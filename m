@@ -4,115 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 744D6C4451C
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 19:04:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05DBCC4452B
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 19:08:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 737826B008A; Tue, 21 Jul 2026 15:04:19 -0400 (EDT)
+	id D0CE26B008C; Tue, 21 Jul 2026 15:08:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E87A6B008C; Tue, 21 Jul 2026 15:04:19 -0400 (EDT)
+	id CE3F56B0093; Tue, 21 Jul 2026 15:08:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D5BD6B0093; Tue, 21 Jul 2026 15:04:19 -0400 (EDT)
+	id BFBE56B0095; Tue, 21 Jul 2026 15:08:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 269AB6B008A
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 15:04:19 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id AA12A1C0140
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 19:04:18 +0000 (UTC)
-X-FDA: 85013709396.22.FA113F6
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 0081C1C000C
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 19:04:16 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=PJnlft8S;
-	spf=pass (imf20.hostedemail.com: domain of harimishal1@gmail.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=harimishal1@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8CFE76B008C
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 15:08:31 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 12F67140283
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 19:08:31 +0000 (UTC)
+X-FDA: 85013720022.11.A74CDE3
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf25.hostedemail.com (Postfix) with ESMTP id E6F7DA0013
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 19:08:28 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=qtmSlt+Y;
+	spf=pass (imf25.hostedemail.com: domain of mark.rutland@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=mark.rutland@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784660657;
+	s=arc-20220608; t=1784660909;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=+JqNpnriZg+duzi2qkjlrmcfUYuT9EqwRHf7/xL8TkI=;
-	b=gII1YHtZqzgLjh39yqTYI4Sw5asaHWEZfUrCLMjiV/WFneIdvR+DZEtLHaw/xmz4BKHIq8
-	25czk+x/Fakdje25SbLHKAvRMdtRTuYakQEIZOP/4VquMPOWRrx2r50aJeeBQZuM3VWarM
-	TJ4BoFxDwFZqVJd/mCnfx99nuLemc7U=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=PdTw4Ljy/iEi6EJKnYY/hTaPD8fG2xXNmAjMarXklqU=;
+	b=dgeY3VFgc9wL1Uf6Jjq+/NV95AUQX/aE7uZD1TJ+UbaxFdyf5fVdceizKeeAt+pclg5gje
+	GvQQyY1LS+JFLho5B9fJf3agzSP4fBx4OEzRv+KXzi8kAJ3nrmpdNn1NmkHqYZXVXb2ia8
+	qVDuqqzf5is7+EsrC5zoIWw0qd8W0R4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784660657;
-	b=WqYs5eghDTVJUaojCI9yeVdCBbgkaEqr3DHTRHZqsyjOpluFpEYniYM5bdEb6bKCjzgltT
-	ahi89K+h99jHhVV5pUnxBqyxHLvwxF0kK/Si40UwtIE0LaWsbs3jS2MHqfOq7KlJa/1sp4
-	AzWIMLdzNG3IZIUU5P1yodCKtEVnShs=
+	t=1784660909;
+	b=V7YjZfBk+wGGPnXV2xPJupymZMs7Bc1aeiSiO13jABgUMpc+iwLNT2oPi7RyPR/5gL5xVE
+	J8OfTh4UwgbmzA9SGCsaXFttuRBYipSk2zEOUOS+uGNi/qZn/1LOUs+oCOkndlIAiButWT
+	0mCk1qDI1Z7aGXNwxsxKPcbwotAsf/w=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=PJnlft8S;
-	spf=pass (imf20.hostedemail.com: domain of harimishal1@gmail.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=harimishal1@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-69e7a5b61e4so5284064a12.2
-        for <linux-mm@kvack.org>; Tue, 21 Jul 2026 12:04:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784660655; x=1785265455; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=+JqNpnriZg+duzi2qkjlrmcfUYuT9EqwRHf7/xL8TkI=;
-        b=PJnlft8S9iZ4dT2nZImw9VK3WCzgG+xdBWDIYYVh/rrmox7ZIKvdk5/i8ct6pt35ME
-         2irLLx7hjQVP8RHPWQQYBIylDpdc0VLbs6u/kjtH9VOA2NHQIxCfHJ9PNISW5xidkFbb
-         hHsyqCG1vXqZT6M3IVEwv4m4ajkUSkoNJJVkM2TCqKabtVYOK8fjc7ihJkg8MrigUKQ9
-         bFUQI0tq6P9q3wZKRvjP4/1b2DAg6SM76XHM/qvoZYO5gZqw+mvXJhVG7PMXGmT5Uz+S
-         EArFZGvNVyFkL47sWr7RO86Qz0RNLw33EO16HcBQ+AhyYajLUe/doJsidp9XquB9NQ20
-         3Uhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784660655; x=1785265455;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=+JqNpnriZg+duzi2qkjlrmcfUYuT9EqwRHf7/xL8TkI=;
-        b=CilwPP7MZlLX/NxPNHZUpi1RIrm1OHAHUac0Qo0zzM9yVAZ9o66Zanq6V8cRuSXRp4
-         dgL9x3FhwC3RyqVHUxkK1otg51RQiZcY0I6kVkSo6LqJL4N4Oa5Y/lydp6BNQOqYcKvL
-         RBwN+IgdGbXIzqQH8RD7VDm8hPoBkRdD1pYuJCRmJsrYla0b/F4qDzyNJ63xj/Fae4VM
-         bmbPZhcYvHpSwA2Bdwo5Ik0bJeTyQ9Vo6Q1Zwh2qHRi8vzZHFddBA2vLYCYAdexrhvUk
-         ifyp1j+RagX2PrV2UGxgdS8RGKe56tatwGaEU2g+f27xFZ4GnbfkTcqWqioCpnEhDEiD
-         ngvg==
-X-Forwarded-Encrypted: i=1; AHgh+Rrx/ME5SW5Q9qFGAvzeeEqQamUlFCaRbahAOCJ80QKzVOdK8RnTSj6el3tFOdIuRkC3/lQAAgzkPA==@kvack.org
-X-Gm-Message-State: AOJu0YwwHCXEAjQ2++rgk/peWoj+797qCpi+3mTyapTbFFEUG/NhCDh8
-	GUlC11pudf27guu6kjGJUNH/FNz8HkxbdRqjBmNYUlKYs39Te0lwktSFLjF+ugsqmCagzA==
-X-Gm-Gg: AR+sD12oY181Jw2/tNh2D2ZoE8FBt04LjCTNDZpy3b/0V4mJYlyjMMFkxtkqiYjDCxX
-	RTgeucsCqzcgu4uLI1bZ7fJ/on0HjwtTWQy2Anqd8ZaYYdcUAC2nJZ+R27qmMMFJhb1MHsGEoPS
-	nbXunVVHqXI8eKPG3SGqn3u7Np2fz5J8vpJM1XBqxm3Fyy3qSBm+ET6iDIJVPe1c7X30MlFnKev
-	+u7S+Sd7/hs3bsyOHtF0q4nCBz2nHrloRUE8pzi8aT+hBm+BQKCvWFk4/++0bQbvdak6FUJFQgz
-	xCP4kNdk94A3QJy3azxf+23HZ9c75iPEDIa1T4toGZJXC6GGTU0Uj0HG0qJUNrYPpaxgdAToXqG
-	2JtZzTXSWYtqF9nDp9j/M9EiWD9wAd0z9BawQEK2f5mfjlOe3LBA/oSguPmAmECgtu/dnfzAR8Z
-	hHlrL0OTE5BL2pqbWnE2ZQKJkhjnMoBbjJxazRtQjD6zs5wRXj5fRVfJXlw1jfloEswOHo7vQWD
-	gRt
-X-Received: by 2002:a17:907:3d45:b0:c16:1901:6ba1 with SMTP id a640c23a62f3a-c16b47c50b7mr857110866b.34.1784660655267;
-        Tue, 21 Jul 2026 12:04:15 -0700 (PDT)
-Received: from misharu.home (2a02-a463-a071-0-1315-eb9e-fdea-db07.fixed6.kpn.net. [2a02:a463:a071:0:1315:eb9e:fdea:db07])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c1c32ebad78sm8903366b.46.2026.07.21.12.04.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Jul 2026 12:04:14 -0700 (PDT)
-From: Hari Mishal <harimishal1@gmail.com>
-To: SJ Park <sj@kernel.org>,
-	Shuah Khan <shuah@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Hari Mishal <harimishal1@gmail.com>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] selftests/damon/sysfs.py: clean up sh processes used for obsolete_target test
-Date: Tue, 21 Jul 2026 21:04:04 +0200
-Message-ID: <20260721190404.135937-1-harimishal1@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	imf25.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=qtmSlt+Y;
+	spf=pass (imf25.hostedemail.com: domain of mark.rutland@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=mark.rutland@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A2EFF152B;
+	Tue, 21 Jul 2026 12:08:23 -0700 (PDT)
+Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 10ED43F58B;
+	Tue, 21 Jul 2026 12:08:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1784660907; bh=6TZNhGMiK6SIIRkXwPe07Z1IbHnyi9FAC1oXtous4SM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qtmSlt+YSuFKMmK97ciSuK0jD2TtFWOpJZ/4+0L3kKd7p/KzmZprjUDCL50RIJ4su
+	 jZNtWdT21n9OWv405MRaEowPh4FZPtevxz8huBWMZJf7WNjfNsCKsiaSOFHzXji5nU
+	 xWcioUiVkpu9s1lxQsD58gdsiYwJyJCjV8aeTl9Q=
+Date: Tue, 21 Jul 2026 20:08:20 +0100
+From: Mark Rutland <mark.rutland@arm.com>
+To: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Yang Shi <yang@os.amperecomputing.com>, cl@gentwo.org,
+	dennis@kernel.org, tj@kernel.org, urezki@gmail.com,
+	catalin.marinas@arm.com, will@kernel.org, david@kernel.org,
+	akpm@linux-foundation.org, hca@linux.ibm.com, gor@linux.ibm.com,
+	agordeev@linux.ibm.com, linux-mm@kvack.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ada Couprie Diaz <ada.coupriediaz@arm.com>
+Subject: Re: [RFC v2 PATCH 0/16] Optimize this_cpu_*() ops for non-x86 (ARM64
+ for this series)
+Message-ID: <al_DpFJFcmVhxpvW@J2N7QTR9R3>
+References: <20260715180455.515692-1-yang@os.amperecomputing.com>
+ <0344c559-1959-4531-9265-d5a5180eb7cd@arm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0344c559-1959-4531-9265-d5a5180eb7cd@arm.com>
+X-Stat-Signature: 4zegtrb6jfn3emqu64ihht3uxisnd7hz
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 0081C1C000C
-X-Stat-Signature: ee5aqh3fhwgododa5w3bhfgz5h1pk1fr
-X-HE-Tag: 1784660656-506239
-X-HE-Meta: U2FsdGVkX19G+MaXPDsVtxZYGTKiF6+vApuFShL76gJ/YGFF9iZFFowJuKocUghxUjtBFoPHuq1D7JgSrkHo+Ds8GU+bWmG9IGUnzP3zzfIcWg8ye6FyfVOwvshL+8mdOohP9FTbcXajJEsVaoF8jrhS19CDBdRiMNDj+C5q4TL1uCQHR81V8QBKRQq4wBd7JP0WOWZ0PjBkrl71bv5dIR19db1eCWCtMKiUDlGaR7ysZB63Lm88hXuVto8TLLLC445AlVa9ZjkEsHD6QZj9gdKkz4fSlbyT75Es5Up55akZeKIYicxAl9S+IJGeK0Cd4LfvriYq+LHazxWJ3TPFqFo/EVkzMojwJz8QVW+csUVucRxiFvnrwdOwruAafUkrqkMnEVPqE1QPbtLTM0hJ2HPbiox30VpjmSupaDaKdDGeBxs/hIeDAw9LfjdJ8Oa9bQwD2LTER3reDa2oSAg2WQN9YDn600BD/u580sBNp4Jpld04LkO2uKM2fmNajH2FZzvhUxtBLCQ53gKrzBr82Py4WAvYCylMloI8tBxZoRKXGp78996f3B6GG7I4ZoxjiVdQam5rXDwzbr0xz5JLWBxzVfTwuLCrdgQD2RYv3b7x114vV4hSefm9GvmJgKLjV+uGIRu4ReIT8v7SdfL3NsdGbbBfWfx3/vD8wJ3RG5yM6Tq56AmU7tGCFHIKtQ0b9eoYOHNFoVBcInfZP5uhuKHjnjkvNiLn0sGA5PSwg6tQPVYw28ORrNNSKM0HuZ2+z2VMg2wopURIginBRU+i8fLMshRI4xXbeoIubwDL0e12wcUQ7bcF26HhANmR0uHPtCADoZkIP3dQQAitqvCwazT9N2P1h9kout9o58fdGzNNYbmIP5WJR4Pmmww7JpJyDwoNhWAFJsLhO8ujVRxDwtuWkGGRCUApr4p3DNEZGYXNGwJAmzphvegyzUdb6sQUDVWj+SauZZ2R+2syXda
- oAXu3usC
- Wf6XksTq2F2Zvh5yiiuUppUylEadvhBKNmV01Pisv+ynBFJ+KTlzL34VUpejEVgCmBkvrnyFkmnIBcwiAfDjTobEeWWdbrv/8WawWS/t7L7Q4Bfw4hSNxt1wUPEMRzIopLQK7r2VMfJutoaWchm6amb9Fq0e1H5BAFBBmXRFXo1x1ZaSlVq5UmPSpg5YmEPiu8nF6EdH2nBXdeHQM4mY2iC5dcBIz7V3EhexNQcQmX29jUbXffqrtRjqF0PnBSnpm8FNRxijjYcNdlFfaoTTk9TAkGShbOInCaeYHApNwHgpTnMyzzznDfvkvixdSATf5pcGMPMhmSvl7DFyS3ki24OkevYJELoxn5Go8GBEEnRw8frTOOBQIFqupKlMUwCWYpUFDGClrNSU5FWEAw+RVYZjEgCjLQ46uRZIRzfEFy3kocpr0kvYAitGbBr1DJNIxHeqEXypsVHTcBPPl5Oab9AaM4A==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E6F7DA0013
+X-HE-Tag: 1784660908-155152
+X-HE-Meta: U2FsdGVkX1+STiVrCdRetQFA+SiSPZdl+2YFdZDUcCwBEO4Wgc5g7MWRMgB7Caj99jKJE9Uc/tntYUEze9x/CKGBvbZl0e1hl+9P1jv1XlLlwxFYPuU0AlzKbYxD7tRPa+QyOCJ3+4TVfmvIENJ4aYm5XabqcBTH3hAD9Twjlatmvwpk6CXYhOUNyLMqGrE7juL27WdxUGk06ZKGelopw+W63S1lXR65jbQ/3h1ji9TjbqykTCxDItGowpzpKCe4hF503cTg4ICObJD/RTbEcKpMA6pB5NPjK5hpkKH10N2SQTQxVdxXD3lSFgJ+noUAnVZqnFE1WrDa90cVDCpCRzDDcEDnAVl47g2/RXkzBrzYDKX8GGfkbeQ2vSGpoAdOiiBVhU0bTlBWWSud/MkaTMRlRkXI9hqOEDRH8kAIJEoAhpfg7tgtBUZ3iui0ZOqQaxIoSbJf1NubcxQsStt800tA/loq1RpphhFjaxbaSXpi1TPMOyZvHUfSti7ZmD/kYBJYhvvRROQC17p/eoyf0a+gzjgzAoq+Sn171CAcfhBq40NhCj3OgLwAr3oGOp+4Qc/GYjlD47PB72L/w71tJpd1ONSA/a44xVN6NIqtZTi/czInxCedx5uDwfwRaGp1eBFSjVKvQhVRUCmf3/J/X8TdlSD2hVlOTIGdLGnhB4CC+/UxXoYjbz6Tx6SJe2pi1oxk3Ej2KK/LoiLyW2WGwTDyLUwrbFPzjjDV6ZZVNK/Gd16oWHtJ6eqfoN7Qo6wZI/jECgjM085VOuigxF9Nma94pP2H37kpCCCrll1YH1KpzzeFug2b9MMVtWavDjISvC8/M9Msq2+L44FcHaaOMCj6fpUJC1En876UeMEttJEnIEYO0pV75Ka4WeW/xcmX+802KwfTeD5tfvBAXMBD4mDvQWivZGnmIWe2ZUNWg0FQ3RLlgouBLakwYjrMPzL0xeTjLi10ARb5Baw8QJd
+ oJA1hndj
+ O+6m8zhU4Zevvva9/0WT9rm8fr6UcztA24h+bbch+BfANLQmQ6/FF4heguuB4mK2rysUGII/DS/FIKgksCC8ONw2FueBI+cQPGOdOzhdPkP9JFkc/X1l9EnMsjBqXtkc5EzaF8VZ7sz8osYuRK1dYpeAhnQGl24+ScxLSFrGOJ8eTIOOLfGaUUluoZxL/w3EWszPLOoM53M0yBJlGzOgGU45QWkarHAOHaPgUxwCxED2duCdnrGfcZb67N/cwuXw6nsZRLU/ACAK9toanCfNcKuLzEraHXrYYWWCzbUSCD5QvRbD+eBpF4MTQySJ/+jzKgGd3VWKSYuRXuVy/aFtiYzh96DiCjzvmoEHdLT7hFVJeoI10PDmA4I2z3KS+qEV8oMu1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,55 +95,136 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The obsolete_target test spawns three sh processes and uses their pids
-as DAMON monitoring targets.  These processes are created without their
-own stdin, so they inherit the test program's stdin, and they are never
-waited on or told to exit.  As a result, they are left running (or
-become zombies) as orphaned children after the test program exits.
+On Thu, Jul 16, 2026 at 02:23:33PM +0100, Ryan Roberts wrote:
+> We have observed a few performance regressions recently, for which the
+> root cause is increased use of this_cpu_*. We have somebody at Arm
+> about to start an investigation into whether in-kernel rseq can solve
+> the problem.
 
-Give each sh process its own dedicated stdin pipe instead of inheriting
-the test program's, and after the targets are no longer needed,
-communicate() with each process to close its stdin.  This sends EOF to
-the shell, which makes it exit, and communicate() then reaps the
-process.
+FWIW, I had a look into something rseq like (resetting the PC upon
+preemption or any exception), and I ended up with a GPR fixup scheme.
+That avoids the need to disable/enable preemption, and only requires a
+read of current and a couple of stores, which *should* be cheap.
 
-Signed-off-by: Hari Mishal <harimishal1@gmail.com>
----
- tools/testing/selftests/damon/sysfs.py | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+The approach is similar to Peter Zijlstra's in-kernel rseq scheme [1],
+and Heiko Carsten's approach for s390 [2]:
 
-diff --git a/tools/testing/selftests/damon/sysfs.py b/tools/testing/selftests/damon/sysfs.py
-index aa03a1187489..d3d50a5a1d56 100755
---- a/tools/testing/selftests/damon/sysfs.py
-+++ b/tools/testing/selftests/damon/sysfs.py
-@@ -328,11 +328,14 @@ def main():
-     kdamonds.stop()
- 
-     # test obsolete_target.
--    proc1 = subprocess.Popen(['sh'], stdout=subprocess.PIPE,
-+    proc1 = subprocess.Popen(['sh'], stdin=subprocess.PIPE,
-+                             stdout=subprocess.PIPE,
-                              stderr=subprocess.PIPE)
--    proc2 = subprocess.Popen(['sh'], stdout=subprocess.PIPE,
-+    proc2 = subprocess.Popen(['sh'], stdin=subprocess.PIPE,
-+                             stdout=subprocess.PIPE,
-                              stderr=subprocess.PIPE)
--    proc3 = subprocess.Popen(['sh'], stdout=subprocess.PIPE,
-+    proc3 = subprocess.Popen(['sh'], stdin=subprocess.PIPE,
-+                             stdout=subprocess.PIPE,
-                              stderr=subprocess.PIPE)
-     kdamonds = _damon_sysfs.Kdamonds(
-             [_damon_sysfs.Kdamond(
-@@ -356,5 +359,8 @@ def main():
-     assert_ctxs_committed(kdamonds)
-     kdamonds.stop()
- 
-+    for proc in (proc1, proc2, proc3):
-+        proc.communicate()
-+
- if __name__ == '__main__':
-     main()
--- 
-2.43.0
+  [1] https://lore.kernel.org/lkml/20260223163843.GR1282955@noisy.programming.kicks-ass.net/
+  [2] https://lore.kernel.org/lkml/20260526055702.1429061-1-hca@linux.ibm.com/
 
+A key difference is that I ignore the PC entirely, and *only* track whether
+GPRs are in use by a critical section. The GPR fixup is idempotent, and
+can safely be applied anywhere in the critical section. Ignoring the PC
+means that (in theory at least) this should work with kprobes, etc.
+
+I've rebased and cleaned that up a bit, and pushed a WIP version to my
+arm64/percpu-fixup branch:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/mark/linux.git
+
+I'll aim to have a more complete/polished version out in the near
+future.
+
+The key idea is that every percpu op has a critical section during which
+it maintains three distinct GPRs:
+
+  <pcp> : The original __percpu pointer.
+  <off> : The percpu offset.
+  <addr>: The final pointer (<pcp> + <off>).
+
+Whenever the kernel performs an exception return back into a critical
+section, it can fix up <off> and <addr>, as described below. The
+critical section is roughly as follows:
+
+	/*
+	 * Prologue.
+	 *
+	 * At the start, <pcp> is already set, but <off> and <addr> are
+	 * uninitialised.
+	 *
+	 * After this STR, upon an exception return into this critical
+	 * section, the kernel will:
+	 * 1. Update <off> to the current CPU's offset.
+	 * 2. Update <addr> to be <pcp> + <off>.
+	 */
+	mrs	<tsk>, sp_el0
+	mov	<tmp>, ENCODE_REGISTER_NUMBERS(<pcp>, <off>, <addr>)
+	strh	<tmp>, [<tsk>, #TSK_TI_PCPU_GPRS]
+
+	/*
+	 * Generate the address. Any preemption within this critical
+	 * section will result in <off> and <addr> being updated to
+	 * match the CPU that this is resumed upon.
+	 */
+	mrs	<off>, TPIDR_ELx
+	add	<addr>, <pcp>, <off>
+
+	/* The actual operation, e.g. read/write/cmpxchg */
+	DO_SOMETHING_WITH(<addr>)
+
+	/*
+	 * Epilogue.
+	 *
+	 * After this STR, the kernel will no longer apply the fixups.
+	 */
+	strh	wzr, [<tsk>, #TSK_TI_PCPU_GPRS]
+
+To handle nesting, the exception code is updated to save/restore the
+register numbers in pt_regs (and clearing the active value at entry) so
+that this safely nests.
+
+With that, a simple test case such as:
+
+  u64 outline_this_cpu_read_u64(u64 __percpu *p)
+  {
+          return this_cpu_read(*p);
+  }
+
+... is reduced from:
+
+  <outline_this_cpu_read_u64>:
+         paciasp
+         stp     x29, x30, [sp, #-32]!
+         mrs     x1, sp_el0
+         mov     x29, sp
+         ldr     w2, [x1, #8]
+         add     w2, w2, #0x1
+         str     w2, [x1, #8]
+         mrs     x2, tpidr_el1
+         ldr     x0, [x0, x2]
+         ldr     x2, [x1, #8]
+         sub     x2, x2, #0x1
+         str     w2, [x1, #8]
+         cbz     x2, 1f
+         ldr     x1, [x1, #8]
+         cbnz    x1, 2f
+  1:
+         str     x0, [sp, #24]
+         bl      0 <preempt_schedule_notrace>
+         ldr     x0, [sp, #24]
+  2:
+         ldp     x29, x30, [sp], #32
+         autiasp
+         ret
+
+... down to:
+
+  <outline_this_cpu_read_u64>:
+         mrs     x2, sp_el0        // Prologue
+         mov     x4, #0xc80        // Prologue
+         strh    w4, [x2, #20]     // Prologue
+         mrs     x4, tpidr_el1
+         add     x3, x0, x4
+         ldr     x1, [x3]
+         strh    wzr, [x2, #20]    // Epilogue
+         mov     x0, x1
+         ret
+
+... which is clearly much better.
+
+As noted above, the branch is a WIP. There are a bunch of things to do
+(in particular, factoring out the xchg and cmpxchg assembly), but I
+don't currently see a major technical blocker for the fixup approach.
+
+Mark.
 
