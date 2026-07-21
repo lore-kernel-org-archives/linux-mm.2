@@ -4,30 +4,30 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5834BC4452F
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 02:53:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 033EBC44531
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 02:53:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CEC106B008C; Mon, 20 Jul 2026 22:53:12 -0400 (EDT)
+	id 1F3DC6B0095; Mon, 20 Jul 2026 22:53:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C70D56B0096; Mon, 20 Jul 2026 22:53:12 -0400 (EDT)
+	id 176B46B0093; Mon, 20 Jul 2026 22:53:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A9E016B0093; Mon, 20 Jul 2026 22:53:12 -0400 (EDT)
+	id DD1586B0093; Mon, 20 Jul 2026 22:53:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E3D06B007B
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7B9F06B008A
 	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 22:53:12 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 94CDC12038F
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D150914033C
 	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 02:53:11 +0000 (UTC)
-X-FDA: 85011262182.23.7203D69
+X-FDA: 85011262182.02.A1FCAAA
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id B1C4840003
+	by imf13.hostedemail.com (Postfix) with ESMTP id EF71620006
 	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 02:53:09 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RU5nIEo7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XEHybAo+;
+	spf=pass (imf13.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1784602389;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
@@ -35,46 +35,46 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZpZGhyITuiEPc35R3SeU9ir9wzXaL641Y6XBXsA0eGY=;
-	b=Lo/VgEcXe3JDL7olV/B/W2K9bY0N3TWcF7odhi9n65f1cssGRuYdd19tYKcC3WfLkYqUEp
-	d08pAkmqfq4qxuPU4sA2OZiRXjW3OXg+TTyfb40bo4N0ZbACVN4iHd6GgxLFtBvcnO4sGC
-	KnrhLbbSM8YEJU0uhlyMpzUEQORBdU8=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RU5nIEo7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org
+	bh=NVNsKl/7btL+2KqAV7Pf+R4Iorkfm2pA8rUSdx+4lEM=;
+	b=pm3WGbOD54k5FHN+V39bHK0wLfoBxfQ6V82OrZj1TTHMMU1t9JrcOtUOMQxEjJZMTAzcBy
+	0/F3Vnm7W2rWGjlns5YmVy7VHVc50NRr1WlZTRIkQJ+8mktfq+9ad0JhNSsm40OzV7gjmW
+	S9wmNFNsLWV9S/ZqQseCd5OQC0K7xbQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1784602389;
-	b=Z0jGY9kbiFzjD8W3FAcNFxtnA2LPuwUQkWKuNcw0/8VntnDlHtChn+X+LC580WbGARAKWw
-	83KHbgnkMGL406T7VwPwt7w5qg5r8mnUtEQYEaOhQp5v5bUrvqNyWBh+zpkk/bP+I0275Q
-	br3mWXElvJt+1id1Tgswf39Z40CtxUE=
+	b=7wesxMLtHfdrYuhWNAI4OaJ2cvUgPyuoN5BZWocc76gZ5zCCHyxQXrq5cos2X1eB1UMpOU
+	wAY8NK2X9IXoEUn2ZTk2BSpHTqxpb4Ew6EQ7jEVfBPtN7zk2UTcFCx+x2ZgHXXl2Wf4PZH
+	5RF9oDiKUqjoB++4xGd/NfnARiInwSk=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XEHybAo+;
+	spf=pass (imf13.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4C12F60A7F;
+	by tor.source.kernel.org (Postfix) with ESMTP id 75A7F60A88;
 	Tue, 21 Jul 2026 02:53:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id ED0F2C2BCC9;
-	Tue, 21 Jul 2026 02:53:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 23057C2BCFF;
+	Tue, 21 Jul 2026 02:53:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1784602389;
-	bh=9xYXc8cFALwl2scnPkDmoIcwhk2eGPLl2JPUNmDY2d0=;
+	bh=kSh9BQgS5QmHyKYjO89WZ2+3iTBXW5J+wxxG9vDVAJE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=RU5nIEo7oWGGETmhUfdKPLm20rS3ih3Lz3nx7dwAbmJpFMYKLmt1sbPxm8M2BdFSb
-	 p+qcEBcKlKCYBeGTbYZvCWk0+kdvFH9uvPlxo+HCrjvzfA3TxKn/TSf+lvQK01A1dG
-	 6bCBamepBRssAXw7K2FZqZE+8Pq1xa652OychT7XIwjDIyD9SfXYw04rOq0bNNF1kL
-	 fY0DPpYdi2kqYt6agKYJjpZBpnTg75KDWOxMZ1teiVfjCiYXeav3kklKOSKGInqqeF
-	 KMnOIr1LMuDTplYR35a/9ljd8NETimAmPoZiEBsL5JeRUAahmv6rCmmCODVa3gC9rc
-	 018p7QpijnZRw==
+	b=XEHybAo+2kZNVVGNyUv5FLdCH48YFNU3aR9zcL663YF8cgoDm5tEZG8C6kZrrD9ZQ
+	 pUEKKPPhBB7T6MqJfWl8D1DxrKjorfKgwda1tcObkLEIva/ABl+y2OTShLxOpWAUfb
+	 QGduIUi/81ESq7KJdMoxhAiAHjQNOB0vy63QE/d3RLQf52zMHPqaeVLUSCIrxY8MWQ
+	 dda5HhbojUX3i6VuawQDBg8/VAFZfiNWnUISIbCVxcOkhCyA/wA09bHEvklUdRiWL1
+	 2w8kogzEW4PrGK1QROYUWNaocIGPYtbMtZS3DnV3h1H2Tc2VCrX22TRJsV3ZO2u6oe
+	 SKlAsthmOF/vg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CCCBFC44524;
-	Tue, 21 Jul 2026 02:53:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0EF6AC44533;
+	Tue, 21 Jul 2026 02:53:09 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Mon, 20 Jul 2026 17:25:05 -0700
-Subject: [PATCH v3 02/13] mm: hugetlb: Return -ENOSPC on memcg charge
+Date: Mon, 20 Jul 2026 17:25:08 -0700
+Subject: [PATCH v3 05/13] mm: hugetlb: Fix subpool usage leak on allocation
  failure
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260720-hugetlb-alloc-failure-fixes-v3-2-7d2a169aa9ee@google.com>
+Message-Id: <20260720-hugetlb-alloc-failure-fixes-v3-5-7d2a169aa9ee@google.com>
 References: <20260720-hugetlb-alloc-failure-fixes-v3-0-7d2a169aa9ee@google.com>
 In-Reply-To: <20260720-hugetlb-alloc-failure-fixes-v3-0-7d2a169aa9ee@google.com>
 To: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
@@ -91,23 +91,23 @@ Cc: vannapurve@google.com, erdemaktas@google.com, linux-mm@kvack.org,
 X-Mailer: b4 0.14.3
 X-Developer-Signature: v=1; a=ed25519-sha256; t=1784602387; l=2183;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=nuUhbZqkwDE9Ph8fILa8cD4bi/Ma9wFUhfWLAJKiQgk=;
- b=j57evNN0B3aJE2bGo4aYEop42SQgenXTgRg2PUpxRSDxLbx80RSNC2CSSJi9kG5+6PcjtSdOX
- U3od4V1MktRAPv3uMaKCMouffdnKbebP9hZr5h1kP/nwAVICniSzxVg
+ bh=TxFD58wSA2jJAufxG4ptcnmkIwsdZTWOv5gzU++/HSs=;
+ b=Cuw9IMu+njvxpvmnRk8QFmkwsKKjZPzSykOuLnRokUuqa3Z2CbGxGweoxUKCN7Lg7QoL0WSrH
+ bxvolGurs8gCNt/+T6VZcrW5RuSxaR+OKnxfVIbStbxrn7DKeQ8rJkq
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
  auth_id=649
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: B1C4840003
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: EF71620006
+X-Stat-Signature: n9cwy9t8h4iof9frs4wan6kymkatnd7k
 X-Rspam-User: 
-X-Stat-Signature: jc4bd1qd9wk1jeq146t5zrytm8f1bmow
-X-HE-Tag: 1784602389-138076
-X-HE-Meta: U2FsdGVkX1/klUnq91gaAhwKtp238RksaUjqcJqGxCCx2K1uDGat6bfUkTu/XIukz0iKo7dwOqX/qkuJtMPubozam61QC5DC1wyQKe308w7EE42UpPcdwZ+ZTtluIFLEN04GlRepzldWvRTTSjGtRdpST8/hi3+3PswKRnwTLm2feHtPMPUSO2+FcHaGVMxmtol9si2MISVNAXj05E5B3dvhEI5t3QXt7ZtWqM0XOK4jOfVLkibK8EOJ8YL93HJv0X1BKQ6MjjZ0tMQCJ6aGkzUWDf8/9dUtT5i0xq0K4ubKPnizLm6e29/hyFzL0NgeXaymsWYO8qulolqJnCcCFF3C8LznY+0YWlTwAG8CrNylnFgZj8TiM4pC8mhk97/JFpz+zEwPdp+u+jgawrrBJQJnLC61Fs6umdMu5FkFiuQBfMSHf7DUkKhHALO83TmUrD8Z+os6FdJN5gsT03OzwIdcWjMHAZQce5BVAG34M69Bi4jNZMM97zwpNoAjtO6AnFapOPICWtLhUGh86xeYTAbp9t7lZBPCOfrpqYJzlA2x8MTVbBmPQqIngY4a4Bfoy0hPvOGvb4quZyTXPXZ7PMxbAWG+JXKpsaH3KcQ188Rjah0GPJWNG/shiWRaIA77qiBSJw3JOOWz7Ak4or5OCp/kixz65IRyNSLL7XQT6Eym1VKcAy7NCwFmcmhaMsPRvf+/tU+wrYJTMWJDRN2tb6/JiME8KmpfAM8PoIi3TM10D3P5oJQ3bqnG9eCYWfRnzIOUNHyvJeT0Iwz0NxIBt1HcC/mX4JWT7GVDdGKVVjwdiX7eZedcYQx/CE6BkX+2BTntePuprlM1FX3TuqkeofUVwPk6C5M3IGyf16W4qQqmPmCPCbXzXq+uFYSChLA8PPkm9zQ9ziSe4Xke7N+octuTsZrQdW/IEMf0/CjMhMqsyCz2vGwtBcuKhgYzZFJ5igDDpe57lMwNtoGM3v0
- 1WKAb+KS
- l7q/jyKMN0OokQXHOkhdqpCIJhadM+kLk71bSSNhmtdkerK0NC/7jdaeI4MUWNjobU1ebFZXYKJWyfBH/gNYvJJFP7gNyxGMdEoWfVkX4Y8vU7vJUKReDaLztWPXjRifyy9hR0aJ0wPebOhAmD7wd8n4KlCzSUJDbna17MmTTlrr+LWKQYPJGRsiGM5jFeLJcm0iZ4NqspuWIH0a3z3Czf+/ExzgmxnURWjwPqGxnpXDkpMadN8TJ3ORV65VSXS7TVkv2EXeL+sLTfaXNve9j626qbHfmaNwIuYQdd4PETaSS1hZZSuCYzMVYHEFJgaskcLEN0D9loL3gGMqWGI3jPl5qQ6az6SiYBFxnguGG4uDHmFMX3m64lLcmslopBuBYUnn9MNMdYq+t9b6ptVjPbkaetyqTxFgzGkAq8CzQLbWxP60sEe9J86uZpJB/wnNMcds05wXiWF0705NtpxpMSWuWSmwSAumXNSXw
+X-HE-Tag: 1784602389-15956
+X-HE-Meta: U2FsdGVkX1/x+I7INCgow/Ra9XHZtT5QlL8zNEf+ub2pGVTEux9JUUQLf2vcj7P9tP5he2fyM0YtRxzbZQyzCFJzs16pmyHtBTLJgPEJvcPRtUFTGKT6zmqBGfW7WVf+6mvME51yw+PC2fMl0qBhyASvuIirvXJ6dWsYL1u434cIAIGPBbhH9Z/+fiLapGEJCLPVsfLRSL0DfLT/3ay6lqSoTrX3QasZCkVVEuNO/LF73MEoRbLjCSMqZUFk6xutTdiCFUcH3cOrgm1xd2ZyMI0TmZx0nU/2fO2HS1KCc6KxWvVhqNUsnqzcuLY3cJNJI+/WN75U2l5co9E50BKRLKLkzJ34sV6FE0JaPN5A19wIbHPMAnftGQBAn61SWz5T5apAdGeie3FJ+qG9h0KC2U09C+LsznX2UddQ+3UNFAEjLmmoCXcEOd9FQl2zM4o0pl7ZzrAfPjyi1zq63poknqgw7cJcqSw6DBYeZUlOrm2ExPw01jgTdPizG0ufMER2PiKzlXCiSNz6F9XXghuu4ig5FFP+QTKzlVhGFG4BgZH0p3zGDWElpo0ApioQTacgOawQpwrz2qxTPsHF+BsVuRIA5YfSdENg1RA9b0YKP3x4jGXpWtmtEQeq9DM3KVhzZmLFrbYi2417sZv0azPvbDhiFZ8UoDfO0ppRzDBenAKz+Rzp3xGAeJGErYH6lkV7kuPwspdFj228FW+4aEIJpeKqq2HKOd8GFiPNG+ljKplN5t6z2nJCOnOc9xvwNukvICIj+f5n5XRXzRHOjrng7fAq1rpHf+RiMCvLLrXy79iBDSyC9xAgxqkeNXbgLQ0mXGi4nsSRf8dkg2qpbKS7iBUEoK++r4s+LMC/cwF65meA+50IZ1ZYPGRW5/0tuxig6PU8ZnjKkMyghn23s3folD8QgYANFM25HHNB3rC2D2UlkDomMlHk3k39oWCfNl7VwAms+LJ9Q+c5kaYEIYX
+ 7F5kXe4Y
+ ZdproWXcWM27olNeIath6v4c8BfC4cy6FHkjWy9bQ+Q/Nd8H4LYq0bZEyoDn9ojS9PTUKdvMA02AJWsOhLN4LiiTvJxh9keDU3mGfXLlBnFJr7YO5z3MTghQxYN/2al7WR2IxXpBWTud+9QrZOqeZR3QD//WWUxDTwV7PRGZJBT855fTBUoWhBk1H8qm2NqUk6wI6ag0g3j6ULTQA/CJSWEP3mqdCmfXzr8gtj+z+LqtrQtt3mdwrX93wBneM0w8/fRf6lqTPTPoYqxNoOjFoN9gPX8jy6sBNmd7Ytwx1Gtw6/YVqw6WKwMhMxmy03mC14M5VRTR12IDqjukD/+chcSWAE5/miG9GNh6f2SXIIdygzjHbAZmKBCRIiwYzjtmu0hlWLWA+JT7mZQFfR8IvSH8vcX8PGbVRR4SZ3DWGMjUxMum2RPfq+55RNe0rfHB7m+1KhhuPmeM/1c4loUE0kFaEQjwh+yj4e5GK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,61 +117,59 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-When mem_cgroup_charge_hugetlb() fails with -ENOMEM, alloc_hugetlb_folio()
-currently propagates this error. This results in the page fault handler
-returning VM_FAULT_OOM.
+When alloc_hugetlb_folio() fails early (e.g. buddy allocation failure or
+hugetlb cgroup charging failure) and gbl_chg == 1 (meaning a reservation
+was not used, but a global page was allocated instead), the subpool page
+acquired via hugepage_subpool_get_pages() must still be returned.
 
-Because HugeTLB allocations are high-order and use __GFP_RETRY_MAYFAIL,
-they bypass the OOM killer. Returning VM_FAULT_OOM to the #PF handler
-without triggering the OOM killer (or having it make progress) leads to
-an infinite loop of retrying the fault.
+Currently, the error path out_subpool_put: only calls
+hugepage_subpool_put_pages() if !gbl_chg is true. If gbl_chg is 1, it
+skips it, permanently leaking the subpool's used_hpages counter.
 
-Avoid this loop by returning -ENOSPC when charging fails, which maps to
-VM_FAULT_SIGBUS, terminating the process cleanly.
+With the earlier patch to always track used_hpages in the subpool, always
+call hugepage_subpool_put_pages() if map_chg is true to consistently
+restore the page to the subpool. Only call hugetlb_acct_memory() to adjust
+global reservations if gbl_chg == 0 since gbl_chg == 0 indicates a
+subpool (and global) reservation was used.
 
-Make mem_cgroup_charge_hugetlb() fault handling use a common error handling
-path, the same handling used for hugetlb_cgroup_uncharge_cgroup{,_rsvd}(),
-which also don't trigger the OOM killer and hence opt to terminate the
-process with a SIGBUS.
-
-Fixes: 991135774c0e0 ("memcg/hugetlb: introduce mem_cgroup_charge_hugetlb")
+Fixes: a833a693a490e ("mm: hugetlb: fix incorrect fallback for subpool")
 Cc: stable@vger.kernel.org
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-Reviewed-by: Muchun Song <muchun.song@linux.dev>
 ---
- mm/hugetlb.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ mm/hugetlb.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
 diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index eef9610a0593c..b32735b092a0a 100644
+index 061d7250c202d..3f6189d2d0188 100644
 --- a/mm/hugetlb.c
 +++ b/mm/hugetlb.c
-@@ -2997,7 +2997,7 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
- 
- 	if (ret == -ENOMEM) {
- 		free_huge_folio(folio);
--		return ERR_PTR(-ENOMEM);
-+		goto err;
+@@ -2859,7 +2859,7 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+ 	struct hugepage_subpool *spool = subpool_vma(vma);
+ 	struct hstate *h = hstate_vma(vma);
+ 	struct folio *folio;
+-	long retval, gbl_chg, gbl_reserve;
++	long retval, gbl_chg;
+ 	map_chg_state map_chg;
+ 	int ret, idx;
+ 	struct hugetlb_cgroup *h_cg = NULL;
+@@ -3009,13 +3009,11 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+ 		hugetlb_cgroup_uncharge_cgroup_rsvd(idx, pages_per_huge_page(h),
+ 						    h_cg_rsvd);
+ out_subpool_put:
+-	/*
+-	 * put page to subpool iff the quota of subpool's rsv_hpages is used
+-	 * during hugepage_subpool_get_pages.
+-	 */
+-	if (map_chg && !gbl_chg) {
+-		gbl_reserve = hugepage_subpool_put_pages(spool, 1);
+-		hugetlb_acct_memory(h, -gbl_reserve);
++	if (map_chg) {
++		long gbl_reserve = hugepage_subpool_put_pages(spool, 1);
++
++		if (!gbl_chg)
++			hugetlb_acct_memory(h, -gbl_reserve);
  	}
  
- 	return folio;
-@@ -3022,6 +3022,17 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
- out_end_reservation:
- 	if (map_chg != MAP_CHG_ENFORCED)
- 		vma_end_reservation(h, vma, addr);
-+err:
-+	/*
-+	 * Return -ENOSPC when this function fails to allocate or
-+	 * charge a huge page. If a standard (PAGE_SIZE) page
-+	 * allocation fails, the OOM killer is given a chance to run,
-+	 * which may resolve the failure on retry. However, for
-+	 * HugeTLB allocations, the OOM killer is not triggered.
-+	 * Returning -ENOMEM (or anything resulting in VM_FAULT_OOM)
-+	 * would leak to the #PF handler, causing it to loop
-+	 * indefinitely retrying the fault.
-+	 */
- 	return ERR_PTR(-ENOSPC);
- }
  
 
 -- 
