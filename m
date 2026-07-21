@@ -4,78 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2FE6C44529
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 14:50:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72C65C44532
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 14:55:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 639C36B00B3; Tue, 21 Jul 2026 10:50:07 -0400 (EDT)
+	id 30FD36B0095; Tue, 21 Jul 2026 10:55:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 612966B00B7; Tue, 21 Jul 2026 10:50:07 -0400 (EDT)
+	id 2C0A36B0096; Tue, 21 Jul 2026 10:55:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4DD046B00B9; Tue, 21 Jul 2026 10:50:07 -0400 (EDT)
+	id 1AF636B0098; Tue, 21 Jul 2026 10:55:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 16BEB6B00B3
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 10:50:07 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8E6F11401C7
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 14:50:06 +0000 (UTC)
-X-FDA: 85013068812.17.48FE665
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DBF376B0095
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 10:55:05 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6602D1A01B7
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 14:55:05 +0000 (UTC)
+X-FDA: 85013081370.12.59BEBAB
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id B7A6AC0010
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 14:50:04 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TktR1nXS;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf31.hostedemail.com (Postfix) with ESMTP id 9AFC220003
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 14:55:03 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mjfmhz7N;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784645404;
+	s=arc-20220608; t=1784645703;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WhL0bFb0++kqhYjp/S8n6P1xQsFGJpg+0C8Sp6UvQH8=;
-	b=EBm9pW4Ro5Chf/jls9wsSNqeRTs28acQjf6pVXN69vFF2APiintQwl6VPXMlxWPMeaC7dH
-	JGx+s9L3rYPZWd59bO1ZbmHKDCshtSM9CKToB5UBctB0ZCtmVvQTpLiBbVn0bx6ayz0Ppb
-	+ZWaNHv3FQas7/c0u1N93w9P267m/PE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784645404;
-	b=MA6o64kP74HcDAFUdPffqh2m7qAKpTDa2jpd1rxEQ3LXc1ZIDLnqn9xm33npSKC7kKh4D/
-	udnQ4xzSxZkkvn7nDDwR96adfROWmWnZPPOdF2TscwzWuN1vomTVCTQB4Ubckl+mBo2oyp
-	O0gn4PUxRt0FRNWrQ9l/wqC5mGLBwv8=
+	bh=tXvMkjXAn7y2m4HY7s7QUvSgtEyYKfTxuKxsFjU19Mk=;
+	b=no8s6ndPnRtqqr2ThvO/F5AT7Hk67N+1bbrBa1XMu76kqQ/h1CjsX3LFKJvYS8GmSKRVq3
+	ij1za83B0PjLNE1yH9Pwm73qMZjDmGj/NMq+C/YAwC7oOhpGFn3cXG7lmnO0IKgrjRYcot
+	Y82kvEjtLkdcMDnqsRvvtYiukyJgsH0=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TktR1nXS;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mjfmhz7N;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784645703;
+	b=eTCSE+7uKA1tbVvWJ5oP2udorc8O96FfiI84YgYg94FQj9OSepArmmyc0eSpEQlFvsK9o+
+	/qMwPhcfl7ai+bF2H9Q0xNf200g0c++ZjNHKuuTvjkeiEy6EUn9E+A6GdWMp+baeTLls+/
+	74RXb10rYAs/l91epsF5UM5lYVoAGl0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C15D14349A;
-	Tue, 21 Jul 2026 14:50:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF9A01F00A3A;
-	Tue, 21 Jul 2026 14:50:00 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C492E40949;
+	Tue, 21 Jul 2026 14:55:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15F4C1F000E9;
+	Tue, 21 Jul 2026 14:54:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784645403;
-	bh=WhL0bFb0++kqhYjp/S8n6P1xQsFGJpg+0C8Sp6UvQH8=;
+	s=k20260515; t=1784645702;
+	bh=tXvMkjXAn7y2m4HY7s7QUvSgtEyYKfTxuKxsFjU19Mk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=TktR1nXS84Yept5lCED+QgykKLhT6N3Xrhd0LiMItRlurja+5uZZ11i0zp8NrDnUR
-	 PoYPJFgrhBgwGF5gYM2GqQVX/lxPBXvv7RXbaCnqXueC3BqGhrs80VFfnhb13K0N85
-	 HtELci/hrSOPjRseUMipO8KjKDVqLGkC9r2VML8Axz+Xc/GUNa8jcTaeK5FgcqQ25S
-	 xoRp0LmsMN2p87NbzhsbkJkn5smJO9OKaia3shW6SZOXA1tc24UEORwFG7rZZI9v6+
-	 nKxmo2El32Mt8+pWRt4mZBZaOYKqH28lKZkzHWXpjn0mZILlFlEOASI7iUYFHjTnP2
-	 I5BxGwbGckSpw==
-Message-ID: <25e3e218-cb74-4d7d-9301-24b583f4323f@kernel.org>
-Date: Tue, 21 Jul 2026 16:49:59 +0200
+	b=mjfmhz7NR5yJZTJdX1z31PRts2NK/a4cqCWaMBfl4jwVaRpkq/t+dQUoJihlx7yBF
+	 jnTH4ge8oxxPrj7ph8sEb5t7R9IZdX1eHl5QOF4AsAjdWpwJIN4n2bU9bEs2dcw3u6
+	 sUXCgZGcFh4JF/IyKXsqUyg1HHH0SSUX9jH97narrkWcXpPEvWKogCVIpC1BDgFCpt
+	 k1xFsKvE1UdeT0dE5hLHq8CVUt+fmKnZflpvll8CfsXsrZN37ZMGck6ezOcw5dsmPS
+	 F3VWeemCIdg/Lds/BCV5wW4iEHYIXaPRHpa+663/5H+x2o9PL4b+g+FFm6+psLYydC
+	 NMTnpGthyVzjA==
+Message-ID: <cefe62b7-0167-46c1-9fe3-fe7efee90a7e@kernel.org>
+Date: Tue, 21 Jul 2026 16:54:54 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] mm: fix out-of-bounds access and race in
- generic_access_phys
-To: Ren Wei <enjou1224z@gmail.com>, linux-mm@kvack.org
-Cc: akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org,
- vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- notasas@gmail.com, vega@nebusec.ai, rakukuip@gmail.com
-References: <cover.1784428532.git.rakukuip@gmail.com>
- <f618e2f57ad0086a8d7a95cb17dcf5a1f0cf0e45.1784428532.git.rakukuip@gmail.com>
+Subject: Re: [PATCH v5 1/5] selftests/mm: make file helpers return errors
+To: Mark Brown <broonie@kernel.org>
+Cc: Sarthak Sharma <sarthak.sharma@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka
+ <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Leon Romanovsky <leon@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Jonathan Corbet <corbet@lwn.net>,
+ Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260716123226.197736-1-sarthak.sharma@arm.com>
+ <20260716123226.197736-2-sarthak.sharma@arm.com>
+ <b66c233a-7956-461a-a3d8-3421c76c937a@kernel.org>
+ <004e11f5-ab21-479d-80a3-64ab89465b85@sirena.org.uk>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -122,17 +135,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <f618e2f57ad0086a8d7a95cb17dcf5a1f0cf0e45.1784428532.git.rakukuip@gmail.com>
+In-Reply-To: <004e11f5-ab21-479d-80a3-64ab89465b85@sirena.org.uk>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: B7A6AC0010
-X-Stat-Signature: 61cjkyspkrp8jqjydwku8xac3b6aqmui
+X-Rspamd-Queue-Id: 9AFC220003
 X-Rspam-User: 
-X-HE-Tag: 1784645404-272717
-X-HE-Meta: U2FsdGVkX18uYqluy3aNbWcvrKJTDHcOyx14MuA/In1y0sjsc8X98bMa+eeBNy1hkhlTozwk+1L3MT3KPcLOCJdeM9s5AR32c1sQfggVIPMjWcHiUzS5/ma5Im22o61mKHOML5LgzG7Wn9lzVFzqnqbgtJionIGoDqQ0e/eXaWlb2emIEa235+raudbeRhaQ1RlaXdUN3o1E6Lt8F871xDOW4O5XffaAKkxezWdz1Wb9NYbOOiH8J5rWadDcBMZFWB+qASHGLI1V0NkHlTt8OOZuOVGpTwOqUvOJS0n30qx+PuUsi0X8Md7jLc8b5XFeWdzYr1/WyLOoVrvRIEpW/xoZsgndCCM5f9VblHCLB0a+2Iw3CSPAYziifrDpWa3JMvFSldybNhZeWUMOWT82zrnrb3rGmToX+VJuYf4oA1fXGogb6CP9ErYmjg1s/W//y+SmSV30glxFwzTDc7yGoFGQW+Xn0tao0zzrKX2URNLA/xaK12xyIAvbvKElgLFgW/Hljly8zg9xySbwjrdrEiEK9OVzYXNlB7q+HDDbda2T9d6k+qDynVcv2xqfBzyUWabWjtK45+B7LvQCNnpZJX6a6pHSEXg3+/IDyI8mipUV/L6PFt4NWylZOfCDt0SHufk17XaLmGzNP5bfRIHkhZdJzX2QFQz5QHP3KSwyW2NkTS2r6ZFIjWrrWPTYCES6FpKB6k2WPd0B8XrweqwWVp1aXb/GSX8yErFpytQ4kC1NkD4o/BPkv5lf6JAWdbonZWylqJ83BmGJspWf9UCXmCzjt0nx6DKHDGh2/LA+FPwGJq10eqhiyIOTAvGXN2qCGAHmCcB1TV5/wr9///q1Sg7RUuQEc2OwSt99RHnno3XyT4HdGwEZ4UiiWBiyfYU1mzwGRhTl5d/jojmENhXBwgSnBTjM3+UTucw8VL1s4Yv+yuvLNOSz9oXnYiS9NbozZCLjaPARGYdIN//gZtz
- siekTLwK
- 8YHquR07STiC8wjoFyz01vv473E+zLxdGjpyK6ViZiHmak6NZUejf4Tg+plSZEEjSR5gR7UzLBMbYuD3k7qkMcUSOH15MXIPXuo3moN6VEz+5/+dc44DromuKzVerMp3A3wSp3gcNyP5dw4BDmlR3kSiNICymxvhKJ6e63jKnOQcQU/ZhpcQqowkYam2SlPtOdPQEO4t3kuEyMjS8OszCWjXPsiBrAKUlnhLVY0HTxi20F2t9I2o4VX5o23QYvH6chhzBN0A0EBcab32ZYfqEFu/N4uoDLWdNewvKB9D3Fcfxw5MGL7DCsxocfDw7r4M1l9iYyjjZAN0mTcQvS9TS++YX7XVNJ8BATxP4
+X-Stat-Signature: m1ft8f4heu5yb4hccp4bgssh4ez8caf5
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1784645703-916688
+X-HE-Meta: U2FsdGVkX1/zAAUtrsmECetbHx9oHxSLyOT947wzFjJR70DEto8Q3bxg2S19L4yzD9OwG3E/Qk8J/G5Mz6V5TlhvZwWrYI99norKAL8IZr5xQ6u9GIQllFvkyFNyD6DIKjz8jEs0kdlP4DSTRVhgjhVhMv0JYWp2bIkKr89eI2uxERYTHt/ZYPLMFofv7trJGOgirT3C+j7LOyYQFkQbbNJmQxF4DHgdFyNAXu3XE4Q/YITXASuBZvf1OU0P7dEaYFjpk3+eEeMCUVWhNf4DHMSDyeLJH+kI3bcMNjUvTWKh/CTYmrYRRANHb3deYasJluZdQcmh08AsrvyLmgwc6ZwhkjF8+v2LB0jJZJBMi6pkZywHDW5YjeeU9pcXJkSc+9NphEUv2hpFas70N46r3GEeUmosc4ecTvH0EdInKr1yfRphqF1/ns4wrdZyssWB4ZUi9/yCpvtZZSePUBrLOuBq9MTYGZKR4UriWwuKyQx5cfIXP+IMWtAqd4R8Ks3sAZ7qS9cq+teWsLMmKckz7XI1Or45Y8TdfVlW6tw9H9P879eAxvCRsEMqsQ3rGJopUjUUy+AXXsRE2FQarewT1EbA7TaE1u7Hh3s6ZVP19xxV6N2IoPcAjFkx7iBE7BtaoV8ndtQ/w9fqQCo/efTer5/UN0auh25zC/AQ7v1gX4xIWL0jcyYqKLTzZuZFAHEYVoqTjllLuys/uUAArcjDGUQt+b4P72pqMDELzNq1e5sNWonUqYnukSBW5XBmnQ3Ik0mgebGZreVmiNp308ExSVyBj8cqPeiL61ccbxvzZan0v8N1E6aSy5jSV7N7ZyeB8zJmu7mR0iF6Y8eTmKrCDvZG4zc2EckPq+gICB9FgBl7fG1Nk0FEwAW0pEVYTSa9ZMzcKbig0+0JW0gzNe/+5ZKI4Sa93dZSL2ceZVNL1fjJlEJd/FhfUCvlj5eIH1MhkUrSP+icXEkoZNpEdnS
+ fY5RMjro
+ svYoexpln3XjV1DrdMa2jS0YJxXjoNqdklKrkfr7Bavuqbfdj+zzaplHysio3345UYbAH/S4ODphbfZqbi8LN6L/LM3RruBUpFzI0SYiUSos0HU7WylwhinbH4X+Dii1nnaoyZANqJS1EXkrbWOnt45YKmnyiQ468BNuHjQLTJ1/33+yU4pKCQC7dOP9TfkKkiDIIPpsyseCUsAKKvFfBzCtDqQ/ucCZlfPLn+ocrLwsuAbse6MDyGOhlh/3oSvEdVt3R
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,44 +153,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/21/26 16:26, Ren Wei wrote:
-> From: Luxiao Xu <rakukuip@gmail.com>
+On 7/21/26 15:48, Mark Brown wrote:
+> On Tue, Jul 21, 2026 at 03:39:09PM +0200, David Hildenbrand (Arm) wrote:
+>> On 7/16/26 14:32, Sarthak Sharma wrote:
 > 
-> generic_access_phys() improperly validates the memory access range. It
-> only validates the start address using follow_pfnmap_start() and then
-> uses ioremap_prot() to map the entire requested length. This fails to
-> verify if the access range stays within the VMA boundaries or if it
-> crosses into adjacent physical/MMIO mappings, allowing out-of-bounds
-> read or write access.
+>>>  	fd = open(path, O_RDONLY);
+>>> -	if (fd == -1)
+>>> -		return 0;
+>>> +	if (fd == -1) {
+>>> +		int err = errno;
+>>> +
+>>> +		printf("# %s: %s (%d)\n", path, strerror(err), err);
 > 
-> Furthermore, the previous implementation failed to handle partial
-> progress semantics required by __access_remote_vm() and lacked
-> necessary concurrency checks (retry logic) to prevent the use of
-> stale mappings after releasing the PFNMAP lock.
+>> Shouldn't we be using
 > 
-> Fix this by:
-> - Processing memory access in page-sized chunks, ensuring every page
->   is validated within its VMA boundaries.
-> - Introducing a retry mechanism to re-validate the PFN/protection
->   after mapping, ensuring safety against concurrent page table
->   modifications.
-> - Returning the total number of bytes successfully copied to satisfy
->   the partial progress semantics of the access_process_vm
->   infrastructure.
+>> ksft_print_msg()
 > 
-> Fixes: 9cb12d7b4cca ("mm/memory.c: actually remap enough memory")
-> Cc: stable@vger.kernel.org
-> Reported-by: Vega <vega@nebusec.ai>
-> Assisted-by: Codex:gpt-5.4
-> Signed-off-by: Luxiao Xu <rakukuip@gmail.com>
-> Signed-off-by: Ren Wei <enjou1224z@gmail.com>
+>> That does the magic "# " for us.
+> 
+> Or ksft_perror().
 
 
-Hm, I wonder if it's responsibility of the callers to make sure that [addr,
-addr+len) is actually within VMA bounds. Just like it's the callers
-responsibility to ensure that "addr" falls within the VMA.
-
-That makes the ->access() implementation harder to get wrong.
+Right, and if we want to move this to tools/lib/mm later, maybe we can just not
+print anything and instead only return expressive errnos.
 
 -- 
 Cheers,
