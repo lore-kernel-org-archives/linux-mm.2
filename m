@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89548C4452F
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 02:53:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79184C44531
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 02:53:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B5546B0096; Mon, 20 Jul 2026 22:53:13 -0400 (EDT)
+	id 8D04F6B0093; Mon, 20 Jul 2026 22:53:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 71B186B009B; Mon, 20 Jul 2026 22:53:13 -0400 (EDT)
+	id 78F426B0092; Mon, 20 Jul 2026 22:53:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2FBDE6B0098; Mon, 20 Jul 2026 22:53:13 -0400 (EDT)
+	id 4A9346B009F; Mon, 20 Jul 2026 22:53:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D99946B0099
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DA11E6B009B
 	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 22:53:12 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3C2C8A03BB
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 49E06120399
 	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 02:53:12 +0000 (UTC)
-X-FDA: 85011262224.21.AA50BA6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 4069640002
+X-FDA: 85011262224.06.9E1C2D6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 2E81F12000A
 	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 02:53:10 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZOhggKih;
-	spf=pass (imf07.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hDEcz+0+;
+	spf=pass (imf29.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1784602390;
@@ -35,45 +35,46 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=atPykDcptr9Vp0vkIQEAqfvEmmMmlzjJYJC/GYPFV5w=;
-	b=Vbb76vjdsmBSr/cMfSwCZIT+SeaEYlCQrQ0E9dobQXna8j30LSF0mD7H4WU2ZrezPZofDb
-	T+Ic/9gAqzx5ng9F2oQVwxBWojXaxh3iS57dtCDEXhaqPUmKtlfw8dg0eoLW5NOHoPek25
-	jpOxjhRrFnDeWihHoF+oOfN9RjSIDW8=
+	bh=mZKea12fb0qVg45FnJl9dHAKpM9UJ7gczJ1ZNa8Bnjw=;
+	b=g589N4vUlPKQF47GiHAUbAewALuiJh9Mv1KuGqIv23yyTbf3w+1D9HEWM3TKf8PzyinnIz
+	6BPky1dmqvu7DO5I7e8/B5oK947QJobZXFqXGIhrX3dWV35AEbl8A0AB7MKXcCbqwb2gXJ
+	5lRul0bXNRxsQpPmYk0p7iCT5HvTYM4=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZOhggKih;
-	spf=pass (imf07.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hDEcz+0+;
+	spf=pass (imf29.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1784602390;
-	b=mjnjabfy5BU/vlNoDBAMP0AMn3cbEYRJ6UqW/WvXCFBQDn9YK6aKFAduT75uRDGRjskMbs
-	i0SL3TzYrJrI1sRfjx02h56g3pVncuIphKQIjBgH+wocOOe63B990Hc2Tj5GxfWgRnFJWw
-	0EccA55p+D90AxkScNn6Q5v7Wgqd79U=
+	b=YNHF1cbKefcRFMMYTTbUtdVoL+nTBWxv5LYHyPnUDJRKdhIIeIgWKS1T693yxS/7Vplk9x
+	6LWHM2aEj6G+LjHadRB32GAWcVmSgt29OQgtgbYFWKoA1m0R1QjJn6+GPrTf3yWSnmlUSE
+	zi4fd+r4bRl7/d4u5fne47bVGW3RvHc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B6D5860A93;
+	by sea.source.kernel.org (Postfix) with ESMTP id 2770843E4A;
 	Tue, 21 Jul 2026 02:53:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 881F8C2BCF7;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 070B6C2BCFC;
 	Tue, 21 Jul 2026 02:53:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1784602389;
-	bh=kttlEIrRapL9va7fSljR3xrwSzOf2bb6snXuzZxqZ30=;
+	bh=S4PQRnwD9RgHZk6exqa/VQ/Z2Egij2virqZNxM9X6GQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=ZOhggKih7xOk/MyAuJWaa130N+z1Q9x1F+XEfuajwBORDjzg1QKcUta3uHiqj+QLu
-	 vXPnHaoq/uE8J/O1kfEKI1trcY97vfO1cjJWnRJ5bVIInHaZKKPS7o/onuZMvZHEl9
-	 LAwiKs1u5gGTP7z4Ryki0KHNtoZjge6VdqF30jE+gdXuNxEbmj1DVXW5r0C0RYOudc
-	 PD9DBKg7uiMcqKXwVe7X6R2Ql3/vjd9aXtc55UfZJYuLdnIEiRN7YRFPzHzeWx+1SX
-	 tNqIrk8XWy6dodqh62rbSfIA/XoCoKUGkTpjdK2cYvI0HZilpYvioLpoO72CBstkUT
-	 wYy9P+MUM4i7w==
+	b=hDEcz+0+HbkjnptTfQiJrDlvEsFfV3su952r96K0JqrS/fctzIM+6fMHuClLe/aXn
+	 8QmNGXxcW0lRKH3zM1j/LJSzBk01XLj9ll1xZ7alKaFc+0S5h2WQoTS+xWcC578er7
+	 OgeezVi0DG4mmTCSqVPnDW9rMmYSwZ2TgKVWoPIGNfaCOKNM2DKLKypX8zgANLclFu
+	 thuqN24RPcS2cOvy3yhvLpFQKuuBK86D1zu8T6aOFCdQwvkqBoNMg+gO+vWEh+EfLm
+	 fbKlXsk9GrkvveGvr9iSnGrbQiYfpeR67CTnNtdE1OK+75YNSyjxKmAzKAKTKIfj32
+	 1bYYL8LurFREQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 74A0BC44524;
-	Tue, 21 Jul 2026 02:53:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E09DAC44531;
+	Tue, 21 Jul 2026 02:53:08 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Mon, 20 Jul 2026 17:25:14 -0700
-Subject: [PATCH v3 11/13] WIP: Reproducer for subpool usage leak
+Date: Mon, 20 Jul 2026 17:25:06 -0700
+Subject: [PATCH v3 03/13] mm: hugetlb: Use try-commit-cancel protocol for
+ memcg charge of folios
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260720-hugetlb-alloc-failure-fixes-v3-11-7d2a169aa9ee@google.com>
+Message-Id: <20260720-hugetlb-alloc-failure-fixes-v3-3-7d2a169aa9ee@google.com>
 References: <20260720-hugetlb-alloc-failure-fixes-v3-0-7d2a169aa9ee@google.com>
 In-Reply-To: <20260720-hugetlb-alloc-failure-fixes-v3-0-7d2a169aa9ee@google.com>
 To: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
@@ -86,13 +87,13 @@ To: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
  Roman Gushchin <roman.gushchin@linux.dev>
 Cc: vannapurve@google.com, erdemaktas@google.com, linux-mm@kvack.org, 
  linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
- Ackerley Tng <ackerleytng@google.com>
+ Ackerley Tng <ackerleytng@google.com>, stable@vger.kernel.org
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784602387; l=4607;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784602387; l=10920;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=inX7G11YaaxbwEU3Aj5PB0crlLMuo9T1V2I+32/3MYg=;
- b=2snhi0Fk67JboBtC3TcQ7c/BnoASl8jauKmvWjHDI4B5pTaAhEL4c/GXuRyTy283zI1c7EcHa
- Em1FnEeYordAxOBRStKhF9bHrxmCLw+F4rYPMhqRBYEn6LJ0/c0I9V8
+ bh=0AcwGphc3uan0N2TDSOh02phq0/whAnaLvUQOgTHT0c=;
+ b=aGV+5Brhx8SclDNTFhVEBxin3LumpPpe6D0wnVa8FJWlaXPeCRzhdP5E/EcKZ94gkjloJEvSq
+ +0FxmYsdgGWAIUAnTVc66ZyJk2YZ20AF+uZgiwHsgN+7gBwG73a3B6v
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -100,13 +101,13 @@ X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 4069640002
-X-Stat-Signature: 8m47xtii1q9j1dxa977mqs88am63z6su
-X-HE-Tag: 1784602390-466182
-X-HE-Meta: U2FsdGVkX1+pG/MjIpez0DoXwLWe2OwcBc94Y94WC2aCBi/imuwLAB7/wbZ0/8D2C46QvakuOMVtdLecAAyXNOxorsHUijHhtS8SbygL/GFWLKxTGFdh1IUrsLw0sVz+rx45QmsmJ1vLZzWkLcBDj2QJG70aSSt+C/3ANqSn76M2bIggmuDb++L5Ws6/WbmVG5PzToAmhxaIft/CnRP/KBfpVI5SeMrCqk8Bu04qadzZafK8OkeVK9q8ZF5vrPA2s3UZVASSErBub3viBt127TnTuCGVwDoueq58nBeqigAqKgt01bUr9RYve4hDIRGWuOtuG5uwQmjbrqeK48Uxh7oxHYQ30rpkcVGBBNS7qkM/oBUZYfXeMyxe/ybEArzhQzmomVDP07S5wRhvAsnQu5eKS7vjfysDxnLSPi8q0gB3qi+fHCTEUUZvga3Y4W3H64lZbm6maTmhHEGmsjkTAqkQuLugPrbzYuCIGBZ2i0KjZdyxOPsPMXvMsLTsSwCT6GPEYD8UJaPXKNsKyXFJ/qOemyNyWFY5RkAyLXxqBGkH/fIFTzp9rNWznOpmMapKONnTQ8N5Wqk2LutLxvZM79CDw7Q32JrXkn1v4xtFCkx+Dcs9h9u88ebg10ZP0Q0oXqiqxdo6db351Dre/Hym6x+VvmLzOZZs/7g190/ZIVe82hkLk+oEEc45FMqZJU29hMPisUjej8ZcVTGsAt6uzlhmoBTUvNxpc2gTigTqSfEtruf1u7ts2VPPAtME4CBNvI7ipbcBvNNMZIX9BakV/rdi7+USjP2H/Lj1YsWXl7TqTaxs1qPDw305tp8nTn8w/RZTXEoAWRPd5AbxV0RT/2Jivinkgn/Q3ONSM9S4tbuFxhvd6tL3uA7WmqOxMBbBwrH30T4Z36+RXxZ6dhc4RwdvNm5QUj04rgKrsL6jzhrAcXhew8CmXlbB+7obdv/bYe9YCVe4mmws4T9fjJc
- ekyDhRrp
- PQEVWWcGEOkUYtyfGAnfTVYQMiWbnKhokQB1VKVzl3ENnCcNFvgV6UhPposlPVM4o2A61GJYuOIskOKhF4TOqBNaovqSKz0S1lQjZI+gO7oqV9EhTCds14/VGJFH/88pVIMK83WGkzdC8z5DKrcku475omALrz78oxSxLTTYLlpvTNZNdWpbBAWOAoYIalNhyHLBscByrMdv+G1vDp1VfOMdHCyXXP3AsyZeuVpex9xEFsKtxSynizUpAyWb14Y7IVlI/T4dgigv495iQElFAT3YiWpgrhauSvobG+e4FY5B787e5aKwvlhlbyXkaKWJ4+wGI0XURsPoNd2VhU5ptQFQOHwC5BYEHpdMOfL0Z/6zGHA8TMhUOfOUKXgoG9HOBKWoCdqK7goe1tbrXd6Hsy6yeOL+9rRVX7dMweKsP69aD4IoYHnEoSU6UIIJFmhXVGNQ22taBBNL98G2ZelSYwEQmIVQ9xpTA8GO17yJ54d/Kr3g=
+X-Rspamd-Queue-Id: 2E81F12000A
+X-Rspamd-Server: rspam01
+X-Stat-Signature: f3symex976g89g1r3sbdb1tjmutapm6q
+X-HE-Tag: 1784602390-580674
+X-HE-Meta: U2FsdGVkX19ASmxzEGKE4oevlDQRBIC0uqRfmGuAYEEIUWVdatBeO2Th0pyRpaJwgEWq4EqivE4wmITfidAIYy4gvv/2usZK1Wia1Y8rTSNPAkWXmQVO6pzonw2sENRlC8d8P0ag2UaBwhEZbGALIQ1lkp4/i0HMQy5dabqH3VjZwzaK/OqbeCr5ocC1hfGbL+rJKAshQY82svnaBwAWuOORlcWphy0GpwISwZnd4V5r+1v79yU/ULxdc9uuMb0LeV2Wfy22J29lC8bXrec6jxy1kUV5rzHV8xh/kW1R+4sItWl0/hgmtBdppB9CUqk992mUD2Hlr73PAy60tJn6Td1PTaSJQhUyqhNDny/Nr/9QERFik/G8Q8ll+dZnMBxYs1UmxX3L3xaZJbrdBJlYg0VB9yXFL2OnTWNwC4ArbY2MiFvtGYbxY4mZx7o3X/bbQjHCaUYMZBGMfiF5po7wC+10PxIwJsEK1ku/OH5kA8yNKGtko2HPT1aDFMlaMhPsc2FmoZM2g/3i3RoVQ9UE8FN4HTxYHGQs34JHwvCsH+YJRQ46GYFu6N2c1OxdOqgmcjN6EZWM8TyAQDBWRDi+MUyIgedrvp98FPjIab+1XFAz8cYeUEEc8HJAuAMzIIncAek6/QI1d8G+MZZn3lMF6QHOa3xiskAoccm5zXWUP4VtaVmhqT9/0lYbf98ZiyMaATPHLA/6BPq8b/2ckNGSg86p+Tl316MUUOYT1tIgkbdb6Gc7J/9BNBCkNo6yquq/Ft2wDH8pFkqRlrXENhyAI5IaKYRN8UCZe/HNwOsqvpjw8QueHAbMsyDJqiFksoUmviOEwF2I78HIwalucgXa88XPR56lTKMqChZCUvgF7C9xTr+sFT3wM8LMP8Ht8fAtHjlJTtiK2XllO6CueXZ7D52MQc8G1RQ2t5ApB/w+FOkoh/cD7GXjPd32bfEtdkWUVIt6GSTixHtiVXkq+r9
+ dWRkiIbx
+ 54iP/qGTaDB9JDT6dHH3oO8uxDUrP0rlETcI8tZyNuhNXvCSsRwisfYV+A38k8UZ11+8AsLfQ50zocqGfQUj7YSobRzT/KMP+aoN8D+jAMlM11xq/Vzk6zHAp5VDzOWUTOLsV96eOi+0E+ocyIAUW4HEvNzpkCZia7ioo5lU+POJ6EQBlvhlDwSWnSZ38Ok0izxDLrvcBbjjHWJp2BCDagDnNqRHUO5SNP4jI/VLwoH7da45LPApDr8LhiB0k+kHzoV27GvHRrO0tXDvsa1on2zgE0uEoNtXhCk40Xw6SRvVDxoC4gTOWoDOKLkOIsZmNVFa63+qk2QdZiRZQV2Iao+Jnu8Bi1oLbUQslzuzf9vXxv7P0kDzT32AuYy0yzL72tHljx5VoM3ZXinK3RZFDlP/HX9h+RrQy+ttWbdeNiLPfHdiQQjVHs2V4lWlF/o8xueLq33T886fJK1j6KUa4YTSEKeWoNBwAOncf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,128 +117,312 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-(This reproducer was hacked up and not meant to be merged.)
+Using mem_cgroup_charge_hugetlb() to charge a HugeTLB folio during page
+fault creates a reservation leak bug if the task hits its memory cgroup
+limit.
 
-The kernel leaks subpool usage and the subpool structure itself if a HugeTLBfs
-mount specifying size (which sets max_hpages on the subpool) is created.
+When alloc_hugetlb_folio() commits the VMA reservation, the reserved
+page is removed from the reserve map. If a subsequent call to
+mem_cgroup_charge_hugetlb() returns -ENOMEM, the allocation is aborted
+and the physical folio is disposed of via free_huge_page(). However,
+because the VMA reservation was already consumed, the reservation count
+in the reserve map is lost. This causes subsequent faults in the VMA
+address range to fail with premature reservation exhaustion.
 
-subpool_leak_max_size.sh reproduces this with the following steps:
+Additionally, dropping the use of free_huge_folio() on the failure path
+fixes an issue where free_huge_folio() was incorrectly invoked on a
+folio with a refcount of 1, triggering refcount mismatches and kernel
+warnings.
 
-1. Create mount, specifying size=2M (1 page). This sets max_hpages = 1 on the
-   subpool, but does not reserve any pages.
-2. Set nr_hugepages = 0 and nr_overcommit_hugepages = 0 so that physical
-   allocations will fail.
-3. Run fallocate -l 2M on a file in the mount.
-     + This calls hugetlbfs_fallocate, which attempts to allocate a page by
-       calling alloc_hugetlb_folio.
-     + alloc_hugetlb_folio calls hugepage_subpool_get_pages to track the
-       allocation against the subpool limit. This increments used_hpages to 1.
-     + Physical allocation fails because nr_hugepages is 0.
-     + Before patch (Buggy):
-         + The error path in alloc_hugetlb_folio sees gbl_chg is 1 (indicating
-           we tried to allocate a global page) and incorrectly skips calling
-           hugepage_subpool_put_pages.
-         + fallocate fails and returns to userspace, but the subpool used_hpages
-           counter remains leaked at 1.
-     + After patch:
-         + The error path always calls hugepage_subpool_put_pages if map_chg is
-           true, restoring used_hpages to 0.
+To fix this, introduce a try-commit-cancel protocol for memory cgroup
+charging of HugeTLB folios, matching the architecture used by the
+hugetlb cgroup controller. Invoking mem_cgroup_hugetlb_try_charge()
+before consuming the VMA reservation ensures that if the memory cgroup
+limit is reached, the allocation is aborted cleanly without leaking
+the reservation entry or having to dispose of a partially initialized
+folio.
 
-4. Unmount the filesystem.
-     + During unmount, the kernel calls unlock_or_release_subpool to clean up
-       the subpool.
-     + It checks if the subpool is free using subpool_is_free, which returns
-       whether used_hpages is 0.
-     + Before patch (Buggy):
-         + Since used_hpages leaked and is 1, subpool_is_free returns false.
-         + The kernel skips freeing the subpool structure, leaking the
-           hugepage_subpool structure in kernel memory.
-     + After patch:
-         + Since used_hpages is 0, subpool_is_free returns true, and the subpool
-           structure is correctly freed.
+An alternative would be to retain the current usage of
+mem_cgroup_charge_hugetlb() and free_huge_page(), but freeing the folio
+performs reservation management for subpools and global hstate, which
+complicates rollback in alloc_hugetlb_folio(). Using a try-commit-cancel
+protocol is more consistent with the other charging performed in
+alloc_hugetlb_folio() and easier to understand.
 
+Fixes: 991135774c0e0 ("memcg/hugetlb: introduce mem_cgroup_charge_hugetlb")
+Cc: stable@vger.kernel.org
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- subpool_leak_max_size.sh | 71 ++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 71 insertions(+)
+ include/linux/memcontrol.h |  36 ++++++++++++--
+ mm/hugetlb.c               |  30 ++++++------
+ mm/memcontrol.c            | 114 +++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 162 insertions(+), 18 deletions(-)
 
-diff --git a/subpool_leak_max_size.sh b/subpool_leak_max_size.sh
-new file mode 100755
-index 0000000000000..bfafa1ba074ea
---- /dev/null
-+++ b/subpool_leak_max_size.sh
-@@ -0,0 +1,71 @@
-+#!/bin/bash
-+
-+if [ "$EUID" -ne 0 ]; then
-+    echo "Please run as root"
-+    exit 1
-+fi
-+
-+MNT_PATH="/tmp/mnt_hugetlb"
-+FILE_PATH="$MNT_PATH/test_file"
-+
-+# Save original values
-+orig_nr=$(cat /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages)
-+orig_overcommit=$(cat /sys/kernel/mm/hugepages/hugepages-2048kB/nr_overcommit_hugepages)
-+
-+cleanup() {
-+    echo "Cleaning up..."
-+    rm -f "$FILE_PATH"
-+    umount "$MNT_PATH" 2>/dev/null
-+    rmdir "$MNT_PATH" 2>/dev/null
-+    echo "$orig_nr" > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
-+    echo "$orig_overcommit" > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_overcommit_hugepages
-+    echo "Cleanup done."
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index e1f46a0016fcf..c4e63d0e03526 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -641,7 +641,16 @@ static inline int mem_cgroup_charge(struct folio *folio, struct mm_struct *mm,
+ 	return __mem_cgroup_charge(folio, mm, gfp);
+ }
+ 
+-int mem_cgroup_charge_hugetlb(struct folio* folio, gfp_t gfp);
++int mem_cgroup_charge_hugetlb(struct folio *folio, gfp_t gfp);
++int mem_cgroup_hugetlb_try_charge(unsigned int nr_pages, gfp_t gfp,
++				  struct mem_cgroup **memcg_p,
++				  struct obj_cgroup **objcg_p);
++void mem_cgroup_hugetlb_commit_charge(struct folio *folio,
++				      struct mem_cgroup *memcg,
++				      struct obj_cgroup *objcg);
++void mem_cgroup_hugetlb_cancel_charge(unsigned int nr_pages,
++				      struct mem_cgroup *memcg,
++				      struct obj_cgroup *objcg);
+ 
+ int mem_cgroup_swapin_charge_folio(struct folio *folio, unsigned short id,
+ 				   struct mm_struct *mm, gfp_t gfp);
+@@ -1128,9 +1137,30 @@ static inline int mem_cgroup_charge(struct folio *folio,
+ 	return 0;
+ }
+ 
+-static inline int mem_cgroup_charge_hugetlb(struct folio* folio, gfp_t gfp)
++static inline int mem_cgroup_charge_hugetlb(struct folio *folio, gfp_t gfp)
++{
++	return 0;
 +}
-+trap cleanup EXIT
 +
-+# 1. Mount hugetlbfs with size=2M (1 page)
-+mkdir -p "$MNT_PATH"
-+if ! mount -t hugetlbfs -o size=2M none "$MNT_PATH"; then
-+    echo "Failed to mount hugetlbfs"
-+    exit 1
-+fi
++static inline int mem_cgroup_hugetlb_try_charge(unsigned int nr_pages, gfp_t gfp,
++						struct mem_cgroup **memcg_p,
++						struct obj_cgroup **objcg_p)
++{
++	*memcg_p = NULL;
++	*objcg_p = NULL;
++	return 0;
++}
 +
-+# 2. Set nr_hugepages to 0, overcommit to 0
-+echo 0 > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
-+echo 0 > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_overcommit_hugepages
++static inline void mem_cgroup_hugetlb_commit_charge(struct folio *folio,
++						    struct mem_cgroup *memcg,
++						    struct obj_cgroup *objcg)
++{
++}
 +
-+# Check subpool usage before running
-+read total free < <(stat -f -c "%b %f" "$MNT_PATH")
-+used_before=$((total - free))
-+echo "Before test - Subpool total blocks: $total"
-+echo "Before test - Subpool free blocks:  $free"
-+echo "Before test - Subpool used blocks:  $used_before"
-+if [ "$used_before" -ne 0 ]; then
-+    echo "ERROR: Subpool is not clean before test starts!"
-+    exit 1
-+fi
++static inline void mem_cgroup_hugetlb_cancel_charge(unsigned int nr_pages,
++						    struct mem_cgroup *memcg,
++						    struct obj_cgroup *objcg)
+ {
+-        return 0;
+ }
+ 
+ static inline int mem_cgroup_swapin_charge_folio(struct folio *folio,
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index b32735b092a0a..061d7250c202d 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -38,6 +38,7 @@
+ #include <linux/mm_inline.h>
+ #include <linux/padata.h>
+ #include <linux/pgalloc.h>
++#include <linux/memcontrol.h>
+ 
+ #include <asm/page.h>
+ #include <asm/tlb.h>
+@@ -2863,6 +2864,8 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+ 	int ret, idx;
+ 	struct hugetlb_cgroup *h_cg = NULL;
+ 	struct hugetlb_cgroup *h_cg_rsvd = NULL;
++	struct mem_cgroup *mem_cg = NULL;
++	struct obj_cgroup *obj_cg = NULL;
+ 	gfp_t gfp = htlb_alloc_mask(h) | __GFP_RETRY_MAYFAIL;
+ 
+ 	idx = hstate_index(h);
+@@ -2922,6 +2925,11 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+ 	if (ret)
+ 		goto out_uncharge_cgroup_reservation;
+ 
++	ret = mem_cgroup_hugetlb_try_charge(pages_per_huge_page(h), gfp,
++					    &mem_cg, &obj_cg);
++	if (ret)
++		goto out_uncharge_cgroup;
 +
-+# Run fallocate (expecting failure)
-+echo "Running fallocate (expecting failure)..."
-+if fallocate -l 2M "$FILE_PATH" 2>/dev/null; then
-+    echo "ERROR: fallocate succeeded but should have failed (nr_hugepages is 0)"
-+    exit 1
-+fi
+ 	spin_lock_irq(&hugetlb_lock);
+ 	/*
+ 	 * glb_chg is passed to indicate whether or not a page must be taken
+@@ -2933,7 +2941,7 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+ 		spin_unlock_irq(&hugetlb_lock);
+ 		folio = alloc_buddy_hugetlb_folio_with_mpol(h, vma, addr);
+ 		if (!folio)
+-			goto out_uncharge_cgroup;
++			goto out_uncharge_cgroup_memcg;
+ 		spin_lock_irq(&hugetlb_lock);
+ 		list_add(&folio->lru, &h->hugepage_activelist);
+ 		folio_ref_unfreeze(folio, 1);
+@@ -2960,6 +2968,9 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+ 
+ 	spin_unlock_irq(&hugetlb_lock);
+ 
++	mem_cgroup_hugetlb_commit_charge(folio, mem_cg, obj_cg);
++	lruvec_stat_mod_folio(folio, NR_HUGETLB, pages_per_huge_page(h));
 +
-+# Check subpool usage via statfs
-+# %b: Total blocks
-+# %f: Free blocks
-+read total free < <(stat -f -c "%b %f" "$MNT_PATH")
-+used=$((total - free))
+ 	hugetlb_set_folio_subpool(folio, spool);
+ 
+ 	if (map_chg != MAP_CHG_ENFORCED) {
+@@ -2987,21 +2998,10 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+ 		}
+ 	}
+ 
+-	ret = mem_cgroup_charge_hugetlb(folio, gfp);
+-	/*
+-	 * Unconditionally increment NR_HUGETLB here. If it turns out that
+-	 * mem_cgroup_charge_hugetlb failed, then immediately free the page and
+-	 * decrement NR_HUGETLB.
+-	 */
+-	lruvec_stat_mod_folio(folio, NR_HUGETLB, pages_per_huge_page(h));
+-
+-	if (ret == -ENOMEM) {
+-		free_huge_folio(folio);
+-		goto err;
+-	}
+-
+ 	return folio;
+ 
++out_uncharge_cgroup_memcg:
++	mem_cgroup_hugetlb_cancel_charge(pages_per_huge_page(h), mem_cg, obj_cg);
+ out_uncharge_cgroup:
+ 	hugetlb_cgroup_uncharge_cgroup(idx, pages_per_huge_page(h), h_cg);
+ out_uncharge_cgroup_reservation:
+@@ -3022,7 +3022,7 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+ out_end_reservation:
+ 	if (map_chg != MAP_CHG_ENFORCED)
+ 		vma_end_reservation(h, vma, addr);
+-err:
 +
-+echo "Subpool total blocks: $total"
-+echo "Subpool free blocks:  $free"
-+echo "Subpool used blocks (leaked if > 0): $used"
+ 	/*
+ 	 * Return -ENOSPC when this function fails to allocate or
+ 	 * charge a huge page. If a standard (PAGE_SIZE) page
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 6dc4888a90f3f..0beee5c0ce93b 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -5180,6 +5180,120 @@ int mem_cgroup_charge_hugetlb(struct folio *folio, gfp_t gfp)
+ 	return ret;
+ }
+ 
++/**
++ * mem_cgroup_hugetlb_try_charge - Try to charge the memcg for a hugetlb folio
++ * @nr_pages: number of base pages to charge
++ * @gfp: reclaim mode
++ * @memcg_p: Output pointer to the charged mem_cgroup (if successful and enabled)
++ * @objcg_p: Output pointer to the charged obj_cgroup (if successful and enabled)
++ *
++ * Prepares and tries to reserve the memory counter for the folio from the current
++ * task's memcg. If successful, both *memcg_p and *objcg_p are populated and their
++ * references are pinned until a subsequent call to mem_cgroup_hugetlb_commit_charge
++ * or mem_cgroup_hugetlb_cancel_charge.
++ *
++ * Returns ENOMEM if the memcg is already full.
++ * Returns 0 if either the charge was successful, or if we skip charging.
++ */
++int mem_cgroup_hugetlb_try_charge(unsigned int nr_pages, gfp_t gfp,
++				  struct mem_cgroup **memcg_p,
++				  struct obj_cgroup **objcg_p)
++{
++	struct mem_cgroup *memcg;
++	struct obj_cgroup *objcg;
++	int ret = 0;
 +
-+if [ "$used" -gt 0 ]; then
-+    echo "RESULT: LEAK DETECTED (FAIL)"
-+    exit 1
-+else
-+    echo "RESULT: NO LEAK (PASS)"
-+    exit 0
-+fi
++	*memcg_p = NULL;
++	*objcg_p = NULL;
++
++	if (mem_cgroup_disabled() || !memcg_accounts_hugetlb() ||
++	    !cgroup_subsys_on_dfl(memory_cgrp_subsys))
++		return 0;
++
++	memcg = get_mem_cgroup_from_current();
++	if (!memcg)
++		return 0;
++
++	objcg = get_obj_cgroup_from_memcg(memcg);
++	if (!objcg)
++		goto put_memcg;
++
++	if (!obj_cgroup_is_root(objcg)) {
++		ret = try_charge_memcg(memcg, gfp, nr_pages);
++		if (ret)
++			goto put_objcg;
++	}
++
++	*memcg_p = memcg;
++	*objcg_p = objcg;
++	return 0;
++
++put_objcg:
++	obj_cgroup_put(objcg);
++put_memcg:
++	mem_cgroup_put(memcg);
++	return ret;
++}
++
++/**
++ * mem_cgroup_hugetlb_commit_charge - Commit the memcg charge for a hugetlb folio
++ * @folio: folio being charged
++ * @memcg: Target mem_cgroup obtained from mem_cgroup_hugetlb_try_charge
++ * @objcg: Target obj_cgroup obtained from mem_cgroup_hugetlb_try_charge
++ *
++ * Finalizes the memory and statistics charging for the folio in the specified memcg.
++ * Transfers the pinned objcg reference to the folio structure (for automatic
++ * uncharging upon freeing via mem_cgroup_uncharge). Releases the try-commit reference
++ * on memcg.
++ */
++void mem_cgroup_hugetlb_commit_charge(struct folio *folio,
++				      struct mem_cgroup *memcg,
++				      struct obj_cgroup *objcg)
++{
++	if (!memcg || !objcg)
++		return;
++
++	commit_charge(folio, objcg);
++	memcg1_commit_charge(folio, memcg);
++
++	/*
++	 * Drop our try-commit-cancel protocol reference on memcg.
++	 * The objcg reference is TRANSFERRED to the folio by commit_charge,
++	 * so it will be put automatically by __mem_cgroup_uncharge() when
++	 * the folio is freed.
++	 */
++	mem_cgroup_put(memcg);
++}
++
++/**
++ * mem_cgroup_hugetlb_cancel_charge - Cancel and undo a hugetlb folio memcg charge
++ * @nr_pages: number of base pages to uncharge
++ * @memcg: Target mem_cgroup obtained from mem_cgroup_hugetlb_try_charge
++ * @objcg: Target obj_cgroup obtained from mem_cgroup_hugetlb_try_charge
++ *
++ * Cancels and safely rolls back the prepared memory charge for the folio in the
++ * specified memcg. Releases the try-commit pinned references on both memcg and objcg.
++ */
++void mem_cgroup_hugetlb_cancel_charge(unsigned int nr_pages,
++				      struct mem_cgroup *memcg,
++				      struct obj_cgroup *objcg)
++{
++	if (!memcg || !objcg)
++		return;
++
++	if (!obj_cgroup_is_root(objcg))
++		refill_stock(memcg, nr_pages);
++
++	/*
++	 * Drop our try-commit-cancel protocol references on both objcg
++	 * and memcg, since this mapping attempt was aborted and the folio
++	 * was never committed.
++	 */
++	obj_cgroup_put(objcg);
++	mem_cgroup_put(memcg);
++}
++
++
+ /**
+  * mem_cgroup_swapin_charge_folio - Charge a newly allocated folio for swapin.
+  * @folio: the folio to charge
 
 -- 
 2.55.0.229.g6434b31f56-goog
