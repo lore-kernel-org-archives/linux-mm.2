@@ -4,88 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2091CC44529
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 06:36:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 399C3C44529
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 06:41:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 031466B008A; Tue, 21 Jul 2026 02:36:37 -0400 (EDT)
+	id EDF126B007B; Tue, 21 Jul 2026 02:41:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F24E66B008C; Tue, 21 Jul 2026 02:36:36 -0400 (EDT)
+	id E69D86B008C; Tue, 21 Jul 2026 02:41:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E3D5B6B0092; Tue, 21 Jul 2026 02:36:36 -0400 (EDT)
+	id D0BD96B0092; Tue, 21 Jul 2026 02:41:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BF35C6B008A
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 02:36:36 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 35B9FA0B9A
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 06:36:36 +0000 (UTC)
-X-FDA: 85011825192.08.0EB3CF8
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 1F113C0002
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 06:36:32 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	spf=pass (imf10.hostedemail.com: domain of yanlonglong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=yanlonglong@kylinos.cn
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A26176B007B
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 02:41:14 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2A8DDC039F
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 06:41:14 +0000 (UTC)
+X-FDA: 85011836868.26.90A8A7C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 7623D140004
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 06:41:12 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kTiZGmzZ;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784615794;
+	s=arc-20220608; t=1784616072;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=WbL7hLFpyYyWlQ69suI7CdPGRC2HvE0nOjInllVPceU=;
-	b=rrPxw7v2rJF+9WxTYmg/OXsh61LksLbZtAbMXE3Ht/Bc6qkgYxBSBfoIQ9KejB+paOUWLR
-	D3Mb+iVWL+AWMFZmq5wzDST80Dfj0rUPXUuQ473TFYA2rqauL36K9WeG8nuTN4nG+V21aa
-	AKqrdtiekW6ptlBUJtBAvGVDuHUChKI=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=dOHrExRuWAF3V9Vp4izbIbOaYSPY1V+m+7eA9UxNOs8=;
+	b=Q3/lB7/ifDiZSW/kmE5Z0DsthCE/ojnG2P1mjJ8N+ekOkJ8EFpUs8wk7YMvvDM+lZXd8q2
+	HS07PGJgVm2gLogpt56uxqKo7SByJ826rN6/0lv489IYGIB376905S0EpL2nLUXgrYrKqE
+	2dIRAxs2Arh0K5KMKfpTNpB4GsqGLnU=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=none;
-	spf=pass (imf10.hostedemail.com: domain of yanlonglong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=yanlonglong@kylinos.cn;
-	dmarc=none
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kTiZGmzZ;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784615794;
-	b=KD272XdEa4efd+3GFvzzmhwPGsIQs9Zu74Euggh/V+88tdi0nSe32v302UDzJIe4TtR48h
-	uL1mLKYDoDfbAvWC38vF1q0tATZQ31AM6EdGxZlCKQA6uPdUL2fj+jCEnu30f4xNa5dhKa
-	eDkTiwebiyM5mdC82Lh+oe0qUmY2ERE=
-X-UUID: 7ee9a92084ce11f1aa26b74ffac11d73-20260721
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:4c1196d5-20c3-4374-a698-42b25190473e,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:e7bac3a,CLOUDID:76d2d3ce1ca729c4a973014ee7f7f4d2,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:102|850|865|898,TC:nil,Content:0|15|50,E
-	DM:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA
-	:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 7ee9a92084ce11f1aa26b74ffac11d73-20260721
-X-User: yanlonglong@kylinos.cn
-Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <yanlonglong@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 101423065; Tue, 21 Jul 2026 14:36:25 +0800
-From: longlong yan <yanlonglong@kylinos.cn>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
+	t=1784616072;
+	b=SBzuF20ycD6SGSmnwzsy+G6wRPyQyQUGcVQy6Di3diiC6FSIl/TVCny30WTlP0YLEkttpJ
+	QruDwDWyZ7DDC8JMsoaCxyVN7OtQFfZdrLwFUWfUDJmdfbCMzmjq/jBA+nwVbnbvOxc/Zh
+	tqOu0CoDB6MdNzsQWk8vz2/GkNJ0P/U=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8D5F842DFC;
+	Tue, 21 Jul 2026 06:41:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 372371F000E9;
+	Tue, 21 Jul 2026 06:41:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784616071;
+	bh=dOHrExRuWAF3V9Vp4izbIbOaYSPY1V+m+7eA9UxNOs8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=kTiZGmzZz3UketVn5wFBEYl1u3hPtLyHVEEOz4TULPcMK8jBb99DiCJjEo0c5Jcvk
+	 ybN/XDXNCuR2DLNeCcLaLqvXV7j0dJ8KPUD3hCNet8cDB2iZYHTBSmf54HtRXCs9lT
+	 l+T0nwHVrwvjECzB6Hnjts1BDzAwiNNFNstCzKCDuZRM9OseOrWsCJ+9n2+XuDQnQD
+	 wYkk3UXA8sbfsTj2fzQwDTl000B/BWPTWREbcZKEB4Pa4UUUYK9Et1PVkFpDzIpzcJ
+	 C8ZlF67xWrbQOl4ZdnFznWQF2umYIw+dHh6mRpsfaDIWy4KJXJuv9352pwX4YP8gIT
+	 yvSkkJLoaDKfQ==
+From: SJ Park <sj@kernel.org>
+To: longlong yan <yanlonglong@kylinos.cn>
+Cc: SJ Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org,
-	shuah@kernel.org,
-	longlong yan <yanlonglong@kylinos.cn>
-Subject: [PATCH] selftests/mm/pagemap_ioctl: Fix missing NULL checks after calloc()
-Date: Tue, 21 Jul 2026 14:36:11 +0800
-Message-ID: <20260721063611.342-1-yanlonglong@kylinos.cn>
-X-Mailer: git-send-email 2.47.1.windows.2
+	linux-mm@kvack.org,
+	shuah@kernel.org
+Subject: Re: [PATCH v2] selftests/damon: Add missing NULL checks after malloc()
+Date: Mon, 20 Jul 2026 23:41:03 -0700
+Message-ID: <20260721064104.182094-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260721060542.326-1-yanlonglong@kylinos.cn>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1F113C0002
+X-Rspamd-Queue-Id: 7623D140004
 X-Rspamd-Server: rspam01
-X-Stat-Signature: hktnkt9zzwnz5dpnorc7toge6ye4md3a
-X-HE-Tag: 1784615792-463034
-X-HE-Meta: U2FsdGVkX1+/bZOjYNwPuO0jpJ1JN5wJ+Lk06Q+rZmIJxTSXhiSay2RoSAXqPy6eXaJshCrYZTmjykVEp7t+NdGk72R5cjCz6jY/R4qlQc8qChSTBmlkDzuS7rJW9Wfg/4z9l4Ex/u+/5sAU9M/+0t58U8eXRfqNnm/PE65GM5auPh/C4YRWCN7Nxa8eyHThJ2LBqcVH2FJNS557TWWV8+yjkPM7VfxBUTKL93YhKbdOxd4lz1Gwj4FJFQKOg3gWDh7VYctQx9JxmTU6/OpJVHMv1s7TPi7lbZxwyPWkIRnkwHJtZYTebEeodqPGITqRTYOIuGkQhDtbIMEimDiECEacMCIGzkZK+rnOP2s7FRrbmwLzbEv1Rfbxp4lSpPxD8fCQz4cT6XKjrRiMHl4LTJiTpxUEk9AKbtNeoQIjkrpCrG/Yz1jr+mOTKQjmxzWXxwpb5vNNSZ2vaLooBj6yy5VQ2gBh76Y7TBMsCy2g6YmimHCdNkyEikTm4JcCphWD4dXHIJMeQS+qx1jfnSeeU1frl+msg807zlEWQ0fcsttOdI4olI/zBm+SojiaiZizOlrmjpX3L8RIuo31Aoc/ID3cUxRQcijYmPG1PSEebCrMC0L2wbguZ9hwD1JqHaNvHHd5qyOBmOIP2C5Yl7XNe3fQ0OHMRD9faXR3i5NsHznCvb2oTL5Pa+JNOzv9n72BDxNp4Ed4M+yn6aipD1NvW6WOBXrLSfy5Eln4BZAe8ltmzmjqI9E0xhCPg5nvGjeaBVQ53uWOqxx5NAtAINTUMXUD6QjYUC1UkOHJ+jT5+MV/8yz4bHPnz3HzWyPGYqOwQHcBjq06IYmj99ypuKzYiIakUPik8T0P869kYTGUMwhKiIyzNSjQ8o8GvgbSK75XaDX5d0kR+KVDOTNjXNyDTYlilyBLdVm2cD2DNycaFD+I0Ucdm8EvAMVg0Uf7vP7W2vQforKToTjMcTdcBqd
- fxMblCdI
- 5/7Sp6b44M9NU8Y7vMKe3C76+J2xL4cxUsQwzLf9bcGzkrz0=
+X-Stat-Signature: awud8z5kxouks4uohtrwuz85ecgtkykj
+X-HE-Tag: 1784616072-497754
+X-HE-Meta: U2FsdGVkX18fXRLZ+Y+zOUZ330YgJPE3i1KKgTg7XvK+RZwS2ysiMrSV7fbIsufC88cEpu7rgvHLHvD2ce4Pg5/TNyNiOcoZHG009CZJWh7vlkSmrCQ7VFcnvKd4BtI1h24c9m19Kj2efguGBOmyogfdw9yPStZaoRI+16yVZc/kvfdJo+iS4N7zJbbnpiHCgSWSDW8PQRbNa/t5ciX2+U0INxMOCMFU0QAxREzHIhX7u7hnAIM1M2Jdh1CY/rybMpgZCLdi+tSHsfVfNFMQclADQpLDR1ADXDO1v+3YR/sAj2OFtLS/pSZRQXHRpI3vNGGXDRFxI5hQ9JePxqV29bhZ0H/hBc1W4C8LaiXCL8s07nYBnwsa+5L5sR9+N2BjCWuxdgDEae3at3uVRTw0zhfolU0IuetoDkX06Cpj0eVjmZSLRQW+drCvmItOLiTEX48yXAwa0Qi90C+plqjxjdr10RIlLj0rwfH7s7QsPxThEv4RKoqK/LoMiflTdF/oUNMCxI/SE/+wNPd/BrB5J/Q1E6UjIxZ3eo6sSsZe54fOVobZOHMTH8uL4MNUzaaFjF/tsulfRwEMH5rixrqu/qepjVZLXwg1hihb/Z/RA20vHPbcIQE2s567hOmLnWFmP6FLoygjx93DHJ/6+9IYsdT9MpaAHm/JWraEXWYRhZyLoLU5caIlD3CUqE0li8MPbVip15XDpntcfawDsSD3Czjc6CWof6JBRfpsfq5Ngw1Gi4YahZuYJy52nCYT82AStHTIXHj1cul0P+/mbFvYt3a3IB5cqwjIKYZ/rm4f+EQNXqfWjmTNWni8OB8TuVMsAtWwGeAmc810ydmKP3FIbvvMAHyJD0j8nKDMFDWitGzFIeOt58qZFe784degsHPXPMBlUiIfzz1GQ2qjfqMJAugUHQiGANNOr8wem0YAF+xd3jz0SWJEBsYn6/oeE9pl0vWku3Z5WMEb0H0a4ha
+ Y0CQQmBY
+ A1raQJwQeWIXJKZNnXC3s7zppZsKFrNaxZ0Q3uQJHKiSZ+GyFcUqxnffgYYJHdvI9j1ZnUJPhhtpCSlTDCjS4f7MCYetSIbBrVqd/FD11xSTulSTRW5+CyP+OJiDCOf+rtpDXwAecgHe9ZSTYJ/jf3OEY+EktCmhgYNMDlaFskXh30oRB804HXgcgyrkga/cbO5kxqMuMi5pC9qeNLWOcODAW0oiNlhdz2kaXLE3dG2/93+JonUJz0DOywsc2SFkhaLJf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,65 +94,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The pagemap_ioctl selftest allocates memory via calloc() in several
-places but does not check the return values. If calloc() fails, the
-subsequent code will dereference a NULL pointer and crash.
+Hello longlong,
 
-Additionally, in sanity_tests(), the calloc() failure check incorrectly
-uses MAP_FAILED (the mmap() error constant) instead of NULL. Since
-calloc() returns NULL on failure, the check never triggers and a
-failed allocation goes undetected.
 
-Add NULL checks after each calloc() call, and fix the wrong error
-constant in sanity_tests(). Use ksft_exit_fail_msg() consistent with
-the existing error handling pattern in the file.
+From the next time, when someone asked questions to your patch, please answer
+the questions and keep the discussion until the next action item becomes clear.
+Please don't post a new version without making sure such discussion is done.
 
-Signed-off-by: longlong yan <yanlonglong@kylinos.cn>
----
- tools/testing/selftests/mm/pagemap_ioctl.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+Also, don't post a new version of a patch as a reply to the previous version.
+Post as a new thread from the next time.
 
-diff --git a/tools/testing/selftests/mm/pagemap_ioctl.c b/tools/testing/selftests/mm/pagemap_ioctl.c
-index f9bcff8e78fa..f6629f44a13d 100644
---- a/tools/testing/selftests/mm/pagemap_ioctl.c
-+++ b/tools/testing/selftests/mm/pagemap_ioctl.c
-@@ -212,6 +212,8 @@ int userfaultfd_tests(void)
- 
- 	vec_size = mem_size/page_size;
- 	vec = calloc(vec_size, sizeof(struct page_region));
-+	if (!vec)
-+		ksft_exit_fail_msg("error nomem\n");
- 
- 	written = pagemap_ioctl(mem, mem_size, vec, 1, PM_SCAN_WP_MATCHING | PM_SCAN_CHECK_WPASYNC,
- 				vec_size - 2, PAGE_IS_WRITTEN, 0, 0, PAGE_IS_WRITTEN);
-@@ -699,6 +701,8 @@ int base_tests(char *prefix, char *mem, unsigned long long mem_size, int skip)
- 	vec_size = mem_size/page_size;
- 	vec = calloc(vec_size, sizeof(struct page_region));
- 	vec2 = calloc(vec_size, sizeof(struct page_region));
-+	if (!vec || !vec2)
-+		ksft_exit_fail_msg("error nomem\n");
- 
- 	/* 1. all new pages must be not be written (dirty) */
- 	written = pagemap_ioctl(mem, mem_size, vec, 1, PM_SCAN_WP_MATCHING | PM_SCAN_CHECK_WPASYNC,
-@@ -1000,6 +1004,8 @@ int unmapped_region_tests(void)
- 	int written, len = 0x00040000;
- 	long vec_size = len / page_size;
- 	struct page_region *vec = calloc(vec_size, sizeof(struct page_region));
-+	if (!vec)
-+		ksft_exit_fail_msg("error nomem\n");
- 
- 	/* 1. Get written pages */
- 	written = pagemap_ioctl(start, len, vec, vec_size, 0, 0,
-@@ -1116,7 +1122,7 @@ int sanity_tests(void)
- 
- 	vec = calloc(vec_size, sizeof(struct page_region));
- 	mem = mmap(NULL, mem_size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
--	if (mem == MAP_FAILED || vec == MAP_FAILED)
-+	if (mem == MAP_FAILED || !vec)
- 		ksft_exit_fail_msg("error nomem\n");
- 
- 	wp_init(mem, mem_size);
--- 
-2.43.0
+On Tue, 21 Jul 2026 14:05:42 +0800 longlong yan <yanlonglong@kylinos.cn> wrote:
 
+> In low-memory scenarios, malloc() can fail. Without checking,
+> the test will dereference NULL and crash, causing the test harness
+> to report a failure that is unrelated to DAMON functionality.
+
+'test harness' means the DAMON selftests that internally runs the access_memory
+and access_memory_even programs, suc as damos_apply_interval.py, right?  Could
+you share more details about how the test harness report a failure in the
+situation?
+
+> This is a false negative:
+
+Shouldn't it be called false positive, as this is a context of tests?
+
+> the test should skip or report a resource error,
+> not crash and mask the actual test result.
+> 
+> Add NULL checks after each malloc() call, printing an error message
+> to stderr and returning -1 on failure.
+
+The above description reads like this patch makes the DAMON selftets skip or
+report a resource error.  But I don't show how that works.  Could you please
+elaborate?
+
+> 
+> Signed-off-by: longlong yan <yanlonglong@kylinos.cn>
+> ---
+
+Please add changelog on the commentary area [1], with links to the previous
+revisions.
+
+[1] https://docs.kernel.org/process/submitting-patches.html#commentary
+
+
+Thanks,
+SJ
+
+[...]
 
