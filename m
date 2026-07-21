@@ -4,114 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7CC0C44533
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 15:56:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB590C44532
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 16:13:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 952E66B0095; Tue, 21 Jul 2026 11:56:52 -0400 (EDT)
+	id 813A56B007B; Tue, 21 Jul 2026 12:13:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 904576B0098; Tue, 21 Jul 2026 11:56:52 -0400 (EDT)
+	id 7C3E66B008A; Tue, 21 Jul 2026 12:13:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7567F6B0099; Tue, 21 Jul 2026 11:56:52 -0400 (EDT)
+	id 6B2766B008C; Tue, 21 Jul 2026 12:13:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2C5BC6B0095
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 11:56:52 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A4777140198
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 15:56:51 +0000 (UTC)
-X-FDA: 85013237022.15.415CA53
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	by imf01.hostedemail.com (Postfix) with ESMTP id D7C7340006
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 15:56:49 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=AVmiWiCx;
-	spf=pass (imf01.hostedemail.com: domain of enjou1224z@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=enjou1224z@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 44B896B007B
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 12:13:17 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BBDF21C0110
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 16:13:16 +0000 (UTC)
+X-FDA: 85013278392.25.AA6E009
+Received: from lgeamrelo12.lge.com (lgeamrelo12.lge.com [156.147.23.52])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 9E4DE20008
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 16:13:13 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=none;
+	spf=pass (imf31.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.52 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784650395;
+	b=tUrt7CvyGEj2QOR0134qY9rAbNlR6q4NKEvFD9JfSPlNflfKa3Q3U1+TIBsq3h3PUanPQe
+	V6v3NkBduy1IAwZYVb94VLovsOewouM1NohN7F/H63lAC/CMs2QKqLYgNHzFtLGFcdO86y
+	Fyc4HnPdzOjZZLLkvwNySKlUp81z5qA=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=none;
+	spf=pass (imf31.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.52 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784649409;
+	s=arc-20220608; t=1784650395;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dDbYzkykPvbgdcYCtYPgUAJoDDOjTvDIgLuAOwgatzg=;
-	b=67ZiJTNAQyQK3OvGANop7LApzZ6rjy/keK0bPg4ZU3jV3x3XkqTaU2l9SFGCcm4v5GtCr8
-	w1LOvon/c54yApPhgrGsTQm1qPkgqbbDnWgXhLQqGvShECp12wOxlCvN5Dp9iaVpaCqi73
-	vospOx0rKVBYc/PfQ8dhTHSb/vNhIVo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784649409;
-	b=o2PC237lTloNNj026qfRHqfzrIis6x6rvyra6qgDP0bVS5y3llAQCu/UFb+Sz3H/NzqK3L
-	oyLmUQi5Fk0P4whVMOHRiJA3Z4FCVNnsYZaj3oJnRu5WSbFfZMTs/hJ1dWJNnUFV+zXqqF
-	8m1NV+MkKtesDLNUyQKDbSO4MGJBxtI=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=AVmiWiCx;
-	spf=pass (imf01.hostedemail.com: domain of enjou1224z@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=enjou1224z@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2cf50c6f235so36051345ad.0
-        for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:56:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784649409; x=1785254209; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=dDbYzkykPvbgdcYCtYPgUAJoDDOjTvDIgLuAOwgatzg=;
-        b=AVmiWiCx6xfzVMZb+rlP16RLYw5ryGUyZucUELLK61R86coBHW15kF1y/a7Ijyd+uf
-         6mNqw1IVPjXVpY/uSXSyzZmRnCiYCh5+iPOYvHfWE/k3cI9Y6dsPNDeemjX5iBoODufT
-         WZOChIaBVaCxDOCSpCwpkKFnUQP+NoI2ZDfxaGpDvuWgHkcRKMv0DL0fR38gy5AOXWsh
-         PsGcGGLOKeOvonQiDH7fuLfQV00aM1V20fA06vzDt4VnPKQhYvKnMTpeszrVAUUjvVNc
-         G9dYEnJXj1g9SirCJi17sQfVs/goVo4qHLM6LjWjDTxnHaRAanxgk+OWhLDT9znNiK/n
-         ZM0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784649409; x=1785254209;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=dDbYzkykPvbgdcYCtYPgUAJoDDOjTvDIgLuAOwgatzg=;
-        b=kQ8z1OX1f02RL+KeEpOTKOjg4ZSrsBgnRCetR77UatrqY2YVN6KADzHOroCptEpN85
-         6+Fav5MIkN/LgqMzxRPs2ARS2Fqu+6qlnMrPXnXxllWcFigOaV0GRFntCiW2p5c8vM+l
-         623hDc/dqVo0ocL9nCfIs3xmta1OPa0nRvFaVh5MmWKBAbXRisp0d2EC4QaqnFaWXuXA
-         raQeuv7azDK4eR1yvPhsDlSgXLPpFXwifozHgZOYwJb1Tm2dyxMkv5wXJu7QJHqJIJgQ
-         Lgj5okF1n24Q/6hrXA69nJVI830flmlOKUIGoyx/k8UaGO/w2UlgLtJhJ17vCwXJzt9s
-         2QgA==
-X-Gm-Message-State: AOJu0Ywyt6FyrKdg1uBpQAIYgG+9ymEyNoj8cp74H/04b2OLgQqgN41M
-	tFsFfcexkTP32wSykY680CZ5Dq6QafneBZpHglPX1BVERiTicfHKeRYQZZZp2NLt
-X-Gm-Gg: AR+sD10nO2o1OpWhGRcvvW6oXRbVH+9hu7cVYlD2q3SFPy9P82ros35MOezLPWgO/cw
-	5vyAgPELnLwELBJNcEcvuxu+gbChyp2XnzRI3BmSNREKpLuvJpkqBmUYnZT7TfXBHa0xmX0E0fg
-	uFclwcoaxar69utkxqtAugE/Hba6Vk0RQhhFsWcEcmuOYpCsb88tAZamReYlhvJ+YFWT+cci8ZP
-	6921+4Q2wQgTJhII/bGpfiIX3ZBkTBDchM2ognuzro/SHHteZjqfmacFJIrEIgBgWLGbHCZv0uu
-	9jybExTt2Y66bIZHMZOrWIOHAvZ+2Se64upT8hTqcs9s9LLscjF78U7olJjWcowu2asdv1WsNMD
-	PLfUL6RABj61byVYgIkqYp1qlJ9Zm++r97saYJPOW9FYxEpFrEJfACkFVH+gRhtIV61EG0uh2yI
-	0QZxoPUGBe64TFYBy0eg==
-X-Received: by 2002:a17:902:f549:b0:2cc:9e99:55c9 with SMTP id d9443c01a7336-2cf3495fe8emr222049575ad.26.1784649408780;
-        Tue, 21 Jul 2026 08:56:48 -0700 (PDT)
-Received: from enjou-Legion-Y7000P-2019 ([144.48.80.242])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf345111d5sm78494075ad.37.2026.07.21.08.56.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Jul 2026 08:56:48 -0700 (PDT)
-From: Ren Wei <enjou1224z@gmail.com>
-To: linux-mm@kvack.org
-Cc: pasha.tatashin@soleen.com,
-	akpm@linux-foundation.org,
-	vega@nebusec.ai,
-	roxy520tt@gmail.com,
-	enjou1224z@gmail.com
-Subject: [PATCH v2 1/1] mm/page_table_check: skip zero pages
-Date: Tue, 21 Jul 2026 23:56:38 +0800
-Message-ID: <1f8848512d2e3ded944f8d595c29faee8fdaeab0.1784645969.git.roxy520tt@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <cover.1784645969.git.roxy520tt@gmail.com>
-References: <cover.1784645969.git.roxy520tt@gmail.com>
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Im2LCtJAt3fUOoHKRg2yc+oApLbaNb8Ya7UVW6LfXwI=;
+	b=j8c++0R2EL/yxcVq2SA/8R9Da5oHVu9a16mHGTQ6y9GNnVLQF0NjgasHKyJA2OEgtxRQtY
+	jNZFvZENeV5nMRuZ9LuOaTSLvuhWrpXyIQP2sC7mJTBwRMmst7J/i0h1JBE3GoiTmeCO57
+	77PQqhdEfTs3wzO3usl0/YZAQCYHi4w=
+Received: from unknown (HELO lgemrelse6q.lge.com) (156.147.1.121)
+	by 156.147.23.52 with ESMTP; 22 Jul 2026 01:13:10 +0900
+X-Original-SENDERIP: 156.147.1.121
+X-Original-MAILFROM: youngjun.park@lge.com
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.1.121 with ESMTP; 22 Jul 2026 01:13:09 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Wed, 22 Jul 2026 01:13:09 +0900
+From: Youngjun Park <youngjun.park@lge.com>
+To: Xueyuan Chen <xueyuan.chen21@gmail.com>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+	baohua@kernel.org, zhaonanzhe@xiaomi.com, hannes@cmpxchg.org,
+	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, chrisl@kernel.org, kasong@tencent.com,
+	shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com,
+	david@kernel.org, ljs@kernel.org, liam@infradead.org,
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+	qi.zheng@linux.dev, axelrasmussen@google.com, yuanchu@google.com,
+	weixugc@google.com, baolin.wang@linux.alibaba.com, hughd@google.com
+Subject: Re: [RFC PATCH v3 2/4] mm: distinguish large folio swap allocation
+ failures
+Message-ID: <al+alXxG/8XRCM3y@yjaykim-PowerEdge-T330>
+References: <20260717122514.51514-1-xueyuan.chen21@gmail.com>
+ <20260717122514.51514-3-xueyuan.chen21@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ymodn4wy51c6wpy5kexi1uqi1jj7iria
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260717122514.51514-3-xueyuan.chen21@gmail.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 9E4DE20008
+X-Stat-Signature: jcs6upozze5tuh83f467ftk3b7q835hz
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: D7C7340006
-X-HE-Tag: 1784649409-922672
-X-HE-Meta: U2FsdGVkX18gP3vejA2V/Rv0gUQD6uqSIXSFDSGcjaci+Hnf4TlfNsM849u5zNievwMi8xKTHrSqLqFk6eArrBCUY9CMdoNsZa1OSPzWoAoZofULyCL5wzZKWy/l5uHKhiuER22gw46PqSHipMKagUngUO3bLp1V4wxPA4+jwdNSATljCXg8U6MmnzrbGXOEJ2dLKBpAJONcE2nG8V78wbCejut0T4WKhoGRmdR1DDWnCrfsggvp9scxopCibcuuMLI2WrqiCl5jbgzxVe519uQaTJFNRTOaO4MJC8j7XnhZdWMIza8oADrb0SKzk8tm1mk0vdgf7IpjcoleaBLlriDRod3ILuoW/0WyKhSp4BVIG2EeqLYOppz0flJll+uZrdKoOFZohXG8DhB5txBghLO3FXwz85qRKLZpzzwi5NnY2ZdDQ3SJDPRm9DOT9GPgG0rQb77q1cyTZeepfIh7V6ot/4uej+i1yFeVSWJuEJS5hSeqOiprfaCeLpdtkpG3az+L1m32SoF4bK/gpdDgPa6vaicF1cmXQuwvVanWpN0Iatpg9Ix1tQQF9Nf9LH8fuijHXWtClYMMO+BdgnvzpRQcvH8TH0266zNR+W85ePc84L2ot/lNQmzWqLlGGLc7BGeraZtEZlRB4vrajdobnE/NnClGsrch8vLYXB77n9FdYPH+fmLGHodmCTEuCCcy2WLjUGSxHnOnbLp5twdPoXZ3KpD2uJL84pI5xqp9bQoiMuMkMjQ0CMW+XvI4BIxM/LrpaoIAOYOsTaJmLnnGd9fHWV9McJDjcP5P1iBS5F4BTnMxfATm/CrhHznnh6pYwyb/kL+VtdAFdIZE2hgL6L4i2FGbRNcPowOosTmc2oKvtOS1ts3Z6r5k8482fKw8ZkjXSHjliCe0gvGJLQ+rgtKSmAwrmdgOu3fGKtZlo/4LBpTVKmkr+wJ+nztkrH6SiKm6cx1NX4TsUrnFojI
- VJykjDEW
- N4EVSwt1cvQN07Bqvsbs7+n/MCiJOFerE8EpF4My6SrKoMYPi+XNCuWgsasoqjH1+FjeshEPwT6Y1Y6BrPtOrZRpK59P8riiLehQS9DAgFEq4Tm2D5hn4Nf8EVBXn9H1/72D8Zy3hcEsbumo6Zlg3oXnn7O0haM/01ru4LCjHn1xCYj0W5BGKNyam7u60NoYjKwKla14tIngcpD45bT+iab5cPN7mF+BNkaPZbChhL2thNfZhOiu+jzaONEai4GD0hLpm00i/EkKSCb73OImYEY2pwK65b5wXKHpRu5JhyGtKNwvHJ6Xw7m83XhqBB61wVZcxGpYj0phvd1vwq3PTO2/4OgCtHwizGWQKdos+OOl98xW5PUZ0SkeAESxZvEw/0DpgDQ2CQmPdk+NqhdlxTnxMVGRW6n40Wkcd6PfJcQn8keO2yygyoLOtZw5KvN84h2xGM5iVwcrRDcDeGQovIxgmy2hNv9QqOUPNopgh8EVfb1s=
+X-HE-Tag: 1784650393-901800
+X-HE-Meta: U2FsdGVkX19WnFgQtqqiBIigWCPggFpmFERI5mO/nD2ztyrBLa/rVNkYC+J+VfMZiL5xajtY/MFi88e3Zcc4B93Pm/0ip6WcNzInooJJKJffq2J5APzI4O27FAkKThGQARFBbZEJyojpJuKYy/HLBN8+XZN2EQXQSCWPqBHqEOYvbzVpV8LIkXWj+AD2WR8Ajmxm/UvxIKYXNk28JacFaf37OJ/1GMTkCilyVH9dHgmlBb/4MBQHmIdfIoryMSln/Hx3HzRUu31vtWIttRDurVCKY5NwPQgx0CiVRyBo83rLX2kkUfYnG+YyW4MfkcMPS6v3eHhAhop4cPL+8z1jlbeRm1+CMv3oXaCHJsSlQOvtGwvtyIysb3v22VET6PhwqfroJ0KM5V/wvZ+Y3aspYCkq6xuoEbhr4xmliS8c5FDQy2zN6GQDFfuxpv4CgryhYoxHhSxNFjziSPRiptSVeqTgvqMq8/Fct3pofWgM2je6fVu5VHm10q/YRJT+3IQmdY6+sfs1MmXpnwsKjYvIORzN2JZYEcqxY9MhR4WTmKsm0RNQ+GdAyHYrdYA94xX6QfpVvc5zhvUYyGpdbutxUhgZE9DWzbnRG1G8Py4Ehy/j6mzc+uBO/P34zEjbYT5Zwk6dGz0pTVom0hTGu6DGe/Mu2FhOjFRLk9/cZquBMw7nBpmdccA10Im7wrYqZQMSwVlijVDI5ukI4SPfNERIAI2ok7kwKlovBD5VVnkUDFyxDWkKbpKSsvEv0rC6fso7XfK5/KMEDHOH5MThDL4tasOmK40EHKiC7GFD2pofB/17ZUGz58SAb0W7jytxgQ11nw2OQL8HSj7uB7cyZC4XgTHJzAwtn+ErdHjQDvCfF0P+lVPxNgz2dJKJV8xRooWBHRnOkzLiq64cD9VVorw2T0/EpJfMs8mRE25d/RkWM9c1lRMwetVJL6Lgova4rZ4ltLN4CyZ7XWSSOOcAkrr
+ TCwfxrM1
+ /EfWP8j4bucgzILnyl2pmTjH9HABBEc34HeJuuFSAuSJ4eyL7165ne9iirqMcXNdiGTRWbJHlXClp5+K3taktnrz8fuQqv2O1tHhmhTj5/BI9fHRHesB2efT6P7xOPKGFZHa3JL1U38ldZLZRjyoLLSDJXc+TMQfN3MtvJWRMIp5AWXE/94MYh63l/ggzOvY+/Innz4rGykhN+KiO54V3FzBJBzmEB0nSUgxT/2njUGGSaM+ldEFhCs0utMVV2m5wpzRA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,59 +93,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Zhiling Zou <roxy520tt@gmail.com>
+On Fri, Jul 17, 2026 at 08:25:12PM +0800, Xueyuan Chen wrote:
+...
+>  	local_lock(&percpu_swap_cluster.lock);
+>  	if (!swap_alloc_fast(folio))
+> @@ -1730,11 +1734,16 @@ int folio_alloc_swap(struct folio *folio)
+>  	}
+>  	/* Need to call this even if allocation failed, for MEMCG_SWAP_FAIL. */
+> -	if (unlikely(mem_cgroup_try_charge_swap(folio, folio->swap)))
+> +	if (unlikely(mem_cgroup_try_charge_swap(folio, folio->swap,
+> +						&nr_swap_pages))) {
+>  		swap_cache_del_folio(folio);
 
-page_table_check_set() accounts pages by whether they are PageAnon().
-The shared zero page is a special page, not an ordinary file-backed
-page. Read faults on private anonymous mappings can install many
-read-only PTEs that point at the zero page, but page_table_check
-currently accounts them in file_map_count.
+IMHO,
+If we get here the allocation succeeded and only the charge failed, so
+we already know global swap space exists.
+(And also swap_cache_del_folio right above even puts the slots back, 
+so nr_swap_pages goes up again)
 
-That lets an unprivileged process populate enough zero-page mappings to
-overflow file_map_count and trip the BUG_ON() in page_table_check_set().
+Could we just take the margin and decide -E2BIG or -ENOMEM from that?
 
-Skip zero pages in page_table_check accounting. They do not need the
-anonymous/file mapping conflict checks that page_table_check performs for
-ordinary pages, and this keeps the existing counter size and page_ext
-layout unchanged.
-
-Fixes: df4e817b7108 ("mm: page table check")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Assisted-by: Codex:gpt-5.4
-Signed-off-by: Zhiling Zou <roxy520tt@gmail.com>
-Signed-off-by: Ren Wei <enjou1224z@gmail.com>
----
-changes in v2:
-- Handle zero and huge zero pages as special cases instead of widening
-  page_table_check counters.
-- Keep page_ext storage and ordinary page map-count checks unchanged.
-- v1 Link: https://lore.kernel.org/all/b4414b588418c52a99d959d35a40e064ae8b6e72.1784337674.git.roxy520tt@gmail.com/
- mm/page_table_check.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/mm/page_table_check.c b/mm/page_table_check.c
-index 53a8997ec043..1914902aaf30 100644
---- a/mm/page_table_check.c
-+++ b/mm/page_table_check.c
-@@ -67,7 +67,7 @@ static void page_table_check_clear(unsigned long pfn, unsigned long pgcnt)
- 	struct page *page;
- 	bool anon;
- 
--	if (!pfn_valid(pfn))
-+	if (!pfn_valid(pfn) || is_zero_pfn(pfn) || is_huge_zero_pfn(pfn))
- 		return;
- 
- 	page = pfn_to_page(pfn);
-@@ -102,7 +102,7 @@ static void page_table_check_set(unsigned long pfn, unsigned long pgcnt,
- 	struct page *page;
- 	bool anon;
- 
--	if (!pfn_valid(pfn))
-+	if (!pfn_valid(pfn) || is_zero_pfn(pfn) || is_huge_zero_pfn(pfn))
- 		return;
- 
- 	page = pfn_to_page(pfn);
--- 
-2.43.0
+Youngjun
 
