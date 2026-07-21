@@ -4,112 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 759BAC4451C
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 18:06:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 115E2C4452B
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 18:13:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BAB336B0092; Tue, 21 Jul 2026 14:06:13 -0400 (EDT)
+	id 17C3B6B007B; Tue, 21 Jul 2026 14:12:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B5AC36B0095; Tue, 21 Jul 2026 14:06:13 -0400 (EDT)
+	id 153446B008C; Tue, 21 Jul 2026 14:12:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A4A7B6B0099; Tue, 21 Jul 2026 14:06:13 -0400 (EDT)
+	id 042C66B0095; Tue, 21 Jul 2026 14:12:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A3F36B0092
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 14:06:13 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A592B140260
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 18:06:12 +0000 (UTC)
-X-FDA: 85013562984.27.C71F419
-Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
-	by imf16.hostedemail.com (Postfix) with ESMTP id DF4DF180003
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 18:06:10 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=WW80aqKW;
-	spf=pass (imf16.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.49 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E9416B007B
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 14:12:46 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8E9751C0142
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 18:12:45 +0000 (UTC)
+X-FDA: 85013579490.04.147A814
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id B65EA100006
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 18:12:43 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bvdgVv6s;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784657170;
+	s=arc-20220608; t=1784657563;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xV+CPF5YI18r3TAdTBdkPihqc2UD1F8N4LyG6mVrBcA=;
-	b=Nln7YLIK8XM8UVClaMcepJFwAtxKF7m9x7IHftfuaBxNAkNedv7hcysj5NuiJWho91G0B5
-	TMsVT2T18k1cGCREIoXxGC+vGxGcy4MjkijkbkddaMukdzB2KIVEfFbD0CZQqUI5gs3L6o
-	PSWw/F/z/oftYtuZonkJmDmCsQ+E6pg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784657170;
-	b=hQGsQ9DCvjyDxh25icJJFsaebUf3LUf/aAK4TXDUihjND+DLISZd0MMgwrW42Pi//aiIZ8
-	q9Hl5N2+1bH1N1SBPXn4WM9axka8RURnMzOWQ+EFj1P3/UxZyOxSvBtEsSF1GVU7L+J6TW
-	UulXcZ0mOPjNC5eabN428obwBHxIf5M=
+	bh=Kl0Lh6FjGEgG1H/3xD/a8p3nj1WAQN+duTO4F2foLOk=;
+	b=Io5NNG45JdISYFqcXwv+p26xrhDWzo44XUoS2PmJ1A5T+XrI6ftRyHUpSHbPtLxuh93rzn
+	LE/f2XH/XegTg416zBSLHaZPiJknUqN6nxyVhYWdPMVFY7NPs2oGfPfnnb1NUKQFWpSdZk
+	M/enHimpOz5B4L8Egh5pcIn7IScGMiQ=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=WW80aqKW;
-	spf=pass (imf16.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.49 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-8eeb4508f29so117323776d6.0
-        for <linux-mm@kvack.org>; Tue, 21 Jul 2026 11:06:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1784657170; x=1785261970; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=xV+CPF5YI18r3TAdTBdkPihqc2UD1F8N4LyG6mVrBcA=;
-        b=WW80aqKWmhn70l+6ASUZWHHxU0VAEGjfMvviIluttJH8aFMmHMONOFt05NKVn7jhxw
-         84H01sFQp0cZHD1Kuqy2LEYwOdCRkK0DB0kmsuJQ4RnTYAKfMbZHdU6/DUDF2vAiciWO
-         8r9sn77jL+bXdWghI5eYUI6f2GnvDd93nmgQI85XaLPs5IOszXCifC+Kwa/8XJbiw9Gk
-         x07EHY2UO2LJ73JHsGBPhABLT/Dcak3TGsNs0z+dxqbD3bsIsp135czs7mzz8EPudldb
-         tsOidnotbIX5ad2BtbBak7/Ev2BVLNdKS99RMV8ou3K5a7tq/4bvMgysc/ozZB5+8J+Z
-         GVEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784657170; x=1785261970;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=xV+CPF5YI18r3TAdTBdkPihqc2UD1F8N4LyG6mVrBcA=;
-        b=Pf4z8VCO65UswunTfk9w55QzUAtzLA9860Is4ADYQb/L3eQPXgiJyVmJkHbdpe1F3z
-         HsOZZRs1LCHxGeVD3UgyABHUw+GgHVKPLBNNNt4CvH1oq7yDTAHJnGqNIZnPmy2s9h+6
-         hUhluMa/K7UULo3S8Wqq5NQVRnj1gT1yQM+p3hjUq7OQGcSl5ddJ9kA7hmfyHBxwr5xM
-         J4t0kTKOitMGrbye4l9YRXeyj1S0m7wZGV8P+hM1HTCdg1QOI+rB+pVwufTMXYqvtyti
-         ynhV3IAG3TNYEV0g17YuHtr08TkrQJHnwYiQeBLoXquMOjbuj4SrvQ4Z4OreHSAWuESp
-         wAgw==
-X-Gm-Message-State: AOJu0Yw8cEKL7vnEFW2v7PDkqA3BQY/nnxD/jxjSWCFA2vaLKycZ9iHo
-	47J14l89+0u2azLuCQNy7GJidOYOWjH1V6xbaJxFiq2GstehldJ7aoUitUqqNFyKR+aXcGk+MhY
-	fVAOT
-X-Gm-Gg: AR+sD11ymqknncldaPSKUzx8S/vOG9/xs9GHkEMgjLvEy7IFCqmQDwgaZFGyFSZCkKo
-	aV2A2Jujre/58Yo9z1OT72lSaKotp3NCBUBPacOY+rYASpKMB44uLxvpL25q7EUt4iR/IRS2W1w
-	pl3ekWgb1rh63mx3XHSoUsjRCo06HzsskgFmrfuKj/yYa3kESG/xRTI5d9mhnNC+PoQYa9wpBhN
-	559TiO0vc3WM8hyUBUX2uyofq/YzfUeM6rLEbWhbSFulMwEdSHc6kUUtv+FozzPhBl8/G7HkT0D
-	tnHWHX0/PBU4o8qbe1+/3gN10dp7Uy/tXHc6akvzu4G7qR9YGyEDYylsBk4xa1U+USs+T8KZ8rG
-	VslRsE70ewavsgIhsxJAdrW9pEKtAecc0UVQF9+5yQLG4G0x3URfe2v12TDW93tnxooeaWFLc6Z
-	8KLpUpUt3hXM6/AHfDiYnnSzR+GQN2pQJj0pN/Xa+vENyPLFIsmxrkaFwoijWKoh8=
-X-Received: by 2002:a05:6214:f64:b0:8ef:892d:381 with SMTP id 6a1803df08f44-9077852e966mr204719166d6.52.1784657169822;
-        Tue, 21 Jul 2026 11:06:09 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-907baa27361sm1557796d6.43.2026.07.21.11.06.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Jul 2026 11:06:09 -0700 (PDT)
-From: Gregory Price <gourry@gourry.net>
-To: linux-mm@kvack.org
-Cc: kernel-team@meta.com,
-	Dave Jiang <dave.jiang@intel.com>
-Subject: [PATCH v5 36/36] KVM: selftests: add a guest_memfd FLAG_BIND_NODE test
-Date: Tue, 21 Jul 2026 14:06:04 -0400
-Message-ID: <20260721180604.172421-1-gourry@gourry.net>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260720193431.3841992-1-gourry@gourry.net>
-References: <20260720193431.3841992-1-gourry@gourry.net>
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bvdgVv6s;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784657563;
+	b=ge1YTKTCsSL9LVQQU2CZh+xGX60XBMw6Z4qQhn2P9Rk15DWzcWqngu8PxRHO0GrJUbr4kn
+	jBXljuXVfB5/zQr282BFwRFI+lfnBmb2OrONEiWDrOXqB3SrJpXm0nkowGzH0Rtt53Mq1+
+	uRagOJQF7FzWAO7Ilx54UlhwWPwkS0w=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id D976241395;
+	Tue, 21 Jul 2026 18:12:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25D111F000E9;
+	Tue, 21 Jul 2026 18:12:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784657562;
+	bh=Kl0Lh6FjGEgG1H/3xD/a8p3nj1WAQN+duTO4F2foLOk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=bvdgVv6sYnZOASG/ksH9sQhf/lJzzXdiBaiQw4qKoPbUwo8rmsFbdnFL7KJkOSzzo
+	 qkbWcYA+5g0tRRv8TBOdqhhU6lEtcvLeI0Uy8tgPF09Ws0ZSujd0n55HbnxKo0oC9u
+	 K5/0bXQjlcKvvBX2ny4JRMxCxlvrem0vBvhoKO8nOe3ve7vBr35CFb7J1GwzlVfePA
+	 z4Dj6v723Rdu0FdpkO32dxJn1+tiZN2cb6M/ynUx9RoiajTtjMavSg377RTAp6f5IF
+	 MS/I28YPA3bXOXRy9RdKD0fWo60E1iTo+iX7FaIwm0pMIXggQJ22eo19LY4DD8gdZs
+	 jOnKGEQ9jcW/w==
+Message-ID: <cbecbce0-475e-4817-bdda-d1f4c89698d0@kernel.org>
+Date: Tue, 21 Jul 2026 20:12:38 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: DF4DF180003
-X-Stat-Signature: zd9h5yde36zk5hnsmsjdgmqouys7bmg9
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/6] mm: access remote process memory under the per-VMA
+ lock
+To: Rik van Riel <riel@surriel.com>, linux-kernel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: kernel-team@meta.com, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org
+References: <20260717170036.743149-1-riel@surriel.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260717170036.743149-1-riel@surriel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1784657170-720814
-X-HE-Meta: U2FsdGVkX19NJ4ew35lLGUmP3e+F2F9I3NmxJH9VSJba9Teg8WG7tUCKxB23jxcQcPSI3L9htgf4TNQPCf3XsyXtyW2C8m1iRuiT7h1vSIzDjmXa5QwPnZdLhN2mP9x7IhWHnDCVfWtiVsp2+R2fuWLscGDfXWLySZtMjn+xbnmUqyNFDH1YBCf3EFxhJRF+T4CwZ+FZLOKWJiUVjKLzGB6bPJGE523X1gw7H46vpxULkq6HJBbP+UrDGhFmobOGrPK2aBWIp8e7a1Z8UJDyPZTw9iAcUjyYMWLOUdmijWdwzIueOGXI2hbkIjP9QxU4uHhrueR9ffL0vL7OhC+bPc3ePNk6D9w1nvan5fxXsFIv8IyIJLuLEWOtSAB6YMGzxarLbSIK1akO48CUiciduJwA7b8kD2h+5CtYBR4JW71hES1b6NtQmcAo/IiuT2/RKB22pcB+GO4/x7pqtSOyz+hSnvOBLXgHyCruqH6sFi894Uv0S+LaM5O4nlPQoyAKjEGF2aCTStHshE7wv5dA519Lzl0SqS2joR9rS/yUnfsigwa3jZeI5fZQBTk6TRyNDvt6S8BxeKiQxMgOn/PD02/tj5C5HqO47MoVJ4AU5l5xPkCxFj0eTnANC3U5X5cE0GHyJUmyaUNvmXMcE87I/qQBsV+ZardWZ9RDBT/RqPBzj/RJOAP0APCkPzCCPg1HLK2zLzeIhqDngG3uWfaxcbI+2ACWvg9Ke/jhQsfg1wbhZkJFYOtBbA7iPTUhhO0Ic5lodTXjcCLTrFXoTSBF2lEY+Iv+UosSFn4ie7BQJ70T04fxiQdr5QLtUILokyfJR5Rt9stFJS/H0xLPqV3w1m6YIhYGDIu+gv2lXBLl0rm3gLNmOVuT0SEH8NsfGeXV8dd3mb46C3LsGlBOelEiWNbLlplX1DLHfcldWG1uai+HP4MYWQLYZ2GTjTk+yJdgYrd20ySU9dVDt7SULjo
- 6Z8nn3qD
- DFtqiuToEXd3l1Sqe4bsnWCU1nyMzKhMLvjRv+XdRTRpxEx3+mge5C8fb6UK8VsBjYMvhg3Gln4u7SrduWKXkhL9a+JgLN98rUQ+rlBAFGhXvSsrs0FQ4TdYbgMZDcEEbCN6UEFwWCPE7pejB0RfB8ua7vwEhjbmAoPkapR1pnRTZTHcqAisLwu7vTNDV4sTYLIefFGhqKARi1DOflRvClPxqf+xyVBcB+GHDDHRSMxO0YBgkqBCHoFFzUjUd86uxh/6CsPdu8HtfIUZxFc+77ybgZwf++J2ZFdX1RncMXPqIaeiOyACNCR1nS+bdzX5odHYKTBIXEngBUyexlhxkkZN4JQsObM/pggGVyC18Up+YARmyQP8lfB+sKA==
+X-Rspamd-Queue-Id: B65EA100006
+X-Rspamd-Server: rspam01
+X-Stat-Signature: 4p8iufhc37nuk679asq1siipzrwn571x
+X-HE-Tag: 1784657563-979241
+X-HE-Meta: U2FsdGVkX1+i5V/eUdPo2Snic6ER3wwHEp3adbzr5iB9RTnWJ+HkcvAUDuZr82pQhB+0cvxHyO83KVs9ZFiQ7gi5Y0axjGl3zHO46CsuwOCXH9Kner2c9Hru+Lx/kNp7FEnZaQLOtAOsfTZTUnS4fRr5kQy2q4Dh5RDR8RHu9lnzIPTMyv8FCkzBJevebCred+NkIBqU9p49qzHemuLGztCqHpRMO57LQ6Vi2sL+y5/W8Yyn0uxUOxDDnpMD/wc3AgfDf5IZcdIYakw6nBKh2aVisJCVSFXYn0mM6qFGXvg4EhqXOMgqo38okctq8VNNE8xoOwc5/XKOrk3KR/4Dvf4kVrGFbOw5nt8O/LeNtSsD+KhkhXeCbFtMT43K/+ATrwEvDHONr4ZfuKSakM/3QpZ7YbYSZiWzhVoYbu4FFRYoOD5aYRyiuVtQpFt5xgos2VUerDD5P3+PIJW48bFwTh1RgDA/i6EhUJTMyjX/b2r5/dDxw1Ck5N1MYgYw9oNvOjJK0dlzhZLfzwbhAuIBc2q6ALUra9WVToG7xy5gI+q/Cuy1Pg4DzC0C+EDxAAdfUBIko1p5Mi/F+DsBQ27FBEj3g68IXXLvzqHAGb3+7oeOSIQYm8NWbeswdqfKMS45VkxEDEfSKfR/5cLpyZE4IBzkUya2jYso4GGhZyhTObLR99dRewT/atz8AWw4xHfs8GU9bz+OO64VD6PF9cgl+0fli1uorVZKX/HqB+4mzXURFSo7RLuYHITkOuYAn34SonM65EhS7FlBtTI5bvCtU3ZlsgWSsZ/9aMCRn2t52X1W5bkDpHc/WndewZuL3Fq63UB2jTGyvaij/kp3kDSvynQByEy7t7EyqhIwcyl1r+r7qM+PpL+dU5VKovLx3Eej9+RifnjFvijnPCflc3Yd6yzUX89uIYQ/C/YbxzrkzxLNFhzWQe8dsmCAwT1AxpmYAtcq2pgqjr65KS55pyQ
+ hcizJP6k
+ YGIah4C/XdCUveHCdPEAzVgyRlF2lsSJ4nb6weBU5ioQz3TwkPnG8lu43w71dsGT5ybiTtUj4VrywRmBxb/XDK8qcbmJfL6jHK9pRg6NOmw5Y+fN+ODJh2Oq2L01NlktZoXR8t4XagVqif/ftfF+eM4CTtCXuznSG7K29rgJcY0KIbNAEnhq8xqa8Afc1WmUHF9WcF5JWCkHHApMJFqK8Iarrqd5fbpvJKzLwZDpYn2qtW6iW6mKyF0yR1cClDRn1TH6m
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,273 +141,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a standalone test for GUEST_MEMFD_FLAG_BIND_NODE.
+On 7/17/26 19:00, Rik van Riel wrote:
+> __access_remote_vm() holds mmap_read_lock() for the whole transfer. On
+> large machines with large multi-threaded applications, the mmap_lock
+> is often contended due to mixed accesses from readers and writers, like
+> mmap and munmap. When a lock holder gets stuck, system monitoring software
+> can get stuck behind that, resulting in a failure to log that the system
+> is in trouble.
+> 
+> Take the per-VMA lock in __access_remote_vm() when the access falls
+> entirely within a single VMA. Fall back to the mmap lock when the access
+> crosses a VMA boundary, or when the page cannot be reached under the
+> per-VMA lock: a dropped fault, a userfaultfd VMA, a hard error, or memory
+> with no struct page that has to go through vma->vm_ops->access().
+> 
+> The bulk of the work is a new gup helper. __access_remote_vm() needs a
+> single page from a VMA it has already looked up and locked, faulting it in
+> when necessary, under either lock.
 
-It creates a guest_memfd bound to a given node, mmaps and faults it
-from the host, and checks with move_pages(2) that every folio landed
-on that node - with no userspace mbind().
+Yes, much better.
 
-It also covers the rejection paths with -EINVAL
-  - a nonzero pad
-  - an out-of-range node
-  - a node supplied without the flag
+> 
+> get_user_pages_remote() does not fit: it hard codes the mmap lock and
+> re-derives the VMA. get_user_page_vma() walks the page tables, faults a
+> missing page in, and returns it with a reference and the caller's lock
+> still held.
 
-An unbindable (memoryless/offline) node is rejected at create time.
+Agreed, and that can be tackled later.
 
-It uses a default (non-protected) VM so the host can fault the fd to
-observe placement, and needs CONFIG_NUMA.
+> 
+> The per-VMA path also closes a pre-existing gap. A COWed page in a
+> VM_IO/VM_PFNMAP VMA has a struct page, but the old code routed it to
+> ->access(), where generic_access_phys() ioremaps the PFN and ioremap of RAM
+> is rejected, so the read came up short.
 
-Suggested-by: Dave Jiang <dave.jiang@intel.com>
-Co-developed-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Gregory Price <gourry@gourry.net>
-Assisted-by: Claude:claude-opus-4-8
----
- tools/testing/selftests/kvm/Makefile.kvm      |   2 +
- .../kvm/guest_memfd_bind_node_test.c          | 213 ++++++++++++++++++
- 2 files changed, 215 insertions(+)
- create mode 100644 tools/testing/selftests/kvm/guest_memfd_bind_node_test.c
+Yep. The GUP code rejected VM_IO/VM_PFNMAP for, though, because it did not
+properly handle vm_normal_page_pmd() etc so far.
 
-diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-index d28a057fa6c2d..f0ddb5cc39db9 100644
---- a/tools/testing/selftests/kvm/Makefile.kvm
-+++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -155,6 +155,7 @@ TEST_GEN_PROGS_x86 += access_tracking_perf_test
- TEST_GEN_PROGS_x86 += coalesced_io_test
- TEST_GEN_PROGS_x86 += dirty_log_perf_test
- TEST_GEN_PROGS_x86 += guest_memfd_test
-+TEST_GEN_PROGS_x86 += guest_memfd_bind_node_test
- TEST_GEN_PROGS_x86 += hardware_disable_test
- TEST_GEN_PROGS_x86 += mmu_stress_test
- TEST_GEN_PROGS_x86 += rseq_test
-@@ -194,6 +195,7 @@ TEST_GEN_PROGS_arm64 += coalesced_io_test
- TEST_GEN_PROGS_arm64 += dirty_log_perf_test
- TEST_GEN_PROGS_arm64 += get-reg-list
- TEST_GEN_PROGS_arm64 += guest_memfd_test
-+TEST_GEN_PROGS_arm64 += guest_memfd_bind_node_test
- TEST_GEN_PROGS_arm64 += mmu_stress_test
- TEST_GEN_PROGS_arm64 += rseq_test
- TEST_GEN_PROGS_arm64 += steal_time
-diff --git a/tools/testing/selftests/kvm/guest_memfd_bind_node_test.c b/tools/testing/selftests/kvm/guest_memfd_bind_node_test.c
-new file mode 100644
-index 0000000000000..6f33b1ae6c42a
---- /dev/null
-+++ b/tools/testing/selftests/kvm/guest_memfd_bind_node_test.c
-@@ -0,0 +1,213 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Standalone test for GUEST_MEMFD_FLAG_BIND_NODE.
-+ *
-+ * Verifies that a guest_memfd created with GUEST_MEMFD_FLAG_BIND_NODE allocates
-+ * its folios on the requested NUMA node, without any userspace mbind().
-+ *
-+ * The folio placement is checked with move_pages(2) (status query mode).
-+ *
-+ * Self-contained:
-+ *   - issues the KVM ioctls directly
-+ *
-+ * Build inside the guest:
-+ *   gcc -O2 -o guest_memfd_bind_node_test guest_memfd_bind_node_test.c
-+ *
-+ * Usage: guest_memfd_bind_node_test <target_node>
-+ */
-+#define _GNU_SOURCE
-+#include <err.h>
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <unistd.h>
-+#include <sys/ioctl.h>
-+#include <sys/mman.h>
-+#include <sys/stat.h>
-+#include <sys/syscall.h>
-+#include <linux/kvm.h>
-+#include "kselftest.h"
-+
-+/* Mirror the (proposed) uapi additions in case the host headers lag. */
-+#ifndef GUEST_MEMFD_FLAG_MMAP
-+#define GUEST_MEMFD_FLAG_MMAP		(1ULL << 0)
-+#endif
-+#ifndef GUEST_MEMFD_FLAG_INIT_SHARED
-+#define GUEST_MEMFD_FLAG_INIT_SHARED	(1ULL << 1)
-+#endif
-+#ifndef GUEST_MEMFD_FLAG_BIND_NODE
-+#define GUEST_MEMFD_FLAG_BIND_NODE	(1ULL << 2)
-+#endif
-+#ifndef KVM_CAP_GUEST_MEMFD_FLAGS
-+#define KVM_CAP_GUEST_MEMFD_FLAGS	244
-+#endif
-+
-+struct gmemfd_args {
-+	__u64 size;
-+	__u64 flags;
-+	__u32 node;
-+	__u32 pad;
-+	__u64 reserved[5];
-+};
-+
-+/* True if the node has any memory (MemTotal > 0). */
-+static int node_has_memory(int node)
-+{
-+	char path[128];
-+	char line[256];
-+	FILE *f;
-+	long total = -1;
-+
-+	snprintf(path, sizeof(path),
-+		 "/sys/devices/system/node/node%d/meminfo", node);
-+	f = fopen(path, "r");
-+	if (!f)
-+		return 0;
-+	while (fgets(line, sizeof(line), f)) {
-+		if (strstr(line, "MemTotal:")) {
-+			if (sscanf(line, "Node %*d MemTotal: %ld kB", &total) == 1)
-+				break;
-+		}
-+	}
-+	fclose(f);
-+	return total > 0;
-+}
-+
-+static long move_pages_status(void *addr)
-+{
-+	void *pages[1] = { addr };
-+	int status[1] = { -1 };
-+	long ret;
-+
-+	ret = syscall(SYS_move_pages, 0, 1, pages, NULL, status, 0);
-+	if (ret)
-+		err(1, "move_pages");
-+	return status[0];
-+}
-+
-+int main(int argc, char **argv)
-+{
-+	int kvm, vm, gmem, ret;
-+	long page_size = sysconf(_SC_PAGESIZE);
-+	size_t size = page_size * 4;
-+	int target_node;
-+	struct gmemfd_args ga = {};
-+	char *mem;
-+	size_t i;
-+
-+	if (argc != 2)
-+		ksft_exit_skip("usage: %s <target_node>\n", argv[0]);
-+	target_node = atoi(argv[1]);
-+
-+	kvm = open("/dev/kvm", O_RDWR);
-+	if (kvm < 0)
-+		ksft_exit_skip("open /dev/kvm: %s\n", strerror(errno));
-+
-+	/*
-+	 * Use a default (non-protected) VM: it has no private memory, so it
-+	 * advertises GUEST_MEMFD_FLAG_INIT_SHARED, which lets the host mmap and
-+	 * fault the gmem (needed to observe placement with move_pages()).  A
-+	 * SW-protected VM would not advertise INIT_SHARED and the host fault
-+	 * would SIGBUS.
-+	 */
-+	vm = ioctl(kvm, KVM_CREATE_VM, 0UL);
-+	if (vm < 0)
-+		ksft_exit_skip("KVM_CREATE_VM: %s\n", strerror(errno));
-+
-+	{
-+		long caps = ioctl(vm, KVM_CHECK_EXTENSION,
-+				  KVM_CAP_GUEST_MEMFD_FLAGS);
-+
-+		printf("KVM_CAP_GUEST_MEMFD_FLAGS = 0x%lx\n", caps);
-+		if (!(caps & GUEST_MEMFD_FLAG_BIND_NODE))
-+			ksft_exit_skip("BIND_NODE flag not advertised (need CONFIG_NUMA)\n");
-+		if (!(caps & GUEST_MEMFD_FLAG_INIT_SHARED))
-+			ksft_exit_skip("INIT_SHARED not advertised; cannot fault from host\n");
-+	}
-+
-+	/* Negative: pad must be zero. */
-+	ga = (struct gmemfd_args){ .size = size,
-+				   .flags = GUEST_MEMFD_FLAG_BIND_NODE,
-+				   .node = target_node, .pad = 1 };
-+	ret = ioctl(vm, KVM_CREATE_GUEST_MEMFD, &ga);
-+	if (!(ret < 0 && errno == EINVAL))
-+		errx(1, "nonzero pad should be rejected (ret=%d errno=%d)", ret, errno);
-+	printf("OK: nonzero pad rejected\n");
-+
-+	/* Negative: out-of-range node. */
-+	ga = (struct gmemfd_args){ .size = size,
-+				   .flags = GUEST_MEMFD_FLAG_BIND_NODE,
-+				   .node = 1 << 20 };
-+	ret = ioctl(vm, KVM_CREATE_GUEST_MEMFD, &ga);
-+	if (!(ret < 0 && errno == EINVAL))
-+		errx(1, "bogus node should be rejected (ret=%d errno=%d)", ret, errno);
-+	printf("OK: out-of-range node rejected\n");
-+
-+	/*
-+	 * Negative: node set without the flag.  Only meaningful for a nonzero
-+	 * node: node 0 is indistinguishable from "node field unset".
-+	 */
-+	if (target_node != 0) {
-+		ga = (struct gmemfd_args){ .size = size, .flags = 0,
-+					   .node = target_node };
-+		ret = ioctl(vm, KVM_CREATE_GUEST_MEMFD, &ga);
-+		if (!(ret < 0 && errno == EINVAL))
-+			errx(1, "node without flag should be rejected (ret=%d errno=%d)",
-+			     ret, errno);
-+		printf("OK: node-without-flag rejected\n");
-+	}
-+
-+	/* Positive: bind to target_node, mmap, fault, verify placement. */
-+	ga = (struct gmemfd_args){
-+		.size = size,
-+		.flags = GUEST_MEMFD_FLAG_BIND_NODE | GUEST_MEMFD_FLAG_MMAP |
-+			 GUEST_MEMFD_FLAG_INIT_SHARED,
-+		.node = target_node,
-+	};
-+	gmem = ioctl(vm, KVM_CREATE_GUEST_MEMFD, &ga);
-+	if (gmem < 0) {
-+		/*
-+		 * A node that cannot be bound - memoryless/offline, or a private
-+		 * node that did not opt into userspace placement - must be
-+		 * rejected at create with EINVAL (mpol_bind_node() fails), not
-+		 * produce an opaque failure later.
-+		 */
-+		if (!node_has_memory(target_node) && errno == EINVAL) {
-+			printf("OK: unbindable node %d rejected with EINVAL\n",
-+			       target_node);
-+			return 0;
-+		}
-+		err(1, "KVM_CREATE_GUEST_MEMFD(bind node %d)", target_node);
-+	}
-+	if (!node_has_memory(target_node))
-+		errx(1, "FAIL: unbindable node %d should have been rejected",
-+		     target_node);
-+	printf("OK: created gmem fd=%d bound to node %d\n", gmem, target_node);
-+
-+	mem = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_SHARED, gmem, 0);
-+	if (mem == MAP_FAILED)
-+		err(1, "mmap gmem");
-+
-+	/* Fault every page in (no mbind on this mapping). */
-+	memset(mem, 0xaa, size);
-+
-+	for (i = 0; i < size / page_size; i++) {
-+		long node = move_pages_status(mem + i * page_size);
-+
-+		printf("page %zu -> node %ld (want %d)\n", i, node, target_node);
-+		if (node != target_node)
-+			errx(1, "FAIL: page %zu landed on node %ld, wanted %d",
-+			     i, node, target_node);
-+	}
-+
-+	printf("PASS: all %zu pages on node %d via FLAG_BIND_NODE (no mbind)\n",
-+	       size / page_size, target_node);
-+
-+	munmap(mem, size);
-+	close(gmem);
-+	close(vm);
-+	close(kvm);
-+	return 0;
-+}
+> 
+> get_user_page_vma() now returns that page normally. Raw PFNs with no struct
+> page still reach ->access() under the mmap lock, as before.
+> 
+> The series is arranged as:
+
+
+It will take me a bit to dig into the details; I'll be out the remainder of the
+week. But the general direction sounds good.
+
 -- 
-2.53.0-Meta
+Cheers,
 
+David
 
