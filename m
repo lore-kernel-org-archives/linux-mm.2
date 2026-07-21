@@ -4,94 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80E8FC44520
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 00:33:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99F9BC44520
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 00:37:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 10C896B007B; Mon, 20 Jul 2026 20:33:27 -0400 (EDT)
+	id E33CA6B008A; Mon, 20 Jul 2026 20:37:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0BD096B008A; Mon, 20 Jul 2026 20:33:27 -0400 (EDT)
+	id DE3606B008C; Mon, 20 Jul 2026 20:37:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F17E36B008C; Mon, 20 Jul 2026 20:33:26 -0400 (EDT)
+	id CFA5C6B0092; Mon, 20 Jul 2026 20:37:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C35C96B007B
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 20:33:26 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1F722C0356
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 00:33:26 +0000 (UTC)
-X-FDA: 85010910012.29.68F3802
-Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 66BFEA0003
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 00:33:23 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=none;
-	spf=pass (imf15.hostedemail.com: domain of hu.shengming@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A23456B008A
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 20:37:11 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1EABCA038B
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 00:37:11 +0000 (UTC)
+X-FDA: 85010919462.16.48FA1B1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 59101140009
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 00:37:09 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="eXP/KIsg";
+	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784594004;
+	s=arc-20220608; t=1784594229;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EPDPo1L192f9P/w0loxq2ykIdwJrk8qyXie6h3kBK8A=;
-	b=LGHWUlhJgE3nDXu7vLF9XvM5gRWniXmflFQ7yfijQD+96Fsi/QlOzg/DKCxuIgCd3ITRP6
-	LBVjiKgoXq/svjMOi12jBsj1Rnrk3HasUyBcON6UQZ+pIx5pFUbxaDwFBh++c3wJHr2gIH
-	zBjwRVGbqr8spYvMcHfKywxXxXMgADY=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=1C0EuWr3F1b93P4Qgb1emQClLky/+draKUJtiAP9rE8=;
+	b=IZKyVseDKTGOZb7UNvGqRByiy6AgsfRPXQ6mmDRc6HYE3kAYBpA+/mtmOyRGueXWaRRd5/
+	zNBjD3UKjuvkC0jFc0xPMQCq3wFdmS6oB+J4e1woq5T0qBftOCOpmkhXVk0RemJLurSkMt
+	h606FFzUa6qM+iquoJyqRnb7JVaQfEw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784594004;
-	b=x8P3TRzGn7anTKvD740P5Umk9TiN51wPlE1twrtmm0VVqMHDYY4vmLysHr+/S6TZ7tyYF2
-	fB6SZoQr6cL/MIV1dePhw6h2bM4tPitd/1lo+5JpMoMIr/C3br+Y7MOO2hYPSzI7Er6a+s
-	5UoAdTm8uOYn1WwrKLS511IwXM7RFRI=
+	t=1784594229;
+	b=ny42Ypgzd1yegW25yX+qtAGuaSkpBfge/Ledp/XP0UXQaUmS2iSqkDe6A0mmcm3Qff0Aou
+	3ElhMlX5BSVLJ5MZ17LwNtJlhmGTh0MUNG4bWF6eoWizzM+VRw7EdVyoaLh2iI6MUWDJKE
+	60LVR3GgBA/yPWvcGUuKRvng6+fXYWc=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=none;
-	spf=pass (imf15.hostedemail.com: domain of hu.shengming@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxct.zte.com.cn (FangMail) with ESMTPS id 4h3yzD6YYwz5B14p;
-	Tue, 21 Jul 2026 08:33:12 +0800 (CST)
-Received: from xaxapp01.zte.com.cn ([10.88.99.176])
-	by mse-fl1.zte.com.cn with SMTP id 66L0XBik020499;
-	Tue, 21 Jul 2026 08:33:11 +0800 (+08)
-	(envelope-from hu.shengming@zte.com.cn)
-Received: from mapi (xaxapp04[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Tue, 21 Jul 2026 08:33:12 +0800 (CST)
-X-Zmail-TransId: 2afb6a5ebe48d09-73b1f
-X-Mailer: Zmail v1.0
-Message-ID: <20260721083312105DoEsp23e1aJM-hxh_CQ7s@zte.com.cn>
-In-Reply-To: <32ffd484-6fb4-418e-b30a-7e2344dfe35f@kernel.org>
-References: 20260720211127124sYtTNbvsxCXN9_pDh-pwt@zte.com.cn,32ffd484-6fb4-418e-b30a-7e2344dfe35f@kernel.org
-Date: Tue, 21 Jul 2026 08:33:12 +0800 (CST)
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="eXP/KIsg";
+	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 49CE760A7A;
+	Tue, 21 Jul 2026 00:37:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93F411F000E9;
+	Tue, 21 Jul 2026 00:37:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1784594228;
+	bh=1C0EuWr3F1b93P4Qgb1emQClLky/+draKUJtiAP9rE8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=eXP/KIsgTNcGZG0ecWCx3qAESwU7i+fLE7XKgVUEgbSP+W+DC2HhunSfR49qqOWJr
+	 V5AexzcVOPYOeQSWnOLP7ca3aWQWqOmqdaGgqnTFOaebIlWZktdtM3dpfGrhHqVbDz
+	 7xFATrfM5HCA7nK5/Bl350jRrMlXP2AdS4mTdMFE=
+Date: Mon, 20 Jul 2026 17:37:07 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Sourav Panda <souravpanda@google.com>
+Cc: Muchun Song <muchun.song@linux.dev>, osalvador@suse.de,
+ david@kernel.org, fvdl@google.com, gthelen@google.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Vlastimil Babka <vbabka@kernel.org>, Suren
+ Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Brendan
+ Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan
+ <ziy@nvidia.com>
+Subject: Re: [PATCH v3] mm/hugetlb: Fix null nodemask in
+ alloc_fresh_hugetlb_folio
+Message-Id: <20260720173707.47616938378bc26a41650b6a@linux-foundation.org>
+In-Reply-To: <CANruzcTi8+37K=YQwpZ51MxzDUKiX-gF6BdFMXax=ozzZw86eg@mail.gmail.com>
+References: <20260705175119.440599-1-souravpanda@google.com>
+	<B8DC1E3C-24B1-4608-86B1-5F12B2FF4DBE@linux.dev>
+	<CANruzcTi8+37K=YQwpZ51MxzDUKiX-gF6BdFMXax=ozzZw86eg@mail.gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
-From: <hu.shengming@zte.com.cn>
-To: <harry@kernel.org>
-Cc: <vbabka@kernel.org>, <akpm@linux-foundation.org>, <hao.li@linux.dev>,
-        <cl@gentwo.org>, <rientjes@google.com>, <roman.gushchin@linux.dev>,
-        <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-        <zhang.run@zte.com.cn>, <cai.qu@zte.com.cn>
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCB2Ml0gbW0vc2x1YjogcHJldmVudCBwZm1lbWFsbG9jIG9iamVjdHMgZnJvbSBlbnRlcmluZyB0aGUgYmFybg==?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl1.zte.com.cn 66L0XBik020499
-X-TLS: YES
-X-ENVELOPE-SENDER: hu.shengming@zte.com.cn
-X-SOURCE-IP: 10.5.228.132 unknown Tue, 21 Jul 2026 08:33:12 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A5EBE48.001/4h3yzD6YYwz5B14p
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 66BFEA0003
-X-Stat-Signature: hj1xjzopnn5x7ygkqckyt8gi4kymjik7
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 9ot61ndwth1uwscei7jb1krwhx9756ek
 X-Rspam-User: 
-X-HE-Tag: 1784594003-952442
-X-HE-Meta: U2FsdGVkX18EOyMMZ0xxS5iSq3YpHkrrNVFAevjZuXk6sLkfaUHXOJ8iGVdeC/Gv+JQVAjI0RQhtVAb3X1qVRNKPYN5JmiTKjVi4BJotYV+p+QJjbrFITQvwHhDxzBxMlWajdastrGjh54EgAclnQr1WbNflF8cwI917AcwOU2mKo9VxqFb4vANtFOPkC0apal0IOtruUT+mdbwsHnBZKh/vwkA2BYAOi0/PdpfEmko/ONpurFJTGMUmEbxp2R0Xe6QliwJYxPhSyI2tLX3Tu9TugnPsHa+0mMSRSPTay94qUPks1gyPmpuFzn3Twiw6VrCeJcSIvzjf7EXywBkGKiwCTOwCpyOos1mn9EPHmpomOwKVkiDtzhyW8dk+zge3/fUQKbKIK24ECIws5qOkhFwm8m6JvxFtF/oWdIVLYr4V3UR3FMObxeYx37wX3R2kyz2mvDameWoVlUuKda8nDp71gmF1QM1k8lNuEJQj7y0eiKkDLMJcJ3D53hQ3GGjOV0chaiz6j3GUe9+mzXh8/jc36H6Y+3zg5tYJzqXuaR/7PUXq5AWclxlvWMOGKzb/NYxcbUIw9wRxsZTML4ais9Zk/bY7mxLFBNVRKqkTUxflR4QuN9gLdvgXuaFEayBx4/9QvOqR3Sb1mBRW12QNqPGLqReOXu6lT4pHYVzXcGGpsqIZPtqqQK3WqQdT8EYgfJSyVe29zztjxnVVjz8dTPhtqJKmS+jHVyH1oPJi+mk4dkZ56zWA/HpKsa2YcV8VQrDWyIC/B727T3GQK28D/WrlCCz/zkDaJU/RymJroVtZK+BooC7vtwXfQQauIXAuCMhlS3HGMJGPiKg+h4LZTm3tPOosEwRO6Mge+i1SbpXxksaFs5Qh9e680t3FBA8+YNxJBbqkJhANdM8pSfPCLTdcCmnV29FE6YTMNAKo/gFCKJWcHh82EvGwKdbcuhD9jXpIHAOfV6LoLL3A+iS
- Gp1VTgFz
- WmNAwPVM+RnTRxMQ1//PjZknS2Z1am+tLmRBJ+AdHlBRqn1TJbhODUEfeyyBipu2vCteY1o3CFab/kae586BR6cO89wfdUlYG8dKtLbJf90XBSyxBsb2j5KelK9KELLyy1uhGmY4yCf1VZfXd6VXGkLufRMvj/R6orqQOouwGA9htdfrFGfaBe5dbtJDPvVqECDr21Lh/pQ9gmpyWTAlwlg7623Za7Y6Az05QshQqkJCDvNIJdt/Cwz+miqPcPsYq5mWxb6L9y4w56Oq/I/4AJXCPAI2lu9LOr9QSZvgcIEqQkDo=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 59101140009
+X-HE-Tag: 1784594229-778525
+X-HE-Meta: U2FsdGVkX18b7AhYPi57gUw3vI8y7ULNc0YGMhL0t5tmyNQqq5n5K7ck/cfdCxmCvuU5c37lpTDwugxVtduqGdu1BCdbc7Ew5phTnfE/YR7Ku89Uz6t43mku9tGIBKPposdSMcBMmk9eFEMriAy43b+5rjs190ue8zuq8Zfdhj5eCDjbinK3zJdkuRs86iQ+g0JcRg4XOpwIUKZim4F6B3SzwvnSF+qvMcxhvL/CIdCYb3g9u2cstt5VmZaQvOUdSoYOHFvp5ote8XnGTyBI2A3za013gKCRUUlDbbwhYDLRVBQBprzxw3akaZSCNgpmEp8o1pNNXOsSAke1mBu358I/r1R9TIAPD8uYqXhhdtvDTD4+lWW6ugzHXbKXS34RramaxLcNGCXYKKBIun4iwbf6rRRO0RvfimAkcNeEGzvpFDnsQK2sd0Bl6WQ4GB35tZ0W2lFNBHg5K1DxyTK8nxl1FbvYykv2HTWGiVRpYl4Cqb9X4fu4OtKtSfudrL1YiNNlPWz7s7WgvCAWOMUu9gbTgJl/opO+NengbZpNDw1FqzvLFFHQvRVonJbw0zBiL+FIWlg70a6XmbTAacToJRbDAhK19NuSe7FPajl+MBDIuZvKeKVSyi3YnRTidIoZY/+W/DpPNDWkR4sKfquRXt5F+krnHuoQatGX/dtppIoRlLMqOkW8oJs6fKHFswRCyK84/Vr5zGSkPDSGtTPWBfVgNleaDjOZTVi7xk2WBn85f3ZetwrlqC8zVjut2VrsARgnNjh31nXgehVgxaxCi0ZWU1muLkuF31OR9duuX1cDlModO9p+nVPa53XFVCCx7z/QOJ82bt76GLWFuTHjEXYGninix+p/3F4x6dQ9p1NkkQdaldGCwiXDqxYEvov39l1TPrujrExL4KqXRhvR4qtTLAcVlB0wC2o2RsppGMvJ9aTiYlgtV9AtFGetkzeKOEjGRlb72zU/D18ss7L
+ 4ZwI5jVe
+ c6tNscF187ofnxMC+YPg9aekYf72yaTZ1HFvIlDpLk1ZPj7uUGg+LHUDT/c2PbsvStICCkkaR1eB8X/dj6jZqhK2GOyCfxmhhoi4pxanb5pzKh04jMX1nU6/E7rHMsFAFFPv6jr5AT1FEDZYLuWDJbCjgIJNqf1+0a4qu9OorENSAPm4Goq3fKz1g9MNxli7eccIbpmN2rhp4RWfe2m4Cxt0vPu7QASIm+RcJ6rj/z7WR19IHoAI2yyrSH+Vhlwd72Vg2cQJ7+xmSClv5anhTNQHCmIX2P7D6Q5P8ICouWJcc5mk94IAiOvOiGjsD2MLEhJET
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,40 +96,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Harry wrote:
-> On 7/20/26 10:11 PM, hu.shengming@zte.com.cn wrote:
-> > From: Shengming Hu <hu.shengming@zte.com.cn>
-> > 
-> > kmem_cache_return_sheaf() may refill a partially consumed sheaf before
-> > placing it in the barn. Without an explicit restriction, this refill may
-> > draw objects from pfmemalloc slabs and consume emergency reserves.
-> > 
-> > Add __GFP_NOMEMALLOC so that returned sheaves are refilled only from
-> > normal memory. Also add __GFP_NOWARN, as suggested by Hao Li, because this
-> 
-> normal memory -> non-pfmemalloc slabs?
-> 
+On Sun, 5 Jul 2026 23:55:31 -0700 Sourav Panda <souravpanda@google.com> wrote:
 
-Thanks, “non-pfmemalloc slabs” is indeed more precise. I’ll update it.
-
-> > refill is a best-effort attempt and failure is acceptable. If the refill
-> > fails, flush and free the sheaf instead.
+> > - Option 1: Fix it directly within alloc_gigantic_frozen_folio().
+> >   This would centrally cover both of its underlying allocation paths:
+> >   hugetlb_cma_alloc_frozen_folio() and alloc_contig_frozen_pages().
 > >
-> > Signed-off-by: Shengming Hu <hu.shengming@zte.com.cn>
-> > ---
+> > - Option 2: Fix hugetlb_cma_alloc_frozen_folio() and alloc_contig_frozen_pages()
+> >   separately. The rationale here is that since the buddy allocator
+> >   already handles this case internally, and alloc_contig_frozen_pages()
+> >   is also a low-level allocator, it would be better to keep their behaviors
+> >   consistent.
+> >
+> > Both approaches are viable from my perspective. I'm CCing more MM maintainers
+> > and reviewers to gather your insights and decide on the best path forward.
+> >
+> > Muchun,
+> > Thanks.
 > 
-> Overall looks good to me.
+> Gotcha! Thanks Andrew and Muchun!
 > 
-> Probably worth adding Fixes: and Cc: stable to make processes' life
-> slightly easier under low memory situations?
-> 
-> Given that the API is not widely used yet I'm not sure how bad it would
-> be in practice, but the fix is quite simple.
-> 
+> I shall wait for the decision and then send the subsequent version :)
 
-I’ll also add the Fixes: tag and Cc: stable in v3.
+15 days: no decision shall be forthcoming.
 
---
-With Best Regards,
-Shengming
+Please code up whatever you consider best then send it out.  This will
+trigger a great outpouring of decisions ;)
+
 
