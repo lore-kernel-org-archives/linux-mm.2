@@ -4,102 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65AFAC4452B
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 06:12:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21862C44529
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 06:33:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 50EAE6B008C; Tue, 21 Jul 2026 02:12:26 -0400 (EDT)
+	id C392F6B007B; Tue, 21 Jul 2026 02:33:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4BE656B0096; Tue, 21 Jul 2026 02:12:26 -0400 (EDT)
+	id BEA626B008A; Tue, 21 Jul 2026 02:33:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3FBA96B0098; Tue, 21 Jul 2026 02:12:26 -0400 (EDT)
+	id B00E76B008C; Tue, 21 Jul 2026 02:33:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0D4D16B008C
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 02:12:26 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 82F1516040B
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 06:12:25 +0000 (UTC)
-X-FDA: 85011764250.17.A050A5B
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
-	by imf31.hostedemail.com (Postfix) with ESMTP id AC03020007
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 06:12:21 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	spf=pass (imf31.hostedemail.com: domain of shikemeng@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=shikemeng@huaweicloud.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 89EC46B007B
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 02:33:36 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0BB2A803F1
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 06:33:36 +0000 (UTC)
+X-FDA: 85011817632.02.FEB37ED
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 1FC0940003
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 06:33:31 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	spf=pass (imf11.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784614343;
+	s=arc-20220608; t=1784615614;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DaCathYsgsDVQRuU1H0n6jHM0UuuIDUu1vG3OL75lv4=;
-	b=4VZbVj92htJtGlAPXh8XmEQUBUA5+IFDARtTK+JJbca1tIkHb4UHoh7VI7zpCXkaVG8mdG
-	TMCDcJcXaov1PWVpOxMA78GP2huME4dyOe1yMgzj98Wq/ENLsLtkk+0Po7l+qxxVGSEusi
-	YRoL+S9vHcrqNocWSS/jUQpUxcj1BVU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784614343;
-	b=IYBab9c40TEmIjEkr34tyYjzIo9tne3OGEv0udqjogPmFmulDy1tqWAYXNBBHbNekVgBBO
-	SSQ9SlJHQHtQWPo7BF4/zOgNGiLrOP4RWLBzEsvN2UB4PR92G+XZiBwjYADSJC9wGhhihs
-	1hflu/Yx50ifoayq5YLCKnSFb19klLU=
+	bh=HkKRCPSXJA1sB+va5JOmVEtBFUahj8esELgNBveW5pk=;
+	b=5RsrUHtOnh9ht/WrvhBbMCkq3pWuV1WIIgzrcyNPI2q40TKIMRNNtJxkeFwwXRXf2lp2QN
+	PrbF3wo8Le7EJukD/+8+mHev5jDbduQIuyIiufyq04Vdn8yc95aX1bf7vZ0ETleGDk3991
+	pP5lEGmy1bln5HUBxl1wnv+XtZcvayM=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
+	imf11.hostedemail.com;
 	dkim=none;
-	spf=pass (imf31.hostedemail.com: domain of shikemeng@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=shikemeng@huaweicloud.com;
+	spf=pass (imf11.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn;
 	dmarc=none
-Received: from mail.maildlp.com (unknown [172.19.163.177])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4h46Tv40l0zYQtHW
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 14:11:47 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.252])
-	by mail.maildlp.com (Postfix) with ESMTP id 6613540539
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 14:12:14 +0800 (CST)
-Received: from [10.166.163.161] (unknown [10.166.163.161])
-	by APP3 (Coremail) with UTF8SMTPA id _Ch0CgCHUaK8DV9qC63yBw--.2432S2;
-	Tue, 21 Jul 2026 14:12:14 +0800 (CST)
-Message-ID: <76738b02-1f12-4deb-84f7-542d9830b0b5@huaweicloud.com>
-Date: Tue, 21 Jul 2026 14:12:12 +0800
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784615614;
+	b=K5m5EJat1mx6ljC4dqH6LTrFUfHnVUduHm9Lo5aWy3ACP42n0DNTJajQCLSpd3QxJLj4j4
+	Wssx5AFgSm1wQQ03RVgt0VIdoqgUUeYzB+f0DTGCN3x9l6mYozKiBpJdn2veFpXUr5/kaT
+	wi/vCasG1X3Iy+KvcIurRiB1kFAupsQ=
+X-UUID: 147b4d3284ce11f1aa26b74ffac11d73-20260721
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:5fa9bac4-0e4a-46ce-88b0-19b306f5f5ad,IP:10,
+	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:10
+X-CID-INFO: VERSION:1.3.12,REQID:5fa9bac4-0e4a-46ce-88b0-19b306f5f5ad,IP:10,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:10
+X-CID-META: VersionHash:e7bac3a,CLOUDID:c71eda32d66573de90340bbe7ea22ca4,BulkI
+	D:260721092816JFTOF5G1,BulkQuantity:1,Recheck:0,SF:17|19|64|66|78|80|81|82
+	|83|102|127|841|865|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:0,File:nil
+	,RT:nil,Bulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,D
+	KP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 147b4d3284ce11f1aa26b74ffac11d73-20260721
+X-User: lienze@kylinos.cn
+Received: from [192.168.111.172] [(223.70.159.239)] by mailgw.kylinos.cn
+	(envelope-from <lienze@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_128_GCM_SHA256 128/128)
+	with ESMTP id 399262998; Tue, 21 Jul 2026 14:33:26 +0800
+Message-ID: <04c66a8e-a342-427d-afa5-aede30a4df2c@kylinos.cn>
+Date: Tue, 21 Jul 2026 14:33:22 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] mm, swap: Fix potential NULL dereference when trying
- a sleep table allocation
-To: Youngjun Park <youngjun.park@lge.com>
-Cc: chrisl@kernel.org, kasong@tencent.com, nphamcs@gmail.com,
- baoquan.he@linux.dev, baohua@kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260720071342.50742-1-shikemeng@huaweicloud.com>
- <20260720071342.50742-2-shikemeng@huaweicloud.com>
- <al3mWmCN3lNv8jMu@yjaykim-PowerEdge-T330>
- <0884d36c-06b3-4df1-8fd2-8abc9e6c97ee@huaweicloud.com>
- <al7WTNXanPVSELAH@yjaykim-PowerEdge-T330>
-From: Kemeng Shi <shikemeng@huaweicloud.com>
-In-Reply-To: <al7WTNXanPVSELAH@yjaykim-PowerEdge-T330>
+Subject: Re: [PATCH v2] samples/damon/mtier: use damon_addr_range consistently
+To: SJ Park <sj@kernel.org>
+Cc: damon@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ enze.li@gmx.com
+References: <20260721012801.94223-1-sj@kernel.org>
+Content-Language: en-US
+From: Enze Li <lienze@kylinos.cn>
+In-Reply-To: <20260721012801.94223-1-sj@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_Ch0CgCHUaK8DV9qC63yBw--.2432S2
-X-Coremail-Antispam: 1UD129KBjvJXoW3AF17tFyrZFWfCrWfAF1DKFg_yoWxtFW3pF
-	4FgF90kF4rXr9xWrsIvw1qq34rtw40gr1DWr4xJr1293ZIqr1fWF1xArWY9FykuF1kJF1q
-	qr1UK347uFs5AwUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUyGb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x
-	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxkF7I0En4kS14v26r126r1DMxAIw28IcxkI7VAK
-	I48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7
-	xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xII
-	jxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw2
-	0EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x02
-	67AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU1veHDUUUUU==
-X-CM-SenderInfo: 5vklyvpphqwq5kxd4v5lfo033gof0z/
-X-Stat-Signature: z1wppje7858d1bqns6wr8sz3kr7zrajw
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: AC03020007
-X-HE-Tag: 1784614341-163775
-X-HE-Meta: U2FsdGVkX18Kz9lo8d7/jnW6Y5h2+0bX5xLWyLYFERTWaZXIHQe+IorCxb53znfsvXxNbuj+KvbjzF/DPP5u3gP+Md9F4oZgvdeeaRizibytL4n3CBRkC3UjSip19kyp/xWB2Dwfi/q1tqDYpObol2FXHU/8fEmkS2ERk3yFvR+BkOWs5whGRGaJJNvxhkVkAFvShK7KRzAqA/TBnSTo6cGz0/krZkLbz2c39JD7gRow6H4m3BJ5nKo6SH6bSk/pheGV+8ATayu6ijkJlqAGeTl9e8s8Tv8ChK/mxZPHYLD7cNXJXNLf5JuNjmXEuWG9r4K78mt1TU6PzLT83X8t/3l2ykkVjK838eCCrtLjVdDd+7iLfqjp3Gs15ML99nI+s4iWIZJ3hcVOfnxDVM6FK0EnUFJYI7SU+SW+YnEXRROH5wrmYq6FFcT66xtfJvPwWsRQJ1D8NwgnGCixkmtvDyO4tKMXqbnGfI1lijQSTT5/b3nZ7yNT+YX0Jj96hRZTMBjo1/dQmYpSxR6afWMWp5OsYq6zaZCKiMl3TE/KL/j4cJjPpu68dk73ReO2198mfy3pSWiwuHUQlT4WqcKjwt053Somzk8XJzQKksy0fXmYa84nr71crkKtbouTXmjlewWqjqRxMDVgfb2BzegJbX6a8xyoVOpN7usfg72nkfDYsUGGpBMD0jX/eXLHMQ8ZalD2JEwQHfIECM6Vxnq1A22ri3Y4rotlptoCRMiQ8NwyZI9K1+JWhxi9OnCUZD+L7IeTV2gJ96plwVbknICS3bcvpNffJ4rB2ZsH08I/emCIFRESBePlgiYINp2FuRJZT0d5pMm2pE5NzRkmuI0TpCgDn/hRAG1Gzp+yg069KPscMa0ivD25wCNhHJ/86ymCnD+Sejm6ymBOfTKpeL7Zt4hCNllq22EiQ6mIv2izKewqp8cDCKWnIEOCbX1rUd04N3/S1zizXA68JeU1rf1
- yOg65yR4
- zQWwg5meaJbD/j7oTLs/FJQFCAXekhmp+hsGHR2Jh1Hkx7/gKR+uS250w4Hik2jLtkVntMtaFuUj8aZzIlTRw35bg39fYtrPH1Atm3MstVh+0RjP4ELHu0AkgjV+NUrQmANDC8mhjSmKdeVN/YbQ6fKNxmbxAACqq9TSy4b20xhyLM6c=
+X-Rspamd-Queue-Id: 1FC0940003
+X-Rspamd-Server: rspam01
+X-Stat-Signature: b8aund7t3rmzh916chww7k8eadyuqa95
+X-HE-Tag: 1784615611-878307
+X-HE-Meta: U2FsdGVkX1+R8Q6yub517ZNoPbUPwWtV0XSmBZQ0mWYOEREzf6Xojbc73yenP5Rzxjhr3+nqK8DnKG96T5EUC8oGHTBNZwy48m68tWfUuuDAemYFsc0aVsIlnSeWnSKSI28HtaMj9XxkRC8krpBjrwsJbIfGZG2HOkYlNHsppumzr3p6Q4hf2KKC2zLwpZXq869tSg9eObG0R4GyPU06o0o0e9jm0FyaVstX8Dc/qHLY+br4a72vuR35nriFaCOUCvK2qUCX/KRFZzv9DMQHcsXzh1SBNUio7/Yvi9pfyhproSMECSoEixBabzspSTfVmnGnYH9++tJ89DmXAc2gvoOtkVwkdP9sxbpxzZFikD4wC23VZaGwDHxMUiqWMRFPZ5KRo/gX8G9IrNlDQYjvB/J9HtujCoV0rJrjaujwaI9wH5+bVPVr1PAlKzE6ug5eu4WIxvWJturk8dH7mDP77z7eOrs3pWR+A/1cPWuwP+jCFprP+2M7P9xW2yz3EaNFi5daJnIC3U5AUud13jm7XTz3A20ET5zRmkrxooVmjpwArvrOu/wWjqtX/e+Az4yMJxWtgZMGSSO2OAZiKi41rB/XqowlwdbcE/EkZ4Spe5QDmlCGnfo5ahv/fc/myZfIO2MmmSLd5W7tcXQ4kR97f4TTIk7YqgkVIPwQRVNX9QxqoSxQcKjCxCm9uXEwLUatssssc/QsyNzk3VK1VvRxwzw8mfovYBbxlEIiKOAPpZIhEXMGbvDazXc16v16V0SWcgr6JTn8jimsiaXXHbtg9ioQpZNz7X9pTavYF1w4ii8LcKe0mMW8HDYVUBowZ5YpI+pTspu3zX3N28Mtd6UlUjtnUHh7CM9aAIrgptZkqupKUZDuL9EqJ4tAHFVs/DLVrtyoLMElxF5sFKyrPO1igiHBaV2LfKdNyc+flwLEvsaeZuYfPITcg3+cKtVKWIdRxTJIn/QkUPkzcrZeiht
+ 73MxG0L3
+ jtPtOyao6qcoDZaNEwOgQ8hQeM1zEbJ8p5otYohJGSvl4oj9niwWQmVOQ03Mce/GWNNxnC3+lOLJ+w5ETY1KCCHXITQKtPOGq7NBa
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,221 +99,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-在 2026/7/21 10:15:40, Youngjun Park 写道:
-> On Tue, Jul 21, 2026 at 09:49:53AM +0800, Kemeng Shi wrote:
->> 在 2026/7/20 17:11:54, Youngjun Park 写道:
->>> On Mon, Jul 20, 2026 at 03:13:39PM +0800, Kemeng Shi wrote:
->>>
->>> Hello Kemeng Shi,
->>>
->>> Good catch!
->>>
->>> it indeed looks like a possible race condition 
->>> (though I haven't verified it at runtime either).
->>>
->>>> The root cause of this issue is because multi-tables are updated in non
->>>> atomic context. To be more specific, the issue could be triggerred as
->>>> following:
->>>
->>> Here the cluster is isolated (CLUSTER_FLAG_NONE).
->>>
->>>> swap_alloc_fast         swap_cluster_populate()
->>>>                          /* Try a sleep allocation */
->>>>                          spin_unlock(&ci->lock);
->>>
->>> And from here, the table becomes visible,
->>>
->>>>                          swap_cluster_alloc_table()
->>>>                           rcu_assign_pointer(ci->table, table);
->>>
->>> All entry on this cluster is freed(e.g process dead) , 
->>> so this might be the free cluster.
->>>
->>>>  ci = swap_cluster_lock(si, offset)
->>>>  cluster_is_usable(ci, order）
->>>
->>> Since it's a normal cluster (CLUSTER_FLAG_NONE) and the table exists,
->>> it passes here...
->>>
->>>>   if (!cluster_table_is_alloced(ci)) // ok 
->>>>  alloc_swap_scan_cluster()
->>>>   cluster_scan_range()
->>>>    __swap_table_get()
->>>>
->>>>                           /* free table when more table allocation fails */
->>>>                           ci->memcg_table = kzalloc_obj(*ci->memcg_table,
->>>>                                                         gfp);
->>>>                           if (!ci->memcg_table)
->>>>                            swap_cluster_free_table()
->>>
->>> Nullified
->>>
->>>>                             rcu_assign_pointer(ci->table, NULL);
->>>
->>> Now it happens.
->>>
->>>>     table = rcu_dereference_check(ci->table, lockdep_is_held(&ci->lock));
->>>>      atomic_long_read(&table[off]); // NULL dereference
->>>>
->>>> Fix the issue by updating allocated tables in atomic context.
->>>>
->>>> Fixes: 2fe7a6f5024b8 ("mm/memcg, swap: store cgroup id in cluster table directly")
->>>> Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
->>>> ---
->>>>  mm/swapfile.c | 21 ++++++++++++++++++++-
->>>>  1 file changed, 20 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/mm/swapfile.c b/mm/swapfile.c
->>>> index 615d90867111..d29062d9c3cd 100644
->>>> --- a/mm/swapfile.c
->>>> +++ b/mm/swapfile.c
->>>> @@ -490,6 +490,20 @@ static int swap_cluster_alloc_table(struct swap_cluster_info *ci, gfp_t gfp)
->>>>  	return 0;
->>>>  }
->>>>  
->>>> +static void swap_cluster_copy_table(struct swap_cluster_info *d_ci,
->>>> +				    struct swap_cluster_info *s_ci)
->>>> +{
->>>> +	rcu_assign_pointer(d_ci->table, rcu_access_pointer(s_ci->table));
->>>> +
->>>> +#ifdef CONFIG_MEMCG
->>>> +	d_ci->memcg_table = s_ci->memcg_table;
->>>> +#endif
->>>> +
->>>> +#if !SWAP_TABLE_HAS_ZEROFLAG
->>>> +	d_ci->zero_bitmap = s_ci->zero_bitmap;
->>>> +#endif
->>>> +}
->>>> +
->>>>  /*
->>>>   * Sanity check to ensure nothing leaked, and the specified range is empty.
->>>>   * One special case is that bad slots can't be freed, so check the number of
->>>> @@ -527,6 +541,7 @@ static struct swap_cluster_info *
->>>>  swap_cluster_populate(struct swap_info_struct *si,
->>>>  			 struct swap_cluster_info *ci)
->>>>  {
->>>> +	struct swap_cluster_info tmp_ci;
->>>>  	int ret;
->>>
->> Hello, Youngjun
+Hi SJ,
+
+On 7/21/26 9:28 AM, SJ Park wrote:
+> Hello Enze,
+> 
+> On Mon, 20 Jul 2026 21:06:42 +0800 Enze Li <lienze@kylinos.cn> wrote:
+> 
+>> The DAMON provides struct damon_addr_range for unified address range
+>> management.  However, the mtier sample still defines a local struct
+>> region_range and mixes its usage with struct damon_addr_range in
+>> damon_sample_mtier_build_ctx().
+> 
+> damon_addr_range is for DAMON core layer address system that uses 'unsigned
+> long' as the address type.  Because 'mtier' is dealing directly with physical
+> address, we use a dedicated struct for that purpose.  On 32bit systems having
+> more than 4 GiB memory, this may be necessary.
+> 
+> 'mtier' doesn't really take care of the >4GiB 32bit system since it is simply
+> casting the 'phys_addr_t' addresses into 'unsigned long' addresses.  But it
+> might support it better in future, using the addr_unit parameter.
+> 
 >>
->> Thanks for feedback.> IMHO, How about resolving everything inside swap_cluster_alloc_table() instead?
->>>
->>> We could consider the following two things.
->>>
->>> - Assign the table at the very end inside swap_cluster_alloc_table().
->>> - Handle the table freeing properly if subsequent allocations fail.
->>>
->>> Rather than allocating a temp_ci (which adds special handling
->>> for this case), wouldn't it be better to maintain the original intention
->>> of the swap_cluster_alloc_table() function?
->>>
->>> Although this is not a hot path and table allocation will usually succeed with
->>> the ATOMIC allocator, this approach would also save the memcpy overhead
->>> and stack memory usage.
->> Yes, it will be better to handle the issue inside the swap_cluster_alloc_table()
->> and I also consider this before. However, I didn't find a way to properly handle
->> the lock as swap_cluster_alloc_table() will be used for both ATOMIC allocation
->> and sleep allocation. So what about introduce a new helper like:
->> swap_cluster_alloc_table_unlocked()
->> {
->> 	table = kmem_cache_zalloc()
->> #ifdef CONFIG_MEMCG
->> 	memcg_table = kzalloc_obj()
->> #endif
->> #if !SWAP_TABLE_HAS_ZEROFLAG
->> 	zero_bitmap = bitmap_zalloc()
->> #endif
->>
->> 	spin_lock(&ci->lock);
->> 	/* update all tables in atomic */
->> 	spin_unlock(&ci->lock);
->> }
->> In this way, there are some repeated code, so it is also a little ugly...
->> I will appreciate if you have any better idea!
+>> This patch removes the local struct region_range and changes the
+>> parameter type of nid_to_phys() to struct damon_addr_range.  It also
+>> gets rid of the now-redundant local variable and pass the address range
+>> directly to damon_set_regions().
 > 
-> Hello!
-> 
-> I don't quite understand why we need to introduce a new helper function.
-> Is it because the table assignment must be done strictly inside the lock?
-> In successful cases, wouldn't it be fine to assign the table without holding
-> the lock? (Please let me know if I am missing something here.)
-> 
-> If we just add error handling to free the allocated table inside
-> swap_cluster_alloc_table(), swap_cluster_free_table() will properly free
-> memcg_table and zero_bitmap as long as ci->table is not assigned yet.
-> I don't think this will cause any issues.
-> 
-> My intention is something like this:
-> 
-> -       rcu_assign_pointer(ci->table, table);     /* Remove this */
-> ...
-> 
-> #ifdef CONFIG_MEMCG
->         if (!mem_cgroup_disabled()) {
->                 VM_WARN_ON_ONCE(ci->memcg_table);
->                 ci->memcg_table = kzalloc_obj(*ci->memcg_table, gfp);
->                 if (!ci->memcg_table) {
-> 			+ free table
->                         swap_cluster_free_table(ci);
->                         return -ENOMEM;
->                 }
->         }
-> #endif
-> 
-> #if !SWAP_TABLE_HAS_ZEROFLAG
->         VM_WARN_ON_ONCE(ci->zero_bitmap);
->         ci->zero_bitmap = bitmap_zalloc(SWAPFILE_CLUSTER, gfp);
->         if (!ci->zero_bitmap) {
->                 + free table
->                 swap_cluster_free_table(ci);
->                 return -ENOMEM;
->         }
-> #endif
-> 
-> ...
->         /* Assign here! */
->         rcu_assign_pointer(ci->table, table);
-> 
-> 	return
-> }
-> If it becomes visible at the very end, wouldn't it be safe from any issues?
-Sorry, I misunderstand what you mean. I think this is a better direction!
-As we rely on memory ordering, I'm checking if we need add memory barrier
-betwwen access ci->table and zero_bitmap or betwwen ci->table and memcg_table.
+> So, I don't think this change is required as-is.  I don't really want to add
+> addr_unit support for >4GiB 32bit system, either, unless it turns out to be
+> really needed.  I'd like to keep sample modules as simple as possible.  If the
+> code was confusing you because it is anyway casting the types, adding a comment
+> explaining the rationale might be a better change, in my opinion.
 
-On write side:
-rcu_assign_pointer(ci->table, table) will offer release to ensure
-zero_bitmap and memcg_table visible before ci->table.
+Thanks for the explanation and the feedback -- I agree that keeping
+struct region_range is the right call.  Per your suggestion, I've
+prepared a new patch that simply adds a comment to clarify the rationale.
 
-On read side:
-folio_alloc_swap
- swap_alloc_fast/swap_alloc_slow
-  /* access ci->table under cluster lock */
-  swap_cluster_lock
-  cluster_is_usable
-  ...
-  __swap_table_set
-  ...
-  swap_cluster_unlock
-  
- mem_cgroup_try_charge_swap
-  ...
-  /* cluster lock will ensure order betwwen ci->table and memcg_table */
-  swap_cluster_get_and_lock
-  __swap_cgroup_set
-  swap_cluster_unlock
+Best Regards,
+Enze
 
-swap_writeout
- swap_zeromap_folio_set
-  /* cluster lock will ensure order betwwen ci->table and zero_bitmap */
-  swap_cluster_get_and_lock
-  __swap_table_set_zero
-  swap_cluster_unlock
-
-So I think we can fix the issue in this way and I will do it in the next
-version. Thanks for this great idea.
-
-Kemeng Shi
+<...>
 
 
