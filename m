@@ -4,109 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3A95C44515
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 00:56:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C031C44520
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 01:08:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9EC476B008C; Mon, 20 Jul 2026 20:56:57 -0400 (EDT)
+	id 25F316B008C; Mon, 20 Jul 2026 21:08:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C28F6B0092; Mon, 20 Jul 2026 20:56:57 -0400 (EDT)
+	id 210F86B0092; Mon, 20 Jul 2026 21:08:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8FF886B0093; Mon, 20 Jul 2026 20:56:57 -0400 (EDT)
+	id 0D8896B0093; Mon, 20 Jul 2026 21:08:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DFE9C6B008C
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 20:56:56 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5BCD7A0357
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 00:56:56 +0000 (UTC)
-X-FDA: 85010969232.11.D664174
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
-	by imf13.hostedemail.com (Postfix) with ESMTP id B5B1620005
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 00:56:54 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=rPXXyXKi;
-	spf=pass (imf13.hostedemail.com: domain of 31cNeagUKCDIZWbYZUccUZS.QcaZWbil-aaYjOQY.cfU@flex--linkl.bounces.google.com designates 209.85.214.197 as permitted sender) smtp.mailfrom=31cNeagUKCDIZWbYZUccUZS.QcaZWbil-aaYjOQY.cfU@flex--linkl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id BC69E6B008C
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 21:08:20 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 31203A037F
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 01:08:20 +0000 (UTC)
+X-FDA: 85010997960.02.5A95154
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 8098AA000C
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 01:08:18 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y1NNnxX3;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784595414;
+	s=arc-20220608; t=1784596098;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=dVZeqaiAWbMoulLNM+KQI45sBsT7cMtZAQ/ZsFxQyUg=;
-	b=PY1UhEr9b6YEUKuSNiObbts1r68VLQBvchRM20fSPsstXEaEdU8WSH7mSl1goZ78Q6UFJ2
-	7b1LhSs5c6vSYvIc2cCvsfJkpsSAc6pJ09QzG6h6GbYyDAAtgahHVkWEs+DTLbmcpnoC4M
-	jFTOKVpD6rL+wRJpyjzHaBLlvTJLum0=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=rPXXyXKi;
-	spf=pass (imf13.hostedemail.com: domain of 31cNeagUKCDIZWbYZUccUZS.QcaZWbil-aaYjOQY.cfU@flex--linkl.bounces.google.com designates 209.85.214.197 as permitted sender) smtp.mailfrom=31cNeagUKCDIZWbYZUccUZS.QcaZWbil-aaYjOQY.cfU@flex--linkl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=iPEDa4y7YnsA2DDrvJuGMFg2pO2MLhdYW/8sh9nMWJQ=;
+	b=Va8bND/ygYcCVNsh2SIBcRN20v0p3T1t1UUY6c7jFQUQukwK9BGTv8yBYCclx0RsTmk9IE
+	pq3ww8DGAQK75UQwctn61N2d8u/uVZCkZouYHpK7LP/8wLX1n2+8RU9uisGfbLT/szYf9z
+	Xp4miASpU/90ZfsoPLfmz4qwO2b24Vw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784595414;
-	b=KZnUnRWnan4B/SeGKhkLsq3wBSN36R/jbAIRlsVyhIhGQUcoTJ8nPLSesPuAaQMUMLsQ9h
-	5Rmepc4jSBL+tePu2+iNI1vJtCp+8B5zccCNLok9CxjvBj1IRj1KEbcUl4mzAYzguor7zt
-	vMsBB9CMnc+guQ9m1ouM4oDZ4Hu1gS0=
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2cacf17c7e0so105830515ad.0
-        for <linux-mm@kvack.org>; Mon, 20 Jul 2026 17:56:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784595413; x=1785200213; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:mime-version:date:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=dVZeqaiAWbMoulLNM+KQI45sBsT7cMtZAQ/ZsFxQyUg=;
-        b=rPXXyXKij015wJjpXpu+H86SzUHp7dthg/jqZ5nxJOqvCeZxBfdJaw/5XLsNdzA1o8
-         OHEb6Lpn+9Q5IXDfJCx6pMp4+gu1AX9UcB2eHuHfUYM0uhSwxoEFbkHHpQgLRNOlBiEy
-         lIJK3t/8DY+1JtjGznFq4D/nF12YHXOj4ZgQOekmc2+tF8dLhTbbohnGWQtLKQKc/emU
-         Qcu7Stz0UOiwDBTHcs+5wR1D15yqYRFx2HNwm7Lp8UHUDuEQy7Nrr2HTX2MBtULfX56H
-         h9gqyFljT1EjLey4MzmNoI/QYsNL33oxScYEMyIhI4shCd2L5sMAMJt+p9IhNnT2nbae
-         4a9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784595413; x=1785200213;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:mime-version:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=dVZeqaiAWbMoulLNM+KQI45sBsT7cMtZAQ/ZsFxQyUg=;
-        b=sSpsV/vE7VvZUA2b8Mp5VVrCNHq23nmItkR8e6TrzbnEIr7YrSnj+loAI7idZ21cAo
-         kvnz0BrghnhsQ1YWQsyO7V8kmuYt1RQyrItSVv8sbU/vcJm4nunO2kIVcwQ6JssXHbHx
-         bQR0QW31V0HQlSLRvk81d8QP+ds7wkJKUK3mASihB7+YS7+y/ZICa0JkipZYRzsz/FEl
-         tDHNSwLxEB7nVaDkLHqATd6WWmHS6IiNnB5TXauxW1jVt4ErTc34CmhbdIJWciT2fsWi
-         y2HGEHYTrR5WFyda/uPO4UmMxooH8sffKJc31UehdBetSoIaBVMbTI5ZHwibnLfeVtrM
-         WzvQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpnfxtlbHDreOwJSnxtIZb4Ch19Ovm+MPC/IR2w7BRIJ3PHJkvhytVZdxHMffS9A7zvHs/VAkXBZQ==@kvack.org
-X-Gm-Message-State: AOJu0YwW7mrvwsepu/4/cDsvyocSOwUeuuRgm1hfQFtruFmIvBQK7Z/q
-	v/zrGBJDvddy4Y9pRb3T7yQmofIxbDEk5O3lY6bRvXxx8BMYyG3BBYjk6HgOzyRct7qCI4q6EXO
-	cWw==
-X-Received: from pjbng10.prod.google.com ([2002:a17:90b:1a8a:b0:38e:7f2c:2c4b])
- (user=linkl job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3886:b0:36b:944b:fd81
- with SMTP id 98e67ed59e1d1-38e4b3d27c3mr16883838a91.4.1784595413290; Mon, 20
- Jul 2026 17:56:53 -0700 (PDT)
-Date: Tue, 21 Jul 2026 00:55:33 +0000
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.229.g6434b31f56-goog
-Message-ID: <20260721005603.1710551-1-linkl@google.com>
-Subject: [PATCH v3] mm/page_reporting: use system_freezable_wq to fix UAF
- during suspend
-From: Link Lin <linkl@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	"Michael S . Tsirkin" <mst@redhat.com>, David Hildenbrand <david@kernel.org>
-Cc: virtualization@lists.linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, prasin@google.com, rientjes@google.com, 
-	duenwen@google.com, jasowang@redhat.com, xuanzhuo@linux.alibaba.com, 
-	Ammar Faizi <ammarfaizi2@openresty.com>, jiaqiyan@google.com, ahwilkins@google.com, 
-	Greg Thelen <gthelen@google.com>, Alexander Duyck <alexander.duyck@gmail.com>, jthoughton@google.com, 
-	stable@vger.kernel.org, Link Lin <linkl@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	t=1784596098;
+	b=Ja+jI0AgPyOVOrAf0AfQUPImSW0ELCM/StMuniQKXNCH+EIJPfqZ1x3Oo9b9HPbTtEcJ0g
+	e2teV+YiB98RYpETd16uNVM3tsixr3f+mrMaFJgqR5yHR+NlxneQVenJW+dUaxj6Y+O99G
+	qtjnyvRCeUaHiSHe+9q5WrfO7QrB/VU=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y1NNnxX3;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4D5B943EF5;
+	Tue, 21 Jul 2026 01:08:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D1A51F000E9;
+	Tue, 21 Jul 2026 01:08:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784596097;
+	bh=iPEDa4y7YnsA2DDrvJuGMFg2pO2MLhdYW/8sh9nMWJQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Y1NNnxX3MNIsRMp9h2f/ABJG909Ow/nvUnsD0tLSYs3Ys3DsVuIEyb2CfvEQ8/Qf9
+	 RdKg+Yr1domo41jagvZyZv+mQJgE2yoGx5M/z2j+py6spDZa0PTp7GOvyGcrAJsyry
+	 tgxurD/LqwM6fdWZ9LFbFEE2mlDeKHo6fg4IWzLnqPWp3jSldd4L+N2xPAHDSpHAaM
+	 MJCOYun6XBmj1zcoIPsCtj2sYrh5mCjZkGlyc/Xw24f7QeQ0gK0zEmlC1WHDH4bTpT
+	 xjzxgEoRQDm9kzqX6hcIXizxuK//2wV4MHAdleIa51Nm46CFqU4kcKqx2glJfQpk+q
+	 CeqmG4UbOIm9w==
+From: SJ Park <sj@kernel.org>
+To: Lian Wang <lianux.mm@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	akpm@linux-foundation.org,
+	linux-kernel@vger.kernel.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	npache@redhat.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	ryan.roberts@arm.com,
+	daichaobing@sangfor.com.cn,
+	wangkefeng.wang@huawei.com,
+	gutierrez.asier@huawei-partners.com,
+	zengheng4@huawei.com,
+	kasong@tencent.com,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org,
+	linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	lianux.wang@processmission.com,
+	kunwu.chan@linux.dev
+Subject: Re: [RFC PATCH v3 0/3] mm/damon: introduce DAMOS_SPLIT action
+Date: Mon, 20 Jul 2026 18:08:12 -0700
+Message-ID: <20260721010813.94016-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260720030327.80153-1-lianux.mm@gmail.com>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 7hmwz5xxjzckps8b4dhsuoybg7g5c4xm
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: B5B1620005
-X-Stat-Signature: mam7ukqeo8yzo18mhbyhz6eqf96sxbct
-X-HE-Tag: 1784595414-928253
-X-HE-Meta: U2FsdGVkX1/ZZRcOFQ/Kpy2b/YVFXxjJjetYD3K/Tbu5A2SGftOhHjupQebAtrC37qLMve0tirGzsQBs0VU092lKLmiMOU717q6k6+2gn0Q4Me0bmzVs9uwtcvPNlW+mUKt0k1RN4CIrsM0Fdd7vKzALkyJi6PkA8MV02GGDxG4EdFnUERoD2LTuJSWNoNl75RB3uJfOj2wqoRuiWEDyUsHVQpnLk31b4c6etBOYXpFwrc1VvixyDeUpfVt9/5Wghg3XQKFEUoToKfVEJATm06aFbjaGwvlTcJypSmwtqvEIJ7ixEnbm7td2kHeJedIk4SaeAu6O7RYOBQECPQ6bBStIfVM1HFFDu3x6xHGsxaUWZQPstDWN30lWSiJyTBMniqnHnbPdI4HSEkD9ugx1O0XTgOwkqIFKAwk5S/rDBY+jSMzhhYtEtD1EBmdEUgn7caN/n9fzl/foOhnN1fkbNYkbJGDGO1OJLnZ/Bpod/CjfEN+1yXjzYEyElI5eTw8kLV+5dEbkSv580dRh8iXwWdjqWGLj/6cm1+fG5Xum4XpVYCKwotx9OmZKfLkByGCRA0hZcTk/qa3jM6poGYMFtIVrLCuQ9zaoJhMavP20X2teURJNheFzfLMMyBU5JxyJwPiW9PeU0ceKj2GXLjPH+5BiHF08OepJ/pKLNbDHA5qxru7a/G3cQppWI7+S1nThI733Ny+XAZ4XDbuutJEmTNg2o7plomdvJDR+GfN4jnXWuqK6blsRmf3/eAGYgPErGNzpM9P91z+ktufK+mmgYGlYvDqr45gukUozXjH2EFD67nHRfWByFKfWHTrfBJzC0A8wlGUs4rDuFOjR9AeJALcHojXcKaoZeUBiquSzBdJG7qNpibA8BvVefPlSG5vSO4ZrzC8STrOFa1J5MkYm/fmuT7GkOrLXNXbnoSj8HUL2tajVsw2kecmGXnsYHE6Qsj6WWbKpMrQ7VAJpLbL
- UbiVpkNB
- gvN/eyzSr0+w+8LX9EV7ouT23/nUDravT1C1C+CyZC8l2jwzgzYldp5j8tYsci2orv9Ktog8qMirEMj1a93TopLv8CXSLNFEa7LIZT2pkKr4uQJwWHFeTIcA3/p/m6JOE50honnm559/XkfL6tjuWq4+MbTeRIKgw1ji/VawXU5eN6hhUH+eM9Y954hWgy7YgsFoPEnQhQ2Y3XnOQiAHQwkL9J2Q1zIGgR2CZaUxIJZb5+/8is+7AxOw3RXdE8rYBNG5n+TOvBu/Hhl2gc4NuLWLujSoCcylMlLpXVZyre6goVQya3YLdi89FEhH1sJxmgcQmI5T5b5fwehkfNrGxOx8ky6GS9OINzUn33meFEDH2af3jihIl5ss/QF6C8vsin4c7Rqj+raAP7C8H516LkIx1deXB7H7VnFpVno53zECYedPS3WuNHaFFqUH83do6/q+MsjDdqliMFoV/SSsYYMDoJFjM773tVZ2XXFC+UMkX0zXGxasZ+yy0kcdeQj8dIDkVr3jVC+PtQTw2E6Pm4ik3JxYPHA+D3r0G+1Svn03R7QlcfU1ClhSuyWY9oK9P9tAYzREm5jstM7Gi0xXoUxEM5UjrtlsGi+TUT00i8lQkut2EvnaIJloIJlJPxiHBGsJ5t6JgL6B4JOW0OzfxWDCeje/iHLR/CFEEZgrCU75md51nm7LkddvU+Zi7B7AxlL/Hj+xGuIOFqY8=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 8098AA000C
+X-HE-Tag: 1784596098-809586
+X-HE-Meta: U2FsdGVkX1/+vHvWwrx2A+Lro1ltaHZ4jcGMBQIvabFp+i5F/doP3E70PqC8S/hkhL6QcpRmADj32C7Z9Ou+IcaO8t5yWQ3d1th3vObJFkqh5/lMuRb6OZcc8tEZVm1k7rMx16g7wFhz/ePXG5kjvLtOe/UPpO8Vc1VtgMxADkCkA6IFj5K6LsPrHS7el2Ybop8UY+PaCp2YsKRlGMpfSgbhOwSf+/pjCMW2jjmM5QHCQR9R43d/gIBXS9P+vXiNEzpa+SZ0L/iCjviBSXWGJSvQcE4xE/1pRMwegHO/ULXaG8mMluYNOMCU/AGyLylHwLLMW4fWFi8Ehvc9w1BhQf0ybmOI3uiC9A2wj2mt9xdRV120agllM8CNrrUQcrdh01Lkrff1jns+/nWfrtDxw012OoBOE47QFTXfGW0gf04f6L3IvKPTvFP6d5Q0ddJlBLWrWy/RFcOahNDaV/6dfL4hbSgV2zd0W1ackZx5VRXfo7Xj2LBnIh0MUIc0IMGeiGAhmWcB6yNlYB4xsUgx4tLIXvuRDhTJofE0rg8XpHXFIoa7Y/S6XlhjzqrHLD6r8UXYBdN0mVZn2fiJMgO5//jRG5nKrjMkcH02heO2BMXMQDN6sk1frh5iLtqncNCFk1/h68+eLNpo/Ioae7afJCOXNFYvI/UJPEG5WYgE7JO/1U8/Om7xhPMINAfgtzMxwm2mniIi+NH5Atpgak8bDdlvc6HfZwCXdclM20hxPv0xEn5Bbo8fOP2pP0ZDx92EM++mdmVOSTdxtkLY1rVkRbxkS+yVEZzUaEXNLbbfSsaEMSaCpCPlkIBhV29nRqKGf6gZ2Ori0SB2uLefcGlpkJrSGoSrk2iAh5+hTfh27/t4dC5E02h5IoJXydSSLiVnubujaQJbAx1ZIn5zo29R+58hW3Wz3daRyrzRAPKShgdQNoExPq6os1qoVs/RL06Bb7rCHtmdEKbvPmYe//k
+ JEWfcUAj
+ u7iIpizdXFWONw2yOT8duIu6SblphKkyuBtfSWL17QO4pkIdOiXPvcY+x5FqsUxFfQZL+elgsSaGHjyiLjwmp3uB+mPd9/BdwAbL+zDvBD4scNgSmvLbcMOE9caR8nXQjNDMr6sFCoGrrxdOJidHth8e6mgHrccdxJnf24R4NP62Z72Y9JRopkn8+VkiHOGvKkBef/D3D1QvLVGawjXT5w1b79lwON5ghHkxw2O/yM6Fk3f7J7k9iRWRcifCHE5AiBDp1f6YshHb95prwuTtQp/P4aCQVSSswdYB3smJzxI2Rhzg6pvvTzLGzh4d7fpJE32FAfOXOCEyT7jjsCWSjLHcdZl8Bs073Y1j63+Qu6tHX7GAWJlDlr/d7Apg0bN3RRbzDpkyW78r8+TEmv4FyQP+sjgES4g04ihK0rb+RoTW/o5c7i5+csSu9ymAUhYEIxV/m+BNkXSw+uHlYXyhstWyvnM5uxFQG+hNorzIex3p97D0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,102 +115,152 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-During PM freeze (e.g. S3 suspend or S4 hibernation), device drivers like
-virtio_balloon reset their underlying virtio devices and delete their
-virtqueues via vdev->config->del_vqs().
+You were warned at not Cc-ing THP developers in the previous revision, since it
+was modifying THP source code.  Since this version is modifying only DAMON
+source code, you don't really need to Cc more than DAMON developers.  Asking
+wider inputs is good practice.  And it worked very well.  We got great inputs
+from Asier, David and Zi.  But some people don't really like having too much
+mails in their inbox.  My personal rule of thumb is just running
+get_maintainer.pl via 'hkml patch format' [1].  You must have your own rule,
+though :)
 
-However, page reporting work (page_reporting_process) was scheduled on
-the global system_wq. Because system_wq lacks the WQ_FREEZABLE flag, the
-PM freezer skips it, leaving page_reporting_process active during suspend.
+On Mon, 20 Jul 2026 11:03:24 +0800 Lian Wang <lianux.mm@gmail.com> wrote:
 
-If pages are freed into the buddy allocator while suspending (for example,
-when core MM invokes the balloon shrinker during S4 hibernation image
-saving), page reporting triggers virtballoon_free_page_report() on deleted
-virtqueues, resulting in a Use-After-Free / General Protection Fault:
+> DAMOS_SPLIT splits large folios in a target region down to a
+> configured target order, using the existing split_folio_to_order().
+> No new core-mm code or exported symbols are introduced.
 
-    [  196.795226] general protection fault, probably for non-canonical add=
-ress 0xaa1436fe70dae6df: 0000 [#1] SMP NOPTI
-    [  196.825967] Workqueue: events page_reporting_process
-    [  196.831038] RIP: 0010:virtqueue_add_split+0x233/0x4c0 [virtio_ring]
-    [  196.927073] virtballoon_free_page_report+0x3a/0xe0 [virtio_balloon]
-    [  196.946943] page_reporting_process+0x370/0x4f0
+The last sentence may better to go to changelog.  If you want to highlight, you
+can put changelog at the top of the cover letter.
 
-Fix this by switching page reporting work to system_freezable_wq. This
-ensures that the PM freezer pauses page_reporting_process before device
-drivers destroy their reporting virtqueues. Because the reporting worker
-is frozen, memory reclamation/freeing (e.g. via shrinker execution) can
-safely return pages to MM during freeze without triggering unfrozen
-reporting work on deleted virtqueues.
+> 
+> Based on mm-unstable at 61cccb8363fc ("mm/swap, PM: hibernate:
+> atomically replace hibernation pin").
 
-This aligns with the driver's existing design. The comment in
-virtballoon_freeze() states:
-    /*
-     * The workqueue is already frozen by the PM core before this
-     * function is called.
-     */
+This is also not feasible to be the cover letter main content.
 
-Testing:
-I have verified these fixes using Google=E2=80=99s virtualization infrastru=
-cture by
-running continuous suspend/resume iterations (40+ cycles) while churning
-memory using stress-ng (`stress-ng --vm 4 --vm-bytes 60% --timeout 1`) to
-constantly create free pages for the buddy allocator. We also set the
-`page_reporting_order` parameter to 0 to make the page reporting worker
-highly sensitive, forcing it to pick up any 4K free pages. This confirmed
-that the UAF crashes are no longer reproducible.
+> 
+> Different addresses within a PMD-mapped folio resolve to the same
+> PMD Accessed bit.  Accesses to a small part of the folio can
+> therefore coarsen DAMON's observed hot set relative to the actual
+> working set.
+> 
+> DAMOS already provides promotion actions (HUGEPAGE, COLLAPSE) but
+> has no corresponding demotion action.  DAMOS_SPLIT fills this gap.
+> It is a mechanism, not a policy -- it does not decide which folios
+> to split.  Selection is left to DAMON's existing access patterns,
+> filters, and future probe/PMU signals.
 
-Fixes: 924a663f75e2 ("virtio-balloon: Reporting free page reservations")
-Cc: stable@vger.kernel.org
-Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-Suggested-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: David Rientjes <rientjes@google.com>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Link Lin <linkl@google.com>
----
-v3:
-  - Dropped Patch 2/2 (virtio_balloon shrinker flag). Freeing pages via
-    the shrinker only returns pages to MM; with page reporting work now
-    properly serialized on system_freezable_wq, shrinker execution during
-    freeze is harmless and requires no additional locking/flags in
-    virtio_balloon.
-  - Link to v2: https://lore.kernel.org/all/20260717002311.681748-1-linkl@g=
-oogle.com/
+As I commented to the previous version [2], this sounds like you are saying two
+very different things.  Monitoring quality degradation issue and better THP
+handling of DAMOS.  This makes understanding the motivation of this series
+difficult, as other people also pointed out.
 
-v2:
-  - Split into a 2-patch series including explicit shrinker fencing.
-  - Link to RFC: https://lore.kernel.org/all/20260709224330.946683-1-linkl@=
-google.com/
+Based on your replies to others, now I understand you are proposing DAMOS_SPLIT
+as a way for improving the monitoring results.  I'm waiting for your more
+clarification of the issue, to better assess if this makes sense or not, as I
+commented on the reply to Zi's reply.
 
- mm/page_reporting.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> target_order selects the split target: 0 for order-0 base pages,
+> or a supported smaller mTHP order.  Both anonymous and file-backed
+> folios are supported.  The locking follows split_huge_pages_in_pid()
+> in mm/huge_memory.c.
+> 
+> Tests
+> =====
+> 
+> damos_split.py (VM + Kunpeng 920):
+>   anon THP -> order-0 split: PASS
+> 
+> sangfor_exp.py (Kunpeng 920, tmpfs, 4096 MiB):
+> 
+>   - Created a 4 GiB PMD-mapped tmpfs workload.
+>   - Applied DAMOS_SPLIT with target_order=0.
+>   - ShmemPmdMapped dropped from 4194304 KiB to 0 in every round.
+>   - Repeated for five rounds without functional failures.
+> 
+> The functional selftest (damos_split.py) is included in this series.
+> Additional experiment scripts and raw results are available on
+> request.  Performance characterization using masim [1] and KMB [2]
+> is in progress.
 
-diff --git a/mm/page_reporting.c b/mm/page_reporting.c
-index 7418f2e500..4dc6f4b852 100644
---- a/mm/page_reporting.c
-+++ b/mm/page_reporting.c
-@@ -80,7 +80,8 @@ __page_reporting_request(struct page_reporting_dev_info *=
-prdev)
- 	 * now we are limiting this to running no more than once every
- 	 * couple of seconds.
- 	 */
--	schedule_delayed_work(&prdev->work, PAGE_REPORTING_DELAY);
-+	queue_delayed_work(system_freezable_wq, &prdev->work,
-+			   PAGE_REPORTING_DELAY);
- }
-=20
- /* notify prdev of free page reporting request */
-@@ -343,7 +344,8 @@ static void page_reporting_process(struct work_struct *=
-work)
- 	 */
- 	state =3D atomic_cmpxchg(&prdev->state, state, PAGE_REPORTING_IDLE);
- 	if (state =3D=3D PAGE_REPORTING_REQUESTED)
--		schedule_delayed_work(&prdev->work, PAGE_REPORTING_DELAY);
-+		queue_delayed_work(system_freezable_wq, &prdev->work,
-+				   PAGE_REPORTING_DELAY);
- }
-=20
- static DEFINE_MUTEX(page_reporting_mutex);
---=20
-2.55.0
+It is completely fine to keep having tests in progress.  But, please make the
+story complete.  What damos_split.py and sangfor_exp.py do?  What the results
+mean?  What the performance tests will do with what expectation?
+
+> 
+> [1] https://github.com/sjp38/masim
+> [2] https://gitee.com/OpenCloudOS/kernel-multi-bench
+> 
+> Open questions
+> ==============
+> 
+> - Selection policy: this series keeps folio selection outside the
+>   action and relies on DAMOS access patterns, filters, and quotas.
+>   Is this the appropriate layering for future probe-based signals?
+
+You mentioned this series is for monitoring quality improvement.  If so,
+shouldn't you just apply it to all THPs, regardless of the access pattern?  I'm
+again being confused.  More clarification of the motivation would be useful.
+
+> 
+> - Hysteresis: khugepaged may re-collapse a just-split folio.
+>   Should cooldown live in DAMON policy or khugepaged?
+
+Ditto.
+
+> 
+> - File-backed folios: adjust target_order upward to filesystem
+>   minimum, or keep current "fail and skip"?
+
+I don't fully understand the question.  Could you please elaborate more?
+
+> 
+> Beyond the action API itself, feedback on real workloads that need
+> proactive large-folio demotion is particularly welcome.  Follow-up
+> work will evaluate candidate selection signals, including DAMON
+> probes and hardware-assisted sampling, as well as target-order
+> selection and split/collapse hysteresis.  Those policies are
+> intentionally kept outside this series.
+
+You mentioned this work is for monitoring quality improvement.  Now you are
+saying somewhat followup.  I'm again being confused.
+
+> 
+> Changes since v2 [3]
+> ====================
+> 
+> - Split-only series (collapse deferred).
+> - Dropped SPE feedback (mechanism/policy separation).
+> - DAMOS_MTHP_SPLIT -> DAMOS_SPLIT.
+> - order field in existing union (no struct size increase).
+> - Added functional selftest (damos_split.py).
+> - checkpatch: 0 errors, 0 warnings.
+> 
+> [3] https://lore.kernel.org/20260701123000.00000-1-lianux.mm@gmail.com/
+> 
+> Lian Wang (Processmission) (3):
+>   mm/damon: introduce DAMOS_SPLIT action
+>   mm/damon/vaddr: implement DAMOS_SPLIT handler
+>   selftests/damon: add functional test for DAMOS_SPLIT
+> 
+>  .../ABI/testing/sysfs-kernel-mm-damon         |  7 ++
+>  Documentation/mm/damon/design.rst             |  5 +
+>  include/linux/damon.h                         | 15 ++-
+>  mm/damon/core.c                               |  2 +
+>  mm/damon/sysfs-schemes.c                      | 48 +++++++
+>  mm/damon/vaddr.c                              | 90 +++++++++++++
+>  tools/testing/selftests/damon/Makefile        |  1 +
+>  tools/testing/selftests/damon/_damon_sysfs.py |  9 +-
+>  tools/testing/selftests/damon/damos_split.py  | 99 +++++++++++++++
+>  tools/testing/selftests/damon/sysfs.py        | 11 +-
+>  10 files changed, 279 insertions(+), 8 deletions(-)
+
+[1] https://github.com/sjp38/hackermail/blob/master/USAGE.md#formatting-patches
+[2] https://lore.kernel.org/20260702183551.91007-1-sj@kernel.org
+
+
+Thanks,
+SJ
 
