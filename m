@@ -4,120 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF5D7C4451C
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 19:55:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46864C4452B
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 20:25:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BDC156B007B; Tue, 21 Jul 2026 15:55:36 -0400 (EDT)
+	id DE8FF6B007B; Tue, 21 Jul 2026 16:25:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B7CF26B008A; Tue, 21 Jul 2026 15:55:36 -0400 (EDT)
+	id D752D6B008A; Tue, 21 Jul 2026 16:25:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A7A6E6B008C; Tue, 21 Jul 2026 15:55:36 -0400 (EDT)
+	id C15596B008C; Tue, 21 Jul 2026 16:25:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 846516B007B
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 15:55:36 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 16E7CA0910
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 19:55:36 +0000 (UTC)
-X-FDA: 85013838672.01.7D142AF
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 15252120005
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 19:55:33 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=Xran02uK;
-	spf=pass (imf29.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784663734;
-	b=jQ5SaOTIAsB0zZ+3cXhcc3i+cpFnHsniNtVfK9fyubxDbZCvdEuTZJb2Um6rXPL/ZRPIAz
-	i0jwcbjXihcVKNkAGVphUtAK6P2GZUoHfsxjZ6EWKAskzdi2LuqN8nJlgwajBTeBs4W8sA
-	mPD2doJuba2bIXAvw/dUDWwKqWz7D3I=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=Xran02uK;
-	spf=pass (imf29.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
+	by kanga.kvack.org (Postfix) with ESMTP id 82E666B007B
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 16:25:26 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 10AD38021E
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 20:25:26 +0000 (UTC)
+X-FDA: 85013913852.20.C4F9630
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 30E2FC0004
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 20:25:24 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=FsNNWw4K;
+	spf=pass (imf10.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784663734;
+	s=arc-20220608; t=1784665524;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mHZ6KR0HBY/A+4ayC9BCwjfVh3BlnXge75QXQoZQPFo=;
-	b=7prXU+37d3ZD8GZ8q5FVwtGh+bxkWHV6868S7uuhp+QM5GAtY2FrEi40zjECLL9EoE1jGz
-	40a0gQ8qtv10NW3xlBZtBRdgZbMZmVbumI3N6T2xL1Ca3oMLNSVOacmxCHiFmiR2pKoDCg
-	jzvWF7L4wInLrn3p7/IvtYZDbaDfRqU=
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 72DC140E00E6;
-	Tue, 21 Jul 2026 19:55:30 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id BFh35W6ojD13; Tue, 21 Jul 2026 19:55:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1784663720; bh=mHZ6KR0HBY/A+4ayC9BCwjfVh3BlnXge75QXQoZQPFo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Xran02uKyC5edtPpDYP3zrYWvM/wd+TuG8TczFdXanmHqJhF4EQsJramNEgpUqMwo
-	 qKjV7yxLOGcs3wwnXmjjsCK5Wsw3coj0OmWWhxSEvMj6q5BqKwChVtk+5XngQLUbCr
-	 /O1lX0OhBtGD757bPtSiNIuD8gDwKolYacrfjk729yTU/wd41XvJ+Txnbfg+WR8ucu
-	 ZpiWXmpQ5StCU0PcoZvEj867IEcdyNscwc/HZQrbWpF4lscz3jaXE7vdz8WjzoJQfL
-	 GDpLxjoBWUV0QWk2qVOLe/DigHevMVj41j2DrfnWbCar8FMZNrvwr3ceq+FvFEtLNw
-	 rekRCUCLPFqCLIs4bS3oJFRNFimbOqu5sqM4nf0pMGmLcuR9HFD3php75HDfUvDgiN
-	 G3IRK97tDDj5J+3sEGwfflva1Z+sNvEsTc+mALCDIjJ399i+n5nWTNTnzk1l1NCNT7
-	 JP0i3sSqMhy7J5xHbWKX0Ki3IvtL51oonXbpv3Xo8OESr1ABKFqZPkXBIXMKwWkrRE
-	 YxiTGeQOVesK2TUnUn9AIBV5+Z3L52z/SIJ2k0j6W0aaosNAqJwgh897ftzD+uInQh
-	 31m6kPgkYEz4Z4fslke2woWDCwHQLFhtW8IJVLJ7H12rRG/CN+c6+j3GaBs5bmc3Ng
-	 XIgXGRuajM3fuCnBC+JRBOxs=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::2b])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C109E40E016E;
-	Tue, 21 Jul 2026 19:54:48 +0000 (UTC)
-Date: Tue, 21 Jul 2026 12:54:46 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: linux-mm@kvack.org, Albert Ou <aou@eecs.berkeley.edu>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	Brendan Jackman <jackmanb@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	David Hildenbrand <david@kernel.org>,
-	Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Kevin Brodsky <kevin.brodsky@arm.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org, loongarch@lists.linux.dev,
-	x86@kernel.org, Dave Hansen <dave.hansen@intel.com>,
-	Juergen Gross <jgross@suse.com>
-Subject: Re: [PATCH RFC 00/18] arch, mm: create a generic
- set_memory/change_page_attr core
-Message-ID: <20260721195446.GHal_OhkuBCWQjmLQW@fat_crate.local>
-References: <20260721-generic-set-memory-v0-1-v1-0-2c1fc62306b3@kernel.org>
- <20260721171943.GEal-qLx4p5YbocQNV@fat_crate.local>
- <al-6aLMJONOMfW2v@kernel.org>
+	bh=vbz1iYT6k9l+H6Z3FTtCF6cLZIfTcAcJKlDT5dYK2AI=;
+	b=ZlHilkRZ+CX5WVemm2RF2/+pDmMfJcOPVOWd/t2lTNjNMpA7Zcv4rwnUe6BxyRsDyfammK
+	WnPm4aTPiPlZH16u07aWIaLtr0fIH0svcCLggLk4vGc6+xBN+ZU8NRdYR60opRCkKQycLX
+	c7sTCsAQC0WM6o2G0gOeP7S2YcfGHCw=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=FsNNWw4K;
+	spf=pass (imf10.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784665524;
+	b=YqNzSPMAXyrt0SRkCrGkYZ8WMvzXvR8Nu7utnwDdMnVIuzMYOJmEcFV+fI5irKxzJf/1D6
+	DpoPEKZGFKLFeP7WnK40YHw5oWf32D9HHcFSwxO3VTT4IBxp4lr7bnd7t+1PaUz2Ia4d/t
+	efIdXfGrl5c5aSnm7Zet2QDhWEcD6zg=
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2cab973140bso144899445ad.3
+        for <linux-mm@kvack.org>; Tue, 21 Jul 2026 13:25:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784665523; x=1785270323; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=vbz1iYT6k9l+H6Z3FTtCF6cLZIfTcAcJKlDT5dYK2AI=;
+        b=FsNNWw4Kd1ZFq8/76G/hkUxsyIuk62GswfQ+d1YuBhvRqZDChWVL2cLA/QVTXQoSsM
+         pCmISCeYN0T8E996Kw6ndhtPlWcJr63EgdbQ/T0nTpZXqj7JrD4aYrkTB03Ou6/GMGRw
+         N5rG+wWEJFBslTD7Ng54kk+B9nHjxV2mGHQO7W6fC7RdFNyv7kfMq6K+mKzfQezwqUTc
+         hlhds8A9m8ZRF5UTTLUq5orR00FDN66Yy9rf4uVy5nAsWn8OPiHdbAiynP53UJ7P43NN
+         K0U3W888cnHjuNhf0aT2TtADvvJ0dNnGMpBJNhjwyvZZc6sfegU0CU7L9d25UlgGxp0H
+         jgVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784665523; x=1785270323;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=vbz1iYT6k9l+H6Z3FTtCF6cLZIfTcAcJKlDT5dYK2AI=;
+        b=GIgkK8p3m51cOAB1xnfTCrgxlobCWTEh0AHfSI6vyulwe5Y/Xa0m6Fq4rJ1hUQEDum
+         vf6CXmS4BTEuB3I3uiUaM3X7unB2peMqSUoN3QdCoc255pzKora6Dg5rZWmNJhuPKTES
+         wNQQqO+HUGJNRhqA3rYBUIg1PjV+7oilcO5Y4m+Oli00z7egAKAOXYxizRqk4zSSAbVy
+         smoyFbQQhCdWlt3F+kt3k5lVxOxWwfLxujoClg8HGiP3IqX2FS34gKx3jWXr3uIweSmE
+         qKsmXhCWQMUTETusP+QDFSmaZXm5HLntfSaQgbnh4yS0oYgnOF7132K/ziUdpZYAFU7k
+         +kow==
+X-Forwarded-Encrypted: i=1; AHgh+Rr9MO0s/rgno+FDwMkyBJHHjoMJrguXKx510J5GIDC1GfLvbASKBbyjRbzhS7+c3UXOxDjclskKEQ==@kvack.org
+X-Gm-Message-State: AOJu0YxiO6pyE+ev3kVlPIt/ZVKshiT9+C+3UWurEPcaznElDD0p0ZxG
+	Jw0zWNfsJUeDDD7mC/Siw+VVld//qY9Rtbhg66/1r4iJB8zuJw3hHRFAh9JHAOXICQ==
+X-Gm-Gg: AR+sD10G0hwpxLXDEISPurmEOU9TzpSXfCvrt3tLDbB97PnnJWCvVnGacBgPQtFJho7
+	DICXRDWF5CIki1FsKXXkYUHY9DMbP71zJujz4JQZC9MB7OanwFz5tEF2W1H36cdSYfUbhD4VeWO
+	nfbCaYy8edKkUifjBYiCSi54uEzqAIv6RTft7eoz/dLsIgnCu2St9V8dKvxO/eZ18F9CozjaUXo
+	8ArWHx1rcw4RnHc9L4Xl9I9RpkMlEnJxYkH1TwjJqnM8Lwv1XgO4lrnn9V4gYUtqgafEFpmkfI2
+	8W8+eu99ue3GPxWVhRqrNc4RQ9zq19YpE3tXbe4cJNzdyEoh4P8JWiTFBU2k6m+9Qr1sDSzhXSe
+	euwPv+qAiuFpPk1k8nteh74OuPNMgnEkcxEptnhjvDJVjaFLNO1DC8pfwuKXizVHCLj1e8Fou90
+	L5nXtnDFyUXamjSQpTO0ZLGhz/ASnre4UaASmors3L
+X-Received: by 2002:a17:903:b08:b0:2c6:90ec:f601 with SMTP id d9443c01a7336-2cf34835859mr235453285ad.8.1784665522497;
+        Tue, 21 Jul 2026 13:25:22 -0700 (PDT)
+Received: from google.com (79.217.168.34.bc.googleusercontent.com. [34.168.217.79])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf8f3b7c9dsm2391865ad.83.2026.07.21.13.25.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Jul 2026 13:25:21 -0700 (PDT)
+Date: Tue, 21 Jul 2026 20:25:18 +0000
+From: David Matlack <dmatlack@google.com>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-pci@vger.kernel.org,
+	Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Alexander Graf <graf@amazon.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
+	Josh Hilke <jrhilke@google.com>,
+	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
+	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
+	Pranjal Shrivastava <praan@google.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>,
+	Yi Liu <yi.l.liu@intel.com>
+Subject: Re: [PATCH v7 03/12] PCI: liveupdate: Track incoming preserved PCI
+ devices
+Message-ID: <al_VrpvPE-RLCF5X@google.com>
+References: <20260710212616.1351130-1-dmatlack@google.com>
+ <20260710212616.1351130-4-dmatlack@google.com>
+ <178432481253.189683.3297727348836286619.b4-review@b4>
+ <CALzav=e1Gcu-9TD7F--41cYqKBrStKOE4VqQ4K3PKdNuYnNmcQ@mail.gmail.com>
+ <178458744511.332171.13770778781241262180.b4-reply@b4>
+ <CALzav=fjTOnyg2++GFFe5B17rHqNCWW=afjsD0A=EEjycPW7Sg@mail.gmail.com>
+ <178465652971.412167.17838319728990505256.b4-reply@b4>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <al-6aLMJONOMfW2v@kernel.org>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 15252120005
-X-Stat-Signature: 1bgn1atmemc76bye7xtrsombs5mu3c51
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <178465652971.412167.17838319728990505256.b4-reply@b4>
 X-Rspam-User: 
-X-HE-Tag: 1784663733-886835
-X-HE-Meta: U2FsdGVkX1/uMVwu8FzwRaymVOKfJv41Ya+NVjbGypzer9f0z+6qM5ObVS7Hl+0YsSwhiIEkIVjS8o2WrXBe4B4xYYXENoWmHv2bPXvKK6ei3JESEjGK0h6cT/KBYMLlIHDpQKLBS1ITKRxiSO4wIIMxG43geniEaR4U0Wc7NtDAaKwnw8wRkfP6nkuitA7efVDDQ5exhX9iOidZjtQjvRxzaLKn2xrYBmGDgQR2T1lcEZV+bDomjfdwmP9lYPHEewNWpE741nh24VQoocAd9iLf2APTLVQDxz9cXdgs+SphDTQRyp3EKMS8zyWeWGvyXqhRLY+1P158FjsUr3THtE4bNbRYd06I5iYEmlly3EWZE+sQTKwH1xj2lGnLb0tKnl7dj82W7Cjzr8R30vR1FPidwnwEJxhQgOeqzIV6C1vETrXz2tLuxNLe/6gwpzYVoZcmhlmcwlhy08vz1bHNqOZdvCH2PoNl2f9IPXfSNyXl5QwPNKeQuHFg0+PnvYuMAnBOV/q/AjsirCO2+kPO/7aexDnJ/WoDTRY2mu//oU2SYvm+1SXNwYw2rzFrdehQAeeVtNtXC88pMghummZb1SvSiwy9EDOQMDM/OKoFQ57VdTvtUCKZ2kItQZbi9D8CNF0ghTSLWkVD+ssAP5KSQS2S7rHNIRGmmZc26sZbX+439YS+4xJQMy/e1xPAAlTkJyrTsFk1IzEZSHZ3v/YY/0+MzXUQ+A/UG2lINMZ5naEW2F3FW40scqwMGgkIeiB3jmKPmc/lQC/qikfZdFd/NnpmBAyvb5ZaIbsqq5+66gcHb0Kwn/Z85liL+yzvcZZNEoqT/YSrAhlf7M/7GuQJL2hfnWTkzV6EbryX6xHYRfMDUazHmkpnH/A6Y3KGcNwhlY2hlFUYLL6iyxtvCigb2682agy0rTZxGXXcoEENCsU/dPmkVRrSyGcjQKZIi5vcystA6r1889To6Ffbo3P
- /rRmYiAd
- 5c8L9YllrwNvFsEQR6lv0x1LBqfUvqpyj1vxJEBSGadXc7Rc594/9MC52Z6FSp/Nt5df2JaraAI+4xqQcQwEoElOrsRKxuBWQvdnACzFv1JyH7RlkXiVO8kFuOAPckKavlQlChkHBq7mlXN7MeVl2jQsKWNMPtE60hQcC0XkFtxP5USnauAdGaiEQuiFWHrqVVX1moyK5QB9XRVkMLNlh4QPRDmJ34/hZII7DxPESgR5xJBWunPCiopP5/UvHJvxahiWanBInslgfgIv5mIDjek47HvJiMYq/364YmksOru1OuuhJ8nRdTh9bTzOgTr0nzgNmBo283pyeLeQmyc9MEWpfWw==
+X-Rspamd-Queue-Id: 30E2FC0004
+X-Rspamd-Server: rspam01
+X-Stat-Signature: hh5neeqghzx57nzqib179u9w4if7o8t5
+X-HE-Tag: 1784665524-379447
+X-HE-Meta: U2FsdGVkX1/PQCRD4ra0hY+DXa+5BhyzjnaUPijprEf3wJ2bD2sbF/jVHs6PDP/+aQ5fCiFcL1ES9P5JhVRLcZhQO+pTaDzj7mwWWCQddUISeEty7O33BL45bsRoQATT8imBmqWJpTBOQJzFkxbGcZ75WNCuOiqAIMuG/tDCyDlTrYEzYHvBuSFfkh1/kgxJrrLMdsyxkASriWJ0j2Jg7kI2/uXs0V0RXmgnmaKUytyZ31IMpbwtbhUs/HvfONDWpZcCSFM9YldFExwN1qeoBDRhT++S57IHW8FboP0jb/ZmzW6hTewDXRXY4lAQOVw7/phOXqqrgTdJYTy8lvpLkBYjZZ17BJwYl7v+p4Iz0yFSbkGkDS7bYDhr5g3UEE+fiMeBXANyBuCibKOSnLZvelJUFSQm6DN9SX9miUpsbBYu/Bh35VFkWba8Vm3h3sbabIVcfL96RLWJYMDgIX1Dc/lBIBW2PKd+AIfZbdXw3mNIzno9nUkU0RNgpUfmOGMcdkuYDbKhRB4XVHXCVeh2sIwn7JUQbbSoo59my9dNDhUyFEX6m9t4Gy4XlnFKg/bq0iQYXUZqZdZM0Z1TCRY/unlUVXOA4xyTh7zn3HKNzgXk1JOeSAQZNqvAwv0eMVYHGekmH0cc+pRP5d5PKNSU8VTX3WSwVBHPG28/zwbjC+eXA3ycsdVEiEwzPyj91s+PgX1SO9Ezps2ftprdo1ud0YZYYTb8Qkrjt7ntOYEGOa2nv+g3Jbu/3JSKO+vgWR7jUWBLlvyOXTeEwX3bN79PT7nqsv1C84ibZNUWOSDCrSJOiMTlurHHQN6FZVn0n9n0VzlItKawNZcxZ0oRPxt8SqOF5rsFL0SAemfuvR0Ifn5nFObzPDSi7eqxxh4IJdvcWidO9XUBbFlkNyQ2cRmvyQYXmjQw0DxnWDXv7vPKR/pEc5voRV8iM92RNA32BRD3K0/uOc1bygn4JxKLkQ0
+ ILX9T5mf
+ 7Ev48Lfz6jBOkO0c9D34HQnTG+psI+7CYAXq7nlrLIa4CHjwDXD8j+8w9cjFVCp9FgfGxcDCQjWaEGdLcqC9mCkRWcZaMq/RiuLff0l3At4by9rP7D/TymjMKoEYN85SlyzKbqVeMXcLUA8fyh+0Mnfko2cejvGPnJKvhtBGWro9gIrdFoEcXFSV2Ny6FkfibcWVxentPSL9eI7LHSSJmzUezoXmyzqZdpqR4svSYGubqJPtCqU+q3wmbB2/m4TmNBCGxkGfun6KeK5V0dbe+lQVMGdY6uHy3P/Rh2ez5vbCG11Rk5GMEpTdeBFHbDRmGU6Sf0sWmw4DdSjuXNPrOUwmN24NAnA6njvGIQHW04tGTSjGNAvrJ2GKav8BXVe5obrOOK4YMZ6T7d8DUZwqD4W8WhDFyCiCUbS3kxELw3Ns/isE76G4OOyaljT22ZA/oXHI4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,18 +145,137 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 21, 2026 at 09:28:56PM +0300, Mike Rapoport wrote:
-> I'll take it via the memblock tree? ;-)
+On 2026-07-21 05:55 PM, Pasha Tatashin wrote:
+> On 2026-07-20 16:07:47-07:00, David Matlack wrote:
+> > On Mon, Jul 20, 2026 at 3:44 PM Pasha Tatashin
+> > <pasha.tatashin@soleen.com> wrote:
+> > 
+> > > On 2026-07-20 14:54:51-07:00, David Matlack wrote:
+> > >
+> > > Thanks for the explanation. As I understand, the most straightforward
+> > > way to avoid holding the permanent reference is indeed to delete
+> > > dev->liveupdate.incoming entirely and perform an xarray lookup on every
+> > > access, like this:
+> > >
+> > > bool pci_liveupdate_is_incoming(struct pci_dev *dev)
+> > > {
+> > >         ...
+> > >         incoming = pci_liveupdate_flb_get_incoming();
+> > >         ...
+> > >         dev_ser = xa_load(&incoming->xa, key);
+> > >         ...
+> > >         pci_liveupdate_flb_put_incoming();
+> > >         return dev_ser && dev_ser->refcount > 0;
+> > > }
+> > >
+> > > However, as you note, this is inefficient because it affects every
+> > > single device and adds lookup overhead to every access (not sure about
+> > > the actual cost though, xarray access is pretty fast!).
+> > >
+> > > We can, however, still avoid tinkering with the lifecycle of the FLB,
+> > > and instead treat dev->liveupdate.incoming as a "hint" that we validate
+> > > on access with a fast, liveness check:
+> > 
+> > Can you tell me more about your concern about FLB lifetime?
+> > 
+> > The lifetime of the FLB will not be affected by this reference unless
+> > there is a bug in the driver where it fails to call
+> > pci_liveupdate_finish() during it's file handler finish callback.
+> 
+> From a design perspective, liveupdate_flb_get/put_incoming() is a 
+> logical read-lock/unlock pair on the FLB data. We use a refcount for 
+> optimization and sharing, but holding a get over a long asynchronous gap 
+> (from boot-time device setup to driver probe) is essentially holding an 
+> unbound lock.
+> 
+> Unbound locks make it difficult to trace refcount leaks or debug 
+> lifecycle issues.
 
-Definitely not.
+It's very standard for refcounts to be held for a long time, e.g. file
+refcounts and device refcounts. LUO FLBs themselves already have
+long-lived refcounts taken by each file that depends on themm, which
+aren't released until that file handler's finish callback runs. The PCI
+core is just doing the same thing.
 
-Unless you folks want to carve out the bits of set_memory.c which interact
-with core mm and mark it as maintained by someone else. I personally don't
-mind too much.
+> 
+> > 
+> > > 1. At Setup: In pci_liveupdate_setup_device(), we do the xarray lookup
+> > > once, cache the pointer in dev->liveupdate.incoming, and immediately
+> > > call pci_liveupdate_flb_put_incoming(). We do not hold a permanent
+> > > reference.
+> > >
+> > > 2. On Access: When an accessor runs, instead of doing a full xarray
+> > > lookup, it just validates the cached pointer's liveness by temporarily
+> > > securing the FLB:
+> > >
+> > > static struct pci_flb_incoming *pci_liveupdate_get_incoming(struct pci_dev *dev)
+> > > {
+> > >         struct pci_flb_incoming *incoming;
+> > >
+> > >         incoming = pci_liveupdate_flb_get_incoming();
+> > >         if (!incoming)
+> > >                 return NULL;
+> > >
+> > >         if (dev->liveupdate.incoming)
+> > >                 return incoming;
+> > >
+> > >         pci_liveupdate_flb_put_incoming();
+> > >         return NULL;
+> > > }
+> > >
+> > > * If get_incoming() returns NULL (the FLB has already finished/freed),
+> > >   the hint is invalid and the device is no longer incoming.
+> > 
+> > This avoids the xarray lookup but still requires taking the incoming
+> > FLB mutex twice (once for get and once for put) on every access. And
+> > if there's no incoming PCI FLB, the LUO will iterate over all incoming
+> > FLBs under the mutex to find it.
+> 
+> Can we do a fast-path check first?
+> 
+> static struct pci_flb_incoming *pci_liveupdate_get_incoming(struct pci_dev *dev)
+> {
+> 	struct pci_flb_incoming *incoming;
+> 
+> 	/* Fast-path to avoid unnecessary FLB querying */
+> 	if (!dev->liveupdate.incoming)
+> 		return NULL;
+> 
+> 	incoming = pci_liveupdate_flb_get_incoming();
+> 	if (!incoming)
+> 		return NULL;
+> 
+> 	/* Check again, now that FLB is acquired */
+> 	if (dev->liveupdate.incoming)
+> 		return incoming;
+> 
+> 	pci_liveupdate_flb_put_incoming();
+> 	return NULL;
+> }
+> 
+> This seems to gives us the best of both worlds: robust refcount hygiene 
+> and a sane fast path.
+> 
+> What do you think?
 
--- 
-Regards/Gruss,
-    Boris.
+It still seems like an overall worse approach to me.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+ * From a performance perspective, the PCI core would still have to
+   acquire the FLB mutex twice every time it needs to use the device's
+   serialized state (once to acquire a new reference and once to release
+   it).
+
+ * From a locking perspective, the refcount doesn't actually protect
+   against the device itself going through finish. So we still need the
+   pci_liveupdate.rwsem.
+
+ * From a hygiene perspective, each reference is held for less time yes,
+   but there will more places in the code that need to acquire and
+   release a refcount.  That is more room for bugs to leak a refcount.
+   So I'm not sure taking more small refcounts is an improvement.
+
+With the current approach there is just one refcount with a very clear
+lifetime (that aligns with the device file's refcount) and no extra LUO
+mutexes required to use the device's serialized state during device
+enumeration & setup.
 
