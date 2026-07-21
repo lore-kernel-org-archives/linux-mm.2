@@ -4,92 +4,165 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13527C44532
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 15:11:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BCF9C44533
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 15:12:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 06F436B0092; Tue, 21 Jul 2026 11:11:38 -0400 (EDT)
+	id 5F0546B00A5; Tue, 21 Jul 2026 11:12:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 020676B0096; Tue, 21 Jul 2026 11:11:37 -0400 (EDT)
+	id 5C7356B00A6; Tue, 21 Jul 2026 11:12:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E78926B009B; Tue, 21 Jul 2026 11:11:37 -0400 (EDT)
+	id 46A896B00A7; Tue, 21 Jul 2026 11:12:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C11AC6B0092
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 11:11:37 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 52DFFA01CF
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 15:11:37 +0000 (UTC)
-X-FDA: 85013123034.21.A62C160
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 9782F1C0010
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 15:11:35 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AWfmGqL8;
-	spf=pass (imf18.hostedemail.com: domain of will@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=will@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0C28B6B00A5
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 11:12:30 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 746021C0154
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 15:12:30 +0000 (UTC)
+X-FDA: 85013125260.10.7F6CF12
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 9C71F8000E
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 15:12:28 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SAHldLLt;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784646695;
+	s=arc-20220608; t=1784646748;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XlmkIlI/0ZYha/er7EZ84MmkZCiwZXbwdDI7LTwrjs0=;
-	b=pgBS8fOi3loDd1LAOa09KZA5CKBiiI9j9/5xOtHMdKCUM1Bc8DMww89w7KGzOD5gJsyrE2
-	HNMaSw1rt0rvi5jr+JkgZcw4sxrSNyQdJXzcqjQpW0ifJ14WAFDT+XUPz+v69Lt8UGgpKc
-	hWoSA0ad99UD9uUOA5zZLUUVWB1f49E=
+	bh=dKHsQTtEuYgX66yr5l7qTAts/c0fmhleRyEHOKKYymE=;
+	b=VHkLeSZVpD2viq64FqcxPh0Mn15wct8CxQPLmLBuO0XBwcE2C4qOJ4vG2oCDVWN4IUT6cW
+	fMFXnEfKs7YUZfBSvmALtJmGLYa5Mr284xSlxFMeA167AzF4kqPmvcuyEZbET4Fm39vv9+
+	k9gOz9ljEZtd/GdlYOLyCQU3mxtFaNA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784646695;
-	b=vSrPdF/u2Kjo1UMQJ39My15GY+cnYPhJyojQ5AMVlbRq2WHcQ3LiFgtBMMhABoIAN6euCA
-	xeAH3XwmN7ijJIlDuhWimcXA/L2kpCUhgCtRmS1Rv24IHdZ4RoYEz4wnfz9qa2siYOFlq8
-	zyr5cj6uHldP9iN3T+fKQEtN1IuGVaw=
+	t=1784646748;
+	b=8Bm8S2On1DszAGeKxxT/qii6DynCaGUq3uRiQfYv5NYVkWC1RMVMnEzHYpdzS5rm57kh6g
+	MqUG9RqR39lIa1cRKBpv6NoryXJytM+u9k7n+j9N7XGQlCr22WHjpGMpcEqWuopdVNfeFG
+	OGEpJpwKVKNWSFKDr5Ap2llfnShAkNY=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AWfmGqL8;
-	spf=pass (imf18.hostedemail.com: domain of will@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=will@kernel.org;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SAHldLLt;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B5DBA43C9E;
-	Tue, 21 Jul 2026 15:11:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54CE71F00A3A;
-	Tue, 21 Jul 2026 15:11:32 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id DBCE460204;
+	Tue, 21 Jul 2026 15:12:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A02A41F000E9;
+	Tue, 21 Jul 2026 15:12:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784646694;
-	bh=XlmkIlI/0ZYha/er7EZ84MmkZCiwZXbwdDI7LTwrjs0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=AWfmGqL8yS617Go8Z6km8FnvSkHiDdc6L8CbGJA/0U32k1eIHPo85iPNL9i12xBm5
-	 4wq2AZPUqXiMLOxwrB8KGKCXdEqpzhKlFVjcQ3wXfzRHo9XGf8PlFC22DRPfM7k3ip
-	 VSUm/7GKjSTaCjzjjdPT5Z/Gpj/PvWGiCxtghkQVquZBmd1UpXGEuqpj89QcOGhq9b
-	 GmqHdPF204W3n+31wTaWe6nvELLtr6BwxheTu+PWc6vMg2j/ojrPzNqE+Vf2I/xXaO
-	 qqixl6f79FqbDMJ0RWqzDIMD5ghInp5QfOA6ZTmGWd9mNgg8W868UCqeDa8WKoqcfe
-	 FjEIqWNE/AnSg==
-Date: Tue, 21 Jul 2026 16:11:28 +0100
-From: Will Deacon <will@kernel.org>
-To: Sang-Heon Jeon <ekffu200098@gmail.com>
-Cc: akpm@linux-foundation.org, Catalin Marinas <catalin.marinas@arm.com>,
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, linux-mm@kvack.org,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	David Hildenbrand <david@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org
-Subject: Re: [PATCH 3/3] arm64: remove early_ioremap_reset() call and
- __late_* macros
-Message-ID: <al-MIFXhVs2Yol4c@willie-the-truck>
-References: <20260708170647.362562-1-ekffu200098@gmail.com>
- <20260708170647.362562-4-ekffu200098@gmail.com>
+	s=k20260515; t=1784646747;
+	bh=dKHsQTtEuYgX66yr5l7qTAts/c0fmhleRyEHOKKYymE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=SAHldLLtU7xQLUi26xcrFkkKYS9P2o0TLlkOjzUmM1ZX+ko0k4a5qoTy1XIzPnGuR
+	 cUwpVC2pjk/AcJZnO2ck/hKhSbf0g7wXo4wDqxpuQwgnlryAB+OI4sFQmwKGpjwACd
+	 enYLSrkvYR2jeki4Otq+ltW90hWiBaTrF/JNXyF+yRPm5yNU9EjacdD6Eez4RxQWkS
+	 R/vMNpXomL7UbrNL+StWd5DkroEC3h3/ANJZihtyBxVHJDlK0GJboY1KU7BdfMJaKq
+	 VKu4K28N8WCS7Gwfe+dJ3I52jWqP8Ne73GQo4qa4GIm81yq4+MD6smuws6cHVq8Lwc
+	 157dab58h6V9g==
+Message-ID: <e95aabc0-522b-4660-958a-d648c1cfa78f@kernel.org>
+Date: Tue, 21 Jul 2026 17:12:13 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260708170647.362562-4-ekffu200098@gmail.com>
-X-Rspamd-Queue-Id: 9782F1C0010
-X-Stat-Signature: m6z3tfe9u4c8bc3m98kz7aroia9m1nnb
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 15/22] mm: only initialise pt_share_count for user
+ pgtables
+To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Russell King <linux@armlinux.org.uk>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Ryan Roberts <ryan.roberts@arm.com>, linux-arm-kernel@lists.infradead.org,
+ Huacai Chen <chenhuacai@kernel.org>, loongarch@lists.linux.dev,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org,
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, linux-riscv@lists.infradead.org,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>, linux-s390@vger.kernel.org,
+ "David S. Miller" <davem@davemloft.net>,
+ Andreas Larsson <andreas@gaisler.com>, sparclinux@vger.kernel.org,
+ Richard Weinberger <richard@nod.at>,
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+ Johannes Berg <johannes@sipsolutions.net>, linux-um@lists.infradead.org,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Ning Sun <ning.sun@intel.com>,
+ x86@kernel.org, tboot-devel@lists.sourceforge.net,
+ Ard Biesheuvel <ardb@kernel.org>,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>, linux-efi@vger.kernel.org,
+ Vishal Moola <vishal.moola@gmail.com>, Alistair Popple <apopple@nvidia.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org
+References: <20260714-remove_pgtable_cdtor-v1-0-44be8a7685d7@arm.com>
+ <20260714-remove_pgtable_cdtor-v1-15-44be8a7685d7@arm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260714-remove_pgtable_cdtor-v1-15-44be8a7685d7@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: pgak9freyistruwcy7ncqxswb41m96nx
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1784646695-715926
-X-HE-Meta: U2FsdGVkX1+dXdJ3y4bTOMFTioaGarBdituZstGXD0qRZo7QNQIfclHkRm1C8g0kKBC/1UkfHscr14Cj02m39dPFaM7f5Z++9WibK2nY3+ndbGyqlDDbwYeYrN1Gb7SFF8Jq9uE/ZxpTP2jtGNVCSYpfx+jvoXBTDpZ1MdC5t+3u10eLx0O6DETWa3cMBvJqidFW6rPQFAre4WEq6p8uzCyWOt/NavIB8uCKRttS4/coa6kDAqLIb3buDXcIRQ6nbLz6KtBE0c63LATPgpHVK4d27ulsB9SJgIbInYG05z6lSXJtpDVDLgU2Fkp7liKy6i/hFhK5xFM4Z3PIrVWc/ldW7BfvwIyHf7X90qooW3ECz+2VPhqUEFCl2IecShndC3gMe5D+oBbM0tzUu4Dax4MERe4Jy25iINhyitElsazEnC/LJStgNXVk2uzO52GD8bb29j/sRGrY5X6JH3rnLUbH1dfjEZZqDpnDqeSTyavwRiMdDeu35Jnnf75LC8+0L9GldQH4HHdnuDWFj5/AC5pZCzNTeNfhfo6TXDOnDLe9+1bqCERXAx8UtkL7rQfrkBFmTe+yjhrIajyhT83PTqeVzPKcO9z3V+caXWOoZ5wNMZ0J3vcjB+ZrET5cH6UbgA7YqMUgSMauawSE6Q3o+ZNT3m8cYe3tXhFvypcHkvTWi29/06CwP5JS2u5WTVKcwiT0c6F3plEaDXOmOEeUSbFt1BNe/M+q6Lw78G4iUcskd/1QAI2kZcxUTp+WUgfGWLMsRUz4nH4r/zoXGcn/Ctng+wMrTUZ5yptMwOeDdY9hckIVKoWReNJIgyhDvgnBzwDxEeEWu9Icx/vy+S5QhLTMcG9/VZvKPGqwFJw2msHchVW71tybafEhWFIyotCE7rBqo79Js3bAYvGSMiT6mbCpi7NTB2lzhw6DkTSX1pxSWtG2UDOdNu6j47sMrg1v8FdJjH2WDmu3HOperW2
- F5148huV
- cwu7maULRYWZPcLvSFlYLKh+WiyHAlB7/TutKKIP6AZhMKwSQ96ss9gmfoYVMWDvZ+mSnC5WsCChOGYlPFIiwTyZnedSjUZVtMUCTIjuZ29Y2eNmHMcnDVRg84VnYgR+T6K4OUq+q39e+5NXarXrsVAoeafmpL0/U+H9jTomMDNw5kJV1R1ebdI17iA2XV+4p0930lfqanAUkupn6o4BcdwGTD/QttKgqRONjJ1mAiD8VPfJwOgvEJA50gnWDksJDFnbKdJq3C4dR72GrjQETsjvMJSmLp5G8amF+29xxlTSIJrhI+T/JDwn3zi6t/PS667MsQREtDWXgqDQyhvJnlP5RD2zUEx6h7/9f
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 9C71F8000E
+X-HE-Tag: 1784646748-882951
+X-HE-Meta: U2FsdGVkX1+QTvBvlsKFbAZT+1iSEhwiaYHxWyO7OlEIkJGHYHi3zfhpQAxNR267vyWQ05p/luW05yIPX2I2RhHTIyC3/NyMC63HxugnTElSpxUsHJKLpDtZNL3VmnTI+VJp6UqrO+jO4yvngIGsA1MXOgQRrn4/Z4DxEptAMm6sb4NqRZfmfEQgmjGvKCgoQCLXeUUZ8B/iD8nIxPe/CAxbftLET10HGYxySEjrUJ8+ef/BOTc1k7aEc55w7nRTge5Lm0BhOaIaqp7LOs6dcCMa4F2xKl9n4P89Yf7sGvpI9KuVW2UADI3WOwo4Mjfjssa9Ye7IWr4+yGZLn3yb83iJEOHqfZn4KeXdhOsKmq3oruDgy3VvvyXQF4WsWIv9p5xrdMDTBlMB3Po53+MoTh9cUEFXMzca+w6cFbEZGRy4FP4QDQzxFPgSTO9EVpzU8IBVom46fQdson0VRxZHGPF5cZAl07Fzu5hjI0ZPjVLB3sbMXe0gZsZZ1Ib5A1uUIA33RWB3aI3s5E8U+z7MW4mDfgq1RbW/jzHfXZcBt/95KZa9+jKgZlcHnlVEhCAupDkYpRJ1ZpIOOzltVwgw99CRXN8a1Thzp5ssJTHYEV25/KJeBcWu0e4aj98dmEXLezR9V2yrrhIzv3TOWhTLzIc/XoeofniZ+MwrWUSTBvQMhwzhmTsjAPbhUIpuYszitqjJK44dmvrRV2vmqNfbeUuhJ/LWfWmhy0LT2CHOFcHwTPF+VFBUVgHNC/pWZpC9FU++5ihBHm1oUkp3mWn/lh58TtikyJnXJFrtgARW5O7RT1G7dioS3eFtJqzS6CuXpevkhPQuG1VtmSmNLKNpG7kVrhFb/FTq4QEoFKBM9jQUPDhxPdzEB/eYYb1dDaJZhpPhqOkvjnsPuab+E1rfVx4JPwei6cYdc8JbjXAqNWUP1zfI/ZIwzgHfNpUafMSLo9avV4DnWDbQIg/CuuK
+ 70rPkV3w
+ cQc+NqY+8Nx1WSrBStGg9Br4YoTs0hFkOYf+1mmiJZaoEp3kZfKgsqv3+ADIQGa2OyaZHsKUYOD/AuJyGIstOMi189HCRLCY61yMpgGphaWm4EfZxPS3j8HDw8s8FHNXB5TWzCWQ5ExkQL8fjLRA3p3qL76NNrVmSxdNVchj2htc3V4y7U4nAomiaK0pXrwCSnpnSktxRdjIz80cWwBILNF1UWhRy8nVsnODbbJeek8KEPeVJn6B1LhGIVpOaZcYWhJxnzmsUkdfztEXSxDhUjopaQBL8ly59U1lB9VSSXWiGM5uhZQh1BTDmtII1/sHaJoqT1Q9wrvSNRpGfoa6uzqfkZM06IQsWV609T0MI/NcFNy3rNNsy8CoYqjFeaM5EPvDzgEnKLr5lk1sOziwy714exVgNLaIBDqSDDhiGXznTa80P8b1cZ8E5ac+kh87yuUM1XVz86q0J5jCcWOittDLJlg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,49 +170,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 09, 2026 at 02:06:47AM +0900, Sang-Heon Jeon wrote:
-> On arm64, __early_set_fixmap(), __late_set_fixmap() and
-> __late_clear_fixmap() are all __set_fixmap(). Calling
-> early_ioremap_reset() changes nothing. So remove the call and the
-> macros.
+On 7/14/26 16:04, Kevin Brodsky wrote:
+> ptdesc_pmd_pts_init() initialises the pt_share_count ptdesc field.
+> That field is only used for hugetlb tracking purposes, so there is
+> no need to initialise it for kernel page tables. Skip the call for
+> kernel page tables, like pmd_ptlock_init().
 > 
-> No functional change.
+> From now on pagetable_*_ctor() and pagetable_dtor() do nothing for
+> kernel page tables.
 > 
-> Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 > ---
->  arch/arm64/include/asm/fixmap.h | 3 ---
->  arch/arm64/kernel/setup.c       | 2 --
->  2 files changed, 5 deletions(-)
+>  include/linux/mm.h | 9 ++++++---
+>  1 file changed, 6 insertions(+), 3 deletions(-)
 > 
-> diff --git a/arch/arm64/include/asm/fixmap.h b/arch/arm64/include/asm/fixmap.h
-> index 65555284446e..abd9800aabf7 100644
-> --- a/arch/arm64/include/asm/fixmap.h
-> +++ b/arch/arm64/include/asm/fixmap.h
-> @@ -110,9 +110,6 @@ void __init early_fixmap_init(void);
->  
->  #define __early_set_fixmap __set_fixmap
->  
-> -#define __late_set_fixmap __set_fixmap
-> -#define __late_clear_fixmap(idx) __set_fixmap((idx), 0, FIXMAP_PAGE_CLEAR)
-> -
->  extern void __set_fixmap(enum fixed_addresses idx, phys_addr_t phys, pgprot_t prot);
->  
->  #include <asm-generic/fixmap.h>
-> diff --git a/arch/arm64/kernel/setup.c b/arch/arm64/kernel/setup.c
-> index 23c05dc7a8f2..29c6100f0c50 100644
-> --- a/arch/arm64/kernel/setup.c
-> +++ b/arch/arm64/kernel/setup.c
-> @@ -347,8 +347,6 @@ void __init __no_sanitize_address setup_arch(char **cmdline_p)
->  
->  	request_standard_resources();
->  
-> -	early_ioremap_reset();
-> -
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 94f0fb1c662a..b217ccbed5a3 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -3905,9 +3905,12 @@ static inline spinlock_t *pmd_lock(struct mm_struct *mm, pmd_t *pmd)
+>  static inline bool pagetable_pmd_ctor(struct mm_struct *mm,
+>  				      struct ptdesc *ptdesc)
+>  {
+> -	if (!mm_is_kernel(mm) && !pmd_ptlock_init(ptdesc))
+> -		return false;
+> -	ptdesc_pmd_pts_init(ptdesc);
+> +	if (!mm_is_kernel(mm)) {
+> +		if (!pmd_ptlock_init(ptdesc))
+> +			return false;
+> +		ptdesc_pmd_pts_init(ptdesc);
+> +	}
+> +
 
-Acked-by: Will Deacon <will@kernel.org>
+I'd have said "the initialization is cheap, why bother", but we already do have
+the mm_is_kernel() check in place, so
 
-I'm assuming that Andrew will sweep up all three, but please holler if
-I should take this one via arm64 instead.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Will
+-- 
+Cheers,
+
+David
 
