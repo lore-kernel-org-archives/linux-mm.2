@@ -4,103 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB0B7C4451C
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 09:20:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B776CC44529
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 09:20:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BEA986B00AE; Tue, 21 Jul 2026 05:20:15 -0400 (EDT)
+	id B002D6B00AF; Tue, 21 Jul 2026 05:20:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC3036B00AF; Tue, 21 Jul 2026 05:20:15 -0400 (EDT)
+	id AB0716B00B1; Tue, 21 Jul 2026 05:20:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AFFEB6B00B0; Tue, 21 Jul 2026 05:20:15 -0400 (EDT)
+	id 979636B00B3; Tue, 21 Jul 2026 05:20:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 88A126B00AE
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 05:20:15 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0AD46A0AAC
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 09:20:15 +0000 (UTC)
-X-FDA: 85012237590.10.1AFA3E3
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com [209.85.128.70])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 787044000D
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 09:20:13 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="Rf/Qkx49";
-	spf=pass (imf11.hostedemail.com: domain of 3yzlfagUKCBY07H0D2AA270.yA8749GJ-886Hwy6.AD2@flex--elver.bounces.google.com designates 209.85.128.70 as permitted sender) smtp.mailfrom=3yzlfagUKCBY07H0D2AA270.yA8749GJ-886Hwy6.AD2@flex--elver.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 662B16B00AF
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 05:20:20 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C4AF040426
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 09:20:19 +0000 (UTC)
+X-FDA: 85012237758.12.CC3A9F5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 03980180003
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 09:20:17 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bw5OEAe2;
+	spf=pass (imf16.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784625618;
+	b=e4zYpHpSL5w17+8nGYj5p61Igv2O8M0MBW16JwKkQpErj4Bu/A5P/sJ7mfS4aX7h6GC73o
+	i6tWBfg8BSvSbsZHidfWescQ1usSOp/oEn2FlKsUhicYwpat8NaaBiZzu6q8+CAw9K4g5+
+	DMCYECL5qqBbGPdRQZBK1aCctTobF5M=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bw5OEAe2;
+	spf=pass (imf16.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784625613;
+	s=arc-20220608; t=1784625618;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=mNzxuyo7zY8DBbMGXllxmPQe9PiD3EoZmPKiPpb3nLo=;
-	b=hQbRhv1wuhZ884h5KEZu4nrB+KA99eyx9nX0HClNtMiW4RGjiQhddhV2JYHCTSmc1TaRFU
-	bUI8rY5sc3+0k06kyBRagHPPmZHN2e/hLFWIhVKIcpEmPmHRw1oBZ8HabdpSLMMgkV08SQ
-	/8DK6iHxsRB74pEHM/awajT7hc5+4aw=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="Rf/Qkx49";
-	spf=pass (imf11.hostedemail.com: domain of 3yzlfagUKCBY07H0D2AA270.yA8749GJ-886Hwy6.AD2@flex--elver.bounces.google.com designates 209.85.128.70 as permitted sender) smtp.mailfrom=3yzlfagUKCBY07H0D2AA270.yA8749GJ-886Hwy6.AD2@flex--elver.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784625613;
-	b=gf5guTH5Iw/e7SnoqnAH/NsluscCU5vrG0BRFBUI4/HFfPXyhlrn1IN7qXOSsiGehgMgGg
-	HawYfgBGMxQQwzBLsGuznQpMoC0q/5YLltnlCOkX1kbFQdOdA4Yd9NKM6gbMKtLBk3M3EJ
-	mso5G4Cv/ThwMysmoDE0uRUDt51N+hM=
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-49553d98911so21430615e9.0
-        for <linux-mm@kvack.org>; Tue, 21 Jul 2026 02:20:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784625612; x=1785230412; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=mNzxuyo7zY8DBbMGXllxmPQe9PiD3EoZmPKiPpb3nLo=;
-        b=Rf/Qkx49EkP1399W8Hb3o0reqAj7p+qrbzeb7Kv7ujtAMwi50AllTf5O2cSe+d6ocz
-         8hHr+1fVFvW6Dg1DXDStEbhghQq0NK1pPhKmiGAUecMzUoROpTlt+0lJyi/DJKDYeGku
-         5QCrcKZWAisyWZXjITle79/bSzsG7MDVOHb102rxyhwjBG/Do1l7gM8teeBxkcu8x4xN
-         ihplOz2O2VhgaLKCiU5D1jAP098nZuQrBGPzvrfJXBYFot6NTYaFElnKFds4y7paXBvx
-         QOxpHDyyzZ0g7g6G6YXhoVPyt4OmSIVdib7Iuc5M+MFS+ORzO2yUC1CkL4P7dA2q2/Zn
-         85IQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784625612; x=1785230412;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=mNzxuyo7zY8DBbMGXllxmPQe9PiD3EoZmPKiPpb3nLo=;
-        b=Hsig2A2lOzUNnf30KDDlRZ0tNsPfiNZvpqo6QlWUqI7RsLpV04IZpfBGuxfAxRpNFv
-         Fx1CmZPrkjos4xrCoEOflqO5QlOcGlzmAiu50h2dWkU2GB+VYJB5Xn8eRxOWUTGTAUP7
-         EPTM3ihMyMumwoWhv4zd0zkoNx0YkMS/u0RQJH3zny5NB6Qql7E1k6ZaymqEiQRImr5E
-         zCappfVs5SbJwkkdHNCX49t4BqR06Qz1dJ0Pc85lU1LzDwMlFIHRjAroC9NlZseyyXy5
-         RUwBeMFvMZzwYqIgdvlJ1/E4UHuuwQGAxMG5ky857BkHd8hx8p6YJNYI93qDezwGKJJ1
-         IHrg==
-X-Forwarded-Encrypted: i=1; AHgh+RqaS7nNz6DpHrFPYAFQHi7fC3kOSTa52AQAe/0EbDHgzdl9aogXGmWiPb7LZb0p9hjMxagT+NmL7Q==@kvack.org
-X-Gm-Message-State: AOJu0Yxf68NrPLTIQc71tGsYD5/9kH4poR1lKmp8QQ7OmLCPpUGaEl+e
-	+x1XfuSIVtXITSVBRRLRSrq1GLBg5Q6yWUS6RownyOS8XI6piillhXr3FWbm0pJrDhFn5FyHGF5
-	9qg==
-X-Received: from wmnu26.prod.google.com ([2002:a05:600c:441a:b0:495:4b05:6e35])
- (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:64c8:b0:495:6934:4146
- with SMTP id 5b1f17b1804b1-495693442d3mr558735e9.11.1784625611424; Tue, 21
- Jul 2026 02:20:11 -0700 (PDT)
-Date: Tue, 21 Jul 2026 11:19:21 +0200
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.229.g6434b31f56-goog
-Message-ID: <20260721092005.1986693-1-elver@google.com>
-Subject: [PATCH] slab: silence sparse warning with type-based partitioning
-From: Marco Elver <elver@google.com>
-To: elver@google.com, Vlastimil Babka <vbabka@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	kasan-dev@googlegroups.com, kernel test robot <lkp@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 787044000D
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=RXbi65g0B2x3zSEY3/jiZ4q6NSDtzWd4WeQahT18Nm8=;
+	b=2nREK7C45hXs1BcbctEdj55NOQFwnaj2V4NG6/5VazzWfEGIyIE20N9RYc5NoZ9B/4/S53
+	LQvqEqdbUAmthtqAgO0Xl0QQsfT0ELV3bvFuGO1qIrH0XijRsHnheCpyyz9FmMKXnD/FXq
+	ABBIdg4dtA189AiJAvzn4+/hpHMZbdw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 319BF43A37;
+	Tue, 21 Jul 2026 09:20:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A57911F00A3D;
+	Tue, 21 Jul 2026 09:20:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784625617;
+	bh=RXbi65g0B2x3zSEY3/jiZ4q6NSDtzWd4WeQahT18Nm8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=bw5OEAe2QR/KdmtZ71poTClbJsrEiBVJ/goxjbCH9efpvu50jRYD8zq8hbUOwOYpA
+	 a3To6pkAdT8nhq3oTSkBuChpYOURbkETb6xN1sXW+hUy8Oqrfya5K5tdwkc5p4x4DY
+	 7C6Zk4NAUQJLSaI7MuvFQrK79x1JkZG5wk7soKjmyS/D6J6zaHfMpCDvCOEoignLiR
+	 x7ivuy/MsauqvrCuiCF1oGpDXoe/dOch98Ul8FuxUR3ebVEzEXjopke5FYmLw3jV/Z
+	 A4EFiXkvrqGM37n+66VmBl8OLX90+n8hzRaNfVAFps/cSf6U0Yxw/hv+2XklT1q12G
+	 veSMpIW1blnNg==
+Message-ID: <96468090-6b31-4f78-a813-c5729b53aa3d@kernel.org>
+Date: Tue, 21 Jul 2026 11:20:12 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 01/13] mm/slab: skip kfence objects in allocation
+ profiling
+Content-Language: en-US
+To: Harry Yoo <harry@kernel.org>, Suren Baghdasaryan <surenb@google.com>
+Cc: Hao Li <hao.li@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter
+ <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+References: <20260720-b4-objext_split-v2-0-2fa7c6f60dbe@kernel.org>
+ <20260720-b4-objext_split-v2-1-2fa7c6f60dbe@kernel.org>
+ <da6ca31c-f97c-4cd1-9380-4fe50d797a7d@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <da6ca31c-f97c-4cd1-9380-4fe50d797a7d@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: oi43ezdedst5jk6fz57qkf5b9odrjmhw
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 03980180003
 X-Rspam-User: 
-X-Stat-Signature: wkg916jqfgqbxpxk11jxa5y5meffewej
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1784625613-91940
-X-HE-Meta: U2FsdGVkX19R1w/I812rqcucOqbOVYwXDuEKEa2/xd1e0enV+4/51fzW0GlAtc019pzWA12Prk90W4qGCCno3Ut1j071O3syb5s2ErqxHpTXDc98gNZqmSTaVZoZJcIrQDWGejoG+m8SU/lirQXZNfIbGSwzJ1P89QhWsc+kYO//RMfcLHigYVvxQQhfAwsFWPIOHgBwYCJlvTjociX2LiuekPq3iWjBZsXPivmcdGb0f/9igeQUjvXa8Q5C26fidzMWO6zRqiAMJM1K1D0cPLoq8Ux5UU4RbueLZHy7uVffu5nW3rmNFI6jAqhWiSaUM/iC3p68yTHCen+kdKvDg6mxNyWCqYSxayg5nRz1tGUxrGDbsaqiIGmiIZrCa2DUs8+8eNCEPXPHWVbzrVSsbJ882msjiL0EboWorzHF9roKukV8+cTeq0DLbIAtv4bp78WxLNHzjX/V7mJgn/JqF6L2VR4JqLrWB8F3L90S0Xxge5/Wy6TWuSqeV5SXD08+Lpeuky3rBYufisw8x+q1x3W3MospBHLCUnu96vf2iiZqdLfiKSipNDjtRqqmQfoIy6OSYUKbrHRk0lf/SsojkRTFlnstPaNTrp967pKSxHO/HQKpIKBGBzrkTwlerQKxHHr9dvWsoMp6Mz2bww/7G8QYach2XDqV22JWIoBsU70D2GFPMVcwzYzda9/ZfwLyasBwuqsFVb+T3O2nWgLnVk7+A8q+8AlqMRmv8r0+Z3G0+V8gYpAdeqzOg3giyIflZOYwWn7JAz9IGI9idSlYbDjBifGF6t8H1OIPZB5h6uHWVFGIUSJqFGKE0tXvl8FzUCaqrVBLPt6x0niq++KM1kEH7cPt2uq7UAvXPd6k+r4bp2DhbN6ooWwY+7GELdwe1i6EZ/Js0AIXzk+6Ac1zK0cr3xwGbT5Ty2H5S3Qf/PiDfFllDoVygQamis1eeyo6tj5B2rwZwMzNtkJyEL0
- k9ZszF3C
- jA4HdOrpMSRm2NuBweZQQwnBOLm3EcLRbQH2zyEgZ4Vqky3gT1cR01UQ2SNblYiezKI6hpTX8GwbpGoaTpaslWEsDGNrP+6w1FM4ya6ukOvkoaaONrlZM3xjGKkm9BEwzEn/SgicPsU6t+c1VKfvKVLJFggBOgifkNXIzdhWiJzvsEtH12YN+JlOHFZk3995XDZf2ZzEhnSDHEZG36PCFzoiA8BYechSXjt2ghGndLW5uF4W/mGQXOLwlsLE1mzx5pG4zol8PQVCX2t264rseHfcSnCCE/y5BI7nB5LqAe80bsBI3+Wz3OKvniZvpBseExJjFM66JsdaKyZggLSy/RFNeg7ADY2qoVCgtZ1WmxOzT0Bc7I5zLw5goAOUVbIQtCm+lTn7R/mgT8dxElOdF8KImw8VEcd6p6Ub+DfdNYJeWNUtL8EioGoKcL6DVoa5USbmhzdqz6KgkmnwM0mZp73Zs4a0fckkRW+ghBMim5vwfkxpwd8YjutQ1Q9EsbkoYi9dxIBTbfR5mbZ42exPbYV68oHnIuB+gicdUW0Uf9T3VQWcTFSvxlZdZBX18LAT0k1nGCj5nM8Sppl/YMn0pRNhafqiL2EnkRgWlBpww29a3jts=
+X-HE-Tag: 1784625617-59315
+X-HE-Meta: U2FsdGVkX19cA5x1SMK26ZVyNcQigOIdLE67Kf2QsEcnaovkAUpKDvjxLcOFYwhPdvn5+ZvMSZW1WCvarg1U+4mGT8mC6NTWX9sj9DP5x7AqAJ48hR3LKvwB/szVQa/iMsc104SyxFGNtkhpUiahPiRfmvdUepQElMXTPqlL1a6J47zal8CnnRdNTYoFYOMkIVgSExjNIR7oKzmgTfTLlaZnIqK09bcCnCxXw4u06oSQnUjLA3B1xwjq61YexAxCw/RGHBzTEkVSK9/6oQ+k9qG2gOEu8ekeldh0HIvOMHhtfCZ3qKZzpvfM1s0nna+1n35iSq7DCUcsq1MpBcxL1WmqiZqSg5cR0yvAzQbAFi3s/KxmMs9fZubOkpCbAJ/QRXCNimuBS4TqgmRBDNyzchQj5K88+tN7xHkHZJGKOgE68vCoJY7rhA2OzeF+xjR5iIngkBIr7Wey10OXShMr+j+JrTlm41rKkO3oqg5s2sjxIxfiMY8r9NXrLkUI7lY0abrzpJM5i7PIWKOqpdzLDFLU6GMXDkKSzbzD38/VLUTSUhJVUgVYfao7QaKtxi1CBumpvTxPd3xs4C6BnDKkFZk62FdkdtIC8ec3bN353C4Vk9/t+smbCEhg87Ron1bbK2Ls1rUpuvSyRKyrb8yGq/UdyHrfKOS3TmSUXaHnGPohDHymKB4cInIvdq8//PCM9lrJvyqiFARcgYSireIQbgb8Pt4kSVtymKZQhajToWyfUUtbOydH2UK1tfJumzJvW5dsm8f+muyMrzOj42aKcKbO5QISVKu8qc/y0Sz0a7rMv84OFQT6PONy65LihW2gSQpzN7YsxEPmkjn4t33QCaMddamm3R1zoFJEB+vlfYuMgazRBA5mf5M75rLp+IOW28sT3rdOAr4DgNjncqVtvnVr/fzTqTmfPILcpxxMY38gGTSw8Mk79M0wOAfHnFXkhtUxg4QA7jUCMgcdp/R
+ VjTXVoQC
+ 59JQlS1mg9o7W4SHLZ/z98g3Ov1f2Yd7tyR0mgPW401vYAxx7eYZQ6BWUTxfVcJ5EJ73b2VWIsoYNd1o6N0c6NjInWlL4ioaw5gAtFYzvH87mdshDjqc0uDp42uU2fTiEKatbob3EP9bL696zsp6fqlhQ186sdX2GqcyEtolebdz+lWsUfLhpR3zFIxutKhQLVf+06TC5sVHNm+x8kstulGOm/wy5QtgwqBKmBiRqVx3fa2X2OLlDCPz0UjrFQaRRzrOmwPhUbakgiIP7fiKga6rCNsH5P/NPbEGc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,40 +139,122 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Sparse does not know __builtin_infer_alloc_token() and complains:
+On 7/21/26 07:43, Harry Yoo wrote:
+> On 7/20/26 11:16 PM, Vlastimil Babka (SUSE) wrote:
+>> struct kfence_metadata only contains struct slabobj_ext with
+>> CONFIG_MEMCG, which is then used for the "fake" slab's obj_exts field.
+>> If CONFIG_MEMCG is enabled, the struct can also end up used for memory
+>> allocation profiling. If CONFIG_MEMCG is disabled but profiling is
+>> enabled, it will end up allocating its obj_exts via
+>> prepare_slab_obj_exts_hook() and assigning them to the fake struct slab.
+>> These will probably then never be freed.
+>> 
+>> So things sorta work, but not always in the intended and optimal way.
+>> The upcoming changes to slabobj_ext layout would additionally need a
+>> proper refactoring to keep working.
+>> 
+>> However, there's little benefit in accounting KFENCE objects. KFENCE
+>> allocations are rare and there can be only CONFIG_KFENCE_NUM_OBJECTS
+>> (default to 255) outstanding ones at any time. For any callsite
+>> prominent enough in the memory allocation profiling stats, allocations
+>> served from KFENCE will be lost in the noise.
+> 
+> For a similar reason I wonder if we can drop obj_exts completely.
 
-	sparse: sparse: undefined identifier '__builtin_infer_alloc_token'
+To make it clear, you mean kfence objects wouldn't have objcg accounting and
+would essentially behave as if obj_exts for them could not be allocated.
 
-Fix it by using a dummy variant of __kmalloc_token() if __CHECKER__ is
-defined.
+> The idea that kfence objects might have different slabobj_ext layout
+> isn't really worth the extra complexity if we have very limited amount
+> of kfence objects. The amount of objects that escape memcg accounting
+> will be quite limited.
 
-Fixes: feb662d9168b ("slab: support for compiler-assisted type-based slab cache partitioning")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202607110912.nZTqfCrH-lkp@intel.com/
-Signed-off-by: Marco Elver <elver@google.com>
----
- include/linux/slab.h | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+Indeed. I think the main point wasn't to have everything accounted, but to
+avoid specially cased kfence paths.
 
-diff --git a/include/linux/slab.h b/include/linux/slab.h
-index 51f03f18c9a7..7ffe152ce483 100644
---- a/include/linux/slab.h
-+++ b/include/linux/slab.h
-@@ -505,8 +505,12 @@ typedef struct { unsigned long v; } kmalloc_token_t;
- extern unsigned long random_kmalloc_seed;
- #define __kmalloc_token(...) ((kmalloc_token_t){ .v = _CODE_LOCATION_ })
- #elif defined(CONFIG_KMALLOC_PARTITION_TYPED)
-+#ifdef __CHECKER__
-+#define __kmalloc_token(...) ((kmalloc_token_t){ .v = 0 })
-+#else /* !__CHECKER__ */
- #define __kmalloc_token(...) ((kmalloc_token_t){ .v = __builtin_infer_alloc_token(__VA_ARGS__) })
--#endif
-+#endif /* __CHECKER__ */
-+#endif /* CONFIG_KMALLOC_PARTITION_TYPED */
- #define DECL_TOKEN_PARAM(_token)	, kmalloc_token_t (_token)
- #define _PASS_TOKEN_PARAM(_token)	, (_token)
- #define PASS_TOKEN_PARAM(_token)	(_token)
--- 
-2.55.0.229.g6434b31f56-goog
+But I think this would probably just require adding is_kfence checks to
+objext allocation paths to fail them, so that's manageable. Should perhaps
+allow moving some of the checks added by this patch to more generic shared
+places.
+
+> Any thoughts from KFENCE & MEMCG folks?
+> 
+>> Thus let's not complicate things and simply stop accounting KFENCE
+>> objects in allocation profiling and skip them in the related slab hooks.
+>> 
+>> We also need to skip kfence objects in mark_obj_codetag_empty() in case
+>> a sheaf is allocated from kfence, per earlier sashiko review.
+>> 
+>> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+>> ---
+>>  Documentation/mm/allocation-profiling.rst |  7 +++++++
+>>  mm/slub.c                                 | 11 +++++++++++
+>>  2 files changed, 18 insertions(+)
+>> 
+>> diff --git a/Documentation/mm/allocation-profiling.rst b/Documentation/mm/allocation-profiling.rst
+>> index 5389d241176a..d02eb54ee8f2 100644
+>> --- a/Documentation/mm/allocation-profiling.rst
+>> +++ b/Documentation/mm/allocation-profiling.rst
+>> @@ -112,3 +112,10 @@ break it out by rhashtable type.
+>>  
+>>  - Then, use the following form for your allocations:
+>>    alloc_hooks_tag(ht->your_saved_tag, kmalloc_noprof(...))
+>> +
+>> +Notes
+>> +=====
+>> +
+>> +- When a slab object is allocated from KFENCE, its accounting is skipped.
+>> +  KFENCE allocations are rare and limited to a small number, so this omission
+>> +  is negligible.
+>> diff --git a/mm/slub.c b/mm/slub.c
+>> index 0337e60db5ac..76acb78f2655 100644
+>> --- a/mm/slub.c
+>> +++ b/mm/slub.c
+>> @@ -2076,6 +2076,11 @@ static inline void mark_obj_codetag_empty(const void *obj)
+>>  		struct slabobj_ext *ext = slab_obj_ext(obj_slab,
+>>  						       slab_exts, offs);
+>>  
+>> +		if (is_kfence_address(obj)) {
+>> +			put_slab_obj_exts(slab_exts);
+>> +			return;
+>> +		}
+> 
+> I think we should check this before get_slab_obj_exts()?
+> 
+> Checking if the object is from kfence after slab_obj_ext_codetag_ref()
+> looks bit weird.
+
+Hm indeed.
+
+> Otherwise LGTM.
+
+Thanks!
+
+>> +
+>>  		if (unlikely(is_codetag_empty(&ext->ref))) {
+>>  			put_slab_obj_exts(slab_exts);
+>>  			return;
+>> @@ -2352,6 +2357,9 @@ __alloc_tagging_slab_alloc_hook(struct kmem_cache *s, void *object, gfp_t flags,
+>>  	if (alloc_flags & SLAB_ALLOC_NO_RECURSE)
+>>  		return;
+>>  
+>> +	if (is_kfence_address(object))
+>> +		return;
+>> +
+>>  	slab = virt_to_slab(object);
+>>  	obj_exts = prepare_slab_obj_exts_hook(s, slab, flags, alloc_flags, object);
+>>  	/*
+>> @@ -2399,6 +2407,9 @@ __alloc_tagging_slab_free_hook(struct kmem_cache *s, struct slab *slab, void **p
+>>  	for (i = 0; i < objects; i++) {
+>>  		unsigned int off = obj_to_index(s, slab, p[i]);
+>>  
+>> +		if (is_kfence_address(p[i]))
+>> +			continue;
+>> +
+>>  		alloc_tag_sub(&slab_obj_ext(slab, obj_exts, off)->ref, s->size);
+>>  	}
+>>  	put_slab_obj_exts(obj_exts);
+>> 
+> 
 
 
