@@ -4,85 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23388C4452B
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 20:56:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1A7EC4452B
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 21:12:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D121D6B007B; Tue, 21 Jul 2026 16:56:18 -0400 (EDT)
+	id 6530C6B007B; Tue, 21 Jul 2026 17:12:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC3446B008A; Tue, 21 Jul 2026 16:56:18 -0400 (EDT)
+	id 603536B008A; Tue, 21 Jul 2026 17:12:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BDC336B008C; Tue, 21 Jul 2026 16:56:18 -0400 (EDT)
+	id 51FC96B008C; Tue, 21 Jul 2026 17:12:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 909076B007B
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 16:56:18 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 12AAA40174
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 20:56:18 +0000 (UTC)
-X-FDA: 85013991636.14.97C250C
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2AF9E6B007B
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 17:12:56 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A1D19A02BE
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 21:12:55 +0000 (UTC)
+X-FDA: 85014033510.29.FBBBF04
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 526A6C0004
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 20:56:16 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=WDdidS21;
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	by imf02.hostedemail.com (Postfix) with ESMTP id CC65B80014
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 21:12:53 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=moTgEIVr;
+	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784667376;
+	s=arc-20220608; t=1784668373;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=effgOexwWcG/ga7iXqcUg9L0kW3t4xU7toK0kCCOMRs=;
-	b=PslYJRZ0YIiOcL4RUuwBL7VmKzfsocFjtAwGyysK3Yo9bNcAB6hnJ5uiEpfm1css223zwo
-	kxplmcW+za9i6S3lp+SY62AiZ4yBlAkLIHi0Gmy26E95RiuXmQw0JBeAKhkfD3tzPsivBJ
-	0gauKGL32w1aIFHnP5Z36Jc7YJ6X8Ek=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784667376;
-	b=HulKo2NNa9ZXSEy6BchbP4gjikW2N4Gas+5ABuo6UYKEjjBFtMXSdsw419eZsDiyjmigar
-	BLpj8WLsTjD5Evw9/jFQ45690eGJNhY2HU9edyIz/I3NpK+gH1lRiPBU87WypnZBkSGS5k
-	orKoWeqK1gasF23BzvvdGenPAKPcIfQ=
+	bh=50DG1DUhzmetZRiBRhuUiP6VEDW+D6fHhN+LDrz6EsU=;
+	b=2PU1eHiWbgarwa1lIBzp4oWFCIzNEmjL7zchhRR23eiGLnL101iAt8OmHHUHNYmPXUbcoD
+	fkpozUe8yt8g4/KbHDT2RKLJC0SwRlkNZhOtRbXL1rPNnQnADkDnRfKUgIL5Id0Ap1oX2n
+	N5pFbm7QzKcPFEWu3CIItv+oLqyUsRY=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=WDdidS21;
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=moTgEIVr;
+	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784668374;
+	b=Q0mU4clsHxnOfpIvvaFwl9PDwjPOuBCqibmX+LHkDlKmJiZtswtwSWUzBTX0x37K8uvRct
+	jM4l0MYP2UAstsAQgGd/5cnstYoTsn+xT4u52gnAZjFcVNDTbbXI3GZds1sbLknzzU/2Ws
+	rO1kCg+20D4IbJjZuszFlNeRbPgo/rY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0F30C42A62;
-	Tue, 21 Jul 2026 20:56:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCD2F1F000E9;
-	Tue, 21 Jul 2026 20:56:14 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A5D8543D69;
+	Tue, 21 Jul 2026 21:12:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E3821F00A3A;
+	Tue, 21 Jul 2026 21:12:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1784667374;
-	bh=effgOexwWcG/ga7iXqcUg9L0kW3t4xU7toK0kCCOMRs=;
+	d=linux-foundation.org; s=korg; t=1784668372;
+	bh=50DG1DUhzmetZRiBRhuUiP6VEDW+D6fHhN+LDrz6EsU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=WDdidS21FUy7qaVnd9wBHMLIAIRyeZiAMpxlV5b9CapOu25JIGj29Vqa9m5EyUae/
-	 1/Z4L10d3urWhnPHK0dR28hFfNMz8MNU75HCo80UA9bheT1aLCNzcdlevs6fx0NkJ/
-	 PX2/6yhfPDTe7p4kK0/hhBGi0sKmKjW5LUom/gCg=
-Date: Tue, 21 Jul 2026 13:56:14 -0700
+	b=moTgEIVrWpADWURju9wqyqLD8qgacfuZLrzgUPW2PUfwS84q38YHdGjSYfwxzRrKL
+	 8viY9+VAA1xGowWbdZq4mzrlUNPiG+pPM6RLC59nV4shbJh4Dqv+knroeCi5gnih/m
+	 6Ul2oT7RKtL7yYe/SktlIjNlvcVyqaHlZuk09BuM=
+Date: Tue, 21 Jul 2026 14:12:51 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
 To: Ren Wei <enjou1224z@gmail.com>
-Cc: linux-mm@kvack.org, pasha.tatashin@soleen.com, vega@nebusec.ai,
- roxy520tt@gmail.com
-Subject: Re: [PATCH v2 1/1] mm/page_table_check: skip zero pages
-Message-Id: <20260721135614.7aa2d8d9a8a732a66ba623c3@linux-foundation.org>
-In-Reply-To: <1f8848512d2e3ded944f8d595c29faee8fdaeab0.1784645969.git.roxy520tt@gmail.com>
-References: <cover.1784645969.git.roxy520tt@gmail.com>
-	<1f8848512d2e3ded944f8d595c29faee8fdaeab0.1784645969.git.roxy520tt@gmail.com>
+Cc: linux-mm@kvack.org, david@kernel.org, ljs@kernel.org,
+ liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, notasas@gmail.com, vega@nebusec.ai, rakukuip@gmail.com
+Subject: Re: [PATCH 1/1] mm: fix out-of-bounds access and race in
+ generic_access_phys
+Message-Id: <20260721141251.ea1eafd7b9a3e0c9d4d36c53@linux-foundation.org>
+In-Reply-To: <f618e2f57ad0086a8d7a95cb17dcf5a1f0cf0e45.1784428532.git.rakukuip@gmail.com>
+References: <cover.1784428532.git.rakukuip@gmail.com>
+	<f618e2f57ad0086a8d7a95cb17dcf5a1f0cf0e45.1784428532.git.rakukuip@gmail.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 526A6C0004
-X-Stat-Signature: bgmpyq7jizd95uoebnbu56hz656bcqyi
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1784667376-116809
-X-HE-Meta: U2FsdGVkX19Rww6vOQ6q4WlL/h+UhWZJkFwXxuvoYaGpTAfV8XX3SGpOtiwnPglG/SCpblr5952JGM9bknsqkDCpSW0XBn36WwqwrfrbQB1d5/2X8PDUbFY60Ccb5CWnnQlfBNyLfw6JmyfGIBb9kD0l8fZ15tnAVCOryyvIvmJvY7Q7bj5Y9TRNU9DgIL1ufQ/rr8f6d3QdBaawctVjhDSRz+tUE3pz8I2vqdpWYdVz8UZN0vnIiFNjfA6A+L1mykSqV7VYNsCILlr4c0vd7ViYimPnWtY+P/RRBSgBtiaUQGmmd4R4YzBabZLaI4kA6DFo5EpgBfDYQllpHmcbxKvvsiI2p9TpA6o/bzZrsTqq6WmreYCnPox03Kn36WANYaqhnwozjDQkxZDRuk2I5zS6VT2qLZobSHi7KXssp4TgEDA989kEZEzHkgeQU+BD2wlouI0MzivbYeT1Qb+JHWProUepOBWXHdejdIU481fDjAWBMjqBcjTV36mnsJPZTF8mgfEatHZffCfaQoSNo+8EITO+oBRWbntm4la6BRjHsRKLbi0hTutpg+mzTUS5PzFLlWVxQhGiapnDiHcMx/RsjRcEFl+L6LCY4dYQr6uGCbVPNFxSmP4nQ4s8GpLvucQgU/gK6WUtvbOMk18BsvHKdhwPDEfVvqoDI5hhX873KUbJOHOuuhoCbwS9s72cb9TsXcmP8PpBmhgiSszz87KSLKuDMkodiromT9cKCPs1DZp8uLZEElYV2zT8HugDn/SJBX8x0a+9v5FO2ruwZnsHkj/xt+qCJ13QzxPlII/oVz0S10GYQX1B5le9i3k2e9LUyWLLp9EKiqm+f8XBPLYfGDbNkC5aSq09mpnjQ4tBA0fSiNgdtnXRQP8XtFYGpgRYx4QE2dra/n8mVNfJOXM0c9a/TPUFte9BCHERIOCDsEM/Ik2UOh7SQ2tFETLR1WsSEIzTjHBy15w2lh7
- yUTU/+sW
- 3rZt/thCefPXXE4JNvyRAxnXLP1KYlWtYejK086kWGVr1yE82/UQhBoIR2wBTs0RrThk7c8tZzJVM92VevkJLaLM1SYKMm6RloBaHA/EVUmWQIdGzn7OKCCqUXOHqbKiGmEblQ5HWp4UFsTwVuEzJAr3NbOLdot4aRxDHnCCA273akwEOjJ7tG8euIDup/JHAbM6duxdwBwkF0YDqHIGMetVdm5Rn3sIVeeYIK9E3ImtJnQR3Zr+V5/XBqOmf/iksQLgE1GksD0C16DtzfCGoqiypMv4b2XlEWprecjW13LvcyO5wIM+twzmddSpgtOAWJRmulsgQjGf4htkKbt/7OHmonxhmQoWr813upehYB9NGzD2VEzB/uwXhRgRRh5FZ/Q++
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: CC65B80014
+X-Stat-Signature: 7syjsxhrt64wgzrwob7hesgnc6un3b89
+X-HE-Tag: 1784668373-150326
+X-HE-Meta: U2FsdGVkX1/rZYCfI8kUMhvJGIUUggdtxOpNgtt+Fp2zV/M6NjRlJELvO8fYqvtaVE8f+CSEmlwutbHVzjuEfTWtX0LCM7zntCv6hxhH1hy6CFEE4UgExRD+lAPXQuqqrXr6KExqplLrg7aiSFqUYE36dQf0QCfEORZTEvNgN1pjbEO2t2j48zcRMIlySNUu5UIf8xTIWExAbopWX+HS5JAQuJHM0SLl8O3Pdvnv6Z6zt/p8kIrPJjqYqb08xMfWJJlU9kS0N4wKM3nWmQbZA2QlCArL6Eq861G2UGSQ7p26FI2oMn76oWnUlPJqYBFxvNcs8uPCUus/Mmocp+WioPLtk0hslO0Ae8fflh/CyP3xN9LuohcO8jEa0/JrHaznKObh6pObcs1hZvdLOHD12BwdadJ4Rump+BFoyhoBxpo+84JmNx7v7/ofr7n2u+84sjRv/aQCusFatTTGl+tHlKanVngN0oiJm7t3Sf1Zn7H/EOzVH1e9i/NynfSQfGhD7E6YfFT/ZV5d0ysjYwDgoI5CWGIMHrBDu6odGLGtcjt3B63YUAneF2N+ILu0PQE6E7PmXrpT48I/M2SkCVOGlRuRebxD0aZOPrX5vXHwnjJuxzudKT63B2E5ANgCqajel5PLozecqczNyirkPnn6q48o3IRLlDu0jwQ5KxpSLs1oiwRVKfjG2Woery/OUR/lp8eDuTvsWpK6bTz87Eoa3lKnLZbxepUgDyXLyDUyc8V1k5iisq9jWXE+l4pNdywOzJkIrsy4FMmRHY/C4eHHRzaWN2SGWnnmfbFnVIoRZMydTTlCl0qFWr+82yw3KagRS8tPva5dDm6pgWx9mbbC4GF5PjL9gmGLMa42A/qF2KxCeM5vcc1TuNNUAXBJqBXSG6DjM/cGBvJ1NS/8mGs81TGiH6Ms0GqN1id0rtHyRnrW92Us9+Sn9TvZXDQ+YalCMFtRNruN0eDwWUOjL85
+ Mytpccep
+ r7BYNjFa0zEhj2NFYKGL/Yc7+Oo+hQWWOl6GJ+zlwQoVGLKLSBFn1BklcR41/vncwXTPbEm8RVdDDnUsiFotU2KK61XTlx11lO2TW8ba3+QriWk6p9ziAzj6zRNBcNZi/gLbXzu43eP0Qsb0xVQh7T6btjRAhLJM41V48FSE7VSY/I5+9swwDAFpJGZ7DTsADILicbxXk/jtpvjRYNvC0vJ94fg7ODJ3dJZycO4twZuHiOSzQ+Cl7sPCMBangvOcJ4YpaUmx0s7H5y5AXu/PIHJWIoO/CHjrFp0vn1xY7ejv63RWSrpv0zdxjcBdFYaazRG9guGBdoPLfPwYV0QM4Mj8f4AFxxcc0IVji0pXgTAxXUXmIBmiQFHTyQZXrRcJsNym4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,36 +92,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 21 Jul 2026 23:56:38 +0800 Ren Wei <enjou1224z@gmail.com> wrote:
+On Tue, 21 Jul 2026 22:26:04 +0800 Ren Wei <enjou1224z@gmail.com> wrote:
 
-> From: Zhiling Zou <roxy520tt@gmail.com>
+> From: Luxiao Xu <rakukuip@gmail.com>
 > 
-> page_table_check_set() accounts pages by whether they are PageAnon().
-> The shared zero page is a special page, not an ordinary file-backed
-> page. Read faults on private anonymous mappings can install many
-> read-only PTEs that point at the zero page, but page_table_check
-> currently accounts them in file_map_count.
+> generic_access_phys() improperly validates the memory access range. It
+> only validates the start address using follow_pfnmap_start() and then
+> uses ioremap_prot() to map the entire requested length. This fails to
+> verify if the access range stays within the VMA boundaries or if it
+> crosses into adjacent physical/MMIO mappings, allowing out-of-bounds
+> read or write access.
 > 
-> That lets an unprivileged process populate enough zero-page mappings to
-> overflow file_map_count and trip the BUG_ON() in page_table_check_set().
+> Furthermore, the previous implementation failed to handle partial
+> progress semantics required by __access_remote_vm() and lacked
+> necessary concurrency checks (retry logic) to prevent the use of
+> stale mappings after releasing the PFNMAP lock.
+> 
+> Fix this by:
+> - Processing memory access in page-sized chunks, ensuring every page
+>   is validated within its VMA boundaries.
+> - Introducing a retry mechanism to re-validate the PFN/protection
+>   after mapping, ensuring safety against concurrent page table
+>   modifications.
+> - Returning the total number of bytes successfully copied to satisfy
+>   the partial progress semantics of the access_process_vm
+>   infrastructure.
 
-Yeah, we don't want that.
+Thanks.
 
-> Skip zero pages in page_table_check accounting. They do not need the
-> anonymous/file mapping conflict checks that page_table_check performs for
-> ordinary pages, and this keeps the existing counter size and page_ext
-> layout unchanged.
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -6966,50 +6966,61 @@ EXPORT_SYMBOL_GPL(follow_pfnmap_end);
+>
+> ...
+>
+> +		if ((pgprot_val(prot) != pgprot_val(args.pgprot)) ||
+> +		    (phys_addr != (args.pfn << PAGE_SHIFT)) ||
 
-AI review:
+AI review
+(https://sashiko.dev/#/patchset/f618e2f57ad0086a8d7a95cb17dcf5a1f0cf0e45.1784428532.git.rakukuip@gmail.com)
+indicates that this might be missing a (resource_size_t) cast.
 
-	https://sashiko.dev/#/patchset/1f8848512d2e3ded944f8d595c29faee8fdaeab0.1784645969.git.roxy520tt@gmail.com
-
-claims that we're missing a barrier which, in the unlikely case, can
-result in us "mapping the system-wide huge zero folio as writable".  We
-don't want that either.
-
-I'm not sure why this is described as a pre-existing issue, as it's
-this change which adds the is_huge_zero_pfn() check.
-
+> +		    (writable != args.writable)) {
+> +			follow_pfnmap_end(&args);
+> +			iounmap(maddr);
+> +			goto retry;
+> +		}
 
 
