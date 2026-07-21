@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03808C44529
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 14:14:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 140E9C44529
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 14:14:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2EAC36B0093; Tue, 21 Jul 2026 10:14:37 -0400 (EDT)
+	id 5A9266B0099; Tue, 21 Jul 2026 10:14:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 29A8D6B0098; Tue, 21 Jul 2026 10:14:37 -0400 (EDT)
+	id 580876B009B; Tue, 21 Jul 2026 10:14:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B0BB6B0099; Tue, 21 Jul 2026 10:14:37 -0400 (EDT)
+	id 496656B009D; Tue, 21 Jul 2026 10:14:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D5E8C6B0093
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 10:14:36 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 603A240186
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 14:14:36 +0000 (UTC)
-X-FDA: 85012979352.09.6880E80
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 9B2841C0004
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 14:14:34 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k3rXtkLV;
-	spf=pass (imf18.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784643274;
-	b=6/pdLV4q9ofp2WwoUTY/DP8/UAUJqaWps3a3PBkElfL2XMUVmjrOHaix8u3vigTnVFTU3b
-	ynxZinzLMMktDylQsdDjKsPyOXVm4dP2Ki86ate2Qmt/Yf8SiQgQyzTFcTueDqAhqSIyLc
-	JB8YAtrGoTL5QOTku0pXbtQqEGFXmnU=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k3rXtkLV;
-	spf=pass (imf18.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 146546B0099
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 10:14:40 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9BB1A1A01A9
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 14:14:39 +0000 (UTC)
+X-FDA: 85012979478.12.EC3D6A6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id B9E454000B
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 14:14:37 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a218HhdR;
+	spf=pass (imf17.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784643274;
+	s=arc-20220608; t=1784643277;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IySjUe+fekqEUyus3KN/ReQzmr0jzl1UX4v+5RczmKM=;
-	b=v+pX/kt+ZP5Ch5R4E47VvoAWLxqFl/2GoU3pHLsFTBReNQqT8z9djhPUo9GiYp7SzKV1Ec
-	EWw9Q7RaPqflw9tVX3EV5PGN/VxI458HHsNdRTwBRCsazHmv5rHkhNKMNECvXD6kAOFp4q
-	zVKbVFfWpkRB3rFGtkY8GLcG8kcuUvc=
+	bh=Jh0kCK0JumH3aozuqcy0Oaz/v3fXNMaeUd/Qe0rfQyk=;
+	b=N+rHvJbtZO8HSBrT2S5fUNyzuvjG8vB7yLxD0FgMVJkG/vw4sUnR075yL9UMJJNqhcbdO0
+	fX8XODNaVXtfnbv0Oz6qQI5I3YU1g4XEBPSODAxjxGwgWx1di2XTfspbdHH+KWC8KGf4Fl
+	YTW4WM2wEgwWZHbosBY3pJ1Pt7trwQg=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784643277;
+	b=yvwro4OOA7O4D+xKxEzvSRRsAD0LcwNaO8XRLpm64q/cZxjdh9F/sAUOYLFRXTgDoHIR7g
+	7uxgvU81XDRJlzMp1TKFZsC+f5vGeHTJao5hxu0/zN4L3EG4Kc0usznKLt1GlRKe2SSmvS
+	XWpkqbziLNLhT2x15Wv+akBAHXCvmQA=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a218HhdR;
+	spf=pass (imf17.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2AED7600DA;
+	by sea.source.kernel.org (Postfix) with ESMTP id 105EB4168A;
+	Tue, 21 Jul 2026 14:14:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 544651F000E9;
 	Tue, 21 Jul 2026 14:14:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41B621F00A3D;
-	Tue, 21 Jul 2026 14:14:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784643273;
-	bh=IySjUe+fekqEUyus3KN/ReQzmr0jzl1UX4v+5RczmKM=;
+	s=k20260515; t=1784643276;
+	bh=Jh0kCK0JumH3aozuqcy0Oaz/v3fXNMaeUd/Qe0rfQyk=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=k3rXtkLVUYH+tX0EsEcvwjEF14GVctfc1m6YTs77MSVGa0JF/YACJkHEXM83v8MGj
-	 o1M3j8M01rePmmJmj0UjyN0Aq57Lp9BLSjV4DAL2WkaENCsPiPoSiBYjdPJPINXAWc
-	 AuaPPcZdgj0m0p2qenKaYdrS5NkvxX4SVZFrJZU7XLnmUVrUZ6o648UYUUZJLbuUWf
-	 d4s2I6QJAwN3pmwpbHr/eY23QtRg3Lh7Wr76uJ6YA2QG9aNCKvTpLIvh3DHaj3nYsi
-	 oDjZrzf4S57TvlV7ascEoskjwcGqhNKYKWRHEHZY85xBIbrUN2JRmmqqE+1vK3rIUP
-	 9QLuMGfuNEG3w==
+	b=a218HhdRCmuYafaPTfLmconv3uRTsvKgdeS9DkKis8JgpYQVAoEqiXLXsmXSz/Cp/
+	 2i2wBeroEgVec8kk3ohpJ4sVMmfW4mb+wVgdY+iHevi3QbqPRq/ghjXwkllQvtmCQD
+	 uM3v8ZR+XrKG5nfcQB6v0Bo1u5e8Ab9vfz1FsBYdkWSO1F5s98FnayxiLMAoYtk62c
+	 L7xqD7eSCuQU/K4d7Li1v92ZWZh/29nI7Xv4nkLnhTQqcP1/7Uk4gVwHvzDkV2p7TY
+	 Luq0b5GkzEb4TZlKORdUmTGeDikRN92i0e3pz+Soa2fzrsoYUNlnVVMTtqQBlDMjGa
+	 cVEwD7y5IgG8A==
 From: Christian Brauner <brauner@kernel.org>
-Date: Tue, 21 Jul 2026 16:13:44 +0200
-Subject: [PATCH v2 02/21] docs, binfmt_misc: keep general usage out of the
- handler sections
+Date: Tue, 21 Jul 2026 16:13:45 +0200
+Subject: [PATCH v2 03/21] binfmt_misc: table-drive the register string
+ flags
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260721-work-bpf-binfmt_misc-ptinterp-v2-2-e57866e4ae0f@kernel.org>
+Message-Id: <20260721-work-bpf-binfmt_misc-ptinterp-v2-3-e57866e4ae0f@kernel.org>
 References: <20260721-work-bpf-binfmt_misc-ptinterp-v2-0-e57866e4ae0f@kernel.org>
 In-Reply-To: <20260721-work-bpf-binfmt_misc-ptinterp-v2-0-e57866e4ae0f@kernel.org>
 To: Farid Zakaria <farid.m.zakaria@gmail.com>, 
@@ -83,22 +83,22 @@ Cc: Daniel Borkmann <daniel@iogearbox.net>,
  jannh@google.com, mail@johnericson.me, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.16-dev-4217c
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4962; i=brauner@kernel.org;
- h=from:subject:message-id; bh=pnQ2H4ThUkWl2NY2YaCVOKuFwWPtz/Wy/4Hat7E6A2U=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWTF1+3/6Kh4dh/H9i1bA+N/C8jF2C77IG2Y8C7ZsSZ0r
- 7a3KcP+jlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgImk7WX4X3tx+zE2piV6AQc3
- Wx256dV0lCVg1QQdfpflPMsK8lbfus/wV1yzraKoeI/OVdNlHJ7Hzh7SZzXV9ZfeqvlaYtHy3RY
- 3mAE=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6070; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=WfRCXhSBfi2LzkKaz/OKGy2fNvqcBkrDAyApc0zJ7VM=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWTF1+2P4XscHZNfsYiX505IkWjKprlzp69ofLXU74ui3
+ NtrjSJeHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABOxSmf4w9F9Kjpuw6Q2x+fb
+ +NI7xcqzOEMb7s5I89k9VeeKsINkBcM/hbMdKTX/Sz7uaProOe/F/cWM+t4Ljv3tDP3yO5LFwD2
+ TDQA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Stat-Signature: 786je843gahccxh4fqwxs6fureu37bu7
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 9B2841C0004
+X-Rspamd-Queue-Id: B9E454000B
+X-Stat-Signature: rbgp3mrzqeoarsxf9di4nob6diubjeaz
 X-Rspam-User: 
-X-HE-Tag: 1784643274-608161
-X-HE-Meta: U2FsdGVkX1+beJG73dtamT4RQ9GMS+yvt4DLpsPU4YTf82jgHSLuq7Mk3fFSxHp2e20gJbxgFOtIz5+N5Z9nSjQMLexEJ03Psb22f8amVZneM/TbmY/iksnJLZqKG2dxuEndUH3vutxUkEcsEMFhqLkhtLXnKsQeGpxGIZvV2httq+DgM72kDhf2TTwDc2tGsyjKRhVLDRDHM4Ir5tkerWiKm/aWltsHTF6XiWTDKsicM4dI7FY+yxYvoFl26/JtD0791G1YklIJXsMzfZ+ffM3nfjTAjqfjI7bzYHJVDfH8K/ziVMNiClYaoyghvTn7guho8v2NU1WZUlvGqKyeb2/r18w1UwsXrAtVnVrJ1lcMPPWrHAxDU4EX6OtTIJ5bOZ6uQdRrOcipt01HR0tuAGu2wskobjWmdvGzHO4jwmP0ZooV0ulYypTHxWC4XMiumVHacKjK3rZxTHZbFStfezLdk0bJRGzViilEfw61SxJLS9Sy96ccapeu3zxXW3QdaxpE/nCrdGRFv8SMhtulgIaoeyj+6Xag3sGrLJaVjL6oYdsFJRWYiuSQVSeaF6R24AoVl8xYJ43MiRRoo5cJ6EWgfy1LLoQSa7/bG58Di4wpPYvkCSMHlNQn7c+z11XydunvnCOFUr67pL4tfGO0y0q8ucTCXIUVWT1pZ2RHYNV/POJtmDFYOckTfPxPVZCoIRIGmqdL1fOuiZVtHy7Lx8hKpSK/o5XCyDE/Z6nggeiZ9O5/jqHymcK3Sbkbb3ije+kVaPuUqqmsKIxFda8LB7eJHMd9/xAPM79NQlcuDol3F8qQjhFuGhI61umHsN7gBNq8GPSg6PLEn/ZxGHz5J742M1F7iGjhwB91KqufD/hlh+jfDBCiCD7BmsiLZcpUsTadFyhVjR6RIuP7dAJU21+AcTxkH5jyGy1JmWX9B1xTBSuLKs/oJqEUcBdpEMhkCctf+bVl2mllxN8vZIg
- Tnm6NfBi
- 6Q6AHzduOWf3/RWVBS6OQntwOp+arokUDdn24PhIphXeEfJc8kZ824LuZ+y+1qBQ8OuD2Fy6v8zVM5vSi3ppleSxVwH8/EFnqWkYTCc1BqfN7OMDsNYXiNqAqBnjJhbX+Uq9VSDPmzwuDcW/hYt/ZlXmCWuC53YSOm13k9Iy1r3cIVbmIXIIXIjhS54IzFdTY4EnRgUJC2CtN1mGzgNl1iRry9H0OC7Js5a/GYABakciKVM4HQ9GS7IC6NFagygCBfQCdJmeEbsAAsAlXx8xFEcwYZRAd8ZmcfF1SBN3SJOAX74SVr2lLG3kAXajB8vOPpbbXACkVJBLWDMKn7HfoqyXCBs3L8t9DuMoCbShLPa/KWU8fIwo/dHQC4g==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1784643277-791789
+X-HE-Meta: U2FsdGVkX18gRcZ7tRviA+j6NO8j025HT1U2t5I5c0YMlaPnLFFC9EBETbIAElKnDDlLe8UF/XDM/QxOIkUUPwsKhWKucwlrkE+rnzG4BB23A7LWbKj8I4dNXiIj76PmT92mo9nlb6Xunjwra20r3QN0tt8HLAn+DUL7trzwH9ik1ABM2mPtvTEYtmByAA9NxBaXCA8sa3Rca2y32OvNexxz7fSOnMScXEj1W8wJlXIEOJncPjxfDfnWT/zS6bN4SAdg5yGDnybUqXG4UV4HB+19bE1CFul4/TsQA4GgrmVqyJWolh07tM/84nSzRTgHdpCKZLsxYsDSiHVz3Z5mpOD+bzEP0Z/UE4P7m4kcJBcW/0upJq1iuB4rckN8Rus53p1gv6asbZ9ONcZZ3C0HCmCgQk10yDzqjh01KWDMznOfSIRRXU9/w6GPkXZARdeYlPbl81W8sMxwhWlOgkGZzdpmCP7Y3gJS2whl7gyAv5A8fsMkYjV/mCq880iMuDlTw8ZuOeJRhwqm/5P8k+94dOO+fnjE22eq0SuUy04RGUyMHMbDvCUxdamAHgnfkA4xowYSRzqKyvfTDqE/G8RQ+SHmOhmaQJNBX5aTgA+YvNLQi4CxJ+96Mo6I3mqrxUEqxghFhMecDJ34YrxWuH+eVjzyNQRSI00cZgHnUgj5/sVqYA16Sw6FJ/Ud/E1x7RlUEfuh93xjq8h8JKS8ZSZaAXQeiGVktO6BTi6EEHhJW9hSEjoDoBsYSlfQs8RfKEGb57R6nU2qAhCI2p/oKqUm9xnKLGhR5GBagEHw+QV2XggHQN1/h+oIK6j+yUcFpVWl27BsxOwNiLkrvtpLlghoNGe01DjZa4qdBLtJGv1jpxjmFFl+CYuv4iFE3AnbBFs/MZS+jF9SqGadhsTBfGu/WQYTHN0HRCWMGk3ttNsSRFhjj9fu0w27yqPGfJYU+3oWWP4cxD1vwF+qQIXgTD7
+ BfD1zrN/
+ VfkF0M8FF94WdDMw7iMNpVxc6sR+sdC2fKwOxUY6j056ircGJQ7QO83Y2H2oYsZEXphE3a31tw0UI4mPTrcFJgDHo7mFWUNbGY2iz6zXz+iDOoBCguaeQ/ela18V4Z36FwONl9ebQWovgZd5U1fJlgK9C3Kx2a3YUdkH0x6RlAw+/9QXw4SsPdB83MW4A3SVmLlBddXsYqcDpl/7WvdbDoYwCDco8eeEhFD5X7kEBD+qKhWO551XKHCOBOV6VypMGnZ0wNhbRAg9NoVhX9DAIlbdFaPb6l1Rvs6tBTFz0S/uVpV1FbvmHwlQvysx7C0LLrcFNTAJCvVU9X06dw3x4WihAVeTd1AmlawKO2cF75s7E7cj0qwATzMw7MA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,118 +106,183 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The general usage trails the bpf-backed handlers section and therefore
-reads as part of it. It predates that section and applies to binfmt_misc
-as a whole.
+Every flag character of the register string is spelled out three
+times: in the parser, in the entry's /proc output and in the
+delimiter blacklist that keeps a flag character from sending the flag
+scan off the end of the buffer. The three lists have to agree, and
+each new flag has to be added to all of them.
 
-Move it back up so the handler section ends where the file does.
-Upcoming sections describing the transparent and loader dispatch modes
-append after it without swallowing the general prose again.
+Describe a flag once - character, entry flag, implied flags and a
+description for the registration debug output - and drive all three
+from the table.
 
-Pure text move, no content changes.
+While at it, express the "a 'B' entry carries no flags" check as what
+it is, an empty flags field, rather than as a fourth list of every
+flag character. Equivalent: the check runs right after
+check_special_flags(), which advances past exactly the flag
+characters it consumed and sets exactly their flags.
+
+No functional change.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- Documentation/admin-guide/binfmt-misc.rst | 79 ++++++++++++++++---------------
- 1 file changed, 40 insertions(+), 39 deletions(-)
+ fs/binfmt_misc.c | 92 ++++++++++++++++++++++++++++++++------------------------
+ 1 file changed, 52 insertions(+), 40 deletions(-)
 
-diff --git a/Documentation/admin-guide/binfmt-misc.rst b/Documentation/admin-guide/binfmt-misc.rst
-index ce94c8c36534..d689f21858b2 100644
---- a/Documentation/admin-guide/binfmt-misc.rst
-+++ b/Documentation/admin-guide/binfmt-misc.rst
-@@ -104,6 +104,46 @@ There are some restrictions:
-    the binary
+diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
+index bfe30fe532ba..c0a3b42a38f7 100644
+--- a/fs/binfmt_misc.c
++++ b/fs/binfmt_misc.c
+@@ -10,6 +10,7 @@
  
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
  
-+To use binfmt_misc you have to mount it first. You can mount it with
-+``mount -t binfmt_misc none /proc/sys/fs/binfmt_misc`` command, or you can add
-+a line ``none  /proc/sys/fs/binfmt_misc binfmt_misc defaults 0 0`` to your
-+``/etc/fstab`` so it auto mounts on boot.
-+
-+You may want to add the binary formats in one of your ``/etc/rc`` scripts during
-+boot-up. Read the manual of your init program to figure out how to do this
-+right.
-+
-+Think about the order of adding entries! Later added entries are matched first!
-+
-+
-+A few examples (assumed you are in ``/proc/sys/fs/binfmt_misc``):
-+
-+- enable support for em86 (like binfmt_em86, for Alpha AXP only)::
-+
-+    echo ':i386:M::\x7fELF\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x03:\xff\xff\xff\xff\xff\xfe\xfe\xff\xff\xff\xff\xff\xff\xff\xff\xff\xfb\xff\xff:/bin/em86:' > register
-+    echo ':i486:M::\x7fELF\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x06:\xff\xff\xff\xff\xff\xfe\xfe\xff\xff\xff\xff\xff\xff\xff\xff\xff\xfb\xff\xff:/bin/em86:' > register
-+
-+- enable support for packed DOS applications (pre-configured dosemu hdimages)::
-+
-+    echo ':DEXE:M::\x0eDEX::/usr/bin/dosexec:' > register
-+
-+- enable support for Windows executables using wine::
-+
-+    echo ':DOSWin:M::MZ::/usr/local/bin/wine:' > register
-+
-+For java support see Documentation/admin-guide/java.rst
-+
-+
-+You can enable/disable binfmt_misc or one binary type by echoing 0 (to disable)
-+or 1 (to enable) to ``/proc/sys/fs/binfmt_misc/status`` or
-+``/proc/.../the_name``.
-+Catting the file tells you the current status of ``binfmt_misc/the_entry``.
-+
-+You can remove one entry or all entries by echoing -1 to ``/proc/.../the_name``
-+or ``/proc/sys/fs/binfmt_misc/status``. A single entry can also be removed
-+by simply unlinking (``rm``) ``/proc/.../the_name``.
-+
-+
- bpf-backed handlers
- -------------------
++#include <linux/array_size.h>
+ #include <linux/binfmt_misc.h>
+ #include <linux/binfmts.h>
+ #include <linux/bitops.h>
+@@ -51,6 +52,36 @@ enum binfmt_misc_entry_flags {
+ 	MISC_FMT_OPEN_FILE	= (1U << 28),
+ };
  
-@@ -161,45 +201,6 @@ registered in, falling back to ancestor namespaces, mirroring how
- binfmt_misc instances themselves are looked up. The entry keeps the handler
- alive; deleting the struct_ops map only prevents new activations.
++/**
++ * struct binfmt_misc_flag - a flag character of the register string
++ * @c: the character userspace writes and reads back
++ * @flag: the entry flag it sets
++ * @implies: entry flags it turns on in addition
++ * @desc: what it does, for the registration debug output
++ */
++struct binfmt_misc_flag {
++	char		c;
++	unsigned long	flag;
++	unsigned long	implies;
++	const char	*desc;
++};
++
++static const struct binfmt_misc_flag misc_flags[] = {
++	{ 'P', MISC_FMT_PRESERVE_ARGV0,	0,			"preserve argv0"		},
++	{ 'O', MISC_FMT_OPEN_BINARY,	0,			"open binary"			},
++	{ 'C', MISC_FMT_CREDENTIALS,	MISC_FMT_OPEN_BINARY,	"credentials from the binary"	},
++	{ 'F', MISC_FMT_OPEN_FILE,	0,			"open interpreter file now"	},
++};
++
++/* Look up a flag character, NULL if @c is not one. */
++static const struct binfmt_misc_flag *misc_flag_by_char(const char c)
++{
++	for (int i = 0; i < ARRAY_SIZE(misc_flags); i++)
++		if (misc_flags[i].c == c)
++			return &misc_flags[i];
++	return NULL;
++}
++
+ struct binfmt_misc_entry {
+ 	struct hlist_node node;
+ 	unsigned long flags;		/* type, status, etc. */
+@@ -424,30 +455,16 @@ static char *scanarg(char *s, char del)
+ 	return s;
+ }
  
--To use binfmt_misc you have to mount it first. You can mount it with
--``mount -t binfmt_misc none /proc/sys/fs/binfmt_misc`` command, or you can add
--a line ``none  /proc/sys/fs/binfmt_misc binfmt_misc defaults 0 0`` to your
--``/etc/fstab`` so it auto mounts on boot.
--
--You may want to add the binary formats in one of your ``/etc/rc`` scripts during
--boot-up. Read the manual of your init program to figure out how to do this
--right.
--
--Think about the order of adding entries! Later added entries are matched first!
--
--
--A few examples (assumed you are in ``/proc/sys/fs/binfmt_misc``):
--
--- enable support for em86 (like binfmt_em86, for Alpha AXP only)::
--
--    echo ':i386:M::\x7fELF\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x03:\xff\xff\xff\xff\xff\xfe\xfe\xff\xff\xff\xff\xff\xff\xff\xff\xff\xfb\xff\xff:/bin/em86:' > register
--    echo ':i486:M::\x7fELF\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x06:\xff\xff\xff\xff\xff\xfe\xfe\xff\xff\xff\xff\xff\xff\xff\xff\xff\xfb\xff\xff:/bin/em86:' > register
--
--- enable support for packed DOS applications (pre-configured dosemu hdimages)::
--
--    echo ':DEXE:M::\x0eDEX::/usr/bin/dosexec:' > register
--
--- enable support for Windows executables using wine::
--
--    echo ':DOSWin:M::MZ::/usr/local/bin/wine:' > register
--
--For java support see Documentation/admin-guide/java.rst
--
--
--You can enable/disable binfmt_misc or one binary type by echoing 0 (to disable)
--or 1 (to enable) to ``/proc/sys/fs/binfmt_misc/status`` or
--``/proc/.../the_name``.
--Catting the file tells you the current status of ``binfmt_misc/the_entry``.
--
--You can remove one entry or all entries by echoing -1 to ``/proc/.../the_name``
--or ``/proc/sys/fs/binfmt_misc/status``. A single entry can also be removed
--by simply unlinking (``rm``) ``/proc/.../the_name``.
--
++/* Parse the 'flags' field, stopping at the first character that is not one. */
+ static char *check_special_flags(char *p, struct binfmt_misc_entry *e)
+ {
+ 	for (;; p++) {
+-		switch (*p) {
+-		case 'P':
+-			pr_debug("register: flag: P (preserve argv0)\n");
+-			e->flags |= MISC_FMT_PRESERVE_ARGV0;
+-			break;
+-		case 'O':
+-			pr_debug("register: flag: O (open binary)\n");
+-			e->flags |= MISC_FMT_OPEN_BINARY;
+-			break;
+-		case 'C':
+-			pr_debug("register: flag: C (preserve creds)\n");
+-			/* C implies O */
+-			e->flags |= MISC_FMT_CREDENTIALS | MISC_FMT_OPEN_BINARY;
+-			break;
+-		case 'F':
+-			pr_debug("register: flag: F: open interpreter file now\n");
+-			e->flags |= MISC_FMT_OPEN_FILE;
+-			break;
+-		default:
++		const struct binfmt_misc_flag *f = misc_flag_by_char(*p);
++
++		if (!f)
+ 			return p;
+-		}
++		pr_debug("register: flag: %c (%s)\n", f->c, f->desc);
++		e->flags |= f->flag | f->implies;
+ 	}
+ }
  
- Hints
- -----
+@@ -570,7 +587,7 @@ static struct binfmt_misc_entry *create_entry(const char __user *buffer,
+ 					      size_t count)
+ {
+ 	struct binfmt_misc_entry *e __free(kfree) = NULL;
+-	char *buf, *p;
++	char *buf, *p, *flags;
+ 	char del;
+ 
+ 	pr_debug("register: received %zu bytes\n", count);
+@@ -595,7 +612,7 @@ static struct binfmt_misc_entry *create_entry(const char __user *buffer,
+ 	pr_debug("register: delim: %#x {%c}\n", del, del);
+ 
+ 	/* A flag-char delimiter runs the flag scan off the buffer. */
+-	if (del == 'P' || del == 'O' || del == 'C' || del == 'F')
++	if (misc_flag_by_char(del))
+ 		return ERR_PTR(-EINVAL);
+ 
+ 	/* Pad the buffer with the delim to simplify parsing below. */
+@@ -666,21 +683,21 @@ static struct binfmt_misc_entry *create_entry(const char __user *buffer,
+ 	}
+ 
+ 	/* Parse the 'flags' field. */
++	flags = p;
+ 	p = check_special_flags(p, e);
+-	if (*p == '\n')
+-		p++;
+-	if (p != buf + count)
+-		return ERR_PTR(-EINVAL);
+ 
+ 	/*
+ 	 * A bpf handler decides the invocation flags per exec with
+-	 * bpf_binprm_set_flags() rather than fixing them at registration, so a
+-	 * 'B' entry carries no flags: 'P', 'C' and 'O' become per-exec choices
+-	 * and 'F' (pre-open a fixed interpreter) is meaningless for it.
++	 * bpf_binprm_set_flags() rather than fixing them at registration, and
++	 * 'F' (pre-open a fixed interpreter) is meaningless for it, so a 'B'
++	 * entry's flags field has to be empty.
+ 	 */
+-	if (test_bit(MISC_FMT_BPF_BIT, &e->flags) &&
+-	    (e->flags & (MISC_FMT_PRESERVE_ARGV0 | MISC_FMT_OPEN_BINARY |
+-			 MISC_FMT_CREDENTIALS | MISC_FMT_OPEN_FILE)))
++	if (test_bit(MISC_FMT_BPF_BIT, &e->flags) && p != flags)
++		return ERR_PTR(-EINVAL);
++
++	if (*p == '\n')
++		p++;
++	if (p != buf + count)
+ 		return ERR_PTR(-EINVAL);
+ 
+ 	/* Non-F opens the interp at exec against the caller's cwd; require absolute. */
+@@ -749,14 +766,9 @@ static int bm_entry_show(struct seq_file *m, void *unused)
+ 
+ 	/* print the special flags */
+ 	seq_puts(m, "flags: ");
+-	if (e->flags & MISC_FMT_PRESERVE_ARGV0)
+-		seq_putc(m, 'P');
+-	if (e->flags & MISC_FMT_OPEN_BINARY)
+-		seq_putc(m, 'O');
+-	if (e->flags & MISC_FMT_CREDENTIALS)
+-		seq_putc(m, 'C');
+-	if (e->flags & MISC_FMT_OPEN_FILE)
+-		seq_putc(m, 'F');
++	for (int i = 0; i < ARRAY_SIZE(misc_flags); i++)
++		if (e->flags & misc_flags[i].flag)
++			seq_putc(m, misc_flags[i].c);
+ 	seq_putc(m, '\n');
+ 
+ 	if (test_bit(MISC_FMT_BPF_BIT, &e->flags)) {
 
 -- 
 2.53.0
