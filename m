@@ -4,170 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D613C44532
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 13:51:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25B59C44529
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 13:51:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1F9406B008C; Tue, 21 Jul 2026 09:51:20 -0400 (EDT)
+	id 0C2916B0092; Tue, 21 Jul 2026 09:51:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1AB9F6B0092; Tue, 21 Jul 2026 09:51:20 -0400 (EDT)
+	id 073E26B0093; Tue, 21 Jul 2026 09:51:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 04B496B0093; Tue, 21 Jul 2026 09:51:20 -0400 (EDT)
+	id ECD8B6B0095; Tue, 21 Jul 2026 09:51:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BDAF86B008C
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 09:51:19 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id F1C60A0175
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 13:51:18 +0000 (UTC)
-X-FDA: 85012920636.11.514F9C9
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 6BC1914000C
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 13:51:16 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b=G+WERwPL;
-	arc=reject ("signature check failed: fail, {[1] = sig:google.com:reject}");
-	spf=pass (imf09.hostedemail.com: domain of "prvs=5662d1cd31=alexghiti@meta.com" designates 67.231.145.42 as permitted sender) smtp.mailfrom="prvs=5662d1cd31=alexghiti@meta.com";
-	dmarc=pass (policy=reject) header.from=meta.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=fail;
-	t=1784641876;
-	b=z1e6hsEQ2VAuS3eBCzZ5p9CXWk6JZBSvaPU7pD0u1kurecZOVTe3vcGdCnIjLXYNMskugT
-	zEecnqFolAFutx96NZhejpW7R9XByyed3eJG+ZA6rwioosvWmsDvZWzy9UDDkNTba3qUUs
-	U1Xq4+82IXHnKx0nlnfquz0o557hMCE=
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b=G+WERwPL;
-	arc=reject ("signature check failed: fail, {[1] = sig:google.com:reject}");
-	spf=pass (imf09.hostedemail.com: domain of "prvs=5662d1cd31=alexghiti@meta.com" designates 67.231.145.42 as permitted sender) smtp.mailfrom="prvs=5662d1cd31=alexghiti@meta.com";
-	dmarc=pass (policy=reject) header.from=meta.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784641876;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BC2A16B0092
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 09:51:46 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C46CCC0185
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 13:51:45 +0000 (UTC)
+X-FDA: 85012921770.24.2D80772
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id CD05D1C0002
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 13:51:43 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="J7RZ/w8/";
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784641904;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hgKqNwI9zHLhK4AxI/VtHp9PGEUWLwuB1Rwu5NNgDlg=;
-	b=wzNa0pS46fDAhYMtuzybkzAgXuiP44Lb4t4mMQP9kOUyteAF8jOUuXNUwDao66CPrhktf5
-	FNvfHZtxkfPRs4Nz7z8MouWl2gre2Dq8PJZnV4dU+54Tr8dgkzlE9q0iOVlVniCLUZfg+X
-	bzIttH+qBHdBKJyGEHzen/8UeBH/txc=
-Received: from pps.filterd (m0528009.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66LDmH6j930246
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 06:51:15 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=hgKqNwI9zHLhK4AxI/VtHp9PGEUWLwuB1Rwu5NNgDlg=; b=G+WERwPLhiAe
-	69s2vKEtmDv2qYfUCZ738zaPksZOw9QVXm7WvP2zwWMbSlLKR55jXkq1kz5tyvNl
-	p319Jl/M+GPvDossNQVvKjWv4mTtIKG1dxu7NdVSVUmBZL6QsT8n5xM/n1jA2979
-	LMdVmqrcOS20sRkHx19rcPPV0eMb9YZdRolUH1uV2hX5evGcPQRVmQc/JhQWmxcC
-	wp5C6MSHqEqXbdbGGOQE5EnhOz96eLg3w9c+zPGG+buoV79d11Nr6XnKASF6ltkb
-	NI0wliMXHrYcYV+VgfLUiJUWHVALCoEQoV54iSHlK1C0a7OZWwYKOIXpepKQncYL
-	QltCu+Kd1w==
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com [209.85.208.69])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4fgu84wept-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 06:51:15 -0700 (PDT)
-Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-69c0f3a15dcso6748284a12.0
-        for <linux-mm@kvack.org>; Tue, 21 Jul 2026 06:51:14 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784641873; cv=none;
-        d=google.com; s=arc-20260327;
-        b=L348c44F+cZCkdduz2Kl2nOCQOmS79fwfag2n/y9nvGD7FqtFNL4hzDLhjzmVzRUZK
-         N286+sBcFoylAWt8NElEoIz4d9eJFkgI6Mq/UZ9YvwCuGWKdjeFmwezgtImpZdpE3RHD
-         sXDvtmSdIol01OOhetPfyIXaqV9WwMfVbICYQZfbiPGCbN4aH/vn9O+uvSF49WriL9g1
-         u+LZpazgKyz9qIKn99xPi8eRYb642Z08x5UG4ZMl+V6lyOq7WJzzE0uaGRtDeKvVkWbx
-         fd0R9MTOhTHJRuFgk05GV49d5a1S6++xO4thOIwc9Jrqv1Yy6yABC/YVUCY3v0W8J7fD
-         PdjQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version;
-        bh=kgCqHqk6t/4b7ihE9C0Q1R3dMzn+0bCpulqcGqITNJE=;
-        fh=7JajkvmeLzJ1j8bNr4wQCauNb6mFrfJmJ4K9Bi7hJpE=;
-        b=BzRgSG7NBSQENIIs2Hmv8hulrQlRl1PVO3A1k3lakOV2rp3n4/WJazOk6cyfUemB/K
-         zVHpeaXKQKNJxbrVSemJPN0MDXeugqqOqmF9d5H1GRy+nUm7m8vfCRrsoFmYo1Tmrg6p
-         /iMdNof3yeGdfqYE9VKMrSkxhA523AU59zl+fqHPoWW17i2ZUr1eOFJZuX6uxgUVTdw/
-         RJpOulH23aLtzjzn0sVznB5ebVZCoqWp8k+Qi4rBhPlURYN/92aunxAplcJ4NT18M6aV
-         KQwm2bkNG9n11ITnDMgtjfcfqUvsUF6u7VFVcprup+JtK4c7FwaB4nc8ITQjCrj6QvBS
-         avDw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784641873; x=1785246673;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kgCqHqk6t/4b7ihE9C0Q1R3dMzn+0bCpulqcGqITNJE=;
-        b=dsP9G9h7Qq5tblJAe6Wi0iTAXiD8/BSW4x996dXty3PbHd8SUFIHbK5v4OMhKFXdag
-         gAf/tNrW4hnRgKUCZ/yDzzv081EnUPnDfs2Fnr+zl9AJovtknpMJRYw1StH9Sd6QULn3
-         Rwa3palJSMwcGL02OH226p1STWNsnOAahNfbp/YkQsTaL86EVEwPuZyFBygxHu9SBxSL
-         QzPhW4Q1Ahw//Ppz8HT0HzqI4na+9U98eHVxHfjMllURxQOMqYCg7RzCy/N35T+LnbPg
-         eljxk6Dar3UgqzgcmdLPTwZMfsjUP19TpmMRW2WW6xqtmwlFADKuLs4dywcibSp262s5
-         qiPw==
-X-Forwarded-Encrypted: i=1; AHgh+Rqb4MARLD0pXLR03wYNnMBsR7mm/QnJy4XK6TxXt5g/+1q/CoCz8vMkvAlmEx6kGhaNY9G4iJgdwA==@kvack.org
-X-Gm-Message-State: AOJu0Yw7cEHcYUB9I1qRGJKYvgPFTNl0MIofgjVssIXu9naSb+4LnjKI
-	HJlYj2KvBY5MSPtZCsi88rlU6/GoWdE3JnhGBzhenATOjclnVPmp+50KsQtZjpy1DHNre128zI6
-	+PoX33GRzQBQliwPwj7Qm8kX7HLeHFPfJyLF61Usg9ZElRdMila8xzZS8C19moVTpqYQ0HoJ6UW
-	nS0hpWSzMd1Virg7e24bd4gykTWA==
-X-Gm-Gg: AR+sD12EqkWD7YRueQKSOxUMl0BaWkgrKbRajT9H8nrBtcFF1R23fdv/ScESGarZk7r
-	sIboQidZRYxL7JuTBXTHyQ5wu2/BMVmz9UFR+L8dzdELoYkZb5Sj9Ion4DUSYIy0y/mv5GSLxvK
-	cHyzNmpABZH81NCqaRq5H9/Mdp34gkOSrLEpPNXcUxeUiR5twtXX8z+c1Q7KOGm5YB9lPAIo6y
-X-Received: by 2002:a05:6402:40c7:b0:697:eb97:a4ed with SMTP id 4fb4d7f45d1cf-69e64dd54d5mr7267912a12.7.1784641873405;
-        Tue, 21 Jul 2026 06:51:13 -0700 (PDT)
-X-Received: by 2002:a05:6402:40c7:b0:697:eb97:a4ed with SMTP id
- 4fb4d7f45d1cf-69e64dd54d5mr7267883a12.7.1784641872842; Tue, 21 Jul 2026
- 06:51:12 -0700 (PDT)
+	bh=Pvhzps5Tk8jvX4BviS4O6j3wBvkJmKKyvjZkkLOc2rg=;
+	b=YDVLTFW5KneK5LsyoPLJz0iMeVVoY1aJpmtWRkcbjEHbbZYO1ekGdfL/7TwaAKieeBrtTX
+	SCusryBnrNDhOWJ5iWm85sJNlNtDb+MFR1Iac7h5kG8OYc5dp2TFQpuxkBNkCdGqJGVQmq
+	DwTJLUrLqoSxAvwheKN954kP8EoS6AY=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="J7RZ/w8/";
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784641904;
+	b=WKixjU/P7cynyNg3OSG7C/GFkzLtc2sEQSxCNVRFllXYyh9fIkhkJfNi0yGNL6CjV9ui6i
+	0lrBsHmHF0fXyyEOg7pMkOLgqLlO0gPT4NAdpmBm0w4x2hfnD/97cAI2yFxcGC/J3X3yng
+	Rs3BtdgPfY0xTZ/Hz+Vpx61mRaVk8UM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1534943D48;
+	Tue, 21 Jul 2026 13:51:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4EAB1F00A3A;
+	Tue, 21 Jul 2026 13:51:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784641903;
+	bh=Pvhzps5Tk8jvX4BviS4O6j3wBvkJmKKyvjZkkLOc2rg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=J7RZ/w8/5rFQ34nRZAhG0S3I7LkEUZgHnw7sx0w8dS/sJSmTbr4aizN0U3uNYgOQV
+	 sk+G4vyEeLOSsf2PIJloJu7kGJqS/3E25KrpYk5r+YOSIqyCJRmfTxs1OIq1mkzONo
+	 KabEJby3rR7jR5UX7RV8WVOEg0aPKQ0y4E3iB/HrcTmRmWsBssUnUjs1ayS052H4PV
+	 HFk8hIxhrkAdtOnQVeC4Kxh/mqNLkxxMOmsOgWOnvy9S+FrDdo2gBNPhRP2M1PnHRu
+	 NB+5r5JGvSlUOB6/drzEldF0d6B6O0jmOkNvmnDQJr2QgNJT+hpFzKtRtqlfAw2pBn
+	 HTyEC6KvboqRQ==
+Date: Tue, 21 Jul 2026 16:51:31 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Vishal Moola <vishal.moola@gmail.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, Kiryl Shutsemau <kas@kernel.org>,
+	iommu@lists.linux.dev, Kevin Tian <kevin.tian@intel.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] x86/mm/pat: allocate split page tables as kernel page
+ tables
+Message-ID: <al95Y5aXof0ISEkI@kernel.org>
+References: <20260720-fix-cpa-kernel-pagetables-v1-1-0766e782cefe@kernel.org>
+ <al5-fDRStgU6gjk6@fedora>
+ <al5_Le9QlD4zlt25@fedora>
+ <al8hE_ded6qyWiDv@lucifer>
+ <al8_xx_99BjAUn5A@fedora>
+ <al9BpTu2ma8GpiPW@lucifer>
+ <al9KzIhKXa3PCMqa@kernel.org>
+ <al9b5uE-ep9ADtLt@lucifer>
+ <al9hMyqpjd4l0Fql@lucifer>
 MIME-Version: 1.0
-References: <20260718093723.153324-1-alex@ghiti.fr> <20260718093723.153324-2-alex@ghiti.fr>
- <CAKEwX=Nn0dMc1K9drXFVMwt7wMZ2P6KToeh7T3rE1+Xq5yrCFw@mail.gmail.com>
-In-Reply-To: <CAKEwX=Nn0dMc1K9drXFVMwt7wMZ2P6KToeh7T3rE1+Xq5yrCFw@mail.gmail.com>
-From: Alexandre Ghiti <alexghiti@meta.com>
-Date: Tue, 21 Jul 2026 15:51:01 +0200
-X-Gm-Features: AUfX_mxqg_lic_i-cnpMMasc3XbCKh4ZvMOp6vx1fefhyR4VNBj1s0GHL0sNvB8
-Message-ID: <CAEmasaWnp_pHEo2m=5GEo4r3YYWoRC20FNfWN=TtrPT070WUzw@mail.gmail.com>
-Subject: Re: [PATCH 1/2] mm: zswap: free synchronous-IO writeback folios directly
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: Alexandre Ghiti <alex@ghiti.fr>, Johannes Weiner <hannes@cmpxchg.org>,
-        Yosry Ahmed <yosry@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-        Chengming Zhou <chengming.zhou@linux.dev>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        Jan Kara <jack@suse.cz>, Kemeng Shi <shikemeng@huaweicloud.com>,
-        Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
-        Youngjun Park <youngjun.park@lge.com>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzIxMDE0NSBTYWx0ZWRfX/ivhbqd8xILz
- Y+H1GdnEu/RlQNA9UQ6sMZ8GDBbnEucjkYnsj7CYKYJsxFXLpb3oXkGGe0zTsC20vEiyS38OTxZ
- fYagnBZk2Xtgchh6jeC8hTh8fPMnDl4=
-X-Authority-Analysis: v=2.4 cv=ApXeGu9P c=1 sm=1 tr=0 ts=6a5f7953 cx=c_pps
- a=Tczdrg5if7+wQeIJmxD/XA==:117 a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=U_y8lYiYyhHBU5rMqhb2:22
- a=pGLkceISAAAA:8 a=GXzu1mSckkvTQhgV4B4A:9 a=QEXdDO2ut3YA:10
- a=1oAhN8tkTtOBK6_UvoHx:22
-X-Proofpoint-ORIG-GUID: -YQNMaYE7CN6V0cbmEmr0X80XoWo8D_j
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzIxMDE0NSBTYWx0ZWRfX7mvlZLjvctUt
- hE0X7FJ1L2quhTyk4pL8IyF79k7BwfA1jfAQqv6NbNWe049Nww6DASp0xSyRhWWa5Y4hQKTZ3mf
- voqBo41KPckW+441yW0wBP1u1UFaC8Ep+CSCncj+uXUuuDLeklUSs0vPdi9VcMG02o5TlHgu8pq
- 8DUCpA3Z/pwUisQcGK3T9QjT3TsxkPp+xocqCisOiwPTJLq7s/7hn4xaP6P/OVZmx+PQpmQ4e97
- z2TISevNn2xiy6Aj/CnV5/1Y7OJvUj14HIOvE7lt7H4Nwe1818KWDuAe0Jja6QXHqxvxThE7VKO
- xruZ9Ib7cOv2n9BGgB3wsW4V0ku7ohze6rlRCaZjRHpK6NmTul0NSAdx1co5T3SCSxnYjZJnWT+
- rzgq/BXyKCKr4OW93IFLrE2YWcK+QR4pO6HJf/mHAOQwekQl+snj6+wZr+/vK4TnkaGjMkO/PLY
- cDZK2BNM6DgGm7ynytQ==
-X-Proofpoint-GUID: -YQNMaYE7CN6V0cbmEmr0X80XoWo8D_j
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-21_03,2026-07-20_03,2025-10-01_01
-X-Stat-Signature: 1n9gw738g3e534tyqo5zxi6xsr6k9gh6
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 6BC1914000C
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <al9hMyqpjd4l0Fql@lucifer>
 X-Rspam-User: 
-X-HE-Tag: 1784641876-436251
-X-HE-Meta: U2FsdGVkX19d7tblhZ3IdxO+N/yXY7XhKVKkz9LdI80+LAsOrHeym9ORIY6FG5s9ktSnDLM0GGFaXqh1uFUhlok57m2VgRin+Y6hu4ag3iLz7RkMg2MB2j8GqnFsDPj/n49c8f1D0Z/hDOzdfOEKmyyqsVjHBcyZOvPuK7T45Ig0TfZerX8njoB/hjfAMXxMidQh8oUfWm+O6bJubt7zAcY/Yhwu7dDI1pB+QG4mgLYNr9cQ1YlsMKNmNwqdh7NnB62bN9gJIzLSbhu0FqbfDfg9Mgw76blu1ab/2gOgVO2gRrsgBi90iYELFjCSOVBYlT3fSjplk4j61PJ8f2WXC6janooJd7nEVGeMRY8kkc5I0usdB7BcCnn3v6BYUbJbS1JsD3ekuLjiE7jRoxCX6jK8Xrk+MAhaAYJi8meuTqqbdJb5ZsyntzZyYLUCF1KxYRVR4SuIcEmGkI5S9TtUuGXOQFqCrdfO5cZBxw1kM9Ew6yGAiDsuhAUf8wdUWVNKQITiyk2dpTd4LlImcqkIFa5OzcIVHpwOnbaWY1Niv5sp8Uqxb0NSsYgP8xLvG1FhJ/RHOkCx146wXEibBmHuGamGsuBF0UHpAQaxqgJJBy0KL3+gUpNyrJoMKmSpzg5gou8k+W6F33X2lxU5mwHBqvYy7LMWkpZ2gCizJ6v0E0sy5OM9VQ5qhDmaQ272ws2a6z7O6jL0qeyN+Xp+ttyQSNo5rhmXKxDHGrbwg1FqU68ifI3hVV82ORGCwhJb/YXDfa+zEOa27fehSfPlx8S8Lb/0scwikkQtLmkShITJG9ylBJKF+QWlzVMp7J1IWzPMxOqaiIbH3b9kH1/t8Z9MvYFn950rOCX4c0azp2qHbHABseQ3YJ0ccl1YGYuExmpuaRidWGBkv9R0tOiFMrWbbcxh8Afpjzl1jzZLCW1ElPea+sC1umAn40ldZLYYWnK663V0Yj60Z3x+bM6d+hF
- WBirOnM5
- mW0HkDTo7b8Zl7ulzr02YYYAKBRdUh3zUmYi9cq/JXKzXMbsa9x6SHenAMIgrvkrAOulxOuyk4vx+3PSfudo6vdzHCDOEnlMnFXeSF7ZaGQorQ813YWMFehnfjXcVnAyTJwS5TserjDoKxsIN2rK9AMY2tcq30CtwXnfKKOWVe+DXjgo6t4XusF1NBvXCvJmkP82lk4bguKhyhaZagBHYv1j788fg/Jf/xgeOwaiWjc7YMB3gudDtIbCcmzULPJNZ4fCqHuVsASVnP1kq//gBznFJxIgznvlW4uaNM+LFLWHVzBo1vhMOltq1eeCfzqBEtPHIT3u75wHbRk7hKcBGGaQU/ofuOxh8H3wRu8AP5y43EzCgUWDD9KmNu0DxOKuuXiQJj8RtjKUi+55BY1/HEhu5Hq4edx2wWLw6H5aI5BlFgF4IzCVjeVuSQyCryg3Nx4wnWO/qCPdjW98SPuofZ4W9fP41eSJdhtfkZUUCuNcKA2wNqjsDAvsWSg==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: CD05D1C0002
+X-Stat-Signature: 3khogst73xhwgdhaj4k8izp6ss7i8as3
+X-HE-Tag: 1784641903-852714
+X-HE-Meta: U2FsdGVkX19ZxZGysFRb/xk1bjxrIsggEVINpWQUCIz7i/gHUoaUGxZvNpP2u7xHDf+QdhSnPXjywat2ciWMvzhoZnxv8gFMaHUQN5D6bInrRDr47mtSXvu9muU5W6RiLxIwrHkofv49DGlDz7oiGs07cCmajVRHo2lO68HnxDsux3TySqX3Pt+jNvh3APQ6e2Plxnz6zaifE3SR/e6pcP/M28p+MJDbcgFFntqEjiZhcZzUE8b9OyQgZ0ntOUfckY9fxs2PL7JosPYUT+xpayefy0srvCTFEQLShkYfAI9pPase4d+MaDjuQtPglHxEgQ/zmQ5WsBsDhurL2ZyGp7v6X2JcMQB6BkiPG0i0UtT2XR597saLNdcuAT99OCjbUUp6v6Dpz4EhRQY9oKm1vV+Yu5Imy3ymW2jQkyrkhZHZXNth0QJTwTh9pOhSZHtAR0Ha+pu6OJuKxOapDM3PZdm/eR/L81Lun9zZmWYoX4sIAqVg7sSGbI+Hq9txJDBYCiRwM/bhtLpEol7UzXhJB9znoS8Yyxph0cKQGK1h1PJy5QbEakqyB0NB91f0aoLxW8wzF9pcostfNYOHw8U5KlBseiqrLqEgRMOloKzQN742DDk63AAobIps73XS82LTqCZP0I7A9/UWAfnSGHQiX65+r8VF25O3fTkDLvDq6jDbx8zd/m8wm0xGPPJbSIPU0WMTKD4kEB2IPmND32t/PWbR+wviIFdywC9QlREcvQKSA/++YAE0JPgtIU9ZR0mmiih7ejbQh60j/bN5opZSL1377jUH3JPOmaujhiTzmrMMIGiowNRxspdCMWB5KmQBm3vTlvGOzXWqiZv+ZbMWlYeQPGt6hUWkJjZnDl1JSemfh+bqS7YiPdU2pZY5aD0wofMhXwhv7fHmlld5ewDxbrkCHuUUUJYm64LUjTi2YFdG9fQckPBJs+lMLJRwb/BWv3VPo+gReGHsdSp8MT5
+ hW92jWDo
+ yDu381nof+HOQRWXO3txaECQNI2xHK6RRSHrIcAcCqpJ7VRpfTpwSdWOeP/Haga3NOmnSwwBD7hhxxUuj5GRaWzMFPSwcNcFX63nTrDw8nFsC0zB75mSTLUzrG3UVQllgYVTda5vflQwmtmwAnJXTy2mvhul9ObBcLZYXbu5+W4+ewYct7Z8bznw8Og+Bmfesj5JEgT1rNMivQTEE1izToT//wfU7lWewkyw+p61jaw9iWnXTHgXgieFDo0AArP2cSfpnt5GGuGTi5BX5c2OPBFdFRkjxb0sQSkaDfjEwh6CeFET85tLQ6Bczg9pOITuJ6+Voxkw/1A1pFkg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -175,213 +110,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Nhat,
+On Tue, Jul 21, 2026 at 01:09:27PM +0100, Lorenzo Stoakes (ARM) wrote:
+> On Tue, Jul 21, 2026 at 01:00:53PM +0100, Lorenzo Stoakes (ARM) wrote:
+> > On Tue, Jul 21, 2026 at 01:32:44PM +0300, Mike Rapoport wrote:
+> > > On Tue, Jul 21, 2026 at 10:58:50AM +0100, Lorenzo Stoakes (ARM) wrote:
+> > > > On Tue, Jul 21, 2026 at 02:45:43AM -0700, Vishal Moola wrote:
+> > > > > >
+> > > > > > Well some kernel page tables are still allocated without ctor (early allocated
+> > > > > > direct map for isntance), and if you did pagetable_dtor_free() it
+> > > > > > unconditionally calls pagetable_dtor().
+> > >
+> > > TBH, I cannot think of a scenario when page tables allocated at boot would
+> > > be collapsed. But surely, checking the page type is safer just in case.
+> >
+> > Yeah nor can to be honest, anything that could be made large in the direct map
+> > would already be large right?
+> >
+> > But it's 'just in case' somebody did something dumb :) Later can maybe make it a
+> > WARN_ON(). But just to fix the proximate issue for now.
+> >
+> > >
+> > > > > > The ptlock_free() and __folio_clear_pgtable() there would be harmelss (no locks
+> > > > > > assigned for kernel page table, and if PG_table never set clearing it is a noop)
+> > > > > > but the lruvec_stat_sub_folio() would cause an unbalanced decrement of
+> > > > > > nr_page_table_pages.
+> > > > >
+> > > > > Gotcha, thanks for the explanation :)
+> > > >
+> > > > No worries, this is subtle stuff with lots of weird gotchas and stuff we need to
+> > > > improve... I seem to have fallen down an unexpected rabbit hole with these fixes
+> > > > :)
+> > > >
+> > > > >
+> > > > > > It sucks, but until everything is updated to call the ctor we have to do it this
+> > > > > > way :>)
+> > > > >
+> > > > > Yeah that makes sense. Although I'd rather see the condition as:
+> > > > > if(PageTable(ptdesc_page(...)))
+> > > > >
+> > > > > We really shouldn't be calling ptdesc_folio() anywhere anymore.
+> > > >
+> > > > I think better for a follow up since the code already uses ptdesc all over the
+> > > > place (fundamental to the approach really, keeping a list of page tables etc.)
+> > > > and this is a fix that needs backporting.
+> > >
+> > > I agree with Vishal that it's better to use page type rather than folio
+> > > type. And it's the same for backporting ;-)
+> >
+> > Ah sorry misunderstood, you mean straight up PageTable(ptdesc_page()), I thought
+> > Vishal was saying we shouldn't be directly referencing ptdesc's at all (which
+> > would be the rework).
+> >
+> > I guess definitionally page tables are never folios. I lazily went with what I
+> > saw elsewhere, my bad :)
+> 
+> Ah yeah I remember now, i saw __pagetable_ctor() dealt with folios:
+> 
+> static inline void __pagetable_ctor(struct ptdesc *ptdesc)
+> {
+> 	struct folio *folio = ptdesc_folio(ptdesc);
+> 
+> 	__folio_set_pgtable(folio);
+> 	lruvec_stat_add_folio(folio, NR_PAGETABLE);
+> }
+> 
+> 
+> And was like 'huh?' (surely definitionally they're _not_ folios) but went with
+> that on that basis.
 
-On Mon, Jul 20, 2026 at 5:56=E2=80=AFPM Nhat Pham <nphamcs@gmail.com> wrote:
->
-> >
-> On Sat, Jul 18, 2026 at 2:38=E2=80=AFAM Alexandre Ghiti <alex@ghiti.fr> w=
-rote:
-> >
-> > When zswap writes an entry back, it allocates a swap cache folio,
-> > decompresses the entry into it and writes it out. That folio is cold by
-> > construction, but it is currently left on the LRU for page reclaim to f=
-ind
-> > and free later. This wastes a reclaim scan and keeps cold memory reside=
-nt
-> > longer than necessary.
-> >
-> > For synchronous-IO swap devices writeback completes in the calling cont=
-ext,
-> > so the folio can be freed right after the write rather than left behind=
-; do
-> > that. Because it is freed directly rather than through reclaim, it is
-> > allocated off the LRU: dropping the last reference on a folio still on =
-the
-> > LRU would trip the free-time page-flag checks. A folio that a concurrent
-> > swapin has meanwhile claimed is left in place and reclaimed as usual.
-> >
-> > Asynchronous and filesystem-backed swap complete writeback in interrupt
-> > context, where the folio cannot be freed; they are handled in a later
-> > change.
-> >
-> > Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
-> > ---
-> >  mm/swap.h       |  3 ++-
-> >  mm/swap_state.c | 17 +++++++++++------
-> >  mm/zswap.c      | 36 ++++++++++++++++++++++++++++++++++--
-> >  3 files changed, 47 insertions(+), 9 deletions(-)
-> >
-> > diff --git a/mm/swap.h b/mm/swap.h
-> > index 77d2d14eda42..c617e5a0257f 100644
-> > --- a/mm/swap.h
-> > +++ b/mm/swap.h
-> > @@ -306,7 +306,8 @@ void *swap_cache_get_shadow(swp_entry_t entry);
-> >  void swap_cache_del_folio(struct folio *folio);
-> >  struct folio *swap_cache_alloc_folio(swp_entry_t target_entry, gfp_t g=
-fp_mask,
-> >                                      unsigned long orders, struct vm_fa=
-ult *vmf,
-> > -                                    struct mempolicy *mpol, pgoff_t il=
-x);
-> > +                                    struct mempolicy *mpol, pgoff_t il=
-x,
-> > +                                    bool skip_lru);
-> >  /* Below helpers require the caller to lock and pass in the swap clust=
-er. */
-> >  void __swap_cache_add_folio(struct swap_cluster_info *ci,
-> >                             struct folio *folio, swp_entry_t entry);
-> > diff --git a/mm/swap_state.c b/mm/swap_state.c
-> > index 9c3a5cf99778..048efc7ca612 100644
-> > --- a/mm/swap_state.c
-> > +++ b/mm/swap_state.c
-> > @@ -403,7 +403,8 @@ void __swap_cache_replace_folio(struct swap_cluster=
-_info *ci,
-> >  static struct folio *__swap_cache_alloc(struct swap_cluster_info *ci,
-> >                                         swp_entry_t targ_entry, gfp_t g=
-fp,
-> >                                         unsigned int order, struct vm_f=
-ault *vmf,
-> > -                                       struct mempolicy *mpol, pgoff_t=
- ilx)
-> > +                                       struct mempolicy *mpol, pgoff_t=
- ilx,
-> > +                                       bool skip_lru)
-> >  {
-> >         int err;
-> >         swp_entry_t entry;
-> > @@ -484,7 +485,8 @@ static struct folio *__swap_cache_alloc(struct swap=
-_cluster_info *ci,
-> >         lruvec_stat_mod_folio(folio, NR_SWAPCACHE, nr_pages);
-> >
-> >         /* Caller will initiate read into locked new_folio */
-> > -       folio_add_lru(folio);
-> > +       if (!skip_lru)
-> > +               folio_add_lru(folio);
-> >         return folio;
-> >  }
-> >
-> > @@ -507,7 +509,8 @@ static struct folio *__swap_cache_alloc(struct swap=
-_cluster_info *ci,
-> >   */
-> >  struct folio *swap_cache_alloc_folio(swp_entry_t targ_entry, gfp_t gfp,
-> >                                      unsigned long orders, struct vm_fa=
-ult *vmf,
-> > -                                    struct mempolicy *mpol, pgoff_t il=
-x)
-> > +                                    struct mempolicy *mpol, pgoff_t il=
-x,
-> > +                                    bool skip_lru)
-> >  {
-> >         int order, err;
-> >         struct folio *ret;
-> > @@ -522,7 +525,7 @@ struct folio *swap_cache_alloc_folio(swp_entry_t ta=
-rg_entry, gfp_t gfp,
-> >
-> >         do {
-> >                 ret =3D __swap_cache_alloc(ci, targ_entry, gfp, order,
-> > -                                        vmf, mpol, ilx);
-> > +                                        vmf, mpol, ilx, skip_lru);
-> >                 if (!IS_ERR(ret))
-> >                         break;
-> >                 err =3D PTR_ERR(ret);
-> > @@ -643,7 +646,8 @@ static struct folio *swap_cache_read_folio(swp_entr=
-y_t entry, gfp_t gfp,
-> >                 folio =3D swap_cache_get_folio(entry);
-> >                 if (folio)
-> >                         return folio;
-> > -               folio =3D swap_cache_alloc_folio(entry, gfp, BIT(0), NU=
-LL, mpol, ilx);
-> > +               folio =3D swap_cache_alloc_folio(entry, gfp, BIT(0), NU=
-LL, mpol, ilx,
-> > +                                              false);
-> >         } while (PTR_ERR(folio) =3D=3D -EEXIST);
-> >
-> >         if (IS_ERR_OR_NULL(folio))
-> > @@ -683,7 +687,8 @@ struct folio *swapin_sync(swp_entry_t entry, gfp_t =
-gfp, unsigned long orders,
-> >                 folio =3D swap_cache_get_folio(entry);
-> >                 if (folio)
-> >                         return folio;
-> > -               folio =3D swap_cache_alloc_folio(entry, gfp, orders, vm=
-f, mpol, ilx);
-> > +               folio =3D swap_cache_alloc_folio(entry, gfp, orders, vm=
-f, mpol, ilx,
-> > +                                              false);
-> >         } while (PTR_ERR(folio) =3D=3D -EEXIST);
-> >
-> >         if (IS_ERR(folio))
-> > diff --git a/mm/zswap.c b/mm/zswap.c
-> > index 761cd699e0a3..3c494c5a671c 100644
-> > --- a/mm/zswap.c
-> > +++ b/mm/zswap.c
-> > @@ -972,6 +972,30 @@ static bool zswap_decompress(struct zswap_entry *e=
-ntry, struct folio *folio)
-> >  /*********************************
-> >  * writeback code
-> >  **********************************/
-> > +static void zswap_writeback_free_folio(struct folio *folio)
-> > +{
-> > +       folio_lock(folio);
-> > +
-> > +       /* The folio was allocated off the LRU and nothing re-adds it h=
-ere. */
-> > +       VM_WARN_ON_ONCE_FOLIO(folio_test_lru(folio), folio);
-> > +
-> > +       /*
-> > +        * Gate remove_mapping() on folio_test_swapcache(): a racing sw=
-apin may
-> > +        * have freed the swap slot (folio_free_swap()) and dropped the=
- folio from
-> > +        * the cache, and remove_mapping() must not run on a non-swapca=
-che folio
-> > +        * (it would trip __remove_mapping()'s mapping =3D=3D folio_map=
-ping() check).
-> > +        */
-> > +       if (folio_test_swapcache(folio) &&
-> > +           remove_mapping(swap_address_space(folio->swap), folio))
->
-> Hmm I think you also have to test for writeback and dirty here right?
->
-> After a racing swapin freed the swap slot, the folio might be dirtied
-> and swapped out again. We probably shouldn't try to remove_mapping()
-> such a folio?
->
-> We also do similar check for zswap/sync-io devices in pageout handling
-> (mm/vmscan.c, shrink_folio_list()), and the other dropbehind handler
-> (filemap_end_dropbehind()).
+I wonder why setting the type is even in ctor rather than in allocation.
+ 
+> Another place to clean up I guess? (that one _definitely_ is a follow up though
+> ;)
 
-Actually it took me some time to eliminate the writeback check, I
-think it is not necessary.
+Yep :)
+ 
+> Cheers, Lorenzo
 
-First, we only call remove_mapping() at the end of writeback (easy scenario=
-).
-
-Then comes your scenario, the hard one. But it cannot happen because
-dropbehind folios are allocated off lru. Which means that a racing
-swapin can re-dirty the folio (that will get caught by remove_mapping
-itself) but it cannot be swapped out (ie under writeback) because it
-is off lru and then cannot be reclaimed.
-
-But writing that, I realize I may have missed other "swap triggers"
-(MADV_PAGEOUT for example). Perhaps adding the check is safer (and
-cheap anyway), what do you think?
-
->
-> When I was playing with this, I also tested the folio with
-> folio_test_active() and folio_mapped(), but I must admit - I do not
-> remember why I did it. Could just be me making sure we dont get rid of
-> frequently used folio rather than for strict correctness. :)
->
-
-folio_mapped() is not necessary because remove_mapping() checks the
-refcount. folio_test_active() is always false in my case since
-allocated off-lru.
-
-So unless someone confirms what I said above for writeback, I'll check
-for it, it's cheap anyway.
-
-Thanks,
-
-Alex
+-- 
+Sincerely yours,
+Mike.
 
