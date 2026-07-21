@@ -4,106 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A355EC4452B
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 22:29:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2951DC4452B
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 23:03:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B7836B007B; Tue, 21 Jul 2026 18:29:21 -0400 (EDT)
+	id BD3DB6B007B; Tue, 21 Jul 2026 19:03:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 468266B008A; Tue, 21 Jul 2026 18:29:21 -0400 (EDT)
+	id B84906B008A; Tue, 21 Jul 2026 19:03:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3577E6B008C; Tue, 21 Jul 2026 18:29:21 -0400 (EDT)
+	id A75E36B008C; Tue, 21 Jul 2026 19:03:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F3FDE6B007B
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 18:29:20 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 935F3A0987
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 22:29:20 +0000 (UTC)
-X-FDA: 85014226080.20.9FE9EBB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id AC91F180009
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 22:29:18 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e7fV4X+I;
-	spf=pass (imf16.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784672958;
-	b=f8LCha4kaF5JDUI/SqkW4KQANZbZlQwVZ7Raz+9IoEnqaiJT7pLo41GHx7e5eqFO6GUWuZ
-	A/oiYxkqZ76rbEGe5zM9unW/9LdeAPVIqLvmgD6vfQtKXpO8ougAcsIhG/3h+Njm7AGBEa
-	F3qY1NQmFfyzxyz05AGsCEeCnHxbQdQ=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e7fV4X+I;
-	spf=pass (imf16.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 76E456B007B
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 19:03:00 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 024131C0359
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 23:02:59 +0000 (UTC)
+X-FDA: 85014310920.06.C9F9C56
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 1BA4A140012
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 23:02:57 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=l5ZWZK0a;
+	spf=pass (imf26.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=skhawaja@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784672958;
+	s=arc-20220608; t=1784674978;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2oMF13mkpXboxWf/OL9zlV7n9G6mE79uD6c/9l03sfc=;
-	b=X5MmactJ+Yow0SkHy3DYMwEDBVhdIcBeME5gHf5B6V+emwJRmjw+Qy2go4v0P534ibL2uN
-	60kAguWi7xKjdpe8cYvObFmO5nepZDNM9ueRWqyia4+F1VT1e8cCPadlt8kS7zWgAZdgbs
-	rHjR+cJHk6L2b/sncDLs1PfvmBo3TeE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E2CF060A78
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 22:29:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BBC51F00ADF
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 22:29:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784672957;
-	bh=2oMF13mkpXboxWf/OL9zlV7n9G6mE79uD6c/9l03sfc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=e7fV4X+IQERegCO70hRUpfCgz5PUZnB0dgb/djnu9ElGem8hRmOSHX2IBO7liWWto
-	 x0MWRObMG/ZgeiIP3DfRHA/CXXGHBiRj4thQKK6x85Nj9mRs1AxPKXKxZkMFeYzBpn
-	 /p/VsZo4tSYtikLrCcA06kmoXbeZuxfTrlcMHNXcoL2RDVpeFx6Z7H5YCNXbHh4Lg5
-	 lzj7281Bd2XNhH3bxbx0pNuZe/HIbMFL0CwL6VcY7ZKeqYJ8PeZtnx40rp/RNPP65a
-	 My6zb2vLteA2+EOIoyf2bjzpOWnyUOjrjDMLR3HQNNjei3PbJo67c+OqJxEXlNbPiH
-	 TpbUO3xAS5bbA==
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-81ee41aaec1so60186327b3.3
-        for <linux-mm@kvack.org>; Tue, 21 Jul 2026 15:29:17 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RqJQELU5KXfvSPuKFitnqIXJg5cTklFfrtO4NUehEebtx+00UL85pN0ZWuK7JEysWslHLhFMY25Mg==@kvack.org
-X-Gm-Message-State: AOJu0YxokvzmpLo730kTIsAExfH1kujEN9YqlZXJIyjhZWn52TK/1s11
-	fsCrTByihaIJA8uQ6SbxXpjFGr73dGpmgT9LJGODFx+3YtuptDWVyz3sHPL3cnTyk9f4SVEl+7d
-	8ql5b8UTzntqKmgdjZdYjj1FcWebu1E9ozZN7v4/WYQ==
-X-Received: by 2002:a05:690c:4d83:b0:80c:3848:bdf4 with SMTP id
- 00721157ae682-81ef2671daamr69194697b3.41.1784672956929; Tue, 21 Jul 2026
- 15:29:16 -0700 (PDT)
+	bh=kK8bQTGCWBVYNgO28KRycMBgomSj7cEEqhXHP2aOvCg=;
+	b=hRxyNcVNrwHMZ1jJqD1NNAaGrzUo4HvsDY0vyi4wAp3+Wa6V5UFze/N+x7W7pHEdJugN9Q
+	l5LFrO0WTLrzPItNbtFrn+ZUfL+ilTpIPABX9gFDf43Hl7w27+T2JwpB1Y1sBokOeldr1R
+	4u8DJ0IG6XMa5iWvwFfO4RcQ86s/97I=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=l5ZWZK0a;
+	spf=pass (imf26.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=skhawaja@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784674978;
+	b=GTOugB1U7eNAYIRA03i27LHyNbs3YdPgg21lzGu+KASkSL0d9VFZO9UUjcMXV13JNTQK5N
+	7Sb09q+hecs9Qr6aig6WugjZ3yQwnTjLFHjrw5MpkYw/Pi//md8NrbB4ycvN038YmTKhDj
+	04ZsfNAMcNEK29ED8ZkQg/2vm8MB1N4=
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2ccdf36f63dso604495ad.0
+        for <linux-mm@kvack.org>; Tue, 21 Jul 2026 16:02:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784674977; x=1785279777; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=kK8bQTGCWBVYNgO28KRycMBgomSj7cEEqhXHP2aOvCg=;
+        b=l5ZWZK0aZZpzhyqff0tHxfF1BLjNzuvcX7l0dbI3AGfNEn+Fj/sjIGKAqoWdDs7OPL
+         cb9xSKAocS6zPqUuCiGh9idY06MbU35u1JfxvX0yeGmRCnweraEUmi/JMmhQTDEtb95x
+         GiQo3QJNz8gxgAXtJcv1Iq61UFp4Rit0iGRMRpgT/L5ikAuhNC2VptOXtlAf0Bp7aQDE
+         sBEogKeO6Txfb3E+YtlEP6p+JGt8Fr/ltNKipYTIb879ddrB4kXZKBmWkP3MRpPApgCD
+         QZnq4LzHztPDwV4BDDlt9lxFcsrbTUZKCm3Z1RsSrHX4WZy4iQRBQYjdo7vgWWsTSv49
+         0UZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784674977; x=1785279777;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=kK8bQTGCWBVYNgO28KRycMBgomSj7cEEqhXHP2aOvCg=;
+        b=KGWj4qurgOcW39AfBQl6WgATEGZWfPyB+EOLusS9fijxXWfjH5/DFuEWpRnY9b5r7o
+         VW90SN6DQ5wIrZqmOINT2HQr0K6G6x4TTTVaWq7/qUmjP+MJE3mWAfQY1BHvIw5f9MGE
+         YGT+8PeGKPVJEF0GO+C+cbhl9fridwrbB3M5L/7jPFvs+LYsJJvmu/vj1iFsGZCu8LnU
+         3r0jhh41Kp7TcKNQYq0DQPCJJ/ZE/Hj9htXIj97Nrz6gHj0Nv0VitqFK9wX4hQVP5kio
+         FNRcPI0lBdeKcLv0ZWzhURftUdydDBWVIcqaalQg0sOmG/q3COhIgFeATdzbaJzGKfyj
+         vBYg==
+X-Forwarded-Encrypted: i=1; AHgh+Rqz69O1N3nm2/nJeGuZ8bmXokHBoqlhLa7UPRfKfnzM1+PEfA/7MswESAik6ShKx++fbwq3OWKBag==@kvack.org
+X-Gm-Message-State: AOJu0YxG+n+YQZy8a9mZQP/a4ELx9YEdsPiAZc/kjFrcPz7x4Lqd+UAy
+	ICovdhnn5WT5RNZIEyyMgLYOG8z9iNIzIgUoT3mB4x1HZ9O+VhE6dGUmwTGRauJ68w==
+X-Gm-Gg: AR+sD10+qXjn0vPcZvv6HLFbs3BddbyeTVEo9pDmganOl/5Yf+L61ZQJrjpyzKBoPND
+	mtH1fcbmX0KvkRkdAATNyLGzWWkYGKdauCnq/Y7Fp+Q2v6u+/gtz4qYa0PNvaGXSrGF/kCD64n3
+	B0WqLgGH0QL4ksYit1LFn/ZmPYNRjOWdBuLZPx67dsxeccunyCqgJGaCi1HCnDt/NARWlrWdqhy
+	mtlSwbJP692UvIfucktokAhBPQtRm+tyZc1hdutTKpNjLNh0NJhPoD8wVW7AxuQVwtzJBBPaMru
+	ocVPmH4+mORVYzPJoYD/U2e0lB/OPEQgNwnl2fWPdTAO0C3eXXni+/Z//SpCPB01bqS5O586cH0
+	2NVnsr1s/3nPxHNf6eW9vHXHv5iOjKjThy7aVd16z05V+U+N8inWAIYTXIvvqQ8ILe3fj1TElM2
+	na2fEEtS2UvAeIwt0Hmyn3y6VSToY8givMi8PJaLwlQtyTCcuvfq40QWU3UoVS+63cMOiJgy4c
+X-Received: by 2002:a17:903:2409:b0:2c7:9e6a:1a8d with SMTP id d9443c01a7336-2cf8f3c3e69mr1002465ad.12.1784674976345;
+        Tue, 21 Jul 2026 16:02:56 -0700 (PDT)
+Received: from google.com (168.136.83.34.bc.googleusercontent.com. [34.83.136.168])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbb8f18bb8dsm207669a12.19.2026.07.21.16.02.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Jul 2026 16:02:55 -0700 (PDT)
+Date: Tue, 21 Jul 2026 23:02:52 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: David Matlack <dmatlack@google.com>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, kexec@lists.infradead.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-pci@vger.kernel.org, Adithya Jayachandran <ajayachandra@nvidia.com>, 
+	Alexander Graf <graf@amazon.com>, Alex Williamson <alex@shazbot.org>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>, 
+	David Rientjes <rientjes@google.com>, Jacob Pan <jacob.pan@linux.microsoft.com>, 
+	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Josh Hilke <jrhilke@google.com>, Leon Romanovsky <leonro@nvidia.com>, 
+	Lukas Wunner <lukas@wunner.de>, Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, 
+	Pranjal Shrivastava <praan@google.com>, Pratyush Yadav <pratyush@kernel.org>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
+Subject: Re: [PATCH v7 03/12] PCI: liveupdate: Track incoming preserved PCI
+ devices
+Message-ID: <al_3nOssZoa6RoCq@google.com>
+References: <20260710212616.1351130-1-dmatlack@google.com>
+ <20260710212616.1351130-4-dmatlack@google.com>
+ <178432481253.189683.3297727348836286619.b4-review@b4>
+ <CALzav=e1Gcu-9TD7F--41cYqKBrStKOE4VqQ4K3PKdNuYnNmcQ@mail.gmail.com>
 MIME-Version: 1.0
-References: <20260707082614.95030-1-baoquan.he@linux.dev> <CAKEwX=P50av2rfocpsqZoDQowZ=EEhQ-5vj5tBykbNz8vtKTzA@mail.gmail.com>
- <ak-IS61GeP85Jnxg@MiWiFi-R3L-srv> <CAKEwX=PEgnJ4nGFZYUwMryjq+Yp4v8Op_HdZ6_xEJ4n_MrM0Yw@mail.gmail.com>
- <aldtS2S-TXc7ocsH@MiWiFi-R3L-srv> <aleW5xL2gYcU_Rl4@MiWiFi-R3L-srv>
- <CAKEwX=Pm_C6OD1jAo818wzFVVhLwgVFu-4bLdNrmUZ01URpLTQ@mail.gmail.com>
- <CACePvbV62T9LA894vTXzBZQ2PNh6iYZD7eH6=UjeFSWhUW2aDA@mail.gmail.com>
- <CAKEwX=NXJ1LKQOA8Qy_4YOS6v+jGbAJnbD5K0=jNbgC8Da0iKw@mail.gmail.com>
- <CACePvbXAqutPvawTcBXLa47=WVKdLBDHL8unKOSvV+KbrEmmwA@mail.gmail.com> <CAKEwX=MjvpNwLVg6FZRgYw=31D4XwJnn_ty4EQr+KqzQX+Rz6g@mail.gmail.com>
-In-Reply-To: <CAKEwX=MjvpNwLVg6FZRgYw=31D4XwJnn_ty4EQr+KqzQX+Rz6g@mail.gmail.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Tue, 21 Jul 2026 15:29:05 -0700
-X-Gmail-Original-Message-ID: <CACePvbVydmgscK6UgnqpHXqvpAaQjz+MZjOa1hmAVp1Va5u-2A@mail.gmail.com>
-X-Gm-Features: AUfX_mzqAuNJeRHp4BdDCk65opFAnGacdId38aBy9aqYusQfkWEodpfH96O7B5w
-Message-ID: <CACePvbVydmgscK6UgnqpHXqvpAaQjz+MZjOa1hmAVp1Va5u-2A@mail.gmail.com>
-Subject: Re: [RFC PATCH 00/10] mm/swap: ghost swapfile with backend switching
- via Redirect entries
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: Baoquan He <baoquan.he@linux.dev>, linux-mm@kvack.org, akpm@linux-foundation.org, 
-	kasong@tencent.com, shikemeng@huaweicloud.com, baohua@kernel.org, 
-	youngjun.park@lge.com, hannes@cmpxchg.org, yosry@kernel.org, 
-	chengming.zhou@linux.dev, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 8r7kzodrxy14xini6cw3jbnc51xfpseu
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: AC91F180009
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CALzav=e1Gcu-9TD7F--41cYqKBrStKOE4VqQ4K3PKdNuYnNmcQ@mail.gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1784672958-307411
-X-HE-Meta: U2FsdGVkX1/u/cG/SFeYe4JHlUOeHfDReJLs/6FaPk20JLBIpYqN6ixHCfnE4EeopChvX5uUw1yueJlpvySTHxypVhHGlWq+clpQ31PyIHIz83vwE4Lwm/pHQM+ra4UzzkYBA+pIbddubREZ9oFdGlVJ1QQhrYYbAcSDSbtlGf8Tx8bA+uGY4+62/iJmMkji7T1OZNM6VN0jYWMV3dLoLF976zx+t+8qVGGYQyNZzi2AZDItMafgwfEq25ub8QadKr5irwO3iXwzEKml+f8Uyh4EezDtCKSr/T428cDi2bugVcB5aP5AzUQj9Yh4bRxFJzkImtbCFNDR0clTF8qZGc5H9j12iPEkjzru+PKSIjD+KBZ7LFD3qqOQss4Rw11peu2inq95ROJXZBr47887hCInFxbo5eeuqL0QCOyY6B9cveQ97C+WfZCrTSsIHREPp78YUZm9sm29mODxPm1NLxEnUHAxbX32Hw/kZlzGJ+kz6W+TrUY/wtNtxC4Dw0XzdW1RJ2udU4hb6ScpHg40EQyKNGMUULy9e/NkN/IP7L+2L7lqJ3hqUmBouhDjuY/wdjnVrNFxMs0A853E2a0zEh5VpFNez30AVTHppY7KUicIQrCaOjvDF/8y/PNQ/m1mAAoxO7a4vHY3RrBp7kIIbGyjrhU26jV4Fl1e1hc+pGegTeQcedEMMSdwR/z1flLmSc0cAHN48Kyef0AT6LMyHcNyC7hKwr3nq4Z6jCbAHdnKLtZYt0///eQeNsH5LDUWCA3Rocz2+12Dt/1rlVObuL86bv721K4y3wnfEBfdxGxrMkDnNnix7NmTU/sW4TTgBlq53s9bQRTUtK58OmY8dSc6Fp46YNx4Cg4E1uRUsp5nIXDA4ORtFNai8WTeuodpKSX7zG/XbLNDv9IwbwQW48wYUa3HsoONvEkHJs+yq+T3kVT/3BaWD+lNA01g95d7GoiBfQafWojCIzW2ENx
- WcPW6+Qi
- HHvPMTa+r05d92nQeDj0RCZkCcDb9HJUTYgE8oU8Bwi3tBTjMDOBU+dE8M3/sUh4mDInIeIYLiOQsiDGhO+pOTShzC4HL45rnsOgDo0SQsjUoWwPOG5Jyh/hRfRrNJSRZxD+e097LYLBwAYDpNxDFiWGn0JZRnYJiJM3upqv6rFa1GrVGFIsBhjSZLLQbypYH/lrmsup0ZIClyKyAWXl5VacM//cf1p52pKz0PI30/Aol+C0ryz2MvIF/fF3N1zivpkAM4ueBahd5XeEUxAXnZCP46Eg9PCw0sOPRI1l11ZAbYT0AYAhM+uqGjQ==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 1BA4A140012
+X-Stat-Signature: jxh46d4hjh9xnaduitkbrnkciggs541k
+X-HE-Tag: 1784674977-732633
+X-HE-Meta: U2FsdGVkX18wyJM/UMbf+hjAROstPt0oPuaoiE2M5wUeOfcyfpmI1/O28ubJwVb/GkgklV6wgm9CABCuCbeJ+mhEkxAT2baFr+76dNLsbPN3i1r3HYTgO/3UOGLPWkZSD3zE4bgt/RfEuCa6DGa+NeVqxleyF5OIpE7GHsZgjwDH2g+lymyhiz1J21LD12MNl3HkvLTGbhYM9PJJdCrzmkwe1kI0fKQEzYE8bQS3/m3s3Oxcs5pbrn8/KcvJDZHDPWgo5V+MOJdkISyXIoaWwfoc373V0dmVlQnb2ZwtSQhJ+YMZViB6IgvjXg/i2fy5Ab3CTiSOICCnL1Ta3CZ8QiCu+DVa1FeKIXc1oltRlRerc0XV0lMSF28m1Zl8eLPaEZEOMrHWpdhAE4PH75A6hFXLXSV4tzjnG++jx3ab8r8oSRqcLdKXG5UMvpYqjdrJB1U4cSSCjclgpqv4Zy6ybM2AuR7g0cJM2jOPdkmxUAXy68gPZ7mpmKlpKRUFMbtRY71fXZ+rsCjm0Y8y18yGBf6cHR/5RsYZYDOuI6QkDGYnrpwi49nRxRwpwdW61yLKPB8EtPb9wm3XGvor0hq6OpM/h6ZQac1Gy9ce010usmCJAlI9C8wivelzAQI/LO458n+ZwTAu6AQ74lKQJn9RTgdGTgia14Eexvl6famhG2WWz9gVi8OxXUQcBzEAZ5P46QTU13ynUxje3hDEgxmAPHD8AM95SRkrQ1Unjax9DQZK+gGxLJYyrwFawBtU++fxoKJt/SXcLa+Niu/wTHSkLzw2dKDiedYHCzGzuk/qmICXH7wffTRTLwxL70MLNK1Vd11jllWoMz4TrOull99B6BTskXT6h/vb8wwQlsEQMarFqV8pFh33NA5unvyGx2KXPoKw85BqLFSDunyO8o4ixY74HPbDipAI+/94TeXKgT80LgsBTl/L+b9BJDaeArTU4XCQ04/FoOMNb+0+Ooz
+ EVZAIdD8
+ ydEvznYQEN27VJJw8xUIZwA4O73q2vRFBrXN+rmmMOmyGsf3yxttGtYNSbocZ6GTwfN9AD+cl/2JKYmufV+151tDEvFpY13HI9kfllf6rBEiY2lDNa1jjsDbGHyr5pGrFocWfGweuIZLWyXlZ1q8PRcsNob8BimtuxfSz3qdxzm3Wtl3KP8XO2BNbdbxH5QoXvAk1ziD+bfAc7kC92xbMYm5DL4TxYwouzc4gcksAue3OBdWI7UK1UlkWn5K/UOmiR6P4WPMCCOsFR7dwkjnD1NqYoc0l36Rf18Uq+8N3xqE/WB9EkcA/MupPBQbMl3fhdAdMB3hhJv+F0JiJhjSWUqcY+Jr5nxbDwU7fTyeCuCbc+fehlthJsCPH1YAbXObKWukktNe8K7QcDf8T6iELxZ1AVa84HlKdjGFyHnAiEPqcHhu/zSUfA29UWQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,92 +134,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 21, 2026 at 11:37=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wrot=
-e:
-> > I hope you are not clinging to that xarray because I want to get rid
-> > of that as well.
+On Mon, Jul 20, 2026 at 02:54:51PM -0700, David Matlack wrote:
+>On Fri, Jul 17, 2026 at 2:47 PM Pasha Tatashin
+><pasha.tatashin@soleen.com> wrote:
+>>
+>> On Fri, 10 Jul 2026 21:26:06 +0000, David Matlack <dmatlack@google.com> wrote:
+>> > diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
+>> > index 03075ce06ac9..df6a02240aa4 100644
+>> > --- a/drivers/pci/liveupdate.c
+>> > +++ b/drivers/pci/liveupdate.c
+>> > @@ -298,6 +377,87 @@ void pci_liveupdate_unpreserve(struct pci_dev *dev)
+>> > [ ... skip 76 lines ... ]
+>> > +     /*
+>> > +      * Hold the ref on the incoming FLB until pci_liveupdate_finish() so
+>> > +      * that dev->liveupdate.incoming cannot get freed while the PCI core
+>> > +      * has a pointer to it. It's better to leak the incoming FLB than do a
+>> > +      * use-after-free if driver does not call pci_liveupdate_finish().
+>> > +      */
+>>
+>> I am confused by this. Each preserved PCI device must have an associated
+>> FD preserved with it via LUO. I.e., vfiofd would need to be preserved. If
+>> the vfiofd was not reclaimed, and finish is not possible, that vfiofd
+>> would still be owned by LUO, and therefore PCI FLB refcount would stay
+>> positive.
+>>
+>> However, if finish is possible, and this is the last vfiofd that is
+>> finished, FLB will be freed as soon as the reference count reaches zero,
+>> which I would think is the expected behavior.
+>>
+>> What is the point of holding a reference here, instead of only for the
+>> duration of FLB access, i.e. to make sure we are accessing a valid data?
 >
-> That's what I meant though. The virtual table replaces it for vswap users=
-.
+>The duration of the access is from here until pci_liveupdate_finish()
+>because that it when the pointer (dev->liveupdate.incoming) is
+>cleared. So that is why the PCI core holds the reference from here
+>until pci_liveupdate_finish().
 
-But you still have one xarray for lookup swap entry to cluster right?
+I think LUO gives you guarantee that this pointer remains valid until
+the FLB finish(), because all the vfiofd that were preserved have not
+finished. And when all vfiofd have finished, LUO lets you know that the
+pointer is becoming invalid so you can unset these in the finish()
+callback from LUO?
 
-I want to get rid of xarray in both zswap and VS. The ultimate
-solution is to not have xarray in the zswap/VS lookup of swap entries
-at all. I believe achieving that would be a better win. I can already
-see that happening by building on top of Baoquan's xswap kvmalloc
-growth series.
-
+If I understand this correctly, I think by keeping long references until
+finish you are replicating the vfiofd bound lifecycle that LUO already
+gives you.
 >
-> >
-> > > The rest is small stuff here and there that is not O(slot) but rather
-> > > O(cluster). For example one struct rcu_head per cluster, xarray
-> > > overhead for the dynamicization - note that this xarray manages
-> > > cluster, not slot. I think that's all, unless I miss something.
-> >
-> > I also mean the normal path that accesses the swap table will take an
-> > xarray lookup with different locking requirements.
-> > I prefer to keep the swap table and cluster info where they are now to
-> > avoid that extra complexity in the mental model.
-> >
-> > It seems allowing the cluster array's virtual entry to grow should
-> > mostly answer your VS need?
->
-> I don't get it. What do you mean here?
+>We could avoid this by deleteing dev->liveupdate.incoming and,
+>instead, fetching the incoming FLB and doing the xarray lookup every
+>atime the PCI core needs to access the device's incoming ser struct,
+>but that would be inefficient.
 
-I mean, here is my observation, please correct me if I am wrong,  VS
-patche series needs two things from the swap core function:
-1) able to allocate more swap entry beyond the current si->max.
-Baoqun's kvmalloc grow patches should be able to answer that.
-2) able to store private data structures per swap slot. e.g. a zswap
-entry pointer, or a redirection pointer or both. We can modify the
-swap core to provide this extra context per swap entry for each swap
-device. In Baoquan's new purposal that is the vs_table array. We can
-use the same kvmalloc grow trick to grow this pointer array as well.
-
-That way, it does not need to have the VS xarray lookup in front of
-cluster_info. You just keep growing the cluster info array and
-vs_table array as needed.
-
-> > > So if you don't writeback, i.e no physical swapfile, then I think
-> > > there is negligible overhead (no rmap and all that jazz).
-> > >
-> > > Does this sound acceptable to you?
-> >
-> > Regarding the memory size, yes, if the overhead is less than 1 byte
-> > per swap slot compared to the ghost swapfile. The location and lookup
->
-> If you see where I miss, point out. Otherwise I'll take that as a yes? ;)
-
-Pending my deeper look into your patch series. I have been bitten by
-your patch series' claim about metadata overhead before so I am a bit
-more cautious about concluding anything regarding your patch's meta
-data usage now :-)
-
-> > path for the swap table and cluster info are not ideal because VS will
-> > force a different location and lookup code path. I prefer growing the
-> > cluster info array to gain more swap entries and keep the current swap
-> > cluster and swap table data structures where they are.
->
-> The current swap cluster and swap table data structure are *exactly*
-> where they are. In fact my proposal keep it closer to the status quo -
-
-It is not the case in my mind because the swap entry will require an
-extra xarray lookup to get to the cluster info. No?
-I do  not want that extra xarray lookup. I prefer an array lookup if
-possible. With Baoquan's kvmalloc grow, that should be possible.
-
-> once you lock the cluster, swap cache and swap count operations are
-> *exactly* the same, whereas Baoquan's approach requires taking swap
-> table information and shove it into the struct zswap entry.
-
-Yes, my concern is the xarray lookup for the swap cluster info.
-
-> Can you clarify what you meant here? :)
-
-It still has the xarray lookup in the code path (looking up the swap
-entry index to get swap cluster info), that xarray is what I want to
-get rid of.
-
-Chris
+Sami
 
