@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02923C4452B
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 16:23:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 040AEC44532
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 16:23:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A22B46B0092; Tue, 21 Jul 2026 12:23:51 -0400 (EDT)
+	id B5BD76B0095; Tue, 21 Jul 2026 12:23:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9FA476B0093; Tue, 21 Jul 2026 12:23:51 -0400 (EDT)
+	id B338E6B0096; Tue, 21 Jul 2026 12:23:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9381D6B0095; Tue, 21 Jul 2026 12:23:51 -0400 (EDT)
+	id A704D6B0098; Tue, 21 Jul 2026 12:23:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 573276B0092
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 12:23:51 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 7861C6B0095
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 12:23:58 -0400 (EDT)
 Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C7BED1A01FB
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 16:23:50 +0000 (UTC)
-X-FDA: 85013305020.10.6F2511F
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D76EE1A01EB
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 16:23:57 +0000 (UTC)
+X-FDA: 85013305314.10.D6842BC
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 321D54000D
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 16:23:49 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mKMTfTfZ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	by imf14.hostedemail.com (Postfix) with ESMTP id 332A310000D
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 16:23:56 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Hhew6m2T;
+	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784651029;
+	s=arc-20220608; t=1784651036;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XB4al3rOoBg4JSOO19Uh9eYt2qBCEAxlPfiPknctj/I=;
-	b=dqpKNH/DjhfxyrQWpaqCvP4Y51RVE/q0UcB9Zm7IDrPlNwsVarx0DzO0icS08A711lkUqE
-	wgdpv0Q4FbN8Mx3KDaipFXuUSjdLjvfNk3ese2OcixuyehJPv189P/4YjJeGceOP2Sm5cu
-	iQaBsZHC38KUW5biE+uWCDogYEHuknw=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mKMTfTfZ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	bh=ztzLHFgZF1pj4LHMu3VvIZzUHzFoGqe9tmkrlg/P0Q4=;
+	b=wdL9dqGBj2ZiwJ8wuEXaNX14nL8qf6CbTukj4Ts06IdWGxQCW6N4qHNXsjnOYpHnW6k9nd
+	6YrJHYV9ViIihJ40YcpeYJH8C2BBxqCMLan6xiIYpVtjxVQXlUyqvcqshNWjF0YyhDdqL1
+	CF1rSWH/2Y/3RA4pefWwO6Nd1NyAprM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784651029;
-	b=f5k7GdOEaEqnJZSiyoiTE6wFuZUhRrAXjBT8+KPVe+uQjufL/L84RwJRIcz/oHU/YsLVJR
-	AtzUh44ZSLOtD3NAWxljft2kMeG/bHNxgxDCLhKrVY3mOPXomsoVlLSuWhu7ykdcaRiS9F
-	bv7+BZxnJ8xHWxMnaZ9CUZeUo6YZMvE=
+	t=1784651036;
+	b=5FRGTSM7SlCLryAyHBNwiKEti0Hj9ZPT8rWeEooKsNBjjYWjHfeReGPiNfCFPJymraNvse
+	WyWl8PWXQWKqtDkDO18+2WU/eJz67KIBfIlzjAds7WyBvTuzYmkg0zH+eRcmdmhuoxTJqK
+	LinMaMJD5AqZhaPHj+n7DQQcM1kqSZc=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Hhew6m2T;
+	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B1129601DE;
+	by tor.source.kernel.org (Postfix) with ESMTP id BD59B60A5E;
+	Tue, 21 Jul 2026 16:23:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E305A1F00A3D;
 	Tue, 21 Jul 2026 16:23:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7C571F00A3A;
-	Tue, 21 Jul 2026 16:23:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784651028;
-	bh=XB4al3rOoBg4JSOO19Uh9eYt2qBCEAxlPfiPknctj/I=;
+	s=k20260515; t=1784651035;
+	bh=ztzLHFgZF1pj4LHMu3VvIZzUHzFoGqe9tmkrlg/P0Q4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=mKMTfTfZUJdKGwWB88q3MmHstD1zIbNqfuQyZ+BRaAhhajf7LR9JlLvHXO02AACeZ
-	 FTlA0E0QLniF/9UduU1JcK1Zt/0PJvKV+ojBQKZCr+3D8Ut/wKtGHCRw5BkHT5EPSj
-	 GQD7zZIHCIv9D7iMSQPw7l76zQxEOd5wMZ+hwVjw9NzgIyfjEJrr0pK3P8do0X2/YS
-	 z3gNy8oRMf0+fn8Cqp1vwF8N5ezh4wRzEbz8gk/+aeM2Qdnu7V800g9/NYGbN1OOIj
-	 Rwp6d5daE20K+Y5iJgr+4zLFeNl5BXFmfKqOxS7DGq5Y/CxU4aIDzlJE2qmeCE88N7
-	 pQhTF9DI3MSNA==
+	b=Hhew6m2TOv9DRY3CJ5gbegcSEoCRoBYhTbf45iQdRbrMKFcSNrw9pfJTGRkHal5DG
+	 pqwwjVVXbCK/99gt0PM3LFTF44MIq8GFR1Ln36lj/2CLq4/MQi2K/EbV75ihicS6s/
+	 KZX9AWzzwaf86AoOavdoSUccw18O810scPylB6O2yn2ye8JoGgcA5FlxhKbcuTe+3g
+	 0pt009M4LWj4WIRRFBSNZO1cvdBvD/JHkGsywJiS3euU2gHN7KcWgAo+3wnO1a4lJU
+	 kOE2hML+o2O5/WqOcYTGrDHVckMtRkBrIsMPIXn7dZVSzhO0n3VARhQSPwyFXlBaxH
+	 nLyf675udKYow==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Tue, 21 Jul 2026 19:23:24 +0300
-Subject: [PATCH RFC 01/18] x86/mm/pat: Don't gate cpa_lock on
- debug_pagealloc_enabled()
+Date: Tue, 21 Jul 2026 19:23:25 +0300
+Subject: [PATCH RFC 02/18] x86/mm/pat: fix effective RW computation in
+ lookup_address_in_pgd_attr()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260721-generic-set-memory-v0-1-v1-1-2c1fc62306b3@kernel.org>
+Message-Id: <20260721-generic-set-memory-v0-1-v1-2-2c1fc62306b3@kernel.org>
 References: <20260721-generic-set-memory-v0-1-v1-0-2c1fc62306b3@kernel.org>
 In-Reply-To: <20260721-generic-set-memory-v0-1-v1-0-2c1fc62306b3@kernel.org>
 To: linux-mm@kvack.org
@@ -92,16 +92,16 @@ Cc: Albert Ou <aou@eecs.berkeley.edu>,
  Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>, 
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
  linux-riscv@lists.infradead.org, loongarch@lists.linux.dev, x86@kernel.org, 
- Dave Hansen <dave.hansen@intel.com>
+ Juergen Gross <jgross@suse.com>
 X-Mailer: b4 0.16-dev
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 321D54000D
 X-Rspam-User: 
-X-Stat-Signature: ncmy4qby6rno43kffi6ib8q8rgjw3pf3
-X-HE-Tag: 1784651029-400251
-X-HE-Meta: U2FsdGVkX181Gas9/CPd30MugeLwPuCy3lwR9M0rBMRo8di6sByznAkY09Uz7VxBJMMe7L+hnWugHqaCbb3HD/MzvdoBgrZMld9iNLOv1BUY3yPUHXb+g1QW6vxcXc+zMvLMafcbR4OH7eFqEOzCE7TSrYSCNnwTpFhakXZ4oku1CTDlb5/Qre6P0Itc8PctU78/ou5/7K4Tds3+UsgLFzHFz6Tn6+0meO/V+47b8Oc9p5pP3U5OZixNsZDe+wsw9X+anezXTNkNxyryKZOtWZxmdhh2FZm3t5/JeObUqaOcW8VX3vIO69y75wRUHrgtfMPDdHV8JjonMpZHyNSq62GXI/Vfq2G/inGpR493PRjaUZRzvyBT/tIb9doZzHZl7JlzAv90sG45b0NroJU2WOtIiraJCIefbqVZn+GtZC+TStExzRc3JMxw+3HlkRSvWlZqLBL9vjDrS+Vsn2DQX4+AnwLobO3kCVZq7HBgOOwLV/1wRyHnA+/2aKbxoILs50U3qDFdEWqQN4ji6xMuyVUO1l2XzANJoymg8/2jqxnXaZqzJMWBD1fVjAKHyXCebs7Zi4aKGycNJEK1ZUP2b1Skd5QSCd9vGPDIvejLOHcEVUATdpYaqdFLWLwo9xOKLqjf0IHnYLdjP3M3BQQfc99TlBwN4nJBILVF+hQKijk+AftvIvHyzOWbFdeK1IBgTudKUShlLDwsVf8GIfFAh9YugINFIHdT3QJSNPN0+CBZJ4J62UnLYHGjK9EgXzvFDQgY7Z7OF+KdXSNPZH3Pf3lUMmG8YD7vrjQ8GtwRmWmjb9HwERtCj4I0V79oZbBsoEll5kC3gOa+TBHmmT7VpWBC6Zk9kpqNlqoxur0rJ/P3tJCgPBQqepozzr+VC1WLRklVw0LJ0VkNrOwd+zMa6Dt4ydT9jTLTyBDCCaSNsXJvi4MqykV4BBtA9J7HU3hhj6e/vLmNPWAtqQdNjAZ
- EJ0vkzSw
- acnHlw8mez80wO+pmx6vzl13ZJMUkn5uIGSZ0ONHJtZ74tn0AF5UDHXz/42kDrT2AKpfWXWEJS8ucc9X4wl/wD0gHRIe9/JNFRVTvIB0dRlxiL2o1tjin7zEgv7oAIwwXGX/ILsutqd4ozkjtQafxyZ7g24HC2aB9Lka96zPMP0OsGHmmXkTnNeH51lC0S5bY+FVmLCiEMPKHLAxNhXkDatiyk6HDmPg9wb4MAjVfY1l1EBismSI1FXzWhXPQQI5ai9xw9JHTeVQ5zIQSX1BotxeTZhw+IvF76f0LPbvH+SVsnCEnlmQzNDBhlHVVbkBvLZK/7nqM5U1OmqM/Q1MNMW/HSFYk+ghRbkJw+7Vpgpn3515WRT2F08+/gIoGLxOCneWZRFSHJyuu14wovllwf7AXeA==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 332A310000D
+X-Stat-Signature: bg1m8tynqwuxxitsbxg7btfp3ng63deu
+X-HE-Tag: 1784651036-747392
+X-HE-Meta: U2FsdGVkX18NZZ80fJ77frhJuue+DgOheCqLdidKNvQ4Ob4qaeM2BkqSWQI1XnzYnWYZ/+XLjTOqNx9oEJuqF0JPo/znYZUAeuO0QG319UgJqGY28aikml7MPVNMkvtuoMJq+dKj6io9Mwm6pWY8z8TFCzwlYwoSq3oxpABWt768a+2duYCz0mNYMnJWa6aJcBRh8PkusosC5aEmJwyTSCWz5SAyvqS3YJ1iMG4Kct/OM3N4Bk5LCkTWDEqSUbxZrAuged40o5B4zgYJO/isWo71OKOMIVCOZOgVaScj732UXmHaxMogoju7tYpUFH3Xb8uESTlae6c2JK50KfUSQsGqJHkypePh+8bYCmpHoFbuN+MxoXj1tT31BlTtdvjcgwAQgrQJ9J2ywOFmUkT6+VNJJRs1V+zhaTgb2JbyGYNezVInsQNV8BuZeQMBM97509ifM0j+Sfg6dcZHpkgvS8JDzXl3pSiqgrFHtozq/AF5BY7jtiINTDvmKHL4OzH87Z9Z/TnwxKrzB3xskv3mlC/pGt4McJv24Ptt6HOgwDFHygctc9oUkG/fvU2Gy6xkpXBmNnYrkkVn5Q5tkaIzKC2CU046fyeSY9qi6pBfFTjCQw+YaDvpRxZbtiaxlpmhe1BWmBfizsbX7WLMts3/lTROmbZB8rO0wj1aI7RpthD31L9GasLB3a5Bx89Z5ffrMpLb6qchW4qFeJt46lRBMWpnSkCK42vB68jSEVHU5T2XOheGWoRNrRihhuxDRjC7in/m2HKeL0LhekTR3V4u0LuhqGMz7ViBvZzbOFFstnRGbxEjq8N0C8mgv3eAEXHsO8rHuGE0SfFRuKai9E7av5O18e5nRQM1Pj67pK5w/j00S/J4Jlwhb6E9tmJccvppd7b2orozVoga6tsUFzK4FlANUUIYKgJSSsdwfqES03wDlzRs3v73xlE6b+hFfovXdVzBmzmHvk6pv1HJxfb
+ 5M3EQVel
+ G6gccyRtFZmYfrtgsaoQwgKFFT3c+Ue/ztlXhca0RIcPlejLYLM1Ji9Fp82Bo7+l5kvybz1QVFXefqe7m/ppJSJ4YENHn8RK+YUgMG/3FbAelpN92MdMqIDEsApfXaOkypR8tIChUAcWdesOgokJZk3cCwI6ufZbbCiIceKygdbmf/ChX5Xp6/Cn9IbObsw0iv8fn+jz7hDAW/vhan110+FRaEvE5xfmTyvZTepCr07CRydge9OKlcTzJvYsK77BpXQbSx8jj+2vRGdpMw8i4ZmCsDDF7l8wlpJBCs03ZmVyNMpefpYkMHd2/hJ0yPa9WmEhfXu6yxoDOFGe6I7MqzXNLvmYPzFFP3syZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,80 +109,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The splitting and merging of kernel page table mappings between small and
-large is protected by cpa_lock. The merging is relatively new but the
-splitting is ancient.
+lookup_address_in_pgd_attr() accumulates the effective NX and RW bits of
+the walked page table levels so that verify_rwx() can detect mappings that
+are both writable and executable.
 
-The splitting has a locking optimization: since DEBUG_PAGEALLOC forces all
-mappings to 4k, there are no large pages to split. So the code that *might*
-cause a split can just skip the locking (and a few other things).
+The RW bits are folded into a bool with
 
-This is entertaining, but it adds complexity and makes for weird locking
-rules. Plus it's all for a debugging feature which makes the kernel super
-slow in the first place. Optimizing something which is already super slow
-and not used in production is not the best way to spend our complexity
-budget.
+	rw &= pXd_flags(*pXd) & _PAGE_RW;
 
-Stop gating cpa_lock on debug_pagealloc_enabled() to simplify the code
-and the locking rules.
+but _PAGE_RW is 0x2. So consider the accumulation line:
 
-[ dhansen: flesh out changelog ]
+        rw &= pXd_flags(*pXd) & _PAGE_RW;
 
-Suggested-by: Dave Hansen <dave.hansen@intel.com>
+where rw=0x1 and the right side evaluates down to 0x2. It'll end up doing:
+
+        rw = 0x1 & 0x2
+
+and rw always ends up 0.
+
+This way rw becomes false at the first level walked, regardless of the
+actual permissions, and verify_rwx() treats every mapping as non-writable
+and never reports a W^X violation.
+
+Add double negation to the right side to normalize the _PAGE_RW flag to
+0 or 1.
+
+Fixes: ceb647b4b529 ("x86/pat: Introduce lookup_address_in_pgd_attr()")
+Assisted-by: Copilot:claude-opus-4.8
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://patch.msgid.link/20260715144519.934289-1-rppt@kernel.org
-Link: https://lore.kernel.org/all/aab44f08-89f8-47fe-bee4-0ab6b25968c6@intel.com/
+Reviewed-by: Juergen Gross <jgross@suse.com>
 ---
- arch/x86/mm/pat/set_memory.c | 19 +++++++------------
- 1 file changed, 7 insertions(+), 12 deletions(-)
+ arch/x86/mm/pat/set_memory.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index d023a40a1e03..e8316f5ffa8a 100644
+index e8316f5ffa8a..9382f1d6194f 100644
 --- a/arch/x86/mm/pat/set_memory.c
 +++ b/arch/x86/mm/pat/set_memory.c
-@@ -62,10 +62,9 @@ enum cpa_warn {
- static const int cpa_warn_level = CPA_PROTECT;
+@@ -730,7 +730,7 @@ pte_t *lookup_address_in_pgd_attr(pgd_t *pgd, unsigned long address,
  
- /*
-- * Serialize cpa() (for !DEBUG_PAGEALLOC which uses large identity mappings)
-- * using cpa_lock. So that we don't allow any other cpu, with stale large tlb
-- * entries change the page attribute in parallel to some other cpu
-- * splitting a large page entry along with changing the attribute.
-+ * Serialize cpa() using cpa_lock so that we don't allow any other cpu, with
-+ * stale large tlb entries, to change the page attribute in parallel to some
-+ * other cpu splitting a large page entry along with changing the attribute.
-  */
- static DEFINE_SPINLOCK(cpa_lock);
+ 	*level = PG_LEVEL_512G;
+ 	*nx |= pgd_flags(*pgd) & _PAGE_NX;
+-	*rw &= pgd_flags(*pgd) & _PAGE_RW;
++	*rw &= !!(pgd_flags(*pgd) & _PAGE_RW);
  
-@@ -1235,11 +1234,9 @@ static int split_large_page(struct cpa_data *cpa, pte_t *kpte,
- {
- 	struct ptdesc *ptdesc;
+ 	p4d = p4d_offset(pgd, address);
+ 	if (p4d_none(*p4d))
+@@ -741,7 +741,7 @@ pte_t *lookup_address_in_pgd_attr(pgd_t *pgd, unsigned long address,
  
--	if (!debug_pagealloc_enabled())
--		spin_unlock(&cpa_lock);
-+	spin_unlock(&cpa_lock);
- 	ptdesc = pagetable_alloc(GFP_KERNEL, 0);
--	if (!debug_pagealloc_enabled())
--		spin_lock(&cpa_lock);
-+	spin_lock(&cpa_lock);
- 	if (!ptdesc)
- 		return -ENOMEM;
+ 	*level = PG_LEVEL_1G;
+ 	*nx |= p4d_flags(*p4d) & _PAGE_NX;
+-	*rw &= p4d_flags(*p4d) & _PAGE_RW;
++	*rw &= !!(p4d_flags(*p4d) & _PAGE_RW);
  
-@@ -2023,11 +2020,9 @@ static int __change_page_attr_set_clr(struct cpa_data *cpa, int primary)
- 		if (cpa->flags & (CPA_ARRAY | CPA_PAGES_ARRAY))
- 			cpa->numpages = 1;
+ 	pud = pud_offset(p4d, address);
+ 	if (pud_none(*pud))
+@@ -752,7 +752,7 @@ pte_t *lookup_address_in_pgd_attr(pgd_t *pgd, unsigned long address,
  
--		if (!debug_pagealloc_enabled())
--			spin_lock(&cpa_lock);
-+		spin_lock(&cpa_lock);
- 		ret = __change_page_attr(cpa, primary);
--		if (!debug_pagealloc_enabled())
--			spin_unlock(&cpa_lock);
-+		spin_unlock(&cpa_lock);
- 		if (ret)
- 			goto out;
+ 	*level = PG_LEVEL_2M;
+ 	*nx |= pud_flags(*pud) & _PAGE_NX;
+-	*rw &= pud_flags(*pud) & _PAGE_RW;
++	*rw &= !!(pud_flags(*pud) & _PAGE_RW);
  
+ 	pmd = pmd_offset(pud, address);
+ 	if (pmd_none(*pmd))
+@@ -763,7 +763,7 @@ pte_t *lookup_address_in_pgd_attr(pgd_t *pgd, unsigned long address,
+ 
+ 	*level = PG_LEVEL_4K;
+ 	*nx |= pmd_flags(*pmd) & _PAGE_NX;
+-	*rw &= pmd_flags(*pmd) & _PAGE_RW;
++	*rw &= !!(pmd_flags(*pmd) & _PAGE_RW);
+ 
+ 	return pte_offset_kernel(pmd, address);
+ }
 
 -- 
 2.53.0
