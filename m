@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DF50C44529
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 14:57:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04EC4C44533
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 14:57:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B8EF6B00B1; Tue, 21 Jul 2026 10:57:21 -0400 (EDT)
+	id 1180F6B00B9; Tue, 21 Jul 2026 10:57:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 890EF6B00B9; Tue, 21 Jul 2026 10:57:21 -0400 (EDT)
+	id 0F1166B00BB; Tue, 21 Jul 2026 10:57:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 783686B00BA; Tue, 21 Jul 2026 10:57:21 -0400 (EDT)
+	id EFD836B00BD; Tue, 21 Jul 2026 10:57:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 542736B00B1
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 10:57:21 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DBF4D16019B
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 14:57:20 +0000 (UTC)
-X-FDA: 85013087040.25.BFFEA1B
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C08196B00B9
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 10:57:48 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 559B880187
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 14:57:48 +0000 (UTC)
+X-FDA: 85013088216.26.24E87DB
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 184781C0002
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 14:57:18 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WgSfBD18;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf23.hostedemail.com (Postfix) with ESMTP id 7E9CF140011
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 14:57:46 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CF605gLh;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784645839;
+	s=arc-20220608; t=1784645866;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X2h5bpBFH+7npqK5spxeWS5f6StKH/bYQuKFvgmb620=;
-	b=XzwvusZWrGw/OYi250xhhP5GXWWMRmcihLhDFUq31Z4tJ06CUO5qqvGI+TOyutXECdYx2O
-	dwd7riy3Lb3uHbStYooOU3TDFXrB1eDh/vTP/9PMvknEcNzQdmikAOimUGDdMmmdp5/SRs
-	JMEsA4CnorQp4KYnR8whpnJN4z3KigE=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WgSfBD18;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=FE8BGgQW0fYMcN8NBCYcnkW6qzjkh5NcrjtCMjU8eh4=;
+	b=arDqoYYLzOgyAGMirEWk5tItf4o+mOrmMnqw4PtLu6MdLEMSz2JTjCUO/5e1Kc+aePatsT
+	Pm4whvfM6qbO0LJbDKjChhWcbcp3EOeMdYMjSXQF1G5KvhNMFx73Fv9sSodRtkDyik7u9X
+	T6JOmdLE84HGMZKnv+hqoFS/6ZnxP08=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784645839;
-	b=EmmQgKxsYk/4wi/vNZPph/cLHL04yOqwS+jA9DRumJjglM3pGfLRplIWj4bMgmsDgC+YDj
-	2Z/DHQmvgdj1sAHOKzubwQKb5D8T3allSfMmR1vH+C+hMUHj0KdiicZj76I5pTlk3TxUck
-	Y3bHtaNUt8oEWOtJL2EiMWW6M1hn/EA=
+	t=1784645866;
+	b=WCSaiBUJOKZHR50T2SEX16xjYSiWBeIuy1Gf9EEA5OALg4MgJfUQBuM68xZ7T/3mS14KAk
+	oZS4h5d+7/T0+Kpm2eXwrVGZs4mh40VBK33SP9H7BhEAir0frk9xjgD+TuGh+DYlqjr8Hn
+	vupP0+1urip3GL4EDQqaZCBZizZZkNY=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CF605gLh;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 29BDA41E6F;
-	Tue, 21 Jul 2026 14:57:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 629C01F000E9;
-	Tue, 21 Jul 2026 14:57:05 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B185842E54;
+	Tue, 21 Jul 2026 14:57:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51D9E1F000E9;
+	Tue, 21 Jul 2026 14:57:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784645838;
-	bh=X2h5bpBFH+7npqK5spxeWS5f6StKH/bYQuKFvgmb620=;
+	s=k20260515; t=1784645865;
+	bh=FE8BGgQW0fYMcN8NBCYcnkW6qzjkh5NcrjtCMjU8eh4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=WgSfBD18nsRmmrJbieRHbTVnpndeVh/tD76HjXec6RXFgapMArMcgsdjnj3ag9o+z
-	 gRz5mmhtSTZHrmYy5ISeCHWFYOTq7G1IN/AumKXpJns+CtzdzduEIoHtuwoerwhrZ9
-	 o+cHYXj3YXpuJr8AKYsSMPqZD19eTtjcpMp2+2Cc2bAb4BA8C0oZQBcuuIci3G3RQU
-	 ifhNI6BDFoki0rZELq87NBJ4bnC/uCZ1USuEO623tHk4h8hxI+SQsbYiOmFvQARDUZ
-	 nwmxkjaQnS2o0Ipn8VUe3e09evZb5SLADluS5GaT349oximkYtUuU/T1Q9kT98BPoX
-	 VnzApXzpWL2iw==
-Message-ID: <45118388-cf5e-4407-b2a2-ec67727cc4a4@kernel.org>
-Date: Tue, 21 Jul 2026 16:57:03 +0200
+	b=CF605gLhkL6zeNadf6XOk+7+Xs2t0BTo91YzpcEjV43Dy4ytRnKlrI1fy3IfzLfr2
+	 H237T7YQRtv9qWHYksEwmMf5RE3ZYvRoJSOeXXL+2yh4D1dEUPcTyLwLec9+Zn3EgK
+	 qqCNVLPEojFqEefP3dviDr8CHO/fP2J8TwcR2ZYzx237I42d3HVsZR1VLnvfEXyRKs
+	 0SKBkLrnKLIE8EkkKJgQ+T6TW+p6uojk9GEgxOrVIp+aEpxVUV3oDZJRz7AsXfNubY
+	 ynooLXX47XDmMejrp+qJn7sUW0kyUeIx0eFx+Ch1dtyXdtQo0kiZamHTYgY5ojROd/
+	 /R4xf4Sm53OYw==
+Message-ID: <4da506a7-11e2-4cfd-9f0b-ad8635190e89@kernel.org>
+Date: Tue, 21 Jul 2026 16:57:30 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/22] mm: drop unused __mm_flags_set_mask_bits_word()
+Subject: Re: [PATCH 02/22] mm: move mm_flags helpers to mm_types.h
 To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
 Cc: Andrew Morton <akpm@linux-foundation.org>,
  Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
@@ -104,7 +104,7 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  "Matthew Wilcox (Oracle)" <willy@infradead.org>,
  linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org
 References: <20260714-remove_pgtable_cdtor-v1-0-44be8a7685d7@arm.com>
- <20260714-remove_pgtable_cdtor-v1-1-44be8a7685d7@arm.com>
+ <20260714-remove_pgtable_cdtor-v1-2-44be8a7685d7@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -151,17 +151,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260714-remove_pgtable_cdtor-v1-1-44be8a7685d7@arm.com>
+In-Reply-To: <20260714-remove_pgtable_cdtor-v1-2-44be8a7685d7@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 7E9CF140011
+X-Stat-Signature: n9jf4xu1df97ag1adxbopkmpdjup3wh7
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 184781C0002
-X-Stat-Signature: x447tgqqmjid14qhhjrs9imb57mz7xrf
-X-HE-Tag: 1784645838-41530
-X-HE-Meta: U2FsdGVkX1//AtiwkexqHandJkz9Otk7IC/Sa3FhIh3pr0nHLPmy4eUiz0leizu6/xhUGoZTqVal/26ZmrnHaY6K/9GddBZHdUw9JiSlBtnGECnUJK04YN5A8sc2ThKSQcBBtJBeEt8BRyxv2y+0W768qgaBG8s3XqMvPvzZnONNahzUtlb7Uyn6Xcohvol27eP6brJNrjeZJnmMBED/gBaBbBkyigAeisKQluYw4j9o6Gz1KD4Dm6AGl39FXWn0TBvHuTsh7A9SrHF/K7OusHznG0z8L81jwcR78OWLUc5Ws4zGfTAfaGYa4PUfSHE9O2XgzVIAVFZZbzI1tTXhfYnOjzcItUpc+nvHOT7BpdJNl1/KhqZh/Oc4bCNjgmEwBc3zkqPUWj9QcDpTuqvpvfMPaLFnedo4czDPnTKo2Pq/D5NSdw+kH3eCIIFRQ4cmAeof8fNNuO0e6/VAlFyehk+OG4Ake5o3mzkJ+M5DNkHOeld2zrMCNH+kweW0KZx9F5oyWPPvCq7skC0/nbbTnbIbeaPQkzZ2bXtG7VmY42XEMSu9QjkfUZ3FYWtUZ7Nu2uL/mmO8IPvu0RmYSrz+v5NWo67fAMyGbn0h7/b/hV8dBtInxcQBofx7gMgOdWwHbVDtyaO5Z4DeAesYa4lvZq3I/YcmaWplEf0rieqmauTRRKWUqX1IPtEXahL3J9dZLWSLXpTlfjNTL9GgaXHXwXfW4aQrrzEXa4C60zoYXr2ughdRjzMpHOiQ11gt12khi8e3oVnEKfmTeQ6C0P2+TCT/IE3fSR0IiQJqdgccAQkr8ZI9RYnbrz3f4/ITj8rLIe6hJjnYHP1lug72KKMbuq41HAf0bJ02EXID3q09eqgRskcgoeCDD5aRZuDesdZRcWQqyF42Yd7CGbl0uQ41+GFvHpB1ik6qRoE9Z3UYcsYwz434nZR/vVcluhirY6sPJ/QC16WVAcn5NIvNBeD
- YSLkVzLD
- +TqKKvEVJMBoQI9V2nZTBep8QpwDg+QoO9Sm7GZVWTfZpytIO0CtolvYY7n7eYRRzWjnGOXivUp9pTmn4+FRmuZV+JHkV1CMBOG1JXMkWXiyhaVNfQmKKf63lKQepwxi0VfYMcETNuTz6zwgtfg+fnPzeg5MieyZNx4Wrag++XfA1JHBVMpj3Y6kWTxRiTxdonY48pDndZvRIreJ+prK3y4RnDHDwltNPbAs1lATi9hUSaUF4dB0pNsryCCIQovxk1gG24g/vHkzMu9rEgYcN7p+b2R/jZx88kzvVIe2dOCUPePxdZ7AhxspHJqYd0qwphCOMEZxFHKDQ3mS4VCBo4JaO+zdJW6Rb2yXW2UhGOTDlTEZ2GuyWT3N3gEDOpoYt63H2YL4EhZlyvxV4IaM4ffbVAML2pdMep0yt+FBBXe/VJo0PlRM+uyqMmaqUl+NV0qMdCmQ2ebzlcie7gqThy3jE9A==
+X-HE-Tag: 1784645866-250230
+X-HE-Meta: U2FsdGVkX1/NFcCtcPM8mzdgq3awnLt+S/DzY3d8Kt4isniR9aEiO4yEDWGlEm6jJgO8RG7jpxY5A8zqQZVo5PUSR4PEpXR/C0supqffPLF+ePcs8SvJw0fVwlVP52CNTv6hBEtRmcSzpT4fJ9aSLSKXly0nwRdKTd1203R78D0dYQHyNkY+QZV5Smbl0PFiTwbnh4xDNcy5MkKbiklQwRdwvRsng+SlkEVQIIVg11VevjcM3hEqd8cAaKmnAda2JJ4IFj3Wovn3WM4bEFfxdbtBkvScVPR+AShy7DY+J/t8j6hHRXlQMd3tWBJr3vnYEoLIN/cK8wMdnUBWgZe5bv8/CDdDG5ljs7On3au3ktg5R5HEqoZ9GueJ8TBjnXlRqgifD38SVm38Qot8E8ir8/cZfJZjoFephH+pEFcI/n0RqbS9nxoOXdVaJujpJfC69Rnh+a9K6liuy57yn4ps3LuhrAmR0oLkCQcbd6mQBKfDUSgGe5khJjjqWMzfzHfuZyzN3yMRsSigCHZDrgtkr2WetJP2vcnxgtfek7few1izWNFhinAbyn92FRAKKEk6t/aX4GTqLd/gNbiFU43lS6d36cAob2InzTKfxTdVzVmLmWUzbUWZMOgezjtla8brPKPWN1SYBYKlbvmQqKh08wACYrSKKLo7FLJ7oSQ1UzAOe925gfucWuTZAjZ7simR68Tq1MTohRpgnlBR6fMbotO0q/mdE2Eqr+3IKWpEtZ1c3Q+qZGGnPu1RYlRn/cjSFAgznEo5zsUXa9UFsN4cSm481O0qgtbsH9WAbz+qrruCAADBE8rE6Y4LDtE/c81BlFy0PtM8WejMsSnYz/kkXxA7wFAruvSw0zli5ZbHuUxdUIW66zdcD+Jj4auvWQYsX1E1p2XyweZIFs1cPbCXRmn7wf3psLN9ERopqVKmirWQVC48gjnSIwSJPDsd/oVx7lx9wxUIFoWFYKnmexc
+ ysBYV0Vt
+ es7M76h1o+pAWSPKuliWvV3O8Xzpooe6A1VCbJtD6E+R+o+KF087Z+6OqAejSl4ZeNqJO/PdNevZxx/bC19VPXtzeO6aNHs4vYYNgYFjq1Lbi7l39gCV3zU07yZeBtzE6hMi6052enPxEsA+UFdLpG3hDTi/yJ6/nTKKAdhXs/A+xMd3AetWO6A7wrYcejGxbwujZd9Nr7doXH5kbQvEeo3UFvVQz0ijhgVsuSa/bt2QqlDoCFW6RyM9h7DdW4GfShRVjFs3XGZUEx7hCUbt0FuJjBF85+JHp8SAQYwlRrQnDwHqGse9D2c8jpumWe+GL8M2gEAdfrtXtBJ1unuPgdJS1R96lfX9dSDKru/OmN8iLBMe52ZdZUbyRKET4oqy3o+G197x0ZZOf3GMmd+2LsXn1Dz/MYF0jASueIC7E4EgwcHjUjmQEVBgdr4axXRLvh+bGF66bBhK76xQfXbLYfn3cYg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -170,15 +170,15 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 7/14/26 16:03, Kevin Brodsky wrote:
-> Commit 39f8049cd49f ("mm: update coredump logic to correctly
-> use bitmap mm flags") added coredump-specific helpers for the
-> remaining masked mm-flags update users.
+> Some of the mm_flags helpers are defined in <linux/mm_types.h>,
+> while others are defined in <linux/mm.h>. We will soon need to call
+> one of the latter helpers from mm_types.h.
 > 
-> That left __mm_flags_set_mask_bits_word() without any callers.
-> This is a special-purpose helper that is unlikely to be useful for
-> other purposes; best to remove it.
+> Regroup all the helpers in mm_types.h to keep things simple.
 > 
-> Assisted-by: Codex:GPT-5.5
+> Also remove #include's that were added specifically for these
+> helpers in mm.h.
+> 
 > Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 > ---
 
