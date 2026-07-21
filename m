@@ -4,75 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBE50C4451C
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 10:20:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE575C4451C
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 10:21:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C0D766B009F; Tue, 21 Jul 2026 06:20:21 -0400 (EDT)
+	id B74BB6B007B; Tue, 21 Jul 2026 06:21:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BE4A46B00A3; Tue, 21 Jul 2026 06:20:21 -0400 (EDT)
+	id B4AC36B008C; Tue, 21 Jul 2026 06:21:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AD4A26B00A5; Tue, 21 Jul 2026 06:20:21 -0400 (EDT)
+	id A64686B00A3; Tue, 21 Jul 2026 06:21:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 869866B009F
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 06:20:21 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 123111C0752
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 10:20:21 +0000 (UTC)
-X-FDA: 85012389042.27.1B6471B
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7001F6B007B
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 06:21:30 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E9E87A0C62
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 10:21:29 +0000 (UTC)
+X-FDA: 85012391898.03.F37C316
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 44E3880004
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 10:20:19 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="LH2Gn/tS";
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf05.hostedemail.com (Postfix) with ESMTP id 2B9A810000F
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 10:21:28 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GKczp2n4;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784629219;
+	s=arc-20220608; t=1784629288;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A9wRHEKwv+WdwFijMYO9/GWWMxwCr4GTDiWIhHFElFQ=;
-	b=V9gxr8w0LqDAMjpsxD3894zeHtOX01At+eS0jVUdeXOzggZ3S1TtQ3x/PLQvqy2ntK3qiR
-	nWPQdcki9WisK7bsDTaP5TVsQMgoEEr5+Mpa7uRgondpwz7IdVQE/555AoT2hXg7dJP27X
-	B7ks4LmYOn8H3/QEIpqep1025K2xElk=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="LH2Gn/tS";
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=ZOSPBV5aVAEwLYVjNRoOlMr+JSa2UkAatgyy7uYpix8=;
+	b=3kFcvn+I3TPx3tsZ3z4FF25/npnqq9ZSHxf7IOB2vzZ6HK0sgarAaymAzBVHLcwwBvzMav
+	6Knw/VC6eHU/j9QtMb1OjFVofloxAkfs3vsAYyB6rEQOY1cSy4MiLyktVt6xDRShHkq70z
+	iLo1q6CCx3aur3NlVBJ38e+IYZc5pKE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784629219;
-	b=F8KtybbJ8D+tjxvNLX5SlKTXWZtbj83blzFw10U0CdabhllkY4lmdZColcXRUc2c7a8cpb
-	2TvyfCgMzVsf45ejCUPRiGmHbwYPxaNTv/yfbLDtQmBbvmFud1y3Q56EldifyhDWRZWUd+
-	aWv7G9iTiwg0RUi7KkSVtLj1IoyQQds=
+	t=1784629288;
+	b=Oq0Vdq8MBHBlv/S2UXUolV4ZJ+Mc4Ghi5zhCebLXvaXJ5alS09G9RquiBYc2poGSwNvaUg
+	ZmikX3kYQwYHX74ar47NI/JgvnyvFZ4nsDLX50qos5L0L884dLMDGKyCygxZbO8UZ62viH
+	gkm7VC0LWxfjRXQfyYhb7DpyAavQAzk=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GKczp2n4;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 93B6A41A75;
-	Tue, 21 Jul 2026 10:20:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19AF21F00A3A;
-	Tue, 21 Jul 2026 10:20:16 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7008242A88;
+	Tue, 21 Jul 2026 10:21:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9A341F000E9;
+	Tue, 21 Jul 2026 10:21:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784629218;
-	bh=A9wRHEKwv+WdwFijMYO9/GWWMxwCr4GTDiWIhHFElFQ=;
+	s=k20260515; t=1784629287;
+	bh=ZOSPBV5aVAEwLYVjNRoOlMr+JSa2UkAatgyy7uYpix8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=LH2Gn/tSDjmt0o/rxLzdRUzmR/X+9XO7/lkR4rZcqBhJoe6dg7SIelJtk/NI2fUMW
-	 TP4JarZF/p96LnvNGm5xE79+Jrq6awPLZzM7qmC2O6i54tuOZXpnuaVMs9OEswiJUP
-	 NRPaD9dZf9nX2PdG5QrWsOrhPqwiPfMl83chC6/CcoLz+9MlQu7ZsJfeFwcK1C1s01
-	 4tjxx66KAunQHXbe2HTdYsoKFFtPhilJN+UKM7bQGs3fjvGGwi+4zYZmNEVVSBRBdR
-	 npGOQTJucOq8R4QBqEQn5R46mPEIQx/PlLEdFrrGLm7ymMFSzy5ea8Ge68NMvNNWfM
-	 pClVDWgTdDXpw==
-Message-ID: <681e178c-f7d6-4b1a-a060-6ca7ff7d3419@kernel.org>
-Date: Tue, 21 Jul 2026 12:20:15 +0200
+	b=GKczp2n4eRLB3f3JWK0e3dwItaCfN77wXgtp0MYQEHWdXye6isZxvtK+87VZcX3dJ
+	 7L+0vH9e7Krd/NfLr8PkvH0fLofr45CSzSxWON+v+3ThPjcz6ubPPeO91fqIrX+Zm0
+	 s/E45fhdxERSlkvVBlQO7CiDCU1Ix41qun07U+WcEjXWrOAC7uPM8QetvIfzX2NDN5
+	 9ym11Er/HniqgG5mZKnzWvuZPoUS8v2vlqNW8izX+KvKyM2PxGqYEQMkL25rqf+eCJ
+	 Q1Z+57KggmvkXFCY7JSZvW7R0oGDTu0YvZikaDPNyLV1vRYyOF86hQuls8YGXduXAQ
+	 WlnbWtZFpQXpA==
+Message-ID: <43d4d21e-1dfc-41fb-88ef-865ca0dc13ba@kernel.org>
+Date: Tue, 21 Jul 2026 12:21:23 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] MAINTAINERS: update Nico Pache's email address
-To: "Nico Pache (Red Hat)" <nico.pache@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, akpm@linux-foundation.org
-Cc: npache@redhat.com
-References: <20260721101811.115954-1-nico.pache@linux.dev>
+Subject: Re: [PATCH] mm/memory: use folio lock/ref helpers in do_swap_page
+To: Hongfu Li <hongfu.li@linux.dev>, akpm@linux-foundation.org,
+ ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Hongfu Li <lihongfu@kylinos.cn>
+References: <20260721013347.65698-1-hongfu.li@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -119,17 +121,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260721101811.115954-1-nico.pache@linux.dev>
+In-Reply-To: <20260721013347.65698-1-hongfu.li@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 44E3880004
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 2B9A810000F
+X-Stat-Signature: 3hs6pfr1xk4pir6x5zbgzxs5zfjpazje
 X-Rspam-User: 
-X-Stat-Signature: 4w7kys5ti34gcsoko1hzyryr7kt4s83u
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1784629219-467449
-X-HE-Meta: U2FsdGVkX1+yCXIltogPopnKL9NvijEl7rgsAJL+NXnmgKIDdB7AtrJ56x2bRQY2AGlv2MRwsCIhPqq7YvBsUJbXca/L6KdGfemNyWwwwBQQ+r+6UloFl1fsS0kJyqDk3c9UpC4psmLP9rbkyemcDGGiWfBmzHUTA/9Hs4RX0l4LbHJ6egjcPGLbKU0l4Wm13h+jPE+Z58h1v1b8THLQ4DachPgEw8Ihmw2G7TSybC8q+p66OwfXibqKipDwejdz002JjkYl4DLaixJMlmDHXvkEFbKDiueZBb/WjwvLAV/hb8tQOJ5NsL51WOyzHYUTUao7DRrmgY8uo48dH+XpjzDFezSgMKA4dBBeW0sbBaeS5LPai9OFsufj2uU6iSDeDkI1b8LVPymfXeop7zv8+B3AfKbszRTpVg2bFFF5VmZpQyxSdgcn9eqHVH3ji+rqX+sOTF1ByzmhXniXe9S0q4hyOWfJDq29o8In7e5Vfd7nSaJ9Pq3sMdnP8HGNZmyToQvz/N9YpB+Jrvw+5CbsCI9SI/qj6rz5qaXwwBCp1SCs/Kckud1LgI6B8e4mVeiFD9d1Tqz7GrmBqmnbPHhNwfrgqWFBOCwVkdDJcEdaIQh+dlFZBjyS4YG362HK7rekJ5U1LJ84EQY2f9VYuTA91AYUddiUR4PzkMpmfLcrLr/ONdbN1Q9WYaLC3hkl63oVyxqEKU3NnOI9Iouis865twu+v6qIWCp/Iuq4oUV91WAMvxmS4lzcD8MS4Eu4f2eXugUOlSqt2Ds5wgXadKEEV+7ftTaIHoIj029bcjC2BIlpVPc4GqVdYx+M/Jv+Dai1Cxs/ScYeGr2rzzGK0V+K6s6vqcDzaOBRYGrxv+IiSK7PhpccPrAHTNnn5ayv/9b8z2F8qKsnH7yhLI+aFrENbzCYC+G8ZZLfYoogkZ0wo4WegDUtzNSo1Km4E4wtpGjZHLxolBlUIWoCaCL+uow
- 4sQKR94O
- 9DQdJPxZynXZQNBAuZMJ+Bg28q5FbKEa9rtsnjW4NLPJpE4PUhnebS2+vcTPUqFNqhWubo576ttyAAyQBXdjZ/tQonXhFm31U0htGfuPRB4efZLjI0+IrSqx8S9QP3wKumhoFliUy8E3RbYA4mJo5ne1W1l2wPueKszw7dTxwFXlK3vFv1f9Wq62+0sUYR5i8SE9oV9Z6HMJrddmHB0ulzFn4WEiikmmtYTgvokyPfD2wkJ0U3PAsM2thiptZ9Z78QzSSgOf+PRrEZsoLLI8Tlpb8ixL7oc9EDoRuwZsyMiBhvAKjaEbpDpjuUsSEv7FG68pd9ZcFPesArDU=
+X-HE-Tag: 1784629288-373416
+X-HE-Meta: U2FsdGVkX18CJ9JXXm0AyUup66Z2f4//n7QZSR0y0Y/PR1KA8HwvU4SRgVbkD6Ue/Hw+cEQ6dLM74NyKidajdmTAb95yBNIq34Z0qG7NBikPbkJWK+QtIRuDm0v160+92KaB0jGluzMIrkNg3JxXoIoOb65VaW8+pQwxvOKWPTOYCXoN4eumXSvRWTT+aDELX08mfKrc+T9Netow7N4Z24oA/4apf+dj07zwlgoylKXXGuhlrVyzC9rpBxY/yonpM9YAytCu0eO4xIsEL05WeQHDq33UhLkvurIWcifqlZMpRjuyc9uO+K9AKNq5ZTDoZYaPT4zafPUBwCYouJYntFAegWxy8xkHfKVXXs6oKrzU0tJQ61/0o9RySu3jBxHW7rWVRXTYBA1mJ5eL637x+4Ra0VrXRg6CyP72daE1LlRpyae1dMZ99QDytXQX49OXxTMfdMKy+xbGkkH2Eg57adoorWx4a2cmgs/QNIZFLbiYcBdTI/o6LikqKQhDJGRn6jD2ZZNAsykqK2fD/DnA6AVkW/1xIuRYBm2SH1Z/i7DoEXKD3NaZT2jr8MlB4wx8pom9SrZEfZTxqftjriFZ1yEc/ePvJwF9W+zBbNtpIZXv0+Dfrfs0msbfDEF/6y/E7CSwb+4Lzpgaeh+3bS1ALGiKIcJbJ9oCtaoQXj7A4Yj7LpFb/g4LWaIu1SD69vLuh6NnrezyQ1NMSyFAdsr9yQfc+xUIuwKTcC43MmBidwGFdJqaJ6DzuuIPXo1mLSlSCBwej3+OHsvgUbBLYOaVTWJPmNAqLf8HrsmVQi9GjTR0hcbRTq9ne28pU0wx7aCgtffcMq4xylUv/KzA9JbEFvmfhYC4zxoh1yvmFmEV2rGKeomN9rfDrlCg/bEO6vAggAHQBQAXCA+KqCwTJzYbHL1DHcN/WcgZ0IxHagFjRSzn8NSavIQYpYVkBdSZAGSlaw8q0nvJQJ5eCP2Jz2c
+ nelYEn2h
+ WgipC/mvMTo9DAEKfaIlwYQORXR2TtWW3EIvkFo3wSOrkp5IQu/9pqYT5pxgqySgiFa0WhgPI82zxogvjDjKCE6qnMMivmwNOfVhGios7dnCn8PHvOg8ApzwgPYwagtoLEH/fgkWWVr0pSGOVvv3uz2LOp0kcGTb0vdwO3+gUBHMMMzc8ZJXK2A0dkMMFr3Ckx7X0AdNalzed2jXSo52Tpdet7rW9W/1GASAOSCuiDrXOqLRN90dfzYI7xnQcnPlgK8qV2fuTXi5hAP2inp1huP7XxXfgOxvdybBnQPWo2Ju+Nz9T5skaj/YqAc+l107Ny3cU0EgqBzXr3W6R3E5RRGwkRPRZEyeVdvhF3DKlX1cN8e+C4tNqz41UTQsYNXEpba+y
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,11 +139,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/21/26 12:18, Nico Pache (Red Hat) wrote:
-> Switch my entry in MAINTAINERS and .mailmap to my @linux.dev email address
+On 7/21/26 03:33, Hongfu Li wrote:
+> From: Hongfu Li <lihongfu@kylinos.cn>
 > 
-> Signed-off-by: Nico Pache <npache@redhat.com>
-> Signed-off-by: Nico Pache (Red Hat) <nico.pache@linux.dev>
+> Replace page-level lock/ref operations with their folio equivalents
+> in the device_private migration path of do_swap_page().
+> 
+> Introduce a local fault_folio to hold page_folio(vmf->page) to avoid
+> repeated page_folio() invocations.
+> 
+> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
 > ---
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
