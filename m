@@ -4,133 +4,149 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 260E8C4452B
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 18:16:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F7F8C4451C
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 18:17:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9231E6B008A; Tue, 21 Jul 2026 14:16:31 -0400 (EDT)
+	id 1AC576B0092; Tue, 21 Jul 2026 14:17:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8FAE76B0092; Tue, 21 Jul 2026 14:16:31 -0400 (EDT)
+	id 15CD86B0093; Tue, 21 Jul 2026 14:17:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7EB536B0093; Tue, 21 Jul 2026 14:16:31 -0400 (EDT)
+	id F3EED6B0095; Tue, 21 Jul 2026 14:17:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E0376B008A
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 14:16:31 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 72D22C025F
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 18:16:30 +0000 (UTC)
-X-FDA: 85013588940.10.EFC613F
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 9497AC000E
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 18:16:28 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=Pb6u8avZ;
-	spf=pass (imf10.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.177 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BFDE86B0092
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 14:17:20 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3F2261C02CC
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 18:17:20 +0000 (UTC)
+X-FDA: 85013591040.02.5BFE7C5
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 5F282C0009
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 18:17:17 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=YuYJnbEN;
+	spf=pass (imf22.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.171 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784657788;
+	s=arc-20220608; t=1784657837;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tK6CpaworNApxpcs4ZRJbHY7w08bgOkmP8ipHWd1tq8=;
-	b=XYU6gyCw1hqfUvDWgPQllKTd6MKbxCfSITA1ACPAWcmzPbq/10vgl+9YqXKhVZUxSIuHM6
-	s0tdFqE8Ty1HGeH/VC1ekIK97962aG2/DhH6XMtq9j3zoQaXFQdaXuFEBN5ZUGoEe5sJsl
-	NNbBT5PMIg+bofKxS4ZrsiTOY1It6Qo=
+	bh=f+9XXd1f5+onL8AjI4khFaIFq5nBOeaDPXuilZKVYdI=;
+	b=aHlZ7u9sdrP6l+mgnxm6jG4VzyCcLAddJBBmUS2iz7cVa3hDKiAgwxebgNrWIWxtKWBe6C
+	PBpp8CaW4nk4G3mkoRDY9sBDxV3oE5UbxsvPHXIqOLHbCh5PP8U3lj1rNT1qzQSfebRPkQ
+	RpOnBbAoY1eocge//zAAaLsEjGotIB8=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=Pb6u8avZ;
-	spf=pass (imf10.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.177 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	imf22.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=YuYJnbEN;
+	spf=pass (imf22.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.171 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784657788;
-	b=pZYELkruMoTycrl0j2YjcwU3oy1cyP6XJfzbyBNG9wuGGzHXCdURPLqd0s3VouQ72Vi+AM
-	YQUwFowbTxELBoDyiAXUbPOm+y5owWKKLtyGrDc/gaQ+a2TtAanmzFEKZZk/MGXqL9qm58
-	gcv0C/oG9D1UTcrOc2mIL5VshCDDTKE=
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-526f963372aso7668411cf.1
-        for <linux-mm@kvack.org>; Tue, 21 Jul 2026 11:16:28 -0700 (PDT)
+	t=1784657837;
+	b=Mu4ASx4FLOh0TdHAPKyuXJWS3Dt7lobwgo4yWoHp4S05Foh9UHjJtTBq5uXDwIa3lWsxt/
+	QX6atHwFVhdt/rUSZelIx97bnFKNlMOfi61I6sMb9LiMzUYK9rypPxUg7t2+aat2IgfMoj
+	IPlhtkZGtsPzVLqExyZd0anEDsGAqrY=
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-92e50a650a0so700026685a.1
+        for <linux-mm@kvack.org>; Tue, 21 Jul 2026 11:17:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1784657788; x=1785262588; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=tK6CpaworNApxpcs4ZRJbHY7w08bgOkmP8ipHWd1tq8=;
-        b=Pb6u8avZaZumMG0lP7+waOXU0LI6O7ZRXB8nHcRdVqL/3Le2FItO00kSc4WSD2bk0o
-         ue05l2PXkHJOwIHLFoSgYQGJCvYQmbpgCoQaPqPrian7fIyerjCmCDL0d6kBeICIywBg
-         qpXwFBHC6C2z94/pPfmaQkPH1u2Eik6mY3MOkgF2F0i1oA0ZUOReC5N2BiVvfjEjdEzK
-         kA8BLqpMLM7l40nG0KXyY93xGIsR23ne+dM1mwsPLj9hFviVyiWhFwpK3GU/iO4QeMeE
-         9MfZZ6RvoA/BbEk0PEbudKzhqbAJTCE3AhaIS1pw9h8x/o0c8eZbfG/gStn6T+Fpzr8N
-         NIIw==
+        d=soleen.com; s=google; t=1784657836; x=1785262636; darn=kvack.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=f+9XXd1f5+onL8AjI4khFaIFq5nBOeaDPXuilZKVYdI=;
+        b=YuYJnbENklhqCoiXjFQzQnFVHxSZ2n24+dlHF+wogHKcwo02wEL+/Uw2MdDESuu+0R
+         hioGYXQnY9Y4WmTjXipVpQdwXb4habdt6TjQVp/MP3Gu3f71WpRmWChDeH1wCVG1Jwim
+         FA9iBgPnwsCJziQdb5GzVChV9W9wJkVqrzG1LLDCUbSUFg6vnxk11/pk7T8IVpPFbBmH
+         v5ZyjdXgHt/klQ8pLWFiEDGdnjCl5mdIobdO1UslKgitPMepwELD8rUOhayV3pWNDZcG
+         q+eY3Wkq5sI7PgBl+AMl4L5j7bJ6r0wKnqM4cb2dO5ngF3et/LAvJxf20ozIjyjretAS
+         8mFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784657788; x=1785262588;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20251104; t=1784657836; x=1785262636;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=tK6CpaworNApxpcs4ZRJbHY7w08bgOkmP8ipHWd1tq8=;
-        b=i6Wx0FX+BxnUqCobNKez6MreNMTn0Ine+PrvPFuzw6QDLVvzVEDEek2mlTPjWtVfID
-         Gw+HeZUII7jKvJV4ECGIygLZuSsG69ofEnwqXrLh7DVVJZc8EXOnxIzySDtnUi/Xz860
-         SUNXDOtu6PvAs80r0THtMtPRq0frz54B7nXhaMRC5fQjIVukLQ35ueVJmzqAuouf1Oqg
-         C7y20qB42wFT2cMBduEKJc2lGdSYnjN9jk9mNvh4omJW/aktKd1cFfeFS8hlrAi2HDUI
-         j8iQVendF+LAAOar1rHTeD4nQoosh6WdEBP/v3UBU3CdGDHcoGmGJt+e0HcPU5OkpBbw
-         zzLw==
-X-Gm-Message-State: AOJu0YwLKNSlSyFKnA9hNHZqY+RXpji9AvOXuj/VcP4KjuLnI0PdMzlj
-	kwCvWEpK1PFyMNYuUr7mU7YbUaYU1IVTy82slJ85U5WwDgy+4JpS/JG0h7R58CYbYn8=
-X-Gm-Gg: AfdE7clZyrjXuHUQVMIIxXnsVKoZyC0nrVhB5ueSB8f9r1BZ1q6iG01v+9HcNezdVyF
-	88pLLrGtqVGd0ROrXvHYP8PxfUF7Ax07fDTSPNloP6oxp0VLErsf1VmdqJdfVolusKxMhpv23Wb
-	osM+bxaWSkVEvDYVboItFFXya3bEi2LyyhfiGsNVUR9BDz1K8tUETY8p7ZLowISaz/ItueAdcJd
-	zS+/AXie3ozR7SjnbIEe2Pk5SRFV/vf++PqSwgi/+nLycYaKp0eklaGK9Wr+2w9SL51Yf13n6yM
-	UPnQIuUHeeXh/pmhhvxDzdJsPxsucsO63n1Xjrzjsuq6nQDjFMbKfVS0IV6G2gIyKn46m9v6Jq+
-	xUjbY/3tshSu+r08dWWmDzri8/YMmtKpjFVF/RFtGutHaZ7p7WUJWPSbOe0npKaf7eTHLlIs9fX
-	eaQs2sZ5PDEfjeubdoLoGCn3HoJ7aijDL6EmqHh4TaVOQ9SpUTSHOd1Y4dQQEU4j9eWUn7
-X-Received: by 2002:ac8:5845:0:b0:51c:7b12:600a with SMTP id d75a77b69052e-5213e881e44mr171868611cf.86.1784657787636;
-        Tue, 21 Jul 2026 11:16:27 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-527d066fa6asm463921cf.6.2026.07.21.11.16.25
+        bh=f+9XXd1f5+onL8AjI4khFaIFq5nBOeaDPXuilZKVYdI=;
+        b=dAj0aco6UrkJO/oBl7edNQY4nNQjl6++OkcyZuYEzKknqwrvDi6n1uiFiGkf33D2x6
+         JcA97pm98JJ03rWw5DWvq6MRJOZDsT75+C0VELBCjx13afr4wGrU0mBtwf3DTf4O/P+N
+         jwRCFqBtZnjFbTRYnAyQX0u5NSDkZDEkngBMOIxmRHl1maAIi18S/Xs2bLxrNClewBez
+         A73WcUfR2pYRVhl+xtVoJHLHXYMdwybPMuTgykLr1J60OTId4piRJMygNDr8xVfggncz
+         PBtkbVLMo4uypAxtnrykyj6xV3USP3QhFR/tH7Ui7h2qTwkSLdpir7trJUh3j/8/Yin6
+         ocgQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rpu19D0hskiSDL+aI/YpPPtQ9PpK3YOql8xb4uyVHQmsTgD0FCWTDHWCajc6KYO5D0kMjBLDF8aDA==@kvack.org
+X-Gm-Message-State: AOJu0YzZssrhCRUMVcsRqdyUYK+UJTOcShDpbIcJ5/oHeM3AkCGM0HjS
+	W8TF332UWGU9H4opAaz1eFq+jVPWazMxse4C/Xlqj9ZOKop+Y7vWA5qiGZSkMUmyOUk=
+X-Gm-Gg: AfdE7cl6vf0F4+uxzt79MnYlBh9DKzv17HcD5yQ+sRKtf9NmpZK3RXyWsNPEYnAjf4+
+	ti/4X0o9ugIvZXURhaC7UGJd3GQNAUG23GnXGVJuS1vX8btu5SQXuyJiaS1H2TinYdooMCtmcZG
+	MHsF5Cd/QzyfoEFhYUuv4UPQf5IukcOBO8W1Tuv2urvH+G+4We6dDVIw+dgz3M36Z+K2+I1yOHr
+	QL+RXZ1Eud0OwfTUEGOuCwNVI1GiNcLE7Om9sk3JiflH7bYoXXvCxFPuou8L3OQdo9ybKCsM4Ry
+	4MxF2Vtghi1fUtw1MEh6JAfI+o023v4yVJqWa8O9ZcG+3lviwsKpbYt0xQXzuUVdJ3kIESd88Ne
+	CW2EkrzMHOD6d0xXXiLR8S7CjEXzNxJf2VL2cFWExhFJVv3RbPvgRG3yvgOd6dnIARCO9GqLvkM
+	D5tVkjAQ3DPfjmg+7rIPUF9u0us3i9F0YYym6xR8TZXImZ396+Rg==
+X-Received: by 2002:a05:620a:708a:b0:92e:fd2c:6a21 with SMTP id af79cd13be357-930b3ed4e6bmr1951409485a.27.1784657836474;
+        Tue, 21 Jul 2026 11:17:16 -0700 (PDT)
+Received: from [127.0.1.1] ([71.181.43.54])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-930b52dd4c2sm1177061685a.6.2026.07.21.11.17.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Jul 2026 11:16:27 -0700 (PDT)
-Date: Tue, 21 Jul 2026 14:16:21 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Balbir Singh <balbirs@nvidia.com>
-Cc: linux-mm@kvack.org, Zhigang.Luo@amd.com, arun.george@samsung.com, 
-	brendan.jackman@linux.dev, yuzenghui@huawei.com, apopple@nvidia.com, alucerop@amd.com, 
-	matthew.brost@intel.com, akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
-	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, corbet@lwn.net, skhan@linuxfoundation.org, 
-	gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org, djbw@kernel.org, 
-	vishal.l.verma@intel.com, dave.jiang@intel.com, alison.schofield@intel.com, 
-	osandov@osandov.com, jannh@google.com, pfalcato@suse.de, jackmanb@google.com, 
-	hannes@cmpxchg.org, ziy@nvidia.com, pbonzini@redhat.com, osalvador@suse.de, 
-	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com, 
-	kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev, baohua@kernel.org, 
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, yury.norov@gmail.com, 
-	linux@rasmusvillemoes.dk, longman@redhat.com, ridong.chen@linux.dev, tj@kernel.org, 
-	mkoutny@suse.com, sj@kernel.org, jgg@ziepe.ca, jhubbard@nvidia.com, 
-	peterx@redhat.com, baolin.wang@linux.alibaba.com, npache@redhat.com, 
-	ryan.roberts@arm.com, dev.jain@arm.com, lance.yang@linux.dev, usama.arif@linux.dev, 
-	xu.xin16@zte.com.cn, chengming.zhou@linux.dev, roman.gushchin@linux.dev, 
-	muchun.song@linux.dev, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	driver-core@lists.linux.dev, nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org, 
-	linux-debuggers@vger.kernel.org, linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org, 
-	cgroups@vger.kernel.org, damon@lists.linux.dev, linux-kselftest@vger.kernel.org, 
-	kernel-team@meta.com
-Subject: Re: [PATCH v5 00/36] Private Memory NUMA Nodes
-Message-ID: <al-2D_7NcwMxqmsM@gourry-fedora-PF4VCD3F>
-References: <20260720193431.3841992-1-gourry@gourry.net>
- <6a7aaac3-e70d-4063-9c84-e643db1488e0@nvidia.com>
+        Tue, 21 Jul 2026 11:17:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6a7aaac3-e70d-4063-9c84-e643db1488e0@nvidia.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v7 09/12] PCI: liveupdate: Inherit ARI Forwarding
+ Enable on preserved bridges
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: David Matlack <dmatlack@google.com>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, kexec@lists.infradead.org, 
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+ linux-pci@vger.kernel.org, Adithya Jayachandran <ajayachandra@nvidia.com>, 
+ Alexander Graf <graf@amazon.com>, Alex Williamson <alex@shazbot.org>, 
+ Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>, 
+ David Rientjes <rientjes@google.com>, 
+ Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@nvidia.com>, 
+ Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, 
+ Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>, 
+ Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, 
+ Pranjal Shrivastava <praan@google.com>, 
+ Pratyush Yadav <pratyush@kernel.org>, Saeed Mahameed <saeedm@nvidia.com>, 
+ Samiullah Khawaja <skhawaja@google.com>, 
+ Shuah Khan <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>, 
+ William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
+In-Reply-To: <CALzav=eZYfYYKAGEzk4TsGFLp1TPb2iFePNmqGsjX4jEZNJ9XA@mail.gmail.com>
+References: <20260710212616.1351130-1-dmatlack@google.com>
+ <20260710212616.1351130-10-dmatlack@google.com>
+ <178433098576.189683.2364970585754668266.b4-review@b4>
+ <CALzav=eZYfYYKAGEzk4TsGFLp1TPb2iFePNmqGsjX4jEZNJ9XA@mail.gmail.com>
+Date: Tue, 21 Jul 2026 18:17:13 +0000
+Message-Id: <178465783370.437204.17382376546970842455.b4-reply@b4>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1819;
+ i=pasha.tatashin@soleen.com; h=from:subject:message-id;
+ bh=Fo9WpNwT/sUGT1i7/NR5Dmr2ueLjAaW0mDLdJx/XgD0=;
+ b=owEBbQKS/ZANAwAKAbt3KEzbc3reAcsmYgBqX7eqlp/ogJ/HFSfe9d7gJvqY2QGlESov+8vFK
+ UnrL0B5ofWJAjMEAAEKAB0WIQRBMaqT7LRvGvB/NmK7dyhM23N63gUCal+3qgAKCRC7dyhM23N6
+ 3rjiD/9pLAojhUZ3Gw0QkDSo7CBHc6v2wUGVKaF2iWfP34rUPJsFfVEgg0jF9wmXV0jX94tyfnY
+ 58vcRgopDo9BnjdD8MJiKFLY+c/1bwgj5XqBw+4EWhLvz1cWvI0pK57KzZJf31wAFALQ1n98Pex
+ seGiBWeqXy76HaXMdWJDmgR4qaB2Vj75oUuWMgQjY/Rmh9diTQj64aJRo0Z0TliMy/x4gDC6h38
+ +9FxcViNa0lAmfU8/om1ODmLzJYeNSkFs4cKpSTk2bzfYB9eamzgedskRKF1qKnP5mzg6GJcu2D
+ OAMcwa46xXwAqfr/gFHQBaP7I/C+IJECu6cyTskw9gA3Zq6Q+2i/sSvfgeKVZQlkttlbmR126zD
+ DxnnvF42qrMvHhoRSvB9sDlwSwmLklefh37cOifSHw+vVceIzCVZjS7Shfm3AddiYxSYqYcNaY3
+ 6MHkGOo3+A0GZ8YcJafB+8ex0TkPCLiZwlXZXCxLB9MeHjmJX0X5cFrb9n1luDPUNQVXeLK0t+4
+ lawS9ROqKc2B9vkgurKqrFrmOZQjImBcdvlievMeF0JaXTh9/omvw+U/ObgJMAvq0Q+aKKb6XIi
+ a5XHO7v0Lj4g+Vp6FrvyZ8Z67/Mqdn/XYGInU31avmh94um8Lqtsa1ygKrugCRiViW5TWEwES1Q
+ aEb+GAhvGiNMESA==
+X-Developer-Key: i=pasha.tatashin@soleen.com; a=openpgp;
+ fpr=CAAAB722DD22A081F0D49F35633A6A993D43B569
+X-Rspamd-Queue-Id: 5F282C0009
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 9497AC000E
-X-Stat-Signature: 8rbp9pjxco5jftrjr4qdktiaerb3u8py
-X-HE-Tag: 1784657788-221200
-X-HE-Meta: U2FsdGVkX1+8PK5k39VIz3UJnegShcvq6VbKGyrutLUEzkYHdel/1YLNfiH6r5IGh3WbcK+q6kn/+2N7T8qXtb3aRbbD4VzJAv8n2SV+l143K/0VsyNwM9dE6ioVoWvVSOq9XOL7yYTwIsvnOXhJea/9ihGwMV/5nslFHe9ZZz8+S/qUfys2N2a707U3KMYZrCn7FRwCb2ZHt2CyJy9MRlty03C+ogKZSC6CIENRXilaby4R0uVr3IzhwX7gVekSL8k8azl2FEPVebj7ErYCbEFN7qNwfZm+DiKIpqHL/RfzzNpDye6vxpSz6E857dZ8BIVqtIcnGdkMnPWKyosyyzxCScDsKb3D/4X+u7+1fRoCQc8rMDeM8YeFiTjbHmJnyN2dlWUYTbPyxknw5Aq+vzYh1RX/+iU0Vj2gsuJ22uF+EJmMc1KuBv8Hpk7JTw3cCWuRDu39dKhcblSsdakqIWDK+kpQRKEGvnRWVIoWcTIYYJdIfXiPL/dhmZfwnYb/ZgA6ntOc2vGgvZ+dXMJxxFdFouOGPxYhgqvdT0KuCEdp1zSP7OdhDvVfOv5EtlrdyHZXUShc9bqGUWxxr15WbYUcm4OiSSG2axfeQ2whSjiK2wKVeOK8X1m7MJ+fPU3jNDxbXFsYxnwk2toLHlv6N/U75/UWxp6rwuyGEi+CtuRoB80o4jwgJFIQ7L1i1ORjVJlywky5IoPtqdj27Y30CFtRkNiOxXLNmwkPLrOdam4fGCgnX2loeKKg8RFxx4kyjzfOTVWBiLd06XSDRrCssjN3wzm3VsMQlmosSKDsX6WOaBLV0a/0CQMiH3PRDM4cORp044q6Rzt5oKnx4Ggo33Z5WnUfJlhi8h+fFBlnQNQ3LIIvx7FF5LIXZ90aou5VQr49tq7VIwGliW0Flc+LQZiqxuns9pjUC7TAHsdN2Fp0dhBkKORh00KLZ7hBC3uI6xrZNndKUl+adF1Ywr+
- 1IbMnFyL
- GXgErrUe+RhkniKMqxrxZAzxXxg23S4yW9YiDmUEIuDnoTg4kce5y5Yd7IDSu2yftans2wHxeTsHQKkOU0v37dXtV0l6NtyCle8DyVmgZIdr5WplYPZNpZCkPD/kokfVj4YkHz4mgRRbq5e1VNec6es9XqLzPdN5T1bB8HKhrQfRy2d2gtv6fHCBhf2pZcPhMWw7KJmgBibyQf517sF8e3VCwdPH4Xmj/PoF3mFp2bjg0q09gRueITIwwChviOVMiSI1ODUzOxJTNZpT77E0GTbbsSKZELD7fJjzqhWmiKtL2NU88jXXDT9RjMdkhQaQTzWDaWvKQUe1I0snusom+Cyol6wMZrTSWK18YLgXVdgbfYoT92fl5ZnJkYYw/IT/q5zCrQqy9zwv4NmPBkJJ9Hrd4VA==
+X-Stat-Signature: tb6ajepyhjf47rsrntiugafctwhke769
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1784657837-149959
+X-HE-Meta: U2FsdGVkX1/KxIV0C6w9m1gvM9LVTpP8/xPghFu2/pmcNXk3is+stnSatKd9STKIYlxsfhD9ckR8yOAmbCUbzpDjL7E6S5GVKV0N2cSAPJbAAdJabdTmA0yB2YKMQduQ6b1v5zJsB56p83/MplrEbE6dHqqJ7T3u+18y/3PD+7S0q2UhZL7B0/V/yzhZVmaVs7U68Ky4g8a7cCTeByLMxc1g8rLvKWQN00BeheupBd+PwHMGp3ABik6WJPYzKa3MnUFsdK6dPPWqSQ/tC255XFL6cByKil6loDpGMepnlPoxK+qJMWNAzjLQATc8luWQdpPX4IRQNwszX7W3leHL34I7aaMACMgcbq2/rdUNby4J8KzfjyoGGfZ/+lVJVY6P61UmlmU6KOe0zRxBRuOnOByxfD5nGj67/GCmt/znY2oVsJL8N3HBgufR2LXHoVg5VjOkU93ylAA8xTPBw8ziltNY9kkCwiCsZQW3vISHGKblLLPLcLpz/E0NrKuK33H8a78SX+iY/GZoPDAhiZDU8vyeCFHr/5g49dEEh/8lGpHXoMUDWNNJFot9YSfBFPQeWHOj3+/wblmdczYcOMgead2ZQ0eBntx1YKb7mddT3Evaorrksy71J5qBpk4H0qbA/EK303/cCZSsVPv9Ct/Ll+PJKGwMIige/q6vXZ16DvSVxOLDlu9D8QuRaaPyqECZJk4+aLNZv/6THNhmKIOwoMFww5kR7AVT0LgQDIIRUPMIq/k04c5Ymh2wcVV8YWTXrHvUM11P9eA9XW99AMuVMcNuEpqwfvQWRtsirL0JOZBaruu5xGiYANsm5V2uJLFa/shpmTaME6xX7ed1Z5p4rosrZ8wvGNAn5o1uDrmn/ZtA5Z+QxtkP4BbDUURCG+8TA0TuA9hhMM599cEG2mqd7XWghn07e4qrlP/fYZX0RNTJdjk54ZYPODTgYmo2NPFruHAmt8XwfXW1M4ZJIDS
+ evIXDxAX
+ iLOEpXh9isBjcn4F6P7sqAzcWPzf//bRRjrznxvQLY5CyQ1hP8HNwhlc0S2CDJ2dtp65/XCnJpD80jYL5m0ZMhbpnaaTjpcQmh1cDl0EGaUZErvopwVBDfsVLeVAobCaQ0rdsYcrPWaDwFkx+C2F/SDjNCXnkUofdMlQ1ZuORtq9mXghhhq+p6NMok34Vi1jrzdoPvNO9eymRe2c4hVvFkma27fXphz6oNTysfDEdeIJA2XQIXnozjeUQS/kWYRTkVMGqDWulkpG9ONxuQiMvQXeO9TQQhH6MeyD9RCSwicaxcXQwXJ6rymxNWX4DbcHP5EZD8goLyWQEYHHt4W2EHkc2QASkki+Nn8mTI7Yop5vLiHtp8GZc6q0ettyIKvJ68Nl4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,57 +154,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 21, 2026 at 01:46:01PM +1000, Balbir Singh wrote:
-> On 7/21/26 5:33 AM, Gregory Price wrote:
-> > 
-> > Patch Layout
-> > ============
-> > The series is broken into two sections:
-> > 
-> > 1) N_MEMORY_PRIVATE Introduction.
-> >    Introduce the node state.
-> >    Opt those nodes out of mm/ services.
-> > 
-> > 2) NODE_PRIVATE_CAP_* features
-> >    A set of mm/ service opt-in flags that augment private
-> >    nodes to make them more useful (i.e. reclaim = overcommit).
-> > 
-> >    NODE_PRIVATE_CAP_LTPIN for private node folio pinning
-> >    NODE_PRIVATE_CAP_NUMA_BALANCING for private-node NUMA balancing
-> >    NODE_PRIVATE_CAP_DEMOTION for private-node tiering demotion
-> >    NODE_PRIVATE_CAP_HOTUNPLUG for opted-in private nodes
-> >    NODE_PRIVATE_CAP_USER_NUMA for userland numa controls
-> >    NODE_PRIVATE_CAP_RECLAIM for opted-in private node reclaim
-> > 
+On 2026-07-20 16:19:00-07:00, David Matlack wrote:
+> On Fri, Jul 17, 2026 at 4:29 PM Pasha Tatashin
+> <pasha.tatashin@soleen.com> wrote:
 > 
-> Looks reasonable, I wonder why USER_NUMA/HOTUNPUG is an opt-in?
+> > On Fri, 10 Jul 2026 21:26:12 +0000, David Matlack <dmatlack@google.com> wrote:
+> >
+> > unsigned int    ari_enabled:1;
+> >
+> > Sashiko asks a valid question, what protects other bits in this word
+> > during modication?  At a very list a comment is needed.
 > 
+> This was my reply to Sashiko, not sure if you saw it:
+> 
+> .  pci_liveupdate_configure_ari() is called from pci_configure_ari()
+> .  which also sets dev->ari_enabled=1 and is pre-existing code.
+> .
+> .  If writing to dev->ari_enabled in this path is indeed unsafe then that
+> .  is a pre-existing bug.
+> 
+> I figured that a comment wouldn't be needed for continuing an
+> established precedent (it's ok to write to ari_enabled during this
+> path).
 
-Ideologically: Private nodes default to fully isolated, why should any
-given feature be special?
+Overall, I agree that if there is a bug it is pre-existing. But we 
+should also take opportunities to improve existing code and make it 
+safer. In my opinion, Sashiko raises a valid concern that is not 
+obvious, since there is no comment explaining the access of non-atomic 
+bitfields in the header before the struct pci_dev definition.
 
-Concretely: 
+In this path, it is safe because we run inside pci_device_add(), where 
+dev is brand new and has not yet been added to the public devices list.
 
-User-numa
+However, it would be great to:
 
-   Some devices don't want the user to have control over placement.
-   I have been working on compressed memory, for example, which only
-   ever wants to be used as a reclaim-demotion target.
-   
-   (The reasoning for this is another thread, i plan on publishing
-    my research on this this year)
+1. Review the access patterns to ensure there are no concurrent writers 
+   on any other paths.
+2. Add a brief comment in this patch right before setting ari:
+/* Safe to write without locking; device is not yet publicly visible */
 
-Hot-unplug:
+or:
 
-   Some devices can't necessarily handle unexpected migration, and
-   hot-unplug is fundamentally a migration.  So the HOTUNPLUG cap
-   actually means "hot-unplug can execute migrations".
-
-   If the entire device has pre-drained the memory (all memory is free)
-   then unplug works - it's just not very hot (no migrations) :]
-
-   Maybe a naming issue?
-
-~Gregory
+3. Create a new separate patch that adds a comment before the struct 
+pci_dev definition explaining the bitfield access pattern, and how 
+concurrent writes are avoided.
 
 
