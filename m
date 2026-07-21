@@ -4,53 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE426C4451C
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 09:06:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E77AC44529
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 09:06:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2F5AC6B00B3; Tue, 21 Jul 2026 05:06:21 -0400 (EDT)
+	id C45A06B00B6; Tue, 21 Jul 2026 05:06:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A6886B00B6; Tue, 21 Jul 2026 05:06:21 -0400 (EDT)
+	id C1CCE6B00B7; Tue, 21 Jul 2026 05:06:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 16E786B00B8; Tue, 21 Jul 2026 05:06:21 -0400 (EDT)
+	id B31CA6B00B8; Tue, 21 Jul 2026 05:06:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E4F736B00B3
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 05:06:20 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4920F1A0434
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 849DA6B00B6
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 05:06:21 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BC45EC03D4
 	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 09:06:20 +0000 (UTC)
-X-FDA: 85012202520.09.A3B48A1
+X-FDA: 85012202520.25.ADE9946
 Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 36983A0013
+	by imf14.hostedemail.com (Postfix) with ESMTP id 5E405100006
 	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 09:06:13 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	spf=pass (imf25.hostedemail.com: domain of yangtiezhu@loongson.cn designates 114.242.206.163 as permitted sender) smtp.mailfrom=yangtiezhu@loongson.cn
+Authentication-Results: imf14.hostedemail.com;
+	spf=pass (imf14.hostedemail.com: domain of yangtiezhu@loongson.cn designates 114.242.206.163 as permitted sender) smtp.mailfrom=yangtiezhu@loongson.cn
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784624779;
+	b=ej6drP8lObkszNDxydsZ/e5TnoQgeDypB198pVZxdNLYdtnp4DEdGivVtPtgEOG3cpeeL5
+	JNBYXQ7Y0iWp2AlZia87fvlFNh/4lrs76gC0WIakBUCSNzLiMxnVr2D21fbcG1ZIJBSOHD
+	UXRQJfCTDR8OhNqBRaLvg8Cgflc2AFk=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=none;
+	spf=pass (imf14.hostedemail.com: domain of yangtiezhu@loongson.cn designates 114.242.206.163 as permitted sender) smtp.mailfrom=yangtiezhu@loongson.cn;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784624777;
+	s=arc-20220608; t=1784624779;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=QEWk5v+C8X/YQvliiY7KDSrRhicWkbRwaDrr/N2mxUQ=;
-	b=EBMrg8822Q8yghTHs7lQQsLWfR4YQ6RJZ4SciqkPiqV0RZo85r8YZAam7kIAF/hIV4rHpq
-	mn2tbgp20sV2Zm9vFDTdch0atWuYlShJ0fXcSgMdhjiMqLI2cpba34bC9L2Q5vw9ecl6TF
-	ke34lNjY8xceijOHbROu0DqYoiujHAI=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=none;
-	spf=pass (imf25.hostedemail.com: domain of yangtiezhu@loongson.cn designates 114.242.206.163 as permitted sender) smtp.mailfrom=yangtiezhu@loongson.cn;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784624777;
-	b=fzu9M5W4sDDElGfvFyWJSB2EnOndpt8S8r/wNlOW/cC0aQXOilKdkyoxzjtnRZoHYZBlew
-	0qQRFM33WI720ODHd/JPQzNltHIzjvj8BY06NSRBjC4dQcP2XfQoWAqqGRdjVBtoJfcRwd
-	eO/qVICYlSp6KiwBV7rey6I5YeIDDec=
+	 in-reply-to:in-reply-to:references:references;
+	bh=Uuvh8A9GrbgRnYSNzXlzbSr4WIu1Jq3J31+FVNwbGSs=;
+	b=yEgGb/jGXnlFCeyDt+0Jbxg80mKpeEFPSagquLKauLa7Befyecg0gNuPGDl8Pt5vxzYfUk
+	IRO22IPVeE0V7PjVKVcwi5NrLxKX4O6SjYU6uVaPU3BEtvuUKQih6z+RN2mTTx8+scYRBR
+	eDxEqNnW4kDfN5T0oTt54KI6xT0cJ3c=
 Received: from loongson.cn (unknown [113.200.148.30])
-	by gateway (Coremail) with SMTP id _____8DxeeuANl9qHpMFAA--.21602S3;
-	Tue, 21 Jul 2026 17:06:09 +0800 (CST)
+	by gateway (Coremail) with SMTP id _____8BxmuuCNl9qKJMFAA--.21877S3;
+	Tue, 21 Jul 2026 17:06:10 +0800 (CST)
 Received: from linux.localdomain (unknown [113.200.148.30])
-	by front1 (Coremail) with SMTP id qMiowJBxb8d_Nl9qdssTAA--.39236S2;
-	Tue, 21 Jul 2026 17:06:07 +0800 (CST)
+	by front1 (Coremail) with SMTP id qMiowJBxb8d_Nl9qdssTAA--.39236S4;
+	Tue, 21 Jul 2026 17:06:09 +0800 (CST)
 From: Tiezhu Yang <yangtiezhu@loongson.cn>
 To: Huacai Chen <chenhuacai@kernel.org>
 Cc: linux-mm@kvack.org,
@@ -58,37 +59,40 @@ Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Mike Rapoport <rppt@kernel.org>
-Subject: [PATCH v2 0/2] Fix and optimize LoongArch module loading
-Date: Tue, 21 Jul 2026 17:06:04 +0800
-Message-ID: <20260721090606.8982-1-yangtiezhu@loongson.cn>
+Subject: [PATCH v2 2/2] LoongArch: Skip address pairing for non-exec sections
+Date: Tue, 21 Jul 2026 17:06:06 +0800
+Message-ID: <20260721090606.8982-3-yangtiezhu@loongson.cn>
 X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20260721090606.8982-1-yangtiezhu@loongson.cn>
+References: <20260721090606.8982-1-yangtiezhu@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJBxb8d_Nl9qdssTAA--.39236S2
+X-CM-TRANSID:qMiowJBxb8d_Nl9qdssTAA--.39236S4
 X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
-	ZEXasCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29K
-	BjDU0xBIdaVrnRJUUUBEb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26c
-	xKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vE
-	j48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxV
-	AFwI0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E
-	14v26r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44
-	I27wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JF0_Jw1lYx0Ex4A2
-	jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwCF04k20x
-	vY0x0EwIxGrwCF54CYxVAaw2AFwI0_Jrv_JF1l4c8EcI0Ec7CjxVAaw2AFwI0_JF0_Jw1l
-	4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxV
-	WUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI
-	7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r
-	1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI
-	42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07UMpBfUUUUU=
+X-Coremail-Antispam: 1Uk129KBj93XoW7CrW8Zr18tryxKw4kKrWfJFc_yoW8CFWkpr
+	sxCws5Zr48GrnxJws5J3WkWa4UGaykWw4aqF95J3s2yFsxXF9Yy3Z3KrnxXayUuw4rAw10
+	qryFqwn8Z3WUCFbCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUkFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+	6r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
+	Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jw0_WrylYx0Ex4A2jsIE
+	14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwCF04k20xvY0x
+	0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E
+	7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcV
+	C0I7IYx2IY67AKxVW8JVW5JwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF
+	04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7
+	CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07josjUUUUUU=
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 5E405100006
+X-Stat-Signature: 4r336xappakodnmf9kxwhqc3s3319iuk
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 36983A0013
-X-Rspamd-Server: rspam01
-X-Stat-Signature: cetorsxiszw3kahmj5fr6mfh4szqhm7u
-X-HE-Tag: 1784624773-598631
-X-HE-Meta: U2FsdGVkX18LGx1b1yjnanFzvDs/9AYhqmND99Zcp3u5gJCRyVRTcNd7nCebtKhfNWRPuoGT0fynRuQj9CFnVngH4Wx2JHl6EOAemISOVCwkHzO5QUNmTtY42r+yIohtM/kUmOjszWLtHYXxKwisur9SODd1/m8kQ4/lwc+gOrf55WRsJKiE1kUYp91lkzWJXPpWTfdsusyohqeDMgiJkK0TZ4cky26M38DgiJ8keLQxWnrhybyG2++zFAzQBaJkGeMD3efDx0iG4PnQgL9akFNpl6pWFDOU48vE4fGvF/keO8HBZUmlWlOHhujUkXY6O/F45BC8nI8En+p8c79COVxji+AQRxpNdmtvdCrK0xj6hV04L+M9LrmR8Y8cNS+bmTLp9fidzYfFyrXp+/pnsPxaLinBxYHKMFviD1o86mtT64ZBQ09TFrF+/Slbt4rn0dAk2GY6fjrl1bJqDJY0bPfqIwy8vEkzur6KsDklklQa4xye1dUyJqhQgEZlHAmkX6xKyoSr31+PJivZzi1vqQb+WhNfuVmOYJkriDVXFyEPCwQcLQ35391F0dKserbVFwiOUUzMKJJhM5O0jLmkPE2UYPQy5up6lJlup+4aAiMjGrI5l2FXeer7kaO5QC/ktVabEO8KUIuzfmbA+KzqvGmHjrWa1Atn9MBlUpoPIrDhNIyIGQVt4/sPFtD63o/t4CYxAaBBJDc/oIXMvMZ3PWOY19uvxYdFYfz3teokyQGQAmT5ZceY3yn16BT2L2BjxaOXyFEk3/TAfkKepdoGPoX5VGo+vF3XkGqda1qiU/ySWImANMCt2WhSdFjUESuzsTZv3jLCzA5NskcUXyTGOtkbDVs1NBTxSgFBhHu8yYPys9ojSdKzK34s5ryzoFtv5U0q8fAvujCWzJ6ALQqkMoXH3xU30af/QzQsTJTZhclT+tlCUdOTVTp68pXLQGmT3hgEyTYc+JRZTZs039a
- 3v6f/5Yf
- x8yix
+X-HE-Tag: 1784624773-975466
+X-HE-Meta: U2FsdGVkX189EckvWU6QJua4btH5PfH/u2dlVeCJqE+QLU9QTwv9ocU8CLTTXyeJJXla1BbIbMpZDkvE9A//y1gdb1V3mfN/Y/9Y5QOhyJX//Iw89Qe7mN5M05fuR8A/Uy8JEJRiMxeXs3vRh3wTcK00erJWiRZ5/jyIW52gcm1S39Ba80CfThDnIQmpPrsMAZ5iB/ZlfEbnTPT78Tf9mUIUYt6/3wPtVJhADvDVDzL/3e3q6cxcsQvABVqI61qpQ6Bj6ibLIYMeGu2PGbcimaxadzpsQLlNmp9rna9RcXVlSCN2WjA3ZUSJfxMqGoNJ6Y11DpQw+GC8fkWIPQw1dlFQ2B1nZTyHQ4P6l7kauf5AhTKiddSWKmWAPjzbIUsya6EQabKcCzjYr0H4gqbs33dQWxBr967xVHDuqz1ew84/xXiTe+puhIN11qwK7Mpgbf1Obb9TdjN9d9EuGq1OS3uTQ4/wia2eFRLOg+5dkP8Yksztm6JqkqbyF2oIPMitsEnDumME8AgVSLBIIOtskFfXjNI/R7pLkx7clJUlZGp2/7lmSsfU4PzlHjN8Ehlc6gICc9APYWfw1x5AlcvvnnFd9C3BW88SBbWahLbtxWiOUGUlgvcFz/kBqDhP/pgizla/dVQR8WdIpIw62SAmufPhXZxnl0XJcIn9T4doGGckV7dquBLO8NvnI3EaxQLo4Pkq1gUpoMsVRYU3XQ0LJhD0jRKKlArcx1RnI0u8Bzn/guXK+pnvem0r32I4yLCXfMlr7RKtGXkimTAOfpllc6BHRQK5INkdNWR2pY2nTNLzj2nDZuafKVnM9PTchWxU+Dj8CqmganelL3y1MmdUAXwXdWzIoA2HzIZYj5JijYZw/TDOLaZ/k8flA5WMH60fpJDMGRV7Nx3y4ALgY+dI2iyMm7vfXZplSRkt+dzPSyazq5pFjFR7bJNiuCaAAQRUj+SJRkKrxAf35DIfWH0
+ S2jYPQ2+
+ u1FVU
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,22 +100,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Fix "execmem: unable to allocate memory" failures and optimize
-apply_relocate_add() to improve module loading efficiency.
+The module loader currently runs expensive address pairing logic for all
+sections blindly during relocation. For massive modules like amdgpu, this
+causes the loader to waste lots of CPU cycles analyzing non-exec sections.
 
-v2:
-  -- Drop the size/align/caller print patch for mm/execmem.
-  -- Update the commit message for the 2GB space expansion patch.
-  -- Add a new patch to skip address pairing for non-exec sections.
+Furthermore, there is an inconsistency since module_frob_arch_sections()
+already ignores non-exec sections during the counting phase.
 
-Tiezhu Yang (2):
-  LoongArch: Expand module virtual address space to 2GB
-  LoongArch: Skip address pairing for non-exec sections
+Check the SHF_EXECINSTR flag in apply_relocate_add(). If the section is
+non-exec, skip address pairing and then jump to normal relocation. This
+eliminates redundant search loops to improve module loading efficiency.
 
- arch/loongarch/include/asm/pgtable.h | 2 +-
- arch/loongarch/kernel/module.c       | 6 ++++++
- 2 files changed, 7 insertions(+), 1 deletion(-)
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+---
+ arch/loongarch/kernel/module.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
+diff --git a/arch/loongarch/kernel/module.c b/arch/loongarch/kernel/module.c
+index 7d4d571ee55e..c84ac1546dc6 100644
+--- a/arch/loongarch/kernel/module.c
++++ b/arch/loongarch/kernel/module.c
+@@ -484,6 +484,7 @@ int apply_relocate_add(Elf_Shdr *sechdrs, const char *strtab,
+ 	Elf_Addr v;
+ 	Elf_Sym *sym;
+ 	Elf_Rela *rel = (void *) sechdrs[relsec].sh_addr;
++	Elf_Shdr *dst_sec = sechdrs + sechdrs[relsec].sh_info;
+ 
+ 	pr_debug("%s: Applying relocate section %u to %u\n", __func__, relsec,
+ 	       sechdrs[relsec].sh_info);
+@@ -522,6 +523,10 @@ int apply_relocate_add(Elf_Shdr *sechdrs, const char *strtab,
+ 
+ 		v = sym->st_value + rel[i].r_addend;
+ 
++		/* Skip address pairing for non-exec sections */
++		if (!(dst_sec->sh_flags & SHF_EXECINSTR))
++			goto apply_normal;
++
+ 		if (type == R_LARCH_PCADD_LO12 || type == R_LARCH_GOT_PCADD_LO12) {
+ 			bool found = false;
+ 			unsigned int j = idx;
+@@ -562,6 +567,7 @@ int apply_relocate_add(Elf_Shdr *sechdrs, const char *strtab,
+ 			idx = j; /* Record the previous j-loop end index */
+ 		}
+ 
++apply_normal:
+ 		switch (type) {
+ 		case R_LARCH_B26:
+ 			err = apply_r_larch_b26(mod, sechdrs, location,
 -- 
 2.42.0
 
