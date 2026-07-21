@@ -4,83 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6814C44532
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 15:04:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA19DC44529
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 15:07:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D8236B00A9; Tue, 21 Jul 2026 11:04:51 -0400 (EDT)
+	id 87EDD6B0093; Tue, 21 Jul 2026 11:07:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 989166B00AA; Tue, 21 Jul 2026 11:04:51 -0400 (EDT)
+	id 82F706B0096; Tue, 21 Jul 2026 11:07:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 853C26B00AB; Tue, 21 Jul 2026 11:04:51 -0400 (EDT)
+	id 6AC0F6B009B; Tue, 21 Jul 2026 11:07:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 533E56B00A9
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 11:04:51 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D581D1201CF
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 15:04:50 +0000 (UTC)
-X-FDA: 85013105940.04.B9B449C
+	by kanga.kvack.org (Postfix) with ESMTP id 408B06B0093
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 11:07:40 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B861F1201DC
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 15:07:39 +0000 (UTC)
+X-FDA: 85013113038.28.C3C955A
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id A477B40011
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 15:04:48 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A7zv8FYY;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784646288;
-	b=06V3UdaaLWk95gLbIebdTZRW5IeVPX28cM6QNx0x3FqXRxLR6gASwX7GsvmRpIHYs5UHmf
-	VfHEAcLMuuO7M5RKeg0t7UAeH1Sl30Jmlag6MWu6ZhU5jbOok5ld1HFexyWXX1NBzDkiJ0
-	Daz9lB5G+XuIGcW1KSL6yrgIO/jivRI=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A7zv8FYY;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf01.hostedemail.com (Postfix) with ESMTP id DBDAE40009
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 15:07:37 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RN3uJG0M;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784646288;
+	s=arc-20220608; t=1784646458;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KvFlBOSAAN25BmqEyf7MAcVM6Drefi3m8EoY83MJzfk=;
-	b=J+h5LIB0V0KoORjYP8NKA7hjHOywfxjAKu23lIcWk4vCukEK8cqUoXdneomTLblc0MIo2h
-	OqCkWsTySnN+gu5s0PN0m+GPWMzVsmbs35tCPncQ3Qp5TACJfQDBeAdqth5/RBj3WMDfBl
-	hDA0B9+SjyeiIO6/rVFpF/9DO0aviLM=
+	bh=mM22wXNqV+CNPvkdpjW41Isrw3g8nd8xGQ5BFOB02PI=;
+	b=MKvzfm3ndFbGMUR6w+SdLpRhlMWNK7zdaG6jrWydHu18S4MYdqEg/VcHUxtxc/Ef5EI+fk
+	ab6SEfQlrZ6bTQFq7OobjVasl3idwEvt3YSmxudwZLSx8Q+29QpURDgWnH6WJpSqcKjiJT
+	LilwD9RWQt8KzjXQ24DgV296/3TnRs0=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RN3uJG0M;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784646458;
+	b=tJsVIqIS2UdLJ2zwfQdJYs+EVS6EuXm+YP5DP8LWyMBcNNjKNX2gh61C7rkBxcvf3acUzL
+	+6E3gE6teuXbKncCSWECLyA5J+4V3rWgC6f/5Xiv1n9JZyjHc5JJXnA+muQssday5Bixgx
+	whxQb1JxA5f9ncJ8Z9FL0NWA+ssWoCs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CAC91414B7;
-	Tue, 21 Jul 2026 15:04:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 253511F000E9;
-	Tue, 21 Jul 2026 15:04:34 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id F2A9042A16;
+	Tue, 21 Jul 2026 15:07:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6A151F000E9;
+	Tue, 21 Jul 2026 15:07:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784646287;
-	bh=KvFlBOSAAN25BmqEyf7MAcVM6Drefi3m8EoY83MJzfk=;
+	s=k20260515; t=1784646456;
+	bh=mM22wXNqV+CNPvkdpjW41Isrw3g8nd8xGQ5BFOB02PI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=A7zv8FYYS3BagE62jjvD73Uo/224uS+6js4DUo1TwI40rxRLe9Jy+r9SjEyOaqeU5
-	 rrJBY4oVg3W901xWvxUgvAaN9pRWVrH2l4W2I/qQ5dqtTJ7UGaFX2JCrkU4eOJlqcD
-	 jxL2cK2LvZK45Y/FKSigYw2lIsYEm8O2UBS6UV1NJX6apyOK6foKBUIuE2snq0pRW2
-	 8XXBKWZtHyGR2+qVvCUv9YcmaWJjt6iRu03x4OeaKWzLsttCkNZ0wQAKhXTJ1cXNRV
-	 6VmOsoQBDpTz9vZqaykrZj3UP9etcPWzq5QO5kU0Ljog+5Hjy2ATYcv4TUr/wX9mdf
-	 dN7NNkgocFuig==
-Message-ID: <0bab816d-5de9-4814-b97d-11e89322c413@kernel.org>
-Date: Tue, 21 Jul 2026 17:04:33 +0200
+	b=RN3uJG0MKYkntwW4hxDo3qUFPMhpku3GDnQrJrwqiNxB7yZEM6TnuHnBDCWJO90it
+	 02gHwiFiCaHCVJOPhX0VNJDXeMofaa0s0BJ2/Drvm9eVZnTluHf4BI+Ddgb6gKi9KX
+	 AzFrBF9yts9UMP5t+O0NQcrIuKnhMfh2wM8Yqn1Ej+X0uuOXq0Q0R28VM7PbeIEvI/
+	 m0PhFOrHuwevuAEA7lPzJb1FsAYH0FKc5nvki+6pXx7+QRWF7swgYuqaD1KZSwY/wp
+	 LYnK2HBN/1j2D2AqEsFiRRHEoPYFEtsrpUEIWiS6UM1lANNVXU6k4KoJt5clL++S4O
+	 +vfed+lG/TEOw==
+Message-ID: <0d75daa4-a034-4094-bce5-57938d294163@kernel.org>
+Date: Tue, 21 Jul 2026 17:07:22 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 03/22] mm: introduce MMF_KERNEL flag and set it for
- init_mm
-To: Kevin Brodsky <kevin.brodsky@arm.com>,
- "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Dave Hansen <dave.hansen@intel.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Pasha Tatashin <pasha.tatashin@soleen.com>,
+Subject: Re: [PATCH 04/22] mm: use mm_is_kernel() in generic page table code
+To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
  Russell King <linux@armlinux.org.uk>,
  Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
  Ryan Roberts <ryan.roberts@arm.com>, linux-arm-kernel@lists.infradead.org,
  Huacai Chen <chenhuacai@kernel.org>, loongarch@lists.linux.dev,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
  Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
  Madhavan Srinivasan <maddy@linux.ibm.com>,
  Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org,
@@ -105,9 +104,8 @@ Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
  "Matthew Wilcox (Oracle)" <willy@infradead.org>,
  linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org
 References: <20260714-remove_pgtable_cdtor-v1-0-44be8a7685d7@arm.com>
- <20260714-remove_pgtable_cdtor-v1-3-44be8a7685d7@arm.com>
- <71045fa8-89fe-4a0b-a05b-67e19ce89834@intel.com> <alZOs30ziqa7l_Lq@lucifer>
- <5ce00109-c0ea-43f0-881d-f58a0fda8dcb@arm.com>
+ <20260714-remove_pgtable_cdtor-v1-4-44be8a7685d7@arm.com>
+ <02565237-d777-4c63-8b17-817df59feac4@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -154,17 +152,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <5ce00109-c0ea-43f0-881d-f58a0fda8dcb@arm.com>
+In-Reply-To: <02565237-d777-4c63-8b17-817df59feac4@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: qis1sbjiy9dzncuuuqj5jeqiryf9jxiw
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: A477B40011
 X-Rspam-User: 
-X-HE-Tag: 1784646288-387142
-X-HE-Meta: U2FsdGVkX18RgMa2Mv+0j+hFe2bwnqzLxyOw0XkAok6pzS72oNDsBNewGUXSKaizFQ0x5pFJ4cdeu44Tu/q6fdny4eyuu5MTXIyFzd1E4bk8Acmytm6wNmvNhymYbo2jTEbQssDKaJCjDpycXa8tqnuT0FzXzGoUrLp9M+V359XdmmGYajMDlkqxTbnF7+vDVvZ23ARbvCBwEE/LAWjdrlW60qEhHYqdJj2YflmoixiXdiSainbwi1FeBVK4TlmUetNBCM8cH8a9W645icCrV43nSB6tyPqWyHLwsnNsEuCNt+E17JZb4DoqbdN0ATR4UgvGwtqwTPHq2WcRcc7SO4kWgIkZ+dc02DcCXz2+7px8n30ybyLJn3t85LaOjSzEYUqmyjPJHxcmaLUKqbu8ixRPkMMfGL20FLqcgnVWCCI22ITJf61WM+09sMdyQJid101MYhJ0WOqwWKt8uqXWaXsXhkXnCTjzlbmEYxT0/FeYZyVJgZEtt6bTu+BrOIpHEd3JN9ue5h+mRyimgighot9T/w67hdRVKu7fHfAKqR5+PDPi+NVFJHYRvmLTZQ5kv7Vge/5NOAh8vcuiLbv1/0Oj0HbOMR999bAg0SWFSansSTxPAHY5ZZvK7Q8ZyxaLgs0+X6MAuwS4LYIY+rmQjKlHl75UNOQrpqCHiJKNcqiSL/3ye5V7ZL0lct5GHTMbsY/j3mUMdBSz5vsvz1tN9BcL5nVfugm1a9FqdL1BScQ/s7X4TxdGIsyL3K+R7DXtKhtTPk3mUK1TK/QN3SnAMAc9mxzyWXlk04Z/4a31RT2j2CZdz0C8/rICaq21CFmRZ1oGykiJ+Gljo1aATfckZUrPhz8qrugJehA0/n4W5clnRPYPt58xzK1/ipKnjxGOWBKOcCFPjCybF4hMif79V0zVnYD3Lw8oXlDozo178JXWJjC4F8F4aYGTeiSxlNEkkR1LyT+ZpgaOxu4TC9m
- vK+k0dSV
- U/PC21O5yruTjjmnUJQBOwRdhAYhiK3MzFG2wRagS9lbzYQZ4uF66UQZj3wzldrer6gvJos26P52VAIVserzNLqY7b/Ht8hBJhxEP1GIMM98kV09/eTsKgOJ0vd2CRlxtou/477oQKqVIndw/FwmcLH1JiMVdcjTw4ZW8OFkjhV/5wq3buHehZk/KOG3MKhdpMdz3xAG622lE/LESO4COME7G+Z9LmC+zGs31sYzgy3lkp7umDtqwlu2ckj1KUW7rORAE+8raYBVqD7olwBJAwjLLQkvZBj8vrrUUX2kY2TlEVTy7goWYej+wHPeQr1Lv4j+648qB3sAvZbx6N8WGsgAf94a0e5kqu/NXHATqt4xeHl1pwFxcga4doz3YX1qeFwix
+X-Rspamd-Queue-Id: DBDAE40009
+X-Rspamd-Server: rspam01
+X-Stat-Signature: iw8bu8xdbzh1u79pm4qt43xnfqopjr1x
+X-HE-Tag: 1784646457-260872
+X-HE-Meta: U2FsdGVkX18VVGYtAg0qa9+wXZnV6ZsiCDWGBqZqcngis4kTHHrrm6nIW961KIWPmZNfgn/nUIoKMLNdMNm2ZdX/PT6k0iOzm1hD0zDh0oo31KkRz/cY5zxhS2UgRLQTlh21kgChOInlxXjt2iSMZ+p8vYRgdBhNhzwsZF/OcoRnttogTt4UF9wNT6lM94voMRNLGNiN4MEs9sBByw26UZDa4yLz0uyIusgepnqzhcmhbJVAZXXN7aEmPBHVP7QHck2hP4U4Jm21OWxHzyeJFepNI4xFCJdtUqZULl9rvr8Gc+HM2B/WZyHPzJZ5glm9Ka5AkUtXD1R4pvXaMo/KcCxUnUzkulvI5JdrHiVydSnFqH4T2WK2GYld3F/qXZ8VTT1tE/SQQrnbbeQ++zgcmo1U2AylEwVHIsX0Phz8iDAaJ9mUY0fu1U3e608eaXAn5guvC02x/2btyuAnRfQ+FsP6CeeE/Iv8MmCrGj691QmHGVYcddn20yUmfY0QdUeFkQGWO2zRPa8Crw7W1OWl0hJrWhLUonbGaLXUoqrZjWKNfLNHLdjB80X3Bm35rL41qV9lsDQpObOp9AcHHpiRaSjPSCcQdwqGThYyjKF9SUZPE7x0PR6iSrbAItXkvqba0NkjMPtchepZu5osZBvdVBno3OQhPdYXp3GC9C//NPQRljT7jXv9NDoWqgCB41qmwhsLb1ROW1evUHolStrSP8ovKPw05axLqBgha0HXF3PM0x0FCPNV25i306zcnz/XVrAttWROhUpvxdlFt9DBosEKrG4jz9RbgIkRsObjLxZF1AFtibjqOCy6qBsbav2IWF/KOziPcLJInWkrK5bmDaCKSip1GXxSdAlenhlH4xcjWaFf4PBBhhcFpGdZc/zRCTNmMR8ltdcmeSJdvSxH4m9IHkx73UU/TOQqNXO6u+t7OhazoiTXI+EkAxe+oMjCt6q+zOUHLdj+CiegZ/d
+ u7bjUVLs
+ BNYU5z3YSoz9VSP226eTOUpJ7ZFIZ8P7AWO3Hfu+8VIQg2Om9b4+I6VaFXZAFZrt3wBP3EjAwy3NR0alv2LT1qHpleUmaldWQ7nuRkOn9V2rm8AUtMHg46i6EmWsqdItBi8FM7/DRWWP4AIdcTo5tllCSBVBo7GPTqNste0VC42SpEPf6g11zWF/XhycqgPa38J8XQMfd/gaIRFzAkRhtDV6o8Bchr98BcKDeGEredTcZLhkrKv5Dmdiuwp9m+zFge22dUHuG6ROovunBQYsISIvFe3DCwC0YvGNTI9ZzAQwuv6Otf3ZmINyDir+WfpHjefrkqa33kUEOCRiuFlDbHn1+QW0y5b65Seh5YWIXW2bLrDru14XSlVVnvRPtsar+Ysan
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -172,62 +170,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/16/26 11:33, Kevin Brodsky wrote:
-> On 14/07/2026 17:04, Lorenzo Stoakes (ARM) wrote:
->> On Tue, Jul 14, 2026 at 07:47:43AM -0700, Dave Hansen wrote:
->>> Could we give this some nice comments explaining what a kernel mm is,
->>> please? Part of the problem with the init_mm checks is that they're
->>> magic and it's not always clear what's special about init_mm.
+On 7/16/26 11:35, Kevin Brodsky wrote:
+> On 14/07/2026 16:03, Kevin Brodsky wrote:
+>> diff --git a/mm/memory.c b/mm/memory.c
+>> index d5e87624f692..c0244c0b0756 100644
+>> --- a/mm/memory.c
+>> +++ b/mm/memory.c
+>> @@ -3394,13 +3394,13 @@ static int apply_to_pte_range(struct mm_struct *mm, pmd_t *pmd,
+>>  	spinlock_t *ptl;
+>>  
+>>  	if (create) {
+>> - mapped_pte = pte = (mm == &init_mm) ?
+>> + mapped_pte = pte = mm_is_kernel(mm) ?
+>>  			pte_alloc_kernel_track(pmd, addr, mask) :
+>>  			pte_alloc_map_lock(mm, pmd, addr, &ptl);
 > 
-> Agreed, we need to define what this property means exactly, and your
-> comments on patch 14 show that extending it to efi_mm isn't necessarily
-> as benign as it appeared to me at first.
+> As noted by Sashiko, this is a little problematic because if
+> apply_to_page_range() is called on efi_mm, then we will end up with
+> __pte_alloc_kernel() taking the init_mm lock, since that's hardcoded.
 > 
-> My motivation really is about how page tables are handled (in particular
-> whether ptlocks are used), so as you suggested on patch 19 maybe this
-> flag should be narrower in scope, and the naming should reflect it.
-> Possibly MMF_KERNEL_PGTABLES? That's at least one thing that should be
-> true of all of init_mm, efi_mm and tboot_mm: their page tables use
-> kernel permissions, not user, and should follow the same rules including
-> not using ptlocks.
-> 
->>> Maybe start with this list?
->>>
->>> 1. There's only one of them.
->>> 2. All kernel threads share it. tsk->mm is the same for all kernel
->>>    threads.
->>> 3. It holds the reference copy of the kernel page tables
->>> 4. Userspace can't be entered when it is the current mm
->>> 5. It has different TLB flushing rules than userspace mms
->>>
->>> I _think_ those are universal across all architectures.
->> Well point 1 isn't true of efimm or tboot_mm so we possibly need a better
->> name :)
->>
->> "Special" is overloaded too much already. I quite like "eternal" so:
->>
->> 	static inline bool mm_is_eternal(const struct mm_struct *mm)
->> 	{
->> 		return mm && mm_flags_test(MMF_ETERNAL, mm);
->> 	}
-> 
-> Cheeky but why not! I do wonder whether this conveys the right idea
-> though. The main point of this flag is that page tables are
-> allocated/initialised/locked differently; in principle you could have a
-> temporary non-user mm.
+> That probably means we should pass the mm to __pte_alloc_kernel().
 
-I mean, we talk about MMs that are not used for actual user space processes?
+Agreed.
 
-IOW, the following:
-
-arch/x86/kernel/tboot.c:static struct mm_struct tboot_mm = {
-drivers/firmware/efi/efi.c:struct mm_struct efi_mm = {
-drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-test.c:static struct mm_struct sva_mm = {
-mm/init-mm.c:struct mm_struct init_mm = {
-
-
-So "user" vs. "kernel" is quite intuitive. Sure, there can be multiple
-"kernel" ones, but each with a distinct purpose (IOW, we don't have multiple init_mm MMs).
+I guess we have to audit all existing init_mm usage?
 
 -- 
 Cheers,
