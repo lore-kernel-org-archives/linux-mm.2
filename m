@@ -4,70 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15A6BC4452B
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 05:53:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E85AC4452B
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 05:56:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D50876B008A; Tue, 21 Jul 2026 01:53:31 -0400 (EDT)
+	id E8D736B0095; Tue, 21 Jul 2026 01:56:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D01596B008C; Tue, 21 Jul 2026 01:53:31 -0400 (EDT)
+	id E3EC76B0096; Tue, 21 Jul 2026 01:56:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BF1196B0095; Tue, 21 Jul 2026 01:53:31 -0400 (EDT)
+	id D54EA6B0098; Tue, 21 Jul 2026 01:56:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A8BF6B008A
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 01:53:31 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 13F931C01E3
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 05:53:31 +0000 (UTC)
-X-FDA: 85011716622.05.F1EAD9A
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id AD2A26B0095
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 01:56:05 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2A216A03FE
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 05:56:05 +0000 (UTC)
+X-FDA: 85011723090.01.5043CA1
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 5E4D540002
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 05:53:29 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Tp53nAes;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+	by imf11.hostedemail.com (Postfix) with ESMTP id 6E1C240009
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 05:56:03 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I16JXFNt;
+	spf=pass (imf11.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784613209;
+	s=arc-20220608; t=1784613363;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X/Ol8r5ArsVuARV2wlyP0lWho5H8ekpzbpXGHH72Syc=;
-	b=VNTLTmFgNRekeS8as5Ynbn0jFGWqAxJLCUffwry4Nd8me0yoFME2xmwNuzxOdSuUr7rX4L
-	LQstrxTWqFy4gZuGdrs+jmAW/7+7MjbGjKlPegZoNQyNBPU5eIYGJWSB3eNSrFmvcfwNMR
-	g0kzxdIVZbiX0AxNNjPk23u1/7BWrWc=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Tp53nAes;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+	bh=ry9nwKcjc3En+95aLTmNvR9XfBv8Y48g5ZHbR8RfbM8=;
+	b=wKcCYQoP7xcIZH+j813TlETN/LNfmUuL2FA4hFH4Ga6UgSvEkbFr6SmNiGrouPV1L9DAoF
+	NWzIGGrwCfVgcXjDptIMS8dU/uvoJPm6o3V54ZhLUSZb3Ij9j82GffD2KxWDNuPRmDj6f5
+	vxii8GalOlkfpr4ykHagMWtF8fnIDwI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784613209;
-	b=yym7tRK7OQ6BqaDAOQggEWAg1D2ebw2SLAQCEXhS7smr2U7w8DAFd8GM+nIxTV7MNsEeXT
-	g8QwekFphWad6ybw4fyrJbBVGjRzmE0gqOI+0aFMtTeA3bB+s9eswZswvS4dJZxiYu29tP
-	ehkfJJv1zYH49aucWxbyrlHZRrlZsVs=
+	t=1784613363;
+	b=PFy5l1sYK9MguRBpWNJRWjuOkCHHVR35MjnQEEsBzhqjSgPNFltnja9eyaiv0VdkbURmHR
+	yh5nIm7qSNpL5E/FgdTyLP2T97ObIkGdSIR5Ro6cfhkDnlqWid9DrJ4oPLZLxoSomSUKvK
+	44w1elM6GToHE4XFLv9kYjdQgh7NRAw=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I16JXFNt;
+	spf=pass (imf11.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A273240B86;
-	Tue, 21 Jul 2026 05:53:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6682D1F000E9;
-	Tue, 21 Jul 2026 05:53:25 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9093740729;
+	Tue, 21 Jul 2026 05:56:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DD061F000E9;
+	Tue, 21 Jul 2026 05:55:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784613208;
-	bh=X/Ol8r5ArsVuARV2wlyP0lWho5H8ekpzbpXGHH72Syc=;
+	s=k20260515; t=1784613362;
+	bh=ry9nwKcjc3En+95aLTmNvR9XfBv8Y48g5ZHbR8RfbM8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Tp53nAesptOxLEw9xI8Bk84IKtKiRYMoIF2tQCNOyAo8uQSEV7Te3XwN3bjbKbyvk
-	 tnEep518SyfrjS3HGQIo3OClz0MXXyCJjQckYg1r2RgCAw78sb+h4qgxrJRYOcxipo
-	 Yxodf5CE3M5VBfIwmJyP8FzV2bawKFEMwSOR2qTQ9eSzBk8wgd4oYZ5t/dpqY9GQpX
-	 YRWFTZF8ahvTNPPPdYgcH1Fw5k/EvTZFSTOVqSx9e03kQ0QgFsimH8+lvcccXL5A25
-	 ej7xuAJEgxZ21s3g0BYmgvziySV0d2To+lNwJEr2uNxxU4UvcsFHlpV7vwjBiMatQD
-	 CE24mIW2Fd3+w==
-Message-ID: <bbbd376f-dd0c-432e-abe3-7ea0e37b1db2@kernel.org>
-Date: Tue, 21 Jul 2026 14:53:21 +0900
+	b=I16JXFNtmsTyrr4HzilKeW3iZg11ZNKOg3eqllU7CcyIMceJfGOPOPCk7H9utG0cR
+	 Sz9b6CB1IG504z5qQnsJ2IBQgMRQYxoNVl759xA8IE9RSDkzCb8YFU0bJ3xRaZ1m3F
+	 x3Fv5aaotN7BFn/KP/89wM4H6s38hK7wASbmhGztas2Bfwcl0yAIIbIpIvoiLkcx2B
+	 HreNYgWmb1OgjAmplrA02qCzKE4oWhAFBZq2aF+55eZov7o7wg/RLlGMtULhxVKV9i
+	 cIGUM+cpN6aWyVQwXpXWjriA4U2lHE6Bn4+IfrYajlSKltXG9e3WANUMjBsu08ApGa
+	 kMAhh32IvJoog==
+Message-ID: <10634acc-f45b-475e-a2df-2d7efc880b68@kernel.org>
+Date: Tue, 21 Jul 2026 14:55:56 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 03/13] mm/slab: remove objs_per_slab()
+Subject: Re: [PATCH v2 04/13] mm: move struct slabobj_ext to mm/slab.h
 To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
  Suren Baghdasaryan <surenb@google.com>
 Cc: Hao Li <hao.li@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
@@ -77,21 +77,21 @@ Cc: Hao Li <hao.li@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
  Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
 References: <20260720-b4-objext_split-v2-0-2fa7c6f60dbe@kernel.org>
- <20260720-b4-objext_split-v2-3-2fa7c6f60dbe@kernel.org>
+ <20260720-b4-objext_split-v2-4-2fa7c6f60dbe@kernel.org>
 Content-Language: en-US
 From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <20260720-b4-objext_split-v2-3-2fa7c6f60dbe@kernel.org>
+In-Reply-To: <20260720-b4-objext_split-v2-4-2fa7c6f60dbe@kernel.org>
 Content-Type: multipart/signed; micalg=pgp-sha256;
  protocol="application/pgp-signature";
- boundary="------------QVrUM3rJ2V0pNQ7hep9iO32R"
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 5E4D540002
+ boundary="------------erUdOoVxhVjluo2iVkSPasJs"
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 6E1C240009
+X-Stat-Signature: wkou6j9cmbfep4amcfhnyoicn74194s1
 X-Rspam-User: 
-X-Stat-Signature: h74aeqbjz3idiztc9md3sx8h9bmknnis
-X-HE-Tag: 1784613209-705670
-X-HE-Meta: U2FsdGVkX1+489+CULpkxVDe4mb5uIBk887inhGbCAnS9ng+Ih3T7gpRciHVm+g6/EnUQFizpln8eqKJ0za8bcMnp8//A9trKuZh+3OP0/ClrlDYGxRwYVoFIsj3tlbG5I97jhLVvEsXmH5pz5/Syttztma0YzFaHihJSULLhWJJ3FoBUId9rUKeChXuq+XMtn5nup48hR1dlQ4/k9z5ABMISTW9mgRB/Q7cMBQO6wbnCS/mkorqmqidzFkuKTK1ro7JYBzBmRSH3Xa7i4jqK9KzRUyf7pISCv68ZmZCP61B5uLgIcI1FRcE52SNfWmkZqWO08AJ8FeJthS9TcT8vb9+fAq8ThM3WfEC2WtrD6ZLEaJGuetpEAzJiydt38PS92O5bEdYy4K+51aQU2D96FPVGpRlRPubzm92YJ8B5p03PQqd1AezcPWhw4bfAb3SMrEYU5TW7HZ4PKmL4YpFyCZcm//wC6uACS3Ej5AT0WF/JXw8IeLwJ4l0y7XLAr0US6nn94b2ohmqGee+2AKeN2k2rxTStowLR6zS5qaulTvpjQ9K9vV495iLoamC+d1og9yFO3MY0bXiG1g+kam4D5bh3jIZTTeuJRcvmtZF8GabjZbGT+NEnDgcu2/pYTAFHs5hRfHqXw9L/IPEQOzjkgQLyl/WSrBtgeISy3Iqk4zIWhRgT4fGYeR9lluNzdhgoyyLP+QtTwDBcH752JyoclxZilR++Xk6lJi/bWDq9cv9I79JaWPJrfPlY8/RYvR576vvXezUKhgf6sLIU8t7pxm8+k3mxwi14w+fqeIENpSoqJFpt/a8NE8iuVmonR6BQ+wQd2LMfdPxiyulyEXY27VWJe9F2MwvaRQSRBgrDbZwqSbrBwoXxaFkTV7uZ3gl1Q0rjU15+S2X0SF/aAW8RQliQPgLYBgzIbpV4swK/7u6tGcU5zYzefYWiQzyvlrTroLLvu4dLHMpJoKqHg1
- 4wJywFvJ
- icLemVH4vWBbK1omRiNWLeE7K1aLfo2NzBUsesevk22RVIR5gMmjq1Ar5sZATqLvCWbugID+AqPk5bJlTRKH6cbaH0ulwRG0Y3kLexp8vc1gJAObWZvMPp9n0tQnK/8Wed7zvgG7UG+65r1HERcI9nK0LV6hgoZzGIFm6eu+RhA87r3uljwKZ4M3mjf7PqgeOtq9FjLE+cpCM/Irv9WSb9nOu0JJgyxCZ4+u+YAXUDMLr23ffITdWlpj1YdJu0lZW/j6qd2UAtIk0bPM+8lVKGLYo9P+3VY5FyxLu8IeTAwIEPBHqv1/YIbNL/ldAuavCltIrWz5bu7uRSdA1iOa24TwPD56k8fnaQdi96974Qrd4yQxTB5g2I4SXm5RsAme+qlouQyexiAGMYMQCaQJGQTOMMnqMUeDPYb1K/hluRzIAqV/VJp3QZKL0e7jsQMJNvJHG7+KZIr/c0XV8bwbc3gk9E61Wssq9fJb8kTRHSNFi8BpBszVnDOVEz7LJxb2xjkTeBpMDj6EwRB6jazNp7vv1kJ6hhqHh+pRTyx7+8iw5xyDtgb3Pus6jQZNf47+G4HhS
+X-HE-Tag: 1784613363-850632
+X-HE-Meta: U2FsdGVkX1+x3pf6ISNzwFp5/RQPjvyxXVYu0zRdiv4NwvmSBum8ltp2Eljttd3RXBMLgwZgGX1monZseNlOJoETv8Ggaw0Kf3EsInnUsUmqAXBtrb3RjbGyR4IpQvPPfFDz/t2p/HApfsTh3UMHSpqjvaBeTJlzkX6beISfBsF0++HEOKeTgukRNNidsu8iSuPtJPxjWBedm9caLEyfSqes1XMOg2b4g1KEOhLy0aKmKP7pjAnxdO4FEiUKl8RN23b90xk1GM7G0A8UgoMd/h6daweWLaJ9XTrxAfP2eiZzx3uN1w3G2A4pNzWm25T8OsDzG1zJyektd0SC0Sj8nWreKI0rmvLZ7xTL8AqCWtysAoe4jfRPg8hz2NAnTubH0TL0JwctopFYyF30+Wy7QZy0LWq40B/afhURPin1HYHeUkyNfnOiFPEfoKEOJfePnIBgl3IWmyh4u2xnSYsF0uXdt0w3scWBR2WS89G4aRWfZHVMif6guBWNWb6r0SFTvXbQekOPYS7yKcN2UvsYSAa9MUiJUMMt0d2c8qEbwI47BHnZZuNSaEqv7hRn4g2scF0OV4+opEwOW0b5Q8UivsEYEKecW/Z8eHD9AJ3xp0ZlvFZkpsReD2YO153guj2QjoKYw4BDjtgzS7gvrTu9Ph2MkPfN8In3A6T2njFUY35TTWgEsQt8S8SCFrU27dSM5J9lCzLjInO3+cWjDLL6eis9bB8F4d7xMyRw8QJsEuF1xUPZvDU1hLWexkg3RG+X89W9SBslRwn8A5eZCsP7IGhxeoKcGXnX4IVCGQDRt4msjgloYW1ICaHM4MGk2z1AqFmV4jF+GgfG54TZuP6u3YQzFvx1hDwmML5ew+Zds1uGDoDp56iGqj0yaVDwr6kX30X14qQEnuiMttJlo9dDLNMYhwtJLaIQlOlqk9Ycdh9f4Y+YWRj6jFQ1tIPQ6hxvS7hroHkDthHfR0NzgKI
+ gA2lw+fD
+ tgesxckS43OuMpNA9/z3vzq+/G6n948FGbO3KZRpqPJmEGg+VYUXFC9aq+LFvELtvKqFKvjZjkXJDk/IrjqOnK7TJYb00AsEZytkNMnygAUP5yf3vJ8fm8Jiet5iVtx/u3Ku0Jm4/SQiBTrCj0Uz3GFeAsEqpc2IxNFusmHD/hQ2fmNr96yzvSzAbVDbIvsY7OkVw9OS+yahxw1EC2nEg3vw22isbgLXpyV/4AKOHgrpTpqEFBoxaHAyTvcApXcFkBrVK623DmAVkCBfcvadIL03oHLm06PWTtpq7iBY8IlATUMBXSc1fb8INvLUU9aUOcj+UQDbihu4dQvkzMftqetkqaLSGKtjQaogdQAjRZsks/uWiLZdTHuAzQULm8XCJJOY5TjLdqW/irRd9z1l3Q2tkSH12La0mxw1s+wczyp8rcNiHq8ep09z2ukR4O6dUYh2AqSnEkVNDNptUpPGwMBKymFYQtMxrB4ynBfs954HdSFoiILVYs8RRNAkGiZrsCd3spe5XsEYZ4QXK4MUmifsYybF2SmjunuvC8xbcwgoWOHs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,8 +100,8 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------QVrUM3rJ2V0pNQ7hep9iO32R
-Content-Type: multipart/mixed; boundary="------------0xVRzTOr1DAkrkFmXoKm6is4";
+--------------erUdOoVxhVjluo2iVkSPasJs
+Content-Type: multipart/mixed; boundary="------------GcZskzVFCTVPbbHA49fLBI3E";
  protected-headers="v1"
 From: Harry Yoo <harry@kernel.org>
 To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
@@ -112,24 +112,21 @@ Cc: Hao Li <hao.li@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
  <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
  Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
-Message-ID: <bbbd376f-dd0c-432e-abe3-7ea0e37b1db2@kernel.org>
-Subject: Re: [PATCH v2 03/13] mm/slab: remove objs_per_slab()
+Message-ID: <10634acc-f45b-475e-a2df-2d7efc880b68@kernel.org>
+Subject: Re: [PATCH v2 04/13] mm: move struct slabobj_ext to mm/slab.h
 References: <20260720-b4-objext_split-v2-0-2fa7c6f60dbe@kernel.org>
- <20260720-b4-objext_split-v2-3-2fa7c6f60dbe@kernel.org>
-In-Reply-To: <20260720-b4-objext_split-v2-3-2fa7c6f60dbe@kernel.org>
+ <20260720-b4-objext_split-v2-4-2fa7c6f60dbe@kernel.org>
+In-Reply-To: <20260720-b4-objext_split-v2-4-2fa7c6f60dbe@kernel.org>
 
---------------0xVRzTOr1DAkrkFmXoKm6is4
+--------------GcZskzVFCTVPbbHA49fLBI3E
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
 
 
 On 7/20/26 11:16 PM, Vlastimil Babka (SUSE) wrote:
-> The function has an unused kmem_cache argument and almost nothing uses
-> it anyway; doing slab->objects is simpler. Remove it with the last two
-> users. KUNIT_EXPECT_EQ() needs a cast to avoid "error: =E2=80=98typeof=E2=
-=80=99 applied
-> to a bit-field" but we don't need to keep a wrapper just for that.
+> Users of include/linux/memcontrol.h don't need to see this internal
+> structure. Further changes to the struct will reduce recompiling.
 >=20
 > Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 > Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
@@ -142,20 +139,20 @@ Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
 Cheers,
 Harry / Hyeonggon
 
---------------0xVRzTOr1DAkrkFmXoKm6is4--
+--------------GcZskzVFCTVPbbHA49fLBI3E--
 
---------------QVrUM3rJ2V0pNQ7hep9iO32R
+--------------erUdOoVxhVjluo2iVkSPasJs
 Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
 Content-Description: OpenPGP digital signature
 Content-Disposition: attachment; filename="OpenPGP_signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCal8JUQAKCRCGXBN6rc5S
-1hoIAQC93Of5VVke2ZLR0Ho/ZA+b1qSqrQjT9drL71MUDzG7MgEA7eAu73jtOYlK
-17uyJ98yg3Uwhq4QKfO0LVAEru/U/QA=
-=NQkt
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCal8J7AAKCRCGXBN6rc5S
+1lgLAP4su2fsXdwSFi7bi0OfSRrrqacuZyGdHgCgzBgFKtrMlwD/Tuz/xDlfjgkk
+JIJBgYri4MiQpJ48eeEMBBVzDmcBlAE=
+=mB45
 -----END PGP SIGNATURE-----
 
---------------QVrUM3rJ2V0pNQ7hep9iO32R--
+--------------erUdOoVxhVjluo2iVkSPasJs--
 
