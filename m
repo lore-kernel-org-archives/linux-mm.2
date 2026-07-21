@@ -4,131 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91650C4452F
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 12:48:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81B66C4452F
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 12:58:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 83E966B007B; Tue, 21 Jul 2026 08:48:38 -0400 (EDT)
+	id 828D76B007B; Tue, 21 Jul 2026 08:58:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7EF076B008A; Tue, 21 Jul 2026 08:48:38 -0400 (EDT)
+	id 7D9906B008A; Tue, 21 Jul 2026 08:58:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B73D6B008C; Tue, 21 Jul 2026 08:48:38 -0400 (EDT)
+	id 6C9556B008C; Tue, 21 Jul 2026 08:58:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 304366B007B
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:48:38 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C93E61C0043
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 12:48:37 +0000 (UTC)
-X-FDA: 85012762674.07.1CB46E1
-Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
-	by imf22.hostedemail.com (Postfix) with ESMTP id E6EB9C0007
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 12:48:35 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=COxyS21S;
-	spf=pass (imf22.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.161.45 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C3056B007B
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:58:31 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C692880141
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 12:58:30 +0000 (UTC)
+X-FDA: 85012787580.26.E3A73D3
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf10.hostedemail.com (Postfix) with ESMTP id CB99DC0013
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 12:58:27 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=huawei-partners.com header.s=dkim header.b=Lu55HiYO;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com;
+	spf=pass (imf10.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784638115;
+	s=arc-20220608; t=1784638708;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f9BdUyGIX1sBYdd4LfNbX4BHjyUWmMKKhhuvfWpGKTI=;
-	b=oUzd5MW0tUGxCQjQcCScJgdIaapXRQ4w/GBk3d0Ww2ecT4Ms8fMtqf8Nq/zUX80hBFK4NZ
-	B+3qPGhUacKFlE88TwPZjU3GO4awA5ZUHzyIW9RV29U4ON7HUZdNGw/xiEPpKAHghPgY5d
-	GUZsx02gtcxV55gcdXF2JfgOiT5xv+Q=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784638115;
-	b=bMF8+/EgI6ZydkVQMmbMiK/o5usIKL2PFiQlOx6O85ZnqRRXulInpE9EKqBtwYGYPofWPk
-	z62imYW/M6EueivbLn/WILyqeK1Yl3cOPrW8NtlgVE030nOgROq9Tpe69yeUDLBGRzLC8P
-	7xCCRJYF4e7MSWQa+Jk7TN4/5xghsU8=
+	bh=WQ/bIIO+fVLNltTgziHSVBVNXf4iqiNT2wWZgC2YhaU=;
+	b=juqqlBwgGGKcBvN9WzwjRGL/Qh6Gjsz2Gh+octL0p3B2tEBcEtNenMur+FOJy+ARsJA9pM
+	koUOClu1173qgmtRbJXJZxK4Dv97/Ym2/RfbNr5x2KkFgt3nt0rNaOzvrE+Y58jE2Gkdfx
+	e2kDjejglRcqG9JxV6/qp8ymuNgEUFU=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=COxyS21S;
-	spf=pass (imf22.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.161.45 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-6a384e29a20so369486eaf.1
-        for <linux-mm@kvack.org>; Tue, 21 Jul 2026 05:48:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784638115; x=1785242915; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=f9BdUyGIX1sBYdd4LfNbX4BHjyUWmMKKhhuvfWpGKTI=;
-        b=COxyS21SuwcCnIWPDyYVXazHEUlJ8ydJq0DCwaaf0UMdO4YBbkXw4rY33I7D/ff8i4
-         87AyTHz5YqNuBs6q4yOSlW7BF/ZBh2hckeY97s78IxwhuDxejX1tIQBuk+S8auixLmLv
-         QPWXkBItpK/x/0E1cIOCTNUBX4WLgbzXj38nXPMTh/doWzbmGf7teU2mgnu2AAa2av48
-         Xb+l0T637BobuSRx0lCrlnh7THxFjfd4m3f5WWLU3AceOz75E3gXehAn6b31liK/AUO0
-         2KP9LJR4sQke/XM16axovIewyOOePvuMJg/gIMF/3MuOmpWTRrdphkQHd0HNu4lG5Sd+
-         n8iQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784638115; x=1785242915;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=f9BdUyGIX1sBYdd4LfNbX4BHjyUWmMKKhhuvfWpGKTI=;
-        b=DoCbLFFxKeq5qAjudbPicuxgrR7mZiWugsa23uaPSejC1iarJ47TRReHIvnUeLPQgV
-         pon9vSaKw6lS0laBsSRm1ovbWxbbqKyjIdXGZiBnrBn50mETXGxC5MenHgA/9cK9Bqp0
-         5bib/zwAxCVO835ZXLv68cvHKyRXxH89l5gpQgo7f4kUeR3NWGIiLxVuNztvc2vj7sqc
-         LBJxxn3V6jiRuwKxmPRiniha/dcMATH7791WGt59PRKZk6odw495MV5IacjmF3vW2VTp
-         QFWy5CrJFK7xUR6A93jb2DOmVf6f6UIKQ4MhCmQxRdTRSc9VFgUR4nw4MsfNwQoJH2w1
-         TFdg==
-X-Forwarded-Encrypted: i=1; AHgh+Rpv0AjoL6NuBT+DJrhuNynNqWFjDVm4yODbzSzReR4n2oDJwifg80gsyKSxHTQsIWriQ24DTxjTxw==@kvack.org
-X-Gm-Message-State: AOJu0YxNSUzo2OrBHQwJmjT6QGvNkClyuRj6QTK0RVC4ZrWxk3QkUft/
-	kZHXUeyhXCtFeUVw/aJOLWj4xPxQiKM8Rm/M2X++3qjsJbPDwmZALCME
-X-Gm-Gg: AfdE7cmuZdL6OZBSAlOgVkglDUHpUU+92VRMVdfK9/8rmHZ1IJHIyrkk64iH4WpCcoH
-	tnkynJIh9B+IIGsQiIYVRWMgwfuvX+lDM4w0zMS+BBgQRTLIBT9R8zyEGJvUwydux1UyO7Ex6kK
-	sQfcV/+lcbQMhCSJ1wTiga33Q4QeBVzbUHsQtgPwq7nzrcKOoOnuR1hiQvdFOFt9DHvv8UlQZig
-	pLfSMXKcQMYFXOm1pXCccCdAdciRsKcxEZUIvoP3w0yA7JJFS9t8oK0DN0aNNwGDiNyBW5Anz8P
-	BLHYkNKcpJ1HuxExo18qUq4VpriyUJ4nA6j3zqxa3ShCH7dIKCuwMr66i2ehM5dGISB3y1OwyKt
-	N8eRhWkYMRISJkK03L64Zy3XF+OFBzZVkrSWnNng8xO0R8A/sHozfiCJ55X676SR6i5RtohcZ4C
-	VcjlKp6Q==
-X-Received: by 2002:a05:6820:f02f:b0:6a1:8cd5:c9d8 with SMTP id 006d021491bc7-6a536ada646mr9327016eaf.68.1784638114876;
-        Tue, 21 Jul 2026 05:48:34 -0700 (PDT)
-Received: from [198.18.0.1] ([144.24.58.22])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4568e0bddefsm11251568fac.4.2026.07.21.05.48.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 Jul 2026 05:48:34 -0700 (PDT)
-Message-ID: <f23b0cf4-840f-4fb0-aab5-750dee42a7b2@gmail.com>
-Date: Tue, 21 Jul 2026 08:48:22 -0400
+	imf10.hostedemail.com;
+	dkim=pass header.d=huawei-partners.com header.s=dkim header.b=Lu55HiYO;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com;
+	spf=pass (imf10.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784638708;
+	b=EBr4rRKIDu9p45pbB9faJAi12RICvDJHw+ZojbXlWvzD/uTlE/mR3mWtRqf1a5kvY4rwho
+	T4Y7o8qE4RcIzZCUxr9VSa54cypkJriqrrl7nQNwfvNjuYQZuHtQgXckF/670opWsiLJD8
+	2UMApt1E9eGPe5WcMs8cvxdNUvo7jlw=
+dkim-signature: v=1; a=rsa-sha256; d=huawei-partners.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=WQ/bIIO+fVLNltTgziHSVBVNXf4iqiNT2wWZgC2YhaU=;
+	b=Lu55HiYOJ4+JZue4XXyulYTRzrGLbp8+ldADC/bKhsApTDw8uDXqDBgD55OdwRAPU//nJGQpf
+	ZlsVv+/gQFZywoUyx4/MtgqFBCGZxmrqnSkaitEn4AqE9KqpqovtxWyZl8gm32z8CPOTrtVMAW2
+	aC8iaLQBuyHu+i8uCxPi4zs=
+Received: from mail.maildlp.com (unknown [172.18.224.107])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4h4HVQ156yzHnHSX;
+	Tue, 21 Jul 2026 20:57:50 +0800 (CST)
+Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
+	by mail.maildlp.com (Postfix) with ESMTPS id 5F9724058B;
+	Tue, 21 Jul 2026 20:58:14 +0800 (CST)
+Received: from [10.123.123.154] (10.123.123.154) by
+ mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 21 Jul 2026 15:58:13 +0300
+Message-ID: <524b7d2c-4136-4476-9a84-a3dedcd00c5e@huawei-partners.com>
+Date: Tue, 21 Jul 2026 15:58:13 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 00/13] mm/kwatch: dynamic hardware watchpoints for
- hunting memory corruption
+Subject: Re: [PATCH v3 0/3] mm/damon: Introduce a huge page collapsing
+ mechanism using auto tuning
+To: SJ Park <sj@kernel.org>
+CC: <artem.kuzin@huawei.com>, <stepanov.anatoly@huawei.com>,
+	<wangkefeng.wang@huawei.com>, <yanquanmin1@huawei.com>, <zuoze1@huawei.com>,
+	<damon@lists.linux.dev>, <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>
+References: <20260721035848.147455-1-sj@kernel.org>
 Content-Language: en-US
-To: Dave Hansen <dave.hansen@intel.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, "H . Peter Anvin"
- <hpa@zytor.com>, x86@kernel.org, Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- David Hildenbrand <david@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Matthew Wilcox <willy@infradead.org>, Alan Stern
- <stern@rowland.harvard.edu>, Randy Dunlap <rdunlap@infradead.org>,
- Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
- Mike Rapoport <rppt@kernel.org>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
- linux-perf-users@vger.kernel.org, linux-doc@vger.kernel.org
-References: <20260717125023.1895892-1-wangjinchao600@gmail.com>
- <91f3486b-3b85-4b43-b099-0a5325643352@intel.com>
-From: Jinchao Wang <wangjinchao600@gmail.com>
-In-Reply-To: <91f3486b-3b85-4b43-b099-0a5325643352@intel.com>
-Content-Type: text/plain; charset=UTF-8
+From: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
+In-Reply-To: <20260721035848.147455-1-sj@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: E6EB9C0007
-X-Stat-Signature: n9d5ujsarpbhrw9c1qtjc8bp7nmft1ci
+X-Originating-IP: [10.123.123.154]
+X-ClientProxiedBy: mscpeml500003.china.huawei.com (7.188.49.51) To
+ mscpeml500003.china.huawei.com (7.188.49.51)
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: CB99DC0013
 X-Rspam-User: 
-X-HE-Tag: 1784638115-351532
-X-HE-Meta: U2FsdGVkX195gx7TuGf3QNyGKue4P6OLt3uiM+NNpGLL1/5hDXDmYAVykCRlChhkhxDdmnVfjCxkv26PSiJZAIZL9uNcFg+BKt1qGg/hQXR9uID9koSysA5Ho3K8QBFTZcc3T2jIOBNfoF7JbntAcZ7ef4hx2mGU3kxia6vCMwbGw6a5PSjW3Wyz9q1UVd8apEcIyGov5Ih86jVrkNfHtd26lfDexXQH+bUkc9Iw+VL02v9K8bOKsVVsSgGxPwUaLpgXRZmJ9XLJfUcFdcrsWjOnqPAfVZb7nv6xUvce6Tv3Bwo8TMQcWjJm98T+uz2N9EHnjEJeeAumH1kxq+2ebropds1lU4gKsedy1KXkw2eyBQfDHbdw7jnjVINqHi3GDeoLg+HiIvR4S3nTPnlq+EtQLVTUXhprxCNrfYirnJTajNclQ9Cph2fG79BCQq1H46VRYkjKM1Tv85g0d7gFpu8efGXDpTr5NoQVepaG/7eK++94dtHmAdACCv8QSGxCGZ8ruM3VQSHfn/Do7IqtnBotPzLRRvG8Jpc+wCjz2HopfxN/AxDbsjKCcgcEKiSEYDudbMbXKj60gi6GhW5XTAFrrSgA1Mlqy/pyaQEZMo6Xrhnby8miplNtl+Z5xFeV5/TNxKJdZOzkDtl1IeansqZkzEOeEBYxIBbtHk5dM4JARAM98DcnHoiP/KNUJdXyxU1bYu6AJ+6ObwCwq1hK0moogAhjXZssSE/l42clDpNEcvYXa54Aei9+rF8SqyHBD88peRDdufEtHCoVkXiPI6T7AXXoMi+e5+F68ZW5Wr2giD/gMqW/095pHiE49VXg1SkNx3zkFKqxgqFWfqXPPOrQ3Jsa2HMgTfmqg4tj99Pg2Mj27jboFOHL44hsR/gHg58GVzwWANskA2kwwYcnPK1jznLYQm/3ZF55o92mSn1sTaZfD8ZLdGjHEYRcN3cnPRuvrmY0usNolhU+B+Y
- chD9yxL9
- vUha4HdtobxphxUHy2mKUtUgk+o/CxghcrGh5dyOEiVJ3DTbpXdFIXggNM8rMBGFrv1SHsdzOw6ZSnG1xY4G0uxNkqGiWkWarvR5+h6kjlhPQ/3aosExNBRmExxK+jIf9A4XqSIZCOPDYmnanhaOT52YkjPeU2X3H0Go9d4q30B+516eSYE44xV+irMNhZHLTyp1mhUXxgec+10DLhZX1prFKvJPNYZCcSmOIqcSlU2RAyyN519VvD3CgofXLhnLmG7I3pZsLrpTAd2kULbmiIlr1pK44N4qxGeIEfB/CCDQkF3TOqTIrUSepxIXbKumAWNhNLNWcBqGBXHiw8gyA0QyLF7npp/vBy+5XO3f8LPFcelP/9WvlNCrdFST+DOdmECy//Li4pJCVXaUpccRJrCZ1J0utVDxLstBNrCjysfEIJdPMD72fedsOI91bbw5VqcFxdFmou8NMvAzL+yeqORnbHw3Zzz8+R9aErBaQzP70s3bsCJADMFWDcU442d++ExPV
+X-Stat-Signature: yn3afmsenhbbao3f6oqj5puktt64r54p
+X-HE-Tag: 1784638707-327738
+X-HE-Meta: U2FsdGVkX19rhM3tgpBXAuA1Wc6F6BAjpQp6ZX3KktobI7ro9LpmkALb6vZ+DBHMDM6qkRT9Khvz2hrFFFFbn3oEBs2lrCnLw7JGShNrAH10z0vS7KHL9FYye5VO4o0coe7e9FlJ5+LQH1VBzAoLXiaOPWhts33ke41k5zAYWb/548tqPKExMchWm+u1A4FCzYWrP22Shx1Gt9wm9vWfmefPD2q/q5pP/EHcz/Vo5euu8JfbtUj/r4D+yBOctOVatnGup8zW6JLam5ufNAcTQNjwjoXEPYwVqDbbnXgmxcFsvrnB31DyBbMk44UDL2UnSwdpcFzrSo7u5UTXylLruR1KQ9fCC+YiwODi81qKUFfN1DsxX+9lHI5x16YKSPU+5Kg0rLCzWG3o/BGlqadeZQFtlhAb1sZTAbVtGvnmqNgLUtFraIWLmGnzFimRAvjj1yoiB2frwLyObxiJzym/o3/Z0Zyavw4/dWl8VAOW4Q0jrYGl1YGuTde4xgyuj0FW+tv4OTo/j/QG6U0++mNNhHe9sjfAP+jkK9CYt8EE1qYCWd/lOM6JAxj+sm79/J0JAuZmR/bO9lyUViaGP3XvR2tLHkW8eBvLNyrsydd/DkI+tFZuAdoH/OrZmnhFOxWn2tsluNYpTP2uoi65uDAbKmYDl3VqogMrCSTrfjAVLvam/Hqq0syxJT3ATS0rx6D0nY3d6dgX7TAwxZT+WwbF9cO/c/Sr6RuuxVwDKYQQUdE5WXYF1PdBK4Zs//b9QfwjUSr9OXgR/WOI0SPEc6WAFfPrnwD8RpEsy3lui3W0iExAoxy+RVOZ6+dl8h14qYiB/htgRf8WdyWX2GYgmLSdT2jvWMyF7KHk7K2wNFth6SP/euvhGJ+QUQXQhZ0Vnrn8s0pAe9kU9kpUobPfxdDn3P+bc6/qVwHPWLct3Cjbc0ICGXHTy0MRrqr2u5fxS9l5q5mWUsDGuvTftOBUYXN
+ w1tor2QQ
+ yX/yN2LHhCCq6X7YlHkSq2gn9gIFqOr1daQEnhedsKFN8m1CyeSAHVDIJkyDcmYysxVrc6BKWU+we3sz031URrnag+QoRtp1nhOwWjMiAqzIHVUbOTbMqOq1UZUI9/ekv7+1hZwa5OSifX0W4kbr8K7EZUUIkJ+lV18ZRpvPc+j0J4fjVk8GhZfGlEZ4ic3lGYGP44JlOydlfN0fr7OTln5GfvSURInVs4/JHXG4/qrysfqGErqSNlUlc0MoOm3aZm50wtZhy7loocL2OgTYrOR3S2uScl/aX6ZaYtwZvzMf964zz16fqc/YsNzBP/7Ph6tnmXPyBmZTzophfwlY21IC7b4kcoVdzwwGa0YLv5G+JkXn2ZNpqdTUWkLIdSzxgw/2kedMS54+95MMnI/9aEreToQSDvrLrN4pd/plxzMuG36eM/bAq0gn5MoP/sw4lCXu8QIkHMEXVonA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,42 +101,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/17/2026 9:41 AM, Dave Hansen wrote:
-> On 7/17/26 05:50, Jinchao Wang wrote:
->>  24 files changed, 2115 insertions(+), 63 deletions(-)
-> Reading this, I wonder how many kernel debugging features we need. I
-> don't even think we have a centralized list of them. They all just live
-> in their own silos.
+Hi SJ,
+
+On 7/21/2026 6:58 AM, SJ Park wrote:
+> Hello Asier,
 > 
-> This one really seems like a super specialized tool. It has to be
-> enabled at compile time and specifically aimed at a specific function.
+> On Mon, 20 Jul 2026 12:01:37 +0000 <gutierrez.asier@huawei-partners.com> wrote:
 > 
-> Maybe this should live off on the side for a while. If folks end up
-> actually needing it, they can point their friendly LLM over to its tree.
+>> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+>>
+>> Overview
+>> ========
+>> This patch set introduces a new autotuning which allows to collapse
+>> hot regions into hugepages.
+> 
+> Thank you for making this series well done like this!
+> 
+> [...]
+>> Patches Sequence
+>> ================
+>> Patch 1 -> Introduce DAMOS_QUOTA_HUGEPAGE_MEM_BP and autotuning
+>> Patch 2 -> sysfs support for the new quota goal
+>> Patch 3 -> Document hugepage_mem_bp parameter
+> 
+> I'd prefer handling 'total' underflow and returning 10,000 instead of INT_MAX
+> from damos_hugepage_mem_bp() corner cases.  But definitely that is no blocker.
+> For the series,
+> 
+> Reviewed-by: SJ Park <sj@kernel.org>
+> 
+> This series is applied to damon/next [1] tree.  If this series is not added to
+> mm.git in short term (~3 days?), I will ask mm.git maintainer (Andrew Morton)
+> to pick this.  In the case, I will update patch 1 to do what I mentioned as
+> preferred change if you don't mind.  So, no action from your side is needed for
+> now.  If it seems I also forgot doing that or you cannot wait for my action,
+> please feel free to directly ask that to Andrew.
+> 
+> [1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
+> 
+> 
+> Thanks,
+> SJ
+> 
+> [...]
 
-Thanks, Dave.
+Thanks a lot for your patience and help with the patch series.
 
-I agree that adding another standalone in-kernel debugging facility of
-this size is not the right direction.
+I will work on the suggested minor changes once the this patch set
+lands into mm-next, if you don't mind.
 
-The motivation was practical. I have encountered several silent memory
-corruption bugs for which I wrote similar one-off instrumentation to
-identify the writer. KWatch was an attempt to make that technique
-reusable instead of rebuilding it for each bug, and to reduce the same
-setup cost for other developers facing similar problems.
+-- 
+Asier Gutierrez
+Huawei
 
-This approach proved useful for localizing the dummy_hcd corruption:
-
-https://lore.kernel.org/all/20260714064829.172098-1-wangjinchao600@gmail.com/
-
-It identified the copy that overwrote req->complete and recorded the
-writer's call stack. So I believe the debugging use case is valid, but
-it does not require a separate KWatch implementation.
-
-As discussed in my reply to Masami and Boris, I will stop pursuing the
-standalone KWatch series and work with Masami on implementing the
-necessary scoped watchpoint features in wprobe/tracing instead.
-
-Thanks,
-Jinchao
 
