@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3F02C44529
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 10:46:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B11DC44529
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 11:06:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5115F6B0098; Tue, 21 Jul 2026 06:46:47 -0400 (EDT)
+	id 4C1166B007B; Tue, 21 Jul 2026 07:06:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C2AE6B0099; Tue, 21 Jul 2026 06:46:47 -0400 (EDT)
+	id 471F36B008A; Tue, 21 Jul 2026 07:06:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B3CB6B009B; Tue, 21 Jul 2026 06:46:47 -0400 (EDT)
+	id 363366B008C; Tue, 21 Jul 2026 07:06:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B1A06B0098
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 06:46:47 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7DEEF1A0468
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 10:46:46 +0000 (UTC)
-X-FDA: 85012455612.05.5586D00
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id AF97C20006
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 10:46:44 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="LpSb/m/n";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F24026B007B
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 07:06:14 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 709BAA0CB8
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 11:06:14 +0000 (UTC)
+X-FDA: 85012504668.19.82E76C6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id A5FFEA0007
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 11:06:12 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TM9BOLXU;
+	spf=pass (imf25.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784630804;
+	s=arc-20220608; t=1784631972;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dO+PVrm5HMtA1iQW+bv64CElxpl8z6fE8uq5ZpX/a00=;
-	b=Bio4S2+ABT/OQB64nkoXVZYy36KbFn7+HaN7Gmio4tmDs+lt1xrvW9X/rI+j4ifCFsEXUt
-	pO3DHTL0uoyBqpx+ige1owiVdQt4KoJwSPX+5fogpM2W1FBcA779CTC6Tz88v6HixVP/3g
-	5HY9fTCg6gaF5muVYZDHjUG55KGsU4Y=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="LpSb/m/n";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	bh=LaVZvxNKUlS8V5YFdO52ViXqG34PCKTpK+eQer0gTnI=;
+	b=D197X6lPGacOrMsPviEI32VqnUETLhwsRywpO0zluZ5eWwS+mFicaxipLmsz3YP3EUHo2i
+	XFbyXB8wknQOdC91oR8TDhZ33ezyfE7jAslcbVeenqr4w9wT0yFpsOxeq6g33FCkrzmwMu
+	RoYHWUYxfy5a3u/XhbcbV59UMAxQ+YY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784630804;
-	b=PRAdUKUmYr6Y4HiFCBJrWsPKKxdsMm4tQXfVE3WAgtK5twgUFH2VN6fA5syMG7dJJlzXmu
-	IDc7H4VN0KiVn2SNRK2f+4wz8ChYJ2NtB7BMT7txJThyV2NmMv/Fb7/iGU/tjdOVi3U/0k
-	d/CGVMaxNm6lDdsAHFgl0yEDaYtAk4Y=
+	t=1784631972;
+	b=F/hqOMVGfwD4S6c75siyzbjHMbXzEFuLMd4ddUjWuoC5xe/+Ty/FT3l/QeoWh40arz6vxv
+	THjXrBiwmkWmBY0S9kvqN3dJKHSIIsjgaGg+qqBj2Gx1obQnbudMnQPhXTx0nBU/FZ+F0I
+	Aw+QN42dkvJFUyM01mexSN+SMwY5D7g=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TM9BOLXU;
+	spf=pass (imf25.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 84CE9407BC;
-	Tue, 21 Jul 2026 10:46:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B50A1F00A3F;
-	Tue, 21 Jul 2026 10:46:37 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id ED2416001A;
+	Tue, 21 Jul 2026 11:06:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0057C1F000E9;
+	Tue, 21 Jul 2026 11:06:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784630803;
-	bh=dO+PVrm5HMtA1iQW+bv64CElxpl8z6fE8uq5ZpX/a00=;
+	s=k20260515; t=1784631971;
+	bh=LaVZvxNKUlS8V5YFdO52ViXqG34PCKTpK+eQer0gTnI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=LpSb/m/nFwv6Fxf5E4wwMzA7a+zOz1RBkSBx/X2VMxQsjr3Jh5IKmhspJL2hbmV7V
-	 /o2P27drWcfPuhXrKLBUxWzh7xlRF/f+KelYKfm1dhIsE4iZzJS9mR4Jsif7unblPh
-	 XyXCRDg8gkRqH/5VgHF31/P3ht3P9mDAaZJolDrrk+J09luZY75llAHOiBc3u95Fkt
-	 s1NRRgaO1p+mVXyxHrRrkvd/sVLJLVghF6Vce1FP+c02FIOQ/dt4gh4lLaj+s0nv0N
-	 YrVAtJf5Yjlmnu8I1sxzExiRnxIVsfghFGLy6EL3LrC82sPMhJhLsAqM80fja5mayC
-	 rxhrYrO/l9lgQ==
-Message-ID: <12c63386-f96e-421e-b34c-00548d016f69@kernel.org>
-Date: Tue, 21 Jul 2026 12:46:35 +0200
+	b=TM9BOLXUbZv8axude7fnH0r8XrDLOI8/x4LVPjAPG823eqYIStGZxvrdJkC9sdotq
+	 SBHMq+1to+F+pV2rXsEE+y/SL3hR+P5QfvhMGN55BSQHAgoUgGOVASH4J0A4s6PdB6
+	 +sTBRPbfwA8vHdjNpB/t5TNmnlbbLcCJ9iamgnXqqt9OTiNFkPedPs3MFjCSNLFplk
+	 SYRByFhF/e1L0rg+ADBPrH3PVf1MIN/HvJX4BZKbzLG9u3b9/cD81fCxJgeXrQQv5H
+	 TxCewVYgMAegtT6YCaXeCw7KM3G1Ge64txCm6X7Q2apiTlaMdPv4IYHcFzvjCE73kF
+	 jZoH0SKUa8C5g==
+Message-ID: <cd11b015-7c59-4ce4-8eb0-8040fbb2cdfc@kernel.org>
+Date: Tue, 21 Jul 2026 13:06:04 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH slab/for-next v4 5/8] mm/slab: allow kfree_rcu_sheaf() on
- PREEMPT_RT
+Subject: Re: [PATCH slab/for-next v4 6/8] mm/slab: introduce struct
+ kvfree_rcu_head for kvfree_rcu batching
 Content-Language: en-US
 To: "Harry Yoo (Oracle)" <harry@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
@@ -92,7 +92,7 @@ To: "Harry Yoo (Oracle)" <harry@kernel.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  linux-rt-devel@lists.linux.dev, rcu@vger.kernel.org, bpf@vger.kernel.org
 References: <20260720-kfree_rcu_nolock-v4-0-964e03c41a4e@kernel.org>
- <20260720-kfree_rcu_nolock-v4-5-964e03c41a4e@kernel.org>
+ <20260720-kfree_rcu_nolock-v4-6-964e03c41a4e@kernel.org>
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Autocrypt: addr=vbabka@kernel.org; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -133,17 +133,17 @@ Autocrypt: addr=vbabka@kernel.org; keydata=
  NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
  OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
  jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <20260720-kfree_rcu_nolock-v4-5-964e03c41a4e@kernel.org>
+In-Reply-To: <20260720-kfree_rcu_nolock-v4-6-964e03c41a4e@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: AF97C20006
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: A5FFEA0007
+X-Stat-Signature: 9731xecbxajst11kquqxtbx8satd3ptf
 X-Rspam-User: 
-X-Stat-Signature: pwndg8z73ggh8wrqhbtyw4ncuh59hpjq
-X-HE-Tag: 1784630804-717988
-X-HE-Meta: U2FsdGVkX1/C5wFCf+PqY/Hp9ci7VucgLQ5m5y+jHPZm5aGS9qdGQiw4WmBNL5P7Q3DXj3KKKJ275CnZL4nvtoQfcMpvtansWxKNpx9sDIa+z3jAaX1F2g9wc+JRkfEcQb7nT4nSWcgQPdV4FKXw5lZ9pPncmCqogVR83pvRJfYSapotsHamPRYvOx5adSL9f2uMG+MWNypJX9zJo1mnJaKz26+ikcrIpkH7ARUsSUGbWNzOAMR7yPsbmsXBvspJ73gHDuCCXfNJIj1snP18/mgSBxhnzN1vf+BZ3od7TXo6lGDvwjLv0cSD2ezGd2JELmnkVS09UuCsfyd78q4WjbXe4RtgckZqbkDNJDw7Pj39o1PWbIzg0tAIHjstP7zDWPNY+3Daz1b4B4/84Qv29aLDIJdnaeLL74XpUkha8ALXrfe1K+D3dPUbOiq/1oDCP1fuTYFBVc39uY1YHHYjNRtBCQu93IpygMiniIOTqJ8dehMArvI658yXbGDhcojDzxsbHZh7pGYr97SDOtVuGu0vzaZt1+mC3eDTC0Jt9oWZScnp+2/vKd5xnDJbHtO0Dwc8Ah4VdI/Ov8U7metlotThPPx6MbGTRxOXTMWuwCeSnRN+PnH6Cbtvd5nGJ/Fs6dNYyge1rGjmIwbCkzCHLsKyHTuSVfoykMHpCYLNBsfx0RxAIa9UheAsWWxMfUtfxmaxXO1CwngaixDvpV35s5rXy+mnWrIMl8gswsCLbGqXmDpotSVnDwxMrjLKrPgkRG6ZVKlogT+cy8OzBBsK2+uRkUm5J5ZWKzACwR7Iwln70VXmGm4d5yS330eKE5r3Uy9uSsfPF6SqYIPs+AEKrrUH2TNlBnmhipKilzIkS34LOaJBck9eNGtKQk8ySR6roFvCzVpFCddeh46tU5J9aGfcycqUmPWKY/A2lw6GfWgQcLSwqrb48nTYGokdB6nQobzgNdAMIx5PDACQVXt
- U+hu4+Em
- F9qOy6xyZpssoBMuH2i0ZqhZg68yoXp/Muca4WAcnfyjJIHTPPkczSl9o9811HXerTBqkhBEr5MZAIgS3hnSvp08XflViBB5euIsWfF7kR3RoARul17b3YRGjIPhFTL6AEFFGFNWT141CCa4CnleGljE/YlEHmMEyqSlu1ey9uaEFeXMV3QC3Hvvs4YZVXYTKk2JGV3vjy3o9ChIkp4Jrx2/xaZ/wTdQJC/G6gv3Z2JJygN4Rovy7913LOZF43II4CYqeKu+S4s4Inr/VTCcLED5WlJZPC8dtW63bAgd3A3Nrwjh75CefWu4EQ7Tdd51rnasJn/iAy+Ju4zA=
+X-HE-Tag: 1784631972-691892
+X-HE-Meta: U2FsdGVkX1/wVsTSffk6Bj10bn7+JRUh7y/McsLkGbCDCPxwquKjTiIxRQhQxcvUpMKTU9mKLPp7pm5WcFaY8EnFi+W7RaXxiPnKSnTDO9SRzHuhbZ2qNPYXAERHxYelGBbZjqfWTQHCWAjY550BxJBonifkWZ5OSNSU/RuUopA3vOVxKCvV05r9+fPaolVnKJWgyTeAjoTksxqXg1bCxYPhZtB61HsgysUztG4B/byCsBwIqvpul1zw8d6deF9SOCfw0i78St0oSwMCEDCq2fZhV9zoQMA7MdscA51kSE9LmYEI/wBFFOPPlCW5fqCf/MkRAm43uNPd08EKcFRazhXnJxmidd42oQiJ3iGapTqdd9qB2jt0RpCXMDpAcVX+D5hL+3FJ7gjVD8HteAK9etZhteSRf6g7WoWt4a9kJveixTs+C5kdNQr3gTjxZ5n9YG1PthJF1rCsFc6GgMAv2N+equW0MXeDnpiOZnf8eAFn9b8uyE3RwHkh2/LsJNgUIskJiwdA1w1gAuDa2emkg09a1pjJ6DhOspCvYczY8sAQ6n9RZaXTZJxt8TU64YLw3aVDmJu6uLHji3FJtPnpFVIgi80FLJnceo9RvLz2ydAiK6FTON3AuPchrqcuCeJYzU0/ukuVVK8ArBP+Za7+hxwjo56ELCCWk51TqbZp4bcN3omG2khXhKljdBCZYJvoLpSYOK7wD5y7Kt2N40UzRCBNDss29M8j759H/Y8IdUazVfFDPRUWFDfSs8d57UsRdWjb1AerrDAdTnwMxbApC3hYgcnuNynEK2gZJmwHiLubLaBe4MJjitCuUwWyL+6/pfSLWA/wEfcTmFTztQEayvHu3qunVc1t1SVp+CvbtzUgcX3d6cTuK5jFlNq+fPa0u6oXF/b9WQh8gDNgDOWyR17bWOyTt/gOUEOJiavzdFPVFrJGaIjjzBeQn4Q+7v7GXW6GM07WMy/qrV/4MHL
+ 8S6Ymm9w
+ jR58Iz/EB4H/8698HWLL4MzsuXzjatlq7g4iohb0uy99Hg+D6nxFEUmNf9t892ihKZ3pAfxuHLnOFIqy7KzDpqEkq7hNeASfVTMyxsz8SJozbtejgrcj6JAsiQPT6/mfqxLkEC0RQ38iGUjbSiFM8nE9n5bQpd55KLuqKAEYjF93CoKydJLxoOk5hWWGEfD6/UQLYGuWe84sJU/wSFAvlWuGt7QA30hwQa7bdQJnVuwhuC6hwS33txrUbfyvTFkCy5Zpgbse2v88E3KqLpm73LTXAm5nA1lHHMA30brSDabb0h8z4yVvYVk05XSHYq70n6IrqeTpROj8PnmM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,129 +152,82 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 7/20/26 14:44, Harry Yoo (Oracle) wrote:
-> As suggested by Vlastimil Babka [1], kfree_rcu_sheaf() can be used
-> on PREEMPT_RT if we always assume spinning is not allowed on PREEMPT_RT.
-> This is because local_trylock and spinlock_t are safe to use with
-> trylock and unlock as long as the kernel does not spin and the context
-> is not NMI and not hardirq.
+> rcu_head is overkill for kvfree_rcu() because the callback
+> function is always either kfree(), vfree(), or free_large_kmalloc(),
+> and thus there is no need for a function pointer.
 > 
-> Now that __kfree_rcu_sheaf() knows how to handle SLAB_FREE_NOLOCK,
-> relax the limitation and try the sheaves path on PREEMPT_RT as well.
+> kvfree_rcu batching reuses the field to store the start address
+> of an object, however, this is not strictly needed because we can
+> calculate the start address in the slowpath. For the purpose of
+> kvfree_rcu batching, it is sufficient to implement a linked list using
+> a single pointer.
 > 
-> Keep the lockdep map on non RT kernels. However, do not use the lockdep
-> map on PREEMPT_RT to avoid suppressing valid lockdep warnings.
+> Introduce a new struct called kvfree_rcu_head (the name was suggested
+> by Vlastimil Babka), which is similar to rcu_head but is only a single
+> pointer to build a linked list, without a function pointer, when
+> CONFIG_KVFREE_RCU_BATCHED=y.
 > 
-> As pointed by Vlastimil Babka [2], on PREEMPT_RT it is unnecessary to
-> defer call_rcu() under IRQ-disabled section or raw spinlock. However,
-> let us avoid adding more complexity as the scenario is not supposed
-> to be common on PREEMPT_RT, with a hope that call_rcu_nolock() will be
-> soon supported in RCU.
+> When kvfree_rcu is not batched, kvfree_rcu_head is the same size
+> as rcu_head. Note that shrinking struct kvfree_rcu_head on
+> CONFIG_KVFREE_RCU_BATCHED=n kernels would inevitably require additional
+> complexity and also some sort of batching (which defeats the purpose of
+> the config option) because it cannot fall back to call_rcu().
 > 
-> Link: https://lore.kernel.org/linux-mm/6811cc17-8ee4-48c8-8cbf-6bf4d9f98162@kernel.org [1]
-> Link: https://lore.kernel.org/linux-mm/40591888-3a87-433e-b3d2-cda1cab543be@kernel.org [2]
-> Suggested-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> For now there are no user-visible changes to the API. k[v]free_rcu()
+> simply casts rcu_head to kvfree_rcu_head. While this does not affect
+> the API, it allows kfree_rcu_nolock() to reuse kvfree_rcu batching
+> as a fallback when trylock or sheaf allocation fails.
+> 
+> Stop storing the object pointer in rcu_head.func and instead calculate
+> the object's start address in kvfree_rcu_list(). Factor out the existing
+> logic to calculate the start address from kvfree_rcu_cb() to
+> kvmalloc_obj_start_addr().
+> 
 > Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
+
+Nice.
 
 Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
 Nit:
 
-> ---
->  mm/slab_common.c | 12 ++++++++++--
->  mm/slub.c        | 17 ++++++++++-------
->  2 files changed, 20 insertions(+), 9 deletions(-)
-> 
-> diff --git a/mm/slab_common.c b/mm/slab_common.c
-> index 9c9ae1384f47..8c631bf97cd5 100644
-> --- a/mm/slab_common.c
-> +++ b/mm/slab_common.c
-> @@ -1595,6 +1595,14 @@ static bool kfree_rcu_sheaf(void *obj)
->  {
->  	struct kmem_cache *s;
->  	struct slab *slab;
-> +	unsigned int free_flags = SLAB_FREE_DEFAULT;
+> --- a/mm/slab.h
+> +++ b/mm/slab.h
+> @@ -351,6 +351,33 @@ static inline int objs_per_slab(const struct kmem_cache *cache,
+>  	return slab->objects;
+>  }
+>  
+> +/* kvfree_rcu_head offset can be only less than page size */
+> +static inline void *kvmalloc_obj_start_addr(void *head)
+> +{
+> +	void *obj = head;
 > +
-> +	/*
-> +	 * It is not safe to spin on PREEMPT_RT because the kernel might be
-> +	 * holding a raw spinlock and slab acquires sleeping locks.
-> +	 */
-> +	if (IS_ENABLED(CONFIG_PREEMPT_RT))
-> +		free_flags = SLAB_FREE_NOLOCK;
->  
->  	if (is_vmalloc_addr(obj))
->  		return false;
-> @@ -1605,7 +1613,7 @@ static bool kfree_rcu_sheaf(void *obj)
->  
->  	s = slab->slab_cache;
->  	if (likely(!IS_ENABLED(CONFIG_NUMA) || slab_nid(slab) == numa_mem_id()))
-> -		return __kfree_rcu_sheaf(s, obj, SLAB_FREE_DEFAULT);
-> +		return __kfree_rcu_sheaf(s, obj, free_flags);
->  
->  	return false;
->  }
-> @@ -1954,7 +1962,7 @@ void kvfree_call_rcu(struct rcu_head *head, void *ptr)
->  	if (!head)
->  		might_sleep();
->  
-> -	if (!IS_ENABLED(CONFIG_PREEMPT_RT) && kfree_rcu_sheaf(ptr))
-> +	if (kfree_rcu_sheaf(ptr))
->  		return;
->  
->  	// Queue the object but don't yet schedule the batch.
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 8afa6b47b1f2..deac315d0f23 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -6065,12 +6065,13 @@ static void rcu_free_sheaf(struct rcu_head *head)
->   * kvfree_call_rcu() can be called while holding a raw_spinlock_t. Since
->   * __kfree_rcu_sheaf() may acquire a spinlock_t (sleeping lock on PREEMPT_RT),
->   * this would violate lock nesting rules. Therefore, kvfree_call_rcu() avoids
-> - * this problem by bypassing the sheaves layer entirely on PREEMPT_RT.
-> + * this problem by passing allow_spin = false on PREEMPT_RT.
+> +	if (unlikely(is_vmalloc_addr(obj))) {
+> +		obj = (void *) PAGE_ALIGN_DOWN((unsigned long)obj);
+> +	} else {
+> +		struct page *page = virt_to_page(obj);
+> +		struct slab *slab = page_slab(page);
 
-by passing SLAB_FREE_NOLOCK ?
+Can use virt_to_slab().
 
+> +
+> +		if (!slab) {
+> +			obj = (void *) PAGE_ALIGN_DOWN((unsigned long)obj);
+> +		} else if (is_kfence_address(obj)) {
+> +			obj = kfence_object_start(obj);
+> +		} else {
+> +			struct kmem_cache *s = slab->slab_cache;
+> +			unsigned int idx = __obj_to_index(s, slab_address(slab), obj);
+> +
+> +			obj = slab_address(slab) + s->size * idx;
+> +			obj = fixup_red_left(s, obj);
+> +		}
+> +	}
+> +
+> +	return obj;
+> +}
+> +
+>  /*
+>   * State of the slab allocator.
 >   *
->   * However, lockdep still complains that it is invalid to acquire spinlock_t
->   * while holding raw_spinlock_t, even on !PREEMPT_RT where spinlock_t is a
->   * spinning lock. Tell lockdep that acquiring spinlock_t is valid here
-> - * by temporarily raising the wait-type to LD_WAIT_CONFIG.
-> + * by temporarily raising the wait-type to LD_WAIT_CONFIG. Skip the lockdep map
-> + * on PREEMPT_RT to avoid suppressing valid lockdep warnings.
->   */
->  static DEFINE_WAIT_OVERRIDE_MAP(kfree_rcu_sheaf_map, LD_WAIT_CONFIG);
->  
-> @@ -6080,10 +6081,10 @@ bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj, unsigned int free_flags)
->  	struct slab_sheaf *rcu_sheaf;
->  	bool allow_spin = free_flags_allow_spinning(free_flags);
->  
-> -	if (WARN_ON_ONCE(IS_ENABLED(CONFIG_PREEMPT_RT)))
-> -		return false;
-> +	VM_WARN_ON_ONCE(IS_ENABLED(CONFIG_PREEMPT_RT) && allow_spin);
->  
-> -	lock_map_acquire_try(&kfree_rcu_sheaf_map);
-> +	if (!IS_ENABLED(CONFIG_PREEMPT_RT))
-> +		lock_map_acquire_try(&kfree_rcu_sheaf_map);
->  
->  	if (!local_trylock(&s->cpu_sheaves->lock))
->  		goto fail;
-> @@ -6181,12 +6182,14 @@ bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj, unsigned int free_flags)
->  	local_unlock(&s->cpu_sheaves->lock);
->  
->  	stat(s, FREE_RCU_SHEAF);
-> -	lock_map_release(&kfree_rcu_sheaf_map);
-> +	if (!IS_ENABLED(CONFIG_PREEMPT_RT))
-> +		lock_map_release(&kfree_rcu_sheaf_map);
->  	return true;
->  
->  fail:
->  	stat(s, FREE_RCU_SHEAF_FAIL);
-> -	lock_map_release(&kfree_rcu_sheaf_map);
-> +	if (!IS_ENABLED(CONFIG_PREEMPT_RT))
-> +		lock_map_release(&kfree_rcu_sheaf_map);
->  	return false;
->  }
->  
-> 
-
 
