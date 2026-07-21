@@ -4,148 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56BFCC44529
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 10:08:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CAC1C44529
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 10:09:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 540A26B009F; Tue, 21 Jul 2026 06:08:04 -0400 (EDT)
+	id 4A6C46B00A4; Tue, 21 Jul 2026 06:09:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 519436B00A4; Tue, 21 Jul 2026 06:08:04 -0400 (EDT)
+	id 47E216B00A7; Tue, 21 Jul 2026 06:09:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4070F6B00A6; Tue, 21 Jul 2026 06:08:04 -0400 (EDT)
+	id 3BE806B00AA; Tue, 21 Jul 2026 06:09:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A2E86B009F
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 06:08:04 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 89DEB1C06ED
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 10:08:03 +0000 (UTC)
-X-FDA: 85012358046.06.8D68A00
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 919BE180004
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 10:08:01 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=n+JRHP4g;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf24.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784628481;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 117FD6B00A4
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 06:09:10 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7E7E580433
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 10:09:09 +0000 (UTC)
+X-FDA: 85012360818.21.9FC417A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id C6368140005
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 10:09:07 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dfFcQbR1;
+	spf=pass (imf23.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784628547;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uJqHqkBJhkNLZbiN8td7JzVLgTCDKdS3I7/+ILBr1ww=;
-	b=PDqmaiF1f/eEuS+3oQKjcj9ufjcv0MxbXz2nH5NojwDTaq/3z0W0k+6ZyYkSd+hHN4rbZ0
-	Z8Y8z/tPvQzt089jjrSN20R1jvwRuxNWC1ohH8QjpnBDhdEt1LdT+nuUKcD2d+f6//ebbD
-	wkt/nd9vEO8eiFknkMZJIgbo3RRRlN0=
-ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=n+JRHP4g;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf24.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784628481;
-	b=rltWsxuORgVhUkg/TPjopom/B2GVO29a2AzNDarpLKhadLrCd+ZnAqs5etau+T/A9nDDQe
-	o5NouKUvrEAnyZVfmPhnygSQPhNFS85njMjrJjfMy6rhWG1/xEGcOZilPOK9wgHUxVOfjI
-	qMFJAOPh2ffuyRZ8/Cpj4UuTKEMqtbo=
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2cf30af983aso7679815ad.3
-        for <linux-mm@kvack.org>; Tue, 21 Jul 2026 03:08:01 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784628480; cv=none;
-        d=google.com; s=arc-20260327;
-        b=i2POb7UPmMQN/1vNefsKMnwzilfv61goRmJs4GFLmbyikDFIdeGXAi00UbP44S8zgd
-         HXYVkElrosoWGLr002kH4kOhmVUn9aQNpuagY4yoDB5S4AnfG+IiaPWeRQ9FbkPK86O8
-         ECX0gejZiFExRaXs5DBEhMBygSkaCTtC8S4JoHe9KMrCyCiATzZfd4iF0G8O/MPNBaeN
-         8nyZGf/x9vAUpDZqzub22T/KJ2DJB4EX9Ua2HH+I3VnsWoptbwmyb7WdI6rRGgLPnUAH
-         sVE0AK5Qe9ZarfrF2J+vNZp8q5aIdiGGf3onGfK+ZxXwSMav/RLhJ8NRwBE5yVEjuHmN
-         hTdQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=uJqHqkBJhkNLZbiN8td7JzVLgTCDKdS3I7/+ILBr1ww=;
-        fh=LTvCQrNPIVedENNky3FlPK6xduKOA12P8GUq6tduTv8=;
-        b=NWoxqTv6/9bvSX2OH8fT6nRfubYY7C1aIHsdggH1KDLkR3ho5KtrCIcYRerX9WMhnI
-         vV1PFMriU7R3nbAFz2dvvlKWnZfq7gwUYbGxqVxpdz3M51ga7yPsQ62XCE5pUcPOQ9iY
-         /OqcDDsEK/XQsTDkO4KozLrf7GkivhDFW7kVPOvC00gd4xZwtBy5Kq5L+cBLSokV968K
-         R0CI7+3dylQ0m5/YLjjy/86kTQsxLcqGOMqcjINj/MAvbmsqAYhH0uLbgn9rdHC4iU4v
-         uhzm1EzHMb90Z4uppEAO0K8oJN5x9thZtcxAQaGXISWYlUS80qAOeD+LncnTN8GrXUtv
-         fQXg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784628480; x=1785233280; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=uJqHqkBJhkNLZbiN8td7JzVLgTCDKdS3I7/+ILBr1ww=;
-        b=n+JRHP4gumu736A0LQWLeUEqq91ojTwbDOZ4OabMfqPyt3AubmhC3zoDbrM9b/6Su+
-         gNk8NyTYeWE12ZqS9i3mRo0JIXQIGg0cPMM2lMAd32hHTIsVg1MbjgMfUSMSOAerKOIX
-         XIYj5yAbFp2BtOuUYyDkLqIPKD39XuQfpTWhWvHxIqfD1MUkPtJu6o0gv6eF+aPbalBc
-         H1aeUqqd+YMamgTn5vEv453DUFkbvMZq6zO20zych+GPrId2KdQ9gT0B6SlW/GG1KaYw
-         qCcEU52i4RJa7VoOmrPRqJqMiI4oCfx17DTSaY2R70mHG9+UxhVLg5ethyYwcWY4nlGV
-         Hy6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784628480; x=1785233280;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=uJqHqkBJhkNLZbiN8td7JzVLgTCDKdS3I7/+ILBr1ww=;
-        b=l/0mv/y4mu5Q51Htttd9Pyc+Qv4FoNClWX1ZY6IxSPf4bLFovwY2T0UvEGoGbcILnx
-         T0No42hFfsMTGoAhva9zG+/DMgeAVQNtkw7D0PEfBUAcvVSftjtwQvvbu0TAGMSNCyq9
-         B2C7r0G8IVL+0S+RUguAe6JG6PW/a6gHaAcvfC0Tq5lvFvjr5F3m91pHOGZEOQ/99TMw
-         MEjM1lucnocgd9cIzExdspMKXdfnxp9PKZIWRAvbtpgPCvBRpX9Lmu28rcriU/hkkXmV
-         n7jOJnvvBHHnhwSnETb7YWmyRVvdgOL9lPB4XIg7gH/M/HfIjXy43Dh9KSjff2iiJYLM
-         8UnA==
-X-Forwarded-Encrypted: i=1; AHgh+Ro74kwzIajmAqYCthJYOVZy8BoeqwzJmtCEQOovvPrrrSVAc+3PArrJStetjlmcfU70hSaZhS+kmA==@kvack.org
-X-Gm-Message-State: AOJu0YzodHnkxBgAewYFiI+XamHki7pLLDUJWRL+U0s+aCw6WqMEZTIb
-	C0j6G/KWhgWiDvZlrKa/F0uOoqIBysIgBbWZRT9yzViZNJnSR4l5HNfSi9lFBD64z6jd4Ojq8Xl
-	r+QOWpHHq4b9uGZok3TrLCMLwkyT0GPw=
-X-Gm-Gg: AR+sD12chqZJu7RkFONlPu5acgPhAKaHgVl6du6Nq8lriw5c+HBO+A6wMGeDwMBMJ62
-	uU4Os+3GgFb/yiVj8wyYqRVRmltGXKgJHRuHZyq+8WX4y0Yyw9DfZXt0cf+RHPwCYjLT9iKkMHn
-	Wu8/BA56NfGGVQc0meO6zCjugLbLPFKbWPH3SCYQ3TlzRLg4VTqONyoC5I5Xh7rFP8UiPiGbyI/
-	GYVJtT27t8PhCMXoh+60oajfS2MK0RzuZan2LLFHCyCI+uMzitSfTJQx3NmQo6p5prSVtGigtdA
-	xEZtQykUW4EfI5wMVJx0fp9ofaJzZAMSkdk8cYmj/iH2LIpz+6AQ8DMMxuHad6+x5BS2v8/oyRw
-	M4Q==
-X-Received: by 2002:a17:903:2c0c:b0:2c0:db23:4a6 with SMTP id
- d9443c01a7336-2cf34877127mr161188405ad.1.1784628480430; Tue, 21 Jul 2026
- 03:08:00 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=HhgiFT7gO89ZbsoBF977sX4zSyifCWX/9pr2xPYrWr8=;
+	b=ikr7LJy7UlhGeh9jifF+rqbXSZzs52DqZTLDlQs0df8mFLQ/wJOuM8QGiEcSlXkLKPgxNk
+	794dWNzKeEpBaW60B1lRCbZzROix5Oztwb6BHarRtDMyut4u0TIC9QEUDFHksIGVZJ6wGj
+	Iv14S7pzoJqOoOf0aK2grTn+70QeILk=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784628547;
+	b=TgJaxRojoRc/2KwpNTn6y/hXhZeDP/E3G8ApowCXw99PlbNBzSPFeB/gTVkz0h4XYsNY/W
+	esHVCXBJ+FqXFH6pFuUOeMaxNi/wLt2fLLDqtjtC5pKcoTffU6m8L2Trfre4eT36jHEZEw
+	rqeYjxm0qp9fr05TN7iAf7doWbJ0hcY=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dfFcQbR1;
+	spf=pass (imf23.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id D89A9436DF;
+	Tue, 21 Jul 2026 10:09:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC0F71F00A3D;
+	Tue, 21 Jul 2026 10:09:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784628546;
+	bh=HhgiFT7gO89ZbsoBF977sX4zSyifCWX/9pr2xPYrWr8=;
+	h=From:To:Cc:Subject:Date;
+	b=dfFcQbR1u/TdFv+tY8MlY9H7YDBQJaV5W8E4oIz4qNkMOVVKJiXONvo87Dvecag0S
+	 QCsF6+gLgGAATS2Vka9Y8U13kG39TPBfME96ic7LHtwSkkuv/FpyDakq0ssUqyzYfO
+	 kzKcxru4YGETZLSYs/J958X6/iaX0rhNEJwga0n4PJFnFT/YrF9sRp1YP+7X9hOwni
+	 40l5VC+n82c+sRlZo2NHFf/GnRrGoDfy5oVXf5YhTIvqs4CVGDvV9qsMD8iBYeUVi3
+	 sb/2cZBspZi50pxT4vUIM79ZdphD/yLwYLspdQLWWY4F780fwDnP9zu3asvuDNNNxN
+	 74k8nqmqY7giA==
+From: Christian Brauner <brauner@kernel.org>
+To: linux-fsdevel@vger.kernel.org
+Cc: Christian Brauner <brauner@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Jan Kara <jack@suse.cz>,
+	linux-mm@kvack.org,
+	stable@vger.kernel.org
+Subject: [PATCH] exec: fix unsigned loop counter wrap in transfer_args_to_stack()
+Date: Tue, 21 Jul 2026 12:08:49 +0200
+Message-ID: <20260721-hochachtung-staumauer-pigmente-15d71f7d7d04@brauner>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-References: <20260711-id-pool-move-bitmap-v1-1-cd5b7efc2c12@google.com> <alzeHwmGJsmK4z96@yury>
-In-Reply-To: <alzeHwmGJsmK4z96@yury>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 21 Jul 2026 12:07:46 +0200
-X-Gm-Features: AUfX_myc3dWi3KO1PwgkhDIvWoWmIji8BJjxPimHdjYL3OdXBlWKkkU1pj14LEw
-Message-ID: <CANiq72mz9bvrOn14yVtEOLf9BW7R6mS+whRszmcA-WNMuftcNQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: bitmap: encourage using xarray/maple_tree instead
- of id_pool
-To: Yury Norov <ynorov@nvidia.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, "Liam R . Howlett" <liam@infradead.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Andrew Ballance <andrewjballance@gmail.com>, 
-	Burak Emir <burak.emir@gmail.com>, Eliot Courtney <ecourtney@nvidia.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, John Hubbard <jhubbard@nvidia.com>, 
-	Matthew Wilcox <willy@infradead.org>, Tamir Duberstein <tamird@kernel.org>, 
-	Yury Norov <yury.norov@gmail.com>, Alexandre Courbot <acourbot@nvidia.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Benno Lossin <lossin@kernel.org>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Boqun Feng <boqun@kernel.org>, Carlos Llamas <cmllamas@google.com>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Danilo Krummrich <dakr@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, Lorenzo Stoakes <ljs@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 919BE180004
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2999; i=brauner@kernel.org; h=from:subject:message-id; bh=BfGVnvLylOR1ukv19F3xDAtbizuM3JaHDvahSFlKH8w=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWTFu5pnM/w/kBcX9SbY+PubiPnV+7x8rr7S7cpb43nM8 Mthj9O+HaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABN5/JGR4Wrvu9/sk82/vp/6 beWPXXytMjv9P9pcPXTY5GmenYpM/iFGhu0iQveOWRmUfdJQOWl9v6Hf4q/N9OLMdU+UTu74ya/ 1lh8A
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C6368140005
+X-Stat-Signature: b8yojwdni8f4e1u3apdzdds61x3rocyx
 X-Rspam-User: 
-X-Stat-Signature: uenwnn38uhsamhwk8sy3mm43mtwc5pdm
-X-HE-Tag: 1784628481-21854
-X-HE-Meta: U2FsdGVkX19NWYQFBmQlFivkJzNu2Ct7889lVCxIxPCa8nYeDWdYFGa74KdKpnR0gfAkMFafUSr3quj5ck8r9c9swzt0f+HnPDKwyBEBseSeuUhHFZgSvyBs+miG695ZlvZmihyEPKI9WnSe4mGC7u1Hyu1acu44/tNqji0OhJUA8br/hqXNFJ6XW74yN7Jik5kiNjYXXYJArPcCDeR2kb4FAg0yZbw+IDRlquXoZdcrcPJJjhW/L64u1+iuX5H7tWTydzH+R879Rs3vQYPwvH/+n/sSH+lR4iTChuZRXoWQyi5Akm0zIfQopvzY+9RlykZ1ZBYP48dZcAGhm2cDF0IMaH7/5e/K0IdTtjwyHR4zBweL/Dn7NA7yBBdG3DVRGgX8LRSrSq3si5p/uGaifFSj6/Okm94CxYWUcvGr4nFFTyDbv/I3ajibNTk8OnHS4bxFyKwNOego5837hBf4IcSkwYYaK0U3OZAvLZJeLZhgSwiqxfTdh8oChNbmCsjdQSrzec+beGw+vyLSlf88qr4ND26yg38kzAeg/s0mTrlPeGk3SppcDorluX7+G4PDR1fnRKU6jAnm7r4FuoN3btW3Jb6OqY/MaRHMKpYqeKpSecTvFJKc1Hc5zObNahF+ARV8wZj3r6JRxjbYnXpu8UwoWPRrXqUB72ns9hRU+HNiV7FlqPMpMD8XcOcw8U5vAfs6xLCvJidYL/7sRet/EQ81lTXX5/YM9X0hHI42aDz+nCLu8LipzXpwJVTwL6F4mF27k2IwldWM8L6ojmpZ/teALYEb4tADhubood+jaKs3Tn8C75a3BkXM/UqSr65LS+7oOuRz49yxlM8z5SIuFPXsyWhtoylwpZ9UpaZK6zF/AZ74fv9fUhW5TVAWA1Vaj7VGvHsrfLEDSHLFv4QdJrMxgJReIqY2VuorUYxl8tO7kXb+/Rqvsb4E59M6Uv2op1PnBeHvQvHCCFv3w+/
- h8KyBbjm
- bXU4uSaUM1kSrBYQmbB6rrob3dmBKzcBZJbNYroF+5qRI7J5U4W1z6gjEoeq4HVWRQTifoFtLoy0waUEpt21zfI2b63eef+eDZ8nh0WeV6S7yB6iC/ZP899tkp8nyEaifzGIl8smp3DFR6ZoSlCMHdyCZ5ll59uoJ3Wx1spp6kGh+yipQTlxBEiHh5zRXrd3govHRRsiyH4KGSO/z4fQGNRFFYYB2HvHR2ikiJ3GAsIcVbaMB6MaUzQ78pTgCtsCW9TGBggr6nrs3ltXve407NC+80DgUV/9D5CJR/fYA6hUcCl8txgHJjECzp0gteYLVKMEE4Sr3AU6nNkoKWCSAcz6NEIZIF1rvPvUoI+z55u2iuOq7j/Y3vSg0xiWgX+zzjm35FjDjGZ6YXsYraF1GKzNDC+M+gHwkmweKq+zlj6VQJL5tlhorKo10uGzjalbZ5EO4aQ+YmVKZ1GmhRk2Vk/us3ZpxV2Rp04jAVwgkZ+5bSiyW+YQmjMkUrMOqFFeSZBXRQqCNEFF4b/cx8Vvl370+sHhwOzypigkxBpjrJg+VIm71TEpVVERp429U5JWwSpKm
+X-HE-Tag: 1784628547-231599
+X-HE-Meta: U2FsdGVkX1+hrwIPMYeoqAHp/z+JaPP6A4cNRXJddofV+75/3d0w2W/waxyxsbJM5HaeFxngBiFDzSATNJsdSWUxgWE21USubdTI+WcNwuGDVp85DxepE0ybxRZQ+ceI1QPoOgNoGPJcViKFQ+I4fJZ0izhjInV1UYUgwoFcjUTEIrs+hToRF+bfuiflJMpyvNqx1yttMtzIpMPWhs+53hq0hpNQdLXJNDbBFCedWjuz3KuTLoCvrI7SHPtbscIfv2cTCQYz4IdDJzIuHDQK+kXz0ZTgUpjmTqUh5yJqWy5UGSb5gneZTiG5RdJEPWLAMKMwnUilcc0BkV8IHla9XPccXwVu7yWzFzKVH0DNvtz0Q6opouOzOrs+m6OsW5KgEARLGXWVJgT7xlq6KZQsbzcw0Do778KEfuuoNBcLAgJJ+BwubJtsDPBh5Dp3mlgXZUUw20iIIMvVQzh6Dz9aD+8IrQTCwmQnUWC7jArSkfUZhzxS82Mcg/FEfUDnotzWxTci0BbtMi6m6mAOmpUxh3o7xKgHec/gVGrEaiXhFMbodfLDquAdjQW80ZFrgX9VHmp2X/y8gmXjiCt4CHfjaPL9CxglazGyfvKR510xq3/0dj+Tm8CyDIt6cNorP+WVJ0xLHGeXiptgNRB9knXhePGatP2PuXUVxgZBZjEDHTG/uNV9tFdZIbDh2kPVIUxvr63jPZWuMYPb/znGvqrWe2knqafhXYmpPOTeKvS0ANPobvDxFt58jE7vx7JUskZdJQkY8yCdjKlOWA/OE4qI5ew/AyWpNVdN5ktD2uoEdQwaANeMdOMQgwaqrSP71ATCOfnKJCjZTAlL88YrdbfKPFFdXM85YW+gWvcbIWz/ZQfIyNNa6GvbzhOzJw7tDR6vC/BtebcoowigWrWIk4UdfYViBK+79CW81MfRQ0szyXaiUivPAs1lxIBkIbTNY5UZM0xvjM0xMEpFJhKc0E3
+ 3gqrQzqG
+ K6hwHtI47yDgkCB1+gGDHXZVft0cvzflUKxd4AUStp2n7946TfXSiqNSHmpFwtuLz6fZHz2Xt6fyeleAQHxe+tkNjRgq/UvK+KeIrtowPyQIi6vIF5d8aomRWUxyFV/QcsTfZBPNV6lxrMEpOkBxq9TMtximoOqsLaS0U7ZN4axAbBDVN+z2xy95Na+fUY1ANKmaHZPI/jp59tJwVuXDxIoSnl744UcYS1HXKorlzLNQ9MYe3m48ZzwkVXI3tgtEUANbXOr7DtLphrrJbDdcHnGdzzO4lvi4So/26BFufk4dItjmUjvmh8jhTT3NZeY9Jaq/pwXFkrcxVT4w664cAFXEbIIiq0IxF8y568uS7Qik7Dks=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,24 +95,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Jul 19, 2026 at 4:24=E2=80=AFPM Yury Norov <ynorov@nvidia.com> wrot=
-e:
->
-> ID pool is a user of bitmaps, not a part of it. If we move every
-> random user to the bitmap directory, that would be an immediate
-> maintenance burden on you, Burak and me. Not sure I'm a fan of
-> this idea.
+The stop value is derived from bprm->p >> PAGE_SHIFT. The index variable
+is an unsigned long. If bprm->p drops below PAGE_SIZE and stop becomes
+zero the loop condition index >= stop is always true.
 
-Splitting things into more independent modules is usually fine, yeah.
+After the index == 0 iteration the decrement wraps to ULONG_MAX and
+bprm->page[ULONG_MAX] reads sizeof(void *) bytes in front of the array.
+The pointer has wrapped to -1. That garbage pointer is then passed to
+kmap_local_page() and PAGE_SIZE bytes are copied from wherever that
+lands into the stack of the process being created. And the loop doesn't
+terminate either...
 
-I don't see why we would need a `lib/`, though.
+Getting there only requires bprm->p < PAGE_SIZE. On !MMU
+bprm_set_stack_limit() and bprm_hit_stack_limit() are empty. So the only
+constraint on how far bprm->p is pushed down is valid_arg_len(), i.e.
+that each individual string still fits in what is left.
 
-Hmm... If what we want is to avoid having `id_pool` as part of
-`bitmap`, then can we add the documentation paragraph added here
-instead?
+bprm->p starts at PAGE_SIZE * MAX_ARG_PAGES - sizeof(void *) so a
+single argument or environment string of a little over 31 pages leaves
+it in the first page:
 
-Thanks!
+  Oops - load access fault [#1]
+  CPU: 0 UID: 0 PID: 1 Comm: victim Not tainted 7.2.0-rc4 #1
+  epc : __memcpy+0xd4/0xf8
+   ra : transfer_args_to_stack+0xaa/0xae
+   s4 : ffffffffffffffff   s2 : 0000000000000000
+   a1 : ffffffdc98000000   a2 : 0000000000001000
+  status: 0000000a00001880 badaddr: ffffffdc98000000 cause: 0000000000000005
+  [<801a5324>] __memcpy+0xd4/0xf8
+  [<800d5f6a>] load_flat_binary+0x43a/0x65e
+  [<800a2de4>] bprm_execve+0x1d4/0x316
+  [<800a351a>] do_execveat_common+0x12e/0x138
+  [<800a3d44>] __riscv_sys_execve+0x38/0x4e
+  Kernel panic - not syncing: Fatal exception in interrupt
 
-Cheers,
-Miguel
+This is an arcane bug but we should still fix it.
+
+Count down from MAX_ARG_PAGES so the loop ends when index reaches stop,
+stop == 0 included. The iterations performed are unchanged for every
+other value of stop.
+
+Only CONFIG_MMU=n builds are affected, transfer_args_to_stack() is used
+by binfmt_flat and binfmt_elf_fdpic on nommu only.
+
+The loop predates git history. commit 7e7ec6a93434
+("elf_fdpic_transfer_args_to_stack(): make it generic") only moved it
+from binfmt_elf_fdpic.c into fs/exec.c and narrowed the copy to the used
+part of the first page. The condition and the decrement are unchanged
+from 2.6.12-rc2.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+---
+ fs/exec.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/fs/exec.c b/fs/exec.c
+index d5993cedc829..c7b8f2d6366c 100644
+--- a/fs/exec.c
++++ b/fs/exec.c
+@@ -740,7 +740,7 @@ int transfer_args_to_stack(struct linux_binprm *bprm,
+ 	stop = bprm->p >> PAGE_SHIFT;
+ 	sp = *sp_location;
+ 
+-	for (index = MAX_ARG_PAGES - 1; index >= stop; index--) {
++	for (index = MAX_ARG_PAGES; index-- > stop; ) {
+ 		unsigned int offset = index == stop ? bprm->p & ~PAGE_MASK : 0;
+ 		char *src = kmap_local_page(bprm->page[index]) + offset;
+ 		sp -= PAGE_SIZE - offset;
+-- 
+2.53.0
+
 
