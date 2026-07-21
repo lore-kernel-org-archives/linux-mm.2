@@ -4,90 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05DBCC4452B
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 19:08:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A355DC4451C
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 19:20:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D0CE26B008C; Tue, 21 Jul 2026 15:08:31 -0400 (EDT)
+	id 3D2C26B007B; Tue, 21 Jul 2026 15:20:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CE3F56B0093; Tue, 21 Jul 2026 15:08:31 -0400 (EDT)
+	id 3AB436B008A; Tue, 21 Jul 2026 15:20:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BFBE56B0095; Tue, 21 Jul 2026 15:08:31 -0400 (EDT)
+	id 299A26B008C; Tue, 21 Jul 2026 15:20:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8CFE76B008C
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 15:08:31 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 12F67140283
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 19:08:31 +0000 (UTC)
-X-FDA: 85013720022.11.A74CDE3
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf25.hostedemail.com (Postfix) with ESMTP id E6F7DA0013
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 19:08:28 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=qtmSlt+Y;
-	spf=pass (imf25.hostedemail.com: domain of mark.rutland@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=mark.rutland@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by kanga.kvack.org (Postfix) with ESMTP id E708D6B007B
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 15:20:10 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6AD20A083F
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 19:20:10 +0000 (UTC)
+X-FDA: 85013749380.19.045BD07
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id A28DA20004
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 19:20:08 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SYK1MxMD;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784660909;
+	s=arc-20220608; t=1784661608;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PdTw4Ljy/iEi6EJKnYY/hTaPD8fG2xXNmAjMarXklqU=;
-	b=dgeY3VFgc9wL1Uf6Jjq+/NV95AUQX/aE7uZD1TJ+UbaxFdyf5fVdceizKeeAt+pclg5gje
-	GvQQyY1LS+JFLho5B9fJf3agzSP4fBx4OEzRv+KXzi8kAJ3nrmpdNn1NmkHqYZXVXb2ia8
-	qVDuqqzf5is7+EsrC5zoIWw0qd8W0R4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784660909;
-	b=V7YjZfBk+wGGPnXV2xPJupymZMs7Bc1aeiSiO13jABgUMpc+iwLNT2oPi7RyPR/5gL5xVE
-	J8OfTh4UwgbmzA9SGCsaXFttuRBYipSk2zEOUOS+uGNi/qZn/1LOUs+oCOkndlIAiButWT
-	0mCk1qDI1Z7aGXNwxsxKPcbwotAsf/w=
+	bh=fbtv0vw1LlTZUCiZD8t3HdgT+DZEZ+c4X5oV0q2qGp0=;
+	b=15YNu4VPZHWKRCDNpZNBHCMH0WPUuPMyQUj7yJphBw3q/OscjMH4JEjACOIxSq4U5x3qJ/
+	LLIW9U0HUqFDYvdLNZKshD9lHCNBOBQ+ZT1/IDl46MInSt4d7bduBiT7vkFIpnT9spDw25
+	pex5asIXsilxAYxdSPqy4HQFA/j2fvs=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=qtmSlt+Y;
-	spf=pass (imf25.hostedemail.com: domain of mark.rutland@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=mark.rutland@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A2EFF152B;
-	Tue, 21 Jul 2026 12:08:23 -0700 (PDT)
-Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 10ED43F58B;
-	Tue, 21 Jul 2026 12:08:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784660907; bh=6TZNhGMiK6SIIRkXwPe07Z1IbHnyi9FAC1oXtous4SM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qtmSlt+YSuFKMmK97ciSuK0jD2TtFWOpJZ/4+0L3kKd7p/KzmZprjUDCL50RIJ4su
-	 jZNtWdT21n9OWv405MRaEowPh4FZPtevxz8huBWMZJf7WNjfNsCKsiaSOFHzXji5nU
-	 xWcioUiVkpu9s1lxQsD58gdsiYwJyJCjV8aeTl9Q=
-Date: Tue, 21 Jul 2026 20:08:20 +0100
-From: Mark Rutland <mark.rutland@arm.com>
-To: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Yang Shi <yang@os.amperecomputing.com>, cl@gentwo.org,
-	dennis@kernel.org, tj@kernel.org, urezki@gmail.com,
-	catalin.marinas@arm.com, will@kernel.org, david@kernel.org,
-	akpm@linux-foundation.org, hca@linux.ibm.com, gor@linux.ibm.com,
-	agordeev@linux.ibm.com, linux-mm@kvack.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ada Couprie Diaz <ada.coupriediaz@arm.com>
-Subject: Re: [RFC v2 PATCH 0/16] Optimize this_cpu_*() ops for non-x86 (ARM64
- for this series)
-Message-ID: <al_DpFJFcmVhxpvW@J2N7QTR9R3>
-References: <20260715180455.515692-1-yang@os.amperecomputing.com>
- <0344c559-1959-4531-9265-d5a5180eb7cd@arm.com>
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SYK1MxMD;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784661608;
+	b=cXdiCUaBNnTQOfDYuqUJnuUzM9fEnZFKEGWs292xSTeo5l4/hucAemW9bC8KdG4YdZ4A5l
+	1c/ty9K2omZqgy1BoIzdI4YkZ5Xa5MAOmSx3y76/+jE9E5dqKLwYHGdYQAOzPoielkz2Ao
+	Q6BJF3fUaQwuyylm/Q/M+RN7+dvOTIc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 20E7C404E1;
+	Tue, 21 Jul 2026 19:20:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A36DF1F00A3A;
+	Tue, 21 Jul 2026 19:20:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784661607;
+	bh=fbtv0vw1LlTZUCiZD8t3HdgT+DZEZ+c4X5oV0q2qGp0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=SYK1MxMDQ4Ju4xurEh0nrhuHZHxv4A0QZ1Bge1pFLQOi9VrJbPQfw3EqoddRVH9IO
+	 6qInYd0gsSaFvE9ucIK/mVz1sGl/97DH+imBNDenFeN7hpzhC120OKnvcYr2t1IyWa
+	 nIzrT1Ud8MvuGarRrIfFx7677btQhuLafF+A+z7w8x55g4FkmQfrt42NQW/Slyu49P
+	 22gtk6y36rTnkTapLdn/0cWqAdHD5ECZom4JJCrIS+zi/+YqPRDqBrpBegikW7jyIC
+	 FT9IrELkmXzXY+JvPJ4YvLcfCJYg1V3xYawMu/U2m+vpNvLzDUeyZPcZ/BL7uX0fBH
+	 YRPirVPljhpIA==
+Message-ID: <5a43053d-8d08-4fda-82e3-bda10ca79c92@kernel.org>
+Date: Tue, 21 Jul 2026 21:19:59 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0344c559-1959-4531-9265-d5a5180eb7cd@arm.com>
-X-Stat-Signature: 4zegtrb6jfn3emqu64ihht3uxisnd7hz
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] mm: Add unmap_mapping_file() helper
+To: =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Tejun Heo <tj@kernel.org>,
+ Bjorn Helgaas <bhelgaas@google.com>
+Cc: Bjorn Helgaas <helgaas@kernel.org>,
+ Manivannan Sadhasivam <mani@kernel.org>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ "Liam R . Howlett" <liam@infradead.org>, Dan Williams <djbw@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Simona Vetter <simona.vetter@ffwll.ch>,
+ Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
+ linux-pci@vger.kernel.org, linux-mm@kvack.org, driver-core@lists.linux.dev,
+ Christian Brauner <brauner@kernel.org>
+References: <20260721185252.1670958-1-kwilczynski@kernel.org>
+ <20260721185252.1670958-2-kwilczynski@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260721185252.1670958-2-kwilczynski@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E6F7DA0013
-X-HE-Tag: 1784660908-155152
-X-HE-Meta: U2FsdGVkX1+STiVrCdRetQFA+SiSPZdl+2YFdZDUcCwBEO4Wgc5g7MWRMgB7Caj99jKJE9Uc/tntYUEze9x/CKGBvbZl0e1hl+9P1jv1XlLlwxFYPuU0AlzKbYxD7tRPa+QyOCJ3+4TVfmvIENJ4aYm5XabqcBTH3hAD9Twjlatmvwpk6CXYhOUNyLMqGrE7juL27WdxUGk06ZKGelopw+W63S1lXR65jbQ/3h1ji9TjbqykTCxDItGowpzpKCe4hF503cTg4ICObJD/RTbEcKpMA6pB5NPjK5hpkKH10N2SQTQxVdxXD3lSFgJ+noUAnVZqnFE1WrDa90cVDCpCRzDDcEDnAVl47g2/RXkzBrzYDKX8GGfkbeQ2vSGpoAdOiiBVhU0bTlBWWSud/MkaTMRlRkXI9hqOEDRH8kAIJEoAhpfg7tgtBUZ3iui0ZOqQaxIoSbJf1NubcxQsStt800tA/loq1RpphhFjaxbaSXpi1TPMOyZvHUfSti7ZmD/kYBJYhvvRROQC17p/eoyf0a+gzjgzAoq+Sn171CAcfhBq40NhCj3OgLwAr3oGOp+4Qc/GYjlD47PB72L/w71tJpd1ONSA/a44xVN6NIqtZTi/czInxCedx5uDwfwRaGp1eBFSjVKvQhVRUCmf3/J/X8TdlSD2hVlOTIGdLGnhB4CC+/UxXoYjbz6Tx6SJe2pi1oxk3Ej2KK/LoiLyW2WGwTDyLUwrbFPzjjDV6ZZVNK/Gd16oWHtJ6eqfoN7Qo6wZI/jECgjM085VOuigxF9Nma94pP2H37kpCCCrll1YH1KpzzeFug2b9MMVtWavDjISvC8/M9Msq2+L44FcHaaOMCj6fpUJC1En876UeMEttJEnIEYO0pV75Ka4WeW/xcmX+802KwfTeD5tfvBAXMBD4mDvQWivZGnmIWe2ZUNWg0FQ3RLlgouBLakwYjrMPzL0xeTjLi10ARb5Baw8QJd
- oJA1hndj
- O+6m8zhU4Zevvva9/0WT9rm8fr6UcztA24h+bbch+BfANLQmQ6/FF4heguuB4mK2rysUGII/DS/FIKgksCC8ONw2FueBI+cQPGOdOzhdPkP9JFkc/X1l9EnMsjBqXtkc5EzaF8VZ7sz8osYuRK1dYpeAhnQGl24+ScxLSFrGOJ8eTIOOLfGaUUluoZxL/w3EWszPLOoM53M0yBJlGzOgGU45QWkarHAOHaPgUxwCxED2duCdnrGfcZb67N/cwuXw6nsZRLU/ACAK9toanCfNcKuLzEraHXrYYWWCzbUSCD5QvRbD+eBpF4MTQySJ/+jzKgGd3VWKSYuRXuVy/aFtiYzh96DiCjzvmoEHdLT7hFVJeoI10PDmA4I2z3KS+qEV8oMu1
+X-Rspamd-Queue-Id: A28DA20004
+X-Rspamd-Server: rspam01
+X-Stat-Signature: pe5uixxf33kwue7a3rca1ax6rssk58i1
+X-HE-Tag: 1784661608-988194
+X-HE-Meta: U2FsdGVkX19Ror1W+ARi1sNINlNjO4iqdPjpcE4aNnh2tuSHRNWuKp1MCzkiRbIdWe1E/UaQkahElhUI9Cx5AsLXYZR6sKdNKTSnZq7Fc7gqVNYWi4Zcb4qndYKuHxcMr1m5sMu7r56OHZSzBg+2tktG3PDiUgsfQShowhfhPAnu3DEQHxw8EI2pCM1qBwZVNGE/vw5xftt4hBSIKHzLDqP/H+sgPgVOOaHu6Zx1ST0w6nDB5nl9UOPYT/wx0A43RD3rU8HmyoiVDXpY1JKKb6FBeFhiRGMtEwykoGCMytSbThUtxrvRmvq8AvLKvblV/SiBNyB+Odp+tbsOvXFLzBR5PG1EXsQTUeIQF8wqtvU4RUcE2VRaOOsUJqWVoON+8fe/dTSWX/vk8r6mHUxO7bAK1ZWj+Zufic/4iHC1M0FIZy3a97g6tCA+SDEw3tqgrzXNpimP0C+xj6Jlkw7eZvdBqBhzHvaOYH/q7GgPpfP3M1m+sh4S5wNRSvfAwTrpsAeIZdX1FO49AKf6ck/e5pH92s2+J9/TC7eOEbi6KupLANGxC6IiT59/L9n6aOd+9WeBsOPBxi5vIqEU71PYkkGEW+Q4qd3DeIUdvFdKKRXs0/uL+M654WpMsKAQteDtDL51SBKtwv5XUJ7x67Q1TP4FQLzbMfWpuxdTHYyHdOLxIYcfkYk4UMtaAubDAgQNqZfzqdoVebI6xHNMBpQRM/bme+V3zBkM2+jWfR16cTi3nKezy5abIz6T1+UKVw3+W24FPQ3PNKiADlDUC3iibrKQ29KW1AmtUS3tOzWKbOQiabQu8yIPXny/2rNuSCJmUd1daIgk5Nr55aytG31VC8iNGIJKDEGvWvPXfkv6T/uO8qWvYznfCC9hLgxQ6m28AOxgP4DZG9/pG83zdWjH3nmMoTMpCNNCsWTFTIDdiCMo4vNafBnggypr/koX37sbeCNJ6CXEF8roDo6UHcu
+ wu/Xs6XC
+ DffBo0yKXYcszqur80Wasv42+K31n/xrR8EYM9w4eEeScds3fpRR2tPHoDPnjQ/FHElU+jIewafKmRvhMIFjvN9LNiDfXqtzzcYe0fgmdXu/2m4NjccwpHmKzOXwanqJifqnRkBiDssAiZGeUG+5GruxxFtY64CQ5eqRX5E1MCQy9KsU+IwU57SNhgvh7nER55EZFg1TYDrKEvRv0mrrHQ6ODc0R+WuBC34egDULXbYYgtG/a/yY6KkBY0YhzOP2X/VFNemJRJ8sqzGqL9alx2ZCiRtwLWLPD5OlTVpAYOH4Ww5szwNyZSurteHXHjntQfaoXfAaQWrrjRVRsxxYUCBTknc2cvHc7nUXD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,136 +148,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 16, 2026 at 02:23:33PM +0100, Ryan Roberts wrote:
-> We have observed a few performance regressions recently, for which the
-> root cause is increased use of this_cpu_*. We have somebody at Arm
-> about to start an investigation into whether in-kernel rseq can solve
-> the problem.
+On 7/21/26 20:52, Krzysztof Wilczyński wrote:
+> Currently, unmap_mapping_pages() and unmap_mapping_range() unmap
+> a page offset window of an address_space, and teardown paths such
+> as kernfs_drain_open_files() rely on them to remove the mappings
+> of a file that is going away.
+> 
+> Files with f_mapping swapped to a shared address space at open time,
+> such as PCI resource files using iomem_get_mapping(), have their
+> VMAs attached to the shared mapping instead of the file's own inode
+> mapping, so a teardown that unmaps the inode's address space cannot
+> reach them, and they stay live after the file is removed.  As such,
+> the only correct discriminator for these VMAs is the originating
+> struct file recorded in vma->vm_file.
+> 
+> Add unmap_mapping_file(), which walks the VMA interval tree of the
+> file's f_mapping under i_mmap_lock_read() and zaps every VMA with
+> vm_file set to the given file, using the same per-VMA zap teardown
+> as unmap_mapping_pages().
+> 
+> Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+> ---
+>  include/linux/mm.h |  2 ++
+>  mm/memory.c        | 26 ++++++++++++++++++++++++++
+>  2 files changed, 28 insertions(+)
+> 
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 485df9c2dbdd..e882a03eaddd 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -3183,6 +3183,7 @@ extern int fixup_user_fault(struct mm_struct *mm,
+>  			    bool *unlocked);
+>  void unmap_mapping_pages(struct address_space *mapping,
+>  		pgoff_t start, pgoff_t nr, bool even_cows);
+> +void unmap_mapping_file(struct file *file);
+>  void unmap_mapping_range(struct address_space *mapping,
+>  		loff_t const holebegin, loff_t const holelen, int even_cows);
+>  #else
+> @@ -3203,6 +3204,7 @@ static inline int fixup_user_fault(struct mm_struct *mm, unsigned long address,
+>  }
+>  static inline void unmap_mapping_pages(struct address_space *mapping,
+>  		pgoff_t start, pgoff_t nr, bool even_cows) { }
+> +static inline void unmap_mapping_file(struct file *file) { }
+>  static inline void unmap_mapping_range(struct address_space *mapping,
+>  		loff_t const holebegin, loff_t const holelen, int even_cows) { }
+>  #endif
+> diff --git a/mm/memory.c b/mm/memory.c
+> index ff338c2abe92..f9cfb88ac4f7 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -4423,6 +4423,32 @@ void unmap_mapping_pages(struct address_space *mapping, pgoff_t start,
+>  }
+>  EXPORT_SYMBOL_GPL(unmap_mapping_pages);
+>  
+> +/**
+> + * unmap_mapping_file() - Unmap all mmaps of an open file.
+> + * @file: The file to unmap.
 
-FWIW, I had a look into something rseq like (resetting the PC upon
-preemption or any exception), and I ended up with a GPR fixup scheme.
-That avoids the need to disable/enable preemption, and only requires a
-read of current and a couple of stores, which *should* be cheap.
+We are unmapping pages/folios, not really mmaps.
 
-The approach is similar to Peter Zijlstra's in-kernel rseq scheme [1],
-and Heiko Carsten's approach for s390 [2]:
+"Unmap folio from all mmaps of a file." ?
 
-  [1] https://lore.kernel.org/lkml/20260223163843.GR1282955@noisy.programming.kicks-ass.net/
-  [2] https://lore.kernel.org/lkml/20260526055702.1429061-1-hca@linux.ibm.com/
+> + *
+> + * Unmap every VMA with vm_file set to @file, regardless of the address
 
-A key difference is that I ignore the PC entirely, and *only* track whether
-GPRs are in use by a critical section. The GPR fixup is idempotent, and
-can safely be applied anywhere in the critical section. Ignoring the PC
-means that (in theory at least) this should work with kprobes, etc.
+Again, we are not unmapping VMAs, we are unmapping pages/folios within all VMAs
+that map the file.
 
-I've rebased and cleaned that up a bit, and pushed a WIP version to my
-arm64/percpu-fixup branch:
+> + * space it is attached to.  This also covers files with f_mapping
+> + * swapped to a different address space at open time, since such VMAs
+> + * cannot be found through the file's own inode mapping.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/mark/linux.git
+God this is confusing :)
 
-I'll aim to have a more complete/polished version out in the near
-future.
+Sorry for the stupid question, but why can't we call
 
-The key idea is that every percpu op has a critical section during which
-it maintains three distinct GPRs:
+	unmap_mapping_range(file->f_mapping, 0, 0, 1);
 
-  <pcp> : The original __percpu pointer.
-  <off> : The percpu offset.
-  <addr>: The final pointer (<pcp> + <off>).
 
-Whenever the kernel performs an exception return back into a critical
-section, it can fix up <off> and <addr>, as described below. The
-critical section is roughly as follows:
+What is a bit annoying is that you now do in the caller:
 
-	/*
-	 * Prologue.
-	 *
-	 * At the start, <pcp> is already set, but <off> and <addr> are
-	 * uninitialised.
-	 *
-	 * After this STR, upon an exception return into this critical
-	 * section, the kernel will:
-	 * 1. Update <off> to the current CPU's offset.
-	 * 2. Update <addr> to be <pcp> + <off>.
-	 */
-	mrs	<tsk>, sp_el0
-	mov	<tmp>, ENCODE_REGISTER_NUMBERS(<pcp>, <off>, <addr>)
-	strh	<tmp>, [<tsk>, #TSK_TI_PCPU_GPRS]
+	if (of->file->f_mapping != inode->i_mapping)
+		unmap_mapping_file(of->file);
+	else
+		unmap_mapping_range(inode->i_mapping, 0, 0, 1);
 
-	/*
-	 * Generate the address. Any preemption within this critical
-	 * section will result in <off> and <addr> being updated to
-	 * match the CPU that this is resumed upon.
-	 */
-	mrs	<off>, TPIDR_ELx
-	add	<addr>, <pcp>, <off>
+Shouldn't we just have one function that takes care of that internally ... so
+it's harder to get wrong?
 
-	/* The actual operation, e.g. read/write/cmpxchg */
-	DO_SOMETHING_WITH(<addr>)
+-- 
+Cheers,
 
-	/*
-	 * Epilogue.
-	 *
-	 * After this STR, the kernel will no longer apply the fixups.
-	 */
-	strh	wzr, [<tsk>, #TSK_TI_PCPU_GPRS]
-
-To handle nesting, the exception code is updated to save/restore the
-register numbers in pt_regs (and clearing the active value at entry) so
-that this safely nests.
-
-With that, a simple test case such as:
-
-  u64 outline_this_cpu_read_u64(u64 __percpu *p)
-  {
-          return this_cpu_read(*p);
-  }
-
-... is reduced from:
-
-  <outline_this_cpu_read_u64>:
-         paciasp
-         stp     x29, x30, [sp, #-32]!
-         mrs     x1, sp_el0
-         mov     x29, sp
-         ldr     w2, [x1, #8]
-         add     w2, w2, #0x1
-         str     w2, [x1, #8]
-         mrs     x2, tpidr_el1
-         ldr     x0, [x0, x2]
-         ldr     x2, [x1, #8]
-         sub     x2, x2, #0x1
-         str     w2, [x1, #8]
-         cbz     x2, 1f
-         ldr     x1, [x1, #8]
-         cbnz    x1, 2f
-  1:
-         str     x0, [sp, #24]
-         bl      0 <preempt_schedule_notrace>
-         ldr     x0, [sp, #24]
-  2:
-         ldp     x29, x30, [sp], #32
-         autiasp
-         ret
-
-... down to:
-
-  <outline_this_cpu_read_u64>:
-         mrs     x2, sp_el0        // Prologue
-         mov     x4, #0xc80        // Prologue
-         strh    w4, [x2, #20]     // Prologue
-         mrs     x4, tpidr_el1
-         add     x3, x0, x4
-         ldr     x1, [x3]
-         strh    wzr, [x2, #20]    // Epilogue
-         mov     x0, x1
-         ret
-
-... which is clearly much better.
-
-As noted above, the branch is a WIP. There are a bunch of things to do
-(in particular, factoring out the xchg and cmpxchg assembly), but I
-don't currently see a major technical blocker for the fixup approach.
-
-Mark.
+David
 
