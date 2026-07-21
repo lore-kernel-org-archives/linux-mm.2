@@ -4,136 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 115E2C4452B
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 18:13:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81E52C4452B
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 18:13:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 17C3B6B007B; Tue, 21 Jul 2026 14:12:47 -0400 (EDT)
+	id 59BD56B0096; Tue, 21 Jul 2026 14:13:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 153446B008C; Tue, 21 Jul 2026 14:12:47 -0400 (EDT)
+	id 54C3D6B0098; Tue, 21 Jul 2026 14:13:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 042C66B0095; Tue, 21 Jul 2026 14:12:47 -0400 (EDT)
+	id 48A126B009B; Tue, 21 Jul 2026 14:13:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E9416B007B
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 14:12:46 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8E9751C0142
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 18:12:45 +0000 (UTC)
-X-FDA: 85013579490.04.147A814
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id B65EA100006
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 18:12:43 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bvdgVv6s;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1CAAB6B0096
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 14:13:50 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7F565C0267
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 18:13:49 +0000 (UTC)
+X-FDA: 85013582178.25.96CD78B
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 85E4614000D
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 18:13:47 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=AFG+8oMq;
+	spf=pass (imf23.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784657563;
+	s=arc-20220608; t=1784657627;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Kl0Lh6FjGEgG1H/3xD/a8p3nj1WAQN+duTO4F2foLOk=;
-	b=Io5NNG45JdISYFqcXwv+p26xrhDWzo44XUoS2PmJ1A5T+XrI6ftRyHUpSHbPtLxuh93rzn
-	LE/f2XH/XegTg416zBSLHaZPiJknUqN6nxyVhYWdPMVFY7NPs2oGfPfnnb1NUKQFWpSdZk
-	M/enHimpOz5B4L8Egh5pcIn7IScGMiQ=
+	bh=LSfkR1e/dR8kqPxQlWrl73BK+AJy0HI9oL3YLggpuKk=;
+	b=jwopdwJSwdjtsa4MzL6AWc0qD9/sxWy/nO4CVWlGsAztyO2e5p1xyq5rAAZS+UQQFKHfCJ
+	rsW0m4of2V9FDS6rQaxBQmcb90XOk7UHafzsZeBhNXm8zPFll2cwFpAl58doxBjI7A8BsT
+	YoVK9sfvZm60AAm2JhoyO4vTlBpX4f8=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bvdgVv6s;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf23.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=AFG+8oMq;
+	spf=pass (imf23.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784657563;
-	b=ge1YTKTCsSL9LVQQU2CZh+xGX60XBMw6Z4qQhn2P9Rk15DWzcWqngu8PxRHO0GrJUbr4kn
-	jBXljuXVfB5/zQr282BFwRFI+lfnBmb2OrONEiWDrOXqB3SrJpXm0nkowGzH0Rtt53Mq1+
-	uRagOJQF7FzWAO7Ilx54UlhwWPwkS0w=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D976241395;
-	Tue, 21 Jul 2026 18:12:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25D111F000E9;
-	Tue, 21 Jul 2026 18:12:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784657562;
-	bh=Kl0Lh6FjGEgG1H/3xD/a8p3nj1WAQN+duTO4F2foLOk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=bvdgVv6sYnZOASG/ksH9sQhf/lJzzXdiBaiQw4qKoPbUwo8rmsFbdnFL7KJkOSzzo
-	 qkbWcYA+5g0tRRv8TBOdqhhU6lEtcvLeI0Uy8tgPF09Ws0ZSujd0n55HbnxKo0oC9u
-	 K5/0bXQjlcKvvBX2ny4JRMxCxlvrem0vBvhoKO8nOe3ve7vBr35CFb7J1GwzlVfePA
-	 z4Dj6v723Rdu0FdpkO32dxJn1+tiZN2cb6M/ynUx9RoiajTtjMavSg377RTAp6f5IF
-	 MS/I28YPA3bXOXRy9RdKD0fWo60E1iTo+iX7FaIwm0pMIXggQJ22eo19LY4DD8gdZs
-	 jOnKGEQ9jcW/w==
-Message-ID: <cbecbce0-475e-4817-bdda-d1f4c89698d0@kernel.org>
-Date: Tue, 21 Jul 2026 20:12:38 +0200
+	t=1784657627;
+	b=s4O1pYb/Hs5X58rEjGjPKCuV3xCCHpNkUjv1QlQy2gaRZRdH3KoK7JIf3vb1Q3EYzMrdvw
+	G7YBe7Dfl92e8XdvUjMGQpnxTdihlhWiDvMHG0Nllva821edEB2olRtX3+Qg7FgfcHIqlH
+	f4Y2PK1UwNWnHwsBWZbrh6jj2VqMZBY=
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 04AB040E00C3;
+	Tue, 21 Jul 2026 18:13:45 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id WAgM4pQygBNu; Tue, 21 Jul 2026 18:13:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1784657615; bh=LSfkR1e/dR8kqPxQlWrl73BK+AJy0HI9oL3YLggpuKk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AFG+8oMqJ6CM22RRudRv/nXdW5UuYrbU46fmTTZlALzETNNr9CwP4cZbj+QgQOxkh
+	 9hw+oXsWm5DhTcDpNXuGs/YaK9pFU0L9TIXnkESUOmFRlNIcTGyk6+nDFaRzeg1Qmp
+	 dzgEU5UiguZUOojfrsjzaGNbEZOZa2HT5ih8y5OM13Pnl0VYhYin8b2Nkpny3l/u2C
+	 rktizLJ48mqBMrjD8CFdkklVH8Q3inF4tCYFexQKghkl3miTHh7yAlOZoTNfIJ55id
+	 UlpSM6QZM3uOCg63I8/rTdWRN0gwZNPl8Nrnic0062Bx+A8JsZIEQocUyMj3Y4nikl
+	 9owLsJzseUxstriow0FasdINPHKxavLfkxW9UsQ6EaXH3XvNMZGsHBzvUfMR0SrgQN
+	 SJDtzRl9sZzag3zbCFNbDZJH/qEn8zG2oa/llXQCN6PMmBoF9ru6EQ28SR7baXL/jE
+	 MfLjcKh+7rqtWDuo86Rz25IvPKUyjsexNDvlecm56E2jpambnMRwBgPM0iWYUPqZvt
+	 cnMGp0GyLIhZNJShDQ4F+iLCCuqIYfJpSBPMxgw0qFnOusN2uaJyCjPdf6jwdpiSbQ
+	 ya1WUb+rjROSj2Rc/tDGNBbURH+R5lNWBMyqNlt8aGTp9ehn28FLWJ+ee1oEcq/8gw
+	 MH8GvTKPSj6o5/oBONJ9AO3Y=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::2b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 690BE40E00E6;
+	Tue, 21 Jul 2026 18:13:19 +0000 (UTC)
+Date: Tue, 21 Jul 2026 11:13:16 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Ihor Solodrai <ihor.solodrai@linux.dev>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>, bpf@vger.kernel.org,
+	kernel-team@meta.com, kasan-dev@googlegroups.com,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 0/5] x86/cpu: Refactor identify_cpu()
+Message-ID: <20260721181316.GFal-2vGmvOGqbq8mW@fat_crate.local>
+References: <20260704002046.3859585-1-ihor.solodrai@linux.dev>
+ <7c79eb26-0986-41c8-a5f9-5911a2e71175@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/6] mm: access remote process memory under the per-VMA
- lock
-To: Rik van Riel <riel@surriel.com>, linux-kernel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: kernel-team@meta.com, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org
-References: <20260717170036.743149-1-riel@surriel.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260717170036.743149-1-riel@surriel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <7c79eb26-0986-41c8-a5f9-5911a2e71175@linux.dev>
+X-Rspamd-Queue-Id: 85E4614000D
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B65EA100006
-X-Rspamd-Server: rspam01
-X-Stat-Signature: 4p8iufhc37nuk679asq1siipzrwn571x
-X-HE-Tag: 1784657563-979241
-X-HE-Meta: U2FsdGVkX1+i5V/eUdPo2Snic6ER3wwHEp3adbzr5iB9RTnWJ+HkcvAUDuZr82pQhB+0cvxHyO83KVs9ZFiQ7gi5Y0axjGl3zHO46CsuwOCXH9Kner2c9Hru+Lx/kNp7FEnZaQLOtAOsfTZTUnS4fRr5kQy2q4Dh5RDR8RHu9lnzIPTMyv8FCkzBJevebCred+NkIBqU9p49qzHemuLGztCqHpRMO57LQ6Vi2sL+y5/W8Yyn0uxUOxDDnpMD/wc3AgfDf5IZcdIYakw6nBKh2aVisJCVSFXYn0mM6qFGXvg4EhqXOMgqo38okctq8VNNE8xoOwc5/XKOrk3KR/4Dvf4kVrGFbOw5nt8O/LeNtSsD+KhkhXeCbFtMT43K/+ATrwEvDHONr4ZfuKSakM/3QpZ7YbYSZiWzhVoYbu4FFRYoOD5aYRyiuVtQpFt5xgos2VUerDD5P3+PIJW48bFwTh1RgDA/i6EhUJTMyjX/b2r5/dDxw1Ck5N1MYgYw9oNvOjJK0dlzhZLfzwbhAuIBc2q6ALUra9WVToG7xy5gI+q/Cuy1Pg4DzC0C+EDxAAdfUBIko1p5Mi/F+DsBQ27FBEj3g68IXXLvzqHAGb3+7oeOSIQYm8NWbeswdqfKMS45VkxEDEfSKfR/5cLpyZE4IBzkUya2jYso4GGhZyhTObLR99dRewT/atz8AWw4xHfs8GU9bz+OO64VD6PF9cgl+0fli1uorVZKX/HqB+4mzXURFSo7RLuYHITkOuYAn34SonM65EhS7FlBtTI5bvCtU3ZlsgWSsZ/9aMCRn2t52X1W5bkDpHc/WndewZuL3Fq63UB2jTGyvaij/kp3kDSvynQByEy7t7EyqhIwcyl1r+r7qM+PpL+dU5VKovLx3Eej9+RifnjFvijnPCflc3Yd6yzUX89uIYQ/C/YbxzrkzxLNFhzWQe8dsmCAwT1AxpmYAtcq2pgqjr65KS55pyQ
- hcizJP6k
- YGIah4C/XdCUveHCdPEAzVgyRlF2lsSJ4nb6weBU5ioQz3TwkPnG8lu43w71dsGT5ybiTtUj4VrywRmBxb/XDK8qcbmJfL6jHK9pRg6NOmw5Y+fN+ODJh2Oq2L01NlktZoXR8t4XagVqif/ftfF+eM4CTtCXuznSG7K29rgJcY0KIbNAEnhq8xqa8Afc1WmUHF9WcF5JWCkHHApMJFqK8Iarrqd5fbpvJKzLwZDpYn2qtW6iW6mKyF0yR1cClDRn1TH6m
+X-Stat-Signature: q35rsswsbxcuhi3zgi9g1tdmy3mph5bh
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1784657627-552498
+X-HE-Meta: U2FsdGVkX18yoiLPffmKfaSmX9DlfTaLK1sVowYUjCi/YOtFtOyCAQYSaKGbokA1za3puXKpn2OKU8Uwq+Ggse2KD3zKaoR/3THBGu3WzO3sZSFyJt7tVlOy8S0EoS5PDhubUe9QvepH+a2OhmGMeV3wxeW0ic1SZ76RCb7HfFXsOjv6BDzQ8ei8DWwKr1NytVyiJp9hbXECXkO2G8ayIN2M2ZBM76iBNPOn5yvENV9uWYvQt9czCHcoCrI+0tHpRz4nKk1/dodkn4hXaYIjsYSMvMUtde+9cDI7I2yk7T0vfGMpvaENnFh4LeKmeEvETKAMUDs+kXWnm/fHXJfmMBccFsEbR4BuEOCEDQuLzXhevZR0cqCr5LSZIHAy9HIGIyFUA4tQyVQXdzT+KG2EgnUR/8tApMML47lRaqrmfsHEMPnnXglH90bIszzn62Foq+UuPjKxQVXFefROjnJmWyu+Ru7cFbk4JABDzuzOE6IxldVfuhznuizNnLwNfJLrP2b9ZuvBd1x3qNhE2iwcsLwQUHfxYT0/UJy2g5Zz1OK1RObfuCOZHLO6GshDoWGC4e40OReUAIqAXq8Urh9flE7Pso8oNgDP9aAV1ySAMyDfACO+3cOTzA/cOKSMp5RUQkuTPihUk4jqJKACZsDNZAgnkysKiIAUOhPuSd9jGuZP5x8Q67X5jxK+9iS29MapO+O8Q4eBRNCbfnMFrt9k/IEiD/8+eoB3+ur2T0X/nk4qSnYWv8cskwIbAdhuvY9qNVFPVGmfuNBQERf2Ecjq/sLNxvAnhVYKBOiKMpFp88SmdUvgNd+OhuxlBdP8A2ovD0hRpfYcWe7+V++ed0bvqvWOqrd/TMChfK8vNDUJMCagvBbnJEGU18QNzCHZ52GClbOqS5ubR2HBFmg6AzAkmFhtKBvN0Si/Ai/C10POAJhmCHJ9drOIeQ7gb421Frs6zlIy8fx+ggYlEHtVCrY
+ 9jsWJ3VP
+ PlMaFplQD8X2jKcQtVkfAXCWZU9e2SOOqmKdwiSiza3ZST3pkZjr/9aTR6f36yVFOdwVXa9oDUxa6ttXBXV/SH5svL12oXQb6tr7V/2gnB3wCegTQjYDEL9C9MmGourfOrT1wtW4idUurDCNp9esGbbIXMZuFyJePBKBNGlJt2I76jRafknLqEVCsjCyPvmL7thWvf7ZQ50hykjp5Odk/2rkUAWtpK/cZ63fkn4/78Z+0HV3N/2biAVDj85XXPP2c7fLF44GNzyCThO5qqS5WDGhqk/4LIPE6WQAcfRYyJfRZbIR6S84G0nDREnLmSSjcWUWehwZTqmfZUJFdL3JRHHRcSz62TLmDGvcuCob+LK5WkCcBJVg2MavKj9ov8PurfpY8HTZtTqUY4NdZnTqdHQlxed082IxqJlsG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,55 +111,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/17/26 19:00, Rik van Riel wrote:
-> __access_remote_vm() holds mmap_read_lock() for the whole transfer. On
-> large machines with large multi-threaded applications, the mmap_lock
-> is often contended due to mixed accesses from readers and writers, like
-> mmap and munmap. When a lock holder gets stuck, system monitoring software
-> can get stuck behind that, resulting in a failure to log that the system
-> is in trouble.
-> 
-> Take the per-VMA lock in __access_remote_vm() when the access falls
-> entirely within a single VMA. Fall back to the mmap lock when the access
-> crosses a VMA boundary, or when the page cannot be reached under the
-> per-VMA lock: a dropped fault, a userfaultfd VMA, a hard error, or memory
-> with no struct page that has to go through vma->vm_ops->access().
-> 
-> The bulk of the work is a new gup helper. __access_remote_vm() needs a
-> single page from a VMA it has already looked up and locked, faulting it in
-> when necessary, under either lock.
+On Tue, Jul 21, 2026 at 10:23:25AM -0700, Ihor Solodrai wrote:
+> Bumping the thread as it's been a couple of weeks.
 
-Yes, much better.
+You don't have to - it is on the TODO list.
 
-> 
-> get_user_pages_remote() does not fit: it hard codes the mmap lock and
-> re-derives the VMA. get_user_page_vma() walks the page tables, faults a
-> missing page in, and returns it with a reference and the caller's lock
-> still held.
+> Please take a look when you get a chance. Thanks!
 
-Agreed, and that can be tackled later.
+There's this thing called fires which need to be handled yesterday and we're
+all drowning in them. So yeah, I know, but pls be patient.
 
-> 
-> The per-VMA path also closes a pre-existing gap. A COWed page in a
-> VM_IO/VM_PFNMAP VMA has a struct page, but the old code routed it to
-> ->access(), where generic_access_phys() ioremaps the PFN and ioremap of RAM
-> is rejected, so the read came up short.
-
-Yep. The GUP code rejected VM_IO/VM_PFNMAP for, though, because it did not
-properly handle vm_normal_page_pmd() etc so far.
-
-> 
-> get_user_page_vma() now returns that page normally. Raw PFNs with no struct
-> page still reach ->access() under the mmap lock, as before.
-> 
-> The series is arranged as:
-
-
-It will take me a bit to dig into the details; I'll be out the remainder of the
-week. But the general direction sounds good.
+Thx.
 
 -- 
-Cheers,
+Regards/Gruss,
+    Boris.
 
-David
+https://people.kernel.org/tglx/notes-about-netiquette
 
