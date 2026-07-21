@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C04C9C4452B
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 16:24:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B967C4451C
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 16:24:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8EBB36B00A5; Tue, 21 Jul 2026 12:24:39 -0400 (EDT)
+	id C96216B00A7; Tue, 21 Jul 2026 12:24:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C3066B00A7; Tue, 21 Jul 2026 12:24:39 -0400 (EDT)
+	id C6E4A6B00AA; Tue, 21 Jul 2026 12:24:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 800466B00A9; Tue, 21 Jul 2026 12:24:39 -0400 (EDT)
+	id BA9E96B00AB; Tue, 21 Jul 2026 12:24:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 445A26B00A5
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 12:24:39 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C29591C00D2
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 16:24:38 +0000 (UTC)
-X-FDA: 85013307036.03.ED019E6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 34B5CA0012
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 16:24:37 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y40sTc2v;
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 863D86B00A7
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 12:24:46 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E65828018A
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 16:24:45 +0000 (UTC)
+X-FDA: 85013307330.18.97E2D12
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 2F602A000F
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 16:24:44 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="mduyV/4o";
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784651077;
+	s=arc-20220608; t=1784651084;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s+fAGwkj37+ME7Pb0rsrK6LPOBZGydYbqjFxeMM43qs=;
-	b=gOImrnpsltpX8UNrtieSNoRy7a618U0uVfc3oy0sXa6EvI80ovoxIiRtAN/kiEyMlRDXHV
-	Kj1dldh+00wjEyNPRr68N2VYKxLmAACAtvKNd2PEPl3ofrXXQjrwZVVHlKA+heusytR4r8
-	91hFad8qpntz4+zaBHPmtrNhryu+ngg=
+	bh=nokpUTK/BQEU2xPd8dil79b/pTUs86asyupxsitnFKA=;
+	b=7tPNhBs8pK64hK+WveqqWKF7m8YxpTPLiXg9rFMeW0UfXEEuV2nWcgNQVDBDhguapuiyel
+	+XBP0iqFN12Yd+beqNzkd7bOXGXCsvSK1KDhFF1v36zR9Ap8RjtfcyWZHUT4BirdmzG8ha
+	S2ZF+r94CQKtKEahsGuvtMWvfH4ZrAI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784651077;
-	b=Q42GnG7umzCSI/av1EIxbmFdMv7UIX2iIIxS1SdYuREtivfe+2zi3rocaFWuKQCQPzt6wP
-	O8PlHPTcgwHgrydNtApAcFjchk1OIM6Zvf8EAXnVr8WIpdRoFheo4ww6kOY+FquwQaLepP
-	t9Gi7zN03i4rebwgUO8zvIvZjiVVUqc=
+	t=1784651084;
+	b=QHzZyTafz4vIavgHHAd4Vt79osIw/X5VUdrl4oR3fRgkgzS0RpDSjm/ZzcNzpFJejVa1AQ
+	01nqEVX4BCggAEPM7fbIkwVNtgHFYlH/Gb4bfD8/E7g0ru8UQdNlhHptwSpbZ4VzBZJlSd
+	kJdGkKAof9MEFG/vmIBz7iEGuzQSZkY=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y40sTc2v;
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="mduyV/4o";
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D253760A65;
+	by sea.source.kernel.org (Postfix) with ESMTP id 7F79F40E4F;
+	Tue, 21 Jul 2026 16:24:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1032F1F00A3A;
 	Tue, 21 Jul 2026 16:24:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 370D11F000E9;
-	Tue, 21 Jul 2026 16:24:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784651076;
-	bh=s+fAGwkj37+ME7Pb0rsrK6LPOBZGydYbqjFxeMM43qs=;
+	s=k20260515; t=1784651083;
+	bh=nokpUTK/BQEU2xPd8dil79b/pTUs86asyupxsitnFKA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Y40sTc2vrbeiNxDRxijWQmoLZupCjYYBLIzRIrURtoo3cDYHr5ZhKX2eqWO5Ns/9M
-	 VWE7/yT06n+QRfyjogcDC45ebqMMD7SdkLyRKsNKmMuL5obaqIIuDsCjanWsgfwzrw
-	 cNesCrWBJcDQ75nQP1mhcRx593LcEO94fvoZMWlfhl1r0xwzsbMZ9+NX+FEMYVsT+F
-	 mKy8et9CuedtDDog/EjWVPYtVcr1/Kaiz0PWF3WoioZkDaWdkK8y+MHKL1arlrbJeB
-	 Ph2fAs7rl++yRte5vI2YNioSX3LdjWLts0yl4+kaXBmoTOVKSN+a2vBm/IfjtVTZq6
-	 sZT1yAdoXsXcA==
+	b=mduyV/4oIfEViBoL6lriq5H4veut2axJNwNq2s8j+Qo/kcJQY2HEyGHhleoOmd1Ba
+	 KqLtqTyZvyOcUE/AJKvW6Fvi+sOLhFoZYGyhft2SjmZUALxgwD5DGq9OsXZr8lT1+t
+	 Z1NUg49kmKteh+uVkht2fdwI7NtwumvsJCfpA9k8YL5d/G4pidA3LDhwZQisFKj0WT
+	 bJlJEAeJYy76RZjM+xZVDhcI3yxkOWWVkJLQMTUtiPeaY8q902iyg65RZ21W/j9hWZ
+	 plSCPQAYE8Bab5QU90e8Xoo9DivS7xzxi6Pg0rG3OxFpbwABrQidREgO0VdToD8Had
+	 qxbQhX+cRlHKQ==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Tue, 21 Jul 2026 19:23:31 +0300
-Subject: [PATCH RFC 08/18] x86/mm/pat: use cpa_split_data structure to pass
- split parameters
+Date: Tue, 21 Jul 2026 19:23:32 +0300
+Subject: [PATCH RFC 09/18] x86/mm/pat: use a single locked lookup for PTE
+ verification
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260721-generic-set-memory-v0-1-v1-8-2c1fc62306b3@kernel.org>
+Message-Id: <20260721-generic-set-memory-v0-1-v1-9-2c1fc62306b3@kernel.org>
 References: <20260721-generic-set-memory-v0-1-v1-0-2c1fc62306b3@kernel.org>
 In-Reply-To: <20260721-generic-set-memory-v0-1-v1-0-2c1fc62306b3@kernel.org>
 To: linux-mm@kvack.org
@@ -93,14 +93,14 @@ Cc: Albert Ou <aou@eecs.berkeley.edu>,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
  linux-riscv@lists.infradead.org, loongarch@lists.linux.dev, x86@kernel.org
 X-Mailer: b4 0.16-dev
+X-Stat-Signature: 3kjku4zbgbyt6soe4k9d83ht6f8egukd
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 34B5CA0012
-X-Stat-Signature: g3t6hopw6nnfknje3p1t9a8bez1oqjce
-X-HE-Tag: 1784651077-857180
-X-HE-Meta: U2FsdGVkX19UXRpzR3aILIECb2ZC6m3cLMdnWhii8tZsw684ux+HDkpywAHvaa+/nGC3QJgKxdraT6cAYZlWZSloAUV1TMN0HvjgwHxL8564l3ZYGkgG4AuYHbmCSTG5whwbdJ/yCf0uMUtPe/W+BF/jzMnPF0CYLzqng8BZefhKEQSTMMTMoF9XAAOXwZFvD+uNCkD5/u+KIWjWoz7lAv7dSM9W820YT6UIfgGsSOyUE/skLTh5szFOK/fGxxyWb4ZWq/Wp/mGIC8Vncg76sGJv21hH6NHEcpK3PEo1hORoJxuwuhRyZcEq166xtLPrwAWOh3OOWRyotT80FvnNqPa9nIQW6X2QK8y+4EvERlEK5VGqGTXSd9Kz4mOtElbSgNpxLcHsYyjwLS/EixXYCanyOyRDa7+UO25r0nCD9Juz6E/BobOTIf1KlbVf4KnCIghVP+zv+4+EAyceeJFgofiZXJYtpjgb2X3l2KrEjtVPshZ6XcP9lGVo8i4NbiMcLKPjozUXC3I957Ol2FX9xp1MTdhIWPp0J9TxDm8X/2/HLfXmdAy5SpeiVNrjtwjtfGX6jHaSspo5qIJZy0Cp69EfTWEAZFnznjnnNtQVJg45c0Ycs3W00b12ENRLHixHc+RMESLRPYRUXPth/SsRNQtMT5m3+AcMBhzuHVUnkRnjeYHZTQHeo/96jbuQ9sfJHlsa73MEOCH4Uq9/7mVjYbiUI+9k0cylnfYQsYAdkIRgu4cqXZSlyIWb4t427cn8qjUzXOOUfc3ZtmXPKTw8IW/QBDGHUMgaLa9onwLX2PY1mGXTQniiDVoXfaFFVuPuRWN/uXOTFtec+v082sMqD7dplztQx5tRvkmRKL6kicpaFUgyjpW3pfcYmO+As5t8sykFEFaStm7clT8Y+/asF8E9wtjssMfPfBuyZNIjtBvLHBQc8KrHSIoxWltry4/TpqQHHbSdqQKtgnjZQK8
- 1TcxaE7Y
- 4RmdYbl+Eb4f7VcZE7E8JCQUjZ/9Rm+uhyBS9KZ4Y7vkfZfgKknovPfp9ztMF/+gs/4lQtK8MEw05ikshjqddwHAUF8Fn7GTbv1fG56iR4pLdBrG2BhZ4mcgSEwpqEnIYo7eTLdasmP97wB1AD0eIFYher5Gv7DnLr5/J+JpOaIXDcoHZBCtt8NHes/+rD67ijvjoDe6yNhGdeJOxc7D/5RjnoWIfTcL+ejGwHAlH5Zp+0RIDr8lMVtJLdlbwohdKCo5BCH3wd7hO9HENEz1EEzWnGt/Kf0oIqmFvbmOSPbT9QSQ=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 2F602A000F
+X-HE-Tag: 1784651084-337983
+X-HE-Meta: U2FsdGVkX19sfyYZzAl04zBAznhgh/tW4AfwjoV0I/bTZzoiHdCb5wowIDqehpbmgCzCNuAOZEzKaaeZ6qRJc3TfakEtIfhUCLykynw50zA8S2U508ZL7AKAqKnFwsowilUBq2YtSciZlNtoB4Qm6+PXZREpycCJJnJbaSiRPxTGARTSZdFpdklM8Nesgx+rqFde59IezFHbB/A2pwqbJdXNeOaspogAZBx/7lRIx7u+srpx+tPq3QLqSo5MoPIX0oonlqCCGAwoKqOQyt5F0LI14gdbm+RZg9PBTy6cXap+gZADJFkReBCMFFxy5yjgK1b4qT1+f+2GpoiHiPSBZgxZXks+I72gUQtoIr0Bfbs2xqbBZw7lgs32SWRoK6AhXnZPAErHXgPpRMfqi20T6M+tXRTiFVD9kssvZOh7m5hUQL5ej3cFirq4VcDGBM0cESFaN//jKH12PGg/p8wq26SGssoh127o3zyrrWQxpzOlev0jm7+gJccRhafKozrKbiiuhGS23XfcaCuQshKikfGMgdackgU7ewHK7bfaoUjUNxocsWldJyl6s2S1gZMHR9CotWZIYpviyzfON6cTRwjQfP16JHRc4SKrR6yLFsT4wbV0ZWsMCyQOU0JgxJMtIDOtbFbedCEFPzexVAR0uRqlghjmutgU0w+jIXtKQVbbS50aViOr1w3UpZgALuQNqiWnPxEZ1RY3GyilpTDK5/eETiIBuXw83dXcEw95Wt9pMOXRmST3i+HxXDRO8X8P3EoLUjEZkY3vJKJ2Z2cBg9te0VNJcsxqQ/G4s1MMheM9yKkMMA1XBjpMrjMQTDfKgI1zAphX++MpBnYpN57X8yqxnPJb3XLcVlApjnF+fETn7sihubjV4Po42dpQjU8eLjfcpo8m0J9Aj3Z+ap/BdQoU6X5j/Arvnnq7dYrllajSTZWaXyEhzz5iRytI1rfzfIyfat1QXgoC0Dkr223
+ U9OUFk4B
+ z0hde7ZdF/tjHX/pZK2b/4SknyGl9SGN6cik8AE9kIHi9WmKwY7n2TI8ysC1BvW3r5H/cC94lGVj8Ebsj4k1s+SJS2nk5ZIjpHp7fMmJr032KpnOta3rCbC+iruifbXhsEhkhJgr7vH9Etzj1/Ur/kGSeHokTghx98RSMdIVCC0w4yNU2DUTxY/mHwqajnYtgXyNerFmh32UsDYVw3pSRHkO+J6FbacEbor/tg2pkPDr/U0a0Zzefyn8pyg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,154 +108,204 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Keeping all split parameters in a struct between
-should_split_large_page() and split_large_page() allows maintaining the
-split state that is initially established in cpa_handle_large_page(),
-then this state is updated in should_split_large_page() and finally
-consumed by split_large_page().
+Currently both __should_split_large_page() and __split_large_page()
+verify that the page table entry wasn't changed by another CPU while
+pgd_lock was released.
 
-Start passing parameters between should_split_large_page() and
-split_large_page() in cpa_split_data structure.
+pgd_lock must be released between __should_split_large_page() and
+__split_large_page() because split of a large page requires allocation
+of a new page table page.
 
-As the first step only pass the existing parameters in the new
-structure.
+Preallocating the page table page before checking if the large page
+should be split allows running both __should_split_large_page() and
+__split_large_page() inside the same critical section protected by
+pgd_lock and allows dropping the duplicated lookup.
 
-No functional change intended.
+Move allocation of the page table before the call to
+should_split_large_page() and pull out race-checking lookup into
+cpa_handle_large_page().
 
 Assisted-by: Copilot:claude-opus-4.8
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- arch/x86/mm/pat/set_memory.c | 49 ++++++++++++++++++++++++++++----------------
- 1 file changed, 31 insertions(+), 18 deletions(-)
+ arch/x86/mm/pat/set_memory.c | 89 ++++++++++++++++++++------------------------
+ 1 file changed, 40 insertions(+), 49 deletions(-)
 
 diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index a9d270e986ff..c2a72cd8b832 100644
+index c2a72cd8b832..ef206ba6e254 100644
 --- a/arch/x86/mm/pat/set_memory.c
 +++ b/arch/x86/mm/pat/set_memory.c
-@@ -53,6 +53,15 @@ struct cpa_data {
- 	struct page	**pages;
+@@ -60,6 +60,9 @@ struct cpa_split_data {
+ 	unsigned long	address;
+ 	pte_t		*kpte;
+ 	struct ptdesc	*ptdesc;
++	enum pgtable_level level;
++	bool		nx;
++	bool		rw;
  };
  
-+/*
-+ * context for checking for a split a large page and splitting it if required.
-+ */
-+struct cpa_split_data {
-+	unsigned long	address;
-+	pte_t		*kpte;
-+	struct ptdesc	*ptdesc;
-+};
-+
  enum cpa_warn {
- 	CPA_CONFLICT,
- 	CPA_PROTECT,
-@@ -869,12 +878,14 @@ static pgprot_t pgprot_clear_protnone_bits(pgprot_t prot)
- 	return prot;
- }
- 
--static int __should_split_large_page(pte_t *kpte, unsigned long address,
--				     struct cpa_data *cpa)
-+static int __should_split_large_page(struct cpa_data *cpa,
-+				     struct cpa_split_data *sd)
+@@ -883,19 +886,12 @@ static int __should_split_large_page(struct cpa_data *cpa,
  {
  	unsigned long numpages, pmask, psize, lpaddr, pfn, old_pfn;
  	pgprot_t old_prot, new_prot, req_prot, chk_prot;
-+	unsigned long address = sd->address;
- 	enum pgtable_level level;
-+	pte_t *kpte = sd->kpte;
- 	pte_t new_pte, *tmp;
- 	bool nx, rw;
++	enum pgtable_level level = sd->level;
+ 	unsigned long address = sd->address;
+-	enum pgtable_level level;
+ 	pte_t *kpte = sd->kpte;
+-	pte_t new_pte, *tmp;
+-	bool nx, rw;
+-
+-	/*
+-	 * Check for races, another CPU might have split this page
+-	 * up already:
+-	 */
+-	tmp = _lookup_address_cpa(cpa, address, &level, &nx, &rw);
+-	if (tmp != kpte)
+-		return 1;
++	bool nx = sd->nx;
++	bool rw = sd->rw;
++	pte_t new_pte;
  
-@@ -1016,8 +1027,8 @@ static int __should_split_large_page(pte_t *kpte, unsigned long address,
- 	return 0;
- }
- 
--static int should_split_large_page(pte_t *kpte, unsigned long address,
--				   struct cpa_data *cpa)
-+static int should_split_large_page(struct cpa_data *cpa,
-+				   struct cpa_split_data *sd)
+ 	switch (level) {
+ 	case PGTABLE_LEVEL_PMD:
+@@ -1030,16 +1026,10 @@ static int __should_split_large_page(struct cpa_data *cpa,
+ static int should_split_large_page(struct cpa_data *cpa,
+ 				   struct cpa_split_data *sd)
  {
- 	int do_split;
- 
-@@ -1025,7 +1036,7 @@ static int should_split_large_page(pte_t *kpte, unsigned long address,
+-	int do_split;
+-
+ 	if (cpa->force_split)
  		return 1;
  
- 	spin_lock(&pgd_lock);
--	do_split = __should_split_large_page(kpte, address, cpa);
-+	do_split = __should_split_large_page(cpa, sd);
- 	spin_unlock(&pgd_lock);
- 
- 	return do_split;
-@@ -1067,13 +1078,14 @@ static void split_set_pte(struct cpa_data *cpa, pte_t *pte, unsigned long pfn,
- 	set_pte(pte, pfn_pte(pfn, ref_prot));
+-	spin_lock(&pgd_lock);
+-	do_split = __should_split_large_page(cpa, sd);
+-	spin_unlock(&pgd_lock);
+-
+-	return do_split;
++	return __should_split_large_page(cpa, sd);
  }
  
--static int
--__split_large_page(struct cpa_data *cpa, pte_t *kpte, unsigned long address,
--		   struct ptdesc *ptdesc)
-+static int __split_large_page(struct cpa_data *cpa, struct cpa_split_data *sd)
- {
- 	unsigned long lpaddr, lpinc, ref_pfn, pfn, pfninc = 1;
-+	struct ptdesc *ptdesc = sd->ptdesc;
+ static void split_set_pte(struct cpa_data *cpa, pte_t *pte, unsigned long pfn,
+@@ -1084,23 +1074,11 @@ static int __split_large_page(struct cpa_data *cpa, struct cpa_split_data *sd)
+ 	struct ptdesc *ptdesc = sd->ptdesc;
  	struct page *base = ptdesc_page(ptdesc);
  	pte_t *pbase = (pte_t *)page_address(base);
-+	unsigned long address = sd->address;
-+	pte_t *kpte = sd->kpte;
- 	unsigned int i, level;
++	enum pgtable_level level = sd->level;
+ 	unsigned long address = sd->address;
+ 	pte_t *kpte = sd->kpte;
+-	unsigned int i, level;
++	unsigned int i;
  	pgprot_t ref_prot;
- 	bool nx, rw;
-@@ -1174,19 +1186,16 @@ __split_large_page(struct cpa_data *cpa, pte_t *kpte, unsigned long address,
- 	return 0;
- }
- 
--static int split_large_page(struct cpa_data *cpa, pte_t *kpte,
--			    unsigned long address)
-+static int split_large_page(struct cpa_data *cpa, struct cpa_split_data *sd)
- {
--	struct ptdesc *ptdesc;
+-	bool nx, rw;
+-	pte_t *tmp;
 -
- 	spin_unlock(&cpa_lock);
--	ptdesc = pagetable_alloc(GFP_KERNEL, 0);
-+	sd->ptdesc = pagetable_alloc(GFP_KERNEL, 0);
- 	spin_lock(&cpa_lock);
--	if (!ptdesc)
-+	if (!sd->ptdesc)
- 		return -ENOMEM;
+-	spin_lock(&pgd_lock);
+-	/*
+-	 * Check for races, another CPU might have split this page
+-	 * up for us already:
+-	 */
+-	tmp = _lookup_address_cpa(cpa, address, &level, &nx, &rw);
+-	if (tmp != kpte) {
+-		spin_unlock(&pgd_lock);
+-		return 1;
+-	}
  
--	if (__split_large_page(cpa, kpte, address, ptdesc))
--		pagetable_free(ptdesc);
-+	if (__split_large_page(cpa, sd))
-+		pagetable_free(sd->ptdesc);
+ 	paravirt_alloc_pte(&init_mm, page_to_pfn(base));
+ 
+@@ -1133,7 +1111,6 @@ static int __split_large_page(struct cpa_data *cpa, struct cpa_split_data *sd)
+ 		break;
+ 
+ 	default:
+-		spin_unlock(&pgd_lock);
+ 		return 1;
+ 	}
+ 
+@@ -1181,23 +1158,13 @@ static int __split_large_page(struct cpa_data *cpa, struct cpa_split_data *sd)
+ 	 * just split large page entry.
+ 	 */
+ 	flush_tlb_all();
+-	spin_unlock(&pgd_lock);
  
  	return 0;
  }
-@@ -1194,13 +1203,17 @@ static int split_large_page(struct cpa_data *cpa, pte_t *kpte,
- static int cpa_handle_large_page(struct cpa_data *cpa, pte_t *kpte,
- 				  unsigned long address)
+ 
+ static int split_large_page(struct cpa_data *cpa, struct cpa_split_data *sd)
  {
-+	struct cpa_split_data sd = {
-+		.address = address,
-+		.kpte = kpte,
-+	};
- 	int do_split, err;
+-	spin_unlock(&cpa_lock);
+-	sd->ptdesc = pagetable_alloc(GFP_KERNEL, 0);
+-	spin_lock(&cpa_lock);
+-	if (!sd->ptdesc)
+-		return -ENOMEM;
+-
+-	if (__split_large_page(cpa, sd))
+-		pagetable_free(sd->ptdesc);
+-
+-	return 0;
++	return __split_large_page(cpa, sd);
+ }
+ 
+ static int cpa_handle_large_page(struct cpa_data *cpa, pte_t *kpte,
+@@ -1207,13 +1174,31 @@ static int cpa_handle_large_page(struct cpa_data *cpa, pte_t *kpte,
+ 		.address = address,
+ 		.kpte = kpte,
+ 	};
+-	int do_split, err;
++	int do_split, ret = 1;
++	pte_t *tmp;
++
++	spin_unlock(&cpa_lock);
++	sd.ptdesc = pagetable_alloc(GFP_KERNEL, 0);
++	spin_lock(&cpa_lock);
++	if (!sd.ptdesc)
++		return -ENOMEM;
++
++	spin_lock(&pgd_lock);
++
++	/*
++	 * Check for races, another CPU might have split this page
++	 * up already:
++	 */
++	tmp = _lookup_address_cpa(cpa, address, &sd.level, &sd.nx, &sd.rw);
++	if (tmp != kpte)
++		goto out_free_ptdesc;
  
  	/*
  	 * Check, whether we can keep the large page intact
  	 * and just change the pte:
  	 */
--	do_split = should_split_large_page(kpte, address, cpa);
-+	do_split = should_split_large_page(cpa, &sd);
+ 	do_split = should_split_large_page(cpa, &sd);
++	ret = do_split;
  	/*
  	 * When the range fits into the existing large page, no split is
  	 * required.
-@@ -1213,7 +1226,7 @@ static int cpa_handle_large_page(struct cpa_data *cpa, pte_t *kpte,
+@@ -1221,16 +1206,22 @@ static int cpa_handle_large_page(struct cpa_data *cpa, pte_t *kpte,
+ 	 * cpa->numpages and cpa->pfn.
+ 	 */
+ 	if (do_split <= 0)
+-		return do_split;
++		goto out_free_ptdesc;
+ 
  	/*
  	 * We have to split the large page:
  	 */
--	err = split_large_page(cpa, kpte, address);
-+	err = split_large_page(cpa, &sd);
- 	if (err)
- 		return err;
+-	err = split_large_page(cpa, &sd);
+-	if (err)
+-		return err;
++	ret = split_large_page(cpa, &sd);
++	if (ret)
++		goto out_free_ptdesc;
  
++	spin_unlock(&pgd_lock);
+ 	return do_split;
++
++out_free_ptdesc:
++	spin_unlock(&pgd_lock);
++	pagetable_free(sd.ptdesc);
++	return ret;
+ }
+ 
+ static int collapse_pmd_page(pmd_t *pmd, unsigned long addr,
 
 -- 
 2.53.0
