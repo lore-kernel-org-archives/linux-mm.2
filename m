@@ -4,95 +4,190 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84EAFC4452B
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 05:43:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FA50C4452B
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 05:47:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B1016B008A; Tue, 21 Jul 2026 01:43:50 -0400 (EDT)
+	id 4E38D6B007B; Tue, 21 Jul 2026 01:47:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 662A56B008C; Tue, 21 Jul 2026 01:43:50 -0400 (EDT)
+	id 494696B0092; Tue, 21 Jul 2026 01:47:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5510A6B0092; Tue, 21 Jul 2026 01:43:50 -0400 (EDT)
+	id 35BBD6B0093; Tue, 21 Jul 2026 01:47:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 249166B008A
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 01:43:50 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A29AA1A03CE
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 05:43:49 +0000 (UTC)
-X-FDA: 85011692178.26.1F3C249
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 0E77714000C
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 05:43:47 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Foq28WPh;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784612628;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 016546B007B
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 01:47:35 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 887281C0267
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 05:47:35 +0000 (UTC)
+X-FDA: 85011701670.24.3301104
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010067.outbound.protection.outlook.com [52.101.61.67])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 901E91C0003
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 05:47:32 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Dg3RbDMe;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf21.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.61.67 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784612852;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=meJhmwUfnjOSp8m4k+erl7xb2QjuGv1a7LosgCLMC3w=;
-	b=QtpNdIF7lqqnP+8a0NKu+ENPuSxjQ/xBZKIPJbYaumNVE3Jzal98OH5EibA39KLAjXZkUJ
-	TLK3tMP4eT23G4xnbhWhKngjlMMTfLx2S2Q1LlxiPg0A+2Jf1KdgjrVk+rHiBz7wUINKXu
-	w8rYmIuPoRAJNXbrOPfbOIcS9xnkY1w=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Foq28WPh;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784612628;
-	b=Lae29/FvZy5b2m3ht14iaZzBez6fxVlc6r5wZD/azGOwAMpedCelLBcEGpplSRwW8NTGxG
-	91ou6IkEU0oYPd3ajOTgq+piAEpKJUGYoHnwYujy6JBiQ5nFB5l7cDbMpSy0cKC/XwW+RK
-	qt0qAWpFrUJa948IfSo1A0gPXSf++EE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7719D60A61;
-	Tue, 21 Jul 2026 05:43:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7678B1F000E9;
-	Tue, 21 Jul 2026 05:43:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784612627;
-	bh=meJhmwUfnjOSp8m4k+erl7xb2QjuGv1a7LosgCLMC3w=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Foq28WPh8couwfB2Ljzyrr9Kv43HLtbC9JwcBZVDRIySK6OhX2CW8yIrUTFl0eomd
-	 TKAbM0LDTW45qhdiUR5wblr62ZILUSI2rPc2ZROEnG1ep8GfXwd6d0+BQYwSpyksLt
-	 b3GqPqfZZRA9eIjUDAX7m2uWCuTDZwNLGe5OB37hAkqKP5pBHstDkI/Mq8jY/ULPtz
-	 2B84OsXGn5IbZ5XaRXR2islFFPAK6K5v6J5Lk7MMkMSvFOP+FkpBVYghJStorOGDgq
-	 vot39Me7Gxt8+ZqY45mqWEDNAXQ2v1EnYgxNi/Vp9iwecX9YYYiHNrWPxgkoLBX6yb
-	 M4L1mGMGOoI7A==
-Message-ID: <da6ca31c-f97c-4cd1-9380-4fe50d797a7d@kernel.org>
-Date: Tue, 21 Jul 2026 14:43:40 +0900
-MIME-Version: 1.0
+	bh=XX8cfeen7j81/+xnErTyWQVyuaKqlCLvSRfssHbei6w=;
+	b=uPyGmAa+zoXYiaBtYTCzb5wtVNdE9WdrZldNlAnJN1JfIuBAUUAbmFWpn5zp2da5CAXyK7
+	QIP0z327279xAe9tCAQjzColuS1aMaES7Y3VG9eEXF4Vu5ufTgsMHLZ2OHdV9DJfEYXvNn
+	HPOjRqQXY5w/DM6FC+lRJR8+HxfnnLk=
+ARC-Authentication-Results: i=2;
+	imf21.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Dg3RbDMe;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf21.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.61.67 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784612852;
+	b=xuf8+TYHmq2JDlEkBgMUiLmpNhE2D4k5x+aLIeGqCN9kEqKFM3oeJQ5rVyrTMmHJxxwjyb
+	A5TmPXESkFFi1wKwxgyBCyMXcijqMLhK/Dl3hNTFg1JlW8MZiQNE3aJ83GlShZB94tD8d4
+	mesoK0guJMTW9V2EMWJorEIwKTjRMPc=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=w+9vkb6P082UNKB/2IpcqfU2qha2momJShcEuDH8phfbfiJ/UOPsz3F2oX/9hhcaz9ouvz2Zwq9LH78RtWrD9wLFjTtLbfW1FsYEGjif0sZZGpnEbETKJ0qrt5XzXlslgAXEMVBqpcqyRCas64kQUASlu3xHUmNJ0loHXZDc4FddASWKdtQAdP6DSqTgMo6I8zBAgzrNqUWwRCFzA4j+uK10iLaG6mJEdlkRZfOHhNSmaV7IB1kPoMyb8jypwXgeAZ/SO5i6vyjCaB8OBxLspM1maNSiLoR44n4fnWoxSwaw2riIm6WecStx6FX5uzr72oDrvu8XqhelRT2njk8UWw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=XX8cfeen7j81/+xnErTyWQVyuaKqlCLvSRfssHbei6w=;
+ b=DScdoggeO3Bm0u6YNR4lbWhPpvSz6OVtb7yfy5GvP5nrRX4Q3NgumzU20matCe2g23SkkEE9nnJUw8U2+U9ih8PYO/mMLmx8qQRtfMabA5F59O1BoH0FPvoLkbbc/hUNpsHKXNXyMYqZ/KlKDO8nQ21/YeNDDAIO7uXnb05w4APuyPyEHFzgNazWv7ImHr2o3YcRwYOitzuS2mApB7L7f1OeqKnQA9QzJxYR8kag2aVjQC2hf0iZFAvmbmEHpluT70dtFFCsaPYxUjkUir9iWxqqm+//ErvC2MBOrKdE4XnjRqTuqFS/X/LYMVyXUsvLUxsUwgEOQtvfsfY2DrlGMA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=XX8cfeen7j81/+xnErTyWQVyuaKqlCLvSRfssHbei6w=;
+ b=Dg3RbDMeFnApOREHRnXHnJm+SDuJ+7PP6ObrqyHlDfU6vAcj+enFpphBDABTqSA1g0FoWYH7NQKXJL6f6eqFwi1KUbD9+9V2y3kqnk4jRj4XIwkycFsdr/9BOTP25MVz5hRIyDGkxT7+cWmgd+2fkjltXfWVS4PUe/jaPmaK64NXHgVP92+cfxkbRcaVBa1Q3jmmKenB9Awc2jlhjjT20W2+u8y5DapO1cTB8ArLqDB9myVnVP6BjvZ8swOfXm39FhELhzTvWCTXd5fU2DiXhwMRKrn1KqgnbzF3aOkk8zRtOkr7q2B8q1pAHxSz9jh3+lXNwiZ3AkttKDHUnnZPdQ==
+Received: from BL0PR12MB4995.namprd12.prod.outlook.com (2603:10b6:208:1c7::23)
+ by CH3PR12MB7593.namprd12.prod.outlook.com (2603:10b6:610:141::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.18; Tue, 21 Jul
+ 2026 05:47:20 +0000
+Received: from BL0PR12MB4995.namprd12.prod.outlook.com
+ ([fe80::dde:9068:4b1a:53e2]) by BL0PR12MB4995.namprd12.prod.outlook.com
+ ([fe80::dde:9068:4b1a:53e2%4]) with mapi id 15.21.0245.009; Tue, 21 Jul 2026
+ 05:47:20 +0000
+Message-ID: <62bf02dc-dab1-41bf-8204-eb3566628b93@nvidia.com>
+Date: Tue, 21 Jul 2026 15:46:53 +1000
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 01/13] mm/slab: skip kfence objects in allocation
- profiling
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>
-Cc: Hao Li <hao.li@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter
- <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
-References: <20260720-b4-objext_split-v2-0-2fa7c6f60dbe@kernel.org>
- <20260720-b4-objext_split-v2-1-2fa7c6f60dbe@kernel.org>
+Subject: Re: [PATCH v5 01/36] mm: refactor find_next_best_node to
+ find_next_best_node_in
+To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org
+Cc: Zhigang.Luo@amd.com, arun.george@samsung.com, brendan.jackman@linux.dev,
+ yuzenghui@huawei.com, apopple@nvidia.com, alucerop@amd.com,
+ matthew.brost@intel.com, akpm@linux-foundation.org, david@kernel.org,
+ ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, corbet@lwn.net,
+ skhan@linuxfoundation.org, gregkh@linuxfoundation.org, rafael@kernel.org,
+ dakr@kernel.org, djbw@kernel.org, vishal.l.verma@intel.com,
+ dave.jiang@intel.com, alison.schofield@intel.com, osandov@osandov.com,
+ jannh@google.com, pfalcato@suse.de, jackmanb@google.com, hannes@cmpxchg.org,
+ ziy@nvidia.com, pbonzini@redhat.com, osalvador@suse.de,
+ joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
+ ying.huang@linux.alibaba.com, kasong@tencent.com, qi.zheng@linux.dev,
+ shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com,
+ yuanchu@google.com, weixugc@google.com, yury.norov@gmail.com,
+ linux@rasmusvillemoes.dk, longman@redhat.com, ridong.chen@linux.dev,
+ tj@kernel.org, mkoutny@suse.com, sj@kernel.org, jgg@ziepe.ca,
+ jhubbard@nvidia.com, peterx@redhat.com, baolin.wang@linux.alibaba.com,
+ npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+ lance.yang@linux.dev, usama.arif@linux.dev, xu.xin16@zte.com.cn,
+ chengming.zhou@linux.dev, roman.gushchin@linux.dev, muchun.song@linux.dev,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ driver-core@lists.linux.dev, nvdimm@lists.linux.dev,
+ linux-cxl@vger.kernel.org, linux-debuggers@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org, cgroups@vger.kernel.org,
+ damon@lists.linux.dev, linux-kselftest@vger.kernel.org, kernel-team@meta.com
+References: <20260720193431.3841992-1-gourry@gourry.net>
+ <20260720193431.3841992-2-gourry@gourry.net>
 Content-Language: en-US
-From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <20260720-b4-objext_split-v2-1-2fa7c6f60dbe@kernel.org>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------BcYzxlX3VPSEK1j5AEJfPS35"
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 0E77714000C
+From: Balbir Singh <balbirs@nvidia.com>
+In-Reply-To: <20260720193431.3841992-2-gourry@gourry.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: ME3P282CA0170.AUSP282.PROD.OUTLOOK.COM
+ (2603:10c6:220:1cb::6) To DM6PR12MB5006.namprd12.prod.outlook.com
+ (2603:10b6:5:1b8::23)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL0PR12MB4995:EE_|CH3PR12MB7593:EE_
+X-MS-Office365-Filtering-Correlation-Id: bfd89711-05a5-43b5-9f7f-08dee6eb873e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|376014|23010399003|366016|18002099003|22082099003|56012099006|4143699003|11063799006|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	qNF1SrVAHfoLNltaNSJshYDOpjMghk1P+vnaCtM776iiQdZOGEuh4VVAgcKlJcmqZyQzs9yo83QOp4bSfqif/Ip6EFHmZ4Ap8LHTKoTiHnkXjrbt+S4DTzTOLh2iPPlpLR+s+JPmhHKK0g4Rjpy1KnDdUgRhN6gr4BbLBek4tvS1O0Z8fERqAvvVDtrUuSe4zhQEhVrZdJWk+ZVm84APcY7ABVa2JH/plKmaek8NwPCdey+KwDeyPmTrvZJyZp5nAuqBaBbBPzq/+FASMGjSwvk19+RV1PV9pDnape9M7BiniXPq3alnFCUDKxpgTEEr2wmTvvNOj704V+ZC4/lmGsgIA0P0MwraJXlHNXZLtSLS3LcjIJ46CZ3Lc/0FoJ+q9rBIlpOa16IdkKESbra/LML7XCpWMIdzG57ZVjWTwJmHtfIIHfg9sdzKngmHaW3B1QTt18nAGXXdEAPpb7xus8msZRqkfLnKhpOIb4ye4oXjEOntE8F0imAEqHnmFbv67Qux9Qykf0dPs5OoXsmgJrv0gbSVgdwAf4xNjaGHBu3DrhWlfK1v+bAyjwzhSLZBr/v+l12uPttR4ZJI2oqAAURyMqNd9im6gcE4PPK65o+BPDKV5AtRWrTASr14LuvWuvVQ24CKVKQY4pnwbXFR3ZLbAsepw4j0R9gxSM2doKk=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB4995.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(23010399003)(366016)(18002099003)(22082099003)(56012099006)(4143699003)(11063799006)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SWhMUDZPZjQvVURoTlFVYUtTRmlweWpUWForUkZjZGxKR0p5NERRMlJ2ZEs4?=
+ =?utf-8?B?cG1peHNIWUpVMTV6N2tsNUxHSzFjRTB3MEdHZ1hDZkRsZ0ZMa2lqWGZNT3ZD?=
+ =?utf-8?B?TThOWnV2Y0N0dnpUTEszR1VaTndzSVdHbVZVZTJaMGlSOU10T1VYMEQ1RHVl?=
+ =?utf-8?B?aWZXZ09CdW53NlNUZk5DbEg4MmRuY1FGemF5YmFlMEltdTVzbnBYd2FNZE05?=
+ =?utf-8?B?THplaU4zUSs3citnMDhhaGdGTzR3NUh5a0NWUnloUEZ2S2ltZWVVanZsNUts?=
+ =?utf-8?B?TmdpbklqTHpvNXVFbVUxamtmRE0xQzZqK3BhQXBGd293Z3BhLzdpbEsxU2h0?=
+ =?utf-8?B?YUdObE1rcktzYjZiRnJDcXl3ckl3MEZOazhyeVZlYmxLOWY3aU9lNy9Oc3d0?=
+ =?utf-8?B?QWsrSUNzN0JmUE1uWml0WHY1SFZWbVNkS0hicHZFckIrNjdkTWtpMWJpV0ZH?=
+ =?utf-8?B?QUlLSDRRcHNuS0VkTW10Q3BrSXNOUjZuU3p5UXZKRlA3REt0Ymx6aXZwR250?=
+ =?utf-8?B?S00vd0xZaXJmd2h0aEVFVkcwaEhLTUJCajBUcko1Mks5WUpVc1hNeDhNc2Iv?=
+ =?utf-8?B?bmZudndjT2xBTThvNS9vN3dtWm5ob2NUbGpnUHV0TDJVUUVXV1BzZVh0OXdQ?=
+ =?utf-8?B?RStNbGRLZWdLdUVNY216YlJjZHU4S1MyNThGTGcwMnFaVWUrd1VSMVZBMXNG?=
+ =?utf-8?B?czJqWWRjd0I5bm9nWktoNDEwZVRxaHZSb1htN2J0aXJxS1AwckxvblJGTmkz?=
+ =?utf-8?B?VFVyVlAwbmZtWkptY2FZNU1nT1p6d2pEL3g0ZmZyZHlYWEl3YjJoaVVDeGdj?=
+ =?utf-8?B?aWpXNEk0UUhGTkk1QmNGWE53eEYyOWVtMWVRZjBBRG04L2wvNVZEZWhXbHJY?=
+ =?utf-8?B?ZEsyd2FTelMyL29VSlZiRW9ESjBWUVBBUTAxUHYrZHhQSkYwQ2U4cUpGcCtN?=
+ =?utf-8?B?Slp0ZThPNDZ5enhDNDZyWXUvbGtqRldMZVdVSDcwNlZqNENQQ2M0WVk1d0Nh?=
+ =?utf-8?B?aVVNQVZNcG5Lb0s4bmpmNW9IaU1WRjVUSXB3NXYwUGZYTVcrek5aQkt5WGor?=
+ =?utf-8?B?a1VLS3pJTHN2SVR3Wnp5N0RUTTYrVDZQN3orRklmbVNKaXhRaFVHVllqbGZY?=
+ =?utf-8?B?dWRBdzN2RDFvek13ZmhRclM1LzNoZk1lNitJZXlyRGgzSExrbXFKS09xbnE2?=
+ =?utf-8?B?aGFUc1R5ZFhBeTVBdzZqYXJ0TnB4cnRDeVhYN2NQQUFBR2syRk5qSFdEZlpp?=
+ =?utf-8?B?ajlUcjRIQ0dQdDlaWlA4TFhoTzg4UzFiTndxNHFOQ3FpeHJkSDlpYmtMVCtM?=
+ =?utf-8?B?RGtkbVZqaC9ER2xJN3ZRdjFYREdhS1BaRVlqVFVTSmRReVEwc29zUXRXeFRG?=
+ =?utf-8?B?ekxTVU56YjkzQitvQjNibmJNY2RRZE1DNFliek1zZm15cWRXajZZQUd5SHds?=
+ =?utf-8?B?MmdYWWN4VFZ2eHkxVkoyMkJ2Y29yWGhyQllsdnQvSzJnVjJRVTMyY3BIY2dQ?=
+ =?utf-8?B?dTlaS1F6azhrOFlZUXk4UFViaHdSYXd4cU5XVlZ0ZUdTamVxVUdQWnA0WlEr?=
+ =?utf-8?B?TUJPUnZObFpzczFFbkZBVmRUN2F2NmpwR3I4MVZHZXFBdlA4Q01qNGNUMDhJ?=
+ =?utf-8?B?aGk2ZERia1hLaE1CKzZJZUpFU1hscFhNMUJzdm5Scng5akNSUzM3eFkzYTlr?=
+ =?utf-8?B?Q0VVV0RXZjYrRDhGcU9pbUpUTG9KWWVqcGRPQWNVQVk3QUVJTmVlckgrODZp?=
+ =?utf-8?B?OWtsQXBsMHpKTjhhaGVuRHFlaDhKL09FUWtreFNibEpHR3kvTTRxWjNZVDlJ?=
+ =?utf-8?B?SW5wOFkxb1hmaCtTUWxzaXhRQzJnTEJGRUlSUHB3Wjg0YStwSTQ1KzZqM1lt?=
+ =?utf-8?B?K0ljZGRqVjVYd0ZFcVQyYVRhUU52Rmx1am9GckFGaklrUFFyUmpWemlNWTZN?=
+ =?utf-8?B?ckkzdkxQbTBoaGhYSnJCeFFsZCtDR1h1MkpqaXNPcy9NczBqTGZvWXBRRlZB?=
+ =?utf-8?B?c2RUOVBtaHJIUGNrT0FzVS9PU1BiRFliT2wrTndhMGI3dE9IT2hpVDFSZUxy?=
+ =?utf-8?B?ZUl4VjlybGM0cGREWGFXVFBLTkI0Uk4rcnd4VERvWkJucm8rNDZpWjB5UXc3?=
+ =?utf-8?B?Sm11ZWN2d3pHbkNPUjF6M0sxVUZadlhiVVdveElIN2tjOGxLUGtkamZseUt6?=
+ =?utf-8?B?ZU9XSE42L2xSSzlTVmtBUll3Rkk4OWdvTHpCbWY4NjRRQVhzT2Z3TDVEL0ta?=
+ =?utf-8?B?QlhQR1ptN3V2MGY0WWc2dTk1SlVMdzFSalNOcGo2cDRHZ1hvRkp5UmNiN04z?=
+ =?utf-8?B?QVprTnJNZ1hjSUsza203dnRBcHo2ZFBsTTJwelFmT0lqYmtzcEFoQT09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bfd89711-05a5-43b5-9f7f-08dee6eb873e
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB5006.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jul 2026 05:47:20.6074
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8PGwhnfB0RIaHawaLx4M7opjvQ2pmcilEVZIhdDlwi+kzJ7KWPdWTjvxr6d2kECqGzVuieNEjGufCxVX6CIA0w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7593
 X-Rspam-User: 
-X-Stat-Signature: opi1akzdjpc5dyssn67hbpt6quj7jm78
-X-HE-Tag: 1784612627-53179
-X-HE-Meta: U2FsdGVkX1/2r5fU9fijjOa/NrMtZXYIyEHs5G3hCRX18Mn6+d9DnHNBL/jXCzW/cDi4BuDrORFIRVzESAT/kB5a22COh2tPs99dhkEdHgkw/iG79IPMw2k+ALCfRou2MDWDDTMZL146Vr7XQNQSZV9kIDz/y1cQLjqS6iPbd6OjDyNao7+DIdkqbZVrxV9ryHHC9RgBlF4LoTonQBEdPmk+zAbIdZr84mlgPB6zpdtnmVJmG++jwemR/30d5h9DZvthhK/sl7ZEzEEavaLuLrPQZd+T2gEqlqEP2rKDDund2WBSiUpMgqp7UYjTccKJ+PsUOqQH1AwMaGwgZiuXIMNhjwURms2CqrKI8M+CMIe4IKwaBgOgHtR69R4MUOR7TyuASEhfagDVf1C7hbnpkaBa2dSUiJWsgo6MDYLckF5Bll6EqNvaUquS7eL5jUyK96lR5QI506fCGaQhsMzHl1ldsL3v3YyYA3vPG+XKM1B4VGpIACzR5ySlOaEli7V2XkIVgWkvAeikTET1ZwWipECrnCz6bl+sWQq7iYCRcVtfpOY+ukck3Wt3k5NhY012/k7NR5cjxFB2D3N0vkPgE8aWHIwP9GMnRI84pnI15NwqZlVNPvVjizPrA/KtmBOLhbKQM/RuUOuBmLTznrYrjJqXz3QWBCxl9L8icBCe4LwwT7KguchiyDiHnB0r2AWdiAUqT5IYF6S8vF+5uc/RBL9n75NBiBA3w8Ru2QjLHUNFHHw+ZnTpKOn6AGzy4TXUqMn09d10fEKxe0xBbL+uvXZbcnUNEFqUdnq54YeebYnEFHu+h8kAB+17yMNVkfdbSq0heCix43/J5qKguXslCFD0i3bTxAprvgnqzuGiW33mZ5vy1IvTmmc6/QSm+5Oge0wpO4Z8RsalPI93zgdI5DxkXyFfhwzUC1dtJf2FQ5FuKY2T5QtL5Ok1nXc0ra4wBnpi+uTwurBCNUh0YTi
- Xh0E8jiu
- krv3xAXyJsE8SnjWVLi2voLis7fY9mF5aoEgtq75hkQrqBIPgOIcWRSnh9tt5i4+bqRx+D3zaY8Jgxuh/yiidyifcY5ap2i0E/qZ91/t7u+tsQShnjPyGDIblu2VFPbs555JO2raDmo3be9M8o7V+J39ZZZTBCxwz8vRLQfammAqz3Ml1yU5qR0xYqb7D/M5pIX1JigFa2I80mM03YUuPM8IOuvivR2BVXHUDVng5zKFNtr3795wj9pEruDJ5tGxlAZylrcnYTVX88+UGjy86ltoJvPLosIire7yL03pIID0ehG3OC4UlIIcaxA1UrH5gQj834xyBetFLjPiaD5tESFqbF6LAAvLQ7mc6Rp6XSQwg248wiu3xEkZ3dols7H5pHpEqOfAw9lXuowpFkSbMFjj0yttwIuiKEmwzp4zLYvhLuKHkadZVEsVoqYzTOwBSmrFVSsi7RY/o72YVLs7bTpEm8sb2+pfog8gd
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 901E91C0003
+X-Stat-Signature: a494qxpfb18kf5tryqiqkjqks87o6br5
+X-HE-Tag: 1784612852-121046
+X-HE-Meta: U2FsdGVkX1+Ny+vB1qPUCawyRmFoN5gdWtDVPNRAoviqSB9C5KS4sC5yJz5Ke+mesTaqKPgLY9tDixriknMAqz1bOYwsRxCfI4zi3qOoWgP1hHSmR4vm/DRAT3Md8el/JyYySGSgeawCntpQoLNHI77a8KCq+9gHCtxJdVXItGRqyImkn0/AIXAlnM64XRVjFyXsrK7Q/BD6wmGgJKWFSoLKWkt4/i+evspF/dBWRCkMU45fIL0y/vcBFmWd+092QduMEgOtrAfgfoXRYaSjzAUpfd7sKOXpe+j2Ztre/4BG4xGxJe1rOAr/eir88zMdAAiU06Wh7MRZLqB896t8YYHWWXlQ5s2F8tIfKUo10Nz+QBgc/y6N8c1nI6tGEwgXvIhKl5SOWtOHkWyyALprN1PIT22+DacDyX2z0QiObkkt0soSxhREw/09VbGvydlIrPhb54tXBP3nK2Cl8GToMehQ8xzC8PPXbI8FSz0fVgHOPjwLA6F1X+dATP9a7GiFUFfYBWL7g376VkwBsex5aOWfcOTz183nJ61YNt6bRLg+mdAQlmUzCD/Ltu3eXUvEF49LCJwQUdBQ4igty05x++Mg0RoGcRr0SBCjW0C5JeyMSZ0CoRs8yznmNDEdk7QqjSLI69hOtHKjjYOSuxxF9GxzY3Ry9By+030aRtMjj618AH6r8R/PqT7tPXXU3rHvxK+iMI2jecwtDDPNr3Qr2+Jnhc7FFnMOucgAqiVYuMGZmNXxAGtDIh9ZPHkr00ruPqK7kXmn4tiC5UEuA92tVrEYQqcaGZo2f/G8hB7conlBZvjBycJ1c5vfuvu9TWjYWwbGK7heuSFfSp8L6w8jCTMC0/fZRlAm/EmgPfp77Oi8x/9kKClIgebH+4oNse+G71AUG5IaM0mgCq8NpKJmlu6CbX1M0a+qFNfcgD97h85B6waLyCytYZqUP+MROafWM0xVfdxbGVlwmfgphKu
+ OdPeMXsg
+ z22LF7hMHSBSJ2h30tHoBzUk3tgYGOb005N9N4DiZ9NsHqdzvY1485J/jOfWAUboZtB9PusDI/7/OG+B3QRVEdOVQlRUqDtXqxsDDvACenHhoJ0xG6Z46WEYY1sNTwqzxiZVAm6dv+sl3088VdJPnpYe0ld7xkyE0RTsg0ZS3PlqQSr8GwpAKkcl920hK0H/bM/juwhRzDLdDJsbb0jmriOLAyLxs31GLMXl7nkEUZDzrcTvjBRbmPJArl5MxIVO0DmXjETeyb2PxI4Clfzf0CAKAxJCrryM9wU+TRqRspXV/w+3214qrXT590y3KZgAC5xzO+zoBIkwrh0/mRyd1JE+CRwSmpCEiO93P0rqd8hnkrNceNPPnGUMi2GDhFkyBBO+DSaUkT2dqF8B+YZ1v/RsdRiojFgFSK6gSGlHy4AtSp0g7OP6XaoRxCZZczBlyus2jSCL5nuHTZ2owrUnm4MqbzuNVOcyxyNEmE8yeHIFi5Ky8N7EPYbRrfojnGescOobdJLeQmPp6DOsaE7lgLiofJPZteLY4ydQqsVzzpFkPlBbMj7wuy0D7Q1ikP7W1tdmkiG/P43wT6OLDViGiWYenJ/SVhT9XQGli4ng+im3IfUE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,160 +195,132 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------BcYzxlX3VPSEK1j5AEJfPS35
-Content-Type: multipart/mixed; boundary="------------2Fwu9gZK7PiMF1w25tWuNnKl";
- protected-headers="v1"
-From: Harry Yoo <harry@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>
-Cc: Hao Li <hao.li@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter
- <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
-Message-ID: <da6ca31c-f97c-4cd1-9380-4fe50d797a7d@kernel.org>
-Subject: Re: [PATCH v2 01/13] mm/slab: skip kfence objects in allocation
- profiling
-References: <20260720-b4-objext_split-v2-0-2fa7c6f60dbe@kernel.org>
- <20260720-b4-objext_split-v2-1-2fa7c6f60dbe@kernel.org>
-In-Reply-To: <20260720-b4-objext_split-v2-1-2fa7c6f60dbe@kernel.org>
-
---------------2Fwu9gZK7PiMF1w25tWuNnKl
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-
-
-
-On 7/20/26 11:16 PM, Vlastimil Babka (SUSE) wrote:
-> struct kfence_metadata only contains struct slabobj_ext with
-> CONFIG_MEMCG, which is then used for the "fake" slab's obj_exts field.
-> If CONFIG_MEMCG is enabled, the struct can also end up used for memory
-> allocation profiling. If CONFIG_MEMCG is disabled but profiling is
-> enabled, it will end up allocating its obj_exts via
-> prepare_slab_obj_exts_hook() and assigning them to the fake struct slab=
-=2E
-> These will probably then never be freed.
->=20
-> So things sorta work, but not always in the intended and optimal way.
-> The upcoming changes to slabobj_ext layout would additionally need a
-> proper refactoring to keep working.
->=20
-> However, there's little benefit in accounting KFENCE objects. KFENCE
-> allocations are rare and there can be only CONFIG_KFENCE_NUM_OBJECTS
-> (default to 255) outstanding ones at any time. For any callsite
-> prominent enough in the memory allocation profiling stats, allocations
-> served from KFENCE will be lost in the noise.
-
-For a similar reason I wonder if we can drop obj_exts completely.
-The idea that kfence objects might have different slabobj_ext layout
-isn't really worth the extra complexity if we have very limited amount
-of kfence objects. The amount of objects that escape memcg accounting
-will be quite limited.
-
-Any thoughts from KFENCE & MEMCG folks?
-
-> Thus let's not complicate things and simply stop accounting KFENCE
-> objects in allocation profiling and skip them in the related slab hooks=
-=2E
->=20
-> We also need to skip kfence objects in mark_obj_codetag_empty() in case=
-
-> a sheaf is allocated from kfence, per earlier sashiko review.
->=20
-> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+On 7/21/26 5:33 AM, Gregory Price wrote:
+> find_next_best_node() picks the next-closest node for a fallback list
+> from the full N_MEMORY set. Refactor it into find_next_best_node_in(),
+> which takes an explicit candidates nodemask.
+> 
+> This enables building fallback lists with non-N_MEMORY candidates.
+> 
+> No functional change: every caller still selects from N_MEMORY.
+> 
+> Signed-off-by: Gregory Price <gourry@gourry.net>
 > ---
->  Documentation/mm/allocation-profiling.rst |  7 +++++++
->  mm/slub.c                                 | 11 +++++++++++
->  2 files changed, 18 insertions(+)
->=20
-> diff --git a/Documentation/mm/allocation-profiling.rst b/Documentation/=
-mm/allocation-profiling.rst
-> index 5389d241176a..d02eb54ee8f2 100644
-> --- a/Documentation/mm/allocation-profiling.rst
-> +++ b/Documentation/mm/allocation-profiling.rst
-> @@ -112,3 +112,10 @@ break it out by rhashtable type.
-> =20
->  - Then, use the following form for your allocations:
->    alloc_hooks_tag(ht->your_saved_tag, kmalloc_noprof(...))
-> +
-> +Notes
-> +=3D=3D=3D=3D=3D
-> +
-> +- When a slab object is allocated from KFENCE, its accounting is skipp=
-ed.
-> +  KFENCE allocations are rare and limited to a small number, so this o=
-mission
-> +  is negligible.
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 0337e60db5ac..76acb78f2655 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -2076,6 +2076,11 @@ static inline void mark_obj_codetag_empty(const =
-void *obj)
->  		struct slabobj_ext *ext =3D slab_obj_ext(obj_slab,
->  						       slab_exts, offs);
-> =20
-> +		if (is_kfence_address(obj)) {
-> +			put_slab_obj_exts(slab_exts);
-> +			return;
-> +		}
-
-I think we should check this before get_slab_obj_exts()?
-
-Checking if the object is from kfence after slab_obj_ext_codetag_ref()
-looks bit weird.
-
-Otherwise LGTM.
-
-> +
->  		if (unlikely(is_codetag_empty(&ext->ref))) {
->  			put_slab_obj_exts(slab_exts);
->  			return;
-> @@ -2352,6 +2357,9 @@ __alloc_tagging_slab_alloc_hook(struct kmem_cache=
- *s, void *object, gfp_t flags,
->  	if (alloc_flags & SLAB_ALLOC_NO_RECURSE)
->  		return;
-> =20
-> +	if (is_kfence_address(object))
-> +		return;
-> +
->  	slab =3D virt_to_slab(object);
->  	obj_exts =3D prepare_slab_obj_exts_hook(s, slab, flags, alloc_flags, =
-object);
->  	/*
-> @@ -2399,6 +2407,9 @@ __alloc_tagging_slab_free_hook(struct kmem_cache =
-*s, struct slab *slab, void **p
->  	for (i =3D 0; i < objects; i++) {
->  		unsigned int off =3D obj_to_index(s, slab, p[i]);
-> =20
-> +		if (is_kfence_address(p[i]))
-> +			continue;
-> +
->  		alloc_tag_sub(&slab_obj_ext(slab, obj_exts, off)->ref, s->size);
+>  mm/internal.h     |  6 ++++--
+>  mm/memory-tiers.c |  7 ++++---
+>  mm/page_alloc.c   | 13 ++++++++-----
+>  3 files changed, 16 insertions(+), 10 deletions(-)
+> 
+> diff --git a/mm/internal.h b/mm/internal.h
+> index f26423de4ca28..96d78a7778e88 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -1103,7 +1103,8 @@ extern int node_reclaim_mode;
+>  
+>  extern unsigned long node_reclaim(struct pglist_data *pgdat,
+>  				  gfp_t gfp_mask, unsigned int order);
+> -extern int find_next_best_node(int node, nodemask_t *used_node_mask);
+> +extern int find_next_best_node_in(int node, nodemask_t *used_node_mask,
+> +				  const nodemask_t *candidates);
+>  #else
+>  #define node_reclaim_mode 0
+>  
+> @@ -1112,7 +1113,8 @@ static inline unsigned long node_reclaim(struct pglist_data *pgdat,
+>  {
+>  	return 0;
+>  }
+> -static inline int find_next_best_node(int node, nodemask_t *used_node_mask)
+> +static inline int find_next_best_node_in(int node, nodemask_t *used_node_mask,
+> +					 const nodemask_t *candidates)
+>  {
+>  	return NUMA_NO_NODE;
+>  }
+> diff --git a/mm/memory-tiers.c b/mm/memory-tiers.c
+> index 54851d8a195b0..25e121851b586 100644
+> --- a/mm/memory-tiers.c
+> +++ b/mm/memory-tiers.c
+> @@ -370,7 +370,7 @@ int next_demotion_node(int node, const nodemask_t *allowed_mask)
+>  	 * closest demotion target.
+>  	 */
+>  	nodes_complement(mask, *allowed_mask);
+> -	return find_next_best_node(node, &mask);
+> +	return find_next_best_node_in(node, &mask, &node_states[N_MEMORY]);
+>  }
+>  
+>  static void disable_all_demotion_targets(void)
+> @@ -450,7 +450,7 @@ static void establish_demotion_targets(void)
+>  		memtier = list_next_entry(memtier, list);
+>  		tier_nodes = get_memtier_nodemask(memtier);
+>  		/*
+> -		 * find_next_best_node, use 'used' nodemask as a skip list.
+> +		 * find_next_best_node_in, use 'used' nodemask as a skip list.
+>  		 * Add all memory nodes except the selected memory tier
+>  		 * nodelist to skip list so that we find the best node from the
+>  		 * memtier nodelist.
+> @@ -463,7 +463,8 @@ static void establish_demotion_targets(void)
+>  		 * in the preferred mask when allocating pages during demotion.
+>  		 */
+>  		do {
+> -			target = find_next_best_node(node, &tier_nodes);
+> +			target = find_next_best_node_in(node, &tier_nodes,
+> +							&node_states[N_MEMORY]);
+>  			if (target == NUMA_NO_NODE)
+>  				break;
+>  
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index f93a6bb9a872d..acf096f525f49 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -5743,9 +5743,10 @@ static int numa_zonelist_order_handler(const struct ctl_table *table, int write,
+>  static int node_load[MAX_NUMNODES];
+>  
+>  /**
+> - * find_next_best_node - find the next node that should appear in a given node's fallback list
+> + * find_next_best_node_in - find the next node that should appear in a given node's fallback list
+>   * @node: node whose fallback list we're appending
+>   * @used_node_mask: nodemask_t of already used nodes
+> + * @candidates: nodemask_t of nodes eligible for selection
+>   *
+>   * We use a number of factors to determine which is the next node that should
+>   * appear on a given node's fallback list.  The node should not have appeared
+> @@ -5757,7 +5758,8 @@ static int node_load[MAX_NUMNODES];
+>   *
+>   * Return: node id of the found node or %NUMA_NO_NODE if no node is found.
+>   */
+> -int find_next_best_node(int node, nodemask_t *used_node_mask)
+> +int find_next_best_node_in(int node, nodemask_t *used_node_mask,
+> +			   const nodemask_t *candidates)
+>  {
+>  	int n, val;
+>  	int min_val = INT_MAX;
+> @@ -5767,12 +5769,12 @@ int find_next_best_node(int node, nodemask_t *used_node_mask)
+>  	 * Use the local node if we haven't already, but for memoryless local
+>  	 * node, we should skip it and fall back to other nodes.
+>  	 */
+> -	if (!node_isset(node, *used_node_mask) && node_state(node, N_MEMORY)) {
+> +	if (!node_isset(node, *used_node_mask) && node_isset(node, *candidates)) {
+>  		node_set(node, *used_node_mask);
+>  		return node;
 >  	}
->  	put_slab_obj_exts(obj_exts);
->=20
+>  
+> -	for_each_node_state(n, N_MEMORY) {
+> +	for_each_node_mask(n, *candidates) {
+>  
+>  		/* Don't want a node to appear more than once */
+>  		if (node_isset(n, *used_node_mask))
+> @@ -5857,7 +5859,8 @@ static void build_zonelists(pg_data_t *pgdat)
+>  	prev_node = local_node;
+>  
+>  	memset(node_order, 0, sizeof(node_order));
+> -	while ((node = find_next_best_node(local_node, &used_mask)) >= 0) {
+> +	while ((node = find_next_best_node_in(local_node, &used_mask,
+> +					      &node_states[N_MEMORY])) >= 0) {
+>  		/*
+>  		 * We don't want to pressure a particular node.
+>  		 * So adding penalty to the first node in same
 
---=20
-Cheers,
-Harry / Hyeonggon
 
---------------2Fwu9gZK7PiMF1w25tWuNnKl--
+Looks good!
 
---------------BcYzxlX3VPSEK1j5AEJfPS35
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCal8HDAAKCRCGXBN6rc5S
-1inqAP9Xf5gpteIoCx+wRMSTfe3rUiOi1kgL0f7l+nIX7MTGvwEAoIuZmbTxNxGc
-ptiFK2CT0FBb+0PUFF6oYZruDcKjsA4=
-=QTRH
------END PGP SIGNATURE-----
-
---------------BcYzxlX3VPSEK1j5AEJfPS35--
+Acked-by: Balbir Singh <balbirs@nvidia.com>
 
