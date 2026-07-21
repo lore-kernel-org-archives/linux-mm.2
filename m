@@ -4,87 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DCEFC44520
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 01:34:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E24BCC44515
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 01:34:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6D4756B008C; Mon, 20 Jul 2026 21:34:19 -0400 (EDT)
+	id B430C6B0093; Mon, 20 Jul 2026 21:34:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 684CC6B0092; Mon, 20 Jul 2026 21:34:19 -0400 (EDT)
+	id B1A556B0095; Mon, 20 Jul 2026 21:34:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 59DCE6B0093; Mon, 20 Jul 2026 21:34:19 -0400 (EDT)
+	id A097A6B0096; Mon, 20 Jul 2026 21:34:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 32E626B008C
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 21:34:19 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 960FE140321
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 01:34:18 +0000 (UTC)
-X-FDA: 85011063396.01.AC6FC49
-Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 3ED4680005
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 01:34:16 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Bw8Mi6dQ;
-	spf=pass (imf30.hostedemail.com: domain of hongfu.li@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6ED8D6B0093
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 21:34:43 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D423F1A037D
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 01:34:42 +0000 (UTC)
+X-FDA: 85011064404.22.40C9E83
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 1DAB4C0009
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 01:34:40 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=JfHG1xRe;
+	spf=pass (imf10.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784597657;
+	s=arc-20220608; t=1784597681;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=ssCjc5RyO4iON0/B4Mm6pQ4p+Fnv9Wcq91/6zrguLIA=;
-	b=OWhVkWrGa+8SojzrZyVZdD5k5zHV5Otjf73VWHPUAIkKdtrfH9MiQtF6YFY0rk/OisucXK
-	XcMrqCceaK7p8bx/zRhDLfLseRHwvT8eOBtiI7lLe4i8eUIiecSmoV4GLBsVJqiPAGnriI
-	VMTkSI2IVsB+ol3Q5n8txTs1oanZMgE=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=C/tCUmc6Af/w9eCR04YBcQ5lmA7aoPQojmTNJw54oAM=;
+	b=UWPFh+DLqUet1AE6oLgKSkGiMK+AVU294AicmfvKHMFYjZnGcHpxw/3r5YqQaCrKTb4wxE
+	UT2CB2byLuB6OaBlek0wy0cNSFS3ghd5KFF6hr9WkBAHgHr2Mn3rQTjXl0aprlEmZ15Lja
+	R3GG+x8FHkkIjM/dDVQKV94Mphk5FAo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784597657;
-	b=PGoA9Gv5st2hqzdvHbqevY35UXyH3qWcAuflYLHh6iJamxzJOaoIKPSwFWHIUh63mAAIKg
-	pyZijSGv/AFabZ9hyAy0t6vfMzwZlbgG1P3Z+4JB3HaXKGW5ztOc+uVHrZK0wdCJg5c0kM
-	tcIHA2ccLPpB9kr/586zKQble5KSgFM=
+	t=1784597681;
+	b=PQHirneq8+aMFzx2x/4aVVCRzj61HNQF/JL6AKZFN+DHq1+ATTO/X4WWiL/FW2xqyfvAcb
+	RV1RPVtoLduduooAgHmg1ZhKXsI/mUZVMMfx/Tb9bqpKwrtBFWrpHNzBHvPx8q7ZopiJ5t
+	zUapbIrR7lK6wj2lq4uV+y50lJZ0f50=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Bw8Mi6dQ;
-	spf=pass (imf30.hostedemail.com: domain of hongfu.li@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784597652;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=ssCjc5RyO4iON0/B4Mm6pQ4p+Fnv9Wcq91/6zrguLIA=;
-	b=Bw8Mi6dQItJMykB2V4qA0T3ghdDWdAHjVAPr82lCKXtONIdiQg5xRnBKyucW9X5oV++0Kz
-	jD5z8z8Li6CFZWs12EviQX77byjbHlaEBuTT1H64vyCmyjIGWfGew5KAzN01RLNukDn3ky
-	nG8sQn+WoDqaIcKuRCJDUOYlwq3zBXU=
-From: Hongfu Li <hongfu.li@linux.dev>
-To: akpm@linux-foundation.org,
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=JfHG1xRe;
+	spf=pass (imf10.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2caf228a910so84795665ad.2
+        for <linux-mm@kvack.org>; Mon, 20 Jul 2026 18:34:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784597680; x=1785202480; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=C/tCUmc6Af/w9eCR04YBcQ5lmA7aoPQojmTNJw54oAM=;
+        b=JfHG1xReMKtLjrNfrZdr0mFR7KPpAMLXVKpAdnLKpJDLPsmXiTji5aI91iBazFFYJ4
+         KZDOdTx5k/hKGAKSzdUUiQRuoH13Rt1cFifVWJmaYdJIlfT4oLT2fAgh1fUVD8TxWP0f
+         rY2oghOKlNcoh1RhJvIOQkr9FLVjjV6HOQEJrwbS/oei85BQslrcjS5rQyRB/AgCJMc5
+         ZX4f06xCeU0uiRUs0YVi7yjTj7RFalY5AtvM9sVQlG2LLufywi/CQl6U9vw0+ualP2tX
+         c1kpbXQvoWPLrNI5epoVPwDNvHJUGDoL1M5mPt/93am/ggTc6S3GUlFHMkf8RL8fsos8
+         UbpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784597680; x=1785202480;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=C/tCUmc6Af/w9eCR04YBcQ5lmA7aoPQojmTNJw54oAM=;
+        b=qrzlGfXJJyBNtRB17D+MsKkvT3du1KqIwOEi5AweVxyN183AbQU7Pa8cjDqH6JTDm3
+         bwmDpj9UagmRRNDh08piN+WyzGuz01QfkUytEE/hHg3bIBNIJTluTWYebcju8yuNqHtV
+         c7lTaUVoAPUUSVqKUUrAfqJi26SFn375CZAYNDa0WpB9++Nt7gYAAzYfrCXQs01NSHPQ
+         noT2ojOcLUEZTUv9nYXgPtEg7hflUZydevMyIVjGbA9nsv7pIzAp7ws0JgWP3u3Jb335
+         EacOzvGUdvhFkanIkIUc4Fq2jUllZPWjezD+7SyPePeTxaeuWg6aOMbfMz0kKQ2XZpY6
+         lfnQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rqf6nVEqVE4Utvn00iykU1LyvYlZFGTXLr6dO2NV2MEu7hLdRW9nZk9qeVbz1H1vNuSF6doYGaGGA==@kvack.org
+X-Gm-Message-State: AOJu0Yz26x3DgFBaTsa9SwUiGWWRvZ+jnbTlTGni2m8wHTN4I0vuNxfY
+	TDz3A7iOtQy1ZfBHE3xhjTMBx7patq5lMpeo7fvjazQx1qpo+oGkxjTp
+X-Gm-Gg: AR+sD10p94lXGdmWYgiDi/reHiCRlC+pAoPIiV2CJfcDmivg5lswoqIbRUi/nCEjftu
+	AmRSM2fguIeQC+ObHQ77bO/LanvFm3c2v2k2oPisUSAQrOnbjv8o/TVp0zEVkV2niFXRCidKNWk
+	T/7m3820RReKRpLztB6ETSkJTnQrvUjTT5Qzj1CWaA4GptptUwi5gDcP/Yrp5YsbCLhbkFA1YM6
+	7QK7RaskSLVO5Oy0l4apFotTwvOW57EnmqDkof64faghX/BJivhVddQPxahPFjk+2V8T9dw1jvr
+	YJdZ4WYVAHPxGVQq3n4N/2VXaruedr1EAfFKd56fItPh+b+B4/B3+GKi+e6XfEXtn/ibiSze/Bq
+	fEEYYr635+HEf4bbJUHjVW4ZTZ3zwgavGYkR0I4fQk89ApuTM98XJ74n+lhKSE1GK/UXp1PDkv1
+	8GJP3gCjfsMmdECp6/EDd9AkAlYLw=
+X-Received: by 2002:a17:902:da85:b0:2ce:93a3:c16c with SMTP id d9443c01a7336-2cf348665f8mr180911895ad.12.1784597679975;
+        Mon, 20 Jul 2026 18:34:39 -0700 (PDT)
+Received: from localhost.localdomain ([112.65.87.25])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf3448f91bsm65631895ad.8.2026.07.20.18.34.33
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 20 Jul 2026 18:34:39 -0700 (PDT)
+From: Lian Wang <lianux.mm@gmail.com>
+To: sj@kernel.org,
 	david@kernel.org,
+	ziy@nvidia.com
+Cc: damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	akpm@linux-foundation.org,
+	linux-kernel@vger.kernel.org,
 	ljs@kernel.org,
 	liam@infradead.org,
 	vbabka@kernel.org,
 	rppt@kernel.org,
 	surenb@google.com,
-	mhocko@suse.com
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	hongfu.li@linux.dev,
-	Hongfu Li <lihongfu@kylinos.cn>
-Subject: [PATCH] mm/memory: use folio lock/ref helpers in do_swap_page
-Date: Tue, 21 Jul 2026 09:33:47 +0800
-Message-ID: <20260721013347.65698-1-hongfu.li@linux.dev>
+	mhocko@suse.com,
+	npache@redhat.com,
+	baolin.wang@linux.alibaba.com,
+	ryan.roberts@arm.com,
+	daichaobing@sangfor.com.cn,
+	wangkefeng.wang@huawei.com,
+	gutierrez.asier@huawei-partners.com,
+	zengheng4@huawei.com,
+	kasong@tencent.com,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org,
+	linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	lianux.mm@gmail.com,
+	lianux.wang@processmission.com,
+	kunwu.chan@linux.dev
+Subject: Re: [RFC PATCH v3 0/3] mm/damon: introduce DAMOS_SPLIT action
+Date: Tue, 21 Jul 2026 09:34:30 +0800
+Message-ID: <20260721013430.40303-1-lianux.mm@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260721004755.93824-1-sj@kernel.org>
+References: <20260721004755.93824-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 3ED4680005
-X-Stat-Signature: 671tp3gr9t4z6n7pkswki67te7bfakky
+X-Rspamd-Queue-Id: 1DAB4C0009
+X-Stat-Signature: x1ojxf67msrze6huayn1a4wf3w1fscke
 X-Rspam-User: 
-X-HE-Tag: 1784597656-498472
-X-HE-Meta: U2FsdGVkX1+R5/J75FXiouhzVsqz+OYnMUrNnCzx9b1i4GV+kXfEo+yyWNTNcPXhPEbSTO68QnW5g6rq3itAULnBw6zVeECr4PfeDJ0bc9DTjifBRNHU2i9nHIv4TetsZdukDcmFlJ28WJyCZ0pWwiVO0+PAzkeYNSepGHgwU6WygpwuQl4E6PHxzNCk2pdhmMV0lO9++gKzTBAUIdXONEweTl/fIpHozLi0LiysDLBmbuCC7mR8rlE4Amcum+1EsXknBb9LOIVxhx8ozGDb604cN4p1CB4mnQlPux29ZGyjLfgHLuikwK9cRmEnV4e6INbuHIO3c4RiPwwq36PY1EZYi2SiIkxgfFjKIEmf57wGc0D++WtTcKhRDq7TVJQYy+OsQLi9p8xM2tTHefDJglN4eg3SpgH5YVjav2NKipCIZGP+gD7gLdNkEtbRprIS9Azv28I4aGP0S2xdpofJ/r+fydhr8gbFQE35hHT7CPYyLAB6NeJ8EltaxZD63kjnBe4NsJmvSSOFc13nz0ltO5wsrzxWo4e/4ij4pOkSnH4z3IvHXB6NLAaNBvUkhqIwdW1ru0GZwVHCA8aMmYdUYflM70WBw/+YxWs6pZdEdHzyoTV4CoG81k6SNIIJbXYazL7rqXK3W5pkpW+oY5K/t1M8fu3XItoEurIl7azhMTU8WFP4I3MgBFDRKWch7T+WHgZFIqXeTPMggRdM5JA35h+FgaBEFjzgUozL33eocDq5JDYMb3T3apsULYpLY+3Uw51fFgVpk/t+rfZ1tsaKcvV0F6fYZQrQNW3kyVvdmAvpNIwpXjnr4wuIl82mvVJfQJSO1TqQv/HwqpeiMPQWncweTv/rV44O4JM3PazYxnU0iAfR9Vg+uo2DMj6uJdXdirgHPXjbvumxqqXeICrl0z64T7yElW+fPlTGdR20GzJGhYeKLJaKkUTTbV0ROm7OglNlpmxHrYIyQ+V/lvg
- Yfr5Lafj
- z355YdxhqDP8ZoVruPr/5Bv4n09OrlaqTL3pOGMNE23R8nKSfUJDlAm4CqhYlhhBiR3VL8aXdKj4HRXWv6WzQlBRv4fAf8+l1TKWeM/T0zeLXP7RjtQsetwfOgulwEax1JS6n0VX/EvCf2g/t+14OzpyVEOQjUNn1qQJ8MUhhCyEptSS6E/v4JuZKCcKsHKl/nWtHfzCnhIscavGnVU3TgCsyGVf1Q1qPlCKjeFaowNNnoDBqPEzzZ71Wzw==
+X-HE-Tag: 1784597680-819518
+X-HE-Meta: U2FsdGVkX191wRURQTKkRe7M1g3n12wyFKNqbnLFL98/nGPfu0IJ0pquJtmxaSxEWV3JnhC0WQ7RZyp/o0DJiNluk+sTGotRr+9YCRGp9jzjGW+I7x/u1+DhwYuE6trev3mI9TNou4er0GZGd2sqnZEsmHOhw7IemR/hdvA81nfxgCrVdcPojMrd0fI32EdHJgxalo4TaBFJMwd5RvEqFmfEi2uhH1YBFEnzfPEiye5NJQnxyRUNa2VeuD6ypdWsxcjFwpLZpXycSXljNizYbLQAeWCB1edwGSOo1s8LHC+cDlP1BztONjk/twWHUFV0gvdsUBFbeI2ecBhJm0DJnIHC2bQ7RvcwvyK08poTKwFyM7crKc7Hu0YK8Z7lpfbzTGABo691/hcnx1ZtUjBoV2R0vhSdCsbmjlQocqptQfYFHHYn61SKsVOuFuyhyudeGpTdQO/bPBi7JCe3czI4AsIa/zNe74HwB75zGPxS3FC7L+s7PtnDrwl05wmOpK2L7v2KoH6pGwFIUlCIRWndTsmwW2cQzc8vgdZA6Fjcf4ZpslbeRmgefJxCBchO9cgA2xTVgnFEK0pEkPBZElmxXv9vhFsWmO2GH9q8rAiWJqRhneqZN/IOjLdmpi0bdCwA3TAYNV86o3vjkp7u1z5S9uRohMqhBZNBzTKxowFeOXRGiTHr5TZVoq2x2MG8VgJOFNoK0St+v0GWM6vf6SVC4BBo10tvPCnF93XDC560puTu5GKUJYjvyTFbf2goJpKsmAOcGdXkTtO5YQGim2cKFXTFNEaQwv93yyvNFRVjVTaU0Dnurc9MlGg/7rLJMAhkUKbKWCl4LGTG1wPiLHjAepVP8lDcRZL0/mDgdNDzvqX3TmXzkZrtDKl0zUzD1YuScWCDDOcv+WGLJm0xTDegJffSoEw9DmnGxxfOisvYpBR0nruKPmrARgiQU8C3uZsOvmC36CgZgIHD/Y8c7Ap
+ lF9pCTc4
+ 1Dtv3pYo4moxiezVCtYOXZwLbc/s05SEUiqwojnVxiO5VSntKGD3JEUtHOtBxSThtIgcBM6S+98x/5/kX8OPfU2yDIC0q/pkS9sVj1GEUZNDyxGXacXSDXnF1dR0JTfMF8ZkIqas4phygZ+MOJHqbqa/avY3jEDJBAmmvtj1aAlm23xLg7l/6Oct/UdF7a6LkJQAl4yzMhxnpV48Vkf4UQufeJiN4fvnKlGgXDIQnqpof5BkuwLOXQ4duNxft6ZHzhVbNILULx42BeO8gOCQobbC8KFF7pCXWcsyoQC0+V6jQaqBYBMJLsGXMP4d8FT8+R8i2I/u4pn9wrqpHBrvH4uvQQB9vcP724e9CGC3AVS+bQEIVnMZXMChw3S3AOw9e6/cuI+NuxfHZRQByz2WzdZAcfaoptaDK3+pjDRDLNB5fEYW8wjhrRrTcq9xyMQcDWJkNbRSVFL37nwdfDsu/tQ24WgxMYvzeRALwBcNIfvVezU87MqEptDlvsdgMv5p7yfFw
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,61 +142,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Hongfu Li <lihongfu@kylinos.cn>
+Hi SJ,
 
-Replace page-level lock/ref operations with their folio equivalents
-in the device_private migration path of do_swap_page().
+On 7/20/2026 5:47 PM, SJ Park wrote:
+> To me, it's still unclear what is the real user impact, though.
+> ...
+> Only after understanding what is the problem and how bad it is, we
+> will be able to think of different approaches and assess those.
 
-Introduce a local fault_folio to hold page_folio(vmf->page) to avoid
-repeated page_folio() invocations.
+You are right.  I will work with Sangfor to quantify the real impact
+in their production scenario -- what DAMOS action is driven by the
+inflated hot-memory readings, and how badly the monitoring error
+affects the actual outcome.
 
-Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
----
- mm/memory.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+Thank you, David, and Zi Yan for the honest and constructive feedback.
+It made me realize I should have led with the problem, not the
+mechanism.
 
-diff --git a/mm/memory.c b/mm/memory.c
-index d5e87624f692..bd27372a1052 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -4852,6 +4852,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
- 			vmf->page = softleaf_to_page(entry);
- 			ret = remove_device_exclusive_entry(vmf);
- 		} else if (softleaf_is_device_private(entry)) {
-+			struct folio *fault_folio;
-+
- 			if (vmf->flags & FAULT_FLAG_VMA_LOCK) {
- 				/*
- 				 * migrate_to_ram is not yet ready to operate
-@@ -4863,6 +4865,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
- 			}
- 
- 			vmf->page = softleaf_to_page(entry);
-+			fault_folio = page_folio(vmf->page);
- 			vmf->pte = pte_offset_map_lock(vma->vm_mm, vmf->pmd,
- 					vmf->address, &vmf->ptl);
- 			if (unlikely(!vmf->pte ||
-@@ -4874,15 +4877,15 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
- 			 * Get a page reference while we know the page can't be
- 			 * freed.
- 			 */
--			if (trylock_page(vmf->page)) {
-+			if (folio_trylock(fault_folio)) {
- 				struct dev_pagemap *pgmap;
- 
--				get_page(vmf->page);
-+				folio_get(fault_folio);
- 				pte_unmap_unlock(vmf->pte, vmf->ptl);
- 				pgmap = page_pgmap(vmf->page);
- 				ret = pgmap->ops->migrate_to_ram(vmf);
--				unlock_page(vmf->page);
--				put_page(vmf->page);
-+				folio_unlock(fault_folio);
-+				folio_put(fault_folio);
- 			} else {
- 				pte_unmap(vmf->pte);
- 				softleaf_entry_wait_on_locked(entry, vmf->ptl);
--- 
-2.54.0
+Let me take a step back, gather concrete data on the problem severity,
+and come back with a clearer picture.  I will follow up in this thread
+once I have something solid to share.
 
+Thanks,
+Lian Wang
 
