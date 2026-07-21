@@ -4,91 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72C65C44532
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 14:55:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B0E1C44533
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 14:55:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 30FD36B0095; Tue, 21 Jul 2026 10:55:06 -0400 (EDT)
+	id 077B26B0098; Tue, 21 Jul 2026 10:55:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C0A36B0096; Tue, 21 Jul 2026 10:55:06 -0400 (EDT)
+	id 0289A6B009D; Tue, 21 Jul 2026 10:55:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1AF636B0098; Tue, 21 Jul 2026 10:55:06 -0400 (EDT)
+	id E819E6B009F; Tue, 21 Jul 2026 10:55:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DBF376B0095
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 10:55:05 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6602D1A01B7
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 14:55:05 +0000 (UTC)
-X-FDA: 85013081370.12.59BEBAB
+	by kanga.kvack.org (Postfix) with ESMTP id B3F096B0098
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 10:55:25 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 384BD40197
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 14:55:25 +0000 (UTC)
+X-FDA: 85013082210.03.D35EAB0
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 9AFC220003
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 14:55:03 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mjfmhz7N;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf07.hostedemail.com (Postfix) with ESMTP id 604C840003
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 14:55:23 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nU3VfTMz;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784645703;
+	s=arc-20220608; t=1784645723;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tXvMkjXAn7y2m4HY7s7QUvSgtEyYKfTxuKxsFjU19Mk=;
-	b=no8s6ndPnRtqqr2ThvO/F5AT7Hk67N+1bbrBa1XMu76kqQ/h1CjsX3LFKJvYS8GmSKRVq3
-	ij1za83B0PjLNE1yH9Pwm73qMZjDmGj/NMq+C/YAwC7oOhpGFn3cXG7lmnO0IKgrjRYcot
-	Y82kvEjtLkdcMDnqsRvvtYiukyJgsH0=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mjfmhz7N;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=JqgP6/1vZQA9GBdH0LWRXjquTgO0fEILyJc7crNbr3Y=;
+	b=j9mFOVESIK1LmAf1tmeluTx+KL7fSR9t2lOLmKnJp+aOloURpQMloCcAdAaCA5ZdgNm14A
+	LH4fYprtsYBrB0K/mLvTUVP8x++z1tZRmVZDe8ONMdmiHATpf9k1tO3N0oFhKqAjWKizKP
+	cwFrpr4jE+m2QBRxrD4bqzCCYj2jIE8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784645703;
-	b=eTCSE+7uKA1tbVvWJ5oP2udorc8O96FfiI84YgYg94FQj9OSepArmmyc0eSpEQlFvsK9o+
-	/qMwPhcfl7ai+bF2H9Q0xNf200g0c++ZjNHKuuTvjkeiEy6EUn9E+A6GdWMp+baeTLls+/
-	74RXb10rYAs/l91epsF5UM5lYVoAGl0=
+	t=1784645723;
+	b=JKSJ6jpau9CKVRWLVnPif76djb5lO+G8ONUr4SWQlRYjBsqKhDHaFxLu6MG4O6TEXcd8Mo
+	38tCYmj3sw9k6KEnZY5Ts7Q7PwNQ6Z5ZBX4sDBqNhkOwugQACxoG9rGKNunO/PVwHKnGES
+	OGiXUMc33c0Rge6WeHdyJ0r79Nw8wOM=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nU3VfTMz;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C492E40949;
-	Tue, 21 Jul 2026 14:55:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15F4C1F000E9;
-	Tue, 21 Jul 2026 14:54:55 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A390440949;
+	Tue, 21 Jul 2026 14:55:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E792C1F000E9;
+	Tue, 21 Jul 2026 14:55:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784645702;
-	bh=tXvMkjXAn7y2m4HY7s7QUvSgtEyYKfTxuKxsFjU19Mk=;
+	s=k20260515; t=1784645722;
+	bh=JqgP6/1vZQA9GBdH0LWRXjquTgO0fEILyJc7crNbr3Y=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=mjfmhz7NR5yJZTJdX1z31PRts2NK/a4cqCWaMBfl4jwVaRpkq/t+dQUoJihlx7yBF
-	 jnTH4ge8oxxPrj7ph8sEb5t7R9IZdX1eHl5QOF4AsAjdWpwJIN4n2bU9bEs2dcw3u6
-	 sUXCgZGcFh4JF/IyKXsqUyg1HHH0SSUX9jH97narrkWcXpPEvWKogCVIpC1BDgFCpt
-	 k1xFsKvE1UdeT0dE5hLHq8CVUt+fmKnZflpvll8CfsXsrZN37ZMGck6ezOcw5dsmPS
-	 F3VWeemCIdg/Lds/BCV5wW4iEHYIXaPRHpa+663/5H+x2o9PL4b+g+FFm6+psLYydC
-	 NMTnpGthyVzjA==
-Message-ID: <cefe62b7-0167-46c1-9fe3-fe7efee90a7e@kernel.org>
-Date: Tue, 21 Jul 2026 16:54:54 +0200
+	b=nU3VfTMzLIQcVaYqBxNGhgYRoq3QlIqshzL3yW/teYN46bR5pNHJPuvsoDCITMvgi
+	 TmS1x+BttZyJrMOPNX5uZ0EnRZZQu0/eS8lma8g5dsFqB6htaA5sXYcwDtfW3NlZQW
+	 tFyC8oG4YR1vSDgRrYlEFkkQ/6aS2oWjtxv1TdxR3CcU6baNYfgL1sKGk9RE3p+tX9
+	 ush6g7c4SxoTyCGkMfTZ4uTa+/vr0TcjGaXsdg/RbX977gONO6tm7r5qVlYHdf9jNe
+	 NRr+pFzb2cY/hW8x/Z6iK1a/l4+e+7L+ZxS5YNZT9/L8SPf01CpKAxpp7o/bVZLhfE
+	 8YMCFPu5ISkbA==
+Message-ID: <2ea6ee0f-ae22-4961-ba8e-7c4794a692fc@kernel.org>
+Date: Tue, 21 Jul 2026 16:55:19 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 1/5] selftests/mm: make file helpers return errors
-To: Mark Brown <broonie@kernel.org>
-Cc: Sarthak Sharma <sarthak.sharma@arm.com>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka
- <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Leon Romanovsky <leon@kernel.org>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Jonathan Corbet <corbet@lwn.net>,
- Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260716123226.197736-1-sarthak.sharma@arm.com>
- <20260716123226.197736-2-sarthak.sharma@arm.com>
- <b66c233a-7956-461a-a3d8-3421c76c937a@kernel.org>
- <004e11f5-ab21-479d-80a3-64ab89465b85@sirena.org.uk>
+Subject: Re: [PATCH] selftests/mm/pagemap_ioctl: Fix missing NULL checks after
+ calloc()
+To: longlong yan <yanlonglong@kylinos.cn>, akpm@linux-foundation.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org, shuah@kernel.org
+References: <20260721063611.342-1-yanlonglong@kylinos.cn>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -135,17 +120,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <004e11f5-ab21-479d-80a3-64ab89465b85@sirena.org.uk>
+In-Reply-To: <20260721063611.342-1-yanlonglong@kylinos.cn>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 9AFC220003
+X-Rspamd-Queue-Id: 604C840003
+X-Stat-Signature: eqqjpxjw9q9qruob64uqwjz7ff6t3az3
 X-Rspam-User: 
-X-Stat-Signature: m1ft8f4heu5yb4hccp4bgssh4ez8caf5
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1784645703-916688
-X-HE-Meta: U2FsdGVkX1/zAAUtrsmECetbHx9oHxSLyOT947wzFjJR70DEto8Q3bxg2S19L4yzD9OwG3E/Qk8J/G5Mz6V5TlhvZwWrYI99norKAL8IZr5xQ6u9GIQllFvkyFNyD6DIKjz8jEs0kdlP4DSTRVhgjhVhMv0JYWp2bIkKr89eI2uxERYTHt/ZYPLMFofv7trJGOgirT3C+j7LOyYQFkQbbNJmQxF4DHgdFyNAXu3XE4Q/YITXASuBZvf1OU0P7dEaYFjpk3+eEeMCUVWhNf4DHMSDyeLJH+kI3bcMNjUvTWKh/CTYmrYRRANHb3deYasJluZdQcmh08AsrvyLmgwc6ZwhkjF8+v2LB0jJZJBMi6pkZywHDW5YjeeU9pcXJkSc+9NphEUv2hpFas70N46r3GEeUmosc4ecTvH0EdInKr1yfRphqF1/ns4wrdZyssWB4ZUi9/yCpvtZZSePUBrLOuBq9MTYGZKR4UriWwuKyQx5cfIXP+IMWtAqd4R8Ks3sAZ7qS9cq+teWsLMmKckz7XI1Or45Y8TdfVlW6tw9H9P879eAxvCRsEMqsQ3rGJopUjUUy+AXXsRE2FQarewT1EbA7TaE1u7Hh3s6ZVP19xxV6N2IoPcAjFkx7iBE7BtaoV8ndtQ/w9fqQCo/efTer5/UN0auh25zC/AQ7v1gX4xIWL0jcyYqKLTzZuZFAHEYVoqTjllLuys/uUAArcjDGUQt+b4P72pqMDELzNq1e5sNWonUqYnukSBW5XBmnQ3Ik0mgebGZreVmiNp308ExSVyBj8cqPeiL61ccbxvzZan0v8N1E6aSy5jSV7N7ZyeB8zJmu7mR0iF6Y8eTmKrCDvZG4zc2EckPq+gICB9FgBl7fG1Nk0FEwAW0pEVYTSa9ZMzcKbig0+0JW0gzNe/+5ZKI4Sa93dZSL2ceZVNL1fjJlEJd/FhfUCvlj5eIH1MhkUrSP+icXEkoZNpEdnS
- fY5RMjro
- svYoexpln3XjV1DrdMa2jS0YJxXjoNqdklKrkfr7Bavuqbfdj+zzaplHysio3345UYbAH/S4ODphbfZqbi8LN6L/LM3RruBUpFzI0SYiUSos0HU7WylwhinbH4X+Dii1nnaoyZANqJS1EXkrbWOnt45YKmnyiQ468BNuHjQLTJ1/33+yU4pKCQC7dOP9TfkKkiDIIPpsyseCUsAKKvFfBzCtDqQ/ucCZlfPLn+ocrLwsuAbse6MDyGOhlh/3oSvEdVt3R
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1784645723-170828
+X-HE-Meta: U2FsdGVkX190cTv2PEB1D8dmeNRVyVQljvOlL6B/c/GncOEmEzVmW7ZHgx5zyryeYPDFX3T9VRemlDhN1LnMQvLj3cGD3criCDYKOLszKOBOLvzbMe9kRohxVmR3do8vaUyBBHC6lEfVzzmKhf4d63bqFcX92/S5lSn8W/TYkVoAp0PkiYiOQpSQFsfBpjmek0SWqFsHxYct9EH+6iii2ejxRDSQCK5QYfGOYGR2hRK7ohJMfj0z5SAFa1HE6dBA6/BK0V3+/+BwrJwhZjqcNiwm3rSBkuTyEoe0n0vZktQjneuSIzo6kY8X8f9sbV0oOMBpXYYfEnGM5Kd9z2IB/z+FyEGuiNjx3YfZ+NCeTqyRqWbWJ9Tf6EkEqOJ4V+UWM6eOfQeJtTpadbaxMY411lRad8MbxXq4XD08809zUm06f2BQ88oJdG6P8OnXGzRFfImz13GY+IxQ/3xsNtSsXXx1adWHiGh47t0dv6ToTyPeI8iML2JjzBGQSUeNiS3aSv8ApMy0S5NuPsR69CDeAEMrgWktvcE/MlOymFET0HKkveTJIls2Xr+clN078wIVrEnIkjZ6J1RCZ1VM7T+8MI3MrC/HA4MgtVSwm+rIXD9tz2QSGhLU3Ny53Q4M9DBwnYCLG81r0+thjSP/BZWYHhgYBlnTpjycZwYBxns1maEMqu0u4NmQJSAgDOMQOIp9I8TF+j0Zwh6ajQilI6NkdK9qCIezFodUSeIrtAPPjU0oBie/nRaEQa/wzAlU3WQQli4bcqK5cfA7Q8uRQm7ZPRtcAYAkcq7mQNZtKAchrDaai0KuBHby4kpyYMGn/x7Z2Hpp8114bMGnfgDkwHYXoilEtOscWrafp5I8F1zm8k5m9qLbIJCL/YYniJHTgwWI6Iwb9w+1dmvfhM35kY3HNPEJrbGWqqyIRn5lalvdONE3c14t40ZSYxJmIJM8RCya8L0rpfZ+k4N/+9reXiW
+ B4tkiU/n
+ TWzVZW/lxa6Ujovq/tk/TMPAJvHpskI5IGXGfgJBeUx2sB7N4RgAMbXeWsJ1qWWyU67VdLpQFn7UtGak7zDSZ826gcHlERNqI1w+/dIKXuWrrTpbHq9tpX/3yGxF2Ddzm1H30CFo5r5MHamjCEqJiShkTWM65e6bqc4WGF7Dz9dE81nOeO8HdluCNjCoAAbZo+BJVrlrJIBt6ReB2Panr5lKv6D9XyUZ4Jo8eToMozPsdKlI7QEcZ304B/BqBOke0k7WyojLHraRfLm1iZbKeTVkY11Wpwdp6VDPusBSQx+7EXHHQM8khyadTmd9+9NZ6aYgH4wLpf6uA+9c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,29 +138,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/21/26 15:48, Mark Brown wrote:
-> On Tue, Jul 21, 2026 at 03:39:09PM +0200, David Hildenbrand (Arm) wrote:
->> On 7/16/26 14:32, Sarthak Sharma wrote:
+On 7/21/26 08:36, longlong yan wrote:
+> The pagemap_ioctl selftest allocates memory via calloc() in several
+> places but does not check the return values. If calloc() fails, the
+> subsequent code will dereference a NULL pointer and crash.
 > 
->>>  	fd = open(path, O_RDONLY);
->>> -	if (fd == -1)
->>> -		return 0;
->>> +	if (fd == -1) {
->>> +		int err = errno;
->>> +
->>> +		printf("# %s: %s (%d)\n", path, strerror(err), err);
+> Additionally, in sanity_tests(), the calloc() failure check incorrectly
+> uses MAP_FAILED (the mmap() error constant) instead of NULL. Since
+> calloc() returns NULL on failure, the check never triggers and a
+> failed allocation goes undetected.
 > 
->> Shouldn't we be using
+> Add NULL checks after each calloc() call, and fix the wrong error
+> constant in sanity_tests(). Use ksft_exit_fail_msg() consistent with
+> the existing error handling pattern in the file.
 > 
->> ksft_print_msg()
+> Signed-off-by: longlong yan <yanlonglong@kylinos.cn>
+> ---
+>  tools/testing/selftests/mm/pagemap_ioctl.c | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
 > 
->> That does the magic "# " for us.
-> 
-> Or ksft_perror().
+> diff --git a/tools/testing/selftests/mm/pagemap_ioctl.c b/tools/testing/selftests/mm/pagemap_ioctl.c
+> index f9bcff8e78fa..f6629f44a13d 100644
+> --- a/tools/testing/selftests/mm/pagemap_ioctl.c
+> +++ b/tools/testing/selftests/mm/pagemap_ioctl.c
+> @@ -212,6 +212,8 @@ int userfaultfd_tests(void)
+>  
+>  	vec_size = mem_size/page_size;
+>  	vec = calloc(vec_size, sizeof(struct page_region));
+> +	if (!vec)
+> +		ksft_exit_fail_msg("error nomem\n");
+>  
+>  	written = pagemap_ioctl(mem, mem_size, vec, 1, PM_SCAN_WP_MATCHING | PM_SCAN_CHECK_WPASYNC,
+>  				vec_size - 2, PAGE_IS_WRITTEN, 0, 0, PAGE_IS_WRITTEN);
+> @@ -699,6 +701,8 @@ int base_tests(char *prefix, char *mem, unsigned long long mem_size, int skip)
+>  	vec_size = mem_size/page_size;
+>  	vec = calloc(vec_size, sizeof(struct page_region));
+>  	vec2 = calloc(vec_size, sizeof(struct page_region));
+> +	if (!vec || !vec2)
+> +		ksft_exit_fail_msg("error nomem\n");
+>  
+>  	/* 1. all new pages must be not be written (dirty) */
+>  	written = pagemap_ioctl(mem, mem_size, vec, 1, PM_SCAN_WP_MATCHING | PM_SCAN_CHECK_WPASYNC,
+> @@ -1000,6 +1004,8 @@ int unmapped_region_tests(void)
+>  	int written, len = 0x00040000;
+>  	long vec_size = len / page_size;
+>  	struct page_region *vec = calloc(vec_size, sizeof(struct page_region));
+> +	if (!vec)
+> +		ksft_exit_fail_msg("error nomem\n");
+>  
+>  	/* 1. Get written pages */
+>  	written = pagemap_ioctl(start, len, vec, vec_size, 0, 0,
+> @@ -1116,7 +1122,7 @@ int sanity_tests(void)
+>  
+>  	vec = calloc(vec_size, sizeof(struct page_region));
+>  	mem = mmap(NULL, mem_size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
+> -	if (mem == MAP_FAILED || vec == MAP_FAILED)
+> +	if (mem == MAP_FAILED || !vec)
+>  		ksft_exit_fail_msg("error nomem\n");
+>  
+>  	wp_init(mem, mem_size);
 
-
-Right, and if we want to move this to tools/lib/mm later, maybe we can just not
-print anything and instead only return expressive errnos.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
