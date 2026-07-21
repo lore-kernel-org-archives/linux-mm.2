@@ -4,98 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3B28C44536
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 20:36:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23388C4452B
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 20:56:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 069F86B008A; Tue, 21 Jul 2026 16:36:42 -0400 (EDT)
+	id D121D6B007B; Tue, 21 Jul 2026 16:56:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0D356B008C; Tue, 21 Jul 2026 16:36:41 -0400 (EDT)
+	id CC3446B008A; Tue, 21 Jul 2026 16:56:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD5E06B0092; Tue, 21 Jul 2026 16:36:41 -0400 (EDT)
+	id BDC336B008C; Tue, 21 Jul 2026 16:56:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AC0E46B008A
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 16:36:41 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1D555140295
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 20:36:41 +0000 (UTC)
-X-FDA: 85013942202.12.39B923A
-Received: from ewsoutbound.kpnmail.nl (ewsoutbound.kpnmail.nl [195.121.94.184])
-	by imf11.hostedemail.com (Postfix) with ESMTP id B032E40006
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 20:36:38 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=xs4all.nl header.s=xs4all01 header.b="fw4JTd/q";
-	spf=pass (imf11.hostedemail.com: domain of jkoolstra@xs4all.nl designates 195.121.94.184 as permitted sender) smtp.mailfrom=jkoolstra@xs4all.nl;
-	dmarc=pass (policy=reject) header.from=xs4all.nl
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 909076B007B
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 16:56:18 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 12AAA40174
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 20:56:18 +0000 (UTC)
+X-FDA: 85013991636.14.97C250C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 526A6C0004
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 20:56:16 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=WDdidS21;
+	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784666199;
+	s=arc-20220608; t=1784667376;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X6JbNQIATPP5lzRYGP9EC0Lk7v2gUEGWN6HyA1XyIBs=;
-	b=e5Un8hko0HlfcQnjmEX5Jka4GpM4lpKFTTeBwa1v2RRr8MuYkBLWGBI9v0tCAjKaMj2qwa
-	2/+Y3cnY2fEmXzQmQ2wH7XdSPMUwH6OnH5KVmNVsXDWRs9uhGnTPOEoNcw7LmvdVn021i7
-	jsOI9m8teV7fvn704kPFw8w2OdScRZ0=
+	bh=effgOexwWcG/ga7iXqcUg9L0kW3t4xU7toK0kCCOMRs=;
+	b=PslYJRZ0YIiOcL4RUuwBL7VmKzfsocFjtAwGyysK3Yo9bNcAB6hnJ5uiEpfm1css223zwo
+	kxplmcW+za9i6S3lp+SY62AiZ4yBlAkLIHi0Gmy26E95RiuXmQw0JBeAKhkfD3tzPsivBJ
+	0gauKGL32w1aIFHnP5Z36Jc7YJ6X8Ek=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784666199;
-	b=3GDSb1wvj7y43SE6lJjhLhpl9MgyG3ZPplVD6vQUMDGWEcBs6DHQ4VrlXRCHGrVdlikgzx
-	ty9XN1Bir7RMzmHon2t52h/cHP4kiPCuc5XXKBZYsAVPvGPc4NCEoyZGije3MTMSoMEhQP
-	35vix5Crq0DmZDpTnJL+2bWWKANZVvs=
+	t=1784667376;
+	b=HulKo2NNa9ZXSEy6BchbP4gjikW2N4Gas+5ABuo6UYKEjjBFtMXSdsw419eZsDiyjmigar
+	BLpj8WLsTjD5Evw9/jFQ45690eGJNhY2HU9edyIz/I3NpK+gH1lRiPBU87WypnZBkSGS5k
+	orKoWeqK1gasF23BzvvdGenPAKPcIfQ=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=xs4all.nl header.s=xs4all01 header.b="fw4JTd/q";
-	spf=pass (imf11.hostedemail.com: domain of jkoolstra@xs4all.nl designates 195.121.94.184 as permitted sender) smtp.mailfrom=jkoolstra@xs4all.nl;
-	dmarc=pass (policy=reject) header.from=xs4all.nl
-X-KPN-MessageId: de161530-8543-11f1-a5a0-005056994fde
-Received: from smtp.kpnmail.nl (unknown [10.31.155.8])
-	by ewsoutbound.so.kpn.org (Halon) with ESMTPS
-	id de161530-8543-11f1-a5a0-005056994fde;
-	Tue, 21 Jul 2026 22:36:36 +0200 (CEST)
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=WDdidS21;
+	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0F30C42A62;
+	Tue, 21 Jul 2026 20:56:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCD2F1F000E9;
+	Tue, 21 Jul 2026 20:56:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=xs4all.nl; s=xs4all01;
-	h=content-type:mime-version:message-id:subject:to:from:date;
-	bh=X6JbNQIATPP5lzRYGP9EC0Lk7v2gUEGWN6HyA1XyIBs=;
-	b=fw4JTd/qR7ifxH2fj/4bRz3KVC/QD9f8iYNWW5Q3w8YjOYoFoFe4ZdcHOC3XahpY8VjOIfWJHHbix
-	 XD5XiYFNABemP+gEJ5gDD10p2GlkGKoFArYnrqnkeFamt6ikv+qf0UJrjZ1x6jlR1RP3irnfPrbkNU
-	 7VCacAMAstMXBntGGZaXwYEw20UpvXGZNHFjmZ3snx8i3ixbr6UttKvLC5uFZBXMxEJZQNJX9fiRSD
-	 ZI2phKRqAvsixtMKeqePNMSe4LhwKK026NBQ1fJPx4lkArGyL7VKuVz2LzW8VewpT04zM4x/csvEkZ
-	 lPkkZKC/9qy4Wn3Bffmic4C4SEkfVSQ==
-X-KPN-MID: 33|/FRaVBBNTpX7oZEbL/WUJwV+obe8QveTmU6qomkjd7Zwy0bDuddoRQ6LhmU9/QC
- +7Nh0UkLCbRlhhU1hxRxRyHX5B0cO19/6jnvbrmmuR1g=
-X-KPN-VerifiedSender: Yes
-X-CMASSUN: 33|Bt02zkTEX4BovQyofVTpaC6SvmEMyLJr1cMXxpOT5X5aV92dxLfZk6RhnWA+hTi
- 9O7uuVJiPiXaYg6l10QxO/g==
-X-Originating-IP: 178.231.6.225
-Received: from localhost (unknown [178.231.6.225])
-	by smtp.xs4all.nl (Halon) with ESMTPSA
-	id dde1a5a1-8543-11f1-8dd0-00505699d6e5;
-	Tue, 21 Jul 2026 22:36:35 +0200 (CEST)
-Date: Tue, 21 Jul 2026 22:37:58 +0200
-From: Jori Koolstra <jkoolstra@xs4all.nl>
-To: Christian Brauner <brauner@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, 
-	Farid Zakaria <farid.m.zakaria@gmail.com>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Alexei Starovoitov <ast@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Jonathan Corbet <corbet@lwn.net>, 
-	linux-mm@kvack.org, bpf@vger.kernel.org, jannh@google.com, mail@johnericson.me, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] binfmt_elf_fdpic: only honour the first PT_INTERP
-Message-ID: <al_MqBrjDW1QjRau@daedalus>
-References: <20260721-gezittert-medium-kreide-b41fc1f0277e@brauner>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260721-gezittert-medium-kreide-b41fc1f0277e@brauner>
-X-Rspamd-Queue-Id: B032E40006
-X-Stat-Signature: yhqak5uirf7nga8dnoe4thu1uj7tzcsz
+	d=linux-foundation.org; s=korg; t=1784667374;
+	bh=effgOexwWcG/ga7iXqcUg9L0kW3t4xU7toK0kCCOMRs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=WDdidS21FUy7qaVnd9wBHMLIAIRyeZiAMpxlV5b9CapOu25JIGj29Vqa9m5EyUae/
+	 1/Z4L10d3urWhnPHK0dR28hFfNMz8MNU75HCo80UA9bheT1aLCNzcdlevs6fx0NkJ/
+	 PX2/6yhfPDTe7p4kK0/hhBGi0sKmKjW5LUom/gCg=
+Date: Tue, 21 Jul 2026 13:56:14 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Ren Wei <enjou1224z@gmail.com>
+Cc: linux-mm@kvack.org, pasha.tatashin@soleen.com, vega@nebusec.ai,
+ roxy520tt@gmail.com
+Subject: Re: [PATCH v2 1/1] mm/page_table_check: skip zero pages
+Message-Id: <20260721135614.7aa2d8d9a8a732a66ba623c3@linux-foundation.org>
+In-Reply-To: <1f8848512d2e3ded944f8d595c29faee8fdaeab0.1784645969.git.roxy520tt@gmail.com>
+References: <cover.1784645969.git.roxy520tt@gmail.com>
+	<1f8848512d2e3ded944f8d595c29faee8fdaeab0.1784645969.git.roxy520tt@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 526A6C0004
+X-Stat-Signature: bgmpyq7jizd95uoebnbu56hz656bcqyi
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-HE-Tag: 1784666198-904485
-X-HE-Meta: U2FsdGVkX1/GWT/zRMO//B0VzcDzbkJWPG3WR6Xc0hbVAQwQU1/qkLTJm5q7ARYT6gzOmf//UvoThGqAO2IEWefOXDQRcCLo2oH9XK9qoyHPeg2G1YXR0fdWcyIYVvrrKUjpgCMInxIwsBtzbRydv26zKmC9XM5KLl33gUvyk6s6Mva6FKLkb+tCYp28094r3VLl7FupiUV/C2kXvKzOhGzn/hiwiHr00Zmhig+dUsrTKfcz79VrXAQcYsEvlp6bnj6/Ojz9A2WQ7QW4u5Qwi02UHZ4qf5Gf0CLzbYsg0LaZc19BZbONsho9oWAHjdvvgIwmpgRMwrboh177y90PZOgQvDT9MGzubEGKimiO6fa/CCcZ3AnVvjVtQW6gSUBcKMseskSGaO005/gdPt9iqEt8Sr3Yto1MqjFQo4PiO+NyvLCBAKNkd4t3NOqWCZC/L6WMJCzHpTku1rI5CVvE/L1lQqoIjPe9RErkV0i5/+txWKlk28GRgtWOTZ+CPXbink6vZnxaMdIYlQZ8TlWNRuIuyz8r3QvA95ammE7+TzcEip+ETvjNoY9iaAN63rC4+2qqvufcevw11wI3Ngqb+nBehYFEOkuETndAnxQuWG3+flFaQ9evCEl0GaJbL1GtpHLy/wKabQCPcj42XFXy5RMn71JCquFGn7vxzPivAR1WcOz4ppdrtN2PwsCYJKVpaMYJwpspGhqgQYHOuQ3uQYIkL93xV5Nvf1gpKMVSrz2ZKbnC6sRpRXOd6NMtJMhEd+HoHd5b2ZPF7nsXs9e55uWhgWfNDB2lsa4JZ7mNL0jD0gThfUz7HTCA1JevOF+0SatBa+ZQGZlYOtR6q/GnwzDvgLBkzfo4hmabTTGuHoxKmlTWIPH7/eHHRo1g3UeHJLwZWS3HlqXtGX9YuG0YqxnlZDn6E1chycuFkerS6Ppbdkyc56/vAu1eVNVG+QL35a+8FlVm/oO5/E35/Rb
- F1RjvOw2
- 8ma+uGywG+B4ZqytCsTk2Ybzjgad3IWGZ3Iprf8pC9SNKj9JrLUV29wvaOv+19St/o/4KatF79jfSNwufUftc5cc2PqLIkiu96IwfU7p10H+mtgbJraPdYP0EKE7iDI9jKEQfY/vjM3ivS86D1P8OD020K71FwVUycifr2qdE82DggpF36X0E7oByYaocMg/LpHArBLouXyEfT3c44x2Jxb3LTRC+mlVP+1BEeYo2nr0FD5ylwuBLUga8TkjRoSt0DJGkmXmaTuMZwk9F5sYQqeUM5ADggIZvJopD6s7ahrIkSTQwqzSsZkFi/xBdqgqJ8zrLyhfKCC5CjyWNgXPKZ2dZ9LFwPfTLYtcICCZ0zYEERYgbs9ZKN9M+9872bVFmAXhszW84ey0XYaS4kJoMeUO8LETER30iGexrcrJanR88HcMGBGfIWDNxTVbUjVdO+u4qPw+JecjfSSyHGJGVuMzLaVSEshGoPEVJVj3zwCsTOhtomFlAO/nID/znhQJ6Bev3PINhtrJGZDkQiC0RwVynlspklMY3yNPlc4Lr6Tl26Gqr61A5/NNQ/XOBHuJhbV+KFV04QGVkSVb4e42S87N/QUHtynnBPzLA1RYjxHA8v3C+sDPTF/2z1g==
+X-HE-Tag: 1784667376-116809
+X-HE-Meta: U2FsdGVkX19Rww6vOQ6q4WlL/h+UhWZJkFwXxuvoYaGpTAfV8XX3SGpOtiwnPglG/SCpblr5952JGM9bknsqkDCpSW0XBn36WwqwrfrbQB1d5/2X8PDUbFY60Ccb5CWnnQlfBNyLfw6JmyfGIBb9kD0l8fZ15tnAVCOryyvIvmJvY7Q7bj5Y9TRNU9DgIL1ufQ/rr8f6d3QdBaawctVjhDSRz+tUE3pz8I2vqdpWYdVz8UZN0vnIiFNjfA6A+L1mykSqV7VYNsCILlr4c0vd7ViYimPnWtY+P/RRBSgBtiaUQGmmd4R4YzBabZLaI4kA6DFo5EpgBfDYQllpHmcbxKvvsiI2p9TpA6o/bzZrsTqq6WmreYCnPox03Kn36WANYaqhnwozjDQkxZDRuk2I5zS6VT2qLZobSHi7KXssp4TgEDA989kEZEzHkgeQU+BD2wlouI0MzivbYeT1Qb+JHWProUepOBWXHdejdIU481fDjAWBMjqBcjTV36mnsJPZTF8mgfEatHZffCfaQoSNo+8EITO+oBRWbntm4la6BRjHsRKLbi0hTutpg+mzTUS5PzFLlWVxQhGiapnDiHcMx/RsjRcEFl+L6LCY4dYQr6uGCbVPNFxSmP4nQ4s8GpLvucQgU/gK6WUtvbOMk18BsvHKdhwPDEfVvqoDI5hhX873KUbJOHOuuhoCbwS9s72cb9TsXcmP8PpBmhgiSszz87KSLKuDMkodiromT9cKCPs1DZp8uLZEElYV2zT8HugDn/SJBX8x0a+9v5FO2ruwZnsHkj/xt+qCJ13QzxPlII/oVz0S10GYQX1B5le9i3k2e9LUyWLLp9EKiqm+f8XBPLYfGDbNkC5aSq09mpnjQ4tBA0fSiNgdtnXRQP8XtFYGpgRYx4QE2dra/n8mVNfJOXM0c9a/TPUFte9BCHERIOCDsEM/Ik2UOh7SQ2tFETLR1WsSEIzTjHBy15w2lh7
+ yUTU/+sW
+ 3rZt/thCefPXXE4JNvyRAxnXLP1KYlWtYejK086kWGVr1yE82/UQhBoIR2wBTs0RrThk7c8tZzJVM92VevkJLaLM1SYKMm6RloBaHA/EVUmWQIdGzn7OKCCqUXOHqbKiGmEblQ5HWp4UFsTwVuEzJAr3NbOLdot4aRxDHnCCA273akwEOjJ7tG8euIDup/JHAbM6duxdwBwkF0YDqHIGMetVdm5Rn3sIVeeYIK9E3ImtJnQR3Zr+V5/XBqOmf/iksQLgE1GksD0C16DtzfCGoqiypMv4b2XlEWprecjW13LvcyO5wIM+twzmddSpgtOAWJRmulsgQjGf4htkKbt/7OHmonxhmQoWr813upehYB9NGzD2VEzB/uwXhRgRRh5FZ/Q++
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,63 +90,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 21, 2026 at 01:20:45PM +0200, Christian Brauner wrote:
-> The program header scan handles PT_INTERP from a switch nested in the
-> scan loop, so its break leaves the switch and not the loop. A binary
-> carrying more than one PT_INTERP runs the case again and overwrites both
-> interpreter_name and interpreter. The previous name allocation leaks and
-> so does the previous interpreter reference, along with the write denial
-> open_exec() took on it. The denial is never released, so the file stays
-> unwritable for as long as the system runs.
+On Tue, 21 Jul 2026 23:56:38 +0800 Ren Wei <enjou1224z@gmail.com> wrote:
+
+> From: Zhiling Zou <roxy520tt@gmail.com>
 > 
-> An unprivileged caller reaches this with a crafted binary and repeats it
-> at will. binfmt_elf stops at the first PT_INTERP. Do the same here.
+> page_table_check_set() accounts pages by whether they are PageAnon().
+> The shared zero page is a special page, not an ordinary file-backed
+> page. Read faults on private anonymous mappings can install many
+> read-only PTEs that point at the zero page, but page_table_check
+> currently accounts them in file_map_count.
 > 
-> The flaw dates back to the driver's introduction in the pre-git history
-> tree introduced in v2.6.11 by 91808d6ebe39 ("[PATCH] FRV: Add FDPIC ELF
-> binary format driver").
-> 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
-> ---
->  fs/binfmt_elf_fdpic.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/fs/binfmt_elf_fdpic.c b/fs/binfmt_elf_fdpic.c
-> index 7e3108489c83..fe0b5c5ed2bc 100644
-> --- a/fs/binfmt_elf_fdpic.c
-> +++ b/fs/binfmt_elf_fdpic.c
-> @@ -231,6 +231,10 @@ static int load_elf_fdpic_binary(struct linux_binprm *bprm)
->  	for (i = 0; i < exec_params.hdr.e_phnum; i++, phdr++) {
->  		switch (phdr->p_type) {
->  		case PT_INTERP:
-> +			/* elf ABI allows only one interpreter */
-> +			if (interpreter_name)
-> +				continue;
-> +
->  			retval = -ENOMEM;
->  			if (phdr->p_filesz > PATH_MAX)
->  				goto error;
-> -- 
-> 2.53.0
-> 
+> That lets an unprivileged process populate enough zero-page mappings to
+> overflow file_map_count and trip the BUG_ON() in page_table_check_set().
 
-Good catch.
+Yeah, we don't want that.
 
-Reviewed-by: Jori Koolstra <jkoolstra@xs4all.nl>
+> Skip zero pages in page_table_check accounting. They do not need the
+> anonymous/file mapping conflict checks that page_table_check performs for
+> ordinary pages, and this keeps the existing counter size and page_ext
+> layout unchanged.
 
-Btw, it seems that elf_fdpic_map_file_constdisp_on_uclinux() has no
-check to verify that phdr->p_memsz >= phdr->p_filesz, despite elf(5)
-saying that
+AI review:
 
-	The file size may not be larger than the memory size.
+	https://sashiko.dev/#/patchset/1f8848512d2e3ded944f8d595c29faee8fdaeab0.1784645969.git.roxy520tt@gmail.com
 
-Afaict, currently read_code() may blow past what vm_mmap() allocated
-there, which may result in memory corruption for a non MMU system. This
-is an LLM assisted find, and it may be that I missed something when
-verifying. If you agree this is wrong, I'll fix it.
+claims that we're missing a barrier which, in the unlikely case, can
+result in us "mapping the system-wide huge zero folio as writable".  We
+don't want that either.
 
-Thanks,
-Jori.
+I'm not sure why this is described as a pre-existing issue, as it's
+this change which adds the is_huge_zero_pfn() check.
+
+
 
