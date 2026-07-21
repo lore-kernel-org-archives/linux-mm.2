@@ -4,94 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21862C44529
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 06:33:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2091CC44529
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 06:36:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C392F6B007B; Tue, 21 Jul 2026 02:33:36 -0400 (EDT)
+	id 031466B008A; Tue, 21 Jul 2026 02:36:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BEA626B008A; Tue, 21 Jul 2026 02:33:36 -0400 (EDT)
+	id F24E66B008C; Tue, 21 Jul 2026 02:36:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B00E76B008C; Tue, 21 Jul 2026 02:33:36 -0400 (EDT)
+	id E3D5B6B0092; Tue, 21 Jul 2026 02:36:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 89EC46B007B
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 02:33:36 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0BB2A803F1
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 06:33:36 +0000 (UTC)
-X-FDA: 85011817632.02.FEB37ED
+	by kanga.kvack.org (Postfix) with ESMTP id BF35C6B008A
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 02:36:36 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 35B9FA0B9A
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 06:36:36 +0000 (UTC)
+X-FDA: 85011825192.08.0EB3CF8
 Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 1FC0940003
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 06:33:31 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	spf=pass (imf11.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
+	by imf10.hostedemail.com (Postfix) with ESMTP id 1F113C0002
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 06:36:32 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	spf=pass (imf10.hostedemail.com: domain of yanlonglong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=yanlonglong@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784615614;
+	s=arc-20220608; t=1784615794;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HkKRCPSXJA1sB+va5JOmVEtBFUahj8esELgNBveW5pk=;
-	b=5RsrUHtOnh9ht/WrvhBbMCkq3pWuV1WIIgzrcyNPI2q40TKIMRNNtJxkeFwwXRXf2lp2QN
-	PrbF3wo8Le7EJukD/+8+mHev5jDbduQIuyIiufyq04Vdn8yc95aX1bf7vZ0ETleGDk3991
-	pP5lEGmy1bln5HUBxl1wnv+XtZcvayM=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=WbL7hLFpyYyWlQ69suI7CdPGRC2HvE0nOjInllVPceU=;
+	b=rrPxw7v2rJF+9WxTYmg/OXsh61LksLbZtAbMXE3Ht/Bc6qkgYxBSBfoIQ9KejB+paOUWLR
+	D3Mb+iVWL+AWMFZmq5wzDST80Dfj0rUPXUuQ473TFYA2rqauL36K9WeG8nuTN4nG+V21aa
+	AKqrdtiekW6ptlBUJtBAvGVDuHUChKI=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
+	imf10.hostedemail.com;
 	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn;
+	spf=pass (imf10.hostedemail.com: domain of yanlonglong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=yanlonglong@kylinos.cn;
 	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784615614;
-	b=K5m5EJat1mx6ljC4dqH6LTrFUfHnVUduHm9Lo5aWy3ACP42n0DNTJajQCLSpd3QxJLj4j4
-	Wssx5AFgSm1wQQ03RVgt0VIdoqgUUeYzB+f0DTGCN3x9l6mYozKiBpJdn2veFpXUr5/kaT
-	wi/vCasG1X3Iy+KvcIurRiB1kFAupsQ=
-X-UUID: 147b4d3284ce11f1aa26b74ffac11d73-20260721
+	t=1784615794;
+	b=KD272XdEa4efd+3GFvzzmhwPGsIQs9Zu74Euggh/V+88tdi0nSe32v302UDzJIe4TtR48h
+	uL1mLKYDoDfbAvWC38vF1q0tATZQ31AM6EdGxZlCKQA6uPdUL2fj+jCEnu30f4xNa5dhKa
+	eDkTiwebiyM5mdC82Lh+oe0qUmY2ERE=
+X-UUID: 7ee9a92084ce11f1aa26b74ffac11d73-20260721
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:5fa9bac4-0e4a-46ce-88b0-19b306f5f5ad,IP:10,
-	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:10
-X-CID-INFO: VERSION:1.3.12,REQID:5fa9bac4-0e4a-46ce-88b0-19b306f5f5ad,IP:10,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-	elease,TS:10
-X-CID-META: VersionHash:e7bac3a,CLOUDID:c71eda32d66573de90340bbe7ea22ca4,BulkI
-	D:260721092816JFTOF5G1,BulkQuantity:1,Recheck:0,SF:17|19|64|66|78|80|81|82
-	|83|102|127|841|865|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:0,File:nil
-	,RT:nil,Bulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,D
-	KP:0,BRR:0,BRE:0,ARC:0
+X-CID-O-INFO: VERSION:1.3.12,REQID:4c1196d5-20c3-4374-a698-42b25190473e,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:e7bac3a,CLOUDID:76d2d3ce1ca729c4a973014ee7f7f4d2,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:102|850|865|898,TC:nil,Content:0|15|50,E
+	DM:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA
+	:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
 X-CID-BVR: 2,SSN|SDN
 X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
+X-CID-FACTOR: TF_CID_SPAM_SNR
 X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 147b4d3284ce11f1aa26b74ffac11d73-20260721
-X-User: lienze@kylinos.cn
-Received: from [192.168.111.172] [(223.70.159.239)] by mailgw.kylinos.cn
-	(envelope-from <lienze@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_128_GCM_SHA256 128/128)
-	with ESMTP id 399262998; Tue, 21 Jul 2026 14:33:26 +0800
-Message-ID: <04c66a8e-a342-427d-afa5-aede30a4df2c@kylinos.cn>
-Date: Tue, 21 Jul 2026 14:33:22 +0800
+X-UUID: 7ee9a92084ce11f1aa26b74ffac11d73-20260721
+X-User: yanlonglong@kylinos.cn
+Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <yanlonglong@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 101423065; Tue, 21 Jul 2026 14:36:25 +0800
+From: longlong yan <yanlonglong@kylinos.cn>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org,
+	shuah@kernel.org,
+	longlong yan <yanlonglong@kylinos.cn>
+Subject: [PATCH] selftests/mm/pagemap_ioctl: Fix missing NULL checks after calloc()
+Date: Tue, 21 Jul 2026 14:36:11 +0800
+Message-ID: <20260721063611.342-1-yanlonglong@kylinos.cn>
+X-Mailer: git-send-email 2.47.1.windows.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] samples/damon/mtier: use damon_addr_range consistently
-To: SJ Park <sj@kernel.org>
-Cc: damon@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- enze.li@gmx.com
-References: <20260721012801.94223-1-sj@kernel.org>
-Content-Language: en-US
-From: Enze Li <lienze@kylinos.cn>
-In-Reply-To: <20260721012801.94223-1-sj@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1FC0940003
+X-Rspamd-Queue-Id: 1F113C0002
 X-Rspamd-Server: rspam01
-X-Stat-Signature: b8aund7t3rmzh916chww7k8eadyuqa95
-X-HE-Tag: 1784615611-878307
-X-HE-Meta: U2FsdGVkX1+R8Q6yub517ZNoPbUPwWtV0XSmBZQ0mWYOEREzf6Xojbc73yenP5Rzxjhr3+nqK8DnKG96T5EUC8oGHTBNZwy48m68tWfUuuDAemYFsc0aVsIlnSeWnSKSI28HtaMj9XxkRC8krpBjrwsJbIfGZG2HOkYlNHsppumzr3p6Q4hf2KKC2zLwpZXq869tSg9eObG0R4GyPU06o0o0e9jm0FyaVstX8Dc/qHLY+br4a72vuR35nriFaCOUCvK2qUCX/KRFZzv9DMQHcsXzh1SBNUio7/Yvi9pfyhproSMECSoEixBabzspSTfVmnGnYH9++tJ89DmXAc2gvoOtkVwkdP9sxbpxzZFikD4wC23VZaGwDHxMUiqWMRFPZ5KRo/gX8G9IrNlDQYjvB/J9HtujCoV0rJrjaujwaI9wH5+bVPVr1PAlKzE6ug5eu4WIxvWJturk8dH7mDP77z7eOrs3pWR+A/1cPWuwP+jCFprP+2M7P9xW2yz3EaNFi5daJnIC3U5AUud13jm7XTz3A20ET5zRmkrxooVmjpwArvrOu/wWjqtX/e+Az4yMJxWtgZMGSSO2OAZiKi41rB/XqowlwdbcE/EkZ4Spe5QDmlCGnfo5ahv/fc/myZfIO2MmmSLd5W7tcXQ4kR97f4TTIk7YqgkVIPwQRVNX9QxqoSxQcKjCxCm9uXEwLUatssssc/QsyNzk3VK1VvRxwzw8mfovYBbxlEIiKOAPpZIhEXMGbvDazXc16v16V0SWcgr6JTn8jimsiaXXHbtg9ioQpZNz7X9pTavYF1w4ii8LcKe0mMW8HDYVUBowZ5YpI+pTspu3zX3N28Mtd6UlUjtnUHh7CM9aAIrgptZkqupKUZDuL9EqJ4tAHFVs/DLVrtyoLMElxF5sFKyrPO1igiHBaV2LfKdNyc+flwLEvsaeZuYfPITcg3+cKtVKWIdRxTJIn/QkUPkzcrZeiht
- 73MxG0L3
- jtPtOyao6qcoDZaNEwOgQ8hQeM1zEbJ8p5otYohJGSvl4oj9niwWQmVOQ03Mce/GWNNxnC3+lOLJ+w5ETY1KCCHXITQKtPOGq7NBa
+X-Stat-Signature: hktnkt9zzwnz5dpnorc7toge6ye4md3a
+X-HE-Tag: 1784615792-463034
+X-HE-Meta: U2FsdGVkX1+/bZOjYNwPuO0jpJ1JN5wJ+Lk06Q+rZmIJxTSXhiSay2RoSAXqPy6eXaJshCrYZTmjykVEp7t+NdGk72R5cjCz6jY/R4qlQc8qChSTBmlkDzuS7rJW9Wfg/4z9l4Ex/u+/5sAU9M/+0t58U8eXRfqNnm/PE65GM5auPh/C4YRWCN7Nxa8eyHThJ2LBqcVH2FJNS557TWWV8+yjkPM7VfxBUTKL93YhKbdOxd4lz1Gwj4FJFQKOg3gWDh7VYctQx9JxmTU6/OpJVHMv1s7TPi7lbZxwyPWkIRnkwHJtZYTebEeodqPGITqRTYOIuGkQhDtbIMEimDiECEacMCIGzkZK+rnOP2s7FRrbmwLzbEv1Rfbxp4lSpPxD8fCQz4cT6XKjrRiMHl4LTJiTpxUEk9AKbtNeoQIjkrpCrG/Yz1jr+mOTKQjmxzWXxwpb5vNNSZ2vaLooBj6yy5VQ2gBh76Y7TBMsCy2g6YmimHCdNkyEikTm4JcCphWD4dXHIJMeQS+qx1jfnSeeU1frl+msg807zlEWQ0fcsttOdI4olI/zBm+SojiaiZizOlrmjpX3L8RIuo31Aoc/ID3cUxRQcijYmPG1PSEebCrMC0L2wbguZ9hwD1JqHaNvHHd5qyOBmOIP2C5Yl7XNe3fQ0OHMRD9faXR3i5NsHznCvb2oTL5Pa+JNOzv9n72BDxNp4Ed4M+yn6aipD1NvW6WOBXrLSfy5Eln4BZAe8ltmzmjqI9E0xhCPg5nvGjeaBVQ53uWOqxx5NAtAINTUMXUD6QjYUC1UkOHJ+jT5+MV/8yz4bHPnz3HzWyPGYqOwQHcBjq06IYmj99ypuKzYiIakUPik8T0P869kYTGUMwhKiIyzNSjQ8o8GvgbSK75XaDX5d0kR+KVDOTNjXNyDTYlilyBLdVm2cD2DNycaFD+I0Ucdm8EvAMVg0Uf7vP7W2vQforKToTjMcTdcBqd
+ fxMblCdI
+ 5/7Sp6b44M9NU8Y7vMKe3C76+J2xL4cxUsQwzLf9bcGzkrz0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,46 +93,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi SJ,
+The pagemap_ioctl selftest allocates memory via calloc() in several
+places but does not check the return values. If calloc() fails, the
+subsequent code will dereference a NULL pointer and crash.
 
-On 7/21/26 9:28 AM, SJ Park wrote:
-> Hello Enze,
-> 
-> On Mon, 20 Jul 2026 21:06:42 +0800 Enze Li <lienze@kylinos.cn> wrote:
-> 
->> The DAMON provides struct damon_addr_range for unified address range
->> management.  However, the mtier sample still defines a local struct
->> region_range and mixes its usage with struct damon_addr_range in
->> damon_sample_mtier_build_ctx().
-> 
-> damon_addr_range is for DAMON core layer address system that uses 'unsigned
-> long' as the address type.  Because 'mtier' is dealing directly with physical
-> address, we use a dedicated struct for that purpose.  On 32bit systems having
-> more than 4 GiB memory, this may be necessary.
-> 
-> 'mtier' doesn't really take care of the >4GiB 32bit system since it is simply
-> casting the 'phys_addr_t' addresses into 'unsigned long' addresses.  But it
-> might support it better in future, using the addr_unit parameter.
-> 
->>
->> This patch removes the local struct region_range and changes the
->> parameter type of nid_to_phys() to struct damon_addr_range.  It also
->> gets rid of the now-redundant local variable and pass the address range
->> directly to damon_set_regions().
-> 
-> So, I don't think this change is required as-is.  I don't really want to add
-> addr_unit support for >4GiB 32bit system, either, unless it turns out to be
-> really needed.  I'd like to keep sample modules as simple as possible.  If the
-> code was confusing you because it is anyway casting the types, adding a comment
-> explaining the rationale might be a better change, in my opinion.
+Additionally, in sanity_tests(), the calloc() failure check incorrectly
+uses MAP_FAILED (the mmap() error constant) instead of NULL. Since
+calloc() returns NULL on failure, the check never triggers and a
+failed allocation goes undetected.
 
-Thanks for the explanation and the feedback -- I agree that keeping
-struct region_range is the right call.  Per your suggestion, I've
-prepared a new patch that simply adds a comment to clarify the rationale.
+Add NULL checks after each calloc() call, and fix the wrong error
+constant in sanity_tests(). Use ksft_exit_fail_msg() consistent with
+the existing error handling pattern in the file.
 
-Best Regards,
-Enze
+Signed-off-by: longlong yan <yanlonglong@kylinos.cn>
+---
+ tools/testing/selftests/mm/pagemap_ioctl.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-<...>
+diff --git a/tools/testing/selftests/mm/pagemap_ioctl.c b/tools/testing/selftests/mm/pagemap_ioctl.c
+index f9bcff8e78fa..f6629f44a13d 100644
+--- a/tools/testing/selftests/mm/pagemap_ioctl.c
++++ b/tools/testing/selftests/mm/pagemap_ioctl.c
+@@ -212,6 +212,8 @@ int userfaultfd_tests(void)
+ 
+ 	vec_size = mem_size/page_size;
+ 	vec = calloc(vec_size, sizeof(struct page_region));
++	if (!vec)
++		ksft_exit_fail_msg("error nomem\n");
+ 
+ 	written = pagemap_ioctl(mem, mem_size, vec, 1, PM_SCAN_WP_MATCHING | PM_SCAN_CHECK_WPASYNC,
+ 				vec_size - 2, PAGE_IS_WRITTEN, 0, 0, PAGE_IS_WRITTEN);
+@@ -699,6 +701,8 @@ int base_tests(char *prefix, char *mem, unsigned long long mem_size, int skip)
+ 	vec_size = mem_size/page_size;
+ 	vec = calloc(vec_size, sizeof(struct page_region));
+ 	vec2 = calloc(vec_size, sizeof(struct page_region));
++	if (!vec || !vec2)
++		ksft_exit_fail_msg("error nomem\n");
+ 
+ 	/* 1. all new pages must be not be written (dirty) */
+ 	written = pagemap_ioctl(mem, mem_size, vec, 1, PM_SCAN_WP_MATCHING | PM_SCAN_CHECK_WPASYNC,
+@@ -1000,6 +1004,8 @@ int unmapped_region_tests(void)
+ 	int written, len = 0x00040000;
+ 	long vec_size = len / page_size;
+ 	struct page_region *vec = calloc(vec_size, sizeof(struct page_region));
++	if (!vec)
++		ksft_exit_fail_msg("error nomem\n");
+ 
+ 	/* 1. Get written pages */
+ 	written = pagemap_ioctl(start, len, vec, vec_size, 0, 0,
+@@ -1116,7 +1122,7 @@ int sanity_tests(void)
+ 
+ 	vec = calloc(vec_size, sizeof(struct page_region));
+ 	mem = mmap(NULL, mem_size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
+-	if (mem == MAP_FAILED || vec == MAP_FAILED)
++	if (mem == MAP_FAILED || !vec)
+ 		ksft_exit_fail_msg("error nomem\n");
+ 
+ 	wp_init(mem, mem_size);
+-- 
+2.43.0
 
 
