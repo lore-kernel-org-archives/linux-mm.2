@@ -4,87 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08172C44529
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 14:06:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 630CEC44529
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 14:11:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E25706B007B; Tue, 21 Jul 2026 10:06:29 -0400 (EDT)
+	id 52E8C6B0095; Tue, 21 Jul 2026 10:11:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DAF786B008A; Tue, 21 Jul 2026 10:06:29 -0400 (EDT)
+	id 505EE6B0096; Tue, 21 Jul 2026 10:11:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA0746B0092; Tue, 21 Jul 2026 10:06:29 -0400 (EDT)
+	id 445E76B0098; Tue, 21 Jul 2026 10:11:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 946276B007B
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 10:06:29 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 09036C01C0
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 14:06:28 +0000 (UTC)
-X-FDA: 85012958898.29.F6F8928
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 2AA9C180012
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 14:06:27 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZTokIeXI;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1AFEB6B0095
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 10:11:40 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 870751A018C
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 14:11:39 +0000 (UTC)
+X-FDA: 85012971918.24.0976680
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id D4FEF140009
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 14:11:37 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=y5dYi+mx;
+	spf=pass (imf26.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784642787;
+	s=arc-20220608; t=1784643098;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CdhiAY3AR+DWlx+cfFlEkb6gx81e+qOTJQ6399p5XX4=;
-	b=zGEYydqjwD9y8QxbupiP4Rg1+DRPUKZoRa3hzhY+MgaQLXWxr266WHNpv4mv+jr4pmSfLq
-	qvDZnoDsNrT7Udm0epTL+vD9Liv43NeZxf4HLRVmISL8haiVXlnxMIZyZmTWv5uo4GQWD8
-	93ocGsaMDEiY21K83cybLOBHax3ZpZU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784642787;
-	b=nRpPlQgJuS/A5TQlYSzv7uTLt1uvzn6acKeSA2WqrDAj5ShMhnDioHiQaCDdYBcz0cR5Yd
-	2d22xQrQolddvWx7/elxqc97zZF+TpEBCYeVHnbV3ORNcziWNAnTu1oPZUBXMyjKWYgFxb
-	ibtlNiLQLtCnUR3d4Cmw79bUQgNz8Vw=
+	bh=rpFqOx+TsMaVwS/8DdMCOrSKpISWlzOMZL2nv+19d8M=;
+	b=YPrDVF03ga9baLCnr/24gQozzKTq38xrV0bDe07ovoRDtN+RCb2/RbysEOTXlznycirKB3
+	S4uH2G+t+aFpIFaFpFRazVQTEfdFDH2cljq+XeM5/FsYlAjsWAdpRIPx5x7JdRYGb+k5DR
+	OjCjbNrWFFyELm/qmMflsuW4gPtN1MA=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZTokIeXI;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf26.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=y5dYi+mx;
+	spf=pass (imf26.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784643098;
+	b=mCGAK9Mbox6fBwkBwdhjiYakDooc2DY0wsT8ZXdthQsRPCqeaa2JOzUMQMtAXktzpX9K5q
+	BgvhCMN8Z+s71Jv2U6/YMSlXp1li2GRp1Jy0q/I9/1gR7lVtZRwP0xNecYcuqdfGk6pqOH
+	NHlfPugyUGowugNyhxi45llfnLKQsv8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5B7A840DC1;
-	Tue, 21 Jul 2026 14:06:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A3641F000E9;
-	Tue, 21 Jul 2026 14:06:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784642786;
-	bh=CdhiAY3AR+DWlx+cfFlEkb6gx81e+qOTJQ6399p5XX4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZTokIeXIv0qyStkdpnmS+y+AQHlDHS2hFIEnc6/i0lw6uIKD7qarbgCA5oz+mjWev
-	 9mLc2McjUXzHaf475W79BvctBYhqr9jgx/uKcQvnTWLwjAm7tmc+lDBMdr7jov62iL
-	 9PAMjgxK7yggvD+6u26v1MFd8wrnzR9WtdFbx11qYv77LipTtyWlFaH2Uvy5IPpJc7
-	 x2dzalMX47/mEFfSHtFr2SMl8l6WM59Dlvi1wHAPj4o72Tec3DOirezrsSgIX8FtcK
-	 q/lAhiuBkSyUfPGIKPuE3rzjY6IgVJCC6gcutsAP1NwDZn6KLPiCxP2nRr4QneY5Aq
-	 K3kbZx4LSOXGw==
-From: SJ Park <sj@kernel.org>
-To: Enze Li <lienze@kylinos.cn>
-Cc: SJ Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	enze.li@gmx.com
-Subject: Re: [PATCH] samples/damon/mtier: add comment for struct region_range
-Date: Tue, 21 Jul 2026 07:06:18 -0700
-Message-ID: <20260721140619.297538-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260721070756.54435-1-lienze@kylinos.cn>
-References: 
+	by tor.source.kernel.org (Postfix) with ESMTP id 36FB7600D8;
+	Tue, 21 Jul 2026 14:11:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 739671F000E9;
+	Tue, 21 Jul 2026 14:11:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1784643096;
+	bh=rpFqOx+TsMaVwS/8DdMCOrSKpISWlzOMZL2nv+19d8M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=y5dYi+mxTGv0in5N0FFAm5BWI1Yg1//GcmBDVLzKLfm3BDzh105Ightc2rdtZ1ydz
+	 JdY/GvONP/ucNnh6OU7HwQqVQltBaru2IZxfF/pOcilqhJ7aJ+2ZnLUxcumOt5j0Qv
+	 O0ymlsgR/93f+HDqrg6FAbn6HE04xo4up1/9thx0=
+Date: Tue, 21 Jul 2026 16:11:27 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Qi Xi <xiqi2@huawei.com>
+Cc: stable@vger.kernel.org, Naoya Horiguchi <naoya.horiguchi@nec.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Miaohe Lin <linmiaohe@huawei.com>, Sasha Levin <sashal@kernel.org>,
+	Jane Chu <jane.chu@oracle.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, sunnanyong@huawei.com,
+	wangkefeng.wang@huawei.com
+Subject: Re: [PATCH 6.6.y] mm/memory-failure: fix missing ->mf_stats count
+ when hugetlb folio already poisoned
+Message-ID: <2026072119-facial-encircle-f1c8@gregkh>
+References: <20260721121956.124887-1-xiqi2@huawei.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 2AA9C180012
-X-Stat-Signature: s7qt3nc6oirdfhxskyg9njojciigpfbi
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260721121956.124887-1-xiqi2@huawei.com>
 X-Rspam-User: 
-X-HE-Tag: 1784642787-610209
-X-HE-Meta: U2FsdGVkX1+jyPd/maIywfD4peaMz2TmFFdnTAnGbNxYHCN5myKXYsRMAhmE9XwUVkGw0I4Y4WCCE1mGzDsQcpZwjabVYgkuMjB3/N6q8Q4BZs2CHGyOqBldgJ3YWDw868jgxepT4uc+CEOTJ0O1gsDrM7KUgU0AE4jpV/Z+ADpt6JznwXLVE2HJAPtyuWX4tYez5qzhdZF2LmbC7bMgGKNQ87YORo12QQxT2qtQn7hKpniY6l776Cq2Hzkub9W8ri3ATKUWD1X+KMqPRuAGAbQWvhbeCO8RAVwFboNacRNLermL8ntY6D+abKWPTTT5IvAU7XoHz6CWSVns7m5lNn5z4X03OZQk47x+T1rItv3MCW5S7sEQDPtO9E59e6b6DEP6phzLVeEnPgW5GnI3/0RA4qHQtHhZUpsrfdeJIz1vS9pBQ39Q76w3msbNUP/N69OYwCdZpU4RV/5TZb5UQJTe7NopVvkwQibIqxMqlAjx7ZhF5YmD6pNPZT5YcMVe2zy5aCrXuL00Kuf5vvRvy4YY3CY7IqVFApOLVdwoAD+HwTwt9Cyt2vFsiK+zC/KZtRTCEFuZPWlqgNm//i4MkWBnUuwk87uKKd5nGzlnzkiIXRmhW25Ne68ZcqqrJ9xMIZc4XttzVEY3X7F+B+Yi4UVUarBVvTOuh9ydMO9knXiC4GOfSENm2D30Wk3sG4KDGXQpQp79I9XlTA9hNUC9SIbAaidTXa9xHyjHSkqp4cMBOHtaNwKees1RNGf9bd0HM6FyyYAWKxJiQw2Ue48dWTLSn5UNkFXEJRqvYuxBvIb1WjGd2qvhma4guJkekxDujQVrzAu3AkniKxfeCTo00/AupkqnkOaV8ULqIX3VKjB6Hrhjo5N2CzyQbgjp57IcoleeEMQJxMnFG6eJNlFmxlVmOHAquCCN/WhT5yp5yrNkYtTHxTPYvqS0KF4FdavYnSKoTNSUAvwk9cXROjl
- wyzzf5Sk
- nfIEifMUxahKIgESt3KMB4GWfUmgRK8Uw0G5hkjRsF+cCDDbhNaa5GEt8hLEVO1jpnM53RRp2uj5fiyBz9bv7h0byMZZxxSh8OkewNHHYikQoacQjia4XXxgV8MHL0FGgX+7bkJ4mx/7UjQsgB5gTvmy3PRSCAvIEBeB/PxQKch77/gjYcoJN3YnbB8Vv9D56QAVj6wI8caOPLTYCwfcPpMb/jTRXXL9C1BKj8U0G5Q3JfUnNABvpISp3bjcuBlF7699QFk57JPf0uT4kDWIoJ8KdziaUNl0VHSv4aMw3TWtbdBA=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: D4FEF140009
+X-Stat-Signature: 6pau69k49ek5ee1gtna16j7zfkk6eq54
+X-HE-Tag: 1784643097-762531
+X-HE-Meta: U2FsdGVkX1+yZ1g/5FF0mFE8Gw7b3LsvCNNeR7rEV+gyAyZPierXfarmssQPlayva6XgYJ9PX9sIb+HRE+WwViNykZfFoTqKJBbbdD/ewXiJwlv2lX1TDNHfErV/711cbMiQs5/ZpR/g9344L++b5Z8CnTsW5hGtObq+CWdeFS44RSf5mIbpOnMD3/vlYSxJzBbbSqbUkqN0oin+02KIi4/ck/v+ccXo5h5xgyi1ahBwJPsGnnFVDQZ41bvTqUbOT1VTfF1dA81hyw3AmG5k2/DZY7OHZzyZJmUyA9kHHscfuNOoDpaHCc5j83lZsjrQD72snzedCxgbZfnOrgSLGtDI3N1LOe9x/TOtPvi80/zk+0CqFpFJgM2VK2GtiTmq5exzqORl58uq05aisO0+FkMD/KZIyE7Zmun7JH2xYjk5z6z0VDRbtPAwIoQTITdZA9rrTfpYi6fJhmqb971CYgNsX7xIm7HZTMNdExLfSBEF/i3176imlljfjZsd+h73kaT87v6BmcauFZYhtaqqh++AYlG1uyspwe/wHUuDB5vDfZjRin8sund2Z8BbMrusA8U4/qsvr2qAYa+gUICsG22jwhwN0/OZe0JVKty1yLc6ajcG1ZI1FKrBnLT3vfCr55MOnNu4ZSv5N5ADZ1SPM+Ii9HCy+llJ2A7eoyGugUnUDN8XnKt09lY2PNPwQ5XaK8ZKzvkErRePztkIqf6XWNKEgsBYbjh2daKbJNSJDCYeRUhblthC2Q3wObQtw1MwKoSU5WaX0Z2g2Aik61XnsJU5bgZ3igBeBTBDQZnA34sGh9RExVhUtXaYazLSR7UBUljKoNyN7m08wi92RWUb7xgYEjsjgDbqlABKGJmyJ1NfxXjiUlvaLk8CyztF3jqtNmxdYemgNLS8vUksTvYvHA0K9F/KjlayxvJUViQ/rje2M2fJnZbMkr9F/paYTgB1MRXkPEcZbEeY0AL1ZtF
+ eX5aHj+w
+ u9IxF89qk0ItTweFTXW3XBq+sTLTi09q451ckrhcUHB5dc3ARDXORWQump5is8n6QGxxN+4EwE7ji4wB6IK0dDG7giLPgZLeN9JWIl4jdLiubP/RuC6Fc+7V8z5ChyAEeiIVlkFRnnJ4+4BwEG2384GyrMwjyHdvMlqvQkLmVKJo7Hl1jZbiR1QVtrKxVq4jTeABfROWMLIjbQahiAG8uxc4xA6phOBD/41pkNb8E3acdNfDFNmoC0lhbAWwN4eGX6MrRJVu5FgPUCwIuBqXtpz8n1m8XEjg4YfU+kpdQsKFslyt1FYKmTGrjK2hM+DNuDpYTcjgc9w4MN9vZWwCzteKWXKEIy3EmbpelPwCll+YfKUaPsWN3xooZ4A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,31 +92,9 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 21 Jul 2026 15:07:56 +0800 Enze Li <lienze@kylinos.cn> wrote:
+On Tue, Jul 21, 2026 at 08:19:56PM +0800, Qi Xi wrote:
+> [ Upstream commit a148a2040191b12b45b82cb29c281cb3036baf90 ]
 
-> The mtier sample defines a local struct region_range using phys_addr_t
-> instead of damon_addr_range which uses unsigned long.  Add a comment
-> explaining the rationale: on 32-bit systems with more than 4GiB memory,
-> phys_addr_t will be 64-bit while unsigned long is 32-bit.
+That is not what this commit is :(
 
-Looks good to me.
-
-> 
-> Signed-off-by: Enze Li <lienze@kylinos.cn>
-
-Reviewed-by: SJ Park <sj@kernel.org>
-
-This patch is applied to damon/next [1] tree.  If this patch is not added to
-mm.git in short term (~3 days?), I will ask mm.git maintainer (Andrew Morton)
-to pick this.  So, no action from your side is needed for now.  If it seems I
-also forgot doing that or you cannot wait for my action, please feel free to
-directly ask that to Andrew.
-
-[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
-
-
-Thanks,
-SJ
-
-[...]
 
