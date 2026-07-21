@@ -4,96 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A046CC44529
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 11:21:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D214C4451C
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 11:32:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6FFB36B008C; Tue, 21 Jul 2026 07:21:06 -0400 (EDT)
+	id D57956B008A; Tue, 21 Jul 2026 07:32:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D7546B0092; Tue, 21 Jul 2026 07:21:06 -0400 (EDT)
+	id D07526B0092; Tue, 21 Jul 2026 07:32:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5EE646B0093; Tue, 21 Jul 2026 07:21:06 -0400 (EDT)
+	id BF5806B0093; Tue, 21 Jul 2026 07:32:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 385086B008C
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 07:21:06 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A9322120422
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 11:21:05 +0000 (UTC)
-X-FDA: 85012542090.23.DD0D8A5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 1B091180007
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 11:21:03 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cpoJ0Xrv;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 870736B008A
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 07:32:34 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 098251C078D
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 11:32:34 +0000 (UTC)
+X-FDA: 85012571028.27.B4557A4
+Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 8A83C1C0006
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 11:32:29 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=mlVy1E9P;
+	spf=pass (imf18.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784632864;
+	s=arc-20220608; t=1784633551;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=2QCIGWwPwoyvoMjnJWSMriHvqcGHG1Gj+h1JEnla2yE=;
-	b=Zxy41xpRSSkFWNDQoMUbCp+QBEwhiUb6MaEj3KIqSnDPSg6f24+6JEWjUUvjIeksk4bdSL
-	mzxrEvPjzqlmbExAVAfbb4rO3/rVrH6Dm8Te/JhC/hSyfRIB1bWS3tdNVBkg7ARPIE0FKd
-	Bcd2c6Mfdn5CrscxS4g9YfooqKCN50U=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cpoJ0Xrv;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=AcQT6oTjanxItuAmimd9GFfZe4OYmXP7lT7W50sMfx8=;
+	b=yZqnLIeIWsFshQGbH1DEsAnyXfJn8ar4agz6ZaTxh/zeSodz7rHlUQGP217GXLhRLsSsGu
+	NoKcRplO37Tps4G/qz5eiL59ZhM0b9GNowv9VM1E0LQHazNhXHEH8lfqGmri3tEDSW6Be+
+	Z7Hk38VZgAz6oYe76R243FZuvxSLL+8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784632864;
-	b=KKWTV/bXEPvUkF9ujOZanQl3NQxS9YQk9/grMJXRyPa9o32poIy8z1gK6hMCl/w1OGjUif
-	W2qyzScLsacXRd5BsOhXMdIt80Q9ZC+CE84ObRPZ2caRBt+PpKcbple1KfL5v7uXIoYERY
-	ToDNLwKNVI7V8pxsosUHjRuJJBfat1s=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id F2127401B3;
-	Tue, 21 Jul 2026 11:21:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A91BB1F000E9;
-	Tue, 21 Jul 2026 11:20:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784632862;
-	bh=2QCIGWwPwoyvoMjnJWSMriHvqcGHG1Gj+h1JEnla2yE=;
-	h=From:To:Cc:Subject:Date;
-	b=cpoJ0XrvNyOBs0sYpHabs3pSxWkh5ZyP4hOPNJTumhP9A3+5yNiE8L5lAXdhOZVcF
-	 SCsnAKkfIHJBgsoc6AiUrF3k9QCBUCrPQEOrCsKS0IApnhACYBCUMSg2GnvhD4/ja1
-	 wJ7erJP8p/NUXN1V54aMicRA8wl2JkkxFUR75dKHFFl3KVwSlQn0EE6xQC80oW3h6w
-	 mdDTkNFgTVKlJFKyvXE4t52HP5ou3QJUsfIrVBcXFWHp4eXBVEQ2jP9vUBUs5zivo2
-	 Ff8OjW4I1FDkVxUR5me4VwLLKTnEfUVBoID52nJ2oThtCsuHBgrSn91uxMnOCV41QQ
-	 xS9yHg/KgQNPw==
-From: Christian Brauner <brauner@kernel.org>
-To: linux-fsdevel@vger.kernel.org
-Cc: Christian Brauner <brauner@kernel.org>,
-	Farid Zakaria <farid.m.zakaria@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Jan Kara <jack@suse.cz>,
-	Jonathan Corbet <corbet@lwn.net>,
-	linux-mm@kvack.org,
-	bpf@vger.kernel.org,
-	jannh@google.com,
-	mail@johnericson.me,
-	stable@vger.kernel.org
-Subject: [PATCH] binfmt_elf_fdpic: only honour the first PT_INTERP
-Date: Tue, 21 Jul 2026 13:20:45 +0200
-Message-ID: <20260721-gezittert-medium-kreide-b41fc1f0277e@brauner>
-X-Mailer: git-send-email 2.53.0
+	t=1784633551;
+	b=nXEG5RGNALB8nplXV3GN/3v1SpPkPelBEwvHb/ew8GYmjYh3y3nzqzwuJJC96nYqufacHp
+	wUiOnj7Hl1FJzfz7RigmskgXGgAmdFsNndXngNVOUWwgF8aORoqQkkM9/kV9HPrklEW2+e
+	LvL1XqKeH41jXk1EPYVkw8BwrBdWaZQ=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=mlVy1E9P;
+	spf=pass (imf18.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1784633546; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=AcQT6oTjanxItuAmimd9GFfZe4OYmXP7lT7W50sMfx8=;
+	b=mlVy1E9PH4XZWrmys62liAn7WrrLWWbkoyTno4SB/pocl72EC+xYuZKX13MAUhxMSj9wUyqdQ0O4sz+RXiSZtK0T+p75IyP51C8eVF1Y8qySkzvhmBtc1/eBYqLpiJah8Gik5Uagf/72GAb9Z4wda/+VjPNrhmnWHRE5dCLGxhA=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=46;SR=0;TI=SMTPD_---0X7ZvAmG_1784633542;
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0X7ZvAmG_1784633542 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 21 Jul 2026 19:32:24 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Shivank Garg <shivankg@amd.com>,  Andrew Morton
+ <akpm@linux-foundation.org>,  David Hildenbrand <david@kernel.org>,
+  Matthew Brost <matthew.brost@intel.com>,  Joshua Hahn
+ <joshua.hahnjy@gmail.com>,  Rakie Kim <rakie.kim@sk.com>,  Byungchul Park
+ <byungchul@sk.com>,  Gregory Price <gourry@gourry.net>,  Alistair Popple
+ <apopple@nvidia.com>,  Lorenzo Stoakes <ljs@kernel.org>,  "Liam R.
+ Howlett" <liam@infradead.org>,  Vlastimil Babka <vbabka@kernel.org>,  Mike
+ Rapoport <rppt@kernel.org>,  Suren Baghdasaryan <surenb@google.com>,
+  Michal Hocko <mhocko@suse.com>,  Karim Manaouil
+ <kmanaouil.dev@gmail.com>,  Frank van der Linden <fvdl@google.com>,  Teja
+ Vojjala <tejavojjala@google.com>,  Pravin Tamkhane
+ <pravintamkhane@google.com>,  Kinsey Ho <kinseyho@google.com>,  Wei Xu
+ <weixugc@google.com>,  Matthew Wilcox <willy@infradead.org>,  Davidlohr
+ Bueso <dave@stgolabs.net>,  Vinod Koul <vkoul@kernel.org>,  Bharata B Rao
+ <bharata@amd.com>,  SeongJae Park <sj@kernel.org>,  David Rientjes
+ <rientjes@google.com>,  Xuezheng Chu <xuezhengchu@huawei.com>,  Yiannis
+ Nikolakopoulos <yiannis@zptcorp.com>,  Dave Hansen
+ <dave.hansen@intel.com>,  Johannes Weiner <hannes@cmpxchg.org>,  John
+ Hubbard <jhubbard@nvidia.com>,  Peter Xu <peterx@redhat.com>,  Rik van
+ Riel <riel@surriel.com>,  Shakeel Butt <shakeel.butt@linux.dev>,  Tejun
+ Heo <tj@kernel.org>,  Fan Ni <nifan.cxl@gmail.com>,  Jonathan Cameron
+ <jic23@kernel.org>,  "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,  Nathan
+ Lynch <nathan.lynch@amd.com>,  Frank Li <Frank.li@nxp.com>,  Dan Williams
+ <djbw@kernel.org>,  linux-mm@kvack.org,  linux-kernel@vger.kernel.org,
+  Mike Day <michael.day@amd.com>
+Subject: Re: [PATCH RFC v6 3/5] mm/migrate: add copy offload registration
+ infrastructure
+In-Reply-To: <19F47514-EBC4-4659-8252-EC3765D9B601@nvidia.com> (Zi Yan's
+	message of "Mon, 20 Jul 2026 10:44:34 -0400")
+References: <20260630-shivank-batch-migrate-offload-v6-0-da95d7e8b8a2@amd.com>
+	<20260630-shivank-batch-migrate-offload-v6-3-da95d7e8b8a2@amd.com>
+	<87wlupx60s.fsf@DESKTOP-5N7EMDA>
+	<19F47514-EBC4-4659-8252-EC3765D9B601@nvidia.com>
+Date: Tue, 21 Jul 2026 19:32:22 +0800
+Message-ID: <87se5cwpbt.fsf@DESKTOP-5N7EMDA>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1540; i=brauner@kernel.org; h=from:subject:message-id; bh=+cJkpeap/KFYrggTqEpe4nk3HWVb6K6EfACXBz+YXGw=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWTFh4k154eeNb993lBn4lqZiOWct+XOaF9teCzbb8+Q3 +QZIL27o5SFQYyLQVZMkcWh3SRcbjlPxWajTA2YOaxMIEMYuDgFYCJ2XYwMB+5PtfosrlMQsYA3 waej1EphxQGt34rS/7ZNqxNxWvy0kOGvtHDrjQ4HBtZjykoGfkcdLXOvX39iep+R6dh2Ka31Wxs 4AA==
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 1B091180007
+Content-Type: text/plain; charset=ascii
 X-Rspam-User: 
-X-Stat-Signature: m6qamk977y9qz8azqyhxrtdr6n5uqumd
-X-HE-Tag: 1784632863-533563
-X-HE-Meta: U2FsdGVkX19dKEGBs2D5Mo5b6ZO2C6fVwnqh9bi7Gbkzn2zvjtJzpb2gcbNY0TfWab5u5WsErBNTn1KLYaG+dkP4ZvwMnPN82lelEJND378gYTe/ZAymt/5STXVEX67zXlDllDJ3YXymJSwjN0O2QTj5LEjL8or7m5wzr7gUyVpO6FGGoMUaUw3TDohB012u0VQGdIiFrLdHWaqhezHWZxsMyosfvtAPr1cPaYrAeOYifi7ICr1BHLQFoZbXncXFjF6MS5IwpRGjJuofNFkaLpl1P+0M567EQk+DHk3v6Rkqez+XuLfmPiDEWk8zc68hQ9qwzrmI4AKdNJrDVLYqvBnIV3L/c9d1MaJ++P+8gxlpW2r3bYdLWvZOJ5fXW4mnIiSnqISvzJyrOKrvjNFg1ozIOUZ10h3u829yeJuHHQCSwO8sbq7ReqgBsJQvMdQLjuY/Tt5yKU/GN4JZM9jagj624GVAwNxpb23ArG9GZZbe8hAezymbgDOZodRhIpOn274OYTdLKcK4rVsu2acRabWY3pxrNiBX3MTcZxG4x5/o3YtbPNSWdfrWxpFHxa1nf790HlZlN7d0Cfe7We53uAc+KLPAcAkFjEMEqKwgBfPTLltr+ulUDmGCmIfPsEXznE6hTY3LTgeqYEySvAhq3Tczvgrg47k6Jbk2xFoU0gY2qdKGHTfPh8Ki67SPF3nakXTLJM/2xBQmm7uReB0VAF/i9e285kvHB7o4qYN7vLSDGAJwRNAlgn1vj56mg4ehBYJHn/3f952vPLkT1F07WmvanrcgSi4j7ZvO2FtkFNl1zqin+k3uy6d+8R3vvrtNd0dCDY6owF9mJwWaHNlRPJEGz7GWShMe+rkCZ9vq9X2hBkxtae62DCb1Y6ioLr2hs9wJ/fI5BAcE3UV1Kv7/1fuXuqRdJHDQFKF6olNGrHQn8uTEEEX/7fW/YVklUZaLlzH9Lkz59bSMY+d5rB8
- OEz5rK9s
- NdQev2rn8280us8mhOZpR0bvATigJTnZiJWGAyuxHEXJ1UyxgJDFgtrgHcRU+307sd3eZGEZkI4L2WWlai02GLe624gt+2Y2566353fadrrOQbhFLwUX0ClZQgFxWWcpiw1H6hObxfamM0fGVi83qX53NsGACfjjboB3g6j1ErvIcoAlCCEMNgkNeFMiwMHHecZQHMyCf12pHrd+lfUTmcR+I7rP38yG51qgcRjqBBE0d+Sn+Iy/xNB4dwZaOBOL2bKqvIKxH7kTiitb/kzoQnuhIhN/xhuznKMYdSRuOsj9klDktN+93TCo7hOLvf8pm9WjPeiaqsL3Z3aWCBL7an88NGVCWnUiLFuji4poXmg/kT27RlqnKIu4LH9tzZO4+B0PWX1mUSdN41nDQjVBJhq9Lkt/Uc2jIjPNZjsjLIQmcac4=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 8A83C1C0006
+X-Stat-Signature: risbkxx33qmw86yhj6c3sgjaixqprbyk
+X-HE-Tag: 1784633549-946411
+X-HE-Meta: U2FsdGVkX19WU3qUmST051An9t91R7B7estcX2NTEl+zoiQ1N2V33iO3pjMVdbWrT0z2pGIZLRFDzICnypEuKOfgJ0aukNLiCxi2S0c3zKTEeX5wmq33wUfwHNAA5/XTbfaqciRc5k5Q4au3YtlSVRbm5fTbhAU9fK7gdoD4MlmnI2vaZ+Xiv2rIzO+ZEeZ3Kb3SEr4P32XYP0fDsSIoGgfnYKveUzIsUmxij11ASzmTQumx8bJ6PdehbvFfPOSU/T+MzB3MElxKnMS3lQ8vfV/r090ql1GSJjUK7O2HUt9xgHjpzxzgAYHfHGrRXeLCBrNeLKZQHYHkHxCh1v0vkk3JgHN8o3DNB5kGBtMe6j84zl6ynOa04UmNPiLWozWYYB4YRfUvQ2C4juZBT2rjyeShMGLOAlmXQfcLZvkzoCpNO2rDtQ6gUUHTLhESSotUq7C0cFjPVciWdxVX92vvl+0qZ4qWTuGu09S7AL86KHMCsf2BV8nd2k/QZ5K6mfaddEUSUFCn0WRFq18YnGbZ4j1bkQkuHcE5y2HKzzea2e8b473nbO/vfSlbTpQsoSnZQWkFa0Z197hWap5DxQGEKtAfpg1mE2QXE5W8qvdWDx2T2tP5s4GIo+PUhYnjyqPblVo2Vb3qy0Q/ffrUJ0dY0ESs9HAgjD0a74AAJNQZcz/cH+vbRGNzj9QmnxAYiMT8/TPT9/UlcIghWsvBFaoRwL8RdKXeVhKrm8wS1iGFZ7PxeSna+yxdyp4hMGUfvnCEsHBzgruzOhyjMBDHQxqlwP/RZdpxDem7IYGAG4Z6V0nvmB5hsHdwNYnUOUtnzI3/z3KUPHBoIYVfCjNb4Gyf/YPQOcEHnAKt3a9Zo5KSnDBPGli40ZEo18QF3SsNExBTAIEkZjiXrUYhOvxBspcPTofketIRu42SIwZOYmxK3GJ3EGVy2Ujc5v4Hri//LVSykouPJ6I6GQ76eADWuNX
+ ki3aExsP
+ AciGRmcmpFljVxCdEmDfWE0YE4xMTqFIWJe/x30pgbYtK0FnaAXL3TbQPz54M/EIw3oH1V9R106yHVwPBn0aKprLCO/zvDyQhEWqqIcJM3w5GZi9Da07SfWg70K45BJQhCgFIDsqxRN3dSJf9wzJy9e/FF3qcOexJEWrr8PeUxt8NnxhtnIz5bI7Xc0V+ehvVxEIvqZMv8Wabp+J8Il9uacX8paP1a3bMg1z6suphe7rvV20yKfqZwk1swwWRDb6JV3RYFMghTbSmbJ4WFvvM7Etofcy565NtMep0FqAKOxtdVmwVYdU1ugx5xb+W1jcDLUxBLD1FrFRTyAEN6TmDnIA8HDzG0XqfMOrK9xxoRNRlo0XkvRmuzopfESwWt9M3MPUAW/xXif5mN7RBzJoAWo6rdSYmTZYSU3SB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,44 +112,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The program header scan handles PT_INTERP from a switch nested in the
-scan loop, so its break leaves the switch and not the loop. A binary
-carrying more than one PT_INTERP runs the case again and overwrites both
-interpreter_name and interpreter. The previous name allocation leaks and
-so does the previous interpreter reference, along with the write denial
-open_exec() took on it. The denial is never released, so the file stays
-unwritable for as long as the system runs.
+Zi Yan <ziy@nvidia.com> writes:
 
-An unprivileged caller reaches this with a crafted binary and repeats it
-at will. binfmt_elf stops at the first PT_INTERP. Do the same here.
+> On 20 Jul 2026, at 7:19, Huang, Ying wrote:
+>
+>> Shivank Garg <shivankg@amd.com> writes:
+>>
+>> [snip]
+>>
+>>> diff --git a/mm/migrate.c b/mm/migrate.c
+>>> index 41b732e78a67..4fed3110ca0a 100644
+>>> --- a/mm/migrate.c
+>>> +++ b/mm/migrate.c
+>>> @@ -43,6 +43,7 @@
+>>>  #include <linux/sched/sysctl.h>
+>>>  #include <linux/memory-tiers.h>
+>>>  #include <linux/pagewalk.h>
+>>> +#include <linux/migrate_copy_offload.h>
+>>>
+>>>  #include <asm/tlbflush.h>
+>>>
+>>> @@ -51,12 +52,6 @@
+>>>  #include "internal.h"
+>>>  #include "swap.h"
+>>>
+>>> -/* For now, never offload. Wired up in later patch. */
+>>> -static bool migrate_should_offload(int reason)
+>>> -{
+>>> -	return false;
+>>> -}
+>>> -
+>>>  static const struct movable_operations *offline_movable_ops;
+>>>  static const struct movable_operations *zsmalloc_movable_ops;
+>>>
+>>> @@ -2050,7 +2045,7 @@ static int migrate_pages_batch(struct list_head *from,
+>>>
+>>>  	/* Batch-copy eligible folios before the move phase */
+>>>  	if (!list_empty(&unmap_batch))
+>>> -		migrate_folios_mc_copy(&dst_batch, &unmap_batch, nr_batch);
+>>> +		migrate_offload_batch_copy(&dst_batch, &unmap_batch, nr_batch);
+>>>
+>>>  	retry = 1;
+>>>  	for (pass = 0; pass < nr_pass && retry; pass++) {
+>>
+>> Found a difference between v5 and v6 here.  In v5, migrate_pages_batch()
+>> checks the return value of migrate_offload_batch_copy() and acts
+>> accordingly. While in v6, it does not.  Why was this changed?
+>>
+>> IIUC, FOLIO_CONTENT_COPIED is now used to indicate a copy failure.  Is
+>> this necessary?  Is it possible that some (but not all) folios fail to
+>> be copied?
+>
+> Based on the discussion[1], FOLIO_CONTENT_COPIED is used to indicate both
+> 1. folio is copied via offloading, and 2. MC copy failure. So the code
+> no longer needs to store the return value of migrate_offload_batch_copy()
+> and can just check dst->migrate_info & FOLIO_CONTENT_COPIED.
+>
+> For 32bit, FOLIO_CONTENT_COPIED is always 0, so all folios are always
+> copied in the serialized path. Hmm, that might be causing double copying,
+> since migrate_folios_mc_copy() copies batched folios and later
+> migrate_folios_move() copies them again since
+> dst->migrate_info & FOLIO_CONTENT_COPIED is always false. Maybe we could
+> make migrate_folios_mc_copy() return immediately in 32bit, otherwise,
+> we will need to find somewhere else to store FOLIO_CONTENT_COPIED.
+>
+> [1] https://lore.kernel.org/all/c2bfdf39-8caa-43bd-b1ad-2285b4cc767a@amd.com/
 
-The flaw dates back to the driver's introduction in the pre-git history
-tree introduced in v2.6.11 by 91808d6ebe39 ("[PATCH] FRV: Add FDPIC ELF
-binary format driver").
+Thanks a lot for your information!  Although personally I don't think
+that it's necessary to optimize for really rare folio_mc_copy() failure
+cases, I am fine with it if you think that this is the better way.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+>>
+>> [snip]
+>>
+
 ---
- fs/binfmt_elf_fdpic.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/fs/binfmt_elf_fdpic.c b/fs/binfmt_elf_fdpic.c
-index 7e3108489c83..fe0b5c5ed2bc 100644
---- a/fs/binfmt_elf_fdpic.c
-+++ b/fs/binfmt_elf_fdpic.c
-@@ -231,6 +231,10 @@ static int load_elf_fdpic_binary(struct linux_binprm *bprm)
- 	for (i = 0; i < exec_params.hdr.e_phnum; i++, phdr++) {
- 		switch (phdr->p_type) {
- 		case PT_INTERP:
-+			/* elf ABI allows only one interpreter */
-+			if (interpreter_name)
-+				continue;
-+
- 			retval = -ENOMEM;
- 			if (phdr->p_filesz > PATH_MAX)
- 				goto error;
--- 
-2.53.0
-
+Best Regards,
+Huang, Ying
 
