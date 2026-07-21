@@ -4,85 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6804BC4452B
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 08:52:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D68B9C44529
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 08:55:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4D79F6B008A; Tue, 21 Jul 2026 04:52:46 -0400 (EDT)
+	id B93DA6B00B2; Tue, 21 Jul 2026 04:55:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 488BE6B008C; Tue, 21 Jul 2026 04:52:46 -0400 (EDT)
+	id B6F046B00B6; Tue, 21 Jul 2026 04:55:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 352A16B0096; Tue, 21 Jul 2026 04:52:46 -0400 (EDT)
+	id A83B76B00B8; Tue, 21 Jul 2026 04:55:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B6316B008A
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 04:52:46 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 89FE11C02D0
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:52:45 +0000 (UTC)
-X-FDA: 85012168290.13.4AC441F
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7E4636B00B2
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 04:55:19 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id F3ED74039B
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:55:18 +0000 (UTC)
+X-FDA: 85012174758.24.A047F00
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id BC9E010000F
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:52:43 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QaQQN6Li;
-	spf=pass (imf05.hostedemail.com: domain of linusw@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=linusw@kernel.org;
+	by imf01.hostedemail.com (Postfix) with ESMTP id 294484000E
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:55:17 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iisKK8sg;
+	spf=pass (imf01.hostedemail.com: domain of linusw@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=linusw@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784623963;
+	s=arc-20220608; t=1784624117;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HycQ/24U0Dvfa9rYEhTzBVd4Z8wFBY/G9IvJddSNUb4=;
-	b=Hp8S97gFfIJ1uNcNEVbZqdmFIK7WBWQn6nV4ZdCqHe9TMzyUg4SgBrseV0SDYxoepCrj7h
-	v6LCMPi7nV6BsTTrIFInA/0QAYMO5MCmW3RSYUg29LPU+9Q8+aZCKMEO+lZuBUR1l29rPE
-	TIZ/KYL64hFMSDEKoEtF44axe7xa+Pk=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QaQQN6Li;
-	spf=pass (imf05.hostedemail.com: domain of linusw@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=linusw@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=+udoP9bpLuD/FuhqJDkgPC7XrvFSE/5o+cm7TZnYZm0=;
+	b=UG4/EQFtQk/2bvZ9EhReHZJ9BddwEyRRGKZ+spnrFTWEN1d7cq1iKq/gnRKqsnXGrMBvBE
+	i65hiqxU7BEaOVMxYA8K9Pa5BcheW9Dhh5D+PnilxXIR45gC9cw4YtdPKDqSUthFHWFzC+
+	yPmYokiDAHW+IviVLElrMGiz5B3HwP0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784623963;
-	b=AjAgTVJvmCTTtpQ09hfZBsC7HH2VXN6RND88we4T/EHVuJCqd7hpIxo/OoQNWMoCh2oiPg
-	dvIUsqvog5s9IUCw+QT2j1JCXVCggAyyaEiY1LNbnK5MceKPuqriqt7VuCYA+saaZSkL9A
-	6XZwnsFGfErM32XhCMZirxOyCAjpbno=
+	t=1784624117;
+	b=yFutLB8WiK9DlrWi67vFIWl5jUBwQURCApH80jaKc+BAKEkGjA1lodqN1Pz+gm/giDDo7s
+	xJg+Ymlg8SehgToJVIvOADNFDNX5G+8bs3f1MoyfW+HjtTJt04PggMPdCv6KyxuoGaDzUD
+	Z0f/kjk0kXyZL+FeADRuEvBASK1lBpQ=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iisKK8sg;
+	spf=pass (imf01.hostedemail.com: domain of linusw@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=linusw@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5284960A95
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:52:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09CB51F000E9
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:52:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8E9B660AA2
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:55:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 474511F00ADB
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:55:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784623963;
-	bh=HycQ/24U0Dvfa9rYEhTzBVd4Z8wFBY/G9IvJddSNUb4=;
+	s=k20260515; t=1784624116;
+	bh=+udoP9bpLuD/FuhqJDkgPC7XrvFSE/5o+cm7TZnYZm0=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=QaQQN6Li5L+AU8DEPefyXXdMjMHBY1IHVUIvzBV4pRo5eDe25VfkYoTpgY0hEt29u
-	 pkVvZgCkfLlMgUBDDeccY9j6JHmCdSkYohdi8H6+5uACEV+fNLRL4OD30huuP8VgIu
-	 loAv7Cg+9XkloP3Pb8ehYPWpHXYqK2PlEg4djUVbOq6hTNjFzzC1yfW7ZQr9HDUdOI
-	 bgtDXDm+e2kNK5IAx1QXAH334yFbGYDqxRhXPJWZu7YqG3crVrYoolh6nyIwx3JFQ8
-	 jwBH9cYXlUHOEYu3vikybPanfqZ4HHPdz8wrxWhRW6JPMY1Ht9da3keTiQ/14K9hI9
-	 PN7BQxmb7zNag==
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5b015b2d792so12676929e87.3
-        for <linux-mm@kvack.org>; Tue, 21 Jul 2026 01:52:42 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RqoTo36vqDhiuWa6GiJKLchWyEenv47Ho1UV+2wKiHYMcEoudftPgeJsbsmAcPd791++tv2c44QrA==@kvack.org
-X-Gm-Message-State: AOJu0YxV+waHtGtWnUyVDnrVfiwVpdWxMkHbScYd6BKHOYUVuPYUU3pe
-	YrNI1RJVyYzrJTUgPtTF4IUFTDVoWYGRIyhun9W7dp3plxSJh50/V9I8wsnT4J/K/fDUTngbBAn
-	xfVXU7l6Y1yM0QQlG2CC301JK1wuJb0Q=
-X-Received: by 2002:a05:6512:1156:b0:5b0:ce5:a04f with SMTP id
- 2adb3069b0e04-5b28face409mr4587541e87.61.1784623961856; Tue, 21 Jul 2026
- 01:52:41 -0700 (PDT)
+	b=iisKK8sgq0MTBZx1da6Nfg41IiKRkWZCAiUOSPwGEm+wlYS2rqO7wwO5/HLCFiBBo
+	 CspqHpcL/uVDH3P7vAe4fgtPhceAyBTgadzGCLJ8uqmorXPGBg4wEdLCUOAI4NszEs
+	 dUK3jcdUHV+oFNjBOAQxn5G/1jvPznsNxtNgX/PQ/uW10QxFHseaePD+BVZqjrfy9C
+	 NkByULDo3F6mVgZ1qD9CEFEbXnp0jLt4rf23/2AKt32jcvobVHQfmVpY8V1nL5u501
+	 vDIxdUTOTZ+sjUgAP9LXiJQO5LJK96y0uVZhAiTSVwobT8Hat/e1eEmdU1ohpKqpHU
+	 t4+P1OAS9kpNA==
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5b2a22c52c1so1413392e87.3
+        for <linux-mm@kvack.org>; Tue, 21 Jul 2026 01:55:16 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RrnHLjijRMSNT07e+YSDnxP15nEbtHUzBIrcgt9zeLQ1aeOjhlSz55FrtGLoFsNS3aemhAzQ8r6UQ==@kvack.org
+X-Gm-Message-State: AOJu0YwtIyvWv1bTabJBASDN98V42sPd9YwMHh5ctdGVeG6+f9kSoWdH
+	Q8fuzX9XBQ+2Ipj3skjPn5/fgWzInYIpeQrfqXePLw7vqO64jS80Qgf9Ubk6DHv8xTXvPLJh35z
+	a6fx9AugJtm3/3+0CZyQOhJXDlch9a5w=
+X-Received: by 2002:a05:6512:6d2:b0:5ae:b792:7f1e with SMTP id
+ 2adb3069b0e04-5b28f9ac8bbmr4154050e87.30.1784624115027; Tue, 21 Jul 2026
+ 01:55:15 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260721081858.1169276-1-ruanjinjie@huawei.com> <20260721081858.1169276-13-ruanjinjie@huawei.com>
-In-Reply-To: <20260721081858.1169276-13-ruanjinjie@huawei.com>
+References: <20260721081858.1169276-1-ruanjinjie@huawei.com> <20260721081858.1169276-16-ruanjinjie@huawei.com>
+In-Reply-To: <20260721081858.1169276-16-ruanjinjie@huawei.com>
 From: Linus Walleij <linusw@kernel.org>
-Date: Tue, 21 Jul 2026 10:52:29 +0200
-X-Gmail-Original-Message-ID: <CAD++jLn7ogMvgUdQA+yCjzj2OJDj_v7JDO=mPnWxqNUE7oY6yA@mail.gmail.com>
-X-Gm-Features: AUfX_mzXSUvYI-AiEHstTcYri4vC5EAAtQ9xFqLJkpR6sHINZPIFjmFDc1Yxrj4
-Message-ID: <CAD++jLn7ogMvgUdQA+yCjzj2OJDj_v7JDO=mPnWxqNUE7oY6yA@mail.gmail.com>
-Subject: Re: [PATCH v17 12/15] arm64: ptrace: Make return type of
- arm64_syscall_trace_enter() bool
+Date: Tue, 21 Jul 2026 10:55:03 +0200
+X-Gmail-Original-Message-ID: <CAD++jL=Ou_HF5VchexnjUf9qwzrz0xgY+NhA5gZhOwiwdxUi-g@mail.gmail.com>
+X-Gm-Features: AUfX_mzzb3lQ09c4zH2YPpivf-4j4IDejfx1qyUuGSOUbGFbX3JjubmvWtjOIvU
+Message-ID: <CAD++jL=Ou_HF5VchexnjUf9qwzrz0xgY+NhA5gZhOwiwdxUi-g@mail.gmail.com>
+Subject: Re: [PATCH v17 15/15] arm64: vdso: Expose sigreturn address on vdso
+ to the kernel
 To: Jinjie Ruan <ruanjinjie@huawei.com>
 Cc: catalin.marinas@arm.com, will@kernel.org, kees@kernel.org, oleg@redhat.com, 
 	luto@amacapital.net, wad@chromium.org, thuth@redhat.com, peterz@infradead.org, 
@@ -93,14 +93,14 @@ Cc: catalin.marinas@arm.com, will@kernel.org, kees@kernel.org, oleg@redhat.com,
 	linux-kernel@vger.kernel.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 294484000E
+X-Stat-Signature: 9r11tb1bo4wh3cca15a11khooieowpu8
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: BC9E010000F
-X-Stat-Signature: b1iio1woumm7uhyr38stbinfiju9sjza
-X-HE-Tag: 1784623963-786162
-X-HE-Meta: U2FsdGVkX186BYTPGllk1eMthgqsxBFNg7GNNl0oueNPiNcVJNtjMLFrbHC2ZPtCV7zrFydOCiuDzmoKGySWbwxhwN43Ico7BfoIcr2Kv5hvvi+5OOSeB26d18+XtYpSY4iCuKLd8edb7D6LTdDIiMJB5n5o6NQH4h696QQIFfSj1NIat3oUvsglCrzJScZbHMqtC0e4pXjqU/xCFeRwrX2uTgnSHq7QMWszOG68r8bz+B6dpfWK1Y2u0MTYXLUXhzkddwXRhJG7BMN02+u4KDFkavRuGLIt4iVu7NdUX6a+Am6MBoKjwQ1Aqnb3O/mZCUE3QpRjCSjyRW79kYGC3zfNWcQ6//fvKRGjvRJ4GSvrvBEMkn0rSQkRUsOcGKE1sK64BcrQyNZhDhHzq/cYrKxvPnVGvsrkZBBnZ2f2Gm2OqOn+LRD1YlO+HM7xAFvSMofNjYLVUUBJIRuMR7FV3EaJFWxRrACsd7rBRewPepVLR4qirNOHo/HsYwFMIEHovdF0JlEJt5K4cYZDJI/hLXSQTVzXAwazmtm+aMjaDpTGbYsA6Xb4jqLggEvScSXdgEWIqJOIFQYFBrr/PHQYCqFhXyA/68BRT8ODT5EhDUyN77ZcGACqEF1XroVxLgCydxgFY+evj4aGcxlcXrmfRbwDIZQc7XvVqdEiOwJV7d/er2/wFnOYuDMlVxNlOVeoypzEYS6o8L8hFnhd5HkGHII/Pf68XB+C+QVj0TeAzFgwPZAqtg2w3gSwMaZ1bGdBUdSbiTJO4qhXt63N//jWjb5igieEOV0Vq7hZBBmQFQj9nOTFXjOqaCcw3YiC9d2oaU/qKHDyaXw+xwc92z4al785/M6BnC3m15TkOLtrckvsEcaHlsTvVryVJp0tKu3dxgukN0vd4cICYNk0kzBIbx8wPz3RuBWeWh5UwgGJ7iYHbm2srILBNorcUJ5djUR9PJfbAiYT+N27AfsmPPY
- /5+KfEZP
- isa5QgtFT2G719hhTrH/eRJRTCizhSYXn5SlvF68m1lXti/L3j1GFuqJcV8s47bGdZjh8/99mDHaXNgzWO1ixx2Ex13UeM5NMz1NFKr9VHt2v5seOS7BIDKA8wUtdN+9j+rVN+puHW1aYSztRfa97A4xywDvmIh2SxY9dRaRy1eIrhzAEZHIA9xlqcPsaZ8gJ4XkC/E/95N+fjLGE7gfHseTIf6zzKayB3Of/2va1w0re1ZJg+VKOHYZUKVB7XHskK2VM72MdhfSA5I7n9s2JWKJvcANpj2VGZf2S71fweSa8BZmJLuuUM38x+bngQFnaS1OyEHIhPubgcqBHRTZyioxNFZbDDvrwOziRmFnXVwQ/dxLDSWpPiXx+yUf1yLxhxUh7Fg1uKy9wb6FDdaqPzJs5ujd1yAYA5PkhkTDJFzbuRCf0HxDHf6rQyg==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1784624116-468287
+X-HE-Meta: U2FsdGVkX1/zKLP787tWnDWE8dBFAOQ6SeYkKlM7yI1iK9rsxD36B0KCaQ0GSO6FZCfTiA1sXKmKMHxndF+0HxBs3I608kj4knccllET7MI5eP7fak5jguq/4ls+vLykOU6tfaOsI7Imm119JJ22re8aHn85Ba6kIRlol3wS9nmGI9crF+Fs+3AjLOhaF5Yy7xScs2qAtfjbodjJjjUE58mG/Gz++mPQaqou74Koygej4I24FpCQneuyGXS5h1vnegkWH5pd27gxwCtg9p73//bmJgiJKbTmdIW4HvxcJ5ifqOC6RK1c0pKEkV0h4XyK7+/kUoDpO4ekztceW9bbggdkdLpwhTC26eE8IdwAaXO2RFnNenI7v7gMkqruUpTtHSafEPwoBt0Z2deoUOQGw6JURfwhKTXCIU9itvn5Ea21MLVgQqqVg9CygB6Hau5TGHGWKPKL9BVUk81KkvUIeGALanjDKLl3w7cnsGaz9shHZUVeWiGI5OmnUI5FseKXK5EomReCASzldYDy+i8DqtyicPI9DHpD+mpiXtwVvyuHlBvA6TnBtgmu3y1ZCqpn6o4ZR1wTh4bLo/CrLqNRSJ3pJ/a05Vtpn6i60kw+NcSXeIKiFToq+1xfFoyb8FSVd88yxqBmpbGnum1MCPTpr/0FW0h7sJ2qrS4C8q2m425hxtfhY17PPWI3bxViCMoq3DRIyfFhbSPTMSoC5xj/2LhoDk+qtUamGS+uK2tzchNiknHX6lZgYduLtZdt7gRiqiQ3XapDpglJKjwoAfQbE2TGJTadThJkJhUPlZWd9y/1OaW8RlgSmrcgV4/Ti/gZ3eHSLn/A4Y/ddvfblJrn8cYpPRisfPF3LiM+ENj1kZIdnqrOX3nKDL50RiiIzGRBJl7CCsWEluEQjEpPVNQ5MhqjYb525Z3jLkwb6BmIgEFZjXDYiUdio3r+jMCs2M6gFiyP/y+1yuDN0mlMyF4
+ lJohZJGs
+ g95VZVq0oel3koUd2E6vQHuw1IpAtMrY8G/Ngw0gjOwnNQLc7nREOGZNtbIZzvbM3BYVM9ZdNaNbaZWlmVH/IAkbv7w2ZZWaZJeCJBcktSFHnVcdcv8A6a+EZedFjw5eS4vYguk+tcXBatAbNzXeGa4ucUnE64sFnu8NCAowPT1ezhc9r7qj90p9kjswBY2+aN3mQOMU9qkFLxtiGBF+IfAuXQevozje68xN3bKUk1g8DCrrSLbaCiLDD9SoFanGJVDwccaCxqQ4jbsYAzAHe/CxuYQLZsE/GS/1X5IwVBeQP9qhNAVYMMeaWIstH7j2zv0poojkQmSNyvoAfL3g6I36QCZNnXqctn5SW3ALHn39/cwMZuopfV6J/NA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,37 +111,38 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On Tue, Jul 21, 2026 at 10:19=E2=80=AFAM Jinjie Ruan <ruanjinjie@huawei.com=
 > wrote:
 
-> In preparation for migrating arm64 to the generic entry infrastructure,
-> decouple the decision to execute the syscall from the syscall number
-> itself. The ptrace and seccomp now returns a boolean flag rather than
-> overloading NO_SYSCALL (-1).
+> Syscall User Dispatch (SUD) must not intercept the signal trampoline
+> code, otherwise returning from a signal with a locked selector may
+> cause infinite recursion into the signal handler.
 >
-> Changes:
-> - arm64_syscall_trace_enter() returns bool:
->   - false: abort syscall execution
->   - true: proceed, with syscall number reread from regs
-> - If we decide to execute the syscall, reread the syscall number
->   and check if it is NO_SYSCALL again. Because when a tracer sets
->   the syscall number to -1 and provides a custom return value in x0,
->   this avoids calling invoke_syscall() which would overwrite the custom
->   value with -ENOSYS by sys_ni_syscall().
+> Provide an arm64 implementation of arch_syscall_is_vdso_sigreturn()
+> to exclude these sigreturn syscalls from dispatch.
 >
-> Behavioral impact (unchanged):
-> - User-issued syscall(-1): unchanged, returns -ENOSYS.
-> - Tracer skip with custom x0: unchanged, returns custom x0
-> - Tracer skip without setting x0: unchanged, returns original
->   argument (garbage)
-> - Normal syscalls and seccomp rejects: unaffected
+> For native 64-bit tasks, check whether the current PC matches the 'svc #0=
+'
+> instruction inside the vDSO sigreturn trampoline (defined in
+> arch/arm64/kernel/vdso/sigreturn.S as below).
 >
-> No functional changes.
+>         SYM_CODE_START(__kernel_rt_sigreturn)
+>                 mov     x8, #__NR_rt_sigreturn
+>                 svc     #0
+>         SYM_CODE_END(__kernel_rt_sigreturn)
 >
-> Cc: Mark Rutland <mark.rutland@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Ada Couprie Diaz <ada.coupriediaz@arm.com>
+> For COMPAT tasks, verify that the instruction falls within the dedicated
+> 'sigpage' range, since compat signal handlers use this architecture-
+> specific page (not the vDSO) for their return trampoline. This prevents
+> SUD from incorrectly dispatching syscalls issued during signal return.
+>
+> Suggested-by: Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
+> Suggested-by: Kevin Brodsky <kevin.brodsky@arm.com>
+> Suggested-by: kemal <kmal@cock.li>
 > Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 
-Reviewed-by: Linus Walleij <linusw@kernel.org>
+I'm a bit scared about SUD.
+
+Certainly we can merge patches 1-14 first and iron out
+any trouble related to that and split this off so a separate
+series to be applied lated?
 
 Yours,
 Linus Walleij
