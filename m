@@ -4,101 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A03D1C4451C
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 09:27:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0BB2C4451C
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 09:30:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9AE3E6B008C; Tue, 21 Jul 2026 05:27:19 -0400 (EDT)
+	id 9B3C76B00B5; Tue, 21 Jul 2026 05:30:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 986AB6B0096; Tue, 21 Jul 2026 05:27:19 -0400 (EDT)
+	id 93E9C6B00B7; Tue, 21 Jul 2026 05:30:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C66B6B0099; Tue, 21 Jul 2026 05:27:19 -0400 (EDT)
+	id 8058A6B00B8; Tue, 21 Jul 2026 05:30:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 64DBF6B008C
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 05:27:19 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8F9A6A0BF6
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 09:27:17 +0000 (UTC)
-X-FDA: 85012255314.29.2564199
-Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 03C6A18000A
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 09:27:14 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=jIxiaBiE;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf16.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 512186B00B5
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 05:30:20 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CB9391A043F
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 09:30:18 +0000 (UTC)
+X-FDA: 85012262916.01.20D946E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 1714C1C000A
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 09:30:16 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="cXc/RGN/";
+	spf=pass (imf21.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784626035;
+	s=arc-20220608; t=1784626217;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1c85gg17qOp2jVI8fhxIGgJrpPOSpSPj68RXsM9YqFQ=;
-	b=DJGQAgT+HpB4zUJPIRZQNRfu+1FdPVNLpMPe2MPxONWEem1PruHPvD8j40OZfTneU2k1/8
-	6EvQg/DBnbqBsJpRbynuOPZwpe+IUuLH8D18e/FsZNRQ4UslJ1j8a2Q1Telkbvh4Cr9WuC
-	woX7r/Ypxhza/xBt+SkYMjmRW/pcs+E=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=jIxiaBiE;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf16.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com
+	bh=4FrzFFnuliDVci/9RIJav0eot32RM/T7R2sy1IPCPQg=;
+	b=spon7MyWEguExg4rY+Myy84uT4Z6RkULy2N0qCnCDk/LhaDPKj9SfQyP0FnmPWYQ12mCfK
+	zM8RIHjCOSnR997x/zXHTTfi0/JFLNQC+eMTzXOihzRkmhi1tlPLNQGgpe4wqdilUsYax4
+	CqTQ9V6VZOzraXwzxDjpWWYI0qpwC14=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784626035;
-	b=Oc5vh+M5S/YxDSIZ+Rzhnca1KEvdqdWbkmj56fkVvtgc7Kh16WToHBHHRD6crjvGCN4ukv
-	R9q9DypEc/ETv4P9/ukabqMC4KalvoQS9l+a3h3o14aR3dJrU9Eoo0ZUxQOjRVHNG6ytVQ
-	nJkgMZ+I0F2c0AIY8aYyxsHijmg9284=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=1c85gg17qOp2jVI8fhxIGgJrpPOSpSPj68RXsM9YqFQ=;
-	b=jIxiaBiEZUASBc8flQ1I2Kxi2AQjwRTVk+7jv2wnMBVzpgVwbrHH1P9sWOOXoQKOmfpGn8nRR
-	X2lgXtHd1WrGwtiMFog4QqUZi/Gc3IoY1fNRbmS+gCErqIfBa0tXGkgqtll21JVbEXAywqIb9Kn
-	rsA7SAzkcvjTsgPhf9LV8vA=
-Received: from mail.maildlp.com (unknown [172.19.162.92])
-	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4h4BcQ1ZvRzKmWF;
-	Tue, 21 Jul 2026 17:17:42 +0800 (CST)
-Received: from dggpemf500011.china.huawei.com (unknown [7.185.36.131])
-	by mail.maildlp.com (Postfix) with ESMTPS id BE91A40586;
-	Tue, 21 Jul 2026 17:27:06 +0800 (CST)
-Received: from [10.67.109.254] (10.67.109.254) by
- dggpemf500011.china.huawei.com (7.185.36.131) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 21 Jul 2026 17:27:05 +0800
-Message-ID: <4b6d760a-8270-443b-878f-37d46d9bed47@huawei.com>
-Date: Tue, 21 Jul 2026 17:27:04 +0800
+	t=1784626217;
+	b=TWvyB4vGiLZa4w4rMDCNKURfKMCT8p/CxAnvj3j8okYstgTgspyARJfq3L09Vk3n0bVmaI
+	hy1R8G9bJBGRyxQZyz1m5LNYxWH2Kp4FB1G9/dftErPbfgJ+nWU5gz4R0Q+3At0gnEBtHZ
+	XcbInw/McEf1BAWjIGShHeHNi/bcHBM=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="cXc/RGN/";
+	spf=pass (imf21.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7BE3960A98;
+	Tue, 21 Jul 2026 09:30:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95B811F000E9;
+	Tue, 21 Jul 2026 09:30:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784626216;
+	bh=4FrzFFnuliDVci/9RIJav0eot32RM/T7R2sy1IPCPQg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=cXc/RGN/EEk3TA8+aWGro2/Fnx0tx4VqletVomXjKh/MSCMNlLx1DvtbKHqHpwRkk
+	 Xj67CelJVOCdIPCsBc72IOTX+qyup/LH7e1bvo6gbcLLcyrbUiKhrBTWnQHDx1xCiq
+	 j9Oc4h2q5V8Jl6XngRVlWWEj5qjlVdyQle/2DzW8pO2kv7uuBBgPuW7MQ7OjiMW5vj
+	 9gJhUKy09s8CjJcwgG5wrlSzJ5V8CX7ay6frImypxxbVDDnTiyEBtzNPo77T14zyKc
+	 +Hfqfc19ZH2fj7LV8n2x8bLlryY18726tYTYi/nEKE+aBZXSTBz2/Y0hbAvU3xM4IQ
+	 /gFH45HHc69oQ==
+Message-ID: <9e399c58-38c7-4c98-b22e-77f04f8b9f5b@kernel.org>
+Date: Tue, 21 Jul 2026 11:30:11 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v17 15/15] arm64: vdso: Expose sigreturn address on vdso
- to the kernel
-To: Linus Walleij <linusw@kernel.org>
-CC: <catalin.marinas@arm.com>, <will@kernel.org>, <kees@kernel.org>,
-	<oleg@redhat.com>, <luto@amacapital.net>, <wad@chromium.org>,
-	<thuth@redhat.com>, <peterz@infradead.org>, <mark.rutland@arm.com>,
-	<ada.coupriediaz@arm.com>, <kevin.brodsky@arm.com>, <yeoreum.yun@arm.com>,
-	<anshuman.khandual@arm.com>, <james.morse@arm.com>, <tglx@kernel.org>,
-	<broonie@kernel.org>, <pengcan@kylinos.cn>, <ryan.roberts@arm.com>,
-	<liqiang01@kylinos.cn>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
-References: <20260721081858.1169276-1-ruanjinjie@huawei.com>
- <20260721081858.1169276-16-ruanjinjie@huawei.com>
- <CAD++jL=Ou_HF5VchexnjUf9qwzrz0xgY+NhA5gZhOwiwdxUi-g@mail.gmail.com>
-From: Jinjie Ruan <ruanjinjie@huawei.com>
-In-Reply-To: <CAD++jL=Ou_HF5VchexnjUf9qwzrz0xgY+NhA5gZhOwiwdxUi-g@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.67.109.254]
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- dggpemf500011.china.huawei.com (7.185.36.131)
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 03C6A18000A
+Subject: Re: [PATCH] slab: silence sparse warning with type-based partitioning
+Content-Language: en-US
+To: Marco Elver <elver@google.com>, Andrew Morton
+ <akpm@linux-foundation.org>, Chris Li <sparse@chrisli.org>
+Cc: Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
+ kernel test robot <lkp@intel.com>, linux-sparse@vger.kernel.org
+References: <20260721092005.1986693-1-elver@google.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260721092005.1986693-1-elver@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: uwwoj3jza8ep9b9h5bsoerwfkpbet4yy
-X-HE-Tag: 1784626034-44057
-X-HE-Meta: U2FsdGVkX1/nzfHcInbBverUMzQdhxZG7qQ860JJrsV9SrJGTCFHSMhuY8AVn1DCuyexVqMIFeKIuSuR88DjR0m3jPi6FSVNyxTSa8Yx0O0hsnMG4QhkFpMb77Rc+r6o9Hs5fzw7QuedTRsT2ch1KBsxnp9CxVDdiTEepl+WHRaaObvGVRGtdJ8rdejQy8dcCeRogGfviqP90CH2SN8MLt0+De8QONTfOfcRAXQXF7XmAX6wkmQ5wvdN2yyQ7qAVC6x82TsBrOKh1VkyER5zD3XhWR5YlvT9un1DmbjoXfPT7R1TVbEnKnKVLMa5m0IrEJimE4SRZaTOlrwByezaA2uKlaNOf5QnWn5SFwhhzVqnTkyumwX6WLyJXi91+fqYOUMgvUR62Rrl/O/yyZ4Ro/eZABzJD0ifCMyYzjzaByYEowuP93nK+s4mhPgwtWaR/Z+dMwKmNnFDoOUOa7bceV9fo7kQVDy8WOCZ0yLf5WOs6sQyMqQrzcL3rQpD1cEZt1icRitr7m8Z2Tcn0o0DTuWmiVYS5+5Lz98OojKQSLhQGUsrxI9O7q6KGhxrzgvX20vlYSTCEr1Nl3VRt0pigTouCI8f5dT9bqEYyVmEqtN3lSfH7MSrxndDoLHGhD0qiFqSg7w6U6fo+Z5YugH8wpV3YVKxtDjVhYCu7RYxdx74SSgAHpNWzCKZDs/h3rcIEuneNzCouJ+AR/l+77YIQBANCxJNHUkw/GWh2cXB5Retek3QJmHWwK7xqjPsxfuSKHwQlFSAyvZMnr26qXkzQWar4RFYxRIAc5gjzXdD+WhIjW6Kzcj28Kic/jQ6UXVSK8IHNZ1IQyZpHn/KjClElfODFnQrnx6mJFBWj8l5EnxT4HFViZ6pfE7zq7e0U+XGnzCBrrhpQ3W8OxsCsMLOPzAQcF3vI0icleHlC8e51p8MWqAbSZpXIo+8Ut/0vnA2KDQ6KGKutRi4A38vLEq
- YgNvmdcO
- DWB0Nzc+/K/cLRyhSQyn7zcZnR2DIv8NlkQD13ZTBR7n1qoI0xUXtWqkJnVL2sHvw6vwIeQlG6e230l04mSv6l5dDeuU30rSAKMM0LSJ+uI1PDedpJxW0Prwwjf1LutbEW6NbRnS8xpBFb2g7nYOHKI3+Umc2UPaYyWc/xL5CDjH6UgWDZVSGlfyFM+MjKaNMvGTvRGBMM8RHzoetmAS4znYeZaYM0+t7F5U0lkTDPTf1WMsTjG+viCXa0KK2dVPevOlxY8QNCy4ocfIXtjb/XGT7xHzkg3gw8PUo+P0lw0rdIbv1b3UfyyD0Xhxw1KvXOuTZak3YUoyXqjYkXqrVF+i4Ksy3aJCmRRC4ISqxv0OJrqZkUSgTyEdVsshuVMJtIxGNNl0m/mY9lPILuh86gLFSNm8Ixy/rLcAvurUIBCEAnEg68wpXF1Aul5YAXQouCKn1
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 1714C1C000A
+X-Stat-Signature: 6o3pb5qtcqxh4ksbirjcd1xdyisgx6iq
+X-HE-Tag: 1784626216-281057
+X-HE-Meta: U2FsdGVkX19D/UvmQmgsnWZsNRdvEAayaZGoiHsw1tUdZAXZ9x6fraTZvAbx4e4dHONj0tqRjaRu2zxbBp35o/AtJh7Ho1k6Zig+CiuXpzF2km6xug+glbS+ephlAqs0TUdMNAh7iOZ7kgOq1p8ffGTIOmfRHWGo/KouvpxuB6PA5LgAIOZcTQbIJ0A17fK70l8M2FItG/E9c6R9HeXCUZEnFzC4xM3O3CZzGAJwvgeN4mxMShWo894AdO/6WI0P+zFBjyf7eZ92odjpN+2AG4+fgOSQlFKg/3yodkZU6TOd4gnwmn8X10ugx3EakwSZarg2gIX6jLvDqJcbsqtHYcVfTg0AYmbKqcIOH2jWcCyOn9sQ+U664ot4Pxo5DoJtJZ60UbCZ78iuEM258vZiPkGRqX+MtYRv+9dipd6w8PcRs8SU8ORdWvRv2rblweezZBI719PZmyDUi6Mo+rIQYHCpmK+8LMGkSDT7cPyFzvsQbYbYdpSNEEWRKNVnhsFwP8pSNfRRT4Ve8jv9kuT0BPvNomucDU6OJZIPb6fi/ZbYd+wNKSlvGvauwzlIgjc6yhr80ewqKLwyXqwSfXxBc0xdPtA76klV/Ix4ZLBRPZ3SO3R1Z6NYNAnYQ4vwI5VDvm0ErEANIQdkwarkQPwZYH+xYJrTOcHW3IEqMyopOrGGq7fJieUOqDYCq85rOrTuaDbOmyNaK8KV1kp51kF543L6NHV+mRf/BwbHNeM/HCoGpMc06+9/xP9ALjzgMp95QSuph4SpIOoXwEhim9WJVjCMFE7caMQR0DiuGj+CVvmsAAlpaNvsMAAV2HRTdA07tOQKPN45P+Y+1jIR8UefG4nutDGoef3Ft5TFwrDd2Tau0Nr+ujRZDwH6nlX8METZtgigiEJ79VNDNV6Ul/S+mvgvXHHKPI7SGVrkoTqB7H3V9olItODcVPMthaCrX1xhNV61xeI1jR5NJzV1zdI
+ 6C5v8G3L
+ d4p8/qtxx3bG4n44uQ4fRzbczsr8khqiBjOaG2pT7ZKk9HGF0rsDxptMwS9BmzLrLSh123Hmz6b7XF7VYZe/N96+7Px6a5eWavWxHZkfwR07jGZLBq6J/gbCO15wtvRs4YQ4850M34MABY2v/8v7OBMISXFEWi4aWXwDVy0dfiraT0iqz/oH/cx/PhPyZtQsfFPKD0n66c9AIS/z///huKhWU1E3Ig5FWGUvpzRQXupyZ/hxgPKmVZh43NBdIr6Md+IhPJN4qtD7CrrYsrp/4qzw9TP3yUPPFV+amrMZe7QLiKUwc1Wxjj6a+g6LhOUIxMbIWt5sRUIUMCSA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,51 +136,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 7/21/2026 4:55 PM, Linus Walleij wrote:
-> On Tue, Jul 21, 2026 at 10:19 AM Jinjie Ruan <ruanjinjie@huawei.com> wrote:
+On 7/21/26 11:19, Marco Elver wrote:
+> Sparse does not know __builtin_infer_alloc_token() and complains:
 > 
->> Syscall User Dispatch (SUD) must not intercept the signal trampoline
->> code, otherwise returning from a signal with a locked selector may
->> cause infinite recursion into the signal handler.
->>
->> Provide an arm64 implementation of arch_syscall_is_vdso_sigreturn()
->> to exclude these sigreturn syscalls from dispatch.
->>
->> For native 64-bit tasks, check whether the current PC matches the 'svc #0'
->> instruction inside the vDSO sigreturn trampoline (defined in
->> arch/arm64/kernel/vdso/sigreturn.S as below).
->>
->>         SYM_CODE_START(__kernel_rt_sigreturn)
->>                 mov     x8, #__NR_rt_sigreturn
->>                 svc     #0
->>         SYM_CODE_END(__kernel_rt_sigreturn)
->>
->> For COMPAT tasks, verify that the instruction falls within the dedicated
->> 'sigpage' range, since compat signal handlers use this architecture-
->> specific page (not the vDSO) for their return trampoline. This prevents
->> SUD from incorrectly dispatching syscalls issued during signal return.
->>
->> Suggested-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
->> Suggested-by: Kevin Brodsky <kevin.brodsky@arm.com>
->> Suggested-by: kemal <kmal@cock.li>
->> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+> 	sparse: sparse: undefined identifier '__builtin_infer_alloc_token'
 > 
-> I'm a bit scared about SUD.
+> Fix it by using a dummy variant of __kmalloc_token() if __CHECKER__ is
+> defined.
 > 
-> Certainly we can merge patches 1-14 first and iron out
-> any trouble related to that and split this off so a separate
-> series to be applied lated?
+> Fixes: feb662d9168b ("slab: support for compiler-assisted type-based slab cache partitioning")
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202607110912.nZTqfCrH-lkp@intel.com/
+> Signed-off-by: Marco Elver <elver@google.com>
 
-Yes, Mark's idea is the same. We can place the SUD patch here separately
-and wait for thorough testing and review.
+Added to slab/for-next-fixes, thanks!
 
-Link:
-https://lore.kernel.org/all/akZgV0Y4YAmB43_g@J2N7QTR9R3.cambridge.arm.com/
-
+> ---
+>  include/linux/slab.h | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
 > 
-> Yours,
-> Linus Walleij
+> diff --git a/include/linux/slab.h b/include/linux/slab.h
+> index 51f03f18c9a7..7ffe152ce483 100644
+> --- a/include/linux/slab.h
+> +++ b/include/linux/slab.h
+> @@ -505,8 +505,12 @@ typedef struct { unsigned long v; } kmalloc_token_t;
+>  extern unsigned long random_kmalloc_seed;
+>  #define __kmalloc_token(...) ((kmalloc_token_t){ .v = _CODE_LOCATION_ })
+>  #elif defined(CONFIG_KMALLOC_PARTITION_TYPED)
+> +#ifdef __CHECKER__
+> +#define __kmalloc_token(...) ((kmalloc_token_t){ .v = 0 })
+> +#else /* !__CHECKER__ */
+>  #define __kmalloc_token(...) ((kmalloc_token_t){ .v = __builtin_infer_alloc_token(__VA_ARGS__) })
+> -#endif
+> +#endif /* __CHECKER__ */
+> +#endif /* CONFIG_KMALLOC_PARTITION_TYPED */
+>  #define DECL_TOKEN_PARAM(_token)	, kmalloc_token_t (_token)
+>  #define _PASS_TOKEN_PARAM(_token)	, (_token)
+>  #define PASS_TOKEN_PARAM(_token)	(_token)
 
 
