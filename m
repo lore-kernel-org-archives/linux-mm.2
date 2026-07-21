@@ -4,95 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E77AC44529
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 09:06:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77CECC44529
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 09:18:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C45A06B00B6; Tue, 21 Jul 2026 05:06:21 -0400 (EDT)
+	id 642376B00AD; Tue, 21 Jul 2026 05:18:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C1CCE6B00B7; Tue, 21 Jul 2026 05:06:21 -0400 (EDT)
+	id 5F2506B00AE; Tue, 21 Jul 2026 05:18:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B31CA6B00B8; Tue, 21 Jul 2026 05:06:21 -0400 (EDT)
+	id 50B526B00AF; Tue, 21 Jul 2026 05:18:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 849DA6B00B6
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 05:06:21 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BC45EC03D4
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 09:06:20 +0000 (UTC)
-X-FDA: 85012202520.25.ADE9946
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 5E405100006
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 09:06:13 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	spf=pass (imf14.hostedemail.com: domain of yangtiezhu@loongson.cn designates 114.242.206.163 as permitted sender) smtp.mailfrom=yangtiezhu@loongson.cn
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784624779;
-	b=ej6drP8lObkszNDxydsZ/e5TnoQgeDypB198pVZxdNLYdtnp4DEdGivVtPtgEOG3cpeeL5
-	JNBYXQ7Y0iWp2AlZia87fvlFNh/4lrs76gC0WIakBUCSNzLiMxnVr2D21fbcG1ZIJBSOHD
-	UXRQJfCTDR8OhNqBRaLvg8Cgflc2AFk=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2DF1C6B00AD
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 05:18:13 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id AFB211A043A
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 09:18:12 +0000 (UTC)
+X-FDA: 85012232424.30.75BAD38
+Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 57CB040007
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 09:18:10 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
 	dkim=none;
-	spf=pass (imf14.hostedemail.com: domain of yangtiezhu@loongson.cn designates 114.242.206.163 as permitted sender) smtp.mailfrom=yangtiezhu@loongson.cn;
-	dmarc=none
+	spf=pass (imf07.hostedemail.com: domain of hu.shengming@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn;
+	dmarc=pass (policy=none) header.from=zte.com.cn
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784625490;
+	b=Q7p5KDH+2Zt/cB9fSPh/WNvvH9FllEjYQ8tr4MMb4i/W17NMoPCZXcfcMWOIRHDybZ1J2W
+	Ehy8od6Zq/Y9BSTg8YxG7ZsuCd+x0iLPpWc4RulLszJkkfeeNgCD5RwLEPLw0JibMPGGkJ
+	DHEMJCnZ0WXyOMQS7Nkb6EUR0sru5kU=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=none;
+	spf=pass (imf07.hostedemail.com: domain of hu.shengming@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn;
+	dmarc=pass (policy=none) header.from=zte.com.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784624779;
+	s=arc-20220608; t=1784625490;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Uuvh8A9GrbgRnYSNzXlzbSr4WIu1Jq3J31+FVNwbGSs=;
-	b=yEgGb/jGXnlFCeyDt+0Jbxg80mKpeEFPSagquLKauLa7Befyecg0gNuPGDl8Pt5vxzYfUk
-	IRO22IPVeE0V7PjVKVcwi5NrLxKX4O6SjYU6uVaPU3BEtvuUKQih6z+RN2mTTx8+scYRBR
-	eDxEqNnW4kDfN5T0oTt54KI6xT0cJ3c=
-Received: from loongson.cn (unknown [113.200.148.30])
-	by gateway (Coremail) with SMTP id _____8BxmuuCNl9qKJMFAA--.21877S3;
-	Tue, 21 Jul 2026 17:06:10 +0800 (CST)
-Received: from linux.localdomain (unknown [113.200.148.30])
-	by front1 (Coremail) with SMTP id qMiowJBxb8d_Nl9qdssTAA--.39236S4;
-	Tue, 21 Jul 2026 17:06:09 +0800 (CST)
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: linux-mm@kvack.org,
-	loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Mike Rapoport <rppt@kernel.org>
-Subject: [PATCH v2 2/2] LoongArch: Skip address pairing for non-exec sections
-Date: Tue, 21 Jul 2026 17:06:06 +0800
-Message-ID: <20260721090606.8982-3-yangtiezhu@loongson.cn>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20260721090606.8982-1-yangtiezhu@loongson.cn>
-References: <20260721090606.8982-1-yangtiezhu@loongson.cn>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJBxb8d_Nl9qdssTAA--.39236S4
-X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7CrW8Zr18tryxKw4kKrWfJFc_yoW8CFWkpr
-	sxCws5Zr48GrnxJws5J3WkWa4UGaykWw4aqF95J3s2yFsxXF9Yy3Z3KrnxXayUuw4rAw10
-	qryFqwn8Z3WUCFbCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUkFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
-	Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jw0_WrylYx0Ex4A2jsIE
-	14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwCF04k20xvY0x
-	0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E
-	7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcV
-	C0I7IYx2IY67AKxVW8JVW5JwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF
-	04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7
-	CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07josjUUUUUU=
+	bh=oGZgo2lAyLytkVgMW6gwwi4KNzLuALFKb1WfLU/9jac=;
+	b=UzJpSIjtQCQcRDfL7ojO5QehiOj6nLMUZrkQrppnuroxt8mTBu2zIuo4ZjXjcfoxDgIgjY
+	EyUDk+PZIAniCu+Bnf/Nv4FH4mg2V4tPatBK5z8D/CVZpfG/oU3RM2gdvPhcwZHOa7qL8O
+	Yc+eaQ/zxL/1dnI5TBbz0CS/QkuksgI=
+Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxct.zte.com.cn (FangMail) with ESMTPS id 4h4Bcq4TNFz55RJ4;
+	Tue, 21 Jul 2026 17:18:03 +0800 (CST)
+Received: from xaxapp05.zte.com.cn ([10.99.98.109])
+	by mse-fl2.zte.com.cn with SMTP id 66L9Hpwm082167;
+	Tue, 21 Jul 2026 17:17:51 +0800 (+08)
+	(envelope-from hu.shengming@zte.com.cn)
+Received: from mapi (xaxapp05[null])
+	by mapi (Zmail) with MAPI id mid32;
+	Tue, 21 Jul 2026 17:17:53 +0800 (CST)
+X-Zmail-TransId: 2afc6a5f39411af-0ec2d
+X-Mailer: Zmail v1.0
+Message-ID: <20260721171753509I9L8xNy2kiOGQFKloTnrG@zte.com.cn>
+In-Reply-To: <17fe32e3-6761-4101-9d5f-2b22c8a83d7b@kernel.org>
+References: 20260721084522552ZPa16p1SRj3PYat3sqxuN@zte.com.cn,17fe32e3-6761-4101-9d5f-2b22c8a83d7b@kernel.org
+Date: Tue, 21 Jul 2026 17:17:53 +0800 (CST)
+Mime-Version: 1.0
+From: <hu.shengming@zte.com.cn>
+To: <vbabka@kernel.org>, <harry@kernel.org>
+Cc: <akpm@linux-foundation.org>, <hao.li@linux.dev>, <cl@gentwo.org>,
+        <rientjes@google.com>, <roman.gushchin@linux.dev>,
+        <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+        <zhang.run@zte.com.cn>, <cai.qu@zte.com.cn>
+Subject: =?UTF-8?B?UmU6IFtQQVRDSCB2M10gbW0vc2x1YjogcHJldmVudCBwZm1lbWFsbG9jIG9iamVjdHMgZnJvbSBlbnRlcmluZyB0aGUgYmFybg==?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl2.zte.com.cn 66L9Hpwm082167
+X-TLS: YES
+X-ENVELOPE-SENDER: hu.shengming@zte.com.cn
+X-SOURCE-IP: 10.5.228.133 unknown Tue, 21 Jul 2026 17:18:03 +0800
+X-CLEAN: YES
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6A5F394B.000/4h4Bcq4TNFz55RJ4
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 5E405100006
-X-Stat-Signature: 4r336xappakodnmf9kxwhqc3s3319iuk
+X-Rspamd-Queue-Id: 57CB040007
+X-Stat-Signature: dsiunmk5rbrewducxm57ghiij8zw74eo
 X-Rspam-User: 
-X-HE-Tag: 1784624773-975466
-X-HE-Meta: U2FsdGVkX189EckvWU6QJua4btH5PfH/u2dlVeCJqE+QLU9QTwv9ocU8CLTTXyeJJXla1BbIbMpZDkvE9A//y1gdb1V3mfN/Y/9Y5QOhyJX//Iw89Qe7mN5M05fuR8A/Uy8JEJRiMxeXs3vRh3wTcK00erJWiRZ5/jyIW52gcm1S39Ba80CfThDnIQmpPrsMAZ5iB/ZlfEbnTPT78Tf9mUIUYt6/3wPtVJhADvDVDzL/3e3q6cxcsQvABVqI61qpQ6Bj6ibLIYMeGu2PGbcimaxadzpsQLlNmp9rna9RcXVlSCN2WjA3ZUSJfxMqGoNJ6Y11DpQw+GC8fkWIPQw1dlFQ2B1nZTyHQ4P6l7kauf5AhTKiddSWKmWAPjzbIUsya6EQabKcCzjYr0H4gqbs33dQWxBr967xVHDuqz1ew84/xXiTe+puhIN11qwK7Mpgbf1Obb9TdjN9d9EuGq1OS3uTQ4/wia2eFRLOg+5dkP8Yksztm6JqkqbyF2oIPMitsEnDumME8AgVSLBIIOtskFfXjNI/R7pLkx7clJUlZGp2/7lmSsfU4PzlHjN8Ehlc6gICc9APYWfw1x5AlcvvnnFd9C3BW88SBbWahLbtxWiOUGUlgvcFz/kBqDhP/pgizla/dVQR8WdIpIw62SAmufPhXZxnl0XJcIn9T4doGGckV7dquBLO8NvnI3EaxQLo4Pkq1gUpoMsVRYU3XQ0LJhD0jRKKlArcx1RnI0u8Bzn/guXK+pnvem0r32I4yLCXfMlr7RKtGXkimTAOfpllc6BHRQK5INkdNWR2pY2nTNLzj2nDZuafKVnM9PTchWxU+Dj8CqmganelL3y1MmdUAXwXdWzIoA2HzIZYj5JijYZw/TDOLaZ/k8flA5WMH60fpJDMGRV7Nx3y4ALgY+dI2iyMm7vfXZplSRkt+dzPSyazq5pFjFR7bJNiuCaAAQRUj+SJRkKrxAf35DIfWH0
- S2jYPQ2+
- u1FVU
+X-HE-Tag: 1784625490-705630
+X-HE-Meta: U2FsdGVkX18D895uwO1d9XCeootLRqCw8gtnHh4feI8XpvFLC1ORCZivDSpWjikGvUzrpfXEeT/QYwjBEXuvyLSFC/jaqGW0JheEDAsp/RvdG6t0kAbpZoSTr5vYKeis5FLG6WOH+5mn/UyB/b7WIOvTl8v8ru6l0E8cy6iHT+qG5ZE1u7F6dhM39OzmAHe+z5/QfyQQVILta3XzLBU4EV4BQ2JS5RMBjFyoyzM46WeB1peNKrrYcc5Ju1La0xcTTYMOTe1L9L5lkiThgs+ffxirR8imhA4G4Qv3Xk/tHpBlHdNLXn5Xko+FwoyZRwa6RU0dgDyz/saQmiwC+Y1Yi30FqfEcItfcqVq5ndvnbIONXoJMXdTlZg0S9BfTgHmEQm391Ni4l4NnzUDyPK4H6ID4dOU/AO0pnk0qsmAb3yxJiUp+JZvs8xEx9hQ8PeSyPgsGpnGXPg17g2/SSjlR62i7aExX6op8uMLeGeWwZzmFUIJ9RjHbDf2Y/WLxh9UrX+HU+18sE+vuc9FiJkOL+LJ7xjkTtUXKD3Bi80xPQIfArjpMie2OKMP4krjnBLa1WuyOJici6ITh/ETzNtZFm0yEitagqBJTHP4QUDutozljpcRIrWl/bSKZT6TcgMyR42h0hBMx0xBxPgAyiXIWe7KHJeR1Ra+MWvALQYKw6UsY1cYv/LlA2lEXZOrGbWFu8WKLpyvKEHdJ7l1/mDdP9MKCWTLhr3h1GpMMAkkcazGnzF28755+LAN+9KBFOshuijJN/8NTRbMD5ZsfGIRPTOfUA1JQZ/FZzL9U4UdGqk4hjDZbSCSsYqnCox7X/fBowyMXuSujfpklSUSm+N9ipprNkzk0AoNiKMxnoqK7DqLBzDmupfhc7q2c/dV2UGF7bppjQvFkRn31Nb6h1YajfPRW4FHQAVSrEsxqgAlYCX6Y84k3HXVvD1gxYEe5Pb3TJhw2WOat5+n49vZLrd2
+ XC1Tk8FI
+ wvaQhhHWvh0q1siSkpLSovqlS6lgn7p9W82M3iREj5e2zJXEXn9ft5680aAL+vswKCu+cQpS1pxMXMzGDMoriX7rsEv7M+k9Ng6Tv0/DqW5qCZetZvPmb4u0WekPk5a34M6UF8rTBA6YSmzZZsEvRO0HiQYlZanaTCX1n491TsHBeh1hojDzbZ1jC5RE+cQWjCSjtTL84RXQxYBvkoB6WoFPd2EapDhMDhU1Jx0CfkbW+SQxgKTwEVVz/AVU+eAsTUybC5d2TwyCiUY5LoOLOWQ6SXwu4bCu55wnVIpd5uRXq2mc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,54 +99,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The module loader currently runs expensive address pairing logic for all
-sections blindly during relocation. For massive modules like amdgpu, this
-causes the loader to waste lots of CPU cycles analyzing non-exec sections.
+Vlastimil wrote:
+> On 7/21/26 02:45, hu.shengming@zte.com.cn wrote:
+> > From: Shengming Hu <hu.shengming@zte.com.cn>
+> > 
+> > kmem_cache_return_sheaf() may refill a partially consumed sheaf before
+> > placing it in the barn. Without an explicit restriction, this refill may
+> > draw objects from pfmemalloc slabs and consume emergency reserves.
+> > 
+> > Add __GFP_NOMEMALLOC so that returned sheaves are refilled only from
+> > non-pfmemalloc slabs. Also add __GFP_NOWARN, as suggested by Hao Li,
+> > because this refill is a best-effort attempt and failure is acceptable.
+> > If the refill fails, flush and free the sheaf instead.
+> > 
+> > Fixes: 3c1ea5c5019f ("slab: sheaf prefilling for guaranteed allocations")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Shengming Hu <hu.shengming@zte.com.cn>
+> 
+> Ah so per sashiko [1] we should consider adding also a __GFP_NORETRY to
+> avoid an OOM kill. Seems reasonable that an API for returning memory should
+> not cause an OOM kill... it's unusual enough that it takes gfp flags but I
+> thought defaulting to GFP_NOWAIT would be an unnecessary limitation.
+> 
+> I can add __GFP_NORETRY locally if others agree.
+> 
+> [1]
+> https://sashiko.dev/#/patchset/20260721084522552ZPa16p1SRj3PYat3sqxuN%40zte.com.cn
 
-Furthermore, there is an inconsistency since module_frob_arch_sections()
-already ignores non-exec sections during the counting phase.
+Agreed, adding __GFP_NORETRY seems reasonable, since this best-effort
+refill should not trigger the OOM killer.
 
-Check the SHF_EXECINSTR flag in apply_relocate_add(). If the section is
-non-exec, skip address pairing and then jump to normal relocation. This
-eliminates redundant search loops to improve module loading efficiency.
+However, I wonder whether the same scope consideration that Harry raised
+for __GFP_NOFAIL also applies here, and whether __GFP_NORETRY should be
+discussed separately rather than folded into this pfmemalloc fix.
 
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
----
- arch/loongarch/kernel/module.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+The earlier discussion is here:
 
-diff --git a/arch/loongarch/kernel/module.c b/arch/loongarch/kernel/module.c
-index 7d4d571ee55e..c84ac1546dc6 100644
---- a/arch/loongarch/kernel/module.c
-+++ b/arch/loongarch/kernel/module.c
-@@ -484,6 +484,7 @@ int apply_relocate_add(Elf_Shdr *sechdrs, const char *strtab,
- 	Elf_Addr v;
- 	Elf_Sym *sym;
- 	Elf_Rela *rel = (void *) sechdrs[relsec].sh_addr;
-+	Elf_Shdr *dst_sec = sechdrs + sechdrs[relsec].sh_info;
- 
- 	pr_debug("%s: Applying relocate section %u to %u\n", __func__, relsec,
- 	       sechdrs[relsec].sh_info);
-@@ -522,6 +523,10 @@ int apply_relocate_add(Elf_Shdr *sechdrs, const char *strtab,
- 
- 		v = sym->st_value + rel[i].r_addend;
- 
-+		/* Skip address pairing for non-exec sections */
-+		if (!(dst_sec->sh_flags & SHF_EXECINSTR))
-+			goto apply_normal;
-+
- 		if (type == R_LARCH_PCADD_LO12 || type == R_LARCH_GOT_PCADD_LO12) {
- 			bool found = false;
- 			unsigned int j = idx;
-@@ -562,6 +567,7 @@ int apply_relocate_add(Elf_Shdr *sechdrs, const char *strtab,
- 			idx = j; /* Record the previous j-loop end index */
- 		}
- 
-+apply_normal:
- 		switch (type) {
- 		case R_LARCH_B26:
- 			err = apply_r_larch_b26(mod, sechdrs, location,
--- 
-2.42.0
+[2]
+https://lore.kernel.org/linux-mm/33a1cb67-8d23-4b51-b4d8-9e95e8de00c7@kernel.org/
 
+--
+With Best Regards,
+Shengming
 
