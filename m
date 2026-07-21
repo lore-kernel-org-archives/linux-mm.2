@@ -4,104 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CE05C4452B
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 18:24:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CD39C4452B
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 18:28:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9F64B6B007B; Tue, 21 Jul 2026 14:24:27 -0400 (EDT)
+	id 347076B008C; Tue, 21 Jul 2026 14:28:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A7956B008A; Tue, 21 Jul 2026 14:24:27 -0400 (EDT)
+	id 31E796B0092; Tue, 21 Jul 2026 14:28:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8967C6B0093; Tue, 21 Jul 2026 14:24:27 -0400 (EDT)
+	id 1E7B06B0093; Tue, 21 Jul 2026 14:28:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1C5206B007B
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 14:24:26 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6BCAA140249
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 18:24:26 +0000 (UTC)
-X-FDA: 85013608932.18.7C1D6A4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 7FA2DA000C
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 18:24:24 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DVV+feby;
-	spf=pass (imf25.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784658264;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D20006B008C
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 14:28:12 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 65DBCA0271
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 18:28:12 +0000 (UTC)
+X-FDA: 85013618424.10.E404F44
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 73D95140010
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 18:28:10 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=nbnjvQ1M;
+	spf=pass (imf09.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784658490;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Yvn6r7dHmDV+5JRqVix1IFpZCujrNiFtwZVefWGMRs4=;
-	b=JjJ3YVul0Ee4kjUmlvLII8lVM3lGaEYF905mZAA4PAu6uzzLj04mnGbHWQF5ov0rXLe6e9
-	61F/0dPCoAtYAHftDyGosZMLgzWjNOMytDL+x/T/jO1WkdWLpR373q4bxnopQx2SMcHPrG
-	uY/EUbjVamtNqV1PDTT28kRyBYEv2dY=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DVV+feby;
-	spf=pass (imf25.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784658264;
-	b=xFk7NuMqNFGunHgSNDAi85+KRlsLnl0Z0J2bZORr6Xg0r/gbTbUbkJmeN+5asvnvkxpFlj
-	K6gT4I66INesX413ikF1rVaEXlz6a/Mw3JqbuqZ6NWnscWu5uje0VO4rYmflPK2l3XOBGd
-	wr665TKU1S/6SJOmwgseplWLrSjrR7I=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B367B43D68
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 18:24:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9794E1F00ACF
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 18:24:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784658263;
-	bh=Yvn6r7dHmDV+5JRqVix1IFpZCujrNiFtwZVefWGMRs4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=DVV+febyc5SvZzqTFnHNw2MPh3b+F9nSZIuNhLgTZksAbb3j9qNUtbYoL0ddpXEgL
-	 sdNOglak/5v3rcobGxEMx7QYOSVvCbagF+BEH6eIovd2R3FwRiqAYMAksJrBO8LFp4
-	 9ywnb8JLyqUFlYVfKiDu63UK7u1dhEwgVwI4srmYpuLMjbLvoAZdvgMGu6MoElbLQ+
-	 ltnWYq/jDKzauGvWDi3CSJQ3Nd/ffIfom4DGPddbVaqJs1jT1LjC5xKVAG4T5I7nnC
-	 Cy/MW9SgLfpA/3JLXi8wTWo8lqNFAjHZxhEmYGc3rm9S1uHBIDAOcLujYHR7TrM9aX
-	 89i2eRU0UtLCQ==
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-8143daf89c7so78316167b3.1
-        for <linux-mm@kvack.org>; Tue, 21 Jul 2026 11:24:23 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Rr9bVQTQvdU4Aqn65YlU2iU0HoOm+KOa4EfM5fT3E3R3J1h9I1YFMFFRrxBl64648ORCqu4/NIkFg==@kvack.org
-X-Gm-Message-State: AOJu0Yz36RcX3EsbIC5OQnSSkiCfdyanchwHDZdt7msXitgfMol1CjEe
-	EkGKMi4AmQkJYVmkEHVl3qV8svBNATQifA8FQN5+Kq4r4Uer0GMK8YHnMo664SOQVoXwxro6daK
-	r3pCOS0QSJ64K4TuLhU+bV68Jb4REP//KiqB/xDBwMg==
-X-Received: by 2002:a05:690c:6303:b0:80b:a6a3:937c with SMTP id
- 00721157ae682-81ef23e7382mr58902807b3.20.1784658262941; Tue, 21 Jul 2026
- 11:24:22 -0700 (PDT)
+	bh=zCOgBuJBdugLyqdqIa/3Y0VnqVqc4uDFkyLYhFb/R/8=;
+	b=P0yh9vgP/wJPruOyg9DaPtn9DrGMze08re5gSFVwxTkKJD+Rnc5y0rYI5XvsOhSPYvov1P
+	dIrdbbll6wY9CoCcC/wxOJYHgTbIsIBkfrPnHBI3NcCEE2vEVzEMvMXYrbEepi/rpxug5h
+	PkMpI5qTqAYn1thPcjlTnsIfb7VaojQ=
+ARC-Authentication-Results: i=2;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=nbnjvQ1M;
+	spf=pass (imf09.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784658490;
+	b=l51Ru6nWQxTDXTHPIv0+xUD8H2z7KEUdCWYppkHpEFladSxDRC07NkrJP+Hhd2Nf0gPT9k
+	az9w8dpjJvhIeXKBs2FQqYXMdsFMa57dgKzSelfhVn/SO/zTEaGVyCmplNiKo1SPJucwJH
+	vJer6Fw8eGBHkDVNjoZ/AQewTCqgdVg=
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-49553515a8bso38075765e9.1
+        for <linux-mm@kvack.org>; Tue, 21 Jul 2026 11:28:10 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784658489; cv=none;
+        d=google.com; s=arc-20260327;
+        b=rjonmM9L8Xoo8sxWeOd61QhcFu5l6RTlYz/wA4QuceZtP+BoHWZRYqeKbEfV2Vc/Ci
+         UxoDSnA7VMO1+4W8JgiTzJ/dN2fr+4LiRYINpyDX9i9b4ldtG3eaYATD+mMOHfxX6jzQ
+         mZgKZ1HXhmUTphBJDcn+UajbwjCZFhGD87m/dWue5vAtkZaMKdshaUQHdpZh4UvUtdBe
+         nFIIKw3LAzoGuJXf3Xy/xEctTQLUmPJcGQkpWc6lEMkHCw2S4RHhPglvViXz0A9fiZos
+         Nc8CpY4ACtILYGzzKT1GFI7J23HgY1A174MGGa1HDvdAycDZZRiATZUr4Ccd659qaKj7
+         lbzA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=zCOgBuJBdugLyqdqIa/3Y0VnqVqc4uDFkyLYhFb/R/8=;
+        fh=lr9H3SeGkShLJ9a/dvOarujqer4bEo9yU8jQ1dVpz9A=;
+        b=fg7Ebv2fD3kpL2s8tqoOh/d94kDvSP/GwRFTPRRL9VrSpkRv+yZJh+tVEOaMnwN5ry
+         o5eNib9/RGAlKBV+z/rsPdDGVbZMdwlEIkS+cj/ZoNexvuJi25FbLsmEugVA/I8BqDES
+         +kWxevOGvCPBH5eTbi4K0P2tAil8OBkmUX1C6z2b2fyh+s8tQeOBRNDnza+0EQWQ7O6A
+         x1AV18PwqXIF7hHWaD1B6nQhSpCNCF+65AotWqF25Gph/eihaVxJBkVw2S/47GvTaGP5
+         eTMpqCXYXDfjGu+0jP0byZ+0ipRzb66lJ0pJCOwebwu6FrrbvzjZCq7FN4hpGqDf7J6o
+         kvQg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784658489; x=1785263289; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=zCOgBuJBdugLyqdqIa/3Y0VnqVqc4uDFkyLYhFb/R/8=;
+        b=nbnjvQ1MPVTbMQUls1lqK8diP3EHAOw9s81EvB+ANo5Mn8KORafwN4EHP0YokFYDLO
+         Nh6PhV7Nq7wkvhE89y5RLVTiT4k0dMbXnIodtjFGlxk439krGwGkLCVF/KEZuFI0kXVd
+         eGe7p8/1QEG5yai2TL2aeyWJCBmCk+EapPdyMH1PmpyQHfh71Tvi/DdoHx11kjqTecU3
+         S/oh2h3Tqgs9Doe1dG7MQCLwSJ2PGzq7tP1cmLr4nZAIIdBwG4dftbaHwQjI6Iuwf7iw
+         3XGr0t8Mad6kR6LbId8GBGw0rackbQyS1IqD+icozzSBjcB6vT5nPnItBwag690wCFDm
+         Sl4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784658489; x=1785263289;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=zCOgBuJBdugLyqdqIa/3Y0VnqVqc4uDFkyLYhFb/R/8=;
+        b=CrQzHYLyA0ZAdDAD+OtFvq1nb1TghLXx+FTnr9sDt9hmFycU1Lk71D3Wo3guSaQfIE
+         AggBwOGmvGIHirIz1nczJEIJSPeMIfo/03wxYaZ1+L1i0KwbFhUqfc3kikW4vGnKSS3B
+         iBPf+WgwpJc3B8go3oipECVuyQ3CBhai8V90QiCcRmw9kD8mwQyiQyVUbONlxdz8Bnxr
+         DhE39QirHVbbCV80mHS7A5Vo2ql8tiQVU4CAoetwInYhRF2pJLbvKFbWVs+vEAgP3w3+
+         b8LNWTiD1ckzVGIQWscTmt1sDoAzv8yEkPTWkJ3lGGbLEx1mPhqZysAmsVagR+A+34vS
+         l0Zg==
+X-Forwarded-Encrypted: i=1; AHgh+RrswIAphO7hTMmzCilXslSGmFavFGk8F/OZusYVTT/Dk2vCCTuxV4h6rVnZ1wzsOjz1sSUq/Ge07A==@kvack.org
+X-Gm-Message-State: AOJu0Yz5eWjnAZW3T9KHXBCx8yLhTUc6n4LQIzMi3XYwkH1ZuM6IHff6
+	gOS5829iRZ+oZS5W7/k2akVm2wQHJn7S7Jhubv9ZNAQ0eJ3OOJrjhhhZevQ7XCz1/MPDKq9NLXt
+	owoKkXeZsU1sP/SkoP1oZTYy8CqZHSME=
+X-Gm-Gg: AfdE7clV2zlAcrp8g5AjqaILoudcnh4wOzNXAnP95m+HW7VnR34q2lMRljQFab8O6YI
+	cGID5C8q7PI76igl8L4erzKXguLNtc/QB6djQdWJqkp7tlVXYmzz3jyGlD2267VFQKOx7Pnb9Dk
+	Aau1ZYGPTD8ebuOD67rfXiB9HbN+K2GqPXWX5A3GFyFdMG8zDlKk7JyREUE3q9PI0VmitbKXlRT
+	oNd/eKb8DyunqZcoDd8YJCEJ4YhH/sqtNbLvAGKcBSI05L7XVITYMUGRfcueau4S0JcB5dzsGkQ
+	P7ZteX+z8LbrLt2a1g==
+X-Received: by 2002:a05:600c:3b91:b0:490:c6c2:52 with SMTP id
+ 5b1f17b1804b1-4954a3d0065mr268942165e9.3.1784658488814; Tue, 21 Jul 2026
+ 11:28:08 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260707082614.95030-1-baoquan.he@linux.dev> <CAKEwX=P50av2rfocpsqZoDQowZ=EEhQ-5vj5tBykbNz8vtKTzA@mail.gmail.com>
+References: <CAKEwX=P50av2rfocpsqZoDQowZ=EEhQ-5vj5tBykbNz8vtKTzA@mail.gmail.com>
  <ak-IS61GeP85Jnxg@MiWiFi-R3L-srv> <CAKEwX=PEgnJ4nGFZYUwMryjq+Yp4v8Op_HdZ6_xEJ4n_MrM0Yw@mail.gmail.com>
  <aldtS2S-TXc7ocsH@MiWiFi-R3L-srv> <aleW5xL2gYcU_Rl4@MiWiFi-R3L-srv>
  <CAKEwX=Pm_C6OD1jAo818wzFVVhLwgVFu-4bLdNrmUZ01URpLTQ@mail.gmail.com>
- <CACePvbV62T9LA894vTXzBZQ2PNh6iYZD7eH6=UjeFSWhUW2aDA@mail.gmail.com> <CAKEwX=NXJ1LKQOA8Qy_4YOS6v+jGbAJnbD5K0=jNbgC8Da0iKw@mail.gmail.com>
-In-Reply-To: <CAKEwX=NXJ1LKQOA8Qy_4YOS6v+jGbAJnbD5K0=jNbgC8Da0iKw@mail.gmail.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Tue, 21 Jul 2026 11:24:12 -0700
-X-Gmail-Original-Message-ID: <CACePvbXAqutPvawTcBXLa47=WVKdLBDHL8unKOSvV+KbrEmmwA@mail.gmail.com>
-X-Gm-Features: AUfX_mys3vauyZ8WwH1CBisqlM0IDjOy1s3SJEbaC5t0V3bCJk4rdpRQb67k2sU
-Message-ID: <CACePvbXAqutPvawTcBXLa47=WVKdLBDHL8unKOSvV+KbrEmmwA@mail.gmail.com>
+ <CACePvbV62T9LA894vTXzBZQ2PNh6iYZD7eH6=UjeFSWhUW2aDA@mail.gmail.com>
+ <CAKEwX=NXJ1LKQOA8Qy_4YOS6v+jGbAJnbD5K0=jNbgC8Da0iKw@mail.gmail.com>
+ <alo7tuEKLjA0IZQe@MiWiFi-R3L-srv> <CAKEwX=Pm2=fdPYE6e0o8bO2sazACwGhKCpstii-P-8P2AxWGDQ@mail.gmail.com>
+ <al8ohWshSSZ64AtT@MiWiFi-R3L-srv> <CACePvbUBfut0rjfK_4MTGrp09KHSXxtU7neS7O_eLNW8co-DaQ@mail.gmail.com>
+In-Reply-To: <CACePvbUBfut0rjfK_4MTGrp09KHSXxtU7neS7O_eLNW8co-DaQ@mail.gmail.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Tue, 21 Jul 2026 11:27:57 -0700
+X-Gm-Features: AUfX_mz4-feQWKUNvcgmyFVrV6T8D2pHHkQrhgianZo4drxPi6x5RYZAMGgdrbc
+Message-ID: <CAKEwX=Mv2gMsZ5FkfmyaNofz5CwhSCipOtWfax1oVTtom+OoQA@mail.gmail.com>
 Subject: Re: [RFC PATCH 00/10] mm/swap: ghost swapfile with backend switching
  via Redirect entries
-To: Nhat Pham <nphamcs@gmail.com>
+To: Chris Li <chrisl@kernel.org>
 Cc: Baoquan He <baoquan.he@linux.dev>, linux-mm@kvack.org, akpm@linux-foundation.org, 
 	kasong@tencent.com, shikemeng@huaweicloud.com, baohua@kernel.org, 
 	youngjun.park@lge.com, hannes@cmpxchg.org, yosry@kernel.org, 
 	chengming.zhou@linux.dev, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 73D95140010
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 7FA2DA000C
-X-Stat-Signature: 1tsutw81rogxizc535bky1pdc75ssxun
-X-HE-Tag: 1784658264-622111
-X-HE-Meta: U2FsdGVkX1+0H/5oS8qc8wvosjT0MWsWD6oJfU1G8KIgIl4qS5aUsoRQsLjbh3L5gkJeTpJSKAupxehZZofSJhGOX4S3QQMnUtiBzW7XDCt4ce66Cc+9NIpxUukVNc+u0/xkBMv8qWTxsNh26a5w4Dpnp3rqsE5xnklyutiHB66xM3AkoaHr6PTYJAhEIsq4PCx3n6Jj7o4/d/e3N1G9RATSCTHWCmiJ6QQV/vbTkO7adw3645ttyRukQUifiVBMel0LXVG5ZjxGcsFbzWIdoCF67zShlslki9+dwOoc5WzVu/PX7fb/3v0JRj/SoQunfxEOzKpeWTrY0XeBAfEncbHojQYxQiNXO1yvZnEd1gV5JCeW7ATEBW8dJFyESuYWpdOFJjJ81BNhSB1Xb3HPl+MVQ1///KZaj6Or6gF8QfVP25B6SCJv/b0052q3muGZg5WqRRRYesHiYMlnPJO3znAMKEd0CyWmEtyHRNL3+iQFF1FccTfg+nULXYjJ2Kb51ICR7aiJHuFO1jm/3imFi2JEjeBWuZ0nEexjPLJC9PlA5ODaVMZDVpgULkShQVayTmKmLn66J97MeWHY6DCfLjw/HL8YTNk8SZGpgOVCgIBvopWUDPlfSKu2D+ijSrq9E/VLTq+C1dUH1p21c+wUe7bxaKcGHCt3/C1Al/kOVsENH2qvTpJACfm+yinPoNBt7fTp15zbFz7yWReJvniBpUSMukt6j5qe6me7F2mHmJHSXbMEu6CdPavqLjgZekdI9n9p3vVh649vA7Bw97lLYMv49ReXmJyrM4dXv3DHWbsAtOLD4FsdTAmC4sHWJeNCtwYK+LTxhyrhQ5n1RP4tfvxZTD/aXbKRa1UAKHOhLAbxlPQIV058yTdLbeeXxH7RdSaHkI4NDcNwOjR2yQ1gKMB+2mo1ttc3UwzoHwH8gqIsu7+qav2lozvGrWe3VTdjfqAZYda+7eD/HgmS4Aj
- 4CrSptQ5
- uKEPvX50nnLmO9m8QjyInS/IhZY+ntHonL9XjK4Vh91+1rz4hMSIxcuYIniaDl2CNTtXgGfAWAZVJ4cftLTzz7vCj3NFAaUBeJYSZV15XJYemBPxBpJtoTWRHQp9fw6rX2Ln1ThT3y1/3bEBtzmeNNFAlbuXiAjUA1KKDoZIyUdD5TT6wXRHZrsXWulMX/nbKY4GR668WYqFiX3raj0JrepBO7dO49Upeun9XocT3FyKA40obQhD7ziLWksCotIzIE8TZxjzBg4RPDBlD8gWRCT79hTlCMfkrGkjg2UmkDfvAdE5pZxrq/Q6FJBAHCBjVTrLvKhe5cqRUkE4=
+X-Stat-Signature: g778yu6w1kgb6y1f31gp1xjfxap6edbe
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1784658490-61884
+X-HE-Meta: U2FsdGVkX1/q4w3TslkrM02MT6gIYxZGxvZY6rjXtGwZdmh3c+A/87JulM3d0mjV9d/bP1INfQcpHkH+Mn/yR/bXG/ZIYGyoQ234sdbKZGDxNmdOi6roDchMynooZJOLrU8d+l4+Jme/G0F3yPyMdkVhvy/9sNqaFqb5Q5Bqg5HdpDA7caEfz9P/UQEai5A0ZuDuki/I6jmhrmcT4lrUdJdzlJcpVB7bbN7uX3/3yCcnFH0KT4/uu3/Sy6HH40+xg3wfIyhQy8JQhq28ok8LCSzJJH6dAl5Yp4+3s1nQzQLKsTeMe/p/HuaTD5h8M/mEgfx43CCg2Y8np+qFNqDNPoUCfZZzPpnbZB5yr90uCFIJjxvNaCODtf0xQ/GHD34GdNdqUXp/xSZ0wDZbQ3SEeAiTDimP3S8wO9uhWx9CpWhi5J0ih3g2w88imn6d7logcCq9RMerb37o5dIfvU6wdv2bfbjhXj1sF0gyoVpwTLxDvYdgaL0i/M+8gLUh4nzQEMCcQqTbgYqshAXkglVtrwKC8lBmh9XITquixTgFfP/pyj0uDehUCLoJygudyJkbHF4+eW8QwtK4sewbq6D8LoD4nIwUAbJD+J6gVcU09zs8+3ymxA3L1QkPrbAtvFRw1QtopKCZAftRtu0RX+U33/Ueb41XeNRdnMf/UMEIEwwLgY69wcQzBBKaCTc0O6l4abCpAUrFGlzj8wqF/3r2LR4s/cTPQ7DAlvAgEEvBzemXUFwUMNC4ZL/G6hC22SWEc94us9PHX2vU8iNf55TRGK+FUPRqkzQXDHDKHYJRUrislgwZyXR3nPN/Z9dRkI1sUVOHCckHdLrfZ6PaGnSVw8FdJiu3CbSPZXqJ5+Jo2FE7Ago+UMvbWQT6q9sdu3zUorrjG7baalFCRulPX7HmIORxATh8+Hgi3T65mHoyuUL6TW7jrm8tIsNDgXU9YrLZcpQnn1WCtdWz0zllllQ
+ jEhk/Tv7
+ fMhi/E3Ed/28xlpom/YxIlx+3yLrR2zILpDFyYwXNfaD2Cb9xjf7fA1S1yVohUkE7jv1Q5g29zmXq7x7idZCK9OrQ+co3/TxdxBG6bWIU63oZqU58AYwlZNHuQFCuMVyMpEed86I403Rf+mc9FoxwFhLqjRv1jXB7Dxuntwv2rzuCgiU+oTYnOATbPgF0OmNZ2ZdaUfp/FZXb3ZEDf+Pr7ZSPQ6W6B7MOOz+X1e222d5Xn+wt51jE89ebcXWZV0IuI6rJyB+2Rrl+ETY3pzWWE3qnpbvk++PY0pfDzNxpqCS7wEjHoD2D+xtqisjm/W9yVAaKH3xuFGUl0ouw3L02gR1AKFKG5MPQN5kR+92rHaDIwi2ci1z8V3XSHPAmSkAroCURtEF1Lz+qJ1VzXkXQSNBJEWHlfRDmVjqRckIsz7vCiqo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,91 +149,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 16, 2026 at 9:49=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wrote=
+On Tue, Jul 21, 2026 at 11:03=E2=80=AFAM Chris Li <chrisl@kernel.org> wrote=
 :
-> > > [1]: https://lore.kernel.org/all/CAKEwX=3DOvR7GbU_9f2h_MtU4m0g6s-esHm=
-NQKYNhJz610M0P3Sw@mail.gmail.com/
+
+I'm writing a full response to Baoquan, but there are a couple points
+I'd like to point out first, to save everyone's from the confusion
+going forward :)
+
+>
+> On Tue, Jul 21, 2026 at 1:06=E2=80=AFAM Baoquan He <baoquan.he@linux.dev>=
+ wrote:
 > >
-> > Hi Nhat,
-> >
-> > Sorry for the late reply. I've been busy and just saw this.  First
-> > impression looks promising, it is better than any previous version of
-> > VS. Thanks for incorporating Kairui's feedback. Please give me some
-> > time to sleep on it. I will get back to you on that.
+> > On 07/17/26 at 09:02am, Nhat Pham wrote:
+> > > On Fri, Jul 17, 2026 at 7:27=E2=80=AFAM Baoquan He <baoquan.he@linux.=
+dev> wrote:
+> > > >
+> > > > On 07/16/26 at 09:49am, Nhat Pham wrote:
+> > > >
+> > > > Thanks for the thoughtful reply and the very constructive proposal.
+> > > > Your suggestion about moving forward in small, incremental steps in
+> > > > last mail is really appealing =E2=80=94 I think that's the right wa=
+y to make
+> > > > progress on this. I need a little time to think it through more
+> > > > carefully before giving you a proper response. Will get back to you
+> > > > soon.
+> > >
+> > > Yeah let me know what you think. I'm planning to send out v3 with som=
+e
+> > > more cleanups and fixes, but I'm happy to hear what you and Chris
+> > > wants to make it as useful as possible for everyone.
+> >> I agree with that. The current VS patch is a great improvement over
+> the previous version of VS. However it places the cluster info and
+> swap table in different locations when accessing swap table-related
+> information. The code path requires different locks as well, the
+> xarray needs to take the xa lock.  This kind of dual-personality issue
+> will make reasoning harder. Keeping the swap table in the same place
+> is simpler in my mind.
 >
-> Please take a look. I was waiting for your response as well :)
+> The other issue I want to add is that, using xarray as a swap
+> allocator is unverified. It has no size limit which is one of its
+> claimed advantages, but also one of its drawbacks. Because it does not
+> have swap_full() concept. It will never do the normal if swap_full()
+> fail to allocate, let's do swap cache related. That code path cannot
+> trigger because the xarray has no size limit.
+
+1. If the page is reclaimable, reclaim path will take care of swap cache to=
+o.
+
+2. For non-physical swap users, we actually eagerly attempt to get rid
+of the swap space (and swap cache) once the final reference is
+dropped. Zswap load invalidates the compressed copy, so there's not a
+lot of value in caching. I'm not sure if you missed this or not.
+
+
+> There are other considerations as well. It works fine if VS only wants
+> to allocate 4K swap entries. If VS later wants to go into the mthp
+> swap entry allocation. I don't think xarray has similar considerations
+> as the current swap allocator regarding fragment lists, etc. The
+> xarray isn't designed to be used that way, at least not in the common
+> usage situation.  You are likely running into your xarray allocation
+> specific issue.
+
+I don't understand what you're asking here. mTHP swap allocation
+already works with my RFC.
+
+The xarray maps to 512 entry cluster, not individual swap slots. Once
+you get a cluster (either from a partial cluster or a new cluster from
+the xarray), allocation of mTHP works exactly the same as physical
+swap allocator.
+
 >
-> The patch series is large, yes, but it's an RFC meant to show case the
-> final end design.
+> The xarray allocator also has a fragmentation issue where not all
+> memory released from the xarray returns to the system as free pages.
+> Using kvmalloc grow it will wait some unused cluster info. But let's
+> put it into perspective: cluster info is shared by 512 swap entries.
+> Each swap entry is 4K. So the memory used by swap cluster is pretty
+> small. Much smaller than 1 byte per swap entry. We can also modify the
+> cluster info array, making it an array of pointers. Then the waste
+> will be even smaller (if unused). At the cost of one more pointer per
+> swap_cluster_info. We can consider all this later, not at this current
+> stage.
 
-Understand.
+The xarray also maps each index to a cluster too.
 
-
-> > May I add one wishlist item related to ghost swapfile here? I will
-> > reply to your VS thread for other feedback.
-> >
-> > For the ghost swapfile usage case (no writeback). Can VS support this
-> > usage case while maintaining per-swap-slot metadata usage comparable
-> > to the ghost swapfile implementation? If we have to put a number to
-> > it, let's say the increase in metadata is less than 1 byte per swap
-> > slot compared to the ghost swapfile implementation.
-> >
-> > We have large deployments of ghost swapfile in the fleet. I want an
-> > upstream aligned solution that does not increase the existing memory
-> > overhead compared to the current ghost swapfile deployment, for that
-> > usage. As you know, memory pricing and optimization pressure are high.
-> > The ghost swapfile patch itself is relatively simple. If VS can
-> > address this usage case, it will remove a lot of incentive to explore
-> > ghost swapfile-like solutions.
 >
-> Hi Chris. I have some thoughts on this - let me know what you think.
+> > 4. Writeback and rmap as follow-up
 >
-> I understand the memory overhead discussion here. In the case where
-> vswap slot is backed by a real swapfile, I have not figured out a way
-> to make the overhead disappear yet. The damn rmap is very annoying - I
-> have some strategies to get around it for certain operations, but none
-> of it can be done without a full fledged patch series of its own.
->
-> However, with the ghost zswap swapfile backend specifically, I think
-> the overhead is going to be negligible compared to the status quo
+> I agree that adding cluster info growth as the first step. I recall
+> Kairui has an RFC patch series to implement virtual entry lookup
+> (still using the xarray). I think the combination of growth and
+> indirection lookup should provide most of what VS depends on from the
+> core swap point of view.
 
-We might need a clearer definition of negligible. e.g. in my mind less
-than 1 byte per 4K size swap slot.
-
-> upstream (things might be different internally at Google - please let
-> me know!). This is because the main remaining per-slot overhead comes
-> in the form of one per-cluster array to store the "backend", here it's
-> going to store struct zswap_entry pointers. This is not extra overhead
-> though, because it basically replaces the xarray (that you added all
-> those years ago)!
-
-I hope you are not clinging to that xarray because I want to get rid
-of that as well.
-
-> The rest is small stuff here and there that is not O(slot) but rather
-> O(cluster). For example one struct rcu_head per cluster, xarray
-> overhead for the dynamicization - note that this xarray manages
-> cluster, not slot. I think that's all, unless I miss something.
-
-I also mean the normal path that accesses the swap table will take an
-xarray lookup with different locking requirements.
-I prefer to keep the swap table and cluster info where they are now to
-avoid that extra complexity in the mental model.
-
-It seems allowing the cluster array's virtual entry to grow should
-mostly answer your VS need?
-
-> So if you don't writeback, i.e no physical swapfile, then I think
-> there is negligible overhead (no rmap and all that jazz).
->
-> Does this sound acceptable to you?
-
-Regarding the memory size, yes, if the overhead is less than 1 byte
-per swap slot compared to the ghost swapfile. The location and lookup
-path for the swap table and cluster info are not ideal because VS will
-force a different location and lookup code path. I prefer growing the
-cluster info array to gain more swap entries and keep the current swap
-cluster and swap table data structures where they are.
-
-Chris
+That is *exactly* what my RFC is using. Did you see the first patch? I
+put Co-developed-by Kairui for a reason.
 
