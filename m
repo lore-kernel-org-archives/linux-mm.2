@@ -4,96 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81B66C4452F
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 12:58:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 304FDC4451C
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 13:06:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 828D76B007B; Tue, 21 Jul 2026 08:58:31 -0400 (EDT)
+	id 0700B6B007B; Tue, 21 Jul 2026 09:06:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D9906B008A; Tue, 21 Jul 2026 08:58:31 -0400 (EDT)
+	id 021386B008A; Tue, 21 Jul 2026 09:06:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C9556B008C; Tue, 21 Jul 2026 08:58:31 -0400 (EDT)
+	id E7B9C6B008C; Tue, 21 Jul 2026 09:06:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C3056B007B
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:58:31 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C692880141
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 12:58:30 +0000 (UTC)
-X-FDA: 85012787580.26.E3A73D3
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf10.hostedemail.com (Postfix) with ESMTP id CB99DC0013
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 12:58:27 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=huawei-partners.com header.s=dkim header.b=Lu55HiYO;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com;
-	spf=pass (imf10.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BF1C06B007B
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 09:06:43 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AFE461C009E
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 13:06:42 +0000 (UTC)
+X-FDA: 85012808244.11.826BBCB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 94A814000D
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 13:06:40 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=TflpULBP;
+	spf=pass (imf04.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784638708;
+	s=arc-20220608; t=1784639201;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WQ/bIIO+fVLNltTgziHSVBVNXf4iqiNT2wWZgC2YhaU=;
-	b=juqqlBwgGGKcBvN9WzwjRGL/Qh6Gjsz2Gh+octL0p3B2tEBcEtNenMur+FOJy+ARsJA9pM
-	koUOClu1173qgmtRbJXJZxK4Dv97/Ym2/RfbNr5x2KkFgt3nt0rNaOzvrE+Y58jE2Gkdfx
-	e2kDjejglRcqG9JxV6/qp8ymuNgEUFU=
+	bh=gAvC7NZ0aC43RFdOVjevlRnmxAEAMYI/EG3Kb+rwdd8=;
+	b=2QLhfodwmIsJcv4Ln0fZzoi95w8ZdSoSIbTWqqSpN8EKbU6xpzdlZKjDyNwlvZd8Oe7AXu
+	ABjAA6HhQtO4YcIA2RZkxjH9imRLYNwv8kxqqUS5g7Vd6NnCokSCIROX3H5blPGhX5sHAA
+	iKCvzoy7DhKIZ9Q6cISuQ3rI9NN5bEM=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=huawei-partners.com header.s=dkim header.b=Lu55HiYO;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com;
-	spf=pass (imf10.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com
+	imf04.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=TflpULBP;
+	spf=pass (imf04.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784638708;
-	b=EBr4rRKIDu9p45pbB9faJAi12RICvDJHw+ZojbXlWvzD/uTlE/mR3mWtRqf1a5kvY4rwho
-	T4Y7o8qE4RcIzZCUxr9VSa54cypkJriqrrl7nQNwfvNjuYQZuHtQgXckF/670opWsiLJD8
-	2UMApt1E9eGPe5WcMs8cvxdNUvo7jlw=
-dkim-signature: v=1; a=rsa-sha256; d=huawei-partners.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=WQ/bIIO+fVLNltTgziHSVBVNXf4iqiNT2wWZgC2YhaU=;
-	b=Lu55HiYOJ4+JZue4XXyulYTRzrGLbp8+ldADC/bKhsApTDw8uDXqDBgD55OdwRAPU//nJGQpf
-	ZlsVv+/gQFZywoUyx4/MtgqFBCGZxmrqnSkaitEn4AqE9KqpqovtxWyZl8gm32z8CPOTrtVMAW2
-	aC8iaLQBuyHu+i8uCxPi4zs=
-Received: from mail.maildlp.com (unknown [172.18.224.107])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4h4HVQ156yzHnHSX;
-	Tue, 21 Jul 2026 20:57:50 +0800 (CST)
-Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
-	by mail.maildlp.com (Postfix) with ESMTPS id 5F9724058B;
-	Tue, 21 Jul 2026 20:58:14 +0800 (CST)
-Received: from [10.123.123.154] (10.123.123.154) by
- mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 21 Jul 2026 15:58:13 +0300
-Message-ID: <524b7d2c-4136-4476-9a84-a3dedcd00c5e@huawei-partners.com>
-Date: Tue, 21 Jul 2026 15:58:13 +0300
+	t=1784639201;
+	b=7GBEZXZ8/GEQpqCXkzYIiNWmnmBfc25lBpA8PO+CKkjGFJjYTalX9X9oN3U93jTxcy7v8w
+	g9sHd4RVxYjbRVleQ5E9RH8F7MW7+XTOfGAH43e0i98Xz7L1/Ik46NnxTBH11eS4NRmkl9
+	h+1E0alYZtY1ntxRCdl60yXTNyR9RKI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id AE5494150E;
+	Tue, 21 Jul 2026 13:06:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21BC41F000E9;
+	Tue, 21 Jul 2026 13:06:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1784639199;
+	bh=gAvC7NZ0aC43RFdOVjevlRnmxAEAMYI/EG3Kb+rwdd8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=TflpULBPsUF9aflAlRjqyKq3bZoqXA2/SV7TZ8SpHM0qr532SxGo94jmG94f/8458
+	 pmBaVGp1KUH9wdN+7AiMIEUWNhJFcN0SWo7CmJjMnenC/WRsOeSx2D3ONFlOfJws+X
+	 C98g4DPooh9J2Ox2vubP94bX6CJqIetdqjvDeXhU=
+Date: Tue, 21 Jul 2026 15:06:30 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Qi Xi <xiqi2@huawei.com>
+Cc: Naoya Horiguchi <naoya.horiguchi@nec.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
+	Jane Chu <jane.chu@oracle.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, sunnanyong@huawei.com,
+	wangkefeng.wang@huawei.com, stable@vger.kernel.org
+Subject: Re: [PATCH stable/linux-6.6.y] mm/memory-failure: fix missing
+ ->mf_stats count when hugetlb folio already poisoned
+Message-ID: <2026072112-lapping-turf-bf90@gregkh>
+References: <20260706084118.1284271-1-xiqi2@huawei.com>
+ <6a756801-f4a5-44a5-abfd-e9ae57432c56@huawei.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/3] mm/damon: Introduce a huge page collapsing
- mechanism using auto tuning
-To: SJ Park <sj@kernel.org>
-CC: <artem.kuzin@huawei.com>, <stepanov.anatoly@huawei.com>,
-	<wangkefeng.wang@huawei.com>, <yanquanmin1@huawei.com>, <zuoze1@huawei.com>,
-	<damon@lists.linux.dev>, <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>
-References: <20260721035848.147455-1-sj@kernel.org>
-Content-Language: en-US
-From: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
-In-Reply-To: <20260721035848.147455-1-sj@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.123.123.154]
-X-ClientProxiedBy: mscpeml500003.china.huawei.com (7.188.49.51) To
- mscpeml500003.china.huawei.com (7.188.49.51)
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: CB99DC0013
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6a756801-f4a5-44a5-abfd-e9ae57432c56@huawei.com>
 X-Rspam-User: 
-X-Stat-Signature: yn3afmsenhbbao3f6oqj5puktt64r54p
-X-HE-Tag: 1784638707-327738
-X-HE-Meta: U2FsdGVkX19rhM3tgpBXAuA1Wc6F6BAjpQp6ZX3KktobI7ro9LpmkALb6vZ+DBHMDM6qkRT9Khvz2hrFFFFbn3oEBs2lrCnLw7JGShNrAH10z0vS7KHL9FYye5VO4o0coe7e9FlJ5+LQH1VBzAoLXiaOPWhts33ke41k5zAYWb/548tqPKExMchWm+u1A4FCzYWrP22Shx1Gt9wm9vWfmefPD2q/q5pP/EHcz/Vo5euu8JfbtUj/r4D+yBOctOVatnGup8zW6JLam5ufNAcTQNjwjoXEPYwVqDbbnXgmxcFsvrnB31DyBbMk44UDL2UnSwdpcFzrSo7u5UTXylLruR1KQ9fCC+YiwODi81qKUFfN1DsxX+9lHI5x16YKSPU+5Kg0rLCzWG3o/BGlqadeZQFtlhAb1sZTAbVtGvnmqNgLUtFraIWLmGnzFimRAvjj1yoiB2frwLyObxiJzym/o3/Z0Zyavw4/dWl8VAOW4Q0jrYGl1YGuTde4xgyuj0FW+tv4OTo/j/QG6U0++mNNhHe9sjfAP+jkK9CYt8EE1qYCWd/lOM6JAxj+sm79/J0JAuZmR/bO9lyUViaGP3XvR2tLHkW8eBvLNyrsydd/DkI+tFZuAdoH/OrZmnhFOxWn2tsluNYpTP2uoi65uDAbKmYDl3VqogMrCSTrfjAVLvam/Hqq0syxJT3ATS0rx6D0nY3d6dgX7TAwxZT+WwbF9cO/c/Sr6RuuxVwDKYQQUdE5WXYF1PdBK4Zs//b9QfwjUSr9OXgR/WOI0SPEc6WAFfPrnwD8RpEsy3lui3W0iExAoxy+RVOZ6+dl8h14qYiB/htgRf8WdyWX2GYgmLSdT2jvWMyF7KHk7K2wNFth6SP/euvhGJ+QUQXQhZ0Vnrn8s0pAe9kU9kpUobPfxdDn3P+bc6/qVwHPWLct3Cjbc0ICGXHTy0MRrqr2u5fxS9l5q5mWUsDGuvTftOBUYXN
- w1tor2QQ
- yX/yN2LHhCCq6X7YlHkSq2gn9gIFqOr1daQEnhedsKFN8m1CyeSAHVDIJkyDcmYysxVrc6BKWU+we3sz031URrnag+QoRtp1nhOwWjMiAqzIHVUbOTbMqOq1UZUI9/ekv7+1hZwa5OSifX0W4kbr8K7EZUUIkJ+lV18ZRpvPc+j0J4fjVk8GhZfGlEZ4ic3lGYGP44JlOydlfN0fr7OTln5GfvSURInVs4/JHXG4/qrysfqGErqSNlUlc0MoOm3aZm50wtZhy7loocL2OgTYrOR3S2uScl/aX6ZaYtwZvzMf964zz16fqc/YsNzBP/7Ph6tnmXPyBmZTzophfwlY21IC7b4kcoVdzwwGa0YLv5G+JkXn2ZNpqdTUWkLIdSzxgw/2kedMS54+95MMnI/9aEreToQSDvrLrN4pd/plxzMuG36eM/bAq0gn5MoP/sw4lCXu8QIkHMEXVonA=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 94A814000D
+X-Stat-Signature: xh48c76phkjkmee61qz1bk4eoanertte
+X-HE-Tag: 1784639200-241626
+X-HE-Meta: U2FsdGVkX1/MbeAEgSr9WuuO+vMdgGRl5CZSuD+CBJJxDicaMSnwhJMvmxLjIzIq/P/g9V06Vd1wWD1zXu4D+SGIAQKW16D5nWZG9vGw9umUNxeYKCUVsab23s2zsVK5/ZGbEIPwVfoV1LKSLHmpy3f6y8t0MbXE2wlnHx6BiGF1t7PYw6D2xld575TaTUYf4ggZlITRit1+wmUU0ByU9mxFF7QzmOW87LCgyb3ef75gd9krGKNRMG6ttFBtIxenaFTrEXRFeODC9EbRzC8xocrwX14sD64XRy/qzgyvoqx9NWr7CgxvVtMuwzAWJWiOQ6Hi7nOsRLjTZfyPfF5k/U8E78r/auw+zqDk95CQdjP3rFD6y9SA77pJtAzfdK11mhfT9ATSz70U5DxsXUSFNJGWQ8WQ81PJ0g9ywqkeQzU5YB+8l8IDFbt5B0Xle2PAW8s/U/1ujyyprQTtv4XjxjCmXcgnncPG/QT318V18NGXA77sxsKFfFhWMTZ/6jrwZpcWxFUqot6QqUykgZmN0Nx9GdILDz4VMaG6u4R1DRi9Pcannc7kH0d8W33VflPT5KnAIimliCYUqT3AMZwTIbxGq7naYvHd0/vzF+sMlQfZKqkygfJazEiF8jCVQ9Qtn6g6SB4s0LOmG6f5sP6dvtNeKiU53mzhyn6mwO9wH1gunywMg2ztU9lhpqtUPJ3TR9qLafWmmh2xseZ62U2y7Hc+xG4Vnc/aPJK086A3FFlIV34r3wvNrv6X2gelRhccJ80A6Is6rCoO8z9lxshtvJi6nYVsT5T95i89lljqDmdGOg8q0hjmEWqYxy4kt2T3ILKELRYV/VgP6JQrFeSFFuQXqexaiK8a4bnReAST3tiyQi3nVSuxZghUdmNN342ARvwqd2CGurAdzDz0TFfIzf9653TpWxT//GsjJzABpCeHj7wRIOL8z4loV3p+i5qHHTaH6W724z8QeIxeMtp
+ /g6ApPI2
+ 0ZOp3N+sfo4ingCoILT8t1PxFURfUCezqPhMZghwwR+3BbFw2tPXgD0zcoRsG4DWArGPIbtbq8oSnzUc0849/4omDvkUM4x2V7oxx19ffOTcTIYAssIHus5xvQcBStdn9H5+Jg3vbpK/lQctgD5KdV500RaVwD4lIbhVminipxHa97kvQMlGw1xWJRbe3XoxkbQZLjRJXC06VmJ+8xotwQ0Vwc0FJxjYXPSLVTPjKqqs0UvfWEjz0VWdN0vMmToyxLjISyxnIhSV2Ae/XRU2Q+yTrHxp1pfaDe7m6aFtagetHOWUgxTHN1jU9RJDwOHIHQUDf1w+sY32jNNGv1CtBLIdcH+jscerCp1bciIS57UvwFemKlRhCn41CcY0jufI44Nl/GWvdylpANuE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,57 +93,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi SJ,
+On Tue, Jul 14, 2026 at 09:45:03AM +0800, Qi Xi wrote:
+> Add stable@ to Cc.
+> 
+> On 06/07/2026 16:41, Qi Xi wrote:
+> > When a new subpage is poisoned on a hugetlb folio that has already been
+> > marked hwpoison (MF_HUGETLB_FOLIO_PRE_POISONED), hugetlb_update_hwpoison()
+> > increments num_poisoned_pages directly, but the per-node ->mf_stats is
+> > not updated because this path bypasses action_result(). This leaves the
+> > two accounting counters inconsistent within the hardware memory-failure
+> > path: a new poison event is counted in num_poisoned_pages but not reflected
+> > in the per-node mf_stats.
+> > 
+> > In mainline, commit a148a2040191 ("mm/memory-failure: fix missing
+> > ->mf_stats count in hugetlb poison") fixed this by removing the direct
+> > num_poisoned_pages_inc() from the helper and adding action_result() calls
+> > in try_memory_failure_hugetlb() for the already-poisoned cases. The
+> > backport to linux-6.6.y as commit 252bb328b36f ("mm/memory-failure: fix
+> > missing ->mf_stats count in hugetlb poison") applied the refactoring
+> > (naming, constants, switch-case) but omitted the core counting fix,
+> > leaving the inconsistency in place.
+> > 
+> > Fix this by adding a matching update_per_node_mf_stats() call alongside
+> > the existing num_poisoned_pages_inc() in the same block, so both counters
+> > stay consistent without restructuring the error path.
+> > 
+> > Fixes: 252bb328b36f ("mm/memory-failure: fix missing ->mf_stats count in hugetlb poison")
+> > Signed-off-by: Qi Xi <xiqi2@huawei.com>
 
-On 7/21/2026 6:58 AM, SJ Park wrote:
-> Hello Asier,
-> 
-> On Mon, 20 Jul 2026 12:01:37 +0000 <gutierrez.asier@huawei-partners.com> wrote:
-> 
->> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
->>
->> Overview
->> ========
->> This patch set introduces a new autotuning which allows to collapse
->> hot regions into hugepages.
-> 
-> Thank you for making this series well done like this!
-> 
-> [...]
->> Patches Sequence
->> ================
->> Patch 1 -> Introduce DAMOS_QUOTA_HUGEPAGE_MEM_BP and autotuning
->> Patch 2 -> sysfs support for the new quota goal
->> Patch 3 -> Document hugepage_mem_bp parameter
-> 
-> I'd prefer handling 'total' underflow and returning 10,000 instead of INT_MAX
-> from damos_hugepage_mem_bp() corner cases.  But definitely that is no blocker.
-> For the series,
-> 
-> Reviewed-by: SJ Park <sj@kernel.org>
-> 
-> This series is applied to damon/next [1] tree.  If this series is not added to
-> mm.git in short term (~3 days?), I will ask mm.git maintainer (Andrew Morton)
-> to pick this.  In the case, I will update patch 1 to do what I mentioned as
-> preferred change if you don't mind.  So, no action from your side is needed for
-> now.  If it seems I also forgot doing that or you cannot wait for my action,
-> please feel free to directly ask that to Andrew.
-> 
-> [1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
-> 
-> 
-> Thanks,
-> SJ
-> 
-> [...]
+We need acks/reviews by the relevant maintainers before we can accept
+something like this.
 
-Thanks a lot for your patience and help with the patch series.
+thanks,
 
-I will work on the suggested minor changes once the this patch set
-lands into mm-next, if you don't mind.
-
--- 
-Asier Gutierrez
-Huawei
-
+greg k-h
 
