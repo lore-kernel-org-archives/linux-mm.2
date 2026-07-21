@@ -4,81 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 538F0C44529
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 07:58:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3953C44529
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 08:01:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 317136B0092; Tue, 21 Jul 2026 03:58:42 -0400 (EDT)
+	id C1C5F6B007B; Tue, 21 Jul 2026 04:01:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2EF326B0093; Tue, 21 Jul 2026 03:58:42 -0400 (EDT)
+	id BCD326B0095; Tue, 21 Jul 2026 04:01:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 22CC36B0095; Tue, 21 Jul 2026 03:58:42 -0400 (EDT)
+	id ABBE46B0096; Tue, 21 Jul 2026 04:01:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DCD586B0092
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 03:58:41 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5AE14A0BE8
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 07:58:41 +0000 (UTC)
-X-FDA: 85012032042.02.0CC6FAD
-Received: from lgeamrelo11.lge.com (lgeamrelo11.lge.com [156.147.23.51])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 77EFD40004
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 07:58:38 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf17.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.51 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A6946B007B
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 04:01:08 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0BE5040410
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:01:08 +0000 (UTC)
+X-FDA: 85012038216.03.04CE398
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 0ACB8A0015
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:01:05 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oSDQqTuh;
+	spf=pass (imf25.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784620719;
+	s=arc-20220608; t=1784620866;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RIXxGEqueAKbvhH20kRRx34G8a+xY9gHjs7JNw3QQys=;
-	b=YCcj9hfvwf11LjcqwAjp04PkBTP0o8+gEsBYDN/V89/YRvoSQ5zE4NAWuLM7IAMHBx79sz
-	ReD4icbl+az9XUzQqYunTeKBF0oX2iZMQSt+fbo+RzFHzK0zGbMjWbQT19NCjJ5UW5xes6
-	hdbspP9/bpgVRNCzxpjXrNqGesOuxiE=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf17.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.51 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=6GenzPzcYbFf+w6RJ/NVkKF8Dt0CNm/M4SQ446MxELY=;
+	b=5H9B2jqQSZazDD/ykMjxecdxuIBAH4CcF2h734tKrxhAhCTZXOfSVKACKkjGYkDJdr5U1v
+	w3PDZahEH+g90YSff9rylKvn0Hx6YHH151wtG3eodEVKY4m4yYQDgduffWVlnABmxAeHqE
+	MEFrAvTBi7FCfN4ZAVm7WTbTRkjCkcU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784620719;
-	b=fY1OYvr4crg+QWlCnXWaw7OnnC3/9/OUQGJhc9av+kffbMDpHx9E+IQaLi9/Ky8hRSBghp
-	GSLEqoGyksHQhM1Hzt3xuSdjzGPXqKulxDaxxjyBKZU/EstcLN1rEWKrOngLbSNdK+CrQs
-	hXONz5w0VYui/rlhX3OUmwinVY5Up/k=
-Received: from unknown (HELO lgeamrelo02.lge.com) (156.147.1.126)
-	by 156.147.23.51 with ESMTP; 21 Jul 2026 16:58:34 +0900
-X-Original-SENDERIP: 156.147.1.126
-X-Original-MAILFROM: youngjun.park@lge.com
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.1.126 with ESMTP; 21 Jul 2026 16:58:34 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Tue, 21 Jul 2026 16:58:34 +0900
-From: Youngjun Park <youngjun.park@lge.com>
-To: Kemeng Shi <shikemeng@huaweicloud.com>
-Cc: chrisl@kernel.org, kasong@tencent.com, nphamcs@gmail.com,
-	baoquan.he@linux.dev, baohua@kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/4] mm, swap: Remove unneeded
- swap_extend_table_try_free() in swap_dup_entries_cluster()
-Message-ID: <al8mqsmCy42X3Ewo@yjaykim-PowerEdge-T330>
-References: <20260720071342.50742-1-shikemeng@huaweicloud.com>
- <20260720071342.50742-5-shikemeng@huaweicloud.com>
+	t=1784620866;
+	b=kG55SNdMk62rxBiw0058QKEgKgdhJCKW9w2NH0BbeW8NRmBDDcmKUVAnMHuVgkoMy2Gtgw
+	IcHIbdTmNBQi40Ex8R7p2PBS/m1TJlNXvWW7ElDtGQf9NuNI2bpirKKnnENvSspOsAiAdu
+	Zr4PDmUBSXCdGZU05uDuQTLkzm+c358=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oSDQqTuh;
+	spf=pass (imf25.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3AD1D450D6
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:01:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D29C1F0155B
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:01:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784620865;
+	bh=6GenzPzcYbFf+w6RJ/NVkKF8Dt0CNm/M4SQ446MxELY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=oSDQqTuhskefxln0WsyjLF/koPtYsau0RQvIzKsmAFs7XLCPvs5Fi0XTWC46Y2Zos
+	 b6fRsfyZBVDc1nEO+ZUBJzQa8Qp52bRJADyZeo4wLsCzdcoybBhpJ8qQ6et5rtUeZo
+	 sWyVA3usbberbyHijsBWrMThw6OBBaeSXAUNWEdSPuGNhyvJXK28SNQi/lhcVs/WY8
+	 jGUn2t2Z+t8WP01I4r6HewhkXFan9Lx96Bk79vEsMnEXakvZguqP/Bys9zG1BYIYVF
+	 XWDRZlfC1RudSUqJ4nqSOYCmbGUAg2lgJ6ETB6OztIrqQXNqDKtyzdC9aEZDUThUXd
+	 UkxX12Xjp93Dg==
+Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-8f1a8e914a9so86184576d6.1
+        for <linux-mm@kvack.org>; Tue, 21 Jul 2026 01:01:05 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RqRJYHiJJ/oIuM5XxEBkglG7hRjBoBSzHZ4VfYg05/WQs9aic6aDOUKuS+ftEGUaDcgdCWT8UP2Uw==@kvack.org
+X-Gm-Message-State: AOJu0Yy9sVd0Nbom5cg3Hd6Mnw38uDOvDj/Pt3aHi7bdRbkNsIKR6b9q
+	khFLErkONCTOKW334imdbjhc6FyZ3yrNQZuJhGBTKeJjgdQsKEhZYS947mKcK8v6PWSQhQVUokt
+	Kcy9MkREkiG24Kfw5cZFMqL74squCID0=
+X-Received: by 2002:a05:620a:1a1b:b0:92e:cd21:447c with SMTP id
+ af79cd13be357-930b3f3e243mr1658877285a.38.1784620864331; Tue, 21 Jul 2026
+ 01:01:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260720071342.50742-5-shikemeng@huaweicloud.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 77EFD40004
+References: <20260717122514.51514-1-xueyuan.chen21@gmail.com> <20260717122514.51514-4-xueyuan.chen21@gmail.com>
+In-Reply-To: <20260717122514.51514-4-xueyuan.chen21@gmail.com>
+From: Barry Song <baohua@kernel.org>
+Date: Tue, 21 Jul 2026 16:00:51 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4yj3dYah2exFWLMwFhUysOz2U9ANyoESgdGKvRL0E_0zw@mail.gmail.com>
+X-Gm-Features: AUfX_mzV7chpGdNffqXbImgVBBAcu9kSDaNJlsxvxuv1ZaQiruWokGqb-8_Rtmw
+Message-ID: <CAGsJ_4yj3dYah2exFWLMwFhUysOz2U9ANyoESgdGKvRL0E_0zw@mail.gmail.com>
+Subject: Re: [RFC PATCH v3 3/4] mm/vmscan: avoid pointless large folio splits
+ without swap
+To: Xueyuan Chen <xueyuan.chen21@gmail.com>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, zhaonanzhe@xiaomi.com, 
+	hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev, 
+	shakeel.butt@linux.dev, muchun.song@linux.dev, chrisl@kernel.org, 
+	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com, 
+	bhe@redhat.com, youngjun.park@lge.com, david@kernel.org, ljs@kernel.org, 
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
+	qi.zheng@linux.dev, axelrasmussen@google.com, yuanchu@google.com, 
+	weixugc@google.com, baolin.wang@linux.alibaba.com, hughd@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 0ACB8A0015
+X-Stat-Signature: 8acj7q35fwjpmzyke6m41te9u3z3hdnq
 X-Rspam-User: 
-X-Stat-Signature: fxwqgfxbdq4ppdmhybe81n8m8pazzcqf
-X-HE-Tag: 1784620718-137335
-X-HE-Meta: U2FsdGVkX1+XmpulYZWlIxFa9nfYGXrZ5god3k7gZGtNb66z7QmtZGpAXsNpiXvAabNMQfkUisOYM9TzoUOZrTY9z/hPPylVODDScLorVf5w8nRfGLKJiu3EvQCsXe2kX8kH34btocGJ05oQLK7qrZswLJbIAOgh+bzqJSKYPmWVu3xa7byg3BMPW7n7OAwUp5d5K1RzYO3ddEausNIzIn6ixdlemBgQeW/ASYhsW6pjn5sVUE2idktx0Zhd2Aoz6xMvbsmO9ttBr34Eg+VDu/RagXKTwVT/+bmEYtLEmCUUWSTrNgKA3ojWMlzbku36bJEKEWQGRQR8KeZQV8D+pn4Vh04ouvDz/V9E4bI4YLiKuxLnkeVQEzP5yP5K1Q85qKZkRDcdokDmNvYnMZKjVOwWkc31QCZ1yKBVM8s3oAZkgTZJ99JW6tZNnFwHT9MBM0R3z0jg8aH8zvrFTc/ZFto6H5ulBjoV1PZttYjtfkLzYaS9k/kyTPiBkwJ+UH6jIqPo3wuo/CghzIq5tpXLDREaxCJHScjfAn19BDcUt25qjcXMr6/qyRxr6ACNOMUTlZbhKDveXgwcju9kliGFT7fEZ47G3Nu0uFmAZFhU/x/haf7TY2cqrtWR+ME4EIKT1E4HcQMPewhzVQsMdH7byVqcX1ZF3W0VzWD1i+wfWNl8NRAaFbxrMC0RJxquEE5v8VqHCzr8Vvqtha1JSuxbFyDEodrwV7nUENG3hLBvhcEYM9lU6QAiAqpT7qP6O97US/9lE5xGX8IxnYsNlJ9NSJviTjtQDc76h0GiW2wv2ZvuNb1u5t1fAhs3efB29NhwM7YXnrAPaiLRI9ja7zhvh7kIYZYydr30H6yjUTvcVfc9aw+anGbuDsvkLAfpugNEG1vbppFP4anYUpdULQJ2TBiyTbQUhXcpRl4VIkpRa3FCu4+yyrB+cJH87KR1cbG+n2JmmNRuoTIEw0SueTo
- qrtmzGd4
- rPzwjcYOoOISUMUCCGXtddgBz7GHSyZ+J8fMbWbOF2sZTcpS2z/OgY8w7q9WGgpGXxR3J5F9NpQrp/22TffoOwHvu9Asr+kmqKa0l5VY01jEeHVh0rVBmSsMRTSUldpr5A255Bz5vUsd0QpJon9V54dmIf+THW2Q85RuNlaj7af+7Eh2SfqbU45Kn5xNkZIdPyiuB4P73Zwq5vu4vfBVMxfQ5zH7f6WT98cOM4oeMokfumTopWixmmTxnaIcp9RiYfoaafMhS4s/0yueR+zBmQWYqXw==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1784620865-79634
+X-HE-Meta: U2FsdGVkX19hl/+hfPdDTNjMB9YMsQByzgejd+IT4k8PEz1qmOElPs0SYZRz3P0JUVHHz/ASwE/Uzk9WNEqydO6faVflLDdBgnj67XuJTRnhvKJYT0ZSstaIrKUJUnaN764CKUkyT1cCRJm0O/ui1opTUCcLbXJ2S+vjUspjM8MljLGC5ZoWEJviHpxjQQwHg8Q3+XeHclwM/kUMUE4Qco+9cbt4gWiBfJeRcHhoxuzUjcLOvwDNoH+w4HprrdnNDFUhi6CIRfZIuX6mo74SEQrcXQoCUbX87pMhsrqZgoN1yvl5Y8q2PHtoy5Tuz1lTZr/G7cu00sGDYX2Elc0p5NKlF0Ssv5EOFTw+BSQ8gOMOnp/UQOWycoZRCEoJNNUvcFt4AIScNCXwe+NpuxPwMKIpaiNAnjrTJ8CnUfMy5Z6qdNznniCWgpzoYarS07idAy/+tg3bSe/7+wHrE20qugOM3qt7xRu++BR/b79wObhVpe8BhYNqP76IbcZhF8NBDpDEbhIlb7RCZgPmeL7WNeWWYTHpkfdx470lRFi3In4R20GdUnw1xiKrLo5jmHKrN1F+TBXv0KKd0y0NyDym+obvJmoNTF+xx5O0nhh1KaoolJsfKgJUl0uUBv2NRMmij4u+PkbgKgrcKvMgPYkcbwisRfXW7QBIPa/NC4f0KKv8qHmJCgCsMH0Ye2EW/GtMMviwTwkYuAE/H6bRC2ziRcZhYpGXQ96Ia32PpJqekyGwqL+/tmM8Zg4AOJydi4YJgFg778eu/rBNpNm9zKq2Az6Vcf5s4y5xvosszINCcMNY30k0fiiY6CLOW9sy4NVY4qD5Q2h4doZnRvFWcY6aUkMgaXvY/xviLQmHniuI2sNzg9oeTtguj2v3KVazF1aU7cpxTLBmzzXLKJYKCvGZV6MfyHg6eQHQYrHSTN7AWpkcSBM2gTBrvtgCSB4gisOlX00sIW3GdEbVaQyZG5P
+ IjD9GWEG
+ oTyW+gYxh49SQP3Y5X6EB8qT8nclEFMatAwFxsWaOaopGtPSZt0WstO+fhPyLRYWjMZxLtKaDJGUH3JoeiSjyKSKYyseya6pTlWYZc1ZYb1XGehpzAyW8/6pbuPJNzPuw9PThmG+RkjqtpKG344n4W6MyFz30/fQckXh7KpEFiF7cU/23Yj+vvuEHeAA5oxuuq+5AogUwWO5VsA/c6hapX8knR+Ba5eFMShvdJM3Q+7t1Q9CChGcP4Gp4rUbRaycB1e5M0CwGrroLfLgubqzVSxEZkONcSkt87PxLOSkqdvZin/EAKr38ChAbR8+60xh2IkdA0i8wbdnZvtln15X3qIgiKkkohgVm5Z0dSfqoCJgrvJRs7bshs38QVBqvXiptkD5eygDiKX+c/hyCPXeson/5chavBFbGombGtJALOIooK/BLD8Tz+gIKgA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -86,73 +110,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 20, 2026 at 03:13:42PM +0800, Kemeng Shi wrote:
-> Since commit 0475fde0f68de ("mm, swap: avoid leaving unused extend table
-> after alloc race"), extend table is always allocated when any swap count
-
-Looks like this? 395085eacdfa
-
-> reach MAX - 1 and is always freed when swap count decrease to MAX - 1
-> or MAX - 2 with cluster lock held. So the extend table will always be
-> freed properly when decrease swap count in __swap_cluster_put_entry().
-> So swap_extend_table_try_free() outside of __swap_cluster_put_entry()
-> is unneeded and can be removed.
-> 
-> Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
+On Fri, Jul 17, 2026 at 8:25=E2=80=AFPM Xueyuan Chen <xueyuan.chen21@gmail.=
+com> wrote:
+>
+> From: "Barry Song (Xiaomi)" <baohua@kernel.org>
+>
+> When swap is disabled, exhausted, or unavailable due to memcg swap
+> limits, splitting a large anonymous folio cannot make swapout progress.
+> The fallback only destroys the large folio and inflates split statistics.
+>
+> Use -E2BIG from folio_alloc_swap() as the explicit signal that splitting
+> the folio might allow swapout of smaller pieces. For other allocation
+> failures, keep the existing activation path and avoid the split.
+>
+> This preserves the split fallback for fragmented or partially available
+> swap, while avoiding it when there is no backing space for any part of th=
+e
+> folio.
+>
+> Reported-by: Nanzhe Zhao <zhaonanzhe@xiaomi.com>
+> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
 > ---
->  mm/swapfile.c | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 3fcbd10c6353..fc9f16bc2e4e 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -1732,7 +1732,6 @@ static int swap_dup_entries_cluster(struct swap_info_struct *si,
->  failed:
->  	while (ci_off-- > ci_start)
->  		__swap_cluster_put_entry(ci, ci_off);
+>  mm/vmscan.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+>
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index bd1b1aa12581..40340a88f78e 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -1260,6 +1260,8 @@ static unsigned int shrink_folio_list(struct list_h=
+ead *folio_list,
+>                  */
+>                 if (folio_test_anon(folio) && folio_test_swapbacked(folio=
+) &&
+>                                 !folio_test_swapcache(folio)) {
+> +                       int ret;
+> +
+>                         if (!(sc->gfp_mask & __GFP_IO))
+>                                 goto keep_locked;
+>                         if (folio_maybe_dma_pinned(folio))
+> @@ -1278,10 +1280,11 @@ static unsigned int shrink_folio_list(struct list=
+_head *folio_list,
+>                                     split_folio_to_list(folio, folio_list=
+))
+>                                         goto activate_locked;
+>                         }
+> -                       if (folio_alloc_swap(folio)) {
+> +                       ret =3D folio_alloc_swap(folio);
+> +                       if (ret) {
+>                                 int __maybe_unused order =3D folio_order(=
+folio);
+>
+> -                               if (!folio_test_large(folio))
+> +                               if (!folio_test_large(folio) || ret !=3D =
+-E2BIG)
 
-Right, it handles duplicate here.
+I'd rather split it into two checks:
 
-> -	swap_extend_table_try_free(ci);
->  	swap_cluster_unlock(ci);
->  	return err;
->  }
-> -- 
-> 2.36.1
+if (!folio_test_large(folio))
+         goto activate_locked_split;
 
-However, looking at this part, since swap_extend_table_alloc() uses
-GFP_ATOMIC, I think it could be further improved by not releasing the ci
-lock.
+if (ret !=3D -E2BIG)
+         goto activate_locked_split;
 
-This would also clarify the situation where scount becomes MAX - 2.
-But there seem to be some drawbacks. For instance, the original intention
-might have been to make the swap_extend_table_alloc() API work seamlessly
-for both sleepable and unsleepable contexts, and some implementation details
-might not look as clean.
+This makes it clear that ret !=3D -E2BIG is only relevant for the large
+folio case.
 
-Here is what I was thinking:
-...
-        err = __swap_cluster_dup_entry(ci, ci_off);
-        /* <- Could -ENOMEM handling be improved here? */
-        if (unlikely(err)) {
-                if (err == -ENOMEM) {
-                        spin_unlock(&ci->lock);
-                        /* <- Change to NOT release the lock, and make
-                         * swap_extend_table_alloc aware of it with
-                         * GFP_ATOMIC(aware cluster locked) */
-                        err = swap_extend_table_alloc(si, ci, ci_off,
-                                                      GFP_ATOMIC);
-                        spin_lock(&ci->lock);
-                        if (!err)
-                                goto restart;
 
-Just sharing my thoughts! (Wondering if this could be a good direction for
-further improvement?)
+>                                         goto activate_locked_split;
+>                                 /* Fallback to swap normal pages */
+>                                 if (split_folio_to_list(folio, folio_list=
+))
+> --
+> 2.47.3
+>
 
-The current modification looks good enough to me.
-
-Reviewed-by: Youngjun Park <youngjun.park.lge.com>
-
-Youngjun
+Best Regards
+Barry
 
