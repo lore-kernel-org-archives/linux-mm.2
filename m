@@ -4,95 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCA28C4451C
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 12:39:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05B25C4452F
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 12:41:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C720C6B0098; Tue, 21 Jul 2026 08:39:16 -0400 (EDT)
+	id AC9436B007B; Tue, 21 Jul 2026 08:41:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD4886B0099; Tue, 21 Jul 2026 08:39:16 -0400 (EDT)
+	id A80296B008A; Tue, 21 Jul 2026 08:41:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A78146B009B; Tue, 21 Jul 2026 08:39:16 -0400 (EDT)
+	id 91CED6B0095; Tue, 21 Jul 2026 08:41:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 77EED6B0098
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:39:16 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1C7DD1C0029
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 12:39:16 +0000 (UTC)
-X-FDA: 85012739112.13.51C8C0C
-Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net (zg8tmtyylji0my4xnjqumte4.icoremail.net [162.243.164.118])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 4629880003
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 12:39:12 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5BF446B007B
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:41:19 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DAFE3A00D4
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 12:41:18 +0000 (UTC)
+X-FDA: 85012744236.12.2EA953A
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 7DDC380003
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 12:41:16 +0000 (UTC)
 Authentication-Results: imf30.hostedemail.com;
-	spf=pass (imf30.hostedemail.com: domain of chengfenglin@stu.xmu.edu.cn designates 162.243.164.118 as permitted sender) smtp.mailfrom=chengfenglin@stu.xmu.edu.cn
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=nMTllraD;
+	spf=pass (imf30.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784637554;
-	b=5DTavaiQcwHcCOWRI4zEUmzQr82V+kCWe8dPUpWaNTOzyXuMSlGuCFPZxo8B21N4r6Hlxm
-	487mxFUc6bdadUQduLrEczCWSpSdsd0UOxarIzqBOrX303C7E7hgHzJF4Rx6XssAQ1Y1ys
-	IVTU1a9wXmIjjPOT8lLvg+ox5C8hlMM=
+	t=1784637676;
+	b=ooGg7/asQ+0YVKQlQ+SA5ZMgnYKwd5YT9CPSWygGbRBkCESEBz/p33GVRmoFYdqLE0J235
+	tpe926vn1uY8kPeIUUQKxDkHPn0wfI5Gyl8C+ywFNutup79Y7uKRd8ks0qv2AmTgRDRIRW
+	euxUDdhy2c2EGS8pXXtFRzaWrFgg3g0=
 ARC-Authentication-Results: i=1;
 	imf30.hostedemail.com;
-	dkim=none;
-	spf=pass (imf30.hostedemail.com: domain of chengfenglin@stu.xmu.edu.cn designates 162.243.164.118 as permitted sender) smtp.mailfrom=chengfenglin@stu.xmu.edu.cn;
-	dmarc=none
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=nMTllraD;
+	spf=pass (imf30.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784637554;
+	s=arc-20220608; t=1784637676;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=J9o7MHeYrhqvMtTxAxjODO81wUU1IlSjmrdACYphAuk=;
-	b=wu5ITj5f2y9Y1X9IVBNECCdHw31fbcxUBTLej4ZZGdEJx5k2J+84snBXQERdRfTRCNIL8V
-	eIO5A74k9KNYTWg1WzUB6VD8JXdGHoJwfYAF+3Q3OHk3GlkfOJ92N3qJWynntOgeLSu74h
-	bp3RKrC2UxBhnJQpAnFZQ1Do7p1AsNo=
-Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
-	by hzbj-icmmx-6 (Coremail) with UTF8SMTP id AQAAfwA3GJloaF9qMU8yAA--.18095S2;
-	Tue, 21 Jul 2026 20:39:04 +0800 (CST)
-Received: from chengfenglin$stu.xmu.edu.cn ( [23.249.17.80] ) by
- ajax-webmail-mail (Coremail) ; Tue, 21 Jul 2026 20:39:01 +0800 (GMT+08:00)
-X-Originating-IP: [23.249.17.80]
-Date: Tue, 21 Jul 2026 20:39:01 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From: "Chengfeng Lin" <chengfenglin@stu.xmu.edu.cn>
-To: "Pedro Falcato" <pfalcato@suse.de>,
-	"Andrew Morton" <akpm@linux-foundation.org>, linux-mm@kvack.org
-Cc: "Liam R. Howlett" <liam@infradead.org>,
-	"Lorenzo Stoakes" <ljs@kernel.org>,
-	"Vlastimil Babka" <vbabka@kernel.org>,
-	"Jann Horn" <jannh@google.com>, linux-kernel@vger.kernel.org,
-	regressions@lists.linux.dev
-Subject: Re: [REGRESSION] mm/mprotect: shared-dirty base-page toggle slower
- since v6.17
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2025.3-cmXT6 build
- 20260202(ad063891) Copyright (c) 2002-2026 www.mailtech.cn OP_ICM_ICMVM
-In-Reply-To: <433d619a.1e8a6.19f1d4d1be6.Coremail.chengfenglin@stu.xmu.edu.cn>
-References: <7c9eeb21.1c04f.19efaacbb2f.Coremail.chengfenglin@stu.xmu.edu.cn>
- <433d619a.1e8a6.19f1d4d1be6.Coremail.chengfenglin@stu.xmu.edu.cn>
-X-CM-CTRLMSGS: =?B?+TW9bjiH6nJ5xwDR7hwMki1N8jM=
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=iPlPzqvav1UW5eHaa40ZbJscdEd+i1OC+0ehWg4cK3E=;
+	b=YccoYM5Zr9TvTl6oVqANIizkYfU2nRaXAKU7ptPCAEDcPk5wj+Ex+1/MrmKohbu1Gf2yCp
+	gm3hKktKkyw0m+2oeIMQmin+w/YS5SBLwYjbvmzurHdA6TksYxIlTMeOxrUvDcnKj4VzZS
+	/IRJE0fwJZodnxrIczUZKSh5mDzVoVw=
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66LAfsVU793700;
+	Tue, 21 Jul 2026 12:41:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=iPlPzqvav1UW5eHaa40ZbJscdEd+i1
+	OC+0ehWg4cK3E=; b=nMTllraDCvXzlQ4gSXh5/QOPJ0MHn7mfMQmwGww2FERYza
+	3mZJ7lRspjiI+v7D2VoxYDFEmEFFciuwPc5yYcYTj3PRDTHbMDUZzKB9bMuzb652
+	9gvnEFDZy9SgYJZd16lZ7Ff489jCVh8j5hrI7OdN7lZ4jJqZDU4EHij346BLWyH0
+	+lCmjbgkQb/4EQQ4DmgaM5kE/aYv2OZj2UrawOc7Ab0pe/BOx5Pigu7gfBbWHLYP
+	UjXfvzH/PCweM3nDKSSA+xjsv8IrcQdnR3ODYBqjuUSbcCXFDAHrT2JkZOpgOgP/
+	lJACeA6/CWy2Kp1a9aOQthVCa4ivXyIHEsSatL0Q==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fg790vh2a-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 21 Jul 2026 12:41:02 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66LCYYLH002468;
+	Tue, 21 Jul 2026 12:41:01 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fgm6w2c6d-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 21 Jul 2026 12:41:01 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66LCex8G42664360
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 21 Jul 2026 12:40:59 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 024B72004E;
+	Tue, 21 Jul 2026 12:40:59 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C3D232004B;
+	Tue, 21 Jul 2026 12:40:58 +0000 (GMT)
+Received: from tuxmaker (unknown [9.87.85.9])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue, 21 Jul 2026 12:40:58 +0000 (GMT)
+Date: Tue, 21 Jul 2026 14:40:57 +0200
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Muhammad Usama Anjum <usama.anjum@arm.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+        Pedro Falcato <pfalcato@suse.de>, Ryan Roberts <ryan.roberts@arm.com>,
+        Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "Liam R. Howlett" <liam@infradead.org>,
+        Mike Rapoport <rppt@kernel.org>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Samuel Holland <samuel.holland@sifive.com>, linux-s390@vger.kernel.org
+Subject: Re: mm: opaque hardware page-table entry handles
+Message-ID: <20260721124057.2820903Adf-agordeev@linux.ibm.com>
+References: <74182e50-b54f-4d2d-a27f-3a59a538d6bc@arm.com>
+ <31d36023-d728-4eee-90f8-158c7066f565@kernel.org>
+ <e22407d8-4509-4a53-9ba4-491b9d5c5ef7@arm.com>
+ <4bfeb697-9c1f-4316-96bb-9bfd66f959df@kernel.org>
+ <6110202c-057b-4701-8c04-1a76ee7bb9ab@arm.com>
 MIME-Version: 1.0
-Message-ID: <6c8d9b6c.24a8b.19f84afccdd.Coremail.chengfenglin@stu.xmu.edu.cn>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:AQAAfwAXMvNlaF9qBIjCAA--.14436W
-X-CM-SenderInfo: astqjiysvrikiuszmqhvwxh5lpxovvfxof0/1tbiAQALEGpZQDgCZ
-	QAFsz
-X-Coremail-Antispam: 1Uk129KBjvJXoW7uw1DWry7WF1rXw17Gw4rXwb_yoW8Cw1DpF
-	ZxCry5Gr4kCw1jy392van7WrWrCr93Ja15Jrs5K34xZas8GF9FyrWSy3W8ZF4jgr10v34Y
-	vrs8Kw17Jrs8uaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
-	DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
-	UUUUU
-X-Stat-Signature: qdwzkifebpen41k3tbeuop4n1bkgtw1c
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 4629880003
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6110202c-057b-4701-8c04-1a76ee7bb9ab@arm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: y-cS7h0zIIKKfU5heE1tSQvzZjOAVoN7
+X-Authority-Analysis: v=2.4 cv=V6RNF+ni c=1 sm=1 tr=0 ts=6a5f68de cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=kj9zAlcOel0A:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8
+ a=WHKbetgI1jfQOmHUsxoA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzIxMDEyOSBTYWx0ZWRfX5L8TJE6Lf5z/
+ PQ4oUUYB41NczNetweoXhqbQVYI4cGQ5SH66WxF9ziddwLi534CCE8LEyy62iBcCqZtE1f+D9RK
+ n5vYb/6LHZ4bxhdeg3gEDqW/yeWmPqw=
+X-Proofpoint-GUID: y-cS7h0zIIKKfU5heE1tSQvzZjOAVoN7
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzIxMDEyOSBTYWx0ZWRfX3cWHXzVyanrU
+ IGkEbOlm9FJuFbDU97cgAhueRbpaYHss3q5E2bfV9nfbIgx8kPrhkm4y1bhf6uQ6lfPCxulrP56
+ oJyn85GoW7FBamrYjdFw6soYQS7jF0BnlV6VhHppblUpc25b0SqU0riM3hBXJzwwDvIr0dO1orO
+ 8Su/34UenHl3yQjtQI4E4Fm+0doYENDWsyVgzbyQ+w0CoCvJ2d2j8rJdzODTG55f0CaihWQNL2z
+ DTvIAWRpAdV7o9rFTDFXqeQATE9OrNPJtibgXzfadiVtzk02wQRR3GYuPOdKaKkbRCxLAziVOhS
+ t/+rWhBtsUJwDCb2fnUvtNStfgyelrCiVLt1tKgFEE/dqCc38GhK0aAK1qCOgyN1KRj9Sb608j3
+ YCQB83mcJYOTjta5lm61iP+fkq4BzxsHvvosQ9aYfCBv662uIRSZQC9ymiHfmX+19wh3ppkxm5d
+ SX59MRyJoyPubstxIRQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-21_01,2026-07-20_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 adultscore=0 bulkscore=0 lowpriorityscore=0 clxscore=1011
+ spamscore=0 impostorscore=0 phishscore=0 priorityscore=1501 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607210129
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 7DDC380003
+X-Stat-Signature: didd9bkbg5ay3foqx77xe7ac3birxswq
 X-Rspam-User: 
-X-HE-Tag: 1784637552-610191
-X-HE-Meta: U2FsdGVkX1/7E0AGPKpw/9RbSfv6y7MepenQMDkmJ5DimwaCJXxeCZO721sy1VbrUtF0kIoUCVDWv69QtNjdCWnxT0o5KrYMhneT3Y0c5MbTs7pfYoKqKx5xqw4ZWwC1+5C5Ba+bzjiF+NTKM68XWYT4+kEhaw5baCQIa2uANSwAIP7PKfaFCAh4/oWhN+HD6ZczOVFyq/EiXTDauilaufJ4HWtHcWJvrLlF+p2SLFPJPoWLKLfuDp71pZgIe6cD/q1aCZJx53fU2u/adH7Gq9SqOwYMt1atRRFmD9t8BTYWLZVFxKKWQJy29J93E+2uTqOiD4nXBHkWWfYZAWCl2gkNrOXBI+NWYa0paK4GrNoGQLddB8ojLSTZMBoVKBdmZDas7vmZ5ccS7XkvV6Fo4eARCZWH9W+YzCFYN/bRnZtHq4VpYeHPuTLLYUIY1WUZvD9ovF+S8tT73cY1mKtTQt1PT0A1ghdVfZzkHYdsyNJ9g7cqLahRFG8787RhdDFv7mECoyy4IFMEVuFXwpcgimj/MngQ9oVwAB97DaeIvhjiOQSQsh0AxfBEJAMRBiKzmmAgYHxO3KWlICAfgNH5+HuMQAb/Xbjk7jwRnk7hsRpE5t8Maztgyde+wm+n2d46NsMZl9FJ8ppj0OeaA3igeMRkSTNXPduaJjmrpWqMG+hLK+WLcbznOhwAEdHC4BfhPRmoc5foLr7/Ty2wH1VrdoGN1KFTYRm2FfI3NbQ249pgBR83HiKUwiVAQPTrNUbPeQSxc+X7HphYGj3vi1P/RdS3xribsIILcvuLh5Vn2V60TwBV+Zm3Kfsunk67ae6KJpR63l0D//rKiZYcFdh3GidjcEI4erYFt/SNnFITHvlAb5FzniQdkQR3z5ovzdVFeYFMEegQK3YbHLilsDgrTb8kr4gjE64m3qONgC6WmLkvhWrRhb49bdRoT/ape6X3E7dVMWpW3c9mAmTSz/x
- BQSBgyZN
- GQM5aobd/fhQ2xYQsb2Ny6L6TV8pTUwM6vbvnHfEOpVqeSIA8JOTm4iUnqiEWr0yzK0QScXdH2PrfkSYJRhyjAcFB5HfU1orYjwYVWRA6tzMsw6uAj99NvBCrF/2F8BEHpqA6DqjVpB5Ka1Y2C3iipiHHCunmA9o/m0H7QSay4w0FF4N3nXfcnVGutVz9udpUGOWVK5rjDppZzOhw5cKhvpjifVz+4ahzJaFT0Jki6aAgctjU9dYLA0xWCDnxcNWieB7lBi3+5pMG2voUgcBbT4hi+7ISDJOtmYJmHvqG74VEWzaCZ/ixdhdVz0V9TjtQqe+7B3aukEzFd0NSlNDOa8KvEJ3YpTHiHaA5bhLeX7HU16w=
+X-HE-Tag: 1784637676-698197
+X-HE-Meta: U2FsdGVkX19HrwGw04pdpMocznj35hJhlG5K7Hx6JPoVDsLYsQI8FnhHHmTCg/wewX2iEOZYbLdcr094QasLQZ3OXZWD+AYt9VcV7Ttfs+Q2taCIfhy77R2ZAQZhzIyALZeYSz9OtP4eAmaSn5q10uxBgj1H6SVE6tCj36pKxJqiMd74fmOYLCMwA5YeQrohL5bIgKRoi4LchziSlDz0xaw6sy6Sh4SRgP3cIHVRQuTSRcSukhZ2QkgEh1/qAFhR+CLpwWKos+NiWYWKicPIv9SJvGfqF8sOOIgwp+YKqYh+TArgOf0dkDu3sKCPe+o8IGmVaw/M6F5+KNmmTa+tf9diOoNFFSsEjoCkxLgDZSYs78PwRA57fBDyjzV4TtB4ha6MegBkVEivAGX9QSyK4hpN0ZfX5CroiTGB96r3FpgOU8f90LZgtJNcnoVsniKNKOtpNPGdKNur+kstd0wW0SKUeSNq5ZfJGoV25k4dD8fEeKA59oGMXCtICkt7kC02oEChZqK57K41Tkem3/ezT+qYfazehFJhTfGDeqyBbX8jMPyG8EuJ9+5Ymivq0IMGqM00fvc/bT6z3V9aW1zbxzBdoQHGOiFHiv73S6IBFWRtD/J/5A7QiPNC14SagFRHTvqrwurhjeVjevAyAOgOQRKm+H7SWzhdpiaxUKSpHFLPS/MOwmqW2XqXYxbIDUsdB45W/6dnO54pVNW1CYqXTX8VMl5xHpZ/ICNZ5JgSTEAnGhvszU5YG5CFXP3yFXrXE8QiX3iHFe0g479fysiJNYF5NkxnNQPfMD9TgJ2JD6M9dujTruYyP/5Foodx8uisCKjZqj0QWJKRB3SSvO8opgbQFyFAE5Duymaipc8nl/TS8tFw+dQJbwA63S/T1ZgQsXlW3g+/lbTHeVuWvmFBXqEkU3JxVg77MeN1jfbRVJvxeom80rf+IlT88G0Olsf3Z4INeGlQLyMyIxWFqi2
+ w/dumKZ8
+ lclGbSpwTgSe2cbIqLyAvoYra2zN45+ESy4O2r6DpK+JA3e/E9xvLVHpCHsQh1HNLbROMr6C1jILeZ4/sTKYhEpc8jmVH/yseMHZjYfpbUNbKKouKSSX54Nq7KB5agjEkUrMIpp5jPasHKWXX1utjpT6RobErdeJHAErIlCZ1WYApAOJAPRHz4vrqUMtnwyl41UKnqoQ/JIclEM7j7kVKe5v5Yq57IYXXBJ5mrtgCPdM4XRGYmhjp1C6I+w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,39 +151,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-SGksCgpKdXN0IGEgZ2VudGxlIHBpbmcsIHdpdGggcmVzdWx0cyBmcm9tIGFuIGV4YWN0IGNvbW1p
-dC1sZXZlbCBjaGVjay4KCkkgdGVzdGVkIGNhYzFkYjhjM2FhZCAoIm1tOiBvcHRpbWl6ZSBtcHJv
-dGVjdCgpIGJ5IFBURSBiYXRjaGluZyIpCmFnYWluc3QgaXRzIGRpcmVjdCBwYXJlbnQgNDUxOTlm
-NzE1Yjc0LiBFYWNoIHBvaW50IHVzZWQgYSBmcmVzaCBib290OgoKICA0NTE5OWY3MTViNzQgcGFy
-ZW50IEEgLT4gY2FjMWRiOGMzYWFkIGNoaWxkIC0+CiAgNDUxOTlmNzE1Yjc0IHBhcmVudCBCCgpJ
-IHVzZWQgdGhlIHNhbWUgbmFycm93IDY0IE1pQiBzaGFyZWQtZGlydHkgNCBLaUIgYmFzZS1wYWdl
-IHRvZ2dsZQp3b3JrbG9hZCBmcm9tIHRoZSByZXBvcnQuIEVhY2ggcG9pbnQgaGFkIDMgd2FybS11
-cCBwcm9jZXNzZXMgYW5kCjE1IG1lYXN1cmVkIHByb2Nlc3Nlcy4gRWFjaCBtZWFzdXJlZCBwcm9j
-ZXNzIHJhbiAxLDAwMCBpdGVyYXRpb25zLgpUaGUgcHJpbWFyeSByZXN1bHQsIGl0ZXJhdGlvbl9u
-c19wZXJfcGFnZSAobG93ZXIgaXMgYmV0dGVyKSwgd2FzOgoKICBwb2ludCAgICAgICBtZWFuIG5z
-L3BhZ2UgICAgU0QKICBwYXJlbnQgQSAgICAgICAgICAzOC4xMzMgIDAuNzQzCiAgY2hpbGQgICAg
-ICAgICAgICAgNTMuNTMzICAwLjUxNgogIHBhcmVudCBCICAgICAgICAgIDM4LjQ2NyAgMC42NDAK
-ClRoZSBwYXJlbnQgbWlkcG9pbnQgd2FzIDM4LjMwMCBucy9wYWdlLiBUaGUgY2hpbGQgd2FzIDM5
-Ljc3JSBzbG93ZXIsCndoaWxlIHBhcmVudCBCIGRpZmZlcmVkIGZyb20gcGFyZW50IEEgYnkgb25s
-eSAwLjg3JS4gRHJvcHBpbmcgdGhlIGZpcnN0Cm1lYXN1cmVkIHByb2Nlc3MgZnJvbSBldmVyeSBw
-b2ludCBsZWZ0IGEgMzkuNTMlIGNoaWxkIGRlbHRhLgoKQWxsIDQ1IG1lYXN1cmVkIHByb2Nlc3Nl
-cyBwYXNzZWQgdGhlIHNlbWFudGljIGNoZWNrcyBhbmQgdXNlZCA0IEtpQgpwYWdlcyB3aXRoIG5v
-IFRIUC4gVGhlIHByb3RlY3QgYW5kIHJlc3RvcmUgY29tcG9uZW50cyBlYWNoIGluY3JlYXNlZApm
-cm9tIDEzIG5zL3BhZ2UgaW4gdGhlIHBhcmVudCBjb250cm9scyB0byAyMCBucy9wYWdlIGluIHRo
-ZSBjaGlsZC4KVGhlIHBvc3QtdG91Y2ggY29tcG9uZW50IHN0YXllZCBjbG9zZSB0byAxMiBucy9w
-YWdlLgoKVGhlIGV4YWN0IGNvbW1pdCBjaGFuZ2VzIG9ubHkgbW0vbXByb3RlY3QuYy4gQm90aCBr
-ZXJuZWxzIHdlcmUgYnVpbHQgZnJvbQp0aGUgZXhhY3QgY29tbWl0cyB3aXRoIHRoZSBzYW1lIG5v
-cm1hbGl6ZWQgY29uZmlnLCBHQ0MgMTUuMi4wLCBhbmQgS2J1aWxkCm1ldGFkYXRhLiBFdmVyeSBw
-b2ludCB1c2VkIHRoZSBzYW1lIENQVSBzZXR0aW5ncyBhbmQgcnVudGltZSBwcmVlbXB0PW5vbmUu
-CgpGb3IgdGhpcyBuYXJyb3cgd29ya2xvYWQsIHRoZSBleGFjdCBwYXJlbnQvY2hpbGQgcmVzdWx0
-IGlkZW50aWZpZXMKY2FjMWRiOGMzYWFkIGFzIHRoZSBzb3VyY2Ugb2YgdGhlIG1lYXN1cmVkIHNs
-b3dkb3duLiBJIGFtIG5vdCBjbGFpbWluZwphIGdlbmVyaWMgbXByb3RlY3QoKSBvciBhcHBsaWNh
-dGlvbi1sZXZlbCByZWdyZXNzaW9uLgoKRXZpZGVuY2U6CgogIGh0dHBzOi8vZ2l0aHViLmNvbS9s
-Y2YwMzk5L2xpbnV4LXJlZ3Jlc3Npb24tZXZpZGVuY2UvdHJlZS9hM2FlN2JmMWE1MGU0ZDg4YjU3
-MmM2MDA1YTAzNzY3OTUzMGM5YjFmL21wcm90ZWN0LXNoYXJlZC1kaXJ0eS10b2dnbGUvYmFyZS1t
-ZXRhbC8yMDI2MDcyMS1jYWMxZGI4YzNhYWQtZXhhY3QtYWIKCiNyZWd6Ym90IGludHJvZHVjZWQ6
-IGNhYzFkYjhjM2FhZDk3ZDZmZmI1NmNlZDg4NjhkNmNiYmJkMmJmYmUKCklmIHVzZWZ1bCwgSSBj
-YW4gc3RpbGwgY29sbGVjdCBhIHBlcmYgcHJvZmlsZSBvZiB0aGUgY2hpbGQgYXJvdW5kCmNoYW5n
-ZV9wdGVfcmFuZ2UoKS4KClRoYW5rcywKQ2hlbmdmZW5nCg==
+On Wed, Jul 15, 2026 at 05:15:36PM +0100, Muhammad Usama Anjum wrote:
+> Hi,
+> 
+> [Moved some already involved people to To. So they can help with the plan
+> details mentioned below.]
+> 
+> On 07/07/2026 2:17 pm, David Hildenbrand (Arm) wrote:
+> > [...]
+> > 
+> >>>
+> >>> typedef struct {
+> >>> 	pte_t __pte;
+> >>> } hw_pte_t;
+> >>>
+> >>> And then simply use
+> >>>
+> >>> hw_pte_t *hptep;
+> >> Make sense. So you have suggested to just hide put pte_t inside a structure
+> >> instead of complex structure of pointer. I've tried to implement and it reduces
+> >> churn enormously.
+> > 
+> > Right. And for most architectures we can probable leave both types be the same
+> > under the hood.
+> > 
+> > So we'd only have to convert common code first, and can then e.g., look into
+> > making architectures that care about the difference (e.g., arm64) actually have
+> > it be two separate types.
+> It makes a lot of sense.
+> 
+> Let's even divide the series into more parts as there are several places where
+> conversion is controversial. (Xi Yan had mentioned one example earlier in this
+> thread.) Most of those controversial conversions are pmd related. I propose
+> that we convert pte_t first, then pmd_t and others. It'll keep the number of
+> patches manageable and easier to review. 
+> 
+> I think wider agreement for this approach will be very helpful before I post the
+> actual code.
+> 
+> > 
+> > Just an idea to further reduce the churn and limit it only to core code (because
+> > I saw some very ugly stuff in some arch code that would make such a conversion
+> > harder).
+> > 
+> > [...]
+> > 
+> >>> Why do we need this and what would we use it for?
+> >> The idea was that there should be two different functions to read value. Let's
+> >> leave this out of the first initial series. It is complicating the original
+> >> proposal.
+> > 
+> > Right, let's leave that out for now. I'm currently working with Levi on an
+> > approach that tries to avoid the overhead due to READ_ONCE with folded page
+> > tables. [1]
+> So you are referring to page folding improvements. I also stumbled upon those
+> while doing a dirty implementation.
+> 
+> > 
+> > We're still struggling with some bits, but looks like we can make it fly and
+> > have it be fairly robust.
+> > 
+> > With that, maybe there is no reason left to have separate pXXp_get() vs.
+> > pXXp_get_once(). TBD :)
+> Yeah, I was reviewing that series earlier today. I've not looked deeply, but it
+> seems there are still a lot of cases where (mostly) pmd is getting dereferenced
+> directly. To complete the conversion, direct dereferences need to be converted
+> into an API. I've been thinking if there should be a dereference macro or we
+> must always use pmdp_get() even though it ensures ordering. It may add excessive 
+> ordering in some functions if pmdp_get() is getting called multiple times. But
+> storing its output in a tmp variable would solve this. 
+> 
+> Do you agree with converting all direct dereferences into pXXp_get()?
 
+For the clarity (e.g. on the PTE level) is it goint to be converted to?
+
+pte_t ptep_get(hw_pte_t *ptep);
+pte_t set_pte(hw_pte_t *ptep, pte_t pte);
+
+While variables on stack are still may be dereferenced directly via pte_t*?
+
+What about unlinked/temporary page tables in memory?
+
+> > [1] https://lore.kernel.org/all/08ecabe9-0664-4aea-82fb-f9cb1739f762@kernel.org/
+> > 
+> > [...]
+> > 
+> >>>
+> >>> I'm still not sure about the _once() really, and if we need that right now. We
+> >>> survived without is so far, why do we need it now?
+> >> The idea is to convert all current pXXp_get() to pXXp_get_once() and convert raw
+> >> dereference to pXXp_get(). Let's keep this idea separate for the other work. Let's
+> >> discuss it later sometime again later.
+> > 
+
+> > Sounds good.
+> 
+> I've tried to do conversions already. Converting by call hierarchy wise is very
+> difficult and error prune.
+> 
+> Converting component by component (such as page walk, huge page) is also difficult
+> as code is tangled. Some helper which is getting used in one component is also used
+> in another component.
+> 
+> I see the following way forward:
+> * Add the new type
+> * Identify which functions need explicitly pointer to a stack variable. These
+>   must not be converted. These variables must be renamed to a common name. For
+>   pte_t pointers on stack some functions already use ptentp, which is unique name
+>   if we look at generic code. So ptentp would be used for all such variables.
+> * One commit per controversial change would be done at this point. We need new
+>   separate function for stack types. Also we can do more renaming to a name which
+>   will not be converted.
+> * Run Coccinelle script directory-by-directory which would ignore converting any
+>   ptentp (and similarly for other types). Coccinelle doesn't converts in some case
+>   (pte_t *a. *b) which can be done by hand at this point.
+> * Update any remaining functions
+
+What is the approach to STRICT_MM_TYPECHECKS?
+
+We would like to keep it, and I guess some other architectures too.
+
+> -- 
+> Thanks,
+> Usama
+
+Thanks!
 
