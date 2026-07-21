@@ -4,129 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE55AC4451C
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 08:06:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7A6AC4451C
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 08:06:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC6DA6B0096; Tue, 21 Jul 2026 04:06:24 -0400 (EDT)
+	id 98F246B0099; Tue, 21 Jul 2026 04:06:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A50B66B0098; Tue, 21 Jul 2026 04:06:24 -0400 (EDT)
+	id 9412E6B009B; Tue, 21 Jul 2026 04:06:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 917FF6B0099; Tue, 21 Jul 2026 04:06:24 -0400 (EDT)
+	id 830B66B009D; Tue, 21 Jul 2026 04:06:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C38D6B0096
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 04:06:24 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D2033A0429
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:06:23 +0000 (UTC)
-X-FDA: 85012051446.17.503C9E0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 0E93C140009
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:06:21 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YiSd8pDU;
-	spf=pass (imf09.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784621182;
-	b=OdBhWifWVbrYZwXEh8zYXETw83MRdORNoCastLS4n4JCZkTEm5PdpgnmKtadfabksGZu2L
-	nUG/sN53c3xqiE97edpusDYDvNY/VbbfutRsVxL2zPG5wsDZfWJvBMfJSAOxb8rNHBcN5X
-	nWwoP3QB122GfFQXSSpBKmlCqGfKrDY=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YiSd8pDU;
-	spf=pass (imf09.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 4D3DA6B0099
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 04:06:47 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C9FC0A0450
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:06:46 +0000 (UTC)
+X-FDA: 85012052412.23.764B937
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 52052C000A
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:06:43 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=GoXxF9gL;
+	spf=pass (imf10.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784621182;
+	s=arc-20220608; t=1784621205;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ROLOrfPqMTfQb393OeJq2htXFD07Htbn862T+F3MXnE=;
-	b=ioNA1QRNFgldzWdq/e7C7jgklOn5RihCKMVaJQrL+ljdTtqU6YpfNh8LXMoIoZP2XgL/Yb
-	A6M6nRbpB1QMfvO2nEcjPPaCoOmDBz6mOlHJletxhHnzrIUfZFy5NeTJmesDMAH8spKSzd
-	14WOhO/LsC2fkPESYn7v/86P4LF+K5Q=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4502C43995;
-	Tue, 21 Jul 2026 08:06:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A8711F00A3A;
-	Tue, 21 Jul 2026 08:06:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784621181;
-	bh=ROLOrfPqMTfQb393OeJq2htXFD07Htbn862T+F3MXnE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=YiSd8pDUlnk54p+cGidnrLlHwhi5yZ2AVjrgGHvwLxttGbMXx+XqXN8synT9inFmJ
-	 cIT4D3U6E76mBReMbCCip8dEZDv8f85y5wye92oxssvHvJS2q1X33CsKweQ24BX7y0
-	 6yEyfP6/h9WEo/imefAHtTQqczYlqlgCsTB/8NIpAmRw9XWmBwkGaG3BSzSrwYhAhv
-	 Dkzjr42zd5yQ4LqGe6UHz1Gg7WNacsg3JIdbbt0FCS0w5UZhQu7ZDEr42JFY5aKxON
-	 y6orMEYgD3vOBeQLTLGlzzHZVheUtrIxkNtNo5NaoDrWtXB/wr6BRyJVnae1ABeWlG
-	 ULhQ3r7gkednw==
-Message-ID: <17fe32e3-6761-4101-9d5f-2b22c8a83d7b@kernel.org>
-Date: Tue, 21 Jul 2026 10:06:17 +0200
+	bh=YRC91WJZB8K86VbjtUS5rd8+YdjblueKOYRzcZP+nsE=;
+	b=nmYzNTvOiu6qbwzUgC5BOzxR55y8bbFnY586lLkJfyx4DcQ1BEYcw8lTnLjX/kau/0+BPQ
+	O/RNoGEtpAeR9ngXYl/jJLXcg1M45pmb7zu2hramYnxqd65tkHqSVUTaIM3S8C/ulzIZGX
+	z6bW+UMVS3Y2hyjNPzqVYBM6zy8vZ04=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=GoXxF9gL;
+	spf=pass (imf10.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784621205;
+	b=UuJXqTMEIB2HwZADgLKFd4k2jUT+frYbXNxcs42yyPRS1hYGAF+rKLm2W7bGBc2nP2AGMJ
+	DfJh0J7VJQ5VUQz30FFRz2aATEgNi43HxSZ9c9KNFDZVY/LrYmlyeecEdtaCYhmRifdA5o
+	3EKbZcCFysrYifI5VFDuPc9N57g8wzs=
+Date: Tue, 21 Jul 2026 16:06:29 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784621199;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YRC91WJZB8K86VbjtUS5rd8+YdjblueKOYRzcZP+nsE=;
+	b=GoXxF9gLCWOZ154SIxCP7kilRCqGxaRA7Q2wYzfIT/kdR9Lh1rosaSxTn8PZx5kF15XCys
+	MPvedDbt5SO/WrWkissscNc5BdndpOvP8zvbqY1rj/3dgtn7tag1ZzFxXz4Zf5CDos2kSr
+	lIxAWyPrR5ammgU5UCOV2LQYBWgg3AE=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Baoquan He <baoquan.he@linux.dev>
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: Chris Li <chrisl@kernel.org>, linux-mm@kvack.org,
+	akpm@linux-foundation.org, kasong@tencent.com,
+	shikemeng@huaweicloud.com, baohua@kernel.org, youngjun.park@lge.com,
+	hannes@cmpxchg.org, yosry@kernel.org, chengming.zhou@linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 00/10] mm/swap: ghost swapfile with backend switching
+ via Redirect entries
+Message-ID: <al8ohWshSSZ64AtT@MiWiFi-R3L-srv>
+References: <CAKEwX=P50av2rfocpsqZoDQowZ=EEhQ-5vj5tBykbNz8vtKTzA@mail.gmail.com>
+ <ak-IS61GeP85Jnxg@MiWiFi-R3L-srv>
+ <CAKEwX=PEgnJ4nGFZYUwMryjq+Yp4v8Op_HdZ6_xEJ4n_MrM0Yw@mail.gmail.com>
+ <aldtS2S-TXc7ocsH@MiWiFi-R3L-srv>
+ <aleW5xL2gYcU_Rl4@MiWiFi-R3L-srv>
+ <CAKEwX=Pm_C6OD1jAo818wzFVVhLwgVFu-4bLdNrmUZ01URpLTQ@mail.gmail.com>
+ <CACePvbV62T9LA894vTXzBZQ2PNh6iYZD7eH6=UjeFSWhUW2aDA@mail.gmail.com>
+ <CAKEwX=NXJ1LKQOA8Qy_4YOS6v+jGbAJnbD5K0=jNbgC8Da0iKw@mail.gmail.com>
+ <alo7tuEKLjA0IZQe@MiWiFi-R3L-srv>
+ <CAKEwX=Pm2=fdPYE6e0o8bO2sazACwGhKCpstii-P-8P2AxWGDQ@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/slub: prevent pfmemalloc objects from entering the
- barn
-Content-Language: en-US
-To: hu.shengming@zte.com.cn, harry@kernel.org, akpm@linux-foundation.org
-Cc: hao.li@linux.dev, cl@gentwo.org, rientjes@google.com,
- roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- zhang.run@zte.com.cn, cai.qu@zte.com.cn
-References: <20260721084522552ZPa16p1SRj3PYat3sqxuN@zte.com.cn>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260721084522552ZPa16p1SRj3PYat3sqxuN@zte.com.cn>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: dazrpzamhmtzkk7w8ta84887jjwz4jy6
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 0E93C140009
+In-Reply-To: <CAKEwX=Pm2=fdPYE6e0o8bO2sazACwGhKCpstii-P-8P2AxWGDQ@mail.gmail.com>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1784621181-764080
-X-HE-Meta: U2FsdGVkX18hckCXBjY8jSmzlYy8LIkoARxaRHx6AV+FOz42u7yay+GuN0i8cw0zRX5W9DYkxmYYQdb97u9u6QxtW2BWHvMGaht8AIo1St4uJ1E1Brk0FBtlOal9E7ROlYn4HEm4pabb40PWN/lcIBy4heHhunGmmjR8nc5yN+JxNH5tVLomN7WPSZxRSz31/c4MwgzsJyZLcJBycNYKiuGCJsIdfvi3zAc93FU2aZd12cQg8i3zaQJdbrFnheKXzImL4DWE2RW7lsZIh96T3IY5bhR8jfHNkSCMuI76IHqMLtOC8McdG8z0y7wYTdql6Ve2rdlg3BM1O5B/dptnURCK8pfFEFssHExO2qiTcMScwgMb9/5TtpSNL01PIaFiaysO4u6lBUGN0rUr7j3oi7jAr/Fk9/a+7kD4qVyfThsfUD/tiaq8BOufW0/WlkH65jfSuwHzjQHs5kyQ/L3qR0Wi5ROYBdErF5lWKAh+r2sxrppuvsCl6q5Jq+g7I6Ng3q6tFBDIK+kCsZ/kkVBP+GcBYhE9iMJzoqYGyg9frR4g2ApK7H4f2AEu1/LYR0Tw0zhkFO8I1OstmVuLV+VD/Gb00yxR89yh2E3HJTYWENzQz/oJfYQus1fOXyg0BwLAkaSmfmTi6N6Yt7IQ1WT/JUpy/ZlHk1BCoBO8Vi6aU0epBxCxmKuYDN89yFmIUc+xxzVXCD487p5X2rd91kNVDeLDd9lgexFyMkrBsNlpeArY+jbX+cIbEDmob+XYUn+U/x4tuk6GCUCWSSKW58alCU8ZAOE3WVyR/gr75zAcC4bZ/fWO0UzCO+XO31O2ZUJUdydu/FkgZjnYlxHIVIM9l02D9uB4HokRTWDC+tgFlAsn2A0HLo9iQrgHhMSb9L7LuI6LF5a7nkSEeLj4RzPB+KNbZcUXJWC6nTEM2heKjW+7C5bgDUUbyo3i031zus6ZIJAt8bH3o7X/RAAPqiI
- Nly+2ZW4
- dVtJ/r4XgHYQzGcFU2dSN4AbVD/oaQMPXTPe1PPlnZbjai8SamZlELS5QoZPRUYUiM5ICWrSTGubAcAAcgYYfiCAUY7+MLcLjyNdNr7ipWf17MKNZndpTbnFjedSQwUyFplXep2Udw20/MOwfDjgEAy6S08n6hEZ8w3uRupAq+aYxGx9oPBPyklwV0AxAHuFKkHDBx4a4HW7flEkVyaB8bQ4HFWm+fT4GMu271mjlBEp1YeJ5Pcpj4j8oX75lRX3jT2P2dp/xSKeVzOlLnBGmP4Ea3h5gdDLuWSITrsvB+TJJOlyeMTwvVa+XMQkUiKSvVYMgdt3/TTM7ngDdcS5HWPCPVYYOZlLywfwsckuMY97dAjmJ3/mct9h8ysOhxqqTVOssvKDtt04xQCo5FwE6IRO+NMowrqV9tWtfdqoEauyVY7c=
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 52052C000A
+X-Stat-Signature: 51jenfe6q3kxrmrkxcbjwnhcfhsn3tz5
+X-HE-Tag: 1784621203-306129
+X-HE-Meta: U2FsdGVkX18DLMBLZIO9aUk/tNPxIvqF+GSrhpTjLoP+MG1ndVZjR6WEY7tHxNYAvcuum297VP1uMLUWQZtvrXVwfnXm+WHve9poCIAHJ3Fa0PtMZgZAjSmdysY1bmiBR/ByA3P1yal/XZvh1Twb9lSChKKh8i3sOnNh7YQuqp1zLIqjrElurwjYotUNIxtWIgZ+zXj2BQ1gRhw3Zft/MFeuiebZmlHvEyQaQLi9myBfPp0kmN6vdJlLPbbVNSszIXlMpvyCgPN1U0SyXC/EYCqfz7My9M+kaZLI35pUKDpi+U08TBzVeUdoumdibHmgQRN/PhG0R0EzqBLDjtt1rPq9wvkNnFP6KPh4/lSgfaCuOXg5PVZr5QlBPpbFhY5GxplZ2kAP1I1hjUsuHUb2VKr0WonUJJGnflYQvjW/EFZdnhJZsT9Wk0HYmHaAW1nr7Oou6jeh0gIo/60SBAIL87Cf3alwNOrcIgTq3UkKZ9aW/kkYJqCjghtatwXVXTqeyCiWYxCIEMINtxnmS1FZRF7m3ip2QfphCYiiKl4g6Uw5NPwmrCPYOt8et/FTk2ttg0I4rKAc3ptiZqvS7sWk4+KYWLCy/LIL7I04UzBYKdK1nvWtP469lMBPkPJUvm29taDkO/BH31Af9K09sgorKAbK4qeGPNebJnTv5UXqRZ+Ajd6WwWR0L6FdCJMe/MRSB0Zj6/gytsexukurvKIurQ8nantyfOh9sEXbLxZbag9IQEJDX6RVz6qohRznjspTJyhZ6BeIQnXsBXCiNjn4RzAsVwR2G/1xsr0U9YcCqPqcBDsbs5l8e8iPLmSfTr2kzs4Kjw448vFzqG0BjK8O7T/ZDPDyNgNSSLlw6sBXvVgzz7F5Vxh7/uJG65LO5xlQoozDHLYgtzCG65UjKL7n2iIkm/iN9XFLlc8xhtIgVyB+wWupR1VCY/OwoGZiPm7VAouEjbxftemmQRtgUQR
+ 0Be7aKxB
+ bZmEgZqcnCVzy42VRDi5xTON3qYxDNx7JBHbQ3nviv+/T49NDeJ1+CZVtYpSb4Hw0QduOJ6t0jaYI2lJoY+JWYavAGRTh741jlQp670Yz/CrOe4sl36m8APnIAb8spMbH3MVi8asleZ2cOWjoi1SyxC7sdrSKe7tyDfsXJ0CfEQegtKQ6HYkHGsT0KEXkUk7Cv2RnPit2GTlN2Do+hqfXdz2SHMxGcHquZu9cK8aB0eYwsjz6zzQVsaMkLK1k/H7Z2W2OEYM9WU0YQHXAaX/t2x/fPQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,58 +102,166 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/21/26 02:45, hu.shengming@zte.com.cn wrote:
-> From: Shengming Hu <hu.shengming@zte.com.cn>
+On 07/17/26 at 09:02am, Nhat Pham wrote:
+> On Fri, Jul 17, 2026 at 7:27 AM Baoquan He <baoquan.he@linux.dev> wrote:
+> >
+> > On 07/16/26 at 09:49am, Nhat Pham wrote:
+> >
+> > Thanks for the thoughtful reply and the very constructive proposal.
+> > Your suggestion about moving forward in small, incremental steps in
+> > last mail is really appealing — I think that's the right way to make
+> > progress on this. I need a little time to think it through more
+> > carefully before giving you a proper response. Will get back to you
+> > soon.
 > 
-> kmem_cache_return_sheaf() may refill a partially consumed sheaf before
-> placing it in the barn. Without an explicit restriction, this refill may
-> draw objects from pfmemalloc slabs and consume emergency reserves.
-> 
-> Add __GFP_NOMEMALLOC so that returned sheaves are refilled only from
-> non-pfmemalloc slabs. Also add __GFP_NOWARN, as suggested by Hao Li,
-> because this refill is a best-effort attempt and failure is acceptable.
-> If the refill fails, flush and free the sheaf instead.
-> 
-> Fixes: 3c1ea5c5019f ("slab: sheaf prefilling for guaranteed allocations")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Shengming Hu <hu.shengming@zte.com.cn>
+> Yeah let me know what you think. I'm planning to send out v3 with some
+> more cleanups and fixes, but I'm happy to hear what you and Chris
+> wants to make it as useful as possible for everyone.
 
-Ah so per sashiko [1] we should consider adding also a __GFP_NORETRY to
-avoid an OOM kill. Seems reasonable that an API for returning memory should
-not cause an OOM kill... it's unusual enough that it takes gfp flags but I
-thought defaulting to GFP_NOWAIT would be an unnecessary limitation.
+Hi Nhat,
 
-I can add __GFP_NORETRY locally if others agree.
+I've thought about it more carefully. Here's what I think the path
+forward could look like. I'll try to lay it out from the bottom up.
 
-[1]
-https://sashiko.dev/#/patchset/20260721084522552ZPa16p1SRj3PYat3sqxuN%40zte.com.cn
+1. Data structure
 
-> ---
-> Changes in v3:
-> - Replace “normal memory” with the more precise “non-pfmemalloc slabs”,
->   and add Fixes: and Cc: stable@vger.kernel.org, as suggested by Harry.
-> - Link to v2: https://lore.kernel.org/all/20260720211127124sYtTNbvsxCXN9_pDh-pwt@zte.com.cn/
-> 
-> Changes in v2:
-> - Add __GFP_NOWARN as suggested by Hao.
-> - Link to v1: https://lore.kernel.org/all/20260719113701797vZ3R8NxiqYt8dEfeUxtON@zte.com.cn/
-> 
-> ---
->  mm/slub.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 53b4976d3831..357b7522c817 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -5123,7 +5123,7 @@ void kmem_cache_return_sheaf(struct kmem_cache *s, gfp_t gfp,
->  	 * simply flush and free it.
->  	 */
->  	if (!barn || data_race(barn->nr_full) >= MAX_FULL_SHEAVES ||
-> -	    refill_sheaf(s, sheaf, gfp)) {
-> +	    refill_sheaf(s, sheaf, gfp | __GFP_NOMEMALLOC | __GFP_NOWARN)) {
->  		sheaf_flush_unused(s, sheaf);
->  		free_empty_sheaf(s, sheaf);
->  		return;
+   Instead of introducing a separate swap_cluster_info_dynamic wrapper,
+   I'd prefer to add a per-slot backend pointer array directly into
+   struct swap_cluster_info:
 
+   struct swap_cluster_info {
+       ...
+   #ifdef CONFIG_ZSWAP
+       atomic_long_t *vs_pointer;   /* or xs_pointer — per-slot backend pointers */
+   #endif
+       struct list_head list;
+   };
+
+   This is allocated together with or alongside the swap table when the
+   cluster is first used.  No wrapper struct, no new ->cluster_info
+   pointer type change — just one extra field that is NULL for clusters
+   that don't need it.
+
+   The name is bike-sheddable: vs_pointer (virtual-space pointer) or
+   xs_pointer (cross-space pointer), xs_table (xswap extension table),
+   aux_table (auxiliary table), priv_table (private data table),
+   slot_priv (per-slot private data) or s_ext (slot extension).  The
+   point is that it stores a pointer to the backend owner of each slot —
+   initially just struct zswap_entry *, eventually extensible to other
+   backend types. I prefer to name it ext_table, but we have had
+   extend_table. My second favorite option is aux_table. What's your
+   choice?
+
+2. Eliminate the zswap xarray
+
+   Once vs_pointer is in place, zswap can store and load entries
+   through vs_pointer[ci_off] instead of xa_store/xa_load on the
+   per-device zswap xarray.  The cluster lock protects the access.
+   This is exactly the same idea as your virtual_table, just placed
+   directly in swap_cluster_info rather than in a wrapper.
+
+   The benefit: zswap_swapon and zswap_swapoff become no-ops (no
+   global xarray to allocate or tear down).  The per-cluster allocation
+   is lazy — only clusters that actually see a zswap store allocate the
+   array.
+
+3. First step for ghost swap / virtual swap: dynamic growth and shrink,
+   no writeback yet
+
+   I think we agree that the first landing should be narrow in scope:
+   - A virtual swap device that decouples PTE swap entries from
+     physical backing.
+   - Backed only by zswap (and zero pages) initially.
+   - No writeback to physical swap.
+   - Dynamic growth and shrink of the cluster space.
+
+   For the dynamic cluster management, I'd like to try a lazy vmalloc
+   approach: allocate the cluster_info array as a vmalloc region, and
+   use vm_area_map_pages() to map newly populated clusters on demand.
+   Growth is automatic via page faults; shrink means reclaiming the
+   physical pages backing freed clusters.
+
+   The vmalloc approach has O(1) lookup (simple array index), which
+   matters on the swapout hot path.  The trade-off is that shrink is
+   coarser than xarray-based management (we can't easily unmap an
+   individual cluster from the middle of the vmalloc region).  But for
+   the initial landing where swap usage tends to be ratchet-like, I
+   think this is a reasonable trade-off.  We can always switch to
+   xarray later if shrink granularity becomes a real issue.
+
+4. Writeback and rmap as follow-up
+
+   Once the basic virtual swap device is upstream, we add writeback
+   support:
+   - When zswap store fails, fall back to allocating a physical swap
+     slot and writing out.
+   - The vs_pointer entry is updated to point to the physical slot
+     (tagged to distinguish from a zswap_entry pointer).
+   - rmap for physical -> virtual reverse lookup, needed for swapoff
+     and physical slot reclaim.
+
+   This is a natural extension: the vs_pointer is already per-slot, so
+   adding a new backend type is a tag-bit change, not a rewrite.
+
+5. Longer-term: swap tiering
+
+   Looking further ahead, the per-slot pointer can also serve as the
+   basis for a swap tiering model.  Imagine a memcg with multiple
+   tiers: ghost/virtual swap at the top, then pmem, then SSD, then
+   HDD.  Swapout goes to the top tier first; when that fills, data
+   cascades down to the next tier.  Each swap device only needs to
+   know about the device directly below it — a simple "push down"
+   interface.
+
+   This is a longer-term vision, but having a uniform per-slot backend
+   pointer from the start keeps the door open without painting us into
+   a corner.
+
+6. Naming
+
+   We have three names floating around: "ghost swap", "virtual swap",
+   and Chris suggested "xswap".  We're going to be talking about this
+   thing a lot, and having a single agreed-upon name would help avoid
+   confusion in discussions, commit messages, and documentation.  I
+   don't have strong feelings about which one — but I'd like us to
+   settle on something everyone can live with.
+
+7. How to swapon a ghost / virtual swap device
+
+   There are several approaches on the table right now:
+
+   a) A sparse file created via truncate (Chris's approach): a swap
+      file that looks large (e.g. 1GiB) but only has one real backing
+      page.  Works with the existing swapon syscall, but the sparse
+      file has to live somewhere and the filesystem interaction is a
+      bit of a hack.
+
+   b) A boot-time, always-present device (your VSS approach): the
+      vswap device is created unconditionally at late_initcall when
+      CONFIG_VSWAP=y.  No userspace action needed, but no runtime
+      control either — you can't create or destroy it, and you can't
+      have per-memcg or per-workload virtual swap spaces.
+
+   c) A swapon flag: something like SWAP_FLAG_VIRTUAL or
+      SWAP_FLAG_GHOST passed to swapon(2), which tells the kernel to
+      treat the swap device as a ghost device with no backing storage.
+
+   d) A dedicated sysfs / debugfs knob: create and size the ghost
+      swap device at runtime via a file under /sys/kernel/mm/swap/.
+
+   e) Something I'm missing?
+
+   Each has trade-offs between flexibility, simplicity, and the
+   existing swap management model.  I'd like to hear what you and
+   Chris think — especially whether the boot-time-only nature of the
+   current VSS design is a deliberate simplification or something
+   you'd be open to revisiting.
+
+Curious to hear what you think — especially if you see any structural
+issues with putting vs_pointer directly in swap_cluster_info rather
+than in a wrapper.  If the wrapper is important for your v3 design,
+I'd like to understand the rationale better.
+
+Thanks,
+Baoquan
 
