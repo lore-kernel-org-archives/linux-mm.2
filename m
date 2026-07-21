@@ -4,130 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4A1FC44529
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 14:43:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58ECDC44532
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 14:47:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D801D6B00B5; Tue, 21 Jul 2026 10:43:42 -0400 (EDT)
+	id 5E7BB6B007B; Tue, 21 Jul 2026 10:47:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D31836B00B9; Tue, 21 Jul 2026 10:43:42 -0400 (EDT)
+	id 597B96B008C; Tue, 21 Jul 2026 10:47:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C6E306B00BA; Tue, 21 Jul 2026 10:43:42 -0400 (EDT)
+	id 43A4C6B0095; Tue, 21 Jul 2026 10:47:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 98E9A6B00B5
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 10:43:42 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1EBB8160174
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 14:43:42 +0000 (UTC)
-X-FDA: 85013052684.16.E2390AA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 6CBE480012
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 14:43:40 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n+e9OZZi;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 147516B007B
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 10:47:05 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8371BC01C0
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 14:47:04 +0000 (UTC)
+X-FDA: 85013061168.28.832DCBD
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf01.hostedemail.com (Postfix) with ESMTP id AD2A540012
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 14:47:02 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=BK6QNPtE;
+	spf=pass (imf01.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784645222;
+	b=M4ieCIkphU3q+mOH17U/h5/QRQoNMA4PEZ8p8W+hw6ah8PIy/ybJJD2lptRgpMC8UovtJn
+	sviLg1H+PO+TN2yyDexcRCp0XCLLWNqKrkSH52C4PRoayd8YpJJEx4ZChaT4M8S95RALnE
+	w+NsYa00JOeHkGtV1hfcjqRrzGN5gN0=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=BK6QNPtE;
+	spf=pass (imf01.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784645020;
+	s=arc-20220608; t=1784645222;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=olLhFfLQoyr4q/gUUxf2G5MJgNcHZvq8RkoA1mPtdUY=;
-	b=z5PKaLu6Tbq99PuuW8JV8lClyvFkDJiTkP04mJ5DYky9RNrngGH+ZARPdwp8Yhwms68Qbq
-	pHKJgWLMg1GvCS3RKPbI5dtUkOoaHriHCUoum/+6dOX5xZ/wB/NkwiK4SFPY81htaHkuxH
-	ei5KDSANR+RfKK1XYEO+zi4dG3yzPMU=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n+e9OZZi;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784645020;
-	b=OKhFWmzcx3aQkarJDDLA1b1DrNZPUpxzkzmbZRcapHb77piZBb0wgKUoVjJkd8hM/QcEPN
-	o/k+al7P5NJVfC1XMSxVCXYKR1xl7h6M7Pvrnc46jlEWJOZ6MsCKAzBajg696PtFkx9Gje
-	GKvqmcfYnWb9wRf7AS8vSBvf3Dgb5So=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A439160054;
-	Tue, 21 Jul 2026 14:43:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25F371F000E9;
-	Tue, 21 Jul 2026 14:43:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784645019;
-	bh=olLhFfLQoyr4q/gUUxf2G5MJgNcHZvq8RkoA1mPtdUY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=n+e9OZZi58BM08zRIJazklblOQRdvuRQmcPvTPji+ceOCw/wzktUOqjA2Q65Gw70X
-	 bsUf1aBB4De3Ntgx0D3QASJsT42BFhTZYhhTYAGtdEEC2QdhESo8sZ6Fpm2SAfYy1k
-	 KtlEJ0GgZNBq5b2C59FuxEenLWQ/ek5VmtjNAZHksSqwbvOrhMR/jqi6p3BaIAsYwR
-	 s6aBg7mDXw2uwfsKowcYq/LXgYDAjln2l9ITibmiQcmOrL5q70+XBgmqGvPygeuPgM
-	 H7W6KhllzepBnsFXaqM5i6VyTct2Y79mu+KAh3aK63fjTI2rOFv83Klbb3myV/bZ3x
-	 glc8aE/vZPi7A==
-Message-ID: <348dcc9c-00bc-4b59-a266-4f11bd2990e0@kernel.org>
-Date: Tue, 21 Jul 2026 16:43:34 +0200
+	bh=Rkbii2FJonBgXwo4P4xuRdlSQz3cCqK8xFFUoSBH+SI=;
+	b=jbdvpliNv1SigKoBMg1AMWaLXEN3rxluxKBHQ4RSOZHpluqf67RXXQ8Coa4Hu/nwXnse8U
+	n/VWtmxbdgD7wWGXGsHqIGRvsSZLnUxsIL2P/L5QX6X2M1HLPqMaqjFZ7XP7dvZU799Yba
+	mQEW/u3GbJjFp6E7b9xyD1G7HbLIinc=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=Rkbii2FJonBgXwo4P4xuRdlSQz3cCqK8xFFUoSBH+SI=; b=BK6QNPtEUbQ+F/EBiJsH6S5WPQ
+	sxH0yc0kzECYZfAjOEEc9eqgKd2NyNH5BnmPrOrWq3SPROCxgKyW+9VXhR4FKkSNN46rVa/+0ymie
+	+IuW5yy9re0nhKY1kUiCFXY7iodSnGPY1Nrw+vLbI8OZbXBYr+rsXee4cHcFZAxJ6Hr6eLWSbuf07
+	xYVaU0LqFW+ykGtGVYK63a2FvWs9yw7JWB/Fop/9spSGylUzPafH2y6Nee+/NStRwdhDUzPBLMWOL
+	v902UO/WBLgZeDjuM+1L8/hxiUfoFgkcPMDon70QYK/2uW4Ex7ASCrrvrwHHFWDOnGes+LzyUBkhn
+	rTdoBBaw==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wmBkI-002HtH-2B;
+	Tue, 21 Jul 2026 14:46:59 +0000
+Date: Tue, 21 Jul 2026 07:46:54 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Guillaume Morin <guillaume@morinfr.org>
+Cc: linux-mm@kvack.org, muchun.song@linux.dev, 
+	Rik van Riel <riel@surriel.com>
+Subject: Re: [PATCH] hugetlb: only adjust reservation during unmapping if
+ mapcount is 0
+Message-ID: <al99cIaOIPriDQKq@gmail.com>
+References: <aleRuVBaWu6eTCJb@bender.morinfr.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/slub: prevent pfmemalloc objects from entering the
- barn
-Content-Language: en-US
-To: Harry Yoo <harry@kernel.org>, hu.shengming@zte.com.cn
-Cc: akpm@linux-foundation.org, hao.li@linux.dev, cl@gentwo.org,
- rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, zhang.run@zte.com.cn, cai.qu@zte.com.cn
-References: <20260721171753509I9L8xNy2kiOGQFKloTnrG@zte.com.cn>
- <85ddd27a-ade6-4f27-80ab-cb91caa4e171@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <85ddd27a-ade6-4f27-80ab-cb91caa4e171@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 6CBE480012
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aleRuVBaWu6eTCJb@bender.morinfr.org>
+X-Debian-User: leitao
+X-Stat-Signature: dmftsc9racm1qxhhghgstsz9yyajess3
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: AD2A540012
 X-Rspam-User: 
-X-Stat-Signature: z1gj6g1jdrkiwmz9njf6gm7cfxzdahpm
-X-HE-Tag: 1784645020-323108
-X-HE-Meta: U2FsdGVkX18rQtDaPFqahWABh3ANt0PbmmYI3+OxdyfaW3vy8rvwWQLEb077RBBuoPeYtAvtb8zejBtEkwftwoq7xJ8SvxElacAzQa4y2BVPfC/jmfT2eZijWFFxwiLop0Es0pCEL/9je33uGfhA7zkvzk1Iz3tYVsSckrNQuO4UTzTbnWVSV49wAGJPrv1TvvSTlIYZxt8J369hnH5Ss+VcZ1VnmYse+z0j4wFHVHJFSLa7bBSGukjRf/O8OsYB+r/Ejjmh/ptAd8NQkTQ4//S/O0W6tvlzYbIPix8VWTCItTRZLuaZM20d+7sFkIy+g3tO+j0Qb9IJappEfg8gTueylCDBQg1NVSkLgNKd/O/jYoPBPUrgpck5na3AuN9TgDPewyoWHvMfEzayxAYbbxF2X3sOsjxBXoPay/5U9uxkqehEjPjCUbBFouUJFyaYXqd99dhyl0JkTWuKzdGqQOPW6BBfFCbL1RAOOQslNl+pxGZfTbSMf3QXg/x2S/ZXM4Ikse7NRhRQvalG5BTmPikA8+FbP8R+WCNCAJ4Wfg3M7arrKAH5OPzSY59IU+m2mBLfO6Lu6KmQ5judM06VmFWba9VzpwIbXvN5saQYOW6B4vAjr4iEMY4IpUWoMgXSSarxHeCBB55PZy0Lff++L7PNgs8WuSypEfuZgIgpR8U5orccZ4Mjn+93IqnBud35q2F0mouKYBIpgc60yvn4WUk6dCUAY9UkvwGxGDkisvbJrPMLCZXPGNRYZnsBLtq588+TpC0JdGJQbmPrMcr9tgHewkWbQjza7NZmxxYBsupAPLqH6DKfmqrNijB2JApHj13umRbLQ4fk1BnoaIRc2G1XQ42ehjSDlPGVO79mcKaKEENauFr8WTFhhwA/+yOUWcp8MN8aqSsRb9xcu9Q0d4TNFDvpIIzA28zOiwlIOHc1Aa99OSrF3/vNMYE2TCgNu0yTNRZKhZiySRDwmvn
- zEihFsXa
- bJCdZiAvvfmBSLsKLRAKncu//b8FXwX4J/YWk862TOXz2bw5y93WhAzzlwvNMB4+26MN4qytcyDSQQyybdIzWKAVEUAnOo61+ZNbsg+xTqVnRsNzmYtzQwNHUgUuTmEm7DV5xzrZ20Ava8p4zxGQmeje0pHffXxOFYgoPwYhdJ+ftgykYVQHh6zTul4jVHgo0JYWg7JxJqQGShLi9cFHcnIGc1agZovbaKqRvltTjEWdLNObE9k1WSeKC7tM9nZfUdSzAVgY978b9N2OALuvPzVBkvboNWE4d0bLOUada0JMswFnUQXAjLGTI8/2G2w8t2VOdxZpdtNUcMHMpxBrds/AnxCvej6zdn0dpc9JWQi0BFEjmAnUFzLp0+2Y3CrQ+wr33DSPMl1DNDLc=
+X-HE-Tag: 1784645222-863767
+X-HE-Meta: U2FsdGVkX1935KQD0OSqpooRrhDlMSuADkYVDFHQwJT0g4MgV15Mmo9lwrOzJoibd4grCqMkUQJhodDIJ6AGBYI0oWDfT54dQ2tgPsPHb5PsSfVcLiA1GGPZNQHBDJbG7AFD4P3ZKm8shrzHTuLSl1Q69YsRxtY3U+gKYt5FgMORjSKAZTPih5K5dIyC6uzvbIYDA0M8YZzanN8E5JOj0CNj+oDj1XmG8DII5AEHAV2ASbtoRCJfN8onxZM1LZh3O3M2WHu0n26ph/OPyFDmc1LhfkeyfsSJHxYaHqh13Mh0f5YGommZABf6LZabOvDj2VLxWL6JBmrAAPPEy4xag+IuMgnPZczZOHNF62EvCHUuSCtFkamFG6luLLCwvPDOxym6uReFzLOXRnQJ58fjJ+Sb4+WVIjQQUI7DUU+cHKkDGBYNsFM3IpiBLcwlkCCTg1OCNC1Oq/9a4NVv0cjg7TDngPEXtdPyBIIdxu7GoG9gPM7iDmp3/Y3KpGd8qwgsSdVdai5+6VatguDn2mnMSqd97fiBwyH8Rkunn+t9VVbIQrUgRfoZMG8wjEO/X5/Mbe/3kBA17hDSbHdAzonqKwoe7pRnjKtREEPKIvLSOCP1CCnpt2dqdBr11kO7GMSuCujn0r0WeKMoajUehwr/K4byGjuyxZtGWsRIOjMGFxnyWZ82niBgLyj2QxrnfYVpMfiAceMnz2JkEUJV2ejuYFeSXRKfql7+Fd9b08/Hn4HOI+/T8L+pVa4gGLkYcOCfxzwjk3trLpkPe0JBllztEzDH7h7ATrNJP+9EHVaPlaDl4z9NaCb7hdLfZzFWC9Z/GnGb/HMGQeMQts5SZlaif3/ixrUx1a09ZL59iKk7wX+eKO1Cggq+QfM1155uW8pjXYUZP0bEAt25/ncBCdDwYd4KKWpAF8doTgQ1SsLiU8Gbq2KFkfpM2l+lFGY50TMAZ63L21iS7eXho0Vv8CF
+ XQcojmzu
+ IDRpu8nsIIu1WZZcSnbLzjlDKuxKBRA/d4WEcVmtWE/Xtw7cn4QKXhndTvEiTV61bpjzEI834n6AORhZicAbD6AaPacVUgWn69R9D37h3dfGUOm4GC6T1zPcve8IugP742+YC4ojBhB8K0L7BHzmmLs/gNAcFf1LjXORxLIfyaTogW4kHfbbopUN7hk5nEef2t7Q2C9oH1fX83l/XeO3sA5xWrRZ0XWlvjf3IWFVrGH93v6N/8iPuE+u2VJaBSQmmYwgaOcaosrrwSRZ/eIiMaqvItfptOCo5+12zEBuuns4CKjxollB5D7Pnpn/sL6rkp2zg+NqSt9UsTxzTjbA028ocgvijXwdQJgMJ+lfCaEBUA8Y=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,71 +93,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/21/26 16:27, Harry Yoo wrote:
-> On 7/21/26 6:17 PM, hu.shengming@zte.com.cn wrote:
->> Vlastimil wrote:
->>> On 7/21/26 02:45, hu.shengming@zte.com.cn wrote:
->>>> From: Shengming Hu <hu.shengming@zte.com.cn>
->>>>
->>>> kmem_cache_return_sheaf() may refill a partially consumed sheaf before
->>>> placing it in the barn. Without an explicit restriction, this refill may
->>>> draw objects from pfmemalloc slabs and consume emergency reserves.
->>>>
->>>> Add __GFP_NOMEMALLOC so that returned sheaves are refilled only from
->>>> non-pfmemalloc slabs. Also add __GFP_NOWARN, as suggested by Hao Li,
->>>> because this refill is a best-effort attempt and failure is acceptable.
->>>> If the refill fails, flush and free the sheaf instead.
->>>>
->>>> Fixes: 3c1ea5c5019f ("slab: sheaf prefilling for guaranteed allocations")
->>>> Cc: stable@vger.kernel.org
->>>> Signed-off-by: Shengming Hu <hu.shengming@zte.com.cn>
->>>
->>> Ah so per sashiko [1] we should consider adding also a __GFP_NORETRY to
->>> avoid an OOM kill. Seems reasonable that an API for returning memory should
->>> not cause an OOM kill... it's unusual enough that it takes gfp flags
-> 
-> Ideally the caller should not specify gfp flags that could invoke
-> OOMs.... but even GFP_KERNEL for non-costly order could invoke them.
-> 
->> but I
->> thought defaulting to GFP_NOWAIT would be an unnecessary limitation.
-> 
-> I think it's reasonable to drop gfp parameter and default to GFP_NOWAIT
-> rather than relying on the callers to avoid OOMs or implicitly
-> overriding the behavior.
-> 
-> It wouldn't be too limiting given that it's for returning memory (!) and
-> other free APIs don't take GFP flags and assume GFP_NOWAIT e.g.) when
-> allocating a new sheaf.
+On Wed, Jul 15, 2026 at 03:57:13PM +0200, Guillaume Morin wrote:
+> This patch changes __unmap_hugepage_range() so it now checks the
+> mapcount before adjusting the reservation.
 
-Indeed, let's do that as a separate cleanup.
+Can you please rephrase this in imperative setence.
 
->> I can add __GFP_NORETRY locally if others agree.
->>
->>> [1]
->>> https://sashiko.dev/#/patchset/20260721084522552ZPa16p1SRj3PYat3sqxuN%40zte.com.cn
->> 
->> Agreed, adding __GFP_NORETRY seems reasonable, since this best-effort
->> refill should not trigger the OOM killer.
->> 
->> However, I wonder whether the same scope consideration that Harry raised
->> for __GFP_NOFAIL also applies here, and whether __GFP_NORETRY should be
->> discussed separately rather than folded into this pfmemalloc fix.
-> 
-> Agreed that this is an independent issue.
+> Link: https://lore.kernel.org/all/alEJkwn5VlTTH_ZX@bender.morinfr.org/
+> Fixes: df7a6d1f6405 ("mm/hugetlb: restore the reservation if needed")
+> Signed-off-by: Guillaume Morin <guillaume@morinfr.org>
 
-Yeah I won't add __GFP_NORETRY to this patch.
+Reviewed-by: Breno Leitao <leitao@debian.org>
 
-Thanks!
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index 571212b80835..c0167a09a0c4 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -5252,7 +5252,7 @@ void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
 
->> The earlier discussion is here:
->> 
->> [2]
->> https://lore.kernel.org/linux-mm/33a1cb67-8d23-4b51-b4d8-9e95e8de00c7@kernel.org/
->> 
->> --
->> With Best Regards,
->> Shengming
-> 
+There are some comments before this section, that describe this code.
 
+Could a short note be added for the new one, so the intent survives?
+Something like "restore only on the last unmap, otherwise the owner
+empties its resv map while a child still maps the folio" would do. One
+line is enough.
+
+>  		spin_lock_irq(&hugetlb_lock);
+>  		if (!h->surplus_huge_pages && __vma_private_lock(vma) &&
+> -		    folio_test_anon(folio)) {
+> +		    folio_mapcount(folio) == 0 && folio_test_anon(folio)) {
+>  			folio_set_hugetlb_restore_reserve(folio);
+>  			/* Reservation to be adjusted after the spin lock */
+>  			adjust_reservation = true;
+
+For what it is worth, I confirmed the original df7a6d1f6405 case is
+preserved: a singly mapped folio still goes 1 -> 0 across
+hugetlb_remove_rmap(), so the MADV_DONTNEED restore still fires.
+
+Thanks for the fix,
+--breno
 
