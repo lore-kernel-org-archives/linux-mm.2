@@ -4,145 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8880C44536
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 15:19:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39464C44529
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 15:41:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B53B96B00A4; Tue, 21 Jul 2026 11:19:20 -0400 (EDT)
+	id C8EC36B0098; Tue, 21 Jul 2026 11:41:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B2B956B00A6; Tue, 21 Jul 2026 11:19:20 -0400 (EDT)
+	id C40316B0099; Tue, 21 Jul 2026 11:41:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F63C6B00AA; Tue, 21 Jul 2026 11:19:20 -0400 (EDT)
+	id B2F816B009B; Tue, 21 Jul 2026 11:41:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 70C4D6B00A4
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 11:19:20 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DA5351A01B2
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 15:19:19 +0000 (UTC)
-X-FDA: 85013142438.27.F0D80D8
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7E92F6B0098
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 11:41:20 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 16FF91601CF
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 15:41:20 +0000 (UTC)
+X-FDA: 85013197920.10.CA18CEF
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 2288A2000F
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 15:19:18 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="cxXu/Jgl";
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784647158;
-	b=uF16BvCVIra23UFy6RYfHvoOr8PDmc21IpBpkU4WnQTutKGxwjQCsHrZT5jI7ycanZOIlo
-	+f3PlBit805flho9MomyJsaEpz1zQ1bzQL8wnM+grI/dcIy7qbQQSOH+xey7qBvYynqOK1
-	/gGxHuceGH0oVkR+s02LDkXX7kT1P44=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="cxXu/Jgl";
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf18.hostedemail.com (Postfix) with ESMTP id 71A5C1C0006
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 15:41:18 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NtrX8Fj7;
+	spf=pass (imf18.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784647158;
+	s=arc-20220608; t=1784648478;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NcQHotnRc1YltaL0d91NNFzXPnSIvU2fa84uq1Kqf80=;
-	b=z3j4j3Jr37SbppEcdm0Bj0atrwv9mOH1+Bi1PBhms319BN0kwPIHU8CPa4WQnmPW7RTGZf
-	teLd9Y/YRkq/9sRgXOy/g20TcJM1Yl01CSR0HbNoxA+rw5vHm7TKTzqCkn5Jwssaupu0uZ
-	xI7t0f8sak5MMqS0qEm4lyOwN0QS/h8=
+	bh=AI9xw2VxbQp7jX/B5YduqGMEsi6H2MQYTvtbRLDj+lQ=;
+	b=CIGJkw/7AfZKtUbrypjgqhZty1u/qPiMqBSShu6wOy9A1+AIwPiGAwf8ub+zv0JX9+AuFf
+	DyrxXzUUzh1uN7vSobiQ2ZwrLwf1CMzv99HGbTvOvBe6RXJnR0xFp2jb5XLQ4OYgYD7yVS
+	l4wcySAPVKlHTxAbZAPHCStvRA+SUZk=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784648478;
+	b=zpar/pg4FPosL2sis+d5bRkEV+1IzbNbF0f2FY4S5rQ7LCZK/YTi1Se40akO7qYfkhMM07
+	Q7qkWDcHAHQFYwyoQ9dtbJdNFemDWL5J6nc0LhZ9WXeqQPulK1L42GbiotPHgcXzhOeuyd
+	izYU/yRPtzt5yCYEU/R8BB47mDabj28=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NtrX8Fj7;
+	spf=pass (imf18.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 91A77600D8;
-	Tue, 21 Jul 2026 15:19:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2559E1F000E9;
-	Tue, 21 Jul 2026 15:19:07 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D51CA60054;
+	Tue, 21 Jul 2026 15:41:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1312E1F000E9;
+	Tue, 21 Jul 2026 15:41:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784647157;
-	bh=NcQHotnRc1YltaL0d91NNFzXPnSIvU2fa84uq1Kqf80=;
+	s=k20260515; t=1784648477;
+	bh=AI9xw2VxbQp7jX/B5YduqGMEsi6H2MQYTvtbRLDj+lQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=cxXu/JglamTfxZku20/hvwti8kyhkeyVDle5r6Gs3gp+SkJnbyhtcGv/c18jtV/cw
-	 7gSgQmx19CA7r6u805JO5I8cZ3xBRPmkyR/TaKUjbH5t+Gm9nKMDsP+xj1jwAvi8dW
-	 owS3DMGZ59TLPI3kIqnJaRSYe1gjvqDyjXDBUA50bTQChhd5HKjqPm/P51z59oZg6/
-	 DbaXmu+vpmoqXHG96HzQT4+JM+fRaZglAuD4Kv4OKXvbdx+2jLMN67pqWyuu0y85qm
-	 dUyOAjy7uV0NxLmjNVxyy+EME6N/YRuWZvdtvW6P4ZjgS0iJJkfPgii0UTXWZb8cqx
-	 way087G+3sExg==
-Message-ID: <0b9be5b3-93aa-407f-b83d-409bec4b55e1@kernel.org>
-Date: Tue, 21 Jul 2026 17:19:06 +0200
+	b=NtrX8Fj7MU5zwfg83ZUMZfEGaN6yiGQFBNo9V9EorL498LCl6y+uUXPMaew6uQ814
+	 xtTYLI8WOBNCHHVSqPhwBh2fXbW3bE/a5lkOiNrco9fge8qyNJ/VnnyS7pkKM1k2xe
+	 onZdI0uZk+PMrMcuhJ3A4cf9UaWO+L0m+imJ06ogOSUYiyczDvWgioLzgTt56qzPVN
+	 zKTOPa8GJTEhkGtqjT+gbZLyme5ItgNld/9LEJEFa6Q04EuUZcNGxFoxtTQOkVqg/p
+	 eOtSLf+4IVFD3piDBW8rTs+31ExAcMsWX003NIwQ+J9+Wl20w+NVI5P46zlnBc7E8w
+	 wC+1cblY0O4qQ==
+Message-ID: <31e637da-1ef2-412f-9c4a-26b720d7c74a@kernel.org>
+Date: Wed, 22 Jul 2026 00:41:10 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 1/8] mm/hmm: move page fault handling out of walk
- callbacks
-To: Stanislav Kinsburskii <skinsburskii@gmail.com>, airlied@gmail.com,
- akhilesh@ee.iitb.ac.in, akpm@linux-foundation.org, corbet@lwn.net,
- dakr@kernel.org, decui@microsoft.com, haiyangz@microsoft.com, jgg@ziepe.ca,
- kees@kernel.org, kys@microsoft.com, leon@kernel.org, liam@infradead.org,
- lizhi.hou@amd.com, ljs@kernel.org, longli@microsoft.com, lyude@redhat.com,
- maarten.lankhorst@linux.intel.com, mamin506@gmail.com, mhocko@suse.com,
- mripard@kernel.org, nouveau@lists.freedesktop.org, ogabbay@kernel.org,
- oleg@redhat.com, rppt@kernel.org, shuah@kernel.org, simona@ffwll.ch,
- skhan@linuxfoundation.org, surenb@google.com, tzimmermann@suse.de,
- vbabka@kernel.org, wei.liu@kernel.org
-Cc: dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
- linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-hyperv@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-rdma@vger.kernel.org
-References: <178413903133.1155966.3904063656020521607.stgit@skinsburskii>
- <178413935809.1155966.6398279131483632373.stgit@skinsburskii>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH v2 01/13] mm/slab: skip kfence objects in allocation
+ profiling
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>
+Cc: Hao Li <hao.li@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter
+ <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+References: <20260720-b4-objext_split-v2-0-2fa7c6f60dbe@kernel.org>
+ <20260720-b4-objext_split-v2-1-2fa7c6f60dbe@kernel.org>
+ <da6ca31c-f97c-4cd1-9380-4fe50d797a7d@kernel.org>
+ <96468090-6b31-4f78-a813-c5729b53aa3d@kernel.org>
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <178413935809.1155966.6398279131483632373.stgit@skinsburskii>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 2288A2000F
-X-Stat-Signature: 69817mhkfhphgaw4eqk4y3eewfczh5y5
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <96468090-6b31-4f78-a813-c5729b53aa3d@kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------lihAPi6O8DUJyauCGzEd0pPf"
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 71A5C1C0006
+X-Stat-Signature: osac6ihotufoy9mb6356iaati9ijfmg5
 X-Rspam-User: 
-X-HE-Tag: 1784647158-347344
-X-HE-Meta: U2FsdGVkX18AyI7mgPgC7V3hOUktuwEvpwBAtk/OCsH2mOWifiFZzWKTtpPyYC6UwS6y30SFDHG5d13lwf03OXZUDTf5CFK745liMjpqTvZ4te7ZgctEI6DRhi31C7uvisGVDdYo3sHdRwc8qo3kuknUVfAnGJNPQZ010X5o2ZCFwPQcB+Im/V4Cp4uuXEj8WgDyUveCv9KHu9NkKV/F9WQRpSC2w2uif7ZuDd9w+pgzMNSZfteQmS57Z/L/GSkO5ct7cXDe6F3wVk154KVBCdYT5UfUe0qx8cARSFkZZgku5ytlAarC/cf1DTuvUCsF+urDfyPdKj7rtOkCtNvL8XZw8qJHqVgZH9t6NhxybSsZvtbN8YvTW0YwFro6TFJ2ieHnjBH4YTmFEDwcONxtDkmFmN5Dtoi1fS7j7t5zvefpOAFou+XnfQcCkO29Wrscj949T9Mq5fYqt7wwYMZJIWRReV1X8z6w8P2lOgHkq6EqbaBh2Q/yXfydKOht5Oq2UM4NwJ48e7q8j2f3DWhK0C74dROBtYcne0M7JsTzrHp7GU2t3PMBBidhOrC/0L9FPUCWFVW1El+IZz+7Go3dPqnlnw7d823/oTSUNlvOreqwNJ46b2uyfYiDDrOKssjiGBiL6AmYBatEp/isXiaF8S5tB2rixjfW7UcuST3GWUbCYpqX015tZm0aZPdtuKkdjLFfNZ3P4IxsUx/1KO/R+6WIP/rwQWDHYCiORMNRfVz7U8a3VkhZxtICW8wxdhI0Vfp5EOrm1ucjyR1NrYh77EduCym6lE/ehzJeclcpYBY6cBbf3lq4BR46/g7ytPGFJxFbSon7nrjouwR4vlUkK7cgXCudmN/AWKJG+/B4HEzgweZVC5c+iDh6drH3c2yUOL2yUrMYYwyCB3TseVRcX97ahny3tnH6940XpL16TlPmhRkWPL+cF2JAa7Oao9wbL9MQK+2YhmXMdV+X/3P
- 4D6tkV9c
- xK9oaTTYwNumHu3D5FOymDSzjM70KVfJUexBXrXHZRtKGxLPJaNtdpsQWLZYbiyhZ76dzFkLPTTvBRAhNUj+E2GOZ+09JPZmza84s9q7NlFNATknLo3AH13D0K0VsJOfcmNp4ICgA5/sV3rDyI+vrdE0ytDK9yP6/Ool3H4Tmo+WxMHOpvcCzE5PRRUHKJvANaugKvdhOVb7A9PE0gBgqxzBoh58GQYmuZuboqJsriM3SNv6NwFXD5gGVmJa/XYoK49qllrwA8+EaNbxlwszqCNaJKYXyeANcgaxdRQnoQZIVsgp+m+DGQ2tYLQcAHbQNjLY0EYdWnQxWvHA=
+X-HE-Tag: 1784648478-705363
+X-HE-Meta: U2FsdGVkX1/SD/tYYAmFDspiJuZj0diefr8szXp82+jpEFmqVrpJY07I8xpxd0vi3HtQBpJqPauWEtfvSlDy/lrHtXoFRKb83EQ6A5e6y9q75Df9J8yjUMt+VZgTf8jFtyz27UZvW0YVAEqx8utQl6WomhRJq6NWAyx4ZGptgP0lZWyAAFyseC9LBWGf1LZ00WOS79I0nv7CzXRrcsohCEHG4e8trvx6weephOFhMk76TE05+ZuDaxoPmN/xjZ7MNAQ7G8MvG7x/HSbFHPqSPurqeUcvt6IJTtFz0jvqO9wxOAZiSB0IHPKdaF3L9xPnoW5j/hvvaEgvvVB4g2DTenY82Ze6gbEY4+KDnwxe/wtX1S+4m7VzNdUhEOc3P7gHEhdyLgRdr6CoYpYrTcwrSFzaWL1UBUAlj7XThSq1WxjEfw92FlhBdsE8GyEycARYkOhoFf+DuTLIrB/maCPCBO4jJR1K4mWJudECvWlUKzz4JUvwi8Ya0G0gVkwYtTDT8ZPNidAtAQWCfgiA7mdIWqiW6Uw0D+BsUDv/OEOZlEnKOZ+WprpQLOjAeizoBOn4EL0A4knWeOhwSvAs/p57UUk7hLmQfAwL1n3m76GLmFhrLcxMbhwPdTogwTqDbhPDKS2+fm7s+LwOLtSsGjt0eFKeszKXFstizoJD7X6BS4SmDtDip76wh9ZOBHJLCcjsVccw69w11TOydAn7INci3jL7Xg2ZWU6cRjtElRtgbd4VJHXvJ5keA/RyZhIKFhYt4uIaZ8RaoR1PM6IBnJGox9tnCCOQLOXDCUniJBglaY287PWxeqEbs/YDfrzu/cYCLuys1i7HFMF17RObc/OxnRExwh9psRDNBPoHi+84Jb/9tfn1l1KxKnRzyY97tIg7ujveQ4Bnheqa1clxHtfkfvPk5TtWwBOPhWPr0LJFhNrzFnicDRcqw/xXleHtoOU5WqcQCyVKbGHIEHIimwi
+ u0HQOmeP
+ 3CK9qobN4Oa/Y+1ouMl9fNubTO3nBxuVTKZnIyzM6ufLj7jL/ns1elCMOt6Ma8KzfHZs48ZEDxEybzmyeSo3opqm3mUXUeECRh7AUfp9r+mMd4EYOvEHs1F1YSyBvJ9ys7ADy5E2Iwg9Cw/rLTDIYW/c75SR6yKNtdFs+zVOMS9YX1GFybs+Komwy5XbBbCwe0Sjws7P9oLmEznKRVsuMq+4797ZOzh++iyYB51ALEZKYbrm9iq5Fe57yRk/pa5Frs8s93KRChN04171HJDX6sADp90Q80XcM/WCAr5o6/wafC5kEIEcUGTr6GRf3KgVcQv+pxt10rCuyXMjlOsRuDYwlAV4xHd2Aom6yVt+PZpNuh4Dm/YqOIdnWxNxLvILpt6PrjvTcFn6QZ4FXx5/ZWzEw7azIuEUfJ6EkD5Rz6G46V2yUGA0z15C2hKPbYn1jxst8abxt3Gp8fQQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,103 +102,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/15/26 20:15, Stanislav Kinsburskii wrote:
-> hmm_range_fault() currently triggers page faults from inside the page-table
-> walk callbacks: hmm_vma_walk_pmd(), hmm_vma_walk_pud(),
-> hmm_vma_walk_hugetlb_entry() and the pte-level helper all call
-> hmm_vma_fault(), which in turn calls handle_mm_fault() while the walker
-> still holds nested locks.  The pte spinlock is dropped explicitly by each
-> caller, and the hugetlb path manually drops and retakes
-> hugetlb_vma_lock_read around the fault to dodge a deadlock against the walk
-> framework's unconditional unlock.
-> 
-> This layering does not extend cleanly to fault handlers that may release
-> mmap_lock (VM_FAULT_RETRY, VM_FAULT_COMPLETED). If the lock is dropped
-> while walk_page_range() is mid-traversal, the VMA can be freed before the
-> walk framework's matching hugetlb_vma_unlock_read(), turning that unlock
-> into a use-after-free.
-> 
-> Split the responsibilities the way get_user_pages() does. Walk callbacks
-> become inspect-only: when they detect a range that needs to be faulted in,
-> they record it in struct hmm_vma_walk and return a private sentinel
-> (HMM_FAULT_PENDING). The outer loop in hmm_range_fault() then drops out of
-> walk_page_range(), invokes a new helper hmm_do_fault() that calls
-> handle_mm_fault() with only mmap_lock held, and restarts the walk so the
-> now-present entries are collected into hmm_pfns.
-> 
-> No functional change for existing callers. As a side effect the hugetlb
-> callback no longer needs the hugetlb_vma_{un}lock_read dance, and every
-> fault-path exit from the callbacks now releases the pte spinlock on a
-> single, common path. This refactor is also a precursor for adding an
-> unlockable variant of hmm_range_fault() in a follow-up patch.
-> 
-> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-> Signed-off-by: Stanislav Kinsburskii <skinsburskii@gmail.com>
-> ---
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------lihAPi6O8DUJyauCGzEd0pPf
+Content-Type: multipart/mixed; boundary="------------DI7QtXXAQSwUVNu604OE0Y40";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>
+Cc: Hao Li <hao.li@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter
+ <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+Message-ID: <31e637da-1ef2-412f-9c4a-26b720d7c74a@kernel.org>
+Subject: Re: [PATCH v2 01/13] mm/slab: skip kfence objects in allocation
+ profiling
+References: <20260720-b4-objext_split-v2-0-2fa7c6f60dbe@kernel.org>
+ <20260720-b4-objext_split-v2-1-2fa7c6f60dbe@kernel.org>
+ <da6ca31c-f97c-4cd1-9380-4fe50d797a7d@kernel.org>
+ <96468090-6b31-4f78-a813-c5729b53aa3d@kernel.org>
+In-Reply-To: <96468090-6b31-4f78-a813-c5729b53aa3d@kernel.org>
+
+--------------DI7QtXXAQSwUVNu604OE0Y40
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
 
-[...]
 
+On 7/21/26 6:20 PM, Vlastimil Babka (SUSE) wrote:
+> On 7/21/26 07:43, Harry Yoo wrote:
+>> On 7/20/26 11:16 PM, Vlastimil Babka (SUSE) wrote:
+>>> struct kfence_metadata only contains struct slabobj_ext with
+>>> CONFIG_MEMCG, which is then used for the "fake" slab's obj_exts field=
+=2E
+>>> If CONFIG_MEMCG is enabled, the struct can also end up used for memor=
+y
+>>> allocation profiling. If CONFIG_MEMCG is disabled but profiling is
+>>> enabled, it will end up allocating its obj_exts via
+>>> prepare_slab_obj_exts_hook() and assigning them to the fake struct sl=
+ab.
+>>> These will probably then never be freed.
+>>>
+>>> So things sorta work, but not always in the intended and optimal way.=
 
->  
->  		pfn = pud_pfn(pud) + ((addr & ~PUD_MASK) >> PAGE_SHIFT);
-> @@ -564,21 +561,8 @@ static int hmm_vma_walk_hugetlb_entry(pte_t *pte, unsigned long hmask,
->  	required_fault =
->  		hmm_pte_need_fault(hmm_vma_walk, pfn_req_flags, cpu_flags);
->  	if (required_fault) {
-> -		int ret;
-> -
->  		spin_unlock(ptl);
-> -		hugetlb_vma_unlock_read(vma);
-> -		/*
-> -		 * Avoid deadlock: drop the vma lock before calling
-> -		 * hmm_vma_fault(), which will itself potentially take and
-> -		 * drop the vma lock. This is also correct from a
-> -		 * protection point of view, because there is no further
-> -		 * use here of either pte or ptl after dropping the vma
-> -		 * lock.
-> -		 */
-> -		ret = hmm_vma_fault(addr, end, required_fault, walk);
-> -		hugetlb_vma_lock_read(vma);
-> -		return ret;
-> +		return hmm_record_fault(addr, end, required_fault, walk);
+>>> The upcoming changes to slabobj_ext layout would additionally need a
+>>> proper refactoring to keep working.
+>>>
+>>> However, there's little benefit in accounting KFENCE objects. KFENCE
+>>> allocations are rare and there can be only CONFIG_KFENCE_NUM_OBJECTS
+>>> (default to 255) outstanding ones at any time. For any callsite
+>>> prominent enough in the memory allocation profiling stats, allocation=
+s
+>>> served from KFENCE will be lost in the noise.
+>>
+>> For a similar reason I wonder if we can drop obj_exts completely.
 
-Yes, that looks much better, as discussed. The downside is another vma_lookup()
-in hmm_do_fault().
+=2E..for kfence objects!
 
->  	}
->  
->  	pfn = pte_pfn(entry) + ((start & ~hmask) >> PAGE_SHIFT);
-> @@ -637,6 +621,44 @@ static const struct mm_walk_ops hmm_walk_ops = {
->  	.walk_lock	= PGWALK_RDLOCK,
->  };
->  
-> +/*
-> + * hmm_do_fault - fault in a range recorded by a walk callback
-> + *
-> + * Called from the outer loop in hmm_range_fault() after a callback
-> + * returned HMM_FAULT_PENDING.  At this point we hold only mmap_lock;
-> + * the page-table spinlock and any hugetlb_vma_lock acquired by the walk
-> + * framework have already been released by the unwind.
-> + *
-> + * Returns -EBUSY on success (all pages faulted, caller should re-walk).
-> + * Returns a negative errno on failure.
-> + */
-> +static int hmm_do_fault(struct mm_struct *mm,
-> +			struct hmm_vma_walk *hmm_vma_walk)
-> +{
-> +	unsigned long addr = hmm_vma_walk->last;
-> +	unsigned long end = hmm_vma_walk->end;
-> +	unsigned int required_fault = hmm_vma_walk->required_fault;
+> To make it clear, you mean kfence objects wouldn't have objcg accountin=
+g and
+> would essentially behave as if obj_exts for them could not be allocated=
+=2E
 
-end and required_fault could be const.
+Haha, right. Thanks for clarifying.
 
+>> The idea that kfence objects might have different slabobj_ext layout
+>> isn't really worth the extra complexity if we have very limited amount=
 
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+>> of kfence objects. The amount of objects that escape memcg accounting
+>> will be quite limited.
+>=20
+> Indeed. I think the main point wasn't to have everything accounted, but=
+ to
+> avoid specially cased kfence paths.
 
+> But I think this would probably just require adding is_kfence checks to=
 
--- 
+> objext allocation paths to fail them, so that's manageable.
+
+Agreed.
+
+> Should perhaps
+> allow moving some of the checks added by this patch to more generic sha=
+red
+> places.
+
+Which places did you mean by 'more generic shared places'?
+
+--=20
 Cheers,
+Harry / Hyeonggon
 
-David
+--------------DI7QtXXAQSwUVNu604OE0Y40--
+
+--------------lihAPi6O8DUJyauCGzEd0pPf
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCal+TFgAKCRCGXBN6rc5S
+1p1pAP0XU9L5CZnX3R1WlPuTzkAElnqLx3SBYNykv6t/dWnyMAD9HX2ksCXwGe4N
+oQmhmLj0qHcHsgUqb1WXUMWF6EyZBwE=
+=EJeX
+-----END PGP SIGNATURE-----
+
+--------------lihAPi6O8DUJyauCGzEd0pPf--
 
