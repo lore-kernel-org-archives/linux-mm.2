@@ -4,88 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54DF9C44520
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 01:28:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DCEFC44520
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 01:34:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 234AC6B007B; Mon, 20 Jul 2026 21:28:13 -0400 (EDT)
+	id 6D4756B008C; Mon, 20 Jul 2026 21:34:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E5F16B008A; Mon, 20 Jul 2026 21:28:13 -0400 (EDT)
+	id 684CC6B0092; Mon, 20 Jul 2026 21:34:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0FC396B008C; Mon, 20 Jul 2026 21:28:13 -0400 (EDT)
+	id 59DCE6B0093; Mon, 20 Jul 2026 21:34:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D1AA16B007B
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 21:28:12 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 35B1C14031E
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 01:28:12 +0000 (UTC)
-X-FDA: 85011048024.21.8D04E3B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 92123180009
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 01:28:10 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W2uy+ueV;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 32E626B008C
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 21:34:19 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 960FE140321
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 01:34:18 +0000 (UTC)
+X-FDA: 85011063396.01.AC6FC49
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 3ED4680005
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 01:34:16 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Bw8Mi6dQ;
+	spf=pass (imf30.hostedemail.com: domain of hongfu.li@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784597290;
+	s=arc-20220608; t=1784597657;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ucliq96+aNI+vu1/RJUCbYuu0aOGb4J93fyO7SHloJ8=;
-	b=HkF1jrB5BWJZIS9V1MyVEHr2FzABEetHxIHvlR9mnaFWJM52rkXJPBT77ACUXaCHJwlJue
-	QufGEtbIocEwYoVHdgFiXL/+sVd5VskgLmHf3jBKHgSTuNc2tBYyjBLJLnAaHL5+n/nK0N
-	+kIWYfRq/bP+EmbtKPEgVbZVrn+PQCw=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W2uy+ueV;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	 in-reply-to:references:dkim-signature;
+	bh=ssCjc5RyO4iON0/B4Mm6pQ4p+Fnv9Wcq91/6zrguLIA=;
+	b=OWhVkWrGa+8SojzrZyVZdD5k5zHV5Otjf73VWHPUAIkKdtrfH9MiQtF6YFY0rk/OisucXK
+	XcMrqCceaK7p8bx/zRhDLfLseRHwvT8eOBtiI7lLe4i8eUIiecSmoV4GLBsVJqiPAGnriI
+	VMTkSI2IVsB+ol3Q5n8txTs1oanZMgE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784597290;
-	b=5MeTOmpx0Rn9Fxwt3YlRJxlum/3WAZSFqmPpZlJDM+qD2tZnzwIa9SEVDXXUr4/DUHuHTg
-	UYERI3Waje2mL7A3/GBmknw4y6ojQNpqUyGXDnz/5TneF8q2loAuccnhvmAtzxH2+q5Cwj
-	RjTAm+Kt6AGxnyjfhDhBWJWJWFTFcTw=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C3A5A40198;
-	Tue, 21 Jul 2026 01:28:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 790F11F000E9;
-	Tue, 21 Jul 2026 01:28:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784597289;
-	bh=Ucliq96+aNI+vu1/RJUCbYuu0aOGb4J93fyO7SHloJ8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=W2uy+ueVatRrqnXjFjpB7iTcWu41nwoyeH9AYoQojxN+yCSUCEL0ohoJP3L/+rM7Q
-	 rJ8JwQwvWyLttL24bfjSxJSqbI1oJfHkZCmm8sFtykJ1iGDW1T5e0iHYB6SdnBgkS4
-	 rJnN6snNiAEdr57Ozf1VNcitiBaOLSHmKTpXmFenZxjUznZRqG0tlrnptbvb7apJdJ
-	 v1lA/w5SV2WMhP3PxfvpAU5KsVyBJRtgvEZicX4sdoYXAcd+dZgb8ecCmdhDUxVvr7
-	 15uHQxSRxmU0tKvBolnM7bCoWzufyxXxRqoOlm+SAkm4W/4v8hIQgKgBIxDhhw/Uqc
-	 vz8au05MMIB7A==
-From: SJ Park <sj@kernel.org>
-To: Enze Li <lienze@kylinos.cn>
-Cc: SJ Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
+	t=1784597657;
+	b=PGoA9Gv5st2hqzdvHbqevY35UXyH3qWcAuflYLHh6iJamxzJOaoIKPSwFWHIUh63mAAIKg
+	pyZijSGv/AFabZ9hyAy0t6vfMzwZlbgG1P3Z+4JB3HaXKGW5ztOc+uVHrZK0wdCJg5c0kM
+	tcIHA2ccLPpB9kr/586zKQble5KSgFM=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Bw8Mi6dQ;
+	spf=pass (imf30.hostedemail.com: domain of hongfu.li@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784597652;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ssCjc5RyO4iON0/B4Mm6pQ4p+Fnv9Wcq91/6zrguLIA=;
+	b=Bw8Mi6dQItJMykB2V4qA0T3ghdDWdAHjVAPr82lCKXtONIdiQg5xRnBKyucW9X5oV++0Kz
+	jD5z8z8Li6CFZWs12EviQX77byjbHlaEBuTT1H64vyCmyjIGWfGew5KAzN01RLNukDn3ky
+	nG8sQn+WoDqaIcKuRCJDUOYlwq3zBXU=
+From: Hongfu Li <hongfu.li@linux.dev>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com
+Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	enze.li@gmx.com
-Subject: Re: [PATCH v2] samples/damon/mtier: use damon_addr_range consistently
-Date: Mon, 20 Jul 2026 18:28:00 -0700
-Message-ID: <20260721012801.94223-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260720130642.508355-1-lienze@kylinos.cn>
-References: 
+	hongfu.li@linux.dev,
+	Hongfu Li <lihongfu@kylinos.cn>
+Subject: [PATCH] mm/memory: use folio lock/ref helpers in do_swap_page
+Date: Tue, 21 Jul 2026 09:33:47 +0800
+Message-ID: <20260721013347.65698-1-hongfu.li@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 92123180009
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 3ED4680005
+X-Stat-Signature: 671tp3gr9t4z6n7pkswki67te7bfakky
 X-Rspam-User: 
-X-Stat-Signature: q7f6yqfoxdyxbscsaoayxdhebbwk9k9b
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1784597290-950331
-X-HE-Meta: U2FsdGVkX19p+ZoD5LSFVy11t3ggPnOSyDZro0sRhZONk9qa9yt5dlPOD1HdbQi3c1gFy7HlQ6BJQqhgtJ5S1b2Bp2tcvOOq6SMgaWMb0RGkhYHXExKfFT4Ro3zDrgySiZYeQb74J+lccf6jnMXZ+NQqXwALBygOQ6uhwpaV1PmTW6xD5gPtMp4PndEv9poF+egMLmzywa+URKL8QzbTndC3NgJrlQ8Ay4W9DKO2cgJ8xtmwH0TjA9IPFmGf5g5u2D6zbbP32tawZE4gIjCCU983wDiNBPec6lOSeFfoUaTYHuwD6MH7v1AZpTnb11NBImVHtNs+i3eL23Hk3ds9rVYGpr1ysnK//9O8c7dNoeqTYbvdl/q3EFIl/QpXRqvm9RQOfxqLkNRDz2U40w9kuWXyXom7ItSnP15VPzvqYonHn3aNUB8oEVcQ7hGUzfgocMbfd7ObocXmNjasWFrQqNcdPYlJSUQIbNhUeLYRSyF4IZYjhSQ/BVWT6qlfwVdCfK6+nYtECRB4WEFpJ9d9BWofe7In6JBrZQiHWJrd4c5R55SN/UNnUPi2bQ/GQhA8cqDZegdvRzbUmqpyVl/5q+ipVH3bHgstGdESJQWS2g6eCZRUK1r/XGnU9yPu8kFz7NTBbQ8n27eeTo4y13ihfEzJPVxiHeq4NXLRJgBuEg60Ovu7S1IdC4vEVt4G1y59I4p6h+Q/jxT+Oqy7Zi1P05CiIxSD77lnc4LGVndootPzioNt88AwYWp3cHLPpIS0fsSF0pQqwJ1T51YBuGYtQzWz6+Xw1x40iaGFh4HJaIi+Dh52ZWXjRJNPLBWq1puxvDstaPVK1J/7XNsuIDW7mXh06Oi9pNFSqT0YB9JX1DOZQn+Gzoeg4R/TOTi5HhOS5HecHqcr+ruxKvEstO9HMC+pKA48D1KTRS44pXXAQgt1lPxHTrK/j4in1KmKcdgxNqSpImR16eNbL45rb/S
- oiJzGGVH
- zTCyzFV6swNbD5HjxESkZ4sZlW7F5YiytgXm+7+HMCqNOJwAo5ZgTZ52ggkil5RTpc/dk9QO5Zu4oYNGhOWtMyMsa18e/zZbStYrF2+P8ldJ+oUeZGRyeAcFaR/jkUjDG6J3PKOkRRNgLjDq6kl4zZMouWYJ7vUlhKrbD2x8ANznq3nbM6nfDRPeMWTERpHpqAujI7VGgr57uHBg2kpER28dJNx+Bg1DU44YNZMlWliiKlJsnE+md7SMj6mDUeafCnBkr
+X-HE-Tag: 1784597656-498472
+X-HE-Meta: U2FsdGVkX1+R5/J75FXiouhzVsqz+OYnMUrNnCzx9b1i4GV+kXfEo+yyWNTNcPXhPEbSTO68QnW5g6rq3itAULnBw6zVeECr4PfeDJ0bc9DTjifBRNHU2i9nHIv4TetsZdukDcmFlJ28WJyCZ0pWwiVO0+PAzkeYNSepGHgwU6WygpwuQl4E6PHxzNCk2pdhmMV0lO9++gKzTBAUIdXONEweTl/fIpHozLi0LiysDLBmbuCC7mR8rlE4Amcum+1EsXknBb9LOIVxhx8ozGDb604cN4p1CB4mnQlPux29ZGyjLfgHLuikwK9cRmEnV4e6INbuHIO3c4RiPwwq36PY1EZYi2SiIkxgfFjKIEmf57wGc0D++WtTcKhRDq7TVJQYy+OsQLi9p8xM2tTHefDJglN4eg3SpgH5YVjav2NKipCIZGP+gD7gLdNkEtbRprIS9Azv28I4aGP0S2xdpofJ/r+fydhr8gbFQE35hHT7CPYyLAB6NeJ8EltaxZD63kjnBe4NsJmvSSOFc13nz0ltO5wsrzxWo4e/4ij4pOkSnH4z3IvHXB6NLAaNBvUkhqIwdW1ru0GZwVHCA8aMmYdUYflM70WBw/+YxWs6pZdEdHzyoTV4CoG81k6SNIIJbXYazL7rqXK3W5pkpW+oY5K/t1M8fu3XItoEurIl7azhMTU8WFP4I3MgBFDRKWch7T+WHgZFIqXeTPMggRdM5JA35h+FgaBEFjzgUozL33eocDq5JDYMb3T3apsULYpLY+3Uw51fFgVpk/t+rfZ1tsaKcvV0F6fYZQrQNW3kyVvdmAvpNIwpXjnr4wuIl82mvVJfQJSO1TqQv/HwqpeiMPQWncweTv/rV44O4JM3PazYxnU0iAfR9Vg+uo2DMj6uJdXdirgHPXjbvumxqqXeICrl0z64T7yElW+fPlTGdR20GzJGhYeKLJaKkUTTbV0ROm7OglNlpmxHrYIyQ+V/lvg
+ Yfr5Lafj
+ z355YdxhqDP8ZoVruPr/5Bv4n09OrlaqTL3pOGMNE23R8nKSfUJDlAm4CqhYlhhBiR3VL8aXdKj4HRXWv6WzQlBRv4fAf8+l1TKWeM/T0zeLXP7RjtQsetwfOgulwEax1JS6n0VX/EvCf2g/t+14OzpyVEOQjUNn1qQJ8MUhhCyEptSS6E/v4JuZKCcKsHKl/nWtHfzCnhIscavGnVU3TgCsyGVf1Q1qPlCKjeFaowNNnoDBqPEzzZ71Wzw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,39 +92,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Enze,
+From: Hongfu Li <lihongfu@kylinos.cn>
 
-On Mon, 20 Jul 2026 21:06:42 +0800 Enze Li <lienze@kylinos.cn> wrote:
+Replace page-level lock/ref operations with their folio equivalents
+in the device_private migration path of do_swap_page().
 
-> The DAMON provides struct damon_addr_range for unified address range
-> management.  However, the mtier sample still defines a local struct
-> region_range and mixes its usage with struct damon_addr_range in
-> damon_sample_mtier_build_ctx().
+Introduce a local fault_folio to hold page_folio(vmf->page) to avoid
+repeated page_folio() invocations.
 
-damon_addr_range is for DAMON core layer address system that uses 'unsigned
-long' as the address type.  Because 'mtier' is dealing directly with physical
-address, we use a dedicated struct for that purpose.  On 32bit systems having
-more than 4 GiB memory, this may be necessary.
+Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
+---
+ mm/memory.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-'mtier' doesn't really take care of the >4GiB 32bit system since it is simply
-casting the 'phys_addr_t' addresses into 'unsigned long' addresses.  But it
-might support it better in future, using the addr_unit parameter.
+diff --git a/mm/memory.c b/mm/memory.c
+index d5e87624f692..bd27372a1052 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -4852,6 +4852,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 			vmf->page = softleaf_to_page(entry);
+ 			ret = remove_device_exclusive_entry(vmf);
+ 		} else if (softleaf_is_device_private(entry)) {
++			struct folio *fault_folio;
++
+ 			if (vmf->flags & FAULT_FLAG_VMA_LOCK) {
+ 				/*
+ 				 * migrate_to_ram is not yet ready to operate
+@@ -4863,6 +4865,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 			}
+ 
+ 			vmf->page = softleaf_to_page(entry);
++			fault_folio = page_folio(vmf->page);
+ 			vmf->pte = pte_offset_map_lock(vma->vm_mm, vmf->pmd,
+ 					vmf->address, &vmf->ptl);
+ 			if (unlikely(!vmf->pte ||
+@@ -4874,15 +4877,15 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 			 * Get a page reference while we know the page can't be
+ 			 * freed.
+ 			 */
+-			if (trylock_page(vmf->page)) {
++			if (folio_trylock(fault_folio)) {
+ 				struct dev_pagemap *pgmap;
+ 
+-				get_page(vmf->page);
++				folio_get(fault_folio);
+ 				pte_unmap_unlock(vmf->pte, vmf->ptl);
+ 				pgmap = page_pgmap(vmf->page);
+ 				ret = pgmap->ops->migrate_to_ram(vmf);
+-				unlock_page(vmf->page);
+-				put_page(vmf->page);
++				folio_unlock(fault_folio);
++				folio_put(fault_folio);
+ 			} else {
+ 				pte_unmap(vmf->pte);
+ 				softleaf_entry_wait_on_locked(entry, vmf->ptl);
+-- 
+2.54.0
 
-> 
-> This patch removes the local struct region_range and changes the
-> parameter type of nid_to_phys() to struct damon_addr_range.  It also
-> gets rid of the now-redundant local variable and pass the address range
-> directly to damon_set_regions().
-
-So, I don't think this change is required as-is.  I don't really want to add
-addr_unit support for >4GiB 32bit system, either, unless it turns out to be
-really needed.  I'd like to keep sample modules as simple as possible.  If the
-code was confusing you because it is anyway casting the types, adding a comment
-explaining the rationale might be a better change, in my opinion.
-
-
-Thanks,
-SJ
-
-[...]
 
