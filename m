@@ -4,99 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A6CEC44524
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 02:30:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5834BC4452F
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 02:53:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E90496B008A; Mon, 20 Jul 2026 22:30:48 -0400 (EDT)
+	id CEC106B008C; Mon, 20 Jul 2026 22:53:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E1B656B0092; Mon, 20 Jul 2026 22:30:48 -0400 (EDT)
+	id C70D56B0096; Mon, 20 Jul 2026 22:53:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CBD956B0093; Mon, 20 Jul 2026 22:30:48 -0400 (EDT)
+	id A9E016B0093; Mon, 20 Jul 2026 22:53:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A54FE6B008A
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 22:30:48 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 387D3A03AB
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 02:30:48 +0000 (UTC)
-X-FDA: 85011205776.10.56CB5A1
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 2BDF2A0008
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 02:30:46 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MSqSNz4V;
-	spf=pass (imf15.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5E3D06B007B
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 22:53:12 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 94CDC12038F
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 02:53:11 +0000 (UTC)
+X-FDA: 85011262182.23.7203D69
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id B1C4840003
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 02:53:09 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RU5nIEo7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784601046;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1784602389;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uqpkdQj+7qvi4skqZqI1ASqK0ghmKIC3He//asuLC98=;
-	b=VSGqu9UVW5fqdpzVHtkoeFaZfHZWAaUonr0jN2Ps/INZsl8Qjyp4BBueetXiqMGkmEwlFz
-	YK5BNR3OW6WHI20H2KratcBQPXbvC0Fed70NreQLLxG9Z3br3DOFP8sxvjy7mRUtWRV0O5
-	1awP1Rm4M4WfMVWF8Za4UW6lXzKTwA8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784601046;
-	b=P6SrPQ5S3sthDqmB+siXzEABhYhZlNAG2Op0JmvPQrhkp530hj2u18q4ihyEJ5tnkJMVCv
-	QF3fXJ6nqP09Egssn49rJxQezLcdFY0kmIpDLOOdsNKpMktQrdWrWE4PLwBQ2aobie42gO
-	O2hlmY5DLv1qPjlVeofzn3eKjl7OrTw=
+	bh=ZpZGhyITuiEPc35R3SeU9ir9wzXaL641Y6XBXsA0eGY=;
+	b=Lo/VgEcXe3JDL7olV/B/W2K9bY0N3TWcF7odhi9n65f1cssGRuYdd19tYKcC3WfLkYqUEp
+	d08pAkmqfq4qxuPU4sA2OZiRXjW3OXg+TTyfb40bo4N0ZbACVN4iHd6GgxLFtBvcnO4sGC
+	KnrhLbbSM8YEJU0uhlyMpzUEQORBdU8=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MSqSNz4V;
-	spf=pass (imf15.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Content-Type: text/plain;
-	charset=us-ascii
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784601043;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uqpkdQj+7qvi4skqZqI1ASqK0ghmKIC3He//asuLC98=;
-	b=MSqSNz4Vj3kzhzaJ0O98ooGg/Sc1TB36RgXR0TxbuPJ6aUn9fymZhWXZLcaYL9eggSaW0a
-	G2so9EUVJGkos/7YuUcAJsREUXx4yKSput+DUFM6dNfj2cTaHLqybsCUm8I7RSQfwR0U/D
-	whU7CS0UZLMkd/k+c3MYsM9Awb8A3AA=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
-Subject: Re: [PATCH v3] mm/hugetlb: Fix null nodemask in
- alloc_fresh_hugetlb_folio
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260720173707.47616938378bc26a41650b6a@linux-foundation.org>
-Date: Tue, 21 Jul 2026 10:30:20 +0800
-Cc: osalvador@suse.de,
- david@kernel.org,
- fvdl@google.com,
- gthelen@google.com,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- Vlastimil Babka <vbabka@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <E8AB5D4D-E781-45B5-B06C-4AAFB2518977@linux.dev>
-References: <20260705175119.440599-1-souravpanda@google.com>
- <B8DC1E3C-24B1-4608-86B1-5F12B2FF4DBE@linux.dev>
- <CANruzcTi8+37K=YQwpZ51MxzDUKiX-gF6BdFMXax=ozzZw86eg@mail.gmail.com>
- <20260720173707.47616938378bc26a41650b6a@linux-foundation.org>
-To: Sourav Panda <souravpanda@google.com>
-X-Migadu-Flow: FLOW_OUT
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RU5nIEo7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784602389;
+	b=Z0jGY9kbiFzjD8W3FAcNFxtnA2LPuwUQkWKuNcw0/8VntnDlHtChn+X+LC580WbGARAKWw
+	83KHbgnkMGL406T7VwPwt7w5qg5r8mnUtEQYEaOhQp5v5bUrvqNyWBh+zpkk/bP+I0275Q
+	br3mWXElvJt+1id1Tgswf39Z40CtxUE=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4C12F60A7F;
+	Tue, 21 Jul 2026 02:53:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id ED0F2C2BCC9;
+	Tue, 21 Jul 2026 02:53:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1784602389;
+	bh=9xYXc8cFALwl2scnPkDmoIcwhk2eGPLl2JPUNmDY2d0=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=RU5nIEo7oWGGETmhUfdKPLm20rS3ih3Lz3nx7dwAbmJpFMYKLmt1sbPxm8M2BdFSb
+	 p+qcEBcKlKCYBeGTbYZvCWk0+kdvFH9uvPlxo+HCrjvzfA3TxKn/TSf+lvQK01A1dG
+	 6bCBamepBRssAXw7K2FZqZE+8Pq1xa652OychT7XIwjDIyD9SfXYw04rOq0bNNF1kL
+	 fY0DPpYdi2kqYt6agKYJjpZBpnTg75KDWOxMZ1teiVfjCiYXeav3kklKOSKGInqqeF
+	 KMnOIr1LMuDTplYR35a/9ljd8NETimAmPoZiEBsL5JeRUAahmv6rCmmCODVa3gC9rc
+	 018p7QpijnZRw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CCCBFC44524;
+	Tue, 21 Jul 2026 02:53:08 +0000 (UTC)
+From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
+Date: Mon, 20 Jul 2026 17:25:05 -0700
+Subject: [PATCH v3 02/13] mm: hugetlb: Return -ENOSPC on memcg charge
+ failure
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260720-hugetlb-alloc-failure-fixes-v3-2-7d2a169aa9ee@google.com>
+References: <20260720-hugetlb-alloc-failure-fixes-v3-0-7d2a169aa9ee@google.com>
+In-Reply-To: <20260720-hugetlb-alloc-failure-fixes-v3-0-7d2a169aa9ee@google.com>
+To: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+ David Hildenbrand <david@kernel.org>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, Nhat Pham <nphamcs@gmail.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>, 
+ Wupeng Ma <mawupeng1@huawei.com>, fvdl@google.com, rientjes@google.com, 
+ jthoughton@google.com, Mike Kravetz <mike.kravetz@oracle.com>, 
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+ Roman Gushchin <roman.gushchin@linux.dev>
+Cc: vannapurve@google.com, erdemaktas@google.com, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
+ Ackerley Tng <ackerleytng@google.com>, stable@vger.kernel.org
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784602387; l=2183;
+ i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
+ bh=nuUhbZqkwDE9Ph8fILa8cD4bi/Ma9wFUhfWLAJKiQgk=;
+ b=j57evNN0B3aJE2bGo4aYEop42SQgenXTgRg2PUpxRSDxLbx80RSNC2CSSJi9kG5+6PcjtSdOX
+ U3od4V1MktRAPv3uMaKCMouffdnKbebP9hZr5h1kP/nwAVICniSzxVg
+X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
+ pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
+X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
+ auth_id=649
+X-Original-From: Ackerley Tng <ackerleytng@google.com>
+Reply-To: ackerleytng@google.com
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: B1C4840003
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 2BDF2A0008
-X-Stat-Signature: 4fmnuszzj8yyrbqn6mf1h39xkgi1sfx6
-X-HE-Tag: 1784601046-887029
-X-HE-Meta: U2FsdGVkX1/8tt+rLjvlBmGsK6o17RrXpJA/aytQ8SaBYEzqjpTuRHBY5tW/uwzg4S/tBboOcQoEsw+NfWUxIcZUGBpHw+kked+xAHJVNz34gwCA8FVf8l94t1lqnb5cguyIhpnYgbFhRoWCnQpb1lnbKeQbUi4z04t6dbAnqnRIlsB52B/RNrtrXieH0pyEdPSMSRXGfaMI28ud1GOyNycxK8vR1CGXqD/DOKC8aKhwIYJI4xuWBV9zuA3DDPz6U++XffMrZ/FinhpEILifeUv5G8otXJRTKjP7ihm53PM8o7GuuQerhOzzr+bbmKFYtGDOHA+agSXq34D2iDjXyN/b5KZToCNyUyUHCZUC5AulwoNxNcOFdJLlbLZYirMNlZDjfVmCAjF0UoDrnY/hW/YpRRt5+CeIjAuWgQTayAuWtFZOiVrpTfC0ejOmcifswWFUpBYMRldF4DcSvi8H2MKyocoyYH4WumCKhVt6KSDN9rBdNmuF4lXhbXThYIANrGtYlxlafQCQTP9HkOlvfS87u6HiG0AMAuUW/JO2uDPpQcwdOwuhTJQEoeuTOI325xvY8ds41ys7+GIGdARVeUgv1xLNatVtNyDcEK2B5a0w6a4PdXc2xSPcm4KxiLF/Si0scTvZuia42RQudcxQxBdmVJwpsDLAbiqHoBxQ3snm4lZ9UrdKpItbKnCTAm4wod+ctwzPW/21R0Vsm2/Dxl99XohlnC8V7yTej0rfUoBEtEFsBskjjLtqDAvchYe8Yra0mdf4AuIFEC9K8RaGVUqIsYP50QHqd1kLjjkD9pFLSY7oF0fMXdFo09oNBOBccibIDP2PuYS0/NhZJn0qsfei39NUAaFS9V7eWLzwt0QkysyzblkCiaL7QLy/2NODhjqIgf5OhPwfFe3sjT07IE82uf+YSpKEvrzZb7HwXYP2O4/hoTaeWjfWjl3tyPELWFl+UE1I8LCkwiLDyCK
- V4BKWDDU
- xMCfO5xTmILf+euu5YVYjWNwM4+r57DReryKHfYARagt6ttSFloPNakRIxoDSHOforRnRt7fnYqMD3+bwGRE9i8EIZMb/QzW5ItphXkFlbrHyCVBSbn/aUq10h3TOxbIUXhU3Y5OzP+gJuCJxtulLvIRMBeVPY7glQMK3wA3JrzSflXMtMLR6xuGidyH38yylsTcvl5gl+nuGlBLT3C8vKh9awSGaUNl26r2OvNef0+90NuDG0M2lAwSKJOhUaZBB7HktfWBZqZhfiRInOA50yZv1RPQLYeaKi/087TN62RGbT5ZVX5CqbFjLzu8NjvXwlxoW6swMLSjj+JiKzKFBA43iQjikgGzxVNzE2DKkc51GcIw3lhq7DZ+pvA==
+X-Stat-Signature: jc4bd1qd9wk1jeq146t5zrytm8f1bmow
+X-HE-Tag: 1784602389-138076
+X-HE-Meta: U2FsdGVkX1/klUnq91gaAhwKtp238RksaUjqcJqGxCCx2K1uDGat6bfUkTu/XIukz0iKo7dwOqX/qkuJtMPubozam61QC5DC1wyQKe308w7EE42UpPcdwZ+ZTtluIFLEN04GlRepzldWvRTTSjGtRdpST8/hi3+3PswKRnwTLm2feHtPMPUSO2+FcHaGVMxmtol9si2MISVNAXj05E5B3dvhEI5t3QXt7ZtWqM0XOK4jOfVLkibK8EOJ8YL93HJv0X1BKQ6MjjZ0tMQCJ6aGkzUWDf8/9dUtT5i0xq0K4ubKPnizLm6e29/hyFzL0NgeXaymsWYO8qulolqJnCcCFF3C8LznY+0YWlTwAG8CrNylnFgZj8TiM4pC8mhk97/JFpz+zEwPdp+u+jgawrrBJQJnLC61Fs6umdMu5FkFiuQBfMSHf7DUkKhHALO83TmUrD8Z+os6FdJN5gsT03OzwIdcWjMHAZQce5BVAG34M69Bi4jNZMM97zwpNoAjtO6AnFapOPICWtLhUGh86xeYTAbp9t7lZBPCOfrpqYJzlA2x8MTVbBmPQqIngY4a4Bfoy0hPvOGvb4quZyTXPXZ7PMxbAWG+JXKpsaH3KcQ188Rjah0GPJWNG/shiWRaIA77qiBSJw3JOOWz7Ak4or5OCp/kixz65IRyNSLL7XQT6Eym1VKcAy7NCwFmcmhaMsPRvf+/tU+wrYJTMWJDRN2tb6/JiME8KmpfAM8PoIi3TM10D3P5oJQ3bqnG9eCYWfRnzIOUNHyvJeT0Iwz0NxIBt1HcC/mX4JWT7GVDdGKVVjwdiX7eZedcYQx/CE6BkX+2BTntePuprlM1FX3TuqkeofUVwPk6C5M3IGyf16W4qQqmPmCPCbXzXq+uFYSChLA8PPkm9zQ9ziSe4Xke7N+octuTsZrQdW/IEMf0/CjMhMqsyCz2vGwtBcuKhgYzZFJ5igDDpe57lMwNtoGM3v0
+ 1WKAb+KS
+ l7q/jyKMN0OokQXHOkhdqpCIJhadM+kLk71bSSNhmtdkerK0NC/7jdaeI4MUWNjobU1ebFZXYKJWyfBH/gNYvJJFP7gNyxGMdEoWfVkX4Y8vU7vJUKReDaLztWPXjRifyy9hR0aJ0wPebOhAmD7wd8n4KlCzSUJDbna17MmTTlrr+LWKQYPJGRsiGM5jFeLJcm0iZ4NqspuWIH0a3z3Czf+/ExzgmxnURWjwPqGxnpXDkpMadN8TJ3ORV65VSXS7TVkv2EXeL+sLTfaXNve9j626qbHfmaNwIuYQdd4PETaSS1hZZSuCYzMVYHEFJgaskcLEN0D9loL3gGMqWGI3jPl5qQ6az6SiYBFxnguGG4uDHmFMX3m64lLcmslopBuBYUnn9MNMdYq+t9b6ptVjPbkaetyqTxFgzGkAq8CzQLbWxP60sEe9J86uZpJB/wnNMcds05wXiWF0705NtpxpMSWuWSmwSAumXNSXw
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,50 +115,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+From: Ackerley Tng <ackerleytng@google.com>
 
+When mem_cgroup_charge_hugetlb() fails with -ENOMEM, alloc_hugetlb_folio()
+currently propagates this error. This results in the page fault handler
+returning VM_FAULT_OOM.
 
-> On Jul 21, 2026, at 08:37, Andrew Morton <akpm@linux-foundation.org> =
-wrote:
->=20
-> On Sun, 5 Jul 2026 23:55:31 -0700 Sourav Panda =
-<souravpanda@google.com> wrote:
->=20
->>> - Option 1: Fix it directly within alloc_gigantic_frozen_folio().
->>>  This would centrally cover both of its underlying allocation paths:
->>>  hugetlb_cma_alloc_frozen_folio() and alloc_contig_frozen_pages().
->>>=20
->>> - Option 2: Fix hugetlb_cma_alloc_frozen_folio() and =
-alloc_contig_frozen_pages()
->>>  separately. The rationale here is that since the buddy allocator
->>>  already handles this case internally, and =
-alloc_contig_frozen_pages()
->>>  is also a low-level allocator, it would be better to keep their =
-behaviors
->>>  consistent.
->>>=20
->>> Both approaches are viable from my perspective. I'm CCing more MM =
-maintainers
->>> and reviewers to gather your insights and decide on the best path =
-forward.
->>>=20
->>> Muchun,
->>> Thanks.
->>=20
->> Gotcha! Thanks Andrew and Muchun!
->>=20
->> I shall wait for the decision and then send the subsequent version :)
->=20
-> 15 days: no decision shall be forthcoming.
->=20
-> Please code up whatever you consider best then send it out.  This will
-> trigger a great outpouring of decisions ;)
+Because HugeTLB allocations are high-order and use __GFP_RETRY_MAYFAIL,
+they bypass the OOM killer. Returning VM_FAULT_OOM to the #PF handler
+without triggering the OOM killer (or having it make progress) leads to
+an infinite loop of retrying the fault.
 
-Hi Sourav,
+Avoid this loop by returning -ENOSPC when charging fails, which maps to
+VM_FAULT_SIGBUS, terminating the process cleanly.
 
-Please select Option 2 first, as I'd prefer not to make HugeTLB a =
-special case
-again.
+Make mem_cgroup_charge_hugetlb() fault handling use a common error handling
+path, the same handling used for hugetlb_cgroup_uncharge_cgroup{,_rsvd}(),
+which also don't trigger the OOM killer and hence opt to terminate the
+process with a SIGBUS.
 
-Thanks.
+Fixes: 991135774c0e0 ("memcg/hugetlb: introduce mem_cgroup_charge_hugetlb")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+Reviewed-by: Muchun Song <muchun.song@linux.dev>
+---
+ mm/hugetlb.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index eef9610a0593c..b32735b092a0a 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -2997,7 +2997,7 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+ 
+ 	if (ret == -ENOMEM) {
+ 		free_huge_folio(folio);
+-		return ERR_PTR(-ENOMEM);
++		goto err;
+ 	}
+ 
+ 	return folio;
+@@ -3022,6 +3022,17 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+ out_end_reservation:
+ 	if (map_chg != MAP_CHG_ENFORCED)
+ 		vma_end_reservation(h, vma, addr);
++err:
++	/*
++	 * Return -ENOSPC when this function fails to allocate or
++	 * charge a huge page. If a standard (PAGE_SIZE) page
++	 * allocation fails, the OOM killer is given a chance to run,
++	 * which may resolve the failure on retry. However, for
++	 * HugeTLB allocations, the OOM killer is not triggered.
++	 * Returning -ENOMEM (or anything resulting in VM_FAULT_OOM)
++	 * would leak to the #PF handler, causing it to loop
++	 * indefinitely retrying the fault.
++	 */
+ 	return ERR_PTR(-ENOSPC);
+ }
+ 
+
+-- 
+2.55.0.229.g6434b31f56-goog
+
 
 
