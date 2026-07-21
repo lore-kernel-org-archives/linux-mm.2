@@ -4,101 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32A53C44529
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 04:57:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5AB5C44529
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 05:02:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 399D56B008A; Tue, 21 Jul 2026 00:57:03 -0400 (EDT)
+	id 836C36B007B; Tue, 21 Jul 2026 01:02:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 323B06B008C; Tue, 21 Jul 2026 00:57:03 -0400 (EDT)
+	id 7E8B16B0092; Tue, 21 Jul 2026 01:02:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1EE3C6B0092; Tue, 21 Jul 2026 00:57:03 -0400 (EDT)
+	id 6DA196B0093; Tue, 21 Jul 2026 01:02:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DD0896B008A
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 00:57:02 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3DC15A03EB
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 04:57:02 +0000 (UTC)
-X-FDA: 85011574284.09.28CCCE0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 66FF620006
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 04:57:00 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D0rnIU6k;
-	spf=pass (imf13.hostedemail.com: domain of chenhuacai@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784609820;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3BF786B007B
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 01:02:42 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B0B691A03C8
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 05:02:41 +0000 (UTC)
+X-FDA: 85011588522.15.5C84210
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+	by imf05.hostedemail.com (Postfix) with ESMTP id C1C93100004
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 05:02:39 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="EV2/+0E+";
+	spf=pass (imf05.hostedemail.com: domain of souravpanda@google.com designates 209.85.167.48 as permitted sender) smtp.mailfrom=souravpanda@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784610159;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RMvV8zHJ0YWHZpZGjoLFxMf7FQLHmiNjNa68W8trvtc=;
-	b=EoLi1PeDZEoyQetxsPlPn0dfbSF/HKOQLzzD1OkjJZSU0UhKC5/0rgRkB/F8NgpHmMicGD
-	Cx1hdnwfyJkvVwSzTGf1WyQXKQFzW3rgxpBTttKti5yEC4DjqXc7Dl8BBDyGkOb8XR29jt
-	8WDeEOX+g5PZZnwIWWmY12fjnmWFWuc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784609820;
-	b=XZh/6oZg7wYWu/mHbMTpgXb51GjNYfeLSatDAKtktQbI+xyzUp182uBqT/aWhtOTN97B+U
-	hy8wb3GVlla44C9ucrEuuVllcb/ra2ozXsjLMNopBEJpHOSy0R1wl1wpMaPSTXwWh8v+AL
-	xkjAdKwknnNB4FieAneo/PneQXSbQ68=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D0rnIU6k;
-	spf=pass (imf13.hostedemail.com: domain of chenhuacai@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id BD6BD60A7C
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 04:56:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 780C01F00A3E
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 04:56:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784609819;
-	bh=RMvV8zHJ0YWHZpZGjoLFxMf7FQLHmiNjNa68W8trvtc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=D0rnIU6k/uzIevZydGbdnTO56J2zR9h2KH3xByy0JssQKCjXpCCY7mOxkUIsuUbXe
-	 ROpeyFVUQET291WIy3gA+hXM8bz1hwEkEB1xIPm8z0Lm5p1mv0q3DLqyGC59yhyade
-	 URjhQ1GqOWps/o0gOTZAeBSqaAyjeATVb7bndZvJ2Jc2UB3kE85XeR6t6xIDGAtkv3
-	 FPVqIjcTiZcKcCfzmGytNCKqTttPSpoDa0jNsG4RgY3DDbSGrCu0XeMXcPpAN52PHl
-	 VNfjLuuP04v1VBaDQnotE0tLFDjJtyn/IyHvRrH2MV+86CZdh015sf61fNbPBaSt07
-	 6CtWFdyem1Wyw==
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-69c1220bd51so12528499a12.3
-        for <linux-mm@kvack.org>; Mon, 20 Jul 2026 21:56:59 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Rr21j/GXXBM5u6Ghw6ZJVMRTZ0/9pu2bNYDK1wrGGz8lAbXasy+eZX9osxMsyrrb4AxVjnYm3N6Eg==@kvack.org
-X-Gm-Message-State: AOJu0Yxn5CtrT7eHjtAbSuYgN72y0URuRXoId5pnItRUf1YmwF3uwpg5
-	uBK6nZWy3wJGwcRnh5wavQIdLxkmFxPrOR5m9p7gBKq9Cffmz8uW5XetiyA7TXsU+37XJKJeJIs
-	1LkhkWc9s+obhE/Jjcal/3h0AbG9moxQ=
-X-Received: by 2002:a05:6402:5286:b0:698:ade9:757f with SMTP id
- 4fb4d7f45d1cf-69e652e0c81mr6223233a12.19.1784609818044; Mon, 20 Jul 2026
- 21:56:58 -0700 (PDT)
+	bh=wVYv1jY6vQm8iou0Tx0bNvdZzW73gw/syVItxV6jH04=;
+	b=bohAp8+Cqvgl4seqTpxEGabqiiRCnVTLJdXv6GA1DbnA3bNPIqzK2j53YELYa6Kqz8UMAS
+	tDybdegLpNnQe2bM1jNbXDXGyBSi+m38i5ixY2IZsDoFGmC3uUEGGgRekF4WqL7nCJEla5
+	Hsues19kL3MMxNSN4yqRaYKuVYBAzs0=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784610159;
+	b=M4xO2HcLHZvDBl1Eo1fapVjyMASrpZxMvtfOrKN5/R+YlCgUxYnjsixvVtQaqmxw0KTLBg
+	iL/Kcc6nzA9k9VNNPbaina+igP7aBh1PYK/nro+hQ4XgtS06roGed/PWV6+nQ5Prq6m1La
+	NFBL74B8ULYtgbUXsLRrqU3wQ575mUk=
+ARC-Authentication-Results: i=2;
+	imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="EV2/+0E+";
+	spf=pass (imf05.hostedemail.com: domain of souravpanda@google.com designates 209.85.167.48 as permitted sender) smtp.mailfrom=souravpanda@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5b020a70f9bso19848e87.1
+        for <linux-mm@kvack.org>; Mon, 20 Jul 2026 22:02:39 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784610158; cv=none;
+        d=google.com; s=arc-20260327;
+        b=GAXd0BqmxoMEuEe9XD205q2WuSbAA0tit8Nqxnau+JxAbd111fb4Is3+d7TbKPylmR
+         EYSCVxXLfKNGl45RNN7PB5uqfeM9XnSOADUeMQrS0BCv7v30TJDUTT5WJafOFg5o92xT
+         7YOTrtlNSrSTI8cWh0j/kNCJucXcjrK+WE315e0LgLD7mnY2buxIryeimxp8s+FwQZjL
+         NFssfpmbpuI7B6H1GIJvBabiZnEHKLdIuRkl8Ns3/bT7njEGfepA+0EnHJKGiwD61fDR
+         LlCStUeP5mwy4XJVCtYPHP3VgCkuaZs3CjF9LJwZVpSlAnuC7c8dSyJi304sTmTgHAJ5
+         2R7A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=wVYv1jY6vQm8iou0Tx0bNvdZzW73gw/syVItxV6jH04=;
+        fh=b+IvxaXiLzJvqnh7AiX/pZxuvOF4dOx9x6RL92ZqJ2E=;
+        b=fa3NQe0lq+MmXGEMMXcWxvLkns6+gxfI46HO51+UCMYgRbkPfsn2GIl4BrQz8e4E91
+         t9Jd5V4iAviQIj3daO2FUbrK7U4IYZ+r1M8OLyphu2yJdRlKrWy+Q4VkGpahX1SsPmWA
+         tCx5EFQqeqgFaThQVygwHXkZ3udVMd9+/3hRx3X560xcB2MzndUfa3gbfd2bTN90Mq9O
+         2/bYgVLgcv/76cqsmJprhc8oTdrtoa22LfzRhjcgvKSnRpnQyGjFSEBEZeI2pw7osioQ
+         a7ADsQ6of4mdD4mu0ON9ejvnI9J/iUbhywOzC8EYGYQ8NFbskPHIMTVm8g+OZC9GOWTZ
+         YqbA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784610158; x=1785214958; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=wVYv1jY6vQm8iou0Tx0bNvdZzW73gw/syVItxV6jH04=;
+        b=EV2/+0E+Ajf2p55P00a1QIzI7uZcvgLhH1W5jLEpVaAsBLWTiqdn3luOin05GVS7Fe
+         MzhMZSG+j1lu+wLTFyuIsDBd1PXjF/6DGA66y1cUUPjUuZe5MpQGUgV9M0ApzXK8O/Td
+         2FXyQXsj+LbsitRsrkOFYuC8ui9XO2YBZ59canHEVQA5Vj18+GBTT5nG2TqM70HOmPnd
+         kUN8D+oPP3sZROi8/zVjeFZfpOyFv5SYcadsPju9e5oZWqBK1758fZvSisXQFeRR5M9g
+         kfSGxgdiZ557FoRYn0XR3zJY4AxhEi48oHS94pqZU9jM1RgIOSHe9sFYv0rVOhjq2QZS
+         jTHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784610158; x=1785214958;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=wVYv1jY6vQm8iou0Tx0bNvdZzW73gw/syVItxV6jH04=;
+        b=aNhuYE7kVDS3Q17A3m1aLvxljRQETEwZ0k2MDgbnJ0j7/gYqGX8zKoxJL+cGtcGT+Z
+         WXBUWVW6YNwAEqVaH2GW6I4Rb8LJhcuho0o6bca7E7lxDF2cfadO62ufXMUsEM0D6gQm
+         vRbMi4U2frNZbhBuB/3fmZyZZWgKwh6NuYLyVZKHmPFW/qiJAsGcLlNVim1XsXF+cOBU
+         y72vsY38S0cdZBhfNL90dBLFjVFLLfsSC9jGu9qVBbK5PeFgDqWDu7vWn2e9PIHSmtPO
+         t0PDfkwqp0LkJpSBmZ35+DQMVGdy1Tp2JwJPl6rKknIA4ci9yKY9DtukY6Yqq1tW+w6e
+         CGLA==
+X-Forwarded-Encrypted: i=1; AHgh+Rq8p6RcW+BoYeVeG38bgHDX0LByS965wGUbqi3P/FJ0qRdlJG9kxoOigHCijnV/xpawi3SfKp4PzQ==@kvack.org
+X-Gm-Message-State: AOJu0YxmA3xN7s4n8ye3yjG3fH6sJQIKCxcJk1FxKCg0DqFNeawhlH/N
+	Evzt4aXnQGZXaZMVLnXTYhdwFMFBXTioqAouDgK8TywrGFnd++rYclXdJ6yUv9hc2zo1aL1rsVc
+	fq/MU+5XfsWvykXTCY+kBiNwCoSBiGhAHoc1QlvUV
+X-Gm-Gg: AR+sD10PffKHoFJfVR5mLBS3D3LIYYDqqL4Z7mZIUezF8pOMB0ZIsinAvc2Y4pPhw3D
+	8f0xxwdui63Un+BkkZunZoEXQGy2TJGMp92Y3vr3Vw0NmpZMda99jnaIpx60TbTVDjf0F4xes+H
+	PaZEeOudD7On9+bxFLH/CTcQlaT3gujvbf1ha2QdBnv3erwY10ir/AkuU28Z0MNBxx2i3J286Og
+	FMQoVI3euAtWfTc8i9VwgG6J1FwFM7cLlnoEIqswC1vlXmR51f3F2lyVjhC2x2ntoNn4j88a91c
+	rS64mYDFKvhvDrNjzJ9Hb8WdlH4RHTiDmSgEsO8jwYCnO+SnJg==
+X-Received: by 2002:ac2:5683:0:b0:5ae:bfe1:737b with SMTP id
+ 2adb3069b0e04-5b2a31d1e55mr197564e87.10.1784610157601; Mon, 20 Jul 2026
+ 22:02:37 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260717075715.25513-1-yangtiezhu@loongson.cn>
- <20260717075715.25513-3-yangtiezhu@loongson.cn> <alySgaaQen6ZtwSo@kernel.org>
- <ba8b2723b563cd290c5c00fb4ec2402626fba06c.camel@xry111.site> <38d130e6-7036-e296-e058-433c8ba7a265@loongson.cn>
-In-Reply-To: <38d130e6-7036-e296-e058-433c8ba7a265@loongson.cn>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Tue, 21 Jul 2026 12:56:42 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H4huLS_G+TMDKZ5sFwFH9BJsQbQeADtyH3CSnkHirCnaw@mail.gmail.com>
-X-Gm-Features: AUfX_mzM6qRkuX0HyFLmmwRdjcJKwGwcwAnFR5p5zb2EUUQxAoEkjSBvo-LZGaI
-Message-ID: <CAAhV-H4huLS_G+TMDKZ5sFwFH9BJsQbQeADtyH3CSnkHirCnaw@mail.gmail.com>
-Subject: Re: [PATCH v1 2/2] LoongArch: mm: Expand modules virtual address
- space to 2GB
-To: Tiezhu Yang <yangtiezhu@loongson.cn>
-Cc: Xi Ruoyao <xry111@xry111.site>, Mike Rapoport <rppt@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, loongarch@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
+References: <20260705175119.440599-1-souravpanda@google.com>
+ <B8DC1E3C-24B1-4608-86B1-5F12B2FF4DBE@linux.dev> <CANruzcTi8+37K=YQwpZ51MxzDUKiX-gF6BdFMXax=ozzZw86eg@mail.gmail.com>
+ <20260720173707.47616938378bc26a41650b6a@linux-foundation.org> <E8AB5D4D-E781-45B5-B06C-4AAFB2518977@linux.dev>
+In-Reply-To: <E8AB5D4D-E781-45B5-B06C-4AAFB2518977@linux.dev>
+From: Sourav Panda <souravpanda@google.com>
+Date: Mon, 20 Jul 2026 22:02:26 -0700
+X-Gm-Features: AUfX_mzTHSp3G0b6O7xSOaCA-VlORxS038Zcl2wZRjRN4n1VtzMqA4_dd0hSmtc
+Message-ID: <CANruzcTCqERLWDiHyPsbWgB+DgoMVwecvEmkUTrBjgeja9r5Gg@mail.gmail.com>
+Subject: Re: [PATCH v3] mm/hugetlb: Fix null nodemask in alloc_fresh_hugetlb_folio
+To: Muchun Song <muchun.song@linux.dev>
+Cc: osalvador@suse.de, david@kernel.org, fvdl@google.com, gthelen@google.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Andrew Morton <akpm@linux-foundation.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 66FF620006
-X-Stat-Signature: 96ssbwo8b1z8wsmdc9hfahixb1cw7oqu
+X-Stat-Signature: uef7emcuoeqhxpn7fq1stuy76s38h9rq
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1784609820-780098
-X-HE-Meta: U2FsdGVkX18YpBM75Mp2aTJFCPOTfXJXGOqECLPM4M4Ao3JiXdtHAsj4Q5TO2Fno5DVoKwNR8YDCHLqrzSHW1O8UKDVlRfCwgZeAkTSQ+JQRSHouPvCAwnPKXdVvEzA9MZjvzilnddJlpAyUwzQGSsjKwLidgFvgeeGkuPgg2JgaozAm+FPM9er70LShgn1WJaHWC53CYJz93IAsvnxJS8ohd4N+H6V2hy1FyYG+oimqo7uQGexm9pmloSYDBmUyzsZ+nC7OCbNbNfi688+RCTTRBI3R/i7Vn5udAfG9UXPpq/Q7Al2D7pzqnyEkedFONdPnExSm3QS5uZWO5Wg9S539UNamtwA7Ks/QET51Nv/C6NPwPr333LN4+YqbN5KnrPpPf8OqlMQ7kZgcAe/K8JNOF0W1XrEsoSucqP/f3DFGD7SBRawpLFoSxBOZuhA24YiBqKUtvJoLfOv4RfaOFHFWAiCzC5oyOVaOZKPKT6CrZG1WPuTNVNjl8KzfgwdW8jMASPE5IY6St97/AhwOt31VjKzMH3ubyW4AkPgfEX5jyEZ3acJFhD+aPp2jKj/kUaw0D9NQQMOwPJglZ/izoSRBycpX1yT/XEZD8Cyc6K9sJ0csNcc3Uey1kpy/Jsg9oXaYN+QtNBlEKkQ7S7VC/pkjtdoHB8egXBPtw6Gn8RzLGggRf9AcfTgjiPWhn5gesTz7jNfmMdGwp05qFSdF0gSnBDI+4NDYJ05pYPyvitwfL/xmtCw/zEqO5QlxZBkTAjbzQOBwkro17DY4XY2mY26veMRfUYzLIWVN43/S+WRG8wx4CcUD9pS4r9wJ23Mg3Um1MXuyNZRU76AtlFurVSHapO+J5VJSpnhuPN4Upi8BR4MfBWVTg1nslYXkPg1IGu3LCEPuT8Yskrmv+2B1v16MsO9m6NweRzOJkkPP1nY6mrz+Je1F2LA7wRf68FbHZfqj5aMpNV1ySJQQ/iX
- hCWXzT6Q
- qwy63wsYGHpFNyarkonF36Ovy2xsJC4ot6rDJZins7CKS2U03zzuPOprcyZ0+3zXiC5vRYtJCudN8ec3TrwxU12gUPlKH0dRIszro6pr1KMD7/XybwM070Fxo0gY47K0D3h49OFI65V2Zor5UyYCutwNAGelU1ML70BCrawkKkM02KXo0ncSlLf0e+MGhlQkCPFEhha8jcEYTA57mSkFK93x14d4L1/YqMXKRUjzlmvCflSVpQunWbu3U6LpJgNfV8ZkEJc4aFlTCCKQzMQcvi6vHGw==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: C1C93100004
+X-HE-Tag: 1784610159-898619
+X-HE-Meta: U2FsdGVkX18Zenb86aiXj1goiYSB+0GGa4plWqhI4d6aELOfrEY12t7D6vXOGG6ieZPOl0Bn8PGbtiJCFTlYKMCfLKsMSBgR4AGqEx7uVg0xr5QiAo6C9bA17phIlGw9NZ8gRsnS09eeAXobl9wGOwKiYlQ4jq6hrTfygniDtBjT2YkXWsUJ6JGkJ9ZLfiftxTFWN2YbvLMXf4w0PphC09tuO0Kn/cwEMi0QoSYm3x58023Mh2FVDJIeJlQMzMb4CZxiSZ3fRAoHtqPMZ1HD1JI1v123hrlGwNwPNT+QKxlstbx9sy9nEvdRC0TVscBMZySyNQGIS5PONsO+AF/hpBopsjYEJUNR2/rpKfPsBBEw408ksSQXMYzuCkMY5uuD2dIdQrpQA8xr7IjA/gghbZ83lv2HZfePmVCV6dACAJlY+kMjV4bvku2b/+LeaFMdLiJCKv1PVRgcF7pwxQ/gaGNziQcRiBsbA0p32iJ3CGWxibEqlZo/RqjhWFjb8ty2JAjqtWnoG93G+EX/VZkUuLVtZ+qXeCxMlWBkH5YaLMhGUPf2gbY0AMKQTDG/hdyu7tWL3rKcXwNqu+pCj0JbnA8IyiPVjU1c8JvedzfdHY+pG+MkHZJW5Reh+qw10Aj0UC7+J5F+MdiwYEIhUGeECR8TkEKmHgFOfMvp0XGRfTCeh7akkDi5pIy0JE3QggFlKF0MMi6ae8PseQ/qC1e98YJLmGJx0aV9X7vgCmx7GLygDDn4ckhYwXa8urMZG3O6sjIhTjFo1gOKE/exIu5fyuSYJb0UAgQI6/ndI5ZP3a24aJVhGEG57tQ7f9Y6iiuiQYgt6VbCmhAooGUkzG/7OmXfRpwDmeg1YBfr4OUl54vqcFVM9dG6ukpcnF8nexJxGuR3XBe2+5oQroHVJxnmry6N75oETXafXTyrdB6q+F8B/aI8NAEtjg/WUUZs2Jrtq6WsQ2CSrEkN1JU6Dd/
+ cYc7hvot
+ 6ib9paK8XODkxlq7D3vasljJuagqoBRFUc+bh5bVTZA+R+SwG8TTERSbo2hIIaSD/g42sJ7JwyxAGIPO2lrxpDUCEIIqtnPzorooGqQU2EaI2OziAlurWzBjk6V5zs3Pa9t/5+w/LhW90k6xngYdiKyGb58ILGS0OPvYO+Fx4YKbj7u6y+0g35pJ5NryDRjjhV7LucDGvb2OqcxcPWvY3hQM9NWLgS9uyr6azxfzpwWwwJNNaQUOehrR1Hzbg9mGh0lD3Nr5iDOdj7yD0OWwDPmRtQWZf5EIWX603jgiChuw3rw7i9NJxquVeXCc5f7szrvNr096nFBsdBkPGSl/gxBf+hDLonQIU0jaREMog0OweYKzVjyAvzEZ/VQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,112 +144,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 20, 2026 at 6:40=E2=80=AFPM Tiezhu Yang <yangtiezhu@loongson.cn=
-> wrote:
+On Mon, Jul 20, 2026 at 7:30=E2=80=AFPM Muchun Song <muchun.song@linux.dev>=
+ wrote:
 >
-> On 2026/7/19 =E4=B8=8B=E5=8D=8811:28, Xi Ruoyao wrote:
-> > On Sun, 2026-07-19 at 12:01 +0300, Mike Rapoport wrote:
-> >> On Fri, Jul 17, 2026 at 03:57:15PM +0800, Tiezhu Yang wrote:
-> >>> Frequent "execmem: unable to allocate memory" warnings are observed
-> >>> during kernel module loading when updating the latest kernel.
+>
+>
+> > On Jul 21, 2026, at 08:37, Andrew Morton <akpm@linux-foundation.org> wr=
+ote:
+> >
+> > On Sun, 5 Jul 2026 23:55:31 -0700 Sourav Panda <souravpanda@google.com>=
+ wrote:
+> >
+> >>> - Option 1: Fix it directly within alloc_gigantic_frozen_folio().
+> >>>  This would centrally cover both of its underlying allocation paths:
+> >>>  hugetlb_cma_alloc_frozen_folio() and alloc_contig_frozen_pages().
 > >>>
-> >>> This is because the modules virtual address region on LoongArch is
-> >>> tightly constrained to 256MB, while ARM64 and RISC-V are natively
-> >>> configured with a spacious 2GB region.
+> >>> - Option 2: Fix hugetlb_cma_alloc_frozen_folio() and alloc_contig_fro=
+zen_pages()
+> >>>  separately. The rationale here is that since the buddy allocator
+> >>>  already handles this case internally, and alloc_contig_frozen_pages(=
+)
+> >>>  is also a low-level allocator, it would be better to keep their beha=
+viors
+> >>>  consistent.
+> >>>
+> >>> Both approaches are viable from my perspective. I'm CCing more MM mai=
+ntainers
+> >>> and reviewers to gather your insights and decide on the best path for=
+ward.
+> >>>
+> >>> Muchun,
+> >>> Thanks.
 > >>
-> >> The constraint follows architecture ability to address kernel instruct=
-ions
-> >> and data from modules code.
+> >> Gotcha! Thanks Andrew and Muchun!
 > >>
-> >> I don't know what are loongarch requirements, but I remember that arm6=
-4
-> >> added a layer of relocation support to allow 2G module address space.
+> >> I shall wait for the decision and then send the subsequent version :)
 > >
-> > IIUC on LoongArch the size of one module is limited to 256MB, but the
-> > total size of modules can be up to 2GB, as the module loader creates PL=
-T
-> > entries for calls across the module boundary.
-Unfortunately, the one module size also limits the MODULE REGION size,
-we have observed that the distance between .init.text and .text of the
-same module is too large and the module loader prints an error.
-
-Huacai
-
+> > 15 days: no decision shall be forthcoming.
 > >
-> > I'd seen the "execmem: unable to allocate memory" error loading the
-> > large amdgpu module.  But after I stripped the amdgpu module those
-> > warnings gone away.  To me this is very strange: shouldn't the module
-> > loader just ignore the debug info even if it's not stripped instead of
-> > requesting execmem for it???
+> > Please code up whatever you consider best then send it out.  This will
+> > trigger a great outpouring of decisions ;)
 >
-> I did the following changes based on the original 7.2-rc4 for debugging:
+> Hi Sourav,
 >
-> ```
-> diff --git a/kernel/module/main.c b/kernel/module/main.c
-> index 46dd8d25a605..5eab1ab8b195 100644
-> --- a/kernel/module/main.c
-> +++ b/kernel/module/main.c
-> @@ -2972,7 +2972,6 @@ static struct module *layout_and_allocate(struct
-> load_info *info, int flags)
->           * special cases for the architectures.
->           */
->          layout_sections(info->mod, info);
-> -       layout_symtab(info->mod, info);
+> Please select Option 2 first, as I'd prefer not to make HugeTLB a special=
+ case
+> again.
+
+Ack! Thanks for the direction Muchun and Andrew :)
+
 >
->          /* Allocate and move to the final place */
->          err =3D move_module(info->mod, info);
-> @@ -3013,9 +3012,6 @@ static int post_relocation(struct module *mod,
-> const struct load_info *info)
->          percpu_modcopy(mod, (void
-> *)info->sechdrs[info->index.pcpu].sh_addr,
->                         info->sechdrs[info->index.pcpu].sh_size);
->
-> -       /* Setup kallsyms-specific fields. */
-> -       add_kallsyms(mod, info);
-> -
->          /* Arch-specific module finalizing. */
->          return module_finalize(info->hdr, info->sechdrs, mod);
->   }
-> ```
->
-> With this diff, the "execmem: unable to allocate memory" warnings disappe=
-ar
-> completely:
->
-> fedora@linux:~/7.2-rc4.git$ dmesg -t | grep "execmem:"
-> fedora@linux:~/7.2-rc4.git$ readelf -S
-> drivers/gpu/drm/amd/amdgpu/amdgpu.ko | grep -A 1 -E "debug_info|symtab"
->    [23] .debug_info       PROGBITS         0000000000000000  00b73fa9
->         000000000bfde1bc  0000000000000000           0     0     1
->    [24] .rela.debug_info  RELA             0000000000000000  280f2e40
->         0000000011f754a8  0000000000000018   I      75    23     8
-> --
->    [75] .symtab           SYMTAB           0000000000000000  18934e78
->         000000000f1a0dd8  0000000000000018          76   10548226     8
->
-> This test proves that the "execmem: unable to allocate memory" warning is
-> entirely triggered by the massive unstripped .symtab section (~241.63 MB)
-> rather than the debug sections themselves.
->
-> As the readelf data shows, the ~500MB debug sections remain fully present
-> in the static file, yet the memory allocation succeeds without any errors=
-.
->
-> This confirms that the generic loader successfully ignores non-SHF_ALLOC
-> sections during layout_sections().
->
-> However, layout_symtab() must put the massive .symtab into memory to
-> support kallsyms and oops backtraces. Combined with the driver core code,
-> the total memory request reaches ~252.86 MB. This immediately triggers
-> allocation failures because 252.86 MB is too close to the narrow 256MB
-> limit on LoongArch, especially when virtual memory fragmentation exists.
->
-> We cannot strip modules or remove layout_symtab() because we need
-> backtrace symbols for debugging. Therefore, the ~252MB memory demand is
-> a hard requirement, and expanding MODULES_END to 2GB is necessary for
-> large modern drivers on LoongArch.
->
-> Thanks,
-> Tiezhu
+> Thanks.
 >
 
