@@ -4,100 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24E30C44524
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 02:21:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A6CEC44524
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 02:30:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C5E776B0093; Mon, 20 Jul 2026 22:21:36 -0400 (EDT)
+	id E90496B008A; Mon, 20 Jul 2026 22:30:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C360B6B0095; Mon, 20 Jul 2026 22:21:36 -0400 (EDT)
+	id E1B656B0092; Mon, 20 Jul 2026 22:30:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B73C96B0096; Mon, 20 Jul 2026 22:21:36 -0400 (EDT)
+	id CBD956B0093; Mon, 20 Jul 2026 22:30:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B0AE6B0093
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 22:21:36 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A54FE6B008A
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 22:30:48 -0400 (EDT)
 Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id F384BC0361
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 02:21:35 +0000 (UTC)
-X-FDA: 85011182550.10.5A8C8EF
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
-	by imf23.hostedemail.com (Postfix) with ESMTP id C240A140009
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 02:21:31 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	spf=pass (imf23.hostedemail.com: domain of shikemeng@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=shikemeng@huaweicloud.com
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 387D3A03AB
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 02:30:48 +0000 (UTC)
+X-FDA: 85011205776.10.56CB5A1
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 2BDF2A0008
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 02:30:46 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MSqSNz4V;
+	spf=pass (imf15.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784600494;
+	s=arc-20220608; t=1784601046;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0OYAPq44wYI5s+aqmYwtG5kVnAEXbVfZSKfS1FN1XcQ=;
-	b=aJyHuZHmmHPzH1ADWSvMUXEHYN5IbwTl6d/tO+IuhgsbOJkw5jGEk+wBKgLUq415KPUZkh
-	i/OcnnncPtR6LMzvDK7BpVxMRhXxu3a/F+JKtzhnNoD3jGyZ63eGWn8VJhuJPbH6emnJN7
-	yBzCfw8M/ZJ9k2ZVMhpAKKTfqSi9HJs=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=uqpkdQj+7qvi4skqZqI1ASqK0ghmKIC3He//asuLC98=;
+	b=VSGqu9UVW5fqdpzVHtkoeFaZfHZWAaUonr0jN2Ps/INZsl8Qjyp4BBueetXiqMGkmEwlFz
+	YK5BNR3OW6WHI20H2KratcBQPXbvC0Fed70NreQLLxG9Z3br3DOFP8sxvjy7mRUtWRV0O5
+	1awP1Rm4M4WfMVWF8Za4UW6lXzKTwA8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784600494;
-	b=fP0u1OExvzN7qoyvUl5dXgPvJQuBhgVA+IVva//Ce/b5jDfOAb/sUzUeANNU8VYBDyPjIQ
-	cLrf6tk8RJjf3UqLlZ1vsKsK8EqKzs/efsnJYhzbFOoIC2ZAeu8xrMiZ6jyYrFqxnbAF02
-	JsApSHTIYefTzJgN0r1mLiTBV4AjjOk=
+	t=1784601046;
+	b=P6SrPQ5S3sthDqmB+siXzEABhYhZlNAG2Op0JmvPQrhkp530hj2u18q4ihyEJ5tnkJMVCv
+	QF3fXJ6nqP09Egssn49rJxQezLcdFY0kmIpDLOOdsNKpMktQrdWrWE4PLwBQ2aobie42gO
+	O2hlmY5DLv1qPjlVeofzn3eKjl7OrTw=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=none;
-	spf=pass (imf23.hostedemail.com: domain of shikemeng@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=shikemeng@huaweicloud.com;
-	dmarc=none
-Received: from mail.maildlp.com (unknown [172.19.163.198])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4h41MY0lcyzYQtqW
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 10:20:57 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.75])
-	by mail.maildlp.com (Postfix) with ESMTP id AAA494057C
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 10:21:23 +0800 (CST)
-Received: from [10.166.163.161] (unknown [10.166.163.161])
-	by APP2 (Coremail) with UTF8SMTPA id Syh0CgD33Cif115qK0rwBw--.29067S2;
-	Tue, 21 Jul 2026 10:21:20 +0800 (CST)
-Message-ID: <d47f870d-4065-436b-a8ad-9d4b2116d2ad@huaweicloud.com>
-Date: Tue, 21 Jul 2026 10:21:19 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] mm, swap: Fix potential NULL dereference when trying
- a sleep table allocation
-To: Kairui Song <ryncsn@gmail.com>
-Cc: chrisl@kernel.org, kasong@tencent.com, nphamcs@gmail.com,
- baoquan.he@linux.dev, baohua@kernel.org, youngjun.park@lge.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260720071342.50742-1-shikemeng@huaweicloud.com>
- <20260720071342.50742-2-shikemeng@huaweicloud.com>
- <al3WqZ45Tapey-eB@KASONG-MC4>
-From: Kemeng Shi <shikemeng@huaweicloud.com>
-In-Reply-To: <al3WqZ45Tapey-eB@KASONG-MC4>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:Syh0CgD33Cif115qK0rwBw--.29067S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxWryktr45GryUAFWrKryfZwb_yoWrXr1kpF
-	nYgF90kF45XrnrGrsIvw1DK34agw40gryDG3WxGF1I93ZxXr1xWFn2krWYvFyDCF1kJr90
-	qF1jqw17uan8Za7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUyGb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x
-	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAK
-	I48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7
-	xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xII
-	jxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw2
-	0EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x02
-	67AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IUbmii3UUUUU==
-X-CM-SenderInfo: 5vklyvpphqwq5kxd4v5lfo033gof0z/
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: C240A140009
-X-Stat-Signature: d9fffyo9rgqmcahejaiw8djhh1kiwnh9
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MSqSNz4V;
+	spf=pass (imf15.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784601043;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uqpkdQj+7qvi4skqZqI1ASqK0ghmKIC3He//asuLC98=;
+	b=MSqSNz4Vj3kzhzaJ0O98ooGg/Sc1TB36RgXR0TxbuPJ6aUn9fymZhWXZLcaYL9eggSaW0a
+	G2so9EUVJGkos/7YuUcAJsREUXx4yKSput+DUFM6dNfj2cTaHLqybsCUm8I7RSQfwR0U/D
+	whU7CS0UZLMkd/k+c3MYsM9Awb8A3AA=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
+Subject: Re: [PATCH v3] mm/hugetlb: Fix null nodemask in
+ alloc_fresh_hugetlb_folio
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20260720173707.47616938378bc26a41650b6a@linux-foundation.org>
+Date: Tue, 21 Jul 2026 10:30:20 +0800
+Cc: osalvador@suse.de,
+ david@kernel.org,
+ fvdl@google.com,
+ gthelen@google.com,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <jackmanb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Zi Yan <ziy@nvidia.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <E8AB5D4D-E781-45B5-B06C-4AAFB2518977@linux.dev>
+References: <20260705175119.440599-1-souravpanda@google.com>
+ <B8DC1E3C-24B1-4608-86B1-5F12B2FF4DBE@linux.dev>
+ <CANruzcTi8+37K=YQwpZ51MxzDUKiX-gF6BdFMXax=ozzZw86eg@mail.gmail.com>
+ <20260720173707.47616938378bc26a41650b6a@linux-foundation.org>
+To: Sourav Panda <souravpanda@google.com>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1784600491-72064
-X-HE-Meta: U2FsdGVkX19VnvLmmm+44tGGltaOdnX6OBvsSiC3+YJ5391D7QqXzyD0QQoqxaFEm1AR7ZE832ldhJfhpgO1P991aVasy/DQ+iv0PeWcAXeB7iSNcxRjEGk+I/Dr035ae36J6LmeQ0umG+T2u0Zi7afp/4hQOrmAGa2OEV+uITFZfnbQCWoJMY1Mvkwdv8FKB83xUeTYI8jHwKLlkxG/wEwJBxV1vpo3iWOGMGSM/HD/Lqpd8o5JP0M2Pl+jSQ0DT+SWOp7fseK6cIiaebaX5Vcfhuk957qJD6fyMgQ4uEF0KvUGsd8uCIfsSfHWCR0bhXTAWA91fw6qjs9n1+wwX127BWB7rGTDrCMD0Guh0BJCdh/Um7fvRg/S69WKLlQTp9fH7QmH2FQBaWyIQlQfoqtDJaPGJDAiDwrjWST9ogX19KbqSCZUDwqj3gcTtMOiMvLfmTWrqNK4jvFh8gDNbYc+wXmOdS1By+/WNOB46IxrzvSeUUwTe+kcOFOsVBy+6h+mqvd74eyAiYXmitPaYHGUoDNUZLYz8jhsA0y5dnIn1fHe1AYkQRZMCP82cVasDB6M1tTSJSKdlU9YhDPEn0Jow4FEyS6Fc7X9JUeymbT7hccl0WSE6oFaSr1bz/gfTzY2rkKAXypUxg0jagQgw57DJgwS/w3Q3b/e0+YY/vpe8+ba4SCdUbvDusfwzTO5Dg/vXCWoXdrL0ouo+zT/7TOZDCeG3cnHxwx6kM2E/FaIFILVnfgVop/w7dSDbLj1iOVgfAQUxG2C0CTtm5SMJvpCcrbJdpQy7+/nkqOW9nGH4yTmtlNM17ZPFB76gJE+sxUSw9QD1GNIIRjaEK/cdd8EKpGCaEyXmizxTfwXLHnp+/N6IWc8pLc2pySpvpgw08H7q/ROYSEvfY6VVn5EYmZUfsN3jF8cpPr3PeLzzwhyjFBF57DyaTwxfD+zKe6J5k+W3Na6gVeRVM5rWiN
- 03ls6TgH
- b6V9Mn/WOxsgJuC4K53mgbbx8dxCaLA2aJMmOl0ba9SU3aaBIyjRiCDD4ZhpekrD5HDctvZWWuF3qSy3nVF1T1LHiYFy5kOLdsUrqWmTMXLpZzw3xUrbC1q7RzSV/Iqxeq1qeSFT5pbvgSfwo86aWigZqU6aEZjDxcM2oKQCynVii4e3xBRTlY6NgqE8v+hfjQVn/kgt60Q21JxiaNVApEsPJSKK6z07uOEA4
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 2BDF2A0008
+X-Stat-Signature: 4fmnuszzj8yyrbqn6mf1h39xkgi1sfx6
+X-HE-Tag: 1784601046-887029
+X-HE-Meta: U2FsdGVkX1/8tt+rLjvlBmGsK6o17RrXpJA/aytQ8SaBYEzqjpTuRHBY5tW/uwzg4S/tBboOcQoEsw+NfWUxIcZUGBpHw+kked+xAHJVNz34gwCA8FVf8l94t1lqnb5cguyIhpnYgbFhRoWCnQpb1lnbKeQbUi4z04t6dbAnqnRIlsB52B/RNrtrXieH0pyEdPSMSRXGfaMI28ud1GOyNycxK8vR1CGXqD/DOKC8aKhwIYJI4xuWBV9zuA3DDPz6U++XffMrZ/FinhpEILifeUv5G8otXJRTKjP7ihm53PM8o7GuuQerhOzzr+bbmKFYtGDOHA+agSXq34D2iDjXyN/b5KZToCNyUyUHCZUC5AulwoNxNcOFdJLlbLZYirMNlZDjfVmCAjF0UoDrnY/hW/YpRRt5+CeIjAuWgQTayAuWtFZOiVrpTfC0ejOmcifswWFUpBYMRldF4DcSvi8H2MKyocoyYH4WumCKhVt6KSDN9rBdNmuF4lXhbXThYIANrGtYlxlafQCQTP9HkOlvfS87u6HiG0AMAuUW/JO2uDPpQcwdOwuhTJQEoeuTOI325xvY8ds41ys7+GIGdARVeUgv1xLNatVtNyDcEK2B5a0w6a4PdXc2xSPcm4KxiLF/Si0scTvZuia42RQudcxQxBdmVJwpsDLAbiqHoBxQ3snm4lZ9UrdKpItbKnCTAm4wod+ctwzPW/21R0Vsm2/Dxl99XohlnC8V7yTej0rfUoBEtEFsBskjjLtqDAvchYe8Yra0mdf4AuIFEC9K8RaGVUqIsYP50QHqd1kLjjkD9pFLSY7oF0fMXdFo09oNBOBccibIDP2PuYS0/NhZJn0qsfei39NUAaFS9V7eWLzwt0QkysyzblkCiaL7QLy/2NODhjqIgf5OhPwfFe3sjT07IE82uf+YSpKEvrzZb7HwXYP2O4/hoTaeWjfWjl3tyPELWFl+UE1I8LCkwiLDyCK
+ V4BKWDDU
+ xMCfO5xTmILf+euu5YVYjWNwM4+r57DReryKHfYARagt6ttSFloPNakRIxoDSHOforRnRt7fnYqMD3+bwGRE9i8EIZMb/QzW5ItphXkFlbrHyCVBSbn/aUq10h3TOxbIUXhU3Y5OzP+gJuCJxtulLvIRMBeVPY7glQMK3wA3JrzSflXMtMLR6xuGidyH38yylsTcvl5gl+nuGlBLT3C8vKh9awSGaUNl26r2OvNef0+90NuDG0M2lAwSKJOhUaZBB7HktfWBZqZhfiRInOA50yZv1RPQLYeaKi/087TN62RGbT5ZVX5CqbFjLzu8NjvXwlxoW6swMLSjj+JiKzKFBA43iQjikgGzxVNzE2DKkc51GcIw3lhq7DZ+pvA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,109 +104,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-在 2026/7/20 17:11:58, Kairui Song 写道:
-> On Mon, Jul 20, 2026 at 03:13:39PM +0800, Kemeng Shi wrote:
->> The root cause of this issue is because multi-tables are updated in non
->> atomic context. To be more specific, the issue could be triggerred as
->> following:
->>
->> swap_alloc_fast         swap_cluster_populate()
->>                          /* Try a sleep allocation */
->>                          spin_unlock(&ci->lock);
->>                          swap_cluster_alloc_table()
->>                           rcu_assign_pointer(ci->table, table);
->>
->>  ci = swap_cluster_lock(si, offset)
->>  cluster_is_usable(ci, order）
->>   if (!cluster_table_is_alloced(ci)) // ok
->>  alloc_swap_scan_cluster()
->>   cluster_scan_range()
->>    __swap_table_get()
->>
->>                           /* free table when more table allocation fails */
->>                           ci->memcg_table = kzalloc_obj(*ci->memcg_table,
->>                                                         gfp);
->>                           if (!ci->memcg_table)
->>                            swap_cluster_free_table()
->>                             rcu_assign_pointer(ci->table, NULL);
->>
->>     table = rcu_dereference_check(ci->table, lockdep_is_held(&ci->lock));
->>      atomic_long_read(&table[off]); // NULL dereference
->>
->> Fix the issue by updating allocated tables in atomic context.
-> 
-> Thanks, that's a really tricky one, good catch.
-> 
->>
->> Fixes: 2fe7a6f5024b8 ("mm/memcg, swap: store cgroup id in cluster table directly")
-> 
-> This commit doesn't exist, you mean b197d41462c2 right?
-The commit 2fe7a6f5024b8 and b197d41462c2 both exist in this tree:
-https://kernel.googlesource.com/pub/scm/linux/kernel/git/akpm/mm.git.
-I search in another tree and only your commit exsits, so I believe
-your commit is correct. Will fix this in next version. Thanks for
-correction.
 
-> 
->> Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
->> ---
->>  mm/swapfile.c | 21 ++++++++++++++++++++-
->>  1 file changed, 20 insertions(+), 1 deletion(-)
->>
->> diff --git a/mm/swapfile.c b/mm/swapfile.c
->> index 615d90867111..d29062d9c3cd 100644
->> --- a/mm/swapfile.c
->> +++ b/mm/swapfile.c
->> @@ -490,6 +490,20 @@ static int swap_cluster_alloc_table(struct swap_cluster_info *ci, gfp_t gfp)
->>  	return 0;
->>  }
->>  
->> +static void swap_cluster_copy_table(struct swap_cluster_info *d_ci,
->> +				    struct swap_cluster_info *s_ci)
-> 
-> Nit: The name is a bit misleading, it not copying the table content,
-> just filled the d_ci with s_ci. And do we really need a helper for this?
-As swap_cluster_alloc_table() grows from only table allocation to table,
-memcg_table and zero_bitmap allocation. So I think maybe a helper may
-inform us not to forget to do copy when new member is added. But I also
-think about open-coding it. So both ways look good to me. I will open-code
-it if you prefer it. :)> 
->> +{
->> +	rcu_assign_pointer(d_ci->table, rcu_access_pointer(s_ci->table));
->> +
->> +#ifdef CONFIG_MEMCG
->> +	d_ci->memcg_table = s_ci->memcg_table;
->> +#endif
->> +
->> +#if !SWAP_TABLE_HAS_ZEROFLAG
->> +	d_ci->zero_bitmap = s_ci->zero_bitmap;
->> +#endif
->> +}
->> +
->>  /*
->>   * Sanity check to ensure nothing leaked, and the specified range is empty.
->>   * One special case is that bad slots can't be freed, so check the number of
->> @@ -527,6 +541,7 @@ static struct swap_cluster_info *
->>  swap_cluster_populate(struct swap_info_struct *si,
->>  			 struct swap_cluster_info *ci)
->>  {
->> +	struct swap_cluster_info tmp_ci;
->>  	int ret;
->>  
->>  	/*
->> @@ -552,7 +567,8 @@ swap_cluster_populate(struct swap_info_struct *si,
->>  		spin_unlock(&si->global_cluster_lock);
->>  	local_unlock(&percpu_swap_cluster.lock);
->>  
->> -	ret = swap_cluster_alloc_table(ci, __GFP_HIGH | __GFP_NOMEMALLOC |
->> +	tmp_ci = *ci;
->> +	ret = swap_cluster_alloc_table(&tmp_ci, __GFP_HIGH | __GFP_NOMEMALLOC |
->>  					   GFP_KERNEL);
-> 
-> This allocation could be largely simplified with mempool, the reason I didn't
-> use that is due to lack of RCU support, which can be done later to clean
-> this up.
-> 
-> Please fix the Fixes tags, other parts are mostly fine, thanks agian!
+
+> On Jul 21, 2026, at 08:37, Andrew Morton <akpm@linux-foundation.org> =
+wrote:
+>=20
+> On Sun, 5 Jul 2026 23:55:31 -0700 Sourav Panda =
+<souravpanda@google.com> wrote:
+>=20
+>>> - Option 1: Fix it directly within alloc_gigantic_frozen_folio().
+>>>  This would centrally cover both of its underlying allocation paths:
+>>>  hugetlb_cma_alloc_frozen_folio() and alloc_contig_frozen_pages().
+>>>=20
+>>> - Option 2: Fix hugetlb_cma_alloc_frozen_folio() and =
+alloc_contig_frozen_pages()
+>>>  separately. The rationale here is that since the buddy allocator
+>>>  already handles this case internally, and =
+alloc_contig_frozen_pages()
+>>>  is also a low-level allocator, it would be better to keep their =
+behaviors
+>>>  consistent.
+>>>=20
+>>> Both approaches are viable from my perspective. I'm CCing more MM =
+maintainers
+>>> and reviewers to gather your insights and decide on the best path =
+forward.
+>>>=20
+>>> Muchun,
+>>> Thanks.
+>>=20
+>> Gotcha! Thanks Andrew and Muchun!
+>>=20
+>> I shall wait for the decision and then send the subsequent version :)
+>=20
+> 15 days: no decision shall be forthcoming.
+>=20
+> Please code up whatever you consider best then send it out.  This will
+> trigger a great outpouring of decisions ;)
+
+Hi Sourav,
+
+Please select Option 2 first, as I'd prefer not to make HugeTLB a =
+special case
+again.
+
+Thanks.
 
 
