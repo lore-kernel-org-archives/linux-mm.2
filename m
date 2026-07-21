@@ -4,97 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E1DAC4451C
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 12:24:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16F96C44529
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 12:30:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 10C846B007B; Tue, 21 Jul 2026 08:24:55 -0400 (EDT)
+	id E5F326B008C; Tue, 21 Jul 2026 08:30:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0BE506B008A; Tue, 21 Jul 2026 08:24:55 -0400 (EDT)
+	id E36D96B0092; Tue, 21 Jul 2026 08:30:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F15B36B008C; Tue, 21 Jul 2026 08:24:54 -0400 (EDT)
+	id D4EED6B0093; Tue, 21 Jul 2026 08:30:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BA1326B007B
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:24:54 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 46B4BC0136
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 12:24:54 +0000 (UTC)
-X-FDA: 85012702908.27.99D0C14
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 5A75A4000B
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 12:24:52 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="n36ZgD/J";
-	spf=pass (imf17.hostedemail.com: domain of rafael@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rafael@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 982116B008C
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:30:43 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 05FBE140114
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 12:30:43 +0000 (UTC)
+X-FDA: 85012717566.05.8D07C82
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	by imf28.hostedemail.com (Postfix) with ESMTP id E10A5C0003
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 12:30:40 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=KNoaSjtF;
+	spf=pass (imf28.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784636692;
+	s=arc-20220608; t=1784637041;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KawtIA94ik5HxyTa/hmILJYqp75zatY9AOc1LY8FQ7E=;
-	b=TKpMwugr4Wazk79w5SR3XmCD2fO1Sdgd8QojKrRdso2a+E9hhmbkvnNVQddAAT4cLF2K8g
-	vj4MjGjy9ocXaZoSbfNrdurQtF0QPrMpmDM9nWslLEjaEBAxyhsYdYZgFm0sKUx/vE6XBU
-	3OB2w3u9i0LHGFq+y2Y+nW9YXkbzjMM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784636692;
-	b=GDLMZZd33dAEE/K3D2ZTpqwDmuVDdkt6JVzxX7pFFSV+gLrJaEEk/f3ASfQP29wNEqGYZr
-	oOa/OJknk6Cx0k/czv+7xqiHJmlvnIxJtlSXF3OHE28LSQkJLzBfoTZJP3nOzv9N6BiKiM
-	9o7hzI1vyxoXOeLQvQF3eUBd+PKPukc=
+	bh=Vw+R7y8hfT7A4z5+X72bXa8COEHFqKBWa6qMTipwJ+w=;
+	b=ejqmHRMzjSDnGF3PZSJjBjXGsVnNAdkYE672DNb+5qtOASq55at6i4U90Db0wh7NagJzNS
+	VvfxcnXhzT25tqBCh7gAZJY8mJd64dK6RgbKmkcOBMvVG2ah7vE8a5ObG81trjrKcyvBTh
+	6wRblzIswICYJpyYMsoVtLbkFKbdgsM=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="n36ZgD/J";
-	spf=pass (imf17.hostedemail.com: domain of rafael@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rafael@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 87424412C9
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 12:24:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B8031F00A3D
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 12:24:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784636691;
-	bh=KawtIA94ik5HxyTa/hmILJYqp75zatY9AOc1LY8FQ7E=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=n36ZgD/J/DJ6W4imrSHq7VXXnh2lZMIAQwqQXHWaaq4ycfq35V1kvNKmekLH1lH2M
-	 6Kg54Ni1sO/GX4eqsHJtru0xmGfN++J/R8zMwwOo8lZq2uqMrvQ6Iuc9JCpVk87+Dw
-	 UJmBgDGMPalQEgEKCFmZhXxxgrMIGp1Nc/K8WQThm2NZdAKvgLWw9/KzspIBOMrNyl
-	 fGFm2qAQIDN7gFXBsBSDcncHP/zdrjZhXdnAo4Yglvln/dX4QpXPMSm5GsqngHfZ6W
-	 f8+3MtqJVyWYM1psEJiUakQat7o5xQ7tv8H+BNy0ew0qEk5eMnzf35nbgA3udQrebB
-	 uxtdfx0XelhxA==
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-39ca300db70so86024411fa.2
-        for <linux-mm@kvack.org>; Tue, 21 Jul 2026 05:24:51 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RoNl516K7/1RNqfDQOenDCkl9iUZETSFYx2iv83renw9in4HiK7pe7ejd+nLG+F1LM5Nhqov/6ong==@kvack.org
-X-Gm-Message-State: AOJu0Yxjk6gGC/GXlvyDIoZ6PCmquPl6WkJKRNTG3k3t6EVLemjvqCAx
-	XnALFqCEIPksyt5NTXFxhQTjFMbmCVvNfdZw4FFi4Ps+M5Yd9ttTPHM2XFCgFd4kQ0ZjyJeLnYI
-	lQzOcFOpNb6kpflWJW4KoWEdoFxhtU5A=
-X-Received: by 2002:a2e:a99b:0:b0:39a:cfe7:d224 with SMTP id
- 38308e7fff4ca-39eb287f10emr35824701fa.30.1784636689854; Tue, 21 Jul 2026
- 05:24:49 -0700 (PDT)
+	imf28.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=KNoaSjtF;
+	spf=pass (imf28.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784637041;
+	b=ekf2Nq75XGsV4RxGdd3MdnCAPfeqwLz4w+ljya1/gx/9tZaQcdHzLwKCQwa7+K+CwVm20W
+	wg/+NHAC7pn5yiNG9Kc8H9yJ+pevYLtqvmv/W1UwXM0nCVXvZe6wXDWd4249+T6QReQQ/+
+	bQACXqVvI5IKrite4euh+PMrJMEStxE=
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4953e04ef16so53834675e9.2
+        for <linux-mm@kvack.org>; Tue, 21 Jul 2026 05:30:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1784637039; x=1785241839; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Vw+R7y8hfT7A4z5+X72bXa8COEHFqKBWa6qMTipwJ+w=;
+        b=KNoaSjtFdDPTmYbxUxj1zez7yEeDB/E9joi75e/MiT7qSKIk0b4FVP942tL0bCqWfH
+         8mZznS8wRKmfqSqHRA5lnfVBPcN+XjwvabSQJy0U3m4SqQ13AdKWnhXJpnn5s+ZDk6yh
+         Q0wr8owGDWG1GkgxG+rnpEAiqHEbjobZPbCPMbgeMJGVOwD/p6EmjeNI8cfpvpj6bHie
+         cBzjtZ6eo45iwwK6253sXvlz2DDXjpqY2qUA0baw05lqfH33z2UGfJk6UT21nicK9kNV
+         1/dra8pL8Db6TbhxqxnM0ksT/8VRUJjC0OfgCRRX4WmYs51pUoZzpI31jH2cZWWXmKcT
+         5jbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784637039; x=1785241839;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=Vw+R7y8hfT7A4z5+X72bXa8COEHFqKBWa6qMTipwJ+w=;
+        b=hTMpA6kpCVXsPJdGRwdVduvNIDKFkOYev6d8j7pt7ptlYEgBbXJ7hhOkY3OG4HX18x
+         V0Ex1cnTosw7ITlNqT0brr6/XDb1InmO9kzk86nRHmlc6OPU8QHmBiea03Qu8yPYm8/s
+         c9mUqdmpH4APEt9gHo9TZey2ARq9bHtTE3IKRleHUyN4+Eialicy2YGCm35YdKVwrSqL
+         kMI8gIwEegT2QZc/hw1JmhMiUhVmVlV79cieQsdoNJuTkSAQxcxD85L/TKsKaz6XwrAd
+         rW1boxyxPOQe5RGhl7pZAvdh9/ATZY7N8ALBnRMbdifeZpudmuIgspvzMXQl2HKgyzBo
+         CKhg==
+X-Forwarded-Encrypted: i=1; AHgh+Rqo8FMtUJFBUXK9Mn5HWVhoA1ZrKPXVIHKfzXmB5eff/uQGFWEHbI4yTXcpDLHcv6ONLZeN8ALGjA==@kvack.org
+X-Gm-Message-State: AOJu0Yyvj0AlWiBzHUr5lMcTtLoigARTfv+Ybnxz0lUhemyoSIjgyPEd
+	4Uwsm2wKmxA7d0KY565JsoEbDcPc4g9yb4z49JlhtmlJN28jN4CrY6lzHGoRg5epRXw=
+X-Gm-Gg: AfdE7cm8hyNLMPN8I2Nli2BT7KWAoCgZn0jli6SFvZ6GD1hj3cRu4d9nobA75ZoZCph
+	ui67Bn6Ld5mfi3amwrQ+AeEk2gZY2x7EzrirJu9pj9yon4Hk9IBira2tp3ANB2l0eENHGtQ1wgI
+	t/FrQkmjWS+fRl/pf/6+WorAYHtcagvAToDmH92ZsQ00nOKWsrqpIY6KN3WZAXSXIEKBkhn7xBz
+	UieWgiYHRzlsQhzdyH6e3GnyXLXVEfGr1qZhHK2vjbIUW3LcU6PGdfmX8gl6ufUccM1ktstlmT6
+	8VwA3D1aUATg+hAMSlXcIj3zL7Vh/H1n+Y8BfD2dBvnBZQ3Eo7X2sPImfiz5rpk7xPzrG9KPoih
+	iOi3JiFJNXVvDw+BqYQ+Ka34UcHguh73qzBG5cg6Wg7qjz0Fx/jwTOGgiV6naZ6fE/Gdx1uN1IK
+	Cb5aj49Y6/+pIu
+X-Received: by 2002:a05:600c:6dc1:b0:493:b967:178d with SMTP id 5b1f17b1804b1-4954a402dd9mr129364835e9.19.1784637039238;
+        Tue, 21 Jul 2026 05:30:39 -0700 (PDT)
+Received: from localhost (109-81-80-79.rct.o2.cz. [109.81.80.79])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f63ed1911sm41461110f8f.22.2026.07.21.05.30.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Jul 2026 05:30:38 -0700 (PDT)
+Date: Tue, 21 Jul 2026 14:30:37 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Richard Chang <richardycc@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	"T . J . Mercier" <tjmercier@google.com>,
+	Martin Liu <liumartin@google.com>, Minchan Kim <minchan@kernel.org>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4] mm: vmscan: abort proactive reclaim early when
+ freezing for suspend
+Message-ID: <al9mbf00nCx9gWS2@tiehlicka>
+References: <CALC_0q8rz7U-8x+syTFcWS6Nihxvzd00ruzOThb90P+cDqi=TA@mail.gmail.com>
+ <20260720044103.905191-1-richardycc@google.com>
 MIME-Version: 1.0
-References: <20260630-b4-acpi-v1-1-a9f59c04d221@kernel.org>
-In-Reply-To: <20260630-b4-acpi-v1-1-a9f59c04d221@kernel.org>
-From: "Rafael J. Wysocki (Intel)" <rafael@kernel.org>
-Date: Tue, 21 Jul 2026 14:24:30 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0jaRjxMBxpjAxZiKUXqdZ9W-d7yNC=4ifwA87YUOrdxWA@mail.gmail.com>
-X-Gm-Features: AUfX_mxAK7A3TH3wQk93Zll9tA8OYKnbfa0WfFqey7JRWYnrWOXL32o-SJAaR6k
-Message-ID: <CAJZ5v0jaRjxMBxpjAxZiKUXqdZ9W-d7yNC=4ifwA87YUOrdxWA@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: NVS: replace __get_free_page() with kmalloc()
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 5A75A4000B
-X-Stat-Signature: tqzj3sifnakzz9384hdzbsgn7tf37a9b
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260720044103.905191-1-richardycc@google.com>
 X-Rspam-User: 
-X-HE-Tag: 1784636692-892196
-X-HE-Meta: U2FsdGVkX1+jtSFdLI15rf8WrSy+R2EROv2zmNaZ7dsNrW9hIiy5mm/P+nTRP5sA5QXsCiWnKFeakdEpsNyNgmfCHowlDCmfEy1zmIxvFgeNOd0O3GvktZwuzJAd99Bsg36In2p8NyoserjkWfJSgp2bwxbD73vOfvOsq8VG2X5qhW6wj/1wN2Ty/RwHZYU8daNtVhX9jh4BYMhUMQgb+zxQvWLI+ub+DqdKicQZYNUZyL4uE9+OXqH9IxuaFYmXyCtvykQgrKLQ2Z5kRZEQBM8VweSSQECdRTKnHePfj4JHqi/vOVsu9wKtxLU9V2ijZdYrGUvY+KrHniQTQlxPJvuy0nDJdrFdOqxdfEpF6lrwmipIZbneUFnYrmB0BvXq5hzH+8ImC4q0TMXPAyxIYl8jl+1TCenYacznrNZoLrX4d8JgdwxW627unFMRJy6zCe/4FYzLYVOaHHMOpmc4qP4W+4I+iVY0Jwy4yd2P96Z+UsffmjGFy0Kk+OHsBH8I0ktdfpEm9avMDysAlelYqV76hutxfICmkdfeHbym95K24dsIinG1ka/R80hxIzKkwgEeBpzJNKw6JG3apreONI+KoT6hwLOmb4R3PbvpuDEOOttvC6UbnKUfseGfvau5zYl0vUTpaaQOfNSyVUtgZwjp9sxvCJ6eQDmBSuuOu6/TqKxLBhbOcmCFpOJA/pJxPH2BP+sDJzXWWFjrQSrUQDCNIwXqL7hhr7kTVq1UOjcK2r19ec9X5AtWMNS6Gdqx9V2di2q3XkmBxHyBoX/0tXSvdGuChObCPdBp4YQGxLR3mygb+QJKC+3QG3fHFiJfq/JzAXfPzZpk04cFBiZ+7nxhfgXNf3wUS5oJXeYHMXeSZiXUfEklwqIWRYIOB8CyEMq3yfRCT69sB+4u9B8Xz7VzxtsmUL1gQWX8x1W9Vrnkzmp3g2/0qljaIW0MixA9874RtWE8US0KFFTKNGG
- QLGfmnkw
- rIycZ4jxnrlhYy7v6LN5Dq8s1/T16EmjvpBT9ydK3o0DZbZ9yXkT86Nr1osdRiIUs4rdg4stLWdT+EqobJgykmpO7z7DbQNh3faKCgarZSBd8ArU1kvKAA9nb5M8IuiSCi4pya/uugVsZtD0ogYJOLRz4sKAvHPJVPtgOCULxgi5B103fCIhiN5vw/dJw+nv278borkTIvT4ZeeNDqHxoDYN1pD+Ivm+Tr7sekzBJ9ZYN0/ve4AmGRf21P8oPtl+bQaTW7qk4mbEu2MF90H+LWqUI7m41pNCqqh0FKW6hfhcBxS+YilaQttWASZMMTB9OGwpFNMcwUY+ni+rfb2iAjeJ46X4N8sDf7ZCiRtIDapA0W5ji5jUf6YxNDwXUBRw3/quZxLnNP+vwYkiZz1l3eWP91Q==
+X-Rspamd-Queue-Id: E10A5C0003
+X-Rspamd-Server: rspam01
+X-Stat-Signature: 4au9rcufcutmny8x5fjqdm16bbt131m5
+X-HE-Tag: 1784637040-705976
+X-HE-Meta: U2FsdGVkX1/4HKJuasIOh37AGaYLNFIqxfErwOXZRHIHtx6xV6JQcth3lnW7Nm9jLxvvHRXIe3XDT1Y4GgULjsgn+SIO0D3gcWPZ4zY9kNYP4u61pjqK3QLC93y21TnjOtVxXiYTHtRl4hgv1LIrrkT4T4FH7eE3I8ILi5vYbhYA+K9zSzoNmibRbsRwFbJKcqmmVkQ0FfuJmdzc82cu6O/9iSJ4VOcsKiBUCBr8ko8ybY3yG+jzAiLISjgPPsnOmvKELgj3H0qbgjy4flmE4ITZ0Q5Htq7Zq+l8XTPZN59LaYxs+4GGxwMxM8Nv9ufJyw4CiYUxY4WAw0K+nRGfz4Hw79l7lWYXUaewE5t8U/PE9kaC7y5CP0RPCBb46Gokxa5sF2wVbOEfrGaWUEBgu+DP2pOoid1zcGXxNjDBuhTuQdQDsll2QMYI2YonFl9rQ/wKVejQNp7ZtGIwWq/TAd7lMRwBzUVamo8OAiL4RDly5M+CMRiJ0VkBn4Uv1sbCpyXidPh3t7cDYrPMsm8L1SEnI0va89GBykmuqtePCY2md5cuOAB17yiopsnWmVfzhhKMvWhJIJoUAuQZBTOzBPuUIx7zKj8U8baJXDlmS8yXgKPxNoKAdXj1aEgLarQJQreBCCD08oKRCGLg9bolovRkxXT1Sk63QyK27aKjijF/GM6b520gZm3JWapA2qAbfgDcZ3gilBEHyuH3fo84TCE/MZKIGqn9YCVakz4quojVSpdvl8OS75Tfo7JvOxfNuqCjlNmj97l84qWHNSnOK6G49Nr62Y1YUSiP1mzIpivktNwPDm2fD7sMFNUE172ak4N3/TGYqvamIYFMt0zyCb48P+q2uMMB/bgCgcClhXWK4vSdW8alqwB2Fg08lUPAjivy3LejvL87h0qKKS82XILwnmfEkxuiGLkpy+BDJp6ECspMxRHBS1zXQrirCZ3CKJQFomE8NMiEBXSYW1S
+ h02LIuJb
+ l9npi4zmDqxG9sGioa6Zog4KhwE8q9t+SmYHOIuTqmtdFYdW7zF2m8yLIIELocxAI17koYTTq7/dE2sI5FynJqCGN/7H0geOr+LA9j8rceOPWDTMc8t4uUi4oooxrYAwpFGwq9QT0mf3PQ31I9U5Ci5t9so81qtLEPUCDjay48DsjVg9tTUqkfugMidlEs0rCQaSb/JRXIFHoxKFttshSuWGC9ZG5NhMEX6iRDl8LhaAMOetTiFA5KM9bzMcsfXXEEP4lReCTDEyvauuRIlc6xdJRnSW4u8Fb5z5gGe/ZLevE+XmcLz22yMBhd++tLSMqwFKsUs9koFRafsMSQWayFMuCCfJGR5j7YIff9OlmRxFFINIIHJlacanZsb+rWEP3WS9C++nONAG8bxNtqwEVJcvPYlcgdv2taBbaOsQts23D0zGdMQe+zGdb1LB8F1w9xxKJf9LmSLNkVd45cLKd55M0yfnEiAOu3Cse+u5zGQYHTzo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,75 +133,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 30, 2026 at 12:56=E2=80=AFPM Mike Rapoport (Microsoft)
-<rppt@kernel.org> wrote:
->
-> suspend_nvs_alloc() allocates shadow pages for saving and restoring
-> ACPI Non-Volatile Storage regions across suspend/resume.
->
-> These buffers can be allocated with kmalloc() as there's nothing special
-> about them to go directly to the page allocator.
->
-> kmalloc() provides a better API that does not require ugly casts and
-> kfree() does not need to know the size of the freed object.
->
-> Performance difference between kmalloc() and __get_free_pages() is not
-> measurable as both allocators take an object/page from a per-CPU list for
-> fast path allocations.
->
-> For the slow path the performance is anyway determined by the amount of
-> reclaim involved rather than by what allocator is used.
->
-> Replace use of __get_free_page() with kmalloc() and free_page() with
-> kfree().
->
-> Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@re=
-dhat.com
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
-> This is a (tiny) part of larger work of replacing page allocator calls
-> with kmalloc:
->
-> My initial intention a few month ago was to remove ugly casts [1], but th=
-en
-> willy pointed out that Linus objected to something like this [2] and it
-> looks like more than a decade old technical debt.
->
-> [1] https://lore.kernel.org/all/20251018093002.3660549-1-rppt@kernel.org/
-> [2] https://lore.kernel.org/all/CA+55aFwp4iy4rtX2gE2WjBGFL=3DNxMVnoFeHqYa=
-2j1dYOMMGqxg@mail.gmail.com/
->
-> Also in git:
-> https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git gfp-to-kma=
-lloc/acpi
-> ---
->  drivers/acpi/nvs.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/acpi/nvs.c b/drivers/acpi/nvs.c
-> index 6eaad7dd0241..12aee4102696 100644
-> --- a/drivers/acpi/nvs.c
-> +++ b/drivers/acpi/nvs.c
-> @@ -133,7 +133,7 @@ void suspend_nvs_free(void)
->
->         list_for_each_entry(entry, &nvs_list, node)
->                 if (entry->data) {
-> -                       free_page((unsigned long)entry->data);
-> +                       kfree(entry->data);
->                         entry->data =3D NULL;
->                         if (entry->kaddr) {
->                                 if (entry->unmap) {
-> @@ -156,7 +156,7 @@ int suspend_nvs_alloc(void)
->         struct nvs_page *entry;
->
->         list_for_each_entry(entry, &nvs_list, node) {
-> -               entry->data =3D (void *)__get_free_page(GFP_KERNEL);
-> +               entry->data =3D kmalloc(PAGE_SIZE, GFP_KERNEL);
->                 if (!entry->data) {
->                         suspend_nvs_free();
->                         return -ENOMEM;
->
-> ---
+On Mon 20-07-26 04:41:03, Richard Chang wrote:
+> Proactive reclaim (triggered via memory.reclaim or node sysfs) checks
+> for pending signals in its outer loop in user_proactive_reclaim().
+> However, the inner reclaim loops—specifically scanning cgroups in
+> shrink_many() and evicting/aging folios in try_to_shrink_lruvec()—can
+> run for a long time before returning to the outer loop, especially on
+> systems with many cgroups or large memory sizes.
+> 
+> During system suspend, the PM freezer attempts to freeze all tasks by
+> sending fake signals (setting TIF_SIGPENDING). Because the inner loops
+> do not check for pending signals, the proactive reclaim task can remain
+> stuck in kernel space for seconds, failing to enter the refrigerator in
+> a timely manner. This leads to suspend failures due to freeze timeouts,
+> a behavior observed on Android devices.
+> 
+> This latency issue is specific to proactive reclaim because of its
+> large, user-defined reclaim targets (could be gigabytes). Since commit
+> 287d5fedb377 ("mm: memcg: use larger batches for proactive reclaim"),
+> proactive reclaim uses larger decaying batch sizes (starting at 1/4 of
+> the remaining target) to maintain throughput. This keeps the task in
+> the inner reclaim loop for extended periods. In contrast, reactive
+> reclaim (global/memcg) uses small targets (SWAP_CLUSTER_MAX, typically
+> 32 pages), allowing it to return to the outer loop and check signals
+> frequently.
+> 
+> To fix this, add a signal_pending() check to should_abort_scan() for
+> proactive reclaim paths. Since should_abort_scan() is called within
+> the inner scanning and eviction loops, this allows proactive reclaim to
+> abort early and return to the outer loop in user_proactive_reclaim().
+> 
+> Additionally, return -ERESTARTSYS instead of -EINTR in
+> user_proactive_reclaim(). When interrupted by system suspend, returning
+> -ERESTARTSYS allows the task to enter the refrigerator and automatically
+> restart the syscall upon resume, making the freezer transparent to
+> userspace. For real signals, the signal layer will either restart the
+> syscall (if SA_RESTART is set) or return -EINTR to userspace.
+> 
+> This fix specifically targets Multi-Gen LRU (MGLRU). Classic LRU's scan
+> targets per iteration are strictly bounded by get_scan_count(), which
+> ensures it returns to the outer loop more frequently.
+> 
+> The check in should_abort_scan() is limited to proactive reclaim
+> (sc->proactive) to avoid inadvertently affecting reactive reclaim paths,
+> and is wrapped in unlikely() as it is a slow path.
+> 
+> Suggested-by: Michal Hocko <mhocko@suse.com>
+> Suggested-by: Oleg Nesterov <oleg@redhat.com>
+> Signed-off-by: Richard Chang <richardycc@google.com>
 
-Applied as 7.3 material, thanks!
+Acked-by: Michal Hocko <mhocko@suse.com>
+Thanks
+
+> ---
+> v2: Update the commit message
+> v3: Return -ERESTARTSYS instead of -EINTR in user_proactive_reclaim
+> v4: Clarify -ERESTARTSYS vs SA_RESTART behavior
+> 
+>  mm/vmscan.c | 12 +++++++++++-
+>  1 file changed, 11 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 35c3bb15ae96..5aa4becacb7f 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -4929,6 +4929,9 @@ static bool should_abort_scan(struct lruvec *lruvec, struct scan_control *sc)
+>  	int i;
+>  	enum zone_watermarks mark;
+>  
+> +	if (unlikely(sc->proactive && signal_pending(current)))
+> +		return true;
+> +
+>  	if (sc->nr_reclaimed >= max(sc->nr_to_reclaim, compact_gap(sc->order)))
+>  		return true;
+>  
+> @@ -7909,8 +7912,15 @@ int user_proactive_reclaim(char *buf,
+>  		unsigned long batch_size = (nr_to_reclaim - nr_reclaimed) / 4;
+>  		unsigned long reclaimed;
+>  
+> +		/*
+> +		 * Return -ERESTARTSYS to allow the freezer to interrupt the
+> +		 * task. The syscall will be transparently restarted upon
+> +		 * resume. For real signals, it either restarts the syscall
+> +		 * (if SA_RESTART is set) or is converted to -EINTR by the
+> +		 * signal layer.
+> +		 */
+>  		if (signal_pending(current))
+> -			return -EINTR;
+> +			return -ERESTARTSYS;
+>  
+>  		/*
+>  		 * This is the final attempt, drain percpu lru caches in the
+> -- 
+> 2.55.0.229.g6434b31f56-goog
+
+-- 
+Michal Hocko
+SUSE Labs
 
