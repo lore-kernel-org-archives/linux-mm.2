@@ -4,118 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 629F8C4452B
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 17:20:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4757EC4451C
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 17:24:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3FF906B0096; Tue, 21 Jul 2026 13:20:37 -0400 (EDT)
+	id 390956B008A; Tue, 21 Jul 2026 13:24:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3D5DC6B009E; Tue, 21 Jul 2026 13:20:37 -0400 (EDT)
+	id 368686B009E; Tue, 21 Jul 2026 13:24:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2C7B56B00A3; Tue, 21 Jul 2026 13:20:37 -0400 (EDT)
+	id 283C86B00A4; Tue, 21 Jul 2026 13:24:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 017296B0096
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 13:20:36 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7654914024B
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 17:20:36 +0000 (UTC)
-X-FDA: 85013448072.20.6454B83
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 00A92A000B
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 17:20:33 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=OCGDcuY9;
-	spf=pass (imf15.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
+	by kanga.kvack.org (Postfix) with ESMTP id 016C96B008A
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 13:24:15 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 869CBA06AF
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 17:24:15 +0000 (UTC)
+X-FDA: 85013457270.21.07CC402
+Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 444C31C000F
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 17:24:13 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=J0h3YynE;
+	spf=pass (imf18.hostedemail.com: domain of ihor.solodrai@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=ihor.solodrai@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784654434;
+	s=arc-20220608; t=1784654653;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H+kp8j8RQXqYz4HiL6BM9iRIWosOZOMzLCJGR/2Sk1c=;
-	b=mF2V7ss8oKvPLNMm8OBoE64xzLLz3Odrm6/uHnnK2CzP3ZoGR8XBBRcL/Cl7MMuKErmf+Y
-	MiDA4TVOGKhne/d/fW19JMeCiqOLCeLvprC59Ro0eTgq4q3sWyxak/VBm8tK605DPGt0RT
-	5SV/0K70hypJpVGoIWiB+lNiQ14Ss+0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784654434;
-	b=xZUkiMraxt+YQBg3kucPY2cQNh2pa0ef+16rUJp1yAr9B2JQF8eaR66H56dC1MC24l3A14
-	B2ON86y1HuDd8usSpAQKv06HOSnlw4tBRfocD/9KqY4OMMODYMl1CUwIbVC00d4lpYRcos
-	IEQVMjfh+Ce5VhddNUL6eGhpSGTH4ts=
+	bh=4F+iZhFV6VPB9ZUQh4/hKSJwpjYLP4RW3rsSYNMA+yo=;
+	b=Wrn0D3/Ad6FGZvD0tnYNwpxCYMgcU/Nq/uI5No1ACbmpVfD2xIGn48WwbPVyoWGRMtqoU4
+	RLzMYdBqyJimFcQF+KkTZ2B1EJKtwmvVj3umK3nikyLPitDjyndWssIJZ0If/dIw33ahfW
+	dlx8tGo+L0np9fDCTb7h7EpyY3ylr7o=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=OCGDcuY9;
-	spf=pass (imf15.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 65B4E40E00C3;
-	Tue, 21 Jul 2026 17:20:30 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id RI_0lUk3GInp; Tue, 21 Jul 2026 17:20:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1784654418; bh=H+kp8j8RQXqYz4HiL6BM9iRIWosOZOMzLCJGR/2Sk1c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OCGDcuY922zK8+thN0a62DX0OJ8S/zy6csu77s+HJDg7Tiw3kuK5DaR9HV84RC1uV
-	 3muM6FhgECTBD1hnQJgreOzu3oTIVap397z/IHO1OgOzVK6cFrjeUW28/6/VeYios2
-	 9xp7ox94bn7q8PR/PYxTspEHEVs/es3ZexKmoUo16HiBUiLfFdshRCBDoOEcrWQZ5X
-	 gk5MMg+8crrVqEUe7nSTVz7F1fjDQRHShglfx9h/aocbLPYQcmp6GosBqFk70xDh3B
-	 vFl7CPkaTEBTA36WZiBsymfJjORj0ceKVFGsmJxm/OfHppSGUE9eNkgMvxt5mRVdLE
-	 rBsAYl2pQKQC2N8xuA5SALvB/zZ2grhAHKMFeaX3E1wjKQeD9MCnn0iwT+iGtRJtiC
-	 1pyvm1Cu8SPrZH+szL96x3eOB3+s8AnVA9sNE/F3/fekNwhMmnR9eW0ILdZLGwE+v+
-	 xk9X39suV3YKAWgnLxhJ6RlvC5WN7q7PH/fhr9JeeRvlTdzEE29AX7RAcPkHsgkgZ8
-	 dXZGOS2Ox1+ZbRF/n5yWDJpdNyN1PqtbqLvkitI9T1cNJEW10+XufRbq7u85XyZNuD
-	 ALc9/5Rr6AHbe0zLz5I9GTdYVu4AJ2S9D9ua13A2ocklLMRv/WEp8zzXVITKSYuBkq
-	 twY8CxE2QiT4H9C4DrpesDGY=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::2b])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9384340E00E6;
-	Tue, 21 Jul 2026 17:19:46 +0000 (UTC)
-Date: Tue, 21 Jul 2026 10:19:43 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: linux-mm@kvack.org, Albert Ou <aou@eecs.berkeley.edu>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	Brendan Jackman <jackmanb@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	David Hildenbrand <david@kernel.org>,
-	Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Kevin Brodsky <kevin.brodsky@arm.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org, loongarch@lists.linux.dev,
-	x86@kernel.org, Dave Hansen <dave.hansen@intel.com>,
-	Juergen Gross <jgross@suse.com>
-Subject: Re: [PATCH RFC 00/18] arch, mm: create a generic
- set_memory/change_page_attr core
-Message-ID: <20260721171943.GEal-qLx4p5YbocQNV@fat_crate.local>
-References: <20260721-generic-set-memory-v0-1-v1-0-2c1fc62306b3@kernel.org>
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=J0h3YynE;
+	spf=pass (imf18.hostedemail.com: domain of ihor.solodrai@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=ihor.solodrai@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784654653;
+	b=OZuwi2bA1SHvJW6G/CqARpn7rh1sK8vHtYrl2F25Y7qMhCa/WCuT63/kB8bEhRIHmUkv9Q
+	7Lp12X4Ta20w5Ndnq4jTrQBr3bO9c265pJZdaJ2CLQVavE7PsgoY7uJ35crxqIqUPTOwq6
+	APcJGT3v7c7cH9Tyjah7o1bstwAlO0I=
+Message-ID: <7c79eb26-0986-41c8-a5f9-5911a2e71175@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784654649;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4F+iZhFV6VPB9ZUQh4/hKSJwpjYLP4RW3rsSYNMA+yo=;
+	b=J0h3YynECLow0Nnsp03fdyDTS34Y59J51xWwDr2kgqKZ+bKjF8x6FCbBrrZ+jMk0bOw0sl
+	4Mnp7MxCx4Pw1IVloH58zet5ib5GPDifhdDNflFMbMXGBmu4g9/DbXHuKBXZrjb6eb8HFg
+	x10FPUADk/mxFAuq3c77N0sGAoYLr34=
+Date: Tue, 21 Jul 2026 10:23:25 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260721-generic-set-memory-v0-1-v1-0-2c1fc62306b3@kernel.org>
-X-Rspamd-Queue-Id: 00A92A000B
-X-Stat-Signature: 4cez5n6t7ij6aqb97ei8qgtj49qppgm1
+Subject: Re: [PATCH v1 0/5] x86/cpu: Refactor identify_cpu()
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Ihor Solodrai <ihor.solodrai@linux.dev>
+To: Borislav Petkov <bp@alien8.de>, Dave Hansen
+ <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>,
+ Thomas Gleixner <tglx@kernel.org>
+Cc: Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>,
+ Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>, "H . Peter Anvin"
+ <hpa@zytor.com>, Andrey Konovalov <andreyknvl@gmail.com>,
+ bpf@vger.kernel.org, kernel-team@meta.com, kasan-dev@googlegroups.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260704002046.3859585-1-ihor.solodrai@linux.dev>
+Content-Language: en-US
+In-Reply-To: <20260704002046.3859585-1-ihor.solodrai@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1784654433-240308
-X-HE-Meta: U2FsdGVkX1+xrVAkgzowvmO7J+v3afVWw/ZE5ZZmgcHmivDrmvmHmpDhvievzj+TkqGZZcRw3QWIz7skPsbqsF2o5vRqSmUgV6ViVnvup62t973kqgqqF9tHvgaCLHNy7/becFRn6cCJJJ9gV3kH+SdDn8njMcyx1rR+dVilQEV/Tw8kXorm+8D9D5R9cBOH5FzyuL3vx4qft6gQxXhWhGBlTeK6HZqRA3162BrdYEoOs2nrDiQyyommsWiSfzr7gbqRBxBtVQEwB/r8Cun/RAISc9WFn/8bAfg67hg1ObM3plk0b7WgvOftAXsR1FDJg0ZZTiqy/Wl1emtNrtFVrlq94LPGj3cXbH4O2ClNu9khIo99yFZ4hS+xhaDi6O8VHyqJf8rma0fU1FWkceakEvmxlzmc9fEOlC8HfJRjdHi4r6JN+1lYeUBn/JVQNMVuoCNtcOkKQt4LYtlWhQLSf1pNGyvbinupX0a+7IHEf/mzOq7T6gzcB3eEKZrXG1EoHeG5et4dyvwq4u+jhCRHVu8G98UAS8a4lrIERi4Xeh/C4gLpAngx3sgg0F4P7AIQ9Nt2lwXT7m+PjC+qMg0cbYjMehd/zjrNHCpxMCHVvFt2CvNBkAKm6D6oZ8+34s3NSndMOwzazMxBvF3mpX01RtVQW/7OqiNnrQPrE+NVN5ND+ygXwrLcbztIQPbK717NmAJYJyQHENqwVsDxs8GRXRkC7TxNAb4gyOvPuEKTrkNc+PyTB/1/gKEcdKkJ2mXlx7GjRwxV7FtNhrFDrn5rPE725HpH6N96XYf6nitx7akIGQkJvqedyTE8ELjbjvTYkPMmSxz0pOA69j6avFL4uePeqlk0sKvUByfQwQh1nbSXmoGS/Z+Ty9rMXKlldnUxfRF3L9dTg7Vso9h5VX3M8JHZ8jTnZBu+MUBRkGbk3Ppd12MJuIDPwi0Zj5+lvnaJOCx+RDd5f0upejoxU9k
- tlCzMxfG
- MUcSXIWq96vEKTLI7KAVmYD7y1MxDfqjtCcMIrfwp5m+h53j83jS7QeFF7kjfPpmC0Ypty8ojT2Gtzye17OO9cQWS5Io0We3ysGTyF5uSDg6zwRJFRwpXhPpObdTESQcpp1MvarwSRxfVls12DCgJSanYbGR+JO6YJQV5sSxA7FxqFDtWT693fWQm6qXDI9neRGy7iPq7793jHHbCGZZ3y9zp7Rh1PNM/LBYNHTEGP099r2BdvpWuWxXwolN/VNBLeRsRRGai82D5qUJvRAjeeA2tvu5xGFG6U0LhTkDBx9Uyx+Yl+PdyCTBAH4pegKmspGCctHryxHvJ2lRCSz8tYSZpBw==
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 444C31C000F
+X-Stat-Signature: tt7rs6qjm4f3o3jkisrd181fp8omj58w
+X-HE-Tag: 1784654653-399989
+X-HE-Meta: U2FsdGVkX1+PY7+1YzlrFbVE7OWpecuCsvgfXQ9blSqwF6v4mMh+S/T6PHp2X/Bq0r1dim/dSpKjQ4mCy4GDuYSfyJ5/ZiwAQgWrU97+10W1twYUCTqHws4ExW3z8YdkYkr+rgLOkfadGwsA2T/6JYc6i9tM1PvCI4XdWXEOBgkWGNeUBAPWkAdouj5rdP1vfKYpq+3ZnxpivObduysvCh9SjeGjwRPylO4URpvnVreLhC7PjqoJ1lCFv9QL0Y7G+I+4ooAKVjkdcMCj14CqkJsK8TKD2wtch6X+PqRZDkFdpJgLK09nWzzVp+CRenbSuB7Mc/eHYEq5sTlVEaBGA46jREP5juTqBsO+1fHhHKBTHLXZmYmEsT4Kmz9t+CjdjjAGkcOYGRq7XZ4JlRNTaGcQtTH5E9Jztt3TOT0lgpM+bOuXPAXrKs6AuEx6OZAahLr86cfSOj4ytLLkDTMjp+zFV1M8Z4Unz9HZnkljgPEZYWLpEMhIn93bejhzR/EI+CTtXEirXnrr9yMSIO5PWyj+884LwEp/wpgb3VbckMlD3scpbddtfOumPPQzvbtxtKftq7UxGgjIYOs1HHpqJVNXMTkVZAzBUVnNUi+yrvrEvSnfAcbf/WPyky4TWtyc0x5DQgoa9SSAMxKs4B2eIGQCd/FbwIPRqhOba3lGlstTUaTsNF2PTTatbmGjMWadc/EulaB5Awx61shW2QKrvbvks92ZnRtyXFs90gXZYenaXVdGVYUnGy2mc2QptVvfY6wLuHQanhk1IgmYRNYE4Pzhe8U2e/wslOCqOSwBXT2WjWNdwwcFG6+xo9/8lvbifbVOAm4FgEz+JbM7084kiukMzRWmxHzKpN0xRFI4c897k3m7Y/MaMm3dbH7CYUlo58wlyXPzOJsRHSqkEQS+vtmyXsv9x3G2wJsGxsYK4aaU0Gq341AGHPFCRS77kHp76wjQaLCrYa36zLvu5Wa
+ ErR4RGH2
+ 9Y7zAtcih9knkiDfvwKuFB2lbVE86lsinreh6o5lTir2NLTttPPvpPr2Lp4lXB/8ntSG27JK2LiBptp8VE6C6c6hg2LEhX0bO1ixYgWLFuVVK6ouMrpLMeTFom0ewmr6bUYSg+8HJg7RX8ONMvRlaBbyomsfpTerOOuXxHYjispXEMb87Pbi8J5D6O5juebi2hTfzXmgAJCGosFQMwyGtqU6iPIfMqIWT8BnLoSxwzDDlHmIkI0UMCOXsTVY51yrVbr92Fw1OtCxW8m0peL4rv8zBModijPgjeV0KmAndREk+FVEGXMfEyScJdqa7UqB8NTaFXX3SbDwuDduhz7gG0SIn/rbOWT9yt4oNKKdd6MvU6AQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,24 +95,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 21, 2026 at 07:23:23PM +0300, Mike Rapoport (Microsoft) wrote:
-> Currently there are 6 independent implementations for set_memory and
-> set_direct_map APIs.
+On 7/3/26 5:20 PM, Ihor Solodrai wrote:
+> This series refactors identify_cpu() machinery on x86 and then
+> implements a fix for a bug when cpu capabilities are temporarily
+> cleared within an interruptable window. For more details and
+> discussion see the relevant bug report [1].
+> 
+> Suggested-by: Borislav Petkov <bp@alien8.de>
+> Signed-off-by: Ihor Solodrai <ihor.solodrai@linux.dev>
+> 
+> [1] https://lore.kernel.org/bpf/20260610175651.647515-1-ihor.solodrai@linux.dev/
+> 
+> Ihor Solodrai (5):
+>   x86/cpu: Factor init_cpu_info() out of identify_cpu()
+>   x86/cpu: Inline generic_identify() into identify_cpu()
+>   x86/cpu: Introduce identify_cpu_32() helper
+>   x86/cpu: Set X86_BUG_ESPFIX in identify_cpu_32()
+>   x86/cpu: Don't reset boot CPU cpuinfo in identify_cpu()
 
-So with all mm/x86/CPA patches flying around, can we first agree on which tree
-is going to collect everything?
+Hi Boris, everyone.
 
-And if I want to review patches in that area, what am I applying it ontop?
-linux-next perhaps...
+Bumping the thread as it's been a couple of weeks.
 
-Let's sort out the workflow first so that we don't get lost on fruitless bug
-chases and fingerpointing.
+Please take a look when you get a chance. Thanks!
 
-Thx.
+> 
+>  arch/x86/kernel/cpu/common.c | 114 +++++++++++++++++++----------------
+>  1 file changed, 61 insertions(+), 53 deletions(-)
+> 
 
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
 
