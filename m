@@ -4,131 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C9DAC44529
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 13:54:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7481C44529
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 13:56:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 02C2F6B009D; Tue, 21 Jul 2026 09:54:47 -0400 (EDT)
+	id 9CCB56B009E; Tue, 21 Jul 2026 09:56:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 003276B009E; Tue, 21 Jul 2026 09:54:46 -0400 (EDT)
+	id 9A33B6B009F; Tue, 21 Jul 2026 09:56:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E34D26B009F; Tue, 21 Jul 2026 09:54:46 -0400 (EDT)
+	id 896056B00A0; Tue, 21 Jul 2026 09:56:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BA4FD6B009D
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 09:54:46 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 453BAA00BA
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 13:54:46 +0000 (UTC)
-X-FDA: 85012929372.13.ABCE4A7
-Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
-	by imf21.hostedemail.com (Postfix) with ESMTP id D567A1C0007
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 13:54:43 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b=S7EOLnm6;
-	spf=pass (imf21.hostedemail.com: domain of "prvs=5662d1cd31=alexghiti@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=5662d1cd31=alexghiti@meta.com";
-	dmarc=pass (policy=reject) header.from=meta.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:google.com:reject}")
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4EDB76B009E
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 09:56:13 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BEF0A120195
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 13:56:12 +0000 (UTC)
+X-FDA: 85012932984.11.B7B6844
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 4D6844000F
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 13:56:10 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b="eqHt/L9H";
+	arc=reject ("signature check failed: fail, {[1] = sig:google.com:reject}");
+	spf=pass (imf04.hostedemail.com: domain of "prvs=5662d1cd31=alexghiti@meta.com" designates 67.231.145.42 as permitted sender) smtp.mailfrom="prvs=5662d1cd31=alexghiti@meta.com";
+	dmarc=pass (policy=reject) header.from=meta.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=fail;
+	t=1784642170;
+	b=vpZ61d8gg//LN1PEqKaDCW37lJUd5Z7mdK9ph9OGXv/D/wDpeUbStOCRUAgX01ZjBV1DIb
+	8vOUokJfpWP4mQ33rOct5aaR8UYDQnStcj/6jcu8dAaWo5q1tSWOsrIbntKe22vs82VTSa
+	cev5E0gpGK5zwTa3uOo5ahon2BxTjW8=
+ARC-Authentication-Results: i=2;
+	imf04.hostedemail.com;
+	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b="eqHt/L9H";
+	arc=reject ("signature check failed: fail, {[1] = sig:google.com:reject}");
+	spf=pass (imf04.hostedemail.com: domain of "prvs=5662d1cd31=alexghiti@meta.com" designates 67.231.145.42 as permitted sender) smtp.mailfrom="prvs=5662d1cd31=alexghiti@meta.com";
+	dmarc=pass (policy=reject) header.from=meta.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784642083;
+	s=arc-20220608; t=1784642170;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sx7+Wpg1cuNhbLRjLTJbDwoqoDdkVIIIbVtBxTNNKe8=;
-	b=YblTfkHuyf4gKHUC4onV6PmATcYeZlUhHAU0Ww1R1woXDGtuIZgbLkzB/F/rtNiBIIFIqk
-	wpim0eUk3hURymwCHITrc6TbDI+iOzuH7dP2IQhQpR3NMXFuGrgxnpDsqaE881fZqEUfTH
-	wPYZqPhAv6sI0B5DbiYgkN5bJ7l+PKg=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=fail;
-	t=1784642083;
-	b=VwV4CmxDWaZN/6Cj0jN6ACG8e6I0cYv8jGaRgYn3Goad97fVRtnZ/MEQL3CBqmrZg100w7
-	/EzE0a8sA168AIBLx/kKWQuaVFCwu/gHLCmxg7dzkr5DIySXFdVs85ZZctDrCnAtWu4K/B
-	r+irf3jufUQV2rMSnt48y7pEOT1FvE4=
-ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b=S7EOLnm6;
-	spf=pass (imf21.hostedemail.com: domain of "prvs=5662d1cd31=alexghiti@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=5662d1cd31=alexghiti@meta.com";
-	dmarc=pass (policy=reject) header.from=meta.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:google.com:reject}")
-Received: from pps.filterd (m0109331.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66LDkrXh903270
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 06:54:43 -0700
+	bh=i39j9ZPSo0Qr2xtMzm51tKekm1oxcgLbT3Wlw2yCCUw=;
+	b=jjBDvHJ1H+PZ60aqw7EbYHl0KKYbnd+2VBRrvnSanzLbTiJoiTzAFPYwNbXutuIBaHT1oi
+	o+4kwnZEa7z7Xl3kQj9BEihxIVLketBt2rrZKSDaxzbHyKFzpGophHCsSRxBqchGcAI7TD
+	bInZhkUDWwxUWLtsp8XXJ3zwxtty/9M=
+Received: from pps.filterd (m0044010.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66LDmJjP705075
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 06:56:09 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=sx7+Wpg1cuNhbLRjLTJbDwoqoDdkVIIIbVtBxTNNKe8=; b=S7EOLnm63S4m
-	IuPxTC/+11L3Zrj+hS0WSPIHDl/IdtjqJ4HBhMExfWAJqkqQSMFt4l5xrnsnS5Ca
-	+mZCQN3U0iD/y/dcTu+JS4kkrVcP4LWfG1YoArC7j9vuuohn3Hmnc4cFBfPNxYdw
-	vYQaWuyHhA0z8sBkTJjzq6As/iio1eNAAvSbCDdOSnTEFcK85VP9J/xfLXID8DA7
-	xek81ORaffO1S3MBnkpzPJFHUkxnbtylM5f7+5G66oxeGZBRnuURXl1GHnra7Pa0
-	KoAAmT62XYETf0BQz6kh7/qJqMFAPUM32JAHPscmW3Fl0gpRR8bgRpN20lwzD8ES
-	X2GkwgNOsw==
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com [209.85.208.71])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4fj8cn8k2n-1
+	 bh=i39j9ZPSo0Qr2xtMzm51tKekm1oxcgLbT3Wlw2yCCUw=; b=eqHt/L9HIE5K
+	foimN4Kxyx8g37MIUm5hs5xTLxfBxDh3a1NFffPtJaWTbPk73wAl1YJlfSDnuDQe
+	7mEZ8SzAPxCjfw0nbzv0hzjke12DEoPpDWXfzeTFiEP4q4TDgDGH9e23X7p//O4i
+	xp+6i6SmdU/y3wdzL3QPEbZwn4ZiHeqldTVTfbV0jCRqZx3+LPrNW3qSs5HmCvr6
+	WaOBMK4hNXA3+AN3iA4PN5zx42uSu5cvm7JPFXKPof7+ljLN/PMybEla2xOBKQTn
+	RcTS90gm9eD0KzzqCCzX7GGiN6YQqlVC07QilsnP0pqU+s3+aFv+U5KIkJd8ZINA
+	8tgkuRtTuA==
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com [209.85.208.70])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4fj6bph707-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 06:54:42 -0700 (PDT)
-Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-6986557937eso6733401a12.3
-        for <linux-mm@kvack.org>; Tue, 21 Jul 2026 06:54:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784642082; cv=none;
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 06:56:09 -0700 (PDT)
+Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-69c20d12deaso8069786a12.1
+        for <linux-mm@kvack.org>; Tue, 21 Jul 2026 06:56:08 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784642168; cv=none;
         d=google.com; s=arc-20260327;
-        b=KOELrKfAqg+b30XalH8XZWv6s1tKaGmCazqVseIIuQL8OG3U+izlqBACEEdh/LvDH1
-         GwLmYIdVxwheg4FTE7jp/22JlBLPGIAy7PJ/cc/NTIm7856MxEUskYtevhvlbfLwuP1y
-         Gnq80ZKa/QtK6prQapOZeKvms/vu5J1c6/3fC4DgnDG50PnhVXrHFVoPbjBoYyskmXfO
-         w5EXfXjfB0Dr13aE1/rm4JYy/UWON0vbWAGimns+OOB4IHpsxvs65oZfjFOpU30d1o0u
-         NSpKM457trVR7y050eaDpOwSQtlm0WQTJJRmXKIKkGT18gCGvflIEOh6KPFQmcOKbiRt
-         e4Tg==
+        b=byW1rr5VQhS9bUZ2s8WZcpmNC46YhjiHh6r6tli5rbV2J4Fkr6v5aOl6T6oMQFqW2r
+         jqk7kSKJhlFs9mmxh7NHvC5kh2IoD+8NyFg/B+esqhTk6CD0nEhq2yTXNUAnpURZF0SP
+         xns4zRYVdLavTxNIAlGryD1n1uuwudDUe8tsRH3eb4YsExuWvhyy9RzwIgN9gRRMZ5FH
+         aAv2hO9/RcqhPJwfo5Ah+rfx1Z4wZ/+C7naoiWZZsgkimj4uNMJzF3YUlOdNRsPlj7TP
+         mKEXKkvFSNlKuiuVM8oQA8JOcG9I/FrKw3NDDsqOhAkm9YzVDkuiOcSqiVwxHuCYKQ72
+         BzXw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version;
-        bh=QXi2y4Ma+bwgvWfji+09XbTWAna/luqe3unBFGrfieI=;
-        fh=qut5gkAjGo1Jq9mqbALQXmkWK9mCKm1tFQtpfQNcR5Y=;
-        b=Ogu/gg5lpLBK/OuBAJry2GVOoiR9Sbbzn2OuS/VpRmYnfjplAS7fXVQ+LtEI+34yIR
-         695SK1Ir1pDWtVb8WNInR2Z1Dndzzjk3Et3XRVs1RDmaUhtXvlYVmipXRVjBJ0bpdFj5
-         YvgbxH5rya9jHnAbwFmigzUgZYvoZOEW/g4lJQBhO3wYuE60MT3V0vmPZL7uyBbppEKT
-         E+R6lx+Wg75UVy2ggLTTZNK9KHG+MbZSsIEV0l3S4UdXRuPF+G0j1VhP8ZIxNM8qDZPL
-         OaCraEF39tDvhqWNVmsFzlMMTZVYCjt8E9Agg5i3c5lX1NjmkFlNtFrNe6zsMlPMpAej
-         PlBQ==;
+        bh=gaF4gINzHeE0i2qJRc+ZrgkOrkJg7hRSLG75jHpuL7E=;
+        fh=YDFbzcr24S9b5plsN596pyRenUv1lQb+g/guomQqYdg=;
+        b=KoLVEvcyvoy6Ii12mDhPXK6oYoq0s6gSuLU5e4YiFwb+URYM7y97bb4HnpjGQBhgDi
+         MrwsHgYmBviKxeWfMEXA+W/rSQOvuJm83vLEHN6obgBI5M1ImiO/nz5uYwIUExti9XsR
+         HSGPkgkHVkZFK/pcyooh9Gv87YvUF2ZgIHfPVjfgRWGpVkSjko/+tlyJISFv6A9hwbux
+         27h8GkWF1cRU//Y5QFAgRsaIpvxwb7Az7RxK7Ejcxj9irQG0Ermqeayvc+F6GRvrcjGW
+         KTszFUzLEkn+4eWjpF7PP2mFLWuz81dPD6g044XYzpQSL9rJZxOZqPj2zIoXtHRhAJdo
+         bo7w==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784642082; x=1785246882;
+        d=1e100.net; s=20251104; t=1784642168; x=1785246968;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=QXi2y4Ma+bwgvWfji+09XbTWAna/luqe3unBFGrfieI=;
-        b=g0gd93jXbXneOgDe1mufPDb9G/132HrsFdbpJwUh535mnEGYO1mdNzm5Bh/hjUZkwo
-         q5+OhSgUNqPGBqwhFjuLBxdA3j1e4XYhtm+PnEv/MP1gWQDWa6Vim5pBBcKXo7S948au
-         AlKvfHvyNyVLi810LcWRuZ3YD7yIEQ09fKoRivUpMvnlCfoKVwlduwNHEaVxCbeW4Il1
-         r2wd/YKYc+xBvDwccSbuiqpLU8ta1mvS3zw4DyNTxN/JF36Ahct3BFfvMlIH3N3crEQG
-         KAlFolwPytlhbiaSu7TOdHivwObNk5J5a7zbbVLkUkl7oW3MMGpupqhACf5kndPS7Kdb
-         RaWg==
-X-Forwarded-Encrypted: i=1; AHgh+RrrODbjyxXrV5+xBgZfIDr3yXDb8p6jrhA2lHae0Oy4QPctQr0DGezSr8I8wEIf/h8A8ChVMDNRwA==@kvack.org
-X-Gm-Message-State: AOJu0YxZ/JZKLKOJ5qS7nyX7wj10s0HKoCjR0IkaqlnT+tf3iUk3oRHF
-	TjtI8wOvjVp1IoPtzRseRYc1Bjj9N9SfVy4ZL7hHxJGI6aFE1x6gXmSsftI+tFKibNd4r7rjg9g
-	lxKlaSXscUeFwsewtts7nfxNoFkFmhWkmhdSjxre/9YNhneizDImcQoBoxOp4yi4hPRitaXIaIB
-	RY4wIalPPOw9d6aPOYiUT6PHNf2Q==
-X-Gm-Gg: AR+sD11S7tOpPlnm9MR7GBK+BRrnDVAO3c1Cg/gZ0h6HTIF2VEK1ODcg/JPHINnRZGo
-	g4N40Mt1R8i7jsKc/h/boe+hcgqomv2fS1ATdw3YY+0zw16PGJCIH6DAHPLtX3xofKX4up3yPpD
-	TcbWiT2cyWvK4JYn7kMxDs7Vd7ZX0eYAPzZGp6Tp2RZAY6lgYwXYfGx+TlHf7dMUcgmh7obR5/
-X-Received: by 2002:a05:6402:5194:b0:698:4d33:b191 with SMTP id 4fb4d7f45d1cf-69e6525b70dmr6983593a12.9.1784642081544;
-        Tue, 21 Jul 2026 06:54:41 -0700 (PDT)
-X-Received: by 2002:a05:6402:5194:b0:698:4d33:b191 with SMTP id
- 4fb4d7f45d1cf-69e6525b70dmr6983585a12.9.1784642081172; Tue, 21 Jul 2026
- 06:54:41 -0700 (PDT)
+        bh=gaF4gINzHeE0i2qJRc+ZrgkOrkJg7hRSLG75jHpuL7E=;
+        b=HAB3XpVcTS4vI5l4KzpvuPdo8J/XaRVUccWdlaL+7AMfRQDE8NoU9VFqWiQQ13wdNW
+         Cv9alY5fF00Cd3YseMGVWuYMCzkHCbpn+kjoJCFy0jv94mlTUAdJKkyZJ/buGyjYW9FX
+         EpXCR5U4ESeK1tVTYEVJDSG+t0w67zVTh+RuYHR/KmTZukqGWmWpgbd6kglYfgOyfjsV
+         s1r3IUBXAExu6HCzmwJaofgvFdtV3FiEcnGlNaFy7bVcEvZTHZHBeDqeVWbpVHNkMQqa
+         cuy74l5EqP9ZH4R1fM2nxJIDli1ZDtfD39cjVS3SBCe+29HSrXRSj1rm30HkKs84LQEU
+         xOpw==
+X-Forwarded-Encrypted: i=1; AHgh+Rqzy6VJS4r3POA3XJgUKIgNyhEyjVdPmHs3392vg9wh9fffLXmMIenr/9f3HV5fZHbaAU6yqf/EOg==@kvack.org
+X-Gm-Message-State: AOJu0Ywu6qrhd75uI8Da+/cJlgaE7UydVuWnmaOQ69sfMUXIdoacu2Cp
+	dmZe6Hy8EfwPLBJM83ql9u0LF6kPy8WcfVs4VxntskZBHvRY2LgmiWeZAVcwVZxjKYM5CmVRXnz
+	t7Ddk0yKJZ/MHvQdpYhZVp3uBHkur9OfJ2S7A7uhG3PPFNvWbuf/bI+5dZIFs6u48CcHmwxIMVQ
+	h1QY2AzOlkJBxHN95nQhaqk+UL1w==
+X-Gm-Gg: AR+sD13sEzyaboojWsGPBLIr8eK8KocCQ75gB+ptFfejdeaAes7Ep+S5XmhDDz8QAeW
+	xyP8Q+KjfvSbkizJMuBe3/JEs7bpP3IIZQvDEJdamUrj02ACRq04C+FdmbQApAgMUHQU0heI+R3
+	ar7lVovW1t958PhaVra7bFmFqi0ltzl6HLIgWKUDqginJLe/enwhDCgZ44UhOsMT1QDqOXIu/Y
+X-Received: by 2002:aa7:c556:0:b0:69c:5eb6:d913 with SMTP id 4fb4d7f45d1cf-69e38d4ecc9mr6571603a12.14.1784642167751;
+        Tue, 21 Jul 2026 06:56:07 -0700 (PDT)
+X-Received: by 2002:aa7:c556:0:b0:69c:5eb6:d913 with SMTP id
+ 4fb4d7f45d1cf-69e38d4ecc9mr6571588a12.14.1784642167406; Tue, 21 Jul 2026
+ 06:56:07 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260718093723.153324-1-alex@ghiti.fr> <20260718093723.153324-3-alex@ghiti.fr>
- <CAKEwX=NY=Uvcfm2BT-HGqu8B3OaoC0eePW1M7fW1qH4wpjQ8gw@mail.gmail.com>
-In-Reply-To: <CAKEwX=NY=Uvcfm2BT-HGqu8B3OaoC0eePW1M7fW1qH4wpjQ8gw@mail.gmail.com>
+References: <20260718093723.153324-1-alex@ghiti.fr> <20260718093723.153324-2-alex@ghiti.fr>
+ <al9cUqWH-72HUAG_@cmpxchg.org>
+In-Reply-To: <al9cUqWH-72HUAG_@cmpxchg.org>
 From: Alexandre Ghiti <alexghiti@meta.com>
-Date: Tue, 21 Jul 2026 15:54:30 +0200
-X-Gm-Features: AUfX_mwF5Q9JVRQNfWQ5TsioDFCzg2oqxuYB2oNNQsm7BN-0LsnY5Qv5zLzHpko
-Message-ID: <CAEmasaUs-1oHnnbP77hBt_02pZChjf5E5vt4nAQQsSY1BYZb9w@mail.gmail.com>
-Subject: Re: [PATCH 2/2] mm: zswap: deferred dropbehind free of writeback folios
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: Alexandre Ghiti <alex@ghiti.fr>, Johannes Weiner <hannes@cmpxchg.org>,
-        Yosry Ahmed <yosry@kernel.org>,
+Date: Tue, 21 Jul 2026 15:55:55 +0200
+X-Gm-Features: AUfX_mxt3Cctj33aPUGv57TuKolyrbhcy_t6t_9xoWTK1h6XqlZegZLiUMOCUZU
+Message-ID: <CAEmasaWbXLzsrR7VPUxMUOfU6DRd0_Jn1iUX=QaZm-aH61c4Ww@mail.gmail.com>
+Subject: Re: [PATCH 1/2] mm: zswap: free synchronous-IO writeback folios directly
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Alexandre Ghiti <alex@ghiti.fr>, Yosry Ahmed <yosry@kernel.org>,
+        Nhat Pham <nphamcs@gmail.com>,
         Andrew Morton <akpm@linux-foundation.org>,
         Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
         Chengming Zhou <chengming.zhou@linux.dev>,
@@ -139,35 +139,35 @@ Cc: Alexandre Ghiti <alex@ghiti.fr>, Johannes Weiner <hannes@cmpxchg.org>,
         linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzIxMDE0NyBTYWx0ZWRfXztzXV7hvEmpZ
- sMUCBjVjRYic4e9tIO5PCPbRuQKSfv6+kaljC1YUZ+WAe5inNQe7v9/9PAYmqLimzaVYNi6IpPg
- 0lGrC7Z8+yQXFJpKbejxPr1aatXG2oQ=
-X-Authority-Analysis: v=2.4 cv=dLeWXuZb c=1 sm=1 tr=0 ts=6a5f7a22 cx=c_pps
- a=9KvDgq78n9V61H3VJbnhTw==:117 a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=wpfVPzegXHpEFt3DAXn9:22
- a=pGLkceISAAAA:8 a=ufHFDILaAAAA:8 a=rBto2jfJFEA7NFfjjzUA:9 a=QEXdDO2ut3YA:10
- a=j5kO0B45gQVIxiUYEfTy:22 a=ZmIg1sZ3JBWsdXgziEIF:22
-X-Proofpoint-ORIG-GUID: 3-jICpL49I8uIMQ_aLJf3HYa4lYlV0LQ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzIxMDE0NyBTYWx0ZWRfX2VL/plQfsdZ+
- wot1/SKTHQeu+9nKM7icoj0FcKsjaBtaAU37+eWf2urbJY3T/YS9CSpgTNOBM4f1ls/ySih1xTy
- /tUuzLkKLxppqBZeU85prb7uN49ns6ft8+LrJ6IgM+ORMNV0lpmxFt/tUhlFY/e/6kwY7yW7hIx
- vl7ZJ9gzNnNrL3QCUIiHpDUjL/d2MSeZ1Nk368omLMD9AKJfIIuXbHivPmTIslRgOGHL5tbHHJz
- f0rDY3gT6r/h2x92B11Fh7HCc9Nr9ackzZH4iXpeAJi/obaXjrMydUuqR9g/cmSI6i2C6UpzD1x
- 3EH8Zb8+4S2rM8TyEbS1acF7Bq66WK6wBC4peOkvxXJx/C0gcRMrbm/t/0Vkz9feyuLE8PQcRg5
- Xz7oZUaAy5IVomvK/mVLFYKHl3BrNDxKCNEWxrZvInLreo3x69FtU3q7g8hIU49WT/XRcpqH0vi
- wPtvalT/6/F61ELAGAQ==
-X-Proofpoint-GUID: 3-jICpL49I8uIMQ_aLJf3HYa4lYlV0LQ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzIxMDE0NSBTYWx0ZWRfX1bUv3RloPZmF
+ dZFnuAd0EWBdcB0SxTtgUaM62GzdoPNg4iPlsp4ntlBskHoB7KRYzSTOUBmhv0UT19uDlVjVDT3
+ tFGQ5behSKD6YFcOACoe7RSyOoseTSsQyzeWh52jqu/Fvn1IO74JL7Hmxmbp3wuSsm5N+L9ZVlN
+ h0zUIqMphyIc8SCT4AYzW2KwAhN5aDNE+Dn9lntlC7v2pLrD5uEIiqqomDY6uDXu1c/PYH4cu27
+ gu6eZuxiW2w79hWEe74KakMBTQfLdl2lENZQhSQxLSeJhK8NWX9ePYsZ2/54hTVNUzpwEvLZQ1i
+ dHvM8xbm+oanweZLMVzuuioBpmiy4Q+1IZI1WssELpMxuoarxXWTRdI06U4d6xuaPr+roHlWM/h
+ ljUi6+Sj1a1ALyJe4CYCZfMP3FQKhkOV/MWLinWUflkj+S0QksbPIiCKKw3cTMi90lgvd6rSDJg
+ 0A5Q2azfvXrUFpAFTCQ==
+X-Proofpoint-GUID: u7OoKrzJfooCI9WG3gs_VLctYMSJtPwQ
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzIxMDE0NSBTYWx0ZWRfX7B2Qc/yqCVMA
+ 5t6D6yzMmYoqhSx2EOcObWKuKlMonPOAxq729UmW0W4dcTwaF219fYXG2j8UX3RvHOncz5nLnWN
+ LRPE2gpFnG41QahDj2ydv1MRO0vL9Vs=
+X-Proofpoint-ORIG-GUID: u7OoKrzJfooCI9WG3gs_VLctYMSJtPwQ
+X-Authority-Analysis: v=2.4 cv=AOkSgtoa c=1 sm=1 tr=0 ts=6a5f7a79 cx=c_pps
+ a=CYpx6mtW7qE8U/l5VCnCPQ==:117 a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=8elwO82fXORLTBIkMd32:22
+ a=ufHFDILaAAAA:8 a=h8lhBcyy4TMpjp85FJYA:9 a=QEXdDO2ut3YA:10
+ a=22KAYETGZJnyhCxlFjxL:22 a=ZmIg1sZ3JBWsdXgziEIF:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-07-21_03,2026-07-20_03,2025-10-01_01
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 4D6844000F
+X-Stat-Signature: c8yfa6zjqfpnu6fc84qqit41i8jrxz7a
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: D567A1C0007
-X-Stat-Signature: 4dgjyezpci45ogscmxic1n45bhfw9f9d
-X-HE-Tag: 1784642083-907959
-X-HE-Meta: U2FsdGVkX19EHjkIUK8kh5Jqzvi08pgAVTgFeN9QeWW4d1SEEgU56837dgAF0aJWvaeYljLyVVX+f0q1fcFp1hUNhyXSjqyRuBF6AYgJu09Q/f3edN12B4imtt1QuVIphebWm5hF3g/0AQWEQC1lXtLCgd5m2lgwBrFMBCwVKRmvh/EdjqKJc34Agmp1HtUxJgPZOm4M/sPRhFTU7FyYjNhz5NbdDS70pfXzOwdMDxEp4lJyezPQGsk5FGAKwOS1mp0pjHo3Vb3l9BGgYtSgN2zOflfDBx1RZZKIv12TmjY26C5cGxl7GSY06F8VH2NeBkU0wLv57CPVU46fqffwtFLqJagFgy79vNy+/7+clKGFmVEsCXuA1smpQrcTfsogAg70Pg+lXBiGG1qBTxv3DDJuqPXPcZns9Ig3ao2Rz+29Os+3GXcaUBSG8eSDyA0N/0dC9m0hCFjuoFppTqAel6Xv+h7E5hxmADmP63dBEU5k7BRtpb7M1GTZ3lnWnaMioE9jaOk0B7sUIP/++7FBhH6clKWdmx5xT5luP+oie25hKBVUx6i9O828CsgcW/QWV+m4Ogw/IAiKsSalaswK5oNu7HwsZTyH6jNZoO1+NmFExFw6gvXTerYyCi3lDwPRgfqWlN3uA42I7wCX3oJnGTvFTrmUiPXEUriRcw7UIeHwmk1GepDfTBjDsArCGDPUuIWCqlHydQn/2GySJlfhHxAbLEfuiWKY0eobSnzzAsnMMPEu9joxXVAYAc6R6N75ER3YIwG2nK02E6lmD2WTUYEyyiB0puiatTqjTD9GcVtMSdOoOoJOYhLGSumDE71WJ17vTqOHp4XQnLN9/baRyueiKDSROnNXTemEWME1pBm+hl7DpOnEuQloG5doqPVwSKEp0qWkpqnhPGZPoL3BsXXB8vSZaHzuh5KSuq9gjx1Zt9rkk5M+9eVLR+U4tXIcQws1iDR+uybN+JZOwUE
- 0el6PJol
- UzJz80gGAh1NhC1BXzpot+1aggyHI3y6W6xekjSQUPYm7WWlrXZ0d2jzowgytqNwYAT8DqmzgrbvZmDYA/x4hNwClaR4xMe4/SHvStFkJI04W7arOPS9ciyfVEsut22GmCQqCP7k4RB8nF5x2ELadaXu/kqu1krXl15fyEuarEsLlB3d17Po3McuuJxwoPbkPaRIpbSWWcEgfQmbzMcMUo1HWPIrthaxJHFAr3tnrYNPtaGmvRenOnqTbakUio76EyDl3YDgfe8S5Ix2AOnnRWelKV3htKaHGKBPEWJUriZK/+z5o+V4bYyQUQYjCrQGVCVpfAVMr2FybiXIyxz9NIAExZcK8hXCNbd5Qm087ileVPBmxFPZZ3tzcKvBqt8B/X4lDE7zAiy7MZqid3yJTeVws+3yGxf2Y/qV2eABDZJ3IIUNI8LVh6X92PIhe5aQEorPhCA2SUsEYNlFho5AT0dr3f/Gp/6m0EYrTWc9KCAczRi1kfzNII9p6xn1QYOqa/n485HJiFI3F5cpDydaVr1Y9ox40kApxYaugRpMECUw0tiw=
+X-HE-Tag: 1784642170-368184
+X-HE-Meta: U2FsdGVkX182yd64jB3SOm9MjV9G+mtuXNlA2f7j/lZzXQLySwMPgZLAlA10Z1yb4G6Gu3tTWzozg1tYwQurK2K/fYb180OBFhLRkF8pR9X5ed3rtMQOppqXPjxFesbcnWyIPMA53cupelwBL7tNit35yJUywvrUZ5S0HrzHCU4gItavcXskISPLNzDzB0Qt/pfq4TmCQ3i+s5tYZuu+2w43qLUvGuZMAq2mdnzxzRQsRgHkWblPjFum1RG2yOWksF7auADkUgB6zPHDD18aSrUBTrgQVF9j02ujFPR52U/rkvrKJy/h1a6a8xpAq/K8KHG+QlS7mSEez6mbcx9YGWQ7R52sjPUC94iEjB5tC8N+M/jVAwAx+zfNSck++R6pVXsYuhZ9yEHei7jdW0wRmq7bOIphGVF7BWdXpbM2LWMehjIA+1vN+F2IGVvza1K1pO5ZWDq6XGttDaUVEyz7StCkAuHVT7oyjHubjqCBVcEbL1m84z75RXEu6mawFUxeC9nARn943KLkXEeEXS1AVarqv6vvp88A+eEsUCrZ+KfAknWNpuB2WCb4R0ApLD2LItSAy/FH2Yp+SDrZF86QS7A2Ahe7i5Iy/81Jd4HrUeCPDZRsODIYoPA35CCPgZYmDQZ5NTSGDzKqJRW7+9krl8IEsX4hCuvVKnY8GZHtoEGvirUD6GPBeIgOE8CiyiupXOZajuNUbTVzotDdO0xq86zAyQj9Xj35/qTx5r3rcnZDDK4vwaxnUiJ5Q7cMvIkl4+DS0T099RnD0v/CNa1nnlZZW9VcO7RcO7JeR9JV8apFcB9Csuq44TvdHEJ58LB21QV767nHkWENU0Eg3uiZjrr8Wxm5xvOrnVHAY5EAHm6k/x+f+sWAlnDM5et6MhRSTeRdX3g3+ETYYGz74MZioXzk9l09dJVna9eCiVQ4oCEV6Y2GMhjmkHnCYYZrj9izOhWiL+T+Hr/OAgLFfv5
+ JkPp78d2
+ 4icRXf/d26Ot4G7juek+HbczDCoiNI282fAKRhyWksgV6aoJwfILBhPQLz7EDC4j+sqjFKvOMxRW/vc2/Emlv0s72NEsnCrdoYg1yA3+UaZB39tvAg9tBXf4vfuVPOtMaOuGUECn3xTsUkN8YDZcbOqG4VQCxYR7vH0pmYp1ChKhW1aoTHz0KKj84/w2nf5Mj7A5xKEHCIbSNqw6s0Ag4XbUs01z4s8FA9z1P0u/D0mvrTjVcDwHk5wbepnJi0K2QLMmVYksJe+1Lc3cSS8WfN0FvwC92nFf4A21ikT4jgtxZYF4QoumpQrWNU9wC5D+nkhjUEGVEPSb7KcAH6Ot/VJpSau86QA+Aufd73BHDxwX1gIUlX3e6eMuNvhZK9905MMNj8QdQYqZF1Ln/lZ7zloQaMM95mIGQ1+RxzQCqe7j5VioEbK5pB6Z0lByhvbqgfBiFJMt6/vmlWl5quB4tOdZ7KpRHjsiizMLeCZFKwUoPJkhOCiwT6/FQHIRIjHva/LenthPUpBVgcPTFQ2BMBs35MA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -175,165 +175,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Nhat,
+Hi Johannes,
 
-On Mon, Jul 20, 2026 at 5:57=E2=80=AFPM Nhat Pham <nphamcs@gmail.com> wrote:
+On Tue, Jul 21, 2026 at 1:47=E2=80=AFPM Johannes Weiner <hannes@cmpxchg.org=
+> wrote:
 >
 > >
-> On Sat, Jul 18, 2026 at 2:39=E2=80=AFAM Alexandre Ghiti <alex@ghiti.fr> w=
-rote:
-> >
-> > The previous change frees zswap writeback folios promptly for
-> > synchronous-IO swap, where writeback completes in the calling context.
-> > Asynchronous block devices and filesystem-backed swap complete
-> > writeback in interrupt context, where the folio cannot be freed, so
-> > those cold folios are still left on the LRU for reclaim to clean up
-> > later.
-> >
-> > Free them promptly as well by deferring the work to a workqueue that
-> > runs once writeback has completed.
-> >
-> > Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
-> > Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
->
-> No Suggested-by for poor Nhat? :(
->
-> Just kidding, of course - thanks for working on this cool idea :)
-
-Oh man I'm sorry, here is the story: while working on the large folio
-zswapin, I noticed the swapcache was getting huge when the shrinker
-was enabled. I mentioned this to Johannes, who suggested dropbehind
-(this was the first time I heard about it). And then you told me you
-had already tried it yourself!
-
->
-> > ---
-> >  include/linux/zswap.h |  2 ++
-> >  mm/filemap.c          | 20 ++++++++++++++++++++
-> >  mm/zswap.c            | 34 +++++++++++++++++++++++++++++++---
-> >  3 files changed, 53 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/include/linux/zswap.h b/include/linux/zswap.h
-> > index 30c193a1207e..23dcde274964 100644
-> > --- a/include/linux/zswap.h
-> > +++ b/include/linux/zswap.h
-> > @@ -35,6 +35,7 @@ void zswap_lruvec_state_init(struct lruvec *lruvec);
-> >  void zswap_folio_swapin(struct folio *folio);
-> >  bool zswap_is_enabled(void);
-> >  bool zswap_never_enabled(void);
-> > +void zswap_writeback_dropbehind_folio(struct folio *folio);
-> >  #else
-> >
-> >  struct zswap_lruvec_state {};
-> > @@ -58,6 +59,7 @@ static inline void zswap_swapoff(int type) {}
-> >  static inline void zswap_memcg_offline_cleanup(struct mem_cgroup *memc=
-g) {}
-> >  static inline void zswap_lruvec_state_init(struct lruvec *lruvec) {}
-> >  static inline void zswap_folio_swapin(struct folio *folio) {}
-> > +static inline void zswap_writeback_dropbehind_folio(struct folio *foli=
-o) {}
-> >
-> >  static inline bool zswap_is_enabled(void)
-> >  {
-> > diff --git a/mm/filemap.c b/mm/filemap.c
-> > index dc3a0e960b9f..548e465b5b9a 100644
-> > --- a/mm/filemap.c
-> > +++ b/mm/filemap.c
-> > @@ -21,6 +21,7 @@
-> >  #include <linux/gfp.h>
-> >  #include <linux/mm.h>
-> >  #include <linux/swap.h>
-> > +#include <linux/zswap.h>
-> >  #include <linux/leafops.h>
-> >  #include <linux/syscalls.h>
-> >  #include <linux/mman.h>
-> > @@ -1680,6 +1681,8 @@ EXPORT_SYMBOL_GPL(folio_end_writeback_no_dropbehi=
-nd);
-> >   */
-> >  void folio_end_writeback(struct folio *folio)
-> >  {
-> > +       bool swap_dropbehind;
-> > +
-> >         VM_BUG_ON_FOLIO(!folio_test_writeback(folio), folio);
-> >
-> >         /*
-> > @@ -1689,7 +1692,24 @@ void folio_end_writeback(struct folio *folio)
-> >          * reused before the folio_wake_bit().
-> >          */
-> >         folio_get(folio);
-> > +
-> > +       /*
-> > +        * zswap writeback folios are off-LRU, so we must prevent a rac=
-ing
-> > +        * swapin from removing the folio from the swap cache and keepi=
-ng it
-> > +        * off-LRU: the writeback flag allows that. Afterwards a swapin=
- may win
-> > +        * the race, but the folio is already queued and the worker put=
-s it back
-> > +        * on the LRU in that case.
-> > +        */
-> > +       swap_dropbehind =3D folio_test_swapcache(folio) &&
-> > +                         folio_test_dropbehind(folio);
-> > +
-> >         folio_end_writeback_no_dropbehind(folio);
-> > +
-> > +       if (swap_dropbehind) {
-> > +               zswap_writeback_dropbehind_folio(folio);
-> > +               return;
-> > +       }
-> > +
-> >         folio_end_dropbehind(folio);
-> >         folio_put(folio);
-> >  }
-> > diff --git a/mm/zswap.c b/mm/zswap.c
-> > index 3c494c5a671c..d185da85bb68 100644
-> > --- a/mm/zswap.c
-> > +++ b/mm/zswap.c
-> > @@ -34,6 +34,7 @@
-> >  #include <linux/writeback.h>
-> >  #include <linux/pagemap.h>
-> >  #include <linux/workqueue.h>
-> > +#include <linux/llist.h>
-> >  #include <linux/list_lru.h>
-> >  #include <linux/zsmalloc.h>
-> >
-> > @@ -990,12 +991,39 @@ static void zswap_writeback_free_folio(struct fol=
-io *folio)
-> >                 goto out;
-> >
-> >         /* Raced: the folio is now owned by the swapin; put it back on =
-the LRU. */
-> > +       folio_clear_dropbehind(folio);
-> >         folio_add_lru(folio);
-> >  out:
-> >         folio_unlock(folio);
-> >         folio_put(folio);
-> >  }
-> >
-> > +static DEFINE_PER_CPU(struct llist_head, zswap_dropbehind_llist);
-> > +
-> > +static void zswap_dropbehind_workfn(struct work_struct *work)
+> On Sat, Jul 18, 2026 at 11:36:39AM +0200, Alexandre Ghiti wrote:
+> > @@ -972,6 +972,30 @@ static bool zswap_decompress(struct zswap_entry *e=
+ntry, struct folio *folio)
+> >  /*********************************
+> >  * writeback code
+> >  **********************************/
+> > +static void zswap_writeback_free_folio(struct folio *folio)
 > > +{
-> > +       struct llist_node *pos, *next;
-> > +       int cpu;
+> > +     folio_lock(folio);
 > > +
-> > +       for_each_possible_cpu(cpu) {
-> > +               pos =3D llist_del_all(per_cpu_ptr(&zswap_dropbehind_lli=
-st, cpu));
-> > +               llist_for_each_safe(pos, next, pos) {
-> > +                       struct folio *folio =3D container_of((struct li=
-st_head *)pos,
-> > +                                                          struct folio=
-, lru);
-> > +                       zswap_writeback_free_folio(folio);
+> > +     /* The folio was allocated off the LRU and nothing re-adds it her=
+e. */
+> > +     VM_WARN_ON_ONCE_FOLIO(folio_test_lru(folio), folio);
+> > +
+> > +     /*
+> > +      * Gate remove_mapping() on folio_test_swapcache(): a racing swap=
+in may
+> > +      * have freed the swap slot (folio_free_swap()) and dropped the f=
+olio from
+> > +      * the cache, and remove_mapping() must not run on a non-swapcach=
+e folio
+> > +      * (it would trip __remove_mapping()'s mapping =3D=3D folio_mappi=
+ng() check).
+> > +      */
+> > +     if (folio_test_swapcache(folio) &&
+> > +         remove_mapping(swap_address_space(folio->swap), folio))
+> > +             goto out;
+> > +
+> > +     /* Raced: the folio is now owned by the swapin; put it back on th=
+e LRU. */
+> > +     folio_add_lru(folio);
+> > +out:
+> > +     folio_unlock(folio);
+> > +     folio_put(folio);
+> > +}
 >
-> nit: I wonder if it's worth doing some batching here for the free step.
+> Is this actually zswap-specific or should it be just swap code?
 >
-> i.e, after remove_mapping() succeeds for a folio, we can just add the
-> folio to a batch, then call folios_put_refs() in the entire batch :-?
+> Both this function and the dropbehind queue in the next patch seem
+> like they could be reused if we wanted to make the generic swapout
+> path do dropbehind as well.
+>
+> It looks odd in the next patch to have a generic swapcache &&
+> dropbehind check and then call zswap code.
+>
 
-Did not think of that, I'll do!
+Yes, agreed, Yosry made the same comment!
+
+I'll come back with a new version when I have numbers for generic swap foli=
+os.
 
 Thanks,
 
