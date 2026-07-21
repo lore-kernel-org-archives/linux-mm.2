@@ -4,134 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE772C4451C
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 17:06:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5818C4451C
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 17:10:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 542916B009F; Tue, 21 Jul 2026 13:06:11 -0400 (EDT)
+	id 65BCD6B009D; Tue, 21 Jul 2026 13:10:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 51ACF6B00A0; Tue, 21 Jul 2026 13:06:11 -0400 (EDT)
+	id 6339C6B00A0; Tue, 21 Jul 2026 13:10:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 430BC6B00A1; Tue, 21 Jul 2026 13:06:11 -0400 (EDT)
+	id 570646B00A2; Tue, 21 Jul 2026 13:10:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 041146B009F
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 13:06:10 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 785B4A088E
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 17:06:10 +0000 (UTC)
-X-FDA: 85013411700.27.0FDB67E
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	by imf12.hostedemail.com (Postfix) with ESMTP id B13624000B
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 17:06:08 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Loz26ujj;
-	spf=pass (imf12.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 275EB6B009D
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 13:10:23 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A1D811C0223
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 17:10:22 +0000 (UTC)
+X-FDA: 85013422284.14.E82E311
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	by imf02.hostedemail.com (Postfix) with ESMTP id D75FB80008
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 17:10:20 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="g+8aOB/a";
+	spf=pass (imf02.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784653568;
+	s=arc-20220608; t=1784653820;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UaZs0dUksz9lWWombvtYA7KfGwaIYElA59FlH0y/uOc=;
-	b=x0vsqocDp95xQXMRDT7NILDLIbvKAsOIyxxYOudFVf0Ho6IQlFdI+sF/goZohNwRURh5FQ
-	9q8h7BlrR5KO3wfr2LeTJTviLMLmsMqG2itIIG3Zg15lOpn2wtTcgDdOkudhsmJx9n7fh3
-	ss7qUe/dJV4NAWktroSXbMMU9UUavOo=
+	bh=Fkn3JmTHyZHrmeo+sPGbWVcJWg9Sa/ZKVruguzBjPig=;
+	b=0cI5dAwuTr9t30sU6/hR9GaJZEXcJiASkv2fHuWoGyPsf8y5jtU/+gVApf3F7OxRFjvoJs
+	GXpMT+kIuopvIce66oYaTGHQWMvsLozuJkk/ZeQjLzpocO6NgjY4ZS415z6qYFI3Ty2IfL
+	UVideRaqBKvMLMvb6mo27aMWzc+4vi4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784653568;
-	b=1abLj43AQShsMw+jAAbgC3NOW7kRSywRj/LoZttDHpj8y6RQ3kppGPffwAlYslZcuzTjPd
-	+n7Hw0hqtZAJnn+9f/ZHGYvA1fiTwko/QJLvle88dN8ocDiBwrvWrXv7YMKf02Erkxscjs
-	i93iWRkuOc9+0nfT03a3V/FGCOGCE2Y=
+	t=1784653820;
+	b=kSii82dGeLLU3My5LY7FfZrU4rRK5gXVQQ44FTzbnM4vhqwJOTDtB5CcvKWAQsyZVrVyDn
+	Wp4CmlM7jqMgDAV9j+wZGqyFjuf6JttVmbpZudFK3/ipwxk/E7dM9oYBA0a1MTWmdM2/DH
+	TEdTPEfuPRbyBnnMTI+XXdYByw9o1S4=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Loz26ujj;
-	spf=pass (imf12.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="g+8aOB/a";
+	spf=pass (imf02.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-381216921aaso11020531a91.1
-        for <linux-mm@kvack.org>; Tue, 21 Jul 2026 10:06:08 -0700 (PDT)
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2ccf2360620so76435905ad.3
+        for <linux-mm@kvack.org>; Tue, 21 Jul 2026 10:10:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784653567; x=1785258367; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1784653820; x=1785258620; darn=kvack.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=UaZs0dUksz9lWWombvtYA7KfGwaIYElA59FlH0y/uOc=;
-        b=Loz26ujjz5Qulea7U0nIjt7h4Cv4Mty1417dyoYqmQEsr5ppL9iqS55hwobcEvhmJB
-         NerJ+KK2nZ5RYhOlk0GKsYX0hTEV7HGHqUSSASurJxguguxnXmAMdbyXZATub/61wn+X
-         2UW141QceSWy207D0RM43q8QrigGOZWyNU9o6bfmmmoFvFQeoXA+KV+sHq0QM6pbxAdA
-         kW//UD89OZ2kQ1/QtG01DrwAdWEk7p0LXUYR8u3mdlOBEdDe30CxVWXmYuMrPRQWZWbc
-         lsprdPuKbSvLrmIv9+BIKUj8CZ7ZmqPNrJ5CEyC0SMxlNRgrMdxu45d0hyvOHg7p67uo
-         gnPQ==
+        bh=Fkn3JmTHyZHrmeo+sPGbWVcJWg9Sa/ZKVruguzBjPig=;
+        b=g+8aOB/aHG7KhaXTbcbuheyaRKAWEaPTU7WV1eodsmkqsIRPLj1MTTzGYTLW9rl5wM
+         wNrACwu8dyvK3dIrvtU2HkPIe65RuGm0FUhvZF6ImFXsMAjAOjps17NBJ4KYSmDAv46D
+         W2QvWe0VJG+2tCLBo1yTA/gZRcHOKMhTreAcWMfFAtdD5TBZyOS/horwNbVyy4kWxFvD
+         dl7wq8VFh9MnEWoT5Zs7ExzzW+ZGQtkWHCILqLzRqVgKOz6wy+4eOk1jdk5q8tlw6Xu9
+         riT5ZPkl0ixMs5e8UhUCmeT0Kvr5EBbEe+WeKPnEx+cc69MGMZB8emxpfOO8942+3tJj
+         bFOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784653567; x=1785258367;
+        d=1e100.net; s=20251104; t=1784653820; x=1785258620;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=UaZs0dUksz9lWWombvtYA7KfGwaIYElA59FlH0y/uOc=;
-        b=iDBixklLZsqxDoM0gEHOrILS3+EwTYJrYXPzyJ5f387dK/cxX/Oh3AvcL/tOqihRG2
-         rmWHeA0NFGeLeRjqMbbEwD5acYzDh3zENJ4BX7FTHUTEjlBzk0Jvt03xBABtl0G/ylAp
-         fr2h/rT20bW6QS4z6mp/AUR9m3p+j4pLo+6ZXZgCKx7DAhgnzhjQp3Tzym4U+BK8mhfh
-         UuL6UL1OC5rZYZ3llZ+KNfDD6ug6u1D1EE37T5tNJV2qATcsAbdXfsTnISUh4nvN3L9N
-         Yy7R3AnYjgmgOs6d+K9PpydRNhpFb4HlaQ0iML9+IaWRk59iMrOehGQIJadgjsY3tFZ6
-         Eypg==
-X-Forwarded-Encrypted: i=1; AHgh+RoxvBQWa5QcTpBNnZyIepUsk9xJutUTm6ntuqXvxBnE1KSTdI8GSZ8qLL3N6oVjGgM0YyK5s9obdA==@kvack.org
-X-Gm-Message-State: AOJu0YyVG1y4kZh6SloF/2E7bXKVWLi1PpNYfrqR5xQjJbFFQnviRUyl
-	3GIaeq/+2rHAEpwKnsbdOJHAdQ40qEUR1Iu0314yFTigw2lp/Yr2tCWTAO4kEjjI
-X-Gm-Gg: AR+sD12gPAPj2WGAPFu4nSQBCILdHb7XiRgIgJw8GggbLM6+Xso8DsRln/jybxhUe2q
-	EWK3r5UZpi1ICIHwwMO+Eqxa7MgYO9qm1IXH1DJRUN1Eul79TtGt6QsBHEL1MJYa1Uv3wze9iGB
-	3ZlOfl19otUfYkpk3wAd6EGttYlsF6UrnfwFODdvXanglu+kxZyExTkBTV9jt5MWlQ0krl/CRyL
-	PrBlQiNnukkw/fOy6fKe1gGjuWSzVaLv4jqe7G4ImCRSbX3ERGlMDmZnPTvRwz7u+1fpwa3xkEj
-	d5ncptQ7XGU4nBkkDK1OX54sq3uDKTh9Xej92xoSdqRkTzEB2pgQp8om/lb/2e6hgtmaThYQJiw
-	biVm99vHfeTXwpWtl+/kLBDMwWFzOyADwT7frpLAvBhP+jwEvx7XjQCww42azU9dawnSijVU7Ga
-	wyAlZVDR3LkgeYz/YdDahxx+0V5WMcu4lkYw==
-X-Received: by 2002:a17:90b:17cc:b0:381:a766:efcb with SMTP id 98e67ed59e1d1-38e4b3dc089mr20506488a91.4.1784653567393;
-        Tue, 21 Jul 2026 10:06:07 -0700 (PDT)
+        bh=Fkn3JmTHyZHrmeo+sPGbWVcJWg9Sa/ZKVruguzBjPig=;
+        b=kngoAU7WHlbEZ842xPgYFZo//OKuC84OavfOU+JF8qA98TeVy+niVC+BTzMGpseBxB
+         XcDquks5L/NoMAS11CIdXfGyyxJDvjSDUHH43YLyEfFRpEOqjHLZk/0BUGoUJ2VCyjeT
+         Z9u6WFTxmgpmtIvCv3VDudY/HlhHmbJF5nET2FHd1Ty5ucDQBhLkMynvXsS4+8MAz4fN
+         1hnMucoIINNDPrgdc8b/RrTdcCa7UlgbCMSRw8mYkpY/mvG5lnVxWGiJcKsHIO44y/Ay
+         yvxrfGWClB3qRa7kyg/u6Z7SoMFV7V5knqEagbJyZ/jaSxAB8qVfE4BjuAf/DoOsuTtE
+         eNug==
+X-Forwarded-Encrypted: i=1; AHgh+RqkRsMsEiVivjwaNcjl3fi9+zNCMxlWJCpJ3Y9XwSg2/AFU8Fys7pEODv81KxiWXDtvn0jFLb6Hkw==@kvack.org
+X-Gm-Message-State: AOJu0YzZllFCxrmnmNFfRJv4tw7efUEf0g83q+TgZy/YTomHMK7Re+Ku
+	sNgVEjFwvDMMMkno/hM3208lAKOzHBwht7m1nNyZdx8+zHPjlMvSoea5
+X-Gm-Gg: AR+sD11Gn6S2HjQpFAN3vQ9YQX95H7xUm3Ek1b97ANtBRiKB4bNF4j+WoVu2HAvcYsO
+	0Q5Ens27EsE4ZD+4K64yIMLiXcAK3uxNd0N5RHbP3BWwALsAOf7Ceo/60lFjK3Zvu7ygdcUGwSN
+	ReUQ99OJ2hzzWrH85F++oTdTbnrhDjmqlYc6jqb/mJkfqLxHApBZjRk3B7l9a2fTF+KwbPhgmYG
+	+uR3YgxYUJh3uRj+aoGtGHw6Yz5TQSwCeOOKiNT+yQAgSzXGhMiqaKYgXm9eVRcQk/wrBZUyopU
+	M+wuHAJoPVa1DwwdI2GWpTMFoFwffOMZKd3QjFXYbvtWOAqImvidUYIRcMA1sQ0cHaY6Fzj4MKZ
+	6qV61spgHsNH3Z9JX3mwrZYtwSVSKUKQGuqKlmJAzimJ2237aLrgqt3CZFF9sSlO9bTCAc+G8uT
+	VuErh29MABwOyHzoDfhgukoaE5+6+nsEFSzQ==
+X-Received: by 2002:a17:902:e541:b0:2ca:b4b9:4586 with SMTP id d9443c01a7336-2cf348b0a43mr211904095ad.19.1784653819673;
+        Tue, 21 Jul 2026 10:10:19 -0700 (PDT)
 Received: from fedora ([2601:644:937c:6c90:6d4e:7b2d:4a39:fb0c])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13ce2cbb6e8sm39508170c88.9.2026.07.21.10.06.05
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3147e1bc886sm585939eec.26.2026.07.21.10.10.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Jul 2026 10:06:06 -0700 (PDT)
-Date: Tue, 21 Jul 2026 10:06:03 -0700
+        Tue, 21 Jul 2026 10:10:18 -0700 (PDT)
+Date: Tue, 21 Jul 2026 10:10:16 -0700
 From: Vishal Moola <vishal.moola@gmail.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: stable@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>,
 	Andy Lutomirski <luto@kernel.org>,
 	Peter Zijlstra <peterz@infradead.org>,
 	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
 	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>, Lu Baolu <baolu.lu@linux.intel.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>, linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org, Kiryl Shutsemau <kas@kernel.org>,
-	iommu@lists.linux.dev, Kevin Tian <kevin.tian@intel.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] x86/mm/pat: allocate split page tables as kernel page
+	iommu@lists.linux.dev, Kevin Tian <kevin.tian@intel.com>
+Subject: Re: [PATCH v2] x86/mm/pat: allocate split page tables as kernel page
  tables
-Message-ID: <al-m-6iCSScC7M9x@fedora>
-References: <20260720-fix-cpa-kernel-pagetables-v1-1-0766e782cefe@kernel.org>
- <al5-fDRStgU6gjk6@fedora>
- <al5_Le9QlD4zlt25@fedora>
- <al8hE_ded6qyWiDv@lucifer>
- <al8_xx_99BjAUn5A@fedora>
- <al9BpTu2ma8GpiPW@lucifer>
- <al9KzIhKXa3PCMqa@kernel.org>
- <al9b5uE-ep9ADtLt@lucifer>
- <al9hMyqpjd4l0Fql@lucifer>
- <al95Y5aXof0ISEkI@kernel.org>
+Message-ID: <al-n-Eos9mc_7lvd@fedora>
+References: <20260721-fix-cpa-kernel-pagetables-v2-1-2b255deed710@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <al95Y5aXof0ISEkI@kernel.org>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: B13624000B
-X-Stat-Signature: eweyqd755ch49prahjgp95k5d3u6kmb4
+In-Reply-To: <20260721-fix-cpa-kernel-pagetables-v2-1-2b255deed710@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1784653568-406248
-X-HE-Meta: U2FsdGVkX19krapgs3Ldm6x+fkdxfTJe5dVQQWSBil3AmEX7LvLTiE8AHiRk2GxQF75zPJYoIkktlq++fmtRyCeUiLQF5smBggASMmrNB98T7fCwvwdEPfBYLeKil+C7cP86TlnM7H/JX6NwkYPcYaGkQEPLntf5rP2iGJwMF2dFFQ69gKsr2DXYTezzyGmJitFbVJmgBJNu4/xjHWodurNYJrxeiM7126IES3O4gkGd3QaBKRGMHKrX9pyjqDbFIXfhTA3nWK0Ys/jsmpmAvoJaNTCrpw/FW0e5P9tg3mhBxqRXuwnZNR56MHzLmtT3l+G6mprucaVzQudHA2ZUSM9wcOGV2RdM4Xl9yfjshiYhjUstNQiAxZZ4AcFfZi3ZsvLMdwMGHXWaO+4LoDBXnOvemw/NCkMjekXWg60MXZeDzohHjyR9xvIaXfWsIutFGTp/I5Noc/9H1yZK5sQ11SWg7H2+eAB1rSaxSkeEztpjV3+VK/qD1QeoVf9EqzRj4IzURtvwCqY3nDKh3oHwAOlu1heMy7GUtIEJaZ5ELJagxwOEl7o40J8V6Hvuo2snAoK1xJ2LVGi17TalIceQ4st7AJfUj/E9CWCb6J5lzoe0Hmzu9+mCohDUtp11+L5PzUMQTrLDd7yzjYb+AaAxicmWATFnkYXCwUX5yxBcoCkOHcyVzN7FNAWNEWgTa/vifYg/jyRsv+H2ZS3PASXg2l3BD2JSp59kHvCuJ18NDY+SPUGgQ10BrLGhZFwYgJuGFnpoYpwdACw/+X53q3OoLtDqf0S9I7m2g9OZyunoD4FpsdZ6WEMbC0x7C3s0Pr1dDXlgNWYOlkDPvPgsym4BCqyV2XCf2Y69DNZuYPsiqrlFHS3s/Zd09wfU4vUB2swpUrvz0J4gPOki45eQbie0OLKSdd43ZE6uqyAaqXQr8p5rRlpRSa4Chwl7wP6AsY4JWd+vLp40N1Qb/6KmwKU
- vq/6cbeA
- RNe8Rs3gzaqAHEvCrXxSlH78nr39gcbyP6GbGl3yJtjoJb9D8i+jbXMhKFH8Lw3RLsfJWjrQX/TnIG55E4EIv5aC0R5FDNGX5ow+gaBTxoKue1x1RGk28tEmXg7fFBT+4PFpMgilc+9Y13WGGGrn/3YU8SPWF1hdVqrJpNJWJlQeHNRZi4Itcukx0dy4aRQq6pKV1dDK3VB4X4xkMPTUWsGFLSZChbZZW1rGn2tC+oMh1S3a1Bl0Et/HwzSi/glYtXyOLycbGZvy2dvivPcuzm2L0yFjGHu7NlX8Oa5Bvdbg8J2JbhTVBGb5rRONstmzc6O+QsIA3oonPCJhN+ycGPz7dlE/qGCCz3LKKeOvH9AHrHOSWx+pZMRK4V/x29RyJP+p7S8Wiv/ipcieQbXglJWKpUNcceYvDmo2vZpH04w0sOyYuzVLZzcpTPGkc5WKLYwvlaqe4twrcDD7DN2W/TXI+H5i8JS52W8o+QvBayFYTNHoJ/yz2AzZNt5zAG6b6Yl7vQUaLaYpQnlrVwMhlbMO07zwLqHm6yLqIcB2LyPabAYtLVI/vAd4MBAM0h8NybZj5XTnOtKT1LET+2QHTyhbRRg==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: D75FB80008
+X-Stat-Signature: xhm8ed6qekhsrs5q1tz8m3ancum9hh9c
+X-HE-Tag: 1784653820-232431
+X-HE-Meta: U2FsdGVkX19QKH7OG0AxIoDW7tg200AqTV/VIiIubf3kc8yb8gdKDBBVQM/SbdKUP01XhMr5evjqFNdovjkPFGTkPxYCa9DdAlgkTpgQNHN5FquX7Fgq1A4xBU453G2sjQ4/zrgQ7Q151jIkQoHQClb3rd+9KxsjEIt1lwRT3O/QTXzUuOZwpMAd2QgM/56OyXdsZar7mK7i34S1La5/zN3OLpVkZd0TT0r9Y7sgDls7Fm1Xsx0eIVXZ/Ffzyv3dhC9lZeVwpiTu+lKx/EM4AElboxXBZfk+O08Zi/VdtPzHHbkxQHDEaU9EFznmAiHbME6iswOTu223N0aH1FUXp4PkTAKqhYG3vUEAoIlgZfyPbZYoFZX7kuMaHLLLtfpuhcZdu0bahF+TcgOCdPvtqrcF78GXATHzbZzqDAnfZhMqPuQabrrLFzGM1da1SfjYxLkBxte4V/4DWNeJE1w2cdhG1duyrfKrBbEN+dRJFuZr1wd2Elhm7VV+1PQHmqiuXd5knxjHYlweFaPByARdoZcjEABIHdhcLXApjY5En93C79qaRmQUyg85zPQQyzb1eXTqU9cTnLNDvlgRjhXgbYc2PNffqbXmvLBgIOkbkFvCXbq0Hsx9ABBnuaBpiLngQ4QfN3jAdb4kikA1iTdZu1SFO8GYRm9TkAIh+hhHfDYrT2bxG0coFDVdzuTTcRSYKkHMJiBUzA4eVXtIYzFp90Y/QyYGIJ75IvZmcUHvDtsBhY6b7UVNbaS1ce9zdorKtC+3d0C+necjpJLlomdHSEB63aZWNe60DAEGlIN4Wdm86W+3JBY8iZAo8oc+1X42Wv9hiiumZgxqfJFaZO//xIVFe4JwiRIf2u7XgqJnfHv5l3LIIYOcqDJ2fhm5zv6kNqVhE2sh0Ohe9pltKG7tA1jXPu31+oIC8t55ixvkIOcJSqOwp3iuzetlL4ga8hj7t73Pde21wcFjQ9+O95y
+ OGreurfi
+ 6M3o1iJ3bI0y8Rm/qkXrDUZCyUc+dpxBD8Y/YF/7yQ69HdXyl6S4UNa8jCqb1LwH3EAXex+FW5MRxuQSiiaZBK7CkxvfBmgiawKLJ2cFszZaUD7jnHDjpBpWlkkuYZaAHnmX/tF3QYV4LKEHu5JGGgYgOShgk/sjVr8849ppmck8Gc+5cyi/5ohDzkypyyCieZ+oyFDRK2dBnvyZOBdb6OIyrQQYc5VRPNM4MCswtmn7v2euQdY1517bzWdufS4lhy8pjJOO7F/5Pd+AF4NnZw4uzjVsz3Rpt6NJD9QQleiWd8luZks8Tksw5k+D/F/60yN5k9UmTA0g43E+Qaa9InsEk+6pzqVs0pDdyJJszIyNHqj2FKtT2eTTBP99a4gYEUzXoH+eKiJ06q/aA3nBtFEHZ65it3D3gAhZVXgVEjos7CtDHvQN3jZAGtpiFN4c0tKtizZ6AfWgO7mtA4KHIPPbuvgFkCCNcqk0pMoBLrUATX6SsPHHdA5W4zURhNgrM6yV32cE9IzgaTms=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,95 +129,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 21, 2026 at 04:51:31PM +0300, Mike Rapoport wrote:
-> On Tue, Jul 21, 2026 at 01:09:27PM +0100, Lorenzo Stoakes (ARM) wrote:
-> > On Tue, Jul 21, 2026 at 01:00:53PM +0100, Lorenzo Stoakes (ARM) wrote:
-> > > On Tue, Jul 21, 2026 at 01:32:44PM +0300, Mike Rapoport wrote:
-> > > > On Tue, Jul 21, 2026 at 10:58:50AM +0100, Lorenzo Stoakes (ARM) wrote:
-> > > > > On Tue, Jul 21, 2026 at 02:45:43AM -0700, Vishal Moola wrote:
-> > > > > > >
-> > > > > > > Well some kernel page tables are still allocated without ctor (early allocated
-> > > > > > > direct map for isntance), and if you did pagetable_dtor_free() it
-> > > > > > > unconditionally calls pagetable_dtor().
-> > > >
-> > > > TBH, I cannot think of a scenario when page tables allocated at boot would
-> > > > be collapsed. But surely, checking the page type is safer just in case.
-> > >
-> > > Yeah nor can to be honest, anything that could be made large in the direct map
-> > > would already be large right?
-> > >
-> > > But it's 'just in case' somebody did something dumb :) Later can maybe make it a
-> > > WARN_ON(). But just to fix the proximate issue for now.
-> > >
-> > > >
-> > > > > > > The ptlock_free() and __folio_clear_pgtable() there would be harmelss (no locks
-> > > > > > > assigned for kernel page table, and if PG_table never set clearing it is a noop)
-> > > > > > > but the lruvec_stat_sub_folio() would cause an unbalanced decrement of
-> > > > > > > nr_page_table_pages.
-> > > > > >
-> > > > > > Gotcha, thanks for the explanation :)
-> > > > >
-> > > > > No worries, this is subtle stuff with lots of weird gotchas and stuff we need to
-> > > > > improve... I seem to have fallen down an unexpected rabbit hole with these fixes
-> > > > > :)
-> > > > >
-> > > > > >
-> > > > > > > It sucks, but until everything is updated to call the ctor we have to do it this
-> > > > > > > way :>)
-> > > > > >
-> > > > > > Yeah that makes sense. Although I'd rather see the condition as:
-> > > > > > if(PageTable(ptdesc_page(...)))
-> > > > > >
-> > > > > > We really shouldn't be calling ptdesc_folio() anywhere anymore.
-> > > > >
-> > > > > I think better for a follow up since the code already uses ptdesc all over the
-> > > > > place (fundamental to the approach really, keeping a list of page tables etc.)
-> > > > > and this is a fix that needs backporting.
-> > > >
-> > > > I agree with Vishal that it's better to use page type rather than folio
-> > > > type. And it's the same for backporting ;-)
-> > >
-> > > Ah sorry misunderstood, you mean straight up PageTable(ptdesc_page()), I thought
-> > > Vishal was saying we shouldn't be directly referencing ptdesc's at all (which
-> > > would be the rework).
-> > >
-> > > I guess definitionally page tables are never folios. I lazily went with what I
-> > > saw elsewhere, my bad :)
-> > 
-> > Ah yeah I remember now, i saw __pagetable_ctor() dealt with folios:
-> > 
-> > static inline void __pagetable_ctor(struct ptdesc *ptdesc)
-> > {
-> > 	struct folio *folio = ptdesc_folio(ptdesc);
-> > 
-> > 	__folio_set_pgtable(folio);
-> > 	lruvec_stat_add_folio(folio, NR_PAGETABLE);
-> > }
-> > 
-> > 
-> > And was like 'huh?' (surely definitionally they're _not_ folios) but went with
-> > that on that basis.
+On Tue, Jul 21, 2026 at 01:14:52PM +0100, Lorenzo Stoakes (ARM) wrote:
+> When splitting a large page in CPA in __split_large_page() we allocate a
+> PTE directly without going through the standard page table allocation
+> routines such as pte_alloc_one_kernel().
 > 
-> I wonder why setting the type is even in ctor rather than in allocation.
-
-Yeah, you're not the only one wondering that ;)
-
-Kevin is actively looking at moving those to the allocation/free site instead[1]!
-
-> > Another place to clean up I guess? (that one _definitely_ is a follow up though
-> > ;)
+> This means the page table constructor is never called nor is the page table
+> marked as a kernel page table.
 > 
-> Yep :)
-
-Yup. It makes most sense to clean those up when we add a per-memdesc
-api (i.e. for memcg in this case). I haven't really had the time to work
-on those though :/
-
-> > Cheers, Lorenzo
+> The former results in the folio associated with the page table not being
+> marked as a page table (__pagetable_ctor() is never called thus neither is
+> __folio_set_pgtable()) nor are statistics updated to reflect
+> it (lruvec_stat_add_folio() is never called).
 > 
-> -- 
-> Sincerely yours,
-> Mike.
+> The latter issue of failing to mark the page table as a kernel page
+> table (ptdesc_set_kernel() is never called) is far more problematic.
+> 
+> Since commit 5ba2f0a15564 ("mm: introduce deferred freeing for kernel page
+> tables") kernel page table freeing has been batched and since the
+> subsequent commit e37d5a2d60a3 ("iommu/sva: invalidate stale IOTLB entries
+> for kernel address space") IOTLB cache entries for kernel page tables have
+> been invalidated upon being freed.
+> 
+> Since split page tables are freed without this invalidation, the IOTLB can
+> contain stale entries for them.
+> 
+> Resolve the issue by using the ordinary PTE allocation API at split time.
+> 
+> This results in these kernel page tables invoking a page table constructor,
+> and thus requires a page table destructor.
+> 
+> Since we cannot assume one is always present (early allocated direct map
+> page tables are not marked as such), we conditionally call
+> pagetable_dtor_free() if the PG_table folio flag for the ptdesc is set,
+> otherwise we free the page table via pagetable_free().
+> 
+> Regardless of which path is taken page tables marked as kernel page tables,
+> which now includes split page tables, take the correct route through
+> pagetable_free_kernel().
+> 
+> There is a user-visible side effect in that split page tables will appear
+> in nr_page_table_pages in /proc/vmstat (as do other kernel page tables
+> allocated after early boot), however this is a positive change.
+> 
+> This issue started being markedly problematic after commit
+> 5ba2f0a15564 ("mm: introduce deferred freeing for kernel page tables") so
+> choose this as the Fixes target.
+> 
+> Fixes: 5ba2f0a15564 ("mm: introduce deferred freeing for kernel page tables")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-[1] https://lore.kernel.org/linux-mm/20260714-remove_pgtable_cdtor-v1-14-44be8a7685d7@arm.com/
+Acked-by: Vishal Moola <vishal.moola@gmail.com>
 
