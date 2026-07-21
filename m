@@ -4,94 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1C32C44533
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 07:55:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B7CAC44529
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 07:57:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 81A3C6B007B; Tue, 21 Jul 2026 03:55:19 -0400 (EDT)
+	id 474986B008A; Tue, 21 Jul 2026 03:57:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F1E36B008A; Tue, 21 Jul 2026 03:55:19 -0400 (EDT)
+	id 44C9D6B008C; Tue, 21 Jul 2026 03:57:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7085F6B008C; Tue, 21 Jul 2026 03:55:19 -0400 (EDT)
+	id 38B716B0092; Tue, 21 Jul 2026 03:57:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 42FD26B007B
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 03:55:19 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AB4171A0419
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 07:55:18 +0000 (UTC)
-X-FDA: 85012023516.01.C819E82
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 0593B20004
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 07:55:16 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JwTdCDZ8;
-	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0BD096B008A
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 03:57:44 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6722F140340
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 07:57:43 +0000 (UTC)
+X-FDA: 85012029606.30.8B95F94
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 8F79C120005
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 07:57:41 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=otTSCgQq;
+	spf=pass (imf29.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784620517;
+	s=arc-20220608; t=1784620661;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/fyuBmwDf+2NBoAiUA97wVQlsoPJEThMn5l0snSCjYk=;
-	b=p/RTAbbMh3ZkAk4koivZ7HZwsOSkb9gyG/aazhJbdzJNIqNiZ+OhwureZ4mQ/iY28O0hU4
-	THiVJo0ekofHInWgWyPVjegm3Seaf1bm3O3Op7fW1s9Q9RjppUc1mznqxkSy+f+mIymI4Z
-	zvwChm+MbShEJ6+/cQPrMpVor9Za4Jg=
+	bh=67VeInvfg2059N6m643qkaKNMdL7mnmvi+qBizbLEU0=;
+	b=BsFaINcTURa3CuKM9PJLsVjShBuflzYInnHP+hpE1s4Mqro2ARkukIRPSykUgQQP5xQ7yd
+	UWWSwe3DYx6h/JxmZdEYH7oRfqneZNHRimpbE9xYcXsqvKVBrGPq3Blqiry5sKJMDQSo0D
+	pW2Ev2FIh3K/nPhJYLiGDFBp3zu60Ko=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784620517;
-	b=57NKx5fKLv4ecpFkILfGtZlKAdxmus7OGc4Ud9eRQHWGENdxcOREozDmk+UyGqDyI1vt6z
-	PqbpkpZf2l6AqC0lYGOcKG76stRkX++Jqcu+jLEn86IHtr4KHeVGA7NLpj/lAy3m6Z0QYb
-	5hv1mAGYSWjaH+O4tRlhx+SalhkJDTw=
+	t=1784620661;
+	b=cUk+GKlh1Eu279xwfDwhNgmI6n2VzQTpLl6Md+ZsfY4swPiVeqRtwuPzVxb+LF3O+u/+zS
+	7TXF5to5FhyIg+QE4JpVgKQcsyxYKrkag6ZNgwAdWjB5uiio37BcfU2Y2F3VWz9PYM4HUi
+	cLTA1f2GKGGnTplp5EozNCPpBn4iCKo=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JwTdCDZ8;
-	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=otTSCgQq;
+	spf=pass (imf29.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 43E97437B8;
-	Tue, 21 Jul 2026 07:55:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 174501F000E9;
-	Tue, 21 Jul 2026 07:55:12 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0321C60AA5
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 07:57:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF38F1F00ACF
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 07:57:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784620516;
-	bh=/fyuBmwDf+2NBoAiUA97wVQlsoPJEThMn5l0snSCjYk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=JwTdCDZ858uBa97dRIbYsqvjUYqjcK7MHEOkl8tOucsdC5ezY7XzsGSELd6WIATKd
-	 eTR4kDVQf5h7eU0RGIheIpWtuD5Q8rl+5zeSF3AfsUeBAg1wBvdJ8hWxwE45O/CMEd
-	 0nbu71zXHs608kXZAIgGNFQb/nLL514l8xMh3mX9xWtQYHTxk4k8PAZg/nVt9dCVCG
-	 JWdy0Ay6qmN+QTFa9u4z7QHtvVyb8Qi2Hi3B/CYLZRo0jq4n1tXHFtowaiI/x8eKWw
-	 /wQcKW1CE2re47XgLv9S800evVopE2vSIn7qyMF46nYxZeZk1fviFR74mkTmEA/VKC
-	 C4aYXZaR6H+Hw==
-Date: Tue, 21 Jul 2026 08:54:58 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Nico Pache <npache@redhat.com>
-Cc: Pedro Falcato <pfalcato@suse.de>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/8] mm/khugepaged: collapse_file() cleanups
-Message-ID: <al8k9mvfZRA27G7m@lucifer>
-References: <20260720142913.846902-1-pfalcato@suse.de>
- <CAA1CXcAk1SYopaokUGbT7RK9+gPNN2Jkm2UrpMaZWShjG3-z8g@mail.gmail.com>
- <al56t4zyjYlCl-20@pedro-suse.lan>
- <CAA1CXcD=zNg8q34DhsH8+BnXACA0TbD1+p4QEOCcY2u1qoie4g@mail.gmail.com>
+	s=k20260515; t=1784620660;
+	bh=67VeInvfg2059N6m643qkaKNMdL7mnmvi+qBizbLEU0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=otTSCgQqMLlbrvW2m893eQvJObUlIZJUTdI03GPpxD2A4rMXYHt7QPUh1NEo76K+3
+	 XsCuuN6Vgm9nheplVYdhDDRorMNF/cHOvDV+EGgIqjaFSgJRZ807MdIxAYSwDdI1my
+	 WXAMvycApGnVXgocZ26TSrtWVpqkEdz+IgGNZAofk0xCU+N6CRiLye0M3I2Y2vFaYP
+	 B9JilmWmBx4Fq9Tz0+h/XPZ7hQKAx731y0Uqg1Fn/GCvhqsnnrb0lNiC1m9rVRO2Lw
+	 Z1I0ZDzNVMau9zk8owbVG9ICdJXT3z2jEkVnE7NdZwU6boid6+76DRkAl39S26WB35
+	 xUUT+fCOmeWSw==
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-92e6391b114so601376285a.3
+        for <linux-mm@kvack.org>; Tue, 21 Jul 2026 00:57:40 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RrsuUH7jqF+PHygZxMd6TVqTiwLpo2/uWuoizA8+nbsPlwoACzh1jXsC24Th3bVBt47RMN0kWK54A==@kvack.org
+X-Gm-Message-State: AOJu0Yzpp48iaac9kpXS5Iunj0kaB/4+o7xHXt+nINZkvAXg97SrkX3x
+	AhIP3M+qvl84OBgY6I0Ptp1EJeGfAEFXIhYoQnm23d7Ojcj/8W33Kka489IA4C0fTjMOjC7yW5D
+	o8H4udUsseQWyev9sB+U9f51K5BeBb5g=
+X-Received: by 2002:a05:620a:4011:b0:92e:604f:909a with SMTP id
+ af79cd13be357-930b3ec8d71mr1812555785a.29.1784620660059; Tue, 21 Jul 2026
+ 00:57:40 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAA1CXcD=zNg8q34DhsH8+BnXACA0TbD1+p4QEOCcY2u1qoie4g@mail.gmail.com>
-X-Stat-Signature: 7j7srmkjxcxif1fh1kyb9zubikjqxs9w
+References: <20260717122514.51514-1-xueyuan.chen21@gmail.com> <20260717122514.51514-5-xueyuan.chen21@gmail.com>
+In-Reply-To: <20260717122514.51514-5-xueyuan.chen21@gmail.com>
+From: Barry Song <baohua@kernel.org>
+Date: Tue, 21 Jul 2026 15:57:26 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4z+uw0YdWMwJzxHA6kbV1wPaqSXhFzwT65ffj1drSmnbw@mail.gmail.com>
+X-Gm-Features: AUfX_mwXoCUVj4Q581J7mLiAo59hEPI1kMXrhwsYQcD6VlJcdSV4gQgQI9BZuCo
+Message-ID: <CAGsJ_4z+uw0YdWMwJzxHA6kbV1wPaqSXhFzwT65ffj1drSmnbw@mail.gmail.com>
+Subject: Re: [RFC PATCH v3 4/4] mm/shmem: split large folios only on -E2BIG
+To: Xueyuan Chen <xueyuan.chen21@gmail.com>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, zhaonanzhe@xiaomi.com, 
+	hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev, 
+	shakeel.butt@linux.dev, muchun.song@linux.dev, chrisl@kernel.org, 
+	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com, 
+	bhe@redhat.com, youngjun.park@lge.com, david@kernel.org, ljs@kernel.org, 
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
+	qi.zheng@linux.dev, axelrasmussen@google.com, yuanchu@google.com, 
+	weixugc@google.com, baolin.wang@linux.alibaba.com, hughd@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 8F79C120005
+X-Stat-Signature: iih1mga48q9egdxdfacebtkbm8fpfq8o
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 0593B20004
-X-HE-Tag: 1784620516-474604
-X-HE-Meta: U2FsdGVkX1+9jSXkuOQTcKB944g4z4u0NORkDVIIsesqT8s0Kd0sDM3nObONL8sjpyp6wRCTmEtuCXQYzeRAvSIhzyLZIlnt7wHzrOZdG64DVpTEotAfJSgBSZMFBSXkE4OKA9/4Ycqn/nt7AKU09ao1X2LrsXxW7Bm8F1U/U5SfxhLFnRwDJ2oVwZPzmbW/3g3CH9UkemNZPezTIMaqYoZDlUt4g5IqM3gu/7WTyaeFuShWqMoaOQYr18D+LOfsHVEEp3eE2O0MPOK7PKilYwFpqHA7FiZWko53yYrup1J2g6d5jmCFDRZZogE92yNp9ZH41JylHbDphlW37QHUf3WQlPLK9y8Zs+N5O20PYbkGfv8ozLpxi237W5M9rHnv40XUKeCSaRg9nCXzwQXXop/iy19lxIzFLDW0Bw8Aqo5otl9rbWGuvWvC/OSUzREfRNZWikHHbLCp6B3ESfzdtdW2eBtpNRN7gy+58DStK8Cd3sjCLHDf5/UpeqCkRGnw9N1meJxi8AS8SyaXheY4sxZvdrZIVpkRoS8temkKQD++hWH7Q1z4fz7eMrDKF6QhK3JvUPFJTe8FDOZeulOAs6JdkhAt2iJzoMopWXP7RZ/QlOXAlGy7Aggv6yNJA8fkZxju9ENrYONWpLyVQAjR5P8YKClchmeigyKQuwsa9n+/zGpZQaWmOuBX+uPHJgpNoSTQRIxX6BNKmg4VRIshK4RxIC5rNvC7q5j6ldArOjoFTHHGhoBkJxKAJvAco5t813enMcwITUpwHIwGP/zPwtU9qa3R/UbXuUmzhTdwPtkpyuI1bab4scwrkio3XTNfM9FW9AyPyL1AQt569K/8/R5hNg+Fcv6cZW5M1pgAdpoDVzh3P2KmgRqt/4w2LNO4pdWRGAs/Z4qRb94cm4GV05UGkh05kvuHAKgCfVsCWu9HwwVEGJy5MUVwPJkul9ARJmMK5WSeOmBRlFJv4dO
- 7jhjC6Sw
- NTwymXN6KpZPEvdN9KCEd1uixW2VUJc1wzEbBWd5iww2sMhVr63sZBYuEtMSdAIGjipyR47rF8hZM7UoRN8sIfid6QzHxxp2zp4adu11+xRb0YlZMhnP2zWt6hdZ1m8xSmlOHaj5TmOQkRSGcfYYcFdQG0ePGo2wdaeh1OkDYFZqke6+2cHaox7XDIZXgd2GiozDZMVP3sDbMu4Xw+Wr08WdC5r/OAOlpuLORpH5TqtXp9/E3P6WyQRka3CKR9Svdt/WIWt8HmWrzVF2SbZrLug9qJs4C1aT0GyNkas1VI3E+YIPkYKBsk1CfXtlHRntdGXspxP2RVLKxfOjO9Mal/uGONzcY1RdvtKiH1gdjyyvm+5Bsx4AaZjVRN9U2OS8bqlYf0fWLwhJt0Fo=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1784620661-798423
+X-HE-Meta: U2FsdGVkX1/7Tg0yXkQRpTof/x2GLzmvurDx2OYP4+phCYNukeJA+QqbWQpyL7sjhCiRcb4oEn4MnNhLmQGtH0x300QCICHsSbTdxkkzC4DP1ZCjXQfY42LfTFiy3YOmKyLk5xEFqEsSq5fVPzgDTJ/h8zlS8aJbdvREz8xurU03uL7qKa6+minCeN7y91vPosPz/vMyrKqiJbIyoTR+zLIuhny5KaR8By3UbN1CPwEaPHztpdt5I0Xt0zqayuYWeZl39QEPCG+AHZYGRFIN50Z9fTWsckjC5Wt5sYaEXYPAAEQbFi/sbpMaKf1PJLCIFPyO3DsEnxHxA77FRH7gD1dOKCHajLXX6J+htY3VCdiT4/6cFjU55TlVBYM/0PRbiAZ5k3sQwQ2RidboBw9upbi0iy70OrTytJG2onxKuYPTFO+eewQT0xeisShKJZ2vtfJ0Z0pf7G2dgCYl2CI0snP8FpA4xbkgKvY2mcIOlYCweuTLcUHC2mP94aMQuL/++5htLB7y/GiLhVFbqoCofWLdg+e+xqWimkEgz8ko1baubVD/jIj+LgYk+7t1IV00MMxnQ9JnSy7MIHvBjIO309cY6LvR2SpOwyRqrL9bjrb8KAGntEJX/VEChXpRbbnGmNYyKhg76WgRfRWrcnIF+c3fpfqz/0c8cPShnyuO0JsUG2Uq2Iiwgm6vrBXeXfHXmt1JZtUAnpfTmnN6I6FQEq4JMn3ZLhOjNr61OhrjNWJhvDWqDLab8maCukNDIvf9b0ktGAUXyIaxGJBgz0BaKW+lRCI/oC+EIwq5y29qO0gG5ry4FutLx/pCeNGPWH98WgZnFV0nhudOT7I933hPw4FpD5aCHOVaZ7sSVbNBiiDcKYSXb9cB6QjQ2/9spx5y9yNKKeQzIGi09veBb/VGA0+gpXNnZTgk0ten0K3AaSNQiTXhAGkbCrnrZgxB7LhGQLsPtrvrsyU9ETTIoDv
+ PjieAw1Z
+ bW8ftscEGaTYgMbmWDZjYROVcrA3P6mj6QZZBBkHN95bcgcEwimg2idOU+p0b9EIeMiyBTqH9kYRNRdZnWeYOReIpvU8T5PL1xHccRUNdKVWhKjd8KS9Z2IE1dv9O65wUBxWOi8JRaNt2mRZopeNy6OIQuiwNU8PvVz1k8CCQLY+EbNLShae0gXZCuMrh2uIppuwShbu8ppZtmj0TKuYmog5LIg0Ifhlw647Cl0dFvKdVxfBZY1uxZw4jvELI6g4dsrILE1utIAUYqdN+Quds8lY79oRiS+g3yFZN0dZ68i/cWjkJ2thb0fH9TgNpxmH6/HKHHdaZtlmijJH6Uq0VTx4nit1krH2Y8kfnHLLGK49kWos1mY61rIYf6kAHTCuaNtMc8e+BYNzA6g54VC7OVV/LUA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,75 +109,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 20, 2026 at 02:14:45PM -0600, Nico Pache wrote:
-> On Mon, Jul 20, 2026 at 1:49 PM Pedro Falcato <pfalcato@suse.de> wrote:
-> >
-> > On Mon, Jul 20, 2026 at 09:21:11AM -0600, Nico Pache wrote:
-> > > On Mon, Jul 20, 2026 at 8:33 AM Pedro Falcato <pfalcato@suse.de> wrote:
-> > > >
-> > > > Here are a bunch of cleanups for collapse_file() that attempt to aid
-> > > > code readability and understanding. This is part 1 out of N, and only
-> > > > attempts to address the main collapse loop. The exit path is still a
-> > > > mess but I figure it's much easier to review if I send this batch as-is,
-> > > > versus sending the whole thing.
-> > >
-> > > Hi Pedro,
-> > >
-> > > I have already prepped a cleanup series for collapse_file().
-> > >
-> > > I was waiting for my work here
-> > > https://lore.kernel.org/lkml/20260715025941.1571316-1-npache@redhat.com/
-> > > to be reviewed (and in mm-unstable) before sending it out.
-> > >
-> > > Our series have several similarities; for reference, here is my version.
-> > > https://gitlab.com/npache/linux/-/commits/khugepaged_file_refactor?ref_type=heads
-> >
-> > Ugh, this is awkward. Do you have any suggestions on next steps?
+On Fri, Jul 17, 2026 at 8:26=E2=80=AFPM Xueyuan Chen <xueyuan.chen21@gmail.=
+com> wrote:
 >
-> Let me review your series and see what differences stand out. You
-> referenced part 1 of N; I think my series covers many of the other
-> parts. I basically broke down each stage of collapse_file() into
-> helpers, and cleaned up each part respectively.
+> shmem_writeout() currently splits a large folio on every
+> folio_alloc_swap() failure. With the refined return-value contract, only
+> -E2BIG indicates that splitting might allow smaller folios to be swapped
+> out.
 >
-> Whatever we decide, as long as collapse_file() gets the proper love im
-> ok with it. I did, however, communicate that I was cleaning this up to
-> David, Lorenzo, and others.
-
-Yeah I'm keen that we find a good compromise here, as I genuinely very much
-empathise with both sides of this - being 'pipped' on a series is horrible and
-we generally really want to avoid that.
-
-But I hope that some collaborative effort is possible here?
-
+> Enter the split fallback only for -E2BIG. For -ENOSPC and -ENOMEM,
+> redirty and reactivate the folio as before.
 >
-> >
-> > I can try and take in some of your work on top of this series. But that might
-> > be hairy.
-> >
-> > This situation really does suck (I've definitely been there), but I would
-> > prefer not to drop the patchset.
+> Suggested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Signed-off-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
+> ---
+>  mm/shmem.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
 >
-> Yeah that might be hard. However, there are other parts I cleaned up
-> that you haven't touched in this series so perhaps some of those apply
-> cleanly.
-
-It'd be ideal if you guys could figure out a way to combine both in a series,
-perhaps with Co-Dev-By or similar?
-
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index 3b5dc21b323c..d76812dd3cef 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -1599,6 +1599,7 @@ int shmem_writeout(struct folio *folio, struct swap=
+_iocb **plug,
+>         struct shmem_sb_info *sbinfo =3D SHMEM_SB(inode->i_sb);
+>         pgoff_t index;
+>         int nr_pages;
+> +       int ret;
+>         bool split =3D false;
 >
-> Cheers,
-> -- Nico
+>         if ((info->flags & SHMEM_F_LOCKED) || sbinfo->noswap)
+> @@ -1679,7 +1680,8 @@ int shmem_writeout(struct folio *folio, struct swap=
+_iocb **plug,
+>                 folio_mark_uptodate(folio);
+>         }
 >
-> >
-> > --
-> > Pedro
-> >
+> -       if (!folio_alloc_swap(folio)) {
+> +       ret =3D folio_alloc_swap(folio);
+> +       if (!ret) {
+>                 bool first_swapped =3D shmem_recalc_inode(inode, 0, nr_pa=
+ges);
+>                 int error;
 >
+> @@ -1732,7 +1734,7 @@ int shmem_writeout(struct folio *folio, struct swap=
+_iocb **plug,
+>                 swap_cache_del_folio(folio);
+>                 goto redirty;
+>         }
+> -       if (nr_pages > 1)
+> +       if (ret =3D=3D -E2BIG)
 
-I'll leave it to you two to figure things out, I've left some review here
-already (the general thrust of the series is good and cleaning
-this... 'organically grown' code is a wonderful thing), but will pause until you
-figure out a way forwards.
+I'd rather keep if (nr_pages > 1 && ret =3D=3D -E2BIG), as it makes the lar=
+ge
+folio case more explicit and easier to understand.
 
-Cheers, Lorenzo
+>                 goto try_split;
+>  redirty:
+>         folio_mark_dirty(folio);
+
+
+Best Regards
+Barry
 
