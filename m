@@ -4,191 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0FBCC4452B
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 16:55:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE772C4451C
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 17:06:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 640E86B00A3; Tue, 21 Jul 2026 12:55:56 -0400 (EDT)
+	id 542916B009F; Tue, 21 Jul 2026 13:06:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5CB5C6B00A6; Tue, 21 Jul 2026 12:55:56 -0400 (EDT)
+	id 51ACF6B00A0; Tue, 21 Jul 2026 13:06:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 46B746B00AB; Tue, 21 Jul 2026 12:55:56 -0400 (EDT)
+	id 430BC6B00A1; Tue, 21 Jul 2026 13:06:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0D6C16B00A3
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 12:55:56 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7FD5DC0233
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 16:55:55 +0000 (UTC)
-X-FDA: 85013385870.23.1019A9F
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 5213E18000D
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 16:55:51 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="TXAPa/kZ";
-	spf=pass (imf24.hostedemail.com: domain of matthew.brost@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784652952;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 041146B009F
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 13:06:10 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 785B4A088E
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 17:06:10 +0000 (UTC)
+X-FDA: 85013411700.27.0FDB67E
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	by imf12.hostedemail.com (Postfix) with ESMTP id B13624000B
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 17:06:08 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Loz26ujj;
+	spf=pass (imf12.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784653568;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5mrQ/MICeZnpZ7A5pgB4oaFRP/282t/NBSgkNHCC9eU=;
-	b=W8t/P8pPitLPv+VQ8S82SMtWyAxUhsGReXvQ3nrwseda8fWSJmF76OZYRdyfFlxmQZaGFf
-	Gjhx7dlf+JvkJ4ncY9ut24efbG/YQC8IS0ogg/4VbCV2w2rPXIq2So78QC5EArjas459Ec
-	yrYOF1HKyrIdOipI+dybv1BvsJdUtU4=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=fail;
-	t=1784652952;
-	b=R3YpFX8HkXYO2i+wcjHirTbtmO4fFiZXA/qtLqCj4HvHJt8TYdMy36UE4lE+EVB83pUx4h
-	tj0NuyAi8TLn20kt43uPzITwRxNQpLsyaXn0CDYTjdgsj0KOOCxPo6780fySmPuk2ZF/U6
-	e6xc8s57gNQm5nuq76ERtx1SD13oYvU=
-ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="TXAPa/kZ";
-	spf=pass (imf24.hostedemail.com: domain of matthew.brost@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784652952; x=1816188952;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=+rvC2naf5M79oDxaHvy7VB0+U2f7vgQRHR2dQJJgg2I=;
-  b=TXAPa/kZNe1iEF07tChqe2X/rlSN/V4ZvozUbzMUNGFHTXFxDTCqg1x7
-   Y1TqEsgh+N7u4Npvrx8mCi/In0V8+mQRiTBvSlaff4uO3SEvDgUwODzSn
-   4IUpEBAFWOj9Ea2kfrNh4oHP4QM4KWnCHQdQ84YXVVJ4brTQDzzGkc/BR
-   cvDRtveTE7Jayjzc9LOuHVT73TaRD/P6Dbeksf92Ikl6oZfKLkY7RO8x6
-   qRkr/69PDdvheybvrTadEvdkj6MT4gzEKFLIs658B2WXA//VsJHECikEt
-   a+fmFuNg5bQvC+nl1sxxcTa02Fxvk/KZhqzCEfD3Gohl2FQMUMH7b+VNM
-   A==;
-X-CSE-ConnectionGUID: L5XxI2exQniM/x4L5dbbvA==
-X-CSE-MsgGUID: oGpl1NzaSMGD+FfePNxnaw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11853"; a="88940608"
-X-IronPort-AV: E=Sophos;i="6.25,177,1779174000"; 
-   d="scan'208";a="88940608"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2026 09:55:50 -0700
-X-CSE-ConnectionGUID: oWO4B3kNTTK/inrKqVLDhQ==
-X-CSE-MsgGUID: 4EPphMXJRmmwdqYpKYxMKA==
-X-ExtLoop1: 1
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2026 09:55:50 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Tue, 21 Jul 2026 09:55:49 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43 via Frontend Transport; Tue, 21 Jul 2026 09:55:49 -0700
-Received: from DM1PR04CU001.outbound.protection.outlook.com (52.101.61.4) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Tue, 21 Jul 2026 09:55:48 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=T3uZQenkfsYUweEzN3ubPYaWdyNitS5maIjDIVyJ70Oq4Ibv4G7FbiJOEw3jUqmTai676QNtLctZnYesk4lVJCWln8mOpcW8xv8ET3SMDih3trlYWdp4lX1OXS/+qTNMHJ9JjkspxO+uB00+WHpHvooDdfHlRomXTBLs3DIkvYaXrtz47ZIqH+f7Tk+ALShJkzW/CXIlft5kugfgjI0DJVrxHHWkyU6dB+qKrK9kbpW8Izq3LE8VN3gMtwqoYBUvMqOGt/g+WkLIKI/uS9th27QvYE5CSHyI3B+mpWZFmVPJbotcJ+ucgXZoC8q7kIf+Xbu+7BLZBiCrtvxkA+I3jQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5mrQ/MICeZnpZ7A5pgB4oaFRP/282t/NBSgkNHCC9eU=;
- b=NmRhfvFCfPRyDC/pRyQISpsFdTl9XfZf5zHoU3etu3+gggrBuIBrcp95zNzl3BIcbKACR3iq/s58DWmPfrVXBM+HMxro+0avcqEEnwgs2sLxr0wz3DOnzupyjk1SYlz9Aq0W+1EqR++F/8E6C8AQlLXJFPyJGedWTvjY9icW/D9aT/bk0xOW3OhNcBRCojJYez4+I3LwvAGbDh5y3028RYTfTd6Qy1g6lt74M7Oa+1ismCL1uRCbI11Np5f01Js/c0LIpyCZGQP5anb6GOgeIEEt/ugnzWDL/1VlCc+Typ31Liz7kgH9Kdgpecs0Z71SAioD9N+iL9/Bjrd+oOvi8w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
- by CY8PR11MB7797.namprd11.prod.outlook.com (2603:10b6:930:76::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Tue, 21 Jul
- 2026 16:55:44 +0000
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::e0c5:6cd8:6e67:dc0c]) by PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::e0c5:6cd8:6e67:dc0c%4]) with mapi id 15.21.0245.009; Tue, 21 Jul 2026
- 16:55:42 +0000
-Date: Tue, 21 Jul 2026 09:55:39 -0700
-From: Matthew Brost <matthew.brost@intel.com>
-To: Matthew Wilcox <willy@infradead.org>
-CC: Christoph Hellwig <hch@lst.de>, Mark Brown <broonie@kernel.org>, "Andrew
- Morton" <akpm@linux-foundation.org>, Linux Kernel Mailing List
-	<linux-kernel@vger.kernel.org>, Linux Next Mailing List
-	<linux-next@vger.kernel.org>, Hugh Dickins <hughd@google.com>, Baolin Wang
-	<baolin.wang@linux.alibaba.com>, <linux-mm@kvack.org>, Christian Koenig
-	<christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>,
-	<dri-devel@lists.freedesktop.org>
-Subject: Re: linux-next: manual merge of the mm-unstable tree with the
- drm-misc-fixes tree
-Message-ID: <al+kiyFVgrulSneA@gsse-cloud1.jf.intel.com>
-References: <al4jGBGNG_QACaNL@sirena.org.uk>
- <20260720144141.GA16699@lst.de>
- <al40qCMTxhEP3Kx8@casper.infradead.org>
- <al6cVnNv2TuhuiV3@gsse-cloud1.jf.intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <al6cVnNv2TuhuiV3@gsse-cloud1.jf.intel.com>
-X-ClientProxiedBy: MW4PR04CA0326.namprd04.prod.outlook.com
- (2603:10b6:303:82::31) To PH7PR11MB6522.namprd11.prod.outlook.com
- (2603:10b6:510:212::12)
+	bh=UaZs0dUksz9lWWombvtYA7KfGwaIYElA59FlH0y/uOc=;
+	b=x0vsqocDp95xQXMRDT7NILDLIbvKAsOIyxxYOudFVf0Ho6IQlFdI+sF/goZohNwRURh5FQ
+	9q8h7BlrR5KO3wfr2LeTJTviLMLmsMqG2itIIG3Zg15lOpn2wtTcgDdOkudhsmJx9n7fh3
+	ss7qUe/dJV4NAWktroSXbMMU9UUavOo=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784653568;
+	b=1abLj43AQShsMw+jAAbgC3NOW7kRSywRj/LoZttDHpj8y6RQ3kppGPffwAlYslZcuzTjPd
+	+n7Hw0hqtZAJnn+9f/ZHGYvA1fiTwko/QJLvle88dN8ocDiBwrvWrXv7YMKf02Erkxscjs
+	i93iWRkuOc9+0nfT03a3V/FGCOGCE2Y=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Loz26ujj;
+	spf=pass (imf12.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-381216921aaso11020531a91.1
+        for <linux-mm@kvack.org>; Tue, 21 Jul 2026 10:06:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784653567; x=1785258367; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=UaZs0dUksz9lWWombvtYA7KfGwaIYElA59FlH0y/uOc=;
+        b=Loz26ujjz5Qulea7U0nIjt7h4Cv4Mty1417dyoYqmQEsr5ppL9iqS55hwobcEvhmJB
+         NerJ+KK2nZ5RYhOlk0GKsYX0hTEV7HGHqUSSASurJxguguxnXmAMdbyXZATub/61wn+X
+         2UW141QceSWy207D0RM43q8QrigGOZWyNU9o6bfmmmoFvFQeoXA+KV+sHq0QM6pbxAdA
+         kW//UD89OZ2kQ1/QtG01DrwAdWEk7p0LXUYR8u3mdlOBEdDe30CxVWXmYuMrPRQWZWbc
+         lsprdPuKbSvLrmIv9+BIKUj8CZ7ZmqPNrJ5CEyC0SMxlNRgrMdxu45d0hyvOHg7p67uo
+         gnPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784653567; x=1785258367;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=UaZs0dUksz9lWWombvtYA7KfGwaIYElA59FlH0y/uOc=;
+        b=iDBixklLZsqxDoM0gEHOrILS3+EwTYJrYXPzyJ5f387dK/cxX/Oh3AvcL/tOqihRG2
+         rmWHeA0NFGeLeRjqMbbEwD5acYzDh3zENJ4BX7FTHUTEjlBzk0Jvt03xBABtl0G/ylAp
+         fr2h/rT20bW6QS4z6mp/AUR9m3p+j4pLo+6ZXZgCKx7DAhgnzhjQp3Tzym4U+BK8mhfh
+         UuL6UL1OC5rZYZ3llZ+KNfDD6ug6u1D1EE37T5tNJV2qATcsAbdXfsTnISUh4nvN3L9N
+         Yy7R3AnYjgmgOs6d+K9PpydRNhpFb4HlaQ0iML9+IaWRk59iMrOehGQIJadgjsY3tFZ6
+         Eypg==
+X-Forwarded-Encrypted: i=1; AHgh+RoxvBQWa5QcTpBNnZyIepUsk9xJutUTm6ntuqXvxBnE1KSTdI8GSZ8qLL3N6oVjGgM0YyK5s9obdA==@kvack.org
+X-Gm-Message-State: AOJu0YyVG1y4kZh6SloF/2E7bXKVWLi1PpNYfrqR5xQjJbFFQnviRUyl
+	3GIaeq/+2rHAEpwKnsbdOJHAdQ40qEUR1Iu0314yFTigw2lp/Yr2tCWTAO4kEjjI
+X-Gm-Gg: AR+sD12gPAPj2WGAPFu4nSQBCILdHb7XiRgIgJw8GggbLM6+Xso8DsRln/jybxhUe2q
+	EWK3r5UZpi1ICIHwwMO+Eqxa7MgYO9qm1IXH1DJRUN1Eul79TtGt6QsBHEL1MJYa1Uv3wze9iGB
+	3ZlOfl19otUfYkpk3wAd6EGttYlsF6UrnfwFODdvXanglu+kxZyExTkBTV9jt5MWlQ0krl/CRyL
+	PrBlQiNnukkw/fOy6fKe1gGjuWSzVaLv4jqe7G4ImCRSbX3ERGlMDmZnPTvRwz7u+1fpwa3xkEj
+	d5ncptQ7XGU4nBkkDK1OX54sq3uDKTh9Xej92xoSdqRkTzEB2pgQp8om/lb/2e6hgtmaThYQJiw
+	biVm99vHfeTXwpWtl+/kLBDMwWFzOyADwT7frpLAvBhP+jwEvx7XjQCww42azU9dawnSijVU7Ga
+	wyAlZVDR3LkgeYz/YdDahxx+0V5WMcu4lkYw==
+X-Received: by 2002:a17:90b:17cc:b0:381:a766:efcb with SMTP id 98e67ed59e1d1-38e4b3dc089mr20506488a91.4.1784653567393;
+        Tue, 21 Jul 2026 10:06:07 -0700 (PDT)
+Received: from fedora ([2601:644:937c:6c90:6d4e:7b2d:4a39:fb0c])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13ce2cbb6e8sm39508170c88.9.2026.07.21.10.06.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Jul 2026 10:06:06 -0700 (PDT)
+Date: Tue, 21 Jul 2026 10:06:03 -0700
+From: Vishal Moola <vishal.moola@gmail.com>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, Kiryl Shutsemau <kas@kernel.org>,
+	iommu@lists.linux.dev, Kevin Tian <kevin.tian@intel.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] x86/mm/pat: allocate split page tables as kernel page
+ tables
+Message-ID: <al-m-6iCSScC7M9x@fedora>
+References: <20260720-fix-cpa-kernel-pagetables-v1-1-0766e782cefe@kernel.org>
+ <al5-fDRStgU6gjk6@fedora>
+ <al5_Le9QlD4zlt25@fedora>
+ <al8hE_ded6qyWiDv@lucifer>
+ <al8_xx_99BjAUn5A@fedora>
+ <al9BpTu2ma8GpiPW@lucifer>
+ <al9KzIhKXa3PCMqa@kernel.org>
+ <al9b5uE-ep9ADtLt@lucifer>
+ <al9hMyqpjd4l0Fql@lucifer>
+ <al95Y5aXof0ISEkI@kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|CY8PR11MB7797:EE_
-X-MS-Office365-Filtering-Correlation-Id: a735d633-65ff-4105-3558-08dee748e680
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|7416014|18002099003|22082099003|4143699003|10067099003|56012099006|11063799006;
-X-Microsoft-Antispam-Message-Info: m2SvUCk+/qEYsstHHpmUg5arsHwFT3pl7pW4d8JBOtBRf/e/rm8e/r/R7GPFdI5YWpdU2lMKSV/z81CcNYlInbnxX0ObAnNWbJaiEr11Lg7Uzu+dNr7lKdFpg64nLfXeu9xJJGs0Ad+48bM1UJkRTfEkaKYWAkweGU4PA7mOvVbq8AK+HceTM9J40EK5p5xoZvFV6KMAv8+XyOqbBT2hFWxZ+pJboLK8935kTt9B+LdH4XExCA2cd5QwBLhC5gZDbtMe3HyyqfbrQSATI85taqiLmcZpmQ67Lllv5+yNTJcKdXGQO3+v9IT4TkSNh1eQBgvhrzCloPCpd/xwRLsaYG3jgwyR9PSkksyJ88evWaOeI9aozdelPJi89fy+rq6oQAHN/SxmkokxD/jDBhSge2/BVvmtCC7pfxMFpCKt+ymjcpSC5OvIBbKtFAKqcIVAWByVWFPGDT7WKx0df9Kk9IxNwJVJvDZAVul0IzQJqbHlX7J5fHKTkvnbLIlh94ZLDqNzUKyFr/05zFImA6z7KZCbZftuKF8kMbteGvWIkkp0hXXKgYsnQeqS1HuPfMMbu4bHlBC1c8RvvYHtEe2Q0je1LpKZW75oTUPRls8ofOJur3dNSOOXShRFscaXlgXqFauOReqiYjIYrhEMKdCLvWxVjIy1zBD53vhoIm8mjuI=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(7416014)(18002099003)(22082099003)(4143699003)(10067099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?kxWsYiXTj7xo4tp2fuyO1VEmCUFsan8rUeBDHt2K/5AgEwfcgvZYu/Dha5qI?=
- =?us-ascii?Q?OqEmFQVjfLMDXK0ZeBrtqHyEWwS/kN2VOY5GqgyPX0EmUX1JhPbLCfhX06Yu?=
- =?us-ascii?Q?PXROggQ88LiIOIwCvbnJFjUFqhxXJShtPL1CH/AyJYSQufRD+bBCTnkXKDps?=
- =?us-ascii?Q?IdZLBecnFlvscq94ZZ82NdXIP2OR+ZwxVpMrdlqHHLKzeIGPCmwrdUCgslfJ?=
- =?us-ascii?Q?9aaHS4ZzDKkXLWw5f2/7eFVYmDxpChbRzsemnU/ciFEKNyrKpCjgc/kBlKPF?=
- =?us-ascii?Q?pVKFu/aRuO4xMtpA453Xsa4ywY7KDJgZa98Cu18Jk8Po4W65t/aFhlpLUv/e?=
- =?us-ascii?Q?z66ikBiOIvwFEzM/3iBrqwVnR2BzjZTYIge2YYz9GsAZdcyExW+YHEdAg0VE?=
- =?us-ascii?Q?kaVEBJp2oYuJfZ0RE2lAvDVV+uE9h6YAvgX25t2lC/MvZ5PH4DjkDhxufH2q?=
- =?us-ascii?Q?mvVeZEu3UWItvW2cvg1wI7X+WzlWRc3EN5D98L+daIuUz5++MyhAuX079ENO?=
- =?us-ascii?Q?ISjgKq8cS6oac+FLHKIB7vEtxOxS9MUFNyvPRy+u18cJOfRIt6SyPnhYQOsY?=
- =?us-ascii?Q?04mHCnhCi43Vx/OeuJaqo/JXDqIgN3jqrgJrypQOARIXcNOHw2iRzDlUa5LW?=
- =?us-ascii?Q?+ySZcgtLHxAfAgw5QAQB9i0dbBOMVldRgZP/2TlOw7fHrePUHVmsJXdxC65Q?=
- =?us-ascii?Q?NqgBzoLxzZOzu+Am4HiZS5978CKORSEPHNkySv9VQMZMebYQwWBrJgqQ3NOA?=
- =?us-ascii?Q?zVCZ0iXj/SRDWAsGFhM44kxuSBfv0RzAYFjZzvECumnE9O0hoWXh9SyX63Bg?=
- =?us-ascii?Q?PCZg+Xj3qfyl11gKnOdZT2EpeM44xTN4HJGBlFZ4h+rPjtK7DcMCklOBEQlX?=
- =?us-ascii?Q?RQfzoU3v0ldibK7ceRSYjTLas1Z71/v9a/6jShfz8+Y4WP9tXjNDVlGS4M7h?=
- =?us-ascii?Q?D+HwcecZZ2LYYZ9BUmyycgeE/9YJuWOLku4zv3L3IAGcfFwwxF8Fai+7XFoG?=
- =?us-ascii?Q?z+JEFRti5WXsA72SVdPgJhzMFL69P18cqr0HUN3/MODZSzZA/AkYWSxwyocu?=
- =?us-ascii?Q?/3ktLShYCM1fiGpwTaVV6mzZrwDTzHPi5D+UNWuulFkv5c1eL3fhZeTNocil?=
- =?us-ascii?Q?px8jbgE/Rj5Tcgk3Ot9PrTOBiSP8BOm2tW6FFijd+hnnEz4pOj2UW7azPcva?=
- =?us-ascii?Q?kE008VooE3w5s63+TobyBmnr5vHB52WHq/PjyNvX7eG0b/hwZ3Qy9lH2LCij?=
- =?us-ascii?Q?YjhFmpWQMA0r/Wjqy8xnMMQ6hTRsyjGrBoGd5Qd5/cUMOZx+o1oGpWX1EGFd?=
- =?us-ascii?Q?5Q6GiqkzAwexO5HkLoRm0dvdipWLMmQjUJPbBEjJd23aEmWzrwykLNaT2TAh?=
- =?us-ascii?Q?t8q6WOvC5lt62Lo+xI2tZjtFrRZl1kp5f8dn0vfGK8xR/Z1R2nsWFiYfYf6P?=
- =?us-ascii?Q?CflQFUbxgEtA6jAo9mvNciaeUdcQZ7Zo/exP7U4hYbRhRHMv7d2N7eG4apLg?=
- =?us-ascii?Q?XllVXZIndHvTVLVObeFk8bD9SOFMuQSLd3eYLi9w6XbuTOqrs27OMYkDuoJQ?=
- =?us-ascii?Q?X/FSQ0+0blb/0VzFt7lurPqSsSKHfCdOY11LHxmsWZyMgHLa5HdxvqcHGXFc?=
- =?us-ascii?Q?987Eus5xLjT1xGZ7Hig05hp6JA6a/3xOmL4SPdrz7nkbKOPepPbFmiGwgmr5?=
- =?us-ascii?Q?uZF5Q3fcm6z4m3IAaxFheJcL58P5XIMVRQ8FWfUDnNhe34CMHcjE+RGzRUpf?=
- =?us-ascii?Q?yNpzxjX/VgnTxt0NjidMASg3C6TJPzE=3D?=
-X-Exchange-RoutingPolicyChecked: Imrq3jreoSNfswwPEAgNgHtrHBCuukrrx05qbfe1OPsamA1+VETRI7a39T43mvL4ARGvvkQD4WFRaUVrMMx7QnSWIcBOJgdtfNwqQfx9ZxZfHkUeVy9mcmSTEJxoP6zQ2Qs+aSzIAP2vZKQqkBWCl6c1KoSaRNG0GBWi8Y1D49b2dus5U3Oa3IAkGFSL6XhWU7P9mhxRDOhfGH+q5oHs+8kmwjSVYNQRSEKDajp4ILZgau+PfXQctvCULWzjnhlftsyYqjUMyKA9kCpCWuoM7OD/NjOS1N1KdYlK1HX2nTsxw5JPrp4wKjSO6tTFFLBUnOFLQ6fCCHy6tp3j7OMzlQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: a735d633-65ff-4105-3558-08dee748e680
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jul 2026 16:55:42.7114
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Qd3scA089vB3rWKQLwseKVqrvfZ9zgLBie/IPIDMJDj1ud/SztIxlR2zhM85T674kWCDsGCNghwGwbeSTvH8NA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB7797
-X-OriginatorOrg: intel.com
-X-Rspamd-Queue-Id: 5213E18000D
-X-Stat-Signature: q3q34n77ch1t1dojd6hp3hwgjcr4b4ch
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <al95Y5aXof0ISEkI@kernel.org>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: B13624000B
+X-Stat-Signature: eweyqd755ch49prahjgp95k5d3u6kmb4
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1784652951-13048
-X-HE-Meta: U2FsdGVkX1+d0C8OmPklICs62pV1543tbENq7+nGOGaH1GfLtHrvg/cHWksixAqeVVOrHTsTBb61pjSUr4X7RGDCXSWKjw48KJPp/8ElfXwETAhjSJuIMGRxFyA0j2QdksmZ14VSLYUMohoo+iEK4EIFxa35ny4lAoCjjBm7jfuofJdT0Jk+C4V3HhcdyRn8Pk8UDvoStne16SJCy/odu0yZbsJGO2tuW68LI9wroyKVTEJ98KC1k2wZ5ifR7ek6KVB3nNkptDk/NFz5PUSbbRq7b8IayQl5hjFDbIJ860nZXujMlEi3NYLwAgIHY0XMPSMuYMFODWhmLhCvnMoPqxtfp+jhyg6aAPkjUQJ+TZHi0kaLD2mwI7dL6EOyuD7aqyW4dBwLqZwB4qL2nfHdiOM5N+Ylk5qVin2leJhWwRtueyKGcHohyr+YhJaACT9dsJfEMBD1iq8ck4UL9PSSpj4NNG7m5Unx0tkko+BGgHY4S62aW+rhdfsaSBrfdk98HFajJKFUZnzOfNTtExxw2VmMZswk70MwdFB762uA+DiQs1viFRfZpdlST0Aaj7mZB36hS9P1N3ZwGeP2JUdmkgbyKJjOlZjOwWsUW5EmF2njqUAm9xIOhQkzNgL4R7SeARLUZ7r1n2P+l71E362XBHtv64vtbrFfoTSnkxwmzBBIZADBMJFwP9xA5vJrMMdQBVZmuIKCNQCzvSRQImzBR2NPpTbWzx7Cps91O2l003GkwypltDGAvUsFS9ENLIuLSoK9jNmlwz8jw9UhoXI1Wjm3EqHlQb9cQvu7NtdKeT1m0eCfsCFoN773C3T8wzUmBfMS7Gh8Lq/JCmdFggD9gsFfA0swUxdBGVPdqg7p2bpN2ane20xRr5Zy681GcdcpNG5xaMVZ4GRpZV6W9io2YMA/q0fuxPA03+4iW9grbJHLdIGByAEXRIR8lGrN4z7An/bdhNMSicFQ6+0b0E6
- XKmO12E4
- XbYvs9pMkpZ6lcP/uF6Ez10q7wdaoNFquYnN2M5HNk837aU2DuL66m22zCJieCLL0b4LIn1v9AzNKLZWA11H79Xkjr+Hjg1zajQ/lKwZrJT1xsCjYK59SN5Pvbq6Q0qfJpfr83GKno+cgLyxb80FA73Gsxh+aq1YZgrIb1AFJpodtXTY+jq0c0SZV45R/YoGNXqqF8vA9NmyHOuRMvDBhvACiiNgrFf73spC6QNg2ZDdt1LP9oDqtyGfUmYqIrKGRWEXWV4DqGrsoEAfaCQ5CcWVFG6sdBTfmOMfhA0W8X552UGCaotBpysmJvtEOPDbvHKVOEMdyRHp4rpGwz6hoJ81yBgMAg5WEX0yckWZ9DX/ox3uxfvXwrp7ncKTnrU0l2fYoU+RKeJSi15yF1ZJrC1/s1/CZRfLxTIpzbuspnvFepnXcqds3YyDUicG4ojTPW5cRrimrxo0yAMi5BtPG+/V3CG4c3mtrpLYqtz3TkvLz88Q=
+X-HE-Tag: 1784653568-406248
+X-HE-Meta: U2FsdGVkX19krapgs3Ldm6x+fkdxfTJe5dVQQWSBil3AmEX7LvLTiE8AHiRk2GxQF75zPJYoIkktlq++fmtRyCeUiLQF5smBggASMmrNB98T7fCwvwdEPfBYLeKil+C7cP86TlnM7H/JX6NwkYPcYaGkQEPLntf5rP2iGJwMF2dFFQ69gKsr2DXYTezzyGmJitFbVJmgBJNu4/xjHWodurNYJrxeiM7126IES3O4gkGd3QaBKRGMHKrX9pyjqDbFIXfhTA3nWK0Ys/jsmpmAvoJaNTCrpw/FW0e5P9tg3mhBxqRXuwnZNR56MHzLmtT3l+G6mprucaVzQudHA2ZUSM9wcOGV2RdM4Xl9yfjshiYhjUstNQiAxZZ4AcFfZi3ZsvLMdwMGHXWaO+4LoDBXnOvemw/NCkMjekXWg60MXZeDzohHjyR9xvIaXfWsIutFGTp/I5Noc/9H1yZK5sQ11SWg7H2+eAB1rSaxSkeEztpjV3+VK/qD1QeoVf9EqzRj4IzURtvwCqY3nDKh3oHwAOlu1heMy7GUtIEJaZ5ELJagxwOEl7o40J8V6Hvuo2snAoK1xJ2LVGi17TalIceQ4st7AJfUj/E9CWCb6J5lzoe0Hmzu9+mCohDUtp11+L5PzUMQTrLDd7yzjYb+AaAxicmWATFnkYXCwUX5yxBcoCkOHcyVzN7FNAWNEWgTa/vifYg/jyRsv+H2ZS3PASXg2l3BD2JSp59kHvCuJ18NDY+SPUGgQ10BrLGhZFwYgJuGFnpoYpwdACw/+X53q3OoLtDqf0S9I7m2g9OZyunoD4FpsdZ6WEMbC0x7C3s0Pr1dDXlgNWYOlkDPvPgsym4BCqyV2XCf2Y69DNZuYPsiqrlFHS3s/Zd09wfU4vUB2swpUrvz0J4gPOki45eQbie0OLKSdd43ZE6uqyAaqXQr8p5rRlpRSa4Chwl7wP6AsY4JWd+vLp40N1Qb/6KmwKU
+ vq/6cbeA
+ RNe8Rs3gzaqAHEvCrXxSlH78nr39gcbyP6GbGl3yJtjoJb9D8i+jbXMhKFH8Lw3RLsfJWjrQX/TnIG55E4EIv5aC0R5FDNGX5ow+gaBTxoKue1x1RGk28tEmXg7fFBT+4PFpMgilc+9Y13WGGGrn/3YU8SPWF1hdVqrJpNJWJlQeHNRZi4Itcukx0dy4aRQq6pKV1dDK3VB4X4xkMPTUWsGFLSZChbZZW1rGn2tC+oMh1S3a1Bl0Et/HwzSi/glYtXyOLycbGZvy2dvivPcuzm2L0yFjGHu7NlX8Oa5Bvdbg8J2JbhTVBGb5rRONstmzc6O+QsIA3oonPCJhN+ycGPz7dlE/qGCCz3LKKeOvH9AHrHOSWx+pZMRK4V/x29RyJP+p7S8Wiv/ipcieQbXglJWKpUNcceYvDmo2vZpH04w0sOyYuzVLZzcpTPGkc5WKLYwvlaqe4twrcDD7DN2W/TXI+H5i8JS52W8o+QvBayFYTNHoJ/yz2AzZNt5zAG6b6Yl7vQUaLaYpQnlrVwMhlbMO07zwLqHm6yLqIcB2LyPabAYtLVI/vAd4MBAM0h8NybZj5XTnOtKT1LET+2QHTyhbRRg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -196,45 +139,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 20, 2026 at 03:08:22PM -0700, Matthew Brost wrote:
-> On Mon, Jul 20, 2026 at 03:46:00PM +0100, Matthew Wilcox wrote:
-> > On Mon, Jul 20, 2026 at 04:41:41PM +0200, Christoph Hellwig wrote:
-> > > >   /**
-> > > >  - * ttm_backup_backup_page() - Backup a page
-> > > >  + * ttm_backup_backup_folio() - Backup a folio
-> > > >    * @backup: The struct backup pointer to use.
-> > > >  - * @page: The page to back up.
-> > > >  - * @writeback: Whether to perform immediate writeback of the page.
-> > > >  + * @folio: The folio to back up.
-> > > >  + * @order: The allocation order of @folio.  Since TTM allocates higher-order
-> > > >  + *         pages without __GFP_COMP, folio_nr_pages(@folio) would always
-> > > >  + *         return 1; the caller must pass the true order explicitly.
+On Tue, Jul 21, 2026 at 04:51:31PM +0300, Mike Rapoport wrote:
+> On Tue, Jul 21, 2026 at 01:09:27PM +0100, Lorenzo Stoakes (ARM) wrote:
+> > On Tue, Jul 21, 2026 at 01:00:53PM +0100, Lorenzo Stoakes (ARM) wrote:
+> > > On Tue, Jul 21, 2026 at 01:32:44PM +0300, Mike Rapoport wrote:
+> > > > On Tue, Jul 21, 2026 at 10:58:50AM +0100, Lorenzo Stoakes (ARM) wrote:
+> > > > > On Tue, Jul 21, 2026 at 02:45:43AM -0700, Vishal Moola wrote:
+> > > > > > >
+> > > > > > > Well some kernel page tables are still allocated without ctor (early allocated
+> > > > > > > direct map for isntance), and if you did pagetable_dtor_free() it
+> > > > > > > unconditionally calls pagetable_dtor().
+> > > >
+> > > > TBH, I cannot think of a scenario when page tables allocated at boot would
+> > > > be collapsed. But surely, checking the page type is safer just in case.
+> > >
+> > > Yeah nor can to be honest, anything that could be made large in the direct map
+> > > would already be large right?
+> > >
+> > > But it's 'just in case' somebody did something dumb :) Later can maybe make it a
+> > > WARN_ON(). But just to fix the proximate issue for now.
+> > >
+> > > >
+> > > > > > > The ptlock_free() and __folio_clear_pgtable() there would be harmelss (no locks
+> > > > > > > assigned for kernel page table, and if PG_table never set clearing it is a noop)
+> > > > > > > but the lruvec_stat_sub_folio() would cause an unbalanced decrement of
+> > > > > > > nr_page_table_pages.
+> > > > > >
+> > > > > > Gotcha, thanks for the explanation :)
+> > > > >
+> > > > > No worries, this is subtle stuff with lots of weird gotchas and stuff we need to
+> > > > > improve... I seem to have fallen down an unexpected rabbit hole with these fixes
+> > > > > :)
+> > > > >
+> > > > > >
+> > > > > > > It sucks, but until everything is updated to call the ctor we have to do it this
+> > > > > > > way :>)
+> > > > > >
+> > > > > > Yeah that makes sense. Although I'd rather see the condition as:
+> > > > > > if(PageTable(ptdesc_page(...)))
+> > > > > >
+> > > > > > We really shouldn't be calling ptdesc_folio() anywhere anymore.
+> > > > >
+> > > > > I think better for a follow up since the code already uses ptdesc all over the
+> > > > > place (fundamental to the approach really, keeping a list of page tables etc.)
+> > > > > and this is a fix that needs backporting.
+> > > >
+> > > > I agree with Vishal that it's better to use page type rather than folio
+> > > > type. And it's the same for backporting ;-)
+> > >
+> > > Ah sorry misunderstood, you mean straight up PageTable(ptdesc_page()), I thought
+> > > Vishal was saying we shouldn't be directly referencing ptdesc's at all (which
+> > > would be the rework).
+> > >
+> > > I guess definitionally page tables are never folios. I lazily went with what I
+> > > saw elsewhere, my bad :)
 > > 
-> > Wait, what?  This is just broken.  TTM should change to allocate using
-> > GFP_COMP.  Why can't graphics people ask questions before writing stupid
-> > patches?
+> > Ah yeah I remember now, i saw __pagetable_ctor() dealt with folios:
 > > 
+> > static inline void __pagetable_ctor(struct ptdesc *ptdesc)
+> > {
+> > 	struct folio *folio = ptdesc_folio(ptdesc);
+> > 
+> > 	__folio_set_pgtable(folio);
+> > 	lruvec_stat_add_folio(folio, NR_PAGETABLE);
+> > }
+> > 
+> > 
+> > And was like 'huh?' (surely definitionally they're _not_ folios) but went with
+> > that on that basis.
 > 
-> To be honest, I have no idea why TTM doesn't set GFP_COMP. This
-> predates my work in graphics by nearly a decade.
-> 
-> I found the following comment in TTM, which was added in this patch:
-> `git format-patch -1 bf9eee249ac20`
-> 
-> As far as I can tell, setting GFP_COMP would make things a lot easier in
-> a number of places.
-> 
-> Christian, who maintains TTM, is out for a couple of weeks, but this is
-> something we should probably take a closer look at.
-> 
+> I wonder why setting the type is even in ctor rather than in allocation.
 
-I have looked into this a bit, changing TTM over to allocations with
-GFP_COMP seems pretty straight forward. I have local patches that are
-working with my driver (Xe), will post something shortly.
+Yeah, you're not the only one wondering that ;)
 
-Matt
+Kevin is actively looking at moving those to the allocation/free site instead[1]!
 
-> Sorry for sending a stupid patch.
+> > Another place to clean up I guess? (that one _definitely_ is a follow up though
+> > ;)
 > 
-> Matt
+> Yep :)
+
+Yup. It makes most sense to clean those up when we add a per-memdesc
+api (i.e. for memcg in this case). I haven't really had the time to work
+on those though :/
+
+> > Cheers, Lorenzo
+> 
+> -- 
+> Sincerely yours,
+> Mike.
+
+[1] https://lore.kernel.org/linux-mm/20260714-remove_pgtable_cdtor-v1-14-44be8a7685d7@arm.com/
 
