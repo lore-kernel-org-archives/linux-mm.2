@@ -4,92 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50059C4451C
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 09:04:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86519C4451C
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 09:04:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 451736B00A9; Tue, 21 Jul 2026 05:04:27 -0400 (EDT)
+	id 53DDA6B00AB; Tue, 21 Jul 2026 05:04:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 402A46B00AB; Tue, 21 Jul 2026 05:04:27 -0400 (EDT)
+	id 515C06B00AE; Tue, 21 Jul 2026 05:04:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F22E6B00AC; Tue, 21 Jul 2026 05:04:27 -0400 (EDT)
+	id 3DE086B00B0; Tue, 21 Jul 2026 05:04:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id EA5296B00A9
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 05:04:26 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6253912040F
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 09:04:26 +0000 (UTC)
-X-FDA: 85012197732.10.8F02A72
-Received: from smtp4-g21.free.fr (smtp4-g21.free.fr [212.27.42.4])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 759CC160003
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 09:04:24 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=morinfr.org header.s=20170427 header.b="P94M0N/P";
-	spf=pass (imf08.hostedemail.com: domain of guillaume@morinfr.org designates 212.27.42.4 as permitted sender) smtp.mailfrom=guillaume@morinfr.org;
-	dmarc=pass (policy=quarantine) header.from=morinfr.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0788C6B00AB
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 05:04:53 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 53E671A042C
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 09:04:53 +0000 (UTC)
+X-FDA: 85012198866.11.31BCA4B
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
+	by imf02.hostedemail.com (Postfix) with ESMTP id BAACF8000D
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 09:04:49 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=zte.com.cn;
+	spf=pass (imf02.hostedemail.com: domain of hu.shengming@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784624664;
+	s=arc-20220608; t=1784624691;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NZctf2Fog7xaH9DdJ/fwk/RMNH/0G9k26p/jbrap3x8=;
-	b=p0wpITD6+0IK9WWuSYGLuNjx52tnWmYFLZzjZ0LfIGm4AHVAilIco/vMPVwuqWwBhns5i+
-	v/jldzxFNAmrLKyB49fWFQue7AT1gX1mXJUnglG0j9aD8g2qAlcRYQlG5jSYvG1OjxpqPQ
-	lL/1XQtZMEsazmJJq9D9Ob/LpGNdV1s=
+	 in-reply-to:in-reply-to:references:references;
+	bh=JCVdhjMUzVtp2JBwzV1kvqlYQbOirRRL02aMa6bd6UQ=;
+	b=yKwyiWUWn2IXwtHUlCRpRP6nwGWMG07BRmeyzTSmQoYQ9nQ+WW19l5U92Ijx+RbPLLxHjD
+	M3mtQzVbMELE9pa94MbErAqyBt8r+nKQgM/VSigliudTp1fDjKLmR/IvyzGKaGfJFG7MdD
+	QLcR8XwxbrTu6/Qe1jhwfuzByE5Kd3Y=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=morinfr.org header.s=20170427 header.b="P94M0N/P";
-	spf=pass (imf08.hostedemail.com: domain of guillaume@morinfr.org designates 212.27.42.4 as permitted sender) smtp.mailfrom=guillaume@morinfr.org;
-	dmarc=pass (policy=quarantine) header.from=morinfr.org
+	imf02.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=zte.com.cn;
+	spf=pass (imf02.hostedemail.com: domain of hu.shengming@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784624664;
-	b=YduADQCv8PdDbBL0J1umFBv4jb4VbG/KMCrRo/WZh6vX3bH5ySzuT9zW3nTfeIHKVx2yog
-	LSgowGy5kIjoDte3YRHaH2XeLJ39+medpU48WfQCMZJcEAMeLUwcGZ7g/CHIBVYRElSYB2
-	7BZc9SpgAFtmvx7URZ4v5pfCnb0JG1k=
-Received: from bender.morinfr.org (unknown [82.66.66.112])
-	by smtp4-g21.free.fr (Postfix) with ESMTPS id C43BE19F5A5;
-	Tue, 21 Jul 2026 11:04:16 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=morinfr.org
-	; s=20170427; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=NZctf2Fog7xaH9DdJ/fwk/RMNH/0G9k26p/jbrap3x8=; b=P94M0N/PYZO5OiqaxYGIFkwbBP
-	7X5G7eTgLxMyMET4tjU44rh3PEtPLw5Xb2KEL+TjnhYXiHl6e4LgXodT+wDsSf2jhPvNp27tda0ah
-	Ces+LSs+xqmZ6G1LMl10bkP8nbswzwfHoLKZ15U+BtIgUhA2A1433ULgMoLwOK3yba8o=;
-Received: from guillaum by bender.morinfr.org with local (Exim 4.98.2)
-	(envelope-from <guillaume@morinfr.org>)
-	id 1wm6Od-00000007VQ3-43cf;
-	Tue, 21 Jul 2026 11:04:16 +0200
-Date: Tue, 21 Jul 2026 11:04:15 +0200
-From: Guillaume Morin <guillaume@morinfr.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Guillaume Morin <guillaume@morinfr.org>, osalvador@suse.de,
-	avid@kernel.org, linux-mm@kvack.org, riel@surriel.com,
-	Muchun Song <muchun.song@linux.dev>
-Subject: Re: [BUG] mm/hugetlb: possible temporary resv underflow
-Message-ID: <al82D3-mumVFAezH@bender.morinfr.org>
-References: <alEJkwn5VlTTH_ZX@bender.morinfr.org>
- <alSyhslcItgtqSHT@gmail.com>
- <alYT8J9aRQDx_8pP@bender.morinfr.org>
- <alYZ7fso3zp3j3jv@gmail.com>
- <aleSDxoADBD0Qkb-@bender.morinfr.org>
- <aleyArKTozc4ml5g@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aleyArKTozc4ml5g@gmail.com>
+	t=1784624691;
+	b=vrmPZMUkw6y4SUZlAycdLHc1TIi6/xB/BeAuvCqDf3n5vX1K42LgOS0bHiUpj2oVl9DCzf
+	q/vadQOu311KWlaAVC1emardk4d/vBfWhH/AkGg4Lfv2ebE5PJ5HFt5tw3/s8DBbPZmcuD
+	SEX09MLauUouqHCFzPJ8R93VqgDrkF0=
+Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4h4BKV4DGFz4yjjC;
+	Tue, 21 Jul 2026 17:04:46 +0800 (CST)
+Received: from xaxapp02.zte.com.cn ([10.88.97.241])
+	by mse-fl2.zte.com.cn with SMTP id 66L94bMC054921;
+	Tue, 21 Jul 2026 17:04:37 +0800 (+08)
+	(envelope-from hu.shengming@zte.com.cn)
+Received: from mapi (xaxapp05[null])
+	by mapi (Zmail) with MAPI id mid32;
+	Tue, 21 Jul 2026 17:04:39 +0800 (CST)
+X-Zmail-TransId: 2afc6a5f3627bca-f5661
+X-Mailer: Zmail v1.0
+Message-ID: <20260721170439864YfrJGliTZWCikCX-HcPzl@zte.com.cn>
+In-Reply-To: <234c56b7-4036-4d03-8d8d-6298d16c3a77@kernel.org>
+References: 20260721084522552ZPa16p1SRj3PYat3sqxuN@zte.com.cn,01ea11f8-65b4-4941-adf7-423c3f000292@kernel.org,234c56b7-4036-4d03-8d8d-6298d16c3a77@kernel.org
+Date: Tue, 21 Jul 2026 17:04:39 +0800 (CST)
+Mime-Version: 1.0
+From: <hu.shengming@zte.com.cn>
+To: <vbabka@kernel.org>
+Cc: <harry@kernel.org>, <akpm@linux-foundation.org>, <hao.li@linux.dev>,
+        <cl@gentwo.org>, <rientjes@google.com>, <roman.gushchin@linux.dev>,
+        <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+        <zhang.run@zte.com.cn>, <cai.qu@zte.com.cn>
+Subject: =?UTF-8?B?UmU6IFtQQVRDSCB2M10gbW0vc2x1YjogcHJldmVudCBwZm1lbWFsbG9jIG9iamVjdHMgZnJvbSBlbnRlcmluZyB0aGUgYmFybg==?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl2.zte.com.cn 66L94bMC054921
+X-TLS: YES
+X-ENVELOPE-SENDER: hu.shengming@zte.com.cn
+X-SOURCE-IP: 10.5.228.133 unknown Tue, 21 Jul 2026 17:04:46 +0800
+X-CLEAN: YES
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6A5F362E.001/4h4BKV4DGFz4yjjC
+X-Rspamd-Queue-Id: BAACF8000D
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 759CC160003
-X-Rspamd-Server: rspam01
-X-Stat-Signature: z7phhiufg67dy8xore9cw51cdibnrtaf
-X-HE-Tag: 1784624664-18013
-X-HE-Meta: U2FsdGVkX1+eWNTtEKuxfkUEMbu9uyhyfhKNg3xGcMG+3diyDp9NNeJ4e7bLDBoaYXdeWmTK71z4u1myy54rIWnYUpED/3HEoi5Ti4ZoMapv2Zqc+pCQl1EboBAMZQ33oQ/egB3jV751StzjVsZuIeXEvOm8/YFMSzAAxa39mwrUXLquclDSLbzuYA3YmLVU7QHgjU9/6YW5i5JrCl3NfP2kLUQfJuZH1jXu8PIt7BlZ7GMB/48oLPw4sOXWm3p5IfcyzxyHk3UiEA8F/kCFDfGzeCT2PgC8XIaLo9xMl3FkGOJwM9d+BlppGxyOfk1kJG3ud9IlBfMX7Ils9Rr+krwADhEBLFj8Rs0aRFqz56mSMssQVHX+Rt8T9dLvovd45EGAJ2om0VpNgFK3Ga2t30LS/mt6hXMFFRG2IQB1Gq6thdzFlkSWOLv2F2T4K2TOLZ44LVx2xQRxuayFAjFNU4Wp1vrb3973aEGia1olyC7+tZrszHIfo7HQT87e315+Fjot/m444P6yFUJ6LYiSTgYNxt85IzvAfaHmqBwvE/XKmOx1HOBfxfCdqf+xLcdS0jehaleDcTWBeEniRQFuIZcjo4Zyrtt3DTy/6NX5xqeHerQAe/Ss5YwPG69GI1mdJXAF9BH4mM8WwXnd4L+9dZ0cYYU8TgXKsHDs1m5aN93tTaJbk8JoT1Yodwuj14npJ8JTMEKv1DzFoRkrE5EUJnNapY2Jk2JhyDx8CT3f8IAz8qjlIzAH8P8pxw6fLtOSs1IjUWsyD67d0xyCnISP5tu3Bq2wOAkz6buL4VllMaFAc0cSpcwZtB2rbh84W46bHO2d128OZdrtm97+XXRA45TMVFesqxt7f318eLFbiTiFa3jJmIa1buaR0hNpgslWrc6QLioW0PETh+AShueOxTzslGWf7RE/SMCCWr3g2uyQR7dadtbXQIgyJj6eVbJRIab2hce6aYvHO9Je3Zq
- uDMaMIvg
- P4j7js+BUKT6xaySDV8I2ZBRAPSmJ3EkG56Ebf3JS6gwx1f7LayPLx/5Lx0qE7U71FyEfBe4a6QU334WbWiLlced9+HljHcMfBGsl0YgTwADqiXvZCgBsCRYjBqGOiZO7R7DBxs9litY8Auhw92ji8ajwyyCPXD9xlSwMdrMOX+KWZYMkiS8LUWwgclLaviJbQxx8KYA2p/U1Rce4R6YweI/7caNJ9EoNZE2t9diRF7GOlnN0rvjxqEz56H675hWPILH9cU76ve2fl2Km4G47QAy4/iRGK+6jNjKUiiNMZ2QJbtI=
+X-Stat-Signature: ko4rt6hi6y6beix4kqm6sf14z4yfntua
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1784624689-445382
+X-HE-Meta: U2FsdGVkX1/TCWlrSZQJuUPcF6+bkZWgVM7oHGfNSifeyxIas/lE46pjB5w9jMWkgf95EGqGOd6kaUiJmiuqdhGhBEcFcu8w+cVGTUp1U3DDh6ZYEI/fXY1F+mtlmAOHjUrqdRc3kCAiYOvQ5HiAsgIuGM65bNZkr4/lGonM9hL1Y9Cuc/gKixfzw/1hOaDHajjjFt6bl9Ql9tFEaib/+NJOarNNSoFBQ5YsjPp6i1U4i8RUZ5Jg9Dwm+a99CDLFp5lAF6mI1IYnW7W+qk/CjSTkTI09pCwNaDF7ZBpE9mWkSGnwxRgn9ZHT8zH+A9nqJ6+1pFpHKsD2ARMaohhEl/bi5785UjHA7oMfUswsAv6JH0fm+ew40qAkQ0M4dxY9J7uwiOlLs5y8NEXVcGL0kFgM58uR7kxxEAy6oMgUYDiH9yhlPW4cELtk8hJB4Qe6fWibcj6trTzMMBWG6Gl0CObi41R5+yWB1GEXAnz335gg9EMUQrtuaiRqmDMzYvB/Q4oyclroNUHJFlzNi+nTVZCfIb5Dq/2a+JJO7UovFCj+4LpwIDfGVRgStuVLa8XH3NJ0JolnfqvbHxzZGWukVJePwN+zmf7VXQtrBhTeDxFaGOVraw+Cy5RjQAn+UhgCS7vG7UOQRyE5fSL4+302LEM9BB9iXqSxZcvYBHMsB0yQFl94j8Ednf6CbZxxEJB5VV0vWt0AbOT0Mevlnr7CnUGxrit430MEfRgRE6DEf90SYmeQ2rpVI7/Z+je9P2uKZibRuJOfwCofiTKOHIqQHHcGEmQZaFp4OtoMPUYHkn+fy3TnVtiYgVjG/9O2jiQL3waC7weDpT53DsLAstKamjhtY/RfkxrEGzSTdKFVbqaOp+JC4amjx7ZPxblqq8B+tiH/k3LtlFllwcI7jpvcVKhBgwMIZmrCH4tG9PQQwUD2pNgBZaL9loiqig4tuHFQLCHASGn7eY4KlPPGKJV
+ Y49FnMgF
+ uj9TuLD8/OOdRKASYlcwcot2vmEKF/IDEWubIm7pp/ZqHsUJE18/FgViKt34zx80buW4Qs7xmng45x1NlOuzcdCvroNuJ6gB99uGenqlutmcfBr6DHj02/FYHr0RyPa3e50AF6yZgpG8zV7Xz5gS+jHAjPnabl3VnOPe/+NcAP3B+Jr7xWNcvkd4XRtbf2V5fQWWbd/Bj1NAjHOyoaRwInirOQQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,21 +99,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 15 Jul  9:15, Breno Leitao wrote:
->
-> On Wed, Jul 15, 2026 at 03:58:39PM +0200, Guillaume Morin wrote:
-> > Did you have the chance of looking at the selftest version of the repro?
-> > Should I spin up a patch for this as well?
+Vlastimil wrote:
+> On 7/21/26 09:34, Vlastimil Babka (SUSE) wrote:
+> > On 7/21/26 02:45, hu.shengming@zte.com.cn wrote:
+> >> From: Shengming Hu <hu.shengming@zte.com.cn>
+> >> 
+> >> kmem_cache_return_sheaf() may refill a partially consumed sheaf before
+> >> placing it in the barn. Without an explicit restriction, this refill may
+> >> draw objects from pfmemalloc slabs and consume emergency reserves.
+> >> 
+> >> Add __GFP_NOMEMALLOC so that returned sheaves are refilled only from
+> >> non-pfmemalloc slabs. Also add __GFP_NOWARN, as suggested by Hao Li,
+> >> because this refill is a best-effort attempt and failure is acceptable..
+> >> If the refill fails, flush and free the sheaf instead.
+> >> 
+> >> Fixes: 3c1ea5c5019f ("slab: sheaf prefilling for guaranteed allocations")
+> > 
+> > Wonder if 1ce20c28eafd ("slab: handle pfmemalloc slabs properly with
+> > sheaves") is a better match. Until that commit we just didn't care, and it
+> > seems like this is a case that commit missed?
+
+Agreed, 1ce20c28eafd is a better match. Thanks for catching this.
+
+> Added to slab/for-next with changed Fixes: per above, but can adjust it
+> further if it was wrong. Thanks!
 > 
-> I've skimmed over it, and it seems fine. please send it in a proper
-> patch and I will review it.
 
-Will do once the fix is reviewed, no point in adding a selftest which
-fails everytime I think but let me know if you feel otherwise
+Thanks!
 
-I do not know if you had the chance to take a look at the patch:
-https://lore.kernel.org/linux-mm/aleRuVBaWu6eTCJb@bender.morinfr.org/
-
--- 
-Guillaume Morin <guillaume@morinfr.org>
+--
+With Best Regards,
+Shengming
 
