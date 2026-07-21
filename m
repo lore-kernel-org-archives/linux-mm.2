@@ -4,85 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0076C4451C
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 08:51:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6804BC4452B
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 08:52:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A2D4E6B00B5; Tue, 21 Jul 2026 04:51:56 -0400 (EDT)
+	id 4D79F6B008A; Tue, 21 Jul 2026 04:52:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A04366B00B7; Tue, 21 Jul 2026 04:51:56 -0400 (EDT)
+	id 488BE6B008C; Tue, 21 Jul 2026 04:52:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 91A776B00B9; Tue, 21 Jul 2026 04:51:56 -0400 (EDT)
+	id 352A16B0096; Tue, 21 Jul 2026 04:52:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B09D6B00B5
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 04:51:56 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D497D1203D0
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:51:55 +0000 (UTC)
-X-FDA: 85012166190.10.8612F2E
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0B6316B008A
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 04:52:46 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 89FE11C02D0
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:52:45 +0000 (UTC)
+X-FDA: 85012168290.13.4AC441F
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id DD87A20006
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:51:53 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G+5IibKd;
-	spf=pass (imf13.hostedemail.com: domain of linusw@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=linusw@kernel.org;
+	by imf05.hostedemail.com (Postfix) with ESMTP id BC9E010000F
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:52:43 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QaQQN6Li;
+	spf=pass (imf05.hostedemail.com: domain of linusw@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=linusw@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784623913;
+	s=arc-20220608; t=1784623963;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WDCGk+ASivZ9odKPg+TByC+zAWOdik9AGlI/d8GoOYg=;
-	b=w2GUgKehNyQgdgQdbhNr/DCI5T1m0oWmD0M0r++IszcoyhsmgPDsqbhxOxp9kDIp+7kGB+
-	RSZKx8xAnJ6KnqBVJxNGhKeS+66HawFlEMpOs7OcZlwYq0cUM00NR3+kDtnRfwJ/jvIRjP
-	ubRGRQmKucrfZXk1uFVowGHSZd9I6hE=
+	bh=HycQ/24U0Dvfa9rYEhTzBVd4Z8wFBY/G9IvJddSNUb4=;
+	b=Hp8S97gFfIJ1uNcNEVbZqdmFIK7WBWQn6nV4ZdCqHe9TMzyUg4SgBrseV0SDYxoepCrj7h
+	v6LCMPi7nV6BsTTrIFInA/0QAYMO5MCmW3RSYUg29LPU+9Q8+aZCKMEO+lZuBUR1l29rPE
+	TIZ/KYL64hFMSDEKoEtF44axe7xa+Pk=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G+5IibKd;
-	spf=pass (imf13.hostedemail.com: domain of linusw@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=linusw@kernel.org;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QaQQN6Li;
+	spf=pass (imf05.hostedemail.com: domain of linusw@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=linusw@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784623913;
-	b=Iml31IwoExd3aZ0EDJNxYY80f3c27zPTtaBmrDlcftwky+8dl8KvckXwyVKbKNvsQr/qTj
-	LggGch6W6X1AoGtKaTPHx8XGZDkq4wViD6loG98w+0034No0sFJaNzG+F9j/ddUoV38U8H
-	xbhzEERkwgHg69KdaK7AHAxO5Qm0Oj8=
+	t=1784623963;
+	b=AjAgTVJvmCTTtpQ09hfZBsC7HH2VXN6RND88we4T/EHVuJCqd7hpIxo/OoQNWMoCh2oiPg
+	dvIUsqvog5s9IUCw+QT2j1JCXVCggAyyaEiY1LNbnK5MceKPuqriqt7VuCYA+saaZSkL9A
+	6XZwnsFGfErM32XhCMZirxOyCAjpbno=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5B3CE60AA5
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:51:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 132D71F00A3E
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:51:53 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5284960A95
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:52:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09CB51F000E9
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:52:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784623913;
-	bh=WDCGk+ASivZ9odKPg+TByC+zAWOdik9AGlI/d8GoOYg=;
+	s=k20260515; t=1784623963;
+	bh=HycQ/24U0Dvfa9rYEhTzBVd4Z8wFBY/G9IvJddSNUb4=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=G+5IibKdCPvRbPIW4UwVnN/zRqG1AqNn0eOnJc1gH9S0Jx6Md2Je86BSXQAPLQtFu
-	 OVHHrtx3875C2JdzQwZop4lAnVQj5padUMaN3axIeDqbQY7ksogL8SSQ6IToqFuIqj
-	 A+eedTBNR2KiCRUi2552YrUgOD2vHONbxnbj5DLDLGYEC2LW/+rsyDvK6GAxaCO52a
-	 E5EgnPOGQblyAoRXWxF2jK/T8coyTK/6os6OK/Ha/krI/Rq43p426jILQFpe0PJ7By
-	 szaGmC0OrgzWRxNXFiK03+2tM7Xa98pdnBPyeaTCKA21sVqSbD34ysFBMm3S2zzAk5
-	 LLAJ7njkImplA==
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5b0117dda13so7357490e87.0
-        for <linux-mm@kvack.org>; Tue, 21 Jul 2026 01:51:52 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Rqnb8uktbIYYteH/U1sB6t+0nFSSCvWwUs78HdgJwcjW758ubZuvrx294PC0Evgoc5qFnz8egaCyQ==@kvack.org
-X-Gm-Message-State: AOJu0YyzcE3cCJioH3Zq7EzV9dN2XRGXdsBRka2jtB+ye8o4FE1Wx5Va
-	NVj/Faj3Swzoposh0qNzfswpxbJ1NjznyQR3tbfhHKnJAABDqoLGgiXuGVc5afrJfvYWKbFj3Re
-	EJAALua3s9tvinh1j6eEAPz3Tr02wdcs=
-X-Received: by 2002:a05:6512:6092:b0:5b0:17e7:67cb with SMTP id
- 2adb3069b0e04-5b28f85c96fmr3157205e87.17.1784623911848; Tue, 21 Jul 2026
- 01:51:51 -0700 (PDT)
+	b=QaQQN6Li5L+AU8DEPefyXXdMjMHBY1IHVUIvzBV4pRo5eDe25VfkYoTpgY0hEt29u
+	 pkVvZgCkfLlMgUBDDeccY9j6JHmCdSkYohdi8H6+5uACEV+fNLRL4OD30huuP8VgIu
+	 loAv7Cg+9XkloP3Pb8ehYPWpHXYqK2PlEg4djUVbOq6hTNjFzzC1yfW7ZQr9HDUdOI
+	 bgtDXDm+e2kNK5IAx1QXAH334yFbGYDqxRhXPJWZu7YqG3crVrYoolh6nyIwx3JFQ8
+	 jwBH9cYXlUHOEYu3vikybPanfqZ4HHPdz8wrxWhRW6JPMY1Ht9da3keTiQ/14K9hI9
+	 PN7BQxmb7zNag==
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5b015b2d792so12676929e87.3
+        for <linux-mm@kvack.org>; Tue, 21 Jul 2026 01:52:42 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RqoTo36vqDhiuWa6GiJKLchWyEenv47Ho1UV+2wKiHYMcEoudftPgeJsbsmAcPd791++tv2c44QrA==@kvack.org
+X-Gm-Message-State: AOJu0YxV+waHtGtWnUyVDnrVfiwVpdWxMkHbScYd6BKHOYUVuPYUU3pe
+	YrNI1RJVyYzrJTUgPtTF4IUFTDVoWYGRIyhun9W7dp3plxSJh50/V9I8wsnT4J/K/fDUTngbBAn
+	xfVXU7l6Y1yM0QQlG2CC301JK1wuJb0Q=
+X-Received: by 2002:a05:6512:1156:b0:5b0:ce5:a04f with SMTP id
+ 2adb3069b0e04-5b28face409mr4587541e87.61.1784623961856; Tue, 21 Jul 2026
+ 01:52:41 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260721081858.1169276-1-ruanjinjie@huawei.com> <20260721081858.1169276-12-ruanjinjie@huawei.com>
-In-Reply-To: <20260721081858.1169276-12-ruanjinjie@huawei.com>
+References: <20260721081858.1169276-1-ruanjinjie@huawei.com> <20260721081858.1169276-13-ruanjinjie@huawei.com>
+In-Reply-To: <20260721081858.1169276-13-ruanjinjie@huawei.com>
 From: Linus Walleij <linusw@kernel.org>
-Date: Tue, 21 Jul 2026 10:51:39 +0200
-X-Gmail-Original-Message-ID: <CAD++jL=D1S7HE9dVwHeOyAmu-6g+BGq+f2=2=BUX-4tzp88NOQ@mail.gmail.com>
-X-Gm-Features: AUfX_myXfFPmxzRpXer_m1f22Sl8KHAIsWBq-5Jvh6C6oAP82PJASvQuqp2AReY
-Message-ID: <CAD++jL=D1S7HE9dVwHeOyAmu-6g+BGq+f2=2=BUX-4tzp88NOQ@mail.gmail.com>
-Subject: Re: [PATCH v17 11/15] arm64: syscall: Simplify el0_svc_common()
- syscall exit path
+Date: Tue, 21 Jul 2026 10:52:29 +0200
+X-Gmail-Original-Message-ID: <CAD++jLn7ogMvgUdQA+yCjzj2OJDj_v7JDO=mPnWxqNUE7oY6yA@mail.gmail.com>
+X-Gm-Features: AUfX_mzXSUvYI-AiEHstTcYri4vC5EAAtQ9xFqLJkpR6sHINZPIFjmFDc1Yxrj4
+Message-ID: <CAD++jLn7ogMvgUdQA+yCjzj2OJDj_v7JDO=mPnWxqNUE7oY6yA@mail.gmail.com>
+Subject: Re: [PATCH v17 12/15] arm64: ptrace: Make return type of
+ arm64_syscall_trace_enter() bool
 To: Jinjie Ruan <ruanjinjie@huawei.com>
 Cc: catalin.marinas@arm.com, will@kernel.org, kees@kernel.org, oleg@redhat.com, 
 	luto@amacapital.net, wad@chromium.org, thuth@redhat.com, peterz@infradead.org, 
@@ -93,14 +93,14 @@ Cc: catalin.marinas@arm.com, will@kernel.org, kees@kernel.org, oleg@redhat.com,
 	linux-kernel@vger.kernel.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: DD87A20006
 X-Rspam-User: 
-X-Stat-Signature: o5aaathy3oe84gfsootd3wt3x4z7tzcd
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1784623913-344045
-X-HE-Meta: U2FsdGVkX1/zm4eWWFoVM2rHxtBeq+GxHpZJ32UiDl+EatJxuhbj3pwFay1yvvuildrYssrwwqacKbyHKH9VXOoaGKg0uOqUXcWX2fMLcBXuHXEsGvUAwg09L3IyoCSKGlT1HiNGA+TVgjAzjA43mPgBtGXKQfrVPYJOdNJ6zwhj3vtKnhDGLeqJcF8FGVmDmQGwHsYStbajQJF/wFeGcemf/4pv8FbhhgkOedTXzc3SBJg/h5fjD+RZBooyZDV1i92USaKP0OQ6DOKhHDrjo4mjFZ5LPkb/vGG6PmywMINJVbmT4obVbF2zYX3ZODFk1gdwLHmRooF6UssVv7Qg/dLkO7+PkQrNy/h/3TPSkAgkNgfgCJtMRqGCBzxGMOj99l5/LfSAxGwmRa96UlfjoN0sWU3+RgGtxcTWzcajA1TvlFaxARuyvBXk/zKO6mY4dHKjDYCKp8/tkTJL69GXkd1odbN2+f6sfCXCuT2ww3xEFZb8T6Sogx4gyyA4AANs/q3lakFgJhmKaO5U+xJMi1HjA6PlUtTXxUUGv4TzwCb0DCBZuQsLnQVmcwkMOT9Qkei4d38rwQ1+Cqda4yb+8qOhVAkW353zAu5UTeGfVg8s3BkNgZoG1F8pUa1hwN43Qk9Pa59Od8qe4bM7hgBhYAWzf6eoFYHKzFXa1L6trcmGwJvcypXhFLcsNrdjh94Ovcmn90V6ig+qLqBpKKUiTh+rwNiE4ajX4eOgpJQbJKub2AbuZBOeY4G0gmUgrasVUdIlFwiqeEN6ON4RuVmHj1I0RKG/nN3wOIeDz2rL0DdUMqfkFmXY0yA96xe35QF1P/b1Znlz8qXFe4g4dCBfqnUv+zEB50AeMQBxeiuGsmOUNYULbx1pUPEGIovuXMLG0oYNMmHoCpgtdiqblBpwminO1l+tA+NJ/tEY8lTxPg0zLqI6YR/GGN5s1rfxBbB4HO1EeTfniWMwTXcKi+B
- DeoDfoKi
- vqR6RRyhIvzhJPfjaDrmhFpyfqsj4Qfz7kqGHY6suMpRy0NtMtNsmDXveVJjxU5fIH88NzdvVWBQTR13rXJRRXyUh4hI3hKUvfvOGrPs1KhKE4nlx0K4BJaP98htkdeLRvJ/NZQgSk+LQSTnDzrK8yQdO1EKok/26GQxzUOTtSVxtS9+VVwaBbBWk/tD5+98c9qBANQ9nP4UwrY4O5o8eDUasENt+rWSAxtMUOdPPJD00CxRFubjfHQqG5yaZPO4hTumZtffk06PrW0CJ3KcZJSQ7WonDkOlwocIqKJDeLwkjhg7rfqL1E/UUYA83PJ33XIrOLZVgxPnKweSDNNJSoeaDx3MDsLUxU4iR+qJK62ihEEy2MNJYF23AmSSARc8EufBeihCynq3BdwpVyU3yfJ1itHLISkTVYsLSFqJA/JZOPtfdESpZumvKhg==
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: BC9E010000F
+X-Stat-Signature: b1iio1woumm7uhyr38stbinfiju9sjza
+X-HE-Tag: 1784623963-786162
+X-HE-Meta: U2FsdGVkX186BYTPGllk1eMthgqsxBFNg7GNNl0oueNPiNcVJNtjMLFrbHC2ZPtCV7zrFydOCiuDzmoKGySWbwxhwN43Ico7BfoIcr2Kv5hvvi+5OOSeB26d18+XtYpSY4iCuKLd8edb7D6LTdDIiMJB5n5o6NQH4h696QQIFfSj1NIat3oUvsglCrzJScZbHMqtC0e4pXjqU/xCFeRwrX2uTgnSHq7QMWszOG68r8bz+B6dpfWK1Y2u0MTYXLUXhzkddwXRhJG7BMN02+u4KDFkavRuGLIt4iVu7NdUX6a+Am6MBoKjwQ1Aqnb3O/mZCUE3QpRjCSjyRW79kYGC3zfNWcQ6//fvKRGjvRJ4GSvrvBEMkn0rSQkRUsOcGKE1sK64BcrQyNZhDhHzq/cYrKxvPnVGvsrkZBBnZ2f2Gm2OqOn+LRD1YlO+HM7xAFvSMofNjYLVUUBJIRuMR7FV3EaJFWxRrACsd7rBRewPepVLR4qirNOHo/HsYwFMIEHovdF0JlEJt5K4cYZDJI/hLXSQTVzXAwazmtm+aMjaDpTGbYsA6Xb4jqLggEvScSXdgEWIqJOIFQYFBrr/PHQYCqFhXyA/68BRT8ODT5EhDUyN77ZcGACqEF1XroVxLgCydxgFY+evj4aGcxlcXrmfRbwDIZQc7XvVqdEiOwJV7d/er2/wFnOYuDMlVxNlOVeoypzEYS6o8L8hFnhd5HkGHII/Pf68XB+C+QVj0TeAzFgwPZAqtg2w3gSwMaZ1bGdBUdSbiTJO4qhXt63N//jWjb5igieEOV0Vq7hZBBmQFQj9nOTFXjOqaCcw3YiC9d2oaU/qKHDyaXw+xwc92z4al785/M6BnC3m15TkOLtrckvsEcaHlsTvVryVJp0tKu3dxgukN0vd4cICYNk0kzBIbx8wPz3RuBWeWh5UwgGJ7iYHbm2srILBNorcUJ5djUR9PJfbAiYT+N27AfsmPPY
+ /5+KfEZP
+ isa5QgtFT2G719hhTrH/eRJRTCizhSYXn5SlvF68m1lXti/L3j1GFuqJcV8s47bGdZjh8/99mDHaXNgzWO1ixx2Ex13UeM5NMz1NFKr9VHt2v5seOS7BIDKA8wUtdN+9j+rVN+puHW1aYSztRfa97A4xywDvmIh2SxY9dRaRy1eIrhzAEZHIA9xlqcPsaZ8gJ4XkC/E/95N+fjLGE7gfHseTIf6zzKayB3Of/2va1w0re1ZJg+VKOHYZUKVB7XHskK2VM72MdhfSA5I7n9s2JWKJvcANpj2VGZf2S71fweSa8BZmJLuuUM38x+bngQFnaS1OyEHIhPubgcqBHRTZyioxNFZbDDvrwOziRmFnXVwQ/dxLDSWpPiXx+yUf1yLxhxUh7Fg1uKy9wb6FDdaqPzJs5ujd1yAYA5PkhkTDJFzbuRCf0HxDHf6rQyg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,46 +111,27 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On Tue, Jul 21, 2026 at 10:19=E2=80=AFAM Jinjie Ruan <ruanjinjie@huawei.com=
 > wrote:
 
-> Remove the redundant nested conditional check within the system call
-> exit path of el0_svc_common() to streamline the exit sequence.
+> In preparation for migrating arm64 to the generic entry infrastructure,
+> decouple the decision to execute the syscall from the syscall number
+> itself. The ptrace and seccomp now returns a boolean flag rather than
+> overloading NO_SYSCALL (-1).
 >
-> When entering this fast-path block, CONFIG_DEBUG_RSEQ is guaranteed to be
-> disabled so the call of rseq_syscall() is a no-op.
-
-Please explain why this is guaranteed.
-
-> Under this constraint,
-> the code logic inside the block becomes completely identical to what
-> the arm64_syscall_exit_to_user_mode_work() helper already does. Replace
-> that nested logic with a direct invocation of the helper, eliminating
-> redundant code.
+> Changes:
+> - arm64_syscall_trace_enter() returns bool:
+>   - false: abort syscall execution
+>   - true: proceed, with syscall number reread from regs
+> - If we decide to execute the syscall, reread the syscall number
+>   and check if it is NO_SYSCALL again. Because when a tracer sets
+>   the syscall number to -1 and provides a custom return value in x0,
+>   this avoids calling invoke_syscall() which would overwrite the custom
+>   value with -ENOSYS by sys_ni_syscall().
 >
-> Before:
->
-> | if (... && !IS_ENABLED(CONFIG_DEBUG_RSEQ)) {
-> |       flags =3D read_thread_flags();
-> |       if (unlikely(flags & _TIF_SYSCALL_EXIT_WORK) || flags & _TIF_SING=
-LESTEP)
-> |               arm64_syscall_exit_to_user_mode_work(regs);
-> |       return;
-> | }
-> | trace_exit:
-> |       arm64_syscall_exit_to_user_mode_work(regs);
->
-> After simplify:
->
-> | if (... && !IS_ENABLED(CONFIG_DEBUG_RSEQ)) {
-> |       arm64_syscall_exit_to_user_mode_work(regs);
-> |       return;
-> | }
-> | trace_exit:
-> |       arm64_syscall_exit_to_user_mode_work(regs);
->
-> Furthermore, Since both the conditional fast-path and the fallback
-> slow-path now uniformly invoke arm64_syscall_exit_to_user_mode_work(),
-> this explicit conditional branch is entirely redundant regardless of
-> whether the evaluation is true or false. Removing it collapses
-> the duplicated logic into a single, unconditional path.
+> Behavioral impact (unchanged):
+> - User-issued syscall(-1): unchanged, returns -ENOSYS.
+> - Tracer skip with custom x0: unchanged, returns custom x0
+> - Tracer skip without setting x0: unchanged, returns original
+>   argument (garbage)
+> - Normal syscalls and seccomp rejects: unaffected
 >
 > No functional changes.
 >
@@ -160,9 +141,6 @@ LESTEP)
 > Cc: Ada Couprie Diaz <ada.coupriediaz@arm.com>
 > Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 
-After looking at it for a while I conclude you are right, provided
-the reasoning about !CONFIG_DEBUG_RSEQ holds. So with
-that explained:
 Reviewed-by: Linus Walleij <linusw@kernel.org>
 
 Yours,
