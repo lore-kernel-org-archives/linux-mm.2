@@ -4,105 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3953C44529
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 08:01:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE55AC4451C
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 08:06:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C1C5F6B007B; Tue, 21 Jul 2026 04:01:08 -0400 (EDT)
+	id AC6DA6B0096; Tue, 21 Jul 2026 04:06:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BCD326B0095; Tue, 21 Jul 2026 04:01:08 -0400 (EDT)
+	id A50B66B0098; Tue, 21 Jul 2026 04:06:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ABBE46B0096; Tue, 21 Jul 2026 04:01:08 -0400 (EDT)
+	id 917FF6B0099; Tue, 21 Jul 2026 04:06:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A6946B007B
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 04:01:08 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0BE5040410
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:01:08 +0000 (UTC)
-X-FDA: 85012038216.03.04CE398
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C38D6B0096
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 04:06:24 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D2033A0429
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:06:23 +0000 (UTC)
+X-FDA: 85012051446.17.503C9E0
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 0ACB8A0015
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:01:05 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oSDQqTuh;
-	spf=pass (imf25.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	by imf09.hostedemail.com (Postfix) with ESMTP id 0E93C140009
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:06:21 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YiSd8pDU;
+	spf=pass (imf09.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784621182;
+	b=OdBhWifWVbrYZwXEh8zYXETw83MRdORNoCastLS4n4JCZkTEm5PdpgnmKtadfabksGZu2L
+	nUG/sN53c3xqiE97edpusDYDvNY/VbbfutRsVxL2zPG5wsDZfWJvBMfJSAOxb8rNHBcN5X
+	nWwoP3QB122GfFQXSSpBKmlCqGfKrDY=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YiSd8pDU;
+	spf=pass (imf09.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784620866;
+	s=arc-20220608; t=1784621182;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6GenzPzcYbFf+w6RJ/NVkKF8Dt0CNm/M4SQ446MxELY=;
-	b=5H9B2jqQSZazDD/ykMjxecdxuIBAH4CcF2h734tKrxhAhCTZXOfSVKACKkjGYkDJdr5U1v
-	w3PDZahEH+g90YSff9rylKvn0Hx6YHH151wtG3eodEVKY4m4yYQDgduffWVlnABmxAeHqE
-	MEFrAvTBi7FCfN4ZAVm7WTbTRkjCkcU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784620866;
-	b=kG55SNdMk62rxBiw0058QKEgKgdhJCKW9w2NH0BbeW8NRmBDDcmKUVAnMHuVgkoMy2Gtgw
-	IcHIbdTmNBQi40Ex8R7p2PBS/m1TJlNXvWW7ElDtGQf9NuNI2bpirKKnnENvSspOsAiAdu
-	Zr4PDmUBSXCdGZU05uDuQTLkzm+c358=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oSDQqTuh;
-	spf=pass (imf25.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=ROLOrfPqMTfQb393OeJq2htXFD07Htbn862T+F3MXnE=;
+	b=ioNA1QRNFgldzWdq/e7C7jgklOn5RihCKMVaJQrL+ljdTtqU6YpfNh8LXMoIoZP2XgL/Yb
+	A6M6nRbpB1QMfvO2nEcjPPaCoOmDBz6mOlHJletxhHnzrIUfZFy5NeTJmesDMAH8spKSzd
+	14WOhO/LsC2fkPESYn7v/86P4LF+K5Q=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3AD1D450D6
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:01:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D29C1F0155B
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:01:05 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4502C43995;
+	Tue, 21 Jul 2026 08:06:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A8711F00A3A;
+	Tue, 21 Jul 2026 08:06:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784620865;
-	bh=6GenzPzcYbFf+w6RJ/NVkKF8Dt0CNm/M4SQ446MxELY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=oSDQqTuhskefxln0WsyjLF/koPtYsau0RQvIzKsmAFs7XLCPvs5Fi0XTWC46Y2Zos
-	 b6fRsfyZBVDc1nEO+ZUBJzQa8Qp52bRJADyZeo4wLsCzdcoybBhpJ8qQ6et5rtUeZo
-	 sWyVA3usbberbyHijsBWrMThw6OBBaeSXAUNWEdSPuGNhyvJXK28SNQi/lhcVs/WY8
-	 jGUn2t2Z+t8WP01I4r6HewhkXFan9Lx96Bk79vEsMnEXakvZguqP/Bys9zG1BYIYVF
-	 XWDRZlfC1RudSUqJ4nqSOYCmbGUAg2lgJ6ETB6OztIrqQXNqDKtyzdC9aEZDUThUXd
-	 UkxX12Xjp93Dg==
-Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-8f1a8e914a9so86184576d6.1
-        for <linux-mm@kvack.org>; Tue, 21 Jul 2026 01:01:05 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RqRJYHiJJ/oIuM5XxEBkglG7hRjBoBSzHZ4VfYg05/WQs9aic6aDOUKuS+ftEGUaDcgdCWT8UP2Uw==@kvack.org
-X-Gm-Message-State: AOJu0Yy9sVd0Nbom5cg3Hd6Mnw38uDOvDj/Pt3aHi7bdRbkNsIKR6b9q
-	khFLErkONCTOKW334imdbjhc6FyZ3yrNQZuJhGBTKeJjgdQsKEhZYS947mKcK8v6PWSQhQVUokt
-	Kcy9MkREkiG24Kfw5cZFMqL74squCID0=
-X-Received: by 2002:a05:620a:1a1b:b0:92e:cd21:447c with SMTP id
- af79cd13be357-930b3f3e243mr1658877285a.38.1784620864331; Tue, 21 Jul 2026
- 01:01:04 -0700 (PDT)
+	s=k20260515; t=1784621181;
+	bh=ROLOrfPqMTfQb393OeJq2htXFD07Htbn862T+F3MXnE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=YiSd8pDUlnk54p+cGidnrLlHwhi5yZ2AVjrgGHvwLxttGbMXx+XqXN8synT9inFmJ
+	 cIT4D3U6E76mBReMbCCip8dEZDv8f85y5wye92oxssvHvJS2q1X33CsKweQ24BX7y0
+	 6yEyfP6/h9WEo/imefAHtTQqczYlqlgCsTB/8NIpAmRw9XWmBwkGaG3BSzSrwYhAhv
+	 Dkzjr42zd5yQ4LqGe6UHz1Gg7WNacsg3JIdbbt0FCS0w5UZhQu7ZDEr42JFY5aKxON
+	 y6orMEYgD3vOBeQLTLGlzzHZVheUtrIxkNtNo5NaoDrWtXB/wr6BRyJVnae1ABeWlG
+	 ULhQ3r7gkednw==
+Message-ID: <17fe32e3-6761-4101-9d5f-2b22c8a83d7b@kernel.org>
+Date: Tue, 21 Jul 2026 10:06:17 +0200
 MIME-Version: 1.0
-References: <20260717122514.51514-1-xueyuan.chen21@gmail.com> <20260717122514.51514-4-xueyuan.chen21@gmail.com>
-In-Reply-To: <20260717122514.51514-4-xueyuan.chen21@gmail.com>
-From: Barry Song <baohua@kernel.org>
-Date: Tue, 21 Jul 2026 16:00:51 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4yj3dYah2exFWLMwFhUysOz2U9ANyoESgdGKvRL0E_0zw@mail.gmail.com>
-X-Gm-Features: AUfX_mzV7chpGdNffqXbImgVBBAcu9kSDaNJlsxvxuv1ZaQiruWokGqb-8_Rtmw
-Message-ID: <CAGsJ_4yj3dYah2exFWLMwFhUysOz2U9ANyoESgdGKvRL0E_0zw@mail.gmail.com>
-Subject: Re: [RFC PATCH v3 3/4] mm/vmscan: avoid pointless large folio splits
- without swap
-To: Xueyuan Chen <xueyuan.chen21@gmail.com>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, zhaonanzhe@xiaomi.com, 
-	hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev, 
-	shakeel.butt@linux.dev, muchun.song@linux.dev, chrisl@kernel.org, 
-	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com, 
-	bhe@redhat.com, youngjun.park@lge.com, david@kernel.org, ljs@kernel.org, 
-	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
-	qi.zheng@linux.dev, axelrasmussen@google.com, yuanchu@google.com, 
-	weixugc@google.com, baolin.wang@linux.alibaba.com, hughd@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 0ACB8A0015
-X-Stat-Signature: 8acj7q35fwjpmzyke6m41te9u3z3hdnq
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mm/slub: prevent pfmemalloc objects from entering the
+ barn
+Content-Language: en-US
+To: hu.shengming@zte.com.cn, harry@kernel.org, akpm@linux-foundation.org
+Cc: hao.li@linux.dev, cl@gentwo.org, rientjes@google.com,
+ roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ zhang.run@zte.com.cn, cai.qu@zte.com.cn
+References: <20260721084522552ZPa16p1SRj3PYat3sqxuN@zte.com.cn>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260721084522552ZPa16p1SRj3PYat3sqxuN@zte.com.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: dazrpzamhmtzkk7w8ta84887jjwz4jy6
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 0E93C140009
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1784620865-79634
-X-HE-Meta: U2FsdGVkX19hl/+hfPdDTNjMB9YMsQByzgejd+IT4k8PEz1qmOElPs0SYZRz3P0JUVHHz/ASwE/Uzk9WNEqydO6faVflLDdBgnj67XuJTRnhvKJYT0ZSstaIrKUJUnaN764CKUkyT1cCRJm0O/ui1opTUCcLbXJ2S+vjUspjM8MljLGC5ZoWEJviHpxjQQwHg8Q3+XeHclwM/kUMUE4Qco+9cbt4gWiBfJeRcHhoxuzUjcLOvwDNoH+w4HprrdnNDFUhi6CIRfZIuX6mo74SEQrcXQoCUbX87pMhsrqZgoN1yvl5Y8q2PHtoy5Tuz1lTZr/G7cu00sGDYX2Elc0p5NKlF0Ssv5EOFTw+BSQ8gOMOnp/UQOWycoZRCEoJNNUvcFt4AIScNCXwe+NpuxPwMKIpaiNAnjrTJ8CnUfMy5Z6qdNznniCWgpzoYarS07idAy/+tg3bSe/7+wHrE20qugOM3qt7xRu++BR/b79wObhVpe8BhYNqP76IbcZhF8NBDpDEbhIlb7RCZgPmeL7WNeWWYTHpkfdx470lRFi3In4R20GdUnw1xiKrLo5jmHKrN1F+TBXv0KKd0y0NyDym+obvJmoNTF+xx5O0nhh1KaoolJsfKgJUl0uUBv2NRMmij4u+PkbgKgrcKvMgPYkcbwisRfXW7QBIPa/NC4f0KKv8qHmJCgCsMH0Ye2EW/GtMMviwTwkYuAE/H6bRC2ziRcZhYpGXQ96Ia32PpJqekyGwqL+/tmM8Zg4AOJydi4YJgFg778eu/rBNpNm9zKq2Az6Vcf5s4y5xvosszINCcMNY30k0fiiY6CLOW9sy4NVY4qD5Q2h4doZnRvFWcY6aUkMgaXvY/xviLQmHniuI2sNzg9oeTtguj2v3KVazF1aU7cpxTLBmzzXLKJYKCvGZV6MfyHg6eQHQYrHSTN7AWpkcSBM2gTBrvtgCSB4gisOlX00sIW3GdEbVaQyZG5P
- IjD9GWEG
- oTyW+gYxh49SQP3Y5X6EB8qT8nclEFMatAwFxsWaOaopGtPSZt0WstO+fhPyLRYWjMZxLtKaDJGUH3JoeiSjyKSKYyseya6pTlWYZc1ZYb1XGehpzAyW8/6pbuPJNzPuw9PThmG+RkjqtpKG344n4W6MyFz30/fQckXh7KpEFiF7cU/23Yj+vvuEHeAA5oxuuq+5AogUwWO5VsA/c6hapX8knR+Ba5eFMShvdJM3Q+7t1Q9CChGcP4Gp4rUbRaycB1e5M0CwGrroLfLgubqzVSxEZkONcSkt87PxLOSkqdvZin/EAKr38ChAbR8+60xh2IkdA0i8wbdnZvtln15X3qIgiKkkohgVm5Z0dSfqoCJgrvJRs7bshs38QVBqvXiptkD5eygDiKX+c/hyCPXeson/5chavBFbGombGtJALOIooK/BLD8Tz+gIKgA==
+X-HE-Tag: 1784621181-764080
+X-HE-Meta: U2FsdGVkX18hckCXBjY8jSmzlYy8LIkoARxaRHx6AV+FOz42u7yay+GuN0i8cw0zRX5W9DYkxmYYQdb97u9u6QxtW2BWHvMGaht8AIo1St4uJ1E1Brk0FBtlOal9E7ROlYn4HEm4pabb40PWN/lcIBy4heHhunGmmjR8nc5yN+JxNH5tVLomN7WPSZxRSz31/c4MwgzsJyZLcJBycNYKiuGCJsIdfvi3zAc93FU2aZd12cQg8i3zaQJdbrFnheKXzImL4DWE2RW7lsZIh96T3IY5bhR8jfHNkSCMuI76IHqMLtOC8McdG8z0y7wYTdql6Ve2rdlg3BM1O5B/dptnURCK8pfFEFssHExO2qiTcMScwgMb9/5TtpSNL01PIaFiaysO4u6lBUGN0rUr7j3oi7jAr/Fk9/a+7kD4qVyfThsfUD/tiaq8BOufW0/WlkH65jfSuwHzjQHs5kyQ/L3qR0Wi5ROYBdErF5lWKAh+r2sxrppuvsCl6q5Jq+g7I6Ng3q6tFBDIK+kCsZ/kkVBP+GcBYhE9iMJzoqYGyg9frR4g2ApK7H4f2AEu1/LYR0Tw0zhkFO8I1OstmVuLV+VD/Gb00yxR89yh2E3HJTYWENzQz/oJfYQus1fOXyg0BwLAkaSmfmTi6N6Yt7IQ1WT/JUpy/ZlHk1BCoBO8Vi6aU0epBxCxmKuYDN89yFmIUc+xxzVXCD487p5X2rd91kNVDeLDd9lgexFyMkrBsNlpeArY+jbX+cIbEDmob+XYUn+U/x4tuk6GCUCWSSKW58alCU8ZAOE3WVyR/gr75zAcC4bZ/fWO0UzCO+XO31O2ZUJUdydu/FkgZjnYlxHIVIM9l02D9uB4HokRTWDC+tgFlAsn2A0HLo9iQrgHhMSb9L7LuI6LF5a7nkSEeLj4RzPB+KNbZcUXJWC6nTEM2heKjW+7C5bgDUUbyo3i031zus6ZIJAt8bH3o7X/RAAPqiI
+ Nly+2ZW4
+ dVtJ/r4XgHYQzGcFU2dSN4AbVD/oaQMPXTPe1PPlnZbjai8SamZlELS5QoZPRUYUiM5ICWrSTGubAcAAcgYYfiCAUY7+MLcLjyNdNr7ipWf17MKNZndpTbnFjedSQwUyFplXep2Udw20/MOwfDjgEAy6S08n6hEZ8w3uRupAq+aYxGx9oPBPyklwV0AxAHuFKkHDBx4a4HW7flEkVyaB8bQ4HFWm+fT4GMu271mjlBEp1YeJ5Pcpj4j8oX75lRX3jT2P2dp/xSKeVzOlLnBGmP4Ea3h5gdDLuWSITrsvB+TJJOlyeMTwvVa+XMQkUiKSvVYMgdt3/TTM7ngDdcS5HWPCPVYYOZlLywfwsckuMY97dAjmJ3/mct9h8ysOhxqqTVOssvKDtt04xQCo5FwE6IRO+NMowrqV9tWtfdqoEauyVY7c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,81 +134,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 17, 2026 at 8:25=E2=80=AFPM Xueyuan Chen <xueyuan.chen21@gmail.=
-com> wrote:
->
-> From: "Barry Song (Xiaomi)" <baohua@kernel.org>
->
-> When swap is disabled, exhausted, or unavailable due to memcg swap
-> limits, splitting a large anonymous folio cannot make swapout progress.
-> The fallback only destroys the large folio and inflates split statistics.
->
-> Use -E2BIG from folio_alloc_swap() as the explicit signal that splitting
-> the folio might allow swapout of smaller pieces. For other allocation
-> failures, keep the existing activation path and avoid the split.
->
-> This preserves the split fallback for fragmented or partially available
-> swap, while avoiding it when there is no backing space for any part of th=
-e
-> folio.
->
-> Reported-by: Nanzhe Zhao <zhaonanzhe@xiaomi.com>
-> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+On 7/21/26 02:45, hu.shengming@zte.com.cn wrote:
+> From: Shengming Hu <hu.shengming@zte.com.cn>
+> 
+> kmem_cache_return_sheaf() may refill a partially consumed sheaf before
+> placing it in the barn. Without an explicit restriction, this refill may
+> draw objects from pfmemalloc slabs and consume emergency reserves.
+> 
+> Add __GFP_NOMEMALLOC so that returned sheaves are refilled only from
+> non-pfmemalloc slabs. Also add __GFP_NOWARN, as suggested by Hao Li,
+> because this refill is a best-effort attempt and failure is acceptable.
+> If the refill fails, flush and free the sheaf instead.
+> 
+> Fixes: 3c1ea5c5019f ("slab: sheaf prefilling for guaranteed allocations")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Shengming Hu <hu.shengming@zte.com.cn>
+
+Ah so per sashiko [1] we should consider adding also a __GFP_NORETRY to
+avoid an OOM kill. Seems reasonable that an API for returning memory should
+not cause an OOM kill... it's unusual enough that it takes gfp flags but I
+thought defaulting to GFP_NOWAIT would be an unnecessary limitation.
+
+I can add __GFP_NORETRY locally if others agree.
+
+[1]
+https://sashiko.dev/#/patchset/20260721084522552ZPa16p1SRj3PYat3sqxuN%40zte.com.cn
+
 > ---
->  mm/vmscan.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
->
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index bd1b1aa12581..40340a88f78e 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -1260,6 +1260,8 @@ static unsigned int shrink_folio_list(struct list_h=
-ead *folio_list,
->                  */
->                 if (folio_test_anon(folio) && folio_test_swapbacked(folio=
-) &&
->                                 !folio_test_swapcache(folio)) {
-> +                       int ret;
-> +
->                         if (!(sc->gfp_mask & __GFP_IO))
->                                 goto keep_locked;
->                         if (folio_maybe_dma_pinned(folio))
-> @@ -1278,10 +1280,11 @@ static unsigned int shrink_folio_list(struct list=
-_head *folio_list,
->                                     split_folio_to_list(folio, folio_list=
-))
->                                         goto activate_locked;
->                         }
-> -                       if (folio_alloc_swap(folio)) {
-> +                       ret =3D folio_alloc_swap(folio);
-> +                       if (ret) {
->                                 int __maybe_unused order =3D folio_order(=
-folio);
->
-> -                               if (!folio_test_large(folio))
-> +                               if (!folio_test_large(folio) || ret !=3D =
--E2BIG)
+> Changes in v3:
+> - Replace “normal memory” with the more precise “non-pfmemalloc slabs”,
+>   and add Fixes: and Cc: stable@vger.kernel.org, as suggested by Harry.
+> - Link to v2: https://lore.kernel.org/all/20260720211127124sYtTNbvsxCXN9_pDh-pwt@zte.com.cn/
+> 
+> Changes in v2:
+> - Add __GFP_NOWARN as suggested by Hao.
+> - Link to v1: https://lore.kernel.org/all/20260719113701797vZ3R8NxiqYt8dEfeUxtON@zte.com.cn/
+> 
+> ---
+>  mm/slub.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 53b4976d3831..357b7522c817 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -5123,7 +5123,7 @@ void kmem_cache_return_sheaf(struct kmem_cache *s, gfp_t gfp,
+>  	 * simply flush and free it.
+>  	 */
+>  	if (!barn || data_race(barn->nr_full) >= MAX_FULL_SHEAVES ||
+> -	    refill_sheaf(s, sheaf, gfp)) {
+> +	    refill_sheaf(s, sheaf, gfp | __GFP_NOMEMALLOC | __GFP_NOWARN)) {
+>  		sheaf_flush_unused(s, sheaf);
+>  		free_empty_sheaf(s, sheaf);
+>  		return;
 
-I'd rather split it into two checks:
-
-if (!folio_test_large(folio))
-         goto activate_locked_split;
-
-if (ret !=3D -E2BIG)
-         goto activate_locked_split;
-
-This makes it clear that ret !=3D -E2BIG is only relevant for the large
-folio case.
-
-
->                                         goto activate_locked_split;
->                                 /* Fallback to swap normal pages */
->                                 if (split_folio_to_list(folio, folio_list=
-))
-> --
-> 2.47.3
->
-
-Best Regards
-Barry
 
