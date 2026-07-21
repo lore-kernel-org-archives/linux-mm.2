@@ -4,86 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABD9CC44529
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 10:09:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1EE9C44529
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 10:17:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 89F566B00A7; Tue, 21 Jul 2026 06:09:36 -0400 (EDT)
+	id BBA166B009F; Tue, 21 Jul 2026 06:17:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 876196B00AA; Tue, 21 Jul 2026 06:09:36 -0400 (EDT)
+	id B6AF26B00A0; Tue, 21 Jul 2026 06:17:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B5D96B00AC; Tue, 21 Jul 2026 06:09:36 -0400 (EDT)
+	id A83246B00A1; Tue, 21 Jul 2026 06:17:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 553506B00A7
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 06:09:36 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id CA90280433
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 10:09:35 +0000 (UTC)
-X-FDA: 85012361910.01.CFF06FA
-Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 827B41C000A
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 10:09:33 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7DA3E6B009F
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 06:17:04 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 16045C0406
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 10:17:04 +0000 (UTC)
+X-FDA: 85012380768.09.D911DFE
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 7A0B61C0005
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 10:17:02 +0000 (UTC)
 Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=q935BXKH;
-	spf=pass (imf21.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784628574;
-	b=EtJV8aEMKluz4LWdZTuyueu3odf4oZItzKTtp+DlmwMokNoe/K61ovPMam4wzxw82OIb+x
-	YMn7joJax2TKgvoR6TET7UJ0cx2+6YYhdXym8ZtPNma8c2a4Ratg6SC26sks2doahwbw/E
-	v8DZjnq9XzgP4sQ4g6XN1wjRrflP9xs=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=q935BXKH;
-	spf=pass (imf21.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	dkim=pass header.d=linux.dev header.s=key1 header.b=sNBjPHD8;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf21.hostedemail.com: domain of nico.pache@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=nico.pache@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784628574;
+	s=arc-20220608; t=1784629022;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=rtXOsg2ueYVGRLW3PtOke69mX+SA5v4SjKosXuE4yoQ=;
-	b=GasYithd781+IJlCUqhOSbPHDkatrdwfLi7LNejcM6JT4ho6RTDy6mE0jsJFiGwL+plNTI
-	r9+BaxQs5AwSCBZZJd1ZJbeKxUdTi06+XewhGLak/dw27y2fU0y7g87PX72EqOOJqgdt5A
-	hP8SF2rfgWMqvLC0TcZRVE2tqf7yfb0=
+	bh=rbbOM9+ieScbci4D2m19EpRMBOk1+xoDTzRYZ8IQLl8=;
+	b=qIxtQ2GS4M7hP8Eove9vRNmXZmgocAli/7nM7RTs396eqet6CUUacyxd8dfhVEKDe2URcG
+	HqN5MeqPh7Phvg5ER0TT5R2uaNIlsdlB1RltW9027jqruYPXt136z37VxNplO1lNeP1b1B
+	xCh9u/nMn9RjTzhKBBrCJLHEjwaOt7k=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=sNBjPHD8;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf21.hostedemail.com: domain of nico.pache@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=nico.pache@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784629022;
+	b=Vg9mVGvUxqDwOjxbhR+vqKSiIF1C932zdX6lNDuE3CKJVw+qGLt/ycejO6wE9H0W1T3Ahi
+	Hs5AbWAHL3g92RgeQrESvpVMSMvRQLhNd+/TwazYUPvdWO270E6a7vPjw9/QVX5ABgm8QK
+	KPjSuXvpKXDRH0g5FNO/TbSUh+qwLQw=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784628571;
+	t=1784629017;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=rtXOsg2ueYVGRLW3PtOke69mX+SA5v4SjKosXuE4yoQ=;
-	b=q935BXKHNaNk7Cj1nFZHQed1RmkLiDzz5keIA85fn4hJm5pJQbJciDxylDv2c9ZmtJnJ8M
-	TCnhPv9od99ouSEGlU0OQUNDGTfcI50VVTvBgElzJX2ybjNcgjGbJpp3YKlht7eK7tRcYT
-	Xtjzse3jV/ssqqPojYUZctyv2V6zyaE=
-From: Hongfu Li <hongfu.li@linux.dev>
-To: hannes@cmpxchg.org,
-	mhocko@kernel.org,
-	roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev,
-	muchun.song@linux.dev,
-	akpm@linux-foundation.org
-Cc: cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
+	bh=rbbOM9+ieScbci4D2m19EpRMBOk1+xoDTzRYZ8IQLl8=;
+	b=sNBjPHD81MV2lL6lnnTFq6SIlC+16xpHB+3aUraUvsPbqtBjXsXj/xQwF+g7nepuD4/+tb
+	2j/ufMa6u3AgVNYGwejuNOVOaz08sgvWR3fVjHDGI4f1K/lDE/ICfzkDilpXBOAbhsZ3Xk
+	7Wb3ZITWYWaTHyP4OakcJGeUAaIudO4=
+From: "Nico Pache (Red Hat)" <nico.pache@linux.dev>
+To: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	hongfu.li@linux.dev,
-	Hongfu Li <lihongfu@kylinos.cn>
-Subject: [PATCH] mm/memcg: check kzalloc_node() return in memcg1_init()
-Date: Tue, 21 Jul 2026 18:09:16 +0800
-Message-ID: <20260721100916.76822-1-hongfu.li@linux.dev>
+	akpm@linux-foundation.org
+Cc: npache@redhat.com,
+	david@kernel.org,
+	"Nico Pache (Red Hat)" <nico.pache@linux.dev>
+Subject: [PATCH] MAINTAINERS: update Nico Pache's email address
+Date: Tue, 21 Jul 2026 04:18:11 -0600
+Message-ID: <20260721101811.115954-1-nico.pache@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 827B41C000A
-X-Stat-Signature: jbo71yk3krcxcwmic6oy33ywbrkwnoco
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 7A0B61C0005
 X-Rspam-User: 
-X-HE-Tag: 1784628573-407220
-X-HE-Meta: U2FsdGVkX1/8SXVgOqbWvNTS95eJfPYBTZm3vK/SRaDIfIFiAQYJ0EIOTg5zcTdh6GW/kC1waaFwmBvLch4Z8zQOwvOwg6nbwISLvE8FNBhgq9eHaE/3M3p3luKgcJmv4qvIl5jb6VNSNHf+BRdFm2e/Ijkc92N53pspl2LTbfsjSSRmnHj1DSApetcy9CK0R//dIgs2V7U5ECOqtz131R1KirIzQZwQ/AioNNRaT4JdhmBRKYbcp8yA1OQMaVPZ4sl4OD09vTiUWbUh5ZysDUtoFt2/OaYSC+hx4QBUVLb36zYIFtRdFMGsJr0XNnzFY3c46XaYMWDlue2IMLIwOFn1VIVtNuZ8yqnpA3xofq6yFTP/xyehvGoONfBaqBnLhYo+9xgaxYxXNp6tyj/74KYI2ji09eZVLNyZ0x6yHrdWrNiKfm0EoNqz5Uarx1+iPhA8vgQiwPz5XbhemAgLDeh5MUGTFYdbb4kQngwqYLUD/qj/VX2IWm8E/b/IFulJneVFwZfL9NeuF9yvq0oD99QdEFhLW4wqYH7yl+gdtja7ohE84KWA0HSqVV6DwKZ5N+hgtx2gVtk/wtcJSvkkoEjwnX5EmD7x/AxUvY3EcbPXlnjCwbjvtjq0Roqi+TD5x1++oGwsmbsGsC2AwEEKp+WbRm0KybKoYTJRzcTjVfDFVVz2L61PJoaM2DHly4yZAzL62MUY2O2uq5BlzSvob/1FhDxCs5yQKEX9LtoXawFWg7/9FOz+DvT9zJcdXEH0WSjN1B9E/BbjiqkRKdsMa0n5uKnB4Z3HfWdh2GMUdDhaJkuULqQeoKMa1Co1JBenzeYEpqgEoq3sg+aRxenEKBFb0Ha2G0xrQLfxaCu2qxHSwIPGw0NFQAGiWtr43TgxxHnaEkKl/NkZCgwjHu2b0sY125/SRZ8okOttnW0DPWNIzWWm8gy5r/dDHDT+Hu/AEPVN9q6RIQ7OQEyeBq9
- S7UPV+xo
- oFX/B00z2AsRBvucoL5IMbRaxQh/ZyXOZnLZoOi49Mbf5IlZ2x0lMuCyn2ss/6TUbuUMigDM3mQA9NxgmksMx/ZZg5ViKxRvDoF+K2V/Tk/lZbsaPlQ5sNnJnUgT7lTsfx/5M7X1MoE5j1wA8MFKO+PJQbOliiQEnZszUJOWIdJSVsrk22Hoh2gDhTYRIui3cxVL+6ME7ofSvirp3K/66E4YmIqWSmrOVjH6ChkuuHYKmXi9JSaXapf26Hg==
+X-Stat-Signature: tennmypb4jnptxxntgcad8cpazec48hw
+X-HE-Tag: 1784629022-209550
+X-HE-Meta: U2FsdGVkX1/nZMMTGT1ja369hh0lBsaMZjr3jPJ8C/sQE8wEaHClo/3kUBcLGt1iN0+e4qt4qqXxU1k8awOfy2lDjsuGlZ/F7ZTVLh+HMTn2PsflHhuf2QfJRVvM4FsvfjSQYGwEzxnThYmboGDJdFG6d/rDVnBnpwttTiEE8QF4HEtgMEM0qVh/fXcjQvsGH6cZz2yWFWGPd39WEnMAKqf67paRrlhqBxBIJBxVL94DF8zWUxB1FZCVTG/+XGmhyQwMrvRBo9KcGCVcgb/kfqZCjy0hK0JU2InItt065DgBViWv+O9Op5m5QAPXpjGemB99rqknzD8sIQhyRNCfmEyrRNxYIYC7CFZRAAgf1g6ooZ2DMA2RLeyJdvB5MeuJSb3z5T/zGPHt+G/wuhemITtv8BpxHp3CFIMo01PZlKQSiV+7N8DWENH2ud4LlpGgns+3UUlz8EgZkVZTHwX0sy7t6BMEJ8t63rkRmYM6OjnEEpqQ2QKFb6DSp0AZfIbYH8tFrxKwmpDC92/q5yM2rR9yGgwpE7Q/2RsiJbWkpmcb0eGvgfYop5J9CwCKtfN7/gRntEqX2nXNFapyZFhz284ECFuL5NqiVvg41tSMDYBcczS0x42mc7Q7U8hz5BAnPs09LcjbTsfKqw+AroFdViwdNTPzsCmd3ZpuH1B4l0ZCpiMgYIpxc2Z36q4AdFkWklQkmm/BxzfkNZhBRSO8Qyl93cMRRGqNyJpN9xGEe561WRzKDEm0vVZcobYqh8lGgRyoGmZnA+p9+H2jdn0PJRr4UyYPiWVRefiBiZBJFAw4/pNRqDjkNGMvS9i1l/n4OEVqFz5z2c8FBgFgDD/qd8mhyUDF0t1s/PW2J3NQur0O9yZ5ll7hXyi2OTMsvPuZQEjH+1uT1FNe4oRMF2xgv2mXEhxpIxti5X4lalwGD70bid23gGHa6wuZ+i1nvl1ytYQIPGO3JXyxCkrU+nX
+ AgcQ9XCD
+ a/vE+jFIlhr28h0wRjEsQ9C9bqFt9YY6BeDBAhaKEniAuU9A5FNA3h7amlR0BrbJiABVcs+b/tqXay203DMxNzOntmQokPfWckEOOzRsIZ3oV6EzgXpnnUUDCsIEXzkciBgUBOu+aLe4dXKP54yZluAS9nl8nLM+8CWnfVJA/th+wipmP5E/9OEEVa9OYNkNezGirA7JuLLiHINYOPVCoHEF32Mg4Xxx4H1qHPHLBFPm5YqFwHxdI/u2dcI6XcwjDiKI7LiBo2YuOHMDgtKcYJHGjAx3lqz3DMQEeyU1Sp93Je4oPPIwBj5CxWtYcRQEq8irK3oRHvisVEtUl1uRs7zRtm5S0yjRs/FMZtc5M0Qx8ONyhLdVeamfMXJl9RoNPWzSU2agGzp6YKVkM/5wFj+qzorVK9TUoq4civzl+uvtuU70SAcgczM9Fm9rde78X4rc96vckf25cjbJJyY8eU/9tw5k3PwB4fQWivF3aeyzlWDdR97oGnJgEeeE/BY18LTl/XpcmqPgsPMvAtplBUn6j0o5YTAWNwFNIOPTzUJr/8V1soSUmg7u1inXqGNrAL/tp8TqN9obOhTPDFrOVs2yPo6IFHeL/MLdtydsviaGgAknQf5iFBO5gOEuUS0pXtpnV83E+vKUAP33IJf9E44hKo/FecHpcIVS4x2pDJ+MNtqeRWPc+emv5EcgzyXNpqtt/UBKfjKWJ4bfbG33Uob5t5B2ON9P74IbQWBJizjTidhjSj/Y9ZBI+iw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,33 +86,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Hongfu Li <lihongfu@kylinos.cn>
+Switch my entry in MAINTAINERS and .mailmap to my @linux.dev email address
 
-Add NULL check for per-node kzalloc_node() allocations in memcg1_init().
-
-Skip the NUMA node when allocation fails. All users of
-soft_limit_tree.rb_tree_per_node[] safely handle NULL entries, only losing
-soft-limit tracking for that node.
-
-Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
+Signed-off-by: Nico Pache <npache@redhat.com>
+Signed-off-by: Nico Pache (Red Hat) <nico.pache@linux.dev>
 ---
- mm/memcontrol-v1.c | 2 +++++
- 1 file changed, 2 insertions(+)
+ .mailmap    | 1 +
+ MAINTAINERS | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
-index 2dc599484d00..33ea693c9281 100644
---- a/mm/memcontrol-v1.c
-+++ b/mm/memcontrol-v1.c
-@@ -2566,6 +2566,8 @@ static int __init memcg1_init(void)
- 		struct mem_cgroup_tree_per_node *rtpn;
- 
- 		rtpn = kzalloc_node(sizeof(*rtpn), GFP_KERNEL, node);
-+		if (!rtpn)
-+			continue;
- 
- 		rtpn->rb_root = RB_ROOT;
- 		rtpn->rb_rightmost = NULL;
+diff --git a/.mailmap b/.mailmap
+index 501d858cb432..e36a76e2800a 100644
+--- a/.mailmap
++++ b/.mailmap
+@@ -644,6 +644,7 @@ Nicholas Piggin <npiggin@gmail.com> <npiggin@suse.de>
+ Nicholas Piggin <npiggin@gmail.com> <nickpiggin@yahoo.com.au>
+ Nicholas Piggin <npiggin@gmail.com> <piggin@cyberone.com.au>
+ Nicolas Ferre <nicolas.ferre@microchip.com> <nicolas.ferre@atmel.com>
++Nico Pache <nico.pache@linux.dev> <npache@redhat.com>
+ Nicolas Pitre <nico@fluxnic.net> <nicolas.pitre@linaro.org>
+ Nicolas Pitre <nico@fluxnic.net> <nico@linaro.org>
+ Nicolas Saenz Julienne <nsaenz@kernel.org> <nsaenzjulienne@suse.de>
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 1ab8736850ea..22d38e288227 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -17252,7 +17252,7 @@ M:	Lorenzo Stoakes <ljs@kernel.org>
+ R:	Zi Yan <ziy@nvidia.com>
+ R:	Baolin Wang <baolin.wang@linux.alibaba.com>
+ R:	Liam R. Howlett <liam@infradead.org>
+-R:	Nico Pache <npache@redhat.com>
++R:	Nico Pache <nico.pache@linux.dev>
+ R:	Ryan Roberts <ryan.roberts@arm.com>
+ R:	Dev Jain <dev.jain@arm.com>
+ R:	Barry Song <baohua@kernel.org>
 -- 
-2.54.0
+2.55.0
 
 
