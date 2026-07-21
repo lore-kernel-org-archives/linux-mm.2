@@ -4,84 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D389C44529
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 08:39:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7977BC44529
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 08:43:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 66D2D6B00AC; Tue, 21 Jul 2026 04:39:30 -0400 (EDT)
+	id 38EDE6B00AA; Tue, 21 Jul 2026 04:43:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 645446B00AD; Tue, 21 Jul 2026 04:39:30 -0400 (EDT)
+	id 33F7A6B00AB; Tue, 21 Jul 2026 04:43:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 50EE26B00B2; Tue, 21 Jul 2026 04:39:30 -0400 (EDT)
+	id 255886B00AD; Tue, 21 Jul 2026 04:43:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2ABE96B00AC
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 04:39:30 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 85B3CC03E3
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:39:29 +0000 (UTC)
-X-FDA: 85012134858.07.27367C3
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id F254E6B00AA
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 04:43:52 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 670B8403C4
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:43:52 +0000 (UTC)
+X-FDA: 85012145904.20.727B8E4
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id A513D4000C
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:39:27 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RQol5GY7;
-	spf=pass (imf01.hostedemail.com: domain of linusw@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=linusw@kernel.org;
+	by imf03.hostedemail.com (Postfix) with ESMTP id 6E1AE20005
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:43:50 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=USYURl6k;
+	spf=pass (imf03.hostedemail.com: domain of linusw@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=linusw@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784623167;
+	s=arc-20220608; t=1784623430;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8d6b/fNRAVaLb/L3bgdgypqz8iTx4qcpmz29xYpDH2Q=;
-	b=I48LOlzyHN3VhJnBEKsXOlhtPcE7ntLNAXEg8o8TKh4wJgkAkCKHIU6h+MfvZLzCm0Kw4+
-	3kiJ2MNXOrJO1EBkPX9Y5iSgjLISNziAxp5Wo5fw500zJMWMvA4BrgqMQA1qv0yejM1QOh
-	KgGIk8qjvjnybQXcxnmk6sQ20YjrL/c=
+	bh=4YnrIcak9MnTuq1PIcIeffGKhfewNQREoFw5G3CgkVE=;
+	b=cka0XjLhREdyB9iS6dGNnY6O53trX6FRgZtTEyNP7rqGjd2Oq9EVu6fAsb/PNCSEZnkdyD
+	cjhFYSITW7Cbi+Y703IhIz5ElmQ+EJlvDJCTVTr74oCwbFmH2gUZg/e7r5LeT+bNQ68IcI
+	DH+ezDigf0+KWPlNn+Nnwwbps/Bpb3U=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784623167;
-	b=LgflpGLT26TpIGbS50vlSp6oc0PRYY1jJWH9bcSU2ydwLL+n/GNOJbpSXK8SS+j9lvYFrK
-	q384QRT7bqn3tXaLsMCWokG6E9cl+o+VOYkd2Oa29rikEbEXtcixb73WmjC2+iIaiwrwA0
-	gEPsF0i2DPNZeffUNH3A+oqQw7vVAPQ=
+	t=1784623430;
+	b=yzU/QENJS4PIvH/a0vGKG0moP/cc4mc11C+CfQIAwFdLXBx7ctKTIylvQucbXvNm0n5tPJ
+	kkkPnL2H3ImdVhkOIFezg5oIfxF+I9vT08LIRf8hrVUr5F3gXzGOkCDnYmx9AqoIcWOBg4
+	ol/via0di24bRNBc6R5aRr+ieC/vWJM=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RQol5GY7;
-	spf=pass (imf01.hostedemail.com: domain of linusw@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=linusw@kernel.org;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=USYURl6k;
+	spf=pass (imf03.hostedemail.com: domain of linusw@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=linusw@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6BDE244E79
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:39:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 503191F01558
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:39:26 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 98E144502C
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:43:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CE361F0155C
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 08:43:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784623166;
-	bh=8d6b/fNRAVaLb/L3bgdgypqz8iTx4qcpmz29xYpDH2Q=;
+	s=k20260515; t=1784623429;
+	bh=4YnrIcak9MnTuq1PIcIeffGKhfewNQREoFw5G3CgkVE=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=RQol5GY7dw3mf/3qmFKPRgYp49U/pocxHZlua+sKWiNCieOxxsxJb72anONsL6mXc
-	 jktT0jHdpsiSq9hznr9t4bXWV/Rp0UYN23KppMrK/SjFMIJ8b/KxgTvVgUZoKjqGLI
-	 YzLwvScHLnGW8HaMBNNWkl8ztBD9WcXcwVGyiYbmTrlz5o+johQtrdiVusi7cyFJhG
-	 hmMWcSqtvHwrcw2k0d9w5he7Y2zKMZCM601eQ7YOWT3uZDT1OHQ9ZSSL4aVPfp2aTe
-	 XBzW+y/HqXvWdBqw2WuoCb/ywC55w1WLoRtezyLo7NoIK/NRiogAMRY7K+Zq2Wp0Z4
-	 Jj7jFhiTtyYdg==
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5b013084dc2so6618585e87.0
-        for <linux-mm@kvack.org>; Tue, 21 Jul 2026 01:39:26 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RoC3OoKSruapSRKWhhttR8+Oeuvaxv99XeEeHnqfkR5DqgOeO9pATrXMzIybER50QTpsNxXV65N2Q==@kvack.org
-X-Gm-Message-State: AOJu0Yyjd6Klq3ls2SzdIzajq6QVoigKV+wCqERYRguDr9CsqC1ezb8d
-	Pejo3I3WhmHxkFfFFfTEOe2etSSZchr30hbdbO4ZirYUXJR53kC7MC2yDDCDA71oPKpOttSHwmI
-	w7scYpL8vh++vV8DERXWhtgNonMoWLsw=
-X-Received: by 2002:a05:6512:607:10b0:5ae:ba28:a56e with SMTP id
- 2adb3069b0e04-5b28f9aa422mr2369081e87.35.1784623165029; Tue, 21 Jul 2026
- 01:39:25 -0700 (PDT)
+	b=USYURl6kL/GvGuhsLkNzCmOf95k2kPvCE25wF4wem7mnhFXq0MaGrMDyEm6Rm3Oi+
+	 i9TjOtrHE8C+3wH6xrI9W0YKGB6RvSS8rh2RT7MckLPo0EFXa1dcZg1Vg5UCbXOZTr
+	 8dH4AbH22PxpiMF6VP+IGlGaauP5R3Vi+lTwEYUy2Cy6NTXtvdf6KkEpUmcsgnEB9T
+	 Na20C2XIockmKxlojg/uI8BDY9W5LZBqfXw+x/mq6r7pigTIaarkpTHf64/ExxD9GH
+	 pXWax0LzEdpuNJUPujmg1wV1QPRmyA59ptfETIuy2YUv4AKtT9aP8UtCGsOQ0ebl43
+	 eC9LMg4wEyz8A==
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5aeb2bc82ccso9519341e87.2
+        for <linux-mm@kvack.org>; Tue, 21 Jul 2026 01:43:49 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RpFvbvA6ViHXX88TSn4w3AYDo+XQ4R7cDIfwvyPkbNzv/KDAhkafkizjJm5m03ErkcJ/Cvxs0AF2g==@kvack.org
+X-Gm-Message-State: AOJu0Yy66uYejF9d/Q04F5lvwUIKcCG5IGDaUV2dSpYAIoWzpTHYj0cn
+	rQdmBtq6C3FZ5dWpOgNFq+tplgZhocVGnVYT0fpxx+iUsusLrZNBTrdb3eJY0ya2xfzoX0+TFMV
+	/a1MlWVsZqo/lLlJJrxb2QvlBsbOOeN8=
+X-Received: by 2002:a05:6512:124f:b0:5b0:f9d:f7d9 with SMTP id
+ 2adb3069b0e04-5b28f9a723emr4081425e87.45.1784623428144; Tue, 21 Jul 2026
+ 01:43:48 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260721081858.1169276-1-ruanjinjie@huawei.com> <20260721081858.1169276-5-ruanjinjie@huawei.com>
-In-Reply-To: <20260721081858.1169276-5-ruanjinjie@huawei.com>
+References: <20260721081858.1169276-1-ruanjinjie@huawei.com> <20260721081858.1169276-7-ruanjinjie@huawei.com>
+In-Reply-To: <20260721081858.1169276-7-ruanjinjie@huawei.com>
 From: Linus Walleij <linusw@kernel.org>
-Date: Tue, 21 Jul 2026 10:39:12 +0200
-X-Gmail-Original-Message-ID: <CAD++jLmY6H1PeQdpLZP6=m1xEPKWdUmmmAkM_Ncy_WxL9mKYRg@mail.gmail.com>
-X-Gm-Features: AUfX_mz4M5Zam7PLq9pt0g3Mh8c9Fbd9QZYGzQZFZyZm2-OUu94zNvOVUQ1YcEY
-Message-ID: <CAD++jLmY6H1PeQdpLZP6=m1xEPKWdUmmmAkM_Ncy_WxL9mKYRg@mail.gmail.com>
-Subject: Re: [PATCH v17 04/15] arm64: ptrace: Rename and clean up syscall_trace_enter()
+Date: Tue, 21 Jul 2026 10:43:35 +0200
+X-Gmail-Original-Message-ID: <CAD++jLmHw3ccWQj-AWvgrj7z6iwPk=MC0-UMaUqLeNpsbxW54g@mail.gmail.com>
+X-Gm-Features: AUfX_mwlDg8vIJsXHYz3fmkT6fCMHFLIFkEllyMO4HcnVtqsYTlYVhuDg7LEE1c
+Message-ID: <CAD++jLmHw3ccWQj-AWvgrj7z6iwPk=MC0-UMaUqLeNpsbxW54g@mail.gmail.com>
+Subject: Re: [PATCH v17 06/15] arm64: syscall: Rework the syscall exit path in el0_svc_common()
 To: Jinjie Ruan <ruanjinjie@huawei.com>
 Cc: catalin.marinas@arm.com, will@kernel.org, kees@kernel.org, oleg@redhat.com, 
 	luto@amacapital.net, wad@chromium.org, thuth@redhat.com, peterz@infradead.org, 
@@ -92,14 +92,14 @@ Cc: catalin.marinas@arm.com, will@kernel.org, kees@kernel.org, oleg@redhat.com,
 	linux-kernel@vger.kernel.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: A513D4000C
-X-Stat-Signature: u7x18tmkqrhqqkpsq6tf8nse1wcot87e
 X-Rspam-User: 
-X-HE-Tag: 1784623167-266811
-X-HE-Meta: U2FsdGVkX19+e7bEcy/swR7/pcdf1388h3tdKxGkbYUje57on0Ifn5djhqytPpR9XSTosODb1gDH+fZM147zlDrKrhub4g+SHvmHB3+qxG560ubelQmJZkhOcmM4Q0oaDC5RPOcMtOa/jL2fi8g/HNpPN1gMgqBtcoHHAfJcxCKb/mV9/epp9ez+n0Ic2LfDhKZLlMu+9dYCWHMX3Sll0XophP3sfoNNPj8nOD47nAvVVNT1a21D3OGWgpAhBfBTWW3gPMApMjwkd5w4MrCXRaCC5ZqiYaGJ1bIqKDKXAth+R7gJ4kpVkFfjp2bRkXvyQNIrOFvF6BrVqpE1ERzUTM9zD0IU3Ku11XIw4WFzxXaEJ+riQrsdCEAuYKkLXlOIogfbwUTfBZpHLVt1lg5EregU6BoSgd50Qraz2Uk4M87VuDYrdViyfKYSb+w7fDrcdDICs39Jbqgjxd5vqS2GHFkoObj9+MQsqJC8FnAtqSzvC22jrRKvQxUJABqi/3x4TPdkVVjBK8zeVewkpgL2lw6C5JF2UV7q+cE7HL2Hb9l7fP9I2F3N82nZEuU3YCyb2C6U2VBFKcONSmfsaHZ90IBqRwhb3rBjbQn9/s9U7NlLpIyQBg4Ufep1VxtHlukPMdUR6xXW8TWHrjb8GEvfayt40cAsq+7JE/LnqhLidaM33AxkKr/EgjKqydK5rfwJg9SdpNHJvTrpdxKCaKf2pHvjVtyY9TdaoS/DcblYNbcYgG6CdPVZMi0A9dhcNUKDHQ0vA4CkS7FgTlI7sstomxWQ7LU+02l5i2ijFasrniAkhIopgw52vp+HXTybyZINDnMn0tteIUBs7eUusxhx5Y8Cpz8Kpq3kkAyle+KqIXQ1Xo1NQEEtmWPQm0WTN8hQql/IQ0GmO10NMnQ6PlqvvtWbqjUk/dz5z9C/YyHJxlZ0TWRcKCppMqnVQEiQOOKl+I2tImaCeQjfvog7pSu
- f6AsyVcy
- NVi2+OW09ExSBlFPF+ndloFAjZvOWFGr4uKrDS+wH5kCnhIGM3inQ5+UTSj+myZ/8ayYDP+vMYwYdlVS5N3Umadm1z5NMTGeFAqJtg5j/6HvURu11E0p+q65bRGD7Io4Wa74key6mLzGWceycCp5laO68uYT9wR1ZY0X2xrhkAZZf11YuBdk47kc5B1KZqhiqyjzMDX99qScjcNAYSEA9yhIFuCtypeaLVrHXQKhS3tUlIznEDim/PbxV4tell7pYoJIvHyMzOtyzYJW/bu02F2CbuMwbJ4swPBudQn3Cl2BV/jk2h6khBxMYCgsOsxooOSrtPBAT/q8cYeSQK+sEzbD89a6oMLucOdWFSNAu56SioX86STYm9Cdu8hoiHVktzy6B/um9cfoRa2L45fXuuH8qjfVDnQp5sFRwtgr6Uf/62k2JE9hYWOluV1yzMksqaXsW5zV3lthxlifiuzUdDUTxjw==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 6E1AE20005
+X-Stat-Signature: f8bet46fsemdyook9h69rbrd4wjomo5t
+X-HE-Tag: 1784623430-635079
+X-HE-Meta: U2FsdGVkX18B2UJwTgeUlzATpMPpd3VLK5grr8zPdk+Ahxj7/Z+sbdS49PkHtuKuAKZStgrP00juSE9yWYDHgikjnJXGoKyr29WMOLCooT530FqQpkjYzvWzF8ErOxqbjwPewE5YWIq006+mDDVYyWRt/LDeCwj3b52I89WiDzPB+WYX/KtyH0uGPsWmZ4qaJTM01YAueanQL2S9+Leb+Q0gsYAPI2fPmdbBDziTYDhUZeezkIscjmaiNGQRclzcUbqjgtajeHAs6wdxJq6+QiuYHroc3tFSug9CEZwlSQZrllK6PBZXLkJjC2yFwl2qv0ihSqJpsMTyQLaxii4kkK1dwsWmtF4oNjJswjXQgqEUxnJoumi5eXRuwPpMPDHKIzwsfMmuwIqOwcpjlN/PvkwZLB/J2BCfxTPhk1NF+IK6MF8EyZ3RGejErOpsQ2E/F3jV3H26PW0PE23u3AEM5HA8ZHldZWZbNmHna/1c2tvUPS2U/iyznDHBu0aNIcs+vYyubSdQ65mwyGjumEz4RbobWrAdBL+6CWLmhEXX8bBHmVHybQd/RLKLRIYU2VfrBLtJRHAkaKolH/LO7B35kSICKM3t5GOqS4hIsUBdJPVVeljYv3cTa29P7JgmjRt6VW4whGjgzlArZKwJAybUf6UnOnkwURj7xoAWCzMTDNxn2s9WZpvt04dGe++nwx/CwZXiNTaXQomv+kh9iL+rAgnuRYNvufwX//HHh4y8MycsaySm5TbNxzr2PKZKacPEKaK03zrHFaM+Sz5FEdSS9PwyQie2rRThBovGAdpnZkHYt+NAo3VSJApNmoNff6zUX2S//PC/ohFpfcPyPyI4g8sKvGfLOinJSdn+IiEDmOA/KMZvMsZCh9xWKG4tEK586ZX/tZSjJLnAo3muhT6OgvulhXZCEwWSUoaxUBrG4pO6tXPkk/wZ2inTN4oSn6rdZdbWgAK0z3HGt2nZNeZ
+ pofBqCZh
+ 7YLqLC6hEMnFY5D+oa8FJ5id4jpIpPe9MZGXdcYCj9CiWw6GTxxwa2GZY6ryAaQ3Wyji4VtiwqvDEGmGz43LsyJdFUi6JiQ6j084h8sE4Rr/t4yM+90XLlwDbwpcCpp3/aksekJEhJoErPFUWunDkpgsSKeyic5PFBeRxfS5JjptoWNBXUcrpKuWD6iXPmllE+xC1J+0Sbe8t3IT8l9K+IeSSbKSIrDn7Ih6s1CELJUXN2NQPmsojKwCNZldMC5jZLaWJY1Hu9pWiuvOOUAOpgaogvlPHileukiAToPLCX5LmCN7c08728DaQhaLBkgCIJA6me+iWa5He4WLgRc6QP584GmVuVKV0q39U/RDHEn86jkoFZpIt+qqKHH9hhbhHWvBm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,24 +110,29 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On Tue, Jul 21, 2026 at 10:19=E2=80=AFAM Jinjie Ruan <ruanjinjie@huawei.com=
 > wrote:
 
-> Rename syscall_trace_enter() to arm64_syscall_trace_enter() to avoid
-> name collisions and clarify the boundary when arm64 eventually switches
-> to the generic entry infrastructure.
->
-> In addition, replace direct accesses to regs->syscallno with the standard
-> syscall_get_nr() helper for both trace_sys_enter() and the return value.
-> This decouples the tracing logic from architecture-specific struct pt_reg=
-s
-> layouts, aligning the implementation with the generic entry pattern.
->
-> No functional changes intended; this is a preparation step for
-> converting arm64 to the generic entry infrastructure.
->
-> Cc: Mark Rutland <mark.rutland@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 
+> In preparation for moving arm64 over to the generic entry,
+> invert the nested conditional flags check within el0_svc_common().
+>
+> No functional changes.
+(...)
+>         if (!has_syscall_work(flags) && !IS_ENABLED(CONFIG_DEBUG_RSEQ)) {
+>                 flags =3D read_thread_flags();
+> -               if (!has_syscall_work(flags) && !(flags & _TIF_SINGLESTEP=
+))
+> -                       return;
+> +               if (has_syscall_work(flags) || flags & _TIF_SINGLESTEP)
+> +                       syscall_trace_exit(regs);
+> +               return;
+
+What about just:
+
+if (...)
+  goto trace_exit;
+
+This is easier to follow IMO.
+
+With that:
 Reviewed-by: Linus Walleij <linusw@kernel.org>
 
 Yours,
