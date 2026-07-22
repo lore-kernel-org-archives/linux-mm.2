@@ -4,109 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C33C0C4453A
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 20:38:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 696E4C4453A
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 20:40:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9679C6B00AD; Wed, 22 Jul 2026 16:38:27 -0400 (EDT)
+	id 5C2FB6B00AE; Wed, 22 Jul 2026 16:40:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 93F866B00AE; Wed, 22 Jul 2026 16:38:27 -0400 (EDT)
+	id 54D906B00B0; Wed, 22 Jul 2026 16:40:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 856C86B00AF; Wed, 22 Jul 2026 16:38:27 -0400 (EDT)
+	id 4159E6B00B1; Wed, 22 Jul 2026 16:40:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 428716B00AD
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 16:38:27 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 940AE1A02AA
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 20:38:26 +0000 (UTC)
-X-FDA: 85017575412.27.F7B71A9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id C2FD5140008
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 20:38:24 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X1BPvpNW;
-	spf=pass (imf26.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 153776B00AE
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 16:40:55 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 901DC12025D
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 20:40:54 +0000 (UTC)
+X-FDA: 85017581628.14.4B7D763
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf25.hostedemail.com (Postfix) with ESMTP id CE4F6A000C
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 20:40:52 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=u905XyTg;
+	spf=pass (imf25.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784752704;
+	s=arc-20220608; t=1784752853;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Sv1yin451FNf9IBjRzFJe2OiUZg4U4oZrwcgx94tkak=;
-	b=LokZ0HFDuwAIeLf61yG3/bw4BxGkS8oNT0xfzhzF8dbdP70uoMBh/i6jO34qk9VOOlY9UI
-	uGkTxKvPSFoa3bpNROXZt96OA0ii0vuA4Ewrqo162a5T1qmLKkeU49L4tDZ4Wc1VcgKMYg
-	9/sUTZVHCzEyrOzVMtVNBf3VPgRTIYo=
+	bh=aKBipMgFuCrzcHQyl/Xa43Q9KRF4LHRa/xmzRHuI4is=;
+	b=wT8qM97IXefBMkZa5unGwrDYJPYb4HuBKl7ChkeDtrJMNghkZ+Nk4w5ynev0n1CUrOoCWz
+	a1GyJGGR+hzce1dt7lzRXJmMcLaCpWoduaSy/dAv7GljHjFlaVHhjfOhFB5CjZuWx1cBep
+	1doc8VCWQHLvmmMgUCz421xR/2jBYSw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784752704;
-	b=kBWNd1S/F2tJEWaxJLhdko7emErSriJClJpafyAtsRfI9WoyMU2fhz/Wc9eyGVdHxVVXTx
-	2VsLV9m2u4MlOg04x5tMbOW3ZqHC9PDUbAJMgNknMds7o+u/cGoNFMC9/LbzfqhF1TNJ1C
-	XWpahdhztHY0AF8FLaOPsrYegN1joSQ=
+	t=1784752853;
+	b=QlgP7lOvL3YjutKKAk+jDWC3/PAcrHL2mjdGTN9CZ6HumaMHn0wDMd7xJL4SAAH+YC7Nuj
+	W8V1NAV8hIRAV8dagNLMwZKbdUHkf9j9+KP/JCDe7v5SJo5YDPrzzfssFg9kb3fgtB6J+H
+	W5InCR4KaU+10CdlKqVVmIWdP/JZcLM=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X1BPvpNW;
-	spf=pass (imf26.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 19596600AB
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 20:38:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4F041F00ACF
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 20:38:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784752703;
-	bh=Sv1yin451FNf9IBjRzFJe2OiUZg4U4oZrwcgx94tkak=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=X1BPvpNWr7GEwW43TDS8VWCrIpskjHDIP2lT+X8LXuU6TwRlX9GTXQRXAjV//ySlM
-	 P5Lu7sD/gF+JeXFlOae/XeqcfP+gjOt8pq0x//nOHWZjnDJenxl7tLLEnugrPbNfBl
-	 B6V5IIzeTbFrjtrRf0vJYbNAoSa2ncA08zERRcd9IuaQsFSLa/QKr2O4wFMydSIco4
-	 8IC/KliAwPwYhCm88pXIc2occfPnzq0GmnPd+jPxa9QoxhM0T3oOcMXzxu6VqwKpdG
-	 jTyliNPWujiZNFaIo4q41fXhukRwIYSkKHfY3YKuqbbBlcWlqHnxzS2P9uHSa1UxnS
-	 plSglyu7GoDoQ==
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c169ae1cb26so1150759466b.1
-        for <linux-mm@kvack.org>; Wed, 22 Jul 2026 13:38:23 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Rqhar/e1bHb2Tj3ofyuLz02UohW16olTGQH1tSv0WpG8yIirLUGA82ky2uMJTnDNJxIh6r/hd4NNw==@kvack.org
-X-Gm-Message-State: AOJu0Yw5O6CzDPSDmYwseGzr9RkRqcVDswE8jO22Gu6OfWkES3+oDgd8
-	rx+/ySTRvvHipx2XAnFurTCf73w1U8ClL1x4WEMMDQTA3Vwlh9Op6RIq2NGPHpHBPRQOMa1hfS0
-	GOrin4nhXX/i1HW+I1RXVrRkjVZwNVOQ=
-X-Received: by 2002:a17:907:1c26:b0:c16:242a:4744 with SMTP id
- a640c23a62f3a-c1c30e5a414mr272454266b.17.1784752702639; Wed, 22 Jul 2026
- 13:38:22 -0700 (PDT)
+	imf25.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=u905XyTg;
+	spf=pass (imf25.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A41A51595;
+	Wed, 22 Jul 2026 13:40:47 -0700 (PDT)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AED0A3F59E;
+	Wed, 22 Jul 2026 13:40:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1784752851; bh=MW7m2jjynF2iry9O2w1L4Qc+wiQ9bjVZq6XG6lr4jCc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=u905XyTg55ekAxzZmoFPwtPfxi5ZSTHzMYONIJRUH3y3Fm3Ceef193xeIS/KNVet8
+	 yxQtUrz5r9bnDKhbmP7Q6WsDlqh8n+se4+8VEFwxrwJi+9h/I/UO3XVjm15kHRCI43
+	 GxZw79GmfpaXJMh5WlC6vJc6NU4kBvXcntwV3zC8=
+Date: Wed, 22 Jul 2026 21:40:42 +0100
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Dave Hansen <dave.hansen@intel.com>, Yeoreum Yun <yeoreum.yun@arm.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	David Hildenbrand <david@kernel.org>,
+	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+	Tianrui Zhao <zhaotianrui@loongson.cn>,
+	Bibo Mao <maobibo@loongson.cn>, Anup Patel <anup@brainfault.org>,
+	Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Jonas Bonn <jonas@southpole.se>,
+	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+	Stafford Horne <shorne@gmail.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org,
+	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
+	linux-openrisc@vger.kernel.org
+Subject: Re: [PATCH RFC v2 14/20] x86: mm: skip pud setup when using generic
+ compile-time folded pagetable
+Message-ID: <amEqyjdoUnD5lYev@e129823.arm.com>
+References: <20260722-dummy_ptxp3-v2-0-d9e4bad31e0a@arm.com>
+ <20260722-dummy_ptxp3-v2-14-d9e4bad31e0a@arm.com>
+ <0ea931f1-4801-4d32-b6ce-4787a8d3daa9@intel.com>
+ <amD7ab_KuJPdBQBh@e129823.arm.com>
+ <6f5060a7-0a64-49fc-81a3-ae88729ef794@intel.com>
+ <amElnEbvRTjv2hyU@e129823.arm.com>
+ <3620750c-54d7-45a0-b067-bc813dd3cd9b@intel.com>
+ <1064CF47-9371-4D9C-B2AD-1457CA41CDB2@zytor.com>
 MIME-Version: 1.0
-References: <CAJnrk1bG6ddP6-dgXpGBRGnCH49oTMPwkJmF--+gefmy+zBo-w@mail.gmail.com>
- <oocwnxqgd4klrem6hkya3sddqoxkosml4ysz23if4j7wj2qdwi@5skgc4ftu7io>
- <CAJnrk1ZU40tRDq0z3yM0+yv=KhiZ-fNjUTO=ccv1tuc0xDx2Vg@mail.gmail.com>
- <4fsrafuhoqgoirlt2sy6vk2ljvb3tdps4hqbcrm5qc2pr6tlaf@tboejm2wdq2s>
- <CAJnrk1b65ypz4bdtd1rTQBYOpOEP+DcoZJUSL87jVDssW1A+pw@mail.gmail.com>
- <nv2h2dd2xoj4zjfvnhsxud2p5e2uw3og22ovqureik4pey72qb@i75tn5ttavfo>
- <ue5xd6f4nfggwodfhbqaispmr5aq2dyszezvy26bl4rtsk6xii@uceqazdioj3o>
- <CAJnrk1bwabyWY+rzzSKfKWp3rivcQm=zae3xzNSZc2hnLj6-Aw@mail.gmail.com>
- <aljxUvui60dm3yvj@linux.dev> <CAJnrk1aTx44=jy0ODHY2sHh16bKsYkwBKj_O-MsnZYjXGW2cCA@mail.gmail.com>
- <alpfQxaYs5hQ0BaU@google.com>
-In-Reply-To: <alpfQxaYs5hQ0BaU@google.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Wed, 22 Jul 2026 13:38:10 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zMwp-wxJz6AjBSEuW+vn-7ff2VwAdHpVHFAqy0skgD2OA@mail.gmail.com>
-X-Gm-Features: AUfX_mzbIxhaji4ACa_s6MziyJYJfdhM5If0Ugu2QBVMrEAPT0o4Q-nTgVPbFwM
-Message-ID: <CAO9r8zMwp-wxJz6AjBSEuW+vn-7ff2VwAdHpVHFAqy0skgD2OA@mail.gmail.com>
-Subject: Re: [PATCH] fuse: disable default bdi strictlimiting
-To: Shakeel Butt <shakeel.butt@linux.dev>, Tejun Heo <tj@kernel.org>
-Cc: Joanne Koong <joannelkoong@gmail.com>, Jan Kara <jack@suse.cz>, 
-	Miklos Szeredi <miklos@szeredi.hu>, linux-fsdevel@vger.kernel.org, kernel-team@meta.com, 
-	fuse-devel <fuse-devel@lists.linux.dev>, Jingbo Xu <jefflexu@linux.alibaba.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	linux-mm <linux-mm@kvack.org>, 
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Jesper Dangaard Brouer <hawk@kernel.org>, Yunzhao Li <yunzhao@cloudflare.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: C2FD5140008
-X-Stat-Signature: wkgz8q4smtsytro1wwbh8wj1jgyphqzj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1064CF47-9371-4D9C-B2AD-1457CA41CDB2@zytor.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: CE4F6A000C
+X-Stat-Signature: sxrrfcpcn8bwm7yzjn93gg5gmgtgccst
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1784752704-979477
-X-HE-Meta: U2FsdGVkX1/FcEKs3Yk2RJQ8GZnwbBYl9C0kzDNtiGWQSVaV9ZGN0zhFjQaWwm3QsiLEhdu25O7tm3ea8dk849+oRQCsovpwc1a9sFCBEvuqrmm+rG7EQGMzf1KFgQeiLO3g3UxNXrK/XoOQ3tEmPT49AeV7FRtjtQzRxaOgHjKRt5o51pQduz3ZOQDSAAmYtsXkXJROB74QYtknJeZKylcNFncaZAH1KYAdrpBjME4Nj1EF7AhVZ4bcAojdWTSz2qO4IVKEU2R97ggnZaj+Bam86G3KBvKmXfYMAfSCz0f+FSrWFp8thNsrpjT6JrfEuZkqifZVkpXfB2Poa+POt4CKDSNTOiDQG+pEG/c62d209BQsaauH0HeVDethyPD4qSnetX7f+NJM5saj4wwExE7NtjipBZEpLmF5lckoJwXKiOuaT16nAp058jFwPXqf+Ksbj1GujmJYV06niw0VcpbAl1VZBF7gPvXACV/HIoRffcrwY5rINwQmfx/KvVHyN1hWioeISeerx8VeIZHchPIlTUtNyo2MvRLR28nCzvwluWjodU2FKiFImZ3t8UL6qXCurzSDRx9HIYzEwoMgXCaBR28vPSV06tELVnMtnjTmJ+x7e8SmS4eUaBbyiAYQTCvaI5pcSeWes2l8d1FuilJvwtEMgfC9XiwA85Y1ilouTKbfR4QvMDLIasgSzJXDIQGgC7a1zAntNfjIktO1mVdPYmVATyNXvYcHIwyQfXzPt0gnZ5QloN1n32Pp9QXqj0nRQ0l3L+YkAEC8fTFkQimtcTKbVud4REtoQAlgq6WADgAc4OQw5deUCEpg4ZgriKte2OXKPcowBkcldeUoKOpedfCvEyAC2u4ZrvPLpz1dXVu9wtgU9iCOve57GsGOkxbrUcvWmPNUmv7yUsZuXjGJTAqZQFz0TM4/1OVMa1izVVR4Yy3dkN5DPvfgxRX3ysTtvklufArSH3+siOF
- TVDr8SJU
- seapEYlSReSN+bxVOeaW2YnGuQ5t1O8UI3kqo/Bfw9zEuhRUWPPD0+QQKZT87GG6vMSTNHUrqsOKhAxt1lQiA555OxRV/7VqkIcKsPpl80g1sTeHz9HluDD+MqmrHe9//+OmqDhr9vNjQutSMiB+w00g1s3A85T6IyraVqll2fxeiwDxT1wejVwgvMqAj4dMCqm1RYUNvYE1UR4cbG1CA7wdcOI3BO6p9fYJlZSDpwNQ7mNyIhR3YDpEcZsuSPL8QEVxJT2tK/2k0vegPUYuRdc3PU3onVQxrzu9+1J5trCGsmhvwJMUbbXnli2/aFJZT7H/zXO1cWxRocwg=
+X-HE-Tag: 1784752852-96759
+X-HE-Meta: U2FsdGVkX1/tRHD91/T2eZxS5Jws2hE2gM5Mo/BAWdHKnwwtRMOPjwfgPfQUNo1mwnaHcCjjrjoFNqpfzvvsAt+gIxnLR8F5r9JEgQ+bjolDPAIZ+yqmauvA0hhKsQ3dYYMoAkWvLltMhFbaRiig2S+jythqVJ4tfKDrzPiQg8rtgnAI6p0Rc6ES29mNYAHC6gFLBWyqRWRxdSkWExWL1CAIfkVilcdtEzDtx+ehfzPGo1TaAp57WJh+LW6GswOaPTkKFV0SFSld8Y6FWSG4T4aK5w66nh4bXRPfmkj1lo0X1qAL4QarDrNlDUg5tcqQIgi4y0q7IQL6W/45g68fykVWW5m66uJ8ahOdh6uwV94NDOwgR1CB6wJ8dhPoCcx9rHUBKTa3M/lfcH3adNLF+J9T88bII6ADaoWeruRKnt4Swul2r29kzarFzRVKOpHF5xYTkiUVnzlqyEtXWsminc0wfSIfipVbTNUqx3sTRSfwZFxESaLhgAJBPCm1LrBEaAIYkbhBqlUE9R9QVSphxHNvgHrUOhVwprFSgpEhmAhYvGMwb3gMdmjbZHxkDIhjCM/FYh9G0Q4jVMjkhCy7hN4b36bmCQ4nDxnFsEwhtul1RtVvanrnIL0BXL9ZA0IpgTN13AKIzYgs7YnDNebgjOsJpLEWMINI0UTMhR+mfzzOJaKwBae6+rwyH8I3sj3+TxiF31xsht/pVDMcSZHgnvIgc4P5E0m7TnpKAvAK74JMvB+yu4tk46TwvsYcfexK9+8413Oxf26lLGyznMX5wD2O4+johj+XDpl18LDC2c/FKygiiFb791BpiHVdDRWDh6DQJIvS/hXV+i+b4G83P92mAHkpV8h4kDq6sKhBkRx16rQD5USzrqY2MQTDWHIfuGDw5ssId9Av7UcNyBQ+Ll6T0ng6EPkE/xiGwZFy8dmC8pQCr+cxM76o14d9AOSNlCVzyLFE7fC3j6INpg7
+ DAT6Iqjb
+ VZlIPpubYO9IVq0u1uP+x2yWvoPbN035mKspuCkTZYqD2CjV0IdqmbMGPdZ/koLCq0SN1p4pwJuELDpdA72Gfy7osTKPV6gdnj4FR94VjP7wPf4dSQojEJxxRk+RK7vqJnFk5TLLxh/HpSfiUSVl0ACUXfSwq3Rt+Z4QLhhTHBgwFGIXFOWUFSBKko3YmHQlj3nJ938KGX5xUtetwwym2W/wKCRVY/hNQB0ItjiB2Ol/w7wwVxtairZQGcrzO29fWcrmb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,71 +131,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > > First let's see if the general solution is doable and simple otherwise we can
-> > > explore use-case specific solutions. In extreme case revert is an options as
-> > > well but I would prefer a more sophisticated ratelimiting (that Jan suggested)
-> > > than a revert.
-> > >
+On Wed, Jul 22, 2026 at 01:28:40PM -0700, H. Peter Anvin wrote:
+> On July 22, 2026 1:22:04 PM PDT, Dave Hansen <dave.hansen@intel.com> wrote:
+> >On 7/22/26 13:18, Yeoreum Yun wrote:
+> >> Sorry. But do you mean check with cpu_feature_enabled() not with
+> >> boot_cpu_has()?
+> >> IIRC, the boot_cpu_has() doesn't use the DISABLE_MASK_BIT_SET() but
+> >> uses REQUIRED_MASK_BIT_SET() and I don't expect it wouldn't make
+> >> an optimisation to constant check which is contrast to DISABLE_MASK_BIT_SET().
 > >
-> > Sounds good. I'll keep an eye out for the work Yosry's doing on this
-> > and look into hooking it up to writeback if/when his general solution
-> > becomes available.
->
-> I am not sure if I had in mind would generalize well. For zswap, I was
-> just going to replace rstat with per-memcg atomic counters, and simply
-> walk the cgroup parents in the update path, as the zswap load/store path
-> shouldn't be too hot.
->
-> However, looking at other in-kernel flushers (including
-> mem_cgroup_wb_stats()), I see they consume other stats like
-> NR_INACTIVE_FILE/NR_ACTIVE_FILE, which are updated in the page
-> allocation path. I am not sure if a cgroup parent walk with atomic
-> updates would fly there.
->
-> A more problematic one is count_shadow_nodes(), which consumes slab
-> object stats. I think we definitely cannot do atomic updates in the slab
-> allocation path. Although it seems like count_shadow_nodes() is a rough
-> estimate and perhaps we can forgoe using the stats there.
->
-> If we want a generic solution for in-kernel flushers to improve stats
-> accuracy without killing performance, I think we need a heavier lift to
-> rework rstat or move away from it completely.
+> >Ahh, yes. I forgot about that nuance! Moving to cpu_feature_enabled()
+> >would be great!
+> 
+> It is supposed to. That's the point of the required mask.
 
-(Adding a few more people and mailing lists)
+Sorry, IIUC if the X86_DIRECT_GBPAGES is not enabled, it would fallback
+to test_cpu_cap() which wouldn't be optimised at compile time IIUC.
+So It would be better to use cpu_feature_enabled().
 
-So I experimented with a per-memcg atomics in zswap (see [1] for
-context), and it appears to be too expensive even for updating the
-zswap stats during reclaim / swap faults. So I think zswap will need a
-similar approach to writeback and other in-kernel users.
+Am I missing something?
 
-One idea is to keep per-CPU per-cgroup counters, but on the update
-side we update all the parents' counters, instead of just updating the
-current cgroup's counters. Flushing the stats then only needs to
-iterate the per-CPU counters and doesn't need to walk the cgroup tree
-at all. There is added work on the update side, but hopefully it's
-cheap enough to update per-CPU counters, and cgroup hierarchies aren't
-usually too deep.
-
-A more radical approach is to completely drop the per-CPU rstat trees.
-So instead of walking the parents to add them to the per-CPU tree, we
-just walk the parents and directly update the stat. The flush side
-will then always iterate the per-CPU counters to accumulate them. With
-this approach, the update cost roughly remains the same, but the flush
-cost changes. Instead of walking the trees and flushing all cgroups,
-but only doing it on CPUs/cgroups that actually have updates, we
-always iterate and sum the per-CPU counters. The average flush cost
-may become more expensive, but it should be more consistent and won't
-scale with the cgroup tree size. I am not sure if this would be a net
-win or not.
-
-We can also choose to do the above for all the stats or only the ones
-used by in-kernel flushers, the latter would probably perform better
-but at the cost of more complexity.
-
-I honestly don't have any time to pursue any of these approaches, so
-this is mostly just a brain dump. But I do think we should try to more
-systematically solve the stats flushing problem as it has given us a
-lot of pain over the years.
-
-[1]https://lore.kernel.org/linux-mm/CAO9r8zP6JrZcBnzb8A3A9V8so4gJMWLvrJQ7VwPyyU417GikQg@mail.gmail.com/
+-- 
+Sincerely,
+Yeoreum Yun
 
