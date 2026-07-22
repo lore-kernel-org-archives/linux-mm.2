@@ -4,101 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12694C4453C
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 16:57:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AD10C4453C
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 16:59:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1ADF16B00BD; Wed, 22 Jul 2026 12:57:50 -0400 (EDT)
+	id DBFE46B00BE; Wed, 22 Jul 2026 12:59:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1854F6B00BE; Wed, 22 Jul 2026 12:57:50 -0400 (EDT)
+	id D95E46B00C1; Wed, 22 Jul 2026 12:59:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 09FFB6B00BF; Wed, 22 Jul 2026 12:57:50 -0400 (EDT)
+	id CD4EE6B00C2; Wed, 22 Jul 2026 12:59:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DCE1E6B00BD
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 12:57:49 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 74C0F140253
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 16:57:49 +0000 (UTC)
-X-FDA: 85017019458.20.1EB0248
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 8E59240004
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 16:57:47 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m3JrSeJv;
-	spf=pass (imf17.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 94C666B00BE
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 12:59:19 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1D1E0120230
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 16:59:19 +0000 (UTC)
+X-FDA: 85017023238.21.3878EA8
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+	by imf25.hostedemail.com (Postfix) with ESMTP id E2E3CA0015
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 16:59:16 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	spf=pass (imf25.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.200 as permitted sender) smtp.mailfrom=alex@ghiti.fr
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784739467;
+	s=arc-20220608; t=1784739557;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LPcOdVZMMcgm6b/T5m22MfHqQlIHIR7KE5HKHozKnrE=;
-	b=ydn/003uK6IalevAoJItFSlP/ztPuVulDdw8KF9KOAbIzl/Yh5rvtm9bvFCtAVTiQEDoIA
-	JgK/dD8pP2OSJLBkexmt5/NZjiA6DlGOadKIA3oqh4GsnzpUd+JfT/X7vHXVyDvc4TsL7x
-	4SPNTocCKMEooAwSr2lZXmBraap9uoQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784739467;
-	b=Bbqe5VD2lj3XW1D+Ozdr3y+kaGw1OTJgw220ujXzODk5UCZA4HMyQu5NyzCjx/Bt4sA32v
-	oSH37wo6RCFptJDZpPOyoi75pbiQyX8dF6fPTxEz35sGbYlrB4wQA8151BSqLCfeGfxHVq
-	ZCwCwtFzqKSgcY1HNjNtQySixIXH9gQ=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/XSX0oaALZx5W9NVPQ6H1LFJelp8qpg4CAK6IiFZ2YQ=;
+	b=3qCbT/r9kEjjdoNvQQpFEvvkhIHAUmsV68dKyNwqpV1UqLpmlTJemksLHxu/e+riAk92Ka
+	EhU7vp1BVbm86PrSK3oKrUJM/lG56jH55oVnG732LufndgIaP8Z8Pr2Bo8J2pckBP4hI6X
+	95d0vlcExHfkyQcOSl1UneDj71KUcxY=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m3JrSeJv;
-	spf=pass (imf17.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A16BC43F42
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 16:57:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8545A1F00AC4
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 16:57:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784739466;
-	bh=LPcOdVZMMcgm6b/T5m22MfHqQlIHIR7KE5HKHozKnrE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=m3JrSeJvvdk8Fm0c9Bts9j6plhi1hxFMHFAWKUI9fog81r6tnrufpwpRHW91Tyu3n
-	 neIp6ut7S8hK6DkHU9cS7uqqWIKX0dhGW/U2YDL7IvcAYPk++GVmM8Ywd6kQD020nU
-	 8Kv62SQhHcbi22QEK0uem5TFwpHC1yamO58EVQTkg6l1Nsq3DYDb7GTUkBJoi7Qb+/
-	 wCXimisEeffKUZqoNEz8os5MA5MdfJmF/7e4q3Ou19NJxs3T/4YpTGO4ICJfjPJGWc
-	 mPZFvK/uYk6vfgekY28H3t6jmnyiAIFM89stl/CXomJDEW/PMtKZu6yPwPv/QyiHFe
-	 d9nLTgKstq9uA==
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-80cebd41372so117970117b3.3
-        for <linux-mm@kvack.org>; Wed, 22 Jul 2026 09:57:46 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Rql3iBAyo1zeDyRb78LI8wDv1dWzMlfRRXTPxGFVY70/QUK6xly9w86+yg+7AMJ9a5K0/XPeUbC0w==@kvack.org
-X-Gm-Message-State: AOJu0YyzMuLiFtuHLij48s18/r7hnCNciyyiDpZJcQpH2MYMsbVxkseK
-	R4jkgE/eeG3n/nGGvE6s0PU4Tr7R0Qf5PCMxry4lHBDfBg/JRE8dj0GRsbKXtfY8inCEMRBO3GP
-	/LfhvmmV+3tJPRD3ilQ/bE1HCjZus7rIxtqSgeDU8yA==
-X-Received: by 2002:a05:690c:e3e4:b0:80e:1ad2:afc3 with SMTP id
- 00721157ae682-81ef22ef457mr71652027b3.15.1784739464993; Wed, 22 Jul 2026
- 09:57:44 -0700 (PDT)
+	imf25.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf25.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.200 as permitted sender) smtp.mailfrom=alex@ghiti.fr
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784739557;
+	b=CHu+MQtIto7sVEdbs59b9sg+H+NEfZyB4a391gExhWdVD+cvIK11KE6UPznls02POksNi9
+	JEedB77kRjRlf+3R43KqsmWgckStgd8f8oBP6sX18h2jy1czoItUa2YTZ+3hey59eoBpro
+	M1nxa3Mb0qKB5eJLFAuFYpX/qTv2AhA=
+Received: by mail.gandi.net (Postfix) with ESMTPSA id CA41E3ECFA;
+	Wed, 22 Jul 2026 16:59:11 +0000 (UTC)
+From: Alexandre Ghiti <alex@ghiti.fr>
+To: akpm@linux-foundation.org,
+	hannes@cmpxchg.org,
+	yosry@kernel.org,
+	nphamcs@gmail.com
+Cc: chengming.zhou@linux.dev,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	kasong@tencent.com,
+	ryncsn@gmail.com,
+	chrisl@kernel.org,
+	baohua@kernel.org,
+	usama.arif@linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Alexandre Ghiti <alex@ghiti.fr>
+Subject: [PATCH v2 1/3] mm: swap: overlap synchronous readahead decompression with disk I/O
+Date: Wed, 22 Jul 2026 18:58:59 +0200
+Message-ID: <20260722165907.784020-1-alex@ghiti.fr>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260722163536.773166-1-alex@ghiti.fr>
+References: <20260722163536.773166-1-alex@ghiti.fr>
 MIME-Version: 1.0
-References: <20260722130615.3163560-1-hch@lst.de> <20260722130615.3163560-2-hch@lst.de>
-In-Reply-To: <20260722130615.3163560-2-hch@lst.de>
-From: Chris Li <chrisl@kernel.org>
-Date: Wed, 22 Jul 2026 09:57:34 -0700
-X-Gmail-Original-Message-ID: <CACePvbWpxJ-5kzvkFwNRcpxqxsKNowsKkWLC6BtzuabyNZv4oA@mail.gmail.com>
-X-Gm-Features: AUfX_mxaUX8OlbXL4sZ1zJoB_AVHbNO17lVhNRIYu9y_lmljMjecn4zlQmCtqew
-Message-ID: <CACePvbWpxJ-5kzvkFwNRcpxqxsKNowsKkWLC6BtzuabyNZv4oA@mail.gmail.com>
-Subject: Re: [PATCH 1/3] mm/swap: revert to single-folio writes for
- synchronous swap devices
-To: Christoph Hellwig <hch@lst.de>
-Cc: baoquan.he@linux.dev, akpm@linux-foundation.org, usama.arif@linux.dev, 
-	kasong@tencent.com, nphamcs@gmail.com, shikemeng@huaweicloud.com, 
-	youngjun.park@lge.com, ryncsn@gmail.com, trondmy@kernel.org, anna@kernel.org, 
-	sfrench@samba.org, linux-mm@kvack.org, linux-cifs@vger.kernel.org, 
-	linux-nfs@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 8E59240004
-X-Stat-Signature: jkmwht7q1e4ga3xoadrukk6ppzr4o39c
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: alex@ghiti.fr
+X-GND-Cause: dmFkZTFgQMyRFuZn1rX9NTarebc0I7T7nq/R/ZHBTIlh8IqQClTjfwSu7K0eaziy7tNAM4X53JhtGZzn540eop7U5DCL+rg/U0xQjoy8BIp1n4895pHfjH8NRnuD+WCoIE51kuJMgJt+3mz144YQ0OoxtQd+5Q+MPSYSfpY++79KBWt1+OTE0Uq864soWP3yIunIfAkTiBnyRg9iDK4XuMcE7JPCRw7BBfNAc5d09aB1L0xQJo0tXhhf7wFNpH20cQ/YgyFSBsrfH8bT4mK/43o2QuLFKkCBqWo1s2ra0McFrNw76VuHY/Tm3YsFQSMJAPDmJsfNK8L3V05NFWCwrd/SY5fzVYllPIvqMv/FZrZZrHri/ZQKt5saqKGLHi1Fgg9eBVP5i+sop0xt2mzORJ/qV8ucDLlxwpzDwB4DWMwDXMm8rqIv61gniCwMXnSashTflGLkZBvXHML9epGe6+9jhIO6poLdDUmvt3bGkgLudRyWLaRj/bsP0nYjwh88/XEgpTk9aqC3tI5fqSAzGCMcf7UA67BTcqD7fIkcMJzTvERicax64H+59Q/Hh+t1Evi7HOpTH3PZahZV7xQiwsBM5MNA7BOwlwOmz+tHdSx/t3egAl+oB3r0/8xam9eKIfD1VwwV9ZBXHGpd6hQ3Xr7uLcRUtGkyQVHr4JXK4b+Q62enHg
+X-GND-State: clean
+X-GND-Score: 0
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: E2E3CA0015
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1784739467-985327
-X-HE-Meta: U2FsdGVkX18M2f9l5L6JTTNlShUgnuhv5QVVhWqrXYmdV24NiFZRvTvPhINQ6Pf8+EX5KTkIhXCyad5/9OrzyCFcOMAiHrE/wSpZMa+jU4s8Tzr2EPRK1qTxT+ANuoNP5wQhWlyJ53uDr5pUUR/BoBlyYjXTNpskfPZKNaWLQ4YUtNVX1WNamMQSfNUln7oIJSju5zG61dt3TCQtrkeHJ5jdk6H3+hvsfX5tX6tPn6W/H9JKzI+6bNQizi4upyVXrvehufUfbhkV58R3wWzSqc6XMEpDGqsKSLRfs4IzkQ5OzuP/MTRcuG3uV42QTTEkFgvQwAcBk/NvY1kLh/B1/ZmFAnQ9jn4/KSzJ1J4BjS3XZoLAZ7g5FekmVjkUWcNKkfe8fOV2nVoh7/l3WRpi7p9XsygWRhwhwGq3G7UIAUoMPWigcz0P3Yosla0P551rB2ShOC+2dXl98ji3MVM7BV8GJo3gDkP2DdJZ2GutNRCwcnBOtn9b320yUdSQp3JNbg6sd5IXCW/VClcIFB0ZW92s5HN3SQX7Nwyl4OTFLRK0r7brTcFDeLBXmMgYSnP8HCIKHXsYxSxGhk7RWpCnsYFGFZfIRh1e/kMsjCbpSD5vqTKNUiBx2FHU9WvU1CPN+BP16lwJsTmfXymsTtlu+BCCDAxKHIMxwuafAKTIcykn9ytyt0tM0P6HjLvvG2axEfbVnxNt7hVcOMr1P8EwMve12U7KJnprYPHds3mZ8HefSLbbFRIaGmSlsVcDAsRpS1k59q6EezNTErNVFGx4Z9nESMN5VjqDgWkPNhzP0MvXSkX5vE6c7vVQEgclzG2IcYXGicjNGPPtY684+6L/KdUblM81bzCfsrNtrVhSNbdwS/wO8bW8z+lSVRqcK/mLpifW1HhXLxHD2R9UUuQcvLh0l4BQKd01IzHarjdmS2rAACE4fLvhyOAFnFl3ge23GxugPkGs4fgwl7+xQcE
- J4fMEHCB
- +R9YQMSEzXcGE3ic79BFdkzJa1C6RzUABrAahFwsTSiukv32A9mPnGsVAdeZn5q8Kj+hBDN2mfGcX6JUJij+w/YI2MHaT3chdmxTCtmykKbEocPET80S8WskdFqsxZX6xguMsx71PRRy5oSjc4DkiWou/e7xxm44TijATx1/kCSxMD9Crf/EviAA27NFuZ0KgVZM8kt5bFDauYwh/aB1EyQAsFPKK/xyX2n7znAG5oLwebGFiC8xiPlIbzR6DoMKUSnDeoakk9YoM1CR32SG3EUGsBY/4v1CCfkcGfceXJaX0p1t+Ad/kI0Gatw==
+X-Stat-Signature: rd1hzfxc46m43juobp647m5wtpc6mrga
+X-HE-Tag: 1784739556-574999
+X-HE-Meta: U2FsdGVkX195XPjKBTWMegVQTJOFzM3Draxg7B9fUYkK9nBGSHtpprDMtI8Ne5b0p0iatgMT7qk8L21f+J/CqI00gPyD9AReif+zRGnYObMi6jq58ug6y1BgQZs02amtNGlGkJ0VxKbM5Y3hjG60/KCZvo5CCgZAX7YoWuv1lukA30URMCvuLVzn6tMoJodim57KbU3RyDK/tNRBIFCeYWZT7C2/W8Fead8ybLbMymodZhK96RG606I1xahKwzd6vWZyxHnYPrxW9DM3dLfibpJZ2tj6MMGcDralHfotDc7j9r4+KEVcsS6cqLdJ1hsK4QYEUqHJD0PKPkQg/fVBkQSLn3O9JhEz1ESkyiz3219p+fDsbd9NfQdBuUDPF2bFfm9TFkRxsc/29Vp0Lh20Q8hvYXGfrVAxXAuxtSv6ZdGKWIO76u6ilalDUggjn7SdmLy2PC42xhU162lpd5LY+O+pPpWTzig5Y3EeDZE+zOeNiLeoM1DuHGodRJ8J6mX+1EJ0xFfC+CjJaNY+IR3uz4NsOnsalfLy8w2NQ1JGo/goQf9hbiQtW+O9MwN2hlh8GvX0+uw+E97Jm98ZGXuP00zPJ+6VwGc7Vgj1DG/oDRJYw0p3XgW4wHym/I9JNjLxI8qiZvyPFaAIZgFEO1TW0EGg4L+ODM4kmxPwoTrYk5igcZxinSLECTX1MGeFyrlpUPujERADi45VvXP8xLTUPx9bsfmWW+TlXrMbTOllElabZFIgRZfLHQg5RctUP1ZIiMWR77cJJXVMFf8TbSVxFMwKzMl68h9BjHGvZnKTdPMfQJJeek0pEyuV19clgMFS7xNiVZbC2YxHIqkALLHS0HCcVFHjeYs/i8MJv2QPbiCGstshMQ2/3WMuDUJDka5d/eSRe+UgSzfzHTEIYv9xjvh6EP1Mi1v6trEMH6jX3cByHfxF6H4bmg9VARiQpNKszVFE7ziThtU1jEfgVkL
+ KniWY66y
+ L2Ytb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,54 +96,267 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 22, 2026 at 6:06=E2=80=AFAM Christoph Hellwig <hch@lst.de> wrot=
-e:
->
-> Kairui Song reported that zram benefits from submitting each folio
-> directly instead of batching up I/O because the classic LRU scanning
-> benefits from clearing the folio writeback bit in the scan loop.
->
-> Accommodate that by kicking off reads for synchronous devices for
-> each iteration.
->
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
+Swap readahead reads the whole window sequentially: the device I/Os are
+accumulated along the way while the synchronous, zswap-resident entries
+are decompressed inline. The I/O is only triggered afterwards, at
+blk_finish_plug(), so the synchronous zswap decompression is pure added
+latency in front of the read the fault is about to wait on.
 
-Acked-by: Chris Li <chrisl@kernel.org>
+Trigger the I/O before decompressing the synchronous entries: split the
+window walk into two passes. Pass 1 issues the async device reads and
+defers the synchronous neighbours; pass 2 reads the deferred entries
+while pass 1's I/O is in flight, overlapping the CPU work with the disk
+reads instead of serialising it in front of them.
 
-Chris
+swap_cluster_readahead() walks a contiguous offset range, which is cheap.
+swap_vma_readahead() instead walks the page tables so we cache the
+entries we encounter in the first pass to reuse directly in the second
+pass.
 
-> ---
->  mm/page_io.c | 11 ++++++++++-
->  1 file changed, 10 insertions(+), 1 deletion(-)
->
-> diff --git a/mm/page_io.c b/mm/page_io.c
-> index e4fa7ffffe8b..c984a4023a65 100644
-> --- a/mm/page_io.c
-> +++ b/mm/page_io.c
-> @@ -358,7 +358,16 @@ static void swap_add_folio(struct swap_io_ctx *ctx, =
-struct folio *folio, int rw)
->         }
->         bvec_set_folio(&sio->bvecs[sio->nr_bvecs], folio, folio_size(foli=
-o), 0);
->         sio->len +=3D folio_size(folio);
-> -       if (++sio->nr_bvecs =3D=3D ARRAY_SIZE(sio->bvecs)) {
-> +
-> +       /*
-> +        * Write out the iocb if we filled it, or if the device is synchr=
-onous.
-> +        *
-> +        * The latter is to work around expectations in the classic LRU c=
-ode
-> +        * which make synchronous clearing of the folio writeback flag in=
- the
-> +        * reclaim path beneficial.
-> +        */
-> +       if (++sio->nr_bvecs =3D=3D ARRAY_SIZE(sio->bvecs) ||
-> +           (rw =3D=3D WRITE && (sis->flags & SWP_SYNCHRONOUS_IO))) {
->                 if (rw =3D=3D WRITE)
->                         swap_write_submit(ctx);
->                 else
-> --
-> 2.53.0
->
+Results [vm-scalability mixed zswap+disk swap-in, 256M zswap cap (~73%
+disk), Sapphire Rapids, zswap=zstd, shrinker off, n=3]:
+
+  metric                  mm-new    +patch    delta
+  swap-in tput (KB/s)    119247    131261    +10.1%
+  swap-in wall (s)          106       100     -5.7%
+  swap readahead (pages)   1.56M      1.55M    ~same
+  zswap-in (MB)            1895       1872     ~same
+  disk swap-in (MB)        5207       5190     ~same
+  major faults            260148     260212    ~same
+
+Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
+---
+ include/linux/swap.h  |  6 ++++
+ include/linux/zswap.h |  6 ++++
+ mm/swap_state.c       | 67 +++++++++++++++++++++++++++++++++++++++++--
+ mm/swapfile.c         |  9 ++++++
+ mm/zswap.c            | 17 +++++++++++
+ 5 files changed, 103 insertions(+), 2 deletions(-)
+
+diff --git a/include/linux/swap.h b/include/linux/swap.h
+index 8f0f68e245ba..6bb35c093d77 100644
+--- a/include/linux/swap.h
++++ b/include/linux/swap.h
+@@ -441,6 +441,7 @@ extern unsigned int count_swap_pages(int, int);
+ extern sector_t swapdev_block(int, pgoff_t);
+ extern int __swap_count(swp_entry_t entry);
+ extern bool swap_entry_swapped(struct swap_info_struct *si, swp_entry_t entry);
++extern bool swap_entry_synchronous(swp_entry_t entry);
+ extern int swp_swapcount(swp_entry_t entry);
+ struct backing_dev_info;
+ extern struct swap_info_struct *get_swap_device(swp_entry_t entry);
+@@ -519,6 +520,11 @@ static inline bool swap_entry_swapped(struct swap_info_struct *si, swp_entry_t e
+ 	return false;
+ }
+ 
++static inline bool swap_entry_synchronous(swp_entry_t entry)
++{
++	return false;
++}
++
+ static inline int swp_swapcount(swp_entry_t entry)
+ {
+ 	return 0;
+diff --git a/include/linux/zswap.h b/include/linux/zswap.h
+index 30c193a1207e..cd9efcf9dec9 100644
+--- a/include/linux/zswap.h
++++ b/include/linux/zswap.h
+@@ -35,6 +35,7 @@ void zswap_lruvec_state_init(struct lruvec *lruvec);
+ void zswap_folio_swapin(struct folio *folio);
+ bool zswap_is_enabled(void);
+ bool zswap_never_enabled(void);
++bool zswap_is_present(swp_entry_t entry, unsigned int nr);
+ #else
+ 
+ struct zswap_lruvec_state {};
+@@ -69,6 +70,11 @@ static inline bool zswap_never_enabled(void)
+ 	return true;
+ }
+ 
++static inline bool zswap_is_present(swp_entry_t entry, unsigned int nr)
++{
++	return false;
++}
++
+ #endif
+ 
+ #endif /* _LINUX_ZSWAP_H */
+diff --git a/mm/swap_state.c b/mm/swap_state.c
+index 9c3a5cf99778..3ff2896dd6d2 100644
+--- a/mm/swap_state.c
++++ b/mm/swap_state.c
+@@ -811,6 +811,7 @@ struct folio *swap_cluster_readahead(swp_entry_t entry, gfp_t gfp_mask,
+ 	struct blk_plug plug;
+ 	struct swap_iocb *splug = NULL;
+ 	swp_entry_t ra_entry;
++	bool has_sync = false;
+ 
+ 	mask = swapin_nr_pages(offset) - 1;
+ 	if (!mask)
+@@ -824,10 +825,16 @@ struct folio *swap_cluster_readahead(swp_entry_t entry, gfp_t gfp_mask,
+ 	if (end_offset >= si->max)
+ 		end_offset = si->max - 1;
+ 
++	/* first, issue the asynchronous device reads */
+ 	blk_start_plug(&plug);
+ 	for (offset = start_offset; offset <= end_offset ; offset++) {
+-		/* Ok, do the async read-ahead now */
+ 		ra_entry = swp_entry(swp_type(entry), offset);
++		if (swap_entry_synchronous(ra_entry)) {
++			has_sync = true;
++			continue;
++		}
++
++		/* Ok, do the async read-ahead now */
+ 		folio = swap_cache_read_folio(ra_entry, gfp_mask, mpol, ilx,
+ 					      &splug, offset != entry_offset);
+ 		if (!folio)
+@@ -836,6 +843,24 @@ struct folio *swap_cluster_readahead(swp_entry_t entry, gfp_t gfp_mask,
+ 	}
+ 	blk_finish_plug(&plug);
+ 	swap_read_unplug(splug);
++
++	if (!has_sync)
++		goto drain;
++
++	/* Overlap the in flight IOs with the synchronous neighbours reads */
++	for (offset = start_offset; offset <= end_offset; offset++) {
++		ra_entry = swp_entry(swp_type(entry), offset);
++		if (!swap_entry_synchronous(ra_entry))
++			continue;
++
++		folio = swap_cache_read_folio(ra_entry, gfp_mask, mpol, ilx,
++					      NULL, true);
++		if (!folio)
++			continue;
++
++		folio_put(folio);
++	}
++drain:
+ 	lru_add_drain();	/* Push any new pages onto the LRU now */
+ skip:
+ 	/* The page was likely read above, so no need for plugging here */
+@@ -899,11 +924,13 @@ static int swap_vma_ra_win(struct vm_fault *vmf, unsigned long *start,
+ static struct folio *swap_vma_readahead(swp_entry_t targ_entry, gfp_t gfp_mask,
+ 		struct mempolicy *mpol, pgoff_t targ_ilx, struct vm_fault *vmf)
+ {
++	softleaf_t sync_entries[1 << SWAP_RA_ORDER_CEILING];
++	pgoff_t sync_ilx[1 << SWAP_RA_ORDER_CEILING];
+ 	struct blk_plug plug;
+ 	struct swap_iocb *splug = NULL;
+ 	struct folio *folio;
+ 	pte_t *pte = NULL, pentry;
+-	int win;
++	int win, i, nr_sync = 0;
+ 	unsigned long start, end, addr;
+ 	pgoff_t ilx = targ_ilx;
+ 
+@@ -913,6 +940,7 @@ static struct folio *swap_vma_readahead(swp_entry_t targ_entry, gfp_t gfp_mask,
+ 
+ 	ilx = targ_ilx - PFN_DOWN(vmf->address - start);
+ 
++	/* first, issue the asynchronous device reads */
+ 	blk_start_plug(&plug);
+ 	for (addr = start; addr < end; ilx++, addr += PAGE_SIZE) {
+ 		struct swap_info_struct *si = NULL;
+@@ -939,6 +967,16 @@ static struct folio *swap_vma_readahead(swp_entry_t targ_entry, gfp_t gfp_mask,
+ 			if (!si)
+ 				continue;
+ 		}
++
++		if (swap_entry_synchronous(entry)) {
++			sync_entries[nr_sync] = entry;
++			sync_ilx[nr_sync] = ilx;
++			nr_sync++;
++			if (si)
++				put_swap_device(si);
++			continue;
++		}
++
+ 		folio = swap_cache_read_folio(entry, gfp_mask, mpol, ilx,
+ 					      &splug, addr != vmf->address);
+ 		if (si)
+@@ -951,6 +989,31 @@ static struct folio *swap_vma_readahead(swp_entry_t targ_entry, gfp_t gfp_mask,
+ 		pte_unmap(pte);
+ 	blk_finish_plug(&plug);
+ 	swap_read_unplug(splug);
++
++	if (!nr_sync)
++		goto drain;
++
++	/* Overlap the in flight IOs with the synchronous neighbours reads */
++	for (i = 0; i < nr_sync; i++) {
++		struct swap_info_struct *si = NULL;
++
++		if (swp_type(sync_entries[i]) != swp_type(targ_entry)) {
++			si = get_swap_device(sync_entries[i]);
++			if (!si)
++				continue;
++		}
++
++		folio = swap_cache_read_folio(sync_entries[i], gfp_mask, mpol,
++					      sync_ilx[i], NULL, true);
++		if (si)
++			put_swap_device(si);
++
++		if (!folio)
++			continue;
++
++		folio_put(folio);
++	}
++drain:
+ 	lru_add_drain();
+ skip:
+ 	/* The folio was likely read above, so no need for plugging here */
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 78b49b0658ad..ee2bbfdfc988 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -1983,6 +1983,15 @@ bool swap_entry_swapped(struct swap_info_struct *si, swp_entry_t entry)
+ 	return swp_tb_get_count(swp_tb) > 0;
+ }
+ 
++/**
++ * swap_entry_synchronous - Check if @entry is served by a synchronous source.
++ * @entry: the swap entry.
++ */
++bool swap_entry_synchronous(swp_entry_t entry)
++{
++	return zswap_is_present(entry, 1);
++}
++
+ /*
+  * How many references to @entry are currently swapped out?
+  * This returns exact answer.
+diff --git a/mm/zswap.c b/mm/zswap.c
+index 761cd699e0a3..b91a1ef8869b 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -234,6 +234,23 @@ static inline struct xarray *swap_zswap_tree(swp_entry_t swp)
+ 		>> ZSWAP_ADDRESS_SPACE_SHIFT];
+ }
+ 
++/**
++ * zswap_is_present() - is any slot in [entry, entry + nr) in zswap?
++ * @entry: base swap entry of the range
++ * @nr: number of contiguous slots to check (pass 1 for a single-slot query)
++ */
++bool zswap_is_present(swp_entry_t entry, unsigned int nr)
++{
++	pgoff_t offset = swp_offset(entry);
++	struct xarray *tree = swap_zswap_tree(entry);
++	unsigned long index = offset;
++
++	if (!nr || zswap_never_enabled())
++		return false;
++
++	return xa_find(tree, &index, offset + nr - 1, XA_PRESENT);
++}
++
+ #define zswap_pool_debug(msg, p)			\
+ 	pr_debug("%s pool %s\n", msg, (p)->tfm_name)
+ 
+-- 
+2.53.0-Meta
+
 
