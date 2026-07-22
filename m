@@ -4,198 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 543A7C44539
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 14:06:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A727BC44536
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 14:08:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 32BF06B008C; Wed, 22 Jul 2026 10:06:56 -0400 (EDT)
+	id 6D9276B0096; Wed, 22 Jul 2026 10:08:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3028A6B0096; Wed, 22 Jul 2026 10:06:56 -0400 (EDT)
+	id 6AFEF6B0099; Wed, 22 Jul 2026 10:08:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1F1936B0099; Wed, 22 Jul 2026 10:06:56 -0400 (EDT)
+	id 5C6446B009B; Wed, 22 Jul 2026 10:08:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E05306B008C
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 10:06:55 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 670BCC01FF
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 14:06:55 +0000 (UTC)
-X-FDA: 85016588790.25.080CDCA
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013010.outbound.protection.outlook.com [40.107.159.10])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 075F41C0009
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 14:06:50 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=KBOniZvb;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=KBOniZvb;
-	arc=pass ("microsoft.com:s=arcselector10001:i=2");
-	spf=pass (imf20.hostedemail.com: domain of Usama.Anjum@arm.com designates 40.107.159.10 as permitted sender) smtp.mailfrom=Usama.Anjum@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=3; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784729211;
-	b=ecE+yHxsnimGfqpZ4WSEXBgbLOQC0rd9QxUlPdZRSARuxw2vdx260262OjrmCkFhBWC1VP
-	+AznqFWazd8f6IkT0SqGw6dXMDfYb5CKRGeLLHmE+CGWopPPDxIvnbCAyndWbnWsIklsuI
-	vm7atCBIRRjpUFxauuNA2URXyyR1lIU=
-ARC-Authentication-Results: i=3;
-	imf20.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=KBOniZvb;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=KBOniZvb;
-	arc=pass ("microsoft.com:s=arcselector10001:i=2");
-	spf=pass (imf20.hostedemail.com: domain of Usama.Anjum@arm.com designates 40.107.159.10 as permitted sender) smtp.mailfrom=Usama.Anjum@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784729211;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 28E3B6B0096
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 10:08:46 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id AD9F6160189
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 14:08:45 +0000 (UTC)
+X-FDA: 85016593410.18.24DD027
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	by imf31.hostedemail.com (Postfix) with ESMTP id E75D420002
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 14:08:43 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=H+FfXVdd;
+	spf=pass (imf31.hostedemail.com: domain of shaikhkamal2012@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=shaikhkamal2012@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784729324;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=C2Qi+i7SnrQLaiOAKiaqOqg3ryvpFb1kJaKl726CP6k=;
-	b=SY5YBDTHTw/2JwRqc4t6j+dGzkx0+fSl7+tkJTbBudyfPtIx+BzbO33AWIueF+c9vqiru7
-	kRqzjWf5fZubVe0UTzlAIhp4E4FbhYYWKjdMNiEYKXTSVnfJOsfbfnliy6FsiqHBgOHdNC
-	zlqS8eazfUuzfXcxESbcgM/ANIskrts=
-ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
- b=fd2Al/0Ny/d3eNP8B+xArfAbHP/RkMsNj3lBUo6hLOdpKD01wtvsrhlFHhdwuoM2ZSqgIxHws9b0PGX8R6ZgTvCwpNyMYRdid/S4jMfAtoPkzmUWDu/p/fWG8BDq/9GAChLzfiSYLKWsCBxSWrnpbfSHuQ0uhKKm3rAWNyjqhNYI1XTyRkSrRm49EFAGbeQn2lujCgaI/7mesVn7QkmBCyddc6j6ul2F4mFZrHtrCaZHcFBJMha/Un8iGcnbEYZyhPs+JKHnVRapuALhZptv2A1SfvJnsWPFhhb0uTAoAZ8mopOKZwlJWEr0dqE5NV5CxtKzMHfGRegXoj7pxd3f3Q==
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=C2Qi+i7SnrQLaiOAKiaqOqg3ryvpFb1kJaKl726CP6k=;
- b=S9zlltd1QfmgXaQEeGV0xvRKpMwHTW09KBYLxCETfs52xdes7gBiBEJPaCEYWXtmA07/VIGVAQSwnM5GibV13bNxe9Vi+bdXDW8YZ3XZx9lxKt4NVpBP2Inf18uKCfcD0DkmawCU5xSfoovAMcQuqwp4+Fi6dmLM5ys24qwRc5BWpIf55E6t81BQw8Npl0yXdFVI5QC25861O1qEhXBXfbVu8wlWXhw88PPCWJ6jI9Pfa++czI1pXVIW4GTdyKqSd+j4ePWk3lyd6BVV08VwwuBT+FJla0VpQI3P6WaLbcFHgree+C8QfRl6yq3DuRRJFkN98hgMrA6UaBk4uyvjoA==
-ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
- 4.158.2.129) smtp.rcpttodomain=linux-foundation.org smtp.mailfrom=arm.com;
- dmarc=pass (p=none sp=none pct=100) action=none header.from=arm.com;
- dkim=pass (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
- spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
- dmarc=[1,1,header.from=arm.com])
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=C2Qi+i7SnrQLaiOAKiaqOqg3ryvpFb1kJaKl726CP6k=;
- b=KBOniZvblyd/594imkg7Z+x+srPN6VRZICyjI7FmU7y1Ms6h92Tbm3vyUlvoqTWYYiXmwdFlN7ySOj+4Oz+VAQtYkdp25tnll0+vJTunVKgsx8Uexhb87TXV+mqxLDhuHUU7ffF/SNn27UOtRMqtJJUhrUxjJ+fJhQT0cJxcr1Y=
-Received: from DU2PR04CA0223.eurprd04.prod.outlook.com (2603:10a6:10:2b1::18)
- by VI1PR08MB5325.eurprd08.prod.outlook.com (2603:10a6:803:13e::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Wed, 22 Jul
- 2026 14:06:45 +0000
-Received: from DU2PEPF00028D04.eurprd03.prod.outlook.com
- (2603:10a6:10:2b1:cafe::75) by DU2PR04CA0223.outlook.office365.com
- (2603:10a6:10:2b1::18) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.245.10 via Frontend Transport; Wed,
- 22 Jul 2026 14:06:45 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
- smtp.mailfrom=arm.com; dkim=pass (signature was verified)
- header.d=arm.com;dmarc=pass action=none header.from=arm.com;
-Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
- 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
- client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
-Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
- DU2PEPF00028D04.mail.protection.outlook.com (10.167.242.164) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.245.5
- via Frontend Transport; Wed, 22 Jul 2026 14:06:44 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Z+W5wCzMh6xRS6zFOTRjKW/A5M+rCYE913t3QNV1nPSDOQiKwwA0z/T/KV1/BnKU/jlH5QAohtvLTxxhSlRg92pbhx/QiOc/xBd7xdb4/QGYpqRF3WwKowKidruugpFjKujX9C3HzGeq4MudH2xFcVLDYry51xHFB1m5WpwywE0F47hjRJcxKhRauA9N1rndCkwwPgulvDZujkk7wX+ePfPJ7TujNFYPaMkCkemr8akTRwDBrusAqH2GviXXKyGD+T0jzw/k+XspBGl35chEcNdCnsbhsLqb7WtW8YJFn8jDYIJh4VZRSxcZEYaJObPgQJO1n6HrD0GeVSaoBfjJaA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=C2Qi+i7SnrQLaiOAKiaqOqg3ryvpFb1kJaKl726CP6k=;
- b=SoWdOq90+1FbMD0vwTPyfHWGe4M5+SvCIdcN/sxBa25kaNsKdJ6oeY0b2wBBStCFhtTOXVXgAbOu82SIceQ5fPMRNI8PVxBQq6pfo0eXrrhdR0txuo8Fcq1CyN1thVkhCAvFAkm3gntd/oQYAfzMWCPAQyUnKz/UhrY05+rUNck39WK5F5+B1pjSRICt99ljZ8OzHnIk5Xdw97EGNh7eSh/TKge9DxGPfM/ydCWA2fmtYIyx8dV9/lEjv4gJLTo3dn+QNNz9TsL5e0WiSuFFnLdwHwqGyaYlUcKRWlLVKWsZcqL+pPEo2UIv6W2hanOXxJ3IAKy91xchfuPxprDCIg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
- header.d=arm.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=C2Qi+i7SnrQLaiOAKiaqOqg3ryvpFb1kJaKl726CP6k=;
- b=KBOniZvblyd/594imkg7Z+x+srPN6VRZICyjI7FmU7y1Ms6h92Tbm3vyUlvoqTWYYiXmwdFlN7ySOj+4Oz+VAQtYkdp25tnll0+vJTunVKgsx8Uexhb87TXV+mqxLDhuHUU7ffF/SNn27UOtRMqtJJUhrUxjJ+fJhQT0cJxcr1Y=
-Authentication-Results-Original: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=arm.com;
-Received: from VI1PR08MB3421.eurprd08.prod.outlook.com (2603:10a6:803:80::16)
- by PA4PR08MB7641.eurprd08.prod.outlook.com (2603:10a6:102:273::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Wed, 22 Jul
- 2026 14:05:42 +0000
-Received: from VI1PR08MB3421.eurprd08.prod.outlook.com
- ([fe80::e079:6bd:fbe0:89b4]) by VI1PR08MB3421.eurprd08.prod.outlook.com
- ([fe80::e079:6bd:fbe0:89b4%3]) with mapi id 15.21.0223.017; Wed, 22 Jul 2026
- 14:05:42 +0000
-Message-ID: <5af250ab-6a52-48d3-bd50-64e8ddd99915@arm.com>
-Date: Wed, 22 Jul 2026 15:05:40 +0100
-User-Agent: Mozilla Thunderbird
-Cc: usama.anjum@arm.com
-Subject: Re: [PATCH RESEND v1 3/5] selftests/mm: skip khugepaged swap tests
- without swap
-To: Sarthak Sharma <sarthak.sharma@arm.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
- <nao.horiguchi@gmail.com>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260722091219.61504-1-usama.anjum@arm.com>
- <20260722091219.61504-4-usama.anjum@arm.com>
- <9bb01e21-159a-427c-9d64-5db7070f0209@arm.com>
-From: Muhammad Usama Anjum <usama.anjum@arm.com>
-Content-Language: en-US
-In-Reply-To: <9bb01e21-159a-427c-9d64-5db7070f0209@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO6P265CA0021.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2ff::14) To VI1PR08MB3421.eurprd08.prod.outlook.com
- (2603:10a6:803:80::16)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=b3yARu6zIPkjRYLYFArLzUNGA0rAwOd58nNqNxGvnf8=;
+	b=vlFb6N2iTfrclsRnNjObS/ZVkCJSLJzvEWq1zu2IQqDqq7YcmCW5LW6Bs+DNnUNOFYKAEf
+	beYlOuhZzjl7kpOnLFNKM2Qte3w5E6QpwudRoeU3lxuUKW/lP7LIpiYtsUIF65lXCgEYGq
+	8qMsuXa4jM4JBO74RtwiW7twtPNtQ5o=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=H+FfXVdd;
+	spf=pass (imf31.hostedemail.com: domain of shaikhkamal2012@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=shaikhkamal2012@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784729324;
+	b=KTglMOWF6Vsr8esC0D7m90LEuvBC04W3CefTQp6WUK22uHyiBcbhF2S78sdkUk9P8L34pU
+	hQQkoYnhP5NLuHoMzLwniyB3rycu1IYCTXIEfGTZxSrRWxyxWyP9xamBEnY3ZrZkpqmmbx
+	Ibsp5qDF9WjYpK0MaWx5oUZ/h/gjfhA=
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2cacb8416a1so92694755ad.1
+        for <linux-mm@kvack.org>; Wed, 22 Jul 2026 07:08:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784729323; x=1785334123; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=b3yARu6zIPkjRYLYFArLzUNGA0rAwOd58nNqNxGvnf8=;
+        b=H+FfXVddviOPzNJUuJ/L0N7DIMjoeUVBfIH6gmc1Pf42Jejh/l7uTxMafEO2EOGgBj
+         bXxjr4cVwP1ep24rh45L6T8PySNccjKoc7UgjB3/8F2Vo72PcGKiDWl3Cj4D6kNECN1b
+         iL1XLVnNmZij00O6//NgYqnd+dOzGgmzuKKKnZnzr19GGa5NSt6BWNinCtRCzZsFVbrg
+         k6VJtL5P/9XwRiXSTgCAX1QdIi6jEwio/0mXoqoj/913oJ9bucTyR7hkq2R8jKPlNHYl
+         q/0YpQwiH9a7s4NN/ZPMkPlRELdc0RfgYGfqq6CZ1TiwrLWWaRRSVJzrwuX7ny7h5BPt
+         U0YA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784729323; x=1785334123;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=b3yARu6zIPkjRYLYFArLzUNGA0rAwOd58nNqNxGvnf8=;
+        b=gLj9XeI9r0ZjovF0E9SKSATORJwaUsuLISvGRJwEcOCU5yRsJGff+pkw88Dv6314eL
+         yerQUolsNLR/zlAosJtdcsDQNDMTXeYLTFkdiwCKkLKF6+LU/iYaCV2oWMkGaxt8g05l
+         FQjGsPbC6Yd06ELf3uX5Rwgt2Yh+jorueYHHFiuDRqgWFrJMUZ/e2iqGV0WYv7Vgqnpy
+         1RPIQ6xEMzdaevpYmy1LhT+akFb8ynbspcCwy/+LYv40K432WBF/inV0z4MwQdKgeMnc
+         3pU3X7R5eERnLSlWJSGlAR+jEzeiNSvmbQntwAslt7m+u5zWmeR4GpqZPcGYnb441FZI
+         i+ew==
+X-Forwarded-Encrypted: i=1; AHgh+RpcPxJphIe3de/UdxIbh7I2kJdLLHgq/9fWjbGDMhvOWUjpi9riwx6j+2HMDYnLkDRBc4ex2E5wMQ==@kvack.org
+X-Gm-Message-State: AOJu0YxFzwaVa7vnC6bhfy5BiNqdxNOsNaXLS2vqm0kkonhWToyZh7kx
+	KY0u2uPiyv1AJjXBEAVPUoNgttdXNacsdgklcBnPZe14+kHl21kTJXjq
+X-Gm-Gg: AR+sD11dliVnrhd+MFQWg+IT8TBmjUxyti0KUOPPKKA+gAuTBG840v4JqDCF5HyTK/G
+	7wDa/CHpVtNVv169dvfktrHyawefnsxLW2XVxieXpxzV6rhi3zcmXWR4T9VU3iSa8HQTRAd136o
+	yxATVJdnVF4vGvKQ2EJLXafwWJSIl5vGUk4SMcjmRTu33/SZ0zg88NC1rYo5hvG9S3VDMR9QSsI
+	1xpbzTFKuSPpnKdsHYf4QUF+T4tUQShdL+rbzLt3Hh/0DU3DWcbvYkZ8yZNjYXrnNMy9F9QQMeE
+	YBg+KZPoCbRGjL3qGOUfizxWRsUnsQvz29CjUfJTFK3lpmTXNG/awyKYRdYUutcFj0gYdCjeBpE
+	r2nvy8qrdPsKdRAu9isJMfCyDAEZBSL/LBzt1JJ8aJHQmbMbPlLO/OIFLXdDTMWo16Dpd68Npn1
+	bRGbOqmP1rSHYTQDEGQEhuTPJLSoYbPtk=
+X-Received: by 2002:a17:903:380f:b0:2c1:ea95:8297 with SMTP id d9443c01a7336-2cf3483687bmr238643635ad.7.1784729322524;
+        Wed, 22 Jul 2026 07:08:42 -0700 (PDT)
+Received: from acer-nitro-anv15-41.entro.com ([118.34.230.2])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf8f2e65e6sm16026145ad.38.2026.07.22.07.08.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Jul 2026 07:08:40 -0700 (PDT)
+From: "shaikh.kamal" <shaikhkamal2012@gmail.com>
+To: Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	David Rientjes <rientjes@google.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev
+Cc: seanjc@google.com,
+	"shaikh.kamal" <shaikhkamal2012@gmail.com>,
+	syzbot+c3178b6b512446632bac@syzkaller.appspotmail.com,
+	kernel test robot <lkp@intel.com>
+Subject: [PATCH v3] mm/mmu_notifier: Add async OOM cleanup via call_srcu()
+Date: Wed, 22 Jul 2026 19:38:03 +0530
+Message-ID: <20260722140803.11421-1-shaikhkamal2012@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-X-MS-TrafficTypeDiagnostic:
-	VI1PR08MB3421:EE_|PA4PR08MB7641:EE_|DU2PEPF00028D04:EE_|VI1PR08MB5325:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7feed9d0-985d-42fa-2735-08dee7fa768a
-x-checkrecipientrouted: true
-NoDisclaimer: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam-Untrusted:
- BCL:0;ARA:13230040|23010399003|366016|1800799024|7416014|376014|921020|6133799003|56012099006|4143699003|11063799006|10067099003|22082099003|18002099003|3023799007;
-X-Microsoft-Antispam-Message-Info-Original:
- ipI6WEcX1GT0e45hxwSn4XqGdYPnCPUWS+SumgTtKncYlCwvhAGSLeaAhdcPlGOaUET9k/2vYJivEgR8cnXjtvN2WbFsyc+T4jzz9lQEJunr58tBcJ+RaV9pFixETiBnk2udQo+xHH4/5HBSvvgvTZtATh7E9sWTfSMArjODebbfv7mF+naiZDlc8hq9pXlCxPXqmSIjD1fo1XiHF4tj2HdfutMwn2+O6N0IWyxB3L/+qswcKSt1DlvhvQ+/Q1xR34KOjDEpTdZIThiKLthWLAkEJ7E2TwwdcO7iTtQe6VCQ9nD2k0B5HZzLZhw+OnlBdgHN6UPvDs/j369Q/E32RE5gxUGnspyt6XHo2EwVMB7JLnxMqzpQH2h4KwVuGrx3C2B0wAIYkjNT6oDjZTdwyHyikmmg3TxyjyaRMiF4BsC+vR7MK9nSdRv90ls4XkBbbMvict+Y5wkIWiJeAUiqliJmjr5L9XA0cWo6f+xqa23YTpFsOBOdFQvh98RAh1G5HUj9qgb/k2nt4nhdt/qsJ8jed3IV5n4ak2i56BcVFAg57bqTNJMNBRt/93V0ECec4a1y97jRJ4XKUq0fd9AAkJvGORP54DqJ6iCxGzw8NgxFfELwC5T7mhkrN6SPVt3daUqyGsx+KZO/IKOVYo814xMadiQWX93gNpSegBsnaffsDXPAQsJiF7a6ivoUtb8di9Aq2IfgqaIc+mB7dndVOg==
-X-Forefront-Antispam-Report-Untrusted:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR08MB3421.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(7416014)(376014)(921020)(6133799003)(56012099006)(4143699003)(11063799006)(10067099003)(22082099003)(18002099003)(3023799007);DIR:OUT;SFP:1101;
-X-Exchange-RoutingPolicyChecked:
- sG/YuQC9dQ/FqRUA+ABemhPIx4BNi8Cj6+jLfMSRFe7UQXG+loL4jCyitPX9gHZGxhRY6291EP45UwzjkLf+dIGX5ClEKpMnCNinm/v7xq1OU3N2VY1CErP5w7Vw3IIwJR+7n5UqwhD4znmzr8yPB8gpf+o+vPzcSaqrPLaux+eQQnhEVYMDeB7CFKzppg4hiqXRPI+WzQh+jAeRfjl+W9jtU/7+sqcCII9tp9dItpPx72tWRTQcMtiMrNvyuQh32n5V1hjoVT0+5/eRJa2i6fhSBGEC1aUn/sdEIzXhGAR22uE3wTQnmuMes4GlNyalMe4IHxZTm/tVF8j2H0KQRw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR08MB7641
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped:
- DU2PEPF00028D04.eurprd03.prod.outlook.com
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id-Prvs:
-	78e0c0ee-acc2-4438-d997-08dee7fa50ea
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|376014|7416014|14060799003|35042699022|1800799024|82310400026|23010399003|4143699003|11063799006|10067099003|6133799003|56012099006|3023799007|18002099003|22082099003|921020;
-X-Microsoft-Antispam-Message-Info:
-	wr9vl4XfBK371s/RWFsNL+6DF7Ee+QXLPhvxiY9L0EV90Ywnaj+x9Ycg065bZ+mYg9S+E6b0FwiQ20Nr/xKb1A2E5JzCIbOKeDX4pqT7rrOZaFa+Lr4ua8NyNsKz3xbiY4nvx7HYKtEGzZWoQdzU3TkoKe7AMhwO0oEc+xCI1aWEu7Z6pUojyFOzffGkFQekPTzUxq3OqT3RIBqGQDYDB1OeaIVnCPtKH+NiirLMvLgfqjtCf7vooXub/GyZssLej4/+tVG0eimjlk28wkmGuqzeorLnkZpy167IkpLIVYuNju1pIKKoParKIxc+mghikDRWuZDcyq9euhDaRPRuIASqS9U04DYi8l9qGyyc0aNjPZYxFtX164QTpPh4mDz9EZyjfuJbKVI3hokohE3NQ7BlV7Y3JuktSHg6DzXE6N4Dpjd2pzWMsKKP0+y657qe831qplnXrqB7OkOCd45KR2iSW0SwNmEeK7/uzdnP8jlWFg/bjXGUXpgUPW2Tkeu0lbXK1u+xbBukw3eavFUAosvg+JrvPWTYnbXC30szrjTWaqz2cCC7o7FEnR4YNyLyzGEAPF/E9p3s4FBX6hOi21D6iRP40bjZHZhyJlVuu1uIZmpgUx4j3A3FPs87syIFkShwSyAVeQvY6h18+auWmR+TN50jLKcy3w+p0dNLGZYtdZcXKP1OBalHpFKpSiW6SppAwd9CCIMxcX7ywEnP8PbaNdqWDuSID89yC/IhNtdQa4Hk93SaCXCB0izKinQX
-X-Forefront-Antispam-Report:
-	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(376014)(7416014)(14060799003)(35042699022)(1800799024)(82310400026)(23010399003)(4143699003)(11063799006)(10067099003)(6133799003)(56012099006)(3023799007)(18002099003)(22082099003)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	kIz+6pX/XMpC38wcVCGOk4QTwH0D9ooEL2Yt38K7FaXB4QHKrZU5QzenMXPGfGyPf2GDzeQV4xVKE73QILqhwe4n+5P83ZvJK2Y9mE8GX3cJXXKTT57wsO3IseZZPxC2I0mFeX/J4/Gu0DWjRNBrTc7Q9kiwQNtkp9kUXbdzE70yYhK2+xhnSB/iLJNGAx0NfIba6ljwCIhJXOlP38ypy/dSbrZh/FrFBi0g7tnLQH/LM5m1EBu8vexM4Jd92NLcfEVjL5ZnJRMNepsV2BIVR9nsfhU16pU+cHp/aY50OmWo3dbDPi6a6VqmqFOz38oU1Lxvzb0TyTDrFxT6WyzfNIVbhRy9gHbDvErRxxKsFwAGca98x6N1evF8td0pdQhj0zuUTZbweIKl61ciVHNCaD5DBSry6SzqxQy7MWwkDKHfKNVugHrKe5LoCYRFe4gY
-X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jul 2026 14:06:44.8655
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7feed9d0-985d-42fa-2735-08dee7fa768a
-X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DU2PEPF00028D04.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR08MB5325
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 075F41C0009
-X-Stat-Signature: nxy16ceff1yw73s678x5zqzea33qszcx
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1784729210-274900
-X-HE-Meta: U2FsdGVkX1+/Z1CtzSL97GF6U2kj3TZdN1YZtIlIytzd7P5WhpBQKAJyD8mbgeUm+yiBOLFkoJGWUEM+oSTwFRm1iJUpkGGK3UoGTMAEHILe/pCfENJQH76uQ+9O7QulptQCouJF22ohyL+l9eFR1iwJgrwv5jKQOv2Cwuz1Sl2zL6tPe8iz8I6Nz1G1vouWD1HHDXOtR9JJMnCUznQly/yxecF4RjbfmcVDX5GEZG97BGlBtRQ7mqta2BqnOQ9Vi3SQZZOoqAaHeAB/QfMokELV04uW34jhZ9XD6qRzx9nkIdm1vNXZbwLJ0wmjL8MriXr7IQZRyUmqrIB+NMxesCGnqlIxbLZr59+HWYCtGEnuwRKvI6pUsZA71nflfNPoFvLjUrU77OHev4TvDSFdEhL+PsLkC2UOc7bgibUp/ukxNmxN6+YimmjHAsjCHn7BRVjj/n5d5V7LXqnVnALutZD1fti2ygKvXL3uPoIVidWij0i6oUl5u+GIcyaB8dU3ce1beEfARNx0h+yJQFEO+HKXBnZcikx9UgvjiyN4yb8xJ3sVAGG16Kll0/6Q4DsMzFmUt3tSiN5rUsXtgQhHR7XCKYQ7VYpr9DTXLwWDP3l6Z0ShsY134iUY4UDP8RhTLLHXFE16MR7tbQ9Ph0JdbNmtMCTBeQLNSu3Xz/aQwPppNHC4t6Nu/QrBFO76scbRKFFK7RJDoRtoxE2jYJX4l4Xg3H/jLyeJDIWeifHJu4R/Co4ajAEdNDRMIw1QCDnJkVyuRg7DAFbXpmsDUbpBsKKDHbBfQs71flvH57BVOWTw35A0NCApYttlbqq48imshVjpenoReiD6lE66X+kC+hSC4NAg2bItwOrZuwIHE8Ve0YlA9XioLVpkKng1J5WK3vyrwTzPOWjoBXic2zK87w1aoMRcX4PAbz/qffcK0AuypyH3Ddx3DX/dQYBSUZZJ8j0uBR9EQj4k3n5D3qt
- zNWBfPuv
- ihix/iEizJrZCuen+L2ib6ilE0n1q0cRPnpK+lC1DBBTm9tDByTMbR6CQYYu3UOHcWZgroAm4E93SezxbeL0cebLWcpKnNYUkHHc4Zm34FWX2ooAS9LbUZdBrUglJJR2ZjbeAcB1dtxTXnjRfeS1U/5cDPiWE4/91e11N0hU2/8HJ7CPZ6fselskM4llv/FrXiTZmpD9BsVYlRBUY+hYTTxa0SNXgMOcckXeYjhUWSgoHczFffM1QeLC7wmD0R2vZene5L45EaI8AYYa59fmo9UTha60RIbxU64GFCPzkuyqie7kz3UHo6NppVNiiMJlIel3UxJUo+jMzXt2E20oFS7hZ7c6Du7R0aV+m5pUEWsZue01bznUkMT3KGEBk2hUvYwNxGS5p66oPhdAqOd6KpNCEI5vugMFpUMArZeln7CMJlMyi8NveSoJ4QO3ETNVNwjZU4NjfEe5gudoyCfs9b/mPHeqaE6insTumH6ocsXqPzweVekkETjxikhc9tRSh2xe8DQHw3KTmnQ1SNosbV9iD7K+8ohrz1Ut3BDT42f9StEcCYMjH5WWrT0CebSvMnGi7Qs3M9G8/r8XGkj8KcoBfmylqQvFYsu5siwPJ1FtDwdoQQOYslqSn8RfYZg3QOivRZy9ZaqvYiek=
+X-Rspamd-Queue-Id: E75D420002
+X-Rspamd-Server: rspam01
+X-Stat-Signature: 7qy1kw5dyrsqqzszjf5kn8wyyed4j7cb
+X-HE-Tag: 1784729323-208219
+X-HE-Meta: U2FsdGVkX1/O6slLRTTXyHWIHWPVYHfW9TBJKDAAcJ45VJUU65eLt8uY2si9cUGptQbXdDoLraxs9ZMBnCy7rHLtxqjBLZhkH+/+jxU+IOfXnNBHLiP9Z+92LIzAUeRalyoBb0s1hvxcLP6oQmLmhXAPGNEOAzw4kScgR7ITQ/Y/gZxUd5gjih0aadF5JmA6Sk1RhCjcZPLOqqlfXkNz/17V7aGMf6EHS+Bvc/X/9xm3DWsliPKA7c1cPWFtCwmg1Sp973QYu3lCXCXOewG4HpVVqk6nqqAtukSAyZtV74Z7cMiIS/xDnz1aMnPVKmG+4cld4QTVkHcn4dBmLlSu+GMJEw6+Z4viWtuaMsVigZP5wUYAKb3/lvKwbKzOZe1u8TrL5/nh6ylh4Zq5G2Zj2comAHwaip7r8s4Ffn3KIJb0Q+eibLeX+/5tFbrahncrkhje1WRdJjGQmBn4Nl9bU9zHoz3rPngF33KleAQSlG9F293/SFcxNm9vbZ7DpbWckGmfRLJbUd56aYWn447JxK3fHNcjqAVGByQlzi79R5R7Rf9Z+BeOBEHcXQN6bZTSuZ0WHPi1SWeULm4p3BaTelxTJhSyVjPaf1J4s559Vkrut9mMH3IzyvOkW3Vq1vcxYLNIMoOQASZ3qnIczQ8bWn2gZ8Qsf2xO42NmUm2YU9jTz4gNf9aG1gcYLNsRRPjpzM+ilIRgOX9QbC6hTU3qzb7UvR5FqUTOaxNmElL9z8sqnZs30IcaSNXx9IsmvFjID6XjewYLw4QwQa9yH6lis9PfhTvFln63zrstxgpktdjbTcp35/zdzC+dU5JuO0zU9KEHvJ0xVy8hdJ4v+Ru2oZ3LSv8A8hfhi83Zise8ig5C6pihcqQpcQ7oaXL6USxFUZlCZOGliGE8qYU9r5bZjgsXg3qZmplgY1H0EgT+Q8xFi5AoUwioxM7sGuClz+j75TsY4A17e3x2f4p8ZNG
+ 5sN1qMnN
+ 2p5NkNjvFIpuIv4QcMeTXM9yw6iGtvWUFN5jR+13P+pCx+A1sVLFYqIrL8Ien14oSH4V0sMvFUtDLBM0lXFvdjcwjhAlIx/ht4HP5tyqRVKFnVTBSXHLDY8AY4U2HrWe1JV63mAiXDlN7hoHKcWjKlK5D4KTIsN8elMwkTcF4vm4AKCwXmPi+KET3xrRaG8Fz3goZL1ehi8TwdKfjsHGE0Z5sHdVwuaOyPzTTebTggTDVeRL39xiAE8yLTTucDbUlBFPN+513Yemnz872rkBPqszh3PUVbc0wDlMS0urOiGJOmoswMtRoc9XwcEizA7rE6XE+XICtfutliDgU2ssBdtXv6XRYel0KettAV0+ih80V1xIrUQ8BUJX5YrewLsl63bZMUrMn8rjbvwa5t47uQ/d52lIcg3tVIt5YKF0wUqIHK9kdIBQVOkOK2wY+ArCptDGnjeZCof7B91cKpM1d0lOHBmfQ5qVkczY74weF2ARHxKLN8QkHmUFtzqSrAPKRXUaVuELKPEz1HHrv7imibcJoGl+E3C6Y6cMXiLRydVUgZ8WH5dLgasgPzxBREMMvp47mSUP6YgoCQVrdqbRAJPak0K67aSP2iHEF2Af78yKuTeZz6/6PzoBDGkPDivytDlO1CV2PKrOz4Qbz1kLUl+6VslhVZEXHIY+0MoZMe4UbbWcsaMt7KEdB78gCzcEaBruXaNqrVLZOHMSjPie7Echm4Ro1MnAx9al5YYszdRN1IcAVGsMZlhrg6dVEtUPd1K4Q37051A9jrT5J+zMYeM0gAA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -203,133 +128,380 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+When an mm undergoes OOM kill, the OOM reaper unmaps memory while
+holding the mmap_lock in a non-blocking context set up by
+mmu_notifier_invalidate_range_start_nonblock(). MMU notifier
+subscribers (notably KVM) acquire sleeping locks in their
+invalidate callbacks, which deadlocks on PREEMPT_RT where
+spinlock_t is a sleeping rt_mutex:
 
-Thank you for review.
+  BUG: sleeping function called from invalid context at
+  kernel/locking/spinlock_rt.c:48
+  in_atomic(): 0, irqs_disabled(): 0, non_block: 1, pid: 40,
+  name: oom_reaper
+  Call Trace:
+   rt_spin_lock
+   kvm_mmu_notifier_invalidate_range_start
+   __mmu_notifier_invalidate_range_start
+   zap_vma_for_reaping
+   __oom_reap_task_mm
 
-On 22/07/2026 1:16 pm, Sarthak Sharma wrote:
-> Hi Usama!
-> 
-> On 7/22/26 2:41 PM, Muhammad Usama Anjum wrote:
->> collapse_swapin_single_pte and collapse_max_ptes_swap require
->> MADV_PAGEOUT to replace anonymous pages with swap entries.  On swapless
->> systems there is no backing store with which to create those entries, so
->> check_swap() reports missing setup rather than broken khugepaged behavior.
->>
->> Swapless configurations are common on Android and other constrained
->> test devices.  Failing these cases obscures actionable results from the
->> rest of the khugepaged suite.
->>
->> Check /proc/swaps before either swap-dependent case and skip when no
->> active swap area exists.  With swap present, retain the existing
->> MADV_PAGEOUT and swap-entry assertions unchanged.
->>
->> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
->> ---
->>  tools/testing/selftests/mm/khugepaged.c | 34 +++++++++++++++++++++++++
->>  1 file changed, 34 insertions(+)
->>
->> diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
->> index 10e8dedcb087d..a152cec59fcbd 100644
->> --- a/tools/testing/selftests/mm/khugepaged.c
->> +++ b/tools/testing/selftests/mm/khugepaged.c
->> @@ -100,6 +100,28 @@ static void skip(const char *msg)
->>  	exit_status = KSFT_SKIP;
->>  }
->>  
->> +static bool is_swap_enabled(void)
->> +{
->> +	char buf[MAX_LINE_LENGTH];
->> +	FILE *file;
->> +	bool enabled = false;
->> +
->> +	file = fopen("/proc/swaps", "r");
->> +	if (!file)
->> +		return false;
->> +
->> +	if (!fgets(buf, sizeof(buf), file))
->> +		goto out;
->> +
->> +	/* Check for first active swap entry. */
->> +	if (fgets(buf, sizeof(buf), file))
->> +		enabled = true;
->> +
->> +out:
->> +	fclose(file);
->> +	return enabled;
->> +}
->> +
->>  static void save_settings(void)
->>  {
->>  	ksft_print_msg("Save THP and khugepaged settings...");
->> @@ -734,6 +756,12 @@ static void collapse_swapin_single_pte(struct collapse_context *c, struct mem_op
->>  {
->>  	void *p;
->>  
->> +	if (!is_swap_enabled()) {
->> +		skip("No active swap");
-> 
-> Can we prefix this skip message with a #, as recommended for KTAP
-> output? Right now it is printing like this:
-It looks like `skip()` is not being prefixed with `#` in this test
-because of how it is currently used.
+Implement the asynchronous cleanup design proposed by Paolo
+Bonzini in v1 review: a new optional after_oom_unregister
+callback in struct mmu_notifier_ops, invoked after the SRCU grace
+period via call_srcu() so that no readers can still reference the
+subscription when cleanup runs.
 
-The `skip()` helper itself should probably be fixed, but that can be
-handled in a separate follow-up patch. This test is not fully
-TAP-compliant at the moment: the normal pass/fail output appears to be
-compliant, while the skip-related messages are not. Would it make sense
-to address that separately from this series?
+The flow is:
 
-Also when we run the whole mm suite using ./run_vmtests.sh, it appends an extra
-# in start of the output which we get by running normal test directly. Its
-controversial already that we are applying TAP styling to suite level and test
-level as well. So non-compliant skip in this test makes overall output
-compliant.
+  1. The OOM reaper calls mmu_notifier_oom_enter() from
+     __oom_reap_task_mm(), before the non-blocking VMA zap loop.
+  2. mmu_notifier_oom_enter() walks the subscription list and, for
+     each subscriber that provides after_oom_unregister, detaches
+     the subscription from the active list and schedules a
+     call_srcu() callback. The reaper's subsequent invalidations
+     therefore never invoke the subscriber's callbacks.
+  3. The deferred callback invokes after_oom_unregister once the
+     grace period has elapsed and all in-flight readers have
+     finished.
+  4. Subsystems waiting to free structures referenced by the
+     callback can call the new mmu_notifier_barrier() helper, which
+     wraps srcu_barrier() to wait for all outstanding callbacks
+     scheduled this way.
 
-> 
-> # Run test: collapse_swapin_single_pte (khugepaged:anon)
->  No active swap
-> ok 16 # SKIP collapse_swapin_single_pte
-> #
-> # Run test: collapse_swapin_single_pte (madvise:anon)
->  No active swap
-> ok 17 # SKIP collapse_swapin_single_pte
-> #
-> # Run test: collapse_max_ptes_swap (khugepaged:anon)
->  No active swap
-> ok 18 # SKIP collapse_max_ptes_swap
-> #
-> # Run test: collapse_max_ptes_swap (madvise:anon)
->  No active swap
-> 
-> 
->> +		ksft_test_result_report(exit_status, "%s\n", __func__);
->> +		return;
->> +	}
->> +
->>  	p = ops->setup_area(1);
->>  	ops->fault(p, 0, hpage_pmd_size);
->>  
->> @@ -760,6 +788,12 @@ static void collapse_max_ptes_swap(struct collapse_context *c, struct mem_ops *o
->>  	int max_ptes_swap = thp_read_num("khugepaged/max_ptes_swap");
->>  	void *p;
->>  
->> +	if (!is_swap_enabled()) {
->> +		skip("No active swap");
-> 
-> Same here.
-> 
->> +		ksft_test_result_report(exit_status, "%s\n", __func__);
->> +		return;
->> +	}
->> +
->>  	p = ops->setup_area(1);
->>  	ops->fault(p, 0, hpage_pmd_size);
->>  
-> 
+Paolo's original sketch called synchronize_srcu() from
+mmu_notifier_oom_enter() before invoking the callbacks. That
+blocks the OOM reaper waiting for a grace period and can deadlock:
+the reaper holds mmap_lock while waiting for SRCU readers to
+drain, while an in-flight reader can itself be blocked on
+mmap_lock. Use call_srcu() instead so the reaper never waits; the
+callback runs asynchronously once the grace period elapses, and
+mmu_notifier_barrier() provides the synchronization point for
+teardown paths that need to wait.
 
+after_oom_unregister is mutually exclusive with alloc_notifier
+because allocated notifiers can have additional outstanding
+references that the OOM path cannot safely drop.
+
+Update KVM to provide after_oom_unregister, which clears
+mn_active_invalidate_count, and to detect via hlist_unhashed() in
+kvm_destroy_vm() when its subscription was already detached by the
+OOM path; in that case call mmu_notifier_barrier() and drop the mm
+reference rather than calling mmu_notifier_unregister().
+
+Tested under virtme-ng with PREEMPT_RT, KASAN, and lockdep
+enabled, using a minimal KVM test program (opens /dev/kvm, creates
+a VM, registers memory, creates a vCPU, and sleeps) driven through
+a CONFIG_DEBUG_VM-only debugfs trigger (not part of this patch)
+that invokes __oom_reap_task_mm() on the target task. With the
+patch applied, mmu_notifier_oom_enter() detaches the KVM
+subscription, the call_srcu() callback runs after the SRCU grace
+period, KVM's after_oom_unregister clears
+mn_active_invalidate_count, and mmu_notifier_barrier() returns
+cleanly in kvm_destroy_vm(), with no KASAN reports, kernel BUGs,
+or lockdep splats across 20 stress iterations. The same setup
+reproduces the syzbot-reported warning on an unpatched PREEMPT_RT
+kernel; it is no longer observed with this patch applied.
+
+If the GFP_ATOMIC allocation in mmu_notifier_oom_enter() fails,
+the after_oom_unregister callback for that subscription is
+skipped rather than retried, since retrying could sleep and
+reintroduce the deadlock this patch fixes. The subscription is
+still cleaned up later via the normal unregister path.
+
+Fixes: 52ac8b358b0c ("KVM: Block memslot updates across range_start() and range_end()")
+Reported-by: syzbot+c3178b6b512446632bac@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c3178b6b512446632bac
+Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
+Link: https://lore.kernel.org/all/CABgObfZQM0Eq1=vzm812D+CAcjOaE1f1QAUqGo5rTzXgLnR9cQ@mail.gmail.com/
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202605031109.uxckW5L3-lkp@intel.com/
+
+Signed-off-by: shaikh.kamal <shaikhkamal2012@gmail.com>
+---
+Changes in v3:
+- Rebase onto v7.2-rc3; v2 was based on stale v7.0 which the
+  kernel test robot could not apply to current trees
+- Add missing static inline stub for mmu_notifier_oom_enter() in
+  the !CONFIG_MMU_NOTIFIER section of include/linux/mmu_notifier.h,
+  fixing allnoconfig build failures reported by the kernel test
+  robot
+- Use kmalloc_obj() per current allocation idiom
+- Add Fixes: tag identifying the commit that introduced
+  mn_invalidate_lock
+
+Changes in v2:
+- Complete redesign per Paolo's v1 review: moved from a
+  KVM-internal locking change to a new mm/mmu_notifier
+  after_oom_unregister callback with call_srcu() async cleanup
+  (hence the subject prefix change from KVM: to mm/)
+- Add mmu_notifier_barrier() (srcu_barrier wrapper) for teardown
+  synchronization in kvm_destroy_vm()
+- Move call site to __oom_reap_task_mm(); use hlist_del_init() to
+  keep hlist_unhashed() correct and avoid use-after-free on the
+  stack-allocated oom_list head
+
+v2: https://lore.kernel.org/all/20260429222548.25475-1-shaikhkamal2012@gmail.com/
+v1: https://lore.kernel.org/all/20260209161527.31978-1-shaikhkamal2012@gmail.com/
+
+ include/linux/mmu_notifier.h |  14 ++++
+ mm/mmu_notifier.c            | 122 +++++++++++++++++++++++++++++++++++
+ mm/oom_kill.c                |   3 +
+ virt/kvm/kvm_main.c          |  27 +++++++-
+ 4 files changed, 165 insertions(+), 1 deletion(-)
+
+diff --git a/include/linux/mmu_notifier.h b/include/linux/mmu_notifier.h
+index a11a44eef521..a1820a487854 100644
+--- a/include/linux/mmu_notifier.h
++++ b/include/linux/mmu_notifier.h
+@@ -88,6 +88,14 @@ struct mmu_notifier_ops {
+ 	void (*release)(struct mmu_notifier *subscription,
+ 			struct mm_struct *mm);
+ 
++	/*
++	 * Any mmu notifier that defines this is automatically unregistered
++	 * when its mm is the subject of an OOM kill.  after_oom_unregister()
++	 * is invoked after all other outstanding callbacks have terminated.
++	 */
++	void (*after_oom_unregister)(struct mmu_notifier *subscription,
++				     struct mm_struct *mm);
++
+ 	/*
+ 	 * clear_flush_young is called after the VM is
+ 	 * test-and-clearing the young/accessed bitflag in the
+@@ -424,6 +432,8 @@ bool __mmu_notifier_clear_young(struct mm_struct *mm,
+ 		unsigned long start, unsigned long end);
+ bool __mmu_notifier_test_young(struct mm_struct *mm,
+ 		unsigned long address);
++void mmu_notifier_oom_enter(struct mm_struct *mm);
++void mmu_notifier_barrier(void);
+ extern int __mmu_notifier_invalidate_range_start(struct mmu_notifier_range *r);
+ extern void __mmu_notifier_invalidate_range_end(struct mmu_notifier_range *r);
+ extern void __mmu_notifier_arch_invalidate_secondary_tlbs(struct mm_struct *mm,
+@@ -643,6 +653,10 @@ static inline void mmu_notifier_synchronize(void)
+ {
+ }
+ 
++static inline void mmu_notifier_oom_enter(struct mm_struct *mm)
++{
++}
++
+ #endif /* CONFIG_MMU_NOTIFIER */
+ 
+ #endif /* _LINUX_MMU_NOTIFIER_H */
+diff --git a/mm/mmu_notifier.c b/mm/mmu_notifier.c
+index 245b74f39f91..f30bf95f17c7 100644
+--- a/mm/mmu_notifier.c
++++ b/mm/mmu_notifier.c
+@@ -49,6 +49,37 @@ struct mmu_notifier_subscriptions {
+ 	struct hlist_head deferred_list;
+ };
+ 
++/*
++ * Callback structure for asynchronous OOM cleanup.
++ * Used with call_srcu() to defer after_oom_unregister callbacks
++ * until after SRCU grace period completes.
++ */
++struct mmu_notifier_oom_callback {
++	struct rcu_head rcu;
++	struct mmu_notifier *subscription;
++	struct mm_struct *mm;
++};
++
++/*
++ * Callback function invoked after SRCU grace period.
++ * Safely calls after_oom_unregister once all readers have finished.
++ */
++static void mmu_notifier_oom_callback_fn(struct rcu_head *rcu)
++{
++	struct mmu_notifier_oom_callback *cb =
++		container_of(rcu, struct mmu_notifier_oom_callback, rcu);
++
++	/* Safe - all SRCU readers have finished */
++	cb->subscription->ops->after_oom_unregister(cb->subscription, cb->mm);
++
++	/* Release mm reference taken when callback was scheduled */
++	WARN_ON_ONCE(atomic_read(&cb->mm->mm_count) <= 0);
++	mmdrop(cb->mm);
++
++	/* Free callback structure */
++	kfree(cb);
++}
++
+ /*
+  * This is a collision-retry read-side/write-side 'lock', a lot like a
+  * seqcount, however this allows multiple write-sides to hold it at
+@@ -385,6 +416,84 @@ void __mmu_notifier_release(struct mm_struct *mm)
+ 		mn_hlist_release(subscriptions, mm);
+ }
+ 
++void mmu_notifier_oom_enter(struct mm_struct *mm)
++{
++	struct mmu_notifier_subscriptions *subscriptions =
++						mm->notifier_subscriptions;
++	struct mmu_notifier *subscription;
++	struct hlist_node *tmp;
++	HLIST_HEAD(oom_list);
++	int id;
++
++	if (!subscriptions)
++		return;
++
++	id = srcu_read_lock(&srcu);
++
++	/*
++	 * Prevent further calls to the MMU notifier, except for
++	 * release and after_oom_unregister.
++	 */
++	spin_lock(&subscriptions->lock);
++	hlist_for_each_entry_safe(subscription, tmp,
++				  &subscriptions->list, hlist) {
++		if (!subscription->ops->after_oom_unregister)
++			continue;
++
++		/*
++		 * after_oom_unregister and alloc_notifier are incompatible,
++		 * because there could be other references to allocated
++		 * notifiers.
++		 */
++		if (WARN_ON(subscription->ops->alloc_notifier))
++			continue;
++
++		hlist_del_init_rcu(&subscription->hlist);
++		hlist_add_head(&subscription->hlist, &oom_list);
++	}
++	spin_unlock(&subscriptions->lock);
++	hlist_for_each_entry(subscription, &oom_list, hlist)
++		if (subscription->ops->release)
++			subscription->ops->release(subscription, mm);
++
++	srcu_read_unlock(&srcu, id);
++
++	if (hlist_empty(&oom_list))
++		return;
++
++	hlist_for_each_entry_safe(subscription, tmp,
++				  &oom_list, hlist) {
++		struct mmu_notifier_oom_callback *cb;
++		/*
++		 * Remove from stack-based oom_list and reset hlist to unhashed state.
++		 * This sets subscription->hlist.pprev = NULL, so future callers of
++		 * mmu_notifier_unregister() (e.g. kvm_destroy_vm) will see
++		 * hlist_unhashed() == true and take the safe path, avoiding
++		 * use-after-free on the stack-allocated oom_list head.
++		 */
++		hlist_del_init(&subscription->hlist);
++
++		/*
++		 * GFP_ATOMIC failure is exceedingly rare. We cannot sleep
++		 * here (would reintroduce the deadlock this patch fixes)
++		 * and cannot call after_oom_unregister synchronously
++		 * without first waiting for SRCU readers. The subscriber
++		 * will not receive after_oom_unregister but cleanup will
++		 * eventually happen via the unregister path.
++		 */
++		cb = kmalloc_obj(*cb, GFP_ATOMIC);
++		if (!cb)
++			continue;
++
++		cb->subscription = subscription;
++		cb->mm = mm;
++		mmgrab(mm);
++
++		/* Schedule callback - returns immediately */
++		call_srcu(&srcu, &cb->rcu, mmu_notifier_oom_callback_fn);
++	}
++}
++
+ /*
+  * If no young bitflag is supported by the hardware, ->clear_flush_young can
+  * unmap the address and return 1 or 0 depending if the mapping previously
+@@ -1144,3 +1253,16 @@ void mmu_notifier_synchronize(void)
+ 	synchronize_srcu(&srcu);
+ }
+ EXPORT_SYMBOL_GPL(mmu_notifier_synchronize);
++
++/**
++ * mmu_notifier_barrier - Wait for all pending MMU notifier callbacks
++ *
++ * Waits for all call_srcu() callbacks scheduled by mmu_notifier_oom_enter()
++ * to complete. Used by subsystems during cleanup to prevent use-after-free
++ * when destroying structures accessed by the callbacks.
++ */
++void mmu_notifier_barrier(void)
++{
++	srcu_barrier(&srcu);
++}
++EXPORT_SYMBOL_GPL(mmu_notifier_barrier);
+diff --git a/mm/oom_kill.c b/mm/oom_kill.c
+index 5f372f6e26fa..66adcd03f36a 100644
+--- a/mm/oom_kill.c
++++ b/mm/oom_kill.c
+@@ -516,6 +516,9 @@ static bool __oom_reap_task_mm(struct mm_struct *mm)
+ 	bool ret = true;
+ 	MA_STATE(mas, &mm->mm_mt, ULONG_MAX, ULONG_MAX);
+ 
++	/* Notify MMU notifiers about the OOM event */
++	mmu_notifier_oom_enter(mm);
++
+ 	/*
+ 	 * Tell all users of get_user/copy_from_user etc... that the content
+ 	 * is no longer stable. No barriers really needed because unmapping
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index e44c20c04961..79a4df8a337a 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -875,6 +875,24 @@ static void kvm_mmu_notifier_release(struct mmu_notifier *mn,
+ 	srcu_read_unlock(&kvm->srcu, idx);
+ }
+ 
++static void kvm_mmu_notifier_after_oom_unregister(struct mmu_notifier *mn,
++						  struct mm_struct *mm)
++{
++	struct kvm *kvm;
++
++	kvm = mmu_notifier_to_kvm(mn);
++
++	/*
++	 * At this point the unregister has completed and all other callbacks
++	 * have terminated. Clean up any unbalanced invalidation counts.
++	 */
++	WARN_ON(rcuwait_active(&kvm->mn_memslots_update_rcuwait));
++	if (kvm->mn_active_invalidate_count)
++		kvm->mn_active_invalidate_count = 0;
++	else
++		WARN_ON(kvm->mmu_invalidate_in_progress);
++}
++
+ static const struct mmu_notifier_ops kvm_mmu_notifier_ops = {
+ 	.invalidate_range_start	= kvm_mmu_notifier_invalidate_range_start,
+ 	.invalidate_range_end	= kvm_mmu_notifier_invalidate_range_end,
+@@ -882,6 +900,7 @@ static const struct mmu_notifier_ops kvm_mmu_notifier_ops = {
+ 	.clear_young		= kvm_mmu_notifier_clear_young,
+ 	.test_young		= kvm_mmu_notifier_test_young,
+ 	.release		= kvm_mmu_notifier_release,
++	.after_oom_unregister	= kvm_mmu_notifier_after_oom_unregister,
+ };
+ 
+ static int kvm_init_mmu_notifier(struct kvm *kvm)
+@@ -1273,7 +1292,13 @@ static void kvm_destroy_vm(struct kvm *kvm)
+ 		kvm->buses[i] = NULL;
+ 	}
+ 	kvm_coalesced_mmio_free(kvm);
+-	mmu_notifier_unregister(&kvm->mmu_notifier, kvm->mm);
++	if (hlist_unhashed(&kvm->mmu_notifier.hlist)) {
++		/* Subscription removed by OOM. Wait for async callback. */
++		mmu_notifier_barrier();
++		mmdrop(kvm->mm);
++	} else {
++		mmu_notifier_unregister(&kvm->mmu_notifier, kvm->mm);
++	}
+ 	/*
+ 	 * At this point, pending calls to invalidate_range_start()
+ 	 * have completed but no more MMU notifiers will run, so
+
+base-commit: a13c140cc289c0b7b3770bce5b3ad42ab35074aa
 -- 
-Thanks,
-Usama
+2.43.0
 
 
