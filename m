@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8724C4453D
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 17:27:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C7B6C44536
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 17:31:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C1E226B00D2; Wed, 22 Jul 2026 13:27:49 -0400 (EDT)
+	id 23AC16B00BF; Wed, 22 Jul 2026 13:31:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BCEFB6B00D3; Wed, 22 Jul 2026 13:27:49 -0400 (EDT)
+	id 1EA816B00C2; Wed, 22 Jul 2026 13:31:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ABE256B00D4; Wed, 22 Jul 2026 13:27:49 -0400 (EDT)
+	id 0B3CD6B00C3; Wed, 22 Jul 2026 13:31:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C9C26B00D2
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 13:27:49 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1602C1C029A
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 17:27:49 +0000 (UTC)
-X-FDA: 85017095058.18.B161C59
+	by kanga.kvack.org (Postfix) with ESMTP id CCD616B00BF
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 13:31:05 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4DC77160248
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 17:31:05 +0000 (UTC)
+X-FDA: 85017103290.30.3269D9E
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 282BA4000B
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 17:27:46 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=SoeZpZp+;
-	spf=pass (imf04.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	by imf21.hostedemail.com (Postfix) with ESMTP id 56CC41C0016
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 17:31:03 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=c73DPG7u;
+	spf=pass (imf21.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784741267;
+	s=arc-20220608; t=1784741463;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M5Y7D3saet3lwRTR1iYvW2JWs6T6gFdbJ6BwZVaxCLY=;
-	b=I5Q1MjmtbGwteYrLSMRaGxggSxYyPCpl1dZof2i4Qn3lXmHSpBHWTjcJy7L7hdqeBYamFN
-	vH0VglSyTYcTBy9MMaaBhogpSYHPyxnXi684JCAqWCnCz1Ov7aefXB1uas3U64XYT8K38s
-	2DHIdeBaiWaomqp+aNFE7IpDUSa83eM=
+	bh=YfFPpLKEfpC8qzSRCtLs88/dMMjpKMcNGRtKebH+Glg=;
+	b=UaAlJ/yFThk0+zpH1xd7sCqultY7HPFqU+RWIm+e5LBmCa7goAke70L9unNSeP/DndiFH9
+	xGw2TivAwaA4dtpSw5qeZBvfB/oP4W2p7H+V6pzjBiC5wvoREY8Zrxm1uG+vw+08AszKFV
+	xgzbzEFhQE2sHSk1+xEF4jKBzmQtK3Y=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784741267;
-	b=S0UyBDA65ohIL5yTzEjzee1dRDC+/k1F+SyiwPPWHuO7kTBbpIG9Ei6r33a3H52MAtNrC7
-	if+meEl7snI0A5xk31PwrTTXNyka9pFRpg3TgiXPjBf9qtSRQeaUj0ZEbzCOps9J5iNP7s
-	odjvm0HFBAUM6+VuCyoJj7E2uKSqEiU=
+	t=1784741463;
+	b=Ye6OS+N9uuSe3cNe26/7ZS6Wh+6mwb84GH3DtHL1TOKIfX6ZW68F8lPU3V/jmgjw/eeFyP
+	OqhUUExNs7uMM7OjhragxFL+0UrRH3HucqLcCjNpFT44ya6AF0FmUJ2oKK2n8ALgto3YiC
+	bB9oI5F1Dzw4UBwnJBO/BZw6nLJ3/yI=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=SoeZpZp+;
-	spf=pass (imf04.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	imf21.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=c73DPG7u;
+	spf=pass (imf21.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B2D7B1595;
-	Wed, 22 Jul 2026 10:27:41 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EC1E21595;
+	Wed, 22 Jul 2026 10:30:57 -0700 (PDT)
 Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B55B63F66F;
-	Wed, 22 Jul 2026 10:27:38 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1CBCB3F66F;
+	Wed, 22 Jul 2026 10:30:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784741265; bh=UJJJ6gDdFfQhPAspitY0ExVcYQKJakkmR/X3IOo4bZM=;
+	t=1784741462; bh=24jF6AcUqs8OWEGAaLR69DLBQjR9hO+Rom+3K8DJQKo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SoeZpZp+wsxHy2IPoBPIESiHfIlciJelBcAUO0h9BaNgywgcLRKe59vGZr1KsfOtU
-	 zXqwnNHi8fnyFJ4Z4tV45RCq4+uQHINF4Mo8FApJ3gK1YQgEZ3tQYqJ6ysDA6eAPD+
-	 h3LKbzFF1zV5s5ibd/Q5KVSGVirnUpwJnXEtiFKM=
-Date: Wed, 22 Jul 2026 18:27:36 +0100
+	b=c73DPG7uUV5Fqsc83UkY57n5Qs0XXql23cCXWpZ2ZiqQ+ckAvgZYW4H6Qxd7IuEhg
+	 UpaREG+sGAYzR3v9TgE4TzXqEnrXG7rfKfeEIP65qzbz/5t2U9GCOzbaaUSYCknPsU
+	 WarfMW9lzNf8oKGScXg68Qq+UBElSke/y8/OuBEw=
+Date: Wed, 22 Jul 2026 18:30:52 +0100
 From: Yeoreum Yun <yeoreum.yun@arm.com>
 To: Dave Hansen <dave.hansen@intel.com>
 Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Russell King <linux@armlinux.org.uk>,
@@ -95,30 +95,28 @@ Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Russell King <linux@armlinux.org.uk>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Michal Hocko <mhocko@suse.com>, Jonas Bonn <jonas@southpole.se>,
 	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-	Stafford Horne <shorne@gmail.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Stafford Horne <shorne@gmail.com>, linux-kernel@vger.kernel.org,
 	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
 	linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org,
 	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
 	linux-openrisc@vger.kernel.org
-Subject: Re: [PATCH RFC v2 12/20] x86: mm: define pudp_set_access_flags()
- when CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD is enabled only.
-Message-ID: <amD9iD7rjmU__9b6@e129823.arm.com>
+Subject: Re: [PATCH RFC v2 00/20] mm: optimize unnecessary loads due to
+ ptep_get() and friends out
+Message-ID: <amD-TLGWGdMK2ItC@e129823.arm.com>
 References: <20260722-dummy_ptxp3-v2-0-d9e4bad31e0a@arm.com>
- <20260722-dummy_ptxp3-v2-12-d9e4bad31e0a@arm.com>
- <188623a9-dba0-4229-a7ff-5feb2ef0c088@intel.com>
+ <0143b927-08c5-4e94-ae6e-2a0d7bfe950f@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <188623a9-dba0-4229-a7ff-5feb2ef0c088@intel.com>
-X-Stat-Signature: 3n1wwuh9oejfikgm8mn8yg757yeh55ax
+In-Reply-To: <0143b927-08c5-4e94-ae6e-2a0d7bfe950f@intel.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 282BA4000B
-X-HE-Tag: 1784741266-3163
-X-HE-Meta: U2FsdGVkX1/Rq2CoQo+x3eHaikKecwqtGZnabauS8Qsjt7SWSIC9YnTYQYREQRzZ0DA5aTfG5YchT6RrMcd5Rgu8ovmnbn25lsJavcgP4JUV2idjILjQdv5DNUtfZqg8wtfdMAgKPNOtnhJFONev+qf1IS2UTHIVpHDGta3NYLBx1G47BUojI5OyIbUHP9WUcLTMKcXpvOU7URQKJpKx6U7QsZv9xhEoOm5Rbo5Rwks8kLdEqj8EOxtcpf61PK3jmaXL7d15GA2GXqXS2DuOSaW6Tt8nj3HRRR7We1h5cifqo+D707xL+1BUSa6NBpLnYO+8BFaWovTBuzfosmlwmoMK8M1GQksOTRwMFxBkpBzXwrlAgP2/pVdFv2WLJ6nAS7PkjCr7Jq9M2oQePU97M03zt5y0TStquVx9zTK5cUfS/G9Jmf0cQ+sVKdm0kitT9y4Gp/o+La0nu5pgBnkmhWny1skzdy0KWAFWkyanUFNH0Xxv6LSwF6C3wmPPVtKd2667T0a35XSjy5ujc3JMQfG2ZiVkTSLfJPxW6TmkVIR6yU1hWx0FnpQvkpMeQFYoFJbcl4p5hlN6vUvktc6uTcaHiNhWF7bBjs3yEJaCxLSRf1BvODSNBiqq2z5S/r36sc9SI4m0L+gmT4xj0EYQnCmh0JXVtwA7M1avOoahV3bGUSaIdNTUHPeI+Ej/NiOttQ/7NBXvMUwMSONGq9C/b4fCHNlqGZ1XM3Qb6s/7qgNDZ2opBXhlUmlxcSYjycBT2enTrVe5WcF6l6HqKXvt23YuA5698VMxAQ5WhEaJt2gZI3aEdj3ynqGqozDHKgmEI6J1m6RLwKgY6IJSfK5gRTucepnIPbY5oyXMBASBNch18h5vQF9zZruc75CW7iLpodDqxJtGRf9Bs7XDHg5IKRzi17paW0DeyJCYbWQvZ+5oejLJ7sjzTFYo2wWwrbS1iDpZ9O88j9EJlGFCkGA
- oCLG7Bao
- zjt2ITc6gKqHELgjIfe/k22A43l/WgJzcbyPI/lZp+acor4Oc0aOA2ch76wiYTvVrqvlLx21wt7SkgOTL+QIVF501ogSFVzdzw08x4A+RqhyNGCYVHo/9WX9fRfpieSlR1tKLL+1iGOE4GP30gsDoxDS5v1iZvbElxDD55b6wfxZ8L1NXXUUaxsem5DlqHEwnr2lwFduTDGsCnU2zLuHg4WExbYS+Yx/NfwSWaY1FGaMpUWRXzBBCrQ9UUde4PzTH1c8vod5SegDC/n5+fYtTg2PgwQ==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 56CC41C0016
+X-Stat-Signature: amgu1t5r76rjcuw8ykxrho7myr334z4o
+X-HE-Tag: 1784741463-994398
+X-HE-Meta: U2FsdGVkX183S6ZnVbTbySo6qKb2DNyRuqR1VyjfWbI8a/bZhdU/0LKwHm9BSF92QE0nb+fDUEtCTkY0dplxPXRsy92jzSOh2FLgLen98FdKPKcLXGSe6ISzFWggBRx1/7JAqHsskYo7byg2FQNYN3reJCG4QgWLvm0Fl0za6OB1DnJBxym4M/iVL5ygES0nR3Cb3UF+jh9Iag4PSkvU9aiQnieSd6FNd2wYsnRQ/9ztXZ90uCUSKQJO31bynv+rnADmgx2gf7voj69q3A/8HvsZn4hgfl4NWJWPHNE7ooEggmkEynhGOAWE3VUSCm1yM4XUEaAAqQsJr5KIZqHq+LKzt7MGwrpnwHHoYmuKJ9prLmahDhw+2EvfcksusRGcQ3RFU2nRnJfO5kRIsUXNH626jp2a+p/BcHlmM7+UYF6JmjmBrkUz6SJsFVERt78WHC0xnSJxUxFEFyof2GXFcGD478SAXYSYtFT1i0i2shunsxuIHusZ7hAEsNGPiWRXZpAJUKvbGA9yT8sH+vzB/KgiMBemy+wklAQZdG/AbmKFETZP/jbghkprv5FCXg2Niay/EfvaOkCUcRpj+4UpvIOpznHaw4eVfnvsavydYwJxO8xpn3q/gLkSOZg141xzdILfxn7YYFtbtGWYUv7UUCSoCZ8gMd7yioeVIAFS4UiLW5RoM1tso2N7seb5ZNo1oNd4ipVPPUvj2EkOm8na5Yer+6zPcDCWAk+/eU/DE4IirY/s7cs6opa12JWgXqBGgVzLDIpbTZQ7Kf0YkxN5p269ank29uT+7IdrO8Vpot9PVQXf3ct9rJVdTlQcCr8f9dG+J9dxL1pjIs1D3+XzvpkxdSYN7eEF70YrGHviTFE3W3K4J2FxSAEt/6lItv6PKyLFLg43UTbWq157ku9ZP8s462RlP6Xp5mTwmi9YBc46t4KzdT4DOHSgExARJufqa0WSsdFkszN6YPJvcTI
+ IW8cbCQZ
+ zXfZn+nAPIKCcH5zJpj1JsCAGwC7R1yuyAnus5+fRUt5WXfVzrVsqTkuTwBt7N4Y4LDi4JSDoDyLCuT2Noe3vG5ma8lvq7+QZn5oNKdIuUjSP4P6KZFFKnlhOO+C764KGz4RaSm6yZv2hnDBEpq65t3YNecobhCemmq2UD/1GCwCDLhWFqK6SVQTJIAeUl7Os1BIpk8hEFG48sbJxvrX43IuvevZDlXmejY62AyPho8mH60xh9tJ11s9B4FFgO2xy5KMhGqyMMzwMTivgM8y8FV0Ngg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,58 +124,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Dave,
+> One of my nits about v1 was that it didn't really frame the series
+> precisely. It talks about "optimization" instead of fundamentally
+> changing the way that the kernel deals with folded page table levels.
+> 
+> The optimization that this *wants* to talk about kinda falls out of that
+> refactoring. It's not really the core of the series, IMNHO.
+> 
+> This series effectively changes the rules about where and how folded
+> page table levels can be manipulated. In doing that, the door is opened
+> to optimizing out the unnecessary loads.
 
-> > diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
-> > index f32facdb3035..edad847a2ecd 100644
-> > --- a/arch/x86/mm/pgtable.c
-> > +++ b/arch/x86/mm/pgtable.c
-> > @@ -411,6 +411,7 @@ int pmdp_set_access_flags(struct vm_area_struct *vma,
-> >  	return changed;
-> >  }
-> >  
-> > +#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
-> >  int pudp_set_access_flags(struct vm_area_struct *vma, unsigned long address,
-> >  			  pud_t *pudp, pud_t entry, int dirty)
-> >  {
-> > @@ -430,6 +431,7 @@ int pudp_set_access_flags(struct vm_area_struct *vma, unsigned long address,
-> >  
-> >  	return changed;
-> >  }
-> > +#endif /* CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD */
-> >  #endif
-> >  
-> >  bool ptep_test_and_clear_young(struct vm_area_struct *vma,
-> 
-> #ifdefs in .c files are evil.
-> 
-> The changelog doesn't make a strong enough case for why this evil should
-> be tolerated.
-> 
-> These are also _precisely_ the kind of #ifdefs that cause compilation
-> problems. This one is:
-> 
-> #ifdef CONFIG_TRANSPARENT_HUGEPAGE
-> /// function here
-> #ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
-> /// another function here
-> #endif
-> #endif
-> 
-> So there end up being a couple of dependent config options in play. If
-> there are compile problems, this makes them harder to find.
-> 
-> What is the _actual_ goal here? Saving 50 bytes of kernel text?
-
-TBH, this came from for v1's change of behavior set_pud() where
-triggered compiliation problem with v2 this change wouldn't require.
-
-However, wrappering pudp_set_access_flags() with
-CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD seems reasonable for not only
-saving a kernel text but also keeping consistency with the other pattern
-like pudp_invalidate(), pudp_establish() and etc.
-
-Am I mising something?
+I see. might the title and the cover letter should be reparsed.
+Thanks to remind it again :)
 
 -- 
 Sincerely,
