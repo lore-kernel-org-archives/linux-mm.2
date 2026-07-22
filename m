@@ -4,90 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D01E4C4452B
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 00:18:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E8B3C4452D
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 00:24:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C664C6B008C; Tue, 21 Jul 2026 20:18:13 -0400 (EDT)
+	id 4AA896B007B; Tue, 21 Jul 2026 20:24:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C172C6B00A3; Tue, 21 Jul 2026 20:18:13 -0400 (EDT)
+	id 45AD66B008A; Tue, 21 Jul 2026 20:24:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B09AF6B00A4; Tue, 21 Jul 2026 20:18:13 -0400 (EDT)
+	id 349986B00A5; Tue, 21 Jul 2026 20:24:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 83AAB6B008C
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 20:18:13 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E3DA7C02DA
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 00:18:12 +0000 (UTC)
-X-FDA: 85014500424.20.F121C46
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0C68B6B007B
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 20:24:24 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8F0B01A02B6
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 00:24:23 +0000 (UTC)
+X-FDA: 85014516006.04.DA2BEE9
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 586771C000C
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 00:18:11 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HQklOV3t;
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf01.hostedemail.com (Postfix) with ESMTP id 0AC5B40008
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 00:24:21 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CsQwnhxv;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784679862;
+	b=bJxRaXxslccs27hL+0vQWLlRgriCmNTBz86j7vq913sPhS6XZwCzrH/j5PDgT0u/OwVTCR
+	geioFhDMIKCoNdBcYrQ8JTGaLeti8dif6/WfUk61AdlpomjhMe56N4PHOsPY21dzUY+ZVt
+	WPerwjfLK5jYAKjXnXLP8v2glo5EWPo=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CsQwnhxv;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784679491;
+	s=arc-20220608; t=1784679862;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NZE8OVcCqPgnZz+/5Kme28lwwlaGh+3LsOtdYSryteU=;
-	b=NVfNpL3ULwjpMd4VSzE9ahWq49nXrBmP7jbe58I7Az0ei+z+3bU6gkezdSyxQie7hjDgec
-	2Q2nQolnNyx4+3WgWsT+Ug0ObaxKdTyiWBF4W3rPzsN0oPLH1YNBDz3fCPVn0sa+YlKGZH
-	Ni0XL9OarM+1nzp+jb+Rkoo9a7VmIvY=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HQklOV3t;
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784679491;
-	b=P7PoqgVc/REIcatPSOig1UWFjd3Bif+XBwGVoj0Qa3w+xwvl21OTBT96JQI/JUZgupjTm0
-	Yf+s1LehjisYIRWWOfABn98pwOUTBqc3fyY3tsXvNnlQX1j9XXH/JEUfA/NfYRvm9rGG/t
-	rSDzwrHaMkjmwxgA0W9q8wotdf3Y+ms=
+	bh=Q6ZtWwJbi47KLhDRmMnb3Zg0qJF7lKRh73y+5hGmLLA=;
+	b=X2VSUDyvNJSya+fHBad7xtEfdv5TnQuxI+XAYl4PcWCcKlPGX5v/nlZMGYwFTvxdexyOWJ
+	NDoYd0CTx2E0ABKqFFtNzsdlBoxnY5YMpuN2s4cvSK5qYshlCFrQJUITGN/nYhDBYJ1WTz
+	rb4GjFcfTZAAzrUrA7AJnSSKc4+FITI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D46BB600FC;
-	Wed, 22 Jul 2026 00:18:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CA041F000E9;
-	Wed, 22 Jul 2026 00:18:10 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 526B9600FC;
+	Wed, 22 Jul 2026 00:24:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 841AF1F000E9;
+	Wed, 22 Jul 2026 00:24:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784679490;
-	bh=NZE8OVcCqPgnZz+/5Kme28lwwlaGh+3LsOtdYSryteU=;
+	s=k20260515; t=1784679861;
+	bh=Q6ZtWwJbi47KLhDRmMnb3Zg0qJF7lKRh73y+5hGmLLA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HQklOV3tmYgsc8UrejYclNrWh/eCAMQrh79IZrgN0+gHQk4JssCNNslTRNhnYyWkX
-	 FyKeg3rWX8mUJnpmSgf+lsRZV5A99IIVJ68sU4maNDFnhBE8vha3SnLsjClH/fl0G3
-	 Anxbm4RcITokwXA85WLGQqRyUh3ahEIoN97Tfa0CB+ZDz75rOG7cBhXZYXc7aFPZCA
-	 xBhlZxxthyvWaJ3wGH2xRHqcWXT1KM2anIcUXTY2aG6QUVHm5f9io8QARfC4i/JiIg
-	 ziVrar6D8Pk1jj+IDiMyd2mh1f+nd66nN2S2aeQ3h/d3I2oeS07tQjN0VhcSsHnCNl
-	 ogBmadR06ltiA==
+	b=CsQwnhxvA9ZxgnP7LaXEJ5c08PoHAPt5HJmn+V6skPO2tfujGXJ6CKOqHWRbP7+p9
+	 OPGHvE5TkjZ72ku9JRsfH8kf3eIFg6d8B7FqF9o8fdjr0IZGpIbJC2tRnC6ka4cw8k
+	 iaqjpCHCwIeGNnbEV4ryMLA6YvieOzBntxqnX2XyCjLocDz0oSX6EsThdrWsZUWi2o
+	 a4q0Xxmv3ygqWXxuSMpiofmUsufQ5eRpq6TCOt7duWrklyXo4bckfupvjsMaIXolET
+	 1Bzd5Q8yIPDfCnQaGwinQCSTxR86dUESSm7cg5nNY+wIJW4RrAy5lD82/S246r3DOd
+	 Emd/JHIcRtRdQ==
 From: SJ Park <sj@kernel.org>
-To: longlong yan <yanlonglong@kylinos.cn>
+To: Zenghui Yu <zenghui.yu@linux.dev>
 Cc: SJ Park <sj@kernel.org>,
+	linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
 	akpm@linux-foundation.org,
 	david@kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	shuah@kernel.org
-Subject: Re: [PATCH] selftests/mm/pagemap_ioctl: Fix missing NULL checks after calloc()
-Date: Tue, 21 Jul 2026 17:18:00 -0700
-Message-ID: <20260722001801.150265-1-sj@kernel.org>
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org
+Subject: Re: [PATCH] docs/mm: Physical Memory: remove deferred_split_queue
+Date: Tue, 21 Jul 2026 17:24:11 -0700
+Message-ID: <20260722002412.150464-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260721063611.342-1-yanlonglong@kylinos.cn>
+In-Reply-To: <20260721111919.22923-1-zenghui.yu@linux.dev>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 0AC5B40008
+X-Stat-Signature: qnqafbst35zugpojtquhtm9xtrezmotw
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 586771C000C
-X-Stat-Signature: 1mnsz5m3zarm8xctyhgozjup5krhifgp
-X-HE-Tag: 1784679491-390586
-X-HE-Meta: U2FsdGVkX189TUiQ7J+f6vV7hhAiRqtAIj/UxgCYsZeq0Q0S5UQGveGaTFanNN/Lrwc+JQakuZrWGZ8NH1O1nruCgsPdDkg2GGiBYaM3V3D3+UHFdIrFvV1so3FGllw6SoArCTz+1XyZsNvad3DhZmE3bJ+cFYzN+jcw8X4p0ZQepVJVP4f/1HmUvOeFoOaAFF0rTDmGIrkBONCbqjUPaMKu7qR8cBIn09zDB9ITAR8daH5P3B3R95TFmW/FbHXxLJs7+SzCZYJ+DyYpvHq/u5bEr6RHJKx31FaMkn8GN8M48PaZDsEDQqIpEqciO3PpcZnbnF3amZKUG4CKIjQQ2O8nXqSUwR+pFEcjoPImbC2C46Zt2pf/ZP63dJY14PrIiszITzo343jHgNTkcojcKV87N16AXgSuJB7kKJamxtnNWTfobOooJr7GkyN29wd98xuzqTYVd0jf2GnP1f2iCnh1cY3Z7Klpc5ivsiwgxi4ZRYWG97m6uWy6s9YW+PGOVi/3LuaMQ/CSSwvkHz6VsqhUoPud+jP/DychT3GNfoK0SxjJ0sA330GPCVm01lB+MbGS9/VOvu4kCsa30GDFur7EG94w4x+PMnTfq0GLWFHE44bYHEgcdJvAyNg/fR+9WIRNfwPZCnVvuCS8BCSdWJfadcErlmrZVcQ5DlghZBgvSwdbjHAbcrMFxYe2knLT1Ug5H7ZOzI9mdOfyVU8/lMEhmFKPLwIodRPNHU8+YIO78J8c6cf0HDb9Fk7nlfhm+d6p9XXFdo1/9kzvyrVlFfK1XM62G5iA9yTrwL6/4C4ZesQwnbsfMo8KUh6OtR6PtZJhNiHr9C6nOC3lFXavURWxaNMe7do2xJDkdpl0Qd1wQxtdWdGw5+T7nZx2KoyevLTsJcnZ+ILHpCeM7a6r1Y1oaYSfcvMdFCLv+JCIj9eABL8Vf6sHflx3f29qKZe6pdkkGND+owFgte/FQsX
- JANjUnUr
- T2BYd9eKtQ3X1B3H4dqnS6/w1hVNqd42V3r1NtGJiaOMbR8cywdzer2QUL2qbDPln3vgwyefpkQ5w7eMNJzC1dbTEVagWWUYRCzHIAV4KZ/pCQz5u9eC66fMhmISI21eI/bLyaR9VT2kaYvYHqfM+jq8Z854tQzVEt1Tw07YOgftbQX7c0Xvumb5JjfBwi8bOOffxXkGzCzBbx9N+DzcNY1IlCLfmdMZVkHukqzmKihYKNyQ9J7/imuPrH8XIdqzphbrYQ56x5nYlRrKu6QwP9NHmsIViTZYOPvpTYQYVAxKp65WjhWVz61evRnphRiM3uw1jHgQKybpAGVw9pAj3zvDFm2El1DMOYO2/PnMyyjAeDgVlNcDKfAeo/465cAo9m9mon5b7tJSBYhOOKJloqENdoxjHdzyWie1e
+X-HE-Tag: 1784679861-631949
+X-HE-Meta: U2FsdGVkX1+TK2j57VYsIQVjTV3aTcGQrZ43OiBNTVzcc/J1mGvKA3ONwxiBaMxz8sUNZ+XrImpPyVpCrQYD/C7rIHhne2sz5VT5ha5is3LK134v7CFplSmhCpqxCnNlUgUYTpBOuuzvFF/xZ/bgNAZaH+MXGYeRDcTEM+8YFr48EP2m72FEtM2t9q75FjrYiEvoy32sFaquhJ+j62/xA9StpTSMg2s70wODDY7KqjYZ3twNnk+ZreX84Z2sr35c3gy8jSwVcS8D5bqRButO2v3zI837lUwN1adfWrJXG9p4uzFwlfsW/7lk4N+RhKFlKj7k/YAYMsc7tgOCzsL+Vsdz/m99QnnXKuYQVLsJGjxwHfXyQ/xjHByyasmWe+yh/WWHqqUpcMErtTgRvP8G1+K+iLPWHvQcaYF5hPY+3Kk9ahwghHx3A3Gl4shPwGCY/l/yM1uKm69HquLePKcrtJt6Xns0kagd9Wa0PqKUWIN9DghBE00Ks48Al7SJ6P29nE7KWwidEeh8sYO5ktYbzR2+e2B+wISOUQ0KhEFVYlqPUEcta90NPLIpLEhe1F7s5nDjwhApZKX0wI0OR6mjOFxaCZpl5kN6k++Z5QB+Ku0GICVZm4SvXzQJR/EGq8INnZf+cWz9+OiyGIZm8awLTLBNFKfYtMoxcPaLbdrcbVR+5XRXG5TSkNyjazs4+xR/hekyKp5RSym3YSTQ9chl+Z0xVhwZf2lVt22p+wWhiIoYpM5XAF5VhI81hK3S3gLMqt+taC9LnsSmU+pmBxej+2sBCP/PWzNGOw+Z3WR9Go6RTQGgXH2zvBi6+MVIei85lIyrSo5Wg75aC1rEVwd78XUlT5nm64GggTD1GdpsykX7HfvTcfpJiHfj82P/MD14Wy38F5+PVnApvQy0HjEfieXbuDFGcIzcHoCuttiywM2IrO1SPYJaTIshb+Hd4U10WFU6RkIpsvBaxR0aECz
+ eYN4xZXG
+ 7UwGjJMTITXAbX3KD1xL+N5YY2xs9QQo59ph6D/T0uM6q1UFx6RgrHFsaG7K5M57XrtyDCdEej5mNcStE0+9S38QPRFuseG2OqZSOVXFYWN3Lz7iBeV42VUI2HjIUXgzkz1GcfnMokegUrEfSRz81AVMJ8FDxRsOJKkmy/Z0aIkbHPLJWqAJI0+VIZ1sYvjk91AzVZEZ/T7HFmWTHjilryadUNxIatcYiKc8VT4CdZC6JOA60FRXaN5+Yj+94etA1L/tr9Pcu7KifggQVXQ254tGC4HV0hYUTTO8gQCMucwHjhFr8NI96Y/nE/HfKV2FcF5uv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,55 +102,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello longlong,
+On Tue, 21 Jul 2026 19:19:19 +0800 Zenghui Yu <zenghui.yu@linux.dev> wrote:
 
-
-I found get_maitnainer.pl is suggesting to Cc below recipients.
-
-- Lorenzo Stoakes <ljs@kernel.org>
-- "Liam R. Howlett" <liam@infradead.org>
-- Vlastimil Babka <vbabka@kernel.org>
-- Mike Rapoport <rppt@kernel.org>
-- Suren Baghdasaryan <surenb@google.com>
-- Michal Hocko <mhocko@suse.com>
-
-On Tue, 21 Jul 2026 14:36:11 +0800 longlong yan <yanlonglong@kylinos.cn> wrote:
-
-> The pagemap_ioctl selftest allocates memory via calloc() in several
-> places but does not check the return values. If calloc() fails, the
-> subsequent code will dereference a NULL pointer and crash.
+> From: "Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>
 > 
-> Additionally, in sanity_tests(), the calloc() failure check incorrectly
-> uses MAP_FAILED (the mmap() error constant) instead of NULL. Since
-> calloc() returns NULL on failure, the check never triggers and a
-> failed allocation goes undetected.
-> 
-> Add NULL checks after each calloc() call, and fix the wrong error
-> constant in sanity_tests(). Use ksft_exit_fail_msg() consistent with
-> the existing error handling pattern in the file.
+> deferred_split_queue was removed from struct pglist_data {} in commit
+> fafaeceb89a5 ("mm: switch deferred split shrinker to list_lru").  Remove
+> its description in doc as well.
 
-Makes sense to me.
+Nice cleanup, thank you!
 
 > 
-> Signed-off-by: longlong yan <yanlonglong@kylinos.cn>
-
-I have a trivial comment below.  Regardless of that,
+> Signed-off-by: Zenghui Yu (Huawei) <zenghui.yu@linux.dev>
 
 Reviewed-by: SJ Park <sj@kernel.org>
 
 > ---
->  tools/testing/selftests/mm/pagemap_ioctl.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
-[...]
-> @@ -1000,6 +1004,8 @@ int unmapped_region_tests(void)
->  	int written, len = 0x00040000;
->  	long vec_size = len / page_size;
->  	struct page_region *vec = calloc(vec_size, sizeof(struct page_region));
-> +	if (!vec)
-> +		ksft_exit_fail_msg("error nomem\n");
+>  Documentation/mm/physical_memory.rst | 3 ---
+>  1 file changed, 3 deletions(-)
+> 
+> diff --git a/Documentation/mm/physical_memory.rst b/Documentation/mm/physical_memory.rst
+> index b76183545e5b..a09407d72973 100644
+> --- a/Documentation/mm/physical_memory.rst
+> +++ b/Documentation/mm/physical_memory.rst
+> @@ -262,9 +262,6 @@ General
+>    PFN that needs to be initialized. Defined only when
+>    ``CONFIG_DEFERRED_STRUCT_PAGE_INIT`` is enabled
+>  
+> -``deferred_split_queue``
+> -  Per-node queue of huge pages that their split was deferred. Defined only when ``CONFIG_TRANSPARENT_HUGEPAGE`` is enabled.
+> -
 
-I'd suggest to separate the definitions and statements by putting an empty line
-in the middle.
++1 for removing >80 columns line :)
 
 
 Thanks,
