@@ -4,115 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1EABC44539
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 15:16:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3217DC44536
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 15:17:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 334A26B00AF; Wed, 22 Jul 2026 11:16:11 -0400 (EDT)
+	id 0C7446B00B0; Wed, 22 Jul 2026 11:17:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 30C496B00B0; Wed, 22 Jul 2026 11:16:11 -0400 (EDT)
+	id 09DFE6B00B2; Wed, 22 Jul 2026 11:17:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2228E6B00B1; Wed, 22 Jul 2026 11:16:11 -0400 (EDT)
+	id EF7596B00B3; Wed, 22 Jul 2026 11:17:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id EAE676B00AF
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 11:16:10 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6FA11120213
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 15:16:10 +0000 (UTC)
-X-FDA: 85016763300.24.045F688
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 0383A1C000B
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 15:16:07 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bW3PreC0;
-	spf=pass (imf18.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784733368;
-	b=WHBFJFU+hAwsEbAa/6/r6ErISNSqBB3uFgyaWWllXeCgamLfGYx9c5e1zj5MUl+1AauGzE
-	ayBNQloxNPPFquJJRHKeaHDRHC0IA46JLZLt0hJ2v+y3g5MQTdZMrrgeEmBHSScr/DPVbk
-	Hl0BZ3m2sYffqyBer5h26CI1mzo3ehY=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bW3PreC0;
-	spf=pass (imf18.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id C64396B00B0
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 11:17:27 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3AFAA120200
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 15:17:27 +0000 (UTC)
+X-FDA: 85016766534.03.8ED376D
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 7CE5720012
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 15:17:25 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=JJkzkAKq;
+	spf=pass (imf03.hostedemail.com: domain of abarnas@google.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=abarnas@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784733368;
+	s=arc-20220608; t=1784733445;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r9xnLf5kCYeKS0y9dx48KGdZi3PUN8z8TKfUOdx3pcY=;
-	b=CtuUrCaGjbBom8Vu+IaGVuIZsUaxKpeVPcVkh1JgjwKGigG2IBSEZNQi4gwNuzXhXQ7Q2n
-	gC20etbKZl++ICIwlJoFP10jHJIjfYV3F0bpDUnP2Dn6aV9m1W+A6sESn9mhK21Bcr/YLN
-	wjT8oBrkWy6CoYZx0T8EEE8pdfycIJk=
-Mime-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784733365;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=r9xnLf5kCYeKS0y9dx48KGdZi3PUN8z8TKfUOdx3pcY=;
-	b=bW3PreC0YSLDGRKBpNSz9D3HV9IBx4wlSIMZcxjKlW2NgHj/d2JJNShI5MXv07j8MqQQS+
-	NPjHWhOdZSBYQK8zlzTLb67RaU+lo+jSdYPczWGuvi2XKtwcuonThN72rQpi4GauyQiL7a
-	183xUjaWt/QyKalqhxboM/IvbhPi1ME=
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 22 Jul 2026 15:15:52 +0000
-Message-Id: <DK5767A146ZW.3LV5JXS7T4W1C@linux.dev>
-Cc: "Brendan Jackman" <jackmanb@google.com>, "Andrew Morton"
- <akpm@linux-foundation.org>, "David Hildenbrand" <david@kernel.org>,
- "Lorenzo Stoakes" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- "Mike Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan"
- <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>, "Johannes Weiner"
- <hannes@cmpxchg.org>, "Zi Yan" <ziy@nvidia.com>, "Jan Kara" <jack@suse.cz>,
- "Joshua Hahn" <joshua.hahnjy@gmail.com>, "Byungchul Park"
- <byungchul@sk.com>, "Gregory Price" <gourry@gourry.net>, "Ying Huang"
- <ying.huang@linux.alibaba.com>, "Alistair Popple" <apopple@nvidia.com>,
- "Hugh Dickins" <hughd@google.com>, "Baolin Wang"
- <baolin.wang@linux.alibaba.com>, "Chris Li" <chrisl@kernel.org>, "Kairui
- Song" <kasong@tencent.com>, "Kemeng Shi" <shikemeng@huaweicloud.com>, "Nhat
- Pham" <nphamcs@gmail.com>, "Baoquan He" <baoquan.he@linux.dev>, "Barry
- Song" <baohua@kernel.org>, "Youngjun Park" <youngjun.park@lge.com>, "Joerg
- Roedel (AMD)" <joro@8bytes.org>, "Will Deacon" <will@kernel.org>, "Robin
- Murphy" <robin.murphy@arm.com>, "Huacai Chen" <chenhuacai@kernel.org>,
- "WANG Xuerui" <kernel@xen0n.name>, "Thomas Gleixner" <tglx@kernel.org>,
- "Chuck Lever" <cel@kernel.org>, "Jeff Layton" <jlayton@kernel.org>,
- "NeilBrown" <neil@brown.name>, "Olga Kornievskaia" <okorniev@redhat.com>,
- "Dai Ngo" <Dai.Ngo@oracle.com>, "Tom Talpey" <tom@talpey.com>, "Trond
- Myklebust" <trondmy@kernel.org>, "Anna Schumaker" <anna@kernel.org>, "David
- S. Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>,
- "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>,
- "Simon Horman" <horms@kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-mm@kvack.org>, <linux-fsdevel@vger.kernel.org>,
- <iommu@lists.linux.dev>, <loongarch@lists.linux.dev>,
- <linux-nfs@vger.kernel.org>, <netdev@vger.kernel.org>
-Subject: Re: [PATCH 1/3] mm: move internal mempolicy APIs to new internal
- header
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Brendan Jackman" <brendan.jackman@linux.dev>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, "Matthew Wilcox"
- <willy@infradead.org>, "Brendan Jackman" <brendan.jackman@linux.dev>
-References: <20260716-folio-alloc-cleanups-v1-0-5363b8e92d33@google.com>
- <20260716-folio-alloc-cleanups-v1-1-5363b8e92d33@google.com>
- <alkLSzQvzT9zJbY1@casper.infradead.org>
- <DK05KUIDJVLZ.61UIWOL0K3OT@linux.dev>
- <al5gQgnBCjNCSD_4@casper.infradead.org>
- <51810eba-2a60-49f9-b879-7f806546e600@kernel.org>
-In-Reply-To: <51810eba-2a60-49f9-b879-7f806546e600@kernel.org>
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: 6qrhioubrefc7zrrtbjen7um17k9z6sd
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 0383A1C000B
+	bh=Upjmrh5JJYyxIf1oGA8lLlYd9DJQLFwgC7+8SiJQqeY=;
+	b=TFujT645UAeZSGSVsXSsvnn8l9hfhnYniYBN1vrRvfbhP6L7CjGisijNEr6l+7d2MI22T2
+	onv2xQkgKwj1pUS/e7koDcwpRzNOiEIdQCN9Fqpl8s1aGMAYyIgtnCOjX0trZOqB+4Rjcs
+	bOD522IuUD+op0YtiORW/PVdn1/SEqw=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=JJkzkAKq;
+	spf=pass (imf03.hostedemail.com: domain of abarnas@google.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=abarnas@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784733445;
+	b=wjg3f8FnYlo3lo9CDQR3fE2qwoRV+Nq+7VGZzfvgYLYqxoIB5mfYAzTiyfSiV1oQlcHm1/
+	IJDnzprCqWzlFlW+UkxnTdGzpBo2A0X+TUabyLROh6D/1X7anxQ71KCDisbpK+Ihhenq/+
+	xdUEauyInLFZjw5vJSwapldwND6yZB4=
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-69a5ecbbfb2so15146202a12.2
+        for <linux-mm@kvack.org>; Wed, 22 Jul 2026 08:17:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784733444; x=1785338244; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Upjmrh5JJYyxIf1oGA8lLlYd9DJQLFwgC7+8SiJQqeY=;
+        b=JJkzkAKqO2Ff6F2yDn+yKxgBU2vKy9cMxuNw0adQqrel8SB1Ptef34bUKrrOlEev9a
+         yc1s4oWYD8UI1GmFDvQfePaM9N0C6LX3bfAti0j4rcb7woHvWAEqy1qNM3xkBVLl9u85
+         26PbvsIo6NWeW81d4PJ7ga4ssnUbPpui424EQVbcCq0I5z0PlcrI3JurEArlw6x6XW0R
+         be1x2RZs1p6oaNd4ujsVd1cVmTj7qziAGC7jihnX1xeobAh8sJXU029cNQ4N0h5Pa8I+
+         76ppNSWE5KlXZdEDLtEevukoHo8nsoNAFoDKXMDPTtX0yJfjLAIJVm0+TTw0cWwKca0h
+         FG4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784733444; x=1785338244;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Upjmrh5JJYyxIf1oGA8lLlYd9DJQLFwgC7+8SiJQqeY=;
+        b=lN7Qd5FJam/55NPA5YbB/ZzdEZEi+iCp6fxbJIhz4yUl8qjrxr0eVGZe85d1CseXhe
+         qIg3hs/pQvkwDCC9iHhfifoyHyeAfFIOfUnLwb0f8kGelM0c+c4zrrw+w5/Aty3zS6dt
+         VZ6dr6q8kdlYjkj/M956C1Yj1s108I9lEOVi9EJZm2v/DPeq3Dx/c9Jj05RwOZGEPTcn
+         QfaEipAr26l7eqmMiFYb2kfwVHiFuNN+FgpU71K2d224vK8WdCI+5wnE9zG3K7hdJZfU
+         2CCCtAozMW/SVC4Wk0WCH8jKYnX07nMCuRClGWRhtI7UVJ0Csrp7RciVcnGICeMj31ZS
+         TCbw==
+X-Gm-Message-State: AOJu0Yz7/rxnH/2dACFJ4zVdbzTZ5Ivau6SeT3eNuZLf6YbGjb6V5qYQ
+	uA4Tfh47313c6D0P4AhwaVNVx3CU7iQpp0pEgXPxtK7YUwrhE61l7xDAzR4TGIGn+g==
+X-Gm-Gg: AR+sD12feGg4X0Hag/Yp5QRCpJRohZUeYtx/jPkzeQ4QzW7TUhz8DFHD0KQKu+1VfmW
+	t9iu837A7YK49CQ/eUrHd8PXOrHWrzqp3aUtuUxtcuIsx1Fu3TZdrTIai+ihU1sWa8nFJV4dLhJ
+	2cQvmxyjYDAE3IoD+QJZpsfz2WDJmCaACiutGA8AS7dbDmC1XIW0ZvriPd/BYNvcDEUt+T/o5d0
+	QrslMRa1rBoXQUJRyeVyt0u09Lzek89G3gYITDjlPkQPFxbAPLi0ZfCkwqfioV9MbXiTrclF47p
+	BTL+HwfiS6++XgELoh/pjqJLjo3mcxvHqfsfYUHMHmXP/sEXdD6JZlT+oqaNbu/D24hTBbZxzru
+	0Ns60M++et+8rUF6i+igkP2Z2xR4Fvo4r/gsRFQHDS5kzjEawl+qcETAGpDTUzGfoejkzRuiBlq
+	yG5KzkZGecYjB8nTpsxkSWCnsYcCAOBn1jCccO1Z+7GNgv
+X-Received: by 2002:a17:907:d5a4:b0:c16:a484:90df with SMTP id a640c23a62f3a-c16b485513emr815970066b.35.1784733443140;
+        Wed, 22 Jul 2026 08:17:23 -0700 (PDT)
+Received: from google.com (152.118.155.104.bc.googleusercontent.com. [104.155.118.152])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c1c32a78229sm131383566b.1.2026.07.22.08.17.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Jul 2026 08:17:22 -0700 (PDT)
+Date: Wed, 22 Jul 2026 15:17:19 +0000
+From: Adrian =?utf-8?Q?Barna=C5=9B?= <abarnas@google.com>
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: linux-mm@kvack.org, Albert Ou <aou@eecs.berkeley.edu>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>,
+	Brendan Jackman <jackmanb@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	David Hildenbrand <david@kernel.org>,
+	Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org, loongarch@lists.linux.dev,
+	x86@kernel.org, Dave Hansen <dave.hansen@intel.com>,
+	Juergen Gross <jgross@suse.com>
+Subject: Re: [PATCH RFC 00/18] arch, mm: create a generic
+ set_memory/change_page_attr core
+Message-ID: <amDe_3KFBc9CcIbo@google.com>
+References: <20260721-generic-set-memory-v0-1-v1-0-2c1fc62306b3@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260721-generic-set-memory-v0-1-v1-0-2c1fc62306b3@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1784733367-464818
-X-HE-Meta: U2FsdGVkX18lulFQ91xGc8wudCIGmAaipU30o4tc7jzrIMcn9ysaWRMgcbUXQEIqt1Uf7mAyZZg8IeklSg6LQixVS6MVHoCdTAudqf2w7kjbsJlI4DIV4dKIJeTj6cgB1lXpsf2x20HaFgZGm9vEjasm63dBr28H/L0+iDlNa+8lYFQTCsJZV3IKqdXJzYkV1aw9fHf/MtKn4Q71RtFtNS9jeuh7F7tEzDO60bCcXAhKXv6Nms5sWnmdtrUYtBDIapcj+A76lBDrPNFQElmxrn/JJst7GgOzqrLR+ZaiAS8RXNSSEJRy7koNI083PvS758wHABNCT5x7BW8JfnAxJGQ2znYaP1Co2Yko7eixcIPzARVg26fj6SfmDl1W3ZpggyCqjOCbW7YoBGULJGKOnVcnysqR3NJSNdJRNPHb9dbizbfBM9Y7VcSMHshrNH0HEyNK3taKf3cXZAVQaFUTckpn1WYaXBf1TC++cr015JqaLN0IVGCpJaz85SuOnAOSwtvuQjPJnznA/JlvrywBEs0NKNMb9t5MsLZ6yuzPXRhOuYyRom1VU/NTSi4GWJuaMj/tLl4G61KhesWrx8CRdw77E61NXqKMFRWnaws/i0Z9po9lxw9j1OE/NllFxowcnCxasyn6cE3/7Zw9Dbg+McX3NxwUjtvQLmrz4cZekBQduQjlRfyfAKQXJ35qr+QYAE7Wk8Ei20bSZitWFTQS92xe94f/cerXHqkIt2p8wPQsS12xgVMIltOpaynENNEtvSCMDI7ngXLOkrhNA5w18KPVm9wavznsw9y8ti6uOc+1UwGmLfb5/FqzXP0wPJMz3VBgoR75/oFPiZz37PVdW8pfcc8Q6Z4V4IXYvr2vcS8N/zLSFjG8ckL1Z5jRZ1ltfj+fQV+TWyx5P5pX3jRaf7J8/PtV8FGRa2rjEcW1WZIyjmj6XMxLJp+LqcGjq8RKSolSh+U5cEDf0y2/JBk
- 8Pj87XFX
- q+kzx0/yCVBQriq56N5FgCLJKw8onPX/fx/5nzm5LJEeYdj8V95Daa2cpS3sSaFzuBNvZ1caXFCjxbBOkFUQbfr0LV10+q6sc7dkhwwUb8aI8sMKz1GQCj4TXE6qrJpQ/Mwgwdwi1omdY2rSHrTE47OueCnnwEOPVb+XlSfrq/sVOVFjwY0mjYiM4Sw0Mbmxkx0gC8hmd0xZjmx/UqtSweTToAHir3JmHRtqB1UMKb+YqLIamyh63SxPnVY6yiR4RbUOuIL/Y/XJ7isi78nCB65fsExZS3n5nF5IkkWos2F+VIq+o8/eZ/RY5m/CRKmIR9bkl4IAXpjunotaYLQj1OkHsJpQq4Kpc1C0D8VMuQfHMz4w=
+X-Rspamd-Queue-Id: 7CE5720012
+X-Rspamd-Server: rspam01
+X-Stat-Signature: i4g8nktt77ff3jzui9om1p39axhpwua9
+X-HE-Tag: 1784733445-511499
+X-HE-Meta: U2FsdGVkX19CbjJAx0ugxz/mkyAEcfv+6eQp20AXsR5FzDyk0ud1AGQyOQRlNT57PDwN+HkfNcSO4vWttULta+bGRFE2hPKtTpsCMUUIFGSEnE+2AwKoCFkLfkNIFnaFRymiMC/OxILtoVXtq5hTI/PO3CVVP3Uok7eBVJWKjtEy2PRjL2SH2ogXHTm0+QKlWr2B4FhJndwqpIlegik0MGQYIf1iBri3lrPvv+LbHNFI03kevo9n9ijOroHzqifimc4xSFwSIqAbcHMHgI6iC8TU/uVO9/9N0EXD4iVUeXgPSUHwuUkiR0gXjrL4BBmqMCTr5OUx6JeN1G+Pb0LzuYfiCYeOdyzrdBykJ1BofuS9fKPTEqlrlXmHUh4Z6Q33rvWLFtKqSwgCuLSICR+Y3g856HeoUh8gYwWF36ziYOPrADLpn7roZGjz/sEo+bdwnb1FwZWlbEvVDuENaCUS0K3tzMcAD0p0+QKk8D0fb82Ip6Vs+GQ5v9GpVJ26oVqAQbw+CHCPQNL7PodLbn6QoolzF3rISGw4Hdhl3KpJM7eMgJj0P8t0aqod5Hb4/dd/XQKQ2fCB7DjOmPKbZkZ/WfMQOrEN1d8cSnVtpT/Ll5wlbuV9uis4fYv0TF370gJ7OSmTL0dStMNqRKA/HP/n6yiNKFWeB5PCWNZgtJv2OuN1WnsjBBxUFXEa81/ykATShn6ggavY70XkJ5HWLtMF6cHk8UQuz9PaA2hbQ4BAGvy1v/JHFwaoeYBVlEx+wEaM3/EZc4YU03FGjyfaMQrp2Ev6Egbr8UYBYgJWNkr8Af7S/GP1NmaHTmG0jc8Obul+uo0B/Bf+wNhmnod7gWzLknsbUfEReLEfGY0iazWZUD1EhOpIqw/6sS8rQQA8fEuHhew+DuSxVJ0r2BPbMybSmSAbvWK1kc7To9aBIUoaIIvE4ODHMm+2sD/WIBphaslkz4CV0qjGgTmFLu2FH+Y
+ ZHbp85+i
+ 7V3i7pE88lBVGmSxpAD0ksCrUsoiftF4IOVblmfxEdaTxH0LjID433X82gxlHJrhsUUASj7gsybcWB8UW4AvMTuW/LQXxoOR/saBF1bDg+M6M6AGF/brcDTX/DRqx/lNMNnwnO66gUkH+XBP9inCempV9ydI9i9kTgm21syM/pYfN+8tn68abeCekBLrnYnKxzvt+9gIR8huJtlD+jTXwNegT+cjWfU5FyqOuCiOzuK4lopAP81unaCYPXEcjssz/aC4mhdK42xIbn0R/yJXi92Of32z6kQDgX/leDf05t50A9icfkW5nlOiA/B6hy4DLaRnZ2kxZG3HzfKOVQsLugwykO4RkIwPcVYFIK0cDA8iHhAj3qxcsMgUktJtNULj9BcTMh3hU/UML03tkygbC5QUyX23rg0gjRGTfsNWuQ6Dpdt9/FCo5GRYmDA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,143 +138,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon Jul 20, 2026 at 6:34 PM UTC, Vlastimil Babka (SUSE) wrote:
-> On 7/20/26 19:52, Matthew Wilcox wrote:
->> On Thu, Jul 16, 2026 at 04:57:37PM +0000, Brendan Jackman wrote:
->>> On Thu Jul 16, 2026 at 4:48 PM UTC, Matthew Wilcox wrote:
->>> > On Thu, Jul 16, 2026 at 02:30:10PM +0000, Brendan Jackman wrote:
->>> >> There are no external users for this surface, reduce the scope.
->>> >> -struct folio *folio_alloc_mpol_noprof(gfp_t gfp, unsigned int order=
-,
->>> >> -		struct mempolicy *mpol, pgoff_t ilx, int nid);
->>> >
->>> > Hm.  So what we're saying is that allocations which respect mempolicy=
- are
->>> > only for core mm and not for, eg, device drivers to do.  Is that real=
-ly
->>> > what we want to say?  I don't think so, because that's inconsistent
->>> > with having just widened __filemap_get_folio_mpol to allow guest_memf=
-d
->>> > to specify a mempolicy.
->
-> guest_memfd is practically mm internal though, IMHO.
->
->>> Yeah I agree, mempolicy definitely seems like a "public concept".=C2=A0=
- All
->>> I'm saying here is this specific function doesn't have any external
->>> users so it doesn't need to be an external header.=20
->>=20
->> I don't think that should be the metric for moving things to internal.h.
->> To me, internal.h is a signifier that these interfaces should only be
->> used by the MM.  Not that "all current users are within the MM".
->
-> Perhaps. It can be also useful to move them outside only when someone ask=
-s.
+On Tue, Jul 21, 2026 at 07:23:23PM +0300, Mike Rapoport (Microsoft) wrote:
 
-Yeah I can see this both ways. It makes sense to only expose functions
-to the scope that currently needs them, but I think Matthew's right that
-moving it to internal.h does kinda signal "this is private, don't touch
-this" which isn't intended.
+Hi Mike,
 
->>> ... With the ulterior motive that I want to add a new parameter to it
->>> that actually _is_ mm-internal. Namely, alloc_flags, so I can add
->>> ALLOC_UNMAPPED to implement AS_NO_DIRECT_MAP, i.e. the next iteration o=
-f
->>> [0]. So basically this is
->>> about trying to extend the allocator without creating a GFP flag.
->>=20
->> Yeah.  I'm not sold on the whole alloc_flags thing, but I'm too busy to
->> sit down and think it through properly to get involved in a proper
->> argument about how it should work.
->
-> Well it's basically a workaround for limited gfp flags space. So we can
-> extend it without making that a cost for everybody, as long as those that
-> need the new functionality are limited.
->
->> My entirely unresearched and ill-considered opinion is that the __GFP
->> flags should _be_ the ALLOC flags.  We shoudn't be translating GFP flags
->> into ALLOC flags that are what the allocator actually uses, the
->
-> It uses both.
->
->> translation should be done at compile time.  So if GFP_KERNEL and
->
-> That would assume the gfp flags are also known at compile time, which is =
-not
-> always the case.
->
->> GFP_ATOMIC need to be composed of different flags with different
->
-> The flags we are adding/considering to add are not about GFP_KERNEL vs
-> GFP_ATOMIC context, however.
->
->> semantics, then we should do that, not invent a different set of flags
->> that special people can use for special purposes.
->
-> Yep it's ugly and pragmatic, as usual. At least it's not immortalized as =
-an
-> UAPI, so we can deal with exploring in a wrong direction and fixing it la=
-ter.
+>Once this settles, the next step I'm planning is to convert arm64. This
+>would be much more involved than loongarch and riscv together, so I
+>didn't even aspire to include arm64 in the first RFC. That said, I have
+>a very ugly arm64 prototype that rewrites arch/arm64/pageattr.c to use
+>the generic CPA infrastructure and replaces the existing implementation
+>of page table splits for systems that support bbml2. But there's a lot
+>of yak shaving there to get from a PoC to actual patches.
 
-FWIW I suspect the "proper" design requirements are something like:
+Could you share your PoC for ARM64. I can help you with that and align my 
+execmem rox cache for ARM64  changes to the desired shape of this API.    
 
-1. We want some flags that we can happily squeeze into places like
-   struct xa_node, and other flags that we can add bits to relatively
-   freely.
-
-2. We want some flags that are "public" and some that are "private",
-   although this is intentionally vaguely defined.
-
-The current ALLOC_/GFP_ flags split is something that kinda inelegantly
-attempts to solve both at once even though they are actually probably
-orthogonal requirements. Do we care about this inelegance? I think it's
-pretty harmless.
-
-Another thing that's pretty inelegant about it is that both sets of
-flags percolate into the allocator at once. This is quite
-confusing/tiresome when you are reading page_alloc.c (I tried to
-ameliorate that with [0]) but I don't think it has much of an
-architectural impact?
-
-[0]: https://lore.kernel.org/all/20260703-alloc-trylock-v5-2-c87b714e19d3@g=
-oogle.com/
-
-In the back of my mind I suspect the "neat and tidy" solution would be
-something like: a single flags namespace that is split into two separate
-enums, one "public" and one "private", and then a separate mechanism to
-"compress" these flags into a small number of bits. But yeah I'm just
-not sure working on that nice elegant cleanup would really unlock
-anything of practical value. Boring little cleanups like "split out this
-API from internal.h into its own header" seem like more useful ways to
-spend refactoring energy in this space.
-
-Quite likely I'm missing potential unlocks though. E.g. maybe there's
-some place we currently put a gfp_t that could benefit from a "separate
-compression mechanism" that could usefully shrink it to 8 bits or
-whatever.
-
->>> So I'm envisaging if an external user arises for it later, we'd slap tw=
-o
->>> underscores on the beginning of the internal one, (with the alloc_flags
->>> arg), and then bring back the public one as a wrapper.
->>>=20
->>> Does that make sense?
->>=20
->> We have a long history of people just moving stuff around in patches
->> without knowing what the intent was if it should be moved.
->
-> I guess this patch is not critical to the rest, if that's an issue.
-
-Well, for ALLOC_UNMAPPED we really do need an alloc_flags arg for this
-function, but we can always just go straight to what I described above.
-I.e. I can create the __ variant + wrapper from the start. It's just a
-question of whether we prefer:
-
-- "Yuck, there's a public wrapper here that we don't actually need", or
-
-- "We hid this mempolicy API and people might think we'd NACK a patch to
-  un-hide it".0
-
-  https://lore.kernel.org/all/20260703-alloc-trylock-v5-2-c87b714e19d3@goog=
-le.com/
+Best regards,
+Adrian
 
