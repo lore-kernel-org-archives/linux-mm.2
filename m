@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD26BC44539
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 10:09:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F24EC44539
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 10:09:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BD07E6B008C; Wed, 22 Jul 2026 06:09:29 -0400 (EDT)
+	id 84CEF6B0093; Wed, 22 Jul 2026 06:09:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B80886B0092; Wed, 22 Jul 2026 06:09:29 -0400 (EDT)
+	id 7FDD86B0095; Wed, 22 Jul 2026 06:09:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A48B36B0093; Wed, 22 Jul 2026 06:09:29 -0400 (EDT)
+	id 6ECC36B0096; Wed, 22 Jul 2026 06:09:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7EB896B008C
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 06:09:29 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1B9501C0823
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 10:09:29 +0000 (UTC)
-X-FDA: 85015990458.05.B3971FB
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
-	by imf31.hostedemail.com (Postfix) with ESMTP id BCBB920007
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 10:09:26 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="oew5Qce/";
-	spf=pass (imf31.hostedemail.com: domain of nico.pache@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=nico.pache@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C3406B0093
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 06:09:35 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id BEC1440413
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 10:09:34 +0000 (UTC)
+X-FDA: 85015990668.13.B7A8019
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+	by imf07.hostedemail.com (Postfix) with ESMTP id E4BF940009
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 10:09:32 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oRglCF05;
+	spf=pass (imf07.hostedemail.com: domain of nico.pache@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=nico.pache@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784714967;
+	s=arc-20220608; t=1784714973;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QOld9v1IQQQffm7VzSiGaWH4GSxtg1czg/IcWZNsV/0=;
-	b=vkblSMAgcoCINi8IrjlhU46rLmsq46xCrYDuHDSC3ShTszHarzMtngg8aPJ0Q69bwZb5j1
-	aeZMDXznRcuD4w7BfQJEzphdVzvJ6RTupcQbVpbeIE3FZqX/gqHvGU3aGfxVqToa25+QVx
-	o8EiLy/FrIuK4Aqik8VigxBOoDLRffs=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784714967;
-	b=OMEI9X57NKW89zTVebnYuB6FxhT+GSjRI3vtKg88A4zdUgWwiSmvNT5+xtqlnPH8hPBcZv
-	5b3+IDYxaqEJ3qCnTO3Pwf7XdHK0ikqo3UD6pBJhX5gd6K1Q3JDs4Y9Ucsb6AMY1CCxThH
-	169ec3ZOBxCsHWmCuMjRGi0C1vsWg0U=
+	bh=rYhVqJgz/LSkLNjg/Okwb0MxG/fMCnKIAMDpcHmPYIM=;
+	b=RW7Gwe2AHC1rMfrGufeqqJ9RnMuTkGNMVwOby85UTjREm1xt75N+RzDr2O8/udfJKZbs0+
+	54MFNQuk7l8QFTlgkmu7DkRTR+AWpAQp3Yr0EetdSQnHIeyeMfK697Yx6yC6XExQ/L/wiG
+	T9A6/9dmQn+Nf47PH5t2wkASO5v+ods=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="oew5Qce/";
-	spf=pass (imf31.hostedemail.com: domain of nico.pache@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=nico.pache@linux.dev;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oRglCF05;
+	spf=pass (imf07.hostedemail.com: domain of nico.pache@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=nico.pache@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784714973;
+	b=hBmjheZ71BTIWyG/kgtXHKPhOo2/a/1VOp1MuX87jexcTdkryq3UE2tTixqQRSyIbO7EXo
+	38kCTmFOIA25M3DgrrcA1e9kGp+8/TxNw71QfmOo8+1RdP/JoCs6UPG1yizooPwNXYsBhH
+	LQB3CwWs69bNCxH/OJst5F39swGGwxk=
 MIME-Version: 1.0
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784714965;
+	t=1784714971;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=QOld9v1IQQQffm7VzSiGaWH4GSxtg1czg/IcWZNsV/0=;
-	b=oew5Qce/8RPKg4CtQaCt86UiDVVuAa0ASlYHSVVZXXVataMbTTQv51xqf6RFn2d9foYO6W
-	yg0bsAEgD+EtSVVk6L/Vl/eTv15os308RhUYq4Jn8UMP6BGflkKGa/LK4AngjdtVV0pqnD
-	1QANsEaK3E1G9OIlK51jZlgC6V64qf8=
+	bh=rYhVqJgz/LSkLNjg/Okwb0MxG/fMCnKIAMDpcHmPYIM=;
+	b=oRglCF05M6wI/1+Yp6A+568U6ThBaa+IA9tr/TF3OV45pVmk7VWeAVudvpaUoorBb3v96C
+	8Ns/FhcTe/zpwnUjcckJclGq8PZkbu7AKv1sEvUPvnSrhDGhQhvQfo7wwo7PYa+hsUsz08
+	eoBxAkG0yk1Txtkds/mh5xWJFJrhOi4=
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 6/8] mm/khugepaged: hoist isolation into
+Subject: Re: [PATCH 7/8] mm/khugepaged: hoist more code into
  collapse_isolate_folio()
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: "Nico Pache (Red Hat)" <nico.pache@linux.dev>
@@ -75,20 +75,20 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
  Usama Arif <usama.arif@linux.dev>, linux-mm@kvack.org, 
  linux-kernel@vger.kernel.org
-In-Reply-To: <20260720142913.846902-7-pfalcato@suse.de>
+In-Reply-To: <20260720142913.846902-8-pfalcato@suse.de>
 References: <20260720142913.846902-1-pfalcato@suse.de>
- <20260720142913.846902-7-pfalcato@suse.de>
+ <20260720142913.846902-8-pfalcato@suse.de>
 Date: Wed, 22 Jul 2026 04:10:38 -0600
-Message-Id: <178471503895.281396.8783902510522649911.b4-review@b4>
+Message-Id: <178471503895.281396.9667058491911094115.b4-review@b4>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: BCBB920007
-X-Stat-Signature: sdonk588sqqge4wpazp44cdz9hs4au84
 X-Rspam-User: 
-X-HE-Tag: 1784714966-227262
-X-HE-Meta: U2FsdGVkX1+oMBwKQcDrggpKwb5O+vDyn0pFc0lSCnz4iTNqp2gFAmVOWVnFLK8MHjeo0szIGeF9cwN4dpSD1VGhl31jEdvSfIDzeYibZmzNfOpVsnC/rba7WM7x2s5/d9pFZkvIWjaqRDPmz6BtQOZYcwJZH1a1vObNOA7jK7UIVucohU00Zw3+dzcv3/77PI2cnY0UA6YWIXLn9qOXD5LZe5y8UPJNSMX6CS8/i8JVtQyVZAWi+8k2DTtzAFJrtNgQ7C8bsqHyofKaB/IbAfaYopUH9qffnEsEuS8TlBdXBtJigI7N32VAccLBxkIhcKJd2UsEayR8+nIMwPicO5QC1aPCIyPlISdMcvlCbtPkNSol+m2yE1e2V/I9acCzH2vWG7Iuqnl4R9sidU6d0IwRUJv2QdmfOf+Co7C3/H4Zv7b/E0dHdOC8UOlv3gC3CnxoDEP07Jb6VDzh3FsTX51+jAKQW8+KspH5EorZ16RfFVgB0qRXePc/yhQk1kPs1Pksqc4senZxJuprkx/fSn6oEj2kOfAYOqZu52idGX5H4+3T+qBRiUs5sLITyqHxgW3BI4gr7eNjg/ktbFESoFT0hxKKIdNzY/kwedvxESnC9+c4h1A5/60Hf28RVIoUUVRRghWJETrvX0bZmbE4CoRoZpEWl+WbP0hMpViRDLzUD6Tw5DAeH7kbw17cogI2ePbDtq5emffDwYi/t8s/eNVYMDzVLX6Djxx6598c17N8X1u5I3zlmQ/vUif5rdToGowHKqERpksEL+OQhMaKptCWDsImEYkuTCgpQ5JidanLgKd+0jjLnGQWyFp3S1ti6mCUdVsaw9nk1/zT7dG34qXSAo2vozl6gnbzP0e4bBnX8GFblrHI+95mX9CMjz284asJpBG3RoXbtwT+fb8cJCF9ANMslVAoQituRvpwD17GAIiIDc3RBpJHlrS59J8pRy6f6KPQR7Ga24yaG8l
- aNn9GOhK
- obJImc+PzjPOrXRbGkboKrpB8IUI3g2jez0FL9NiDqDgkFdDsGv+MoJSaI4ekM60BWAT9GWyeRn5qS6SnGTpziXVdimxXvviZhb0goAi0WVKlarW53mJkSMn3ly+M30oT4+RaDemhAM/6Eu99jkrUX6GCjCPn0yQbcXpb1AbXNCUvN4pKUm5u6iW2NI0yFEF/ds9oPqTKe9YisuZf+95S71FO30qzXckdv2HflRyA8oL7bWWlJUJE5LUwpQF/Ri6m2Ci2heufJFo0/wUG/O8tANPy0g==
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: E4BF940009
+X-Stat-Signature: 9jds9ig7g31yedz7ep7jbmw1oksy6gff
+X-HE-Tag: 1784714972-807512
+X-HE-Meta: U2FsdGVkX1/1jEtnxeAbTbvhCIKKkPRTk2e1YH6AOxTM67A+dAjIjmFVkqB7LyJEx1tsEgCpAAlzIwrz38d+lMKMgAWHXs91/et9GH+HXviid/1ATEl8SlAwnuRLame/aVjStjEhfGRmpkqFI7ocqnNfsnIb2T5gFg0+J0eVfXnVdaXEiq5bk+oGWSZ5300lZ9WEvA/zwKJ2LmlWqZBGybhvfEUL6F1lDIFNMmz7C2YkJs6j4MaYLyPdSH3BZL4PUiK+7viIXf6xZkSTcn0yfJnHsL3/Oaj24jLvZVTJcOdP/CIi7QVZh6Qs79BbjZMY1TJMabUySmrjhoigv6Ow9KAVeHuWRU9VDx2HI95apW93QURk1jwyDLByQlZv6mkndxlgS6fbask7ab/6GXlXH0jdIwmaDplRNXSNK6/rb9R+MIfnqAGTzlVlEidVobUI6rLuagD/YdtW72qqPBjRThaEGJZJtqqn5kYGq68+NDN0CyVD1s+McTCg2p8kDKSmE0OcfADVC4/pbWuFhECxTuz6Tk0TJ1i8vBrEJjqJDIMazAAwrOR52BW3wRsuQW8r8hF16dyN8/AfU3UD69ozrJdtYzb5/0yTsXJecJ9zDzTmTNp7Q7hbInF9Zjmi0pFW8viDnuYGh7Qbnz0DJX4IS/3L8FrUvtwCdb7C2qPPgI/fPJWi04xotKoK3kWcvkM+pwMQbqCzSw/leFlBlmWMp8KF2C98rspfEiMT8qV7PczWqpmWrkNdFkhYY8EeBK03MM1qXWxpbcEzvR1C4j2lTc8iF8mUMYYZRv866t14uuT12Z+gcobQOu3OebZV6oy+WryQunfQNgOn+DUjpk6EuIOdisirRBSF9SHpF9DhxeNmTxWIap9jEBkyElGk8yzbf6g+H+ZiSiFXO6+/wBFNfCorxZnhZWWlbYE19Dc0+FbZBL11KUPnYufGjhxHDXpr5BeieZdmapkdYaeh4zv
+ piqFH1T2
+ CUOFmga0/I7VfZFrplso/YQHogG/WHWTeGT4oBf4hUdNdSKbtHcKwo3hksaRozUlks0tU5Ov7ab/71Q7IbVFvltSpro8sJxVIGacvtapIF5s5a+6lDMb9yhnT4gvyZi6uyCqPGXcMUFD7r8mZexWsTETHIMHSzuk/yNtifwwDE80tkrq9QiP8iprOECh94xFkiTs40nZ9jjdqnudHwe5AkQu5Ye4uuxTzcHbwsRt7m3k3tzuQAUM01sAp+qy7oRD3GC0r
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,91 +96,179 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+> Checking expected refcounts or dirtyness has no need for the i_pages
+> xarray lock.
+> 
 > Signed-off-by: Pedro Falcato <pfalcato@suse.de>
 >
 > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index db1f765b6ead..429e2c5833d0 100644
+> index 429e2c5833d0..a09e4e4e1943 100644
 > --- a/mm/khugepaged.c
 > +++ b/mm/khugepaged.c
-> @@ -2332,6 +2332,69 @@ static enum scan_result prepare_collapse_file_folio(pgoff_t index, struct collap
->  	return ret;
->  }
+> @@ -2382,13 +2382,48 @@ static enum scan_result collapse_isolate_folio(struct collapse_file_state *state
 >  
-> +static enum scan_result collapse_isolate_folio(struct collapse_file_state *state)
-> +{
-> +	struct folio *folio = state->folio;
-> +	enum scan_result result;
+>  	if (!filemap_release_folio(folio, GFP_KERNEL)) {
+>  		result = SCAN_PAGE_HAS_PRIVATE;
+> -		folio_putback_lru(folio);
+> -		goto out_unlock;
+> +		goto out_putback;
+>  	}
+>  
+>  	if (folio_mapped(folio))
+>  		try_to_unmap(folio, TTU_IGNORE_MLOCK | TTU_BATCH_FLUSH);
+> +	/*
+> +	 * We control 2 + nr_pages references to the folio:
+> +	 *  - we hold a pin on it;
+> +	 *  - nr_pages reference from page cache;
+> +	 *  - one from lru_isolate_folio;
+> +	 * If those are the only references, then any new usage
+> +	 * of the folio will have to fetch it from the page
+> +	 * cache. That requires locking the folio to handle
+> +	 * truncate, so any new usage will be blocked until we
+> +	 * unlock folio after collapse/during rollback.
+> +	 */
+> +	if (folio_ref_count(folio) != 2 + folio_nr_pages(folio)) {
+> +		result = SCAN_PAGE_COUNT;
+> +		goto out_putback;
+> +	}
 > +
 > +	/*
-> +	 * The folio must be locked, so we can drop the i_pages lock
-> +	 * without racing with truncate.
+> +	 * At this point, the folio is locked and unmapped. If the PTE
+> +	 * was dirty, try_to_unmap() has transferred the dirty bit to
+> +	 * the folio and we must not collapse it into a clean
+> +	 * file-backed folio.
+> +	 *
+> +	 * If the folio is clean here, no one can write it until we
+> +	 * drop the folio lock. A write through a stale TLB entry came
+> +	 * from a clean PTE and must fault because the PTE has been
+> +	 * cleared; the fault path has to take the folio lock before
+> +	 * installing a writable mapping. Buffered write paths also
+> +	 * have to take the folio lock before modifying file contents
+> +	 * without a mapping, typically via write_begin_get_folio().
 > +	 */
-> +	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
-> +
-> +	/* make sure the folio is up to date */
-> +	if (unlikely(!folio_test_uptodate(folio))) {
-> +		result = SCAN_FAIL;
-> +		goto out_unlock;
-> +	}
-> +
-> +	/*
-> +	 * If file was truncated then extended, or hole-punched, before
-> +	 * we locked the first folio, then a THP might be there already.
-> +	 * This will be discovered on the first iteration.
-> +	 */
-> +	if (is_pmd_order(folio_order(folio))) {
-> +		result = SCAN_PTE_MAPPED_HUGEPAGE;
-> +		goto out_unlock;
-> +	}
-> +
-> +	if (folio_mapping(folio) != state->mapping) {
-> +		result = SCAN_TRUNCATED;
-> +		goto out_unlock;
-> +	}
-> +
-> +	if (!state->is_shmem && (folio_test_dirty(folio) ||
-> +			         folio_test_writeback(folio))) {
-> +		/*
-> +		 * khugepaged only works on clean file-backed folios,
-> +		 * so this folio is dirty because it hasn't been flushed
-> +		 * since first write.
-> +		 */
+> +	if (!state->is_shmem && folio_test_dirty(folio)) {
 > +		result = SCAN_PAGE_DIRTY_OR_WRITEBACK;
-> +		goto out_unlock;
+> +		goto out_putback;
 > +	}
-> +
-> +	if (!folio_isolate_lru(folio)) {
-> +		result = SCAN_DEL_PAGE_LRU;
-> +		goto out_unlock;
-> +	}
-> +
-> +	if (!filemap_release_folio(folio, GFP_KERNEL)) {
-> +		result = SCAN_PAGE_HAS_PRIVATE;
-> +		folio_putback_lru(folio);
-> +		goto out_unlock;
-> +	}
-> +
-> +	if (folio_mapped(folio))
-> +		try_to_unmap(folio, TTU_IGNORE_MLOCK | TTU_BATCH_FLUSH);
-> +	return SCAN_SUCCEED;
-> +out_unlock:
-> +	folio_unlock(folio);
-> +	folio_put(folio);
-> +	return result;
-> +}
+>  	return SCAN_SUCCEED;
+> +out_putback:
+> +	folio_putback_lru(folio);
+>  out_unlock:
+>  	folio_unlock(folio);
+>  	folio_put(folio);
+> @@ -2513,55 +2548,11 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+>  		xas_lock_irq(&xas);
+>  		VM_BUG_ON_FOLIO(folio != xa_load(xas.xa, index), folio);
+>  
+> -		/*
+> -		 * We control 2 + nr_pages references to the folio:
+> -		 *  - we hold a pin on it;
+> -		 *  - nr_pages reference from page cache;
+> -		 *  - one from lru_isolate_folio;
+> -		 * If those are the only references, then any new usage
+> -		 * of the folio will have to fetch it from the page
+> -		 * cache. That requires locking the folio to handle
+> -		 * truncate, so any new usage will be blocked until we
+> -		 * unlock folio after collapse/during rollback.
+> -		 */
+> -		if (folio_ref_count(folio) != 2 + folio_nr_pages(folio)) {
+> -			result = SCAN_PAGE_COUNT;
+> -			xas_unlock_irq(&xas);
+> -			folio_putback_lru(folio);
+> -			goto out_unlock;
+> -		}
+> -
+> -		/*
+> -		 * At this point, the folio is locked and unmapped. If the PTE
+> -		 * was dirty, try_to_unmap() has transferred the dirty bit to
+> -		 * the folio and we must not collapse it into a clean
+> -		 * file-backed folio.
+> -		 *
+> -		 * If the folio is clean here, no one can write it until we
+> -		 * drop the folio lock. A write through a stale TLB entry came
+> -		 * from a clean PTE and must fault because the PTE has been
+> -		 * cleared; the fault path has to take the folio lock before
+> -		 * installing a writable mapping. Buffered write paths also
+> -		 * have to take the folio lock before modifying file contents
+> -		 * without a mapping, typically via write_begin_get_folio().
+> -		 */
+> -		if (!is_shmem && folio_test_dirty(folio)) {
+> -			result = SCAN_PAGE_DIRTY_OR_WRITEBACK;
+> -			xas_unlock_irq(&xas);
+> -			folio_putback_lru(folio);
+> -			goto out_unlock;
+> -		}
+> -
+>  		/*
+>  		 * Accumulate the folios that are being collapsed.
+>  		 */
+>  		list_add_tail(&folio->lru, &pagelist);
+>  		index += folio_nr_pages(folio);
 
-prepare and isolate now share multiple goto error paths. if you move this into
-the prepare function (combining the prepare+isolate). the goto labels at the
-bottom become very easy to follow and reduce the code bloat.
+This can/should also be hoisted up if you follow my recommended code flow.
+This requires also passing pagelist (and index, as lorenzo already suggested) 
+into the helper struct but thats fine.
 
-With the two additional helpers (shmem vs !shmem) the code becomes very clean,
-even without the additional cleanups you did in the previous few patches.
+> -		continue;
+> -out_unlock:
+> -		folio_unlock(folio);
+> -		folio_put(folio);
+> -		goto xa_unlocked;
+>  	}
+>  
+>  xa_locked:
 
-I would suggest doing the very simple restructuring first, then including any
-additonal cleanups that you did in this series.
+my recommendations also allow you to group all these gotos into the bottom of
+the prepare stage which drastically cleanups the amount of gotos in the
+collapse_file() function. 
 
-That would not only make it easier to review, but also a lot of the mess
-already gets handled just by following my recommended flow.
+with my code recommendations the loop becomes.
+
+for (index = start; index < end;) {
+...
+-out_unlock:
+-               folio_unlock(folio);
+-               folio_put(folio);
+-               goto xa_unlocked;
++               result = collapse_file_check_folio(folio, mapping, &xas,
++                                                  file, &index, start,
++                                                  end, is_shmem, &nr_none,
++                                                  &pagelist);
++               if (result != SCAN_SUCCEED)
++                       break;
+        }
+ 
+-xa_locked:
+-       xas_unlock_irq(&xas);
+-xa_unlocked:
++       if (result == SCAN_SUCCEED)
++               xas_unlock_irq(&xas);
+
+        /*
+         * If collapse is successful, flush must be done now before copying.
+         * If collapse is unsuccessful, does flush actually need to be done?
+         * Do it anyway, to clear the state.
+         */
+        try_to_unmap_flush();
+
+        if (result == SCAN_SUCCEED && nr_none &&
+            !shmem_charge(mapping->host, nr_none))
+                result = SCAN_FAIL;
+        if (result != SCAN_SUCCEED) {
+                nr_none = 0;
+                goto rollback;
+        }
+
+	//Copy stage
+
+Now we have no weird goto labels in collapse_file and rely on results to
+control the follow.
+
+If you think my approach is already useable perhaps you can just take my
+commit I pointed to you that does all the major code moving with no major
+refactoring and add your further improvements on top.
+
+let me know what you think!
 
 Cheers,
 -- Nico
