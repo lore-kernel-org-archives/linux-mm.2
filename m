@@ -4,90 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCEB8C44539
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 12:50:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B255C44536
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 12:51:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C8BC6B008A; Wed, 22 Jul 2026 08:50:24 -0400 (EDT)
+	id 6929C6B008C; Wed, 22 Jul 2026 08:51:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A0106B008C; Wed, 22 Jul 2026 08:50:24 -0400 (EDT)
+	id 6698F6B0093; Wed, 22 Jul 2026 08:51:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6DD916B0092; Wed, 22 Jul 2026 08:50:24 -0400 (EDT)
+	id 5AE376B008C; Wed, 22 Jul 2026 08:51:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C5D56B008A
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 08:50:24 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A68E61A018A
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 12:50:23 +0000 (UTC)
-X-FDA: 85016395926.25.0B445ED
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 1A56418000C
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 12:50:21 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=km4jXblX;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 39E686B008C
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 08:51:47 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CC780160174
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 12:51:46 +0000 (UTC)
+X-FDA: 85016399412.27.AA97798
+Received: from mail-pj2-f11.google.com (mail-pj2-f11.google.com [74.125.227.139])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 242474000D
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 12:51:45 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=h1V8DxcR;
+	spf=pass (imf07.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.139 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784724622;
+	s=arc-20220608; t=1784724705;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KeKyLY8p+R3goFIELc8d+Itcavb+BZ5wsH5llzH8q7I=;
-	b=zVRBSsltK5t09c67/I+EFXcti6KYlLAprTdVu4q/k9gT2mrOKrhVjtuA+a6F4RkMAUYKyA
-	8D4/GQH19z0ZmIBtyZdMdAYyOo1xaQK6pvfxuCcBbcUErYrxlTueWOeDTDIm4/JLspCilt
-	qTi+zsQoEUPAaX26eKx+YIxzfjKBKmc=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=km4jXblX;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=vbxJv51ewBhlo0MME6tK7srEAnRYCTzOsiJppgEy5qw=;
+	b=rGyu7+vQd2WZk+kHsDQA6OrSCJ1fFfQEA78WYF5N8vXRkUfxpm94rrOr1k7jj/czsQzXAE
+	GCz2ZUluYvc1p9hDxv+qpeB3iQKqUw33rdF9FSwO/jaaj7QBhmTqyQZOQ5bF+RXW1E/k1i
+	HkuSI+FNuS9/CT8uvDmb1aKZTsywjw8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784724622;
-	b=pePU1zQ+ipxHjCRisDOC1DgLzwvETss0qIZRxg1+Tb8/UAcoJwNP2ZZeptVT/N7kb2JiYQ
-	JVsLZTiHnkPEfkavi0u+ZOWEqmmklR1TSV/6N4+GxmRuf7WyWMkUCyjAuslfXU1kibI53u
-	SRQJZWP9lqtEYW9EaYky+pw22+1Ckbo=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7B08C600DA;
-	Wed, 22 Jul 2026 12:50:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2C301F000E9;
-	Wed, 22 Jul 2026 12:50:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784724621;
-	bh=KeKyLY8p+R3goFIELc8d+Itcavb+BZ5wsH5llzH8q7I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=km4jXblXtMqHV54MzRwH//7c5eqW9dy71GCxJw1dDeoS5/10TgeXzFE8aWx0SG0Lk
-	 l6wyHQpZOltPFilCAvzEdJFssBLo4+ge0lCR2xOee7VQKY1qwJpEBGXr5o5AYnv5wJ
-	 3+DVeiiDhWoq1jt/0CdSprmeHH2pjcSkvvFyM8OsV+VPdF3hFUjXQcNNukURp7Cf2o
-	 +sijjxZWn045XB5E7xXD7leQicASinabMIp4TSetHnSKOHq7515XlkpQnA4JthGdlh
-	 PANB2lfl6Q7E7SV3LVwT1VByU1IPFPeb2OKvcH4ng+Gzd+yNr97J4ZQKZFRLJEL1Bm
-	 6ZVtIXrHtYCOA==
-Date: Wed, 22 Jul 2026 13:50:05 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: jiale yao <19888972804@163.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
+	t=1784724705;
+	b=7jHGs0MUKr/H7jBqus+RgPVUaAtbQsaAxPrlNSYEstNIlMnYImKn0lOiUReoC6Q6sQnctL
+	cVIlkZnt520isxgFdxZ5EgnMHVFpdz8jCScN9Y7N01Jv7hUvJbXePfADKQdnC2rCPqOcf6
+	YxG1PNIhjDXczEUu+L9SMCJNwbd2W6k=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=h1V8DxcR;
+	spf=pass (imf07.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.139 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pj2-f11.google.com with SMTP id 98e67ed59e1d1-38e47da25f8so3053062a91.1
+        for <linux-mm@kvack.org>; Wed, 22 Jul 2026 05:51:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784724704; x=1785329504; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=vbxJv51ewBhlo0MME6tK7srEAnRYCTzOsiJppgEy5qw=;
+        b=h1V8DxcRRd5TLf+EV8Ayot+oYspU6mhkOPjvcJTsPcNxbDy66tUVUw+kzi+VQmR8YW
+         REda4Qmsv+jNlugMj5C+yi/5JYH6KACAXIHBGJopJyiCigi/EXOUDA3ji4ucY4i6q9W6
+         3Ncqns4H+4V514BFHCVRqaFdWLgwhTVp0y3pimZyS9C4zU5s+gfJR1S2q9eKTKcO2NZo
+         yH14wTFfzLess9kpXZd2Mw0joKM+XNyaB8wZvC/zPz/URXVaFYsCf6QUibccH1zmjduV
+         ySxp9K3bOflhPLN1AllJsUysG3Elm6k2UQqnzGlqkXmekjp4OYfZq6kaPnVyRiDXJBd+
+         2b5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784724704; x=1785329504;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=vbxJv51ewBhlo0MME6tK7srEAnRYCTzOsiJppgEy5qw=;
+        b=RXjpIIrfCayRVhpcDonT1wSBQXjwzCitqDBt4Bx0P+TFdWkJt/n3nNg9eVBwbARK8h
+         oScbn0Tc+9BPz4YCc9Kg4HfJj29RMTAT3YFDDCdwKrjgCfcDb/B5rROKwsO+WR2rzHp4
+         2/ENFX3dZRktBULulfc2UdDmNgSc9gIh7Py9L15uZOTYvsyCOLIivcy8euu9N/hRz4y/
+         PAQs53TdOsNn8yqPwmBC+fUhpOgFxWZdzU+J31EKyBMVVbjmCBH8ciI2buXDL79FMvgU
+         NEU6WGRKLG+6zQ4NxN5M+VNXL7xdLFvVb7mqt6gb6pIv4/Dy9bLDMezgVDdV4L3Di+6A
+         K8FQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrKSHCLxBEOjpfREDpMP0ylZMmh1LehROxvV4wqbr1fNpCbPoFkRBKb+tlyUqDEKgMoSM9/ygq1xg==@kvack.org
+X-Gm-Message-State: AOJu0YxdwmUN92b6X50gtBdnX/aQZQL8O9yHv0OfbbVjCL3FDqM+/yiM
+	QQ1RzMBt2UooyMtZccVlOwO7+P7Xy0WKi7nxMdPtBOz9R03h+PtT7Zo3
+X-Gm-Gg: AR+sD130pJTcX+/Szu5vTP9lu0xhkHouQBi3T2YolVj43LZxMdG/AeYK47mVtSrgZry
+	LPbN9hw3xolFCiw3VmPRwbJUwDQRa+KgkoEoeSYa+m3jNAtn1dSqTjLxJMSyu6VgS2/NlZc2qhy
+	gx15+gPzZNo28ucOwFkuo4z0gGPR30PjIeGUksb3OnuKEdB7ggGBklqxLLqmCvitKzRT4hGKZAo
+	yw1OoNb+COpBMALfrHroeiAAlJZ/uplme/qdFfL7XJlUQm8NAmBwRLfPMIKXlm9DAMi0pgpBTRa
+	o8bFNRv9GETWZ0qT9t9sJIhSMC2ogG1ZpNf+CfQhAjIKc0faME3T/w7IthjEq3B249EvvB7guZX
+	bTUb0IY5Sdl7RVjnaYgZbInccXbRg6V/HE1UxiOOsjfowTjESDrb5/6iYGDd6NbMTS2kQ9HFL6+
+	z9M2I7RXXh7fvMKw4uSMaQzlMIjg==
+X-Received: by 2002:a17:90b:1844:b0:37f:9ce1:cdb2 with SMTP id 98e67ed59e1d1-38e4b55aeebmr23831940a91.32.1784724704025;
+        Wed, 22 Jul 2026 05:51:44 -0700 (PDT)
+Received: from intel.company.local ([210.184.73.204])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38ea78484b8sm1021162a91.4.2026.07.22.05.51.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Jul 2026 05:51:43 -0700 (PDT)
+From: Wandun Chen <chenwandun1@gmail.com>
+To: liam@infradead.org,
+	ljs@kernel.org,
+	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/page_idle: call folio_test_lru() after folio_get()
-Message-ID: <amC7kzf4f0lRd_Gu@lucifer>
-References: <20260722092642.1123347-1-yaojiale02@163.com>
- <amCSiltZolhgtO3J@lucifer>
- <75a79b54.8930.19f898e1ed6.Coremail.19888972804@163.com>
+Cc: akpm@linux-foundation.org,
+	vbabka@kernel.org,
+	jannh@google.com,
+	pfalcato@suse.de
+Subject: [PATCH] mm/mlock: skip __mm_populate() for MLOCK_ONFAULT
+Date: Wed, 22 Jul 2026 20:51:33 +0800
+Message-ID: <20260722125133.543441-1-chenwandun1@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <75a79b54.8930.19f898e1ed6.Coremail.19888972804@163.com>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 242474000D
+X-Stat-Signature: nks8t3ii9dykj9axwerp4mf4um5jrw4h
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 1A56418000C
-X-Stat-Signature: y4oixmugw9qxdm8tigizt36yraiophcs
-X-HE-Tag: 1784724621-356552
-X-HE-Meta: U2FsdGVkX194W6UutVezkFFPmP8b2Y6zgfwGCToEcP3YuLDesNFleRHh2HgoDC2ax/SzdlF102+8B17/X+k9a+gvKu/NFDNRI3VTsJ2m3KirdhHDorXyapyAvG3KAfs1OiXV4G7qJjPYJsTI9XxHLK1jsjLkc6taEZC2sDbkxcsC9S0fCjwyLSPkl3jD+hwcyWgwK28SYrIMsb0XhEEIYGXtBdp58sk7aHOKlukcY/Aw9VjIbVf0IqTrSAw826j+0R90jJbi8h4OfsqGb0RBT0rz0UJp8qfHLw9xP/+3NjqVD5E2Ya8eYjPRbkLNjSlwqWnvuuS2up9T+un8Dw7NCMALv7g8Lq9tkFaGVdaqr/PHrGccpEKssNdgVXcMiPs8bK+72GSm2HIZv6k5R6AO2GG22ZXog/bI4VY6VLYzujBNavOPkABEEzbzjijFDuc/+I6JOUQdbX/SPeIvYMw6lxkIeAQshFgVQ1JVLtKnloav3bueeS+qs+9Jc8/4zNk2zy8epNGNj/WD/fGqh1bnxVtRcmjxH6FHH2MjF6kFG8ym64Z1+leDNIg5koELq072cZDqO/LsNu0jq54+csqX/uKC1Hx74vz878Hp9ECBtVWrT5O41CCxvCT1WQ5t1KgfnSed/c89hXjemmkYXafsCVP6zld47QndjjzPbHjEdrU/0nuWly14Iqnqh/ZCuc6uJ2YVTDU/s4AHdaBT++oWBaZS2Ef/mos5bZvzBqWWU8z9QikxguFH0h0LdC3aV7Nq9GAjTMn6nqHTkw8jz/Hn8zctbr71fWJV9ljshjzUSXbjY9pBY9cxL8DSDu0byughpd9vtvBk+rMh5ZDHbHXi6Tgo8MZW8xwE8PzigyBdGj/ACNxiRBzypve9mz/SRFg+21tZ0kVGawA2y4mBQIDRGm8lZwQ3QSvFFJSDvReHraJOrYJ8mZ1UEpTtavLHnZCoMiXYJrh9SkekHchc9lx
- jTOac8Fu
- DZ/Hh153Zi2n8Vo7T0IaEglREGjGLK4mtXkrJG9s/pMEwnDnht2+rL+EHP/Tq5TQbKzjpM6v6U92DFOpzVxPI2NCwbjBd58boEMWcooHA0wMIe82z9jhKHM0ULfRV8tIXisXKzHB4icKvB+8JdGcJexOedpwxK2kJdZWkBGWtGhAWgBsTCr7Jg3vLdp1j9FjJoIHvhOHupTksvsoar1Vw6R1cGljqTmYPjXgFsKvZYV1rSgMbSAo8QypBYy6U6yNiRsCZl0O9UR5IoUHVWnqnjSnIOq+A7Mn62DTO63qHcphGgXNYnacaiFr0Ko6JJ9BpfaMNXAtenRI3qZuGHIKLk9t6e4BRQ7SBg5TxTppetmATO3KERBz6KSxPIA==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1784724705-55584
+X-HE-Meta: U2FsdGVkX19/7/Rv+MGQlxxSzrxcMrXlYkH6HLP/lmb5wk9PLeLz86LAcVXLnKA7aRvBrdrAlSUYwZnIzTmtfwmEBp5dKOztDVApqGLQaRcQpnxUQs3k+ExoG3JHMbVKfqUsvdRrb7JfjcKVpzXFKEMt16L5eFDfNLuP3iLHzpfkG1dhiaNqeMFw9WcJAPd3CyxPart4+/UYhXDBC+FlIwvhOWDLiUn80vCORI5nlqziP8euNR8wxecugoJ/yuhpeX8W4bk2Aet6JqxEzR4sHv8OIjMQhWuNcaWu4T8XXHzNLFdf+esFuafJUilsc1mITAdIlyeVl/hoa/VjVqdy2FegUVlgqa8XwufJKe1CqRaPP9I+aV/yTYiErDeFKiLUyRgHTv9RxfJ1hxbQ/IYAjxzl7y2yQ4934LPUblaUTli0rHjRCzCpCZto5T98HZwjRksU1nACpfi/A30VJkgRqByJ+MO/hkgSuwUd0DWuoAp8l0FO9nS+sgnJ48w23BNWMB1YfzaNYKqKF4A//zBh88UB3ciZV28BxyUO4d+Nq8ZMN/xkWn6ozKeQoU4KwHpWhH1uDxhl5TeD6ZckmaWtBHMVxvN9CYK9GvP9FxjlROTzyNYELiARs5Vp5ICVEGoKHqce0fjQg/XBvBGyzxZVeiVNI9p6dW08mlo5ISjnLB84Lmr+7hXQkZIwmj4Ff+vET1RYWzzXOWERS2OCR5ATLoV4ekn4e2i4HLoRxlW5kSetqpytAFmTDhYw5H0b1FiyaJed1xistJ+3NpyY2fo6dd8htBRqw29dLxguvpHEFGmBJKmWYtakV66q/Nj4OBId+7UL0n7AuZ+2hc2sAXA9PddjH7qTp6dXDUC9rT0CRFSwWPwyKnCpwm11Fh56QJI2omoSBOt9upDWRROfVbo2nmOTbf8GZ44j25UQCMI5tMzArYs2EqDl6pOaJcYl8uwQdZg254MpdJ/xLo9c55L
+ BAQnglp9
+ /UNs4CsmcN+bXRfS31uudrCJ3mf9ktCFcJ0cee/pOQItFsThMe0Zl91ORteUV+WzSXTP04+JVNUzSUAAgnuZxCEkk5SOwXZ3iAv9P8FBNe8haPYSO4dqsdp8Sc3o95eTbsdlJbBiB5vtcmKGUY+pnod+wNBZOpOWuXq+SeUhQWVUvkY0yN+KYVlWPjHge71CqdH6lqCoRPvoc2YvnnSVmomqT6M3ZgfpErmZJuYkeqj2LXWiwmv9bYLJuTq7dAUOlQqDBMhYiu21PeACY4FKrZN8Mv2SCIbMcZWigmwKDd3iTjcsQMaVZRRjG2I4kJgzOnyz9HEb1XkBou1tRUFIgNLZQNSi0Nmr6fwZSs8XlEJ6zcXuEROX+XlYpCNpOle/o+SZs1ERgL1w8dt0sH6h+6S/cmRDlbuhJwdkH3+BlST8oBr+RIEET4hU0m35XKAAx7PlH5roD0ltZMskLJtUMeMyB0K4LMiHXI7AN+8N+0uvmNqs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,146 +119,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Nooooo :) this is not how you send patches.
+From: Wandun Chen <chenwandun@lixiang.com>
 
-Also you should _reply_ to review comments, not just send another patch with no
-reply. Comms is king.
+MLOCK_ONFAULT only locks pages on future faults, so there is no need to
+fault in non-present pages during the mlock2/mlockall syscall.
+populate_vma_page_range() already returns immediately for VMAs with
+VM_LOCKONFAULT, which means __mm_populate() just loops over VMAs and
+holds mmap_read_lock without doing useful work.
 
-Also - don't respin so quick. Wait a day.
+Skip __mm_populate() when MLOCK_ONFAULT is set to avoid this unnecessary
+work.
 
-Then send a v2, NOT in reply to anything.
+Signed-off-by: Wandun Chen <chenwandun@lixiang.com>
+---
+ mm/mlock.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-Really best way is to use b4, docs at
-https://b4.docs.kernel.org/en/latest/contributor/prep.html and etc.
+diff --git a/mm/mlock.c b/mm/mlock.c
+index efa6716e4dfb..784bd4bfc3bb 100644
+--- a/mm/mlock.c
++++ b/mm/mlock.c
+@@ -658,9 +658,11 @@ static __must_check int do_mlock(unsigned long start, size_t len,
+ 	if (error)
+ 		return error;
+ 
+-	error = __mm_populate(start, len, 0);
+-	if (error)
+-		return __mlock_posix_error_return(error);
++	if (!vma_flags_test(flags, VMA_LOCKONFAULT_BIT)) {
++		error = __mm_populate(start, len, 0);
++		if (error)
++			return __mlock_posix_error_return(error);
++	}
+ 	return 0;
+ }
+ 
+@@ -778,7 +780,7 @@ SYSCALL_DEFINE1(mlockall, int, flags)
+ 	    capable(CAP_IPC_LOCK))
+ 		ret = apply_mlockall_flags(flags);
+ 	mmap_write_unlock(current->mm);
+-	if (!ret && (flags & MCL_CURRENT))
++	if (!ret && (flags & MCL_CURRENT) && !(flags & MCL_ONFAULT))
+ 		mm_populate(0, TASK_SIZE);
+ 
+ 	return ret;
+-- 
+2.43.0
 
-But you can also do something like:
-
-git format-patch -v2 HEAD~1
-scripts/checkpatch.pl <patch filename>
-scripts/get_maintainer.pl <patch filename>
-git send-email --to="(andrew)" --cc="<list from get maintainers>" <patch filename>
-
-
-On Wed, Jul 22, 2026 at 07:20:20PM +0800, jiale yao wrote:
-> page_idle_get_folio() speculatively calls folio_test_lru() before
-> folio_try_get(). The folio can get freed and reallocated to a tail page
-> in the meantime. In that case, VM_BUG_ON_PGFLAGS() in
-> const_folio_flags() can be triggered. Remove the speculative call.
->
-> This is a sibling-path bug: damon_get_folio() was copied from this
-> function with the same flawed pattern. Commit d6b8b02a27b3
-> ("mm/damon/ops-common: call folio_test_lru() after folio_get()") fixed
-> damon_get_folio(), but page_idle_get_folio() was left unfixed. KCSAN
-> (strict mode) confirms the data race on the folio flags:
->
->   BUG: KCSAN: data-race in ... / percpu_counter_add_batch
->     page_idle_get_folio+0x7a/0x2d0
->     page_idle_bitmap_read+0xc9/0x220
->
-> Signed-off-by: Jiale Yao <yaojiale02@163.com>
-> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-
-this should really be backported, so good to find the right commit to use as a Fixes: here.
-
-Also then add Cc: <stable@vger.kernel.org> so it gets send for backporting.
-
-But _please_ wait a day before sending the v2 :)
-
-> ---
-
-Also in the v2 put a list of changes here (will not be included in commit msg)
-with links to previous versions on lore.
-
->  mm/page_idle.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/mm/page_idle.c b/mm/page_idle.c
-> index 9c67cbac2965..b6c26a0ba3d5 100644
-> --- a/mm/page_idle.c
-> +++ b/mm/page_idle.c
-> @@ -40,7 +40,7 @@ static struct folio *page_idle_get_folio(unsigned long pfn)
->  		return NULL;
->
->  	folio = page_folio(page);
-> -	if (!folio_test_lru(folio) || !folio_try_get(folio))
-> +	if (!folio_try_get(folio))
->  		return NULL;
->  	if (unlikely(page_folio(page) != folio || !folio_test_lru(folio))) {
->  		folio_put(folio);
-> --
-> 2.34.1
->
->
->
->
->
-> At 2026-07-22 17:56:13, "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
-> >On Wed, Jul 22, 2026 at 05:26:42PM +0800, Jiale Yao wrote:
-> >> page_idle_get_folio() speculatively calls folio_test_lru() before
-> >> folio_try_get(). The folio can get freed and reallocated to a tail page
-> >> in the meantime. In that case, VM_BUG_ON_PGFLAGS() in
-> >> const_folio_flags() can be triggered. Remove the speculative call.
-> >>
-> >> Also mark the folio_test_lru() check right after folio_try_get() success
-> >> as no more unlikely.
-> >
-> >Slightly strange wording but not sure why you're doing that? It is
-> >generally unlikely a given folio will be !LRU right?
-> >
-> >>
-> >> This is a sibling-path bug: damon_get_folio() was copied from this
-> >> function with the same flawed pattern. Commit d6b8b02a27b3
-> >> ("mm/damon/ops-common: call folio_test_lru() after folio_get()") fixed
-> >> damon_get_folio(), but page_idle_get_folio() was left unfixed. KCSAN
-> >> (strict mode) confirms the data race on the folio flags:
-> >>
-> >>   BUG: KCSAN: data-race in ... / percpu_counter_add_batch
-> >>     page_idle_get_folio+0x7a/0x2d0
-> >>     page_idle_bitmap_read+0xc9/0x220
-> >>
-> >> Signed-off-by: Jiale Yao <yaojiale02@163.com>
-> >
-> >Yeah generally this seems obviously correct (TM), if we can't be sure a
-> >folio is kept around any other way to the extent we're doing
-> >folio_try_get() we should gate any actual interactions with the folio on
-> >succeeding the get first...!
-> >
-> >With the unlikely thing changed, LGTM so:
-> >
-> >Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> >
-> >> ---
-> >>  mm/page_idle.c | 4 ++--
-> >>  1 file changed, 2 insertions(+), 2 deletions(-)
-> >>
-> >> diff --git a/mm/page_idle.c b/mm/page_idle.c
-> >> index 9c67cbac2965..29ee18f0e8ce 100644
-> >> --- a/mm/page_idle.c
-> >> +++ b/mm/page_idle.c
-> >> @@ -40,9 +40,9 @@ static struct folio *page_idle_get_folio(unsigned long pfn)
-> >>  		return NULL;
-> >>
-> >>  	folio = page_folio(page);
-> >> -	if (!folio_test_lru(folio) || !folio_try_get(folio))
-> >
-> >I guess this was meant as a racey check...
-> >
-> >> +	if (!folio_try_get(folio))
-> >>  		return NULL;
-> >> -	if (unlikely(page_folio(page) != folio || !folio_test_lru(folio))) {
-> >> +	if (unlikely(page_folio(page) != folio) || !folio_test_lru(folio)) {
-> >
-> >As above, not sure why you're changing this? Seems unrelated, I'd just keep
-> >it as it was.
-> >
-> >>  		folio_put(folio);
-> >>  		folio = NULL;
-> >>  	}
-> >> --
-> >> 2.34.1
-> >>
-> >
-> >Cheers, Lorenzo
-
-Thanks, Lorenzo
 
