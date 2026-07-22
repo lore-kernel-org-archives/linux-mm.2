@@ -4,89 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 370BCC44536
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 22:54:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6BA9C4453A
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 22:56:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3AE1A6B00C3; Wed, 22 Jul 2026 18:54:07 -0400 (EDT)
+	id 97EC66B007B; Wed, 22 Jul 2026 18:56:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 35EF96B00C4; Wed, 22 Jul 2026 18:54:07 -0400 (EDT)
+	id 956EB6B0096; Wed, 22 Jul 2026 18:56:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 277C46B00C5; Wed, 22 Jul 2026 18:54:07 -0400 (EDT)
+	id 86C2F6B0098; Wed, 22 Jul 2026 18:56:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F2C066B00C3
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 18:54:06 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8044214032C
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 22:54:06 +0000 (UTC)
-X-FDA: 85017917292.09.19BD2E8
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5894A6B007B
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 18:56:13 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BFFF41A034E
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 22:56:12 +0000 (UTC)
+X-FDA: 85017922584.16.F30E88D
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 4E06540003
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 22:54:04 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=0+cFNP5V;
-	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf07.hostedemail.com (Postfix) with ESMTP id 5246740004
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 22:56:11 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZPkBpSIy;
+	spf=pass (imf07.hostedemail.com: domain of nathan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=nathan@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784760844;
+	s=arc-20220608; t=1784760971;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZZH0UCJW2OUCFvq2mZvsq/vH6LEHSHRw0NfCnh2a/1c=;
-	b=DkjHwzXLter9dtC+34uU8EAruYRQxXh9K2sKGoIWwaqKYaDhvp/7QDKIYyiODnqllUySRq
-	eGoVf0EzseZ0CA9ZKOdBbHacAhGJ8JqivyYaKdT1/nuwY9OU7VTATdryUCXDrJGMUm31+e
-	SzJKXBwMhKZE3lTegJSIhPoCjlxMbp4=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=nnwsPKVbi4DvaYV8nWWsvMkgYyamzu5KTWQUU7aAxNA=;
+	b=Q53ALgwHyMb5GW0CEWacYrojYuGBbqfJLX1utYFVaa6xDBRq+JklMK5xSvifD6OGEVGCoc
+	FCsDfHSeVkP3C8yS7xfejM1tLLFjYY4gV7z2Ia8HxKognczTyMySsf9JIR66s6Hkt3OnBc
+	reia7hVJnPCxOBfZ/sl5Rpw0JaoDS5k=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784760844;
-	b=62R0g8yt7Qgu7se9nOFOlDbMeYxW2co11V/wbXc3vO2TFHPEi5uEno7+e0opuZ+dElk5Om
-	Z9HkFl+v7bROCTCGj1wI31OTfqL2zJtz0U+OEb8D9fqHtVGEySzcvJtaQ5zuuy+sKEC+qW
-	vovauVU3deUmPae56XBvHXmMCfWp/qo=
+	t=1784760971;
+	b=bxEcdT9cd1eAmqrYulyYdM4cMLG+h7VOhReB4yie63CLv5Ra2Grdl2PiTbKNTMKNgW9ekk
+	Ylz1IvIlHlsrxhEC6r1ZW37X5EIcyG0CDRuwPRd2vdgQd5gJ0wyb7r4Kpz/HSL1VMhE7B/
+	U9k2UvazorFUV6+vz3lVMVH9SBcZ7uc=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=0+cFNP5V;
-	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZPkBpSIy;
+	spf=pass (imf07.hostedemail.com: domain of nathan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=nathan@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8AA31600AB;
-	Wed, 22 Jul 2026 22:54:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E42431F000E9;
-	Wed, 22 Jul 2026 22:54:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1784760843;
-	bh=ZZH0UCJW2OUCFvq2mZvsq/vH6LEHSHRw0NfCnh2a/1c=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=0+cFNP5VCjlcHpDbvEpfxcNnlP3pj6eAQgM+HLiNXa+SMAGtEo5bRYzNZS+dsUwUy
-	 1hTF41aqNo2etfxJz3CBoyRGO1uyg8rQ5p3k9ozOGm/t2ct6lEVcxf3InCdxoT1kvR
-	 vZsrxWbd+qHtRph7/Wt70Lxwo7znJ/n89iyKB1+U=
-Date: Wed, 22 Jul 2026 15:54:02 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: pratmal@google.com
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>, David Hildenbrand
- <david@redhat.com>, Vlastimil Babka <vbabka@kernel.org>, Greg Thelen
- <gthelen@google.com>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
- <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>, Johannes Weiner
- <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm/page_reporting: Add page_reporting_delay_ms
- sysctl
-Message-Id: <20260722155402.f313e8a98615bd3b513221eb@linux-foundation.org>
-In-Reply-To: <20260722211517.1898228-1-pratmal@google.com>
-References: <20260722211517.1898228-1-pratmal@google.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: mrg5q3z7e8kosetgix8xnzfb1hhredc7
+	by tor.source.kernel.org (Postfix) with ESMTP id B38C2600AB;
+	Wed, 22 Jul 2026 22:56:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D5E81F000E9;
+	Wed, 22 Jul 2026 22:56:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784760970;
+	bh=nnwsPKVbi4DvaYV8nWWsvMkgYyamzu5KTWQUU7aAxNA=;
+	h=Date:From:To:Cc:Subject;
+	b=ZPkBpSIygpo7zwkLCFfrCkN630Q73t3unwq8Ryg3gZLQahZp2q8QHd3pusDqaWtUw
+	 c1Ere6dRXFMjYAvUd4fBwfDY9764WDASWOTPEnRvIKayNXrfrzyhJV+PRdNg0XLRJa
+	 yznM14j+ZswrRsLK/JeWZQR4glE9mIkh29df2kUcdv5H9qJAxRNPdyCpeiTFpXKY6k
+	 cbnzAi712V0pfeO1mVq6hGA5CfBDZcH3REZ5TLkNiN/r1Jg6mnA7p8C+MsItzOuefT
+	 ooMHeyX2qXK0WnmukgtbNlsbfnsKdJOmKKE5JBmOhXJGDafvFgQoVHEtRxKuOIwDJe
+	 PivPabZFBIrvw==
+Date: Wed, 22 Jul 2026 15:56:05 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Mark Brown <broonie@kernel.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Usama Arif <usama.arif@linux.dev>
+Cc: linux-mm@kvack.org, dri-devel@lists.freedesktop.org,
+	linux-next@vger.kernel.org
+Subject: Semantic conflict between 04b177544a04 in drm-misc-fixes and
+ 0b6b1bb28482 in -mm
+Message-ID: <20260722225605.GA1910198@ax162>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 4E06540003
-X-HE-Tag: 1784760844-801479
-X-HE-Meta: U2FsdGVkX19v7g/DG+v/I0sYO6aCLygBZgSg4LKoPecMVlrPe1QfHgWAfTokBD6RFuog94GqyE6dEhCaJ9ZMLiDSrp19lsUBKaYKpbZxP1qiwBTGEwWwb3iY/AeM0I/E0dFd3LLX469CrcmFqWTiAOoT1Pz4FT/uYZ0UbG+DvIDFocqjbh0A79hknxPr94Fp3y11BLPVoLe/IzJ4f8ptlihyD2tRgqFoywrZ60Dk1PyYy/TYjFxZbPjfwkdGue89HaoCsODgG816ULCz1kgClj5Ne8IzRZFK0bELfk7R7eaYpk8LZQr106I5fKI0LnKqdztGKP7TbHtFP578hOMGu5FGO9yFQDKu7fIkcB8U569M9oyHEp272KvPpRAHjg7/dCHVCwZGmri4QAtqpsTqxRHysEKvTR7eRCB4AlbvM9cvixa8d7zVBQJEgbA6W/bKWKiNuMA4DTm7Ug+U6qqmb6U7P6Ba0yZx6FNzbvsQs+oRMYokqZzBKVnrlN2TVghj4stvMSCEU1SzYUH++wFk/GrRf59Dy317jcxFKMXt+xU15v+jEhFh5fXYdgNDrXCF0eIbiNJ7QBeA0v24nirT16y8RrWg2mIx/A7CSdilSVtRFmoDImyfkQS3Xekod37w3LGVbb1DKeJ+cOrcorfBszGtLzG6luht1EHGlxNMbMZHVXtRWx6LgZz/blXGT/rbDeu9k+fkVtE4Xj3LGK6Vw0hceigeY1D2n2GA9EI7s76NjrLUK8/3yRAWNg16J7AytGit+7vPQ51GRwW0wD/frgoWlkfgKoQxI559QbklzuZYhylhKaosGhw283LmwQJZgtl4H5sLlo043fSRNPPKXP44+jH90YQCd1v0zFPEDwV6DEgQb7wGYR4jXciNYPN9+nxUpdeRf7GCgTrgV679RblTkF4dQl89mjor8UVv4phk/brl2G2LUqwDjKPR7VUhDtafAJDUyjfkisrXCqr
- 8uLwm4hK
- 14XbP8bwcPzCdF314sJBEDGx9VTSSenMio4BinTCVAdKEDmwcwWveoYx5+q5nh3Ddb2G/gCMsA8a3fWNU/563x2QPLOjW/XLygXbpZzF/Eo8BNzL/FokgvIdvYPnrHBtzrnmOTSdRaQLd4DWFcOn6HOsQz3fesj4oe3BFv1jRKksTY7v7LLI48ysAXS2qyVsoffmVSpu1MpIuaNimNCHaNU1tX6rZQHCSwyMqW3V3eZiUTNE4bGCT3Gw2Wsmk574PyKSpd9foERluFSUWVuiCfs8JIP8yxPrXL7iaue+NurM2C6UTaTUzBF01bopaiwUzpRwM
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 5246740004
+X-Stat-Signature: ynyajy4h6zeprn83fd4qpseik5phuqhk
+X-HE-Tag: 1784760971-97438
+X-HE-Meta: U2FsdGVkX19gstPgGmNbkNIxDW1PB2iylAxtXLC4wnqEDTqRhK4+dmdVV9afMlKCdQGkdrv4mbq8IcV1pNLdBRlAaCZJGB2FNhIK1yiHF/MM7+/yjRQu+2/LG0r5TWzlLzkvz3pT1lw9+kB6hpv8QEajlhjmU0ZN8Eg+zLED2nyhP69wJNkVEyuVn+py7k9zz8PaktKKdwRBZmnJQrGCOx7iAafmClF6dsF/5KSmDsmJEkINU5/d33Jem/SRI/kkkFb/25OtkPwunyv9d7QqqXMd4Q0U6C0mIOOsGnxOuNXjCLr01Bl79rMz1LJVfAI0pq4HJmckDBTV0aOGzigCYzjzF5MRJgt5dF7ycMK2Mtc625/PsCye5F8F5gpOOBx1c/i5xdKpzUSq7b38adbwZuBMfi3sGA8rYdNziR6wIqxzja8vQa5PpO0OxrjHfq9fouuaGzjjiWGHZzNtYF/cWcRmNqvCjY2BKp1yMKr1/wqDza2ElCKdec2p4obVM9dkXwyj/ze40RGRCLQDvmSq5pDC+YpRR3qcTXWN0xzkaP9RZLcQNpiRhaf3QIqo5MltZc87OxZ4eJDrbTo+H8TFuWb05FHpfmGM9ICbvzQbCiwcmtZtKU3PKAweOyuky7j+QFuDd64Gn3pcyRtZccr3HXvYjyE5KtVr2QijkB8nhdHzhi09/zj147Xbqg2R8GvLePb17mN6GA72Sz8FxUBeHf7b2XpH4kpxCt67zpF/vYaADkgJR3i7HT3xIc+fZucHzTBiaK7nNae8+MSybOyrCDQG2RAXHKyaUd+wP3OlJiLyCL3I2bwV14ODRjrO7eoEsVPVPwkaEmZ6tnIBXzHMXDrluNTSfTIHt0VXDQ3uc2SZWtIZn6jOYNTdocZ4Cd4+ZITubvl82lxIMw5itjt+7u8vRtNfeiMpSSucFzSNpvxD43pKjGxh4vSTjUk4RRoLhNS/4pzM55p+bVXrE3k
+ 1rNYL1Nb
+ iAKD4xERdduxawPWyW1WmVrboD+CsW7Pqs1mMuFtMi+PcRZKz5QiWIromXbNvzbN9wD6nGhbk4mzf4B7XMASK6QRyjCtR3Tp6MJUCTOifeZmXI5i2HLLLSoQGAQd4VRMVm00WWWL9dO5PqU+vy5pKKuufZ/mokRcRgL/n0thZnbr6BK01Pudnujec13hqSKmlB5RvdFzt/IWf4NOTfT16BPFssnhVcrD7bmMybtoC4iEU7txgsSwf0gLBADNeSb4+ErPp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,33 +94,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 22 Jul 2026 21:15:17 +0000 pratmal@google.com wrote:
+Hi Mark and drm and mm folks,
 
-> From: Pratyush Mallick <pratmal@google.com>
-> 
-> Currently, the free page reporting daemon uses a hardcoded delay of
-> (2 HZ) between reporting intervals. While this is a reasonable
-> default, it lacks the flexibility to adapt to varying guest workloads.
-> 
-> A low delay allows aggressive memory reclamation, returning unused
-> pages to the host as quickly as possible. However, during spiky
-> allocation/free churn, this immediate reporting can lead to a severe
-> performance penalty (nested page faults) as the guest re-allocates memory
-> that the host has just unmapped. In these scenarios, there is benefit
-> from increasing the delay to batch free pages over a longer window,
-> absorbing the churn without hypercall and re-fault overhead.
-> 
-> This patch refactors the delay into a dynamically tunable sysctl,
-> /proc/sys/vm/page_reporting_delay_ms, measured in milliseconds. The value
-> defaults to 2000ms to precisely match the original (2 HZ) behavior.
-> 
+There is a semantic conflict between commit 04b177544a04 ("drm/pagemap:
+Guard HPAGE_PMD_ORDER use with CONFIG_ARCH_ENABLE_THP_MIGRATION") in the
+drm-misc-fixes tree and commit 0b6b1bb28482 ("mm: rename
+ARCH_ENABLE_THP_MIGRATION to ARCH_HAS_PMD_SOFTLEAVES"), resulting in a
+lone instance of CONFIG_ARCH_ENABLE_THP_MIGRATION with no way to define
+it.
 
-Seems reasonable.
+  $ git grep ARCH_ENABLE_THP_MIGRATION
+  Next/merge.log:Merging drm-misc-fixes/for-linux-next-fixes (04b177544a040 drm/pagemap: Guard HPAGE_PMD_ORDER use with CONFIG_ARCH_ENABLE_THP_MIGRATION)
+  drivers/gpu/drm/drm_pagemap.c:#if IS_ENABLED(CONFIG_ARCH_ENABLE_THP_MIGRATION)
 
-> +The default value is 2000 (2 seconds). The minimum allowed value is
-> +0 (immediate reporting) and the maximum allowed value is 10000 (10 seconds).
+This results in an objtool warning (or error with CONFIG_OBJTOOL_WERROR)
+when building with clang because NR_PAGES(order) results in 1U << -1,
+which causes clang to stop generating code for
+drm_pagemap_migrate_to_devmem() when encountering unconditional
+undefined behavior.
 
-Why implement a max?  If setting it to something enormous causes bad
-behavior then Don't Do That?
+  drivers/gpu/drm/drm_gpusvm_helper.o: error: objtool: drm_pagemap_migrate_to_devmem() falls through to next function drm_pagemap_zdd_alloc()
 
+Mark, could please apply the following diff to the -mm merge to avoid
+this? Obviously, there will need to be further coordination for
+resolving this upstream when the time comes but it is only an issue in
+-next currently.
+
+diff --git a/drivers/gpu/drm/drm_pagemap.c b/drivers/gpu/drm/drm_pagemap.c
+index 4a794544b7dc..f00c27edbfb9 100644
+--- a/drivers/gpu/drm/drm_pagemap.c
++++ b/drivers/gpu/drm/drm_pagemap.c
+@@ -12,7 +12,7 @@
+ #include <drm/drm_pagemap_util.h>
+ #include <drm/drm_print.h>
+ 
+-#if IS_ENABLED(CONFIG_ARCH_ENABLE_THP_MIGRATION)
++#if IS_ENABLED(CONFIG_ARCH_HAS_PMD_SOFTLEAVES)
+ #define DRM_PAGEMAP_PMD_ORDER	HPAGE_PMD_ORDER
+ #else
+ #define DRM_PAGEMAP_PMD_ORDER	(-1)
+-- 
+Cheers,
+Nathan
 
