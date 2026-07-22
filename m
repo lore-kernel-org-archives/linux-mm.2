@@ -4,88 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E6C8C44539
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 09:56:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E118C44539
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 09:56:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4169E6B007B; Wed, 22 Jul 2026 05:56:33 -0400 (EDT)
+	id 1CC616B008A; Wed, 22 Jul 2026 05:56:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3C67B6B0088; Wed, 22 Jul 2026 05:56:33 -0400 (EDT)
+	id 1A44E6B008C; Wed, 22 Jul 2026 05:56:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2DCD76B008A; Wed, 22 Jul 2026 05:56:33 -0400 (EDT)
+	id 0E03C6B0092; Wed, 22 Jul 2026 05:56:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0510D6B007B
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 05:56:32 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7FE1F1403F7
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 09:56:32 +0000 (UTC)
-X-FDA: 85015957824.19.A2076C1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id D58A214000B
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 09:56:30 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Thaeh4vD;
-	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C8E996B008A
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 05:56:42 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 27F731203F1
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 09:56:42 +0000 (UTC)
+X-FDA: 85015958244.26.D618984
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 9B2BE100002
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 09:56:40 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iTTuEnUK;
+	spf=pass (imf14.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784714190;
+	s=arc-20220608; t=1784714200;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tEkmbsohu70wSpeu9kL7X6w5e0YxqXmWzPLQ1TJA370=;
-	b=600hBHcwB7zmIr3qa+jIjFOMxl1OhZu0ppDbdL/e+7Gk9wnt/rqy4x8fcMMg/CEj9fgff0
-	RH8XL0akbbtHOe6Ro+dKXbaQDzBbsfc2mezeHJ1mYA2gSC3lojlWRIa52J7yu0sa8yR3YE
-	i+ZUtqKgyA1Hwy4KV0LtUU64vih+x90=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Thaeh4vD;
-	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=2UKinxtwpUhNzmCHSNfCxB0o/RysIEhOfeODCNlOPoo=;
+	b=6sTbtch4C0imD/8FsgxXfPrS8AhPjPQDAc6B/nbcmcdptyx9AdDYVz5yE2cmiTbkAw1VDA
+	Wx+x5l2YHv98EfyQodeY7dZT+BMYYlJNrpask/T45Hu/qXnBkJhMKSUMFZHFpcZR0iTw0c
+	uEvFOV4YypRYSKIjWzsZieTRsM3a9Uk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784714190;
-	b=tdvXo5hGJyfENRwmJn3uDsAWLiOrplS9O1TNfDZvmjdRVLhhlXbZOjXbklD9Hg3rBrBHYE
-	tqq5ZbYe6CzDuvSqwM1fv0WkrVAygtepvO7R7i7H5FCF+XT5cSyx7yQGkfsQVfeE1A/4M/
-	B1YqF+LY4zoshX9uapNmaqC1Iot/yDY=
+	t=1784714200;
+	b=wJXwNmw5eBU5+rmQFbUMEVjq8uU7qZmuWUYC7ILSHt62WGpVW0snyGaC+ek3ShoTyaznVe
+	hrv7KFP3fAqo+w5/plWE9MsDtTTK4KiHj6ZaDtPn6C01fmcz2j0bmMVVdnKWsATOc+Mi0p
+	JcAw23c2IspJjVd3M2KSL5w/LcZdbqs=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iTTuEnUK;
+	spf=pass (imf14.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id ABD0C44FB5;
-	Wed, 22 Jul 2026 09:56:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 504EE1F000E9;
-	Wed, 22 Jul 2026 09:56:27 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id DDFE060A78;
+	Wed, 22 Jul 2026 09:56:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 842D71F00A3D;
+	Wed, 22 Jul 2026 09:56:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784714189;
-	bh=tEkmbsohu70wSpeu9kL7X6w5e0YxqXmWzPLQ1TJA370=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Thaeh4vDN4ML6kySImSIFQXqo0elsCjKfQgz9DWNjlMi+hJ5c+8WEWhOt7n3J+C21
-	 yM2sQxBRdZIzu0JozK8N2jlcG8kHE7+yDz2S3H/ME+95NaHe4Ygaw/y7gS6fISgr2I
-	 xDbRa+vb//u1nFVzXI4Q+goD08fCNNdIoh9zL5IWUP5mIRBQ2aZ1y2S8Z1ucYleL3I
-	 9gi/hGiaE6KQyeTlx4Svc+ZrBs+olFub5pHk+Q2D95yDK2hSKyt4CmiwRNgND39t1d
-	 tkB4CUFoIilk6uo5VO+gscHioDKA6DxmgmWy3lw3b2irOPgMZfB/wzfJtG4V7lj5gg
-	 f5WrjDdsXi2tw==
-Date: Wed, 22 Jul 2026 10:56:13 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Jiale Yao <yaojiale02@163.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/page_idle: call folio_test_lru() after folio_get()
-Message-ID: <amCSiltZolhgtO3J@lucifer>
-References: <20260722092642.1123347-1-yaojiale02@163.com>
+	s=k20260515; t=1784714199;
+	bh=2UKinxtwpUhNzmCHSNfCxB0o/RysIEhOfeODCNlOPoo=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=iTTuEnUKQW7C4i55BdkYOSG2Awg+qdtvweW4/rglmXgra31Eu+PM6mPv/cht4UWFk
+	 fLrjFvUrnn1wqgTk6wnnrN93sXSi3+UffEfcG3KILa8CLmML82j0oCAM/KHWuDt1bl
+	 sYpXlT+DrNmidRHMyJDMpwaFQyr+DkigbsumgMPOAv+WQ26Fqe5qBmPMtzV7ihzoIJ
+	 uXznuCuGQxaKAbAmgZFgLhYEUIMK3a7sMSzPALT0Sm74HXS0RvxY6QmJ92ju59MN17
+	 unSXjen5rxZCe+xajZDk4GmGgueRR1Js5Wcer9bDa0Fl1luJCxMNLfTAa0O/2+yako
+	 LSAUkAc4Vlg6w==
+Content-Type: multipart/mixed; boundary="===============2757309040262801300=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260722092642.1123347-1-yaojiale02@163.com>
+Message-Id: <1358b841fb4669aa04fcb84247b91c74dfc8f4749f665f5c2a058d6c2bb17640@mail.kernel.org>
+In-Reply-To: <20260721174833.1232771-2-ziyang.meme@gmail.com>
+References: <20260721174833.1232771-2-ziyang.meme@gmail.com>
+Subject: Re: [PATCH v2 1/4] selftests: add shared lib.bpf.mk to build BPF progs and skeletons
+From: bot+bpf-ci@kernel.org
+To: ziyang.meme@gmail.com,shuah@kernel.org,tj@kernel.org,hannes@cmpxchg.org,mkoutny@suse.com,jikos@kernel.org,bentiss@kernel.org,void@manifault.com,eddyz87@gmail.com
+Cc: arighi@nvidia.com,changwoo@igalia.com,mhocko@kernel.org,roman.gushchin@linux.dev,shakeel.butt@linux.dev,muchun.song@linux.dev,akpm@linux-foundation.org,inwardvessel@gmail.com,mykolal@meta.com,nathan@kernel.org,linux-kselftest@vger.kernel.org,cgroups@vger.kernel.org,linux-input@vger.kernel.org,sched-ext@lists.linux.dev,linux-mm@kvack.org,kernel-team@meta.com,bpf@vger.kernel.org,llvm@lists.linux.dev,linux-kernel@vger.kernel.org,ziyang.meme@gmail.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Wed, 22 Jul 2026 09:56:37 +0000 (UTC)
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: D58A214000B
-X-Stat-Signature: oqyt63grdk7u3q78txcaqery3fxh5653
-X-HE-Tag: 1784714190-713277
-X-HE-Meta: U2FsdGVkX19KDWpj9NgxzfzgoCEHgozo0mEad7R7Spo8okca9Wsw+rhlLjuCCcx1YPHfwLy98282Iqasilj13fiAnkrBSGY7XjJSWPlokxY3DYjcUWTRMV+wuaTk41Fu3B7TNRXsP4/qRF7PhRJLimWTAsr0+5jrA/N6+Dd9xsJ9R1P1KhfmElvEh7OzW3TFOF755F1s3RCtXL69lK6vPEnWdGgJky9URpql9vonRo9xeNZbYrSthoqktonk+rZfldVBza/bCVc7GNA0XVycPcAy6fWftorcP6MHZpBuyfuJ9Tku5l92aV9WXmJLKm66DF6UYSbMo0EIULoXzbLsBCoWtYkKYuUCWfmb3O3rK99raloeKUgDKnd4ACk8VEvaqHsDB3ybEKgiGOAiW9m1YSdVR/2f+QjGx4ISiNRw6S/3adM80VBxzq3J4BjIlUBNPYpDQwOJySGs77Lp3bYFZWLW36AQZ6q5y2XeoB6cJseVSivC3YfQEv+dkxETFwwEfe1puqROr7bRBMHrAHBRhdE1wyIrY8AX293OrMga59QpHu9ibD/I3shw631UhgRT35vDnU6pD4jeqpNYbGl7yr5HvBTaspNh8g6YhjAALuo5dH83cLujY1QANWhEkvH/juUo15uQs3zxEm72B11tCYgg8TkSf8BB43ESRStaDtIlvn3FH6Fg0PwNtQDMCg0CKB5BX7izOT01DwFHrR7ZDWHAP/2+Ss54U9SL9asxWkidHnyfUdRI9K4tzbD0jiQt+32VWMYdPBvFxsGLBacq8VqHVykls5Frbnk3GQRATvU6GC+ZCYhCiaT/oVCveDDCI2rCHc5DM3GIB5MSv8PESARTB5EoFbaoujxBbgeZgQsIG6Vh2x+FtuqZKbGxhxNNhxdjwujr2EEZTcQNrdtghUW1pSm+xVTZW2XwVAYCHQ7AhfV4rFb0LGwO8/lhqCcblNMq0zScY4C4mfHafih
- 2loxOx2N
- VVTlkemvGWt+iMnJ7a7CVgh1awXXQPxRFgyC9IBua9ZjsnP8BqzB27w9WdpoRFVBbfgGXHfEiBBi333DB9zosl4bIIJQCqBBG0b9zJs4i9iaHEM7/xjqkibPedn4lwkTlKOSRg48vBQlfQhUHnEhhg+jd/K/590O8z07X5YeGlwd5NVTKH1gVyP3xXdcCG9KvS89/GD6Pn/BAMyDFGAPJ7hGKhufvMaq9Txa9rgDjuYcYPm9fJNUu5vitkVRpLleLyNsy6FppE7fdkSomGcpPS4hycqqKzl68J+AZKZkJ7OvcKEWJwTzeRHELGRDQJDRzyZsUjcMRDuSYh6tmBeBSd+QW+A==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 9B2BE100002
+X-Stat-Signature: ka6n9orh3sw449kdnbx4jmwfc6aahi6g
+X-HE-Tag: 1784714200-155461
+X-HE-Meta: U2FsdGVkX1/EeVOeOyY6koGvs8LPKyp3cf8Eo/2ubK5RQDIEZplmM3uB3qLp/5KLPlZd4loEVw4VHKyPnOQZT811CHAoZ+MuRWbLRgknJ3GE8T7tkMnMIylhUX/MFCfs7ITbmIoB1LlKr4Pc0vQgnrZTl9N933MzS02nTdPqQE0sJxgsaWYpaB9J3XcShpIFuUiyOHxeduaW7w3asdb5WigKbKWFxOsoUdq1SUTHg+6y8s4cGeWaDm1jYWawt5RFpzam+HbAItELzcBO4MG2tKrtEKSvMLowxg0CuA9881kx3fQv8O1XV7U2V+R7FF8fV/AYgNwRhzeLP1OzdoILa8JvBGe4OgXe91YgvQcO/APdP3hTUNhOtRvXsPs88uv8ti9yLeBu1mXgp1ko5LMzhlK8uXAcAUN4PR62aK6j9zoyaAESrp19rzzIJKNetxLv/kK/eAbP0KJmPKLH+sjLksY1AC8rKMU8BtTFaXq0A383MUXn0IpOzFY59r5quSX4EnJBtVuu+IZ+mxEUbpBRdVmR+xOqbDHTH8wzqJ2uIrf4ydAtYbTE3PLLWqMNu3iQD6blfOZcdRlKOgNq6N78UbQw/uQY+Fg+sgxtYZSvg+oqHwHhFIeScOTsff4evE+BchPTV9ClKkIuvCUR7CwncyRdGdK1evDRXnWKZrJwvT82Fvv2VCli00jpi7+DGcktdds+dfdzfAXweQ1VY/VGSKrraz3yg1O0XW22y1Thh/qzC2YzZUnyZufptqBsv5OiCwTZ/5AFDTGf3sPxYaskrwSQ8ny5KAgWBJMMBwnQA0ExHk0vkARxH+DjhfgH4Qjzf7C7YtCEBvaRDOST41EvJnIHpi5+luCR/pp0eAA4+SqboyM5QNSZ2q52W++ZwCh4jEiGl8a2t4EUHpFbcUX5aH6PYjuORnWewircv7EhhmrhtF/gihwsMWRpFDdrmJ0d9snMufUf+NTbODr6bHV
+ VdarSK8P
+ r8NgDC2AC8012EifDDAow8FeISMqCVAcDwF+gjvnW9EL9JmC/FKDpQQbvuNG6xEzP/teRVUQfcg2vBMPED5h76A44PS8ZBwtbn4oy2KkTdmN9BLjsteREjB/Jrwh6lwYPM2wp9yaT5vu8cXGCIbl1klSe44MZm+x4xqXNRAB4RhCiKGN54cCm+CvR+GFfOhFJJE7hiR7AGF/RPSYPAwDhFnXGWRbrgSce3bmrnXKM8kpCAjSrHyg6iSnW5hkNHH8g3yjbXNLNMWkj5GxjDaTxACEFqmiKxlSwiaNrnGSrsq0mZTBjVIXs3elBsYkLaL9W0ajTeF3FdVMjw4IqVaHQi4PLs6o8iXA+VMZcoVH2GDAohCeziHInFrH3SG5mbYCPbuOaLhyPT6IPgaSiU6vUYuga5AzQyKUMo3Swx50uH89FmgF6JBDDXqa9mJWisyvOl9X/p5DzIMJPwM9aKF9XbXlBkTWhoMrL+PQFfqw+ANwUQEO25Up+xD7rtA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,70 +88,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 22, 2026 at 05:26:42PM +0800, Jiale Yao wrote:
-> page_idle_get_folio() speculatively calls folio_test_lru() before
-> folio_try_get(). The folio can get freed and reallocated to a tail page
-> in the meantime. In that case, VM_BUG_ON_PGFLAGS() in
-> const_folio_flags() can be triggered. Remove the speculative call.
->
-> Also mark the folio_test_lru() check right after folio_try_get() success
-> as no more unlikely.
+--===============2757309040262801300==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Slightly strange wording but not sure why you're doing that? It is
-generally unlikely a given folio will be !LRU right?
+> diff --git a/tools/testing/selftests/lib.bpf.mk b/tools/testing/selftests/lib.bpf.mk
+> new file mode 100644
+> index 000000000000..6f175c6568e9
+> --- /dev/null
+> +++ b/tools/testing/selftests/lib.bpf.mk
 
->
-> This is a sibling-path bug: damon_get_folio() was copied from this
-> function with the same flawed pattern. Commit d6b8b02a27b3
-> ("mm/damon/ops-common: call folio_test_lru() after folio_get()") fixed
-> damon_get_folio(), but page_idle_get_folio() was left unfixed. KCSAN
-> (strict mode) confirms the data race on the folio flags:
->
->   BUG: KCSAN: data-race in ... / percpu_counter_add_batch
->     page_idle_get_folio+0x7a/0x2d0
->     page_idle_bitmap_read+0xc9/0x220
->
-> Signed-off-by: Jiale Yao <yaojiale02@163.com>
+[ ... ]
 
-Yeah generally this seems obviously correct (TM), if we can't be sure a
-folio is kept around any other way to the extent we're doing
-folio_try_get() we should gate any actual interactions with the folio on
-succeeding the get first...!
+> +# ---- libbpf (target) ------------------------------------------------------
+> +# Pass ARCH/CROSS_COMPILE/CC through: lib.mk's CC is file-origin and is not
+> +# exported, so without this the libbpf sub-make would rebuild for the host under
+> +# a pure-LLVM cross build (make LLVM=1 ARCH=<arch>).  -fPIC keeps the static
+> +# libbpf linkable into position-independent (PIE) test binaries.
+> +$(BPFOBJ): $(wildcard $(BPFDIR)/*.[ch] $(BPFDIR)/Makefile) \
+> +	   $(APIDIR)/linux/bpf.h | $(BUILD_DIR)/libbpf
+> +	$(Q)$(MAKE) $(submake_extras) -C $(BPFDIR) OUTPUT=$(BUILD_DIR)/libbpf/ \
+> +		    ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) CC="$(CC)"     \
+> +		    EXTRA_CFLAGS='-g -O0 -fPIC'				      \
+> +		    DESTDIR=$(SCRATCH_DIR) prefix= all install_headers
 
-With the unlikely thing changed, LGTM so:
+This rule hardcodes EXTRA_CFLAGS='-g -O0 -fPIC' for the libbpf sub-make.
+tools/testing/selftests/bpf/Makefile instead passes
+EXTRA_CFLAGS='-g $(OPT_FLAGS) $(SAN_CFLAGS) $(EXTRA_CFLAGS)'.
 
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+With -O0 pinned here, is there a way for someone to build the selftests
+(including libbpf) with -O2, or with sanitizer flags?  Could this at least
+honor the EXTRA_CFLAGS or USERCFLAGS that lib.mk already defines?
 
-> ---
->  mm/page_idle.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/mm/page_idle.c b/mm/page_idle.c
-> index 9c67cbac2965..29ee18f0e8ce 100644
-> --- a/mm/page_idle.c
-> +++ b/mm/page_idle.c
-> @@ -40,9 +40,9 @@ static struct folio *page_idle_get_folio(unsigned long pfn)
->  		return NULL;
->
->  	folio = page_folio(page);
-> -	if (!folio_test_lru(folio) || !folio_try_get(folio))
+The same hardcoding shows up in the host libbpf and host bpftool rules
+below, so the same question applies to them:
 
-I guess this was meant as a racey check...
+> +# ---- libbpf (host) -- a distinct rule only when cross-compiling -----------
+> +ifneq ($(BPFOBJ),$(HOST_BPFOBJ))
+> +$(HOST_BPFOBJ): $(wildcard $(BPFDIR)/*.[ch] $(BPFDIR)/Makefile) \
+> +		| $(HOST_BUILD_DIR)/libbpf
+> +	$(Q)$(MAKE) $(submake_extras) -C $(BPFDIR) ARCH= CROSS_COMPILE=	      \
+> +		    OUTPUT=$(HOST_BUILD_DIR)/libbpf/ CC=$(HOSTCC) LD=$(HOSTLD) \
+> +		    EXTRA_CFLAGS='-g -O0'				      \
+> +		    DESTDIR=$(HOST_SCRATCH_DIR) prefix= all install_headers
+> +endif
+> +
+> +# ---- bpftool (host) -------------------------------------------------------
+> +$(DEFAULT_BPFTOOL): $(wildcard $(BPFTOOLDIR)/*.[ch] $(BPFTOOLDIR)/Makefile) \
+> +		    $(HOST_BPFOBJ) | $(HOST_BUILD_DIR)/bpftool
+> +	$(Q)$(MAKE) $(submake_extras) -C $(BPFTOOLDIR)		  \
+> +		    ARCH= CROSS_COMPILE= CC=$(HOSTCC) LD=$(HOSTLD) \
+> +		    EXTRA_CFLAGS='-g -O0'			  \
+> +		    OUTPUT=$(HOST_BUILD_DIR)/bpftool/		  \
+> +		    LIBBPF_OUTPUT=$(HOST_BUILD_DIR)/libbpf/	  \
+> +		    LIBBPF_DESTDIR=$(HOST_SCRATCH_DIR)/		  \
+> +		    prefix= DESTDIR=$(HOST_SCRATCH_DIR)/ install-bin
 
-> +	if (!folio_try_get(folio))
->  		return NULL;
-> -	if (unlikely(page_folio(page) != folio || !folio_test_lru(folio))) {
-> +	if (unlikely(page_folio(page) != folio) || !folio_test_lru(folio)) {
+[ ... ]
 
-As above, not sure why you're changing this? Seems unrelated, I'd just keep
-it as it was.
+On the commit message:
 
->  		folio_put(folio);
->  		folio = NULL;
->  	}
-> --
-> 2.34.1
->
+>     This saves much work for configuring selftests in other folder, such the cgroup.
 
-Cheers, Lorenzo
+This isn't a bug, but could this sentence be tightened?  "in other
+folder" and "such the cgroup" read a little awkwardly, and the preceding
+text already explains the deduplication rationale.  Perhaps something like
+"This eases adding BPF-based selftests in other directories, such as
+cgroup."
+
+
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/29908293077
+--===============2757309040262801300==--
 
