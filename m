@@ -4,93 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC8E4C44536
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 18:19:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 374C3C4453A
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 18:43:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1352E6B00AF; Wed, 22 Jul 2026 14:19:13 -0400 (EDT)
+	id 3AC6F6B0096; Wed, 22 Jul 2026 14:43:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E6D06B00B0; Wed, 22 Jul 2026 14:19:13 -0400 (EDT)
+	id 383C96B0098; Wed, 22 Jul 2026 14:43:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F40EE6B00B1; Wed, 22 Jul 2026 14:19:12 -0400 (EDT)
+	id 2C17D6B009B; Wed, 22 Jul 2026 14:43:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C6F786B00AF
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 14:19:12 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5A2F71C0452
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 18:19:12 +0000 (UTC)
-X-FDA: 85017224544.14.7E8710D
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 668E318000C
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 18:19:10 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=bolhfH6n;
-	spf=pass (imf06.hostedemail.com: domain of mark.rutland@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=mark.rutland@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by kanga.kvack.org (Postfix) with ESMTP id E90BA6B0096
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 14:43:11 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 65DF81C0020
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 18:43:11 +0000 (UTC)
+X-FDA: 85017284982.02.3161A0F
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 074F640009
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 18:43:08 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BsgpXMd+;
+	spf=pass (imf12.hostedemail.com: domain of jp.kobryn@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784744350;
+	s=arc-20220608; t=1784745789;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VsZKe67h58zD6TPYh/iONlX3wxFqEjCYjEE0t327lqs=;
-	b=kaZniuNF5/lEP74FE5qrA6n9WzseOQUq4lllYI+dNdPzBADcw6CGfPsBRCMyP90OiYfLK/
-	TuG6+YDoJFGM1VXDJDQEf/jaCHRtC5hHwro1WOihCxn1A7w+qifYGEz8+2R917BfZyt8r6
-	ojZ8sWYWrotkYsA5lxDHhd9rfibTbMY=
+	bh=jU7TNupb0pdhQBzs77sfqtrZ1+d4xoAeYWx+j3QiA1A=;
+	b=6TkOzfuDpy0pY/KeRklZsQARluafhGKwlsl+JHXNzAVYnehc2vpyGZOwAExCLSYwwzUSAY
+	ScqE9NRnatBxXnqd4IP1BE56/+Aa5l9LfqTss3Vnq4qXT62XntzE3Vc9bL2Zn6uO5SF+/b
+	3eNqwCcOOxJ+bV2ksOM0iXqGSxK0soo=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=bolhfH6n;
-	spf=pass (imf06.hostedemail.com: domain of mark.rutland@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=mark.rutland@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BsgpXMd+;
+	spf=pass (imf12.hostedemail.com: domain of jp.kobryn@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784744350;
-	b=5WL2nXyumqXKvDbA5AaE/F0SlwzUg1jA9ArCXCa8d00i9zb1PZ2AgYM5sPlvtEVcxAjGrG
-	xFLPxQjikeKHT1lpA54CZJUqfCUG7tWLBpsgDMqShrjJURiAjVRnAYmJS0Qv8OFstgS6gm
-	tFDprSZEqHSnguAme37XYQ3TzDZuoS8=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5FDE21595;
-	Wed, 22 Jul 2026 11:19:05 -0700 (PDT)
-Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9B5263F59E;
-	Wed, 22 Jul 2026 11:19:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784744349; bh=gexUY3MO1NYMIt5+4b+Z9AIUlrWUUcj9/Dzpwo5+F+A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bolhfH6nwRwlZ9Rt3oQdeQtyGNQNwRenYiTJbVSlKyM4HgMURSH7uIWdk9u24659s
-	 2k1ZgV/+heCaAiqMwoGsFmvLA+hXuMW6ELfIoI9wb6jJ4oFjYfiYROeaVy0CbVald8
-	 470GVt3Ty9QsOpWvz+uIJHVKDIrr1Y+DFPdxaTBY=
-Date: Wed, 22 Jul 2026 19:18:59 +0100
-From: Mark Rutland <mark.rutland@arm.com>
-To: Linus Walleij <linusw@kernel.org>, Jinjie Ruan <ruanjinjie@huawei.com>
-Cc: catalin.marinas@arm.com, will@kernel.org, kees@kernel.org,
-	oleg@redhat.com, luto@amacapital.net, wad@chromium.org,
-	thuth@redhat.com, peterz@infradead.org, ada.coupriediaz@arm.com,
-	kevin.brodsky@arm.com, yeoreum.yun@arm.com,
-	anshuman.khandual@arm.com, james.morse@arm.com, tglx@kernel.org,
-	broonie@kernel.org, pengcan@kylinos.cn, ryan.roberts@arm.com,
-	liqiang01@kylinos.cn, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v17 15/15] arm64: vdso: Expose sigreturn address on vdso
- to the kernel
-Message-ID: <amEJkyKFvVOkiGao@J2N7QTR9R3>
-References: <20260721081858.1169276-1-ruanjinjie@huawei.com>
- <20260721081858.1169276-16-ruanjinjie@huawei.com>
- <CAD++jL=Ou_HF5VchexnjUf9qwzrz0xgY+NhA5gZhOwiwdxUi-g@mail.gmail.com>
+	t=1784745789;
+	b=VDqAGspJKKdgLhMCwMAUxf1XNmS6lqXBe6RX57YOw9UhCk0dWEqnHDnZGx3spUQuPL8qUJ
+	4GCvx8CjRiy6XNNqdjcoMcJCCSmvngT8ZnB6a50SnfJ9ImQyLzUaUQhQU8Yk/RbL3G0GZu
+	BIT85foUNfOYXV5QmUWNJbi3B32Frng=
+Message-ID: <f83b6c93-b32e-434a-94b7-68628a2e8527@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784745786;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jU7TNupb0pdhQBzs77sfqtrZ1+d4xoAeYWx+j3QiA1A=;
+	b=BsgpXMd+bM/LhQJ2Rz7ftetxHEMGudfLcMl4EwXOOefgsqqUA+QfxR2ssFJp4BuLLOtnV8
+	wr0DW6Ha7NOne5YliUKnWr4ctzX7Wb4TOO9wzA1gl/rTqa474oUAM576CKQ0vhO6rpIyJr
+	lWH6SLT6mICi3YJyQVJ+jlD9UymTRoA=
+Date: Wed, 22 Jul 2026 11:42:58 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAD++jL=Ou_HF5VchexnjUf9qwzrz0xgY+NhA5gZhOwiwdxUi-g@mail.gmail.com>
+Subject: Re: [PATCH v2 2/4] selftests/cgroup: add memcg_stat_cross_cpu
+ correctness test for flush
+To: Ziyang Men <ziyang.meme@gmail.com>, Shuah Khan <shuah@kernel.org>,
+ Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
+ =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
+ Jiri Kosina <jikos@kernel.org>, Benjamin Tissoires <bentiss@kernel.org>,
+ David Vernet <void@manifault.com>, Eduard Zingerman <eddyz87@gmail.com>
+Cc: Andrea Righi <arighi@nvidia.com>, Changwoo Min <changwoo@igalia.com>,
+ Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, Mykola Lysenko
+ <mykolal@meta.com>, Nathan Chancellor <nathan@kernel.org>,
+ linux-kselftest@vger.kernel.org, cgroups@vger.kernel.org,
+ linux-input@vger.kernel.org, sched-ext@lists.linux.dev, linux-mm@kvack.org,
+ kernel-team@meta.com, bpf@vger.kernel.org, llvm@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+References: <20260721174833.1232771-1-ziyang.meme@gmail.com>
+ <20260721174833.1232771-3-ziyang.meme@gmail.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: JP Kobryn <jp.kobryn@linux.dev>
+In-Reply-To: <20260721174833.1232771-3-ziyang.meme@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 074F640009
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 668E318000C
-X-Rspamd-Server: rspam01
-X-Stat-Signature: wrbxjfi6k6dtmajz3tqmsizfe3tnxfsj
-X-HE-Tag: 1784744350-792940
-X-HE-Meta: U2FsdGVkX1/M4TPUdvwzR+Wk5lmf7/1X2q62hf29LNGaZ5ck1KKjuFnszEYIb4Anhu65hDcAIe1MO3MDsf4wU8cI0t8v56XPLcCdbAYyk+aCcUK2X9nVKpQCNWkl1nm9cKovE3434y6c26hxm8uRXqFuFuy9jY56c1ubz1WDwPLM65EYh3SEIwxyvklrCTBlS6Qm29Ii4D/jpEU2kMwafPBLWT6Ay0hhIagKqBUljMcyKRZu3MLQ/QRsn/STGBjctakpoYtavi277Gh5DXxklvdQ5DOlT9c/IgXntbwa8M5eaF1of0CgTHKnFqhEjuJQSsbyDubo5sUz0rTNe/AOf4SfbjB66PYgJYCXuJuSI/dYNmjwNt9ByYWD5fQJ25G9dzZTTC062yf04Ay/F7BbkK7cqomCBVX7nJiApT3XOhDEZKTskI54pn0vbtsVWicqNFJVRP/SLVJxt9kMxbc6oBUwj2zJNeSTVifGIvkFWpzHqtYdo7TFiBA4waQZfrynW8SOe/RuNHYmc9b0+nA5gAPlG3gbKoqvT+jauegPLZHTvzi+uz481cJSyE4B0WQJozulwO/H+1ronn1HcVxhTavk67E6Py1yfVPJQVQGXZp8forHTuaqu095KTGPtvSA2cKtMY0A55pxVKk1sMcnkOJXz5nG/4a4r5UKLKGtCrOLBrsu882SEDSxiiZrY+aPG9N2OZHYNvtpdoE1HA2Hlc7Jz9XK2qZo+LOsYYYhNETz03vfIiytKQuXCttMZsna/QH1gf/CPHcTDCfJGnFbHnU+/XodCNPim2CDZqMmMI9E76Pv7m6MXHu3S5Fy7ywM/fWmDLe58D4XeKQxBPKVv8pAVQjJh3jN53xVE5e5NQCIEJB2dDM8/3Deqi4Mc3QYyArvlwUMkPa1ZupYrz8O/lNPeLl33Op8jTPCIX4Q7HDkVTrvDh8UTCqdXjiE8hndHJTkMMaSLjyB4jpMuBu
- 61RSgLtE
- E5I5PIqWVHknq0aCW5a2+vQwhQB7NU6Qwf/zmxzHKZM7LnWv1vacVp2tuXwMq26CJ9LlUNgvgRhE+3ZgQw1PMr27Rdx3e1kbVgw83hUPH7XP0jXzuYwWonGul8yrDrhr4Ki754HlyY3CskbXCM/OJmlqJJ0BbmmVNBxTEXaJ49dQLuM91vRqkbo2Fks6Bkb+bBtvZeXZ5NfBolzNggkL1K6hXkqeMxrc/YDlZY8+6SaCiwG5UWKr7Y7aDCAhm9gM2ZhVAh/hFZIpVmHAy1Moazf6HbQt/FpVQHeeGXUEwZG6yKTL/Yc/nW/LjIJHUq1MR8HXmpUIVLwtmXnmqoQ87MDRWZpW14dTMJvp0g8ghZ99rIrc=
+X-Stat-Signature: mnuxigbdo1pqhckzopp53cdf5nasso1s
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1784745788-322208
+X-HE-Meta: U2FsdGVkX198jb1IjAWHaDmEHLPao5T9xkDnuo71vzHRRfr+8KxAp+E0eEgZ8lUHldt2/qHjNN8C1DISAqW794Y0cvFI9ZObKBDFYPpge8hjrL9VHt0vV+Qb3aFdg3K3wxvLgDr57swEbBVzbJdMKApHRX3dW+iTAgMmadr2HZv9Y77/bYoXpGuGpdFSlsF/GCmNVzSpN9Sunp2YlK1jjgMhDbgaQd2pGI+WcXtIHmljsUOhbQfLJW852hlHFMJhk9W2ORF3AjyEDWQz/XjfSEQ1WVgHkN4kt+1nyit0a+WMxOQWg8QXv1DmQ1wDgj9sufkHerFlZpQ2dkL3BVxQrZVjphgInZCCZLnaUFfwsEiFhBCr3LrQA3Ps80AI4bDA0ks+L8gwkIeoo+PjxHgp3MfZt+93JlZG4w+d/xT1T6ZIY4KP3k/Tjbulbu1ygRHzhymmXn9hioZv0W4T2cn+ULd3RT0mRG/ludGOE3Guw+P08kUYOPZPpR8kLiuUK2wRbB+S/amckPXJg6LOtgxEBFTN3JslTpjJRWGwD/LFW+3x7/fHYxRn3TYPpTM0eOebmLCF8IHw9YtT9F5K9ggEqXpDyKqXxvv57FmAb/a14y/pURyA3GGahSxEuUT0MMf8+IKuO2dm3vCfCs3lFkC1sHlnQi5JAj6iTCaoSUwjBC8+x94ZpNpok6gqorNV1xnpgpnnJ5cbmv+U6TdTaZrJf8GkZtxVnVdIaWZ2kVbh5CAbBsYLi+79DywaqUcOnOsqDi0ioxmWHwdLo+ihwP8kUvNZLZRmwwNxI7KQIAJFZPhU8sGsZ5NQNlbv6phOGncS1lY6dIXYanxRLEyE4xOSgwLdh9NA5gnxL6KojtSCFOT8snjyYqxIxu+w3vhA3wi40+4D3PloxQLD1MMRNx1JgSwEy7XylwLYYh51RunGNJiiH2jpSKjVpOirBhTYKobBm+oN1eTdLwE2syp5fDA
+ uIUDpZOD
+ eXfITp8B56/ze09qFozOkBACmDQDYso6ZkSbnu+PqYb3TI3VmOFgnK642fnlW3DWwAJWxYp/hNJku73R/paGDRZXvmR0/1y00TbY25FYMRjn1Qy2sCecEFTvckZO7MTOdCChH5CnHCSyTmYZgU/XWJmYfidagnVBjGHLnaoaAem8gwxyo4GZIYunErn8eOSt/0A10QYunkqttdx4/aAbS2ACwbgShTn5y5VmN/G/KLaBo8qcufsDPouZdF5bJ0K6d4dgGhS59xdcSdkla5qi0MSBORkTd0V/YYbG+EDWSkWy8/sLIwQKnhQ/xEQiYjDuPTa7mxoglEE6N1WM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,49 +102,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 21, 2026 at 10:55:03AM +0200, Linus Walleij wrote:
-> On Tue, Jul 21, 2026 at 10:19 AM Jinjie Ruan <ruanjinjie@huawei.com> wrote:
-> 
-> > Syscall User Dispatch (SUD) must not intercept the signal trampoline
-> > code, otherwise returning from a signal with a locked selector may
-> > cause infinite recursion into the signal handler.
-> >
-> > Provide an arm64 implementation of arch_syscall_is_vdso_sigreturn()
-> > to exclude these sigreturn syscalls from dispatch.
-> >
-> > For native 64-bit tasks, check whether the current PC matches the 'svc #0'
-> > instruction inside the vDSO sigreturn trampoline (defined in
-> > arch/arm64/kernel/vdso/sigreturn.S as below).
-> >
-> >         SYM_CODE_START(__kernel_rt_sigreturn)
-> >                 mov     x8, #__NR_rt_sigreturn
-> >                 svc     #0
-> >         SYM_CODE_END(__kernel_rt_sigreturn)
-> >
-> > For COMPAT tasks, verify that the instruction falls within the dedicated
-> > 'sigpage' range, since compat signal handlers use this architecture-
-> > specific page (not the vDSO) for their return trampoline. This prevents
-> > SUD from incorrectly dispatching syscalls issued during signal return.
-> >
-> > Suggested-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-> > Suggested-by: Kevin Brodsky <kevin.brodsky@arm.com>
-> > Suggested-by: kemal <kmal@cock.li>
-> > Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-> 
-> I'm a bit scared about SUD.
-> 
-> Certainly we can merge patches 1-14 first and iron out
-> any trouble related to that and split this off so a separate
-> series to be applied lated?
-
-I had already asked Jinie to drop SUD back in v14, and he had agreed:
-
-  https://lore.kernel.org/lkml/akegeU59jSK9t7FX@J2N7QTR9R3/
-  https://lore.kernel.org/lkml/3ac6d4be-7c57-44c2-80a0-408e2c6f8136@huawei.com/
-
-Jinjie, please drop this for now, as we had _already_ agreed.
-
-I will look over the rest of the series soon.
-
-Mark.
+On 7/21/26 10:48 AM, Ziyang Men wrote:
+> Add a test_progs selftest that verifies the memory-cgroup BPF kfuncs
+> return values that agree with what userspace reads from cgroupfs, across
+> a whole cgroup subtree that has been charged on many CPUs.
+>
+> It complements the existing cgroup_iter_memcg test.  cgroup_iter_memcg
+> calls the memcg kfuncs on a single cgroup (BPF_CGROUP_ITER_SELF_ONLY) and
+> only asserts each value is greater than zero, so it never checks that a
+> value is actually correct.  This test compares the kfunc values against
+> what userspace reads from memory.stat, and checks every node in the
+> cgroup tree.
+>
+Can you extend the existing test instead of adding a new one?
 
