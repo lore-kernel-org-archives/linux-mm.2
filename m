@@ -4,101 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D35DC44536
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 21:45:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9CA3C44536
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 21:45:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 59F906B00B4; Wed, 22 Jul 2026 17:44:58 -0400 (EDT)
+	id 43F916B00B6; Wed, 22 Jul 2026 17:44:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 54F916B00B6; Wed, 22 Jul 2026 17:44:58 -0400 (EDT)
+	id 3F0806B00B8; Wed, 22 Jul 2026 17:44:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 418126B00B7; Wed, 22 Jul 2026 17:44:58 -0400 (EDT)
+	id 2B8196B00B9; Wed, 22 Jul 2026 17:44:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A56F76B00B4
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 17:44:57 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9BADE1A030E
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E8CB36B00B6
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 17:44:58 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 44545A0E19
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 21:44:58 +0000 (UTC)
+X-FDA: 85017743076.22.9FEF954
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 4957D8000C
 	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 21:44:56 +0000 (UTC)
-X-FDA: 85017742992.27.7676019
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 9F08940002
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 21:44:54 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=h0wo0fuy;
-	spf=pass (imf01.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com;
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=NBTbHNCH;
+	spf=pass (imf02.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784756696;
+	b=q+xfo41SKKHU7SarSYu0nj2rHkyIJsUv6aYYiQ1gG0an/Er0bGZf8+xGjAiKTqQrOfxAjd
+	eK9KaR2OEyqSVvdYrvCWXmikf6S0qDh5g3ft6De2otmWs7/vvIU80GIdHixvaNqgHN85tI
+	EljaAEkS2QNfhxrHoOylgNE/0zeUcwo=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=NBTbHNCH;
+	spf=pass (imf02.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784756694;
+	s=arc-20220608; t=1784756696;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3slUHnl834IP76VoxdiRinKrcbFYlUZTVsrXFJZ4JdY=;
-	b=rGZrnLvkOiksjn8Ee6xARBHltc6g/zKca/ZYVZ70RqzLD4CcwMThZAIe8QE2pcbBA0UJph
-	VSHPlrnSWzQ5FjF6wVbR+eNzTdOoXmvxNle6FIs7HVxRJ5y6ucob9V8HEGcFE1onKoXqLc
-	XrQxM9VwyWoXrfmNIKQHQMgUP59jxhg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784756694;
-	b=CtAB+F7M3PHs9wSWONTVVNX5XWQwBMUPquPPVS88wWANZuQDxkexk4N2kQoEtNmGR2Xw9T
-	xTuU0rMPs9rGYxdAPotB1tK8Ac3i05KhSKECDavjr1F4N8KQMiVtV+ycybB44utxJciB4q
-	drv9QjtWe7hxgPsbkrd+Ni6/tCAJs9E=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=h0wo0fuy;
-	spf=pass (imf01.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-84862b0d5aeso14253755b3a.2
-        for <linux-mm@kvack.org>; Wed, 22 Jul 2026 14:44:54 -0700 (PDT)
+	bh=WVIK4CTS2ebWqFuX16f+6TzH9lK4l3CZHr+WHLsMqrs=;
+	b=Lb58aljPX/N5AE6gx77JwIjGY/eb6L7gzOCSJZ0UcxxFe1k/z7vyCLWVJbvpf5yDUeCX1p
+	/iQeoIlc46C2sj2ad4AafTGtA3MBS4Slm+MPojt2r4P1WUj5/GIVB1PC2D+2pI7PSb4yzw
+	3rzyOUJVIYOMode0Qr1YDgu7Uz0iGPI=
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-84874b52eabso12804479b3a.0
+        for <linux-mm@kvack.org>; Wed, 22 Jul 2026 14:44:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784756693; x=1785361493; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1784756695; x=1785361495; darn=kvack.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=3slUHnl834IP76VoxdiRinKrcbFYlUZTVsrXFJZ4JdY=;
-        b=h0wo0fuyfpD1I3dLG6Que5+AyNxdGP8rRR16XMaOV8k57umMXwzU8rlDKlP187ZvNJ
-         0fbiOlvht3VQ6XR9FPeloUUd0EyAHVhXpRZV1P6tBshK+aHuX7kCJSkkGIJ8M7cOjRkh
-         YIaCc0WhMKrh+nJpsec9n1espaJ+7BB7xMN9Zxqd1zt5S9Pi3yxJgWcLVkt+QKYmENZS
-         TbQnajh+LXlnoGMoYGh+csHwodpXe+NgyBv0hgqP89ZeI0NaJQx7hPwb8fUYd9E33Pc4
-         pAAMW/Bk13VnJEPGrFpyyrPflsEnRmCvY8qvCorrHiKsBA4ouU2bBRmtPS6XsEQUFqQ5
-         VX0w==
+        bh=WVIK4CTS2ebWqFuX16f+6TzH9lK4l3CZHr+WHLsMqrs=;
+        b=NBTbHNCHzsASdA0D9TCHlKoLQta5Mk6CJOwdwKlSTzSZLGcHBt0XhhWrdrZTSBmrGX
+         EUK4N1cO2/qrSkbMcT+WDZqQEw7ApdzI5inidlOv4cbSQBBqzeFJrXeUUh9x5P1hXUzd
+         QJ4PReTcJC6fvXWDNOYQ/Q/v3BkCuXXBwTogHUw6hlS5Bncz/ImU3v4FFyIAKrEgWwmW
+         22J+Nr2INcISjP2P522igrTMjAn9eoXwqG45al0dE0jjpi4x1FXwAIyMZZI/M3wFTKbP
+         uruBZVXF/zeI9zzud/eUNcEtMlo7wKyNzoLi1dUSJIagqYbLPhMcNnfjvSxOe/fHX3VL
+         kQhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784756693; x=1785361493;
+        d=1e100.net; s=20251104; t=1784756695; x=1785361495;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=3slUHnl834IP76VoxdiRinKrcbFYlUZTVsrXFJZ4JdY=;
-        b=VYHLbNQO9XsS2M/7QqM4FSpYb/qCOEE5iL1onRKoOnpnm/a2twIVMXNhtWXnIeGFsV
-         Mir97WpWbce3r6nf1Rg3SfCre6LsUS/V8s3wKdOzdQfQX7g+dahdVUpy0UWOafm2TvG+
-         YnU6mfnY1+LvL3MemBVr6MfLAYqGZjtEhOOvuXzIJZkBWE7ZDaeawDxtoQ78hxlPmh+Z
-         v+jF0lA5T9F3QKXDSQPeskElw6/vxoGHuK26+GxJO0an1qsSPhi88+D2dFfb3kpEKvsU
-         ezaAOk2kKkGMxH2mNInFKLt4jh4HnFlEMn2Rn5EcZeZGULYVSE0U1wtK+F6yQ3GHjAMj
-         /qyw==
-X-Gm-Message-State: AOJu0Yyw/5sJ9YHZWXvo3irHDP14g6B17gNagMwD0Ej1gZTz+D6VY6CR
-	3zrc+qoIk0gAyArITY6ZBBPZSZjhlt1RqaqdbCPRBiASUPZUm4LmCl41
-X-Gm-Gg: AR+sD10oZvENua1L4OKYE20Dl3sEAwAsQlCHU7mAAX558TslN+O9cteDD6sCpOsBauc
-	ztO2W4lOtHKEbYRTCqwCPbQF4kXOKjPShu0bktvtwrdBeQZxd7m4ThebSBCFoLszdgGWDJZQZqZ
-	oFR01RrB8kLc5fDLi0T2/saaOwvny08ZzutjogB0XWFd3dHuKg0Aiw1tcUmF+Gna5XyidPr5t1o
-	2EyDGgOqbTVY5Lvu82DiNZbmpAupXMd8fki4NSMG+qmcye5WcBQ6axN0LaqbCOOLLGoKCXheqFy
-	2UMMWvdbFyEtKBrAYJiOFLOUtlH4w95csyk3TYvtTGDT83lj8KER+bO0Ydw05BljjQ49gVJAVvB
-	nhpkns2c4MuFuFw05e5W2/2PgubaVoqbArCBOGKvhqG/LLCfmvuArjxEiv/2y9M7kvpiKpbPsWo
-	wDf8iAAc28XiRsewHk2Jcfgje15nknlQaqALLvIcGp5jE7GyQZ
-X-Received: by 2002:a05:6a00:4fd3:b0:848:3fe2:c88b with SMTP id d2e1a72fcca58-84e2b7f59camr674000b3a.6.1784756693352;
-        Wed, 22 Jul 2026 14:44:53 -0700 (PDT)
+        bh=WVIK4CTS2ebWqFuX16f+6TzH9lK4l3CZHr+WHLsMqrs=;
+        b=No41sXDUAnHOFXrkrpyPPUORKE/tYS6dyzOO7CV2VQvlDKGylds8LgvTDSL3wz2YPM
+         S06Pa+5aWKQYMoiG7eKx8QvRraMAJGGk0JPSzcf/dcdC5Zswy6yYXP617SMVq1Yli2O4
+         dSbLM6HakfF1P52G6PlXgVH169T7FwchTB1r5pi/hPS0R92gjjph6vFn5yeUUPFpZkvY
+         wii8nnoBa33xyCCVIyKbiF/mQvInut5pGzC9nA6ZphFYg9nJSSK/ATjAxb6VuFpH5peD
+         OKkwloG1X6lAqrFx21aRsWCCtpOEKszixCQ0ML7IuL4KuQTwIUcNlLeaKgcBiPdr/zKB
+         3yTQ==
+X-Gm-Message-State: AOJu0Yw0DHqYRcu1qvcphYjlOODs38fmbnQ6aynFzpcwVkXwSfHW4rde
+	Jmslo+2uG02b27jzduPFZvrFXSCzQsTfYWH22ZqALWEGHL4uIcs/J42X
+X-Gm-Gg: AR+sD12DKPoF4fNQbzqNNlS75WexUubqKd/05BSnBzbDNXlQbslgkP8hoa/AuZnnjSB
+	sD1yPHN81Ulqx2WQBqe7+30G/R38y5Kslno4Mzju4Uiwr64wNYv5wRcarQQOKR71L170vgkIto+
+	+8zk0sOswgpfb32zrKmqLMyLfpNW/JyhZwpZcJvtI1OooxkNPE4R520mWnbtuzCkvlUnXfAnwI3
+	SvBWoywsS1rEaOd4ukaLeJAAR1S4h68LJVTrlpBGGBC0r3yJBakiDsHsO7M1NZQKxqFUE0zvUfE
+	wXBY7BeG9Ym4FR+zwbLXVNWoY3oo3NvgA46KCOcaL90GLYdsnliKhcQceTG4v8j+TVBi3OAB7KT
+	otXDr3+bwOPmsgDsAtj6N3/+0eq1wE/0DAyvHIgW+EPyKLOalzE7MMPI09bvq91C5DbDS+OHyJQ
+	110c4sdIElbIBgEfyK6AS3/5Qm/z9IqieDKB/ZUdQaV4Jup2sM
+X-Received: by 2002:a05:6a00:852:b0:848:46ea:bbe7 with SMTP id d2e1a72fcca58-84e2bc6b5d6mr673956b3a.19.1784756695183;
+        Wed, 22 Jul 2026 14:44:55 -0700 (PDT)
 Received: from [192.168.0.160] (c-98-225-44-182.hsd1.wa.comcast.net. [98.225.44.182])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e17237c3fsm1946297b3a.9.2026.07.22.14.44.51
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e17237c3fsm1946297b3a.9.2026.07.22.14.44.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Jul 2026 14:44:52 -0700 (PDT)
+        Wed, 22 Jul 2026 14:44:54 -0700 (PDT)
 From: Stanislav Kinsburskii <skinsburskii@gmail.com>
-Date: Wed, 22 Jul 2026 14:44:26 -0700
-Subject: [PATCH v10 4/8] mshv: Use hmm_range_fault_unlocked_timeout() for
- region faults
+Date: Wed, 22 Jul 2026 14:44:27 -0700
+Subject: [PATCH v10 5/8] drm/nouveau: Use
+ hmm_range_fault_unlocked_timeout() for SVM faults
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260722-hmm-v10-v1-4-606464dd601a@gmail.com>
+Message-Id: <20260722-hmm-v10-v1-5-606464dd601a@gmail.com>
 References: <20260722-hmm-v10-v1-0-606464dd601a@gmail.com>
 In-Reply-To: <20260722-hmm-v10-v1-0-606464dd601a@gmail.com>
 To: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
@@ -123,21 +123,21 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  nouveau@lists.freedesktop.org, linux-rdma@vger.kernel.org, 
  Jason Gunthorpe <jgg@ziepe.ca>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784756683; l=3646;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784756683; l=2163;
  i=skinsburskii@gmail.com; s=20260722; h=from:subject:message-id;
- bh=ZyAhBAfWZePcXjSsL7QqvsrSYU5bhX/lu/bgMYHTJjg=;
- b=tdDpNRsCNvmVGCNOZZ9HC3yxGmAH4ax4m27NmzACrsQovmkbRz97eJ93jI+rhX+xJ0J5zVBrq
- FSNwxKzSGzhDXRe3C8R+8iVP4estzVdVfYmBtDp3huLkA3AiN268Vyv
+ bh=KaVy0LDD2WZ56zIlG4jDVljfxrz2j27JL0AnOSACkpk=;
+ b=uKgRFxKY7gMhEFoK0hHnwQl6N8UsouNcazo70jIAxend3BGPO0koGFjjGoE03g3KTWZd66DI6
+ 5tAsc5/qbDAAjPQ/pjqrtB3km5I7U9rctkdARaqcdzu58Lj+SzHd5bT
 X-Developer-Key: i=skinsburskii@gmail.com; a=ed25519;
  pk=bDpriHBYgeTdkIDweZDCemxsU93neJBOCn3YLIuJpnE=
-X-Rspamd-Queue-Id: 9F08940002
-X-Stat-Signature: h3kpd4jagqaw3f8grpjd9y7cuz94u5x4
+X-Stat-Signature: aqsh9tr87kbgg33ozs7oitsqbymq68dd
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 4957D8000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1784756694-752737
-X-HE-Meta: U2FsdGVkX19yh8EBSdNYuva7vAXlEm+TMLTTWcUQG9kJMQkDmvJxeh3dfUiqyiRxEVK7IKnLsRYly3+nKdJqeVVJD9/p65twywbMlWww/kbwypcgD47W0zpeyfvfLJucECeYR/IdlXcHHajVd4L1hiHL9S5Rjh5khOs57CKEpNWZxmnkZTZ/6uGslEmoz/tl99i3aJPXTuS6V8j+slfPv9ri5nh2qu+CdwFF71tn6Teh6tvtPbWfTbuv3ZdksO9RC3TRdjL2ZlzGIDNyQ4LvZKAJhA/Ms+tWI/XaJlEVPbFbgfoXeq+4UL9SvVYslwJ3udHout6JMIEu3puWOIcng9HRVeGc/qBkto9eNwNfI5y0XaqZg/Nd/CwciLCfajLMz9sdKC5MEdfniQ7uAir6tr9mWfsbQIw1CLaJKcF4a5VUA1xmx87f5QkMDMZlPxClyLzI4MqWC2R5USTcvB498dQBnUWF0OjROA/KtOJYYM/devdN4eB7ZRduvY7z9TSZK3NPVDwqYnLnbqb17c69ghZpNI3gt/W5L8AijPFPo0Wqcl3IuG9YhUsUqkBbgrAA6Ln1othEB1tnR1xkCyLYdkHKPLcmaDx1svrK6TwrVpuqb4HvQFuSX4XqrxpFi9LGxAZYiye0AO40fg4vkEH1bg9B3l4SPuBZBRz1OqzcNib5FEYqV4mRv6vhBgFGsN0twQYBa5KCJA25OPZ9tEpuiIUkVcK9lcIk/KuH4MkIOxxYH23pwAOsN+sx6Yjm8etDobBl2odLf6elctRkBU19VJFNMeoWGxyrvUbO+AxiO0Bw+UvAVqq+9SlEaOyMZ5ItjgOedl5aw3mY06GTiqDhFzirIcVj7rO8vWZhRVLsPLyNnAB0UIn42aJXU99S9ww9rWRBAYCD1xHI6ldfWkhQSPxUo3c5B6JWO4qsCbbBF7xsSdxB7v4uXTddm3hWGPtDAd4r8pTbwb/3E77LdU6
- 9xEJlBqB
- HO3NxRvuhg52VK5b0U0k3xG+KmbqZB0Xm7aW6gqGvWq96a8xHjng8CFqgTo0V7azv9p0bedOAHgpNQ+RSAuAN4R34mAleOcmQD3QxvueR++5++TneLCNn9weJSZReGAMC9hqGbOAOvZ1Qw5itYRt5m6j9s9qZWTeIRzr4+THfoEhSPE6D8MQkUg8S+SgvReQ/DU9g/MYOmF66huTp4YZkTLg4pk9wY+OvLq2qDUyzY9mGaVnJjJNv0AgVJUO/hmiZDDNXnxHMwR/6jvEh3z25ZgNtssvADuztkQKp0/SYz2gP3jEZIAy5C4UaR1ruSWzJZBXeyltJoxmLgeh2gH8scGYzfck96JvuIAetIcqkC6VxbnVc2NjPMc4p4B2jiu5cENE7xSKG6mpXoet0W5jo+ag6zBIH6j+/gSH1mOGul6KliBrEq2hAoQOd252DeEOpVc1fY12lBOrumV+6Gj9IznB+X5nJohzpNT71Elri/PPCpoocM43HKwyBZ+h8Cm1f5VzejSS8dgCs8V/LC5pOBtsUIY0Gdaqb93GjQOFrEQ4HAH5nGKa7xia+Y1CIW5MM7bTQuCP1b5JGN82if5rN6mm9Qyi7bj0rISkKm3afRugNBAk=
+X-HE-Tag: 1784756696-967836
+X-HE-Meta: U2FsdGVkX1/pu6XmFscb/xs2SkRLHQo/ydBH+sCCuXs+LWGpIZV0v3D0uGzTEivmK6R14k+V6lSMalxh6E00fHn6I9oClvcmx3FncvatyjpGnkBhWOPghlZYBa66aXcTppRwJ6LBJ+Rw7kiv7r6ET+yUX/yFjVESYkbfgZ4/lmBASGX3mcv7bwI0g8YpM0RpBQ9V70b3pWxi2OMlDudFkP2CXKUSzGqOzLo+A+KMPcQOVqv/KxVtXNX6Rdb/LEgy208H1H2QooDSpyB3l5wIt/Htb5R/ZCxADH6g76OlX9wQxehW5klhKHrPHh8XC/KzrqWJBJZ4i79IMdbOlCeUmR4wSquhGisTiBkhaHv7Nbt0/8ULs8zwQpslszKMx8dwzwnFtbmJyyXuBYPkm3/LW1iqWCMF8FhShdKgzZX5oDwCF2OLfGuOC4kzQodqIxIEMqGXvL89rfKyqHa9BXdmQEK6FUWFMwYIHpi0poFcjvIjY1bUZS51K04EPHz2xlQZkWR/09ZNaxKDTtKJKo9e2IofOeiMLIynV5pTxDEDWo3/FfEnvJ2mQS3qOln6kk/LrQmE+qGO20C90CUeabCK90ONCebnIR0RPEluKKUOsrNjb2gMDyjEzXtZ2rAIB07msbA8yGhkqoQn25nGe+PqyKQVgLg4Vw7ViPMMhHI0Xb8pX0WtPwFYRmCzijDiDQ0QwKybXuw9AELRfSIp5ZrV7AOIKFqxrQ6zDvxUPAOro6M9nJFp8mwu4xN3f3nJWhlEjootwOijrO9Il167gaXM9m7YaLBsZpGWPJRTPi3P8E/bOP1BFxY93SfCxUp6CLH6If+sgj8r8pdS/IU3Lx0cPkJ+gyvnDQVv9/DfGoM3IDJ62Ca3k3Vm/T02PkxknuO22Uup1cvAE9iXi3NJxQpNxZ/cjCxmlHXwC+4jiy4+AiycBuvYlA3B+kO7pVLc2rarNq3aMBngjsgibTa7RyS
+ Jf/0b9qu
+ H/W2E8LBX8vlF2IjjVobDzMCMlVo6fJ30qLuQaELUMmC2uQopcWmX6S2oGjQIzCQ54h5wZkiRg3Lt/1ShCFyxMaZHwh8wRhl4eHYi5S08kmSKV7ZxTnD9yBphdI5VlMUpPN/R86qDcTA8LAQTJXpZgHK6Ur80YVEKROrYpIkHasaHYj/lkIVbputMItE186++Uma3gzN3gMqLElvAHmFaUWL6ESFxuHP70fYj3NzOp9s99Bro5jZhOyOz5p4GYUsSdSA/Ycf357bXmfnsEtVRBg3IU4PV9gSquRohpAVELGuYBd7ivKYLrzk7kyj7Rd04UMV5tiY8m7hlM5bnncjOeInHJcMvbNotwCD+KWPGwfiGeuFJTcK5pn/+/CGZ3/V53nmQA1moXZO+xFcSVjBRMm08BGneqg4qWJMk1sXJ1c9gTq2hi8ib+NFgccrF5Zdc77lvZn+SFhgvdDiUsN3p6NNg1+HY1Y8N3JCHnwczVtKD3YIE+QAfgMuYqfDn2hUgZloXqif4BtWJpI0JfTjwp1EJFc+bKO3pQitUvLNn2Ms2lgwfDyqeC5kU2uUMojBycgZZnwJ6KAdkBEkb0G/Y7Y1JAh8+rTaPwzbe0SHwts8Fyj4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,103 +145,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-MSHV currently faults movable memory regions by taking mmap_read_lock()
-around hmm_range_fault(). That prevents the fault path from handling VMAs
-whose fault handlers need to drop mmap_lock, such as userfaultfd-backed
-mappings.
+nouveau_range_fault() takes mmap_read_lock() only to call
+hmm_range_fault(). It also keeps a single HMM_RANGE_DEFAULT_TIMEOUT
+deadline across both HMM -EBUSY retries and post-fault
+mmu_interval_read_retry() retries.
 
-Use hmm_range_fault_unlocked_timeout() instead. Passing a timeout of 0
-preserves MSHV's existing unbounded retry behavior while letting the HMM
-helper own mmap_lock acquisition and refresh range->notifier_seq internally
-before walking the range. After the fault succeeds, MSHV still takes
-mreg_mutex and checks mmu_interval_read_retry() before installing the pages
-into the region, so the existing invalidation synchronization is preserved.
+Use hmm_range_fault_unlocked_timeout() instead. The HMM helper now owns
+the mmap lock and refreshes range->notifier_seq for its internal retries.
+Nouveau keeps its existing absolute deadline in the outer loop and passes
+the remaining jiffies to the helper for each fault attempt, so retries
+caused by mmu_interval_read_retry() do not reset the overall retry budget.
 
-Fold the small fault-and-lock helper into mshv_region_range_fault(), since
-the remaining retry path is just the standard "fault, take the driver lock,
-check the interval notifier sequence" pattern.
+Nouveau still validates the interval notifier sequence while holding
+svmm->mutex before programming the GPU mapping.
 
 Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Stanislav Kinsburskii <skinsburskii@gmail.com>
 ---
- drivers/hv/mshv_regions.c | 54 +++++++++--------------------------------------
- 1 file changed, 10 insertions(+), 44 deletions(-)
+ drivers/gpu/drm/nouveau/nouveau_svm.c | 20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/hv/mshv_regions.c b/drivers/hv/mshv_regions.c
-index 6d65e5b42152..dddaade31b5d 100644
---- a/drivers/hv/mshv_regions.c
-+++ b/drivers/hv/mshv_regions.c
-@@ -381,46 +381,6 @@ int mshv_region_get(struct mshv_mem_region *region)
- 	return kref_get_unless_zero(&region->mreg_refcount);
- }
+diff --git a/drivers/gpu/drm/nouveau/nouveau_svm.c b/drivers/gpu/drm/nouveau/nouveau_svm.c
+index dcc92131488e..58735446d783 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_svm.c
++++ b/drivers/gpu/drm/nouveau/nouveau_svm.c
+@@ -678,20 +678,22 @@ static int nouveau_range_fault(struct nouveau_svmm *svmm,
+ 	range.end = notifier->notifier.interval_tree.last + 1;
  
--/**
-- * mshv_region_hmm_fault_and_lock - Handle HMM faults and lock the memory region
-- * @region: Pointer to the memory region structure
-- * @range: Pointer to the HMM range structure
-- *
-- * This function performs the following steps:
-- * 1. Reads the notifier sequence for the HMM range.
-- * 2. Acquires a read lock on the memory map.
-- * 3. Handles HMM faults for the specified range.
-- * 4. Releases the read lock on the memory map.
-- * 5. If successful, locks the memory region mutex.
-- * 6. Verifies if the notifier sequence has changed during the operation.
-- *    If it has, releases the mutex and returns -EBUSY to match with
-- *    hmm_range_fault() return code for repeating.
-- *
-- * Return: 0 on success, a negative error code otherwise.
-- */
--static int mshv_region_hmm_fault_and_lock(struct mshv_mem_region *region,
--					  struct hmm_range *range)
--{
--	int ret;
--
--	range->notifier_seq = mmu_interval_read_begin(range->notifier);
--	mmap_read_lock(region->mreg_mni.mm);
--	ret = hmm_range_fault(range);
--	mmap_read_unlock(region->mreg_mni.mm);
--	if (ret)
--		return ret;
--
--	mutex_lock(&region->mreg_mutex);
--
--	if (mmu_interval_read_retry(range->notifier, range->notifier_seq)) {
--		mutex_unlock(&region->mreg_mutex);
--		cond_resched();
--		return -EBUSY;
--	}
--
--	return 0;
--}
--
- /**
-  * mshv_region_range_fault - Handle memory range faults for a given region.
-  * @region: Pointer to the memory region structure.
-@@ -452,13 +412,19 @@ static int mshv_region_range_fault(struct mshv_mem_region *region,
- 	range.start = region->start_uaddr + page_offset * HV_HYP_PAGE_SIZE;
- 	range.end = range.start + page_count * HV_HYP_PAGE_SIZE;
- 
--	do {
--		ret = mshv_region_hmm_fault_and_lock(region, &range);
--	} while (ret == -EBUSY);
--
-+again:
-+	ret = hmm_range_fault_unlocked_timeout(&range, 0);
- 	if (ret)
- 		goto out;
- 
-+	mutex_lock(&region->mreg_mutex);
+ 	while (true) {
+-		if (time_after(jiffies, timeout)) {
++		long remaining = timeout - jiffies;
 +
-+	if (mmu_interval_read_retry(range.notifier, range.notifier_seq)) {
-+		mutex_unlock(&region->mreg_mutex);
-+		cond_resched();
-+		goto again;
-+	}
-+
- 	for (i = 0; i < page_count; i++)
- 		region->mreg_pages[page_offset + i] = hmm_pfn_to_page(pfns[i]);
++		/*
++		 * The HMM timeout only bounds retries while HMM is walking and
++		 * faulting the range. This fault is handled by a kernel worker,
++		 * so fatal signals from the faulting process cannot stop an
++		 * endless stream of invalidations here.
++		 */
++		if (time_after_eq(jiffies, timeout)) {
+ 			ret = -EBUSY;
+ 			goto out;
+ 		}
  
+-		range.notifier_seq = mmu_interval_read_begin(range.notifier);
+-		mmap_read_lock(mm);
+-		ret = hmm_range_fault(&range);
+-		mmap_read_unlock(mm);
+-		if (ret) {
+-			if (ret == -EBUSY)
+-				continue;
++		ret = hmm_range_fault_unlocked_timeout(&range, remaining);
++		if (ret)
+ 			goto out;
+-		}
+ 
+ 		mutex_lock(&svmm->mutex);
+ 		if (mmu_interval_read_retry(range.notifier,
 
 -- 
 2.43.0
