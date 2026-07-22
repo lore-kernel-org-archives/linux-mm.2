@@ -4,91 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AD10C4453C
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 16:59:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C571C4453C
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 16:59:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DBFE46B00BE; Wed, 22 Jul 2026 12:59:19 -0400 (EDT)
+	id E5BAF6B00C1; Wed, 22 Jul 2026 12:59:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D95E46B00C1; Wed, 22 Jul 2026 12:59:19 -0400 (EDT)
+	id E0C106B00C3; Wed, 22 Jul 2026 12:59:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD4EE6B00C2; Wed, 22 Jul 2026 12:59:19 -0400 (EDT)
+	id CFBCD6B00C4; Wed, 22 Jul 2026 12:59:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 94C666B00BE
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 12:59:19 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1D1E0120230
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 16:59:19 +0000 (UTC)
-X-FDA: 85017023238.21.3878EA8
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
-	by imf25.hostedemail.com (Postfix) with ESMTP id E2E3CA0015
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 16:59:16 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	spf=pass (imf25.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.200 as permitted sender) smtp.mailfrom=alex@ghiti.fr
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 921256B00C1
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 12:59:30 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0930FC0283
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 16:59:30 +0000 (UTC)
+X-FDA: 85017023700.04.11A1AE8
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 3A74C100003
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 16:59:28 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=r6Sk9vUz;
+	dmarc=none;
+	spf=pass (imf14.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.46 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784739557;
+	s=arc-20220608; t=1784739568;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/XSX0oaALZx5W9NVPQ6H1LFJelp8qpg4CAK6IiFZ2YQ=;
-	b=3qCbT/r9kEjjdoNvQQpFEvvkhIHAUmsV68dKyNwqpV1UqLpmlTJemksLHxu/e+riAk92Ka
-	EhU7vp1BVbm86PrSK3oKrUJM/lG56jH55oVnG732LufndgIaP8Z8Pr2Bo8J2pckBP4hI6X
-	95d0vlcExHfkyQcOSl1UneDj71KUcxY=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=qY9nXLv8vuQAHMKqYLjCyjrlLX0YlK0rzr2P3pDbLns=;
+	b=Av5vEoFvTvPTPq4CFtpAZ2zU5LHmktIvsdXB4+nOUZhwjULLS7ctnQatP7E6k/eIRG4b2J
+	6cbbYa4g76y5rL4Kvwt2Z3nkch35zS4lkmHa2Auj4doMuyQOj9VwCci7SNVbo5P0hV/Qxc
+	cacsS4SnZNTkrxB8MldyPH6fq+YPbaQ=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=none;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=r6Sk9vUz;
 	dmarc=none;
-	spf=pass (imf25.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.200 as permitted sender) smtp.mailfrom=alex@ghiti.fr
+	spf=pass (imf14.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.46 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784739557;
-	b=CHu+MQtIto7sVEdbs59b9sg+H+NEfZyB4a391gExhWdVD+cvIK11KE6UPznls02POksNi9
-	JEedB77kRjRlf+3R43KqsmWgckStgd8f8oBP6sX18h2jy1czoItUa2YTZ+3hey59eoBpro
-	M1nxa3Mb0qKB5eJLFAuFYpX/qTv2AhA=
-Received: by mail.gandi.net (Postfix) with ESMTPSA id CA41E3ECFA;
-	Wed, 22 Jul 2026 16:59:11 +0000 (UTC)
-From: Alexandre Ghiti <alex@ghiti.fr>
-To: akpm@linux-foundation.org,
-	hannes@cmpxchg.org,
-	yosry@kernel.org,
-	nphamcs@gmail.com
-Cc: chengming.zhou@linux.dev,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	kasong@tencent.com,
-	ryncsn@gmail.com,
-	chrisl@kernel.org,
-	baohua@kernel.org,
-	usama.arif@linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Alexandre Ghiti <alex@ghiti.fr>
-Subject: [PATCH v2 1/3] mm: swap: overlap synchronous readahead decompression with disk I/O
-Date: Wed, 22 Jul 2026 18:58:59 +0200
-Message-ID: <20260722165907.784020-1-alex@ghiti.fr>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260722163536.773166-1-alex@ghiti.fr>
-References: <20260722163536.773166-1-alex@ghiti.fr>
+	t=1784739568;
+	b=K6vz/eF+28JenSDsITj8A9Ie8bPOBNf028w9wFtuf9aUYGjaCB49KiKzaD3JdmoFZcDwm4
+	5NlcAkslXFuyCeq3ogYs0XZqhtwnUKH6oh4QyhdGdORSXy8sLS+KLIt9IS+lmXPR5qu9N2
+	BAL7cCzVxq8qwgp1VTotmnsJ+wAsXGM=
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-8f186025973so146194616d6.0
+        for <linux-mm@kvack.org>; Wed, 22 Jul 2026 09:59:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1784739567; x=1785344367; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=qY9nXLv8vuQAHMKqYLjCyjrlLX0YlK0rzr2P3pDbLns=;
+        b=r6Sk9vUze+iS6AezMNS4ZtJzRV6Kr7sFyy0HrmiR3eL7mbidoXg6DIkVOGZ1U8sVTk
+         oPqsYaBpwmBZRuP7mMf0x8iaM6Oh/xvFegTtJLW4Qv6dN5hauSfLC/hDusn0rVLePsU4
+         ZPycIfD+Eqpa0XbFzuoOL/wiSGt7DhFgVl4K2qS1NC8hvZv2R6sN6OQo6fPsC06Ci3n0
+         s0bnbQPurMf3Q+tWSscEteP0Z2K3ZEUAd9eaTlr7/5w9qt7s09WPz7JVL0QKn8JT+U+6
+         JFhRY3PyZNRgDR1GvJr+JxDXqq4iIf/dAtJMewzwJ6jvSvDprkfjZdaU/50JxGvwKovz
+         SzSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784739567; x=1785344367;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=qY9nXLv8vuQAHMKqYLjCyjrlLX0YlK0rzr2P3pDbLns=;
+        b=itFv/B9uBT5ed7rPm3+6F3SOOEOIIJN3xDQ+ornR/QdsE4uEuOl5stsswHIUB3d1SG
+         lnFevA/Z/fwwUM4kN2JY4at/lzkjb3zuqk78L7hZE1nqFwRBkXBtMYWMJBLu0FL3cf6r
+         I6Xdd4jSOQ+52DjKFlXOpctiNyBBZm1pCA+sPTzsrhx9zlFijtqhSNxwlSzoHGr99y9A
+         ARGMaPxAEdrtD5cZaYtZrUoQEYriobJdTuLBnmDFBO9xQV4yWwpD22uMPFeyQfR/zNzt
+         0S+9tQAgOQ+45/vkPpCLeciV5i7aj2DXtJS9a8uq6pcJEMuVU7H9zioY2ZkOharb8wzR
+         /0CQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpRKHmLvaU+M4SryHA7rsOc931I6luBaGrNVyeVJxru7f/Y0XRemmCkvaoc0bZOCI2N6e/9F141hA==@kvack.org
+X-Gm-Message-State: AOJu0Yy7YpLT5VXsAyh292anS6As9f/r9HOPoSBuMET6lYVy1PcgpThr
+	aG8As4AnrG/bM2b5B3v9b+X/VYrrS7e6c4JH6WHHc4Qu9ldGxF9iuf/5CATQeyPsMuM=
+X-Gm-Gg: AR+sD127bKAIW95ip0Bq5j0yKA1Q2KVf0t/wTLZfG/LWxKoeAZf6ixp0d/rx74H3qes
+	kqEPDS5D/KEDanxxSe2B1B+icdx/bYvv7RSB/3Ebcvi1prIbJC52kz0MRsKQkuPn5pqtYwXsjzW
+	9szeTK18ffeEY1RDI/gV/bsr32y3I2PEy4B2NKuMAJYwjVEh0ebgZQ3zeSX3UkbAHAJ/qCdDfrB
+	MNJdga2GjP8THvgjf0NyjmTap1yMcAGTgvisOkgRhzAj4VrGOF/FyueJzUB7DvcOT2I9KXhtYl7
+	6EETbHB5sctp4Gw/3+jiDJvktAjXuRon4bhxfNIsqWkugZoNY17Caz4jbluQ7wFsFs+w9k1+PTT
+	H0gI096sW5wXiFg06GGEy3UZjBldt1LheNWU46EWZ2MZUxhXDWjtTrzFQJqYc8mg/n+C+/Wfhre
+	xehSTkdFPElnoEbqmGJVvgxpr53VUhyUNjFULCaE7wyBF8PUhxSIXAl5ft4SIG/98wZ6y1
+X-Received: by 2002:a05:6214:4985:b0:8f0:56e4:10b9 with SMTP id 6a1803df08f44-907783a7325mr273324596d6.35.1784739567382;
+        Wed, 22 Jul 2026 09:59:27 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-907ba672806sm25545896d6.0.2026.07.22.09.59.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Jul 2026 09:59:27 -0700 (PDT)
+Date: Wed, 22 Jul 2026 12:59:22 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R . Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 3/4] mm: page_alloc: move capture_control to the page
+ allocator
+Message-ID: <amDyzpXQirujriAk@gourry-fedora-PF4VCD3F>
+References: <20260722150006.3848560-1-hannes@cmpxchg.org>
+ <20260722150006.3848560-4-hannes@cmpxchg.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: alex@ghiti.fr
-X-GND-Cause: dmFkZTFgQMyRFuZn1rX9NTarebc0I7T7nq/R/ZHBTIlh8IqQClTjfwSu7K0eaziy7tNAM4X53JhtGZzn540eop7U5DCL+rg/U0xQjoy8BIp1n4895pHfjH8NRnuD+WCoIE51kuJMgJt+3mz144YQ0OoxtQd+5Q+MPSYSfpY++79KBWt1+OTE0Uq864soWP3yIunIfAkTiBnyRg9iDK4XuMcE7JPCRw7BBfNAc5d09aB1L0xQJo0tXhhf7wFNpH20cQ/YgyFSBsrfH8bT4mK/43o2QuLFKkCBqWo1s2ra0McFrNw76VuHY/Tm3YsFQSMJAPDmJsfNK8L3V05NFWCwrd/SY5fzVYllPIvqMv/FZrZZrHri/ZQKt5saqKGLHi1Fgg9eBVP5i+sop0xt2mzORJ/qV8ucDLlxwpzDwB4DWMwDXMm8rqIv61gniCwMXnSashTflGLkZBvXHML9epGe6+9jhIO6poLdDUmvt3bGkgLudRyWLaRj/bsP0nYjwh88/XEgpTk9aqC3tI5fqSAzGCMcf7UA67BTcqD7fIkcMJzTvERicax64H+59Q/Hh+t1Evi7HOpTH3PZahZV7xQiwsBM5MNA7BOwlwOmz+tHdSx/t3egAl+oB3r0/8xam9eKIfD1VwwV9ZBXHGpd6hQ3Xr7uLcRUtGkyQVHr4JXK4b+Q62enHg
-X-GND-State: clean
-X-GND-Score: 0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260722150006.3848560-4-hannes@cmpxchg.org>
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E2E3CA0015
+X-Rspamd-Queue-Id: 3A74C100003
 X-Rspam-User: 
-X-Stat-Signature: rd1hzfxc46m43juobp647m5wtpc6mrga
-X-HE-Tag: 1784739556-574999
-X-HE-Meta: U2FsdGVkX195XPjKBTWMegVQTJOFzM3Draxg7B9fUYkK9nBGSHtpprDMtI8Ne5b0p0iatgMT7qk8L21f+J/CqI00gPyD9AReif+zRGnYObMi6jq58ug6y1BgQZs02amtNGlGkJ0VxKbM5Y3hjG60/KCZvo5CCgZAX7YoWuv1lukA30URMCvuLVzn6tMoJodim57KbU3RyDK/tNRBIFCeYWZT7C2/W8Fead8ybLbMymodZhK96RG606I1xahKwzd6vWZyxHnYPrxW9DM3dLfibpJZ2tj6MMGcDralHfotDc7j9r4+KEVcsS6cqLdJ1hsK4QYEUqHJD0PKPkQg/fVBkQSLn3O9JhEz1ESkyiz3219p+fDsbd9NfQdBuUDPF2bFfm9TFkRxsc/29Vp0Lh20Q8hvYXGfrVAxXAuxtSv6ZdGKWIO76u6ilalDUggjn7SdmLy2PC42xhU162lpd5LY+O+pPpWTzig5Y3EeDZE+zOeNiLeoM1DuHGodRJ8J6mX+1EJ0xFfC+CjJaNY+IR3uz4NsOnsalfLy8w2NQ1JGo/goQf9hbiQtW+O9MwN2hlh8GvX0+uw+E97Jm98ZGXuP00zPJ+6VwGc7Vgj1DG/oDRJYw0p3XgW4wHym/I9JNjLxI8qiZvyPFaAIZgFEO1TW0EGg4L+ODM4kmxPwoTrYk5igcZxinSLECTX1MGeFyrlpUPujERADi45VvXP8xLTUPx9bsfmWW+TlXrMbTOllElabZFIgRZfLHQg5RctUP1ZIiMWR77cJJXVMFf8TbSVxFMwKzMl68h9BjHGvZnKTdPMfQJJeek0pEyuV19clgMFS7xNiVZbC2YxHIqkALLHS0HCcVFHjeYs/i8MJv2QPbiCGstshMQ2/3WMuDUJDka5d/eSRe+UgSzfzHTEIYv9xjvh6EP1Mi1v6trEMH6jX3cByHfxF6H4bmg9VARiQpNKszVFE7ziThtU1jEfgVkL
- KniWY66y
- L2Ytb
+X-Stat-Signature: ggfw7u4n6uu6mgt54t6u76kt1etqg4qu
+X-HE-Tag: 1784739568-741295
+X-HE-Meta: U2FsdGVkX18j/WIRm/qpjMhEB3jH+1W4fYNAS0EWr07+0i6+Nq7njHbBBOF/+4D6JwIgVIgrR5BisjNiEvdKEwVe1dTvARg1IRUpIicmd9GAKkY7ndaJ/tM3GzGM+Q6fjnnv1KBmbbp6L+mXIfsO9ia8GlmWUs5D/yIAa6z6WOLbdws6moNVYgxPR92jjWlaVYI+Ig1vwZ/n5XLuEojcdW1XorOrpEd4VtjPYB3MHD41Rw4NNWi1FNNanFx/YpxvlH7YD0+zITzg02kS7nXBJJh2S0lEIWX/7peJ57oxZmsXJK5v4laMBre/dPh5WbxG3Dvb9iYeDdSf63JTi9JwZpbKOE9P1N1f5KUe7e6fOLol7FdxtnnqhVzLyGMMHXsbQc7bh5ocx+6ogg+cddjzidRsrg0aw7cxSJ2W2iqzrHN9H6wuUfsnzIEVMp90tEYcLtm9cY4DGPyiqeFrj/FJCl/Jnk7TIOPms20qSVoqpH7/IUv72Xe6SiVjfQ4J6VsJR5dN+YVJQFbiH95qZAKBve6yFAoHybIljJzP2m+Jnn4nWvUrVPazal7XgmryKoi17bqavn4x0/aAyn6NZEOsc2KUuarkIJiMGTl4Kj6YpnVjWa8BsZTY2ZNgBYtiZKFVAVaF49f0Kqxl9sw2oTg94YvsjZ9Qa+veBobASqgLBuTK5a7jm6VavxmX61hUzxb4e896nbG8/MSV6yXN3Bi5d8Q9q1VYkDxzBPbyCnNLCpPBHL/jKak1eziyMIZD9RZ/JWapqU9yaKqjIe0TgTM4w7Ojmj5krKHsWzaNS07ejS8t8PzF7gtL9wicOqMZtQ/h8ev1H1tY5matOFLkZR3mubYymUXbGw2MJKKRHQOvJfH+5d7X+sxZzQlVgM+jZtWjCY8WK2wwz0ezvtZh9Yef3aJ1HVRaUEdi8GsH1jFljPVXUXJsm3RvqjwKIbzvcu4scgR1OxUBPh5Dp2OxMTY
+ QpVvviqA
+ Z8Stu2elx94Rgv1u9UziwCUj0DAfFmnLJqsdzb3JNXFwGGwSithKgn5cCdGtxF5+Odh6zWuONYTjbZwudichEJ0CLW2OjE6qfHrsVLSdiv3OY+AsPTwUY1drxPITDytYEDlr0+sBpFTYnHeIOEKr5MyGa+6fM/L3q4fQrzKevk+WBHrvNi8a5OEUEEnRNQGBC06toRJL1P3aOWVAs12V7G5hnuzqlOKyoCxrX21POLyizM4onCVU0YeFdIIRUcgezCidFBoBAGx7rJoXVIEkzEDw4Np6zQ0j29wA6ZB13bD51ZR0xUIo3GcBZFVWujeGroA7nfi1BvaPkNwVvQKzs28ARyHXX+z2t58Z+XMmjtqhn5iOGVhKi2DVgcPJGc26a8ZxAbLFRlpUnYh8IHIlgLAxoCGLRz9Yy9ZRZYHG9LNbvbEN7TPxuRXyP6Y0OKqCkf5JzPQgw97+H4OP6Q7ev55aRZqYqyYcdmvplcPH1x0pb07jduVvyumKk4Q+knU7zWrv4EW/9PvNnPkg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,267 +124,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Swap readahead reads the whole window sequentially: the device I/Os are
-accumulated along the way while the synchronous, zswap-resident entries
-are decompressed inline. The I/O is only triggered afterwards, at
-blk_finish_plug(), so the synchronous zswap decompression is pure added
-latency in front of the read the fault is about to wait on.
+On Wed, Jul 22, 2026 at 10:56:46AM -0400, Johannes Weiner wrote:
+> From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+> 
+> The compaction capturing code assumes the allocation request order and
+> compaction target order are the same. That won't be true once
+> defrag_mode promotes sub-block allocations to pageblock-order
+> compaction: compaction targets the larger order, while capture should
+> remain at the original allocation order.
+> 
+> Move the capture_control to the page allocator and give it its own
+> copies of what the page freeing path matches against - zone, migratetype
+> and the allocation order - rather than reaching into compaction's live
+> compact_control. __alloc_pages_direct_compact() fills in migratetype and
+> order, and installs and hides current->capture_control around the whole
+> compaction call; try_to_compact_pages() aims capc->zone at each zone
+> while it is being compacted. compact_zone_order() no longer deals with
+> capture at all.
+> 
+> Pass the capture_control through try_to_compact_pages() /
+> compact_zone_order() in place of the bare struct page **.
+> 
+> No functional change.
+> 
+> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> Co-developed-by: Johannes Weiner <hannes@cmpxchg.org>
+> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+> ---
+>  include/linux/compaction.h |  3 ++-
+>  mm/compaction.c            | 50 +++++++++++---------------------------
+>  mm/internal.h              |  4 ++-
+>  mm/page_alloc.c            | 45 ++++++++++++++++++++++++++++------
+>  4 files changed, 57 insertions(+), 45 deletions(-)
+>
+... snip ... 
+> +		WRITE_ONCE(capc->zone, zone);
+> +
+>  		status = compact_zone_order(zone, order, gfp_mask, prio,
+> -				alloc_flags, ac->highest_zoneidx, capture);
+> +				alloc_flags, ac->highest_zoneidx, capc);
+> +
+> +		WRITE_ONCE(capc->zone, NULL);
+> +
+> +		/* Stop if a page has been captured */
+> +		if (READ_ONCE(capc->page))
+> +			status = COMPACT_SUCCESS;
+> +
 
-Trigger the I/O before decompressing the synchronous entries: split the
-window walk into two passes. Pass 1 issues the async device reads and
-defers the synchronous neighbours; pass 2 reads the deferred entries
-while pass 1's I/O is in flight, overlapping the CPU work with the disk
-reads instead of serialising it in front of them.
+Might be worth a comment to explain what the WRITE/READ once is dealing
+with here since it's now detached from the main barrier(), but otherwise
 
-swap_cluster_readahead() walks a contiguous offset range, which is cheap.
-swap_vma_readahead() instead walks the page tables so we cache the
-entries we encounter in the first pass to reuse directly in the second
-pass.
-
-Results [vm-scalability mixed zswap+disk swap-in, 256M zswap cap (~73%
-disk), Sapphire Rapids, zswap=zstd, shrinker off, n=3]:
-
-  metric                  mm-new    +patch    delta
-  swap-in tput (KB/s)    119247    131261    +10.1%
-  swap-in wall (s)          106       100     -5.7%
-  swap readahead (pages)   1.56M      1.55M    ~same
-  zswap-in (MB)            1895       1872     ~same
-  disk swap-in (MB)        5207       5190     ~same
-  major faults            260148     260212    ~same
-
-Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
----
- include/linux/swap.h  |  6 ++++
- include/linux/zswap.h |  6 ++++
- mm/swap_state.c       | 67 +++++++++++++++++++++++++++++++++++++++++--
- mm/swapfile.c         |  9 ++++++
- mm/zswap.c            | 17 +++++++++++
- 5 files changed, 103 insertions(+), 2 deletions(-)
-
-diff --git a/include/linux/swap.h b/include/linux/swap.h
-index 8f0f68e245ba..6bb35c093d77 100644
---- a/include/linux/swap.h
-+++ b/include/linux/swap.h
-@@ -441,6 +441,7 @@ extern unsigned int count_swap_pages(int, int);
- extern sector_t swapdev_block(int, pgoff_t);
- extern int __swap_count(swp_entry_t entry);
- extern bool swap_entry_swapped(struct swap_info_struct *si, swp_entry_t entry);
-+extern bool swap_entry_synchronous(swp_entry_t entry);
- extern int swp_swapcount(swp_entry_t entry);
- struct backing_dev_info;
- extern struct swap_info_struct *get_swap_device(swp_entry_t entry);
-@@ -519,6 +520,11 @@ static inline bool swap_entry_swapped(struct swap_info_struct *si, swp_entry_t e
- 	return false;
- }
- 
-+static inline bool swap_entry_synchronous(swp_entry_t entry)
-+{
-+	return false;
-+}
-+
- static inline int swp_swapcount(swp_entry_t entry)
- {
- 	return 0;
-diff --git a/include/linux/zswap.h b/include/linux/zswap.h
-index 30c193a1207e..cd9efcf9dec9 100644
---- a/include/linux/zswap.h
-+++ b/include/linux/zswap.h
-@@ -35,6 +35,7 @@ void zswap_lruvec_state_init(struct lruvec *lruvec);
- void zswap_folio_swapin(struct folio *folio);
- bool zswap_is_enabled(void);
- bool zswap_never_enabled(void);
-+bool zswap_is_present(swp_entry_t entry, unsigned int nr);
- #else
- 
- struct zswap_lruvec_state {};
-@@ -69,6 +70,11 @@ static inline bool zswap_never_enabled(void)
- 	return true;
- }
- 
-+static inline bool zswap_is_present(swp_entry_t entry, unsigned int nr)
-+{
-+	return false;
-+}
-+
- #endif
- 
- #endif /* _LINUX_ZSWAP_H */
-diff --git a/mm/swap_state.c b/mm/swap_state.c
-index 9c3a5cf99778..3ff2896dd6d2 100644
---- a/mm/swap_state.c
-+++ b/mm/swap_state.c
-@@ -811,6 +811,7 @@ struct folio *swap_cluster_readahead(swp_entry_t entry, gfp_t gfp_mask,
- 	struct blk_plug plug;
- 	struct swap_iocb *splug = NULL;
- 	swp_entry_t ra_entry;
-+	bool has_sync = false;
- 
- 	mask = swapin_nr_pages(offset) - 1;
- 	if (!mask)
-@@ -824,10 +825,16 @@ struct folio *swap_cluster_readahead(swp_entry_t entry, gfp_t gfp_mask,
- 	if (end_offset >= si->max)
- 		end_offset = si->max - 1;
- 
-+	/* first, issue the asynchronous device reads */
- 	blk_start_plug(&plug);
- 	for (offset = start_offset; offset <= end_offset ; offset++) {
--		/* Ok, do the async read-ahead now */
- 		ra_entry = swp_entry(swp_type(entry), offset);
-+		if (swap_entry_synchronous(ra_entry)) {
-+			has_sync = true;
-+			continue;
-+		}
-+
-+		/* Ok, do the async read-ahead now */
- 		folio = swap_cache_read_folio(ra_entry, gfp_mask, mpol, ilx,
- 					      &splug, offset != entry_offset);
- 		if (!folio)
-@@ -836,6 +843,24 @@ struct folio *swap_cluster_readahead(swp_entry_t entry, gfp_t gfp_mask,
- 	}
- 	blk_finish_plug(&plug);
- 	swap_read_unplug(splug);
-+
-+	if (!has_sync)
-+		goto drain;
-+
-+	/* Overlap the in flight IOs with the synchronous neighbours reads */
-+	for (offset = start_offset; offset <= end_offset; offset++) {
-+		ra_entry = swp_entry(swp_type(entry), offset);
-+		if (!swap_entry_synchronous(ra_entry))
-+			continue;
-+
-+		folio = swap_cache_read_folio(ra_entry, gfp_mask, mpol, ilx,
-+					      NULL, true);
-+		if (!folio)
-+			continue;
-+
-+		folio_put(folio);
-+	}
-+drain:
- 	lru_add_drain();	/* Push any new pages onto the LRU now */
- skip:
- 	/* The page was likely read above, so no need for plugging here */
-@@ -899,11 +924,13 @@ static int swap_vma_ra_win(struct vm_fault *vmf, unsigned long *start,
- static struct folio *swap_vma_readahead(swp_entry_t targ_entry, gfp_t gfp_mask,
- 		struct mempolicy *mpol, pgoff_t targ_ilx, struct vm_fault *vmf)
- {
-+	softleaf_t sync_entries[1 << SWAP_RA_ORDER_CEILING];
-+	pgoff_t sync_ilx[1 << SWAP_RA_ORDER_CEILING];
- 	struct blk_plug plug;
- 	struct swap_iocb *splug = NULL;
- 	struct folio *folio;
- 	pte_t *pte = NULL, pentry;
--	int win;
-+	int win, i, nr_sync = 0;
- 	unsigned long start, end, addr;
- 	pgoff_t ilx = targ_ilx;
- 
-@@ -913,6 +940,7 @@ static struct folio *swap_vma_readahead(swp_entry_t targ_entry, gfp_t gfp_mask,
- 
- 	ilx = targ_ilx - PFN_DOWN(vmf->address - start);
- 
-+	/* first, issue the asynchronous device reads */
- 	blk_start_plug(&plug);
- 	for (addr = start; addr < end; ilx++, addr += PAGE_SIZE) {
- 		struct swap_info_struct *si = NULL;
-@@ -939,6 +967,16 @@ static struct folio *swap_vma_readahead(swp_entry_t targ_entry, gfp_t gfp_mask,
- 			if (!si)
- 				continue;
- 		}
-+
-+		if (swap_entry_synchronous(entry)) {
-+			sync_entries[nr_sync] = entry;
-+			sync_ilx[nr_sync] = ilx;
-+			nr_sync++;
-+			if (si)
-+				put_swap_device(si);
-+			continue;
-+		}
-+
- 		folio = swap_cache_read_folio(entry, gfp_mask, mpol, ilx,
- 					      &splug, addr != vmf->address);
- 		if (si)
-@@ -951,6 +989,31 @@ static struct folio *swap_vma_readahead(swp_entry_t targ_entry, gfp_t gfp_mask,
- 		pte_unmap(pte);
- 	blk_finish_plug(&plug);
- 	swap_read_unplug(splug);
-+
-+	if (!nr_sync)
-+		goto drain;
-+
-+	/* Overlap the in flight IOs with the synchronous neighbours reads */
-+	for (i = 0; i < nr_sync; i++) {
-+		struct swap_info_struct *si = NULL;
-+
-+		if (swp_type(sync_entries[i]) != swp_type(targ_entry)) {
-+			si = get_swap_device(sync_entries[i]);
-+			if (!si)
-+				continue;
-+		}
-+
-+		folio = swap_cache_read_folio(sync_entries[i], gfp_mask, mpol,
-+					      sync_ilx[i], NULL, true);
-+		if (si)
-+			put_swap_device(si);
-+
-+		if (!folio)
-+			continue;
-+
-+		folio_put(folio);
-+	}
-+drain:
- 	lru_add_drain();
- skip:
- 	/* The folio was likely read above, so no need for plugging here */
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 78b49b0658ad..ee2bbfdfc988 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -1983,6 +1983,15 @@ bool swap_entry_swapped(struct swap_info_struct *si, swp_entry_t entry)
- 	return swp_tb_get_count(swp_tb) > 0;
- }
- 
-+/**
-+ * swap_entry_synchronous - Check if @entry is served by a synchronous source.
-+ * @entry: the swap entry.
-+ */
-+bool swap_entry_synchronous(swp_entry_t entry)
-+{
-+	return zswap_is_present(entry, 1);
-+}
-+
- /*
-  * How many references to @entry are currently swapped out?
-  * This returns exact answer.
-diff --git a/mm/zswap.c b/mm/zswap.c
-index 761cd699e0a3..b91a1ef8869b 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -234,6 +234,23 @@ static inline struct xarray *swap_zswap_tree(swp_entry_t swp)
- 		>> ZSWAP_ADDRESS_SPACE_SHIFT];
- }
- 
-+/**
-+ * zswap_is_present() - is any slot in [entry, entry + nr) in zswap?
-+ * @entry: base swap entry of the range
-+ * @nr: number of contiguous slots to check (pass 1 for a single-slot query)
-+ */
-+bool zswap_is_present(swp_entry_t entry, unsigned int nr)
-+{
-+	pgoff_t offset = swp_offset(entry);
-+	struct xarray *tree = swap_zswap_tree(entry);
-+	unsigned long index = offset;
-+
-+	if (!nr || zswap_never_enabled())
-+		return false;
-+
-+	return xa_find(tree, &index, offset + nr - 1, XA_PRESENT);
-+}
-+
- #define zswap_pool_debug(msg, p)			\
- 	pr_debug("%s pool %s\n", msg, (p)->tfm_name)
- 
--- 
-2.53.0-Meta
-
+Reviewed-by: Gregory Price <gourry@gourry.net>
 
