@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11F81C44532
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 23:42:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB6BAC44532
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 23:42:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 56AAA6B00B0; Wed, 22 Jul 2026 19:41:28 -0400 (EDT)
+	id 653C56B00AF; Wed, 22 Jul 2026 19:41:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4A57E6B00AF; Wed, 22 Jul 2026 19:41:28 -0400 (EDT)
+	id 568026B00AD; Wed, 22 Jul 2026 19:41:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2CFE96B00B2; Wed, 22 Jul 2026 19:41:28 -0400 (EDT)
+	id 3E1536B00B1; Wed, 22 Jul 2026 19:41:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EC33B6B00AF
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EC3106B00AD
 	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 19:41:27 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 85E2A140330
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 731631602D3
 	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 23:41:27 +0000 (UTC)
-X-FDA: 85018036614.23.DF7C56C
+X-FDA: 85018036614.16.29B70C5
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 95B75180003
+	by imf20.hostedemail.com (Postfix) with ESMTP id 730071C000A
 	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 23:41:25 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=P5pONj5x;
-	spf=pass (imf06.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="XlQib/ow";
+	spf=pass (imf20.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1784763685;
@@ -35,46 +35,45 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wbf5eLS2e39OJDUCMHKxmz5aD7igM84bb8Ql7ZbyUko=;
-	b=Hw9e8MWLOiGDaPmXLy9bcWVLNsr6diCY8wEv/QYVFAkqY6/PaKVVYAOBRGqbg32buI1WTW
-	eC8sD2gVsV/xdbqrC5kz7wu1RHx4Ls4G6AmYvBYLjKhd6Q53WIZsecxX8mjejMQKQjtHBw
-	zub/lJkxQmxUWpLyoxldpW5d5lstN/c=
+	bh=DdIFcw63nI55tXnnq9HyDHNflovMasXB+BvJ6U9DMyA=;
+	b=KYkFg+vaBxidDoBSyC6Lz5QBMWm2L0a4yfAhr5DZzxThdJWQjwLIOM19vLP87RtObcWNg4
+	qSAgSB3DZLdKsNZfuLKhv77XOlYVbc+vp+6hf/d6H2IyW17yJPc6pJ8k+kenOjFs9xzrE7
+	/49ECM4q2QZ47UHBOkoMF0VZvN7M2tM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1784763685;
-	b=Pd6/42Sk5R3fnrWLlahCyTEGP1kHsgZ9UcR2XH/34VW8OlXNhP0W1FxyGWm7/TbuyZ+q8/
-	IU2D9jjBbAeIlB2l0h7Hb3Qypg3dTHPwtba/FTK0TQ3fUHSPajpSNdrLukqmo6fzg1epNf
-	QQrqHaXsGNWSbQ3jLSc1g1o1GecLfiE=
+	b=Nqg6UdYnH3Gc+kbqBMMkVB5cAqaphFknNahYbEOv3CxfE6Y32awV6mbEOos9f/c9LfwAtn
+	CG/9Xnc9lyEeGL7sBunLOK9rdX1OUbwm53Q9sE0nBKXPow+gEobmTqRwYgdVhpyJgFh/Be
+	PFbgmTQ7YUc0fENSbN77Q0YsMKyyhsY=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=P5pONj5x;
-	spf=pass (imf06.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="XlQib/ow";
+	spf=pass (imf20.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0F66545178;
-	Wed, 22 Jul 2026 23:41:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id E3B5CC2BCF6;
+	by sea.source.kernel.org (Postfix) with ESMTP id E208E45168;
+	Wed, 22 Jul 2026 23:41:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id BF269C2BCF7;
 	Wed, 22 Jul 2026 23:41:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1784763680;
-	bh=JpV22Go91sm1l5ZmXhWEkSXKUuaRnYmpd8p8KT1aw60=;
+	bh=IaSkp3fdmtv7NRhfe3SroO5xQIMOPLdrrRcj/2IEtlE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=P5pONj5xGeyu106b1q17XIEyoT1RAq/C73XmAEdk4j8QmpiPk+M6PqsgRsJJLs82B
-	 N7lEBWCUKHJ93Kr5JJRGJqPCg7R8z0abyWjyHqGfj6RXRa/5nOmY4Mn0S61+xdwSxJ
-	 CYB3nrqzjZKDxEyucLbdkSB1JYysJjctP/QxdkYVMAhJ62UQZ9MFydyvb1dXbixLhJ
-	 i6Gm28HnED6PXjKrrQRYh2rbxiESMgJAkc0GGlqBPRcPG87HExLeJJj4JqUIx3l5Yb
-	 QKGf0DnCpUFx3KYFxxAj+PPoZIA4RR9MAG7av6mQ+kkp8BHHl5aand/40mdHeFSljE
-	 n1q0Fd0Jy44vQ==
+	b=XlQib/owPAVh3H7KfaNS4PyZkmlCbiHxJjSJbi29AcA2PUhaNCMdYbn3nFoRKC9xf
+	 9z7uj6VoT2q8h7zOKugYJorEvmpU3Ogas/oag/J0kR4AO2H+LU63b7FxgJ4Gr1HRvm
+	 XgUXx2mabgUEG1SbqIrZybG/YFb+q/b8g/7wgFb08ytsJltdsj4feTnw9aEAejYHuR
+	 E9YKl0Fbd/Wm5TdI5yiu0eV1JkPbKkcLxscGACQJPCWJW1kfX8kMWHjTV0SZP4ji1m
+	 zTuPDeKmBWVqyzfVfxxz5YIWSu284D3KT0zYL+zxGSRlK87q7wKxeFgXEQCE/u3/cC
+	 j7G2h1Adnf0Mw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D0752C44532;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AAA00C4453F;
 	Wed, 22 Jul 2026 23:41:20 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Wed, 22 Jul 2026 16:41:24 -0700
-Subject: [PATCH v4 16/16] WIP: Reproducer for out_put_pages subpool reserve
- leakage
+Date: Wed, 22 Jul 2026 16:41:22 -0700
+Subject: [PATCH v4 14/16] WIP: Reproducer for subpool usage leak
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260722-hugetlb-alloc-failure-fixes-v4-16-88e8b81970dc@google.com>
+Message-Id: <20260722-hugetlb-alloc-failure-fixes-v4-14-88e8b81970dc@google.com>
 References: <20260722-hugetlb-alloc-failure-fixes-v4-0-88e8b81970dc@google.com>
 In-Reply-To: <20260722-hugetlb-alloc-failure-fixes-v4-0-88e8b81970dc@google.com>
 To: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
@@ -95,25 +94,25 @@ Cc: vannapurve@google.com, erdemaktas@google.com, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
  linux-doc@vger.kernel.org, Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784763678; l=9148;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784763678; l=4644;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=C8+RXWPxhEZ0iEc4milJz3Gk4NI1eHcFg/eirCB7vkk=;
- b=FRykE6OsJj6rPG7Phjv7msN60z3TEeSAhyZioTGAlFZtw0k8YLFxH2S4I/+sdh6xff0dBk5Tf
- ghANT0I23YjCosFVyKBGVj4L7p83snFB5riN4HkN1XQMb0K95tBSTR9
+ bh=E4drmq1mZkjUTuE98aQslvvt9cikJbWZghcgFkli30k=;
+ b=HiSFLR0mil6K38uaer8wl9Fy+05WtiROHkCptxCr9umgO7pDRf//LRN/q++nLpLWmSKUyE1xs
+ 3Zjk/paa3R0Cx5A8PWmokVRUBC6lXEwTZfCv4jw5HxO6WGQpOvLFmfx
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
  auth_id=649
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
-X-Rspamd-Queue-Id: 95B75180003
-X-Stat-Signature: 1i375jkew6e3f39npigo141rgo6grcht
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 730071C000A
+X-Stat-Signature: 8qguf8r1ud9af5kx86r46af7m5dxt9re
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1784763685-378210
-X-HE-Meta: U2FsdGVkX1/91RBdmntw9cl1EvIflRUK3AWIM5+TMOfSOe47fhEpJugVVqpP9Br3/Shsi3wcqkluZf5P20U25fEQIRGvTN731P3wCSSFZb5gDjMdeJ+PkeOZVuWnNY9yBXVl61+FBEU1fzftmDpXlVrRAUPfIv7hdQUpyNdmqo4VoxENoch/OwO8rHCnO7NO2oMmqGr26xoNdpinUzCPb8NyAuJL3IL701E5Ps/qj2owkayFqm2IwEKu5rZ/3f/FROESqK0oRgSYnzYm/90KeF/hUGSZOG25NKClOwSsRGzj2coA3OUujcJ7HdMZpskYyIz5NvGJX0USgOQgzjGE8GoMXvYYKZso8/ZHnkyI5yHF8pMXn+fsBbc6jFFmgOJgzbPXM4iPA43s3xRT9Z6+LBo0CxfW6d6RRpOOApSN3SYQVtC5UWvap5ulwmKegNlpeTDWQitGNMUHQ1W7HUGAe1mkUtIq/uTcc+HeDu+tEJDoa3/RiXw8HEbi8xL/I/N9Ol6xY9gerIVosYcIrhgVCknAFNSdRrADJsrjmZXjIJzfaIbEea4x/hKlhEFamukD78TSZG0MHpq3NZ240xJ7hZGE44q4pAZLmLI0l/sgcz9is3cCTc6OG/NYzOI7b/LdkFhxLUZ1qtz7w72gIMpKpI9UNbINoM04a3dcUdZJhp+CsY6S83Uud/zBHtjqrDjjQGWkck3C7i2feS60H6HUYBt42dluP6bR6a/eXQ0xR3ozxs+MoMsGszy/2iHZ76cebZB2GdbrsEOF6ez8sC1mCNCoFQC9Yy1crNKrtGRnNnd8UKlE6oqlm7rbHaW0W3eN6zGn4VwO/102lVt5A9dPmq/2hbiQY1RqVxAHZafyjmDnVWnGbkMTgd9Mlmws72RbyguIYRKnRvSUipfVqPWjHtTVuq4lfdUZ8jzhG2Uqzz/Uc+PgOmWmQsAeSlkv9EyVlFUEW8Jmify0N2rWCfO
- 5SRjAh9/
- bE5VzvxKb05eHgNondewTLJPXYu1wgE9EiuuOa+RtLZVzD8hhEzAjJRFl5dqVsHLrFIP2Rh1pxHVbEJlaW/G6H1OjvIhj9/WBEwyzPmXgl1LZdCIA60Yz7EDDpJZQhWtu2fvCFFrpBhvIG7ZxcL4FR+B7eGUSO0HIixiN37ikl3MMJsU4TfUSaO4AhvNLn+rcYnUQRc9oL+hKOZleMkNrNzL/oh6cEtk0ZMV4X/EGLy9MdbY3BOq0zxPNF7XrHBLZfhbud8o+uJCEivvSSau43L2035Ztu27Rq1u0GG7FNgrq0pG2+tRZyGT4zNBBojlFZaAaBAZetJ8krqWZLuXgY83Y6YBh9anwhdGl53OYz0AQx3eIjhmFE/TyfDIGb22RRTOr5UHc8tlEQskXcHojIT/lPZ8E1eBAFFq7Bn3S5GDeeUAz+6eGTR4Vssxp8sxkxEvIzzBM2IdLeKTpwn5VAJLFoFSY/3COZBdRuI9ZdcXFz3jthOaCZ0K81f/dufn1R0A83GyaZScAoJ/vwjTPYDKlEzG2Pe/nKhHE
+X-HE-Tag: 1784763685-754372
+X-HE-Meta: U2FsdGVkX1/Si1SNJekA+Vp+FAbWgBNda/HfJRlWp5KScFrWTjhqC1iVsi+CQwJxFKg0b/PYHTCSrxenFVfvr4ev6qUSS5nv6Mw9HcURo8htAwRHoZbibEITXWAdCA9/gqBHQauq7V9Hyl08J5JHMQkkZStGBHHZ92xhViVqwxIGGgWxe6ex0lPM0O/koseoVDl/XikRbwddSKRF3ME0Ha+0E2Qu3CUZDsQxAr63VxjqfKwRJY/R2m7pfYlpxjkqD7uEw8+TGMLMGZrX/mKBgRIjzZQDMgK8vjVVm2HNXmDcxnOS947UrakycuhEnI/AknqoTYs5oKHvTeOeUNqdl/qXddXU8TfZV5QamqFzn20mEHVmkdybLeLsjAG4xufJiPheBgqzgJiNbQOOMeVYB9khvUck4RoCIUiOoV+ySzqwFW5RAKjeJBnV8w/zCiekkg29HNXBedPIEFRCVXKgtaAAJCV5+Mw2JZ3qzGnxzXw7VLjnKenSDODMRWGcmkOcWrGQ8kqreb+ADRaiPE3sCAdHXfv0CLp/Yde89kxlvufkalmqWNWyqA6mJndoypqLA1yzYl/Qsf3/srlJiErEIoRViHlxi0qbUWLYvkAXWl2NtwbQDkShvuFstqrlGOj4lp4Wtf0W+flP9Q9yPCFORbyOmxnHWU6u2yS3k2pwq/wMNxNnFvJAGDscaYQN2jlroEVjzr79GWA6WTVekBO2tWq+WDrIt6nIz0a4Tp6g884XvvcSZqpLJeX5m4vwrAh2JqXJ2qUx2r3yT9iyIgzbOXR/JqXvZ7f/CXnw1QSphrTlgCAm0e+iodCWbonN6SdkJF022fbU/UV7IcQkA1UKLDY0/7uGZqMcUmTTMkyppCYaDLxZophI58YV6SLh8BmQu7z/H3qim2KRy4pmpc4xGwiBqgcUxd9F3rfHu+Un32BSMCELMREYn/XcBU8JP1EtT/hHYNBzBGsjBmQ6b2i
+ CQniwX/K
+ zBuA88sZkrM5KCjWJK60UKAuS16aV9j8ILtNFXp5uvkKhWs90Dy21P2tTqdfkMT/2DW+aP+Oacw5FNA4WfPks+MiiaSM3fukb9q5Mb///Q6cInvkXqjIOpy/Wifr05X6mKfblVbAeHggN4l8abiQ/84PphFYsyYeYe23TXktGQFnxz0IP6hoU7oe5GoIucWmKtyRq1msLkc5R2TFdTQ9TwjEBCo/KkIw6Aqh4pwuTJsOp37y8KBieypqMORNurrLOtATxFVhq1fQi03aTD4ZeuxAd2tFq1B8D8U2ItJkzEpRmGzLtYNHiVSkuuBoeL3r6IYTyh2O31w6WSzOoy5uiYJrogeHnHEdTozQboZh8EVvEIaY40RqDxNCzjytnlL2URsOsvMSs9bj7NepnltD8rk0Scwu7ZdGO4QvZTQPeAIOOYFX7FJIu1yd+Ipg6ia5Ae6iINba9HuqfkMaoOOD4CxzTMWmLmj069fgeLiMU0ewhelapyW7L9ej32A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,247 +122,128 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-Add a highly precise C reproducer and accompanying bash execution script
-to exercise, validate, and stress-test the `out_put_pages` error path
-rollback semantics in `hugetlb_reserve_pages()`.
+(This reproducer was hacked up and not meant to be merged.)
 
-How it works:
-1. The bash script sets the system-wide HugeTLB pool to a highly constrained
-   baseline of exactly `nr_hugepages = 1` and `nr_overcommit_hugepages = 0`.
-2. It mounts a `hugetlbfs` instance with `-o pagesize=2M,min_size=2M,size=4M`,
-   which causes the kernel to immediately consume the 1 available global page
-   as the subpool's mount-time minimum size reserve (`rsv_hugepages` becomes 1).
-3. The C reproducer then attempts a shared `mmap()` for `4M` (2 pages).
-   - `hugepage_subpool_get_pages()` requests 2 pages, sees 1 reserved, and
-     requests 1 additional global page.
-   - `hugetlb_acct_memory()` attempts to secure that global page but immediately
-     fails with `-ENOMEM` because the pool is exhausted.
-   - The kernel jumps to the `out_put_pages` error path, calling
-     `hugepage_subpool_put_pages()` to symmetrically roll back the reservation.
-4. The script verifies that the subpool successfully retains its 1reserved page
-   during the failure and returns it cleanly to the global pool upon unmount,
-   proving that no underflow, double-free, or reserve leakage occurs in the
-   `out_put_pages` boundary path.
+The kernel leaks subpool usage and the subpool structure itself if a HugeTLBfs
+mount specifying size (which sets max_hpages on the subpool) is created.
+
+subpool_leak_max_size.sh reproduces this with the following steps:
+
+1. Create mount, specifying size=2M (1 page). This sets max_hpages = 1 on the
+   subpool, but does not reserve any pages.
+2. Set nr_hugepages = 0 and nr_overcommit_hugepages = 0 so that physical
+   allocations will fail.
+3. Run fallocate -l 2M on a file in the mount.
+     + This calls hugetlbfs_fallocate, which attempts to allocate a page by
+       calling alloc_hugetlb_folio.
+     + alloc_hugetlb_folio calls hugepage_subpool_get_pages to track the
+       allocation against the subpool limit. This increments used_hpages to 1.
+     + Physical allocation fails because nr_hugepages is 0.
+     + Before patch (Buggy):
+         + The error path in alloc_hugetlb_folio sees gbl_chg is 1 (indicating
+           we tried to allocate a global page) and incorrectly skips calling
+           hugepage_subpool_put_pages.
+         + fallocate fails and returns to userspace, but the subpool used_hpages
+           counter remains leaked at 1.
+     + After patch:
+         + The error path always calls hugepage_subpool_put_pages if map_chg is
+           true, restoring used_hpages to 0.
+
+4. Unmount the filesystem.
+     + During unmount, the kernel calls unlock_or_release_subpool to clean up
+       the subpool.
+     + It checks if the subpool is free using subpool_is_free, which returns
+       whether used_hpages is 0.
+     + Before patch (Buggy):
+         + Since used_hpages leaked and is 1, subpool_is_free returns false.
+         + The kernel skips freeing the subpool structure, leaking the
+           hugepage_subpool structure in kernel memory.
+     + After patch:
+         + Since used_hpages is 0, subpool_is_free returns true, and the subpool
+           structure is correctly freed.
 
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- hugetlb_reserve_pages_out_put_pages.c  |  49 +++++++++++
- hugetlb_reserve_pages_out_put_pages.sh | 153 +++++++++++++++++++++++++++++++++
- 2 files changed, 202 insertions(+)
+ subpool_leak_max_size.sh | 72 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 72 insertions(+)
 
-diff --git a/hugetlb_reserve_pages_out_put_pages.c b/hugetlb_reserve_pages_out_put_pages.c
-new file mode 100644
-index 0000000000000..9e63fc8997d57
---- /dev/null
-+++ b/hugetlb_reserve_pages_out_put_pages.c
-@@ -0,0 +1,49 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#define _GNU_SOURCE
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <unistd.h>
-+#include <sys/mman.h>
-+#include <fcntl.h>
-+#include <err.h>
-+#include <errno.h>
-+
-+int main(int argc, char **argv)
-+{
-+	const char *file_path;
-+	size_t size;
-+	int fd;
-+	void *addr;
-+
-+	if (argc < 3) {
-+		fprintf(stderr, "Usage: %s <hugetlbfs_file> <size_in_bytes>\n",
-+			argv[0]);
-+		return 1;
-+	}
-+
-+	file_path = argv[1];
-+	size = strtoull(argv[2], NULL, 0);
-+
-+	fd = open(file_path, O_CREAT | O_RDWR, 0666);
-+	if (fd < 0)
-+		err(1, "open");
-+
-+	printf("Attempting to mmap %zu bytes shared on %s...\n", size,
-+	       file_path);
-+	addr = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-+	if (addr == MAP_FAILED) {
-+		if (errno == ENOMEM) {
-+			printf("mmap failed with ENOMEM as expected.\n");
-+			close(fd);
-+			return 0;
-+		}
-+		perror("mmap failed with unexpected error");
-+		close(fd);
-+		return 1;
-+	}
-+
-+	printf("ERROR: mmap SUCCEEDED unexpectedly at %p\n", addr);
-+	munmap(addr, size);
-+	close(fd);
-+	return 1;
-+}
-diff --git a/hugetlb_reserve_pages_out_put_pages.sh b/hugetlb_reserve_pages_out_put_pages.sh
+diff --git a/subpool_leak_max_size.sh b/subpool_leak_max_size.sh
 new file mode 100755
-index 0000000000000..030e1915539b4
+index 0000000000000..226fd2766c4d0
 --- /dev/null
-+++ b/hugetlb_reserve_pages_out_put_pages.sh
-@@ -0,0 +1,153 @@
++++ b/subpool_leak_max_size.sh
+@@ -0,0 +1,72 @@
 +#!/bin/bash
 +# SPDX-License-Identifier: GPL-2.0
-+set -e
 +
 +if [ "$EUID" -ne 0 ]; then
 +    echo "Please run as root"
 +    exit 1
 +fi
 +
-+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-+cd "$SCRIPT_DIR"
-+
-+# Detect default hugepage size to support both 2MB and 1GB pages robustly
-+hpz=$(grep -i hugepagesize /proc/meminfo | awk '{print $2}')
-+kb=$hpz
-+mb=$((kb / 1024))
-+hpage_size_bytes=$((kb * 1024))
-+
-+hpage_dir="hugepages-${kb}kB"
-+SYSFS_PATH="/sys/kernel/mm/hugepages/$hpage_dir"
-+
-+MNT_PATH="/tmp/mnt_hugetlb_repro"
++MNT_PATH="/tmp/mnt_hugetlb"
 +FILE_PATH="$MNT_PATH/test_file"
 +
-+# Save original values for safe restoration
-+orig_nr=$(cat "$SYSFS_PATH/nr_hugepages")
-+orig_overcommit=$(cat "$SYSFS_PATH/nr_overcommit_hugepages")
++# Save original values
++orig_nr=$(cat /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages)
++orig_overcommit=$(cat /sys/kernel/mm/hugepages/hugepages-2048kB/nr_overcommit_hugepages)
 +
 +cleanup() {
 +    echo "Cleaning up..."
 +    rm -f "$FILE_PATH"
 +    umount "$MNT_PATH" 2>/dev/null
 +    rmdir "$MNT_PATH" 2>/dev/null
-+    echo "$orig_nr" > "$SYSFS_PATH/nr_hugepages"
-+    echo "$orig_overcommit" > "$SYSFS_PATH/nr_overcommit_hugepages"
++    echo "$orig_nr" > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
++    echo "$orig_overcommit" > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_overcommit_hugepages
 +    echo "Cleanup done."
 +}
 +trap cleanup EXIT
 +
-+# Verify reproducer binary exists
-+if [ ! -x ./hugetlb_reserve_pages_out_put_pages ]; then
-+    echo "reproducer binary './hugetlb_reserve_pages_out_put_pages' not found or not executable."
-+    echo "Please compile it first: gcc -static -o hugetlb_reserve_pages_out_put_pages hugetlb_reserve_pages_out_put_pages.c"
-+    exit 1
-+fi
-+
-+# 1. Set global pool such that only the mount-time reservation can succeed
-+echo 1 > "$SYSFS_PATH/nr_hugepages"
-+echo 0 > "$SYSFS_PATH/nr_overcommit_hugepages"
-+
-+initial_resv=$(cat "$SYSFS_PATH/resv_hugepages")
-+echo "Initial resv_hugepages (before mount): $initial_resv"
-+
-+# 2. Mount with min_size = 1 page, max size = 2 pages
-+min_size_str="${mb}M"
-+max_size_str="$((mb * 2))M"
-+mmap_size_bytes=$((hpage_size_bytes * 2))
-+
++# 1. Mount hugetlbfs with size=2M (1 page)
 +mkdir -p "$MNT_PATH"
-+echo "Mounting hugetlbfs with pagesize=${mb}M, min_size=$min_size_str, size=$max_size_str..."
-+if ! mount -t hugetlbfs -o "pagesize=${mb}M,min_size=$min_size_str,size=$max_size_str" none "$MNT_PATH"; then
++if ! mount -t hugetlbfs -o size=2M none "$MNT_PATH"; then
 +    echo "Failed to mount hugetlbfs"
 +    exit 1
 +fi
 +
-+resv_after_mount=$(cat "$SYSFS_PATH/resv_hugepages")
-+echo "resv_hugepages after mount: $resv_after_mount"
-+expected_after_mount=$((initial_resv + 1))
-+if [ "$resv_after_mount" != "$expected_after_mount" ]; then
-+    echo "ERROR: resv_hugepages is not $expected_after_mount after mount (actual: $resv_after_mount)!"
++# 2. Set nr_hugepages to 0, overcommit to 0
++echo 0 > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
++echo 0 > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_overcommit_hugepages
++
++# Check subpool usage before running
++read total free < <(stat -f -c "%b %f" "$MNT_PATH")
++used_before=$((total - free))
++echo "Before test - Subpool total blocks: $total"
++echo "Before test - Subpool free blocks:  $free"
++echo "Before test - Subpool used blocks:  $used_before"
++if [ "$used_before" -ne 0 ]; then
++    echo "ERROR: Subpool is not clean before test starts!"
 +    exit 1
 +fi
 +
-+# Check mount stats after mount
-+expected_bsize=$hpage_size_bytes
-+bsize_S=$(stat -f -c "%S" "$MNT_PATH")
-+bsize_s=$(stat -f -c "%s" "$MNT_PATH")
-+echo "Mount block size after mount: $bsize_S / $bsize_s (expected: $expected_bsize)"
-+if [ "$bsize_S" != "$expected_bsize" ] && [ "$bsize_s" != "$expected_bsize" ]; then
-+    echo "ERROR: Unexpected mount block size after mount (actual S:$bsize_S s:$bsize_s, expected: $expected_bsize)"
++# Run fallocate (expecting failure)
++echo "Running fallocate (expecting failure)..."
++if fallocate -l 2M "$FILE_PATH" 2>/dev/null; then
++    echo "ERROR: fallocate succeeded but should have failed (nr_hugepages is 0)"
 +    exit 1
 +fi
 +
-+actual_stats_mount=$(stat -f -c "%b %f %a" "$MNT_PATH")
-+expected_stats_mount="2 2 2"
-+echo "Mount stats after mount (total free avail): $actual_stats_mount (expected: $expected_stats_mount)"
-+if [ "$actual_stats_mount" != "$expected_stats_mount" ]; then
-+    echo "ERROR: Unexpected mount stats after mount: $actual_stats_mount (expected: $expected_stats_mount)"
++# Check subpool usage via statfs
++# %b: Total blocks
++# %f: Free blocks
++read total free < <(stat -f -c "%b %f" "$MNT_PATH")
++used=$((total - free))
++
++echo "Subpool total blocks: $total"
++echo "Subpool free blocks:  $free"
++echo "Subpool used blocks (leaked if > 0): $used"
++
++if [ "$used" -gt 0 ]; then
++    echo "RESULT: LEAK DETECTED (FAIL)"
 +    exit 1
-+fi
-+
-+# 3. Run the reproducer to trigger the out_put_pages failure path
-+echo "Running reproducer (expecting mmap failure with ENOMEM)..."
-+if ./hugetlb_reserve_pages_out_put_pages "$FILE_PATH" "$mmap_size_bytes"; then
-+    echo "Reproducer finished successfully."
-+    resv_after_mmap=$(cat "$SYSFS_PATH/resv_hugepages")
-+    echo "resv_hugepages after failed mmap: $resv_after_mmap"
-+    expected_after_mmap=$expected_after_mount
-+    if [ "$resv_after_mmap" = "$expected_after_mmap" ]; then
-+        echo "RESULT: out_put_pages EXERCISED (resv_hugepages preserved at $expected_after_mmap as expected)"
-+
-+        # Check mount stats
-+        expected_bsize=$hpage_size_bytes
-+        bsize_S=$(stat -f -c "%S" "$MNT_PATH")
-+        bsize_s=$(stat -f -c "%s" "$MNT_PATH")
-+        echo "Mount block size: $bsize_S / $bsize_s (expected: $expected_bsize)"
-+        if [ "$bsize_S" != "$expected_bsize" ] && [ "$bsize_s" != "$expected_bsize" ]; then
-+            echo "ERROR: Unexpected mount block size (actual S:$bsize_S s:$bsize_s, expected: $expected_bsize)"
-+            exit 1
-+        fi
-+
-+        actual_stats=$(stat -f -c "%b %f %a" "$MNT_PATH")
-+        expected_stats="2 2 2"
-+        echo "Mount stats (total free avail): $actual_stats (expected: $expected_stats)"
-+        if [ "$actual_stats" != "$expected_stats" ]; then
-+            echo "RESULT: Unexpected mount stats after failed mmap (FAIL)"
-+            exit 1
-+        else
-+            echo "RESULT: Mount stats restored to $expected_stats as expected (PASS)"
-+        fi
-+    else
-+        echo "RESULT: Unexpected resv_hugepages value: $resv_after_mmap (expected: $expected_after_mmap)"
-+        exit 1
-+    fi
 +else
-+    echo "FAIL: Reproducer returned non-zero (mmap didn't fail with ENOMEM)"
-+    exit 1
-+fi
-+
-+# 4. Disable trap and do manual cleanup to check for final unmount underflow
-+trap - EXIT
-+
-+echo "Unmounting..."
-+umount "$MNT_PATH"
-+rmdir "$MNT_PATH"
-+
-+final_resv=$(cat "$SYSFS_PATH/resv_hugepages")
-+echo "Final resv_hugepages (after unmount): $final_resv"
-+
-+# Restore original values
-+echo "Restoring original hugepage settings..."
-+echo "$orig_nr" > "$SYSFS_PATH/nr_hugepages"
-+echo "$orig_overcommit" > "$SYSFS_PATH/nr_overcommit_hugepages"
-+
-+if [ "$final_resv" = "$initial_resv" ]; then
-+    echo "RESULT: State restored to $initial_resv (or cleaned up if fixed)"
-+    echo "ALL DONE."
++    echo "RESULT: NO LEAK (PASS)"
 +    exit 0
-+else
-+    echo "RESULT: Underflow/Leak/Incorrect state detected! (final_resv = $final_resv, expected = $initial_resv)"
-+    echo "ALL DONE."
-+    exit 1
 +fi
 
 -- 
