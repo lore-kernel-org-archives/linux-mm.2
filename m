@@ -4,114 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B255C44536
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 12:51:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 593E9C44539
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 12:57:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6929C6B008C; Wed, 22 Jul 2026 08:51:47 -0400 (EDT)
+	id 5DB246B0088; Wed, 22 Jul 2026 08:57:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6698F6B0093; Wed, 22 Jul 2026 08:51:47 -0400 (EDT)
+	id 58AE16B008A; Wed, 22 Jul 2026 08:57:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5AE376B008C; Wed, 22 Jul 2026 08:51:47 -0400 (EDT)
+	id 47A5E6B0093; Wed, 22 Jul 2026 08:57:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 39E686B008C
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 08:51:47 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id CC780160174
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 12:51:46 +0000 (UTC)
-X-FDA: 85016399412.27.AA97798
-Received: from mail-pj2-f11.google.com (mail-pj2-f11.google.com [74.125.227.139])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 242474000D
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 12:51:45 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=h1V8DxcR;
-	spf=pass (imf07.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.139 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1C1286B008A
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 08:57:21 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 97C761A0185
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 12:57:20 +0000 (UTC)
+X-FDA: 85016413440.02.6308C22
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 46BF6C0004
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 12:57:18 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=FG8Vnnr5;
+	spf=pass (imf28.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784724705;
+	s=arc-20220608; t=1784725039;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=vbxJv51ewBhlo0MME6tK7srEAnRYCTzOsiJppgEy5qw=;
-	b=rGyu7+vQd2WZk+kHsDQA6OrSCJ1fFfQEA78WYF5N8vXRkUfxpm94rrOr1k7jj/czsQzXAE
-	GCz2ZUluYvc1p9hDxv+qpeB3iQKqUw33rdF9FSwO/jaaj7QBhmTqyQZOQ5bF+RXW1E/k1i
-	HkuSI+FNuS9/CT8uvDmb1aKZTsywjw8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784724705;
-	b=7jHGs0MUKr/H7jBqus+RgPVUaAtbQsaAxPrlNSYEstNIlMnYImKn0lOiUReoC6Q6sQnctL
-	cVIlkZnt520isxgFdxZ5EgnMHVFpdz8jCScN9Y7N01Jv7hUvJbXePfADKQdnC2rCPqOcf6
-	YxG1PNIhjDXczEUu+L9SMCJNwbd2W6k=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=p59Nbp/0h4piYzBzwlGNI1UeD/BfGw1h5BEhep/TnC0=;
+	b=AgQnQIRSganZEWTp+HdeUUqEFu0AellNRRlvaDhLoNDsJjbevmTAgxtdVuN85juzBqQFmj
+	wsogPb6+ZbfzAg6QSgWq4pvIv7Y3RYqlTy8Z4ppDex46DXq3k5dq7we7YY1H878M6L0CjT
+	Qdxc2QWMp7pmT3UR2zw761b8U+KLcVw=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=h1V8DxcR;
-	spf=pass (imf07.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.139 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj2-f11.google.com with SMTP id 98e67ed59e1d1-38e47da25f8so3053062a91.1
-        for <linux-mm@kvack.org>; Wed, 22 Jul 2026 05:51:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784724704; x=1785329504; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=vbxJv51ewBhlo0MME6tK7srEAnRYCTzOsiJppgEy5qw=;
-        b=h1V8DxcRRd5TLf+EV8Ayot+oYspU6mhkOPjvcJTsPcNxbDy66tUVUw+kzi+VQmR8YW
-         REda4Qmsv+jNlugMj5C+yi/5JYH6KACAXIHBGJopJyiCigi/EXOUDA3ji4ucY4i6q9W6
-         3Ncqns4H+4V514BFHCVRqaFdWLgwhTVp0y3pimZyS9C4zU5s+gfJR1S2q9eKTKcO2NZo
-         yH14wTFfzLess9kpXZd2Mw0joKM+XNyaB8wZvC/zPz/URXVaFYsCf6QUibccH1zmjduV
-         ySxp9K3bOflhPLN1AllJsUysG3Elm6k2UQqnzGlqkXmekjp4OYfZq6kaPnVyRiDXJBd+
-         2b5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784724704; x=1785329504;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=vbxJv51ewBhlo0MME6tK7srEAnRYCTzOsiJppgEy5qw=;
-        b=RXjpIIrfCayRVhpcDonT1wSBQXjwzCitqDBt4Bx0P+TFdWkJt/n3nNg9eVBwbARK8h
-         oScbn0Tc+9BPz4YCc9Kg4HfJj29RMTAT3YFDDCdwKrjgCfcDb/B5rROKwsO+WR2rzHp4
-         2/ENFX3dZRktBULulfc2UdDmNgSc9gIh7Py9L15uZOTYvsyCOLIivcy8euu9N/hRz4y/
-         PAQs53TdOsNn8yqPwmBC+fUhpOgFxWZdzU+J31EKyBMVVbjmCBH8ciI2buXDL79FMvgU
-         NEU6WGRKLG+6zQ4NxN5M+VNXL7xdLFvVb7mqt6gb6pIv4/Dy9bLDMezgVDdV4L3Di+6A
-         K8FQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrKSHCLxBEOjpfREDpMP0ylZMmh1LehROxvV4wqbr1fNpCbPoFkRBKb+tlyUqDEKgMoSM9/ygq1xg==@kvack.org
-X-Gm-Message-State: AOJu0YxdwmUN92b6X50gtBdnX/aQZQL8O9yHv0OfbbVjCL3FDqM+/yiM
-	QQ1RzMBt2UooyMtZccVlOwO7+P7Xy0WKi7nxMdPtBOz9R03h+PtT7Zo3
-X-Gm-Gg: AR+sD130pJTcX+/Szu5vTP9lu0xhkHouQBi3T2YolVj43LZxMdG/AeYK47mVtSrgZry
-	LPbN9hw3xolFCiw3VmPRwbJUwDQRa+KgkoEoeSYa+m3jNAtn1dSqTjLxJMSyu6VgS2/NlZc2qhy
-	gx15+gPzZNo28ucOwFkuo4z0gGPR30PjIeGUksb3OnuKEdB7ggGBklqxLLqmCvitKzRT4hGKZAo
-	yw1OoNb+COpBMALfrHroeiAAlJZ/uplme/qdFfL7XJlUQm8NAmBwRLfPMIKXlm9DAMi0pgpBTRa
-	o8bFNRv9GETWZ0qT9t9sJIhSMC2ogG1ZpNf+CfQhAjIKc0faME3T/w7IthjEq3B249EvvB7guZX
-	bTUb0IY5Sdl7RVjnaYgZbInccXbRg6V/HE1UxiOOsjfowTjESDrb5/6iYGDd6NbMTS2kQ9HFL6+
-	z9M2I7RXXh7fvMKw4uSMaQzlMIjg==
-X-Received: by 2002:a17:90b:1844:b0:37f:9ce1:cdb2 with SMTP id 98e67ed59e1d1-38e4b55aeebmr23831940a91.32.1784724704025;
-        Wed, 22 Jul 2026 05:51:44 -0700 (PDT)
-Received: from intel.company.local ([210.184.73.204])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38ea78484b8sm1021162a91.4.2026.07.22.05.51.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Jul 2026 05:51:43 -0700 (PDT)
-From: Wandun Chen <chenwandun1@gmail.com>
-To: liam@infradead.org,
-	ljs@kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: akpm@linux-foundation.org,
-	vbabka@kernel.org,
-	jannh@google.com,
-	pfalcato@suse.de
-Subject: [PATCH] mm/mlock: skip __mm_populate() for MLOCK_ONFAULT
-Date: Wed, 22 Jul 2026 20:51:33 +0800
-Message-ID: <20260722125133.543441-1-chenwandun1@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	imf28.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=FG8Vnnr5;
+	spf=pass (imf28.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784725039;
+	b=mEdpysXwnZLJkN9aPNXs07+bej2mw7kwKcVl6CMnOum5T9Y88IPA4tuM7kPDw6DQY7NA+4
+	Y0xgJSzOxpamgOloHfYdtDJR9V+yXgjUjkee58zU4HGbLFEJOHSgC/zhIRFMGbPohvo+L3
+	0bU8rke17GWI713+ETft1Opj+eDrwCU=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=p59Nbp/0h4piYzBzwlGNI1UeD/BfGw1h5BEhep/TnC0=; b=FG8Vnnr5vsMTMQEAvY86l+uFLk
+	MFr03IMgedD7PxKczlkMDex/jp2DPkTKFje3UCyjtQZZAkg+SjdPknKc3cowMxn2i6EKmGRSHhKkF
+	cJA622u2TDgVKKTu44nTU7Rlb3gfh3GJXCSY6H3Og4K1kpvqIEGvOt+DMqOEiE2rFpXNefa+/Roj8
+	43NDfueASEFzxNzaIeGozY4SiAGGrLXtaxHrqBvXh4GMU4yrHaNYH/N6hl03LbudAPHPTQWK0c2Xo
+	9JK+ej6shPeaCnznYybCTdecAoTPclBpMXdu3dmrgEqvSxsEAIOsa6LDT+fnLE5vOS4WzoaXz2e67
+	4R4wRhaQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wmWVb-0000000Fdb3-3ARC;
+	Wed, 22 Jul 2026 12:57:11 +0000
+Date: Wed, 22 Jul 2026 13:57:11 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: Qu Wenruo <quwenruo.btrfs@gmx.com>, linux-btrfs@vger.kernel.org,
+	Qu Wenruo <wqu@suse.com>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+	David Sterba <dsterba@suse.com>, Chris Mason <clm@fb.com>,
+	Josef Bacik <josef@toxicpanda.com>, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, linux-s390@vger.kernel.org
+Subject: Re: [PATCH/RFC] btrfs: fix folio lock leak in writepage_delalloc()
+ for folios dirtied behind btrfs' back
+Message-ID: <amC-J7yzwk4Z5tHW@casper.infradead.org>
+References: <20260721191152.101118-1-borntraeger@linux.ibm.com>
+ <20260721191152.101118-2-borntraeger@linux.ibm.com>
+ <b226a6e9-fef2-49bd-b17e-9f9b015626c1@gmx.com>
+ <83290932-cb8b-4741-bff0-6a7d8df2c637@linux.ibm.com>
+ <224d56d2-fcad-41bf-afe3-6f5f5108172a@gmx.com>
+ <f12f70e5-d84d-4a9f-ac94-693be4c863ac@linux.ibm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 242474000D
-X-Stat-Signature: nks8t3ii9dykj9axwerp4mf4um5jrw4h
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f12f70e5-d84d-4a9f-ac94-693be4c863ac@linux.ibm.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1784724705-55584
-X-HE-Meta: U2FsdGVkX19/7/Rv+MGQlxxSzrxcMrXlYkH6HLP/lmb5wk9PLeLz86LAcVXLnKA7aRvBrdrAlSUYwZnIzTmtfwmEBp5dKOztDVApqGLQaRcQpnxUQs3k+ExoG3JHMbVKfqUsvdRrb7JfjcKVpzXFKEMt16L5eFDfNLuP3iLHzpfkG1dhiaNqeMFw9WcJAPd3CyxPart4+/UYhXDBC+FlIwvhOWDLiUn80vCORI5nlqziP8euNR8wxecugoJ/yuhpeX8W4bk2Aet6JqxEzR4sHv8OIjMQhWuNcaWu4T8XXHzNLFdf+esFuafJUilsc1mITAdIlyeVl/hoa/VjVqdy2FegUVlgqa8XwufJKe1CqRaPP9I+aV/yTYiErDeFKiLUyRgHTv9RxfJ1hxbQ/IYAjxzl7y2yQ4934LPUblaUTli0rHjRCzCpCZto5T98HZwjRksU1nACpfi/A30VJkgRqByJ+MO/hkgSuwUd0DWuoAp8l0FO9nS+sgnJ48w23BNWMB1YfzaNYKqKF4A//zBh88UB3ciZV28BxyUO4d+Nq8ZMN/xkWn6ozKeQoU4KwHpWhH1uDxhl5TeD6ZckmaWtBHMVxvN9CYK9GvP9FxjlROTzyNYELiARs5Vp5ICVEGoKHqce0fjQg/XBvBGyzxZVeiVNI9p6dW08mlo5ISjnLB84Lmr+7hXQkZIwmj4Ff+vET1RYWzzXOWERS2OCR5ATLoV4ekn4e2i4HLoRxlW5kSetqpytAFmTDhYw5H0b1FiyaJed1xistJ+3NpyY2fo6dd8htBRqw29dLxguvpHEFGmBJKmWYtakV66q/Nj4OBId+7UL0n7AuZ+2hc2sAXA9PddjH7qTp6dXDUC9rT0CRFSwWPwyKnCpwm11Fh56QJI2omoSBOt9upDWRROfVbo2nmOTbf8GZ44j25UQCMI5tMzArYs2EqDl6pOaJcYl8uwQdZg254MpdJ/xLo9c55L
- BAQnglp9
- /UNs4CsmcN+bXRfS31uudrCJ3mf9ktCFcJ0cee/pOQItFsThMe0Zl91ORteUV+WzSXTP04+JVNUzSUAAgnuZxCEkk5SOwXZ3iAv9P8FBNe8haPYSO4dqsdp8Sc3o95eTbsdlJbBiB5vtcmKGUY+pnod+wNBZOpOWuXq+SeUhQWVUvkY0yN+KYVlWPjHge71CqdH6lqCoRPvoc2YvnnSVmomqT6M3ZgfpErmZJuYkeqj2LXWiwmv9bYLJuTq7dAUOlQqDBMhYiu21PeACY4FKrZN8Mv2SCIbMcZWigmwKDd3iTjcsQMaVZRRjG2I4kJgzOnyz9HEb1XkBou1tRUFIgNLZQNSi0Nmr6fwZSs8XlEJ6zcXuEROX+XlYpCNpOle/o+SZs1ERgL1w8dt0sH6h+6S/cmRDlbuhJwdkH3+BlST8oBr+RIEET4hU0m35XKAAx7PlH5roD0ltZMskLJtUMeMyB0K4LMiHXI7AN+8N+0uvmNqs=
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 46BF6C0004
+X-Stat-Signature: 9f7ahfs4xygntesifi5xmyw7chjn1ied
+X-HE-Tag: 1784725038-498211
+X-HE-Meta: U2FsdGVkX18mOCtFGfRozmlSkZzt/P5Z6cjmMICs2VsL4StONHKPlNqPMxop4jZs9FR9p/4fxO666qNmq5MfGcUEyMktbkk9Toia78tbJRnN1I5MzJcToHLWrxkxvTt+yGCOctFiWSS758+qX/w33chQ4XE65/Q6u8PqhajYWC9aTgIvYdNTUZzvcvfrDVCpfPQJXkx1ssTyC8FhigLfq88vV07/Cjf7VAnung2kb42G4ool85l61+6umsu5z6JTBZuX8WUcSCI8WtCznnOFLs58DLQyKteK77IMPnFyBmlobbcdE2YJq/N4VLVKqtiw3RMcEQnRlUAnWsGmYkTOY3HuyO3DL//sDfwV6KeJvwwS8n0SWEUtsLAppF4VmilIop4/Rgw7gk5u6tbVYvYInC8alWGqWwmcUflpK5G6kA0EMPHtfhtgMDWJSr8avNqyDxO9VqfwotFCOtdFocgWT0qFyKaJQkMv0gJdw4aIk4Iy6KVODZdnSH/kEgy0sfOdbGm8dRg4dDp+bv9OJvItLNwjsoqABF54PBfz5lo8BrS74LFT30oaFQ5oTFbAo+rcMBvLNiDvflh2WqzLXVdd17RuXv5uBm1O9FZGzEIt618k1M2Q7iX8qBHx40Ld4Gr88yETstmmNScLw+snQBjYP8+Hx1hhWUFkK4LxhgygL7JyrcJVnAq8PfCufR7NjIFpCl+XH3i/cqZct2E+9lLpyfwPu0htuffof5u01iWFDTVeespXP8b1g2XsRe9edmD20HllQVnSnarthznEADduPug4vFjb/C0UGcqJfKJBl3EawNfRPxP5T2dCEikgH6xWUlhypNM3ic1LgpPDjbLT8INUcQsSsr9aG64gKXphhYEVuiVbWyZEB0UsaKqOOyX55K8WItpndHI7D2/no7NX4VlgB56lm+3Qkv6UmELSzpHKD6UptXduYWEmRbc0UlT9ORllAxwvgbgxj5Jcy5w
+ WKiSeZc3
+ rEz0sY5YedIl0Hh6qDToRVrifgiuBuA0bU3nZiOAiGJMkt9Rgwso9/muaWLTxCjWBmg7XtvdywvVyVeL9IqKtSwTjvpziu5M0n+GLL2Se70D/H752EEb7Bm+0oj6m8id89zjAH2l5qV+w1yzlfCanJZiBEn79D+KkcN5VKzipX8w8o8wivyGexs57ZRS3sv3L1qVCzOFngMnD8pJYoM0AtICWWYSkJylhbrtG3kqk+qpKMDc2A7Nu51TSkFyT8LB141LuVZfnod1sWPvRxjL5Nv09knddBFrHWiW+ppw2GZNYstuMxyXa8arxDUdrHY91o2G+B9JNal2Wv97APrik3Z5vnqHQ73700v8QhEpy4/F7Wno=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,51 +99,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Wandun Chen <chenwandun@lixiang.com>
+On Wed, Jul 22, 2026 at 11:29:36AM +0200, Christian Borntraeger wrote:
+>  *   4. Thread B loops sync_file_range(WRITE|WAIT) on the target file.
+>  *      Whenever a full clean cycle (clear_page_dirty_for_io(),
+>  *      writeback, bits cleared) completes inside thread A's
+>  *      submission->completion window, the completion-time
+>  *      set_page_dirty_lock() hits a *clean* folio: filemap_dirty_folio()
+>  *      sets only the folio flag and the xarray tag - no btrfs subpage
+>  *      dirty bit, no delalloc reservation.  See the 20-year-old comment
+>  *      above bio_set_pages_dirty() in block/bio.c describing exactly
+>  *      this ("other code (eg, flusher threads) could clean the pages").
 
-MLOCK_ONFAULT only locks pages on future faults, so there is no need to
-fault in non-present pages during the mlock2/mlockall syscall.
-populate_vma_page_range() already returns immediately for VMAs with
-VM_LOCKONFAULT, which means __mm_populate() just loops over VMAs and
-holds mmap_read_lock without doing useful work.
+There's your problem.  filemap_dirty_folio() documents that btrfs is
+doing it wrongly:
 
-Skip __mm_populate() when MLOCK_ONFAULT is set to avoid this unnecessary
-work.
+ * Filesystems which do not use buffer heads should call this function
+ * from their dirty_folio address space operation.  It ignores the
+ * contents of folio_get_private(), so if the filesystem marks individual
+ * blocks as dirty, the filesystem should handle that itself.
 
-Signed-off-by: Wandun Chen <chenwandun@lixiang.com>
----
- mm/mlock.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+fs/btrfs/inode.c:       .dirty_folio    = filemap_dirty_folio,
 
-diff --git a/mm/mlock.c b/mm/mlock.c
-index efa6716e4dfb..784bd4bfc3bb 100644
---- a/mm/mlock.c
-+++ b/mm/mlock.c
-@@ -658,9 +658,11 @@ static __must_check int do_mlock(unsigned long start, size_t len,
- 	if (error)
- 		return error;
- 
--	error = __mm_populate(start, len, 0);
--	if (error)
--		return __mlock_posix_error_return(error);
-+	if (!vma_flags_test(flags, VMA_LOCKONFAULT_BIT)) {
-+		error = __mm_populate(start, len, 0);
-+		if (error)
-+			return __mlock_posix_error_return(error);
-+	}
- 	return 0;
- }
- 
-@@ -778,7 +780,7 @@ SYSCALL_DEFINE1(mlockall, int, flags)
- 	    capable(CAP_IPC_LOCK))
- 		ret = apply_mlockall_flags(flags);
- 	mmap_write_unlock(current->mm);
--	if (!ret && (flags & MCL_CURRENT))
-+	if (!ret && (flags & MCL_CURRENT) && !(flags & MCL_ONFAULT))
- 		mm_populate(0, TASK_SIZE);
- 
- 	return ret;
--- 
-2.43.0
+so btrfs should have its own btrfs_dirty_folio() which does whatever
+metadata updates it needs to and then call filemap_dirty_folio() to
+take care of the page cache business.  See iomap_dirty_folio() as
+an example, but many other filesystems also do this.
 
 
