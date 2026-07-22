@@ -4,135 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E133C44539
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 12:36:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA742C4453C
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 12:48:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E65646B0095; Wed, 22 Jul 2026 08:36:00 -0400 (EDT)
+	id 8B0136B007B; Wed, 22 Jul 2026 08:48:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DEEEB6B0096; Wed, 22 Jul 2026 08:36:00 -0400 (EDT)
+	id 861BF6B0088; Wed, 22 Jul 2026 08:48:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB6656B0098; Wed, 22 Jul 2026 08:36:00 -0400 (EDT)
+	id 7A0366B008A; Wed, 22 Jul 2026 08:48:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 87B366B0095
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 08:36:00 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 09B95120187
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 12:36:00 +0000 (UTC)
-X-FDA: 85016359680.16.676E1F4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 3E1BE20009
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 12:35:58 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HyIzudcH;
-	spf=pass (imf31.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4E1BD6B007B
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 08:48:54 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CEAAC1A0171
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 12:48:53 +0000 (UTC)
+X-FDA: 85016392146.13.E85E974
+Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 622681C000C
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 12:48:50 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=tntCcpwE;
+	spf=pass (imf20.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784723758;
+	s=arc-20220608; t=1784724532;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2Jd1GANGwM+PXpSKQ+CRzq/E6/EDkcfhb0HgkIh9hJw=;
-	b=p05NApqKoYsxTGE/BXaGpRdsrnQGeVABIqbzi9L5MwPdadXMInawbfpeFr1cucv5+Nw+Kd
-	hW15NOsbbAMPfF8IhjOFFQkxCVtz2xRhWA6G9QWWz5kTggFoRxnUNvXQVrxxcOoqBgdND4
-	jYP7ZU/ZoFasF+rgKqCcJYk7qMRUrYA=
+	bh=dfnrtyzHcc7q+v7KzgfWL76gnj0hMYo6SrwEr84OSvg=;
+	b=v6LPV2FZIFPE7ByJ+Z28xWn5+CGnedt4vhrxQqs9cvFsM1SqLioxVQxMAZLEp8aGLPzE57
+	uHnYkonWsNpShYRhKWDtt+Rq2bqFCTw0l8+A+KYSezSr2Bo8sfyFOOvwC6/eIT9i9Iy8Vv
+	/lBM+HZ4OH5mBy9IQhSqea7hHD1+cwQ=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HyIzudcH;
-	spf=pass (imf31.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=tntCcpwE;
+	spf=pass (imf20.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784723758;
-	b=Z665JN+AfwOFjAia1GTmChCaMtRS2oxQXqyYYOpF2PyGwC7OtJNomFc0/d+JF9PwkB5Gsr
-	TPxqWi52SeItVp6WrPgojBNUipQrJiqytYzzzjr914Rq2slm/jDu9p788ruMouhpw42r4i
-	wmpRb3Ok498QntCoh1ndo0fwPhU1Azg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6A1AD40DB7;
-	Wed, 22 Jul 2026 12:35:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 003651F000E9;
-	Wed, 22 Jul 2026 12:35:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784723757;
-	bh=2Jd1GANGwM+PXpSKQ+CRzq/E6/EDkcfhb0HgkIh9hJw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=HyIzudcHgwOZMnwvnVThzTbiSoYQgWKiZ7BSA5Nn93yO5ZwK9lei72TD5EsIyvErW
-	 IBdApPWF/AFiQzqCq6bhBEkYP7OBWar0qnqBy6tDn0UVNS/UQDyr4Tr49g9ife1kGG
-	 PjgiL6sCmL5DZQR2/qRy3V6BSx7RPXHJ9QG9Tsm6etiWSMv+PcWkqBXCseFJR0wKjC
-	 2EiLaTBxgsBcsTcEPY6IrLBGKcD5HpS4iTaK+Ep2QcVcZ/xQT6/7WZKjkyW0RbAhX4
-	 2QTChyiE4YyE/kBFyhpYK/tppcL5nZQpL7EuRWN9qfuuxq3FtATsfFiTdrsAKf0uIE
-	 phOj7bGLdPLfQ==
-Message-ID: <7ddb704c-76a9-4071-8969-06fa1403eb07@kernel.org>
-Date: Wed, 22 Jul 2026 14:35:51 +0200
+	t=1784724532;
+	b=w55st7Hocul0y3FNVTcZ6GX1YQg8FFxeA1kTOyCQ+q4VTtqrT7nqQr+1GAoAJe4mZN9Bbu
+	RNbDxma3bBaYUNM77OwFXQMyvqQoF6oTKQIDm64l6JGAxSSHaEHmBhBxHR0+/t/kdGk8vF
+	/WtYE4d09q8XC/p6Ka4IIBxVByUMSRE=
+Date: Wed, 22 Jul 2026 20:47:39 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784724528;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dfnrtyzHcc7q+v7KzgfWL76gnj0hMYo6SrwEr84OSvg=;
+	b=tntCcpwEEhLS/XWXoNqPZperSBZt5F5W/sXXnga+w0LpJtzlyYRmmPtkIVN+6q09sqs/0e
+	MBKLhGzAWfMEScfkDQqN2tzJwcoIJJMaLV/AiGzzB3xoYaQOKEo/ckDrFPJlKrtEDtIl+7
+	+yyHHnZ8vfdChOnyoYqHc0L9ttrvdyc=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Li <hao.li@linux.dev>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Harry Yoo <harry@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Alexander Potapenko <glider@google.com>, 
+	Marco Elver <elver@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	cgroups@vger.kernel.org
+Subject: Re: [PATCH v2 01/13] mm/slab: skip kfence objects in allocation
+ profiling
+Message-ID: <amC6frE3LoWYjTMh@fedora>
+References: <20260720-b4-objext_split-v2-0-2fa7c6f60dbe@kernel.org>
+ <20260720-b4-objext_split-v2-1-2fa7c6f60dbe@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/page_alloc: avoid direct compaction for costly
- __GFP_NORETRY allocations
-Content-Language: en-US
-To: Salvatore Dipietro <dipiets@amazon.it>, hannes@cmpxchg.org,
- willy@infradead.org
-Cc: abuehaze@amazon.com, akpm@linux-foundation.org, alisaidi@amazon.com,
- blakgeof@amazon.com, brauner@kernel.org, dgc@kernel.org,
- dipietro.salvatore@gmail.com, djwong@kernel.org, hch@infradead.org,
- jackmanb@google.com, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-xfs@vger.kernel.org,
- mhocko@suse.com, ritesh.list@gmail.com, stable@vger.kernel.org,
- surenb@google.com, ziy@nvidia.com
-References: <alEz4Chf7Ibyg-ZG@casper.infradead.org>
- <20260714120204.542300-1-dipiets@amazon.it>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260714120204.542300-1-dipiets@amazon.it>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260720-b4-objext_split-v2-1-2fa7c6f60dbe@kernel.org>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 622681C000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 3E1BE20009
-X-Stat-Signature: dsbjgbequ8jfyewb7fuf11uykq6rgzra
-X-HE-Tag: 1784723758-20475
-X-HE-Meta: U2FsdGVkX18PaVtIdpoIYF+WvpZri3UbbGFb9nONIqzl7sSwU135TzfuxguvbWhXOKb7dWMMxLOg8gpWT04igG+/TZfHdv4gxpMYJrFnkdVAexfTmMFdSGrWi1YHPDtpxAnYk/Nl6jnRy7Ja9HbsB4H5vT1M0k1Ykp7nYf4zOQciIMutQig49UmwMuEF5r5B6jzJ59GwFjO4fQFy+PyeacWKmiTMUHtyor7auGZShPa2evydLQjg+nNPPcUb/p9qORoE3majioVWwLDCR6EnERh3laeHNjCihjO5hUaEZXPD5beCa8zrzYpiVFi8qU3jHXRmy8zWTJdK/GP94fLuVyZILuzFTzaVACz7Cvhxi2VFmU2c9YJiQqx0fBrnDmvMy9PrZbvVNtzg1GGP1qyobN2mIfJfo67Zl2Rt+ni15kmyciFzW9d8AOLq7qhBfJlUd7hOpguZvlkGmqsTLi+7oXvY83hxal9zl4TLhgIBGkL0/AQTEeIPy/9Nv9mqk5/wrkIQWunCG15U9O1YcGtHlfGI5YkFVugvVUaWLEt5TZuyEyGZOB5/gxU0AGhI7hu5x/Yt2pIXOaBUr3/w9Ezsh1aN9HmQaz3oDcPkWl7JL9HMiFHjQOMBr2sQ4TfGmhPMZT/RSwN4XDJnD6/d48YB++Sp41QnVyRjs05pqUC4FSQeuhESIiWTKvLKvnWhmauze3Mo4/PEjcvVp1NKiJ6tWLNqrS1Rfz7Udc0uBxywzDpjnf4uYIff1zzgSpDvir0ikxJJ2JAlAH1OuFpr9At/Ch/ToAvvUJJLdngloZC2ICCYEFi/ZaZVDozy0CmjALI3vPUwK+yqQT6Fz5v6g2fsFE9sZS276jmCceksqGEm8hOVHPGrTn5/fzipImMr1C0Cs7c3qHocYhfyc9JOsuGxZXBbnC3dnzzVjUHY0PmdZXg0b/BaVkdjLckB7SlEPBYkFQQmBaK5CydGINihFdo
- RnygqHog
- uAhJ/BRJlspVPUcVCe6vDx6NCtukjfucHxX6j/CeXaZz53mNryynhorlnBi1V1q3Xn7oUMyvTTctWPSrdbjn8K5phX0RHvcp5nmYqVKH41SDaSYHZTghobw9iccWmujemQh/jgGhkxyb8r+ONZ4sNeewZMLKqritg8J/0bkA9wdQX2K/jy1JYiRf8x+wT+W7bhdcYb2ZlXoKhDwcWdCIH020HfZvXbMGE4KcreKl/mmDkCtROS5VZrcU0XfrE6LcvxAGBqF48T1gUXZarcnSVanvkjrqtIk45XC2kU9tU0iITI80X9tmCslgIkHDxi1eLm29V283Yofpm2DNN079/metEH/l9XFjPpe4d1iOkzJrcbBmgrBR1wIzqglLLUYn1GBG5
+X-Stat-Signature: pw171gtyar6s7zarx7yc4zdycgbeigks
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1784724530-822113
+X-HE-Meta: U2FsdGVkX18SpPEssUn7SqjXi+K6yhZkr8W96DzG2NHYL+r787qhiG+heayxicNwCD4vJn4xSnM99v7o9aSwGxAp5NQHuPPPYnuIGqAXm14UyXj+wJbEPp4SpAsF4ZG5CiwnRe51e/S2ka7LibX7Lf4QShMAxrlpLq8NAurACFRA9b+YDR65LxEY0oaosxziDWB5WXj4ryczAF0lXC6AYOVQUlLgqQUUpvWxImITJHqCo5bm7pghu7LtyFHwtB8SRrIDrxzDEq2CFJIKe+vnF15BtydvRm7JySnEvxGrHfEK2+n677lzrBKaCDiT4abS5rKBmm67bKEWEtMCAJuAQKJb2LgHWCIjwuBMMuhUbRoMtUNNcMwkPndf/HrRO7ZgFPUy10SnG56GxCXmo7nOiIDCnFdi+8oemoZXK1ah4kXHyxIaFfbtMFsgJVMHcERul3eH5n2WOjBUn82BJcY7IZvOGPfXSCDp//2WDOUrM0/ct9BXDEBM/hQpLsWGqkyMDiuisLzSLq8b6J5sljtYcwQc604LQvpoVqjUtZktU9r23fYBvowUqREj7I/rj7jvRx1RxM36kxaN/iU4RZahhYMt6a0RMLENgbPMOl9HpdmB8LlW9u3vclNQwX2bOk3gNYpSXkXtlL/Ibc2GzHRpwllWyrNd+aa6aN0BIMmmRL1ex87pd8DW1pXQQNzA6PVebjZtIWDb93Yd0/T9SA0vdZsEbqqNeaJvaSi/2jXGpynSUL1EkUTFOcIGf3ACHqFF0cPm03kqEvyHLaW3YGxPBrkd9okEdywMkmihe46rvE1q8bAL5NlY8BQowPZTU4xJA/k3rR3qmMvADJIDtAu58rFUzDnKrKGeryyqbxK6sMcKIgfDGOyt64jNrBm1vGMecCMEqgGTupFHW41Jsu+FhhhWVz/AnjJcDajs+bymPZvfATEs/ZUPGup6gG8x+wKYtelxGEG+ouK7x3MmIDD
+ miIlql7p
+ 2wGHt04xaQd40Esx2uQFoG+oEWz72L91etzbCUOdQfVXQFPk5LmKI2gYLy+v01OBWNc3zA8tlstPAvGp3qEfTcS6Z6F8u0DE4CUX1A0/pWwiGuU5mrffDPUiRL7grtQ2VwkYUx+tOgcx2Kc/Gp6D0ZEOnopl/mZR4+90X32UH0gTfJ9qI0wWGKngSdIdvcEmH1/i3b2M5NAP2fLjLw4qOJWTfXSEqiQ/Jz3UtwH0+GT07NO4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,98 +92,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/14/26 14:02, Salvatore Dipietro wrote:
+On Mon, Jul 20, 2026 at 04:16:15PM +0200, Vlastimil Babka (SUSE) wrote:
+> struct kfence_metadata only contains struct slabobj_ext with
+> CONFIG_MEMCG, which is then used for the "fake" slab's obj_exts field.
+> If CONFIG_MEMCG is enabled, the struct can also end up used for memory
+> allocation profiling. If CONFIG_MEMCG is disabled but profiling is
+> enabled, it will end up allocating its obj_exts via
+> prepare_slab_obj_exts_hook() and assigning them to the fake struct slab.
+> These will probably then never be freed.
 > 
-> Hi Johannes, Matthew,
+> So things sorta work, but not always in the intended and optimal way.
+> The upcoming changes to slabobj_ext layout would additionally need a
+> proper refactoring to keep working.
 > 
-> Thank you both for the alternative proposals. I've tested both
-> approaches on the same test environment used for v3.
+> However, there's little benefit in accounting KFENCE objects. KFENCE
+> allocations are rare and there can be only CONFIG_KFENCE_NUM_OBJECTS
+> (default to 255) outstanding ones at any time. For any callsite
+> prominent enough in the memory allocation profiling stats, allocations
+> served from KFENCE will be lost in the noise.
 > 
-> Results (4 runs each):
+> Thus let's not complicate things and simply stop accounting KFENCE
+> objects in allocation profiling and skip them in the related slab hooks.
 > 
->   Config                   Avg TPS      % vs Baseline
->   --------------------------------------------------------
->   baseline (no patch)       70,735       -
->   Johannes' approach       156,908      +121.8%
->   Matthew's approach        70,145       -0.8% (within noise)
+> We also need to skip kfence objects in mark_obj_codetag_empty() in case
+> a sheaf is allocated from kfence, per earlier sashiko review.
 > 
+> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> ---
+>  Documentation/mm/allocation-profiling.rst |  7 +++++++
+>  mm/slub.c                                 | 11 +++++++++++
+>  2 files changed, 18 insertions(+)
 > 
-> Johannes' approach (clearing __GFP_DIRECT_RECLAIM early in the
-> slowpath for costly __GFP_NORETRY) delivers the same ~2.2x speedup
-> as v3, as expected - it prevents the entire direct reclaim and
-> compaction machinery from running for these opportunistic allocations.
-
-AFAICS both your v3 and the implemented Johannes' suggestion effectively
-make all the compact_first logic dead code - at least for the intended THP
-use case based on costly_order. It will only continue to do something for
-the non-movable order>0  case. So that's a significant change which will not
-show up in your results, but might affect other workloads (I'd expect mainly
-by having fewer THPs).
-
-> Matthew's filemap.c approach does not help in this workload.  The
-> reason is that the first allocation attempt at max order still carries
-> __GFP_DIRECT_RECLAIM and enters the slowpath with direct compaction
-> enabled.  The __GFP_DIRECT_RECLAIM clearing only takes effect for 
-> subsequent lower-order attempts in the fallback loop, but the costly 
-> compaction has already executed on the first try.
-> 
-> Let me know if you have any other variant you want me to test, 
-> or if I should prepare a v4 based on Johannes' suggestion.
-> 
-> This is what I tested for Johannes' approach:
-> 
-> 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index a63733dac659..6e960c969e67 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -4733,10 +4733,10 @@ static inline struct page *
->  __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
->  					struct alloc_context *ac)
->  {
-> -	bool can_direct_reclaim = gfp_mask & __GFP_DIRECT_RECLAIM;
-> -	bool can_compact = can_direct_reclaim && gfp_compaction_allowed(gfp_mask);
-> -	bool nofail = gfp_mask & __GFP_NOFAIL;
->  	const bool costly_order = order > PAGE_ALLOC_COSTLY_ORDER;
-> +	bool can_direct_reclaim;
-> +	bool can_compact;
-> +	bool nofail;
->  	struct page *page = NULL;
->  	unsigned int alloc_flags;
->  	unsigned long did_some_progress;
-> @@ -4751,6 +4751,20 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
->  	bool can_retry_reserves = true;
->  	unsigned long alloc_start_time = jiffies;
+> diff --git a/Documentation/mm/allocation-profiling.rst b/Documentation/mm/allocation-profiling.rst
+> index 5389d241176a..d02eb54ee8f2 100644
+> --- a/Documentation/mm/allocation-profiling.rst
+> +++ b/Documentation/mm/allocation-profiling.rst
+> @@ -112,3 +112,10 @@ break it out by rhashtable type.
 >  
-> +	/*
-> +	 * Costly __GFP_NORETRY allocations are opportunistic: the caller
-> +	 * can fall back to smaller orders.  Don't stall on direct reclaim
-> +	 * or compaction; clearing __GFP_DIRECT_RECLAIM makes the entire
-> +	 * slowpath treat this as a non-blocking request.  kswapd will wake
-> +	 * kcompactd as needed for background defragmentation.
-> +	 */
-> +	if (costly_order && (gfp_mask & __GFP_NORETRY))
-> +		gfp_mask &= ~__GFP_DIRECT_RECLAIM;
+>  - Then, use the following form for your allocations:
+>    alloc_hooks_tag(ht->your_saved_tag, kmalloc_noprof(...))
 > +
-> +	can_direct_reclaim = gfp_mask & __GFP_DIRECT_RECLAIM;
-> +	can_compact = can_direct_reclaim && gfp_compaction_allowed(gfp_mask);
-> +	nofail = gfp_mask & __GFP_NOFAIL;
+> +Notes
+> +=====
 > +
->  	if (unlikely(nofail)) {
->  		/*
->  		 * Also we don't support __GFP_NOFAIL without __GFP_DIRECT_RECLAIM,
+> +- When a slab object is allocated from KFENCE, its accounting is skipped.
+> +  KFENCE allocations are rare and limited to a small number, so this omission
+> +  is negligible.
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 0337e60db5ac..76acb78f2655 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -2076,6 +2076,11 @@ static inline void mark_obj_codetag_empty(const void *obj)
+>  		struct slabobj_ext *ext = slab_obj_ext(obj_slab,
+>  						       slab_exts, offs);
+>  
+> +		if (is_kfence_address(obj)) {
+> +			put_slab_obj_exts(slab_exts);
+> +			return;
+> +		}
+> +
+>  		if (unlikely(is_codetag_empty(&ext->ref))) {
+>  			put_slab_obj_exts(slab_exts);
+>  			return;
+> @@ -2352,6 +2357,9 @@ __alloc_tagging_slab_alloc_hook(struct kmem_cache *s, void *object, gfp_t flags,
+>  	if (alloc_flags & SLAB_ALLOC_NO_RECURSE)
+>  		return;
+>  
+> +	if (is_kfence_address(object))
+> +		return;
+> +
+>  	slab = virt_to_slab(object);
+>  	obj_exts = prepare_slab_obj_exts_hook(s, slab, flags, alloc_flags, object);
+>  	/*
+> @@ -2399,6 +2407,9 @@ __alloc_tagging_slab_free_hook(struct kmem_cache *s, struct slab *slab, void **p
+>  	for (i = 0; i < objects; i++) {
+>  		unsigned int off = obj_to_index(s, slab, p[i]);
+
+I noticed obj_to_index also does the `if (is_kfence_address(obj))` check, so
+maybe we could use:
+
+if (is_kfence_address(p[i]))
+	continue;
+off = __obj_to_index(cache, slab_address(slab), obj);
+
+>  
+> +		if (is_kfence_address(p[i]))
+> +			continue;
+> +
+>  		alloc_tag_sub(&slab_obj_ext(slab, obj_exts, off)->ref, s->size);
+>  	}
+>  	put_slab_obj_exts(obj_exts);
 > 
-> 
-> Thanks,
-> Salvatore
-> 
-> 
-> 
-> 
-> 
-> AMAZON DEVELOPMENT CENTER ITALY SRL, viale Monte Grappa 3/5, 20124 Milano, Italia, Registro delle Imprese di Milano Monza Brianza Lodi REA n. 2504859, Capitale Sociale: 10.000 EUR i.v., Cod. Fisc. e P.IVA 10100050961, Societa con Socio Unico
-> 
-> 
+> -- 
+> 2.55.0
 > 
 
+-- 
+Thanks,
+Hao
 
