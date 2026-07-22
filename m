@@ -4,171 +4,191 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAD2BC4453C
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 16:02:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32A44C531BC
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 16:04:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7FA2D6B00C9; Wed, 22 Jul 2026 12:02:25 -0400 (EDT)
+	id D7CF36B00E5; Wed, 22 Jul 2026 12:04:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D1A76B00CB; Wed, 22 Jul 2026 12:02:25 -0400 (EDT)
+	id D2D1F6B00E3; Wed, 22 Jul 2026 12:04:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E80E6B00CC; Wed, 22 Jul 2026 12:02:25 -0400 (EDT)
+	id B5EE06B00E5; Wed, 22 Jul 2026 12:04:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 40A636B00C9
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 12:02:25 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B982116021B
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 16:02:24 +0000 (UTC)
-X-FDA: 85016879808.10.85D818D
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	by imf27.hostedemail.com (Postfix) with ESMTP id DF9C240014
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 16:02:21 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=fKCJmYjD;
-	spf=pass (imf27.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7DAAA6B00E6
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 12:04:42 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 10EBCA0A4A
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 16:04:42 +0000 (UTC)
+X-FDA: 85016885604.16.6C75D97
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 9293F180005;
+	Wed, 22 Jul 2026 16:04:39 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ms6o+w4c;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784736142;
+	s=arc-20220608; t=1784736280;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pzURkASse6yjo7NlHguqsNW/r3n17/VuRvVPtz078tk=;
-	b=t59kJ1LAVm1Yer5eMDOob+PKuPRYpXxEULihMdiSYMB978CUeta/dRYzP3KrLd7Q77odSO
-	lpxJUJM8xg6mlZt9Pvq9gPr7ozpDj5150kMYH3AD9ZkHFsK8VpRoUoKZnXSCY6v3Tt9Z3w
-	m7rMnyx9Ebj/zw/7Hh4vqnd+TEmFGCQ=
+	bh=JGI6yPwNeBlQcmkYkwZnOGVunqjOzUuog/BHm26YT2g=;
+	b=YzSp41osGSXeZ2DHNZq8i99FRidghK0+vJ6fh0nwMs/I98qMsZzYhmxrQrF/8g+BispZPt
+	T/ZcCW+Dd7p8f6qXKy1EZOHDO/k9KG8DwH/uNsZFv/VwWs8TF9OWBVIa6PngxMnJ4yzUck
+	mIhT1myEa7ohwRmDMXoXBp8pq6fV9C4=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=fKCJmYjD;
-	spf=pass (imf27.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ms6o+w4c;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784736142;
-	b=Jjst//o2RLdrA9fbXWzqoGlSPKne16hLrXT2tTghi0kzReCrefkzQMQN44qhrzRP2RnL4A
-	35p89XC3ZR89Mr6buvKYTu1WH2KIk6JIYuRyd4zGAEkdtEzgJlB6zAS1BggqB06/Xd25xg
-	hkWSzvuzRT75XRr0b5sg9jpOnFwd+qI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784736142; x=1816272142;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=3YntNmWvXbzd8ZFyw1hNGjXIdKkTKwZiDQdVND7+LZM=;
-  b=fKCJmYjDptjVAIgvfwgNybQslLWhft/FOaJtj2rOPW3PSbGEG7QkhdF7
-   h+Ij4CA7s1dHETK4jrQKbCl6NhygBm16CVBf0fPRXnNl1Mc+K8rs1apdg
-   qrmWgqlXZ4hyevkdl42fYPGUaSIttpvhcyYp6T1PGwXhs6y3u3xPnWCxV
-   KYK+rcf3YV34U3Fbp//uVNDsoG7A88qRwjKnzhR6kUg7sKrObEaGlE+Yn
-   uhWld6Q0gYdVoNIivtOTfiZa5WCpfdvkO/+1nZ/7v5UF8D2NyBrs867vO
-   B/vzpGBMJnM+XdNxHTQGmifIiBGexN49XV5Qyu8tSueqoYT1MqX2+KMXc
-   w==;
-X-CSE-ConnectionGUID: URAPXzL2SWmDsmGgSWeIUg==
-X-CSE-MsgGUID: 5KWSl8ijSrGbc2ZeisreUg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="96891739"
-X-IronPort-AV: E=Sophos;i="6.25,178,1779174000"; 
-   d="scan'208";a="96891739"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2026 09:02:20 -0700
-X-CSE-ConnectionGUID: eltdkOwfQlattSuyxNW0nQ==
-X-CSE-MsgGUID: 2a6sP2ztS++09pdF9LpRxA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,178,1779174000"; 
-   d="scan'208";a="256344594"
-Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.110.58]) ([10.125.110.58])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2026 09:02:19 -0700
-Message-ID: <188623a9-dba0-4229-a7ff-5feb2ef0c088@intel.com>
-Date: Wed, 22 Jul 2026 09:02:17 -0700
+	t=1784736280;
+	b=40GhWa4N93muTeWS2cRFDbQs9dSOzeL1cU1DTfGADNE9vcZXp0p6mKjQvNTF/AA2YxQrLv
+	maCnd7qRziWU5WjujrUsVhByiT0MwARzX+5kdp3IqMdqz5DC435bB+70Tq4cwMk22vRASa
+	hG7kwacoo/+ne7OYkitU10if8TrQv6o=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id B8E7A40DA9;
+	Wed, 22 Jul 2026 16:04:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3754D1F000E9;
+	Wed, 22 Jul 2026 16:04:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784736278;
+	bh=JGI6yPwNeBlQcmkYkwZnOGVunqjOzUuog/BHm26YT2g=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Ms6o+w4c+2Xirt4wfC02ta/k/1aAw+NVhQXCtWhHHBgGhc26HNZ6GokEaoDd/oT1n
+	 1Z4WoxFTQnFlX/5jbkXGg4b0auOB24CqXpo7xPvVMgmywlqaGJXPKO5XCs7UAhrhN+
+	 frCMgd+z7SKYWLV0DCRn1hYlKmvxDbGPdz0M0t48FHDVBH/q8dru6Wzl7Ix7/AqcT8
+	 gehnFY5/MRkKV7Y45Sqdjv3T9DFlx9vLAMdBkUxFFwrOIoku3EDIgyOwrPaaU0OHkc
+	 D0ulgeLOR5tFCS7ytlEEnUrMeRFCrrgUo6xWzkFU+g1g5scLc4rvdvMNmuUo3BJ5sX
+	 Vk/ngokFr4u7Q==
+Message-ID: <aca6e793-c2dc-40cd-b489-80fb638dced4@kernel.org>
+Date: Wed, 22 Jul 2026 18:04:19 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v2 12/20] x86: mm: define pudp_set_access_flags() when
- CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD is enabled only.
-To: Yeoreum Yun <yeoreum.yun@arm.com>, Russell King <linux@armlinux.org.uk>,
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Arnd Bergmann <arnd@arndb.de>, Andrew Morton <akpm@linux-foundation.org>,
- Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Tianrui Zhao <zhaotianrui@loongson.cn>,
- Bibo Mao <maobibo@loongson.cn>, Anup Patel <anup@brainfault.org>,
- Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, Dave Hansen <dave.hansen@linux.intel.com>,
- Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jonas Bonn <jonas@southpole.se>,
- Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
- Stafford Horne <shorne@gmail.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org,
- kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
- linux-openrisc@vger.kernel.org
-References: <20260722-dummy_ptxp3-v2-0-d9e4bad31e0a@arm.com>
- <20260722-dummy_ptxp3-v2-12-d9e4bad31e0a@arm.com>
-From: Dave Hansen <dave.hansen@intel.com>
+Subject: Re: [PATCH v2 10/13] mm/vma: convert miscellaneous uses of VMA flags
+ in core mm
 Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20260722-dummy_ptxp3-v2-12-d9e4bad31e0a@arm.com>
+To: Lorenzo Stoakes <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, "Liam R. Howlett"
+ <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Benjamin LaHaise <bcrl@kvack.org>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Hugh Dickins <hughd@google.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Muchun Song <muchun.song@linux.dev>,
+ Oscar Salvador <osalvador@suse.de>, Zi Yan <ziy@nvidia.com>,
+ Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Lucas Stach <l.stach@pengutronix.de>,
+ Russell King <linux+etnaviv@armlinux.org.uk>,
+ Christian Gmeiner <christian.gmeiner@gmail.com>,
+ Inki Dae <inki.dae@samsung.com>, Seung-Woo Kim <sw0312.kim@samsung.com>,
+ Kyungmin Park <kyungmin.park@samsung.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>,
+ Peter Griffin <peter.griffin@linaro.org>,
+ Alim Akhtar <alim.akhtar@samsung.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, Rob Clark <robin.clark@oss.qualcomm.com>,
+ Dmitry Baryshkov <lumag@kernel.org>, Abhinav Kumar
+ <abhinav.kumar@linux.dev>, Jessica Zhang <jesszhan0024@gmail.com>,
+ Sean Paul <sean@poorly.run>, Marijn Suijten <marijn.suijten@somainline.org>,
+ Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>,
+ Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+ Sandy Huang <hjc@rock-chips.com>, =?UTF-8?Q?Heiko_St=C3=BCbner?=
+ <heiko@sntech.de>, Andy Yan <andy.yan@rock-chips.com>,
+ Thierry Reding <thierry.reding@kernel.org>,
+ Mikko Perttunen <mperttunen@nvidia.com>,
+ Jonathan Hunter <jonathanh@nvidia.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ Gurchetan Singh <gurchetansingh@chromium.org>, Chia-I Wu
+ <olvaffe@gmail.com>, Zack Rusin <zack.rusin@broadcom.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ Oleksandr Andrushchenko <oleksandr_andrushchenko@epam.com>,
+ Helge Deller <deller@gmx.de>, Kees Cook <kees@kernel.org>,
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+ Boris Brezillon <boris.brezillon@collabora.com>,
+ Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-aio@kvack.org,
+ linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ dri-devel@lists.freedesktop.org, etnaviv@lists.freedesktop.org,
+ linux-samsung-soc@vger.kernel.org, intel-gfx@lists.freedesktop.org,
+ linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
+ nouveau@lists.freedesktop.org, linux-tegra@vger.kernel.org,
+ virtualization@lists.linux.dev, intel-xe@lists.freedesktop.org,
+ xen-devel@lists.xenproject.org, linux-fbdev@vger.kernel.org,
+ linux-sound@vger.kernel.org
+References: <20260711-b4-vma-flags-mm-v2-0-0fa2357d5431@kernel.org>
+ <20260711-b4-vma-flags-mm-v2-10-0fa2357d5431@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260711-b4-vma-flags-mm-v2-10-0fa2357d5431@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 9293F180005
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DF9C240014
-X-Rspamd-Server: rspam01
-X-Stat-Signature: b1cyikke8szuphyxqsjtczpqir7hwprg
-X-HE-Tag: 1784736141-135251
-X-HE-Meta: U2FsdGVkX18YEEU6CoMWemmdmwI6X4hXnBP9IJb5NjO0tVLO/K5oQC225+KeHlfrg+LnVnwDak81EexWZkpQoHkFI7oAfHBVpLJQhGOnI/w/iWQNo0Ag1JPCMbQBN6hX225tpsRVfaT78a0f1tquwso9xp1THNbe0REPMywV0tzjatie2oNSahZWE3tWJbutTH63rO8jD9rioT6hpUcH3+1fr7gPYooAKKXJZbfy8Rl0Dmf1LsPq9UQRBjiGd8/5vfbGLHFnUJXsiocFqjE6Ec9g9oH0IkFw14PF9bw05cBrz2FTif+nbUjwP+TN+WoTacTFc4S+VH8Ye0pWwI+nLRdeoMu1OlR0XdxU8mNtMbM3rdeFrLFmafVMCBnGbbz+8/eqYjt+BbxgMD209iUR8cMKNW8nzKDjNkGag3LWTC/rgORf1oHuCDMNFXzQLMkSMjByBatRbC8e0Nooi37HsUTkt9T7NSIn1Xp4XYC3E38UJ/M8uUtB19DjweumxTu4q+91OHPAZQataq4nWnGJFne8BW/gsK9zsORwkUXq1biNtMWXCrD1D/41Ti3U80jz5II7bOZU4pGmDOWu4jp8ndsXXap88CdGJ3+YrNPWHAcEOPecpXCVF5HbQaBHEgiBSC5DTYv0YoMxsI3j63d3MN/6v9vxKM7lHCUp1mO/EnhjOl7YfHyS6xzWmLGRStcNbDhpUMmPCeigQxFIduUWBP3QAsgne4dTSd0PyLT6nw3vY4cMsy88fC6mOFfYEZoBu3wcBdI+z0DxSl1xy5Npnx5F8wzB7grrrfi/85VmUPmz0/hrz99buHUOY6b4DUSpTCBp/O+A5N91YyfU1uIteG1nOX2IiPYMvmxhXLL0F/4c2oinskamTAISEXIOTpcdckQT9BKDI3YaIzgsIk/bmhuH3ECltU5hoaD+3ZZ+84k4lRlyT0HVJJTn8UDSczF976qgbHFMFtwehVVN613
- uiiUKNlB
- BeQJA5tQdyjSh0qlgQFT9oh9gf+gaMPR3Nqb9WQcK7B3qWGifgBbPqOKUllkOprJX/adnvD1OZXB79zjODae+p4H9IOzAFOrrM2Qogb0+jx3vBLfYBmaMBuObF9b/q/CstPDor/MjrXYt/RR01q3xuqXCax5yD48Xsnp1nbLn+vuCYg8aVWZDt98Sam4O5MdwTW0I7/tHfTDJasH3fRknwltC9cKfabtM7OrcEZXOhy2bhREeuLSyakY0OQ==
+X-Stat-Signature: fiknenr8j41c64edeyy8tgfety7k1a7m
+X-HE-Tag: 1784736279-393355
+X-HE-Meta: U2FsdGVkX190RWNAuI6ZyeZAUZ8+FspQpzRV313HYSVFnUzRTgRKqAlltRpHY3aVVRonqv+YsNEXL2jOYzxECG1FJ/xask9Jjy+TG4NGtZOxilzeAjjsNCMEoCfUDsUBfwY/QFwp25XsG4L8PmE/1/7FRuiZwOtLFXPs3MmoICD89f+DH96gbwS8R8zJNSPUWTgDNZpRjjTXQleUE+Y26gmTjBHs7SLQ1LyefkGwGy+eUarNH/aRwpH3znjsl8IZREjeL34+FMHUPvDK7T8IZy5ucg+yaKTIpHeQ2wCt2VgCnyLd+LebL1ohRyKNkqkw9wvegtJ+QKayJTwgITdIutC65DkHVteRdqHk70H4b7oYhHNrQn1hjUS8kRRJfA6/yU7hULD2RPSabRDzIqar6emGbHVRfbiAKsrEV4e6ciwl6Ui+9srVB7eY9hTsHJy+b9tk47c8tQgcMMfjZKqnx4svBa7SW9ruBFa5xYbD8TVC9D5R5B0uUj+CP3YI36G1icwNBCE8R2yuJIQJJPGAlI9oFisb2nBg5WIAzwdiy18iLpGLFepcLv68QL72gFSNAPZ2MB3cZLBXriRoqfGH9tYysK5uUwky9Pth7I7Fuq/bw6ZYr5TCae/2Ff7hJobqhc1LfFyl7ZfxnQkGNKT4W3ye2MDS+jA/q55pUPmjivYk09w9uUgB+I284XrOZh8Hi62fA1JcNszuJTUPLQN6MIyvQ8iyH5EgTdCFV9Nxpbaf3x2kigrkzxLOBPyB7JHUt10ySUNVeqc+wBYdV9a7kApa3BjDN7wWYCvsjiwVgbwr9a84UAflxXjauCXPb2ggea8H5onlOIjPkSCrTyEb1IVdmJVLETEzUgouBpfbPLUpNGGxbdJRgkXrDEv9fDygI9TBmXubFNHhmoiGbDcMnjlgrz6/lhY4EnF3v/5T5o22C1V2juPEb5Ye5VlBhZEKMawGa6tOUyvifJw0mF0
+ C7JfUm5J
+ ZkrkBQs0JtdPzda3SyI8AaRA7XPSDQ/fEsyu/0u5NnjMFk9coGrGyyp8Qw4kK3V0Z6Y2S0TfOgwCS2hxoBRPxMBgKPX8fOvaemOaXg8kISonrs71SO67FxOYoiT562GeJzH41/3xdX5NJJx3YtepEsUj4wGdYgZl/W9ZBjSHTyIoFAPwTF85n9dIk11f6XdiMx1rixDfDBDhySN14RJjPEomaAxMr9BMsrS7v/2nEZO5VSkG94IZ8eSTU+pQaZuuXndW8Tc+IPK4W8cm87oU0N8C7xcj3rw/l/YpfJryx4SJTubtmrZwBhxrZnjh8gUJ2ZnxTYAzkU6Q/gl2fHHdon6ImFUqFZ0ikBCvos+NreqvBx0FNgEhqvGZBQF10BUPcD2V0n1soZXpDpUr89Bs1yPxNKmsqwxSJJ3yQKilILraW7rY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -176,44 +196,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
-> index f32facdb3035..edad847a2ecd 100644
-> --- a/arch/x86/mm/pgtable.c
-> +++ b/arch/x86/mm/pgtable.c
-> @@ -411,6 +411,7 @@ int pmdp_set_access_flags(struct vm_area_struct *vma,
->  	return changed;
->  }
->  
-> +#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
->  int pudp_set_access_flags(struct vm_area_struct *vma, unsigned long address,
->  			  pud_t *pudp, pud_t entry, int dirty)
->  {
-> @@ -430,6 +431,7 @@ int pudp_set_access_flags(struct vm_area_struct *vma, unsigned long address,
->  
->  	return changed;
->  }
-> +#endif /* CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD */
->  #endif
->  
->  bool ptep_test_and_clear_young(struct vm_area_struct *vma,
+On 7/11/26 20:45, Lorenzo Stoakes wrote:
+> Update various uses of legacy flags in vma.c and mmap.c to the new
+> vma_flags_t type, updating comments alongside them to be consistent.
+> 
+> No functional change intended.
+> 
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
 
-#ifdefs in .c files are evil.
+Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-The changelog doesn't make a strong enough case for why this evil should
-be tolerated.
-
-These are also _precisely_ the kind of #ifdefs that cause compilation
-problems. This one is:
-
-#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-/// function here
-#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
-/// another function here
-#endif
-#endif
-
-So there end up being a couple of dependent config options in play. If
-there are compile problems, this makes them harder to find.
-
-What is the _actual_ goal here? Saving 50 bytes of kernel text?
 
