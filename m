@@ -4,88 +4,190 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCC0DC44539
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 14:29:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 702D3C4453C
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 14:31:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 999206B0098; Wed, 22 Jul 2026 10:29:51 -0400 (EDT)
+	id 5CAEE6B007B; Wed, 22 Jul 2026 10:31:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 970D86B0099; Wed, 22 Jul 2026 10:29:51 -0400 (EDT)
+	id 5A2DC6B009D; Wed, 22 Jul 2026 10:31:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8AD436B009D; Wed, 22 Jul 2026 10:29:51 -0400 (EDT)
+	id 442A56B007B; Wed, 22 Jul 2026 10:31:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5D4946B0098
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 10:29:51 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CA2341A0196
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 14:29:50 +0000 (UTC)
-X-FDA: 85016646540.26.C1779E6
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 286FD1A0006
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 14:29:48 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 03CF36B009D
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 10:31:45 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7BC1580203
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 14:31:45 +0000 (UTC)
+X-FDA: 85016651370.18.856690F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 26B831A000F;
+	Wed, 22 Jul 2026 14:31:42 +0000 (UTC)
 Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=LY4eNAqr;
-	spf=pass (imf19.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784730589;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=esJeQ+cJSuPNZsNqpZn5ORmD35v/TLq1sUVvQsnafD4=;
-	b=czGHnK/xGafZx27XIKize9Otlg/IiDe3X7mIgqLjbKF20MWqjBMEQxV7UCtx0+v5NxlGXK
-	oZxtSs4POUfonNzagkfxjaYn3OvVeO5NY//dVigjt/V9jh9e6jkaL2JVFHJwW+a2jtzEKH
-	9OsUoxqTTzZpHlah1PwKAp8iH6oWZzA=
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z312ICh0;
+	spf=pass (imf19.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784730703;
+	b=4l9jhPoPvCjX8kghCQzfL/W5ST0BL4eIob3B5xvtjQXvXrQSVE+rcO3Y/uwuvUrZxzG6rH
+	+Y2ntp7aiOqN3GI4/5eEvGjIJNxIVY7uGujF+BhLeBcaG8yT+fvcqUlyvfOW5qXTbQU6KG
+	RlGLuBryQehEdSN7QJ7IZsRLkXTgWjc=
 ARC-Authentication-Results: i=1;
 	imf19.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=LY4eNAqr;
-	spf=pass (imf19.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784730589;
-	b=TWvzZ0dLmQXXSzlG1H2e84HIryYf8TlvOpxlf7l9Tzg3RzbIXghx7HgqTNKCwSLw3LWjuw
-	BOLdgWeBh9M/Y9K/9Mhp+ZudzkOOTSB50ACCodumJKBUC9XSPScfByAmjj7CHOFbsXBSL8
-	KivwKeumwlnMTnAUhaQnNkSb7ttardQ=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 18DFD1595;
-	Wed, 22 Jul 2026 07:29:44 -0700 (PDT)
-Received: from cesw-amp-gbt-1s-m12830-01.blr.arm.com (cesw-amp-gbt-1s-m12830-01.blr.arm.com [10.164.195.33])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 2591C3F59E;
-	Wed, 22 Jul 2026 07:29:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784730588; bh=Y2eo83WQ5KXIWQ4HG9NgyTmnBmpnXEbXS51MTrxNjeo=;
-	h=From:To:Cc:Subject:Date:From;
-	b=LY4eNAqrFUtIkbYvUFZ5nAL4UyFumbz1yIdqCVGw5Upbu9b+vxRPcMREjKqhyp1gY
-	 4idufJUVCGrnai65nN2cagm/x+5cXN09qdPaTwzqgHdCoY41juiBBxe+XvGFZSzFB9
-	 WB5Lr319cDa9ePsfBeTDrpAmbyfApF7V271BuDSs=
-From: Dev Jain <dev.jain@arm.com>
-To: kees@kernel.org,
-	akpm@linux-foundation.org
-Cc: Dev Jain <dev.jain@arm.com>,
-	gustavoars@kernel.org,
-	linux-hardening@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	ryan.roberts@arm.com,
-	anshuman.khandual@arm.com,
-	david@kernel.org,
-	urezki@gmail.com
-Subject: [PATCH] mm/usercopy: harden bounds checking for vmalloc allocations
-Date: Wed, 22 Jul 2026 14:29:35 +0000
-Message-ID: <20260722142936.3287702-1-dev.jain@arm.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z312ICh0;
+	spf=pass (imf19.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784730703;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=OvPrDFwM1EEVYtQ4pZxzQ4Crg7V635gU058Fwjy4pjg=;
+	b=38ySE4LA3bD17B04JYbWGNXFhSP5r/k1JFElZvEhpW2oBXXcEtUC3+yNR4fILzYlQkarEM
+	j2Eh7EzR+1gNRToQNFKwIK4vSrIbjBv4hbqb1hu9vR4ggrlePrXCZJakbgpW0dPNfpD33/
+	KYpxQQU3lOrTJVdzhQuuRDJeJnnMXeE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 664DE600AF;
+	Wed, 22 Jul 2026 14:31:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 735B01F00A3A;
+	Wed, 22 Jul 2026 14:31:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784730702;
+	bh=OvPrDFwM1EEVYtQ4pZxzQ4Crg7V635gU058Fwjy4pjg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Z312ICh01hwf5PNipjdUbCmTEpxOFlzpFrFpEbvVg2M62vqBeTEwf2myPaFZw7tPE
+	 VB8S2/xH3Cb64UA1VtTgUUNTgWkDHNnMSRIScWWwylFYdqQUJf29ZSBT+8tvuVKFT+
+	 qpgOuQvv4nbvr4jbtsA43T6qNk4ivRr13hGczyw/g2FSRI/UCbh4ijU+6nZylJLPk5
+	 +vUMLKp/zTcjlaGh9h6kCxmkwMXMYDyA4hWh4uxOZC5o0Hhq3C4INZyEa9oR4qk8id
+	 AL8BavBz/vrgJflUQPB3q0Ym1iVOZACXNzbgj3bOumnwJsWuqmyNhwK6KU112+LaeT
+	 oiB3ruF4FVC7g==
+Message-ID: <0c9b4dbb-95c2-4d19-935e-18a45d8aefd2@kernel.org>
+Date: Wed, 22 Jul 2026 16:31:22 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 05/13] mm: prefer mm->def_vma_flags in mm logic
+Content-Language: en-US
+To: Lorenzo Stoakes <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, "Liam R. Howlett"
+ <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Benjamin LaHaise <bcrl@kvack.org>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Hugh Dickins <hughd@google.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Muchun Song <muchun.song@linux.dev>,
+ Oscar Salvador <osalvador@suse.de>, Zi Yan <ziy@nvidia.com>,
+ Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Lucas Stach <l.stach@pengutronix.de>,
+ Russell King <linux+etnaviv@armlinux.org.uk>,
+ Christian Gmeiner <christian.gmeiner@gmail.com>,
+ Inki Dae <inki.dae@samsung.com>, Seung-Woo Kim <sw0312.kim@samsung.com>,
+ Kyungmin Park <kyungmin.park@samsung.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>,
+ Peter Griffin <peter.griffin@linaro.org>,
+ Alim Akhtar <alim.akhtar@samsung.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, Rob Clark <robin.clark@oss.qualcomm.com>,
+ Dmitry Baryshkov <lumag@kernel.org>, Abhinav Kumar
+ <abhinav.kumar@linux.dev>, Jessica Zhang <jesszhan0024@gmail.com>,
+ Sean Paul <sean@poorly.run>, Marijn Suijten <marijn.suijten@somainline.org>,
+ Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>,
+ Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+ Sandy Huang <hjc@rock-chips.com>, =?UTF-8?Q?Heiko_St=C3=BCbner?=
+ <heiko@sntech.de>, Andy Yan <andy.yan@rock-chips.com>,
+ Thierry Reding <thierry.reding@kernel.org>,
+ Mikko Perttunen <mperttunen@nvidia.com>,
+ Jonathan Hunter <jonathanh@nvidia.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ Gurchetan Singh <gurchetansingh@chromium.org>, Chia-I Wu
+ <olvaffe@gmail.com>, Zack Rusin <zack.rusin@broadcom.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ Oleksandr Andrushchenko <oleksandr_andrushchenko@epam.com>,
+ Helge Deller <deller@gmx.de>, Kees Cook <kees@kernel.org>,
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+ Boris Brezillon <boris.brezillon@collabora.com>,
+ Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-aio@kvack.org,
+ linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ dri-devel@lists.freedesktop.org, etnaviv@lists.freedesktop.org,
+ linux-samsung-soc@vger.kernel.org, intel-gfx@lists.freedesktop.org,
+ linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
+ nouveau@lists.freedesktop.org, linux-rockchip@lists.infradead.org,
+ linux-tegra@vger.kernel.org, virtualization@lists.linux.dev,
+ intel-xe@lists.freedesktop.org, xen-devel@lists.xenproject.org,
+ linux-fbdev@vger.kernel.org, linux-sound@vger.kernel.org
+References: <20260711-b4-vma-flags-mm-v2-0-0fa2357d5431@kernel.org>
+ <20260711-b4-vma-flags-mm-v2-5-0fa2357d5431@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260711-b4-vma-flags-mm-v2-5-0fa2357d5431@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 26B831A000F
+X-Stat-Signature: r45dn6qhzz1wrm15b5ypczhyjhwot5dr
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 286FD1A0006
-X-Rspamd-Server: rspam01
-X-Stat-Signature: 3eztc47rszr3o6w1334pg7gnxcra6wxj
-X-HE-Tag: 1784730588-264289
-X-HE-Meta: U2FsdGVkX18Qk0OITS+9g9Sna1LmWu8RE248qbSqgVDGbT2Lji733AixB8oqxqjPfyhWdFOdDvk84BSMvJXBAxuwzV0u3+IDG53txXlJrM092cp16tqr36kRJEd7Ydrvs7v80K65swMItGIdeG+5JiPqgSdq4rzQPG3ghs/jmvAZ0u5skfPYXx+QyvCZ42dXqkxhBDOpE1FVM2kRFdljM5aMEjQTG0r3fJDDjmhcqbqk60W/G8XoEKvGY4h9xv+1rESeeyrqNuaiZfmwR8BGdX54dK8zMUXsH0mAWlXcna0zaU89V539ZMUleMfdj4g6cUlSA6Tou7TDqM6xbA9jzlscM93kpL5VWTnkC4GM1fHwpsekT0dlkar770ASlr7FkIs+QFdLGlFosFUCKjZ4EoyobB6JVOHTxziCO8QImbI7uw7JjK3fJ4yJthDqca0bLkPYr5wn6aTQF3DBQ+XBstTNvcAQ6ozui0FT0xCGTl7+l3M+5fKVVXrSHLe6/lBh03sa1HffE2KIL9s9ovwLIX+4eSDglORPh+qIFXGFTSZPWLBYPRtA9BXg73DCu8F4MaZY21t+IJKK/lO9PxXhoY2zqieCW0wnonCGnemeIw7/lvtlZywW9dqEQlu7fzLboPvtXjVfA0j5VIbP0ZCnIeFehdnR0cYeaKtFN/DZ9SYNwgFhMqBV1v1LvxWQ64TUvCsdAWD7vQFZ7EjzeAsHFGWI1M/07KsLEppwDEFgkclqVGHeHO02bQulNbankw7L4J5E+2Nmks+4QXC8f7bWUMNcSdPXF+S0GyD5VjOai7WkuFrBlppabEIRXp6XDGXtQAmY0o/BYqso6di6ILJt43DtYdm2aNzT7LU/YKx72bHNvVfvxdigGOdzhpKKVmTAihU0COYNdbwvECAtOliDl5m8EacC6YppAGi+dvZtVhhAWdKm4VFVR7TT8d3xPqwSMjZGMVEqG73aupgdG0v
- WaBRlDFG
- eJEMCe5zkqZYlNtlV/Cu/pG/5AfayyiubO9zKqxLH5c3zPZDlO/nc21CI/6lqOtuv2iF1krW2TsboD1Q4QHv8WB5VdtUh1prMPnI4kOMGtvybUnhj+5pkle5CeVlFSM5lnimwaTLanxtCsV4/hUQVcohHMz17SVWokmFYLNorccDbrNTS6AHKBZzAmpE0WWEwuSlajuDvDSeNxp9LKhj9PGD/MzjHC7NH16FmptHnd2KHDftXbcClUDnnXw==
+X-HE-Tag: 1784730702-475626
+X-HE-Meta: U2FsdGVkX1+6+lTY9oD1XwTVXTnhLxmchrJ4PVrCrFBTlubEdtEDSbSkmWtEzTpgC12c36POMk+IDP7Ok7WmgYON7ZaWC5f1Y0Njlz+yZtA5yO4zxJDCZmw50xqnxeIGtpr3LD8Lepb0ITNc3LkHhUECOBywFBvio4oSHKeGtSz1Fd9Hjbsmj5iTPtU5m56c0NujQqPrDU5cGWNGbo1inxYMKHFHDfc4Mdk+syJ59gcn4OOAtdSl3h5cZgqOVuwAORZf8yQIPrCcAl6Lq9kDdUoOD7urCglgLbP+xkC2q+HaQLL/RWFgIzqz+ppNm5R9HIgXghgAA4nI60g+aZNjqEGG0xRJnENnv+LCSbZTpS9ciSCuE9w1wIRA5XSB8FLGUBe9HpWvvmwhsVbUueT1BDvHWm73NaPysWOjAxyQR2klJdVGB3yu9s/+aMCj2Mq7WiSlojM0/lfSdVDZWLxLRh+XWHmLJVOe/h2wnpZcLKwzX9mnibETNXgTWXcVRmlMS+JimMMCVLo5QIb9egbXH2sFp2WM0NI5fOfqrVlKAe5/n8AllAiH+XK3cS21i+tY9cKdb1RVBfZJCGS/+Kmk5gZP0XjUDH0rZOE1p9gmge3bl9hrUiPElAgg/9RxOpjya39c8rZXFkT2Hs28FXXp3QpxZltoRth6RVJHE6+Y9jAfDkD1D4I+mqwWYqOywlpbKmInD4cOOFGN3u5Vg/9Jze/br+7meekJUXW4PwPobFs542O7E8rTrMK9r9l6TlNS/Btb7sQrwQmgqkF0rkQTMJP28r74ql8VFkKbPLok+T/EDVvoaoYzTkx40EAjufboboqspik5qybuWYrHnlGMjw1KlAIwJtDtbn3Vqb7F7yxVGVhSPNK6tvFfT/fMLB1oheKeQkO5I5bWNr7TF4U73BdDdcwNcZQj5XpOlI+BgTt0e1HxwjAAlPe0USRvFhXqHNw8pWLzSjjsf6CCa/l
+ hO4Hn/5u
+ RRij/oP+45qRZR0/hTHGknHXpFnDZ/auC9MDdN3NvezUMEfReqIpJBh2r2rTBdWBOxd1Ml3LvqOwhHl4fi8tGRaibaSgBfbidPg0O0sCEajKjyLELfEUITK9/4x8nnbBr+ygaZTAD7HRWvGq0x3IWE4HJAzyYbcPFrOc2meOu6NDDtb8Xy7yReCnqxBXnbYMr0I3PMY6OlO++jf4Y9VS/3HVozTtb9JQVg0rJfwxePs3GgBUAGoFVnBce18DpgcyK8lAqflTRsLa84Tri/Aimlb1nOpydgvT5pjq9xEekOMxdTckZgtApaPNvUgAvWCONv4/YJVHBgc+qbXxWWRRqkiUjb0WJ7fKD3xtJ9WBN2YKTgunreNzNvAFwhntb2ZZLMjH9e+eg3JeOIwAp5Y7gdLAUTe0a+TzqkCK8WVjiWbmjkR9uQDRZa3wUlZhym+XhHNZwRh9fEC+ibjIFU5uwY9FHew==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,59 +195,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The vmalloc allocator stores the actual allocation size inside the
-vm_struct structure. We can use this bound in usercopy instead of the
-page-aligned va_end to catch usercopy beyond the actual allocation size.
+On 7/11/26 20:45, Lorenzo Stoakes wrote:
+> Currently mm->def_flags (of type vm_flags_t) is union'd with
+> mm->def_vma_flags (of type vma_flags_t).
+> 
+> As part of the effort to convert vm_flags_t usage to vma_flags_t (in order
+> to no longer be arbitrarily limited to a system word size for VMA flags),
+> prefer mm->def_vma_flags to mm->def_flags throughout the mm logic.
+> 
+> We update dump_mm() to use the %*pb format which means we make no
+> assumption about the number of VMA flag bits on output when outputting
+> default VMA flags.
+> 
+> No functional change intended.
+> 
+> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+> ---
+>  mm/debug.c |  5 +++--
+>  mm/mlock.c | 13 +++++++------
+>  mm/mmap.c  | 11 ++++++-----
+>  mm/vma.c   |  2 +-
+>  4 files changed, 17 insertions(+), 14 deletions(-)
 
-For vmap, the requested_size field is always page-aligned since it maps a
-certain number of pages. Same for vm_map_ram (alongwith, not even having
-a vm_struct). So the check is only relevant for vmalloc mappings.
-
-Because there are early vm areas registered even before vmalloc_init,
-requested_size may be zero. So also check whether the requested_size
-is set.
-
-Signed-off-by: Dev Jain <dev.jain@arm.com>
----
-Applies on mm-new (3d18f3499c48).
-
- mm/usercopy.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
-
-diff --git a/mm/usercopy.c b/mm/usercopy.c
-index 5de7a518b1b1c..772681aff8477 100644
---- a/mm/usercopy.c
-+++ b/mm/usercopy.c
-@@ -176,10 +176,28 @@ static inline void check_heap_object(const void *ptr, unsigned long n,
- 
- 	if (is_vmalloc_addr(ptr) && !pagefault_disabled()) {
- 		struct vmap_area *area = find_vmap_area(addr);
-+		struct vm_struct *vm;
- 
- 		if (!area)
- 			usercopy_abort("vmalloc", "no area", to_user, 0, n);
- 
-+		vm = area->vm;
-+		/*
-+		 * Mappings with a vm_struct track the originally requested
-+		 * size. Check against that rather than the page-rounded
-+		 * vmap_area->va_end so copies cannot reach vmalloc tail
-+		 * padding. vmap mappings are always page aligned.
-+		 */
-+		if (vm && (vm->flags & VM_ALLOC) && vm->requested_size) {
-+			unsigned long size = vm->requested_size;
-+
-+			offset = addr - area->va_start;
-+			if (offset > size || n > size - offset)
-+				usercopy_abort("vmalloc", NULL, to_user,
-+					       offset, n);
-+			return;
-+		}
-+
- 		if (n > area->va_end - addr) {
- 			offset = addr - area->va_start;
- 			usercopy_abort("vmalloc", NULL, to_user, offset, n);
--- 
-2.43.0
+Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
 
