@@ -4,84 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8975EC4453A
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 20:20:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB5CCC531C7
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 20:22:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4DB0E6B00A2; Wed, 22 Jul 2026 16:20:46 -0400 (EDT)
+	id B6D656B00A9; Wed, 22 Jul 2026 16:22:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 464EF6B00A4; Wed, 22 Jul 2026 16:20:46 -0400 (EDT)
+	id B1D776B00AA; Wed, 22 Jul 2026 16:22:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 308696B00A6; Wed, 22 Jul 2026 16:20:46 -0400 (EDT)
+	id 9E65A6B00AB; Wed, 22 Jul 2026 16:22:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id F275F6B00A2
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 16:20:45 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6F1A7C0285
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 20:20:45 +0000 (UTC)
-X-FDA: 85017530850.26.52113BA
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6D81F6B00A9
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 16:22:13 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 012E21C0478
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 20:22:12 +0000 (UTC)
+X-FDA: 85017534504.21.8F9361F
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	by imf09.hostedemail.com (Postfix) with ESMTP id BCAF9140008
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 20:20:42 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=SNxsNMiZ;
-	spf=pass (imf09.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	by imf02.hostedemail.com (Postfix) with ESMTP id 67EEA80002
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 20:22:10 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="UbN/z7A4";
+	spf=pass (imf02.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784751643;
+	s=arc-20220608; t=1784751730;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CPvnSwlo/21AAoFc/5ntGQLtjYyWcNx4/mbJQiNHpGA=;
-	b=mHiLCsBMnjEWwTY6nG5dq4xQWQXcZ1mEQ9Uqx//Z2z8nqO83fy7Cb860WELcOR5HNCn52X
-	a7tnNtqK/psiZhf+acX5kAB6C0ylfab0j3rootRfIGmPFxIl+8DaXtzhxP0ptfSTcXGLxy
-	XJqmpGEvq4oUhR7HG9UZ4jbTacFhAhU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784751643;
-	b=J4vuXalkiOIL+mjfA3eKYK6DvYdeLDV4UjERQVAS+ZtjZZIYClPoYuMP6l7uSOX5Uybxns
-	3Ez0xx35b2ESMU8X3ETxUx5XxMFDYzM6WVd7keyEXxgzPaPU1JrooNjjDt40ay23ezzUV4
-	uKgDO7h35Enf1SpLo9qZ0inM/wQP0/o=
+	bh=C07OTvTr7coVCVH6Y9d+rRwSbozP4VPBHbTE6ss77ds=;
+	b=sJbMc23IyhYKzcImiZqL9GXW7bOyIR3ZLsK+eLNoWhNE0c1vgJooPzO0zvFHDF0LOK20tn
+	c5gN8jkHVnc8QgnAIjrgDIVeKn7uCsmXZGZhS2FTLuGr14hMvBfba542ecWryInSBYdsUY
+	AwQMXugIoSau+w+zk+aJanAvrCDL0I0=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=SNxsNMiZ;
-	spf=pass (imf09.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	imf02.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="UbN/z7A4";
+	spf=pass (imf02.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784751730;
+	b=xxVf6JWQAQd/6+QFviiZ6LYo7TWvaMyBJMi6mXG08btrr2XtLLWUNuqexb5GEhDz7pOhQy
+	jjcvlXK8THNsKFPd10/PmNcyyZF/xSOxjXuXAUQaaeNkrX0qEOC5n6k8l0Csouu5XwYCJW
+	FQwDEzwg5XxcGdlc6NoAQ6vuX84Wltg=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784751643; x=1816287643;
+  t=1784751730; x=1816287730;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=JGaQKmk/1f26nF/+nvxjfYdWz6Jdt3Ok7POmfjc1hRA=;
-  b=SNxsNMiZ12kdonZvE2/+Fw4LOLDyYJZM73fXZzPgezWjT60DKg79Omqj
-   1f04tz9jSOiKpD0uCUdF+2VUsv0sAlEZ8JVPaQpAC/rOw4NuR/cBzdmBL
-   +L4OenTcKaCe3xoKKSAr5t+QTbAqQsA7btoVyBvQcPKTYRz+SDYf49rt2
-   nfYI9Hj8fO+LFi5qFWdjsCC95PiM3jgE8DRzoCMMAmn3pjSJQYjb4j+/g
-   VvxJVABsvndSFyfrek1qX7U1hv/qYXg5ZDNdxLilIm03pQ2cOo/lCrpSM
-   1JvJNY16eMECO3QTS9eiL+FoNYIuulJp/MQOq2AqpVgqasJpO9jAZP2zX
-   w==;
-X-CSE-ConnectionGUID: YAWBcs2qT12OR/fddm+ecw==
-X-CSE-MsgGUID: hE2iZherT3GnG9XcQ0UulQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="85488984"
+  bh=C07OTvTr7coVCVH6Y9d+rRwSbozP4VPBHbTE6ss77ds=;
+  b=UbN/z7A4VAlcx0eGzTRYFRBrPlnh50l8rqDy7Ko8Gz8+W3Tc9//gfu2D
+   lUv6kBziDFQ8/cEYJoVgz5mwrfUHpFYwTl0pDz2WdCO2emF+2CC3kIbrY
+   ecKaiInneoQZNoxJS4JaH6p/xSdg6esYiaG4L3NQhwJWfcz+L93keTxea
+   FxQR/S1bdaPJN9bdzyFdeDeeTy5u27w1at8t9AvqPFQfKwhnmHhxpo1GD
+   /sTBNX6gyIEqKIduuQECu2nfdUgyzXX+bsWz+kG7FPYneILDlDYiC5EpQ
+   EAqkuPOc6TsBIuqdUv2j/UHL7YAl0hJzZqQ8i63d2AwsjgJ25jQ+LauQE
+   g==;
+X-CSE-ConnectionGUID: 2ouTaiG+RDGk5UCNnuQx5Q==
+X-CSE-MsgGUID: yT/cj0feSMmyl8g7tK5/Hw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="85489110"
 X-IronPort-AV: E=Sophos;i="6.25,179,1779174000"; 
-   d="scan'208";a="85488984"
+   d="scan'208";a="85489110"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2026 13:20:41 -0700
-X-CSE-ConnectionGUID: R4FecRX6TXioPL2/MbQm4Q==
-X-CSE-MsgGUID: Hfdmu0XVToqbSJhXxxcGdg==
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2026 13:22:08 -0700
+X-CSE-ConnectionGUID: j/27Y88ERYO041Pa3i8rxQ==
+X-CSE-MsgGUID: whhMVyXKTNOu5lad8draKQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,179,1779174000"; 
-   d="scan'208";a="296397967"
+   d="scan'208";a="296398206"
 Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.110.58]) ([10.125.110.58])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2026 13:20:40 -0700
-Message-ID: <33c774f6-2750-4831-8eee-e43dc471da32@intel.com>
-Date: Wed, 22 Jul 2026 13:20:39 -0700
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2026 13:22:07 -0700
+Message-ID: <3620750c-54d7-45a0-b067-bc813dd3cd9b@intel.com>
+Date: Wed, 22 Jul 2026 13:22:04 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v2 13/20] x86: mm: carve out the generic compile-time
- folded pgtable case in effective_prot()
+Subject: Re: [PATCH RFC v2 14/20] x86: mm: skip pud setup when using generic
+ compile-time folded pagetable
 To: Yeoreum Yun <yeoreum.yun@arm.com>
 Cc: Russell King <linux@armlinux.org.uk>, Huacai Chen
  <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
@@ -106,15 +106,17 @@ Cc: Russell King <linux@armlinux.org.uk>, Huacai Chen
  Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
  Jonas Bonn <jonas@southpole.se>,
  Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
- Stafford Horne <shorne@gmail.com>, linux-kernel@vger.kernel.org,
- loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org,
- kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
- linux-openrisc@vger.kernel.org
+ Stafford Horne <shorne@gmail.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-mips@vger.kernel.org, linux-arch@vger.kernel.org, linux-mm@kvack.org,
+ kvm@vger.kernel.org, kvm-riscv@lists.infradead.org,
+ linux-riscv@lists.infradead.org, linux-openrisc@vger.kernel.org
 References: <20260722-dummy_ptxp3-v2-0-d9e4bad31e0a@arm.com>
- <20260722-dummy_ptxp3-v2-13-d9e4bad31e0a@arm.com>
- <d16a8412-acee-4c21-a126-f570d6306983@intel.com>
- <amD_5r04mzMoZ0-r@e129823.arm.com>
+ <20260722-dummy_ptxp3-v2-14-d9e4bad31e0a@arm.com>
+ <0ea931f1-4801-4d32-b6ce-4787a8d3daa9@intel.com>
+ <amD7ab_KuJPdBQBh@e129823.arm.com>
+ <6f5060a7-0a64-49fc-81a3-ae88729ef794@intel.com>
+ <amElnEbvRTjv2hyU@e129823.arm.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -160,17 +162,17 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <amD_5r04mzMoZ0-r@e129823.arm.com>
+In-Reply-To: <amElnEbvRTjv2hyU@e129823.arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: BCAF9140008
-X-Stat-Signature: jwg3bneys8u8hmu9r34db9s9j6wzo1e1
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1784751642-973016
-X-HE-Meta: U2FsdGVkX1+/8YszPXLaO+fe8w4Lps3b80DRZ08DPOBzqo/wdxKU7rNh9FMX9LFvUSKyQkmYFmuk9lAEGgek36ZqkAjmC3adYG9tZDVezz7dcEjeZqQqHeOXjN6FwLAZ/yCmfFi/nder01SqWYQLRHUui7Vd95w4ItGuVUICP/NOBcZp4/evfZXaLJZ93dTea14JubwsPO3ZnZduMFhp+Nqn5JVtYq+2vuFuVzz0T3RrIbsWsxYFKR77RcxmK4ei+MRdGijU+zX07zaiYOfqLBP63cYrvoUL47NM47Tym0MBmJpYOhf/C0Beb5Ty02ncUgPrzceSY4z1JWGcU1/GxMXzr6YuMGvCWmfWm492WA9NkecXHLlP/TPwB3EWFxnOaNW4FlZQOYIRbdc6SD43WuPyhhNFKORRpyGo84P858dIkewWlM4dDbLP7XVyi9IpVzM573P9MOWI/RFthFmcgX2nBe/aIAFL5Nty8lYyKQOOoUxQ+Zl6JZRxDz2yfsjMK2C0XuBCL+lYJHsKFjI7ER+EWP2a1bLfeAvIOn83O0S14e3Av90LGM0zcFRsf9ze7ApAwn42a/Lv9yRJSAqNt895uqdGdVrashjLnS5fMAeJ4q0mPUl0tNMSpDQGaedEZl+KGEXddCSgEcMD7eQbnPyIfFntkPgtluZTSRPHowMSassREQycuHa5Pz/NdmrznYif5zHj7uJywFH3Q3qC192kuQcKxKzGfddhHFRnIyOeh3i15F8KIeY5pFzBLpzUelFWejzmL+gmq4xmfDpNiMmo0DhWyZL4TECzCl7556n0E2t8jcvoCaqXlbXet0baYWZXNxg2AAU+SZgquCckEZBrehG8gmpYEdWoevcXqDc2+0ylNq5mZR5Fvh5dqvGLfh4SaZR4wCj+3YQYg8h3pecNUhsNGkKJVfUBvCaE1V6SG7bUWAUxiJoxVCTji/yuNQvfCrw6amimIQ+PurS
- eH3AIytt
- YarHc4z82ublnjTVeAiJmteFNYCLKRSn9ReizQfZg3a0L5AnIEW1leMqohvsLjOrG2/ybax/gt4pPKHPKyn1vATe9pDux3G6LDVLQgmnHgzf8xbP4ZpBg2+fGKQMHERleENV5WQteIgskc8QzppoPuORwA9iyLVLsmof/2zyCXzRSev7X9I6BfWbpPRUg2apShlVq+Z5ondj6fqtvetWZHC1NFJMuJAABiMq98aYCCgZaYYASvZeGXxMnPg==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 67EEA80002
+X-Stat-Signature: i5ctgzpznx5mcoc9jo46dzwywyw99mba
+X-HE-Tag: 1784751730-679978
+X-HE-Meta: U2FsdGVkX1+/y9AKtFR3AQLjFct03OouSTt7qp0X0Con1YCG3J9niFn6hnki+DDvuaxLPge3OWz+UC8Q/bdknFanZFdm8LhDdVE90ViPcun1xfP6ELMG32oiL6C+B8mIBb8K2SXX3EBR0bwY6+QCUHWPNu13U3rJjI9LcH/V3jw+kqH3MI90M6Tx8+fsnR339CUJWfh4yDd6PXtBy2drONIYGb4xXHCsimwZd6bA9/RmxTRm2Xq/AEuw/Wzlq31c/Nrp7ifpFXVLDNIQ5QknGHZ3I4KA5zbeZQWhuEe2XvbiA669i5L+cfNFXoT5kvOYif/8/0bjVH/tyI1i37BOW4JOMwRLA//zeP6tIUUx+T7zt9/RiRruGmkq+/SfM6ifscba3b0Tx3F1XZGuMi1q3pvT8iIPz3Wawhk2+po+ZUPRtY4PzqqtqDr9rFlx9smBhBO4ZfMP7prDrentrQw1sGl+2Cchjse11n0DonFntIemezuHREoGgFPFvrTA31d6sB4a7up8PTGKOrvmduezKA3OPJEynaCJuzfNnmQpTO0S1mosrmGRjPYwztX+bLivsLKKmEgfMlOxP7bO6JNAkhVAE2SE58mX8+zJMM4Mhn/+Oz+woaj/FEXET2B9g1GM3LJ9pU30NwbteGgVV3twvJnoaCUk16sPhTVorcBVMSGa6G+E/H3YZPB0FrZb8y/ndTUq873/K3Rlp2777c/7ZV2eQKjMOGAld1MGil1FnAnL6szmSjmWj7FNGQyvAoawGU36+4/Z54Ee46YwnLcup1DDOLtqJnRC1ZkL0GplNzyeh/fEMEf9Nn5wlr4fz1l37/bM/2eIUcadorynRerylJUZekMBu0SzVhTtjB5ZH7AgheDg8VH75RYCO8VgNXtkhigWqb1hsLzt07eytq2xFy+6H6V00/zU/xLWE2Gqv76qiSN2MBBXvg+Ox5SsX5vVky2C0fdCpuabVtF4u2G
+ KaEM6G7L
+ D/1BCQsRhMVGl/9dgTz456M/j7UWG3/gns2VUqnGppM28b0VRT15wMKUiePXTQ40RDIUBvkMDPlpuu0YrW8AtOCq2p/JFA0wS1FjARAnzYLh7g+UCt3jyhbHTK+cGX29DDbZTHVfD3P5J2FjV3Bn+EIiIQwVitRlD+rooX11safo1fpjZFQ+GSG2/iJKWDYV8hp7KY4xvZOiyneWfNf0CMzgWHcI7/Kk0GK/Q
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -178,36 +180,13 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/22/26 10:37, Yeoreum Yun wrote:
->> On 7/22/26 08:30, Yeoreum Yun wrote:
->>>  struct pg_state {
->>>  	struct ptdump_state ptdump;
->>> +	int first_level;
->>>  	int level;
->>>  	pgprotval_t current_prot;
->>>  	pgprotval_t effective_prot;
->> There is zero reason on x86 to hold this value in a data structure. It
->> is 100% determined at boot time or earlier. Pre-5-level-paging it's a
->> compile-time constant.
->>
->> On x86, it never varies per-mm.
-> However, mm_pXd_folded() requires to mm for other architecture like
-> s390. might save the mm instead of first_level and calls the
-> ptdump_pt_level_first() with static inline version would make the
-> constant comparison. So it requires to save *mm* structure in here.
+On 7/22/26 13:18, Yeoreum Yun wrote:
+> Sorry. But do you mean check with cpu_feature_enabled() not with
+> boot_cpu_has()?
+> IIRC, the boot_cpu_has() doesn't use the DISABLE_MASK_BIT_SET() but
+> uses REQUIRED_MASK_BIT_SET() and I don't expect it wouldn't make
+> an optimisation to constant check which is contrast to DISABLE_MASK_BIT_SET().
 
-I'm having a really hard time parsing that.
-
-I think you're trying to say that the effective_prot_p*() functions need
-to know the first level but they don't (today) need the mm_struct. If
-they don't get the (calculated) first_level passed in, they need the
-mm_struct instead.
-
-I think you're arguing 'pg_state' needs a ->first_level or a ->mm.
-Having a pg_state->mm doesn't seem bad to me at all.
-
-But, it's also a little bit silly. It would not be rocket science to
-pass an mm_struct down to the effective_prot_p*() functions. It makes a
-whole lot of sense to me for a page table walking function to need
-metadata from the mm_struct to walk correctly.
+Ahh, yes. I forgot about that nuance! Moving to cpu_feature_enabled()
+would be great!
 
