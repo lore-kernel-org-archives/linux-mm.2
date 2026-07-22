@@ -4,121 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0AE3C4453E
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 16:28:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD7CDC44532
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 16:32:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC5A06B00E3; Wed, 22 Jul 2026 12:28:30 -0400 (EDT)
+	id C2CAB6B007B; Wed, 22 Jul 2026 12:32:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A75306B00E4; Wed, 22 Jul 2026 12:28:30 -0400 (EDT)
+	id C045F6B0088; Wed, 22 Jul 2026 12:32:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 93EF86B00E8; Wed, 22 Jul 2026 12:28:30 -0400 (EDT)
+	id AF3C76B008A; Wed, 22 Jul 2026 12:32:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C6556B00E3
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 12:28:30 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 05279140227
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 16:28:29 +0000 (UTC)
-X-FDA: 85016945580.20.3B874F1
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 2520E1C000E
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 16:28:27 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=b2aLYabg;
-	spf=pass (imf20.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 77E416B007B
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 12:32:32 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id ED69716024C
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 16:32:31 +0000 (UTC)
+X-FDA: 85016955702.02.45A20C0
+Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 5583640011
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 16:32:28 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=b0Rt1yNk;
+	spf=pass (imf04.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784737708;
+	s=arc-20220608; t=1784737950;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=niCtwXGrobByrqvO4rm5iG1Plxs4UCaGCoV/icFVdWw=;
-	b=O8T7p1gsJDqXwd0iZEztX5r2vm5ZiM7gSrHCXK2pQwn60+Q+tl/nLcVxndcj1gO5KnTHcr
-	imjdp2emFLzLpJCKKY9LJQz9Wjjqx3xJrwxe2tRLW1Z3Exmb7c6kyTeC9htDgfbbUHG81X
-	Uyg3uUlb2qcv0EO6eEavT+FfrUaYgmk=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=b2aLYabg;
-	spf=pass (imf20.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	bh=bBnIrrxiyHbn5CbW2/3RvfkB4lrliRmpnHXHN4bKIgA=;
+	b=6ouPjgUJzrF5HAQmY0iNrivTpWOme6ORe3NUzfWBkUGcnAnfgdQpkTb5KwFj0u32elfCLy
+	Qzc97TPTNuB/pkY7hktG1lt4VlwxwwOX0yVB4z7AP/1JCLsPJ6DXywc+0eC9yaQXtF3J6b
+	lLu7ugc09MqePtmybMcqAvGcnH8v5YU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784737708;
-	b=mKbBmqZmo5UPRVgRrRwh9DA2SHh4uIJ69UEjaw5CgMcKmf0lgHCglXL12ip2TuUULHfhqr
-	DHNk1+gQiCIIT8DeYyODLMdNcqRAfCopTw8FndrObIX5pdnntC89RCxlfWXiRzmGSrZlCO
-	Eiv8qjrl9F6+88wls51a7j3/6oPSnKw=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E16781595;
-	Wed, 22 Jul 2026 09:28:22 -0700 (PDT)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 06C6B3F59E;
-	Wed, 22 Jul 2026 09:28:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784737707; bh=zuH7kkmwR8NNpVXMbiFke1P+LUZR0u9QfuY8Dink+x0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=b2aLYabgc6yJSyWPRkPzmjeANxGjltEW66WjBcJJ7wrgt0CpZUhi+4VwgQCiFuvZY
-	 BiepiPV913zyySxKRUxjs9bzt9QQatorM4bNyswKuSduJDtkRp88U81YsA32gpKv2E
-	 vuKaU4EwGuWcGtS6nnlD2rs2LcQdLY6Wx/t2OxuY=
-Date: Wed, 22 Jul 2026 17:28:18 +0100
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Russell King <linux@armlinux.org.uk>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	David Hildenbrand <david@kernel.org>,
-	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-	Tianrui Zhao <zhaotianrui@loongson.cn>,
-	Bibo Mao <maobibo@loongson.cn>, Anup Patel <anup@brainfault.org>,
-	Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jonas Bonn <jonas@southpole.se>,
-	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-	Stafford Horne <shorne@gmail.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
-	linux-openrisc@vger.kernel.org
-Subject: Re: [PATCH RFC v2 13/20] x86: mm: carve out the generic compile-time
- folded pgtable case in effective_prot()
-Message-ID: <amDvonIJezy_YQZA@e129823.arm.com>
-References: <20260722-dummy_ptxp3-v2-0-d9e4bad31e0a@arm.com>
- <20260722-dummy_ptxp3-v2-13-d9e4bad31e0a@arm.com>
- <d16a8412-acee-4c21-a126-f570d6306983@intel.com>
+	t=1784737950;
+	b=S6F24SN/2hVdP5ZeiIeMzzFG/VWtJwnJ+Uw4LGcq6lOFwIs9CpQ8vagps0ufgNi22QE+NA
+	iKh8Id5BL6s7/JG3m3G6N3D8uz5D6Fr0+mv7DSM1/dAJmZYOSmddWXwX0/wy+PnJk8qc9S
+	HonxihloCMBGKmoGXU/Ii9p1GqTUQ3M=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=b0Rt1yNk;
+	spf=pass (imf04.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784737944;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bBnIrrxiyHbn5CbW2/3RvfkB4lrliRmpnHXHN4bKIgA=;
+	b=b0Rt1yNkrfg4I8fIySJ7tAmqfRb/Rv7DlSybC9R/Cxce9tKHq48cy7/r/AoabRFRXbmLoS
+	GTnqjiTkp4wrI86UX+LsR+yLWAl3mRARIY31Dz4xpRbhC9PecgUBRKwJScz9DmdsKW4gq/
+	l8Jv5MWPPRaQw8rpGnXT4vA8GhYeRgE=
+From: Usama Arif <usama.arif@linux.dev>
+To: Christoph Hellwig <hch@lst.de>
+Cc: Usama Arif <usama.arif@linux.dev>,
+	baoquan.he@linux.dev,
+	akpm@linux-foundation.org,
+	chrisl@kernel.org,
+	kasong@tencent.com,
+	nphamcs@gmail.com,
+	shikemeng@huaweicloud.com,
+	youngjun.park@lge.com,
+	ryncsn@gmail.com,
+	trondmy@kernel.org,
+	anna@kernel.org,
+	sfrench@samba.org,
+	linux-mm@kvack.org,
+	linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org
+Subject: Re: [PATCH 2/3] mm/swap: add a new swap_ops.h header to allow for pluggable swap ops
+Date: Wed, 22 Jul 2026 09:32:17 -0700
+Message-ID: <20260722163218.1240273-1-usama.arif@linux.dev>
+In-Reply-To: <20260722130615.3163560-3-hch@lst.de>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d16a8412-acee-4c21-a126-f570d6306983@intel.com>
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 5583640011
+X-Stat-Signature: x61z4hndmjj93t5u9a5syf3okoozby55
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 2520E1C000E
-X-Stat-Signature: b5rt369i419neif3457xc3751pr4tdya
-X-HE-Tag: 1784737707-5387
-X-HE-Meta: U2FsdGVkX19MUC3hmT1fn/bN7BFW017Jk3lsqmvWZ+fGJ9zg3LP57kcRVy1uMyEbPm4J56ZbZuN/Svb18DjvOCQoFUVLLgEbd/6K32EKXPIgPbtcalyDn/rZZ2nQrKAq4um1Qw1kkx2tcfGXfyl0nWZs5GGVdYuTYwCxOrzubUFEPW8Cyrh69B3IUrI0TKEx41BNwn3WW1S1Z5YskbCTRmq3r69gt8uwx3aXcOZ5f7jdUg5A7njVU/PrbkAkb1MkiI1EwB+4tJVglmBH6CH7fCwlmSxUh/AAptI+kHuctZCiM48imy8VDgN+m29yTIOIr0D+/25myNKEX6yeYPGZW6wII3MTXpNLMHRyd4iMeMVtfCwShVHfm/Si0Uhk4K3wCjM4t7JKmHjrakJpKzHF/E2g0GZJV5Sn/PnFfAb5KpL2HV7NalSY4HnQC4lZnBEFJX1lAC/7dcnXGeAxIkygPnEkMXSUnJaaVEyJ7Iy6FZ1Sb/j4bPuDn2AXlCF+gF9hOAvY4z9JUyiqKbewRYF4z4caAOmK10H5qpDi6idHv8N/4WSFv+2s1AThZY3hKfDCoAp34Xc/9sD6pNPXSvUDXWh+p2cMctCv22xUQLCwt5S0GPx8LQF3X6E1mVucVaySxOgOV/Sx3O6vJ5YhtFjR/nzucFyWacZ+H27AMfLbg0rZQL2qVv0YzwbZww+79xI5yzlhxKOJy4IUdzxaEkleL9Kl/gT6XPmvYYhLiVrPrIcmqroatxY93e8vqv1KtlLU0Gb7hik4j/Av6qmzwILr/Yc+2vyJwAfy+1yHo684p4UUxCwJtPf77Lgaeo5AtyUhEnAU52MbwFZyzOC5kiYeG29fTxU3B7bJa+jBz8+dVPUrwqB6f27tG+atXrc5NtEnosPvVXqZ6CxJJloBQy0gUBDDRaVB+4x7lHttepJOvWYxCuadZ8hY1nEYNOilatxcTwCUOSb0/T94Pf5hIg8
- aFf0F0y5
- srysswlKAI2JBrOWk+Dl9XnYgVI9+9o5azj9i0jjtp7e9eYuc84irPFWsN9+K7BYqpc6RxcBPutFfFEnOj6fiXKw4lW66M0rbUlhLno9lpH72DwiNLveiTl+llHVJgix8olEqa13fplj8hpfm3JSJ1fIwFPSCjnAmYVIIohJ+XG9kJc39sb+v6RcZV1FpKbm513zBxaiOAVjfsgJg/5ik2w2WjfhnkD5ROJQDNcYRAFwVZSHyXBL2Wx7b18ODBfkPyjC77s4shwb/IquEheRArmDbWQ==
+X-HE-Tag: 1784737948-107137
+X-HE-Meta: U2FsdGVkX1/zqPyzBqWlDPQY/5oOwnu78CZUY0NnGAThrZuVUIqluEOS1sywEXc5f7PxobuF+bW7SirzDG7t943QYN5SkaG70pYMjR3NHWtXIjxeDnM14SV801LFiP1T/LUBmqA9GPluYsEu8L2leh8kD3koRCp213g3Wd6X5BsowCQ+ReyUf6D6JpMQeOKwxN+Of+L7a0Y9L9u88aXEm644xpMgJpoeO7EUO46h/aad7pyJnkLALBl0jseyPBd9rXab+7O2hs4EalOJfTxX1ZSb8aLVxuqN3QULvFI++y7WCRZH0bBoiNqxR+xoJaIxeJJ6V/yGvV9OshQXqnHinuK2Z9xk3+bzd9FBlgSXyKIxBKpTPZzzBWm3I90E456QMSLTkq2GGgG1Z90do3ArdxIkrwVL48KP8XzBFW494JmUfOMdT+bvDA8JTTOqSflcnV0DS/KqfI/ZhJnYXL5xT99kp+ZZfrLePUmVposPoBOahxOetEqGriiuV5/cjMPCjw9h9sXsRlfLC81S1GlIC5mzomblRhbz3DVaTS3sBmGyDO4c6DJJh7KA8Z2IW0kDMICf3EHl/DL8g6uDujekPF4axrIj+wRYLgcMRRXvviWuzAQRGJb/fCnAsqACHkzR3PiqCry5jeHPuUJyfz1GcRq1dXqKqUDwHCHiCg//obPeGxnbYbAO1DUN+sNA2hzoZ164qXJXWFonomjlS9DgDLAIaEnkZc1XZ5SGyZ0xFL3i3eHyFLc9N+3TXDoqZVBPwjmi2sbOS4MmLizd0/D3oGkAIWiYphljlkS/YRlBoRutqJFPYTIb50JLkHjc/LlBhZFompPHM3XWhpaS9xHM3Jlfj16csaCsW6RcOdb0fQGZmrhoKUduHr1LmFt6QqrNwpjw/cELMeDKpsKVktl0ibzvMsp0eVrgZRlLGJOTgxqPKZQbQieXlcgkzudGQLIC0sGUF/RUNjt9FkN1tOG
+ KRgJYdUI
+ HMnEhUb+t1uvF81Ul4LknuhYD2ixqRM+W9Reg3OIGXu7sGf/5R79nNYv0gr/2QPfruvjmxOKcoaM2qxuLCyXipue6Y1VJ7hMB1rBCNQLJxdfqH+PJnzjroIIT8fZ8sQT9CppQZLZ0g9cQuXz4y3r0S9Sg6y0OSRhG0HgLH+oFbJuE4scIJOCpG+oCFU0HCv4CH9Xlu3jq63/ECSLCr81IkGt5Uz82L4n+yIbFzEBLcXnx/u7dAe+E92t9VA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,65 +99,210 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Dave,
+On Wed, 22 Jul 2026 15:06:08 +0200 Christoph Hellwig <hch@lst.de> wrote:
 
-> On 7/22/26 08:30, Yeoreum Yun wrote:
-> >  struct pg_state {
-> >  	struct ptdump_state ptdump;
-> > +	int first_level;
-> >  	int level;
-> >  	pgprotval_t current_prot;
-> >  	pgprotval_t effective_prot;
+> Add a new header to declare the swap_iocb, swap_ops and swap_ctx to
+> allow for swap_ops implementations outside of mm/page_io.c.  This
+> will be used to remove the double indirection for file system-based
+> swap.
 > 
-> There is zero reason on x86 to hold this value in a data structure. It
-> is 100% determined at boot time or earlier. Pre-5-level-paging it's a
-> compile-time constant.
+> Note that there already is a swapops.h header, which is totally
+> unrelated to struct swap_ops.  The close naming is a bit unfortunate,
+> but I could not think of a better name for this header.
 > 
-> On x86, it never varies per-mm.
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>  MAINTAINERS              |  1 +
+>  include/linux/swap_ops.h | 39 +++++++++++++++++++++++++++++++++++++++
+>  mm/madvise.c             |  1 +
+>  mm/page_io.c             | 10 +---------
+>  mm/shmem.c               |  1 +
+>  mm/swap.h                | 23 +----------------------
+>  mm/swap_state.c          |  1 +
+>  mm/vmscan.c              |  1 +
+>  8 files changed, 46 insertions(+), 31 deletions(-)
+>  create mode 100644 include/linux/swap_ops.h
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 5da77924c6f0..cda42b7ed945 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -17240,6 +17240,7 @@ S:	Maintained
+>  F:	Documentation/ABI/testing/sysfs-kernel-mm-swap
+>  F:	Documentation/mm/swap-table.rst
+>  F:	include/linux/swap.h
+> +F:	include/linux/swap_ops.h
+>  F:	include/linux/swapfile.h
+>  F:	include/linux/swapops.h
+>  F:	mm/page_io.c
+> diff --git a/include/linux/swap_ops.h b/include/linux/swap_ops.h
+> new file mode 100644
+> index 000000000000..e92b4f532604
+> --- /dev/null
+> +++ b/include/linux/swap_ops.h
+> @@ -0,0 +1,39 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef _MM_SWAP_OPS_H
+> +#define _MM_SWAP_OPS_H
+> +
+> +#include <linux/swap.h> /* for SWAP_CLUSTER_MAX */
+> +
+> +struct swap_iocb {
+> +	union {
+> +		struct kiocb	iocb;
+> +		struct bio	bio;
+> +	};
+> +	struct bio_vec		bvecs[SWAP_CLUSTER_MAX];
+> +	int			nr_bvecs;
+> +	int			len;
+> +};
+> +
+> +struct swap_io_ctx {
+> +	struct swap_iocb	*sio;
+> +	struct swap_info_struct	*sis;
+> +};
 
-Yes once ptdump_pt_level_first() is converted with static inline.
-I'll change this.
- 
-> > --- a/mm/ptdump.c
-> > +++ b/mm/ptdump.c
-> > @@ -197,6 +197,17 @@ void ptdump_walk_pgd(struct ptdump_state *st, struct mm_struct *mm, pgd_t *pgd)
-> >  	st->note_page_flush(st);
-> >  }
-> >  
-> > +int ptdump_pt_level_first(struct mm_struct *mm)
-> > +{
-> > +	if (mm_pmd_folded(mm))
-> > +		return 3;
-> > +	if (mm_pud_folded(mm))
-> > +		return 2;
-> > +	if (mm_p4d_folded(mm))
-> > +		return 1;
-> > +	return 0;
-> > +}
-> 
-> Having this in a .c file may not be the best design decision. On a lot
-> of architectures and configs, this is 100% a compile-time constant.
-> Hiding it in a .c file and forcing a call is kinda silly.
-> 
-> In the worst-case scenario on x86, this ends up being an "ALTERNATIVES"
-> patched check. So it's technically variable, but patched at boot-time to
-> one possibility or the other.
-> 
-> If something is making the function larger than a few instructions,
-> something is wrong and needs to get fixed.
-> 
-> IOW, this should be a static inline in a header, not a full CALL'd
-> function in a .c file. *That* will make the value visible to the
-> compiler at all call sites and let it do all the smart things compilers
-> can do with build time constants.
-> 
-> Also, my original objection was "this function has zero to do with x86".
-> Well, it also really has zero to do with ptdump, either. I'd probably
-> just stick it in one of the generic page table headers.
+zswap uses this struct, I think you need to include the header in zswap.c
+as well, good to check if the build is passing with CONFIG_ZSWAP=y
 
-Agree. I'll locate in the linux/pgtable.h
-
--- 
-Sincerely,
-Yeoreum Yun
+> +
+> +/*
+> + * SWAP_OPS_F_REQUIRE_NOFS:
+> + *	When set, all reclaim operations must operated as GFS_NOFS and not
+> + *	just GFP_NOIO, as GFP_NOIO allocations could recourse into the
+> + *	file system backing this swap file.
+> + */
+> +#define SWAP_OPS_F_REQUIRE_NOFS		(1U << 0)
+> +
+> +struct swap_ops {
+> +	unsigned int		flags;
+> +
+> +	bool (*can_merge)(struct folio *folio, struct folio *prev_folio,
+> +			size_t prev_folio_size, int rw);
+> +	void (*submit_write)(struct swap_io_ctx *ctx);
+> +	void (*submit_read)(struct swap_io_ctx *ctx);
+> +};
+> +
+> +#endif /* _MM_SWAP_OPS_H */
+> diff --git a/mm/madvise.c b/mm/madvise.c
+> index 07a21ca31bad..c179938097bf 100644
+> --- a/mm/madvise.c
+> +++ b/mm/madvise.c
+> @@ -32,6 +32,7 @@
+>  #include <linux/leafops.h>
+>  #include <linux/shmem_fs.h>
+>  #include <linux/mmu_notifier.h>
+> +#include <linux/swap_ops.h>
+>  
+>  #include <asm/tlb.h>
+>  
+> diff --git a/mm/page_io.c b/mm/page_io.c
+> index c984a4023a65..e741e67d6592 100644
+> --- a/mm/page_io.c
+> +++ b/mm/page_io.c
+> @@ -25,6 +25,7 @@
+>  #include <linux/sched/task.h>
+>  #include <linux/delayacct.h>
+>  #include <linux/zswap.h>
+> +#include <linux/swap_ops.h>
+>  #include "swap.h"
+>  #include "swap_table.h"
+>  
+> @@ -300,15 +301,6 @@ static bool folio_blkg_can_merge(struct folio *folio, struct folio *prev_folio)
+>  #define bio_associate_blkg_from_page(bio, folio)		do { } while (0)
+>  #endif /* CONFIG_MEMCG && CONFIG_BLK_CGROUP */
+>  
+> -struct swap_iocb {
+> -	union {
+> -		struct kiocb	iocb;
+> -		struct bio	bio;
+> -	};
+> -	struct bio_vec		bvecs[SWAP_CLUSTER_MAX];
+> -	int			nr_bvecs;
+> -	int			len;
+> -};
+>  static mempool_t *sio_pool;
+>  
+>  int sio_pool_init(void)
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index 5071177059a9..797c42f024a0 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -41,6 +41,7 @@
+>  #include <linux/swapfile.h>
+>  #include <linux/iversion.h>
+>  #include <linux/unicode.h>
+> +#include <linux/swap_ops.h>
+>  #include "swap.h"
+>  
+>  static struct vfsmount *shm_mnt __ro_after_init;
+> diff --git a/mm/swap.h b/mm/swap.h
+> index abd26588abd2..19ea61c97df2 100644
+> --- a/mm/swap.h
+> +++ b/mm/swap.h
+> @@ -8,6 +8,7 @@
+>  struct mempolicy;
+>  struct swap_iocb;
+>  struct swap_memcg_table;
+> +struct swap_io_ctx;
+>  
+>  #if defined(MAX_POSSIBLE_PHYSMEM_BITS)
+>  #define SWAP_CACHE_PFN_BITS (MAX_POSSIBLE_PHYSMEM_BITS - PAGE_SHIFT)
+> @@ -77,28 +78,6 @@ enum swap_cluster_flags {
+>  	CLUSTER_FLAG_MAX,
+>  };
+>  
+> -struct swap_io_ctx {
+> -	struct swap_iocb	*sio;
+> -	struct swap_info_struct	*sis;
+> -};
+> -
+> -/*
+> - * SWAP_OPS_F_REQUIRE_NOFS:
+> - *	When set, all reclaim operations must operated as GFS_NOFS and not
+> - *	just GFP_NOIO, as GFP_NOIO allocations could recourse into the
+> - *	file system backing this swap file.
+> - */
+> -#define SWAP_OPS_F_REQUIRE_NOFS		(1U << 0)
+> -
+> -struct swap_ops {
+> -	unsigned int		flags;
+> -
+> -	bool (*can_merge)(struct folio *folio, struct folio *prev_folio,
+> -			size_t prev_folio_size, int rw);
+> -	void (*submit_write)(struct swap_io_ctx *ctx);
+> -	void (*submit_read)(struct swap_io_ctx *ctx);
+> -};
+> -
+>  #ifdef CONFIG_SWAP
+>  #include <linux/swapops.h> /* for swp_offset */
+>  #include <linux/blk_types.h> /* for bio_end_io_t */
+> diff --git a/mm/swap_state.c b/mm/swap_state.c
+> index 5be825911e64..b76eb3d876fd 100644
+> --- a/mm/swap_state.c
+> +++ b/mm/swap_state.c
+> @@ -23,6 +23,7 @@
+>  #include <linux/huge_mm.h>
+>  #include <linux/shmem_fs.h>
+>  #include <linux/sysctl.h>
+> +#include <linux/swap_ops.h>
+>  #include "internal.h"
+>  #include "swap_table.h"
+>  #include "swap.h"
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index e26c6931f5fd..a12eb79c89c5 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -58,6 +58,7 @@
+>  #include <linux/random.h>
+>  #include <linux/mmu_notifier.h>
+>  #include <linux/parser.h>
+> +#include <linux/swap_ops.h>
+>  
+>  #include <asm/tlbflush.h>
+>  #include <asm/div64.h>
+> -- 
+> 2.53.0
+> 
+> 
 
