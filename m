@@ -4,117 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67BE6C4453C
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 13:50:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7441CC44539
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 13:51:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 46C7A6B009D; Wed, 22 Jul 2026 09:50:25 -0400 (EDT)
+	id 447A16B0095; Wed, 22 Jul 2026 09:51:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 443AC6B009E; Wed, 22 Jul 2026 09:50:25 -0400 (EDT)
+	id 3F7656B009E; Wed, 22 Jul 2026 09:51:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E7B86B009F; Wed, 22 Jul 2026 09:50:25 -0400 (EDT)
+	id 3341F6B009F; Wed, 22 Jul 2026 09:51:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id ECEC36B009D
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 09:50:24 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5875E140194
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 13:50:24 +0000 (UTC)
-X-FDA: 85016547168.02.C426BBE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 59F674000D
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 13:50:22 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="T/r8Fyat";
-	spf=pass (imf27.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0DEB66B0095
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 09:51:33 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8BC2C401BF
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 13:51:32 +0000 (UTC)
+X-FDA: 85016550024.21.2E88957
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf16.hostedemail.com (Postfix) with ESMTP id C470018000C
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 13:51:28 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=huawei-partners.com header.s=dkim header.b=bIPv4Yo2;
+	spf=pass (imf16.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784728222;
+	s=arc-20220608; t=1784728290;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EeoRfimiiY9Q3irn9keuGCYbXE0eQn79Xjd7POvlsJo=;
-	b=d7U0RIeqLqof2g6TLR/4XVHsDvUjCZGvi6VicICjnzOtWPvgLJ6myzyRJqSFVFWFc2E3J6
-	hwEgqox5PEzigJIGVRTooLR5JQEbghsg9CUL/uWi0pOpQ4pQ4XZXmCeCotRHnrXqyBIbuh
-	X1HSxQM+8/TuyLwaIPqvgKJnAO+LLjA=
+	bh=6VjUgTdKBXVgimfk1nhh4m7/ifjPlF14ARVQofuTq48=;
+	b=GcQSfFc9Q+gAtcVw3c1YKLty2uu4YE3Yo1GTllmgIcH+kxuVERpTptIKAOdQTerF/0kTNc
+	HT3jYhqiS2Xa8rJ6X8IvkCVkOS6381FhfuGoxliuZGXGCRa8QxhJd1PbnzcOM9lr2cdsl5
+	ceJna/8ToTZuQP7J2mjLooX4psJituo=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="T/r8Fyat";
-	spf=pass (imf27.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=huawei-partners.com header.s=dkim header.b=bIPv4Yo2;
+	spf=pass (imf16.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784728222;
-	b=PRfkS6NLEIVP4Tlm2xsaYiO3UUpQg9sJrum10nPsGiK/bsWfqdqGE0OI3EO1MPGeKFXiu0
-	jZKoQeGlWscbAYiAW/XyxMFK9AeYjeMrUQJWPmTEMICh7gRYMjA8ispte2HBzq6gps2ZeP
-	ZTLSgZDGZXEvXNbaqO7zePWWsTYdRCU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C0885600AF;
-	Wed, 22 Jul 2026 13:50:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E746D1F000E9;
-	Wed, 22 Jul 2026 13:50:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784728221;
-	bh=EeoRfimiiY9Q3irn9keuGCYbXE0eQn79Xjd7POvlsJo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=T/r8FyatYSzoUoPZRC74rXA7bBAIRxpONYRHXdf5Mi9dhy8o8M3tl3WV99KKPwGMM
-	 IH9UFgzJb9bIEhpaVALb7TbbknHaBSdPxIOD3d19VqZpowS4XZAyxgCrlw7siDmfVQ
-	 FNZ/sAhxfRwrZczlvoQSBwaXyQmgyRMiJCYM61R0X/ZS3G8Th1dLH+ptYJSP1K2Jp5
-	 roZK41OtTIwZGPW5WSJytAcGaD187QNdEOWl38XZ87MrCAkQlmqQhzZQJlMrRiJwFo
-	 c6zBuLhlrT7TpaZrYl11bPxgbR9tuYnO524xJFLJyz+6bdjCxSanzCRDHzClATsZYg
-	 M4A4Il8iCaJ9g==
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 2C847F4006F;
-	Wed, 22 Jul 2026 09:50:20 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Wed, 22 Jul 2026 09:50:20 -0400
-X-ME-Sender: <xms:nMpgaiPexXFulMtpWAyLEaEws_-rBvDj0PQ7nmNGPHCBgS-KBKDNBQ>
-    <xme:nMpgajSrEPao7G6bTDU0XWoDvVCmO7WBXv3GdxFWtvv8dfUK4lvbHOf-uIWKE4G0-
-    svdqhEJJHWxEfQ0MpHekm9lNeDeTIgySWQ32Rc-vCU2JDiA_bKRUI8>
-X-ME-Received: <xmr:nMpgan_6rMcwyWKWVzJq8xp5IEMCamoJNxGsOhK9UYawu_-PKD2zTaLOKfnwuA>
-X-ME-Proxy-Cause: dmFkZTEcLBRCwuXySOYV7H6x7DkJIvrYO9Ery/tQi+sq7I57KFQUF1qdJr6zrlSqcvF9Ph
-    deAkADIfMnJyfKCJ80SNnkezEOqscALfqlkpBZTUnQSZZojV5gyx0oOKDQ0eri80MNuuIr
-    9gObeR+HUgmEj6Cla+MYcNTg61VpyDq7ILZJ/gN3wdt4zxWIg555StQsNfcRCIc+pu1iVB
-    t3awqXZ6ybgYd/ROnC7Vy91+fg1Jo2IRoZUm9rhFFIGANGcUB02mSARfiA+BSLCJLBi1AW
-    nlHlvxx/+fNSry5BX93yUaiaCtAggG4UtjCXDlcJLSNCvDXHqZhnM/P/q2SuH0l+gyjUtm
-    BzaKLVGOEjqwfH6K6BnJRff/8fHaDSj0YoXDewKOs2KDXip6nXwim7proZPQ9XFv2/NSAI
-    IEQptmkwx9KLubsenYj8MUM5ucfDyR5ctDxbCXlcEbr/zfX9uljpbFZonG3zlcAgEFtgVf
-    nVw6w977M5lPgjrBjAwkT2YRp5l3WFRrvREt87A0++ayBq5h4EtGfKR4nNTB30NSTHwxoY
-    YeC/aMQACKWpu6iOqk5bjUvsgv9CvZRZFaZFvKqM1BHmmMU8E1l3IP1x6QhejwkHRwBM4b
-    tp/ous0bXtJIqShDCMBjz8XITbuGcABDhJXHj8K8DwVkydmOEytoWiAQYCpg
-X-ME-Proxy: <xmx:nMpgavrX9fWw6b6Zb5y_znY8GnfRFScZx4f7Uw4ayNe5cQ3hQH7amQ>
-    <xmx:nMpgaoGuwB2bl2huD-XpJ3TFcPX9GomeQDNDaHojGSovRPu-l4v5Wg>
-    <xmx:nMpgau3ijbR3EzLaS4uCt5blXvK8FClevkg5H-p0CteeeXjFLc0Wxw>
-    <xmx:nMpgauOiOx20T1ZNOfSc24IAUGCBRPEUjXmBnYDAwaro0bOwMzOdKQ>
-    <xmx:nMpganU0caj9CT79AvPOSmVsSSJs4n3N9fjnBeSXi_ossJ05Ij7IRKWr>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 22 Jul 2026 09:50:19 -0400 (EDT)
-Date: Wed, 22 Jul 2026 14:50:18 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>, 
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, kexec@lists.infradead.org, 
-	rneu@meta.com, riel@surriel.com, caggio@meta.com, anilagrawal@meta.com, 
-	rmikey@meta.com, linux-mm@kvack.org, kernel-team@meta.com
-Subject: Re: [PATCH RFC 0/3] efi: mm/memory-failure: keep hardware-poisoned
- pages out of the next kexec
-Message-ID: <amDHmNWfQ8eid9jH@thinkstation>
-References: <20260717-hwpoison-kho-v1-0-9c5eda551998@debian.org>
+	t=1784728290;
+	b=7ep7+J3nyL40r806zaAlg8g/psNbepbg4+Pc0zHhepGl9Cs2BfbPQdKSlXaDfy1FBIfU6S
+	e6gqVykNW5aeQutVwnN8XSz4vptx6fucxYNU3xwODCSVe+KKuVEyj0Kqkw6R+U7+jsOYKG
+	NyyYHRlvPxltYuHm3KYIqp4ViG9JBC8=
+dkim-signature: v=1; a=rsa-sha256; d=huawei-partners.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=6VjUgTdKBXVgimfk1nhh4m7/ifjPlF14ARVQofuTq48=;
+	b=bIPv4Yo2UJ4eD73IPWp/UrYfPa//ToDrTZ/AviRgkhfrLp9amqoqK+KZK8J76wrqkz9pnKzaw
+	FbzKAZE9AEaDfaWWFxu2weGowjur8nTBM3ljFerX7WJJhz/BIc9xrtgmuxpQUyyIN1kj15Pq6B9
+	rmTlxHJhNw+0VC305nkZ0ag=
+Received: from mail.maildlp.com (unknown [172.18.224.150])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4h4wdD6N55zHnH3s;
+	Wed, 22 Jul 2026 21:50:56 +0800 (CST)
+Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
+	by mail.maildlp.com (Postfix) with ESMTPS id 3188540572;
+	Wed, 22 Jul 2026 21:51:23 +0800 (CST)
+Received: from [10.123.123.154] (10.123.123.154) by
+ mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 22 Jul 2026 16:51:22 +0300
+Message-ID: <1d91aa7f-1601-4cd9-8ef5-8599983bc42f@huawei-partners.com>
+Date: Wed, 22 Jul 2026 16:51:22 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260717-hwpoison-kho-v1-0-9c5eda551998@debian.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/3] mm/damon: Introduce a huge page collapsing
+ mechanism using auto tuning
+To: SJ Park <sj@kernel.org>
+CC: <artem.kuzin@huawei.com>, <stepanov.anatoly@huawei.com>,
+	<wangkefeng.wang@huawei.com>, <yanquanmin1@huawei.com>, <zuoze1@huawei.com>,
+	<damon@lists.linux.dev>, <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>
+References: <20260722134523.87856-1-sj@kernel.org>
+Content-Language: en-US
+From: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
+In-Reply-To: <20260722134523.87856-1-sj@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.123.123.154]
+X-ClientProxiedBy: mscpeml100003.china.huawei.com (10.199.174.67) To
+ mscpeml500003.china.huawei.com (7.188.49.51)
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 59F674000D
-X-Stat-Signature: yzost4ra7nf33fquqcyqz3pw11tjiu4g
-X-HE-Tag: 1784728222-424867
-X-HE-Meta: U2FsdGVkX187ode3jdBA2JaXBuESqZEjZ3pt0CY9ngcYJLaMqE8jdrZB+oa62i6cUbRSoDRSVMCimL6Dy/02uEQx/YRGEQBuZF5MkDv2G7lvU23HhZXJOA0juFeLSpsumqXRUbe090cC3Udjbx9Tx7+ijOJXVqMLCG7xJIMdUXsAUS3pg4uP100xy2IZJIjvOfhFPzakOLB1kp4SBU8iceShWi5o+RF5JlNbIU7afRbrXvNdraYey345aiI7PuSBr2uQW44TeTjHPk0/mvIWPv6J3WSBcQbANVomW3PV6w5pHoj/HcvOXqmjRzfQ90h/+4+yMEDJ2u2Dw2Zh9tEL83xvDHE29z+KBWGAqTXM7a62TrtCy4TZBCCZpSNvEPshxFF2BdAPxSC8wm0T2LLU5eCS4KSzVI2y9M6Hd+8eB5llHp56A6Vg34UxjolPL64sI3QqPgXkPQe0rV6J/PFDdwcH22meGjhpJMHBrbzvxDmlnBsavLP8xyE3i04kwIyK6SygCYF3Kwepn09TqOQrX97TbnHddFCRk2a7/GTGhprbZQCfjXxm40GhLRTDq42wUPGkKwH0xRvPKo4eY/Oe2dZp6jM8iMH9G+4QRjvqBtgOiHIvNXgjwjMRCJyRfF6oJqFHKlznb5Wh6ZLMgnarGSa2EQnqMXlkfTBi1VWk8t7dJYYsYGF7BdCzHvSsTS+TLAi/H915n7ako7/67QhBWkNOsHZRrn/eUQvDY71eCS9EZqq5N9li2rTyN+GMC8saa6iP0EG4exxkZ20Fy24hN0EWXjqd7jePKbMpiE5UjakAnUgougM/TPXz2o1rMWuPsX4XCPRWTVxtqP7FKXLswMsFHZ+XeRr5miTH1uTjZE+FG+us0COnG9R3QmSu1PDOZnwdN9VmgzBsP3+HlMbgMWNBgF/7/sXaqgr87fZkcj5q55DLsVKYYQe+8FIurCyv+fPRWf//11Or67s7UTD
- mxqtrTNp
- Ng+6hS/myKetSDWO2tHLkarI6ReOaJyqKpJ4MfIJqeD8GDGDAowQ35JD3EQ7z84vo5lXoytjRgn8p4Fnc0ng2dYKdFpF7/L8qlJteuVq/kpyPY+cR1uuGSjx6vJq/fOHhaTqCudeR5MlkIn/ogWZV2QiKMyGO4HwiFFTNGl3zbzTf/8h1hHI+pqbuEHAvCMzb5F0KX0+n0FU/sY/S+/txzuRMOeBHZi7GMQwRBoKkCz5QHZspsU5ejVgy1nNiFaBDg49g5fWnukQvVqqhKqNqNs6vengN6n6BC6H4oI2Y+diN1MSu4LjE438TPuPx9PQ7P0IhZ40o0M78BUh0clQj/SsyzSdMaXt+YkLqlSap673VhWX17+JzYZO1iw==
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: C470018000C
+X-Stat-Signature: g5k5nniki8k9w6bk9x18h8mfpib5zrqw
+X-HE-Tag: 1784728288-903733
+X-HE-Meta: U2FsdGVkX18UEmwcdlQTTSPA0agxv4N4kKeIpRHb2qrJqSHjrwPuJQ+QxN2RGlbgPnIYiPDTZG+ImJeMnT2qyg1gfBfvwnbpb3xROvqUmXaRlkhqJTkiiQI9WHbftZ+P/bw5DrqmBm58+itmddT/VMSeyVhCdgB8ZisSSNgl/mu/SNwzdCUc0k9lYWtYuxLcdG4ee4U8M12b5ZcstTKcpbEpxqHvkgak8HPsR44fGPYIAXcWaiJsAiGd2/6/BJ0xyFz6qZv4utozBoh69g5rJeC9PTBVId17xn8XQh5v1vDGeVn2ARv1H16BllFPXALmSW0hQ+arMIyxwHQncIlxCXY7WPN9+r3scWXdwX7Ldoo7OU3soKFrINQn/ztxWb49MQrrOS/48dYXMQCAs+lILuUQN/CnYjBU8EV9DbF7a9bFRSMwryferxb7EgnUvsqz9bLRGKtdagEaXVBMbIy0uCEuKJ/RtAQPlvP9ZfFBxntPT7pc1Eqa2MljzEFcZzLz+MDKkYs9jg3ilURmWHYT9KTL+Nqzb3teB5Xh/fWxYHs6dhyftZPm7Q2VVx1wLmi1qzIvqndaKPDCBnRSIB7SYjNlSPDGed2fcNUVsZm+92ORwSEFfr0T+KZkwVVegUW/Hs4fzlvYdq4/jae0KlQ37SfKLkS3EuDo75l5a7ahi6GtUBmEj6l251QU3QiBo5GfIyvFQvWAXGdJOHTGaINiQ4F4+KPLGp4qaE2Vj8NMAcP2zbCgG0EFZ1DW2mJ9Zxj94F3uZ+67+eHeKWqfXbjY/xDgPZ+W8CByL/6r1ZE4Io+fWt+CvjaNY3i3TYmrCRpGItKMc2D8vDppfFBW9ohKDr8zCzQkJ+2kVrSLCf+MSN82LejMhwFT0Ot8OQRzLkhZ5XQOz2t34x+o/WYlmYGYxAuVZBysJSP4nu5qqz5dERGTzSDyrqambSeL0GW7OBWXXsjn/AtQOPdBXgHUre6
+ Nv5Nt1Mv
+ osuauU2mp/82epqWnQVE6k+PfMzO8MFXlW6OW99RVLYEmbCCq3kOG6ydf4jzbZ9eUQ1KYy+pPJR9FP8JACecb7XJA3U8ApmnmnaDTmr7OPAgxahXjMMlzwg8SS8OGWJrdANr+QBtotPz2muIVeK4BMDuQfVwJdXg0WOJ7ElZLrFNOXYjqv9Nzj2ClZsMsXyCru8BN2YdZ+es7YdbLKSIv/dQNmFnx+yCT36UWagQaUFQ0Avx0l74lCq2fbEhsWZXp8wj32Hw2rdNG28wwMRP5iWbrrXR7n0zqGtiZfd/ZfXTxviv1GjLoVgHV0ZUVlDXe+NJUxo/ZAOvi5Dv414kCBrqLz8h1TQ65kULflePJ7aO45ErD1lf+41JGzd3Y7v2aS4WGyOovTA0RpsggwEW4AT59FLvuNUbfXedqh9WGfDRSul4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,94 +101,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 17, 2026 at 07:03:02AM -0700, Breno Leitao wrote:
-> Problem:
-> ========
-> 
-> When a page is hard-offlined due to an uncorrectable memory error (multi
-> bit ECC), memory_failure() sets PG_hwpoison, unmaps it, removes it from
-> the buddy allocator. This information is not carried to the next kernel
-> that is kexeced. The new kernel kexecs and trip over that bad memory
-> bank _again_.
-> 
-> Why now:
-> ========
-> 
-> Several industry trends make this increasingly important:
-> 
->     1) DRAM is getting more expensive
->     2) soldered / on-package memory (LPDDR, HBM) is becoming more common, so a
->        failing part can no longer simply be swapped;
->     3) memory is kept in service far longer (at Meta, DRAM lifetime is being
->        drastically extended).
->     4) It is more and more common to kexec instead of full reboot
->     5) Increase of memory per system with CXL
-> 
-> Proposed Solution:
-> ==================
-> 
-> Carry the poisoned frames to the next kernel in a new EFI configuration
-> table, LINUX_EFI_POISONED_MEMORY, modeled on the existing
-> LINUX_EFI_MEMRESERVE table.
-> 
-> EFI configuration tables already survive kexec: firmware hands the EFI
-> system table to every kernel in the chain, so a table installed once is
-> seen by all successors without a new handover channel.
-> 
-> The mechanism is architecture independent, so x86 and arm64 use the same
-> code.
-> 
-> The EFI stub installs an empty table while EFI boot service is up. A
-> configuration table can only be created there; the running kernel can only
-> append to it.
-> 
-> Each hard-offlined frame is appended; an unpoison "removes" its entry
-> so a frame that is good again is not carried forward.
-> 
-> The next kernel walks the inherited table early in
-> efi_config_parse_tables(), before memblock and the buddy allocator are
-> up, and memblock_reserve()s every recorded frame. The bad RAM is never
-> handed out.
+Hi SJ,
 
-The allocator is only half of the problem. kexec segment placement
-doesn't know about any of this: kexec_file picks destinations from
-System RAM resources (memblock on arm64), and poisoned frames are only
-ever removed from buddy. So the next kernel image, initrd or purgatory
-can be placed on top of a poisoned frame -- the relocation memcpy then
-consumes the poison and the machine checks during the very kexec this
-series is supposed to protect. Same for the table's own list pages:
-overwrite one at placement time and the next kernel parses garbage.
+On 7/22/2026 4:45 PM, SJ Park wrote:
+> On Mon, 20 Jul 2026 20:58:47 -0700 SJ Park <sj@kernel.org> wrote:
+> 
+>> Hello Asier,
+>>
+>> On Mon, 20 Jul 2026 12:01:37 +0000 <gutierrez.asier@huawei-partners.com> wrote:
+>>
+>>> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+>>>
+>>> Overview
+>>> ========
+>>> This patch set introduces a new autotuning which allows to collapse
+>>> hot regions into hugepages.
+>>
+>> Thank you for making this series well done like this!
+>>
+>> [...]
+>>> Patches Sequence
+>>> ================
+>>> Patch 1 -> Introduce DAMOS_QUOTA_HUGEPAGE_MEM_BP and autotuning
+>>> Patch 2 -> sysfs support for the new quota goal
+>>> Patch 3 -> Document hugepage_mem_bp parameter
+>>
+>> I'd prefer handling 'total' underflow and returning 10,000 instead of INT_MAX
+>> from damos_hugepage_mem_bp() corner cases.  But definitely that is no blocker.
+>> For the series,
+>>
+>> Reviewed-by: SJ Park <sj@kernel.org>
+>>
+>> This series is applied to damon/next [1] tree.  If this series is not added to
+>> mm.git in short term (~3 days?), I will ask mm.git maintainer (Andrew Morton)
+>> to pick this.  In the case, I will update patch 1 to do what I mentioned as
+>> preferred change if you don't mind.  So, no action from your side is needed for
+>> now.  If it seems I also forgot doing that or you cannot wait for my action,
+>> please feel free to directly ask that to Andrew.
+> 
+> We (mm community) now want to focus on making mm.git more stabilized and
+> therefore ready for the next merge window, rather than adding more changes that
+> are not really urgent.  I agree and want to help [1] that.  For the reason,
+> unless Andre pick this first, I will request adding this to mm.git only after
+> next -rc1 release.  Let me know if you think this is really urgent.
+> 
+> [1] https://lore.kernel.org/20260722133829.87607-1-sj@kernel.org
+> 
+> 
+> Thanks,
+> SJ
+> 
+> [...]
+> 
 
-Hooking num_poisoned_pages_inc() also means soft-offlined pages are
-recorded. Those are functional pages, offlined predictively. Turning
-them into permanent losses for every kernel down the kexec chain does
-not seem right. I would record hard failures only.
-
-On the data structure: I am not an expert on DRAM failure modes, so I
-went reading. The field studies [1] say roughly a quarter of DRAM
-faults are multi-bit structures (row/column/bank), and the address
-interleaving means one such fault shows up to the OS as many separate
-4K pages. A row fault lands in a window of tens of KB to about a MB; a
-column fault is one bad line per row, strided across the bank's entire
-footprint -- potentially thousands of pages scattered over gigabytes,
-reported one MCE at a time as they get touched. DDR5 on-die ECC hides
-most single-bit faults from the host, so the visible mix shifts toward
-these multi-bit modes over time.
-
-If that is accurate, per-4K entries have no natural bound, and every
-entry becomes a separate scattered memblock_reserve() in every future
-boot.
-
-I would consider a bitmap with one bit per 2M instead, modeled on
-struct efi_unaccepted_memory: the stub sizes it from the EFI memory map
-at cold boot, the running kernel sets a bit on hard offline, clears it
-on unpoison, and the next kernel reserves set units. It is one
-fixed-size allocation, so the whole grow-and-link machinery and the
-chain-parsing trust problem go away, and a row fault collapses into one
-or two bits.
-
-[1] https://arxiv.org/abs/2408.15302
+No problem at all. I am fine with it.
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Asier Gutierrez
+Huawei
+
 
