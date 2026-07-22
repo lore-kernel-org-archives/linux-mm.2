@@ -4,75 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74C4BC44539
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 04:42:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8C6EC4453A
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 04:42:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5F1D66B00C9; Wed, 22 Jul 2026 00:42:31 -0400 (EDT)
+	id C5D7D6B00D3; Wed, 22 Jul 2026 00:42:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5A1EA6B00D3; Wed, 22 Jul 2026 00:42:31 -0400 (EDT)
+	id C31016B00D4; Wed, 22 Jul 2026 00:42:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 490316B00D4; Wed, 22 Jul 2026 00:42:31 -0400 (EDT)
+	id B6FFD6B00D5; Wed, 22 Jul 2026 00:42:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0E8216B00C9
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 845956B00D3
 	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 00:42:31 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 748881202D0
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 01DBF14035B
 	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 04:42:30 +0000 (UTC)
-X-FDA: 85015166460.24.6B9579E
+X-FDA: 85015166502.20.C855414
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	by imf15.hostedemail.com (Postfix) with ESMTP id CCDE5A0006
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 04:42:27 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="Z+u3/XTa";
-	spf=pass (imf15.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	by imf10.hostedemail.com (Postfix) with ESMTP id 8A0C9C0002
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 04:42:28 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=ncx7cI8I;
+	spf=pass (imf10.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784695348;
+	s=arc-20220608; t=1784695349;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=EXek90LKAYTRZaSZMMcyYht1LmNZYnszoNkDm2vSwWY=;
-	b=e6jnInKTPx6gzZWHxOUa3BKbnzV5ps1X/MKJCK15VKim7hL8nfr0f859gG/dMHNYd7gMVW
-	4IM89zWg8FhEkTm7OieMesQpwUrW78zvRiUOHSQft3j+L8N03dXE4L3manzq2ZutY2zv63
-	fJYBiQm3QyEGIDzHD7vh3Bh+ApYEDx0=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ydF7Yo/8YaF4jhzJBegRn/mex1K70N31Epdks730HPM=;
+	b=Apb34muC+WCdZ2gjpoVvrBP+mbFZrh/5xEnClmaxHxAj6ABYquBQApjlciNwHB9YOBoejt
+	kidehdNPuloj51C3N95Uzwf0QpKhQEbR70DqRWfHhaNSgIU3cx+B+YqCD5/Nuov7Mm3kEe
+	zfYorXc6vMNurSC/PeZLbhbP1K+4DYQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784695348;
-	b=jZ4CMgylH5sv9ylndGJeaO+fIUMJYYB6pmVCaIuZx0zaSFtiFIg6bBx/E92m+jhdy2la7A
-	WCu25i2oIq57Z5YzdvJjIWdIvpiWDbwjgARwBEYiqDo3fSblswMm3b5B2Nx69qkYDuSl7I
-	cpaq3cddX+bz80NKEmq6pLBP0gukUeg=
+	t=1784695349;
+	b=NpOSIbQ5YEU/Nzq5sGL2IrsWNtx6x6gF/wLeUSa8db90Tl9XR8EEa7OkSF1uyTPPZpwrMr
+	7b+tMc0oS/yGNp1oNopYSas1Jn//nEEaJas/ZFvEaUw1+P7Iz1BWvMuAMua5pqFa5m4Yt0
+	cXpdiy8ORi5aAqE/u4ZZzjQiME3GhGs=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="Z+u3/XTa";
-	spf=pass (imf15.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	imf10.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=ncx7cI8I;
+	spf=pass (imf10.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784695348; x=1816231348;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=egqyx0xIHYO6pVjtq79Q7C2oe7YYIs3Mzn5MdOs14pI=;
-  b=Z+u3/XTaoSYSvPiK7UWN6QJfhDNOXbmdtTVdCoakHxebargmvGY602Zp
-   8PSnVlGF6zTobpvMvxr36Bmfy/qPQqXWqTW5Eyiv2FBa5vnwpgtSYJdeM
-   zTyAFVE57uAoNGtoPaniPyLq6mBMutGoUj39jP71zJjHgs0gS/YTZUjTr
-   HTGoyBsxtQI3xpwsC50fFLMiuB+zhRiTD1Ry6BA0iHEa2EsOQQVUvvEvf
-   hdU6Zk87WgUVTGmhsthg3+GErE4M4KHJdvoX011KdO7SYs/6HMG3UXadk
-   tIkMfJyyhSGOJCqwyGjEOAqFUNdK1pAdppfSDuB+4xiXfAUx30pZjWo5B
-   w==;
-X-CSE-ConnectionGUID: nBwlIeWHS0m6lVz1LbL3rg==
-X-CSE-MsgGUID: jS95LRSGT3ugnc09qFRofg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11853"; a="102865781"
+  t=1784695349; x=1816231349;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=DPPvDE2ZYkY75cjC/FOqIdz/rzKIfyUjxxUz+ht8NJo=;
+  b=ncx7cI8IoZwbF7IjcL953w2GtzT+COqlTuxUY4pODzQ++U0BIgigjOvK
+   d06fdKFMXBqYbdHGQZqoHOmkrZ8PNfdPojAsJaTWUh9Tf59gmxPtAbuGC
+   ApHyrkC9aN74+ykMUk6SgeWsIHoSB2hhX4BxuAIKzpHDEp5vqphPhugtT
+   4RLryDHdHY1T3JQDMC5NLtK1EBCRZ6lu2HJTPietssSs39Z9ZCg3qxC0L
+   0lyPa9RbTIUFYAYw6xIx0/h8KYDyh4Qfq4DU5NLP7H+MongW1UJxiQwBd
+   X0SgYZhg2WzjjmXkxoxAmfIXEaydnlLigR55024pUHfAP/woG+1R0eBJU
+   Q==;
+X-CSE-ConnectionGUID: uslM0A5GQq2eaZBU9fqWdw==
+X-CSE-MsgGUID: Zy8Z+6HRQl6txFTbTRhoNg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11853"; a="102865797"
 X-IronPort-AV: E=Sophos;i="6.25,177,1779174000"; 
-   d="scan'208";a="102865781"
+   d="scan'208";a="102865797"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2026 21:42:26 -0700
-X-CSE-ConnectionGUID: f5jNSLotR9G+hsgBQa+nlQ==
-X-CSE-MsgGUID: NNhGkjL0QKOHHVPYPaELjA==
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2026 21:42:27 -0700
+X-CSE-ConnectionGUID: yeAK+zsQTJ6aZaftSkRXRQ==
+X-CSE-MsgGUID: U6MJW0PsSS2/6S9Nm9dxBA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,177,1779174000"; 
-   d="scan'208";a="254063555"
+   d="scan'208";a="254063558"
 Received: from gsse-cloud1.jf.intel.com ([10.54.39.91])
   by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2026 21:42:26 -0700
 From: Matthew Brost <matthew.brost@intel.com>
@@ -102,20 +102,22 @@ Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
 	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
 	Dave Airlie <airlied@redhat.com>,
 	Matthew Wilcox <willy@infradead.org>
-Subject: [PATCH 1/3] mm/huge_memory: add folio_split_driver_managed()
-Date: Tue, 21 Jul 2026 21:42:18 -0700
-Message-Id: <20260722044220.1110278-1-matthew.brost@intel.com>
+Subject: [PATCH 2/3] drm/xe: select TRANSPARENT_HUGEPAGE
+Date: Tue, 21 Jul 2026 21:42:19 -0700
+Message-Id: <20260722044220.1110278-2-matthew.brost@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260722044220.1110278-1-matthew.brost@intel.com>
+References: <20260722044220.1110278-1-matthew.brost@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CCDE5A0006
-X-Stat-Signature: uamaq6t1k3mhe5bs69knmdx6xqw7e1i5
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 8A0C9C0002
+X-Stat-Signature: n98tyej38dmdendx9hyzs9uikpkk6gwe
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1784695347-234100
-X-HE-Meta: U2FsdGVkX1+ydqabGRgcQLLKXMQTyS7ZFuuFXQU/cUBgT4V5WZYXcyNEkpkzjXjn4THvpvpTxD458zujtYJWCOnBLOPp3qnn3UHvw648Gi/PxETjI4WdWH96JSymRv5L0lL/Y86T/zluH9MIytP3MsYx26eLr91iOOdmi/aFTXtG4xKCMG2i7CpUvopka9oTmvSaGJPa22x2Eoce5eIJO+6HVrtvh43p/Zye1g4P/k4f6WzlpTgMxxbRxeU4jjL2nSM1D1VywfAFasnp4rfUp4FK/Ph0bLYYCTBwRT7BD9gKKmiRZ7St5CQFrC99Xq7fRsC1zcVfiRsV9peWMQkbkTe9pcTNBUvXPLR5KTTwYS/W+Zo/9BZPVB/Xx4EfU/3PD4Per2i9Vaf9kXRC64VUHSNt0ozRooTxjh+GrDm6lWixYFg6ptUsz4OnlEVydVxC32lnJgD68eNHyYgAoyz/kc0iJZamwnzBHVo8NTXey8OZhFwMrV0DXQ4rGR+L4ts4j38UggLKv1/hscVqpJrhvE8Oy/4uSBJsMeItOzs1/YaJW2xst4JxIp51d81FXzFWaqug8UNaLen/lv+2Lex3UpvbfnUNLd+nOTgm9NOVkgPbrb44h6sDIsAvEpoiA/h+L5VTNYtNrVaBQF4/90Q3aI/SXC3m2N/XjdkF2JgWFbx2fTDXYnMFw/CGXdVFjMn5/8QBUCKPSg00J3aocx6fh/c3+rn3ASAXdPRqXcqTI2VVApEp3WyrLJvkBhQO4yFYrgOrybTCdCWtu7wESVYDkmPzNnmOZSF4STXH7duaq6laRCse7YzsSodhS+pZBX9iPJdU0mliFxtidw84DpuvCEv3KO227xC0sOVq4cik7P0ZHjL0lVlc5VsKXpX4uxKdeXgDsycN06pqmaTwhv56dypbxbGEVs5VNAW00lf2IAEZ7kafmXE5HHHjDIb18qryxniE6Hctqm0xK9oWNBY
- iuJrN87Z
- MKdB1K/nX+mx2pbfoJCcv/A+ivlA56RXpOMJqYjoWQ4ABb5KGPfYVObbAQdiqR5LZGnPQzpKyUCeNYSAw/xJid+xzWIGxSFWCcSdnbH86iU+qtIOTJ9XemPNCpZe65+AF9mPTxzkEHseFfeXw7lw7qvMe2jG4h5Y5eCbbtdbng+xyJe2UZf5qP4NdtUfjNSajx8EdzGMhoMZvKvoetab9R5xnTAcMyQQinDAKXqBNKLP3ljy/kTg8L1GTJNrfuCScwCFxwUpin9lZuCwSw2AiBpWrPCgoL1STpdHa1nhcXw+LNrmRXQODBwtaQ0gd4MoHT3qZYKU1JfXC6tag4xSZ8ZxRsqbu+rzP8hif2PcbjGpySg2Z80NQPzERGtUnRqSR2Q8W1m1PFZUcDUHYpxKEsPmZraIl77OIVGRAwGLPJliH5wezgfRmxNhPzIlrMQYqj5iVr3FSU6aYccd2CxqC0uKi7pOyZQrBUz4SA1C3QHgPre23UCAsQH1Zh5wCT8UGh6D8ig+CNiUW6XAgehzyrZJ6i2SRkyxz1R3CTkVQ82arVjfdS1wbPzaYDi4YPxnydTYyWkm7JOXUFZEyTGGZ0XZ7BqINyryakOSq2pqoevIlhSCCLPG+wnVLfWRO34rhwvFC3U/wuFTg/r3825KiIdMqzqfQmkQ1o5JzNKd8oKESofubq12iYyxmqnIlpPLR1RGfw1x/zwfpi38HaL8SLIC4zw==
+X-HE-Tag: 1784695348-929678
+X-HE-Meta: U2FsdGVkX19BD35URztxApyFzb5p8Kv+JNqgD0w3ytStkLE0Xq03bzup/+rmziGW7UhEND8p06F2BreDMJJjTrMBWDIJ7RCHQNZEsLux8hQWWJzsI0APO3d2kabbKNXJfBDGziQTj+7/Id/P6ut8pMB89RQScd2uQ+v7ki5930mwoxhwpUeIen8k+0PNRxx2du6NpoD2RH01/QIi5k8lqH4iZ6YT2xCcIhSxNi8Eclc4I/GaoL4pOAz0tQ+ib13MqG+2XqWdAsApg1IYiF/3sjLcxsgcvF//nnwkd6+QojBFpDmv/uN+BHMg5M5zE5fNznCDytzGo/UnqjbGYwDATAzmurw7EsI3KEqxFi9LN4/CjHY8Wq3L9gg0uzRJfvaMQ5GHtWD7lm4ufXVbQ04hqcbd2ygL8/Su3sxmY7I1fugEJp8Jc0SI6pFYl01mebfwcMo9p8U53dFpDsog63o6fAimxyttBEi1nDlFYs/9FMPFyKrkIjreVdHldVyqf3l/dN0j+B6drfsTXWmmAuCQwdSJkHTbUxSsVMkzDgOyxoBOs8OwsS1gqvPScdnlxBN/mPybf6ktN7tG9PXzbDajwIeNXDKQpFfnH2OT/ttb+Ax3PWoilppblHluKtG5O6tZSz91qL6pOh0eO7OPe/GkR/Rz5aXa/1PT8iA3W5WA4oxop4XsTN03OSOifd6hq5wjO3twFyCRigIGBtBW8zPbFhjxBKpwLPXQfHnbJFuT0+R/PtvDypHMEMyxacv00NBr2b24XaVlP+D+f0uVJ7C6qctSNgFfmyxHvh96410P0i8avZMIhyh7TM8YcjtcVwkAbFTOtMOuDqWJv7OJAsG99/ypo4eRnPKiCT7J8SW9elWDAjeaCFVYh4FOKMVjOvnodQ6RztwDR5dKYgNMi3Rzoa2LHatQTgjVtad2UJIJ2q9E3B3426sDE/4BE2Om3lgGCApcKzYy4IdquMndrSR
+ tsr2RbyU
+ 4OfVM8F1ACoaedyKz9d+jmDBnG5XmQyrQREqBw7H81kik6RVmGjNxC6fvXFUo3LjAfhmwzdtcgmvmzpfpgEwPzT4i/OyaXRT3QR6WHnlTD5ERkOljF/GhtL28dkeTaCAmaSC7i0HMrZcfzRty4Bw0biO0zGAL3mr+KASSyzXXd/ZxWyNkMwK7cmGxou6G9QQT6ATk3n4VVK4jFFGb9MqAE0v1AC5jxQ5BOfosjfiBcnx3JVjuIk6FFqNpH7tLRX9haNiDpb7gnry18ZnSjHinKcqCkAo5aq1qU56iXR1054hzC3SY80JDdJqi3FteHk04t/RxjXisz8TUBJGfTRdrEPfo00qrSBq4MNdDKHl7nM3idl1nkt5zXybRiJEDQczznUqsnKwCJZ/TCJCQHYnFV4EAEsjux6y9QqV8E+NmyIqJVHNMJ1dydrQjP7qU2JFqVqOd7CGpBR9rjBnhNHC121BCSqXlZR5EpzhWpTUOGGXeFpksxZH+0lBZ/WpBSVy7/CQ1lK+EolIJASqBoD/mzJqWJuJYEZXmbPzhDZdXjUiphXKU41jxpjyv7tw3Ia16gE4EC4UMp73yfTFNrSgaJFbDWsmZvSfWie3XJi3JcuM+1qD8P2GjPETHlpwvbkGafySBUOjn0VBnW9Cv55gzdcEaDBspIGldaTQEWJeRG5FzqO7MKiFqVb8wDZJZFVDQm712w3n8k3P1wCX8241pheK3Gg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,37 +125,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a lightweight structural split primitive for large (compound) folios
-that a driver allocated with __GFP_COMP and manages entirely by itself,
-outside of the core mm's view.
+Xe is currently the only TTM driver that drives the TTM shrinker, and
+hence the only user of TTM's incremental swap path. That path splits the
+pool's higher-order compound folios one page at a time via
+folio_split_driver_managed() so individual pages can be backed up to
+shmem and freed under memory pressure.
 
-The existing split paths - split_folio() and folio_split_unmapped() -
-are built for folios that the mm owns: they perform a refcount freeze,
-walk and remap the rmap, and take the anon_vma / i_mmap locks, and
-folio_split_unmapped() further assumes an anon, pagecache-style refcount
-model (nr_pages + 1). None of that applies to a folio that is:
-
-  - singly referenced (the caller holds the only reference),
-  - not mapped through the rmap (folio_mapped() == 0),
-  - not in the page cache or swap cache (folio->mapping == NULL),
-  - not on any LRU or the deferred-split list.
-
-For such a folio the split is purely structural: because nothing else in
-the kernel can reach it, there is no need to freeze the refcount or touch
-any mapping. folio_split_driver_managed() therefore performs only the
-compound and split-accounting teardown via __split_unmapped_folio() and
-then hands each resulting order-@new_order folio its own reference,
-mirroring split_page() for compound folios. The caller keeps the original
-reference on the first resulting folio and is responsible for freeing all
-of them individually.
-
-The immediate user is TTM's GPU page pool, which allocates higher-order
-compound pages, maps them into userspace via VM_PFNMAP (never through the
-rmap), and needs to split them into order-0 folios under memory pressure
-so pages can be backed up to shmem and freed one at a time.
-
-A CONFIG_TRANSPARENT_HUGEPAGE=n stub is provided so callers can build
-without the split machinery; it warns and returns -EINVAL.
+folio_split_driver_managed() is part of the transparent hugepage split
+machinery in mm/huge_memory.c, which is only built when
+CONFIG_TRANSPARENT_HUGEPAGE is enabled. Select it from DRM_XE so the
+split primitive is always available for the driver that needs it, rather
+than forcing it on every TTM user.
 
 Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
 Cc: Maxime Ripard <mripard@kernel.org>
@@ -177,123 +159,33 @@ Cc: Barry Song <baohua@kernel.org>
 Cc: Lance Yang <lance.yang@linux.dev>
 Cc: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 Cc: Dave Airlie <airlied@redhat.com>
+Cc: Matthew Wilcox <willy@infradead.org>
 Cc: dri-devel@lists.freedesktop.org
 Cc: linux-kernel@vger.kernel.org
 Cc: linux-mm@kvack.org
-Suggested-by: Matthew Wilcox <willy@infradead.org>
 Signed-off-by: Matthew Brost <matthew.brost@intel.com>
 Assisted-by: GitHub-Copilot:claude-opus-4.8
-
 ---
+ drivers/gpu/drm/xe/Kconfig | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-The patch is based on drm-tip rather than the core MM branches to
-facilitate Intel CI testing and initial review. It can be rebased onto
-the core MM branches in a subsequent revision.
----
- include/linux/huge_mm.h |  8 ++++++
- mm/huge_memory.c        | 63 +++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 71 insertions(+)
-
-diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-index ad20f7f8c179..35661d82d54a 100644
---- a/include/linux/huge_mm.h
-+++ b/include/linux/huge_mm.h
-@@ -402,6 +402,7 @@ enum split_type {
- int __split_huge_page_to_list_to_order(struct page *page, struct list_head *list,
- 		unsigned int new_order);
- int folio_split_unmapped(struct folio *folio, unsigned int new_order);
-+int folio_split_driver_managed(struct folio *folio, unsigned int new_order);
- unsigned int min_order_for_split(struct folio *folio);
- int split_folio_to_list(struct folio *folio, struct list_head *list);
- int folio_check_splittable(struct folio *folio, unsigned int new_order,
-@@ -656,6 +657,13 @@ static inline int split_folio_to_list(struct folio *folio, struct list_head *lis
- 	return -EINVAL;
- }
- 
-+static inline int folio_split_driver_managed(struct folio *folio,
-+					     unsigned int new_order)
-+{
-+	VM_WARN_ON_ONCE_FOLIO(1, folio);
-+	return -EINVAL;
-+}
-+
- static inline int folio_split(struct folio *folio, unsigned int new_order,
- 		struct page *page, struct list_head *list)
- {
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 2bccb0a53a0a..06f9a5f35df8 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -4185,6 +4185,69 @@ int folio_split_unmapped(struct folio *folio, unsigned int new_order)
- 	return ret;
- }
- 
-+/**
-+ * folio_split_driver_managed() - split an exclusively-owned, off-LRU folio
-+ * @folio: folio to split. Must be a large (compound) folio that is owned
-+ *         exclusively by the caller and is invisible to the core mm.
-+ * @new_order: the order of the folios after the split.
-+ *
-+ * This is a lightweight structural split for folios that a driver allocated
-+ * and manages itself (for example TTM's GPU page pool, which allocates
-+ * higher-order compound pages with __GFP_COMP and maps them into userspace
-+ * via VM_PFNMAP rather than through the rmap). Such folios are:
-+ *
-+ *   - singly referenced (the caller holds the only reference),
-+ *   - not mapped through the rmap (folio_mapcount() == 0),
-+ *   - not in the page cache or swap cache (folio->mapping == NULL),
-+ *   - not on any LRU or the deferred-split list.
-+ *
-+ * Because nothing else in the kernel can reach the folio, this helper does
-+ * not perform the refcount freeze / remap / anon_vma & i_mmap locking dance
-+ * that split_folio() and folio_split_unmapped() require. It performs only
-+ * the compound and split-accounting teardown and then hands each resulting
-+ * folio its own reference, mirroring split_page() for compound folios.
-+ *
-+ * The caller is responsible for freeing the resulting folios individually.
-+ *
-+ * Context: caller holds the only reference and excludes concurrent access.
-+ * Does not sleep.
-+ *
-+ * Return: 0 on success, negative errno on failure.
-+ */
-+int folio_split_driver_managed(struct folio *folio, unsigned int new_order)
-+{
-+	unsigned int old_order = folio_order(folio);
-+	unsigned int split_nr = 1U << new_order;
-+	unsigned int nr = 1U << old_order;
-+	unsigned int i;
-+
-+	if (new_order >= old_order)
-+		return -EINVAL;
-+
-+	VM_WARN_ON_ONCE_FOLIO(folio_ref_count(folio) != 1, folio);
-+	VM_WARN_ON_ONCE_FOLIO(folio_mapped(folio), folio);
-+	VM_WARN_ON_ONCE_FOLIO(folio->mapping, folio);
-+	VM_WARN_ON_ONCE_FOLIO(folio_test_swapcache(folio), folio);
-+	VM_WARN_ON_ONCE_FOLIO(folio_test_lru(folio), folio);
-+
-+	/*
-+	 * Structural + split-accounting teardown only. No mapping/xarray, no
-+	 * refcount freeze: the folio is frozen-by-ownership already.
-+	 */
-+	__split_unmapped_folio(folio, new_order, &folio->page, NULL, NULL,
-+			       SPLIT_TYPE_UNIFORM);
-+
-+	/*
-+	 * Give every resulting head folio its own reference. The original
-+	 * reference stays on the first one, exactly like split_page().
-+	 */
-+	for (i = split_nr; i < nr; i += split_nr)
-+		set_page_refcounted(folio_page(folio, i));
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(folio_split_driver_managed);
-+
- /*
-  * This function splits a large folio into smaller folios of order @new_order.
-  * @page can point to any page of the large folio to split. The split operation
+diff --git a/drivers/gpu/drm/xe/Kconfig b/drivers/gpu/drm/xe/Kconfig
+index 4d7dcaff2b91..88a4f3d09d5f 100644
+--- a/drivers/gpu/drm/xe/Kconfig
++++ b/drivers/gpu/drm/xe/Kconfig
+@@ -11,6 +11,12 @@ config DRM_XE
+ 	# the shmem_readpage() which depends upon tmpfs
+ 	select SHMEM
+ 	select TMPFS
++	# Xe is the only TTM driver that exercises the TTM shrinker's
++	# incremental swap path, which splits the pool's compound folios one
++	# page at a time via folio_split_driver_managed(). That helper lives
++	# in the THP split machinery, so pull it in here rather than for all
++	# TTM users.
++	select TRANSPARENT_HUGEPAGE
+ 	select DRM_BUDDY
+ 	select DRM_CLIENT_SELECTION
+ 	select DRM_KMS_HELPER
 -- 
 2.34.1
 
