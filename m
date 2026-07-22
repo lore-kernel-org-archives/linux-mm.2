@@ -4,94 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BD87C4452B
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 01:12:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAFCAC4452D
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 01:23:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 835E46B00B2; Tue, 21 Jul 2026 21:11:59 -0400 (EDT)
+	id 676326B00B4; Tue, 21 Jul 2026 21:23:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7EB616B00B3; Tue, 21 Jul 2026 21:11:59 -0400 (EDT)
+	id 627C26B00B5; Tue, 21 Jul 2026 21:23:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6FC896B00B4; Tue, 21 Jul 2026 21:11:59 -0400 (EDT)
+	id 518986B00B6; Tue, 21 Jul 2026 21:23:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 295726B00B2
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 21:11:59 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4CBBE40316
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 01:11:58 +0000 (UTC)
-X-FDA: 85014635916.11.CD8A654
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 42DA140006
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 01:11:56 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=GxOwvukR;
-	spf=pass (imf27.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 257906B00B4
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 21:23:58 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9EAE112033E
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 01:23:57 +0000 (UTC)
+X-FDA: 85014666114.13.F8BB167
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	by imf22.hostedemail.com (Postfix) with ESMTP id D8A0EC0002
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 01:23:55 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=nmFigF3E;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf22.hostedemail.com: domain of harimishal1@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=harimishal1@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784682716;
+	s=arc-20220608; t=1784683435;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JPeWjqbBuNWvil2Wi1GbJzxHLNLfXAIIvk3axfPdvVE=;
-	b=3kt0GlrXpljh5IjBUo2PyPqfnB/WLJv7ejcfkJcn421s67e3IANa8ppCtK2ZCFTbw+YxUq
-	q/pSdvDBtEV+2bb77D5RcdrzOfvZWMa/qZJwwF/sB5JTHouA7BBx0ASktIbj5o3FYg1w+u
-	NpfSBq4UWVszqVSoKcVPi56K0yflol0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784682716;
-	b=22Wn2V14J6IVsFUsJc+DcKdbdNank4hqPB8Xl5ZeYG2Pkvx2CUU40ySyO5aRLJk20e6XOq
-	SRwnq0O875m1/HAtUBYrrRxrQWH28S2lJ/eLI6NEvonEq42UCpibJw6DvpOvZQ1uC05Mme
-	rIUYi3NPBtjMxoX5pj6kSUMlJKYeFyM=
+	bh=YbFXTrauONRUcQG2aMTBcn7xFxe1QUlq55ZfdY6FsS4=;
+	b=dRapMTmwVPRpbcTVe94kjP1pruzWFbLPKU83nuHh4Yo7qcI3zI2m/bNBqj489DnhM/TJsN
+	8RIFSoQIR/iGCxS+pAuaSJnV/BytZ79R3dGrzeqd8G2KU8yvbVf0KxoTJ6PkuDj6w42pOv
+	C6DHpWWFKq9VLKZ8nUSYv4QhdWETGZg=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=GxOwvukR;
-	spf=pass (imf27.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Date: Tue, 21 Jul 2026 18:11:45 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784682712;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JPeWjqbBuNWvil2Wi1GbJzxHLNLfXAIIvk3axfPdvVE=;
-	b=GxOwvukRpoFyR8PdP9f5TWXO15pCgm937M4Z1QA4Bz+5Po0vKLHau87RH8cURsoyLnX3e/
-	/rQEhdPoJlOjrBDww2yRH0QVuvc9jZCtPjQkjFIL3MbP1o0ljrhhvh3FIXKP3MASNq90zn
-	mQx97xDidduv6eGu9uNqBsT+dfH5bP0=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Youngjun Park <youngjun.park@lge.com>, akpm@linux-foundation.org, 
-	chrisl@kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kasong@tencent.com, hannes@cmpxchg.org, mhocko@kernel.org, 
-	roman.gushchin@linux.dev, muchun.song@linux.dev, shikemeng@huaweicloud.com, 
-	baoquan.he@linux.dev, baohua@kernel.org, joshua.hahnjy@gmail.com, gunho.lee@lge.com, 
-	taejoon.song@lge.com, hyungjun.cho@lge.com, baver.bae@lge.com, her0gyugyu@gmail.com
-Subject: Re: [PATCH v10 0/6] mm/swap, memcg: Introduce swap tiers for cgroup
- based swap control
-Message-ID: <amAYvvTtg8QLyInH@linux.dev>
-References: <20260713025644.170839-1-youngjun.park@lge.com>
- <CAO9r8zNJfhirbzvJzDWRaBQOM7XZcf_Jk0Bz=Y4dB4QK4W-MwQ@mail.gmail.com>
- <alUK8DWRy4LPxTpY@yjaykim-PowerEdge-T330>
- <CAO9r8zPvWKgQ8+ABxSnVnC452-enyMqCjBTA4pfNDVxsoJr25g@mail.gmail.com>
- <alUQ0ksPP00PVwew@yjaykim-PowerEdge-T330>
- <alae-LIRwEFUjgs1@linux.dev>
- <CAO9r8zNfp-T19cYyZxKHBY-FnmQ_9=fbP4JYPPFgYtUCo5fZyg@mail.gmail.com>
- <aluXhRMXkbPRsPcM@yjaykim-PowerEdge-T330>
- <CAO9r8zOK-3OzwsMQFY6GNv7foiw0Jnj2W6Cm0LCMmtX+2r5=nw@mail.gmail.com>
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=nmFigF3E;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf22.hostedemail.com: domain of harimishal1@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=harimishal1@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784683435;
+	b=THB3DhB9oblClntlJ/yyRs1iWJ6K2r9MD/Y3OZw4xRQjA/jBeLqV5NzFlRvaCg3UsZV7GH
+	s1WoLY7z1fFUWBd65TTfPgPN0gGwggQce4mFV44UVixEa2QSj5U6CUGpa3Fj3TlhZfHqFo
+	svXIhTiPQxwA8/nSDFxlh9AlGZD0Wsk=
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-69eae037da1so5646972a12.3
+        for <linux-mm@kvack.org>; Tue, 21 Jul 2026 18:23:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784683434; x=1785288234; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=YbFXTrauONRUcQG2aMTBcn7xFxe1QUlq55ZfdY6FsS4=;
+        b=nmFigF3E3pBtsZ9Impy9J6akLNsfN18Ez41KOZaXYLJ7ItrutTD+fmdlTMW5Nyt7Hu
+         qQooiOO3oGFdW7OuUO6ybHLkpr9Tdb5hEE53Smrkl1TUv9sc6T63btiBEyIQ5ikFtJEk
+         mvCt7Rcl1WiVn/DLdrF77E9XLRVX+QOb1nB1KpnaOrajY/Fi9ZNZs09wd9CEMnlGAkjh
+         7gtmVL0OwQmx67nL1keJ9InuCF9OlXH0LZ+7kQzF3nBBPtSZG972CCz35UPppe1mw8Nc
+         ZQBPv9DGkC564T0Z2PKsQ4TQpTXyglmWyNsVcbpQLWLWaKKZTx03XujxgqtRndUfZazF
+         5D0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784683434; x=1785288234;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=YbFXTrauONRUcQG2aMTBcn7xFxe1QUlq55ZfdY6FsS4=;
+        b=eipobUpMnXC0HJAkhViSp2pZYx+lqRknPHCPbLlD07Dy6ga2fQtwoE5oIDxpsW23yt
+         5rGymjHuc9FZncOMvIGHDxBa8hR68fVKFQNECRPPKH4uQf29W0+ptiYxDvqE84eAnMef
+         RypdVVHzVprKGwulcNH0bsdCfVygAt1plYAqPoRzsCY41pMcDaXc44x5U4Ul7TOey/DG
+         2SL0LaQzr6Lg8t1EG/qGDphw6pAjmurbkVh2SIYvqRRl0sl5XF2Cd1S9yhcJf8XwkQME
+         Pp5Y85s6MyYGUy1G528wnwnORjg4M+IH/STdC6NIuSFRyfKhjT4G8RcVmeQJx5l3KCe6
+         2MCg==
+X-Forwarded-Encrypted: i=1; AHgh+RpYIW4vtmBqNxoCFYQDwoRS42RlbGk38or8uUSZQFroCLv5yfNkhx5cuuZuGM2cVD8Y11sc7gUSRg==@kvack.org
+X-Gm-Message-State: AOJu0YwE2sZVtKdt9M71mwtfHxJSPEQATHJJN1o92zRcJDIUMScE6xxv
+	LiDPiy0da4ChlFSlsQIdp1DrQRqUmpmOSazJWuKjBlmNB27ultyM2mGI
+X-Gm-Gg: AR+sD12zPF8IxEQzfaxa57W2/5wqgJJqtwTovdorPOHuDYzokl2dE33jnhYTByn7CRH
+	h0aazSbeIaP0bp+VS8f8xoRCqC4TIdQ3gcRMhrUiebvumt1d71M54NBpTout9j7wDhGepwHQGk4
+	0h9z3U3/lWDlSKJzz/1/SR8VvZ1HEccxAYvLtCzFpY2lXDxFh/F+34CNBbV4wV3ojcGHjA5/UIp
+	LxFYuzpnSUkC+6qOtwBdYHrh9i7xzaxsXVFChMhOJ84WR9SvHbE7YllBuv6dy9bc6kVEBPZyrs/
+	9KTTlqwW6QzxWoXn8brpEWxQ0nVBKI6mNBTh9JQhRL1Mhizn6pY4uJviy2c4TilRkqQmKZvKIYo
+	StYGveVZMpZZQ8NPW49TLV62fCgwPL+co1iIxaC/gBj0asLAZ/5uM9SWKpNg3LOJcqXKgcAnz+8
+	nzYYSi40NTcvqApZU6gcCkDx9g/QOzwhGo4ZFweQ91uSVgC9syTnW51UkDHDkK12vXIw==
+X-Received: by 2002:a05:6402:528e:b0:69c:7406:9492 with SMTP id 4fb4d7f45d1cf-69e652e1111mr6897698a12.39.1784683434224;
+        Tue, 21 Jul 2026 18:23:54 -0700 (PDT)
+Received: from misharu.home (2a02-a463-a071-0-7364-df4e-3b35-2094.fixed6.kpn.net. [2a02:a463:a071:0:7364:df4e:3b35:2094])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-69f34ba67f0sm321569a12.12.2026.07.21.18.23.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Jul 2026 18:23:53 -0700 (PDT)
+From: Hari Mishal <harimishal1@gmail.com>
+To: SJ Park <sj@kernel.org>,
+	Shuah Khan <shuah@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Hari Mishal <harimishal1@gmail.com>
+Subject: [PATCH v2] selftests/damon/sysfs.py: clean up sh processes used for obsolete_target test
+Date: Wed, 22 Jul 2026 03:23:49 +0200
+Message-ID: <20260722012349.9738-1-harimishal1@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260721190404.135937-1-harimishal1@gmail.com>
+References: <20260721190404.135937-1-harimishal1@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAO9r8zOK-3OzwsMQFY6GNv7foiw0Jnj2W6Cm0LCMmtX+2r5=nw@mail.gmail.com>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 42DA140006
-X-Stat-Signature: yerejy8x8gi8jocemzzhqcykc6964t6s
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D8A0EC0002
 X-Rspam-User: 
-X-HE-Tag: 1784682716-861636
-X-HE-Meta: U2FsdGVkX1/Py9IIS9CX5bUhUL2C+JKB6noe5SrqqWhvjhTIpHxvKoKVfACoS/lPNV9ExvgeSIDwUp2eW32g1Cw/KfEV47ktIJ1QY27kSLXHlCB/3rkR6mGxR8j3d7icpA63J3lQ1Yxyq8IDi/sLSHCJCuAiO62i9zybw0R47poE0h8xA3W0nse9MzTAsNuQ9ZNYlGYGmGlxawHuc42TS/J/RuL/f/BBHhNwPFHbwTAb0gZKJ3cS9Fd1wy5Z8otay7qfGANSHoGQnmBi40lQ5wK7kOG2CMo7TCbDB3jZ17UYGCShVCYou+guajec4W6Bhfqe1IiLSWHzGxu/bbfjaV9ihYq3PgSr7p5uN16HmgfgymEDGRrZcg2kCkkILRKTza5JYYOI7zuyj1PzPWhGUPbXRzniVY1Hnuk2pAYKOTuMGuj9D5wrlqtQCOrXQmJIgbg6kZvPQGDERKmZEKwFblXwiA/e0Buee3hQkS6e4MUbyDWejDGzfk0vZKRggp85FUZ95cxZ5EQ4O3iPr/CX4Htw/QSlzo97Aix5LZTKYmDKc+Ox17gqJcq+8k9O+A1bJD8M3+mrPY5Bp+McIAYyB1Hr6B9JNcwu8SRvDzyOqUoSDMms6mSvWmmvUCVCWsAD82+YAOroZbBTnGJdE+2tWs02wERcUZwW1JUc76ozL8U/Lt1dJ6jxzTRStwsdEO7yLkxiUIjRVMMx9pc+4Wv4l54Ll1K+LjSscIBntsaMvFT5ES9WgCaLwV9qELtfV/7RYMRtAslgG4+RK9blHH3zu6HhLxioXBFZtAuzEnCNXVKFgy/eTuSc4GES8GGpMFh0GAwqb5iLRGWKXPKb1lxZqU58GgSu7bSPeB+aejzcX/poF6oLsdYrjayZwIgNBjNHT8VnawvOOoGjUfao8D1voCeHysnKEFq5l0UxLETx/S6fWPCjYoS26+mpC4bw21ccjpEN5Rnbw0ZJywihwsm
- TiLUv7fq
- c6sG5Wba1Gz1kNUdOcB1gqYW3/fc11mkWtMt++ScCWg/rPyWYxpTcRQvuVOj1U2PHZJDbhJ2gvibfBo9dEYsFi1ma7+nN0SFt1tgUjGrZnor+46bPANwG0b54rmSNK1mk4snH8oUjwPCi4/SyqAYepDj68I3BpCKBplWpYC0Nfbn7NhBK6BBSUG5o49g4Jmj8uWxz/3UNSJRdRKYpErl3QuM2d3P82hpTK5j7vW4a4A3S1M1LOG+hkCewzy6cJUpIJibnNwxmEUZsF/3D7MmKw1iDy69/A6KiwhTb
+X-Stat-Signature: zm8xxanwrcohcqd4s6mqr7wrxgo7nrp7
+X-HE-Tag: 1784683435-351666
+X-HE-Meta: U2FsdGVkX18N9AV44/QQWOVs0sP2RCaQR8423uNOGXllchwOHn43Il70IMnlgQkVWLCl1hYVaU2XrfJ487W1Ff1dpVVLqyRZFjQIbIFP0GqdOdJL6rEBvDxIc59d3VorH6PmQcYk2D6BcICucu0KnKMRPeGjbDo/16gbk6L4CVYVrEl9oHaOsN+Rju23cxz+jAQhi8CHd4tPizcLmnQ9OvOM+SaFM4iFrXfM+ASV/hxiN6wYepCgOW693dff9UK+vk3K9EWRnOduOIDQWeIUChT2aQr0ujytTQ4eWGcQdlBxxMa9BicwasaxyUxk4Y9mNWz03Vh20+DZ0DO8fIiEctcxN0unygwLcFmtFAMeW9mjDSMfRfXuWUnlABYi0wp99zN98HomjxWxvYRt8kGSgsv/WAiJXHEypsel8kaItplcCR7fzcm1prFIYI0GetBZ6QYDEiIqTjLCSgS/gCdEQem306sJlixiLPzVw8t+i1K7ofs+OJnxXwy3UyUNGltvuivG0oaHzuE1yM6MTVAQK99cEPJMuwfU9uQU/cIoe3+B3SrlaFB6S0YWVXr+lpA3V0x5PNnFLqKutY3e8sRUxMY0vjMZJGOZiBgNOp2XD4iPBRz7uHQeQUIw/CD370Xwh2lEzeOY2QyOnSutZj+WSdkgxjcv57vMzQXWoW3IDk9W881KZqmjPJ3LSn96BUmHqGiyuXdjHL6ZREgjw0XGQSBTIPMdpjhAwHjyLrVokQm/p5ODZhgLu4asEsKe32tUgnS15sHyLfnnQkmSb9rdQxY7AQdNaebuin0Khwxh/BIBSSnvtPZgUPj0UQNY33htjKQkSjCdt36/eq6dv9P63+n2dNWrZNzGP3cYSeDlK/CD1+o2hSD5+jfgUOTHO6dOdTi5bDz1htLg4YPyXfbQZnOdS6mFKuOiwOWbxJWqi6DepMHSHg6OvS9EL+ujzLJ9cvJ+xjqZTkuHh+BAXSf
+ NO4cZYu9
+ tz9Z4aAurKHeh71vdXMfdASmHGeZ9tXrrwyxtQ/kJf5FblrTYeoEx7IwErTPjL8suwdHTCfUdPVNMF1E880jYoVvoCo1PTHgRBnr71MhrTW7ukqk0Ei9qV8Igb0lZgTYiIDl8BWsbRMMeFHVjgI9ZtJWD2xEBiYufHfUfgzZFCdUw2tj1u5enbCrnRJVF6/leE9r2OQZMzg9goC9QQmTLuy5F+Fbl7mkwiSiuuxIX3RMlAr7yJgCWwk98X4Oj3SrIQhVma96bIlhvswQS/LcmarSxq+CBT9Z9fNuSWU4Th7MFU5NeLFBJ0l2iDdbFt03DNmsYLFbUZ1TMGZoFor8aAyZz8uDGQHHg8052w+l15CT0DXto1QSP7uVgLxdYU0BKDL5H2GlRIEOPZTlorAB7WXQsA+QI4qv8LLjaIcgie7WQx6EeItJ77H4kdt0zCKFAfWgyxpZjg/vOYjA6mVPyZYoqxA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,84 +122,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 20, 2026 at 11:27:56AM -0700, Yosry Ahmed wrote:
-> > Hello Yosry, Shakeel,
-> >
-> > I have been working through this in detail at the implementation level.
-> > For now I am adding on/off control of zswap through the tier interface.
-> >
-> > > From zswap's perspective, we just need to skip zswap is zswap as a
-> > > tier is disallowed. Could just be a check in zswap_store() similar to
-> > > the check if zswap is enabled. I am assuming that if a swap tier is
-> > > disabled, nothing happens to the existing swapped out pages in this
-> > > tier, but new pages do not get swapped out to it. This is the same
-> > > behavior that happens if zswap is disabled at runtime.
-> >
-> > This part works as you described, with no real issues.
-> >
-> > > From the tiering perspective, we need to accept "zswap" as a possible
-> > > tier, or maybe creating it as a tier by default if zswap is configured
-> > > would be better to avoid handling the case where the user doesn't
-> > > create a tier for zswap. We also need to disallow zswap being the only
-> > > tier as that combination cannot work without vswap.
-> >
-> > I tried to forbid this at the implementation level as you suggested
-> > , and that is where I ran into trouble.
-> > A few code paths can end up with zswap as the only
-> > tier, and they are awkward to handle.  Below is each case and what
-> > handling it would take:
-> >
-> > 1) A write turns off the last device tier while zswap stays on.
-> >    -> rejected with -EINVAL.  The write does not take effect.
-> >
-> > 2) The last device tier is removed via /sys/kernel/mm/swap/tiers.
-> >    -> the file goes empty, so zswap is not shown either.
-> >
-> > 3) A cgroup has zswap and one device tier on, and that tier is removed.
-> >    -> the cgroup's zswap entry is reset to 0, which the user never
-> >       asked for.
-> >
-> > 4) A cgroup has zswap and device tiers on, and swapoff empties them.
-> >    -> the cgroup's zswap entry is reset to 0.
-> >
-> > So the problem is that in (3) and (4), memory.swap.tiers.max has to
-> > change on its own independently of what the user wrote
-> > and it is not like just error handling situation as (1).
-> >
-> > There is also a consistency point.  memory.swap.tiers.max already
-> > accepts a child enabling a tier that its parent has disabled: the write
-> > succeeds, no error is returned, and the difference is resolved
-> > internally.  The user's setting is kept as written, and only the
-> > effective behavior is constrained.  By that logic, accepting a
-> > zswap-only setting and guaranteeing only that it cannot do anything
-> > would fit how the interface already behaves.
-> >
-> > Having thought it over, I think one of these two directions would be
-> > better than enforcing the rule as above.
-> >
-> > 1. Allow zswap-only in memory.swap.tiers.max.  As you say, it cannot
-> >    work without vswap, so today the setting does nothing and there is
-> >    nothing to prevent.  Once vswap/xswap lands it becomes meaningful on its
-> >    own, with no interface change needed.
-> >
-> > 2. Expose memory.swap.tiers.max.effective, like cpuset.  We already
-> >    track the user-set and the effective-set separately.  Exposing
-> >    the effective one would show that a zswap-only setting is not in
-> >    effect, giving the user visibility instead of rewriting what they
-> >    wrote.  It would also help the parent-off/child-on case, where the
-> >    child could see from the effective value that the tier is off.
-> >
-> > What do you think? or any other ideas?
-> 
-> Hmm yes, seems like enforcing this rule comes with a lot of complexity
-> for little gain. It's possible today to enable zswap without adding
-> any swap devices, which would render zswap useless anyway. I suppose
-> in the same way, we can just do (1) and allow users to disallow all
-> tiers except zswap for a cgroup, which would effectively disable zswap
-> in the same way (albeit a bit less clear). We can document this
-> clearly in the memcg docs.
-> 
-> Shakeel, any objections to this?
+The obsolete_target test spawns three sh processes and uses their pids
+as DAMON monitoring targets.  These processes are never terminated or
+waited on, so they are left running (or become zombies) as orphaned
+children after the test program exits.
 
-Nopes, no objections.
+Terminate each process and communicate() with it after the targets are
+no longer needed, so it exits and gets reaped instead of being leaked.
+
+Signed-off-by: Hari Mishal <harimishal1@gmail.com>
+---
+v2: Terminate each sh process directly instead of giving it its own
+    stdin pipe to close, dropping the stdin=PIPE changes and shrinking
+    the diff.
+
+ tools/testing/selftests/damon/sysfs.py | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/tools/testing/selftests/damon/sysfs.py b/tools/testing/selftests/damon/sysfs.py
+index aa03a1187489..bdb37eb1d26f 100755
+--- a/tools/testing/selftests/damon/sysfs.py
++++ b/tools/testing/selftests/damon/sysfs.py
+@@ -356,5 +356,9 @@ def main():
+     assert_ctxs_committed(kdamonds)
+     kdamonds.stop()
+ 
++    for proc in (proc1, proc2, proc3):
++        proc.terminate()
++        proc.communicate()
++
+ if __name__ == '__main__':
+     main()
+-- 
+2.43.0
+
 
