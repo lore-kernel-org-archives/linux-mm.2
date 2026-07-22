@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B10BAC4453A
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 09:12:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FCD8C4453D
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 09:12:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8CE4D6B0092; Wed, 22 Jul 2026 05:12:40 -0400 (EDT)
+	id C51C86B0095; Wed, 22 Jul 2026 05:12:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 87F426B0095; Wed, 22 Jul 2026 05:12:40 -0400 (EDT)
+	id C28FE6B0098; Wed, 22 Jul 2026 05:12:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 796136B0098; Wed, 22 Jul 2026 05:12:40 -0400 (EDT)
+	id B67CC6B0099; Wed, 22 Jul 2026 05:12:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B4C96B0092
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 05:12:40 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C82201A0386
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 09:12:39 +0000 (UTC)
-X-FDA: 85015847238.24.660D772
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A64B6B0095
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 05:12:43 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 163E9A0E70
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 09:12:43 +0000 (UTC)
+X-FDA: 85015847406.05.9B0631B
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 21E52140009
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 09:12:37 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=t5D8ftkW;
-	spf=pass (imf09.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
+	by imf14.hostedemail.com (Postfix) with ESMTP id 6A719100006
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 09:12:41 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=rEfmwAtQ;
+	spf=pass (imf14.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784711558;
+	s=arc-20220608; t=1784711561;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=T1wl1scoNU0/74tbSiLtLPJ9c+az2Kc4PP0hpIC7IMo=;
-	b=4EPwSJ/suHY1WWECcpheORT05mY77o+HTwUHUperkca0iH1jBGhOPhbI41p5Wpelsyaesm
-	B/ssR7hdOzWxDFwlTVWwoD3uhuT9njYF32r+pb0cd3RV7trI1nJnLCKZPRSJDjE092SJxo
-	ohhbmBoTWbYNDGixJjAohGRMr+l2DK4=
+	bh=+2qhESbv4peGVg5GuMtGS17pHcEkT5xEvs7SuLp/SNQ=;
+	b=6k47IjbvpCRpIuy/2Ew6ZoW1/BMr354zhSOMfFcJH7KzT/382vEjlIorzPdMgbMkxB+ywb
+	0NIYztItoqVUu+r0QuenRrTdcr4W+reUnvwLmTBVAZWqoafv0zM9B1Y1POdUbHFnN4qAZ9
+	1A1OdbO2WeZvW2gbPgG7ijwWww/3VqY=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=t5D8ftkW;
-	spf=pass (imf09.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
+	imf14.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=rEfmwAtQ;
+	spf=pass (imf14.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784711558;
-	b=Osnkv1Js8Xap64NeKs44CN6CMzQh6gctc5fxARV29b/0EavfoYTX8ItBZdz+dksH/S79Ri
-	gfE/iyz/aECzVYhpmhWQvPJMifVkjRuCZBQUmu40hwOUHoHijJuZ3mwmhZ+3Vk/MftOGmA
-	JIeK7FDzQvrRBm/a4Ww+aP7iucEFvbU=
+	t=1784711561;
+	b=GklYUd2EElT1meqXHo14zQ+94WC7K7xhty+0psNlDhq6SyhadovmqEN+gUyHsbEm4B1w7L
+	VKaIeEMA+AU8VYOjhd2HOpkNhOIHnJ82YmLgG9Xuf1jX5B2pJAOsE4JbS3+BVRCVEg3Rd1
+	yU0GKAVCid5zjPi+rL8zc6FbAT28S8U=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F0C641595;
-	Wed, 22 Jul 2026 02:12:32 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6FED11691;
+	Wed, 22 Jul 2026 02:12:36 -0700 (PDT)
 Received: from e142334-100.cambridge.arm.com (e142334-100.cambridge.arm.com [10.2.198.93])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 0A48E3F86F;
-	Wed, 22 Jul 2026 02:12:33 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 77C063F86F;
+	Wed, 22 Jul 2026 02:12:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784711557; bh=FcfLiMt+bHeoQiYgQH5BUPvM3W4w/RBin08nosAKQeA=;
+	t=1784711560; bh=MAOIk6RQMMHP9g8q0wW7WPE1XWmO8u6cAL0GlkkzBe4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t5D8ftkWCpH0Wn6f4iz0gui8c3irSjSWBII9enx1vmobNdM98AaccGRsapWj/3DAU
-	 pfkC30kUr7+goUvx4twrTbq96meG8jPrtAXXN5JszxbxqQSc0afhMFDQJNGLOpG7Ij
-	 bA8RtIE92vtzRZycWvxm89X05Y14MVWCt44pZVfc=
+	b=rEfmwAtQp5FzBpgznxbXzbVFSASRpkEAKRKrsxYS6t7OaDOvBhG7lXHIMH9aMs83S
+	 5q0Ogl46PYCxE4UsX2On99Aa72x+SQlwXDYDlbWwiki1/+Rwonheoe9fNeCyXF0MUA
+	 znm6WmOEtVQtpUpIP2CKY8gH9TW6Njp6WSrckMmY=
 From: Muhammad Usama Anjum <usama.anjum@arm.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
@@ -84,22 +84,22 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 Cc: Muhammad Usama Anjum <usama.anjum@arm.com>
-Subject: [PATCH RESEND v1 3/5] selftests/mm: skip khugepaged swap tests without swap
-Date: Wed, 22 Jul 2026 10:11:37 +0100
-Message-ID: <20260722091219.61504-4-usama.anjum@arm.com>
+Subject: [PATCH RESEND v1 4/5] selftests/mm: skip page-cache hwpoison tests on NFS
+Date: Wed, 22 Jul 2026 10:11:38 +0100
+Message-ID: <20260722091219.61504-5-usama.anjum@arm.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260722091219.61504-1-usama.anjum@arm.com>
 References: <20260722091219.61504-1-usama.anjum@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 6A719100006
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 21E52140009
-X-Stat-Signature: 3gis9e71pe6rrpnkiirrwepmywnry5j3
-X-HE-Tag: 1784711557-933393
-X-HE-Meta: U2FsdGVkX1/nxYzYFJeLLKxe7nRNcB4g7pYo576opUJctrTkoJuAIEfE/miE7AdWgjyAlMsiq8lR8Q+MZPPUZX0J+ZU0zTb4KKdSarOO+sdYKVUuvgcnkhwXQztQXGnkfHHWnZnFyKvLbh6/myoLmPopM7w6zdsiCqTjEdlqY5rB96/A/35RuvmDshL7snM9kQ9Xo9YPEdULE4Lh6WaRu/mGFxkxC2ltzoemByORXb16KwFa2H9kxyeKxByDmEgfUzjtfZlPwzX/GBBeWYrkfR+IjsIivDAMfUvMf62OpZUX/oRaZcOyZULQ0TFYNPkaMlZINPC8uaC3Z/va8Uin9LqJmUw1tXR5t0EJWW4Eypch+9mr6CMRuibH7MzcpWHnYY9W7+wZFZdn9rAZPIGmuN6hhEvO3FPX5vA32ZbGlxX339G99BpYwp43aciGNssz0jX3yl7wmponekxnU5yPhi+ANNcQQJarOQRyfFKDgTdhFEPMLYezyuTB5suDXSI9w5+gIuUokfrkCl87fb8Yk0GX9Hu1rkpAKYIfeqk2X/0o2YylMewx/TR3t4Xnu1bRoKABAkfhKd8X2rOYgQK/jfu4/PSIDowMTGEzLIHHOzT6wQhJqbcxZZw6XQ9BHBCEHJtJV9c7TVthL7cSbuNnMjyUk04YNMy1wnND2VgtwO4RIpRdiis51H6pl8kHZkwGLMhKFEgXOmeRfqD+fv49d1FaBilkxe65MRqRh+OP6gISxv2fcBKr6WbftA3uZQXkNREfyncoP4e19fLSC3iRjN+fAPXbfMwQPfqCy/k0sTNXjBGibAnSxIH6NZc1mNXGu2Z5r4U1efYzJqtWMgP5WiWguJ7wwsRRNitmBmtIlF/bAzNwrrV5brT0aEWkxg6IKGiFX38FWJQ4WaB+tySyvkTivAEfYve4YnLwoMHuXpXvvUatlgGCsHSeluXO/niHNt9TLqRTX/4LWJH1aO9
- zhlrfN9I
- C1l0rP4054AjKFjAZurYmMnCi07ExZAFwNWPUvQBG6IXTK1TTrM023Ds28bCfsUVLKuhO2oZzKt+hOzhGbOAn3S4g1Z/xiJttRY+m4bRzSeblTxTnJ0Yn1eOjaKyeMoI08bQaOyutQkZieOy4zTmM0J6wyNqpLyrZbE4sByH+bJw3ogIRWfAcCsTekw/pqu5zY//YyVSbtCJx17Uhm23luMKX91/f/z3baXlGNHxLI0s4dEXLpn8iUJmshLjvNa7NN8Yn0lwkthFlOa9ZssYlXbYdMB0bI97zNgWdRatHxi8TfYR3+VmwxjKzneTHd8dFLjot
+X-Stat-Signature: y1b4oje6541ypwgsym55cka4z51aixob
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1784711561-637086
+X-HE-Meta: U2FsdGVkX1/Mt/Jqj/SHDkp8ll/qz7cwwgjrNxK7mRrpT6CrRuNGiWfc8cXA9OQQ3snb+JjusxwPUAPwRRGpDVJygvY6NkVfjdHzxLykdTD3MpS7SgVqHrCqh+Kt1Ylz03CAJIPQdU7phZiT3X7SSn5l1aRfEOmDTx2Shh5WWOfxjtGkJozeb4I1PLHZHDpT0pTWuuHEDEU6hksSAVmDlNu60umw563Fgu0CmRPVVv6bkGBONIHUZdzG9KfaUJ72D+VmJfnFhR8HBB9O1D4Lv5ZCq4ipOf6v9zMUXg17vdwxz+ddR9SVvb62yb91CG/osjYKfV2d9GcrmS0Nq54Nvop44ZPsIF6/6wf10X0OxvxAaf/IsOoMAYhNF3hasJHJMrb8WTYccXDdK+7Tp/wCQWi3g+LjbDwICUtnkmQ4wVFKlD1GpMn1uwEBckzXbraaXgbktcCad/JIiKyiQy7Gqele+oNBPXb3CkAOttOEicrFABL/tizMB3+y6cJB7r817I3PqgKdjbqMdnd/A5VNk/qK1ND+VUhN0m2GRRr8GqwKD1EuJMpT+IQFhA++JWPOh4fP2tqu7j2rXcx62ekQhuHhovUuQrfXlQla2wJGhFi8N/9uIgy8VIvVzHy0McdKGJbrdRGTsy/x6T7bqWpb8xw3XoB02uFc+b7mQrSdXmZq2B8oIB7CD883u5ipTgMs2Gn0he96DyiNSMKXIwMvC0KQPP3XtuRGOKVSfUDF2SCeZZDy8K/QgVWalLq2PoxKAF2emtWvyLvIqCKjmt8HgWELBj5dSOROzthb+cjtp4Mc0U8FRIAXfvcg5WSzGymBCr1dUy4yKYDS0CTcAY1ag5GBftukYDt9Ir7h9xo7VlLcY6/63p2wMPVIRCE50/jYx0DLAgdp0l8NCGNBxxnXoDHTlvLCkRKC0MmVZ8Hi5rWDKNnQj8Sr/rXNP0ORuBI0d+DjWdqjQVCpcXFDbX3
+ FozWNhZP
+ ThZ0BF3ZSpnXRv6CXEiMk0H5XBRfqAPgQdJXjG8mThfgwdajhLP2dsANBXPXg52a+YjAlk2dk1UvMfLBEfVs8+Y8HSn8o8LtF1IDVbH94Bv3spqN0kJOOaQTsHsYchRE4326nghE181USBA/nkqRzUT34guMgQ0W37HSBE6BlAO8EB/yF7MqUneGjWREKTLkWa5zW9kDuk3XpvXH43SGpswYTSFy9vuMe+yaMRGAxrr6vBfrgBtucVmkWI1PI0Or+IfiarI+giCHYqwEQqWG6VonaMAPDVL8aZvPsxaLY63BUVzz+PUvxNUIgEzRCbJA4s4jQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,83 +107,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-collapse_swapin_single_pte and collapse_max_ptes_swap require
-MADV_PAGEOUT to replace anonymous pages with swap entries.  On swapless
-systems there is no backing store with which to create those entries, so
-check_swap() reports missing setup rather than broken khugepaged behavior.
+The clean_pagecache and dirty_pagecache cases use shared file-backed
+mappings to exercise page-cache memory-failure recovery.  These checks
+assume local filesystem writeback and error-reporting semantics.
 
-Swapless configurations are common on Android and other constrained
-test devices.  Failing these cases obscures actionable results from the
-rest of the khugepaged suite.
+On NFS, the hard dirty-page case can complete hwpoison injection and
+recovery, then report a delayed writeback error when the file is closed.
+That failure reflects NFS writeback behavior rather than the page-cache
+recovery path targeted by the test.
 
-Check /proc/swaps before either swap-dependent case and skip when no
-active swap area exists.  With swap present, retain the existing
-MADV_PAGEOUT and swap-entry assertions unchanged.
+Extend the existing filesystem prerequisite check to reject NFS and
+close the descriptor before skipping.  Other filesystem types retain the
+existing injection and recovery checks.
 
 Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 ---
- tools/testing/selftests/mm/khugepaged.c | 34 +++++++++++++++++++++++++
- 1 file changed, 34 insertions(+)
+ tools/testing/selftests/mm/memory-failure.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
-index 10e8dedcb087d..a152cec59fcbd 100644
---- a/tools/testing/selftests/mm/khugepaged.c
-+++ b/tools/testing/selftests/mm/khugepaged.c
-@@ -100,6 +100,28 @@ static void skip(const char *msg)
- 	exit_status = KSFT_SKIP;
+diff --git a/tools/testing/selftests/mm/memory-failure.c b/tools/testing/selftests/mm/memory-failure.c
+index 032ed952057c6..2e77f58406868 100644
+--- a/tools/testing/selftests/mm/memory-failure.c
++++ b/tools/testing/selftests/mm/memory-failure.c
+@@ -272,6 +272,11 @@ static int get_fs_type(int fd)
+ 	return ret ? 0 : (int)fs.f_type;
  }
  
-+static bool is_swap_enabled(void)
++static bool file_backed_test_supported(int fs_type)
 +{
-+	char buf[MAX_LINE_LENGTH];
-+	FILE *file;
-+	bool enabled = false;
-+
-+	file = fopen("/proc/swaps", "r");
-+	if (!file)
-+		return false;
-+
-+	if (!fgets(buf, sizeof(buf), file))
-+		goto out;
-+
-+	/* Check for first active swap entry. */
-+	if (fgets(buf, sizeof(buf), file))
-+		enabled = true;
-+
-+out:
-+	fclose(file);
-+	return enabled;
++	return fs_type && fs_type != TMPFS_MAGIC && fs_type != NFS_SUPER_MAGIC;
 +}
 +
- static void save_settings(void)
+ TEST_F(memory_failure, clean_pagecache)
  {
- 	ksft_print_msg("Save THP and khugepaged settings...");
-@@ -734,6 +756,12 @@ static void collapse_swapin_single_pte(struct collapse_context *c, struct mem_op
- {
- 	void *p;
- 
-+	if (!is_swap_enabled()) {
-+		skip("No active swap");
-+		ksft_test_result_report(exit_status, "%s\n", __func__);
-+		return;
+ 	int fd;
+@@ -283,8 +288,10 @@ TEST_F(memory_failure, clean_pagecache)
+ 	if (fd < 0)
+ 		SKIP(return, "failed to open test file.\n");
+ 	fs_type = get_fs_type(fd);
+-	if (!fs_type || fs_type == TMPFS_MAGIC)
++	if (!file_backed_test_supported(fs_type)) {
++		close(fd);
+ 		SKIP(return, "unsupported filesystem :%x\n", fs_type);
 +	}
-+
- 	p = ops->setup_area(1);
- 	ops->fault(p, 0, hpage_pmd_size);
  
-@@ -760,6 +788,12 @@ static void collapse_max_ptes_swap(struct collapse_context *c, struct mem_ops *o
- 	int max_ptes_swap = thp_read_num("khugepaged/max_ptes_swap");
- 	void *p;
- 
-+	if (!is_swap_enabled()) {
-+		skip("No active swap");
-+		ksft_test_result_report(exit_status, "%s\n", __func__);
-+		return;
+ 	addr = mmap(0, self->page_size, PROT_READ | PROT_WRITE,
+ 		    MAP_SHARED, fd, 0);
+@@ -325,8 +332,10 @@ TEST_F(memory_failure, dirty_pagecache)
+ 	if (fd < 0)
+ 		SKIP(return, "failed to open test file.\n");
+ 	fs_type = get_fs_type(fd);
+-	if (!fs_type || fs_type == TMPFS_MAGIC)
++	if (!file_backed_test_supported(fs_type)) {
++		close(fd);
+ 		SKIP(return, "unsupported filesystem :%x\n", fs_type);
 +	}
-+
- 	p = ops->setup_area(1);
- 	ops->fault(p, 0, hpage_pmd_size);
  
+ 	addr = mmap(0, self->page_size, PROT_READ | PROT_WRITE,
+ 		    MAP_SHARED, fd, 0);
 -- 
 2.47.3
 
