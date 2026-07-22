@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8D00C4453C
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 17:18:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8724C4453D
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 17:27:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AFC836B00CE; Wed, 22 Jul 2026 13:18:47 -0400 (EDT)
+	id C1E226B00D2; Wed, 22 Jul 2026 13:27:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD4B46B00D0; Wed, 22 Jul 2026 13:18:47 -0400 (EDT)
+	id BCEFB6B00D3; Wed, 22 Jul 2026 13:27:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C2766B00D2; Wed, 22 Jul 2026 13:18:47 -0400 (EDT)
+	id ABE256B00D4; Wed, 22 Jul 2026 13:27:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6886C6B00CE
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 13:18:47 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CBC08A024E
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 17:18:46 +0000 (UTC)
-X-FDA: 85017072252.16.0FCB761
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8C9C26B00D2
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 13:27:49 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1602C1C029A
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 17:27:49 +0000 (UTC)
+X-FDA: 85017095058.18.B161C59
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf18.hostedemail.com (Postfix) with ESMTP id B2B831C0004
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 17:18:44 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=Das3j0Am;
-	spf=pass (imf18.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	by imf04.hostedemail.com (Postfix) with ESMTP id 282BA4000B
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 17:27:46 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=SoeZpZp+;
+	spf=pass (imf04.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784740725;
+	s=arc-20220608; t=1784741267;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eqbx1d58EBdjVrypRq3+II0pTdFRmcSYS+DKLbnqzNw=;
-	b=6i/gm+liONIINr+8/NK5l2YOeGu+75UmFFsInNxCjDtgjeCi2Art1jV8gky2AtjWE9t9xI
-	m9VpPyj+ReZOK+ZsVL2oFtUWqwbTv7eNc6bNapzSvH9vSXltbXbRMnvy+gVmRgIW3UumEf
-	7UFiSuN8sNSZPPH8xV15EY5tIU1tWO0=
+	bh=M5Y7D3saet3lwRTR1iYvW2JWs6T6gFdbJ6BwZVaxCLY=;
+	b=I5Q1MjmtbGwteYrLSMRaGxggSxYyPCpl1dZof2i4Qn3lXmHSpBHWTjcJy7L7hdqeBYamFN
+	vH0VglSyTYcTBy9MMaaBhogpSYHPyxnXi684JCAqWCnCz1Ov7aefXB1uas3U64XYT8K38s
+	2DHIdeBaiWaomqp+aNFE7IpDUSa83eM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784740725;
-	b=p3nZ4BSgZAIx1/W9UITWRXluuD4uG+SG6LTEeE5o0v0aCDsAw/kLNRz3ewypaxhkg0Mx9Q
-	Neh1Xd22nbdfbNc87/t7Cr2e+BwatmE2s4oUa+P4il0KCjRobbbhqFNBokkhTVXViissZw
-	1Q0srcFaKjdEhEL6gxs9rjsU4Dnvo9U=
+	t=1784741267;
+	b=S0UyBDA65ohIL5yTzEjzee1dRDC+/k1F+SyiwPPWHuO7kTBbpIG9Ei6r33a3H52MAtNrC7
+	if+meEl7snI0A5xk31PwrTTXNyka9pFRpg3TgiXPjBf9qtSRQeaUj0ZEbzCOps9J5iNP7s
+	odjvm0HFBAUM6+VuCyoJj7E2uKSqEiU=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=Das3j0Am;
-	spf=pass (imf18.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	imf04.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=SoeZpZp+;
+	spf=pass (imf04.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5E7591595;
-	Wed, 22 Jul 2026 10:18:39 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B2D7B1595;
+	Wed, 22 Jul 2026 10:27:41 -0700 (PDT)
 Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5F8683F66F;
-	Wed, 22 Jul 2026 10:18:36 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B55B63F66F;
+	Wed, 22 Jul 2026 10:27:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784740723; bh=2NDCcLKodqKCpw2t0NDotrWkpKm4cYytW7/B76Q9mwQ=;
+	t=1784741265; bh=UJJJ6gDdFfQhPAspitY0ExVcYQKJakkmR/X3IOo4bZM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Das3j0AmK5wTaHG4tQV+vaD2IuCrxPRNwYvLASUFPiBuUVqMzxuym7Y9yOS6KG2Ei
-	 tTEwkxPYF7fgFUJ9zTix5YA8MAxyV/197dUq0IJrrTNTEeD+WwVVI2vp+T9s0F04m3
-	 cSuvOYeQfWsSA3qkTMWLNYwUi1xxvOwbv1FzSGdg=
-Date: Wed, 22 Jul 2026 18:18:33 +0100
+	b=SoeZpZp+wsxHy2IPoBPIESiHfIlciJelBcAUO0h9BaNgywgcLRKe59vGZr1KsfOtU
+	 zXqwnNHi8fnyFJ4Z4tV45RCq4+uQHINF4Mo8FApJ3gK1YQgEZ3tQYqJ6ysDA6eAPD+
+	 h3LKbzFF1zV5s5ibd/Q5KVSGVirnUpwJnXEtiFKM=
+Date: Wed, 22 Jul 2026 18:27:36 +0100
 From: Yeoreum Yun <yeoreum.yun@arm.com>
 To: Dave Hansen <dave.hansen@intel.com>
 Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Russell King <linux@armlinux.org.uk>,
@@ -101,24 +101,24 @@ Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Russell King <linux@armlinux.org.uk>,
 	linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org,
 	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
 	linux-openrisc@vger.kernel.org
-Subject: Re: [PATCH RFC v2 14/20] x86: mm: skip pud setup when using generic
- compile-time folded pagetable
-Message-ID: <amD7ab_KuJPdBQBh@e129823.arm.com>
+Subject: Re: [PATCH RFC v2 12/20] x86: mm: define pudp_set_access_flags()
+ when CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD is enabled only.
+Message-ID: <amD9iD7rjmU__9b6@e129823.arm.com>
 References: <20260722-dummy_ptxp3-v2-0-d9e4bad31e0a@arm.com>
- <20260722-dummy_ptxp3-v2-14-d9e4bad31e0a@arm.com>
- <0ea931f1-4801-4d32-b6ce-4787a8d3daa9@intel.com>
+ <20260722-dummy_ptxp3-v2-12-d9e4bad31e0a@arm.com>
+ <188623a9-dba0-4229-a7ff-5feb2ef0c088@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <0ea931f1-4801-4d32-b6ce-4787a8d3daa9@intel.com>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: B2B831C0004
-X-Stat-Signature: fwkfgzrjmxjhr43bt6ph3yifw1bwymcw
+In-Reply-To: <188623a9-dba0-4229-a7ff-5feb2ef0c088@intel.com>
+X-Stat-Signature: 3n1wwuh9oejfikgm8mn8yg757yeh55ax
 X-Rspam-User: 
-X-HE-Tag: 1784740724-410028
-X-HE-Meta: U2FsdGVkX19YSOdx0y2sNtHzLwZ4yNrHJIg4et7Kn6pYdaWh5MK96QkWHkcWgLBqHQwia3ae7GMYks+R6N+ROv+tK6b0Pxlw+FmEsTaDIpH6qiEMrMSxXg22SVra3kreyWuGl5X34G3cxl9cn1fatrnP7oOElUCctOr14k0LkSvRrEIViqqHaNtOaVJuZu/Yu2blnnbjk+PDWCzXeIg6eywIWbd6R+zejMQ8iHnzvszBZTqRWgwInk7sBmA+VcBzSEl/alBTqovy2tjWqbv1EPWOZesLfIAnc/YZ23l1jtkse/1k/zECMOWhTVhUpt9jmZbLqZLAXvQqwg3Pu5tUtZaIUXBKbsUpvVm5jkDUQo/tRv4oVPZL2CB9lNGi2HavEMIUxGL/FhvlIg+GF3wDj3vA0SJ73kaXjAF6crgrxjJaJorpAxgKpZtpFY3ZOjFb49x0B4xdkQC1DVnMhYikKTLsyU7bvGxF3ZSZQ9jTp7dgKqWIjWZMMsKEMUQIOZ0thZxua/4X3xLdfgf/ppGwRuhaDuRKr9dDAl01smdWSLwSqEQN/rctkbia36mzkwne9ZPNkFqdgr24u2UOZCeCoroEGNy3Tin599FQT5c4WQxW2WN9QQgNywzA6sDdma5CxPquI7eL5Vg5hNr44tAindt0jy86prOEumoI50RlhXgjavV41ZZZ9s4nWzlZeJA4hulwTqvQTU12jwWSirFZqAfQW09yFJSdPqn1eWtmewur5zMRk5BoctRH3UYT0Ofs0AmBte/5u2diRShzhmteLTuvyydTg48WWmxgatoqpILkBxpgpd2DQbqbTf1VLZ+jl4LbRDLOoBqOpRagO7tz7/7qEoBh1RpyYmGVYJl7rcVhMGKxdeh8f+e4A9MlVFR2K4yoAWJz/zMoNve3tdlRU7wxf4Jgqq1w7+lKts++pExcHRHSSzJ7djeqDfm20smoMr5PQVbN2gEnDnY8ytp
- fftuLpa+
- PJvlDWmxJHYIMKkhPwNOpk8pBRQySeQ8scrlREoTNo6ig+4m5m/M25wwcyQJAc9b/TZllSKzU0+7YyFJYE7MxuiSEzeCPzJ7LvcLttmgV6IZmlJ2iEdVPQnBK/lVMYXUoxoeHflAaz/QUiyj/dEj6nkIINtGisUrl750AyYDWFB8xZmg4a2gR+TGJRLFKLTFnS0PX5dXOLwSziFNMDWpKxF4qyQ5LWe9IJfd19iHprff8c+A=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 282BA4000B
+X-HE-Tag: 1784741266-3163
+X-HE-Meta: U2FsdGVkX1/Rq2CoQo+x3eHaikKecwqtGZnabauS8Qsjt7SWSIC9YnTYQYREQRzZ0DA5aTfG5YchT6RrMcd5Rgu8ovmnbn25lsJavcgP4JUV2idjILjQdv5DNUtfZqg8wtfdMAgKPNOtnhJFONev+qf1IS2UTHIVpHDGta3NYLBx1G47BUojI5OyIbUHP9WUcLTMKcXpvOU7URQKJpKx6U7QsZv9xhEoOm5Rbo5Rwks8kLdEqj8EOxtcpf61PK3jmaXL7d15GA2GXqXS2DuOSaW6Tt8nj3HRRR7We1h5cifqo+D707xL+1BUSa6NBpLnYO+8BFaWovTBuzfosmlwmoMK8M1GQksOTRwMFxBkpBzXwrlAgP2/pVdFv2WLJ6nAS7PkjCr7Jq9M2oQePU97M03zt5y0TStquVx9zTK5cUfS/G9Jmf0cQ+sVKdm0kitT9y4Gp/o+La0nu5pgBnkmhWny1skzdy0KWAFWkyanUFNH0Xxv6LSwF6C3wmPPVtKd2667T0a35XSjy5ujc3JMQfG2ZiVkTSLfJPxW6TmkVIR6yU1hWx0FnpQvkpMeQFYoFJbcl4p5hlN6vUvktc6uTcaHiNhWF7bBjs3yEJaCxLSRf1BvODSNBiqq2z5S/r36sc9SI4m0L+gmT4xj0EYQnCmh0JXVtwA7M1avOoahV3bGUSaIdNTUHPeI+Ej/NiOttQ/7NBXvMUwMSONGq9C/b4fCHNlqGZ1XM3Qb6s/7qgNDZ2opBXhlUmlxcSYjycBT2enTrVe5WcF6l6HqKXvt23YuA5698VMxAQ5WhEaJt2gZI3aEdj3ynqGqozDHKgmEI6J1m6RLwKgY6IJSfK5gRTucepnIPbY5oyXMBASBNch18h5vQF9zZruc75CW7iLpodDqxJtGRf9Bs7XDHg5IKRzi17paW0DeyJCYbWQvZ+5oejLJ7sjzTFYo2wWwrbS1iDpZ9O88j9EJlGFCkGA
+ oCLG7Bao
+ zjt2ITc6gKqHELgjIfe/k22A43l/WgJzcbyPI/lZp+acor4Oc0aOA2ch76wiYTvVrqvlLx21wt7SkgOTL+QIVF501ogSFVzdzw08x4A+RqhyNGCYVHo/9WX9fRfpieSlR1tKLL+1iGOE4GP30gsDoxDS5v1iZvbElxDD55b6wfxZ8L1NXXUUaxsem5DlqHEwnr2lwFduTDGsCnU2zLuHg4WExbYS+Yx/NfwSWaY1FGaMpUWRXzBBCrQ9UUde4PzTH1c8vod5SegDC/n5+fYtTg2PgwQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,139 +126,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 22, 2026 at 09:33:55AM -0700, Dave Hansen wrote:
-> On 7/22/26 08:30, Yeoreum Yun wrote:
-> > We want to rework how set_pXd() behaves for generic compile-time folded
-> 
-> Please move this all to imperative voice. I think I asked for this
-> before, but perhaps I didn't. Either way, please fix the whole series.
+Hi Dave,
 
-Oh. Sorry, I've forgotten to edit this commit message.
-I'll fix in next around.
-
-> 
-> > page tables by disallowing its use and triggering a compile-time error
-> > when it is used improperly, ensuring that the actual first-level set_pXd()
-> > function is used instead.
-> > 
-> > The behaviour of pXd_page() will change with generic compile-time folded
-> > page tables by disallowing its use and triggering a compile-time error
-> > when it's used improperly, ensuring that the actual.
-> > 
-> > To prepare fot that, skip collapse_pud_page() and populate_pud() according
-> > to CONFIG_PGTABLE_LEVELS.
-> > 
-> > There should be no functional change.
-> 
-> If this wasn't done, what would happen? There would be a compile error,
-> right?
-> 
-> Shouldn't that be said out loud somewhere?
-
-Yes compile error for using pud_page(). I'll shout out detail in the
-commit message.
-
-> 
-> > diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-> > index 078689aa7206..91b33a265a43 100644
-> > --- a/arch/x86/mm/pat/set_memory.c
-> > +++ b/arch/x86/mm/pat/set_memory.c
-> > @@ -1346,7 +1346,7 @@ static int collapse_pud_page(pud_t *pud, unsigned long addr,
-> >  	pmd_t *pmd, first;
-> >  	int i;
+> > diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
+> > index f32facdb3035..edad847a2ecd 100644
+> > --- a/arch/x86/mm/pgtable.c
+> > +++ b/arch/x86/mm/pgtable.c
+> > @@ -411,6 +411,7 @@ int pmdp_set_access_flags(struct vm_area_struct *vma,
+> >  	return changed;
+> >  }
 > >  
-> > -	if (!direct_gbpages)
-> > +	if (CONFIG_PGTABLE_LEVELS == 2 || !direct_gbpages)
-> >  		return 0;
+> > +#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
+> >  int pudp_set_access_flags(struct vm_area_struct *vma, unsigned long address,
+> >  			  pud_t *pudp, pud_t entry, int dirty)
+> >  {
+> > @@ -430,6 +431,7 @@ int pudp_set_access_flags(struct vm_area_struct *vma, unsigned long address,
+> >  
+> >  	return changed;
+> >  }
+> > +#endif /* CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD */
+> >  #endif
+> >  
+> >  bool ptep_test_and_clear_young(struct vm_area_struct *vma,
 > 
-> This is subtly wrong. It probably shuts the compiler up, but it's subtly
-> wrong.
+> #ifdefs in .c files are evil.
 > 
-> x86 has 4 paging modes. I'll use the SDM/Intel terminology:
+> The changelog doesn't make a strong enough case for why this evil should
+> be tolerated.
 > 
-> 32-bit:
->  * 32-bit paging: 2-level
->  * PAE: 3-level
-> 64-bit:
->  * 4-level paging
->  * 5-level paging
+> These are also _precisely_ the kind of #ifdefs that cause compilation
+> problems. This one is:
 > 
-> But "gbpages" are not available in PAE paging. It's a hardware
-> limitation. This doesn't cause a functional problem because the pud
-> level is not folded. But it is confusing and not really an accurate way
-> to write this check.
+> #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> /// function here
+> #ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
+> /// another function here
+> #endif
+> #endif
 > 
-> The *right* way to do this is probably something like this in a header:
+> So there end up being a couple of dependent config options in play. If
+> there are compile problems, this makes them harder to find.
 > 
-> static inline bool direct_gbpages(void)
-> {
-> 	if (!IS_ENABLED(CONFIG_X86_DIRECT_GBPAGES))
-> 		return false;
-> 
-> 	return __direct_gbpages;
-> }
-> 
-> Which just happens to point readers over to this Kconfig nugget:
-> 
-> config X86_DIRECT_GBPAGES
->         def_bool y
->         depends on X86_64
-> 
-> which, combined with the knowledge that 32-bit has a 3-level mode, would
-> make the proposed check obviously wrong.
-> 
-> So I'll take this as a suitable alternative:
-> 
-> 	/* Avoid compiling the below code if PUD-level mappings are impossible: */
-> 	if (IS_ENABLED(CONFIG_X86_DIRECT_GBPAGES))
-> 		return 0;
-> 
-> 	if (!direct_gbpages)
-> 		return 0;
-> 
-> That will compile-time optimize the code away in the exact right
-> conditions *and* fix the (assumed by me) compile error that you were
-> chasing.
+> What is the _actual_ goal here? Saving 50 bytes of kernel text?
 
-I thought the same. but It seemed odd at the time since direct_gbpages is
-always 0 when !CONFIG_X86_DIRECT_GBPAGES.
+TBH, this came from for v1's change of behavior set_pud() where
+triggered compiliation problem with v2 this change wouldn't require.
 
-Howver, I've missed the X86_DIRECT_GBPAGES is for X86_64 only and It was
-wrong totally.
+However, wrappering pudp_set_access_flags() with
+CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD seems reasonable for not only
+saving a kernel text but also keeping consistency with the other pattern
+like pudp_invalidate(), pudp_establish() and etc.
 
-I'll follow your suggestion.
-
-> > @@ -1730,7 +1730,8 @@ static int populate_pud(struct cpa_data *cpa, unsigned long start, p4d_t *p4d,
-> >  	/*
-> >  	 * Map everything starting from the Gb boundary, possibly with 1G pages
-> >  	 */
-> > -	while (boot_cpu_has(X86_FEATURE_GBPAGES) && end - start >= PUD_SIZE) {
-> > +	while (CONFIG_PGTABLE_LEVELS > 3 && boot_cpu_has(X86_FEATURE_GBPAGES) &&
-> > +	       end - start >= PUD_SIZE) {
-> >  		set_pud(pud, pud_mkhuge(pfn_pud(cpa->pfn,
-> >  				   canon_pgprot(pud_pgprot))));
-> 
-> This is an OK approach. But there's a way to fix this site *and*
-> optimize a non-zero amount of other code at the same time. Add this hunk
-> to arch/x86/Kconfig.cpufeatures:
-> 
-> config X86_DISABLED_FEATURE_GBPAGES
->         def_bool y
->         depends on X86_32
-> 
-> That will turn the boot_cpu_has() check in to something that can be
-> resolved at compile time. It has the added advantage of compiling out
-> all of the code under X86_FEATURE_GBPAGES everywhere else in the tree.
-
-Does it? when I glimpse check, this wouldn't be compiled since
-there is no bit for X86_DISABLED_FEATURE_GBPAGES and defining the
-DISABLED bit for FEATURE_GBPAGES seems odd since bit X86_FEATURE_GBPAGES
-is already defined.
-
-In stead of CONFIG_PGTABLE_LEVEL > 3, as above, would it be better to
-add check IS_ENABLED(CONFIG_X86_DIRECT_GBPAGES)?
-
-Thanks.
+Am I mising something?
 
 -- 
 Sincerely,
