@@ -4,94 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8AE38C4453C
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 16:36:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE1D0C44532
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 16:38:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8151F6B00A2; Wed, 22 Jul 2026 12:36:17 -0400 (EDT)
+	id 756BB6B00BC; Wed, 22 Jul 2026 12:38:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7EC6C6B00A3; Wed, 22 Jul 2026 12:36:17 -0400 (EDT)
+	id 707706B00BD; Wed, 22 Jul 2026 12:38:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 72CAC6B00A4; Wed, 22 Jul 2026 12:36:17 -0400 (EDT)
+	id 620116B00BE; Wed, 22 Jul 2026 12:38:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C4116B00A2
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 12:36:17 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3AC9D6B00BC
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 12:38:56 -0400 (EDT)
 Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C732F4016F
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 16:36:16 +0000 (UTC)
-X-FDA: 85016965152.08.CF23D8F
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
-	by imf27.hostedemail.com (Postfix) with ESMTP id EB38640007
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 16:36:14 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=RuTQ2dXC;
-	spf=pass (imf27.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B420014022A
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 16:38:55 +0000 (UTC)
+X-FDA: 85016971830.08.CDE462E
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 6615940009
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 16:38:53 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=ZY6Abulw;
+	spf=pass (imf04.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784738333;
+	b=PUnZ65OMOq1H8kONCBLHE2nTpmm7F/Y7RW9288KkWPRTjGNVFU99Kq1FSSepMlgqxe9z2I
+	MyMKtUlVPIqQaWmNZrT4diBCBNMXkwvGNEnWPiGtcoxoUtvb/thJRxU/ptKWka1PHvdwbd
+	Tj21gK5PjxFhZJOk7H0zB7nI+OSgZSo=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=ZY6Abulw;
+	spf=pass (imf04.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784738175;
+	s=arc-20220608; t=1784738333;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bkKbSDToe7oNwQvcp8YwOTva5uUO6i2CXklEvla485M=;
-	b=JJ55O/WCo9s6dHtmHdVymAIOBghThE1t6PSjNn1IcoGv+ZQ7VKXPDNJUFvejGOQl9CytSA
-	m9WYd1qs/M++IRigVdsT659vXdAtemtIoiHPBmP6p75H38YDMQMFsAuNtVrOSSqYl61MQF
-	iVelLVeyzNZHsvoJeXboBSZZjTi9LmE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784738175;
-	b=POoiKTdYsyeRn8PeQ1Nh7prLjtucGYVRnwjahNeztY65q4G6sFrChu9zF1ov/a+F2KoQHx
-	zq+v8ukX+SEsSlSlxn4uYYHr3kbn7EvEhuAOfuRWOtIa1bRl1njBjUKgx3RI5IN0ldAkhU
-	8bwsVOQF6DrdR6tIPC7uRptb1IjWuHs=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=RuTQ2dXC;
-	spf=pass (imf27.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784738171;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bkKbSDToe7oNwQvcp8YwOTva5uUO6i2CXklEvla485M=;
-	b=RuTQ2dXCRsKcy1/kVacuK79/2l9Sxb195ZTSUvuelQx2WQefKsjkPfpci1ZEDmJjdyfExO
-	emo9F9G1tT5sV9WtqueZ6HGevrY/k82dYd8vEzxboVD9OBTDuou0yd4nO8I5vMtuNUqmqZ
-	hnONdAbmlv36HARWV7BoN92iBYteSEI=
-From: Usama Arif <usama.arif@linux.dev>
-To: Christoph Hellwig <hch@lst.de>
-Cc: Usama Arif <usama.arif@linux.dev>,
-	baoquan.he@linux.dev,
-	akpm@linux-foundation.org,
-	chrisl@kernel.org,
-	kasong@tencent.com,
-	nphamcs@gmail.com,
-	shikemeng@huaweicloud.com,
-	youngjun.park@lge.com,
-	ryncsn@gmail.com,
-	trondmy@kernel.org,
-	anna@kernel.org,
-	sfrench@samba.org,
-	linux-mm@kvack.org,
-	linux-cifs@vger.kernel.org,
-	linux-nfs@vger.kernel.org
-Subject: Re: [PATCH 1/3] mm/swap: revert to single-folio writes for synchronous swap devices
-Date: Wed, 22 Jul 2026 09:36:00 -0700
-Message-ID: <20260722163601.1421253-1-usama.arif@linux.dev>
-In-Reply-To: <20260722130615.3163560-2-hch@lst.de>
-References: 
+	bh=a2rtpjFA91mmSgGUi28QsUrzyWT3Khnx+fSWp6f1ZBE=;
+	b=3lhOKGr1Z6KNk2O7yOJJXX4K1xUXbD0fRJW4vVRovDDVhuil0fYfjKgmAFTmHjx5wgW6XP
+	c0z9OBL8zNRjF562O9NdE+h/1z5BPPfTI72WKGeGmpfmqJKkNKCn5saiTZGZCLzhAIkBv9
+	2U4akPacLk6S7EnlxP7XcBTyjKS0pEc=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=a2rtpjFA91mmSgGUi28QsUrzyWT3Khnx+fSWp6f1ZBE=; b=ZY6Abulwpmy8e792mYgY7MIK3L
+	Q+2Ou0P1npTb4PtE3lqcfi4YQmaF20mzCQD0pHGhCXsWpkPp1IQq0UblSTfkTiWlwnINRFSAGsO/K
+	oMInIqfx7ne/W+XX34P4oY3cFHd5gApMUONnqhEatvCY5PxsCz8dVhM9YjgYsn0PMwaeM89KMKvaS
+	csD2/6tKF0U1MRo/DsP7I0Wwz0+RgdymqQIomI6K6+tTBqH7M/5pxl9qlEpbSVVuPIkrsgIeuA1zA
+	Sy0f5RGRKdokAEw4nYBhxWd7o6LrZUExnaOJJERE0SG62i4NZ2eVXRd10GoRYe/7prt6cYcTwY+x5
+	8F/kLR8Q==;
+Received: from [38.23.173.23] (helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wmZy7-0000000CMsS-3bFo;
+	Wed, 22 Jul 2026 16:38:52 +0000
+Date: Wed, 22 Jul 2026 12:38:34 -0400
+From: "Liam R. Howlett (Oracle)" <liam@infradead.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	maple-tree@lists.infradead.org, Rik van Riel <riel@surriel.com>, Jason Gunthorpe <jgg@ziepe.ca>
+Subject: Re: [PATCH v2 14/19] maple_tree: WARN_ON_ONCE when allocations fail
+Message-ID: <laaqmevk454smc2uotd37rwjz7ijekfhv4hyv3wgbp7bql2bas@tqkyygz4wm6t>
+References: <20260630190843.3563858-1-liam@infradead.org>
+ <20260630190843.3563858-15-liam@infradead.org>
+ <20260630160208.b6d1e09d60c50c8fbb80e830@linux-foundation.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: EB38640007
-X-Stat-Signature: aashmspkhyckazoeae3o7pz6k5ydmpw9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260630160208.b6d1e09d60c50c8fbb80e830@linux-foundation.org>
+X-Stat-Signature: qmk416hfjrg4n3awi1gb75uergofjcwg
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 6615940009
 X-Rspam-User: 
-X-HE-Tag: 1784738174-857111
-X-HE-Meta: U2FsdGVkX1/eJXbnNXwAT7WP9+qV5ZEK1eAf0u4eRV4wZHTBNE1bRNnQ9EVj3Ya4o4PjwB+OxCEeJdJaDi4wnoSrh4W/q/lrIQmx2l2KOpofVEjbpS0NjQQxMsLvrSEhk3RcEUawKOCXrADLA2MrR31xd9uZg14DAAgJFwJMtzN5nMC0fE1eyj0zPrweAWF1HOn0wRxc/IpyLpW1lxX1r4z3jjm9UAurdCS7+I1R/VQPRQb0EeOhVKJAf3pb3NcU30GW9yRkw71ryLcJT/xS0LVDngXrvRUA3dfrh7M6Zi2GdkAwIrK4JvsRVJ3nXDmvMCyVU/o6GJ65zQdASys+6T+/KTCKTPnurYV9d32hD59afn14S+3zf278x0tuFQGwBKQKQZ3W21ggdBE9yxae/+XLog87dN3mEiA5sDbYyFoBMAWObz+Y4SR2JV9Z9HqVl2JTQuQmzG4TIwbanrJcOpuI2Mm34FDZ+t+76Edn3gaefhiRRppatZ5LuU3V9I/VAYrT6bYK0meCilfWnVtguHsCSJiqgAb3aRRUpxSubpGeYqCW7uU4jldybwp5IQFMCWO+NZ8sLHlkCHTVpJ8I3bSp3BatYtLRXDbcPkdcWTAyh8ikHr9qWyfwnXCACKm0mNMJhyWlKCVKkc8G0l9WsBrT65yYxFwTIq7vA3e7Yx0o4uA0uWwd93HYiTtRaS/aUFw3xKmneqjiOuHDZhkQ75c/mAIcXDjLT8BzdBCskSBQ0d4HhOrc3BFA4ttP8Zefv5E3myv+PIk49ZNQttwX8Ly5IKVs9lbMrhKoFj7XvHhYk0g9Yts9Zdb5tFjp8l5AewENLKwwr1wL3M/H0Bie0ZQ5VIdUh/4oiESezL8WJwiZmlvnYWOaG3lS7jPMk47LsC5ZVBC4c1+Nx4kD1cbV301KDJs45xsHZfxUJnyh13A+aqpTj7i3pPUdwDgVa/7naVTjdpqC5UgCEQJ3ctB
- i8hcI4DO
- OCufAPY3VdUU6qMs1wYbLwQp3famLzLcZYLx5WjfeAd3R54oEcSCstWYiVVtPo+wIbmtJ1WpMcRJPiC5CNTZhi1IzDHlml3ohs3eJ2obPSLdGMMGybY7JA2We9KJcLe5Ma602t5rLZnl2dXhr8PA6sKTboh2WWFKERYVEM3QPxe0SZ0LcUWG+QEyY8RTof027J6GY
+X-HE-Tag: 1784738333-950501
+X-HE-Meta: U2FsdGVkX1/BQqn/WKbPwmZHdnyWk5n9lqDSNW26X6aHp9J2pKB9dNa4FIhUefLx7BNhwUaendDZ3HYsvM1jTqlf8rl6rOEaNb7hOyDTvBJ1d68noMYdMMWybvd0PWyp95rAWLD4y39CpKF3gs88PxL1qyIOG9sNmjFIcAfafyph9eIugvEbX4VJbAL74dDsgCZzgyrocTeYIRRXWw430fRvRp3Il7PFS2sVrnAcDyJzNpvS4yCDEapJUTWsOOTivZ/w2DvjeWdBqvlNceXjzT8tZIAKPhZ2AvzqWHQAfGJD+bEutypk1kdi7JjntSmNAp2nCA3S85Pdss0Z9oC4neVUjqXrijFjf/wIiCEHYb1Rm0Qj783rT2toG6ybApaPj2B/KXxmfc9DJMcPcjwsyrN+y85tuAQgrq6tabMxtNFxxptF/IxB5jgtM0OlzeCX7WSS6h0cEYHUVH/IfNc3EJbepXbNgK4VGesbRC+vGgLb3fpdNtqPT4WsQkmYK5MeN7MPno/g4ivw9AvwaVvtd1QuFqY4YPdLAfPOHSakkt1zR55Y5ac1kogNS3e5PyefgcSAuiP4qKTBDXubPkkmCDTQXo6z/fEsneUWwOR4Eq+z05yNPnIJ+fptNxUHDLA0htm18wSK2820rgMO/Ig5rfzMMJtDFA5rs6i53qo5xosiEwaPsJByEh9Db6RYCwheypP6/5Z4SdCaZWQUDm/BMmGwodlvhY6C7wX5VPjt/qcRmJw71tdsDpHzJYtqvNq4SqEGUxgCYR09BhWyNNaKSi5+kELRfS9eVCSAKE/iiaqvx2hveKEA38msw2/wzAm6WaD8NK7lrX5omELT2xdqKumAVOngilIDxDWjTXdA56b5O1SL4G3M3XXzrf12wXtsBF2RpWJ5XbGXv62TQ1q8jHmh59emfvGvYAMECVARC7oUbAD7JnLzcQwS5ERxiLoQqTSgnWEu7dXzZXNe8uT
+ IR73Sf8Q
+ /cVe4Ys2Ty9QMG1oCs4caJUirlVDzVd7zBAENANaDgyitA6sJfqPhlLGeQQWXL/XanEyX9cRRZr3jIpuuMjTNGsQ0csPCCX3xRmV3Tv6gHYEE2G8e8asXbfL3Rpo7EPVJFJRAeXc/6/izu21/9ur0a6LQNH0OHKyW3Ske/sToFyM6fJu68h+PjdHz5iqq9X2p1DSVpYXZxPvfplu5opH+dZKWJINyhwoyI1p/rLpZ+hlRJblk3EjianaMNE95DzqnUScsEnKy4KoF6GtfXlXUSB/QTdFAiVMNdeBtRMqMDwfoW2DSeaHWto8xacxu5i4FyoOuHMKldXLcN0ioN4vPzuyw0jRu8w0tF/kGKbv77pJFM/dJNiQHS4OHTpKVLEushrOo
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,56 +91,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 22 Jul 2026 15:06:07 +0200 Christoph Hellwig <hch@lst.de> wrote:
-
-> Kairui Song reported that zram benefits from submitting each folio
-> directly instead of batching up I/O because the classic LRU scanning
-> benefits from clearing the folio writeback bit in the scan loop.
+On 26/06/30 04:02PM, Andrew Morton wrote:
+> On Tue, 30 Jun 2026 15:08:38 -0400 "Liam R. Howlett (Oracle)" <liam@infradead.org> wrote:
 > 
-> Accommodate that by kicking off reads for synchronous devices for
-
-s/reads/writes/ ?
-
-> each iteration.
+> > Allocations should never fail in the circumstances that are expected to
+> > occur.  Add checks in the code to ensure the circumstances are correctly
+> > set up by the user and warn if they are not.
+> > 
+> > Also add a warning on failure to allocate, which should never happen.
+> > 
+> > ...
+> >
+> > --- a/lib/maple_tree.c
+> > +++ b/lib/maple_tree.c
+> > @@ -5720,6 +5720,10 @@ bool mas_nomem(struct ma_state *mas, gfp_t gfp)
+> >  	if (likely(mas->node != MA_ERROR(-ENOMEM)))
+> >  		return false;
+> >  
+> > +	/* Allocations can fail, don't do this. */
+> > +	WARN_ON_ONCE(!gfpflags_allow_blocking(gfp) &&
+> > +		     mt_external_lock(mas->tree));
+> > +
+> >  	if (gfpflags_allow_blocking(gfp) && !mt_external_lock(mas->tree)) {
+> >  		mtree_unlock(mas->tree);
+> >  		mas_alloc_nodes(mas, gfp);
+> > @@ -5730,9 +5734,12 @@ bool mas_nomem(struct ma_state *mas, gfp_t gfp)
+> >  
+> >  	/*
+> >  	 * Return false on zero forward progress.  Partial allocations are kept
+> > -	 * so the retry path will attempt to get the rest.
+> > +	 * so the retry path will attempt to get the rest.  The failure should
+> > +	 * not happen as we try our best to reclaim.  The user would need an
+> > +	 * external lock with a non-blocking gfp in a low memory situation -
+> > +	 * which would have triggered the first warning in this function.
+> >  	 */
+> > -	if (!mas->sheaf && !mas->alloc)
+> > +	if (WARN_ON_ONCE(!mas->sheaf && !mas->alloc))
+> >  		return false;
+> >  
 > 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  mm/page_io.c | 11 ++++++++++-
->  1 file changed, 10 insertions(+), 1 deletion(-)
-> 
+> Can either of these warnings duplicate the effect of !__GFP_NOWARN?
 
+From what I understand, __GFP_NOWARN is about suppressing warnings on
+failures because you handle them at a higher level, but in this case I
+am trying to detect incorrect use of the interface.
 
-Change makes sense.
+That is, if you want to handle the failures yourself then you should use
+mas_preallocate() that is designed to give status on the allocations.
+The following call to mas_store_prealloc() will not need to allocate or
+check for nomem.
 
-After the commit message fix above, feel free to add
+Thanks,
+Liam
 
-Acked-by: Usama Arif <usama.arif@linux.dev>
-
-
-> diff --git a/mm/page_io.c b/mm/page_io.c
-> index e4fa7ffffe8b..c984a4023a65 100644
-> --- a/mm/page_io.c
-> +++ b/mm/page_io.c
-> @@ -358,7 +358,16 @@ static void swap_add_folio(struct swap_io_ctx *ctx, struct folio *folio, int rw)
->  	}
->  	bvec_set_folio(&sio->bvecs[sio->nr_bvecs], folio, folio_size(folio), 0);
->  	sio->len += folio_size(folio);
-> -	if (++sio->nr_bvecs == ARRAY_SIZE(sio->bvecs)) {
-> +
-> +	/*
-> +	 * Write out the iocb if we filled it, or if the device is synchronous.
-> +	 *
-> +	 * The latter is to work around expectations in the classic LRU code
-> +	 * which make synchronous clearing of the folio writeback flag in the
-> +	 * reclaim path beneficial.
-> +	 */
-> +	if (++sio->nr_bvecs == ARRAY_SIZE(sio->bvecs) ||
-> +	    (rw == WRITE && (sis->flags & SWP_SYNCHRONOUS_IO))) {
->  		if (rw == WRITE)
->  			swap_write_submit(ctx);
->  		else
-> -- 
-> 2.53.0
-> 
-> 
 
