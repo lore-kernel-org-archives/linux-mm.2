@@ -4,71 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79964C4453E
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 15:43:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53E3EC4453E
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 15:53:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 53B606B0096; Wed, 22 Jul 2026 11:43:17 -0400 (EDT)
+	id 48E266B00E2; Wed, 22 Jul 2026 11:52:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 512756B00A9; Wed, 22 Jul 2026 11:43:17 -0400 (EDT)
+	id 3EE306B00C5; Wed, 22 Jul 2026 11:52:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3DAE46B00A7; Wed, 22 Jul 2026 11:43:17 -0400 (EDT)
+	id 268826B00E2; Wed, 22 Jul 2026 11:52:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 06B0C6B00A5
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 11:43:16 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 89E0E1A01A5
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 15:43:16 +0000 (UTC)
-X-FDA: 85016831592.17.A0098E5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 3EBDD80008;
-	Wed, 22 Jul 2026 15:43:14 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CLM0aR9e;
-	spf=pass (imf30.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E2A766B00C5
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 11:52:58 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7D2C7A09E6
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 15:52:58 +0000 (UTC)
+X-FDA: 85016856036.23.026B225
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 3D2B8180009;
+	Wed, 22 Jul 2026 15:52:56 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lzeLJ+Mk;
+	spf=pass (imf24.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784734994;
+	s=arc-20220608; t=1784735576;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z8WqCRRmqZNU6m++x/hJd+wI7SHuI+FdIhlbamrdG1A=;
-	b=gNHKB3u4lLWOz3fxFdt3TifmkFU/kLsEyn4DLUUJ1layV2vko1h+eG9WiWtnjz0iVXT7dQ
-	qjI5ysxo69kJ/F1Nm1gwaaAbZb6pujTVARSwkZKGO6godYIG2YNKL7JOYHYopLbnNKfGPn
-	E/k4g3tUyIsvYfVUt4k8yeBncDEtkHA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784734994;
-	b=0PhhuNWlXYXbkWeg+YdzQFLpdYviqd9HNyRQC+Eqt7vbne2JeNphXm3YdYwVA1KzIqYIAz
-	jILpqRikStYrqvCs3Qn6dLEPaLBRlr0RxnKABFeaVvVRNmcJdjhxCe5V8oe2RUfDPSMvb2
-	5nQ1JAd0RmBryYRium4ZDziz3UlPyXk=
+	bh=ufiVbs4gFZoTgyjZH/ZnFnJ99kcRuL/B6RsmsdF3mq8=;
+	b=e0bdaHxalFXqtFcmRC7v0zHHj0spWsYzMZRTfW+ttNveNckiOtoBJm43lVG02HOEFrUvUN
+	XQVNx/fEZLZ4voujz6q8S2kjHOalcT0vNQQnVgtXbJS75genNhfj/0JUplyZGucOl8DG6n
+	KAwNLqZb2Tfuz3WDMe9CvT6doS3XUuI=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CLM0aR9e;
-	spf=pass (imf30.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lzeLJ+Mk;
+	spf=pass (imf24.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784735576;
+	b=2fILoh6WOr1o9u4+EeSKEEQnfPLlePIHOLxKq/BQU4fFmyIU1hN93mOeNx+ZgVcvTZmSt2
+	I7l/pQ06/R7U9Uy3XyLYPR7Hs2ec+paiH1x+SG4sc1YAETMJ5Gio+f+HasNypLzNKGva4v
+	8FrzgLtXyagxDxz+LTrHTV0cFT/r3Wo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id EA1E540977;
-	Wed, 22 Jul 2026 15:43:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 604121F000E9;
-	Wed, 22 Jul 2026 15:42:51 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8E5D8600AF;
+	Wed, 22 Jul 2026 15:52:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D900D1F000E9;
+	Wed, 22 Jul 2026 15:52:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784734992;
-	bh=z8WqCRRmqZNU6m++x/hJd+wI7SHuI+FdIhlbamrdG1A=;
+	s=k20260515; t=1784735575;
+	bh=ufiVbs4gFZoTgyjZH/ZnFnJ99kcRuL/B6RsmsdF3mq8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=CLM0aR9eFhPZ9spOJaHdGqkYPBvjwdadVJYlKZTl2YKiFfjcVhRSxPh1PIcdSZLqF
-	 2uDQVrjKOL7KmFktl7pClbl7cKII+MRZc9/6UaOyQfALqfqRWzhAtz2P2hISt6DjII
-	 CWqB/cDSvIql3IGoYwtilPu5JaZMRbvxlUgx/GqldGAVbyRwWh0ci6cxI6Nrz0fqLU
-	 /E1KAynocQ7mEgmRpP4IShX5p2k0UIxlo2mteluahBk9DcIHRIpb9ZDQ/ba/6DRjn5
-	 oYakHop6ZZ+DFl5M5Rcin/qKgqClJMkqtRONWZt8Qxm6ThTbv5R0wMwmL93ssw6GKd
-	 eiwmeo4mk1lEw==
-Message-ID: <2eb7b45e-0bf6-4b09-9b8a-ecc0f57f2c39@kernel.org>
-Date: Wed, 22 Jul 2026 17:42:49 +0200
+	b=lzeLJ+MkKsdPmOuFrEroytGywJNyjc5go9z+BRGANnrrerkTLT/cUGS0MryhpCrCz
+	 JdnKkJXBXQDM1y9cnTXkAr+L8PkN74T9bfVYvVLVxwI2l26MDbErHm0dHSRnCdonnL
+	 RS8BbhjVo2GZtG/uKLPlYNjbwXf0EqigSTo9sTrTgwAXfegti5hbCb82Ksax3+7W+n
+	 QT+A4kOxO47PX305QOEXl/P2XsuHb7+PKLUJ9j688+bgVNRQrqfPt/YGk7hqqkhk7v
+	 RW33FQF/uI3VdGs/EfFg+aU8yARX/BME5FRohcAXZwHejlJ9HpNhFnfFCSrg51Y2pZ
+	 5PZGfjggIWn2Q==
+Message-ID: <f241a140-cb65-4a77-8dc9-dfa450b2e0fa@kernel.org>
+Date: Wed, 22 Jul 2026 17:52:36 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 08/13] mm: introduce vma_get_page_prot() and use it
+Subject: Re: [PATCH v2 09/13] mm/vma: update create_init_stack_vma() to use
+ vma_flags_t
 Content-Language: en-US
 To: Lorenzo Stoakes <ljs@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
@@ -134,9 +135,9 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  nouveau@lists.freedesktop.org, linux-tegra@vger.kernel.org,
  virtualization@lists.linux.dev, intel-xe@lists.freedesktop.org,
  xen-devel@lists.xenproject.org, linux-fbdev@vger.kernel.org,
- linux-sound@vger.kernel.org, Jani Nikula <jani.nikula@intel.com>
+ linux-sound@vger.kernel.org
 References: <20260711-b4-vma-flags-mm-v2-0-0fa2357d5431@kernel.org>
- <20260711-b4-vma-flags-mm-v2-8-0fa2357d5431@kernel.org>
+ <20260711-b4-vma-flags-mm-v2-9-0fa2357d5431@kernel.org>
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Autocrypt: addr=vbabka@kernel.org; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -177,17 +178,17 @@ Autocrypt: addr=vbabka@kernel.org; keydata=
  NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
  OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
  jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <20260711-b4-vma-flags-mm-v2-8-0fa2357d5431@kernel.org>
+In-Reply-To: <20260711-b4-vma-flags-mm-v2-9-0fa2357d5431@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 3EBDD80008
-X-Stat-Signature: 6n86yemrji565ptnzy75g7z5dxqe8s4f
 X-Rspam-User: 
-X-HE-Tag: 1784734994-438486
-X-HE-Meta: U2FsdGVkX19ZJLPg+6kRw/ZpSPDn8WLvT7UYbnr2nq08EmrIdBB3zlZIuIXP/ESGhgLOqSN1BykeAJ1hzF2NNxtgC6wQgyEMzNh+o3aJtaRupbDp+L7GxaOA7BE2CkDdyV8SVzZlkIk5fv7Lc1eo7PPo2XJPKDZETdbmhPBnSIOaLvBxnQ13S7pSufanSYsP1m+ddtleb1AwCjIAbXhroruLg4yutj+eu/zF4QwcHOIXdmEINdazvRt5WiAJSXaYPCu6UuWZUOewrdkb5TTrCnec3JgIVdt6nLhh6NgeWQV4oa01pDzsAW4uvUJu/pwEavF5wrsEVt5SV/3KfmW+a+3KW+DbTPsx3c8J6A8SyDIevlzsFBhMD2hpdJeLfPE3IeNoF0KfIjwVAnxY5lK6me/lkiFfIx1gWAeOXfYakeConpgKTJ8pyAP7Mlqxs0hHkboy5iOdd/L0lx4LO6MzzJ7khqwpFd+bgcaW1maOKKsg3MDJenkMJshbVewqL8X9IM/v8WKeFJSWQawHT2Osc3O+5A1WIGk6sB/oe7a5D+H2LxLrZd2YrBNRJro9pfcdtGXIpNBWUUSJgrsPgucN+zyMccaC7mqjiYec6R5ghnmG7kVUSui+/TIj2R5MQCqCMB7nxIuwInRvuLbBj7LdBHuYG0bGVC3BDcmgBclzVWtVtGYVYtauIcKo6mVib/swqblNuABYqQKpljzL/sNaW8dnOCbe43IYZPF0vdCiflIMssK+sWUYA6KZfFawpBCuU6M4xie/fF7kcZwbFJuzfstIOdXDZV5DN1RTjOELO4K5LJNmqYbWLvmbEj8RaMnB876EHuSuPsTFHXkj7qYJ9LGbTRK4FqEWgYxX3QkGD+kBHdhbC3M27yJHmFnloGjwJCiTdp8wIsMk/5it/t4bOyoNZtSbvKCtid2xnzraICZ88s70qnuo2uLYQLBLcQ+pKoT0jDQfDbtYc25PIkX
- OX5JyOpj
- aqwbGw5fbla0/yYbCkjqIrENkAWwjHB7NHxotHhLtnwJc4L7+4lOTrp3fo688bgc8wbkvZJXt5YXXWCA9ACixtKLazldQJNyK2BDJdoHrT3PAMnIFZ35g21CqwWpqVMKY3M0OfXtpqODv/99sq7mkuBCGc+g/S12ghTl1aplpppYPl+pho9ujjO14XavhZIsEBTuvaVn+cCKzVWu1zK0QoL7lMGK4L+qOIDS3ElAxz4/8UzajAJzF/RP5stxpqr3AErKiVgaG771XAgxyDrdkq6n91lE0v2Ja4OcL31abOFLPNTKTpUJV49CXu2syJUT2L9sTNWWrmFfF8ZrQmI+cWpI+qdfZc3vQ71kYY96UmNckpSpOCpGVMKe7AIaM1YwBQdkpBMdUV2QkE9w3Q5h1HgjxlSSL1KuE0zTdLskdEsTFwa2pXzznlF5erArek64yQ8HaRvnx5JbGew+0v/1JI9+bFV9LIvT8S98DA0ClcOhGXHoZt+OyuWgoSA==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 3D2B8180009
+X-Stat-Signature: sprod8ahn4tx4fjanu6u4ag9a756n1d3
+X-HE-Tag: 1784735576-544556
+X-HE-Meta: U2FsdGVkX1/IHkRq1iRtHP2crlgsMDP3mjxDpPwhAmKu9hgFt+yx+Lrea9sLhZXF0RIdoQYF7lKq08UdqcmozY9E38AyyuynUIc+TDk724NEXSSyvVEte1VgjHkP5Uvfeoox3pas9KjLEn12u+3AjCycHDH6WxCmj4OgM2l2JT3/C9cb7AfsUhFS4W5LekP/kQZeYgaDGPIKkcMT3fXEtadQe3G00VkO2J37jXJZTO0SAfc7J/5uork0tnQzaRHsaVF9KVzADqdnhtXTy47ulyz92rOdQUHVllTmHJ60clrnHqbuQxurdPkjcy5af5f49NZna1ba5wD6dPSleJrITOkNPF5ZAindVs6R4/EdeGG67s99siMPLQ8edHefm4M9K+9IP2MFfkZMOx+m4M6q4v5fS5NhiK/NVSqYarAPLDjQNwUpdvJ+229uyLr4G+vh9VU4jgMgIgehPeLWL5P6bqNdz3axr0x4BzmBSvK032AJcOsfVobA6kpjCK+Mbs9BZX+lLt1Lbja149JUz+DOvqIGMIg8cg6K3Sz19RAP6XI2GgbYkfm5hx2y1Hc4G87S6lVNWZY7RAxeUO84+0NwHw4+KR6DWdtgkB/s3tTu/YFdwVYIbeNJiq1Z8XuJjuRV7J/h5e2rpyvkprta3YsOebPJyPHGxbZNL0bn8qJ889MTaEZC/3abFXYvFk3qe/Y4pEb2YWaMy/HZO/fYYOckvuoQsjTLNC7QE7Xv4fUMeO6z84rxTyh93zW4/pBiJObmo/DDG9hB0LANbGFxZy4CS4HNYydfn+klPjGSaZkc+ZxNqLyNYfJMUCj5MY5bCJQvLPD4fnbt/U1BkXnvLrOePqS09iBZgtf9yCZH9e6jQyBAoHWzR3eDD8qMu8sk0prd4fT6xzo1gUUjWQDA8e+fquprZUjUABqlIm0Vgt+srnEJ9g3/2a7ICzs8WEySsgGt3LqeWlR09zc9JIEas+/
+ wo53WhwN
+ tuiQhGlRrLoh8eh1j1TNTo9IS5YW34Gh7Rt0VlVIgw/3I6ZOADZ+lh6YW1lEvs8kL3XAN/lK0kv6rIsTA+qEUPWCgBncmTIyeRdgKmS/fFKtpHC/R0yN2OC7lKcp9ev4n3ztBqv3Gkej0nFFM4HjxzQXjBSj+wBVS8c2FFSu32szqhw8BGtod+cEf5ahzMYdA3Ou6LSpgOoFNjnEgzVO5tzw3ER2PvAftlR8hMIDGTXxsfGMJlhpNtJDKpO0qgb9qNuAE0vJqdkqtETSV/9M02L/EopwUufZo9prQAKsXw5acrFfAwvwjQDojwQcylMpHHgvxSaDeabtJR4it5zC5djzepm9f3nXvYTqA0GQq2BMgIFn45YTV2eilsoEvuRR9HD+VpDH3rNVtdaMqwZQB5qYg9EChForOCI58gr2Qc+Wpza3QF0yFd1jnuz9q3UVD1IyGHRn7u6fYx31/PCe367I5Kg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -196,18 +197,17 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 7/11/26 20:45, Lorenzo Stoakes wrote:
-> There's a large number of vm_get_page_prot(vma->vm_flags) invocations. Make
-> life easier by introducing vma_get_page_prot() parameterised by the VMA.
+> Replace use of the legacy vm_flags_t flags with vma_flags_t values in
+> create_init_stack_vma().
 > 
-> This also makes converting vm_get_page_prot() to vma_flags_t easier.
-> 
-> Also update the userland VMA tests to reflect the change.
+> As part of this change we add VMA_STACK_EARLY and VMA_STACK_INCOMPLETE
+> vma_flags_t defines, and slightly rework create_init_stack_vma() for
+> clarity.
 > 
 > No functional change intended.
 > 
-> Acked-by: Zi Yan <ziy@nvidia.com>
-> Acked-by: Jani Nikula <jani.nikula@intel.com> # for i915
-> Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de> # for DRM
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Reviewed-by: Lance Yang <lance.yang@linux.dev>
 > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
 
 Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
