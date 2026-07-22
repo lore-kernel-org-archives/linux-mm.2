@@ -4,117 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAFCAC4452D
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 01:23:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00F23C4452B
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 01:25:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 676326B00B4; Tue, 21 Jul 2026 21:23:58 -0400 (EDT)
+	id 9FB6D6B00B6; Tue, 21 Jul 2026 21:25:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 627C26B00B5; Tue, 21 Jul 2026 21:23:58 -0400 (EDT)
+	id 9D3466B00B7; Tue, 21 Jul 2026 21:25:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 518986B00B6; Tue, 21 Jul 2026 21:23:58 -0400 (EDT)
+	id 8EC586B00B8; Tue, 21 Jul 2026 21:25:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 257906B00B4
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 21:23:58 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9EAE112033E
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 01:23:57 +0000 (UTC)
-X-FDA: 85014666114.13.F8BB167
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	by imf22.hostedemail.com (Postfix) with ESMTP id D8A0EC0002
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 01:23:55 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nmFigF3E;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of harimishal1@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=harimishal1@gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 679266B00B6
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 21:25:29 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C8B45A028B
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 01:25:28 +0000 (UTC)
+X-FDA: 85014669936.28.52F71D5
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 791AF80002
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 01:25:26 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=AH1yMPga;
+	spf=pass (imf30.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784683435;
+	s=arc-20220608; t=1784683527;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YbFXTrauONRUcQG2aMTBcn7xFxe1QUlq55ZfdY6FsS4=;
-	b=dRapMTmwVPRpbcTVe94kjP1pruzWFbLPKU83nuHh4Yo7qcI3zI2m/bNBqj489DnhM/TJsN
-	8RIFSoQIR/iGCxS+pAuaSJnV/BytZ79R3dGrzeqd8G2KU8yvbVf0KxoTJ6PkuDj6w42pOv
-	C6DHpWWFKq9VLKZ8nUSYv4QhdWETGZg=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nmFigF3E;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of harimishal1@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=harimishal1@gmail.com
+	bh=36tslyDQzMK9DRsSYiP8yJ4Xvp1NbiX3KOlD9FuNW60=;
+	b=KtNc4q023JEayfVWhTJat8mcDCpUBcyvg47kcyk4LKIkeZuJIN/Lu3hOdJRxzzkxiXai1z
+	4R/bgzIG0D3Rozxz7EhPuMQqbuZq7zH5qDNN41aKzq/AjtlGlKN3x03FigcG//QER77vVT
+	2KMxlP+wVAUc2+rY1IVadUjyJQ1rnmo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784683435;
-	b=THB3DhB9oblClntlJ/yyRs1iWJ6K2r9MD/Y3OZw4xRQjA/jBeLqV5NzFlRvaCg3UsZV7GH
-	s1WoLY7z1fFUWBd65TTfPgPN0gGwggQce4mFV44UVixEa2QSj5U6CUGpa3Fj3TlhZfHqFo
-	svXIhTiPQxwA8/nSDFxlh9AlGZD0Wsk=
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-69eae037da1so5646972a12.3
-        for <linux-mm@kvack.org>; Tue, 21 Jul 2026 18:23:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784683434; x=1785288234; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=YbFXTrauONRUcQG2aMTBcn7xFxe1QUlq55ZfdY6FsS4=;
-        b=nmFigF3E3pBtsZ9Impy9J6akLNsfN18Ez41KOZaXYLJ7ItrutTD+fmdlTMW5Nyt7Hu
-         qQooiOO3oGFdW7OuUO6ybHLkpr9Tdb5hEE53Smrkl1TUv9sc6T63btiBEyIQ5ikFtJEk
-         mvCt7Rcl1WiVn/DLdrF77E9XLRVX+QOb1nB1KpnaOrajY/Fi9ZNZs09wd9CEMnlGAkjh
-         7gtmVL0OwQmx67nL1keJ9InuCF9OlXH0LZ+7kQzF3nBBPtSZG972CCz35UPppe1mw8Nc
-         ZQBPv9DGkC564T0Z2PKsQ4TQpTXyglmWyNsVcbpQLWLWaKKZTx03XujxgqtRndUfZazF
-         5D0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784683434; x=1785288234;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=YbFXTrauONRUcQG2aMTBcn7xFxe1QUlq55ZfdY6FsS4=;
-        b=eipobUpMnXC0HJAkhViSp2pZYx+lqRknPHCPbLlD07Dy6ga2fQtwoE5oIDxpsW23yt
-         5rGymjHuc9FZncOMvIGHDxBa8hR68fVKFQNECRPPKH4uQf29W0+ptiYxDvqE84eAnMef
-         RypdVVHzVprKGwulcNH0bsdCfVygAt1plYAqPoRzsCY41pMcDaXc44x5U4Ul7TOey/DG
-         2SL0LaQzr6Lg8t1EG/qGDphw6pAjmurbkVh2SIYvqRRl0sl5XF2Cd1S9yhcJf8XwkQME
-         Pp5Y85s6MyYGUy1G528wnwnORjg4M+IH/STdC6NIuSFRyfKhjT4G8RcVmeQJx5l3KCe6
-         2MCg==
-X-Forwarded-Encrypted: i=1; AHgh+RpYIW4vtmBqNxoCFYQDwoRS42RlbGk38or8uUSZQFroCLv5yfNkhx5cuuZuGM2cVD8Y11sc7gUSRg==@kvack.org
-X-Gm-Message-State: AOJu0YwE2sZVtKdt9M71mwtfHxJSPEQATHJJN1o92zRcJDIUMScE6xxv
-	LiDPiy0da4ChlFSlsQIdp1DrQRqUmpmOSazJWuKjBlmNB27ultyM2mGI
-X-Gm-Gg: AR+sD12zPF8IxEQzfaxa57W2/5wqgJJqtwTovdorPOHuDYzokl2dE33jnhYTByn7CRH
-	h0aazSbeIaP0bp+VS8f8xoRCqC4TIdQ3gcRMhrUiebvumt1d71M54NBpTout9j7wDhGepwHQGk4
-	0h9z3U3/lWDlSKJzz/1/SR8VvZ1HEccxAYvLtCzFpY2lXDxFh/F+34CNBbV4wV3ojcGHjA5/UIp
-	LxFYuzpnSUkC+6qOtwBdYHrh9i7xzaxsXVFChMhOJ84WR9SvHbE7YllBuv6dy9bc6kVEBPZyrs/
-	9KTTlqwW6QzxWoXn8brpEWxQ0nVBKI6mNBTh9JQhRL1Mhizn6pY4uJviy2c4TilRkqQmKZvKIYo
-	StYGveVZMpZZQ8NPW49TLV62fCgwPL+co1iIxaC/gBj0asLAZ/5uM9SWKpNg3LOJcqXKgcAnz+8
-	nzYYSi40NTcvqApZU6gcCkDx9g/QOzwhGo4ZFweQ91uSVgC9syTnW51UkDHDkK12vXIw==
-X-Received: by 2002:a05:6402:528e:b0:69c:7406:9492 with SMTP id 4fb4d7f45d1cf-69e652e1111mr6897698a12.39.1784683434224;
-        Tue, 21 Jul 2026 18:23:54 -0700 (PDT)
-Received: from misharu.home (2a02-a463-a071-0-7364-df4e-3b35-2094.fixed6.kpn.net. [2a02:a463:a071:0:7364:df4e:3b35:2094])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-69f34ba67f0sm321569a12.12.2026.07.21.18.23.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Jul 2026 18:23:53 -0700 (PDT)
-From: Hari Mishal <harimishal1@gmail.com>
-To: SJ Park <sj@kernel.org>,
-	Shuah Khan <shuah@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Hari Mishal <harimishal1@gmail.com>
-Subject: [PATCH v2] selftests/damon/sysfs.py: clean up sh processes used for obsolete_target test
-Date: Wed, 22 Jul 2026 03:23:49 +0200
-Message-ID: <20260722012349.9738-1-harimishal1@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260721190404.135937-1-harimishal1@gmail.com>
-References: <20260721190404.135937-1-harimishal1@gmail.com>
+	t=1784683527;
+	b=iIuBNQF0LZLPvrWQC1P7OI8TcgJunUrGKfpvzzAbuFPogJ3dQIIA/r762RoPzaTu9vmYDD
+	2qRN+FtHtPxd/Di7Nt48EtYQTJ5i4XiY8XboxHU6MS1KJmudgOmMyonow23zjIknKr6+oe
+	N02122iahbVuGFCXIuuQns+9G8xqIFY=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=AH1yMPga;
+	spf=pass (imf30.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=36tslyDQzMK9DRsSYiP8yJ4Xvp1NbiX3KOlD9FuNW60=; b=AH1yMPgaYJ/ZlOAHjTj5SGmh7I
+	QiQZPsy3nXrc4392q/ZquqOfl0aVU6Ko0rQVoORy2IY2z19Pu2dOb28emR3YziOcDADlBvESUkhfD
+	9HetugUAak+A0Ym3QtekcB/rKxtjmMFrIsuSAnenmbmB69NthJDJIAlMf52LY9WhJbJerg0s9CMJT
+	iEl2eMZ8e3Y44hF3e76KUH9yxeug+o2lzVqtFe8ydtwycPlZ3URwk0wnMpC9H2Tcmh9c27F0qB8oc
+	KlySH53LQHX7UBUGPzmzlWoSbub5hynL2VqhyqOxOlL4ApsJEHm9micWfNF3bq2BEF9rM62KWBHBk
+	gd00kk0w==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wmLi5-0000000ERcV-1Heb;
+	Wed, 22 Jul 2026 01:25:21 +0000
+Date: Wed, 22 Jul 2026 02:25:21 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Hongfu Li <hongfu.li@linux.dev>
+Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Hongfu Li <lihongfu@kylinos.cn>
+Subject: Re: [PATCH] mm/memory: use folio lock/ref helpers in do_swap_page
+Message-ID: <amAcAVdFT4O59Svw@casper.infradead.org>
+References: <20260721013347.65698-1-hongfu.li@linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D8A0EC0002
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260721013347.65698-1-hongfu.li@linux.dev>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 791AF80002
+X-Stat-Signature: pqz5c13mnije9q9xuj555zdzhx9p3p63
 X-Rspam-User: 
-X-Stat-Signature: zm8xxanwrcohcqd4s6mqr7wrxgo7nrp7
-X-HE-Tag: 1784683435-351666
-X-HE-Meta: U2FsdGVkX18N9AV44/QQWOVs0sP2RCaQR8423uNOGXllchwOHn43Il70IMnlgQkVWLCl1hYVaU2XrfJ487W1Ff1dpVVLqyRZFjQIbIFP0GqdOdJL6rEBvDxIc59d3VorH6PmQcYk2D6BcICucu0KnKMRPeGjbDo/16gbk6L4CVYVrEl9oHaOsN+Rju23cxz+jAQhi8CHd4tPizcLmnQ9OvOM+SaFM4iFrXfM+ASV/hxiN6wYepCgOW693dff9UK+vk3K9EWRnOduOIDQWeIUChT2aQr0ujytTQ4eWGcQdlBxxMa9BicwasaxyUxk4Y9mNWz03Vh20+DZ0DO8fIiEctcxN0unygwLcFmtFAMeW9mjDSMfRfXuWUnlABYi0wp99zN98HomjxWxvYRt8kGSgsv/WAiJXHEypsel8kaItplcCR7fzcm1prFIYI0GetBZ6QYDEiIqTjLCSgS/gCdEQem306sJlixiLPzVw8t+i1K7ofs+OJnxXwy3UyUNGltvuivG0oaHzuE1yM6MTVAQK99cEPJMuwfU9uQU/cIoe3+B3SrlaFB6S0YWVXr+lpA3V0x5PNnFLqKutY3e8sRUxMY0vjMZJGOZiBgNOp2XD4iPBRz7uHQeQUIw/CD370Xwh2lEzeOY2QyOnSutZj+WSdkgxjcv57vMzQXWoW3IDk9W881KZqmjPJ3LSn96BUmHqGiyuXdjHL6ZREgjw0XGQSBTIPMdpjhAwHjyLrVokQm/p5ODZhgLu4asEsKe32tUgnS15sHyLfnnQkmSb9rdQxY7AQdNaebuin0Khwxh/BIBSSnvtPZgUPj0UQNY33htjKQkSjCdt36/eq6dv9P63+n2dNWrZNzGP3cYSeDlK/CD1+o2hSD5+jfgUOTHO6dOdTi5bDz1htLg4YPyXfbQZnOdS6mFKuOiwOWbxJWqi6DepMHSHg6OvS9EL+ujzLJ9cvJ+xjqZTkuHh+BAXSf
- NO4cZYu9
- tz9Z4aAurKHeh71vdXMfdASmHGeZ9tXrrwyxtQ/kJf5FblrTYeoEx7IwErTPjL8suwdHTCfUdPVNMF1E880jYoVvoCo1PTHgRBnr71MhrTW7ukqk0Ei9qV8Igb0lZgTYiIDl8BWsbRMMeFHVjgI9ZtJWD2xEBiYufHfUfgzZFCdUw2tj1u5enbCrnRJVF6/leE9r2OQZMzg9goC9QQmTLuy5F+Fbl7mkwiSiuuxIX3RMlAr7yJgCWwk98X4Oj3SrIQhVma96bIlhvswQS/LcmarSxq+CBT9Z9fNuSWU4Th7MFU5NeLFBJ0l2iDdbFt03DNmsYLFbUZ1TMGZoFor8aAyZz8uDGQHHg8052w+l15CT0DXto1QSP7uVgLxdYU0BKDL5H2GlRIEOPZTlorAB7WXQsA+QI4qv8LLjaIcgie7WQx6EeItJ77H4kdt0zCKFAfWgyxpZjg/vOYjA6mVPyZYoqxA==
+X-HE-Tag: 1784683526-230162
+X-HE-Meta: U2FsdGVkX19eTz3ZPLJHNuAwL0xWGYWjr92xLKdKjEQeBba1vck2OG7WC9UBpd0swT0OQbZXnnSWDuHIud6FR9V38w16yXoTwua53XkstK+M2dmOaPeGLQ5uXxPblcXMAUbsdfduwAzCl4TqUxLi9fpIVrOipI7ZpM1EK0AflRrCt90FrzMlavYr6kOdFyCoGYYrcOTmAQylcfb3MhYJ8Y8bHQMju2VrKCtBMvCZ753OsIOBsEyB0hMw3emDr6vKkEp5EoMnokQIJJ/svu2I4I3LijyWOOCeT5XM2KlYZ5tM1b9elWVs67eI1AANEgNGRsMHSGFW4VZKPWqPIMdAVB7txqzn6p/we4qLUh2FBeSVvu/I6SRgME+jszwkZqgqvAuSsoFjO7uZWj65vGQq72CLDfPB3RBIZmBpQ3MR6GKLwKMJD1kvVUGexp+ymPxd8DC4JM9IWHHjdJ2eCluM6fzMFB64sVwMCyc+MQOCp9v8xm/eDFsSap/hInrEeM17NkRg8ojdw/tmz/fuqqPV57PaiLO80bcu9QI0BAAUSXqlgHiIWRB26QIM71PGw9bO7v7IkWF2QMM/Ny0aN6b83lYV4Wmqms2j//cNxEdtPzXGSGDyiEOda8I2KX2B3+iJESocnGpQk7ygjZ/zTm6Qn7tHMVQvmU67Bjl+FY3u2LeTapFc2gqqfDdWKGcr1QXdnIhi34SsoHoSUPLJNDhRWBZsjNlmJcU5fSKTLneEOyX5YraQgCvfu+yzMFHIcC64qlR8aRHovwW6w2hG0sG78jzmSIIlC4hqdfwzjUAP1iMTgXYS1cwHujn6qJxgXyvwWpQWhPVO41mdgoln+LfUmHOmvWnn3StAR3kERImZC0Ks/bmMei5Q1iwIzLjlDG0wfSq7P8639cYjRvandDXU1m827SvPiz54mui2QXPYBvkFWpb/gmhZSyPteLz9H77Ts9bIpeuRFd+7a54HHmI
+ hugO82Ei
+ WUfAPDOyQLoq3OLpngZwXyblMTPbOzBpEh6OrHT8OjSbXpDrQC4EI258v9iQGKkxcUTWnI5c/81uKr1ddJoQYj0f4IgRYvSYM9tSMtXe9HwfKINPYdrsck4pucPm/oCA50EynCLP6abpDN9tGtXu0WYDuZb5Lnd9aFfXpNL4hYm4SkxqSWelAikin/wOL/c9fNtV+HvEdAoEJ9w94IrIL7V4te2xPg1uCE+ixpLJpJmQkRdQH+FSq4zW8cyVJWvC4GUnv2cKCKjPZvCj02zaJ7MALfbgSeHNSpvzSGeJyMj+vTMdzKkNp54ceTEvjPipqymOJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,38 +90,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The obsolete_target test spawns three sh processes and uses their pids
-as DAMON monitoring targets.  These processes are never terminated or
-waited on, so they are left running (or become zombies) as orphaned
-children after the test program exits.
+On Tue, Jul 21, 2026 at 09:33:47AM +0800, Hongfu Li wrote:
+> From: Hongfu Li <lihongfu@kylinos.cn>
+> 
+> Replace page-level lock/ref operations with their folio equivalents
+> in the device_private migration path of do_swap_page().
 
-Terminate each process and communicate() with it after the targets are
-no longer needed, so it exits and gets reaped instead of being leaked.
+When I do folio conversions, I like to mention the actual advantage
+of the patch.  Here, I'd say something like ...
 
-Signed-off-by: Hari Mishal <harimishal1@gmail.com>
----
-v2: Terminate each sh process directly instead of giving it its own
-    stdin pipe to close, dropping the stdin=PIPE changes and shrinking
-    the diff.
+mm: Use a folio in the softleaf_is_device_private path
 
- tools/testing/selftests/damon/sysfs.py | 4 ++++
- 1 file changed, 4 insertions(+)
+Use the folio APIs, replacing four calls to compound_head() with one.
 
-diff --git a/tools/testing/selftests/damon/sysfs.py b/tools/testing/selftests/damon/sysfs.py
-index aa03a1187489..bdb37eb1d26f 100755
---- a/tools/testing/selftests/damon/sysfs.py
-+++ b/tools/testing/selftests/damon/sysfs.py
-@@ -356,5 +356,9 @@ def main():
-     assert_ctxs_committed(kdamonds)
-     kdamonds.stop()
- 
-+    for proc in (proc1, proc2, proc3):
-+        proc.terminate()
-+        proc.communicate()
-+
- if __name__ == '__main__':
-     main()
--- 
-2.43.0
+
+
+> Introduce a local fault_folio to hold page_folio(vmf->page) to avoid
+> repeated page_folio() invocations.
+> 
+> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
+> ---
+>  mm/memory.c | 11 +++++++----
+>  1 file changed, 7 insertions(+), 4 deletions(-)
+> 
+> diff --git a/mm/memory.c b/mm/memory.c
+> index d5e87624f692..bd27372a1052 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -4852,6 +4852,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+>  			vmf->page = softleaf_to_page(entry);
+>  			ret = remove_device_exclusive_entry(vmf);
+>  		} else if (softleaf_is_device_private(entry)) {
+> +			struct folio *fault_folio;
+
+You can just use the existing 'folio' variable.
+
+Although this function is far too long (400 lines!  14 function-scope
+variables!) so I don't blame you for not noticing that.  Pulling a
+do_non_swap_page() out of it might be a kindness.
+
+>  			if (vmf->flags & FAULT_FLAG_VMA_LOCK) {
+>  				/*
+>  				 * migrate_to_ram is not yet ready to operate
+> @@ -4863,6 +4865,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+>  			}
+>  
+>  			vmf->page = softleaf_to_page(entry);
+> +			fault_folio = page_folio(vmf->page);
+>  			vmf->pte = pte_offset_map_lock(vma->vm_mm, vmf->pmd,
+>  					vmf->address, &vmf->ptl);
+>  			if (unlikely(!vmf->pte ||
+> @@ -4874,15 +4877,15 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+>  			 * Get a page reference while we know the page can't be
+>  			 * freed.
+
+You should also replace 'page' with 'folio' here.  Pages don't have
+refcounts, folios do.
 
 
