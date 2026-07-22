@@ -4,120 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96C5FC44536
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 04:42:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38501C44512
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 05:20:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B21FA6B00D4; Wed, 22 Jul 2026 00:42:33 -0400 (EDT)
+	id D8D5F6B00D8; Wed, 22 Jul 2026 01:20:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF9F46B00D5; Wed, 22 Jul 2026 00:42:33 -0400 (EDT)
+	id D3D256B00D9; Wed, 22 Jul 2026 01:20:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E9E06B00D6; Wed, 22 Jul 2026 00:42:33 -0400 (EDT)
+	id C52706B00DA; Wed, 22 Jul 2026 01:20:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 588006B00D4
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 00:42:33 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C301780385
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 04:42:32 +0000 (UTC)
-X-FDA: 85015166544.22.C45B6D4
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 9BDB6A0006
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 04:42:30 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="A+//2Hnr";
-	spf=pass (imf15.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 99D806B00D8
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 01:20:21 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 04E0D1A0256
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 05:20:20 +0000 (UTC)
+X-FDA: 85015261842.11.983BD5A
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 99C0720006
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 05:20:18 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b="eJ74/J1/";
+	spf=pass (imf03.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784695350;
+	s=arc-20220608; t=1784697619;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AUkOz8FYOEDUgGX+CslCF+loeViL30IBrcU7GQGWtrk=;
-	b=PcciMgNOnheiAZY+Nf2D1VMySEp+8ujdf3ySatV5g82pocIWp18geIFmvBC2S16kGmrG81
-	RI6vUu9Ukaj0xM1bET0y1l712jtTRr1olYo7U/8zvpSE5fxFFXYDw0Qmn6UmoH857xjyUK
-	Sx4Ji0AJTQF4zWuqCI2EK99f46hjC2E=
+	bh=Cww537ASv8kzxMe1FGmK/V4GT98IxA5VfJnEBpkxoko=;
+	b=zPNGFD9+uwzunxKxtsTen4WcisQqCdoQAB7sXpAFWqnF7/dQFYLzjqNSlgCpRvKS/4RD9D
+	U46ToL7Yx3in21aXDEmLXN+UNDD5r3jWuiJQbo45q+UoHRvDTYW0WaBDJzVg//KRXmRltj
+	HYO9KeIvavxCAFUHAI4YcQ3h42LP2J8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784695350;
-	b=ruAox0Y/vT6X2THAcEXFu2ck2yz84rpuVcSfXLDEB27DwNTUlUNcdgFRwzgTskNbCKoU0X
-	AHY0J/Wcb6jCCyf4VZ9BhxnYolvXOEfEzdh0zebl1THaDnR9hB8G6a2HRosu0fSRKdzfEG
-	ZoItf1IWbwfWea3odwEYTnpxQBOJZSc=
+	t=1784697619;
+	b=yAL9lmzhvInonu9B0oA0ix0UAK006ZxFpejtjSsawIqCcbliq6w5LZi1KcenAQvXMLLmhT
+	ulfILx30IFv/GAKaGIlAEwJP79Wrozw0LA62RAv1LdaKc/igFhV2bW3rf2wvxsW3vAsUfH
+	R+nTNLiu3Yx6Bw/JOPNnrYOTHy0eX24=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="A+//2Hnr";
-	spf=pass (imf15.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784695351; x=1816231351;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=8r1Uq1zdtpAGJu8GavaMBdCBQ8DhrDpmk6GT3M4wn6s=;
-  b=A+//2HnrC2m/RfOdkm4d7GgcjiHIWD3EOFh1Ie+9ejd3pvJWU9MRdZmp
-   gSJEAUUjbVkW9VfCe41slQZwJ63HucQ86xUCIwsx2PzZXA2ZTLxn5wKih
-   G9bRfji7bpzlwTlkHCfq8by87uNLz3wpJs3LZoCdA+q0rW6Hhhr0m+gNF
-   1qfsbuuB746nF0Gkxaf2jRdF/DIn7wTbI/YlL/pAJ2lyivQtgSYdyWrUi
-   6oYbFZuash5Ww5DX7a2EjJEqRvHrSox/+Nwtpi2n6+akgk/Gt7bPFRaxW
-   Cq5L1Ya9ufvxBHZO8pTc9IGcNq7zpCxRnIl5p0j9VtyT8IAFIIIek0bLu
-   w==;
-X-CSE-ConnectionGUID: e9A4dViMQQmBOaEGQzFzzQ==
-X-CSE-MsgGUID: 3HvH0iN2SbCjjOLVS/klUA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11853"; a="102865813"
-X-IronPort-AV: E=Sophos;i="6.25,177,1779174000"; 
-   d="scan'208";a="102865813"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2026 21:42:27 -0700
-X-CSE-ConnectionGUID: ttMGdGQCR4qWX40DU9YdWg==
-X-CSE-MsgGUID: 4McOWbVNSJOBmCVv1kMXLg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,177,1779174000"; 
-   d="scan'208";a="254063563"
-Received: from gsse-cloud1.jf.intel.com ([10.54.39.91])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2026 21:42:27 -0700
-From: Matthew Brost <matthew.brost@intel.com>
-To: intel-xe@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Christian Koenig <christian.koenig@amd.com>,
-	Huang Rui <ray.huang@amd.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	Dave Airlie <airlied@redhat.com>,
-	Matthew Wilcox <willy@infradead.org>
-Subject: [PATCH 3/3] drm/ttm: allocate pool pages as compound (__GFP_COMP)
-Date: Tue, 21 Jul 2026 21:42:20 -0700
-Message-Id: <20260722044220.1110278-3-matthew.brost@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260722044220.1110278-1-matthew.brost@intel.com>
-References: <20260722044220.1110278-1-matthew.brost@intel.com>
+	imf03.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b="eJ74/J1/";
+	spf=pass (imf03.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 4451740E00DC;
+	Wed, 22 Jul 2026 05:20:15 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id r3gHIk3Z3MOa; Wed, 22 Jul 2026 05:20:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1784697604; bh=Cww537ASv8kzxMe1FGmK/V4GT98IxA5VfJnEBpkxoko=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=eJ74/J1/mMRLlE9IAuONfD56lNUVXzhb901qTTGENZwHDUVcGgizSAaYO8wZHAExL
+	 uVsJwZzSfKuJVlU/vEeiX1faUMYGtjP80CDZCEkdW0VHP9sgbFZ8/9r1/7tVg+2F6l
+	 a1xEzieGWlQp/toLSUHJ5fZaTujsj8rtcfw5cm2Jpzq98Y5xMf/Zz+7kaVZg+uKJin
+	 xRvfHcAnwTKFVlefasJd6TIa4frpo7LleJuPwugGmzgzYS5kSEzCM49oggSQLM9UmI
+	 a+XwuGSPT+saT5toOfAhBpmeuDZb9W65QB+biIvujG9fzKzp6M2yaZ33Uw52jdIyir
+	 8oSxzWtd6xfM0kVPr8c3ZNqwcw+i/Nmvs/IrfZb1KvAZ3QU8RYHLheIdibCSqasNNf
+	 rM42chfSS0cdoDEwkQPxocMOY7m6G2jFLflfMxos13KnszcoK/3Ol0CJJq/xRgPF3+
+	 nkzD4uYQW6VHYcQwoKCxGoJq+a6LWScYeLVcHWS+Xzq/bycwqwUj453r/7PW3qVZ5L
+	 o25TaVAd7fSwvTPLLNMPh9V9TMsO6cCbD8jv9f3tjQl1J1DcDJO/O1X2F1+gefUvb7
+	 sehjqYsRj4bC44uTZH4DOfADniqpy3TzT4dRs1PR3/3umimP4pzL6TGrYBSaZ9moQq
+	 8NVt+GVAlinVBUQ4zPTqVEh8=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::2b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id B81DD40E014C;
+	Wed, 22 Jul 2026 05:19:27 +0000 (UTC)
+Date: Tue, 21 Jul 2026 22:19:24 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: shijujose2008@gmail.com
+Cc: rafael@kernel.org, akpm@linux-foundation.org, rppt@kernel.org,
+	dferguson@amperecomputing.com, linux-edac@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+	linux-doc@vger.kernel.org, tony.luck@intel.com, lenb@kernel.org,
+	Yazen.Ghannam@amd.com, mchehab@kernel.org,
+	ashok.raj@oss.qualcomm.com, jic23@kernel.org, linuxarm@huawei.com,
+	rientjes@google.com, jiaqiyan@google.com, Jon.Grimm@amd.com,
+	dave.hansen@linux.intel.com, naoya.horiguchi@nec.com,
+	james.morse@arm.com, jthoughton@google.com, somasundaram.a@hpe.com,
+	erdemaktas@google.com, pgonda@google.com, duenwen@google.com,
+	gthelen@google.com, wschwartz@amperecomputing.com,
+	wbs@os.amperecomputing.com, nifan.cxl@gmail.com,
+	tanxiaofei@huawei.com, prime.zeng@hisilicon.com,
+	roberto.sassu@huawei.com, kangkang.shen@futurewei.com,
+	wanghuiqiang@huawei.com
+Subject: Re: [PATCH v22 0/2] ACPI: Add support for ACPI RAS2 feature table
+Message-ID: <20260722051924.GAamBS3KN1wWTbiMwt@fat_crate.local>
+References: <20260709210750.424659-1-shijujose2008@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9BDB6A0006
-X-Stat-Signature: n1u97es1m9dxt6gqchnr53akpg3xebme
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260709210750.424659-1-shijujose2008@gmail.com>
+X-Stat-Signature: udbjhqubdkbch1tmn7yzgofy97q9mf37
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1784695350-436692
-X-HE-Meta: U2FsdGVkX1/iw1rIsvSuoIS7dAHjYUod/h9VGfQE2495jAoYhiecHC14TGGnIdP1okE/uqNtsSSZ05TUjUsIGLnqsROEkQBSprRtXoMSjh9/M9FICU1Q5EWkais0auiVrxZBOP93HqJOLCT9sODDHKFoEi5okqX5PcdNHrRZ98dYfmG/dnQNgP5mP+vDY2d3cLCMS1lDryedMdI6ab+f92Vk5IdsN9O7cwHkmRiWFDN7KdOgnvqA27MPUaM7271rXQ+2Yp5VPzXuk+CvriSVxbg8xfC0YXkjLeTGQS/jxU+dsFqN2PWn594KnY2ppofrpGFFDw/FkZJMKTSM4u1ZWUmEhzmcGwntY8IVpjOdVMmHfy3Xlj8iptqixQZQvanGG3h8dzeyhBITtl/FtSfR9OuQFKYQUMml5LzOYyfQk+BN5G6gbUvusMjgDCHpZNaTc4jQ5qYl+luou4ey1zBEqiVvBid0/i+tLDK3m4xOEbkyYu5foRbWtYJWv08TqkwpgCsCPLMZ39eZN2SY1h/WjVjyZN/5MYH7YNTJsB39iOQycVjG58enkIqwg/XeQMqS42gFo1+69dtDOawvG5V4sshFB+Tcj8o2uO1J9VW55ew8jYwC2anYzpNytUr030lQERxFS93XLFCRzVb3e64Om/ij9tyKlaIkVSliCZ/fje7pr+BtQxhfvAVJb1LchRmUrhuUcUY8ER50pCmbfilY8vgp450qjJliaDiKHTe1/FmELUiFt8SuwDfgPJ8YEgAiJsfv7tu/H37vI8sxMeddYvUHXM9FeNolc3uoATSwYUJu7V5FCWzWiWHFTdHyU9OhCBuA1rfYj6FcASd7QdxB2HmAL1ucPIAEwkrh6REwCmtBuHGgvobxdyrnLhI7qgm45403YYLmrZYiRL12C2qIe4g2wTIQrfxR2mkdcbDcm5z9i7IUzCn8zh8NdJ6iZYM31fZAmTutOVWG38qGtKq
- slBQuaT2
- s8pICVCKdrbGJPGzWqsYmN3UDK3G0X4ir/MhN9qV0wurZKOqnMSWO75M3FYjJev9kfjrmjljFHu6O691sgyNsL5si9rgmUJd10sZ54LV6s0e6lVxtnYwSDzq6/BlMrVrSWBHHpUmMp3x7d4qg/DgkCDeMhH+dheloZ6S3O4l6zFbkMo/OBe75KhG4KpsLLgXWlkOFSlNcoLAH7GRnHBQERLWgJcMplJXaE5GyGa7ByE322NwUVVMd+2oVYzH7oDMS1eTm24IhYHlhOZjBfscmj9EjYTyegj8E48NCCRAHKu+RKskjgZxxJN9JlEoNCxjDAmp4VAAGiNhnmJHHsXNglZhOAS7XowXFcl5wNvabQR1AkmpCVcuDLJJoMmG1uf99EAuhhlZt62BroPilB4DvgW09aa2X/+zFrqH55eZE5/RYbcmE7DGX1cyAcl/uemkfJX2kFUAB+dfoSN9s88yFnbO7Ys0T4CfunVxqQ0XQxYtEcUXBJC5XxnFyu42jBEA0aerS8KHhs4FYqP6rV5Onzrsy0RBsKKDUARt2RVtacglYNDB6ef9secwGkXoAkzZS/mQv8KH6/soWYE+Zyf9NSZhwf+zdSOD8JMtFsk0q5PQLAEU6dUFoX7CeB0GTTysNAKGuUPh0SgLur1ORyUWaKwtfW193Ak8Y6v5UhFEIKZLRBnNbkJVZHfqruTd+xG6uS6dh8QjnZKjRveRJ6A0TDJ24aPpUbaAwkcJJ
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 99C0720006
+X-HE-Tag: 1784697618-410084
+X-HE-Meta: U2FsdGVkX18LNfeYBaofdiVzEWM43EmjzHCf3395XBXM/8+FdkupEoOaHG9mBiHTf+vnZB4aX3ZgLATSOpJG43QD5/7p9K3qGCmPZsRIC4f2F7G5b5ADEBJdC+EdJkaf2K2Vt9XhD3lQ/QNnrh4aivaH6/x8P4Xj5Zcf1GkKMsJ+2pqJ5MDbpAVvIiHki6GNDQim6ZzXwl1W2rmndxSgQpU9oIQwGURUQfNhXSFrzTNxbOd30vdzWvEukJdqltJw4a0wUxC8ms/SisZCmsDuqLUurV2Yc8xA+RJkm5f5O5FQ7Rr7P/QE78AUAHWRw7tjrm7sE9amxB+ptlGtgPvr2ioXm6fRGwwB8oHy9m/vaKlJIyeHW16/67vvA97S4I8NNJS1+fucpKFJwdTsmqL5B3Zd2lotbZ19fuEH5uV6I9vJxB1/eF6n7uZDd6v1/PsLqk4GLSjXY65kCHYPG/L/et8t5LK+hjzsK93cxRG2Ist3yBsGZhsPi2OjbrQIw841DiiDGv88l2+xfs/5eTBqCR+tok5Vis5geufjRKPc3WkYncw+SWSwQfxE75wcXCia9c2W8yWNnCk/fW3MQFt6fKKT0Tg0SwEb4H3vj71AkI+cl93aVN/QpVtGnm8mgGivIljD4DPXPO/+ImYCQMfwaRPlS3Kw1Ls3xhz6nRN5TuI+oevIqAWVvAbsbjBVUAilIGMMLWyWwpYKPTrMqVT13OPb5xq6VkLGmebybIpqLvJiXOb8eQEsvw3IW684EiUAKk24IXoDoZhL30dgw/+p8NONXQBDvNaZk9fhgDdO/4Sev+yI1c4cZyU5P8VhVFZPXlFsIUKvI1O7cj38WbKh9pSEVsSrm0u8Mpe+/BEvuaYtgqAjfOKwSggBOun02X5c7zoDKTL9RelbMzrcEOWVj8BCe9PlAVt7mt9pwfjGtmTCZRbHEODphSAH9ULfPWAVXT1TskvBjvriseSMcsE
+ 0QaVwLUT
+ FbB+9csj5ZpAqtEBP9XPyySVkmAk+eQv4TN7DTbG0/6cdq52EOfgIYBvZiA632TS25YogENHHpTdpPTCkiezO7ukZOWow7BweGTfYnB8M9rTPukPOkHtidkT/dDtYhXmxRd0g1icfOz2FZx00vHldoBydtx81R04C3C/Kj49dCm9TfT7LuAqUo7h+YEziE5JEOvPOegYE5iN6fqvZPrPkuvULW0E/XFf0VdVN6crlbIOMqylD8iIwJd/MN/6IQ7sXiJxpckWpN4+7oxillepBnh2shkZ2ipn1bxY9i+QlEax/gzZi/eV6VkSzVOJ8sE8e+qbnDpqYzS82mB5po5r97mvK+oTUarWOcpqcUuHkPEikHp0GQIym2l9CJnQAxL93/yWNrYJRJ3CV95pp+jc68C0nVfmNS+3G/GfJDuAqIY2TJGAtm+kxZhvIx2oSUKXM0Pw7seeb+OmRluc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,244 +115,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Historically ttm_pool_alloc_page() deliberately avoided __GFP_COMP for
-higher-order allocations and instead stashed the allocation order in
-page->private. The stated reason was that mapping a TTM page into a
-userspace process and having that process call put_page() on it would be
-illegal on a compound page, because the stray reference would fold into
-the compound head and could free the whole block behind TTM's back.
+On Thu, Jul 09, 2026 at 10:07:48PM +0100, shijujose2008@gmail.com wrote:
+> From: Shiju Jose <shijujose2008@gmail.com>
+> 
+> Add support for ACPI RAS2 feature table (RAS2) defined in the
+> ACPI 6.5 specification, section 5.2.21 and RAS2 HW based memory
+> scrubbing feature.
 
-That hazard no longer applies to the non-DMA path. TTM faults its pages
-into userspace via VM_PFNMAP (see ttm_bo_vm_fault_reserved() /
-vmf_insert_pfn_prot()), so the core mm never takes a struct page
-reference on them and GUP rejects the range; a stray userspace put_page()
-cannot reach these pages at all.
+https://sashiko.dev/#/patchset/20260709210750.424659-1-shijujose2008%40gmail.com
 
-Convert the !ttm_pool_uses_dma_alloc() path to allocate compound pages
-with __GFP_COMP and recover the order via folio_order() instead of
-page->private:
+Thx.
 
-  - ttm_pool_alloc_page(): add __GFP_COMP, drop the page->private write.
-  - ttm_pool_page_order() / ttm_pool_unmap_and_free(): read the order
-    from folio_order() for the non-DMA case.
-  - ttm_pool_split_for_swap(): for compound folios, split via the new
-    folio_split_driver_managed() helper rather than split_page(), which
-    rejects compound pages. Each resulting order-0 folio is then freed
-    individually as it is backed up.
-  - Drop the now-dead page->private = 0 clears on the purge and
-    full-backup free paths.
-
-The DMA path is intentionally left unchanged: dma_alloc_attrs() does not
-produce compound pages, so it keeps split_page() and the page->private
-order stash.
-
-folio_split_driver_managed() lives in the THP split machinery
-(mm/huge_memory.c), which only builds when CONFIG_TRANSPARENT_HUGEPAGE
-is enabled. Drivers that drive the TTM shrinker and therefore reach the
-split path must select TRANSPARENT_HUGEPAGE.
-
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Simona Vetter <simona@ffwll.ch>
-Cc: Christian Koenig <christian.koenig@amd.com>
-Cc: Huang Rui <ray.huang@amd.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: "Liam R. Howlett" <liam@infradead.org>
-Cc: Nico Pache <npache@redhat.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Lance Yang <lance.yang@linux.dev>
-Cc: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Cc: Dave Airlie <airlied@redhat.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org
-Suggested-by: Matthew Wilcox <willy@infradead.org>
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Assisted-by: GitHub-Copilot:claude-opus-4.8
----
- drivers/gpu/drm/ttm/tests/ttm_pool_test.c | 23 +++++++++---
- drivers/gpu/drm/ttm/ttm_backup.c          |  8 ++--
- drivers/gpu/drm/ttm/ttm_pool.c            | 46 +++++++++++++++--------
- 3 files changed, 53 insertions(+), 24 deletions(-)
-
-diff --git a/drivers/gpu/drm/ttm/tests/ttm_pool_test.c b/drivers/gpu/drm/ttm/tests/ttm_pool_test.c
-index be75c8abf388..771ed257778c 100644
---- a/drivers/gpu/drm/ttm/tests/ttm_pool_test.c
-+++ b/drivers/gpu/drm/ttm/tests/ttm_pool_test.c
-@@ -169,7 +169,14 @@ static void ttm_pool_alloc_basic(struct kunit *test)
- 			KUNIT_ASSERT_NOT_NULL(test, (void *)fst_page->private);
- 			KUNIT_ASSERT_NOT_NULL(test, (void *)last_page->private);
- 		} else {
--			KUNIT_ASSERT_EQ(test, fst_page->private, params->order);
-+			/*
-+			 * The non-DMA path allocates compound pages, so the
-+			 * order is recovered from the folio rather than from
-+			 * page->private.
-+			 */
-+			KUNIT_ASSERT_EQ(test,
-+					folio_order(page_folio(fst_page)),
-+					params->order);
- 		}
- 	} else {
- 		if (ttm_pool_uses_dma_alloc(pool)) {
-@@ -177,13 +184,19 @@ static void ttm_pool_alloc_basic(struct kunit *test)
- 			KUNIT_ASSERT_NULL(test, (void *)last_page->private);
- 		} else {
- 			/*
--			 * We expect to alloc one big block, followed by
--			 * order 0 blocks
-+			 * We expect to alloc one or more max-order compound
-+			 * blocks. page_folio() on any subpage resolves to the
-+			 * compound head, so both the first and last pages
-+			 * report the max block order.
- 			 */
--			KUNIT_ASSERT_EQ(test, fst_page->private,
-+			KUNIT_ASSERT_EQ(test,
-+					folio_order(page_folio(fst_page)),
-+					min_t(unsigned int, MAX_PAGE_ORDER,
-+					      params->order));
-+			KUNIT_ASSERT_EQ(test,
-+					folio_order(page_folio(last_page)),
- 					min_t(unsigned int, MAX_PAGE_ORDER,
- 					      params->order));
--			KUNIT_ASSERT_EQ(test, last_page->private, 0);
- 		}
- 	}
- 
-diff --git a/drivers/gpu/drm/ttm/ttm_backup.c b/drivers/gpu/drm/ttm/ttm_backup.c
-index 3c067aadc52d..9194747a1dff 100644
---- a/drivers/gpu/drm/ttm/ttm_backup.c
-+++ b/drivers/gpu/drm/ttm/ttm_backup.c
-@@ -72,9 +72,11 @@ int ttm_backup_copy_page(struct file *backup, struct page *dst,
-  * ttm_backup_backup_folio() - Backup a folio
-  * @backup: The struct backup pointer to use.
-  * @folio: The folio to back up.
-- * @order: The allocation order of @folio.  Since TTM allocates higher-order
-- *         pages without __GFP_COMP, folio_nr_pages(@folio) would always
-- *         return 1; the caller must pass the true order explicitly.
-+ * @order: The allocation order of @folio, passed explicitly. For the DMA
-+ *         path TTM allocates higher-order pages without __GFP_COMP, so
-+ *         folio_order(@folio) would return 0 rather than the true order;
-+ *         the caller therefore passes the order explicitly. (The non-DMA
-+ *         path allocates compound pages, for which the two agree.)
-  * @writeback: Whether to perform immediate writeback of the folio's pages.
-  * This may have performance implications.
-  * @idx: A unique integer for the first page of the folio and each struct backup.
-diff --git a/drivers/gpu/drm/ttm/ttm_pool.c b/drivers/gpu/drm/ttm/ttm_pool.c
-index 1bf37023fed6..364cc7ec7469 100644
---- a/drivers/gpu/drm/ttm/ttm_pool.c
-+++ b/drivers/gpu/drm/ttm/ttm_pool.c
-@@ -168,9 +168,11 @@ static struct page *ttm_pool_alloc_page(struct ttm_pool *pool, gfp_t gfp_flags,
- 	struct page *p;
- 	void *vaddr;
- 
--	/* Don't set the __GFP_COMP flag for higher order allocations.
--	 * Mapping pages directly into an userspace process and calling
--	 * put_page() on a TTM allocated page is illegal.
-+	/*
-+	 * For higher-order allocations be a good citizen: don't dip into
-+	 * memory reserves, don't retry hard, don't warn on failure and stay
-+	 * on the local node. The non-DMA path additionally sets __GFP_COMP
-+	 * below; the DMA path allocates via dma_alloc_attrs().
- 	 */
- 	if (order)
- 		gfp_flags |= __GFP_NOMEMALLOC | __GFP_NORETRY | __GFP_NOWARN |
-@@ -189,11 +191,9 @@ static struct page *ttm_pool_alloc_page(struct ttm_pool *pool, gfp_t gfp_flags,
- 	}
- 
- 	if (!ttm_pool_uses_dma_alloc(pool)) {
--		p = alloc_pages_node(pool->nid, gfp_flags, order);
--		if (p) {
--			p->private = order;
-+		p = alloc_pages_node(pool->nid, gfp_flags | __GFP_COMP, order);
-+		if (p)
- 			mod_lruvec_page_state(p, NR_GPU_ACTIVE, 1 << order);
--		}
- 		return p;
- 	}
- 
-@@ -482,7 +482,7 @@ static unsigned int ttm_pool_page_order(struct ttm_pool *pool, struct page *p)
- 		return dma->vaddr & ~PAGE_MASK;
- 	}
- 
--	return p->private;
-+	return folio_order(page_folio(p));
- }
- 
- /*
-@@ -493,15 +493,31 @@ static unsigned int ttm_pool_page_order(struct ttm_pool *pool, struct page *p)
- static void ttm_pool_split_for_swap(struct ttm_pool *pool, struct page *p)
- {
- 	unsigned int order = ttm_pool_page_order(pool, p);
--	pgoff_t nr;
- 
- 	if (!order)
- 		return;
- 
--	split_page(p, order);
--	nr = 1UL << order;
--	while (nr--)
--		(p++)->private = 0;
-+	if (ttm_pool_uses_dma_alloc(pool)) {
-+		pgoff_t nr;
-+
-+		/*
-+		 * DMA-alloc pages are not compound; split the plain
-+		 * higher-order allocation and clear the per-page private
-+		 * (which held the order for the non-compound case).
-+		 */
-+		split_page(p, order);
-+		nr = 1UL << order;
-+		while (nr--)
-+			(p++)->private = 0;
-+		return;
-+	}
-+
-+	/*
-+	 * The non-DMA path allocates compound folios (__GFP_COMP). Split the
-+	 * driver-owned, off-LRU, unmapped folio into order-0 folios so each
-+	 * page can be freed as soon as it has been backed up.
-+	 */
-+	folio_split_driver_managed(page_folio(p), 0);
- }
- 
- /**
-@@ -548,7 +564,7 @@ static pgoff_t ttm_pool_unmap_and_free(struct ttm_pool *pool, struct page *page,
- 
- 		pt = ttm_pool_select_type(pool, caching, order);
- 	} else {
--		order = page->private;
-+		order = folio_order(page_folio(page));
- 		nr = (1UL << order);
- 	}
- 
-@@ -1124,7 +1140,6 @@ long ttm_pool_backup(struct ttm_pool *pool, struct ttm_tt *tt,
- 					       num_pages);
- 			if (flags->purge) {
- 				shrunken += num_pages;
--				page->private = 0;
- 				__free_pages_gpu_account(page, order, false);
- 				memset(tt->pages + i, 0,
- 				       num_pages * sizeof(*tt->pages));
-@@ -1214,7 +1229,6 @@ long ttm_pool_backup(struct ttm_pool *pool, struct ttm_tt *tt,
- 		}
- 
- 		/* Fully backed up: free at native order. */
--		page->private = 0;
- 		__free_pages_gpu_account(page, order, false);
- 	}
- 
 -- 
-2.34.1
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
 
