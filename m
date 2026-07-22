@@ -4,89 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DB1BC4453A
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 09:36:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44F55C44539
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 09:39:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 85DFA6B008A; Wed, 22 Jul 2026 05:36:18 -0400 (EDT)
+	id 296696B0096; Wed, 22 Jul 2026 05:39:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 835B16B008C; Wed, 22 Jul 2026 05:36:18 -0400 (EDT)
+	id 26DC46B0098; Wed, 22 Jul 2026 05:39:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 74B946B0092; Wed, 22 Jul 2026 05:36:18 -0400 (EDT)
+	id 184E86B0099; Wed, 22 Jul 2026 05:39:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 380086B008A
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 05:36:18 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A25981203F8
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 09:36:17 +0000 (UTC)
-X-FDA: 85015906794.29.60A07C5
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf05.hostedemail.com (Postfix) with ESMTP id DA191100009
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 09:36:15 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=p+96pLlS;
-	spf=pass (imf05.hostedemail.com: domain of mark.rutland@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=mark.rutland@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D99376B0096
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 05:39:01 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3F1471603EE
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 09:39:01 +0000 (UTC)
+X-FDA: 85015913682.12.2AD8521
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 850BA40007
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 09:38:59 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HP6LvHAv;
+	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784713139;
+	b=48HEv9MVp4APsqC/6qxsEA84hukgA8DQjQonwIMRd2iVOLawEZ8Dw6snLWSPAUwXSz+qqh
+	BWXSBZtHCnE7wpk6nbsV1AXMzdLVCZYe5Xl1cC7b/lcJjDQ3jjeZMIlzlcBhLFakDwFeAH
+	8rZyDjgSCbdZVu65rKogwFHCPP1i5bg=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HP6LvHAv;
+	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784712976;
+	s=arc-20220608; t=1784713139;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K3BAwkX4e0yTBdzLE/9XMWKMSFzQsojzSVvnX9l/QZo=;
-	b=7JKK1mnEV5epmhrwIb9omxQKtFAoC5odrQSsra1srum/iLd7MOfHnpIVigb5hxUTM8NnKn
-	P0/70Yh/Yz+Ais6TH1YS1oFADofilvjDwVDdBbR3kOzVzdeOZGDqXZkckYw9cyQq/w7xrI
-	RX3ekeQZjwHJR7zxAW5ML1Bu5g5/U2o=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=p+96pLlS;
-	spf=pass (imf05.hostedemail.com: domain of mark.rutland@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=mark.rutland@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784712976;
-	b=G91f/RdCkQX08jusXo03KSm+dmiW+dCz9driM4hNVQcPjLq/5ujLKrfNytQvJAb26QpXuS
-	kyETc2CaqTHbOJS13jDA2QGBBgdOHGw0zmvPxzgChSvz0wLwDqRYbU1GXZEt0byH7GKnjv
-	P9J+rLx3HfmxYrZd2b4umP1z8fYcpZU=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B22441595;
-	Wed, 22 Jul 2026 02:36:10 -0700 (PDT)
-Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 60C193F86F;
-	Wed, 22 Jul 2026 02:36:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784712974; bh=O7EJYDmByoTpsITBBymwn3nowadBexEAS2hMkYKxPgw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=p+96pLlSDOM6+k2/MeXzTMznCRtWimKXzB4tZA92QDqgSOl1NjfUhJS9lG6GG2p5N
-	 bi0O/7yZ1vIOSsokI2+i6rrzLGeAR0mlIrLwTZfXK87JhsURFk+oz8FzSyeN1Ge4FY
-	 mHRsI05xgc+t/aDcEBztVuIkH8Y7lIyPqamtbWMk=
-Date: Wed, 22 Jul 2026 10:36:06 +0100
-From: Mark Rutland <mark.rutland@arm.com>
-To: Yang Shi <yang@os.amperecomputing.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>, cl@gentwo.org, dennis@kernel.org,
-	tj@kernel.org, urezki@gmail.com, catalin.marinas@arm.com,
-	will@kernel.org, david@kernel.org, akpm@linux-foundation.org,
-	hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
-	linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC v2 PATCH 0/16] Optimize this_cpu_*() ops for non-x86 (ARM64
- for this series)
-Message-ID: <amCPBrdltFSE_fEf@J2N7QTR9R3>
-References: <20260715180455.515692-1-yang@os.amperecomputing.com>
- <0344c559-1959-4531-9265-d5a5180eb7cd@arm.com>
- <fc21c840-1584-4844-963f-80cea7f2e674@os.amperecomputing.com>
+	bh=u7RxK/cqkx5zm0zUzRBQlYHZ6HubdZwVeSlafhlZfSk=;
+	b=QhyC7ey7dZu+f0sGz9xnTnocxs2tvZKQmSk+Sg/48nwvhXhMMxb7i1c4iz8f/k21oHOcuY
+	DV1DFTz5KvmdWWrN299LJMEkG9I2rJK9wKIkyX4PhWny8NTHoYbSjZU2XP7BCKnTYXe4SS
+	VHDZzDYhjshybwLy1R7+6BQU80okl1A=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id EBED460A70;
+	Wed, 22 Jul 2026 09:38:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A8E41F000E9;
+	Wed, 22 Jul 2026 09:38:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784713138;
+	bh=u7RxK/cqkx5zm0zUzRBQlYHZ6HubdZwVeSlafhlZfSk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=HP6LvHAvJS+CRTPHxHaEK/B6aBFoCwy50MzG+4ziWAx9GMHTGQnpSVuj3O2e4I/TX
+	 w4m8HZqvstuZS6NQ+IzKalQwQ7xIwiLOXJJ3cKT3ODI8aqg1nxIYPf0UY9iaEl/3fJ
+	 WTrHn+usQVVngBz4nGKzCWxYoDWvFDfd95OCoypz07m2o9lFr42I15OIwq1EYBN+Fk
+	 xzjEhD5a5yEB9BWVv4q51ZFWdw8t4PBZ91yoRlvC1m5xwpEnhpRVU7Sjpntg+SufRf
+	 Btbja4VCgMZXY8Kd7SWRtdxFVe/fz8AhTHLpm/6dUnhexMxAwEZkPrstiqBYeLLTli
+	 14yr3pp3vrFJw==
+Message-ID: <aecdd315-1cbb-4e7a-8694-f9b85ac68d76@kernel.org>
+Date: Wed, 22 Jul 2026 11:38:50 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <fc21c840-1584-4844-963f-80cea7f2e674@os.amperecomputing.com>
-X-Rspamd-Queue-Id: DA191100009
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 1/5] mm/page_alloc: introduce
+ __free_prepared_contig_range() with fpi_t
+Content-Language: en-US
+To: Jiaqi Yan <jiaqiyan@google.com>, linmiaohe@huawei.com, ljs@kernel.org,
+ ziy@nvidia.com
+Cc: osalvador@kernel.org, harry.yoo@oracle.com, willy@infradead.org,
+ osalvador@suse.de, jackmanb@google.com, hannes@cmpxchg.org,
+ nao.horiguchi@gmail.com, david@kernel.org, william.roche@oracle.com,
+ tony.luck@intel.com, wangkefeng.wang@huawei.com, jane.chu@oracle.com,
+ akpm@linux-foundation.org, muchun.song@linux.dev, liam@infradead.org,
+ rientjes@google.com, duenwen@google.com, jthoughton@google.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, rppt@kernel.org,
+ shuah@kernel.org, surenb@google.com, mhocko@suse.com,
+ boudewijn@delta-utec.com
+References: <20260705180714.3708947-1-jiaqiyan@google.com>
+ <20260705180714.3708947-2-jiaqiyan@google.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260705180714.3708947-2-jiaqiyan@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 850BA40007
+X-Stat-Signature: xg5sh97ibputxabwkxfidt9djswonnoe
 X-Rspam-User: 
-X-Stat-Signature: cm5q8djmka1nwcojwnj5ir3cq36jx8qn
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1784712975-110245
-X-HE-Meta: U2FsdGVkX18v4G4lcgc6gjR223p49hAeLaTWxKYbPB6qFE03lNpFor7W3S0Z5FPp1Yy70hxiA9DZk8Kj/CjURuGgDKw1qwZ6JBaiensb9rNTzaXLNm2hn4fr/9sxUWJO2j/Y1UkrpLDsG7X82ukp+nKm+Uw5tCTd/QWY7WREhQHySSETEVm3+6YsO0zPgu00XcrxstMEjhy/iclAj3QLQ9JpYYCLnslq+M9SgWEEcfPX6LBpHwVM6MxmvRI2Tvs97mjuxbVBbBAq0Zqo7XjXv5DQuV6BZXVckAmQvdL/VLufOoPD6tk/j6mp01VJmdYJtVZhqmyFpiCZOCA13ELU6dLbXtDJe+Q1jxVVs/3WcTGI4uPUS5tbkf3J8Jt1PeeDnbpZJ3zCa5d3X1hnko8U5R7Zo+Df61MSu0K2h/qg7XwOfBQekMCJbbZrh8aoJqdiqQGPU5mWhOd3Qk0DJviM5MNPqSviid3qc7fXyypLEj/V+yM7bsYfxOZ+1dKYygjt0+RQYRrt64q3pnXUh/NU1t+JvFN/JWR9PTgF0nCGzwLtNQf+5rJvhyyTY1lrKFeHL4jXaLRY/k2E0rpzgvvpzkYW+9HUY/TRe0YpSgCrz4Dw/Psl1jZMRkosCPCBjkHP2zsjoqzhc+KxMzyAnUeK5sbvf4uFUAqxbv/lfihBa2ceixJ03UUbCV7nKw6bdX55QzGVm+P1TKC7dDXKJRnL9L6IhY8R+doqjj6d3ZLj0l6DQ/ym92wLiRDZqQrPF7kBvy3JFv1sJuoTi8RpeF6Fjk2ABFshXtUU7VoDQMYz8BlEgKyfxfUW141LXoxh4sA/3hnWV8JOf9/czm1tT5hPb+TsHFv+1beqqfoTp3zEqMo4Kx+jch1+TANvwVx+ZmONXzVLXIGwdkJMpxyK32g5yl05ZT3IfgkJy3VT6byPEjrnYwodVi2l0bRgw4keHqXXsk6oaahdm5MjyYPmZVG
- +4Fnth3M
- 1+8s3OdJFfACBDPPO0uKXaF0ymPC8OdxFL+4KK0Ok+nZu+EyX1mnZMK2hfWjTrvl3SWxuWziCopm9F1BHN4BEGFEiPKRSTvM25dasmlDdgmyO8txnPdk09FTrzBwI68M0JRUiI7pOG+1UXWZwpNw2KGNX7iLBjYH3jSvj0BsrRb5NO9GovIn9Xj/tz2Q6jBaCM9bU8RwfFvdcOBcndZzQaj33PlnollJB9p9zNpbkZGugs4NvLW7i0Xr7NqQjvByWy7d49KBszhzVxXnlV7mTk2wdfnd4qpzSOidSOdypsjy4nS66bEYURbjKqr65Gx9IVAeHmWAGzrFcFJNqcvKK7XKoXUxYF4GcZR0AmItniFKWFBudsaKLrjezDMS1lnFl4HSt
+X-HE-Tag: 1784713139-713161
+X-HE-Meta: U2FsdGVkX19dJ6u1cPFC72n1R2Tjol2wHN/O5/6R/pxhTFKB5XJo+4zEXO2cHmE7sBCjNi3KmV2kivHF/u4AJXRGl2Yl1Kz5zUWn+0SPYPmAsyqbWcMCaVb4aCrzA541dcSibWSDmzvjlCJ49SmSM0feBS3xvRhhXx4AlRzJLeeopCfnNzyLhDZX8GB5nimMvzqi3SmQ1T5ji3PjGTmpETwJ6wEEJmVcfZWh2tLrn4QCU8DrKFuIO+VJYL3jycGhsg++MRe8bCFmubmz/073srE1Xh7aGaxJs8wa2n19CfcWS+2gLZzxVxZA2BWvC2OshVTYj8glMGJTiQTeTdJ1STkY4O8dIT6DkhVHy64+Ncbm0lwC9Ly2CaJjz8Aner9YoC6pPWGlD+wA1i9wHG4Q2t0YS9z7i9dMdo/aNqeYzIprme2J78RYNGltJ+GSrM/lR/Z33XLSFmHFEW6DkrCwd9m4NrKf7amp+PDT2Wvvd47qMifva6yScO4puyiJ0yAT+NOIs4zprKAu/M25ZEzXTRNMOtFdZkxpXZLBNRoM3Aud3qX0BiCkkoz9vkBh5wbgVcyeaINJNxPfgRLjpXqwisoQVDp58kHUXqg3C5I+pYzFUyvjxoDREu/oRXWv4VO2HyHGzBYUFTvcf/ys1fWvk9t6zo1upFHcmu8Hm3vrF9s5wWU+Xt8uRskwjWfdZhxZ9rBIdGH4715uxPCcfkn6oSPwImnhAnOhccpusNaOq+6W3/RZ+E0+7TcTfjH8vR+8S1rkuLDdMFOnZw65Hq0IrEv5wYcDd0dJ7jjv+jsV20Z7+Fu6iVT8XYZaPvizhNaEuaNOKnM7DBF7MTFkMkyDaN94BXCZcLw5/GKeRiS2fV9RT46NoGOa53BCnxSsyxuxoDtCiiZ8AKO5smX2leLjQnC1wdw6177x6s1ScrdKaibCYrPUm00wey7cCXyeE7cnV7TwNWKC/gMritc8liS
+ sc2qCEwt
+ iHIc9FuN5qz8dADoHzJ5fOwYilnAV7P5Ldqnsbzib5DbUNGYe5ZH7NdEKNskwWxsToH48sKUqJjo2R0kFJH7hjw5Sh5/jx/mJrRicdMyxlvkZuhRZIIrnYBqxr5WeFilJP/JGQZluDIIQyYg1XS9V3x9qaQ/9WPv6R9Gr3SX9AzZdDuTY2Ou9WqeLES0iIkZRzPr/c9FcS4kF1mi7lEsiow3zcz9yhVaWVKMsO/9WebrVxQ83yr2fxffjnq7C9/AtejN4VQNIpSUPgX7qUmMNpqjiykKCeyOQkTGTZPjVwFfmLJTSmaSd9/55YHlo0AQwGvUGSYAsTQBPI/dIOgrzLcJY7EK8uBK/+HSWsHIyx/CyIpwoHT+vb8a508cz5qeMZQs8Db7hB9h7RFw49R6V6ZAW2YA20KvsGazf2NIcCEzCQXc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,135 +142,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 21, 2026 at 04:20:50PM -0700, Yang Shi wrote:
-> On 7/16/26 6:23 AM, Ryan Roberts wrote:
-> > On 15/07/2026 19:04, Yang Shi wrote:
-> > But I think that there are other issues with this concept that likely block it
-> > from being accepted upstream; see below...
-
-> > We have observed a few performance regressions recently, for which the root
-> > cause is increased use of this_cpu_*. We have somebody at Arm about to start an
-> > investigation into whether in-kernel rseq can solve the problem.
+On 7/5/26 20:07, Jiaqi Yan wrote:
+> A future commit introducing free_has_hwpoison() to be called within
+> __free_pages_prepare() will need to pass specific fpi_t flags when
+> freeing a contiguous range of pages. Currently,
+> free_prepared_contig_range() hardcodes the FPI_PREPARED flag and
+> does not accept any caller-provided flags.
 > 
-> It is good to know someone is exploring the alternative path. But I doubt
-> restart sequence can really boost the performance. It needs check whether
-> preemption (or cpu migration) happens in the middle of percpu operations
-> then manipulate the ip to restart the operation.
-
-With the rseq approach, that check happens out-of-line in exception
-handling code, *only* when preemption occurs, so in the fast path there
-is *no code whatsoever* to check for preemption/migration, and no
-branches to cause a restart.
-
-Please note that with the approach I've prototyped, the exception
-handling code doesn't even adjust the PC; we just adjust a GPR
-containing the address. The forward progress guarantees (and behaviour
-under contention) should be the same as a single instruction. The fixup
-logic itself is trivial.
-
-Please see my message where I outlined that approach in detail:
-
-  https://lore.kernel.org/linux-arm-kernel/al_DpFJFcmVhxpvW@J2N7QTR9R3/
-
-I expect that should come with a reasonable benefit, but I don't have
-benchmark figures yet as I haven't finished converting the xchg and
-cmpxchg implementations.
-
-> It sounds like it just moved the cost from one place to the other
-> place and it also seems hacky TBH.
-
-The existing (high) cost is removed from the fast path. A new (low) cost
-is added to the rare path where we perform an exception return into the
-middle of a critical section.
-
-I don't think this is any more hacky than percpu page tables. It's far
-more contained to the relevant pieces of code (only the this_cpu_*() ops
-and exception entry/return).
-
-> It may reduce the preempt_disable/preempt_enable cost somehow for some
-> less contended cases, but it may be worse for high contended cases.
-> The percpu page table can work well for both.
-
-It entirely removes the preempt_disable/preempt_enable cost.
-
-I don't follow your concern with contention. Any contention on the
-memory location is going to be independent of preemption, and if a
-thread is preempted mid-operation, the impact is going to be the same
-with either the adress fixup or percpu page tables -- I don't think you
-avoid that.
-
-> S390 implemented restart sequence. Heiko didn't share too much benchmark
-> data, just confirmed there is no regression and I had a lengthy discussion
-> with him
-> (https://lore.kernel.org/lkml/20260520092243.264847-1-hca@linux.ibm.com/).
-
-As above, for s390 Heiko didn't implement a restart sequence; he
-implemented an address fixup sequence. There is no restart.
-
-The discussion you had there seemed to focus on the s390 implementation
-details (e.g. why he used an address fixup rather than a restart), and
-the benefits of removing the preempt_count manipulation (which all the
-approaches, including mine, do).
-
-Am I missing some key detail?
-
-> Improving this_cpu performance is just one of the usecase of percpu page
-> table. The other potential usecase is kernel text replication I mentioned at
-> LSFMM. The idea is not new, someone else has explored it, see https://lore.kernel.org/linux-arm-kernel/ZMKNYEkM7YnrDtOt@shell.armlinux.org.uk/.
-
-That was looked at in the past, but people weren't keen given the
-complexity it would lead to, which is why it never saw much traction.
-
-> Percpu page table can make kernel support it more naturally.
-
-Perhaps, but the only difference is that you've moving the support code
-into the core kernel mm code. I think the general concerns people have
-with percpu page tables still apply.
-
-[...]
-
-> > > Known Issues
-> > > ============
-
-> > > 3. Shared TLB machines
-> > > ----------------------
-> > > Some machines may share TLB between CPUs, for example, SMT machines may share
-> > > TLB between the two hardware threads in one core.
-> > > The per cpu page table just can't work with it. Maybe we need a new
-> > > cpufeature to indicate whether per cpu page table is allowed or not. Then
-> > > just enable it for not-shared-TLB machines.
-> > The architectural feature you're referring to here is FEAT_TTCNP (common not
-> > private). There are many CPUs out there that use this feature (not just those
-> > that support SMT).
-> > 
-> > FEAT_TTCNP is mandatory from Armv8.2 and the presence of the feature only tells
-> > you whether you can legally set the CnP bit - it doesn't actually tell you if
-> > the HW does any sharing - there is no way to detect this. So making per-cpu
-> > pgtables mutually exclusive with CNP is a non-starter as all CPUs from v8.2
-> > onwards advertise CNP.
-> > 
-> > Even ignoring the CNP problem, you'll end up installing the per-cpu TLB entries
-> > tagged with whatever user ASID happens to be installed at the time. Which means
-> > you could end up with lots of duplicated TLB entries all differing only by ASID.
-> > It's probably not the end of the world, but it seems... inefficient.
+> Rename the core logic to __free_prepared_contig_range() to accept
+> an fpi_t argument. It bitwise ORs with the required FPI_PREPARED
+> flag.
 > 
-> Really? I thought ASID will be ignored if nG == 0.
-
-The nG bit only applies to leaf entries (Page or Block descriptors). All
-intermediate entries (Table descriptors) are ASID tagged.
-
-> > The only way I can see to make this work fully is to rely on FEAT_ASID2, which
-> > allows specifying separate ASIDs for TTBR0 and TTBR1. Then each CPU can have
-> > it's own (permanently installed) ASID for local mappings in TTBR1. That would
-> > solve the CNP issue. FEAT_ASID2 is optional from v9.4 and mandatory from v9.5.
+> This is a preparatory commit with no functional changes.
 > 
-> I agree it is safer to handle CNP problem by depending on FEAT_ASID2.
+> Signed-off-by: Jiaqi Yan <jiaqiyan@google.com>
 
-I think that depending on FEAT_ASID2 is a non-starter.
+Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-There is no extant hardware with FEAT_ASID2, and I don't think we want
-to maintain distinct versions of hte percpu code accross architecture
-versions.
-
-Mark.
 
