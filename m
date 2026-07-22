@@ -4,119 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C7B6C44536
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 17:31:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09F06C44536
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 17:34:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 23AC16B00BF; Wed, 22 Jul 2026 13:31:06 -0400 (EDT)
+	id F397B6B007B; Wed, 22 Jul 2026 13:34:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1EA816B00C2; Wed, 22 Jul 2026 13:31:06 -0400 (EDT)
+	id F113A6B0088; Wed, 22 Jul 2026 13:34:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0B3CD6B00C3; Wed, 22 Jul 2026 13:31:06 -0400 (EDT)
+	id DDA626B009B; Wed, 22 Jul 2026 13:34:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CCD616B00BF
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 13:31:05 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4DC77160248
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 17:31:05 +0000 (UTC)
-X-FDA: 85017103290.30.3269D9E
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 56CC41C0016
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 17:31:03 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=c73DPG7u;
-	spf=pass (imf21.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B56486B007B
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 13:34:20 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3E4791201F4
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 17:34:20 +0000 (UTC)
+X-FDA: 85017111480.11.FA7AF2A
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 0D0141C0010
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 17:34:16 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=I2wb8lkB;
+	spf=pass (imf20.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784741463;
+	s=arc-20220608; t=1784741658;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YfFPpLKEfpC8qzSRCtLs88/dMMjpKMcNGRtKebH+Glg=;
-	b=UaAlJ/yFThk0+zpH1xd7sCqultY7HPFqU+RWIm+e5LBmCa7goAke70L9unNSeP/DndiFH9
-	xGw2TivAwaA4dtpSw5qeZBvfB/oP4W2p7H+V6pzjBiC5wvoREY8Zrxm1uG+vw+08AszKFV
-	xgzbzEFhQE2sHSk1+xEF4jKBzmQtK3Y=
+	bh=ffF1YtoR/cZxAVUPZ8SrWZR3GBHgYP9GM5ARzRAhO38=;
+	b=HRKNzhxMZoR997J3tRmI3dFAeH6zNFzPTuiPQa+iZzFGI9CCDebA2Yh/4P19VwhdN2jRXp
+	/jiYxnia6v/eqqamZwJm/jb9aGPf/YF3E5NInqwKKoOwG/7d5UsKsPPl/wlKbYvgugOSdm
+	HgtZp81/4+SndV5gsZfcZxb7k1GmXNo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784741463;
-	b=Ye6OS+N9uuSe3cNe26/7ZS6Wh+6mwb84GH3DtHL1TOKIfX6ZW68F8lPU3V/jmgjw/eeFyP
-	OqhUUExNs7uMM7OjhragxFL+0UrRH3HucqLcCjNpFT44ya6AF0FmUJ2oKK2n8ALgto3YiC
-	bB9oI5F1Dzw4UBwnJBO/BZw6nLJ3/yI=
+	t=1784741658;
+	b=2rHXGM5G3TB7XgjaF42EA6gjDIT7qjm8rMjYW2R/OJ2CQBwtOiJeUS3FNVfdh1p724tDCF
+	EuHd0nvOjQKCX7HS24TzHWl2hwvMJvccjmrx3IpzECecmBn7dDFLA2dkmnf5gNzr8lMI6U
+	BlFPHGQbkDNSlpQRXX/c25cZLcvZQZQ=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=c73DPG7u;
-	spf=pass (imf21.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EC1E21595;
-	Wed, 22 Jul 2026 10:30:57 -0700 (PDT)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1CBCB3F66F;
-	Wed, 22 Jul 2026 10:30:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784741462; bh=24jF6AcUqs8OWEGAaLR69DLBQjR9hO+Rom+3K8DJQKo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=c73DPG7uUV5Fqsc83UkY57n5Qs0XXql23cCXWpZ2ZiqQ+ckAvgZYW4H6Qxd7IuEhg
-	 UpaREG+sGAYzR3v9TgE4TzXqEnrXG7rfKfeEIP65qzbz/5t2U9GCOzbaaUSYCknPsU
-	 WarfMW9lzNf8oKGScXg68Qq+UBElSke/y8/OuBEw=
-Date: Wed, 22 Jul 2026 18:30:52 +0100
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Russell King <linux@armlinux.org.uk>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	David Hildenbrand <david@kernel.org>,
-	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-	Tianrui Zhao <zhaotianrui@loongson.cn>,
-	Bibo Mao <maobibo@loongson.cn>, Anup Patel <anup@brainfault.org>,
-	Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jonas Bonn <jonas@southpole.se>,
-	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-	Stafford Horne <shorne@gmail.com>, linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
-	linux-openrisc@vger.kernel.org
-Subject: Re: [PATCH RFC v2 00/20] mm: optimize unnecessary loads due to
- ptep_get() and friends out
-Message-ID: <amD-TLGWGdMK2ItC@e129823.arm.com>
-References: <20260722-dummy_ptxp3-v2-0-d9e4bad31e0a@arm.com>
- <0143b927-08c5-4e94-ae6e-2a0d7bfe950f@intel.com>
+	imf20.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=I2wb8lkB;
+	spf=pass (imf20.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=none
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
+	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=ffF1YtoR/cZxAVUPZ8SrWZR3GBHgYP9GM5ARzRAhO38=; b=I2wb8lkB66vP/VbwkSxq7mxq4r
+	aeer3+czdNVgGMs11RQYWgqHOI4/3a0jWRwchgIAgGaMP6ywwkdse2bqvB3NYD4COWIUfLWD6Cx7V
+	0tFfGvkiSJR6H434UcYf5LIQvyFOUwRap+XfzbEQXPKWz916j84NrF0KfY+J1zIzxG6kLAP1xdNXx
+	8BSYx7rVi2N1dLLqE3Qda7EsYmwpb/DqkWi4blWBh7fDzqia3m0bimO6c0Ppre+BBPDzFzkQQEWNb
+	zH3LyltRswVnep+b2fLB074N7VdgEPDcmjqw/jLPoAIgirLPhyGrEIvdQf7+u+UMhoOhqT6Ei6JQU
+	FoEK9ODg==;
+Received: from fangorn.home.surriel.com ([10.0.13.7])
+	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <riel@surriel.com>)
+	id 1wmap3-000000004NY-2BGF;
+	Wed, 22 Jul 2026 13:33:33 -0400
+Message-ID: <8da92b565d7ec64ea4ab2db8155a250aed0aa88b.camel@surriel.com>
+Subject: Re: [PATCH v3 0/6] mm: access remote process memory under the
+ per-VMA lock
+From: Rik van Riel <riel@surriel.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>
+Cc: kernel-team@meta.com, Lorenzo Stoakes <ljs@kernel.org>, "Liam R.
+ Howlett"	 <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike
+ Rapoport	 <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal
+ Hocko	 <mhocko@suse.com>, linux-mm@kvack.org
+Date: Wed, 22 Jul 2026 13:33:33 -0400
+In-Reply-To: <cbecbce0-475e-4817-bdda-d1f4c89698d0@kernel.org>
+References: <20260717170036.743149-1-riel@surriel.com>
+	 <cbecbce0-475e-4817-bdda-d1f4c89698d0@kernel.org>
+Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
+ keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
+ eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
+ Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
+ lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
+ dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
+ mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
+ gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
+ r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
+ WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
+ 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
+ Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
+ +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
+ g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
+ KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
+ fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
+ 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
+ G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
+ okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
+ TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
+ cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
+ omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
+ QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
+ c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0143b927-08c5-4e94-ae6e-2a0d7bfe950f@intel.com>
+X-Rspamd-Queue-Id: 0D0141C0010
+X-Stat-Signature: c85jsxy5zgmwano9s9ek15of3ispxt4x
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 56CC41C0016
-X-Stat-Signature: amgu1t5r76rjcuw8ykxrho7myr334z4o
-X-HE-Tag: 1784741463-994398
-X-HE-Meta: U2FsdGVkX183S6ZnVbTbySo6qKb2DNyRuqR1VyjfWbI8a/bZhdU/0LKwHm9BSF92QE0nb+fDUEtCTkY0dplxPXRsy92jzSOh2FLgLen98FdKPKcLXGSe6ISzFWggBRx1/7JAqHsskYo7byg2FQNYN3reJCG4QgWLvm0Fl0za6OB1DnJBxym4M/iVL5ygES0nR3Cb3UF+jh9Iag4PSkvU9aiQnieSd6FNd2wYsnRQ/9ztXZ90uCUSKQJO31bynv+rnADmgx2gf7voj69q3A/8HvsZn4hgfl4NWJWPHNE7ooEggmkEynhGOAWE3VUSCm1yM4XUEaAAqQsJr5KIZqHq+LKzt7MGwrpnwHHoYmuKJ9prLmahDhw+2EvfcksusRGcQ3RFU2nRnJfO5kRIsUXNH626jp2a+p/BcHlmM7+UYF6JmjmBrkUz6SJsFVERt78WHC0xnSJxUxFEFyof2GXFcGD478SAXYSYtFT1i0i2shunsxuIHusZ7hAEsNGPiWRXZpAJUKvbGA9yT8sH+vzB/KgiMBemy+wklAQZdG/AbmKFETZP/jbghkprv5FCXg2Niay/EfvaOkCUcRpj+4UpvIOpznHaw4eVfnvsavydYwJxO8xpn3q/gLkSOZg141xzdILfxn7YYFtbtGWYUv7UUCSoCZ8gMd7yioeVIAFS4UiLW5RoM1tso2N7seb5ZNo1oNd4ipVPPUvj2EkOm8na5Yer+6zPcDCWAk+/eU/DE4IirY/s7cs6opa12JWgXqBGgVzLDIpbTZQ7Kf0YkxN5p269ank29uT+7IdrO8Vpot9PVQXf3ct9rJVdTlQcCr8f9dG+J9dxL1pjIs1D3+XzvpkxdSYN7eEF70YrGHviTFE3W3K4J2FxSAEt/6lItv6PKyLFLg43UTbWq157ku9ZP8s462RlP6Xp5mTwmi9YBc46t4KzdT4DOHSgExARJufqa0WSsdFkszN6YPJvcTI
- IW8cbCQZ
- zXfZn+nAPIKCcH5zJpj1JsCAGwC7R1yuyAnus5+fRUt5WXfVzrVsqTkuTwBt7N4Y4LDi4JSDoDyLCuT2Noe3vG5ma8lvq7+QZn5oNKdIuUjSP4P6KZFFKnlhOO+C764KGz4RaSm6yZv2hnDBEpq65t3YNecobhCemmq2UD/1GCwCDLhWFqK6SVQTJIAeUl7Os1BIpk8hEFG48sbJxvrX43IuvevZDlXmejY62AyPho8mH60xh9tJ11s9B4FFgO2xy5KMhGqyMMzwMTivgM8y8FV0Ngg==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1784741656-76408
+X-HE-Meta: U2FsdGVkX18Nlski3jSF0w3ucFRaU1I2zexUnIsuZtO2avuVhpGURzDQx43wXxDm8XEocUrS0nlNoHaJ0ImvOjFDVvIufF/A5gCEi4WY7J/wvllS31tTDmScMk3lr/93CYseTF0RrsogasWJwAAD/clDxqGtsNfq3hEtVAVNuEkqEom1OwXCXDD3ktCEU0RyLh+y4uthTKdAzDWVsAildzj7udAAMouW8GFH9a75fBqnI/WDLNj+knzdr45wKPg2fHOEOfFAvzukZklSICyOpDC1u8tfDCF34jX5xQIxB8h5Hy4kEgzwO5AbJ5O84jJhiSD7dygsQTQcxHWn+CxuXvath1tkCLoWXQgJkExztDF10gvxJndHFVWP5Ll1leML2rPZKc9JcWcmZuNDq2fZqprYjWmN805kBX14Hgv1YaLbXPbmN0Xt0HHgGHeTguaaZc65hWv1fYj8UU0hwrnlGZnSc4oZLxSs0GQfvxpBw3KzEbZmSrireKHQ1vbjULK3RJr/p9LxD8T6O3QWA3YRFTRiMiBoMizPiSo80Sc5o/KabrpIJBgR/Rj8xS3fWUDcc5L+1x4ChrS/X/XzxYi0a7Qb06t/y5ybYnrJ0l3RrXN2Qa06AcGqRNHLmCsfyMdkqrLQmzbjXYHiVRm23/AVk+DUhg7CqJH7I3szcUy8S6KMfOIEmN0gRI/GJ4gd6UfKNyQphSgpBZKA4GtNqy1av9tnvjyJESxDAXKNhyOAqMlHYZKeUD0y8ir2WuY9fKlcYkef7kMfEAfWTA0uqd4f7b2RNrRATrexJEKENjVc0uYMfxCUTx/4C8tYit3kObpR5JbH7jB5DqeZBwKC//UxhfVqLy8yN73KyyR8FXAM36COoB//o0jaViW9/YjG3pubXA20oyB2LCW1hVZFU18hbTguS725vf0ebTth8ZebeGC9JHz0vH8/Dl//6gyiEEwc05Bn6VzuDUnGqojX4LR
+ Q5xgI/A7
+ auL0dkIiQdF4FusIFufkAoAkdxBMs/r98Q1Ao8xVJ6esLFlqxQV7hcYZGzucAXlxgHhkwCvayG+NAo8b6uFG1YlkFqUeR/Uwzfu9YpdS4kal87Qx8ztyB/kX/46k6f5aJyVmz1iRMzAu9lqBUC/k1V0Kzs/QWOT69V//OGEwPePQQvMm4V13JMzyNo68khy87VL5EmjbnNk/R2SVN6L4qvAEK8+4rlA8Jo1We
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,21 +124,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> One of my nits about v1 was that it didn't really frame the series
-> precisely. It talks about "optimization" instead of fundamentally
-> changing the way that the kernel deals with folded page table levels.
-> 
-> The optimization that this *wants* to talk about kinda falls out of that
-> refactoring. It's not really the core of the series, IMNHO.
-> 
-> This series effectively changes the rules about where and how folded
-> page table levels can be manipulated. In doing that, the door is opened
-> to optimizing out the unnecessary loads.
+On Tue, 2026-07-21 at 20:12 +0200, David Hildenbrand (Arm) wrote:
+> On 7/17/26 19:00, Rik van Riel wrote:
+>=20
+> >=20
+> > get_user_pages_remote() does not fit: it hard codes the mmap lock
+> > and
+> > re-derives the VMA. get_user_page_vma() walks the page tables,
+> > faults a
+> > missing page in, and returns it with a reference and the caller's
+> > lock
+> > still held.
+>=20
+> Agreed, and that can be tackled later.
 
-I see. might the title and the cover letter should be reparsed.
-Thanks to remind it again :)
+I'll stop making this series (much) bigger, then ;)
 
--- 
-Sincerely,
-Yeoreum Yun
+I added a few things for v4, but I can save other
+stuff for follow-ups.
+
+>=20
+> >=20
+> > The per-VMA path also closes a pre-existing gap. A COWed page in a
+> > VM_IO/VM_PFNMAP VMA has a struct page, but the old code routed it
+> > to
+> > ->access(), where generic_access_phys() ioremaps the PFN and
+> > ioremap of RAM
+> > is rejected, so the read came up short.
+>=20
+> Yep. The GUP code rejected VM_IO/VM_PFNMAP for, though, because it
+> did not
+> properly handle vm_normal_page_pmd() etc so far.
+>=20
+Do we ever do a PMD sized COW on VM_IO / VM_PFNMAP
+VMAs?
+
+In other words, is this something we should:
+- leave out for now?
+- fix now?
+- fix later?
+
+If we can fix it later, I'll add it to the list.
+
+--=20
+All Rights Reversed.
 
