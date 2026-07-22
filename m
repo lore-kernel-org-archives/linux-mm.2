@@ -4,109 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85AD1C44512
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 06:50:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06EC3C44512
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 07:08:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3D4866B008A; Wed, 22 Jul 2026 02:50:30 -0400 (EDT)
+	id 94C366B007B; Wed, 22 Jul 2026 03:08:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3AC016B008C; Wed, 22 Jul 2026 02:50:30 -0400 (EDT)
+	id 8FD866B0088; Wed, 22 Jul 2026 03:08:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2C2966B0092; Wed, 22 Jul 2026 02:50:30 -0400 (EDT)
+	id 7EBA26B008A; Wed, 22 Jul 2026 03:08:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0655A6B008A
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 02:50:29 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 77AB7A03AA
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 06:50:29 +0000 (UTC)
-X-FDA: 85015488978.12.7F46003
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id E4E9C40003
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 06:50:27 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U6R84Ps3;
-	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 535BF6B007B
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 03:08:20 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C640414036F
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 07:08:19 +0000 (UTC)
+X-FDA: 85015533918.04.8F24064
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 25E9B180004
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 07:08:18 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D5aVet97;
+	spf=pass (imf24.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784703027;
+	s=arc-20220608; t=1784704098;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XnxogIQS7eoD999V7HLL1Y7l5CDp4hmKICTpMm/zYng=;
-	b=YloTN/SCjY02TJhyCf4yYuM3qy0UnTPTmIO313maYYwbX9fxp6Fk6C3QdgvfMeigB+6fqH
-	qttoOOV4hNMVQt4jjEMYn7IO0QIbIS3CzeUv/UyEDIUBO1nec01E/BHNlohdjrvgTg8iBF
-	NRvxmQHEKF1aRNZX0Qv3mV8TZAzuGfw=
+	bh=ffKA3v8JXhual6MJp3NZTppdmwPwKkpdeSEyJ3K/MqY=;
+	b=6jiey2e3kPTpQDQXffndI0Atpx6vpb3LzDAprEwKzTffPcgyXEhpbVlxemqPdVH4ZBmKBl
+	zGtR8LA83t6rHSsT2oVCPgThhKZzXB7S7a4twAPv/fq5wr3VVwfunJqIJ2HRTXvtz1Mqnr
+	N7T1HNw645/wQIjIypwqSzZXTUhzidc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784703027;
-	b=M9LgOXQHQWs0ph56ipd5+Y7zksZH2lv7vFSrWS/b3d78mXCjx7qdrgnnrGcBAl7iAQms7h
-	GmMDJl10KYpP3UfVKwPbTcsdi12E0tQ2A3pZn0t6C1nby/AawOKLrtRfDyv1SainoeOcxZ
-	vPpF1XKHIjpoehtOc9OMge7SV0YiG6g=
+	t=1784704098;
+	b=u0c9ZNZwtzUfD8H/RahFisZrNYlUU3psOTTudP5ux8rni6A0JrZ177WjCtYQVzp+uaj0fG
+	5fmZnEBuLE8kGLsyO0A1R8pONAm/FFaraVEhiGNKYO+AOsGfXCxwTXqCyCXRXTPFsBsDzC
+	fSBjwIKuRTH+IYZz+G0/dNoaq4wS2ic=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U6R84Ps3;
-	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D5aVet97;
+	spf=pass (imf24.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3BEF760A6E;
-	Wed, 22 Jul 2026 06:50:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A69921F00A3F;
-	Wed, 22 Jul 2026 06:50:14 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 01D20407AD;
+	Wed, 22 Jul 2026 07:08:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DE8E1F000E9;
+	Wed, 22 Jul 2026 07:08:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784703026;
-	bh=XnxogIQS7eoD999V7HLL1Y7l5CDp4hmKICTpMm/zYng=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=U6R84Ps3/o94s4otuUkA+xNRsB5SBqBibOFkn3ZUnHYqT68BNhN4Q6nc4CuniP19I
-	 zYEnJ1fmed/32oOwBB71rH0FjI5bExSFo+zlkkxYGw3sCWwij82ZJ8uclZpZQlVyo8
-	 ebrxOKEISusfcf7TJmWKFvFZOfZqSmurjyLJks8m+sX/YHFgL7k4zBlJwb1k5wn24E
-	 1fk9q3Vcd4xS/QdQVthkdevDIv5Suvv0pRY9ose9471KFU3cykS+x/qOOCj5ZB0GIO
-	 /+an0VbZVI55lPLsc1ki6evJDFzMwpChtRqQkvtAM7j5el32I4dCakfifpWOZP5Wpi
-	 LVRtdVoJ6XJEA==
-Date: Wed, 22 Jul 2026 09:50:09 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Borislav Petkov <bp@alien8.de>
-Cc: linux-mm@kvack.org, Albert Ou <aou@eecs.berkeley.edu>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	Brendan Jackman <jackmanb@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	David Hildenbrand <david@kernel.org>,
-	Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Kevin Brodsky <kevin.brodsky@arm.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org, loongarch@lists.linux.dev,
-	x86@kernel.org, Dave Hansen <dave.hansen@intel.com>,
-	Juergen Gross <jgross@suse.com>
-Subject: Re: [PATCH RFC 00/18] arch, mm: create a generic
- set_memory/change_page_attr core
-Message-ID: <amBoIXBYKAhToIgy@kernel.org>
-References: <20260721-generic-set-memory-v0-1-v1-0-2c1fc62306b3@kernel.org>
- <20260721171943.GEal-qLx4p5YbocQNV@fat_crate.local>
- <al-6aLMJONOMfW2v@kernel.org>
- <20260721195446.GHal_OhkuBCWQjmLQW@fat_crate.local>
+	s=k20260515; t=1784704096;
+	bh=ffKA3v8JXhual6MJp3NZTppdmwPwKkpdeSEyJ3K/MqY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=D5aVet97eXazbrvprI2QQmqdPDlsIBtvqVq0N6A1dpIb8YhN2eOilNC+OGsrtITZm
+	 u9b4iw2oqG63lnSGswUs3R2WWxRH12rKCRJlT1GmDBnJt4pGOqgaERfXMuSa7rBwwW
+	 OCVBWnGpGb64cxIJ73biwK/EJk+4J1ZABtj/39sonprHRn7hEqdpUyJ2KbtE0jHvin
+	 y1CTrk5SQ8BSCYxN6Rsrj4uKSwweCGRwaViCMCvqaij1zfSsD1P9l4ISlGHhvKcIgm
+	 zdpCvelViIEAz2tBMKXwlKPR6moduVJN+lNvB67DsN9nd9ONljbek1a1qnvgRuRiFF
+	 S/PIXA0YHvDkw==
+Message-ID: <9e65f398-5576-48df-85fa-3d993b9e163b@kernel.org>
+Date: Wed, 22 Jul 2026 16:08:06 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260721195446.GHal_OhkuBCWQjmLQW@fat_crate.local>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] slab: silence sparse warning with type-based partitioning
+To: Marco Elver <elver@google.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
+ kernel test robot <lkp@intel.com>
+References: <20260721092005.1986693-1-elver@google.com>
+Content-Language: en-US
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <20260721092005.1986693-1-elver@google.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------6m9D5WkPAdlH0TQWgJq33p0J"
+X-Stat-Signature: f4jfq1a9w45z3yxwproabc7ksmwua7d6
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: E4E9C40003
-X-Stat-Signature: 7czdsjzoizw34k9qqkexp74w3p4ndznj
-X-HE-Tag: 1784703027-199406
-X-HE-Meta: U2FsdGVkX1+GnfOUEjzhem69YfVqVADoiF3i0dJuHvKBNZlMa5zkbbMq9825KUIHtkyGwPWdSi9n1ySdNr31MOrkkcE7fDy4NFvo8oW89Du4wPo/NO8m5o5NxQbWODT/SaY+hFFvLwzTReDNlMdhH7uOykTzo4Fe0P6feourR2bAbwD1S092lGBiSBT4Ncl5JU2VKYtHSM84yq4TPEHtJIMbNRnsUa92h4ctXrePSECIONO3tHcHbSQDFiN2HtFjA9WbP+Tm6uQQkIJsN0oFJJ4zmaKFemeuRauAGDTfGIC+VJYnHQP36/x4VVF4xb11MNDSoSEBJ9nKQnfx+Y+yGYSMZklOEtssIJaEbl8Ex9+4XVDQNyLzFJ0B8r+n4M3aerTCX3e+Jeq1/gH/+b8K58K8nboAEbuSv56zXKjzzutL1qy/fLjSbr8dimdss3K6WuusTB9fxeB8qEB0e/B6DT3dz3XUUFvyYcvJj2OLHRCoEpYyjGVLqx0+SXkznHSt2814/z7itjMRwv5us7fxgTsuDmGSV6K/ncNOtHhwxG66qGzojWHEwZpuV7u2RDm5WdTrUIo6aJkXqzmOYzRUNrmrkkzIyDoqmaxyodN9dVDJ02mmW+EXWxdIi+sukprsE069KSWDn0XoUBXUpemn4qhYZi19b+tKPyBcZBCkQIAx8FL9Gwe4wOAV2xFSIR0dgcQYFzWb+fMinTD4RaGCYknduj8pBtzkOR2meZVutzYVB3Rd6I6eJTfeudgncg7U7i6cwIaqMPX47fLHnCTJSa2GoRiv0eoBhI/VDukQtoYERK5iFZN1OCYniaf8h2LSbmZafVZc4wgE4798R/ztXaeWKPzIq6gN78vGqEJDcW9kvLADnKJ3A+kptI4Id+Hd+VIgTNNISTIqtHIRqMi2FE4g6CENM68YEz+MNsq4MTKAUz3EhlbHtAz8dEzRmjNeV2fNaJmz0Mrno1n0LnQ
- D/97kBiQ
- hkTZSK+FDZEkHacKpHXd+majl639j+UOJ85J1DjRH4d3ZxZ961nRTZYirhrk/KA3e+t2/12blnPi8Nbnb5P+3wvjKqryTDoWmN7D3oE0D61WWQZSLf4XSJs3U0YWCSlVT/Fvj2eWGzBC2WZ+pRlZ6S6wgQLDliMn4Z1J8LLobv3Whq37WokNOgzxWPPo7G9+J0zB/SZ2c3PU3lVeN7UN/lIsLrSyNSUNEdPH6Z5gx1P1Q6mibez6fWzO/7JdxqYATh2Tc/KGgxjEK3XghRXvbdVlAcjDVMj+7P3uGdGYFhS71q3wOsr7K8HvOOQ4zatwYp7+bG9E1ZAreNxY=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 25E9B180004
+X-HE-Tag: 1784704098-517053
+X-HE-Meta: U2FsdGVkX19ogf/eXdUSotNXJr8sh2Vp4KUL2hzyanwkmrVT9JC4du2X+7GN5yX+WBKtOU7CxDgaDHkcUuMGI9UApDiBv7aIV9+bmj11I7oVK86I/5YTkCp/uG/QpAbP8d2JTGphOrc4rTsu2exlDFsv/4lfDDdH8aDqe23L58CYmfNngtPBMpM7c0m4EHwQAsA+jBeuNYAvzagqsmHPdvSq94K1Bl09XieuLUhQUcWF0lxPXhi30qXDAN6+GmSImwOMy04Kzvq1SKU2f//x9NnevePBoR2TEslvPd5pGJpUwORc37q/ZVh5c12PRXV6hDcqZBIiXVqhocD+if/XoiF2EJBYAb7kwC4Q3xI6pf/uyky4CTVf36On0+cK/YcPh3FgfVYijMIYq0fDImDq/cxjKmKZLjvlBx/jLAzxkqQiWtIxPA0jTIkXPxdv4ol2/7Gs2bLfOYIkHAu555+ukzTgQPeuo1Ax1dBQuQGRTcBYhCNxJEVcUV5Ucz4Uf07jmtYFYN5c//Au/FrIhEqWBRrvdq1RBqEeIbZL9C6oW78Ye19RmlMyS1IX05l6j0NJHsORo7feaeUPQd7o/QNacCoDXeOQsECFh98I73oxI5NerugxPiQfXB6h1BHxaGNYcwDCpqD9fLIrzuWJC3HpdgBQ0zku+0ZlhGEwiFBeMGUfqFDbM/JNtTSaNK/GMPH7fkvvMmAcJrX8FL2Ujuzsq9gV+U2kMw1LE3Ybqk53LyNdMk+7kHfFRGtq84FhDzMKNjZfolyk21rxdpLF/Z7CI3zt+685f9iCzsmPIPgh3tUkcBUQL0sD8zQU3WJBOmBTc5RIwgfv/JpRtJeH5QIUWljyAOuTb31SrsrqoEEQJgwiLXUCKunOUlS2+3Quhx+9Xo+/Z/IgyNxktfbtpAZyU8bwtPU39ZNCdGNucH6QD+aNACjWKmwoEGk8Lqpp4KO1+43QRaH3jUbzp7NpmsL
+ mQ1h8HwK
+ REVGQZkiw/O2SUWRWbrHJUmsy0eoWOCSsSeqbPBzhO256dwNJsIRifNL/DhcYoo3TJNCb4Dp2Ts5U+8bOqvJ8aPJnDZ+I5s1q1ZkAi6IMC89Nt5pkMIPfldm8DbTbwtPv3pgnn/MugD+UUpAe9pvsYCJdCw5ZoGDMrGghHlOySDptqzrwQKweZKoZKo57NM30frTuKyNnkftTaxV34H6mrdiRbz1jnNIKxWxxWjJH6ILXllRwzSyJGXprsKra5z0MlDI/lQg3dkZMJVyG1CA1EPSQY2m2pvk8W1W0S20iQHisfeyWK1SjSzpxrrG43zRvJyCBc5gySz2DlhxRIzpVvcFV5PVOMKeZaQwar86AleWPXhlHCnUscfOsxeiEVdgzKhiyM92RMFjU6dey9TlaKEYLE7VYEKHpizCOtuMXql6qvLfBUoWNOkAI246M0PAU11lQz5K5aYmHcx0WdlbloayNbtZh3fjb21SGCzQSPGF9YnllpbQoJJbMS66SvTO4g+5JsRH2huK1Vj0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,32 +97,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 21, 2026 at 12:54:46PM -0700, Borislav Petkov wrote:
-> On Tue, Jul 21, 2026 at 09:28:56PM +0300, Mike Rapoport wrote:
-> > I'll take it via the memblock tree? ;-)
-> 
-> Definitely not.
-> 
-> Unless you folks want to carve out the bits of set_memory.c which interact
-> with core mm and mark it as maintained by someone else. I personally don't
-> mind too much.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------6m9D5WkPAdlH0TQWgJq33p0J
+Content-Type: multipart/mixed; boundary="------------w3q0NO5NRlwkt4rlkq1vNAGu";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: Marco Elver <elver@google.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
+ kernel test robot <lkp@intel.com>
+Message-ID: <9e65f398-5576-48df-85fa-3d993b9e163b@kernel.org>
+Subject: Re: [PATCH] slab: silence sparse warning with type-based partitioning
+References: <20260721092005.1986693-1-elver@google.com>
+In-Reply-To: <20260721092005.1986693-1-elver@google.com>
 
-Well, in essence that's what this set is doing:
+--------------w3q0NO5NRlwkt4rlkq1vNAGu
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
- arch/x86/mm/pat/set_memory.c            | 611 ++++----------------------------
- {arch/x86/mm/pat => mm}/cpa-test.c      |  66 ++--
- mm/set_memory.c                         | 396 +++++++++++++++++++++
 
-I just decided to postpone MAINTAINERS update that would add
-mm/set_memory.c mm/cpa-test.c to MM CORE section until non-rfc version.
- 
-> -- 
-> Regards/Gruss,
->     Boris.
-> 
-> https://people.kernel.org/tglx/notes-about-netiquette
 
--- 
-Sincerely yours,
-Mike.
+On 7/21/26 6:19 PM, Marco Elver wrote:
+> Sparse does not know __builtin_infer_alloc_token() and complains:
+>=20
+> 	sparse: sparse: undefined identifier '__builtin_infer_alloc_token'
+>=20
+> Fix it by using a dummy variant of __kmalloc_token() if __CHECKER__ is
+> defined.
+>=20
+> Fixes: feb662d9168b ("slab: support for compiler-assisted type-based sl=
+ab cache partitioning")
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202607110912.nZTqfCrH-lkp=
+@intel.com/
+> Signed-off-by: Marco Elver <elver@google.com>
+> ---
+
+FWIW,
+Acked-by: Harry Yoo (Oracle) <harry@kernel.org>
+
+>  include/linux/slab.h | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/include/linux/slab.h b/include/linux/slab.h
+> index 51f03f18c9a7..7ffe152ce483 100644
+> --- a/include/linux/slab.h
+> +++ b/include/linux/slab.h
+> @@ -505,8 +505,12 @@ typedef struct { unsigned long v; } kmalloc_token_=
+t;
+>  extern unsigned long random_kmalloc_seed;
+>  #define __kmalloc_token(...) ((kmalloc_token_t){ .v =3D _CODE_LOCATION=
+_ })
+>  #elif defined(CONFIG_KMALLOC_PARTITION_TYPED)
+> +#ifdef __CHECKER__
+> +#define __kmalloc_token(...) ((kmalloc_token_t){ .v =3D 0 })
+> +#else /* !__CHECKER__ */
+>  #define __kmalloc_token(...) ((kmalloc_token_t){ .v =3D __builtin_infe=
+r_alloc_token(__VA_ARGS__) })
+> -#endif
+> +#endif /* __CHECKER__ */
+> +#endif /* CONFIG_KMALLOC_PARTITION_TYPED */
+>  #define DECL_TOKEN_PARAM(_token)	, kmalloc_token_t (_token)
+>  #define _PASS_TOKEN_PARAM(_token)	, (_token)
+>  #define PASS_TOKEN_PARAM(_token)	(_token)
+
+--=20
+Cheers,
+Harry / Hyeonggon
+
+--------------w3q0NO5NRlwkt4rlkq1vNAGu--
+
+--------------6m9D5WkPAdlH0TQWgJq33p0J
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCamBsVgAKCRCGXBN6rc5S
+1l5EAP9V49DkdzS2HLB3lWDL05UG0KOMuz2kHVDNeGNzlpHfmAD/T5fLEfNPnmVy
+eAlw6dbWs92E1AhoN5NmO3k3+D8i0wE=
+=/o29
+-----END PGP SIGNATURE-----
+
+--------------6m9D5WkPAdlH0TQWgJq33p0J--
 
