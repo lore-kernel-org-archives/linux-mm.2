@@ -4,88 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14EC1C4453C
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 16:35:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8AE38C4453C
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 16:36:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2203E6B0093; Wed, 22 Jul 2026 12:35:48 -0400 (EDT)
+	id 8151F6B00A2; Wed, 22 Jul 2026 12:36:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1FA6E6B009B; Wed, 22 Jul 2026 12:35:48 -0400 (EDT)
+	id 7EC6C6B00A3; Wed, 22 Jul 2026 12:36:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1367E6B009D; Wed, 22 Jul 2026 12:35:48 -0400 (EDT)
+	id 72CAC6B00A4; Wed, 22 Jul 2026 12:36:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E10206B0093
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 12:35:47 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6B8D212020B
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 16:35:47 +0000 (UTC)
-X-FDA: 85016963934.21.B5A8E4B
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 7B787100006
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 16:35:45 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	spf=pass (imf05.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.198 as permitted sender) smtp.mailfrom=alex@ghiti.fr
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C4116B00A2
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 12:36:17 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C732F4016F
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 16:36:16 +0000 (UTC)
+X-FDA: 85016965152.08.CF23D8F
+Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+	by imf27.hostedemail.com (Postfix) with ESMTP id EB38640007
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 16:36:14 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=RuTQ2dXC;
+	spf=pass (imf27.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784738145;
+	s=arc-20220608; t=1784738175;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=IBLryKwTtUnGvX1owRzcrX+V3EM9LpngHLsmtrpAS6Y=;
-	b=ZYp/7f7g87v2H7lzh0hZu1fHrdaH284u7TdHpg9Bm8TCYetPs0TrAFSrw0zniQ18wOO2LM
-	PQLNOdWXn769lTBKPMIjfyzU33HUXnOdybm4x3hamzj6h0wPLw+9D3fYtKDNMVBm/AqQfJ
-	y9DZEd/IgJb/3AGK/3VatHIJzeKG+8E=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=bkKbSDToe7oNwQvcp8YwOTva5uUO6i2CXklEvla485M=;
+	b=JJ55O/WCo9s6dHtmHdVymAIOBghThE1t6PSjNn1IcoGv+ZQ7VKXPDNJUFvejGOQl9CytSA
+	m9WYd1qs/M++IRigVdsT659vXdAtemtIoiHPBmP6p75H38YDMQMFsAuNtVrOSSqYl61MQF
+	iVelLVeyzNZHsvoJeXboBSZZjTi9LmE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784738145;
-	b=mm5bQZRM1GcCa7F/G33hQ8JKoqgEI3LmJ+h7sd72c0pMzRsWGyecmBsfZebv0YZlmgjV55
-	QWnabUDoC8LvnX9KAFcoMjKJo/f8VaTbMBtBnXOhSmeeapnfL9dBl/Vfp3sjzJQgK5Q/G/
-	ZsAG+rOVPrJfzWAdTmlEwcsHH7rx0FU=
+	t=1784738175;
+	b=POoiKTdYsyeRn8PeQ1Nh7prLjtucGYVRnwjahNeztY65q4G6sFrChu9zF1ov/a+F2KoQHx
+	zq+v8ukX+SEsSlSlxn4uYYHr3kbn7EvEhuAOfuRWOtIa1bRl1njBjUKgx3RI5IN0ldAkhU
+	8bwsVOQF6DrdR6tIPC7uRptb1IjWuHs=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=none;
-	spf=pass (imf05.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.198 as permitted sender) smtp.mailfrom=alex@ghiti.fr;
-	dmarc=none
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 3A5DB3F505;
-	Wed, 22 Jul 2026 16:35:40 +0000 (UTC)
-From: Alexandre Ghiti <alex@ghiti.fr>
-To: akpm@linux-foundation.org,
-	hannes@cmpxchg.org,
-	yosry@kernel.org,
-	nphamcs@gmail.com
-Cc: chengming.zhou@linux.dev,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	kasong@tencent.com,
-	ryncsn@gmail.com,
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=RuTQ2dXC;
+	spf=pass (imf27.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784738171;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bkKbSDToe7oNwQvcp8YwOTva5uUO6i2CXklEvla485M=;
+	b=RuTQ2dXCRsKcy1/kVacuK79/2l9Sxb195ZTSUvuelQx2WQefKsjkPfpci1ZEDmJjdyfExO
+	emo9F9G1tT5sV9WtqueZ6HGevrY/k82dYd8vEzxboVD9OBTDuou0yd4nO8I5vMtuNUqmqZ
+	hnONdAbmlv36HARWV7BoN92iBYteSEI=
+From: Usama Arif <usama.arif@linux.dev>
+To: Christoph Hellwig <hch@lst.de>
+Cc: Usama Arif <usama.arif@linux.dev>,
+	baoquan.he@linux.dev,
+	akpm@linux-foundation.org,
 	chrisl@kernel.org,
-	baohua@kernel.org,
-	usama.arif@linux.dev,
+	kasong@tencent.com,
+	nphamcs@gmail.com,
+	shikemeng@huaweicloud.com,
+	youngjun.park@lge.com,
+	ryncsn@gmail.com,
+	trondmy@kernel.org,
+	anna@kernel.org,
+	sfrench@samba.org,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Alexandre Ghiti <alex@ghiti.fr>
-Subject: [PATCH v2 0/3] mm: bypass swap readahead for zswap
-Date: Wed, 22 Jul 2026 18:35:23 +0200
-Message-ID: <20260722163536.773166-1-alex@ghiti.fr>
-X-Mailer: git-send-email 2.55.0
+	linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org
+Subject: Re: [PATCH 1/3] mm/swap: revert to single-folio writes for synchronous swap devices
+Date: Wed, 22 Jul 2026 09:36:00 -0700
+Message-ID: <20260722163601.1421253-1-usama.arif@linux.dev>
+In-Reply-To: <20260722130615.3163560-2-hch@lst.de>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-GND-Sasl: alex@ghiti.fr
-X-GND-Cause: dmFkZTFEy/h7CX42yfAcvx8H68gVNQWl7hSJQtCRqa5qhaZvp1hGhH6WZ2/EporIZfMtT1niLpPlQCW7OwTxTuIxjqamN5Lusuv45Okg+WN/rspzzu2UF7rul7C/1iZvwvbHd6vGqDwj5ooxG3tauiuQpKwjFyJVOpx20A/Ak00UZ5OHqVhUh9Nw4XS0naXjjd8Xc2+RrpOHpojvQSHGpNjujI5wrtXZejKQVZL4KQ54lXr4lvTe6aYJfwH7ufoqkwUQZrWjvwlwb+4jaqv2fb/4XW13mkcpyu7dFJJKZPiKpWEUjTTlFvV24FIupHeqcFfBAR/OuAgqBYZoYfQS7TwYKvEZsI+7F/CPHL2eQyMZ7rxIA0VGs+J5WI6sKFMnD6VWZ0GBMaB1RWvS20w8FQLRTYTq5wux/qJkfV+dpTkKFSYQg+gDhW9tnPnXVLrtPSGqOmGPClvzbFTam39OKx/LHLs66bwzqVAJw1rmX/mGpGHnbH6575HZI9du7wOOdP2WGS0fEXFS81xnLAIsrfrSq0TaRm55w126hZYaYx/IK5FXVFMHLPyHnGCvVNBebM3+QXgpy2Mdk/sUidqBAuvg1/zY2Njb/CaDKFfD5Cdz4+kXnWANWLEWO/Hxxg8JldvHlJGeYCCtrvN8ho6AqHUekLInfRuyq4Vy23H/6/RZ4IslyQ
-X-GND-State: clean
-X-GND-Score: 0
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 7B787100006
-X-Stat-Signature: 6wu87ijyo7hoikr1ceoiq8ai7ym6e63u
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: EB38640007
+X-Stat-Signature: aashmspkhyckazoeae3o7pz6k5ydmpw9
 X-Rspam-User: 
-X-HE-Tag: 1784738145-294128
-X-HE-Meta: U2FsdGVkX1/yCdbSRdo9whT0OLP/wI1/tRxJ9pZFMUNS3ANQC+S+v1nTDyVXuQTCHJ3P6mfPBJCGCBNVvzQNGN7d42mu4hQ+b5zKsCi0czD8e0t/tjatttkb5zMU2/NyrGVTWTWxkXntJChQw3slhaHs0b3nTFJkM/CeFB0xRFaV8wv1HWhlrkj2UB0Yn3z3x83dG/lHiHIuu10XRCE47yewEc1o/ChI3FCo+tTcRLzzg7IL2I7xC6dfmM2kP1F824d4duGeWbNA18OiYLvrQFOwChDnME1ISnvuvFGxrx5siFJ8F0Z/IwCht7SmJraVfEeBlNxnc/ak+C7JqKv0nWGUOwUSFJqMgi+hRan4Zvc+Fgmg3nOWsAYyE/rsz6BHFYL9XFsQDefNyiRGyNyhJoQKJAySz1GnP/cxdjg9rWPITQH4mVSjH6HUvBEQfhlsBn8WXNA2pm8I8oBA+AgNrLTL7rBvAZW6Z8u6DXm7zHqmjbmTOTQQ16UddGK2eRZnEKvD5EjMZ47n+uj4o0XBVV7UPYGY6bK8oo+/95qMAkdc5W8nnRXl3a2F0Sqdk+T66F9B1d9+XIFltV5hA4RBrGYt1iIW64hiaRM17CDJLGJbilwISSkVkw74hguIsV0oMygSP2+/ZqZgtQ7YOE9qFpevUJ/RkoO5sC4/opiJVte/0CKrlkhMH5Ije2/i10dxuJHW9HyCFjUa+CU1MtE1VhYBTFmJWL6YD0ML5bg6gYyysLKvUtqXRcXWKnSQvWWoJ+K8qnjC4dYIeetPkPJT5xKetgLr4ZfA37E1UahohMNL+5QXXpVVw4WMPHn4YJXoysCmp4m86/GAgTcIvLbx760MLETMmeRlBKsT4NQqx5G5zKxbJrCQ9hWIVFmOrN7+j7eI45jmJqpQoBAngktI553aRI8ggQmWyvpUArnsRUSuQi0iJHyXl7xMWIj5WwE9I5Ux1o00RepozbMLjCR
- MKY31Tpk
- r+DV2YXoWF/l0JvoT+ZyF/qVL8jvT6/Uaowlu
+X-HE-Tag: 1784738174-857111
+X-HE-Meta: U2FsdGVkX1/eJXbnNXwAT7WP9+qV5ZEK1eAf0u4eRV4wZHTBNE1bRNnQ9EVj3Ya4o4PjwB+OxCEeJdJaDi4wnoSrh4W/q/lrIQmx2l2KOpofVEjbpS0NjQQxMsLvrSEhk3RcEUawKOCXrADLA2MrR31xd9uZg14DAAgJFwJMtzN5nMC0fE1eyj0zPrweAWF1HOn0wRxc/IpyLpW1lxX1r4z3jjm9UAurdCS7+I1R/VQPRQb0EeOhVKJAf3pb3NcU30GW9yRkw71ryLcJT/xS0LVDngXrvRUA3dfrh7M6Zi2GdkAwIrK4JvsRVJ3nXDmvMCyVU/o6GJ65zQdASys+6T+/KTCKTPnurYV9d32hD59afn14S+3zf278x0tuFQGwBKQKQZ3W21ggdBE9yxae/+XLog87dN3mEiA5sDbYyFoBMAWObz+Y4SR2JV9Z9HqVl2JTQuQmzG4TIwbanrJcOpuI2Mm34FDZ+t+76Edn3gaefhiRRppatZ5LuU3V9I/VAYrT6bYK0meCilfWnVtguHsCSJiqgAb3aRRUpxSubpGeYqCW7uU4jldybwp5IQFMCWO+NZ8sLHlkCHTVpJ8I3bSp3BatYtLRXDbcPkdcWTAyh8ikHr9qWyfwnXCACKm0mNMJhyWlKCVKkc8G0l9WsBrT65yYxFwTIq7vA3e7Yx0o4uA0uWwd93HYiTtRaS/aUFw3xKmneqjiOuHDZhkQ75c/mAIcXDjLT8BzdBCskSBQ0d4HhOrc3BFA4ttP8Zefv5E3myv+PIk49ZNQttwX8Ly5IKVs9lbMrhKoFj7XvHhYk0g9Yts9Zdb5tFjp8l5AewENLKwwr1wL3M/H0Bie0ZQ5VIdUh/4oiESezL8WJwiZmlvnYWOaG3lS7jPMk47LsC5ZVBC4c1+Nx4kD1cbV301KDJs45xsHZfxUJnyh13A+aqpTj7i3pPUdwDgVa/7naVTjdpqC5UgCEQJ3ctB
+ i8hcI4DO
+ OCufAPY3VdUU6qMs1wYbLwQp3famLzLcZYLx5WjfeAd3R54oEcSCstWYiVVtPo+wIbmtJ1WpMcRJPiC5CNTZhi1IzDHlml3ohs3eJ2obPSLdGMMGybY7JA2We9KJcLe5Ma602t5rLZnl2dXhr8PA6sKTboh2WWFKERYVEM3QPxe0SZ0LcUWG+QEyY8RTof027J6GY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,56 +99,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-First, the title is a bit misleading but this patchset is a follow-up of 
-the zswap bypass readahead, so I kept it.
+On Wed, 22 Jul 2026 15:06:07 +0200 Christoph Hellwig <hch@lst.de> wrote:
 
-Swap readahead walks a window around the faulting entry and reads every
-neighbour. Some of those reads are synchronous (a zswap-resident entry
-or an entry on an SWP_SYNCHRONOUS_IO device) with no asynchronous device I/O
-to overlap them with. Today they run inline during the window walk, so they
-are pure added latency in front of the read the fault is actually waiting on.
+> Kairui Song reported that zram benefits from submitting each folio
+> directly instead of batching up I/O because the classic LRU scanning
+> benefits from clearing the folio writeback bit in the scan loop.
+> 
+> Accommodate that by kicking off reads for synchronous devices for
 
-This series splits the window walk into two passes and reorders it around that
-distinction:
+s/reads/writes/ ?
 
-Patch 1 (overlap): issue the asynchronous device reads first, defer the
-synchronous neighbours, and read them while the device I/O is in flight. This
-overlaps the synchronous work with the disk reads instead of serialising it in
-front of them -- the win for mixed (zswap + disk) workloads.
-
-Patch 2 (bypass unless the target needs I/O): when the faulting target is
-itself synchronous there is no in-flight I/O to hide the second pass behind, so
-skip it. This is the zswap readahead bypass, gated on the target: it helps
-pure-zswap workloads and, above all, keeps synchronous-target page-fault
-latency low.
-
-Patch 3 (SWP_SYNCHRONOUS_IO): treat SWP_SYNCHRONOUS_IO devices (zram) as
-synchronous sources too, so a disk-target fault overlaps its zram neighbours'
-reads behind its own disk I/O -- the same benefit patch 1 gives zswap
-neighbours, now for mixed zram+disk workloads.
-
-Changes since the RFC [1]:
-- patch 1: overlap the synchronous decompression with the in-flight disk I/O
-- patch 2: bypass the second pass when the target needs no disk I/O
-- patch 3: extend the same handling to SWP_SYNCHRONOUS_IO devices (zram)
-
-[1] https://lore.kernel.org/all/20260624075700.751467-1-alex@ghiti.fr/
-
-Alexandre Ghiti (3):
-  mm: swap: overlap synchronous readahead decompression with disk I/O
-  mm: swap: bypass synchronous readahead unless the target needs I/O
-  mm: swap: treat SWP_SYNCHRONOUS_IO devices as synchronous in readahead
-
- include/linux/swap.h  |  6 ++++
- include/linux/zswap.h |  6 ++++
- mm/swap_state.c       | 67 +++++++++++++++++++++++++++++++++++++++++--
- mm/swapfile.c         | 11 +++++++
- mm/zswap.c            | 17 +++++++++++
- 5 files changed, 105 insertions(+), 2 deletions(-)
+> each iteration.
+> 
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>  mm/page_io.c | 11 ++++++++++-
+>  1 file changed, 10 insertions(+), 1 deletion(-)
+> 
 
 
-base-commit: 13a1e1a618858407fa12c391f664ea750651f6b2
--- 
-2.53.0-Meta
+Change makes sense.
 
+After the commit message fix above, feel free to add
+
+Acked-by: Usama Arif <usama.arif@linux.dev>
+
+
+> diff --git a/mm/page_io.c b/mm/page_io.c
+> index e4fa7ffffe8b..c984a4023a65 100644
+> --- a/mm/page_io.c
+> +++ b/mm/page_io.c
+> @@ -358,7 +358,16 @@ static void swap_add_folio(struct swap_io_ctx *ctx, struct folio *folio, int rw)
+>  	}
+>  	bvec_set_folio(&sio->bvecs[sio->nr_bvecs], folio, folio_size(folio), 0);
+>  	sio->len += folio_size(folio);
+> -	if (++sio->nr_bvecs == ARRAY_SIZE(sio->bvecs)) {
+> +
+> +	/*
+> +	 * Write out the iocb if we filled it, or if the device is synchronous.
+> +	 *
+> +	 * The latter is to work around expectations in the classic LRU code
+> +	 * which make synchronous clearing of the folio writeback flag in the
+> +	 * reclaim path beneficial.
+> +	 */
+> +	if (++sio->nr_bvecs == ARRAY_SIZE(sio->bvecs) ||
+> +	    (rw == WRITE && (sis->flags & SWP_SYNCHRONOUS_IO))) {
+>  		if (rw == WRITE)
+>  			swap_write_submit(ctx);
+>  		else
+> -- 
+> 2.53.0
+> 
+> 
 
