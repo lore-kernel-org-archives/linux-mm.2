@@ -4,148 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82E4BC44539
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 10:06:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFD2FC44539
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 10:09:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F9A56B007B; Wed, 22 Jul 2026 06:06:00 -0400 (EDT)
+	id 4F1A96B0088; Wed, 22 Jul 2026 06:09:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7AACE6B0088; Wed, 22 Jul 2026 06:06:00 -0400 (EDT)
+	id 47BAD6B008A; Wed, 22 Jul 2026 06:09:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 671846B008A; Wed, 22 Jul 2026 06:06:00 -0400 (EDT)
+	id 343786B008C; Wed, 22 Jul 2026 06:09:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F6276B007B
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 06:06:00 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id AFFBC1C081E
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 10:05:59 +0000 (UTC)
-X-FDA: 85015981638.09.C274D5C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 0AF7C1C0010
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 10:05:57 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l8yQoO+D;
-	spf=pass (imf21.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 00B5B6B0088
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 06:09:17 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 872E480447
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 10:09:17 +0000 (UTC)
+X-FDA: 85015989954.27.8F3F7FA
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 1FD3B4000B
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 10:09:14 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vOr9kTcd;
+	spf=pass (imf01.hostedemail.com: domain of nico.pache@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=nico.pache@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784714758;
+	s=arc-20220608; t=1784714955;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D6xRJg1cx2MApnHZbTatL/7rofeEJ41u17Yfn/n5svk=;
-	b=1X3eNtHbniBVgdcVkb9Q+TpGFpxCPiGSLmhC7p50BV2dtbQ/+ynYW9wY0JreFqYwHt3cKt
-	OhwCp4SMzsdIDdKDRy3g/dJHKI60FfkU9auc9KFWqnCPIAfpitrSiA9mcdznQB4G/9J++F
-	KR67vxqGy3gWO4LodrmyrfG4qnEPzC4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784714758;
-	b=Byr5U39CHVOdM9HYr6MtHnOKEQPx1Nt29MtnTh2qR8qIrZmLhD0OcSWUOp8YgETBe3ljHi
-	gi7Wu/M9maINF8Bsoghcv9KA6ns9v+55IVNNyW5WYtxulhbqgcpKM/5EGzaFaFOWmosXQ0
-	/b1R4gw23EKOsV8Vznk56m9wVI24M7s=
+	bh=H9ZHitasBPd+89xCAjhNNqu5X1u0tuqYIkRhsSlZ8EI=;
+	b=KUK2l3oxQw8XHaqcPuxjmGtMtdzCRYo6GjwCUamephcbgWLDdGfcmm7gqwpfO971jhjv0n
+	iCQi4Q4+A2jbgXomMENQV2dVv0WVPSctzuPi7+EKZzRpdvsjhs0wgmBl0tcA1+5KcpfOjV
+	2TPx5Mh2RHspdC9JF13ZM/g1HuREggQ=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l8yQoO+D;
-	spf=pass (imf21.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 96967600DA;
-	Wed, 22 Jul 2026 10:05:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49D871F000E9;
-	Wed, 22 Jul 2026 10:05:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784714757;
-	bh=D6xRJg1cx2MApnHZbTatL/7rofeEJ41u17Yfn/n5svk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=l8yQoO+Dlue8vZ1yUqfeSgih4Rs9yNiQyqVpA7436Ssb9aTi4vw/bCvaoY28YmbhN
-	 nLUIuZnMQr4FsWHmbhjWhO5aO0g3mlmNM9IfG0Gj8lINAdf14fcSQ+wlh2m5vLg0gZ
-	 8KMR6onERgLKAlrQfNIDBFCZxcA+z8KS4SjAJvBXKWCJRgD6dQ8FPKhYSy9W0mZ/ru
-	 1VCvvamIr7Eu6raA8FcnBQe0BtPNHSqP4tYmdTzhYsN+hG0ne8bwgSbs6Mg9UGYyyN
-	 4ir3qvSYcZtHmZWysW5Spo+OLmUs9gFWMBWojk7/VC7IXPC6Fr9oywbavW0lYX4HwW
-	 n9jfuNl8SxFmg==
-Message-ID: <8d67a924-9c1f-4e93-9e2a-4d71001167a2@kernel.org>
-Date: Wed, 22 Jul 2026 12:05:49 +0200
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vOr9kTcd;
+	spf=pass (imf01.hostedemail.com: domain of nico.pache@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=nico.pache@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784714955;
+	b=RZyrVnAFxqLPf1GZkhnqS0aarDSOWKvqDR9qYQ/Z1yveyx91PtfvJ60ahi9RvAA8WhkbEQ
+	133Bpdcc/vC5EU5RRR1ByMji9K85BSzpnULWyqoX7ZE9rK4dZHT8wxYusAMwuwMyk0TC32
+	cg0531LHy/0PlL3FA7dqXKs+fKFmbKo=
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH slab/for-next v4 7/8] mm/slab: introduce
- kfree_rcu_nolock()
-Content-Language: en-US
-To: Harry Yoo <harry@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>,
- Puranjay Mohan <puranjay@kernel.org>, Amery Hung <ameryhung@gmail.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- "Paul E. McKenney" <paulmck@kernel.org>,
- Frederic Weisbecker <frederic@kernel.org>,
- Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
- Joel Fernandes <joelagnelf@nvidia.com>, Josh Triplett
- <josh@joshtriplett.org>, Boqun Feng <boqun@kernel.org>,
- Uladzislau Rezki <urezki@gmail.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>,
- Pedro Falcato <pfalcato@suse.de>, Suren Baghdasaryan <surenb@google.com>,
- Shengming Hu <hu.shengming@zte.com.cn>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-rt-devel@lists.linux.dev, rcu@vger.kernel.org, bpf@vger.kernel.org
-References: <20260720-kfree_rcu_nolock-v4-0-964e03c41a4e@kernel.org>
- <20260720-kfree_rcu_nolock-v4-7-964e03c41a4e@kernel.org>
- <c7607f25-5336-4f64-9244-9476dcc8ff3d@kernel.org>
- <734ecdc6-f415-41d8-9357-7fc11379e4da@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <734ecdc6-f415-41d8-9357-7fc11379e4da@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784714953;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=H9ZHitasBPd+89xCAjhNNqu5X1u0tuqYIkRhsSlZ8EI=;
+	b=vOr9kTcdoFznC35WRGHl+qTLrZ/hH/4I+xNFVBrqu1iQGFg23ugJxT5FqESameluilfhL2
+	PLPEyCv2GNK9FUA4uJtwOfB9Nqgbo2tYG0wvsBr18KYvaFR6o86Ye4slk6ZhAAy0aT/1C/
+	lOcAnK4zMEXNd4Ile8plQ+4u2JnicIU=
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 0AF7C1C0010
-X-Stat-Signature: quoq71rbr51eopptyby7uurab9bhjx8z
+Subject: Re: [PATCH 1/8] mm/khugepaged: separate out windy folio logic from
+ collapse_file
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Nico Pache (Red Hat)" <nico.pache@linux.dev>
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>, 
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+ Usama Arif <usama.arif@linux.dev>, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20260720142913.846902-2-pfalcato@suse.de>
+References: <20260720142913.846902-1-pfalcato@suse.de>
+ <20260720142913.846902-2-pfalcato@suse.de>
+Date: Wed, 22 Jul 2026 04:10:38 -0600
+Message-Id: <178471503895.281396.17089759639940764659.b4-review@b4>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1784714757-724799
-X-HE-Meta: U2FsdGVkX19wIH/HacV4H7sdfXIZaI/l4KPpAoSBHQmr9R4a33DH2kWYacGSnOLrfck5CZriM2SyVBR+Y6WGozL9GO+7ODLS9xJIAl+qLxQVc9//hdtmiv4VCxUNco4J4y5PRbpSwU7+/ghLFwIsMdt+ipAuUq09Gyxqa7zH+8icFA50ZIZoX7c8tvertqO7AkYa9IzXpxxnYZEu1w/6odQx7F9xFcNJamLNTmKzfUHsrU0NCHbmafiTTyY7DjWxkmfVHIHD7PF+QJcGNofYFPiACjAhJVMhmJfsnCoiF3l4tvtyt/+U9+wxnx2jkGBYyimcvsZgD0lVOBYM6UN8pzKJTrYn6DMAuzKOZKFWFcrJEYImea4SMMPcgvZseV2ONVLx1jvLNRSxVOY+5+xR1GhWfpTvruYlrJSl2PwZwDN3t6WwXWskZZ8hCq/MKJzixiOExOvgqyNAGIW8iZAD82wcLF9hMkfieaIunU6RVinki+K5wa4ZoVoVXRKTLp/5tbguAwif4YTVChl0EALF7VOKiekfVEnlUdaibhcTFTA0K8WL/BhhF2aHreOfSACSNem/yJpsZGI03gfD6Tv/9PpB38Fl99QMpotpcHEZAIo8Aa0vJDVp08H/bqeoC91gZw/OHA5PK0iyH9cw6x7HQan6QxKY50tsIZfvzbEBIlhaZ21zU0AufCuh7wo01zebWQ4Fo19CkCxrU9wTipVhn2UhgC6ac3L3pEHJXyPa5PD64VgToAHqvyJET1ABcjpkG2d0MkoilcaZZzY0a/Ty61P68IlmwEX9/0zbIFoMpuPwP4WhoksT7bffJ9qy5v8gxcMooR5VDWsgRvUJB2dT/pjOQyb36ybQISugzbQVN/bRMkqw3m3tlaTVE4K35T6SDmyMPRd9UzWYFnERC62RL47fw10numNCe3xl155uWDGZxk7RSHjy6dTH1j0BxqciIILUP95ilrgEuIFo36i
- LzP1B4nm
- GwrI7AcoLsgKPjDhcCfiwEjQhlfmRlF5TTy9VoT0jimPlpG0tv3D2dESbJ9xzQ8Xi5QbnYJoFAx6x4TfXdrlj1WaD8+VVQgGSzxvw8cSdknpY2vctKLYC900NfGQ/gL/uJrR8CsRM847mcov8nd+lbI01ix2ziOQY+7/byg3xr9qPi9ye+0CF8BpAfdebAFFTKO/XgHpKYK/gcpaqQuMjlVvKmjhwr5kX9n9+w3u8bEcxnaXqAvzHz/J9dwp4z8knTQ8++oAW5Y+xecm6aWAbA8kOktk4xqoCImyZ2c4kXEuKfrYg+BjCjSpVuJtEWOaKn/l8Ir3Kt0f+InU=
+X-Rspamd-Queue-Id: 1FD3B4000B
+X-Rspamd-Server: rspam01
+X-Stat-Signature: 3e9qy6f769fh7syx8uzuwdtx9ktuente
+X-HE-Tag: 1784714954-970299
+X-HE-Meta: U2FsdGVkX19YWREX0j3XE/evG+YaYea6TNZy2bj4CnqbANOyebQElktmT3L0Vznds/8mhFP+IKnBlTC3TOySDYH++SX4J/d05fTOGpMODTjvH4i7vkSX9cctm1WgwBwnqoLfeQlAw+YDba16uX0AXK2J8AjPab0BD3w0+yvFgKmP1EZo0R7b/5WWjlc+RBvNsjhD7EKNRYwgHCU3PnHa2u6cye4KbElGyXASFePJ+i8L7/jyTvMev+hyONxOljoJt0E/WKjrsSGLDYFbATRapYmFQJcXf8Uag7FEDLEW5eclyWgrJwJJgmWzD2Me9nC9/HX9HZVuHeVtEPu/iDIe6hEAn2q+TDPg6B3LS9xmyAVmRk57/LeczogEparMFoCQYBEIGT6CKeXIzJioc/7KxSTrDDPxkGoW7aEFNo3iQueZ3N7efqBYvi8EvIrVs/jPlBAOVvL1yPNmt+nQTzRzlrBhwjlAR4xsIe5kSrqmFGA21JnHFonIeTqMg7eWjI3nsQch/doTkTrRGUxWFeWQnlUFL782/y31qzwHOgoQl4gf8AasMCX/G/1EhyOYobRg5diE8n5vb+02nV+I7jkfhVoQUr+nVFTPXoyJ7Es8nA9mWP7UygvcnxSbm0kQJLS8PoFNCf0upCaWJMYHpbJe90JUY3tRJMuFZ3o8vckW2P0iFXGQSuEYxXPiPJGg4geqELcX0lEDFwd/N4KjkYRKql2AJ6MGFs513Xi0BsDCRceWtknX9IYnb9a4cqarLXTjYcxFMbF4T/pMM3X35/dmTsUIY90dI9p/2qdVZmTA5LU02ZeRLRzx4x9HjmvrrbLW+0c9kCzxN7I8s88GwbQoOtgvV/IHyLO3CvMtcDKOduEI21zCdOKbO4D6xOoeI1dcgxVdLwaWrEfU5yda/hsNvVz+63GKlZohw0tx5e0e8E3hj83A9Ff+Wjqarj89GYzaPiGeLhoZtbzhUmsGhly
+ Ph4I9/3V
+ VhszuCxhHSoBkQX9hFYZV/ARD/sBTFN575DY/mH5OPy7TWdBrWnnlSmPbucPlbfbJe82YC6zN9yZGQDArP/aTUiTSCh+4Nki3O4BEsHb076/LJ7zlUY2un7KGwBidxyR1zvfBrN8dYGIo5mTmCkxPlHY+QCNv+hLhZ45vuIsZtWGAZl1SxhEQ70fwcCX04eGk46D4DLoYz7x7Ivrlx+yAYDxEVcDp8JxWB8ZC+NhKj743j5ft0vzJgeifq3fUafNRdKqi
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,114 +96,293 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/22/26 10:15, Harry Yoo wrote:
-> On 7/21/26 10:09 PM, Vlastimil Babka (SUSE) wrote:
->> On 7/20/26 14:44, Harry Yoo (Oracle) wrote:
->>> Currently, k[v]free_rcu() cannot be called in unknown context since
->>> it could lead to a deadlock when called in the middle of k[v]free_rcu().
->>>
->>> Make users' lives easier by introducing kfree_rcu_nolock() variant,
->>> now that kfree_rcu_sheaf() is available on PREEMPT_RT and
->>> __kfree_rcu_sheaf() handles unknown context.
->>>
->>> kfree_rcu_nolock() falls back to the kvfree_rcu batching when sheaves
->>> path fails.
->> 
->> From the code I would say it falls back to defer_kfree_rcu(), which is an
->> irq_work that does kvfree_rcu batching?
-> 
-> Indeed that was what I intended to say, but I messed up while
-> writing it :-) Will fix that.
+> Separate out complex folio-related logic from the main collapse_file()
+> loop, and introduce a new helper struct to help marshal arguments back
+> and forth.
 
-Thanks!
+Hey! Since we both have a similar patch, I will note our differences in
+approach here, and then comment inline for your changes.
 
->> Otherwise the sentence would contradict the following:
->>
->>> In most cases, the sheaves path is expected to succeed
->>> and it's unnecessary to add complexity to the existing kvfree_rcu
->>> batching by teaching it how to handle unknown context.
->> 
->> This talks about trying to perform the batching immediately without defering.
-> 
-> You mean the earlier sentence "kfree_rcu_nolock() falls back to the
-> kvfree_rcu batching when sheaves path fails", right?
+Overall I think your series is a good v1, and tackles the most complex patch
+in my version. There are a few things your patch does that mine does not, and
+vise-versa.
 
-I was trying to point out how it contradicts the wording above. To be clear,
-with above fixed, this part is fine.
+You seperate all this code into a prepare + isolate stage, and call both from
+the parent collapse_file() function.
 
->>> Since defer_kfree_rcu() can be called on caches without sheaves, move
->>> deferred_work_barrier() and rcu_barrier() outside the branch in
->>> kvfree_rcu_barrier_on_cache().
->>>
->>> Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
->> 
->> Other than that and a comment correction below, LGTM.
->> 
->> Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> 
-> Thanks!
-> 
->>> ---
->>>  include/linux/rcupdate.h | 19 +++++++++++++++++++
->>>  mm/slab_common.c         | 28 ++++++++++++++++++++++++++--
->>>  mm/slub.c                | 24 +++++++++++++++++++++++-
->>>  3 files changed, 68 insertions(+), 3 deletions(-)
->>>
->>> diff --git a/include/linux/rcupdate.h b/include/linux/rcupdate.h
->>> index ef5bb6981133..ce0fd401352e 100644
->>> --- a/include/linux/rcupdate.h
->>> +++ b/include/linux/rcupdate.h
->>> @@ -1099,6 +1099,7 @@ static inline void rcu_read_unlock_migrate(void)
->>>   * In mm/slab_common.c, no suitable header to include here.
->>>   */
->>>  void kvfree_call_rcu(struct kvfree_rcu_head *head, void *ptr);
->>> +void kfree_call_rcu_nolock(struct kvfree_rcu_head *head, void *ptr);
->>>  
->>>  /*
->>>   * The BUILD_BUG_ON() makes sure the rcu_head offset can be handled. See the
->>> @@ -1124,6 +1125,24 @@ do {								\
->>>  		kvfree_call_rcu(NULL, (void *) (___p));		\
->>>  } while (0)
->>>  
->>> +/**
->>> + * kfree_rcu_nolock() - a version of kfree_rcu() that can be called in any context.
->>> + * @ptr: pointer to kfree for double-argument invocations.
->>> + * @kvrhf: the name of the struct kvfree_rcu_head within the type of @ptr.
->>> + *
->>> + * Objects that are not allocated via kmalloc_nolock() are not supported.
->> 
->> Is this true? If __kfree_rcu_sheaf() succeeds, rcu_sheaf is either flushed
->> normally (call_rcu with rcu_free_sheaf()) or via the irq_work doing the
->> same. The defer_kfree_rcu() fallback ends up doing a normal
->> kvfree_call_rcu(). I don't see any path that ends up doing kfree_nolock().
->> Am I missing something?
-> 
-> I added this limitation because I thought it doesn't make sense
-> to support this when we don't support large kmalloc and vmalloc in
-> unknown context.
-> 
-> Perhaps too limiting than it should be though.
+What I did in mine was a "check" stage that handles both of these stages
+together; however, it is also broken down further within the check stage into:
 
-Hmm right. Maybe we could just state that it handles all small kmalloc() and
-kmalloc_nolock() allocations without deferring as much as possible, but
-large k[v]malloc() allocations that end up being large_kmalloc() or
-vmalloc(), will also work but be always deferred?
+collapse_file_check_folio
+ --> collapse_file_regular_check_folio (filemap is a better name)
+ --> collapse_file_shmem_check_folio
 
->>> + * kfree_rcu_nolock() supports 2-arg variant only.
->>> + */
->>> +#define kfree_rcu_nolock(ptr, kvrhf)						\
->>> +do {										\
->>> +	typeof (ptr) ___p = (ptr);						\
->>> +										\
->>> +	if (___p) {								\
->>> +		BUILD_BUG_ON(offsetof(typeof(*(ptr)), kvrhf) >= 4096);		\
->>> +		kfree_call_rcu_nolock(&((___p)->kvrhf), (void *) (___p));	\
->>> +	}									\
->>> +} while (0)
->>> +
->>>  /*
->>>   * Place this after a lock-acquisition primitive to guarantee that
->>>   * an UNLOCK+LOCK pair acts as a full barrier.  This guarantee applies
+the two child function help reduce nesting and make the code much more
+readable. then the parent function handles all the common checks and
+isolation.
+
+I didnt use a helper function, but I think its the right approach.
+
+overall I think your approach is better but should match the same flow as mine.
+
+I dont think you need a separate isolate stage, as if you match my flow the
+check/prepare keep the error handling much cleaner (see my patch for an
+example of this).
+
+
 > 
+> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
 
+
+>
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 27e8f3077e80..d4de507ac001 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -2218,6 +2218,92 @@ static void retract_page_tables(struct address_space *mapping, pgoff_t pgoff)
+>  	i_mmap_unlock_read(mapping);
+>  }
+
+
+>  
+> +struct collapse_file_state {
+
+
+> +	/* in-out parameter */
+
+
+> +	struct folio *folio;
+> +	/* in parameters */
+> +	struct address_space *mapping;
+> +	struct file *file;
+> +	struct xa_state *xas;
+
+
+> +	/* collapse end index */
+
+
+> +	pgoff_t end;
+> +	unsigned int is_shmem : 1;
+> +};
+> +
+> +static enum scan_result prepare_collapse_file_folio(pgoff_t index, struct collapse_file_state *state)
+
+
+> +{
+> +	struct address_space *mapping = state->mapping;
+> +	enum scan_result result = SCAN_SUCCEED;
+> +	const int is_shmem = state->is_shmem;
+> +	struct folio *folio = state->folio;
+> +
+> +	if (is_shmem) {
+> +		if (xa_is_value(folio) || !folio_test_uptodate(folio)) {
+> +			xas_unlock_irq(state->xas);
+> +			/* swap in or instantiate fallocated page */
+> +			if (shmem_get_folio(mapping->host, index, 0,
+> +					&folio, SGP_NOALLOC))
+> +				result = SCAN_FAIL;
+> +			/* drain lru cache to help folio_isolate_lru() */
+> +			lru_add_drain();
+> +			goto xa_unlocked;
+> +		} else if (folio_trylock(folio)) {
+> +			folio_get(folio);
+
+
+> +		} else {
+> +			result = SCAN_PAGE_LOCK;
+> +			goto xa_locked;
+
+
+> +		}
+> +	} else {	/* !is_shmem */
+> +		if (!folio || xa_is_value(folio)) {
+> +			xas_unlock_irq(state->xas);
+> +			page_cache_sync_readahead(mapping, &state->file->f_ra,
+> +						  state->file, index,
+> +						  state->end - index);
+> +			/* drain lru cache to help folio_isolate_lru() */
+> +			lru_add_drain();
+> +			folio = filemap_lock_folio(mapping, index);
+> +			if (IS_ERR(folio))
+> +				result = SCAN_FAIL;
+> +			goto xa_unlocked;
+> +		} else if (folio_test_dirty(folio)) {
+> +			/*
+> +			 * This page is dirty because it hasn't
+> +			 * been flushed since first write.
+> +			 *
+> +			 * Trigger async flush for read-only files and
+> +			 * hope the writeback is done when khugepaged
+> +			 * revisits this page. Writable files can have
+> +			 * their folios dirty at any time; blindly
+> +			 * flushing them would cause undesirable
+> +			 * system-wide writeback.
+> +			 *
+> +			 * This is a one-off situation. We are not
+> +			 * forcing writeback in loop.
+> +			 */
+> +			xas_unlock_irq(state->xas);
+> +			if (!inode_is_open_for_write(mapping->host))
+> +				filemap_flush(mapping);
+> +			result = SCAN_PAGE_DIRTY_OR_WRITEBACK;
+> +			goto xa_unlocked;
+> +		} else if (folio_test_writeback(folio)) {
+> +			xas_unlock_irq(state->xas);
+> +			result = SCAN_PAGE_DIRTY_OR_WRITEBACK;
+> +			goto xa_unlocked;
+> +		} else if (folio_trylock(folio)) {
+> +			folio_get(folio);
+> +		} else {
+> +			result = SCAN_PAGE_LOCK;
+> +			goto xa_locked;
+> +		}
+> +	}
+> +
+> +xa_locked:
+> +	xas_unlock_irq(state->xas);
+> +xa_unlocked:
+> +	state->folio = folio;
+> +	return result;
+> +}
+> +
+>  /**
+>   * collapse_file - collapse filemap/tmpfs/shmem pages into huge one.
+>   *
+> @@ -2255,6 +2341,13 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+>  	enum scan_result result = SCAN_SUCCEED;
+>  	int nr_none = 0;
+>  	bool is_shmem = shmem_file(file);
+> +	struct collapse_file_state state = {
+> +		.is_shmem = is_shmem,
+> +		.xas = &xas,
+> +		.mapping = mapping,
+> +		.file = file,
+> +		.end = end,
+> +	};
+>  
+>  	/*
+>  	 * MADV_COLLAPSE ignores shmem huge config, so do not check shmem
+> @@ -2298,87 +2391,29 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+>  		folio = xas_load(&xas);
+>  
+>  		VM_BUG_ON(index != xas.xa_index);
+> -		if (is_shmem) {
+> -			if (!folio) {
+> -				/*
+> -				 * Stop if extent has been truncated or
+> -				 * hole-punched, and is now completely
+> -				 * empty.
+> -				 */
+> -				if (index == start) {
+> -					if (!xas_next_entry(&xas, end - 1)) {
+> -						result = SCAN_TRUNCATED;
+> -						goto xa_locked;
+> -					}
+> -				}
+> -				nr_none++;
+> -				index++;
+> -				continue;
+> -			}
+> -
+> -			if (xa_is_value(folio) || !folio_test_uptodate(folio)) {
+> -				xas_unlock_irq(&xas);
+> -				/* swap in or instantiate fallocated page */
+> -				if (shmem_get_folio(mapping->host, index, 0,
+> -						&folio, SGP_NOALLOC)) {
+> -					result = SCAN_FAIL;
+> -					goto xa_unlocked;
+> -				}
+> -				/* drain lru cache to help folio_isolate_lru() */
+> -				lru_add_drain();
+> -			} else if (folio_trylock(folio)) {
+> -				folio_get(folio);
+> -				xas_unlock_irq(&xas);
+> -			} else {
+> -				result = SCAN_PAGE_LOCK;
+> -				goto xa_locked;
+> -			}
+> -		} else {	/* !is_shmem */
+> -			if (!folio || xa_is_value(folio)) {
+> -				xas_unlock_irq(&xas);
+> -				page_cache_sync_readahead(mapping, &file->f_ra,
+> -							  file, index,
+> -							  end - index);
+> -				/* drain lru cache to help folio_isolate_lru() */
+> -				lru_add_drain();
+> -				folio = filemap_lock_folio(mapping, index);
+> -				if (IS_ERR(folio)) {
+> -					result = SCAN_FAIL;
+> -					goto xa_unlocked;
+> +		if (is_shmem && !folio) {
+> +			/*
+> +			 * Stop if extent has been truncated or
+> +			 * hole-punched, and is now completely
+> +			 * empty.
+> +			 */
+> +			if (index == start) {
+> +				if (!xas_next_entry(&xas, end - 1)) {
+> +					result = SCAN_TRUNCATED;
+> +					goto xa_locked;
+
+You can hoist this stuff into the new check/prepare function if you pass the
+nr_none through the helper. I think the ultimate goal here would be to
+breakdown collapse_file() into a very simple stage based calling convention.
+
+Leaving this one hunk that checks for nr_none in the parent would then seem
+out of place.
+
+ie) alloc() -> check/prepare() -> copy() -> validate_holes() -> finalize()
+
+I also did a rollback() function to keep the collapse_file() clean. 
+
+>  				}
+> -			} else if (folio_test_dirty(folio)) {
+> -				/*
+> -				 * This page is dirty because it hasn't
+> -				 * been flushed since first write.
+> -				 *
+> -				 * Trigger async flush for read-only files and
+> -				 * hope the writeback is done when khugepaged
+> -				 * revisits this page. Writable files can have
+> -				 * their folios dirty at any time; blindly
+> -				 * flushing them would cause undesirable
+> -				 * system-wide writeback.
+> -				 *
+> -				 * This is a one-off situation. We are not
+> -				 * forcing writeback in loop.
+> -				 */
+> -				xas_unlock_irq(&xas);
+> -				if (!inode_is_open_for_write(mapping->host))
+> -					filemap_flush(mapping);
+> -				result = SCAN_PAGE_DIRTY_OR_WRITEBACK;
+> -				goto xa_unlocked;
+> -			} else if (folio_test_writeback(folio)) {
+> -				xas_unlock_irq(&xas);
+> -				result = SCAN_PAGE_DIRTY_OR_WRITEBACK;
+> -				goto xa_unlocked;
+> -			} else if (folio_trylock(folio)) {
+> -				folio_get(folio);
+> -				xas_unlock_irq(&xas);
+> -			} else {
+> -				result = SCAN_PAGE_LOCK;
+> -				goto xa_locked;
+>  			}
+> +			nr_none++;
+> +			index++;
+> +			continue;
+>  		}
+>  
+> +		/* At this point folio can be NULL, or a value. */
+> +		state.folio = folio;
+> +		result = prepare_collapse_file_folio(index, &state);
+> +		folio = state.folio;
+
+I think prepare is a better name than my "check" functions. But i think it
+should also handle the isolation code below.
+
+Cheers,
+-- Nico
+
+-- 
+Nico Pache (Red Hat) <nico.pache@linux.dev>
 
