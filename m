@@ -4,121 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6011C4453A
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 17:37:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC8E4C44536
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 18:19:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 813616B0088; Wed, 22 Jul 2026 13:37:54 -0400 (EDT)
+	id 1352E6B00AF; Wed, 22 Jul 2026 14:19:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C3D56B0096; Wed, 22 Jul 2026 13:37:54 -0400 (EDT)
+	id 0E6D06B00B0; Wed, 22 Jul 2026 14:19:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 68C796B009B; Wed, 22 Jul 2026 13:37:54 -0400 (EDT)
+	id F40EE6B00B1; Wed, 22 Jul 2026 14:19:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3DA696B0088
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 13:37:54 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BE51F1A01C1
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 17:37:53 +0000 (UTC)
-X-FDA: 85017120426.08.D4F1832
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C6F786B00AF
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 14:19:12 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5A2F71C0452
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 18:19:12 +0000 (UTC)
+X-FDA: 85017224544.14.7E8710D
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf08.hostedemail.com (Postfix) with ESMTP id DFF34160004
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 17:37:51 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=QAyoeG7P;
-	spf=pass (imf08.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	by imf06.hostedemail.com (Postfix) with ESMTP id 668E318000C
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 18:19:10 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=bolhfH6n;
+	spf=pass (imf06.hostedemail.com: domain of mark.rutland@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=mark.rutland@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784741872;
+	s=arc-20220608; t=1784744350;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9b0lYAChp/dlK8UrMEe9sgRuRXi4DJ+u7ef6sfSwFo8=;
-	b=vpwwbi1jD/eVWnDrMlgGYXfLfPVVu7jTVkD8SglC6W5jUZKbffurIIRkBCQWj24UU/5dnY
-	a8dul+UQ+MR5pN9TdziFg4IU+jFG+w+oINhqi954zVBXtlvz7R25+KLH6nlUmI3mu0Bg8b
-	e0KGqx5P+zm6t6OvCqjZlwBSkCJhNls=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784741872;
-	b=2PG3g485n2g2igkUkKfTaktIzh2WMINJosHz2cvJtfiD4HWDoZEhSnraH3urL70BcZDT4v
-	VNpn6qqXjtAjEo3AlM4VOVRkKOBq5ghLWJGbNtqN5i4hSthGU7JmMZIa2w6810R6fjCgWk
-	tbsSjZXJ2tb/W9TqV6SpfinQUFjFc7Y=
+	bh=VsZKe67h58zD6TPYh/iONlX3wxFqEjCYjEE0t327lqs=;
+	b=kaZniuNF5/lEP74FE5qrA6n9WzseOQUq4lllYI+dNdPzBADcw6CGfPsBRCMyP90OiYfLK/
+	TuG6+YDoJFGM1VXDJDQEf/jaCHRtC5hHwro1WOihCxn1A7w+qifYGEz8+2R917BfZyt8r6
+	ojZ8sWYWrotkYsA5lxDHhd9rfibTbMY=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=QAyoeG7P;
-	spf=pass (imf08.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	imf06.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=bolhfH6n;
+	spf=pass (imf06.hostedemail.com: domain of mark.rutland@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=mark.rutland@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784744350;
+	b=5WL2nXyumqXKvDbA5AaE/F0SlwzUg1jA9ArCXCa8d00i9zb1PZ2AgYM5sPlvtEVcxAjGrG
+	xFLPxQjikeKHT1lpA54CZJUqfCUG7tWLBpsgDMqShrjJURiAjVRnAYmJS0Qv8OFstgS6gm
+	tFDprSZEqHSnguAme37XYQ3TzDZuoS8=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C4C9A168F;
-	Wed, 22 Jul 2026 10:37:46 -0700 (PDT)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 074493F66F;
-	Wed, 22 Jul 2026 10:37:44 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5FDE21595;
+	Wed, 22 Jul 2026 11:19:05 -0700 (PDT)
+Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9B5263F59E;
+	Wed, 22 Jul 2026 11:19:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784741871; bh=JnKvBjo2fOfq9jvwV+JUrWEAgatydjsNYlPbheLKhxc=;
+	t=1784744349; bh=gexUY3MO1NYMIt5+4b+Z9AIUlrWUUcj9/Dzpwo5+F+A=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QAyoeG7PKBAcoDg4Vx9aVKdN0VlATPEViq8WVRyZilegBBahIiktHRv2hfoEoCbzO
-	 UJkF9NKxVlB1ZkC22HyEA1xzj6R0ZAmD2eyyzrJ2PtRBpEmkwyyZGygxHNSHMhB+yJ
-	 cFBkNBXczoT10ntHra7/zJDISGpvjgKKjsxCrn3c=
-Date: Wed, 22 Jul 2026 18:37:42 +0100
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Russell King <linux@armlinux.org.uk>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	David Hildenbrand <david@kernel.org>,
-	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-	Tianrui Zhao <zhaotianrui@loongson.cn>,
-	Bibo Mao <maobibo@loongson.cn>, Anup Patel <anup@brainfault.org>,
-	Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jonas Bonn <jonas@southpole.se>,
-	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-	Stafford Horne <shorne@gmail.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
-	linux-openrisc@vger.kernel.org
-Subject: Re: [PATCH RFC v2 13/20] x86: mm: carve out the generic compile-time
- folded pgtable case in effective_prot()
-Message-ID: <amD_5r04mzMoZ0-r@e129823.arm.com>
-References: <20260722-dummy_ptxp3-v2-0-d9e4bad31e0a@arm.com>
- <20260722-dummy_ptxp3-v2-13-d9e4bad31e0a@arm.com>
- <d16a8412-acee-4c21-a126-f570d6306983@intel.com>
+	b=bolhfH6nwRwlZ9Rt3oQdeQtyGNQNwRenYiTJbVSlKyM4HgMURSH7uIWdk9u24659s
+	 2k1ZgV/+heCaAiqMwoGsFmvLA+hXuMW6ELfIoI9wb6jJ4oFjYfiYROeaVy0CbVald8
+	 470GVt3Ty9QsOpWvz+uIJHVKDIrr1Y+DFPdxaTBY=
+Date: Wed, 22 Jul 2026 19:18:59 +0100
+From: Mark Rutland <mark.rutland@arm.com>
+To: Linus Walleij <linusw@kernel.org>, Jinjie Ruan <ruanjinjie@huawei.com>
+Cc: catalin.marinas@arm.com, will@kernel.org, kees@kernel.org,
+	oleg@redhat.com, luto@amacapital.net, wad@chromium.org,
+	thuth@redhat.com, peterz@infradead.org, ada.coupriediaz@arm.com,
+	kevin.brodsky@arm.com, yeoreum.yun@arm.com,
+	anshuman.khandual@arm.com, james.morse@arm.com, tglx@kernel.org,
+	broonie@kernel.org, pengcan@kylinos.cn, ryan.roberts@arm.com,
+	liqiang01@kylinos.cn, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v17 15/15] arm64: vdso: Expose sigreturn address on vdso
+ to the kernel
+Message-ID: <amEJkyKFvVOkiGao@J2N7QTR9R3>
+References: <20260721081858.1169276-1-ruanjinjie@huawei.com>
+ <20260721081858.1169276-16-ruanjinjie@huawei.com>
+ <CAD++jL=Ou_HF5VchexnjUf9qwzrz0xgY+NhA5gZhOwiwdxUi-g@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <d16a8412-acee-4c21-a126-f570d6306983@intel.com>
-X-Stat-Signature: jger1n7ek54ruq933zmcjiyx4n7gtbh6
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAD++jL=Ou_HF5VchexnjUf9qwzrz0xgY+NhA5gZhOwiwdxUi-g@mail.gmail.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: DFF34160004
-X-HE-Tag: 1784741871-699479
-X-HE-Meta: U2FsdGVkX1+QXT6kD0tUO2F83iTenPbL+JneH60FfXmokXrGFS4+jLKWzDgzULbNETkliBOLPYyavem/uu4ST00zyXV7rGf1puSrYRsAA/j22Zzy93ZS5dj5dZb9XBWBbylNWGkGUtLzgIoHLrPl4qXolsdLpjyeB554ohFUi7bR1L8getrrekxttvPr0ted6B12k7tCZe7aFsj8pNz4Y3lcf9M6ZROWCP5/WgzjZ5B77uw9XhodNzi6MF35ysiTyzBgmV04k2oAmWcMX9JLYEVaIcK+LSuW3K11TmSN+/14vO4jxG0xWHcgUVy//HpMGHFWSVRoO11MVQa9hN2zeqZF2g4vg4UyLJBFa92D1zJPh+SwT3RdAycJAHj0bsXSX9s4xhlUjJeFk/0BEBWCpbTz1aIZ3aE456rkKz+hGkLi6FQnWQ4RjEja/9gkTsaPo+H9xuflvCt7xgihzmG0fkb6fKBibAksxGym9oRwk6JLy9ZKXYYDY5jrfeezBKJtf8+eySJsVvOFK0HHNun2z2CC/BaXi872HDEDoJTgVuKjwZ8GVHHM5ZSUyvxKPUrS9ZF3UuWNKp435qifWZZBuajSWVcvgoMvKrsW5wuh/e1dJfKZyvutPLrX5/YZjGyPsh69eds08yKkvDnQ2WLxlcutW4PRNnv8hBH8mdjIQuRNxgXEhrOIdSXObMS6z9fNoamjg8fnI2J10J2nvARmiMdQRoQyZGornwvd+E1I2wz36WQUcUDGun5MlLlLkbPZJp2LFwu+1PauZCEBcL96w3TMGTlcuerXSU0cKPem6sQU/r5kSA+/NmTq3cb/j7oqFcA7IQv0qDVB28iZxzIItmlCDhd36pR51LgLRLXl+H+inh6VGIgr9BRXdTmvBaurMcTKNjHiDOaUVc0eK+IrWCLI/8XThsitBQsuzYh2TRoiUcygkBOUhXcjWDouI8obLvr54z86mFMYchmcOYn
- U82OSwcz
- leeg+hbtf4+wmA/vTffQcgAZq/5mX7QalmM0iCatzBDoiJOJD7JcPatPQYy3+/d21aMbAciQcsCvbVZ0MW3rU0VIlvdkyWbGENnKJBb36RiQD/bpiLyaMFn6a4DOQrDZ/ya+TCR+SO4q6I4X9Tm4FQX9KebK44tkD9KcOkAdZNjXhB6UhnAaASlI6CkQti7VHIIhpTnxKJpunFNiDilGvP1juksjG5uXx0czlbdK1B3pJs3rexkKF3Yo4Zdo/hah7/04XfDc9nIBG624Jq315SA6hcRPijWzvhikg/CeY654LT07z12VCPA0WeA==
+X-Rspamd-Queue-Id: 668E318000C
+X-Rspamd-Server: rspam01
+X-Stat-Signature: wrbxjfi6k6dtmajz3tqmsizfe3tnxfsj
+X-HE-Tag: 1784744350-792940
+X-HE-Meta: U2FsdGVkX1/M4TPUdvwzR+Wk5lmf7/1X2q62hf29LNGaZ5ck1KKjuFnszEYIb4Anhu65hDcAIe1MO3MDsf4wU8cI0t8v56XPLcCdbAYyk+aCcUK2X9nVKpQCNWkl1nm9cKovE3434y6c26hxm8uRXqFuFuy9jY56c1ubz1WDwPLM65EYh3SEIwxyvklrCTBlS6Qm29Ii4D/jpEU2kMwafPBLWT6Ay0hhIagKqBUljMcyKRZu3MLQ/QRsn/STGBjctakpoYtavi277Gh5DXxklvdQ5DOlT9c/IgXntbwa8M5eaF1of0CgTHKnFqhEjuJQSsbyDubo5sUz0rTNe/AOf4SfbjB66PYgJYCXuJuSI/dYNmjwNt9ByYWD5fQJ25G9dzZTTC062yf04Ay/F7BbkK7cqomCBVX7nJiApT3XOhDEZKTskI54pn0vbtsVWicqNFJVRP/SLVJxt9kMxbc6oBUwj2zJNeSTVifGIvkFWpzHqtYdo7TFiBA4waQZfrynW8SOe/RuNHYmc9b0+nA5gAPlG3gbKoqvT+jauegPLZHTvzi+uz481cJSyE4B0WQJozulwO/H+1ronn1HcVxhTavk67E6Py1yfVPJQVQGXZp8forHTuaqu095KTGPtvSA2cKtMY0A55pxVKk1sMcnkOJXz5nG/4a4r5UKLKGtCrOLBrsu882SEDSxiiZrY+aPG9N2OZHYNvtpdoE1HA2Hlc7Jz9XK2qZo+LOsYYYhNETz03vfIiytKQuXCttMZsna/QH1gf/CPHcTDCfJGnFbHnU+/XodCNPim2CDZqMmMI9E76Pv7m6MXHu3S5Fy7ywM/fWmDLe58D4XeKQxBPKVv8pAVQjJh3jN53xVE5e5NQCIEJB2dDM8/3Deqi4Mc3QYyArvlwUMkPa1ZupYrz8O/lNPeLl33Op8jTPCIX4Q7HDkVTrvDh8UTCqdXjiE8hndHJTkMMaSLjyB4jpMuBu
+ 61RSgLtE
+ E5I5PIqWVHknq0aCW5a2+vQwhQB7NU6Qwf/zmxzHKZM7LnWv1vacVp2tuXwMq26CJ9LlUNgvgRhE+3ZgQw1PMr27Rdx3e1kbVgw83hUPH7XP0jXzuYwWonGul8yrDrhr4Ki754HlyY3CskbXCM/OJmlqJJ0BbmmVNBxTEXaJ49dQLuM91vRqkbo2Fks6Bkb+bBtvZeXZ5NfBolzNggkL1K6hXkqeMxrc/YDlZY8+6SaCiwG5UWKr7Y7aDCAhm9gM2ZhVAh/hFZIpVmHAy1Moazf6HbQt/FpVQHeeGXUEwZG6yKTL/Yc/nW/LjIJHUq1MR8HXmpUIVLwtmXnmqoQ87MDRWZpW14dTMJvp0g8ghZ99rIrc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,27 +98,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> On 7/22/26 08:30, Yeoreum Yun wrote:
-> >  struct pg_state {
-> >  	struct ptdump_state ptdump;
-> > +	int first_level;
-> >  	int level;
-> >  	pgprotval_t current_prot;
-> >  	pgprotval_t effective_prot;
+On Tue, Jul 21, 2026 at 10:55:03AM +0200, Linus Walleij wrote:
+> On Tue, Jul 21, 2026 at 10:19 AM Jinjie Ruan <ruanjinjie@huawei.com> wrote:
 > 
-> There is zero reason on x86 to hold this value in a data structure. It
-> is 100% determined at boot time or earlier. Pre-5-level-paging it's a
-> compile-time constant.
+> > Syscall User Dispatch (SUD) must not intercept the signal trampoline
+> > code, otherwise returning from a signal with a locked selector may
+> > cause infinite recursion into the signal handler.
+> >
+> > Provide an arm64 implementation of arch_syscall_is_vdso_sigreturn()
+> > to exclude these sigreturn syscalls from dispatch.
+> >
+> > For native 64-bit tasks, check whether the current PC matches the 'svc #0'
+> > instruction inside the vDSO sigreturn trampoline (defined in
+> > arch/arm64/kernel/vdso/sigreturn.S as below).
+> >
+> >         SYM_CODE_START(__kernel_rt_sigreturn)
+> >                 mov     x8, #__NR_rt_sigreturn
+> >                 svc     #0
+> >         SYM_CODE_END(__kernel_rt_sigreturn)
+> >
+> > For COMPAT tasks, verify that the instruction falls within the dedicated
+> > 'sigpage' range, since compat signal handlers use this architecture-
+> > specific page (not the vDSO) for their return trampoline. This prevents
+> > SUD from incorrectly dispatching syscalls issued during signal return.
+> >
+> > Suggested-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+> > Suggested-by: Kevin Brodsky <kevin.brodsky@arm.com>
+> > Suggested-by: kemal <kmal@cock.li>
+> > Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 > 
-> On x86, it never varies per-mm.
+> I'm a bit scared about SUD.
+> 
+> Certainly we can merge patches 1-14 first and iron out
+> any trouble related to that and split this off so a separate
+> series to be applied lated?
 
-However, mm_pXd_folded() requires to mm for other architecture like
-s390. might save the mm instead of first_level and calls the
-ptdump_pt_level_first() with static inline version would make the
-constant comparison. So it requires to save *mm* structure in here.
+I had already asked Jinie to drop SUD back in v14, and he had agreed:
 
-[...]
--- 
-Sincerely,
-Yeoreum Yun
+  https://lore.kernel.org/lkml/akegeU59jSK9t7FX@J2N7QTR9R3/
+  https://lore.kernel.org/lkml/3ac6d4be-7c57-44c2-80a0-408e2c6f8136@huawei.com/
+
+Jinjie, please drop this for now, as we had _already_ agreed.
+
+I will look over the rest of the series soon.
+
+Mark.
 
