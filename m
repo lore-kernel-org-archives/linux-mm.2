@@ -4,86 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 006C4C4452D
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 00:13:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D01E4C4452B
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 00:18:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C5D776B00A1; Tue, 21 Jul 2026 20:13:55 -0400 (EDT)
+	id C664C6B008C; Tue, 21 Jul 2026 20:18:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C0ED46B00A2; Tue, 21 Jul 2026 20:13:55 -0400 (EDT)
+	id C172C6B00A3; Tue, 21 Jul 2026 20:18:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B24BF6B00A3; Tue, 21 Jul 2026 20:13:55 -0400 (EDT)
+	id B09AF6B00A4; Tue, 21 Jul 2026 20:18:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C4016B00A1
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 20:13:55 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0B0941402EA
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 00:13:55 +0000 (UTC)
-X-FDA: 85014489630.05.4904F17
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 83AAB6B008C
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 20:18:13 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E3DA7C02DA
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 00:18:12 +0000 (UTC)
+X-FDA: 85014500424.20.F121C46
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 565578000D
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 00:13:53 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=nJPZ26zo;
-	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf18.hostedemail.com (Postfix) with ESMTP id 586771C000C
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 00:18:11 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HQklOV3t;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784679233;
+	s=arc-20220608; t=1784679491;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V+aY/Lsw2VDgBYyUllYNgRGhKE2XyNDmp9Ld83OgmxE=;
-	b=wI0TEPM0DHH8ti6potxYybpzP6Nt1Ou7uVkBUY8rbgcppbb5cveqlabzG5pXiTsag3fCoS
-	ryIx03TRw0EhLRV08asH2ph1GB5Itf0Qtxu4YpkfuvNflk8OxiqTbPZB3TgCpKq37mRUAW
-	6JiO09CbRM6F2Jr8hRpIkgJ4Y7k63iE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784679233;
-	b=QonThQT4Pnz5Eo6ZP/9mbnLqm65QF0Hir4resSb8dK6+hetPI5jhb+uUDMre4qEJaDHFuK
-	RnIVsLfzamSHXkLEAHRQ94cfKousg6sTNf0NAXMiaqrr8YMUrDdlMVVjHsnTFfvb7AxdD0
-	c9IQxmUQbhXUvg4sq3AikzJvXQAFyuE=
+	bh=NZE8OVcCqPgnZz+/5Kme28lwwlaGh+3LsOtdYSryteU=;
+	b=NVfNpL3ULwjpMd4VSzE9ahWq49nXrBmP7jbe58I7Az0ei+z+3bU6gkezdSyxQie7hjDgec
+	2Q2nQolnNyx4+3WgWsT+Ug0ObaxKdTyiWBF4W3rPzsN0oPLH1YNBDz3fCPVn0sa+YlKGZH
+	Ni0XL9OarM+1nzp+jb+Rkoo9a7VmIvY=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=nJPZ26zo;
-	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HQklOV3t;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784679491;
+	b=P7PoqgVc/REIcatPSOig1UWFjd3Bif+XBwGVoj0Qa3w+xwvl21OTBT96JQI/JUZgupjTm0
+	Yf+s1LehjisYIRWWOfABn98pwOUTBqc3fyY3tsXvNnlQX1j9XXH/JEUfA/NfYRvm9rGG/t
+	rSDzwrHaMkjmwxgA0W9q8wotdf3Y+ms=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A0B07600FC;
-	Wed, 22 Jul 2026 00:13:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B9CB1F000E9;
-	Wed, 22 Jul 2026 00:13:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1784679232;
-	bh=V+aY/Lsw2VDgBYyUllYNgRGhKE2XyNDmp9Ld83OgmxE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=nJPZ26zoK7PeHw+emQhxgCgwLn8YyeMkqi0Fd4RjQd5+al8q4OAvP9ctMVjqJe71s
-	 GXL9PO9z2mVWG0Uu2MmY07PnEZYg6BjBNgiLvcCure2j6YIlulDZFkgrI9SS+PwYlX
-	 5QVyAYDb2uhDygxWGjir4LpcpLmowxGRf3bDpgms=
-Date: Tue, 21 Jul 2026 17:13:51 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Hongfu Li <hongfu.li@linux.dev>
-Cc: hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev,
- shakeel.butt@linux.dev, muchun.song@linux.dev, cgroups@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, Hongfu Li
- <lihongfu@kylinos.cn>
-Subject: Re: [PATCH] mm/memcg: check kzalloc_node() return in memcg1_init()
-Message-Id: <20260721171351.ec213c13afab38b89c14f849@linux-foundation.org>
-In-Reply-To: <20260721100916.76822-1-hongfu.li@linux.dev>
-References: <20260721100916.76822-1-hongfu.li@linux.dev>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 565578000D
-X-Stat-Signature: mj6xjcfeza9esaqu1uoumbkjo8tcsprk
+	by tor.source.kernel.org (Postfix) with ESMTP id D46BB600FC;
+	Wed, 22 Jul 2026 00:18:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CA041F000E9;
+	Wed, 22 Jul 2026 00:18:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784679490;
+	bh=NZE8OVcCqPgnZz+/5Kme28lwwlaGh+3LsOtdYSryteU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=HQklOV3tmYgsc8UrejYclNrWh/eCAMQrh79IZrgN0+gHQk4JssCNNslTRNhnYyWkX
+	 FyKeg3rWX8mUJnpmSgf+lsRZV5A99IIVJ68sU4maNDFnhBE8vha3SnLsjClH/fl0G3
+	 Anxbm4RcITokwXA85WLGQqRyUh3ahEIoN97Tfa0CB+ZDz75rOG7cBhXZYXc7aFPZCA
+	 xBhlZxxthyvWaJ3wGH2xRHqcWXT1KM2anIcUXTY2aG6QUVHm5f9io8QARfC4i/JiIg
+	 ziVrar6D8Pk1jj+IDiMyd2mh1f+nd66nN2S2aeQ3h/d3I2oeS07tQjN0VhcSsHnCNl
+	 ogBmadR06ltiA==
+From: SJ Park <sj@kernel.org>
+To: longlong yan <yanlonglong@kylinos.cn>
+Cc: SJ Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	shuah@kernel.org
+Subject: Re: [PATCH] selftests/mm/pagemap_ioctl: Fix missing NULL checks after calloc()
+Date: Tue, 21 Jul 2026 17:18:00 -0700
+Message-ID: <20260722001801.150265-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260721063611.342-1-yanlonglong@kylinos.cn>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1784679233-935350
-X-HE-Meta: U2FsdGVkX1/zHCchPfMr7nGdRVxonQMrRYBA/tiyUm7SAQz7IxxcZO+r075JJ932N7S6lHraiozADK69nLnxaQgcpMFLNkVr3uqsQeeZJMy1N6lR1IEsXLz/GPPlGgmg86Owv9wYTofWrOYTSeLM0lZZXNRABNijT5Xc12Ct6RMI9RDTlm8aQnY2i1JHDuSVgA6HQKHkLZCw9gRf5Yj6i+P2vEjQKvmzoHcbQnkOkBWRNw7amRJTKUzK8tt0gdFPitvig/ADszo3cp+u5Mx8AUcFKG+X6aOAnLpPqERqGiTcj2lWaqpoJNMR6Y7Qk+/hOeDkJkM+46EcCixjE8/+VrpWE/F+vOEd/RuU2fY8F8ZeckQMaIxe/e56y6DL4RAMp4qe8mFLE0JS0oS/4qNaxRlz/ZrCfUv5god//MDpbhPvXeughsAsKZpHu+Wl+mOYPsAWbMjdFB7/H0DPKiYSPutNAvpo8DvrlShTd//nxh4WhdKqMUTn8wwQKTgv2uYU2A6XSLmextQiy0F3AefW9S/bHAFlXQqTyJ8U5mOmpSMhNOWDGMRUEon3PkLaEnPmeO7aQidCh8rM2QqNU0N4q1CQFKxxY6J2JmVLAYB49yMCAvw3jCYOAohwYFVHgB7gyLwzA1OHREGy3Vg0qmrXFoIsAkbcq5eRGcfw4rHkUB0LdEcOK9WBn6AQrhetegdjsz87ZcoozWJibEPKBWontW8tXzosSCOKzCcG3jeh1/zjYXhtcyGCJvPSxAROq0I+Lx8la5yCcYmE2HZ4Lb2qiwWzol4OI3AS/1nAPTj2j7q6u30cwaeY3zhmMOWiY/q4zQ9EU6KThxduHp/UdCM+54gFxlRRX6OFja/Aa11cp/r6K/G+eex5VWrkz3kB22NrTc6UqxebqiyWC1jcFlqNwy5FIf+EZ3xCkQJW/aAQWD0P9Si6pODiAcrnvP+chkP/y1RklNndFgGCO6zS4Wb
- thqbPhRi
- 86wBTEJtsI/aecESJ5oYWjulFmXqml6oIvgh6LQrrnE7pzL7ogr+ZbykCJNJVyJwbo31stG245CBHESfNJtLFeVojZAiN+jyzYPvMqO2sU1jkhQQrueY7mW+xgEDod3vfBfNmOOkePP62FZ659ISsi2Ym+19cJAep+G1IskV4VD16qInGUtjiE4vzFvjjgfA/17N4VS7vZ56zio65v2HoojJFyPHlutqb1XlRRg6tQlCBY16Q+vBmM6+VG++9TFcX0ZQGMwOOb14sZD/M33NZPhM2dtEBAb2/31K5sDmMU4NNr1g=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 586771C000C
+X-Stat-Signature: 1mnsz5m3zarm8xctyhgozjup5krhifgp
+X-HE-Tag: 1784679491-390586
+X-HE-Meta: U2FsdGVkX189TUiQ7J+f6vV7hhAiRqtAIj/UxgCYsZeq0Q0S5UQGveGaTFanNN/Lrwc+JQakuZrWGZ8NH1O1nruCgsPdDkg2GGiBYaM3V3D3+UHFdIrFvV1so3FGllw6SoArCTz+1XyZsNvad3DhZmE3bJ+cFYzN+jcw8X4p0ZQepVJVP4f/1HmUvOeFoOaAFF0rTDmGIrkBONCbqjUPaMKu7qR8cBIn09zDB9ITAR8daH5P3B3R95TFmW/FbHXxLJs7+SzCZYJ+DyYpvHq/u5bEr6RHJKx31FaMkn8GN8M48PaZDsEDQqIpEqciO3PpcZnbnF3amZKUG4CKIjQQ2O8nXqSUwR+pFEcjoPImbC2C46Zt2pf/ZP63dJY14PrIiszITzo343jHgNTkcojcKV87N16AXgSuJB7kKJamxtnNWTfobOooJr7GkyN29wd98xuzqTYVd0jf2GnP1f2iCnh1cY3Z7Klpc5ivsiwgxi4ZRYWG97m6uWy6s9YW+PGOVi/3LuaMQ/CSSwvkHz6VsqhUoPud+jP/DychT3GNfoK0SxjJ0sA330GPCVm01lB+MbGS9/VOvu4kCsa30GDFur7EG94w4x+PMnTfq0GLWFHE44bYHEgcdJvAyNg/fR+9WIRNfwPZCnVvuCS8BCSdWJfadcErlmrZVcQ5DlghZBgvSwdbjHAbcrMFxYe2knLT1Ug5H7ZOzI9mdOfyVU8/lMEhmFKPLwIodRPNHU8+YIO78J8c6cf0HDb9Fk7nlfhm+d6p9XXFdo1/9kzvyrVlFfK1XM62G5iA9yTrwL6/4C4ZesQwnbsfMo8KUh6OtR6PtZJhNiHr9C6nOC3lFXavURWxaNMe7do2xJDkdpl0Qd1wQxtdWdGw5+T7nZx2KoyevLTsJcnZ+ILHpCeM7a6r1Y1oaYSfcvMdFCLv+JCIj9eABL8Vf6sHflx3f29qKZe6pdkkGND+owFgte/FQsX
+ JANjUnUr
+ T2BYd9eKtQ3X1B3H4dqnS6/w1hVNqd42V3r1NtGJiaOMbR8cywdzer2QUL2qbDPln3vgwyefpkQ5w7eMNJzC1dbTEVagWWUYRCzHIAV4KZ/pCQz5u9eC66fMhmISI21eI/bLyaR9VT2kaYvYHqfM+jq8Z854tQzVEt1Tw07YOgftbQX7c0Xvumb5JjfBwi8bOOffxXkGzCzBbx9N+DzcNY1IlCLfmdMZVkHukqzmKihYKNyQ9J7/imuPrH8XIdqzphbrYQ56x5nYlRrKu6QwP9NHmsIViTZYOPvpTYQYVAxKp65WjhWVz61evRnphRiM3uw1jHgQKybpAGVw9pAj3zvDFm2El1DMOYO2/PnMyyjAeDgVlNcDKfAeo/465cAo9m9mon5b7tJSBYhOOKJloqENdoxjHdzyWie1e
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,32 +95,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 21 Jul 2026 18:09:16 +0800 Hongfu Li <hongfu.li@linux.dev> wrote:
+Hello longlong,
 
-> From: Hongfu Li <lihongfu@kylinos.cn>
-> 
-> Add NULL check for per-node kzalloc_node() allocations in memcg1_init().
-> 
-> Skip the NUMA node when allocation fails. All users of
-> soft_limit_tree.rb_tree_per_node[] safely handle NULL entries, only losing
-> soft-limit tracking for that node.
-> 
-> ...
->
-> --- a/mm/memcontrol-v1.c
-> +++ b/mm/memcontrol-v1.c
-> @@ -2566,6 +2566,8 @@ static int __init memcg1_init(void)
->  		struct mem_cgroup_tree_per_node *rtpn;
->  
->  		rtpn = kzalloc_node(sizeof(*rtpn), GFP_KERNEL, node);
-> +		if (!rtpn)
-> +			continue;
->  
->  		rtpn->rb_root = RB_ROOT;
->  		rtpn->rb_rightmost = NULL;
 
-Thanks.  We assume that mamory allocations cannot fail within __init
-code.  Because if they do, the kernel has some ghastly problem and it
-cannot possibly run.
+I found get_maitnainer.pl is suggesting to Cc below recipients.
 
+- Lorenzo Stoakes <ljs@kernel.org>
+- "Liam R. Howlett" <liam@infradead.org>
+- Vlastimil Babka <vbabka@kernel.org>
+- Mike Rapoport <rppt@kernel.org>
+- Suren Baghdasaryan <surenb@google.com>
+- Michal Hocko <mhocko@suse.com>
+
+On Tue, 21 Jul 2026 14:36:11 +0800 longlong yan <yanlonglong@kylinos.cn> wrote:
+
+> The pagemap_ioctl selftest allocates memory via calloc() in several
+> places but does not check the return values. If calloc() fails, the
+> subsequent code will dereference a NULL pointer and crash.
+> 
+> Additionally, in sanity_tests(), the calloc() failure check incorrectly
+> uses MAP_FAILED (the mmap() error constant) instead of NULL. Since
+> calloc() returns NULL on failure, the check never triggers and a
+> failed allocation goes undetected.
+> 
+> Add NULL checks after each calloc() call, and fix the wrong error
+> constant in sanity_tests(). Use ksft_exit_fail_msg() consistent with
+> the existing error handling pattern in the file.
+
+Makes sense to me.
+
+> 
+> Signed-off-by: longlong yan <yanlonglong@kylinos.cn>
+
+I have a trivial comment below.  Regardless of that,
+
+Reviewed-by: SJ Park <sj@kernel.org>
+
+> ---
+>  tools/testing/selftests/mm/pagemap_ioctl.c | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
+[...]
+> @@ -1000,6 +1004,8 @@ int unmapped_region_tests(void)
+>  	int written, len = 0x00040000;
+>  	long vec_size = len / page_size;
+>  	struct page_region *vec = calloc(vec_size, sizeof(struct page_region));
+> +	if (!vec)
+> +		ksft_exit_fail_msg("error nomem\n");
+
+I'd suggest to separate the definitions and statements by putting an empty line
+in the middle.
+
+
+Thanks,
+SJ
+
+[...]
 
