@@ -4,93 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46370C4453E
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 13:45:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7302FC4453E
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 13:47:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DB22F6B008A; Wed, 22 Jul 2026 09:45:34 -0400 (EDT)
+	id 43FC56B007B; Wed, 22 Jul 2026 09:47:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D63256B008C; Wed, 22 Jul 2026 09:45:34 -0400 (EDT)
+	id 415DD6B008C; Wed, 22 Jul 2026 09:47:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C7B286B0092; Wed, 22 Jul 2026 09:45:34 -0400 (EDT)
+	id 32C5F6B0092; Wed, 22 Jul 2026 09:47:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 96B2D6B008A
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 09:45:34 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 21E08A05B4
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 13:45:34 +0000 (UTC)
-X-FDA: 85016534988.21.387938B
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 115FF6B007B
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 09:47:05 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 98EA91201BB
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 13:47:04 +0000 (UTC)
+X-FDA: 85016538768.11.C4F8D82
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 9145B180005
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 13:45:32 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="HJWegH0/";
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784727932;
-	b=nuzYmRmU2tbuoX1asyj8QohHMJUMFPQvJHb7klcd6dcnKYYip4xqqoUhn0he3hoVydr9Dj
-	D90cc3TD82GmbbeHFo4MViafSCtCDoafqeKcrsOPuaWTKlgdWty6ihIgCBnYD3fqsYe54q
-	kCQo/aXMgdnR+VSnov0pV2n8QVnt1I0=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="HJWegH0/";
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf17.hostedemail.com (Postfix) with ESMTP id 067D54000F
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 13:47:02 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mmWKKlyq;
+	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784727932;
+	s=arc-20220608; t=1784728023;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=W3vYwSW4UujfgSMcU5g5Qb19b6BNp6jfqJHAfwMNJHw=;
-	b=5/p+9SANMP6D91a+9N91rY0cMCR9NNSsOxnyVpsvY43Ry7oxcotb3su9F/IrIlqQq95lJt
-	RKz6KsQA8vxguDiuSJKcAzwugpX1Sa8WMrD72ASy5KAlD1Xpxl8o7PNrHFkHwC73zoaITm
-	JsFiAfEYwtqW5BScIVnKje84m/i55gw=
+	bh=TU1MQ7BeWFaTxBRrc9aQ1q6vtJ2v42CrYLRPX+haj9A=;
+	b=Diuwj7IJReF6CPoQF1isCyNEPkZ3YAN88W9JGeJYXu5wmkGFErUO2hx9/OfQzO8GdZG7u4
+	asyHvKO+BqAWkIcNM9qKBZAqEmwcx3UA+cMu5oE7FAVPmeB5QILCLSPIed8rfaSIn0hyJp
+	PkRJhF/RxlG7LfV8d6QAMS7kVQuKRqQ=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784728023;
+	b=k/GUuTE4m+l2Sx5T0TPIsvU960k4A3BgmSpLul8g5SmpuWn5XKhDst9omtJPbJiv3z0iOs
+	ETLx/U1SL0WHdCpTyJ1acxZkccbc2X2OIcOtTUWAKOIqK9v0dcn15VP/k9Pf6fYfOUie4r
+	cwKJGf2VZqMCakSo2bh5Zut4AMTfTzU=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mmWKKlyq;
+	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id ED0AC60A70;
-	Wed, 22 Jul 2026 13:45:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D5AD1F00ADB;
-	Wed, 22 Jul 2026 13:45:31 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 75B3A600AF;
+	Wed, 22 Jul 2026 13:47:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 026C81F00A3E;
+	Wed, 22 Jul 2026 13:47:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784727931;
-	bh=W3vYwSW4UujfgSMcU5g5Qb19b6BNp6jfqJHAfwMNJHw=;
+	s=k20260515; t=1784728022;
+	bh=TU1MQ7BeWFaTxBRrc9aQ1q6vtJ2v42CrYLRPX+haj9A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HJWegH0/RLjcksN2vqderqOYhQ9eWMrvzDt5295YLB/S3X3EZ0v380dfSamggSPEG
-	 TVP7s8UFmheAbEgBv9yaFV3OuTn9uUQcIe8KAIZW0KXPGhpE+cjXlMt/9FdUdjm9XZ
-	 agBD6Rh8Ady3BBoT0diaBBbNtQ/bjZcDOrsc6V0y9No+2M94lnhkApJ1GzclAF7rem
-	 js395LCWqzwq/SfBRYcnE8qI/fQ9/WZxTx7Wc99Lou97N1TRsFDADph+Gpmpocyd9d
-	 7W4dbQ+eiHFeDQQZBIVJmQ4clllbMPu1NnVLx9dfs8+qnk6H4HAx6kllqK61GZ+PlK
-	 AN17LF64p95bQ==
+	b=mmWKKlyqqhYD320QJBZRm+9uE4C47XmP7jgW9+rLCD5lv3gtBmGDlLPrOWOMW1TX+
+	 xN4zqiHMObOzhzKhC0t2LKfdeCa1fCHROrwY5i+bZekCZHAp8PgMlGSc6AkMgut/MP
+	 HlnXERzuwdCpoWiXSCbQmoGIsp274iEpDZG60bCNoNM2JxIlpvzT7l6sjguBo/22yk
+	 FO1fOV1xicUNJSjj6bmK7HFYxtpYjGg7dXSr85AFfpNkPRRcfE2r56G2hSvTUSMRO7
+	 nlr8lUpsVmBW9pmvcDlU6CKw9VliA1/VzthryBVuuoHU4Qh67wvelcfy1VrrzC20oj
+	 Rs7WoRKXVC/8g==
 From: SJ Park <sj@kernel.org>
 To: SJ Park <sj@kernel.org>
-Cc: gutierrez.asier@huawei-partners.com,
-	artem.kuzin@huawei.com,
-	stepanov.anatoly@huawei.com,
-	wangkefeng.wang@huawei.com,
-	yanquanmin1@huawei.com,
-	zuoze1@huawei.com,
+Cc: Enze Li <lienze@kylinos.cn>,
 	damon@lists.linux.dev,
-	akpm@linux-foundation.org,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 0/3] mm/damon: Introduce a huge page collapsing mechanism using auto tuning
-Date: Wed, 22 Jul 2026 06:45:22 -0700
-Message-ID: <20260722134523.87856-1-sj@kernel.org>
+	enze.li@gmx.com
+Subject: Re: [PATCH] samples/damon/mtier: add comment for struct region_range
+Date: Wed, 22 Jul 2026 06:46:54 -0700
+Message-ID: <20260722134655.87994-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260721035848.147455-1-sj@kernel.org>
+In-Reply-To: <20260721140619.297538-1-sj@kernel.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 9145B180005
-X-Stat-Signature: f1zjk3wtetiwnpnmxbp3jsrittaprbe1
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 067D54000F
+X-Stat-Signature: w4w8wtfnhabxyb1rp83f91fjhqp1ezpz
 X-Rspam-User: 
-X-HE-Tag: 1784727932-748019
-X-HE-Meta: U2FsdGVkX18kwDB85BJNSGs2x9snj7CuWwvcgme3qTRWOksb/X8ikkHPgyPeaIgDIHMLZDx2RWwuw485/nUmMJAGuiQv/zkR0pAg2GDeFa750Yj5/9uJoPG0yXCRexVHZsrzZc8tSsaynBAWnNosWkrL3jGtjCmXcZ3K3/jiG7PIYgOv96NFXGIngg1cVnyJjg8XaK4F1OoS2EKRRCq73k2u+cDG0To9u2Aot4b5d18rji4BYWJ+XfNoHhlBxqKj/IpM87RK+CAVn/3bs4buAbRGeuWbHYkUmwaoCNsjmx4xvniD299Bzp+JXuZ/Yd+V4yseGIcmOuIgoNTLkVRYZ6q+6X0o8Mt/EG8ZSmIDlGJyhl/ZSxKFRM5wxd3tko74gzRJTxfrDiWwNHWaE4KkqiU3xZ0Sp8OISNB0B0DHyUYB9/reZMlQ7cunTFDc57aV5rhS9SZkjCrXUDuc974438KKUlVVHGk/pOqiHjcg+5V0D3C5wQM1JSQZ2FJl6NNpN0xCi1remehmJkZcWkgjEPPGorGI4Qcgf6gVA87rfzadzibfx5SenR2tMzNqeX+znpbhh82GPZQuOGNAaE66UqAc25PUS0k1l8WkIbNCmnVElVHGD9u1eEzMXv2yeq1/yqHbQSXdrQhnkpuCgs2SbGJNW7WO4AWirn1aJqYDSxbPsUzOw5F/NI4d4PbTX11eq+K+IniY2+IWVwLO+9C1VaNOR1E6WHlf/DIJyYG87wEZDBWW+Tb4GqiA/DpBtEK1TKizZgF4WWVIspGesG3ut9TE0/H4Cjeb93IPY0NJk/wQFAJ6gL40h6uL7R/9smu3vdiCjVMmgL17WhhN/oqXjSs3iN8iMp3a3W5HnE69XvobeP6lyrZI9ovBS+4nKaI4iZOFvmTAqYo4iKYK4koiZyxwE0carHFz075J2ha0Uti42sYIvyOu4Vyus9at8+IlDblEcH4T38EvmMz+CJy
- SMq5OAnI
- uzSLJoNe/GoX6vgLmLY2BluYW+X/E9rxjOntAvrmxuBClr/n7BqOV4qYpFjllNjGaUgA1RxvcKjPuV3uqqfGVzrclNU9GCBEXLsPoKwxRXSfTaAOLHGnaXNO+DZxA0GRbiuwl98hxS11A/VPICkMZIYQiYhB6UhUdrjyu5YC8kyvoWj92dRfdISXkpRcaRJZWOjEu/bwk+2eYbl5pmJOWXUFEogjg/ZOkm4/9mKnqy0ktXrjoC0JDLG2ca/Ft5y15S68JTyOE7cOCmNuTxntZ2HXZ8r4O7dikJ8tf
+X-HE-Tag: 1784728022-297332
+X-HE-Meta: U2FsdGVkX1/JEbJOC+W25eQgPOxOQPVfAc9OOEE/3XAP5GkQI9XlbGYWOJKHzn6AjeMco9J4bOFml3jUGp5DjUWmRfFUDYvCt3dpGjBWv9FGc5oNrcbt4oMw0ZCwaGhxzrvpneSR6o62wOvhJ+6AWmNdaX2+gVRRP7Q8SmtLHsI/WPjeCPb/BUnet6d0Si8mDnFnU21AMlr/eNpZLBhvUbpYqQnyM5v2LGAXRTLDjeKqfO5IhpBMOJHZxESPRjONynEW8iBQpCb4KvOleziy0z8ahCy7HFJKsdp0OIxbKGZTSe6NU//jxhTXzS7nvZgddAF/9jpNkRFnpjs10bzKveBJOKOxVGkyYOkPW4z3e1lwbclMiVGBsXIbk3zcHAOaF+2C5xS1xh0VXVPkm7DSXq7etKWDuK0yRJLgyV6dFndxsK5hx2lWQYDoXi3AFjHdwxp+BR/2vGUwZvZ4kRBFOxW6nYelW8UPxs6NbsoizImV0HM3KPoDcdjx6Zg01uIyoDrbvrJyx9mIZkDRalYjAZkKIn+4Ne54ytv44edQVFSIQiprjJ0u7VcgWs6eBD8/xtvQv/2d68F3iSdz1zsCPjD70UmrlX58O/aIIgbXiVl7mAgoqBUuAnHEBKhrO+9GuNLintTj+QV8v5DmfGbeuupA0DA04WreojAyQyvSO1mUpmwOPfoD8ZFvKXRh+meIdnRBeF25sxinrSxcpBfOV3nxZviRN4ougnUd7iisiTTtORfFzohIGVxIlkhvyEe0/CDMCNuL0dT6u/VXQzYs+g18/1ZxktZnt9lZRNWct4ba9lyXcsoukzt4/OF3eKFjTjLoylFNMPKvPrwrOpx6tXEhCf4ZixUiIXJk5fWcTJ+HOJDvb1rVrLX/igLk8AwYba2Fxix/3J8pk2ayQaXdA5stvXTkVBkfdvSJuRGY+k3g+nxN+Uf1hPxf9ntSb9SHVF3lbbmwaFVY37Uc0s+
+ G+QGxpg7
+ 7dACHdz+Z6Kjk6KqLlQSaXJjfGldc9PoMQyPqILp7UHVmA0uckdyi2vDx019n7lmngItWfN00gQZ0j/nrqb8xLxviiDFJAzxVZbOlyNUdxIt4I4mC+EMt5kGNMvw/QLvXY++7XVAnOItiIhGCGshx/Dj9dsZtIan+c290CsAgz+iLJfPzbbd2TcRYCeiD6EF8fueXOaGkXdP/KGjra0E2h/rXNbTXozyAvdeDy4GpZNNJJHWxqBsXr3f0O6sXedbpiZd0Y1+J4J5xlIUDTBgYWdMATVBLtTPgBEYTcTTRsu79VbU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,40 +92,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 20 Jul 2026 20:58:47 -0700 SJ Park <sj@kernel.org> wrote:
+On Tue, 21 Jul 2026 07:06:18 -0700 SJ Park <sj@kernel.org> wrote:
 
-> Hello Asier,
-> 
-> On Mon, 20 Jul 2026 12:01:37 +0000 <gutierrez.asier@huawei-partners.com> wrote:
-> 
-> > From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
-> > 
-> > Overview
-> > ========
-> > This patch set introduces a new autotuning which allows to collapse
-> > hot regions into hugepages.
-> 
-> Thank you for making this series well done like this!
-> 
-> [...]
-> > Patches Sequence
-> > ================
-> > Patch 1 -> Introduce DAMOS_QUOTA_HUGEPAGE_MEM_BP and autotuning
-> > Patch 2 -> sysfs support for the new quota goal
-> > Patch 3 -> Document hugepage_mem_bp parameter
-> 
-> I'd prefer handling 'total' underflow and returning 10,000 instead of INT_MAX
-> from damos_hugepage_mem_bp() corner cases.  But definitely that is no blocker.
-> For the series,
-> 
-> Reviewed-by: SJ Park <sj@kernel.org>
-> 
-> This series is applied to damon/next [1] tree.  If this series is not added to
+> On Tue, 21 Jul 2026 15:07:56 +0800 Enze Li <lienze@kylinos.cn> wrote:
+[...]
+> This patch is applied to damon/next [1] tree.  If this patch is not added to
 > mm.git in short term (~3 days?), I will ask mm.git maintainer (Andrew Morton)
-> to pick this.  In the case, I will update patch 1 to do what I mentioned as
-> preferred change if you don't mind.  So, no action from your side is needed for
-> now.  If it seems I also forgot doing that or you cannot wait for my action,
-> please feel free to directly ask that to Andrew.
+> to pick this.  So, no action from your side is needed for now.  If it seems I
+> also forgot doing that or you cannot wait for my action, please feel free to
+> directly ask that to Andrew.
+> 
+> [1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
+
 
 We (mm community) now want to focus on making mm.git more stabilized and
 therefore ready for the next merge window, rather than adding more changes that
