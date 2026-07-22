@@ -4,90 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4068DC44536
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 13:48:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCA8BC44539
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 13:49:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2BAD46B0096; Wed, 22 Jul 2026 09:48:19 -0400 (EDT)
+	id 9242B6B0088; Wed, 22 Jul 2026 09:48:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 292606B0098; Wed, 22 Jul 2026 09:48:19 -0400 (EDT)
+	id 8D6186B009B; Wed, 22 Jul 2026 09:48:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D2156B009B; Wed, 22 Jul 2026 09:48:19 -0400 (EDT)
+	id 7EB006B009D; Wed, 22 Jul 2026 09:48:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E377E6B0096
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 09:48:18 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6BF881C014A
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 13:48:18 +0000 (UTC)
-X-FDA: 85016541876.24.3FC4D95
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id C55D1180004
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 13:48:16 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ihF369TR;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 52C946B0088
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 09:48:59 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BE03FA019A
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 13:48:58 +0000 (UTC)
+X-FDA: 85016543556.14.6173361
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 0A27640006
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 13:48:56 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=jhr2ABz9;
+	spf=pass (imf11.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.179 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784728137;
+	b=5X2NTPqU1p5Sl8sE5R6goVj4VpUJdTBjEKWyT8LATY5UCL2rNE5WN4HisMjgNNkG9W7BHi
+	bP7TZKf1VU/WTAb12FdDSVEqgO+f3AFLLbS5qfR5Xk7bFC6vMKJLOwWEan/dwX4puVy9dB
+	VMhZHGw3F8Msqit9zwwjIGC2rGFYW+Q=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=jhr2ABz9;
+	spf=pass (imf11.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.179 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784728096;
+	s=arc-20220608; t=1784728137;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hqr52O01QL+8rXNjOIialVzyWEy2PL3xs2YZI1bEPWM=;
-	b=r87MxLJXrvQ0/qAfTR+Xdwn6l5c1Cyll7fDLH9X74MrhkpYrdgkDRvqjaS7Krtqy1OVDcr
-	SHKYFq4+XJVzeKJwoZGzY0gWiR6mF+aS9GqlxQQe+H/sCXsN0B7dz9Q/QyKTzP2d0G3rTF
-	dmVxpBBvgDHMOP7OUAVbHIlWIuUB/Cw=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ihF369TR;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784728096;
-	b=8kHMpP4LfJZkHC1GUGnhtTLram2RGZ0L/1mFJsFaM0osG26uw7dhGXrqi/ab0vUUk/FS00
-	FGgUw8BtebG11eV2V9MYJiEfzNMAfi/fzNJQSeyHwvALl/EJj+yuzEmKEz8sZZpAbG1WQM
-	FcCzAHvS12qjCZFwXZfHZ7MgFzvnHSE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D2B19418CD;
-	Wed, 22 Jul 2026 13:48:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 728161F00A3A;
-	Wed, 22 Jul 2026 13:48:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784728095;
-	bh=hqr52O01QL+8rXNjOIialVzyWEy2PL3xs2YZI1bEPWM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ihF369TR/bVoyo4aQ4voUjIhvMp+kJdM2NbFjPI1N2Y1M1Py8Z3uq/lL7/c3XjN44
-	 q1bCRhwgo4SIm6wtaFjlgc51+qHs0UWfCggqAvGi9PZkLfaF7uod/UJR+tWB+o/TSf
-	 1gjg9Nlmc7eYMx6bPli/E4tGYSECBXUcG+M0bhJL5omH/aEhvTLFOXzNaV1j2UM71i
-	 so/EwXeZiMaYJbaECrfRSiJaFl0VRWAqjyZLhrcBhazpROxKZ5J8eG85o+xhKDYvay
-	 VJELNGidvBpI4Bx926JGTDoE0WStjicUuyIGffziGn45uTUanJbppeSEXQBbWkYlcA
-	 DpW1ItKv1m4qQ==
-From: SJ Park <sj@kernel.org>
-To: SJ Park <sj@kernel.org>
-Cc: Hari Mishal <harimishal1@gmail.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] selftests/damon/sysfs.py: clean up sh processes used for obsolete_target test
-Date: Wed, 22 Jul 2026 06:48:12 -0700
-Message-ID: <20260722134812.88133-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260722033844.65932-1-sj@kernel.org>
-References: 
+	bh=LI4otu0+1hHJyrtu/tBxz3iTtloCysub9k9iNgYv1gk=;
+	b=8KLVCKG3m566o6UMwT32xi7u2Bbu0zDszjzFh32fSYtp5KXpYPSdOq5cqfokdN7Y2DVoaR
+	S9ZB6OwIXDjhFAUh8U0jW4B9xMHpVr1YVjYbO/jTGgkd0hqWwTvY+XHLPVKBLSYitBoxOy
+	voQJC5Fz3DvNSvbMj8TDwOAGG6Rv2+w=
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-51c4436d02cso50814261cf.1
+        for <linux-mm@kvack.org>; Wed, 22 Jul 2026 06:48:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1784728136; x=1785332936; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=LI4otu0+1hHJyrtu/tBxz3iTtloCysub9k9iNgYv1gk=;
+        b=jhr2ABz90MB+8SEPYYJdHn8DbakJNia6ZGsT6HhSHRY29IZukv5GnV+G7Cn8RQBc1u
+         n8oua9aIeGvXNO8IiAoBE6ewkhjXn/As2D5n6Esn5n2pMd45W5k6ZO3TpQlRkWOngtAc
+         kzJml4wrM/OEOJ/wt1V1+Gqfb3QgVK3goAggWT8Ui0J0+9gZPaqyCH/+W6+dNqK7zDnw
+         dmajC1yu7P/HoBQsAS+MSKwA5/jfpgZI+NDqAT6DrXxagmXOWr4BgfkR2hmPjPNPPDQe
+         NkE/ZH+Hg3HwNNMZElrQ/lLT6ewpiZCR54iuKyDToEeB00c0+djp4uMsZH0zli48m5KU
+         4PUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784728136; x=1785332936;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=LI4otu0+1hHJyrtu/tBxz3iTtloCysub9k9iNgYv1gk=;
+        b=iHGXoOqUDrT0wmM90GbCVfQEITdTWRUoCu9HsgwKpRFehQGjRN/E3QCeQ4rxYm7tsK
+         wT61UCfps2vdJs2Ziq84cLFxRoZ52dMkVE1wggFSNnQdcSFDJHI45bYfHDF4tXwdx+m/
+         sADtkZVfZ8kQMQ7a5erkyvI7PpBSfqC1pMfbLNc27vzCApA/DCqt5qcoNnm/tuWOzqmW
+         1Y6M+XnQpRNsZ38dFrq4ePS/KcWm9F1mT5j/B6iNF/QHQyJWDa9F5FatZA73Za9tMS/5
+         eBftMAZjAPmo9PyYNKuOl3MfZz5WDSSkKha65OsEvw9AqpeeQ8xQNQqmD1Q2B8tv4DIN
+         r7mg==
+X-Gm-Message-State: AOJu0YyjzTf+mvDNyFtwL7sHmSoYcoVKJFuLvncWwiLsDCKsIrPuw8Lr
+	S6nbFHOD3BFBdq5w69G9cTLxh32p9GMelmzq7EmF2xINxWebxsPBFQMj1RxRTXRIkPtyw9yhr9T
+	2GAKC
+X-Gm-Gg: AR+sD12XJxxeBC7s+5F58TK7sYjuyF5pIULFOvv7e7tZkEzlF4ZkLQW5bcalPXDdwXa
+	YkVNJCFxyNsCHIIEj92n4sI6VRFags2/SKFm3RxYtVsrAeTz0sEjO0zR6W6x0S9iyqFY4VFot/T
+	HkwToVd+oEnsWNiawFNGW0vXCz3H2kI5ynRPxJ+omXoG0J62Z38eVurf+e4HSgoOadyAtUxfjWJ
+	NOnoeBiOLgc4HdwMyzcE+NJPE22gU93yhQhrinVhKNUestSixhRQZkCGj4O7823edpoSivmEuET
+	W8tbFnbbeWXYgRpC0h56sA2riH4aOBjRrqv1MkAOum4oXwRn9vdaXFQZHXlUJEdAGjV9BihsZ8u
+	QGCBJwdfASSsiSdu1tC+OKkZks0p4vjeFnn09P7yq9kYpduAwABGIP2DAgPPre9xZ4ycH9+PWZB
+	PVbBwxGkosS1+2QbvHeKQBuqwwPvnph0GbMMaSzyMIO4Tepki1UN+ja5FADg==
+X-Received: by 2002:a05:622a:350:b0:51c:555:7dea with SMTP id d75a77b69052e-5213cbd667cmr215415981cf.30.1784728136109;
+        Wed, 22 Jul 2026 06:48:56 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-907ba8e2581sm21393266d6.19.2026.07.22.06.48.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Jul 2026 06:48:55 -0700 (PDT)
+Date: Wed, 22 Jul 2026 09:48:50 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Richard Cheng <icheng@nvidia.com>
+Cc: linux-mm@kvack.org, Zhigang.Luo@amd.com, arun.george@samsung.com, 
+	balbirs@nvidia.com, brendan.jackman@linux.dev, yuzenghui@huawei.com, 
+	apopple@nvidia.com, alucerop@amd.com, matthew.brost@intel.com, 
+	akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, liam@infradead.org, 
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
+	corbet@lwn.net, skhan@linuxfoundation.org, gregkh@linuxfoundation.org, 
+	rafael@kernel.org, dakr@kernel.org, djbw@kernel.org, vishal.l.verma@intel.com, 
+	dave.jiang@intel.com, alison.schofield@intel.com, osandov@osandov.com, 
+	jannh@google.com, pfalcato@suse.de, jackmanb@google.com, hannes@cmpxchg.org, 
+	ziy@nvidia.com, pbonzini@redhat.com, osalvador@suse.de, joshua.hahnjy@gmail.com, 
+	rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com, 
+	kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev, baohua@kernel.org, 
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, yury.norov@gmail.com, 
+	linux@rasmusvillemoes.dk, longman@redhat.com, ridong.chen@linux.dev, tj@kernel.org, 
+	mkoutny@suse.com, sj@kernel.org, jgg@ziepe.ca, jhubbard@nvidia.com, 
+	peterx@redhat.com, baolin.wang@linux.alibaba.com, npache@redhat.com, 
+	ryan.roberts@arm.com, dev.jain@arm.com, lance.yang@linux.dev, usama.arif@linux.dev, 
+	xu.xin16@zte.com.cn, chengming.zhou@linux.dev, roman.gushchin@linux.dev, 
+	muchun.song@linux.dev, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	driver-core@lists.linux.dev, nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org, 
+	linux-debuggers@vger.kernel.org, linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org, 
+	cgroups@vger.kernel.org, damon@lists.linux.dev, linux-kselftest@vger.kernel.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH v5 26/36] mm: add NODE_PRIVATE_CAP_RECLAIM for opted-in
+ private node reclaim
+Message-ID: <amDJEbu3aQO8J8f4@gourry-fedora-PF4VCD3F>
+References: <20260720193431.3841992-1-gourry@gourry.net>
+ <20260720193431.3841992-27-gourry@gourry.net>
+ <amDGXU94trqlXUgR@MWDK4CY14F>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C55D1180004
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <amDGXU94trqlXUgR@MWDK4CY14F>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 0A27640006
+X-Stat-Signature: y1borromezw4wjb16udrcocyfzuy6n8g
 X-Rspam-User: 
-X-Stat-Signature: yky6hy691a6qgzd4ehsx3bjrse51455y
-X-HE-Tag: 1784728096-315141
-X-HE-Meta: U2FsdGVkX18Kr7YnO+nVq9dczyR0fcpjwTxOT+gezhUdtTpnt6lu9LLe8/PI2YMK2pqJF1C7BTBJM4FsLT57S2sUsEHw/VFOwa4fK9rbm8NbWBYccdAYdPYneVXS8DxWOKG8Q6mCLY8HZXfnHovC6hmhyXwR8thB+zH6rlLr4Ajo3lNHq0Hwe9vFdofOWF2zER+2Pinw8AawMHiytzrjvKhTH9w89L0VGO9eePJvzZh+QceSEAXxi/SRLYPk19aFqjVc9o3hhFnb6G+OSRDDNKRbSyEkNH044Xwd5mNz925neoExKqdzTCxR88PMq1EPb9gHrIO+4nHcv1Q/GqKCtZ0TnyHv37mqd+xN3vtFafBZZrVWmZbCRygdyqzzOUa9WSLAKq7h3Dqb92yWrZdhbGXjej+cXfHc1mZH1CtGKFpg06iABbjU8i2xjfHCl/Nhe/xG0zorks7kT2aO1zftzoL6l3OxJS0Wrl1HbMu2SyHZmvBvW8qvUkk43mGRUWydrLTnLZMGXF2IqehHmbVHi9kENN4dMPLUhPT8FScdQoTB490Fnw8ptklKQ3P5xUXyQeScNfjvSAhRwnNMrnulRsfb94LADh6xTa3c9HgdcQ3ogIQcEfB1p4spii4WggoFiDjC1DNu86PIqBeMmP3AKtYpn2x+iHVocgO+ryz/ChXI/F2f3jxJlf/WlvtrgR48lZ4tu4PkIb2hb4+O15ZtP163v2mOLuHDzeYquSLmtqG+aENSjyCTvGqCaWW858yngTdTyPPOlBkSH71Kau8GIqkWhRMiX/myHWJow+kfBfhYhXEPjXyUBCznerj5XRNRwRZe7k/S8mRwKMe17mciQjEt0vlM93mvNOfU9GvlZz+HTCOCyrhfnuRDB4H7PNKCv4RWmYwXwCnqVIExi+Auj2Qd2WQOhOIl7bPILcRw04gjUs7wvIDjkpMpW3cA0p9lLmaHcm41HJQXLq7j/or
- O4qTB3oI
- VyaAPapJ1caQ1/9nLjuLWQwb9Ptc1yI/i5Jfu74JIO2PD/1ZcVsthvDa3tQIup4lOGbJOG2mf8hU07oGQu9swpymbwqxnUQgYFKtxe2qEfQnB4rE1kLXUC5P4uxEq0h1IN8IzxLvOwxZcNlzou7P9pMtIfm5ve12jT2gUTkSFhfrKFEAPoZ6o6F07che4JRXNKuMaKHbiKdVT74xAuLslgpAE8DTyNhloR8z02X8vA45dpUym26YglN1/9kNjt6TRlmphEfno7w2Zdb0g0/Kzi3finQ==
+X-HE-Tag: 1784728136-564419
+X-HE-Meta: U2FsdGVkX1/3IWRnCUZCOkHzHYr+AfG1vrFIrk1znw4kfdN0j8dzv45Vwd4isFOPsSStb4lo4OxCB8r0Bg8bROfvD0gd7gQjLmOl8YHNE7qOuWiwmdg+7uDOft1pceFOpzytFVxDNPiousrIISP9FWfJwW3hSGowgSigioSPU20Dj83mtVh50jT5U8zRHZPcZt3bahMVc8kmlMJXwFcsHgVkqFGEjgsSVTE+OCV52kZrsSMxAq8rEySEx0nEQvwSF2CM7WavVm3O5NkX/N3/GRU/UN9YkJ/tVhLt8nEaHpxtXyIvggXkm3gkiG+oZJHzPzfHFXI5W+TSzVtu/ClTwARgc8hE5acwnT/vvrmzFAagBMSJAVBmmH1+jaoKA9zbo0QBRTfwK0P0gQyR78MucGpExLb96USWMWalJQAnoE8e7RU4pppYiCrIhmUsOi1bi8AFPwrUe5nf2QXKzn7PsB4Glam5dG6p083OUnEOSog1OGpO3XQ0RcX+EidEsE99hJaoM/EoEBwEGt1kTnhgtTFbVhjYgPzKzGWNVg0IFyHUp7qiDLgn73MYA0bKKsBcEMcxlWlAEwWGChP7zLmmDPQcsdsElGXE/wPsPdT45GIzDq0PwD9ZJZJe3LZ7yF7tVbLuVsHsBJ7MmYGSfilLYDD7OpzWUnyBDfYMxNk0+E+l48tg8pSFe3AtmJF3BOBwR1HjnwyqnFYwXKBLuv5VSuAOquvuBO+TsLHed4IWaUR8H/ygn0Tbufk+qUUDmviGpdEjDidLhWe3nbHn8xTBTK9g96p4vZJOJrK8Nafdka4K/sgYz6yjIABgeD4OeGa5s8Ak5aSwagM2qRPrq6+Rxu8F30NNXanNIo2KHQG3rS3R1MTcFCntEteG+Brq0c2gG77IaheQTNbrS2aTwUcBzJFjfe3YfArj3NUOyGWl6DHFJIsKdXk6fabRh91wo+5X5SdQwC7ZcQfBQutATr5
+ 7IgwOUOY
+ fw82+3UfeJ6MfGH0QQnyKS5DdQJ56U4qPiQl/qk+4o8gFfnPQU5zuhN1qaKuvjyeHPnnHVX2mS0U9/jUWA3LT9RTiFTd2doR9TtXPFyWR4LCqxWuXV8+4aqtwxo+JoPpO7YUOB0TFCBaTPj9V7MUuFdUm8+j1kWEywnuf3wU60bArV6WjXZkMrydfUv61FLzehC24pcptYYFy/ACzoT6e9ponuOm/mGoQ8ksBTrwS18Jnk7ge1nvdN7RHIs3H2DZn+FqidLyZRuFgmfc/eOyn86ryrEqMYVgcDh++r79A6PMPVpyfROxnk2FwJq1sTkAuEBqspms0pA7I8GSbRN5btY5Fcxia7Oi6vmucnFOSyXjhG+wn1RlMXhT/LsoPx0XRQPAYYtHf2DJOwapX1J/XankqOWXHRsx+dbQm0tyKswXoH6OspocDHmjplbv6UGJ3ij+2kXl0m2HWt8sD4tSodP5Fq83kM1f9KDcfRpKZXokfpK/E759djYg4Jkgqbs+sIAcy4RPz3XNScV92PaKvXay9+g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,24 +142,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 21 Jul 2026 20:38:43 -0700 SJ Park <sj@kernel.org> wrote:
-[...]
-> This patch is applied to damon/next [2] tree.  If this patch is not added to
-> mm.git in short term (~1 week?), I will ask mm.git maintainer (Andrew Morton)
-> to pick this.  So, no action from your side is needed for now.  If it seems I
-> also forgot doing that or you cannot wait for my action, please feel free to
-> directly ask that to Andrew.
+On Wed, Jul 22, 2026 at 09:36:14PM +0800, Richard Cheng wrote:
+> On Mon, Jul 20, 2026 at 03:34:20PM +0800, Gregory Price wrote:
+> > +static struct zonelist *memcg_reclaim_zonelist(int nid, gfp_t gfp_mask)
+> > +{
+> > +	unsigned int aflags = ALLOC_DEFAULT;
+> > +
+> > +	if (unlikely(!nodes_empty(node_states[N_MEMORY_PRIVATE])))
+> > +		aflags = ALLOC_ZONELIST_PRIVATE;
+> > +
+> > +	return select_zonelist(nid, gfp_mask, aflags);
+> > +}
+> 
+> 
+> I applied this code change and notice in mem_cgroup_shrink_node(), it calls
+> shrink_lruvec() directly and never passes through shrink_node().
+> 
+> This patch makes private nodes reachable through memcg reclaim zonelist, but
+> what prevents the direct per-node memcg path from reclaiming a private node
+> that has not set NODE_PRIVATE_CAP_RECLAIM ?
+> 
 
+I legitimately missed this.
 
-We (mm community) now want to focus on making mm.git more stabilized and
-therefore ready for the next merge window, rather than adding more changes that
-are not really urgent.  I agree and want to help [1] that.  For the reason,
-unless Andre pick this first, I will request adding this to mm.git only after
-next -rc1 release.  Let me know if you think this is really urgent.
+Sashiko also picked it up on the filter patch:
+https://sashiko.dev/#/message/20260721183528.B4B9C1F00A3A%40smtp.kernel.org
 
-[1] https://lore.kernel.org/20260722133829.87607-1-sj@kernel.org
+If nothing else - implementing this feature has taught me some
+sub-components of mm/ have very well centralized logic, and others (like
+vmscan.c) have 3 or 4 different paths in with a lot of strange quirks
+carved out.
 
+I think some of the vmscan paths can be improved to simplify this
+interaction, but i will fix this particular miss in v6 and come back
+around to see whether we can clean up these different paths as a general
+improvement.
 
-Thanks,
-SJ
+~Gregory
 
