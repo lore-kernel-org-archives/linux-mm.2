@@ -4,199 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4730DC4452D
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 04:39:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74C4BC44539
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 04:42:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F0496B00D0; Wed, 22 Jul 2026 00:39:43 -0400 (EDT)
+	id 5F1D66B00C9; Wed, 22 Jul 2026 00:42:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A17F6B00D1; Wed, 22 Jul 2026 00:39:43 -0400 (EDT)
+	id 5A1EA6B00D3; Wed, 22 Jul 2026 00:42:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 26B756B00D2; Wed, 22 Jul 2026 00:39:43 -0400 (EDT)
+	id 490316B00D4; Wed, 22 Jul 2026 00:42:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E58446B00D0
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 00:39:42 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6A6D91A0352
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 04:39:42 +0000 (UTC)
-X-FDA: 85015159404.27.8E1D845
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012024.outbound.protection.outlook.com [52.101.66.24])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 48126120002
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 04:39:38 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=StBEYEWJ;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=StBEYEWJ;
-	arc=pass ("microsoft.com:s=arcselector10001:i=2");
-	spf=pass (imf29.hostedemail.com: domain of Sarthak.Sharma@arm.com designates 52.101.66.24 as permitted sender) smtp.mailfrom=Sarthak.Sharma@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=3; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784695178;
-	b=l5hxiMefosir0OTOxEtUoZRdS7MnplTFq/zWpiGGC4E7I1QTHswW1YVKXjm4JLQ+zN8eey
-	aRhywEvfNCBgL+Tz7ViZhvCOSp+ehns7S8JvI/YoCqUxK6HeCyo/e8xM+9ygrvM5fqgfi0
-	Dh7zc7641o59ozBn+OSqmTYb/Mt+vyg=
-ARC-Authentication-Results: i=3;
-	imf29.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=StBEYEWJ;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=StBEYEWJ;
-	arc=pass ("microsoft.com:s=arcselector10001:i=2");
-	spf=pass (imf29.hostedemail.com: domain of Sarthak.Sharma@arm.com designates 52.101.66.24 as permitted sender) smtp.mailfrom=Sarthak.Sharma@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784695178;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0E8216B00C9
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 00:42:31 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 748881202D0
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 04:42:30 +0000 (UTC)
+X-FDA: 85015166460.24.6B9579E
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	by imf15.hostedemail.com (Postfix) with ESMTP id CCDE5A0006
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 04:42:27 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="Z+u3/XTa";
+	spf=pass (imf15.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784695348;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wbVgzfA643nPqDQHesnWq3qXC7mpwzDK+W1ThSy3c28=;
-	b=jdI6F4/WfFzBZOuXeWe7Pk9T47SZdwILZxSZhojS5JeRqIrU3jiJ/mNeUaqQ2eUb7CLIeO
-	iN7XD8XsRP6nzzsuBcTutL+4dYP8YlSrJcTnsnDnab7bamcgerqrjJl5vJXlT5Jc8yfQN/
-	qHOYqYEgOA7JNvJdf1tcn4nobdoJSbI=
-ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
- b=SdgRLM2OflaIOREu3gZWVoxelEDn4MnacqQMXCL1NniXo1iqHOukrLyeyBHYaCtnzjbhFq63A1yS/82yd6lQ/roJDTGQjQIvrNVB8dtm1/AxmZAVeKcmX+JCNoKnu0jx+7NRqkkdRLeFfkDs/E/tb3PbfTHY3rnMPin9nKjBcirNhnv9ffj4r3tuPhEBPmB40nNX+snOU3d4i1pM12p5iI6BnnWdLTq567kBRxBoreTpps9p9TN7rva3kc68PFM0AFHUSMZENUNe/07K6j2jKeRok7oj0z7/vyW6q6UAmSu8IbIAbfLPTGIx8l6GSWSUHjV0pjdKf+dGp1B9k8EHpA==
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wbVgzfA643nPqDQHesnWq3qXC7mpwzDK+W1ThSy3c28=;
- b=dF3C7SuZNbIRMgnTQ5aiUvRHzxZ0sRMRcx/unOMvwKSwv6t1xR3O9O6KynippLlP0dPyrmogUCBFyL4zBXr9T0uvk4LYKP2Y464xsGUuSMnNxXYLcWbQveMV+SfHytEpGldf9tTyaqifvw5AvzWd28Q7g0TmZaipnlOgZXrDcvETZ/1uqZNJJ8mNK12IYl2dl8xkQtZOIAX/XDCBBJv7tVR6OVEfnBrpE2ZPHxElRi4ykVGiq7B48LpNScU8hSk87yZRc1YKac4C8IbU7LtP6nXkPvO6hnD35MZuAGHwUdkNKz03imFB2LR+Wr4PRzVYhB3PdDAKIF93g1vR5IPIDQ==
-ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
- 4.158.2.129) smtp.rcpttodomain=kernel.org smtp.mailfrom=arm.com; dmarc=pass
- (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
- (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
- spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
- dmarc=[1,1,header.from=arm.com])
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wbVgzfA643nPqDQHesnWq3qXC7mpwzDK+W1ThSy3c28=;
- b=StBEYEWJAuLUc5VBPzl4/IaWY+RtuAEDsIb4vs6fPPYQmxo5RrDtV4Jac8hZEGzRarT+mwILLV2qzkRi/nBM+5slD+2JNYcKLpeNC0ef7+JF8/d11IXtXCnBIB0+ZzkxEz3ucKIKaoSVX8ejVTP8/7KK7UWribxWJblWJxhBcV8=
-Received: from DUZPR01CA0034.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:468::10) by PR3PR08MB5627.eurprd08.prod.outlook.com
- (2603:10a6:102:83::10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Wed, 22 Jul
- 2026 04:39:33 +0000
-Received: from DU6PEPF0000A7E1.eurprd02.prod.outlook.com
- (2603:10a6:10:468:cafe::77) by DUZPR01CA0034.outlook.office365.com
- (2603:10a6:10:468::10) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.245.10 via Frontend Transport; Wed,
- 22 Jul 2026 04:39:33 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
- smtp.mailfrom=arm.com; dkim=pass (signature was verified)
- header.d=arm.com;dmarc=pass action=none header.from=arm.com;
-Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
- 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
- client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
-Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
- DU6PEPF0000A7E1.mail.protection.outlook.com (10.167.8.40) with Microsoft SMTP
- Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.245.5 via
- Frontend Transport; Wed, 22 Jul 2026 04:39:33 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UjNYp9SA0PnhBqLKLZ2Z/VW4Neg+NhuJW548ir7JAK6WcGY63Fuc9o7mrzWsH9x5ehl22UwAPDDgDob1GUk0g+HyJK+0YG3qi8VFqvEixH1Q3wzJCkx0SSIgnOA4IZpqg/l6/yOCxZWqhyoGzdB4x/99Tb71wF9wVH9OX3jXbUjkE+jmlL3oBFoKHPU+d5TxoqHytiujuJoMUnbDjeWZDHGOR+hf5RBgO6PfWq3uvS1UghahchzyNiIOuTA74TVgrZz1QdQcuVMc2R3WDsj0P9Lyb5r3yBVVe9BQsyW+NEtKm6crh9bRjLq3rEzeToTdczA7WUuqG3YC/wsLQi1HvQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wbVgzfA643nPqDQHesnWq3qXC7mpwzDK+W1ThSy3c28=;
- b=kxaiVa1UCT6N/1ivyZII+J4eHQT+s9fUFfZM24vbIuHmNVe88A5lzaVGLsWRP96woWOl7KT/FsBfYkgY/mB8vt0XLn3jfXpwM/JOifE+j9Gti4KgcNf+uGaXU/D1VNykRBCY+868ekqYiK/yQIaVdQ1ldWdE44qlbvZuiM8Arkmsd49RAYE4LnV2LQlQg04ks03SEaS+92ZEzXAL/2OHo3sV8vtx4Dwc8D8jWGZjYC0A+9KNgj+IW6IhyHSu81gGAEnOFWMz7ykLXMDPWIuVHnriDNXWpwxZacvzF5M+L4L7fTyPiBzFFE+NiMm9w5nTQO0jp8uWKfWYVd13SJ4nSA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
- header.d=arm.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wbVgzfA643nPqDQHesnWq3qXC7mpwzDK+W1ThSy3c28=;
- b=StBEYEWJAuLUc5VBPzl4/IaWY+RtuAEDsIb4vs6fPPYQmxo5RrDtV4Jac8hZEGzRarT+mwILLV2qzkRi/nBM+5slD+2JNYcKLpeNC0ef7+JF8/d11IXtXCnBIB0+ZzkxEz3ucKIKaoSVX8ejVTP8/7KK7UWribxWJblWJxhBcV8=
-Authentication-Results-Original: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=arm.com;
-Received: from DU0PR08MB9203.eurprd08.prod.outlook.com (2603:10a6:10:417::12)
- by PA6PR08MB10419.eurprd08.prod.outlook.com (2603:10a6:102:3c8::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.18; Wed, 22 Jul
- 2026 04:38:29 +0000
-Received: from DU0PR08MB9203.eurprd08.prod.outlook.com
- ([fe80::f1e:73f2:57df:4047]) by DU0PR08MB9203.eurprd08.prod.outlook.com
- ([fe80::f1e:73f2:57df:4047%6]) with mapi id 15.21.0245.009; Wed, 22 Jul 2026
- 04:38:28 +0000
-Message-ID: <86fbde8e-c0dd-4ccb-8890-210026ac6756@arm.com>
-Date: Wed, 22 Jul 2026 10:08:19 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 4/5] tools/mm: add a standalone GUP microbenchmark
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
- Shuah Khan <skhan@linuxfoundation.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
- Leon Romanovsky <leon@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Jonathan Corbet <corbet@lwn.net>, Mark Brown <broonie@kernel.org>,
- Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260716123226.197736-1-sarthak.sharma@arm.com>
- <20260716123226.197736-5-sarthak.sharma@arm.com>
- <4665dd2d-99c8-492c-a4cf-b72028317d0b@kernel.org>
-From: Sarthak Sharma <sarthak.sharma@arm.com>
-Content-Language: en-US
-In-Reply-To: <4665dd2d-99c8-492c-a4cf-b72028317d0b@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA5P287CA0194.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:1aa::6) To DU0PR08MB9203.eurprd08.prod.outlook.com
- (2603:10a6:10:417::12)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=EXek90LKAYTRZaSZMMcyYht1LmNZYnszoNkDm2vSwWY=;
+	b=e6jnInKTPx6gzZWHxOUa3BKbnzV5ps1X/MKJCK15VKim7hL8nfr0f859gG/dMHNYd7gMVW
+	4IM89zWg8FhEkTm7OieMesQpwUrW78zvRiUOHSQft3j+L8N03dXE4L3manzq2ZutY2zv63
+	fJYBiQm3QyEGIDzHD7vh3Bh+ApYEDx0=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784695348;
+	b=jZ4CMgylH5sv9ylndGJeaO+fIUMJYYB6pmVCaIuZx0zaSFtiFIg6bBx/E92m+jhdy2la7A
+	WCu25i2oIq57Z5YzdvJjIWdIvpiWDbwjgARwBEYiqDo3fSblswMm3b5B2Nx69qkYDuSl7I
+	cpaq3cddX+bz80NKEmq6pLBP0gukUeg=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="Z+u3/XTa";
+	spf=pass (imf15.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784695348; x=1816231348;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=egqyx0xIHYO6pVjtq79Q7C2oe7YYIs3Mzn5MdOs14pI=;
+  b=Z+u3/XTaoSYSvPiK7UWN6QJfhDNOXbmdtTVdCoakHxebargmvGY602Zp
+   8PSnVlGF6zTobpvMvxr36Bmfy/qPQqXWqTW5Eyiv2FBa5vnwpgtSYJdeM
+   zTyAFVE57uAoNGtoPaniPyLq6mBMutGoUj39jP71zJjHgs0gS/YTZUjTr
+   HTGoyBsxtQI3xpwsC50fFLMiuB+zhRiTD1Ry6BA0iHEa2EsOQQVUvvEvf
+   hdU6Zk87WgUVTGmhsthg3+GErE4M4KHJdvoX011KdO7SYs/6HMG3UXadk
+   tIkMfJyyhSGOJCqwyGjEOAqFUNdK1pAdppfSDuB+4xiXfAUx30pZjWo5B
+   w==;
+X-CSE-ConnectionGUID: nBwlIeWHS0m6lVz1LbL3rg==
+X-CSE-MsgGUID: jS95LRSGT3ugnc09qFRofg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11853"; a="102865781"
+X-IronPort-AV: E=Sophos;i="6.25,177,1779174000"; 
+   d="scan'208";a="102865781"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2026 21:42:26 -0700
+X-CSE-ConnectionGUID: f5jNSLotR9G+hsgBQa+nlQ==
+X-CSE-MsgGUID: NNhGkjL0QKOHHVPYPaELjA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,177,1779174000"; 
+   d="scan'208";a="254063555"
+Received: from gsse-cloud1.jf.intel.com ([10.54.39.91])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2026 21:42:26 -0700
+From: Matthew Brost <matthew.brost@intel.com>
+To: intel-xe@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Christian Koenig <christian.koenig@amd.com>,
+	Huang Rui <ray.huang@amd.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	Dave Airlie <airlied@redhat.com>,
+	Matthew Wilcox <willy@infradead.org>
+Subject: [PATCH 1/3] mm/huge_memory: add folio_split_driver_managed()
+Date: Tue, 21 Jul 2026 21:42:18 -0700
+Message-Id: <20260722044220.1110278-1-matthew.brost@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-MS-TrafficTypeDiagnostic:
-	DU0PR08MB9203:EE_|PA6PR08MB10419:EE_|DU6PEPF0000A7E1:EE_|PR3PR08MB5627:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9600c2b7-ecd2-4c3a-684e-08dee7ab39fa
-x-checkrecipientrouted: true
-NoDisclaimer: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam-Untrusted:
- BCL:0;ARA:13230040|23010399003|7416014|376014|366016|1800799024|6133799003|56012099006|5023799004|11063799006|10067099003|4143699003|22082099003|18002099003|3023799007;
-X-Microsoft-Antispam-Message-Info-Original:
- 2OUZAElBtVTWThM0joqZpB9oKeyoiLZ9LFxLzti+xl/FvxwVnRDyJQpJezay0GDDsba5IgbuzWtOMFjhUFQR8xdoIys5y2gH1/KAq+Mq8AKaea7H9JK2+OS0/ggifeBO6AcfmjfIQqQLMk0tUkscmmVg0QG/ajgveiiDgh1qFJC9MiuCaqr4Uj6gX02W3nr37fkmPE9yXHHl0C1QxP4F5F5ISgNV1sCu0MZtrRRwZ7FlSHFyF33c6lr2jM/407uBuiaqOnM4s8Vl/5cHKmRIagA3nQ8eNr5l5xvLvXJQGPvq1LZ149GZ2ESL+7+8iA1kU+vhBzDZXFVw31ELFw8mDMDWtjqqmw6qJF8Qz6p+2/uQhKhnGfH6lRd610AOZ7a76wiFXV3E0K988kbJ5UlTV8XTYRVxOdLBeAs2F5EPr9I/ZtSETqrSLD70loJ7pOi4jgNDM5MmYRDYTmHeACEAfgT7W9ly225LFswW09oaAXBclzATwHJOUpkARmBLnog9f8mNXXKd0/MmbPCKAiyCfRWWMwQNT2dlLPZRByQFod8kVk96FjilV4i0fyMHYW5jK++gujGAwq0yd4W7WQFmkFHDuAAuQQyst4lJmVfyUxbnmTNMmWf8Kws2/0Lp4yqAe1b17sFnpYOf87C0r6gnmvPD95oE4loeDKJvuIrTXjM=
-X-Forefront-Antispam-Report-Untrusted:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR08MB9203.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(366016)(1800799024)(6133799003)(56012099006)(5023799004)(11063799006)(10067099003)(4143699003)(22082099003)(18002099003)(3023799007);DIR:OUT;SFP:1101;
-X-Exchange-RoutingPolicyChecked:
- N5vYVNZrjFUFMwDseatsbS9OLmInSObjc2fgoUG7l9U8WcUE5Dx9obEAqTYq9dNjf7JUEFaUugyl3zlxnQvUAMfCgDmKvRNforPYQLE5gOV5EwHlEw18DwSk4YC9r9i2DiSs1LEhtKwMruFrjfTjIRnBltC6QCHMoDliBeMDyKW8as65N3ZOCbSCWhppxKGnkQQVcGGGsrwmsf7IluiDZx/ckoLzQeP8TfvP6ZGAmpT6NnNsqxdZCnUB/oYuDLvuHHtb/aNdljYJIPX4b9od+ZI/a7RSAG+touvHpSc3aaJdEcof9q8gyfKYnJ/viz84sxCNtVvk7he2peoEFnOBcg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA6PR08MB10419
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped:
- DU6PEPF0000A7E1.eurprd02.prod.outlook.com
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id-Prvs:
-	284b1811-ae0a-4443-dd17-08dee7ab137e
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|376014|7416014|14060799003|35042699022|1800799024|82310400026|23010399003|10067099003|5023799004|11063799006|4143699003|6133799003|56012099006|3023799007|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	2tH/pJNdiUiRB1WbsWMajN7fZqILdg3FLQ8NvBV7YjeKJL4DXpJqEnD7X7hYP0yQLVcBTtrTKFysyLdwjU6CaVFoS+NcH46ZWLGgQI1ONdpxLNfcLaxA4ofTX7epXJ5AIgqFkVhUvUyV1s2uCtRF30mj+wk3i57yGwCq4raffPhW6YLOUxM7cDtTKKg1BvMGne1H9FqOroIkmlsHfqOA1MoZyGtPMglfm+0dowpUIaORzlqHUqUUcD7R7QqYJ7hUQJDAowkJUAXquXQsaa/NklHbLT3NvgDuIgZRDm6qflaoqemqqFJvArCMdO91yexO2AcdtAQNYj45AZDDh3+PW8bsXJMRrHWVCf5XOnV6bPxVw4ujg6Jr6hu9AfYbIGXRh9Ym/s04gVHTiFnElNSHQGnOWBXqg+8br+ct2SxNGIN2FdMTHqGxajzQesYG51HKKPw5ycRuZNLUL4IuIigaDgOPTRJg2VrFA24V8PK9seALTPWk1O7l481/hsmP5ESV8a3fDx4O3jkKnHHxYYZ42eB9t4BhK8CtBpAzrtuHIRF5UxCs8Mw30EiCSZkhSoXz2iwFc/N7F7Q+adXyNE8XqebtWuGFNx3LkqOad0Ps7fsyoeV+7dHB5+aa1wdFJFmzggej5eXbVwul3yWkMNg3IvSbzPso4D31BBe1p4Bg2QKPN3pWT8bhex42bFAqG6cqrI1jQ8ibC2CmOhKXyj9i6w==
-X-Forefront-Antispam-Report:
-	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(376014)(7416014)(14060799003)(35042699022)(1800799024)(82310400026)(23010399003)(10067099003)(5023799004)(11063799006)(4143699003)(6133799003)(56012099006)(3023799007)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	GOfR846pfyiXmAKXGucd6FlPI56rRLPZlfmrGOuqETQ/rs+wFxVpm3OUMJcrcs2TFQQ1hngcMIsIlI6Btf4hgQyEtTXjoMqYK1tzfeEHLbTqdKIPyHmRqrhLDFHGx0z4XL+ZIJlym+Z8huQrwxw3Hzo+yOLQwv03XG5WqMXzlGCs+WhZV2v7iRMXOvDd17OTpe8zGMW2k6DXvQ091nGkHhNco8go9DUoPjJjFCwcF1iPWcM1KhOxQ+nUUrN9MWtMw+rvhT5Y8/QVEVxHYYOUR/zsaZO9ixW4OZxfUu11uuMxKttSvrhY9LgUxMMbIlyLZQD8WVhCMMmvfzBeS3xpVT7I4ExirQAsZdFvPMTYYgKgYbYNJfo7LxcHA73FVE+oAl0QbyXyQfSZdC+7qA2m0VJWoPkDsXCjx2yINvFNDZ9KdbqdO8y4h34YFWJqCyzw
-X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jul 2026 04:39:33.0338
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9600c2b7-ecd2-4c3a-684e-08dee7ab39fa
-X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DU6PEPF0000A7E1.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR08MB5627
-X-Stat-Signature: yopt5nxdftcgujdprxsqkrbd1mmn8son
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 48126120002
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: CCDE5A0006
+X-Stat-Signature: uamaq6t1k3mhe5bs69knmdx6xqw7e1i5
 X-Rspam-User: 
-X-HE-Tag: 1784695178-14758
-X-HE-Meta: U2FsdGVkX1+h8OShRZntMZwWLVfM3ZDySj9uocH1acx8+35+9xDiTYYyRica5fVr50XwfB+WUWEYQwU4SPRNS7uF7aMbBYVbvVHSVRn496IU8F+0Vn3DBr1o6V7b/kaK794zcWRZiaaNu6MPErFOxIjnw6ItdWhK+Puh3WKDJagNOhH8Xsa4SvqDrybChnzozXcJQGQ+gGzROBeRLlAgqHmBr9lqhKR4QtVD0/sPm6kS/+70WSnOFEKa+6Q31V5tg6NeEKCjnGG6hKPv5WnksCdqTRb12eTvrbK3KPIb7EH63fulyojUskViDM3AdXxZ2RdvmkSsSsXdk/XjamnZFDoAYz7bEmCcPPOG1lw/eKcaQ0bd0Za0eTdTCYR2FfTAGE2xLgJ1Ef+VeDrdi8oAyPHJEUzV03B6nbuP/spveLZYDOje1hKq7nfdC6XMQQZ5O8Vndgu5klqnsYnh6L089yFZiE/RhGe4oJOOAKDn0mY62l2E3oYw7yUtEEf/2/BU9614wMJpAhWeBY+hOydHGDPqWVT1Rsw0tkRJEj0ax0Rd3q4UETlBk8oiTxkn8//izLWEbKfVqgFwDJJ0+9ljnrf9dH9lz4Fo4t1de8t6DzFR17asQzKgS5HPB+tux0NFCy2I6BWMel+kSO1o1wz38CUDvZiDUYN5bUpJTQaAYdwrzReYQ7RVKSdNO7nIMiKSu9uqwej0ZwvzTDpFsDhdDknAgpluKoXYObXq4iYbTcliJmDkl1jvcuDNS8o2pViMKAAsHbNqG7XJZj2fBjaTto0oUBlGSdfab6hzEjVZww9AQ00j+UpkHN8nM1TiS2r7y0Bnx3xbg3L1gUli1DQzH4d62sBxrwsSeCpGxIWywAFN4rUX2esbjEnbcAd84fO5Hi2d/ujY63dvMMcoxH1USTPEXkeBS31ZEQV6gAWDLRHaMKRa4ccefnwqZUHG96RLNBK/P3JRmAgKYPHN9bv
- /5RlzN64
- fe+J1OlVXuY+WyD2fJGhUc7tzJvrUTs07b0aqqcNOukZhySpyC/IEddgvEFXoB1xnHJs6jkHGPy2ajHpze09n7aIsGQfok8j4mUl5jV5dSaYhttdsbdZYo1UNyTgLrfVMneuMEPBAgwjdJjRCuOgj3kZN0HQz3jSIGrxrPz4/NeZpvGuW/TYj/cp0gXRBFU6t2YTVx+hiBwIN5XhRaMqkYFS10VXU1FzFIKo+MfTf8IzR70GOlD+yrK1H8dP7mQ/x2yMrIfdIRwuoScDxZsThIr8W7ZtOx5DWyhrYryoYHgXQZHFDAmBxX6pkG79ETxOz+YdZDuoaS7Gqsgo6UfXmMxeBfSHVqqEo0+r6f8klVLndicAq0pXMOFdfbJURGSAnvA6133ILTnQOUnYGgG2SnCww7iwSErAgNA8hY6cppF4BVqSEc3e1cuHgdtwMsX1fRdvOEXGKa0M1/5nR1fIcuNZetPxL0nKAvmAmbNnO02NOClR2Jkciq5WNhZpUZYQwry2sxMCUwfbike+6LEPb5qx9BJj8FPFeASIVF6sPr8VC90N0knekMiDB2zFAOT2l181ctkTkcVTpJNqph63IHGPdEbrtI1yc42pQ
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1784695347-234100
+X-HE-Meta: U2FsdGVkX1+ydqabGRgcQLLKXMQTyS7ZFuuFXQU/cUBgT4V5WZYXcyNEkpkzjXjn4THvpvpTxD458zujtYJWCOnBLOPp3qnn3UHvw648Gi/PxETjI4WdWH96JSymRv5L0lL/Y86T/zluH9MIytP3MsYx26eLr91iOOdmi/aFTXtG4xKCMG2i7CpUvopka9oTmvSaGJPa22x2Eoce5eIJO+6HVrtvh43p/Zye1g4P/k4f6WzlpTgMxxbRxeU4jjL2nSM1D1VywfAFasnp4rfUp4FK/Ph0bLYYCTBwRT7BD9gKKmiRZ7St5CQFrC99Xq7fRsC1zcVfiRsV9peWMQkbkTe9pcTNBUvXPLR5KTTwYS/W+Zo/9BZPVB/Xx4EfU/3PD4Per2i9Vaf9kXRC64VUHSNt0ozRooTxjh+GrDm6lWixYFg6ptUsz4OnlEVydVxC32lnJgD68eNHyYgAoyz/kc0iJZamwnzBHVo8NTXey8OZhFwMrV0DXQ4rGR+L4ts4j38UggLKv1/hscVqpJrhvE8Oy/4uSBJsMeItOzs1/YaJW2xst4JxIp51d81FXzFWaqug8UNaLen/lv+2Lex3UpvbfnUNLd+nOTgm9NOVkgPbrb44h6sDIsAvEpoiA/h+L5VTNYtNrVaBQF4/90Q3aI/SXC3m2N/XjdkF2JgWFbx2fTDXYnMFw/CGXdVFjMn5/8QBUCKPSg00J3aocx6fh/c3+rn3ASAXdPRqXcqTI2VVApEp3WyrLJvkBhQO4yFYrgOrybTCdCWtu7wESVYDkmPzNnmOZSF4STXH7duaq6laRCse7YzsSodhS+pZBX9iPJdU0mliFxtidw84DpuvCEv3KO227xC0sOVq4cik7P0ZHjL0lVlc5VsKXpX4uxKdeXgDsycN06pqmaTwhv56dypbxbGEVs5VNAW00lf2IAEZ7kafmXE5HHHjDIb18qryxniE6Hctqm0xK9oWNBY
+ iuJrN87Z
+ MKdB1K/nX+mx2pbfoJCcv/A+ivlA56RXpOMJqYjoWQ4ABb5KGPfYVObbAQdiqR5LZGnPQzpKyUCeNYSAw/xJid+xzWIGxSFWCcSdnbH86iU+qtIOTJ9XemPNCpZe65+AF9mPTxzkEHseFfeXw7lw7qvMe2jG4h5Y5eCbbtdbng+xyJe2UZf5qP4NdtUfjNSajx8EdzGMhoMZvKvoetab9R5xnTAcMyQQinDAKXqBNKLP3ljy/kTg8L1GTJNrfuCScwCFxwUpin9lZuCwSw2AiBpWrPCgoL1STpdHa1nhcXw+LNrmRXQODBwtaQ0gd4MoHT3qZYKU1JfXC6tag4xSZ8ZxRsqbu+rzP8hif2PcbjGpySg2Z80NQPzERGtUnRqSR2Q8W1m1PFZUcDUHYpxKEsPmZraIl77OIVGRAwGLPJliH5wezgfRmxNhPzIlrMQYqj5iVr3FSU6aYccd2CxqC0uKi7pOyZQrBUz4SA1C3QHgPre23UCAsQH1Zh5wCT8UGh6D8ig+CNiUW6XAgehzyrZJ6i2SRkyxz1R3CTkVQ82arVjfdS1wbPzaYDi4YPxnydTYyWkm7JOXUFZEyTGGZ0XZ7BqINyryakOSq2pqoevIlhSCCLPG+wnVLfWRO34rhwvFC3U/wuFTg/r3825KiIdMqzqfQmkQ1o5JzNKd8oKESofubq12iYyxmqnIlpPLR1RGfw1x/zwfpi38HaL8SLIC4zw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -204,104 +123,178 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi David!
+Add a lightweight structural split primitive for large (compound) folios
+that a driver allocated with __GFP_COMP and manages entirely by itself,
+outside of the core mm's view.
 
-On 7/21/26 7:22 PM, David Hildenbrand (Arm) wrote:
-> On 7/16/26 14:32, Sarthak Sharma wrote:
->> Add a command-line tool for benchmarking get_user_pages fast-path
->> (GUP_FAST), pin_user_pages fast-path (PIN_FAST), and pin_user_pages
->> longterm (PIN_LONGTERM) via the CONFIG_GUP_TEST debugfs interface.
->>
->> When invoked without arguments, gup_bench runs the benchmark subset
->> of configurations covered by run_gup_matrix() in run_vmtests.sh: all
-> 
-> To we really need the matrix in there? The matrix was good for selftests, but
-> not when using it as a benchmarking tool, no?
+The existing split paths - split_folio() and folio_split_unmapped() -
+are built for folios that the mm owns: they perform a refcount freeze,
+walk and remap the rmap, and take the anon_vma / i_mmap locks, and
+folio_split_unmapped() further assumes an anon, pagecache-style refcount
+model (nr_pages + 1). None of that applies to a folio that is:
 
-Yeah makes sense, I'll remove the matrix part.
+  - singly referenced (the caller holds the only reference),
+  - not mapped through the rmap (folio_mapped() == 0),
+  - not in the page cache or swap cache (folio->mapping == NULL),
+  - not on any LRU or the deferred-split list.
 
-> 
->> three GUP commands across read/write, private/shared mappings, and a
->> range of page counts, with THP on/off for regular mappings and hugetlb
->> for huge page mappings. Restore HugeTLB settings after each hugetlb
->> benchmark run. Validate numeric command-line arguments instead of
->> relying on atoi().
->>
->> This tool is a mix of reused and new logic. The mapping/setup path comes
->> from selftests/mm/gup_test.c, while the default benchmark matrix matches
->> the benchmark subset of run_gup_matrix() in run_vmtests.sh. The standalone
->> CLI and tools/mm integration are added here and the HugeTLB setup code is
->> shared via tools/lib/mm.
->>
->> Add gup_bench to BUILD_TARGETS and INSTALL_TARGETS in tools/mm/Makefile,
->> link it against the shared tools/lib/mm hugepage helpers, and ignore the
->> resulting binary in tools/mm/.gitignore. While here, also add the
->> missing thp_swap_allocator_test entry to .gitignore.
->>
->> Add tools/mm/gup_bench.c to the GUP entry in MAINTAINERS.
->>
->> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
->> Signed-off-by: Sarthak Sharma <sarthak.sharma@arm.com>
->> ---
->>  MAINTAINERS          |   1 +
->>  tools/mm/.gitignore  |   2 +
->>  tools/mm/Makefile    |  10 +-
->>  tools/mm/gup_bench.c | 482 +++++++++++++++++++++++++++++++++++++++++++
->>  4 files changed, 492 insertions(+), 3 deletions(-)
->>  create mode 100644 tools/mm/gup_bench.c
->>
->> diff --git a/MAINTAINERS b/MAINTAINERS
->> index 26b06d80ab45..7d121dee9f0f 100644
->> --- a/MAINTAINERS
->> +++ b/MAINTAINERS
->> @@ -17024,6 +17024,7 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
->>  F:	mm/gup.c
->>  F:	mm/gup_test.c
->>  F:	mm/gup_test.h
->> +F:	tools/mm/gup_bench.c
->>  F:	tools/testing/selftests/mm/gup_longterm.c
->>  F:	tools/testing/selftests/mm/gup_test.c
->>  
->> diff --git a/tools/mm/.gitignore b/tools/mm/.gitignore
->> index 922879f93fc8..154d740be02e 100644
->> --- a/tools/mm/.gitignore
->> +++ b/tools/mm/.gitignore
->> @@ -2,3 +2,5 @@
->>  slabinfo
->>  page-types
->>  page_owner_sort
->> +thp_swap_allocator_test
-> 
-> ^ Does that belong into this patch?
+For such a folio the split is purely structural: because nothing else in
+the kernel can reach it, there is no need to freeze the refcount or touch
+any mapping. folio_split_driver_managed() therefore performs only the
+compound and split-accounting teardown via __split_unmapped_folio() and
+then hands each resulting order-@new_order folio its own reference,
+mirroring split_page() for compound folios. The caller keeps the original
+reference on the first resulting folio and is responsible for freeing all
+of them individually.
 
-No it's just that when I was working on v1 of this patchset, I saw that
-this binary hadn't been added to .gitignore so I added this, since I was
-already modifying .gitignore to add gup_bench. It has stuck around since
-then :). Will drop this from here and send a patch separately for this.
+The immediate user is TTM's GPU page pool, which allocates higher-order
+compound pages, maps them into userspace via VM_PFNMAP (never through the
+rmap), and needs to split them into order-0 folios under memory pressure
+so pages can be backed up to shmem and freed one at a time.
 
-> 
->> +gup_bench
-> 
-> I wonder if it makes sense to "git mv" the existing tool (only slightly fixing
-> header inclusion to make it compile), essentially removing the old benchmark.
-> 
-> So it would be
-> 
-> 1) Move tools, fixing up includes and removing the gup testing logic+matrix to
->    make it compile
-> 
-> 2) Extend tool by XYZ
-> 
-> 3) Add completely new selftest
-> 
-> Because looking at patch #5, there is not really any code reuse there, but I
-> suspect there should be some in this patch here when moving instead of copying.
-> 
-> That would make this a lot easier to review.
-> 
+A CONFIG_TRANSPARENT_HUGEPAGE=n stub is provided so callers can build
+without the split machinery; it warns and returns -EINVAL.
 
-I agree that this would make it easier to review, but then there would
-be an intermediate commit where there is no gup_test selftest. Is this
-fine from a bisectability point of view?
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Simona Vetter <simona@ffwll.ch>
+Cc: Christian Koenig <christian.koenig@amd.com>
+Cc: Huang Rui <ray.huang@amd.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: "Liam R. Howlett" <liam@infradead.org>
+Cc: Nico Pache <npache@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Lance Yang <lance.yang@linux.dev>
+Cc: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Cc: Dave Airlie <airlied@redhat.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org
+Suggested-by: Matthew Wilcox <willy@infradead.org>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Assisted-by: GitHub-Copilot:claude-opus-4.8
+
+---
+
+The patch is based on drm-tip rather than the core MM branches to
+facilitate Intel CI testing and initial review. It can be rebased onto
+the core MM branches in a subsequent revision.
+---
+ include/linux/huge_mm.h |  8 ++++++
+ mm/huge_memory.c        | 63 +++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 71 insertions(+)
+
+diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+index ad20f7f8c179..35661d82d54a 100644
+--- a/include/linux/huge_mm.h
++++ b/include/linux/huge_mm.h
+@@ -402,6 +402,7 @@ enum split_type {
+ int __split_huge_page_to_list_to_order(struct page *page, struct list_head *list,
+ 		unsigned int new_order);
+ int folio_split_unmapped(struct folio *folio, unsigned int new_order);
++int folio_split_driver_managed(struct folio *folio, unsigned int new_order);
+ unsigned int min_order_for_split(struct folio *folio);
+ int split_folio_to_list(struct folio *folio, struct list_head *list);
+ int folio_check_splittable(struct folio *folio, unsigned int new_order,
+@@ -656,6 +657,13 @@ static inline int split_folio_to_list(struct folio *folio, struct list_head *lis
+ 	return -EINVAL;
+ }
+ 
++static inline int folio_split_driver_managed(struct folio *folio,
++					     unsigned int new_order)
++{
++	VM_WARN_ON_ONCE_FOLIO(1, folio);
++	return -EINVAL;
++}
++
+ static inline int folio_split(struct folio *folio, unsigned int new_order,
+ 		struct page *page, struct list_head *list)
+ {
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 2bccb0a53a0a..06f9a5f35df8 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -4185,6 +4185,69 @@ int folio_split_unmapped(struct folio *folio, unsigned int new_order)
+ 	return ret;
+ }
+ 
++/**
++ * folio_split_driver_managed() - split an exclusively-owned, off-LRU folio
++ * @folio: folio to split. Must be a large (compound) folio that is owned
++ *         exclusively by the caller and is invisible to the core mm.
++ * @new_order: the order of the folios after the split.
++ *
++ * This is a lightweight structural split for folios that a driver allocated
++ * and manages itself (for example TTM's GPU page pool, which allocates
++ * higher-order compound pages with __GFP_COMP and maps them into userspace
++ * via VM_PFNMAP rather than through the rmap). Such folios are:
++ *
++ *   - singly referenced (the caller holds the only reference),
++ *   - not mapped through the rmap (folio_mapcount() == 0),
++ *   - not in the page cache or swap cache (folio->mapping == NULL),
++ *   - not on any LRU or the deferred-split list.
++ *
++ * Because nothing else in the kernel can reach the folio, this helper does
++ * not perform the refcount freeze / remap / anon_vma & i_mmap locking dance
++ * that split_folio() and folio_split_unmapped() require. It performs only
++ * the compound and split-accounting teardown and then hands each resulting
++ * folio its own reference, mirroring split_page() for compound folios.
++ *
++ * The caller is responsible for freeing the resulting folios individually.
++ *
++ * Context: caller holds the only reference and excludes concurrent access.
++ * Does not sleep.
++ *
++ * Return: 0 on success, negative errno on failure.
++ */
++int folio_split_driver_managed(struct folio *folio, unsigned int new_order)
++{
++	unsigned int old_order = folio_order(folio);
++	unsigned int split_nr = 1U << new_order;
++	unsigned int nr = 1U << old_order;
++	unsigned int i;
++
++	if (new_order >= old_order)
++		return -EINVAL;
++
++	VM_WARN_ON_ONCE_FOLIO(folio_ref_count(folio) != 1, folio);
++	VM_WARN_ON_ONCE_FOLIO(folio_mapped(folio), folio);
++	VM_WARN_ON_ONCE_FOLIO(folio->mapping, folio);
++	VM_WARN_ON_ONCE_FOLIO(folio_test_swapcache(folio), folio);
++	VM_WARN_ON_ONCE_FOLIO(folio_test_lru(folio), folio);
++
++	/*
++	 * Structural + split-accounting teardown only. No mapping/xarray, no
++	 * refcount freeze: the folio is frozen-by-ownership already.
++	 */
++	__split_unmapped_folio(folio, new_order, &folio->page, NULL, NULL,
++			       SPLIT_TYPE_UNIFORM);
++
++	/*
++	 * Give every resulting head folio its own reference. The original
++	 * reference stays on the first one, exactly like split_page().
++	 */
++	for (i = split_nr; i < nr; i += split_nr)
++		set_page_refcounted(folio_page(folio, i));
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(folio_split_driver_managed);
++
+ /*
+  * This function splits a large folio into smaller folios of order @new_order.
+  * @page can point to any page of the large folio to split. The split operation
+-- 
+2.34.1
 
 
