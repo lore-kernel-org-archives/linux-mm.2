@@ -4,119 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09F06C44536
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 17:34:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6011C4453A
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 17:37:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F397B6B007B; Wed, 22 Jul 2026 13:34:20 -0400 (EDT)
+	id 813616B0088; Wed, 22 Jul 2026 13:37:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F113A6B0088; Wed, 22 Jul 2026 13:34:20 -0400 (EDT)
+	id 7C3D56B0096; Wed, 22 Jul 2026 13:37:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DDA626B009B; Wed, 22 Jul 2026 13:34:20 -0400 (EDT)
+	id 68C796B009B; Wed, 22 Jul 2026 13:37:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B56486B007B
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 13:34:20 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3E4791201F4
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 17:34:20 +0000 (UTC)
-X-FDA: 85017111480.11.FA7AF2A
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 0D0141C0010
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 17:34:16 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=I2wb8lkB;
-	spf=pass (imf20.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3DA696B0088
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 13:37:54 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BE51F1A01C1
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 17:37:53 +0000 (UTC)
+X-FDA: 85017120426.08.D4F1832
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf08.hostedemail.com (Postfix) with ESMTP id DFF34160004
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 17:37:51 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=QAyoeG7P;
+	spf=pass (imf08.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784741658;
+	s=arc-20220608; t=1784741872;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ffF1YtoR/cZxAVUPZ8SrWZR3GBHgYP9GM5ARzRAhO38=;
-	b=HRKNzhxMZoR997J3tRmI3dFAeH6zNFzPTuiPQa+iZzFGI9CCDebA2Yh/4P19VwhdN2jRXp
-	/jiYxnia6v/eqqamZwJm/jb9aGPf/YF3E5NInqwKKoOwG/7d5UsKsPPl/wlKbYvgugOSdm
-	HgtZp81/4+SndV5gsZfcZxb7k1GmXNo=
+	bh=9b0lYAChp/dlK8UrMEe9sgRuRXi4DJ+u7ef6sfSwFo8=;
+	b=vpwwbi1jD/eVWnDrMlgGYXfLfPVVu7jTVkD8SglC6W5jUZKbffurIIRkBCQWj24UU/5dnY
+	a8dul+UQ+MR5pN9TdziFg4IU+jFG+w+oINhqi954zVBXtlvz7R25+KLH6nlUmI3mu0Bg8b
+	e0KGqx5P+zm6t6OvCqjZlwBSkCJhNls=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784741658;
-	b=2rHXGM5G3TB7XgjaF42EA6gjDIT7qjm8rMjYW2R/OJ2CQBwtOiJeUS3FNVfdh1p724tDCF
-	EuHd0nvOjQKCX7HS24TzHWl2hwvMJvccjmrx3IpzECecmBn7dDFLA2dkmnf5gNzr8lMI6U
-	BlFPHGQbkDNSlpQRXX/c25cZLcvZQZQ=
+	t=1784741872;
+	b=2PG3g485n2g2igkUkKfTaktIzh2WMINJosHz2cvJtfiD4HWDoZEhSnraH3urL70BcZDT4v
+	VNpn6qqXjtAjEo3AlM4VOVRkKOBq5ghLWJGbNtqN5i4hSthGU7JmMZIa2w6810R6fjCgWk
+	tbsSjZXJ2tb/W9TqV6SpfinQUFjFc7Y=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=I2wb8lkB;
-	spf=pass (imf20.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=ffF1YtoR/cZxAVUPZ8SrWZR3GBHgYP9GM5ARzRAhO38=; b=I2wb8lkB66vP/VbwkSxq7mxq4r
-	aeer3+czdNVgGMs11RQYWgqHOI4/3a0jWRwchgIAgGaMP6ywwkdse2bqvB3NYD4COWIUfLWD6Cx7V
-	0tFfGvkiSJR6H434UcYf5LIQvyFOUwRap+XfzbEQXPKWz916j84NrF0KfY+J1zIzxG6kLAP1xdNXx
-	8BSYx7rVi2N1dLLqE3Qda7EsYmwpb/DqkWi4blWBh7fDzqia3m0bimO6c0Ppre+BBPDzFzkQQEWNb
-	zH3LyltRswVnep+b2fLB074N7VdgEPDcmjqw/jLPoAIgirLPhyGrEIvdQf7+u+UMhoOhqT6Ei6JQU
-	FoEK9ODg==;
-Received: from fangorn.home.surriel.com ([10.0.13.7])
-	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <riel@surriel.com>)
-	id 1wmap3-000000004NY-2BGF;
-	Wed, 22 Jul 2026 13:33:33 -0400
-Message-ID: <8da92b565d7ec64ea4ab2db8155a250aed0aa88b.camel@surriel.com>
-Subject: Re: [PATCH v3 0/6] mm: access remote process memory under the
- per-VMA lock
-From: Rik van Riel <riel@surriel.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>
-Cc: kernel-team@meta.com, Lorenzo Stoakes <ljs@kernel.org>, "Liam R.
- Howlett"	 <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike
- Rapoport	 <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal
- Hocko	 <mhocko@suse.com>, linux-mm@kvack.org
-Date: Wed, 22 Jul 2026 13:33:33 -0400
-In-Reply-To: <cbecbce0-475e-4817-bdda-d1f4c89698d0@kernel.org>
-References: <20260717170036.743149-1-riel@surriel.com>
-	 <cbecbce0-475e-4817-bdda-d1f4c89698d0@kernel.org>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+	imf08.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=QAyoeG7P;
+	spf=pass (imf08.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C4C9A168F;
+	Wed, 22 Jul 2026 10:37:46 -0700 (PDT)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 074493F66F;
+	Wed, 22 Jul 2026 10:37:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1784741871; bh=JnKvBjo2fOfq9jvwV+JUrWEAgatydjsNYlPbheLKhxc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QAyoeG7PKBAcoDg4Vx9aVKdN0VlATPEViq8WVRyZilegBBahIiktHRv2hfoEoCbzO
+	 UJkF9NKxVlB1ZkC22HyEA1xzj6R0ZAmD2eyyzrJ2PtRBpEmkwyyZGygxHNSHMhB+yJ
+	 cFBkNBXczoT10ntHra7/zJDISGpvjgKKjsxCrn3c=
+Date: Wed, 22 Jul 2026 18:37:42 +0100
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Russell King <linux@armlinux.org.uk>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	David Hildenbrand <david@kernel.org>,
+	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+	Tianrui Zhao <zhaotianrui@loongson.cn>,
+	Bibo Mao <maobibo@loongson.cn>, Anup Patel <anup@brainfault.org>,
+	Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Jonas Bonn <jonas@southpole.se>,
+	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+	Stafford Horne <shorne@gmail.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org,
+	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
+	linux-openrisc@vger.kernel.org
+Subject: Re: [PATCH RFC v2 13/20] x86: mm: carve out the generic compile-time
+ folded pgtable case in effective_prot()
+Message-ID: <amD_5r04mzMoZ0-r@e129823.arm.com>
+References: <20260722-dummy_ptxp3-v2-0-d9e4bad31e0a@arm.com>
+ <20260722-dummy_ptxp3-v2-13-d9e4bad31e0a@arm.com>
+ <d16a8412-acee-4c21-a126-f570d6306983@intel.com>
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: 0D0141C0010
-X-Stat-Signature: c85jsxy5zgmwano9s9ek15of3ispxt4x
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d16a8412-acee-4c21-a126-f570d6306983@intel.com>
+X-Stat-Signature: jger1n7ek54ruq933zmcjiyx4n7gtbh6
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1784741656-76408
-X-HE-Meta: U2FsdGVkX18Nlski3jSF0w3ucFRaU1I2zexUnIsuZtO2avuVhpGURzDQx43wXxDm8XEocUrS0nlNoHaJ0ImvOjFDVvIufF/A5gCEi4WY7J/wvllS31tTDmScMk3lr/93CYseTF0RrsogasWJwAAD/clDxqGtsNfq3hEtVAVNuEkqEom1OwXCXDD3ktCEU0RyLh+y4uthTKdAzDWVsAildzj7udAAMouW8GFH9a75fBqnI/WDLNj+knzdr45wKPg2fHOEOfFAvzukZklSICyOpDC1u8tfDCF34jX5xQIxB8h5Hy4kEgzwO5AbJ5O84jJhiSD7dygsQTQcxHWn+CxuXvath1tkCLoWXQgJkExztDF10gvxJndHFVWP5Ll1leML2rPZKc9JcWcmZuNDq2fZqprYjWmN805kBX14Hgv1YaLbXPbmN0Xt0HHgGHeTguaaZc65hWv1fYj8UU0hwrnlGZnSc4oZLxSs0GQfvxpBw3KzEbZmSrireKHQ1vbjULK3RJr/p9LxD8T6O3QWA3YRFTRiMiBoMizPiSo80Sc5o/KabrpIJBgR/Rj8xS3fWUDcc5L+1x4ChrS/X/XzxYi0a7Qb06t/y5ybYnrJ0l3RrXN2Qa06AcGqRNHLmCsfyMdkqrLQmzbjXYHiVRm23/AVk+DUhg7CqJH7I3szcUy8S6KMfOIEmN0gRI/GJ4gd6UfKNyQphSgpBZKA4GtNqy1av9tnvjyJESxDAXKNhyOAqMlHYZKeUD0y8ir2WuY9fKlcYkef7kMfEAfWTA0uqd4f7b2RNrRATrexJEKENjVc0uYMfxCUTx/4C8tYit3kObpR5JbH7jB5DqeZBwKC//UxhfVqLy8yN73KyyR8FXAM36COoB//o0jaViW9/YjG3pubXA20oyB2LCW1hVZFU18hbTguS725vf0ebTth8ZebeGC9JHz0vH8/Dl//6gyiEEwc05Bn6VzuDUnGqojX4LR
- Q5xgI/A7
- auL0dkIiQdF4FusIFufkAoAkdxBMs/r98Q1Ao8xVJ6esLFlqxQV7hcYZGzucAXlxgHhkwCvayG+NAo8b6uFG1YlkFqUeR/Uwzfu9YpdS4kal87Qx8ztyB/kX/46k6f5aJyVmz1iRMzAu9lqBUC/k1V0Kzs/QWOT69V//OGEwPePQQvMm4V13JMzyNo68khy87VL5EmjbnNk/R2SVN6L4qvAEK8+4rlA8Jo1We
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: DFF34160004
+X-HE-Tag: 1784741871-699479
+X-HE-Meta: U2FsdGVkX1+QXT6kD0tUO2F83iTenPbL+JneH60FfXmokXrGFS4+jLKWzDgzULbNETkliBOLPYyavem/uu4ST00zyXV7rGf1puSrYRsAA/j22Zzy93ZS5dj5dZb9XBWBbylNWGkGUtLzgIoHLrPl4qXolsdLpjyeB554ohFUi7bR1L8getrrekxttvPr0ted6B12k7tCZe7aFsj8pNz4Y3lcf9M6ZROWCP5/WgzjZ5B77uw9XhodNzi6MF35ysiTyzBgmV04k2oAmWcMX9JLYEVaIcK+LSuW3K11TmSN+/14vO4jxG0xWHcgUVy//HpMGHFWSVRoO11MVQa9hN2zeqZF2g4vg4UyLJBFa92D1zJPh+SwT3RdAycJAHj0bsXSX9s4xhlUjJeFk/0BEBWCpbTz1aIZ3aE456rkKz+hGkLi6FQnWQ4RjEja/9gkTsaPo+H9xuflvCt7xgihzmG0fkb6fKBibAksxGym9oRwk6JLy9ZKXYYDY5jrfeezBKJtf8+eySJsVvOFK0HHNun2z2CC/BaXi872HDEDoJTgVuKjwZ8GVHHM5ZSUyvxKPUrS9ZF3UuWNKp435qifWZZBuajSWVcvgoMvKrsW5wuh/e1dJfKZyvutPLrX5/YZjGyPsh69eds08yKkvDnQ2WLxlcutW4PRNnv8hBH8mdjIQuRNxgXEhrOIdSXObMS6z9fNoamjg8fnI2J10J2nvARmiMdQRoQyZGornwvd+E1I2wz36WQUcUDGun5MlLlLkbPZJp2LFwu+1PauZCEBcL96w3TMGTlcuerXSU0cKPem6sQU/r5kSA+/NmTq3cb/j7oqFcA7IQv0qDVB28iZxzIItmlCDhd36pR51LgLRLXl+H+inh6VGIgr9BRXdTmvBaurMcTKNjHiDOaUVc0eK+IrWCLI/8XThsitBQsuzYh2TRoiUcygkBOUhXcjWDouI8obLvr54z86mFMYchmcOYn
+ U82OSwcz
+ leeg+hbtf4+wmA/vTffQcgAZq/5mX7QalmM0iCatzBDoiJOJD7JcPatPQYy3+/d21aMbAciQcsCvbVZ0MW3rU0VIlvdkyWbGENnKJBb36RiQD/bpiLyaMFn6a4DOQrDZ/ya+TCR+SO4q6I4X9Tm4FQX9KebK44tkD9KcOkAdZNjXhB6UhnAaASlI6CkQti7VHIIhpTnxKJpunFNiDilGvP1juksjG5uXx0czlbdK1B3pJs3rexkKF3Yo4Zdo/hah7/04XfDc9nIBG624Jq315SA6hcRPijWzvhikg/CeY654LT07z12VCPA0WeA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,48 +126,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 2026-07-21 at 20:12 +0200, David Hildenbrand (Arm) wrote:
-> On 7/17/26 19:00, Rik van Riel wrote:
->=20
-> >=20
-> > get_user_pages_remote() does not fit: it hard codes the mmap lock
-> > and
-> > re-derives the VMA. get_user_page_vma() walks the page tables,
-> > faults a
-> > missing page in, and returns it with a reference and the caller's
-> > lock
-> > still held.
->=20
-> Agreed, and that can be tackled later.
+> On 7/22/26 08:30, Yeoreum Yun wrote:
+> >  struct pg_state {
+> >  	struct ptdump_state ptdump;
+> > +	int first_level;
+> >  	int level;
+> >  	pgprotval_t current_prot;
+> >  	pgprotval_t effective_prot;
+> 
+> There is zero reason on x86 to hold this value in a data structure. It
+> is 100% determined at boot time or earlier. Pre-5-level-paging it's a
+> compile-time constant.
+> 
+> On x86, it never varies per-mm.
 
-I'll stop making this series (much) bigger, then ;)
+However, mm_pXd_folded() requires to mm for other architecture like
+s390. might save the mm instead of first_level and calls the
+ptdump_pt_level_first() with static inline version would make the
+constant comparison. So it requires to save *mm* structure in here.
 
-I added a few things for v4, but I can save other
-stuff for follow-ups.
-
->=20
-> >=20
-> > The per-VMA path also closes a pre-existing gap. A COWed page in a
-> > VM_IO/VM_PFNMAP VMA has a struct page, but the old code routed it
-> > to
-> > ->access(), where generic_access_phys() ioremaps the PFN and
-> > ioremap of RAM
-> > is rejected, so the read came up short.
->=20
-> Yep. The GUP code rejected VM_IO/VM_PFNMAP for, though, because it
-> did not
-> properly handle vm_normal_page_pmd() etc so far.
->=20
-Do we ever do a PMD sized COW on VM_IO / VM_PFNMAP
-VMAs?
-
-In other words, is this something we should:
-- leave out for now?
-- fix now?
-- fix later?
-
-If we can fix it later, I'll add it to the list.
-
---=20
-All Rights Reversed.
+[...]
+-- 
+Sincerely,
+Yeoreum Yun
 
