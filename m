@@ -4,102 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 179C0C4452D
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 08:32:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56A4EC44539
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 08:53:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B43B26B008C; Wed, 22 Jul 2026 04:32:46 -0400 (EDT)
+	id 06CFC6B007B; Wed, 22 Jul 2026 04:53:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF45D6B0093; Wed, 22 Jul 2026 04:32:46 -0400 (EDT)
+	id 01D536B0088; Wed, 22 Jul 2026 04:53:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E1C96B0095; Wed, 22 Jul 2026 04:32:46 -0400 (EDT)
+	id E50C16B008A; Wed, 22 Jul 2026 04:53:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6BD7B6B008C
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 04:32:46 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E3D03803EB
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 08:32:45 +0000 (UTC)
-X-FDA: 85015746690.19.90FCF40
-Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 368111A0004
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 08:32:43 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=none;
-	spf=pass (imf19.hostedemail.com: domain of hu.shengming@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
+	by kanga.kvack.org (Postfix) with ESMTP id B76776B007B
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 04:53:08 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 28755A0C74
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 08:53:08 +0000 (UTC)
+X-FDA: 85015798056.02.92D95C5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 8B4C5140004
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 08:53:06 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jP7ZIN8U;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784709163;
+	s=arc-20220608; t=1784710386;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OOdO6RMgoF9VS6Vv3n8lrROsLZqKIbDNtt7G6Ky0O8Y=;
-	b=qW3V8blAjZ6l3kj9jOAtHSUdW4FH+A3Yab2uwKQYZCuk1+hcC9B/QSVSNUUFJ/IIUWLYmx
-	DjxZvQns5VFhk05SRU7YlH5+MydN9zd+LWnqwLQA3t8p7ykSKCNlqniNL0b7+27gyxm7ue
-	fcUSydbvqFj+wsVOo6bwPl2/nrGL954=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=none;
-	spf=pass (imf19.hostedemail.com: domain of hu.shengming@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=GyOcgX/JrvPJwhP/amg6I0codmSgZ3HLCjB358pTvwo=;
+	b=OFAuW3d4ZgWdwSlNHuJ7JWbcy51qRUf+CypRt2oE36LF33bujM+UxXC/a3wz5msSm2hrgS
+	ubvasUe5qdMMDFS+5/2lIFsApLrT2jp01qs27iMXG4eEEwNYODpn0HSrGWFavSguIahW8n
+	4zb3Fr2pcmOsjHvdFRF0SW5yfa+zup0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784709164;
-	b=BD+LDcorlO+J80YNdNqNjzmjCgBBtXZymHnd/QoLWQN55ZqyoZZVli7Wt/1wJqFW6Fsl3K
-	nkcD71Wg4DksjrI27bEArev2wLzqxQzt73TWDIUYyNU3HfOd+vX8zwPIFCcrRGi/1pycFh
-	x12Dsdc0bjKRL9s4CQnsdp4TNxSLF0c=
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxct.zte.com.cn (FangMail) with ESMTPS id 4h4nYp2q18z55y2H;
-	Wed, 22 Jul 2026 16:32:30 +0800 (CST)
-Received: from xaxapp05.zte.com.cn ([10.99.98.109])
-	by mse-fl1.zte.com.cn with SMTP id 66M8WOxP048119;
-	Wed, 22 Jul 2026 16:32:24 +0800 (+08)
-	(envelope-from hu.shengming@zte.com.cn)
-Received: from mapi (xaxapp05[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Wed, 22 Jul 2026 16:32:26 +0800 (CST)
-X-Zmail-TransId: 2afc6a60801acda-ec081
-X-Mailer: Zmail v1.0
-Message-ID: <202607221632263010RKz3KaXP9NUQ9kGPYnU_@zte.com.cn>
-In-Reply-To: <004d1215-a1da-448e-bf10-df637c7029f5@kernel.org>
-References: 20260722112748588_IEr10bQdigv8c8bjw7Ck@zte.com.cn,004d1215-a1da-448e-bf10-df637c7029f5@kernel.org
-Date: Wed, 22 Jul 2026 16:32:26 +0800 (CST)
-Mime-Version: 1.0
-From: <hu.shengming@zte.com.cn>
-To: <harry@kernel.org>
-Cc: <vbabka@kernel.org>, <akpm@linux-foundation.org>, <hao.li@linux.dev>,
-        <cl@gentwo.org>, <rientjes@google.com>, <roman.gushchin@linux.dev>,
-        <ast@kernel.org>, <andrii@kernel.org>, <puranjay@kernel.org>,
-        <ameryhung@gmail.com>, <bigeasy@linutronix.de>, <clrkwllms@kernel.org>,
-        <rostedt@goodmis.org>, <paulmck@kernel.org>, <frederic@kernel.org>,
-        <neeraj.upadhyay@kernel.org>, <joelagnelf@nvidia.com>,
-        <josh@joshtriplett.org>, <boqun@kernel.org>, <urezki@gmail.com>,
-        <mathieu.desnoyers@efficios.com>, <jiangshanlai@gmail.com>,
-        <qiang.zhang@linux.dev>, <pfalcato@suse.de>, <surenb@google.com>,
-        <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-        <linux-rt-devel@lists.linux.dev>, <rcu@vger.kernel.org>,
-        <bpf@vger.kernel.org>
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCBzbGFiL2Zvci1uZXh0IHY0IDEvOF0gbW0vc2xhYiwgc2x1Yl9rdW5pdDogcmVnaXN0ZXIga3Byb2JlIHRvIHRyaWdnZXIgX25vbG9jayBBUElz?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl1.zte.com.cn 66M8WOxP048119
-X-TLS: YES
-X-ENVELOPE-SENDER: hu.shengming@zte.com.cn
-X-SOURCE-IP: 10.5.228.132 unknown Wed, 22 Jul 2026 16:32:30 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A60801E.001/4h4nYp2q18z55y2H
+	t=1784710386;
+	b=hdATuSzk7IzPeLPqohYXnQeVZdx66bE9GraLT7HZl+XkJPA4qdKPrMWXAly9wiFrh8QtbP
+	HY8kWlmlzhr9iBLhNsFUMXEqWYs7tdlYKjnc5dVhDdQnxRuNxWDxClk/MCTYEIWb/s564Y
+	B73/nL4aAU0EyJBuT1BW1yTaqguZdlU=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jP7ZIN8U;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id F33D1600DA;
+	Wed, 22 Jul 2026 08:53:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67AED1F000E9;
+	Wed, 22 Jul 2026 08:53:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784710385;
+	bh=GyOcgX/JrvPJwhP/amg6I0codmSgZ3HLCjB358pTvwo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=jP7ZIN8UgO/HUTXhWIEmVSbC76l0TGwpR2XciQHR88M0YJHCd2AMJ3dM1NBo9WmA4
+	 0kwZ4wXq1d/1Mpi/9E+Gj8+85uQRwGHYjQo2d8bYh8pt/h/5J80x9Y7PvOjllk5qDS
+	 q52n28K1yZXRPeQYij3nDdMQ3dMzbi6KarcgWIxjkf47y6mUcEZbnbnNMFoWbTYHNg
+	 Yd1nNX3Gi8X8lUBD1M2v0N5FTev5NtHifPX7hJ2w4d+7BCZu1ffKu4qRWIMlZw8rTY
+	 ufsqXqY1YZRm303pik/Aw6G4DGxuxg1t1AT1LD3YRnwe9XRfCvgb3h4qzwlQHxJnMo
+	 CmkK6sdQU4mug==
+Date: Wed, 22 Jul 2026 09:52:49 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Michal Hocko <mhocko@suse.com>
+Cc: deepakraog <gaikwad.dcg@gmail.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/4] mm: vmpressure: scale sampling window with machine
+ size
+Message-ID: <amCEULry4nsM_Uqn@lucifer>
+References: <20260715143646.15828-1-gaikwad.dcg@gmail.com>
+ <amB6WXIEKEeKudOh@tiehlicka>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <amB6WXIEKEeKudOh@tiehlicka>
+X-Stat-Signature: 8jn65xcthm7ipqiay59dqpgmpb3q487i
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 368111A0004
-X-Rspamd-Server: rspam01
-X-Stat-Signature: ztokn6y144w4f7ntrt881w4s7fwjnfrx
-X-HE-Tag: 1784709163-164429
-X-HE-Meta: U2FsdGVkX18mFROtgoTHMDJynRm4vrFVMY0XLlrQrU4xy1A6iQhTggTid1TN6Q2XguAkHBTMlhfGRYh/9iQo6cO9ya25Z4QC+Xh7D02jljgvhmVdDEgAV5PMW7hjSIg04iCE5KVuCECqyqmpy4U3K8HRoSIa8tPBpbA10xSLEyxUS4YmIax4GGHJhhF6oGeAEiIcyrfYoecFyy3e5wkRVb5WO7Hyg6jLULtC+RkqhG1h27zlC6cLrqQd2FmhfJ1y8JM6mWuUYKxDPC9j9aG4qHGZ1SKhZUzISZlDtli5L/srdUF6m6cyEyBlxGAkA5mb483GWnjtZbDTtSnfZ1yKWGL+ExMqKnm6pnQj8PVlbSdLEQRRPwOAqwqseDNP3eW9+S7BraLjehq8uxS2m0nIduwFN3/p3TKZIr7JsfY8rwKvA+uLGnBThbQYICCajG/0Eih/NAO3ROoL2SKsBJzfDUAAs+LFPR7CVaOhqkX/pPNoGqkpTlT9/BJGKdPIstNrHjWFrVJ5oC/IhUSvt88bMFLci7WYiDiKKyRbQpdr13Q8bV36jhLocMwpz9x5cLHpyhVYfPcvjFh2NwrFAziLRfXXBPERL4Kg28jHj/JER9ktIB4VXHHfRYZFVhItXpj5uU+bTX12sTCCaYP9Zpr+t5FgvQ6HHNoNyUCuS3qECsvrFSkCifDbSznqyB1yTv8XTj8gWJroNcLfXDoIuYKhnZIcdTKEdB3oK5gO+m6fz4KS/xv6VIRfm8haZtBWIjO18/qb72Gyqpq1jJoETnr4STtwoCnJPlIHjD3jXYvCadN14uuO3lUp3pnXY4EhgI08oO/O6FoGmIdDE3xrVtzg736IKjpXYp+cNzB95npHucCLDVfwJwAi2caf6aoQGde3zQCybZ64lNaCeOqt0AirwKErr6tML/66APLIeDCNaSQptfPw4zEyufnwUFrReCLLAfZTtFt3zLRNuH0ssRF
- YyOR77FU
- wDKy/5X+Ycoz7d9PgoK0mk8ODJt8LNWI1lj+LBLvTJ7ZRe+R6OXRvy0jFgoWkbQfrJcheTaKINTSd3/pKCfDLAmDIV2cabOFv7dXeaOmd7thP2JfdgcCRs15sjx3fZid8V2+mVY3I+u52+dAGY2Zhmt2SRD2/t26RA+gzAvycsEjlk30vBIDai2DhslCSiDqqxotR4H+ySPpBxiD4uZasCrzO6/VhCEda4gXdzKOXi7ERf8DxZHLShluElQLEPFGXhjS/aFY2iaXtBYM=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 8B4C5140004
+X-HE-Tag: 1784710386-27500
+X-HE-Meta: U2FsdGVkX1/lrPxGnleea8pAgE42vxyTfyMeNAztvItejwfvNw0bJxo2eoT8zy2uWtxOWvYDrOGs7AWKzWOVcayj4ERt6iNLW17HmE1SEoTj33GjW+44YhOa9aUWBVNx6tNFChRP4qNaZ7nDJCGBSVt+yIyeLWrw7R4Mo9rnnv60UPjwv2kqhFdMT7FywPGtPu615S+njPrEE221Bo6ZNiVya7W8WfkRGoOLUh+WxNyLvixj4DY9zOzt1wgQbNY/ZabnhpRBr/AndsMIXk/8EEdxRGeuhGmw/FvNLF+8sAiOUkG/wTJJn30K8/Has5k51g5V3MqLXoPm47EvOHTUGxpEoxVLalAe2a6oOfXuZD/Xxci9opEq7h+ohFXfBEWJ3eORVS7gujIlLCpyqxr2x5idrErvNXpnYx6SPYEHlg2BUMdYkjCBudmST5wGlpuRYvgm6YrVrE0DupIqhiN7EmlAj9jCbAT5T4WvptM5HxSfAIib1d6vPu9feRJLOBMcNrIZ8BZgjWJDxSps2041WDML1Wy0CBiHjkvqmBCDKQT9lORzSh6NBnXb8Dor1qfWoHYcZz8b89UKj/jGeVEdpQik9UFozHOQxWuv1LDICUKYbqijsm2U5Et80IHVrO/0wjaWKnM5hwQqkzRICeWJtErEDOCJoD0v16pOnmTF+iY4hR5ClIyx7XWPRf72ZpvfcsKdU3OPa3Pv4LImaIhNQvhzX/BzcBcaJ4TUtIdqaqE/z3JPQlWCk1hHeohElFpG0h5g7lvH09huP4Ld72q2kfLo+PoDuqGkgQFb/skIojWHNgoNA9Z3JsELdXpZHOYm415bJA2/i0xlrdM0T0ia3SxoOpbKIuLj7LhzcATKyY4OKJcqVVAMBet2OeNzf/iWFJj8ElcfrBJ/djL7ZkGK4a9vMdDVLIoYxBBn3otKcqFF/uSZ1eKFhxRx7sFB00c5VlhKwOq/p7PmlgM610p
+ WiPxFQK/
+ jn1C3uJJoHFX2kRvf6M8a/+iTyY2HcmqPJ+KP6mM0RbNvoXebNJQUC+Bk9qgu9pxMK9dfMPvXkcFrdIYATYjTuYJ6JhbrfaA9/wwHma7LFxWuZQppCc99vuiR5zSx0mPXc4LrDz6YC1OGfXjGA6W2Ljipy05pyDpLWfDApPZ5pEZPt6cJYUqbDZxMq9NEE1jctjBj0DZQJS7CBZxIAwnO1+JUpcqfgP2vRE5/cjCVy3foW3+2FFmCZ9Un7sSDq0WEyCOoY07joaf84WGe173KF0EkmOtZydllvNmpNZghDQV/CzQGEs9mjG/jPstQSIlUTTMxxeAARJHAEDNTOatnlumJziwJi8TaRAu5lwOhzkvy0dayo2bhUJebDZ7zBeTsr69Nd2it3AdPA4oRCFmD16b+a+NSur2b/dphDznB8lMREi40l8rgEwq+2Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,99 +95,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Harry wrote:
-> On 7/22/26 12:27 PM, hu.shengming@zte.com.cn wrote:
-> > Harry wrote:
-> >> Since kmalloc_nolock() always fails in NMI and hardirq contexts on
-> >> PREEMPT_RT, slub_kunit cannot properly test _nolock() APIs.
-> >>
-> >> Register a kprobe pre-handler to invoke kmalloc_nolock() and
-> >> kfree_nolock() in the middle of the slab allocator. However, do not
-> >> register the handler on UP kernels because that use case is not
-> >> well supported [1] in the kernel.
-> >>
-> >> To attach the pre-handler while s->cpu_sheaves->lock or n->list_lock
-> >> is held, add a wrapper function for lockdep_assert_held() that calls
-> >> a no-op function slab_attach_kprobe_locked() on debug builds. The
-> >> function is optimized away when neither CONFIG_PROVE_LOCKING nor
-> >> CONFIG_DEBUG_VM is selected and register_kprobe() fails.
-> >>
-> >> The function calls barrier() to prevent the compiler from optimizing
-> >> away its callsites. Otherwise, the compiler may consider the function
-> >> does not have any side effect and remove callsites.
-> >>
-> >> Compared to using plain kprobe, this has two advantages: 1) it avoids
-> >> hardcoding function names in the test, and 2) it can trigger those APIs
-> >> in the middle of a function, where the lock is expected to be held as
-> >> annotated with lockdep.
-> >>
-> >> While it was proposed [2] to use kunit function redirection to test
-> >> this, it is currently infeasible as some lock helpers don't have
-> >> symbols.
-> >>
-> >> Factor out the nested loop that calls kmalloc and friends to
-> >> test_kmalloc_kfree(), and call them in
-> >> test_kmalloc_kfree_nolock_{perf,kprobe}(), each being an independent
-> >> test case. During the refactoring, drop alloc_fail handling as it
-> >> doesn't provide much benefits.
-> > 
-> > Nice test addition!
-> > 
-> > Reviewed-by: Shengming Hu <hu.shengming@zte.com.cn>
-> 
-> Thanks a lot for reviewing, Shengming!
-> 
-> Just FYI, I'm going to adjust a nit pointed out by sashiko
-> that kmalloc_obj(*objects[j], gfp) is wrong because objects is an array
-> of void pointers. (which is fixed later in the series)
+On Wed, Jul 22, 2026 at 10:07:53AM +0200, Michal Hocko wrote:
+> On Wed 15-07-26 20:06:41, deepakraog wrote:
+> > The vmpressure window size was fixed at 512 pages (SWAP_CLUSTER_MAX * 16).
+> > Scale it at boot from total memory and CPU count using the same fls-based
+> > formula as vmstat per-zone thresholds, clamped between 128 and 2048 pages.
+>
+> This is not giving us any rationale why this is needed or desirable.
 
-Indeed, Nice catch by sashiko. :)
+Agreed, the series are all somewhat corrupted here (seemingly some patches
+missing + not sent to the same list of people, unrelated stuff in the same
+series, etc.).
 
-> > Nit below:
-> >> +static void test_kmalloc_kfree_nolock_perf(struct kunit *test)
-> >> +{
-> >> +    struct test_nolock_context ctx = { .test = test };
-> >>  
-> >> -    kunit_info(test, "callback_count: %d, alloc_ok: %d, alloc_fail: %d\n",
-> >> -           ctx.callback_count, ctx.alloc_ok, ctx.alloc_fail);
-> >> +    if (!enable_perf_events(&ctx))
-> >> +        kunit_skip(test, "Failed to enable perf event, skipping");
-> >>  
-> >> -    if (alloc_fail)
-> >> -        kunit_skip(test, "Allocation failed");
-> >> +    test_kmalloc_kfree();
-> >> +
-> >> +    disable_perf_events(&ctx);
-> >> +    KUNIT_EXPECT_EQ(test, 0, slab_errors);
-> >> +}
-> >> +#endif
-> >> +
-> > 
-> > Maybe it would be worth checking that the perf event actually fired:
-> > 
-> >     KUNIT_EXPECT_GT(test, ctx.callback_count, 0);
-> > 
-> > Otherwise, the test could pass without the callback.
-> 
-> I'm not sure if that would be useful though.
-> 
-> Ideally we want to make sure every code path that handles
-> allow_spin = false is tested, but it's tricky to measure that and
-> also it's tricky to make sure those paths are properly tested
-> (especially with perf events).
-> 
-> callback_count is not a good indicator to measure test coverage.
-> 
-> (I use GCOV to make sure we have reasonable coverage,
->  but it's hard to turn that into a test case...)
+I replied to the v2 of this ([0]), in general this is essentially the same thing
+submitted by a previous person ([1]), and Deepak acked that ([2]) and agreed
+that this isn't worth pursuing.
 
-Thanks for the explanation.
+Cheers, Lorenzo
 
-I was considering it only as a basic sanity check, but agreed that
-callback_count does not reflect the actual path coverage. I'm fine
-with leaving it as is.
+[0]:https://lore.kernel.org/linux-mm/aljYxLusTzZkTfnH@lucifer/
+[1]:https://lore.kernel.org/all/20260227221555.29969-1-mcq@disroot.org/
+[2]:https://lore.kernel.org/all/20260716134938.42495-1-gaikwad.dcg@gmail.com/
 
---
-With Best Regards,
-Shengming
+>
+> --
+> Michal Hocko
+> SUSE Labs
 
