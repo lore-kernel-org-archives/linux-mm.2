@@ -4,84 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB825C4453D
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 09:43:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E6C8C44539
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 09:56:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 22AF76B0092; Wed, 22 Jul 2026 05:43:58 -0400 (EDT)
+	id 4169E6B007B; Wed, 22 Jul 2026 05:56:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1FF006B0095; Wed, 22 Jul 2026 05:43:58 -0400 (EDT)
+	id 3C67B6B0088; Wed, 22 Jul 2026 05:56:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 116FF6B0099; Wed, 22 Jul 2026 05:43:58 -0400 (EDT)
+	id 2DCD76B008A; Wed, 22 Jul 2026 05:56:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DA3986B0092
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 05:43:57 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 0510D6B007B
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 05:56:32 -0400 (EDT)
 Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5F84FA0EA9
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 09:43:57 +0000 (UTC)
-X-FDA: 85015926114.19.6B72A4F
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 83C63160006
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 09:43:55 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf08.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7FE1F1403F7
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 09:56:32 +0000 (UTC)
+X-FDA: 85015957824.19.A2076C1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id D58A214000B
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 09:56:30 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Thaeh4vD;
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784713435;
+	s=arc-20220608; t=1784714190;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Z/vnS3jKVr2U0OQlxBPo9zJ5nbDSq/qv2qcCFmNnSKs=;
-	b=zpbR4hv5q5crvqujlllUAaNZf6J7ceTmJ8lT8BhPSvfJSIVep04PqcdRcyBW4TfDMzALJQ
-	WuwpgRy/wSbfc88lFYmUqnLmWsSSN0Qfm6vvvXFtPQ9cLaKvp9R5e7aEgWm4FpAKHu6u6Y
-	9Tei7wLNNNhRFBKNjHvHWCra58kF78E=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=tEkmbsohu70wSpeu9kL7X6w5e0YxqXmWzPLQ1TJA370=;
+	b=600hBHcwB7zmIr3qa+jIjFOMxl1OhZu0ppDbdL/e+7Gk9wnt/rqy4x8fcMMg/CEj9fgff0
+	RH8XL0akbbtHOe6Ro+dKXbaQDzBbsfc2mezeHJ1mYA2gSC3lojlWRIa52J7yu0sa8yR3YE
+	i+ZUtqKgyA1Hwy4KV0LtUU64vih+x90=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf08.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Thaeh4vD;
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784713435;
-	b=tC9P9p5iwKVmVRYi5++HsJd+JVY9ITk5NUes3Xk8nbwbPQGpFSCDIElvIX47/hfdUgNkYI
-	3754eE20NqlniUh1k9wHy67HCbmC+A+16D7WbpR8Ky1JfGnnlrwZ1On7a2gh7V6YSyxwcP
-	hF2PTHZFeUb6HYiyPVyYsY0gvDCuy5o=
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 88ADA68C4E; Wed, 22 Jul 2026 11:43:50 +0200 (CEST)
-Date: Wed, 22 Jul 2026 11:43:50 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Matthew Brost <matthew.brost@intel.com>
-Cc: intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christian Koenig <christian.koenig@amd.com>,
-	Huang Rui <ray.huang@amd.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH 1/2] mm/shmem: add shmem_backup_folio() helper
-Message-ID: <20260722094350.GA1057@lst.de>
-References: <20260721174723.1039395-1-matthew.brost@intel.com>
+	t=1784714190;
+	b=tdvXo5hGJyfENRwmJn3uDsAWLiOrplS9O1TNfDZvmjdRVLhhlXbZOjXbklD9Hg3rBrBHYE
+	tqq5ZbYe6CzDuvSqwM1fv0WkrVAygtepvO7R7i7H5FCF+XT5cSyx7yQGkfsQVfeE1A/4M/
+	B1YqF+LY4zoshX9uapNmaqC1Iot/yDY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id ABD0C44FB5;
+	Wed, 22 Jul 2026 09:56:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 504EE1F000E9;
+	Wed, 22 Jul 2026 09:56:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784714189;
+	bh=tEkmbsohu70wSpeu9kL7X6w5e0YxqXmWzPLQ1TJA370=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Thaeh4vDN4ML6kySImSIFQXqo0elsCjKfQgz9DWNjlMi+hJ5c+8WEWhOt7n3J+C21
+	 yM2sQxBRdZIzu0JozK8N2jlcG8kHE7+yDz2S3H/ME+95NaHe4Ygaw/y7gS6fISgr2I
+	 xDbRa+vb//u1nFVzXI4Q+goD08fCNNdIoh9zL5IWUP5mIRBQ2aZ1y2S8Z1ucYleL3I
+	 9gi/hGiaE6KQyeTlx4Svc+ZrBs+olFub5pHk+Q2D95yDK2hSKyt4CmiwRNgND39t1d
+	 tkB4CUFoIilk6uo5VO+gscHioDKA6DxmgmWy3lw3b2irOPgMZfB/wzfJtG4V7lj5gg
+	 f5WrjDdsXi2tw==
+Date: Wed, 22 Jul 2026 10:56:13 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Jiale Yao <yaojiale02@163.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/page_idle: call folio_test_lru() after folio_get()
+Message-ID: <amCSiltZolhgtO3J@lucifer>
+References: <20260722092642.1123347-1-yaojiale02@163.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260721174723.1039395-1-matthew.brost@intel.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+In-Reply-To: <20260722092642.1123347-1-yaojiale02@163.com>
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 83C63160006
-X-Stat-Signature: fu7uhdd1ihq7irxwtb8p3ypx9f8of4e6
-X-HE-Tag: 1784713435-677739
-X-HE-Meta: U2FsdGVkX1/lZpS42UldVeCDcXBI2yUV0/+VWx5ZKHjm6HBqkgqAu0KqkxIxy4I/r7ZxzlHk4BXx4VYxkWmMHUxK8/PBSucrsHojrgbDqJO6gGAvHpXS8kKOOJpU2dVGO1jnxmNOYnNjBy+TxSDfjm+7ZkXc6o7d3vXkxOuqLqriTfQO+lkDeYVhwzfMlZYvc+G6DZd3+q7s7w9/hFdYgn1/i4eV6VH4OEbP8wZsVL8FGdeR5ZBBxBngoTUyLgj6hbKwGR1XiDKupNV5Ub9Dff46rMVfKxNUeLqSGNTgAhjPHScd/+7Rq8MnocoDwVtcoEN1CU3ahbO6ORmAek5ezqUPuRWBzYDsIw+Ift8EGVPanJ5o1TpEWSeWFfvceEQRwvcEI+FQRYsD1BC6FbSu3HHmB43sCUwnR7knVye4w3NUZlXVseFb4qP2Uioi0ZHlfHQwTuYeRf2QmfCdXf5z04b0s9voPygUiyeiCxhSY+fPBHFYRVtU5U6jGB6XJo1kCgL2DX0g5yGurxf34DOBUOhhDdmxsbLHdROcXfWB6RsBHKG8qJbWxHi4dKOzzccww4EGFfCJvd8qm/1+QFlL2TKkyu2nL6/Ez1lgyCd+4ZBA9mgK81SW+FCQRZLhbTQs11BFP1Xre7q31fonygx7rm6TZX83rmkC6UNsXTyfexN3AerWoW38ISLnOENxNMqJS56wuItzKixhNVduC3NKq6nEjWR45hkoq9VAn0QAmECvzYy64PumESbMPgkYGL3RIX8/oT3QeUm2oGcecBLC4/EKgGo/lmZnlfGVBjgVWNNOOxC1jLwiWXrI5gzXknK+8oNr21mTZY4ynYRs6u8tXKEfUlBi+2ufB/ctq+BC76PHCGKGcsTNhtC1biHdxvc9PcXsTTBT5NiXxzI8dGCONbg6w01hTpXjfis0+MD0onqKctmEgtaJYyfzhK5MhYTvCIJfpVv+VZwRm/VyXfn
- uypVogY6
- RrgY0rRyDNrlcuhgm1wTgFas/xgRf9ltZXjtrjrasFJPE4oiVivy8nxtCMI+mwrHifpDlWiIIkLyPJVGThK6DAYZHs5NQ3gNlpIgyHUZTEBM/tmak0iOPqwjvCsnvK+Uj6N9rTW9Zu8fQQnQ=
+X-Rspamd-Queue-Id: D58A214000B
+X-Stat-Signature: oqyt63grdk7u3q78txcaqery3fxh5653
+X-HE-Tag: 1784714190-713277
+X-HE-Meta: U2FsdGVkX19KDWpj9NgxzfzgoCEHgozo0mEad7R7Spo8okca9Wsw+rhlLjuCCcx1YPHfwLy98282Iqasilj13fiAnkrBSGY7XjJSWPlokxY3DYjcUWTRMV+wuaTk41Fu3B7TNRXsP4/qRF7PhRJLimWTAsr0+5jrA/N6+Dd9xsJ9R1P1KhfmElvEh7OzW3TFOF755F1s3RCtXL69lK6vPEnWdGgJky9URpql9vonRo9xeNZbYrSthoqktonk+rZfldVBza/bCVc7GNA0XVycPcAy6fWftorcP6MHZpBuyfuJ9Tku5l92aV9WXmJLKm66DF6UYSbMo0EIULoXzbLsBCoWtYkKYuUCWfmb3O3rK99raloeKUgDKnd4ACk8VEvaqHsDB3ybEKgiGOAiW9m1YSdVR/2f+QjGx4ISiNRw6S/3adM80VBxzq3J4BjIlUBNPYpDQwOJySGs77Lp3bYFZWLW36AQZ6q5y2XeoB6cJseVSivC3YfQEv+dkxETFwwEfe1puqROr7bRBMHrAHBRhdE1wyIrY8AX293OrMga59QpHu9ibD/I3shw631UhgRT35vDnU6pD4jeqpNYbGl7yr5HvBTaspNh8g6YhjAALuo5dH83cLujY1QANWhEkvH/juUo15uQs3zxEm72B11tCYgg8TkSf8BB43ESRStaDtIlvn3FH6Fg0PwNtQDMCg0CKB5BX7izOT01DwFHrR7ZDWHAP/2+Ss54U9SL9asxWkidHnyfUdRI9K4tzbD0jiQt+32VWMYdPBvFxsGLBacq8VqHVykls5Frbnk3GQRATvU6GC+ZCYhCiaT/oVCveDDCI2rCHc5DM3GIB5MSv8PESARTB5EoFbaoujxBbgeZgQsIG6Vh2x+FtuqZKbGxhxNNhxdjwujr2EEZTcQNrdtghUW1pSm+xVTZW2XwVAYCHQ7AhfV4rFb0LGwO8/lhqCcblNMq0zScY4C4mfHafih
+ 2loxOx2N
+ VVTlkemvGWt+iMnJ7a7CVgh1awXXQPxRFgyC9IBua9ZjsnP8BqzB27w9WdpoRFVBbfgGXHfEiBBi333DB9zosl4bIIJQCqBBG0b9zJs4i9iaHEM7/xjqkibPedn4lwkTlKOSRg48vBQlfQhUHnEhhg+jd/K/590O8z07X5YeGlwd5NVTKH1gVyP3xXdcCG9KvS89/GD6Pn/BAMyDFGAPJ7hGKhufvMaq9Txa9rgDjuYcYPm9fJNUu5vitkVRpLleLyNsy6FppE7fdkSomGcpPS4hycqqKzl68J+AZKZkJ7OvcKEWJwTzeRHELGRDQJDRzyZsUjcMRDuSYh6tmBeBSd+QW+A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,21 +93,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 21, 2026 at 10:47:22AM -0700, Matthew Brost wrote:
-> Add a new generic helper, shmem_backup_folio(), that copies the pages
-> of an arbitrary source folio into a range of a shmem-backed file,
-> optionally issuing writeback for each destination folio. It is
-> extracted from drivers/gpu/drm/ttm's existing shmem-backup loop so
-> that other subsystems (starting with TTM in a follow-up patch) can
-> share the same implementation.
+On Wed, Jul 22, 2026 at 05:26:42PM +0800, Jiale Yao wrote:
+> page_idle_get_folio() speculatively calls folio_test_lru() before
+> folio_try_get(). The folio can get freed and reallocated to a tail page
+> in the meantime. In that case, VM_BUG_ON_PGFLAGS() in
+> const_folio_flags() can be triggered. Remove the speculative call.
+>
+> Also mark the folio_test_lru() check right after folio_try_get() success
+> as no more unlikely.
 
-Hmm, what is the difference to just doing a ITER_BVEC write with a bvec
-containing the folio for this the pure write to shmem part of this?
+Slightly strange wording but not sure why you're doing that? It is
+generally unlikely a given folio will be !LRU right?
 
-You'd probably want a kernel_write_iter helper wrapping
-__kernel_write_iter for the writecount, but otherwise this sounds
-like a normal write.
+>
+> This is a sibling-path bug: damon_get_folio() was copied from this
+> function with the same flawed pattern. Commit d6b8b02a27b3
+> ("mm/damon/ops-common: call folio_test_lru() after folio_get()") fixed
+> damon_get_folio(), but page_idle_get_folio() was left unfixed. KCSAN
+> (strict mode) confirms the data race on the folio flags:
+>
+>   BUG: KCSAN: data-race in ... / percpu_counter_add_batch
+>     page_idle_get_folio+0x7a/0x2d0
+>     page_idle_bitmap_read+0xc9/0x220
+>
+> Signed-off-by: Jiale Yao <yaojiale02@163.com>
 
-We'd want something for the writeback part, preferably a purely
-range based API to be generic.
+Yeah generally this seems obviously correct (TM), if we can't be sure a
+folio is kept around any other way to the extent we're doing
+folio_try_get() we should gate any actual interactions with the folio on
+succeeding the get first...!
+
+With the unlikely thing changed, LGTM so:
+
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
+> ---
+>  mm/page_idle.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/mm/page_idle.c b/mm/page_idle.c
+> index 9c67cbac2965..29ee18f0e8ce 100644
+> --- a/mm/page_idle.c
+> +++ b/mm/page_idle.c
+> @@ -40,9 +40,9 @@ static struct folio *page_idle_get_folio(unsigned long pfn)
+>  		return NULL;
+>
+>  	folio = page_folio(page);
+> -	if (!folio_test_lru(folio) || !folio_try_get(folio))
+
+I guess this was meant as a racey check...
+
+> +	if (!folio_try_get(folio))
+>  		return NULL;
+> -	if (unlikely(page_folio(page) != folio || !folio_test_lru(folio))) {
+> +	if (unlikely(page_folio(page) != folio) || !folio_test_lru(folio)) {
+
+As above, not sure why you're changing this? Seems unrelated, I'd just keep
+it as it was.
+
+>  		folio_put(folio);
+>  		folio = NULL;
+>  	}
+> --
+> 2.34.1
+>
+
+Cheers, Lorenzo
 
