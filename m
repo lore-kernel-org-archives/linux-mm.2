@@ -4,90 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E828C44536
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 14:04:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE7DDC44539
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 14:05:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8CD646B007B; Wed, 22 Jul 2026 10:04:12 -0400 (EDT)
+	id A7B6A6B0093; Wed, 22 Jul 2026 10:05:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A5306B008A; Wed, 22 Jul 2026 10:04:12 -0400 (EDT)
+	id A2B846B0095; Wed, 22 Jul 2026 10:05:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7BBFE6B0093; Wed, 22 Jul 2026 10:04:12 -0400 (EDT)
+	id 8F6846B0098; Wed, 22 Jul 2026 10:05:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5756E6B007B
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 10:04:12 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 772E3401B1
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 14:04:11 +0000 (UTC)
-X-FDA: 85016581902.02.36835F7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id D67D4A000C
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 14:04:09 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UCVgnYM0;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5EB746B0093
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 10:05:00 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D6ADFC01EA
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 14:04:59 +0000 (UTC)
+X-FDA: 85016583918.08.2018C01
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 15DAE140013
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 14:04:57 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=kKNkOEFR;
+	dmarc=none;
+	spf=pass (imf09.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.43 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784729049;
+	s=arc-20220608; t=1784729098;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5kH0UiDy6iA8qhgAkS2XGaRTI2kmVSqdkfcswAJ2RR0=;
-	b=NdjBO1rsT6ZNibLJFVe/v8x5XMdRloPBBgH8gQnBv++7RP9FTldcHlBUNkT1R6IPTft9QE
-	Pk1h29N2K8IPaIBAdplZJkpZhfM1pvoTESfuYETHZzqIbhjiLntClaskn143hGvAHdlkJ4
-	EN60aBwfsitWnT1R7pQzFWFgVtvbwtg=
+	bh=wzTopji7Zl+MAyFivVnXiZLO5KABEpd5UV02S/KHUTw=;
+	b=iVOXCNHJah6vSisrlBNCFN65EAXSyXDueUq81Rs1yrTlh3Bunec1/8bG5TAYJ7Z3wIr+N6
+	2Vv4AhgkWqz+yk/nJdFpPgBtk4ZwmroqxM9HQU71r5l7LObwmcBxdzFqwYgU6PhNkrzRIt
+	kH1r3YZnoBC4hwYBFIlO1Rsr46gxFY0=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UCVgnYM0;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf09.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=kKNkOEFR;
+	dmarc=none;
+	spf=pass (imf09.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.43 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784729049;
-	b=ZCfIuSFch7ETpwaw+Ecn1gRgZ1KdhvWxUXofkHTxmkmjcPnA2iuMF0a0l1WRgOfg/ps5ke
-	Cqg8/+ChBBm66Hp0jh24dfuKaFgDn1cxjf7Zn45gvcxkfJnhSdmlLyQ38x/rzHP5prlzhw
-	ct2jRn1jk1RcISkhvCm9ahK34O4hyYU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 577D5600B0;
-	Wed, 22 Jul 2026 14:04:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCDD31F00AC4;
-	Wed, 22 Jul 2026 14:04:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784729049;
-	bh=5kH0UiDy6iA8qhgAkS2XGaRTI2kmVSqdkfcswAJ2RR0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UCVgnYM0nzaYUeSvhwaSiiwHHGClKZGjt3YMsoI8Pxfdi/Mw8dLNHzK9Khk6TamXC
-	 WINroK/kJx7WiB0fZivv2oi7jBx0JknQp1XAmRnX9EJhSMJ7vxTFLpAKKWxVoabIyc
-	 S0cJ4+pQRIt+yno851PG2NhXii970/xxRuUrYlrvmzNYf3IP2NGpY33sqcpk0zGx0j
-	 tE7lzO5IjbwEM4lG1jJ1DWVCzZx2nbwFBoMdKgafeNhAeZKLRAn/9K8nsSFvbjsL7i
-	 xNqcFIa1/ZliFf5IsWM+jNtfIZhkTlCGQ3sARQGQKz9l3OU4G7bm8j5C8U+kODF9t3
-	 V/GLOOqYq6tvQ==
-From: SJ Park <sj@kernel.org>
-To: Cheng-Han Wu <hank20010209@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-kernel-mentees@lists.linux.dev
-Subject: Re: [PATCH 1/2] mm/damon/core: remove unused damon_targets_empty()
-Date: Wed, 22 Jul 2026 07:04:01 -0700
-Message-ID: <20260722140401.88772-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260722113338.302603-2-hank20010209@gmail.com>
-References: 
+	t=1784729098;
+	b=zSvymlAbAOk+4Fi/+QVsIJ5khtgxIo3M/fwNwGtEVFAn/0w1xjSPgVO0X7H6h5ddSi25GK
+	Sso9VAlURXAw9jCMPW0hGk3X5bX8Z6o5LlOF6y2i+m2EDpinCvf4cIB/JJk1mrfdWsd8+4
+	iL7GQIbLwBi7t8PfXTVNywpaABRmXjk=
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-8f256eaedf8so149143276d6.2
+        for <linux-mm@kvack.org>; Wed, 22 Jul 2026 07:04:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1784729097; x=1785333897; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=wzTopji7Zl+MAyFivVnXiZLO5KABEpd5UV02S/KHUTw=;
+        b=kKNkOEFRNjARUCeHy5/dAdE5CIR7bpv48H7BlZLt10CRJ4AGLfWWj6I9960huJ/WcR
+         fqTKwduV5rCIGokp3Re0qoEsVt2HnHan+3/m5xTCD+RHxcWx1waRUEgME164FCvR3L1f
+         NCv24YvagiO3WMcjbjzw0V28+QfGq+KXqp+7UUMQt2saBriNPObgYwNwUtq7Qirh2iJC
+         qEiJDaI7iA4B5UEHi8o68dDBOPr/QGBubjeW/p2hcJ7WN0hQ9f80vvGAoycDif8YB2rh
+         zsph+yUl+J1uv0AzI72g3Kljiv8sXxcHWKo65JlBfPTA1dgt0QFeumHFFXj1jxPeCwz2
+         tiIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784729097; x=1785333897;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=wzTopji7Zl+MAyFivVnXiZLO5KABEpd5UV02S/KHUTw=;
+        b=S8T/YtATLLTNSt5s3fQj63qzWV3kJ7oJ+bI2A5v5hBFDYShGacyUJFLhKFGqXkGofK
+         sQC2CtNsVTAuFg1Dr+oc1N7j2+/u8O7mI85gW+34K3qF941T2pymZWC8TSxrEqjGpVHj
+         QxfwWPvKfWLSoCd2vPuLvrHAsN+E2BcpLC9du7EZ+kgai+1Fwvq/Crx2BMB+7pddvXaS
+         H/2OLgfJ4rYFP0DWWUqpxjub4QP14a0yGwNb9dj7VlL7UlU7koVf+aDFJwY+gV4mjdyx
+         n5ClNqOSX77+yUejxNayM70UAPH1ktptbwgY+4bT2QIfPjrES+B0ZSCwZlbx8oXjSQ1B
+         7xjQ==
+X-Gm-Message-State: AOJu0Yw7aJ6mMfeokdJj0lTNe6YVyMRiw8CiiPeEiBMqNtYbOnzoTIu2
+	Xz5YB6AnGHUzbYkWMjoqQWVSVy90ahYMF2xfRlAudlgqM0sWPOrXJYUVoxu17zZcSaKryneyEsJ
+	5grfo
+X-Gm-Gg: AR+sD11KY6B5GMC50nh/z/tNqDsJcixD4xNmlFoMxm7gZKxx5MAIU8l/qnusP5QpiIf
+	CndMOnvKBMb4yNNwfzPFdpTmaliM2fSQHId2IYlfYJu/QFhNPiOiHvILCWZxZLbxCV3EDz3eLxr
+	ZxA8GP+dhhqqDn/ikx8ZpTRwRK69cnI0IoHolH5/3oXEhsGgL0OuKJovZsyNY6i+qIr3SYckes+
+	Si+wom41zvHVosXXHbAOfujTGBA/EUlw2rXfDl+aF8gslp9QayGxmOu5eDT8tiS8RHfrc5Yrb9k
+	0FdEJV6gEDyi25SVfVWNaLTveDNlrQ/dK8OuUjvU6VohOWAi4BAImSh5/o9/4szajqFRHW0kwQN
+	2+GRRlpP0xM+COLxIyV6n5zY/Q5xytOyr3K3aSOartZTtrPkHIKTqWFNlbD9NEwZw+OfFxXiZbH
+	K6s3ErtVz2Bi58Ty9lxvIQvS4r0FYN8QNLsmGEcLyct3R9OJKNLXplYaRpag==
+X-Received: by 2002:a05:620a:1992:b0:930:f7ee:2cf5 with SMTP id af79cd13be357-930f7ee3792mr215753585a.66.1784729095553;
+        Wed, 22 Jul 2026 07:04:55 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-930f68d5d6dsm171863585a.20.2026.07.22.07.04.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Jul 2026 07:04:55 -0700 (PDT)
+Date: Wed, 22 Jul 2026 10:04:49 -0400
+From: Gregory Price <gourry@gourry.net>
+To: linux-mm@kvack.org
+Cc: Zhigang.Luo@amd.com, arun.george@samsung.com, balbirs@nvidia.com, 
+	brendan.jackman@linux.dev, yuzenghui@huawei.com, apopple@nvidia.com, alucerop@amd.com, 
+	matthew.brost@intel.com, akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, corbet@lwn.net, skhan@linuxfoundation.org, 
+	gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org, djbw@kernel.org, 
+	vishal.l.verma@intel.com, dave.jiang@intel.com, alison.schofield@intel.com, 
+	osandov@osandov.com, jannh@google.com, pfalcato@suse.de, jackmanb@google.com, 
+	hannes@cmpxchg.org, ziy@nvidia.com, pbonzini@redhat.com, osalvador@suse.de, 
+	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com, 
+	kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev, baohua@kernel.org, 
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, yury.norov@gmail.com, 
+	linux@rasmusvillemoes.dk, longman@redhat.com, ridong.chen@linux.dev, tj@kernel.org, 
+	mkoutny@suse.com, sj@kernel.org, jgg@ziepe.ca, jhubbard@nvidia.com, 
+	peterx@redhat.com, baolin.wang@linux.alibaba.com, npache@redhat.com, 
+	ryan.roberts@arm.com, dev.jain@arm.com, lance.yang@linux.dev, usama.arif@linux.dev, 
+	xu.xin16@zte.com.cn, chengming.zhou@linux.dev, roman.gushchin@linux.dev, 
+	muchun.song@linux.dev, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	driver-core@lists.linux.dev, nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org, 
+	linux-debuggers@vger.kernel.org, linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org, 
+	cgroups@vger.kernel.org, damon@lists.linux.dev, linux-kselftest@vger.kernel.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH v5 28/36] mm: add NODE_PRIVATE_CAP_HOTUNPLUG for opted-in
+ private nodes
+Message-ID: <amDNMmbdE_ZhUgl1@gourry-fedora-PF4VCD3F>
+References: <20260720193431.3841992-1-gourry@gourry.net>
+ <20260720193431.3841992-29-gourry@gourry.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260720193431.3841992-29-gourry@gourry.net>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 15DAE140013
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D67D4A000C
-X-Rspamd-Server: rspam01
-X-Stat-Signature: dr44azr91e9ufh4imqa9o3kk9wyn8j88
-X-HE-Tag: 1784729049-485713
-X-HE-Meta: U2FsdGVkX195tHQ5Yx1aUEP58wIQ0Azmoxn5CKCeM94L9NDkxVOgR63i6fbygUThg062cM+8M73VdMqOPj7jc3uTZEaG86hXzzMY/zF3TOMrNqT2W8CdzNzNJpN8AxNI3Z+XD3jDg6/t2s1nLrFF8D89mcNsnCpGfHrx8if9qh/Wtwm+blGB66A7NvgIjop1yIswFx4e+GLWf2FgKET3QeFfS3BmRdMosw8weEAvkT6CFjzzN7Dhck5tLAi1EyFokyay3zgYWEdL06A14QFojBKEJJ/8EDYfb+Vn16Wn1BO0Gel2u2heTtzVa8+dbiahK87imKpLuLhIO68vBOEbmDr2IkTeQjUx9WDnfJdoWSB+Fuy6t+/7pdlyJIjxryzqxL7XK8w75foRP6m2TbsKhvlm7oyNUijypgeG6iFnZ2c3ps38iCQa7sFh6sFmjVdQhQ3KgJlEKNM91DFMCgG4Y8oMoXxLd0RklV/SXi+RQXyJ7DbFvtP/FG7tIX9Q0lNKoL1II7gQlD3jN7EBVms3D2Vhah6K21J4b/3iuIbpy6q3HhFPCGt40q6fVq9VVvWqyquYyKrKoXDZXZjXkLAMyX9rNoVmDXO127D4aFs2aQs7VqhKOIUWYkU0A+tRZYxlqr6WiP0NdMIDJkMDgTbJYECTft9XxPCY5r36bFSo5dY9ajcngEDgaP53zOUiUQC2UFPJAcc+wqajzaCBSkyjTdNxda7V/cAeeliuHd1up0tW/nzGbfT7LZUw3xUCYTozCXHU7bDfsGmONoqgwi/K47zltC0qyxV8l9+FgPiSqrnw55y7oxbm3kBj5bW/fm4H+5Q0TX/RqZ0sQiO0bN7dX5sbn415Hvj2DLeeDjxdlOUXROB0n7kIdxi2WGz/oJpzZC1D9kixTomMtnCW6hC8BTQ8tnHMZlihhAUTfElMSO7n8PvY5/D/n0wOx0MkyBWVY5Twod6DXw3R2B+2i53
- 9vlk9Hn2
- Q7bTy2YWbLXqkfCv709A9XRFz7BmlBelpnE45zcVMom0LYxAev802ilueU19o2b+sdQEdGcHtvWCLwrGhGUB3K9TvWdg1tAzEc4jbD2grTmTvNxxN+ZFYI6pVzMpFYBmkopCYKzkz/D8jX2U+dsn6pueyLSiQPSy18REPbxsRQYcnzfO5BPRnEIEa7nzNtLMfhY7BPEJxiBu0Z4sbquLokBe8RWx25Bw0K5imeprjWRXKLjy+yAZBAGaj6Lg+88SYn5OEV4ccp/XuelwSFItT/bPCk02GNyFXpLxaTmk5MGfQ/zg=
+X-Stat-Signature: n9xqcfkdys4cy7zym73mtyb7zzjodd8i
+X-HE-Tag: 1784729097-71623
+X-HE-Meta: U2FsdGVkX1/DF8dQq6gdABQCZqArOrFzqDkXmfSmd2TbqpoQL6tJQoYMkFPYs/dV1SOcKBxEWBMRzP/7yPwbJu8THKH7r/w4EqDjABPhRRJfKzzWl33HKu/k0eW//dh1Q0WwF8AIJjLOsT9JNNXk+MY886NbIDgkauK5i2wk4l8V3N4uwpYweyy8d0nKi9sNt0aiRWb+ZeeRsRRhXwWXdXeg6Msk5LoteBo7/c0kZtoojoMkSDhEikoFD4FZO1EZtsnU+gxRSVbq2YXwM3avCQFZIKLpA7a3v8Kf0yuSzkTWowRQPsphKPiElk0cYBCydft6nY1amzWMGwFscD4Rg7XfXHo9wiHcLHsfvDs75QO6KUfn6r6ti+F/pRTnXRFtVUkoYKrtzymDN+OWiTX4rOBPVZikfyTbh4hzu/GjxPrI6o1N8y3ETJtd0a26a6inQQzG1vOwkmyqixTikCDMQPcdsykHTbI0i72MNipfhwyEhHAdREpykGmFV6TifgBrO9bhmTtrFDwjUwfoyRUHR7wf3uzcrIuVSo1g7vxmF1opSId4r8ICnxBLgpHOUJeN1gEzSYSiJOqwyuqnMY0flqn5SCYoWPKYm91P4GgFrHHJp/4hrfQC0UIb4GoqNCAlqJ9ds70bXeljfDkGBoghMJ/MgK8E53p+p7A6f0D9T/xiOXFEZ6rEpncyHdfuNob/GR+0zCCaXtVQR/knNmVML+4Se7DZ40ucco/YaWLIHMLTviJXS/UN8BQILKkhu985YFpUXZfG/803CFOdXGh0IM2E6/l/hjhqVwCkeNUMznCehvuIss/2NuVac5GRZSPCJPxJ9T0nYBZhvbFoDuLfpzpRe2xWpkzGTaSPkT4NDojNcprwQODo+i7Bz30mfB8wT3buV3OEocx7UBQKCOniwodUk6Wcwmwee6tDix+cKz1pQeZzO/RU6NuHTr5A+8y8gAgqxcq8NVBMod0WNXj
+ /inn+7PF
+ ZuuAqfvEMCLCG+3/lv9kssCwDGxcihzafE60p+EKvVCHFBd+dAXYKvxI9oLGXyUhM0vrqCeVizpptbmg66hLCalQ0885LQtqfJQt8uzZucXhxhyqInn3yTnfuoZJS1Estnj3oRAgKtGAqlc+o4iPbOZqnSc6tUJntMTrwgtskb1+UXKBIveaCzx+ejYh0Vre3HpmepN1Oe+B3i9I4igyv74DkHuGgzfVCxfSAgZaM/zMkkJtHO/9hRGUcIB8OP21qfzV78MWE/hnuYsq1lIt3+krS/XJEf3sRc+y63vtP8TWVNBUwWaXw9sRqNUu8rNrF0F3Z0BmmaKgJDYU+2pxAfdzias2WRt5IYFDeu+cXOqI4w7wP+MsK2aQ3+aRcwvqG+Rm+bZz5mAF+R33cskzHqicRrKDoXiU2pdPW/in0dMjQjCFZHJGWxokIPGJFn4UykmhEgtyTJWaFow+AyeoCcY9gleAwDeWD8fm1+nCHOjbzib7Qf976NBNMgUp1n4rzMybtztGhdPkQguZHjyLTLvujnA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,24 +140,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 22 Jul 2026 19:33:37 +0800 Cheng-Han Wu <hank20010209@gmail.com> wrote:
-
-> damon_targets_empty() has had no in-tree users since commit
-> 5ec4333b1967 ("mm/damon: remove DAMON debugfs interface") removed
-> its last caller.
+On Mon, Jul 20, 2026 at 03:34:22PM -0400, Gregory Price wrote:
+> Add CAP_HOTUNPLUG, which allows memory_hotplug to migrate a private
+> node's folios for the purpose of hotunplugging memory.
 > 
-> Remove the unused declaration and definition.
-
-Nice catch and cleanup, thank you!
-
+> Without this, hotunplug fails if any folio on the node is allocated.
 > 
-> Signed-off-by: Cheng-Han Wu <hank20010209@gmail.com>
+> Add node_allows_hotunplug() - which returns true for any normal node
+> and private nodes with CAP_HOTUNPLUG.
+> 
+> Signed-off-by: Gregory Price <gourry@gourry.net>
 
-Reviewed-by: SJ Park <sj@kernel.org>
+after this question:
+https://lore.kernel.org/linux-mm/al-pkvmgIxGu3LzM@gourry-fedora-PF4VCD3F/T/#m5b8166212a276fece2380f2dd03d6864375a576b
 
+and some off-list feedback about limiting initial cap bits to active
+use cases, I realized that this CAP bit can be entirely eliminated.
 
-Thanks,
-SJ
+hotplug notifier callbacks already allow a driver to prevent memory
+block state transitions - so that control already exists.
 
-[...]
+v6 will remove both the filtering here and the cap bit.
+
+~Gregory
 
