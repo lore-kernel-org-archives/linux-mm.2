@@ -4,97 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 374C3C4453A
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 18:43:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0A78C44536
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 18:45:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3AC6F6B0096; Wed, 22 Jul 2026 14:43:12 -0400 (EDT)
+	id 7A7436B00AA; Wed, 22 Jul 2026 14:45:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 383C96B0098; Wed, 22 Jul 2026 14:43:12 -0400 (EDT)
+	id 77EEB6B00AB; Wed, 22 Jul 2026 14:45:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2C17D6B009B; Wed, 22 Jul 2026 14:43:12 -0400 (EDT)
+	id 6464E6B00BB; Wed, 22 Jul 2026 14:45:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E90BA6B0096
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 14:43:11 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 65DF81C0020
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 18:43:11 +0000 (UTC)
-X-FDA: 85017284982.02.3161A0F
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 074F640009
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 18:43:08 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BsgpXMd+;
-	spf=pass (imf12.hostedemail.com: domain of jp.kobryn@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 3BDCE6B00BA
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 14:45:03 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A66F61C0454
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 18:45:02 +0000 (UTC)
+X-FDA: 85017289644.22.0C22FE7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id B443B20006
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 18:45:00 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VnG2Zqb3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784745789;
+	s=arc-20220608; t=1784745900;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jU7TNupb0pdhQBzs77sfqtrZ1+d4xoAeYWx+j3QiA1A=;
-	b=6TkOzfuDpy0pY/KeRklZsQARluafhGKwlsl+JHXNzAVYnehc2vpyGZOwAExCLSYwwzUSAY
-	ScqE9NRnatBxXnqd4IP1BE56/+Aa5l9LfqTss3Vnq4qXT62XntzE3Vc9bL2Zn6uO5SF+/b
-	3eNqwCcOOxJ+bV2ksOM0iXqGSxK0soo=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=x44uhZbq2B9G2E9nG+czfwtCtF+7aytn//SENl8MBaQ=;
+	b=PNr9mihrIIuoSoZDdXwAyqdNPeygri/jj9itPmInMysavz1BQ6Xfe5UBl8GHgoARFDeTh6
+	iz5LK70MjpIMolCIaDpGjxZdbnfWIhkl5LpEL2TQGjGZpRBYnZlIiA7E9KiE2nkTNn71ry
+	k2dSNa0Fbrof+wuYW1YP+fGONqsrvs0=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BsgpXMd+;
-	spf=pass (imf12.hostedemail.com: domain of jp.kobryn@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VnG2Zqb3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784745789;
-	b=VDqAGspJKKdgLhMCwMAUxf1XNmS6lqXBe6RX57YOw9UhCk0dWEqnHDnZGx3spUQuPL8qUJ
-	4GCvx8CjRiy6XNNqdjcoMcJCCSmvngT8ZnB6a50SnfJ9ImQyLzUaUQhQU8Yk/RbL3G0GZu
-	BIT85foUNfOYXV5QmUWNJbi3B32Frng=
-Message-ID: <f83b6c93-b32e-434a-94b7-68628a2e8527@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784745786;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jU7TNupb0pdhQBzs77sfqtrZ1+d4xoAeYWx+j3QiA1A=;
-	b=BsgpXMd+bM/LhQJ2Rz7ftetxHEMGudfLcMl4EwXOOefgsqqUA+QfxR2ssFJp4BuLLOtnV8
-	wr0DW6Ha7NOne5YliUKnWr4ctzX7Wb4TOO9wzA1gl/rTqa474oUAM576CKQ0vhO6rpIyJr
-	lWH6SLT6mICi3YJyQVJ+jlD9UymTRoA=
-Date: Wed, 22 Jul 2026 11:42:58 -0700
+	t=1784745900;
+	b=eozr5gaMvagQY8kPdAhXE0yDL+4m52CbVvzwG521yB6F9U/DyJ8FYhNtpJV9LhfqcgyatK
+	1GVPoEqfL2Z8JuHnK/fdeVtmxmw1/NVhUPr+OXJ6zNlusNP5MOxep3+EOsEho8NLSmGYY/
+	t0la6B8Entu8YYZa6/qIMeGAl60L3to=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 97DFA40621;
+	Wed, 22 Jul 2026 18:44:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17DE41F000E9;
+	Wed, 22 Jul 2026 18:44:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784745899;
+	bh=x44uhZbq2B9G2E9nG+czfwtCtF+7aytn//SENl8MBaQ=;
+	h=From:Date:Subject:To:Cc;
+	b=VnG2Zqb3URkf57II21CdKuzRq8Rny3mmyTDuzOgM5COBWIhT2h8jrvP9GFOo3Lti6
+	 ePo6HWikoWfq/fG6d4ALd4SnanDRGFVGZQyl5fL7IYCJTSz/c33ld0TuUwly9J0DzN
+	 VJ7qR6bUgOt1eSCs2sla+y5Uro9SSORWEDynyIM4fXc2u0jAOLy0B5m1PGZDRkpEfQ
+	 bWETfre6N/5x/oWeyReX4VqwP3qntBd9CKMKMLXSByXWWvQippZjMxEuUZ88MVEtW2
+	 CmZpzm30AJ9ZlvJ2qm+M2kr5mh8kr0qltv/Xh9/bAIHwqAuTE4Zs+9h2PSmU4HC+do
+	 z8fRaWy422GrA==
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Date: Wed, 22 Jul 2026 19:44:43 +0100
+Subject: [PATCH] x86/elf: Correct comment for STACK_RND_MASK()
 MIME-Version: 1.0
-Subject: Re: [PATCH v2 2/4] selftests/cgroup: add memcg_stat_cross_cpu
- correctness test for flush
-To: Ziyang Men <ziyang.meme@gmail.com>, Shuah Khan <shuah@kernel.org>,
- Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
- =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
- Jiri Kosina <jikos@kernel.org>, Benjamin Tissoires <bentiss@kernel.org>,
- David Vernet <void@manifault.com>, Eduard Zingerman <eddyz87@gmail.com>
-Cc: Andrea Righi <arighi@nvidia.com>, Changwoo Min <changwoo@igalia.com>,
- Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, Mykola Lysenko
- <mykolal@meta.com>, Nathan Chancellor <nathan@kernel.org>,
- linux-kselftest@vger.kernel.org, cgroups@vger.kernel.org,
- linux-input@vger.kernel.org, sched-ext@lists.linux.dev, linux-mm@kvack.org,
- kernel-team@meta.com, bpf@vger.kernel.org, llvm@lists.linux.dev,
- linux-kernel@vger.kernel.org
-References: <20260721174833.1232771-1-ziyang.meme@gmail.com>
- <20260721174833.1232771-3-ziyang.meme@gmail.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: JP Kobryn <jp.kobryn@linux.dev>
-In-Reply-To: <20260721174833.1232771-3-ziyang.meme@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 074F640009
+Message-Id: <20260722-fix-x86-comment-v1-1-605080af988d@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAJoPYWoC/yXM0QpAQBCF4VfRXJtitUNeRS5Yg1GWdpGSd7e4/
+ Oqc/wLPTthDGV3g+BAviw1I4wjM2NiBUbpgUImiJFcKeznxLAjNMs9sN2x6ItKZzlLdQXitjsP
+ kK1b1b7+3E5vtzcB9P5iL1JBzAAAA
+X-Change-ID: 20260722-fix-x86-comment-af666535315d
+To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+ Kees Cook <kees@kernel.org>, Andi Kleen <andi@firstfloor.org>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1357; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=ISIwp/sXQobVv07RweLH6MaBMg/gxKujXMAO7JcPE94=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLIS+ecG7n9kZMMuPF3q2tay56W3fi+Xye355F829VIzS
+ /7uyK4/HaUsDGJcDLJiiizPv4jvDxIJm9d5wd8NZg4rE8gQBi5OAZhIy3yGf2Zp2oYuyUuKJPbt
+ 8dotlvZ3W9ffpwd/Hw1rvW946/8er7OMDB8ZFqXFur7a9CGKt+ijiGzquwa7fT0HugMmSU7u+q/
+ DwAkA
+X-Developer-Key: i=ljs@kernel.org; a=openpgp;
+ fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: B443B20006
 X-Rspam-User: 
-X-Stat-Signature: mnuxigbdo1pqhckzopp53cdf5nasso1s
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1784745788-322208
-X-HE-Meta: U2FsdGVkX198jb1IjAWHaDmEHLPao5T9xkDnuo71vzHRRfr+8KxAp+E0eEgZ8lUHldt2/qHjNN8C1DISAqW794Y0cvFI9ZObKBDFYPpge8hjrL9VHt0vV+Qb3aFdg3K3wxvLgDr57swEbBVzbJdMKApHRX3dW+iTAgMmadr2HZv9Y77/bYoXpGuGpdFSlsF/GCmNVzSpN9Sunp2YlK1jjgMhDbgaQd2pGI+WcXtIHmljsUOhbQfLJW852hlHFMJhk9W2ORF3AjyEDWQz/XjfSEQ1WVgHkN4kt+1nyit0a+WMxOQWg8QXv1DmQ1wDgj9sufkHerFlZpQ2dkL3BVxQrZVjphgInZCCZLnaUFfwsEiFhBCr3LrQA3Ps80AI4bDA0ks+L8gwkIeoo+PjxHgp3MfZt+93JlZG4w+d/xT1T6ZIY4KP3k/Tjbulbu1ygRHzhymmXn9hioZv0W4T2cn+ULd3RT0mRG/ludGOE3Guw+P08kUYOPZPpR8kLiuUK2wRbB+S/amckPXJg6LOtgxEBFTN3JslTpjJRWGwD/LFW+3x7/fHYxRn3TYPpTM0eOebmLCF8IHw9YtT9F5K9ggEqXpDyKqXxvv57FmAb/a14y/pURyA3GGahSxEuUT0MMf8+IKuO2dm3vCfCs3lFkC1sHlnQi5JAj6iTCaoSUwjBC8+x94ZpNpok6gqorNV1xnpgpnnJ5cbmv+U6TdTaZrJf8GkZtxVnVdIaWZ2kVbh5CAbBsYLi+79DywaqUcOnOsqDi0ioxmWHwdLo+ihwP8kUvNZLZRmwwNxI7KQIAJFZPhU8sGsZ5NQNlbv6phOGncS1lY6dIXYanxRLEyE4xOSgwLdh9NA5gnxL6KojtSCFOT8snjyYqxIxu+w3vhA3wi40+4D3PloxQLD1MMRNx1JgSwEy7XylwLYYh51RunGNJiiH2jpSKjVpOirBhTYKobBm+oN1eTdLwE2syp5fDA
- uIUDpZOD
- eXfITp8B56/ze09qFozOkBACmDQDYso6ZkSbnu+PqYb3TI3VmOFgnK642fnlW3DWwAJWxYp/hNJku73R/paGDRZXvmR0/1y00TbY25FYMRjn1Qy2sCecEFTvckZO7MTOdCChH5CnHCSyTmYZgU/XWJmYfidagnVBjGHLnaoaAem8gwxyo4GZIYunErn8eOSt/0A10QYunkqttdx4/aAbS2ACwbgShTn5y5VmN/G/KLaBo8qcufsDPouZdF5bJ0K6d4dgGhS59xdcSdkla5qi0MSBORkTd0V/YYbG+EDWSkWy8/sLIwQKnhQ/xEQiYjDuPTa7mxoglEE6N1WM=
+X-Stat-Signature: hh1e81gcemmfszdywzoq3kah54bhjj5n
+X-HE-Tag: 1784745900-356760
+X-HE-Meta: U2FsdGVkX19lVoTuulVRWvd9t0lVuSDXr3/0aY42anx+UHGLJfXx2H9d0kfNxOols8SjILr7gTn7kLK7smwvUZ8QQx1qSpE+EPOU9NASjyGz8HhBvmHCFdRj6lVT1LrBp3IYqLRULgRRwkn5ZLY7RN4FN/YcFAGihtZIZ+4CD/r7PdgdYNKgIHFOTbx/5gdEpUoHfhOv9QfMCFc6eyIn8Y1lZRK37hpKV9bJO9edTVM8KNj5KRWCfyHE0TeRiMkYBLGteJS2mSvojbQEPPUcy0BVbdBam1X2iL4SW7hItVXxCcaejMxHn07wXahMDj1cLIBnHJ/nlvFxJNQ0BKeU2h+KLbplZPR+OQOZILpvl5YImDNYntH5I0i7fqPsHHYJhwO3RBygxnHRTNV7Vcm0ujCgzyW+KpD94i9oQY2cPscHlXtW/zdiDaCKtqFkQ4amUJKCvLGv4gVCKcJheabPCL2zJyy+Z0enH0wM083pa286pTVjX/GZ1QFmBo3C13zI7uFgeahE/hD/QR0gnkN6A5Rf+JOw65HxVChx/xLV9Rlbd7h0Now3ItrTRq6Fj8K9ktfBvRb78EYC6XqZyheYlwwaKxpj3FOwJGnsCdfXOHwJxju3kj0q2vT7LEDHLsaf7WFUmvDEyPveOQOxG6GfWl2Sp6UAOEF1aZqHQPtEWFJdCZnZBit0gfoEBEK3i9cpLaHNDdBZN81eqCErPqkTzo24tCo35oULm9d4pb41gOsaY7xGMAEWgxkFjtog2fW2KSC3BQNfivUu9+ah01Cs4jLuOyXxAi49AFtjoGnTTx98eo8FuepvdjNT0vzmcqRF/AHdr6DtgFt+0vUHOWUrlbSN7cmzoymvVR3tIcORsIV83fEx9JcNfUmYYgFrXplLvhvUO4EjCsPOAbIoKIm/Jvo6PUQXLmm9b6UPTkVu3TZqbQmA3UoPtcyJpQLgP1BAhWAgB0rN8FkGEVpucvm
+ vQ3ZvCEY
+ FwlHUgBaVAfAbiGOblKIdO1VWx+PieZlmLyLhYGwU/vlflGkkfjWuZ48x4+USaWDsLRHPP4/saoyHBTuOgeMndDSrbHuasonIVTdWUbl59yVVD1B87Og+gtqT+lpq745UNFpn3b1Akh6QjoDGRx1K6LPLQ320Q8km2LxvMXlcc/lFJnI60lm+oE1ibEVuBj2JXjXMDMnp7CK3b8y7aklxTUHYLH0svF69Olf1QMJHlCzXyj+k0+soyx7/nah1arNkLBSPgqCOAXYRfPszfia+W6V4TXtw+j8MycTC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,17 +103,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/21/26 10:48 AM, Ziyang Men wrote:
-> Add a test_progs selftest that verifies the memory-cgroup BPF kfuncs
-> return values that agree with what userspace reads from cgroupfs, across
-> a whole cgroup subtree that has been charged on many CPUs.
->
-> It complements the existing cgroup_iter_memcg test.  cgroup_iter_memcg
-> calls the memcg kfuncs on a single cgroup (BPF_CGROUP_ITER_SELF_ONLY) and
-> only asserts each value is greater than zero, so it never checks that a
-> value is actually correct.  This test compares the kfunc values against
-> what userspace reads from memory.stat, and checks every node in the
-> cgroup tree.
->
-Can you extend the existing test instead of adding a new one?
+Commit 913bd9060195 ("[PATCH] x86_64: Increase the variability of the
+process stack on 64bit architectures"), merged in 2006, increased stack
+randomisation from 8 MiB to an ostensible 1 GiB for 64-bit systems.
+
+However the commit actually introduced a mask of 0x3fffff * 4 KiB pages
+which provides 16 GiB of randomisation, not 1 GiB.
+
+It appears Andi perhaps typo'd an additional 'f', as 0x3ffff would indeed
+provide the stated 1 GiB.
+
+Since this value has been in use for 20 years it seems sensible to retain
+it, so correct the comment instead.
+
+Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+---
+ arch/x86/include/asm/elf.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/x86/include/asm/elf.h b/arch/x86/include/asm/elf.h
+index 0de9df759c99..4133c790e71a 100644
+--- a/arch/x86/include/asm/elf.h
++++ b/arch/x86/include/asm/elf.h
+@@ -322,7 +322,7 @@ extern unsigned long get_sigframe_size(void);
+ 
+ #else /* CONFIG_X86_32 */
+ 
+-/* 1GB for 64bit, 8MB for 32bit */
++/* 16GB for 64bit, 8MB for 32bit */
+ #define __STACK_RND_MASK(is32bit) ((is32bit) ? 0x7ff : 0x3fffff)
+ #define STACK_RND_MASK __STACK_RND_MASK(mmap_is_ia32())
+ 
+
+---
+base-commit: 248951ddc14de84de3910f9b13f51491a8cd91df
+change-id: 20260722-fix-x86-comment-af666535315d
+
+Cheers,
+-- 
+Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
 
