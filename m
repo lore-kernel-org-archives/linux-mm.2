@@ -4,88 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67E7FC44512
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 04:01:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4D81C4452D
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 04:15:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E7C146B00C8; Wed, 22 Jul 2026 00:00:59 -0400 (EDT)
+	id 98E686B00C2; Wed, 22 Jul 2026 00:15:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E2D4B6B00C9; Wed, 22 Jul 2026 00:00:59 -0400 (EDT)
+	id 93F7E6B00C9; Wed, 22 Jul 2026 00:15:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D44276B00CA; Wed, 22 Jul 2026 00:00:59 -0400 (EDT)
+	id 855796B00CB; Wed, 22 Jul 2026 00:15:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A4C966B00C8
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 00:00:59 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 076BE1A034E
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 04:00:59 +0000 (UTC)
-X-FDA: 85015061838.03.6AF18FC
-Received: from va-1-114.ptr.blmpb.com (va-1-114.ptr.blmpb.com [209.127.230.114])
-	by imf17.hostedemail.com (Postfix) with ESMTP id E0F9E40005
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 04:00:56 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 61FB66B00C2
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 00:15:24 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CA1FFC0357
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 04:15:23 +0000 (UTC)
+X-FDA: 85015098126.08.0FA25CA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 3DA7C40004
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 04:15:22 +0000 (UTC)
 Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=q66hMoEW;
-	spf=pass (imf17.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.114 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fm62kkMp;
+	spf=pass (imf17.hostedemail.com: domain of kwilczynski@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kwilczynski@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784692857;
+	s=arc-20220608; t=1784693722;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=noynmVdv6GOWzBzQEODBsTTH5zKK0O/aYXI/N+MayE4=;
-	b=1AT8QCQeM7LcyCPvfJXGgYJMriMWpiZusZz4OBS0W4gW6Vp9tZBfBc5wNfSsEakrKtLarQ
-	OR1vp3gZfyuD6XoAzTJ1wOI4cjJYnB/RYJBXnKVz4jcAYboPXs/3P7BpxmBjPbSz7OVaoN
-	lYZRPJPg/aSrwNn+viHJtwnZXH5g9hc=
+	bh=sjWoXeUsuihxAtS7FsL2okB6tKsuwtAGig0KCI2ANJc=;
+	b=HRpsKuW4n5SZq/scrcDX05Cf75CenuZdABXX0fj9c6kdvLp+z6GSImX4WW4ZLEr4FJ1zmQ
+	4bQhVfUfqZN7TTfpQFTsx3BRC5QBDXV5pAqDa0jmbS/metp/269wpBiqol3/CYsKI9kkpg
+	KU0mkep9QNZUM9JcjgFHIEey70h5sUE=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784693722;
+	b=TgntvR5z1kH671+w68/4O8nXQ+BlN28Qqp+WT6SQ7JhRdXDif3B3NlyRCnU5pD/Bk9jcpJ
+	C5G2TPCWye/rrHFwRTmz45fbhTbh3ort4v5dlxaZ6eGL6v6a+/PCTsqeQN8Ym1kenRy6XS
+	OKOIQFskokGWpfnOLUh96pm90E8TUlQ=
 ARC-Authentication-Results: i=1;
 	imf17.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=q66hMoEW;
-	spf=pass (imf17.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.114 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784692857;
-	b=7++7vhdBJFinPMm5QyPFimztrzTxnGXd6nPLCaDay+Ej/ExRIc688NpouYgra583yMzGZt
-	KfQirRVyPvaluAokE6p6hyR0rOTx4K44Ljw8KR+SULQZqPe3cHHbBLYvvDv6D9Z1J02S3/
-	Gg4xNJpT7uTLisuNrgYBVznIceb6NEE=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1784692843; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=noynmVdv6GOWzBzQEODBsTTH5zKK0O/aYXI/N+MayE4=;
- b=q66hMoEWLHr21wHkDhf956gafpoc6kvCmdYLKPhsLYtPDLHgxw5NVIc58fUastAUG+w6wZ
- m/QHj496nYEUd641ftBov0DKne22M0CY2ReIz9TrZanvLfnJJI1SA2c4RnDBMvgiOOpJJb
- iQDLDGfSKZcMA4326AtMLiKr2x8kNgfEyCwaaZdMpmVSZxx4ofri1Mz/BKhxkDuEmwmCBj
- qUSkx+O2m01my0VgK+SKowsxrULyslOIOQ4mb16dkQff5/41qKSK1vu13sJQTkxP0M98vP
- M/rL3djkPfPshZ53ZQQd393oBW47TdmYP7AtWf8vJqBqdKXYfW0G0Iqc+ylwZA==
-To: "Dave Hansen" <dave.hansen@intel.com>, <akpm@linux-foundation.org>, 
-	<apopple@nvidia.com>, <arnd@arndb.de>, <balbirs@nvidia.com>, 
-	<bp@alien8.de>, <dave.hansen@linux.intel.com>, <david@kernel.org>, 
-	<kees@kernel.org>, <mingo@redhat.com>, <rppt@kernel.org>, 
-	<tglx@kernel.org>, <muchun.song@linux.dev>
-Cc: <linux-arch@vger.kernel.org>, <linux-hardening@vger.kernel.org>, 
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, <x86@kernel.org>
-References: <20260720120259.1545-1-lizhe.67@bytedance.com> <33fae97d-75db-4df7-9aa3-05a51f8747cd@intel.com>
-Content-Type: text/plain; charset=UTF-8
-User-Agent: Mozilla Thunderbird
-Date: Wed, 22 Jul 2026 12:00:19 +0800
-Message-Id: <5284ba93-13c2-4727-9693-fa192d6c1cda@bytedance.com>
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
-From: "Li Zhe" <lizhe.67@bytedance.com>
-Subject: Re: [PATCH v7 0/9] mm: optimize zone-device memmap initialization
-X-Lms-Return-Path: <lba+26a604069+8d3e41+kvack.org+lizhe.67@bytedance.com>
-In-Reply-To: <33fae97d-75db-4df7-9aa3-05a51f8747cd@intel.com>
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fm62kkMp;
+	spf=pass (imf17.hostedemail.com: domain of kwilczynski@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kwilczynski@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 941AC601EC;
+	Wed, 22 Jul 2026 04:15:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C870A1F000E9;
+	Wed, 22 Jul 2026 04:15:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784693721;
+	bh=sjWoXeUsuihxAtS7FsL2okB6tKsuwtAGig0KCI2ANJc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=fm62kkMp8EGXL0Bk2nd8liF0rcgGYvmNHL2xGKQfTLZL2kSPA8y1n/abjhkfNeM76
+	 lX6Xsr8MYRgisl+17CNTa4FPyTHAcdfrDKI1ChOwvf3wOdKAPsY0n0lSl6TjtX7RTs
+	 YnZCYrvJ8m/GVM4GdAwXhp0Z0X+WtVsPfSrvJo0eX8t4hwb2fnJwFdJysGk3XL6Pj4
+	 BoqYQwXRBoUJSsH+EaCmkpYMFKzM+R0v/Avjz2UnnDS1EVVN8mf0Rp1KpvShzKxvlT
+	 Ge0rZLZwY9SUMUTejgeT0I9HqBpG6z/HXFAgB5kK15w3Ez2nzYEwcv2LPuowLBy/wQ
+	 XM0p4eY5PHmsg==
+Date: Wed, 22 Jul 2026 13:15:18 +0900
+From: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Tejun Heo <tj@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Bjorn Helgaas <helgaas@kernel.org>, Manivannan Sadhasivam <mani@kernel.org>, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, "Liam R . Howlett" <liam@infradead.org>, 
+	Dan Williams <djbw@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	Mike Rapoport <rppt@kernel.org>, Simona Vetter <simona.vetter@ffwll.ch>, 
+	Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>, linux-pci@vger.kernel.org, 
+	linux-mm@kvack.org, driver-core@lists.linux.dev, 
+	Christian Brauner <brauner@kernel.org>
+Subject: Re: [PATCH 1/2] mm: Add unmap_mapping_file() helper
+Message-ID: <20260722030916.GA2513661@rocinante>
+References: <20260721185252.1670958-1-kwilczynski@kernel.org>
+ <20260721185252.1670958-2-kwilczynski@kernel.org>
+ <5a43053d-8d08-4fda-82e3-bda10ca79c92@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5a43053d-8d08-4fda-82e3-bda10ca79c92@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: E0F9E40005
-X-Stat-Signature: i5ynpsmxqdqd7djbbx3pqpr4g5jg6tc9
-X-HE-Tag: 1784692856-362836
-X-HE-Meta: U2FsdGVkX1+gW9FT6KvSrD/n4ZE7aTdIFXPVJ1NAWxnkVSZQd9qRv5gdY2Bt3rTnZWENqOiHfhivgT7h5JhwnsbtNPhlKomFXupdoMQ7U9s6XYnGFiYl378pTRwsUMCzUh2ycpDv7RVMAT8hJQA7yosll756rc96Osa23E1vC42MNtXY6d/xrw2uwQNEVPbxJnlzOG1HjoZy/WvXqvdkVLXqrHB7JZcGi6c6VSuCbhWZ3Ofc5AbhbzifJ6TCEyVxKLqyO5ka87+mQUQiKkMsAdl44stvBvrIkDULf8Z9YYCuvkCBo8QeObKDtgCdgHUfGrPTB1qJcpsht6KonoR96Y/iv/GmBipwkAN3DDuuP2AyFntUwIAH7v8mXPrPsBceCbYE5mzVLW1bWDazpdc/vsiFPw7+1LvFHe0QeDwC7k8xlBT6qG76XyeP4KbeEmkEIBOceHMrxK19FRVaFCXDDK93VYkATiJmzc59u4oNmAGjWb0awZbddp5KVIzxustwqYzU4O3LAGURVHh524yPUBtkEI0GqJKmwLbSP+ZeKuxpgzxhkBUCRytA8vPRdEfHlENhXjgtq8plIrb35rMDDh3XCcd+xpYn25TZXXGHC41ZubnmDdCW5yJfgjpkLbbkMBPx+VbY4N79yHh4XiLd/GEbgDUZqWgnts15CxyMGeaoXrk3SP6RyNMQIvcxcnlq4Wpvbp9uRkVsqpQ4HhxvBu0EjSESOw4Fpu2eK/y9fQdV01QBxXYqo+05YW4rXZVWiHtrHKM9BlcQeV/zBPjx+B9/Bp+89FLU9i5qP0b2+3sNu3AZHMUxKlKm9pgoj5zknogE6J9U7F3NDThDPZhOaTvx1UuyfuSAxHuM0T54MajRGaVyVXYnPjjHlW3VjkjSvj5ixicrv//j/dUSL6IjJkCzHG6cPfnz30HmypHzqNLBk1ycQKY0Y+SIHw6Io8JFOPtTOfcYRPX6QiBxccg
- 3QWfnWgY
- 54vMgsI103v6LsbyEi4NY/DXDVigIaI7RnOcvWtop+Mu+sF2JIqKcYYaw1XVhOqw0oGcrSDT1M9L847uMiwyj/hS9UpNsESEW1Ih7GTmkiA9yDiHUIeu96Y6AizL52jgvPcQDAdptCWiYwLCJTkBE383DxeC7tFabSttqFKu7kLzd8iyujHm6y3MIirjVnCt3MhQ7bRhIq4HeXVkBoE2lU58ycVuuN9EGoO4KJDShzt3+YHzVkmZr6fbpGMHq1DN/VvZYpKWpvdzuv0hn8wJinc8r5Q==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 3DA7C40004
+X-Stat-Signature: iqj14a5ao3cp7naj9xfsd4cz6pezafxi
+X-HE-Tag: 1784693722-275323
+X-HE-Meta: U2FsdGVkX1+Xw5IEe7KsZWi0Hf2rOkBFgwVdz288eZZqKryMVTvsil8WflMSPktSGqZ/wrdFFGjJShPQEV3UScEuQA/9g1dPBqQzSdRIQyvYuUpKUv7dClQvR5YY19tB27fMbjrU29NvoQmF/ynUDQU5SzLrZ+2cJNcfp4mUB3VyBJ8ksls+aADvdH7kOzeRfVS2Y10lYww4M1MH+U6clczI3WLzYAyvIqXs+161RG+tHyiHI1CDxrBMxZP6aNwCzs3UhXshxaQwH7oRhO//Qhh1B1aQdhTf3a/Ulhrbsu3TngF4GQl/iBv2tii8PJozMaaMttzgx+q2b7IReyPMy+Yld+menbBT0jQTZ+gSnluCDNFAaNoaG2zG6mHIvx9DmAXDeWxFKAoxErBUPZPArLTjWO7k6MvrS0y4K3PFzJYZrs2NWpImnDXZsd3CgvcwGIApUfBVE+sr+YO4IuCSFgsHitjyLO+LHcPkhGPZSsdjVSoKa35WY9nL/GxuYbwY9gRf2xUe1Ho+7Sk1/XV06ARqA3dLlfkEBi7l0ykzJQ5aZjv19BF6rX5sA2ujNqtBl0U8PYp3mGaX7/SWfrNG7UI2qVK8d3KaL1dqbaWkeMFfeuGqnaSlIFDYEN5jNW6Ez+7SRfb4Id3SEOhZ9r2/k+iPJuFrPH7AXcFCq58kPh8wNz2gde84a7MYqPSC0AgChbQOu6ABhsbCXcsP90Ibe485wuHynLugRJAlnGSOdQyiqorgboYJs1hig+b5LXzQyZeYDfqZLZr8Q62eqE4XKinOB6mVe+m6QYroYoldoZmze/2AXjHGfpLfR/+rgQRNnwiS9sy9Kx20ZENnPEH2h3vvi0iyCS8JqjWtoo0uT4Ahg/lcO2HWx29K/BYv6xfEJuCt6EUz3bIMgpZiaicWUYOmBgdxYWiAIB8TicFUmP5LdNieWcfHfWX6rvlVP8l+vVQkf4qje8bkIkATqGU
+ 7ejFG3OQ
+ BsixTih0aqR+wg6Ww+tLNaQdJVUCzzATlJci0mOUNv6/AhOyEqY/h1fnI4TnXRxDMxOhUckQuchRlD5nthCNirpWvVtRH+KPQM9WspbNX6mgjMab6oXXLtx+yjDfEEZjkxMwgsCHdgvYPFl4w2kJ+/328tJindtV3cp3f/3+AAW19Nl9eJ22Bgun8HbBkM064+aGKx6gvXhTBMXC2saIQ2uGr2la7B2ukur+0+Y52YEvYWG0I5yzRzTbBNUwBaYmb6ni+eyrrFbZ1cs29zlS1s7FmADx9dnaazCf+R2qEi1TGBVM4o8iezIF+pmcoF/yzqX7K
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,30 +99,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/20/26 9:05 PM, Dave Hansen wrote:
-> On 7/20/26 05:02, Li Zhe wrote:
->> This reduces the average memmap initialization time measured during
->> rebind by about 60.4% for nd_pmem and 56.4% for dax_pmem.
-> There are lots of things in the kernel we could optimize.
->
-> Why is this important?
-This is in the synchronous probe/bind path for large DAX/PMEM
-ZONE_DEVICE mappings. Userspace operations such as enabling or
-reconfiguring nd_pmem/dax_pmem namespaces, or bringing a hot-added PMEM
-device online, will benefit from the lower synchronous initialization
-latency.
+Hello,
 
-The numbers in the cover letter are only for memmap_init_zone_device(),
-not for the full driver bind operation. But that time is still a
-blocking part of the user-visible operation. On the 100 GB setup it is
-already a few hundred milliseconds per bind/rebind, and the cost grows
-with the amount of ZONE_DEVICE memmap initialized. With larger devices,
-or several namespaces being brought online, that becomes visible
-provisioning and recovery latency.
+> > + * unmap_mapping_file() - Unmap all mmaps of an open file.
+> > + * @file: The file to unmap.
+> 
+> We are unmapping pages/folios, not really mmaps.
+> 
+> "Unmap folio from all mmaps of a file." ?
 
-So the benefit is lower latency for provisioning, hot-add, and recovery
-or rebind of large DAX/PMEM devices.
+Got it.  I will make sure that v2 has the wording improved.
 
-Thanks,
-Zhe
+> > + * space it is attached to.  This also covers files with f_mapping
+> > + * swapped to a different address space at open time, since such VMAs
+> > + * cannot be found through the file's own inode mapping.
+> 
+> God this is confusing :)
+
+Sorry about that!  I am not very familiar with the inner workings of
+mm/, so please bear with me here a little. :)
+
+> Sorry for the stupid question, but why can't we call
+> 
+> 	unmap_mapping_range(file->f_mapping, 0, 0, 1);
+
+Since commit 636b21b50152 ("PCI: Revoke mappings like devmem") the PCI
+resource and legacy files swap their f_mapping to the shared iomem
+address space returned by iomem_get_mapping(), so that revoke_iomem()
+can zap existing mappings when a driver claims a region.
+
+That address space holds the VMAs of every resourceN file of every PCI
+device, the /proc/bus/pci mappings, and every /dev/mem mapping in the
+system.
+
+So, calling unmap_mapping_range(file->f_mapping, 0, 0, 1) from
+kernfs_drain_open_files() would then zap all of them on any
+single device removal as a side effect.  This is not ideal.
+
+I have tried exactly that, to be sure: mmap resource0 of two different
+devices, then remove one of them.  The mapping of the other device was
+torn down as well, and the next access through it got SIGBUS, even
+though that device was alive and bound.
+
+Hence the new helper, especially since kernfs does not know which
+physical range belongs to the file being removed.  Only the PCI side
+does.  The struct file in vma->vm_file was the only thing I could
+think of to use as a filter.
+
+> What is a bit annoying is that you now do in the caller:
+> 
+> 	if (of->file->f_mapping != inode->i_mapping)
+> 		unmap_mapping_file(of->file);
+> 	else
+> 		unmap_mapping_range(inode->i_mapping, 0, 0, 1);
+> 
+> Shouldn't we just have one function that takes care of that internally ... so
+> it's harder to get wrong?
+
+The idea was to introduce as little change under mm/ as possible, keeping
+things inside kernfs, which is the de facto consumer of the API from mm/,
+so I wanted to make it obvious at the call site what needs to be done, so
+to speak.
+
+I will change it, such that in v2, kernfs will simply call
+unmap_mapping_file(), and the helper will take care of both cases
+internally.
+
+Thank you for the review!
+
+	Krzysztof
 
