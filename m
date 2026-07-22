@@ -4,126 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 696E4C4453A
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 20:40:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4BB3C4453A
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 20:50:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5C2FB6B00AE; Wed, 22 Jul 2026 16:40:55 -0400 (EDT)
+	id 909B76B008C; Wed, 22 Jul 2026 16:50:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 54D906B00B0; Wed, 22 Jul 2026 16:40:55 -0400 (EDT)
+	id 8B9ED6B0092; Wed, 22 Jul 2026 16:50:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4159E6B00B1; Wed, 22 Jul 2026 16:40:55 -0400 (EDT)
+	id 7D2456B0093; Wed, 22 Jul 2026 16:50:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 153776B00AE
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 16:40:55 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 901DC12025D
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 20:40:54 +0000 (UTC)
-X-FDA: 85017581628.14.4B7D763
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf25.hostedemail.com (Postfix) with ESMTP id CE4F6A000C
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 20:40:52 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=u905XyTg;
-	spf=pass (imf25.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 528296B008C
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 16:50:10 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BA32A12025E
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 20:50:09 +0000 (UTC)
+X-FDA: 85017604938.03.22175F9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 6F0DD140004
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 20:50:06 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ng3LcE3f;
+	spf=pass (imf23.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784753407;
+	b=JKDYBmj46i558GQQL071mEWo1DaubAExIl6EET9diYcmpiF0MH6MyiZAPELjbLp+imPFL5
+	xv/rs4XJN73lnwuoSm2lCP8zr9uAgbCNDw7yxSjwBxRehJbbkYly9y+4D7nVy0aEPpSofi
+	/nX/hkGE++rSlhjEL+JJjQpkVVQCxfA=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ng3LcE3f;
+	spf=pass (imf23.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784752853;
+	s=arc-20220608; t=1784753407;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aKBipMgFuCrzcHQyl/Xa43Q9KRF4LHRa/xmzRHuI4is=;
-	b=wT8qM97IXefBMkZa5unGwrDYJPYb4HuBKl7ChkeDtrJMNghkZ+Nk4w5ynev0n1CUrOoCWz
-	a1GyJGGR+hzce1dt7lzRXJmMcLaCpWoduaSy/dAv7GljHjFlaVHhjfOhFB5CjZuWx1cBep
-	1doc8VCWQHLvmmMgUCz421xR/2jBYSw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784752853;
-	b=QlgP7lOvL3YjutKKAk+jDWC3/PAcrHL2mjdGTN9CZ6HumaMHn0wDMd7xJL4SAAH+YC7Nuj
-	W8V1NAV8hIRAV8dagNLMwZKbdUHkf9j9+KP/JCDe7v5SJo5YDPrzzfssFg9kb3fgtB6J+H
-	W5InCR4KaU+10CdlKqVVmIWdP/JZcLM=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=u905XyTg;
-	spf=pass (imf25.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A41A51595;
-	Wed, 22 Jul 2026 13:40:47 -0700 (PDT)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AED0A3F59E;
-	Wed, 22 Jul 2026 13:40:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784752851; bh=MW7m2jjynF2iry9O2w1L4Qc+wiQ9bjVZq6XG6lr4jCc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=u905XyTg55ekAxzZmoFPwtPfxi5ZSTHzMYONIJRUH3y3Fm3Ceef193xeIS/KNVet8
-	 yxQtUrz5r9bnDKhbmP7Q6WsDlqh8n+se4+8VEFwxrwJi+9h/I/UO3XVjm15kHRCI43
-	 GxZw79GmfpaXJMh5WlC6vJc6NU4kBvXcntwV3zC8=
-Date: Wed, 22 Jul 2026 21:40:42 +0100
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Dave Hansen <dave.hansen@intel.com>, Yeoreum Yun <yeoreum.yun@arm.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	David Hildenbrand <david@kernel.org>,
-	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-	Tianrui Zhao <zhaotianrui@loongson.cn>,
-	Bibo Mao <maobibo@loongson.cn>, Anup Patel <anup@brainfault.org>,
-	Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jonas Bonn <jonas@southpole.se>,
-	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-	Stafford Horne <shorne@gmail.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
-	linux-openrisc@vger.kernel.org
-Subject: Re: [PATCH RFC v2 14/20] x86: mm: skip pud setup when using generic
- compile-time folded pagetable
-Message-ID: <amEqyjdoUnD5lYev@e129823.arm.com>
-References: <20260722-dummy_ptxp3-v2-0-d9e4bad31e0a@arm.com>
- <20260722-dummy_ptxp3-v2-14-d9e4bad31e0a@arm.com>
- <0ea931f1-4801-4d32-b6ce-4787a8d3daa9@intel.com>
- <amD7ab_KuJPdBQBh@e129823.arm.com>
- <6f5060a7-0a64-49fc-81a3-ae88729ef794@intel.com>
- <amElnEbvRTjv2hyU@e129823.arm.com>
- <3620750c-54d7-45a0-b067-bc813dd3cd9b@intel.com>
- <1064CF47-9371-4D9C-B2AD-1457CA41CDB2@zytor.com>
+	bh=svd8qKUPLqu9cVL1hzcljvgHEiqm3JmbDQZFevcGTtc=;
+	b=Faf9o6782LgijPhMql6jqqCbmZXOF0/eM4J/S5dSSrAcXo0bIFHoeCdPU5us31/fwii0cr
+	EbNHj6Fue2nUX9ZoB2s0ek6yFQi7hYgwKz25ZFs9zUA7zNFSW3klxje9BldtM3m2BL6RUE
+	mKJmpNFtWMMcVFKLPwtGHccqq2PofOU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 00B2B600B0
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 20:50:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABA2F1F00AC4
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 20:50:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784753405;
+	bh=svd8qKUPLqu9cVL1hzcljvgHEiqm3JmbDQZFevcGTtc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=Ng3LcE3fUCRtaPGEEhzMWGp2AHtmaDyhsZO4bSQsijwFWt0LaNAP8FNabG14dRLLp
+	 81v3mBFcD2VTO7+hH+PIgiIC1sw1MVkI7gcEXEzrw28mWnOfrjsIBkHBjWGGFMpxDV
+	 JzokVuPhf84fNue2bwloULdaWVEvvF0BXAzwPKifA9DYN3D4P1R/V3YgTIBwiVCEmy
+	 EFjIYtj9ljXE/NXkhN9XT4zk9/VOgumFyUFy8qAuzOvTm5qQpsD+Uq4VzKCJbBzQV7
+	 BMswzPDoe7dysPo5rY3E5FPFN8wbz5YwDA3eoymLDuMgsCAFdcuOowHV5nbfz6Lv63
+	 jAfK4U5+Sa+fA==
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-c1c24ec9525so81882766b.1
+        for <linux-mm@kvack.org>; Wed, 22 Jul 2026 13:50:05 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RqnRlj1MAglWsA31ByxRADhFeDmCuKqYXtMA7TCZ6EYicaMgFqwq/yDTUVyfz5KIjny/FlezpnRLA==@kvack.org
+X-Gm-Message-State: AOJu0YycX6YzmCq/tzmkebZayi8tAMv+MZKX8V1lEj5DMo9sLm8NE83/
+	ee7oer+eUqeGQWp8rT4w6HP/j2sOGaTH57n78ZzBag3/ZHfyNZdcD2r0T4vuaTakvw16iPpXqRw
+	W9qUc5yIVjbgx/J/FbKIjS2qExcqykEM=
+X-Received: by 2002:a17:907:d16:b0:c16:1901:6ba1 with SMTP id
+ a640c23a62f3a-c1c5088d931mr18037966b.34.1784753404547; Wed, 22 Jul 2026
+ 13:50:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1064CF47-9371-4D9C-B2AD-1457CA41CDB2@zytor.com>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: CE4F6A000C
-X-Stat-Signature: sxrrfcpcn8bwm7yzjn93gg5gmgtgccst
+References: <20260702180908.150136-1-yunzhao@cloudflare.com>
+ <akbHBZP9HxOJMtQB@cmpxchg.org> <CAO9r8zOiwgG80EjqdZFgWQvODUe1RzecLemxcB7xXNm_f3XfbA@mail.gmail.com>
+ <6ecf5579-0b3b-4e8c-a625-bbf0a4a48f94@kernel.org> <CAO9r8zP6JrZcBnzb8A3A9V8so4gJMWLvrJQ7VwPyyU417GikQg@mail.gmail.com>
+In-Reply-To: <CAO9r8zP6JrZcBnzb8A3A9V8so4gJMWLvrJQ7VwPyyU417GikQg@mail.gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Wed, 22 Jul 2026 13:49:51 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zPr8GrkjxEgkCnyzvbMwtjv4pz=-fPF5pU_0=d-04HznA@mail.gmail.com>
+X-Gm-Features: AUfX_mzucBMYgrYM1RZx9TGyW_IkG7yTOSjC0nyVH_uaw3OJsy5URxVn2ngbmUo
+Message-ID: <CAO9r8zPr8GrkjxEgkCnyzvbMwtjv4pz=-fPF5pU_0=d-04HznA@mail.gmail.com>
+Subject: Re: [PATCH] mm/zswap: use ratelimited stats flush in zswap_shrinker_count()
+To: Jesper Dangaard Brouer <hawk@kernel.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Yunzhao Li <yunzhao@cloudflare.com>, linux-mm@kvack.org, 
+	nphamcs@gmail.com, yosryahmed@google.com, shakeel.butt@linux.dev, 
+	akpm@linux-foundation.org, zhouchengming@bytedance.com, 
+	James Houghton <jthoughton@google.com>, kernel-team <kernel-team@cloudflare.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: 7gw1nd1u1ty1ef6s6e3cwfn77e8smfob
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 6F0DD140004
 X-Rspam-User: 
-X-HE-Tag: 1784752852-96759
-X-HE-Meta: U2FsdGVkX1/tRHD91/T2eZxS5Jws2hE2gM5Mo/BAWdHKnwwtRMOPjwfgPfQUNo1mwnaHcCjjrjoFNqpfzvvsAt+gIxnLR8F5r9JEgQ+bjolDPAIZ+yqmauvA0hhKsQ3dYYMoAkWvLltMhFbaRiig2S+jythqVJ4tfKDrzPiQg8rtgnAI6p0Rc6ES29mNYAHC6gFLBWyqRWRxdSkWExWL1CAIfkVilcdtEzDtx+ehfzPGo1TaAp57WJh+LW6GswOaPTkKFV0SFSld8Y6FWSG4T4aK5w66nh4bXRPfmkj1lo0X1qAL4QarDrNlDUg5tcqQIgi4y0q7IQL6W/45g68fykVWW5m66uJ8ahOdh6uwV94NDOwgR1CB6wJ8dhPoCcx9rHUBKTa3M/lfcH3adNLF+J9T88bII6ADaoWeruRKnt4Swul2r29kzarFzRVKOpHF5xYTkiUVnzlqyEtXWsminc0wfSIfipVbTNUqx3sTRSfwZFxESaLhgAJBPCm1LrBEaAIYkbhBqlUE9R9QVSphxHNvgHrUOhVwprFSgpEhmAhYvGMwb3gMdmjbZHxkDIhjCM/FYh9G0Q4jVMjkhCy7hN4b36bmCQ4nDxnFsEwhtul1RtVvanrnIL0BXL9ZA0IpgTN13AKIzYgs7YnDNebgjOsJpLEWMINI0UTMhR+mfzzOJaKwBae6+rwyH8I3sj3+TxiF31xsht/pVDMcSZHgnvIgc4P5E0m7TnpKAvAK74JMvB+yu4tk46TwvsYcfexK9+8413Oxf26lLGyznMX5wD2O4+johj+XDpl18LDC2c/FKygiiFb791BpiHVdDRWDh6DQJIvS/hXV+i+b4G83P92mAHkpV8h4kDq6sKhBkRx16rQD5USzrqY2MQTDWHIfuGDw5ssId9Av7UcNyBQ+Ll6T0ng6EPkE/xiGwZFy8dmC8pQCr+cxM76o14d9AOSNlCVzyLFE7fC3j6INpg7
- DAT6Iqjb
- VZlIPpubYO9IVq0u1uP+x2yWvoPbN035mKspuCkTZYqD2CjV0IdqmbMGPdZ/koLCq0SN1p4pwJuELDpdA72Gfy7osTKPV6gdnj4FR94VjP7wPf4dSQojEJxxRk+RK7vqJnFk5TLLxh/HpSfiUSVl0ACUXfSwq3Rt+Z4QLhhTHBgwFGIXFOWUFSBKko3YmHQlj3nJ938KGX5xUtetwwym2W/wKCRVY/hNQB0ItjiB2Ol/w7wwVxtairZQGcrzO29fWcrmb
+X-HE-Tag: 1784753406-235284
+X-HE-Meta: U2FsdGVkX1/NawMH2xjk/jaGzDM1X+RKstMiYRZjo4xw4PRBtn9xTm16NQWW4vvavaImHBIkd7iSEdFsckmLZxwvG2Dm5FOBJ623EN4wRDO6gQ7W7DDcnyqk/hWCGr27LXrAfQ3gBagpfV7UTF1cJEABVTx2i7Dktmcw1Vvx3eE2aSoTJ/XxCz9gFpl1FLh6wSC3bMIC+nPkLKC+IwbJ00y4snOegPZwk0Ov6AQ24EosdDM9ntgQSOq714XobehuINxOVOHBZDi/lKMlARKBXfH4QttPKppf0N7lCHJgM4CbKUMStiKRrQGJySaBdbK8i7wURAlZaNwQB1Y4LCupST1CIRNFQ0j7SwSLOH7FpPJo7g5pfE7P2jIWi0bj4YJ/v4lzr2CWQB6YfiG3I6rsC5eE8EfcN2HIJwQIiYlU6UKv4L0oYPITFiOPOxY5qhqx3fvPJZZQcF5bUcoPXfJ+nSqGHCnMuuulu64LaOHhA0hamsDBrfQlT1zK3Z3SudXvH9H8gjE3o+dEfbWNHn/owGSdvQoOUFg+EFpJbzYv90zqUp2fQXtQg5uZaUvnqUCT+9xmFjiqKHxln5I2tunTzNZx+lOF7rNZjkQClmNfmZ4bcctjXbIDASH+QmKzqVFfofM8RS30HxBINRqZoFsIMCHdyi5tkWcuRgmEfgE9r4JLpmNyRH0ALYxS8jn/vjxrjQazZ92KzK/SUWMEC3/meg287uM7o/i+ojN4v0SbVk2JMILfbPwltnyt7bBUYJLQ8rlBWPEmWMQuwTaxzk4s8I6op2JXT57UvKFHO4dntXv7RqlxMc7rwRpX9q/h1AF8dZBazWKQp2hPxTm843f+5TCDJOc9QriTrftg1oUOk4uww6T4GIcxtLwZscgQ3amOv/s0z9XsnMakQZblhyiroRK8UGgMMnS6nPPIT/blV5+kV4ZwgJ5yKZuKoany2qdLVHaocU65pbAHbJxWOet
+ s+0/1nJs
+ q+Pu0z1JNQpwWLZnfyGEEFJNPPiDstu1XbpMwgWH4SIIWynzlqprkFve927ZDWb2txLoiiy5lU3MJ1mqDLSlm0wNIMEDqJ3k7HmuyOnieFidXyNrb7XNrBSfc09zL/3DUi6gvvwT1we8W2rTtfr8xFYx+qsJ4A3hIW8V4ldeByBcfCGF1vLOosdJJSFwqKEZ/nYCs09d3CBww2zQoNH2KbLvmTOi9D6be/5FwUp6FaNGUU7x8f+FLdSpv62pBXS2BUXJYARNJJsbVcM/b+LaBYbMb9EhDIR9ufPSG3P+7xcVnK9Cu5h7+aVtrgCS/dMZjSORnDe9JFudkSN4c3Iq4fcXlpcng34HGoKDS2IJtxRzLy2BdXFoesFiXlQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,27 +104,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 22, 2026 at 01:28:40PM -0700, H. Peter Anvin wrote:
-> On July 22, 2026 1:22:04 PM PDT, Dave Hansen <dave.hansen@intel.com> wrote:
-> >On 7/22/26 13:18, Yeoreum Yun wrote:
-> >> Sorry. But do you mean check with cpu_feature_enabled() not with
-> >> boot_cpu_has()?
-> >> IIRC, the boot_cpu_has() doesn't use the DISABLE_MASK_BIT_SET() but
-> >> uses REQUIRED_MASK_BIT_SET() and I don't expect it wouldn't make
-> >> an optimisation to constant check which is contrast to DISABLE_MASK_BIT_SET().
-> >
-> >Ahh, yes. I forgot about that nuance! Moving to cpu_feature_enabled()
-> >would be great!
-> 
-> It is supposed to. That's the point of the required mask.
+> I think we should at least try a proper solution before falling back
+> to the whack-a-mole approach here. I don't like the ratelimited flush
+> because we use stale stats and the formulas start making less sense.
+> If it causes any problems, it's hard to reason about them. I agree
+> it's probably not gonna cause significant problems with the zswap
+> shrinker, but we should at least make an attempt at a proper fix
+> before resorting to this.
+>
+> I *think* we should stop using rstat for MEMCG_ZSWAPPED and
+> MEMCG_ZSWAP_B. We can probably use per-memcg atomics for those, and
+> just iterate the parents and update the counters. It will also get rid
+> of the flush in obj_cgroup_may_zswap(), which is also problematic if
+> memory.zswap.max is used. Yes, it's more expensive, but I suspect it
+> may be just fine. The reclaim path is a slow path anyway. The fault
+> path is probably more concerning but we won't know unless we try.
+> rstat has a heavily optimized update path and a really expensive read
+> path, and I think that tradeoff just doesn't make much sense in the
+> zswap case.
+>
+> Can we try doing that instead? If there aren't significant performance
+> regressions it would put us in a much better place imo.
 
-Sorry, IIUC if the X86_DIRECT_GBPAGES is not enabled, it would fallback
-to test_cpu_cap() which wouldn't be optimised at compile time IIUC.
-So It would be better to use cpu_feature_enabled().
-
-Am I missing something?
-
--- 
-Sincerely,
-Yeoreum Yun
+If anyone is following this thread, I did play around with the
+per-cgroup atomics and that didn't work out. I think we need a more
+general solution for in-kernel flushers. See:
+https://lore.kernel.org/linux-mm/CAO9r8zMwp-wxJz6AjBSEuW+vn-7ff2VwAdHpVHFAqy0skgD2OA@mail.gmail.com/.
 
