@@ -4,71 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D54BC4453F
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 16:08:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE587C4453F
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 16:09:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 03EDD6B00E7; Wed, 22 Jul 2026 12:08:24 -0400 (EDT)
+	id D5F706B0088; Wed, 22 Jul 2026 12:09:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F09C66B00D6; Wed, 22 Jul 2026 12:08:23 -0400 (EDT)
+	id D10606B0099; Wed, 22 Jul 2026 12:09:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD09C6B00E7; Wed, 22 Jul 2026 12:08:23 -0400 (EDT)
+	id BB15B6B00A2; Wed, 22 Jul 2026 12:09:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A37C6B00D6
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 12:08:23 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2F717140206
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 16:08:23 +0000 (UTC)
-X-FDA: 85016894886.05.5C32B9B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id EC58414000E;
-	Wed, 22 Jul 2026 16:08:20 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lnL+GDOW;
-	spf=pass (imf23.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 83CF96B0088
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 12:09:39 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1BA35160238
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 16:09:39 +0000 (UTC)
+X-FDA: 85016898078.20.0F7C64E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id DC28312000A;
+	Wed, 22 Jul 2026 16:09:36 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ust3bdj7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784736501;
+	s=arc-20220608; t=1784736577;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=70Ep7Q7Q+hOHdHGDd1WlBsRT3Q12DveziwsIcTZZXqU=;
-	b=gMxnEi57F1egBgERiC7E/wLY5+34esTRcmEcIvh/AMvOVr265hPJcIi3lSEpI4K7/Na/0q
-	Sj7r0oK+Dd2xWh0sb/HHICdxde9oqt6GAc5y7cOGgfThCcaKGKAJkBDMDsyWOWdhv2hrQQ
-	Xo7MH6lCm9sY2/B62+2VnAI1xezTLMY=
+	bh=hm/5iL9EveGYA3vJkgF8R7lbasRuEO1iSSKVyzrOX0w=;
+	b=DO95W4w3y8okxthpUBXF4I1z4pN9vxMZ5TySUm9plrZ4Uv4lqImnYjM6+j4q/zCg0nNgLw
+	4RJap3pmYNQEISNwmsmD2NBeohqvoFqIo2HcYN6p6oXP8tyVVdYOVoK2aagJ3o/K/VdGXp
+	MwJzH6qwz0YpJE5sCSIrpXvSxAmtWxU=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lnL+GDOW;
-	spf=pass (imf23.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ust3bdj7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784736501;
-	b=sYQySqActocChP8Hcz12dgYwsA4XxGT4Hkk3JfFmhAsU080oB9WEolBvzcm1tgBUMFsnAf
-	Zr/9MC6lr7ugVS8QF5w+4LyiwIZJb8AC9oKLwZoC24QFb/GoHiXbtPQmMOY2eGOlNLp1pJ
-	K7WUk1SqVDPrFa8F73ymdTaV57HAI2I=
+	t=1784736577;
+	b=o69vaSv3/8+57+JL1ggL1BOFHBqqNuaINs2ohHGiaklOd40OUILTeQN1Mh58shxdHu3LFh
+	G/iT/WE2DTWjPUuOGpoe6cj0JG+gXDL9fknJE+5qy15sfPhc7OQFnPwajzB2q8oK2w9E6S
+	bpavFV/UTnvQlIjVQ1F2NdF6lRUByro=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8D58B4071F;
-	Wed, 22 Jul 2026 16:08:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 482441F00A3F;
-	Wed, 22 Jul 2026 16:08:00 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 04F24600AB;
+	Wed, 22 Jul 2026 16:09:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B26D1F000E9;
+	Wed, 22 Jul 2026 16:09:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784736499;
-	bh=70Ep7Q7Q+hOHdHGDd1WlBsRT3Q12DveziwsIcTZZXqU=;
+	s=k20260515; t=1784736575;
+	bh=hm/5iL9EveGYA3vJkgF8R7lbasRuEO1iSSKVyzrOX0w=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=lnL+GDOW1RNyK8faVj+xog2qSVNXd5RW5OZ1TweaueH4vffC3geYYJCYWnNruwaiS
-	 SQlqDRNKNPkeFV8pd50akmXs+sysIAJx0dl4qQI1kgjZ6kfYnGNgnNyvZO2RHeen8x
-	 X1qP6AX16FvbgJG94v217TFQnJ+LPOkihf1JEqv8cWcYINv3KHgBTg196eAiyyVzED
-	 ODqqwmPRIhhkkPjChZPamQYcsNbf0LXo6MAgOs9eBCf+KjRIMLkkN7puHDnEuCp48e
-	 gcPqy9EHh5p23lLq8nqHqbWffgpAuBPw/rHyQ4KXf/Fx6ZkfX9yv/WIyidH3EEOx9c
-	 uKXxeAZUsAjDg==
-Message-ID: <c363ab95-8d8d-46e0-b9ec-d827664b21a8@kernel.org>
-Date: Wed, 22 Jul 2026 18:07:58 +0200
+	b=Ust3bdj7ZEAIy4n4wtOYmRrwIQMPYailb9NKjIw+PKcSHQ8vdpkni8H9CvqYAd7ol
+	 sYRVz/kVItg+dwjuYK2krwBem8+veFMitxTLh/YTkHWhVNjP51455v1a9nrqh6Ik0y
+	 viIYvdj57qXS44HtDjKV8s67omerf7XX+Dc7blWdQgjVJBj1PsD9HIXLgWzqmt11EB
+	 SfbWgbCZAj446RLfe1lnmBgaAIG3mecQ4G6Pux5a/pXFPkXy2VrYG9pruPTPvsgQc4
+	 DKAHr6nz3y5prdMIJ1evrpm4+rGT63RjYoIMfAKzeOw1IfR0c0eJfd7IjnNEuR5DmG
+	 V8ez2dOJEIeUw==
+Message-ID: <1bab7f72-9de0-4237-971e-6b8e1aff1d6d@kernel.org>
+Date: Wed, 22 Jul 2026 18:09:16 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 11/13] mm/mlock: convert mlock code to use vma_flags_t
+Subject: Re: [PATCH v2 12/13] mm/mprotect: convert mprotect code to use
+ vma_flags_t
 Content-Language: en-US
 To: Lorenzo Stoakes <ljs@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
@@ -136,7 +137,7 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  xen-devel@lists.xenproject.org, linux-fbdev@vger.kernel.org,
  linux-sound@vger.kernel.org
 References: <20260711-b4-vma-flags-mm-v2-0-0fa2357d5431@kernel.org>
- <20260711-b4-vma-flags-mm-v2-11-0fa2357d5431@kernel.org>
+ <20260711-b4-vma-flags-mm-v2-12-0fa2357d5431@kernel.org>
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Autocrypt: addr=vbabka@kernel.org; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -177,17 +178,17 @@ Autocrypt: addr=vbabka@kernel.org; keydata=
  NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
  OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
  jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <20260711-b4-vma-flags-mm-v2-11-0fa2357d5431@kernel.org>
+In-Reply-To: <20260711-b4-vma-flags-mm-v2-12-0fa2357d5431@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: DC28312000A
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EC58414000E
-X-Rspamd-Server: rspam01
-X-Stat-Signature: awt6xybhxzfn3yag38qchjbsjeemo8y4
-X-HE-Tag: 1784736500-555643
-X-HE-Meta: U2FsdGVkX1/z7JuAxUeTV/+pLJWWCfhsGjYDQ244YCeSPTgd8syBlYwFAP7Q7NiIDXNzsOTIXIM6qvuwCLstkshB3CDXT9E5D9zhZHSidoJoPdOfBVNH1+d0uVhyJfbcKV7lCsDWAXYewgrBgCztfnBwcBy4x9DAO/JWKycrerv/omt84EHcTc5v/Zs2FWmo0juLQ9fMsYtVcYWQbzV0OXTbg4Y/SlBHzI+cXr9V7RW7w1TzPdfLnJOM16VzDV2TQ0Yk4H54oc7RFVZq9VS6cR1fz97bJ5FNKhoVKD+CGmw3cl2Sd0vM9A08jQdr8anMbXr+W4stq+MAxJMLd8s67dkSk7GPEKG0QtKh3bmZzL49u8JqS5j1FSekvbzLk9Tg/8Ksa9j313x6E+Z36H09bMPD6QIBLTNUFr2O3XGgZGBYlaus4BYU+sHa9m5gBW6qKg8h8iLzgXW+nf/UDfSIIj03AAP9RApAQZVqJie8xF0rcburM6VO+dfclsllZYzNldqOYoEPIMaVLoqqr4q4u/a30MZXHD7fPqc8y1WikBxTeScPAYsghDkyE9emo2iNdF53br46tsMEYeyJjaWVY3glSG5fuiubb2TpxI+JTJ0DcvI7W4EF3B3Dl7H/6HUFiTueiYPs0dJx1dCg2nwMJcJkTCxliTm9ozHPeABb+qrUKT+nIK0pjoirbxW5Ntxlw73D+5sSQklCUMob/cZ5/RCqALPthvDheE0nv5qASHQ2OoS4QYnUm0Xow3CJNWRfFqcpDqLUQmglHQAYGPB3Coxq/PW+Q7qPKC6obfD0MWzxpWmRw72VEY1zEG8MaCQY9X46H3eww3n07N+PMYBiGF3c6dt6bP/U0cvQRVKjGUgJv8FE85PxH7cZnIvYq9Mpb9QNy0FUqGe+VEptWh56CLMOakA8DVsmgj6UpKkcITTgI7NJEWkb3P9J1utqsc7BAUtIviJlbA6ZJ4axely
- tFqs/ajJ
- F6z6GJ1STKTZM9r6XuBkYi/hHhlw9Qt+uytWhH9wLO2OiB8K4YINgy18QEdkovK42MTmJvfF7spuYOtKnJUEcw3Ok9mpfQWpscE/DprmYJVpQOnKni0GPXczPCtmJJdaQ7MCrTnoSrv9fkzuBM8+h1q2XF34Res49J6Qwn+a+PnADqwxNjCfGGdexuULJLKzT58IlkrTgBegOjtz70bGlP0mJLDc29GEA56ca1khjcZNH/KjVoLcFKK3bRPxw63+OvuehLRxpRrrV8phJI7s/6UjRZpJi4GH49mljvZNoAkFOHjKE/Lzd8iQx57RSuBVaBP+AO/fZqjXt0QJWNh/FbnFh0Xuyk9a7fQ423KdpLUvL8RdJc7VyF9rS7ywefkUr83o5RjxOyvZUg4PxjvyK0LJk6XFLQR0NdydmdBpUmvoU/Y+eA43huFZDj0N0cTLQiicFKUTa9HFAgRIexwaS3To5nA==
+X-Stat-Signature: 4ano16co4brhyssotugqwgocdr1kfx11
+X-HE-Tag: 1784736576-138476
+X-HE-Meta: U2FsdGVkX19S+TcPrVi+aSoxDXrGiNLIU5X4RrOrHD5qVYJqFVhLHnsmySEfVU3FvMyz/C7htlZnYao+bAjTUg+8EMPovkv8lQtnVureHVf4icUwal3YYjQgd7XBLKb2f7QSycyIRUdi2VvqBZdtp8eN4VLEh8r885suRGw9Aur+JbeVokfWCilYdbncNIh3J7kHKFFZgHqWddgzVCIio2WirzxQVf8J7iNGw1iErv56M7AUrPiecZ+uVoCzw8qLvkvwmirKR1GbddBJ8aSXO75j4Oh223WrRZ4f7QOJnYkJlieZTRa/8b1C3uPY1GjAtDM+qNuoT3We4yB+sNVbNyaHWUq3Cv229yyeLreE9t9TuQMcD1JsDifmqz672x/g40B5U6UzN7mYizPVm8psuNeyfde41ue652BI6pIYb0H5TWk6Fx2xktx0SL3IvM9XqD2UfqsK6GCAa/hHSkpurJJv6OKCMD4e3Rfl3SrcsYDtv2nGjRwC3petnoXt204FM0jms+X5zTQ3Qdyws72EBivZtV0WmBSlIHZY5rf6hIBM8S81O2bafKOG1xT2ad9PDIGwWhm+3+ldq+IDLmpO7fk9PSIt4gFoCcHiiKeKDF2BSD+B8kiUbgr5DvZjQUlM6G8o4lkTpwuHoKHqHKIDbOuFmkSx3lu8xA6NxrzcqPOywbtVIC+2QWHfulfJypDkjyLh4+sgDhpt/I+R6Oe/U/UiVsB0dSyvOrkfdtnkZ/GVqpXU181ZCyTi9HjdCNYegMbIUL1JQ+aMty7W178kkTe4Jx+L6wMbAE1lxvR9cXTI4YXKyDZzmxS2M8U4N2CXRGoPWKVjWHJLJy47iQXJkIfNH7zsjAY8ysb0tF+CPs4cf/0gd0kqNsjy/STOgOgySF3cj/i8aRIvgbqwDWPJvcugLEubcmX5Xt1Xd7SJNojO5leMwJaNgAc39cWR5VtunipwjkO7yq+7M6gbpIc
+ 4blQ1JV+
+ ikpob2KM00P/2RL1sCFZqA1ExpfDkGHwNWderlJZJROYiF1A9vduA9VisI6ZX+ItUndcWA6Ap6Bxn6BV519wsexKHbRzEYJ1DwXAWkdi292qLYTuSZxrC8v45ylMogcmL3PReHL+rtLXrJWl9pWyh5leOYfWVJCqmIpg8muGosfrxoQ70vS7axdwYKa7h2gvq5W9VIoPFs0i9VmOdhvbZ9IqJPyawobCBUOIXiQAgeV1DncWLIBbNTZwgdAW8wxGj2XjIQPdxJz3f+xduMnSAESMo2l23rDwqza3hLl+VD/FwOMdXnpe1+zmD+6p6sZdx/vLebkWTk6s5cWVxQvdvwCUV94aq9GioIy7R7aNNrI93ict7cxwFU++AUYCnl4VKR9uxZ6vV9Rduc7e5MX8xkPKgCxU1kqWcsuOHcpz3MSxg5kg8wBvcaWp7rQOtIihqFOW1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -197,14 +198,16 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 7/11/26 20:45, Lorenzo Stoakes wrote:
 > Replace use of the legacy vm_flags_t flags with vma_flags_t values
-> throughout the mlock logic.
+> throughout the mprotect logic.
+> 
+> Note that we retain the legacy vm_flags_t bit shifting code in
+> do_mprotect_pkey(), deferring a vma_flags_t approach to this for the time
+> being.
 > 
 > Additionally update comments to reflect the changes to be consistent.
 > 
 > No functional change intended.
 > 
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Reviewed-by: Lance Yang <lance.yang@linux.dev>
 > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
 
 Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
