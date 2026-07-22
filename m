@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FCD8C4453D
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 09:12:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DC62C4453A
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 09:12:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C51C86B0095; Wed, 22 Jul 2026 05:12:43 -0400 (EDT)
+	id 6F9E06B0099; Wed, 22 Jul 2026 05:12:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C28FE6B0098; Wed, 22 Jul 2026 05:12:43 -0400 (EDT)
+	id 6D1876B009D; Wed, 22 Jul 2026 05:12:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B67CC6B0099; Wed, 22 Jul 2026 05:12:43 -0400 (EDT)
+	id 5BE0C6B0099; Wed, 22 Jul 2026 05:12:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A64B6B0095
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 05:12:43 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 163E9A0E70
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 09:12:43 +0000 (UTC)
-X-FDA: 85015847406.05.9B0631B
+	by kanga.kvack.org (Postfix) with ESMTP id 2BAE96B0099
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 05:12:47 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 84A20803ED
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 09:12:46 +0000 (UTC)
+X-FDA: 85015847532.03.799F939
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 6A719100006
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 09:12:41 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=rEfmwAtQ;
-	spf=pass (imf14.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
+	by imf23.hostedemail.com (Postfix) with ESMTP id C291B14000A
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 09:12:44 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=oS8ZvJdS;
+	spf=pass (imf23.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784711565;
+	b=n7YXSGC2wJD9GlR+Agb+PX26xfr8LuVmXo8vlATKY7sWNqbesQopOKnA+IQlTUk8skn/lU
+	Vdf7jc3A/jOBteUqvSh/TrcGttzSIRYGXvzq95eyMMHQfUr7zdUMjzNOzyjZGXR3NJLYH8
+	DiNW+tnipIKlWIfMtwC7eWnB27mSjVQ=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=oS8ZvJdS;
+	spf=pass (imf23.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784711561;
+	s=arc-20220608; t=1784711565;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+2qhESbv4peGVg5GuMtGS17pHcEkT5xEvs7SuLp/SNQ=;
-	b=6k47IjbvpCRpIuy/2Ew6ZoW1/BMr354zhSOMfFcJH7KzT/382vEjlIorzPdMgbMkxB+ywb
-	0NIYztItoqVUu+r0QuenRrTdcr4W+reUnvwLmTBVAZWqoafv0zM9B1Y1POdUbHFnN4qAZ9
-	1A1OdbO2WeZvW2gbPgG7ijwWww/3VqY=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=rEfmwAtQ;
-	spf=pass (imf14.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784711561;
-	b=GklYUd2EElT1meqXHo14zQ+94WC7K7xhty+0psNlDhq6SyhadovmqEN+gUyHsbEm4B1w7L
-	VKaIeEMA+AU8VYOjhd2HOpkNhOIHnJ82YmLgG9Xuf1jX5B2pJAOsE4JbS3+BVRCVEg3Rd1
-	yU0GKAVCid5zjPi+rL8zc6FbAT28S8U=
+	bh=AmgXCtLFj/W9Xi358sr4Ha8NbnGF/mAXiBQiDiKgJJk=;
+	b=KpCW1kEb3nMmRX4fjRytPaW22jLXjzH0P5/+LZn48MRIYw9voVcb9Nl4j/oIIk9hIXkiBe
+	g4omU4SnmvcTc8Plm5VyyMDEd6oHykKN/Hb1um48Gn3bhCG3XuraPw7gMBO1/BjDC+0XY0
+	xYfXIyHpzAe23APabin254ilSD+QVxE=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6FED11691;
-	Wed, 22 Jul 2026 02:12:36 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DB9021595;
+	Wed, 22 Jul 2026 02:12:39 -0700 (PDT)
 Received: from e142334-100.cambridge.arm.com (e142334-100.cambridge.arm.com [10.2.198.93])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 77C063F86F;
-	Wed, 22 Jul 2026 02:12:37 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id E7C253FC81;
+	Wed, 22 Jul 2026 02:12:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784711560; bh=MAOIk6RQMMHP9g8q0wW7WPE1XWmO8u6cAL0GlkkzBe4=;
+	t=1784711564; bh=zU+WJI13tWsgGSx87Of2o6NV7wNVwyx6o1/X2ur3XDE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rEfmwAtQp5FzBpgznxbXzbVFSASRpkEAKRKrsxYS6t7OaDOvBhG7lXHIMH9aMs83S
-	 5q0Ogl46PYCxE4UsX2On99Aa72x+SQlwXDYDlbWwiki1/+Rwonheoe9fNeCyXF0MUA
-	 znm6WmOEtVQtpUpIP2CKY8gH9TW6Njp6WSrckMmY=
+	b=oS8ZvJdSVqcqJG5JmEhwWraFolHd2/OKcrNFCnyihoZTNbCtCApPpi1EvWQ4GlDhG
+	 0qYmVOSWCIfBmRBoC7xmkVKG8a7g7aXjdDZMRRUnWgvvZv56kTX9h2dmvr4Rjp6Fci
+	 kGZiqF89fwv6XKoDKMXa4dAkdq7vQaqlqsCtxHj0=
 From: Muhammad Usama Anjum <usama.anjum@arm.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
@@ -84,22 +84,22 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 Cc: Muhammad Usama Anjum <usama.anjum@arm.com>
-Subject: [PATCH RESEND v1 4/5] selftests/mm: skip page-cache hwpoison tests on NFS
-Date: Wed, 22 Jul 2026 10:11:38 +0100
-Message-ID: <20260722091219.61504-5-usama.anjum@arm.com>
+Subject: [PATCH RESEND v1 5/5] selftests/mm: retry migration failures for the full runtime
+Date: Wed, 22 Jul 2026 10:11:39 +0100
+Message-ID: <20260722091219.61504-6-usama.anjum@arm.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260722091219.61504-1-usama.anjum@arm.com>
 References: <20260722091219.61504-1-usama.anjum@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6A719100006
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: C291B14000A
+X-Stat-Signature: umgyknkpwpewrxx1cywuq7bn9apadn1r
 X-Rspam-User: 
-X-Stat-Signature: y1b4oje6541ypwgsym55cka4z51aixob
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1784711561-637086
-X-HE-Meta: U2FsdGVkX1/Mt/Jqj/SHDkp8ll/qz7cwwgjrNxK7mRrpT6CrRuNGiWfc8cXA9OQQ3snb+JjusxwPUAPwRRGpDVJygvY6NkVfjdHzxLykdTD3MpS7SgVqHrCqh+Kt1Ylz03CAJIPQdU7phZiT3X7SSn5l1aRfEOmDTx2Shh5WWOfxjtGkJozeb4I1PLHZHDpT0pTWuuHEDEU6hksSAVmDlNu60umw563Fgu0CmRPVVv6bkGBONIHUZdzG9KfaUJ72D+VmJfnFhR8HBB9O1D4Lv5ZCq4ipOf6v9zMUXg17vdwxz+ddR9SVvb62yb91CG/osjYKfV2d9GcrmS0Nq54Nvop44ZPsIF6/6wf10X0OxvxAaf/IsOoMAYhNF3hasJHJMrb8WTYccXDdK+7Tp/wCQWi3g+LjbDwICUtnkmQ4wVFKlD1GpMn1uwEBckzXbraaXgbktcCad/JIiKyiQy7Gqele+oNBPXb3CkAOttOEicrFABL/tizMB3+y6cJB7r817I3PqgKdjbqMdnd/A5VNk/qK1ND+VUhN0m2GRRr8GqwKD1EuJMpT+IQFhA++JWPOh4fP2tqu7j2rXcx62ekQhuHhovUuQrfXlQla2wJGhFi8N/9uIgy8VIvVzHy0McdKGJbrdRGTsy/x6T7bqWpb8xw3XoB02uFc+b7mQrSdXmZq2B8oIB7CD883u5ipTgMs2Gn0he96DyiNSMKXIwMvC0KQPP3XtuRGOKVSfUDF2SCeZZDy8K/QgVWalLq2PoxKAF2emtWvyLvIqCKjmt8HgWELBj5dSOROzthb+cjtp4Mc0U8FRIAXfvcg5WSzGymBCr1dUy4yKYDS0CTcAY1ag5GBftukYDt9Ir7h9xo7VlLcY6/63p2wMPVIRCE50/jYx0DLAgdp0l8NCGNBxxnXoDHTlvLCkRKC0MmVZ8Hi5rWDKNnQj8Sr/rXNP0ORuBI0d+DjWdqjQVCpcXFDbX3
- FozWNhZP
- ThZ0BF3ZSpnXRv6CXEiMk0H5XBRfqAPgQdJXjG8mThfgwdajhLP2dsANBXPXg52a+YjAlk2dk1UvMfLBEfVs8+Y8HSn8o8LtF1IDVbH94Bv3spqN0kJOOaQTsHsYchRE4326nghE181USBA/nkqRzUT34guMgQ0W37HSBE6BlAO8EB/yF7MqUneGjWREKTLkWa5zW9kDuk3XpvXH43SGpswYTSFy9vuMe+yaMRGAxrr6vBfrgBtucVmkWI1PI0Or+IfiarI+giCHYqwEQqWG6VonaMAPDVL8aZvPsxaLY63BUVzz+PUvxNUIgEzRCbJA4s4jQ
+X-HE-Tag: 1784711564-710458
+X-HE-Meta: U2FsdGVkX1+CelH79gM5yZqUPWqDH9t4otxJ+MLWSrzKRHf+YX/vQezkGx4XjkCHBtwa7oyJMwS9jzmYGuTl0uy/qNtQBJjD7WKp6a1C133iXnhfOLCaZsRp8sqabO/huawUCCuyZhmKKmB4XkDINvdEhB2i7Ldr7S10NQU7eiOXYf4nxrskiChYp8nHlTUwWBP+oivD63vI6BX3J3J56+M8C6VIbm7LdV0PMVFXssHPxH6cvlHxqyWU4QhFeHv5hhri17vSRKqxI+B5lyDC/YMeeTUALhJ/Lms6tI5ENw+l2w4WTpgTS19ShaSTdNwUEjp4PKoDsJ4tlEAGqb1FGChCc9M4AN0Lz8Ql0204WhtPOuqoSgT1vl7ygpOrOTlt64csbzxPvTWEEfhai7+5d1OaRNYhw+Z/XXexLXEXSS/qsorhEDNE9SbulmMzoWX2YPr5XtvVMX4SFBe+hHIGXGpw8QFb/9k9QUL4JRU1fmNBryeidPcoFaG9p/gOM4EuWSP0pTEwS19JmGKQq8HS1D6qYr6bx2ti28pv9i1fjYqGIMHVnqjUbme+oEZd/CEyrfw6J4oNBkVzbHmXOwp2xUMHet/wZp0Vt3LaSch9K8jI1UzHNHrvcr5DLsQJejIpZ+VQO8caC3pQsZNBDGCAWoJCgKY2gFK3kAZVhmmpHut6TODUaFk9hN0GZS3xiIxc080unhkCRb6wX+m8aKmWDAot7Kl2+fcYuZ3NIzrFORG5ONmifk8GYddz0ebH2xOM6ED++gV9rfE7eibK2eNeymOtDW0LUez3V5ivO3bakSgNwQ35dUp7ehtAZRZrkNduDBQghqGWqNFi8OyhHdIFF+J8evHY9ByktOy9YU/rbtPJ8YvJZx0wtD4CJDcpJQGh7Ffmf+hwiNIEf/AT3vl5Pi5TycEX4Yv2KG/EHM9t6lNY+MIoli0NJcdxuNE/M1V78/Nr9GCVIUdbUpmtb/3
+ yrgeqtk+
+ zbzt1G+8IQIvq+AC+HDafzwtlyJmBRwrTkgYaA63yq66K6jXzvq6oVtUj/eE03NwwUZWc8dyL5KKeo1QirSR3COLug99zhvxSoECm5X1cP0z3nR3CXUzpkLacqvbADia/aNuH2qRLlLUvsOvYVFcZw6oQEy5bWnrTFy+yO0kdoRIxbF/7AX771QDTTOqfcQzhngDMf1gYlkpWCb4VvtQsGwAg3R/76JN0x+ppDL+LJK5DXF3Bni1YTxaBV/90C+oXE0but1PITSGgDrd2pne6gbiaGRGglShkXAbhIYbOhET4KBBCsUiX92Gw/2wEnczk0nPY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,64 +107,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The clean_pagecache and dirty_pagecache cases use shared file-backed
-mappings to exercise page-cache memory-failure recovery.  These checks
-assume local filesystem writeback and error-reporting semantics.
+move_pages() migration is best effort and may temporarily leave a page
+unmigrated when another task faults on the folio during unmapping.  The
+migration test currently tolerates 100 consecutive partial failures,
+but a busy machine can exhaust those retries in a fraction of a second
+and fail long before the intended 20-second runtime expires.
 
-On NFS, the hard dirty-page case can complete hwpoison injection and
-recovery, then report a delayed writeback error when the file is closed.
-That failure reflects NFS writeback behavior rather than the page-cache
-recovery path targeted by the test.
+This is especially visible in the shared-anon cases, where every worker
+process continuously accesses the same mapping.  The retry count then
+measures syscall rate rather than whether the test can exercise a
+successful migration entry.
 
-Extend the existing filesystem prerequisite check to reject NFS and
-close the descriptor before skipping.  Other filesystem types retain the
-existing injection and recovery checks.
+Retry positive move_pages() results for the full runtime and record the
+per-page status.  Pass if at least one migration succeeds, and report the
+last status before failing if no migration makes progress.  Continue to
+fail immediately for syscall-level errors.
 
 Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 ---
- tools/testing/selftests/mm/memory-failure.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ tools/testing/selftests/mm/migration.c | 34 +++++++++++++++++---------
+ 1 file changed, 22 insertions(+), 12 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/memory-failure.c b/tools/testing/selftests/mm/memory-failure.c
-index 032ed952057c6..2e77f58406868 100644
---- a/tools/testing/selftests/mm/memory-failure.c
-+++ b/tools/testing/selftests/mm/memory-failure.c
-@@ -272,6 +272,11 @@ static int get_fs_type(int fd)
- 	return ret ? 0 : (int)fs.f_type;
- }
+diff --git a/tools/testing/selftests/mm/migration.c b/tools/testing/selftests/mm/migration.c
+index 29f7492453d43..19b4cef65f345 100644
+--- a/tools/testing/selftests/mm/migration.c
++++ b/tools/testing/selftests/mm/migration.c
+@@ -7,7 +7,7 @@
+ #include "kselftest_harness.h"
+ #include "hugepage_settings.h"
  
-+static bool file_backed_test_supported(int fs_type)
-+{
-+	return fs_type && fs_type != TMPFS_MAGIC && fs_type != NFS_SUPER_MAGIC;
-+}
+-#include <strings.h>
++#include <string.h>
+ #include <pthread.h>
+ #include <numa.h>
+ #include <numaif.h>
+@@ -20,7 +20,6 @@
+ 
+ #define TWOMEG		(2<<20)
+ #define RUNTIME		(20)
+-#define MAX_RETRIES	100
+ #define ALIGN(x, a)	(((x) + (a - 1)) & (~((a) - 1)))
+ 
+ HUGETLB_SETUP_DEFAULT_PAGES(1)
+@@ -110,7 +109,8 @@ int migrate(uint64_t *ptr, int n1, int n2)
+ 	int ret, tmp;
+ 	int status = 0;
+ 	struct timespec ts1, ts2;
+-	int failures = 0;
++	int last_status = 0;
++	unsigned long successes = 0;
+ 
+ 	if (clock_gettime(CLOCK_MONOTONIC, &ts1))
+ 		return -1;
+@@ -119,23 +119,33 @@ int migrate(uint64_t *ptr, int n1, int n2)
+ 		if (clock_gettime(CLOCK_MONOTONIC, &ts2))
+ 			return -1;
+ 
+-		if (ts2.tv_sec - ts1.tv_sec >= RUNTIME)
+-			return 0;
++		if (ts2.tv_sec - ts1.tv_sec >= RUNTIME) {
++			if (successes)
++				return 0;
+ 
++			if (last_status < 0)
++				printf("No page migration succeeded: %s (%d)\n",
++				       strerror(-last_status), last_status);
++			else
++				printf("No page migration succeeded: status %d\n",
++				       last_status);
++			return -2;
++		}
 +
- TEST_F(memory_failure, clean_pagecache)
- {
- 	int fd;
-@@ -283,8 +288,10 @@ TEST_F(memory_failure, clean_pagecache)
- 	if (fd < 0)
- 		SKIP(return, "failed to open test file.\n");
- 	fs_type = get_fs_type(fd);
--	if (!fs_type || fs_type == TMPFS_MAGIC)
-+	if (!file_backed_test_supported(fs_type)) {
-+		close(fd);
- 		SKIP(return, "unsupported filesystem :%x\n", fs_type);
-+	}
- 
- 	addr = mmap(0, self->page_size, PROT_READ | PROT_WRITE,
- 		    MAP_SHARED, fd, 0);
-@@ -325,8 +332,10 @@ TEST_F(memory_failure, dirty_pagecache)
- 	if (fd < 0)
- 		SKIP(return, "failed to open test file.\n");
- 	fs_type = get_fs_type(fd);
--	if (!fs_type || fs_type == TMPFS_MAGIC)
-+	if (!file_backed_test_supported(fs_type)) {
-+		close(fd);
- 		SKIP(return, "unsupported filesystem :%x\n", fs_type);
-+	}
- 
- 	addr = mmap(0, self->page_size, PROT_READ | PROT_WRITE,
- 		    MAP_SHARED, fd, 0);
++		status = 0;
+ 		ret = move_pages(0, 1, (void **) &ptr, &n2, &status,
+ 				MPOL_MF_MOVE_ALL);
+ 		if (ret) {
+ 			if (ret > 0) {
+-				/* Migration is best effort; try again */
+-				if (++failures < MAX_RETRIES)
+-					continue;
+-				printf("Didn't migrate %d pages\n", ret);
+-			}
+-			else
++				/* Migration is best effort; try again. */
++				last_status = status;
++				continue;
++			} else {
+ 				perror("Couldn't migrate pages");
++			}
+ 			return -2;
+ 		}
+-		failures = 0;
++		successes++;
+ 		tmp = n2;
+ 		n2 = n1;
+ 		n1 = tmp;
 -- 
 2.47.3
 
