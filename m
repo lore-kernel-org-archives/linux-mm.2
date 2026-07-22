@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B7F7C4453F
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 14:18:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A1CAC44536
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 14:19:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DA06A6B0088; Wed, 22 Jul 2026 10:18:07 -0400 (EDT)
+	id DCAE46B008A; Wed, 22 Jul 2026 10:19:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D51976B008A; Wed, 22 Jul 2026 10:18:07 -0400 (EDT)
+	id D7BCB6B0095; Wed, 22 Jul 2026 10:19:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C409F6B0098; Wed, 22 Jul 2026 10:18:07 -0400 (EDT)
+	id C460C6B009B; Wed, 22 Jul 2026 10:19:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A17406B008A
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 10:18:07 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 287261A018D
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 14:18:07 +0000 (UTC)
-X-FDA: 85016617014.01.DE5D95F
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8CE4F6B008A
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 10:19:57 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1F61BA01DE
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 14:19:57 +0000 (UTC)
+X-FDA: 85016621634.26.00A430B
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id A944B16000B;
-	Wed, 22 Jul 2026 14:18:04 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a4vdnNdZ;
-	spf=pass (imf08.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	by imf29.hostedemail.com (Postfix) with ESMTP id D48B612000D;
+	Wed, 22 Jul 2026 14:19:54 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BqxaWu0Y;
+	spf=pass (imf29.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784729885;
+	s=arc-20220608; t=1784729995;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nr20QdluTC6Xb2QJCx/L2OqHD3wYjRZzxUHD+ltN0io=;
-	b=WtIc+FZZRdriGDK8Px9mMA8W0ZevKNrFIJWLjXm5on6gCNNFPOvvHxiuXFPHgaEhFyslb9
-	oR+K9Qt+mVyBl+WXd3e7FoDhHl301KkId1cWK5Fjds+V9XVrITcaiSJ4sipzYJU2XZ6mNB
-	JYZt0Qkxuz0I0YR5LDf7X3UV55TCA3U=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a4vdnNdZ;
-	spf=pass (imf08.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=E1fZtyJMG9BfhlBz0sxJsvbizOy4XPOaAolVzZbKG2U=;
+	b=APY6B+l3B25Bm5SCCDDSkhdsMQFwfbK1XXQgEXscZIWxYKgcuTAa8Dyt1qjNoq86vNn223
+	aYnJdUNBdo06SCjy9xtIO67CjGDXfoW7RC4ScEXpdqk6wI3dvYX8UtLzXb1LVNqNP31IaI
+	uXKBRkLQmyegesAgQT0C+Erqe3FL8H4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784729885;
-	b=EEo9Ql4mb3sVX4T8WoaPRv8Laq4JDrsbk6oN0t67nIcjROEtHPqjp2j2G0FS/X4wgfIRJb
-	3SqzvhK61nijIluMuEMlg6QvGTaXHMhbJ7Xo2WzyPCfedldaSvNdxRXFBbs+GTOWbKkdN2
-	0I+LXwvB7JjybpV3on9tvEhPOZGfSVY=
+	t=1784729995;
+	b=mPEfzH5jPHSkPiGkyWgj4BKljlxqml3MCNfrA8ujKOt6h0OHvuT11LjIeQfPTCEDTnN61y
+	zaXtTeDehVxAn1oXJz4fs1Ymgd7oSEIcO1aSjDADUpEADsNMnIQTV1l2uY5wjo0THRR6F7
+	h1rn1+4NdFaPNXbgGVvOAPRSSFgGC2Q=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BqxaWu0Y;
+	spf=pass (imf29.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BC1C4432E9;
-	Wed, 22 Jul 2026 14:18:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 998571F000E9;
-	Wed, 22 Jul 2026 14:17:45 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 02F2244A98;
+	Wed, 22 Jul 2026 14:19:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E6961F000E9;
+	Wed, 22 Jul 2026 14:19:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784729883;
-	bh=nr20QdluTC6Xb2QJCx/L2OqHD3wYjRZzxUHD+ltN0io=;
+	s=k20260515; t=1784729993;
+	bh=E1fZtyJMG9BfhlBz0sxJsvbizOy4XPOaAolVzZbKG2U=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=a4vdnNdZSy07RDuS+C9gat8xlWANgEMGre2Gt8w50+S/RARkD/NxqriSXn9wrozPj
-	 E5W9CBr1d7eepeguATkGjOrPXaqKaMp0+xcdJH6JVLGWRdkxSRqsBQirTItAu9VNRf
-	 xKAJOUg/URAYNGPYd8y4vGKj+ONw/nWOpgBtlfPsR8ltFxfx8IoinmWT2jtQMA7WpP
-	 nozoGRCEMkB8851Fg9u/prJ/JOJKbaLEpz8L+8Zr68k62Ilb0p88pE+y3ZC8cSKbhK
-	 kBpgQZfX/d3Rxy5rU6yBQqCx1AN3uW+o51yyGmm2In6YviRmTxHVmf6qDl7Zlbt9Ib
-	 DwnPnhWrhgAMw==
-Message-ID: <ac18f5bc-62a9-41b0-8980-a4c465a4229a@kernel.org>
-Date: Wed, 22 Jul 2026 16:17:43 +0200
+	b=BqxaWu0YTlU0ACbArZmL1FzVAFZZB99uC8ks1vtMhYpCgqApT2szyxYcg1xfNPabV
+	 vGSiTNffzTx44l3VWUJEAhlKvwfBY3Xra1IVdmogCBtFsk9nzjk+BGE1KLD5RpS7yY
+	 xng/3auPQfLkXlvbFds3mkE+ZTq8CD+HG6nXSTfbPPYRYcfhkE8M7wT9pQKJoGIC6I
+	 AbYfEKSjq3JxuczuH2nnoB2mE1hfB2CFJxBsxovd00Kl34r3hXvL97tmTc4k/sHWSy
+	 TmquS1Z60ecsbwmO27nqyZ5HdEjOPRSPo1EtEzsS8vtOCqC7V2r8idg0kkU4mns8HT
+	 nM+l659nsR41A==
+Message-ID: <141b2b88-477c-4f54-a378-fbd3bb596cfd@kernel.org>
+Date: Wed, 22 Jul 2026 16:19:34 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 03/13] mm: convert __get_unmapped_area() to use
- vma_flags_t
+Subject: Re: [PATCH v2 04/13] mm: update generic_get_unmapped_area[_topdown]()
+ to use vma_flags_t
 Content-Language: en-US
 To: Lorenzo Stoakes <ljs@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
@@ -137,7 +137,7 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  intel-xe@lists.freedesktop.org, xen-devel@lists.xenproject.org,
  linux-fbdev@vger.kernel.org, linux-sound@vger.kernel.org
 References: <20260711-b4-vma-flags-mm-v2-0-0fa2357d5431@kernel.org>
- <20260711-b4-vma-flags-mm-v2-3-0fa2357d5431@kernel.org>
+ <20260711-b4-vma-flags-mm-v2-4-0fa2357d5431@kernel.org>
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Autocrypt: addr=vbabka@kernel.org; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -178,17 +178,17 @@ Autocrypt: addr=vbabka@kernel.org; keydata=
  NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
  OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
  jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <20260711-b4-vma-flags-mm-v2-3-0fa2357d5431@kernel.org>
+In-Reply-To: <20260711-b4-vma-flags-mm-v2-4-0fa2357d5431@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: D48B612000D
+X-Stat-Signature: r4u19eyj6z7oc18zu78pkmbyzxmotwr9
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: A944B16000B
-X-Stat-Signature: b51qmgj56w93mqczbjf93zbood59bsar
-X-HE-Tag: 1784729884-778708
-X-HE-Meta: U2FsdGVkX1+hGCnJp0diqPD77XGqCZBfYgcENqreOxkpQybaOyqirNFFe/iGzfQkTBI1gmoW8nTX8mfXwa0uwkedza0keYl0d/3NpYR+kG6qSRWj/x1FgcCKPDbuw5tgnPfYp4Xw+xdbGZsu9pZ49nTboLQ+JgaqfYsr6ke/ADmRlLmDyYggRH7TMjXC6maq2bhbnyDjza+wCnAzNgSlEuaUWLl3E6GeNINMd+ZEd6+7zXAjKCDdoeWKIO3DhA5ydssWdVBhChwVcFYX/FObPVlwiPDmIzNefhVOz5ULTBG5pt0m0BUuIz3kBVLqz9DYBXBw4LH5EuZtHUCw2ChrM15nJNscW5FAzr+AU4H4ltgQ9/ojGz9nLvXM2PejrHKWUYVJ1g1TN58fCX8kauUlLOBKsEUmJ0B9Q+C76J1vVJRErcIZBXUJM1q9/+jBfU90ohprd3PjYm1uV8NuOnpGPsUBy31pekgN1NrPq/cNqXA/JQxGb4IfKKwL6vkqqwzg6huFHmHYuyhsdGk7Pk6RsodXoQb5sJwVoomkT3BJArvqZSjrlzGSlInwHx+pEIqTe2y+uTPwb7i9/ql82tJAiSDmdZRZXurUwrhEi6P0KvjGDcWYt6k2uqSDgdXvo0s2uQsV4rcv4ktH375NTQhzMrl1t3WEFqL7+VUKs+nUinulSOaf4uL5sSlvk7gP/79H6HdD/QUuREBZr3w0kahU8tgZf6fH3HK/SILDYUY/kk1EPHIzUIjJTHGpUl42x20dCuIMVVy4oe26dBsNIOjxjtK6RTL7kjImmLhDgApp1Z+6wSEmQPMyGinxwene3+JsXfp22LK/CRTHL0zbGrQzZZ1pS5veCWv9gU1n5/dT7EEb0V4EFx1IjNxv04igtEVglrpW7CxsQBVcmKIdoSJBYoI26P7r14iRtCgLbQlOMFoto/Kprwf7r97FG/jPQNAYyWgnqwzCCMJ2UOv4hJW
- MODmChB0
- XzraAhim5xiLFQXg2QKsZWDPdeFTTwwpWAxqH3s+QKh4wRMGHd0e9WM4F72vl9eprNQUYdmzgmPS6FL/K3HIjGNh4q5p3BrVcV3+6TpuDSZ2y7dW1usvYqV+bLcpQ7DWiD+jkK8+gGe1iWQaGQmsszWmrsaTcbvxWX8Xjibp7OfeIKwyDTG2HhD/BPR+WliMhbwxmB3oapEU9jT89kf6D/WSXNOB5v3QO/Wttq+cRsEWULN4HPOmZqEF359V2UbIsXHvP25GUvCKXw7gZytpGKkk/cS3qIUag7aVkfKRAHIA8dxvkkTnKAozbeqgyQuUPjh0R1j6jD9iQmyg5B+As1km4vUMZRV0czUUyRlyDJL+/6KN+m8g9Znu22KtXz+VyQP2CnurBze/7A3q7ql0bxUcK3hcFfx9Mv7aHQI9AOHF3S7cjQI05tDw80dfobyJzPqc6EZ2HCkTwRf63RPZca6rfDA==
+X-HE-Tag: 1784729994-293579
+X-HE-Meta: U2FsdGVkX18qEfi9t03jDRxb7WZFKm5fDNuRzYo6yHM/SleeZr6d4vJm3n1XD8ONTCe8M8yYc3GVrwNMC/0cr1WxyBoi0a0iciYWgRQxfSki9IoCtWq3Sabzt5Jd90lk7nCv1yW1d2iTyq8o9ig7f0vZ4M9+i6Lmx4Bok63P0e4HjLYhQKeItXL5abhdfS9agKI20JhefMC8b7w7w7Lll7VgFTSmNr44srIRoD4oazfbJpz6kNvNIMA8//gErrMoPcDMWMPgd2ZXvgaAMn+ZhwJwooEdDpn89pt5/LC4DPSyPdO0slqkw47rFFganMqyNq0yUNvegmKA/VhxetUpko9jhntidBiwewXlpMvOyYG7YZLNbhbx5S7Cl6TBiwGlwkhWPm2fWt9SUy68Td9ABKVb0EZwDZ6wjtRxHVmywgj3ID/RH7TIzaxnaxx9yFsZY9VL2N/0OMufUkhj5iCbOfubWOUjHii9uCffX5TKp22OHUIGVKofhgm44PvWeMuJ7nRFafr93WwqPAfeb3qzAUCnZ+8EVRSjlZkusu2LCt7Yx95IzRYoig44RrNuMPJ+liv8b07fRitXa/IY4Wt9Fl1+LzyFOOz3WMCqbwNq48nNPqFMGEFEPYkp2IRtRpXX/fccfA2wC1nFo6lZvopLqiv+iQkb10n17QMMsHV+2+bpXD0jJx3+uZXrNAm1+NW37wE9FU0yxNPgUNeYttVxNuEy5UvGPNieFdNPZRbGCtjKURrtZF170qt37LG7AflFBsDODkl1Tm07X/ZBo0/Z3H6ebhGggg8n4BaGDtzYto6jUJiV6gglZsKR6Tf/MpLeNyj5C55kcss2GMwOOaO1QdRdQGgQae19R3NVvCIfB3TG6Ea74SAb8XVkvgi7EKGt1c/OVjOZC1orhDid0MZ8741BMDJx811AeZWT9WCzYQ/EE/C0q6zXK4MSYO9DiFtI594Bl86wzT29oJUMoX2
+ hqxXdzbx
+ WHI1aNHNA3n4QdKFr5TxZeOFGES4x/DBDMWJdXgjqqnbCuCYTadoycc9qQsh0RRnLEv1zQj3b+Qd6CPhb6IHW6AYiPsR87AOM7nRrvOcpIK/eDYB2bWvta55EJ7JQhodJHfBVvYfeY1RTmdG26Q2ef9JCw8VKxXMmoNB2nW2PCK9u41SznzFN13ln7Zbt7T4aNUoA0JStgRoA/dCy9AyM3MrMVOZt1RnIJJv728VjAclB5F/dFoF2EqlDAURuZkc5sRmnwcFWN7Vgz3YY9Vbk1oxVxsTo2owUx2vXVGiuYdZ3pk+XdjbFwgRyXDOkgG+CATCxaFI5DZsat9b2kGs7edj8opDS318epbaZGLKEU7EneDHzTwGpu9h8JIUqpEX0NRsv+AMlMNSES+xHIp3yn7Mvc5NnJxx2AGcuqRuZsxm2TaNdl/cfjzSODgDCR2j95+k9tibcif2QgQ3aI++Yab70HQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -197,18 +197,18 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 7/11/26 20:45, Lorenzo Stoakes wrote:
-> Update __get_unmapped_area() to be parameterised by vma_flags_t rather than
-> vm_flags_t as part of the effort to move VMA flags from a system word to a
-> bitmap.
+> As part of the changes converting VMA flags from a system word size to a
+> bitmap, extend this change to generic_get_unmapped_area() and
+> generic_get_unmapped_area_topdown(), which also allows us to convert
+> stack_guard_placement() as well.
 > 
-> We cascade the changes up to arch_get_unmapped_area_topdown() and
-> arch_get_unmapped_area(), where, for now, we use vma_flags_to_legacy() in
-> order to propagate the VMA flags.
+> We retain arch_get_unmapped_area() and arch_get_unmapped_area_topdown()
+> as-is for now, using legacy_to_vma_flags() as necessary to do so.
 > 
 > No functional change intended.
 > 
-> Reviewed-by: Lance Yang <lance.yang@linux.dev>
 > Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Reviewed-by: Lance Yang <lance.yang@linux.dev>
 > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
 
 Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
