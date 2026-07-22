@@ -4,96 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1C2FC4452B
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 00:55:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD35CC4452B
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 01:02:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B26056B00A0; Tue, 21 Jul 2026 20:55:58 -0400 (EDT)
+	id 8735C6B00B0; Tue, 21 Jul 2026 21:02:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AFD376B00AE; Tue, 21 Jul 2026 20:55:58 -0400 (EDT)
+	id 823206B00B1; Tue, 21 Jul 2026 21:02:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9ECF16B00AF; Tue, 21 Jul 2026 20:55:58 -0400 (EDT)
+	id 7149C6B00B2; Tue, 21 Jul 2026 21:02:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7731F6B00A0
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 20:55:58 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1CA4A4021F
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 00:55:57 +0000 (UTC)
-X-FDA: 85014595554.22.03BEEFF
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
-	by imf26.hostedemail.com (Postfix) with ESMTP id D60BC140005
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 00:55:54 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="FuAAY/yo";
-	spf=pass (imf26.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3902B6B00B0
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 21:02:35 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6D8C580335
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 01:02:35 +0000 (UTC)
+X-FDA: 85014612270.10.B642B34
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id B9B4940004
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 01:02:33 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ZMo9tAZL;
+	dmarc=none;
+	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784681755;
+	s=arc-20220608; t=1784682153;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DRZCQburw7HgkreYBNUaHDCQ/ve0PWnL6l7wpHhXWFE=;
-	b=M8CTC5ePXdZRGlB9UDiGvek87Ow0z3aSKg815N1i4Yw0pxB2jz9kXAPvON9liOcppPJhrr
-	xaZRoBKxRoqJCj484ZW1y6x4Wu402WXG/yWuRwfbKfIUSsCW3b/pig5dy5yxoPi3/G9tma
-	FmB/61utxXI+jbkKRMsBB2GFXusOt14=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784681755;
-	b=dKJuasheqEsveMRh3IeW8WD2/Lj0Xk7tvHwfPm2vHfTgsJ5CC7jJhWUqHpRoz5DqA45dWl
-	+q/pFNLCC+h26MqjRbdqjXfGLjqzUD5Xb1eH/GhSN4HCNnphSoTHmgfF0rNvJUs8BvuK3b
-	9IbcCKhFrLmaJhFXRf/t5/5/KDPOgn0=
+	bh=0i56NBqaotRJ5p3UAKMDmToLmD0VzAqE4hcOPd7uRRw=;
+	b=3A/GyM2P4pFu5vEqyuKJII+R0vgSXdOxlVMCg1/hPibe8qeIRGHsQFaSxipMcGGXaELZGW
+	eAxczKcamKUh01xHXKJeKlIOI/R8EiHeJwD5UH8Xgj1litrHb+craUVJ7ibhcqeS6m84Qi
+	/cQ24prvt9/TkuDZ36KC4fab9lZni8U=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="FuAAY/yo";
-	spf=pass (imf26.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <1d596a2a-f930-449a-b8e8-4349d95578e6@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784681752;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DRZCQburw7HgkreYBNUaHDCQ/ve0PWnL6l7wpHhXWFE=;
-	b=FuAAY/yoInt8FpHJSquoeDZ9NamAcZJ9YBXv6ftCfMNzSK5KJCEE0BLqmx4Jy9HyzKoqDQ
-	EzjpoKhahJcykPC1KM/nyCjngSwOjK3aTAqoivUbXjWPgHIRdY3S15bZ6eZ/wILM3dM3nt
-	fPmFob1DXt3NO+fHZQNKe7ncV6sb9TU=
-Date: Wed, 22 Jul 2026 08:55:37 +0800
-MIME-Version: 1.0
-Subject: Re: [PATCH RFC 05/12] mm/slab: abstract slabobj_ext.objcg access
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- Omar Sandoval <osandov@osandov.com>
-Cc: Harry Yoo <harry@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter
- <cl@gentwo.org>, David Rientjes <rientjes@google.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
- Stephen Brennan <stephen.s.brennan@oracle.com>, SeongJae Park <sj@kernel.org>
-References: <20260715-b4-objext_split-v1-0-9a49c4ccf4c3@kernel.org>
- <20260715-b4-objext_split-v1-5-9a49c4ccf4c3@kernel.org>
- <976e4d7b-24d6-4047-a405-e86c2feb45d3@kernel.org>
- <1784596208654455.18988.seg@mailgw.kylinos.cn>
- <8f3a6021-0ef0-4ecc-bbe0-0be1c3c6834d@linux.dev>
- <e72f54ee-2ab6-462c-a9b4-4e05c3e85266@kernel.org>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Ye Liu <ye.liu@linux.dev>
-In-Reply-To: <e72f54ee-2ab6-462c-a9b4-4e05c3e85266@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: D60BC140005
-X-Stat-Signature: mgfp4yygyccqthznkmsaxj9dgizby6wc
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ZMo9tAZL;
+	dmarc=none;
+	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784682153;
+	b=vx4yQPLWITfmnVe0K7KVUspg2YPjiYXRQzifBzrnTx4zL9hasP6+Mel1/38N3v/4DICZIn
+	bLXo9WOjRM2scq/jqzMvCP+eT+GjK3tvUcKg/NXgnstGBxZ0xfIKf6RRF9fowTk9zeGWsw
+	35ykV6ARTP04dLaKerVbbuwz3uPQo/A=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id CCEBF417DE;
+	Wed, 22 Jul 2026 01:02:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 638D61F00A3A;
+	Wed, 22 Jul 2026 01:02:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1784682152;
+	bh=0i56NBqaotRJ5p3UAKMDmToLmD0VzAqE4hcOPd7uRRw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=ZMo9tAZLQuNTT3TmXwvXaJIUZG1GspTtUXwa2bIwBcihJ4fytqb6DXR0xoIDucDDC
+	 kHI/Rrs71iVP3hlYjd37QUuJXQY650p7TUVngciXpOl81fXuoY/y72B/C1WuCv7dmc
+	 W2cGNfKmwEOfG6ny5BfNlShihsd86R7ys1pXtbbc=
+Date: Tue, 21 Jul 2026 18:02:32 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Hongfu Li <hongfu.li@linux.dev>
+Cc: david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Hongfu Li <lihongfu@kylinos.cn>
+Subject: Re: [PATCH] mm/memory: use folio lock/ref helpers in do_swap_page
+Message-Id: <20260721180232.0984ad6fd55ad43053b3a079@linux-foundation.org>
+In-Reply-To: <20260721013347.65698-1-hongfu.li@linux.dev>
+References: <20260721013347.65698-1-hongfu.li@linux.dev>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: B9B4940004
 X-Rspam-User: 
-X-HE-Tag: 1784681754-479861
-X-HE-Meta: U2FsdGVkX18b7K15Y9Yy7mciCTt6FoDtbHeNuhp2Uvm4MxBSUruTAzkqadz5PplaIcoGGbYjgLVFAPxry7vritIQPxIgTpFeq1ZyqmTTzQkTYkw1Wg9g5ReOdMZ1TpG8lMvnrN4I3PeL3ZdUQos1XDDXc1BgYZ/h9cBfNAAlM7KTds48uRa4K1guwY9ftmr7I/LEe0erigNCb3mBgmskYoEQMD3u11BxHqxUkeZ/AIexp/vvQ2eSUZqKJG4J/EfrIXJ0f1r90iZxAbZFx98bViEQw8CSNi8/Q+wLmoW7BjW8WFo7YfbaZUepzh1l6qOyjjQpPI3L/n+9r1woRLi8sSSfgDvmYN53Japoo3iMfYw2r7j6uepeBK8cl4HDHw1y5TiSsGaCUa+r4/ioTy0T33MKUBSASA+0ISpATDTmWiW5fXNDYDTFVZwpnjhmKDWqA0uh/xoHLT9Wov903mKz4eAwpWkFqYRse76anLpXBeyRtC5H0buvaZv0rwf4u1EylU9hhwEYIDqcQ7AyzzNFEMj/A28g7Z8v5mPnftx6G5rpdv4BA8RxRILM93KwNGDTroGv7lJ/YKS2P20BkyJaEYMNpEW4dp5t8Rm0nWOYSRVhjmaWk8/8G/P1kshR9GjpSda4dDxJWgDCQZl/xVAfTBzxMoj4Zq11m5MIRhlu3/12pjWVvbDQNC6a33S6zel/i1nBfiZOfdcqkYySNrpEBooIO9IcJcscTccEoqJWe4gc/uS+OE+BvBLzkd7ZQrs1jp31YdAsgF/eToGwxS623St+bCCoWA1xvkTob9ee1zO5hTW/l9LvVkM58XAyfhsiYQpRxgojib6hWs1rzwhZF36Y9TDe6k/4cEi91w1MTlLfxGoXscVy+FW4Zs5blVcKCsVmUV1P0P4VrjLHKtf4OLruHSU4z21NTYic3WPrmTKeTl/75o5xgjOoK5UtV/QsYGkag31sHhL6vhfHTsc
- 0cupmryK
- h7EgEcHP8liPAgQeVWDizH5zQ9YRjNPbdOjEeZ1Nkaqgkq7ZKrIJxsAu6juMklPLYro/ubt4CUkXGdbWHEp1o8zFF7NuUkbjPIJsa9kfU0oBz8pRDK/qBC1csyXfLgfaqZKunAKCs4fyD8UX3EvwaSv4K8nabjpYrqJCSF73duKZTXRr0fTG/RHi2P6+XPqVCUjbPTZljSJ3uL6p6hl/aTHhrJwLELeD5r4Pg7kneFFF5lh1HNXcTNw9eMed32S1lYuk336SCx48YZlGuKlbKFRIzfEPHjlSqTw1n
+X-Stat-Signature: dzh5ept4sgeuonzrowiu8rwsb3gquqjp
+X-HE-Tag: 1784682153-476234
+X-HE-Meta: U2FsdGVkX19YK2PcE2N75l2d4EDaKEiJ2z2DRhJr8hI5fA4NeZ2YTxRxgukDvrZB1yH9iSlJ0v7Acm1lFvjVorKFpD3cIxDzDmWiiTMaZSFoqiwpzkvtj1dXZj+zIZAd4Os6NUofc2D3cIMRtQf7Mq8gZuXf7zn6u/8irIZYchKsogMbYukZHcBaKyUXVCHCVEqY26vSGfbmGCb61UixqbtjFHOWLiU9qnx+QgcNWcHOwhw7nb/0UtJq0hCUMAFlZ5cOnWj0o+kYzy13N/dXeX0XQk8oiV7IfwHH4GwL6MGic9F5JMEbZBF2jlpL5kILW0lT5avWoCseeHHmjE4GgEL/RKPCB6krNC3G/7GcmSOQ+NVdZ5tcEyx/nytGuXqst0LnVRba4Tf+4TbLm8Z2zaaw0Xf8J/7ztDmK5tTuTTpGvl7pMXRzL9z4NV1Ptv4aik9m/Ioq4hOi0kVdKptlGZTtDuIICVg2Y2sQsctrnHeD0BVZrWoULLhqQmGvOY1D3hdLjV4nZUqsuhc2Sz10mrdjLfEh9nqvd3kHauhIK3ZpIx5k3wgSdoSgqh+muVh5wG46NQNzimAAD8RlWJ7GdGJXrLCcZwetJGJVCj9+hCcDcYRXlPjeKmfm2r3KJeAjo2V0GE5jUic03OWQBGssDBxlwtHmQQ87No2LkoVtQ1SVCvckKC4yxFM4t9sRtKIuD3OdNMJWjO4Y67169M3AwXsHBFrSfS0aW6Ghq9U4q4k1GGv+7irAxx146D3GvVZoBC5IZbVx5t4LveCOmPlejxGalpQitWXKWwQBzh/9VvFb5kwiHElXaWd2B6c2q0/NoR9O0s8mUpHa5OlNW2kWGRmfO4ATfxOxNb2RktxxPgOR6z04eiKwPFYXipmKc/7tiUCO4aXtLCkJx+AoAAJzambU56kJC2ZS82c0zUymgnLzDEALNHECWCH/7a0jwSiBZpRDwy/ZeeU0eCZA1Rh
+ vqkOgxAS
+ AMvvWnzeCsxRbSjkj5mOrUuioahozoDjluoVqilXpZ37s4cbSOUEZOpsTRAlvo5776DlGqQCDZt6h1FL5wIxENpjTaKSX7/GkgTW6QtP1UUZB41nn3/VD6y/XfgXNawhy1fo4g6QPXnm7u5Kc3/osY/L5UEEwX9t4o2KPFYVLl6MYYBjgVH9iqfjlf5dCUJIkC7SW3WNnA5hYqvrcOIv6OGzceZFiFjpI1BKGOaXbqncRSRt+dy2WxI0n7Ca52tSUPleki2rytxkHutgsb1SRzR+XbWUDNWTUDjNE0jlVL3NmviBCONm2gv9UMtvJRCtkoG0pBnYcL+J6FHcFMaOmw88SHHm7vo3bwNkO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,39 +90,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, 21 Jul 2026 09:33:47 +0800 Hongfu Li <hongfu.li@linux.dev> wrote:
 
-
-在 2026/7/21 21:20, Vlastimil Babka (SUSE) 写道:
-> On 7/21/26 04:00, Ye Liu wrote:
->>
->> 在 2026/7/21 03:58, Omar Sandoval 写道:
->>> On Fri, Jul 17, 2026 at 12:00:29PM +0200, Vlastimil Babka (SUSE) wrote:
->>>> On 7/15/26 12:10, Vlastimil Babka (SUSE) wrote:
->>> FWIW, if these scripts were in the drgn repo with test cases, these
->>> breakages would be caught by our CI and someone (usually me) would fix
->>> them up promptly :)
->>
->> When I first used the drgn tool, I noticed that some scripts were directly      
->> merged into the kernel repository, so I merged show_page_info.py into the kernel
->> repository as well. Later, I found that merging into the drgn repository was    
->> also a good option, so I merged it into the drgn repository as well,            
->> and maintain it there. Therefore, I currently use show_page_info.py regularly   
->> and update it promptly if I find any issues.                                    
+> From: Hongfu Li <lihongfu@kylinos.cn>
 > 
-> Seems we could remove the in-kernel version then? Besides better regression
-> testing, I'd assume the scripts in drgn repository can also handle ranges of
-> kernel versions and not the single one as of the given kernel commit (and
-> often not really due to undiscovered breakages) which IMHO is much for
-> useful for using these scripts and tools.
+> Replace page-level lock/ref operations with their folio equivalents
+> in the device_private migration path of do_swap_page().
 > 
-There are many drgn-based tools in the kernel repository. Should they all be removed?   
-Or should existing scripts be retained? Should new drgn scripts not be merged           
-into the kernel repository in the future, but instead directly merged into the          
-drgn repository? I think Omar Sandoval would be very willing to accept new drgn scripts.
+> Introduce a local fault_folio to hold page_folio(vmf->page) to avoid
+> repeated page_folio() invocations.
+> 
+> ...
+>
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -4852,6 +4852,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+>  			vmf->page = softleaf_to_page(entry);
+>  			ret = remove_device_exclusive_entry(vmf);
+>  		} else if (softleaf_is_device_private(entry)) {
+> +			struct folio *fault_folio;
+> +
+>  			if (vmf->flags & FAULT_FLAG_VMA_LOCK) {
+>  				/*
+>  				 * migrate_to_ram is not yet ready to operate
+> @@ -4863,6 +4865,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+>  			}
+>  
+>  			vmf->page = softleaf_to_page(entry);
+> +			fault_folio = page_folio(vmf->page);
+>  			vmf->pte = pte_offset_map_lock(vma->vm_mm, vmf->pmd,
+>  					vmf->address, &vmf->ptl);
 
+AI review thinks we shouldn't be reading vmf->page until after taking
+the page table lock:
 
--- 
-Thanks,
-Ye Liu
+	https://sashiko.dev/#/patchset/20260721013347.65698-1-hongfu.li@linux.dev
+
 
 
