@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E12D4C4453C
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 13:06:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB61BC4453E
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 13:06:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ACE9C6B0088; Wed, 22 Jul 2026 09:06:39 -0400 (EDT)
+	id 614186B00A2; Wed, 22 Jul 2026 09:06:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A7FAE6B008C; Wed, 22 Jul 2026 09:06:39 -0400 (EDT)
+	id 5C4ED6B00A3; Wed, 22 Jul 2026 09:06:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 91FBB6B00A0; Wed, 22 Jul 2026 09:06:39 -0400 (EDT)
+	id 5020F6B00A4; Wed, 22 Jul 2026 09:06:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 693E66B0088
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 09:06:39 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id F3ADF40191
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 13:06:38 +0000 (UTC)
-X-FDA: 85016436876.11.ED90557
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 204366B00A2
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 09:06:56 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7AE3BC01AA
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 13:06:55 +0000 (UTC)
+X-FDA: 85016437590.09.A03B51D
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 10A7A140003
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 13:06:35 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=wBCFQGFL;
-	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none);
-	spf=none (imf09.hostedemail.com: domain of BATV+371806032f8d6c276398+8368+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+371806032f8d6c276398+8368+infradead.org+hch@bombadil.srs.infradead.org
+	by imf03.hostedemail.com (Postfix) with ESMTP id 3409820009
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 13:06:53 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=vZGP0+ov;
+	spf=none (imf03.hostedemail.com: domain of BATV+371806032f8d6c276398+8368+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+371806032f8d6c276398+8368+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784725596;
+	s=arc-20220608; t=1784725613;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AJu6W+cDK+vrIV3o8PwkdnGRy2RqYD0RDxVBwAOMbr8=;
-	b=XlLbXEAzbrmpOs4il2nlWJRQ7O0zWkMcBZhEle+xERJ3qspJPBiEVnz+wDMMz+15l20kvv
-	l/zBgUajX5iVwFsIdlSSPvIl2IQM1s0sKNh44knNSv1Cb346gQ+x3NcaEiTo3Jj3QJtZk0
-	ZbwkF9nhFuveOkBuRHsY1nOLKAYROyM=
+	bh=qmP1+k44uQ0XzsS2fg67ij07ScstcQcZVV2Jbwuyduw=;
+	b=Joxd3d5Jh8GIgvO2eNQpDy/4VRzknEVWEy+rb4xcOYKXhj6CLH7qmYxyikrvpWwZ3y5l7l
+	IEk6TXJP6d4fZYW5NjwVX+JoPsHwYBuZMylE8cQAs6NUtgpdibutlSv9v4SIiD7/wzfPao
+	q43+F1Bie3vT3YDTUg4ex7bJjJL8vSI=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=wBCFQGFL;
-	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none);
-	spf=none (imf09.hostedemail.com: domain of BATV+371806032f8d6c276398+8368+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+371806032f8d6c276398+8368+infradead.org+hch@bombadil.srs.infradead.org
+	imf03.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=vZGP0+ov;
+	spf=none (imf03.hostedemail.com: domain of BATV+371806032f8d6c276398+8368+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+371806032f8d6c276398+8368+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none)
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784725596;
-	b=7Hidkc0Isg2rSzZ8T8oekIx1a2pb26LZv79ESQTHJ9lKqKyUS+3P0mqPuoy0bi9xFBi73q
-	oTlHW1ZPgywtCTCCIp7YZ1EGg4bW2ppLQxHwhTDPJbkMQAOHF8seeow1rH8Ox9RArffi8d
-	0+x60EFzF5DcbqNBTRm1bCs90kYfzO0=
+	t=1784725613;
+	b=21xDO8Y7ygHWMUe9leguMnGWVIGudTsjv6cuRIAZkVKCOsQWNs37rsHTtofDMIQeqAHVap
+	hm5vIaDRw/3WUOArCdRYPKF3zwKflrRhaKSIUGTeC+mr0eAnBkrIQVec+ZXGF5lSNoSKJh
+	VjnsycKjTU4eDOUTk7XB93Ie09F9QCg=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
 	:Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=AJu6W+cDK+vrIV3o8PwkdnGRy2RqYD0RDxVBwAOMbr8=; b=wBCFQGFLFtCcB4Yaw6R2yS+bIU
-	FxxTWZwNsSFVLylygCqH0P18xh6Ze4pD7kroAlyDWFMmHdnjc2RcJBmsetsW1+JGn3UNElSoAU3Yr
-	YjpfKOJn/E6cZhxNBDDYtDDc6iAdfOlwFAHb9Ksn5I9Qj140vLAqwLyIijhTCQx5GPtV8AUnVgLTq
-	dkWRzH/FsDoqmj8wfiq8p9oDQrppLLtr+wKlv4zq/ln4GAV749HYf3HtzqimYXqgNG6QLYKOnOJoS
-	j0z7EfPPmR3OhHDFVfjuqPD4Fj08ESri1FXeYHCxasSGF80m78yzbewf0uCRx4W9y/hmKAj5Ib8jr
-	hnmijh2g==;
+	bh=qmP1+k44uQ0XzsS2fg67ij07ScstcQcZVV2Jbwuyduw=; b=vZGP0+ovGndQzTzHorEOgZRIsX
+	SZKZtFESuUcSYvvMJ7SEctBCIYheC8pQ5U48ntqDLN9yH8G0Tc6XjiwtKgJUHDF60XUe3Wg9nmmcC
+	P8KapGGgmmkswd1xz2unK7a7Ya+ZcPm0KZ7ZAEB59QAkS1p1ywXI2cI0AiInKYn5SgDByI76LpW1n
+	NwsNDP2YfAD6npLdBZlyYhyYtbSUo1BkXUyqaAn+SZJ+qy/ar6ksvkC8y1pKvf/Ty4yiCT1Y5sCI1
+	QQcH7NNzIVTR/8YSVR93U87B9NxZrZPFuSfyO3PyQvsZgrL4Pmcvdc6XcHFwQY0XN8VBP6RcGNzNg
+	7wbA69IQ==;
 Received: from [2001:4bb8:2d6:3a78:eb21:714c:af4c:ee7d] (helo=localhost)
 	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wmWea-0000000Bpp9-1eNe;
-	Wed, 22 Jul 2026 13:06:29 +0000
+	id 1wmWer-0000000Bpq3-2owx;
+	Wed, 22 Jul 2026 13:06:46 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: 
 Cc: baoquan.he@linux.dev,
@@ -79,23 +79,23 @@ Cc: baoquan.he@linux.dev,
 	linux-mm@kvack.org,
 	linux-cifs@vger.kernel.org,
 	linux-nfs@vger.kernel.org
-Subject: [PATCH 1/3] mm/swap: revert to single-folio writes for synchronous swap devices
-Date: Wed, 22 Jul 2026 15:06:07 +0200
-Message-ID: <20260722130615.3163560-2-hch@lst.de>
+Subject: [PATCH 2/3] mm/swap: add a new swap_ops.h header to allow for pluggable swap ops
+Date: Wed, 22 Jul 2026 15:06:08 +0200
+Message-ID: <20260722130615.3163560-3-hch@lst.de>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260722130615.3163560-1-hch@lst.de>
 References: <20260722130615.3163560-1-hch@lst.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 10A7A140003
+X-Rspamd-Queue-Id: 3409820009
 X-Rspam-User: 
-X-Stat-Signature: ocujufco8w5noh1itwzfi4ne5t93mmsp
-X-HE-Tag: 1784725595-912039
-X-HE-Meta: U2FsdGVkX18SBXonbua4zYLtjG54cJdEqJxKtJO4ihy6FMfLqvuNWbVtTyN2roqWBCfdptrDJIw2SE1iQfJNf8Q/jrNu2+UT8TwKQp0bAGFT2/6I/D2gRxZv6YhpZCc6mUw8iYDUz+L9eUpppeqKKmR0q+WOoxsPnYPzmAemHbxXXXl2VsUnT4168uwRWEls8ADLkHueX5+dmQ1i5E5pgbumT/T5gKFTMcn590vivBtqVzB3QHYvO0KqB4RFfGQvaywBmsTwGY1ehDaggd561W1aM4rFMJR24+F4/j/dLzAnX6FpX2kM5fGUy/Kv6bJl5OtScfNtkY31EdXLgunJwNJAv1SwS4/L+/vPqkPm17U22evkTrr7LFv8Cyjjn9r6NrKkETPHUo5xue5Lpr9+7Y0yEsfENMs34BumvH0ycuM67Vi4QcHNGLSAXhI9EplGd0cw3b4ikoR9bmjKzZ2DPaaskEfSJbMmlGswQX7uENpNawkxGXL9fyoRk0qiSpMzxHgM3DAOcMbO++kgDRcuFu79NCNayYkuHquYakhK+GxNGUd80R9HGCdX8MBGuBnEFSbOCp66LPxmX8lsOxlx+t9mDoKzeN0aKcase2ptFGizHYnIz9iK8+ygT3UYyvGrbfm7YcKF3qnUkNBXIIF1xB8nqy/92gzeR+3SF7kjamSME+LazgKYX83Le1JL+lE7eLCCd7yjMjiiGMff1Cixg6AmzJQmwl5ulKd3Iv8d8mVqp9IgLMityJBQ2fZchGXvhSYoqUsn/qJwnap7B5d4ijGw6EDFzVLG9taeDz+ogYqTitDvrOaX7OnGp8xnigUkyNSwzswJHBozRhaag9GhFhuSchLL581x1s4JSp7eNBrDTaIlzV53agP6BleoR+J1XBMQMpb/eUaDgpLL0ZMdlnnv8gv6yWAiiw9CZXGkad+i9YTtfk3eTrxAiemuziyOGn/Vj9IwT8WEZuV7Dwv
- BevYBHhJ
- Vajw0niLXWJpK8KFUCv2fuiRo8Y2aPwJiiQvaZaAA/p9h1uXj1zjNJqafmsVq7Wltk7ggsgDmMO8avPMInkj7MhyjePUNyP6rrpeCVGORN7Sj8CZP7hXaFNlqrhX8t3E3c+YpbyOasPhiS0HEjTNcz6aW6DL9KTVxX+avnfuGZCuFFDVeTfAxnFv378cAJxCF58+uZa//5aDX+xmuPd35l/AC5aOaw2yo86EBDeAAJa/Ba8vRAPHIkDrpFfN7PM2S1lg+SkFG6gh/71fLoHII8NGtr348B9gv3OETY5LKiAoYGAhuYMoVMKgZwIGD0tLi4dHG9wtjr9p98J8zPgmZblLOVnd4qgZ5Rej0/sNHlSlDOmZukoAi0nwBe+1/SwsPrCrLexZNQizKJ6uf0onurGP7sgGVKc4TpCGVObmf/Yyyhceg9Dg7gHH1Kgq0eqAOM3hIyPRZGK+0+Dx4cSiUguFh7hNBiEK9dhW2ojPNKti+rwfko/WXDLS4pp6Hf2QrYO8qEWmEflIOG6voWb8Fuwmu+C2y8s7KCLJhd9wXS0OFoZxb3DJKykbYz4UHkaCnJxNMUFLFoQR+GjD3rRAzqtxuEQ==
+X-Stat-Signature: a74485ki38c7cm6a94sgjut9i8s9umzx
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1784725613-931496
+X-HE-Meta: U2FsdGVkX193WGlcBmu56eXvg7X0wUrd4klxxPEb0VUzd07CsSwMUCbStejHff0ogogMxvrXw3unRD4TPo13L+rgiuszhp3nhhX1X6nCxcSfApa9142X44GR0tOoVY3+GZWjDEgkki4a5KCbYUKaa7SKqm6n/gabOjsSzCQiGoWL/ICSn27FZtMzr4t/TDI6rrlV30olmhWpnfSU9jhIVuiG+jmFIJvv0Y4MxNuuCUo7rXvf5no7pOL6l8G9ya3kj0gHNphl1C+RhkPg0ncuFS3H+3bS+eD9Hup3X6qDWFUdsddQ4aCgz8kZtYmYlLMBa6dFKooMcPeiZ7D+meYZtBt1e4fGlSA3GSp0mDxZwKQMkR0Oo2oQYHdFBOPyBhojxYWP4pX8CnrGTP7DdPNqWgxxYRVtvgZ4q+1t5XEQ7z3KORiuFSNOhYDsA1iVVnYKwID+ASsxIF6Tdd74ED9Ecgf7hhZTrhAJVRJi3LKYxHk0KULb74jt4TYWYeqtnwPitqAbzz6slCDFMu1bw9M1dTQ/YIBiufP+2HbJEynR3os4FV01N34P28LIeAiwqKPFfKtrEKjnZ+/YH0z7PsSHGITtt/VxXMMsnVg/sO/4eaP0d76O9q7GX2Yuh+yYZmqKWgmzsuDD12D5JBMavG5MxunRp+geW3fjH7ge2YakeiwjgM/icKc8xWu+lMSANBPGuWBkQ9aRo6ITQbOI7EYryLECRxYvRhxYfBVlNrD7KN6kCMdys6aYByzs6YSRHnHtcvbqCcAdAy6qWbrZ8TdIFsby/NAnfCLRqh1s3f1sXPVFuGKzJGsflmC/uuz3pn1Gsi0y+akOPoBbwYEl0Ap0zn1IHR3Y61izyQ/l9lXWGEIFcNl7zKaf7XD5gUSuHqxRbDVsOm64TKKIJ4RW9gS7nWpPsqdDVDQSNCbN2PuyJFLnOaTI5FSqy7ri4BmauOgnawI4AuIFnnScJhWXFYF
+ 9oQNqXcW
+ eQJnoqYdwTl1EthZiRgegiwHAGYWq/MzBfNsGEOmj+hwSMcb1HysTrOEhAps2HR8qykXJOrgRWMnCCVnG7qwXW08n8VpG6c87zzph0V5bLfVD2AjGc7htEA3v4fc+zjZoek2ULjWoYT9OO5QnFS3pgvg8EFLfWz5JUxIk2ru4NctW21+co9GGKlC/LAs+9hVddv1NQfNg/XNsgOx2RG4Zkw34+AxPAmgaZVjf1JsSkwaYA7kZJQ84EGPCE4PxyJN9TwTe/lNtdN6/jXFi2v4r86vUhFuBfmdPD2b54z8MSagiXYHObftOTBbpPAQ6+nME5zn7Ry9NhMl8KxanHjwlaPjy5swjNdrBI+5gK/P35d50DNzPBHfzqlK5EdjcW/Hs5PRqaW6fnn8JipDisyDzdWm0B/grAA0OwqZjjXC/9dF2OOu+4ipzv9pFzprZhRv4IWOwFYIYArbC4kyuwVERF5akGxuvtR0K0vJRM1B8HhbcTP8TPCQv0dRs5O9AHt/e3HBmIhbVzVUJ86C1BT4eECvYvqTooBEBIEfRcn/TlhSU9eBkGH0LtKgHVmvXBInlEvA6XohKfMZk6kR8xJrNXoT6olnrLSWeziG5D1xH3bDbsIYfy3Nl02oAxZe7UqZrsePh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,40 +103,202 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Kairui Song reported that zram benefits from submitting each folio
-directly instead of batching up I/O because the classic LRU scanning
-benefits from clearing the folio writeback bit in the scan loop.
+Add a new header to declare the swap_iocb, swap_ops and swap_ctx to
+allow for swap_ops implementations outside of mm/page_io.c.  This
+will be used to remove the double indirection for file system-based
+swap.
 
-Accommodate that by kicking off reads for synchronous devices for
-each iteration.
+Note that there already is a swapops.h header, which is totally
+unrelated to struct swap_ops.  The close naming is a bit unfortunate,
+but I could not think of a better name for this header.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- mm/page_io.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ MAINTAINERS              |  1 +
+ include/linux/swap_ops.h | 39 +++++++++++++++++++++++++++++++++++++++
+ mm/madvise.c             |  1 +
+ mm/page_io.c             | 10 +---------
+ mm/shmem.c               |  1 +
+ mm/swap.h                | 23 +----------------------
+ mm/swap_state.c          |  1 +
+ mm/vmscan.c              |  1 +
+ 8 files changed, 46 insertions(+), 31 deletions(-)
+ create mode 100644 include/linux/swap_ops.h
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 5da77924c6f0..cda42b7ed945 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -17240,6 +17240,7 @@ S:	Maintained
+ F:	Documentation/ABI/testing/sysfs-kernel-mm-swap
+ F:	Documentation/mm/swap-table.rst
+ F:	include/linux/swap.h
++F:	include/linux/swap_ops.h
+ F:	include/linux/swapfile.h
+ F:	include/linux/swapops.h
+ F:	mm/page_io.c
+diff --git a/include/linux/swap_ops.h b/include/linux/swap_ops.h
+new file mode 100644
+index 000000000000..e92b4f532604
+--- /dev/null
++++ b/include/linux/swap_ops.h
+@@ -0,0 +1,39 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _MM_SWAP_OPS_H
++#define _MM_SWAP_OPS_H
++
++#include <linux/swap.h> /* for SWAP_CLUSTER_MAX */
++
++struct swap_iocb {
++	union {
++		struct kiocb	iocb;
++		struct bio	bio;
++	};
++	struct bio_vec		bvecs[SWAP_CLUSTER_MAX];
++	int			nr_bvecs;
++	int			len;
++};
++
++struct swap_io_ctx {
++	struct swap_iocb	*sio;
++	struct swap_info_struct	*sis;
++};
++
++/*
++ * SWAP_OPS_F_REQUIRE_NOFS:
++ *	When set, all reclaim operations must operated as GFS_NOFS and not
++ *	just GFP_NOIO, as GFP_NOIO allocations could recourse into the
++ *	file system backing this swap file.
++ */
++#define SWAP_OPS_F_REQUIRE_NOFS		(1U << 0)
++
++struct swap_ops {
++	unsigned int		flags;
++
++	bool (*can_merge)(struct folio *folio, struct folio *prev_folio,
++			size_t prev_folio_size, int rw);
++	void (*submit_write)(struct swap_io_ctx *ctx);
++	void (*submit_read)(struct swap_io_ctx *ctx);
++};
++
++#endif /* _MM_SWAP_OPS_H */
+diff --git a/mm/madvise.c b/mm/madvise.c
+index 07a21ca31bad..c179938097bf 100644
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -32,6 +32,7 @@
+ #include <linux/leafops.h>
+ #include <linux/shmem_fs.h>
+ #include <linux/mmu_notifier.h>
++#include <linux/swap_ops.h>
+ 
+ #include <asm/tlb.h>
+ 
 diff --git a/mm/page_io.c b/mm/page_io.c
-index e4fa7ffffe8b..c984a4023a65 100644
+index c984a4023a65..e741e67d6592 100644
 --- a/mm/page_io.c
 +++ b/mm/page_io.c
-@@ -358,7 +358,16 @@ static void swap_add_folio(struct swap_io_ctx *ctx, struct folio *folio, int rw)
- 	}
- 	bvec_set_folio(&sio->bvecs[sio->nr_bvecs], folio, folio_size(folio), 0);
- 	sio->len += folio_size(folio);
--	if (++sio->nr_bvecs == ARRAY_SIZE(sio->bvecs)) {
-+
-+	/*
-+	 * Write out the iocb if we filled it, or if the device is synchronous.
-+	 *
-+	 * The latter is to work around expectations in the classic LRU code
-+	 * which make synchronous clearing of the folio writeback flag in the
-+	 * reclaim path beneficial.
-+	 */
-+	if (++sio->nr_bvecs == ARRAY_SIZE(sio->bvecs) ||
-+	    (rw == WRITE && (sis->flags & SWP_SYNCHRONOUS_IO))) {
- 		if (rw == WRITE)
- 			swap_write_submit(ctx);
- 		else
+@@ -25,6 +25,7 @@
+ #include <linux/sched/task.h>
+ #include <linux/delayacct.h>
+ #include <linux/zswap.h>
++#include <linux/swap_ops.h>
+ #include "swap.h"
+ #include "swap_table.h"
+ 
+@@ -300,15 +301,6 @@ static bool folio_blkg_can_merge(struct folio *folio, struct folio *prev_folio)
+ #define bio_associate_blkg_from_page(bio, folio)		do { } while (0)
+ #endif /* CONFIG_MEMCG && CONFIG_BLK_CGROUP */
+ 
+-struct swap_iocb {
+-	union {
+-		struct kiocb	iocb;
+-		struct bio	bio;
+-	};
+-	struct bio_vec		bvecs[SWAP_CLUSTER_MAX];
+-	int			nr_bvecs;
+-	int			len;
+-};
+ static mempool_t *sio_pool;
+ 
+ int sio_pool_init(void)
+diff --git a/mm/shmem.c b/mm/shmem.c
+index 5071177059a9..797c42f024a0 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -41,6 +41,7 @@
+ #include <linux/swapfile.h>
+ #include <linux/iversion.h>
+ #include <linux/unicode.h>
++#include <linux/swap_ops.h>
+ #include "swap.h"
+ 
+ static struct vfsmount *shm_mnt __ro_after_init;
+diff --git a/mm/swap.h b/mm/swap.h
+index abd26588abd2..19ea61c97df2 100644
+--- a/mm/swap.h
++++ b/mm/swap.h
+@@ -8,6 +8,7 @@
+ struct mempolicy;
+ struct swap_iocb;
+ struct swap_memcg_table;
++struct swap_io_ctx;
+ 
+ #if defined(MAX_POSSIBLE_PHYSMEM_BITS)
+ #define SWAP_CACHE_PFN_BITS (MAX_POSSIBLE_PHYSMEM_BITS - PAGE_SHIFT)
+@@ -77,28 +78,6 @@ enum swap_cluster_flags {
+ 	CLUSTER_FLAG_MAX,
+ };
+ 
+-struct swap_io_ctx {
+-	struct swap_iocb	*sio;
+-	struct swap_info_struct	*sis;
+-};
+-
+-/*
+- * SWAP_OPS_F_REQUIRE_NOFS:
+- *	When set, all reclaim operations must operated as GFS_NOFS and not
+- *	just GFP_NOIO, as GFP_NOIO allocations could recourse into the
+- *	file system backing this swap file.
+- */
+-#define SWAP_OPS_F_REQUIRE_NOFS		(1U << 0)
+-
+-struct swap_ops {
+-	unsigned int		flags;
+-
+-	bool (*can_merge)(struct folio *folio, struct folio *prev_folio,
+-			size_t prev_folio_size, int rw);
+-	void (*submit_write)(struct swap_io_ctx *ctx);
+-	void (*submit_read)(struct swap_io_ctx *ctx);
+-};
+-
+ #ifdef CONFIG_SWAP
+ #include <linux/swapops.h> /* for swp_offset */
+ #include <linux/blk_types.h> /* for bio_end_io_t */
+diff --git a/mm/swap_state.c b/mm/swap_state.c
+index 5be825911e64..b76eb3d876fd 100644
+--- a/mm/swap_state.c
++++ b/mm/swap_state.c
+@@ -23,6 +23,7 @@
+ #include <linux/huge_mm.h>
+ #include <linux/shmem_fs.h>
+ #include <linux/sysctl.h>
++#include <linux/swap_ops.h>
+ #include "internal.h"
+ #include "swap_table.h"
+ #include "swap.h"
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index e26c6931f5fd..a12eb79c89c5 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -58,6 +58,7 @@
+ #include <linux/random.h>
+ #include <linux/mmu_notifier.h>
+ #include <linux/parser.h>
++#include <linux/swap_ops.h>
+ 
+ #include <asm/tlbflush.h>
+ #include <asm/div64.h>
 -- 
 2.53.0
 
