@@ -4,150 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F00BC44539
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 09:35:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DB1BC4453A
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 09:36:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 269F56B007B; Wed, 22 Jul 2026 05:35:46 -0400 (EDT)
+	id 85DFA6B008A; Wed, 22 Jul 2026 05:36:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 219EB6B0088; Wed, 22 Jul 2026 05:35:46 -0400 (EDT)
+	id 835B16B008C; Wed, 22 Jul 2026 05:36:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0E25F6B008A; Wed, 22 Jul 2026 05:35:46 -0400 (EDT)
+	id 74B946B0092; Wed, 22 Jul 2026 05:36:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CBED76B007B
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 05:35:45 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3C999C03EF
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 09:35:45 +0000 (UTC)
-X-FDA: 85015905450.25.385D171
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 1AB4740005
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 09:35:42 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=StqRSIUi;
-	spf=pass (imf12.hostedemail.com: domain of wqu@suse.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=wqu@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 380086B008A
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 05:36:18 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A25981203F8
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 09:36:17 +0000 (UTC)
+X-FDA: 85015906794.29.60A07C5
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf05.hostedemail.com (Postfix) with ESMTP id DA191100009
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 09:36:15 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=p+96pLlS;
+	spf=pass (imf05.hostedemail.com: domain of mark.rutland@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=mark.rutland@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784712943;
+	s=arc-20220608; t=1784712976;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dFy4yNyzmo3UbOv6Xs2SIMr6v8Q5AhI2ZjktcOYD0w8=;
-	b=TLyEXhBlrKTPaMMtu8lMR9VzbinGV2TOJKwfD/zVcnWJZG0uTh9ZRlmNWNt2GsF3r55zU0
-	r+em1JRFkW1YT584V0IanNcKRHdzdoOhbo7SER+ktAVLQfk7za00deGVUSkH9UAvyVqF0F
-	H8opmt7+BDpx8iDaof5X+SkgJRsJyQA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784712943;
-	b=ifJshXcsZar/dcxuLo2TDhztkiXiCPoCkTggKl86Kc9nhsrK3dxvK58IEtHcMLjv2Ada+o
-	/fmVAD9cQyw2+vHWG8Z1wzu58Vw2XMYAP2Rypfu8V4hezIlDXDUBZQlzIDpWFvmGLwRTZy
-	KMY8oxntmY8EqjjdPcuZwhuXHfHrlLc=
+	bh=K3BAwkX4e0yTBdzLE/9XMWKMSFzQsojzSVvnX9l/QZo=;
+	b=7JKK1mnEV5epmhrwIb9omxQKtFAoC5odrQSsra1srum/iLd7MOfHnpIVigb5hxUTM8NnKn
+	P0/70Yh/Yz+Ais6TH1YS1oFADofilvjDwVDdBbR3kOzVzdeOZGDqXZkckYw9cyQq/w7xrI
+	RX3ekeQZjwHJR7zxAW5ML1Bu5g5/U2o=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=StqRSIUi;
-	spf=pass (imf12.hostedemail.com: domain of wqu@suse.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=wqu@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-69e2266b07fso10528820a12.2
-        for <linux-mm@kvack.org>; Wed, 22 Jul 2026 02:35:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1784712941; x=1785317741; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=dFy4yNyzmo3UbOv6Xs2SIMr6v8Q5AhI2ZjktcOYD0w8=;
-        b=StqRSIUiVpS94VmEa547I231duS8ULqF1lOFtVaiqs8BCE9/QL5qR6x9JBPN0GUaSf
-         HJNsbSgsTt64G0S2VWnda/yYODV3IrfYotaSIqTyTztNDq+UuZwyYXzDT1EGmOSgQW/9
-         Wc1VasUlD4XFPbWqy+FbcE+WXPDjXbpbmgBjEwcu3aMnJyEhkA5X7g43X5rGSi8kJREn
-         8a+2gSceaksLO9gDGU2tS79fcv6mktBnrCtHvLX9Vyp0kK8NokMJwRSBId1dpxvS1DHe
-         eNQ19QqHcrRFD0aC83AgV7VmiXVeB4GnDYG1K56PycY/fAFXK8cy6yVQwr4ELXBDOz5A
-         yBoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784712941; x=1785317741;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=dFy4yNyzmo3UbOv6Xs2SIMr6v8Q5AhI2ZjktcOYD0w8=;
-        b=CLXdB9tMlbFlZUG4735ipsvZa3dyj46k3HKKpojUuDNDsCiy/Fy6FCZbbLKv3by2DB
-         hu9h1nYZIKBxPMRQAxDspgeLmxMRqqhWkhNa06SIqLBnjjhmQUHuo0B58bV/h1stdNIe
-         CsKicxy+rMA0iIqjOiApdFHw9hXskg1jobiTJlCcmzYvoefKCkPEd3QNgDYTiKf7sUEm
-         AWwyG0zaoUx/Ee9nKqzm+x0M7yZMbMIYNRxw4isVNx/eiZ0R31kiwvhZaUhLo3VhBebL
-         sqQDdwRZrbI/THZFZ8WE5LH8s38xefeBt6c91HlR9BVzH0Eh08ouk14IKsm+hK78MjOW
-         BD9w==
-X-Forwarded-Encrypted: i=1; AHgh+RpH+YyMxZOSZUvxvn5WlpEroZZKcmt8k3DzQhDMHryjuLxkwqf/RRPl4byX2wOhoKbKkORxYtjl8g==@kvack.org
-X-Gm-Message-State: AOJu0YxvB777RbS4uPlBms6uq/zhvRA3s+NItmU/kPmqyTJi+YFR5Mtd
-	f4qnfluLT6LlwYUNryJshuOc1THtzkKxz3OwG7HNX1n7PHDNg6ENVSGA73lY3itvKgY=
-X-Gm-Gg: AR+sD13imqAPChHdWOlyL+wgD/oVtybjAZFuvtN6KaEiGWwLUf/mjgFm/gVTxIE2Sl4
-	K37SSSeNUPyE3W94e8Dg0x0Aq6fiWNsYAUqblyLDwu5hINJytzSAwVEaA70iPxc+GJeWIWxEO0E
-	RnHLcjvJaKaGbuDMGQ1dy4UE10YVwEMuwVfiLmeCRoz3NBNVUJZf6ZnRwLsunrs4xrG+GtMUcKL
-	kks57WXpfFzrGiOV637v6KBgNEcAlRw22AeZMBGO5cxwS1MZdgL490hTqLeraBZ+C5dr3VUbZ9i
-	MadiPTJwdqFD0A4JzZU7eDn2H9Uyncm/kD0HvdlTbWOh2FtH/Augoh8Sgw1c8Qs8HAI8/0JDxca
-	udGPZJ2pyhYBZ7yH9/rpyGXPKh+Dipv/HZtuklZn0TBahNqdntUUS/vU57eZxqclPqMXhOZM=
-X-Received: by 2002:a17:907:3f99:b0:c16:592b:ec4c with SMTP id a640c23a62f3a-c16b46990d8mr926168866b.1.1784712941118;
-        Wed, 22 Jul 2026 02:35:41 -0700 (PDT)
-Received: from [172.16.0.229] ([159.196.52.54])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbb8f02e454sm882841a12.0.2026.07.22.02.35.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 22 Jul 2026 02:35:40 -0700 (PDT)
-Message-ID: <8ef80fa7-6c93-40bc-8a49-bf6494104cb7@suse.com>
-Date: Wed, 22 Jul 2026 19:05:33 +0930
+	imf05.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=p+96pLlS;
+	spf=pass (imf05.hostedemail.com: domain of mark.rutland@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=mark.rutland@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784712976;
+	b=G91f/RdCkQX08jusXo03KSm+dmiW+dCz9driM4hNVQcPjLq/5ujLKrfNytQvJAb26QpXuS
+	kyETc2CaqTHbOJS13jDA2QGBBgdOHGw0zmvPxzgChSvz0wLwDqRYbU1GXZEt0byH7GKnjv
+	P9J+rLx3HfmxYrZd2b4umP1z8fYcpZU=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B22441595;
+	Wed, 22 Jul 2026 02:36:10 -0700 (PDT)
+Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 60C193F86F;
+	Wed, 22 Jul 2026 02:36:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1784712974; bh=O7EJYDmByoTpsITBBymwn3nowadBexEAS2hMkYKxPgw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=p+96pLlSDOM6+k2/MeXzTMznCRtWimKXzB4tZA92QDqgSOl1NjfUhJS9lG6GG2p5N
+	 bi0O/7yZ1vIOSsokI2+i6rrzLGeAR0mlIrLwTZfXK87JhsURFk+oz8FzSyeN1Ge4FY
+	 mHRsI05xgc+t/aDcEBztVuIkH8Y7lIyPqamtbWMk=
+Date: Wed, 22 Jul 2026 10:36:06 +0100
+From: Mark Rutland <mark.rutland@arm.com>
+To: Yang Shi <yang@os.amperecomputing.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>, cl@gentwo.org, dennis@kernel.org,
+	tj@kernel.org, urezki@gmail.com, catalin.marinas@arm.com,
+	will@kernel.org, david@kernel.org, akpm@linux-foundation.org,
+	hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
+	linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC v2 PATCH 0/16] Optimize this_cpu_*() ops for non-x86 (ARM64
+ for this series)
+Message-ID: <amCPBrdltFSE_fEf@J2N7QTR9R3>
+References: <20260715180455.515692-1-yang@os.amperecomputing.com>
+ <0344c559-1959-4531-9265-d5a5180eb7cd@arm.com>
+ <fc21c840-1584-4844-963f-80cea7f2e674@os.amperecomputing.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH/RFC] btrfs: fix folio lock leak in writepage_delalloc()
- for folios dirtied behind btrfs' back
-To: Christian Borntraeger <borntraeger@linux.ibm.com>,
- Qu Wenruo <quwenruo.btrfs@gmx.com>, linux-btrfs@vger.kernel.org,
- Linux Memory Management List <linux-mm@kvack.org>,
- "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>
-Cc: David Sterba <dsterba@suse.com>, Chris Mason <clm@fb.com>,
- Josef Bacik <josef@toxicpanda.com>, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org, linux-s390@vger.kernel.org
-References: <20260721191152.101118-1-borntraeger@linux.ibm.com>
- <20260721191152.101118-2-borntraeger@linux.ibm.com>
- <b226a6e9-fef2-49bd-b17e-9f9b015626c1@gmx.com>
- <83290932-cb8b-4741-bff0-6a7d8df2c637@linux.ibm.com>
- <224d56d2-fcad-41bf-afe3-6f5f5108172a@gmx.com>
- <f12f70e5-d84d-4a9f-ac94-693be4c863ac@linux.ibm.com>
-Content-Language: en-US
-From: Qu Wenruo <wqu@suse.com>
-Autocrypt: addr=wqu@suse.com; keydata=
- xsBNBFnVga8BCACyhFP3ExcTIuB73jDIBA/vSoYcTyysFQzPvez64TUSCv1SgXEByR7fju3o
- 8RfaWuHCnkkea5luuTZMqfgTXrun2dqNVYDNOV6RIVrc4YuG20yhC1epnV55fJCThqij0MRL
- 1NxPKXIlEdHvN0Kov3CtWA+R1iNN0RCeVun7rmOrrjBK573aWC5sgP7YsBOLK79H3tmUtz6b
- 9Imuj0ZyEsa76Xg9PX9Hn2myKj1hfWGS+5og9Va4hrwQC8ipjXik6NKR5GDV+hOZkktU81G5
- gkQtGB9jOAYRs86QG/b7PtIlbd3+pppT0gaS+wvwMs8cuNG+Pu6KO1oC4jgdseFLu7NpABEB
- AAHNGFF1IFdlbnJ1byA8d3F1QHN1c2UuY29tPsLAlAQTAQgAPgIbAwULCQgHAgYVCAkKCwIE
- FgIDAQIeAQIXgBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJnEXVgBQkQ/lqxAAoJEMI9kfOh
- Jf6o+jIH/2KhFmyOw4XWAYbnnijuYqb/obGae8HhcJO2KIGcxbsinK+KQFTSZnkFxnbsQ+VY
- fvtWBHGt8WfHcNmfjdejmy9si2jyy8smQV2jiB60a8iqQXGmsrkuR+AM2V360oEbMF3gVvim
- 2VSX2IiW9KERuhifjseNV1HLk0SHw5NnXiWh1THTqtvFFY+CwnLN2GqiMaSLF6gATW05/sEd
- V17MdI1z4+WSk7D57FlLjp50F3ow2WJtXwG8yG8d6S40dytZpH9iFuk12Sbg7lrtQxPPOIEU
- rpmZLfCNJJoZj603613w/M8EiZw6MohzikTWcFc55RLYJPBWQ+9puZtx1DopW2jOwE0EWdWB
- rwEIAKpT62HgSzL9zwGe+WIUCMB+nOEjXAfvoUPUwk+YCEDcOdfkkM5FyBoJs8TCEuPXGXBO
- Cl5P5B8OYYnkHkGWutAVlUTV8KESOIm/KJIA7jJA+Ss9VhMjtePfgWexw+P8itFRSRrrwyUf
- E+0WcAevblUi45LjWWZgpg3A80tHP0iToOZ5MbdYk7YFBE29cDSleskfV80ZKxFv6koQocq0
- vXzTfHvXNDELAuH7Ms/WJcdUzmPyBf3Oq6mKBBH8J6XZc9LjjNZwNbyvsHSrV5bgmu/THX2n
- g/3be+iqf6OggCiy3I1NSMJ5KtR0q2H2Nx2Vqb1fYPOID8McMV9Ll6rh8S8AEQEAAcLAfAQY
- AQgAJgIbDBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJnEXWBBQkQ/lrSAAoJEMI9kfOhJf6o
- cakH+QHwDszsoYvmrNq36MFGgvAHRjdlrHRBa4A1V1kzd4kOUokongcrOOgHY9yfglcvZqlJ
- qfa4l+1oxs1BvCi29psteQTtw+memmcGruKi+YHD7793zNCMtAtYidDmQ2pWaLfqSaryjlzR
- /3tBWMyvIeWZKURnZbBzWRREB7iWxEbZ014B3gICqZPDRwwitHpH8Om3eZr7ygZck6bBa4MU
- o1XgbZcspyCGqu1xF/bMAY2iCDcq6ULKQceuKkbeQ8qxvt9hVxJC2W3lHq8dlK1pkHPDg9wO
- JoAXek8MF37R8gpLoGWl41FIUb3hFiu3zhDDvslYM4BmzI18QgQTQnotJH8=
-In-Reply-To: <f12f70e5-d84d-4a9f-ac94-693be4c863ac@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 1AB4740005
-X-Stat-Signature: 88rx11agmx5ydgnp4nsyf9nmr88ym3hd
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fc21c840-1584-4844-963f-80cea7f2e674@os.amperecomputing.com>
+X-Rspamd-Queue-Id: DA191100009
 X-Rspam-User: 
-X-HE-Tag: 1784712942-970802
-X-HE-Meta: U2FsdGVkX18eV+uLsTPuc8PTEI8lgz4HTWb6/shJJK4Y+aEpE/y40j6vHyGZsKOTQnFcsxYxnHsmqnAuh9IzgaREklMJU1g21DrBn5l2ioamPCJ2/xks2s08Iqb8t4j+S6CBGfk++MhdMkmY9sIv2OPyEwVjcka+OjiY4TpepubQrKIDqR719Sf7us+XAjnQRSnuQIypBUISlxgEZwbR7HczK2x5aDNfr5xhnlie9Zw1iNIOM3twBk2PGg49fz7irLXTkRaUvUxja7tfoaoL63wuHlA928d7xj3xvP9PL2GDvQmhvMzzh1jboS2wzsqpLSlPPKGs/Mr1Rn5AIV5JLuQdkAiHVd2jDvd2z1kVdYU6Jv8NJk0BCPOo6s9ktoD/hFUK1cHKD2PD49r3ofChAl7UNXAVrUtCzTbIs55MwWvKYnG5sRfgNsAoCeFHyWHuLxZI4p+NcfSn5H99q6HVJdIrJX9S9m/0UDtBCJK5uhRxSmkfjz/C9vseEV7g5ratkknQKBdVQTIwWRPgsZ9fWR26a0mCeR3ecOeJnttVKzAvgO03N3AI6j+WVZdvRF6mbQ+H0sWMl/+ej/18t81YdQdOaUSBx4L8xoo8h/s9rRHY0LNh87QfYiU0ZsdJAdHoPglWoWd+HjpHwAW1Tf1jDXsiSVQ1OTLmmZHiZiG1y7BgiexLwsPvZyA/LPXR7tXeM6POJmrdzN693p57+15QrnuytghIlkWj3EQm5DmvbzXRdzAbdHkmEnxOzyu9h8yEDu4rOiodXi2Kr/tKiW+7jseVUlyNWFSk3U1LE7nY3xTj4+hX/j8C+9LIFH3gzUN8ORVoNl5D9rBqB5ErwAhuvPEkGRcwCFiZoLtWlVXt9LoJey8XGbHzvus300vzbHj4vM76fNErF2cXC+lso71VBdYG1nprbMQIQMT8VfiOhn6SIZJ9vXjtm98UaY2QbdfrvMRC0rrLj16TgDrVk3c
- 4PMquxFa
- eefrh7ZibyaCQ0xiJDlDFqm3RrOAAeFuTm0ahfmHS2s1LsOZETr6fkrWFEJze50LTzYumWpwi7ejyS2EgFhZW6tB0dsxM5c/sfwkEtV+Why4Z1g0//0JzYxJ0kVBax7+RiPRJTgh+fyhxhckJ44IT8SOzNtxFDV3rv1wZ86GRdqReaVks/YUt6iHuLxZxFJlNIys937YbsWEfYnTG1KhA9EHd7/wJRGhsdjuJ/emgU7lHaHL0J8glmW4BK+jqCb+uFl1inoyOcp4nXk5nhGOTNT+sczD80YlypMc7eAne9UuzUEWmn9pcAa696CvMQM/pMXcyUdTSMKdSbXte0S3TSu0VsKw0jmEU5geCae5COzAgGsxAoZR/TgDzvi0hHnQBbFwRHqAJCNxdTXpxS7LVX1c1Ar821qF6gsYS6C0dzHNE25I=
+X-Stat-Signature: cm5q8djmka1nwcojwnj5ir3cq36jx8qn
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1784712975-110245
+X-HE-Meta: U2FsdGVkX18v4G4lcgc6gjR223p49hAeLaTWxKYbPB6qFE03lNpFor7W3S0Z5FPp1Yy70hxiA9DZk8Kj/CjURuGgDKw1qwZ6JBaiensb9rNTzaXLNm2hn4fr/9sxUWJO2j/Y1UkrpLDsG7X82ukp+nKm+Uw5tCTd/QWY7WREhQHySSETEVm3+6YsO0zPgu00XcrxstMEjhy/iclAj3QLQ9JpYYCLnslq+M9SgWEEcfPX6LBpHwVM6MxmvRI2Tvs97mjuxbVBbBAq0Zqo7XjXv5DQuV6BZXVckAmQvdL/VLufOoPD6tk/j6mp01VJmdYJtVZhqmyFpiCZOCA13ELU6dLbXtDJe+Q1jxVVs/3WcTGI4uPUS5tbkf3J8Jt1PeeDnbpZJ3zCa5d3X1hnko8U5R7Zo+Df61MSu0K2h/qg7XwOfBQekMCJbbZrh8aoJqdiqQGPU5mWhOd3Qk0DJviM5MNPqSviid3qc7fXyypLEj/V+yM7bsYfxOZ+1dKYygjt0+RQYRrt64q3pnXUh/NU1t+JvFN/JWR9PTgF0nCGzwLtNQf+5rJvhyyTY1lrKFeHL4jXaLRY/k2E0rpzgvvpzkYW+9HUY/TRe0YpSgCrz4Dw/Psl1jZMRkosCPCBjkHP2zsjoqzhc+KxMzyAnUeK5sbvf4uFUAqxbv/lfihBa2ceixJ03UUbCV7nKw6bdX55QzGVm+P1TKC7dDXKJRnL9L6IhY8R+doqjj6d3ZLj0l6DQ/ym92wLiRDZqQrPF7kBvy3JFv1sJuoTi8RpeF6Fjk2ABFshXtUU7VoDQMYz8BlEgKyfxfUW141LXoxh4sA/3hnWV8JOf9/czm1tT5hPb+TsHFv+1beqqfoTp3zEqMo4Kx+jch1+TANvwVx+ZmONXzVLXIGwdkJMpxyK32g5yl05ZT3IfgkJy3VT6byPEjrnYwodVi2l0bRgw4keHqXXsk6oaahdm5MjyYPmZVG
+ +4Fnth3M
+ 1+8s3OdJFfACBDPPO0uKXaF0ymPC8OdxFL+4KK0Ok+nZu+EyX1mnZMK2hfWjTrvl3SWxuWziCopm9F1BHN4BEGFEiPKRSTvM25dasmlDdgmyO8txnPdk09FTrzBwI68M0JRUiI7pOG+1UXWZwpNw2KGNX7iLBjYH3jSvj0BsrRb5NO9GovIn9Xj/tz2Q6jBaCM9bU8RwfFvdcOBcndZzQaj33PlnollJB9p9zNpbkZGugs4NvLW7i0Xr7NqQjvByWy7d49KBszhzVxXnlV7mTk2wdfnd4qpzSOidSOdypsjy4nS66bEYURbjKqr65Gx9IVAeHmWAGzrFcFJNqcvKK7XKoXUxYF4GcZR0AmItniFKWFBudsaKLrjezDMS1lnFl4HSt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,204 +94,135 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Jul 21, 2026 at 04:20:50PM -0700, Yang Shi wrote:
+> On 7/16/26 6:23 AM, Ryan Roberts wrote:
+> > On 15/07/2026 19:04, Yang Shi wrote:
+> > But I think that there are other issues with this concept that likely block it
+> > from being accepted upstream; see below...
 
-
-在 2026/7/22 18:59, Christian Borntraeger 写道:
-> Am 22.07.26 um 10:59 schrieb Qu Wenruo:
->>
->>
->> 在 2026/7/22 18:05, Christian Borntraeger 写道:
->>> Am 21.07.26 um 23:07 schrieb Qu Wenruo:
->>>
->>> First, thank you for taking the time to look into this and trying to 
->>> understand
->>> things and trying to explain things. this is highly appreciated.
->>> I am still trying to fully understand this myself. A question:
->>>
->>>> 在 2026/7/22 04:41, Christian Borntraeger 写道:
->>>>> A folio can carry the folio-level dirty flag while its btrfs subpage
->>>>> dirty bitmap is empty: btrfs data mappings use filemap_dirty_folio(),
->>>>> so a generic folio_mark_dirty() call sets only the folio flag and the
->>>>> xarray tag, without setting any subpage dirty bit and without a
->>>>> delalloc reservation.  The typical source is set_page_dirty_lock() on
->>>>> a GUP pin,
->>>>
->>>> Shouldn't such folio got its ->page_mkwrite() callback get called 
->>>> first?
->>>
->>> Isnt that called implicitely at pin time?
->>
->> I have to admit, I'm not an expert on the MM part, I'm mostly a simple 
->> user of the existing MM interfaces.
->>
->> AFAIK, the last time I brought this thing up, Christoph mentioned that 
->> dirtying-folio-without-notifying-fs is a bug, and fs should not and is 
->> not able to handle such situation anyway.
->>
->> And that idea makes a lot of sense to me.
->>
->> So adding MM list for more help.
-> So I now have an userspace O_DIRECT reproducer outside of KVM. 
-> (attached) which gave me (on an s390 system, though)
-
-Thanks a lot, I can also reproduce it on arm64 (64K page size).
-
-This is super bad, as we have just removed a lot of folio ordered 
-related code to detect such problem.
-
-I'll also check if it's some recent btrfs changes making it worse.
-
-Thanks,
-Qu
+> > We have observed a few performance regressions recently, for which the root
+> > cause is increased use of this_cpu_*. We have somebody at Arm about to start an
+> > investigation into whether in-kernel rseq can solve the problem.
 > 
-> [  189.067731] sysrq: Show Blocked State
-> [  189.067872] task:kworker/u1665:5 state:D stack:0     pid:1363  
-> tgid:1363  ppid:2      task_flags:0x4208060 flags:0x00000000
-> [  189.067877] Workqueue: writeback wb_workfn (flush-btrfs-1)
-> [  189.067884] Call Trace:
-> [  189.067886]  [<000003a8b2e19284>] __schedule+0x374/0x900
-> [  189.067891]  [<000003a8b2e1984c>] schedule+0x3c/0xf0
-> [  189.067894]  [<000003a8b2e1996c>] io_schedule+0x2c/0x40
-> [  189.067896]  [<000003a8b219d158>] folio_wait_bit_common+0x198/0x3b0
-> [  189.067902]  [<000003a8b263e2e8>] extent_write_cache_pages+0x348/0x4d0
-> [  189.067907]  [<000003a8b263ea0a>] btrfs_writepages+0x6a/0xd0
-> [  189.067910]  [<000003a8b21ad444>] do_writepages+0xd4/0x190
-> [  189.067915]  [<000003a8b2324590>] __writeback_single_inode+0x50/0x310
-> [  189.067917]  [<000003a8b2324b1a>] writeback_sb_inodes+0x2ca/0x690
-> [  189.067919]  [<000003a8b2324f36>] __writeback_inodes_wb+0x56/0x140
-> [  189.067921]  [<000003a8b2325498>] wb_writeback+0x368/0x460
-> [  189.067923]  [<000003a8b23258c6>] wb_do_writeback+0x336/0x3d0
-> [  189.067925]  [<000003a8b2325d2a>] wb_workfn+0x5a/0x1d0
-> [  189.067927]  [<000003a8b1f0cee2>] process_one_work+0x1d2/0x480
-> [  189.067932]  [<000003a8b1f0df30>] worker_thread+0x210/0x420
-> [  189.067935]  [<000003a8b1f190b8>] kthread+0x148/0x170
-> [  189.067939]  [<000003a8b1e90358>] __ret_from_fork+0x48/0x220
-> [  189.067941]  [<000003a8b2e2426a>] ret_from_fork+0xa/0x30
-> [  189.067994] task:oob-dirty-repro state:D stack:0     pid:8152  
-> tgid:8151  ppid:7260   task_flags:0x400040 flags:0x00000800
-> [  189.067997] Call Trace:
-> [  189.067998]  [<000003a8b2e19284>] __schedule+0x374/0x900
-> [  189.068050]  [<000003a8b2e1984c>] schedule+0x3c/0xf0
-> [  189.068052]  [<000003a8b2e1996c>] io_schedule+0x2c/0x40
-> [  189.068054]  [<000003a8b219d158>] folio_wait_bit_common+0x198/0x3b0
-> [  189.068057]  [<000003a8b263e2e8>] extent_write_cache_pages+0x348/0x4d0
-> [  189.068061]  [<000003a8b263ea0a>] btrfs_writepages+0x6a/0xd0
-> [  189.068063]  [<000003a8b21ad444>] do_writepages+0xd4/0x190
-> [  189.068066]  [<000003a8b2199dec>] filemap_writeback+0xbc/0x100
-> [  189.068069]  [<000003a8b2199e5a>] filemap_fdatawrite_range+0x2a/0x40
-> [  189.068072]  [<000003a8b2637d3c>] 
-> btrfs_start_ordered_extent_nowriteback+0x18c/0x1d0
-> [  189.068074]  [<000003a8b26260ce>] btrfs_page_mkwrite+0x22e/0x8d0
-> [  189.068079]  [<000003a8b21f89d0>] do_page_mkwrite+0x60/0xf0
-> [  189.068084]  [<000003a8b21ffa64>] do_wp_page+0x134/0x660
-> [  189.068086]  [<000003a8b2206584>] __handle_mm_fault+0x1c4/0x5a0
-> [  189.068088]  [<000003a8b22069f0>] handle_mm_fault+0x90/0x230
-> [  189.068090]  [<000003a8b1ebfbd0>] do_exception+0x190/0x560
-> [  189.068094]  [<000003a8b2e136c0>] __do_pgm_check+0x1b0/0x370
-> [  189.068098]  [<000003a8b2e243a4>] pgm_check_handler+0x114/0x160
-> [  189.068101]  [<000003a8b283135e>] _copy_to_iter+0x6e/0x870
-> [  189.068106]  [<000003a8b2831c4a>] copy_page_to_iter+0xea/0x160
-> [  189.068108]  [<000003a8b219ff8c>] filemap_read+0x1ec/0x400
-> [  189.068109]  [<000003a8b22d0a70>] vfs_read+0x210/0x370
-> [  189.068112]  [<000003a8b22d1694>] ksys_pread64+0xa4/0xd0
-> [  189.068114]  [<000003a8b2e13b7e>] __do_syscall+0x14e/0x590
-> [  189.068117]  [<000003a8b2e24242>] system_call+0x72/0x90
-> [  189.068120] task:oob-dirty-repro state:D stack:0     pid:8153  
-> tgid:8151  ppid:7260   task_flags:0x400040 flags:0x00000000
-> [  189.068123] Call Trace:
-> [  189.068124]  [<000003a8b2e19284>] __schedule+0x374/0x900
-> [  189.068126]  [<000003a8b2e1984c>] schedule+0x3c/0xf0
-> [  189.068128]  [<000003a8b2e1996c>] io_schedule+0x2c/0x40
-> [  189.068130]  [<000003a8b219d158>] folio_wait_bit_common+0x198/0x3b0
-> [  189.068133]  [<000003a8b263e2e8>] extent_write_cache_pages+0x348/0x4d0
-> [  189.068136]  [<000003a8b263ea0a>] btrfs_writepages+0x6a/0xd0
-> [  189.068138]  [<000003a8b21ad444>] do_writepages+0xd4/0x190
-> [  189.068141]  [<000003a8b2199dec>] filemap_writeback+0xbc/0x100
-> [  189.068144]  [<000003a8b2199e5a>] filemap_fdatawrite_range+0x2a/0x40
-> [  189.068146]  [<000003a8b2637d3c>] 
-> btrfs_start_ordered_extent_nowriteback+0x18c/0x1d0
-> [  189.068149]  [<000003a8b26260ce>] btrfs_page_mkwrite+0x22e/0x8d0
-> [  189.068152]  [<000003a8b21f89d0>] do_page_mkwrite+0x60/0xf0
-> [  189.068154]  [<000003a8b21ffa64>] do_wp_page+0x134/0x660
-> [  189.068156]  [<000003a8b2206584>] __handle_mm_fault+0x1c4/0x5a0
-> [  189.068158]  [<000003a8b22069f0>] handle_mm_fault+0x90/0x230
-> [  189.068160]  [<000003a8b1ebfbd0>] do_exception+0x190/0x560
-> [  189.068163]  [<000003a8b2e136c0>] __do_pgm_check+0x1b0/0x370
-> [  189.068165]  [<000003a8b2e243a4>] pgm_check_handler+0x114/0x160
-> [  189.068168]  [<000003a8b283135e>] _copy_to_iter+0x6e/0x870
-> [  189.068170]  [<000003a8b2831c4a>] copy_page_to_iter+0xea/0x160
-> [  189.068172]  [<000003a8b219ff8c>] filemap_read+0x1ec/0x400
-> [  189.068174]  [<000003a8b22d0a70>] vfs_read+0x210/0x370
-> [  189.068176]  [<000003a8b22d1694>] ksys_pread64+0xa4/0xd0
-> [  189.068178]  [<000003a8b2e13b7e>] __do_syscall+0x14e/0x590
-> [  189.068181]  [<000003a8b2e24242>] system_call+0x72/0x90
-> [  189.068184] task:oob-dirty-repro state:D stack:0     pid:8154  
-> tgid:8151  ppid:7260   task_flags:0x400040 flags:0x00000000
-> [  189.068187] Call Trace:
-> [  189.068188]  [<000003a8b2e19284>] __schedule+0x374/0x900
-> [  189.068190]  [<000003a8b2e1984c>] schedule+0x3c/0xf0
-> [  189.068192]  [<000003a8b2e1996c>] io_schedule+0x2c/0x40
-> [  189.068193]  [<000003a8b219d158>] folio_wait_bit_common+0x198/0x3b0
-> [  189.068196]  [<000003a8b26260fc>] btrfs_page_mkwrite+0x25c/0x8d0
-> [  189.068199]  [<000003a8b21f89d0>] do_page_mkwrite+0x60/0xf0
-> [  189.068202]  [<000003a8b21ffa64>] do_wp_page+0x134/0x660
-> [  189.068203]  [<000003a8b2206584>] __handle_mm_fault+0x1c4/0x5a0
-> [  189.068206]  [<000003a8b22069f0>] handle_mm_fault+0x90/0x230
-> [  189.068208]  [<000003a8b1ebfbd0>] do_exception+0x190/0x560
-> [  189.068210]  [<000003a8b2e136c0>] __do_pgm_check+0x1b0/0x370
-> [  189.068213]  [<000003a8b2e243a4>] pgm_check_handler+0x114/0x160
-> [  189.068215]  [<000003a8b283135e>] _copy_to_iter+0x6e/0x870
-> [  189.068218]  [<000003a8b2831c4a>] copy_page_to_iter+0xea/0x160
-> [  189.068219]  [<000003a8b219ff8c>] filemap_read+0x1ec/0x400
-> [  189.068221]  [<000003a8b22d0a70>] vfs_read+0x210/0x370
-> [  189.068223]  [<000003a8b22d1694>] ksys_pread64+0xa4/0xd0
-> [  189.068225]  [<000003a8b2e13b7e>] __do_syscall+0x14e/0x590
-> [  189.068228]  [<000003a8b2e24242>] system_call+0x72/0x90
-> [  189.068231] task:oob-dirty-repro state:D stack:0     pid:8155  
-> tgid:8151  ppid:7260   task_flags:0x400040 flags:0x00000000
-> [  189.068234] Call Trace:
-> [  189.068235]  [<000003a8b2e19284>] __schedule+0x374/0x900
-> [  189.068237]  [<000003a8b2e1984c>] schedule+0x3c/0xf0
-> [  189.068239]  [<000003a8b2e1996c>] io_schedule+0x2c/0x40
-> [  189.068241]  [<000003a8b219d158>] folio_wait_bit_common+0x198/0x3b0
-> [  189.068244]  [<000003a8b263e2e8>] extent_write_cache_pages+0x348/0x4d0
-> [  189.068246]  [<000003a8b263ea0a>] btrfs_writepages+0x6a/0xd0
-> [  189.068249]  [<000003a8b21ad444>] do_writepages+0xd4/0x190
-> [  189.068252]  [<000003a8b2199dec>] filemap_writeback+0xbc/0x100
-> [  189.068255]  [<000003a8b2199e5a>] filemap_fdatawrite_range+0x2a/0x40
-> [  189.068257]  [<000003a8b2637d3c>] 
-> btrfs_start_ordered_extent_nowriteback+0x18c/0x1d0
-> [  189.068260]  [<000003a8b26260ce>] btrfs_page_mkwrite+0x22e/0x8d0
-> [  189.068263]  [<000003a8b21f89d0>] do_page_mkwrite+0x60/0xf0
-> [  189.068265]  [<000003a8b21ffa64>] do_wp_page+0x134/0x660
-> [  189.068267]  [<000003a8b2206584>] __handle_mm_fault+0x1c4/0x5a0
-> [  189.068269]  [<000003a8b22069f0>] handle_mm_fault+0x90/0x230
-> [  189.068271]  [<000003a8b1ebfbd0>] do_exception+0x190/0x560
-> [  189.068274]  [<000003a8b2e136c0>] __do_pgm_check+0x1b0/0x370
-> [  189.068277]  [<000003a8b2e243a4>] pgm_check_handler+0x114/0x160
-> [  189.068279]  [<000003a8b283135e>] _copy_to_iter+0x6e/0x870
-> [  189.068281]  [<000003a8b2831c4a>] copy_page_to_iter+0xea/0x160
-> [  189.068283]  [<000003a8b219ff8c>] filemap_read+0x1ec/0x400
-> [  189.068285]  [<000003a8b22d0a70>] vfs_read+0x210/0x370
-> [  189.068287]  [<000003a8b22d1694>] ksys_pread64+0xa4/0xd0
-> [  189.068289]  [<000003a8b2e13b7e>] __do_syscall+0x14e/0x590
-> [  189.068292]  [<000003a8b2e24242>] system_call+0x72/0x90
-> [  189.068294] task:oob-dirty-repro state:D stack:0     pid:8156  
-> tgid:8151  ppid:7260   task_flags:0x400040 flags:0x00000000
-> [  189.068297] Call Trace:
-> [  189.068298]  [<000003a8b2e19284>] __schedule+0x374/0x900
-> [  189.068300]  [<000003a8b2e1984c>] schedule+0x3c/0xf0
-> [  189.068302]  [<000003a8b2e1996c>] io_schedule+0x2c/0x40
-> [  189.068304]  [<000003a8b219d158>] folio_wait_bit_common+0x198/0x3b0
-> [  189.068307]  [<000003a8b263e2e8>] extent_write_cache_pages+0x348/0x4d0
-> [  189.068310]  [<000003a8b263ea0a>] btrfs_writepages+0x6a/0xd0
-> [  189.068313]  [<000003a8b21ad444>] do_writepages+0xd4/0x190
-> [  189.068315]  [<000003a8b2199dec>] filemap_writeback+0xbc/0x100
-> [  189.068318]  [<000003a8b2199e5a>] filemap_fdatawrite_range+0x2a/0x40
-> [  189.068320]  [<000003a8b232bbf2>] sync_file_range+0x122/0x150
-> [  189.068323]  [<000003a8b232bc84>] ksys_sync_file_range+0x64/0xb0
-> [  189.068326]  [<000003a8b232bd0a>] __s390x_sys_sync_file_range+0x3a/0x50
-> [  189.068328]  [<000003a8b2e13b7e>] __do_syscall+0x14e/0x590
-> [  189.068331]  [<000003a8b2e24242>] system_call+0x72/0x90
+> It is good to know someone is exploring the alternative path. But I doubt
+> restart sequence can really boost the performance. It needs check whether
+> preemption (or cpu migration) happens in the middle of percpu operations
+> then manipulate the ip to restart the operation.
 
+With the rseq approach, that check happens out-of-line in exception
+handling code, *only* when preemption occurs, so in the fast path there
+is *no code whatsoever* to check for preemption/migration, and no
+branches to cause a restart.
+
+Please note that with the approach I've prototyped, the exception
+handling code doesn't even adjust the PC; we just adjust a GPR
+containing the address. The forward progress guarantees (and behaviour
+under contention) should be the same as a single instruction. The fixup
+logic itself is trivial.
+
+Please see my message where I outlined that approach in detail:
+
+  https://lore.kernel.org/linux-arm-kernel/al_DpFJFcmVhxpvW@J2N7QTR9R3/
+
+I expect that should come with a reasonable benefit, but I don't have
+benchmark figures yet as I haven't finished converting the xchg and
+cmpxchg implementations.
+
+> It sounds like it just moved the cost from one place to the other
+> place and it also seems hacky TBH.
+
+The existing (high) cost is removed from the fast path. A new (low) cost
+is added to the rare path where we perform an exception return into the
+middle of a critical section.
+
+I don't think this is any more hacky than percpu page tables. It's far
+more contained to the relevant pieces of code (only the this_cpu_*() ops
+and exception entry/return).
+
+> It may reduce the preempt_disable/preempt_enable cost somehow for some
+> less contended cases, but it may be worse for high contended cases.
+> The percpu page table can work well for both.
+
+It entirely removes the preempt_disable/preempt_enable cost.
+
+I don't follow your concern with contention. Any contention on the
+memory location is going to be independent of preemption, and if a
+thread is preempted mid-operation, the impact is going to be the same
+with either the adress fixup or percpu page tables -- I don't think you
+avoid that.
+
+> S390 implemented restart sequence. Heiko didn't share too much benchmark
+> data, just confirmed there is no regression and I had a lengthy discussion
+> with him
+> (https://lore.kernel.org/lkml/20260520092243.264847-1-hca@linux.ibm.com/).
+
+As above, for s390 Heiko didn't implement a restart sequence; he
+implemented an address fixup sequence. There is no restart.
+
+The discussion you had there seemed to focus on the s390 implementation
+details (e.g. why he used an address fixup rather than a restart), and
+the benefits of removing the preempt_count manipulation (which all the
+approaches, including mine, do).
+
+Am I missing some key detail?
+
+> Improving this_cpu performance is just one of the usecase of percpu page
+> table. The other potential usecase is kernel text replication I mentioned at
+> LSFMM. The idea is not new, someone else has explored it, see https://lore.kernel.org/linux-arm-kernel/ZMKNYEkM7YnrDtOt@shell.armlinux.org.uk/.
+
+That was looked at in the past, but people weren't keen given the
+complexity it would lead to, which is why it never saw much traction.
+
+> Percpu page table can make kernel support it more naturally.
+
+Perhaps, but the only difference is that you've moving the support code
+into the core kernel mm code. I think the general concerns people have
+with percpu page tables still apply.
+
+[...]
+
+> > > Known Issues
+> > > ============
+
+> > > 3. Shared TLB machines
+> > > ----------------------
+> > > Some machines may share TLB between CPUs, for example, SMT machines may share
+> > > TLB between the two hardware threads in one core.
+> > > The per cpu page table just can't work with it. Maybe we need a new
+> > > cpufeature to indicate whether per cpu page table is allowed or not. Then
+> > > just enable it for not-shared-TLB machines.
+> > The architectural feature you're referring to here is FEAT_TTCNP (common not
+> > private). There are many CPUs out there that use this feature (not just those
+> > that support SMT).
+> > 
+> > FEAT_TTCNP is mandatory from Armv8.2 and the presence of the feature only tells
+> > you whether you can legally set the CnP bit - it doesn't actually tell you if
+> > the HW does any sharing - there is no way to detect this. So making per-cpu
+> > pgtables mutually exclusive with CNP is a non-starter as all CPUs from v8.2
+> > onwards advertise CNP.
+> > 
+> > Even ignoring the CNP problem, you'll end up installing the per-cpu TLB entries
+> > tagged with whatever user ASID happens to be installed at the time. Which means
+> > you could end up with lots of duplicated TLB entries all differing only by ASID.
+> > It's probably not the end of the world, but it seems... inefficient.
+> 
+> Really? I thought ASID will be ignored if nG == 0.
+
+The nG bit only applies to leaf entries (Page or Block descriptors). All
+intermediate entries (Table descriptors) are ASID tagged.
+
+> > The only way I can see to make this work fully is to rely on FEAT_ASID2, which
+> > allows specifying separate ASIDs for TTBR0 and TTBR1. Then each CPU can have
+> > it's own (permanently installed) ASID for local mappings in TTBR1. That would
+> > solve the CNP issue. FEAT_ASID2 is optional from v9.4 and mandatory from v9.5.
+> 
+> I agree it is safer to handle CNP problem by depending on FEAT_ASID2.
+
+I think that depending on FEAT_ASID2 is a non-starter.
+
+There is no extant hardware with FEAT_ASID2, and I don't think we want
+to maintain distinct versions of hte percpu code accross architecture
+versions.
+
+Mark.
 
