@@ -4,63 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DC62C4453A
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 09:12:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84632C44539
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 09:27:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6F9E06B0099; Wed, 22 Jul 2026 05:12:47 -0400 (EDT)
+	id 3BA1A6B0093; Wed, 22 Jul 2026 05:27:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D1876B009D; Wed, 22 Jul 2026 05:12:47 -0400 (EDT)
+	id 344206B0095; Wed, 22 Jul 2026 05:27:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5BE0C6B0099; Wed, 22 Jul 2026 05:12:47 -0400 (EDT)
+	id 20E646B0096; Wed, 22 Jul 2026 05:27:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2BAE96B0099
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 05:12:47 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 84A20803ED
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 09:12:46 +0000 (UTC)
-X-FDA: 85015847532.03.799F939
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf23.hostedemail.com (Postfix) with ESMTP id C291B14000A
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 09:12:44 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=oS8ZvJdS;
-	spf=pass (imf23.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E959C6B0093
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 05:27:23 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 676021C07E8
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 09:27:23 +0000 (UTC)
+X-FDA: 85015884366.09.B461018
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+	by imf14.hostedemail.com (Postfix) with ESMTP id C7787100003
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 09:27:20 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=MN0DeUOD;
+	spf=pass (imf14.hostedemail.com: domain of yaojiale02@163.com designates 117.135.210.4 as permitted sender) smtp.mailfrom=yaojiale02@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784711565;
-	b=n7YXSGC2wJD9GlR+Agb+PX26xfr8LuVmXo8vlATKY7sWNqbesQopOKnA+IQlTUk8skn/lU
-	Vdf7jc3A/jOBteUqvSh/TrcGttzSIRYGXvzq95eyMMHQfUr7zdUMjzNOzyjZGXR3NJLYH8
-	DiNW+tnipIKlWIfMtwC7eWnB27mSjVQ=
+	t=1784712441;
+	b=WUxiXmacKuno2zvuDEVSnYIwsU2Lq+iZujdwSGmYLI7ub7an5MBIvxlANP/eUxAVRzBGB1
+	RkexwvTDr9FYmD2WNNSIU2GtlAGl+cdkC7oCx/hvOTvYrMtAH0ePzNh6VTRiCI+0R/ETgm
+	pki9k3eiHpc5KdGmvjS6SzBTuEZwMFU=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=oS8ZvJdS;
-	spf=pass (imf23.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf14.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=MN0DeUOD;
+	spf=pass (imf14.hostedemail.com: domain of yaojiale02@163.com designates 117.135.210.4 as permitted sender) smtp.mailfrom=yaojiale02@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784711565;
+	s=arc-20220608; t=1784712441;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AmgXCtLFj/W9Xi358sr4Ha8NbnGF/mAXiBQiDiKgJJk=;
-	b=KpCW1kEb3nMmRX4fjRytPaW22jLXjzH0P5/+LZn48MRIYw9voVcb9Nl4j/oIIk9hIXkiBe
-	g4omU4SnmvcTc8Plm5VyyMDEd6oHykKN/Hb1um48Gn3bhCG3XuraPw7gMBO1/BjDC+0XY0
-	xYfXIyHpzAe23APabin254ilSD+QVxE=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DB9021595;
-	Wed, 22 Jul 2026 02:12:39 -0700 (PDT)
-Received: from e142334-100.cambridge.arm.com (e142334-100.cambridge.arm.com [10.2.198.93])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id E7C253FC81;
-	Wed, 22 Jul 2026 02:12:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784711564; bh=zU+WJI13tWsgGSx87Of2o6NV7wNVwyx6o1/X2ur3XDE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oS8ZvJdSVqcqJG5JmEhwWraFolHd2/OKcrNFCnyihoZTNbCtCApPpi1EvWQ4GlDhG
-	 0qYmVOSWCIfBmRBoC7xmkVKG8a7g7aXjdDZMRRUnWgvvZv56kTX9h2dmvr4Rjp6Fci
-	 kGZiqF89fwv6XKoDKMXa4dAkdq7vQaqlqsCtxHj0=
-From: Muhammad Usama Anjum <usama.anjum@arm.com>
+	 in-reply-to:references:dkim-signature;
+	bh=mVyLNtcGFqMMWAIWtW4iF3YkvbkdX3ti+Cv8fxWpraw=;
+	b=gQQXZf+Ck4kzab05G0Umg0NKPA14DjtSFhrXbjgez62HjW78Wp7HQTNQo8D/Vnd/MT/T+e
+	M76vA46c90BVrps6QRQMjs8Zd5CMk6R2eBTqPOdKOCZh+k1WqbsKaJS8j8uo/GLpuFqdly
+	2p67R917AsFbUTtPtLWXZLHzqgevrAk=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=mV
+	yLNtcGFqMMWAIWtW4iF3YkvbkdX3ti+Cv8fxWpraw=; b=MN0DeUOD+aEyWHPmlW
+	kazmak+3lAYeVpgtu3OzsL008hzGtLjQOTa72pKvCrABiqUa5bLDXriq0+rd8roR
+	bK92IC+zXjWQpPssugOS9gFjjbXhwPFk32pNDGwYTmyO+okYYtxJPJI1MwNuD8KQ
+	uuBUbgnaytJPeH5vkH0nU/9XA=
+Received: from pc.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wAH3YXUjGBqP_nGJg--.117S2;
+	Wed, 22 Jul 2026 17:26:46 +0800 (CST)
+From: Jiale Yao <yaojiale02@163.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
 	Lorenzo Stoakes <ljs@kernel.org>,
@@ -69,37 +66,30 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 	Mike Rapoport <rppt@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Michal Hocko <mhocko@suse.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
 	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Cc: Muhammad Usama Anjum <usama.anjum@arm.com>
-Subject: [PATCH RESEND v1 5/5] selftests/mm: retry migration failures for the full runtime
-Date: Wed, 22 Jul 2026 10:11:39 +0100
-Message-ID: <20260722091219.61504-6-usama.anjum@arm.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260722091219.61504-1-usama.anjum@arm.com>
-References: <20260722091219.61504-1-usama.anjum@arm.com>
+Cc: Jiale Yao <yaojiale02@163.com>
+Subject: [PATCH] mm/page_idle: call folio_test_lru() after folio_get()
+Date: Wed, 22 Jul 2026 17:26:42 +0800
+Message-Id: <20260722092642.1123347-1-yaojiale02@163.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wAH3YXUjGBqP_nGJg--.117S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7tr48Xr15trW7Zry5CF1rWFg_yoW8XFW7pF
+	ZxKw1DJFykJa47C347JFnxZF1Fk39xXay5GFW3Ww43Z3W5t3WUKFWxKw15Za4fG3ykAa40
+	vayDAFy0vF1UAF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pRR6wJUUUUU=
+X-Originating-IP: [36.110.52.2]
+X-CM-SenderInfo: x1dryxhdohiji6rwjhhfrp/xtbC8BYLRWpgjNbK5gAA3U
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: C291B14000A
-X-Stat-Signature: umgyknkpwpewrxx1cywuq7bn9apadn1r
+X-Rspamd-Queue-Id: C7787100003
+X-Stat-Signature: z93ge5zz7yuewo4dezgd95mdx37eunoi
 X-Rspam-User: 
-X-HE-Tag: 1784711564-710458
-X-HE-Meta: U2FsdGVkX1+CelH79gM5yZqUPWqDH9t4otxJ+MLWSrzKRHf+YX/vQezkGx4XjkCHBtwa7oyJMwS9jzmYGuTl0uy/qNtQBJjD7WKp6a1C133iXnhfOLCaZsRp8sqabO/huawUCCuyZhmKKmB4XkDINvdEhB2i7Ldr7S10NQU7eiOXYf4nxrskiChYp8nHlTUwWBP+oivD63vI6BX3J3J56+M8C6VIbm7LdV0PMVFXssHPxH6cvlHxqyWU4QhFeHv5hhri17vSRKqxI+B5lyDC/YMeeTUALhJ/Lms6tI5ENw+l2w4WTpgTS19ShaSTdNwUEjp4PKoDsJ4tlEAGqb1FGChCc9M4AN0Lz8Ql0204WhtPOuqoSgT1vl7ygpOrOTlt64csbzxPvTWEEfhai7+5d1OaRNYhw+Z/XXexLXEXSS/qsorhEDNE9SbulmMzoWX2YPr5XtvVMX4SFBe+hHIGXGpw8QFb/9k9QUL4JRU1fmNBryeidPcoFaG9p/gOM4EuWSP0pTEwS19JmGKQq8HS1D6qYr6bx2ti28pv9i1fjYqGIMHVnqjUbme+oEZd/CEyrfw6J4oNBkVzbHmXOwp2xUMHet/wZp0Vt3LaSch9K8jI1UzHNHrvcr5DLsQJejIpZ+VQO8caC3pQsZNBDGCAWoJCgKY2gFK3kAZVhmmpHut6TODUaFk9hN0GZS3xiIxc080unhkCRb6wX+m8aKmWDAot7Kl2+fcYuZ3NIzrFORG5ONmifk8GYddz0ebH2xOM6ED++gV9rfE7eibK2eNeymOtDW0LUez3V5ivO3bakSgNwQ35dUp7ehtAZRZrkNduDBQghqGWqNFi8OyhHdIFF+J8evHY9ByktOy9YU/rbtPJ8YvJZx0wtD4CJDcpJQGh7Ffmf+hwiNIEf/AT3vl5Pi5TycEX4Yv2KG/EHM9t6lNY+MIoli0NJcdxuNE/M1V78/Nr9GCVIUdbUpmtb/3
- yrgeqtk+
- zbzt1G+8IQIvq+AC+HDafzwtlyJmBRwrTkgYaA63yq66K6jXzvq6oVtUj/eE03NwwUZWc8dyL5KKeo1QirSR3COLug99zhvxSoECm5X1cP0z3nR3CXUzpkLacqvbADia/aNuH2qRLlLUvsOvYVFcZw6oQEy5bWnrTFy+yO0kdoRIxbF/7AX771QDTTOqfcQzhngDMf1gYlkpWCb4VvtQsGwAg3R/76JN0x+ppDL+LJK5DXF3Bni1YTxaBV/90C+oXE0but1PITSGgDrd2pne6gbiaGRGglShkXAbhIYbOhET4KBBCsUiX92Gw/2wEnczk0nPY
+X-HE-Tag: 1784712440-297383
+X-HE-Meta: U2FsdGVkX1+IPEWiZ+uZ4BDiI2KFf3ss4mMLd/yISCLmM39uVICqDjVDrFanhzS5ugGk5p0x5mN0zzB1k1OXcrEGiyNxcf5GKhoMb3nM0kTsc76RD8vhTtN54wZtrzsXsmqQAZak9pN6i4fdWa/UcpG9IDN56HxAu+qn33u8jNNIWdKlCajTs2ONksM6RD9KxTIHrkX13PjWd9CScMWMUvfP7fLNg0Y7Lp0QaEap2+ymfIlzkncnUD7ueLsTQv8CZciuGqFFXL88kVINgg4behiRChTPA2slVsO9k3lgBY+AG336PiAN85+87+e+/gR8L56/qlGwtLoST2ByY7ro4sHgAmoyWo14L/eSsuUBOi9C5BFxcid8tWQZ22eq3XoZ6KLiM++NSCQrmzwm3hbL9Ksk1YG/zvpx4Ycjz4MIjT871d5iYnabwiIRr7CQ0W+1M5RNFXg2ZodsqIsxzBomF0msuNYhxC2lUqlWVprsWuYvGQGNYe55tiZF9HSE25XbeCHMUixANXiA4kar5SG4BCwJ0R5YO/E4SOLj1IKnmekxvuHhVEMizaCgIYXRyBJWvHl4hFkGI7HQFeto1WoROBq5OarqAkKs8mB+8v9IEUUA0nyXEJp/Mj6Buyq0bWHBT+V680RTDm0qhMwTuYJRG7wdfVIH8+kRg86k+F6piHEe+CXORkSiPydXRtGCM8ifFXPlGYfRaKGEO7poQg1Itj5d9hUkgCLEHwRzQHtLYOwANucRF425txjFkfNDoiqfeggE1DFK325VTUWF5HQVNnLJJC7TkAJdABzVhIkGY/Hx8ffUW636Qj2kobc5t1sW0LyB3AUoByxX2ZLKQegwt/m2NhCVeCv/BOyYKuKFNf8+otu8NH9vcSE7P8s9u6tbh6dQkT8uO5HRZkwjwRvjYiHL4Tvw+DARDTTPCYuMj4W1JDCRUEQ0cllXSm2MuOrwEpriOo3ZnxgJI5F+zZh
+ Gild2LNx
+ gfFXUNwcF1vKzTRgs45K82kh5eVHDek6SJ8xeORGmvQ/N1/TDeVGDyLRRqk0NQH2Ghe/sfEXPDxWJwG7UYiIMkmHetd9CYf5GA0PScHnJ94X08eve8/4N0GCLssAHfj+qKPlAh5GIrHvv4RGaRBCCtK2V/fkvDTFX9L2taQc886zF7uHOzDcfY9g82cItHJ/ihH8WtkMJepR8THw/BvcNCbJ0ncphfEyuQRCAEV59w9/Y0jOO1nCfbUlERl9El1QkmU6qbf3/mbg54A5w0lDIdDj1IlZgRAa9tNceTw1KpJI2lpuQr6hN8Bs3B1b80nLfR1/ogMcIr/icbfLTG8CBPvoTdJtD1IUTxGLQTKlgpQIOXY11oDaNUQEgxJK2551aFfwvPFZFY3vn8ok/g1Duov0xp4mJOhOiH5zk
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,102 +97,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-move_pages() migration is best effort and may temporarily leave a page
-unmigrated when another task faults on the folio during unmapping.  The
-migration test currently tolerates 100 consecutive partial failures,
-but a busy machine can exhaust those retries in a fraction of a second
-and fail long before the intended 20-second runtime expires.
+page_idle_get_folio() speculatively calls folio_test_lru() before
+folio_try_get(). The folio can get freed and reallocated to a tail page
+in the meantime. In that case, VM_BUG_ON_PGFLAGS() in
+const_folio_flags() can be triggered. Remove the speculative call.
 
-This is especially visible in the shared-anon cases, where every worker
-process continuously accesses the same mapping.  The retry count then
-measures syscall rate rather than whether the test can exercise a
-successful migration entry.
+Also mark the folio_test_lru() check right after folio_try_get() success
+as no more unlikely.
 
-Retry positive move_pages() results for the full runtime and record the
-per-page status.  Pass if at least one migration succeeds, and report the
-last status before failing if no migration makes progress.  Continue to
-fail immediately for syscall-level errors.
+This is a sibling-path bug: damon_get_folio() was copied from this
+function with the same flawed pattern. Commit d6b8b02a27b3
+("mm/damon/ops-common: call folio_test_lru() after folio_get()") fixed
+damon_get_folio(), but page_idle_get_folio() was left unfixed. KCSAN
+(strict mode) confirms the data race on the folio flags:
 
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+  BUG: KCSAN: data-race in ... / percpu_counter_add_batch
+    page_idle_get_folio+0x7a/0x2d0
+    page_idle_bitmap_read+0xc9/0x220
+
+Signed-off-by: Jiale Yao <yaojiale02@163.com>
 ---
- tools/testing/selftests/mm/migration.c | 34 +++++++++++++++++---------
- 1 file changed, 22 insertions(+), 12 deletions(-)
+ mm/page_idle.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/migration.c b/tools/testing/selftests/mm/migration.c
-index 29f7492453d43..19b4cef65f345 100644
---- a/tools/testing/selftests/mm/migration.c
-+++ b/tools/testing/selftests/mm/migration.c
-@@ -7,7 +7,7 @@
- #include "kselftest_harness.h"
- #include "hugepage_settings.h"
+diff --git a/mm/page_idle.c b/mm/page_idle.c
+index 9c67cbac2965..29ee18f0e8ce 100644
+--- a/mm/page_idle.c
++++ b/mm/page_idle.c
+@@ -40,9 +40,9 @@ static struct folio *page_idle_get_folio(unsigned long pfn)
+ 		return NULL;
  
--#include <strings.h>
-+#include <string.h>
- #include <pthread.h>
- #include <numa.h>
- #include <numaif.h>
-@@ -20,7 +20,6 @@
- 
- #define TWOMEG		(2<<20)
- #define RUNTIME		(20)
--#define MAX_RETRIES	100
- #define ALIGN(x, a)	(((x) + (a - 1)) & (~((a) - 1)))
- 
- HUGETLB_SETUP_DEFAULT_PAGES(1)
-@@ -110,7 +109,8 @@ int migrate(uint64_t *ptr, int n1, int n2)
- 	int ret, tmp;
- 	int status = 0;
- 	struct timespec ts1, ts2;
--	int failures = 0;
-+	int last_status = 0;
-+	unsigned long successes = 0;
- 
- 	if (clock_gettime(CLOCK_MONOTONIC, &ts1))
- 		return -1;
-@@ -119,23 +119,33 @@ int migrate(uint64_t *ptr, int n1, int n2)
- 		if (clock_gettime(CLOCK_MONOTONIC, &ts2))
- 			return -1;
- 
--		if (ts2.tv_sec - ts1.tv_sec >= RUNTIME)
--			return 0;
-+		if (ts2.tv_sec - ts1.tv_sec >= RUNTIME) {
-+			if (successes)
-+				return 0;
- 
-+			if (last_status < 0)
-+				printf("No page migration succeeded: %s (%d)\n",
-+				       strerror(-last_status), last_status);
-+			else
-+				printf("No page migration succeeded: status %d\n",
-+				       last_status);
-+			return -2;
-+		}
-+
-+		status = 0;
- 		ret = move_pages(0, 1, (void **) &ptr, &n2, &status,
- 				MPOL_MF_MOVE_ALL);
- 		if (ret) {
- 			if (ret > 0) {
--				/* Migration is best effort; try again */
--				if (++failures < MAX_RETRIES)
--					continue;
--				printf("Didn't migrate %d pages\n", ret);
--			}
--			else
-+				/* Migration is best effort; try again. */
-+				last_status = status;
-+				continue;
-+			} else {
- 				perror("Couldn't migrate pages");
-+			}
- 			return -2;
- 		}
--		failures = 0;
-+		successes++;
- 		tmp = n2;
- 		n2 = n1;
- 		n1 = tmp;
+ 	folio = page_folio(page);
+-	if (!folio_test_lru(folio) || !folio_try_get(folio))
++	if (!folio_try_get(folio))
+ 		return NULL;
+-	if (unlikely(page_folio(page) != folio || !folio_test_lru(folio))) {
++	if (unlikely(page_folio(page) != folio) || !folio_test_lru(folio)) {
+ 		folio_put(folio);
+ 		folio = NULL;
+ 	}
 -- 
-2.47.3
+2.34.1
 
 
