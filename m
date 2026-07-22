@@ -4,117 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 991DCC44539
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 11:34:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9842C44539
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 11:52:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D4BC6B0092; Wed, 22 Jul 2026 07:34:01 -0400 (EDT)
+	id 935F36B007B; Wed, 22 Jul 2026 07:52:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 986176B0093; Wed, 22 Jul 2026 07:34:01 -0400 (EDT)
+	id 8E3FA6B0088; Wed, 22 Jul 2026 07:52:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 875CB6B0095; Wed, 22 Jul 2026 07:34:01 -0400 (EDT)
+	id 7D5FE6B008A; Wed, 22 Jul 2026 07:52:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6289A6B0092
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 07:34:01 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E8E0E80158
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 11:34:00 +0000 (UTC)
-X-FDA: 85016203440.23.B53259D
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 2B54E40006
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 11:33:59 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=euqyDzVU;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of hank20010209@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=hank20010209@gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4865D6B007B
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 07:52:42 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 66C9F120161
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 11:52:41 +0000 (UTC)
+X-FDA: 85016250522.03.500E012
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id D8EB71C0007
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 11:52:39 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IsbXT4SE;
+	spf=pass (imf20.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784720039;
+	s=arc-20220608; t=1784721159;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YtTalQDtKgX2+sfw/36efx5Lj5w8MeFStk5ysuXqYT8=;
-	b=dNne1tSlkmTl5T0K4TsIGrh/8eNky9fQnmlS3K0rWCHKld0M4EJ5MUfyOOPyzYUVz5b8Dn
-	jzNyGcR0arcYjn18I1+XxAOWc2W38ktyhbfjDZYz3WRx41ZL1KRG562xPZGsARq3YK9z73
-	kXhkfMuW5NaivxqDBrKUamvDMrI5W7k=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=euqyDzVU;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of hank20010209@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=hank20010209@gmail.com
+	bh=2u+YmL3O7mDZg1oLXMa5OhmXTCMV452YGb8AVhTqv5A=;
+	b=cO8x/nVHmbApR5l6z12OGmzw5kp/Sq8eMKSDzLMrCTjBfcCrbr006ah2nVNK1lL7ckMn7S
+	8IJJ5HKCxgfbgTfEux5jNdK3/n50CWeQptoYAPgZmFPM6BSriIiO24gT+NE5C7xnCoPM0d
+	Gj6IJPbwFE5a+N0nsBkQO05a49D21p0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784720039;
-	b=ypK7dFrXP8m5lmKF9rO37iwb0wsxmnsnwfyZeEz19orZoUL6ktpb8buthjJcyT5opzA9aN
-	I43zIzGxDHRLjugF8kjHDF01r/nMwbVr1TPmcMnTpmrqTtrCc33X3ehCUk9+X/Gcdf223l
-	IsL0S0MMfBOJ/2ggEX/EeDcPkzRyA30=
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-c9e607d81fcso5661790a12.2
-        for <linux-mm@kvack.org>; Wed, 22 Jul 2026 04:33:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784720038; x=1785324838; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=YtTalQDtKgX2+sfw/36efx5Lj5w8MeFStk5ysuXqYT8=;
-        b=euqyDzVUo55am1M2ltqCYloupDMwGLwsrdteRNzMj65k6t9iqMZ7+WEpv76qwaOFVQ
-         bz2/3CDKvgb5uQyxpw+pFqFD6jZqrqh+EH7f6BDl5UwE5IRladPhkPqADbcrhU+gsOTo
-         h0ibOEjDKeX7ve6SlaqaGawD2AE51y45cRvcHB+4Zyd9Oiwg4dQZ2mhPFA9gnOY+cUgp
-         KB/OoGyFlv5skONPCEuUZ1Xmq3PqLJegrR/Ln0L+SarWptJd6Y53aA7fwcuypdyPAj/T
-         53oNl8/aigVuArBPENGqVK+xJbtXwzZcP3ynEyLm2XK14OUo9jMYpDCAUObZjZdJROZU
-         a0Lw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784720038; x=1785324838;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=YtTalQDtKgX2+sfw/36efx5Lj5w8MeFStk5ysuXqYT8=;
-        b=HE2GEYBnoNQD09YtSxqPfhgJ0lJpAPWh1VSMUxQm/enCITItHNKPNRIkFfYa4okTAN
-         ourjyjgJggZwLDzTkUflvWOSbwwZF/a0rkeD3WrPuLF4A7cEm/sGfswMI+alZYSzwT7P
-         zzwimXe3kl8nqHp3XnyvRYkvr95epOCg+AI6U68yPlhVl4IElX5tOn/xQr6G0laliyaN
-         iuwE403/az0/Lm20om4feOYoiWWyE3qbh3F03d15IJG43cuIJ3xk6OWDC7dL5l1BlSHm
-         KFvQlERuh168kE2emiovBL09rQ14oMMJk7OrYpFo7cCqRMUrNUUgdxhs58sAek8numF5
-         vzGQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqsLyK4CTn+17awdBhuukt9pkbdmlVN4RVep03Y1KU3q15S/tXMPumxSQujzUM1+9HI/9wVubdf9w==@kvack.org
-X-Gm-Message-State: AOJu0Yz2yWPAibCzEVASHBK/3gqKld1+Umu/ORlZdKV0EyBZQikcYjQa
-	hSlM291N7aaEU2G201pM3VEdV36zYr3lj1jmoCuPvVYdJmIwCbkZLTvF
-X-Gm-Gg: AR+sD12CPVg9yLG2rdF2WqsOkRP2bWd8/9bOUIhdayXBOzEKgbrn26vdJRCSEeJSIKO
-	nfgKclhXbPbi+uGt6xl61o85NCnixqQ6h28bxHTyggkbcF0QkdgAmiPFM5v3r5wK1ZavJSQjDzr
-	d/pEv1OiopcxFF7fyE+bypsrl4DhfPfdhJYeauYsAzIjq7s2weLSmVcYqg148ENt5gRUWj5yhMf
-	MrLDF/1Z8PdGAIapZvicrFuBnozfZTIjykchj51ZD8y0HDTmRMnbcSWFJ1rBZg3OJ3gOuzDTFoD
-	1SRdlYbDsCFqQb5W/hU12npLrehfanR54n+1bOO8CHlML7GpSClv4QTmb3CPVvEe9z288xaFaAH
-	NhFjjYWcrcGGnVh9JjYo8vVMsXVirwgFRk1rUvNyZZcZp3PpHnWZCiEMPac78vL96sqAbAz4SJH
-	bAigaNj9yrRBRpsL3Huw==
-X-Received: by 2002:a05:6a20:4388:b0:3b3:fc6:622d with SMTP id adf61e73a8af0-3c3ada195d5mr24819669637.38.1784720038040;
-        Wed, 22 Jul 2026 04:33:58 -0700 (PDT)
-Received: from apt.tailc82bd0.ts.net ([140.123.97.23])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbb8f1c376esm980979a12.29.2026.07.22.04.33.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Jul 2026 04:33:57 -0700 (PDT)
-From: Cheng-Han Wu <hank20010209@gmail.com>
-To: SJ Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-kernel-mentees@lists.linux.dev,
-	Cheng-Han Wu <hank20010209@gmail.com>
-Subject: [PATCH 2/2] mm/damon/core: remove unused damon_nr_running_ctxs()
-Date: Wed, 22 Jul 2026 19:33:38 +0800
-Message-ID: <20260722113338.302603-3-hank20010209@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260722113338.302603-1-hank20010209@gmail.com>
-References: <20260722113338.302603-1-hank20010209@gmail.com>
+	t=1784721159;
+	b=xKIOXJmtY9BCdFbWDqHz1HkIGgP6bcbymW48w/2Sf0WGAeuEbfSf/cNKeYUON/6/euWSKR
+	GO5Svu7bZ0G9eNe98peyfk8ySf+1hzAZssuaCzG+L/42O5hjm49wNhsRonH7K0Fk6k0vLV
+	QUsFR4DjrGgzrmbgdxglv0aLE5duvUM=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IsbXT4SE;
+	spf=pass (imf20.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3984E60A64;
+	Wed, 22 Jul 2026 11:52:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 779D91F000E9;
+	Wed, 22 Jul 2026 11:52:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784721158;
+	bh=2u+YmL3O7mDZg1oLXMa5OhmXTCMV452YGb8AVhTqv5A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=IsbXT4SEjVnkwnCXzJY0T8cBl50BCSrCVGmwo9Gs3OAFL2HC7CMfLRTz+kXbHM+7u
+	 +TRC1/3Wj1Vtu8B027gT6rpfd6xraxlmp6/frHM92cIjrOqKI/W8uhmkW0CA1+BuGc
+	 LH/JD5egHL5o5LeOzFq0FxEMgPAaBVOIgqYsGSldxCIw6WZCTxTn/IEIVm7xi+aV3Y
+	 bkZULNGGTO1WdMjMmYK2M4kUik3xFZb0Vhyp/ovpdVvWTE3hjV2AY2pKylyN8I0bD1
+	 ahInEjp8GrtjzJqlw8gqwZAFNB8cAPZ6Lf63qQZmM130cQK/Y5UdMF70oeXuFfTkcN
+	 iW7ODO9zjcEXw==
+Date: Wed, 22 Jul 2026 12:52:29 +0100
+From: Will Deacon <will@kernel.org>
+To: Dev Jain <dev.jain@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, muchun.song@linux.dev,
+	osalvador@suse.de, ljs@kernel.org, david@kernel.org,
+	liam@infradead.org, catalin.marinas@arm.com,
+	kernel-team@android.com, riel@surriel.com, vbabka@kernel.org,
+	harry@kernel.org, jannh@google.com, lance.yang@linux.dev,
+	kas@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	apopple@nvidia.com, rcampbell@nvidia.com, ziy@nvidia.com,
+	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
+	byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
+	ak@linux.intel.com, nao.horiguchi@gmail.com, mel@csn.ul.ie,
+	j-nomura@ce.jp.nec.com, pfalcato@suse.de, tglx@kernel.org,
+	dave.hansen@intel.com, jpoimboe@kernel.org,
+	linux-arm-kernel@lists.infradead.org, ryan.roberts@arm.com,
+	anshuman.khandual@arm.com
+Subject: Re: [PATCH v3 0/6] Fix incorrect access of hugetlb pte entries
+Message-ID: <amCu_ei3B3-2OPTB@willie-the-truck>
+References: <20260703114202.365553-1-dev.jain@arm.com>
+ <178464737122.1305746.12295190523058911270.b4-ty@kernel.org>
+ <20260721133636.df1a012df895054d3fd34a2e@linux-foundation.org>
+ <4bb234f7-5f3a-452d-92dd-a1e62b6f39aa@arm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 2B54E40006
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4bb234f7-5f3a-452d-92dd-a1e62b6f39aa@arm.com>
 X-Rspam-User: 
-X-Stat-Signature: frod16ez18ehjtnwuohu1cob39odpyfg
-X-HE-Tag: 1784720039-383675
-X-HE-Meta: U2FsdGVkX19m5tZgYZGVPnLUA+mVwPZjpsZV/3tiSHNnPjawD0XH5iBo1Z1UYQMmmFeXvGBC5Uf71pnaJr/diPjhWTjPAwhlE1WtZ7CPrgbJfHDFvpbSFNx7wagC/4v5Wfq+A8q/kwTYC26CqB78o6PkzsPCJQyFHGlLYm9fVq4pL3vOTCyS93eDwyloA3krRRm2uZeilMNhWVpje+ajULKMQMsp8AoVSK3QG1iuvz30w9h07hR6/KeFrHOZC6Cf3e52QmOXX7Nm9fM5geGnkFSzcH4H71KZRGNAkuEoeIwIUQCRFX+G85Uq/2zDLdRLl045KV11taCbV8UJkYZch/jg3Y2oUR0qHgZr1+3nPktl+dD+K/mryXFw/3908R54YbCn9RAb0MAih7AlSH99VyPtUqlC3tKIAdBMjFETLjcc5LBDIG2OgaxLfEZjBTp/b2N01KM9ot/eh6G66v8BBGRf2qnsXKcANTdnthL6Jgb6RnZU9seqlFr2/ks01gvYPhv/B/Z1j0jPKygGXJbr4O0gXWj10qX7TwDal26GJbu8QlQiHH8YHJsFtX5HoENSfnBbcn8lyWyaDB9trzWUpR3ZOKmmUZQl74nhpHa/HIgM83iGXZJZuZNgALGyxUF1YMlUeVfFrF5NrXyYzca792SP74EA5OUgKDDC9nj4v8g+zoknNge14JzHVro9dJDGxeqep6WSuo+nGIYX/P3CYXvvq2buoGkciY9e2qRW8NTGr6Odybmta4H2x0MyemGOzKFVbxrnkIYL+zUMEj1eVwY3JHwqtgPgaal0nsfJPe03MtSiDm7STaH53NYmNj+z4QgMiH/Ll8ujy4gBZwzwdxecVdkv/m6i0CJBBRiKbnfSSVTvCZW/wIHT/UQtkcfEpSUT8tf0Sr4Z7rIgKsSZJcuF+eoU2xCUipzyExPWA3fLPVzpZ4T+LczS6jOmPIxOlwIq1tQpd2XQN2BUxEf
- haj2gXvo
- q6PmEZt4kWn5Gg6MbmSmbYtjYxxZ4+YFIyYnUmVSVguqAcf1f9JvglnfmzjfK2dpP4ruameNFLuc8JTAjysHZnQrNj68E/urDDbYbzY8SufIO6GZUyseylbwdrizJVAwOTEGQ+8UPm0DI59LSBJ7vk6Vsa+OylwS0VJALW2ZoCvgMgypIzlQ6z0LbUW+DPLmkruNqVCeArm8oGuTRk3t+5S6RibxTYOW6QP3USXGkzxux/nSzxbbwXA4D55MswnC/pSPzUHjcNdn1FYGnZPPUse0kSWWZBFBZoQRWrVTyJx6OKiYIEaoZrmvkQoipz25qREgQ9UHKmzXLwdTaQrZtbRfeqam57U4kYq11mdbg9O5SWfANQKMC+T0laLwLnx4a6jfhlXHdSRWEnVz/fToH5o3of78vTYjmLUZ80vRmih/np/QJzao1bDVo3//gnX1R8WzLJTRmLKtjcyo=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: D8EB71C0007
+X-Stat-Signature: z6oj1hgntu6r3cnj5roqfgxs59unaw1s
+X-HE-Tag: 1784721159-472351
+X-HE-Meta: U2FsdGVkX1/Hx8Jgd3EZHQhpkoCHvihBrKM6VLRvMRBJhKl5HIYnqXxZWLquEkUrQjul8y86DktSQYBqVYkzct5oYkMybVrn/ZKCLYpk0SCoZI5dXu4D6Kk3ymGTQocFgeczLjvLc6S4jObQbLlyxTC2Z08MmTGYgJDSMX0Cs8aqgeQ4pDgvvGj9PW1RFopNsYZJdtf47frhakpj9g4Q2zspF9jjppMH7g5Q2o3Ok37Vrn+2zysyZj8ngVUog2BvWY6tWjVBa1K1mfq9WniBBkjmWMyrjaE2o0YdebbetXMNyrWwguuP9EHJgbG8QXux8DICsjvf63V9KXqQMATVocpyDdD9aVueCcdbYUsX68Hvaer05SAF2C99IcfPosIP/R66+2bNfh9NIlVaEGRIHgplmeZjayM5mbDoGxZ+bpJlmxFGGT5tLys2sJc9Nt5qg4jfdQM0kT9GupD79MjuHIeMIGY8Ak7CxmTqynRLz3QSC2bxnAhCcIWZav8hRJroQ0/vNaYcZMFniDYjxDtjzKqlEHlSlL/PrrvIVzZ6aBEHI3dzqECPJtk+Ds24OT09Djgx1SlV4UZi5RPSRfl7gEVt6N/lsCkXFJNXjyKRR5Ur2dkJFOnT9GXTe/ejmKFXgVb7/IHM4hqbnwYclsZ9yw95oftE9d5XHLNAiSA9JphctNN8KNiicfV9hNRqRgUyg5alQYHBy9kp/TZ2AmwuxY+as3QWPy35bPFU2eY4XdUApwRp2ZQPAdUzwr1MJpfKmDeYo12QgSm7fgix+OeS9ubTDDltFzRYn5AHe2/27k5G0i6kglFky5WYBOhEpDgtzs5ZQVG4zdK0tEU96wjfG/ezpU0JUPnl22g1t975je7kwuW5Djbpru95aA+56yqTQxcOoN5pNz5PPzp9rp40XO6O0WFRz8m1ugKwFeAlF7gguE2BChWO8ho/O9warlmwh3eeeq2aLivK5QyPjA7
+ kCdMd905
+ DO3A1aTwgVfxQ3xk7XBoS5xDbEPqtyFHJtw5aeq+Zy381VwXmOLr1n8n4TPMPVBK4Bbs6AbKCSqDVmxKfTT/mRY2I+9c5R4BJ/+U6syxPYVwfk6Y+LCXhG7oduU+wSPa2XRWioN3ekVLP+UySPTQrq3WFvbMz2j4ATcsmrjPb21LFwgRZB78LOyVgr+wBGtWh7UpH86NLrJaFeqiE/14n1AwQGMK3sGQiqbzamm22juYMHFfJo/RuGPlMDC5LQJ4hVEwOaoSwunTSk1QdE9bK09FP2S1+b3xOvbRtRkLsQ6HTjYy9W34Fq81TMqY52HsKFT57CvLbxjtt3C0ev2Xjfjm60XFj9L8YoDQa
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,56 +105,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_nr_running_ctxs() has had no in-tree users since commit
-5ec4333b1967 ("mm/damon: remove DAMON debugfs interface") removed
-all of its callers.
+On Wed, Jul 22, 2026 at 10:03:04AM +0530, Dev Jain wrote:
+> @Will if you could edit the commit message with the following userspace visible
+> effect:
+> 
+> "On systems where CONT_PTES != CONT_PMDS (meaning page size is 16K), we could collect
+> excess a/d bit state, meaning extra work for the kernel. Even worse, we may iterate
+> beyond the PTE table and dereference a garbage ptep pointer to access physical
+> memory we don't own. Since the ptep pointer is a linear map address, we may run off
+> the end of the linear map, dereference a VA not mapped into the kernel pgtables and
+> cause kernel panic."
 
-Remove the unused declaration and definition.
+It's sitting on top of for-next/fixes so I can fold that in, thanks.
 
-Signed-off-by: Cheng-Han Wu <hank20010209@gmail.com>
----
- include/linux/damon.h |  1 -
- mm/damon/core.c       | 14 --------------
- 2 files changed, 15 deletions(-)
-
-diff --git a/include/linux/damon.h b/include/linux/damon.h
-index 8e5589ccf50f..50659c9083a9 100644
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -1064,7 +1064,6 @@ int damon_set_attrs(struct damon_ctx *ctx, struct damon_attrs *attrs);
- void damon_set_schemes(struct damon_ctx *ctx,
- 			struct damos **schemes, ssize_t nr_schemes);
- int damon_commit_ctx(struct damon_ctx *old_ctx, struct damon_ctx *new_ctx);
--int damon_nr_running_ctxs(void);
- bool damon_is_registered_ops(enum damon_ops_id id);
- int damon_register_ops(struct damon_operations *ops);
- int damon_select_ops(struct damon_ctx *ctx, enum damon_ops_id id);
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index da97b2dc39d1..891f851bcbbf 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -1847,20 +1847,6 @@ int damon_commit_ctx(struct damon_ctx *dst, struct damon_ctx *src)
- 	return err;
- }
- 
--/**
-- * damon_nr_running_ctxs() - Return number of currently running contexts.
-- */
--int damon_nr_running_ctxs(void)
--{
--	int nr_ctxs;
--
--	mutex_lock(&damon_lock);
--	nr_ctxs = nr_running_ctxs;
--	mutex_unlock(&damon_lock);
--
--	return nr_ctxs;
--}
--
- /* Returns the size upper limit for each monitoring region */
- static unsigned long damon_region_sz_limit(struct damon_ctx *ctx)
- {
--- 
-2.52.0
-
+Will
 
