@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BE04C44539
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 09:12:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9920C4453A
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 09:12:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 59A376B0088; Wed, 22 Jul 2026 05:12:30 -0400 (EDT)
+	id B8D966B008A; Wed, 22 Jul 2026 05:12:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 571816B008A; Wed, 22 Jul 2026 05:12:30 -0400 (EDT)
+	id B65736B008C; Wed, 22 Jul 2026 05:12:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 487646B008C; Wed, 22 Jul 2026 05:12:30 -0400 (EDT)
+	id A53786B0092; Wed, 22 Jul 2026 05:12:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 21ADE6B0088
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 05:12:30 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9E69E1603B6
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 09:12:29 +0000 (UTC)
-X-FDA: 85015846818.04.54D271D
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7DB676B008A
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 05:12:33 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EFE4CA0E70
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 09:12:32 +0000 (UTC)
+X-FDA: 85015846944.15.79F1DA8
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 096DB180004
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 09:12:27 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=ui42q0eq;
-	spf=pass (imf06.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
+	by imf30.hostedemail.com (Postfix) with ESMTP id 442F280009
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 09:12:31 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=T1kpQAfc;
+	spf=pass (imf30.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784711551;
+	b=A6x9PTe+aJS6TRkm5aT4wbCoCaSKTtphFX8pYo+kXIC4Hesi2mb2b196eBNacICG72rSQz
+	OJ+7fgxl9cGHGLBxW43p2O5NEI64td/b60+au3SD9YG929pWzu85kA3ulT+OLC7YvSEFZv
+	IUOv5+KNkuADoPTJ+cTeOdE4LMSIgEg=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=T1kpQAfc;
+	spf=pass (imf30.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784711548;
+	s=arc-20220608; t=1784711551;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=FPDqfr2rLPR3uRJbaSYiub4wVAZzuM39RjFvMBAAGos=;
-	b=DKQn8a1VQ7V8/nuHIyLnHxD3zWDWRzYVpFccUwW+YtkJvVsJbQxSDc+zwmnSRsH8OFTOZb
-	V+vcKDZtKdZ6QsVovN5nnAbXiHqfwhvJNUiDDhoOeEuCs0u2VMEtGfM+f772YN9qEWSHL+
-	97TRbSCwJiHAwvLGxjYwl9nWGnvbMNo=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=ui42q0eq;
-	spf=pass (imf06.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784711548;
-	b=w9p9rKEYSEYgMdml1zSZd2gFDP335fehAU4tF1YoQ/dcBcrcQZ5cQL5UNua7dqfMfZPrpy
-	HHMc6kzOjX9coMkgZrQGrXShbhzQ0xpe95O9C/yZHJjq2zsLXYVkHlxy9ndIZAb0IHEiul
-	MprPtM5FBEQZDTjDcTsi8VJuHCuHCds=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=OI2hlZeqp95T2LUMkBs7oHSwwoZnZoLUGsdasI2s9WE=;
+	b=yv3R3o86Z5AnilJZJmqJ6vlrhKodjYmQNapSHSyDhVkfWLNwRWkmN3QJS1n+P/XEXyrYTv
+	vbZ20cNXxEat35pBVhL9GFlciG5MaL1cDzsH2wAElzBgSm1SJ+pbjlZUZ0Rwxymk4pOYFQ
+	D8RAxRdQzuorLC5V81SrOiFHonlQ9cY=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9EAE01595;
-	Wed, 22 Jul 2026 02:12:22 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1A27D168F;
+	Wed, 22 Jul 2026 02:12:26 -0700 (PDT)
 Received: from e142334-100.cambridge.arm.com (e142334-100.cambridge.arm.com [10.2.198.93])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 9D2F83F86F;
-	Wed, 22 Jul 2026 02:12:23 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 227653F86F;
+	Wed, 22 Jul 2026 02:12:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784711546; bh=aRnuFbYmxuzHtIDm1YR9dnNIB8HJZpB9ssKA4sZZP+s=;
-	h=From:To:Cc:Subject:Date:From;
-	b=ui42q0eqh0FmzLexEzHBPekesvUyxl58Grtq0nXlWfTIRfNyBdi0nULaQUlQfvrWX
-	 i2IJUqM2GEOazslVCNUNcWi+ADydnJDwYd6z7iFO4LPz8SZSMdZEFEVytW6XpMpL7K
-	 ET0JO12tvo9+/+khCDkAugm9Nm7OD5D4JT1JA+5c=
+	t=1784711550; bh=UkCBixZE4BaIDZgj4iTqd571WFG+D+00A3uwsD0HWlU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=T1kpQAfcd1h63oG/X29DlrT88eBxwgQGQCmu88mokQ5ya8rJ4hg9ZAOrdZBp/Kd4T
+	 zBcqkQYi93Zejo75X4d3zx+HAO0JoSr6pm/Iw/qqXemVOGO6fuVp24q8y+VRaOLsQE
+	 KSovYlksTVclqD9AuVzmhvnFkXVIIxEfDFVDKn8I=
 From: Muhammad Usama Anjum <usama.anjum@arm.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
@@ -84,20 +84,22 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 Cc: Muhammad Usama Anjum <usama.anjum@arm.com>
-Subject: [PATCH RESEND v1 0/5] selftests/mm: Handle unsupported and transient test conditions
-Date: Wed, 22 Jul 2026 10:11:34 +0100
-Message-ID: <20260722091219.61504-1-usama.anjum@arm.com>
+Subject: [PATCH RESEND v1 1/5] selftests/mm: skip COW tmpfile cases when fallocate() is unsupported
+Date: Wed, 22 Jul 2026 10:11:35 +0100
+Message-ID: <20260722091219.61504-2-usama.anjum@arm.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260722091219.61504-1-usama.anjum@arm.com>
+References: <20260722091219.61504-1-usama.anjum@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: oghqqe5q5dacyyrupbshaaiesnugor8j
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 442F280009
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 096DB180004
-X-Rspamd-Server: rspam01
-X-Stat-Signature: wok4w7b9975skxkftcczakrbm9urmkka
-X-HE-Tag: 1784711547-736402
-X-HE-Meta: U2FsdGVkX1+RfnkdemclStC9BmOLEIblqxerSLDL/JU+nzopU4zrNiTOMA8TWokOAnm+9ADqR1zO28bcCHND66F5yFWlzhCwuvr5bBqwDaI45AjGinQRCFHECVD9EfC1za0dMBMgwC0igPGgSAiB08cvmYsf9mD/hpdcG+YdHZNzuAG07zd432H/LFJDSCo7mI1zLz+PnRMlFFQMj+LUvPNz0yapkHQ7iLGl3m3zev7SUBAz9CWwH7uXJNRPXs/s4Q1pPVRUrBe7tSGFY3n6LgW4y9ITQWbL+73T61P4cHyTEJzkZbJ1LLggrrvLLcs8q1QqwaxTqwYc/3M15/19cOz2xgAmr8a+QwpR6t7pl7PXx6ywe/GI4W6Kl0WwKGeKoXAAd2spz8dujMzfa5dBR8YOyHTxgllpzqTV1XeYhqD5uKzXiwmsSfiT5bGzTqmwFlkD/mvWiz9HiycUNuIquXcs0fwNBKrmipirAmgj2uwWTdtmJgVjFE3/fHKSR0u8x1INPxrbdojP+Xi5/tSW+JpP6KioqBqMAkUodFK7noQuExY57GLOCakOezX6LQcaCWDwhXfFP2MMhIXFxIUCCiiud7mpOU7EQi6OOJtKCccL7PErctpeKTfE7D1jouLXtlINpBZNubOajmjmjhwTk08YQv35SHvOfnvIUyr8+xbyO+d/4QhHbkAWzZXJcHLadDpF+AtXuIdBZOLi8OX0CkDtNheTJLS1sbHTeaj6iaaU+HM5FV/u1ewR5ePgGjV85kvNjZQ+7Eb89wMfd8pkE35d6+iVEIP3mN3LX0OK/lZcIABTxI4V/FPhz7VS8em3/l86UtKbt5w49jwbB+PbJqaAqTYawrDbjiu/USebqi6GdTMGrdEq+O2T6FeCuWkPUjaQpj9SnEOVdi3K5CHojDTgGkyD7XwG/FTqM4XgPtDBIAQ/AhUJWsqtNd775MIrWBt79jlnmO7GKJ+TT+i
- px0jF7e4
- jtm6HOm0z5O29evCvk252WC0jrQL/qi1MEYIMipQv4qaXk48LltjyhVNEHCQK/ZWUfFRzWVqhITgowYDIyPbZ5b355LTAtvrMbZ4+fEB9I2vPwoY4E+m5uzbDp4BqoejRNvWkkV8qisgljweRRgo/iltuuNy8SUim5WpwK5IK+B5hdxv6ik3nhMZINsqVbWBbnvgrYJ89r+JStCNGUaVT554TQiHMuUDqXuqU3w8jpW+rBD97Ox8yfpqumGQ1KgK/tst8
+X-HE-Tag: 1784711551-226276
+X-HE-Meta: U2FsdGVkX1966P1MLgT5ROBkbfPfaRroB6iT5J5mIz769mUDdf+vK0D48KENisVLuDfv+hAo4H/rM5a3xiHcC6BN4Mgvq+MI80jZWFKu23kVwr3bDlC8o5AyqU+ef7f/59EQ0kiSDFrJjO5qMGWkV/vN3OeJjYpakBNIfQxTSARI7VkrZ3a8xi67M2qIruv9m5dLZY+DF6Lrb4gNUCBkKLPzShtYKO9QQS+o5HtBGw6CZDVvY2HJl2vm85v+wqJFxkMrbXrd2LlFOE8J9qHmCtIH1nJdKJMS6Z+PhZ3Wq52xyMfIAGS8LOvLjG7jpq7/pFRObKWafw1LpOMUrAaDtjpetUWAuOPMQ+CIJnDPZqshJjkgRummc0SpZpVwRKWlRtj0eqdTLejkka3mgazUN1ZqPMZfol15s7vXebuWUGPA0Yv1FSqLsvNNR2CCLQE6lXmmNleHrENgFjGGXvKFtspudiQeU7ii23HpIDl9IG30ZoG2L1cZ+JtvKlfaKGJHUAUgkyM27eWLsw1GTXXQSgHW5ke5TUrCStBllJYbT3fR5rIHMV2bH5RxsT+9gljUU705w2jP9eW6KAVNZc/0grUN8fMZJUztlekjpv0a8EEyVBZGLZCi2xCmgrvhXPq1skmCu3gZXTWXWZOjd0ZGnX9qvkOEjcAHdyY0ePj+/lBrDk1jI8v4EHUtUsD9PUEhUGfXDO7HGNbhqnc7RD5hP8GmICiQcCdKAlFjt3xKlBI1z3gbu8Khnmho0ozPhcn4GVvxuh3McHC58BXJveBWdWRczUp2ZDngvOewfZvD4ZSRk7I3+Riije89JSzXkjYX9OEnsNOOkoejpqDsx1IwihSDB6VbM24bjj7rGXvleBCsxsgzL4SDEu1awmFtM4/Kfz5lLzovk6AOhE3QsyO3m/ZevkMYHvMNItxcw+OPlCCr3Nlb/I9jP9+1LqhYc4/2qOeRmUIm9IxdDLVoTDA
+ J9PlgMPP
+ OwDE7rMZREgi30DrtaavVn26RkUNKYlYZ6Y1sVDDba9PeG1UUDhrJUYgKDNFnnggGnCZrAZgxPNZVTq2wQBeqKM1+Pg/NCb9pt5VhTr4ZXZSYbRiLXiw24V3I6lqtS1XY7sruTSeqWefgmXm0U5WBMHaPkO5BdXWZ88SIkoVrGkGSRrnU+DIoY4XvrW9LFHbgzq6dR3arCRy0rdtCWyXLGYFuMLhYSS+TqyW20JAm6WYt6xmojrM21OZ7jhJYmnr71G5ZF+o9XS8x/0c6ipnV7wappcEX7FXMrJb+GWcEIxYzEZLyxdcuki++P5nflFNs+sZS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,32 +107,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Several MM selftests report failures when the test environment lacks
-an underlying prerequisite, such as fallocate() support, MADV_REMOVE,
-local page-cache semantics, or swap.
+The tmpfile-backed COW cases allocate a one-page file with fallocate()
+before exercising private and shared mappings.  When the filesystem
+backing tmpfile() does not implement fallocate(), setup fails with
+EOPNOTSUPP and no COW behavior is exercised.
 
-This series converts those unsupported cases to SKIP while preserving
-failures for unexpected errors. It also allows migration tests to retry
-transient move_pages() failures.
+This occurs when the temporary directory resides on a filesystem with
+limited allocation support, such as NFSv3.  Reporting a failure adds
+noise because the test prerequisite is absent rather than the COW
+implementation being broken.
 
-Tested on an arm64 Ampere system using an NFS root filesystem. The MM
-selftest run completed with no failures or errors anymore. Also verified
-on x86_64 to make sure they don't cause any unexpected errors.
+Report EOPNOTSUPP as a skip.  Continue treating every other fallocate()
+error as a failure so unexpected setup regressions remain visible.
 
-Muhammad Usama Anjum (5):
-  selftests/mm: skip COW tmpfile cases when fallocate() is unsupported
-  selftests/mm: skip guard hole-punch test if MADV_REMOVE is unsupported
-  selftests/mm: skip khugepaged swap tests without swap
-  selftests/mm: skip page-cache hwpoison tests on NFS
-  selftests/mm: retry migration failures for the full runtime
+Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+---
+ tools/testing/selftests/mm/cow.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
- tools/testing/selftests/mm/cow.c            |  9 ++++--
- tools/testing/selftests/mm/guard-regions.c  | 10 ++++--
- tools/testing/selftests/mm/khugepaged.c     | 34 +++++++++++++++++++++
- tools/testing/selftests/mm/memory-failure.c | 13 ++++++--
- tools/testing/selftests/mm/migration.c      | 34 +++++++++++++--------
- 5 files changed, 81 insertions(+), 19 deletions(-)
-
+diff --git a/tools/testing/selftests/mm/cow.c b/tools/testing/selftests/mm/cow.c
+index 0c627ea89ff7b..c1b8920e29342 100644
+--- a/tools/testing/selftests/mm/cow.c
++++ b/tools/testing/selftests/mm/cow.c
+@@ -1718,8 +1718,13 @@ static void run_with_tmpfile(non_anon_test_fn fn, const char *desc)
+ 
+ 	/* File consists of a single page filled with zeroes. */
+ 	if (fallocate(fd, 0, 0, pagesize)) {
+-		ksft_perror("fallocate() failed");
+-		log_test_result(KSFT_FAIL);
++		if (errno == EOPNOTSUPP) {
++			ksft_print_msg("fallocate() not supported by filesystem\n");
++			log_test_result(KSFT_SKIP);
++		} else {
++			ksft_perror("fallocate() failed");
++			log_test_result(KSFT_FAIL);
++		}
+ 		goto close;
+ 	}
+ 
 -- 
 2.47.3
 
