@@ -4,94 +4,171 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD7CDC44532
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 16:32:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6457C4453C
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 16:34:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C2CAB6B007B; Wed, 22 Jul 2026 12:32:32 -0400 (EDT)
+	id B93326B0098; Wed, 22 Jul 2026 12:34:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C045F6B0088; Wed, 22 Jul 2026 12:32:32 -0400 (EDT)
+	id B6AB86B00A0; Wed, 22 Jul 2026 12:34:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF3C76B008A; Wed, 22 Jul 2026 12:32:32 -0400 (EDT)
+	id A0E676B00A3; Wed, 22 Jul 2026 12:34:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 77E416B007B
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 12:32:32 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id ED69716024C
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 16:32:31 +0000 (UTC)
-X-FDA: 85016955702.02.45A20C0
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 5583640011
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 16:32:28 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=b0Rt1yNk;
-	spf=pass (imf04.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 610CC6B0098
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 12:34:02 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E91AEA01BD
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 16:34:01 +0000 (UTC)
+X-FDA: 85016959482.21.2A967C7
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 03939180003
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 16:33:58 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=HLomrKEv;
+	spf=pass (imf16.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784737950;
+	s=arc-20220608; t=1784738039;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bBnIrrxiyHbn5CbW2/3RvfkB4lrliRmpnHXHN4bKIgA=;
-	b=6ouPjgUJzrF5HAQmY0iNrivTpWOme6ORe3NUzfWBkUGcnAnfgdQpkTb5KwFj0u32elfCLy
-	Qzc97TPTNuB/pkY7hktG1lt4VlwxwwOX0yVB4z7AP/1JCLsPJ6DXywc+0eC9yaQXtF3J6b
-	lLu7ugc09MqePtmybMcqAvGcnH8v5YU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784737950;
-	b=S6F24SN/2hVdP5ZeiIeMzzFG/VWtJwnJ+Uw4LGcq6lOFwIs9CpQ8vagps0ufgNi22QE+NA
-	iKh8Id5BL6s7/JG3m3G6N3D8uz5D6Fr0+mv7DSM1/dAJmZYOSmddWXwX0/wy+PnJk8qc9S
-	HonxihloCMBGKmoGXU/Ii9p1GqTUQ3M=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=b0Rt1yNk;
-	spf=pass (imf04.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784737944;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bBnIrrxiyHbn5CbW2/3RvfkB4lrliRmpnHXHN4bKIgA=;
-	b=b0Rt1yNkrfg4I8fIySJ7tAmqfRb/Rv7DlSybC9R/Cxce9tKHq48cy7/r/AoabRFRXbmLoS
-	GTnqjiTkp4wrI86UX+LsR+yLWAl3mRARIY31Dz4xpRbhC9PecgUBRKwJScz9DmdsKW4gq/
-	l8Jv5MWPPRaQw8rpGnXT4vA8GhYeRgE=
-From: Usama Arif <usama.arif@linux.dev>
-To: Christoph Hellwig <hch@lst.de>
-Cc: Usama Arif <usama.arif@linux.dev>,
-	baoquan.he@linux.dev,
-	akpm@linux-foundation.org,
-	chrisl@kernel.org,
-	kasong@tencent.com,
-	nphamcs@gmail.com,
-	shikemeng@huaweicloud.com,
-	youngjun.park@lge.com,
-	ryncsn@gmail.com,
-	trondmy@kernel.org,
-	anna@kernel.org,
-	sfrench@samba.org,
-	linux-mm@kvack.org,
-	linux-cifs@vger.kernel.org,
-	linux-nfs@vger.kernel.org
-Subject: Re: [PATCH 2/3] mm/swap: add a new swap_ops.h header to allow for pluggable swap ops
-Date: Wed, 22 Jul 2026 09:32:17 -0700
-Message-ID: <20260722163218.1240273-1-usama.arif@linux.dev>
-In-Reply-To: <20260722130615.3163560-3-hch@lst.de>
-References: 
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=VNOiLlTJueu1J6GELDT4wXSLEHYs4bi5AeRJCYNnNSY=;
+	b=4aUif+x8LPg6ngJ0qJZZBEYBSKjnG9mFYhvfU3iT9XMpFrARp3erXzpSkcL+uQYv68Eese
+	2kRfoQQjWYM/PqyYjINYvRRrpcr/hyqBP5umTxFgmuPD4H0rqbxVsJ7zH9TVbDT0AcnjSF
+	OGd6n5JMG/Xq3Q3y0i626gpeOnp1PKU=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784738039;
+	b=1hRT0SdYykq6EWQbCEpTOey0sPLuGTEbyC3gRPqKWe2cWIJZMQzgUUE7XiJ8Pvw4AwkYVU
+	//L6kl1zvXzY49Yc1QsoaANtzb3sJQVpvhZJ4sXPFgUEE2CEBjY7QO4rhBr4uQzlQRO/Om
+	l1Jux5TfPnIuSZwKGcgn0gTYYodp1R4=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=HLomrKEv;
+	spf=pass (imf16.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784738039; x=1816274039;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=1QLPxfH8/RN3PQ9UGJYpi0qgjdofCd33BuN7TbSZzXc=;
+  b=HLomrKEvUhGtJWeT9giaD+E0ZFmWr+o+1mgGFXN8QGeG7Kq4LGg8fFPY
+   rclCR/jl1FuLxb8PheihublHx9KcHVbFazTQI6+tV7dy3+ImBtC4pN/tN
+   ATsCD0GF85xI0gdP/mTv2fPYAotbx67AxGOK4lRxa0TkrIWmOAg6s4KLQ
+   sJCBGxzT9or8/j810Q8isoXnSd0632YqK45r8ky4QUlZCF0SbYKdQPl0b
+   fVAONOn6ID+s9fGzZ843Rokuw8JAqUqTTqwqMfCL2Kr1puQm0spYOTAAs
+   AuUwqs5QBXv5s+L91t6Try5D0p6C45g5NH3qUEKagNtNF+9WkQ+xJRBP5
+   A==;
+X-CSE-ConnectionGUID: bH2NOy9cQkGa1et1vjpGAg==
+X-CSE-MsgGUID: 6J9OfNFgSSibo9CGPDhMbw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="89270587"
+X-IronPort-AV: E=Sophos;i="6.25,178,1779174000"; 
+   d="scan'208";a="89270587"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2026 09:33:57 -0700
+X-CSE-ConnectionGUID: N1PqcFg2RGO75tskQrSErQ==
+X-CSE-MsgGUID: K5TDUu1dTVeZ26T1hAufkg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,178,1779174000"; 
+   d="scan'208";a="296351973"
+Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.110.58]) ([10.125.110.58])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2026 09:33:57 -0700
+Message-ID: <0ea931f1-4801-4d32-b6ce-4787a8d3daa9@intel.com>
+Date: Wed, 22 Jul 2026 09:33:55 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v2 14/20] x86: mm: skip pud setup when using generic
+ compile-time folded pagetable
+To: Yeoreum Yun <yeoreum.yun@arm.com>, Russell King <linux@armlinux.org.uk>,
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Arnd Bergmann <arnd@arndb.de>, Andrew Morton <akpm@linux-foundation.org>,
+ Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Tianrui Zhao <zhaotianrui@loongson.cn>,
+ Bibo Mao <maobibo@loongson.cn>, Anup Patel <anup@brainfault.org>,
+ Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Jonas Bonn <jonas@southpole.se>,
+ Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+ Stafford Horne <shorne@gmail.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org,
+ kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
+ linux-openrisc@vger.kernel.org
+References: <20260722-dummy_ptxp3-v2-0-d9e4bad31e0a@arm.com>
+ <20260722-dummy_ptxp3-v2-14-d9e4bad31e0a@arm.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20260722-dummy_ptxp3-v2-14-d9e4bad31e0a@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 5583640011
-X-Stat-Signature: x61z4hndmjj93t5u9a5syf3okoozby55
+X-Rspamd-Queue-Id: 03939180003
+X-Stat-Signature: 8ajepar3e4zzhadjwak9pqg3asqbb5cm
 X-Rspam-User: 
-X-HE-Tag: 1784737948-107137
-X-HE-Meta: U2FsdGVkX1/zqPyzBqWlDPQY/5oOwnu78CZUY0NnGAThrZuVUIqluEOS1sywEXc5f7PxobuF+bW7SirzDG7t943QYN5SkaG70pYMjR3NHWtXIjxeDnM14SV801LFiP1T/LUBmqA9GPluYsEu8L2leh8kD3koRCp213g3Wd6X5BsowCQ+ReyUf6D6JpMQeOKwxN+Of+L7a0Y9L9u88aXEm644xpMgJpoeO7EUO46h/aad7pyJnkLALBl0jseyPBd9rXab+7O2hs4EalOJfTxX1ZSb8aLVxuqN3QULvFI++y7WCRZH0bBoiNqxR+xoJaIxeJJ6V/yGvV9OshQXqnHinuK2Z9xk3+bzd9FBlgSXyKIxBKpTPZzzBWm3I90E456QMSLTkq2GGgG1Z90do3ArdxIkrwVL48KP8XzBFW494JmUfOMdT+bvDA8JTTOqSflcnV0DS/KqfI/ZhJnYXL5xT99kp+ZZfrLePUmVposPoBOahxOetEqGriiuV5/cjMPCjw9h9sXsRlfLC81S1GlIC5mzomblRhbz3DVaTS3sBmGyDO4c6DJJh7KA8Z2IW0kDMICf3EHl/DL8g6uDujekPF4axrIj+wRYLgcMRRXvviWuzAQRGJb/fCnAsqACHkzR3PiqCry5jeHPuUJyfz1GcRq1dXqKqUDwHCHiCg//obPeGxnbYbAO1DUN+sNA2hzoZ164qXJXWFonomjlS9DgDLAIaEnkZc1XZ5SGyZ0xFL3i3eHyFLc9N+3TXDoqZVBPwjmi2sbOS4MmLizd0/D3oGkAIWiYphljlkS/YRlBoRutqJFPYTIb50JLkHjc/LlBhZFompPHM3XWhpaS9xHM3Jlfj16csaCsW6RcOdb0fQGZmrhoKUduHr1LmFt6QqrNwpjw/cELMeDKpsKVktl0ibzvMsp0eVrgZRlLGJOTgxqPKZQbQieXlcgkzudGQLIC0sGUF/RUNjt9FkN1tOG
- KRgJYdUI
- HMnEhUb+t1uvF81Ul4LknuhYD2ixqRM+W9Reg3OIGXu7sGf/5R79nNYv0gr/2QPfruvjmxOKcoaM2qxuLCyXipue6Y1VJ7hMB1rBCNQLJxdfqH+PJnzjroIIT8fZ8sQT9CppQZLZ0g9cQuXz4y3r0S9Sg6y0OSRhG0HgLH+oFbJuE4scIJOCpG+oCFU0HCv4CH9Xlu3jq63/ECSLCr81IkGt5Uz82L4n+yIbFzEBLcXnx/u7dAe+E92t9VA==
+X-HE-Tag: 1784738038-992060
+X-HE-Meta: U2FsdGVkX1+aI7BB/GF//E2HM2Hzpcod1pmqwLpfGndRDwY0Ru6bj/W4HppvqckcHhZ3C75Iqo14A8mN4Y4xK+7DHj9NetbMEpEmLnUCTlRaNMVcNhB8I2JcF74G2nl7vkyg8r7Fd3gI5xG1vL/q12eZtg4v5Y17vQ+oNgObrZXBrkDEmJpYUb1FSjHHgzP4MhTUic/G6oGniTpGogXXkSfKqXhvtZKQ7BH17dKiQjIC09tZMm+k+z/3w87kOwKdMnMAqshMtTjT64T9NHoDiuytz+Sel29a2BaPo7gdco9JZjfK3aXFI9GpcV9MnKT/nQPDSVuDSmtSDKn3QNM1lmWK4n2OpcdM3TP58LfsmtgFrbS65ZYIxozljJC9RZMJNxTKYtcbRHjNxoOflERBRaqloXK/sdIrv8GPBfHdSTOniBb++qxdjG5K2GlZIFvk5K65GLA2IPD30T1BUs6Cymsna68BM+M5oc8TU+JDoa7CnOkxsM9CX1wMD7HSqJuKthACqxIP9FIbW1fONlDV0TPk16Je9kFONz4+jILJxwe7lmU+frCiA1DVQw0SceF72+N6RrXIkVy7p6wXHX3pLiW/4rkREf860ASNZDwNskRJ3nXrjBV5WeVQoAsIMsYR7CBV8cvR9PlVW07yJrceBh0nb60dKIQF8kunx18DZwaUu5Na9KzP6NPj6mG9VHUNuWX/znEH1y+vBy/Ih2/7kq9H0fyXnie3X+n42u49cfQ2XE98Sevlw/fSRqjFGlNO8q9SybYUDF1V/E6if3VUu9jqHwXAxt+0BWot/F/LNeMtD2HAGC7wewT2sEVRJN9rYzDc9wPTRLaZ8sQC4vf7pmsMCFpfzpaTzutUKBLKVliE4svXkME1+ZXWwuqal9i8bjXXrNAPcyTGmOM40CyOJQmfg24aI5R38ev2Kwkw8mzWEfMM+PO2qj3QIwIEH4w6OLL7kq38Ea2vZis7N1A
+ GHUvpRW5
+ WEKA3/yLYa2+du0ZtOKFrYetSLPh9JDI1f3U2E908W+sp1xRzZDin2BAWmp7jnXpIQ19diSJibT+M0x++dQ8Fr8hsl/D4Nep1MXlCvFPLV45O0rlJWd82XavRd5XS5jMTxlKgFYK19AgKWrMk7IM9iMt+f/Gi8S+rK0X47poW2c/VJ4w5SH7RsaNO8NG0YyyMjEXlbCTcmLjF7lo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,210 +176,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 22 Jul 2026 15:06:08 +0200 Christoph Hellwig <hch@lst.de> wrote:
+On 7/22/26 08:30, Yeoreum Yun wrote:
+> We want to rework how set_pXd() behaves for generic compile-time folded
 
-> Add a new header to declare the swap_iocb, swap_ops and swap_ctx to
-> allow for swap_ops implementations outside of mm/page_io.c.  This
-> will be used to remove the double indirection for file system-based
-> swap.
-> 
-> Note that there already is a swapops.h header, which is totally
-> unrelated to struct swap_ops.  The close naming is a bit unfortunate,
-> but I could not think of a better name for this header.
-> 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  MAINTAINERS              |  1 +
->  include/linux/swap_ops.h | 39 +++++++++++++++++++++++++++++++++++++++
->  mm/madvise.c             |  1 +
->  mm/page_io.c             | 10 +---------
->  mm/shmem.c               |  1 +
->  mm/swap.h                | 23 +----------------------
->  mm/swap_state.c          |  1 +
->  mm/vmscan.c              |  1 +
->  8 files changed, 46 insertions(+), 31 deletions(-)
->  create mode 100644 include/linux/swap_ops.h
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 5da77924c6f0..cda42b7ed945 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -17240,6 +17240,7 @@ S:	Maintained
->  F:	Documentation/ABI/testing/sysfs-kernel-mm-swap
->  F:	Documentation/mm/swap-table.rst
->  F:	include/linux/swap.h
-> +F:	include/linux/swap_ops.h
->  F:	include/linux/swapfile.h
->  F:	include/linux/swapops.h
->  F:	mm/page_io.c
-> diff --git a/include/linux/swap_ops.h b/include/linux/swap_ops.h
-> new file mode 100644
-> index 000000000000..e92b4f532604
-> --- /dev/null
-> +++ b/include/linux/swap_ops.h
-> @@ -0,0 +1,39 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#ifndef _MM_SWAP_OPS_H
-> +#define _MM_SWAP_OPS_H
-> +
-> +#include <linux/swap.h> /* for SWAP_CLUSTER_MAX */
-> +
-> +struct swap_iocb {
-> +	union {
-> +		struct kiocb	iocb;
-> +		struct bio	bio;
-> +	};
-> +	struct bio_vec		bvecs[SWAP_CLUSTER_MAX];
-> +	int			nr_bvecs;
-> +	int			len;
-> +};
-> +
-> +struct swap_io_ctx {
-> +	struct swap_iocb	*sio;
-> +	struct swap_info_struct	*sis;
-> +};
+Please move this all to imperative voice. I think I asked for this
+before, but perhaps I didn't. Either way, please fix the whole series.
 
-zswap uses this struct, I think you need to include the header in zswap.c
-as well, good to check if the build is passing with CONFIG_ZSWAP=y
+> page tables by disallowing its use and triggering a compile-time error
+> when it is used improperly, ensuring that the actual first-level set_pXd()
+> function is used instead.
+> 
+> The behaviour of pXd_page() will change with generic compile-time folded
+> page tables by disallowing its use and triggering a compile-time error
+> when it's used improperly, ensuring that the actual.
+> 
+> To prepare fot that, skip collapse_pud_page() and populate_pud() according
+> to CONFIG_PGTABLE_LEVELS.
+> 
+> There should be no functional change.
 
-> +
-> +/*
-> + * SWAP_OPS_F_REQUIRE_NOFS:
-> + *	When set, all reclaim operations must operated as GFS_NOFS and not
-> + *	just GFP_NOIO, as GFP_NOIO allocations could recourse into the
-> + *	file system backing this swap file.
-> + */
-> +#define SWAP_OPS_F_REQUIRE_NOFS		(1U << 0)
-> +
-> +struct swap_ops {
-> +	unsigned int		flags;
-> +
-> +	bool (*can_merge)(struct folio *folio, struct folio *prev_folio,
-> +			size_t prev_folio_size, int rw);
-> +	void (*submit_write)(struct swap_io_ctx *ctx);
-> +	void (*submit_read)(struct swap_io_ctx *ctx);
-> +};
-> +
-> +#endif /* _MM_SWAP_OPS_H */
-> diff --git a/mm/madvise.c b/mm/madvise.c
-> index 07a21ca31bad..c179938097bf 100644
-> --- a/mm/madvise.c
-> +++ b/mm/madvise.c
-> @@ -32,6 +32,7 @@
->  #include <linux/leafops.h>
->  #include <linux/shmem_fs.h>
->  #include <linux/mmu_notifier.h>
-> +#include <linux/swap_ops.h>
+If this wasn't done, what would happen? There would be a compile error,
+right?
+
+Shouldn't that be said out loud somewhere?
+
+> diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+> index 078689aa7206..91b33a265a43 100644
+> --- a/arch/x86/mm/pat/set_memory.c
+> +++ b/arch/x86/mm/pat/set_memory.c
+> @@ -1346,7 +1346,7 @@ static int collapse_pud_page(pud_t *pud, unsigned long addr,
+>  	pmd_t *pmd, first;
+>  	int i;
 >  
->  #include <asm/tlb.h>
->  
-> diff --git a/mm/page_io.c b/mm/page_io.c
-> index c984a4023a65..e741e67d6592 100644
-> --- a/mm/page_io.c
-> +++ b/mm/page_io.c
-> @@ -25,6 +25,7 @@
->  #include <linux/sched/task.h>
->  #include <linux/delayacct.h>
->  #include <linux/zswap.h>
-> +#include <linux/swap_ops.h>
->  #include "swap.h"
->  #include "swap_table.h"
->  
-> @@ -300,15 +301,6 @@ static bool folio_blkg_can_merge(struct folio *folio, struct folio *prev_folio)
->  #define bio_associate_blkg_from_page(bio, folio)		do { } while (0)
->  #endif /* CONFIG_MEMCG && CONFIG_BLK_CGROUP */
->  
-> -struct swap_iocb {
-> -	union {
-> -		struct kiocb	iocb;
-> -		struct bio	bio;
-> -	};
-> -	struct bio_vec		bvecs[SWAP_CLUSTER_MAX];
-> -	int			nr_bvecs;
-> -	int			len;
-> -};
->  static mempool_t *sio_pool;
->  
->  int sio_pool_init(void)
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index 5071177059a9..797c42f024a0 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -41,6 +41,7 @@
->  #include <linux/swapfile.h>
->  #include <linux/iversion.h>
->  #include <linux/unicode.h>
-> +#include <linux/swap_ops.h>
->  #include "swap.h"
->  
->  static struct vfsmount *shm_mnt __ro_after_init;
-> diff --git a/mm/swap.h b/mm/swap.h
-> index abd26588abd2..19ea61c97df2 100644
-> --- a/mm/swap.h
-> +++ b/mm/swap.h
-> @@ -8,6 +8,7 @@
->  struct mempolicy;
->  struct swap_iocb;
->  struct swap_memcg_table;
-> +struct swap_io_ctx;
->  
->  #if defined(MAX_POSSIBLE_PHYSMEM_BITS)
->  #define SWAP_CACHE_PFN_BITS (MAX_POSSIBLE_PHYSMEM_BITS - PAGE_SHIFT)
-> @@ -77,28 +78,6 @@ enum swap_cluster_flags {
->  	CLUSTER_FLAG_MAX,
->  };
->  
-> -struct swap_io_ctx {
-> -	struct swap_iocb	*sio;
-> -	struct swap_info_struct	*sis;
-> -};
-> -
-> -/*
-> - * SWAP_OPS_F_REQUIRE_NOFS:
-> - *	When set, all reclaim operations must operated as GFS_NOFS and not
-> - *	just GFP_NOIO, as GFP_NOIO allocations could recourse into the
-> - *	file system backing this swap file.
-> - */
-> -#define SWAP_OPS_F_REQUIRE_NOFS		(1U << 0)
-> -
-> -struct swap_ops {
-> -	unsigned int		flags;
-> -
-> -	bool (*can_merge)(struct folio *folio, struct folio *prev_folio,
-> -			size_t prev_folio_size, int rw);
-> -	void (*submit_write)(struct swap_io_ctx *ctx);
-> -	void (*submit_read)(struct swap_io_ctx *ctx);
-> -};
-> -
->  #ifdef CONFIG_SWAP
->  #include <linux/swapops.h> /* for swp_offset */
->  #include <linux/blk_types.h> /* for bio_end_io_t */
-> diff --git a/mm/swap_state.c b/mm/swap_state.c
-> index 5be825911e64..b76eb3d876fd 100644
-> --- a/mm/swap_state.c
-> +++ b/mm/swap_state.c
-> @@ -23,6 +23,7 @@
->  #include <linux/huge_mm.h>
->  #include <linux/shmem_fs.h>
->  #include <linux/sysctl.h>
-> +#include <linux/swap_ops.h>
->  #include "internal.h"
->  #include "swap_table.h"
->  #include "swap.h"
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index e26c6931f5fd..a12eb79c89c5 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -58,6 +58,7 @@
->  #include <linux/random.h>
->  #include <linux/mmu_notifier.h>
->  #include <linux/parser.h>
-> +#include <linux/swap_ops.h>
->  
->  #include <asm/tlbflush.h>
->  #include <asm/div64.h>
-> -- 
-> 2.53.0
-> 
-> 
+> -	if (!direct_gbpages)
+> +	if (CONFIG_PGTABLE_LEVELS == 2 || !direct_gbpages)
+>  		return 0;
+
+This is subtly wrong. It probably shuts the compiler up, but it's subtly
+wrong.
+
+x86 has 4 paging modes. I'll use the SDM/Intel terminology:
+
+32-bit:
+ * 32-bit paging: 2-level
+ * PAE: 3-level
+64-bit:
+ * 4-level paging
+ * 5-level paging
+
+But "gbpages" are not available in PAE paging. It's a hardware
+limitation. This doesn't cause a functional problem because the pud
+level is not folded. But it is confusing and not really an accurate way
+to write this check.
+
+The *right* way to do this is probably something like this in a header:
+
+static inline bool direct_gbpages(void)
+{
+	if (!IS_ENABLED(CONFIG_X86_DIRECT_GBPAGES))
+		return false;
+
+	return __direct_gbpages;
+}
+
+Which just happens to point readers over to this Kconfig nugget:
+
+config X86_DIRECT_GBPAGES
+        def_bool y
+        depends on X86_64
+
+which, combined with the knowledge that 32-bit has a 3-level mode, would
+make the proposed check obviously wrong.
+
+So I'll take this as a suitable alternative:
+
+	/* Avoid compiling the below code if PUD-level mappings are impossible: */
+	if (IS_ENABLED(CONFIG_X86_DIRECT_GBPAGES))
+		return 0;
+
+	if (!direct_gbpages)
+		return 0;
+
+That will compile-time optimize the code away in the exact right
+conditions *and* fix the (assumed by me) compile error that you were
+chasing.
+
+> @@ -1730,7 +1730,8 @@ static int populate_pud(struct cpa_data *cpa, unsigned long start, p4d_t *p4d,
+>  	/*
+>  	 * Map everything starting from the Gb boundary, possibly with 1G pages
+>  	 */
+> -	while (boot_cpu_has(X86_FEATURE_GBPAGES) && end - start >= PUD_SIZE) {
+> +	while (CONFIG_PGTABLE_LEVELS > 3 && boot_cpu_has(X86_FEATURE_GBPAGES) &&
+> +	       end - start >= PUD_SIZE) {
+>  		set_pud(pud, pud_mkhuge(pfn_pud(cpa->pfn,
+>  				   canon_pgprot(pud_pgprot))));
+
+This is an OK approach. But there's a way to fix this site *and*
+optimize a non-zero amount of other code at the same time. Add this hunk
+to arch/x86/Kconfig.cpufeatures:
+
+config X86_DISABLED_FEATURE_GBPAGES
+        def_bool y
+        depends on X86_32
+
+That will turn the boot_cpu_has() check in to something that can be
+resolved at compile time. It has the added advantage of compiling out
+all of the code under X86_FEATURE_GBPAGES everywhere else in the tree.
 
