@@ -4,146 +4,160 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 071B2C4453C
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 17:00:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C1F0C44532
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 17:03:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0EFFE6B00B7; Wed, 22 Jul 2026 13:00:39 -0400 (EDT)
+	id 476796B00C5; Wed, 22 Jul 2026 13:03:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C8646B00B9; Wed, 22 Jul 2026 13:00:39 -0400 (EDT)
+	id 427FF6B00C6; Wed, 22 Jul 2026 13:03:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EFA456B00C3; Wed, 22 Jul 2026 13:00:38 -0400 (EDT)
+	id 2F02F6B00C7; Wed, 22 Jul 2026 13:03:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C61A46B00B7
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 13:00:38 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5B252A0B4A
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 17:00:38 +0000 (UTC)
-X-FDA: 85017026556.22.C9E2640
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 5A7B24001F
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 17:00:36 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="o1e/A5XZ";
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf27.hostedemail.com: domain of dmatlack@google.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784739636;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EC2456B00C5
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 13:03:08 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 720DE1C0241
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 17:03:08 +0000 (UTC)
+X-FDA: 85017032856.21.177D50D
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	by imf26.hostedemail.com (Postfix) with ESMTP id C73AE140004
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 17:03:05 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=NuKdz8PH;
+	spf=pass (imf26.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784739786;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b6BLtSCxCp7M8WEIqu/WUMj2zfCCYaejhLZ7J9DExtM=;
-	b=k2tRys/rTSF5ytFZW8JJ67CnfEv0KDzPqvPs/s9HBuZpEpsTswhXodhthRq5pMipPxbdJf
-	AEivYj93zVia7W6hcO0d2tK9NvN87OdLJyCtJqcCrr7mPMgkiiwZiJ73QZF+4qfC73pIlv
-	4RTwm5BRcpmeW/ELehh8EMh6AGH+VBs=
-ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="o1e/A5XZ";
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf27.hostedemail.com: domain of dmatlack@google.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784739636;
-	b=3ZqG47z9TU+F5m/+IynpmDSdismCIYeEViy2jNQQoIlp/hYmi8CX3H4hcXCt71/BzfK0hI
-	TBXDSwL8zTwbvJzaDa61dYiuwCcTn4laWFqIGsqc8yach0P2WkdGRtmYQv8UoHrKy3FCB3
-	2vOvl5Ws9xF9og6B7Ppf6dVWNDfZoLg=
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-38ec1402b05so87506a91.2
-        for <linux-mm@kvack.org>; Wed, 22 Jul 2026 10:00:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784739635; cv=none;
-        d=google.com; s=arc-20260327;
-        b=nWaKVL7BDhiL6Z99t+/4xJhHWHULi7CxHqm9XkJD8v02J3tzhAlyX5K2UH/P5NsE+g
-         jTO4GMUqcNADbZwZxBPAlXPxw9ISSefsToBlYyz0aQx97C+xND6Vd+zvz7BhIrC/vv10
-         XssORMyc04fzd7/B8D7oZNOsDVSiDC9/7A5GSh3HPbpz4bYhWVGau04A6QZHxxOuiGEd
-         Qf5irFftG54dBfNYrJPMkwMOnwu/8ceOpTk/hxNmTw+u/RXMth3pqh75J44NrWam9jsR
-         Xvtl7TzwkIknnSKn6DNHmdUZrK3xfG74gmV1xd6vfGnlAZCkueWdJA18Une3+GvcLk2b
-         Uipw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=b6BLtSCxCp7M8WEIqu/WUMj2zfCCYaejhLZ7J9DExtM=;
-        fh=kfJoYHDJudlcdRUAGOf1c327rMBekaVxo2Z/5MjWkWw=;
-        b=rFF2UBouOSdTx1PrbgttcWVeyFsMQx8fQRuRm+I9519lQIDEQUsEbeWx0zeZVC80dJ
-         L+1e2o4foDRo0M+leXwk62b5e5YQHx9/V4EZKMJIjQQCJxjPRHxGqMWP1HVWBvORznkj
-         t8stvopFXrUY5odCxAzlAVBq9eq+S8Kwj6iknKSFVSEmAxDwsiPFRVoabBcqer9tYg4B
-         JLF6IYrH/935xq46EPvpkKRyjfFqDEm4aew2c23HCzRNk/CD5z43vb/NxUU0/DEld5qY
-         KHudAK7xUBPlf3zathDUtZ7q4qckbEX2ZkmmqkG7Mx7W0gcZ6AYSvYoXzgyLOYTssRmE
-         4xJw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784739635; x=1785344435; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=b6BLtSCxCp7M8WEIqu/WUMj2zfCCYaejhLZ7J9DExtM=;
-        b=o1e/A5XZg1LCaoodWbXa+jFqEL5bDF78/eMDAqN1bPa/XCC16eqSQvAKjbgKv+c2Vf
-         9AJXTfmSEpU1xtYvGcrPyGQIScYfvZTqDgIiyuJ/B3xCX54JkA+ABhm9ntnyWS4ZCIl2
-         AslTTPB1KkssA9oKWeFmEX8ogg2HRQQ/Ixk8CGce38i/o5V1FIuT2ObIgcy1QcYOU7rU
-         eKyZNdav7Rnyr1icFq4PtrBufDyRdxyX7Ct/2Hjk/3+Lh3PDaYtBOeM2My6FrQE9pv8m
-         w2cuHsAFeb9xJgmp6xv6R+TVCW/mEw3UK2F5DlC4bdKxNxhY0Vt0hezLqAwVacnb6ZLQ
-         jzJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784739635; x=1785344435;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=b6BLtSCxCp7M8WEIqu/WUMj2zfCCYaejhLZ7J9DExtM=;
-        b=AudX2Sjx/qkKeM0/e7N5vHxjOeKaGmq4yfUEtqLP4CUFO9qX2alrpVatri3F3Ak1Gu
-         NSRz9MuooERrDnskM2DsgCke04c3VeG2KC9PmVSgq+nnRc+g10OlXtjrcfShSw1NnQIC
-         Jz+d2eXoQLTkQs+/DPgn8F0S00MlNFkJwkW2XY708niCwdoTqRd5Ia3oUegj/y+3VFs3
-         dz26+VaYhPT9tBmZ911hfZkjh5VNqtgGC+xVcTD7NgIO9SNDwKczChZLZSgdfnx+YYBH
-         7x7FIf0E7xZ3hOK809gCJhE5UFheV5oOYN2Jl64a3C56I6TdJX31TNw3X0BRPJs97Aro
-         sAoA==
-X-Forwarded-Encrypted: i=1; AHgh+RovB71OkW+YvUrvRjV/+k0YNz8/9XD7BH+SwZ58Jorbs1VL85oBzu1B4SOFRH7FTfvAWOY9A6ByKA==@kvack.org
-X-Gm-Message-State: AOJu0YzZpWWBPpzmbwz/78ebQeqOJkpkF4bGAGeYt0dvS6Pix4b7ZVnB
-	jNIcKRUvaeVabyls201TLY6YY+mgWeKpXy7e0vPU83+r1CjTLDkXB4jO88OwNJ4Mv7Tvk+WUHMS
-	Mep4/mKaak0sCrhTDnt96k8YpI4JoJQ96WmvmO19i
-X-Gm-Gg: AR+sD126G8Mq9NvsNdbhZqUa1Ex8SmMQeZHPUgB0mTpn8sBAVDWyEHIJzxWSRVhzn0Z
-	A/H4QVrxaZvrXaB37Hhk1GbQc9bpbXqKybGYZHmjhy0FOAzXDa7ca5volm+84p6AZpbkYoHBLHw
-	+BcIzMzVIR2LQNbDO8D+pC178TDyv3apYzmNCneOnRGFLHECy8sVr9wXHqwDCLeNvDsi8MMxXzB
-	JC2tt0/aM4oV3hIQYFz+HTPa9lQ/K7aqdOfizrGtL/UzlnRpqZgKMgGXsq2z1oXEkEcnwlxVaNE
-	NeRRONrTWuvfXiQ=
-X-Received: by 2002:a17:90b:1f88:b0:38d:f1a4:1116 with SMTP id
- 98e67ed59e1d1-38e4b537bedmr20414674a91.33.1784739634476; Wed, 22 Jul 2026
- 10:00:34 -0700 (PDT)
+	bh=DAtp/f0KBNYnxuK/vjVMyjiM1pa+SortZzj8/0++AQw=;
+	b=T4GsVEH49ejwcvKWQUoxH8LL1H/iciUcSgqhcd+TVhIC2/YtD0w4roqPePGd5eSMDoPi5O
+	6NXBMyzjNDUyuFB2iCeLS2mC171jU+ajDPJml5e9LrWRgjoa4GxVp8w4KPa0LoB31o5ZhY
+	KJZ/qaYOVpfQ4vIqMfNJoNIUNLKjRp8=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784739786;
+	b=tJ3I66RgUoUIUflyRPJt0DpdD9siJEkBykwV0pNSiR7VbLyIHAWACY54n6zuQ1AAXIpSKG
+	3A6lHZJLGNxxvvfQXZNQTCNhZnD+vbJNY0RosdB33sceH5v7IYLvPfHhXdoKReQyLxZwUn
+	774e7jnaJ3IDIQFEFgfxzYUq/EOuVM4=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=NuKdz8PH;
+	spf=pass (imf26.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784739786; x=1816275786;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=CIbTX8ulngl06DGA3pmHrz2wPzRWMpkv2qZDGCPMo1Q=;
+  b=NuKdz8PHYl3mihpHcHollSUO+e4m4h87tW0ZbANhx9mO/L0h5u1mF5k5
+   aQ1U4WfxAGwPDf/8xZdIz4CoJIPfiNIpmukZSI//iKWKWtJISb2J1AkWR
+   SlPKKOKGI830zgj0WhkOeRsBeNl8VwSSxxXjNeFhU2VIK7sksvNtFYs8W
+   7QNOZA6RnwrZEDpqq0uFzaAQvzS8OWi7d9f6q8OTiJ3/rwiwqnEE2nDjo
+   C0JFzuH+TWfIrai1T2EPRzAcL5xlxtzQiR0A6HMwHeKlABGOlLywbCeyC
+   jjN0y9EG1ETHVIz3DmvmSooJnaHjZ+tIlNK9+8HQ4mUl9/42CBaNopSGa
+   g==;
+X-CSE-ConnectionGUID: QGs68AQ0Tairion+cDew7w==
+X-CSE-MsgGUID: uWo0Jv/+RAup2HCnAZPyKQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="108172611"
+X-IronPort-AV: E=Sophos;i="6.25,178,1779174000"; 
+   d="scan'208";a="108172611"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2026 10:03:05 -0700
+X-CSE-ConnectionGUID: afbeSCRhSV+tqhS/W9bvyg==
+X-CSE-MsgGUID: vb5o0ZCkTXmWUXF0lRl15A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,178,1779174000"; 
+   d="scan'208";a="257603458"
+Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.110.58]) ([10.125.110.58])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2026 10:03:04 -0700
+Message-ID: <fa75382e-878a-4064-a9b1-43bd2c9dedce@intel.com>
+Date: Wed, 22 Jul 2026 10:03:03 -0700
 MIME-Version: 1.0
-References: <20260710212616.1351130-1-dmatlack@google.com> <20260710212616.1351130-4-dmatlack@google.com>
- <178432481253.189683.3297727348836286619.b4-review@b4> <CALzav=e1Gcu-9TD7F--41cYqKBrStKOE4VqQ4K3PKdNuYnNmcQ@mail.gmail.com>
- <al_3nOssZoa6RoCq@google.com> <CALzav=dvc_bdmFtV1U2APfs1FM-6Zi5=VShcAYQjZ0wwNRfC-Q@mail.gmail.com>
- <CALzav=fYx7R7c6FTQ5bC4bbQ+_KNaC3gopcPihOtKmHGaB6s1Q@mail.gmail.com> <amAExy1vqMbx31WU@plex>
-In-Reply-To: <amAExy1vqMbx31WU@plex>
-From: David Matlack <dmatlack@google.com>
-Date: Wed, 22 Jul 2026 10:00:07 -0700
-X-Gm-Features: AUfX_mw9U43t-da8vfCp9-yZYFJuwnLedP2gk2wgS7EP9CWA2swr-hVEqcna6rY
-Message-ID: <CALzav=dHJ6g9FZmoWC5hFRCwCtf=BTHOmEFqbFFaDZiYDbRBvw@mail.gmail.com>
-Subject: Re: [PATCH v7 03/12] PCI: liveupdate: Track incoming preserved PCI devices
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Samiullah Khawaja <skhawaja@google.com>, kexec@lists.infradead.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-pci@vger.kernel.org, Adithya Jayachandran <ajayachandra@nvidia.com>, 
-	Alexander Graf <graf@amazon.com>, Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Chris Li <chrisl@kernel.org>, David Rientjes <rientjes@google.com>, 
-	Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@nvidia.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, Leon Romanovsky <leonro@nvidia.com>, 
-	Lukas Wunner <lukas@wunner.de>, Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, 
-	Pranjal Shrivastava <praan@google.com>, Pratyush Yadav <pratyush@kernel.org>, 
-	Saeed Mahameed <saeedm@nvidia.com>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 00/18] arch, mm: create a generic
+ set_memory/change_page_attr core
+To: Borislav Petkov <bp@alien8.de>,
+ "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: linux-mm@kvack.org, Albert Ou <aou@eecs.berkeley.edu>,
+ Andrew Morton <akpm@linux-foundation.org>, Andy Lutomirski
+ <luto@kernel.org>, Brendan Jackman <jackmanb@google.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ David Hildenbrand <david@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
+ Ingo Molnar <mingo@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Kevin Brodsky <kevin.brodsky@arm.com>, "Liam R. Howlett"
+ <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Michal Hocko <mhocko@suse.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Paul Walmsley <pjw@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Suren Baghdasaryan <surenb@google.com>,
+ Thomas Gleixner <tglx@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
+ loongarch@lists.linux.dev, x86@kernel.org, Juergen Gross <jgross@suse.com>
+References: <20260721-generic-set-memory-v0-1-v1-0-2c1fc62306b3@kernel.org>
+ <20260721171943.GEal-qLx4p5YbocQNV@fat_crate.local>
+Content-Language: en-US
+From: Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
+ oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
+ 2UnKuZuSBu7lgOE193+7Uks3416N2hTkyKUSNkduyoZ9F5twiBhxPJwPtn/wnch6n5RsoXsb
+ ygOEDxLEsSk/7eyFycjE+btUtAWZtx+HseyaGfqkZK0Z9bT1lsaHecmB203xShwCPT49Blxz
+ VOab8668QpaEOdLGhtvrVYVK7x4skyT3nGWcgDCl5/Vp3TWA4K+IofwvXzX2ON/Mj7aQwf5W
+ iC+3nWC7q0uxKwwsddJ0Nu+dpA/UORQWa1NiAftEoSpk5+nUUi0WE+5DRm0H+TXKBWMGNCFn
+ c6+EKg5zQaa8KqymHcOrSXNPmzJuXvDQ8uj2J8XuzCZfK4uy1+YdIr0yyEMI7mdh4KX50LO1
+ pmowEqDh7dLShTOif/7UtQYrzYq9cPnjU2ZW4qd5Qz2joSGTG9eCXLz5PRe5SqHxv6ljk8mb
+ ApNuY7bOXO/A7T2j5RwXIlcmssqIjBcxsRRoIbpCwWWGjkYjzYCjgsNFL6rt4OL11OUF37wL
+ QcTl7fbCGv53KfKPdYD5hcbguLKi/aCccJK18ZwNjFhqr4MliQARAQABzUVEYXZpZCBDaHJp
+ c3RvcGhlciBIYW5zZW4gKEludGVsIFdvcmsgQWRkcmVzcykgPGRhdmUuaGFuc2VuQGludGVs
+ LmNvbT7CwXgEEwECACIFAlQ+9J0CGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEGg1
+ lTBwyZKwLZUP/0dnbhDc229u2u6WtK1s1cSd9WsflGXGagkR6liJ4um3XCfYWDHvIdkHYC1t
+ MNcVHFBwmQkawxsYvgO8kXT3SaFZe4ISfB4K4CL2qp4JO+nJdlFUbZI7cz/Td9z8nHjMcWYF
+ IQuTsWOLs/LBMTs+ANumibtw6UkiGVD3dfHJAOPNApjVr+M0P/lVmTeP8w0uVcd2syiaU5jB
+ aht9CYATn+ytFGWZnBEEQFnqcibIaOrmoBLu2b3fKJEd8Jp7NHDSIdrvrMjYynmc6sZKUqH2
+ I1qOevaa8jUg7wlLJAWGfIqnu85kkqrVOkbNbk4TPub7VOqA6qG5GCNEIv6ZY7HLYd/vAkVY
+ E8Plzq/NwLAuOWxvGrOl7OPuwVeR4hBDfcrNb990MFPpjGgACzAZyjdmYoMu8j3/MAEW4P0z
+ F5+EYJAOZ+z212y1pchNNauehORXgjrNKsZwxwKpPY9qb84E3O9KYpwfATsqOoQ6tTgr+1BR
+ CCwP712H+E9U5HJ0iibN/CDZFVPL1bRerHziuwuQuvE0qWg0+0SChFe9oq0KAwEkVs6ZDMB2
+ P16MieEEQ6StQRlvy2YBv80L1TMl3T90Bo1UUn6ARXEpcbFE0/aORH/jEXcRteb+vuik5UGY
+ 5TsyLYdPur3TXm7XDBdmmyQVJjnJKYK9AQxj95KlXLVO38lczsFNBFRjzmoBEACyAxbvUEhd
+ GDGNg0JhDdezyTdN8C9BFsdxyTLnSH31NRiyp1QtuxvcqGZjb2trDVuCbIzRrgMZLVgo3upr
+ MIOx1CXEgmn23Zhh0EpdVHM8IKx9Z7V0r+rrpRWFE8/wQZngKYVi49PGoZj50ZEifEJ5qn/H
+ Nsp2+Y+bTUjDdgWMATg9DiFMyv8fvoqgNsNyrrZTnSgoLzdxr89FGHZCoSoAK8gfgFHuO54B
+ lI8QOfPDG9WDPJ66HCodjTlBEr/Cwq6GruxS5i2Y33YVqxvFvDa1tUtl+iJ2SWKS9kCai2DR
+ 3BwVONJEYSDQaven/EHMlY1q8Vln3lGPsS11vSUK3QcNJjmrgYxH5KsVsf6PNRj9mp8Z1kIG
+ qjRx08+nnyStWC0gZH6NrYyS9rpqH3j+hA2WcI7De51L4Rv9pFwzp161mvtc6eC/GxaiUGuH
+ BNAVP0PY0fqvIC68p3rLIAW3f97uv4ce2RSQ7LbsPsimOeCo/5vgS6YQsj83E+AipPr09Caj
+ 0hloj+hFoqiticNpmsxdWKoOsV0PftcQvBCCYuhKbZV9s5hjt9qn8CE86A5g5KqDf83Fxqm/
+ vXKgHNFHE5zgXGZnrmaf6resQzbvJHO0Fb0CcIohzrpPaL3YepcLDoCCgElGMGQjdCcSQ+Ci
+ FCRl0Bvyj1YZUql+ZkptgGjikQARAQABwsFfBBgBAgAJBQJUY85qAhsMAAoJEGg1lTBwyZKw
+ l4IQAIKHs/9po4spZDFyfDjunimEhVHqlUt7ggR1Hsl/tkvTSze8pI1P6dGp2XW6AnH1iayn
+ yRcoyT0ZJ+Zmm4xAH1zqKjWplzqdb/dO28qk0bPso8+1oPO8oDhLm1+tY+cOvufXkBTm+whm
+ +AyNTjaCRt6aSMnA/QHVGSJ8grrTJCoACVNhnXg/R0g90g8iV8Q+IBZyDkG0tBThaDdw1B2l
+ asInUTeb9EiVfL/Zjdg5VWiF9LL7iS+9hTeVdR09vThQ/DhVbCNxVk+DtyBHsjOKifrVsYep
+ WpRGBIAu3bK8eXtyvrw1igWTNs2wazJ71+0z2jMzbclKAyRHKU9JdN6Hkkgr2nPb561yjcB8
+ sIq1pFXKyO+nKy6SZYxOvHxCcjk2fkw6UmPU6/j/nQlj2lfOAgNVKuDLothIxzi8pndB8Jju
+ KktE5HJqUUMXePkAYIxEQ0mMc8Po7tuXdejgPMwgP7x65xtfEqI0RuzbUioFltsp1jUaRwQZ
+ MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
+ hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
+ vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
+In-Reply-To: <20260721171943.GEal-qLx4p5YbocQNV@fat_crate.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: C73AE140004
+X-Stat-Signature: pituw1qb1t7y18yiz3f6ru51ro9ujbnp
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5A7B24001F
-X-Rspamd-Server: rspam01
-X-Stat-Signature: bqj4ff9d9hbzhx9b43st81roz8mtu939
-X-HE-Tag: 1784739636-695313
-X-HE-Meta: U2FsdGVkX1+ViDnGHMgtKUvXoxcHDT69P/oro/WBwHjxErSD61UJ+CtoBtvYPh0PpMI278igOg4H9kuE8MV5m//evtUXSztESPa29zfu0M8eIpOdJngqaoWyxEiyHomuLUphSNeaGcOB+TefpCIAQgcY4PqXHxtk61Lhyd0kWE/sRHw4yuQGZJ+cLJGyPpwKePTD6BhGI++8BIIJUnrAzgKa4yfK6NMVH/sAfyJNI1hgCypOEp88tUH6QrwBml1seouO5r3TA9YssIVCEfqt1ia6Ug4lPLNs6ld8FhSXdnj4chayZnJcu3EN49X2pO0NIz1zxhStak3Zw/rT1WuRmOC4qqIm1gprhshI95mEIschhO3kqM7byfqpK8RWsBuI2qD2g6Qdv7egXIqfX09uoa4qNqUPro75VumXtZTyKHMMIiuKbu3BokD+KjtICke0xq+PUrvG3ZX2rN37arYPNyGnawmqfskdx9q+PnPzw9L1QWK2gIXsBzdu6qpWtDwFzmbv6g3d4s2OdYQmMBrAbnbmTcY1sVNR67aktpZ0C/ydiM2IWf0LZbpQWktr/2uySQOd0U8lMZmX71dzaAZGy84zKxrsy/YkZ3RIQaO5sH4Cm2WOIRs1DRvto921T9QfwfRgnaaJA/x83Co7GYUagTUwGNicZaWLxGbxx+Dbd58Pv9sAvFmxqOo4hSbuO+PA3zUt3D4g+Jqiwuiin3JthKkEMah/ljT5eSUgNJpcMkpX+Ao8xttOywpH+z6znYV2AkqBf52eTP/60vzrtWaVJXGjmvhOn1qtxkmSW2UKlN4ixYOtwDHW7dp6BhrNiFslic1Dr8Rfc2uDEELcTjYeVuXUMcPypiIr21MwotRDVbCNlhSB0AC6m8R5sZvACsWd6q9lpXxBUHxKMoCwC8Glxj9vc4EBRLd8oCKxsv2pNjPW0S5Z7IWuMlzSTa6xnbUjxxoLmLU6TxXo2hzvLRa
- 51Z6fbpr
- vsZ2ZQwG/aGsqnnAyMySbgnc5EG0Qx06eboLBW+RWUHLJ1uANZhpI5Q3IaYuXxucsrvzJeKGv3RlwRnccUXVRVftwObGfEcRgux8OmyIejg5pkxLjhT9EaSP2r5HHRbTjwdGVk3Hz1dubX2hJzzM3pCC/5ONCVuvhlWzdmEu/aY1Amge1kUG9YgwEMlsu9Pc6NOdldU1UwKX4uAgxMEsLJ9xMR9W12EmxlivoULacMY58exAG5wLfzKC3ZgwZBGT+OV0feIx7LQ0O9lpAG1s1KH7eZGg3Z7VA3Ub9K+IRkM0XcNZexZk/UcOS9VSuB5R+vnvf
+X-HE-Tag: 1784739785-570328
+X-HE-Meta: U2FsdGVkX19hMFQH0NXpSwhyTVuCGsM2kUyqj3vLv8wTdizlrvVMQb7A4vDVZAPv7/jMN5kD7I9TAIqJKhHxQdofOvzu5Tker28z1QrPtltn9RN6i4Sj+vPa1gbTOl/zJimPqilByz+FVc/IbaOhBr8EXWnfn9+4iN2kbSzYx6q3PtowMn/qqVvgJ9u3S2acnb+fk7KzyOLcgdNF1KtFSxNp+CrvRisolBLrYL904MzBYIjZnPNUNNXUzh+8Pnjo38C86Uwx1OPXYWi8Dsq4O2gmFCI14ptX6N3U1tIwtALHrG9F6pHkVgixBs00slqDXib7HZqHZQVQTuARcAWDGdYjw5frcB/kuXzfSHrc9/H57PezOfsf4Vbig42Xx1PXeZae3NlhIbpALEfE7pm+3xJ/Hi39Q0oTJBQQc3ABYQzYIGETBtm5ccD+ZmNyAHyXmVgCMG6D66FtyMDVnoe2qlz+zLqlrIflxFkIItfs3x32ZoISU8J4xA4dglRZUsriK9jRZIaOpZbmmcqq1Xj8KcN02MGJ9Gg0vfV6dWT2uQPCkXm5E+ktk/92FiyDE/vE1eV5dusevNWTXgKmrqroAfwnqDfoG59dbcIvZCu7ie4hFvj/LBTDAZ0OPBQx9RQ9/jJQTq0oTaskkK9eRZSNuRFTEGF/LocC9lzKMI8X9ybnrIlKUNRtUXg3g2wkOYA/efDJ0H5jMk4+W5J+P0htsIDLMl52b5XW+Akl1CaoY0L0E2g8KXKvHWrrJpYz6UAIUxSx/1Qb6UBZ8FCoSh+tkk2+O4K+0L0IcEgJKhzvCmnUv4hHGQY69wKecWWCdkINmwr+eP9sIOM+rZiqp6lJEsACEcBlClJkDzvX1InppqlUqjwB2TRT8sQkmWtEvj/bA9a+fjeW4c1bfS3FPOpe8Q4ZIkLo13rat68MlsNMfjPAyMpViGCK7ifkV7Ht3WDwJTzDo3Gv8CjP7VnojwZ
+ H13HJhWa
+ t4wFYgrlowGF510rYzx3hFzuDsgNHBgWAb5BJgxU7wN+LrSkf9bbS+jY1M4GKyFbtDUg56EkylJjF1pBe+Vgu5Poc+nxoj08mVCp8YbpLE+xZfqoRaWpePiFEs0dBCkG2XTtUYahHdB88+KqLIuTrNyKPmCHTzmeREUNdLgYfZ+EbhG8H9lsmP2ryKR4TARVNDUtaQL9tBU9ZYKb6TRfzkRjeJOIRLJvxXDDO7Pl40EgkMBvp0OVc7eNXyNu8jZFkJgY4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,109 +165,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 21, 2026 at 4:46=E2=80=AFPM Pasha Tatashin
-<pasha.tatashin@soleen.com> wrote:
->
-> On 07-21 16:18, David Matlack wrote:
-> > On Tue, Jul 21, 2026 at 4:16=E2=80=AFPM David Matlack <dmatlack@google.=
-com> wrote:
-> > >
-> > > On Tue, Jul 21, 2026 at 4:02=E2=80=AFPM Samiullah Khawaja <skhawaja@g=
-oogle.com> wrote:
-> > > >
-> > > > On Mon, Jul 20, 2026 at 02:54:51PM -0700, David Matlack wrote:
-> > > > >On Fri, Jul 17, 2026 at 2:47=E2=80=AFPM Pasha Tatashin
-> > > > ><pasha.tatashin@soleen.com> wrote:
-> > > > >>
-> > > > >> On Fri, 10 Jul 2026 21:26:06 +0000, David Matlack <dmatlack@goog=
-le.com> wrote:
-> > > > >> > diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate=
-.c
-> > > > >> > index 03075ce06ac9..df6a02240aa4 100644
-> > > > >> > --- a/drivers/pci/liveupdate.c
-> > > > >> > +++ b/drivers/pci/liveupdate.c
-> > > > >> > @@ -298,6 +377,87 @@ void pci_liveupdate_unpreserve(struct pci=
-_dev *dev)
-> > > > >> > [ ... skip 76 lines ... ]
-> > > > >> > +     /*
-> > > > >> > +      * Hold the ref on the incoming FLB until pci_liveupdate=
-_finish() so
-> > > > >> > +      * that dev->liveupdate.incoming cannot get freed while =
-the PCI core
-> > > > >> > +      * has a pointer to it. It's better to leak the incoming=
- FLB than do a
-> > > > >> > +      * use-after-free if driver does not call pci_liveupdate=
-_finish().
-> > > > >> > +      */
-> > > > >>
-> > > > >> I am confused by this. Each preserved PCI device must have an as=
-sociated
-> > > > >> FD preserved with it via LUO. I.e., vfiofd would need to be pres=
-erved. If
-> > > > >> the vfiofd was not reclaimed, and finish is not possible, that v=
-fiofd
-> > > > >> would still be owned by LUO, and therefore PCI FLB refcount woul=
-d stay
-> > > > >> positive.
-> > > > >>
-> > > > >> However, if finish is possible, and this is the last vfiofd that=
- is
-> > > > >> finished, FLB will be freed as soon as the reference count reach=
-es zero,
-> > > > >> which I would think is the expected behavior.
-> > > > >>
-> > > > >> What is the point of holding a reference here, instead of only f=
-or the
-> > > > >> duration of FLB access, i.e. to make sure we are accessing a val=
-id data?
-> > > > >
-> > > > >The duration of the access is from here until pci_liveupdate_finis=
-h()
-> > > > >because that it when the pointer (dev->liveupdate.incoming) is
-> > > > >cleared. So that is why the PCI core holds the reference from here
-> > > > >until pci_liveupdate_finish().
-> > > >
-> > > > I think LUO gives you guarantee that this pointer remains valid unt=
-il
-> > > > the FLB finish(), because all the vfiofd that were preserved have n=
-ot
-> > > > finished. And when all vfiofd have finished, LUO lets you know that=
- the
-> > > > pointer is becoming invalid so you can unset these in the finish()
-> > > > callback from LUO?
-> > > >
-> > > > If I understand this correctly, I think by keeping long references =
-until
-> > > > finish you are replicating the vfiofd bound lifecycle that LUO alre=
-ady
-> > > > gives you.
-> > >
-> > > Yes that's right. I am taking the approach of not trusting drivers
-> > > (i.e. VFIO) and having the PCI core maintain it's own references so
-> > > that FLB finish() is guaranteed to never be called while a device has
-> > > device->liveupdate.incoming set.
-> > >
-> > > Alternatively, the PCI core could avoid taking a reference and instea=
-d
-> > > check for driver bugs in FLB finish(). I previously explored that
-> > > approach and ran into a circular lock dependency between the FLB mute=
-x
-> > > and pci_liveupdate.rwsem. But I can look into that again, or just do =
-a
-> > > lockless walk of all PCI devices and panic if any still has
-> > > dev->liveupdate.incoming set. It will only happen if the driver is
-> > > completely broken so panicking seems fine.
-> >
-> > Pasha what do you think of this approach?
->
-> I like it, let's do lockless sanity checking in flb finish callback, and
-> avoid messing with references.
+On 7/21/26 10:19, Borislav Petkov wrote:
+> On Tue, Jul 21, 2026 at 07:23:23PM +0300, Mike Rapoport (Microsoft) wrote:
+>> Currently there are 6 independent implementations for set_memory and
+>> set_direct_map APIs.
+> So with all mm/x86/CPA patches flying around, can we first agree on which tree
+> is going to collect everything?
+> 
+> And if I want to review patches in that area, what am I applying it ontop?
+> linux-next perhaps...
+> 
+> Let's sort out the workflow first so that we don't get lost on fruitless bug
+> chases and fingerpointing.
 
-Great! I'll take this approach in v8.
+Just practically, I think this series needs to be ignored for a bit. Bug
+fixes first, features and cleanups second.
 
-> >
-> > It avoids the PCI core taking a long reference (your conern) and also
-> > avoids the PCI core needing to take lots of short references to access
-> > dev->liveupdate.incoming (my concern). So seems like a good
-> > compromise.
+When the time is right, it probably needs to get get acks from all the
+affected architectures and go through mm. Folks can ack it now, but I
+don't think anyone should even consider merging it until ~7.3-rc1.
 
