@@ -4,90 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46467C4451C
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 06:23:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB163C44512
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 06:30:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 10AF46B008A; Wed, 22 Jul 2026 02:23:36 -0400 (EDT)
+	id A18006B007B; Wed, 22 Jul 2026 02:30:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0BE596B008C; Wed, 22 Jul 2026 02:23:36 -0400 (EDT)
+	id 9C9266B0088; Wed, 22 Jul 2026 02:30:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EEF856B0092; Wed, 22 Jul 2026 02:23:35 -0400 (EDT)
+	id 8DF786B008A; Wed, 22 Jul 2026 02:30:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C2D3A6B008A
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 02:23:35 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 25EF2C0372
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 06:23:35 +0000 (UTC)
-X-FDA: 85015421190.06.A07DBC5
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 5B4F720007
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 06:23:33 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=tzNq2ujD;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf03.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 59C496B007B
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 02:30:33 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D9501C0396
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 06:30:32 +0000 (UTC)
+X-FDA: 85015438704.19.DB8A910
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 89D5A80002
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 06:30:30 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="mLFJjav/";
+	spf=pass (imf30.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784701413;
+	s=arc-20220608; t=1784701831;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y+uZjLLQiIyJL0MNzejDqd3cWL8cnK0hiaCvU3lz9wA=;
-	b=gtIQiEap/6hOhgAlvGsek8oMfBkQiBsL5Q+FxAwp4KIzAv5ZzJr8gYe0f/fEkh5+GgxWf7
-	2dB1m4WWBHcvqz12t36/x8jq+ceZlG2qx6BInc64kXWdP2BIY6FD8RBJ1J2/6Sife3ydjJ
-	jsAi4JS+nacN6vxlVJx5P3mSPgC6dYU=
+	bh=xwMf+4RK6SICi7wthzq1GiMbIn6GQQqznOWIrXFUXxE=;
+	b=XIFK7HrzeCdYQqXQGN9Y6Wa6VN3Hnc9zZa5K0tvs9v7peAKIkH5xYJrEhDfoxASFoPPOKn
+	8+rW4cgA8RFUxKv5SREGC+II0PMAN2fbR2fUmDE+87jNuKXyUMeqMqYstIUcSVu0g5o4Rz
+	GZwDs+/twgoaihj/UdgJpoPJj2RNt74=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=tzNq2ujD;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf03.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="mLFJjav/";
+	spf=pass (imf30.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784701413;
-	b=qWJAmcFjPW/Mxnkq6Cn1D1NiKEDcebfoBf6wLSTakkdyEMUiXiH+AMMRNhLcJv7Ijc/1HQ
-	D0XE/THLKGxcX4R6jKmchQPrLM+tLbWWiHpkxTQfIm4EHq6rgeNBH2AbKw9bcwfe+sHXtU
-	RwSBnFne9FAIcoBFESd5d3HWHWmRAkc=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+	t=1784701831;
+	b=MGo+hypfcZpziJ6IV8ngnnOJNYAK+zPWXCDyUVPORo4BJkQX7Q16ie0FLTmOFIbqhBHi6/
+	MqOfh0pIWz+4k9iEkzWzudElu/KYn9F/sQfHQUyoCE0kMfYv+XAF5fiV7WEjKOC16gHHBF
+	QHkJVpRxoBRO9k5fYBKyVDhQKvoSUAA=
+Message-ID: <cf2e7b98-5980-463c-82df-61524ddf253b@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784701407;
+	t=1784701827;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Y+uZjLLQiIyJL0MNzejDqd3cWL8cnK0hiaCvU3lz9wA=;
-	b=tzNq2ujDDloIPimF2kNcLfziGZkN9+cx5QiImual87rKZ1RhOi2sXu7LV06DGOMeuxcaqk
-	Aw5LgO6eTu/mVxB5SJufTWiCxsFIWSkuIdi8mdNdz5nhodQuGRZEoh4TNDb0uGPX9/idfl
-	2VzKxLsyLeOoNvDCeSQebtG+22IcZTU=
-From: Hongfu Li <hongfu.li@linux.dev>
-To: akpm@linux-foundation.org
-Cc: david@kernel.org,
-	hongfu.li@linux.dev,
-	liam@infradead.org,
-	lihongfu@kylinos.cn,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	ljs@kernel.org,
-	mhocko@suse.com,
-	rppt@kernel.org,
-	surenb@google.com,
-	vbabka@kernel.org
-Subject: Re: [PATCH] mm/memory: use folio lock/ref helpers in do_swap_page
-Date: Wed, 22 Jul 2026 14:23:15 +0800
-Message-ID: <20260722062315.43584-1-hongfu.li@linux.dev>
-In-Reply-To: <20260721180232.0984ad6fd55ad43053b3a079@linux-foundation.org>
-References: <20260721180232.0984ad6fd55ad43053b3a079@linux-foundation.org>
+	bh=xwMf+4RK6SICi7wthzq1GiMbIn6GQQqznOWIrXFUXxE=;
+	b=mLFJjav/girYppI6ZaTUZBUHyD9kE9qq4lF8E7sra9OcZOrcnVW/Kf3W3tl4eQuqN2adyj
+	FiLfkrEcHZFiMyfwHTDVh2xjPEsA5khR+vUUdVV0kReBK1zE4cYJz9hkZH9X+lAij/LgGU
+	X1d9Y4dF7IaZaHo8mu5+DB4fV9UNTDY=
+Date: Wed, 22 Jul 2026 14:29:56 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v5 16/18] mm: remove the __GFP_NO_OBJ_EXT flag
+To: Brendan Jackman <jackmanb@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Zi Yan <ziy@nvidia.com>, Muchun Song <muchun.song@linux.dev>,
+ Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Mike Rapoport <rppt@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>
+Cc: "Harry Yoo (Oracle)" <harry@kernel.org>, Gregory Price
+ <gourry@gourry.net>, Alexei Starovoitov <ast@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+ derkling@google.com, reijiw@google.com, Yosry Ahmed <yosry@kernel.org>
+References: <20260703-alloc-trylock-v5-0-c87b714e19d3@google.com>
+ <20260703-alloc-trylock-v5-16-c87b714e19d3@google.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Ge <hao.ge@linux.dev>
+In-Reply-To: <20260703-alloc-trylock-v5-16-c87b714e19d3@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 5B4F720007
 X-Rspam-User: 
-X-Stat-Signature: p55oreex4khiusuh5e7accpdfzgwhj5j
-X-HE-Tag: 1784701413-544750
-X-HE-Meta: U2FsdGVkX1/jrlY9qfyZWvPv41hqsZDfxJO95M6PGytfv++NsCvPL89utzSj+BE+gPDSMaaAXi7WKVGRnOdeySYG+nQxQaMxpofKLHX6kjxWv5RuAwPydUgdBAdOD+tQcvtgkE1JZLWuoaMenYcS56PClzmmV5LwsQtJJorh/KRj8sUguw2UWtpgkSajphoGGRIHTA9YfBXfXMyVOamLOqzLhSnfFIN4BSm81DJLf/3Jc/AMzEy5fqhRQgn8bWFsz53A3/5Ul0qpXSc59zDuoEplJpnckcMOg85Gk3JwRiXJStPbei71EKHbklXTy4fCKZtLnQsvPTVix9xLxgfsNIfHYe0P4DA0M6lgcYzJKw/Tkmap7KQKQtm/5lTgZaxrAcrwAo7xgskTQ+W6yL63cWFGUJ/rrYqUL5Uc/lAXVEqn2hKI1v90xjH9IBvwrZ2ctM/QTTjAVFB5zY4H/qV45R1mD1FtX/ZOTQtbzuLUzY3Cctbe9bik27lve2VsVBbdYqef66gchCCuTq8avP5przeVa7eG+UwumptzSpW6H2KqhpN5ta9IDiH2zU36iR5A3s42td0WivKsKQtV+okX+S/igdXJJtObBGUmV6B6KdxVN12cSgkZQf4sYJud5Hnh7P9OX123rLHLTiXAUbjJsqsb2CnyVrG5D6ucVb28G3FVoUW32kiaBQ8kcrXvTK+6vgTmZsaYZq7YYDJLWc1jAAJHsP1aT5PGNKy4zgehYUkVGp3Bp1wwanJUEwg9lBTdX/Yejk6K+eRUtql0JSobSkI5ly9o6rFWvWHOJD9ANwTleZvEN9FG4DJdaJzUht88P8vU5s6C2aSwDF+RoOLsrDmSZHkYZlItFDYs9SvCkBxMSXVZ7wZiQ/N2yNN1Y7JHNN+e75OJ8JUCeCV3I6HLYqtdexr7TgkVmkUeW6lbpD5dMyl5nbbSpdlW1Q7nq5xEKAxcVI/RTRt2mHHzEqy
- +3mia6lB
- lXywSaGuFBj8DJLPhLpqav7MF8EVjf66XM0RW85ss593u1Hk2nyUXNQ+okERLSg2BELxIEYx12fTOlZIKaxtBDi/nN630p8YgcukSKnpMTSBRwELef+7sjWP4IxWbdCsKQ3tRnWVk1/6Wt0x8o+wfsaTFR9qDL7iRX12ntFg54+dZEuiZfuSTFOYhXlMx/lUwjxkqSwDM8j20+74kRyXgzHEZPoTBRrzMz9Zaf6YXSbF12rFNJ72O0nu5n6PFIIJSR+21CX7WSD+55feHs4SmFCgxtaw++QHXImA1RpYt61wvvbD2MhHJ6Plpfg==
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 89D5A80002
+X-Stat-Signature: ohjb7gcro6u3h1a7b1yd8gqixdsz9ure
+X-HE-Tag: 1784701830-633078
+X-HE-Meta: U2FsdGVkX1/RlWekelUprkPogrLgmZRN6T06zxwdWY9Lo9MUHEf3ojodYWwNYVQk7na23uZGEWfUS7ZxpMAt0bHx9ywi7vaBjvlajfXRmF0OF7JBOqKFI/dLAB/YuVuMxLZmkmvp0WZYna9BP23w8wjKvniIZV5hi28icNykSAjSpk6ON3tkOx6nCvfKlyeylHCUMBxC8n0Onn9zSmZW7fW28t+EBoLIcGkA+dOMwddamC4uJYGOzJfcwLXxkLO9bBDZOHAQ05yCjAzE1FaN9oes0ErBX3oNLbpUfa1XlTPje0zCSA7hHxI2MuosYAIKzBKBDDdTK0TdRUIEF0NLoGg6s5AI4NRtQqgAuAMECGZzKpTDWc6dfF47m+4ncEkn8+SAm+1zAMkzyanBDougHmnxlvs7KJnWUHDDkm6V3xcU0O9EiEWoSnJRGN3VoY7jBoDt/k5Ze+B4qNfaNfodFNrO4Pq5oVcJxeLv8TqwFO1u1OW57rMEN+o3HtCdCKawIH9EEC2MyZp2J5OScd5okjp1lZqoHLglksA6vMb72a/xwWM0q7/FUSR4odVFwDTglpP0ryc8NmmuDFRv/I1FcDz8YX2X20Mh/rOPCNyFITZn61cRQXcdsn+AwpIx7qTLDOXf3YroXYlsHu7SezcSvhQEm62bKuNGWhNSmQDWgYqnfpgz6B+wNPOLGeFL78yQD+ZorBKi/kEwipOWIUz69/cdcpP0pgDT9+1n2TOpC8jhWoZgqQDBweElpuH9FnuYp6euFZgYSw/xr/Ehao3tCsRv+0FCZqj2703oTDfkAKibwnee1by7ZHxUviN11x3lUNWACwf5lWifAL0wwTcegQNF+wtX1G24q+z1M5u1S/ybybyjAKM0J8Q5tT0yrNOUq/RRZyUxjmzZSSld16xcO3SHtE1XujFaoV8+eibnvg0PzOMRBpdmUt2F8sEOFZoM8hezgN+r32haUkX34Hq
+ JkTOM08B
+ Q2kqhFDFiUQvEpgMfM1MiLqpygMh7mUhAtCVH8QC039Y3iprmTNeoRNTgDTN5kqnDohirIWkkymPktf1drr0n7CS1AyQFrZXbQjpEN/RO035JR5ydVhFvFQU8+b9z3kR1ZikA9GG4/J1AdGSDiOZhqUOYme8spk5wjifAhsUzGrSc/nPC2zRcMpKZfgFtADBTBsC7gf/tCK7zun99uAQtQXrkKo/6+X1kZ20d+rK4Len6IuDIopPPmyawQsAS5gbPR+3Cc5PT7s7JOgQeX8yhuJ/ZZWfiamsmlSgV2FBAwMfkWnD4CrNDkVhA8erWNPoxUpxnxAAFNM5+OAVYKif6iSLQ14xf6Pw0kLqoLLy6MAvheIRIVUux89mtaCCIki/VW+Iu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,39 +108,127 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > --- a/mm/memory.c
-> > +++ b/mm/memory.c
-> > @@ -4852,6 +4852,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-> >  			vmf->page = softleaf_to_page(entry);
-> >  			ret = remove_device_exclusive_entry(vmf);
-> >  		} else if (softleaf_is_device_private(entry)) {
-> > +			struct folio *fault_folio;
-> > +
-> >  			if (vmf->flags & FAULT_FLAG_VMA_LOCK) {
-> >  				/*
-> >  				 * migrate_to_ram is not yet ready to operate
-> > @@ -4863,6 +4865,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-> >  			}
-> >  
-> >  			vmf->page = softleaf_to_page(entry);
-> > +			fault_folio = page_folio(vmf->page);
-> >  			vmf->pte = pte_offset_map_lock(vma->vm_mm, vmf->pmd,
-> >  					vmf->address, &vmf->ptl);
-> 
-> AI review thinks we shouldn't be reading vmf->page until after taking
-> the page table lock:
-> 
-> 	https://sashiko.dev/#/patchset/20260721013347.65698-1-hongfu.li@linux.dev
 
-Thanks for the review.
+On 2026/7/3 20:31, Brendan Jackman wrote:
+> From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+>
+> All users of the flag are converted to SLAB_ALLOC_NO_RECURSE or
+> ALLOC_NO_CODETAG (from __GFP_NO_CODETAG which reused the NO_OBJ_EXT bit).
+> Free up the flag bit.
+>
+> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> [Rebased onto __GFP_NO_CODETAG removal]
+> Signed-off-by: Brendan Jackman <jackmanb@google.com>
 
-The AI review makes a valid observation: `vmf->page` should not be accessed
-before holding the page table lock.
 
-I've moved `fault_folio = page_folio(vmf->page)` after `pte_offset_map_lock()`
-and the PTE validation check, so `vmf->page` is now read under the page table
-lock. This fix will be included in v2.
+Acked-by: Hao Ge <hao.ge@linux.dev>
 
-Best regards,
-Hongfu
+
+> ---
+>   include/linux/gfp_types.h       |  7 -------
+>   include/trace/events/mmflags.h  | 10 +---------
+>   tools/include/linux/gfp_types.h |  7 -------
+>   3 files changed, 1 insertion(+), 23 deletions(-)
+>
+> diff --git a/include/linux/gfp_types.h b/include/linux/gfp_types.h
+> index 463b551d12d99..190191411009f 100644
+> --- a/include/linux/gfp_types.h
+> +++ b/include/linux/gfp_types.h
+> @@ -55,7 +55,6 @@ enum {
+>   #ifdef CONFIG_LOCKDEP
+>   	___GFP_NOLOCKDEP_BIT,
+>   #endif
+> -	___GFP_NO_OBJ_EXT_BIT,
+>   	___GFP_LAST_BIT
+>   };
+>   
+> @@ -96,7 +95,6 @@ enum {
+>   #else
+>   #define ___GFP_NOLOCKDEP	0
+>   #endif
+> -#define ___GFP_NO_OBJ_EXT       BIT(___GFP_NO_OBJ_EXT_BIT)
+>   
+>   /*
+>    * Physical address zone modifiers (see linux/mmzone.h - low four bits)
+> @@ -138,17 +136,12 @@ enum {
+>    *
+>    * %__GFP_ACCOUNT causes the allocation to be accounted to the active
+>    * cgroup context.
+> - *
+> - * %__GFP_NO_OBJ_EXT causes slab allocation to have no object extension.
+> - * mark_obj_codetag_empty() should be called upon freeing for objects allocated
+> - * with this flag to indicate that their NULL tags are expected and normal.
+>    */
+>   #define __GFP_RECLAIMABLE ((__force gfp_t)___GFP_RECLAIMABLE)
+>   #define __GFP_WRITE	((__force gfp_t)___GFP_WRITE)
+>   #define __GFP_HARDWALL   ((__force gfp_t)___GFP_HARDWALL)
+>   #define __GFP_THISNODE	((__force gfp_t)___GFP_THISNODE)
+>   #define __GFP_ACCOUNT	((__force gfp_t)___GFP_ACCOUNT)
+> -#define __GFP_NO_OBJ_EXT   ((__force gfp_t)___GFP_NO_OBJ_EXT)
+>   
+>   /**
+>    * DOC: Watermark modifiers
+> diff --git a/include/trace/events/mmflags.h b/include/trace/events/mmflags.h
+> index a6e5a44c9b429..c1a05ff0feab0 100644
+> --- a/include/trace/events/mmflags.h
+> +++ b/include/trace/events/mmflags.h
+> @@ -54,18 +54,10 @@
+>   # define TRACE_GFP_FLAGS_LOCKDEP
+>   #endif
+>   
+> -#ifdef CONFIG_SLAB_OBJ_EXT
+> -# define TRACE_GFP_FLAGS_SLAB			\
+> -	TRACE_GFP_EM(NO_OBJ_EXT)
+> -#else
+> -# define TRACE_GFP_FLAGS_SLAB
+> -#endif
+> -
+>   #define TRACE_GFP_FLAGS				\
+>   	TRACE_GFP_FLAGS_GENERAL			\
+>   	TRACE_GFP_FLAGS_KASAN			\
+> -	TRACE_GFP_FLAGS_LOCKDEP			\
+> -	TRACE_GFP_FLAGS_SLAB
+> +	TRACE_GFP_FLAGS_LOCKDEP
+>   
+>   #undef TRACE_GFP_EM
+>   #define TRACE_GFP_EM(a) TRACE_DEFINE_ENUM(___GFP_##a##_BIT);
+> diff --git a/tools/include/linux/gfp_types.h b/tools/include/linux/gfp_types.h
+> index 6c75df30a281d..a93b8bd200b76 100644
+> --- a/tools/include/linux/gfp_types.h
+> +++ b/tools/include/linux/gfp_types.h
+> @@ -55,7 +55,6 @@ enum {
+>   #ifdef CONFIG_LOCKDEP
+>   	___GFP_NOLOCKDEP_BIT,
+>   #endif
+> -	___GFP_NO_OBJ_EXT_BIT,
+>   	___GFP_LAST_BIT
+>   };
+>   
+> @@ -96,7 +95,6 @@ enum {
+>   #else
+>   #define ___GFP_NOLOCKDEP	0
+>   #endif
+> -#define ___GFP_NO_OBJ_EXT       BIT(___GFP_NO_OBJ_EXT_BIT)
+>   
+>   /*
+>    * Physical address zone modifiers (see linux/mmzone.h - low four bits)
+> @@ -137,17 +135,12 @@ enum {
+>    * node with no fallbacks or placement policy enforcements.
+>    *
+>    * %__GFP_ACCOUNT causes the allocation to be accounted to kmemcg.
+> - *
+> - * %__GFP_NO_OBJ_EXT causes slab allocation to have no object extension.
+> - * mark_obj_codetag_empty() should be called upon freeing for objects allocated
+> - * with this flag to indicate that their NULL tags are expected and normal.
+>    */
+>   #define __GFP_RECLAIMABLE ((__force gfp_t)___GFP_RECLAIMABLE)
+>   #define __GFP_WRITE	((__force gfp_t)___GFP_WRITE)
+>   #define __GFP_HARDWALL   ((__force gfp_t)___GFP_HARDWALL)
+>   #define __GFP_THISNODE	((__force gfp_t)___GFP_THISNODE)
+>   #define __GFP_ACCOUNT	((__force gfp_t)___GFP_ACCOUNT)
+> -#define __GFP_NO_OBJ_EXT   ((__force gfp_t)___GFP_NO_OBJ_EXT)
+>   
+>   /**
+>    * DOC: Watermark modifiers
+>
 
