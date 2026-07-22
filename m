@@ -4,98 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 556EEC44536
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 11:31:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F5C2C44539
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 11:33:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB2DD6B007B; Wed, 22 Jul 2026 07:31:04 -0400 (EDT)
+	id 939636B008A; Wed, 22 Jul 2026 07:33:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E3CF46B0088; Wed, 22 Jul 2026 07:31:04 -0400 (EDT)
+	id 8C3496B008C; Wed, 22 Jul 2026 07:33:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CDE076B008A; Wed, 22 Jul 2026 07:31:04 -0400 (EDT)
+	id 78D026B0092; Wed, 22 Jul 2026 07:33:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A220E6B007B
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 07:31:04 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 335FE80145
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 11:31:04 +0000 (UTC)
-X-FDA: 85016196048.08.4057F08
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 9CA2D40003
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 11:31:02 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="WZE6F3/0";
-	spf=pass (imf27.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784719862;
-	b=8ShuKHHZsRY97FuRKqylT1pVG0VZZywUqDFmL6seQPvV48N8QJwVk0pYeDJmwvWqdtquJf
-	axzbiEm8Xl7NiwJ21fGUxj8bFudrh4mpPCkEdgGZ2Kh4/11eo9FIsoUVykuOTfZRdor2Xq
-	Qxts1ANCrd3XPp4MUrNPmoqqh6JGG5A=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="WZE6F3/0";
-	spf=pass (imf27.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D47C6B008A
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 07:33:54 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CF11EC0162
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 11:33:53 +0000 (UTC)
+X-FDA: 85016203146.03.B73820A
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 1FDBE40009
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 11:33:51 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=bnRUuMB5;
+	spf=pass (imf01.hostedemail.com: domain of hank20010209@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=hank20010209@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784719862;
+	s=arc-20220608; t=1784720032;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+shRNGBj5Owp+uVGh3Xp8g/6GJInc0RvJCbh8LgO5Wo=;
-	b=Kl9iY8bHqphNqWZY1urHh6oFeowKgly9RoHShopbHK7Obl4Dya4/ZiK9E0n2+LCZ54513e
-	fyfX/IcmxGCuvV/WjtXZGCho2o26Yh4fwfXHl57du3QELfk0CuL+hcFD0W06gx4MvJJwxv
-	KpWUpV7nsQeDJrnuqTYa5QseMs+9F7c=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D764F60A68;
-	Wed, 22 Jul 2026 11:31:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03EB21F000E9;
-	Wed, 22 Jul 2026 11:30:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784719861;
-	bh=+shRNGBj5Owp+uVGh3Xp8g/6GJInc0RvJCbh8LgO5Wo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=WZE6F3/01WTp/lAinJIxVK6/EsQhlrlX2KXOvzmSPlCZqP8jC5mFOR0S8xfvNvboG
-	 bvasr1TP8hjB5AKJ2yqL620A8IOPAWztB0M6uRSv5QN6CUgciyncyHEhgwi5D87xGv
-	 PV/LGb1KTBP6eWTCnPLpjbDOoM0A1PJyS8tRhaZDzNC2J6HSWvu9iY3kO94VT9XvX1
-	 Zt6lJADr2o4/DNqbr7uW2s/Vk7eXpIeKf/PtMXaulg+1AHZMXQ6EIpYnrjX72DzBd/
-	 UBzORVJqLtDpVMjV6m0bbfxLf9DHK8ynfE2gZUS9G4kWfPODKlapdihYaC6gzCx7+8
-	 PZfGzSNPazBfQ==
-Date: Wed, 22 Jul 2026 12:30:52 +0100
-From: Will Deacon <will@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: muchun.song@linux.dev, osalvador@suse.de, ljs@kernel.org,
-	david@kernel.org, liam@infradead.org, Dev Jain <dev.jain@arm.com>,
-	catalin.marinas@arm.com, kernel-team@android.com, riel@surriel.com,
-	vbabka@kernel.org, harry@kernel.org, jannh@google.com,
-	lance.yang@linux.dev, kas@kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, apopple@nvidia.com,
-	rcampbell@nvidia.com, ziy@nvidia.com, matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
-	gourry@gourry.net, ying.huang@linux.alibaba.com, ak@linux.intel.com,
-	nao.horiguchi@gmail.com, mel@csn.ul.ie, j-nomura@ce.jp.nec.com,
-	pfalcato@suse.de, tglx@kernel.org, dave.hansen@intel.com,
-	jpoimboe@kernel.org, linux-arm-kernel@lists.infradead.org,
-	ryan.roberts@arm.com, anshuman.khandual@arm.com
-Subject: Re: [PATCH v3 0/6] Fix incorrect access of hugetlb pte entries
-Message-ID: <amCp7L1AxoeDH1Yg@willie-the-truck>
-References: <20260703114202.365553-1-dev.jain@arm.com>
- <178464737122.1305746.12295190523058911270.b4-ty@kernel.org>
- <20260721133636.df1a012df895054d3fd34a2e@linux-foundation.org>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=lxBwVWRrpNduEO0ca1Z4JijkhZ7cZaOkNn5k5o4dK5Y=;
+	b=SaUvinDj6OTk01bJh5pqV+ZryKW7hAg39hKRBsC23D0MtfZaVWkHUOWtA6PkQ63DIAMu7x
+	YG9w3hYE2L/EOG/YScmftbirGKeGJcK6QOSgFJzK/QF8RxzMQ8xWGXLhbM/DMRLs43zmcO
+	1ZDb9voiqV/d1B3hyj3Pd3dNY0Q4oEg=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784720032;
+	b=tA6WxI5iWMwWyoTgFyFv2rJz6yy96si3rIb5vUbBxiagxBLAOM03I9VvQITPZ+N373Clpy
+	sCXg7ShXXoBdoZpG5PJTS0bCyRhtcsQk9nFoYU6GkIeetLLjmMaFJipAztj7dmobj/MSj9
+	BstJnXhj2wo9W5ZjGt/eNe1AFeW2zjU=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=bnRUuMB5;
+	spf=pass (imf01.hostedemail.com: domain of hank20010209@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=hank20010209@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2ccdb73f0e1so85166645ad.3
+        for <linux-mm@kvack.org>; Wed, 22 Jul 2026 04:33:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784720031; x=1785324831; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=lxBwVWRrpNduEO0ca1Z4JijkhZ7cZaOkNn5k5o4dK5Y=;
+        b=bnRUuMB5ncNC8l8NFq+Aa76m+pIKUkWQJ7a6JrzGG/oO8dhLvEc8V3aAo3Sam+Isp7
+         waxQjQUQ9Eo1RNkXduCB6WCtkpcRAzDEGrN2Wl/YRWvg1xRgq0T6DymefEi+MCwUqME7
+         WcrgMydg48wB2lKPFWgLA1fI+v3Jhs5Vf09z0N69e03iXgmD6l7+KDonSY9uiGcbCvHt
+         hmH0/waklakKGi1sA2amhg90VI70LR1pBcrefTqh/JUyq2BGHn5yZoQeCFUsDiq+AcPp
+         Oih5pm9pBvAvsmm24Eg2sa0qKIvBdTvCjeO7h2SuEb30B1hzG24Zahc3ztOtGXYuMUXH
+         dhuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784720031; x=1785324831;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=lxBwVWRrpNduEO0ca1Z4JijkhZ7cZaOkNn5k5o4dK5Y=;
+        b=LhMwDR696FhOdfNNhCFZWkS6XVKJgEt0KFXDIXRVr3o01AZieSWixnO4gM8Dtyy1n6
+         MURSQllKQh4YksOcbm8Bxg4HlvRK7PVrWbTS/mwMvPrFP4ElDrFe20CH2AYXU97qTrdT
+         2X/Rh5aIXOi/XS+GOajJWGyghMxg5CVAkglaGfBvNAFPqGfMnCnSuI3ubk6qUz6/BHUr
+         u6yINpwWEN21esXyf3hYZwbYmYUujkGsRFe4RwMjncPkVwrAbF57hbc41Un1dozqfKgH
+         MkzV3ykHOJFIaFKcQ0A5mQT34kwTKXjdgljVe8r+G++VZiik0SbNhKMfAMN+oEZE8iFg
+         ZG5A==
+X-Forwarded-Encrypted: i=1; AHgh+Rr0qyQpjN7uqaBCeieckNcqG+YEuRI07FzTuzuOVyk5XbzJb5QZ6Itleh5saN6OR9qLU4c/RO1EFA==@kvack.org
+X-Gm-Message-State: AOJu0YybMGqu6dbplBWdeecY7t7VwQKKr9yyp2Ln6nU8KoJxgc2ZDFJF
+	Z3LLid8Pru1UfvWC5L7vKsjDs2etTBdgHeYj1/Qj9yidCm0vI56YIkGF
+X-Gm-Gg: AR+sD10SjXF2r2aQsG0Pt9AHGkC2yqHKy4fHz4+a2KiEUWNMhCSO7o5mRpQ/p+L8gK+
+	igDH6u8hpPBRq+5i9Exm5iAU87ew+pQm1jJbbq7OstlUPohvWHu5ZinJIbDU1MIZEUGPS2L0jT9
+	DPRCZS8KUb3kMCX5OVcjaA9P4OzVI0mr5wA+f0/AZBsTorO/c+IipbX/ZROxTIAReR8gGzL7k/3
+	EhOi61V5ee5wv+PXVutMHElc31i0G8NoqEHqJV0BhJGbx4brsXu7BVQE8KuL/uHj7Pae82oMW3Q
+	q9HdQlLGb+TkFWAfpdGoGpINJ39rKsdcshnHAhGPI0dMr9UKrfYmYPYzlQNyjHOiN4+Mdyq/LTG
+	cvbemT9w3pwZ/xg+nL7piQL6Jl4p0happOijMjYrwMpV4xhkdKAg0fdhNuMGsZIXiR3Y/72RUU0
+	4qBELVfkkiI/aq2513Bg==
+X-Received: by 2002:a05:6a21:7008:b0:3bf:a0e5:999f with SMTP id adf61e73a8af0-3c3ad7a439fmr25423558637.22.1784720030853;
+        Wed, 22 Jul 2026 04:33:50 -0700 (PDT)
+Received: from apt.tailc82bd0.ts.net ([140.123.97.23])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbb8f1c376esm980979a12.29.2026.07.22.04.33.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Jul 2026 04:33:50 -0700 (PDT)
+From: Cheng-Han Wu <hank20010209@gmail.com>
+To: SJ Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-kernel-mentees@lists.linux.dev,
+	Cheng-Han Wu <hank20010209@gmail.com>
+Subject: [PATCH 0/2] mm/damon/core: remove unused helper functions
+Date: Wed, 22 Jul 2026 19:33:36 +0800
+Message-ID: <20260722113338.302603-1-hank20010209@gmail.com>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260721133636.df1a012df895054d3fd34a2e@linux-foundation.org>
-X-Stat-Signature: jtm7onq4b977eyx68qkfyxi9s8rnzjd5
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 9CA2D40003
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1784719862-315928
-X-HE-Meta: U2FsdGVkX18luEwwW89aVK5EUIWDj48vkW7hrZz30wLA6BSAIfri9ZoVkC9L59P+3NOsUMWGxdrBhRtWatahwqonoMigczgczzE+fBR14dvYOPCFx4WbtKhMf1AJ4zj2tUdUWIO3fZVkLke2Ho4b4AMyDJe1hotSrP5c0BSDdRBH0LTxmFDcn3vEh+s+UZRHe8lwEDsycVpvaJGr0heaKMuPupibMkL3A13dJIKv3dLoEzE4rxo+ZJhTYSl7MY+Uvv+upAGEvkO5UoV3VIPskyu3679pKsWFxpKW/1WtWza4QsU8Iu4dVt/lCk1NQJ/W1XtmEU0WrA18QskqMBjsv/rEVkZfmfVd7YhP/orTiorz4ddbNF7WBIL5hOeQ4R1ZxnaP0kRbaxay/bMSAqVqO6x0BJbCb6NcMkUEBHzigK4UWUyABmfVnMuyDR2cZtGYBBvsxtm7I44CZ6Y0V+nMWsC8v0HvbM0xJ2feq2sVFintX2a1vTL9egH47cbteTW94YJr9gtwZa/n3u4qEUNthWqScaQ7Fu75QZ7RjMRzqgfSP00KtRXtjDlq+X5jcF2VDxRkSCNRS4LRKyyyh4PVfJ7KIemDwJ4968qOdkn+ghIK5mLIJuSlUNyud6ajBBbzICZVtpq/rtxRtBsiwDOIiPkQoGPMlCaOixALixqM1Kg8OL2+pfIVH5aWVTPQhHOkwC15/p4YDRPiBj8vvS6VIwafZNmOgCv15MHeDVamt7ysCUuf4YVmMMuA1k4FD6kGvxMN2ICSvO87YS0IqVECB8q6oqb/DK7zXq4QY9qqE84JugSu2fbXygYkSEHbxq3QQ/pNQHkmhGfRJ9vWJGPGUCtnb9FWJnsnHn0pISkpmsfgbmZhqysE0t/KMX9u5wXZ3CVATpcAf6YwI1BupIJUDAvNFnOC7ERb5F9r8RQkctQIT0XL85pDo8bQNwaZta8uYowilibZHzElBr/l1um
- Dwf+E1kg
- 5zI6B/YeemFHN7vhtxjkBv3ftsNZ5Hl4S8aWqhT4o9i889Fu2oKX/9yXatCUfK6Bn/JlQhd+LqD0yOR57C0/r+krl4Eabf5Esx62HmzexpjCwBwH/nwSKn7ZqoUjG8mVy9fsWko+Geletz28GrXETE5WrXooxl8C41EbZpLFRgMSugNizPzkX4Fiyq3e5cQlKHBRfl8uQ/sY2F25Pg4284P+mxRU/+ADylqcFajBXS6EibxwnfZLOMtNfhTSyS1nfjNG8DlzlXsTT0Fm7nmcT0Y0560Wkz/JlUHsDx4ZPrfd+U8ZurfQMEJIqIywWhFWUgPf2nRoruaNms2Bt5OFCelfwnfCQPd1ShK8f
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 1FDBE40009
+X-Stat-Signature: icy9xncpqunanjdcxzonbfp4zz87dtqz
+X-HE-Tag: 1784720031-421953
+X-HE-Meta: U2FsdGVkX1+PbZ0lI81LdAUc6WgjSeCUb2xc9lg3H2VhSfExkxmGEPBHuZMAynnuHGbuIE92j8RE4SDlEdHZFZA9b/i0M+30qLP23VI2frVjAItZo4WbknVU+sOnIabTgh6swqyH/lGYwFwhowpMtCbbmb2xSSNEf0Sd+fNx1f6eHrEJB7LF7rHhWDjGork6NCkdZCfOSP4jBdOvFKHwqdyZr4DACj+9I4ed3ibF8KNvebykL3R7Px5YUbe5ViPRIx52nQpyWoozd4RSFu1KRkoVmBEu+Eqf89GpDvM753Ewy4uEi//ZQG0ABIWGcNJfJY74qA9YpJM6Z20Pd57pQ0HnACbEb4XqdTnsGBf9oiWe+rdSaHZr8oo+Ymm4lwpDQXT5Uvixj97D5t8xtmfRPw2vlmYbr3/9Vg8xlVNypjLk8cBegbmO1xwoOTOhQozJHFl2RwOQO6d0ockavdwpyK2xjIiXxQMYACteu+/Y8TbRzg7M1HIUuDIZ9YgJi8BS4ij9ZKm+RvctGCBd9EmuYgifIM80RpLNBQyq1uSokwvA84rzMjVUB/jdRYwRoxJFzoiV1Te9oIWPphoC55hCbSzwJZ+wLuyEks/X0rmahYU5o9wJNCxCmCFORu6ML5XgShoTKlL+SMMbynf7SQ/uTZNPa+I+QeycZ0B0ZJB9VVr0kN8Oiggk7q+wY/Ssafg9MxjHaB5d7AzdWUhIA0z/FNG/wtgP5nm+e9VlXiV9yuHG7uwPSw9OARJ/IR1GRbvJ7aRadbThKCCTt5592JS9QDhQPOiXJ/6GF9GedkZNNizgp6Z9v7dCyWFeG//h7i5irtPSdHzsO+7YTFhzUHFkizduJCtncQ994bvQshvZUWYAG3j1Wix8fhgOf3LMX0sk2bTmfGCW3moaXSnKRf1Rwr+vagd8fwq8dqEEkFmgquPy+FhXBNdVHJje8DlJ8le9VjZvR9hBTmx9Ao6X3jT
+ B2hQXNR4
+ kqC148aIMavjXU6ImrqTKFbJXjoG+qDPPGI9nrmKsg6sFmCrHGRYU/WdfSvfphEF+tcZCuP749ytll5+O1hZx9zkYIvVPdXm10kIZS7JcWlqvFA62ItVoKPPZcPF/gbetQfpHhjzgNMjr2eei8iYAW8Tnj6cUVV06MuLDkZx9EzRoZSV1hW9RolwRDTyaY14+mYdWcqn1e58ucLYd8s8GzlllCJpwahgw3HmdfbMH2AXlFFqgad1xz2QEzjc0WvOzFe72+Hy5LJjBTn8iUvU2hmLy79wnJx61NfXo/g0m+hkYVmyntQjyDtjLEOS1P/JpyGUaagU4UdYW2vmJQfkZqu7lxSgvCcd9Hw8uNDU/5WodV2oznH/FE8knDYgGiEgvtzcY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,47 +119,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 21, 2026 at 01:36:36PM -0700, Andrew Morton wrote:
-> On Tue, 21 Jul 2026 18:18:38 +0100 Will Deacon <will@kernel.org> wrote:
-> 
-> > On Fri, 03 Jul 2026 11:41:53 +0000, Dev Jain wrote:
-> > > There are various places which use ptep_get() to get the pte entry
-> > > corresponding to a hugetlb folio. Some arches (like s390) have special
-> > > handling to compute the pteval, so they provide huge_ptep_get(). Use this
-> > > helper consistently.
-> > > 
-> > > Additionally, some code paths may provide huge_ptep_get with an unaligned
-> > > address. This is a problem on arm64 (I checked other arches and it looks
-> > > fine for them), which is fixed in patch 1. The fix is made to be
-> > > to huge_ptep_get() - that is wider churn and we can do that later.
-> > > 
-> > > [...]
-> > 
-> > Applied first patch to arm64 (for-next/fixes), thanks!
-> > 
-> > [1/6] arm64: make huge_ptep_get handled unaligned addresses
-> >       https://git.kernel.org/arm64/c/9175a8c7cfe88
-> > 
-> > I'm hoping Andrew can drop this from the mm tree to avoid a duplicate,
-> > but I didn't hear back yet and I'd like to land the fix.
-> 
-> I can redo Dev's series to omit [1/6].  The patches apply that way, but
-> there might be build-time or runtime issues running the other patches
-> without [1/6] present, haven't looked.
-> 
-> Also, review indicates that the changelog requires updating
-> (https://lore.kernel.org/all/2b9d60a2-8698-46b0-80ae-b8747a66a85b@kernel.org/)
-> and I believe that Dev plans to do that.
+Both damon_targets_empty() and damon_nr_running_ctxs() have had no
+in-tree users since commit 5ec4333b1967 ("mm/damon: remove DAMON
+debugfs interface") removed their remaining callers.
 
-There's been no update for two weeks, so I wouldn't hold your breath!
+Remove the unused declarations and definitions.
 
-> IOW, it would be better to carry this in mm.git with your ack.
-> 
-> Do you plan to upstream this in 7.2-rcX?  If so then I can hang onto
-> this patch until it appears in mainline.  Or something.
+Tested with:
+  make O=../linux-build-mm W=1 mm/damon
 
-Yes, I'd like to get this (just this first patch!) in for -rc5 so I
-picked it into the arm64 fixes branch.
+Cheng-Han Wu (2):
+  mm/damon/core: remove unused damon_targets_empty()
+  mm/damon/core: remove unused damon_nr_running_ctxs()
 
-Will
+ include/linux/damon.h |  2 --
+ mm/damon/core.c       | 19 -------------------
+ 2 files changed, 21 deletions(-)
+
+
+base-commit: 5e0603ba185af6754422ad28b646798686b6caf6
+-- 
+2.52.0
+
 
