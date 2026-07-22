@@ -4,65 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F14D8C4453A
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 10:09:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD26BC44539
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Jul 2026 10:09:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E8EB36B008A; Wed, 22 Jul 2026 06:09:22 -0400 (EDT)
+	id BD07E6B008C; Wed, 22 Jul 2026 06:09:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E3EDE6B008C; Wed, 22 Jul 2026 06:09:22 -0400 (EDT)
+	id B80886B0092; Wed, 22 Jul 2026 06:09:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D07096B0092; Wed, 22 Jul 2026 06:09:22 -0400 (EDT)
+	id A48B36B0093; Wed, 22 Jul 2026 06:09:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AFC2F6B008A
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 06:09:22 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 41AA880455
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 10:09:22 +0000 (UTC)
-X-FDA: 85015990164.21.B4E08A3
-Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 8D7EF40006
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 10:09:20 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=cwUBfWfi;
-	spf=pass (imf27.hostedemail.com: domain of nico.pache@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=nico.pache@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7EB896B008C
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 06:09:29 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1B9501C0823
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 10:09:29 +0000 (UTC)
+X-FDA: 85015990458.05.B3971FB
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+	by imf31.hostedemail.com (Postfix) with ESMTP id BCBB920007
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 10:09:26 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="oew5Qce/";
+	spf=pass (imf31.hostedemail.com: domain of nico.pache@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=nico.pache@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784714960;
+	s=arc-20220608; t=1784714967;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WbZilrAwqWoZrYkJoelEKIE52CQ/nyZ9NXOXJK2xQqc=;
-	b=Lw5mf+py9dC7laSqdwHCyvoG4y8hqnHD6wUsj9uYppHSaDnWjJFQOmk9awBzLJGU/XXAh6
-	4hqN4DI+UHyLvkVJPParSLRZozag5+3Z36btYw/gz6lkS+IaRb/Jy8+SUi6faVpHT/FHu2
-	gaK1AJlRONp8i77x7O8MeV0LLEX8wlU=
+	bh=QOld9v1IQQQffm7VzSiGaWH4GSxtg1czg/IcWZNsV/0=;
+	b=vkblSMAgcoCINi8IrjlhU46rLmsq46xCrYDuHDSC3ShTszHarzMtngg8aPJ0Q69bwZb5j1
+	aeZMDXznRcuD4w7BfQJEzphdVzvJ6RTupcQbVpbeIE3FZqX/gqHvGU3aGfxVqToa25+QVx
+	o8EiLy/FrIuK4Aqik8VigxBOoDLRffs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784714960;
-	b=ul3VhSe9S8JxYrinUsIppeYguMNYNDHFIYmDrMOpSqIBQg+qND18wJQoUpTpZPNG0CVmy0
-	spLQqE++Yf0hu9vaonl+aE1n2W/KOr087kXVD+McwICLkMkBbBDMaks85qlMIbarvxVKhF
-	/Rc5W/wjGx/vTantLlgoP8WdbyQjqjI=
+	t=1784714967;
+	b=OMEI9X57NKW89zTVebnYuB6FxhT+GSjRI3vtKg88A4zdUgWwiSmvNT5+xtqlnPH8hPBcZv
+	5b3+IDYxaqEJ3qCnTO3Pwf7XdHK0ikqo3UD6pBJhX5gd6K1Q3JDs4Y9Ucsb6AMY1CCxThH
+	169ec3ZOBxCsHWmCuMjRGi0C1vsWg0U=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=cwUBfWfi;
-	spf=pass (imf27.hostedemail.com: domain of nico.pache@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=nico.pache@linux.dev;
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="oew5Qce/";
+	spf=pass (imf31.hostedemail.com: domain of nico.pache@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=nico.pache@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 MIME-Version: 1.0
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784714959;
+	t=1784714965;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=WbZilrAwqWoZrYkJoelEKIE52CQ/nyZ9NXOXJK2xQqc=;
-	b=cwUBfWfiB9fmshkStpgd4bVyiAfog5aucP/KUrw1/tUCotII604KFRILL7bI2bIN7F6Tsl
-	EwzpQT+q5ifTKbPLFHjvaSL+gUUGgDdFE4puhkjre6v/GukjzPu2dx/OX0SmWxzbntXbnq
-	bPZ2eF4tFWBqJZZF6I4nr/bTS8KrIPM=
+	bh=QOld9v1IQQQffm7VzSiGaWH4GSxtg1czg/IcWZNsV/0=;
+	b=oew5Qce/8RPKg4CtQaCt86UiDVVuAa0ASlYHSVVZXXVataMbTTQv51xqf6RFn2d9foYO6W
+	yg0bsAEgD+EtSVVk6L/Vl/eTv15os308RhUYq4Jn8UMP6BGflkKGa/LK4AngjdtVV0pqnD
+	1QANsEaK3E1G9OIlK51jZlgC6V64qf8=
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 2/8] mm/khugepaged: factor out page cache folio reading
+Subject: Re: [PATCH 6/8] mm/khugepaged: hoist isolation into
+ collapse_isolate_folio()
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: "Nico Pache (Red Hat)" <nico.pache@linux.dev>
 To: Pedro Falcato <pfalcato@suse.de>
@@ -74,20 +75,20 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
  Usama Arif <usama.arif@linux.dev>, linux-mm@kvack.org, 
  linux-kernel@vger.kernel.org
-In-Reply-To: <20260720142913.846902-3-pfalcato@suse.de>
+In-Reply-To: <20260720142913.846902-7-pfalcato@suse.de>
 References: <20260720142913.846902-1-pfalcato@suse.de>
- <20260720142913.846902-3-pfalcato@suse.de>
+ <20260720142913.846902-7-pfalcato@suse.de>
 Date: Wed, 22 Jul 2026 04:10:38 -0600
-Message-Id: <178471503895.281396.10308212257898921197.b4-review@b4>
+Message-Id: <178471503895.281396.8783902510522649911.b4-review@b4>
 X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: BCBB920007
+X-Stat-Signature: sdonk588sqqge4wpazp44cdz9hs4au84
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 8D7EF40006
-X-Stat-Signature: ters86siws1meq5grg8tnxy4ir8yie1m
-X-HE-Tag: 1784714960-56894
-X-HE-Meta: U2FsdGVkX1/KxKjMUdZkbBHYsEkdK6NuvPedjPoIghKgs3agSVfK118yREWE8CMq7NbVnJeGOrHRGeLR1mRX1C7eo3t/M7ilvtm5EyDC6426CCrHZHBbgIvieCcKMa/0BwsnHC6dQDXsQARXfIkMe76C8AUidpk4xpBigirusc81O/SSHL7od55R400r6tUV3X7ghxvPjVuD/0G/GChtcBZ+sldZd+Og/FH4h3TRjPEoWhoyK7LnOJZ+VmSY6DD5ukJhCPM3+foz4HHxCpz/uJmauvuIkfZ1tPt6wx4ui3V5oMi1g8U+L3dnmFCUOljSCVu+ibFGmsBimsHJrUUbriLXdttY2uPk5YGEwKhrEfTTgxjUt2iQWzM5HOsB2KbJB2BxEpuXdVmkuDgTV6B3qZu2ze0AxCA+tU8Rl4XMeM4mPmHjRufL0Gqy4Sm0pnxdJsTR5tmi1eq8bXZ7Us86lHy2Vhs+bxWQhIJ/uhkvpU8kQA8YjiRLO1l9ucVAbZvDGtBkrnIN3ahHqTHoyS10bHtjeB9jP3Moee5SlBWDtZUma+ZA19W4kHavNv9VzbwR/jvY9auqM8usNT7YRn5G7DipPmRbsMsfW1Fxs4mHqcYsSdogGok5BG+KfxIqlv5AWoRAAwtUc/6vZFIPF3biselqoXF+/dd3vuOKBYmM8joaZd8r9LOC7V7TSaZ18URgRsk1Alj4V1AlcOX58lkUQg2582LJK/1cQAwURbXfkiqsYxGUL9N6CZrIuQnMb6vXYY15nyjANjTluPj6xRJaWiFfoJJM87/XgUwjKT417OMxdgKzlq8X3zIGZV2waNiDJyI8uDn+vgNvjf7xV8vuXr+cBpjGXqO3r36Eia90i5I3pdxsT3828PMnnilcincliE7hmA3uvZfQV2KVYT6bCzOuGmQTpg5T8dSD3G0yof+Ul3ZnOU47dQyQ3ik9q5H2u9zzLsXTmOOJHOdzb52
- 6ZIxG4EP
- ZYUdICp5KintfHqJgmn5McjOzckY0k/zC2AcizulygktqbT0AzJLrFoCWdhezCOfRvFVxwkLJSCj/Zvw5uNRJm7BuKMLBGzyZaAYf6smpIia2f8aCoEpCfEFkwUv8dBzIv4jguyFRCMXQRs6M2HF1dhSB5H/9vMj2z6bzfLYjNJMPGHOk+IKbneQj7NNxSXv8xL7ureVyTHvo8l0gmQc420ETjJUZyHZ6aPAeZMTL4akpxN9tsOnust/A0frjNgvVU4/ynQKZJh5YHKw=
+X-HE-Tag: 1784714966-227262
+X-HE-Meta: U2FsdGVkX1+oMBwKQcDrggpKwb5O+vDyn0pFc0lSCnz4iTNqp2gFAmVOWVnFLK8MHjeo0szIGeF9cwN4dpSD1VGhl31jEdvSfIDzeYibZmzNfOpVsnC/rba7WM7x2s5/d9pFZkvIWjaqRDPmz6BtQOZYcwJZH1a1vObNOA7jK7UIVucohU00Zw3+dzcv3/77PI2cnY0UA6YWIXLn9qOXD5LZe5y8UPJNSMX6CS8/i8JVtQyVZAWi+8k2DTtzAFJrtNgQ7C8bsqHyofKaB/IbAfaYopUH9qffnEsEuS8TlBdXBtJigI7N32VAccLBxkIhcKJd2UsEayR8+nIMwPicO5QC1aPCIyPlISdMcvlCbtPkNSol+m2yE1e2V/I9acCzH2vWG7Iuqnl4R9sidU6d0IwRUJv2QdmfOf+Co7C3/H4Zv7b/E0dHdOC8UOlv3gC3CnxoDEP07Jb6VDzh3FsTX51+jAKQW8+KspH5EorZ16RfFVgB0qRXePc/yhQk1kPs1Pksqc4senZxJuprkx/fSn6oEj2kOfAYOqZu52idGX5H4+3T+qBRiUs5sLITyqHxgW3BI4gr7eNjg/ktbFESoFT0hxKKIdNzY/kwedvxESnC9+c4h1A5/60Hf28RVIoUUVRRghWJETrvX0bZmbE4CoRoZpEWl+WbP0hMpViRDLzUD6Tw5DAeH7kbw17cogI2ePbDtq5emffDwYi/t8s/eNVYMDzVLX6Djxx6598c17N8X1u5I3zlmQ/vUif5rdToGowHKqERpksEL+OQhMaKptCWDsImEYkuTCgpQ5JidanLgKd+0jjLnGQWyFp3S1ti6mCUdVsaw9nk1/zT7dG34qXSAo2vozl6gnbzP0e4bBnX8GFblrHI+95mX9CMjz284asJpBG3RoXbtwT+fb8cJCF9ANMslVAoQituRvpwD17GAIiIDc3RBpJHlrS59J8pRy6f6KPQR7Ga24yaG8l
+ aNn9GOhK
+ obJImc+PzjPOrXRbGkboKrpB8IUI3g2jez0FL9NiDqDgkFdDsGv+MoJSaI4ekM60BWAT9GWyeRn5qS6SnGTpziXVdimxXvviZhb0goAi0WVKlarW53mJkSMn3ly+M30oT4+RaDemhAM/6Eu99jkrUX6GCjCPn0yQbcXpb1AbXNCUvN4pKUm5u6iW2NI0yFEF/ds9oPqTKe9YisuZf+95S71FO30qzXckdv2HflRyA8oL7bWWlJUJE5LUwpQF/Ri6m2Ci2heufJFo0/wUG/O8tANPy0g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,146 +96,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> The two mechanisms (shmem, filemap) are quite similar and only change in
-> subtleties. There is no need to have two variants. Factor this out into
-> its own separate function, shared by both paths.
-
-As I stated in my review on (1) I think you should first hoist the
-prepare+isolate into a helper, then later do cleanups like you do here.
-
-The flow my patch follows, leaves for much cleaner (and shared) error handling.
-
-Sashiko left a comment about some locking issues which might be why sysbot
-found.
-
-https://sashiko.dev/#/patchset/20260720142913.846902-1-pfalcato%40suse.de?part=2
-
-
-> 
-
-
 > Signed-off-by: Pedro Falcato <pfalcato@suse.de>
 >
 > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index d4de507ac001..4cc6917a55c7 100644
+> index db1f765b6ead..429e2c5833d0 100644
 > --- a/mm/khugepaged.c
 > +++ b/mm/khugepaged.c
-> @@ -2230,42 +2230,63 @@ struct collapse_file_state {
->  	unsigned int is_shmem : 1;
->  };
-
-
+> @@ -2332,6 +2332,69 @@ static enum scan_result prepare_collapse_file_folio(pgoff_t index, struct collap
+>  	return ret;
+>  }
 >  
-> +static struct folio *collapse_read_folio(pgoff_t index, struct collapse_file_state *state)
-
-
+> +static enum scan_result collapse_isolate_folio(struct collapse_file_state *state)
 > +{
-> +	const bool may_bring_uptodate = state->is_shmem;
-
-
 > +	struct folio *folio = state->folio;
+> +	enum scan_result result;
 > +
-> +	if (!folio || xa_is_value(folio) ||
-> +	   (may_bring_uptodate && !folio_test_uptodate(folio))) {
-
-
-> +		xas_unlock_irq(state->xas);
-
-
-> +		if (state->is_shmem) {
-> +			/* swap in or instantiate fallocated page */
-
-
-> +			if (shmem_get_folio(state->mapping->host, index, 0,
-> +					    &folio, SGP_NOALLOC))
-> +				return NULL;
-
-
-> +		} else {
-> +			page_cache_sync_readahead(state->mapping, &state->file->f_ra,
-> +						  state->file, index,
-> +						  state->end - index);
-> +			folio = filemap_lock_folio(state->mapping, index);
-> +			if (IS_ERR(folio))
-> +				return NULL;
-> +		}
+> +	/*
+> +	 * The folio must be locked, so we can drop the i_pages lock
+> +	 * without racing with truncate.
+> +	 */
+> +	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
+> +
+> +	/* make sure the folio is up to date */
+> +	if (unlikely(!folio_test_uptodate(folio))) {
+> +		result = SCAN_FAIL;
+> +		goto out_unlock;
 > +	}
 > +
-> +	return folio;
-> +}
+> +	/*
+> +	 * If file was truncated then extended, or hole-punched, before
+> +	 * we locked the first folio, then a THP might be there already.
+> +	 * This will be discovered on the first iteration.
+> +	 */
+> +	if (is_pmd_order(folio_order(folio))) {
+> +		result = SCAN_PTE_MAPPED_HUGEPAGE;
+> +		goto out_unlock;
+> +	}
 > +
->  static enum scan_result prepare_collapse_file_folio(pgoff_t index, struct collapse_file_state *state)
->  {
->  	struct address_space *mapping = state->mapping;
->  	enum scan_result result = SCAN_SUCCEED;
->  	const int is_shmem = state->is_shmem;
-> -	struct folio *folio = state->folio;
-> +	struct folio *folio;
+> +	if (folio_mapping(folio) != state->mapping) {
+> +		result = SCAN_TRUNCATED;
+> +		goto out_unlock;
+> +	}
 > +
-> +	folio = collapse_read_folio(index, state);
-
-
-> +	if (!folio)
-> +		return SCAN_FAIL;
-
-
-> +	if (folio != state->folio) {
-
-
+> +	if (!state->is_shmem && (folio_test_dirty(folio) ||
+> +			         folio_test_writeback(folio))) {
 > +		/*
-> +		 * collapse_read_folio() got a new folio. This folio is locked
-> +		 * and ref'd up. Nothing tricky (dirty, writeback, etc) can
-> +		 * happen, so bail now. But before that, drain the local LRU
-> +		 * add batch. Otherwise, it's very possible folio_isolate_lru()
-> +		 * will not succeed.
-
-
+> +		 * khugepaged only works on clean file-backed folios,
+> +		 * so this folio is dirty because it hasn't been flushed
+> +		 * since first write.
 > +		 */
-> +		lru_add_drain();
-
-
-> +		goto xa_unlocked;
+> +		result = SCAN_PAGE_DIRTY_OR_WRITEBACK;
+> +		goto out_unlock;
 > +	}
->  
->  	if (is_shmem) {
-> -		if (xa_is_value(folio) || !folio_test_uptodate(folio)) {
-> -			xas_unlock_irq(state->xas);
-> -			/* swap in or instantiate fallocated page */
-> -			if (shmem_get_folio(mapping->host, index, 0,
-> -					&folio, SGP_NOALLOC))
-> -				result = SCAN_FAIL;
-> -			/* drain lru cache to help folio_isolate_lru() */
-> -			lru_add_drain();
-> -			goto xa_unlocked;
-> -		} else if (folio_trylock(folio)) {
-> +		if (folio_trylock(folio)) {
->  			folio_get(folio);
->  		} else {
->  			result = SCAN_PAGE_LOCK;
->  			goto xa_locked;
->  		}
->  	} else {	/* !is_shmem */
-> -		if (!folio || xa_is_value(folio)) {
-> -			xas_unlock_irq(state->xas);
-> -			page_cache_sync_readahead(mapping, &state->file->f_ra,
-> -						  state->file, index,
-> -						  state->end - index);
-> -			/* drain lru cache to help folio_isolate_lru() */
-> -			lru_add_drain();
-> -			folio = filemap_lock_folio(mapping, index);
-> -			if (IS_ERR(folio))
-> -				result = SCAN_FAIL;
-> -			goto xa_unlocked;
-> -		} else if (folio_test_dirty(folio)) {
-> +		if (folio_test_dirty(folio)) {
->  			/*
->  			 * This page is dirty because it hasn't
->  			 * been flushed since first write.
+> +
+> +	if (!folio_isolate_lru(folio)) {
+> +		result = SCAN_DEL_PAGE_LRU;
+> +		goto out_unlock;
+> +	}
+> +
+> +	if (!filemap_release_folio(folio, GFP_KERNEL)) {
+> +		result = SCAN_PAGE_HAS_PRIVATE;
+> +		folio_putback_lru(folio);
+> +		goto out_unlock;
+> +	}
+> +
+> +	if (folio_mapped(folio))
+> +		try_to_unmap(folio, TTU_IGNORE_MLOCK | TTU_BATCH_FLUSH);
+> +	return SCAN_SUCCEED;
+> +out_unlock:
+> +	folio_unlock(folio);
+> +	folio_put(folio);
+> +	return result;
+> +}
 
-I agree with Lorenzo that this leaves a very ugly intermediate state. As I
-recommended please combine prepare+isolate into one stage, with two helpers
-for filemap and shmem, then do these kind of cleanups.
+prepare and isolate now share multiple goto error paths. if you move this into
+the prepare function (combining the prepare+isolate). the goto labels at the
+bottom become very easy to follow and reduce the code bloat.
 
+With the two additional helpers (shmem vs !shmem) the code becomes very clean,
+even without the additional cleanups you did in the previous few patches.
+
+I would suggest doing the very simple restructuring first, then including any
+additonal cleanups that you did in this series.
+
+That would not only make it easier to review, but also a lot of the mess
+already gets handled just by following my recommended flow.
+
+Cheers,
 -- Nico
 
 -- 
