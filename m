@@ -4,99 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39105C531CC
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 22:19:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4882BC531CC
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 22:21:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9915C6B007B; Thu, 23 Jul 2026 18:19:12 -0400 (EDT)
+	id 2DE056B008A; Thu, 23 Jul 2026 18:21:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9428C6B0088; Thu, 23 Jul 2026 18:19:12 -0400 (EDT)
+	id 267EA6B008C; Thu, 23 Jul 2026 18:21:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 831726B008A; Thu, 23 Jul 2026 18:19:12 -0400 (EDT)
+	id 12FD06B0092; Thu, 23 Jul 2026 18:21:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E9076B007B
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 18:19:12 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id AD1DA1601F1
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 22:19:11 +0000 (UTC)
-X-FDA: 85021458102.25.0D239D0
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 6545EC0004
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 22:19:09 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=o1hEm5gq;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf22.hostedemail.com: domain of yanjun.zhu@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id DF9C96B008A
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 18:21:10 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6D6ACA021E
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 22:21:10 +0000 (UTC)
+X-FDA: 85021463100.07.5C49C40
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id CB465100003
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 22:21:08 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I6oI+1Wv;
+	spf=pass (imf14.hostedemail.com: domain of helgaas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=helgaas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784845150;
+	s=arc-20220608; t=1784845268;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G0SzsDUN/BFXoWvc6OI68QQ0aGQFC3X7Tv8gtb7Mzg8=;
-	b=ST3iIN9x90QY9l0fiCy1z0aH+uhM/BbizltUNuM+jXY7ZPQAo+nhSV399gRKEdw0oIejOK
-	W02/SGaSXlJF6j2xtaqapcj0P3iMURjFz7tiJN9i1LYhzq5NvOj5TeeHie70WkobzBTtxs
-	MxkuTlAVrrFhG+Yi+zQSqkdt0fjQg6Q=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=o1hEm5gq;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf22.hostedemail.com: domain of yanjun.zhu@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:dkim-signature;
+	bh=jt33XZg6IakrXoUrAEnJIibUYgZUlDskKhuW4fOU1xM=;
+	b=LkCN0t1M+EYJmToonCgAU4Lqm8Aypwz/Vi3ZXDRfZskE4C9lDhh3HzPIskZ2WWx7KsGKs7
+	gGOrY4Sjy9kuqX+QBlsTGU5yldT99mUvNqE0B/mMIAXZRBV56OIl+fWusn9ZWBNKvXQ0BJ
+	oF4fb2uKI2Mivo6j0qKB89gN0jQcYd8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784845150;
-	b=wtEggQzMc/p4i3bnsyu/nAqfypeUzV2l++tCGM3alFLLJ+SbuabdTflbP7dxbQBdcUSZML
-	hz+X2WMneuec3acriBzfdyDuwInSbOQgFX1wpLsd2kPZRKMgwWa2mkmYX0NrMTuKreErSH
-	XpFcf90OBIsOwvlhG0POLFUvl1W5Qjo=
-Message-ID: <cebd1045-5dd7-4f35-8750-9c39790ceae9@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784845145;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=G0SzsDUN/BFXoWvc6OI68QQ0aGQFC3X7Tv8gtb7Mzg8=;
-	b=o1hEm5gqbSFXjNQ4yIfcWqVF8F2VgF7agEYdG4EH8wmp+G1vDgDZuukjZsNrRRZEMTLDn8
-	e2RghIzHx5oniMfYsrV4kpaicQc52zsfUQFC/Lj9EgU93DFRi4xAAwgenWevULM+oLxJIs
-	Z9M3QnjiLFjyIalbt7oDxrbrLyVCbiY=
-Date: Thu, 23 Jul 2026 15:18:55 -0700
+	t=1784845268;
+	b=w9dr7sAxfH88aK6e8mQtdGyPbfrADJwy9bKh8ToO4WVqg7loTxFFdHjoYgtYyjkLNkT/FY
+	ZdawTskZl+NqR4ERIYzLKUTr7n6qu2eBSOotRhT6Ky79NW/hs+tbgHOKNT7QZW11kt9AnI
+	zgtVf26y929vYkW1641lLvM81D4kMoI=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I6oI+1Wv;
+	spf=pass (imf14.hostedemail.com: domain of helgaas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=helgaas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0A50043C2D;
+	Thu, 23 Jul 2026 22:21:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8CD81F000E9;
+	Thu, 23 Jul 2026 22:21:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784845267;
+	bh=jt33XZg6IakrXoUrAEnJIibUYgZUlDskKhuW4fOU1xM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To;
+	b=I6oI+1WvIphSqo2SuYZlr+Z760iGzSCqCOqo1O52QXp0AQt4DpnWOjisJa4Dl9+HO
+	 JERVpACfEtCncGeO3ANxpi2GaBQ94g9U/b+m2LChVg+v8C7Jj96R4FEHQemOqnV1df
+	 gF8XJ3qDVMf4/f1lRpAYBfHrtjAtaYNxjerhzzJQ9O35DZ+nmDJ7bEIxwhEUUJN7Ye
+	 Tt6/NS51u9fLd+CCzUdwtSjR+JsoOWluKNMUvl38CPvbY5NrDPcKPsKklnoXAfp0Hc
+	 LJ8hgorhXMMGA5x79fdAR7IgtS9Ri1F8IjDr++NQof3NE313yZRqh3C/6dYKWCte5P
+	 +i2kBcAGvHzwA==
+Date: Thu, 23 Jul 2026 17:21:06 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: David Matlack <dmatlack@google.com>
+Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-pci@vger.kernel.org,
+	Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Alexander Graf <graf@amazon.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
+	Josh Hilke <jrhilke@google.com>,
+	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
+	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pranjal Shrivastava <praan@google.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>,
+	Yi Liu <yi.l.liu@intel.com>
+Subject: Re: [PATCH v7 01/12] PCI: liveupdate: Set up FLB handler for the PCI
+ core
+Message-ID: <20260723222106.GA867236@bhelgaas>
 MIME-Version: 1.0
-Subject: Re: [PATCH v5 00/20] vfio/pci: Base Live Update support for VFIO
-To: Vipin Sharma <vipinsh@google.com>
-Cc: kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, ajayachandra@nvidia.com, alex@shazbot.org,
- amastro@fb.com, ankita@nvidia.com, apopple@nvidia.com, bhelgaas@google.com,
- chrisl@kernel.org, christian.koenig@amd.com, corbet@lwn.net,
- dmatlack@google.com, graf@amazon.com, jacob.pan@linux.microsoft.com,
- jgg@nvidia.com, jgg@ziepe.ca, jrhilke@google.com, julianr@linux.ibm.com,
- kees@kernel.org, kevin.tian@intel.com, leon@kernel.org, leonro@nvidia.com,
- lukas@wunner.de, mattev@meta.com, michal.winiarski@intel.com,
- parav@nvidia.com, pasha.tatashin@soleen.com, praan@google.com,
- pratyush@kernel.org, rananta@google.com, rientjes@google.com,
- rodrigo.vivi@intel.com, rppt@kernel.org, saeedm@nvidia.com,
- schnelle@linux.ibm.com, skhan@linuxfoundation.org, skhawaja@google.com,
- vivek.kasireddy@intel.com, witu@nvidia.com, yi.l.liu@intel.com
-References: <20260714151505.3466855-1-vipinsh@google.com>
- <2c03ac97-60a6-4352-a942-27dcebae8d22@linux.dev>
- <8fd94fad-e457-4839-9e41-ae257a138bee@linux.dev>
- <20260720163452.GC1191959.vipinsh@google.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Yanjun.Zhu" <yanjun.zhu@linux.dev>
-In-Reply-To: <20260720163452.GC1191959.vipinsh@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 6545EC0004
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260710212616.1351130-2-dmatlack@google.com>
+X-Stat-Signature: uk39uq4xw7kjg5wwwm8j66d3h54idm13
 X-Rspam-User: 
-X-Stat-Signature: mxeqe9a5ukwwgbp1i8ycp5zm1qhyyz35
-X-HE-Tag: 1784845149-210058
-X-HE-Meta: U2FsdGVkX1/vPrr+7RazAfR1V/Hxf+Dnsne47ykToGJCRfseUsVTm7WK6v3arGXN5XyZERLfGpuuNX/f4nYSgX74xZmhPFQkwAI+wnga+3dkzTMBNgIoKUknoDP0shMQm3RPoEbhMfurlZeFIfQl4SSx9k/jcXiRwU/KTggTm8LBN3xiDikJPznFgvAEr1otRmDczZBYu1/p9XGo7lpUxkT4S57bz8+iiriha6MsyD27Au9VAqtTuX2K04/cumA+2SBYVFwYK7JLMFq6A/4r49jsAnyJ2vjDoSXSyaIsICkLOr02OnDoWPEEhGGD/uImfNU00j+N3B5VxtsbI2REWTsptBPi7OcKhhwVHkveYOwbkckokUigA4c4e0LXprZSAnF9828uziLnX7XHij4XWNpbKEW4BGMSGxkGQYo/dLYYTkpCcsg6oFLTXAe6CX5hS94Gz3vMlFU9nWXE3Nk/MFqZS0anKSqpVqn1lPcW0yptjEG61W12BBaZQAYSXn5F9wiDhlb0gJRmjxQFkZtFb8GkwhuiUUozkCjQscJx/av82GunWCoiyqilOCtjpgiUq4uPGNCku6SUfgZwY2tqaUyi7dG2tWZ8VHfaN3gUPIezwkTF4DaPrS/X4Z9mMAXwqluhR8P9fABBUNiriFhvkEVgYi5CzU785mG93KudwYUeDDc6fKgc4r60V3e/ZNRZ4PeQ9k62dJY6yr6VuL4yB9cpcxBFIcraSYX8B1LIATpe794VuRi8Dr+866fDQmdmZqqsZwXAKzK4sVAZgVJ1UM002YCPUSs1/91mMbf/z5Kb0voeKi785KlDUw2PLWVjoEjNIDtlibwdS32buCGBmbUS4Xs9VFBDm9q46SoJTv4JC75jr1v1aFWYFBjluXmqKR9lvH2diiciX4D3iHn0qnXRs5XT3EcvCUNWxFlaWeqyoPYsxYVO+//8asx6jAsElJAQVH9MZYcs2GetLBl
- z+O+o+Sy
- 4qAf9a3nLJSBKdgnpd6Rb67gMbm13+7KxJ+DuDm0sevEQLRkdsL5LODDkRZyYOCYXAXtrS+58ayf97EWjeZ83HRgQhgJukC8WZyMuVc5oblS7RADMa97OFe14KfH3E3I7GBOAs/l/x88UJUwk38Obr3A3ifJ3SyaQc8AYUxipsvQn/w8KzwNloCVgx1bRkCY3s1WlkIjxXMLLfkabmKAaP8Dym26iXy2qhxpzYelG5JsbhT8P+3jUCSPDfyTFHFQYx7nWas9vcDC1H+LpgZ7R8rs2yA==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: CB465100003
+X-HE-Tag: 1784845268-887776
+X-HE-Meta: U2FsdGVkX1+DCIE97LziWoKHZttUShsfP1Gs18AmucLzk7c8HpzBdnrLlgupZpMChOmoLPpk56pNlz6GUMebR1dbY9Ni9fogmiNxkSTc7EYVhvoj2sIO6eeRT3ZTeEsMCFRPfdMIlE7YwO91Ls61hU6tboi3UYpQstB7mQahsukvE5PBEt+GKkES3S1n6QORp1jvL1CP+Nytlu3ci7k9ggLZWZ7WBisxSda2UU8GN4STGaV6iltJC8rccePQwax2VxQOTsJtgZbf/H1uXV55rtKtu6QbD/vIwtJ8QRq+U4z2F1dsl/y/UeUwCMzojjqOTPuZEC0Ya8EyGWiLyH59+7B/+E+75ANaoONLcf4jBt5DQ9xRBmgfBqeePLkY6U4gnDFQZRuXqdVwLc3SMlaNBJs4ZcXo738noxsSk1ed5lQhQIBBumkTFDTi3WyMhYOYg8d49jvqz+NgfHCCG4qXwyhQEzHj73/wtjajCfCEHEwk4wMSxlCm9XHGu7JhE09jX0RCY1MS80fTX5n+gMPxHdmmRY/PDWZ4tcAcTalCzSMQoqo37XSc7B3s2JxYjtOHLQn5UPcefwLaOkWZ1dV0Be0zK8lyvgLkl05Bx9zT6JZZ+2Oqj960rjQ7EacPOtrmtgFf8RE2n+6x98qOeqaXDmjEAvkxPp/aLWzwtqt72ouhHfoZv+MVtJ/YAiwxKNlu5k6vygSrblBUjfkr7UgSUZeG0U1WJa8lPJvy3HQV9CBtOoV/oG19xKI4E4BHJhm5DbUQm8GY5oyHBsfJBWX+mj63DjOgE8fvUQe0SQZoq1Fx5589tiTQfCoQ4oXgzLaXS8ZFhQUPTZPZww3SDo+sN8eeyiVBByQOhM70TYWiul4gIXU+nP4ubFAEdGTpX0HjjpWp913tXzpDXox9Wc+nzmQArxXV4N1XTTDbnVJfncrGszXu2hcoQHPUIH3LPkzc3TeYUtvDq/WRhRQPYyS
+ eqU+q7Wv
+ Fvbq8+s+glQWEXwLF+937XQHydMC97M3X8an2qo7BkUn53sdWnuVu2j53vx0AIqVI9KLhvU6j1DoWQM/KSfAnlAx3SolDZk+gZ/PTHQd+EvkXhxAYAk6MFfy+B4H6WtwJbngr8X4+qW0O2WiI9MED2KS1yqe6lQUniNKKermkLUGsDsWO4zoqFPRuqkx+wiUj9wvDNKUuNdifZDPfGziN+AQJFSb9RjixWLWByxBWMuebVf0ccInYDppFmW+ngOW0QR0x
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,80 +109,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, Jul 10, 2026 at 09:26:04PM +0000, David Matlack wrote:
+> Set up a File-Lifecycle-Bound (FLB) handler for the PCI core to enable
+> it to participate in the preservation of PCI devices across Live Update.
+> Essentially, this commit enables the PCI core to allocate a struct
+> (struct pci_ser) and preserve it across a Live Update whenever at least
+> one device is preserved.
+> ...
 
-On 7/20/26 10:08 AM, Vipin Sharma wrote:
-> On Thu, Jul 16, 2026 at 06:22:07PM -0700, Yanjun.Zhu wrote:
->> On 7/16/26 4:24 PM, Yanjun.Zhu wrote:
->>>
->>> On 7/14/26 8:14 AM, Vipin Sharma wrote:
->>>> Testing
->>>> -------
->>>>
->>>> Tested using VFIO Live Update selftests in both QEMU and bare-metal
->>>> environment (Intel DSA PCIe device).
->>> I want to make tests VFIO Live Update selftests in QEMU. But how to
->>> select a PCIe device?
->>>
->>> what device do the PCI ID 0000:00:04.0 and 0000:6a:01.0 mean in the
->>> following testcase?
-> Sorry, this was my copy-paste mistake when combining things from both
-> qemu and baremetal. You only need one device not two separate ones.
->
-> For testing using QEMU, you can use QEMU PCI test device.
->
->    -device pci-testdev
->
-> In VM, use `lspci` command to find the BDF of the PCI device. It will show
-> output like:
->
->    00:04.0 Unclassified device [00ff]: Red Hat, Inc. QEMU PCI Test Device
->
-> Then prefix the domain (generally, 0000) to the BDF and use the testing
-> commands.
->
-> `0000:6a:01.0` was the BDF of the Intel DSA device on my host. I
-> incorrectly mixed two devices during my copy-paste.
->
-> Limitation of qemu pci-testdev is that it does not have the DMA
-> capability. I used physical host with Intel DSA to verify that the
-> device performing DMA during live update gets reset.
->
->> In my qemu,
->>
->> 00:04.0 System peripheral: InnoTek Systemberatung GmbH VirtualBox Guest
->> Service
->>      Control: I/O+ Mem+ BusMaster- SpecCycle- MemWINV- VGASnoop- ParErr-
->> Stepping- SERR- FastB2B- DisINTx-
->>      Status: Cap- 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort-
->> <MAbort- >SERR- <PERR- INTx-
->>      Interrupt: pin A routed to IRQ 20
->>      Region 0: I/O ports at d040 [size=32]
->>      Region 1: Memory at f0400000 (32-bit, non-prefetchable) [size=4M]
->>      Region 2: Memory at f0800000 (32-bit, prefetchable) [size=16K]
->>      Kernel driver in use: vboxguest
->>      Kernel modules: vboxguest
->>
->> I am wondering if the above pci device can work well with this patch set or
->> not.
-> I think you should be able to test Live Update with any PCI device which
-> can be attached vfio-pci driver.
->
-> `vfio_pci_liveupdate_kexec_test` will initiate DMA if the VFIO selftest
-> framework has the driver for the passed device (Intel DSA) otherwise it
-> will just skip over the DMA flow and do the remaining things.
+> +#define pr_fmt(fmt) "PCI: " KBUILD_BASENAME ": " fmt
 
-Thanks a lot. I'll run some tests with QEMU's `pci-testdev`.
+Is KBUILD_BASENAME buying us something important here?  Just from
+code-reading perspective, it's more work because without some digging
+I don't know what it will end up looking like in a dmesg log.
 
-If I understand correctly, when using `pci-testdev`, only the DMA test 
-case is expected not to work, while all the other test cases should work 
-correctly.
+> +static void pci_flb_unpreserve(struct liveupdate_flb_op_args *args)
+> +{
+> +	struct pci_flb_outgoing *outgoing = args->obj;
+> +
+> +	WARN_ON(outgoing->ser->nr_devices);
+> +	kho_block_set_destroy(&outgoing->block_set);
+> +	kho_unpreserve_free(outgoing->ser);
+> +	kfree(outgoing);
+> +	pr_debug("Unpreserved struct pci_ser\n");
 
-Yanjun.Zhu
+If this pr_debug() is useful, maybe it should include an address and
+there should be a corresponding pr_debug() on the preserve side so we
+could find things in a crashdump?
 
->
-> Let me know if you still face some issue in running Live Update, I will
-> be happy to provide more details.
->
-> Thanks
-> Vipin
+> +int pci_liveupdate_register_flb(struct liveupdate_file_handler *fh)
+> +{
+> +	pr_debug("Registering file handler \"%s\"\n", fh->compatible);
+
+Is fh->compatible enough to identify a driver?
 
