@@ -4,130 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A426C531CB
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 08:45:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3A70C531C7
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 08:45:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 323976B014D; Thu, 23 Jul 2026 04:45:11 -0400 (EDT)
+	id EBD446B014F; Thu, 23 Jul 2026 04:45:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D4F26B014F; Thu, 23 Jul 2026 04:45:11 -0400 (EDT)
+	id E94A46B0151; Thu, 23 Jul 2026 04:45:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C4E66B0150; Thu, 23 Jul 2026 04:45:11 -0400 (EDT)
+	id DADAD6B0152; Thu, 23 Jul 2026 04:45:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DC8F06B014D
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 04:45:10 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 62DEF403ED
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 08:45:10 +0000 (UTC)
-X-FDA: 85019406780.10.821E25C
-Received: from mailout4.samsung.com (mailout4.samsung.com [203.254.224.34])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 74EAC160004
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 08:45:07 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=W5gXIxoD;
-	spf=pass (imf08.hostedemail.com: domain of arun.george@samsung.com designates 203.254.224.34 as permitted sender) smtp.mailfrom=arun.george@samsung.com;
-	dmarc=pass (policy=none) header.from=samsung.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E0E66B014F
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 04:45:28 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2874CA0428
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 08:45:28 +0000 (UTC)
+X-FDA: 85019407536.12.109B3E6
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 4E64EC0003
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 08:45:26 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=iKduSdmP;
+	spf=pass (imf22.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784796308;
+	s=arc-20220608; t=1784796326;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sQjXIg3wAcrT3mkYCsdbl0LWsoOlUsvvM9TLKCcGrBo=;
-	b=x8nUpHv9fMjtX7TVHTd2Elp5kNTt9aMEv6gUN1chjo+EBJpIY/61KmnB8yVLA3hBlxyDBW
-	Kt1u6hJwsaP9cyBdCpO3Mwz6pZSZSbSFS84EhqWSD7OiLixMUQZaDfY+M8Y6H1GowstP8l
-	B9TLdTLjF3kkq0qsngBrufRhaioQg2I=
+	bh=QNSCWeKhrxGWAlQghBfhaL555IVsMmUGtowa8Jgc3Rs=;
+	b=ld/XmrFSdFTPD4pL6z5kv0Ti2fn65sJLL9eG4XAeyuCid/Nlm78UaPF/9P0rbjwZHHC1F7
+	8v/ejNSeM9qAfFF1wxvR/Sg9iAQNXVsaJ1nuFFl/JHjX1kfRu3zLsZgAdf52tnGjx0/vtQ
+	lfKn1x0s8iSWF6QLKQyMIkd2OlUcw4Q=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=W5gXIxoD;
-	spf=pass (imf08.hostedemail.com: domain of arun.george@samsung.com designates 203.254.224.34 as permitted sender) smtp.mailfrom=arun.george@samsung.com;
-	dmarc=pass (policy=none) header.from=samsung.com
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=iKduSdmP;
+	spf=pass (imf22.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784796308;
-	b=MURLrVWHx5KEoT68SqhE1adiRnhFbxvC+kRw+Cl1qt2lK/Qf1Sl3VECeoAQzzC0YXYcY4d
-	1gdBPrrnLAi0kD6f3KEDuS9f5F+Gg2QAvcUzDlPsnx+4OfK/oR4ljeDfQ6wPQZjCoLiEhx
-	kvCWSmYPFgWqvUPUz+KUsubpaiJA7aE=
-Received: from epcas5p1.samsung.com (unknown [182.195.41.39])
-	by mailout4.samsung.com (KnoxPortal) with ESMTP id 20260723084503epoutp04a324084313ef02b272e897115231c5b2~E3sg4KZO-3034630346epoutp04L;
-	Thu, 23 Jul 2026 08:45:03 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20260723084503epoutp04a324084313ef02b272e897115231c5b2~E3sg4KZO-3034630346epoutp04L
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1784796303;
-	bh=sQjXIg3wAcrT3mkYCsdbl0LWsoOlUsvvM9TLKCcGrBo=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=W5gXIxoDyG4Nfrz0+i0pklqM2q3/qpEunf4JU/SLOUtj2VknFkftcVuCb6c5nB9rv
-	 0PfvO1yP0f71Cs1IOmIxhbGH98MahM0XyvQigBVdJ9zrXWw6I7OJvWLRpHZNA++6Az
-	 8E6N/DHVyIA5A/LbAByxODYxcLsaYG1fyL2e0bnc=
-Received: from epsnrtp04.localdomain (unknown [182.195.42.156]) by
-	epcas5p4.samsung.com (KnoxPortal) with ESMTPS id
-	20260723084503epcas5p43df5d820cf5e5603cbe8d66b060992f0~E3sgfyfxj0540505405epcas5p4A;
-	Thu, 23 Jul 2026 08:45:03 +0000 (GMT)
-Received: from epcpadp1new (unknown [182.195.40.141]) by
-	epsnrtp04.localdomain (Postfix) with ESMTP id 4h5Pnq2p8Nz6B9mQ; Thu, 23 Jul
-	2026 08:45:03 +0000 (GMT)
-Received: from epsmtip1.samsung.com (unknown [182.195.34.30]) by
-	epcas5p2.samsung.com (KnoxPortal) with ESMTPA id
-	20260723083847epcas5p21a735796de0bdb6459cd2c3b7b9b18de~E3nCLElTK0474604746epcas5p2T;
-	Thu, 23 Jul 2026 08:38:47 +0000 (GMT)
-Received: from [107.122.10.65] (unknown [107.122.10.65]) by
-	epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20260723083835epsmtip11766a99123bc01993811bc8746be0d2d~E3m3Il4WE1438914389epsmtip1e;
-	Thu, 23 Jul 2026 08:38:35 +0000 (GMT)
-Message-ID: <963815509.21784796303385.JavaMail.epsvc@epcpadp1new>
-Date: Thu, 23 Jul 2026 14:08:31 +0530
+	t=1784796326;
+	b=k/78uWw+l3i+4lHZARJxODQa2zPgTZ1VDUmHx+QDGneg7C6HDQoBvbztJEdaffa50+ikQc
+	z7UEOrs7mZUZDpP+vb8/mR7e3WAExBwuu5FWxrvi2ZLx39qWI1pVuHfp7sncCH5ySod/eb
+	GxZ3vZXjYklG9CccSSoAx9xcregD5ng=
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-495590dde14so4092915e9.0
+        for <linux-mm@kvack.org>; Thu, 23 Jul 2026 01:45:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784796325; x=1785401125; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=QNSCWeKhrxGWAlQghBfhaL555IVsMmUGtowa8Jgc3Rs=;
+        b=iKduSdmPi5BRQQGfU351DJe4Ey/m40S4imVibCOPVf5l1kyP6TYrwKSWdJCmIw7uLv
+         jw2FCO5HYxbWbY0D5dFxP0YNIX+boPKHcwx6BVxmvSpUdOq0k1qOVaE9KryxnubaLxmr
+         HaCc64isml/tYJfdcPGsxXUWFckp/R8CJdEDynNYenvTP+W2gbuhWMkP5Q6KEIix/fJR
+         rD+mj56OeQPKVpaXyQNRF3ccSS3l2Wunweogg/G0hLAJG38YruJxeatdjRbg8wpWxMN8
+         /1B5DkSw+Z38mVoykKv6OiEnQFXXT6lZ0rVKVMzImCXww0U4I/VTWs2Tf+ojuUPwahdd
+         Zw/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784796325; x=1785401125;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=QNSCWeKhrxGWAlQghBfhaL555IVsMmUGtowa8Jgc3Rs=;
+        b=JLJqjzvaDC0dMb2WUPOg34bukczU6zh/nCmqK7gH0IAUAOdg2XDmpACHwbUON8v3mO
+         uoZcVCLdBVCu6DCYs14/AEsl77OResoDkW30i4GDBshbgoJMAzVCIHmLqX6HEsMbpx8P
+         EfInCdKx2EWNjYtdNyyPArzlwjucfMWcULdodlwG4dhgxU3GRZoVSEgSZkHYqOxpqZWP
+         lO6k4QE7AwiYdh5ebHVT9dNb0uxD3Te8+aPiSrTIZbsOE0Io9U4DykjrSlTLzKvm6FLl
+         WpnAV8EUB69r3FipFlqab/OQU6XgMbisLZV+Wb59kptfs/tcVUO9rBxmIAuA4ji3xvWR
+         EuZg==
+X-Forwarded-Encrypted: i=1; AHgh+Rocu+VaglCD/xRXPhd1cG/V28p33lpvlGj1yzBsIGDg/LhVCAd/3qB+iWrH77E1dvX/J8jZKitJjQ==@kvack.org
+X-Gm-Message-State: AOJu0YynGUtn4raQAzzSEtB8M6sDXDUfgUhTHqeKvu1k7r6FHchO81TU
+	AJwhvy7PRu5zstQ4RhDlhN+mczqUOXJ2ZF9xia+WGQqJiH0AB69jwwwL
+X-Gm-Gg: AR+sD13cJ8eP2I1cj4ZEExeqm3alrROFHMM2QlIQK/+QQYpCXok/2Hua+rszH3Lnrf3
+	STYQPRkQ2IpVfj/7SaRuwChZMadO8SfXY21spnujDbMNrLRRHhw6fZCU0WjoYodFaWaQwX94uqu
+	ALSBaVOtB/0dCXe/HD0ynsQpK/hz/4PImM1edPzBUT/U/buXelHyzsm9v/xeILlnY4ORgn1SloP
+	ESmdzndbKbnyDswsOR4TPA0YYvjeAS+XbX6JFipD0iksn2mKViHSZ/f9wJk3Gnw37pxGGgA+Cfq
+	dHv2aFnZnUAf2DE+2eoA03o+mhXblfuvzUjM+mUj4f1GxSJ0+XKHWhmkrtEldoIYwecVTSIq8W+
+	M/6fCRoqq0tr/1MuAfqQ7B59jQbVtsBnN5rILAVrR69BRk/vPxAJ91N8efOp0CRo2QxlYo7y8aj
+	SvGtpbPDPP3MwAWSBAL5GAFyTTytXmFDLe1ZdfkmU=
+X-Received: by 2002:a05:600c:1914:b0:495:5e86:4e59 with SMTP id 5b1f17b1804b1-49573cf6226mr22983005e9.22.1784796324550;
+        Thu, 23 Jul 2026 01:45:24 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-495653bfabesm234783595e9.10.2026.07.23.01.45.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Jul 2026 01:45:24 -0700 (PDT)
+Date: Thu, 23 Jul 2026 09:45:22 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Mahad Ibrahim <mahad.ibrahim.dev@gmail.com>
+Cc: Kees Cook <kees@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, Mike Rapoport
+ <rppt@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] lkdtm: use kmalloc() instead of __get_free_page
+Message-ID: <20260723094522.535b284c@pumpkin>
+In-Reply-To: <20260722230246.2869-1-mahad.ibrahim.dev@gmail.com>
+References: <20260722230246.2869-1-mahad.ibrahim.dev@gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 00/36] Private Memory NUMA Nodes
-To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org
-Cc: Zhigang.Luo@amd.com, balbirs@nvidia.com, brendan.jackman@linux.dev,
-	yuzenghui@huawei.com, apopple@nvidia.com, alucerop@amd.com,
-	matthew.brost@intel.com, akpm@linux-foundation.org, david@kernel.org,
-	ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
-	surenb@google.com, mhocko@suse.com, corbet@lwn.net,
-	skhan@linuxfoundation.org, gregkh@linuxfoundation.org, rafael@kernel.org,
-	dakr@kernel.org, djbw@kernel.org, vishal.l.verma@intel.com,
-	dave.jiang@intel.com, alison.schofield@intel.com, osandov@osandov.com,
-	jannh@google.com, pfalcato@suse.de, jackmanb@google.com, hannes@cmpxchg.org,
-	ziy@nvidia.com, pbonzini@redhat.com, osalvador@suse.de,
-	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
-	ying.huang@linux.alibaba.com, kasong@tencent.com, qi.zheng@linux.dev,
-	shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com,
-	yuanchu@google.com, weixugc@google.com, yury.norov@gmail.com,
-	linux@rasmusvillemoes.dk, longman@redhat.com, ridong.chen@linux.dev,
-	tj@kernel.org, mkoutny@suse.com, sj@kernel.org, jgg@ziepe.ca,
-	jhubbard@nvidia.com, peterx@redhat.com, baolin.wang@linux.alibaba.com,
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
-	lance.yang@linux.dev, usama.arif@linux.dev, xu.xin16@zte.com.cn,
-	chengming.zhou@linux.dev, roman.gushchin@linux.dev, muchun.song@linux.dev,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	driver-core@lists.linux.dev, nvdimm@lists.linux.dev,
-	linux-cxl@vger.kernel.org, linux-debuggers@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org, cgroups@vger.kernel.org,
-	damon@lists.linux.dev, linux-kselftest@vger.kernel.org,
-	kernel-team@meta.com, cpgs@samsung.com
-Content-Language: en-US
-From: Arun George/Arun George <arun.george@samsung.com>
-In-Reply-To: <20260720193431.3841992-1-gourry@gourry.net>
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-CMS-MailID: 20260723083847epcas5p21a735796de0bdb6459cd2c3b7b9b18de
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-CMS-TYPE: 105P
-X-CPGSPASS: Y
-X-Hop-Count: 3
-X-CMS-RootMailID: 20260720193443epcas5p167fa7d8490edfb4d8c0aa6a259db058f
-References: <CGME20260720193443epcas5p167fa7d8490edfb4d8c0aa6a259db058f@epcas5p1.samsung.com>
-	<20260720193431.3841992-1-gourry@gourry.net>
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 74EAC160004
-X-Stat-Signature: yrd5kix53ak6a179yng8ge35a7egdjme
-X-HE-Tag: 1784796307-348347
-X-HE-Meta: U2FsdGVkX1/JTRVnYCujnAEwxKBIUA2pObaBDP6tAra5lqPksGwwyi7lQtWPn5UH+xv/uooWVKtCwia351EfJ4qur8lsefEOFSKugJU0mOcJ0frbmC1ys33gvs1Ybh4shlPM9LACVlKxbxEatR0crMcQcAundNIKp5Wu6tFeImXxSza1yJSUA2VE80lUGw1HfFo1FjCjj6t+gI4rToe4hUyYDHhueyuGowE779HAG2z2+L/wfHOdxYsehxpog7Bx4UnIeLESilvVnZbfTda9vxWwHT3VAyeDwPklrQIQjuatflMCSKMJeMwQujfuVEZtxOj4NDcb+ZlDfxYcYi4pJXhNt5Cm9iUwQGQmHtra66wQ622ctadnuwEaqAQKngniii18twuNw9iXfvraHJpskXAiPLJ26CKi8WQ5JUEylCwn/5u9CVPmZSW2evuNcqIi+D2sdzkXzjhdc5rnQ8qq/czH2BQtgtORjvhDfjUyrV6CwppPovffhw7QLA89nVpl4xq4h5JKY6GqMx/A40hlgMgSBhR9p0Q0Vr0aIZTpb/onWKZzCX+ouFFSTYT+RxQvOLwlXK000lWKH+WeeTkw2BQhfSGbC5VbEXL/cpOiDfhrbFEP7dRiWvp0bYe9lFd+HQAMhn8/2zdlK8B7JWy3WijIICmXhyu3Xd5H0I8/etQgQjd+ueyprv4jLRa9TjPdbWVXOTtXafPT+zbLKN/tdgEDySpZc0QlUZbb44xItjuCQLhgjEeDyJF2SAM0KtLWnLXEjOmBpR/VMQr+BoGzglojEV/h2zF8dbjhzA9DS/Z+bdVQCYQrxcUSZV+NjQ/jDl+cVOdY0f+rpcmf0xUKRzNP7LKmCRVoVmxHDW4OhJgf4x4Yv3I6qnYEJsO7wqJE9/A27urlXkRYz5t0viHVT4gkHLTql3sXKnWXhcCvJYVEXS+82EjoSWJ0x9LTb3xSHoRe7dxR+JW6j56vjE3
- CvMJsDnR
- 9ZuFvbFrWtefmXXq7Nb24jVVNbLhjH0QIY4ty09/153IW5quWZFDfzBawRp1K9JUqEsGJg59+J5zJ4+o+IYEbx/brOVwHtJ0lTprZsl+WPl2NkTShxZZEm67rHGHfyeL9lzjyMqUx2sepPchDyLDgbcVsJI91OkHGQSBI7nZWfyrTMAur53GWqWpm6GM4QGI/4dsjDwNFY+/LY6Q=
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 4E64EC0003
+X-Stat-Signature: 8mgoiujeigngyjx7f1fznzxphck7ybqk
+X-HE-Tag: 1784796326-460207
+X-HE-Meta: U2FsdGVkX1+LT2W4+PUb9WLJQsnlM58jczGHldEbIKgnsRrJyVR+EY0ixVlJoJVETlPUdDFzPXI96taVcBoZ3UMk1LUpnV/SRKIYvrt1TgwwgWsf5UyzW8hlYbIFHnaiZXiUJG6++nSWyAFxavUS1Laty+kNMEe7R38Y6qGKsM3yQcqSPYdJyj6IVv8QWb6gyWv1KhTm3HkPSM7uMjmrwqHk+pEeHKYLAt3v9ITEP81FQnD6Ai2JnuUYxJWd/eGsdhjaZciKU3/Fl3oIMXO/MU5WoyRFYBH0PZuHDyQodscYnDl/jVvg27y8BLskSKdxFNyKh+yxulG0UUqO6zKxDpmgmhpzPVTGQqy53pXUMNWeVwISZaYw7YB5bxRDx5oZLd0RGawPNrDwAiWwSgZD74BKlKQDtKRM0GqSGCcu8B4pZAHKRtBilnhKEVvW9seCZUizjHyrdNeMOe0lt9B+FKOdXg83XBgMmr+7+F0xNWhXZvPH00V4UI3BsbOYMYSvdT+uGMHaCpQYCY8d16uLOizDuKwAvFgpqwN26PEvgvQsfVmpY6l36G1C+P3+RvjKnxaAKy1LgCz9slGFssLfFO14tNFNybZUuazVXkJkAXFY/EDfWM8oG604ilwP0lUdeppfXPQlAvtOPnyMLNJB+N5TEP9Djti6uUpWiIwUQDwCJPE4xCISunPzpnuOFbCi9EjWHtEe7Q0DlhHrS7atRFyMYudFQ5Danth2CXEQIw4Tez34R6FQjrVwrC28mdut1l2/sBSrBLYZWp1eoDJrpmevGAurv9zCR99dDbKxJhiEY038Hgzn8FuvfHylTgB2Il+Jjbx6GW2/1weQzgyKQtEv08AepeChWoXYQdd1f3+K+5t0/ap1QAtpzssUybuS7efEtaW5o5XNhqqexHu4f10lTF7j9G7x4CaRIHzAqIqPnoSoCmmEV0ucUCgYYQ7ZLHQSu//M36bJBIu8WG8
+ /ijEIpdb
+ C3B6wTI8v3PL+T3j4A63GujkZaLJfE7rHd8GYtJ1/MkElojI2Q20feQPMh674JhiMm+jk5uL5IZH3tcmfA3xDFknOKEGluIy69LE576ImHSBnArewggraYsqn4TN1TiuIHX4GrF1op3KtMwGaUlOkGyG8Hyg3xM523dRaBhTPBKlx4rWgpL9czKmH2T5c2EDT8lt9MmhthXXpYv6zX4oG41Xp19eVZFxePvhudhrk+syrMssgV0CjKd/RmHWX8kcCyiKVLvMMKR+dE6h+Mm9nzvQ9vzW+cRIXecEIxHRVFWKp/Me8rYlKgDoZemkR79bZAONcJh6WcSHitwbQZ3xbEGkz1zGF9MjrWsxf8RcgtblinfbBKH1QoHfcfEndzVRZnne2+d8+ACZ7IJ30rcYeoIk4SsX6/TNNd7mdtjq025ymcFl5xJE4Y6O5UnyqwbunjypAgX98LS4Im1clkXs95uzLIy0hndzNky34h57NgbK9Wx6EkBEyit3d6HbAK8AWw86qOp7msqEb8/r0LYx5UndAdTuRSnYw4W3z
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,17 +121,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 21-07-2026 01:03 am, Gregory Price wrote:
-> Changes Since V4
-> ================
->   - dropped compressed ram example from series
->       - will submit separately if this moves forward
+On Wed, 22 Jul 2026 23:02:46 +0000
+Mahad Ibrahim <mahad.ibrahim.dev@gmail.com> wrote:
 
-We intend to test this series on a compression capable CXL expander 
-hardware. Since compressed ram example (cram) is not part of this 
-series, how do you suggest to do that? Do you have a version of cram 
-module compatible with this series?
+> lkdtm_debugfs_entry and direct_entry use __get_free_page to allocate a
+> temporary buffer, perform copy_from_user to get the crashtype name,
+> strim() to strip whitespace and find_crashtype to find the corresponding
+> crashtype that is being requested.
+> 
+> The lkdtm_debugfs_read uses __get_free_page to allocate a temporary
+> buffer to store all the available crashtypes, and then copy it to
+> userspace.
+> 
+> The buffers that are allocated can be allocated with kmalloc as there is
+> nothing special that requires a struct page, or the page allocator.
+> 
+> kmalloc() additionally provides a better API that doesn't require ugly
+> casts which obfuscate the code and kfree does not need to know the size
+> of the freed object.
+> 
+> Replace use of __get_free_page() with kmalloc().
 
-~Arun
+None of those buffers need to be PAGE_SIZE.
+Even the sanity limit for overlong requests could be 4k.
+The longest 'crashtype->name' is probably about 32 characters, so could
+probably go on stack.
+
+And can't this code use the sysfs/kernfs wrappers?
+
+	David
+
+> 
+> Signed-off-by: Mahad Ibrahim <mahad.ibrahim.dev@gmail.com>
+> ---
+>  drivers/misc/lkdtm/core.c | 16 ++++++++--------
+>  1 file changed, 8 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/misc/lkdtm/core.c b/drivers/misc/lkdtm/core.c
+> index ededa32d6744..01bebcb33bd4 100644
+> --- a/drivers/misc/lkdtm/core.c
+> +++ b/drivers/misc/lkdtm/core.c
+> @@ -236,11 +236,11 @@ static ssize_t lkdtm_debugfs_entry(struct file *f,
+>  	if (count >= PAGE_SIZE)
+>  		return -EINVAL;
+>  
+> -	buf = (char *)__get_free_page(GFP_KERNEL);
+> +	buf = kmalloc(PAGE_SIZE, GFP_KERNEL);
+>  	if (!buf)
+>  		return -ENOMEM;
+>  	if (copy_from_user(buf, user_buf, count)) {
+> -		free_page((unsigned long) buf);
+> +		kfree(buf);
+>  		return -EFAULT;
+>  	}
+>  	/* NULL-terminate and remove enter */
+> @@ -248,7 +248,7 @@ static ssize_t lkdtm_debugfs_entry(struct file *f,
+>  	strim(buf);
+>  
+>  	crashtype = find_crashtype(buf);
+> -	free_page((unsigned long)buf);
+> +	kfree(buf);
+>  
+>  	if (!crashtype)
+>  		return -EINVAL;
+> @@ -271,7 +271,7 @@ static ssize_t lkdtm_debugfs_read(struct file *f, char __user *user_buf,
+>  	ssize_t out;
+>  	char *buf;
+>  
+> -	buf = (char *)__get_free_page(GFP_KERNEL);
+> +	buf = kmalloc(PAGE_SIZE, GFP_KERNEL);
+>  	if (buf == NULL)
+>  		return -ENOMEM;
+>  
+> @@ -290,7 +290,7 @@ static ssize_t lkdtm_debugfs_read(struct file *f, char __user *user_buf,
+>  
+>  	out = simple_read_from_buffer(user_buf, count, off,
+>  				      buf, n);
+> -	free_page((unsigned long) buf);
+> +	kfree(buf);
+>  
+>  	return out;
+>  }
+> @@ -313,11 +313,11 @@ static ssize_t direct_entry(struct file *f, const char __user *user_buf,
+>  	if (count < 1)
+>  		return -EINVAL;
+>  
+> -	buf = (char *)__get_free_page(GFP_KERNEL);
+> +	buf = kmalloc(PAGE_SIZE, GFP_KERNEL);
+>  	if (!buf)
+>  		return -ENOMEM;
+>  	if (copy_from_user(buf, user_buf, count)) {
+> -		free_page((unsigned long) buf);
+> +		kfree(buf);
+>  		return -EFAULT;
+>  	}
+>  	/* NULL-terminate and remove enter */
+> @@ -325,7 +325,7 @@ static ssize_t direct_entry(struct file *f, const char __user *user_buf,
+>  	strim(buf);
+>  
+>  	crashtype = find_crashtype(buf);
+> -	free_page((unsigned long) buf);
+> +	kfree(buf);
+>  	if (!crashtype)
+>  		return -EINVAL;
+>  
 
 
