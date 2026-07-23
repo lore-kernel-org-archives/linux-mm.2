@@ -4,62 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2711C531CB
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 11:29:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39F7DC531CB
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 11:30:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 45C456B0088; Thu, 23 Jul 2026 07:29:30 -0400 (EDT)
+	id CC2B36B008C; Thu, 23 Jul 2026 07:30:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 40CFD6B008A; Thu, 23 Jul 2026 07:29:30 -0400 (EDT)
+	id C99F66B0092; Thu, 23 Jul 2026 07:30:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2FE366B008C; Thu, 23 Jul 2026 07:29:30 -0400 (EDT)
+	id BAFFC6B0093; Thu, 23 Jul 2026 07:30:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 032F16B0088
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 07:29:29 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7B29FA048F
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 11:29:29 +0000 (UTC)
-X-FDA: 85019820858.28.7F90BAA
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 283BD14000C
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 11:29:27 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=dmcrERvO;
-	spf=pass (imf09.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 95A0A6B008C
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 07:30:13 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0DD68140463
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 11:30:13 +0000 (UTC)
+X-FDA: 85019822706.05.E2C08BD
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 3560E100002
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 11:30:11 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=S+CxPn4V;
+	spf=pass (imf14.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784806167;
+	s=arc-20220608; t=1784806211;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4XnK5MSZnm10txveKUazi1pt0QZOCFoh2oisogPVwAY=;
-	b=wxdIG0Nq8ckM/JcQuflA56Dl2tAMmSa0vsLbtZojJVBcaygmdfmQxFW8+eEv41xX3gRp6u
-	FIpRKrHXkNmOnvFy03owdfPh/zr4NWf+b3KxJCUUa1nP/nM9EdFDev5xEcpul2p32D+zfM
-	LFCzPedo47vAz+EnmAkecn2QZScs4fY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784806167;
-	b=nEhij7aCfvb0vfFReF4CbHP2YiGBjHwwL4pgmULQB4HNG/fIvwL5PKTHslkr5xaV1fMtnb
-	H8sYA++jcRdOm2Lu/ho0aVv1aq+8hhD/+BizCgkb68xLMp361tKkPt5oayOqneiA8l5rYi
-	wZ+6uLeXNaORVIPLehFimPOTeKpVrUA=
+	bh=TlMXS0ReEa1Jcg5Kw/12F9RUMNxQ8FVd9z21BkuydjE=;
+	b=GclYCLgXILnfgsM0e1rYgYBmrZVLUYy4TZHWOuFlRe4Wu974QnXMQ473pYoNxIkHU13OMc
+	zGRdKi0k2OmSBODn0lVxv0sCZZ6wp/BFwjivI3MhSeJZGGyZ8ebZOVVrZM/cyaFMLf6R4M
+	Dz1HwDtISNpUZdLFSZvBplpHzRLGiAs=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=dmcrERvO;
-	spf=pass (imf09.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=S+CxPn4V;
+	spf=pass (imf14.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-Date: Thu, 23 Jul 2026 19:29:17 +0800
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784806211;
+	b=HwreJ9kygebselSHKL1We+lJQ5/h3GGWLtDLpI4AZ1sVSPoBuetTfxdRwiDgycyPbyY/Pb
+	xNfPZ8OUH/EmZR77Q/DfNlXOCfp7L5Z5zJQAgKcu8CvJ+RGzFBCIaUx54J1X+qTSgGTuJk
+	Nu1lYiR/7YFXClUnGjY8DKzQ69ryUJ8=
+Date: Thu, 23 Jul 2026 19:29:54 +0800
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784806165;
+	t=1784806209;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=4XnK5MSZnm10txveKUazi1pt0QZOCFoh2oisogPVwAY=;
-	b=dmcrERvOOrxVpIfxHgtyEWEvap5lrXEjssBSFtGgA/+fX2aNAs6CQAq9AGzIkJRB1Ch+MU
-	T2RdeaIPyWYC++4/ReVAQcWvH1MCnxevqYUO+LzvCgSqfy62lWAkN1cow5j3uoX1hIwuxV
-	8ruwfWHStx6xP345j8n5kw5DRBYFKc8=
+	bh=TlMXS0ReEa1Jcg5Kw/12F9RUMNxQ8FVd9z21BkuydjE=;
+	b=S+CxPn4VeSNyIfb3s0ABJkkUNzNutt68r9nqps6I/lyAtvkSCQnLvPld/W+kKaNpsYjWg4
+	d8mxCwLHUTJWLe1QHnM59lyqfVjxrsqlcQrxlTSBqNxCROwWnKVAEA4422DjU/UVCaLskT
+	OZFnUjxbOo+xE63T508iZlC0nKXtdPU=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Hao Li <hao.li@linux.dev>
 To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
@@ -69,24 +67,23 @@ Cc: Harry Yoo <harry@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
 	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
 	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
 	cgroups@vger.kernel.org
-Subject: Re: [PATCH v2 03/13] mm/slab: remove objs_per_slab()
-Message-ID: <amH619DxX4_rO6kM@fedora>
+Subject: Re: [PATCH v2 04/13] mm: move struct slabobj_ext to mm/slab.h
+Message-ID: <amH7GSSZNliu1vWt@fedora>
 References: <20260720-b4-objext_split-v2-0-2fa7c6f60dbe@kernel.org>
- <20260720-b4-objext_split-v2-3-2fa7c6f60dbe@kernel.org>
+ <20260720-b4-objext_split-v2-4-2fa7c6f60dbe@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260720-b4-objext_split-v2-3-2fa7c6f60dbe@kernel.org>
+In-Reply-To: <20260720-b4-objext_split-v2-4-2fa7c6f60dbe@kernel.org>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 283BD14000C
-X-Stat-Signature: b9a1bnpnymibpak787tsd9w6qycc3bgk
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1784806167-414287
-X-HE-Meta: U2FsdGVkX18k50AZ2n4eh4ieWC17zWhJJRT1v0LI50xOoiZIEO79hPSqNvPu+o8FeYj4dRpIWhhjghVdrNyEVcHCCNQShVG+/L4iodkVuP/o1820TrCAIr0qYtxSSgK6laUVtq3Ni3xZf12nFAcxEJfivTj7r+pcXaLDN6FJEYY+wkHyMcIAln7do3L/aexY41pmboXAJEJOoR9RW2MEkH/zmEMfQyN5zL8OJsn/btfuZxDkZG0JNicP88ycMgBYX0hZ0Il+yF4kZI3ix/PbHdza7+oYyJB19wXHSWuTL9rW81RfNIKhxrtJA6fLm14/ywyCELASjzKuoIrtZIU0KxAnBJt6wwqdPQKzsMN271bknYEwAwIZwYP9+izcYdnCN9D+4RaDvkifZxmHbsLKgw73RhgaDBlntImvU8kNIBAz9ZrhJ9EH8J1IAiuu6ZmokTZiG71zq+68cEd1Ju2XXkgcsuUp0w/gwJqTuXobv5LIpzTNMh1Zr1DgAmYzzraZm2dyTGSGvsK23+TGttrO7bCJlD4If3Z7gOiFHapyb/sHA5RqYyuRSKkDJGnVGm5hJz+hF+mEVdkrlks4EKG3HzXK6HoXHVZaT0p0DytfGr71f4fHH3xccOyL6p2QbVMf1ZzkPgpd4ay3n3oq38nIqUTTnZYzvve/m1/lx8O9hX3bsWSGnd2nRpJXLw/tZftm5F3+m2C9ZKPegRYXyZDc5+wJ83q6NM4ATcdhGtAFVnQ3aD16G8pYsbCWIiXqnKMAOXjiMVca+9bwNtXZd8fFlel+NPKjHR/IsCZ/2+Y2jyRk0MCVhbNS4/CYHp6/aowIn6ISWNoBb584vk3PMqE6MfWPNE2CF+W++bfUjRE+/OeglI0rkt8Ny1sI7m65MBXKHDrqAg1Cgw7VlLXy0AV5UsCQDCRnzOOQeVKT0bRbetemIOfoak6goC+TMf1b25fyANiz18FHxAb4pdZitpc
- GNoy089k
- N3cgUv/dh3hVW/4BMsPG34eOFSTZrflK4LgqZH1gXqAuXzwuFc/vU0SY7wA+FqU7poAexeZn+JgH8G1BOaTqF+RKMHTY98THhXJN8qV+Tz4Dp4ClMAwpHVV1O7fOxAIyWtohd8Hd7fMMcPMR4AZBAB2oSUVGPSMbMguvscuQbL6SgBNaviOw17JUbTd9FkH9QaMUpK8O1U97kfxIjR/0ySOm2YcCB2RVqRjsQz0I41Ux5ziVDYvswGqsd92mzMuPdRFZxM7Kb/RhQM2RD56ncEaUfHIUIHCHF5NcWYJLOYHmwfvyRxA/jMCOTQsMaNKwf48UmQ5WXLOVAmZdqPZT48VJbSfl+jHzvQ5Cm
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 3560E100002
+X-Stat-Signature: wbx3eu34gha73jg7ig5k4wsfi913o4uq
+X-HE-Tag: 1784806211-216697
+X-HE-Meta: U2FsdGVkX18hw+dImeqCinhKBYfq2kino5x2PwkHoTRMYdaiCuBo+EPpS4yJf+tH0lZCitw+jS5kwXT/LIwYUij8Q6huQuPwTsIe1Hk3N9BkeUW0bJ3Iyc3tXPIRU8yrR+xhjNsxshwZsyxIbIAOOv5FaZ+M0J3u0ieYNhVNk2R60SC9RuJZIOQwc+87Mezc9IMtpA9sMqrJu6ZwKottLPCERwmo6VxUYni0UeJRSxHpZJ4z7a2gmWXPzILJw1x7P13MnYyBkjvglcTbeUu1jY5rr3vmnAjWn+KiUhmF0R0YcAWAf48qLtlIYmbg3PNzo0c47kEpjn5RyvIKQJA2pBiQ0NEA29W6ZalXQc7JmyRzY3rXiqeKkMjih0RNsx79IkxyTe0eGaHb0BYCknNRQopyNLVT4Ymzr3rdc+iptTH2t+TtLtntFTnGF9rUcJCbcRevRZwwa0VYZdEAvd2eBtyF0Mp3NVZJl7/+Bbv3TBp3cmNR+89UJtPOm78LSBypom5IMxNpaPhQpnN6mWcOmpAeBuD93JJW67nJGE+O8nABeKfX+EvPSwHDHGQOLyd3SKNOUBPTrGXOXXcRvy1Q2EFnH6KOrKKO2BxdsimDBx0N6ZjZm131YFXVohescxaiBNlUafdi3gP5i8wMNLJAICWCXhQ53qZDYiSEfQrqjQAfjLkdI1/y0tYqtmCuplv1m74/bHSctWaniia1gZddUDGVriqW214SXnyHN53i7AZsXTdSUL1lBVtCffzT0GFzaPAmM21uzZ/cHRwRTbTIvA1s3itBf71OuyMZvg+vyrih9EGegdmcv802uWhb4rA9/uvF7A281L7xTm0MZ7sMjAxJlYwLyBCthz51AwkAv7jeaV7iFE55MG3tv+L2Jw/y6jX5GQRpv8XHfOGXP6ywF0yMJKOJfEUm6k/JBgvTQwaMZjzPOPGXSU6ty0xH9Zer88N1BgSqUochAwK4y85
+ 7bSPRJuj
+ hHc1miGOxmsUhOY9ZUE/8YfX2/mxArRKUZ3p+dtjbNCAw4VFTJVvk2l7zdzRjAPZJA9t2d7obuz4kL+y7YzUqWXKAMQemxe6wrJ0QV2on3px3JXo5QZ23LZo26l3UPBkdhEFOVRxodjNamEu4cyt2lglK76NqmgcOzxUeuje7DoBQoQxXwJmDTg9QmYuczucXwtdcpkXJtBxEol8cnyJNj5njOlgHSMz66MQH8Yo+gOlJAl/GorRRhfmwPV3mFnmRRujBM27zuE7ySnZ13DJgH20lfiAVS8rAdcwIDvhkIu20jmg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,20 +91,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 20, 2026 at 04:16:17PM +0200, Vlastimil Babka (SUSE) wrote:
-> The function has an unused kmem_cache argument and almost nothing uses
-> it anyway; doing slab->objects is simpler. Remove it with the last two
-> users. KUNIT_EXPECT_EQ() needs a cast to avoid "error: ‘typeof’ applied
-> to a bit-field" but we don't need to keep a wrapper just for that.
+On Mon, Jul 20, 2026 at 04:16:18PM +0200, Vlastimil Babka (SUSE) wrote:
+> Users of include/linux/memcontrol.h don't need to see this internal
+> structure. Further changes to the struct will reduce recompiling.
 > 
 > Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 > Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> ---
->  mm/kfence/kfence_test.c | 2 +-
->  mm/slab.h               | 6 ------
->  mm/slub.c               | 3 +--
->  3 files changed, 2 insertions(+), 9 deletions(-)
-> 
 
 Looks good to me.
 Reviewed-by: Hao Li <hao.li@linux.dev>
