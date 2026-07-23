@@ -4,87 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D690AC531CA
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 11:33:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70E26C531CA
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 11:33:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BB5D76B009D; Thu, 23 Jul 2026 07:33:08 -0400 (EDT)
+	id 5C4246B009F; Thu, 23 Jul 2026 07:33:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B8DF86B009F; Thu, 23 Jul 2026 07:33:08 -0400 (EDT)
+	id 5743A6B00A1; Thu, 23 Jul 2026 07:33:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ACD066B00A0; Thu, 23 Jul 2026 07:33:08 -0400 (EDT)
+	id 4B2BF6B00A2; Thu, 23 Jul 2026 07:33:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 87F746B009D
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 07:33:08 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 205661C093F
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 11:33:08 +0000 (UTC)
-X-FDA: 85019830056.13.804A1E0
-Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 5A30B40010
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 11:33:06 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=UmK2w40M;
-	spf=pass (imf04.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784806386;
-	b=2Mwo0DSynUCqMmPe8O5WvE5V916ZNXOAIyc+o7rEOXrOIAEfXnNo/sUsbZJoxOLyT9jHim
-	QsTdFLcHtUCSEDgqc08Zt/70LlovOsA5Tp45/0SwzktflvZOD6ZK6ycfJm9h1l6TEnB1/O
-	QdH99CSMLMdw1bcQpDN7vzeSWZBsvCo=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=UmK2w40M;
-	spf=pass (imf04.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 2299F6B009F
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 07:33:47 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A7A381C09A3
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 11:33:46 +0000 (UTC)
+X-FDA: 85019831652.29.6E529C3
+Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
+	by imf30.hostedemail.com (Postfix) with ESMTP id D9DD28000C
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 11:33:41 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=RcC4lbyw;
+	spf=pass (imf30.hostedemail.com: domain of lixiasong1@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=lixiasong1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784806386;
+	s=arc-20220608; t=1784806425;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4uXExJqvLMtKg00EjemEMSid0MvB4tr4xwG+35o6dDM=;
-	b=FO2TPNNaHiimp0B6E3cwbU6F+goBc0YgheFBZxzd2JdIZs9Vehk5M7a/cy5+l08Y5KUlxq
-	IC0xpeeVz1Hn1OiQedDvwa7NsqglKFAg+9pWICzQzhV/UI4Ss+GbCoPH+AN83LbM4UtulM
-	UV5DuNEWEkeBZ9FBu6IU3Z74BuEwpwE=
-Date: Thu, 23 Jul 2026 19:32:56 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784806384;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4uXExJqvLMtKg00EjemEMSid0MvB4tr4xwG+35o6dDM=;
-	b=UmK2w40MFyZ/JojmgRCaLx0E0N2DysqKVJWJd9B3jE/RMQy0AaK4rleRGHpRCwSpLACDZX
-	2Sb1AJIWcYppgilQGqaVo6dk4+FQ/IsInEXicA3SpQZOhrN5BV2/JvU5PKopd6qyZbt6nM
-	EvQy6fT2YGRXCbcMIY1vQGGZq7+5dmk=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Harry Yoo <harry@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Alexander Potapenko <glider@google.com>, 
-	Marco Elver <elver@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	cgroups@vger.kernel.org
-Subject: Re: [PATCH v2 08/13] mm/slab: replace slab.stride with
- obj_exts_in_object
-Message-ID: <amH72thTfL0Ur19U@fedora>
-References: <20260720-b4-objext_split-v2-0-2fa7c6f60dbe@kernel.org>
- <20260720-b4-objext_split-v2-8-2fa7c6f60dbe@kernel.org>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=GxVNFt8xQTYyKNyZXDf27eETT5f/KM+VvCGWAK3V/z8=;
+	b=8R/Bd+lN4c71lHWED8Y1VDCczjkR1S+PuQzKCiEJoA65lfKbDu9tSYUvnkstgQlqQRmAdH
+	bIGHYhjfOAfEu92r4+CyGRbK6Sg7v3DBvpn2vofUl7pyuME/e6cKYWBfqhl0eoXcCbdbuW
+	lXm9JBYLHfPT1fndYUliu88UyrgCCYw=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=RcC4lbyw;
+	spf=pass (imf30.hostedemail.com: domain of lixiasong1@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=lixiasong1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784806425;
+	b=n8zL/1nvLGOj66YNu6/oQmuWOcTEfngkMIovqGyJGxlUR5RXcvhZD/Wp2O9RtfwUfJKgMB
+	y2o20c+iDUTmQrMsQcwTuiMXhDTwZ8/DdgWRAmZFWeoW1DUUjpytAt7XuAgxGstwKwvF7I
+	CSJBAjrGDC05FkWOBjoW/dDRtUGCzjU=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=GxVNFt8xQTYyKNyZXDf27eETT5f/KM+VvCGWAK3V/z8=;
+	b=RcC4lbywS4NyQB8ogFvDv3vWqNzsM05EjyaK9pIIK11HfiA3i/BbV6Ul/8d4m8g2e71eXSoFq
+	+AYUlYCq3WtuIWn/OpH6GHJdRZyWfuRLL/K4lCmUXrUAxZ/bfT/NRDkKxrl2JFA1RhwsX5uv1ig
+	2iEQqzz8YnL2S1s1GtZVN/E=
+Received: from mail.maildlp.com (unknown [172.19.163.15])
+	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4h5TKS2PCwzLlTV;
+	Thu, 23 Jul 2026 19:24:12 +0800 (CST)
+Received: from kwepemj500018.china.huawei.com (unknown [7.202.194.48])
+	by mail.maildlp.com (Postfix) with ESMTPS id A1FC740586;
+	Thu, 23 Jul 2026 19:33:35 +0800 (CST)
+Received: from huawei.com (10.50.85.128) by kwepemj500018.china.huawei.com
+ (7.202.194.48) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 23 Jul
+ 2026 19:33:35 +0800
+From: Li Xiasong <lixiasong1@huawei.com>
+To: Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, Andrew
+ Morton <akpm@linux-foundation.org>
+CC: <stable@vger.kernel.org>, Hao Li <hao.li@linux.dev>, Christoph Lameter
+	<cl@gentwo.org>, David Rientjes <rientjes@google.com>, Roman Gushchin
+	<roman.gushchin@linux.dev>, Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+	<yuehaibing@huawei.com>, <zhangchangzhong@huawei.com>,
+	<weiyongjun1@huawei.com>
+Subject: [PATCH v2] mm/slub: fix missing debugfs entries for caches created before sysfs init
+Date: Thu, 23 Jul 2026 19:55:32 +0800
+Message-ID: <20260723115532.761920-1-lixiasong1@huawei.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260720-b4-objext_split-v2-8-2fa7c6f60dbe@kernel.org>
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: u6at55mz7gp8so87nmj9mtduk9fouf1i
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 5A30B40010
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.50.85.128]
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemj500018.china.huawei.com (7.202.194.48)
 X-Rspam-User: 
-X-HE-Tag: 1784806386-591548
-X-HE-Meta: U2FsdGVkX1+dTO6tzD+M1QQwDWrOptyx37uEU0a7bNTe8vnhybjKMOMuETqwKOMtK+66/7vvNTxpmXY2ctlcLrHAja8fUBYi4+QE4i7BnOAWyWJ2osXpLCsubN+BTBJqLVdcrVywabFaZA34/KFuSV8kj1KemEjtKY48RPp4R4rs0evM+m8aX72Gn41qcjiKL2uWKqVfv1b9OgyCZYYYAuZWf4XDmPa/An8NV5BLGiWBt2npdan/aHuBNMyhzxrLuP9ZJUljbBobZ9Attfzzdl64aEp8znjNYs48gNp1QgF+JouvWsO84xe7EfUyAYvQ0T8ViqR4D3AQ5xQVSCc8o3zxrOGT5nPimDvIMMnF7HEyxJb0puRhCzzdNF8I3/CIcoQ9GDOCxgSlKM8qxgv9PrLpKnnMm8tnNKwe+8zhRjg/9SF3SouoXJ2n9z1pedyvGNEJs005H4/sKXcgP/Jo3+Pt9nYWbr0UIfcxeWEXvYafS1k3Y72Icz+m9GHSbDjUsC2PS5E9AV+254dzUIG4MJIVSI8BvmrtO/RBi3Q92PUQ832BDT0lb3F6K+u35D+cEe1Djroe+FcePVgmYejQ68i7sDmaCC1+RP5BGQgx8BtUcmhZHBUF26dWhKrat9dOE2lzlQKkJQwjlmOn6GNyfkHHhRgscCPzs8SAiiaaH3CBY3w+SSYExlW11WFcR8xmq7Ggok7A+CAemI1n9d0LJk2ovNoIUKhmYjSNqBuhNRPE0XLKV/4vbV3/9tvzWrcVNEso6M58my3nJQEk4K/SJJ23kLt6ABKLzoJ5KlfdXlbvIDfpwheXW/Y0mo6wvukU66kLzYQsL3TI+BOOY70Uafq62QmHtTM/AMoiGuhjOpxR4rKCpb3rQtXwo5TL/A8+XiUdviJT1tLAtYpH0BaWpXgMhTI6BGLcXYsRw0gn8UTmphtyjE9zs2oTJesGNFOxyGyCS3SRnXB2zD2BWV2
- aUUvum77
- 2k3BLQ4E4vaDRC7K0o5qOkFIjSorllaxFlZucQih815bsh5HsX4oPKk2IVAE0o1zdx9UCBf1xTRtO5ug+jYinWfKPyxZz+f9M4MsDgx45qmzyFD9fEOBAfhasb/50ntieVIcBM0uZOPSgRNO5J7FnXDk7eMalukvTMjGT4ul0Lt0r5SP76gYLaBDT7LaI7fJKLJVgK7mYjF4r7Z84veVuaTV9A4DIY91XzDgvL8gC6WYCS5z1Uux//6dsIJ7qvHkKQ4QlWH71agEexlL+/ZW9orjyvrlzl+ykzj9fevHmjTkDEIw=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: D9DD28000C
+X-Stat-Signature: 5ff95qw5nwj6zjmxi3qhdsywak68acj7
+X-HE-Tag: 1784806421-920552
+X-HE-Meta: U2FsdGVkX19erHTxMwW0++QH4gSg7JFUrBZTuogeXKuwT+exPSX0C7wG+KRjb5tU61Tk+kexaOoq/KoZW5OsXnhKvYI/Lv8tm+9wZ0xR0XPrTk0Hh2Z2fCnkd4g7rpl3JIiweIHscA9cVi+f+kU2Kc2NrgPH2EjHlQZF9JIHb7eQNn2NH1NfJ0XGbKaE+nIUl7NTfGe74meul5mJteGhT7K3q/ieQMmUY02SOBji5MSQLreTLIxs9XEixAHiy92SdILTepf8klqCXNDRsPFgVIiS5OPqlbJAakz5MnCFVqp7CC0KZYQ6TXdiaOlquze8nhGoiwlEgJctxiCcuxJ5obYKdl0vQV5/fx7Xm3PQeEmO6lcMj+TMrqJCnvpa6T4B8E1BzGSwiAdMyFxNC+c+B9m3UuU6wT7x/+EvmR8gVd3hojMf3/2QxKD9Vv/xn5oMTRa8Sd3bMqYu3yk4KwGF/bt87+7FFkcOdcTBFltDidkxTT9zE+lo/2AgM0+GG0X+NMVbmKSeX6/SjJUED0YNSFhUE/yDaRXqD9EAKsINyg1VVQYcfGwKd0E9UNV3bXUvpilTiU3yeKlhzhrMCIcFScvavVCQN7MtOTc2UDnloy2aYDkAnehghHKZDEbgAOHyloY8arGvtRn0anXzG5woy7cMqpkTz9Ae97siUMQ+H3+fTlg/jymrF4iZSnN7THTDvBHZENRG+gbwBfOPY0QBn65PAXLzx7N3bBoT9tM9Hii6upYjjj1SkK2uTuvr5Knb9stqWoYfjg6EOo5vo1n+a3D5WQU1t14gEzq6KDvij/lHes8COmAnFTcBzna2o04jCXxWuYe320d2l6IZ0VuAn+7ccy5ziTuTyzzjx7HwSWZhG9VMUVG8ynsN+uIhUYdCURXLEbmcm7gpBHVuIkuX8q7ProaHoswZHObbbsl1i2eleLR35mkqEEgrp1so+8ja7T7o4kLNfpN5J6DrlSG
+ FoP3N1dk
+ me4f8zxFy9tkOo7nbeA6yiAH5Ano/XQkPPXlofHYDPJluIzLTlxSJ7q2Hza1/oBC2doNLn3zjJ0av+cBXrhA4OyBUP9wjucdUnMfP1/OLncgIEglWkyzHljzB3FZZWlTkFPTUNZzuze5S+GRvJbMx3pcoFEDKts7jLNOb2m7aQ7BlS00oeDbghmec47wbmYUa1tEb/zkfFoc2SiYrkpfoFBeYmHpjKEilRsZJJJKLcHjFFG7PB9dthXawLtBrE5VKcMgOnA1YV4nSpDzODaMbQVfyIZkBZKky4qHs/5xQdjuIjKSMh0Rbuw+2KEWfNl8g1GP+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,30 +99,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 20, 2026 at 04:16:22PM +0200, Vlastimil Babka (SUSE) wrote:
-> The stride field is used to convert object index to an slabobj_ext so
-> both compact arrays (kmalloc() or in-slab-leftover) and spread
-> in-object-padding obj_ext layouts are supported.
-> 
-> In practice thus the stride is always sizeof(slabobj_ext) or s->size.
-> 
-> This simplifies the calculations, but with the upcoming slabobj_ext
-> handling changes, it will be easier to stop storing the stride and
-> instead just have a flag whether obj_ext is in the object padding.
-> obj_exts_in_object() can then rely on this flag and slab_obj_ext()
-> can use that to determine the stride.
-> 
-> No functional change intended. Performance impact TBD, hopefully
-> in the noise.
-> 
-> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> ---
+slab_debugfs_init() creates the slab debugfs root at device initcall
+time, while slab_sysfs_init() moves slab_state to FULL at late initcall
+time. SLAB_STORE_USER caches created in this window miss their debugfs
+entries because do_kmem_cache_create() skips debugfs_slab_add() when
+slab_state <= UP.
 
-Looks good to me.
-Reviewed-by: Hao Li <hao.li@linux.dev>
+The affected window is:
 
+  slab_debugfs_init()
+    slab_debugfs_root = debugfs_create_dir(...)
+    list_for_each_entry(s, &slab_caches, list)
+      debugfs_slab_add(s)
+
+  kmem_cache_create(..., SLAB_STORE_USER, ...)
+    do_kmem_cache_create()
+      if (slab_state <= UP)
+        return without debugfs entries
+
+  slab_sysfs_init()
+    slab_state = FULL
+
+Initialize the debugfs root and add debugfs entries while
+slab_sysfs_init() holds slab_mutex and walks slab_caches. This gives the
+sysfs and debugfs initialization an explicit order and prevents caches
+from being created between the debugfs scan and slab_state reaching
+FULL.
+
+Since the debugfs root is now initialized later, a cache may be released
+before the root exists. Guard debugfs_slab_release() in that case to
+avoid looking up the cache name in the debugfs root directory.
+
+Fixes: 1a5ad30b89b4 ("mm: slub: make slab_sysfs_init() a late_initcall")
+Cc: stable@vger.kernel.org
+Signed-off-by: Li Xiasong <lixiasong1@huawei.com>
+---
+
+Changes in v2:
+- Move debugfs root and cache entry initialization into
+  slab_sysfs_init() so both use the same mutex-protected cache walk.
+- Guard debugfs_slab_release() against an uninitialized debugfs root.
+- Update the commit message accordingly.
+
+v1: https://lore.kernel.org/linux-mm/20260720145124.3684976-1-lixiasong1@huawei.com/
+
+---
+ mm/slub.c | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
+
+diff --git a/mm/slub.c b/mm/slub.c
+index 9ec774dc7009..70e9aeda6a8f 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -339,8 +339,10 @@ static inline int sysfs_slab_add(struct kmem_cache *s) { return 0; }
+ 
+ #if defined(CONFIG_DEBUG_FS) && defined(CONFIG_SLUB_DEBUG)
+ static void debugfs_slab_add(struct kmem_cache *);
++static void __init slab_debugfs_root_init(void);
+ #else
+ static inline void debugfs_slab_add(struct kmem_cache *s) { }
++static inline void slab_debugfs_root_init(void) { }
+ #endif
+ 
+ enum add_mode {
+@@ -9771,11 +9773,16 @@ static int __init slab_sysfs_init(void)
+ 
+ 	slab_state = FULL;
+ 
++	slab_debugfs_root_init();
++
+ 	list_for_each_entry(s, &slab_caches, list) {
+ 		err = sysfs_slab_add(s);
+ 		if (err)
+ 			pr_err("SLUB: Unable to add boot slab %s to sysfs\n",
+ 			       s->name);
++
++		if (s->flags & SLAB_STORE_USER)
++			debugfs_slab_add(s);
+ 	}
+ 
+ 	while (alias_list) {
+@@ -9985,23 +9992,16 @@ static void debugfs_slab_add(struct kmem_cache *s)
+ 
+ void debugfs_slab_release(struct kmem_cache *s)
+ {
++	if (unlikely(!slab_debugfs_root))
++		return;
++
+ 	debugfs_lookup_and_remove(s->name, slab_debugfs_root);
+ }
+ 
+-static int __init slab_debugfs_init(void)
++static void __init slab_debugfs_root_init(void)
+ {
+-	struct kmem_cache *s;
+-
+ 	slab_debugfs_root = debugfs_create_dir("slab", NULL);
+-
+-	list_for_each_entry(s, &slab_caches, list)
+-		if (s->flags & SLAB_STORE_USER)
+-			debugfs_slab_add(s);
+-
+-	return 0;
+-
+ }
+-__initcall(slab_debugfs_init);
+ #endif
+ /*
+  * The /proc/slabinfo ABI
 -- 
-Thanks,
-Hao
+2.34.1
+
 
