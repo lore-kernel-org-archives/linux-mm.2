@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C37D8C4453C
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 05:46:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 957E5C4453E
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 05:47:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A6A856B00C9; Thu, 23 Jul 2026 01:46:54 -0400 (EDT)
+	id 7073E6B00CA; Thu, 23 Jul 2026 01:47:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A13976B00CA; Thu, 23 Jul 2026 01:46:54 -0400 (EDT)
+	id 6B7A16B00CC; Thu, 23 Jul 2026 01:47:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 902FB6B00CB; Thu, 23 Jul 2026 01:46:54 -0400 (EDT)
+	id 5CDE66B00CD; Thu, 23 Jul 2026 01:47:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5F7226B00C9
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 01:46:54 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C7A50A03AF
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 05:46:53 +0000 (UTC)
-X-FDA: 85018957506.21.E9AAEE2
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3493B6B00CA
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 01:47:03 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A15181603C6
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 05:47:02 +0000 (UTC)
+X-FDA: 85018957884.08.8A023DD
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 6D825A0003
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 05:46:51 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=NZkM7sAA;
-	spf=none (imf15.hostedemail.com: domain of BATV+ab842403ba89e86779d5+8369+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+ab842403ba89e86779d5+8369+infradead.org+hch@bombadil.srs.infradead.org;
+	by imf24.hostedemail.com (Postfix) with ESMTP id B4186180005
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 05:47:00 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=DI6wpV8r;
+	spf=none (imf24.hostedemail.com: domain of BATV+ab842403ba89e86779d5+8369+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+ab842403ba89e86779d5+8369+infradead.org+hch@bombadil.srs.infradead.org;
 	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784785612;
+	s=arc-20220608; t=1784785620;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=K+PZXaq32U3TufEyMUaewYZwMLMqHIERdn548N0cTs0=;
-	b=aXCs++DfrCIqnGSmlejESj8lUXeS08DB6p6ev6EeLGQwDgZr1rQ5Saf5PFG3DTOPh09lbX
-	HSpvycAjACGAW9iwyjdFotTstRjN/48ZiSn+H4AiD8oXkKBoRtEYlYWgP0pR+iVd+7aWRb
-	h+5t0bwaYsYfTYnjL6JEMwm1ij2/nic=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784785612;
-	b=fMuV712tAfnbHGOQtq0rrfJhel6+qSiT7vDFZ3aM1ms5bVH48ahslh4jsMDkVBO9q3v9jv
-	kn9KAWLPMwjAFHCx+jh3SajTYlf555qqmNdDpqR6YjB4wWpJurC9EOI3K72EGjopdQCv0Y
-	yXRPn8tbhVUG9qTcqqJpxr8r33AzTVg=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=pcRYB9o1CpB5jJsRwr6821KrXtl1M65m2wTd3bP1/Cw=;
+	b=NnTPQbw0uo1zzLlSbs6/Tp6gGaB/MuVhkNdzjEuvkF0TpnhXGriFy9p3Pw2viMWMg20GdB
+	he8b9rhkSGc0YD/yMK+2CFIQgT1Cg2Hrqx6YfjHYBdaBNu1XRfK4xBx2qY8EAYq2oqTnqk
+	f00bgqOdi27l/HvgxxTHfzs5pjkmxZk=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=NZkM7sAA;
-	spf=none (imf15.hostedemail.com: domain of BATV+ab842403ba89e86779d5+8369+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+ab842403ba89e86779d5+8369+infradead.org+hch@bombadil.srs.infradead.org;
+	imf24.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=DI6wpV8r;
+	spf=none (imf24.hostedemail.com: domain of BATV+ab842403ba89e86779d5+8369+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+ab842403ba89e86779d5+8369+infradead.org+hch@bombadil.srs.infradead.org;
 	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none)
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784785620;
+	b=8EgBu0N5zYGPPPdpHt6Tgv0Hnv19NKfSD3wo6iim/A6mllUlx1BxHxivEDQjDLr5ItoAtu
+	nhqs1tBEb8dgGvEep4zyc6p6SgPAIGQM/Dr+bAAvtyZGo1luX+ZSiucIkc3EvcmFl6U5mC
+	7LSzZSWz1ynRmibRoQHFd7GQU3QWwjc=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-	Content-ID:Content-Description:In-Reply-To:References;
-	bh=K+PZXaq32U3TufEyMUaewYZwMLMqHIERdn548N0cTs0=; b=NZkM7sAALmaobWAaZMJplx7y/U
-	LsQ4OswQChA5sGRNqjILzHGzJNfueRIJzfJiHrxA/A+i4KtkMZN1LC6dUHc2nNqb8E+TZmKnf1UP0
-	vqjBmd0GbYY6wOcyRT0GVmHFid1Vnrd6LhzUcohsHGgOkQC3666hydey0r0M64SVtPvY+7E48xR1+
-	wiqDDdv9V0HWS43BMJC3K7VH9H2VD87W97flsH57GEEhkd5ge4SmeKn6cmRh1cFICRBJkPxCH5GL0
-	qqqWBp9GhJ2QyQy5j3WKSTyDPaxOKlc7AbaR7QLPhu2q4PXfjbuXBl3W0SSvknPasBcW5m3gN+M2U
-	DTdTtc2A==;
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
+	:Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=pcRYB9o1CpB5jJsRwr6821KrXtl1M65m2wTd3bP1/Cw=; b=DI6wpV8rEtQVdeWHAke9bjq8wu
+	wC0FuZ5lRLAB197Fqglgn5hrmJr7cs35jEo/78WySTb6bEB/SyGU4G6u1rvTxTzrwWX+AukskRf+U
+	TuLlBHHb8QyRQBvtQfMqI1mNatec4DzqztCPfvjLAb8JTSDAdGV79JFAnVQAWGtxkPsEr10e6KArw
+	nisHmsIa4OX29uUi8ylg2e5r97u312LxvkTAFV3QZoafJXof5R3o68YHVqWVsE21gHdEU0JJy8At3
+	o65DkZOCBBJvHgTugEBft4iloJ6qxvVQT+syZ5ASbyxmwbO2fsClDsArCFt3/nX+g8TwsiAzn0xG7
+	byqOLwJQ==;
 Received: from 217-76-162-32.static.highway.a1.net ([217.76.162.32] helo=localhost)
 	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wmmGV-0000000DV0i-2isy;
-	Thu, 23 Jul 2026 05:46:40 +0000
+	id 1wmmGg-0000000DV1N-3y5c;
+	Thu, 23 Jul 2026 05:46:51 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: 
 Cc: baoquan.he@linux.dev,
@@ -79,21 +79,23 @@ Cc: baoquan.he@linux.dev,
 	linux-mm@kvack.org,
 	linux-cifs@vger.kernel.org,
 	linux-nfs@vger.kernel.org
-Subject: swap_ops updates v2
-Date: Thu, 23 Jul 2026 07:46:03 +0200
-Message-ID: <20260723054622.3460249-1-hch@lst.de>
+Subject: [PATCH 1/3] mm/swap: revert to single-folio writes for synchronous swap devices
+Date: Thu, 23 Jul 2026 07:46:04 +0200
+Message-ID: <20260723054622.3460249-2-hch@lst.de>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260723054622.3460249-1-hch@lst.de>
+References: <20260723054622.3460249-1-hch@lst.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Rspamd-Queue-Id: B4186180005
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 6D825A0003
-X-Stat-Signature: xum7r76onf1s33g4x3uo7jdsd3d5b9jk
-X-HE-Tag: 1784785611-642885
-X-HE-Meta: U2FsdGVkX19ZRr/pf4nlaWARjd64wfWFFDaD3UVtILEpQ5ATknqR6n/Ob83Zh4nqO8eNIo3Db85Kb2DqZQmDPWPeAhZ93PkOwn2vK22zD2bDQixF/pVyWxCPBJqoow31sXzRBztdzEu7+MskgGRtaOMTR2zbfVwjAksi5sFlyWwByNpzIk3856JaMJWZueUX5IoDpfmB88Idj2odJ8zTqoPnWC+UbDa7v34vtRuPiLUlJY2MxRNJx9pYhxD+GFHAR4N3wcVZrvCsJsJzPQ9ThDeX80hdeRQIiwXBJpaoNTtc/6II1eXOdp1QQqHtYh/jiyYkpR/o88+qrvYLsAetDR4YexzPDaFkCoBOz19YkisjZgbEayMvEAw6idH2niUXrhUO8sa5VCLfb6qbJp2nFgKpEYR/dIcWdAieycbLi/knH2yWKzM2cevpyMKYz0ozH5971E7y8kGBh14P9Xcx53Dk2ZaCSiJgNZFI+I1mM6wnnQ1+eXCzQXF1FtLOngP/agRwlcqPcru/lGyT6216rbOybXBVjPMlPL5depWuwi5Oa9Fs2gwpPc9OqKm5+tkVZz8neF/Z5XNumkFjMOG8LYo/URZECkfJHAjizy/KU6uCpEFPv9g7jiGNSdZMjFRoYj7OxbmkVRfJx5Afb7PVNzadB1OLeEqNf8HbLb+YThGNsfg60gPIJ5ihr+6vd48HJO2AFbGspvJM8Uv51cMeTLIUMgfmsM+XFOvrWvQohc4T514cgmkphFqhC1xL0hO+ndobiP2LrQzT4Myl404yrJmVBJz6KsmuxC0M+utMjHQjph3IDvu20Um+KKyG9WgSaVGNVKaSgPSR3V6foEXEHnBe2T84Ia1bs1KHrgO8tRj0qw5xQxGea1H/X4vzHabSAXWGKCKnskoA+8pyqBKsZ5qmlUc/p3F72RRsjb5589vjUP4f5NfIQ2Rv57TQPWxJHP+r4aSErcVeDw+t0b9
- HzlsW2tv
- K+lNmvdjIlYC3i5BRU7Go+szOdWPSr/6Mk7uALjtjpX1jEzlQC8FkafhfNtmq1/UbLr5eFhutSKp+/wXsAUa0cVjGGUSNsedJOEpZSOJuFMF0iJM27waZb/H6aEZ6fxkLmmiQX0yW206hlh0X7d3IIFcvn15WFDYS0VhPNaT1Vu1LYAJ9pY/arJm2dIffwp+qNV88BS0DKaF2khh/ubF8Vfk0fMfybgfjvfyYDEu86hXoBE3wJy+uQ6EN0+lcAoyya7iH9X4VoB2rl/GmpEsgNwMN5+RfAihpIIDlmibMhMkO9Vg7XCNckcYOjMX3o46DlYHheESgl1DEO8qUr8YHvo9XlFAdK1ImFeOVaahKwpr1xIXMlf7+5UcVVaP7ClzOqJgGBcdhQdtw/ZVJWg53t6Ps946GM8niziK9+d3yoXtPCON9o7IepkDKJDWfs23dsv2WAUOY6+z7ng1uDcTPY3vnLspPod3y/k8pleFqJ2CN6uxdYFB89joAFuaAE5Y0uH8vmQcSc4NuW47frhuEzUwySI+KMmr28YNwFMaQ9Ba+1k+o3iktdmckdeeiiCyeTqOBcJwC4UcEkJGUwcdUUG2iCqN5V9ZPFgfquJb5YN2FQjY=
+X-Stat-Signature: spiut73ubgxkzb6gmipjhjtdmm1x1qpb
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1784785620-790169
+X-HE-Meta: U2FsdGVkX18/0WO5Wlf7yd42UR+jYQWrvJb5Qm8O8cRU0/E0QDUrrdcesRp8Zm/4KWjBIjh9zb1ypStCXEoUSwY8Qh4riTTJBhpUxNVyD84Y3p8s69hlCqCmaJxApIcyr7Ar0L5G1BS/plXCB9Lj6RngJ4seG8vtjaqhZOAAxW82eDNjj2zTChVXzLqTpQJQ0vdWgp13T/u/q/P5CAgXPL4obt7j6jCFqfGLqrZUvhQhM7Uhy3oxJpjyOtQnnydMXgsq8y5vZqzHuTCInmbM8BqAkK9YojJ8wAJrp2uumA4OuT9c1J6QjCL2gFGQXERBUp7HAEEc6aq0ShyZNgzK38SxsNQGZBGRkarmWxeFugKsGSAm9mfW0fiuVugbzBKkpEa9943BOl2csHqP1ca6STEro9vaIpqkgx9EbtXU9tJeX98wxTiehl1DQ3c0SRMSHKwPndhN4Ej3svS/+J0XmZAhTPbMFAXO8LRIdysnHiPERnyV4bMxg2IzzWn4dOt3eCoWXMut4ujEyxBSr5guwcAZ88CGQtH0shbZ8lhbfFoicvaTbDwatDlqEpjREEWXImaZkDoUaoN6jGvnaVJ9h0Ke1bNhmPXM69ckqmVAjFcFC9/Jkvmv0VWWqAtqbuuQNKk+p9G9TVyto5gk5CURysYLl0wOz/FrojeDBez4CvA6PqqAhgUJWHlqSv2Un8pH59InArkr6PBx7yahBlm0BxRUPkNVwT4AkXf9H84v7o8SI3nf35NaDHkAMhdBjeLGlxQrkj+/O7dakad+HJ1h+B3ik5QEK+HbJYjyrehEloLZFaTQgk16/qbGxALalzXwY3lIuUDIBY4yaoKppa6vkaaH9BoRqhLgQtXW6/3ym8VdvUVY0Osqm3CEsIcUwNhtCB2SupufdyY6LWf0ZeObGVNtO0JmD80SUxL9yTMPqITMMOvUidv9v0zNVtgDyURFabLZDuXVQEVI7T/I4vP
+ YnAwjkMF
+ WlUVge1gHF/Cxg/lzYgryvIshmUy4uuBRO4xTH3SFLITQZ//yjOHWet5IfUNcbfs9/nKu/4cIV3jgI9Wn1fX2myqNE2hsyY4yN6WbgGaqVUfGnz2vlbzQ/yBA8w759rmoZNEfXhr2MVMZhGEtmq7a973P8nec7xazDGdIpw25mS3fmeBRCIiFWnTy0V9ltNO1fguQIe7hSll4PRbYF+UtIsJWEJHbLYVtTCVSSqIbi6lwc+mPH+65sOsFGw09K9sVFgXbrqaTP5WNc0Qs2ZM0w6WgX+1frFWsJtFGv2uyEG6BASWWgrrFUUpUSkfxwKnUMcmsRa82NwjiE3Z0UK5RH5+XY08urLYUl2S48PNpk09IEkQqrzZwEMS0+3VNlW0PNxV9ohhTf94VRN/552h7J1ySYZcdoZhruY+Pfte/D6NAcKZqrgEnZTWj+A38ISBVuDtQ0VEWraA/jabn2F/FC2sGuAT3NG89csNFm3CRw2Lj7cW1q3+3Q/Ipsw8yiE7u1mUfaKhVRHE3XdI35JDEPnRyYg5LMgaRmQRRjAtLqLT/Qd3IYaisuB9CIWK8/t35+Dgya3OK72tu+kUBF9f7RxXvWQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,17 +103,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi all,
+Kairui Song reported that zram benefits from submitting each folio
+directly instead of batching up I/O because the classic LRU scanning
+benefits from clearing the folio writeback bit in the scan loop.
 
-this series is a follow on to the swap ops series now in mm-unstable.
+Accommodate that by kicking off writes for synchronous devices for
+each iteration.
 
-The first patch reintroduces direct folio writes for synchronous
-swap files, the other two remove the double indirect for file
-system based swap.
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Acked-by: Usama Arif <usama.arif@linux.dev>
+Acked-by: Chris Li <chrisl@kernel.org>
+---
+ mm/page_io.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-Changes since v1:
- - include swap_ops.h in zswap.c
- - fix a commit message typo
- - add a commit log blurb to mention there are not functional changes in
-   patch 2
+diff --git a/mm/page_io.c b/mm/page_io.c
+index e4fa7ffffe8b..c984a4023a65 100644
+--- a/mm/page_io.c
++++ b/mm/page_io.c
+@@ -358,7 +358,16 @@ static void swap_add_folio(struct swap_io_ctx *ctx, struct folio *folio, int rw)
+ 	}
+ 	bvec_set_folio(&sio->bvecs[sio->nr_bvecs], folio, folio_size(folio), 0);
+ 	sio->len += folio_size(folio);
+-	if (++sio->nr_bvecs == ARRAY_SIZE(sio->bvecs)) {
++
++	/*
++	 * Write out the iocb if we filled it, or if the device is synchronous.
++	 *
++	 * The latter is to work around expectations in the classic LRU code
++	 * which make synchronous clearing of the folio writeback flag in the
++	 * reclaim path beneficial.
++	 */
++	if (++sio->nr_bvecs == ARRAY_SIZE(sio->bvecs) ||
++	    (rw == WRITE && (sis->flags & SWP_SYNCHRONOUS_IO))) {
+ 		if (rw == WRITE)
+ 			swap_write_submit(ctx);
+ 		else
+-- 
+2.53.0
+
 
