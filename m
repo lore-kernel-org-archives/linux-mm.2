@@ -4,96 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F606C531CB
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 12:45:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 765F1C531CA
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 13:06:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7805D6B007B; Thu, 23 Jul 2026 08:45:35 -0400 (EDT)
+	id 314866B007B; Thu, 23 Jul 2026 09:06:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 731ED6B0088; Thu, 23 Jul 2026 08:45:35 -0400 (EDT)
+	id 2ECA06B0088; Thu, 23 Jul 2026 09:06:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 646FE6B008A; Thu, 23 Jul 2026 08:45:35 -0400 (EDT)
+	id 228B36B008A; Thu, 23 Jul 2026 09:06:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3520E6B007B
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 08:45:35 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AFAD91A04BA
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 12:45:34 +0000 (UTC)
-X-FDA: 85020012588.29.9DCD0D8
-Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
-	by imf04.hostedemail.com (Postfix) with ESMTP id B47DC40008
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 12:45:32 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=O6PCeemo;
-	spf=pass (imf04.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E5C2E6B007B
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 09:06:33 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5824816049E
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 13:06:33 +0000 (UTC)
+X-FDA: 85020065466.21.CF6087B
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 370F9A001A
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 13:06:29 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=aCG4fDtB;
+	spf=pass (imf15.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784811991;
+	b=ZuWE4i3ebgpP5AdsxVWATLq4R6Mrd4LqeGG0jP+CRbvhvPqMTomK8HfgSEq5itEf0hcA1s
+	tumew64wiYfTcnMZJQ+bK/RWnYzAH5I8v0r3gAkrr1cUJHK5Bu7H/7cVdeP0HOZnrGOJED
+	UPuQ/Odn/ZwQzefsI1WKttCXZLCHBgc=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=aCG4fDtB;
+	spf=pass (imf15.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784810733;
+	s=arc-20220608; t=1784811991;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Fi7Yg8IOfCZrBlHXrltI73qzUIgGZEMeZzt8zqMdn/E=;
-	b=Bru7UnBgatG/roJjQhdKrUQ15jTiRNU/JbeHKM3deNRyDhURPMmLCMAbOAgG0I0hvLeRMT
-	zR+yHePps45hRChhNAJsU4vDrj/6GjROcvSBxpQS5ya8Ut3+QEXJV9dgYl8U73pByjeXh1
-	yaSAhKICSoGf+IDifjHpMU8PJmiTUy8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784810733;
-	b=SAcPhJBw1LATRj2ZIOELc0FEfF0Hjk9QDVSdYBDK8Rp1wZfmSTgfhIJVRnH/KieweHmZRL
-	0ZWx21wDEZdBDy+Vynr2NtDVqfivn069U0ZfUA0vbORKpBAwyAr6afZH/MGD4k9eQPyl/k
-	zSj8pRNE19hHy5adCp/JAVD88CFUmQA=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=O6PCeemo;
-	spf=pass (imf04.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <ee172b01-54c3-47ef-9040-1342a1566796@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784810730;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Fi7Yg8IOfCZrBlHXrltI73qzUIgGZEMeZzt8zqMdn/E=;
-	b=O6PCeemoOgURF0840AgkMJOELEbNSRja2/yiK7zmwHaqO8NyAwa4fZtUa985iRRynONcbp
-	rTfkeI/IbBC32Rw/THBy43qi7WFikAn/uygPWv4SVBc7cDEB3c83VputH1O5q2wsw/eSh1
-	JMZRGCiFka5EAf7QBHPplXmzg3YUBww=
-Date: Thu, 23 Jul 2026 13:45:15 +0100
-MIME-Version: 1.0
-Subject: Re: [PATCH v5 04/11] mm: zswap: add range lookup for large-folio
- swapin
-To: Yosry Ahmed <yosry@kernel.org>, Alexandre Ghiti <alex@ghiti.fr>
-Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org,
- chrisl@kernel.org, kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com,
- linux-mm@kvack.org, ying.huang@linux.alibaba.com,
- Baoquan He <baoquan.he@linux.dev>, willy@infradead.org,
- youngjun.park@lge.com, hannes@cmpxchg.org, riel@surriel.com,
- shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org, baohua@kernel.org,
- dev.jain@arm.com, baolin.wang@linux.alibaba.com,
- Nico Pache <nico.pache@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
- ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>,
- lance.yang@linux.dev, linux-kernel@vger.kernel.org, nphamcs@gmail.com,
- shikemeng@huaweicloud.com, kernel-team@meta.com,
- Alexandre Ghiti <alexghiti@fb.com>
-References: <20260722152043.2273289-1-usama.arif@linux.dev>
- <20260722152043.2273289-5-usama.arif@linux.dev> <amFZmtGHEZjXEw5R@google.com>
-Content-Language: en-US
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=MGfalNcUUGb9oiqhuCNvSsUVOzxB2Lc/6ZPh2Rebisw=;
+	b=DIwz0nsuLE1gdn4LyNJjtutuaayWBV5UmQ1nBdP6JDSmnQZBkZ/FBqaiet/do3k2RW5qls
+	57jPI/kBuyN5m8S9HRHf6PJL1ogZ0JeAccYYcQXWM+wPkBy2ajAW8sWEz0KHwTh3ub0gMZ
+	FdQA3ffUoFUl5mTuo3EpjRlc+GeN510=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <amFZmtGHEZjXEw5R@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784811986;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=MGfalNcUUGb9oiqhuCNvSsUVOzxB2Lc/6ZPh2Rebisw=;
+	b=aCG4fDtBd6UAAUlJI4VcXesHNuPmOjIK9ENyYlBK85L6PNfcKzazsg+firV76xk99jhzdk
+	kpd5JqcodSOF99HLOzVZnj2G9CdMKTNatWWQuJWXEQWhIfVXWaqSDvtBSG3yW1bOHTrXNy
+	pW5YRBPgXrbfEvpaNt907qVWGXzDbzI=
+From: Ridong <ridong.chen@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>
+Cc: David Hildenbrand <david@kernel.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	Yu Zhao <yuzhao@google.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Ridong Chen <ridong.chen@linux.dev>,
+	Ridong Chen <chenridong@xiaomi.com>
+Subject: [PATCH] mm/mglru: fix memcg protection for global proactive reclaim
+Date: Thu, 23 Jul 2026 21:05:59 +0800
+Message-Id: <20260723130559.2343690-1-ridong.chen@linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: m4ikgpzgxmhdrjxcec33fjoomrpxubko
+X-Stat-Signature: 8so4rdndkwejp5r6pjns3iqarkwhsyon
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 370F9A001A
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B47DC40008
-X-HE-Tag: 1784810732-767365
-X-HE-Meta: U2FsdGVkX19bHSQ8zaxK9+yg6AWaiU5YfSBRg/kkJ+4FH1U3VZKCz8R3HGiCetUKn/OAwWlALU19+03s4MK7P6130ut4Z3bRiNlScHw6yql6FmOgNUxvE91CH2eS66mCHLOs94eIhgTEOf4cYvaqJC0dVlIImGSqmzgZ/rzOO9hVf0RWMgFDQczbiH/APPY1BEkq+f16u8rX5Yp20wx6XMqNEQQmSo93K0/tXjLLnqWSYWZfqXn/wIYqi+oEAgQAt+ycud80cJrW/9egUsXPqJ5ObYtIZsj9fs7YMJHR4nPNkJdKIcBbqTegFsYKNbEzumrd0WDiXw53WAgd5UqPKPDC6d+JYbEQzK8qOPKNSV+BuZliaCkC4BYFTBURlFRMtDYqXuWPicj6CwCv6FEpsX9rbXZRUCi+klDhsggliWEP6qiFVvn0PQ9jV9/1MdkI2jdgnGxkjou9u8XtwfiRhb1I/GbTCWdLqMOZG40qeumSoD7lUOPIXNT+n2aqYCNATM4wYjswkDgnevPmBRLb+InybLyAMliLwhkaRgxtcrwzSrFyWnA6lRl/1mkOGFFVMsW91hImcl4Bo68r1Osp7hBDeScqs+rrOI1itedrj0vnEpk2SDQIVCwYSZQ3Xy8RPu1d6Nhm6XfOhMHz7Nl/TfwSgYeV2qAjtDF6Kh9Pxs9rX2D2F9lzmddg33lXlm5G+FLcA8TLI89ORhtwPBm+O+hyRh3DmDADdVASBuLi9SiyfGBexljML0fe4RTjG4NYLIbMmBxLKeyymGMK/T9dNByptoX002C6tdO3cz9qG3KZhaQ8q9wbBsbIRqviXYEtTOP/tsdb4k37C58ah10IXI7COH651EdpoZviT5foOFvtI68IZsykJ9U7w6As/RhVvARe4igwKaD5de0JwFzjp2OC2zeFNbBebp+FlNHpX1AKgACBRYpUgwgnSd/bvonOytn+UmB9aCVJA3hNGCp
- CMPJGsRb
- qn1w0GvDQseYtaK0PSToa4NkblYq7+m0jgMdHlqZ5j8UmV/eV8liCZDzOvOP5Hl+lbkTcShtCQc0Nislk9zE4FBhtBPA0uX9ttwgU+rmGRX+GovXCjCGNJpj6wsC1/tN7ndLtCJgdc0lYtX0DzfJmG4ZYnIN68F9dEKuYWxztdaOOmsUSuDzwZiMnBiln/+Bj/T+8+RW8kUMEWVMUxJTzW0Eq6Pq+QUoZbK9lTOnguRkAaSE=
+X-HE-Tag: 1784811989-908606
+X-HE-Meta: U2FsdGVkX1+76JgxcQbqvIcJ3fBrspa0GpGcS0p1YAJGqdnwseXBQaH6DZclcJdHhe5RFXNqjQFlAXIH/incBcSQXvAxCRK4tFmbPqXSNNFyr8cm+k1ffVBgcVJ+26IsKPFlYp4BnfnG9L62rwQsh6ai+dlhLr33OmrR4gduPJzfcKZBaHCxh54iReBkyQKQTVeLxAjpiOk6Ys6etE1r4nneR8XDeeaYhV+3jjk/bcvmbKz3jiZlj+BNp2kD3OzcKTM+j8mGqm71OUI1HG0aYzAl/gmTqh5jEIbpbsiNLHcbldI+lm69cwDIfO7Cg90bKOoA5aYLiP01Bmx5D2opbsTF+Yb8tfAw20SfpSguKdYD9H65j72hffWHyDk7oopSxllxIz6HCuyImismcizS1ra29F0Yz5UMbvXDJcqjGQnGRUBfqfzA3OBAJunhjwkhsOo15+dxEz/u5s5iUcA+Ezo+w7G2sxYtqwHNi9aFoFBgA8fhr3DS5QFc+O4TFTCpVndmAwYBPWAI1TPXJzrg2hq2x+Lnhv5SEdEGposVWwFyghc+6lC3rT/ZJPIjMpVbJ5GCusZ/S0zWAt+ylgVxIc5jh6AYpO2OS8cnr4MgC0YDMiK+7fxT2Dt0ADErvssGKh8VQWA96obR2+SqPvn5JMeH2HsHBrrrjI0AyF9HtghB4Gw5t1K+SDUlKZdGtLNtRgTopITbo96KShCM0EIUvxlAaBz9jllCRk+CV23UGeGJlHsQxBJM2C7ZU8SOhflq0aWB1Ggppc4a3CMaOLJ4kgUnR/K5c08/HPEygC3L2+8yFLqYI9TNDzyLif+HyaXw5sZZTLu5mYsgurMsNSRX8kmVptxaVhfCNDTnD0sxaxDxohdZdQXSzSOEVyVBIJueMfYThp2ZOOxEo0g6k1z1twNBROBrHAuv53ebn723/mfLLDd/BxRZGDJMscZ2OodI7+yQg9224HsTcvDmo6A
+ jOl/EVZL
+ 90gfkywKb2btpTgz4xA7xY25VN8yrVSc03biKa3atxZdgK9//Z7ytAWheNpMlRvQp/m7YXloqcTO1t7vlfOJ0hDVmtLj7hSxVyi2m7Napp0F1kb++20o0zn+AcI7ALf3+yXm73rpvmyAFEs/eZNHIKWd1GOg+hgRPfIYH3Z2qy19PMROENS6v1HCzNogS0WGXIuCHA8WFlzy3hGO5GY39l0JUxBErs8tgGxFv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,191 +97,117 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+From: Ridong Chen <chenridong@xiaomi.com>
 
+memory.min/low is silently bypassed for MGLRU during global proactive
+reclaim (writing to the root memory.reclaim). It can be reproduced as
+follows:
 
-On 23/07/2026 01:01, Yosry Ahmed wrote:
-> On Wed, Jul 22, 2026 at 08:19:35AM -0700, Usama Arif wrote:
->> From: Alexandre Ghiti <alexghiti@fb.com>
->>
->> A large folio reaches zswap_load() only when the caller expects
->> the whole range to be on disk. Zswap still stores large folios as
->> independent order-0 entries, so reconstructing a large folio from
->> zswap entries would risk returning partially initialized data.
->>
->> Teach zswap_load() to scan the covered range. If no slot is in zswap,
->> return -ENOENT so swap_read_folio() reads the backing device. If any
->> slot is still in zswap, fail the large-folio read so the caller can
->> fall back to per-page swapin.
->>
->> Return -EIO rather than -EINVAL for that conflict. Large-folio loads
->> are now valid requests; the error means zswap cannot safely satisfy
->> the request from partial per-page compressed state, not that the
->> request is unsupported. Existing callers only distinguish -ENOENT,
->> so this is a semantic clarification rather than a behavioral change.
->>
->> Add zswap_is_present() so PMD swap-entry consumers can make the same
->> range decision before attempting PMD-order swapin.
->>
->> Signed-off-by: Alexandre Ghiti <alexghiti@fb.com>
->> Signed-off-by: Usama Arif <usama.arif@linux.dev>
->> ---
->>  include/linux/zswap.h |  6 ++++++
->>  mm/zswap.c            | 42 ++++++++++++++++++++++++++++++++----------
->>  2 files changed, 38 insertions(+), 10 deletions(-)
->>
->> diff --git a/include/linux/zswap.h b/include/linux/zswap.h
->> index 30c193a1207e..cd9efcf9dec9 100644
->> --- a/include/linux/zswap.h
->> +++ b/include/linux/zswap.h
->> @@ -35,6 +35,7 @@ void zswap_lruvec_state_init(struct lruvec *lruvec);
->>  void zswap_folio_swapin(struct folio *folio);
->>  bool zswap_is_enabled(void);
->>  bool zswap_never_enabled(void);
->> +bool zswap_is_present(swp_entry_t entry, unsigned int nr);
->>  #else
->>  
->>  struct zswap_lruvec_state {};
->> @@ -69,6 +70,11 @@ static inline bool zswap_never_enabled(void)
->>  	return true;
->>  }
->>  
->> +static inline bool zswap_is_present(swp_entry_t entry, unsigned int nr)
->> +{
->> +	return false;
->> +}
->> +
->>  #endif
->>  
->>  #endif /* _LINUX_ZSWAP_H */
->> diff --git a/mm/zswap.c b/mm/zswap.c
->> index 4e76a4a87cdc..384492f1f696 100644
->> --- a/mm/zswap.c
->> +++ b/mm/zswap.c
->> @@ -1561,6 +1561,23 @@ bool zswap_store(struct folio *folio)
->>  	return ret;
->>  }
->>  
->> +/**
->> + * zswap_is_present() - is any slot in [entry, entry + nr) in zswap?
->> + * @entry: base swap entry of the range
->> + * @nr: number of contiguous slots to check (pass 1 for a single-slot query)
->> + */
->> +bool zswap_is_present(swp_entry_t entry, unsigned int nr)
->> +{
->> +	pgoff_t offset = swp_offset(entry);
->> +	struct xarray *tree = swap_zswap_tree(entry);
->> +	unsigned long index = offset;
->> +
->> +	if (!nr || zswap_never_enabled())
->> +		return false;
->> +
->> +	return xa_find(tree, &index, offset + nr - 1, XA_PRESENT);
->> +}
->> +
->>  /**
->>   * zswap_load() - load a folio from zswap
->>   * @folio: folio to load
->> @@ -1573,10 +1590,9 @@ bool zswap_store(struct folio *folio)
->>   *  NOT marked up-to-date, so that an IO error is emitted (e.g. do_swap_page()
->>   *  will SIGBUS).
->>   *
->> - *  -EINVAL: if the swapped out content was in zswap, but the page belongs
->> - *  to a large folio, which is not supported by zswap. The folio is unlocked,
->> - *  but NOT marked up-to-date, so that an IO error is emitted (e.g.
->> - *  do_swap_page() will SIGBUS).
->> + *  -EIO: if a slot in a large-folio range is unexpectedly still in zswap.
->> + *  The folio is unlocked, but NOT marked up-to-date, so that an IO
->> + *  error is emitted (e.g. do_swap_page() will SIGBUS).
->>   *
->>   *  -ENOENT: if the swapped out content was not in zswap. The folio remains
->>   *  locked on return.
->> @@ -1595,13 +1611,19 @@ int zswap_load(struct folio *folio)
->>  		return -ENOENT;
->>  
->>  	/*
->> -	 * Large folios should not be swapped in while zswap is being used, as
->> -	 * they are not properly handled. Zswap does not properly load large
->> -	 * folios, and a large folio may only be partially in zswap.
->> +	 * A large folio reaches zswap_load() only when its whole range is
->> +	 * expected to be on disk: PMD swap-entry consumers split before
->> +	 * calling into PMD-order swapin whenever any slot is still in zswap.
->> +	 * Confirm the range is entirely absent from zswap and return -ENOENT
->> +	 * so the caller reads it from disk; if a slot is unexpectedly still in
->> +	 * zswap, fail the read rather than return partially-initialized data.
->>  	 */
->> -	if (WARN_ON_ONCE(folio_test_large(folio))) {
->> -		folio_unlock(folio);
->> -		return -EINVAL;
->> +	if (folio_test_large(folio)) {
->> +		if (zswap_is_present(swp, folio_nr_pages(folio))) {
-> 
-> Is dropping the warning here intentional (for the folio_test_large() &&
-> zswap_is_present() case)?
-> 
+  # echo 7 > /sys/kernel/mm/lru_gen/enabled
+  # cd /sys/fs/cgroup
+  # mkdir -p a/b
+  # echo 100M > a/memory.min
+  # echo +memory > a/cgroup.subtree_control
+  # echo 100M > a/b/memory.min
+  # echo $$ > a/b/cgroup.procs
+  # dd if=/dev/zero of=/tmp/testfile bs=1M count=200
+  # cat a/b/memory.current
+  222650368
+  # echo 500M > memory.reclaim
+  -bash: echo: write error: Resource temporarily unavailable
+  # cat a/b/memory.current
+  6070272
 
+memory.min is 100M, yet reclaim drops a/b down to 6M, breaking the
+protection. The traditional LRU is not affected.
 
-Yes, so we can end up in a race, which should be handled gracefully.
+Commit 30d77b7eef01 ("mm/mglru: fix ineffective protection calculation")
+computes the memcg protection in lru_gen_age_node(), which only runs for
+kswapd. Global proactive reclaim reaches shrink_one() through
+lru_gen_shrink_node() without any aging step, so emin/elow is not
+couputed,
 
-For example, lets say we have zswap writeback enabled, which means we
-can end up in a state where we have a PMD swap entry and 511 of the 512
-slots have been written to disk, but 1 slot (slot X) is still in zswap.
+Factor the tree traversal out into update_memcg_protection() and call
+it from lru_gen_shrink_node() for the non-kswapd path, so the protection
+is computed before shrinking. kswapd keeps computing it in
+lru_gen_age_node(), which also needs it for the min_ttl OOM check.
 
-We can then have the following race:
+Fixes: e4dde56cd208 ("mm: multi-gen LRU: per-node lru_gen_folio lists")
+Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+---
+ mm/vmscan.c | 33 +++++++++++++++++++++++++--------
+ 1 file changed, 25 insertions(+), 8 deletions(-)
 
-
-  CPU A: PMD swap-in                  CPU B: split-PTE swap-in
-  ------------------                 ------------------------
-
-  Checks swap cache: empty
-
-                                       Faults slot X
-                                       Adds order-0 folio F
-                                       zswap_load(F):
-                                         removes X from zswap
-                                         marks F dirty
-
-  Checks zswap range: empty
-  A is preempted
-
-                                       Unmaps/reclaims F
-                                       zswap_store(F):
-                                         puts X back in zswap
-                                       Removes F from swap cache
-
-  A resumes
-  Allocates large swap-cache folio G
-  zswap_load(G) finds X in zswap
-
-
-
-The correct action would be to reject the PMD order read and fall back
-to per-page loading.
-
-I am bit torn about what to do for zswap here. The series is quite big
-already. Alexandre is looking at adding support for PMD swap, but will
-send patches once this series gets merged. My initial versions 1
-and 2, basically stopped installing PMD swap entry if zswap was ever enabled.
-From v3, I used Alexandre's suggestion to do zswap_is_present() test
-so that PMD swap entry can keep on working.
-
-Both of these paths are temporary till Alex sends his series. I
-do feel my initial version was simpler but will basically stop
-working if zswap is ever enabled. Do you have any suggestions on
-what your preference is for zswap?
-
-Thanks!
-Usama  
-
-
->> +			folio_unlock(folio);
->> +			return -EIO;
->> +		}
->> +		return -ENOENT;
->>  	}
->>  
->>  	entry = xa_load(tree, offset);
->> -- 
->> 2.53.0-Meta
->>
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 06e103f9781e..dc3549583e97 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -4122,6 +4122,16 @@ static bool lruvec_is_reclaimable(struct lruvec *lruvec, struct scan_control *sc
+ 	return time_is_before_jiffies(birth + min_ttl);
+ }
+ 
++static void update_memcg_protection(void)
++{
++	struct mem_cgroup *memcg;
++
++	memcg = mem_cgroup_iter(NULL, NULL, NULL);
++	do {
++		mem_cgroup_calculate_protection(NULL, memcg);
++	} while ((memcg = mem_cgroup_iter(NULL, memcg, NULL)));
++}
++
+ /* to protect the working set of the last N jiffies */
+ static unsigned long lru_gen_min_ttl __read_mostly;
+ 
+@@ -4135,15 +4145,19 @@ static void lru_gen_age_node(struct pglist_data *pgdat, struct scan_control *sc)
+ 
+ 	set_initial_priority(pgdat, sc);
+ 
+-	memcg = mem_cgroup_iter(NULL, NULL, NULL);
+-	do {
+-		struct lruvec *lruvec = mem_cgroup_lruvec(memcg, pgdat);
++	update_memcg_protection();
+ 
+-		mem_cgroup_calculate_protection(NULL, memcg);
++	if (min_ttl) {
++		memcg = mem_cgroup_iter(NULL, NULL, NULL);
++		do {
++			struct lruvec *lruvec = mem_cgroup_lruvec(memcg, pgdat);
+ 
+-		if (!reclaimable)
+-			reclaimable = lruvec_is_reclaimable(lruvec, sc, min_ttl);
+-	} while ((memcg = mem_cgroup_iter(NULL, memcg, NULL)));
++			if (lruvec_is_reclaimable(lruvec, sc, min_ttl)) {
++				reclaimable = true;
++				break;
++			}
++		} while ((memcg = mem_cgroup_iter(NULL, memcg, NULL)));
++	}
+ 
+ 	/*
+ 	 * The main goal is to OOM kill if every generation from all memcgs is
+@@ -5004,7 +5018,7 @@ static int shrink_one(struct lruvec *lruvec, struct scan_control *sc)
+ 	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
+ 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
+ 
+-	/* lru_gen_age_node() called mem_cgroup_calculate_protection() */
++	/* update_memcg_protection() computed the protection */
+ 	if (mem_cgroup_below_min(NULL, memcg))
+ 		return MEMCG_LRU_YOUNG;
+ 
+@@ -5151,8 +5165,11 @@ static void lru_gen_shrink_node(struct pglist_data *pgdat, struct scan_control *
+ 
+ 	set_initial_priority(pgdat, sc);
+ 
++	/* kswapd called update_memcg_protection in lru_gen_age_node */
+ 	if (current_is_kswapd())
+ 		sc->nr_reclaimed = 0;
++	else
++		update_memcg_protection();
+ 
+ 	if (mem_cgroup_disabled())
+ 		shrink_one(&pgdat->__lruvec, sc);
+-- 
+2.34.1
 
 
