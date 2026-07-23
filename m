@@ -4,93 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C667C44536
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 02:00:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB933C4453A
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 02:05:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DEE686B00A6; Wed, 22 Jul 2026 22:00:26 -0400 (EDT)
+	id 963D66B00A9; Wed, 22 Jul 2026 22:05:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D9E666B00A7; Wed, 22 Jul 2026 22:00:26 -0400 (EDT)
+	id 93ACB6B00AA; Wed, 22 Jul 2026 22:05:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB45C6B00A9; Wed, 22 Jul 2026 22:00:26 -0400 (EDT)
+	id 87A576B00AB; Wed, 22 Jul 2026 22:05:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A33756B00A6
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 22:00:26 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 08675A038B
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 02:00:26 +0000 (UTC)
-X-FDA: 85018386852.22.557991F
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
-	by imf20.hostedemail.com (Postfix) with ESMTP id ED9731C000A
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 02:00:23 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=q1upDwdl;
-	spf=pass (imf20.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5E5D26B00A9
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 22:05:22 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A95B8C03B8
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 02:05:21 +0000 (UTC)
+X-FDA: 85018399242.20.61F2AB3
+Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 9DE4A20009
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 02:05:18 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=j21Jbnt7;
+	spf=pass (imf03.hostedemail.com: domain of xiqi2@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=xiqi2@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784772319;
+	b=eTUZgNx0Gza0O7ZDrIEpMgXJtvpxEMXWypSUGEf8SRUgBfquDuV6G73N+LINsbSPGiNQND
+	sz+NkfVQYxp6m7kAxhqVUAE9cU88U90hoPTmpSCEB2Sr3NSES4q8d0M0JWKK07NbCKSA+m
+	6Y7rFIBiLVthOgDJGSGxzuKbBFVVpOQ=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=j21Jbnt7;
+	spf=pass (imf03.hostedemail.com: domain of xiqi2@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=xiqi2@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784772024;
+	s=arc-20220608; t=1784772319;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RtZKpBojyVkCJ2vB47fWFj5D6zB1GFGL23zh19aZDtI=;
-	b=SE2tNx+R6iw/HNtNlbiX+wAPX3eZGVhrTJGDr8IWAsxoVMooCEqwSqkTSPX6wP8mCFNOCj
-	KsZpuJHXJfZsZ3hBy1EHsCPyAmiXqddPsWDJAiNqmPedgyFZx1cZZY5BRzI+4jU+cv/RLg
-	luhZd/PQz3jTgWlZxeWlf61U7Xxi/e4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784772024;
-	b=Hwtk0fAvKwsJnDSy8/SMEsxPwry8tfekRNoLFbxYoK5PL8fPDIb8iM0LZCD5wjrOtJwAaA
-	B3KW9VxEdOnXWqRDQQjqTMVbmlnBrBFdsoCusXPmY7qKCtopbqXWiVAo0shnmf7Y0ct+gD
-	fQ5+IweeFdPQBjvy7jmTb18uKXWu9UQ=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=q1upDwdl;
-	spf=pass (imf20.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <52f41904-d6fb-46b9-9e89-296cda0a988b@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784772021;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RtZKpBojyVkCJ2vB47fWFj5D6zB1GFGL23zh19aZDtI=;
-	b=q1upDwdl6/ue9tdjrtLUVw1GKKwC4/LsLsDDk6KE1XA8HH6XMP/OzA9p3xxQCCjCwNM16b
-	YPHcz9dPzMvOGxemOyQ1W3O3bs330krkWM9lVB+G8w7zRGxz2ZqiExz6GFuTIzNVRZZppM
-	qS+5PQwg0tNCQP/7l2YQWcK8J7LakqE=
-Date: Thu, 23 Jul 2026 09:59:45 +0800
+	bh=hzYIGpBXbFZonwDEQCBbDgP46W9DkA6XzZteCy3etkg=;
+	b=rk3FmyZOzTRgYTg7QbZRQEd24YkYW+MtqRK3pAc2HUyIT0oJlLMmdclwgvKY/lBvtDBn9K
+	973DRbExH2UvC4J8nCRnh1rF4yg6PAWE7ytQnTBs0QDx3K+bk3gdtlZs6IF0fpJl3KRXDd
+	zfDPEppW3PG2m9FgJO28FQ1wzhY1dBk=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=hzYIGpBXbFZonwDEQCBbDgP46W9DkA6XzZteCy3etkg=;
+	b=j21Jbnt74JDV9NCT72cBGojfiVTFeBkYsniDEPCn/vszEk51Xxy62OO7uzzzjhsOyN0VBrTjE
+	8WcqQwo0IFxJ4fVzYbQHXRU5xLMiXyO2Zu3tLKDghEulrlrN1iV06FDO80v7dkdcDMTNoWTziJL
+	2gvYE0V/Eqdn1V3W7kfskB4=
+Received: from mail.maildlp.com (unknown [172.19.162.197])
+	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4h5Djc4m4kz1prlh;
+	Thu, 23 Jul 2026 09:55:48 +0800 (CST)
+Received: from kwepemo200010.china.huawei.com (unknown [7.202.195.178])
+	by mail.maildlp.com (Postfix) with ESMTPS id C98C04057D;
+	Thu, 23 Jul 2026 10:05:13 +0800 (CST)
+Received: from [10.174.178.56] (10.174.178.56) by
+ kwepemo200010.china.huawei.com (7.202.195.178) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Thu, 23 Jul 2026 10:05:12 +0800
+Message-ID: <0adae468-745f-4f38-bb1a-151b91bb47dd@huawei.com>
+Date: Thu, 23 Jul 2026 10:05:12 +0800
 MIME-Version: 1.0
-Subject: Re: [PATCH v2 1/4] mm/vmscan: fix anon-only reclaim evicting file
- pages when swappiness=max
-To: Barry Song <baohua@kernel.org>
-Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, david@kernel.org,
- mhocko@kernel.org, qi.zheng@linux.dev, shakeel.butt@linux.dev,
- ljs@kernel.org, kasong@tencent.com, axelrasmussen@google.com,
- yuanchu@google.com, weixugc@google.com, hezhongkun.hzk@bytedance.com,
- muchun.song@linux.dev, dave@stgolabs.net, roman.gushchin@linux.dev,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Ridong Chen <chenridong@xiaomi.com>
-References: <20260718095251.82937-1-ridong.chen@linux.dev>
- <20260718095251.82937-2-ridong.chen@linux.dev>
- <CAGsJ_4yYEaoiTY0vFtqJK5fsXZW2PTkMu-qZ=X7=cqmMVa3YCg@mail.gmail.com>
- <bcace78f-987f-4908-9e65-bf0b9a52855c@linux.dev>
- <CAGsJ_4wbLAky6B9gPGmyLkZPaqrbC4eSMXXK1n4bLfnzs5+-sQ@mail.gmail.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Ridong Chen <ridong.chen@linux.dev>
-In-Reply-To: <CAGsJ_4wbLAky6B9gPGmyLkZPaqrbC4eSMXXK1n4bLfnzs5+-sQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.6.y] mm/memory-failure: fix missing ->mf_stats count
+ when hugetlb folio already poisoned
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: <stable@vger.kernel.org>, Naoya Horiguchi <naoya.horiguchi@nec.com>,
+	Andrew Morton <akpm@linux-foundation.org>, Miaohe Lin <linmiaohe@huawei.com>,
+	Sasha Levin <sashal@kernel.org>, Jane Chu <jane.chu@oracle.com>,
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+	<sunnanyong@huawei.com>, <wangkefeng.wang@huawei.com>, <david@kernel.org>
+References: <20260721121956.124887-1-xiqi2@huawei.com>
+ <2026072119-facial-encircle-f1c8@gregkh>
+Content-Language: en-GB
+From: Qi Xi <xiqi2@huawei.com>
+In-Reply-To: <2026072119-facial-encircle-f1c8@gregkh>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: ED9731C000A
-X-Stat-Signature: b4wh87n5zmyyq83z35ak3e45occxonqh
+X-Originating-IP: [10.174.178.56]
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemo200010.china.huawei.com (7.202.195.178)
+X-Stat-Signature: wmqy1q1658515myqshi84fcuuu3dagmf
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 9DE4A20009
 X-Rspam-User: 
-X-HE-Tag: 1784772023-549763
-X-HE-Meta: U2FsdGVkX1/c/8rZ4tJ8Gdev7t9EZdsSTgcEn/fY0FGYancq+FmzBpf0+Q/H9/cKLOI20YpgEnY5bYjWblEsNGdiDw3l/slLfujCCguXKLuLI77Rs0AxMmlPFfHnLumWW9QpUG3zvVpGipXH8HRhf/mV1NVviPYN6tDOA0iKv87A9N+WcEeDTtoPp53N46h6fKQN0HVKmHxWitx08BXI7ksj6injPLuJvevWwcgWgbwca036NJE1Gy4D0MzxSomzQCCbHRAgYBD1IB9ZL7+SxChdhlLB9EChGwV731shvUwXYwsy2FtGp24Ne4Xk5iENwLLDF5d/iciYBvhtzv7qd2GZnc+5tGoHcJEUmUdB675LG4pJCn/HVYH7BW4BUGux8Z1FJX/DxhEB7j7OY/tFm84H4ZP6+oSO9Ybb7Q7fcsxkOsFbjvm3QTjkhOa2HnRrfhCIHsgD80mueLbgYcLoNGxT42PrzU6udnLnD1zNuLL95QJJvjjpRAkoIyKLLROKhvSdC3aF7kXazdzezEZzScStXR7JF1jqIqA9sFZVChT9z5jP0SalkbCf5KJShRAZVDy36MdoatAomeVndiNAQlpxUPklp1XLtFQ7WHf7IQBIfmhn8fKLkZMGt3uMAn2BsW2AttmOgGfa3IfX8F/fhtpyYEeyIQyG6f4bm5jG9PfLcJxdQrp4gCJJnIpMIot6GwZSqxZPdnf8a/Y6vsgSpHi/zgXNpaBET91bbwhp3cUvLCQLjPNxhuKvlE8ZHuYfvwbcS5oZg4XGb8dN3HhNomujmBn0X9etVzY1LYFdAwCshYtvxgYM1yECv7+Hp7FYP2kt+dq2uCy+5qgABv8STXbIVOSR7U0EFHw0+VT/S4CX6hYDsg6P+OJyKfxYS8EVmagvMCKr3J7iDmJ1ZXQjlOn4PSiV9KC5QpEHFj0N6Mkd0Up/FvxPEOy8WSwSPHKig0/kXt0Ak+yLmdOov4H
- 89+XgdGa
- Q8umdM9T0bBg1VrGFzwpPNAXL+2wnvv5QrKDWu/25Qp61jDZQBiqM5GYcamHStRSCacu4Qo25T1wfjy/nEZlRVGngzL8VgT0GQb/ESI2bkTJfd6FBpyccWW8jCnJvf0+7YK3MV1xJbDeVrLsxy7w3UcV0UxqSo/+LN52Z3uh0CAf+rR8snSozTCWP6xVzG4rEmBTw7+lgCF4Vof230zXJdyIaCubCKcD1okJJCqrzJODKtM0=
+X-HE-Tag: 1784772318-51287
+X-HE-Meta: U2FsdGVkX19hsUgqrQ/X7GHxbQGCSyCoMe9cQrqUtY/anELH0z2mo09KwXBIUCOAyhQPOlJrhAV9Q9H16H/VVyRwPOOlNISOGf7IIcf+yfS99E2NUPzSR7PSOkENTSVgfUKMQPTrZU/fMq+sEiuWOLrn9KPmQRAI+aAKY758OQyojizcJoO90l+YcC7C+fO11c2o3TdwmpQdFOfxisgFVcMSszH8yZQ3EkU261aV7AfcXYR1KN0KnLYJxx21GlToy1k07eyBRID0shExw4MojmnranbfQlDQYA2Heyazya720yMbW6p07hnVVPhJpIMmc63XCC8Cq+5d/n3PevAV9JI78jdMjRJWj9+z5jdHi2ZX4ReeNSjgyP59jBzejaZNIi0SVY9niFG1GFkwY3+W0hRTwPRiI9okjUv/V0JVrWaqUJRJn5wsngP1JZ6gR+HANiU6NQkjqxEICuN6hT48aEuoak3MXSLlJc1duztbTE0pHBNyCbOn9N5Oe7n0rQWdhXdfXhDo984GeTpZRhxIyvaUF74jAVVpL+Xdl3wqm8n+vasTAUC9IaN5e7ECMdnvi3FM5oNA10mJzY7bRI97NcX7L+G7QMX9jjaZcf5Xaka7P/JPZWzrnTb5P7eyWw+PpsMwa3WJ2um78nDSg1qNMoTViBN8CwCt3EbHyXgYv1ezpYAiEuN3W6VcF6Fuz4zyV5yvugQ8n+qw4FPJ+9zPgZoadIndr4e9kWb6ewXi773pAe36rZfTYmduxtYqT9mtuuNhOOyuj755M8IjKNeYN9loVYc8qs9cu9B07KX+9i4FyN/cRjerDYp9rLw/TeQfBImd+UrQqEne6uya4D+jM8BOFwY6iGhNlua+jrctqhCI3KScAnlFouqw2swysEM5V42VX7eTZ4OEU6mjKZ4ls/EX30/aBDH8uzHPIZCBu2/6WEzPSCkKJSzXIN+dm/sGcgSxEqR3f6nSswkAQVP
+ jYVSpL8l
+ 4FbY3gLiAUNwLFw58HSnIJEZ7NjpasPzouWu6vslbCEPTf5IoGIBGUbj/KMe+6dsc8m/ruVC/dShlLgZVr2m8dxc13GEYHQSfcDsD9JKQ8SZj5DVaxtBgiAbMXDQv7EuSlJb8GYd0eqSFbTBOjT9aKcJ77g4TeeZMwypdSxl8nSOPwYrFjL6b3ni7iFbzb5sNs6yrm+T4a3v9qEdk7uUf5vVtephm6iZFFrOJqAsU+k7Py8xauXJwFFnS5I0oc8NEnTegxXK3LrNBg8RI7ItF7loas2unH9Yv006SLV8z49xaxK1z5QH1I04tqGieICA8PQQ80u3wjVEgGrjL+nP0mlmEfVpQvlw9xnt94S7/fPpHYXfRUyAV//UAgvY1CtCXOGeHIInj//uJK6M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,58 +103,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+You're right, I apologize for the misleading tag. This patch is a
+follow-up fix for the defective backport 252bb328b36f — the bug does
+not exist on mainline, so it's not a direct backport of any upstream
+commit. I'll correct this in the next version.
 
+Also, as in your earlier comment on the v1 thread about needing
+maintainer acks — I'll ask for feedback from maintainers first before
+sending the next revision.
 
-On 7/21/2026 3:45 PM, Barry Song wrote:
-> On Mon, Jul 20, 2026 at 12:43 PM Ridong Chen <ridong.chen@linux.dev> wrote:
-> [...]
-> 
->>>> --- a/mm/vmscan.c
->>>> +++ b/mm/vmscan.c
->>>> @@ -2501,6 +2501,17 @@ static void get_scan_count(struct lruvec *lruvec, struct scan_control *sc,
->>>>           enum scan_balance scan_balance;
->>>>           enum lru_list lru;
->>>>
->>>> +       /* Proactive reclaim initiated by userspace for anonymous memory only */
->>>> +       if (swappiness == SWAPPINESS_ANON_ONLY) {
->>>> +               WARN_ON_ONCE(!sc->proactive);
->>>
->>> I feel it's a bit odd that the WARN_ON_ONCE() is placed here. Maybe
->>> adding a short comment would make the intent clearer. For example:
->>> "SWAPPINESS_ANON_ONLY is only allowed for proactive reclaim."
->>
->> Hi Barry,
->>
->> I didn't change the original logic in this patch. I agree that adding a
->> comment would help clarify the intent.
->>
->> I'll include that in the next version.
->>
->>> I'm not sure whether it would be better to issue this warning earlier,
->>> for example in try_to_free_mem_cgroup_pages(). That said, I don't
->>> feel strongly about this.
->>
->> Since patch 4 will address the MGLRU issue and could also include this
->> warning, I think that triggering the warning earlier makes sense and
->> would be more general. Would it be acceptable to add a separate patch
->> (e.g., patch 5) for moving the warning? That way, each patch stays
->> focused on a single logical change.
-> 
-> I'm not quite sure where the best place would be to move it earlier. We
-> already have two places that perform proactive reclaim:
-> try_to_free_mem_cgroup_pages() and __node_reclaim(). There are also
-> other reclaim paths that are not proactive. Since they all eventually call
-> shrink_node(), would it make more sense to handle it there?
-> 
-> If we can't find a suitable common path, I guess simply adding some comments
-> to the current patches would be good enough.
-> 
-Eh, shrink_node handles MGLRU global reclaim via a special branch, so we'd have 
-to add the warning at the beginning of shrink_node, but that feels a bit 
-jarring. Let's just go with adding some comments instead.
+Thanks,
+Qi
 
--- 
-Best regards
-Ridong
-
+On 21/07/2026 22:11, Greg Kroah-Hartman wrote:
+> On Tue, Jul 21, 2026 at 08:19:56PM +0800, Qi Xi wrote:
+>> [ Upstream commit a148a2040191b12b45b82cb29c281cb3036baf90 ]
+> That is not what this commit is :(
+>
+>
 
