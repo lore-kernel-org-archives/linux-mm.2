@@ -4,88 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B3E7C531C7
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 09:57:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C7C5C531C7
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 10:01:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 22B226B00DE; Thu, 23 Jul 2026 05:57:10 -0400 (EDT)
+	id 8745A6B0165; Thu, 23 Jul 2026 06:01:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2026E6B0166; Thu, 23 Jul 2026 05:57:10 -0400 (EDT)
+	id 824596B0166; Thu, 23 Jul 2026 06:01:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 13FFE6B0167; Thu, 23 Jul 2026 05:57:10 -0400 (EDT)
+	id 6EC666B0167; Thu, 23 Jul 2026 06:01:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D41F96B00DE
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 05:57:09 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1DF1A1A0431
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 09:57:09 +0000 (UTC)
-X-FDA: 85019588178.27.29C16BB
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 9E846160006
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 09:57:05 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=gNalcYo6;
-	spf=pass (imf08.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	by kanga.kvack.org (Postfix) with ESMTP id 4A2576B0165
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 06:01:38 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B9ECB40415
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 10:01:37 +0000 (UTC)
+X-FDA: 85019599434.26.FE1DB2E
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+	by imf16.hostedemail.com (Postfix) with ESMTP id ABC14180004
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 10:01:35 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=B3tN3CMm;
+	spf=pass (imf16.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784800627;
+	s=arc-20220608; t=1784800896;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n5Va5xqbBf3fhekckmlcg2X0hrc0i9E9Xp9SI7nV9WM=;
-	b=4YBcyqNmBEgvzXSFqkTZdw3TDq2sxwAdx+lWNlyY3HZlYMXW2nU96HaafVYpKQE9l98FnF
-	tEQMlkCW4d+OP/BJckm6i0MewERMbuQl/12bdfQcOIKeO/foUtpRJZ3jv6XGu88wcEtd7C
-	p6hlCiyuEM8zCz4hGb4SiGO016tFFbo=
+	bh=/IOPEWFyLCrkOKDL5TmCaxllcKhpBFa1PGm5TdS+JwA=;
+	b=qH6S4RyQeRfxAMiRi1eh3e6veKqpzFepCPPchvQiy7VDKTrfmLSTHREvip5xYLKVX6eeHQ
+	RYrSS6SrmkyWZYql5ENlKs779ku4VuSY4TuNsXu8ySFv56qL6Wyj95RNwX0TE3ICYWlmNs
+	6leQwCGxZTkmfZWcgedlMxl9e/nVwro=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784800627;
-	b=4oSF1FHZZ1CkN5jd5wf/DMaDrTyPaFHcF6gNj2ntGQG/MxIuFgdqZfb9bBX0x9FxGn7p6n
-	0XF2A91p86z2HwoEQtPy1JL5qCJnxIj8nlK9x4Xtz9T5XQYbXU5xbQzcqORKOw45U+gQdH
-	bYFhkZ5QlCG9QMKsrUG1x0pQ3koQ8zc=
+	t=1784800896;
+	b=RKKJu83OtrVoB3fzXdnUoG8v1X2KBr42q9jejojLdof1qzuekfcFTHpRiZlHkZDi6J5S5y
+	bbNUB5usBhvs44kN8gqy79BHa+QyL4gmN3+GSP+PKhw/iza0AF89ps1KeIagJ0A8JpTnOV
+	5GCIJ06SC5dS+NzQ9ZJGBy78CmAITqQ=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=gNalcYo6;
-	spf=pass (imf08.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=B3tN3CMm;
+	spf=pass (imf16.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-Date: Thu, 23 Jul 2026 17:56:56 +0800
+Date: Thu, 23 Jul 2026 18:01:07 +0800
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784800623;
+	t=1784800889;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=n5Va5xqbBf3fhekckmlcg2X0hrc0i9E9Xp9SI7nV9WM=;
-	b=gNalcYo6YMM9tSoRfU0ofQa40+wtblPqWAaxiKhOjK7x0Iw5UmBpQIa+Ye7cxVkj0Uy1AY
-	K8HBT+TUYv/ZuBNMD5oqNdRNgzbaPIpIpKgviQ+8wsbpbRtPTAbkQNVb6QPRn19tNCTtLx
-	TkfB7nEHflrI0sX2dTbbcAKderUB5iU=
+	bh=/IOPEWFyLCrkOKDL5TmCaxllcKhpBFa1PGm5TdS+JwA=;
+	b=B3tN3CMmCpKLZ3NrTYsrJ4RLkX3LFQJRJLgVEIuQsXk/GkMvH5ZafyBK62EAo0LIvT2D50
+	fAKJeIjSiLb7ygdHnxWK0DaWeYIXONIZaWgnhZYOEC7DvUfbyNhUa9RtOtJ0mXfO3rfymO
+	FwBtaicdmtSjfbwmIZf+DeT8vEaPrX4=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Hao Li <hao.li@linux.dev>
-To: Harry Yoo <harry@kernel.org>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
-Subject: Re: [PATCH v2 09/13] mm/slab: change struct slabobj_ext to a union
-Message-ID: <amHkbJsvOjcfUR3D@fedora>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Harry Yoo <harry@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Alexander Potapenko <glider@google.com>, 
+	Marco Elver <elver@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	cgroups@vger.kernel.org
+Subject: Re: [PATCH v2 12/13] mm/slab: add cache_ and slab_needs_objcg()
+ helpers
+Message-ID: <amHldYIo_-Bgm7Ek@fedora>
 References: <20260720-b4-objext_split-v2-0-2fa7c6f60dbe@kernel.org>
- <20260720-b4-objext_split-v2-9-2fa7c6f60dbe@kernel.org>
- <amGEY5w-cBm4_uhx@fedora>
- <9b2dadb7-8e3d-4b9b-a870-969be9a7a432@kernel.org>
+ <20260720-b4-objext_split-v2-12-2fa7c6f60dbe@kernel.org>
+ <amHbnLLrpOmwmusv@fedora>
+ <e8b503fe-c97f-4747-aa95-97be42cdd832@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <9b2dadb7-8e3d-4b9b-a870-969be9a7a432@kernel.org>
+In-Reply-To: <e8b503fe-c97f-4747-aa95-97be42cdd832@kernel.org>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 9E846160006
-X-Stat-Signature: jsjk65d6srffoaypy1pw3xqrdq3p5d51
+X-Rspamd-Queue-Id: ABC14180004
+X-Stat-Signature: prmtcoq8dy9kn5od1h7rs3cqchdquaor
 X-Rspam-User: 
-X-HE-Tag: 1784800625-49407
-X-HE-Meta: U2FsdGVkX1/m9xfUtPO7LXGPhrj4rta0ZGNA2o9m83TS1AIZ+9lhuLoC6u4thD33MgsoTflOCmVl4aoGPrmshEvgrYaOv65CJ6t2ZNQBZhveRxltpPPI6XZ1E5Pue973gVFTLfii85Xgh5A6jMYrfNf1kG2FBgJyareFAdixpBhQi/kRxIwBE3ai0sbDI4OPkg83YX3DeODbLBu0QOEerwRA3wZ4YHgMfnp8/BdnCfioJZq3n1iEVYA2k52MZ9V22D2Kyw20CE34eoZkDL3K20Msg76qrlq3NLnys4ernAB5nNGy0UHkM/uzyHgI67xtkYgHidRNeRSAQOzp27GggU2ADUeNVEYPs0pl/V1sI+IkqdU+Bl9lxdcXaJYFakcWdtBNGrvZAtQWQCLg2f9O4O5XQ5t8JCOznwrtd0GSQyQHNekZcXVb1fAKCSSvp2mKFYLiQpjWlAgocIu6WlDvwfOab8k0esjdN/M495E2Kvs+XzaflyM73oqoaYtuUIGdunx/HmotsNlPNW6s2jm9TOn9QVQ8zCnsfjJ4kdvzyMtoDd8s4MDy84+Ba8SIdqwR0VKqvVKlu6+99X2XUioLJSYL5C/OaureamKDrBcmMl4dkJeKKLzYA/RWi/FCbUDz8CeLNyHBDOXSksOnCm37ZLsbW61+sXBAOvSH6to92WupZDT8u4vznDU1vvxI0S2twjyG7m9d89fuvV8y+oyE04+BKj3J6nuox83aEmUHwx29Zz3vG2olquoVXyp6SnS0JbR9isFhBLvrXsdTOCNJz77LHE+3Ta65C6WzJQxsvL7Pv2NxtbpGkG9BbuBsaAhBGlrle5yPZM4vgrL8AG2xnXrLIiBsueJNDKQbUkeBDMiIuyL/hrmlWzwOQL6O/AItI2MCuaNAF0bCkrhnMXUCmoikn6AwKjsDDIFiglM7Rx+G0shd4NrVvdsYE3+yb1ZPUVqv293m18brJAJLtPA
- DCCKBN6C
- 2QhEJatxpL1hN/7ggsFGsud+DJgR0iRD6g7auR063YZLLh6DCm/MStz1FawmGo9vNC3nV2wYen3PC337U+2jkUdP2j9Wg7+CmaJmpPJ3U2Zz0btscRCXW8VDOpDzlDnVzpsJWEVjngbdvyatLV9/J8FhSHG4pvx+H9lYVOe1696+Axd98ONU1QxBUSYLD9dy5uVCW8lFGNyr2QsctK5hak6sX5dXuJ1FM5BN+BfRkuiCgO3cBe2kK+afsHtipX/0tVJTV9PgCCzb3HdTUIHGcxWIW+oYS+l+ThExr3FWT9Co0y8E=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1784800895-276286
+X-HE-Meta: U2FsdGVkX19qNyndwSUKtsPZMO/3+vdvRFbKwgVFTtDJDaNCeu+2xiXLN+qklAPR9RCQNkebfHjQduJT4J4jxyePIOk4wMOaFkjwubd7mJvTemNvIrHto3zNkenrFF33POhJj8xlxYRwoH89fGHUjcLZO/Vy/yWkNf8/vezy5n7gzsc8XWQlO+Ah6aBluwAOdkwASPZgh42XtFi/7aA2nPyU04MImW9I2l2btUnY3phy4ZaSmJ0OIKAt++sZDFUJMfdHw8GEZ/H6w2fkv52/gwjTbA+DttR/ugWZsQo2vLyzBPvbQ6xvGLD0eRQWsrww/h0a4nOnDyAj02G2fVBXBPXv1Px3ZO9KEbLIzWLB/Al1iihl7LCgoAr/V7UbgtTdKjsKfsu17t4NOaznuFJRjI+yUhTUzDUUUj/NNS4AjyquPDF7ZqXUWGKaUeHzx1XvEZnRLo66kfMdAbG35ui8efG6wMkvPgzkcHROf2DX+SmwOv5XS6lMHX3E4a4FW6pS/WbIXAIL/IlOlBJD7g7O+P5P2Tbc0IchGKZTnmWtAza+4+NGhT4PIW+fJAFFOklinBjSzhj3bPv4+rY+epYO1vFaKVG98cwXEaZv5FiMP8SpH2t2piQACxEFCXUge5eorUpchT0LZ+G8Oetj7ZDp8bEdaZnfyIsnjDo02u+uWgAlMYUBvhLdsFj8sEkmeDZOoZsP5VhFZlGGyLLgFFzKOKDKoijiIvQzfMEqi0s2CXVEX0fhgTnhBtQACI9D5tTWMXZgiqKSqEIcgXltlxNC2s3GLYLMoA0ZmJIbnZFDTXuO4lzY7o2w1T+GHB0ixNocg6YtkOLBgryGDtC0ao9XNIWgkwWmeFqXgpK8XRJeysmoSQXgfAu6+5TXUCQu45jpNL5KiYvI6gcjrdl3oxHH+QtDCUqbGqROAxgQ9wThd/ufpDg6kK0Tc667MqPh45a/mTV4l4Hmw/UIx0CHeQH
+ C3Letkwu
+ tohYzmXBJYy5rlDjLyiBjhsH4lagShgIWgCBxxe8eQQCW++YPLbQ+cHpQzdqBjjdyAYycOdtTaSMAy5vlQtgQp9Cs5slUaOV4EYU2Fy9APIdg8QM1z39qOs8cPAeTJKiOqG9xOejmBfFuIiEY18LJeFkt/YrZ5WEd1DQDO1NKzxJppXZeJ9hNrxkWzZhYKE2EiaDtakjZRW4gdK+RsKjaOUBir80Ss0s1mh0PnrlK6ojk/wjIogaHTig9qsoAiZpqe5uY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,88 +94,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 23, 2026 at 03:27:51PM +0900, Harry Yoo wrote:
-> 
-> 
-> On 7/23/26 12:05 PM, Hao Li wrote:
-> > On Mon, Jul 20, 2026 at 04:16:23PM +0200, Vlastimil Babka (SUSE) wrote:
-> >> Currently, struct slabobj_ext can hold both objcg pointer and
-> >> codetag_ref (when both are compile-enabled) and there is an array of as
-> >> many slabobj_ext instances as there are objects in a slab.
-> >>
-> >> This makes the layout fixed so even if codetag_ref is unused (because
-> >> memory allocation profiling is disabled), the space for them is
-> >> allocated and wasted. Similarly, some caches (currently kmalloc_normal)
-> >> do not ever need objcg pointers, leading to wasted memory with memory
-> >> allocation profiling enabled.
-> >>
-> >> To make this more flexible, change the layout so that struct slabobj_ext
-> >> becomes a union of objcg pointer and codetag_ref (to ensure uniform
-> >> size; in practice both are the same size anyway). The slabobj_ext array
-> >> then can have twice as many elements as before. For cache locality
-> >> purposes, the effective memory layout is unchanged, so objcg and codetag
-> >> ref for a given object are still adjacent.
-> >>
-> >> cache_obj_ext_size() returns the effective size of (0-2) struct
-> >> slabobj_ext's for a cache, slab_obj_ext_size() for a slab. Currently
-> >> both return a constant value derived from the config options, but will
-> >> be made dynamic later. Replace all sizeof(slabobj_ext) usage with these.
-> >>
-> >> No functional change intended, the layout is still effectively static.
-> >>
-> >> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-> >> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> >> ---
-> >>  mm/slab.h | 49 +++++++++++++++++++++++++++++++++++++++----------
-> >>  mm/slub.c | 19 +++++++++++--------
-> >>  2 files changed, 50 insertions(+), 18 deletions(-)
-> >>
-> >> diff --git a/mm/slab.h b/mm/slab.h
-> >> index e586798e4f16..f8446167e175 100644
-> >> --- a/mm/slab.h
-> >> +++ b/mm/slab.h
-> >> @@ -550,18 +550,42 @@ static inline bool need_kmalloc_no_objext(void)
-> >>  }
+On Thu, Jul 23, 2026 at 11:30:49AM +0200, Vlastimil Babka (SUSE) wrote:
+> On 7/23/26 11:25, Hao Li wrote:
+> > On Mon, Jul 20, 2026 at 04:16:26PM +0200, Vlastimil Babka (SUSE) wrote:
+> >> @@ -359,6 +359,13 @@ struct kmem_cache *__kmem_cache_create_args(const char *name,
+> >>  		goto out_unlock;
+> >>  	}
 > >>  
-> >>  /*
-> >> - * Extended information for slab objects stored as an array in page->memcg_data
-> >> - * if MEMCG_DATA_OBJEXTS is set.
-> >> + * Extended information for slab objects stored as a pointer to an array in
-> >> + * slab->obj_exts (aliasing page->memcg_data) if MEMCG_DATA_OBJEXTS is set.
-> >>   */
-> >>  struct slabobj_ext {
 > >> +	/*
-> >> +	 * All elements of the union should be pointer-sized to avoid memory
-> >> +	 * waste
+> >> +	 * For now we assume any cache can be used with __GFP_ACCOUNT and thus
+> >> +	 * may need to store objcg pointers for objects
 > >> +	 */
-> >> +	union {
-> >>  #ifdef CONFIG_MEMCG
-> >> -	struct obj_cgroup *_objcg;
-> >> +		struct obj_cgroup *_objcg;
-> >>  #endif
-> >>  #ifdef CONFIG_MEM_ALLOC_PROFILING
-> >> -	union codetag_ref _ctref;
-> >> +		union codetag_ref _ctref;
-> >>  #endif
-> >> +	};
-> >>  } __aligned(8);
+> >> +	if (!mem_cgroup_kmem_disabled())
+> >> +		flags |= SLAB_MAY_ACCOUNT;
 > > 
-> > slabobj_ext is now acting as a generic struct, serving as either _objcg or
-> > _ctref. However, because it's set to __aligned(8), I'm wondering if this might
-> > waste half the memory on 32-bit?
+> > if memcg itself is disabled via `cgroup_disable`, mem_cgroup_kmem_disabled()
+> > still return false, so maybe we can use:
 > 
-> We could loosen the alignment to
-> max(__NR_OBJEXTS_FLAGS, alignof(void *))
-> 
-> and drop OBJEXT_FLAG_UNUSED.
+> Aha, but then shouldn't rather mem_cgroup_kmem_disabled() take that into
+> account on its own?
 
-Yes, this idea is insightful and I think it may need a standalone patch without
-blocking current patchset.
+Yeah, it's better to handle two cases in mem_cgroup_kmem_disabled!
+This could also be a standalone patch, but including it to this patchset it totally
+fine.
 
 > 
-> ...not sure how much we care about this on 32bit though.
-
-Yeah, 32bit is a rare arch today :)
+> > if (!mem_cgroup_disabled() && !mem_cgroup_kmem_disabled())
+> > 	flags |= SLAB_MAY_ACCOUNT;
+> > 
+> >> +
+> >>  	/* Fail closed on bad usersize of useroffset values. */
+> >>  	if (!IS_ENABLED(CONFIG_HARDENED_USERCOPY) ||
+> >>  	    WARN_ON(!args->usersize && args->useroffset) ||
+> >> @@ -984,11 +991,19 @@ new_kmalloc_cache(int idx, enum kmalloc_cache_type type)
+> >>  #endif
+> >>  
+> >>  	/*
+> >> -	 * If CONFIG_MEMCG is enabled, disable cache merging for
+> >> -	 * KMALLOC_NORMAL caches.
+> >> +	 * If memcg_kmem is enabled and this is a KMALLOC_NORMAL cache and  not
+> >> +	 * aliased with any other type, make sure it's never merged with any other
+> >> +	 * cache.
+> >> +	 *
+> >> +	 * In other cases the kmalloc cache may end up being used for a
+> >> +	 * __GFP_ACCOUNT allocation so mark it as such
+> >>  	 */
+> >> -	if (IS_ENABLED(CONFIG_MEMCG) && (type == KMALLOC_NORMAL))
+> >> -		flags |= SLAB_NO_MERGE;
+> >> +	if (!mem_cgroup_kmem_disabled()) {
+> > 
+> > the same as above
+> > 
+> > Others look good to me.
+> > 
+> > Reviewed-by: Hao Li <hao.li@linux.dev>
+> 
+> Thanks!
+> 
+> > 
+> >> +		if (type == KMALLOC_NORMAL && KMALLOC_RECLAIM != KMALLOC_NORMAL)
+> >> +			flags |= SLAB_NO_MERGE;
+> >> +		else
+> >> +			flags |= SLAB_MAY_ACCOUNT;
+> >> +	}
+> >>  
+> >>  	if (minalign > ARCH_KMALLOC_MINALIGN) {
+> >>  		aligned_size = ALIGN(aligned_size, minalign);
+> >> diff --git a/mm/slub.c b/mm/slub.c
+> >> index d78d3e50c877..30435e2509ea 100644
+> >> --- a/mm/slub.c
+> >> +++ b/mm/slub.c
+> >> @@ -2557,7 +2557,7 @@ bool memcg_slab_post_charge(void *p, gfp_t flags)
+> >>  	 * of slab_obj_exts being allocated from the same slab and thus the slab
+> >>  	 * becoming effectively unfreeable.
+> >>  	 */
+> >> -	if (is_kmalloc_normal(s))
+> >> +	if (!cache_needs_objcg(s))
+> >>  		return true;
+> >>  
+> >>  	/* Ignore already charged objects. */
+> >> @@ -3435,6 +3435,10 @@ static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags,
+> >>  
+> >>  	slab->objects = oo_objects(oo);
+> >>  
+> >> +#ifdef CONFIG_64BIT
+> >> +	if (cache_needs_objcg(s))
+> >> +		slab->obj_exts_needs_objcg = 1;
+> >> +#endif
+> >>  	slab->slab_cache = s;
+> >>  
+> >>  	kasan_poison_slab(slab);
+> >> 
+> >> -- 
+> >> 2.55.0
+> >> 
+> > 
+> 
 
 -- 
 Thanks,
