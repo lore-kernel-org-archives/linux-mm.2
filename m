@@ -4,152 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2337FC531F8
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 17:08:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A971C531F7
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 17:11:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 244196B008C; Thu, 23 Jul 2026 13:08:00 -0400 (EDT)
+	id 88BD66B0088; Thu, 23 Jul 2026 13:11:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 21B4C6B0092; Thu, 23 Jul 2026 13:08:00 -0400 (EDT)
+	id 83D226B0095; Thu, 23 Jul 2026 13:11:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0BE186B0095; Thu, 23 Jul 2026 13:08:00 -0400 (EDT)
+	id 72E056B0096; Thu, 23 Jul 2026 13:11:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D15CF6B008C
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 13:07:59 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6601FA124B
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 17:07:59 +0000 (UTC)
-X-FDA: 85020673878.24.BC64104
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010068.outbound.protection.outlook.com [52.101.201.68])
-	by imf21.hostedemail.com (Postfix) with ESMTP id F16E81C0002
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 17:07:55 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=hjJYpn+b;
-	spf=pass (imf21.hostedemail.com: domain of nirmoyd@nvidia.com designates 52.101.201.68 as permitted sender) smtp.mailfrom=nirmoyd@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784826476;
+	by kanga.kvack.org (Postfix) with ESMTP id 46C276B0088
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 13:11:46 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 35770A1243
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 17:11:45 +0000 (UTC)
+X-FDA: 85020683370.17.C0B449D
+Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 1FB101C0009
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 17:11:42 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=HVvGDiIm;
+	spf=pass (imf18.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.175 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784826703;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l8mMPg9TqsqiVxPJ4y9PHkt6iPNPmFCEuITfesVev98=;
-	b=CTCXa7APSsEgxWSIeQtnJ1Mw/5OdG8De/oRfJcYDwy/qyDAgn37/Xsz226rcZ/XZ2K2nzC
-	/sr75e6my2nynjVaagTOWPixPjjOHS+/wgdhfTFU4hfKRdtsMzLI89nHEHu0KqR5HkIsCx
-	j1KTjv4UxALiRWB+ubvQd1GS78U0M6A=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784826476;
-	b=yuccvYnljFWxMsFuNkSFlzg3kLOUhp7O3CEefGP0aWyK7/xELC9BZCZLfR9V4HGs06y7fa
-	yTDJsSkH9xixZ7ndHV4teS+MQwVvUW60oU/MgarfQfmWqxw9k1kyr6n6IkghgbOOTlI5GV
-	zawc6wTXQyYVEckVfNw4UDJX3uao+B4=
-ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=hjJYpn+b;
-	spf=pass (imf21.hostedemail.com: domain of nirmoyd@nvidia.com designates 52.101.201.68 as permitted sender) smtp.mailfrom=nirmoyd@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=M2ud07hPP3FKF33wavxYM1WLdmCBs35HVeTIIZ+XXiyfFxltssl0Lb/HHS2EpqCWXHslsC6GYR/zS8vWE8F0nixEjSVDZ2HvqJeUsaXhZZG9fm1EqZ+kvKuWZTjT5kgJi/cta9QcUrSeo5T3aMVeYVYOGfOlwxQ5+MyZ9CQvBsb9ofwnngIuwPsvBxqC84fQf5CZD/aYz819vDr2w+WxCNOZvFYE+tIlQlBvh0BteL5Yuq1gqsQwqKhOiWwD5YEL/5vq2xgnke3hIYqF7ZYPojG/tPxi30oCVUWXdnS5DDJMLS3YMlycF4Rza40ppKpe6X9hoempTgHotiSFhuz73Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=l8mMPg9TqsqiVxPJ4y9PHkt6iPNPmFCEuITfesVev98=;
- b=AYXSy1npPmyD1rodXtybJanAdgmF2S0OhQ5Ml4/8S+RHFji5HeU5zL5TfGOdrMv52yHmvedSpVCZzvrtgmwOK5OCWl3C6x20bMZAde8pgmKjulsaKwngoPk+S62OxnW/SR87WDGpBL04hbfQSJwLq1NL4UV4MlOUZ4ttYfweZpPncFk3lZhBPaiNJk3/GkkLvhHmQ/SYZPYOPDD6sZ8fT1G0tfDoh81NyzLs0ANS0oZEtPdfEqrtO2+y2IiTEoaKIXH9UMCglJMJK8MTpjfsXG5aSO9Ef1aZFfzwNaH/C1Iiyqr1smnBXAWTg3ZYD4UqMTxtaLkIsPPsR5V8HDCWfw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=efficios.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=l8mMPg9TqsqiVxPJ4y9PHkt6iPNPmFCEuITfesVev98=;
- b=hjJYpn+bHBje+CvG9pIodiPUg9CIwkcOAPcCePC/oTb0wdb+sBhLylxQr3sPaQGiG/q8Qhte9Jznv3NhsbwozoiuOS3/N+/dUGCGpbHhnyVZmoj5ixASRReHl+64R/QNYA1yzMfy2XRhlL+2f3OrkHg8EuqqaAXYdV2XdjMmoA9TF6fCZEEluuNYh3EuOEfiS1kUFNao7oGML3jwrG3Gbe3yiDqTJ/tlBScuaK/OEkea68smUBE9MiD1A/9p9MwLjodzhXivEvvDQFdDYGoCrSRwu1KwN13zlkmFvy+k4wbobjjxhv76mCP2WArstJFz3NCklkZ1L1oQBZAkqY5QMA==
-Received: from SA0PR11CA0158.namprd11.prod.outlook.com (2603:10b6:806:1bb::13)
- by CH3PR12MB8660.namprd12.prod.outlook.com (2603:10b6:610:177::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.11; Thu, 23 Jul
- 2026 17:07:46 +0000
-Received: from SA2PEPF000015C8.namprd03.prod.outlook.com
- (2603:10b6:806:1bb:cafe::51) by SA0PR11CA0158.outlook.office365.com
- (2603:10b6:806:1bb::13) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.245.11 via Frontend Transport; Thu,
- 23 Jul 2026 17:07:45 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- SA2PEPF000015C8.mail.protection.outlook.com (10.167.241.198) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.270.5 via Frontend Transport; Thu, 23 Jul 2026 17:07:45 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Thu, 23 Jul
- 2026 10:07:23 -0700
-Received: from 82875d6-lcedt.nvidia.com (10.126.230.37) by
- rnnvmail201.nvidia.com (10.129.68.8) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.20; Thu, 23 Jul 2026 10:07:22 -0700
-From: Nirmoy Das <nirmoyd@nvidia.com>
-To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-CC: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
-	<david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
-	<liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
-	<rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
-	<mhocko@suse.com>, Shakeel Butt <shakeel.butt@linux.dev>,
-	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-	<stable@vger.kernel.org>
-Subject: Re: [RFC PATCH] mm: use precise current RSS for high-water accounting
-Date: Thu, 23 Jul 2026 10:07:08 -0700
-Message-ID: <20260723170710.1971749-1-nirmoyd@nvidia.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <21d24fc4-141d-4957-8b96-6d5887ef4027@efficios.com>
-References: <20260723134158.1473841-1-nirmoyd@nvidia.com>  <bd3facf5-cc4e-4fa3-95cf-0f4aa926ae23@efficios.com>  <20260723162133.877125-1-nirmoyd@nvidia.com>  <21d24fc4-141d-4957-8b96-6d5887ef4027@efficios.com>
+	bh=oKoEFKHAauD9ChUUVwq+5WmbWXEzRCLgc2RAxWNhYLo=;
+	b=wNE1d83UqFzFn8m8ikG6HH+PtAIuHgT+yLxsbZ71DeeLYlMX7acqYI2OJFTlAbuJ5UKrdp
+	hzc9Icx7SI9bCmSJ0B+Rr+R0giNtF2J2WZNuVU5OklOdlaSIqSC1wQlaCKdR+J/T+jq7u3
+	W5u8WXk/GN5/gyDQ6Lhttn5JLZkSeqA=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784826703;
+	b=zXhRPQrtvmpFyuzddKPaHUG0/klV6ZSS5pGXmjzADtACvTgzMNUay7lZ+hgGleokNB+MXU
+	BLupehgMZwMXhEUxdTBKvvaLZqt3UkDimsxAnPUi6fxaAH0rsGhRNY4C+C/iKVa1G/vFpk
+	Z6RichKC1w8ItUBWdf6OMDZhMZEeIcs=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=HVvGDiIm;
+	spf=pass (imf18.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.175 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-92ea24a2dbfso84892985a.0
+        for <linux-mm@kvack.org>; Thu, 23 Jul 2026 10:11:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1784826702; x=1785431502; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=oKoEFKHAauD9ChUUVwq+5WmbWXEzRCLgc2RAxWNhYLo=;
+        b=HVvGDiImweT0dOoD2G00mWuK4EKAQtRqnLI9xXJH4s+NgIhN74l7KZdAOftYSv8asK
+         RKah6TIRBWj3CTmitkN/CcNMJoq4hXK4niXs629LofNam8HzD0QCzd5GNVfYsIMv0HWy
+         sQJ6MXtuITxymC04bbHFKBrmKwOsrDPPkiAcRdfIoGNwF3eVypzpZJkHBfeB78cW0Zyn
+         JGDtOzgPPpPeaD99pJ0Hmux1HWi5Up+X2rYlQne65NY5hs3sNWj6cSufw5WLXABb9raT
+         PNXfAmgn0apGeJcCffyfPQ9WeukYnbsVRqGOJiaClOBbY+MhuITDjV71D5a4GfNzbbT3
+         umtQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784826702; x=1785431502;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=oKoEFKHAauD9ChUUVwq+5WmbWXEzRCLgc2RAxWNhYLo=;
+        b=PW26c/dcQKSnBpveQi2cxCjxsVXppQIVfVbQ9k8D39Vwg1UzCIrRpsvyYrHljpZS5E
+         6Jlw9WqJIwLtQlC/xIwik7yxZtPzBipuoM4b4epBz45u4FbV4OGGm2UUz62Dwhr1R/oD
+         dbhTvOlVqpSfpWwEn01BJh8Y1ejqgkSkWIwEedxNq5AP6tUlVxRsD0pU+8bEjtTrlnPG
+         SHN6QGLjXyDDkH8c5TnLQPSWSZsCI69IlGn9FE5R8tNwXcykDLA6vEQyYCapuhwtGKHu
+         6SJosxpteXXzwr/8CeOpC7WC+oGnd4cIo5jDJ/1l8CaBzNzks2bQIo8DKfCGOhxN3C1g
+         wafA==
+X-Forwarded-Encrypted: i=1; AHgh+RrnjsOC6qcj7CzEqh3iGrdoDcuJDo7tBCQgblpfYkEaMJW9htCTihm4cghev0Qh8ae0c96zBU1nHw==@kvack.org
+X-Gm-Message-State: AOJu0Yx1STIiiZotYbRXSlPg64tzXAkAj6wLgIkVFPc7hwyaV87nzEDd
+	N5Tf5ilsD1ykhu2og6NidNpqnGhQVPRqfrouqSBznjSPN2yAoluPoJ+R3+azPuoNVZg=
+X-Gm-Gg: AR+sD10p6z6zEirXKutP0ZruFcEYGnQaC5fz6jMRNuknbocdkyU1l1W1C96EH/kVxT4
+	9ukh09xvuD3QaPEAOXOMW0BStCWUhSR8C/GqZO+Mk3pTpYKxkXJMtOC+rIwQoQf8yLeXdj3yLbj
+	herVNSHSr42UaWoowZsBC6V7ZipTGQFeaUL6GOY9t1fQjBgH0W6+crP+SHfdtlTQ8aSc9lPflqV
+	UDRYzbHG6spZKBPFanRnmX8Ofz/DO8J+ET7EOH/aL7LzhCfSrXWyRoVYwLh9WPPVtIBDhawskTj
+	Zwc66X3x4netVBr7kEkwjF9pJzo91DNa0AH/43dA29YgjphfpNlodqInFXkyfggWpaE0CLsaUI/
+	sZ/f0w5hIN+RpOSXavWjpIgxw5k0c2zHILRPlcjQp6b6rOZTgHA8wRegbHOhu6O3833J6RUtxj1
+	sO
+X-Received: by 2002:a05:620a:1728:b0:92e:f3ca:2eaf with SMTP id af79cd13be357-93103907cd9mr404452485a.11.1784826702204;
+        Thu, 23 Jul 2026 10:11:42 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-930f68743c8sm466141585a.7.2026.07.23.10.11.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Jul 2026 10:11:41 -0700 (PDT)
+Date: Thu, 23 Jul 2026 13:11:40 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Hao Jia <jiahao.kernel@gmail.com>, akpm@linux-foundation.org,
+	tj@kernel.org, shakeel.butt@linux.dev, mhocko@kernel.org,
+	mkoutny@suse.com, nphamcs@gmail.com, chengming.zhou@linux.dev,
+	muchun.song@linux.dev, roman.gushchin@linux.dev, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	Hao Jia <jiahao1@lixiang.com>
+Subject: Re: [PATCH v2 2/2] mm/zswap: Support batch writeback in
+ shrink_memcg()
+Message-ID: <amJLTLQ5A9EDWcxF@cmpxchg.org>
+References: <20260717085151.22822-1-jiahao.kernel@gmail.com>
+ <20260717085151.22822-3-jiahao.kernel@gmail.com>
+ <amF7_GB5Rl6OJmt4@cmpxchg.org>
+ <CAO9r8zPaUPddYoLz8o+g+xkb-zdkfyB+LqaDOrkzqFSePEV-xA@mail.gmail.com>
+ <amIdU1lFxqxTI3Gc@cmpxchg.org>
+ <CAO9r8zPepaekOgaDaVBWyB_F05Ezvz+AJZ8M5+NGQ4BmiJNBkQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain
-X-Originating-IP: [10.126.230.37]
-X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF000015C8:EE_|CH3PR12MB8660:EE_
-X-MS-Office365-Filtering-Correlation-Id: 56084cd6-7443-4dc1-95df-08dee8dcea76
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|82310400026|23010399003|1800799024|36860700016|56012099006|11063799006|4143699003|10067099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	TWdR2aQ9GucmGQenFMYqhiKt8bnelePiwY0BCWmNLZ4XwidGfa15/WzYhfbWlmcz6kkwJW+XhCG26gl40AvmlFnqlR9uszzO0qFg5zyIRS+dV08obkLb9YKaAQaw3mbl1b33YfNZyi7rOvH6P8gve9a/vjeHVnYLHmu/nlMIfiVVsMXQaCs3ad+HNA+pNe3OU5kMWkxi0oJswiUrnMufMPo8TxINljLpc3rxfF4GuQhfPb1DhPndDQbr5g7p/KNdZcBdsIBZwPtx53lYBvyLDqgXIO6nsKTaDGiesv8rLAXv7pkAT3tbZeikREmxBzVS6enSYwBjgOHdNlhRjv5J8al5eJuePM/a5qpqQxtrNFjrbuQr3h1wfbqO+AtfBIViUsAFpi7rpEmJrEOky6+KuQdME+9k94F/wcByYm19UV5wy/5W3Rf6kKNeJBOppVSs0Oq1mbuIxugpCRYcua1HMzUS7/Cccb2YQbFfnHjOzSBgDoy4KVfVDmoCIR5ET5Sel3e4KAUH9e5WbhXq0TklfulmDPQbCd9mmnI4A0hhea+anQfry6FOAWXE1tvG/3SbmcUay5zKAaZITtGtDkca6UWcnRD0lY5jvYunBJYiHim02SNGZFY5rvug6TSRGr0uxVtnI0fHbJ/lnkC/AUzQQ8Q8iTVVDPXEENfBNFTbfPjl8gZLlU4li6JK45TEcJc9GzANGUH9dgORmMVhUzFyUA==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(7416014)(376014)(82310400026)(23010399003)(1800799024)(36860700016)(56012099006)(11063799006)(4143699003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	foPolEPhmvRd8a5kJOAgM1uqXoLaOFLxW1OXuP1y9oqXR6Weq6VsYzANDYO4uZlyf9WpR9j8XKgxfE2X78eKPde6mGGwg64ypo8HCkNdnncmTT9k2Js9qw6K36uP/5GyB1s3coZhQExlQ1Tt6zBu8yrG+a2oG3fMmVXd3s7NplKaM9k1BogbtgMWz8r6nt1cnF2hwADS8y4KNvLnKV1WycrUXK/60nkb7MNpWH9GLv9I3TJuBCZ7A76XtNtQc5Ji+fQkI70wpnoJifO2ViuVkbGnZZEpWLJIK8FihwMndWiXC8UyeoFELzzIS+RXRePS3eBUvOufRENv54AQiyxIAjT7nq5uIKjn193v14ejJtf6kzhZ0uLzKSq4c1EgOPeDExos09bU7Oz/FsojGRPkpondfzfnvx8Ucpumli5r2Cfz8VpIdVl0pwQVoAncawzh
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2026 17:07:45.5751
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 56084cd6-7443-4dc1-95df-08dee8dcea76
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SA2PEPF000015C8.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8660
-X-Rspamd-Queue-Id: F16E81C0002
-X-Stat-Signature: y5ty1wbcbuaptg6i4xq4ny1c8xgidjy1
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAO9r8zPepaekOgaDaVBWyB_F05Ezvz+AJZ8M5+NGQ4BmiJNBkQ@mail.gmail.com>
+X-Stat-Signature: iceqknj59zfbxh8p36wbt1enefpqtbwg
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1784826475-830636
-X-HE-Meta: U2FsdGVkX18L/mhniJxkul09rb5JBxCTdbBGLLVwM/qWlMFtNRqMga9jKls6kBkj7dt2etyffjvbae8xiRsH1uSaqPI7AEJUMiKaKr6XIKTVGBd9WIxOuawQB9l0UJBkJAqLVm64vcLmLYO7+dQOLlhgFFj+nxB60lgvlRmE7S/cKkrdjRhoOr8pv05ALF5miCOs9uKqY7/6WsAH65uAmW4oRsEFrnSAEjLLHi7nVjH804DnN/ryOCIbuykz15qlMXa5ai09pwB5zf52D6cQJ267JwMWWzQ77h0m0LH2bp1f5Wa24he51bpzLUHpjqxmoQQvdYeSPhGwZxSE0AJg2cYjrJQ3k72AMGl2ZWafdftK89MzgHSJdXIBAEIPDmimyKaj6hSo+ircjocXq8J7ENSOiDS7xyBZp0348Gf9uMoT/JhmO6JDOhDaANF0ohA0OuTnHjYIERStWLzk7IzbycCCcSTUfHWA5BDANvYM+WGV9HP2uvzz/O1J+TbUJCpmMHL9SD1eLXx86hSH4kq1XA6lmkntHOHJc0L6GuQBAELXpHSuNVdqujnMBFMHco44BI/pZgEKS8vFoQ/vIbFLVwOcDrqMUlsHspQr/FE1r8VlgpfrXFULrf/R4F62CFMnQdNHhSi+66dmVWLpgOVAbKndQYzZfcn77lVeo7KPLeA4cSBXcw8rQkGOrhYSLdo2YQipd2C052WZqJK6DOIL+PnoY4t4zaYcytlpJ+oDRbL6zRuZnIBBh3HrKm5OlE+A6eunR7sqo5ryWD0midnoVnZm5ggCYdYJiZxhVjJGh22BDX7R+Pk6iR36vi99/H3IfbWtOpeJn6UC87DT5X6uZo2oPCvMTylDCrK9yn1Qs57VRkBwnHwtKRE1RWRtUbUyoO8IixQEqj7jOntA0IhSVnrRCArWeF/mxzxhvRAQAyz4IXB/Ki7/9evJsSW7j2/ObtscQ8YaKAt1Eqz4qtU
- sWosLHSe
- E4EkoCxPwnD/I+W4aLhO+D49Vb1zYEjZHh+KLsYlwSy53MSBTlkWDSnfOh3O9OHkxn3QPtz2RCN0u4pjx451IpFB3oYAGORgeW1vhpcB5mkhBRFVtaBMNqLQnRTPeKTgF3Gn8UmiEr6VxjGbvfU5tAvBbIFCpdHgwPckv1E/jH5RthuxSZAO/T/L8xwEa1y5nbD160qlMWJJNJ3fqC2HoV6Z+dwDHzVnGIiH4xxM6NMSQAc3bxXQi2xTh4tiqOX+FgUwdDfyVD2fYY0ubGseJgIRYnQ+cS8xcX4C0cuJXyxecEPy1CxY4JtJhapP0NM/8uWrvMXhJI6gfClr/3o2SCKSLZYkGsx02OC3OSIuIM+JCHcmFEwvS3c9f3hKYWnH9GhSSx3jEp5E/8PTQ4fFIhu67gLKtSIHyKsf8svFG0LIhIMGWxjOQgrubeB/DWjphFXaL6rSEz7GndKOaaq+c4rEwUA3vNzw1pjryxEOQriEwrR02IJwyZWHcSwzbVzm0NUGt
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 1FB101C0009
+X-HE-Tag: 1784826702-501745
+X-HE-Meta: U2FsdGVkX19LD7qUogOPEY03pojrnCjoABoBwYh8TCEbby8NlbYBCPz6F7zVNmlRLivw6LOF0q3reXu2V2KdWmwHc63loKoFU43BsRW+2rAqa173BjAERJRIOjLF0ffKwGMuZAWe+eA9F6/I9u/UiqViJyHLBQS9o/5AFjGUtVCJNROzXw1ldy5JQyJBN0bQ9wKvsnvm2cedKyv2K9ZayVFT5pQgsVa8Nw4ncyA1iUu6Aje80cOr2M2Xb3xhmVm/Z+tPB/PCTDVsZjwuJCnEIGtcGlxrGfeITOZxT7cMzvMfRawoOH+IwM0ZTyTMa0djBC+rxnUjAQsXKRQ65VMOn8YaCHz/f1nSGgr3HWfdJsDQUE6sHujsziU4XmI0HQq+PyzPedQAOaKt9WRnDB3tcJzgRLupIZ94Xy6dDbg5HSzSAmgTpzoqg5qQEOoHb69PNBF/mqCNvOGWJKVmYadkyOxsp39N4oWFUKJl2kBWrVQGXFKtOqhgY253QKfrqOToMbyOdYsYlk9ffpUwfoRmcNP4KKJdeuiB7DxPbeVXXcruDPMRScojQvtsAy+nSSKF9DzIhoINkgIlkSSO7b7UVRSQE+DQ3uBeiQawwN3z/4XUCV/+faTnxFMobYYxuvEktp4C66f3xezl2mOiyH3049PTXI/BwNXREEOk7kEy46H3WXGICarkjvaAlLyjm0hL9jKzgl1LDeIs3AVojuloeb8EGAERpsDp6uzgMTCgH6iX/MDV9H8/eN4h4SwoswRBHf3U5bENe6IMG4O2rsCgkqv5XMh3OMxJopEqpPBhjfcBZTkiiyAXliY3wIG+nMbQIWWiI7IcsD05puCUWSgIu+vy13zR88/0KoEoG6MruA3WEBlk+dqpbXmIfdfMZeyysG/tfWA8WcXHGD1/XzuGanHV0XpJrXorkPFP9R0T2lLeiUay3M+Dt/tyCeysqxlh3d+KbXiylMwZosy+l9v
+ 2HgUhwvV
+ 5BazgLFX4tME8Q13QERcGmMNumAKWKKDsP/c/X1c8oa7+KUO9e946s4evLe+fsX1sYFZcOkgqxxODv+nXhYVd58NyfSnMeh9GTGYMMAbXaLQe6ENwSyrHSmLtHgBBYF+OJpbl07Kj+k600Vh1OoNRTKOYr71Zt+8joQTu6PKZhCroeH8gWxlsppcOcCsvkCK0nBw2VAFyHEixwv1qZu3WA9DXQQ60y/q9kEvNgDa/IeFoo/gJkZuCNMHbNa7BZ5EzvO8JjwEWT326fnLQlndXlUBjeJ5nEqi5al+RysKd6/UY9MjdGBFBxvkBU9T3BN7xpFxi2V9FR40XzEBzOGPT1a22AiGBXAnZv8Kc7TH1XFwznEQsnpVyPbpO1qf/A+X6SmqN0U/a440yCdeFmv3NXTFtAWU/uWYpMO4sAxhcnkJnYslfp4LLYZOpsxtLR5748x73m8Ic7vYKUt2P7fQwP3PJSB/9pb/3zlEot8pblSTA8yilupC+YFRWgsMtnDXasHWcvQPqnHnUiE2qgNoFcJf7qtBpCZKZtjL+zRT1PbA6Q2mFQyrVgmGGiy6oxf1PZWHIyV+wUL60ApE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,24 +130,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Mathieu,=0D
-=0D
-On 2026-07-23 12:31, Mathieu Desnoyers wrote:=0D
-> What is this test validating ? Does it actually matter for a real-life=0D
-> use-case, or is it just the test being too strict ?=0D
-=0D
-It tests getrusage(RUSAGE_CHILDREN).ru_maxrss:=0D
-=0D
-https://github.com/linux-test-project/ltp/blob/master/testcases/kernel/sysc=
-alls/getrusage/getrusage03.c=0D
-=0D
-I am not sure about a real-world use-case; I do not have one.=0D
-=0D
-> What is the overhead impact of your change from approximated counter=0D
-> read to a precise sum on this /proc ABI ?=0D
-=0D
-I have not benchmarked the overhead yet. I will get back on this. =0D
-=0D
-Thanks,=0D
-Nirmoy=0D
+On Thu, Jul 23, 2026 at 09:39:35AM -0700, Yosry Ahmed wrote:
+> On Thu, Jul 23, 2026 at 6:55 AM Johannes Weiner <hannes@cmpxchg.org> wrote:
+> >
+> > On Wed, Jul 22, 2026 at 09:52:18PM -0700, Yosry Ahmed wrote:
+> > > On Wed, Jul 22, 2026 at 7:27 PM Johannes Weiner <hannes@cmpxchg.org> wrote:
+> > > >
+> > > > On Fri, Jul 17, 2026 at 04:51:51PM +0800, Hao Jia wrote:
+> > > > > @@ -1369,7 +1402,7 @@ static void shrink_worker(struct work_struct *w)
+> > > > >                       goto resched;
+> > > > >               }
+> > > > >
+> > > > > -             ret = shrink_memcg(memcg);
+> > > > > +             ret = shrink_memcg(memcg, NR_ZSWAP_WB_BATCH);
+> > > > >               /* drop the extra reference */
+> > > > >               mem_cgroup_put(memcg);
+> > > > >
+> > > > > @@ -1493,7 +1526,7 @@ bool zswap_store(struct folio *folio)
+> > > > >       objcg = get_obj_cgroup_from_folio(folio);
+> > > > >       if (objcg && !obj_cgroup_may_zswap(objcg)) {
+> > > > >               memcg = get_mem_cgroup_from_objcg(objcg);
+> > > > > -             if (shrink_memcg(memcg)) {
+> > > > > +             if (shrink_memcg(memcg, 1)) {
+> > > >
+> > > > Why 64 for the global limit but only 1 for the cgroup limit? That
+> > > > seems arbitrary in multiple ways.
+> > >
+> > > I suggested that we keep the writeback here without batching and do
+> > > that change separately, mainly out of abundance of caution as
+> > > writeback is done synchronously here so the extra latency could be
+> > > problematic. I think we probably want to measure the performance
+> > > impact of that separately.
+> > >
+> > > That being said, this path is potentially too expensive anyway due to
+> > > the flush, but I would rather we do some basic measurements before
+> > > batching here.
+> > >
+> > > What do you think?
+> >
+> > It's not an unknown, right? We know this works for direct reclaimers,
+> > cgroup limit reclaim e.g., and what the latency implications are.
+> >
+> > Because of how reclaim works, we also know it'll call zswap_store() in
+> > batches of SWAP_CLUSTER_MAX. If we don't batch here, they're likely to
+> > each call shrink_memcg() once we're at the limit - while still risking
+> > rejections due to compressibility differences.
+> >
+> > My worry is that if we start with an inconsistency, we'll be stuck
+> > with it for a long time.
+> >
+> > I'd rather start with the clean, consistent version. Dial it back only
+> > if we have data to justfiy the complication that we can put into a
+> > comment and the changelog that outlines why exactly it's different.
+> 
+> I am fine with doing that and basically always using NR_ZSWAP_WB_BATCH
+> as the batch size in shrink_memcg(), but I would be more comfortable
+> if we did some sanity testing.
+> 
+> Hao, would you be able to do some smoke testing with NR_ZSWAP_WB_BATCH
+> used for all paths, and memory.zswap.max set in a way that induces
+> writeback? You can probably set memory.zswap.max to 1% of total memory
+> instead of the global pool limit and rerun the same test.
+
+Please just use SWAP_CLUSTER_MAX. That's what the reclaim side which
+issues the stores is also using for batching.
 
