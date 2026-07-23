@@ -4,105 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D24EC4452B
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 03:25:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3E09C4452B
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 03:45:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 736166B00C6; Wed, 22 Jul 2026 23:25:13 -0400 (EDT)
+	id 1B8FA6B007B; Wed, 22 Jul 2026 23:45:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 70E126B00C7; Wed, 22 Jul 2026 23:25:13 -0400 (EDT)
+	id 143336B0088; Wed, 22 Jul 2026 23:45:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 600C36B00C8; Wed, 22 Jul 2026 23:25:13 -0400 (EDT)
+	id 030B56B008A; Wed, 22 Jul 2026 23:45:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 33AAD6B00C6
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 23:25:13 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A752F140361
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 03:25:12 +0000 (UTC)
-X-FDA: 85018600464.19.BCA6B50
-Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 0D15F40006
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 03:25:10 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=dWO4NxvV;
-	spf=pass (imf11.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id C9DA76B007B
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 23:45:20 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 37336140385
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 03:45:20 +0000 (UTC)
+X-FDA: 85018651200.28.611EB6D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 9101BA0003
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 03:45:18 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kA4N1gHb;
+	spf=pass (imf15.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784777111;
+	s=arc-20220608; t=1784778318;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z8OTpiatQBHFhVb1kcbCtXbO04T0mIjzVEpsj33f5I8=;
-	b=C/S8TgJImI47JOm9EN1WabJEap8NyebYBAaUrrodoW/+tz3rS+zUtVkfslRVTXhIeN3Tr4
-	lXBlAj4nOD600qcErQK1oJj/WQUSXpNezGuAnC/ptyr86kKh0VAH9VUAd+Klnd9HAZVlAm
-	1V2dW2zAUnL0hmK6QjSc+sVS8hiNnlw=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=dWO4NxvV;
-	spf=pass (imf11.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784777111;
-	b=g4MaOWGb953bTIiGUqyhYten/8BPAwROkDSF7+6/2O7nxjUrZNAFCAXhaEdLdoF/Hc2/X0
-	K+ILFngsnhYHgazkflSrxijShNEqAKOR+gT0ETdLBaskDXMB5tJcJee7FSq4jWIChBJcjS
-	45ly4zYB766/QudgZkbjNn+A+GWr1wg=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784777108;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Z8OTpiatQBHFhVb1kcbCtXbO04T0mIjzVEpsj33f5I8=;
-	b=dWO4NxvVnnjKGuqo3qzfxKzhUKo3sdjpaWPlrGNi6aOGIcZXw0WenQYF3Vs1M4OTZnArqC
-	9lcjRkm8zXCLDuvZf21/B6QEXLG3RPuuStjDBl8rvOEnAtYypC/wemgFHFpjWvOOdV8Q2Q
-	nNrovUKOq8dYSrn4gT/RZduAGdwZCZo=
-From: Ridong <ridong.chen@linux.dev>
-To: Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>
-Cc: Muchun Song <muchun.song@linux.dev>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>,
-	David Hildenbrand <david@kernel.org>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=762g8kYBk7lElwigO/Zsr8G9z8HnpHqNCurBk1LuKrE=;
+	b=cahGAnjhAwdv5wKwPH/YcSZStp5+BgakaUfNhEs0mWOR6tSgjODZeGDvKgRbBbbZp0z6/Y
+	BubZ2cKGXyV42tO2xdbRj+x5XqDcscNE3+QBqCJdHO/D5zKW8iZ7YvfMNzATA5H/8uD6si
+	6mCrgYevyXSCwSjrMNyGz+fZsqGEPVc=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kA4N1gHb;
+	spf=pass (imf15.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784778318;
+	b=LE4FWr5Me0ExN9X+/8HZBSRVlVGEenuP60Sg9rhfE5dHycvG86ZVQjj/AUXba4/PJPTPxA
+	mP9/f2/k0yfmr7OacbfhYMRJx0WX03dRZePdQFuLILKB6TZ0msCgUtByeI5XXAs1H76Ifj
+	Cui11yDSjC/vy80pe3Qko7lwL0pKmmw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6AA2643979;
+	Thu, 23 Jul 2026 03:45:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 173DF1F000E9;
+	Thu, 23 Jul 2026 03:45:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784778317;
+	bh=762g8kYBk7lElwigO/Zsr8G9z8HnpHqNCurBk1LuKrE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=kA4N1gHb3nJw/caFpk+zcO5zBuVRkiwLvH3IZoY/LzrxvYHLB2xd4AoCSsMJKFb1+
+	 4pYFxIkozgxBzPHNcBgVh/R0WVsJA48HvhrC6lb10OrV6eNluL8eexI2VL3VaR5Q62
+	 XPE38DSIRUbmxpzFH+Eu2hYcB1Xq3jIspibyUH81JZjh/lqNUncn/qWo+2Yv3CJvEz
+	 gDxmCOAuNsOt/Bdh6KsLD+jeYMXWpXXs5NlRkIIwWW25vI4UM9fZfgG/8nNf1BI2Ze
+	 bB7IcRBHAOSXfOZmPpwPgHRBoIOgQwhKLBbQeP5UPTaZxPjizvwhSvyFWiSKEc7rku
+	 JiVIbxaNJNEjw==
+From: Kees Cook <kees@kernel.org>
+To: Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Andi Kleen <andi@firstfloor.org>,
+	"Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Kees Cook <kees@kernel.org>,
 	linux-kernel@vger.kernel.org,
-	Song Hu <husong@kylinos.cn>,
-	Ridong Chen <ridong.chen@linux.dev>,
-	Ridong Chen <chenridong@xiaomi.com>,
-	stable@vger.kernel.org
-Subject: [PATCH -v4 2/2] mm: vmscan: fix node reclaim ignoring swappiness parameter
-Date: Thu, 23 Jul 2026 11:24:34 +0800
-Message-Id: <20260723032434.2016749-3-ridong.chen@linux.dev>
-In-Reply-To: <20260723032434.2016749-1-ridong.chen@linux.dev>
-References: <20260723032434.2016749-1-ridong.chen@linux.dev>
+	linux-mm@kvack.org
+Subject: Re: [PATCH] x86/elf: Correct comment for STACK_RND_MASK()
+Date: Wed, 22 Jul 2026 20:45:04 -0700
+Message-Id: <178477830120.3132185.17815722457437200154.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260722-fix-x86-comment-v1-1-605080af988d@kernel.org>
+References: <20260722-fix-x86-comment-v1-1-605080af988d@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 0D15F40006
-X-Stat-Signature: pai9r9nyh7qoko3x8qpanuy558yss7h7
-X-HE-Tag: 1784777110-933444
-X-HE-Meta: U2FsdGVkX1/gLi4ASY1Txqmt/Wpk2QIBtI4jozkOghSHCcrqFN6vSo4y25Hw4kqkvncHpxa6KDkYQydcd0+bzv2EL9L7W4XRHUojDQNerwkojbyhbV14apsszRH4xHL9jvxYIiV22VpU5yuJN5hXJj/0IcgUW1P3SIX5kdxF8pTt7WrE9DPZOXmdTCnTAv9nWuTTzzU9bSNsz+nLsrFzqfgk66w7kSdp3varrPHkVyxaSxYZ/R7ewe589ZycNttYfjQdHJtCOifkoyB5esnbWalr4f1tT4YvqBlB4grmAqpeGP8z3uYSewjchtHfhvPCiDL9BAhZvOw3VuF3w7zp2OFDFbOeo0NAoAi4EFqIdP2qM77PzXCrx0W5XaYEQPB5aBHCdRWxJ2XreNwvSu3XYd6JDF86Hdmuphop72a54T0ldkKDVa+c3+aGd8y+OYbenNa/5CiuDkRqypXC04hDvFMKgNQ99H71WF3Ydqul7MwJc96K//tJJVlkFV/v+6guonVX6qFNMTrAgLTGnCXDJQNCnv2lSW+bNd0PNEtemdOGDgTVrl0KPLNbhMLD+HkQr5OUlcj4NrxSNBWLzEzwCZwv1du8ZcRluaVSeNDaqhgzUgPJvD7njfLQ14515RlM6k/UHiX7RLw/pIjBcZODLTQid0I4QNnC7LmWnhN2z7ahGSeVVqlVCs9FSKhvcgbCv8Lm9SLpDTqmGEwCgdtz/e+7X5ZhjdhSaWlmWU6ej0asFwuZZSQCZaAF7ECP0SUafAcp6PcGn/AUOPepCn8tjOt56uI8xzLLoZl1h3PyTFmuE6VvYbGI0sUJty/btY26eeyFdto5YHLXfvj+SOy2Gf4UxtdEKByb8IweDh5qQEy3I2Dwa305tQ+vGPIaW9FwWawx1azTGlmi2bBAonDzPVbJawpxzwgR6aRw4EIT/yMmgS2hW5JBO5qXNjOI2b7EotQ6SD9Gvv6H/Z6+cdT
- jf3s//CO
- Sre/GF3YueCDA0iVrmgvs2K8YzyY14Xum8BSWZsbk0WGPprItnfCwVChpyPIZZZqb/jlpz9/1AEJYuhLa5CyRnKM1QXD7I45uIlc8jI0jGJ9PUmIc+9xGpSqtLc+ssyHlw39RlbqU0Ou+uCUF5yINbtG969cfnFWkfva5p8lTdqvoMioSxUPf48MjhPwsrpF8LBI6dC0azVo7StCGf+6cY4nW0M9KftwL8bR/KR32jrejP0oefAd0C1hD7F9RUrAjswG4uk0SSP+anOiI6BpNyS7Xn/RosMFH6UBRH8Nd8EBsuAtTv5HKiJ36OQ==
+X-Rspamd-Queue-Id: 9101BA0003
+X-Rspamd-Server: rspam01
+X-Stat-Signature: ddygpf193p6k7tibmeq6r6bc91emz9wh
+X-HE-Tag: 1784778318-991203
+X-HE-Meta: U2FsdGVkX19cpcj9iQDk0h2ZFWAtYq6HPdh/GOwZnGfde5Z+gTvhFjkTR6xr/bvMkC6VYOeF9xF/GEEjgsGDyiUQd84aUbzpvSVKqw8YOeMk/FosYQLqaNEhwHDAwGiWt76MkTI2RUU1g3ZkzSjXkq6HvNCQ23gmy+1Bzz0/H3rc84PKzDGCZSR8KN8ye+CqXk5vCQD1Eu5qWr1qOfyoQPhTHXwnm+AlCVrc8UpG97JAHavjf+U42ao/91aGGAtLHg4Tto2WtSTLR4VvKqmalcNHVmYslAtlJvVcY4q0Kqg2VJQwoc5wtBNNjxkPGro3OoOTX4mzXO6PWaHRkTMCOllGqWi6McVdVaTVQGu9NCeAyuUfmTY63/y3/E2sDRBzqcZrfHkn0OLA1tvSsEHv5Un1VyR/Hd/zqYv0kWbwbBed6bAHo+VDRZ7JaUIACEC032f+oeo7DE6LyNaDgocpRIkuRS07ITtZMrN4ii2X9UdVZexvx0T0+LQYgV4yl0iw19s030hbZ01AAEs53GPGCtNzOw/QAKJp9q3+J3y5l70NiYg2mjkPL5p0FCxrkbcE83rClb1NaCL0Y0DkyVW8i/hATO4spR3mb3keu2XhQMUsaD4lcbb+UiKuLUvn5sl3QIdlnZDgl/eZqjcwJ0ufgpur1RaocQb9vPkzgXBFItr+gZi3BOcXXqrlmnvs6iUYMotj7xDNs+Nt5tv16YHmgpTxVNfCwepVrzPk5loiY7sQLUYsM/jQNRVW2eijueD8oVDNTynOPFGSYW03EDnVCEg4WK1eMD5imY0BN2uldWRrZIN8jQ/Mgw0dWYB6E/LfHRcj3om2eUlly0VypLd4TNTAH1PfCZ8oUl3ct0gVizjrxb26ckOPBhzpibgDWBeXigcACPtloWuT6tn1U2e+HRVc3S4FkUO0Y1sbo8wZ1jAfFKsWBB39pggEWwdHAWHW5SZqnlE4NuIlrUupHkY
+ UH1hZ63x
+ FfFlxnqOFQG7FJdk7FhY7yNr7tFG0kWEIxOhEpQVq4mqCDM0DAv/xkNrf+rHXBr3QBL7YFFkX+1QCc9A7FSy4TdE3+DwsSJcutxsj2rZCtvEJKninbyN9y6h7NpAS4rfzJXY96FsztEMluBwqlH+w7mpsvX037o53wubFD5MX+hTlVZNdR5vQtKAanZUqfSZLe0MFH4l96FuO83MNZk9Dy+3HWIN4AjgqAAkDreCdAQjs3MX4b7QI29Rcu3fVaWP0wLO7Cqscvv5mCXiUTQvRww60g4aEeDs/1HZ0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,115 +100,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ridong Chen <chenridong@xiaomi.com>
+On Wed, 22 Jul 2026 19:44:43 +0100, Lorenzo Stoakes (ARM) wrote:
+> Commit 913bd9060195 ("[PATCH] x86_64: Increase the variability of the
+> process stack on 64bit architectures"), merged in 2006, increased stack
+> randomisation from 8 MiB to an ostensible 1 GiB for 64-bit systems.
+> 
+> However the commit actually introduced a mask of 0x3fffff * 4 KiB pages
+> which provides 16 GiB of randomisation, not 1 GiB.
+> 
+> [...]
 
-sc_swappiness() had two separate definitions depending on
-CONFIG_MEMCG. The !CONFIG_MEMCG variant simply returned
-vm_swappiness, ignoring the proactive_swappiness value passed
-through scan_control. This caused the swappiness parameter
-written to /sys/devices/system/node/nodeX/reclaim to have no
-effect when CONFIG_MEMCG is disabled.
+Applied to for-next/execve, thanks!
 
-Fix this by consolidating sc_swappiness() into a single definition
-that checks sc->proactive_swappiness first, then falls back to
-mem_cgroup_swappiness() which already handles both CONFIG_MEMCG
-and !CONFIG_MEMCG.
+[1/1] x86/elf: Correct comment for STACK_RND_MASK()
+      https://git.kernel.org/kees/c/ab11176bd3a7
 
-Before fix (swappiness=max ignored, mostly file pages reclaimed):
+Take care,
 
-    # cat /proc/sys/vm/swappiness
-    60
-    # cat /proc/vmstat | grep pgsteal
-    pgsteal_kswapd 0
-    pgsteal_direct 0
-    pgsteal_khugepaged 0
-    pgsteal_proactive 1840
-    pgsteal_anon 25
-    pgsteal_file 1815
-    # echo "64M swappiness=max" > /sys/devices/system/node/node0/reclaim
-    # cat /proc/vmstat | grep pgsteal
-    pgsteal_kswapd 0
-    pgsteal_direct 0
-    pgsteal_khugepaged 0
-    pgsteal_proactive 18013
-    pgsteal_anon 337
-    pgsteal_file 17676
-
-After fix (swappiness=max honored, anon pages reclaimed as expected):
-
-    # cat /proc/vmstat | grep pgsteal
-    pgsteal_kswapd 0
-    pgsteal_direct 0
-    pgsteal_khugepaged 0
-    pgsteal_proactive 0
-    pgsteal_anon 0
-    pgsteal_file 0
-    # echo "64M swappiness=max" > /sys/devices/system/node/node0/reclaim
-    # cat /proc/vmstat | grep pgsteal
-    pgsteal_kswapd 0
-    pgsteal_direct 0
-    pgsteal_khugepaged 0
-    pgsteal_proactive 16283
-    pgsteal_anon 16283
-    pgsteal_file 0
-
-Cc: stable@vger.kernel.org # 6.17+
-Fixes: b980077899ea ("mm: introduce per-node proactive reclaim interface")
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Reviewed-by: Barry Song <baohua@kernel.org>
-Acked-by: Qi Zheng <qi.zheng@linux.dev>
-Tested-by: Song Hu <husong@kylinos.cn>
-Reviewed-by: Song Hu <husong@kylinos.cn>
-Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
----
- mm/vmscan.c | 19 +++++++------------
- 1 file changed, 7 insertions(+), 12 deletions(-)
-
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 06e103f9781e..155167b3614b 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -199,6 +199,13 @@ struct scan_control {
-  */
- int vm_swappiness = 60;
- 
-+static int sc_swappiness(struct scan_control *sc, struct mem_cgroup *memcg)
-+{
-+	if (sc->proactive && sc->proactive_swappiness)
-+		return *sc->proactive_swappiness;
-+	return mem_cgroup_swappiness(memcg);
-+}
-+
- #ifdef CONFIG_MEMCG
- 
- /* Returns true for reclaim through cgroup limits or cgroup interfaces. */
-@@ -239,13 +246,6 @@ static bool writeback_throttling_sane(struct scan_control *sc)
- #endif
- 	return false;
- }
--
--static int sc_swappiness(struct scan_control *sc, struct mem_cgroup *memcg)
--{
--	if (sc->proactive && sc->proactive_swappiness)
--		return *sc->proactive_swappiness;
--	return mem_cgroup_swappiness(memcg);
--}
- #else
- static bool cgroup_reclaim(struct scan_control *sc)
- {
-@@ -261,11 +261,6 @@ static bool writeback_throttling_sane(struct scan_control *sc)
- {
- 	return true;
- }
--
--static int sc_swappiness(struct scan_control *sc, struct mem_cgroup *memcg)
--{
--	return READ_ONCE(vm_swappiness);
--}
- #endif
- 
- static void set_task_reclaim_state(struct task_struct *task,
 -- 
-2.34.1
+Kees Cook
 
 
