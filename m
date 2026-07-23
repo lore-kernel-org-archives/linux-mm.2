@@ -4,101 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4290DC531CA
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 13:32:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E2B7C531CF
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 13:39:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 42EB96B008C; Thu, 23 Jul 2026 09:32:36 -0400 (EDT)
+	id BDD966B007B; Thu, 23 Jul 2026 09:39:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B8C56B0092; Thu, 23 Jul 2026 09:32:36 -0400 (EDT)
+	id B8D416B0088; Thu, 23 Jul 2026 09:39:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 25EBA6B0093; Thu, 23 Jul 2026 09:32:36 -0400 (EDT)
+	id A7B8D6B008A; Thu, 23 Jul 2026 09:39:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id F04E46B008C
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 09:32:35 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 720E8C04EC
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 13:32:35 +0000 (UTC)
-X-FDA: 85020131070.16.9AD83B1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id A663840009
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 13:32:33 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RxKeUhdm;
-	spf=pass (imf01.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 711426B007B
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 09:39:57 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E1E201604A0
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 13:39:56 +0000 (UTC)
+X-FDA: 85020149592.14.71712B6
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+	by imf23.hostedemail.com (Postfix) with ESMTP id B49D4140004
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 13:39:54 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=Dhd9yfdq;
+	spf=pass (imf23.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.179 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784813553;
+	s=arc-20220608; t=1784813995;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NAWPQDEwgUQenFjlFjzBd00tOhMhEOyT4kNXUGq7gfw=;
-	b=kCloH40rVw5IY9bniJRnc/Pz/T2yyUi6tP1Nfo1NX6YGxGUprpLZZiQMhzJ8ItOh3hV/r6
-	y0AUhfDVwKkkK1657CZnoSSYT9zOzUqTVh7SvWG84KIOdH7oBuxmLiDNtAisPdMSW2LyMO
-	wUOjohplj7wuqR42uSPqPW+Gje8u0EU=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RxKeUhdm;
-	spf=pass (imf01.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=5OXNEFjRCaitHQKe2wfBmPOWIET8WKaJvN/RgwCYDNw=;
+	b=sF0OdlqnU5x0v5I8eaVO45San2v2G83WnyVKYDjm9MmVe9scI7NsSgC3y/pvoBq+tL0BHE
+	FYmyU4UntfMveCyGaJmKuxJRDMy/F5Prjuk6Wj5NZdey99mHxyU/7bWcKhJPs/zw9B18UA
+	soaNAls53yM++d3bQHriUlvgLlrO3xw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784813553;
-	b=dTp1opklL3ECGOpk8+xm6sbCP/pgCSs+os0PPumCSxoZe8uHkZnoij90Rxay63BzAwNBYf
-	j+pTsek7V6RMhKlO+WRCnK+UyA64gfnL/whZcq7f7Bb51uvmxPT64zfPeXKGAT2IicEb7b
-	JaCyss9TgfV1g1eKSIK1qBECEYCQ9T4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1266C600FC;
-	Thu, 23 Jul 2026 13:32:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A90D81F00A3A;
-	Thu, 23 Jul 2026 13:32:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784813552;
-	bh=NAWPQDEwgUQenFjlFjzBd00tOhMhEOyT4kNXUGq7gfw=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=RxKeUhdmBj4gJ1n4H1BRQDxOeHFg7Em7lrvFM95dPVAlyrqEEKogQVYaETnHVeev2
-	 geYcv0RmFhuu30Q+RaFN0kQfKqIorfqhzFt4g7mFnEVulsghRfHaTqiNVaGt7etaac
-	 yAOmy68hWehWYt4nkKVWJ2kxMoEhr02NkP+XMMIuVI0R6YdcnySFDuLWa5DkjWhY6K
-	 HaG0+YdObuc19bGQxK/pVLT2mIkZ4k5w9ZEs5Fy2atEdxVgbj5m0PGVjXzM43oSEmL
-	 6++8JM05scF/b7faXlUJId7oQljZ+E6hJDH6MWykOW5GRvZ88g4cNhK7sakvQFRiXl
-	 FyRSSS3WdVMrw==
+	t=1784813995;
+	b=fG2enh2dyGC5KlgJMtaJXhlodcnqp03yYEgO38Np5ovj9aqplSkYD+519vMf/rdS2MYf83
+	VQ3OiTiq/Jex5B/fegCff/cy29GD3d3Mz54WN/Ddr4NfgZcKyLV2neJQdBKwzfah3X7xIn
+	9rSYFkhPEYOKy59mMCZ7PqXebbv7/cU=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=Dhd9yfdq;
+	spf=pass (imf23.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.179 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-51c5382806fso6302821cf.2
+        for <linux-mm@kvack.org>; Thu, 23 Jul 2026 06:39:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1784813994; x=1785418794; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=5OXNEFjRCaitHQKe2wfBmPOWIET8WKaJvN/RgwCYDNw=;
+        b=Dhd9yfdq6k9H6lVintCecAB6V8j2a/l2xTUGZYeh4GJQHaY2tW2XjwuBjE45JGmvao
+         lu3gU+0Fwy9fYNUKpEZRx2I6X6cwo+LinCerVkS9pReiNiqGrk+E2aAsLYoTRieng2N9
+         dF4ZpLZyJDCqZrJOW8NyH3Y5x5jb5n0D+OL0BRfpcWAoJdGYAZhxOfQOo6/u+z4FyzzC
+         DqeBIeVVa4kWzdHjLm+h078+ykBKh8QVA0i34XwMeakJ+z6fqsC+PtJu5TMszMEsNsR4
+         JcVqqUwLbp1zGPEV3wgAAf9ClDX0f6GkKAYb94DoT2Wg9pCELsSaAy7yCsgFsMgmgxIP
+         rClw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784813994; x=1785418794;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=5OXNEFjRCaitHQKe2wfBmPOWIET8WKaJvN/RgwCYDNw=;
+        b=USyjARPU8uNNWjZSCjqI6/0yGvMaIbLcIkU5aUX/O+ESsrhWTHflZoAZVd+ri9c42S
+         cw8hIE2FVe5e2WIuxQjwjzTpvyUWIB8vFb66x2GPzDeoyGcElTkvUe/bIf/EIm4legEz
+         qZ8Bwa+Hxntvppqzf+sAuYjt3Ej2WhXPuZe4eLGdrP7bey8BQoFbzqgD0+3cM8w+bsR7
+         tc40SHIPG14B4jQd89NSsT6ZOv3joqsb0KPuxRNgJGFIRp9wDmuPP2LYTcUK6761jk/O
+         x1a2iLjPHXdHJMFCRC5BpREZFdtWh/VYGQqgmhzrY+Lgj/LFjOYyKSHMxv0MU+tiecaI
+         aozg==
+X-Forwarded-Encrypted: i=1; AHgh+Roszu74QeHHcu9ZpwUVC9ya/h82e6uYEG66RWFW+ctIUCqtXPvr1+9TPBpx9JcIgDp2hTUHn0dIJA==@kvack.org
+X-Gm-Message-State: AOJu0YxbvtilKiNPDBvaNDUjx04ctaN4O3dJAsIhRsHYbSkDleeUrr9V
+	NKSetgZPh8gMlaONcIH8ws6kKPi4q2v4X582aSLmLnGYH23SpuM5AMWMbl7CFTNCuYk=
+X-Gm-Gg: AR+sD13vGNTumFe/gNmdVoO69v+xt7nUnlwefnldlnY8jLYWShEU7KhyYbOPi0+cADt
+	aets932aiEPSOuMttQOUZG0MBSrURXq3ZAMSRs16RKs4zG41DoVX9Crn53jhDOPe2cd4E38uunV
+	XXD7Ajo1T1UrfdiMPUV49ZyOFeYPagV1WElFE/SgWPSktZC5YyiPU/EYaekCMeUb2dSe0gdTQ7S
+	Y2wTHxZZE+NWuyWkiAXm1Erk7clDUAbGJ7Cm1yUhWskB0IyvxmAMmiJ6cmBmbyGI/Rotf1IZheP
+	fGS0nEE6utM4nFQD8w0Cv5JW5stokoqpR1/YZxSuvxv7yFNL3UJv1MoKKqA38RBZiH6258MZd2n
+	kxeRcIvrAd9+R8voGyKUHkzjnUo704eHLskVaQThyQC9zeRr9ta7q94bekdCn/DTVJGVTinwBRE
+	ol
+X-Received: by 2002:a05:622a:5906:b0:528:30e1:b5d3 with SMTP id d75a77b69052e-5283e0419fdmr25761861cf.84.1784813993716;
+        Thu, 23 Jul 2026 06:39:53 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-527d0c4ce60sm35155751cf.7.2026.07.23.06.39.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Jul 2026 06:39:52 -0700 (PDT)
+Date: Thu, 23 Jul 2026 09:39:51 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Alexandre Ghiti <alex@ghiti.fr>
+Cc: Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Jan Kara <jack@suse.cz>, Kemeng Shi <shikemeng@huaweicloud.com>,
+	Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
+	Youngjun Park <youngjun.park@lge.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 1/2] mm: zswap: free synchronous-IO writeback folios
+ directly
+Message-ID: <amIZp7Ual_6Gu86T@cmpxchg.org>
+References: <20260718093723.153324-1-alex@ghiti.fr>
+ <20260718093723.153324-2-alex@ghiti.fr>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 00/21] binfmt_misc: transparent interpreters and
- PT_INTERP loader substitution
-From: Christian Brauner <brauner@kernel.org>
-To: Farid Zakaria <farid.m.zakaria@gmail.com>
-Cc: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org, 
- Daniel Borkmann <daniel@iogearbox.net>, Alexei Starovoitov <ast@kernel.org>, 
- Kees Cook <kees@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
- Jan Kara <jack@suse.cz>, Jonathan Corbet <corbet@lwn.net>, 
- linux-mm@kvack.org, bpf@vger.kernel.org, jannh@google.com, 
- mail@johnericson.me
-In-Reply-To: <178477872729.254289.15918342296936455606.b4-review@b4>
-References: <20260721-work-bpf-binfmt_misc-ptinterp-v2-0-e57866e4ae0f@kernel.org>
- <178477872729.254289.15918342296936455606.b4-review@b4>
-Date: Thu, 23 Jul 2026 15:32:09 +0200
-Message-Id: <20260723-entmilitarisieren-respekt-lehne-5db75924c69a@brauner>
-X-Mailer: b4 0.16-dev-0e65f
-X-Developer-Signature: v=1; a=openpgp-sha256; l=692; i=brauner@kernel.org;
- h=from:subject:message-id; bh=pmGT3faBfzPliMxibFwp5n4R6WM3SvhEchhx/+niCQk=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQlib81X/yro9uX6wzT4+aHLBEPXf2fbNT/97/Xvf3F5
- risLLmgjlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgIl85WBk2MB8ZUJZ64Y7+1pc
- DH5eufWsnX+Fh+Wq13alRYI1v3cz6zAyLJ06c8vDJ0cCLGqrLF/U8/f6mok2TlI0mm4VeeCTyNK
- XTAA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260718093723.153324-2-alex@ghiti.fr>
+X-Stat-Signature: koecgaf6w53kd9b6dkn115itn84imosb
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A663840009
-X-Rspamd-Server: rspam01
-X-Stat-Signature: b9sg16rgxo3o68hrxfenkwnwauemrtce
-X-HE-Tag: 1784813553-411439
-X-HE-Meta: U2FsdGVkX1/r9rdttj+cwIjgtHuFe0aHdKHVHadY5Sj9sgvICJsYSwL63j71ZVkEwBVfML4sxMgMvS7IEOcO06PsvgpzbN1kbMs/vzVsoBIM5GLEy5IMVq6Rev/Lgotinj8BTUfD4dpRKXXQjbUh+laFtLgiJ8bgr7eRh5oUBxi/ZeSrlfcviTM7nNvJVZjK9obDFJJJqPowzsQ/KcYxrgoiSjONWIA4e+8DoNQo+JAoo9XiszyG8bhfKoAf2QNAP2jp9xw2Mwml3ilLQwc05+WWtPIaO5NLlYEF9B/hUfI50QeOLoKfyoBzqJQ+YH2Dxt2yYa0H7Lfu/4dITHHCFEcpupFUH4vW8pQ0U5O3bZbs0i4oWAbcxZyX+QdjtsmV+Fk7HhwMtw46ApN+hW5CNbqgxrnonmFfDEQZH0RoX3HTLTHTRQGjpKHjb1ojZl8aFY5qYsQn5+hnq/rJHRb9ELKJehSiSTd3gbJfUSFrhk4PSLe5RTZtIdAeWDlw8c2ZWAuNRIdCQUrkojJrc8mKYDcm1tSOdCslpz4UViLN5aP3LFI9kKYoC5zSahBIjKjB0gqIr9bTehpoKJtaMQK6GCOkrI/zxvQo/JoaMfLsPYy03wvEAuWRJQixQhJUi2gfCOwCmx97llcNkMolQV9HcptvcGOQD+mno9cn2JXWliYd5xo9tNXbQYGAW3BOEyrDLojQZ3OuhIAY5LZMyRmi3zWJe2NLe/XX98dEa5sbA28ob1cJ65km5awYwKSD4BvEGL2Pf+/V+2nRDV2+IPTNfRKFUP7GWE/mpU9G2ZrmZnBnVwinI+ON720W4MbVrDRwOiebuErcaytRG38Tn+bso2+oWgypgkVBOYiaBSVYpr2FzcRvBAi+OLPg/2+1su+OGoyGSKxHubXuowLoCJoRWietbOuKXhN/YJVaD4/+ZcfZ9ByiYF1GUQ9MBePea5TLw79QGRJ68A6JPNUhQpm
- z0HQXBWI
- DRDg6Yl/rXi9tqXs80hC5Sfd2+kU2bPkVbF5Io186MNsellERVOA5I/8ZcRU7ESkAd8wo6ORYWTenrctT2gRHcTV1oaZUhFbsqa52aZEWJNxHayXtOteLktk2h6SFUoTYVYpjyjHNiTc/YMviwtP+DakM7tPR/ztdJVmWY56hkm0dBUqJDQ0ih6tUbwwwH03d90wAFj9fUI4u4dXJxY2J5LD9L4uOkvxl7y/j3ikRgDBce0J7sfIYe9V9I0Nkenyx2ZRgU+9DF1RHCGvJo9v/xhHNuJHJD4KDplDRCtiJvBYs6xGGzzY2m1WtdmAdyX8/bMJ32G2rtHdfzJuoxYtAdHNAzmCvS4XCpBPh6IAz6I4+ilVEzZ0FhMcMDXKe1BW2WzJ+jCXoBZpMV/scy1Xy45vwnEHFXJEuI38u
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: B49D4140004
+X-HE-Tag: 1784813994-93087
+X-HE-Meta: U2FsdGVkX1+L7e4OQMDfJvbSimsZe71qtzgwvUixGP94lKRQ63xjy9f5eI/X2KCD3hMVsFPQXxQhGKxVayb+5f7RxTLzevU8zfFf1WL+myCzbQxpqfAsRlOcmsmb3NcEUgdXSOA+CLgsBdeLcHhoHlHMFTTJwxKmi7YWJPQkfkmc/Uo51Pu9bAkFIWqt5XyNnOLVsdS3uDMvuPHhbneq/tFVByk+TvQpuVqh0LSVxa1ehwH9VZdN0FjwqoEs3XbihBsl1l+q85nmlQqJlvLYa8zB6dDxbFsCG/CuBF1lku5Y8Z0LZAm1un83DTO4NF5svG2eqwG/dwRoDf9Gs7TUzYx4t7LRRpn9KueiiSEo9LhKMImjCRCVo1K/kN6HmooJeKckFuOHFCBI+V6VWhD8dV/beW1D8BRAMqs/zSOFliNUQwnftD0RNxCZJXP1xNh4qe7znyFdtOeSFT5vy9gqbIN0L66YAsqEzl4KOIuqX7QtlYuYczy4Iboi7gmj9RNWRwk4TzwcbIb0PcylVrOoSkGnERhMYacU7OTNytWDrpisJfSnt9DvvspPnmy5OTFrAExvQs3gEGTFUjn+B1Sb7SvxV+gD+6sUz5mWMWAoxdTSbwjRetLjVcb8FXs7PFeaBZeap0untBcA8R4OnKO4Zx8JSZGp9+IaIMIa9b04k7kteomaRZVJq7xwXRkEOrUsZ+4EQDyrqfDAoWc6euduMaFVy3Fa4W0cZhqB1YNcXNkuo/Sne053DxvoYh4o2d4986taqZlcwhUzHcU7wfkZbEVgAJ8uFKz1vWD+z/qKzajUa9B4ckI9Abr8Bck3RQ0drbQ5MsoH1W0GS7xN5uhbVqy180O5eKAyTDUlCoB1LwbjTA9Z+xhSgcj5fZSnMsYlxaCFY0dqWmHE4NvAr578Um0Rh500GYyx4VetQGvkd1m9jZSZ+EkStxCkXdZj/c58Ye0Op7OYLcCsDpYJq6M
+ BqrfsrbY
+ H6Yf4v+Jd2/nnnzjaon0oeVxRz6HGmu+acNGzhu85JjvQXvgnYVJkHyEke9rcW9pW457xdbcDI+NO3lceKety3oU/WZzOS13/G1ZTSS2oS3shmYel1QHOMHf7edq0R+cPaUnKVImw3QnXc2eizMs5qH+umy9f8Mhown5JIpRda6ZfYt21nhcXrODLIPWrbkE13QavbMItQOhqRizA9aYNntrrU26M0yDB2wtXQs339bMhdJXuBgfOijAzvonyM5XzRRJehjT05KT/nm/w/XxXvfoyYYwYsBDx9q1Ge2Geyh5TKoAVMYuYnakQL6lHwUZm/+OrxmBlWGcIn+U9dpcwV1gFPmZshSzQrkRkMMvyOCwp37YqPWCyLY6zSPkC1tWlc3uoTvd+xISSDXUok7kvbqWRNw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,21 +127,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-07-22 20:52 -0700, Farid Zakaria wrote:
-> On Tue, 21 Jul 2026 16:13:42 +0200, Christian Brauner <brauner@kernel.org> wrote:
-> > [...]
-> >  tools/testing/selftests/exec/loader.bpf.c          |  56 ++++
-> >  tools/testing/selftests/exec/transparent.bpf.c     |  57 ++++
-> >  19 files changed, 1823 insertions(+), 303 deletions(-)
-> > ---
-> > base-commit: 6cea93ff6fe97df34b63fe94487473e16c73b74b
-> > change-id: 20260719-work-bpf-binfmt_misc-ptinterp-e6ee99ff6ba8
-> 
-> Started to review (slowly); looks like the first ~10 are mostly NFC / refactor
-> / documentation.
-> 
-> This b4 thing is so slick; I want something like this for GitHub now.
+On Sat, Jul 18, 2026 at 11:36:39AM +0200, Alexandre Ghiti wrote:
+> @@ -972,6 +972,30 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
+>  /*********************************
+>  * writeback code
+>  **********************************/
+> +static void zswap_writeback_free_folio(struct folio *folio)
+> +{
+> +	folio_lock(folio);
+> +
+> +	/* The folio was allocated off the LRU and nothing re-adds it here. */
+> +	VM_WARN_ON_ONCE_FOLIO(folio_test_lru(folio), folio);
+> +
+> +	/*
+> +	 * Gate remove_mapping() on folio_test_swapcache(): a racing swapin may
+> +	 * have freed the swap slot (folio_free_swap()) and dropped the folio from
+> +	 * the cache, and remove_mapping() must not run on a non-swapcache folio
+> +	 * (it would trip __remove_mapping()'s mapping == folio_mapping() check).
+> +	 */
+> +	if (folio_test_swapcache(folio) &&
+> +	    remove_mapping(swap_address_space(folio->swap), folio))
 
-You're not the only one. :)
-
+I just chatted with Alexandre off-list, but this path does not store
+an eviction shadow like the reclaim path does. That means no refaults
+are detected from dropbehind pages, which can fundamentally alter
+reclaim decisions, zswap shrinker force, and pressure detection.
 
