@@ -4,125 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D07EC44536
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 01:21:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 111BCC44532
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 01:54:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0A8216B00A4; Wed, 22 Jul 2026 21:21:47 -0400 (EDT)
+	id C0D7E6B007B; Wed, 22 Jul 2026 21:54:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 059246B00A9; Wed, 22 Jul 2026 21:21:47 -0400 (EDT)
+	id BE5616B0088; Wed, 22 Jul 2026 21:54:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E65006B00AA; Wed, 22 Jul 2026 21:21:46 -0400 (EDT)
+	id AFCB66B008C; Wed, 22 Jul 2026 21:54:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BCDF46B00A4
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 21:21:46 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A59501C07DF
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 01:21:45 +0000 (UTC)
-X-FDA: 85018289370.17.1229D77
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	by imf28.hostedemail.com (Postfix) with ESMTP id D5092C0003
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 01:21:43 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=RgbodzMq;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 94C1A6B007B
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 21:54:37 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2907DA038F
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 01:54:37 +0000 (UTC)
+X-FDA: 85018372194.06.9F51004
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id EB2F718000C
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 01:54:34 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=C+uY7cJC;
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784769703;
+	s=arc-20220608; t=1784771675;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kjWq0EX3NUE2ngLrdLfPnZ0UVshpvVZocotK3ZKx2ZQ=;
-	b=fWpLRUYQ0cnPQ9XqtEWh69Hx1tz6RSGbI/3iSsYYW0YD/dwyxXA2Zo7otYDFSLUl4oL1wP
-	3B+vl3Qj6Ah1A0I3/Ik2j4i0XIoN7wSqACiNRmRTE3MR+FH5mPgcdpAPFngFM95IWFjYMw
-	lwbrQWp595aTPWb0b6O5dGvbEcz6Rak=
+	bh=N6wjuTbPtxAIgqgnGjPxKaJ4seR3kbUIOBOKDIE0hX0=;
+	b=QH1rjyLhkU63F4LVH+LAaFMeXxWFTUWVdLzPp7WegORUX0EgU2bzwgrddFPF35zLNElXRu
+	MuonxbeXjzlmG0juDO9ap3GbqidX8B0Y8cLwsdJAeQWGUQ6dv9hk2DwJNwCQjg4T154OLm
+	lEB1o/kiYbXgysxpCxfQ9u9wFU2x2II=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=RgbodzMq;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=C+uY7cJC;
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784769703;
-	b=Afc77Og01QMqMSINmdHQO4/vUVe/1aV2tB7WPmFnm0IlQ5J3CoZ8mwNGtclfFwdY13kUxm
-	oA7qcZX8QTIuzaSuw/cijjrB2P9owopQDD5p/zVVkLilTtmtsZeCNpfq17ljylEoy6D8np
-	nDzH+n0Y6Gdk7Z6b+dCWYUJ7ama7+yA=
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-38dc4553f62so99369a91.0
-        for <linux-mm@kvack.org>; Wed, 22 Jul 2026 18:21:43 -0700 (PDT)
+	t=1784771675;
+	b=y/z6hMjOO816KSDiZ6Itvkqe7cWZ1RCUTGA+4kBHewXbuebfz1zeudIw0lL7muMybdDVgF
+	H9HJ7JBM56XAXuhM5++M3zcUavCq6Apn5fWsFSltEiA2F2OTwDQYgLkZF8pw5V/+bCW1kw
+	JOtW+a6y3IZwLAneZaxOA3kNTHp/v2o=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8518540643;
+	Thu, 23 Jul 2026 01:54:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFCAB1F000E9;
+	Thu, 23 Jul 2026 01:54:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784769703; x=1785374503; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:references:cc:to
-         :from:subject:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=kjWq0EX3NUE2ngLrdLfPnZ0UVshpvVZocotK3ZKx2ZQ=;
-        b=RgbodzMqegL2/v0FnKkJFI0UOvv/hZddnPZ3arN8ePGNZh0UkBLmH2v7eyhE2iVabJ
-         RJOuAXxOq0eDOSdtjcoGxgGjSAjAGznM32uSXWVEXpUjhlfxu0i7YP5ur3HqbpgYsiYI
-         SXOYlHVC9qF9D73NhdE/l17QyVSGhapBSlTRWNKoNVKWHDcdu+HQUisGwbhpLr7Doxa8
-         eWtdlog1iE2dHozWmS/ieAN+bn7fFbkBKEaZXsm02QcxvEFSd8Hfk6nhQhbhqkAA6fEn
-         YnJjQEUdNi5uPKPdn6tftUmKIYkL5IZKWWuMuaotFq+bulMOXSf6Vus4OnPGsGhjJU1l
-         ofJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784769703; x=1785374503;
-        h=content-transfer-encoding:content-type:in-reply-to:references:cc:to
-         :from:subject:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kjWq0EX3NUE2ngLrdLfPnZ0UVshpvVZocotK3ZKx2ZQ=;
-        b=AykHlw/BlInfHLMBPiZA8ZJOARUs2a2kgvuzNsxuUH6p1YE8Au7b0luDwDmHN70A5m
-         BzVgcifXpLeyi/UKOoJG71nWGc4dCzvK9cFOOkh3+IGjL5MbfU4EdZSjRSQyjatbpBJL
-         lzXsy4euQo7kaSSPZ/1wz2QdxwN9osSF7vU+ETg23hJOO1xsXtlESaPeq6c8M7lkWfJZ
-         cvLLONrp/052rynjtHXsYC77ZGq6Q2FlGwstBdZywjfot68eVw1qQQ/VNbqKuiydasMp
-         VeB5YoaQzCr2PSuqQM199ZMGC365ZZUI7RxfNLwVf1uM0OOWmxzgbpknIp3t/1jp2YED
-         27Yg==
-X-Forwarded-Encrypted: i=1; AHgh+RqSjCJFzcvqCb5uuPGjlXGRoNkFBawsk4TniABZDUr773KtJ/gMaBoNAGJCdQO7zEsNLxOBABjwGg==@kvack.org
-X-Gm-Message-State: AOJu0Ywdd3kP/dvh6CplV2dnLgCDzPBvws9tzpDl1cniBE5v559J7CWF
-	uwLt/28D4eCjpOg54+Jsmao2OGTfi1w5iE3mKSgWwa8SJQWVQTLI7uJI
-X-Gm-Gg: AR+sD131bQbe19rygbLz6jJA64PgiTVyr/p869pL0DETzku1t8uNpYyIRGVxho3hCAF
-	wNPFlasJpXFIkjMmEAknIO6UNcAcnnutt8PQ45yMdnQbSfsRZrVgrV5FQkWwP+PNjQ8uSqe0z+9
-	wzs/o9MI4cLWZ/LXDoOJsvMpkn1ArF5v69owvQbFf6nvXJ0KrWfxPlydbkMBEUf7139Q4q8g+Sg
-	cu8zbXwk7+aKK4LWeCWbhQh5OGUDf3ktypYWuxN1LTfWVkdQb9yp4fCGCfGRJLwK1SRPSjdrOY5
-	V2DrfilzlIu/596aQBNleG3CmBBduKQQBO4v201f4CsfFVJv2Au68wgUuCHf93JJ8hwKDbJNtvy
-	0gVhJlclEdL3WEktgD4Ap05i8jE9/uYiZ22NWTPHmMAqFfIAxoZSS5eTBInzRtjJau5lS8UYhGZ
-	WSgSnR0UfYv0eWZatvZ05m+neZAPo=
-X-Received: by 2002:a17:90b:5241:b0:383:5a16:bd70 with SMTP id 98e67ed59e1d1-38ec651c1f4mr1027418a91.16.1784769702664;
-        Wed, 22 Jul 2026 18:21:42 -0700 (PDT)
-Received: from [10.125.192.96] ([210.184.73.204])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38ea41f32fasm1418972a91.0.2026.07.22.18.21.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 22 Jul 2026 18:21:42 -0700 (PDT)
-Message-ID: <0a96b7ec-0d8d-2abd-afaa-739c562bc985@gmail.com>
-Date: Thu, 23 Jul 2026 09:21:24 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH v2 0/2] mm/zswap: Fixes and improves the zswap global
- shrinker
-From: Hao Jia <jiahao.kernel@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>, Yosry Ahmed
- <yosry@kernel.org>, nphamcs@gmail.com
-Cc: tj@kernel.org, hannes@cmpxchg.org, shakeel.butt@linux.dev,
- mhocko@kernel.org, mkoutny@suse.com, chengming.zhou@linux.dev,
- muchun.song@linux.dev, roman.gushchin@linux.dev, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- Hao Jia <jiahao1@lixiang.com>
-References: <20260717085151.22822-1-jiahao.kernel@gmail.com>
- <20260717181839.c94d0335ccef0084707d3d85@linux-foundation.org>
- <CAO9r8zOrXqsEaCEJUUAxbAhhN_OQb8ejogeUa6k8hX_JV8hxxw@mail.gmail.com>
- <20260717214031.8b22e9a37ea3b0c564b466f0@linux-foundation.org>
- <7dbde343-fbbf-6a1d-1785-ebf9f5a04f6b@gmail.com>
-In-Reply-To: <7dbde343-fbbf-6a1d-1785-ebf9f5a04f6b@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D5092C0003
+	d=linux-foundation.org; s=korg; t=1784771673;
+	bh=N6wjuTbPtxAIgqgnGjPxKaJ4seR3kbUIOBOKDIE0hX0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=C+uY7cJC1rLCcXQ9uonp8jtS1Q/1LHUvA2TMk43kckRVih0eSZwmuXLsHwSONPqo6
+	 GvAxfZBNdFl5rPvNa5r7NFm2f7Eq6zKdVB/LQP8T91JxGVo3y9K0kulkUhQKib9IBw
+	 DvRz6jbpHeyoFaR0+V2GSmOW8bVdbPqttuECU6Kg=
+Date: Wed, 22 Jul 2026 18:54:32 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Ridong Chen <ridong.chen@linux.dev>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt
+ <shakeel.butt@linux.dev>, Chris Li <chrisl@kernel.org>, Kairui Song
+ <kasong@tencent.com>, Muchun Song <muchun.song@linux.dev>, Kemeng Shi
+ <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He
+ <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, Youngjun Park
+ <youngjun.park@lge.com>, David Hildenbrand <david@kernel.org>, Qi Zheng
+ <qi.zheng@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, Axel Rasmussen
+ <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu
+ <weixugc@google.com>, Davidlohr Bueso <dave@stgolabs.net>,
+ cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Ridong <chenridong@xiaomi.com>
+Subject: Re: [PATCH v2 0/2] mm: fix node reclaim swappiness handling
+Message-Id: <20260722185432.12d549d77cbacd8d5e2829f6@linux-foundation.org>
+In-Reply-To: <56fcb7bf-5e0b-46ad-84e5-12b2d00b7a34@linux.dev>
+References: <20260716031729.1064007-1-ridong.chen@linux.dev>
+	<56fcb7bf-5e0b-46ad-84e5-12b2d00b7a34@linux.dev>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: 8a55roiq97qtgf7bfzxnnhcp3u1qzm79
-X-HE-Tag: 1784769703-15573
-X-HE-Meta: U2FsdGVkX1967JAS3hd21T7KLbHTRuGW2kIsyrANNEnKkghzQnIApmh2U2Jr6FJVx8xYCOmEYV+29JR0A8FtuyXj9Qd5v/VTsoBRPvexc4c5sQl+balHgt4OWbJUilK40Asb82wTcBCZrjadyKThDy9ugMHzQ9fjYod7ZH0Bqy9AbW+pDVX/rNyXYw9LtD/TYtBglKT+gtVPaal2cdgDI1N/iOBurMWKwZo+imz3d7/qzWJk/GPtoQQjty5BZhE7Ew+r5pVkBG5taOdrXfqyum1FDB5sYHESu4Ew6cgBnDtI6HY7yqb+RAh5Gj3qlizPUd0X+a4Eg+yRjKgme5O5qaOdBXUmJjI5zkJTLCyinyWZskpgSEzyvJXbolln4GW5IzV1GwPRwpiDhyvqWhoXhKbtXHatqmSzFLphbbrE5sfelKkcvL3DWtzpp0k13tyGpvTzPT3kDMQJOIUv7COwtRk6yUdUJsYK/P91GAKeGz9+6IoqkyjqGAIwLBwN8nAPl05GpgHcvb5CAhyEmIcLh39KWxm2/AGA43U7MECOr4cEQkkM4GdOc/GQvGiq+ipLyG+wgTyLsb3u3B+t1zi1EE6EjIo8Wls4U1BIRFpmm1XJlx0AXiNuInlOFqV6x/PMzQK++JOBMoTzZw0FTJLA7fLXGNPOLi+sWSqQDEkR44lg3+VgvGvQS4rLAwpq5bb8NWWl85MHnBqzWOM1s9KzUF+4TFljxkGAO6NpvpCjRQtdx6qlnPa91+oMWlMtGThjGQTdl4IP1hrrPv1BWf/lMKoOmm4Oq96U75NS0BpsrnICkhVmT1WrP3wcMWmMnGRfzrA5/si3Q5uCDwvdAfu5IRc5wXGtkh6B+ge1vpaznplBZHJUZPhk+X5mUSWeUpUU3LFdEUW4gjD+jNT9fDnjLUmW8koZI4v2IWpFsa+lBz42cyuH51rF4FmF7mLGAB4Mfh6L4PR7sffVRwv/dCd
- mTqwRlxS
- a3w178Deg30dAFFIWRhfRaFbEdoEzHDd6qNT5/HphFNO/jtuOEpt+ox9ke1qv+giIcEusj2mWD6Q2RsQqmp55nt6daQwo4qFjCHxHiB/+eSrIv98VJ2sQq+/v971GFyw5axPtXNdr7enI0DzckvCRNukpAz/L4wWZdqjeloAo9euPwJVMln03ylZ0L8ac3/azM49TEkqp5GgDWHur4Nmdor9H1clvFsrLe0TOshxYzFw6rdI+sIH62cQThTzxIPAujNYpDo4RszKtyTmvZzbyY2aE/hRZ63dCA1829Z/qXZbqaIkPeb34lMTFNkozRD/ie/AP+L6nm94MI/5eqDVHWVj/as2ydMsdwOSepTRF3AxU+6AelwiE3/I/iRop8xorWByGBXudNywb72ZTD3UirumQyK5jwEiXyrWkZv8ShzUK/EgIpQU16+0Q0ABTV6J8o0xGDau4IO6O2IrrK/3a0pvFbcpMnCLCsvtU9F5IPcRUyzE=
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: EB2F718000C
+X-Stat-Signature: s41zf8oym54x9fe37fgeaim5fte73nfq
+X-HE-Tag: 1784771674-518804
+X-HE-Meta: U2FsdGVkX1/UCP4AWjHqpipbSXuBLFd9ZhKVYJPMMJ8BYY6VCv11+QCpIyN6OgU5Oj46I5+BA4byGtbotEoBXCmA8HBsBLuJdPaaXvOTsqZABlPMkOxjMtxA4ZENR0dxRddXmiJU27XCcShk/T/XRRpP8IG5rrNcfYeoq06TsuzvDosDvCjs15GaQ+eAOhir1BQoNmWC1B+O6fqkjRgzENPCqXI5syBgeXTHXmKPjqb/wBQR3wvL3j7rx5yq1oFPruXs112SLli82p5zuVuXVg1QywVlkzUCeT8oF8cYyp6n1w1PK1MA9QvbCpvt8ysti4fBpGNVJS7u+P7FqZeldtyO0vai1vnZaIzFw8h+IZdTHrx7c+Uj98uYhMO/FJvYFYdOdUuh0TXLLiMvMp880AVmLNUuRjLuYx9CVZ2eJUnSVS1UsfomFvydzV4ga2c9S0TdjTfE39SDBbf3bX0s0NNWlUM4cFHkoikP76/4SnDpr9GcN25ERH82P/bJCYV4uBubOOJtAVC3WL0S09LzroW7bEF+1UUXVJoh+2Pl8CeT/2TMDNuzdur6GPOK2pOWGPDvIOuG5jU1xzgLFSG3rBozVvcNOc2bBW2StG9G7q5l+AvJNllkaS2aWKDHucNHaQJ6CtrcgazIyiV6Xm3u+AzWPVD7OehVuA+5FShCOP0kk+S2Ezu2pcGyNF9Vm+oQK5B+JQjmzgNuRk4hdHYa0D3FV4jgoFqb9GuMQXX/EYWHmq/OpO+LsN+L0319X2D9KMOFwD7NLe2u0qSBpixQQMXo4JszDwarkZvACh3dAc8+H8seFIR0BvR5D6CgRP86rlVKZN+vQqDRD9lsxRQ5nauHPkOcIDdev3S7D5b/WrtvRA8hTHWQzSXujH7qJgzOAJ+BJaX62olFlVIVfEdLE+2XDPNRDaK1qqay1CB5fJMNg1TOYUNVPa15uwMb6tYiDT0ETfODLMYcpI4rOnH
+ 8e70b0b4
+ uf0ZSBhU5IsQNWy/TQHm8KYuHZ2YbRaYRdxJxJiwTIRVepO26nV4ECCu7XUTginWX/4Ykf/vNGUebdaOEsrG7IRi9s0e0+rgRcm+qfpupUhDXZ0J7h9eKMscyjqQSAnNnOSkCq1lOVLDi8v0ovA1uXuzvqXDFWSXHgq8qMMO/6FkmX/+WOjVu21H6xbVXZeYy3T0pF4E+fznTsqg7327UDXmIO2A+YK5APFZ2GXX0/j7vTkBbGNeifaT4x2PKLPI+VpQet0Pu/PYyfysI4vAoRTh3vZ/Ws9yScFufcHL5MX0lRoWz6DuVWcMuvQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,52 +100,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, 23 Jul 2026 09:13:27 +0800 Ridong Chen <ridong.chen@linux.dev> wrote:
 
+> >   include/linux/memcontrol.h |  4 ++--
+> >   include/linux/swap.h       | 19 -------------------
+> >   mm/memcontrol.c            |  4 ++--
+> >   mm/swap.h                  | 20 ++++++++++++++++++++
+> >   mm/vmscan.c                | 19 +++++++------------
+> >   5 files changed, 31 insertions(+), 35 deletions(-)
+> > 
+> 
+> Hello all,
+> 
+> Can this series be applied?
+> 
+> Just a reminder in case this gets buried.
 
-On 2026/7/20 09:26, Hao Jia wrote:
-> 
-> 
-> On 2026/7/18 12:40, Andrew Morton wrote:
->> On Fri, 17 Jul 2026 18:28:04 -0700 Yosry Ahmed <yosry@kernel.org> wrote:
->>
->>>>
->>>> The [1/2] changelog lacks a description of how the flaw impacts users.
->>>> Please describe this fully and maintain that info within the
->>>> changelogging.  This info helps -stable maintainers and others
->>>> understand why we're proposing a backport and helps myself and others
->>>> with timing decisions.
->>>
->>> The first line in the changelog should be sufficient imo: "Zswap
->>> writeback on hitting the pool limit is broken when memory cgroup is
->>> disabled"
->>
->> "broken"?  Perhaps this means "fails to occur".
->>
->> But what is the userspace-visible impact?  IOW, why are we proposing a
->> backport?
->>
-> 
-> Perhaps the first paragraph of the commit1 message could be modified as 
-> follows? I have added a description of the issues that occur without 
-> this patch.
-> 
+Got it, and thanks for the poke.
 
-Hi Andrew, Yosry, and Nhat,
-Any thoughts on this change?
-
-Thanks,
-Hao
-> Zswap writeback on hitting the pool limit fails to occur when memory 
-> cgroup is disabled, because mem_cgroup_iter() always returns NULL. 
-> Therefore, the global shrinker shrink_worker() always takes the !memcg 
-> branch. After MAX_RECLAIM_RETRIES empty walks, the worker simply gives 
-> up, so it fails to write back anything. As a result, once the pool 
-> reaches the zswap limit, every subsequent zswap shrink work run is a 
-> no-op. This leads to zswap store failures, forcing pages to bypass zswap 
-> and be written directly to the backing swap device, which can trigger 
-> issues such as LRU inversion.
-> 
-> 
-> Thanks,
-> Hao
+It seems that kvack.org sent me two of the emails from this 13 email
+thread.  This is becoming a problem.
 
