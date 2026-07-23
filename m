@@ -4,94 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57D83C531C7
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 08:57:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B83B8C531C7
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 08:59:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 426576B00E5; Thu, 23 Jul 2026 04:57:50 -0400 (EDT)
+	id B2D6A6B00E9; Thu, 23 Jul 2026 04:59:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 388DD6B00E8; Thu, 23 Jul 2026 04:57:50 -0400 (EDT)
+	id AB71B6B00EA; Thu, 23 Jul 2026 04:59:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 250CA6B00E9; Thu, 23 Jul 2026 04:57:50 -0400 (EDT)
+	id 9A80C6B00EB; Thu, 23 Jul 2026 04:59:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E77486B00E5
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 04:57:49 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6A4481A0414
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 08:57:49 +0000 (UTC)
-X-FDA: 85019438658.19.D1D8EC7
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6775B6B00E9
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 04:59:16 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E425614014C
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 08:59:15 +0000 (UTC)
+X-FDA: 85019442270.20.A27E397
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 8DF6BA0011
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 08:57:47 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
+	by imf31.hostedemail.com (Postfix) with ESMTP id 2FF6220005
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 08:59:14 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
 	dkim=none;
-	spf=pass (imf25.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784797067;
-	b=2NQtAZiG4jKhnLuxSTUCSrKJw9TFKWdWw+clFqELYAGZ0XZXWfyjXMVfCCZhrX2OB0Tl+5
-	LczdvmmTuaCqmxx+9RJBgYTZHnyKPtpDgLnx8UlrBX7916aJiDU/uercr/jbSwePx7fhkl
-	dXDUYmC1V9D22RIFf7UK32kiZGzVW/w=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=none;
-	spf=pass (imf25.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784797067;
+	s=arc-20220608; t=1784797154;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=oklOSaboSPhMpluJoBZeVgBHDXjeGvg5S3e8nTsOgHg=;
-	b=Bt45vmfCdHvY+4lhaLmkLYXw4YJ7b8tAdcgiv6G0mM7TBInWJWmivmU/ImBSBUmbjJrQch
-	N9pVECEz2brUDxWOXjvRGt3v2sQ9edm6Ufn3HwlM1DBKTE3HlXA5ErwT1RDAhtf/CqYmh9
-	iBaixhvBqu8VId+l5X38Xqctjy5dWOA=
+	bh=oHE5UyZOJcyUR8Q6h9uYcY3GT9DHQw0RTgTmhzj+Oww=;
+	b=LdO5gePU7DfeGreXiJ7ah3RfLUM6Fwx09KB4Qe3W+Hhm0uhiHqOInuYEtRidaDUBH9kgRK
+	bFOPip1sCAJx/GNkCyaeEtua0meKPgkgjLPZuZ08K0CU5rZy5RaneL5ejSFqyWfM7fYZBF
+	DYLjqzJ9E6KZQzn0WjQPpZZp10+u5r8=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784797154;
+	b=0yufawtHS+2OKfmSQqv1ijqek4qT5BIwx3RJvovInIbcuJtM+3fBVo8rVMoxavp4tgCBDA
+	jzPXUqyzEjVPGJfpcO5r/1WrTJNlH4pfvvi4gtpuOKf/0/NuZQByMg98Q5uELRbT39bn40
+	1nm6T6VALdh6pdqbYJPUSShHGRlOGVM=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=none;
+	spf=pass (imf31.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5C96E4170D
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 08:57:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55CFC1F000E9
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 08:57:46 +0000 (UTC)
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-92edb12cdf2so24297085a.3
-        for <linux-mm@kvack.org>; Thu, 23 Jul 2026 01:57:46 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RpLqZBG3PhiS6mqBNMn0SQOL0DBY4uEZKcnGyuAL26s44fYbKtnPNCrroBPMkKFUn4d0JKzH6vAsQ==@kvack.org
-X-Gm-Message-State: AOJu0YwgOIW5J/rfvmxDrSoyyNbIx6bLucFEvc+La1d2o30bhwyRQBU9
-	kz2OaYjs8xy8uF2E6HJfDHYiE7ORjW/4iwdHJa2lEi2SVlDK1nPizZe7wUmklqFAQWQYwKoMQbu
-	t094Lccw2uvfWxDXbUl0ibWFQtkegDJA=
-X-Received: by 2002:a05:620a:2403:10b0:92e:cad9:3540 with SMTP id
- af79cd13be357-93103728103mr151218885a.70.1784797064796; Thu, 23 Jul 2026
- 01:57:44 -0700 (PDT)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6FC024373F;
+	Thu, 23 Jul 2026 08:59:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 950951F000E9;
+	Thu, 23 Jul 2026 08:59:10 +0000 (UTC)
+Message-ID: <d5eed495-1544-4783-813d-e879004603cb@kernel.org>
+Date: Thu, 23 Jul 2026 10:59:08 +0200
 MIME-Version: 1.0
-References: <20260723045718.2052070-1-ridong.chen@linux.dev> <20260723045718.2052070-5-ridong.chen@linux.dev>
-In-Reply-To: <20260723045718.2052070-5-ridong.chen@linux.dev>
-From: Barry Song <baohua@kernel.org>
-Date: Thu, 23 Jul 2026 16:57:32 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4wtcP87bTPmm+aQ3pxn4eLW7KqU-0DJhBF639Muc2xzjg@mail.gmail.com>
-X-Gm-Features: AUfX_mwtuedh3AEXtY8PTrINLkSRxzHjvjpJJ30sQ1NdQRnQUsc53XGyeAvtqc0
-Message-ID: <CAGsJ_4wtcP87bTPmm+aQ3pxn4eLW7KqU-0DJhBF639Muc2xzjg@mail.gmail.com>
-Subject: Re: [PATCH v3 4/4] mm/mglru: fix anon-only reclaim evicting file
- pages when swappiness=max
-To: Ridong <ridong.chen@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Zhongkun He <hezhongkun.hzk@bytedance.com>, Muchun Song <muchun.song@linux.dev>, 
-	Davidlohr Bueso <dave@stgolabs.net>, Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 8DF6BA0011
-X-Stat-Signature: uhatrnk9siir7ntmkt5jydqeax5khoin
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/3] tools/mm/page_owner_sort: fix --sort, add module
+ filter, improve usage
+To: Ye Liu <ye.liu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Ye Liu <liuye@kylinos.cn>, David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260722023726.600200-1-ye.liu@linux.dev>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260722023726.600200-1-ye.liu@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 2FF6220005
+X-Stat-Signature: ri1hg3t7gd7acux5s6o18afzfmf8jjt5
 X-Rspam-User: 
-X-HE-Tag: 1784797067-759795
-X-HE-Meta: U2FsdGVkX19+X6XaKggQt6ZLSnQ5yDwEvUB6AIXDGpofYy7F7oLVtNQMpUhAkFqDaXDrkIm4FpiKrNyCJrGvKQYaEY7CwZM4UzOf27lMltWiAa6IJreUt8zi4CsIsUbUKaMCHEXtkA00BADE5hm2f3806/z8GsOkrrRy3r1w391eQpwgwhG16zf6PxGJjY0flQkUkm+yLNV4rEI9cc/sKy8C9jE0jDo7UuP21QSvZqt/jeRxS/6C+DGsMa3YkrRuR5EQY2Wt+WWtg0vBgc8ZvUH+Se+UgYiccksdzBV0wJDz+SFbGC+jMEG/RItsmJOcP5K/1tePZzJM058Ra7kiWcYFh+5KrfzpIUJx+v0AiaDigf8LKKzS6K+1uIjsszj9y9JzR9Qo2L1eL6jD9hO7O9/LuNp0ys1jLCEyVTZcPam2qIuw1yP5YoXeHtcjfCTG2cwVMqw/vR3uK4OLG/+fsSGkgDMqt9wd++fvoQunGKBv4nQp5IeWYx5dtKqFbQKWeqNC3wRgF/QzVZcK6ybD2qSSBjrVjXQ6OPh7EbJyS+vtK0JKj8hm0S3CL4DrbiGnVAhK4slF2nVS86HkOko0awAcUTGwSPO84x3HB13ZU2VPUcmubm06NvmkJM304ZTll2Iyua71r0UUeM2Xu2t4kcC8yU1/bpjDU5MOLU6uaaGwXvzpZVEWqv71IhLmXvnuVRRdAkQqtD8vnbw8IvS4wj8WsQMZppRZQrpLUo0l4ynClwmOr/8s/cSmdTEeKS2AA1utLngZ09sWse22UUT1VB8AY9F6mwjS8AGp0kbGoMnr2C55+YfjTe3dsmWv9C0qk49IWcX7/8Gr9OrED6SEZh9s/QSOSVABgN7NG3+7/BDCcBFIglhDXFuyBdWSojBt+R6dGPY6cJfnL0f8s47doJfK5DcYLEhbQU/cXUTg9wzbIyzDacjB/aVfMooq6tYLGW7Z27gUuK6ry7Pzl9I
- CpoQZFvg
- Gy/rDh+9BGVk6WIkC700I7BcSkmPp4RjPrOeGeucWbeCo9qiUgW17HqUdjaHFjtrrIIg8UOKUO69jWaLeY1iEf1n9dCUgAuiUD30V1YVoa/xKMalf65oj614tndn2500jQJdgtA3gpqv8DDS5htSwlTLLkgltv6bDL4wRmnMGklvAqTY4UZgQgJ4rpI6GiChpH1sYfZqetbhIiE8=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1784797154-45902
+X-HE-Meta: U2FsdGVkX1+J1TrpgG3Z6TMsnK5LFzuWiRh4kHrEaGWgBBKL5DdS6qUJejlstfuJ93a1T9J7cdO8/u1ALqg/YWOrcR445PhDnn3sLjBfxkNivULJQAVgFZrk+Z0yGJL2G0EJ0PnoMSAJPRmLY319ePHDftwyi3Syv69o4Y1hpJkwX6z1zyhp7aQyYS2v8TGgrOZEannkpFEry6+EUDYrSDekpYTzEfGJ+LUwK81IXk8Ru+TR3vp4f6+NG+iOGUj8b3D0fIhJsMNrorhoeKz9YrgpV24tg9kSOjNfOM9zxR/ftJLzHUVCYq6UhFN7IFi3/tmH4NWHMWDIjkOJ4m9JlynMgEvoBINM1vWRcheV9N6lnT0Nrs4VPAmNhajqShC3ltSGDnO0gj53V8tN4BmVWFQdJv36ZEDZkq2EfvlUVNBkc4yMx1QwzlpQ6DWg0305rbHM+bELY+4eaTXDcddV2wWVyU8LwOmfPLm3R8eMzsHk/djlLmqIinzLz3hLVs2YG59qRD0VcXwB4DsLbQjcJtkk4nyy5yIJczOsOWWBuPjkjYaIkc+Gk+6y87GpiQ394/sLc5MPw1gS2Jtu7eKFFjHUI1nJM8pQ45BFadH5VjrN5Ns15sPAAzIdGC1o+O1PLOH16v/sV6fr5rQLxAlUx1DIC4EdjdMdLT2YNUYFMI+1C/oWf/B6af+CPOKCv//ULl8QwKXpNqQdFRNmKoSDe63lbofN7uyGy/5m82GqmtHFs7Nl83x1xWPMUIpq/proRU8wWhxGPPDjxNv78gOErhXsDWEjm1TUUJFsu62pnrgwa+Vh4mH9erNk/A47TixSpitLNesxQ4+36ElgNuMkDKurDsOuDUea0z5vxLefCym+UuyqOqw0ZA8G/awflYI8Fteox/gEGfZFcPjL3ZuOiDS903c17vgdeU0aiUeoFwtAKkkNc5eewTZsoNTM01e8NmyjrEadGxhPw3ei1/i
+ Oy3VCNv8
+ rsXUJ1zrOEiXHGsN8rGj9dUaoIWJBdfIdwEq6SRGH0BCBnvJ6cz25sLTwpdL+fNQmvA8U5rWWOmQ7sh2G0Ff13HYFZbVJhUgBnu/+ZAk+4yvGqRfbdLTnsq8YdZw+ki3J5tIFTDajQIKcseee0Mdj4UeaPf9PrLjTMKxsAsr6KoPYemHZpzPwOl9q7BYUMBMVCNf23Wa+0sjDQJA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,71 +127,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 23, 2026 at 12:58=E2=80=AFPM Ridong <ridong.chen@linux.dev> wro=
-te:
->
-> From: Ridong Chen <chenridong@xiaomi.com>
->
-> The previous patch fixed this issue for the traditional LRU. The same
-> problem exists in MGLRU [1]: when swappiness=3Dmax (SWAPPINESS_ANON_ONLY)
-> is set, reclaim is expected to evict anonymous pages exclusively, but
-> file pages can still be reclaimed when anonymous pages cannot be
-> reclaimed (e.g. no swap and no demotion target).
->
-> With SWAPPINESS_ANON_ONLY, get_type_to_scan() always returns
-> LRU_GEN_ANON and for_each_evictable_type() only iterates the anon type.
-> But if get_nr_to_scan() does not bail out, evict_folios() still runs and
-> isolate_folios() falls back to scanning file pages in the !scanned case:
->
->   shrink_one
->     try_to_shrink_lruvec
->       get_swappiness   // returns SWAPPINESS_ANON_ONLY for swappiness=3Dm=
-ax
->       get_nr_to_scan
->       evict_folios
->         isolate_folios // falls back to file type when !scanned
->
+On 7/22/26 04:37, Ye Liu wrote:
+> From: Ye Liu <liuye@kylinos.cn>
+> 
+> This series improves the page_owner_sort tool with a bug fix, a new
+> module-name feature, and better usage text.
 
-I am not convinced this is correct. Although we do have `type =3D !type`,
-when `swappiness =3D=3D 201`, `for_each_evictable_type()` stops iterating
-after trying a single type, so there is no opportunity to fall back.
+For some reason, patches 1 and 3 have very limited recipient list compared
+to 0 and 2, please fix when sending a v2.
 
-#define for_each_evictable_type(type, swappiness)                       \
-        for ((type) =3D min_type(swappiness); (type) <=3D
-max_type(swappiness); (type)++)
+> Patch 1 fixes a long-standing bug where --sort was silently ignored
+> when used without a short option (-a, -m, -p, etc.).  The COMP_NO_FLAG
+> case fell through to COMP_NUM and overwrote the sort conditions
+> configured by parse_sort_args().
+> 
+> Patch 2 adds kernel module name support for sort, cull, and filter
+> operations.  Page owner stack traces already contain module names in
+> the [module] format produced by %pS, but page_owner_sort had no way
+> to use them.  Records without module frames are assigned "vmlinux".
+> 
+>   # Aggregate page usage per module
+>   ./page_owner_sort input.txt output.txt --cull=mod
+> 
+>   # Filter to records from xfs module only
+>   ./page_owner_sort input.txt output.txt --module xfs
+> 
+>   # Sort by module name, then by pid descending
+>   ./page_owner_sort input.txt output.txt --sort=mod,-pid
+> 
+> Patch 3 lists all available sort keys with abbreviations and examples
+> directly in the --sort help section so users no longer need to read
+> the source to discover valid keys.
+> 
+> Ye Liu (3):
+>   tools/mm/page_owner_sort: fix --sort option being silently ignored
+>   tools/mm/page_owner_sort: add module name sort/cull/filter support
+>   tools/mm/page_owner_sort: show available sort keys in usage text
+> 
+>  Documentation/mm/page_owner.rst |   8 +-
+>  tools/mm/page_owner_sort.c      | 125 +++++++++++++++++++++++++++-----
+>  2 files changed, 113 insertions(+), 20 deletions(-)
+> 
 
-So I'm really curious what's happening here.
-
-static int isolate_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
-                          struct scan_control *sc, int swappiness,
-                          struct list_head *list, int *isolated,
-                          int *isolate_type, int *isolate_scanned)
-{
-        int i;
-        int total_scanned =3D 0;
-        int type =3D get_type_to_scan(lruvec, swappiness);
-
-        for_each_evictable_type(i, swappiness) {
-                int scanned;
-                int tier =3D get_tier_idx(lruvec, type);
-
-                scanned =3D scan_folios(nr_to_scan, lruvec, sc,
-                                      type, tier, list, isolated);
-
-                ...
-                if (!scanned)
-                        type =3D !type;
-        }
-
-        return total_scanned;
-}
-
-since both min and max types are anon:
-#define min_type(swappiness) (!(swappiness))
-#define max_type(swappiness) ((swappiness) < SWAPPINESS_ANON_ONLY)
-
-I guess the real problem only occurs when `may_swap` is false?
-
-Thanks
-barry
 
