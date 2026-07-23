@@ -4,104 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4882BC531CC
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 22:21:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CF5FC531D0
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 22:22:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2DE056B008A; Thu, 23 Jul 2026 18:21:11 -0400 (EDT)
+	id 097246B0092; Thu, 23 Jul 2026 18:22:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 267EA6B008C; Thu, 23 Jul 2026 18:21:11 -0400 (EDT)
+	id 048196B0095; Thu, 23 Jul 2026 18:22:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 12FD06B0092; Thu, 23 Jul 2026 18:21:11 -0400 (EDT)
+	id E54E46B0096; Thu, 23 Jul 2026 18:22:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DF9C96B008A
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 18:21:10 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6D6ACA021E
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 22:21:10 +0000 (UTC)
-X-FDA: 85021463100.07.5C49C40
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id CB465100003
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 22:21:08 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I6oI+1Wv;
-	spf=pass (imf14.hostedemail.com: domain of helgaas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=helgaas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A7CA86B0092
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 18:22:32 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1F1A0801C6
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 22:22:32 +0000 (UTC)
+X-FDA: 85021466544.28.93ACE1E
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 51ACE4000D
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 22:22:30 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=e6hhBdAv;
+	spf=pass (imf17.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784845268;
+	s=arc-20220608; t=1784845350;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=jt33XZg6IakrXoUrAEnJIibUYgZUlDskKhuW4fOU1xM=;
-	b=LkCN0t1M+EYJmToonCgAU4Lqm8Aypwz/Vi3ZXDRfZskE4C9lDhh3HzPIskZ2WWx7KsGKs7
-	gGOrY4Sjy9kuqX+QBlsTGU5yldT99mUvNqE0B/mMIAXZRBV56OIl+fWusn9ZWBNKvXQ0BJ
-	oF4fb2uKI2Mivo6j0qKB89gN0jQcYd8=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=vzwHTZR2iosFUiZOe0Oy97LjUFogfrOTmiFLxNsdVTA=;
+	b=RQuDOorcAgV0TxHy329R9Ulc46N3hFmQ4EpoxXHsQe7X/2Kon/AKvtR0HhrJiD+JlDiqWQ
+	5duM7mcccd80y4KcPUss6BpgUOxLBx7OtgHqwIR67fo4QyW44c5GzpDaeo5tS5wtsUhhVw
+	aI3hESE723SaZQKQK8Bpn0FmWulmgD4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784845268;
-	b=w9dr7sAxfH88aK6e8mQtdGyPbfrADJwy9bKh8ToO4WVqg7loTxFFdHjoYgtYyjkLNkT/FY
-	ZdawTskZl+NqR4ERIYzLKUTr7n6qu2eBSOotRhT6Ky79NW/hs+tbgHOKNT7QZW11kt9AnI
-	zgtVf26y929vYkW1641lLvM81D4kMoI=
+	t=1784845350;
+	b=Ta/hMH4nCX+MKjRKB2eM6CPRCeQuCqT10euiZjfo+sYYaWcom7AK7g6f94E6hXCqrBZx03
+	DzwEUv+nd+aBClLtKxVcloQxmYnpXmK+Z3QTqRgAyHtOdhRjDl4NvwQ3PILiNXsoEmWRhQ
+	pZq0kLBiIcTC91WrMoDrcOTTqKbzjyM=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I6oI+1Wv;
-	spf=pass (imf14.hostedemail.com: domain of helgaas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=helgaas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0A50043C2D;
-	Thu, 23 Jul 2026 22:21:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8CD81F000E9;
-	Thu, 23 Jul 2026 22:21:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784845267;
-	bh=jt33XZg6IakrXoUrAEnJIibUYgZUlDskKhuW4fOU1xM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To;
-	b=I6oI+1WvIphSqo2SuYZlr+Z760iGzSCqCOqo1O52QXp0AQt4DpnWOjisJa4Dl9+HO
-	 JERVpACfEtCncGeO3ANxpi2GaBQ94g9U/b+m2LChVg+v8C7Jj96R4FEHQemOqnV1df
-	 gF8XJ3qDVMf4/f1lRpAYBfHrtjAtaYNxjerhzzJQ9O35DZ+nmDJ7bEIxwhEUUJN7Ye
-	 Tt6/NS51u9fLd+CCzUdwtSjR+JsoOWluKNMUvl38CPvbY5NrDPcKPsKklnoXAfp0Hc
-	 LJ8hgorhXMMGA5x79fdAR7IgtS9Ri1F8IjDr++NQof3NE313yZRqh3C/6dYKWCte5P
-	 +i2kBcAGvHzwA==
-Date: Thu, 23 Jul 2026 17:21:06 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: David Matlack <dmatlack@google.com>
-Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-pci@vger.kernel.org,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Alexander Graf <graf@amazon.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
-	Josh Hilke <jrhilke@google.com>,
-	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=e6hhBdAv;
+	spf=pass (imf17.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2cca0c5799eso12167715ad.0
+        for <linux-mm@kvack.org>; Thu, 23 Jul 2026 15:22:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784845349; x=1785450149; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=vzwHTZR2iosFUiZOe0Oy97LjUFogfrOTmiFLxNsdVTA=;
+        b=e6hhBdAvMzy9Bnzg/Qx1oaGTlwjA/Uf+UxjjU3jNMU2ollWwsrKcgnsH9k9SUN0jsa
+         mjiiNwD4NfsbGeDOBT7MfmCRYkEIH0lV4Ulx1QcWKt0ljdmtPkvwL+3N5KpuwNxjbYb0
+         jQFqNUo0BtEmAe9/5PZFDwobe7UHh570zygqbYKOgVDC0f7Qu/9QOOhAIXXzbCe9hRjm
+         UVhQp3RIUbwGwKJMkfbC3zczMh5kUTMx0oeXSOP/Q1mXufEBGAf+3BLoKVNgPIxqjlKH
+         GCU04w3grhYpVe/yhij7FyNy7XZ3NbRdQigiROswjZCQIK0yhbo+dq8RfcNLXLIkPY3W
+         4uWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784845349; x=1785450149;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=vzwHTZR2iosFUiZOe0Oy97LjUFogfrOTmiFLxNsdVTA=;
+        b=OKbwRUuuOys/cxCC28++xqwXwtU/wbOni6FVD5+f1QNQXBBNRYUCiyKAXHSRzEIJoR
+         M4mo+GN0zd+HPsza4itBQWIyfmyrUgvr7pTQiSrgFqTmvLieiUSl9gI1SVwMetIlabH/
+         4ahzLl0FRZrLVnqrtD2HXCoCJ03LO/UpHZf3YCcmKN869wD3vN+eDefvOagf1zSGtTSo
+         CKMVYCUdI46apIqHdrpdwYA80mG2j80S5hKDLWbWuHRn106sDfxJTEKyogOjgYTBgu90
+         8ErPXTlC7q113a7SBtVUynLtGng9k2lUbmlW5JaSPJJnLB7f4xf6yIG/4n+JoOxjqXDO
+         Ktdg==
+X-Forwarded-Encrypted: i=1; AHgh+RpqSL3/8PIwSdudWDuayVedFpB/cL6ybDvDUrKMr83jWan6ctNm7jqp/PqGDoofStabVrxfMjSPTg==@kvack.org
+X-Gm-Message-State: AOJu0YxIKdx34OaxWJjqMlT1eMQ4E944TH/Zdp3+D/YQOJFU7kAwEoET
+	zPnSxfC1UOilPlKJ57q4ABDVvUVdf22QnbCpR/6xU6UKzD2VSfVcftXk
+X-Gm-Gg: AR+sD1094U90Xo3QXfcIKW+Hsvlrn1rXTUqrPxG+9guORknYH25yB57gp3fCkPVdIhv
+	wWwo0OBitJ6dFYAMlq+/jxPM8ZYKEu1eonwoZpffvW8JAMXXWPQHeMB1Po5+zkX3xzlu9T6XM/E
+	pgHfFXvXgycm5Z4xGAYujERpqN22SwWad0XI463OGtfaWekX8950MtSqLs98rPz+Qft3ADu4tFF
+	65Of0FH29GdDiy+1UzwekGS9HL21u2qzoGbwIey6YOrm04VgpFrCIqIS5JktYQIMetIRhoZKSoC
+	ZXwUrXG6Dv0f1DxMTZ4TOBJHyMjztB81j4wbKbBaTtRQyyWIpTk+eEMAPTHb3m2S9Q4RR+AJb/9
+	FGjKAjNGrH7mEyQ6HgiHzXAWUIrZdlg7yNuGnLNgj6iDI3oqucUshGkR/+9KWamh7VW4gzF1Sq4
+	QgqeHiUalPQ/WoqPsB5YK3wIjmUZdKxfJEFx2Y6ywW19Zc
+X-Received: by 2002:a17:903:90f:b0:2cb:2b53:559f with SMTP id d9443c01a7336-2cfa6c793d3mr60755125ad.35.1784845349134;
+        Thu, 23 Jul 2026 15:22:29 -0700 (PDT)
+Received: from skinsburskii (c-98-225-44-182.hsd1.wa.comcast.net. [98.225.44.182])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf8f38757esm40198575ad.75.2026.07.23.15.22.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Jul 2026 15:22:28 -0700 (PDT)
+Date: Thu, 23 Jul 2026 15:22:25 -0700
+From: Stanislav Kinsburskii <skinsburskii@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
 	Shuah Khan <skhan@linuxfoundation.org>,
-	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>,
-	Yi Liu <yi.l.liu@intel.com>
-Subject: Re: [PATCH v7 01/12] PCI: liveupdate: Set up FLB handler for the PCI
- core
-Message-ID: <20260723222106.GA867236@bhelgaas>
+	Shuah Khan <shuah@kernel.org>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>, Lyude Paul <lyude@redhat.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Min Ma <mamin506@gmail.com>, Lizhi Hou <lizhi.hou@amd.com>,
+	Oded Gabbay <ogabbay@kernel.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-hyperv@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
+	linux-rdma@vger.kernel.org
+Subject: Re: [PATCH v11 0/8] mm/hmm: Add mmap lock-drop support for
+ userfaultfd-backed mappings
+Message-ID: <amKUIWpMfVS6OFkQ@skinsburskii>
+References: <20260723-hmm-v10-v11-0-c55b003a4b61@gmail.com>
+ <20260723142242.5d3f87208d47819d873ae458@linux-foundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260710212616.1351130-2-dmatlack@google.com>
-X-Stat-Signature: uk39uq4xw7kjg5wwwm8j66d3h54idm13
+In-Reply-To: <20260723142242.5d3f87208d47819d873ae458@linux-foundation.org>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 51ACE4000D
+X-Stat-Signature: b94a6x4xeyp598dit7toz5jzwzgj4mxu
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: CB465100003
-X-HE-Tag: 1784845268-887776
-X-HE-Meta: U2FsdGVkX1+DCIE97LziWoKHZttUShsfP1Gs18AmucLzk7c8HpzBdnrLlgupZpMChOmoLPpk56pNlz6GUMebR1dbY9Ni9fogmiNxkSTc7EYVhvoj2sIO6eeRT3ZTeEsMCFRPfdMIlE7YwO91Ls61hU6tboi3UYpQstB7mQahsukvE5PBEt+GKkES3S1n6QORp1jvL1CP+Nytlu3ci7k9ggLZWZ7WBisxSda2UU8GN4STGaV6iltJC8rccePQwax2VxQOTsJtgZbf/H1uXV55rtKtu6QbD/vIwtJ8QRq+U4z2F1dsl/y/UeUwCMzojjqOTPuZEC0Ya8EyGWiLyH59+7B/+E+75ANaoONLcf4jBt5DQ9xRBmgfBqeePLkY6U4gnDFQZRuXqdVwLc3SMlaNBJs4ZcXo738noxsSk1ed5lQhQIBBumkTFDTi3WyMhYOYg8d49jvqz+NgfHCCG4qXwyhQEzHj73/wtjajCfCEHEwk4wMSxlCm9XHGu7JhE09jX0RCY1MS80fTX5n+gMPxHdmmRY/PDWZ4tcAcTalCzSMQoqo37XSc7B3s2JxYjtOHLQn5UPcefwLaOkWZ1dV0Be0zK8lyvgLkl05Bx9zT6JZZ+2Oqj960rjQ7EacPOtrmtgFf8RE2n+6x98qOeqaXDmjEAvkxPp/aLWzwtqt72ouhHfoZv+MVtJ/YAiwxKNlu5k6vygSrblBUjfkr7UgSUZeG0U1WJa8lPJvy3HQV9CBtOoV/oG19xKI4E4BHJhm5DbUQm8GY5oyHBsfJBWX+mj63DjOgE8fvUQe0SQZoq1Fx5589tiTQfCoQ4oXgzLaXS8ZFhQUPTZPZww3SDo+sN8eeyiVBByQOhM70TYWiul4gIXU+nP4ubFAEdGTpX0HjjpWp913tXzpDXox9Wc+nzmQArxXV4N1XTTDbnVJfncrGszXu2hcoQHPUIH3LPkzc3TeYUtvDq/WRhRQPYyS
- eqU+q7Wv
- Fvbq8+s+glQWEXwLF+937XQHydMC97M3X8an2qo7BkUn53sdWnuVu2j53vx0AIqVI9KLhvU6j1DoWQM/KSfAnlAx3SolDZk+gZ/PTHQd+EvkXhxAYAk6MFfy+B4H6WtwJbngr8X4+qW0O2WiI9MED2KS1yqe6lQUniNKKermkLUGsDsWO4zoqFPRuqkx+wiUj9wvDNKUuNdifZDPfGziN+AQJFSb9RjixWLWByxBWMuebVf0ccInYDppFmW+ngOW0QR0x
+X-HE-Tag: 1784845350-669737
+X-HE-Meta: U2FsdGVkX18uBNdFkfbNHIKn4SprzN96ViTCSOD7YXAE8/t442hNVDDAY7ukGNa4Vk7upz7CtvN9nvwYfJCylrFh6CSWgAxDVMQgzN68Z9liL5RDxK4A71q9Onldc8Xr1awy1WuQTKbawS87hLiJbHWTs6ARsPcMhjAVqc5fdyMP2CL78kK8JXBxB60Efl83nFBfIf37GcugUuflFM6BQx+lxtMwO1GOmUX3kLRCBsYrOMweyALIKmVY9CsRa5uW1XG4xdoGEDxw9M1QhbBI0YaVqo11uXW5INhpRikgYOIwoFu1yTv6VYhEzAAzvKmjWxCrYBUn0SagQEHDBVQtsNu6CEMcuq7NO6YdYKDxleDDR83O/cPMIjo3teVvPyNto/7Q4G1flPkt2JekSuA4eUHTfoh3+ES/Ah2DYAbSmIby6iQm6h8mDz/NScgzlevJtCfJMiEtiIAMMflFZNyYw9HyAWgXf+7hpSp3/AoCXBZXcQ08dr6Bx1Fn1MmP+CbQrzmpQ8DRPtdSI34o9wuC40vtC+6YuOi+xK4QsOr3QMROjEYcbeTBrwIH2+NNKSTpQZ7FWAxAy3Utbn2oxib2auhnbLe1ZiZzEyZaEHHTZhz/rih5epuyEcH5+TAtZXuueaQPmjIjPzQ4yLcsvwGqVe/DK1VKlNUhLJlSkP8pPbiSI8wi71rqP0Pf4BefLK8+RQQUjJWNNqQ08T0DPZBWTaCSf/hlm8zv5zmCaRTjT9b+OtsAeUyEPQ2uXEIivAHFLe+U8EMDAxj51UVHM+k982dxkLLH94jjTIEfbpvkQt2JXRnlaSZrKvKZcOH8rb6GN42EAA7WOcXT9oC2b5Dz9aYGbR7IROBbaxl1kbZZF0u3xPh6aEU4Cz+i1thDAOQeKjsOHy/Rl30iuN6lhvFWzM71uhQtM9waQXp6wu7Q9TkVDZ8pfBNuO+T8S6C6j/YZrXjvK+uaUakgABPclSO
+ SCp+OAZq
+ NEG1SdzL70FwSCWvv71yFezMvu/QtKCaavgnNsy3KOnUiDBiE1Wxxu6OWxgQPTiCBWRKVwopYt7WLY2Un8HzB7lg1+1zcIaFtPzoYWD8Az7FdSduotjBYgz4UutbpuB6YGq9geHSuvtDbdIrv3tecYtnjc5MgR2P+LWHyAalkuV2EPW289VnlL9+e7AME1CqB3ny9z/9aWQW3nxrzt3FgcPdbiotRJz4mNjM5crP3vcslZqzwO2vAlECimowi5msvmBkJ3KxEJUEV17NN3n3Ng93Dez6yOpvAdVk3MY9csdCWJgGTxtnOrA82D2EuMkvymPT67ArhRzCxO6v2JzS3G4d4Y/uucFKP6bKzHY3lJLcrO5rDo1Q+SjuZzctjz3nV4A1W2ArHrPu4QBLQnQcqlouiZmezHeaFsziRVJRVjT6GN2uipv8ki0nDMtb3E+gFvrDsNrpXAxidhH76UuGWiCfDBnqb7X/KZIfZycEFKQ/M0vHKzZvfoEaxhkmyozbL+1h+gRZdkMZAyK0pYk0H/3WH1MvHUtXgceeN1iLXMMIRX2fESBdg4D8pw+HZbWlwIf3j
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,37 +143,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 10, 2026 at 09:26:04PM +0000, David Matlack wrote:
-> Set up a File-Lifecycle-Bound (FLB) handler for the PCI core to enable
-> it to participate in the preservation of PCI devices across Live Update.
-> Essentially, this commit enables the PCI core to allocate a struct
-> (struct pci_ser) and preserve it across a Live Update whenever at least
-> one device is preserved.
-> ...
+On Thu, Jul 23, 2026 at 02:22:42PM -0700, Andrew Morton wrote:
+> On Thu, 23 Jul 2026 10:36:32 -0700 Stanislav Kinsburskii <skinsburskii@gmail.com> wrote:
+> 
+> > This series extends the HMM framework to support userfaultfd-backed memory
+> > by allowing the mmap read lock to be dropped during hmm_range_fault().
+> > 
+> 
+> Thanks, I've updated mm.git to this version.
+> 
+> AI review suggests there may be some problems.  Sorry, I don't recall if
+> these were considered in previous versions of the patchset:
+> 
+> 	https://sashiko.dev/#/patchset/20260723-hmm-v10-v11-0-c55b003a4b61@gmail.com
+> 
 
-> +#define pr_fmt(fmt) "PCI: " KBUILD_BASENAME ": " fmt
+These look like new findings, perhaps from a newer model or review prompt.
 
-Is KBUILD_BASENAME buying us something important here?  Just from
-code-reading perspective, it's more work because without some digging
-I don't know what it will end up looking like in a dmesg log.
+I do not think they apply here.
 
-> +static void pci_flb_unpreserve(struct liveupdate_flb_op_args *args)
-> +{
-> +	struct pci_flb_outgoing *outgoing = args->obj;
+The unlockable path sets FAULT_FLAG_ALLOW_RETRY only when HMM provides a
+non-NULL lock state pointer. The legacy hmm_range_fault() path passes NULL
+and therefore does not opt in to lock-dropping faults. Fault handlers are not
+supposed to return VM_FAULT_RETRY/VM_FAULT_COMPLETED with the mmap lock
+dropped unless FAULT_FLAG_ALLOW_RETRY allows that, so the NULL locked state is
+not expected to be dereferenced on the legacy path.
+
+For the FAULT_FLAG_TRIED concern, HMM is not trying to emulate GUP's exact
+single-address retry loop. If a fault drops mmap_lock, HMM has to restart the
+range walk because the VMA/page table state may have changed. Resetting the
+timeout on that path is intentional: a lock-dropping fault made progress, and
+the timeout is meant to bound mmu-notifier retry churn rather than the time
+spent servicing faults.
+
+Also, the newly converted HMM users are not using this path for ordinary
+file-backed page-cache population, and process-context callers can still be
+interrupted by fatal signals. All the existent kernel thread callers are
+capped by a timeout.
+
+So I do not think this requires a code change.
+
+Thanks,
+Stanislav
+
+
+> > 
+> > Changes in v11:
+> >   - Reject unstable address spaces in hmm_range_fault_unlocked_timeout()
+> >     after taking mmap_lock and before walking page tables.
+> >   - Compute the remaining HMM timeout budget before the time_after_eq()
+> >     check in drm_gpusvm_get_pages() to make sure it can't result in zero
+> >     and lead to infinite HMM range faulting loop.
+> 
+> Here's how v11 altered mm.git:
+> 
+> 
+>  drivers/gpu/drm/drm_gpusvm.c |    4 ++--
+>  mm/hmm.c                     |    6 ++++++
+>  2 files changed, 8 insertions(+), 2 deletions(-)
+> 
+> --- a/drivers/gpu/drm/drm_gpusvm.c~b
+> +++ a/drivers/gpu/drm/drm_gpusvm.c
+> @@ -1422,11 +1422,11 @@ int drm_gpusvm_get_pages(struct drm_gpus
+>  	struct dma_iova_state *state = &svm_pages->state;
+>  
+>  retry:
+> +	remaining = timeout - jiffies;
 > +
-> +	WARN_ON(outgoing->ser->nr_devices);
-> +	kho_block_set_destroy(&outgoing->block_set);
-> +	kho_unpreserve_free(outgoing->ser);
-> +	kfree(outgoing);
-> +	pr_debug("Unpreserved struct pci_ser\n");
-
-If this pr_debug() is useful, maybe it should include an address and
-there should be a corresponding pr_debug() on the preserve side so we
-could find things in a crashdump?
-
-> +int pci_liveupdate_register_flb(struct liveupdate_file_handler *fh)
-> +{
-> +	pr_debug("Registering file handler \"%s\"\n", fh->compatible);
-
-Is fh->compatible enough to identify a driver?
+>  	if (time_after_eq(jiffies, timeout))
+>  		return -EBUSY;
+>  
+> -	remaining = timeout - jiffies;
+> -
+>  	hmm_range.notifier_seq = mmu_interval_read_begin(notifier);
+>  	if (drm_gpusvm_pages_valid_unlocked(gpusvm, svm_pages))
+>  		goto set_seqno;
+> --- a/mm/hmm.c~b
+> +++ a/mm/hmm.c
+> @@ -17,6 +17,7 @@
+>  #include <linux/slab.h>
+>  #include <linux/sched.h>
+>  #include <linux/mmzone.h>
+> +#include <linux/oom.h>
+>  #include <linux/pagemap.h>
+>  #include <linux/leafops.h>
+>  #include <linux/hugetlb.h>
+> @@ -806,6 +807,11 @@ int hmm_range_fault_unlocked_timeout(str
+>  		if (ret)
+>  			return ret;
+>  
+> +		if (check_stable_address_space(mm)) {
+> +			mmap_read_unlock(mm);
+> +			return -EFAULT;
+> +		}
+> +
+>  		if (timeout && time_after(jiffies, deadline)) {
+>  			mmap_read_unlock(mm);
+>  			return -EBUSY;
+> _
+> 
 
