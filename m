@@ -4,87 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0D3DC531C7
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 09:26:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 015C5C531C7
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 09:29:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9419E6B0152; Thu, 23 Jul 2026 05:26:20 -0400 (EDT)
+	id BB88C6B0156; Thu, 23 Jul 2026 05:29:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 919EF6B0154; Thu, 23 Jul 2026 05:26:20 -0400 (EDT)
+	id B68E46B0157; Thu, 23 Jul 2026 05:29:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 831836B0156; Thu, 23 Jul 2026 05:26:20 -0400 (EDT)
+	id A5AE76B0158; Thu, 23 Jul 2026 05:29:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 520986B0152
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 05:26:20 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DA7A5803E1
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 09:26:19 +0000 (UTC)
-X-FDA: 85019510478.17.889673F
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 342FA120005
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 09:26:16 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jhf3zLsm;
-	spf=pass (imf29.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 75FBA6B0156
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 05:29:17 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E3E3B8041C
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 09:29:16 +0000 (UTC)
+X-FDA: 85019517912.04.23B4952
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 31B8240005
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 09:29:15 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=FaKhkTpJ;
+	spf=pass (imf01.hostedemail.com: domain of zhaomeijing100@gmail.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=zhaomeijing100@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784798778;
+	s=arc-20220608; t=1784798955;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qhK7rXQUKHH1GT74xd7mygtaCtXNtm23NKLc3K1ezuI=;
-	b=hS8HG8/kMAZ85vKhqAw52uNca+J5rAhQ2xYrwU2RG3iUx6vLfvKbjJ8fBA3j0LqDQqXybW
-	/6FC/1iPxo7qs5fkhKa6CAUPqpX4XjCdMV6gxtEO7FEn6x7eDlw09AwofgbUQmBEE0coHx
-	lRlpo4SfYicKffg8TA57a11AFwHgFpA=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=PZrPBqYijdzfKMBuONSSs1WTwIYrhiqirWSevn+t5ro=;
+	b=ieGL8maSRHdmr0B8XFEG10oBkhbYmh2xJsI6okym3zEmDe+tm6Vu1xc+k/6yHGHj2m+kEL
+	drbcOxCqhfOSZwlM+Brq76cPprrcNs1Y1e+N1lM1T1W96sxKm+d9uQfCAdbFdWPpDrnNPV
+	fWC3uoNXgV+NFRfGz2fbOsnMdBlDemw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784798778;
-	b=HF65h8FznP6cq4fs8Tb/w1LnrdWZSeqlBee09OghhGRTKhsvG0uVoEnniQ/lVTkcJiC4l/
-	aV0es3yMkZeFWoX76hAku511//JC1VUiGJgOyUQptLYgxlEVA/cfImWO7yVyCp8FOhE8kD
-	ONAsQMkfdMkmAuEs8sVxsG1O+QzcC4Q=
+	t=1784798955;
+	b=AhoPfnF4bVBoTM7KFoLAvU+uh9c9489I8NTIxyvUZieA2GiY39PaCTsGbcYYrBYIl0fzgQ
+	lxMAAINwtO/iSNCgrgc0wAxriok77a3UGrBglO6laJkeGHnju0LRyGTlmmuaLvlhAwFzLZ
+	XF1HAkAA6xpnALULTg89GCd041B+5D4=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jhf3zLsm;
-	spf=pass (imf29.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Date: Thu, 23 Jul 2026 17:25:59 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784798772;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qhK7rXQUKHH1GT74xd7mygtaCtXNtm23NKLc3K1ezuI=;
-	b=jhf3zLsmNmHx5T/z3/e1F0Efeg3KhVVXTyV9pmCM6b9jY1iYdRTLQReW0dJClLYjyCkj14
-	XH5rszyy97A2JoRQ6WHqB8oGHy0L9n0M5kNGb9MezpXfUPRb8QIHX5/Ju82ag6RMFO+qfV
-	iNkAakMIkvIvJ82o8IURiIz1tmXfuHE=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Harry Yoo <harry@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Alexander Potapenko <glider@google.com>, 
-	Marco Elver <elver@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	cgroups@vger.kernel.org
-Subject: Re: [PATCH v2 12/13] mm/slab: add cache_ and slab_needs_objcg()
- helpers
-Message-ID: <amHbnLLrpOmwmusv@fedora>
-References: <20260720-b4-objext_split-v2-0-2fa7c6f60dbe@kernel.org>
- <20260720-b4-objext_split-v2-12-2fa7c6f60dbe@kernel.org>
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=FaKhkTpJ;
+	spf=pass (imf01.hostedemail.com: domain of zhaomeijing100@gmail.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=zhaomeijing100@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2cc7ef7ec27so4673885ad.1
+        for <linux-mm@kvack.org>; Thu, 23 Jul 2026 02:29:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784798954; x=1785403754; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=PZrPBqYijdzfKMBuONSSs1WTwIYrhiqirWSevn+t5ro=;
+        b=FaKhkTpJCukW9Kl6dc9chBDPUWkNZMKxDWocwD9N+4MVTCZg1ipk1NaZSfV8tEYLSK
+         USlshpyoNB0k+sQcBNEQm1GPW29JNbyWcU5H/khPQn3yuacxlwZsk2BQgBWQ/GQblTuE
+         9roofkPpRERdcS20flaVEpKMt19PVf5BWBEtI2HM73VPzdP3bqLaxDLU36q1XdSGJDAU
+         /+U+BTQFhBD25uVDz6Oltzzkg4GJXdTrgC+6UgyJ9KRujMNJ+UTra/kkBp8ETS8Q+qMG
+         x29m3FLlt50d56r0Fcy8ghiiLtcD9pjeCiSsoRSNjEr0jnCkAGIdRvLh3M1EYFiP2/Fg
+         zaTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784798954; x=1785403754;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=PZrPBqYijdzfKMBuONSSs1WTwIYrhiqirWSevn+t5ro=;
+        b=g4+2/E8uVJ1Xf2ltx3Pec9eJeaNXpmEYQOm6frr2Nw353dFK4YcgVyyCSfUy5EWgir
+         9wcUpBMRTmVmSRl2dsg/UQRotyYmvMFfnvwihnpkBad4Bq++37FqOoEo20oD516R/NoZ
+         HTuH4lEmatVm/hv2taU+g9x0zi2k8U88EGvp0zfzeAP5yTfP53SHftqNuyExWJoojpo7
+         ZjSi676W39pCavlwz/V/LTanfoQC5pXY0ahc3ctOubLPEbo0rH9rj5ZVphobAK3IbZLl
+         T01tW/9xAw4fdXK+gNBv2FxjxGbGRUxrT1ARizu8zbS3sCu16VXMOwEg6wwaMmgCLXXl
+         sCxg==
+X-Forwarded-Encrypted: i=1; AHgh+RqUYidrOzGvbR+2lM9Cues1ZD/Yf82qyyZNTxdLRKwyHJIK9LbTkkSDAt0F3SMSdq3dwRNK/V8bGg==@kvack.org
+X-Gm-Message-State: AOJu0YxpFSbyJpcqQdVGgYIk1pYoSya2M6GovnzGibzM1UJIPwWnJ9Xy
+	M5lqqgzMNapkzq23dxbPFgohQ28D7s1D70BeUXeuCEbqnaxN8RghGqvz
+X-Gm-Gg: AR+sD10uFd6PFBgM4b/OXzcOGS4TXRqU/T+spOJamCqdTegr8pcJLtLbJmB8+RmealL
+	cPOWLY5zHr18EQaVyncMI051nXT0lQcgtebUCSDAMK0imUcCA5g9/Acyzanmmqh+vrEMSK3YT4s
+	RLS8LIMvnYfKq/Oay9Qh4Osemq9GYc3j9OJPHSbCuNtj+elnDw6Dh+5iZm89ccLqoPYOQnvRYbn
+	/hoGSvPLOpjMyXsgSm6Q1E8j4OJtkD5snE4I9WNKA6wUeh9MdGZ4IqREGTaySBOn7f3R6WBOEdl
+	BZcGBcL4Xl+o4Z2WGgTizpfLi/WnMbgOBVdIO34y4pMDXxq3KRQe4L+h9/Y+enHNd00vyn87E9y
+	/ae8ltcVbdV0iLLay5Hzxh5Xiqsc66ekHNe0Wkwd8VVkotfqGEPRf1YhEV6qnJ0b8rjMcbvU33I
+	QfhSDe2dBRT+pkViHWGA==
+X-Received: by 2002:a17:902:ebc7:b0:2ca:ce91:f027 with SMTP id d9443c01a7336-2cfa6c875ccmr27647445ad.36.1784798954032;
+        Thu, 23 Jul 2026 02:29:14 -0700 (PDT)
+Received: from PC-2B0BA31200898.company.local ([210.184.73.204])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf8efa388fsm30298125ad.12.2026.07.23.02.29.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Jul 2026 02:29:13 -0700 (PDT)
+From: Meijing Zhao <zhaomeijing100@gmail.com>
+To: Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-trace-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Meijing Zhao <zhaomeijing@lixiang.com>
+Subject: [PATCH RESEND 0/3] mm: trace: decode architecture-specific VMA flags
+Date: Thu, 23 Jul 2026 17:29:02 +0800
+Message-Id: <20260723092905.761037-1-zhaomeijing100@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260720-b4-objext_split-v2-12-2fa7c6f60dbe@kernel.org>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 342FA120005
-X-Stat-Signature: h3ytsow59bj1gfrcxhkrof6u5johcpoq
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 31B8240005
+X-Stat-Signature: gfr1cfikfx8kcccsbac35r9ksks1wtgs
 X-Rspam-User: 
-X-HE-Tag: 1784798776-946709
-X-HE-Meta: U2FsdGVkX19/uCyiHZ/6YQvw6LpMaddataKalGpdWtMmU466hyyIoTecQ7ACjD01dw+WQu75WtaNA3YLsV7Txib+6/5m379sS9UdSviWMBF+ujnGjW28JjSVGsWgKeZpzQ5xtpu+Pldwf/vOOztBzkl4Up7ZnZNVE5V1tJaQRQMSeTe4qC3/dghxR56EQ2zkefu/1dv8VSlr8mOu6bj9P/U+NFSHDkgQ4TnrFpDGCjBFo4Xspv8By10r2Gv24a6INETOP5cDyxm30UkzBVM5hOYB4YMMmyixnpbybUzGrm+uC7Kg8jzFEZJNYePY/a2mLIkHXHKRUY0rnexyfGu6rMDjsUf0kwfLaZ9Pcgy/4jWppxUoUZLz7bo3Xp4hVdNhq4XOfJRWQ62DfVrgQlPbH4mSeFgaeC7QbeD8xgEAvrG3ttmIJhNdopDrKVlD3uk0mnamVjOQQD9cGgMggpXRNyBhAaqHzIM5vnfjrSyNfkBnUluQEAG2SYFjSVUA0ZeXtLZkJ262QO81IlDER260NK6wt2BbWLvvs6OiqWgHQfF0KLTsMyUMuIAFW2x8eqxUv55bHDUjDdtAKWzb5di+P8fNmkS77J5xjVS1Mypjb9uT/13qPuubacXJUyOLj2Qfg++Eq/U4+LwQgQEo2e9BhNXpx1WUZp/TcdDfIm3k6VfiYmdsDpjTCiR82GrZ3o+zhOhhnupCLF59DWce7LO0d+qg0F+c70UheCeMw1ZxNRhrZbcQswS2G11C53dl9vyS/NR4zdCfPHQp3gKQcVu2ewY45DvOBmT1h7N/AuK6kdbo/97GM35XxNk7jNieLmiXQx96g24mfh7qbXvfVd0ncjzA0dJvnhZosr5r12IyJql9bM44SsdTkf5CDMCM43FBFfID8mz/oU3bpaZHiLFX/72YnVTGXS1wDSFSmSu1XcP8JmhJzV3Ed/mPfP7Jd37kqZRL8lkTUouhdbauOPg
- ZkcbC6Rt
- EtuCSKI9z4gbvKy8PDGK/J7SGI4TKaMpeB3/f2jb8cR8sV0f1WlFFEOMbafzqhWoS26bBYlD62uN2jrsCDvgy1AP0PPj5ikOe9jArdbuZEewcP3Jmmz9eG8hRprKLvJt+jFHfjd75lImyOA70g5pUG99zh5Bo3jxmGWOm5NbAgaWKHHWPz7GG+ZmNhkMou0L2DAlfrFNEpSrogSVlSM7mEzb116lxSI5tgDMx4PYW/46QJhrXUOqIMwU4BMP1tpOwbi0hNV8A4/9zbKvStzzjkkTcPw==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1784798955-56833
+X-HE-Meta: U2FsdGVkX19AfFiCp2dcEiNrf1G7ckbh382key2iHspNaj68zqtxKkkGsfoF7v4qJDOqeYYTW7en5Rcr6FJgXkCWw6PhrjA47tRqfUh/Ubl59OU7x9Mrgke7wxShaRx6JIY5Cm4dU3UXNbN7iLvhadh7UflmBsxlsfyBS+dKdeDuyVv1AA5lkvR03nV81HoCsGH3yJGItA4WSECYD1hu11qsW6vhyBDmitCwauzVqJlStP4Mxmuo1ml5e4dkbUdw7f4EOcBlKUIEwaPQwj+lGITNr1bbBSY7KwWvxUAMgl+VFK6GO06HybX5omPT4HZTk11Os5lVmR4AgJmYW9JOFjz/Dte1cYjp3O51l4MoL2tfjV6KRxrAT+9dhW9iaNNVPnNwlys6J9AF0Qd9Oz6NveF9W4dOJ7qEFwEGRKLXN3D4tpMlzqn2YwNVa0G8uJgw4QGiCkQeSaKVYLCQP8kW9WbC7vKoKpwY7kf22U0SeVO+iF8domOE//9TPkIK1HUpJe9ScJMJToHSEcKy/+tI+tsKl38HwOPfb7Loq82l7Os6o7reZcjvV5TK6heK0O/xgOxAiKDjSN1/396kA7BwPQvpJEwyQtxmlpX1BsedezQU1ERpekSIUsFUqhDdL3tCAbYaIRnyxrtmpYBl7babwJGFSpRhyIIuwtlj+FiaCJdpXRWKNDkB63jiovq47xZ7/VU2yJM8XWLKWl5JBW+cyqzteVjoOtrwoyA3QKacv9+uMRM/ueHIDHVff10/So1fRFKlffG52PxVPmhSmD+YEeBgNFM5jXw4le6lE7MNCafXGMIqzM/kZom81J8HJgbeieUKcMQrpucNUhkjp5b5xCNMaiHcKNPePNFv2UKD6XiqI7jr5xjt0ECinHMfjqrWiQtBRgAgZNz7Ar7G29GLkTSZPo6oatg9n8DJwmA492Q7JQHXAGOkiHAtzMz7/32VgHy782DbNdzXJA5YmeL
+ 7vBHr10B
+ 38M3C0vFNzhzRnSJ5nopD7KtFZEf8DBMF1+zHbORWEgn8GklqPzS0CNBawch+4GSajQmT3vnrkSm6DhifXmEXZXCB7PCGM3kz53Cyo5vAkPX8HNTuoJWo0mFlCGUi+P7ff2OPEpIbmrJG1v8d9UQ3Vq0awGQwYBJ79GVFxXR1WEHU5ob79YyTppjfZBwXyty8JvdLEOPDjwcmSGVu+zjJi/iuu2FcZvUGUyDhtmgB/47bs/LFZKzUCtiqit0mpCwg6atsWgHQZhdr0ZFk9a7Fi8x12PctNtVQ0Tz/WovKVLCCVkAhEE0BOu+/0gJEen6wyiEL4DI4vVMAJ9ancEdXQMrXWSab7UbjReMxUbKauc+rZZMIGkiPd/XRbXW5itPqLf5SEGMriWAiSKUwAoBShrhLtU5gSlMDgRt2P/FNZACspbAlclkluSLQ03iV6k895BLzbwbDLmS0ZnGwKPOwI6sjkg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,221 +119,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 20, 2026 at 04:16:26PM +0200, Vlastimil Babka (SUSE) wrote:
-> Slabs of some caches never need the objcg part of struct slabobj_ext.
-> Introduce helpers to query this for a cache or a slab.
-> 
-> Introduce SLAB_MAY_ACCOUNT flag that is currently only internal and only
-> is_kmalloc_normal() caches don't have the flag.
-> 
-> For named caches we currently can't derive SLAB_MAY_ACCOUNT from
-> SLAB_ACCOUNT because some caches might be created without SLAB_ACCOUNT
-> and then used both with and without __GFP_ACCOUNT concurrently,
-> allocating obj_ext arrays on demand. So just add the SLAB_MAY_ACCOUNT
-> to all kmem caches, unless kmem accounting is disabled.
-> 
-> This can be improved later by finding out all caches used with
-> __GFP_ACCOUNT, adding the SLAB_MAY_ACCOUNT flag to them explicitly and
-> then ignoring __GFP_ACCOUNT for all other caches (with possible
-> warning).
-> 
-> To make the evaluation of slab_needs_objcg() faster in the allocation
-> and free fast paths, add a obj_exts_needs_objcg flag into slab itself.
-> This optimization is only available on 64bit architectures where free
-> bits are available for the flag.
-> 
-> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> ---
->  include/linux/slab.h |  3 +++
->  mm/kfence/core.c     |  3 +++
->  mm/slab.h            | 31 +++++++++++++++++++++++++++++--
->  mm/slab_common.c     | 25 ++++++++++++++++++++-----
->  mm/slub.c            |  6 +++++-
->  5 files changed, 60 insertions(+), 8 deletions(-)
-> 
-> diff --git a/include/linux/slab.h b/include/linux/slab.h
-> index 3a14df50766a..f9132902c5a6 100644
-> --- a/include/linux/slab.h
-> +++ b/include/linux/slab.h
-> @@ -45,6 +45,7 @@ enum _slab_flag_bits {
->  #endif
->  #ifdef CONFIG_MEMCG
->  	_SLAB_ACCOUNT,
-> +	_SLAB_MAY_ACCOUNT,
->  #endif
->  #ifdef CONFIG_KASAN_GENERIC
->  	_SLAB_KASAN,
-> @@ -204,8 +205,10 @@ enum _slab_flag_bits {
->   */
->  #ifdef CONFIG_MEMCG
->  # define SLAB_ACCOUNT		__SLAB_FLAG_BIT(_SLAB_ACCOUNT)
-> +# define SLAB_MAY_ACCOUNT	__SLAB_FLAG_BIT(_SLAB_MAY_ACCOUNT)
->  #else
->  # define SLAB_ACCOUNT		__SLAB_FLAG_UNUSED
-> +# define SLAB_MAY_ACCOUNT	__SLAB_FLAG_UNUSED
->  #endif
->  
->  #ifdef CONFIG_KASAN_GENERIC
-> diff --git a/mm/kfence/core.c b/mm/kfence/core.c
-> index 05b5482c8150..897ecf2594fb 100644
-> --- a/mm/kfence/core.c
-> +++ b/mm/kfence/core.c
-> @@ -640,6 +640,9 @@ static unsigned long kfence_init_pool(void)
->  		struct slab *slab = page_slab(page);
->  		slab->obj_exts = (unsigned long)&kfence_metadata_init[i / 2 - 1].obj_exts |
->  				 MEMCG_DATA_OBJEXTS;
-> +#ifdef CONFIG_64BIT
-> +		slab->obj_exts_needs_objcg = 1;
-> +#endif
->  #endif
->  	}
->  
-> diff --git a/mm/slab.h b/mm/slab.h
-> index c5f37a46434e..65b44902c06e 100644
-> --- a/mm/slab.h
-> +++ b/mm/slab.h
-> @@ -81,10 +81,11 @@ struct freelist_counters {
->  #ifdef CONFIG_64BIT
->  					/*
->  					 * Some optimizations use free bits in 'counters' field
-> -					 * to save memory. If these free bits are not available,
-> -					 * such optimizations are disabled.
-> +					 * to save memory or CPU. If these free bits are not
-> +					 * available, such optimizations are disabled.
->  					 */
->  					unsigned obj_exts_in_object:1;
-> +					unsigned obj_exts_needs_objcg:1;
->  #endif
->  				};
->  			};
-> @@ -584,6 +585,32 @@ static inline bool slab_obj_ext_has_codetag(void)
->  }
->  #endif
->  
-> +#ifdef CONFIG_MEMCG
-> +static inline bool cache_needs_objcg(struct kmem_cache *cache)
-> +{
-> +	return (cache->flags & SLAB_MAY_ACCOUNT);
-> +}
-> +
-> +static inline bool slab_needs_objcg(struct slab *slab)
-> +{
-> +#ifdef CONFIG_64BIT
-> +	return slab->obj_exts_needs_objcg;
-> +#else
-> +	return cache_needs_objcg(slab->slab_cache);
-> +#endif
-> +}
-> +#else
-> +static inline bool cache_needs_objcg(struct kmem_cache *cache)
-> +{
-> +	return false;
-> +}
-> +
-> +static inline bool slab_needs_objcg(struct slab *slab)
-> +{
-> +	return false;
-> +}
-> +#endif
-> +
->  static inline size_t cache_obj_ext_size(struct kmem_cache *s)
->  {
->  	size_t sz = 0;
-> diff --git a/mm/slab_common.c b/mm/slab_common.c
-> index 03ecac12cd86..4e983e250338 100644
-> --- a/mm/slab_common.c
-> +++ b/mm/slab_common.c
-> @@ -52,7 +52,7 @@ struct kmem_cache *kmem_cache;
->  		SLAB_OBJ_EXT_IN_OBJ)
->  
->  #define SLAB_MERGE_SAME (SLAB_RECLAIM_ACCOUNT | SLAB_CACHE_DMA | \
-> -			 SLAB_CACHE_DMA32 | SLAB_ACCOUNT)
-> +			 SLAB_CACHE_DMA32 | SLAB_ACCOUNT | SLAB_MAY_ACCOUNT)
->  
->  /*
->   * Merge control. If this is set then no merging of slab caches will occur.
-> @@ -359,6 +359,13 @@ struct kmem_cache *__kmem_cache_create_args(const char *name,
->  		goto out_unlock;
->  	}
->  
-> +	/*
-> +	 * For now we assume any cache can be used with __GFP_ACCOUNT and thus
-> +	 * may need to store objcg pointers for objects
-> +	 */
-> +	if (!mem_cgroup_kmem_disabled())
-> +		flags |= SLAB_MAY_ACCOUNT;
+From: Meijing Zhao <zhaomeijing@lixiang.com>
 
-if memcg itself is disabled via `cgroup_disable`, mem_cgroup_kmem_disabled()
-still return false, so maybe we can use:
+show_vma_flags(), which is used by VMA tracepoints and %pGv, names
+generic VM_* bits but does not fully decode architecture-specific flag
+positions.  As a result, trace output and VMA dumps can show a generic
+"arch_1" name or a raw hexadecimal value instead of the meaning assigned
+by the target architecture.
 
-if (!mem_cgroup_disabled() && !mem_cgroup_kmem_disabled())
-	flags |= SLAB_MAY_ACCOUNT;
+This series adds symbolic names for the arm64 and sparc64 meanings of
+VM_ARCH_1, arm64 MTE flags, user shadow stack flags, and protection-key
+encoding bits under their corresponding configuration guards.
 
-> +
->  	/* Fail closed on bad usersize of useroffset values. */
->  	if (!IS_ENABLED(CONFIG_HARDENED_USERCOPY) ||
->  	    WARN_ON(!args->usersize && args->useroffset) ||
-> @@ -984,11 +991,19 @@ new_kmalloc_cache(int idx, enum kmalloc_cache_type type)
->  #endif
->  
->  	/*
-> -	 * If CONFIG_MEMCG is enabled, disable cache merging for
-> -	 * KMALLOC_NORMAL caches.
-> +	 * If memcg_kmem is enabled and this is a KMALLOC_NORMAL cache and  not
-> +	 * aliased with any other type, make sure it's never merged with any other
-> +	 * cache.
-> +	 *
-> +	 * In other cases the kmalloc cache may end up being used for a
-> +	 * __GFP_ACCOUNT allocation so mark it as such
->  	 */
-> -	if (IS_ENABLED(CONFIG_MEMCG) && (type == KMALLOC_NORMAL))
-> -		flags |= SLAB_NO_MERGE;
-> +	if (!mem_cgroup_kmem_disabled()) {
+The original submission was rewritten by the mail gateway as a
+multipart HTML message and had a disclaimer appended, causing the vger
+mailing lists to reject it.  This resend uses a mail transport that
+preserves plain-text messages.  There are no code changes.
 
-the same as above
+Meijing Zhao (3):
+  mm: trace: decode arm64 and sparc64 VM_ARCH_1 flags
+  mm: trace: decode MTE and shadow stack VMA flags
+  mm: trace: name protection key encoding bits
 
-Others look good to me.
-
-Reviewed-by: Hao Li <hao.li@linux.dev>
-
-> +		if (type == KMALLOC_NORMAL && KMALLOC_RECLAIM != KMALLOC_NORMAL)
-> +			flags |= SLAB_NO_MERGE;
-> +		else
-> +			flags |= SLAB_MAY_ACCOUNT;
-> +	}
->  
->  	if (minalign > ARCH_KMALLOC_MINALIGN) {
->  		aligned_size = ALIGN(aligned_size, minalign);
-> diff --git a/mm/slub.c b/mm/slub.c
-> index d78d3e50c877..30435e2509ea 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -2557,7 +2557,7 @@ bool memcg_slab_post_charge(void *p, gfp_t flags)
->  	 * of slab_obj_exts being allocated from the same slab and thus the slab
->  	 * becoming effectively unfreeable.
->  	 */
-> -	if (is_kmalloc_normal(s))
-> +	if (!cache_needs_objcg(s))
->  		return true;
->  
->  	/* Ignore already charged objects. */
-> @@ -3435,6 +3435,10 @@ static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags,
->  
->  	slab->objects = oo_objects(oo);
->  
-> +#ifdef CONFIG_64BIT
-> +	if (cache_needs_objcg(s))
-> +		slab->obj_exts_needs_objcg = 1;
-> +#endif
->  	slab->slab_cache = s;
->  
->  	kasan_poison_slab(slab);
-> 
-> -- 
-> 2.55.0
-> 
+ include/trace/events/mmflags.h | 43 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 43 insertions(+)
 
 -- 
-Thanks,
-Hao
+2.25.1
 
