@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D926C531CA
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 04:57:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EBE5C4452B
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 04:57:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 090746B00A3; Thu, 23 Jul 2026 00:57:51 -0400 (EDT)
+	id 748086B00BA; Thu, 23 Jul 2026 00:57:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 041526B00A4; Thu, 23 Jul 2026 00:57:50 -0400 (EDT)
+	id 6F7E46B00BB; Thu, 23 Jul 2026 00:57:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E99ED6B00A6; Thu, 23 Jul 2026 00:57:50 -0400 (EDT)
+	id 6352C6B00BC; Thu, 23 Jul 2026 00:57:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B14C46B00A3
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 00:57:50 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 36FD94036C
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 04:57:50 +0000 (UTC)
-X-FDA: 85018833900.04.5B75322
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 21FBA100008
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 04:57:48 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=PVYGstw7;
-	spf=pass (imf05.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E81366B00BA
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 00:57:57 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6EB6A1C080E
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 04:57:57 +0000 (UTC)
+X-FDA: 85018834194.25.DEC5C23
+Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
+	by imf25.hostedemail.com (Postfix) with ESMTP id C0054A000C
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 04:57:55 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=qZ8jpXD9;
+	spf=pass (imf25.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784782668;
+	s=arc-20220608; t=1784782675;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+M31gX24/lXdo/71mKqeb9yMjPYP0lhEdBSZm1x7d2Y=;
-	b=IRkVUY0d0FDTq/4b6hrcJ0ipX1NjWZyO5PHwktV6gnrPGv/PdVtAlS9g5n6GG8B0UHoCku
-	BczkxDkpd4NmpVNtX1HI3nNzQT6rl1m6o3/7CxqckR7wpTeUXFnjx7eMVSajnD6MmJaja4
-	XzXYWLn2bQyoUSKv0MOA/uHWRbUajgc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784782668;
-	b=MaOLt6weB1oBjRbUJWKNNmXRH4SliNF148mZNhegqx3iG8vUf1z/oiwKbidt2Vgdh6yix2
-	Mj8LEGY53zCNwKheu1KD4A1OFb/p25InN2NSbtBRrZFrzUNUl/S7gStA50jbm5g0N9EBlB
-	+lOGIFs6PiFhVUhcKOf5jNvjFqO+WbA=
+	bh=WLiqeUO9mMdZaSq28GFh6cxKKnMxg3tJr/8P87fRsfA=;
+	b=RVRsunuBkXm16r3yBrtPjWahtllvPhk30dSvTJW4D0VlFk+VjKVTQxFMc3U+HDmAmTUcI5
+	Eh9VMlP8UiPmbNK1fzgWXo3laalkYs/h1RRv8EYdVWoWJpe3VVb2ytq6tJn/DMdxgAwvnP
+	Y3i2FJEpCCwS1HoO+HUYJ4H+Q8tQcwQ=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=PVYGstw7;
-	spf=pass (imf05.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=qZ8jpXD9;
+	spf=pass (imf25.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784782676;
+	b=js7AdZq62QOqGOhuDs6IRF8r4YuQDyhOPJaDZyrdfQbUyJne/oHlIRZ/Clqbr9DChuEJ5M
+	ijRMWvz7Z4gcUiEBz/mjPEeyS/a3PV+K3zcJ+FWYENq4SIfIDNAB5j1oWYbAy2FdaAql35
+	YfUJC7abrq0PvDPMEa1UObf+137uR0Y=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784782666;
+	t=1784782674;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+M31gX24/lXdo/71mKqeb9yMjPYP0lhEdBSZm1x7d2Y=;
-	b=PVYGstw7O1AshQlF7Vggr7tyf7t6fBgn/m1/RtemzMXcw63/0ICwW4qp8tqDCErm59X7+q
-	WMgJrDtEtc6OS2rQPuc/BSRn45sRy+z+XeiJwIiDqGsX72W0torSudl1fHn/gkEzoM1upD
-	uzVrvWaG2LLwEZoO5GDLy4Wz2EAlZ+Y=
+	bh=WLiqeUO9mMdZaSq28GFh6cxKKnMxg3tJr/8P87fRsfA=;
+	b=qZ8jpXD9Z/jiKzsINhUHsr9GRrPLHvZDhSSdFCyPpq39qCSswGPIY/vbjTFRxB63umQj0X
+	eP/zls4gT9lgtuJb9rkufCjPnF5bbDeJMpJfqLzf8zWvV1IYen2aDuRCBzjrE1AycRy/Kx
+	TS+ADgWXFrKBTwRmrrIMr9+IxT+Lwek=
 From: Ridong <ridong.chen@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Johannes Weiner <hannes@cmpxchg.org>
@@ -80,22 +80,22 @@ Cc: David Hildenbrand <david@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	Ridong Chen <ridong.chen@linux.dev>,
 	Ridong Chen <chenridong@xiaomi.com>
-Subject: [PATCH v3 1/4] mm/vmscan: fix anon-only reclaim evicting file pages when swappiness=max
-Date: Thu, 23 Jul 2026 12:57:15 +0800
-Message-Id: <20260723045718.2052070-2-ridong.chen@linux.dev>
+Subject: [PATCH v3 2/4] mm: vmscan: propagate real error code from per-node proactive reclaim
+Date: Thu, 23 Jul 2026 12:57:16 +0800
+Message-Id: <20260723045718.2052070-3-ridong.chen@linux.dev>
 In-Reply-To: <20260723045718.2052070-1-ridong.chen@linux.dev>
 References: <20260723045718.2052070-1-ridong.chen@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 21FBA100008
-X-Stat-Signature: ya5pf8o3whx3jdeikhgzufzt5kj5cuae
+X-Rspamd-Queue-Id: C0054A000C
 X-Rspam-User: 
-X-HE-Tag: 1784782667-217028
-X-HE-Meta: U2FsdGVkX18/EW9mNxcigvHZB0vzXqE3yGOUS9v8nTFRC/5m6QW7YBtOfoQfnecQKr+p+MHLZvjOTpt7PmMptMFRjpXVmE47Ca1HYjdJG38wdV3S9ElAJPUPEXv36zuzZyIo23xqR1sCRJLKWSLRV6pP1RIsHDAaOBHDnHPMGAD8ppPQKHrfRwz6nv2XLimUULAGoFw4D53SiSATE8e1UW263EE/7d3C/2MoaR/z2THiKpYjzNvhNgXQW72ToSdGzhZxaD970thy6/RqNFK2IRQ3r2Wm+VN2Qna1ALg1UW3BIFSqOL8oZlW9mkykZh3sM7as9zhY7hIazR3iTlOuxtqAvREON/Hienqq4ruW/ZW+tsBNZXGc1Ls+qxK0wU+D9jDyruVEdUBzh0YPFNR9slvFwkQPDw2Nyxa0QUU2dmZ+Y6aDgl023plodoiLgCBNbxz4CyAoXTV/6yHJnudpIOyDKu9wIESNe2GrhhEn36x8f9IKTSSH6wOwcwMG1WBpSrE2pxO72qBYNxDVvC4UjbHZ1HWBUeQ/GDQC20da5NxriYsAbrzhqvDBD75hiTBbxsy9+Wmijgu7rxRnhJPPNdMp5V5Z58Tj49x/WPG1cNGcZ3gueD/F5hnt3YTmg72ZzNo+lDCoS7IySbuGYZmzH+XWtx6G9v9GiezItNPL354Hh6afr1AiayFu/TXXeQRQ6TvvbI1N5aHUySagEvZgCOTpj4qYT+y1ZofYduZzVIShvvNxhnP8roxwud4FvSS3NLay/ENt6EIeUoglniLOoT/OfwxAv1W8N/l5OJsipV6avRljL696JHXJtZSgQ6ob9UnD/CdXrqih130DYpZZm3XNF9qDSr2uQ8D8wHaeEe5+KXxOymzAwcRPHORqznW5+wf7JyiHV/CiYbppV3KzQ/zepnutbsnAg3sybzmWrx6cJUzip2kK1kMSOd4CVWmzAqpoq++p9lWav2hZ8ww
- SUqv0mX8
- S+6yITYU+N98Uhi6nr0rLQ/WeJhRM7Su976lUINdLSAQAcY40lA5gWJV4aA3USLuD8xp8qHOPpMvvCu2RBEwWgyn/Fti6fZ0n6HZn4c+pTOVVNtALapLX5snWWu4n3TqwwvYdAFu57vGM9jxRgI4383LtTS0+xRN6U8+fygG6veFkSzgYJCjHWuSj1F860b+8cxOKja6KpKZM8xRAEMu9fX5bbDrfSmJoW3+vBPv7zhc6S9j7xXbqm7lU5tlU7lpEyLY7f/pi135d4cGzM42lENBNZVbYH6oKBT+i4Zg7HVKynLYx6E6cUBQ0dA==
+X-Stat-Signature: aa1a3ah1m1qmbqah67ndrtpeuhii6116
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1784782675-611808
+X-HE-Meta: U2FsdGVkX1/eTDviNohjerESwSPX2DwR1SwSggYPMzRAOZA+eEuRmeC8iODgV7teTR1NRfab8pyxFx+aaGv50zUG10Phfdouo7QnGrAcXb3ShjZ1r5nrzGvo2OSXi7S4RXBiafLUhNxi6UtIDUR+0dKuQ6jXEWH7CJQDGfVYFtZu0rH9PLxRpyGOxz921Gt1L4rt1CylJThWrHhWGBYAseAz7mo1bAN7YDACBAtj9GrTNMAsSdbRvg5C2BP8kgNKOCUJyaVk3EjFXdlGu5oGUFdLejMHy83gyoEHjcteKp5PHiH4Vmfl9huxwftJiKo3WG66EmqekZTNJkRFy22Ulq9icvdH1c0W0GogpyAGS/wXtu3fcW3LenLoBde9XKDJkt3Hf6s28xalLdI1G/Yl/c5g0Yc0fPW+N0yKPutIsBLSXvvqmYUSlb70nWS+jjSM92QKdXOMBbYemEWVcN/VEe/RrYLkrepIPCDPXPzEFUhtS46ry5iddTtFhxFOI/9JDCtK+EQfGdbxqopYaWVq4YKssmNKjtGV3VX1/DCf/4oOaV3rV8k+EImIv5YqUa11oT58s6vwqI4S9yNpOWFpZ+SQwouoYpdFjVkZRMuQQL/L0lHOZZrksr4KjxUmEfOGzRvWwWpZX7kvgyje3q/Pv8+V8YhID1i25zgO/aPKs+C89onuNKWE1sJ7arlagTiYjLMBbZtldYqEw/E2Kapb8OHQOQdMLwnlOZms3CjHgtQfh6KycvT9zcToLq4whgLGza5q9kXKejpaQITci7Z4hliHU0LPn7mF6fI7/4SJxCJnETKgk3UMpmphWEvdmTrdbO12BlV+Sbzt1H+VsdhYn5Ggoal4+Vj6iZ4HFOfzoLut5O3mmCe1s3Agz7TMe09WVnrr4ZrsvbaRVvig8dQ/8nHlEgGYc53mN67NqT20V9qBwRK2CySEkOwSX4UrlXR5Fy36kAQfg3qGl0zwbhg
+ e7pYIAGJ
+ +3WX8qLIGaijtU93pw3MoMHyREk1Z5aI/L1DQogHEEf4NB89Spf8OUeapAHLht6ywUc0oaw1DAOT0i7QSkUFD2SMDXEMBIzDVqVW2RJ+fwDF7918urntJnrFk8E5PEM36dl0RKgzKJNpfCdfIq7KQRj5l4svcV7XKjm2C4eZhAWW5UFuI/W2Vcwn2nbb66hwZwwZ/J2fctBVnKyGs2Bhlivbc3OBd1em/vAEwCJXX+BRL7oTPTaco4YwZy1nW+jEdahzI9IrmV/XxTn53iFPoRIZYd5j8l1mV4tqC3jXiBM2tlI4mdspYGZLwww==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,98 +105,39 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ridong Chen <chenridong@xiaomi.com>
 
-As Qi mentioned [1], when swappiness=max (SWAPPINESS_ANON_ONLY) is set,
-the reclaim logic is expected to reclaim anonymous pages exclusively.
-However, due to the current ordering of checks in get_scan_count(),
-file pages may still be evicted if can_reclaim_anon_pages() returns
-false, which contradicts the semantics of SWAPPINESS_ANON_ONLY.
+It has been observed that per-node proactive reclaim always returns
+-EAGAIN when any error occurs. As discussed in the mailing list [1],
+the interface should distinguish between cases where no reclaimable
+memory is left and where another entity is concurrently using the
+same interface. Propagate the real error code, consistent with how
+memcg proactive reclaim handles errors.
 
-Reproducer in a cgroup holding 64M of file cache, with no swap configured:
+[1] https://lore.kernel.org/all/20250717235604.2atyx2aobwowpge3@offworld/T/#m3514718be82a31b05726a49da9b61fbfc69a589e
 
-  Before (file cache is wrongly evicted):
-    # cat memory.stat
-    anon 196608
-    file 67178496
-    pgscan_proactive 0
-    # echo "64M swappiness=max" > memory.reclaim
-    # cat memory.stat
-    anon 208896
-    file 4096                 <- page cache evicted
-    pgsteal_proactive 16400
-    pgscan_proactive 16400
-
-  After (file cache is left intact):
-    # cat memory.stat
-    anon 200704
-    file 67178496
-    pgscan_proactive 0
-    # echo "64M swappiness=max" > memory.reclaim
-    -bash: echo: write error: Resource temporarily unavailable
-    # cat memory.stat
-    anon 208896
-    file 67178496             <- page cache untouched
-    pgsteal_proactive 0
-    pgscan_proactive 0
-
-Fix this by bailing out early when SWAPPINESS_ANON_ONLY is set and no
-anonymous pages are reclaimable, before falling back to file reclaim.
-
-[1] https://lore.kernel.org/cgroups/7ddf3eee-5fe2-45f7-8614-c8936a039e04@linux.dev/
-
-Fixes: 68a1436bde00 ("mm: add swappiness=max arg to memory.reclaim for only anon reclaim")
-Suggested-by: Qi Zheng <qi.zheng@linux.dev>
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Fixes: b980077899ea ("mm: introduce per-node proactive reclaim interface")
 Reviewed-by: Muchun Song <muchun.song@linux.dev>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 Reviewed-by: Qi Zheng <qi.zheng@linux.dev>
 Reviewed-by: Barry Song <baohua@kernel.org>
 Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
 ---
- mm/vmscan.c | 24 +++++++++++++++++-------
- 1 file changed, 17 insertions(+), 7 deletions(-)
+ mm/vmscan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 35c3bb15ae96..2c689682b952 100644
+index 2c689682b952..4b62d6304c49 100644
 --- a/mm/vmscan.c
 +++ b/mm/vmscan.c
-@@ -2501,6 +2501,23 @@ static void get_scan_count(struct lruvec *lruvec, struct scan_control *sc,
- 	enum scan_balance scan_balance;
- 	enum lru_list lru;
+@@ -8023,7 +8023,7 @@ static ssize_t reclaim_store(struct device *dev,
+ 	int ret, nid = dev->id;
  
-+	/*
-+	 * Proactive reclaim initiated by userspace for anonymous memory only.
-+	 * SWAPPINESS_ANON_ONLY is set only on the proactive reclaim path, so
-+	 * warn if it shows up elsewhere. When anon cannot be reclaimed (e.g.
-+	 * no swap), bail out instead of falling back to evicting file pages,
-+	 * which would violate the anon-only semantics.
-+	 */
-+	if (swappiness == SWAPPINESS_ANON_ONLY) {
-+		WARN_ON_ONCE(!sc->proactive);
-+		if (!can_reclaim_anon_pages(memcg, pgdat->node_id, sc)) {
-+			memset(nr, 0, sizeof(*nr) * NR_LRU_LISTS);
-+			return;
-+		}
-+		scan_balance = SCAN_ANON;
-+		goto out;
-+	}
-+
- 	/* If we have no swap space, do not bother scanning anon folios. */
- 	if (!sc->may_swap || !can_reclaim_anon_pages(memcg, pgdat->node_id, sc)) {
- 		scan_balance = SCAN_FILE;
-@@ -2519,13 +2536,6 @@ static void get_scan_count(struct lruvec *lruvec, struct scan_control *sc,
- 		goto out;
- 	}
+ 	ret = user_proactive_reclaim((char *)buf, NULL, NODE_DATA(nid));
+-	return ret ? -EAGAIN : count;
++	return ret ? ret : count;
+ }
  
--	/* Proactive reclaim initiated by userspace for anonymous memory only */
--	if (swappiness == SWAPPINESS_ANON_ONLY) {
--		WARN_ON_ONCE(!sc->proactive);
--		scan_balance = SCAN_ANON;
--		goto out;
--	}
--
- 	/*
- 	 * Do not apply any pressure balancing cleverness when the
- 	 * system is close to OOM, scan both anon and file equally
+ static DEVICE_ATTR_WO(reclaim);
 -- 
 2.34.1
 
