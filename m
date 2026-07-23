@@ -4,128 +4,152 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F813C531F7
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 17:07:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2337FC531F8
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 17:08:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7250B6B007B; Thu, 23 Jul 2026 13:07:13 -0400 (EDT)
+	id 244196B008C; Thu, 23 Jul 2026 13:08:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D54B6B008A; Thu, 23 Jul 2026 13:07:13 -0400 (EDT)
+	id 21B4C6B0092; Thu, 23 Jul 2026 13:08:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 59EF56B008C; Thu, 23 Jul 2026 13:07:13 -0400 (EDT)
+	id 0BE186B0095; Thu, 23 Jul 2026 13:08:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 26D226B007B
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 13:07:13 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9DAEE160576
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 17:07:12 +0000 (UTC)
-X-FDA: 85020671904.04.0CEF775
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 62815120014
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 17:07:10 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=e7+Vhubt;
-	spf=pass (imf29.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.46 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784826430;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D15CF6B008C
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 13:07:59 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6601FA124B
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 17:07:59 +0000 (UTC)
+X-FDA: 85020673878.24.BC64104
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010068.outbound.protection.outlook.com [52.101.201.68])
+	by imf21.hostedemail.com (Postfix) with ESMTP id F16E81C0002
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 17:07:55 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=hjJYpn+b;
+	spf=pass (imf21.hostedemail.com: domain of nirmoyd@nvidia.com designates 52.101.201.68 as permitted sender) smtp.mailfrom=nirmoyd@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784826476;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6nTISuiCBMBC/x5bhGnScXYmL0t1DEe+uFhjm9NEqZI=;
-	b=CeOVC198jjkEDg/3UcEvp+LYUvt4lToJ2/GU1uAr7MlH1U2g1vZIcvb5Hy0QPkn3J5uXqC
-	+WYAEXRXc+togbegCvRu8qDIAodgHH3pez+2cN4BsXcBe7ry1BQXPXvCHd246YyLIvL1bP
-	gmb2gcVf7oKCNZbDMQIvd8aT91tWb6A=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=e7+Vhubt;
-	spf=pass (imf29.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.46 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784826430;
-	b=kJjIENh9x8O8LkDNsVFJByJbn+Bh1a4muaxN4I5CAmMraYhnTUQrjMWYB56JAN8UgT85Tx
-	n4ROiSQoTb2i1mCpYbFrH2Pe0psvc+IbVSsbaBL9AYSpLzlvYVPEwqXW6nwAap237r3/9B
-	ygw7nQwYsJn2MAnDayMWx2k6XEF8yAU=
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-8f256eaedf8so11481966d6.2
-        for <linux-mm@kvack.org>; Thu, 23 Jul 2026 10:07:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1784826429; x=1785431229; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=6nTISuiCBMBC/x5bhGnScXYmL0t1DEe+uFhjm9NEqZI=;
-        b=e7+VhubtFaz1hXoBtJiH7F1cH+RcTvDaL4FXYWPvkO9fakIz/H63LKAqtkMmm9hMvw
-         9RuEiUUDuoJ5B0xCM3RrNktndPuIt1pODO56GFShFI3NPAsZepVsCU2pRFESqyaQ7zeV
-         5B5+GBii54uCeOzR3/uSCAO9k6QFCS0KfPdCimJy7P0dGEDOHWbiEDrZwWVFpLnNNd7A
-         OAR4TjrLuALzdRbGbQX/5jKqzfkQaByva2d99q6DhW8auhF80W4MPAcc2gB5UumT9xxT
-         CEtrcNlYhfgxxxURwZjgKFACusinYDme8f8uquu3J2JF+RDSyqvZohi3VN0wS4/zP63V
-         7JZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784826429; x=1785431229;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=6nTISuiCBMBC/x5bhGnScXYmL0t1DEe+uFhjm9NEqZI=;
-        b=XaZCMBUU5dL+nLjvfa1hIx2joknHHDwE7WpL9FRtccM+pCltfsof7A+pXoGpEGjb46
-         HcBz6i/JpbRhPoCOzusgYZG4FNUcN+skg4Y90XV3CPVaWXGYYq11kRx00CYw57LoVpmn
-         v4NTlON8IKMKhJqNC47HejE0Wo4GNzKF9eFRkky9/ZhFDbDubWMSuIfbgSKF+DhdGHMi
-         qNgY33hZ8DoXo3L87DzyY4xppiVMT/tb9Zj9qBU44G2BPDzkMGm7JaQY4nrqG9UCwFgj
-         M853ASdPcLqAiUAvAgnyLfnOTx8Zx48fjDHFP1yW+bu/7903e0c3LQY6sSMpfOC3XSOS
-         2YaA==
-X-Forwarded-Encrypted: i=1; AHgh+RoiOM5DRSuHvlCGysIC8wX3Gu7zanFtuyGPpnnok3QDamZDRyZOmbRnjzU+p008pCM9sP7sf220Eg==@kvack.org
-X-Gm-Message-State: AOJu0YwMTp0HFAGVXc6ovYXK2kPqBZQ0+K8Xq5g3IKtqfII5lNLZNtUo
-	wbEUWhp14BMymQBpqWBrhYpwz12Jo4ECcBiwOc3D4UAWSdB/rf1RzJ+2s9ozB0FMHridlTKDlYK
-	bwJj2
-X-Gm-Gg: AR+sD129DHps5qS0c+AxVnUt8tQPI9esR5ae0J4nKN3WAU9xFY3g8t68OAEwmvVCryl
-	8/eFXkgvFjFrqlf/GR44gXHsh33kRLhciglAiYpyoBexTMYQfWBthl3Cd/6XbeE4PxqjVcYg5iR
-	pJQauCsS4aiPTZ0gaWirq4zxwcxeGGoYH0c4iJDUdBkME+2JGL7Krgj//btQTtMbbcSaGxtibuX
-	BZnMX2EWZ6A8mZvIE4lbLHDHsXhxFvvzvibghjxNOt6mFuNaDfbRbuyBYLz995qa5BpRfnFgggm
-	HwoOMtdcbrRlMkj6oXAlWmSCkToc61NQoxSwK8qGE3yx52xuKLQEclo3jWV3lrZ8iuvMgtiMsS1
-	gdznxeabYKHWi7zBMWggaTMUCM1qwkA2GO+wIxrmN+4CMlKgHwFn1ErLTTWaHjJ1lAqGlv2CZb+
-	Ve
-X-Received: by 2002:a05:6214:5d0a:b0:8f1:579e:a41b with SMTP id 6a1803df08f44-907ca295150mr42984396d6.24.1784826429087;
-        Thu, 23 Jul 2026 10:07:09 -0700 (PDT)
-Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-907ba8f2a8bsm48949526d6.20.2026.07.23.10.07.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jul 2026 10:07:07 -0700 (PDT)
-Date: Thu, 23 Jul 2026 13:07:04 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Gregory Price <gourry@gourry.net>
-Cc: Sean Christopherson <seanjc@google.com>,
-	Yan Zhao <yan.y.zhao@intel.com>, pbonzini@redhat.com,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Neha Gholkar <nehagholkar@gmail.com>,
-	kvm@vger.kernel.org, rick.p.edgecombe@intel.com,
-	vishal.l.verma@intel.com
-Subject: Re: [PATCH] mm: mempolicy: fix automatic numa balancing for shmem
-Message-ID: <amJKOPczNMb96NJv@cmpxchg.org>
-References: <20260629163337.1264881-1-hannes@cmpxchg.org>
- <amGpEEqxoLq/Y7ZO@yzhao56-desk.sh.intel.com>
- <amIcXrS7nGX-adpG@google.com>
- <amIrDncrL4K-JRBO@cmpxchg.org>
- <amIxyy4Vg_TTE8Y4@gourry-fedora-PF4VCD3F>
+	bh=l8mMPg9TqsqiVxPJ4y9PHkt6iPNPmFCEuITfesVev98=;
+	b=CTCXa7APSsEgxWSIeQtnJ1Mw/5OdG8De/oRfJcYDwy/qyDAgn37/Xsz226rcZ/XZ2K2nzC
+	/sr75e6my2nynjVaagTOWPixPjjOHS+/wgdhfTFU4hfKRdtsMzLI89nHEHu0KqR5HkIsCx
+	j1KTjv4UxALiRWB+ubvQd1GS78U0M6A=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784826476;
+	b=yuccvYnljFWxMsFuNkSFlzg3kLOUhp7O3CEefGP0aWyK7/xELC9BZCZLfR9V4HGs06y7fa
+	yTDJsSkH9xixZ7ndHV4teS+MQwVvUW60oU/MgarfQfmWqxw9k1kyr6n6IkghgbOOTlI5GV
+	zawc6wTXQyYVEckVfNw4UDJX3uao+B4=
+ARC-Authentication-Results: i=2;
+	imf21.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=hjJYpn+b;
+	spf=pass (imf21.hostedemail.com: domain of nirmoyd@nvidia.com designates 52.101.201.68 as permitted sender) smtp.mailfrom=nirmoyd@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=M2ud07hPP3FKF33wavxYM1WLdmCBs35HVeTIIZ+XXiyfFxltssl0Lb/HHS2EpqCWXHslsC6GYR/zS8vWE8F0nixEjSVDZ2HvqJeUsaXhZZG9fm1EqZ+kvKuWZTjT5kgJi/cta9QcUrSeo5T3aMVeYVYOGfOlwxQ5+MyZ9CQvBsb9ofwnngIuwPsvBxqC84fQf5CZD/aYz819vDr2w+WxCNOZvFYE+tIlQlBvh0BteL5Yuq1gqsQwqKhOiWwD5YEL/5vq2xgnke3hIYqF7ZYPojG/tPxi30oCVUWXdnS5DDJMLS3YMlycF4Rza40ppKpe6X9hoempTgHotiSFhuz73Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=l8mMPg9TqsqiVxPJ4y9PHkt6iPNPmFCEuITfesVev98=;
+ b=AYXSy1npPmyD1rodXtybJanAdgmF2S0OhQ5Ml4/8S+RHFji5HeU5zL5TfGOdrMv52yHmvedSpVCZzvrtgmwOK5OCWl3C6x20bMZAde8pgmKjulsaKwngoPk+S62OxnW/SR87WDGpBL04hbfQSJwLq1NL4UV4MlOUZ4ttYfweZpPncFk3lZhBPaiNJk3/GkkLvhHmQ/SYZPYOPDD6sZ8fT1G0tfDoh81NyzLs0ANS0oZEtPdfEqrtO2+y2IiTEoaKIXH9UMCglJMJK8MTpjfsXG5aSO9Ef1aZFfzwNaH/C1Iiyqr1smnBXAWTg3ZYD4UqMTxtaLkIsPPsR5V8HDCWfw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=efficios.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=l8mMPg9TqsqiVxPJ4y9PHkt6iPNPmFCEuITfesVev98=;
+ b=hjJYpn+bHBje+CvG9pIodiPUg9CIwkcOAPcCePC/oTb0wdb+sBhLylxQr3sPaQGiG/q8Qhte9Jznv3NhsbwozoiuOS3/N+/dUGCGpbHhnyVZmoj5ixASRReHl+64R/QNYA1yzMfy2XRhlL+2f3OrkHg8EuqqaAXYdV2XdjMmoA9TF6fCZEEluuNYh3EuOEfiS1kUFNao7oGML3jwrG3Gbe3yiDqTJ/tlBScuaK/OEkea68smUBE9MiD1A/9p9MwLjodzhXivEvvDQFdDYGoCrSRwu1KwN13zlkmFvy+k4wbobjjxhv76mCP2WArstJFz3NCklkZ1L1oQBZAkqY5QMA==
+Received: from SA0PR11CA0158.namprd11.prod.outlook.com (2603:10b6:806:1bb::13)
+ by CH3PR12MB8660.namprd12.prod.outlook.com (2603:10b6:610:177::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.11; Thu, 23 Jul
+ 2026 17:07:46 +0000
+Received: from SA2PEPF000015C8.namprd03.prod.outlook.com
+ (2603:10b6:806:1bb:cafe::51) by SA0PR11CA0158.outlook.office365.com
+ (2603:10b6:806:1bb::13) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.245.11 via Frontend Transport; Thu,
+ 23 Jul 2026 17:07:45 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ SA2PEPF000015C8.mail.protection.outlook.com (10.167.241.198) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.270.5 via Frontend Transport; Thu, 23 Jul 2026 17:07:45 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Thu, 23 Jul
+ 2026 10:07:23 -0700
+Received: from 82875d6-lcedt.nvidia.com (10.126.230.37) by
+ rnnvmail201.nvidia.com (10.129.68.8) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.20; Thu, 23 Jul 2026 10:07:22 -0700
+From: Nirmoy Das <nirmoyd@nvidia.com>
+To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+CC: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
+	<david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
+	<liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
+	<rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+	<mhocko@suse.com>, Shakeel Butt <shakeel.butt@linux.dev>,
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+	<stable@vger.kernel.org>
+Subject: Re: [RFC PATCH] mm: use precise current RSS for high-water accounting
+Date: Thu, 23 Jul 2026 10:07:08 -0700
+Message-ID: <20260723170710.1971749-1-nirmoyd@nvidia.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <21d24fc4-141d-4957-8b96-6d5887ef4027@efficios.com>
+References: <20260723134158.1473841-1-nirmoyd@nvidia.com>  <bd3facf5-cc4e-4fa3-95cf-0f4aa926ae23@efficios.com>  <20260723162133.877125-1-nirmoyd@nvidia.com>  <21d24fc4-141d-4957-8b96-6d5887ef4027@efficios.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <amIxyy4Vg_TTE8Y4@gourry-fedora-PF4VCD3F>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-Originating-IP: [10.126.230.37]
+X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA2PEPF000015C8:EE_|CH3PR12MB8660:EE_
+X-MS-Office365-Filtering-Correlation-Id: 56084cd6-7443-4dc1-95df-08dee8dcea76
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|82310400026|23010399003|1800799024|36860700016|56012099006|11063799006|4143699003|10067099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	TWdR2aQ9GucmGQenFMYqhiKt8bnelePiwY0BCWmNLZ4XwidGfa15/WzYhfbWlmcz6kkwJW+XhCG26gl40AvmlFnqlR9uszzO0qFg5zyIRS+dV08obkLb9YKaAQaw3mbl1b33YfNZyi7rOvH6P8gve9a/vjeHVnYLHmu/nlMIfiVVsMXQaCs3ad+HNA+pNe3OU5kMWkxi0oJswiUrnMufMPo8TxINljLpc3rxfF4GuQhfPb1DhPndDQbr5g7p/KNdZcBdsIBZwPtx53lYBvyLDqgXIO6nsKTaDGiesv8rLAXv7pkAT3tbZeikREmxBzVS6enSYwBjgOHdNlhRjv5J8al5eJuePM/a5qpqQxtrNFjrbuQr3h1wfbqO+AtfBIViUsAFpi7rpEmJrEOky6+KuQdME+9k94F/wcByYm19UV5wy/5W3Rf6kKNeJBOppVSs0Oq1mbuIxugpCRYcua1HMzUS7/Cccb2YQbFfnHjOzSBgDoy4KVfVDmoCIR5ET5Sel3e4KAUH9e5WbhXq0TklfulmDPQbCd9mmnI4A0hhea+anQfry6FOAWXE1tvG/3SbmcUay5zKAaZITtGtDkca6UWcnRD0lY5jvYunBJYiHim02SNGZFY5rvug6TSRGr0uxVtnI0fHbJ/lnkC/AUzQQ8Q8iTVVDPXEENfBNFTbfPjl8gZLlU4li6JK45TEcJc9GzANGUH9dgORmMVhUzFyUA==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(7416014)(376014)(82310400026)(23010399003)(1800799024)(36860700016)(56012099006)(11063799006)(4143699003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	foPolEPhmvRd8a5kJOAgM1uqXoLaOFLxW1OXuP1y9oqXR6Weq6VsYzANDYO4uZlyf9WpR9j8XKgxfE2X78eKPde6mGGwg64ypo8HCkNdnncmTT9k2Js9qw6K36uP/5GyB1s3coZhQExlQ1Tt6zBu8yrG+a2oG3fMmVXd3s7NplKaM9k1BogbtgMWz8r6nt1cnF2hwADS8y4KNvLnKV1WycrUXK/60nkb7MNpWH9GLv9I3TJuBCZ7A76XtNtQc5Ji+fQkI70wpnoJifO2ViuVkbGnZZEpWLJIK8FihwMndWiXC8UyeoFELzzIS+RXRePS3eBUvOufRENv54AQiyxIAjT7nq5uIKjn193v14ejJtf6kzhZ0uLzKSq4c1EgOPeDExos09bU7Oz/FsojGRPkpondfzfnvx8Ucpumli5r2Cfz8VpIdVl0pwQVoAncawzh
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2026 17:07:45.5751
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 56084cd6-7443-4dc1-95df-08dee8dcea76
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SA2PEPF000015C8.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8660
+X-Rspamd-Queue-Id: F16E81C0002
+X-Stat-Signature: y5ty1wbcbuaptg6i4xq4ny1c8xgidjy1
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 62815120014
-X-Stat-Signature: 34kxk9jpyhpr11hhuzhwdaonmp5aefkq
-X-HE-Tag: 1784826430-884658
-X-HE-Meta: U2FsdGVkX1/E7ThJlO9HsWTiemAI/du3l4jF1Oa96FhvMMeMFQgixfOGDCcecJlUpY5RdJNk8bzrOLgRiJDXKOnhdhVQkRDCryUA7Vo9iTBjr2k5nk9oyFdhkiNhZl37EtTmhaqw471x89M1mok+CKrsUy/2GaP9TpqEII5zlMdddmq4dgkK5A3n3dETtbttCGeaDfFp4tkp2YlYoENvj8Cjk8fyezp0ji9xICM6SorS082bhoI4Qt3vFNZuLlxjjDmGNp7ev91x5fY4tHyAYhnV2vMehUTd2+bmQ1HMBTVItWZo8ices+ch6bZWJZ0YHjm1NYmx3JHoN1PQdsRTmdmO1iix1I6Pde6H2eAsFgTToJjPCT8c4w+nTJw7FIUzeWrAeCo1Frw7w/oblucLs1/vCe1dwiNt5av/ItW/LS2fTAGhF/bI2rkde6vXJl78DV1czMZCAf9b9XM9HxwdsqKJx9mFPxh4y3+QhRx8UPK4IbmzGXydDbu6K9x7+L0hQGAg6vt2XgXl0If+5BLAX7xkTNuTX+Enql8IvRIjOqJaWmklbs8+gMWwYZMLtCDswDM6HsWxZLaS34FmSXRQkcFztztWdold/3kVQgp+8Y7dguxgflG5VumW3bxudFTbzpg8ZosLBNMXvKuHfSeziLtZDvvhEzZJoFrPFIYFdCcDu/86P7i81uIWGYkh9acPG0EJf9ZtfpyT4wFdfbSWymDKKHj8sfHCUuz1BjDlyazvNmc1rFTwN4rH8myHux/RMBGlepJ5rZWjFZreewIDu3WdaClylddPOONIrXH0rAUi3VhdyMFXfUl9iJtZy+LT1tSEHo+bBxl1DUKwh4OznN9gIcjwSZtLaKthuCnPZOrw5SmEIwZS910QqvTrPb0jJTexuph/G7HCXO3LhcZqVMFOsKlOPiP0FbkJYYxfEpXX7TwEsyxr6cM2dyOp6lfTSUK21DGDExqjK5yg+4K
- sMV00j9U
- desnn9N3Ljs6mIsC4obRZsZCgp1Wjq6j4lopjaWZN2e0j3N/6iVphnUm4y+yImPq2h4PO5CQ5vumhTnnumfEXKLWQlea85NVRoPxRKzLTSZ0kVj+lsrOSYrlXTvV8hxYDw0mdCr5bkAYPXC77uwSC0myVAPnER8sEW8KO9NLzRY8spYZF8OHCmi3hdm3bccwessEQV+Yw7G586ikGtpVxpkDZW1vUavLv7TzWkQGrY3BwdW27htA8BHxd0O8o47DF95er8u6T8AO4h7UZT0lhntts2HTGj4QJYVixY93O3c9t8dnPDePmyaHOQM2JBG3cQN754o7QQgxJXLaBIyz9umuKRnhpaTVf0S0YW3ZEUrBg19IAhqFyRNIICiZbXnM9ijWgRlAoeG1Aqv1FEP0uvFqpfF2ibDSFoj1Wjsd+6lnq2VZscV521akT/fYKzFvON7gQ81b5sdpSGqg5ZZtsIgKQGbRlgeM1jha2
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1784826475-830636
+X-HE-Meta: U2FsdGVkX18L/mhniJxkul09rb5JBxCTdbBGLLVwM/qWlMFtNRqMga9jKls6kBkj7dt2etyffjvbae8xiRsH1uSaqPI7AEJUMiKaKr6XIKTVGBd9WIxOuawQB9l0UJBkJAqLVm64vcLmLYO7+dQOLlhgFFj+nxB60lgvlRmE7S/cKkrdjRhoOr8pv05ALF5miCOs9uKqY7/6WsAH65uAmW4oRsEFrnSAEjLLHi7nVjH804DnN/ryOCIbuykz15qlMXa5ai09pwB5zf52D6cQJ267JwMWWzQ77h0m0LH2bp1f5Wa24he51bpzLUHpjqxmoQQvdYeSPhGwZxSE0AJg2cYjrJQ3k72AMGl2ZWafdftK89MzgHSJdXIBAEIPDmimyKaj6hSo+ircjocXq8J7ENSOiDS7xyBZp0348Gf9uMoT/JhmO6JDOhDaANF0ohA0OuTnHjYIERStWLzk7IzbycCCcSTUfHWA5BDANvYM+WGV9HP2uvzz/O1J+TbUJCpmMHL9SD1eLXx86hSH4kq1XA6lmkntHOHJc0L6GuQBAELXpHSuNVdqujnMBFMHco44BI/pZgEKS8vFoQ/vIbFLVwOcDrqMUlsHspQr/FE1r8VlgpfrXFULrf/R4F62CFMnQdNHhSi+66dmVWLpgOVAbKndQYzZfcn77lVeo7KPLeA4cSBXcw8rQkGOrhYSLdo2YQipd2C052WZqJK6DOIL+PnoY4t4zaYcytlpJ+oDRbL6zRuZnIBBh3HrKm5OlE+A6eunR7sqo5ryWD0midnoVnZm5ggCYdYJiZxhVjJGh22BDX7R+Pk6iR36vi99/H3IfbWtOpeJn6UC87DT5X6uZo2oPCvMTylDCrK9yn1Qs57VRkBwnHwtKRE1RWRtUbUyoO8IixQEqj7jOntA0IhSVnrRCArWeF/mxzxhvRAQAyz4IXB/Ki7/9evJsSW7j2/ObtscQ8YaKAt1Eqz4qtU
+ sWosLHSe
+ E4EkoCxPwnD/I+W4aLhO+D49Vb1zYEjZHh+KLsYlwSy53MSBTlkWDSnfOh3O9OHkxn3QPtz2RCN0u4pjx451IpFB3oYAGORgeW1vhpcB5mkhBRFVtaBMNqLQnRTPeKTgF3Gn8UmiEr6VxjGbvfU5tAvBbIFCpdHgwPckv1E/jH5RthuxSZAO/T/L8xwEa1y5nbD160qlMWJJNJ3fqC2HoV6Z+dwDHzVnGIiH4xxM6NMSQAc3bxXQi2xTh4tiqOX+FgUwdDfyVD2fYY0ubGseJgIRYnQ+cS8xcX4C0cuJXyxecEPy1CxY4JtJhapP0NM/8uWrvMXhJI6gfClr/3o2SCKSLZYkGsx02OC3OSIuIM+JCHcmFEwvS3c9f3hKYWnH9GhSSx3jEp5E/8PTQ4fFIhu67gLKtSIHyKsf8svFG0LIhIMGWxjOQgrubeB/DWjphFXaL6rSEz7GndKOaaq+c4rEwUA3vNzw1pjryxEOQriEwrR02IJwyZWHcSwzbVzm0NUGt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,45 +157,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 23, 2026 at 11:58:27AM -0400, Gregory Price wrote:
-> On Thu, Jul 23, 2026 at 10:54:06AM -0400, Johannes Weiner wrote:
-> > > 
-> > > My stance is that using NUMA balancing with KVM guests is a terrible idea, and
-> > > that anyone that insists on using such a setup gets to suffer the consequences.
-> > 
-> > I agree. Surely we cannot leave shmem balancing broken due to
-> > that. It's also not clear to me how many people even enable numa
-> > balancing.
-> > 
-> 
-> I lean towards Johannes' stance here that consistency is better, and if
-> KVM has a known-poor interaction with numa balancing, maybe KVM should
-> simply set a default policy (when none are present) to avoid this.
-> 
-> That said, this is painful because MPOL_F_MOF / MPOL_F_MORON are already
-> a silently inherited policy on boot (added during init).  This will be
-> confusing for users.
-> 
-> This is not documented anywhere.  Maybe this change should come with a
-> docs addition that says the default global policy is ACTUALLY:
-> 
->    MPOL_LOCAL + (MPOL_F_MOF | MPOL_F_MORON)
-> 
-> Instead of just MPOL_LOCAL and letting that silent implementation
-> detail bite people.
-
-Hm, where do you see "Instead of just MPOL_LOCAL"?
-
-Documentation/filesystems/tmpfs.rst says it defaults to "default" and
-points me to set_mempolicy(2). That in turn in general makes little
-mention of numa balancing and doesn't mention MPOL_F_MOF/MPOL_F_MORON.
-In fact these are documented as internal flags.
-
-The numa_balancing entry in
-Documentation/admin-guide/sysctl/kernel.rst however DOES say plainly
-that enabling this feature will sample and migrate mapped process
-memory to where it's used, and that this has a performance penalty.
-
-It seems there is a general lack of documented interactions between
-user-requested policies and the system-wide numa-balancing behavior.
+Hi Mathieu,=0D
+=0D
+On 2026-07-23 12:31, Mathieu Desnoyers wrote:=0D
+> What is this test validating ? Does it actually matter for a real-life=0D
+> use-case, or is it just the test being too strict ?=0D
+=0D
+It tests getrusage(RUSAGE_CHILDREN).ru_maxrss:=0D
+=0D
+https://github.com/linux-test-project/ltp/blob/master/testcases/kernel/sysc=
+alls/getrusage/getrusage03.c=0D
+=0D
+I am not sure about a real-world use-case; I do not have one.=0D
+=0D
+> What is the overhead impact of your change from approximated counter=0D
+> read to a precise sum on this /proc ABI ?=0D
+=0D
+I have not benchmarked the overhead yet. I will get back on this. =0D
+=0D
+Thanks,=0D
+Nirmoy=0D
 
