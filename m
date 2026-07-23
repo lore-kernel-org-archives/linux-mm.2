@@ -4,94 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7417C531F7
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 15:57:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B88B2C531F9
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 15:58:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 95C6A6B0095; Thu, 23 Jul 2026 11:57:02 -0400 (EDT)
+	id 937FF6B007B; Thu, 23 Jul 2026 11:58:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9335F6B0096; Thu, 23 Jul 2026 11:57:02 -0400 (EDT)
+	id 90FB56B0088; Thu, 23 Jul 2026 11:58:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 849E96B009B; Thu, 23 Jul 2026 11:57:02 -0400 (EDT)
+	id 84E4E6B008A; Thu, 23 Jul 2026 11:58:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 55ACA6B0095
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 11:57:02 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D92B6120495
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 15:57:01 +0000 (UTC)
-X-FDA: 85020495042.17.7A44D97
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 1CDB51C000C
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 15:56:59 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="j/RqNP4F";
-	spf=pass (imf18.hostedemail.com: domain of "SRS0=k6gO=FR=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=k6gO=FR=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5B3866B007B
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 11:58:37 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DF1F41C0854
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 15:58:36 +0000 (UTC)
+X-FDA: 85020499032.16.B851936
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 135134000A
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 15:58:34 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=tKqjWqxB;
+	spf=pass (imf07.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.178 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784822220;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1784822315;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hnLlhWiRynP6/ofod3foQ+AAh+0y6A4DSv+/njyBLhk=;
-	b=H6L/Px/0+wR533Jw9UbZftoUP0RouETfs/PKC+ZThaM4D9qPyNqLXEc9A7SrrkzTczNUKR
-	99X/ic+G7vu4fVNYxvkHBIQfZYjUlYID2rGec+fNBPbarmM0nez0WzBR++2osf6QiMsd95
-	/gkvqyGLB6tYHpNaU8zbIkZfBGf4mfI=
+	bh=g76/VCTunnMtb1dTlZWxSdXy3jUc5pTpstI44HSyfHw=;
+	b=DAUr3dx1fuyklOxDKm7CemmIa1g6dOHxumXw4z+jJw4g3GtGDcTiZaRli8EnE6bSaCvr60
+	THU1vNL9c6PVljjOfF6W3fjPoOQQqTak3z5tgEDH+vBJLd4Vi5jfoRrWCyYLP5uuXFF6eo
+	Hdi4tGYn3uoDZvO2Ua4u42nR+wy05Bk=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="j/RqNP4F";
-	spf=pass (imf18.hostedemail.com: domain of "SRS0=k6gO=FR=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=k6gO=FR=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf07.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=tKqjWqxB;
+	spf=pass (imf07.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.178 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784822220;
-	b=I8t0iEVEy14RctbZDSIWU/xreiUC2lOem4Eq/8b5GMyigGBY/JyExIxBj//oJnvS7yN2f0
-	iE2kt161CwqrVZmIrFS2iD5RC82hlEgc+mck4QfaJz1qVMkvvCKN1+n08fTxY6SPXLpnvG
-	9DSqGhp3gFs8giabYSjbSVwUBFf0Mmc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 10808408A4;
-	Thu, 23 Jul 2026 15:56:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E771C1F000E9;
-	Thu, 23 Jul 2026 15:56:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784822218;
-	bh=hnLlhWiRynP6/ofod3foQ+AAh+0y6A4DSv+/njyBLhk=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
-	b=j/RqNP4FNb4Os1gXyhKtdKfwqPKeDbNELuRzvh9cpAYIRLQx8uOQLbNhmD9pZKMcy
-	 vJHxgcX9VvyQ0Ix2KMvnDd7a0rJWynXgNAjgvdgzDtV9QzpXumbmDBCghjOj4JnEp5
-	 AceACFVIAsARZeXulWzpbGJ0DQz/aSNHU/JaehDbcRnsGUZbUQ4JWrf1vsqIkn+uKj
-	 NQ+EFQmFq7SPD/5Mrkc9RgV9meMuzI+QPAAwTH1zy8W9NJtQ5HWVWDE80LS96AcWau
-	 aZW2TIyCB0+rWBoLJ4Y3CzHIT9z4VY78ZajWpZU4ChbKz4jTg/ZenZLlQq6tSUx1My
-	 GWWGHnqdz8ghQ==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id 9B657CE0AD8; Thu, 23 Jul 2026 08:56:58 -0700 (PDT)
-Date: Thu, 23 Jul 2026 08:56:58 -0700
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Catalin Marinas <catalin.marinas@arm.com>, puranjay@kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH] mm/kmemleak: report RCU-tasks quiescent states during
- the scan
-Message-ID: <ffa5d8d2-1157-4a30-995c-ddae3566e3a4@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <20260720-kmemleak_rcu_task-v1-1-5b460ade777d@debian.org>
- <20260720153917.2e428e489cd0873ac6d4e6da@linux-foundation.org>
- <5b83b0a0-708a-458a-bdbd-41c6d4610349@paulmck-laptop>
- <amCT9QEgJRsLIb_y@gmail.com>
+	t=1784822315;
+	b=vF/2f7lLNTttmQYWPuHwohDgpb/j9HD1E/Pp6Esud/IKqel2Xc5XtdAKmIzPU1DrkeRt05
+	NPJ7rR+Aefc6iuP6WIc3x3BB6oXYtK5zOrW6OQrOEZJbufxMZmY4Pk0DcifP5qnRBMuy2S
+	55OL908/IXUh0cSvJ8KLDd/Knv5V/WM=
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-9305a2121a1so83567085a.2
+        for <linux-mm@kvack.org>; Thu, 23 Jul 2026 08:58:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1784822314; x=1785427114; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=g76/VCTunnMtb1dTlZWxSdXy3jUc5pTpstI44HSyfHw=;
+        b=tKqjWqxBb4bi1iGix7QIhUlq7GmAih2ZdLrRkGZO2Sf3cWR4bs4wtn1TJf1pCBT1pD
+         ljWlZ5I73T6RljneeM16bifGgXI+0iP9qH9rbiPvnzLySBxS9XcWAGWsViKJMFv2lcpR
+         4xZpKg1oMbU5/5sPAho3KeniTQl0jgn29baLxNlLjQV93SO0X7gwEG7PZbjRWuC3mmoD
+         WyE/Kqgxic6HeJjNCWNoq0PdiRB3zVUWVnUjb4jjPZ5fhI/LGS1zLmobz6hAAECWqn4u
+         EGzY9p8Qk74zJysWuwadvgkq1b90wOVjigJHFh2DOY0LgBKNeSP0SWpYaAq/a+NiaJZo
+         AA8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784822314; x=1785427114;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=g76/VCTunnMtb1dTlZWxSdXy3jUc5pTpstI44HSyfHw=;
+        b=eLuC+pb/5R2OrVBLj7A68pZaiFJsf1XAxmkqPJBI3nLLr5x3sedSCLf7HcLVpdZQqR
+         nuL/QEAjt33MuN0OdtiSC2Y120ivZAz4NSxe5Xm6s2L8c7kmYwh226TptRIIDtKkMzBi
+         QQmPEQkukG3SXo4mRzwzAPN8Wd+6t9H7iQqbkS8K+IHWT+VWAG5JDo6t+t9Z9kjGvRDQ
+         stQWz2RJO8DO9G3Ui6wWMQDBgVEBbSQl6gdr7ToIIUIapVhda9a7kyos3tEoexw7oTFQ
+         ufy+9B1zvOZelJGy66XTN6RiQX4svM00PH2rfg+S8bscksW5WJ1C+Rc86yOTiMmhxpUR
+         RpoQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rp3nig2m1bqjzvFe7zb4LLvmN4r7Yh54N+pIk2vwW9wDk8sZOdI5voVEw7N7yt3mkqdITNZIhzv8A==@kvack.org
+X-Gm-Message-State: AOJu0YxizVqNpGsNL8ndjM70iYyTja2AjREW8i3WzZHmJnheg461eKPp
+	rhRDjRXNfgLl868dTR0EIt7ZEVVmVKckurDW7Jm7NJUY8fULVCDoaUZ5aGLKnpnaiBc=
+X-Gm-Gg: AR+sD11iuwREsjl2luuwntNbIbKSUqvH27aGqVI1auZNapEJTMqwkP3Nm0e5LUD8p0Z
+	+vPl9G83TGLZRR9ENSxfyVNXIARWdsibsf21d7qDZ3K0xqYly2xbHe5UqHyt7q49lGHiJs1wP9Y
+	bDdXx35rFAP6lTbLElkZ260EgIjA5YFu1vF9HnqO0AIz1jibPajjngSjqTDAA3vJBbvu0e6KF8y
+	xF6C7hduAENYVNvLfRO/Z3rgPiOsoCLGa2wq1QE6pVGtlL7h6kDzcuO+vZ9CGibqf+UdiXQ0+GF
+	0X8M8ubESriQx3cziFfygvCPgSLywJigj806yO5Sup2xl+dWXfQx6n0kDJsEozDDGOQ7FpzHCsI
+	f0t8ZX9Mjt7m94mUZBv1aLWlbVzaAiP1YvS4PioSuYZcXHuM2au736+bmckjPdUFrCQsqFg8DOp
+	2+tJmTh5JaMyfXAiNcndYogCyHybsOjujrSbfe0xFchoonmpOk7aL4z68qGw==
+X-Received: by 2002:a05:620a:1726:b0:92e:7d7a:108b with SMTP id af79cd13be357-93103aee60bmr357433185a.50.1784822314110;
+        Thu, 23 Jul 2026 08:58:34 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-930f6a03834sm441323085a.30.2026.07.23.08.58.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Jul 2026 08:58:33 -0700 (PDT)
+Date: Thu, 23 Jul 2026 11:58:27 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Sean Christopherson <seanjc@google.com>, 
+	Yan Zhao <yan.y.zhao@intel.com>, pbonzini@redhat.com, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Neha Gholkar <nehagholkar@gmail.com>, kvm@vger.kernel.org, 
+	rick.p.edgecombe@intel.com, vishal.l.verma@intel.com
+Subject: Re: [PATCH] mm: mempolicy: fix automatic numa balancing for shmem
+Message-ID: <amIxyy4Vg_TTE8Y4@gourry-fedora-PF4VCD3F>
+References: <20260629163337.1264881-1-hannes@cmpxchg.org>
+ <amGpEEqxoLq/Y7ZO@yzhao56-desk.sh.intel.com>
+ <amIcXrS7nGX-adpG@google.com>
+ <amIrDncrL4K-JRBO@cmpxchg.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <amCT9QEgJRsLIb_y@gmail.com>
+In-Reply-To: <amIrDncrL4K-JRBO@cmpxchg.org>
+X-Rspamd-Queue-Id: 135134000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 1CDB51C000C
-X-Stat-Signature: 658echcgj4ncjy7fjeagut6e8xq5icse
-X-HE-Tag: 1784822219-30065
-X-HE-Meta: U2FsdGVkX18evHYY87H1vYWKQFBmK3iqd/6kzNAir4ZW2HaZPbU9LDq1Mtz57AXRj8Jj4vNzVwSav3dku2K6JO32j7JO1pcdFBp7y09BzggHOM997d45UhR7y4EJdZ0+VDITh9s8S+xD5M4CdRM+gzZcPfgDkxGwEpPCCD5fYNsVYqeFeCD+eUQbGzyw8i6CrbVFvVMwDn5Xb5lwStEs4vKqXHwNgcJXu7v9pY/5tfuF1JWeYizBPtONwehzLgfjOrLj/7X29oSfpQm96BqHsCyVkdL2t2F9bDqTgHEdoZAZeSJjfC9aNXGgjNc0LukGq+hNbR2m+G3FN+FMWN5hrGIpeorSmaJ5tns68JzeTLGD6TDSTe2AjgRT1lq3awnhJRpwYy6lS0fsd8ecwVRujSEu/1WROSqB/Y24t5PYrjJi6fzJ0kpkpgzMPcKr2remWSvTus2yG3ibeGaqlUE2NPNufykIevvj4qNZ4bH9OUABF2VTttwLMEfEzRW6xw2maELHnjn6VE9yfwoyyDS1oA6yGKxLL6ifCGbyBH0kRDDJysgMKjUBCEcFsQhzWQTfwuC1gMHr8+GDPuEoT0Jw6BzqrxYygWdrL4GQqt2vMXZtTMsAqC5JA7B4gTZKfj8RqTgWF14lDCmP2U7a7eV1Aqk7XmpsyzrZtVBawNDZSlNjcXvSznaq2TMbztgKKHDcm969Tobog80mAbAE1b6owVBm6mqcwE+gTuGoPorIbkqTnFrJ9diEaXnsFgKo0FE4DibRlJES+aWM109vIbDm5H7+Q7AtKttpv47Ed/58ELFSQV+UlRLttsMMnhmWteBk+aXtmKP04K8VmmePXwnw9A4buf1WTgMPMr9T5tn5N0VnOEMtoNsNX9ZcrQVsyp8xvDWNK7LRIZicbXXep5iVfPko2tDct7ArKGXs/R4O+VSa22Ft6sJihWTsSQk+CYqCrvdt5seotEIuKM8lGc+
- m8WWkM2a
- PmFRPYv1W5NvJJlS6UEBfQP/J5KHOMwy/QqHuleF37UA9W1Fabe82ofFCV7BkGorJX0EOH7lVnM7qPPLLvwRScqqJ+A15trbOKBDJXM4xqHDgmpTB2+eQPqVOkfFdYBXphGUDXpiYs+hdZWADLggu50bc1NGFwS+QWneVNFf6XbAL9pPwCuGxSEI+l6xID2NqmGf97gM6dp+nQOeHbu0VWba2elfgM9spRfy/YS2jYw2hDxfN0ZnnOPMUQ4HaXG81P56a24TrNyasFEt5KhJ7denYVwgViTkeKOJMZJECk7OINLDddeQjRKXwpsw0g5CMRo9Tble5o60xB2RmNDxTNguHIMjVz46svoMqGv8LbuIxWC3A98rvfuO9tawfX+c1ozyeBmnRLGWZ+izFfEb5tgPnmpV4qUTY45OLsn2XTEJQ+J9Jbv2mgGLhp9SozdhO2iNnVEmPaA9g/Kea9p++E5qxlSQIg3RRTOs+kP6cqC2+fFnHLMi5Slw8ugdSluRiGelfSOrRsp34+wFotL3487ENpKAJBwbZa5UyEpDLFOHc474anrQwc5d53dQHo6TXztsV+a3F374L8/xZW3dTbUBhv0mzk9FIFVGaBA3S95VnjZdxdbzeF4Dnpkh0IOCP7cxbtgHOa2sJ5c/lVigQTOuk+f7k7WkWWkeXxu2jX4gPNz7jL/ksxYAuWDCcQNKoDwdTsZf1zE/K1OFA9Bx0dvBUeELhAqVK/uww427Tg4fPAhvOEplJqeld8KEb23f+44xH
+X-Stat-Signature: 9abb1pa3arb3739stnsf5td8dgjsqnqw
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1784822314-459550
+X-HE-Meta: U2FsdGVkX19ZKwQAIFGnsvRfW2eQ/JdnmvOaOQgbpcfguVPl91egZBabf4dBg5PG0gz3woqGmQMNGZUVkj9fiNqM7mInp/Yqyzob2g3bOMM4cToi16Im3gOWIVLtmSDWodUN7YuBOtrUOIZbMcKdIhfzfAj814uhnreFTgOSrfYZRI5mxVxdJADhoL48U36JZkwVrCsGXsKR9EVaY548srIffDfRSdFS92aanNEnSC7+t5TRVlVisg8o7Y4sx1ZAClFcj+zgn0LvYBmO7cTMltKMsiHNslp+yOCRD943R+U365nqrXOTBdHHtAQPDLamZ+ELaaV7v3IJXQLW6hXZpC+O6x9+o4LmSrInJ0Q0AN+JgsOyWBNG2hW/nQIpevwMJZCSBiuFOu2y6Th3U/vMyqlHhCADFy15OtCUWFmQX3P8PmgTFjVRX/pOBTB/vvHgR5l4b7uhMd1C5K/PetUFc6YP3iAOrGg3j+3NfomdJb4UKPgWIKZ26+1JxEK1g+ZFYPFnYj3JJyqvmz2INAD0YoFxlnqwXxlA4KnkpfgwX5N6/ZeCTr2j/UfL76To11ucFUc0CkV+XvPoPHLeIcrU2R/+8+48gRwvLjtSCYcIDvEor27cTaTzCg7XEdKiAhRhBFeuIXzySiZrgba/7bAUUNLyYbW5qRkVwZVET6wRwqYipNsACrppYNuSOkiyd83yeZ/oHCGEt+mSa0Snkuy8Hfb0rJb0qcciUDQmyPIEixVmpEMiM/7R98wplrzxXz6jyRQZJRnLfZK5iihWxJuqm+yzSn6aO/xZ1wA0/L2vhsCnopSFYbjT1ewnk0NIoTfTl2ns6z7WN8dO0BJo1pRAhaSWaLbK9xSJQLXU4sFYDU5Y4XVdVjyBhm8asREjyoTWEd6cnxrWtPkgBQFlcoit0yd9rjH8W7/Z/bELv5clwmxYG9hMneNGhQYQrXSMjsIvP9dta8UWmE0miEzqw5Q
+ ANJJxLiX
+ 1wQztjRwrl6RFYueLJPaMkD8Gf98HXJUnkmDhE1GP654mdn2Cy2SRZ4wCHTp4g/a1ugh1lqLfTnleMHFDxuAMooVKogy01zfy7ILJSmDeZho4htFftnBewnMT+rkiS/vbG7e/PCBn5+DxgAHmOpMStKq4cXAEzl6sCAjbJfZfX+3voBcC2aqbtdlGrDgYEqdrCyKMa2kRKX906TAu969/9QE9tbA+rJF+1x7jUkZlaEBaJIr7ZS48zu+kgBOc+5XgJsIFNpvfnxCKNm5OlORwunaW4VBI3Oe5YgijI6OXh/LYe3d24OmMEuB3zfV9uGkobOmSk8kg8u9NKAUv8Q3cbwC3GQBwd1Xu8HL59tLs6ceaYavYZ1sJlcJsZfw7MVADUULCQqcxj0yGPtRZbm1HonJ3JQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,100 +126,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 23, 2026 at 06:26:11AM -0700, Breno Leitao wrote:
-> Hello Paul,
+On Thu, Jul 23, 2026 at 10:54:06AM -0400, Johannes Weiner wrote:
+> > 
+> > My stance is that using NUMA balancing with KVM guests is a terrible idea, and
+> > that anyone that insists on using such a setup gets to suffer the consequences.
 > 
-> On Mon, Jul 20, 2026 at 09:21:17PM -0700, Paul E. McKenney wrote:
-> > On Mon, Jul 20, 2026 at 03:39:17PM -0700, Andrew Morton wrote:
-> > > On Mon, 20 Jul 2026 06:23:45 -0700 Breno Leitao <leitao@debian.org> wrote:
-> > > 
-> > > > kmemleak_scan() can run for ages on large debug kernels. It was
-> > > > causing some soft-lockups which I got fixed with commit
-> > > > 3175fcfec8b16baeb ("mm/kmemleak: avoid soft lockup when scanning task
-> > > > stacks") with our beloved cond_resched().
-> > > > 
-> > > > I've got the fix above deployed in the Meta fleet, and now I am seeing:
-> > > > 
-> > > >   INFO: rcu_tasks detected stalls on tasks:
-> > > >     task:kmemleak state:R ... nvcsw: 274/274 holdout: 1 idle_cpu: -1/3
-> > > >      scan_block
-> > > >      scan_gray_list
-> > > >      kmemleak_scan
-> > > > 
-> > > > and, worse, blocks the callers waiting on that grace period. Here a BPF
-> > > > struct_ops map free, which waits via synchronize_rcu_mult(call_rcu,
-> > > > call_rcu_tasks), is stuck long enough to also trip the hung task check:
-> > > > 
-> > > >   INFO: task kworker/...:bpf_map_free_deferred blocked for 122 seconds
-> > > >      __wait_rcu_gp
-> > > >      bpf_struct_ops_map_free
-> > > > 
-> > > > Then I've learned that cond_resched() is not an RCU-tasks quiescent
-> > > > state, so, we need to use stronger primitives.
-> > > > 
-> > > > Use cond_resched_tasks_rcu_qs() at the scan reschedule points so the scan
-> > > > reports an RCU-tasks quiescent state as it proceeds.
-> > > > 
-> > > > Inspired by commit b96285e10aad ("tracing: Have osnoise_main() add a
-> > > > quiescent state for task rcu").
-> > > 
-> > > I'll add
-> > > 
-> > > Fixes: c4b28963fd79 ("mm/kmemleak: rely on rcu for task stack scanning")
-> > > Cc: <stable@vger.kernel.org>
-> > 
-> > Thanks to all three of you!
-> > 
-> > This adds fewer than ten calls to cond_resched_tasks_rcu_qs(), but still
-> > more than doubles the number of such calls outside of the RCU subsystem.
-> > 
-> > Which is most likely just fine, and in any case absolutely should not
-> > get in the way of Breno's patch, which after all solves a real problem
-> > in the here and now.
-> > 
-> > Nevertheless, on the off-chance that over the next few months or years
-> > we start playing cond_resched_tasks_rcu_qs() whack-a-mole, I figured it
-> > would be good to get a head start on writing up alternatives.  An initial
-> > draft may be found here:
-> > 
-> > https://docs.google.com/document/d/1s3fn29SCTYVw9jak4iraNIVQR59Wk5C6_I-_eu-MfQA/edit?usp=sharing
-> > 
-> > TL;DR:  Should we get into a rousing game of whack-a-mole, alternatives
-> > include continuing as we are, making the existing calls to cond_resched()
-> > in turn call cond_resched_tasks_rcu_qs(), decoupling mutex-induced
-> > hung-task warnings from synchronize_rcu_tasks(), and various
-> > not-so-practical alternatives to RCU Tasks for trampoline synchronization.
-> > 
-> > Thoughts?  Especially thoughts on other schemes?
+> I agree. Surely we cannot leave shmem balancing broken due to
+> that. It's also not clear to me how many people even enable numa
+> balancing.
 > 
-> While debugging this issue, I was surprised to discover that cond_resched()
-> doesn't provide RCU-tasks quiescent states. That led me to
-> cond_resched_tasks_rcu_qs(), which is the stronger primitive needed for
-> long-running kernel threads like kmemleak_scan(). Is this the common
-> case for cond_resched()? I got the impression that kmemleak is the
-> extreme side, but, I have no data on this.
 
-And that discovery did in fact lead you correctly, and hence my
-giving you a Reviewed-by.
+I lean towards Johannes' stance here that consistency is better, and if
+KVM has a known-poor interaction with numa balancing, maybe KVM should
+simply set a default policy (when none are present) to avoid this.
 
-> Worth noting that commit 7dadeaa6e851e7 ("sched: Further restrict the
-> preemption modes") continues to narrow PREEMPT_NONE, so the future of
-> cond_resched() itself may be uncertain, no?
+That said, this is painful because MPOL_F_MOF / MPOL_F_MORON are already
+a silently inherited policy on boot (added during init).  This will be
+confusing for users.
 
-Especially given that one of the explicitly stated goals of lazy
-preemption was in fact to eliminate cond_resched().  ;-)
+This is not documented anywhere.  Maybe this change should come with a
+docs addition that says the default global policy is ACTUALLY:
 
-Getting back to your point about kmemleak possibly being extreme, as far
-as I know, none of us have data on how many conversions of cond_resched()
-to cond_resched_tasks_rcu_qs() will be required, or, for that matter,
-how many additions of cond_resched_tasks_rcu_qs() above and beyond
-current cond_resched() instances will be required.
+   MPOL_LOCAL + (MPOL_F_MOF | MPOL_F_MORON)
 
-There were concerns raised off-list, so I figured that it was time
-to lay out what we do know, hence the above gdoc.  I very much hope
-that we don't need many more calls to cond_resched_tasks_rcu_qs(), and
-thus that the time I spent writing that turns out to be wasted time.
-But better safe than sorry!
+Instead of just MPOL_LOCAL and letting that silent implementation
+detail bite people.
 
-							Thanx, Paul
+~Gregory
 
