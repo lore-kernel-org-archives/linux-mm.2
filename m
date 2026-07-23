@@ -4,214 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17330C531D0
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 22:43:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BA47C531D1
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 22:56:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C30606B0088; Thu, 23 Jul 2026 18:43:12 -0400 (EDT)
+	id 852166B007B; Thu, 23 Jul 2026 18:56:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB98A6B008C; Thu, 23 Jul 2026 18:43:12 -0400 (EDT)
+	id 802D66B0088; Thu, 23 Jul 2026 18:56:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A364E6B0092; Thu, 23 Jul 2026 18:43:12 -0400 (EDT)
+	id 6F2FD6B008A; Thu, 23 Jul 2026 18:56:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 662AC6B0088
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 18:43:12 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DC6C21C00CA
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 22:43:11 +0000 (UTC)
-X-FDA: 85021518582.18.1A4CA67
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 8B222C0008
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 22:43:09 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmx.com header.s=s31663417 header.b=sSuhTYFw;
-	dmarc=pass (policy=quarantine) header.from=gmx.com;
-	spf=pass (imf22.hostedemail.com: domain of quwenruo.btrfs@gmx.com designates 212.227.17.22 as permitted sender) smtp.mailfrom=quwenruo.btrfs@gmx.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3EA846B007B
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 18:56:45 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C2605A0227
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 22:56:44 +0000 (UTC)
+X-FDA: 85021552728.07.3A26536
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+	by imf02.hostedemail.com (Postfix) with ESMTP id C1C7D80008
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 22:56:42 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=V4vDiDS7;
+	spf=pass (imf02.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.182 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784846590;
+	s=arc-20220608; t=1784847402;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SmmkkUT6ZOoNhviyrOXaNA8ebqCK1kSAzyjXers2mxk=;
-	b=gmHElrLMRho5jUGBtC06QFkFBe+FJDEiv4qlFYw0uVgf1iTvcYo1nrEhxzFheQufFLY7e/
-	89QMKLg+LSF5HOT5IcDn3cQ6xocIFXZRPrT/Ln3OYHe0JgIwxmHx1kJHmKY9p44Zprxd6x
-	dPUW33eBCPmkIEOinertx8VzCCwJ+rg=
+	bh=FpdYfO2GUSLBiSa6MSguWwX6UOJE2iVOhfM84BSexIY=;
+	b=PTyidwzC+z+STFQnlz/CgMQrEYqzKAclwgwcjj29Cx58oCUskJ54OTc5VeWPoxzhr/PFn6
+	KBUF0ufJqWDAbLYuYSgBafl3B7s8NXE6GEW4J0Vm4XcFtt0JGiGby3TUZzJ8eSucN1v946
+	76f2YXbVLOHaih24JVvVMFyDAH15LXw=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmx.com header.s=s31663417 header.b=sSuhTYFw;
-	dmarc=pass (policy=quarantine) header.from=gmx.com;
-	spf=pass (imf22.hostedemail.com: domain of quwenruo.btrfs@gmx.com designates 212.227.17.22 as permitted sender) smtp.mailfrom=quwenruo.btrfs@gmx.com
+	imf02.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=V4vDiDS7;
+	spf=pass (imf02.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.182 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784846590;
-	b=h/b5ejQeVJBbX/rE72OrOyGic+Lq5wjAGQVhEwsHdseM9Vr73HWegfhy1xAZhfnBZskDcM
-	5Q01tHlZa/3J9Tlukk9Y3WMvz/cjweVAgCcInQk4N9ISK4mg2cIn4QiyVkXarUfosVsfms
-	37UB8OZJ9dq+9YhQEB3id9o1bSIwhEk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.com;
-	s=s31663417; t=1784846443; x=1785451243; i=quwenruo.btrfs@gmx.com;
-	bh=SmmkkUT6ZOoNhviyrOXaNA8ebqCK1kSAzyjXers2mxk=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=sSuhTYFwSgxrF2lgEsE9AcD9XT0QA0YPoVp+s0lFXQ7ISGWeGcVVXij8HI//xeqg
-	 4hD1nozXjyXJeUY6iHrr7/E+nZiZ0sZg/Xn1D6YKiVCCrhLWTv0EGmoW5mLO4hIaw
-	 zXvb1hbyTlbZIpdGEKgCq018Z7gabNenOgreBZFgRyQOz3qqVbPwjfs6ybp/Ve6w0
-	 f34AsAmAOX9k51aW30r+MXbs2wHzoC9756stcnXcunfQ7QJ9K+1cCMjo8G1vdgrlJ
-	 Z4mAcJ5xhGVJTokjTtWN1DG5sAQvSGph6Qz+Bv3JliTkwYfNleSYj5yV+QSSj7gBx
-	 K2LUSNfSnv01ySqc6g==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from client.hidden.invalid by mail.gmx.net (mrgmx105
- [212.227.17.174]) with ESMTPSA (Nemesis) id 1MCKFu-1wdigb154U-00EtRn; Fri, 24
- Jul 2026 00:40:43 +0200
-Message-ID: <d948c88b-dec5-4e29-b30a-3ea368997ceb@gmx.com>
-Date: Fri, 24 Jul 2026 08:10:36 +0930
+	t=1784847402;
+	b=YdpXRt3fz/GqURbNhK4lbS4kTgPVu/MLAvcaTAqLf5tdGVC1jxolTUaAQZZ76dRCk0Bkjg
+	JDtVmr2CcJ6mTjID4raY6PNJqAv7qRku7dcc3wguLHvbTOEkaZQk2JAwmS0UFuWr/kF1rl
+	nOzLKcfJ0j5eiwmz0eS2FJguMk+cuuc=
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-51bfa429aa6so9030541cf.0
+        for <linux-mm@kvack.org>; Thu, 23 Jul 2026 15:56:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1784847402; x=1785452202; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=FpdYfO2GUSLBiSa6MSguWwX6UOJE2iVOhfM84BSexIY=;
+        b=V4vDiDS7aE7tE9x0vn4CIA68nEIlzoDCjSdO7/U35Z/+WfS0NPvTRLwF8Vvm78a+Qd
+         F5OrRU+XMzEmeV+M/DMVC8o4z9zgqwyeEIsY3j2qMjhkyKm5iokK/qDw0Rsp447FD3Q5
+         08i7Q5pIs61UALPQ+vtJPWScMWpbt5inA7f9JXX6ASs0Uq3UXMSaA0yNbZ7lWyHo0mTx
+         rEwkKi2IaCco//5SNzfwUhWXOkrW3/SAN4Av63JL8z+2AbHxfcSknal0Df/QWN1WlqWM
+         3uxM2zWgVnQ7+hhLC7R+L7AtSELvE/g0pV1+YE82+RF/R+eudxyhhgTCSp+cYQO2KZkw
+         WPVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784847402; x=1785452202;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=FpdYfO2GUSLBiSa6MSguWwX6UOJE2iVOhfM84BSexIY=;
+        b=Bb1Mx9tjBZ//b1Yk333scoN5Npx9RX97O/LelWw3VxVwTtZbm3m5mkmBHFh3sxOgGY
+         z3NqdScRD/WSC6rR2zo182poisdFUuHDi5zzP4O29uyKJrKmv5Xi2zqTaIjlVkeW/gm+
+         X7kkvX7Pcc1RgalkUuBMiE/1skeD5P9GsHqXQki4/bSfT5M0LeqOpWu0K7Zs69B1VI8I
+         T+igC9NS9ANv7tI4RIKOkPgdk0zxoFfQuptNwuZkEy1e67/0KCfDYg4pglmGboH48gT0
+         oCvv5NTVtnJmwNKzy8W2t5Pf+f4BC1+l/vjSFyFgdd9zY1Pk3/dASWGxSvKU32HLJ+D3
+         YH8g==
+X-Forwarded-Encrypted: i=1; AHgh+RogWxZJGbDcsq83snsgkv2KsU3Sb6Gr327YfJt+BVIF4sf5n/iDl3vVAc55z5634bWyxa8PP7a8TA==@kvack.org
+X-Gm-Message-State: AOJu0YzFdbD8ahOzhYocaqki0ZgDIZT4MdvuG3F8R0itsg6l/uqkOxEJ
+	5srHFn+3S+idgeJ0QH95wq0e+40KgC6IGQL/cA0pvZOp337gb99giRygmip5jZyk2ls=
+X-Gm-Gg: AR+sD12nPFu4FW/lbbwNcGG2EihDWl10f9ELl2NwbKNFlHXRQ+hoUKjMJ4FnDSLL/04
+	4o7ha5hROxi5QUMIQNV4olocX6cRwssZoYnlL0TTMh8UMPegSEJ7p38OUH/gOZvCRk7xx+Co08f
+	IryjAIlZUhmHCp8ufZEoxCzC5IbFQVm8sYjhH1EF5VP1XO9UypglFTKOJRKIzc8VQBnrBlUVHXT
+	TUHzjd20DaeEnuOMKWtmTwRBxASkyuzFYgMDh1EWXO7VdCyPspB9VYV1GF+mwGywqPxZm3wRkJt
+	/Bjz7Xknbifmr4JoKzWwW8jsTr+mtaQz7WcRiJhI6FrYnjOgEQB4tcTWPUhwhDwbwYOxbJSza+q
+	ks/C2+3Jmp0iNgKlF1dhB+dcSxEC77WjSwIDtERw5y1CijCS9fBxgRhRYdPtYrPTvGJ2eUkNctR
+	/YkP2Hx9SnEWkh/ptxMzKBG3F5ViF3/bNZDl8SJ2wlPJXw4GlFEtfbphuSDg==
+X-Received: by 2002:a05:622a:353:b0:51c:f8f:13b with SMTP id d75a77b69052e-5283edce92cmr47173041cf.23.1784847401808;
+        Thu, 23 Jul 2026 15:56:41 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-907ba8b5d70sm54929666d6.4.2026.07.23.15.56.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Jul 2026 15:56:41 -0700 (PDT)
+Date: Thu, 23 Jul 2026 18:56:36 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, 
+	Sean Christopherson <seanjc@google.com>, Yan Zhao <yan.y.zhao@intel.com>, pbonzini@redhat.com, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Neha Gholkar <nehagholkar@gmail.com>, kvm@vger.kernel.org, 
+	rick.p.edgecombe@intel.com, vishal.l.verma@intel.com
+Subject: Re: [PATCH] mm: mempolicy: fix automatic numa balancing for shmem
+Message-ID: <amKb8sBroYNOiZhy@gourry-fedora-PF4VCD3F>
+References: <20260629163337.1264881-1-hannes@cmpxchg.org>
+ <amGpEEqxoLq/Y7ZO@yzhao56-desk.sh.intel.com>
+ <amIcXrS7nGX-adpG@google.com>
+ <amIrDncrL4K-JRBO@cmpxchg.org>
+ <amIxyy4Vg_TTE8Y4@gourry-fedora-PF4VCD3F>
+ <amJKOPczNMb96NJv@cmpxchg.org>
+ <amJQAs3Bm99ZR_sF@gourry-fedora-PF4VCD3F>
+ <amJgdSXxFk24e94p@gourry-fedora-PF4VCD3F>
+ <CAO9r8zN2mPsFiRTPYOPTq3gTVZwsj5hODke4asTTY-jXpSioxA@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH/RFC] btrfs: fix folio lock leak in writepage_delalloc()
- for folios dirtied behind btrfs' back
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
- linux-btrfs@vger.kernel.org, Qu Wenruo <wqu@suse.com>,
- Linux Memory Management List <linux-mm@kvack.org>,
- "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
- David Sterba <dsterba@suse.com>, Chris Mason <clm@fb.com>,
- Josef Bacik <josef@toxicpanda.com>, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org, linux-s390@vger.kernel.org
-References: <20260721191152.101118-1-borntraeger@linux.ibm.com>
- <20260721191152.101118-2-borntraeger@linux.ibm.com>
- <b226a6e9-fef2-49bd-b17e-9f9b015626c1@gmx.com>
- <83290932-cb8b-4741-bff0-6a7d8df2c637@linux.ibm.com>
- <224d56d2-fcad-41bf-afe3-6f5f5108172a@gmx.com>
- <f12f70e5-d84d-4a9f-ac94-693be4c863ac@linux.ibm.com>
- <amC-J7yzwk4Z5tHW@casper.infradead.org>
- <ad6eebbd-07f8-41ce-b04c-edd50d91a6e3@gmx.com>
- <amICQYTK9Xu4KLtH@casper.infradead.org>
-Content-Language: en-US
-From: Qu Wenruo <quwenruo.btrfs@gmx.com>
-Autocrypt: addr=quwenruo.btrfs@gmx.com; keydata=
- xsBNBFnVga8BCACyhFP3ExcTIuB73jDIBA/vSoYcTyysFQzPvez64TUSCv1SgXEByR7fju3o
- 8RfaWuHCnkkea5luuTZMqfgTXrun2dqNVYDNOV6RIVrc4YuG20yhC1epnV55fJCThqij0MRL
- 1NxPKXIlEdHvN0Kov3CtWA+R1iNN0RCeVun7rmOrrjBK573aWC5sgP7YsBOLK79H3tmUtz6b
- 9Imuj0ZyEsa76Xg9PX9Hn2myKj1hfWGS+5og9Va4hrwQC8ipjXik6NKR5GDV+hOZkktU81G5
- gkQtGB9jOAYRs86QG/b7PtIlbd3+pppT0gaS+wvwMs8cuNG+Pu6KO1oC4jgdseFLu7NpABEB
- AAHNIlF1IFdlbnJ1byA8cXV3ZW5ydW8uYnRyZnNAZ214LmNvbT7CwJQEEwEIAD4CGwMFCwkI
- BwIGFQgJCgsCBBYCAwECHgECF4AWIQQt33LlpaVbqJ2qQuHCPZHzoSX+qAUCZxF1YAUJEP5a
- sQAKCRDCPZHzoSX+qF+mB/9gXu9C3BV0omDZBDWevJHxpWpOwQ8DxZEbk9b9LcrQlWdhFhyn
- xi+l5lRziV9ZGyYXp7N35a9t7GQJndMCFUWYoEa+1NCuxDs6bslfrCaGEGG/+wd6oIPb85xo
- naxnQ+SQtYLUFbU77WkUPaaIU8hH2BAfn9ZSDX9lIxheQE8ZYGGmo4wYpnN7/hSXALD7+oun
- tZljjGNT1o+/B8WVZtw/YZuCuHgZeaFdhcV2jsz7+iGb+LsqzHuznrXqbyUQgQT9kn8ZYFNW
- 7tf+LNxXuwedzRag4fxtR+5GVvJ41Oh/eygp8VqiMAtnFYaSlb9sjia1Mh+m+OBFeuXjgGlG
- VvQFzsBNBFnVga8BCACqU+th4Esy/c8BnvliFAjAfpzhI1wH76FD1MJPmAhA3DnX5JDORcga
- CbPEwhLj1xlwTgpeT+QfDmGJ5B5BlrrQFZVE1fChEjiJvyiSAO4yQPkrPVYTI7Xj34FnscPj
- /IrRUUka68MlHxPtFnAHr25VIuOS41lmYKYNwPNLRz9Ik6DmeTG3WJO2BQRNvXA0pXrJH1fN
- GSsRb+pKEKHKtL1803x71zQxCwLh+zLP1iXHVM5j8gX9zqupigQR/Cel2XPS44zWcDW8r7B0
- q1eW4Jrv0x19p4P923voqn+joIAostyNTUjCeSrUdKth9jcdlam9X2DziA/DHDFfS5eq4fEv
- ABEBAAHCwHwEGAEIACYCGwwWIQQt33LlpaVbqJ2qQuHCPZHzoSX+qAUCZxF1gQUJEP5a0gAK
- CRDCPZHzoSX+qHGpB/kB8A7M7KGL5qzat+jBRoLwB0Y3Zax0QWuANVdZM3eJDlKJKJ4HKzjo
- B2Pcn4JXL2apSan2uJftaMbNQbwotvabLXkE7cPpnppnBq7iovmBw++/d8zQjLQLWInQ5kNq
- Vmi36kmq8o5c0f97QVjMryHlmSlEZ2Wwc1kURAe4lsRG2dNeAd4CAqmTw0cMIrR6R/Dpt3ma
- +8oGXJOmwWuDFKNV4G2XLKcghqrtcRf2zAGNogg3KulCykHHripG3kPKsb7fYVcSQtlt5R6v
- HZStaZBzw4PcDiaAF3pPDBd+0fIKS6BlpeNRSFG94RYrt84Qw77JWDOAZsyNfEIEE0J6LSR/
-In-Reply-To: <amICQYTK9Xu4KLtH@casper.infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:XC5GDk4iwsXjGAhKpDlXYRAMeD7GaIwIaetoEDd1XGhyntlDd6S
- PZsTI5M+8hkdAJCuGTdcMPZlv9lCZae9x+zLGgJQRbiM7gKUjD7yA2YhOVk3CuWKvkowaSq
- 5hM7N/c7dykl9Vme/3fbmWCvqo7u/hMQUYW1hamwQlEwkZxinvDynf/44XztRPtQEKg/uE4
- cBqcZhK4rmOGlOdeD653A==
-UI-OutboundReport: notjunk:1;M01:P0:EBiqbos+NQ4=;puBP9/Ex8u1SXuoL4ta9bAYk/lI
- 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
- 7uTedMOCs=
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 8B222C0008
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAO9r8zN2mPsFiRTPYOPTq3gTVZwsj5hODke4asTTY-jXpSioxA@mail.gmail.com>
 X-Rspam-User: 
-X-Stat-Signature: tzyajxuj8hx5rk9x9qn13a11ochwk4jn
-X-HE-Tag: 1784846589-537477
-X-HE-Meta: U2FsdGVkX1/MbO9WSUGmK5LAjy+2KrsnIgx1nHHIA+UGZvB3LHMeFbwYjyvig6DQmGa4d4AvavVuRm9Mt9Xa7DltPa9pfIXTtHRGFUwKKy0Y0qZhCQhmaIXybyPK3n9cjDUbPCkIR+Pjqk0yShXxofHZtA9y1RlAvcui0yyrDfKwUpGhUSmlke4yqoRnKuxuhZw5a4xmQjyh21pllZHjtqknCe/DZOSSofgo5Elf7rHEXiOKTl1g3ZpH7st5qJM+qD82v9XuDFQHPefPOmnJJWmotn7EesqbGYjc7NFW8jcEfWbj/IFFP0ow5TdHBfflw8ibOOIqVZZKPsAgYZ/hMACsfBW7343P1UI1C64QqK/utoFXR7lK9i3WVXSrLHQNPIjwzMET8DYO2T1KfTHXA/QgOiLu7+zQWXDAUU12qlNilEKeNw6NDQmGP9+6sLK7ZwvB6/PpKaUC2kjCAPvhV9Vgx4k3VMQaa6nDOioP4pS7/TYzle5zDF7JbgrrE+/igX05Nc861yTKjptRKKiKEw1an1GsgEhd5cW3krLUrcvzBTCuuilsLZV4rTfcpGZH6y3rdUQWw1k0ermL3oNtWq1yeeC/mlffV0lkXQBEQ6psDxiq4w0QP8ghP+w9EouNM7BrvgFYnbKTggR1vTgnlpXbTo+HEIsGj86eb58/2ArEuML8HO+bdKt2TLhtPFIKQXPrD20iAsxeZ8cAZ9gz4N+vlTTvBBZbESM4jp7CSboZaqvL2FTs/CbtqUuO3wXnCBuqhUCrs7bQPtgCC2iW0lPGyInq67uJ64gy5fcx6LdrXyOKTCTbvwYWdBG+ssfD7+RLQh7aJcT/IlGZ33QViKedjau3HfWNeR+B7yokcD5ztM88y+GkB1cSx8uCajeHYIiiugCd6K61w/XB2tvE2xBhKtTtUDRhiwvBtpKBZLf6lTaNMYHmWSbJOC1FX8wJAWkLtl28PNw0s96cRHB
- CWZ5QHjF
- cU5j8quasRFvTIzrRPqpkJeTRwLWQDPQXP1lM20zE34xVsTOcAfv4NGR3WNsZc6iI7PLwesi8+W7Dad9hSeMad0/UdmhPdIYEg79FFzwkKcJgw/pzOEKePF5Qma6MjyOMlvLpInIy8M8PgOZiGjkQVOGQhnodlGjl0JkabmaSdgiEkkX71bZnAmpK+Unizck9ji8IEgUzdJXLWH2Uf/+cuLOQZyuPT0/Ktr6aiockBOPTl15yuRSU99ELYvd4ynxoI2vfv7WlhZTaZQLhEDyNcyui9U33Npyf0Ph1bjFOJ5WhP+CXoVwdswvqbSVPq0vVx+bGrhdqXrdRaPXLhSqxEgAlp+YkFrh8bVVqmKad5canhhvgSXzVEZveykllcYjkCoZ1+Yil+PNM7SEnQR1JR0E9OHWFxgdTkOyVEDYE+hpjYovilRkmd/tTIw==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C1C7D80008
+X-Stat-Signature: m4yxw7pdu5po1zaokw4tjhodeppu5ahu
+X-HE-Tag: 1784847402-541874
+X-HE-Meta: U2FsdGVkX1/KDEtFTtVnfHwbKW1ri1v5xdvR8U1BAjjwgTP0X5vC1zbHeHJWL+1PKOSt+a/VzSwgO+PTeIIeVeuLnetvcxK1UYaU6Itm6qjrHmEZgUoFyJXa2uWxRhxH6HqjYXndDWwoeB9ZmL/jwoje/tl/w0lrwRBqEA593Su8UzGGnwlyfNzjCz7MFiiZWboFPfKWP7h3FNASpFwXOOqVsKXXyPjm2dPb06LHW7W/EFHAwahCGdNSFs9baBLspdB3JQ/C4+yjPLkKEsICgli/uI1/SUO+S+iYvMbjWk5grv71e3Vt4VCJDwQuG3kt8Of9p37VmT6NXhhiPf0IQ/0wvQ2TyIkXPH/Z580guyVxbpu3c9tbbupwFTlWbE+StZSe/Xs5GeQ3NYnYLxujliQ0YlIcPgeFP3+iwabXY2dlGaXD6/hQ7Fzp/lyx1SDECpE0Wmh4cWMdSbIfu4hNPrAe4m9bZe5t+9rC2LskUncAFw1125zdDnJCfcYEu0UKTmBf6U3pc3iNgCQ3PDX/cawYc/NOzM3vqj/r8WwFyeeCsr24p1IORQ7vatRw9U8kanvFZ7jk7p7ITNhFI9JvJ4C1ILH8KHW1PLNoNTDNrTrBI7nEFU2MR+Rkv5uplN7yz+CQsxDhdfrW6ClqeltL3+I5InEPrKFQgTDABLYiDW49xVPcdXi012JSMHoSXjj05TqcA+lEVRs+4E1bDnMETr5ZAj3GGj+jUUcgIPMZuXKEHxGMgeqtEpYpQlFDfz2PUcZWTERyHW1e5nUk4L0sUhbjVAXx+ZL7IGiC0lDv0VIWXwI9KGOANcC4qlnB5ABe3XJzpjByDMNo3i2pRu4A6+dk90gO3L/cshoJHRS3dJzS4HX7NCXxeagMtCJALYKVrhhG8YVu0PoRG1RIX4IX75EllPh9YrlO1Fp47Sx6pPV0HVtUEIjp/+FTlsKLFrHaC7kPffxMkWKHMwSmYxY
+ OJRCjcic
+ wv9otRnOaFL24aiJoPKe6Dtwd+MPDPE65uhDoTzeUVnzh12VVJES+BMJZflPD9NCRzrgST6shpEjkBmFqV53JlM/jBbEpCnIm4FGCO3rMovIvUnhrLj6Yyh6qRE7CV54gbRTgliFEfHInwJrSwK6FQ/MBo+VY2mxbO5DbIQrcKXhLCXM0M/Tj76mhKdK2OkN2D6MGuad4bD0CZTZZ2vOWTQBuX/AavJHsWHOt2lb+zUJcSgjT3eANWhU2cOhE5pMs1p5Ss2iZJz0ODNsvbPEfT/dGPGXeovJKzsAjwTqvK78jFEupKFZ7705Hq5nZ/jc07hDKiGSA0iH7+Oh0iRe1FBzm2mcqpB7w+kXGhGbANgYnzjgtOUdbSU0azSOiSsT2R2+q57I4vzcohnfxIypfd0Y4Wp0xhhhWRO3UMSmsbj183fv9at4LBfiql/hwJplYf+yWp/+CG5ZPrgxdmechkQGf6Y7vvmmhkrhDmkjEOwtKAJo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -219,68 +134,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Jul 23, 2026 at 03:30:52PM -0700, Yosry Ahmed wrote:
+> On Thu, Jul 23, 2026 at 11:45 AM Gregory Price <gourry@gourry.net> wrote:
+> >
+> > Walking this all back:
+> >
+> >   - MPOL_DEFAULT is the default policy
+> >   - numa_balancing=on means enable NUMA_BALANCING on the defaul policy
+> >   - shmem was broken and did not respect this
+> >
+> > Johannes' fix is correct, and there are no additional changes required.
+> >
+> > Users enabling numa balancing while running KVM with shared regions are
+> > not getting what they're asking for presently - that is a bug.
+> >
+> > They should get the performance hit they're asking for (and then either
+> > turn off numa balancing or set an explicit mempolicy for those tasks /
+> > memfd's).
+> 
+> Does it make sense to add a pr_warn() or pr_info() to help users
+> figure this out when they see a regression?
 
+I'm not sure in what scenario we would do this that doesn't simple
+reduce to "You turned numa balancing on".
 
-=E5=9C=A8 2026/7/23 21:30, Matthew Wilcox =E5=86=99=E9=81=93:
-> On Thu, Jul 23, 2026 at 10:12:27AM +0930, Qu Wenruo wrote:
->>
->>
->> =E5=9C=A8 2026/7/22 22:27, Matthew Wilcox =E5=86=99=E9=81=93:
->>> On Wed, Jul 22, 2026 at 11:29:36AM +0200, Christian Borntraeger wrote:
->>>>    *   4. Thread B loops sync_file_range(WRITE|WAIT) on the target fi=
-le.
->>>>    *      Whenever a full clean cycle (clear_page_dirty_for_io(),
->>>>    *      writeback, bits cleared) completes inside thread A's
->>>>    *      submission->completion window, the completion-time
->>>>    *      set_page_dirty_lock() hits a *clean* folio: filemap_dirty_f=
-olio()
->>>>    *      sets only the folio flag and the xarray tag - no btrfs subp=
-age
->>>>    *      dirty bit, no delalloc reservation.  See the 20-year-old co=
-mment
->>>>    *      above bio_set_pages_dirty() in block/bio.c describing exact=
-ly
->>>>    *      this ("other code (eg, flusher threads) could clean the pag=
-es").
->>>
->>> There's your problem.  filemap_dirty_folio() documents that btrfs is
->>> doing it wrongly:
->>>
->>>    * Filesystems which do not use buffer heads should call this functi=
-on
->>>    * from their dirty_folio address space operation.  It ignores the
->>>    * contents of folio_get_private(), so if the filesystem marks indiv=
-idual
->>>    * blocks as dirty, the filesystem should handle that itself.
->>>
->>> fs/btrfs/inode.c:       .dirty_folio    =3D filemap_dirty_folio,
->>>
->>> so btrfs should have its own btrfs_dirty_folio() which does whatever
->>> metadata updates it needs to and then call filemap_dirty_folio() to
->>> take care of the page cache business.  See iomap_dirty_folio() as
->>> an example, but many other filesystems also do this.
->>
->> Thanks a lot for the advice.
->>
->> However it looks like the sub-folio dirty block tracking is a little
->> different between iomap and btrfs.
->=20
-> My point is not that "you should do it the exact same way as iomap".
-> Rather "the dirty_folio op is the entry point to tell the filesystem
-> that a folio is being dirtied".
-And since dirty_folio() is not allowed to sleep, we should introduce=20
-some extra mechanism, e.g. page private 2/checked, to notify the fs that=
-=20
-the folio is marked dirty without proper preparation.
+Not against it.
 
-Then during writeback, detect such folio and do needed preparation for=20
-it since at writeback we're allowed to sleep.
-
-That sounds feasible, but I haven't seen anyone doing that (including=20
-the older btrfs cow fixup).
-
-Will explore that path. Thanks a lot again for the dirty_folio() help.
-
-Thanks,
-Qu
+~Gregory
 
