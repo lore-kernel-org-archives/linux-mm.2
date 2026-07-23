@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D7A4C531D4
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 14:30:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56346C531F5
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 14:30:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5124F6B0092; Thu, 23 Jul 2026 10:30:48 -0400 (EDT)
+	id 539146B0095; Thu, 23 Jul 2026 10:30:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C3586B0093; Thu, 23 Jul 2026 10:30:48 -0400 (EDT)
+	id 4E9E96B0096; Thu, 23 Jul 2026 10:30:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3D8D16B0095; Thu, 23 Jul 2026 10:30:48 -0400 (EDT)
+	id 3D99B6B0098; Thu, 23 Jul 2026 10:30:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 182DE6B0092
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 10:30:48 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 82C1280404
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 14:30:47 +0000 (UTC)
-X-FDA: 85020277734.30.9E73294
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 119B66B0095
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 10:30:51 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EA37F1A0242
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 14:30:49 +0000 (UTC)
+X-FDA: 85020277818.29.9F906CD
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf30.hostedemail.com (Postfix) with ESMTP id CA2518000B
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 14:30:44 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=p0BjXa2k;
-	spf=pass (imf30.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784817045;
-	b=ltcPVypTtzFshspdk8iE/OJGqoOyjrvcl0IvbIF1Gm16B7YwobPiz04K+I+ybxiJHrPWPY
-	N6VInfya1OnftYifJHYbK1og6rmID6oak4UMK8+C1He3/C2h7C3KnFikU8OLmbuNpesuCi
-	u771QqdHbcyWg/BXHkErNgCxHguZElk=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=p0BjXa2k;
-	spf=pass (imf30.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	by imf19.hostedemail.com (Postfix) with ESMTP id A67E61A0002
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 14:30:47 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=ZymUx1b2;
+	spf=pass (imf19.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784817045;
+	s=arc-20220608; t=1784817048;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cwsU3Mhrg9KcuFxTAl0Tes+dvmZix99ipM91bAbmnN8=;
-	b=wku05+OKKD5TJLYwynGfezV8XtyVk4INCp+eOlEDC3xfxGX4zjvhlZfX6mMuG7S7RG5zUm
-	ZFyO9dVmLIpHbtl78cRG4k1LQC9tTXZr7z52WfX3CQO9qW6BwVDnmUHNA49pApfNX6K2Dn
-	QAiT0wXnb9XkFKhpBKqV3fTt1MbpIUg=
+	bh=CgEqaR+d7oMg+OXW1piQIA/vwtndewjL/6n9mPT59RM=;
+	b=Xgp554qmKw+6sPSST8Ib3c/JqmBshYxFCwR2PZfNL60Lro1AGqdH/11RDTeUJeCWBrb733
+	lxSHmVCSA5ssiIwjYQzVmGGHzvmrspcXY20/j7bYHsr+/4qeVk9qlawEycg2dvjYwUYdG5
+	x56f7iFhEJ1exaUiCtqkqAX7uaUVYLg=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=ZymUx1b2;
+	spf=pass (imf19.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784817048;
+	b=LYoZAbbXrbmEztq/vnmHDVSzfEzWTgEMzis9xOD5t1Qb02ZKxM7JLnr4YbKnZeivyXVxdq
+	sdlUZOgGeW8YNKZct5aoaJ/Tw7NccEd7z0hcqS3aJIazXFFF8A00kHTOt7yCfAONrWDHyY
+	9tPITw0vV9gLCUemWi3Yckb27B+kHmE=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=cwsU3Mhrg9KcuFxTAl0Tes+dvmZix99ipM91bAbmnN8=; b=p0BjXa2kEzvTX3Es+vq2+xSUBh
-	yMDm18HK8DuM1ZL/O43br5EnYTlMFmswaGnixSTRvIi/62M74RVfGJJ9MsDxMkip/QR7Tp8I7vfBc
-	LxJE0vnlOGEns0fF+c1/u9fRsr1Ggk+HbVb3G0Bu8s3cYjI/iNwLlJ3sryLtgIQElsveLp0mnzkEM
-	BPja3cde6PwbqXTBCd1D7oVZi0/XcUN0Xl46EYds+Ku8Shi805YWRGTfwS2tJWW4XMEMXbFFJ9tAO
-	Fwj1HMjKQgKOVIL8jeOcKtNkGeXb0Z1VB12O3FbmYm2Qk+NWe8HjWcMy+ARt+QRPjX4rFrxpUGpp2
-	FBCiGZzg==;
+	bh=CgEqaR+d7oMg+OXW1piQIA/vwtndewjL/6n9mPT59RM=; b=ZymUx1b2XJMwy0Av5eYHFAGkt8
+	9MBjSBOxA/2YuO/UVKqF3Y5YWeYzIicZvqZl3rstjqO7/EoHN69b3F8OnyWGupymcv4oVNXYVUGTc
+	xKBiBrSyOykkjZC7SSrDKzui+alq9VTAfhRU08sKsAQ8Uo/Mi3q3NpVxkSD7mZjCG3RnK7guo9MRr
+	L7Ur2Vi7pGO38dFXcutmJiU/nE2mnBY8ikkK3xFYbvLZCXZvPkXcwT5xaOcmnaS+QNyumqrrVT+Sj
+	tDdqr+0s901HTsWEn5X6PyXHhgm1btb5fp/Nx2c5FyDxtoKuuR1ryCdjPdivXL3oX1ulK+odvY6Du
+	WqYwUwMg==;
 Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wmuRY-00000000jht-2pEi;
-	Thu, 23 Jul 2026 14:30:36 +0000
+	id 1wmuRZ-00000000jiD-3LPo;
+	Thu, 23 Jul 2026 14:30:37 +0000
 From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Jane Chu <jane.chu@oracle.com>,
@@ -74,24 +74,23 @@ Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	Jan Kara <jack@suse.cz>,
 	linux-fsdevel@vger.kernel.org,
 	Christian Brauner <christian@brauner.io>,
-	Jiaqi Yan <jiaqiyan@google.com>,
-	Usama Arif <usama.arif@linux.dev>
-Subject: [PATCH v4 03/14] mm: Rename folio_contain_hwpoison_page() to folio_has_hwpoison_page()
-Date: Thu, 23 Jul 2026 15:30:20 +0100
-Message-ID: <20260723143034.175661-4-willy@infradead.org>
+	Jiaqi Yan <jiaqiyan@google.com>
+Subject: [PATCH v4 13/14] filemap: Add support for authoritative mappings
+Date: Thu, 23 Jul 2026 15:30:30 +0100
+Message-ID: <20260723143034.175661-14-willy@infradead.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260723143034.175661-1-willy@infradead.org>
 References: <20260723143034.175661-1-willy@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: CA2518000B
-X-Stat-Signature: kcpnwg4trqqzko49ea8p41hwkuah6tc8
+X-Rspamd-Queue-Id: A67E61A0002
 X-Rspam-User: 
-X-HE-Tag: 1784817044-779547
-X-HE-Meta: U2FsdGVkX1+MeUswloAPAob84Y4CL1vKOfcTFR0JCA8bwFBUYXrEsyR0cULeeinafE2t40yl8FfWdfwk3rq/FWy0eRYwKVTghkCI+HmbziONAvuM95jxi2KfT4X81KBq/ylh+bYzUVNLQG0P6AS5pTkxyTjqI+v/DqpaE2/rXm6UkEVSJKPZTWNWMuVV1VHawvtdBDKEyvjOMczP1Flps0iI3O+H9FwASKEqm+V3iCw+jc/CyXY40QE+SVrg0MWvksIrXzO3WzkZ9RUezTHdeGwD1j0db51F2/wu5z3EW87qGN0K0eQQFUFaxWq6cjpabRZ25nLgdVszjj2y3waPOxr7DwgzCyBZ56Q++NaJpdUDM5K+nzls2l5kAfp2xjCCul+3Z+UdSsTqhs4usY+2no2OAE+OFWBBYA9j1YIU5awI6iWg/41lNrEcjlOnt+8+UoW+T3O9znjIEwnthqwr5xsBltvMH+TtNF2l3EHEhf/n9rmrEsaCHlXb6PcNV0qaDBVMZLMDGJSGzjQTGqLaA9KWTIpfsSZQ4h9kHvVuArTOEzlh/w6yPqQg15CxQUeu+Z97bae3mr8xfghxLT6DWF7KJ7ePcu7IDn3wEFSipRUykGFfqdG7plomlhz1V3U3EmEUnlyI70tiiLdWDGHDX4sbkhVRhi19y9xZS2XaVH6hb8Oh3EABDZhwum84eivu1Ie/F+2ZrWjQTWzamqEVfKrSLO1JmQhj+HlT1jYhEzQWy6nJJSonYvYOwd/szPDlkAUDvitquOKJA8XuQS46gIN+oUgg19dWMG/8QCx3lyt0sfVhCVooGaH8QeuCfN+z1iaFQ35Sy4aX8aTWy8uLI/JSImlmiyhOKYXMwYz2AXtKODE2sfoD1NXFT71jtWb8+VA9BCZAOMaMViOdbBnu6V+61NjV3/mY3kKAKUmA55eAE6o87eeW0gEjx/HvsMeWpJuTG9QizH99CzDM6Lc
- TGVtdfnF
- AMnsvV0WZ+bI5cvGGCtY+R7Pvxd878ybRY00wyRCVia/vClgHZsKjNcmA8vysIer97eCfXed1Jb6iPBoGUwi8z9nMkY5lj4pEioP/X/7qhzUqSF6EDl6HSrvPZ2gM4PTovM0ExeMbndKzZ9hyLEhI5sfnSz3/ckzipq5teVXcCy4FKvV129eoLSYrsbmNkXDJoh6IqaiQoAF0jhciqvqL3o+Kefk4JXwxBA7ipX4wQfyjvUrOPZTpgORK+zpj3icBKaLM/NK37Cvw4CpN5/MPIxkcGl59pWSAKU/gefORL55y7lltI92gtkvzinJD2Di8Lfw6nM8L0qwDr/9y8rVN5O87yFYUOGAD3im/RfY7EIu+dhtcxuvirxRQOw==
+X-Stat-Signature: iaif653xeszeqmxi75gors6111po3ffj
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1784817047-434490
+X-HE-Meta: U2FsdGVkX19WGRPZrNnTta/pkeEulvpoJMC6sObr4tir/t2uDOzLHwSVqtz3JZOhaGHu27pvBIET0Crok+NaTJ63Kxi0Bg3/gsK6XvGFV992fSArWD4JBKI3Axt4WpYvK3CFXf3ATBUc82H+/Xb+hJikSrBs4PYX92JIaM77n104W8vVFcyQtB59dD38TyCWme3OnQEep2T3902wsz2l7yxoN8qdbqNer2jdWK/9i6AZB9PV7JsmmJawx0oIXitlZ2a6tzu6R1GKBinz3WUo/hkG1GQFv+fw4Xx1J66pNLKf1jRLIxt6VmuYFaOxFN9muGjxUjrEAwN9HbOo+4jFTsanJopvnePRAFsPClqzxVjzHH4mxMyHXrcp1Toe9ckCoQHuUbB3F5dK8pJMpcsHQn206HlZvTQvOVHu2rQ+0DBfkWhmuAsisb6Zit42QRzzy0UimA25syQaXfJwlJyqDw1KwANap9jBxYVoLBxJpFN30M83E3n2qxDQ/XryYe0PQTRIMZI/3Wp4zy/Evumdw6kDM54Z4fpPt54uDj4ZvaJxIIMgdXSu9FVyxn9SWeWiuT9Whb1foUbtGb3iJ9D8q4cVKtgQp0fIgeZn7+Fxkx8W9x7wMBMb51eHrWKtTtv7IGa9NsLMqt3niX0ipTPH5cKXTVrCo5Z0BdubVFNuFZEuk+7Ybg9J7ue+X+xX0yoZS0lRBnLBM8rUniXw19IJRHGpkSDxvJQ6j5H3/DC7JW0y/lh4AIA3/6T2lq4cMRC6e7n1aYn2c4eLvvpi1SIcOkeAXT3cX6LbWQwx+e/Ah/0uF7XatmjL2eWOLf6io3wnHMrryb7jvFyVbQFjLn27CCIKRYgLtGpQdpUtdzuOkp7OpvkfrnWYCkTnbjDdaO1e5KjDAa/Sltt0xcB4z8LmamTitvNK9Q4vvo/qSWIe4SQdKzo9qJNM6/+AAI9hWKMjKfIifNO7yEoApfjKDrU
+ fbDKcA7k
+ syxxln7DAriDjBGKFSJecO9iHomfCnDa9IGGiwF2thbK+Bv+jc8p4qvChLdDntD6aQ/RrmV6A2GuTnrT0Ao8BFsSx8eysC6B5nxbUZGiVmnqs1DPGMRVaF6BvTaiqt3Sc2PYBhxdPc7MnDesv+D9dx+cj8CD7kGb0YO7OmkJvdooG8Dgmqe6tE0cNs4O0R1IHzsV4LxmPgP2vhosi+akcRLS6yWdqIHR5Aowpkmz+nOOFXJr5YLMdUI1ma/p5a0SgFnXJGjTdC1AWAekeU+n7p/XQhKSYufxXTSvh8loIBuSG8Ij5aMqQ1nqf7IRhw3yTxNAdeotHH5tTSMg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,88 +98,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is a better name for this predicate.  Also make the argument const
-to allow other callers to be made const.  No functional change.
+An authoritative mapping knows about all the folios in the mapping.
+If read() finds a missing folio, there's no reason to allocate one and
+try to read it because we know it's a zero region of the file.  We can
+just call iov_iter_zero() instead.
 
 Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Acked-by: Usama Arif <usama.arif@linux.dev>
 ---
- include/linux/page-flags.h | 4 ++--
- mm/huge_memory.c           | 2 +-
- mm/memory_hotplug.c        | 2 +-
- mm/shmem.c                 | 2 +-
- mm/vmscan.c                | 2 +-
- 5 files changed, 6 insertions(+), 6 deletions(-)
+ include/linux/pagemap.h | 11 +++++++++++
+ mm/filemap.c            | 18 ++++++++++++++++++
+ 2 files changed, 29 insertions(+)
 
-diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-index 7223f6f4e2b4..4185a03a45cf 100644
---- a/include/linux/page-flags.h
-+++ b/include/linux/page-flags.h
-@@ -1083,10 +1083,10 @@ static inline bool is_page_hwpoison(const struct page *page)
- 	return folio_test_hugetlb(folio) && PageHWPoison(&folio->page);
+diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+index 436987f47aed..6fdee5b03621 100644
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -210,6 +210,7 @@ enum mapping_flags {
+ 	AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM = 9,
+ 	AS_KERNEL_FILE = 10,	/* mapping for a fake kernel file that shouldn't
+ 				   account usage to user cgroups */
++	AS_AUTHORITATIVE = 11,	/* If we miss in the page cache, it's a hole */
+ 	/* Bits 16-25 are used for FOLIO_ORDER */
+ 	AS_FOLIO_ORDER_BITS = 5,
+ 	AS_FOLIO_ORDER_MIN = 16,
+@@ -345,6 +346,16 @@ static inline bool mapping_writeback_may_deadlock_on_reclaim(const struct addres
+ 	return test_bit(AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM, &mapping->flags);
  }
  
--static inline bool folio_contain_hwpoisoned_page(struct folio *folio)
-+static inline bool folio_has_hwpoisoned_page(const struct folio *folio)
++static inline void mapping_set_authoritative(struct address_space *mapping)
++{
++	set_bit(AS_AUTHORITATIVE, &mapping->flags);
++}
++
++static inline bool mapping_is_authoritative(const struct address_space *mapping)
++{
++	return test_bit(AS_AUTHORITATIVE, &mapping->flags);
++}
++
+ static inline gfp_t mapping_gfp_mask(const struct address_space *mapping)
  {
- 	return folio_test_hwpoison(folio) ||
--	    (folio_test_large(folio) && folio_test_has_hwpoisoned(folio));
-+	       (folio_test_large(folio) && folio_test_has_hwpoisoned(folio));
- }
+ 	return mapping->gfp_mask;
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 26a5f18121f9..5a8cc20e624e 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -2697,6 +2697,8 @@ static int filemap_get_pages(struct kiocb *iocb, size_t count,
+ 	if (!folio_batch_count(fbatch)) {
+ 		DEFINE_READAHEAD(ractl, filp, &filp->f_ra, mapping, index);
  
- bool is_free_buddy_page(const struct page *page);
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 2bccb0a53a0a..353340309107 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -4413,7 +4413,7 @@ static bool thp_underused(struct folio *folio)
- 	if (khugepaged_max_ptes_none == HPAGE_PMD_NR - 1)
- 		return false;
++		if (mapping_is_authoritative(mapping))
++			return 0;
+ 		if (iocb->ki_flags & IOCB_NOIO)
+ 			return -EAGAIN;
+ 		if (iocb->ki_flags & IOCB_NOWAIT)
+@@ -2853,6 +2855,22 @@ ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
+ 			goto put_folios;
+ 		end_offset = min_t(loff_t, isize, iocb->ki_pos + iter->count);
  
--	if (folio_contain_hwpoisoned_page(folio))
-+	if (folio_has_hwpoisoned_page(folio))
- 		return false;
- 
- 	for (i = 0; i < folio_nr_pages(folio); i++) {
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index 7ac19fab2263..33007e8e546a 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -1813,7 +1813,7 @@ static void do_migrate_range(unsigned long start_pfn, unsigned long end_pfn)
- 		if (folio_test_large(folio))
- 			pfn = folio_pfn(folio) + folio_nr_pages(folio) - 1;
- 
--		if (folio_contain_hwpoisoned_page(folio)) {
-+		if (folio_has_hwpoisoned_page(folio)) {
- 			/*
- 			 * unmap_poisoned_folio() cannot handle large folios
- 			 * in all cases yet.
-diff --git a/mm/shmem.c b/mm/shmem.c
-index b51f83c970bb..492c9bef3620 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -3240,7 +3240,7 @@ shmem_write_begin(const struct kiocb *iocb, struct address_space *mapping,
- 	if (ret)
- 		return ret;
- 
--	if (folio_contain_hwpoisoned_page(folio)) {
-+	if (folio_has_hwpoisoned_page(folio)) {
- 		folio_unlock(folio);
- 		folio_put(folio);
- 		return -EIO;
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 35c3bb15ae96..70e54ace0e74 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -1086,7 +1086,7 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
- 		if (!folio_trylock(folio))
- 			goto keep;
- 
--		if (folio_contain_hwpoisoned_page(folio)) {
-+		if (folio_has_hwpoisoned_page(folio)) {
- 			/*
- 			 * unmap_poisoned_folio() can't handle large
- 			 * folio, just skip it. memory_failure() will
++		if (!folio_batch_count(&fbatch)) {
++			size_t fsize = mapping_min_folio_nrbytes(mapping);
++			size_t offset = iocb->ki_pos & (fsize - 1);
++			size_t bytes = min_t(loff_t, end_offset - iocb->ki_pos,
++					     fsize - offset);
++			size_t copied = iov_iter_zero(bytes, iter);
++
++			already_read += copied;
++			iocb->ki_pos += copied;
++			last_pos = iocb->ki_pos;
++
++			if (copied < bytes)
++				error = -EFAULT;
++			continue;
++		}
++
+ 		/*
+ 		 * Once we start copying data, we don't want to be touching any
+ 		 * cachelines that might be contended:
 -- 
 2.47.3
 
