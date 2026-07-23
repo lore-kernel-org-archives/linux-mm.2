@@ -4,150 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30D6EC531C7
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 08:38:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 503F0C531CB
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 08:41:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F4886B00AF; Thu, 23 Jul 2026 04:38:52 -0400 (EDT)
+	id 232886B014C; Thu, 23 Jul 2026 04:41:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A5716B014A; Thu, 23 Jul 2026 04:38:52 -0400 (EDT)
+	id 1E3336B014D; Thu, 23 Jul 2026 04:41:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E88566B014B; Thu, 23 Jul 2026 04:38:51 -0400 (EDT)
+	id 0D4D26B014E; Thu, 23 Jul 2026 04:41:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B88756B00AF
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 04:38:51 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 320EA160402
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 08:38:51 +0000 (UTC)
-X-FDA: 85019390862.28.533FA56
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 4FA54180003
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 08:38:49 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=EdDtVoZ3;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf24.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784795929;
+	by kanga.kvack.org (Postfix) with ESMTP id D34C06B014C
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 04:41:40 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5198D1603FB
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 08:41:40 +0000 (UTC)
+X-FDA: 85019397960.17.A0F700F
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 6C08A40003
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 08:41:38 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=jyYf5dBq;
+	spf=pass (imf12.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784796098;
+	b=vys2/qPucJKMfw78qQnzqF0NCE1bA69iExLl2w2xcfdDbVNoDeVfElFCbFbgWyu4LXkdgb
+	g3gbGfp4PFLzp1T2zWX6f0x2SwMYlqqhdSjTnpjN0gyR82a4FhleeEU+fUG7dyJIvnKZl1
+	yk/XBR0MuZAe39XpAmxhwa7QJQSTF8g=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=jyYf5dBq;
+	spf=pass (imf12.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784796098;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UL+d8wbRBQJ/jtsj7/n6KOSBmbhT6bVbxdyZXPjFAeQ=;
-	b=GMQTxq3/dJVEvzIf/P8dYLpWui+vRPclcS1lkt3IOGzpaZj0rLULnewBr2kyOrw+x89nhY
-	QsQVyk5mDCx79lUjEnoF+kSTukfBLZdJrEpHGH4xNT2KmvuIwQGOhIe7FIPLnjd+ajaBoo
-	an5FbUCyWUP8qJbrICtWoi7lWk1lyyY=
-ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=EdDtVoZ3;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf24.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784795929;
-	b=U6TC+maxBvyODspTB30kJEkTWiEpVlFa+LSBQXf+fZ0QlSeFCjm1mGDEIkEN2n38Fd4ZqX
-	i3CwRvjn1lNtL4TDaKnKytFSJ6TqRkv22/OB0tQiaQcCAlNK2FyFtpJkc35wnBQ+BtxTxv
-	vf/J6X7DEWHniDfdToZQ5jr7qfdbaes=
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c160420289bso56285866b.0
-        for <linux-mm@kvack.org>; Thu, 23 Jul 2026 01:38:49 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784795928; cv=none;
-        d=google.com; s=arc-20260327;
-        b=VSWyttiHcDlsnC9YwuakOV3bZsO6zS/cX991WAel5h5lDghFwiCntk8sOMt0WamJPL
-         rxC7ITKW0/nh3AqShMErFQCatKJMcGTlg8gZkLv8/fsPxgsuFFcnxq16dXgXgKb7d8QL
-         JOvSdqokTTAsXVi800fKQMD291douTXj/B739tFLP+zaFK5J7JIybFOfNPnZjCvCPmaN
-         7ibvJBuR0I0ESaRoQobt5HZFZljiiD3AD7R8CKXvP/zMSoFtpcGxtHgJyhG1Qbf/1qq6
-         +Rh+/TQAeHniffESrPDYq39tF2Na6lq5d3WfUi0osOJEiE0DAzhYFFjB5e+wEOR/V8v6
-         ReYA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=UL+d8wbRBQJ/jtsj7/n6KOSBmbhT6bVbxdyZXPjFAeQ=;
-        fh=EtUcPd1hiphIsqmc/TVVgMwz1sc9Du6SxlM1L312idY=;
-        b=qMiC2SPdvLz/A1t7XVkqYzfPus8qGf9GUOd6x08XRFXrJSeN9H2UHQWpce8MTsMgOe
-         f4zWO6di4W7US1nDluVKkP/+xRZyEu4tpqvSo4XhpzcO6t14CPrvbiD2G++S4FN3s4TN
-         AROaxLm29gFR+7LNnY8TUmewepg/wqylijpvxF2Ow7K7AT03FCLjtQyigHFVkBRGMFK3
-         cxa5BnYchfKBEnbXJ5L1nHshQbEgI/Ejq+x6Pc2waZ9ZmdkUDtee4mK73BNXTXmtFSrK
-         OF4G1Xx7Yt0SBBDw37V2YFgJzIHhfro7KKlCO3Dyk8hPtr0+Ys0RIiIqFDjQXuQln8Jk
-         se5A==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784795928; x=1785400728; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=UL+d8wbRBQJ/jtsj7/n6KOSBmbhT6bVbxdyZXPjFAeQ=;
-        b=EdDtVoZ3WRlADasG+DBhLXi2GL3IC0L1aa8tw06CSP4Gybu76CrKI/6vhPo6WMkhBa
-         rq7YrBbRmCqR7T64727vKyzuDxvfeAQd+r8IgGZKoAOP7rbvXp2ylQMsjPoM2TiUzl9G
-         PTDeR7YW1vGkmLGBg20N6MZYZuQwesn/EDlsBZ/ePOPDIqc19iG1SIRlP3tZQUaFR1jZ
-         F91EB37zu2jwU4MF9dbVXkXjT+Dz+CU0rdMfRmxqr6UVYdvDS9aXjaglu0yAnFfgKmnB
-         XO7NL0t/S8ebnNdtNeQ0WD1jfPVhEn0xxBepYDPTs1mGy/5Pki4p5aHDfLLTleIAIx3c
-         5nAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784795928; x=1785400728;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=UL+d8wbRBQJ/jtsj7/n6KOSBmbhT6bVbxdyZXPjFAeQ=;
-        b=jL9uhi/hOBdBjzhpwT1vE9YlMXyyDtBktOyzQtJLUoyhO5fdr3kf1+iAzVRNS31K6s
-         cBaSpIbSM/gwttVC2fo0cNGEzeY3ri9ymI2TZM5oo2ZLsTP7hRf7IzXZRVl5/juzZnUT
-         6bXAUiwGn53fczrD/tayCh5MZK6G3OcUS41NWKtH9/RZnrGtOWw5tQE+wQt9J3LU11m5
-         c5+6J7BBv5DOuqyMp/sid1nUIRSuuRXcQwmOHIbNPIcf49yWzUhqgbMFAlvVb7K/RThQ
-         eVFCQFHaZfGRNDRgvUqdrs01m0DimcyzkHBi3sVvEEEWC+3Uuc2o/bMNiBv+jdEjeyfu
-         pdIg==
-X-Gm-Message-State: AOJu0YxV7GEhqaTEeCVRYJEujjPDB9seVGFUgNZ/lNArIJ0BE1ywPvbu
-	E9cHHJztjbNP6ZmTCbAD5KfvjhvZSjKEsvT4ULTxG+zOJ0R6o1qSKX7gWGUduWZw+Kz0ydC5J1I
-	P5yhqBPCYpMhcQ3Bsm3JVvwQwQP7lUss=
-X-Gm-Gg: AR+sD10RW+umJdinQFPbCfTUn5oJx1uRXRDZbRsMCPuh/jBw5A20a6t3p/1ncsMABjN
-	iaa+m1z8MT7AbywNn6sheawiZ1qCkg5XdZ3WrZEB1w0gPN0NIV8XtPwGCprxmV0c8KluEkhtJAD
-	sT7o1rV/EQ/XZVmqWnzJm9o6NUQC+GZ6MaPjPmoACdUIXdBlQvdEI0MpuOG87C+XnUZb9w7+VnG
-	EVNi94jyhHjeSx+yA92m/qDnW8NEQSBCncap2zNr+W/FrtcbSffI82a3aqKtSNRC4TEplXyHiFP
-	FwDFHlhWOLejQq/5IZA=
-X-Received: by 2002:a17:907:c386:b0:c16:46b1:e0c2 with SMTP id
- a640c23a62f3a-c1c50dbe5e7mr91218266b.62.1784795927500; Thu, 23 Jul 2026
- 01:38:47 -0700 (PDT)
+	bh=vioNWeK72HlhKzaXdYjtTtx2h8Re/Idn8Y6kZLSjQKU=;
+	b=NzESYUarb3gp3QuZQZRBBvRnxplUHJTRRH0qxAs4kmXlbzR6GNI/8uq7tVvCuFNMuWMYEe
+	PIeUTI29aDcBuRNL1jRMAlsc1P79lGYgXs0Ul8nKu36wwymyGNGNdjbhrxlDjy1jH8LNuA
+	i3Q+aP2Lu5Ov2Myn8gcC+Ze/3BzLu3A=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4EB931477;
+	Thu, 23 Jul 2026 01:41:33 -0700 (PDT)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C5BC73F86F;
+	Thu, 23 Jul 2026 01:41:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1784796097; bh=tHu7RoxBrkiUeHKCDkL/iuN7wAUGu94jRhPQyIZkpMA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jyYf5dBqTJ1JCBs2GdetKtKebNTFujQgVNyM9FlYh+7WTSQ44Nzs8Y0U/Zcu3/0DZ
+	 F8o/mRcYZmN03NpFHUsVhYRsCOYeSG6tNiL+HHlZLY027DY2RfvehP4Hk242KMbom8
+	 Y5LydIRYAz0Vbe5p9VsHCQl+hb7z9+8dMD0K2N00=
+Date: Thu, 23 Jul 2026 09:41:33 +0100
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: David.Hildenbrand@arm.com, david@kernel.rog
+Cc: yeoruem.yun@arm.com, Yeoreum Yun <yeoreum.yun@arm.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org,
+	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
+	linux-openrisc@vger.kernel.org
+Subject: Re: [INTERNAL REVIEW] [RFC PATCH v3 01/20] mm: change behavior of
+ pXdp_get()/pXd_page() in compile-time folded pgtable
+Message-ID: <amHTvacwPg6xljJZ@e129823.arm.com>
+References: <20260723081036.1461495-1-yeoreum.yun@arm.com>
+ <20260723081036.1461495-2-yeoreum.yun@arm.com>
 MIME-Version: 1.0
-References: <20260502-mglru-fg-v1-0-913619b014d9@tencent.com>
- <CAJnrk1b-5eQrPtug7i7n0h7=j0gaaGhihf3tbBZLfxz5fABUiw@mail.gmail.com>
- <CAMgjq7CmQjuOgeU5XOEwA532TB0=8U2aDXBz_prKVdFY0uyxWQ@mail.gmail.com> <CAJnrk1YqpLhsbC5m0vL-w3HG8dXGSPOH7Qq3-XAnJYTBdgN9qQ@mail.gmail.com>
-In-Reply-To: <CAJnrk1YqpLhsbC5m0vL-w3HG8dXGSPOH7Qq3-XAnJYTBdgN9qQ@mail.gmail.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Thu, 23 Jul 2026 16:38:09 +0800
-X-Gm-Features: AUfX_mzaNTQsi1XDwQlO7quC3skQ69zXkB8eOQxkg2stFXO-m_6gpcWqDBbQWhk
-Message-ID: <CAMgjq7A=NB6qJL1WLu6b+EonLKnDjbFG20Fq6OM_Vq=798sDmQ@mail.gmail.com>
-Subject: Re: [PATCH RFC 00/32] mm/mglru: MGLRU-FG and refault distance support
-To: Joanne Koong <joannelkoong@gmail.com>
-Cc: linux-mm <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
-	Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>, 
-	Gregory Price <gourry@gourry.net>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>, SeongJae Park <sj@kernel.org>, 
-	David Rientjes <rientjes@google.com>, Yu Zhao <yuzhao@google.com>, 
-	Vernon Yang <vernon2gm@gmail.com>, Zicheng Wang <wangzicheng@honor.com>, 
-	Chen Ridong <chenridong@huaweicloud.com>, Tal Zussman <tz2294@columbia.edu>, 
-	LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260723081036.1461495-2-yeoreum.yun@arm.com>
+X-Stat-Signature: z1bd4qrphenbaieh58w3hurrai6ayiec
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 6C08A40003
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 4FA54180003
-X-Stat-Signature: pxz9u4i1c5za9a58ebcyq6ax4ts435q8
-X-HE-Tag: 1784795929-645447
-X-HE-Meta: U2FsdGVkX19FLmV3TekiN6HhgbemdyLw9Tl6JeXcQdxOW4lmZCPQaOdlBb4A4WekMQPr2NGu9BRMcX7AESjhI6tGRh+AtSPn3E2+8em4wEtUU94X4Jk5AQOnnFOZqqmNmdEglpLf7/mZF8yrHKJbJfUzP1cPAamJNoNt1wJM5Qk0nBcAjMV929StOqurLGpZzoPIhVujThvZFG4zKzBgyANdGnxXZ5Zao9z3yW+NBo1xomFSCZA+9KfibmGBoe3ouGQ1y9oCoLfD/bgpj0eJVyoKCjY8JCAumWW76XgRe14K67u+BfAs/o8Ox/PgW9ikA/txHBniYZ/hWYbh3542tl/6uRq27xKF7z3rfbniezY+/YkmrqmN/uGyCxGTq8vzGKgtMY5LEykTbBvs+0frhXMPMkf4E18X9wqoCSM+X+NySkFq/KWL9+q6ixggXfIpbB4i8Fn28TjorvSGqPCSWGNvTZg5phtjkwXSXDlzFfeb2o4mTt5mk03QdqmBMyJgRC398SbySlqNM3jfyXVPgJs1tJPcTfc/o5+8WlFlPrKa/Pzru1S8ivmds3XuvjYjkfO3YwjB4Qh4RULA/0vHi2fXDMHQg0rYdBxYt+2j0J5JPleiEiNNRgLGYB3+Ii3IB7bArV3MjZj2Y3MTJ4L+G3zfaBi7RKY98Y+ugV54wgPTMc9i11wWWjFQM4cOXFe7AsWlzEroAiN5yQJIqH4zKfLsPz5/eeD9zayyiI2hdvYaoYNQ610+47I98V64hi1/Dlsehdr9wqAi5aQBQjHarY1EFTNYtD6WF/vLqmCdOznc0QPp/pKh+8FLRkdvKGConkNnoN2sej8axfjHjtiH+/ktsYhCogHmR+WJbxy2eeRWUa+AfVeCwswmtmvS7cw96H/mMPegcDnsMYo61fcQ+wGcQ0b0eDS9LD555VtWrtvMLyy1Thom+EM4iroHl6uMqKz7+5gVgZBvfKXIrsF
- jK40JH90
- rdbGo0SxCGhFPp2Erq4xSF8foQvDdFLUWtD8J0qA4iF4BO3Ety/hkDoCh4ho2gti/vPiEjRouiaJ+7YwBgFzfSuELZwoFCdVAAKHhQco4vQGdKfWAlYdLh42C4cPVFE0cyccMvUaV9PYVfKzDbO2klCgd9frKShm2+LHnEs9zlT/7Giz0VOXk+ft8a8nwF4Jd2PSc+nwT4NEJhdZtFUuaNRgy+uIxY1CZlNFlslWu5m9EoIYR+kxqn0bFNQFLcY4ZUU59M9E9z4bWq5JkO7rZuX6pWsEyQgwmXUvR2rB+9SrJsMWbHZHkIGWVC3Gb68wwQhse7WIVTV6Ay3Dkq4NbQ2UO41TrdDo7CUU7rhyGt2V+/LPTLarsFJU6Tc3sgZSHMAMAaAI0havQT55X/WLlx9W3WZcIQzjDQgpEULwBfpBnALA=
+X-HE-Tag: 1784796098-850074
+X-HE-Meta: U2FsdGVkX19UliuhyTG20d4WzwTQkZ6xPB1hipNnwo8DKhhdFx1SbwHvz2ew4Q4bRqPu6JpZ71QZWKKO5scrhZuFTnwcCgbCosWxsXc3L05O1Ys/Grs/13fg30qj41SO0enU2ZbIZj8P3QMvGuP53T0xUNmwRC2Ei9SiUJqfBTlreugKnvrhpgR0tokclKluZ62e5C51m1IcgZ5+y05iJxtG4XkFwVQ+3JE7aIACd5R4VJIOh6TSL4GTJDHgBccH+FwiS3e2l1AJAeOmVZsMHAdDgK0re+JTgjT2BYkFOTDzSnxxRV4PIlBmeTy9mtPHwG/PDjbbNMEQB2x+KLKRv4l44hEIGHaFWVGYXyIWy08qbPRsDoHUb56AH5rHpfKQ0SkGCR+3uAMbJKTTl0+kSvHlZ9FKqvfX7QWwyPbiXSxHIga3NJkpo/fqW5qm7J4mVSslsQZbTMMEJv0TYdytbV87g2OQ9YsL76xvhuFkrEbM52IMZgonKCWktCWlyGATAmnh3sUIU0uJAtdnVG9li/Rgxm9ZEgFGoueNl9S/EzLni1Sf32HeLMBtwDEheF3vir1YPnlpvj0NwK3hLJ9NbC32X/Ud9j8bmPKIbBlTHjkvops0OiqZ130pWK8ig40jPoLAKt839j0hDZFAcT5yEMIQC2L0zvVwg0/3qr2EvV8tFc8iYogvI1DMO4lOoA5CjXAiAp/Ddku1kaMqp911LvEX+bBV7Erwpde/EQAM3UehqIj3wAaeSf1SZtEEb+f1EBNgvVVzUoYbkHBcq0YVWzL2NP0KZDMXwEZTWNFRtfyhG7mT03QRI1Xl0+ARFrXl+2Yz62OmNqwIyOTC5Wvk2vevJ5duCm5od+MTVRLlj+ltofLRXfTKlbEbKWEOWvdokNWcHr2kDt7pcG98+jJQ3fT+E7xmeXYyXh/Nwr3Hf2qPMKGjTOEt/LAM8fHXZgEQVKdS0P8wcBdUib/8+wc
+ dRkqumI2
+ XzkjouduFRP1ghWo+B9nlCCC1ayyzGxYLk5xbV7XJSWbEU8peBqHqAVJ8cuEpXGyl+05O2z1f05MApzjIjkSmWoyyCo0lrNCgSgR4WQ1S4A33HpDtGbv0UHytDKuBy09A3jJ0+8ZPJs1tVS34iiJWMad46/b2I+0bcT6uQ9BtUuQm5+AeESaZQSF5m9uoqfBv2VhslpKQPNX1f7RhfSZicjJj+O8Er0H0e/DGplFzGCfTDKBghNiNDmZcOQqgSS+VTGjVv3nh3kYFccDJv6kZB8lttRnb4cBSDFNUVxSbKHL1qngidevkXMmdMJtCN9g0LJGdB51Pj4JUogEn8XaEiH4/s++qeBOStMfRQIeuD6n06BcCMSGPRPVbvKVZknrwOgZUUdXQdsQSkKky35Cvzqfl/WvOS0XG7v4D/+rFDjIURW3t1IlzAsT9pYvnpaxA/mh0heCm/jYFBMjS0YYqX74Y2dTbylJxpwMWw0+PHnZE9NFxYxwn7pVrBNxJLpAr+CkeXNkBUeY1prg4YBTl63fG1A12qeOFoaYRYPXUrdqL5CV/pvvDZ9RnOhbqWCDQoAvpMdCsV2Mu+m+RG3vTi8QDyFhdoosQoOU/VUgw9pbzoY4hq+2mwDbhaBqnilZWR8xC/4Q+OSMt9PSqOm1H/+LNkIWsc+oHYM11et96XMZW4osXRJGJLa8L/a6GAcB4i26uIvGzdXcQu1eAq9ItZY2hiLr7FkdmIXzD4ua4APrBD3bUX0FyY6DeeEB75Ju8hKvAVDZi5WKviaNww7MJ9OpsAWg+RigXJzkgD7UTT3ZAk5BjvYRRidfm54sTqsaWzIeEaP+QymKvoQQBkas5La2xyris/0AF1aklh/YLavFr5WKavW/jNldYT/SOfU6SXVocnH/Ivw1QKnTW0oJ1sLzaA4T1687CPGHevLNWZC1phmDO6II61rxvb2+97cvqNu0SraUApnZ+bGiK9uBHZPpyLbXA
+ c3SVgO9l
+ QPovzsW7o0NnvpJ9fBJJuquyuklnawrEwk6iPmIxrAnF/EwDlxyvNFrS7VX1NXz5LQEXq9uy7MnjkE5CkMTHLHK8/WGc+eqjoHOfy9WJRYUMQ1KRJDeDoelHMra4z9ZnHTS5buha13tszj10l1eQyztHMi4GBnTMYeJsy0GusSQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,29 +95,222 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Joanne Koong <joannelkoong@gmail.com> =E4=BA=8E 2026=E5=B9=B47=E6=9C=8823=
-=E6=97=A5=E5=91=A8=E5=9B=9B 08:49=E5=86=99=E9=81=93=EF=BC=9A
->
-> Gotcha. Can I ask what speaks against having the flags unification
-> work ordered first, with the MGLRU-FG patches based on top of that and
-> submitted in parallel as a separate series? It seems like the two
-> could be reviewed upstream concurrently, and I think that would make
-> the MGLRU-FG series easier to review with it on top of the flags
-> cleanup, and freeing the two page flags seems like a sweet win on its
-> own :) Is your concern that the FG series would then be gated on the
-> flag series landing and you anticipate that the flag series would take
-> longer to land than the FG series?
+Sorry for making a noise. I've posted wrongly.
 
-Hi,
+Please, ignore this. Thanks!
 
-That's not how it works, though. Without the MGLRU-FG, it takes four
-bits for tracking the tier and these two flag bits have special
-meanings. After FG, only three bits are needed and these two original
-flag bits are just the lower two bits of a three-bit counter now. So,
-there is an advantage to rearranging them together and removing the
-single-bit (flag) operations to always use them as a whole. Before
-that, that conversion will actual make thing more ugly.
 
-BTW will there be any feature change with your splitting plan? If
-there is no feature change, that should be easy to review.
+> Using ptep_get() and its counterparts in common code is suboptimal on
+> kernel configurations with generic compile-time folded page tables.
+> By default, ptep_get() and its friends expands to READ_ONCE(),
+> forcing the compiler to emit a load even when the value is not used afterwards.
+> 
+> This issue was recently reported by Christophe Leroy [1] for ppc32
+> preventing futher code conversion to ptep_get()/pmdp_get()/... helper
+> and the same behavior can also be observed on arm64 when built with
+> 2- or 3-level page tables
+> 
+> e.g) perf_get_page_size() in arm64 with CONFIG_PGTABLE_LEVEL=3:
+> 
+> 00000000000052a0 <perf_get_page_size>:
+>     ...
+>     52dc: d53b4234     	mrs	x20, DAIF
+>     52e0: d50343df     	msr	DAIFSet, #0x3
+>     ...
+>     52fc: d35e9a69     	ubfx	x9, x19, #30, #9        /* pud_offset_lockless() */
+>     5300: f9403508     	ldr	x8, [x8, #0x68]
+>     5304: f869790a     	ldr	x10, [x8, x9, lsl #3]   /* pudp_get() */
+>     5308: f90007ea     	str	x10, [sp, #0x8]
+>     530c: f8697908     	ldr	x8, [x8, x9, lsl #3]    /* pudp_get() */
+>     ...
+>     5360: 90000009     	adrp	x9, 0x5000 <perf_prepare_sample+0x548>
+>     5364: 92746908     	and	x8, x8, #0x7ffffff000
+>     5368: d3557675     	ubfx	x21, x19, #21, #9       /* pmd_offset_lockless() */
+>     ...
+>     5394: f8757ac8     	ldr	x8, [x22, x21, lsl #3]  /* pmdp_get() */
+> 
+> Though PGTABLE_LEVEL=3, since the pudp_get() still remain with
+> READ_ONCE(), there's redundant load for the pud which is folded.
+> 
+> To prevent generating suboptimal code, make pXdp_get() return a dummy
+> entry for compile-time folded page tables and prohibit calls to
+> pXd_page() in pgtable-nopXd.h.
+> 
+> Also make the helpers in pgtable-nopXd.h, such as pXd_offset_lockless(),
+> validate dummy entries at compile time to catch the wrong usage.
+> 
+> As the pXdp_get() can return *dummy* entry, some of code using
+> the stack value where saves the pXdp_get() could be a problematic:
+> 
+>   1. Passing address of stack value where saves the pXdp_get() result
+>      to pXd_offset() for example:
+> 
+>        pud_t *pudp, pud;
+>        pmd_t *pmdp;
+> 
+>        pud = pudp_get(pudp, address);
+>        pmdp = pmd_offset(&pud, pud, address);
+> 
+>      (e.g. host_pfn_mapping_level() in loongarch).
+> 
+>   2. Using the pXdp_get() result to use as argument of pXd_val() and
+>      to check prot without checking pgtable is folded.
+>      for example, x86's effective_prot().
+> 
+>   3. Using set_pXd() with pXdp_get() will set problematic dummy entry
+>      in folded page table like:
+> 
+>        set_pXd(pxdp, pXdp_get(pxdp_k));
+> 
+>   4. Using pgd_page_vaddr() to get the first-level pgtable.
+>      passing dummy pxdp_get() for pgd_page_vaddr() will return wrong
+>      address. Therefore, make pgd_page_vaddr() and pXd_pgtable() to
+>      trigger the error for improper usage with folded dummy entry in the
+>      generic compile-time folded pgtable.
+> 
+> Thanksfully, above cases are rare since (1) most of usage using
+> pXd_offset() with result of upper pXd_offset(), (2) it's extreamely
+> rare to use pXd_val() for non-leaf entry in the kernel,
+> (3) is to handle the vmalloc_fault or set the first level of page table
+> and (4) to setup early page table and etc.
+> 
+> Therefore, convert this kind of problematic rare pattern properly.
+> 
+> Furthermore, passing the ptep_get() (or its counterparts) as argument
+> directly to pte_present() and related helpers can generate suboptimal code,
+> in arm64 as the current macro implementation may evaluate its argument
+> more than once like:
+> 
+>   !pte_val(READ_ONCE(*pte) || pte_present_invalid(READ_ONCE(*pte))
+> 
+> resulting in redundant loads.
+> 
+> A typical example is pud_free_pmd_page(), where the expansion of
+> pmd_present() generates:
+>     ...
+>     /* pmd_present() (x20 = pmdp) */
+>     1b88: f9400288     ldr	x8, [x20]        // read pmdp.
+>     1b8c: f9000fa8     str	x8, [x29, #0x18]
+>     1b90: 3707fec8     tbnz	w8, #0x0, 0x1b68 <pud_free_pmd_page+0xd0>
+>     1b94: f9400288     ldr	x8, [x20]        // redundant read of pmdp.
+>     1b98: 8a170109     and	x9, x8, x23
+>     1b9c: f9000fa8     str	x8, [x29, #0x18]
+>     1ba0: f120013f     cmp	x9, #0x800
+>     1ba4: 54fffe20     b.eq	0x1b68 <pud_free_pmd_page+0xd0>
+>     1ba8: 17fffff4     b	0x1b78 <pud_free_pmd_page+0xe0>
+>     ...
+> 
+> To address this in arm64, convert pte_present() macro and its friends
+> to static inline function.
+> 
+> This patch is based on mm-unstable.
+> 
+> Future work
+> ===========
+>  - print_bad_page_map() and show_pte() still prints dummy values
+>    instead of printing the same content for all generic compile-time
+>    folded page tables. We might want to skip printing dummy values later.
+> 
+>  - We currently catch abuse of dummy values on the stack at compile-time by
+>    relying on constant propagation by the compiler. Usama's work [3] on using
+>    distinct types for sw vs. hw PTEs could help here as well."
+> 
+> Patch History
+> =============
+> from v2 to v3:
+>   - repasre commit message
+>   - move ptdump_pgtable_first_level() into pgalloc.h
+>   - skip the huge pud operation when CONFIG_X86_DIRECT_GBPAGES is
+>     disabled
+>   - https://lore.kernel.org/all/20260722-dummy_ptxp3-v2-0-d9e4bad31e0a@arm.com/
+> 
+> from v1 to v2:
+>   - Restore slient fallback to next pXd in set_pXd() and pXd_pgtable()
+>     and add check whether they're called with dummy entry.
+>   - Add some comment for returning first entry of pgd in arm with
+>     2 pgtable-level
+>   - https://lore.kernel.org/all/20260713135614.1618183-1-yeoreum.yun@arm.com/
+> 
+> To: Russell King <linux@armlinux.org.uk>
+> To: Huacai Chen <chenhuacai@kernel.org>
+> To: WANG Xuerui <kernel@xen0n.name>
+> To: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+> To: Catalin Marinas <catalin.marinas@arm.com>
+> To: Will Deacon <will@kernel.org>
+> To: Arnd Bergmann <arnd@arndb.de>
+> To: Andrew Morton <akpm@linux-foundation.org>
+> To: Kairui Song <kasong@tencent.com>
+> To: Qi Zheng <qi.zheng@linux.dev>
+> To: Shakeel Butt <shakeel.butt@linux.dev>
+> To: Barry Song <baohua@kernel.org>
+> To: Axel Rasmussen <axelrasmussen@google.com>
+> To: Yuanchu Xie <yuanchu@google.com>
+> To: Wei Xu <weixugc@google.com>
+> To: Johannes Weiner <hannes@cmpxchg.org>
+> To: David Hildenbrand <david@kernel.org>
+> To: Michal Hocko <mhocko@kernel.org>
+> To: Lorenzo Stoakes <ljs@kernel.org>
+> To: Tianrui Zhao <zhaotianrui@loongson.cn>
+> To: Bibo Mao <maobibo@loongson.cn>
+> To: Anup Patel <anup@brainfault.org>
+> To: Atish Patra <atish.patra@linux.dev>
+> To: Paul Walmsley <pjw@kernel.org>
+> To: Palmer Dabbelt <palmer@dabbelt.com>
+> To: Albert Ou <aou@eecs.berkeley.edu>
+> To: Alexandre Ghiti <alex@ghiti.fr>
+> To: Dave Hansen <dave.hansen@linux.intel.com>
+> To: Andy Lutomirski <luto@kernel.org>
+> To: Peter Zijlstra <peterz@infradead.org>
+> To: Thomas Gleixner <tglx@kernel.org>
+> To: Ingo Molnar <mingo@redhat.com>
+> To: Borislav Petkov <bp@alien8.de>
+> To: x86@kernel.org
+> To: H. Peter Anvin <hpa@zytor.com>
+> To: Liam R. Howlett <liam@infradead.org>
+> To: Vlastimil Babka <vbabka@kernel.org>
+> To: Mike Rapoport <rppt@kernel.org>
+> To: Suren Baghdasaryan <surenb@google.com>
+> To: Michal Hocko <mhocko@suse.com>
+> To: Jonas Bonn <jonas@southpole.se>
+> To: Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>
+> To: Stafford Horne <shorne@gmail.com>
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: loongarch@lists.linux.dev
+> Cc: linux-mips@vger.kernel.org
+> Cc: linux-arch@vger.kernel.org
+> Cc: linux-mm@kvack.org
+> Cc: kvm@vger.kernel.org
+> Cc: kvm-riscv@lists.infradead.org
+> Cc: linux-riscv@lists.infradead.org
+> Cc: linux-openrisc@vger.kernel.org
+> Link: [1] https://lore.kernel.org/all/0019d675-ce3d-4a5c-89ed-f126c45145c9@kernel.org/
+> Link: [2] https://lore.kernel.org/all/20251113014656.2605447-1-samuel.holland@sifive.com/
+> Link: [3] https://lore.kernel.org/r/74182e50-b54f-4d2d-a27f-3a59a538d6bc@arm.com
+> 
+> --- b4-submit-tracking ---
+> # This section is used internally by b4 prep for tracking purposes.
+> {
+>   "series": {
+>     "revision": 3,
+>     "change-id": "20260722-dummy_ptxp3-3741d78cc70f",
+>     "prefixes": [
+>       "RFC"
+>     ],
+>     "history": {
+>       "v2": [
+>         "20260722-dummy_ptxp3-v2-0-d9e4bad31e0a@arm.com"
+>       ]
+>     }
+>   }
+> }
+> 
+> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+> -- 
+> LEVI:{C3F47F37-75D8-414A-A8BA-3980EC8A46D7}
+> 
+
+-- 
+Sincerely,
+Yeoreum Yun
 
