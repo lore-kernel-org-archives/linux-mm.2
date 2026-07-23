@@ -4,119 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF4CCC4453A
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 02:13:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97751C4453D
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 02:14:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D1ABA6B00A7; Wed, 22 Jul 2026 22:13:37 -0400 (EDT)
+	id 4E08B6B00AC; Wed, 22 Jul 2026 22:14:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CCC246B00AC; Wed, 22 Jul 2026 22:13:37 -0400 (EDT)
+	id 4B6D96B00AE; Wed, 22 Jul 2026 22:14:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C0A0A6B00AD; Wed, 22 Jul 2026 22:13:37 -0400 (EDT)
+	id 3F4AB6B00AF; Wed, 22 Jul 2026 22:14:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 910B66B00A7
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 22:13:37 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 218CE140344
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 02:13:37 +0000 (UTC)
-X-FDA: 85018420074.17.E658320
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
-	by imf31.hostedemail.com (Postfix) with ESMTP id E33402000E
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 02:13:34 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b="YeYK/zMm";
-	spf=pass (imf31.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.169 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+	by kanga.kvack.org (Postfix) with ESMTP id 1F2DD6B00AC
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 22:14:39 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9DD2580381
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 02:14:38 +0000 (UTC)
+X-FDA: 85018422636.01.E444317
+Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 6B2301C000B
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 02:14:36 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=aUNZUcEl;
+	spf=pass (imf21.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784772877;
+	b=nVPU22QUVYs6XuIcYMmafuyD96bpDBVq2h8V5Z1BbAuR6kR490xVoAFCvNqyd0TygC0LeF
+	W2zumO/oLDbbp1luDLoXWeJ+dYROoDHCipQEGYuSd4GwQnk6bXzjFH+OqczFk99PC1LKDf
+	WgcguR//19cLwcXceXImiURUYnGoD6Y=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=aUNZUcEl;
+	spf=pass (imf21.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784772815;
+	s=arc-20220608; t=1784772877;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=63wl+OLSuyt8DrGkM/Vj7SgGoUiR2AzArICs+kt8mlg=;
-	b=Q7BKVDi5PfgbTnEaXlryN5xX4mERPZAoiLe+jKZbQwva3utNL/xR6Ph3jS1S3J1zUTG27x
-	jus4ddUwdviNQ1pUic/7WNyQR5BaBfmbyzIOG+qdnAkr10YLjCWntH/ZoCpYbXqlwjVxTX
-	lrQtM0+AcXuxnXT1g2S7KEN0m+LjwBM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784772815;
-	b=sOybFAB7A2QTCANhkkyY8FfP5H4YrTcgiycNI0YDWuOiNOoIeIMKGs9l3pBaOENs+G2kwn
-	72FZB7szPZ7BfDcNiCwXdt/tJ/Xqa8s84XCeoZUGnhFMZvZ9lP/pblBoSpHAIXWM1obGJl
-	I9JobdQofD/iFkAwNYez2D91EIbsCJU=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b="YeYK/zMm";
-	spf=pass (imf31.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.169 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-92f0b5ed131so12371685a.3
-        for <linux-mm@kvack.org>; Wed, 22 Jul 2026 19:13:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1784772814; x=1785377614; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=63wl+OLSuyt8DrGkM/Vj7SgGoUiR2AzArICs+kt8mlg=;
-        b=YeYK/zMm47JGRufHIB0l6T/kVVA2sXLp6hjyasKbKyoxL0zKYFPEsv1rv6D/D0B6eo
-         Jwi+6BJ/ANTQkWzr0XjdnYVpRCEYeHOjo18+g2u2Nj1Ewsu/357DKK8EVSThXG5QxEAQ
-         eEdlpSgk+tFqMRYdPfA1Y3Hzii92T3/C75wK6F7Cfw0Iwn/a45Gnwefq6Q8XrkJzPyLe
-         RrRtmnYsLfNjBrXmBS2KVIvUzjULpc25JmVti1vJi/7IUVpj0E6a2j+JeaGuOCWJwXND
-         SchP9E9Fys3rr7YnQWNH2IaThwjnFhsB6PAhfNPBn4WhGOj1rNqU5+0ZVlE4qXqOaHmU
-         jQIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784772814; x=1785377614;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=63wl+OLSuyt8DrGkM/Vj7SgGoUiR2AzArICs+kt8mlg=;
-        b=UCoAdeo84Nn4DGkhdgqv3pVoa0td6QHTZCyKa/CGuGTA7kgCaB6UHTIjKQlzt7aQCl
-         EgIBVsLF8bLrp0dtiHfuKPWfT5JeuKoGRuPKi076qkHYF1giyRPt7TXhTWIAwzIKeUr/
-         gKcTxZ6FPEOd/gyH1hjIDgLJ1bYDAxwoxMeCbsktiFPsjJVeBZZiQ3R/a5ZEkVmyrEhk
-         OObUSS7d61YGErcFc7tO056sIRAXls+UcWvbmuCJnKyQJThJ0UBR2e0QjnwlzOA7ylJ+
-         noV71i72DklwtebXo2HBvrAgZ+EExa2IrbQQLJwuN132DcKQpfK+7spzib4IeDY+MuKi
-         1Lsw==
-X-Forwarded-Encrypted: i=1; AHgh+Rq41xeKHEiXaJpRKaPl3nELb45Z2mKZOvl0xTsskb4NfKXmss8vXxvvSk7EEqAK+5L8sJy6i41LKQ==@kvack.org
-X-Gm-Message-State: AOJu0Yy3hJFtC8r8kT29jDaVqJCF906KyAkOajCTOEnBTAMQyqqDPS2q
-	3GfrGBHcW17Ml0vJUPp8jiSHat3w52L2vkhTGwWt5hx4FzqqfSa+I6zg867YiC+IVpA=
-X-Gm-Gg: AR+sD13jDnxCBSehMaXK9FxyXbtUl9RtyNDAMDjliiSM65Vyf9mIJ/BPSh7TNRJDftF
-	DQTq8d8fgayk+ikM+8T0gFtibWhG68gdVelY3IhcIUOIKfiNyoPS2Hxy1/sSPrbeW+JwNyqvOWz
-	g9fH64hOuVZmuJou8CxPOvvOGpMHC2KaRaWiMN1HoHd63V6Vz+4u08r+cPBuXR2O+yq6tkZXQre
-	q5USHPRH5kEOUIZxJNn4X/dChzRzL2lqhg2Kk9Nzaa0FDHihjCphOOyprgSCcdbkx1NIsLjAekQ
-	TqBnDojuTGaQ52P2bu+WJ/RudAHoIRrp0i2PAmJBFtW3DdARD7Xh/Kum4E45zxjyfwcNlh2W5Yo
-	6jMThcbg3vyVEt3/DZxtToprZyqMtGBSjXX7MpeEnoOxCJia62QTh6zcZ/u1ncWjiM+6Px5fGRH
-	6o
-X-Received: by 2002:a05:620a:1726:b0:930:9a5e:bbc3 with SMTP id af79cd13be357-93103aee31bmr115743585a.49.1784772813954;
-        Wed, 22 Jul 2026 19:13:33 -0700 (PDT)
-Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-931062c4ea8sm22128285a.28.2026.07.22.19.13.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Jul 2026 19:13:33 -0700 (PDT)
-Date: Wed, 22 Jul 2026 22:13:29 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Hao Jia <jiahao.kernel@gmail.com>
-Cc: akpm@linux-foundation.org, tj@kernel.org, shakeel.butt@linux.dev,
-	mhocko@kernel.org, yosry@kernel.org, mkoutny@suse.com,
-	nphamcs@gmail.com, chengming.zhou@linux.dev, muchun.song@linux.dev,
-	roman.gushchin@linux.dev, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	Hao Jia <jiahao1@lixiang.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] mm/zswap: Fix global shrinker when memory cgroup
- is disabled
-Message-ID: <amF4yRobGT9x67y3@cmpxchg.org>
-References: <20260717085151.22822-1-jiahao.kernel@gmail.com>
- <20260717085151.22822-2-jiahao.kernel@gmail.com>
+	bh=ambDkTqQMLokaCulVxvlNgNFFnydU6SgnMT5PS4qzuQ=;
+	b=ypMkmseu0DUchsLR8r6BnaStD1/FAZgLmk1Bc1l44yz3m9Ua2MQCkqijSJfEntX4IUA8OR
+	dQCzeOrOko10jkY1gu4v0OaSeMLwGGcO12po00XsDOzoAhagx26mTTFlmQCi0l9u7X8jVH
+	EWZP2wQWqBICb6Eg66fRqJs+/vLSQMA=
+Message-ID: <17abc770-0185-4795-a23f-f4e9ab1772bc@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784772874;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ambDkTqQMLokaCulVxvlNgNFFnydU6SgnMT5PS4qzuQ=;
+	b=aUNZUcElT+mIglubR8NDtCpfKeCsaKFekTufe9eEjIjAvSOpyrsEm9TWp9JX3MP/hVdEEB
+	iIqhAni30uRN85pi/rT4AvzXb+6qimcmDC4GS/pSHGOTce3rlwqAypgMjWJLXy8E2WRSY8
+	9i+ZSEmkR9oBrlSqTRoNIDVZaGD6S20=
+Date: Thu, 23 Jul 2026 10:14:26 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260717085151.22822-2-jiahao.kernel@gmail.com>
-X-Stat-Signature: ynkusygs1wu3wfsikxsn7krmw67g9uhw
+Subject: Re: [PATCH v2 1/2] memcg: move mem_cgroup_swappiness and
+ vm_swappiness to mm/swap.h
+To: Johannes Weiner <hannes@cmpxchg.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Muchun Song <muchun.song@linux.dev>,
+ Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
+ Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
+ Youngjun Park <youngjun.park@lge.com>, David Hildenbrand <david@kernel.org>,
+ Qi Zheng <qi.zheng@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Davidlohr Bueso <dave@stgolabs.net>,
+ cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Ridong Chen <chenridong@xiaomi.com>
+References: <20260716031729.1064007-1-ridong.chen@linux.dev>
+ <20260716031729.1064007-2-ridong.chen@linux.dev>
+ <amF1ii74RlzKiepO@cmpxchg.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Ridong Chen <ridong.chen@linux.dev>
+In-Reply-To: <amF1ii74RlzKiepO@cmpxchg.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 6B2301C000B
+X-Stat-Signature: 4k6sk5c64qcj3d8spi4678ywduz5e3hs
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E33402000E
-X-HE-Tag: 1784772814-860287
-X-HE-Meta: U2FsdGVkX19cawgn7B9z6qgRxP/6xuuPBVGW2x3imZUz3YYRb1H+N5N21dueItzpUxin6QUIYlImHVohCIIgl4P16ve5YL27hskRAxh76VsPK2pXPckAthvniThChk0ETBTIVG4dws3tw5lHLLkuW1UuFruiAEa/EzYNxY3/IUGm7xLD0K66tLOsyNjDgTtrejdVUKWGXY/x1Jj1ny2aznfzG4fj2Z0EMva+W1TbDDT9pOS1Aa6TPPY4YIYb/p1qGeBrmfa2Ubw8drj8hDHeufaqbZQLbAQWsHnlCYYS0IqvzyUcf0lSxcr+DN8XozX72Gkhub+LiXJSv9TsAHqmyb8pD/ypcTGpsuYVKkZq8EhsGwhAhJ7kdUroxP0bTIrhzUTl1Cyzmcya+FH6EhHw9Iq45HOVUHKFgdv8PikqwOt9KNrZC5Yl/9hwhXAH1UAT3wpORxCRKV56OdMJvFkm9FJ3hGbK30cLmDVyjocekFi5VAjDbUcmWQ4HI2lPWbclvAjg59MZWiUFi2X9YDDqZk27LbJ3C5xMNEEPTBbT9SINZv3SMkm0Lcqbr5xcTiJCBjSEk/P4hbjHIjzPHuipKXMDSdC5yAVtIGvPAO1tcmcyFd+WDT9GgabwHJebipI3S+rgKsZLgrT3JZScLZAsHhrNmwsmS3R7mQsZiHPo6eHw5g0luwD4KS5ezLKQxY9YXyKUbbeIXy4122mczV7KZz6kQ3dfNOti0YshkWfGixvURPqBHCsUlhbheCUA72eaRQrl8VcTCSJOjPoelSdof0fHLPLOhZlMZt9Sc/I8Nmo+uHd1AtmE43zK3900X9zc3su9YPvkqr3OUafXctzhrIm/zWlra9y6azMgDxQ8RFjlDYVjuFk2PjCLxeAYrgJukHz0aJs7H2wcmqa9wq8wiB8/4UBXhdpIaPjxNdBFgV5AjTAQ5coJXdW7Fv7YR3FzCXgFQzP4jZbZtiHUrG1
- IXguY+wN
- GP44CMe7MjEd3HFl2bDqQBD2EKR+wCnMyt32u/nFyRFGXrEqdFkVAChRxSIlglNRt20rDv8n0Sa6MmNxxHp44FCAZYX6t2gonGnA5wGdpSXxztmQFzvNASxxrGkORuJAVsFWWqiaslVlNmeIoZ4GGw/mgR/93fXovXoWpnm7IONuMdH6Kul1G6P7S6qwodTjf/yimLzQyzQmfkWKGkduuR9VFJGY9j3piM7DgpF42lG+3QnstDpKOykZo+xTU0ORHhhfWMMUltN9d+Gf27HdBdY+iGLK2GOV5ckiQhrnwotLmm7hU7t5cGmc6q9bi202In9/UyXX/8Nv3yv3o6Msl+EA7stPZolKO3JqFp6ospv2fuQ2Z34B3EiMHSBbKxjTevkRaDkhENwjSf8ZUIIddVOzaHwy1g53lksEw+C5gNEZkqCngg9hsisL7ZkGu4O2x/NELmSbpO1eZ5NFu2gQ2MYRzeMXOuMkEWhmlsTZoonTkdAm7hSGevrz3FpRuean0aXpRROONq1a3XaGVYHfC2onr4ncYep5m1yUjK/xpqyUmTY8pVWduNznJcKNHUf0M6Gxfq5BYwcNgMjmXW1rKP7iB01VozqBiITR85C2ZYceGTQ0=
+X-HE-Tag: 1784772876-573729
+X-HE-Meta: U2FsdGVkX18tJB8rlW2A5HRU4KuoyLrwCeVSJ9VXuZwfoxhxHTnNN8W8y8K3qHYW1B4lSZnylvQSSziFXzjeiZlVWH9z5NagseoUtpsy9G5xHj+OsfOoUuk1vag1OHy6lk/MAoWQwVkHg9aBnV1zDwXX0ymgzKcC///0GhbwhKuIJwG7dWmEktOhVFDyfKpKyva+lsNoWUqVWT4AXEpzTWJNgmp6Kegy5zVRm29IW6PGNM2BPb4/orPzyUB07XAbN0Tln3qYt7HcEkwE0adPQbtCi2a07kE3gW4wPUEysWuoWirqnSc5enHpbszEab7OJ+DDoxKvmg1PrqO+0AiH2HqSfDKOe3fO9M3pMj/Ca95iLn/N4y+etycotan3Uvw3TTwsIquCf7dOOyWWnpkl85fyugsKaIkjeIj8l1mSMrqstLmDjrm4el/MfwJ2aaZSa6LJvKhc66B5sIGQpB+KaS6KAEjLMJojpIICJC0WEioAg6zZRr1RSj5BdWDmRHj7Go+vUl7NyWNjzMBmH1ig69O7tCsT69D7BcpYWQ6EQvdyRpx+fHnZwDHUrZ2UUZ1BvjuCeR86gXt0g671qw/LroiL+/KQ2zo9sHd0yJelX2sNaJxPHQ+Cq7eRJWOuk4e8HCuoLIJIsJBVYkcRxWS5L8Wzp2MLAXRLruQMq8ZacUOckgwLBHu+b1ONkPNvx5rEimQYpB4rm3/WCmRAzY6Pnln/3a4RdmmKX2MMf2o9JjEdGhBzUxy3KBWRAI3NbY2gNHHpRWxtpkt55DYe710yC88omXk1LEeiaJJdr2ng/7vSbO5EHIjxUmIcNKQZBDc1As2ZiN0uaNW+GVIoxBxNBWuszWfq7YMYD8SRIEof7uvTnRINlspSnRFxL6WDho2rMGGVb1QrCNLcEMcC4FoFoIw6bZuF38Pe9kM3HACgoiz+d0rXL1g/+o6eDsLnyIX5CWQBVcQ8NX+3I9r8Xyn
+ krGuhY2G
+ h/e0a3KgdXsniamOPRapCJuvPLOi5wzM0KECXDuo8iwftpkPsSNxuvvEGM1TXb8ZWn2yXJpMRdXZmxq/P1WwLEPHzBXGFnDhfYcN3GsxDUKmxNWoQiGUTV+8XRwtsAzrl6PYRwyVUJaRcyjwsDwf22UZrpvmEed0EYKtdOqsShZ5P/mgIJYWdOU2IY7SgbmWRRkuRXMowbsylvUxmV2wkyzF3VUTH8KxPcrngxsS1PaarwgX9PAWcSqm3xDUjGHbnThLa9Wg1AOV1WSzGg/vGmqhMucOg1ppHemgsuUCJN2NYK6hb5pSnb32B0LBaxq00wyks
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,34 +103,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 17, 2026 at 04:51:50PM +0800, Hao Jia wrote:
-> From: Hao Jia <jiahao1@lixiang.com>
-> 
-> Zswap writeback on hitting the pool limit is broken when memory cgroup
-> is disabled, because mem_cgroup_iter() always returns NULL. Therefore,
-> the global shrinker shrink_worker() always takes the !memcg branch.
-> After MAX_RECLAIM_RETRIES empty walks, the worker simply gives up, so it
-> fails to write back anything.
-> 
-> Therefore, when memory cgroup is disabled, fall through with the !memcg
-> branch and shrink the root memcg directly.
-> 
-> With memcg disabled, shrink_memcg() only returns -ENOENT when the root
-> LRU is empty, which means the total pages are already below thr. In the
-> absence of heavy concurrent zswap stores, the loop then safely bails out
-> via the zswap_total_pages() <= thr check; otherwise, it will resume
-> shrinking the memcg after processing the reschedule check. For any other
-> return value from shrink_memcg(), the loop is guaranteed to terminate,
-> either after MAX_RECLAIM_RETRIES failures or once the threshold is met.
-> 
-> Fixes: a65b0e7607cc ("zswap: make shrinking memcg-aware")
-> Cc: stable@vger.kernel.org
-> Suggested-by: Nhat Pham <nphamcs@gmail.com>
-> Acked-by: Nhat Pham <nphamcs@gmail.com>
-> Acked-by: Yosry Ahmed <yosry@kernel.org>
-> Reported-by: Yosry Ahmed <yosry@kernel.org>
-> Closes: https://lore.kernel.org/all/CAO9r8zPVzMKFbCixxD-qgtRrkFxWVrHiZZeLc=eyTPKPVQgX4g@mail.gmail.com
-> Signed-off-by: Hao Jia <jiahao1@lixiang.com>
 
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+
+On 7/23/2026 9:59 AM, Johannes Weiner wrote:
+> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+> 
+> One small suggestion:
+> 
+> On Thu, Jul 16, 2026 at 11:17:28AM +0800, Ridong wrote:
+>> @@ -76,6 +77,25 @@ enum swap_cluster_flags {
+>>   	CLUSTER_FLAG_MAX,
+>>   };
+>>   
+>> +extern int vm_swappiness;
+>> +
+>> +static inline int mem_cgroup_swappiness(struct mem_cgroup *memcg)
+>> +{
+>> +#ifdef CONFIG_MEMCG_V1
+>> +	/* Cgroup2 doesn't have per-cgroup swappiness */
+>> +	if (cgroup_subsys_on_dfl(memory_cgrp_subsys))
+>> +		return READ_ONCE(vm_swappiness);
+>> +
+>> +	/* root ? */
+>> +	if (mem_cgroup_disabled() || mem_cgroup_is_root(memcg))
+>> +		return READ_ONCE(vm_swappiness);
+>> +
+>> +	return READ_ONCE(memcg->swappiness);
+>> +#else
+>> +	return READ_ONCE(vm_swappiness);
+>> +#endif
+> 
+> How about:
+> 
+> #ifdef CONFIG_MEMCG_V1
+> 	if (!cgroup_subsys_on_dfl(memory_cgrp_subsys) &&
+> 	    !mem_cgroup_disabled() && !mem_cgroup_is_root(memcg))
+> 		return memcg->swappiness;
+> #endif
+> 	return READ_ONCE(vm_swappiness);
+
+This is simpler.
+
+Hi, Andrew, I notice you just applied this series to mm-new branch. Would you 
+mind I update it?
+
+-- 
+Best regards
+Ridong
+
 
