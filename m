@@ -4,95 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3E09C4452B
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 03:45:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF5D1C44524
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 03:47:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1B8FA6B007B; Wed, 22 Jul 2026 23:45:21 -0400 (EDT)
+	id BF3616B008C; Wed, 22 Jul 2026 23:47:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 143336B0088; Wed, 22 Jul 2026 23:45:21 -0400 (EDT)
+	id BA4876B0092; Wed, 22 Jul 2026 23:47:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 030B56B008A; Wed, 22 Jul 2026 23:45:20 -0400 (EDT)
+	id ABB556B0093; Wed, 22 Jul 2026 23:47:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C9DA76B007B
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 23:45:20 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 37336140385
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 03:45:20 +0000 (UTC)
-X-FDA: 85018651200.28.611EB6D
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7EE686B008C
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 23:47:04 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 09412A03B9
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 03:47:04 +0000 (UTC)
+X-FDA: 85018655568.09.25F430E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 9101BA0003
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 03:45:18 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kA4N1gHb;
-	spf=pass (imf15.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	by imf26.hostedemail.com (Postfix) with ESMTP id 744CC140004
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 03:47:02 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nTRYtKiW;
+	spf=pass (imf26.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784778318;
+	s=arc-20220608; t=1784778422;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=762g8kYBk7lElwigO/Zsr8G9z8HnpHqNCurBk1LuKrE=;
-	b=cahGAnjhAwdv5wKwPH/YcSZStp5+BgakaUfNhEs0mWOR6tSgjODZeGDvKgRbBbbZp0z6/Y
-	BubZ2cKGXyV42tO2xdbRj+x5XqDcscNE3+QBqCJdHO/D5zKW8iZ7YvfMNzATA5H/8uD6si
-	6mCrgYevyXSCwSjrMNyGz+fZsqGEPVc=
+	bh=053eY0ZCIcJIC8vBRuJvf9GYS0I3AC9NFOjUm6ZOPiU=;
+	b=7NOjI8ZVYLyyleNTXYm852NYEkDYKbh4ZNCN0BBc/sW+2uZKv9w0gq+NMx8tjGFsZl7dmX
+	PlrsNE7p7GqraTgJGV3OOcYH3X4SNwW8TKfv3fLffUoYpl8CB/xxr1HPdXcbPqZDtUYDep
+	6Nxw+DfJXEf9HbcNMs8FuM5a3m3l3B4=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kA4N1gHb;
-	spf=pass (imf15.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nTRYtKiW;
+	spf=pass (imf26.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784778318;
-	b=LE4FWr5Me0ExN9X+/8HZBSRVlVGEenuP60Sg9rhfE5dHycvG86ZVQjj/AUXba4/PJPTPxA
-	mP9/f2/k0yfmr7OacbfhYMRJx0WX03dRZePdQFuLILKB6TZ0msCgUtByeI5XXAs1H76Ifj
-	Cui11yDSjC/vy80pe3Qko7lwL0pKmmw=
+	t=1784778422;
+	b=5+Wu4/WKd1VHT9EgTG2NBPYOiDHqTK6W+D5KP9DAwu6q56RSquy0WAVEaMx3hp3GHmgZvW
+	8fnZux9FmWdjr4nwUeISmS0ZkGtWXKA0LC+e01aCz3YFYGe/8HR0ZHRa+Uzy7pQWHmFlrv
+	Gy1FVXNwC5kIgT4Dji6aNnbMQi81Aeo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6AA2643979;
-	Thu, 23 Jul 2026 03:45:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 173DF1F000E9;
-	Thu, 23 Jul 2026 03:45:17 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id AFA2443265;
+	Thu, 23 Jul 2026 03:47:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BF911F000E9;
+	Thu, 23 Jul 2026 03:47:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784778317;
-	bh=762g8kYBk7lElwigO/Zsr8G9z8HnpHqNCurBk1LuKrE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kA4N1gHb3nJw/caFpk+zcO5zBuVRkiwLvH3IZoY/LzrxvYHLB2xd4AoCSsMJKFb1+
-	 4pYFxIkozgxBzPHNcBgVh/R0WVsJA48HvhrC6lb10OrV6eNluL8eexI2VL3VaR5Q62
-	 XPE38DSIRUbmxpzFH+Eu2hYcB1Xq3jIspibyUH81JZjh/lqNUncn/qWo+2Yv3CJvEz
-	 gDxmCOAuNsOt/Bdh6KsLD+jeYMXWpXXs5NlRkIIwWW25vI4UM9fZfgG/8nNf1BI2Ze
-	 bB7IcRBHAOSXfOZmPpwPgHRBoIOgQwhKLBbQeP5UPTaZxPjizvwhSvyFWiSKEc7rku
-	 JiVIbxaNJNEjw==
+	s=k20260515; t=1784778421;
+	bh=053eY0ZCIcJIC8vBRuJvf9GYS0I3AC9NFOjUm6ZOPiU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=nTRYtKiWM+4aHRPfnlovPOxnr4+q0aqHwj0BpC0NDSg/h0XMtB45HxezSUN5B0ZPc
+	 8yZ8GWqjtyWK28De/saqN41GPQzDaCiKly7XbnjWJoGE0KqAg8SY6+iQL93Y/uLfvZ
+	 cO3EhzuTtSdk98OoDw8ofz0x32SsDUrRTRcg7OsdQQ6nOeIPqcoS3v4ao/Wu/dCtlj
+	 fGe6D9rPAVB0mQJBZ3LMjMgfM//xucVn+MJ/PDOzqCgWO3+vBZecQTTEGPEBm6QvmG
+	 1rfnJYhxiJvDQVAymO/a522M0TJvfIIcYGv6HdtjqcKmyx9gXgNscOjjTxO8g2RqMe
+	 lL1ZHrY9TngxQ==
+Date: Wed, 22 Jul 2026 20:47:01 -0700
 From: Kees Cook <kees@kernel.org>
-To: Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Andi Kleen <andi@firstfloor.org>,
-	"Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Kees Cook <kees@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH] x86/elf: Correct comment for STACK_RND_MASK()
-Date: Wed, 22 Jul 2026 20:45:04 -0700
-Message-Id: <178477830120.3132185.17815722457437200154.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260722-fix-x86-comment-v1-1-605080af988d@kernel.org>
-References: <20260722-fix-x86-comment-v1-1-605080af988d@kernel.org>
+To: Mahad Ibrahim <mahad.ibrahim.dev@gmail.com>
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] lkdtm: use kmalloc() instead of __get_free_page
+Message-ID: <202607222046.D287828@keescook>
+References: <20260722230246.2869-1-mahad.ibrahim.dev@gmail.com>
+ <DK5HY1IKXNC5.36QEPX9H8SUHB@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DK5HY1IKXNC5.36QEPX9H8SUHB@gmail.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9101BA0003
-X-Rspamd-Server: rspam01
-X-Stat-Signature: ddygpf193p6k7tibmeq6r6bc91emz9wh
-X-HE-Tag: 1784778318-991203
-X-HE-Meta: U2FsdGVkX19cpcj9iQDk0h2ZFWAtYq6HPdh/GOwZnGfde5Z+gTvhFjkTR6xr/bvMkC6VYOeF9xF/GEEjgsGDyiUQd84aUbzpvSVKqw8YOeMk/FosYQLqaNEhwHDAwGiWt76MkTI2RUU1g3ZkzSjXkq6HvNCQ23gmy+1Bzz0/H3rc84PKzDGCZSR8KN8ye+CqXk5vCQD1Eu5qWr1qOfyoQPhTHXwnm+AlCVrc8UpG97JAHavjf+U42ao/91aGGAtLHg4Tto2WtSTLR4VvKqmalcNHVmYslAtlJvVcY4q0Kqg2VJQwoc5wtBNNjxkPGro3OoOTX4mzXO6PWaHRkTMCOllGqWi6McVdVaTVQGu9NCeAyuUfmTY63/y3/E2sDRBzqcZrfHkn0OLA1tvSsEHv5Un1VyR/Hd/zqYv0kWbwbBed6bAHo+VDRZ7JaUIACEC032f+oeo7DE6LyNaDgocpRIkuRS07ITtZMrN4ii2X9UdVZexvx0T0+LQYgV4yl0iw19s030hbZ01AAEs53GPGCtNzOw/QAKJp9q3+J3y5l70NiYg2mjkPL5p0FCxrkbcE83rClb1NaCL0Y0DkyVW8i/hATO4spR3mb3keu2XhQMUsaD4lcbb+UiKuLUvn5sl3QIdlnZDgl/eZqjcwJ0ufgpur1RaocQb9vPkzgXBFItr+gZi3BOcXXqrlmnvs6iUYMotj7xDNs+Nt5tv16YHmgpTxVNfCwepVrzPk5loiY7sQLUYsM/jQNRVW2eijueD8oVDNTynOPFGSYW03EDnVCEg4WK1eMD5imY0BN2uldWRrZIN8jQ/Mgw0dWYB6E/LfHRcj3om2eUlly0VypLd4TNTAH1PfCZ8oUl3ct0gVizjrxb26ckOPBhzpibgDWBeXigcACPtloWuT6tn1U2e+HRVc3S4FkUO0Y1sbo8wZ1jAfFKsWBB39pggEWwdHAWHW5SZqnlE4NuIlrUupHkY
- UH1hZ63x
- FfFlxnqOFQG7FJdk7FhY7yNr7tFG0kWEIxOhEpQVq4mqCDM0DAv/xkNrf+rHXBr3QBL7YFFkX+1QCc9A7FSy4TdE3+DwsSJcutxsj2rZCtvEJKninbyN9y6h7NpAS4rfzJXY96FsztEMluBwqlH+w7mpsvX037o53wubFD5MX+hTlVZNdR5vQtKAanZUqfSZLe0MFH4l96FuO83MNZk9Dy+3HWIN4AjgqAAkDreCdAQjs3MX4b7QI29Rcu3fVaWP0wLO7Cqscvv5mCXiUTQvRww60g4aEeDs/1HZ0
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 744CC140004
+X-Stat-Signature: js1da5ymwysqk1d5ou1wwwccuku4g6ej
+X-HE-Tag: 1784778422-502592
+X-HE-Meta: U2FsdGVkX18iAWCAxZTb4trEQXKp5O02ovFCj0M0pLy5UScXbuEnMxA0gtx8k2rl+vkHdLG/oMgRta2eRWkrTX62TAot2Na6FDoIfqB15IPSaq6Mx50bXxKE+yyNzq2WRWDC1t00bcZFYNLqmVqDxB/gGorkX+/DRDZjgXam0FcjgtyIpeHZJNKLYtx+aKgc2O0HkkL6gWK1NMdROImRr5WG1aGIuj+Bfw2Ld6wdwd+8qWNLBiARvYQOhz+ryS/CCcGhgmjXKe41Ix2k0NmFhKbODFWxuva2pLQG5tV5B1BdglFxnRqPGuXiv6VhHFnGlmmukWoQXuDmTQUSFBY1M2G59QBmuYMipk/eIQa2oBUj/DIjr6XrrcmFqbUH0GZ3OFk1AuoFNN7MFPwC0v0GUCRuZPOBc2tqJSxbHUkCpnh7cOLczIkkUZsuI1bzK54O+QwJisi4Ue0AVTgkeMdABMTiqYY5o7fe1qGEpvR4XBJvyAjgWLzoJOC1pjsrN6fReicpNT93JrGVAvxrfoKjtSu8z6c1HcbzaJt733sALQw2uxCGvdXtpSxPnJeeFSe0o1X1zFkOlAiqv4FHuUab0a/MgqudoDUPM3oKT2RD/HyQB5pQlc12AD0yuzbHvOHYPIKOok1GM1Ytk9x1iBUpuaFmzUYCyBpfILGN3xEqLkRDy71lSBS36w1V76GoyU5qjbGnZoivATTRpe775SD3RYPtweP5OgFemHPH7Rffwf2MRSeKLMjqPYDcXGeimhXKhpLlr3FdJuVjfsbX/lMo8RaRusl4Xli/ZdbyMoDpISElaQcj1nSYCFOxPYujmdJ9B9/O4kjl90DHvYo6VuK4hZuWLtJi27ogn953WKoAaRfcLAsXm8ov3ZDswruQWlPtPEo36K/VGhOWRBWgR/MdXQ9Q7qYslBfo+ht4EG1y1F8lwXVihZXy5kBgLzpCbpOiyKdI25unlVgahBekfsm
+ PYNxLbSb
+ cauFDZ0BLxOYu7e7XrYMLbccvumLx8Yul3cnuy1LMkapABPcdjf0vgwUtK6sO9uJwh2UH1gVbmmpzd1cOY4ouUxgAyes/FO0KPCtF/vsL7jEp2MbNMxXgxcqThWMEsvJcx1iICEpzU5f/0AOLV557fVNFvuNpnAkChp3raW9ToloshuaxZbfkqc6WsKi5WYzIXadzWxqBG/dr2J4vNWx7KnXXzCYv9CtAoDeA+yc2ILMffDH7eJmxk3+PAi2nE8+13dggXy1gTFjtjNTxOg32JTR7sCaTf0IxuWmyYFgYlJVrKs+KiZ+S99edJLhj6+GUxnIY89F3kP6HRUaeqqymFY+b+VFvWophbQXPJ2E6OcDWru15TmYrGKdwD7P+2sDUGznawtx7BTXy1zcCIB2TFUwz5881KwThHA2d
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,24 +93,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 22 Jul 2026 19:44:43 +0100, Lorenzo Stoakes (ARM) wrote:
-> Commit 913bd9060195 ("[PATCH] x86_64: Increase the variability of the
-> process stack on 64bit architectures"), merged in 2006, increased stack
-> randomisation from 8 MiB to an ostensible 1 GiB for 64-bit systems.
+On Wed, Jul 22, 2026 at 11:42:25PM +0000, Mahad Ibrahim wrote:
+> For context, this is part of the broader __get_free_page() -> kmalloc()
+> transition Mike Rapoport is performing. I noticed it on the mailing
+> lists and found this site which wasn't covered.
 > 
-> However the commit actually introduced a mask of 0x3fffff * 4 KiB pages
-> which provides 16 GiB of randomisation, not 1 GiB.
+> Some background:
 > 
-> [...]
+> [1] https://lore.kernel.org/all/CA+55aFwp4iy4rtX2gE2WjBGFL=NxMVnoFeHqYa2j1dYOMMGqxg@mail.gmail.com/
+> [2] https://lore.kernel.org/linux-scsi/20260704-b4-scsi-v2-0-7d2d21a810de@kernel.org/T/#t
+> 
+> I apologize for this messy reply. I thought I had added the context, but
+> I didn't.
 
-Applied to for-next/execve, thanks!
-
-[1/1] x86/elf: Correct comment for STACK_RND_MASK()
-      https://git.kernel.org/kees/c/ab11176bd3a7
-
-Take care,
+Do you want this to land via my tree or via the series Mike is doing?
 
 -- 
 Kees Cook
-
 
