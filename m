@@ -4,87 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50B70C531CB
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 11:39:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6728C531CB
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 12:00:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 35D386B00A4; Thu, 23 Jul 2026 07:39:31 -0400 (EDT)
+	id A60D56B0093; Thu, 23 Jul 2026 08:00:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 335AA6B00A5; Thu, 23 Jul 2026 07:39:31 -0400 (EDT)
+	id A394B6B0095; Thu, 23 Jul 2026 08:00:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 24EA56B00A6; Thu, 23 Jul 2026 07:39:31 -0400 (EDT)
+	id 94FD96B0098; Thu, 23 Jul 2026 08:00:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DABF26B00A4
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 07:39:30 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5DFD31A0476
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 11:39:30 +0000 (UTC)
-X-FDA: 85019846100.17.0D219DC
-Received: from lgeamrelo11.lge.com (lgeamrelo11.lge.com [156.147.23.51])
-	by imf07.hostedemail.com (Postfix) with ESMTP id CE20E40007
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 11:39:26 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=none;
-	spf=pass (imf07.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.51 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6DB7F6B0093
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 08:00:10 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E1497160480
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 12:00:09 +0000 (UTC)
+X-FDA: 85019898138.15.E36F427
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 14B5640009
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 12:00:06 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=MHyabGz3;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf17.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784806768;
+	s=arc-20220608; t=1784808008;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=beah4yPiJA7BeEtfLv4r45Ojuj4UkjS5TshRQRqSqmM=;
-	b=DV9dpRBJ4F7AybFHpsIs/SFBLkJuWLo6NFKzau5HT8GArfiMDjfaoNfGzFr9tnuM3KJw4l
-	6zHUHyyLZqJLQZte5gg7CQ6ohwmxNSw3KXthCf09gg0wR+K8QHyUvwfuT6UhAU/KuUw7/1
-	1h/yE71iReDk5UbZ+gS0asuubq8rM1A=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=c4hElVqmYpqUsdMIDfblHdUXoaZAp8PegjmWKWhCfi0=;
+	b=f0PFWMOwGyUo9rrhDoUKhhxEmWx0BbWqA5JSo3S9kDMUQZg6aLYdpR9wU/oOvpDPVPGTTZ
+	kMImUUCuhxAPhrVhzYmqu0IsKCkdH9nxTGWMhxqalJ+CRGBNAxNPmjVjSRBeg3dhvJsMGK
+	NZwDSbDxt23F8L6g0MBDRUtDo8FCf/I=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=none;
-	spf=pass (imf07.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.51 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
+	imf17.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=MHyabGz3;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf17.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784806768;
-	b=AbxK7O1JPmxii0NOkgwEvtus6hDYWF8OzXNJoHqEQzcZcsgjlINVrLWsCNyfKqcRgifDt4
-	UEF4CjbURQLAqe8Frflgmh5HG8jWkKztyeSTZONdtoamOSF7cw/0Oh/ySSSlWSgBnFwFh9
-	TMVuWOs9KNUqavk78CJRkm4kok6URv4=
-Received: from unknown (HELO lgeamrelo04.lge.com) (156.147.1.127)
-	by 156.147.23.51 with ESMTP; 23 Jul 2026 20:39:22 +0900
-X-Original-SENDERIP: 156.147.1.127
-X-Original-MAILFROM: youngjun.park@lge.com
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.1.127 with ESMTP; 23 Jul 2026 20:39:22 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Thu, 23 Jul 2026 20:39:22 +0900
-From: Youngjun Park <youngjun.park@lge.com>
-To: Johannes Weiner <hannes@cmpxchg.org>,
-	h@yjaykim-poweredge-t330.kvack.org
-Cc: akpm@linux-foundation.org, chrisl@kernel.org, linux-mm@kvack.org,
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kasong@tencent.com, mhocko@kernel.org, roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev, muchun.song@linux.dev,
-	shikemeng@huaweicloud.com, baoquan.he@linux.dev, baohua@kernel.org,
-	yosry@kernel.org, joshua.hahnjy@gmail.com, gunho.lee@lge.com,
-	taejoon.song@lge.com, hyungjun.cho@lge.com, baver.bae@lge.com,
-	her0gyugyu@gmail.com
-Subject: Re: [PATCH v10 0/6] mm/swap, memcg: Introduce swap tiers for cgroup
- based swap control
-Message-ID: <amH9alaO97YqT8pY@yjaykim-PowerEdge-T330>
-References: <20260713025644.170839-1-youngjun.park@lge.com>
- <amDCIl51NoNPL7Op@cmpxchg.org>
+	t=1784808008;
+	b=sOowjjFz0mnPfoRNmn0IU11lw5WXtluptuKzU01YZWSJw4tX27sy/Ge5nE8TFcvV8ZJKJm
+	OXBT5Prqvh2KE2PQ3SSLdyU9OyKnD16C1HKcPD6cwFditNQKulgmYDOyaq3rt06CMPF6Ur
+	beGx8QGHUK6jKvEbyfn8QCHoTic4JrM=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=c4hElVqmYpqUsdMIDfblHdUXoaZAp8PegjmWKWhCfi0=; b=MHyabGz3a+YQkwKLmY93en+C9q
+	V3KyBg0TsuClrun8CjqP00/AdTEnKuRdi0xjGvsJ0thjHbQPuiMXgPmZu/3ticfErRaRG+XTDJg31
+	WqoM4h3w8B/SknpDK78zm6lk+beGWfs1oGFFRDgoUSS2yVqDFVGNDBiTGCGiIPNmGY5YJ9WqQIh3R
+	b3Bmqvmn7Ejq0BXm+oMUDJuRBiYdLpERczqWZwKrLGutLbmpZRQtmt6saykl6+AOnzslJi43hJjit
+	VBeX/GbxaWFqD8g6BNzaebWGbKWvRQwBtIoi3TS90ETdg6JGTLyAboSWSBi7IslW/LgW785QvN8Nw
+	uB6TxpWw==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wms5p-00000000S92-3D48;
+	Thu, 23 Jul 2026 12:00:01 +0000
+Date: Thu, 23 Jul 2026 13:00:01 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Qu Wenruo <quwenruo.btrfs@gmx.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
+	linux-btrfs@vger.kernel.org, Qu Wenruo <wqu@suse.com>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+	David Sterba <dsterba@suse.com>, Chris Mason <clm@fb.com>,
+	Josef Bacik <josef@toxicpanda.com>, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, linux-s390@vger.kernel.org
+Subject: Re: [PATCH/RFC] btrfs: fix folio lock leak in writepage_delalloc()
+ for folios dirtied behind btrfs' back
+Message-ID: <amICQYTK9Xu4KLtH@casper.infradead.org>
+References: <20260721191152.101118-1-borntraeger@linux.ibm.com>
+ <20260721191152.101118-2-borntraeger@linux.ibm.com>
+ <b226a6e9-fef2-49bd-b17e-9f9b015626c1@gmx.com>
+ <83290932-cb8b-4741-bff0-6a7d8df2c637@linux.ibm.com>
+ <224d56d2-fcad-41bf-afe3-6f5f5108172a@gmx.com>
+ <f12f70e5-d84d-4a9f-ac94-693be4c863ac@linux.ibm.com>
+ <amC-J7yzwk4Z5tHW@casper.infradead.org>
+ <ad6eebbd-07f8-41ce-b04c-edd50d91a6e3@gmx.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <amDCIl51NoNPL7Op@cmpxchg.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ad6eebbd-07f8-41ce-b04c-edd50d91a6e3@gmx.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 14B5640009
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CE20E40007
-X-Rspamd-Server: rspam01
-X-Stat-Signature: 3ibrb5t4pi6wwm7n3tj8e7bftdhp5ioc
-X-HE-Tag: 1784806766-456143
-X-HE-Meta: U2FsdGVkX1+w5RVn57VCdmHQZn2cMq/N9jChr7R+yB7/2dz+3lP0WTVN1BjH/MwQ2QzMbpeS54zvrZUZXasBIIMUHWIRybZbpT1Jn3d/2oTVmzFn2y/LGz7Wu9EAFDzXhrm8MYnnkqj0dP4i42LxAgzkGaizP9JoixjaaDTUCsPYl8JKV8+M4z2pmiyx/mYoni3fvl9U9kaGqAikFyrXZoPV8emQO+ITByKM/jk4YPIU6d68lU7Wlgb9Wugy4geJv0rwaRLE3uxbqWSwkTzSDf+ol2wVcxlzlaEx+5KHbvxPj2A0WlwtObayLJ1ZoXcAFPW7NcbdRjIdsN8QJaRZJH65K1220IGUkG2A/5pieQSAnCIDEAL7gGP0b6cHJo46Su4IPPOXRNrRgkZL8KwPoJTPWjn+cQrxidzAsVbwhMBP53Nur8/iQHgTKZ4lVJc93ACUbL2FkKOcbT532gMwZfc8ww6gJTWy1o1o/0kYBsmIe0rNT0t/8YaLLXf12feHbolKCnjSKXJsvs9pt98TG7+TJsWFaqebWP7XWsdjnbBSBKJWI27N6MJtn15uiYrT4UIZDrIG4nH+52R+MJ0anwBjXuS6uonFBXIQhmHL3uzW9jWjzFb+HV4qHQadpbqae+xhb+l89SGHqH8ZtQ20b1xUgrcIQ8fbnk4l2bPLOiQxNHtOOGryp3zy6zZsN5JRlAxJnfjowu7I94QWBP9vWGDhJMV6gZ8HKQmz8K/sIZvfqGpwaRATc4Y1t4w5/Q47eqXJLPe0F/iWd3pj8I0XMH5UQ/jP4yAbOYMU9kcMKZ9U27GvNMTFrOUKsdQyT4gnHAUye4DOcLRfglIWal8oTGtyqc7EoXwVIaON7vNSmfp3F3Z6w3wFze6uoKW7gvZrfRRmc6BIJUQ5yxpEKonxrpE/nR9eKgLp1jHtZlB4URg2+EAC1+JuKZSkG/dshVB4eE/GtyVtX6ngwsXaSNL
- gekKjqNc
- 5Ex+GjUiKYI6qRbl94Tl0eANkKsLFPX7UoXodWyyWnjthjgCk/9BIOd40y8kfH+PxipxB4iF0rmQtaBF2fn/z4jKoIZFvP5PiTkCnm4NNngCqNDNPeejE35d3WYNvw6Mzdd/53xsASeB0lstSqCwuTvL9kiUcwGAvTifIhI3mZojsrEoOVT4o8sF3d3TFhCZlUxKmv7QGioOBDdL13GqI4dnztLt0ezk2wO8CUpXdOkiakaenW/w0JLHngxxLXEMN0gg1
+X-Stat-Signature: qnob6wobb136q4648numidsogmrkdxw6
+X-HE-Tag: 1784808006-670334
+X-HE-Meta: U2FsdGVkX1+BN3upERoEx+wAJG8E2D54DuIE2c4QDpMmQyTt2PoF80b2EDQFPTG03Ns39khvLra2VXJsonqxFBkXy5zj/HfUVknmjxtalL9gJpfudibqvg8ya7vgmcKuc082VMXTP+VSpV3MdX0CG1oH8VjK71jpymUozjZ3C2ZzMKnEGmVQ9kznX7NSWmJ02G2fhmTrvgg06acUBT4l0l2yqnRqRnu0RbTVt2/11YuCCBCIeO4YWgVTHtUrGov0cH3bcPQaEbCXO0NXRIOxEfOBsuWFnrt5NSA5lDz0GooPy3kAjzz4jD9J52uIIqJiXt5cVv3nPEb+vhF71UTeNodx+j7WUbtdkL+ytJgXeXFkRXx6b7b+Ggx44ebGXpdjzMBwXEEXvGHxiO4YathbB8YRFNMpFdskQuzIE7IDwr6cmWszHgL1suNSI1OSCl8U7fbpL4hO1s5VbRSGXhN8Dvt7AvNeukXorV0g6McNEnIrrtM290BqD46KrCLtMfpx0AY/HbqHt92xf38deLZwCQfMGXh3dsxV5KT+QWLLvABg9IDqAAQXZqEmaTZ4bTvShHp6DPXomGHQ/iLzKOXVRh/aG6yzVMWpxETksuFT6cEnhP2v/TTACf/67S5eAj569Oa2wCsr9prkPfKL9vQaDAhfdbx2AFclB0poqpSXpWKxnuLty5v8t2PfdQv2nBXtgfbrCCmRiU5ZCkV4zoa1bDlXC5qni0Ljiv9+Z0yI/1tFN2SHpyp80RNUJOjqfcKCj9EzKfeG0H+PT5VYBrNslkoavt/Tl1KWgNd9HywUVWdFjsHlDQg9+Wv/+p/Ur6LjXk0arKac6+TfmijKT8CcFSDNdSO/cZz3oI6J8uAKRdH0FdJ3QSjVm3TYqGkhKqlgvgEHZ77eBuUkHYwDi8mrejgq60ZZLr6s2tQwplsYsgOpanMdFxCu9fQStLpPxQfz2llzVjOhMQlnADEzEuB
+ l/7KzTk7
+ B/PWp+ZSvtfdiVLIu8u97m7zWqaPtFBKBgPXAapr5wdcjX+I41J3dQ3WV9tZlay0LAUSa0Uhtpp8JLmiyJgyloJIblEVrHY2c/180612xkEhUXemQKAtoP1Iumu8Y9SxR6qWI/U8JfR6kHekv3P0hEXQXeblgSfOSoDbPhiTmiN+9WTO9qpuZtDGqqwhWC7o2r1aH3FUGpXLLDWH6Prnx7YQAKTTOCsrysQnocykDF0Ajk7LYY2kvegjo/D7znreWwBOPIHugf+iSmncD0ksWtPF/izBuGvzaHANrLbVzJ9IruX7MAWhfmN7OmU/ifmww6VJhFWz3WHXeCtFUAH6YX4j7ij/bqOSh9iEy5TQc8+lQro5DPPsjn5tlZRgdUhB8mri6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,92 +103,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 22, 2026 at 09:14:10AM -0400, Johannes Weiner wrote:
+On Thu, Jul 23, 2026 at 10:12:27AM +0930, Qu Wenruo wrote:
+> 
+> 
+> 在 2026/7/22 22:27, Matthew Wilcox 写道:
+> > On Wed, Jul 22, 2026 at 11:29:36AM +0200, Christian Borntraeger wrote:
+> > >   *   4. Thread B loops sync_file_range(WRITE|WAIT) on the target file.
+> > >   *      Whenever a full clean cycle (clear_page_dirty_for_io(),
+> > >   *      writeback, bits cleared) completes inside thread A's
+> > >   *      submission->completion window, the completion-time
+> > >   *      set_page_dirty_lock() hits a *clean* folio: filemap_dirty_folio()
+> > >   *      sets only the folio flag and the xarray tag - no btrfs subpage
+> > >   *      dirty bit, no delalloc reservation.  See the 20-year-old comment
+> > >   *      above bio_set_pages_dirty() in block/bio.c describing exactly
+> > >   *      this ("other code (eg, flusher threads) could clean the pages").
+> > 
+> > There's your problem.  filemap_dirty_folio() documents that btrfs is
+> > doing it wrongly:
+> > 
+> >   * Filesystems which do not use buffer heads should call this function
+> >   * from their dirty_folio address space operation.  It ignores the
+> >   * contents of folio_get_private(), so if the filesystem marks individual
+> >   * blocks as dirty, the filesystem should handle that itself.
+> > 
+> > fs/btrfs/inode.c:       .dirty_folio    = filemap_dirty_folio,
+> > 
+> > so btrfs should have its own btrfs_dirty_folio() which does whatever
+> > metadata updates it needs to and then call filemap_dirty_folio() to
+> > take care of the page cache business.  See iomap_dirty_folio() as
+> > an example, but many other filesystems also do this.
+> 
+> Thanks a lot for the advice.
+> 
+> However it looks like the sub-folio dirty block tracking is a little
+> different between iomap and btrfs.
 
-Hello Johannes!
+My point is not that "you should do it the exact same way as iomap".
+Rather "the dirty_folio op is the entry point to tell the filesystem
+that a folio is being dirtied".  And you aren't taking advantage of
+that, you're just calling the VFS so the VFS can do its own tracking.
 
-> Zswap is a first-order swap destination with writeback semantics. The
-> way the discussion around zswap has been going in this thread is
-> disappointing, and I don't feel comfortable adding permanent user
-> interfaces on this basis.
-
-I have given this a lot of thought. First, could you clarify exactly which
-part of the discussion or consensus makes you hesitate? Understanding this
-will help me re-evaluate my proposal.
-
-To make sure we are on the same page, I would like to share my thoughts and
-vision for the present and future of the tier interface semantics for your
-further consideration.
-
-The interface should provide the swap amount allocated to a tier and allow
-the use of the swap device defined by that tier via swap.tiers.max.
-Currently, it would only support 0 and 'max' (essentially on/off for
-explicit usage). Auto-demotion is planned for the future, and specifying
-exact capacity limits is still to be determined. (I have also reviewed
-potential interface collisions and duplications based on Yosry's guidance.)
-
-From this perspective, zswap currently cannot exist as a standalone tier. It
-resides in RAM when allocated and borrows slots from other swap devices.
-(If all tiers except zswap are turned off, it is effectively the same as
-zswap being off, meaning there is no zswap-only tier.) The zswap writeback
-interface essentially leaves only the zswap first tier enabled by using
-other swap slots. Virtualized swap should solve this in the near future.
-
-On the other hand, in systems without zswap (like ours), this situation does
-not occur. Allocation and deallocation depend strictly on swap priority,
-avoiding this contradiction. (While it might be possible to implement the
-tier interface only for !CONFIG_ZSWAP first, I abandoned this idea as it
-seemed unpromising.)
-
-In my initial review, I considered creating the swap tier interface while
-excluding zswap configurations, even if zswap is present. From zswap's
-perspective, it acts as a first-order swap, and other tiers operate well
-according to their original tier semantics. Once virtualized swap arrives, we can
-open up the interface without any contradictions.
-
-However, virtualized swap might be toggled on or off (at runtime or
-compile time), we must still account for zswap without virtualized swap anyway.
-There is also a possibility that the initial overall picture might seem
-misaligned until zswap tiering is officially introduced. It looks like we must
-care this case on the first stage.
-
-Therefore, I decided to follow Yosry's suggestion. Since a zswap-only setup
-has contradictions, we initially considered removing user visibility
-as possible as we can (returning an error for unsupported interfaces).
-
-Because the implementation is a bit tricky, we agreed on an on/off toggle
-for this first baby step, accompanied by detailed documentation so users are
-fully aware of what a zswap-only tier means.
-
-As a result, I reviewed this direction and found it does not conflict with a
-future zswap tier. When virtualized swap arrives, the design will align
-perfectly, and we can consider making zswap a proper tier.
-
-One thing that remains undecided, however, is zswap tiering, which is not
-yet fully agreed upon by everyone and should be discussed at the next stage.
-
-> We will not be merging a memcg swap tier interface until the swap side
-> has a story for indirection and backend migration.
-
-Regarding this point, is your position that an indirect layer (I see
-this is virtualized swap) must be implemented first?
-Or do you mean we need community consensus on the overall design before proceeding?
-I believe our direction is set toward virtualized swap, but there are still some discussions regarding
-implementation details.
-
-I would love to hear your thoughts. In the meantime, my preference is to
-proceed as discussed if we can agree on the future direction. If more
-discussion and design verification are needed, I am happy to follow up and
-address any concerns you might have.
-
-However, if you feel the tier concept is premature, I would like to hear
-your thoughts and others' as well on a fallback option. We could add
-per-cgroup swap control in debugfs for now. If we need to scale back, we
-could either keep the swap tier design internally or drop it entirely,
-implementing per-swap control strictly for our specific use case. We could
-then revisit this as a primary use case when swap tier discussions resume.
-
-What do you think? I would appreciate hearing everyone's thoughts on this.
-
-Youngjun
+> E.g. iomap will mark the full folio range dirty even if the EOF is inside
+> the folio, but btrfs will only mark the range inside EOF as dirty.
+> 
+> 
+> Another thing is, even if we follow iomap to mark the full folio dirty, it's
+> still not the end of the story.
+> 
+> We have other supporting mechanisms required to tracking the dirty range.
+> E.g. EXTENT_DELALLOC flags inside extent-io-tree, indicating we have already
+> reserved space for the dirty range.
+> 
+> Only with EXTENT_DELALLOC flag set, we will do the real delayed allocation,
+> allocating the on-disk extents etc.
+> 
+> So even if we always mark the full folio dirty, the writeback path will not
+> handle them correctly either.
+> 
+> 
+> Finally, even without large folios, the reproducer can already cause
+> problems on btrfs. E.g. on x86_64, with mapping_set_folio_order_range()
+> disabled.
+> 
+> The symptom there is that, ordered extent accounting underflows, which may
+> also contribute to the stall observed.
+> 
+> I'll keep digging for this bug.
+> 
+> Thanks,
+> Qu
+> 
+> 
 
