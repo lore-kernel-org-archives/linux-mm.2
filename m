@@ -4,137 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6190C531D0
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 18:00:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B711C531CC
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 18:21:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 64ADE6B0092; Thu, 23 Jul 2026 14:00:26 -0400 (EDT)
+	id 11BE16B007B; Thu, 23 Jul 2026 14:21:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5FBEA6B0095; Thu, 23 Jul 2026 14:00:26 -0400 (EDT)
+	id 0CCE56B0088; Thu, 23 Jul 2026 14:21:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4EADA6B0098; Thu, 23 Jul 2026 14:00:26 -0400 (EDT)
+	id EAFEA6B008A; Thu, 23 Jul 2026 14:21:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1AEBC6B0092
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 14:00:26 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 90F1EC012D
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 18:00:25 +0000 (UTC)
-X-FDA: 85020806010.22.45C2900
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 8E6332000D
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 18:00:23 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=JC0jEv5y;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf03.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BFE8C6B007B
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 14:21:21 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 337EC16014F
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 18:21:21 +0000 (UTC)
+X-FDA: 85020858762.24.011C8BB
+Received: from sender-pp-o91.zoho.in (sender-pp-o91.zoho.in [103.117.158.91])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 7D7904000E
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 18:21:18 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=zohomail.in header.s=zoho header.b=xFbhv7mg;
+	spf=pass (imf11.hostedemail.com: domain of adi.sharma@zohomail.in designates 103.117.158.91 as permitted sender) smtp.mailfrom=adi.sharma@zohomail.in;
+	dmarc=pass (policy=reject) header.from=zohomail.in;
+	arc=pass ("zohomail.in:s=zohoarc:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784829623;
+	s=arc-20220608; t=1784830879;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MUxCdbGeWaQGh+LoYEwItBt1n3zOg3U69kYn+XJ9Jdk=;
-	b=q/pPwrFXghSR7gJrHDX4K8zaUrTrPZA7jmfobyS1rBVEoLHFLOo8F0Em5O2RUs/IUf48dK
-	XQbS2Jfu18FuhqR7UWlPqhhT6wGp6TB6siQK9KOtH//phggr2CI6Z5hz5yKN1l8rT6QGW4
-	A+AXcvT2Z1KjeM3/g6Z0sv38xlkaWoQ=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=JC0jEv5y;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf03.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	bh=pfQDPqw11mCJJji2f0Nti4HsEvZmmxB/+DvabiWGe4o=;
+	b=N8Xi2eFcZAyWeEuloYvD+gbPM9SerhjVx2DE9qQXS0WW6AZW1mfFHqm04cY50vwoJGk/SS
+	T6PuuOgTqMWzK7RZ5jhnmlS5ssFqlR8qGiA5UG1ZNMWI4W8aqQvhRvxcCO9ApIbe2gT0AO
+	1yM5dxla9KIpeUCkoCZHzG0kl1tvbRM=
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784829623;
-	b=hUxmSm4GmuPJe/1XP6KHri1WH+FAMmiUMs25izhbqHV+YZRYuh1mK21haQcBwj61/5lD29
-	HA+vKCwLlKxWwqXptSGGDw37ffw+y4GE5X6ZelGocRtRUdpG+wbQRJQCGG82ykOHuF25U2
-	zN2UxE8JSpvonMFG1QXrcBiGlRyzjCw=
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-c15e03c2763so140206366b.0
-        for <linux-mm@kvack.org>; Thu, 23 Jul 2026 11:00:23 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784829622; cv=none;
-        d=google.com; s=arc-20260327;
-        b=S9YTHgGndGsVTDp7s7l1TwN87tqEAh7qMt4d3515NuO2+CJDZAlEk2zfY0FkVdloiX
-         HIzW4/FjDTY+1JaYCnpkg/Ce+y79KttZcd4bZLgCZD13jjt4c8mmGpbkEYyqFLSLpvbc
-         rbZsWK4LE8VfiGHPNVM6sgHBl7NhvIb+T0Ygdt/69jgJp70a9JRouccnYbDoVPihUl0f
-         eWR+FsIszUw5Tl/TmMe81fCVRN0OCwcvJCiAVv9FFDsqgOz70keVNzB6WLMd9QD6SZEN
-         IkYzAkWVXpjOC6hMzyK5ydQa+KAG3FosF7lEazdeKEg5Z9L55fk2x1gfY0hE3xt5Pnd/
-         J/Iw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=MUxCdbGeWaQGh+LoYEwItBt1n3zOg3U69kYn+XJ9Jdk=;
-        fh=YQTqChsSDSY/aKTsPYMsVyB1bk23kgHg7GE4hmyRXAA=;
-        b=Kedy/TUjurSk21ANksPk5uuKNpZaFEdXOq1D7hiu0aDat1OZuqgUuZsgqBwuKv0jCl
-         SQ0ApIeNe16H21e1hKSM5eXYnmjeYKw7+4atnNWPy8eUqWBR8uBGNTcmz/ptyQoOo8QL
-         p9UA2Tth2mukQI2I7C+r+vYb9lVJh/uTJ7DhIxtYpeIXjg0PGtv3MMBrHXvPZyOMgBHn
-         BCzAIUxnDELA6VHTRHGwUbz1gNiNBHe6GjPUxWd3f8+kIlIdbHggi+xou/LUdq5VHM3U
-         SuYrgzIKMkc/joJKT1LVz23Uoj3jLptXUMiq5hWeHOxxAydHgQ+zx3cj+BrgBMWMnk/L
-         wtvA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784829622; x=1785434422; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=MUxCdbGeWaQGh+LoYEwItBt1n3zOg3U69kYn+XJ9Jdk=;
-        b=JC0jEv5yCyS5FnssZ9jw31z60QEtwUrFscoWsiN0yU9Jy2Ak6vk8f8idxX2gfbahvG
-         UaaLvn3AeNXcyBHLbxZpN1BuBeW8sbaNOdl6fIyvu5Mu81xbiC18bMoPR/GOlcDDrh1Y
-         3HCAcfASaz4jHBmTZrLXLKcGYhNLZTTLyaPVJ8sDsNv183y2COde3/dTKydw9CW+JP89
-         9MM9dsn+0PTLMR0P2xavrfLzbtMrAeT++yvqdohJv9FXRjizplV91RZxEXv7BJQbX7yc
-         FrXujX+UwFHXz6Uk+3QkI3HktZRWNpfpZJzeCnd8yinug9cE3BspPz7KS6suGikghwoE
-         Xp0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784829622; x=1785434422;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=MUxCdbGeWaQGh+LoYEwItBt1n3zOg3U69kYn+XJ9Jdk=;
-        b=looqeB3B0BMkIQseagJvROtr8x8ENLyax8tnxRqjnMakude4ACh0o/FUtxGr1o+4WV
-         axbJCxO5diF3kFS+jek2/rqe1iTaTKslmukHtTfnFxYBO+yoaj2AW9oh+itn30wS73j6
-         J1yk/xyIU00NetG+mIWAvUcYiHRHQEsXH8JHrUgF4U5l2wpIjQU3/oPcF8WMrr29a5n3
-         kd6tn9zWmFTXwRD8HDDzVPjJ79zVD29KrHFDvkaOJzCXbxfPZiXQBSnOe9CzN6LyjOKR
-         YE+mvHCkuctkz/gBIoC/8tdxaoRBSvESCdGxsJ9h9OiMtoDriGCAJ64mqrPtyMYygaDS
-         oArw==
-X-Forwarded-Encrypted: i=1; AHgh+RrGkrUKeT8Z/Prfyi5mjhQ64+ZZHq03BV4Txv07xKQ0XndKHsF8O9IkyGXMJzBqlQ1wrrwoGS7sXQ==@kvack.org
-X-Gm-Message-State: AOJu0YzHELApMhpvbJA/eEoXOD0Gh6MA6eik/b9rCDXJTr37m2/CVFG+
-	Qo+I2MMXD5+PWXkYpl5u+WAdg6BuD/0jvnZhnHRC/H367e9xieSy8WFAvIXHnYxDILHYD0hEPRy
-	RjTnAobFcogmR7W452cQXTb4RgEg3iH4=
-X-Gm-Gg: AR+sD11kAQG2p+npiDSehBvZ2tZ3/9uuQnX1q/hmaf8SIZ5VYP8TmSg41OLMU6r8UGe
-	e1d8/nexhp2bOyjJdYuzgkApcMlcmLsBWDZMJonzMhyi49+6Tl3n9tmm6awMCsKww0e0gbRjoow
-	I7zuaeoHkXHMfshEL4n5lzfb/S0e45I0fQL6GIWkFkRnHA+fUJ/A/BXlcmxe457PYP39liejsKs
-	EMTMNxdBT/XP35WJAmzkL5gZUeBZdq2d4xPsBYYX8Yv2Q+b5SgXPPrEItesQ3j2EZxuL0tpCwFW
-	I7e6WQXs6nedH2eHR5w=
-X-Received: by 2002:a17:907:9619:b0:c19:891c:e1a6 with SMTP id
- a640c23a62f3a-c1c536c8d6emr180399366b.12.1784829621600; Thu, 23 Jul 2026
- 11:00:21 -0700 (PDT)
+	t=1784830879;
+	b=aD6GrDfNV1OoFASVuvb8/Yi9tmCNlMlTmR3BC5vK4e9zN76uUOEVkfS7E5Cpv8KTZMKmml
+	wa1+o8kSjvMJc3Z47PWe8egPgxcApfPimsfdLVfcP3FPgeib9dVn50PuV2vQPKFp2t6v4z
+	89VTm9l2U+UuxUqPI4dB3W5EK9b4MSM=
+ARC-Authentication-Results: i=2;
+	imf11.hostedemail.com;
+	dkim=pass header.d=zohomail.in header.s=zoho header.b=xFbhv7mg;
+	spf=pass (imf11.hostedemail.com: domain of adi.sharma@zohomail.in designates 103.117.158.91 as permitted sender) smtp.mailfrom=adi.sharma@zohomail.in;
+	dmarc=pass (policy=reject) header.from=zohomail.in;
+	arc=pass ("zohomail.in:s=zohoarc:i=1")
+ARC-Seal: i=1; a=rsa-sha256; t=1784830836; cv=none; 
+	d=zohomail.in; s=zohoarc; 
+	b=DhTCt/0+nbXkNrT16r/mYqwaIRGTbMZ2tJRdYDK5WwZpUIEEeJfZUR1W8jfmfNoMMYsi5G+xb0qoVG87YDr13cjS99F4mDYQEDHrcj7JVaJOKxPRHHOnG3J7xdlvZpsL9SCgT0rbN8ZCgY7x4hsBF62uyMsPvu+G5eB20yYGS7U=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
+	t=1784830836; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=pfQDPqw11mCJJji2f0Nti4HsEvZmmxB/+DvabiWGe4o=; 
+	b=bPYqK4TEtuGlf1Iv7tE1PiEybXOUGlCAEw7gRZ/ZLlxLhPVmtiOrDRuoEOxPP4lQNBxSRmmQ8+yQwkLR5WXBe6zAqgWajaQ7EZK3lPTbbFChZ1e8Sd0megUTWMr/Bh86mPSic74axVVNcWs3QEzfwEx3bu7jKTRange6P9Ey/EQ=
+ARC-Authentication-Results: i=1; mx.zohomail.in;
+	dkim=pass  header.i=zohomail.in;
+	spf=pass  smtp.mailfrom=adi.sharma@zohomail.in;
+	dmarc=pass header.from=<adi.sharma@zohomail.in>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784830836;
+	s=zoho; d=zohomail.in; i=adi.sharma@zohomail.in;
+	h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=pfQDPqw11mCJJji2f0Nti4HsEvZmmxB/+DvabiWGe4o=;
+	b=xFbhv7mgSE7zUFuoNZQrs81/lHXApMTmweZPcKCYwIOBAXqXUm6t+CFpPOy/2oco
+	OQM8TDoLXmcxXoWM71ua/6HiyPvdT2BsNPin5Zh+xtkyM9VEOLNNBO3qzIYpGriqC93
+	o2iv/A/Flgm2LP5+bHEg0TmCDbDQ+4QqI2T6x4vc=
+Received: from mail.zoho.in by mx.zoho.in
+	with SMTP id 1784830836074875.803576409499; Thu, 23 Jul 2026 23:50:36 +0530 (IST)
+Received: from  [14.139.128.54] by mail.zoho.in
+	with HTTP;Thu, 23 Jul 2026 23:50:36 +0530 (IST)
+Date: Thu, 23 Jul 2026 23:50:36 +0530
+From: Aditya Sharma <adi.sharma@zohomail.in>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: "Andrew Morton" <akpm@linux-foundation.org>,
+	"Lorenzo Stoakes" <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	"Vlastimil Babka" <vbabka@kernel.org>,
+	"Mike Rapoport" <rppt@kernel.org>,
+	"Suren Baghdasaryan" <surenb@google.com>,
+	"Michal Hocko" <mhocko@suse.com>,
+	"David Rientjes" <rientjes@google.com>,
+	"Shakeel Butt" <shakeel.butt@linux.dev>,
+	"Jonathan Corbet" <corbet@lwn.net>,
+	"Shuah Khan" <skhan@linuxfoundation.org>,
+	"Steven Rostedt" <rostedt@goodmis.org>,
+	"Masami Hiramatsu" <mhiramat@kernel.org>,
+	"Mathieu Desnoyers" <mathieu.desnoyers@efficios.com>,
+	"Kees Cook" <kees@kernel.org>, "Ingo Molnar" <mingo@redhat.com>,
+	"Peter Zijlstra" <peterz@infradead.org>,
+	"Juri Lelli" <juri.lelli@redhat.com>,
+	"Vincent Guittot" <vincent.guittot@linaro.org>,
+	"Dietmar Eggemann" <dietmar.eggemann@arm.com>,
+	"Ben Segall" <bsegall@google.com>, "Mel Gorman" <mgorman@suse.de>,
+	"Valentin Schneider" <vschneid@redhat.com>,
+	"K Prateek Nayak" <kprateek.nayak@amd.com>,
+	"linux-mm" <linux-mm@kvack.org>,
+	"linux-doc" <linux-doc@vger.kernel.org>,
+	"linux-trace-kernel" <linux-trace-kernel@vger.kernel.org>,
+	"linux-kernel" <linux-kernel@vger.kernel.org>,
+	"imbrenda" <imbrenda@linux.ibm.com>
+Message-ID: <19f90353d61.105539924624.2933593927158737842@zohomail.in>
+In-Reply-To: <d6c3eba3-c596-4903-b298-ac6f424d639c@kernel.org>
+References: <20260719185409.409685-1-adi.sharma@zohomail.in> <d1180a70-f4b4-4c22-9ce5-881cb0e2370d@kernel.org> <19f80cb1ed8.13fd666243425.2308143427066829733@zohomail.in> <d6c3eba3-c596-4903-b298-ac6f424d639c@kernel.org>
+Subject: Re: [RFC PATCH 0/7] mm: defer address-space teardown of large
+ exiting processes to a kthread
 MIME-Version: 1.0
-References: <20260722130615.3163560-1-hch@lst.de> <20260722130615.3163560-2-hch@lst.de>
-In-Reply-To: <20260722130615.3163560-2-hch@lst.de>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Fri, 24 Jul 2026 01:59:44 +0800
-X-Gm-Features: AUfX_mwYG6fMwqod_7vhQphcNSi4VFizKHSgiYv7Hwr5KRsNZH6h97bbms1Vw_s
-Message-ID: <CAMgjq7ArsgdKf-uZ_drQ9Kqtq4i_MMZ+dP+tjNzPrsrR0YPBWQ@mail.gmail.com>
-Subject: Re: [PATCH 1/3] mm/swap: revert to single-folio writes for
- synchronous swap devices
-To: Christoph Hellwig <hch@lst.de>
-Cc: baoquan.he@linux.dev, akpm@linux-foundation.org, chrisl@kernel.org, 
-	usama.arif@linux.dev, nphamcs@gmail.com, shikemeng@huaweicloud.com, 
-	youngjun.park@lge.com, trondmy@kernel.org, anna@kernel.org, sfrench@samba.org, 
-	linux-mm@kvack.org, linux-cifs@vger.kernel.org, linux-nfs@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+Importance: Medium
+User-Agent: Zoho Mail
+X-Mailer: Zoho Mail
+X-Stat-Signature: haczazoubin5ru9r7xigizr4c4411scj
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 8E6332000D
-X-Stat-Signature: y76sut95uisewjwx4q6ek4iyxusdjc4u
-X-HE-Tag: 1784829623-462849
-X-HE-Meta: U2FsdGVkX1+SqRqxabMNQAzNPHNInsaoKb4D3u101LehY52n9Ixx/lo6QvU6A/+SLXE+rKYRVHkRDX8HUBlUJQhMpBBGj+dUS4k67oUuoWIp7/MCwp03/N2nimcYqRKdv+qMAUSb/C1HlKg7P4ko1Zcfc5zdPJz8KCewI2Nif8F+MOWEi/0APFS4UGyPqr4cqfQn1qle2feyFCt7ZwajpM7pAJe5D5m8rPry1K01bqwEI4PrQTsihGueGgthCeo+BFuJ1P12Qgrh1qLAuDoli3lDR6gExU4+Jx4acjYsjcYcOPgfEkS22FjIr8nSiZ7HyrV0gADDqq+TdwUWDt7iBjGlVMP51HJKiFdk3+TRnVMFgjVhCDUBVkQ/MuFA7cjyko/8NmuiyF2RUjpM5DZN4gBHv2SCoI6fhzi6a+3BzUtyB6Yzx6BDc8ujAWxdP72iy3H0fH/gJeSI/Rgk1Fy5yb+gI9tgJ+dVOWLBswQ5k7ROV5oqspsMA115Aose/JZhfZ97qd3VP7LGvFiSzzBkt7+n3mc9IOMAPnP1PH3R7VkkKqnwZIoI51F9XNrgcSrIKjkv2hxKJifZwdRjSEEWLB7dakuj4JMx8P18e6wCgZ2XdNUmQkv+K5avWKwtexcSS40N4miH/er7VLWy36z+2WPoYB1PWk4B55c9ESKzA8hdQnvc2vJCWIysgCjgtwf21x2mRYXcN1p6TG9ArUqbZGKJvMbbTQv6rTGJM9nksxUqpl6wCwPkHgaXWuzJ2WXj3Y7Qfug47Ytmu9pVmgu9yDag4iKYW/dPb2ZWyC48P8A00Ly+o553PUcR2BkN4ccyIoBjC67XYwXKoeFRX7SKrYNbJEVvLVC+Cen5ux5aNqs8icKqTt2EnclV45aGRpwk7VUNSd0e9TYqS6bW5c4+iBw4qUMtKtjfM/Kq8yo6R7DCS0R91amQoFB2sycCEv3EXw/L3E0c+bFOh3saZ5Z
- KrP0LynD
- f1PDedP1zuYKaE0ZdUCaVltCZkUuq3YfS87ARu13iU82w1tVRzanNMDPs5+BPciwNFTmb8icKh0ykVVaHsniGTe4toAd5kwoqG2n2UkLcizrx9uqb1ksPbsgFGzjZLCdQK/MiRRMC491lkqKdaYw5u/yrMTf9wUn+dkFzswmPRHekG6xRcbXFvH+bZ1fFmP+WIcCTGlhpodRLFQ6A8Z8ir1lwVUf7FMRsvj2I6cAmYzAFMKzzrJOI7jSaaaJmYR85pCoBj9CGMpg+R38/yxxsB34WTsGd/yavhx+6FF55vV2rX6N/Ltm+/RvQZgPO9OadxpxgbYJQxba/9V5mPc5ADsBfY6J1qrCiapEZy0387mZxqD3bKL/e4LGLjGT4B1x4r0/K6MYD7BoAoU5jBzDWAf9qo9reDTkqJViz3Qv5n3pYcvo=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 7D7904000E
+X-HE-Tag: 1784830878-57210
+X-HE-Meta: U2FsdGVkX1/lAgNiNL62q81ZpxmjupSTwe640Cogdbhil0I/XdGRH0peenKyzjbNgRAJocYRiqDWRGdHetePqLc4ZmhHJ9j/RWGTKnItF4gYjOASKso2WKJU0hQN74/5rxogfDOsRS3He+loLUjPGQEXjs7AqRmSF49opkQep5y2WhJNaA7TxAClxUT3WWNo6eYnjh5gyz3GVhJWJvV8dBWymJv0apv7jxMd8NYiDIaAnwBz1tLFmVVSiU0rR4rfFNfFIUg6TlNnhlqiJcTr+yyDwdjFsvP53Qnnd0YZkDhM1dOODBZgMAjmVQ541Gbz5YJKryfw7D+OYwtb2Lvqsbm9NL4oIuPisY/jHchWU2+lXge6y70aTLPv0eS3yRTXoWv0ZFXe4Sey5oLizGPPNU5+JVJkVBA5P+InqgfBHUtayrvsslNLXs4LC3uHzveL5nft3jPV54mCUvnklYKvGHZ5N8eI1ytczo16g+AMul514UrnqSM1WI/tSpDxcPB5zrPvHUAt/zgxVVGd4F48bLdorsu+ZbmdUWOD9KFfUTl+HKwm3her/YcNyz1FACllGxTGIedgmqIkfMXxkiYbDJdGqSmFfNSbQu05D2Iif0YW2dy61OzCnvsGuKD68CsHELjaVmj3uwFalZWn4JVmOYGvo+W/mjMfUOJVCsrb1RJyGCQjr8Q4korQVwjMoBbBuQ4u0A3oQxKJEhu47hyBRtzSt0NyzhqhhzMCqjjQfDYPiram4KDpmiKbZ4CnQmFa9/OWT9qSWXzaKJok8wsa6wcwxdRg6nUU7uFpspJIXTkhYq2wMBME3P+D980ZFRYGvkkZEoGf1LtSXP76tv59sjVVtS23q+KoAgG9K3zrUlkglNbefPEgYI0u/iIeM1Zx+o9xgA3/dCzLxxVajReo1YtL6lO7nW1K7n7KUo9Evy+YjPvnpcefekXHQa8B8F6qrEHJx0YvYkkYsNkYsVH
+ SiBLy9EB
+ RXQDPIT1B/Lub75mWDpdP+uLYgx5LIfZDZYP1y4EhuMQIPRK9o72990qNunCFrwOWpHk6TGnJ/wpJqQqt4deJzT0Eaefz3BenjcYcqErdJQJsJBRiH4J5fMuKt7+eXeKe2B//GL70UimirHYu2XlcSKSJrUxhsXsvvlgGd8US6sWUQ4Mo+bCH8sUP3zgcZwG/Wc6vK5u8KUQSzuH9kLzpX666Czn1BQSa4WsSSZHunr/38huetlj1Z3wLzuikiRx7lLX8XMGJ9a28kZ8lbblpsFI9KGRVeeFlMcdxeJWzQebXYyfbhLy0BSK4O0CnqFa3cdH5v/kTc1lGNVg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,53 +129,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 22, 2026 at 9:06=E2=80=AFPM Christoph Hellwig <hch@lst.de> wrot=
-e:
->
-> Kairui Song reported that zram benefits from submitting each folio
-> directly instead of batching up I/O because the classic LRU scanning
-> benefits from clearing the folio writeback bit in the scan loop.
->
-> Accommodate that by kicking off reads for synchronous devices for
-> each iteration.
->
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  mm/page_io.c | 11 ++++++++++-
->  1 file changed, 10 insertions(+), 1 deletion(-)
->
-> diff --git a/mm/page_io.c b/mm/page_io.c
-> index e4fa7ffffe8b..c984a4023a65 100644
-> --- a/mm/page_io.c
-> +++ b/mm/page_io.c
-> @@ -358,7 +358,16 @@ static void swap_add_folio(struct swap_io_ctx *ctx, =
-struct folio *folio, int rw)
->         }
->         bvec_set_folio(&sio->bvecs[sio->nr_bvecs], folio, folio_size(foli=
-o), 0);
->         sio->len +=3D folio_size(folio);
-> -       if (++sio->nr_bvecs =3D=3D ARRAY_SIZE(sio->bvecs)) {
-> +
-> +       /*
-> +        * Write out the iocb if we filled it, or if the device is synchr=
-onous.
-> +        *
-> +        * The latter is to work around expectations in the classic LRU c=
-ode
-> +        * which make synchronous clearing of the folio writeback flag in=
- the
-> +        * reclaim path beneficial.
-> +        */
-> +       if (++sio->nr_bvecs =3D=3D ARRAY_SIZE(sio->bvecs) ||
-> +           (rw =3D=3D WRITE && (sis->flags & SWP_SYNCHRONOUS_IO))) {
->                 if (rw =3D=3D WRITE)
->                         swap_write_submit(ctx);
->                 else
-> --
-> 2.53.0
->
 
-Looks good, thanks!
 
-Acked-by: Kairui Song <kasong@tencent.com>
+
+ > CLONE_VM seems to work for the use cases you had in mind.
+ > 
+ > There would have to be a *pretty* convincing story why we would want more
+ > complexity in the kernel to handle this.
+ > 
+ > Some smaller performance improvements are not worth it.
+ 
+Having thought about it more, I agree. I have a workload of my own, 
+which as you say, I can simply fix using the CLONE_VM way.
+
+The only kind of user which the shadow process thing does not cover
+is someone who does not have control over the source of task over
+which they want such a behaviour. Here, the only case I can think
+of is operators who cannot modify or wrap the processes they're managing.
+I dont have that user.
+
+So, instead of further argument or sending benchmarks that would
+show a performance delta, does anyone on the list have such a
+use case? If not, I would consider my questions as answered.
+
+Thanks
+
+Aditya
 
