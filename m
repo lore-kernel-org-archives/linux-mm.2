@@ -4,60 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07CEEC531CA
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 11:30:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C779DC531CA
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 11:32:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B5506B0092; Thu, 23 Jul 2026 07:30:42 -0400 (EDT)
+	id 720416B007B; Thu, 23 Jul 2026 07:32:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 065A06B0093; Thu, 23 Jul 2026 07:30:42 -0400 (EDT)
+	id 6F8B56B0096; Thu, 23 Jul 2026 07:32:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC0CA6B0095; Thu, 23 Jul 2026 07:30:41 -0400 (EDT)
+	id 611A76B0098; Thu, 23 Jul 2026 07:32:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C184A6B0092
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 07:30:41 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4440D14045F
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 11:30:41 +0000 (UTC)
-X-FDA: 85019823882.27.32D8307
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
-	by imf16.hostedemail.com (Postfix) with ESMTP id F3F4F180010
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 11:30:38 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=GoUae43X;
-	spf=pass (imf16.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E0F56B007B
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 07:32:14 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id BB0AB160468
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 11:32:13 +0000 (UTC)
+X-FDA: 85019827746.07.796633E
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 96FDB140005
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 11:32:11 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="sdt/50cy";
+	spf=pass (imf26.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784806331;
+	b=dhJk8+oaiBJ/QaAN5YKtgKd60y62y7jx8wrk0nXVYPaHUL53l2arZGexn5a04t2aZ/yIla
+	kVx9a83ySTrYEt/M11nLbxYMLNSOwAoi3AnEHPGuktdaoc/zFzAiLbTrhvhWsiTvEmRcYT
+	sRplSj2AqPLLgjqh8i8iGP5oEwhZbso=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="sdt/50cy";
+	spf=pass (imf26.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784806239;
+	s=arc-20220608; t=1784806331;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZC7L0HZBSSBFm17jYwEmeIieyNJcmoqfrgZhjSok9hg=;
-	b=Yxb8mVWZM2R22Br4UWByUf0K8yAi/HAdVQWxeyMNRai8zH/mb8Q+fWQ+rDVL3anojdoGZX
-	GYOLzctjD3W/ir5DCrhsZFU2PYnx39Y2GNEPETGAWnFFD01cKziPIOEl8qocG4jz+vdGvo
-	45wi+koGeG2QjUAkSOpeYNeVIISvUz0=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=GoUae43X;
-	spf=pass (imf16.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784806239;
-	b=UQ14108AUbZlCRpZtMP0LJ2gOgafvECAffNbUquC9sAhxGwacWj5spmZYB3j5lJCMdAYvu
-	dyq1XTqrD474urpWrXLzVtKmtGP1akxdJeqTPY9TyAvHUFgExscyhIK8MlvNv26LZFEY4a
-	EcXu209tX8fyUS1BiETJAu9guivSICA=
-Date: Thu, 23 Jul 2026 19:30:26 +0800
+	bh=WnP3NqUZtZbK6qpmXn4nR86n/4NymHwsXkDtmWeZw10=;
+	b=hSMrEb4HRxe4RqJziuPna/cUnzpeZOLvqjQy5lWTDJli106tJmgk7mUXPwsyUCZ5CF2RBc
+	Ci6Aa/WlBopIuENSoEbqfXXNMraTX5AkrbSAFATjLHpleet0ylDWwlNUUce4sNWCNN08jV
+	rt8FSUs5oiRL+aCWkKYsD/1S6yjIOxo=
+Date: Thu, 23 Jul 2026 19:32:00 +0800
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784806237;
+	t=1784806327;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ZC7L0HZBSSBFm17jYwEmeIieyNJcmoqfrgZhjSok9hg=;
-	b=GoUae43Xjonc4DcNTjzHA93JSBkg6hHt+SWUCUVrHOIKOQJm+eYyqzu26Z7Wd9C408DAuO
-	7gwZOlFmYC2nYqR7H1enXuVZ/jEFOlHUet+5Ftg77v/C1ZbDuVbg0HLL7fGx4TwE937uM1
-	JsdwSMgj86xisBjw4x8dsyZOk0xJ6mU=
+	bh=WnP3NqUZtZbK6qpmXn4nR86n/4NymHwsXkDtmWeZw10=;
+	b=sdt/50cydds8v3DMxd2uH7ZtdEkILdbmxDkxAbvhnei5MJH/K0PpMQaT3L1tp1hphszyXP
+	skoflTDLjhC78zAMiVSByQf44kTodEcyOnlmshvAfId5F0DvbHFomEI63gCi556y1uY5ob
+	H/IBUM71PHZ8bhOvSKItfENMQMcklig=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Hao Li <hao.li@linux.dev>
 To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
@@ -67,24 +67,23 @@ Cc: Harry Yoo <harry@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
 	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
 	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
 	cgroups@vger.kernel.org
-Subject: Re: [PATCH v2 05/13] mm/slab: make slab_obj_ext() determine object
- index
-Message-ID: <amH7RRa2lG51viwo@fedora>
+Subject: Re: [PATCH v2 06/13] mm/slab: abstract slabobj_ext.objcg access
+Message-ID: <amH7ndu2TAd4ixKU@fedora>
 References: <20260720-b4-objext_split-v2-0-2fa7c6f60dbe@kernel.org>
- <20260720-b4-objext_split-v2-5-2fa7c6f60dbe@kernel.org>
+ <20260720-b4-objext_split-v2-6-2fa7c6f60dbe@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260720-b4-objext_split-v2-5-2fa7c6f60dbe@kernel.org>
+In-Reply-To: <20260720-b4-objext_split-v2-6-2fa7c6f60dbe@kernel.org>
 X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: ihaz9xfftxz3psmpj7maqt8o4pou6b8g
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 96FDB140005
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: F3F4F180010
-X-Stat-Signature: wixduf8d5s9mrmny533bnqu16b5j1yuq
-X-HE-Tag: 1784806238-635646
-X-HE-Meta: U2FsdGVkX189EuuS3BLkQJTvwN4kFW8K7wQXxEim38HQBzY5CLLjqcTqiDDHbwZ2v7oClCuTINRdyTn2ZUBykfyjYgtQQrsEWa3PyRZpYXWLTqDe6dXXBo1eRrTYmtb3oqjp9JvTJblBF4HOpjyXPsaZxnN8PwhBuoL1tcclHKvMV9nz/KNgUxwLQAFArwVkOys6uJwhoyCjdwfaB9PgbGhSWn1nqKpY0zBLhdo36HVKX6vyTQYP6BU/SvQsfjFj8O+FGeh7Icl7OSoVcMuUCazNFcsn/le3FfPLoXuuRO8qkMFqsOqgmJlJxsQGHrFafvnBslNLEOMi5DOazY5XNrpOVJ60RUmPD6OUYwyYmznE8AB5Id4YhBN788iGRa9nVuGlsssOz6r10VTVynucPj3sGf8WswV49IUST7dqq2qCA/GSAX26Zk9iBRqfwB25xy3B2nwQSrvQD+KzTDUj15Qa74FI76/gChFvEJ0y7qrBDWw0O2hyBqofkCECn8yejmcjhTZlE2TDUQeaqoSt3bO3eWikBAS1ptxVXMRtHD0msqlqodwzbDdnHH2ytQAukR1f9u+pYQ9ip3v+pV0wVJuOhfvLfQvCBxClXATjVbSirEuCTanqHflbGsLunCGG4NNpY9YwlYbxDOS5X989KzmHw/D69USfd0m0vx+30EbxTe7UttyQpMUG4GBCnXQdWFN/suGGiaQkRCAWU6w4JkLjN6UsM7USQ9h1L3xoLDt7eBC/LsLcCofztTy/I3+nHOk6hFOUGMX8ZTSxc6g5lggggmE66LKFBuOCTqaPSvwnMQ1ZlKri0vDvrmmfN53kep7e1DGUDOduCaxamxdInoM2Kkp88ptikz2e/UOthdCmVBG/GeayyAtifjz9SA71v60llKKxw38vsGc42JrPn3Kh6S+dYY8AG/Oa4Utqh/e1B8ho0l65HtG5vRc4x2Ndll/m+1lYbsj9HaUF+3M
- neNXNznv
- 92FKslTIBMsZ1vmhpuyKaA6kfdHVs4krvarEV5IcNR59VT9xbccq4vxSznj9rC6K29ZC0b1rUAQUMQJ4W9eqLpMHzKSQUX2tY+DWqheOAVvushNY5Pg3do/ggEM7hsZze0BuGg4LoiD6xMl5qH8KDNfW+nSvaaknBVx0WWY2pTjiFpCSE/2EqvzvnAhoV4VOqkUx/Pm9ELhnIZFDj28+SidDc92K7vB1TWWVHdbwm/JGQt5YoZCPenC3HNDLGz0bIuRUe5qcrK5SiSZJFlD60EBtVeEMeKZBRNc/le3bjE0NayJ0=
+X-HE-Tag: 1784806331-521032
+X-HE-Meta: U2FsdGVkX1/2klsp031lyH5Xu9nC91yTwKAqPIVfu7Y0MhL+RNbD86/43M8GmNLQ+/giVww7FqxffCcdjATwjpr+E0OpK2U6OshX0VUMpOwZleZKFcyjp/MR7CTJkiGBwMKdEY3ANVKNwstT7DfgQfdNd8jQru5oFVY5ypg4ubDv3QB8oXA4H3eZTNGbBxWyWNBCa7ZfLmriIEysV2kd2WcNtT/EXxTm40fHQKs5twXrJ+G0oqJlqZHfKsPUrx2nbfVGpUzfupLOkoKM8kaqQQwpjV/TXgNKMWp9eUcwocl7XY3B+oVNDbP+pmsXnwSDswuJEj+zSmOjvGlsRYHtT7xY9ybbnjETm7OaE15bmfvxVenUZkZV4Upn27jGj59T2uuCcfXBGYALTIZMVj3kjYEqyq4BlSr1ZjoaWC+3W7wDSKJTSBvNnWbQvBCu6fy6LFJWW9hUhFUVX3u8qVLBMtVV4SIVSJCEmAlSf74QOoF4qrW/2dioR1OG8azW6KKhxRYq4SzNmMJTm946czUpXTtX/AcF7nGVJfqP+HM/TWlhY18KbDBTTvyWgEjkgycxxJ7/YZxisRqjMJ/Z52CdZX/oVJryn5wATv1yLZluoANr4la/joIUv728vW06beFzChTyWKPxctblqYA74PsufNfDBZFV5Lr/eQcy4QP1rBteLnPBofb9xY09UBM7Km+jFVo5qnYLMzOtCZz/mNfLP8o/gbTuIfVzO7ZaeyznL4KBodZW+XsZTTrVv8SiIRWa0CnUYs0y0Kmot/AGLu/Gk2h+f1ev47JGk4wyZXOaMTw6G637gR5xVdVmthXnhfVa3fWkjxJjx1GEpF67ivrZVP8FjsjiANDg82DlnLOPJLEp6AvIpS3pctPZv6I+pkzD+1sqVJTbbMJ7xrEry1MyggYd43QoDKsnTkHaDvE0cHsyujDcI+V8r2ZhVhFIB5532cpf97yIaLB3pTSmJCJ
+ U2vuqS1r
+ hNWjdoZvSz275lg/+MfD/tC+VVhbayzhQSd61O+fMxiPosm8ChPGu7+S4WuOnGAUEMg0s4oyrF1vO74ykLyDQwncQIMacLs8x9h8Vycqe6nT5BE8vrBrUmxOoUWpoxui8mj08AEFMh16WodhFcVwULbRMFjrty/x5e6FlvoJA4nlC7++46DiqMtSn/aNk0AvwdF8qgPyVxA5g6xT4Dd3haAzHZoKCzG3emu1z8D47AOxAQLVhOPLsjyeojtxWh+wLtioHjW9DwBFNxJhhEbS+Wkxw9NrqhYlHChNmcsCczUJm75z5Wvg9U+sYng==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,12 +91,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 20, 2026 at 04:16:19PM +0200, Vlastimil Babka (SUSE) wrote:
-> All callers perform the same obj_to_index() calculation to pass the
-> index. Simplify by passing object pointer instead and determining the
-> index by slab_obj_ext().
+On Mon, Jul 20, 2026 at 04:16:20PM +0200, Vlastimil Babka (SUSE) wrote:
+> In preparation for changes to the structure, abstract getting and
+> setting the objcg field with slab_obj_ext_objcg() and
+> slab_obj_ext_set_objcg().
+> Rename the field to _objcg to make an unexpected direct access a compile
+> error.
 > 
-> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+> No functional change intended.
+> 
 > Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
 Looks good to me.
