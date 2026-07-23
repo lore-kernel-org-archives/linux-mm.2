@@ -4,103 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A4D6C531D0
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 20:29:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85E36C531F7
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 20:29:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5BAC76B0092; Thu, 23 Jul 2026 16:29:29 -0400 (EDT)
+	id 25E5A6B0095; Thu, 23 Jul 2026 16:29:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 591BB6B0095; Thu, 23 Jul 2026 16:29:29 -0400 (EDT)
+	id 1E83D6B0096; Thu, 23 Jul 2026 16:29:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A82D6B0096; Thu, 23 Jul 2026 16:29:29 -0400 (EDT)
+	id 124E76B0098; Thu, 23 Jul 2026 16:29:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2A2506B0092
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 16:29:29 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A3C51160182
+	by kanga.kvack.org (Postfix) with ESMTP id D9C7A6B0095
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 16:29:30 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6F07E1601A1
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 20:29:30 +0000 (UTC)
+X-FDA: 85021181700.14.841197F
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	by imf03.hostedemail.com (Postfix) with ESMTP id B259920006
 	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 20:29:28 +0000 (UTC)
-X-FDA: 85021181616.24.60DA1AD
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 13B5C40005
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 20:29:26 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=remhri9D;
-	spf=pass (imf07.hostedemail.com: domain of 3pXliaggKCHwxpmf1foflttlqj.htrqnsz2-rrp0fhp.twl@flex--skhawaja.bounces.google.com designates 209.85.216.72 as permitted sender) smtp.mailfrom=3pXliaggKCHwxpmf1foflttlqj.htrqnsz2-rrp0fhp.twl@flex--skhawaja.bounces.google.com;
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=hLte5DoA;
+	spf=pass (imf03.hostedemail.com: domain of 3p3liaggKCH4umjcyclciqqing.eqonkpwz-oomxcem.qti@flex--skhawaja.bounces.google.com designates 209.85.214.197 as permitted sender) smtp.mailfrom=3p3liaggKCH4umjcyclciqqing.eqonkpwz-oomxcem.qti@flex--skhawaja.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784838567;
+	s=arc-20220608; t=1784838568;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=a2KNuiqZLV3X87jdwCQu+pUu3Q/Kmj/vy5AMT72i4f0=;
-	b=AVVBGACYDVd4df02B0/IMZpadgVfdDKIkyQgWhIBezSLaHrrDeLu41YUSLYEz9Q0SGipYf
-	fGQR6ocm6NcpQhbOvV0KYqPOfYEOaiDFL9VesqRHWugRqwUf28q3gwkFL/uPfMxZhVDebZ
-	1hqlhga+ptBVi9KGW1+G+TtRd1AIh1k=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=remhri9D;
-	spf=pass (imf07.hostedemail.com: domain of 3pXliaggKCHwxpmf1foflttlqj.htrqnsz2-rrp0fhp.twl@flex--skhawaja.bounces.google.com designates 209.85.216.72 as permitted sender) smtp.mailfrom=3pXliaggKCHwxpmf1foflttlqj.htrqnsz2-rrp0fhp.twl@flex--skhawaja.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=jKy1+xh3t540cHOpDayVgEdD7bHubSTIw9MAGeaiEnQ=;
+	b=DA1nw0dFw9kp57Bl/mjxoVKQPuVZi+o49Llt8HQKe80RkvaP+512p9Fgs5lHyuefBI2u6y
+	21pqsxb2GpvxlH6v7vsOK68GS46dw+CjIPpEaom/ZqQ9JnCzF09zLIE+CDGayXVrBE1LYJ
+	j2xkMjuPWsi6RJ0DytzimU9DbFErlp4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784838567;
-	b=3uYEc3yRdn2hQjhnT70ovJv8HuColEQ04jAtOk7Q/8NMld25/rzAT2MinC1eGSf3f7mXJ0
-	BpIZUFjAvO/OylsXkJRAxb4IaVb1j9BWay1J2FGuiTnW4mTUt3BT8lS8VrjXLSHSq/eBKg
-	z2M6d7VHec1Qe6+0A3zAu/ZtVn2gt3g=
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-3811279d51aso1775107a91.1
-        for <linux-mm@kvack.org>; Thu, 23 Jul 2026 13:29:26 -0700 (PDT)
+	t=1784838568;
+	b=omnU/4lhwsAULj7se+zVEZyf/jBn0m9Kf8yA/BFcBV9Xfs4wpTSPP6L2/XhRxNegwkQtke
+	BExasrXLRbUK4lo0tEL7VsjLzuUjdLiSL5QrFCE7vwawszcCm2i8OJX9ASNarOQwHKIcL7
+	abG5dslZhyFGy2qxNHON154CcYYE1HE=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=hLte5DoA;
+	spf=pass (imf03.hostedemail.com: domain of 3p3liaggKCH4umjcyclciqqing.eqonkpwz-oomxcem.qti@flex--skhawaja.bounces.google.com designates 209.85.214.197 as permitted sender) smtp.mailfrom=3p3liaggKCH4umjcyclciqqing.eqonkpwz-oomxcem.qti@flex--skhawaja.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2cf1c86963bso8705345ad.0
+        for <linux-mm@kvack.org>; Thu, 23 Jul 2026 13:29:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784838566; x=1785443366; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=a2KNuiqZLV3X87jdwCQu+pUu3Q/Kmj/vy5AMT72i4f0=;
-        b=remhri9D0GiiQj8zV1chroh/QfUJWLQto4UiG7m7gyMIQytYC4qWs09Pfuf2hVPq/Y
-         ead1EOza/ZXL7t4BuELFvcoQng9TDO18v1bqRXk+oZfnLIF9KOuj4HrsEqemJ8uCy46k
-         JiMtIrYnVmTMNwzVSAxj9uY+zJu02InQiMtYwDKJE0CTbhxBnwBmuyMmNSSlp/yNuX7n
-         fWsP7gHJrcaJlsvUmyu8MACEVb5t8Qeug1cZ3wBWf9V1kS1yj+QFU1KUkWnuFYY9XdFF
-         Ceh4OtpoGsxfB0EifQLfYt52uNJg8Ts+8L5iMrRe9RQH8QlxEqcpAe/c9Fi71vQg22Ug
-         4q/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784838566; x=1785443366;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1784838568; x=1785443368; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=a2KNuiqZLV3X87jdwCQu+pUu3Q/Kmj/vy5AMT72i4f0=;
-        b=FE7kvrbj1K6OwP3wM4JRpZRsdQLd3k0Zt+b39lbsfnTFa1V9fXgQV+D5HaiklFyol4
-         cU2eKFqUOriJLn8vR6uxHFTQ0zV0dv1tCwCqs1KLINXebLb7sbKfKGdxkflgrcQ8tzxv
-         usGLvq9+fF4KExtxhg1rhQuRTWb84VLOA4F6/BDYuYDinP5N/u+uhTInXc0sqb5RwMNp
-         PK91YeqcEbcZLvZiuFSPh4aZ2ZnQWf4sut7VISBmZm6PCfYZzoKOFTz9w+sh0Mr90/Js
-         Pw53UVYoKdBG72ax9vc8EIm2WzwOFqCxOA9fBhtcMTalqHXktKHWYgoOpyUafSLVTuA3
-         H8sQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rp9u5Nlx2RkK2gDlGjJ3qXT7hKDBsjDeYNLnhS1IGXkJlYbaxN7uBduKV0m2Yed0XX8dfI+UfyUZg==@kvack.org
-X-Gm-Message-State: AOJu0YxAVLJ8IECclIGwntY2gBSUj49jmtPsfTuXWRov410C5d3RM472
-	kg09lLJhiIQKwIrLrO0XjkTv1DdhkC+ydEuIaBYZjftyokv0IPmDDdYrLJR6RuRPFhCm/PedtJu
-	xBvHgqJklkpHXyA==
-X-Received: from pjbmh15.prod.google.com ([2002:a17:90b:4acf:b0:38e:ba48:b0cc])
+        bh=jKy1+xh3t540cHOpDayVgEdD7bHubSTIw9MAGeaiEnQ=;
+        b=hLte5DoA87mlsAAMDY0011hB/+F/YLM1WWfV59bQi5/IL+fWkyJrQcXyZ9BzD4oM3j
+         UuiiDgYoJzgE5lIXwKkFTk+JTv45iszBrATBgnaw8rI6shN34l45/l9mwlNgL6UfI6mE
+         6ANuQkiR4wFEhEpbp7F+X+4c2QKdcaqNiP43jy1Xw7Hi7be7Fdz3pY+vGaF7NMCnAO3/
+         nLLD1AvWGAtcYZsCRWktTTEOFsjEU86oYEY5eH4CjcKgTZNoyFMLcaaQ9OCDJqVovzj1
+         r5CsRQJuf7im5QCVv2OIOqWDys0DEpRdYNlveOws59v1/TCiJbxpNMOMGsxACwm7faRC
+         rYoQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784838568; x=1785443368;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=jKy1+xh3t540cHOpDayVgEdD7bHubSTIw9MAGeaiEnQ=;
+        b=sZxfrPRSEZ15I0dWCrryRgBxvA53t+WevfM0iK794IbguOxqV2lMhfJN8ZisCGvlE3
+         7uqsQ794LVsfR9bOWe7FYqiUrM94Whel0U+6rBMml0/UP3eCCd1myKYHI+/8u8U7P/kp
+         6ocqnRkeWdkvQzIXsHJE/8Wm5IGCrH2otntfixgZquqstT1FRsP2ETaRFLdKi+f8MA1A
+         9vBbeMGnGl8YFU7oUUEYSwOFb3e0BIkq5WGLVZkAKAtE9pRsQvjhmqMREnlIf5KjcQr3
+         lj3YkAIyef3AEobJ2oVqzPoEM24tDvx5woCBiakj3z2OP79jWuDg+oZ9bQh6OS/dgfMa
+         MWjg==
+X-Forwarded-Encrypted: i=1; AHgh+RqX1xv3cLFJ7CAXF2hM0Xh4K5DVTUuuHirncvAYmyo7np6GpLDzBJa7F3UuegYm1nJj4ywouxPeDA==@kvack.org
+X-Gm-Message-State: AOJu0YzWJ0mbiR7P2FqdZAmZZpNo6A424mf62PiZq3ohdsRaM2JJuDBV
+	MNhjx+g/MZmvE2farNWRUM/cq4W0gX/zekEMT51NbZFEm8/bKksqxcXWnFuoiq9sWe9Mnfnj02E
+	iVVrI9f/v+mmOBg==
+X-Received: from plbka16.prod.google.com ([2002:a17:903:3350:b0:2cb:ea2b:5286])
  (user=skhawaja job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:134d:b0:37f:9ce1:cda4 with SMTP id 98e67ed59e1d1-38ec6650501mr4883813a91.26.1784838565570;
- Thu, 23 Jul 2026 13:29:25 -0700 (PDT)
-Date: Thu, 23 Jul 2026 20:29:11 +0000
+ 2002:a17:902:e84f:b0:2ca:c847:8e41 with SMTP id d9443c01a7336-2cfa94b7aadmr48476855ad.11.1784838567356;
+ Thu, 23 Jul 2026 13:29:27 -0700 (PDT)
+Date: Thu, 23 Jul 2026 20:29:12 +0000
+In-Reply-To: <20260723202912.1467112-1-skhawaja@google.com>
 Mime-Version: 1.0
+References: <20260723202912.1467112-1-skhawaja@google.com>
 X-Mailer: git-send-email 2.55.0.229.g6434b31f56-goog
-Message-ID: <20260723202912.1467112-1-skhawaja@google.com>
-Subject: [PATCH v2 0/1] liveupdate: Add internal APIs for file preservation
+Message-ID: <20260723202912.1467112-2-skhawaja@google.com>
+Subject: [PATCH v2 1/1] liveupdate: luo_file: Add internal APIs for file preservation
 From: Samiullah Khawaja <skhawaja@google.com>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>, 
 	Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>
-Cc: Samiullah Khawaja <skhawaja@google.com>, David Matlack <dmatlack@google.com>, tarunsahu@google.com, 
+Cc: Pranjal Shrivastava <praan@google.com>, Samiullah Khawaja <skhawaja@google.com>, 
+	David Matlack <dmatlack@google.com>, tarunsahu@google.com, 
 	open list <linux-kernel@vger.kernel.org>, 
 	"open list:KEXEC HANDOVER (KHO)" <kexec@lists.infradead.org>, 
 	"open list:KEXEC HANDOVER (KHO)" <linux-mm@kvack.org>
 Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: B259920006
+X-Stat-Signature: yfjxwinb7gpugiopcqpcxsfhd4w6bqwm
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 13B5C40005
-X-Stat-Signature: xbj4njnejsw8tngs5q31ix6kj31twfs7
-X-HE-Tag: 1784838566-176814
-X-HE-Meta: U2FsdGVkX18JB3tIYDHNsj5D/d7ilz7Bbg/HODkPwCiQ1ckh5GLpo0MlnJ7InsG0jsH+KSfqdRa4JtjVA/On20Izs/rPZH8mimYSzq3AKx/Pz/n9Ahmgj5OufBFuelMqKY3ZI1wMzFfkEhppZPmcliFnQRY+lEk8JVNdJgUfnscn4+FvJWMcI+v/oTV02UtSygffU7wAzlai12NkFmHZqRpfGQUoPwkFqEfqBQqThkB/UF5ov6u8iPYK8Gobie+xuHPl3Vz2WTKObC5Z4jBUcaUWZwg/DIbpIx7oGqatzad4lXoaS6sKV/wkmr3j8qT+3a6pFmUZW4MfiL+WfuQLcgfhNtsoSXiVo1Zkar5XtVlCXfHJPl27VRTgxmuCB7G750hEoaUO4XNTY/nNbuhIWnJcF2gfJlT4dXHpjLpWH4k4xgSwcDCO3Lw5T5OG0OgOEelOQ0oBh9S2zTYU0moVp1sTBoBk5lbRoS86jfIbQhQ69kJXVbQV7vfAmigV+avlc8hK2KNTJfl8mq9Y7nV1SZ5opz+j0ryl+6thI+Pd2TqknYUOc60gmjzkePkmhFRo4r+oxMRpltGcjQ3YjAt3SerIMXxnYMFOg/JYbQh8QJVZLGFLHrwQ9e8vjGU9l+G/3aigqBR1h3Xo2Jia3NDFS3EHefXzyQ92TJHRhgVW8HbpmioAHd+WDryvmbVahALbRuBlb4aglIjRsCgcNkX/lms308sUCXnQekeEFBTNGMVvvaNR/Vb5JPN8bYgG7XL2D8SNGg6bN4s1oxl1zAuUpFh8494Cu5VKV5851fbtxwgWyHc0yIruvf9Y9jmuGcslGPG0JTJ+rOTbr2fY61KqM+9YSqRCFUu5N9rWEs6mbwH7TfxKNw4V6Ek8lTQkj1cpF3IZsGaSQ73fPQkNFTx+kefeKW4G8RDFQsNEruRwYp0UEHXAENACKvrv9HpdyjoI/5kcUYgWE3KjttVZLfv
- jElYHwBt
- 6sLuVDObAVu9z6JanLRoMNUDJakbomGww+xVq/q3zGTizWGfAnzbbay7qDMBLj2rDEobJ9CoD6OU9Gkh8JiWWjfHAB17ytXiF+6BaS10duiWDvjFeyQHo3WdnjSteYc1Do31NkVJdoQFP5bhx2of/5NshFy0TKzNEGNTlWOxcBbB+PGLicupYwq8OKU8JQ/HiVxGU979ram3ueDORdQxo2M/1oUsnqp9cdMQa15BheYMdCKSBwi3odSveELEpF94kMuK/00eluQAvvfqx7gpARl/uC3ueBBoAL3bbWGEjKf5xoCP4+9+M/03jrDccIl8c/hGCtwJ5cngzCGGgAWI4O+xjaiUDSGveN/PfmNE+kN6xufr5GFwmvTCILq3Q69iq6vADq4fz7sH2ZvXPNVQDzXntpOZW49jKp97cT60WFGC/aWtEMim8xpYztVxrwHDmEhdSm1Zw/gMnK+i6fKR93IS8iOG+LRcoO1QO4uq9MI6hJOaJ3zcFXwnZxNEOjYEN3uruJ2kI4YSPx0XC2F5fsiBP+0DQwLv+aDKgzMalQbTFtU+ueO9Xo4YBi6pZdNzPz4gQN7PnB8QLpme9VUOu3uNyeiIURval/Bna+DCOH8aAbH4=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1784838568-576430
+X-HE-Meta: U2FsdGVkX18u3arABWDlcgL31UoPRRDjDEtXoCorfxq4u1DLfpaS8A+ORL0HIFbNcokhsAZAcaSk4td1Rgna+b9DcK491IpPL5XYHpnCEb5EyoQhPZAYf0pUrXmUyNZsmVQmNmgqDxzu0zQXjUrMNbkN/VxlRndMrYxsupEFgSzJGdW977prwnf2WJW3yQDLK4YhvfiX/BoZBc6760CGgbElwQBfPDAKxGFsR9O8qzt0vcYEqkoIDpKVtFCGyXSjKr8RgPdtcTyLJli3Je3IRuplGg8lMQdh1wE959jOqhwhiWUozciokLPEBFZ6UOiepJUZzgsaf8038P5vXgkps+N1bqs8Qz1UFjkdkbgVOa1Xiw38uqvD/WRJbmzfA7nYYr2vMAXR8LPQNx9asSCWFK1XmXh46y3QaMrilcX07LdWajWKcd5bCDmUoQ8y5Vg1aye1NCHcSIO+CICMTy+2Wkxaq0rvwlt/u7o7TxGKBADSqCljHqPagP2vEhyjEIvKrHkfPWEBtv/j3PFdqawUirfdexkK1/J6mkaqZIyf8YVl99fF29Ucd4hOsk+0xMtoOI5HOb4Gesu0DdKPjZldMpX2Ep4FLITP+BuxX34FbnWmZ/OkXHlwzaMcm2UgH7Ws6AI8dT8xb1D8xwLgYG8MO1eIjHFXgIfxrxbDaUBNe5qzkRodzKWbis9cS+3y2ZJkENBHNynIo061PHPYAs6SqbxVnUdEabGu8YV/yBs7UGpB30vihCIaG1rJAPAFs1stJVYs0m2NRRx+apaMfISpwLK46R2bprNxB0wuFb4ulYVoreHsYRRVjlxNZXhDncG1o2vyTc4rl0HLraVgocx0Sanl+bO0jT1/mb2tG54LMvRD0dPhwj7Jir0gh69hJRO36X6l+VcxBMH9Lk0F5nFiadgTs7rSbGgKctVGnxbleWlPbRCSMULvVkGIcMxVjpASnpSfiiuK1KA1piA3Il7
+ 7TBDfT2/
+ xcQdsUMctT42lgVuZKsNW+QdW8QAhJ4tozjjHw/XMVzWk+GwxWFJf+tVyBQ4Wo4q+tUAq2Z4cRiTKR/yJ0paWi76QM0K7hhLtMWJM3BJo8c9aNExx8Un4wETdFCoCwpNGqwzFYywDjPT+lD7dqQcEt/Lqi6F8gYg7zeEygy+L4SN6Tblya7q8dqDuK69eb3E2fob/+0fls72NHvXLOF7JI9mnT0AMHzxxGiNSrspeUnJj9c9N5I1l32js2Yda/2jng1If1QdcHy1cKaP7tkW+2pZG65rDWioEnaINB6daR5q/kto+TEGrA5x8mSiKUT81yjICOjfRhXP4dW2VApKhIDuSgM8dx6AHkzCAB6rwhfwLgH7fvzsPTzXRHEpGIQOIBOaiwNYN6uSbXXW0Cd2imWsWR1oU6a99vFTTlsd1GSpoFxUycn4oNm9nFkqEdqZ+tL1Giou3vdyQBiJvaZUEDeHljM9G+tzakLnKlQnZOOzDYSzlrxTYzhMVbiG+LoBY0YIqYsGNxeBDcO9ReoHvkEycPbqSnDKZZ9clrDQxHGQ2hRrHFwRqjeOLu6kwMsEsJrdP+JOC+5HodL6qmDn2cWeL67cXHll1mgo0eEVwNzJTyYRUwr/WsFW+Gr9JkagsSRZp+W4oNwMmGAYLgJvBNu7pFgvGVK3bmgallUqqv7bZmNtDhRl2QeH9tRFYybs3hzLg
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,44 +113,233 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+
 Live update orchestrator file handlers depend on the preservation of
 other files. To make sure that the dependency is preserved, the file
 handlers needs to fetch the preservation token of the preserved
 dependency. Similarly during restore, a file handler wants to fetch the
 restored file of the dependency.
 
-There are two known usecases of this,
+Add APIs that allows fetching token of dependency during preservation,
+and fetching the restored file dependency during restore.
 
-- VFIO-Cdev preservation requires the preservation of iommufd. This is
-  required by the IOMMU preservation series:
-  https://lore.kernel.org/all/20260427175633.1978233-1-skhawaja@google.com/
-- guest_memfd preservation requires the preservation of kvmfd. This is
-  required by the guest_memfd preservation series:
-  https://lore.kernel.org/all/20ae20f9d1a198b289444ebb4c824314cbba1bcf.1780676742.git.tarunsahu@google.com/
-
-This patch was being sent as part of the IOMMU preservation series, but
-now it is being sent separately.
-
-Note that LUO File Handlers may resolve the dependencies during
-preserve() as freeze() is very late and past the point of no return.
-Also FH might have preservation requirements on dependencies due to
-immutability, security and performance reasons.
-
-v2:
-- rebased on liveupdate/next to resolve conflicts
-- Added a note about resolution of dependencies based on offline
-  discussion with Pasha and David.
-
-Pasha Tatashin (1):
-  liveupdate: luo_file: Add internal APIs for file preservation
-
+Reviewed-by: Pranjal Shrivastava <praan@google.com>
+Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+---
  include/linux/liveupdate.h       | 22 ++++++++++
  kernel/liveupdate/luo_file.c     | 69 ++++++++++++++++++++++++++++++++
  kernel/liveupdate/luo_internal.h | 17 ++++++++
  3 files changed, 108 insertions(+)
 
-
-base-commit: cecfb90c5f2cc0622b363c2291b69d6cad272897
+diff --git a/include/linux/liveupdate.h b/include/linux/liveupdate.h
+index 63ea5417de84..6051abc0612c 100644
+--- a/include/linux/liveupdate.h
++++ b/include/linux/liveupdate.h
+@@ -25,6 +25,7 @@ struct file;
+ /**
+  * struct liveupdate_file_op_args - Arguments for file operation callbacks.
+  * @handler:          The file handler being called.
++ * @session:          The session this file belongs to.
+  * @retrieve_status:  The retrieve status for the 'can_finish / finish'
+  *                    operation. A value of 0 means the retrieve has not been
+  *                    attempted, a positive value means the retrieve was
+@@ -45,6 +46,7 @@ struct file;
+  */
+ struct liveupdate_file_op_args {
+ 	struct liveupdate_file_handler *handler;
++	struct liveupdate_session *session;
+ 	int retrieve_status;
+ 	struct file *file;
+ 	u64 serialized_data;
+@@ -247,6 +249,14 @@ void liveupdate_flb_put_incoming(struct liveupdate_flb *flb);
+ int liveupdate_flb_get_outgoing(struct liveupdate_flb *flb, void **objp);
+ void liveupdate_flb_put_outgoing(struct liveupdate_flb *flb);
+ 
++/* kernel can internally retrieve files */
++int liveupdate_get_file_incoming(struct liveupdate_session *s, u64 token,
++				 struct file **filep);
++
++/* Get a token for an outgoing file, or -ENOENT if file is not preserved */
++int liveupdate_get_token_outgoing(struct liveupdate_session *s,
++				  struct file *file, u64 *tokenp);
++
+ #else /* CONFIG_LIVEUPDATE */
+ 
+ static inline bool liveupdate_enabled(void)
+@@ -299,5 +309,17 @@ static inline void liveupdate_flb_put_outgoing(struct liveupdate_flb *flb)
+ {
+ }
+ 
++static inline int liveupdate_get_file_incoming(struct liveupdate_session *s,
++					       u64 token, struct file **filep)
++{
++	return -EOPNOTSUPP;
++}
++
++static inline int liveupdate_get_token_outgoing(struct liveupdate_session *s,
++						struct file *file, u64 *tokenp)
++{
++	return -EOPNOTSUPP;
++}
++
+ #endif /* CONFIG_LIVEUPDATE */
+ #endif /* _LINUX_LIVEUPDATE_H */
+diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
+index 72f8bb90b66c..542707e8d8c1 100644
+--- a/kernel/liveupdate/luo_file.c
++++ b/kernel/liveupdate/luo_file.c
+@@ -293,6 +293,7 @@ int luo_preserve_file(struct luo_file_set *file_set, u64 token, int fd)
+ 	mutex_init(&luo_file->mutex);
+ 
+ 	args.handler = fh;
++	args.session = luo_session_from_file_set(file_set);
+ 	args.file = file;
+ 	err = fh->ops->preserve(&args);
+ 	if (err)
+@@ -350,6 +351,7 @@ void luo_file_unpreserve_files(struct luo_file_set *file_set)
+ 					   struct luo_file, list);
+ 
+ 		args.handler = luo_file->fh;
++		args.session = luo_session_from_file_set(file_set);
+ 		args.file = luo_file->file;
+ 		args.serialized_data = luo_file->serialized_data;
+ 		args.private_data = luo_file->private_data;
+@@ -383,6 +385,7 @@ static int luo_file_freeze_one(struct luo_file_set *file_set,
+ 		struct liveupdate_file_op_args args = {0};
+ 
+ 		args.handler = luo_file->fh;
++		args.session = luo_session_from_file_set(file_set);
+ 		args.file = luo_file->file;
+ 		args.serialized_data = luo_file->serialized_data;
+ 		args.private_data = luo_file->private_data;
+@@ -404,6 +407,7 @@ static void luo_file_unfreeze_one(struct luo_file_set *file_set,
+ 		struct liveupdate_file_op_args args = {0};
+ 
+ 		args.handler = luo_file->fh;
++		args.session = luo_session_from_file_set(file_set);
+ 		args.file = luo_file->file;
+ 		args.serialized_data = luo_file->serialized_data;
+ 		args.private_data = luo_file->private_data;
+@@ -596,6 +600,7 @@ int luo_retrieve_file(struct luo_file_set *file_set, u64 token,
+ 	}
+ 
+ 	args.handler = luo_file->fh;
++	args.session = luo_session_from_file_set(file_set);
+ 	args.serialized_data = luo_file->serialized_data;
+ 	err = luo_file->fh->ops->retrieve(&args);
+ 	if (err) {
+@@ -629,6 +634,7 @@ static int luo_file_can_finish_one(struct luo_file_set *file_set,
+ 		struct liveupdate_file_op_args args = {0};
+ 
+ 		args.handler = luo_file->fh;
++		args.session = luo_session_from_file_set(file_set);
+ 		args.file = luo_file->file;
+ 		args.serialized_data = luo_file->serialized_data;
+ 		args.retrieve_status = luo_file->retrieve_status;
+@@ -646,6 +652,7 @@ static void luo_file_finish_one(struct luo_file_set *file_set,
+ 	guard(mutex)(&luo_file->mutex);
+ 
+ 	args.handler = luo_file->fh;
++	args.session = luo_session_from_file_set(file_set);
+ 	args.file = luo_file->file;
+ 	args.serialized_data = luo_file->serialized_data;
+ 	args.retrieve_status = luo_file->retrieve_status;
+@@ -935,3 +942,65 @@ void liveupdate_unregister_file_handler(struct liveupdate_file_handler *fh)
+ 	luo_flb_unregister_all(fh);
+ 	list_del(&ACCESS_PRIVATE(fh, list));
+ }
++
++/**
++ * liveupdate_get_token_outgoing - Get the token for a preserved file.
++ * @s:      The outgoing liveupdate session.
++ * @file:   The file object to search for.
++ * @tokenp: Output parameter for the found token.
++ *
++ * Searches the list of preserved files in an outgoing session for a matching
++ * file object. If found, the corresponding user-provided token is returned.
++ *
++ * This function is intended for in-kernel callers that need to correlate a
++ * file with its liveupdate token.
++ *
++ * Context: It must be called with session mutex acquired.
++ * Return: 0 on success, -ENOENT if the file is not preserved in this session.
++ */
++int liveupdate_get_token_outgoing(struct liveupdate_session *s,
++				  struct file *file, u64 *tokenp)
++{
++	struct luo_file_set *file_set = luo_file_set_from_session_locked(s);
++	struct luo_file *luo_file;
++	int err = -ENOENT;
++
++	list_for_each_entry(luo_file, &file_set->files_list, list) {
++		if (luo_file->file == file) {
++			if (tokenp)
++				*tokenp = luo_file->token;
++			err = 0;
++			break;
++		}
++	}
++
++	return err;
++}
++EXPORT_SYMBOL_GPL(liveupdate_get_token_outgoing);
++
++/**
++ * liveupdate_get_file_incoming - Retrieves a preserved file for in-kernel use.
++ * @s:      The incoming liveupdate session (restored from the previous kernel).
++ * @token:  The unique token identifying the file to retrieve.
++ * @filep:  On success, this will be populated with a pointer to the retrieved
++ *          'struct file'.
++ *
++ * Provides a kernel-internal API for other subsystems to retrieve their
++ * preserved files after a live update. This function is a simple wrapper
++ * around luo_retrieve_file(), allowing callers to find a file by its token.
++ *
++ * The caller receives a new reference to the file and must call fput() when it
++ * is no longer needed. The file's lifetime is managed by LUO and any userspace
++ * file descriptors.
++ *
++ * Context: It must be called with session mutex acquired of a restored session.
++ * Return: 0 on success. Returns -ENOENT if no file with the matching token is
++ *         found, or any other negative errno on failure.
++ */
++int liveupdate_get_file_incoming(struct liveupdate_session *s, u64 token,
++				 struct file **filep)
++{
++	return luo_retrieve_file(luo_file_set_from_session_locked(s),
++				 token, filep);
++}
++EXPORT_SYMBOL_GPL(liveupdate_get_file_incoming);
+diff --git a/kernel/liveupdate/luo_internal.h b/kernel/liveupdate/luo_internal.h
+index 64879ffe7378..dac6644bfb18 100644
+--- a/kernel/liveupdate/luo_internal.h
++++ b/kernel/liveupdate/luo_internal.h
+@@ -77,6 +77,23 @@ struct luo_session {
+ 
+ extern struct rw_semaphore luo_register_rwlock;
+ 
++static inline struct liveupdate_session *luo_session_from_file_set(struct luo_file_set *file_set)
++{
++	struct luo_session *session;
++
++	session = container_of(file_set, struct luo_session, file_set);
++
++	return (struct liveupdate_session *)session;
++}
++
++static inline struct luo_file_set *luo_file_set_from_session_locked(struct liveupdate_session *s)
++{
++	struct luo_session *session = (struct luo_session *)s;
++
++	lockdep_assert_held(&session->mutex);
++	return &session->file_set;
++}
++
+ int luo_session_create(const char *name, struct file **filep);
+ int luo_session_retrieve(const char *name, struct file **filep);
+ void __init luo_session_setup_outgoing(u64 *sessions_pa);
 -- 
 2.55.0.229.g6434b31f56-goog
 
