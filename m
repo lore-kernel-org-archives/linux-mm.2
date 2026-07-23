@@ -4,91 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 693AEC531F7
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 17:12:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5157DC531F8
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 17:16:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 24C086B0096; Thu, 23 Jul 2026 13:12:07 -0400 (EDT)
+	id 49C6F6B007B; Thu, 23 Jul 2026 13:16:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 222916B0098; Thu, 23 Jul 2026 13:12:07 -0400 (EDT)
+	id 477F16B008A; Thu, 23 Jul 2026 13:16:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1398A6B0099; Thu, 23 Jul 2026 13:12:07 -0400 (EDT)
+	id 363036B0099; Thu, 23 Jul 2026 13:16:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C7E7C6B0096
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 13:12:06 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 62FEEC05AD
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 17:12:06 +0000 (UTC)
-X-FDA: 85020684252.27.0C71C90
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 8F7B9A000C
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 17:12:04 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784826724;
+	by kanga.kvack.org (Postfix) with ESMTP id 0DD646B007B
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 13:16:07 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 69AB6C05C1
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 17:16:06 +0000 (UTC)
+X-FDA: 85020694332.17.74E4456
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 6E4CF20007
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 17:16:03 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=FKEU1Heh;
+	spf=pass (imf31.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784826963;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Vy3lpdlZhVoJO12cvkXIy0QiQ7yg4bA2Tl2yEbGhkSo=;
-	b=jvAXOGPpOEiCGcmyS6mdou0S2LAW6m/bsePq54/bTLB12SWPmLBrMe1dpA8FGmt5jMS7CI
-	lzvg0Zxib15RiParvvRg6FpqW/6RKoS7DCoSu/5K+ly2w3PdjxcVIxWiIeC4bcJJJp2ppP
-	C7EJY+OilOIoGd0Vy4s8Ab4s/IudNAE=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784826724;
-	b=iORPagRHJyuP977GLnZKDvkRLCHhl08lXjaWp3xg5xBiO4S72zT/5PalcHBWqEjDFUNPaN
-	t1mB9so9RGEM3ZC2XIuZ2rAZ7lgfLQZdjSZ0ynfm0ARB1P72K3XiR1zG/jKo/PbBe22aoL
-	dQBCCqZNVQ48zVcS7Dd/U4aCuEothh8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CDAF5600AD
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 17:12:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9890B1F00A3D
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 17:12:03 +0000 (UTC)
-Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-6689402c7bfso698560d50.1
-        for <linux-mm@kvack.org>; Thu, 23 Jul 2026 10:12:03 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RoKwSic0N+P5dC1z901X6GOOu2zWeeZLuGRskVmBWt3G0f4ux5TC27QhJEA2+VP2S179xqYvTF6rg==@kvack.org
-X-Gm-Message-State: AOJu0YxOm8gmhGdmVh2nQ9CmSKgKz+B0Id1azYWKmzGd5/XPguG9hbVn
-	6KcaT7R9qzOSkcte0KPQ7eDlbTUkTlTxd4ZTVQs/VZnok3HMncorTlvdx6ucJnNp+fjOquyGqrl
-	fd+YhyzKzFVnaRvBkovQORk47kCPwSdDusjcnInXaGQ==
-X-Received: by 2002:a53:ca4c:0:b0:667:8b9c:e6c4 with SMTP id
- 956f58d0204a3-668a500cae8mr796538d50.104.1784826714641; Thu, 23 Jul 2026
- 10:11:54 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=h7A7ilrML8UYNqjUJnB8K3U9b9b1vXX4T1cwsKKRMFw=;
+	b=aU/hmZk2YOPCL2L4YoP4Wba2VBFFVZeBm+V8shKSxftKqb0vPj00frVLBlkdRWeaoPGtFi
+	D/DGkKU8Fj4t9mKuO6QCw8M5skecFyAz+KaCuXDNfbZBIcYyQR4yhFOHyEOvDHAZ8cZQ1e
+	LcIaevMQtmZRliDGlhWqHWu5uDq6SxY=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784826963;
+	b=cjo2XRkGmmtegWh0Sh3CFsi/1hx7sri/uHJcUqM/91DXodjUP4JzTfAQsAg/1pVrGpFFhS
+	Kh0Vb5rdtPY8EeNhVq92+lwBsjSBdSHk3WeN81P46xZZVEuHnRhEa2c/DLJK18N+aWmYCE
+	z04ZyOSY0twdlv+6ZyoZwHQaClrsVak=
+ARC-Authentication-Results: i=2;
+	imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=FKEU1Heh;
+	spf=pass (imf31.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-47f904e80eeso819124f8f.1
+        for <linux-mm@kvack.org>; Thu, 23 Jul 2026 10:16:03 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784826962; cv=none;
+        d=google.com; s=arc-20260327;
+        b=F9qfvAjRx2hgAnKnV1uN3yoGaq02g5b4cSRHSBboelzbQZ1MdydL0hdDUieVRJC5X+
+         fep8pag1UHmtiVkcxV8CkJMyfZ1xd8scvKY9TqVzqFSFi/2L82U9Oxm1x/nTKzDMgr/U
+         7/pdHWI6otXZsYCS1Tbb0Kcp94MNrL8Oecdq+QbjqTMQ78AZi0dXNC7JY4kvGVfSdOQx
+         6qnrVM+c9zUkmXaMbBQHTw3Lhaovy7/5HH4VxzeYkCx6cb2LcVace90UA87rwbhPvgpx
+         UCa7zusp2OK1Eq2eWsBW5T4fnG+MG7V0ufKtXgjQuDxZUxCVaOTj1MjU8iiZTwV87Wcq
+         8pdg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=h7A7ilrML8UYNqjUJnB8K3U9b9b1vXX4T1cwsKKRMFw=;
+        fh=FDv8zOJliymHpuStw0/zNz1w1rHdjte56Dv6gy3n4jY=;
+        b=ISj/KwDBRlc/5Ss7tci5dBIUb2m5bSxVZMtnmo+XRtV59nhlF0KOQOSfWwjDhNhA+c
+         0yi68NVxom6/F059WldSDYXL78zG4ZnrfBUoVtQ8AP/YXfMjlfdT+hfydeHe55W9nE1F
+         DCIKD5i1x8o4EGz0gtlPHAuAwfaVd4R8gof5rfqlP9RJv8ULNTyHWuqmascnyT/wO5n9
+         bafZ2Q3zLsPNGPx1IgZ+0gwWFcqy9xX2/TYZwXV/KYUwRuTfG4sV0QJs6yjNEh54u2yX
+         5V/BbWBfTfcUNnzf/gE5uVkJEmacxbHCO3vtiYFxoYYhKrnnW0QSyN+G4+yIXyKh5UhM
+         yeBA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784826962; x=1785431762; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=h7A7ilrML8UYNqjUJnB8K3U9b9b1vXX4T1cwsKKRMFw=;
+        b=FKEU1Heh8u9YFhCwsNOCpp0I36v3OwFUf7m6neNBbYRtW/byZJOco5xT2Hx+nraaIW
+         /9qNoVICUeUBNwiZ3lqpL1JaFEVHs/7rNYOvels5Pq72nlhV8efWdhdYqf970VpwVfj2
+         Jy4GHn+Po9JyJq52rfchTlhNEbC+zFk4peyRHA/4IAYrHGW/RhST74WnpJ7vMS24sqGb
+         pucs6a2CyrKQSbZ9gr3U9KybBrf8RUyWngWU4zz3I2W9rgy+X9sU7xrD/OWSRvi+wDRo
+         z3eG4j9pqAYKcx6S3Vm7VnS6aq0ZlFGZtKpPWTLuLW0J4vaW5BBqxuJCGAguPeBvJAdZ
+         Y/dg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784826962; x=1785431762;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=h7A7ilrML8UYNqjUJnB8K3U9b9b1vXX4T1cwsKKRMFw=;
+        b=rmkqZVTSg6SmVK7dU9n5q6pGBijI+mhaKL5FgyZtA1chQnHI27fv58GIknF9be7Nzj
+         1tvaWSCoua1hpvxCnmJnz/XkQoHDUJCLlSCSc5Y8rhSKZJRvFT6uKt04v3y2ljGfVZur
+         aQlGGx0YfaSyaQRMCum4YdoExZOsyPYercvoQPYeH49qIx0i3W45aRN4txam8Xvv6+CU
+         yyTUabeIzQP9u0hYAWIcNRLBs4WsIM7f1qJtZx5P0jylwl3ST5GWghhYI9CuWz5MXVLI
+         rNxAxNZPc+1wVmicnI/NAOpmQ2ZDTg9vCbHsk238xSYpRBVdF7yDsPyfIdDxVtw14obl
+         G7bQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqRF0/wRYj6yxEhXqfutlUtfYFBLG9VOe+h9FJxnQDie+7lYcCILzb5zTyAuqfmWNl/A1Tu4luFCA==@kvack.org
+X-Gm-Message-State: AOJu0Yx9t93Cl5US8J3fMFQAY9ei/ui3aazbyd/6XwYS6GMEQs81UBEk
+	VJzUXr5g01e+mafHWTVxuUhxSzWDqGofqQSSs13ktRnlfAkCknTgf9wPMMXWTNVTzFfbuwIh7EU
+	XMfh0ZIDn4C7DxeeExZS1m000Vd7NgTA=
+X-Gm-Gg: AR+sD10Xd2kBmjov+EiTMcyiz+wTvfctR+gO9q+oWtEpl4ocO4rN8bJrTkRIBNnus4a
+	YV628G/pq/xHxyRNAalgb3j4rfp07TDixAXIBOAk0mUmz9hLnXltu4y8xVYpQOQImBVNvceDnAy
+	61vvVzAY70C5XyQsur6CrP6jnWxd62IKoT7AZuVFkHz+4QJcORiUQCeVTglqWtNODPondjiQTqH
+	n3PbhCpsrsnKYbSwgIjmnw8WHYoBxn5pNHABUUQFEyi4yaa1CZCIUCwhmEYS/8XRsGKFUENMTyl
+	L8rHY8qMuoHTmQiL9g==
+X-Received: by 2002:a05:6000:98b:b0:475:f0d1:eb63 with SMTP id
+ ffacd0b85a97d-47f8d76dc78mr5103717f8f.48.1784826961662; Thu, 23 Jul 2026
+ 10:16:01 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260723054622.3460249-1-hch@lst.de> <20260723054622.3460249-3-hch@lst.de>
-In-Reply-To: <20260723054622.3460249-3-hch@lst.de>
-From: Chris Li <chrisl@kernel.org>
-Date: Thu, 23 Jul 2026 10:11:43 -0700
-X-Gmail-Original-Message-ID: <CACePvbUTUXPR6JQhBEnsOT2qwhpeyb8ycXkAaSj=DT=T+KDDtA@mail.gmail.com>
-X-Gm-Features: AUfX_myqyuT5hBkyXIBFLmZ_g9vicrtyLEsDrAbfU8CZGQvWhiy3AApog2t068c
-Message-ID: <CACePvbUTUXPR6JQhBEnsOT2qwhpeyb8ycXkAaSj=DT=T+KDDtA@mail.gmail.com>
-Subject: Re: [PATCH 2/3] mm/swap: add a new swap_ops.h header to allow for
- pluggable swap ops
-To: Christoph Hellwig <hch@lst.de>
-Cc: baoquan.he@linux.dev, akpm@linux-foundation.org, usama.arif@linux.dev, 
-	kasong@tencent.com, nphamcs@gmail.com, shikemeng@huaweicloud.com, 
-	youngjun.park@lge.com, ryncsn@gmail.com, trondmy@kernel.org, anna@kernel.org, 
-	sfrench@samba.org, linux-mm@kvack.org, linux-cifs@vger.kernel.org, 
-	linux-nfs@vger.kernel.org
+References: <20260722152043.2273289-1-usama.arif@linux.dev>
+ <20260722152043.2273289-5-usama.arif@linux.dev> <amFZmtGHEZjXEw5R@google.com>
+ <ee172b01-54c3-47ef-9040-1342a1566796@linux.dev> <CAO9r8zMzjCf620EHwzfosngc94fu=vAb=ukrtOi9Qf3rA3vv7w@mail.gmail.com>
+In-Reply-To: <CAO9r8zMzjCf620EHwzfosngc94fu=vAb=ukrtOi9Qf3rA3vv7w@mail.gmail.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Thu, 23 Jul 2026 10:15:49 -0700
+X-Gm-Features: AUfX_mxzwM11na30T79ezLPWZb6gzVDd-rpSy4Dm9dX8njnD3RnNPEEPzA9TQPU
+Message-ID: <CAKEwX=OCdMoGh2bQJNORJ42w6wTMrXyzXNUZcfgJMehfQrKanw@mail.gmail.com>
+Subject: Re: [PATCH v5 04/11] mm: zswap: add range lookup for large-folio swapin
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Usama Arif <usama.arif@linux.dev>, Alexandre Ghiti <alex@ghiti.fr>, 
+	Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, chrisl@kernel.org, 
+	kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, linux-mm@kvack.org, 
+	ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>, willy@infradead.org, 
+	youngjun.park@lge.com, hannes@cmpxchg.org, riel@surriel.com, 
+	shakeel.butt@linux.dev, kas@kernel.org, baohua@kernel.org, dev.jain@arm.com, 
+	baolin.wang@linux.alibaba.com, Nico Pache <nico.pache@linux.dev>, 
+	"Liam R. Howlett" <liam@infradead.org>, ryan.roberts@arm.com, 
+	Vlastimil Babka <vbabka@kernel.org>, lance.yang@linux.dev, linux-kernel@vger.kernel.org, 
+	shikemeng@huaweicloud.com, kernel-team@meta.com, 
+	Alexandre Ghiti <alexghiti@fb.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 8F7B9A000C
-X-Stat-Signature: 5ae4yp4hmujhabakhrhxn6hgm1uawabe
-X-HE-Tag: 1784826724-579729
-X-HE-Meta: U2FsdGVkX19eUEmrKYtnP2PQ/9WgJv3/h1Q5iGErJEVXMl8EOeqTlJDCAaD0JW5Y9Qm/rZCoN07dZSZDNh4SQqZayM+wFOjfuqFKPOgp43RaDBWoLUAVrT0QBdR3SrTwm9n9L+xo4dETEtjQvfx60RR3ZFV8lULPftj8EO/IepY3Noks54BQ+Kbnch39JgSHL+4lKC5z87HuHoC0iSv4tyGwr2QtPuoYWWooBcZTYH2+JKTjpOhzwdmavp+a7bsBZPm8vZCPTzEK6dLDzU/+IQB7tzeVBtVsxW31tUxq7EZhmKMsa/EOSAgKksyPhMDsnKZx905CRHYjhzfNWx9Sv5RxF+YnL8H9mxJ2WAHaJIAQMaCZZhZwGBCXxs4uVDJkNXahN1NL3OOWfkUCM4zld3JLUk7w/Q2lsrIxAY4+7oUy1Y2ZTZCQclxQFfoCwdFCWRbNv7X3kYjxOCg1fcgVRelKl0YQatXxkuaD2IHMoBldhed3ctj/qtFj4IG3Xgu7rZPIuo25wLJW1xhGwe9AaHB6KCegDi0zYv5l+3U2t1YtYsoFsKAQ1Jz0251pNf25TvreLPywSUtR5NDrjQK/dBfoFZCkTpJR7OxCg+oxDnZs4M7jGizifHzQNtg/eHCuI/hskiiJMBrZu6Fc/cy/8DH40WWOdVfAi817EkNYsF+YBc4a9H3Bi9HRn2pT9PayQZrHJh0APS07F6CkxtILul8Alsy62NrPjDTzcyiGY3l3zoDpal8DpLvYyI/vt/anHfMkXptNU5kN3hlfvr4RRHnaT06+26qcOhAjhtpoD5SLRKp4D225+7Z0WDQGlNKDwy4BmHjGSEdyX/D8qKGGlKFKFVPwbz8GOMvuI83OmYFkk1C00dEwlIO+hoKwPobGac75zb6DJKE/XbohxJWMOeY31wl8odjlEirwSuCcMowI83XMUa6lnwo7OAsUFJ6vm53nShH4w6g/t8v3ddR
- qSCXz2kc
- 876brBKzmcSGlsjmZvzcdUJjtbLhhIqp+eMM7DNITuowda0XDyOkA4c8SD0WfCwpockaVGUnKqRwuMPa8h1zpIqZoXOloYtoepsA5cRkVdFo0CsudzP68GaHoARRI/I9l3AahpIjdkoLBlLC7jhn9FMZDh9AEo3eH1RUgfBhnSvPysggL2dibHryihPdKM/Xa+QZB9D0sll3jtU8zJPZHShe0YcSORv+JkdTL7n1K3FGHG2rrFP/hxa6A+e9dmYQyaD1B
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 6E4CF20007
+X-Stat-Signature: xpn9jakndkrcryejt7esty7ugexjrxdt
+X-HE-Tag: 1784826963-35576
+X-HE-Meta: U2FsdGVkX1+6deeIq6ODIXw1Oq1h52tWWAV22L/FlrPvtykFHSGz38lW561mTh157FUqTp7rUHJk/kMKtxZYFNvGf/gSewmsPJLF4WhVEEm5B1OBpkG4/fL+lAYpelQ5nqD9v6yNdw0kY3TuH/9t4Z+UNhAOwcS4Dze6m+wtL7za3gFbnxLamShXohR6iJSSUzz2QBTmeew0LdptOYO5j/l8boy3DpAzLogFJNDSRACgZQsKXEMa4pdtUds1Csafs7LKSNun7+yhaJrB8cZ+Ab39sWS+5A6+tJtWYr9gC5MetLP1PQpP4FOk9ty+E5rF4wmh8htOsxz94eG3JydMyaXbI3eUXhYCXWD2Ap2Uy50GOuhgan0F3Dtyf4pBO1/LNq8R3UhbTc/NRJo984saN941ci0F0INGRrrtUUwBi1QWZx7qOfEm/EdoeoTrMQA0ZgUxR1EFseAL+Xs5TNws5aQ2pwQ+Fp1zAYU4dc8loJxdeCqFX/0E2eCgNyDTeHskHiSAGIykKBEWKSIr8xTABMI9RudPVWDVVShgu6Im9ieXd6Ev4z5EhDwrxNtXJrVwfrZ8z8DpI9y2bgbO5dzPS1ii94eZ3G7zdZw70rROWdBSBtyk3GyxgJZetrY3An2/K+KY4KIcROkgu04DF6y8Dz/R1y3jhPGJcq2wKy5nDopr90GW5P6ncwV3tfuRUJNRHGz2JYGQmIGbqDTWW0SrIhOL8yEHudEQHBZU7tywaY4yvnWEpFgNV5zr7PejISIZ935wxTPDL1FH2I4HNPQtrw9/fQzXftJWv2kN0/Tvk1Zh9wJROCWfkVsICaT/mFYpZAucoBXEWhpXMY+kBb27xbSEXjEg/J4/F0KkzybP2knbAjYxYeKA6XIwVKlpU509UdNioo4cwQnv5vbPkTtuexi6iXLKhW2FznLsiINNH/Z5BaI8C5bPO1d/ATjOCpF8V2cRPiedfoiEIHFmTaE
+ VoYRPAjM
+ JzDcdgqJDna0iao+Vg+JKQSOyWomWN/9GrbZLU5fh08pM+7c7wxOFQkq9DWihwkpqOLXWw1M02OiRyl0DORjrclAKIcFtyCFWs6JYm0E7CAdKHUvMGkdhVeyn8lIYctJ1yhUPOc9reojc8/DuPhIh1/fUgbEbRWpHstss2HTwMoA4yPBzkL/MiCLv70yleSfAyRRHdAoqi0Z8aSFZXugIQ1c68MkZSVvMn+Bok6uYEGXaoqS5w3jtMyNyffYNEa/YOfDXUr9eiskcCdKDiyu4lb1F63N0i2fWx1k6fLQV8YxaqoycvCgHmdItwQlQvDuM9HCHWvz8h55WDOU7QdHv2/8rmBL23k81Z+1dsrkit8zv5P+Pzqrwb7qCQU2T6tGm46AbsHLA9hfCkpjVmgaWAUomZbvVbsR1uZC4q97q9uKXW/w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,229 +150,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 22, 2026 at 10:47=E2=80=AFPM Christoph Hellwig <hch@lst.de> wro=
-te:
+On Thu, Jul 23, 2026 at 9:43=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wrot=
+e:
 >
-> Add a new header to declare the swap_iocb, swap_ops and swap_ctx to
-> allow for swap_ops implementations outside of mm/page_io.c.  This
-> will be used to remove the double indirection for file system-based
-> swap.  There is no functional change, just a move of the declarations.
+> > >> @@ -1595,13 +1611,19 @@ int zswap_load(struct folio *folio)
+> > >>              return -ENOENT;
+> > >>
+> > >>      /*
+> > >> -     * Large folios should not be swapped in while zswap is being u=
+sed, as
+> > >> -     * they are not properly handled. Zswap does not properly load =
+large
+> > >> -     * folios, and a large folio may only be partially in zswap.
+> > >> +     * A large folio reaches zswap_load() only when its whole range=
+ is
+> > >> +     * expected to be on disk: PMD swap-entry consumers split befor=
+e
+> > >> +     * calling into PMD-order swapin whenever any slot is still in =
+zswap.
+> > >> +     * Confirm the range is entirely absent from zswap and return -=
+ENOENT
+> > >> +     * so the caller reads it from disk; if a slot is unexpectedly =
+still in
+> > >> +     * zswap, fail the read rather than return partially-initialize=
+d data.
+> > >>       */
+> > >> -    if (WARN_ON_ONCE(folio_test_large(folio))) {
+> > >> -            folio_unlock(folio);
+> > >> -            return -EINVAL;
+> > >> +    if (folio_test_large(folio)) {
+> > >> +            if (zswap_is_present(swp, folio_nr_pages(folio))) {
+> > >
+> > > Is dropping the warning here intentional (for the folio_test_large() =
+&&
+> > > zswap_is_present() case)?
+> > >
+> >
+> >
+> > Yes, so we can end up in a race, which should be handled gracefully.
+> >
+> > For example, lets say we have zswap writeback enabled, which means we
+> > can end up in a state where we have a PMD swap entry and 511 of the 512
+> > slots have been written to disk, but 1 slot (slot X) is still in zswap.
+> >
+> > We can then have the following race:
+> >
+> >
+> >   CPU A: PMD swap-in                  CPU B: split-PTE swap-in
+> >   ------------------                 ------------------------
+> >
+> >   Checks swap cache: empty
+> >
+> >                                        Faults slot X
+> >                                        Adds order-0 folio F
+> >                                        zswap_load(F):
+> >                                          removes X from zswap
+> >                                          marks F dirty
+> >
+> >   Checks zswap range: empty
+> >   A is preempted
+> >
+> >                                        Unmaps/reclaims F
+> >                                        zswap_store(F):
+> >                                          puts X back in zswap
+> >                                        Removes F from swap cache
+> >
+> >   A resumes
+> >   Allocates large swap-cache folio G
+> >   zswap_load(G) finds X in zswap
 >
-> Note that there already is a swapops.h header, which is totally
-> unrelated to struct swap_ops.  The close naming is a bit unfortunate,
-> but I could not think of a better name for this header.
+> Why don't we check the zswap range after allocating a folio in the
+> swap cache? I am assuming at this point we have the folio locked and
+> the result should be stable?
 >
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
 
-Acked-by: Chris Li <chrisl@kernel.org>
++1. Is it possible to perform the check in __swap_cache_add_check?
 
-Chris
-
-> ---
->  MAINTAINERS              |  1 +
->  include/linux/swap_ops.h | 39 +++++++++++++++++++++++++++++++++++++++
->  mm/madvise.c             |  1 +
->  mm/page_io.c             | 10 +---------
->  mm/shmem.c               |  1 +
->  mm/swap.h                | 23 +----------------------
->  mm/swap_state.c          |  1 +
->  mm/vmscan.c              |  1 +
->  mm/zswap.c               |  2 +-
->  9 files changed, 47 insertions(+), 32 deletions(-)
->  create mode 100644 include/linux/swap_ops.h
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 15dd00c7ffec..713275f62ec4 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -17240,6 +17240,7 @@ S:      Maintained
->  F:     Documentation/ABI/testing/sysfs-kernel-mm-swap
->  F:     Documentation/mm/swap-table.rst
->  F:     include/linux/swap.h
-> +F:     include/linux/swap_ops.h
->  F:     include/linux/swapfile.h
->  F:     include/linux/swapops.h
->  F:     mm/page_io.c
-> diff --git a/include/linux/swap_ops.h b/include/linux/swap_ops.h
-> new file mode 100644
-> index 000000000000..e92b4f532604
-> --- /dev/null
-> +++ b/include/linux/swap_ops.h
-> @@ -0,0 +1,39 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#ifndef _MM_SWAP_OPS_H
-> +#define _MM_SWAP_OPS_H
-> +
-> +#include <linux/swap.h> /* for SWAP_CLUSTER_MAX */
-> +
-> +struct swap_iocb {
-> +       union {
-> +               struct kiocb    iocb;
-> +               struct bio      bio;
-> +       };
-> +       struct bio_vec          bvecs[SWAP_CLUSTER_MAX];
-> +       int                     nr_bvecs;
-> +       int                     len;
-> +};
-> +
-> +struct swap_io_ctx {
-> +       struct swap_iocb        *sio;
-> +       struct swap_info_struct *sis;
-> +};
-> +
-> +/*
-> + * SWAP_OPS_F_REQUIRE_NOFS:
-> + *     When set, all reclaim operations must operated as GFS_NOFS and no=
-t
-> + *     just GFP_NOIO, as GFP_NOIO allocations could recourse into the
-> + *     file system backing this swap file.
-> + */
-> +#define SWAP_OPS_F_REQUIRE_NOFS                (1U << 0)
-> +
-> +struct swap_ops {
-> +       unsigned int            flags;
-> +
-> +       bool (*can_merge)(struct folio *folio, struct folio *prev_folio,
-> +                       size_t prev_folio_size, int rw);
-> +       void (*submit_write)(struct swap_io_ctx *ctx);
-> +       void (*submit_read)(struct swap_io_ctx *ctx);
-> +};
-> +
-> +#endif /* _MM_SWAP_OPS_H */
-> diff --git a/mm/madvise.c b/mm/madvise.c
-> index 07a21ca31bad..c179938097bf 100644
-> --- a/mm/madvise.c
-> +++ b/mm/madvise.c
-> @@ -32,6 +32,7 @@
->  #include <linux/leafops.h>
->  #include <linux/shmem_fs.h>
->  #include <linux/mmu_notifier.h>
-> +#include <linux/swap_ops.h>
->
->  #include <asm/tlb.h>
->
-> diff --git a/mm/page_io.c b/mm/page_io.c
-> index c984a4023a65..e741e67d6592 100644
-> --- a/mm/page_io.c
-> +++ b/mm/page_io.c
-> @@ -25,6 +25,7 @@
->  #include <linux/sched/task.h>
->  #include <linux/delayacct.h>
->  #include <linux/zswap.h>
-> +#include <linux/swap_ops.h>
->  #include "swap.h"
->  #include "swap_table.h"
->
-> @@ -300,15 +301,6 @@ static bool folio_blkg_can_merge(struct folio *folio=
-, struct folio *prev_folio)
->  #define bio_associate_blkg_from_page(bio, folio)               do { } wh=
-ile (0)
->  #endif /* CONFIG_MEMCG && CONFIG_BLK_CGROUP */
->
-> -struct swap_iocb {
-> -       union {
-> -               struct kiocb    iocb;
-> -               struct bio      bio;
-> -       };
-> -       struct bio_vec          bvecs[SWAP_CLUSTER_MAX];
-> -       int                     nr_bvecs;
-> -       int                     len;
-> -};
->  static mempool_t *sio_pool;
->
->  int sio_pool_init(void)
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index 5071177059a9..797c42f024a0 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -41,6 +41,7 @@
->  #include <linux/swapfile.h>
->  #include <linux/iversion.h>
->  #include <linux/unicode.h>
-> +#include <linux/swap_ops.h>
->  #include "swap.h"
->
->  static struct vfsmount *shm_mnt __ro_after_init;
-> diff --git a/mm/swap.h b/mm/swap.h
-> index abd26588abd2..19ea61c97df2 100644
-> --- a/mm/swap.h
-> +++ b/mm/swap.h
-> @@ -8,6 +8,7 @@
->  struct mempolicy;
->  struct swap_iocb;
->  struct swap_memcg_table;
-> +struct swap_io_ctx;
->
->  #if defined(MAX_POSSIBLE_PHYSMEM_BITS)
->  #define SWAP_CACHE_PFN_BITS (MAX_POSSIBLE_PHYSMEM_BITS - PAGE_SHIFT)
-> @@ -77,28 +78,6 @@ enum swap_cluster_flags {
->         CLUSTER_FLAG_MAX,
->  };
->
-> -struct swap_io_ctx {
-> -       struct swap_iocb        *sio;
-> -       struct swap_info_struct *sis;
-> -};
-> -
-> -/*
-> - * SWAP_OPS_F_REQUIRE_NOFS:
-> - *     When set, all reclaim operations must operated as GFS_NOFS and no=
-t
-> - *     just GFP_NOIO, as GFP_NOIO allocations could recourse into the
-> - *     file system backing this swap file.
-> - */
-> -#define SWAP_OPS_F_REQUIRE_NOFS                (1U << 0)
-> -
-> -struct swap_ops {
-> -       unsigned int            flags;
-> -
-> -       bool (*can_merge)(struct folio *folio, struct folio *prev_folio,
-> -                       size_t prev_folio_size, int rw);
-> -       void (*submit_write)(struct swap_io_ctx *ctx);
-> -       void (*submit_read)(struct swap_io_ctx *ctx);
-> -};
-> -
->  #ifdef CONFIG_SWAP
->  #include <linux/swapops.h> /* for swp_offset */
->  #include <linux/blk_types.h> /* for bio_end_io_t */
-> diff --git a/mm/swap_state.c b/mm/swap_state.c
-> index 5be825911e64..b76eb3d876fd 100644
-> --- a/mm/swap_state.c
-> +++ b/mm/swap_state.c
-> @@ -23,6 +23,7 @@
->  #include <linux/huge_mm.h>
->  #include <linux/shmem_fs.h>
->  #include <linux/sysctl.h>
-> +#include <linux/swap_ops.h>
->  #include "internal.h"
->  #include "swap_table.h"
->  #include "swap.h"
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 9b8ee902f972..efe24bb36ce1 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -58,6 +58,7 @@
->  #include <linux/random.h>
->  #include <linux/mmu_notifier.h>
->  #include <linux/parser.h>
-> +#include <linux/swap_ops.h>
->
->  #include <asm/tlbflush.h>
->  #include <asm/div64.h>
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index 4e76a4a87cdc..9c4c337790fd 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -20,7 +20,7 @@
->  #include <linux/spinlock.h>
->  #include <linux/types.h>
->  #include <linux/atomic.h>
-> -#include <linux/swap.h>
-> +#include <linux/swap_ops.h>
->  #include <linux/crypto.h>
->  #include <linux/scatterlist.h>
->  #include <linux/mempolicy.h>
-> --
-> 2.53.0
->
+That's what I did for vswap, per Kairui's suggestions. The cluster
+lock is held from that point all the way to after the folio is
+locked-and-loaded into swap cache, at which point no one can change
+the backend under you.
 
