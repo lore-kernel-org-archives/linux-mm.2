@@ -4,113 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C526C531D1
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 15:07:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2ECF3C531D1
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 15:13:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 136756B009E; Thu, 23 Jul 2026 11:07:36 -0400 (EDT)
+	id BA1CD6B0096; Thu, 23 Jul 2026 11:13:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 10E356B009F; Thu, 23 Jul 2026 11:07:36 -0400 (EDT)
+	id B79306B0098; Thu, 23 Jul 2026 11:13:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F1A186B00A2; Thu, 23 Jul 2026 11:07:35 -0400 (EDT)
+	id A92AB6B0099; Thu, 23 Jul 2026 11:13:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B9BFF6B009E
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 11:07:35 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4650514025F
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 15:07:35 +0000 (UTC)
-X-FDA: 85020370470.11.92E4E12
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id A56631C0011
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 15:07:33 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=none;
-	spf=pass (imf18.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 655C86B0096
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 11:13:32 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3A3634051D
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 15:13:31 +0000 (UTC)
+X-FDA: 85020385422.28.C475B15
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 716754000E
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 15:13:29 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C4+cOItT;
+	spf=pass (imf27.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784819253;
+	s=arc-20220608; t=1784819609;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tzQHUghdrVrIrOI0vJOosaA1fJi+VhG4ztN+axtl+o8=;
-	b=MwK4cfRP3UKtcxJs7/kNTaQMW9VaW9sFm4nqTo5P6vTyGCjgDR5jGj//jpbotrTrDMIyIk
-	HaRFeATCNj7fEqUGfE7MBSTjXT/NpBjg2XLUG0wNPq10skbMAzz6VJE1QNW0KGQhK82Del
-	/kzsYVdvAofQNV2vQeH//79Lh+F3bvM=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=HoPBMTykAXQKt94M9v95tVhkcDwfjpfMlCnu/Xxm4ds=;
+	b=gpjI5lpYS3WAajw4GXP9qWevMPhAuyxEvGEO7rqdIeoH5Ro08G0pjcALgv/YYCWu1svo4T
+	hMZ0WK3LFdKqsjIZOGA48CHdYwqPKGjGv8ICVyDHfZ+KK8/i34245s+xoZ2tFoFOSLL96U
+	zIzptSgS0adbfJXzbRdBBeGUWOPOcp8=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=none;
-	spf=pass (imf18.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C4+cOItT;
+	spf=pass (imf27.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784819253;
-	b=hTupbTC+5C/t89uVGNIZuCFZdNxjyObeXBBNwhnuaUry5EqDMdFsW7p+EKP/N17qu7hIM0
-	Oxygy4kqeUSIO2y3qb12OpmRbin+xlogOCY+SsVSgYDWqKcOtV2tV67p2BROjejZL6lR0j
-	SX/sayq4R8yJXsHV11TbDaL5JwQ6aM0=
+	t=1784819609;
+	b=eY+ZVyQpEVDPkfw7KenNHPdmkW/pWr5c2oZFB71WWEq7LESz+ZL6OAzywaqsigTvnwOmzj
+	m1LGyTRtlWONiB4Ujf6/IVukoKclLACnNksnZGDuAh0H6IUSFj+yrw0wRXlFpmkoZvh96M
+	qkdRIZ1v1+6k3zLTXk87J68W1NNUy88=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 89F7040B4A;
-	Thu, 23 Jul 2026 15:07:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CC831F00A3A;
-	Thu, 23 Jul 2026 15:07:25 +0000 (UTC)
-Content-Type: multipart/mixed; boundary="===============8746857589958803762=="
+	by tor.source.kernel.org (Postfix) with ESMTP id D0B2660A71;
+	Thu, 23 Jul 2026 15:13:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3EB41F000E9;
+	Thu, 23 Jul 2026 15:13:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784819608;
+	bh=HoPBMTykAXQKt94M9v95tVhkcDwfjpfMlCnu/Xxm4ds=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=C4+cOItT0PnzdfroCEjzlIBcCT0iIVNJSMJ00DEA+XRUedcSK6kfHfm+olDKn9cvS
+	 RuYLPUeq8jIyqtW9cYE7NmaPAeTYXW/QatXLgk7nbo3wAS1g170Ogvc0CJdqOOWKYq
+	 bAuXzmxNp2eZ1vblRVf7VC7++Nf1+AlokNWcQxqwwNbBZ5k67EBaaiW3GKwW/Z9zy7
+	 Y/pQu3lVPRBYIjjeMC5JRXrhN76RBHxvwOFSVP87Poe5dln9KLLpey8rcmjaVWdlrw
+	 ozFj8yBt5plg+LI3gv/RC/zaMEVVhxvBToTzbv9ckomOw3NTlmt+yWI0jZMFnZN6ZZ
+	 fcBJo+594FICw==
+Message-ID: <5a0702a3-9aa1-48e5-bbd8-924289fb1993@kernel.org>
+Date: Thu, 23 Jul 2026 17:13:23 +0200
 MIME-Version: 1.0
-Message-Id: <cd7b155ba1d02f1a0de26dbac9529e0fce0561ba3e4335fe206b99ef0ab5ae60@mail.kernel.org>
-In-Reply-To: <48f2d61f-d468-49b7-881e-f00777db073f@web.de>
-References: <48f2d61f-d468-49b7-881e-f00777db073f@web.de>
-Subject: Re: [PATCH] tools: Use fputc() calls in some functions
-From: bot+bpf-ci@kernel.org
-To: Markus.Elfring@web.de, acpica-devel@lists.linux.dev,
-	bpf@vger.kernel.org, coresight@lists.linaro.org, kvm@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-gpio@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org, linux-perf-users@vger.kernel.org,
-	linux-pm@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, mptcp@lists.linux.dev,
-	netdev@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-	virtualization@lists.linux.dev, adrian.hunter@intel.com,
-	amastro@fb.com, alex@shazbot.org, alexander.shishkin@linux.intel.com,
-	ast@kernel.org, ak@linux.intel.com, andrew+netdev@lunn.ch,
-	akpm@linux-foundation.org, andrii@kernel.org,
-	ankur.a.arora@oracle.com, acme@kernel.org, brgl@kernel.org,
-	bobbyeshleman@meta.com, borntraeger@linux.ibm.com,
-	chleroy@kernel.org, ctshao@google.com, imbrenda@linux.ibm.com,
-	costa.shul@redhat.com, crwood@redhat.com, daniel@iogearbox.net,
-	daniel.lezcano@kernel.org, david@kernel.org, dmatlack@google.com,
-	davem@davemloft.ne, t@kvack.org, donald.hunter@gmail.com,
-	eddyz87@gmail.com, emil@etsalapatis.com, edumazet@google.com,
-	gmonaco@redhat.com, geliang@kernel.org, irogers@google.com,
-	mingo@redhat.com, ipravdin.official@gmail.com, kuba@kernel.org,
-	james.clark@linaro.org, frankja@linux.ibm.com,
-	kerneljasonxing@gmail.com, jolsa@kernel.org, joe@dama.to,
-	john.g.garry@oracle.com, jpoimboe@kernel.org,
-	kaushlendra.kumar@intel.com, warthog618@gmail.com, memxor@gmail.com,
-	lenb@kernel.org, leo.yan@linux.dev, lukasz.luba@arm.com,
-	maddy@linux.ibm.com, mark.rutland@arm.com, martin.lau@linux.dev,
-	mhiramat@kernel.org, martineau@kernel.org, matttbe@kernel.org,
-	mpe@ellerman.id.au, mike.leach@arm.com, almasrymina@google.com,
-	yatsenko@meta.com, namcao@linutronix.de, namhyung@kernel.org,
-	npiggin@gmail.com, pabeni@redhat.com, pbonzini@redhat.com,
-	pawel.chmielewski@intel.com, peterz@infradead.org, qmo@kernel.org,
-	rafael@kernel.org, rananta@google.com, saket.dumbre@intel.com,
-	shuah@kernel.org, horms@kernel.org, song@kernel.org,
-	srinivas.pandruvada@linux.intel.com, sdf@fomichev.me,
-	sgarza@kvack.org, re@redhat.com, rostedt@goodmis.org,
-	suzuki.poulose@arm.com, swapnil.sapkal@amd.com, linux@weissschuh.net,
-	tglozar@redhat.com, vipinsh@google.com, wander@redhat.com,
-	will@kernel.org, willemdebruijn.kernel@gmail.com, w@1wt.eu,
-	yonghong.song@linux.dev, zhangchujun@cmss.chinamobile.com,
-	rui.zhang@intel.com
-Cc: linux-kernel@vger.kernel.org,kernel-janitors@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Thu, 23 Jul 2026 15:07:25 +0000 (UTC)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 4/4] mm: page_alloc: fix non-movable reclaim storm in
+ defrag_mode
+Content-Language: en-US
+To: Johannes Weiner <hannes@cmpxchg.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260722150006.3848560-1-hannes@cmpxchg.org>
+ <20260722150006.3848560-5-hannes@cmpxchg.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
+ KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
+ 87tMFA+u+L4Z5xAzIimfLD5EKC56kJ1CsXlM8S/LHcmdD9Ctkn3trYDNnat0eoAcfPIP2OZ+
+ 9oe9IF/R28zmh0ifLXyJQQz5ofdj4bPf8ecEW0rhcqHfTD8k4yK0xxt3xW+6Exqp9n9bydiy
+ tcSAw/TahjW6yrA+6JhSBv1v2tIm+itQc073zjSX8OFL51qQVzRFr7H2UQG33lw2QrvHRXqD
+ Ot7ViKam7v0Ho9wEWiQOOZlHItOOXFphWb2yq3nzrKe45oWoSgkxKb97MVsQ+q2SYjJRBBH4
+ 8qKhphADYxkIP6yut/eaj9ImvRUZZRi0DTc8xfnvHGTjKbJzC2xpFcY0DQbZzuwsIZ8OPJCc
+ LM4S7mT25NE5kUTG/TKQCk922vRdGVMoLA7dIQrgXnRXtyT61sg8PG4wcfOnuWf8577aXP1x
+ 6mzw3/jh3F+oSBHb/GcLC7mvWreJifUL2gEdssGfXhGWBo6zLS3qhgtwjay0Jl+kza1lo+Cv
+ BB2T79D4WGdDuVa4eOrQ02TxqGN7G0Biz5ZLRSFzQSQwLn8fbwARAQABzSNWbGFzdGltaWwg
+ QmFia2EgPHZiYWJrYUBrZXJuZWwub3JnPsLBsAQTAQoAWhYhBKlA1DSZLC6OmRA9UCJPp+fM
+ gqZkBQJqFFy6GxSAAAAAAAQADm1hbnUyLDIuNSsxLjEyLDIsMgIbAwUJGtCBUAULCQgHAwUV
+ CgkICwUWAgMBAAIeBQIXgAAKCRAiT6fnzIKmZJIUEADFx/tREzUImHrEwVHeSvDFmA7tJysI
+ UVrlvrM09E7GIuzphzv7jYmo8n3ANpCczLEVr4G0syYQdTigaZgv3+FQDIIzhKih1IHhu1Ei
+ XHlywNWKnQxxQEUNi5Mwx43wQz5XVw9F1A7gtKBKNtfogO511hAbrzagrYajyQacEJ/+sfhZ
+ 9Da8ltHIXD8pcYaHUfQgEusCgmEd9+KrUwrTbckFKmYq5chuE6yJ4J0EmWknL096jIE6CnzF
+ FRslQ3B1UKDjxVsm1ZHfir5NeWszLkTvGFsddFaWTgh8UycESG6VQzKXjjewXu2pG7YQYRpj
+ QKm1W5X2TkwWkXRBZTmfmbhxIUMh3+zf5wQ463rSmDN/8v81tdqBtAW6rH/kzg1GvkaTHXn0
+ 507yEHFzBksk2viAuIxxr7km8+/KARYLIdGtx30EG8cKzAUZOK6WqxtNCsXUJNrVE8CWrCaD
+ icoNu7Fs1c5hmPHdSTnU48ce67449DdnO4neLSNhRiGlMHJgfJUmgrxu/hcYeOZ3haWmEQ2w
+ uW1Mh01OHi8QZHCEyAbABrPs9GUgccc/4eYXX9hIgxfSkYzn8f+8NuIFPWl/0uTvjgqU29FQ
+ SbzOLxHq9439Ox40G5mS5eZXRGxITYR+6TXvRGI6P/264jvflnr/pDGUttaikU+0W+1uxgKH
+ cmYbEc7ATQRbGTU1AQgAn0H6UrFiWcovkh6EXVcl+SeqyO6JHOPm+e9Wu0Vw+VIUvXZVUVVQ
+ La1PQDUi6j00ChlcR66g9/V0sPIcSutacPKfdKYOBvzd4rlhL8rfrdEsQw5ApZxrA8kYZVMh
+ FmBRKAa6wos25moTlMKpCWzTH84+WO5+ziCTsTUZASAToz3RdunTD+vQcHj0GqNTPAHK63sf
+ bAB2I0BslZkXkY1RLb/YhuA6E7JyEd2pilZOrIuBGl/5q2qSakgnAVFWFBR/DO27JuAksYnq
+ +aH8vI0xGvwn75KqSk4UzAkDzWSmO4ZHuahKtQgZNsMYV+PGayRBX9b9zbldzopoLBdqHc4n
+ jQARAQABwsF8BBgBCgAmAhsMFiEEqUDUNJksLo6ZED1QIk+n58yCpmQFAmfIHFQFCRYU6J8A
+ CgkQIk+n58yCpmS2PA//bqN1LfcotmArgElsa+0EGZSQlYgK48pm8WAeTXTngudP9IJ4SuKY
+ HR5RNjHcBeqN+Me0zxRqYzRb8nGanHEkDyf4Im8DQM8d6vbyU+FcPmG4skud4kgS1zMHnlVd
+ SXfSIwKC/hKgdHG8aBV7545Lz9X6Iohea+94wneD0aw/hqF+QWewGZhWJriWAZtvEkzNjQOi
+ 4U9F/trLten/x7bpphDSnDMKJtITbtzATT1Dq7o7VpIUK1nCTQALMuMjKCdi8OdU/+V+R3O4
+ 0PXWvX8qrvqYapVbZ+9KqT74FsuB0Ya9uXwgBF2Q6cRuETZk5vqaqKxzqoQZCO8AOz/58j6O
+ 2RHNy/mZEN+7tJ5Tsq42zVJ4jxsT8b9YplavCMsnBgDeRWhcbYhCyttoL7nYISyWg4kQYZ/P
+ wIV3OuNv2f8iKYsxNsRuClOAF82+gvqOy1/1pprFjy8uo2pkoOrb63aOP3vO5VHnRKgra6dq
+ NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
+ OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
+ jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
+In-Reply-To: <20260722150006.3848560-5-hannes@cmpxchg.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 716754000E
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A56631C0011
-X-Rspamd-Server: rspam01
-X-Stat-Signature: 16p16u49sn8tt4kpaqh66e3kr9p4a6ry
-X-HE-Tag: 1784819253-102807
-X-HE-Meta: U2FsdGVkX19PAXpRWpSr2PGkse11hVGzIt+ZdYFJ9LAYIf7VoFqmtjXSfEhRTu69ekXZnDa4skWepTAn3E1/VXY3KA2nWsKZYAKX/75RyEcxcJnxCeCUYFrdad7QNCYs2zFThmQS/Rn6YERhox6625WyGPPXVk5egj+u/bHlo8J8yb9t8JuEkkSlUjWbzuNBHf0P32nSaCp1n29Un1ujv0laIfvxqZiHGeKX/uBZDAYhDwSbhrOASyPnR/wxsAMIh0VUPOEsTD9t/RiGwx69nk0gf6/pTg/iG3yZLiRCeOkL1XmCcUBhy4YOQz2Ercd5cBA6O9D3Ve0vUASJA5v0P/Ylo8a5VbeBwMJWIuQDXL4G2nAbiwVav2SOkyx93ETsP6Q09ED2Od0zX5nQAbdvgWZ8n6SFvZN+Y3ewk2Bx3qNDw8tXaOwpHJ+LXi3yahoKwGU7GUutiD2gcE10cIqyHHimW1adc0QKmgaPNR/aai+wVIOpgFYr4Ffmgh4bLagrsfT4CgTptzNr7kklus7N7e4+seIrzRHkDZdYKSQfgg56V5n5VcZqf81tg9jaVMmuWbG1dJ28HGxKXwmYxT8GxZvWVPWxi1vIPvnsGxkrPd5WGQSNxA0wrpOdz/aNub0eSJbyAeyyFN2GeoD/LclXNwRAy0tsBS58xSlc/920RExLC3Tpb6hOoIpcy/FMRTibL4fA1ccsO1BoWgL6+4UNao8vFbcWJlSjqpbeqaKC3VGAhO7zZjvl1KV3VeGE1P7B2BRr2GgWYIyCEUUQqFNSBaebYCC/1ovxH596QLFiodTzAS+XQqh15clSQrX+Yk9LSqeCMe/k22DrgqaMbTSP4DP5+8r1uuMTqMZqvUAoSRRNp6t+HaCZtDQKgLPtXqsvJnwjkCn3AmWrpusUPzT/kh0Z2gF93Lpm/hVk9XWM6ylTxIo2L4o2d+4YgB4+uZGmzi9fhevGIPyg4BkeG6J
- YVavePqc
- UAcmizdEET/hP4hyFehISfRJbCDbYZJH/JFKq61o+wDJzTbcs2quoCcxw+oxcQDZo/fnrmpjW8RTshklEnD08G9hocrmiFRnQXG72DaPlSzcj0hoYIOPsWbBje73bqFNL98mpr+6NuEwlD9Am10FKqlcB+JY16XqSbjsEkp7GJT51b1I02ftQ6bWM7n1y1R8MlvE6foqaI5fNpvYXN0ke/NtUpV1PEHku62F5Y845iKsJGzOzgCANO+z7/WoeyLAlA0xNVGsOwTG96ZUrELca2nlyHWKEyasZ2Lzdu0+rZyFABgHDy8SkWAFlE8YxesXiQnScl7qh6sg321ByEWkrYwLkia3OYJ6ClilIn+whAoYhXAWizkDwDhZ/ajWr26r21KDkiR6BwbcupkkAPhzitsGZnfNf4G9qGu8tSlJN521ywh1mWgakJAoDVw==
+X-Stat-Signature: antpcgami3q49z1bgq8wux3uyage1k78
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1784819609-946920
+X-HE-Meta: U2FsdGVkX19sBQbhomThtIhdkmyEpQnt25aGGKMBND6rmEdHvn5bE8Jiz7yh8GslBMdAMpVZeTNxbAOvZddAVaWtv5D0Y68+OVq2TkE4vvm1VoV9bPqbphUkQfphCWL1Z0sxqrwXGOEys8Z85UJmwn6+X7jM5g8HVtCBFR+oLzZgsaG1JDsop0c48N2XuMLUok9/CtCqvaZtBtZlCrUGIb+gfHifLqka6PKvIGMEOSV+2rYmqbgF+PPR04iGaQJVJBUjSHJp9jYgD5A1c9avEX7EAzkwEGi9rujVB/2bt+T1qL0o+ip4e/wGClZDAJN6s3AxiZDCigat9PxJQfnPGKMVEsBvWhyTE/nZw8FeUqXCH1//9gwWneiB9RRou5vPzpwfab0RyQzutRNlzSfw8kWk7eXx4vM6e7aTywQf9fMp6mg3zPzFZde+d5FOcEKlkwDgjCDk+UjPxm7h+lfS+/fRZYmzpbqrqPIKFeSWd/yqX3Pdvy+ox7VB//F6infHwvkucCV5WM1h22jp9o/spU7owLMIYd9TGpD4BtR+QogEEuQKx4rYT34GewICb7OZYc5RyXHJ9Gr+G0dYSiqk1JgE/fHwfdOu7mDiyImAu8+v68efzf74GKs4CVIdP5ZDWs1/XmHEo/yGs/hwF9IdAgB2FBolf3iCbbHUVUXBaVaAFjfm5lc+/E2ADiEIdjiI0CMiIPjl27tAhExwGguzr5v8af6WKtQ/I0BFjaexN8cxhI+TcIUCVv0jO4pEwlC8YN+4gwTEMdkLCK7/b4BFT00W59h2Zf/sv8vAroFTxHwoVYnabSWwDojFJZwXwUX+s8mXOxBA5LlhPp86Pgtae9z+eQ2hLCqeQ9J6c6NlTniVlDPrHH9FuCh5seFQHD4Ceg2HAoWgPim6rGOI38Fi4QCcLGmyJgf1dLvaGZ3qN11QQMmrIkDkWHJGFxsamqd74f7U1p6zdQgG5UEJKjW
+ pj/TUce6
+ 0w0Te0nJak3qmIUA8T65U4wfrmBw45UbbhzQAlXazlnPWAXeFXERRsCebDoqXsM994Av2V+RBYoLGjJa9BuJ79Kz93CDmmUg3gAprDRlmFsiY9Ql0TgzOVg48UpQpBvlkj4CE0NKAglFyYIS/By1OIKH/WtUq0sUiioFJKRMYU7MOyRlbfXK8WrM7pc2qr2Md6oPfxlzuT5ny3J2UahbVn4NOeAiO61BhriTzrx7CY28XFwk4e7p679XyfAPEVw/x/UTfk9gaO8DYM7R0NS9qbLSvxRBF0edM1wVtcG3A225QjdVSH7WUBTuuyEq1Xi4wVBLETnXu9ZYaunud8T2AfS85SxjgHxSJN0e6tOAtQ7nD37PKKZamLW3wEiA9q1nGl6umVZmQwe9WwRw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,928 +139,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---===============8746857589958803762==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On 7/22/26 16:56, Johannes Weiner wrote:
+> As we deployed defrag_mode into Meta production, pressure spikes and
+> excessive swapping were observed on some workloads. Tracing confirmed
+> that this is unmovable/reclaimable requests spinning in the allocator
+> and direct reclaim, causing excessive amounts of swap.
+> 
+> The initial plan for defrag_mode was to rely on kswapd/kcompactd to
+> produce blocks, and if those are overwhelmed under high pressure, let
+> the allocator fall back (__rmqueue_steal()) after its retry loops.
+> However, that retrying results in more reclaim on some of these
+> workloads than we'd hoped, sometimes excessively so, spurred on by the
+> !costly order conditions in should_reclaim_retry().
+> 
+> The storms are dependent on the request type. Reclaim will inevitably
+> make room in existing movable blocks, since that's where the LRU pages
+> live. So if movable requests retry on reclaim, they make progress.
+> 
+> When non-movable requests spin in reclaim that isn't productive. They
+> cannot use the individually freed pages, and the process is unlikely
+> to accidentally free whole blocks to meet the ALLOC_NOFRAGMENT bar.
+> They spin and overreclaim excessively, which tanks performance and
+> triggers userspace guards like swap exhaustion or pressure based OOM.
+> 
+> To fix this, send non-movable requests, regardless of order, into
+> pageblock reclaim/compaction. This way, they help move things along to
+> meet the ALLOC_NOFRAGMENT bar. After this patch, the reclaim storms
+> and excess OOM rates are no longer observed in production.
+> 
+> The longer-term plan is still to have all requests, including the
+> movable ones, help make blocks to spread the cost of defragmenting
+> more evenly and fairly; combined with proper watermarking to reduce
+> allocation latencies in the common case. However, doing this naively
+> unearths scaling and concurrency limitations in compaction that need
+> to be addressed first. Promoting just non-movables for now is the
+> minimally viable bug fix for the above issue.
+> 
+> Fixes: e3aa7df331bc ("mm: page_alloc: defrag_mode")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
 
-> diff --git a/tools/bpf/bpftool/common.c b/tools/bpf/bpftool/common.c
-> --- a/tools/bpf/bpftool/common.c
-> +++ b/tools/bpf/bpftool/common.c
-> @@ -53,7 +53,7 @@ void p_err(const char *fmt, ...)
->  	} else {
->  		fprintf(stderr, "Error: ");
->  		vfprintf(stderr, fmt, ap);
-> -		fprintf(stderr, "\n");
-> +		fputc(stderr, '\n');
-                     ^^^^^^
+Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-The fputc() arguments are reversed. The C standard signature is
-`int fputc(int c, FILE *stream)` - the character comes first, the stream
-second. This passes the FILE* stderr as the int c parameter and '\n' as
-the FILE* stream parameter.
+> ---
+>  mm/internal.h   |  6 ++++++
+>  mm/page_alloc.c | 31 ++++++++++++++++++++++++++-----
+>  2 files changed, 32 insertions(+), 5 deletions(-)
+> 
+> diff --git a/mm/internal.h b/mm/internal.h
+> index 6d3402001b93..5acba3470659 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -1061,6 +1061,12 @@ struct compact_control {
+>  struct capture_control {
+>  	struct zone *zone;
+>  	int migratetype;
+> +	/*
+> +	 * Allocation request order. May differ from the compaction
+> +	 * order: defrag_mode promotes sub-block allocations to
+> +	 * pageblock-order compaction; capture still matches at the
+> +	 * original allocation order so prep_new_page() is consistent.
+> +	 */
 
-Correct form is `fputc('\n', stderr)`.
+Yeah, a premature capture can't jeopardize the full-pageblock clearing
+because compaction_capture() disallows capturing <pageblock_order page from
+MOVABLE pageblock for !MOVABLE allocations.
 
-This constraint violation triggers a -Werror=int-conversion diagnostic and
-breaks the build. If it compiled, at runtime fputc would dereference
-(FILE*)10, crashing the program.
+It's thus unlikely the capture will ever succeed in these scenarios. But
+it's not wrong.
 
-The same argument reversal occurs in 67 conversions across this patch.
-
-> @@ -67,7 +67,7 @@ void p_info(const char *fmt, ...)
->
->  	va_start(ap, fmt);
->  	vfprintf(stderr, fmt, ap);
-> -	fprintf(stderr, "\n");
-> +	fputc(stderr, '\n');
-                     ^^^^^^
-
-Same reversed-argument bug.
-
-> diff --git a/tools/bpf/bpftool/main.c b/tools/bpf/bpftool/main.c
-> --- a/tools/bpf/bpftool/main.c
-> +++ b/tools/bpf/bpftool/main.c
-> @@ -273,7 +273,7 @@ void fprint_hex(FILE *f, void *arg, unsigned int n, const char *sep)
->  		if (!i)
->  			/* nothing */;
->  		else if (!(i % 16))
-> -			fprintf(f, "\n");
-> +			fputc(f, '\n');
-
-Arguments reversed: `fputc(f, '\n')` should be `fputc('\n', f)`.
-
-> diff --git a/tools/bpf/bpftool/prog.c b/tools/bpf/bpftool/prog.c
-> --- a/tools/bpf/bpftool/prog.c
-> +++ b/tools/bpf/bpftool/prog.c
-> @@ -1266,7 +1266,7 @@ static void hex_print(void *data, unsigned int size, FILE *f)
->  			fprintf(f, "%c%s", c, j == i + 7 ? " " : "");
->  		}
->
-> -		fprintf(f, "\n");
-> +		fputc(f, '\n');
-
-Arguments reversed.
-
-> diff --git a/tools/include/nolibc/err.h b/tools/include/nolibc/err.h
-> --- a/tools/include/nolibc/err.h
-> +++ b/tools/include/nolibc/err.h
-> @@ -27,7 +27,7 @@ void vwarnx(const char *fmt, va_list args)
->  {
->  	fprintf(stderr, "%s: ", program_invocation_short_name);
->  	vfprintf(stderr, fmt, args);
-> -	fprintf(stderr, "\n");
-> +	fputc(stderr, '\n');
-
-Arguments reversed. This is in a nolibc header - nolibc's fputc
-(tools/include/nolibc/stdio.h) does `write(fileno(stream), &ch, 1)`.
-With stream==(FILE*)10 fileno dereferences a bogus pointer and crashes.
-
-> diff --git a/tools/mm/page_owner_sort.c b/tools/mm/page_owner_sort.c
-> --- a/tools/mm/page_owner_sort.c
-> +++ b/tools/mm/page_owner_sort.c
-> @@ -867,7 +867,7 @@ struct option longopts[] = {
->  			}
->  			if (cull & CULL_STACKTRACE)
->  				fprintf(fout, ":\n%s", list[i].stacktrace);
-> -			fprintf(fout, "\n");
-> +			fputc(fout, '\n');
-
-Arguments reversed: should be `fputc('\n', fout)`.
-
-> diff --git a/tools/net/ynl/ynltool/main.c b/tools/net/ynl/ynltool/main.c
-> --- a/tools/net/ynl/ynltool/main.c
-> +++ b/tools/net/ynl/ynltool/main.c
-> @@ -156,7 +156,7 @@ void p_err(const char *fmt, ...)
->  	} else {
->  		fprintf(stderr, "Error: ");
->  		vfprintf(stderr, fmt, ap);
-> -		fprintf(stderr, "\n");
-> +		fputc(stderr, '\n');
+>  	int order;
+>  	struct page *page;
+>  };
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 4b9686fedb71..f92055827ae9 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -4152,8 +4152,24 @@ __alloc_pages_direct_compact(gfp_t gfp_mask, unsigned int order,
+>  		.order = order,
+>  		.page = NULL,
+>  	};
+> +	int compact_order = order;
+>  
+> -	if (!order)
+> +	/*
+> +	 * If fallbacks are not permitted (defrag_mode), we either
+> +	 * need to reclaim space in a block of matching type, or clear
+> +	 * out an entire block to allow __rmqueue_claim() to convert.
+> +	 *
+> +	 * Reclaim by itself is primarily freeing space in movable
+> +	 * blocks, since that's where the LRU pages live. So this
+> +	 * works for movable requests, but not for others.
+> +	 *
+> +	 * For those, promote the order to help make blocks, instead
+> +	 * of spinning in reclaim alone unproductively.
+> +	 */
+> +	if ((alloc_flags & ALLOC_NOFRAGMENT) && ac->migratetype != MIGRATE_MOVABLE)
+> +		compact_order = max(order, pageblock_order);
+> +
+> +	if (!compact_order)
+>  		return NULL;
+>  
+>  	psi_memstall_enter(&pflags);
+> @@ -4169,8 +4185,8 @@ __alloc_pages_direct_compact(gfp_t gfp_mask, unsigned int order,
+>  	barrier();
+>  	WRITE_ONCE(current->capture_control, &capc);
+>  
+> -	*compact_result = try_to_compact_pages(gfp_mask, order, alloc_flags, ac,
+> -							       prio, &capc);
+> +	*compact_result = try_to_compact_pages(gfp_mask, compact_order,
+> +					       alloc_flags, ac, prio, &capc);
+>  
+>  	/*
+>  	 * Make sure we hide capture control first before we read the captured
+> @@ -4215,7 +4231,7 @@ __alloc_pages_direct_compact(gfp_t gfp_mask, unsigned int order,
+>  		struct zone *zone = page_zone(page);
+>  
+>  		zone->compact_blockskip_flush = false;
+> -		compaction_defer_reset(zone, order, true);
+> +		compaction_defer_reset(zone, compact_order, true);
+>  		count_vm_event(COMPACTSUCCESS);
+>  		return page;
 >  	}
->  	va_end(ap);
->  }
-> @@ -170,7 +170,7 @@ void p_info(const char *fmt, ...)
->
->  	va_start(ap, fmt);
->  	vfprintf(stderr, fmt, ap);
-> -	fprintf(stderr, "\n");
-> +	fputc(stderr, '\n');
+> @@ -4455,9 +4471,14 @@ __alloc_pages_direct_reclaim(gfp_t gfp_mask, unsigned int order,
+>  	struct page *page = NULL;
+>  	unsigned long pflags;
+>  	bool drained = false;
+> +	int reclaim_order = order;
+> +
+> +	/* Match the slowpath compaction promotion in __alloc_pages_direct_compact */
+> +	if ((alloc_flags & ALLOC_NOFRAGMENT) && ac->migratetype != MIGRATE_MOVABLE)
+> +		reclaim_order = max(order, pageblock_order);
+>  
+>  	psi_memstall_enter(&pflags);
+> -	*did_some_progress = __perform_reclaim(gfp_mask, order, ac);
+> +	*did_some_progress = __perform_reclaim(gfp_mask, reclaim_order, ac);
+>  	if (unlikely(!(*did_some_progress)))
+>  		goto out;
+>  
 
-Both conversions reverse the arguments.
-
-> diff --git a/tools/objtool/builtin-check.c b/tools/objtool/builtin-check.c
-> --- a/tools/objtool/builtin-check.c
-> +++ b/tools/objtool/builtin-check.c
-> @@ -297,7 +297,7 @@ int make_backup(void)
->  			fprintf(stderr, " %s", arg);
->  	}
->
-> -	fprintf(stderr, "\n");
-> +	fputc(stderr, '\n');
-
-Arguments reversed. objtool runs during the kernel build, so a build
-failure or crash here breaks the build.
-
-> diff --git a/tools/objtool/disas.c b/tools/objtool/disas.c
-> --- a/tools/objtool/disas.c
-> +++ b/tools/objtool/disas.c
-> @@ -537,7 +537,7 @@ void disas_print_insn(FILE *stream, struct disas_context *dctx,
->  		return;
->
->  	if (strcmp(format, "\n") == 0) {
-> -		fprintf(stream, "\n");
-> +		fputc(stream, '\n');
-
-Arguments reversed.
-
-> diff --git a/tools/perf/builtin-c2c.c b/tools/perf/builtin-c2c.c
-> --- a/tools/perf/builtin-c2c.c
-> +++ b/tools/perf/builtin-c2c.c
-> @@ -2511,7 +2511,7 @@ struct perf_hpp hpp = {
->  		hists__fprintf_headers(&c2c_hists->hists, out);
->  		once = true;
->  	} else {
-> -		fprintf(out, "\n");
-> +		fputc(out, '\n');
->  	}
-
-[ ... ]
-
-> @@ -2590,15 +2590,15 @@ static void perf_c2c__hists_fprintf(FILE *out, struct perf_session *session)
->  	setup_pager();
->
->  	print_c2c__display_stats(out);
-> -	fprintf(out, "\n");
-> +	fputc(out, '\n');
->  	print_shared_cacheline_info(out);
-> -	fprintf(out, "\n");
-> +	fputc(out, '\n');
->  	print_c2c_info(out, session);
->
->  	if (c2c.stats_only)
->  		return;
->
-> -	fprintf(out, "\n");
-> +	fputc(out, '\n');
-
-[ ... ]
-
-> @@ -2606,7 +2606,7 @@ static void perf_c2c__hists_fprintf(FILE *out, struct perf_session *session)
->
->  	hists__fprintf(&c2c.hists.hists, true, 0, 0, 0, stdout, true);
->
-> -	fprintf(out, "\n");
-> +	fputc(out, '\n');
-
-All four conversions reverse the arguments.
-
-> diff --git a/tools/perf/builtin-daemon.c b/tools/perf/builtin-daemon.c
-> --- a/tools/perf/builtin-daemon.c
-> +++ b/tools/perf/builtin-daemon.c
-> @@ -691,7 +691,7 @@ static int cmd_session_list(struct daemon *daemon, union cmd *cmd, FILE *out)
->  			/* session up time */
->  			csv_sep, (uint64_t)((curr - daemon->start) / 60));
->
-> -		fprintf(out, "\n");
-> +		fputc(out, '\n');
->  	} else {
-
-[ ... ]
-
-> @@ -730,7 +730,7 @@
->  				/* session up time */
->  				csv_sep, (uint64_t)((curr - session->start) / 60));
->
-> -			fprintf(out, "\n");
-> +			fputc(out, '\n');
-
-Both conversions reverse the arguments.
-
-> diff --git a/tools/perf/builtin-lock.c b/tools/perf/builtin-lock.c
-> --- a/tools/perf/builtin-lock.c
-> +++ b/tools/perf/builtin-lock.c
-> @@ -1319,9 +1319,9 @@ static void print_result(void)
->
->  		list_for_each_entry(key, &lock_keys, list) {
->  			key->print(key, st);
-> -			fprintf(lock_output, " ");
-> +			fputc(lock_output, ' ');
->  		}
-> -		fprintf(lock_output, "\n");
-> +		fputc(lock_output, '\n');
-
-Both `fputc(lock_output, ' ')` and `fputc(lock_output, '\n')` reverse the
-arguments. Correct form: `fputc(' ', lock_output)` and
-`fputc('\n', lock_output)`.
-
-> @@ -1598,7 +1598,7 @@ static void print_header_csv(const char *sep)
->  		fprintf(lock_output, "%s%s %s", "type", sep, "caller");
->  		if (verbose > 0)
->  			fprintf(lock_output, "%s %s", sep, "stacktrace");
-> -		fprintf(lock_output, "\n");
-> +		fputc(lock_output, '\n');
-
-[ ... ]
-
-> @@ -1629,7 +1629,7 @@ static void print_lock_stat_stdio(struct lock_contention *con, struct lock_stat *st)
->
->  	list_for_each_entry(key, &lock_keys, list) {
->  		key->print(key, st);
-> -		fprintf(lock_output, " ");
-> +		fputc(lock_output, ' ');
->  	}
-
-[ ... ]
-
-> @@ -1687,7 +1687,7 @@ static void print_lock_stat_csv(struct lock_contention *con, struct lock_stat *st,
->  	case LOCK_AGGR_CALLER:
->  		fprintf(lock_output, "%s%s %s", get_type_flags_name(st->flags), sep, st->name);
->  		if (verbose <= 0)
-> -			fprintf(lock_output, "\n");
-> +			fputc(lock_output, '\n');
-
-[ ... ]
-
-> @@ -1721,7 +1721,7 @@ static void print_lock_stat_csv(struct lock_contention *con, struct lock_stat *st,
->  			get_symbol_name_offset(kmap, sym, ip, buf, sizeof(buf));
->  			fprintf(lock_output, "%s %#lx %s", i ? ":" : sep, (unsigned long) ip, buf);
->  		}
-> -		fprintf(lock_output, "\n");
-> +		fputc(lock_output, '\n');
->  	}
->  }
-
-[ ... ]
-
-> @@ -1781,7 +1781,7 @@ static void print_footer_csv(int total, int bad, struct lock_contention_fails *fails,
->  		for (i = 0; i < BROKEN_MAX; i++)
->  			fprintf(lock_output, "%s bad_%s=%d", sep, name[i], bad_hist[i]);
->  	}
-> -	fprintf(lock_output, "\n");
-> +	fputc(lock_output, '\n');
-
-All six conversions in builtin-lock.c reverse the arguments.
-
-> diff --git a/tools/perf/builtin-script.c b/tools/perf/builtin-script.c
-> --- a/tools/perf/builtin-script.c
-> +++ b/tools/perf/builtin-script.c
-> @@ -2561,7 +2561,7 @@
->
->  	perf_sample__fprintf_ipc(sample, evsel, fp);
->
-> -	fprintf(fp, "\n");
-> +	fputc(fp, '\n');
-
-[ ... ]
-
-> @@ -2815,7 +2815,7 @@
->  				    cursor, symbol_conf.bt_stop_list, fp);
->  	}
->
-> -	fprintf(fp, "\n");
-> +	fputc(fp, '\n');
-
-[ ... ]
-
-> @@ -3271,11 +3271,11 @@ static int list_available_languages_cb(struct scripting_ops *ops, const char *spec)
->
->  static void list_available_languages(void)
->  {
-> -	fprintf(stderr, "\n");
-> +	fputc(stderr, '\n');
->  	fprintf(stderr, "Scripting language extensions (used in "
->  		"perf script -s [spec:]script.[spec]):\n\n");
->  	script_spec__for_each(&list_available_languages_cb);
-> -	fprintf(stderr, "\n");
-> +	fputc(stderr, '\n');
-
-All four conversions reverse the arguments.
-
-> diff --git a/tools/perf/ui/gtk/util.c b/tools/perf/ui/gtk/util.c
-> --- a/tools/perf/ui/gtk/util.c
-> +++ b/tools/perf/ui/gtk/util.c
-> @@ -37,7 +37,7 @@ static int perf_gtk__error(const char *format, va_list args)
->  	    vasprintf(&msg, format, args) < 0) {
->  		fprintf(stderr, "Error:\n");
->  		vfprintf(stderr, format, args);
-> -		fprintf(stderr, "\n");
-> +		fputc(stderr, '\n');
->  		return -1;
->  	}
->
-> @@ -62,7 +62,7 @@ static int perf_gtk__warning_info_bar(const char *format, va_list args)
->  	    vasprintf(&msg, format, args) < 0) {
->  		fprintf(stderr, "Warning:\n");
->  		vfprintf(stderr, format, args);
-> -		fprintf(stderr, "\n");
-> +		fputc(stderr, '\n');
->  		return -1;
->  	}
->
-> @@ -83,7 +83,7 @@ static int perf_gtk__warning_statusbar(const char *format, va_list args)
->  	    vasprintf(&msg, format, args) < 0) {
->  		fprintf(stderr, "Warning:\n");
->  		vfprintf(stderr, format, args);
-> -		fprintf(stderr, "\n");
-> +		fputc(stderr, '\n');
-
-All three conversions reverse the arguments.
-
-> diff --git a/tools/perf/ui/stdio/hist.c b/tools/perf/ui/stdio/hist.c
-> --- a/tools/perf/ui/stdio/hist.c
-> +++ b/tools/perf/ui/stdio/hist.c
-> @@ -691,7 +691,7 @@
->  		}
->
->  next_line:
-> -		fprintf(fp, "\n");
-> +		fputc(fp, '\n');
->  	}
-
-[ ... ]
-
-> @@ -783,7 +783,7 @@ hists__fprintf_standard_headers(struct hists *hists,
->  		if (line)
->  			fprintf(fp, "# ");
->  		fprintf_line(hists, hpp, line, fp);
-> -		fprintf(fp, "\n");
-> +		fputc(fp, '\n');
->  	}
-
-[ ... ]
-
-> @@ -806,10 +806,10 @@ hists__fprintf_standard_headers(struct hists *hists,
->
->  		width = fmt->width(fmt, hpp, hists);
->  		for (i = 0; i < width; i++)
-> -			fprintf(fp, ".");
-> +			fputc(fp, '.');
->  	}
->
-> -	fprintf(fp, "\n");
-> +	fputc(fp, '\n');
-
-All four conversions reverse the arguments.
-
-> diff --git a/tools/perf/util/debug.c b/tools/perf/util/debug.c
-> --- a/tools/perf/util/debug.c
-> +++ b/tools/perf/util/debug.c
-> @@ -350,7 +350,7 @@ void __dump_stack(FILE *file, void **stackdump, size_t stackdump_size)
->  			fprintf(file, "    #%zd %p ", i, stackdump[i]);
->
->  		map__fprintf_srcline(al.map, al.addr, "", file);
-> -		fprintf(file, "\n");
-> +		fputc(file, '\n');
-
-Arguments reversed.
-
-> diff --git a/tools/perf/util/header.c b/tools/perf/util/header.c
-> --- a/tools/perf/util/header.c
-> +++ b/tools/perf/util/header.c
-> @@ -2454,7 +2454,7 @@ static void __print_pmu_caps(FILE *fp, int nr_caps, char **caps, char *pmu_name)
->  		delimiter = ", ";
->  	}
->
-> -	fprintf(fp, "\n");
-> +	fputc(fp, '\n');
->  }
-
-[ ... ]
-
-> @@ -2513,7 +2513,7 @@ static void print_pmu_mappings(struct feat_fd *ff, FILE *fp)
->  		pmu_num--;
->  	}
->
-> -	fprintf(fp, "\n");
-> +	fputc(fp, '\n');
-
-[ ... ]
-
-> @@ -4349,7 +4349,7 @@ int perf_header__fprintf_info(struct perf_session *session, FILE *fp, bool full)
->  			fprintf(fp, "%s ", feat_ops[bit].name);
->  	}
->
-> -	fprintf(fp, "\n");
-> +	fputc(fp, '\n');
-
-All three conversions reverse the arguments.
-
-> diff --git a/tools/perf/util/intel-pt-decoder/intel-pt-log.c b/tools/perf/util/intel-pt-decoder/intel-pt-log.c
-> --- a/tools/perf/util/intel-pt-decoder/intel-pt-log.c
-> +++ b/tools/perf/util/intel-pt-decoder/intel-pt-log.c
-> @@ -70,14 +70,14 @@ static void intel_pt_print_data(const unsigned char *buf, int len, uint64_t pos,
->  	int i;
->
->  	for (i = 0; i < indent; i++)
-> -		fprintf(f, " ");
-> +		fputc(f, ' ');
->
->  	fprintf(f, "  %08" PRIx64 ": ", pos);
->  	for (i = 0; i < len; i++)
->  		fprintf(f, " %02x", buf[i]);
->  	for (; i < 16; i++)
->  		fprintf(f, "   ");
-> -	fprintf(f, " ");
-> +	fputc(f, ' ');
->  }
->
->  static void intel_pt_print_no_data(uint64_t pos, int indent)
-> @@ -85,12 +85,12 @@ static void intel_pt_print_no_data(uint64_t pos, int indent)
->  	int i;
->
->  	for (i = 0; i < indent; i++)
-> -		fprintf(f, " ");
-> +		fputc(f, ' ');
->
->  	fprintf(f, "  %08" PRIx64 ": ", pos);
->  	for (i = 0; i < 16; i++)
->  		fprintf(f, "   ");
-> -	fprintf(f, " ");
-> +	fputc(f, ' ');
->  }
-
-All four conversions reverse the arguments.
-
-> diff --git a/tools/perf/util/libbfd.c b/tools/perf/util/libbfd.c
-> --- a/tools/perf/util/libbfd.c
-> +++ b/tools/perf/util/libbfd.c
-> @@ -603,7 +603,7 @@
->  		} else
->  			srcline = NULL;
->
-> -		fprintf(s, "\n");
-> +		fputc(s, '\n');
-
-Arguments reversed. The variable s is an open_memstream() stream.
-
-> diff --git a/tools/perf/util/stat-display.c b/tools/perf/util/stat-display.c
-> --- a/tools/perf/util/stat-display.c
-> +++ b/tools/perf/util/stat-display.c
-> @@ -529,7 +529,7 @@ static void print_metric_json(struct perf_stat_config *config __maybe_unused,
->  		}
->  	}
->  	if (!config->metric_only)
-> -		fprintf(out, "}");
-> +		fputc(out, '}');
->  }
-
-[ ... ]
-
-> @@ -1316,7 +1316,7 @@ static void print_header_std(struct perf_stat_config *config,
->  	FILE *output = config->output;
->  	int i;
->
-> -	fprintf(output, "\n");
-> +	fputc(output, '\n');
->  	fprintf(output, " Performance counter stats for ");
-
-[ ... ]
-
-> @@ -1333,7 +1333,7 @@ static void print_header_std(struct perf_stat_config *config,
->  	else
->  		fprintf(output, "thread id \'%s", _target->tid);
->
-> -	fprintf(output, "\'");
-> +	fputc(output, '\'');
-
-[ ... ]
-
-> @@ -1406,9 +1406,9 @@ static void print_table(struct perf_stat_config *config, FILE *output, double avg)
->  		fprintf(output, " %17.9f (%+.9f) ", run, run - avg);
->
->  		for (h = 0; h < n; h++)
-> -			fprintf(output, "#");
-> +			fputc(output, '#');
->
-> -		fprintf(output, "\n");
-> +		fputc(output, '\n');
->  	}
-
-[ ... ]
-
-> @@ -1428,7 +1428,7 @@ static void print_footer(struct perf_stat_config *config)
->  		return;
->
->  	if (!config->null_run)
-> -		fprintf(output, "\n");
-> +		fputc(output, '\n');
-
-All six conversions reverse the arguments.
-
-> diff --git a/tools/perf/util/values.c b/tools/perf/util/values.c
-> --- a/tools/perf/util/values.c
-> +++ b/tools/perf/util/values.c
-> @@ -217,7 +217,7 @@ static void perf_read_values__display_pretty(FILE *fp,
->  	fprintf(fp, "# %*s  %*s", pidwidth, "PID", tidwidth, "TID");
->  	for (j = 0; j < values->num_counters; j++)
->  		fprintf(fp, "  %*s", counterwidth[j], evsel__name(values->counters[j]));
-> -	fprintf(fp, "\n");
-> +	fputc(fp, '\n');
-
-[ ... ]
-
-> @@ -225,7 +225,7 @@ static void perf_read_values__display_pretty(FILE *fp,
->  		for (j = 0; j < values->num_counters; j++)
->  			fprintf(fp, "  %*" PRIu64,
->  				counterwidth[j], values->value[i][j]);
-> -		fprintf(fp, "\n");
-> +		fputc(fp, '\n');
-
-Both conversions reverse the arguments.
-
-> diff --git a/tools/power/acpi/tools/acpidump/apdump.c b/tools/power/acpi/tools/acpidump/apdump.c
-> --- a/tools/power/acpi/tools/acpidump/apdump.c
-> +++ b/tools/power/acpi/tools/acpidump/apdump.c
-> @@ -171,7 +171,7 @@ ap_dump_table_buffer(struct acpi_table_header *table,
->  	acpi_ut_dump_buffer_to_file(gbl_output_file,
->  				    ACPI_CAST_PTR(u8, table), table_length,
->  				    DB_BYTE_DISPLAY, 0);
-> -	fprintf(gbl_output_file, "\n");
-> +	fputc(gbl_output_file, '\n');
-
-Arguments reversed.
-
-> diff --git a/tools/power/x86/intel-speed-select/isst-display.c b/tools/power/x86/intel-speed-select/isst-display.c
-> --- a/tools/power/x86/intel-speed-select/isst-display.c
-> +++ b/tools/power/x86/intel-speed-select/isst-display.c
-> @@ -122,7 +122,7 @@ static void format_and_print(FILE *outf, int level, char *header, char *value)
->
->  	if (level == 0) {
->  		if (header)
-> -			fprintf(outf, "{");
-> +			fputc(outf, '{');
-
-[ ... ]
-
-> @@ -138,7 +138,7 @@ static void format_and_print(FILE *outf, int level, char *header, char *value)
->
->  		if (value) {
->  			if (last_level != level)
-> -				fprintf(outf, "\n");
-> +				fputc(outf, '\n');
-
-[ ... ]
-
-> @@ -156,7 +156,7 @@ static void format_and_print(FILE *outf, int level, char *header, char *value)
->  					fprintf(outf, "\n%s}", delimiters);
->  			}
->  			if (abs(last_level - level) < 3)
-> -				fprintf(outf, "\n");
-> +				fputc(outf, '\n');
-
-All three conversions reverse the arguments.
-
-> diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
-> --- a/tools/power/x86/turbostat/turbostat.c
-> +++ b/tools/power/x86/turbostat/turbostat.c
-> @@ -9099,7 +9099,7 @@ void dump_cpuid_hypervisor(void)
->  	dump_word_chars(ebx);
->  	dump_word_chars(ecx);
->  	dump_word_chars(edx);
-> -	fprintf(outf, "\n");
-> +	fputc(outf, '\n');
->  }
-
-[ ... ]
-
-> @@ -9749,7 +9749,7 @@
->  		fprintf(outf, " siblings");
->  		for (ht_id = 0; ht_id <= MAX_HT_ID; ++ht_id)
->  			fprintf(outf, " %d", cpus[i].ht_sibling_cpu_id[ht_id]);
-> -		fprintf(outf, "\n");
-> +		fputc(outf, '\n');
-
-Both conversions reverse the arguments.
-
-> diff --git a/tools/testing/selftests/bpf/benchs/bench_htab_mem.c b/tools/testing/selftests/bpf/benchs/bench_htab_mem.c
-> --- a/tools/testing/selftests/bpf/benchs/bench_htab_mem.c
-> +++ b/tools/testing/selftests/bpf/benchs/bench_htab_mem.c
-> @@ -148,7 +148,7 @@ static const struct htab_mem_use_case *htab_mem_find_use_case_or_exit(const char *name)
->  	fprintf(stderr, "available use case:");
->  	for (i = 0; i < ARRAY_SIZE(use_cases); i++)
->  		fprintf(stderr, " %s", use_cases[i].name);
-> -	fprintf(stderr, "\n");
-> +	fputc(stderr, '\n');
-
-Arguments reversed.
-
-> diff --git a/tools/testing/selftests/bpf/jit_disasm_helpers.c b/tools/testing/selftests/bpf/jit_disasm_helpers.c
-> --- a/tools/testing/selftests/bpf/jit_disasm_helpers.c
-> +++ b/tools/testing/selftests/bpf/jit_disasm_helpers.c
-> @@ -228,7 +228,7 @@ struct bpf_prog_info info = {};
->  	for (pc = 0, i = 0; i < jited_funcs; ++i) {
->  		fprintf(text_out, "func #%d:\n", i);
->  		disasm_one_func(text_out, image + pc, func_lens[i]);
-> -		fprintf(text_out, "\n");
-> +		fputc(text_out, '\n');
-
-Arguments reversed.
-
-> diff --git a/tools/testing/selftests/bpf/test_progs.c b/tools/testing/selftests/bpf/test_progs.c
-> --- a/tools/testing/selftests/bpf/test_progs.c
-> +++ b/tools/testing/selftests/bpf/test_progs.c
-> @@ -383,7 +383,7 @@ static void print_test_result(const struct prog_test_def *test, const struct test_state *test_state)
->  	else
->  		fprintf(env.stdout_saved, "OK (SKIP: %d/%d)", skipped_cnt, subtests_cnt);
->
-> -	fprintf(env.stdout_saved, "\n");
-> +	fputc(env.stdout_saved, '\n');
->  }
-
-[ ... ]
-
-> @@ -391,7 +391,7 @@ static void print_test_log(char *log_buf, size_t log_cnt)
->  	log_buf[log_cnt] = '\0';
->  	fprintf(env.stdout_saved, "%s", log_buf);
->  	if (log_buf[log_cnt - 1] != '\n')
-> -		fprintf(env.stdout_saved, "\n");
-> +		fputc(env.stdout_saved, '\n');
->  }
-
-[ ... ]
-
-> @@ -409,7 +409,7 @@ static void print_subtest_name(int test_num, int subtest_num,
->  	if (result)
->  		fprintf(env.stdout_saved, ":%s", result);
->
-> -	fprintf(env.stdout_saved, "\n");
-> +	fputc(env.stdout_saved, '\n');
-
-All three conversions reverse the arguments.
-
-> diff --git a/tools/testing/selftests/drivers/net/hw/ncdevmem.c b/tools/testing/selftests/drivers/net/hw/ncdevmem.c
-> --- a/tools/testing/selftests/drivers/net/hw/ncdevmem.c
-> +++ b/tools/testing/selftests/drivers/net/hw/ncdevmem.c
-> @@ -135,7 +135,7 @@ static void pr_err(const char *fmt, ...)
->
->  	if (errno != 0)
->  		fprintf(stderr, ": %s", strerror(errno));
-> -	fprintf(stderr, "\n");
-> +	fputc(stderr, '\n');
-
-Arguments reversed.
-
-> diff --git a/tools/testing/selftests/kvm/s390/keyop.c b/tools/testing/selftests/kvm/s390/keyop.c
-> --- a/tools/testing/selftests/kvm/s390/keyop.c
-> +++ b/tools/testing/selftests/kvm/s390/keyop.c
-> @@ -117,7 +117,7 @@ static void dump_sk(const unsigned char skeys[], const char *descr)
->  		fprintf(stderr, "# %3d: ", i);
->  		for (j = 0; j < 32; j++)
->  			fprintf(stderr, "%02x ", skeys[i + j]);
-> -		fprintf(stderr, "\n");
-> +		fputc(stderr, '\n');
-
-Arguments reversed.
-
-> diff --git a/tools/testing/selftests/net/mptcp/pm_nl_ctl.c b/tools/testing/selftests/net/mptcp/pm_nl_ctl.c
-> --- a/tools/testing/selftests/net/mptcp/pm_nl_ctl.c
-> +++ b/tools/testing/selftests/net/mptcp/pm_nl_ctl.c
-> @@ -208,7 +208,7 @@
->  		}
->  		if (server_side)
->  			fprintf(stderr, ",server_side:1");
-> -		fprintf(stderr, "\n");
-> +		fputc(stderr, '\n');
-
-Arguments reversed.
-
-> diff --git a/tools/testing/selftests/net/psock_tpacket.c b/tools/testing/selftests/net/psock_tpacket.c
-> --- a/tools/testing/selftests/net/psock_tpacket.c
-> +++ b/tools/testing/selftests/net/psock_tpacket.c
-> @@ -116,7 +116,7 @@ static int pfsocket(int ver)
->  static void status_bar_update(void)
->  {
->  	if (total_packets % 10 == 0) {
-> -		fprintf(stderr, ".");
-> +		fputc(stderr, '.');
-
-[ ... ]
-
-> @@ -825,7 +825,7 @@ static int test_tpacket(int version, int type)
->  	unmap_ring(sock, &ring);
->  	close(sock);
->
-> -	fprintf(stderr, "\n");
-> +	fputc(stderr, '\n');
-
-Both conversions reverse the arguments.
-
-> diff --git a/tools/testing/selftests/net/txtimestamp.c b/tools/testing/selftests/net/txtimestamp.c
-> --- a/tools/testing/selftests/net/txtimestamp.c
-> +++ b/tools/testing/selftests/net/txtimestamp.c
-> @@ -200,10 +200,10 @@ static void __print_timestamp(const char *name, struct timespec *cur,
->  		ts_delta = timespec_to_ns64(cur) - timespec_to_ns64(&ts_usr);
->  		fprintf(stderr, "  (USR +");
->  		__print_ts_delta_formatted(ts_delta);
-> -		fprintf(stderr, ")");
-> +		fputc(stderr, ')');
->  	}
->
-> -	fprintf(stderr, "\n");
-> +	fputc(stderr, '\n');
->  }
-
-[ ... ]
-
-> @@ -254,7 +254,7 @@ static void print_timing_event(char *name, struct timing_event *te)
->  	__print_ts_delta_formatted(te->min);
->  	fprintf(stderr, ", max=");
->  	__print_ts_delta_formatted(te->max);
-> -	fprintf(stderr, "\n");
-> +	fputc(stderr, '\n');
->  }
-
-[ ... ]
-
-> @@ -271,7 +271,7 @@ static void print_payload(char *data, int len)
->  	fprintf(stderr, "payload: ");
->  	for (i = 0; i < len; i++)
->  		fprintf(stderr, "%02hhx ", data[i]);
-> -	fprintf(stderr, "\n");
-> +	fputc(stderr, '\n');
->  }
-
-[ ... ]
-
-> @@ -933,7 +933,7 @@ int main(int argc, char **argv)
->  	fprintf(stderr, "protocol:     %s\n", sock_names[cfg_proto]);
->  	fprintf(stderr, "payload:      %u\n", cfg_payload_len);
->  	fprintf(stderr, "server port:  %u\n", dest_port);
-> -	fprintf(stderr, "\n");
-> +	fputc(stderr, '\n');
-
-All four conversions reverse the arguments.
-
-> diff --git a/tools/testing/selftests/powerpc/nx-gzip/gunz_test.c b/tools/testing/selftests/powerpc/nx-gzip/gunz_test.c
-> --- a/tools/testing/selftests/powerpc/nx-gzip/gunz_test.c
-> +++ b/tools/testing/selftests/powerpc/nx-gzip/gunz_test.c
-> @@ -363,7 +363,7 @@
->  			goto err3;
->  		fprintf(stderr, "%02x ", tmp[i]);
->  		if (i == 5)
-> -			fprintf(stderr, "\n");
-> +			fputc(stderr, '\n');
-
-Arguments reversed.
-
-> diff --git a/tools/testing/selftests/vfio/lib/include/libvfio/assert.h b/tools/testing/selftests/vfio/lib/include/libvfio/assert.h
-> --- a/tools/testing/selftests/vfio/lib/include/libvfio/assert.h
-> +++ b/tools/testing/selftests/vfio/lib/include/libvfio/assert.h
-> @@ -10,7 +10,7 @@ #define SELFTESTS_VFIO_LIB_INCLUDE_LIBVFIO_ASSERT_H
->
->  #define VFIO_LOG_AND_EXIT(...) do {		\
->  	fprintf(stderr, "  " __VA_ARGS__);	\
-> -	fprintf(stderr, "\n");			\
-> +	fputc(stderr, '\n');			\
-
-Arguments reversed in a widely-used macro. Every expansion of this macro
-is broken.
-
-> diff --git a/tools/testing/selftests/vfio/lib/libvfio.c b/tools/testing/selftests/vfio/lib/libvfio.c
-> --- a/tools/testing/selftests/vfio/lib/libvfio.c
-> +++ b/tools/testing/selftests/vfio/lib/libvfio.c
-> @@ -60,16 +60,16 @@ char **vfio_selftests_get_bdfs(int *argc, char *argv[], int *nr_bdfs)
->  	}
->
->  	fprintf(stderr, "Unable to determine which device(s) to use, skipping test.\n");
-> -	fprintf(stderr, "\n");
-> +	fputc(stderr, '\n');
->  	fprintf(stderr, "To pass the device address via environment variable:\n");
-> -	fprintf(stderr, "\n");
-> +	fputc(stderr, '\n');
->  	fprintf(stderr, "    export VFIO_SELFTESTS_BDF=\"segment:bus:device.function\"\n");
->  	fprintf(stderr, "    %s [options]\n", argv[0]);
-> -	fprintf(stderr, "\n");
-> +	fputc(stderr, '\n');
->  	fprintf(stderr, "To pass the device address(es) via argv:\n");
-> -	fprintf(stderr, "\n");
-> +	fputc(stderr, '\n');
->  	fprintf(stderr, "    %s [options] segment:bus:device.function ...\n", argv[0]);
-> -	fprintf(stderr, "\n");
-> +	fputc(stderr, '\n');
-
-All five conversions reverse the arguments.
-
-> diff --git a/tools/testing/vsock/vsock_diag_test.c b/tools/testing/vsock/vsock_diag_test.c
-> --- a/tools/testing/vsock/vsock_diag_test.c
-> +++ b/tools/testing/vsock/vsock_diag_test.c
-> @@ -86,7 +86,7 @@ static void print_vsock_addr(FILE *fp, unsigned int cid, unsigned int port)
->  		fprintf(fp, "%u:", cid);
->
->  	if (port == VMADDR_PORT_ANY)
-> -		fprintf(fp, "*");
-> +		fputc(fp, '*');
-
-[ ... ]
-
-> @@ -94,7 +94,7 @@ static void print_vsock_addr(FILE *fp, unsigned int cid, unsigned int port)
->  static void print_vsock_stat(FILE *fp, struct vsock_stat *st)
->  {
->  	print_vsock_addr(fp, st->msg.vdiag_src_cid, st->msg.vdiag_src_port);
-> -	fprintf(fp, " ");
-> +	fputc(fp, ' ');
-
-Both conversions reverse the arguments.
-
-> diff --git a/tools/thermal/tmon/sysfs.c b/tools/thermal/tmon/sysfs.c
-> --- a/tools/thermal/tmon/sysfs.c
-> +++ b/tools/thermal/tmon/sysfs.c
-> @@ -522,7 +522,7 @@ int update_thermal_data()
->  	}
->
->  	if (tmon_log) {
-> -		fprintf(tmon_log, "\n");
-> +		fputc(tmon_log, '\n');
-
-Arguments reversed.
-
-> diff --git a/tools/thermal/tmon/tmon.c b/tools/thermal/tmon/tmon.c
-> --- a/tools/thermal/tmon/tmon.c
-> +++ b/tools/thermal/tmon/tmon.c
-> @@ -199,7 +199,7 @@
->  		fprintf(tmon_log, "%s%d ", ptdata.cdi[i].type,
->  			ptdata.cdi[i].instance);
->
-> -	fprintf(tmon_log, "\n");
-> +	fputc(tmon_log, '\n');
-
-Arguments reversed.
-
-> diff --git a/tools/tracing/latency/latency-collector.c b/tools/tracing/latency/latency-collector.c
-> --- a/tools/tracing/latency/latency-collector.c
-> +++ b/tools/tracing/latency/latency-collector.c
-> @@ -1999,7 +1999,7 @@
->  "been enabled. Random sleep is intended for the following tracers:\n");
->  			for (i = 0; random_tracers[i]; i++)
->  				fprintf(stderr, "%s\n", random_tracers[i]);
-> -			fprintf(stderr, "\n");
-> +			fputc(stderr, '\n');
-
-Arguments reversed.
-
-> diff --git a/tools/tracing/rtla/src/common.c b/tools/tracing/rtla/src/common.c
-> --- a/tools/tracing/rtla/src/common.c
-> +++ b/tools/tracing/rtla/src/common.c
-> @@ -449,7 +449,7 @@ void common_usage(const char *tool, const char *mode,
->  		fprintf(stderr, "%s [-h] ", mode);
->
->  	print_msg_array(start_msgs);
-> -	fprintf(stderr, "\n");
-> +	fputc(stderr, '\n');
-
-Arguments reversed.
-
-> diff --git a/tools/tracing/rtla/src/utils.c b/tools/tracing/rtla/src/utils.c
-> --- a/tools/tracing/rtla/src/utils.c
-> +++ b/tools/tracing/rtla/src/utils.c
-> @@ -67,7 +67,7 @@ void fatal(const char *fmt, ...)
->  	va_start(ap, fmt);
->  	vfprintf(stderr, fmt, ap);
->  	va_end(ap);
-> -	fprintf(stderr, "\n");
-> +	fputc(stderr, '\n');
-
-Arguments reversed.
-
-> diff --git a/tools/usb/ffs-test.c b/tools/usb/ffs-test.c
-> --- a/tools/usb/ffs-test.c
-> +++ b/tools/usb/ffs-test.c
-> @@ -562,7 +562,7 @@ empty_out_buf(struct thread *ignore, const void *buf, size_t nbytes)
->  				fprintf(stderr, "%4zd:", len);
->  			fprintf(stderr, " %02x", *p);
->  			if (31 == (len % 32))
-> -				fprintf(stderr, "\n");
-> +				fputc(stderr, '\n');
-
-Arguments reversed.
-
-> diff --git a/tools/verification/rv/src/in_kernel.c b/tools/verification/rv/src/in_kernel.c
-> --- a/tools/verification/rv/src/in_kernel.c
-> +++ b/tools/verification/rv/src/in_kernel.c
-> @@ -667,7 +667,7 @@ static void ikm_usage_print_reactors(void)
->  		end = strstr(start, "\n");
->  	}
->
-> -	fprintf(stderr, "\n");
-> +	fputc(stderr, '\n');
-
-Arguments reversed.
-
-Looking at the lore discussion by Andi Kleen and Steven Rostedt, they
-raised a concern that GCC already performs this fprintf->fputc optimization
-automatically, making the patch unnecessary code churn. The author has not
-responded to this feedback.
-
-Beyond the optimization question, the technical implementation has a
-systematic bug: every fputc() conversion in this patch reverses the
-argument order.
-
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/30016526959
---===============8746857589958803762==--
 
