@@ -4,102 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC77DC531C7
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 09:35:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F11C7C531CB
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 09:37:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC1AD6B0160; Thu, 23 Jul 2026 05:35:36 -0400 (EDT)
+	id A1BA36B0162; Thu, 23 Jul 2026 05:37:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D99046B0161; Thu, 23 Jul 2026 05:35:36 -0400 (EDT)
+	id 9CC436B0163; Thu, 23 Jul 2026 05:37:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD53E6B0162; Thu, 23 Jul 2026 05:35:36 -0400 (EDT)
+	id 8E20E6B0164; Thu, 23 Jul 2026 05:37:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A477A6B0160
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 05:35:36 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1DFC48041A
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 09:35:36 +0000 (UTC)
-X-FDA: 85019533872.12.3FAC888
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 71D121C000E
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 09:35:34 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HJKTuk4Y;
-	spf=pass (imf18.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 601826B0162
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 05:37:56 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C5998403DC
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 09:37:55 +0000 (UTC)
+X-FDA: 85019539710.23.60C07C6
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	by imf26.hostedemail.com (Postfix) with ESMTP id E67D7140007
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 09:37:53 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=EEYQ03Dw;
+	spf=pass (imf26.hostedemail.com: domain of mkchauras@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=mkchauras@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784799334;
+	s=arc-20220608; t=1784799473;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aZZCZ/d/c3xLlwTJG317mBGnb8THEbPIiA7jBD/2pKc=;
-	b=4UYsM1teM/KlZ33K2M5E5dDXgbPHZ3gIRMGKn5ig2iS9xiKKmDKFAP4c/j+CtvcsIt5E/P
-	A8B6iKa1LvI6OkZhlyF73U96hsZeYPTYec02x29c6vCqyycvRYwYK7w7id5C8xRM2t2wLz
-	/kYbxCB0XEZzaWK0pKqIn3rn9RxDD6w=
+	bh=oPUgpb0frsnp1JVUTki2lmBuU8fGYW5E1pXwN+DTdbc=;
+	b=g+oIvhGd34lmm+21ryF4gSnyEFOpzMJKh+ufnk8A9Zmd4uxpoNaRDwd9/VoZe+zN8dYrDJ
+	jnngtGFOZx39onrLgGS0WuEJjlO+GnrTWdFMxrn2uEtEFYYk4xTkboCBwl/Lca0Y2Ta/OT
+	oIRtsILEUqa6wxjb+NRAL8WOKQvEe/0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784799334;
-	b=0vZZcc4BaWlblQjzE6+MaciJKvMyt2CK9+qg497hIoVSqBJHC/sjy4EIOsPskGZY3cH/Kt
-	d4exxqtBn9NDeBC6uzbDOemndu1yxfqQmE8cVcSykUumjf9dqmGkxc19UiDTdNOegPsxuG
-	V5AfxaRciFMFwmKNu7uwXbAF29TCInk=
+	t=1784799473;
+	b=qzfDyGKf3iO+u+o/o4PisOYYwOIl2E6Ms4XX4rPqs8GKJzK5CHQ/lkJK0vIgkUcMc6FFGJ
+	nRwijaUEfwRQ90te/6+ac0mlwF7WdqjEbhtGfgM2F3VChDmSXuGsZfhkXQKtQrsFwCwjZT
+	+FudBRGLdzZgE9uqHzjBShk4A1J/n8E=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HJKTuk4Y;
-	spf=pass (imf18.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C481B600B1;
-	Thu, 23 Jul 2026 09:35:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B28F1F000E9;
-	Thu, 23 Jul 2026 09:35:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784799333;
-	bh=aZZCZ/d/c3xLlwTJG317mBGnb8THEbPIiA7jBD/2pKc=;
-	h=From:To:In-Reply-To:References:Subject:Date;
-	b=HJKTuk4Y/BNCfJUH/Scq+NVzyNgpwaaMcN7elruFMLa6kysXsv3I7IxKHDCxBPw47
-	 DIuZcGDZYUIgna31G1KKOk3CIP/z9vxNh8AnE3qHOXZ/Ufk+9Rs7sBHfryT3TXEtxP
-	 B3dSRJRgiLuz5y8PlT/EWwZP+gSQKGMCWiHM4N6I+yuNPS3nuRq/xxb8CPgwy/3TRc
-	 8B4SOK5+OEL2aIws8L8TSCvwnXSwfi/DeYuEBBbEsiMAGRNbrn+Vw6VV7usFqaUAyz
-	 7X7qUJvSKXz/m6ZICFTxewrNh+FCRQfrlFmnyX8vNjoftu6SbwibBymgEQdUuze6W1
-	 FcOnthHcz5bzw==
-From: Christian Brauner <brauner@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, david@fromorbit.com, 
- dgc@kernel.org, qi.zheng@linux.dev, baolin.wang@linux.alibaba.com, 
- cgroups@vger.kernel.org, clm@fb.com, dsterba@suse.com, hannes@cmpxchg.org, 
- hughd@google.com, jack@suse.cz, linux-btrfs@vger.kernel.org, 
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-mm@kvack.org, mhocko@kernel.org, muchun.song@linux.dev, 
- roman.gushchin@linux.dev, shakeel.butt@linux.dev, 
- Al Viro <viro@zeniv.linux.org.uk>, kernel-team@meta.com, 
- Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <20260715103516.2410175-1-usama.arif@linux.dev>
-References: <20260715103516.2410175-1-usama.arif@linux.dev>
-Subject: Re: [PATCH v2] fs: push nr_cached_objects memcg gating into
- individual filesystems
-Message-Id: <20260723-wuseln-nachwachsen-befeuern-82f31d54fd8d@brauner>
-Date: Thu, 23 Jul 2026 11:35:07 +0200
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=EEYQ03Dw;
+	spf=pass (imf26.hostedemail.com: domain of mkchauras@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=mkchauras@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-8487214ad2bso587609b3a.1
+        for <linux-mm@kvack.org>; Thu, 23 Jul 2026 02:37:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784799473; x=1785404273; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=oPUgpb0frsnp1JVUTki2lmBuU8fGYW5E1pXwN+DTdbc=;
+        b=EEYQ03Dw+MCXPLLR0rO/BXqiQdF/JyUCVTDscPvDQVv+Xc12Tf02oFKhNoXFw6vhxW
+         rREGQdD9B8DIvDOsGLmsAawm21S5l0L676j/ERV3C5+T2Yqc+E3QC0Jp1tDFaBDPoAeY
+         2ODz3m28JWyttK1TQ2gk31vkTESIUeyf8PpUARJp5RBSJ+fixzzXXEGhLLQoLu9z+i38
+         mhSHchC0wIt0Hz8gdXEtuzPgx6QSotI5HXGtwoTh5PQL6eR5p/QLud+eybge87J0+zsx
+         G8T49hhGpwBvar0stNjFRrMdlShhhVYvAEWP+kW6Cb7F9YJdlTlSmFn9thgmmTnnRKkH
+         eYwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784799473; x=1785404273;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=oPUgpb0frsnp1JVUTki2lmBuU8fGYW5E1pXwN+DTdbc=;
+        b=Jiqxezbr+OHsU1Tz426k1dSmlY5IjAKj3OG/OiPYBWbKewhKwc6t2UWldVk1iOmBz/
+         69l48qBWdzARGWr9wHE2KNivCIqMGPIrZTu+4s4bz6Pduobq1TPkff1avYf37j6lbhtD
+         IfSKr7S7tMi1Z8cO7cQXq1j2fWWsblGIUUeboQWtkXB8n6WY+qd1uhpjv/yHrAZBfOGd
+         1KVbHiCgt2A91zBdBFCPyHD91tHSSZGda8T1eee35XdPCqb1lv3eSbGcLd5jgCBQrKr0
+         AC5HxMee08KdI/cjeSZqqJgBJlh237LJOXGdO5VMaUvyJZ0QQrbnOn/sI3gw7KdmPxw/
+         OsfA==
+X-Forwarded-Encrypted: i=1; AHgh+RoEyVd4Iwpsly1RkEZBcI5s1Larub9ZM1v8S/PiwYYsMUF3i2zOaW7U2sUdBt8PUs+RzrVMVFUgcg==@kvack.org
+X-Gm-Message-State: AOJu0YwvhNTdc4iBhfFBsoCCkbCUC7fBPdRx7pIVTZZ8SGRt2aCIHXVD
+	fuTLpPq7gPRcfqJHjno8GXMnfRkLba8urkxwcmQuvYnBsUaXVDgyRKv9
+X-Gm-Gg: AR+sD10+MtWY48uUbk68z3ORWVOCxNGATSLEcpAb6nPyMRKtJEywSNoyygWEe11T7bn
+	vFlPDb9bQywG4H8N9Vr/+JyYfkp9jRWFP2Y4gJqGh842wpF9XknN99voTJ1ZPest7oI7+pFRoO0
+	HoU29EMAK5uyS4DqNghlNPmD6aUjE748aU1RgIuEpoW39bLx0mpG/XgdVEj7wZOMdWhKAJm7lz3
+	Snxnx5+rELMWshvlvF/RmQGP0JJi2calb3HCt+LL4FNyITieB/bHhhnrbvPOsPR5h5EiVvn5yrl
+	mDbXcMZoUkU21ogzEE5iOmgZ55rOAjKtgX3ytHgF9GgTlD1JXPZQT4ovKeD1J7/iWmJmdjoKdNw
+	a3qzQulITVgfTN9BXd6LfrJ7a3xm8cuFANHEq7owbZ1yl6iegutDhQPP+sojkuLBZe1NxjFZn76
+	VyBsxmgqIKKHwMVhrLvnplkrG6k3QmaYNTwmw+shusgbCzuKUo
+X-Received: by 2002:a05:6a00:409a:b0:847:8650:69cd with SMTP id d2e1a72fcca58-84e2bd889a5mr3035099b3a.33.1784799472690;
+        Thu, 23 Jul 2026 02:37:52 -0700 (PDT)
+Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com ([106.51.160.24])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e175d4133sm2738565b3a.50.2026.07.23.02.37.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Jul 2026 02:37:51 -0700 (PDT)
+Date: Thu, 23 Jul 2026 15:07:42 +0530
+From: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
+To: Gou Hao <gouhao@uniontech.com>
+Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
+	chleroy@kernel.org, maarten.lankhorst@linux.intel.com, mripard@kernel.org, 
+	tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch, bharat@chelsio.com, 
+	jgg@ziepe.ca, leon@kernel.org, akpm@linux-foundation.org, ynorov@nvidia.com, 
+	namcao@linutronix.de, sshegde@linux.ibm.com, nilay@linux.ibm.com, kees@kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	linux-rdma@vger.kernel.org, linux-mm@kvack.org, gouhaojake@163.com, kernel@uniontech.com
+Subject: Re: [PATCH 1/4] powerpc/xive: remove dead NULL check after
+ GFP_NOFAIL allocation
+Message-ID: <amHgkkMT4nrWLSka@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
+References: <20260723081813.176792-1-gouhao@uniontech.com>
+ <20260723081813.176792-2-gouhao@uniontech.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16-dev-0e65f
-X-Developer-Signature: v=1; a=openpgp-sha256; l=908; i=brauner@kernel.org;
- h=from:subject:message-id; bh=P1ri9jIlf5K46sMu+BdMRUHIR8r3nUqwsZr/hAYcuzA=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQlPkiQnrH6ltPc6U1T9m/Wnse0usZoz8KbU2fL2liV2
- BxfrXrZt6OUhUGMi0FWTJHFod0kXG45T8Vmo0wNmDmsTCBDGLg4BWAiLtEM/zQieN+tus9Xurtw
- 8eq2k9ft5mitPNCzuWpdxBxm1SV37vEwMtxc8rG3vvm1YUjMhOXBhREVpvKbmtaVHDmuHOx2KOJ
- hMT8A
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Stat-Signature: sjbj939qk6ohhbiwgwmqyx99t7pxf5uj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260723081813.176792-2-gouhao@uniontech.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 71D121C000E
-X-HE-Tag: 1784799334-952256
-X-HE-Meta: U2FsdGVkX19Vjzd6ty54KxPYbTR7YsbIOpTlZYlsYiVvtdJmSx/NKzkUxcpLLUTCVhXwLADV+zWvYMBFmg67WpobZMSR68ZIpctM2jey1lGB9EQiPhH3fsZyK/gtGHp8czC2JYEhBUOElzRmXtf7lWT2HyrwsVHAJIE14kmm+V+zfUVtISwHg1+EBqcOre/NL7rD9NYxnM2Inih8F/tMv+9q7+Ry8VkQj8aMFlULfxZ1qbYD8jEZIuruUZQRjlei78/qKJ9hOWzlvuU0jHMtDC8P/CghDhkbcBtjibRM4IqsSAS3Ox+iB19ag3VwnkaAYu6444uVHXmKdxsHYBYZ40teS/1MKtBre9cOTu60lqSA1vrhL7zORE98w8A1AgCOapqwA4y8zMgsGA3F/Ewy+lpNxEpefyR9bLQAzHQSYihk6q6rtzG9mvyNNHWQR4uurkL6U5NT+87KfDcxO5tzjg1LgE7pQE6W4wffg+arLNypC9tF8mvMn1UH+8Im/eHFDXiWc8SpQ/mhnDPezr8lU8XxCv6Nt1hUrCra+oaR7Rj0w+2/AHoQjjRzxE1dUaWgWWJZ1kWILjkXRthzY7WVvDCdearYfBosCu3E5uc59l+mtXdhgoS4C40dJRvyqYzjbKwpst4dbXn1pqiH1vsN0HHspJxbVX26PKo/ke6CpC8cwITm0Ma/ACoYmhyCLTbByaVjXSt94MlxZgIK/NAybB7p1VEa+KlUG1TlvXV2CqcbzQ2KxLWRIgSLhcUp8Mwiwf/JQXQcjTXs52ifxfvsfBOvNpF4EEYNs5FpfnrD1wpPllhVjlYUXyd+7rrcpLGmyt6kzQKNYFrsgB+8J7opgwBoDGNUHF+rjdnNcX2waOXmCDPejDawcLiM2Mtg2LXool5dMLwlIfu3LGPXuAV+oX7c76RX34S6JLrIYwJlo65KCnWXklgOIhPmK8upaA7WXYSkahulDVeyiW1Dq/W
- 0y2IcopR
- UD0KgPhg1tW+lJEhQVj4u75uBKXmP61nJEo5cUDYgYGQkKf3lbCEsSEFG/u8t3B/8pOqJUzvb/kswCLjQsVUmtVpnEu1zrcUIFwvcdbO90PmjsUXqnzSwIu2QM6vPhh+2CqQb9vjBiGK0oQpg0ilWcxUBK07lc2WNnzCR6JRlpa8vcH8MYdDd/C8Q2cNC66/eHUP7jXuKdDKMwseHQFptaIsEOjQQN7Q/eOiQ0vOqoKwQUW71Vjks/7Z4oCSen4RF6M0T2dTk/aVkisRP7kFl1JEqsD9b4Oy1U2MioBW6d3oFK3eH8U4fI7zHXvPA323WAjVmTOqOrATgIetznUm22AErIw==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: E67D7140007
+X-Stat-Signature: armxdzhsrrueenuedmxci9bfbr6ijisy
+X-HE-Tag: 1784799473-980863
+X-HE-Meta: U2FsdGVkX1/9AUR4KOtGU4CBg4hFZNEDq6vszRzWa9LiT3vHablOs7XBrKzUASdP/0F1yOTaeio0fG5okYizVvxKoqQsFGSaJ13oOoys3wvC1NEgeZED9v5QAAuy/CNKpSm6XznuSAWvnEDrAZAxi1qURY1ygu/wV85dwa76smOdBQSzE5JpnZAai6Rsol07KAOH142Q4GUAzfCYZ7TlnANW2dz417QVokVP0cMGUGaEKA7urNv8WwtDpIennsekXFZD8oDI/rxltcDM/SaBsrQkftDZbx0zf406i4zJ7D3EfXeiRRpzqZ2qOtvuXMfJPtBCUTwib6EQb2MYU+DO5dCslwG1p4FE5LYIlBMioDVJe6Mo0kt9GTd+Ftcta+qN16q2RHqrOu4Ac8ZSHeI8FxceutZqsujQFLCQp01Rlj92Nh8RgrkGBcDsZDnZkXZIJR/50jC2O7pVDBYCb35Fr/X138mWno1oYo8I473wgpNgQUlhZYQjyS5kCYp40WZyK+Dqdnm5jpyzGu5SxxpO6KZP1AxaYyIE5lbp9m+obd/SrVEJt21tzZ1V5kAs2S+rBGVnQbxnASqGgO0aU+nGCvAPdiMMBsZ0SwILYNqHG/Tor7p6Woz39OEqJnR5I9VukGnhkNe80FBdM5/I/Trj9vzQLDy5zNftGLWWLp0rOKTFxjx2o0f1z83ZS+AIG+slFSLDbecEQARPxdBE3NkX74ksPvHmWQpFWJSc1+o3dII9MlsR0H/lnt9l2UnVlI/YtiVfBl03pfN4mQzXhHuOxlC6gCwRfKiV+2WxTtVJGpfLt4OksKtv7c/cOKRLRFk9IjXq5nAzk9w4Jqxjfr66nat1uZ9r+F60lcvYZh9aDn0JAq44BGPD77sJbtC3fbwjT8cV8FIidVSGcNntTACw8Pl105G1k4BKftSob8aFExLqvwmq9RlbRPqsHQNXl34IPSsTfkbyw/aHnRlgNwu
+ ZlRZgLBI
+ Ti1nRh2omf2523WrB0FRcGL320kRlAGuChjSEw3J2cS37Oi89FFn8MvWMjitFitCWxu9492tsO3hWWsQx5yHdZb50mGdYGyqkYySgTzlvhpiPYUb+XUy3TCG8gIXhGXbpe9fPxY7lKpI5T+NhyGmJFxYOkotLBZL3bhD3tncGwKZ0KDGPVpHiZEz+SqcjScNY8GgAiAc2LsCPLiYDuyAhR5yRPTUK5+//fB42ykkuBwNeR6MUsB4cLBlHi1NmEGFfkiDTyQJSW5lfAJ74oy2OZmIwRXSPjCFOYyOph/ip6QYddK8yCczux0xuY2pJm10dv3ZQWAd+VCl8BNTl+VMiG3dxqtEHzh9umuwXgE36zjbNaesdVLBUWxl7AqoBrGts8B+9F0QH10knfZg8ZXf6G6SCGK6b0vRL6oLnmVZCbkBa9/dIzRLqHU94fXRP27IA7nBi4cxm9/IhSVgw54c62ps9Ca9TMspp3MLxrsMr2U3Nkn5nhFArw3uldA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,25 +125,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 15 Jul 2026 03:35:16 -0700, Usama Arif wrote:
-> fs: push nr_cached_objects memcg gating into individual filesystems
+On Thu, Jul 23, 2026 at 04:18:10PM +0800, Gou Hao wrote:
+> kzalloc_objs with the __GFP_NOFAIL flag will never return NULL, so the
+> subsequent NULL check is unreachable dead code. Remove it.
+> 
+> Signed-off-by: Gou Hao <gouhao@uniontech.com>
+> ---
+>  arch/powerpc/sysdev/xive/common.c | 3 ---
+>  1 file changed, 3 deletions(-)
+> 
+> diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive/common.c
+> index dadd1f46ec93..79d7854259cb 100644
+> --- a/arch/powerpc/sysdev/xive/common.c
+> +++ b/arch/powerpc/sysdev/xive/common.c
+> @@ -1134,9 +1134,6 @@ static int __init xive_init_ipis(void)
+>  
+>  	xive_ipis = kzalloc_objs(*xive_ipis, nr_node_ids,
+>  				 GFP_KERNEL | __GFP_NOFAIL);
+> -	if (!xive_ipis)
+> -		goto out_free_domain;
+This will be an unused label after this.
 
-Applied to the vfs.fixes branch of the vfs/vfs.git tree.
-Patches in the vfs.fixes branch should appear in linux-next soon.
-
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
-
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
-
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
-
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs.fixes
-
-[1/1] fs: push nr_cached_objects memcg gating into individual filesystems
-      https://git.kernel.org/vfs/vfs/c/d5233434ecd5
-
+Regards,
+Mukesh
+> -
+>  	for_each_node(node) {
+>  		struct xive_ipi_desc *xid = &xive_ipis[node];
+>  		struct xive_ipi_alloc_info info = { node };
+> -- 
+> 2.20.1
+> 
 
