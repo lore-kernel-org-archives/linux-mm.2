@@ -4,119 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1AC6FC531CB
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 10:26:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E603BC531CB
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 10:27:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 23A946B00AE; Thu, 23 Jul 2026 06:26:55 -0400 (EDT)
+	id D10F46B00AF; Thu, 23 Jul 2026 06:27:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1EB2C6B00AF; Thu, 23 Jul 2026 06:26:55 -0400 (EDT)
+	id CC8236B00B1; Thu, 23 Jul 2026 06:27:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0B5A06B00B0; Thu, 23 Jul 2026 06:26:55 -0400 (EDT)
+	id B8C276B00B2; Thu, 23 Jul 2026 06:27:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CFDB56B00AE
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 06:26:54 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6099A1A0457
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 10:26:54 +0000 (UTC)
-X-FDA: 85019663148.29.AE1FA20
-Received: from smtpbgbr1.qq.com (smtpbgbr1.qq.com [54.207.19.206])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 53C0A100005
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 10:26:47 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=ayIkWdbc;
-	spf=pass (imf14.hostedemail.com: domain of gouhao@uniontech.com designates 54.207.19.206 as permitted sender) smtp.mailfrom=gouhao@uniontech.com;
-	dmarc=pass (policy=none) header.from=uniontech.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 743B56B00AF
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 06:27:40 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id CBBD91C0974
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 10:27:39 +0000 (UTC)
+X-FDA: 85019665038.05.B588589
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
+	by imf15.hostedemail.com (Postfix) with ESMTP id AD01DA0008
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 10:27:36 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=none;
+	spf=pass (imf15.hostedemail.com: domain of hu.shengming@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn;
+	dmarc=pass (policy=none) header.from=zte.com.cn
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784802457;
+	b=O2zOsLXNz1ME993d6I88Wj+NSTOic0Wq8GSzckCZakJ6JwpDxR5qT+jzoHlgMPSC4g77sD
+	RRpXccE61i77FoXl9i/cblz/FsU+ZtWh5n/5qpbooytfRhn3kHZc1r20NtWkbgJX7YkLS0
+	aXgfEbgx8nPGKLYwUxqQ19IQ+Q5FeKI=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=none;
+	spf=pass (imf15.hostedemail.com: domain of hu.shengming@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn;
+	dmarc=pass (policy=none) header.from=zte.com.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784802412;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1784802457;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lVb+x1eJeMDbnGatYezDXk3mRUPsqyFLA5zoJctRxBo=;
-	b=ua+cTgUH161TUMucxEw5LR1q6dIsbFNjjz9tcGQmvdHDBeml19f5HisrykQBrteJJAepqp
-	hd/abUfBebdiWq8joOMabaHY9Gl2foLVQiH1tzLypHi7uXI93tKK5UCuipFmtiFlFObXgK
-	7eEhQHEFrnfDQmjgFsdHta0cCKzapY4=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=ayIkWdbc;
-	spf=pass (imf14.hostedemail.com: domain of gouhao@uniontech.com designates 54.207.19.206 as permitted sender) smtp.mailfrom=gouhao@uniontech.com;
-	dmarc=pass (policy=none) header.from=uniontech.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784802412;
-	b=M/BSwAN1ZnSxRueMo0mDCFByKVrHvEuS5x5WHFPSHDTsqxoawXAV7XQU+R8e9ihmEhjiVW
-	JBEM3dY9MfxQyM2vz2Xaz7LcLU2JpiJ/bar5t+V4DqA2Q4LPtPAN+6KC2A984OlZ6+mYW/
-	Lbk61CYV4VwsFH0VLTfoFdz6D7ECy98=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1784802402;
-	bh=lVb+x1eJeMDbnGatYezDXk3mRUPsqyFLA5zoJctRxBo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From;
-	b=ayIkWdbcS8JO9TRkwXNVvV2cMsNZ0/V1CHIycRnvvpQJ2sIEva0zrkTBdinJ062Hc
-	 JY0IFEVk8Q0Lqf/FIT6Dxt+8OiAskya3/+9VYV+Mt7kWJlDMn1pkJv1K5kLrsNd27s
-	 P9av69av7dEem/7DdCYc1Tna20zTcmNKmPBB83rg=
-X-QQ-mid: zesmtpip4t1784802386t9c54a72f
-X-QQ-Originating-IP: memIhR9gvQ4ZmW+tM9XGn6iEAQmEwf7u2uI7gKQx180=
-Received: from [IPV6:240e:659:1b0:640::113:101 ( [localhost])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 23 Jul 2026 18:26:22 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 5317163867551177588
-EX-QQ-RecipientCnt: 26
-Content-Type: multipart/alternative;
- boundary="------------4HCosMQF2fkroIavSbgGnprv"
-Message-ID: <2B4E356BD3ECC2A3+5e1ad5e2-b34a-4ccd-a11f-60957a20e7b5@uniontech.com>
-Date: Thu, 23 Jul 2026 18:26:22 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] powerpc/xive: remove dead NULL check after GFP_NOFAIL
- allocation
-To: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
-Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
- chleroy@kernel.org, maarten.lankhorst@linux.intel.com, mripard@kernel.org,
- tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch, bharat@chelsio.com,
- jgg@ziepe.ca, leon@kernel.org, akpm@linux-foundation.org, ynorov@nvidia.com,
- namcao@linutronix.de, sshegde@linux.ibm.com, nilay@linux.ibm.com,
- kees@kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-rdma@vger.kernel.org, linux-mm@kvack.org, gouhaojake@163.com,
- kernel@uniontech.com
-References: <20260723081813.176792-1-gouhao@uniontech.com>
- <20260723081813.176792-2-gouhao@uniontech.com>
- <amHgkkMT4nrWLSka@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
-Reply-To: 20260723081813.176792-2-gouhao@uniontech.com
-From: Gou Hao <gouhao@uniontech.com>
-In-Reply-To: <amHgkkMT4nrWLSka@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz5b-2
-X-QQ-XMAILINFO: MiiIZxVYHKtyBDx+D5bHAmbtn8grGwzQ35gLx0CbWpEw3ujXVkRUmP0k
-	M1yxTahfQ70c0Y21c3k8c84EX63ZO1CrPvaKwU3KQgLQpqB+q0FfXYd7SSbqSuLncBx5M1p
-	O8s5Gw44qym4i5gaI7NIi6fV+bWDK3Y6ndGT6GYS0qRSHi4VdEjA656RRMfckpYNGqaJ6Ct
-	3Cd8aPzmSm/bv2pYcHijAtT5TMl12sDSAEdjdg6L/+Y05Ap76SAWMXUMRyr8j6+hSfqiLqK
-	vXstOKEDfR24TgvCi1lezRQeRO5G/4Vox4re+htW2HdWCvyeeqnFsUzZYnwQQh/4YPXyh8y
-	Fk3KMxx/VfBYczrbNO2suR5/R5SHalxOuxuleZfSuU748xnvDxrdbjgB3dA3tpA2fVuLLCw
-	bMb4eKnudk5zfKzoWRJDrrs93TXYMwluzIWZSDMKzh1FzWwheHx8U+3f+0gKGqHI4liqIZO
-	gJL42QL0iywC/uPKSK3nXuqxB+Mq0cayDUTmZ/ODanX+GBd99V9j5o7ZU851d0luZTLMl5e
-	z4+UMTUXD7NfG8JZrUCCgsS9i2ujQtEPiOLPJCxrSV6DpcL+RPo4+O2uYtiVhZQH+w+5/pL
-	odbsAVq71fX7dfmScfMPIHQ0HJv7TI6NifVipOFsteFwFjNDZXBYbXGeBGuUgzPGh0iuqLW
-	8tyoyPR9nACwgeZsIETc9kUPBjY0n78hxUNB+erNlXQ3DatvVipDS8oEMYtn1j1Bc2eF5w/
-	iCK2z95/fvKy4qSlUftzPASKL0RTPoEoi4LFTBZKs68Tf2p4MlV6A1CsQLZvExjXr70Z59i
-	sYxz7x3LEK9NkKPOeKTRjTGu9XiCBhEAHSnI+b2UX6+jMKiBm0uEnvQFzYgE7I4heV7V7Gg
-	NOSBVPzeBTZrIftWUSn7oL3OqcMm1YGvmZsgOPMicWUg8fys+0HGc5dicPReXBZCCquL6KB
-	o6U3zXocSLAARRxY1xYhZ3QLwRhMa1vtDKWQGp7oNLttI73bKqXqs0C6b9nhqabt88VhPbY
-	FEDa5PLEPj83qFgQMGGNBEYprayD1SqgQ66WaBIkto9FHlLOU6Tx4L9kXeLLU5UHQAm9Tz5
-	rfE4qFTmp+2bKfneUmV8PBum/qECbbH2nGwDvWZj8uk+Z8SxuNgDAxJtb/VbC+Eag==
-X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
-X-QQ-RECHKSPAM: 0
+	 in-reply-to:in-reply-to:references:references;
+	bh=xJLaY8iyBCXtHjA9o0y7TPGGm3hsMNid202Bj1u3nkM=;
+	b=um6dQ1Ryvx8+LfFM6bCGSsWHN1jO8W+btEdRIlFjtzP43BHer2DF1sxKEHajYlsaud2wQ3
+	1hO/iRUcU9nlomPYAqWVNKsJNkHF7PKfNP59IyBHcYkazHtQoxij5+534PaWP4gn/uDWAK
+	Dx+hfKkEKs2yP0MQnueToz/odok9tvg=
+Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4h5S434j4Vz4yjjK;
+	Thu, 23 Jul 2026 18:27:31 +0800 (CST)
+Received: from xaxapp02.zte.com.cn ([10.88.97.241])
+	by mse-fl2.zte.com.cn with SMTP id 66NARPOw069720;
+	Thu, 23 Jul 2026 18:27:25 +0800 (+08)
+	(envelope-from hu.shengming@zte.com.cn)
+Received: from mapi (xaxapp02[null])
+	by mapi (Zmail) with MAPI id mid32;
+	Thu, 23 Jul 2026 18:27:27 +0800 (CST)
+X-Zmail-TransId: 2afa6a61ec8f45b-ef006
+X-Mailer: Zmail v1.0
+Message-ID: <20260723182727858gUQJ4TgRU2b6v1kdgpkfV@zte.com.cn>
+In-Reply-To: <20260720-kfree_rcu_nolock-v4-4-964e03c41a4e@kernel.org>
+References: 20260720-kfree_rcu_nolock-v4-0-964e03c41a4e@kernel.org,20260720-kfree_rcu_nolock-v4-4-964e03c41a4e@kernel.org
+Date: Thu, 23 Jul 2026 18:27:27 +0800 (CST)
+Mime-Version: 1.0
+From: <hu.shengming@zte.com.cn>
+To: <harry@kernel.org>
+Cc: <vbabka@kernel.org>, <akpm@linux-foundation.org>, <hao.li@linux.dev>,
+        <cl@gentwo.org>, <rientjes@google.com>, <roman.gushchin@linux.dev>,
+        <ast@kernel.org>, <andrii@kernel.org>, <puranjay@kernel.org>,
+        <ameryhung@gmail.com>, <bigeasy@linutronix.de>, <clrkwllms@kernel.org>,
+        <rostedt@goodmis.org>, <paulmck@kernel.org>, <frederic@kernel.org>,
+        <neeraj.upadhyay@kernel.org>, <joelagnelf@nvidia.com>,
+        <josh@joshtriplett.org>, <boqun@kernel.org>, <urezki@gmail.com>,
+        <mathieu.desnoyers@efficios.com>, <jiangshanlai@gmail.com>,
+        <qiang.zhang@linux.dev>, <pfalcato@suse.de>, <surenb@google.com>,
+        <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+        <linux-rt-devel@lists.linux.dev>, <rcu@vger.kernel.org>,
+        <bpf@vger.kernel.org>, <harry@kernel.org>
+Subject: =?UTF-8?B?UmU6IFtQQVRDSCBzbGFiL2Zvci1uZXh0IHY0IDQvOF0gbW0vc2xhYjogZXh0ZW5kIGRlZmVycmVkIGZyZWUgbWVjaGFuaXNtIHRvIGhhbmRsZSByY3Ugc2hlYXZlcw==?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl2.zte.com.cn 66NARPOw069720
+X-TLS: YES
+X-ENVELOPE-SENDER: hu.shengming@zte.com.cn
+X-SOURCE-IP: 10.5.228.133 unknown Thu, 23 Jul 2026 18:27:31 +0800
+X-CLEAN: YES
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6A61EC93.000/4h5S434j4Vz4yjjK
+X-Stat-Signature: is9jax1swjkccaxi4iodkw11gog5py85
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: AD01DA0008
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 53C0A100005
-X-Stat-Signature: hs3c46we5ufzr485r1rqe7ewubhwtchr
-X-HE-Tag: 1784802407-628773
-X-HE-Meta: U2FsdGVkX1+xbkQ4idpp05sFOm49h1g4raT15X/mcuDeEPLGX5MyQHXzzhALs74ZQnPoJGxvtw16y39xE43NtUDtxidumuF9UavUPre2Cp6mEBv42JcwYBWSyT8UhcSAeAxvxArfVap4jXuA1h5prLv0HhYYjugEeSY0TNgk6jSgXG8pHwE/SZH0xgJdBY8L4Fmk7APDiFMxioCvpoRTx8xF10h6mxsYolyzvyR0WFBBtAqtOjL4Rb94NAgVOCdtk7+DZQgdXTJIwKkuT3FHlTiBGD0oA9LVshRQudBlHlFeg7uP5Ek5h+FUPKmjX/2ar3MNEn+K9sy8iWponMAH8bq4Rmv6A9SlpW63gZ5VKAOfuQrx5DU4apz/00f/HCLDL//ICkunXw3BrAOSlgs2AYqHmA4gn1cwi7hi9RNLj30l8ChP/8zsURlHIugz6fBIH38VUR0fCSSBj8SV5O9thBR3r/4FGn7mAPAPN35+1HigJBReFqwTC6NPS1PYhg12gwIVrZDV/qCa5StJBNi7X4PRMJO7aeu6VqGCMq5ZhQGM2eQws+ZElO39pv85UnYyo/Db7lX//GS0I2sFlWjFdQ/bcc2r9SrsTsDyfGTeHZYECC7f2+7KtarUCLtaIV9KwD+fakhJS0r+F3KXTtDNHzkYyvIoKc++CsChyP13gNWFEPLgeoewQjRcgiQ/4vzUt1hzwNI/z8e5GcTLaS2bsKKZ/Q93ZUp+Qb/IWb+L4wT2i2M42HujTMuSQYK9Glte5jR5xeSJv18eKb/J6AY4DIiFqn5zkZmvNKSgIM2tkSoHxldNjdwAGsEmIIr6h1aO5RrEJOIDJ56enX5KUoiMolJV5VaDLZ3RId4Sx5C/ZxxTjOXn+BYsAkXuZqaHo6y4bWYk5qyAxyyUYXdLKrF9KjYDIWjfx8SWP4oSYvgEGjMvmrDTi2mze5QwUlgjZCL79CyCMKHiMvd50b2dprP
- esTQVGKS
- UjCv7vB/N8yrJ6ZNF1smlQbu1Dxq5yY9T3T17+zhBqm2hFP97QYvSaLG7MXn7tZacNwBKdZdwwaEsMpAPspfO3byFK9N+UXzLniSHNkkJpASfbpZbpo1Eoyket8n4SULTSpRBH/9LUFcTgcQofZRZknpRVjp/6H358OjF5+WtMSYwn8SL7MAxkcsn/k1oEP6rD/MEiCVfvCmXhGc+47C5VLr/8KunhoBVNaUB0Oslmed0X2nn7gq/n7tQVrDZxXeMoGO3ffYJ//gXawGtKh/fMdjRA/ciLE4JaSEV3Kk54yxhwjvWCK5+m0JauKwJ2uJf/3LC7rTYU1rApdSFGd+lItLGVIhmE28C487Ppqu1UfuHCPJjK93QmEe3z0lNpF6I8RUf7LMtyFOh300bpLpEN0YNJ0H1bdBk3DnChcGbG7wS1qIOSNOTesEy4hMwQNaw0/1vFxvqdLQrWbWclY9xfecTK2t6ZVwiDodZAzvdJJX+XlF5fhzKs4ChBFGSXkfGXEAUnx1WvgbvmB5qXkZxW1qkNAyC0I3en1Q9ryKI+X/y7/hXj32m9XY7ScRfdkngJx9QKFnZH9m1xR/lRm5zCLJyFhZGx9brHOE2p2Ewgo+I/eWOzXaMY5ayzMEkZH8NxNc2A3QKd2/hOdv5+1jbmTA6kqRmqK66NGwBLYeZ3lTKNVYpDGiUZxLmIumyJsjnSA5u7fvB1C8vcU4L8Uu/fqieco3HDdqOEFYLrl0jZh5o3wsiukZNAqzRt+BHwwn8bRRrdA3vOwnHxDyfu/ToOLC8f2Gv7kTV0k/g+QXODYZ2zlBLq5skSriavKBtXiKIpKcb9z1TXqjioK6PwXvXiLCrY71dxrR2YjAb959dmp53uT4=
+X-HE-Tag: 1784802456-475378
+X-HE-Meta: U2FsdGVkX1/ctmDfyx1CI/qDI3v6Wf+ahlEVh2FAqwftr01+/I9HX1QYog/2pX6rfM5s/vUIJ1hrYCuASqJRKp9GflpR2amb96pQQ1Jtc3fpTXQsMPxpj7Jg5wMMbmET2WofvQw2nMiS0cScDYqZiX92um6Z6Z8av8TOfvTxgMgjPWh+uwfAJwSJLbPYIC1jQ8XN8cogHSjh2HrwhOMJxUUTNiFcRXcpiKIZzGR9Xq28LBTAquakl/WOMDBGNKdlFcQ881TYvx1vwal7qRBe6kj95QjL6b9qVf0DW5PA5GBogKTbE5lBKlhx1/2gWDXyxA7p4gbAXnnmMqn7JNs09bEM4v0uSvL+AQyweh+vvA6t8LuF16+KrK2Tw1+IjtZ+PsK4i4ZS/tk1ogfuTeyEeLXL5x2/AfF6y9YscpvuAuGtU+DShkCY7tvWO0L3ybs/Dfyhnqup3ym+DlpJIaMe2I2WT62KMVkH2Kph3twQ01a84JnHBDrVulT1hOPyRit0OHwlLupiX8uW/sLf5HmooRCiZmZqvieYBfcm0+SJS4X8xWsKcWaDrKB12NKzXMGwwhWJ6w5QYThZ6Lx2fiQqOXv4qtarih1ABJ35kRJAuhK+q9U8O0noc/cW+oOEmSDv2g2fqimdP4faVNeC3ZDH0zFmyWQjl/KwsZ0xhprFRADKcAMEGk5n4nDcYSKgqzJ0P+hS67sjD84AG5LxMD9lDGihmR/NZlVYkiNZowPsWwRIyKaCWp0u4ge9yfaxhWS9ounB7CWX0nKt3pfDIPRmRWq/s2b/bnTUqhbawBDjfICFxJwNDr/OJzXtFduhkikGr11ZVuDiDJfzAULVgjLRIJFh9fM2LOW3d52cMc/1VEQ61mLGY+65QmltQ5vIDEWmcMunfQ1k644+90tHlG0Jz9tItmYJIkWeKYj1FE5nj3FVKFDF6tVr4rpjIEJIU5zu+nVTxZCwkFH8fP7WxTM
+ zM97jYnW
+ /EuGXdWYeH8v2YeVhAyJ9Wx5rEYjBFQQ4hoyXMCLxS3NDd0YfsfjnRefeR1f+M5WgTmUySSPuUO48rW213JWrHVGhHuAQfPtic9D10aIZelPJcv6F0YWRwvJixiSJIYvkp0WrFsDN9PEpvTP/uDkva7+6zi0uGbE6oM1z/QdEVf3Bg0++H24AVDOLNg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,122 +107,259 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is a multi-part message in MIME format.
---------------4HCosMQF2fkroIavSbgGnprv
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Harry wrote:
+> __kfree_rcu_sheaf() cannot invoke call_rcu() when spinning is not
+> allowed and IRQs are disabled. To relax the limitation, extend the
+> deferred free fallback so that a full rcu sheaf can be submitted to
+> call_rcu() via the existing IRQ work.
+> 
+> Since the deferred mechanism does more than deferred freeing of objects,
+> rename the struct to deferred_percpu_work and adjust names accordingly.
+> 
+> When a sheaf is queued on an IRQ work, it is detached from
+> pcs->rcu_free but call_rcu() is not invoked until the irq_work runs.
+> To keep the kvfree_rcu barrier's promise, call irq_work_sync() on each
+> CPU before calling rcu_barrier().
+> 
+> In the meantime, remove the TODO item as apparently there is no simple
+> and effective way to achieve that. This is because, unlike sheaves,
+> kfree_rcu() batches objects from different caches together.
+> 
+> Suggested-by: Alexei Starovoitov <ast@kernel.org>
+> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+> Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
+> ---
+>  mm/slab.h        |  2 +-
+>  mm/slab_common.c |  7 ++---
+>  mm/slub.c        | 85 +++++++++++++++++++++++++++++++++-----------------------
+>  3 files changed, 53 insertions(+), 41 deletions(-)
+> 
+> diff --git a/mm/slab.h b/mm/slab.h
+> index 85ef2ebc9812..fdd293b3efa5 100644
+> --- a/mm/slab.h
+> +++ b/mm/slab.h
+> @@ -760,7 +760,7 @@ void __kmem_obj_info(struct kmem_obj_info *kpp, void *object, struct slab *slab)
+>  void __check_heap_object(const void *ptr, unsigned long n,
+>               const struct slab *slab, bool to_user);
+>  
+> -void defer_free_barrier(void);
+> +void deferred_work_barrier(void);
+>  
+>  static inline bool slub_debug_orig_size(struct kmem_cache *s)
+>  {
+> diff --git a/mm/slab_common.c b/mm/slab_common.c
+> index e07b4e6d6679..9c9ae1384f47 100644
+> --- a/mm/slab_common.c
+> +++ b/mm/slab_common.c
+> @@ -551,7 +551,7 @@ void kmem_cache_destroy(struct kmem_cache *s)
+>      }
+>  
+>      /* Wait for deferred work from kmalloc/kfree_nolock() */
+> -    defer_free_barrier();
+> +    deferred_work_barrier();
+>  
+>      cpus_read_lock();
+>      mutex_lock(&slab_mutex);
+> @@ -2113,13 +2113,10 @@ void kvfree_rcu_barrier_on_cache(struct kmem_cache *s)
+>          cpus_read_lock();
+>          flush_rcu_sheaves_on_cache(s);
+>          cpus_read_unlock();
+> +        deferred_work_barrier();
+>          rcu_barrier();
+>      }
+>  
 
-On 7/23/26 17:37, Mukesh Kumar Chaurasiya wrote:
-> On Thu, Jul 23, 2026 at 04:18:10PM +0800, Gou Hao wrote:
->> kzalloc_objs with the __GFP_NOFAIL flag will never return NULL, so the
->> subsequent NULL check is unreachable dead code. Remove it.
->>
->> Signed-off-by: Gou Hao<gouhao@uniontech.com>
->> ---
->>   arch/powerpc/sysdev/xive/common.c | 3 ---
->>   1 file changed, 3 deletions(-)
->>
->> diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive/common.c
->> index dadd1f46ec93..79d7854259cb 100644
->> --- a/arch/powerpc/sysdev/xive/common.c
->> +++ b/arch/powerpc/sysdev/xive/common.c
->> @@ -1134,9 +1134,6 @@ static int __init xive_init_ipis(void)
->>   
->>   	xive_ipis = kzalloc_objs(*xive_ipis, nr_node_ids,
->>   				 GFP_KERNEL | __GFP_NOFAIL);
->> -	if (!xive_ipis)
->> -		goto out_free_domain;
-> This will be an unused label after this.
->
-> Regards,
-> Mukesh
+Hi Harry,
 
-Thank you for the review. I will fix it in the next version.
+I noticed that your fix in [1] serializes defer_free_barrier() to
+avoid concurrent irq_work_sync() waiters.
 
+However, this patch still calls the renamed deferred_work_barrier()
+outside that serialization scope, including the new call sites in
+kvfree_rcu_barrier_on_cache() and flush_all_rcu_sheaves().
+
+Is this series expected to depend on [1], with these call sites
+moved under the same serialization? Or am I missing something?
+
+[1]
+https://lore.kernel.org/all/20260624-kmalloc-nolock-fixes-v1-4-fdf4d17351dd@kernel.org/
 
 thanks,
 
-Gou Hao
+--
+With Best Regards,
+Shengming
 
->> -
->>   	for_each_node(node) {
->>   		struct xive_ipi_desc *xid = &xive_ipis[node];
->>   		struct xive_ipi_alloc_info info = { node };
->> -- 
->> 2.20.1
->>
---------------4HCosMQF2fkroIavSbgGnprv
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <p>
-</p>
-    <div class="moz-cite-prefix">On 7/23/26 17:37, Mukesh Kumar
-      Chaurasiya wrote:<br>
-    </div>
-    <blockquote type="cite"
-cite="mid:amHgkkMT4nrWLSka@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com">
-      <pre wrap="" class="moz-quote-pre">On Thu, Jul 23, 2026 at 04:18:10PM +0800, Gou Hao wrote:
-</pre>
-      <blockquote type="cite">
-        <pre wrap="" class="moz-quote-pre">kzalloc_objs with the __GFP_NOFAIL flag will never return NULL, so the
-subsequent NULL check is unreachable dead code. Remove it.
-
-Signed-off-by: Gou Hao <a class="moz-txt-link-rfc2396E" href="mailto:gouhao@uniontech.com">&lt;gouhao@uniontech.com&gt;</a>
----
- arch/powerpc/sysdev/xive/common.c | 3 ---
- 1 file changed, 3 deletions(-)
-
-diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive/common.c
-index dadd1f46ec93..79d7854259cb 100644
---- a/arch/powerpc/sysdev/xive/common.c
-+++ b/arch/powerpc/sysdev/xive/common.c
-@@ -1134,9 +1134,6 @@ static int __init xive_init_ipis(void)
- 
- 	xive_ipis = kzalloc_objs(*xive_ipis, nr_node_ids,
- 				 GFP_KERNEL | __GFP_NOFAIL);
--	if (!xive_ipis)
--		goto out_free_domain;
-</pre>
-      </blockquote>
-      <pre wrap="" class="moz-quote-pre">This will be an unused label after this.
-
-Regards,
-Mukesh</pre>
-    </blockquote>
-    <p
-style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">
-</p>
-    <p
-style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Thank you for the review. I will fix it in the next version.</p>
-    <style type="text/css">p, li { white-space: pre-wrap; }</style><br>
-    <p>thanks,</p>
-    <p>Gou Hao</p>
-    <blockquote type="cite"
-cite="mid:amHgkkMT4nrWLSka@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com">
-      <pre wrap="" class="moz-quote-pre">
-</pre>
-      <blockquote type="cite">
-        <pre wrap="" class="moz-quote-pre">-
- 	for_each_node(node) {
- 		struct xive_ipi_desc *xid = &amp;xive_ipis[node];
- 		struct xive_ipi_alloc_info info = { node };
--- 
-2.20.1
-
-</pre>
-      </blockquote>
-      <pre wrap="" class="moz-quote-pre">
-</pre>
-    </blockquote>
-  </body>
-</html>
-
---------------4HCosMQF2fkroIavSbgGnprv--
+> -    /*
+> -     * TODO: Introduce a version of __kvfree_rcu_barrier() that works
+> -     * on a specific slab cache.
+> -     */
+>      __kvfree_rcu_barrier();
+>  }
+>  EXPORT_SYMBOL_GPL(kvfree_rcu_barrier_on_cache);
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 680fe64aff72..8afa6b47b1f2 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -418,6 +418,8 @@ struct slab_sheaf {
+>      union {
+>          struct rcu_head rcu_head;
+>          struct list_head barn_list;
+> +        /* only used to defer call_rcu() in unknown context */
+> +        struct llist_node llnode;
+>          /* only used for prefilled sheafs */
+>          struct {
+>              unsigned int capacity;
+> @@ -4077,6 +4079,20 @@ static void flush_all(struct kmem_cache *s)
+>      cpus_read_unlock();
+>  }
+>  
+> +struct deferred_percpu_work {
+> +    struct llist_head objects;
+> +    struct llist_head rcu_sheaves;
+> +    struct irq_work work;
+> +};
+> +
+> +static void deferred_percpu_work_fn(struct irq_work *work);
+> +
+> +static DEFINE_PER_CPU(struct deferred_percpu_work, deferred_percpu_work) = {
+> +    .objects = LLIST_HEAD_INIT(objects),
+> +    .rcu_sheaves = LLIST_HEAD_INIT(rcu_sheaves),
+> +    .work = IRQ_WORK_INIT(deferred_percpu_work_fn),
+> +};
+> +
+>  static void flush_rcu_sheaf(struct work_struct *w)
+>  {
+>      struct slub_percpu_sheaves *pcs;
+> @@ -4148,6 +4164,7 @@ void flush_all_rcu_sheaves(void)
+>      mutex_unlock(&slab_mutex);
+>      cpus_read_unlock();
+>  
+> +    deferred_work_barrier();
+>      rcu_barrier();
+>  }
+>  
+> @@ -6136,16 +6153,6 @@ bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj, unsigned int free_flags)
+>      if (likely(rcu_sheaf->size < s->sheaf_capacity)) {
+>          rcu_sheaf = NULL;
+>      } else {
+> -        /*
+> -         * With !allow_spin, we might have interrupted call_rcu()'s
+> -         * IRQ-disabled critical section. If IRQs are not disabled,
+> -         * we know that's not the case.
+> -         */
+> -        if (unlikely(!allow_spin && irqs_disabled())) {
+> -            rcu_sheaf->size--;
+> -            local_unlock(&s->cpu_sheaves->lock);
+> -            goto fail;
+> -        }
+>          pcs->rcu_free = NULL;
+>          rcu_sheaf->node = numa_node_id();
+>      }
+> @@ -6154,8 +6161,22 @@ bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj, unsigned int free_flags)
+>       * we flush before local_unlock to make sure a racing
+>       * flush_all_rcu_sheaves() doesn't miss this sheaf
+>       */
+> -    if (rcu_sheaf)
+> -        call_rcu(&rcu_sheaf->rcu_head, rcu_free_sheaf);
+> +    if (rcu_sheaf) {
+> +        /*
+> +         * With !allow_spin, we might have interrupted call_rcu()'s
+> +         * IRQ-disabled critical section. If IRQs are not disabled,
+> +         * we know that's not the case.
+> +         */
+> +        if (unlikely(!allow_spin && irqs_disabled())) {
+> +            struct deferred_percpu_work *dpw;
+> +
+> +            dpw = this_cpu_ptr(&deferred_percpu_work);
+> +            if (llist_add(&rcu_sheaf->llnode, &dpw->rcu_sheaves))
+> +                irq_work_queue(&dpw->work);
+> +        } else {
+> +            call_rcu(&rcu_sheaf->rcu_head, rcu_free_sheaf);
+> +        }
+> +    }
+>  
+>      local_unlock(&s->cpu_sheaves->lock);
+>  
+> @@ -6354,31 +6375,21 @@ static void free_to_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
+>      }
+>  }
+>  
+> -struct defer_free {
+> -    struct llist_head objects;
+> -    struct irq_work work;
+> -};
+> -
+> -static void free_deferred_objects(struct irq_work *work);
+> -
+> -static DEFINE_PER_CPU(struct defer_free, defer_free_objects) = {
+> -    .objects = LLIST_HEAD_INIT(objects),
+> -    .work = IRQ_WORK_INIT(free_deferred_objects),
+> -};
+> -
+>  /*
+>   * In PREEMPT_RT irq_work runs in per-cpu kthread, so it's safe
+>   * to take sleeping spin_locks from __slab_free().
+>   * In !PREEMPT_RT irq_work will run after local_unlock_irqrestore().
+>   */
+> -static void free_deferred_objects(struct irq_work *work)
+> +static void deferred_percpu_work_fn(struct irq_work *work)
+>  {
+> -    struct defer_free *df = container_of(work, struct defer_free, work);
+> -    struct llist_head *objs = &df->objects;
+> +    struct deferred_percpu_work *dpw;
+> +    struct llist_head *objs, *rcu_sheaves;
+>      struct llist_node *llnode, *pos, *t;
+> +    struct slab_sheaf *sheaf, *next;
+>  
+> -    if (llist_empty(objs))
+> -        return;
+> +    dpw = container_of(work, struct deferred_percpu_work, work);
+> +    rcu_sheaves = &dpw->rcu_sheaves;
+> +    objs = &dpw->objects;
+>  
+>      llnode = llist_del_all(objs);
+>      llist_for_each_safe(pos, t, llnode) {
+> @@ -6402,27 +6413,31 @@ static void free_deferred_objects(struct irq_work *work)
+>          __slab_free(s, slab, x, x, 1, _THIS_IP_);
+>          stat(s, FREE_SLOWPATH);
+>      }
+> +
+> +    llnode = llist_del_all(rcu_sheaves);
+> +    llist_for_each_entry_safe(sheaf, next, llnode, llnode)
+> +        call_rcu(&sheaf->rcu_head, rcu_free_sheaf);
+>  }
+>  
+>  static void defer_free(struct kmem_cache *s, void *head)
+>  {
+> -    struct defer_free *df;
+> +    struct deferred_percpu_work *dpw;
+>  
+>      guard(preempt)();
+>  
+>      head = kasan_reset_tag(head);
+>  
+> -    df = this_cpu_ptr(&defer_free_objects);
+> -    if (llist_add(head + s->offset, &df->objects))
+> -        irq_work_queue(&df->work);
+> +    dpw = this_cpu_ptr(&deferred_percpu_work);
+> +    if (llist_add(head + s->offset, &dpw->objects))
+> +        irq_work_queue(&dpw->work);
+>  }
+>  
+> -void defer_free_barrier(void)
+> +void deferred_work_barrier(void)
+>  {
+>      int cpu;
+>  
+>      for_each_possible_cpu(cpu)
+> -        irq_work_sync(&per_cpu_ptr(&defer_free_objects, cpu)->work);
+> +        irq_work_sync(&per_cpu_ptr(&deferred_percpu_work, cpu)->work);
+>  }
+>  
+>  static __fastpath_inline
+> 
+> -- 
+> 2.53.0
 
