@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56346C531F5
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 14:30:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D27CCC531D4
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 14:30:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 539146B0095; Thu, 23 Jul 2026 10:30:51 -0400 (EDT)
+	id 253016B0096; Thu, 23 Jul 2026 10:30:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E9E96B0096; Thu, 23 Jul 2026 10:30:51 -0400 (EDT)
+	id 22A506B0098; Thu, 23 Jul 2026 10:30:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3D99B6B0098; Thu, 23 Jul 2026 10:30:51 -0400 (EDT)
+	id 168376B0099; Thu, 23 Jul 2026 10:30:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 119B66B0095
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 10:30:51 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EA37F1A0242
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 14:30:49 +0000 (UTC)
-X-FDA: 85020277818.29.9F906CD
+	by kanga.kvack.org (Postfix) with ESMTP id D9C496B0096
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 10:30:52 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 696AE1A0504
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 14:30:52 +0000 (UTC)
+X-FDA: 85020277944.27.A6F80A9
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf19.hostedemail.com (Postfix) with ESMTP id A67E61A0002
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 14:30:47 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=ZymUx1b2;
-	spf=pass (imf19.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	by imf13.hostedemail.com (Postfix) with ESMTP id BD3AF20011
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 14:30:50 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=t84RMmlD;
+	spf=pass (imf13.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784817048;
+	s=arc-20220608; t=1784817050;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CgEqaR+d7oMg+OXW1piQIA/vwtndewjL/6n9mPT59RM=;
-	b=Xgp554qmKw+6sPSST8Ib3c/JqmBshYxFCwR2PZfNL60Lro1AGqdH/11RDTeUJeCWBrb733
-	lxSHmVCSA5ssiIwjYQzVmGGHzvmrspcXY20/j7bYHsr+/4qeVk9qlawEycg2dvjYwUYdG5
-	x56f7iFhEJ1exaUiCtqkqAX7uaUVYLg=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=ZymUx1b2;
-	spf=pass (imf19.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	bh=I46grrWDH2O/dEj+ZMjbkD8D4mKznm+9gntugHYsM+g=;
+	b=1YYOp5tBsesgwMNXDo2rLV5sD8h6xZaWAC3/35eDulkUZqOUQGboepf05Gdh1aD2YZjZt9
+	EeZcoSpYLpE9dhQTsjU8kY0UlH5CSNuzBbgUr4PZOQ2odTz1EEBh14PFTboT5tXbMKuD+K
+	zEl1FMqUw+jrV5lKNSaJFqr/jnetF18=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784817048;
-	b=LYoZAbbXrbmEztq/vnmHDVSzfEzWTgEMzis9xOD5t1Qb02ZKxM7JLnr4YbKnZeivyXVxdq
-	sdlUZOgGeW8YNKZct5aoaJ/Tw7NccEd7z0hcqS3aJIazXFFF8A00kHTOt7yCfAONrWDHyY
-	9tPITw0vV9gLCUemWi3Yckb27B+kHmE=
+	t=1784817050;
+	b=pZDGrRn/3Fh7TcudFXLw9ud57Efi8jBLbAv9pA4JHyj+bp5JXfceUFAgjlaf+qsS60jrNS
+	A6xha+b7slKEHTfgA1Dv5wBMlWRK9INab220AKoY6rSqKce/ZXcmJIEIh6o+QhotqvZNEH
+	kzKF5PsXCOgzWMHZBLBtPjt+ug7PKuc=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=t84RMmlD;
+	spf=pass (imf13.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=CgEqaR+d7oMg+OXW1piQIA/vwtndewjL/6n9mPT59RM=; b=ZymUx1b2XJMwy0Av5eYHFAGkt8
-	9MBjSBOxA/2YuO/UVKqF3Y5YWeYzIicZvqZl3rstjqO7/EoHN69b3F8OnyWGupymcv4oVNXYVUGTc
-	xKBiBrSyOykkjZC7SSrDKzui+alq9VTAfhRU08sKsAQ8Uo/Mi3q3NpVxkSD7mZjCG3RnK7guo9MRr
-	L7Ur2Vi7pGO38dFXcutmJiU/nE2mnBY8ikkK3xFYbvLZCXZvPkXcwT5xaOcmnaS+QNyumqrrVT+Sj
-	tDdqr+0s901HTsWEn5X6PyXHhgm1btb5fp/Nx2c5FyDxtoKuuR1ryCdjPdivXL3oX1ulK+odvY6Du
-	WqYwUwMg==;
+	bh=I46grrWDH2O/dEj+ZMjbkD8D4mKznm+9gntugHYsM+g=; b=t84RMmlD0ISPnEJ9fDYzFYnGkC
+	zDifmWaoBy14ux46UL1JmOHBicFN0exn+7bG8SLlIpUfCyMapxx7q/GkGkoU0JZPgUCZjwllUYm7h
+	Be/aTtQYs6DuEV1T6vpLkIjdokW1+NGnfmUUtTViie+8lw6hgMalvv39WZnyZ4crGFO/IkiUlvqt3
+	YligY2LoPqdwEEQiJrynXcoVtY1R/l89iXQuO4wpmI6Ui2osDUmNSCWWwBOj68e5IP9KTBVEkff/Q
+	SjXBs6FiW4ETgI3UWKgxZgGUMm+RLmSL6qVoglBNPN+kolM8uI5AXWveSPUrWpDZ2S09i3Wewsutz
+	YF1080jA==;
 Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wmuRZ-00000000jiD-3LPo;
-	Thu, 23 Jul 2026 14:30:37 +0000
+	id 1wmuRY-00000000jhx-3lsm;
+	Thu, 23 Jul 2026 14:30:36 +0000
 From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Jane Chu <jane.chu@oracle.com>,
@@ -75,22 +75,22 @@ Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	linux-fsdevel@vger.kernel.org,
 	Christian Brauner <christian@brauner.io>,
 	Jiaqi Yan <jiaqiyan@google.com>
-Subject: [PATCH v4 13/14] filemap: Add support for authoritative mappings
-Date: Thu, 23 Jul 2026 15:30:30 +0100
-Message-ID: <20260723143034.175661-14-willy@infradead.org>
+Subject: [PATCH v4 05/14] guest_memfd: Use folio_has_hwpoisoned_page()
+Date: Thu, 23 Jul 2026 15:30:22 +0100
+Message-ID: <20260723143034.175661-6-willy@infradead.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260723143034.175661-1-willy@infradead.org>
 References: <20260723143034.175661-1-willy@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A67E61A0002
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: BD3AF20011
+X-Stat-Signature: wpmcxhwytfiwn9or1jefia4ab7c6qfgm
 X-Rspam-User: 
-X-Stat-Signature: iaif653xeszeqmxi75gors6111po3ffj
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1784817047-434490
-X-HE-Meta: U2FsdGVkX19WGRPZrNnTta/pkeEulvpoJMC6sObr4tir/t2uDOzLHwSVqtz3JZOhaGHu27pvBIET0Crok+NaTJ63Kxi0Bg3/gsK6XvGFV992fSArWD4JBKI3Axt4WpYvK3CFXf3ATBUc82H+/Xb+hJikSrBs4PYX92JIaM77n104W8vVFcyQtB59dD38TyCWme3OnQEep2T3902wsz2l7yxoN8qdbqNer2jdWK/9i6AZB9PV7JsmmJawx0oIXitlZ2a6tzu6R1GKBinz3WUo/hkG1GQFv+fw4Xx1J66pNLKf1jRLIxt6VmuYFaOxFN9muGjxUjrEAwN9HbOo+4jFTsanJopvnePRAFsPClqzxVjzHH4mxMyHXrcp1Toe9ckCoQHuUbB3F5dK8pJMpcsHQn206HlZvTQvOVHu2rQ+0DBfkWhmuAsisb6Zit42QRzzy0UimA25syQaXfJwlJyqDw1KwANap9jBxYVoLBxJpFN30M83E3n2qxDQ/XryYe0PQTRIMZI/3Wp4zy/Evumdw6kDM54Z4fpPt54uDj4ZvaJxIIMgdXSu9FVyxn9SWeWiuT9Whb1foUbtGb3iJ9D8q4cVKtgQp0fIgeZn7+Fxkx8W9x7wMBMb51eHrWKtTtv7IGa9NsLMqt3niX0ipTPH5cKXTVrCo5Z0BdubVFNuFZEuk+7Ybg9J7ue+X+xX0yoZS0lRBnLBM8rUniXw19IJRHGpkSDxvJQ6j5H3/DC7JW0y/lh4AIA3/6T2lq4cMRC6e7n1aYn2c4eLvvpi1SIcOkeAXT3cX6LbWQwx+e/Ah/0uF7XatmjL2eWOLf6io3wnHMrryb7jvFyVbQFjLn27CCIKRYgLtGpQdpUtdzuOkp7OpvkfrnWYCkTnbjDdaO1e5KjDAa/Sltt0xcB4z8LmamTitvNK9Q4vvo/qSWIe4SQdKzo9qJNM6/+AAI9hWKMjKfIifNO7yEoApfjKDrU
- fbDKcA7k
- syxxln7DAriDjBGKFSJecO9iHomfCnDa9IGGiwF2thbK+Bv+jc8p4qvChLdDntD6aQ/RrmV6A2GuTnrT0Ao8BFsSx8eysC6B5nxbUZGiVmnqs1DPGMRVaF6BvTaiqt3Sc2PYBhxdPc7MnDesv+D9dx+cj8CD7kGb0YO7OmkJvdooG8Dgmqe6tE0cNs4O0R1IHzsV4LxmPgP2vhosi+akcRLS6yWdqIHR5Aowpkmz+nOOFXJr5YLMdUI1ma/p5a0SgFnXJGjTdC1AWAekeU+n7p/XQhKSYufxXTSvh8loIBuSG8Ij5aMqQ1nqf7IRhw3yTxNAdeotHH5tTSMg=
+X-HE-Tag: 1784817050-361351
+X-HE-Meta: U2FsdGVkX18Bd/5HdYxkBFLKG6/Nqw0/vK9fRobHqZXGay2ZofofEJ90hE6r6WPMefO4APmFfN8z9OO5T6SsoTU7fSFyTedqTKj9CJ2xnMku21qdqb6nUY5s7UhYZOYWVWuxESjpDSNuBKAu1y5eMcemRKoh6J53k5wyfjA8N8lxs8rPr++wD8KduzPrIOYGiaxyVCKIiMy2oC16KWLv4wcCgA4/bV0Qtm6iWTIXsv0ITCLN9xm5GyOIjuQN/BJC3oQpjuAnISS+P8ralYptY13RNiqQih5vzzb5gSQnorO/eraQwWq4/vOGKslBXGpaNw5bcH/250FCzogFGY2ieoDHm/5K2N6jus1S58IHPp83HYCSjyZEj0Mb4WoHOlMr4iJx8qZyuYKJWRcnlU//MGFG/qEri4k6HFTLUqd14Jc9PuMEGbD7EwYc0aRXS3ao9xiGS4MLPT6w2X3Vx0gC1WjcuR0OOCcd5Tapd+GDLAMXO2iZCY6Is4JKg1U/doZVDR7YqpdufjnqlDmviOlCepvObmfm6APeJ7f6EoM6jBa+yMmWLw4OFLAWrlWNZCyBcX8HMdFDgntsMgAFo00NfSxwmme0MVHTP0UzWYsw4vFl3BmRx7RsLO/i/lB8tB4sh2wy+jQRyQRGpzqwKUIJRXSyYBRXanisq9sr/H2zGc/W+qVslU1fR77R/b9lS8yaWP72nJhcW/fr3wxrehidNwJousEvq4EbTiNxxifdyztKUn6JoCxLCebCBD0mudlxo4L5SJuq80x2p+aUpzYF6QsblYMrPKhms02nJwUm0ykxh/W07BGkZRCrNdao1h3DtFqLXPiOkoRUSvVqpATrHHhEvz7auAaZz1FgQeE5sLs2/+WvImvtNiid+ZZ/xABNn15oFzjC0rK7X8LJAEq9oXwTjNn+LQRU3gX9GjLiSSwcux5s7maQbeSbjM0BNfgaXdLLB8WIn+UzIZospkk
+ ATCUp/qe
+ RFZ21SkRiSZwpfdM9wiXIXaTMN0eOsybhXprlm3x5tqAdsSgJ2cq472HI4/OQdN0baYprgr0p8aK+FJSeIBX3GLG5rMnCzUQbG/BaMRNg/Ox+PZUzhOEQCmCTUQGJCoNVg8CWP7793UGOpYyq5iKs1V4ZussJjR9jYMGD61CfDo15kbcN/SkJEEHVL/mzNP3IDhSMRM3rI2w0oFmxlla70Ae8C0I3QnkUx8vErtxLjGvBdrduiZwlBP/Pv872BZi/6uoXiH0VC5Nei9OY1y6blK7KiQOvw6BHJtHXzhiI345f9WbFWrlUhY9fje6Y1/odoS9Hgntzsj/palDj2wbqb1G8+JlGhSBc/hTWGM9hFDNGBRYgYM7QGHmPvg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,82 +98,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-An authoritative mapping knows about all the folios in the mapping.
-If read() finds a missing folio, there's no reason to allocate one and
-try to read it because we know it's a zero region of the file.  We can
-just call iov_iter_zero() instead.
+folio_test_hwpoison() only works on hugetlb folios today and will give
+the wrong answer for other large folios.  folio_has_hwpoisoned_page()
+works on both.
 
 Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 ---
- include/linux/pagemap.h | 11 +++++++++++
- mm/filemap.c            | 18 ++++++++++++++++++
- 2 files changed, 29 insertions(+)
+ virt/kvm/guest_memfd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-index 436987f47aed..6fdee5b03621 100644
---- a/include/linux/pagemap.h
-+++ b/include/linux/pagemap.h
-@@ -210,6 +210,7 @@ enum mapping_flags {
- 	AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM = 9,
- 	AS_KERNEL_FILE = 10,	/* mapping for a fake kernel file that shouldn't
- 				   account usage to user cgroups */
-+	AS_AUTHORITATIVE = 11,	/* If we miss in the page cache, it's a hole */
- 	/* Bits 16-25 are used for FOLIO_ORDER */
- 	AS_FOLIO_ORDER_BITS = 5,
- 	AS_FOLIO_ORDER_MIN = 16,
-@@ -345,6 +346,16 @@ static inline bool mapping_writeback_may_deadlock_on_reclaim(const struct addres
- 	return test_bit(AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM, &mapping->flags);
- }
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index db57c5766ab6..94eedcc7f1a9 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -774,7 +774,7 @@ static struct folio *__kvm_gmem_get_pfn(struct file *file,
+ 	if (IS_ERR(folio))
+ 		return folio;
  
-+static inline void mapping_set_authoritative(struct address_space *mapping)
-+{
-+	set_bit(AS_AUTHORITATIVE, &mapping->flags);
-+}
-+
-+static inline bool mapping_is_authoritative(const struct address_space *mapping)
-+{
-+	return test_bit(AS_AUTHORITATIVE, &mapping->flags);
-+}
-+
- static inline gfp_t mapping_gfp_mask(const struct address_space *mapping)
- {
- 	return mapping->gfp_mask;
-diff --git a/mm/filemap.c b/mm/filemap.c
-index 26a5f18121f9..5a8cc20e624e 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -2697,6 +2697,8 @@ static int filemap_get_pages(struct kiocb *iocb, size_t count,
- 	if (!folio_batch_count(fbatch)) {
- 		DEFINE_READAHEAD(ractl, filp, &filp->f_ra, mapping, index);
- 
-+		if (mapping_is_authoritative(mapping))
-+			return 0;
- 		if (iocb->ki_flags & IOCB_NOIO)
- 			return -EAGAIN;
- 		if (iocb->ki_flags & IOCB_NOWAIT)
-@@ -2853,6 +2855,22 @@ ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
- 			goto put_folios;
- 		end_offset = min_t(loff_t, isize, iocb->ki_pos + iter->count);
- 
-+		if (!folio_batch_count(&fbatch)) {
-+			size_t fsize = mapping_min_folio_nrbytes(mapping);
-+			size_t offset = iocb->ki_pos & (fsize - 1);
-+			size_t bytes = min_t(loff_t, end_offset - iocb->ki_pos,
-+					     fsize - offset);
-+			size_t copied = iov_iter_zero(bytes, iter);
-+
-+			already_read += copied;
-+			iocb->ki_pos += copied;
-+			last_pos = iocb->ki_pos;
-+
-+			if (copied < bytes)
-+				error = -EFAULT;
-+			continue;
-+		}
-+
- 		/*
- 		 * Once we start copying data, we don't want to be touching any
- 		 * cachelines that might be contended:
+-	if (folio_test_hwpoison(folio)) {
++	if (folio_has_hwpoisoned_page(folio)) {
+ 		folio_unlock(folio);
+ 		folio_put(folio);
+ 		return ERR_PTR(-EHWPOISON);
 -- 
 2.47.3
 
