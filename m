@@ -4,106 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2C81C531D1
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 15:33:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E93AC531F7
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 15:38:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 954B56B00A2; Thu, 23 Jul 2026 11:33:26 -0400 (EDT)
+	id 0D38D6B007B; Thu, 23 Jul 2026 11:38:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 92D106B00A4; Thu, 23 Jul 2026 11:33:26 -0400 (EDT)
+	id 05D076B0098; Thu, 23 Jul 2026 11:38:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8438E6B00A7; Thu, 23 Jul 2026 11:33:26 -0400 (EDT)
+	id E91EF6B009F; Thu, 23 Jul 2026 11:38:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 53C2C6B00A2
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 11:33:26 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id CBC04120529
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 15:33:25 +0000 (UTC)
-X-FDA: 85020435570.19.606BB7F
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com [209.85.208.72])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 0C6F22000D
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 15:33:23 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=kZ4mWATy;
-	spf=pass (imf03.hostedemail.com: domain of 3QjRiagkKCI0Ar8B49ryBx55x2v.t532z4BE-331Crt1.58x@flex--tarunsahu.bounces.google.com designates 209.85.208.72 as permitted sender) smtp.mailfrom=3QjRiagkKCI0Ar8B49ryBx55x2v.t532z4BE-331Crt1.58x@flex--tarunsahu.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784820804;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B148D6B007B
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 11:38:43 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3A6FB1C0AD2
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 15:38:43 +0000 (UTC)
+X-FDA: 85020448926.07.81EFF74
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 3D1E918000C
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 15:38:41 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TpPfRi6M;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf06.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784821121;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=v0qWoxbum+mc2LRSxBlzJpjmKPNemz4JvYfhVDhJ98E=;
-	b=kRaxigjbmpCIGZhDcOm1pzT2IBeq6NjkUpZfPAhzBMGlgKrBO+LHeRUC3cVdb/pNRle8Up
-	U9rBx64tatl8Y5W/caUsylgtlpVSfOgJJx/wQ2MNv3ff0tIR/ZaByFcTHASmCPzfgONBPm
-	9fLHFj3Fxk+WCMRKCM4mavQWfeIiB7k=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=kZ4mWATy;
-	spf=pass (imf03.hostedemail.com: domain of 3QjRiagkKCI0Ar8B49ryBx55x2v.t532z4BE-331Crt1.58x@flex--tarunsahu.bounces.google.com designates 209.85.208.72 as permitted sender) smtp.mailfrom=3QjRiagkKCI0Ar8B49ryBx55x2v.t532z4BE-331Crt1.58x@flex--tarunsahu.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784820804;
-	b=vYQd5Acy+zRJRB/T/tsdImKdFA4gb8fAKjcgPgKR5cAdGzTCrhwS6CrTpaVZnJjObHaWX/
-	hek6fD7su5KFCdq+U4hTP1UR6AUOuLIhkQiRbE4YYV454KoQqDvA7wu5ZoE/CzL+jV7ujU
-	wzhRUBPWVil30vZJONVrg66JG5fA/GQ=
-Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-69ebdb9390cso1493889a12.3
-        for <linux-mm@kvack.org>; Thu, 23 Jul 2026 08:33:23 -0700 (PDT)
+	bh=0L6BTG4czRYdQ6EfwGUAWi2A2+4jjv2ECjLUnPT3t78=;
+	b=jqoYcYzy44h+RcZXTLqlje8iFXxlU0iJZkEiA3AM0OiLs+47OLb5FTpCb9fr8ko4G2ZU2g
+	HfIEyqglQLujVr6XsSQUTqDeyjQnvVJoiAKtLhuPAUL2s52lXU47HXm3cSlHH4IGvQAyr9
+	CF7OGGcaIzo/Y8q8tukti7BvlZfCcO4=
+ARC-Authentication-Results: i=2;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TpPfRi6M;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf06.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784821121;
+	b=LErVrZnb2/PFZtDMVETt++XTLSnQ03k3XTDWDAyiTphwk+mc73+FconfCKeW5S7iOCcZ5/
+	h+5ROBRM5RZ9bpZ0eHd8pwrehD19xf8vz4G5ckfJyB1ltpRipQGo+Q6P2vu8qgy32XQsGw
+	JomQWcAM+JIY0PFOdihrc40cBxzGwqs=
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-476a130c138so824243f8f.0
+        for <linux-mm@kvack.org>; Thu, 23 Jul 2026 08:38:40 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784821120; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Pe5UA6rBr++61LxPiZMxK7Esui1bX4Ipk97kDE7MzqnmcErV4ij20oYKBalFUK7689
+         DIxE9TkulqydVsaWAFODjdVWWKzI2Wtsl6hvWuzxKjq7DPkKpJ6VNqDHKqLVzJyr5Xaa
+         TpvoRHD8mDCDRZ7OL/ldMUb5CuzGoXAuxBc7IlBWnLPBju4iPhGNVENB/Q/FwQ5bqdUS
+         8xEGgC4koIr68SpzdeRRQRor+x2i45Hc7xzI6+90fF4z08rHZFxfaFwLgZ8Q1SgnuQgu
+         fxhDgSzThtwYdeyJZVA5XHNgcv6va8JkxSy6wkUNu6oYpK2XQ1xvm4U0N9s5mjoKTarI
+         jHAg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=0L6BTG4czRYdQ6EfwGUAWi2A2+4jjv2ECjLUnPT3t78=;
+        fh=VKjO0VF+O3iwgTRX5hRXQnjWxoPMOxc6kFVMFLxhC9U=;
+        b=mmiYMPfLlHmDeqRh7EjCiRYW3htK/90BWwf2OQkzt+wJ3/2FcOL54H5FJhAwP0wk4E
+         XwDH1RVpU5pfevONN3r27VMv+mrQYxKryWmO8//SxS7RLvzO9HV76+jeSb6M+NhuTEZD
+         1q/pCL8vmM2az823a4bCObap62Vhvf4m+LcvXLRPOrVr6IgxVV0WG+Q8o7nSGZcQniIl
+         rr5kw4UqpS9wgfIQIIrGB2vosFJZU0J+Q2GRACWu2W53CHCzq0NY33Imat00tRAsm/IM
+         lHF4D1OeLTFPVr2R49NT8fZUijMgNUmG15+isjnibET86mOJ48mrEHjHMZ7vQmsUjGqs
+         Nnpw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784820802; x=1785425602; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=v0qWoxbum+mc2LRSxBlzJpjmKPNemz4JvYfhVDhJ98E=;
-        b=kZ4mWATyQscOILiMERUGyzOpGcTYAtLxf3e2MLuLDklQZYOnZaaRSlnRJ1hFbfn9ue
-         PsEkF/P/tD2cIiF/sXj9i3OxKjl8bNG5swnnn/0d8/euFnk3PP7XcdzO6tgGwNi/FCem
-         U7g1Sv7dGMTU4edS5bbrTwX19qESOXLS0EY9S7/N+vwdzWpIwm1DK4XXjWnJZaWK1DkN
-         saQ2IdQ5hsb3WwuMQpGRSyqgg5qdAy793lmTaoLiRFmu3oX0LPJZdB+j2smFEXG85HQj
-         6CnFaa31ZUkNj2MwnhYg5UXJNDVUCRcpGX1zqtKa7rzIWpOcjgtFloKmeL+zYVaNWoEL
-         P4AA==
+        d=gmail.com; s=20251104; t=1784821120; x=1785425920; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=0L6BTG4czRYdQ6EfwGUAWi2A2+4jjv2ECjLUnPT3t78=;
+        b=TpPfRi6MpxO45SWyDuVpVJo0ydCunAwHkRXoLGEUcmjtz4OqUe8aX23pCpBroOu9Mn
+         ILujWx2cm+IklW1b7mnDQUuAoj6cWg+a9EbvIlfoe3m6kPE0j14WezbyHmF5I0BGfj1S
+         pGd4/7wfod8d9kG3Zlj0saev0jkRlE2A3sxibjYgf0/cIirspD00kPiHz0ld8NibuSDU
+         5FfLUTdqAvo/iL1cEsWembx5kb7/XihJX3K3Mz+KR+ljKdIPRkd3a0g4bmm64fyctAHQ
+         R5xsZQSlwKC1aGGRPHi/8wg8B/v7mZwm+J37xC0IjziCa1SVT1INLrN+p6MHwrVop1y6
+         WFTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784820802; x=1785425602;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=v0qWoxbum+mc2LRSxBlzJpjmKPNemz4JvYfhVDhJ98E=;
-        b=KKyQ/kAN28mVePe/2mJ3Nju1KLgBhoQALdTMB32JRsys46FghoInN9co7qQ0HGm0jI
-         e2JcdRjIwJ24McF28cHJ1qfNAfL7Ku3M1x2fwdoUvha/4biw9e5zSvu/Z7CqEXVLNrZV
-         8GuZQfD1tHWN9o38DXWtUlJm/7kp1S6KDDuDxxcSNRne5NVZoKvPrmr2GpKe/taMpsRR
-         LW0xvXX4Lbyv18TwwdgDk6N5TgnJ3ANzTlh8q2kqcsM7jk6omNQA8NKd6ypebjYFaIAP
-         /LawzM63EZBFLvKrxfmSmpBtTrfLc2cemvDsY3THYczHkwLeJ4INWRkRMPU1NuR6ixvK
-         GOhA==
-X-Forwarded-Encrypted: i=1; AHgh+Rpkd6rMuuJ3WOMW8ktZHjzuvYDLfeWMh1c9Hyo7Cuko+wBsNNLFU+iXEAzjE38O5ZtsjBa5lurANQ==@kvack.org
-X-Gm-Message-State: AOJu0YyJbGLgvyXxOdlwYfyuTPaYmyCzHqgiZAqj6yTzXx0UmHdPXUPi
-	zcM0bz0M7vnEgI1yx7i881kjB1+Dc589ZZagihvX+cW4RWlZSGn8qul/jEq7dU3iIf82L+BPFRc
-	0a/+RYJpAStihvJwxWw==
-X-Received: from edbbf4.prod.google.com ([2002:a05:6402:1a44:b0:69a:9f30:4b29])
- (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:34cd:b0:699:2448:be63 with SMTP id 4fb4d7f45d1cf-69f6b63060emr1442487a12.16.1784820802174;
- Thu, 23 Jul 2026 08:33:22 -0700 (PDT)
-Date: Thu, 23 Jul 2026 15:33:21 +0000
-In-Reply-To: <2vxzldbklb18.fsf@kernel.org>
-Mime-Version: 1.0
-References: <20260628001114.1869564-1-tarunsahu@google.com>
- <20260628001114.1869564-4-tarunsahu@google.com> <178271651966.13502.2620034351625890943.b4-review@b4>
- <2vxzldbklb18.fsf@kernel.org>
-Message-ID: <9huzbjbx201q.fsf@tarunix.c.googlers.com>
-Subject: Re: [PATCH v6 3/3] luo: Update serialized data to use KHOSER_PTR
-From: tarunsahu@google.com
-To: Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>, skhawaja@google.com, 
-	kexec@lists.infradead.org, linux-kernel@vger.kernel.org
+        d=1e100.net; s=20251104; t=1784821120; x=1785425920;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0L6BTG4czRYdQ6EfwGUAWi2A2+4jjv2ECjLUnPT3t78=;
+        b=ChE63YESy2b9oQhD3qdlWQbc8pZWjUg/Hu0iSfaqOkReegXzEiBJQPLv9YK7Kxc2Uq
+         hwsymtFFgdFydNdpWrFsUbMtPC+hjpbdO9IUHe/NhlaXe28q1qW4QW27B5ljvz3EW2oO
+         M6kiF99cGOOFNOurDiR+V5Z1xlUj+5gkXxHS136XPlCKtKK5WJaGLjTFJPH/lBsfdI5H
+         O1v91GuPuC5UCxzDTAhVwjo/RkjPDj7iOADRIoumZ1emE1eijr8wg8l1z6nVMmRrvN1y
+         DN4tRYEFnSVIVRQ7uOQOe6qHLJYdU9J8Xk/cH3FIBotc8O9CW6F5mPVikST3xvP8tiSg
+         voiQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqIyxhtj+tft+ofRCjJzo9Ba3fgOVnV2meAUwI47hravEMD24Cotg/C91hGV6kormZ33c/bP2Veyg==@kvack.org
+X-Gm-Message-State: AOJu0YxCruqBRNKLmiMcVqkfJFZeVriPicLBTyhgh8/AyIUE0ucjRWcI
+	0MwoA5Hv+fZMAfUyggMkymv7SzvfZfksrKunUWfEpUIcGQWmgS8qaWYVIQa6mgQSoPEM7NadC0O
+	0jknFlmGvY5sFqm83FAecn/PmBI2bagI=
+X-Gm-Gg: AR+sD10iV/PV38Svi35Twd3TVbB2yoZN0LA9lsgPO+zA5k32jC2/yJ1yn29yIOWK1DW
+	0VCwix/1UvScjAvSqBt0ldnipD/7i41OwIEGm67ym/npQ80V8HMFCmk7E2UZQkIyvkNulIOzIo5
+	G7s72avxOxcnCoOXAygXVtM7ABD4QDjF3M/TyrHixG6RG/0sdbhSYKSUHOnIp+LsWZD7nZXpuX9
+	zeB9x8ZqKI3g0PeutO1JdP3LZHbblLv8IzXkDlKX2J2yTeA6ZnENTcoAnrxpvmMovXjSTCo2o1N
+	tJmMpBScDajOb6eJfw==
+X-Received: by 2002:a05:6000:38f:b0:47f:6fa4:58e0 with SMTP id
+ ffacd0b85a97d-47f8dc8cf80mr4468005f8f.35.1784821119603; Thu, 23 Jul 2026
+ 08:38:39 -0700 (PDT)
+MIME-Version: 1.0
+References: <20260718093723.153324-1-alex@ghiti.fr> <20260718093723.153324-2-alex@ghiti.fr>
+ <amIZp7Ual_6Gu86T@cmpxchg.org>
+In-Reply-To: <amIZp7Ual_6Gu86T@cmpxchg.org>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Thu, 23 Jul 2026 08:38:26 -0700
+X-Gm-Features: AUfX_mwHQ3blZ7P6gvbmhVAOte3aZtlO1MRJXjAm_VmD80Tv4wDddJ9EXfV6VAY
+Message-ID: <CAKEwX=MxufM5aNw2xW0f1UcyfcCJbtXR_u3cK+coRaC+_bLspg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] mm: zswap: free synchronous-IO writeback folios directly
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Alexandre Ghiti <alex@ghiti.fr>, Yosry Ahmed <yosry@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 0C6F22000D
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: mgg5xxue6sd8qqr3sd1t6mm9ah1nxko5
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1784820803-402715
-X-HE-Meta: U2FsdGVkX1/etQ+/l6Btn3t11D9lH8ecFPmDsZJZAXccsxafr/VZ12H4cQ+OacZff/xAefdHaePqhAmtqI8I232CXkTNTJ5Tcj6kz9gX4FESeohXj57F8VTvCHDnfXkPpbzhnz/uROJ6sHGWBEKi+YKx1ZyuFVVZyR5TqEpBqA4v4XWa4Eytdqv6f5RCpZ9OiqRxohSLzlWSDLdOsFQVYm6FCYdjP2LAHmriPyXPy0WVjbMmgSfjOjmeMdN/GNKaQwrUuInbXAVbwKljXx9sNB+iDznOBI8d5E1BzDZAZXb6Nw3SZLgtcsXbQK3yC0irc4hOY7q6gEAvE9zOHYN9ngUTpzeyjEAq8x6V8evTcsHGCpqF+ePbenS7/SWJ55gmXxzhTEyijS3XGgHKf61J5qFi5NB1FZwLd282dH4b5fB3whtd4m3eufZ/Nkjx4fTicLgcDnIidZ29BG/OHIu+wzc7CMFnuN37KRuHLfttd0RFBMhXFL4Dus7ALGIHA7IfcH/wX2ODC7FLGuqBD4dVDVsErroKA13/y1IDOEGSTMpKY9CPnLwlZ0CRdNAAMkzhd3tZ8lMoJLb1qS+Uy7NrT9xf7h7mRKB2R64u8MSuMslLvmryPSBydnKbF/PW5C7ayjD/ds27Okt4j2+gDccrYUCuPyXihs8owVO8miKIXL9sNVEvWGZY/IX7Q5jcn93et8r57m2/TNIkJS4eS0KODmUFmFEENCbLYQR+8raZ+0lM1VS2B0WYOr0pHDyVy3M3FFmFso+6/i/XE5MDqVYeU9ZvD/nB0CYODpKjqcvs2EDis4M5XEjej0Ipm4fB4WT+RIwRrvOyuVy9F8aY+iVwdRXukqXMwycInYeQRN3hlQVn3mjmXEKRbjFhv4KbjmuNUv4ZZFKUR3N7qGNViJutxnxQnVA8ki0BFvmdoUkXU4kx8QhRLCWR2HQNU+EAk0f7skuyDmWLCNd3PGEaxQB
- bFOwJ4gv
- 9m7jZPpj3Nyy9GXSADez3YSVGmN8LrN+CwopmYFv4aPL0DkRiQnOXQkzH1EC6jwoZd8CzUZ5fekYNtXkMMWotdQ4sfuoPQUmyXy14k9gHOWNPDeSqFQO8gmzsJoQTZpB1F0Uf0MFkh6CTZXe0re7q1VH9LFmVnRFGj24SsVRTt90/fp+Aq1C3JJYxCIgnkFjsLlkW3DdOeZgPwoJgbyEE8AJHQs7+eMdtPzvOGCFF2flh3cv6Lgu/dEhwkjdA4wC5mo8PxmbwH0vu1BnlybmjjyqKUOujp2gEm5OH71SIjXFijV5sHIzf/+UtywhcndPqv3+ngZCoRKKr2n9lUMwUZs8JBTxtnQNshie2ek5XOJzjWalNs1mDcbJmmn8MC24ujlFoaJ53Kd9vh4t9jE8fjwyfOyOPUz9RNf7kdLA7SyzjEmxChzQJZd7FcztBeplNcPVfSFKAla3P5zyW4R5hJca7ZE9xXbxXoYtR+C5iejBy5lN8dAU4O5fML/LPRj7i3bfwG+00HyoiPoxdxkNHBU4u5SzjB1PjwyW0OWyI0ikiX9KtptM83MnBr2f5Y13F38FpMxJ04DrIS1q18vB4/Yy6amw721C3PUlEIPHsqLNNGXlEespoQtLDGAQLMw3Y1BC5V4hx77rt9ioudYF7KK2c+w==
+X-Rspamd-Queue-Id: 3D1E918000C
+X-Rspamd-Server: rspam01
+X-Stat-Signature: 1zj4yt7hxojsq48mm3kagt4qq88f6pta
+X-HE-Tag: 1784821121-326900
+X-HE-Meta: U2FsdGVkX1/TFUTexhSPTbML0yH1bUcN4+c4VKfF5cpNASWduizC/qausq8BiTxw+6ZDsmKYDH4d0LhofB7lvy64DfSQHwOrqVkvMapnyvXaG4csqP5nZyBKVf7joyfCU3Fh5N2n2PqOwFwGcmrU0dCXHDzv7ICWxytbmYBJfxkAS/WwnUqRDZ+0jBR6uwI51kogamCren+sv9AXLS8C47FvRqySpPFTwMRNAbCUvJd7lG5Y4D5mqfbl5Qjs/QiiKEFHf/NFDI7UznmX0xldJ9JVCiLc2z3thzZKtuPsZ55nsN9W/fyZhVH65ekWeCWsUEv7QOzK8Vt9eGv/lCN1oAx1udMcs7nUzPEicb+miTRnuuUyrYmCE7tpB9UhUhaKmRCede+LjZKgnbzOiBjMwz/MrdpGSECkT4PTw7lO6xqAUm7I9291W/vgcs1cAUuwdCQIFLyXAhVgqa1L+MXyVgjddvVzbqwqktPoa/QlNvSZFl9fusqOxiFzI9XN4bDqb1qSimmyBz91YprzQm5oROq9iZM5Hp2+YsU5Wwds4lwc+kVGCIukeMO+X0K2l0S1bZcrApbSwyCyzyJDqwFM54TrMCmcsMCD92Wky6g9XIek5R7qnY3YQLKMHB7oStWQffza0gCddXQr5kVV93iY1zJMM+h04/7nZ1gc9hPYGrJaD/gol+nQow9toojrOFMNfsZ5NMIHE9R5/ZggSSohqg1A+QDsfBmDsSUuy5NzTvIZ7/i5P1QbaCn7j1yipA3H2O29DRKzR4ImRiG+fSefTTDZAqytvsJgrGNFqCNTrKWVftXV8w0FIlarZgTZvS4TSD1cKq8+EbbfWd0ruBSHz6kDlG5D0eNAkShtr3rHOLy9/KWQNf512Cj8H8LJozxXadVFb8Ktr0kZUl9Q1A4tvm4xPC/A0ht+u4q2Kjs3l3wo0KAYgs71QtjuZIGo4PF2mb/qCO/AgW2rbjeOUpu
+ q+ezngsI
+ XgQT3/WAfbCi/fLjklyg0D3l5asgzMe10TKfHIhO6OV7VnC3/CBEbNVl0P1muGb1YxZGEyQS7X82/RkMl4xhUV7cbxeuIQ4pdglHPbLprTYgOsiQpmPr6eAexLPSO/pKM59w7++dy2upH4y+Kf2wiLg6bqjHY6Od0GSGgd6Oa1/Zeg2dHlB71At+C6ZoO8hSpErTjl37iLGnSrtj0iQIocdeC+Iuexo4680h91oxN148aXORe4YP8OqkxsKLzxCDVe238B3iGUv6c8/yGPgFk1tdYI3mj+5xUWc701q3LA1kXpr0QfxjkUTa2O/W0B8ijTBgoWFeADUKUV8y16mtwIczsc80J7WgvnIv8ava6q2I64d3Z5JXQmofUPD6rL6FmIe9nLkdE9tCAX4O2LmhiGYgFAv83Fk5mr08/x5RQ6CFXVsNiMf+vrG8O+4v69nNVlCNsfw9tZiG4TbBDa4rLWF5Q9A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,68 +145,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Jul 23, 2026 at 6:39=E2=80=AFAM Johannes Weiner <hannes@cmpxchg.org=
+> wrote:
+>
+> On Sat, Jul 18, 2026 at 11:36:39AM +0200, Alexandre Ghiti wrote:
+>
+> I just chatted with Alexandre off-list, but this path does not store
+> an eviction shadow like the reclaim path does. That means no refaults
+> are detected from dropbehind pages, which can fundamentally alter
+> reclaim decisions, zswap shrinker force, and pressure detection.
 
-Hello,
+I think it's a zswap shrinker bug even before this patch. When we
+allocate a new buffer for the writeback request and add to swap cache,
+we erase the old shadow :(
 
-I dont have much opinion here. I am writing this as a
-gentle reminder to the open discussion below.
+I had a patch sometimes ago to fix this - basically, what it did is
+when we allocate the buffer for writeback and add it to swap cache, we
+save the existing shadow and hand that shadow to zswap. zswap will
+store it in the zswap tree tree (in place of the struct zswap entry
+that is being freed).
 
-~Tarun
+Now you will have to juggle it a bit in various path:
 
-Pratyush Yadav <pratyush@kernel.org> writes:
+1. swapin has to check the zswap tree for refault.
 
-> Hi Pasha,
->
-> On Mon, Jun 29 2026, Pasha Tatashin wrote:
->
->> On Sun, 28 Jun 2026 00:11:14 +0000, Tarun Sahu <tarunsahu@google.com> wrote:
->>> diff --git a/include/linux/kho/abi/luo.h b/include/linux/kho/abi/luo.h
->>> index 288076de6d4a..9e78625cfdc1 100644
->>> --- a/include/linux/kho/abi/luo.h
->>> +++ b/include/linux/kho/abi/luo.h
->>> @@ -89,14 +90,14 @@ struct luo_ser {
->>>  /**
->>>   * struct luo_file_ser - Represents the serialized preserves files.
->>>   * @compatible:  File handler compatible string.
->>> - * @data:        Private data
->>> + * @serialized_data:  The serialized KHO pointer for this file
->>
->> I am concerned about layring violation here.
->>
->> LUO is designed as  a generic, opaque transport layer that promises to 
->> preserve 64 bits of raw data. How those 64 bits are interpreted is 
->> entirely up to individual clients.
->>
->> While some clients like memfd_luo will use those 64 bits as a physical 
->> address pointing to KHO-preserved structures, other clients may store a 
->> generic token, cookie, index, or non-pointer status. By
->> changing u64 data to DECLARE_KHOSER_PTR(serialized_data, void *) in 
->> struct luo_file_ser, we force KHO pointer semantics and layout 
->> constraints on all generic LUO files.
->
-> That makes sense theory, but in practice, no file handler is going to
-> need only 8 bytes for its metadata. It is always going to need more, and
-> to store more information, it needs to store a pointer to that
-> information with the 64 bits it gets.
->
-> Do you have any examples of something else one might store here?
->
-> At least looking at the current file handlers merged and in flight,
-> memfd, iommufd, vfio, pci, hugetlb, guest_memfd, all of them store a
-> pointer here.
->
-> And if everyone is only storing pointers in this field, might as well
-> give them a bit of type safety.
->
->>
->> Clients that need KHO pointer serialization must cast that opaque 64-bit 
->> value to/from a  KHOSER_PTR  within their own callbacks.
->>
->> Also, the field descriptions in  struct luo_file_ser  are no longer 
->> aligned due to the length of the new variable name, I believe it will 
->> cause warning when making docs.
->
-> -- 
-> Regards,
-> Pratyush Yadav
+2. remove_mapping does not create a new shadow, but instead restore
+the zswap's owned shadow, if there is one.
+
+3. zswap operations have to now handle shadows stored in its trees too.
+
+I think there is one edge case where we still lose the old shadow (I
+need to check), but the rest seems to work.
+
+It's a bit complex, yes, but I managed to find more uses for this
+added complexity too. With this, I was able to add more monitoring to
+zswap shrinker - you can track how many shadows are being stored in
+the zswap tree, which gives you a per-cgroup counter of inflight zswap
+buffers. This helps with diagnosing when zswap writeback is generating
+too much memory pressure with these buffers. You can also use this
+counter it for zswap writeback heuristics (for instance, throttle
+writeback when there are too many inflight buffers already and we're
+not freeing them fast enough).
+
+I have not had the chance to make it upstream-ready, given all of my
+attention being taken away by vswap and other endeavors, and the fact
+that swap architecture has changed quite a bit.
 
