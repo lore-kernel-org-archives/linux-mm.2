@@ -4,93 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 116FBC531D2
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 14:31:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6AABC531D4
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 14:31:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DEBF96B00A1; Thu, 23 Jul 2026 10:31:13 -0400 (EDT)
+	id 7D2466B00A2; Thu, 23 Jul 2026 10:31:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D9CFE6B00A2; Thu, 23 Jul 2026 10:31:13 -0400 (EDT)
+	id 75B6D6B00A3; Thu, 23 Jul 2026 10:31:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CDB956B00A3; Thu, 23 Jul 2026 10:31:13 -0400 (EDT)
+	id 649F46B00A4; Thu, 23 Jul 2026 10:31:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A2A5B6B00A1
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 10:31:13 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3ECDC6B00A2
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 10:31:15 -0400 (EDT)
 Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 29F09404F4
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 14:31:13 +0000 (UTC)
-X-FDA: 85020278826.21.9CE55D1
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 7ECA51A0002
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 14:31:11 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=kx0YnXAB;
-	spf=pass (imf19.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784817071;
-	b=yYG4/kELvYQmmBWx2CYNJdv1ang8HC2LSdtuZ1ItcvqLVhB8zDByVj+513KyJUYrwwb5vS
-	wVEZkBwzG25iz2in54H0Upr/gh8RG2TlUR8nV1n3wruJZO7rzyR/sL1ya+uyh3x1PnXs91
-	6nul19NcAi18BenB4ndca2rRj43wNyI=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=kx0YnXAB;
-	spf=pass (imf19.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CB287804D2
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 14:31:14 +0000 (UTC)
+X-FDA: 85020278868.21.D684BC1
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	by imf05.hostedemail.com (Postfix) with ESMTP id AD6B3100016
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 14:31:12 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=FDkKWlB5;
+	spf=pass (imf05.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.175 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784817071;
+	s=arc-20220608; t=1784817073;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p6B5uzR9OdXO8nYEWFbGyWYL1jpdG251Ai6iDz0lbMs=;
-	b=WasRZPXqElpR/cxYb5SYQS86tAPe8RTmYbzuXmg37EGX355+DWaRtY+oUI1jVAwljBqMBY
-	46gGKOvzyCX2zQD0Xrllw7/mDMRRu38M2QbSIjqm6MdaPeQChNNrxDp4vAHgJ6MeMicdVS
-	Y7kcTSWnT9pZymLTOOMVOlcERlAm8EM=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=p6B5uzR9OdXO8nYEWFbGyWYL1jpdG251Ai6iDz0lbMs=; b=kx0YnXAB/onfB8JRGqLAoIaCtc
-	dikwqySzkZo9jbm7cDu7u/kPIw5GfBPYqjV7f+OiVuYlYqxxOJbt7PXOpjco/8V6PRBcwdZVPtK2H
-	sQeQyZpino5ajGS8kCWckrZeUUVTcP2hfdF8LDVBGNlxJK7jf5lfWA+c7qycuppJd0+KVtk818WaH
-	q7I+QbBAfJFop5smtj2+gkynWGiRlg35zZCf/XVM3MZ22hzcnQjkjZSrAS/Tc3Rw+OfFKMGCplgz+
-	OrqJfJrccv6NlOGss6L/I/l9nQXrjk+VsENfFm5hemL8rZwPeQRaOw6dDbJGarRwBEU+n92a1k7uE
-	XEuw2JIA==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wmuRZ-00000000ji1-0Sb5;
-	Thu, 23 Jul 2026 14:30:37 +0000
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Jane Chu <jane.chu@oracle.com>,
-	linux-mm@kvack.org
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Jan Kara <jack@suse.cz>,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <christian@brauner.io>,
-	Jiaqi Yan <jiaqiyan@google.com>
-Subject: [PATCH v4 07/14] hugetlb: Use the has_hwpoisoned flag
-Date: Thu, 23 Jul 2026 15:30:24 +0100
-Message-ID: <20260723143034.175661-8-willy@infradead.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260723143034.175661-1-willy@infradead.org>
-References: <20260723143034.175661-1-willy@infradead.org>
+	bh=1zAg+xMWc/xZ3o/AF2/ksssRntRxa3XS2KXW4/UcoJg=;
+	b=lkTsmoRJkoAvvhHZTgbnrs4nErXNCPcHPzlfZnbMJSUX6del57f2d7mNqgLEkQQYApVkWw
+	h5J1UumXKRShKoQPB2zRyWdkgCfj5I4//Cbh29TYuIX11ksglSW0bfxnakNCvEdc2NKh/q
+	kfZjg0nyiV9Hwc+gE1PJj7h5Fbzg33s=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784817073;
+	b=snLcbHsfPq5aNB2u59yGrONNatYK2aHVfqzz/S7m3zn10RJVJRDGkSyTFM+7GEnU0+lSNp
+	oczbjT0y6lP17+FB+8i8kvkELw/R5roYMX8ux0J5Dfv3wu5x8OcYkwIaBOdRJ84ZLemAwc
+	lfVWdKRAxPJCVr//jzPRFXqnxEmfQ3I=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=FDkKWlB5;
+	spf=pass (imf05.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.175 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-526f963372aso7007031cf.1
+        for <linux-mm@kvack.org>; Thu, 23 Jul 2026 07:31:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1784817072; x=1785421872; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=1zAg+xMWc/xZ3o/AF2/ksssRntRxa3XS2KXW4/UcoJg=;
+        b=FDkKWlB555jE022hve+YmwjzW9yC5f0vJYUokusOdMfGtypAqlcav+mw+t9Ji1XKab
+         uWw7Kyg3m96VD/U4b1eujA+OeT0ymWfzwL/fSvoL20H6m3P83R0OuujO126oLLwUBz8F
+         CXrgSozYBzVzM/LknU0K2uUNRxcQ0xaOCpLRAskQHR3gpIohUS1IdIaxOzuvLy2pyDsq
+         hcg05xn/YHylx6EJV/fFJ+TE6yiwFVxxZk6k/EzF2LkoFiQOfULYZQuGN1a9AVukS68S
+         ciMhvJ+8+LWYmjxnD42cUpWw0kXvJgnNKwRx2Q6vKPy/xbd3ptIv8J42LK2iQcd4Fx4R
+         /Cjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784817072; x=1785421872;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=1zAg+xMWc/xZ3o/AF2/ksssRntRxa3XS2KXW4/UcoJg=;
+        b=YS0ivUotlTj286qDk5obo8PKlm4zVgHRZLNemawfJWadELKPygjhqAzbAzlBv0F9Ao
+         c+xIbk+CQCMGC5TTpa77pmTbboSWDsA244DOpB9LIy8JohcjQnHaH72ICKQ0yJ9T/zs6
+         Lp2e6hQIM30IRuxNUqRIlgvNsYzFCZ4TBXSdd2HoXkc2r90g3jq2Li1gPr28vcrqBjAz
+         YrQlWF44IciibkOUVr0+Dbl6KUMgZGi52byE0QR2K+x7e/pWxtv0M2Yezau0u7vj+sDZ
+         iKhVSMh9eBlw8alIl2zby9S4uGIqRbaIjIKPAoES7zY9YVm6ilepI/3GY7wB/EiiKxWw
+         Fdbg==
+X-Forwarded-Encrypted: i=1; AHgh+RrxyKg/O2/D3toYai+3/+/TDxTu/61qi017Kghzb2915SHekiQ/9wosaVVNkxvNiB8ASMawHkkKPg==@kvack.org
+X-Gm-Message-State: AOJu0YwLabsx1ZpMLQKexpy++0S4t8DqD4RCyxZ+amCzF5cULVC0Dh65
+	kp/pWonaErTLbiO0HgXA3legLs3/Q2ESJ3+xkjoqRzY/f6dOrVNYBSy8giXuRsDj+f4=
+X-Gm-Gg: AR+sD11DmBR1o0rs35S8KbTj/jL9dbIQkZYi8Ut1oP1GnXRv+HLafK5bDqjftZ9uWpT
+	09HwGdqyX85IKqw0Ip1gdQ/guyGgsjXnu1Ki20FbzD+ymicOEpGN3J3gf68Fyne/eKXDBT1pvix
+	PFCfveYSW73jK9GqYpWxViJwHszUHT3j4VklsOZuug3+H+ian+KMPJrIqr9zHCNaI/bDC4MFWxZ
+	DMgnKHyvrArmwJpSoZZJBl0e/Rqqd9Tegaz5OqZx8lFrXtsGO6jb87sD/mMdxetR4iXWvUofC+/
+	vodjlVR+umL3DzA2N6ewjKl8mebS9bdVOf+plVkxRtNxW73YbQLyafIJperaEx10uuKfNOLy4DY
+	Rpy/yqbQtyc8zFKdNTrTykBydzeoAOyr01EDlgabpR6D4i25w7cdO6cs/S9Q80uJ3+VdToAObRC
+	7H
+X-Received: by 2002:a05:622a:1196:b0:51a:8c97:938d with SMTP id d75a77b69052e-5283df677edmr29089161cf.68.1784817071384;
+        Thu, 23 Jul 2026 07:31:11 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-930f6a4f11fsm424226585a.36.2026.07.23.07.31.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Jul 2026 07:31:08 -0700 (PDT)
+Date: Thu, 23 Jul 2026 10:31:04 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Youngjun Park <youngjun.park@lge.com>
+Cc: h@yjaykim-poweredge-t330.kvack.org, akpm@linux-foundation.org,
+	chrisl@kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kasong@tencent.com, mhocko@kernel.org,
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, shikemeng@huaweicloud.com,
+	baoquan.he@linux.dev, baohua@kernel.org, yosry@kernel.org,
+	joshua.hahnjy@gmail.com, gunho.lee@lge.com, taejoon.song@lge.com,
+	hyungjun.cho@lge.com, baver.bae@lge.com, her0gyugyu@gmail.com
+Subject: Re: [PATCH v10 0/6] mm/swap, memcg: Introduce swap tiers for cgroup
+ based swap control
+Message-ID: <amIlqHQ40baRoz3O@cmpxchg.org>
+References: <20260713025644.170839-1-youngjun.park@lge.com>
+ <amDCIl51NoNPL7Op@cmpxchg.org>
+ <amH9alaO97YqT8pY@yjaykim-PowerEdge-T330>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 7ECA51A0002
-X-Stat-Signature: k7du4ocba5rr34negnyhami5xuuqgngq
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <amH9alaO97YqT8pY@yjaykim-PowerEdge-T330>
 X-Rspam-User: 
-X-HE-Tag: 1784817071-301295
-X-HE-Meta: U2FsdGVkX18mmKFlwXN2IbAjqQ2rK7cOcClJPDqRzJHWIJnHoHkKgofjEHlRnPBV+j8nCEo5WFUUtnSgQYFiUk8s57vAs1eblOgwE4p1sQbEDPrS2erD9Ui/oX0GSWQ8TCrsgH9mh5Pz+5raQUeMEo4F1JFExKjsJH+wvD0SsbAJtdpTExXLJ19OcoCRzSnluSNuOZyDg34MQcqDVQK6VTVWembDecJR+3x16QprR6Gh2+T9W0/SX/7NpoMLlafwRpoRBBnO1osHxZuGtcBm08apnMhCSxC8f0aZJwDF7pZXGbO5TAzyR9rfPIitssZf07q5MMy+/sPUtaCOVOYbvLjJHDcFm0rzyVukgVRn3vPGg4yKyZ3Eaqk++1idkghi0+WsJIpCIkcaUmWy1RnrqjfySyQgWlTrENECAIGSLKmtg6slTzZTD/0e3CelK617cwoG26f0qD3NAqW9nVgNFZ0Yufv2BUtWdN7dDjLt8No3k3cWNAy/WbJ7Cjdd3zH8EwrRrw/UanlD3mJobI42EuTFnFyx9H44bqQdL1F/eWrH652AIF6MH5fGnzOC/kGpU2ZrnE9Xlims5h/vFDrf9SM57hRXjTpQbNDRQ2zeKFYerUFReEOd4gqBtwhf16FLk5yB/W8LgF9H+BC6jh5U68iemmltxqiPwsvHGXDt7acjpiRIxauEwLncDD6T76wJEfXdvNvn5QdRE1X0dpt+G8/Tn/Ss1tnwY6eJmdIT2yrf79tqZsLAhqfB8bGbP6+E4PhLnev4nqLB2hnrVY21u78ZM/LkMp4CNalEXOkrkPgG4gzS+HR039a/zu4u16VA3U0k/yFykkYcRHc0dv6g03Kn8xxQNgSd3/dqqOiA5khNCvFxJdKfIQ6zvakPfGs5+apsb1a4HM6L5fuksusMyuBHVOniNsL1he1pl/iwVnVQz8bstmoPDzCLd/225bxIGwN2RDFhU8zAJNbDQaq
- 3kr8l47x
- CEQz5J4aZGNbfCiZphje8UIQHhdaCzDxlUkjUOfAdaHT+3UTCgF2TgIUvEufDduFAjeYWnbLFjnWcTS4qdcym+Ejaos9UEsNi7rGFFfLyBYx54lYyqVEQw5Pm2vuKbgpUxvprKExnivsxHySCwWaAxk/tUctHzBk8R7PBEj8pxYNvr0NbkoLCJQcuX3s/VCJ99xStWz8BUbOplnCXp5AZC4d1RcX7Y3SLygIfvT/JP451g0CRSKaoOc9b/KY/ltb+3lOSbW04Y5v1kRfMeoTuM4q8BEQ6YVTOP+L9KpY38I/XRuMPf/Vt6oHZV6liBOIR47tolQNvC6nqDTePoHyndD3K23X3O8MhjCDGevKN4B3huWu6u/bEBhVWb9AxJHUDWWnQ
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: AD6B3100016
+X-Stat-Signature: heg9mqd89oo6qi8su8zdaixm31yrcaqk
+X-HE-Tag: 1784817072-458764
+X-HE-Meta: U2FsdGVkX19qeSn0fHgZBMkS273ar8ILWamMwH3lPv2C+oapOQz8IqSaouLnEpPn5MmjFBagSQT+b6QhQH/sugToQNUbjb52DY+70s1+lzCcR8KCKX1ruLMutbIZRfEs1j+PrCotH1UQyuFvTDut6zMeBuV+vcmsYv/HbxhfX/PAORyJ+cmh1b3D7KmQYsKVV20dFDrACGxfgy5BI6Kna77fSwbhXRcXL40tNy1oKWi/J/zCxDT29kB5z2CgyF3GHE3AsK8fzfLLqSZ+ZRT8mAOuxSq2+5GU23D4Ek+JV/nAsALQWlNYhFbVvQIEJbbUt6tyfdiZCZ/0V2QWK6mcC1wQKe/X0K0u8QAfScY3sIMvA6UlguSmICdNSn3W8dDfqh/CHQ7sZpcpsuBvw1T2EvaoTRJ+KZciG6LkKOW1H2XqgLwbwJPeD6XioZ2+UjyzK7h70GURzVNn+XhKUT3uN9734G8UGv4j/ZjPl13o5OJwlNzURKwtZ4KGt8GpBiqrIenecgXxPRfkOuJVERsFwSRZgWEpESQnozjD7dS6zDgLLNBUGG1GllFCp81mDk1Ng7uxqhmMLVh8RmfdKIPuQq0viz9bRpsydNc8L2vPZJ/gtGoAZVEb8E1XhjvtBsSPAfo4FVMuFC9aHmc8agDaQVSyc92CGVQlJ/ETf1R0tfki/R3rPaxYy/msmiWcPDZcYfKiwYNqyq9wKkY55stcOzwAp4WNvCM9mduIeP/2PQdvkT89Ydl2tnghURLEDOyXy5AV3L900K6HsrzkLIWTrK1Y2431MVA6zKjuSTeP0sMqDzkAQpn/RJQ0wMoRCj+yGnUAURhQQotRncyCXGfriYIgJtqGgoEWeaSOSPfk7nSG6rBSrBYgRtIFlS8XxagBBBrAtZKCGVMFPbeXACxZyN6JIZFoKQNr4HEQJpdpiAykExVLprW0HpW04FaNrMjLWK8OWBNvp2Q31XoW8Me
+ RR6jVZ/z
+ xqTChpsYVAJrTRE6R3N2Ju0DXg70od+eYq2/Lmwqe2OtQDFJv2LapgHJGnRqu+c7ZtMaIy6mwAE585qlI63MnL7yw0Dd+lpjBY/x9voIVd6JV26rSODaQubD78nK+W1JykQtCo+3mUewARe52dEU4nMBhlz40ca7SvGY6ggIYFrICdqtaIx/aueboAyM2BMwZpIy0+vLWkh1X9yAculu5cacKvsnIVKT2TmyicADwnyNA5Cn3P2EJabqqu5lyKzbZJrFl4AjRCLE5ohc58MHx2ws43elY+jMSkqttKYL+03Ayvo0UhJ5JG4CYhwyzqAd3ubfmA6jTt6iGsTEAJADjkc63HU6Hvn1NddoJPWIr4u659V8puLdE3d0h00TQB27YUMlhE6e0nYpu9Y/tYts3iZf8EMDs0TZBfy6Gw9VVim1WNLgt2IG10UOcV9rx3NVZo1qpnVSOD+f7drzQ5gSCqkPAXgLtK9tNLA3P
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,329 +127,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Other large folios use the has_hwpoisoned flag.  Convert hugetlb to match.
-This will help us use the per-page hwpoison flag in the future.
+Hello Youngjun,
 
-Also introduce a folio_test_huge_poison().  This has exactly the same
-meaning as folio_test_has_hwpoisoned() but can be used when we don't have
-a reference to the folio containing the page.  folio_test_has_hwpoisoned()
-can race with folio splitting / reallocation and trip the assertions
-in const_folio_flags().
+On Thu, Jul 23, 2026 at 08:39:22PM +0900, Youngjun Park wrote:
+> On Wed, Jul 22, 2026 at 09:14:10AM -0400, Johannes Weiner wrote:
+> 
+> Hello Johannes!
+> 
+> > Zswap is a first-order swap destination with writeback semantics. The
+> > way the discussion around zswap has been going in this thread is
+> > disappointing, and I don't feel comfortable adding permanent user
+> > interfaces on this basis.
+> 
+> I have given this a lot of thought. First, could you clarify exactly which
+> part of the discussion or consensus makes you hesitate? Understanding this
+> will help me re-evaluate my proposal.
+> 
+> To make sure we are on the same page, I would like to share my thoughts and
+> vision for the present and future of the tier interface semantics for your
+> further consideration.
+> 
+> The interface should provide the swap amount allocated to a tier and allow
+> the use of the swap device defined by that tier via swap.tiers.max.
+> Currently, it would only support 0 and 'max' (essentially on/off for
+> explicit usage). Auto-demotion is planned for the future, and specifying
+> exact capacity limits is still to be determined. (I have also reviewed
+> potential interface collisions and duplications based on Yosry's guidance.)
 
-This closes a gap where a page in a previously-poisoned hugetlb folio
-could be observed to not have the hwpoison bit set.
+This is the part that makes me uncomfortable. The interface as
+proposed now is just a small subset of what should eventually be "swap
+tiers" - with limits, hierarchies and demotion rules. It seems to be
+an unordered blacklist/whitelist for swapfiles right now.
 
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
----
- fs/Kconfig                 |  2 +-
- fs/hugetlbfs/inode.c       |  2 +-
- include/linux/page-flags.h | 42 +++++++++++++++++++++++------
- mm/Kconfig                 |  6 ++++-
- mm/hugetlb.c               | 14 +++++-----
- mm/memory-failure.c        | 55 +++++++++++++++++++++++++++-----------
- 6 files changed, 87 insertions(+), 34 deletions(-)
+And how the final form looks like depends on the indirection layer.
 
-diff --git a/fs/Kconfig b/fs/Kconfig
-index cf6ae64776e6..eddac4ed214b 100644
---- a/fs/Kconfig
-+++ b/fs/Kconfig
-@@ -272,7 +272,7 @@ endif # HUGETLBFS
- 
- config HUGETLB_PAGE
- 	def_bool HUGETLBFS
--	select XARRAY_MULTI
-+	select LARGE_FOLIO
- 
- config HUGETLB_PAGE_OPTIMIZE_VMEMMAP
- 	def_bool HUGETLB_PAGE
-diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-index 216e1a0dd0b2..fbac554886c3 100644
---- a/fs/hugetlbfs/inode.c
-+++ b/fs/hugetlbfs/inode.c
-@@ -258,7 +258,7 @@ static ssize_t hugetlbfs_read_iter(struct kiocb *iocb, struct iov_iter *to)
- 		} else {
- 			folio_unlock(folio);
- 
--			if (!folio_test_hwpoison(folio))
-+			if (!folio_test_has_hwpoisoned(folio))
- 				want = nr;
- 			else {
- 				/*
-diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-index 4185a03a45cf..7c4652dd517a 100644
---- a/include/linux/page-flags.h
-+++ b/include/linux/page-flags.h
-@@ -893,14 +893,19 @@ static inline int PageTransCompound(const struct page *page)
- TESTPAGEFLAG_FALSE(TransCompound, transcompound)
- #endif
- 
--#if defined(CONFIG_MEMORY_FAILURE) && defined(CONFIG_TRANSPARENT_HUGEPAGE)
-+#if defined(CONFIG_MEMORY_FAILURE) && defined(CONFIG_LARGE_FOLIO)
- /*
-- * PageHasHWPoisoned indicates that at least one subpage is hwpoisoned in the
-- * compound page.
-+ * folio_has_hwpoisoned indicates that at least one page is hwpoisoned in the
-+ * folio.  That page will usually also have the HWPoison flag set, but this
-+ * is not possible for folios which have HVO (see memory-failure for the
-+ * scheme used in that case).  You probably don't want to call this directly;
-+ * use folio_has_hwpoisoned_page() instead.
-  *
-  * This flag is set by hwpoison handler.  Cleared by THP split or free page.
-  */
- FOLIO_FLAG(has_hwpoisoned, FOLIO_SECOND_PAGE)
-+FOLIO_TEST_SET_FLAG(has_hwpoisoned, FOLIO_SECOND_PAGE)
-+FOLIO_TEST_CLEAR_FLAG(has_hwpoisoned, FOLIO_SECOND_PAGE)
- #else
- FOLIO_FLAG_FALSE(has_hwpoisoned)
- #endif
-@@ -1041,8 +1046,25 @@ PAGE_TYPE_OPS(Slab, slab, slab)
- 
- #ifdef CONFIG_HUGETLB_PAGE
- FOLIO_TYPE_OPS(hugetlb, hugetlb)
-+
-+static inline bool folio_test_huge_poison(const struct folio *folio)
-+{
-+	return (READ_ONCE(folio->page.page_type) >> 23) ==
-+		((PGTY_hugetlb << 1) | 1);
-+}
-+
-+static inline void folio_set_huge_poison(struct folio *folio)
-+{
-+	folio->page.page_type |= (1 << 23);
-+}
-+
-+static inline void folio_clear_huge_poison(struct folio *folio)
-+{
-+	folio->page.page_type &= ~(1 << 23);
-+}
- #else
- FOLIO_TEST_FLAG_FALSE(hugetlb)
-+FOLIO_TEST_FLAG_FALSE(huge_poison)
- #endif
- 
- PAGE_TYPE_OPS(Zsmalloc, zsmalloc, zsmalloc)
-@@ -1069,9 +1091,10 @@ static inline bool PageHuge(const struct page *page)
- }
- 
- /*
-- * Check if a page is currently marked HWPoisoned. Note that this check is
-- * best effort only and inherently racy: there is no way to synchronize with
-- * failing hardware.
-+ * Check if a page is currently marked HWPoisoned.  This check is best
-+ * effort only and inherently racy: there is no way to synchronize with
-+ * failing hardware.  The caller may not have a refcount on the folio
-+ * containing the page, so we must be careful to not trip any assertions.
-  */
- static inline bool is_page_hwpoison(const struct page *page)
- {
-@@ -1080,12 +1103,15 @@ static inline bool is_page_hwpoison(const struct page *page)
- 	if (PageHWPoison(page))
- 		return true;
- 	folio = page_folio(page);
--	return folio_test_hugetlb(folio) && PageHWPoison(&folio->page);
-+	if (folio_test_huge_poison(folio))
-+		return true;
-+	/* In case we raced with hugetlb transferring flags */
-+	return PageHWPoison(page);
- }
- 
- static inline bool folio_has_hwpoisoned_page(const struct folio *folio)
- {
--	return folio_test_hwpoison(folio) ||
-+	return PageHWPoison(&folio->page) ||
- 	       (folio_test_large(folio) && folio_test_has_hwpoisoned(folio));
- }
- 
-diff --git a/mm/Kconfig b/mm/Kconfig
-index 9e0ca4824905..e666dd14ca0c 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -843,11 +843,15 @@ config PERSISTENT_HUGE_ZERO_FOLIO
- config MM_ID
- 	def_bool n
- 
-+config LARGE_FOLIO
-+	def_bool n
-+	select XARRAY_MULTI
-+
- menuconfig TRANSPARENT_HUGEPAGE
- 	bool "Transparent Hugepage Support"
- 	depends on HAVE_ARCH_TRANSPARENT_HUGEPAGE && !PREEMPT_RT
- 	select COMPACTION
--	select XARRAY_MULTI
-+	select LARGE_FOLIO
- 	select MM_ID
- 	help
- 	  Transparent Hugepages allows the kernel to use huge pages and
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index cc8d98399913..aaac6e2af4c2 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -1255,7 +1255,7 @@ static struct folio *dequeue_hugetlb_folio_node_exact(struct hstate *h,
- 		if (pin && !folio_is_longterm_pinnable(folio))
- 			continue;
- 
--		if (folio_test_hwpoison(folio))
-+		if (folio_test_has_hwpoisoned(folio))
- 			continue;
- 
- 		if (is_migrate_isolate_page(&folio->page))
-@@ -1498,10 +1498,10 @@ static void __update_and_free_hugetlb_folio(struct hstate *h,
- 	}
- 
- 	/*
--	 * Move PageHWPoison flag from head page to the raw error pages,
--	 * which makes any healthy subpages reusable.
-+	 * Move HWPoison flag to each error page
-+	 * which makes any healthy pages reusable.
- 	 */
--	if (unlikely(folio_test_hwpoison(folio)))
-+	if (unlikely(folio_test_has_hwpoisoned(folio)))
- 		folio_clear_hugetlb_hwpoison(folio);
- 
- 	VM_BUG_ON_FOLIO(folio_ref_count(folio), folio);
-@@ -3998,7 +3998,7 @@ long demote_pool_huge_page(struct hstate *src, nodemask_t *nodes_allowed,
- 		struct folio *folio, *next;
- 
- 		list_for_each_entry_safe(folio, next, &src->hugepage_freelists[node], lru) {
--			if (folio_test_hwpoison(folio))
-+			if (folio_test_has_hwpoisoned(folio))
- 				continue;
- 
- 			remove_hugetlb_folio(src, folio, false);
-@@ -5809,7 +5809,7 @@ static vm_fault_t hugetlb_no_page(struct address_space *mapping,
- 		 * don't have hwpoisoned swap entry for errored virtual address.
- 		 * So we need to block hugepage fault by PG_hwpoison bit check.
- 		 */
--		if (unlikely(folio_test_hwpoison(folio))) {
-+		if (unlikely(folio_test_has_hwpoisoned(folio))) {
- 			ret = VM_FAULT_HWPOISON_LARGE |
- 				VM_FAULT_SET_HINDEX(hstate_index(h));
- 			goto backout_unlocked;
-@@ -6318,7 +6318,7 @@ int hugetlb_mfill_atomic_pte(pte_t *dst_pte,
- 	ptl = huge_pte_lock(h, dst_mm, dst_pte);
- 
- 	ret = -EIO;
--	if (folio_test_hwpoison(folio))
-+	if (folio_test_has_hwpoisoned(folio))
- 		goto out_release_unlock;
- 
- 	ret = -EEXIST;
-diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index 18691c905ac9..4200deab2c3c 100644
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -1823,7 +1823,7 @@ bool is_raw_hwpoison_page_in_hugepage(struct page *page)
- 	struct folio *folio = page_folio(page);
- 	bool ret = false;
- 
--	if (!folio_test_hwpoison(folio))
-+	if (!folio_test_has_hwpoisoned(folio))
- 		return false;
- 
- 	if (!folio_test_hugetlb(folio))
-@@ -1874,6 +1874,23 @@ static unsigned long __folio_free_raw_hwp(struct folio *folio, bool move_flag)
- #define	MF_HUGETLB_FOLIO_PRE_POISONED	3	/* folio already poisoned */
- #define	MF_HUGETLB_PAGE_PRE_POISONED	4	/* exact page already poisoned */
- #define	MF_HUGETLB_RETRY		5	/* hugepage is busy, retry */
-+
-+static inline int hugetlb_set_poison(struct folio *folio)
-+{
-+	if (folio_test_set_has_hwpoisoned(folio))
-+		return MF_HUGETLB_FOLIO_PRE_POISONED;
-+	folio_set_huge_poison(folio);
-+	return 0;
-+}
-+
-+static inline int hugetlb_clear_poison(struct folio *folio)
-+{
-+	if (!folio_test_clear_has_hwpoisoned(folio))
-+		return -EBUSY;
-+	folio_clear_huge_poison(folio);
-+	return 0;
-+}
-+
- /*
-  * Set hugetlb folio as hwpoisoned, update folio private raw hwpoison list
-  * to keep track of the poisoned pages.
-@@ -1882,12 +1899,12 @@ static int hugetlb_update_hwpoison(struct folio *folio, struct page *page)
- {
- 	struct raw_hwp_page *raw_hwp;
- 	struct raw_hwp_page *p;
--	int ret = folio_test_set_hwpoison(folio) ? MF_HUGETLB_FOLIO_PRE_POISONED : 0;
-+	int ret = hugetlb_set_poison(folio);
- 
- 	/*
- 	 * Once the hwpoison hugepage has lost reliable raw error info,
--	 * there is little meaning to keep additional error info precisely,
--	 * so skip to add additional raw error info.
-+	 * there is no point in keeping additional error info precisely,
-+	 * so skip adding additional raw error info.
- 	 */
- 	if (folio_test_hugetlb_raw_hwp_unreliable(folio))
- 		return MF_HUGETLB_FOLIO_PRE_POISONED;
-@@ -1941,8 +1958,8 @@ void folio_clear_hugetlb_hwpoison(struct folio *folio)
- 		return;
- 	if (folio_test_hugetlb_vmemmap_optimized(folio))
- 		return;
--	folio_clear_hwpoison(folio);
- 	folio_free_raw_hwp(folio, true);
-+	folio_clear_has_hwpoisoned(folio);
- }
- 
- static int get_huge_page_for_hwpoison(unsigned long pfn, int flags,
-@@ -2095,6 +2112,11 @@ static inline unsigned long folio_free_raw_hwp(struct folio *folio, bool flag)
- {
- 	return 0;
- }
-+
-+static inline int hugetlb_clear_poison(struct folio *folio)
-+{
-+	return 0;
-+}
- #endif	/* CONFIG_HUGETLB_PAGE */
- 
- /* Drop the extra refcount in case we come from madvise() */
-@@ -2722,8 +2744,8 @@ int unpoison_memory(unsigned long pfn)
- 			count = folio_free_raw_hwp(folio, false);
- 			if (count == 0)
- 				goto unlock_mutex;
-+			ret = hugetlb_clear_poison(folio);
- 		}
--		ret = folio_test_clear_hwpoison(folio) ? 0 : -EBUSY;
- 	} else if (ghp < 0) {
- 		if (ghp == -EHWPOISON) {
- 			ret = put_page_back_buddy(p) ? 0 : -EBUSY;
-@@ -2732,17 +2754,18 @@ int unpoison_memory(unsigned long pfn)
- 			unpoison_pr_info("%#lx: failed to grab page\n",
- 					 pfn, &unpoison_rs);
- 		}
--	} else {
--		if (folio_test_hugetlb(folio)) {
--			huge = true;
--			count = folio_free_raw_hwp(folio, false);
--			if (count == 0) {
--				folio_put(folio);
--				goto unlock_mutex;
--			}
--			p = &folio->page;
-+	} else if (folio_test_hugetlb(folio)) {
-+		huge = true;
-+		count = folio_free_raw_hwp(folio, false);
-+		if (count == 0) {
-+			folio_put(folio);
-+			goto unlock_mutex;
- 		}
--
-+		folio_put(folio);
-+		ret = hugetlb_clear_poison(folio);
-+		if (!ret)
-+			folio_put(folio);
-+	} else {
- 		folio_put(folio);
- 		if (TestClearPageHWPoison(p)) {
- 			folio_put(folio);
--- 
-2.47.3
+As Chris says upthread, virtual swap will be a whole new world. But
+unfortunately interfaces are permanent. So I'm sorry, but it's
+premature to start tying us to an ABI direction here.
 
+> > We will not be merging a memcg swap tier interface until the swap side
+> > has a story for indirection and backend migration.
+> 
+> Regarding this point, is your position that an indirect layer (I see
+> this is virtualized swap) must be implemented first?
+
+It is implemented. There have been patches floating around since the
+beginning of 2025. Initial proposals date back to 2023.
+
+But we need settled consensus before we can start adding interfaces
+that are supposed to control that very layer long-term.
 
