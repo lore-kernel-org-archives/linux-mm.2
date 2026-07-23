@@ -4,104 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3657BC531CC
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 22:29:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4305C531CC
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 22:31:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BF0616B008A; Thu, 23 Jul 2026 18:29:52 -0400 (EDT)
+	id C40576B0088; Thu, 23 Jul 2026 18:31:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BA09C6B008C; Thu, 23 Jul 2026 18:29:52 -0400 (EDT)
+	id BF14C6B0092; Thu, 23 Jul 2026 18:31:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A92546B0092; Thu, 23 Jul 2026 18:29:52 -0400 (EDT)
+	id B07C56B0095; Thu, 23 Jul 2026 18:31:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 79F286B008A
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 18:29:52 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C7DEEC01DF
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 22:29:51 +0000 (UTC)
-X-FDA: 85021484982.10.4292C39
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 82DF46B0088
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 18:31:08 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0C6571A0217
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 22:31:08 +0000 (UTC)
+X-FDA: 85021488216.13.D9A75D8
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 3FE4640009
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 22:29:50 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="jxZW/nu3";
-	spf=pass (imf04.hostedemail.com: domain of helgaas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=helgaas@kernel.org;
+	by imf26.hostedemail.com (Postfix) with ESMTP id 1EB18140007
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 22:31:05 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="WoRvO/pI";
+	spf=pass (imf26.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784845790;
-	b=OVr/wLF6qif2oZFdttmpQumNtAmr/Wx02hU6MP/cp6Rrt1ofW8D+Mja9teO7+rYDdb954F
-	XcfFPQBC6uLs8MZoorEZvvbsqfjNILYwFWvhX5h319D/uFUJ2d0LTtSMlwl9T+88yCxEgC
-	flJdpO4f8MlqPZ352GQ08x1/yQmJnkE=
+	t=1784845866;
+	b=KRl2y25F9QCyJsaMxg3nMM00JHzVtTiHY5ONTDmuW0TxXlHTICaGzILNHfpjbG+klGEpoL
+	EUZakI1jl4buSq+0tMJ6pE27YiGxaB3ZUawSRdGmVsTVho8/rGUguOEhME8U5l1xiIpKmi
+	jmLNMi9YZ2dBAgQOjEZABD5W3GpKWKY=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="jxZW/nu3";
-	spf=pass (imf04.hostedemail.com: domain of helgaas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=helgaas@kernel.org;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="WoRvO/pI";
+	spf=pass (imf26.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784845790;
+	s=arc-20220608; t=1784845866;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=AzhkvE35OLgSJeDoG4ympV/KpNSWvwXjJ0euGOpNYdM=;
-	b=cZFoTK5JcemdUxYc+RxJYGAP2VWWIbW0HsafBwC8DMy0qLJIQOxxs02YcFgX3I16+efuZk
-	LGveZ/y+pMuniUTGCWFXxUPpsbQayDoIl/fy/4ueuOkmGJVU7VnP9cKjkHCyCm1v3wjsDI
-	rXK6YyQFSmiY7qKg7sMQD7Gt1rpivTU=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=h0Mec8/GVZl0xwfSlHmKj3QfvJBgOauId4QfnpHUiNk=;
+	b=ZTEUTgl5/LlefO69ru2rUgdIeat/zOs7zg6RGvmaqjTF67SWeo7tT5dqTJ4jhTIDr0Oug1
+	f2m7cB7lL5lFkx9bLjtQZW0PeBWT2JMTmcPvdekGeZa15+jVWsQa+mXW50illuRdZNJsxq
+	8ZSe15eI9OLTvbc0PotFmFT7qxlAvd0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 31FCE437E5;
-	Thu, 23 Jul 2026 22:29:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABF061F000E9;
-	Thu, 23 Jul 2026 22:29:48 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4B25E439B4
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 22:31:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EA031F00A3E
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 22:31:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784845788;
-	bh=AzhkvE35OLgSJeDoG4ympV/KpNSWvwXjJ0euGOpNYdM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To;
-	b=jxZW/nu3CXPiWcwj+x6K4YRDb3DrW8DFXGAxUW/O/c41NSdn+3EAAGfV128mF4txX
-	 u1ujjcA2PwqcZUC9bf9hS2Igqo07ugIeH4d/G8zLSxxVkDF7rKuq65okwe/EbAMegB
-	 Q4xAVC4G8ItofSVuXKgtcHFDz5EW1+Gq4nEZ9boWdkh1PIO7Io9jIZG/LzQCZyMfU2
-	 Pfk7jJNctcfToZeLftnQ4AJ9ZmSCbwyht6uQ60I3sWz6Mqc3m4v9iNVllRdCQa8Xu7
-	 rTzvBICrwzL/iafIpRv/MiTC0qsCRlGWXIrWPdBjdTl/ewxIJAvdwUrV5Ya/ZhAOYX
-	 gev15MW3uJHEg==
-Date: Thu, 23 Jul 2026 17:29:47 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: David Matlack <dmatlack@google.com>
-Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-pci@vger.kernel.org,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Alexander Graf <graf@amazon.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
-	Josh Hilke <jrhilke@google.com>,
-	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>,
-	Yi Liu <yi.l.liu@intel.com>
-Subject: Re: [PATCH v7 02/12] PCI: liveupdate: Track outgoing preserved PCI
- devices
-Message-ID: <20260723222947.GA868047@bhelgaas>
+	s=k20260515; t=1784845865;
+	bh=h0Mec8/GVZl0xwfSlHmKj3QfvJBgOauId4QfnpHUiNk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=WoRvO/pIvftSP33s+TjIIK04RdirgQFNq3UYfkf05nGwxfuvlyvXGFzGBTT3dDYXm
+	 xhMxqiq3uOrm0hELZh9KYbPnGQ8rzENcOYxeeu4tMXQ5rv/Z/PSov7pTZuhGQLIhPE
+	 C08ncXdySev81r79Jpp7bOb3+dctXz3QoYaVAOfVh9PV4/2W6kw2cHSirzFZc651CX
+	 qge/AJaICSuvHowudt/1jGbw0hm+8m8/y6iwB5wDAVDDE1J8Lrc8Rms4FZc7r1eM+M
+	 aWp5Atcy8dYT3RNLu0ig16431HIfzVu/AEYDeHgA1BEo5QmAhXrAR4kQhxH83F/3Ay
+	 IaBwuN+EaKcOw==
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-c197e7e4e94so213556066b.2
+        for <linux-mm@kvack.org>; Thu, 23 Jul 2026 15:31:05 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Rqxm7vT0xI/RX0HK82vKv1XmygslEy7Old/KWoAECEOlxG7FHJ1mQ/6EFlmnRZHgquJAutbD/DbyQ==@kvack.org
+X-Gm-Message-State: AOJu0YywfsP6Jw3tJ8fUmI3oAcCE//qzyIBbR23aVW7Qsqp+zysqo039
+	ANpujh9jNnXL/kH8/UtaoZDuijydrdCyxdZjtQtIsEMk7lteRzCVObrszjicTPcHy0hSepeyjbu
+	Yf72P87bzeY7WasPFiDKQwZSbbb//6aY=
+X-Received: by 2002:a17:907:608f:b0:c19:5db0:edd3 with SMTP id
+ a640c23a62f3a-c1c50cf9265mr187233666b.58.1784845864122; Thu, 23 Jul 2026
+ 15:31:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260710212616.1351130-3-dmatlack@google.com>
-X-Stat-Signature: k9qg1fzjkuxcp9hdzci3pgx5rwdkgt69
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 3FE4640009
+References: <20260629163337.1264881-1-hannes@cmpxchg.org> <amGpEEqxoLq/Y7ZO@yzhao56-desk.sh.intel.com>
+ <amIcXrS7nGX-adpG@google.com> <amIrDncrL4K-JRBO@cmpxchg.org>
+ <amIxyy4Vg_TTE8Y4@gourry-fedora-PF4VCD3F> <amJKOPczNMb96NJv@cmpxchg.org>
+ <amJQAs3Bm99ZR_sF@gourry-fedora-PF4VCD3F> <amJgdSXxFk24e94p@gourry-fedora-PF4VCD3F>
+In-Reply-To: <amJgdSXxFk24e94p@gourry-fedora-PF4VCD3F>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Thu, 23 Jul 2026 15:30:52 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zN2mPsFiRTPYOPTq3gTVZwsj5hODke4asTTY-jXpSioxA@mail.gmail.com>
+X-Gm-Features: AUfX_my37iO8kg43fRJAMFzRp5ru5qgHtGIQ_-ffgL4wvv2TG3Cin2cd_aD6SYo
+Message-ID: <CAO9r8zN2mPsFiRTPYOPTq3gTVZwsj5hODke4asTTY-jXpSioxA@mail.gmail.com>
+Subject: Re: [PATCH] mm: mempolicy: fix automatic numa balancing for shmem
+To: Gregory Price <gourry@gourry.net>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Sean Christopherson <seanjc@google.com>, 
+	Yan Zhao <yan.y.zhao@intel.com>, pbonzini@redhat.com, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Neha Gholkar <nehagholkar@gmail.com>, kvm@vger.kernel.org, 
+	rick.p.edgecombe@intel.com, vishal.l.verma@intel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 1EB18140007
+X-Stat-Signature: io9jipizwaajac5smz77qdzpe5tmcb3c
 X-Rspam-User: 
-X-HE-Tag: 1784845790-276703
-X-HE-Meta: U2FsdGVkX1+371Ub5igd28jNjeUaL1y70z5speSb0z4DvQWjaJPsvrWroqgUWGp9zHPakDOz+tdWEzLb3QyaSWaWYt8Ap0+wKSN3Rj/CKaLdb9bkZ2a8WW1zQY6cJu+G3qk85p9QVcAGmflhMgTNlag1bX60kePcrnbT+W4pVkoMAcJj8Wn3uzAhHFdXHe1tO/uOplQXMlCnI6YGkwetujGBpOYClJ3rn2Dno7Y15zulHj0dXztDIaf/DmexA0pV8L3pcLBHqw7/Pive9GP3eNf17/0BMnmw+hZPBIeKXQx5MgyiuG5Mfv976OzZKi0yr6WL/HwfUjz4w/N99Hz2oOqF48+s/mDYEjkaBsUdzKs/6Xs/VW7q+WxIYxwWyZzbmyO2T45gg+BFs0fwxXcrYEeUz2Ra3JCd5++8lmojQx6hmzoQQRzn+sCz05kzm9CKV51GYZ509pBUzC1Kr7pJ0IPBHxSE4TIct8xGCDrVbEcZFYUWQRB+DP7mqysr6tjTynzcufuA5eDTtbkqYhCPcaVmbTV3Rlwog11XSvsMWl8Zd3b35XcEAsBmweC92bwRwSdzix/bZ0Y38eBRMircxHiYikVcHJwqwpURuFJq2IlmZ+tECXjKiwXJ/jZ+2TICfQAWUseBZTpC8W6ns61F1nxPOPk9Oj3Qm6bKct5TZ6YhsUHcRQF/b3iK5EC9YVoGP4vcsYQ2efKptbhM//LIN5zUCqbOY0Xe+vZsB+GZyg/lgr3PvGILU93MM8M+ET0+8RQjKPjkE+HY2fZTuaHsV1OE8oRUXYDDAQdkRgoxdY5AeyZvkoF70fJ78QnL+k7cmKhgloz/VtefuRj1ve5jbRxP/0qhosIN9ytHwO7KBAa9lXrn6KwGZ7pcf5VXxMr1SQQsrKj5YNGvIiDIDi76zFwp+3FCj5cgSAqOLewUsVPSAL8unhFimi+unqdMg/vonNxMqpyGOY6fnT2KNX5
- apcBuu2G
- EeW6EjHXUuX8x6jdfmENSRUzozkMvZiERYiXB2GaXzaZAXIYvlS3Q7AD/uYArS5ozuvGZkNcVBtp4I6AvMiRYKznrCGn7U17nx4NO7FB8SIUtx2cY+z9u+dUttdiQh4NOqlAUvAXlRjgyYlQw6AJeRwhQBYQ519vMZpTCLfyvtyhVeUYxagHiJallD06TgYr0tgDBIXhEGBM4bhJ8WxcQK92IH7lVECkTzQtwi+OvKzqJNs7MBWD7VEBrwqulN5NviHojLM0mDOUraSq8WNLnMvkZ3w==
+X-HE-Tag: 1784845865-63668
+X-HE-Meta: U2FsdGVkX19kwUkiz8JeVu5sGJaAzP31SwPvayHP/UXcCSeelmxkxPiOacQWzRMDzf8FK6DmsBHTHt4OTa3nyKFCsXojT9EqqSqALxI0jnjG31FFbivWo4x1gSLRREVBl6/zTC+GOEXe9NRMBi8075dbBKLJC+NDSBelgKwCj3o/qz1uVl41W53oJDZwVlHG59awUPd52GX6eEWH+2wBLjRm+4aBKNc+XAncTHFKGzSGScuDBmfhOn9xthcUd7dznK2hYes0VtDjUiuk/GfDlUrwuys5fVzAzqZSVSOLVHnG9IvWNZOnCaLLaXFhyssGywuRoAwKCtAhPIzZhQLDLXAnBSCbHJiurM7FjmZnoxp0CsPIhVs9Hl1rG6GBgGBOpRdRvKNTgfoEwlpISvtD7Z8LoEsgdfH8oUSiQ6sQ9Z4/3qDIvACwCAEYcQR7PLOayGOP3WmEx7UV7m68cCwcsj5PH5vRSwkXsG9xrM/VWcSRld+ShiLJlJwbQdGyaWr6LgJCH895Y/6ST5fY563Yzfm2PlXdcCFWtC3V3PVn+9BVX9m0kthztIwaHzmFpuwNTrPbafT0bma7vU9/wCDz/O77QjXiVQJvU1tQVCYpk7jBU54rrA22VVIigVfwrkXNawS95hD1yIKYDJb/uDosepFYzFZHhARXwgrKw+t7RbhXjcEe5NhjHfvK4QWUUUhnsjFz9jnQC23kyiiCH9Bap3taqD/t+TfLG/dobRd4i5fnMw4hMtUiWRTljS2dSjPsqF6H36Ie9THcAXKjwMd5Yp+TAImsq32haFy2rCS+NMC4mHgtm7GkXTC4toj3L8Sk8LVEHrMqX22RqJec0f+ibmxjDnvjljJQtdfUocGw8dukL2OqHY39VxDH1tuqumegJA6NetJ9nHqOchyW1+kQ/3Pg+QtbhPSYoEaQscOdFCUoocG/kvDEgAaFkjov++6jQMBGc0r+UUr9aG2HGXj
+ bw0pVuaO
+ Ih1izQD0EjNXMIB2+RrkrhlSmd+wW4P7i0iCf7kSnMPEZlDxOLaMzXLYtMJCUGGV4oN/ZQft6I68t8aa/rIoSE3+3LGYyEyZuywctethRv58ofsiOBZDP8dHPR6sxgVNYhYF0anTL8S7hnBbGAnVaQl4X+gHDJpYuHBeAiYGnsqHMse9sCKhNRLcjdBMzRevqF3kHfJIVpQ06oTfOvt4hB+rLZpj2hElfMWNzqv5WoXtWgSSTUXb8JC3Eq8fOcDBO5s2Iv4+OF5m9FH+ESWw7hkYKyz6ecv8eIpRRMHLHUCdS6ZTEkdos78Aaoq2IXiMhOxOv1Hu2Nlq4Nv0yrfKJou7I+Myq7aFrXS1UFpzLbF/WhDx55iKGGQEd/F8vQ0KkDF92zW00iknXg9VosBByPH7eB9+X0WLdCZ6h
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,26 +111,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 10, 2026 at 09:26:05PM +0000, David Matlack wrote:
-> Add APIs to allow drivers to notify the PCI core of which devices are
-> being preserved across a Live Update for the next kernel, i.e.
-> "outgoing" devices.
-> 
-> Drivers must notify the PCI core when devices are preserved so that the
-> PCI core can update its FLB data (struct pci_ser) and track the list of
-> outgoing devices. pci_liveupdate_preserve() notifies the PCI core that a
-> device must be preserved across Live Update. pci_liveupdate_unpreserve()
-> reverses this (cancels the preservation of the device).
-> 
-> This tracking ensures the PCI core is fully aware of which devices may
-> need special handling during shutdown and kexec, and so that it can be
-> handed off to the next kernel.
+On Thu, Jul 23, 2026 at 11:45=E2=80=AFAM Gregory Price <gourry@gourry.net> =
+wrote:
+>
+> On Thu, Jul 23, 2026 at 01:48:27PM -0400, Gregory Price wrote:
+> > On Thu, Jul 23, 2026 at 01:07:04PM -0400, Johannes Weiner wrote:
+> >
+> > So the default global mempolicy is effectively:
+> >
+> >     (MPOL_PREFERRED | (MPOL_F_MOF | MPOL_F_MORON)
+> >
+> > which is just MPOL_F_NUMA_BALANCING without MPOL_F_NUMA_BALANCING.
+> >
+> > The user can't actually see that - because the MOF/MORON flags get
+> > stripped out when it's queried (because they're internal only).
+> >
+> > Maybe we should just set MPOL_F_NUMA_BALANCING in the default/preferred
+> > policies and document that the global preferred policy default-enables
+> > MPOL_F_NUMA_BALANCING - and that if a user (KVM) doesn't want to be
+> > affected by numa balancing it needs to set a policy to disable it.
+> >
+>
+> Walking this all back:
+>
+>   - MPOL_DEFAULT is the default policy
+>   - numa_balancing=3Don means enable NUMA_BALANCING on the defaul policy
+>   - shmem was broken and did not respect this
+>
+> Johannes' fix is correct, and there are no additional changes required.
+>
+> Users enabling numa balancing while running KVM with shared regions are
+> not getting what they're asking for presently - that is a bug.
+>
+> They should get the performance hit they're asking for (and then either
+> turn off numa balancing or set an explicit mempolicy for those tasks /
+> memfd's).
 
-I guess the antecedent of "it" is a device?  Maybe s/it/they/?
-
-Reviewed-by: Bjorn Helgaas <bhelgaas@google.com> 
-
-> +static void pci_liveupdate_unpreserve_device(struct pci_flb_outgoing *outgoing, struct pci_dev *dev)
-
-Wrap parameter list to fit in 80 columns.
+Does it make sense to add a pr_warn() or pr_info() to help users
+figure this out when they see a regression?
 
