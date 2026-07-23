@@ -4,116 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3A70C531C7
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 08:45:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 812DDC531CB
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 08:45:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EBD446B014F; Thu, 23 Jul 2026 04:45:28 -0400 (EDT)
+	id 7911B6B0151; Thu, 23 Jul 2026 04:45:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E94A46B0151; Thu, 23 Jul 2026 04:45:28 -0400 (EDT)
+	id 742836B0153; Thu, 23 Jul 2026 04:45:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DADAD6B0152; Thu, 23 Jul 2026 04:45:28 -0400 (EDT)
+	id 65AA76B0154; Thu, 23 Jul 2026 04:45:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E0E66B014F
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 04:45:28 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2874CA0428
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 08:45:28 +0000 (UTC)
-X-FDA: 85019407536.12.109B3E6
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 4E64EC0003
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 08:45:26 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=iKduSdmP;
-	spf=pass (imf22.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3494A6B0151
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 04:45:51 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B36361A0414
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 08:45:50 +0000 (UTC)
+X-FDA: 85019408460.06.2DD6F46
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 2D64140008
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 08:45:47 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="n/83yfdB";
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf01.hostedemail.com: domain of yuan1.liu@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=yuan1.liu@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784796326;
+	s=arc-20220608; t=1784796348;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QNSCWeKhrxGWAlQghBfhaL555IVsMmUGtowa8Jgc3Rs=;
-	b=ld/XmrFSdFTPD4pL6z5kv0Ti2fn65sJLL9eG4XAeyuCid/Nlm78UaPF/9P0rbjwZHHC1F7
-	8v/ejNSeM9qAfFF1wxvR/Sg9iAQNXVsaJ1nuFFl/JHjX1kfRu3zLsZgAdf52tnGjx0/vtQ
-	lfKn1x0s8iSWF6QLKQyMIkd2OlUcw4Q=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Vq/G4Cv7vN8OHh0w0Ztjbc8kGt5Tj24H4OjTSconuEY=;
+	b=VbDihmPKPGauWbknaKDi6ZRtPf0OJeyXxacH4GhSPNz3J24IvMedq6uMzfuohIyZFVPkFY
+	ySw49XvKeLT2L0+VETpBgYmsFc7yiud+++cTgo4SDx9Biod7TQm2QwNTsqa0O23emGd6Rs
+	Zrd+/cJlvmJyd32WeVN4pjp+lDzkbi8=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=iKduSdmP;
-	spf=pass (imf22.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf01.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="n/83yfdB";
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf01.hostedemail.com: domain of yuan1.liu@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=yuan1.liu@intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784796326;
-	b=k/78uWw+l3i+4lHZARJxODQa2zPgTZ1VDUmHx+QDGneg7C6HDQoBvbztJEdaffa50+ikQc
-	z7UEOrs7mZUZDpP+vb8/mR7e3WAExBwuu5FWxrvi2ZLx39qWI1pVuHfp7sncCH5ySod/eb
-	GxZ3vZXjYklG9CccSSoAx9xcregD5ng=
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-495590dde14so4092915e9.0
-        for <linux-mm@kvack.org>; Thu, 23 Jul 2026 01:45:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784796325; x=1785401125; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=QNSCWeKhrxGWAlQghBfhaL555IVsMmUGtowa8Jgc3Rs=;
-        b=iKduSdmPi5BRQQGfU351DJe4Ey/m40S4imVibCOPVf5l1kyP6TYrwKSWdJCmIw7uLv
-         jw2FCO5HYxbWbY0D5dFxP0YNIX+boPKHcwx6BVxmvSpUdOq0k1qOVaE9KryxnubaLxmr
-         HaCc64isml/tYJfdcPGsxXUWFckp/R8CJdEDynNYenvTP+W2gbuhWMkP5Q6KEIix/fJR
-         rD+mj56OeQPKVpaXyQNRF3ccSS3l2Wunweogg/G0hLAJG38YruJxeatdjRbg8wpWxMN8
-         /1B5DkSw+Z38mVoykKv6OiEnQFXXT6lZ0rVKVMzImCXww0U4I/VTWs2Tf+ojuUPwahdd
-         Zw/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784796325; x=1785401125;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=QNSCWeKhrxGWAlQghBfhaL555IVsMmUGtowa8Jgc3Rs=;
-        b=JLJqjzvaDC0dMb2WUPOg34bukczU6zh/nCmqK7gH0IAUAOdg2XDmpACHwbUON8v3mO
-         uoZcVCLdBVCu6DCYs14/AEsl77OResoDkW30i4GDBshbgoJMAzVCIHmLqX6HEsMbpx8P
-         EfInCdKx2EWNjYtdNyyPArzlwjucfMWcULdodlwG4dhgxU3GRZoVSEgSZkHYqOxpqZWP
-         lO6k4QE7AwiYdh5ebHVT9dNb0uxD3Te8+aPiSrTIZbsOE0Io9U4DykjrSlTLzKvm6FLl
-         WpnAV8EUB69r3FipFlqab/OQU6XgMbisLZV+Wb59kptfs/tcVUO9rBxmIAuA4ji3xvWR
-         EuZg==
-X-Forwarded-Encrypted: i=1; AHgh+Rocu+VaglCD/xRXPhd1cG/V28p33lpvlGj1yzBsIGDg/LhVCAd/3qB+iWrH77E1dvX/J8jZKitJjQ==@kvack.org
-X-Gm-Message-State: AOJu0YynGUtn4raQAzzSEtB8M6sDXDUfgUhTHqeKvu1k7r6FHchO81TU
-	AJwhvy7PRu5zstQ4RhDlhN+mczqUOXJ2ZF9xia+WGQqJiH0AB69jwwwL
-X-Gm-Gg: AR+sD13cJ8eP2I1cj4ZEExeqm3alrROFHMM2QlIQK/+QQYpCXok/2Hua+rszH3Lnrf3
-	STYQPRkQ2IpVfj/7SaRuwChZMadO8SfXY21spnujDbMNrLRRHhw6fZCU0WjoYodFaWaQwX94uqu
-	ALSBaVOtB/0dCXe/HD0ynsQpK/hz/4PImM1edPzBUT/U/buXelHyzsm9v/xeILlnY4ORgn1SloP
-	ESmdzndbKbnyDswsOR4TPA0YYvjeAS+XbX6JFipD0iksn2mKViHSZ/f9wJk3Gnw37pxGGgA+Cfq
-	dHv2aFnZnUAf2DE+2eoA03o+mhXblfuvzUjM+mUj4f1GxSJ0+XKHWhmkrtEldoIYwecVTSIq8W+
-	M/6fCRoqq0tr/1MuAfqQ7B59jQbVtsBnN5rILAVrR69BRk/vPxAJ91N8efOp0CRo2QxlYo7y8aj
-	SvGtpbPDPP3MwAWSBAL5GAFyTTytXmFDLe1ZdfkmU=
-X-Received: by 2002:a05:600c:1914:b0:495:5e86:4e59 with SMTP id 5b1f17b1804b1-49573cf6226mr22983005e9.22.1784796324550;
-        Thu, 23 Jul 2026 01:45:24 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-495653bfabesm234783595e9.10.2026.07.23.01.45.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jul 2026 01:45:24 -0700 (PDT)
-Date: Thu, 23 Jul 2026 09:45:22 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Mahad Ibrahim <mahad.ibrahim.dev@gmail.com>
-Cc: Kees Cook <kees@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Mike Rapoport
- <rppt@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] lkdtm: use kmalloc() instead of __get_free_page
-Message-ID: <20260723094522.535b284c@pumpkin>
-In-Reply-To: <20260722230246.2869-1-mahad.ibrahim.dev@gmail.com>
-References: <20260722230246.2869-1-mahad.ibrahim.dev@gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	t=1784796348;
+	b=5NDlBJZ68quhM6BkqRmPyAL6BIgPyZP4eKs7bipx4E2XTTxcG1W+ccEoKB7jRt250VOmtk
+	3rKmDdx6iKEJE5EjsQu5354Ly6hGuKuXkIjagQ+cJtgqymQRzBl2RYB0vp/Ab4vn7ugFB4
+	egawhoWlN4m+I+Pjcsp5HzHxjcyTpV0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784796348; x=1816332348;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=wt/1Q/1Uc8s3JGUPFe4oh+yq/wTku+L5499+dfNpp+A=;
+  b=n/83yfdBmW32T5W2EO/zq+s3UMiPLsgUS3hFFQda8MLZrLGaDHurSuNz
+   vT0VU2UvK0YutlNntFeQLB1LgRis4BJO8eDP8kkXNxzeifJSupWY88/73
+   zLrhJ0kBDmzkfxcWNR1AkuiaAB2uIYfClwGE8FGuRcEkQNbomtPf1a4B+
+   s9P+kfeUvB97lWgNCdhqcODhC8vz/yB+8NucBgXMw5PPh5Ffdnm+0a42c
+   0hJOqqJJkTV07HXVYyKHc/P8fQwThvZDzwnoiY0O04EINfYTtGPSmwpF/
+   MFnNcPq0KqsPVOFE0lidyfShTF8L/N4ShRzbgZWcW1mO+1eZLm8D51Z4V
+   A==;
+X-CSE-ConnectionGUID: cWmPT471R9Ct5j+Xvpekhg==
+X-CSE-MsgGUID: q6P/gG+jSCWcx5IOlktvFw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="102854653"
+X-IronPort-AV: E=Sophos;i="6.25,180,1779174000"; 
+   d="scan'208";a="102854653"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2026 01:45:47 -0700
+X-CSE-ConnectionGUID: amV6tR1LQq2BfEoLMkFrqA==
+X-CSE-MsgGUID: 0Xxj1lxqTqW2HB+YmsYBiA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,180,1779174000"; 
+   d="scan'208";a="258408727"
+Received: from spr10.sh.intel.com (HELO localhost) ([10.239.23.75])
+  by orviesa007.jf.intel.com with ESMTP; 23 Jul 2026 01:45:44 -0700
+From: Yuan Liu <yuan1.liu@intel.com>
+To: David Hildenbrand <david@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Mike Rapoport <rppt@kernel.org>,
+	Wei Yang <richard.weiyang@gmail.com>
+Cc: linux-mm@kvack.org,
+	Nanhai Zou <nanhai.zou@intel.com>,
+	Yuan Liu <yuan1.liu@intel.com>,
+	Pan Deng <pan.deng@intel.com>,
+	Tianyou Li <tianyou.li@intel.com>,
+	Chen Zhang <zhangchen.kidd@jd.com>,
+	Jason Zeng <jason.zeng@intel.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v6 0/2] mm/memory_hotplug: optimize zone contiguous check when changing pfn range
+Date: Thu, 23 Jul 2026 04:49:44 -0400
+Message-ID: <20260723084946.189392-1-yuan1.liu@intel.com>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2D64140008
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 4E64EC0003
-X-Stat-Signature: 8mgoiujeigngyjx7f1fznzxphck7ybqk
-X-HE-Tag: 1784796326-460207
-X-HE-Meta: U2FsdGVkX1+LT2W4+PUb9WLJQsnlM58jczGHldEbIKgnsRrJyVR+EY0ixVlJoJVETlPUdDFzPXI96taVcBoZ3UMk1LUpnV/SRKIYvrt1TgwwgWsf5UyzW8hlYbIFHnaiZXiUJG6++nSWyAFxavUS1Laty+kNMEe7R38Y6qGKsM3yQcqSPYdJyj6IVv8QWb6gyWv1KhTm3HkPSM7uMjmrwqHk+pEeHKYLAt3v9ITEP81FQnD6Ai2JnuUYxJWd/eGsdhjaZciKU3/Fl3oIMXO/MU5WoyRFYBH0PZuHDyQodscYnDl/jVvg27y8BLskSKdxFNyKh+yxulG0UUqO6zKxDpmgmhpzPVTGQqy53pXUMNWeVwISZaYw7YB5bxRDx5oZLd0RGawPNrDwAiWwSgZD74BKlKQDtKRM0GqSGCcu8B4pZAHKRtBilnhKEVvW9seCZUizjHyrdNeMOe0lt9B+FKOdXg83XBgMmr+7+F0xNWhXZvPH00V4UI3BsbOYMYSvdT+uGMHaCpQYCY8d16uLOizDuKwAvFgpqwN26PEvgvQsfVmpY6l36G1C+P3+RvjKnxaAKy1LgCz9slGFssLfFO14tNFNybZUuazVXkJkAXFY/EDfWM8oG604ilwP0lUdeppfXPQlAvtOPnyMLNJB+N5TEP9Djti6uUpWiIwUQDwCJPE4xCISunPzpnuOFbCi9EjWHtEe7Q0DlhHrS7atRFyMYudFQ5Danth2CXEQIw4Tez34R6FQjrVwrC28mdut1l2/sBSrBLYZWp1eoDJrpmevGAurv9zCR99dDbKxJhiEY038Hgzn8FuvfHylTgB2Il+Jjbx6GW2/1weQzgyKQtEv08AepeChWoXYQdd1f3+K+5t0/ap1QAtpzssUybuS7efEtaW5o5XNhqqexHu4f10lTF7j9G7x4CaRIHzAqIqPnoSoCmmEV0ucUCgYYQ7ZLHQSu//M36bJBIu8WG8
- /ijEIpdb
- C3B6wTI8v3PL+T3j4A63GujkZaLJfE7rHd8GYtJ1/MkElojI2Q20feQPMh674JhiMm+jk5uL5IZH3tcmfA3xDFknOKEGluIy69LE576ImHSBnArewggraYsqn4TN1TiuIHX4GrF1op3KtMwGaUlOkGyG8Hyg3xM523dRaBhTPBKlx4rWgpL9czKmH2T5c2EDT8lt9MmhthXXpYv6zX4oG41Xp19eVZFxePvhudhrk+syrMssgV0CjKd/RmHWX8kcCyiKVLvMMKR+dE6h+Mm9nzvQ9vzW+cRIXecEIxHRVFWKp/Me8rYlKgDoZemkR79bZAONcJh6WcSHitwbQZ3xbEGkz1zGF9MjrWsxf8RcgtblinfbBKH1QoHfcfEndzVRZnne2+d8+ACZ7IJ30rcYeoIk4SsX6/TNNd7mdtjq025ymcFl5xJE4Y6O5UnyqwbunjypAgX98LS4Im1clkXs95uzLIy0hndzNky34h57NgbK9Wx6EkBEyit3d6HbAK8AWw86qOp7msqEb8/r0LYx5UndAdTuRSnYw4W3z
+X-Stat-Signature: ky5tiwqan815ufsza39qfyxe1of5r98e
+X-HE-Tag: 1784796347-604492
+X-HE-Meta: U2FsdGVkX19YbpzEEA1yCLhCHf7zTiib/fangk+kuFzFM5qTCVqcy4h/paHp8br/nCNBw8h+pVIto1JXdqCeE0xhJBwgbfyJgD/5LQBE9AOTrRyvB9JzUNEw9uXn6stQ0cG6W4A+HCSfGdaGgnYBLIiWEhzKucniwAsiuUh7wanTvMWB4RUyQP1UgQSSrvus1gaBBim1s6VmrIhxJ5odFapCv6r22Ty6x6SDQeMjOAyM6/GwbPuMbS6SEoMAn8rRtNRq3HXs15abOigBljimBG6KYWcDT6vgsKbHax5rmbEYfqFDEJUO/8pBUIxbeV8R9vmKGN43pLMgqI72SF4crxdQJerNeopN9AyRNtqOjInC32f+5GlTmxtGfXNrF+EuiVONovzh2kG9qTkyfZPinF8vOUC9rMaU4SigOwx6Zbsf7zT+s9/OTqZLYqHCp/0c7675WrYBc5k6vmsTRBu8vvf0PMZtS+4Q9O5VXfzNPViy4DG4ERRg2vT2vRA0jUJOljXVPZi6zUi28mDhGTRpdtVQdsBvbrB3AdPE7McGlDKeWf1rH37/agwHVPqOHANVQERw1gFYsMDA+RyUw6nM4IBMosP0/fxGS2780gHm1UJEEjkTfWfDJ3veH0EOJwE0N1bjyrLrX+selHxd1dULgC97rpl6YM/IMRmakOY8h426NzF9hiCTUiiRuuN+FHXaGe8qDg/vVm+ZMaVPxFUSnTs6/6ALcGLyv940cA6CJoAHFkAe4rJKWKtYNLd7RSk25Yk9+bVMIbOJMOorn7kYnFEueSQID5X5SALdunsVSQna5ntK6jhT+LY42hQI7WupaQlHRKo2cPYZzOcK7k6KVy9fNpIenP08MfiXo9uzRHgJbIYcvEVbDo1NdBEA0WyCDYit5ZqoOs9Y7Wh4gQYX3JyAnlOB0zDvwL6Bld5Pr0o4CqQS4BnzSRTSz6SvO1Chb3LFCYYz7MgCODfkQpN
+ EH6tfobN
+ bwR3rCvJtgHR7pjvt1MQKcHxW5Sd8181zebo3yJj9cI64gJko6INYMPaZlBfdWxlID7/KsgRYmtiexzvc5m7owDeN/NB5jgoNvdvxG2TTCCwRcAYvOoHAXOxyQmSK/zssp4u7ZpBMSeUxTZoD9r+FRCGflo/DlvKGwuo8s8bL4yvnfSZRjV0j2AIQ0aQBEUkkAXroBA3YewjPRwvFhAQwqpj8qCIyOusvlXHD/BA12ak7DznpE7SrHzjl9CoNek1wd2O3tZIYfOhKJq6ih/aSJVriZK79aizUVn+cJFqY4XHtIxZKlHUjkBtyTFO4rV2UEzMkyxuHEihZTpXo+yNOQGJSK60GuLSrNjl3+wcdbtd2Q3IRNd1eHnuUZ8yuOvB1/31s
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,109 +109,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 22 Jul 2026 23:02:46 +0000
-Mahad Ibrahim <mahad.ibrahim.dev@gmail.com> wrote:
+This series introduces a pages_with_online_memmap member into struct
+zone to avoid pageblock-by-pageblock scans across the entire zone and
+improve memory hotplug performance.
 
-> lkdtm_debugfs_entry and direct_entry use __get_free_page to allocate a
-> temporary buffer, perform copy_from_user to get the crashtype name,
-> strim() to strip whitespace and find_crashtype to find the corresponding
-> crashtype that is being requested.
-> 
-> The lkdtm_debugfs_read uses __get_free_page to allocate a temporary
-> buffer to store all the available crashtypes, and then copy it to
-> userspace.
-> 
-> The buffers that are allocated can be allocated with kmalloc as there is
-> nothing special that requires a struct page, or the page allocator.
-> 
-> kmalloc() additionally provides a better API that doesn't require ugly
-> casts which obfuscate the code and kfree does not need to know the size
-> of the freed object.
-> 
-> Replace use of __get_free_page() with kmalloc().
+Reworked how pages_with_online_memmap accounts for PFNs in early
+boot memory in response to Sashiko's review comments [2], which
+identified potential issues with the previous implementation.
 
-None of those buffers need to be PAGE_SIZE.
-Even the sanity limit for overlong requests could be 4k.
-The longest 'crashtype->name' is probably about 32 characters, so could
-probably go on stack.
+Approach
+========
+Add a new zone member pages_with_online_memmap that tracks the number of
+pages within the zone span that have an online memory map (including
+present pages and memory holes smaller than a subsection whose memory
+map has been initialized). When spanned_pages == pages_with_online_memmap
+the zone is contiguous and pfn_to_page() can be called on any PFN in the
+zone span without further pfn_valid() checks.
 
-And can't this code use the sysfs/kernfs wrappers?
+For early boot memory, pages_with_online_memmap is calculated in
+memmap_init_zone_range(). Since every PFN within a memblock region
+satisfies pfn_to_online_page(), the calculation aligns both boundaries
+of each memblock range to PAGES_PER_SUBSECTION and counts the aligned
+pages that fall within the zone span. If two adjacent memblock regions
+share a subsection (i.e. the hole between them is smaller than a
+subsection), the overlapping subsection pages are counted only once.
+For hotplugged memory, pages_with_online_memmap is updated through
+adjust_present_page_count(), which is called during memory online and
+offline.
 
-	David
+Only pages that fall within the current zone span are accounted towards
+pages_with_online_memmap. A "too small" value is safe, it merely
+prevents detecting a contiguous zone.
 
-> 
-> Signed-off-by: Mahad Ibrahim <mahad.ibrahim.dev@gmail.com>
-> ---
->  drivers/misc/lkdtm/core.c | 16 ++++++++--------
->  1 file changed, 8 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/misc/lkdtm/core.c b/drivers/misc/lkdtm/core.c
-> index ededa32d6744..01bebcb33bd4 100644
-> --- a/drivers/misc/lkdtm/core.c
-> +++ b/drivers/misc/lkdtm/core.c
-> @@ -236,11 +236,11 @@ static ssize_t lkdtm_debugfs_entry(struct file *f,
->  	if (count >= PAGE_SIZE)
->  		return -EINVAL;
->  
-> -	buf = (char *)__get_free_page(GFP_KERNEL);
-> +	buf = kmalloc(PAGE_SIZE, GFP_KERNEL);
->  	if (!buf)
->  		return -ENOMEM;
->  	if (copy_from_user(buf, user_buf, count)) {
-> -		free_page((unsigned long) buf);
-> +		kfree(buf);
->  		return -EFAULT;
->  	}
->  	/* NULL-terminate and remove enter */
-> @@ -248,7 +248,7 @@ static ssize_t lkdtm_debugfs_entry(struct file *f,
->  	strim(buf);
->  
->  	crashtype = find_crashtype(buf);
-> -	free_page((unsigned long)buf);
-> +	kfree(buf);
->  
->  	if (!crashtype)
->  		return -EINVAL;
-> @@ -271,7 +271,7 @@ static ssize_t lkdtm_debugfs_read(struct file *f, char __user *user_buf,
->  	ssize_t out;
->  	char *buf;
->  
-> -	buf = (char *)__get_free_page(GFP_KERNEL);
-> +	buf = kmalloc(PAGE_SIZE, GFP_KERNEL);
->  	if (buf == NULL)
->  		return -ENOMEM;
->  
-> @@ -290,7 +290,7 @@ static ssize_t lkdtm_debugfs_read(struct file *f, char __user *user_buf,
->  
->  	out = simple_read_from_buffer(user_buf, count, off,
->  				      buf, n);
-> -	free_page((unsigned long) buf);
-> +	kfree(buf);
->  
->  	return out;
->  }
-> @@ -313,11 +313,11 @@ static ssize_t direct_entry(struct file *f, const char __user *user_buf,
->  	if (count < 1)
->  		return -EINVAL;
->  
-> -	buf = (char *)__get_free_page(GFP_KERNEL);
-> +	buf = kmalloc(PAGE_SIZE, GFP_KERNEL);
->  	if (!buf)
->  		return -ENOMEM;
->  	if (copy_from_user(buf, user_buf, count)) {
-> -		free_page((unsigned long) buf);
-> +		kfree(buf);
->  		return -EFAULT;
->  	}
->  	/* NULL-terminate and remove enter */
-> @@ -325,7 +325,7 @@ static ssize_t direct_entry(struct file *f, const char __user *user_buf,
->  	strim(buf);
->  
->  	crashtype = find_crashtype(buf);
-> -	free_page((unsigned long) buf);
-> +	kfree(buf);
->  	if (!crashtype)
->  		return -EINVAL;
->  
+The contiguity check using pages_with_online_memmap is stricter than the
+old pageblock-by-pageblock scan. The old set_zone_contiguous() iterated
+at pageblock granularity via pageblock_pfn_to_page(), so a zone could be
+marked contiguous even if a subsection-sized hole existed within a
+pageblock. The new check requires spanned_pages == pages_with_online_memmap,
+meaning every PFN in the zone span must satisfy pfn_to_online_page().
+
+Performance
+===========
+1. For VM hotplug performance data, please refer to Patch 1.
+2. This series also benefits CXL hotplug. Performance results are
+   as follows
+   https://lore.kernel.org/all/20260409023552.GA2807@AE/
+
+Tested cases
+============
+1. Hotplug/unplug correctness with both online_movable and online
+   policies, including partial unplug, middle-block offline gaps, and
+   edge-block span shrink.
+2. Large scale (256G/512G) plug/unplug performance.
+3. Boot-time subsection holes (aligned/unaligned, in-zone and
+   cross-zone) with correct pages_with_online_memmap accounting.
+4. kernelcore=mirror: verified no overcounting.
+
+Patch overview
+==============
+This series is based on the kernelcore-mirror branch [1].
+
+Patch 1 introduces pages_with_online_memmap to replace
+pageblock-by-pageblock scans across the entire zone for zone contiguity
+checks.
+
+Patch 2 avoids incorrectly shrinking the zone span during memory unplug
+when a memory or hole boundary falls in the middle of a subsection.
+
+v6 changes:
+  1. Dropped patches 1-3 from v5. The kernelcore=mirror overlap issue
+     that caused pages_with_online_memmap to be overcounted has been
+     resolved by the series [1].
+  2. Reworked pages_with_online_memmap accounting during early boot.
+
+v5:
+    https://lore.kernel.org/linux-mm/20260520093457.3719960-1-yuan1.liu@intel.com/
+
+v4:
+    https://lore.kernel.org/linux-mm/20260421125508.2317429-1-yuan1.liu@intel.com/
+
+v3:
+    https://lore.kernel.org/linux-mm/20260408031615.1831922-1-yuan1.liu@intel.com/
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock.git/log/?h=kernelcore-mirror
+[2] https://sashiko.dev/#/patchset/20260520093457.3719960-3-yuan1.liu@intel.com
+
+Yuan Liu (2):
+  mm/memory_hotplug: optimize zone contiguous check when changing pfn
+    range
+  mm/memory_hotplug: improve shrink_zone_span() subsection boundary
+    checks
+
+ Documentation/mm/physical_memory.rst | 13 +++++++
+ drivers/base/memory.c                |  6 +++
+ include/linux/mmzone.h               | 47 ++++++++++++++++++++++
+ mm/internal.h                        |  8 +---
+ mm/memory_hotplug.c                  | 54 ++++++++++++++------------
+ mm/mm_init.c                         | 58 +++++++++++++++++-----------
+ 6 files changed, 132 insertions(+), 54 deletions(-)
+
+
+base-commit: b69c2a1fa9beb4c3db24b4013e07f5cb7e7260aa
+-- 
+2.47.3
 
 
