@@ -4,129 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE2F8C531C7
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 09:00:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E1E3C531C7
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 09:15:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A45606B00EA; Thu, 23 Jul 2026 05:00:35 -0400 (EDT)
+	id 0EE3C6B00E3; Thu, 23 Jul 2026 05:15:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F5DA6B00EB; Thu, 23 Jul 2026 05:00:35 -0400 (EDT)
+	id 0C5F06B00E4; Thu, 23 Jul 2026 05:15:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E54B6B00EC; Thu, 23 Jul 2026 05:00:35 -0400 (EDT)
+	id F1E4F6B00E6; Thu, 23 Jul 2026 05:15:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 49C646B00EA
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 05:00:35 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B82F016040D
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 09:00:34 +0000 (UTC)
-X-FDA: 85019445588.04.6C8CBB0
-Received: from fhigh-a3-smtp.messagingengine.com (fhigh-a3-smtp.messagingengine.com [103.168.172.154])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 91EDC40002
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 09:00:32 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm1 header.b=MhC9IYmc;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="c 0/woa7";
-	spf=pass (imf12.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.154 as permitted sender) smtp.mailfrom=arnd@arndb.de;
-	dmarc=pass (policy=none) header.from=arndb.de
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784797232;
-	b=WivA7UylJdWA9kE64DYQ/iyTphPu39SVCxD43HWIgARYVrBrBL8tC9Ukwf3VwvIS5+Bjby
-	4WwZagvjlhwRlw5Os4f79xejzuFo69os2AaS5HMuABn2F+LXCdex6dkaYAfNjiScsAn+pK
-	dF6b8JDW/M6h0d/YyPQeC8JBTbI6aag=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm1 header.b=MhC9IYmc;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="c 0/woa7";
-	spf=pass (imf12.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.154 as permitted sender) smtp.mailfrom=arnd@arndb.de;
-	dmarc=pass (policy=none) header.from=arndb.de
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BBECE6B00E3
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 05:15:32 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 234B98041A
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 09:15:32 +0000 (UTC)
+X-FDA: 85019483304.09.28D7FEB
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 84EC44000F
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 09:15:29 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VN8l4I8x;
+	spf=pass (imf17.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784797232;
+	s=arc-20220608; t=1784798129;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2QBxZKriJFHuZN6Z35es1VQXh4AQXzZ22zo0Cq/T5UE=;
-	b=u8/+XdW3hpbMf7hk8Qnq3S4td2/CGmp0+Ln/XphtLOEwcM1R34sw5EGjbiYND0+ImKsFty
-	YEpKeWtPVLFz/AOhQWN3L4RNIvjZbOU/g04jGeDB1B6aCKCIkf8HcbYx0I8EsO+3O4mLqV
-	cRAbdTWoKVfEDCf+twqmAaoghniuHVM=
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 022B6140012F;
-	Thu, 23 Jul 2026 05:00:32 -0400 (EDT)
-Received: from phl-imap-05 ([10.202.2.95])
-  by phl-compute-04.internal (MEProxy); Thu, 23 Jul 2026 05:00:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1784797231;
-	 x=1784883631; bh=2QBxZKriJFHuZN6Z35es1VQXh4AQXzZ22zo0Cq/T5UE=; b=
-	MhC9IYmchfODkVkzWv8TSLDTgMlTNmynreQBV8QNQGHtG81gc2UURP1gaiVbyWBG
-	DsBfNtH93/dUjs7AT+32xRnfmG9EqK2VJ6g8OBpNHXJv4tovg2FF3ApvRpVcEA6x
-	Olo/dJFMSecs7tGFGUE8C9TdMwwc7LqWv5HOIAIjcwgSQuq5gdL9baimKf6y13Dq
-	DOxFPht5ZSdXXZKfLzovn47yiZT+BMoll4yQust2YIIx1Sykx+jdL6h6d09mKdl3
-	v9E9eljykaIl1Hy2Wgo1qTmrvV3Ywm4D65V4ROKKNPZUB9cmGZV6NFvmVqTr5JJa
-	+bSQgRYUJkVBj6LsfRwAgQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1784797231; x=
-	1784883631; bh=2QBxZKriJFHuZN6Z35es1VQXh4AQXzZ22zo0Cq/T5UE=; b=c
-	0/woa7vZxWgu7P0bJVWGYDjSSpRhyBc/uAccseFg9NckclCDzDhn7lmjuHEwhYOg
-	7/lGn/8QNE8Uc0mn2wEVogcqMFf4C6XJJs6EhzvbM1XZ5IRbBl9slfiNQP9eOEZm
-	cyeVQaoh3C1gLrvVewY3kdQGKbwC8pgjWSldL329YRlCb3HlWTSALtSnnoXbEikN
-	pBqQYzw47UdZUSLlnpHKubOxBBTqHGb1GExGUe9jU/qOr6/qGgRBS389+TNxrPWL
-	0E59Lt53rmjn2xMEz6rWvyNY1HCgJuXHe1xHYQvPxgHo0Wv2Ev3rZ6LjJpaAONWS
-	B4fygZiHh/bHafbkVUcaA==
-X-ME-Sender: <xms:L9hhao9SzhjZNO3_OeHML98PxSMs_RGt1ZHAxLohetKJep1-8vu3lA>
-    <xme:L9hharh0aOdU0Il-TBXDcDBrpNrzVp-GKjLHs_OsGvYvoJePDrBzQNuBX-Ep2toMW
-    vtGSH7X_IttVdBR-xFgmSCFguV9d56_Kq8i3UO24OLIbGpGHZyc>
-X-ME-Proxy-Cause: dmFkZTF28N2zVOgB4i+IDbUFo5lPnmWt5yN72Qeqda4VDxpbYcuatT80WlC7DQczBt9xnI
-    2xyeFNkCTHEcFqw0KQ9/zCYJ5y8+d4jKS9CHMWN7oOFafIiELdAqE5OGF8G9NEoV1A0EV7
-    wzvB0QsnDCkSzhQyoSvbS+LQq9sjAsaxCIPhdKC9nbTskJwGuiRO1HPeCbV98lVTWajI7D
-    SixnyBVXkgQ/l/c2sBx6r6otcCfcENPmBvfcOizP+GeOC0B2DRmTxI0DR7X4k5+2TR4zst
-    GwFAaeXC192JI7Lnh32mbEbdvSzAh0WrJgTXBZnLr7XNj7PDPT7Rrkm55fYu3FT0iGLhOI
-    nTqD8t5p02jISOCbYJTQMeLMSBcYL318xz7hGJiP3jr8+3+5L8LM0BNII/9sf6ftWgAFCR
-    EGLu5OB7KAUuDSpszH/wdJJVTZUEZHpVeuIVniqBhfDSWh1qXdwq6EY564QanpQkUqQCLq
-    u9rJZyAd7WHIQL5k9a7PmblfiLdUe6XKLtyZQSko6iBlpYpIQDoOQgopIIkbwHSCELsvxS
-    3VQ0EDnT2b8A5sIFIKc0xrDaKQ/FKRNZKBitnfwh+JFlpIo+u3trgDu1+hhz6RSe116+e4
-    1EaWt/Wkq0Hn3/4sOlGbif+UeFkhgDUHd86qY/q9xqinnhM8qSzJtgOYfDKQ
-X-ME-Proxy: <xmx:L9hhagXEZnS7X-gPEh44QiP4wk4eac-zQP2p6gGdjmqvVUGSxXmf8w>
-    <xmx:L9hhalRiKX2UdYtxbfg2d7jEMYkyr5EMsntLOXqPJ0ZBJMJQlv4qMQ>
-    <xmx:L9hhaikqGz6HxMAubkupwgf7vEaDP4GlYY52mRValI4idVYhR3E72A>
-    <xmx:L9hhaj4pi5cdkNzwpX5SYWJQdSoB2hmpBweQeKvAYDqDwsGDO56XtQ>
-    <xmx:L9hhalXVAo1NU2bsM9-jylyuKTu1EoNW6epetCb5tAYVhYD3tUTiksm6>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 7B07E182007E; Thu, 23 Jul 2026 05:00:31 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	bh=HFDQsWaV4YVMqaytcd/qULKOMwPiXTV9I3KQpj/1PB4=;
+	b=yngq639XYy7lm6ndA3RbyZnaZBl+F+BGtt0GDBv1dakCzvqzYnUzY34czaBNwEzjLhqsNX
+	NTrujm+6Opn20RYb6VQelBqteXPBmDmmEDXfVmK4LsIC6NkoIP0WFKB2uTFQ1l0gM7uUGp
+	S6592q8jpGa0PZuTnsH6v+XQoyfu4Fg=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784798129;
+	b=K+tVrwWGZEnW6tvJK9sC67N4UdJwgwoIMICj65WDYzEtMOPagPL8sb01oyJEJCw/GN0XfR
+	meZzA5pSnQVVV/8iY3KAeiGcjBXLIIA2Dh8eqvp3H7pl4IcnLXDzbmZP2EuxsJnRASHc1M
+	5y7eT5Wlnq7tjIJ2SYVJC5PuIhNwwMY=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VN8l4I8x;
+	spf=pass (imf17.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784798128;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HFDQsWaV4YVMqaytcd/qULKOMwPiXTV9I3KQpj/1PB4=;
+	b=VN8l4I8x96+KOSYruHJdo9bkEjjmbjUDOcl8pwDyBrgTDzsOlKcVagcNLX2CyM0jZWDPOM
+	8EttGd8n713pvl61eXkW3eYWpz5n8qxE3gOminVy3IuVTGle0bxzZo2A3bon2bvS0yJxFT
+	LVNwQ1YmsZw+xqD55gGrIEttTn0+myA=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-247--BvzslgUN6KW7iNBoe_SFQ-1; Thu, 23 Jul 2026 05:15:27 -0400
+X-MC-Unique: -BvzslgUN6KW7iNBoe_SFQ-1
+X-Mimecast-MFC-AGG-ID: -BvzslgUN6KW7iNBoe_SFQ_1784798126
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-47f6e8b5996so430269f8f.2
+        for <linux-mm@kvack.org>; Thu, 23 Jul 2026 02:15:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784798126; x=1785402926;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=HFDQsWaV4YVMqaytcd/qULKOMwPiXTV9I3KQpj/1PB4=;
+        b=G+grqHtz+4HQrPkoYz0p5IkTlF1KEz8KAKPGm+J2/e9PMEuDDajJWGyBkprz06XVD7
+         rGfnnpJ9v7VgyWBuedRNyLMaivZEQoyMueq6Y/y4i43OBjSporLB3oxug8t4LuWsS6l9
+         agaa685kwCEaPmuN+/Q7Cw4RkD6aK2T6Q4SxVRXB/j5rZk2hoy0C0OOhlEAQA2+3naEi
+         RXL/LaNOY48gsjnYM8/8YEEFShpzHKaU7hj0bFljLxzzs5AxcFaSTRtdEhFCWRJ5TGHr
+         B+MGSzIgAMrUOIR/OZMooCUZwAa0qy5hyPgEBdPfcpet1HSDR+qCyUgdGUD33N1lsURa
+         Zt2Q==
+X-Forwarded-Encrypted: i=1; AHgh+Rqvn2ZgEArAjRGLj93lc9ZJOjuh517kcKOuezIZtOQIHsI1SBFsCi8R1lnORdc37DpuoOOPvOLyOA==@kvack.org
+X-Gm-Message-State: AOJu0Yzq8+TE87litWAiKOpxBlrY/+HOL5ciPtlnfSQ8qoCVG12a+L/i
+	AB4k0pht7ud2TF75Ki/uDMBR6OtC6GF8AZBrSqz247KPL+/ja36wCT2CecxGJF5jW8v2NWNk5sN
+	iZ6asRMtR48LeBs2TSg6+zcZ9HqEJdRkrbUv9bJpt55dXBCzJTIMx
+X-Gm-Gg: AR+sD13qr5YhK1yxZ/SH5AKzylG5WG7SoYWgIrP13UP1hCN+7okBifUBip/Ds/p6srG
+	58Twkmn7491AuRg8ObZ/RQdpcCLT1kz0AGZFx1tSq+l1rSv3EWfc/8AtYliYblazybudWutkvyc
+	Xtr5lF8lK6ErFQ0/cfIcM0zj2LdAKXwWGGLjb9gnFU5p8V6S/HeqEd+6hJBRLSQPqLoO2FtIY6W
+	y/Qi9Imnytvop5y8A4UW0NUgwOKbEEQbpuw4/n6YoQjM9QrRq23WPaTNtThf/wM+6Ltj0xncUt4
+	cHMCGBGg5CoGbSJbZZgOx3vi0CjbfPGayAhd/1lwiu2U92pjqwND8vlZl21cHvY6mAnaRhxMwSL
+	yU3/hANwVzT+52HsZ1y/Obw==
+X-Received: by 2002:a05:600c:548a:b0:493:eb71:5cc6 with SMTP id 5b1f17b1804b1-49573d0eac1mr23927635e9.27.1784798126322;
+        Thu, 23 Jul 2026 02:15:26 -0700 (PDT)
+X-Received: by 2002:a05:600c:548a:b0:493:eb71:5cc6 with SMTP id 5b1f17b1804b1-49573d0eac1mr23927055e9.27.1784798125726;
+        Thu, 23 Jul 2026 02:15:25 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-37-66.inter.net.il. [80.230.37.66])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4956b72fac1sm108575995e9.1.2026.07.23.02.15.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Jul 2026 02:15:24 -0700 (PDT)
+Date: Thu, 23 Jul 2026 05:15:21 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Link Lin <linkl@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	virtualization@lists.linux.dev, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, prasin@google.com,
+	rientjes@google.com, duenwen@google.com, jasowang@redhat.com,
+	xuanzhuo@linux.alibaba.com, Ammar Faizi <ammarfaizi2@openresty.com>,
+	jiaqiyan@google.com, ahwilkins@google.com,
+	Greg Thelen <gthelen@google.com>,
+	Alexander Duyck <alexander.duyck@gmail.com>, jthoughton@google.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v3] mm/page_reporting: use system_freezable_wq to fix UAF
+ during suspend
+Message-ID: <20260723051327-mutt-send-email-mst@kernel.org>
+References: <20260721005603.1710551-1-linkl@google.com>
+ <20260722173639.34d3f58413354218b24a5b0d@linux-foundation.org>
+ <CALUx4KSfUUud86k4SLwETJAciRc8kZ9QocvBj39KmzXDiQ7J1g@mail.gmail.com>
 MIME-Version: 1.0
-X-ThreadId: Ay96WTovVnnN
-Date: Thu, 23 Jul 2026 11:00:01 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "David Laight" <david.laight.linux@gmail.com>,
- "Mahad Ibrahim" <mahad.ibrahim.dev@gmail.com>
-Cc: "Kees Cook" <kees@kernel.org>,
- "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- "Mike Rapoport" <rppt@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Message-Id: <e9bb1f61-03ce-4f37-b3c0-cb87f11b8f72@app.fastmail.com>
-In-Reply-To: <20260723094522.535b284c@pumpkin>
-References: <20260722230246.2869-1-mahad.ibrahim.dev@gmail.com>
- <20260723094522.535b284c@pumpkin>
-Subject: Re: [PATCH] lkdtm: use kmalloc() instead of __get_free_page
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: rsd6kb6n5fyp5pn8nyf5qse5k9h6gnns
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 91EDC40002
+In-Reply-To: <CALUx4KSfUUud86k4SLwETJAciRc8kZ9QocvBj39KmzXDiQ7J1g@mail.gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: RhZiPcaeU2yoFvYIQVjazLaE3EJG2VOZLNxpqXEKQFs_1784798126
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 84EC44000F
+X-Stat-Signature: qxkcr89nom953ymymt6yq7g711yoneo5
 X-Rspam-User: 
-X-HE-Tag: 1784797232-896789
-X-HE-Meta: U2FsdGVkX18BdMa5s1p/eO3QMj0xESbfl55z8gTXxPPUvDtjKx5ufMtZYCayJmOx1GKdwx2YPjjZjNFvOiUCXd93Q3aIk/KATMf4zYAfGqbxXk5ckpW2zJsTVB9zFUphQV/sjQuL4SBZDnkIGVLjcl7lizcfPocakps8eqzbCJ/Q0SrLU5gSPNtP0jAt0cVMUtHs8zIMryiKr8GKamlLBmPc9HfyfYoZPDHt4DSliUqDuBG/G3wqgjCGh9AaL7sEbBwy1nqoAyP+2ZPWg2pYiHqtyr1iOx+E4SrogLna791aoJ3gumuhd1fb2c6QXeTokQEbTmowXmh2GEhgneOkSrdcN7uE1gzk6DNhic9WCBQ/MjOniGhgNVBwiGbMGHe1jMT2/fe0CPkuBqUm5nTR9HUgf4s8xHVI7VVwh26MgByYiGcVRMoM3F7el4XeeD/+6FrdmUY1SvG8k6VkYfHm3xH9D5bmUSqXiA1iIav4JhHF3dmyJ/KHGM7gubUBjPXr1OvG6yGBPAy43WV+rsad+IIUc/+/3i7+aWPwybTjQullbJDpBbTjywqT+H9kgtoxc5CDfG/AKOijU69lOWwHaq6nWMavne+IaSBlgE5IBtYJBvzvBy1HiqXn3anvvSdQEpMUjTiYNkiOwdq1SMtW6T3+xWu0Fk/29d81w0T4C1L14dtkK5Qg7+QaiifHmZ2kSi0FHp3ZxN17E4ovf5i/RzBcXD9iFuX7VjSH5ZpuhvUASSBh/TNU1XZYTwhKj/aFmxXiT0ctHqCZzxeW03sGM780mFi3O5VgXYe+fOqfx05i1eZ2KYIqfTz8MsoaK0MqESusqXz2GafVmd3rhNGFRAkOMCnq36C1yu4z9nvRFYTvKeNdtF4QrOP+Hd3R5OwR/lbpmRlZxclXsvs6uetTBt4HYwhKNdYxdPy32TDfsYO5I7FNSiK7Chk5I1dWOPZpzfT38T0BWqMAvzrDvRS
- /kiyti27
- TTZTHbrRjnGvxIoRQSU5YJsWZ5nuIZXwEGrf2JCkb/bta6Exv3QOnhB3uTfOFHzufXrwkkzck5PPdKEXikZjrfPfJSxW4H4qmEriTbDMu0KNHKSTuQoFi2YpglvKfYlcLK8mdb0KFtuiUEjJJlWOWp9wZm0FXDntI5fz1XOszJpTKceI5FktHwxjywwdLOWVA9APvWBGl+89ZldpyDehGmahEIkU0ZZdu9FA2h2dZDFIXvDiigBrSrwTiP5tPeet9olquDADwpcvb+kQ//703JtSKY0pJL9sjo2J1epH1Heiw4ozzoMCuks2DK73d6F6fm1PWwwFLVriCC+8jQ3A3goWGahVg3xfqIRtKnoKBbyVPFwiEFSUtMd3FlQ==
+X-HE-Tag: 1784798129-169419
+X-HE-Meta: U2FsdGVkX186BkU6r+sxLSafkdSa2mJOC0yFus16HjSv5GEsE7RqOTYzQJ6IKJ1T86JvOT8WXff1qFe3qv4Iaq/IuvOwSCljvD/AvfD1I8oSKGHA0ByaScl3qWaM/L38PQ5q+S9vdbueP+aqO8A4Z3jhtUlmOAGjYqgbLF0wl778znoUlrNcb6SWPc/nzp/J3GcintFlXL/oGmwAsk1FS+gqIpF/4QNbH+s/+/HuPtwK9QRPqncQ6GthUmShQpIc8C8Ye6wMXJTl9qXaVvr+YrRFWQchIqfmeibHnNGwFXFP7ETyii5OTOzLmc7aYCmbd9ervzjO7Z6fHOefX0XkTLKX1PUAxRLU4ZkzIqa2lY4aktmjawHcmMpAE+fNp+iucJbi0W3WeDaaIJsq00nv/UlRaPlRahmy513O+opuRQoQXBcab+xfjiRZP7G8fB7UmWAwJR74FAFx/pI9ThZ6fhkHIf8VV25pp/H/Is2d7ai4KtqRc59gy2N+lKDNMuiKBXqn3FRpghhZCYzsR10eEGjkwZZ3kBRuRx8WKxmBOpjvleyDTXSifsfFY8tcCg69XqVDv3RqEj3WS2PRfPGNbi8zf0XEokajp5uAjtqqDQImgNXFBj3cZaFMjKK6G00+EriOsGTovvk0M1AQoUkBVj+C6rCpylQX8fs57hICvJYaKofYNT/b7AHQt/395JPJpzcm2g/uij7kxgUucP7maKJnqqLl3WIoITBe2LQ6vJOY7t2hADhtgvUFrVub6njrwaHyee2piPY88Evjdkj3vFPji13A3c1N1dX4QLmQHLtzn+yi9B/u4r78vSI/JqhYGja1mpNOvUrCteZVIiPcA3eMFNMis8tkTmgxAPB9QM4G6iiosUfyQxfcUWslk8ovu9nxQvAv/I6DHqv2COjSGY9ZlI7QdeBLAgAW/Twh+e1Kge2kdhzPswmOo69d7JrCGrkIt0ZwPkFJHynUTQS
+ hYckRCyB
+ V3dtle+6Tkp9ghdBzHRpBoepIEvA2/bSatG67WpDvnhMBEwaw/Tt7JHNr1DYMq9y/aFGj0FJq67dECOX1M+1AjViluQCR4IvvkKS8W+3PgBZ+bEAejL1FEnMDKJAI5FZlL0GiFSyvSANet41L+0i+KXr+/BYxk4kd7P9rUcHa+lLV6iE80LtFRi2UUnYuzqVyF7UVyQVasEZ2SxZsC6OlTLNMzt7eCWsPYGl+E2Nl1UZUmDv0uc8rbk6hwmxhQP9CLNSW9CzAarGLlzspPhQ+5zD/dW560Sk0Yo+F4YlfSWziBxO2mzIY/ma8lkLtRyI5hniEmqaxnURTEXsdGH0FU4hFWAGxAJ6UoA66muFA8R6V1r4T51Ihm4CXc2LO7/ALF2TR4hE3Mct28GZkTQU9cxofZo2T9twI9bgdNsoJxyA25wAXNeD5LVMfXlrPgnCSgWByUzENifmo+XEuXTN9vAEBmG0sBDGR7ET747ylhv5pQHO7xiMhGKhnkA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,38 +141,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 23, 2026, at 10:45, David Laight wrote:
-> On Wed, 22 Jul 2026 23:02:46 +0000
-> Mahad Ibrahim <mahad.ibrahim.dev@gmail.com> wrote:
->
->> lkdtm_debugfs_entry and direct_entry use __get_free_page to allocate a
->> temporary buffer, perform copy_from_user to get the crashtype name,
->> strim() to strip whitespace and find_crashtype to find the corresponding
->> crashtype that is being requested.
->> 
->> The lkdtm_debugfs_read uses __get_free_page to allocate a temporary
->> buffer to store all the available crashtypes, and then copy it to
->> userspace.
->> 
->> The buffers that are allocated can be allocated with kmalloc as there is
->> nothing special that requires a struct page, or the page allocator.
->> 
->> kmalloc() additionally provides a better API that doesn't require ugly
->> casts which obfuscate the code and kfree does not need to know the size
->> of the freed object.
->> 
->> Replace use of __get_free_page() with kmalloc().
->
-> None of those buffers need to be PAGE_SIZE.
-> Even the sanity limit for overlong requests could be 4k.
-> The longest 'crashtype->name' is probably about 32 characters, so could
-> probably go on stack.
+On Wed, Jul 22, 2026 at 09:07:04PM -0700, Link Lin wrote:
+> On Tue, Jul 21, 2026 at 5:36 PM Andrew Morton <akpm@linux-foundation.org> wrote:
+> > hm, now where did that come from. I can find no such commit and that's
+> > the second time this very unusual thing has happened in 30 minutes! I
+> > wonder what's going on.
+> >
+> > I'll use
+> > 36e66c554b5c ("mm: introduce Reported pages")
+> > OK?
+> 
+> Yes, that Fixes tag is perfectly OK. I pulled the previous hash from
+> an internal downstream tree by mistake. Thank you for catching that
+> and correcting it!
+> 
+> > The bug is very old so I won't fast-track this fix into 7.2-rcX.
+> 
+> Completely understood and agreed.
+> 
+> > AI review pointed at a possible pre-existing use-after-free issue,
+> > related to virtio-balloon. But I think this is a rephrasing of the
+> > issue it flagged against your v2 patch.
+> 
+> I actually looked closely at Sashiko's flag, and to my surprise, it is not a
+> rephrasing—it caught a completely separate, valid edge case.
+> 
+> My patch fixes the UAF on the PM suspend/teardown path. However, Sashiko noticed
+> a UAF on the PM *restore* error path. If virtballoon_restore() fails during
+> init_vqs(), it aborts without unregistering the page reporting worker. When
+> system_freezable_wq thaws, the reporting worker wakes up and dereferences the
+> now-dangling vb->reporting_vq pointer.
+> 
+> Since it's a driver-specific lifecycle bug rather than a core MM workqueue
+> issue, I will write up a separate follow-up patch to address it in
+> virtio_balloon.c
+> shortly.
+> 
+> Thank you again for shepherding this fix into -mm!
+> 
+> Best,
+> Link
 
-It is a straightforward change with a very low risk of regression,
-so I see nothing wrong with this version.
 
-If we wanted to improve readability here, I would suggest
-using strndup_user() to fold ten lines into one.
+I suspect rest of work items we have, e.g. update_balloon_stats_work/update_balloon_size_work
+all have issues around freeze/restore and error handling.
 
-    Arnd
+-- 
+MST
+
 
