@@ -4,101 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E16EC531CC
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 17:37:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDF0DC531F8
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 17:37:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EFAB76B009B; Thu, 23 Jul 2026 13:36:59 -0400 (EDT)
+	id A67256B009D; Thu, 23 Jul 2026 13:37:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ED3646B009D; Thu, 23 Jul 2026 13:36:59 -0400 (EDT)
+	id A3F0C6B009E; Thu, 23 Jul 2026 13:37:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DC10A6B009E; Thu, 23 Jul 2026 13:36:59 -0400 (EDT)
+	id 92CDF6B009F; Thu, 23 Jul 2026 13:37:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 996BC6B009B
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 13:36:59 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 22B4D160108
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 533ED6B009D
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 13:37:02 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1C5D64011D
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 17:37:01 +0000 (UTC)
+X-FDA: 85020747042.06.8F23413
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 353FA100006
 	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 17:36:59 +0000 (UTC)
-X-FDA: 85020746958.19.729B0FC
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 3ABDF40006
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 17:36:57 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=b1h5ur96;
-	spf=pass (imf01.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com;
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=hD5fRqKk;
+	spf=pass (imf05.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.210.169 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784828217;
+	s=arc-20220608; t=1784828219;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/3EHZQlaXq9sLmhVgtuP5ODA2wxc36yvs54yemcncOc=;
-	b=ZmrxmoAT9e7SPbr11R6MSIeqnCFPzJAtV2caVmngNAV7SzGxWoqr1kSLDL5o3rpcgh1Ajn
-	1PHd1P/huDgKHjG+ND5m7TG/iXTNasHX/ayxT1mPvIhTbybFy6/Sj9JmBnV9fcx+wQb1y4
-	ccawomFq2g7U8zRa3GGXdy3+OLuhsFw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784828217;
-	b=E80duH0FSi+Q8woQZCs6EZrWx0deUPVXTeERAPoUkAa/fLyleSPk7gMXbrQyZ/cFIyo5ly
-	rcr0j6VAKMLYqpIntPuksWrjrg2rDK7P+0wuvBpy5DtbpW0otJab/CgQy8BUDEa6G3t1/Z
-	C3jXsOAlwCGBtzRsbf7iTaTjSsqTAHc=
+	bh=i8Qd33SMLkRtmqANiDW8AEhl0t9s2Dut7/75bk+4IdQ=;
+	b=luvkilguMTaRAK072r3Lqi93hKOpzsKvTeE4F7Beumsiu9ovZQ5VM/EUaDke/8svKgiZIU
+	NUXm9wLwnL1Kh0ROClfjEqvBCGfz5Cm2W/X0TzJ6Q8VV75jCtDCX8dS8od1MPRpQfEYnVc
+	RHs85C1rBoBFh0NCoyjNqIs+rl+IO1Q=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=b1h5ur96;
-	spf=pass (imf01.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=hD5fRqKk;
+	spf=pass (imf05.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.210.169 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-84536ecfc5bso1148288b3a.2
-        for <linux-mm@kvack.org>; Thu, 23 Jul 2026 10:36:57 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784828219;
+	b=1bPoZZvF9CPTKa0FqaSZ8vj2HP/U8XkjCqs3IgKmWea2xum9zqpBEZavRsGSLlD+DzmBXD
+	cliXkmUWkpDajEdAygXHrtR8QnX4RTTltTvDNuDY4zIXKALq/dTU//X8+qDk83aVcTwLjU
+	ZzWhpMvnA0d8EiwZyc91hBnKxZ2TM/Y=
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-84a652535dcso621041b3a.3
+        for <linux-mm@kvack.org>; Thu, 23 Jul 2026 10:36:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784828216; x=1785433016; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1784828218; x=1785433018; darn=kvack.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=/3EHZQlaXq9sLmhVgtuP5ODA2wxc36yvs54yemcncOc=;
-        b=b1h5ur96Kai4lFh148+RnI5H+RPODIMWrfylxTpIB5RslzgPVxnv6QguCTexVcvQoG
-         v/pWb588SA1t+j/4hparyJu4LSk5wUulm6wtrIW1IAygXT49C4ZKcsls/w+gJ0uNULwT
-         KYNpu1PC4vHfjIq5KRDFdQZ57N8y1WJe1Ea+zxbmwDGm1lCfKRhmKhWqT8JIe0J6Q0h2
-         nIZ+y69Khlbtlj0NbYSGRabJgL64xTYLF9oqErJ1I0F1dGOgXEwzwLovWCITp8BIzqVR
-         qRC3A8kpYkqJD4ZCFgI3bC/uzRpegYQVJO5ZC+GVpqpRw6C0YKY91NzDPZOvXKfvA8fd
-         AwRg==
+        bh=i8Qd33SMLkRtmqANiDW8AEhl0t9s2Dut7/75bk+4IdQ=;
+        b=hD5fRqKkW8lG5kgu/BaKs/irMNVfKK+jHOjOdbjWkpqOAfe2rBvy6+NK45koCpUREA
+         Od5OVmANRVn2qaw6thSHOjkIUEmmzeJDCPWjKnugmapFzZzGaKW9LwhXIGxBxrmcS6o4
+         1Kh5mcvteZqftFuf8lSCqxcxxssLanQnGmAzZ0+/J1hPnKmlIxf1edVInHIS+6OAVvot
+         OutICufy/LiMob5nLbgxtgdfXXQVpiSqllpiJj6mAIczNOevP1GUGzK7MwxagLjA2bL1
+         oOVl/0lyTVlKcIFLCJwUc+XODSE0dh5zkusClVE1J5OnGYnGqqdcuh6WAuXKC8mf+sAz
+         zdxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784828216; x=1785433016;
+        d=1e100.net; s=20251104; t=1784828218; x=1785433018;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=/3EHZQlaXq9sLmhVgtuP5ODA2wxc36yvs54yemcncOc=;
-        b=AsZUMWL3Zg31qoTDEW5r1ykQ+tOnFrDmaeJl1TZO70hUCYP487MJv+pYyr2eZOmYX0
-         KJ+hPV3oJoiLh/UknZEGwRLlnQ5DcAUL545mIm6PrDWVeQJ8sgnylp7jPUHeS8sM2nFH
-         MCtJcdmgVhq/kgehVXuYl/YK8Bgp6HzpIwwzClKz5LXIWhQfXg76eHG7v8kLxhmM2+ci
-         AfkyJSKoRhgsmXTVUb3yhdT9II4FuTFZyZqve01Ct4JWLkJHhKgEVxgU2XdoIdbQoc7q
-         9o0toc/uphT5NmULYtnoHdOnbJN4bFWQ+jSVfqUoXhuQgnj3ykOVv9yCy8v2IY4EhMao
-         YJFA==
-X-Gm-Message-State: AOJu0Yxe3A6zNZ1+LaS6IQwQeZczV86Skj5RA/D3b1CPN/Sub/zACHa1
-	sffcAf5JW0mIsRZJde5/PNL555OgnQEpknNJ8IhB1lS6135MgwQiNddF
-X-Gm-Gg: AR+sD12iiAvjIHQaUJQTyIPfk2zVgz6WF6nlAdtEwv5+ZHiEZvbo/XcwgpL5wIghrfm
-	Ebd4oUVjGZ6VINJr0vp2UN7PJn2ZGPSs32ybb26a/VHZjiWxLSPNUznpen7GP763D4jiCoodU6V
-	dzzZwQLijLK9vvC4gVGpFI+KWUxGsl1U9kdVKcAcF325ASH5siOyaYSFGrL4/QFhF5ODiCNXQao
-	SXZ9j67NMSdym7Q38WAQjB26fVBXJBPBhVv1v83k5r6qyZFGmgZE6gF4k1iG6dKj09C5Y2lEU1a
-	4B0TRUSvBNlXNP51++WFYcQbtQWLmqEvn8aHBCXPIcO9UkzJU8FMbQpSEUQIA78KexvzP3j66sx
-	fPfISRzedK/9Fh58xw27lycJR/fabzgaLiNxIrcnLuf6J5KjkUia+MbCBYTKTFhXwMqqmfSO6Km
-	oDNbpvvJDsRHRAfpbbJTaOZKAznhlV57S9zTHhTUzan2pKurTs
-X-Received: by 2002:a05:6a00:4482:b0:848:47d3:47ec with SMTP id d2e1a72fcca58-84e2b8ab6d2mr4797080b3a.31.1784828216068;
-        Thu, 23 Jul 2026 10:36:56 -0700 (PDT)
+        bh=i8Qd33SMLkRtmqANiDW8AEhl0t9s2Dut7/75bk+4IdQ=;
+        b=Vc9S9B8r7jzceSay7FQvBVTr6HO1frkwh5fGp9ce+1w1c/S0YZ+PSE+J0M3v4fpsPb
+         rUC6CSabCrRj1sBYy15zC3Io1aCuqdRIOPdJMQZNAWX5HowxpNoHrHOJlQ+C4+glHjtH
+         /Odz4x6JBpteh4QecwH3zMAM8ZpY/qfF1dWsaBICHDlUzZ5poeoqP2jQEpmcDGD+nK83
+         W5FP1PaW7PUbnan1Dol3B2uT2KuSKViS6UYrRG4vdJ8ndOtihSr48fCjHl+CxUdUcYyy
+         y82ZVj7n8jhpDpdvhRDRH1dllsallWXP9L4VmUkbgqOEjup9a+uNQRn7ZoYIsz+GfSIq
+         evBA==
+X-Gm-Message-State: AOJu0YwrYsfOb0vUPLLdmVCbu3OGJV6B632XSkKB2scyhTXxMQKKnPST
+	at/eZhCJNyq0AYmolmCZTWqxg1X1gH6SIuysxIIT/Y69NRCLXXMOI3w1
+X-Gm-Gg: AR+sD12c367CO9nNM5I9SC/++VxWO46zTao9gpU5wcXH3RXZNi6HSx2+zf0rROEbm8K
+	ywgn7U8IjWpb+qfgq2b6+RTc7GxeKdIktj6OXKcbLartKk5e5xagZ9R/gk7bDzB79vmJfSVPVcj
+	sqG04FrySPgsS3zyjO+ktveDsa/0lKMfhL7iNTuA2P0305+NUbdX70QIhabnoEzDflXyJDp2lR4
+	D541Xnto42BG7Bpy/i4t0lrXbkpnLKq8xu1k0W/KRak7Ku8Y4ZSLOlLXFZcM069Nt7hj66e9pI/
+	4+MrzDywxxHmPRw5sBM81sTT8vNI1iC1Bd8aEAiWPGKFudCjVAVbSHDtthWG5XwIanZEKNQlxDc
+	l9VdgBRoo3Wxd22kX7MPX1OAPmk1+AbZmux/rY7Kk4JZQEcJfzUSRU0JxhDvRTDjUjOg/dd+Rlr
+	hzByRCZ8suLQFaShwANIzZJMn0nCgGmY1PRE0+vDDejfCcxSzB
+X-Received: by 2002:a05:6a00:cd3:b0:848:88e6:95d3 with SMTP id d2e1a72fcca58-84e2bc4d259mr4728321b3a.72.1784828217972;
+        Thu, 23 Jul 2026 10:36:57 -0700 (PDT)
 Received: from [192.168.0.160] (c-98-225-44-182.hsd1.wa.comcast.net. [98.225.44.182])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e20622dedsm2691612b3a.11.2026.07.23.10.36.54
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e20622dedsm2691612b3a.11.2026.07.23.10.36.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jul 2026 10:36:55 -0700 (PDT)
+        Thu, 23 Jul 2026 10:36:57 -0700 (PDT)
 From: Stanislav Kinsburskii <skinsburskii@gmail.com>
-Date: Thu, 23 Jul 2026 10:36:39 -0700
-Subject: [PATCH v11 7/8] accel/amdxdna: Use
- hmm_range_fault_unlocked_timeout() for range population
+Date: Thu, 23 Jul 2026 10:36:40 -0700
+Subject: [PATCH v11 8/8] drm/gpusvm: Use hmm_range_fault_unlocked_timeout()
+ for range faults
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260723-hmm-v10-v11-7-c55b003a4b61@gmail.com>
+Message-Id: <20260723-hmm-v10-v11-8-c55b003a4b61@gmail.com>
 References: <20260723-hmm-v10-v11-0-c55b003a4b61@gmail.com>
 In-Reply-To: <20260723-hmm-v10-v11-0-c55b003a4b61@gmail.com>
 To: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
@@ -123,21 +123,21 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  nouveau@lists.freedesktop.org, linux-rdma@vger.kernel.org, 
  Jason Gunthorpe <jgg@ziepe.ca>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784828202; l=2650;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784828202; l=4921;
  i=skinsburskii@gmail.com; s=20260722; h=from:subject:message-id;
- bh=Js9Z5fScNTLs9yZDEPq5MMQDWBFdccrrYdkvKMfBR0c=;
- b=UoKX2QEi16TQG/XSPiXepu/KONklG+8l1kn86LgWhqxQQe32BnNrpIu04JJYOeap8yhmhRNnI
- Xgchah8NIfnDwgLdxf/plAUECr/N2GDtTgg00z0Czhp7vw9hyXoBoqQ
+ bh=OHRNaT5JjbQYbg0HfVsh/goi/Wp2JeVv837tKjXheiU=;
+ b=3mS7hpEm1cC4EjlfjSHzs08itt/haPD5UmH5YZzhkX5wXqdTOzSMnls0rW++T0vSS8hxNEDOH
+ H/0vN9YPqS8C3NJp8Qfk40j/53Cv5CNaQqrwQS1NX9qK2UYGBofyGE6
 X-Developer-Key: i=skinsburskii@gmail.com; a=ed25519;
  pk=bDpriHBYgeTdkIDweZDCemxsU93neJBOCn3YLIuJpnE=
-X-Stat-Signature: jcs648sekjs7dzhjt6ye9bti8n1uuryn
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 3ABDF40006
-X-HE-Tag: 1784828217-260299
-X-HE-Meta: U2FsdGVkX1+kvpMsWcsfsgFaCVDBnMDu3C0JA6kU2K8W1A176YOElcdtrFbAI2bpIzlRIy6APdloJsPRP89YBHhevcUwJyNDTjZLz6T6qP3rnDDtegCsAOxQk6rSxekzGH8XOKtidxaXG3lDXqc5qbsG3GOeSSAp5W64YbqSBGLB/5HHhbERrnibD+ae7mEBodLYw2arIdRo+pTJVgCw7OUKNKFfvR+YOZY8jxALvNUTj8gToV/eeAphNDY3VXkeMkBXA5ablYPfgW2H/jJ0D8quhj6IXjOci1dJGShJ56sWEI9jKPbsNBqfS6I/cEK+ShY9yMolf9aTSku3SGn9R8Vi74HasP67b2L7b2T8TpoS/4IiARNKH3ojAcWRwQl/8H4uFi8AUL3TIUk9ovIvS3JxER7cDy6rVfnYuEr7lr6OcY63l3xSOIz5OGz5jCjEnNANu5U7T5YM26deXbNcoGZQXW6Ct/UySPQ14TQvo1CA5CuKWbd8a6wzN766tcpvM6qRp2NMvR51TgabSq33uZ/fmnru1FvgS0aWvLeTAjyNoi1a44KvOJjwAZF8P0075COhxoMV62bLEniErnfRnHGhk4KfXH/EMhrX+jqSfYPXR59mNS2eIsyTRTmIO25LPwii9ORBLAJcP4qlZjWfN5qSUjEJI+K+3DFrA4dS3OguitgSI5h5llSMBq8YFNaWbD4L0syB8x6GI84oYpQ/SGdoSd86kQr1ePlHtsqV4aWXZ7Ina4a6pOTblehwhtHyqBntcx0wsYWgPkdzE28xgr+eKVGOcIwaJTSoPZrRbN390DAVDB3kWXzycwec0RReN618j1koM+8VwytX3ptvf/dpKsbF1u7Jf0F+FV9kUUww4VciPqhPZtDwUFVUCz3u1Z60OHks9L8G79pKJfDkmQpBBaOWfZ74iKL7XuStNh0QOmmckc7NGIBDVCsHGxbvWA8OwKED+uS3l1HT3rp
- 4YU6dzRK
- rycDCrMgb/hr4f6q0ISyFNAjbQr6KPrnH3lr8pVZzha37xxgBybsOwl+dF2U8Alk6z9chJY/GD7FianlrK9pTuWecki2qGbTVYQD/ldKPpSM0Wgfv8VAiQQsGgIDX3et9tDYq6mz0ucILfsAfXglDCqF8EE5e0oa7kSzO/Fc/fCNayDKaN6QXp42B7GBnSJDcpPw4xeXVDVFLSxMSI52UxZ/eIiPEGk7+RqSRU0YMcC++LP78TUZrft5kYqxBgOWoMUnwBPclQ5O0yPQ51nVRhz2LHbVHs4lN7CdBzM5xUi7N4IaI9UAbtcLQF+KFO9em6y7mhjch555ASMI1XvSqoxZXVUwz21Yt3UbbwMrUKtJvqQQzrVL6t+nnxfwWGPkPYPPx+LD4ioG+VTsc6NbQEn/EHOpUAEu0Y1eh7zfcjUhJ9ahFvAP0r1MFBCx9hoIC7loR6nDo1XxUwUbHHRe5Jdsmush1oRUvWx6QRSUY6x+xQchnBIWiKm85AcCWqNtJNGzNc/082cHxUZKbwYrzgZWjCeKuMXj5/64jeXQmPqKRV0c48VifLG2MUfc3OsyjXdDvm63JBRYbBjpV2eQDT+ojcP3M03ypcjZRg89O3XffaB9GxlNRYvroUg==
+X-Rspamd-Queue-Id: 353FA100006
+X-Rspamd-Server: rspam01
+X-Stat-Signature: efaoknxmdhrusf3fowzgm8d1nc7zbpak
+X-HE-Tag: 1784828219-558550
+X-HE-Meta: U2FsdGVkX19dhrZAu7zytY3Jj6d8d9sX09FcEm7Rmci5DcuHHRCwwT3i0Kc7N+PjPqjrpxdgFv1fB4vXGa+w2w3qrkGACgGZywwETh46ky5jF+SoX5X9FqDDpJssXD08k6tyuAutGi60tFufdH70YaXIOO7gPdM4JVMZyZFxxyNwpluf/fFoE2unDhvCsiwRNlOKNqPA7moECh/Tez4R0WD/Y59hkcOpdaS/lK40WjzR08Sgz2OvwU5edaJtTHjv+N5MJUnmQ1O9VgawqwV9wd93E/UitRHCy6Cs42aZKmvzLBR89dbIeyjPNIBFnVQZjMW2M82KTu3Vk4L2vEOXNJBp8Nev2BPfZwEgUeMQ4uHq92HGm1xM2sHj0Q6Hv+Z2/jgfVOkt10qXc1jaYJw9sK3m2UE4m0FxrdPa5h2jKuKJmkFPmUbpLRdytZH8217GiomwlZSv+1pu4lUwF7kpB8pa/q8IDlEvHEM1hieTZ41xfQ8GlGGDOtHwMx/5JspIUQ0Cy/7xJr7oZQL6m3/n53VJYIAGBalhgft2ODJGPytLBpulpRBke07mlZEjQDpwYC0FAl86Iaq2u+rb/tGImXF4YyyPpaOtBj07cXpVojV00VPu3h42RXO6jW2MXNn/YtCgw461qEMIIB+G2FrEF8eqa3ndS41oj0UV1Y5pRsCoHcSV+/DaSDMrcLfmrGZvRgII2JPKwg4Yxn54G4+s/YnP347dPvOcUF5c1mRSLPSJwKfDWyM7lTstwU23k0wWgSViPuQhBxUoukHQlWLQQrB0UVOkgyKp1rmhTdWMk+BxlQBRUuPWHM/P2kjFp+8LMEQrU9pFlodj9D38RbnsyopchgpaRKL19j5euR9WowwaXl6IQZXX5EekFxPcPbcaz0CdFFzTr136gpSe2rX+nTO1wcXMHwaUgv72kzX7E0Zej5VcwWZzHD0AtBBi8/fR0ucJMUtpFfN/o6p+/nx
+ V/oXpcGC
+ gO6JxDUVX19SxLE+25Ym4QNiKUAG+IgMzO3tLMJWYczBy/3mcUZEMP/7Pit7osTfDSK2f12R509kXymPgP8QewwKW2QdpqrAYBiX7L+ZCbGKGIBJae//jSYnShpc32L8IMZQiS3uByluTAoiqWe8Y1JnWzDozYzbVjy3cH3Oo6s+MEhxdWPALuKiqrTPY9GnfPGmjr5s1G7E/A4zXuwZRO1WVykQLzITwHOKjOGzb6bEW1gTHDHKK+d3e8ueKq/GGIgsyHljdw4CmFx29qyqRyYt3SayFlLziPP7Gdtyk04cFYWWP8RnenPKFmY4p9c5McvordbJXmuh8Rt+2fEaeFHtRa6Ftle5GIzNxJ1UQT1u/REG3rYSmfEcvhe74Czl2nVDXY2quMHer577SRtxwXU7iWbuWKeAK7S9F2i6gVN1xo6emhCmMvDmQtx6hvzaHDlSm59U/Y7rFiDho5TcXTlKy5ovjldrTHksOP9nwfT+L6ITlJR6erAuA3A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,79 +145,149 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-aie2_populate_range() takes mmap_read_lock() only around hmm_range_fault().
-It also open-codes the mmu interval sequence setup before each HMM walk and
-retries -EBUSY until HMM_RANGE_DEFAULT_TIMEOUT expires.
+Several GPU SVM paths take mmap_read_lock() only to call hmm_range_fault()
+and open-code mmu interval sequence setup before each HMM walk. They also
+retry -EBUSY until HMM_RANGE_DEFAULT_TIMEOUT expires.
 
-Use hmm_range_fault_unlocked_timeout() instead. The HMM helper now owns
-the mmap lock and refreshes mapp->range.notifier_seq for its internal
-retries, so the driver only needs to call the helper and then validate the
-sequence before marking the mapping populated.
+Use hmm_range_fault_unlocked_timeout() for those faults. The HMM helper now
+owns mmap_lock acquisition and refreshes range->notifier_seq for its
+internal retries, while GPU SVM keeps its existing driver-lock validation
+with mmu_interval_read_retry() after a successful fault.
 
-Pass HMM_RANGE_DEFAULT_TIMEOUT as the helper retry budget for each HMM
-population attempt. This scopes the timeout to repeated HMM notifier
-retries while preserving the existing outer loop that moves between invalid
-mappings and restarts when the interval is invalidated before the driver
-updates its mapping state.
+drm_gpusvm_scan_mm() and drm_gpusvm_range_evict() pass
+HMM_RANGE_DEFAULT_TIMEOUT as the helper retry budget for each HMM fault
+attempt. drm_gpusvm_get_pages() keeps its existing absolute outer deadline
+because it can be reached from GPU page-fault workers, where fatal signals
+from the faulting process cannot stop an endless invalidation retry loop.
+It passes the remaining time from that deadline to HMM for each fault
+attempt.
 
-Keep returning -ETIME when the HMM retry budget expires, matching the
-driver's existing timeout error convention.
+Leave drm_gpusvm_check_pages() on hmm_range_fault() because that path is
+called with the mmap lock already held by its caller.
 
 Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Stanislav Kinsburskii <skinsburskii@gmail.com>
 ---
- drivers/accel/amdxdna/aie2_ctx.c | 23 ++++-------------------
- 1 file changed, 4 insertions(+), 19 deletions(-)
+ drivers/gpu/drm/drm_gpusvm.c | 60 ++++++++------------------------------------
+ 1 file changed, 10 insertions(+), 50 deletions(-)
 
-diff --git a/drivers/accel/amdxdna/aie2_ctx.c b/drivers/accel/amdxdna/aie2_ctx.c
-index 54486960cbf5..b5b4ca263002 100644
---- a/drivers/accel/amdxdna/aie2_ctx.c
-+++ b/drivers/accel/amdxdna/aie2_ctx.c
-@@ -1034,7 +1034,7 @@ static int aie2_populate_range(struct amdxdna_gem_obj *abo)
- 	bool found;
- 	int ret;
+diff --git a/drivers/gpu/drm/drm_gpusvm.c b/drivers/gpu/drm/drm_gpusvm.c
+index 958cb605aedd..e912e994beb2 100644
+--- a/drivers/gpu/drm/drm_gpusvm.c
++++ b/drivers/gpu/drm/drm_gpusvm.c
+@@ -773,8 +773,7 @@ enum drm_gpusvm_scan_result drm_gpusvm_scan_mm(struct drm_gpusvm_range *range,
+ 		.end = end,
+ 		.dev_private_owner = dev_private_owner,
+ 	};
+-	unsigned long timeout =
+-		jiffies + msecs_to_jiffies(HMM_RANGE_DEFAULT_TIMEOUT);
++	unsigned long timeout = msecs_to_jiffies(HMM_RANGE_DEFAULT_TIMEOUT);
+ 	enum drm_gpusvm_scan_result state = DRM_GPUSVM_SCAN_UNPOPULATED, new_state;
+ 	unsigned long *pfns;
+ 	unsigned long npages = npages_in_range(start, end);
+@@ -788,22 +787,7 @@ enum drm_gpusvm_scan_result drm_gpusvm_scan_mm(struct drm_gpusvm_range *range,
+ 	hmm_range.hmm_pfns = pfns;
  
--	timeout = jiffies + msecs_to_jiffies(HMM_RANGE_DEFAULT_TIMEOUT);
-+	timeout = msecs_to_jiffies(HMM_RANGE_DEFAULT_TIMEOUT);
- again:
- 	found = false;
- 	down_write(&xdna->notifier_lock);
-@@ -1061,24 +1061,9 @@ static int aie2_populate_range(struct amdxdna_gem_obj *abo)
- 		return -EFAULT;
+ retry:
+-	hmm_range.notifier_seq = mmu_interval_read_begin(notifier);
+-	mmap_read_lock(range->gpusvm->mm);
+-
+-	while (true) {
+-		err = hmm_range_fault(&hmm_range);
+-		if (err == -EBUSY) {
+-			if (time_after(jiffies, timeout))
+-				break;
+-
+-			hmm_range.notifier_seq =
+-				mmu_interval_read_begin(notifier);
+-			continue;
+-		}
+-		break;
+-	}
+-	mmap_read_unlock(range->gpusvm->mm);
++	err = hmm_range_fault_unlocked_timeout(&hmm_range, timeout);
+ 	if (err)
+ 		goto err_free;
+ 
+@@ -1408,6 +1392,7 @@ int drm_gpusvm_get_pages(struct drm_gpusvm *gpusvm,
+ 	void *zdd;
+ 	unsigned long timeout =
+ 		jiffies + msecs_to_jiffies(HMM_RANGE_DEFAULT_TIMEOUT);
++	unsigned long remaining;
+ 	unsigned long i, j;
+ 	unsigned long npages = npages_in_range(pages_start, pages_end);
+ 	unsigned long num_dma_mapped;
+@@ -1422,7 +1407,9 @@ int drm_gpusvm_get_pages(struct drm_gpusvm *gpusvm,
+ 	struct dma_iova_state *state = &svm_pages->state;
+ 
+ retry:
+-	if (time_after(jiffies, timeout))
++	remaining = timeout - jiffies;
++
++	if (time_after_eq(jiffies, timeout))
+ 		return -EBUSY;
+ 
+ 	hmm_range.notifier_seq = mmu_interval_read_begin(notifier);
+@@ -1439,21 +1426,7 @@ int drm_gpusvm_get_pages(struct drm_gpusvm *gpusvm,
  	}
  
--	mapp->range.notifier_seq = mmu_interval_read_begin(&mapp->notifier);
--	mmap_read_lock(mm);
--	ret = hmm_range_fault(&mapp->range);
--	mmap_read_unlock(mm);
--	if (ret) {
--		if (time_after(jiffies, timeout)) {
--			ret = -ETIME;
--			goto put_mm;
--		}
+ 	hmm_range.hmm_pfns = pfns;
+-	while (true) {
+-		mmap_read_lock(mm);
+-		err = hmm_range_fault(&hmm_range);
+-		mmap_read_unlock(mm);
 -
--		if (ret == -EBUSY) {
--			amdxdna_umap_put(mapp);
--			mmput(mm);
--			goto again;
--		}
+-		if (err == -EBUSY) {
+-			if (time_after(jiffies, timeout))
+-				break;
 -
-+	ret = hmm_range_fault_unlocked_timeout(&mapp->range, timeout);
-+	if (ret)
- 		goto put_mm;
+-			hmm_range.notifier_seq =
+-				mmu_interval_read_begin(notifier);
+-			continue;
+-		}
+-		break;
 -	}
- 
- 	down_write(&xdna->notifier_lock);
- 	if (mmu_interval_read_retry(&mapp->notifier, mapp->range.notifier_seq)) {
-@@ -1096,7 +1081,7 @@ static int aie2_populate_range(struct amdxdna_gem_obj *abo)
- put_mm:
- 	amdxdna_umap_put(mapp);
++	err = hmm_range_fault_unlocked_timeout(&hmm_range, remaining);
  	mmput(mm);
--	return ret;
-+	return ret == -EBUSY ? -ETIME : ret;
- }
+ 	if (err)
+ 		goto err_free;
+@@ -1720,8 +1693,7 @@ int drm_gpusvm_range_evict(struct drm_gpusvm *gpusvm,
+ 		.end = drm_gpusvm_range_end(range),
+ 		.dev_private_owner = NULL,
+ 	};
+-	unsigned long timeout =
+-		jiffies + msecs_to_jiffies(HMM_RANGE_DEFAULT_TIMEOUT);
++	unsigned long timeout = msecs_to_jiffies(HMM_RANGE_DEFAULT_TIMEOUT);
+ 	unsigned long *pfns;
+ 	unsigned long npages = npages_in_range(drm_gpusvm_range_start(range),
+ 					       drm_gpusvm_range_end(range));
+@@ -1736,24 +1708,12 @@ int drm_gpusvm_range_evict(struct drm_gpusvm *gpusvm,
+ 		return -ENOMEM;
  
- int aie2_cmd_submit(struct amdxdna_hwctx *hwctx, struct amdxdna_sched_job *job, u64 *seq)
+ 	hmm_range.hmm_pfns = pfns;
+-	while (!time_after(jiffies, timeout)) {
+-		hmm_range.notifier_seq = mmu_interval_read_begin(notifier);
+-		if (time_after(jiffies, timeout)) {
+-			err = -ETIME;
+-			break;
+-		}
+-
+-		mmap_read_lock(mm);
+-		err = hmm_range_fault(&hmm_range);
+-		mmap_read_unlock(mm);
+-		if (err != -EBUSY)
+-			break;
+-	}
++	err = hmm_range_fault_unlocked_timeout(&hmm_range, timeout);
+ 
+ 	kvfree(pfns);
+ 	mmput(mm);
+ 
+-	return err;
++	return err == -EBUSY ? -ETIME : err;
+ }
+ EXPORT_SYMBOL_GPL(drm_gpusvm_range_evict);
+ 
 
 -- 
 2.43.0
