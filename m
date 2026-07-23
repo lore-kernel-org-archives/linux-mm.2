@@ -4,89 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C7C5C531C7
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 10:01:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E475C531C7
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 10:09:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8745A6B0165; Thu, 23 Jul 2026 06:01:38 -0400 (EDT)
+	id 6FAA26B00AF; Thu, 23 Jul 2026 06:09:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 824596B0166; Thu, 23 Jul 2026 06:01:38 -0400 (EDT)
+	id 6AB7F6B00B0; Thu, 23 Jul 2026 06:09:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6EC666B0167; Thu, 23 Jul 2026 06:01:38 -0400 (EDT)
+	id 5C4CE6B00B1; Thu, 23 Jul 2026 06:09:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A2576B0165
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 06:01:38 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B9ECB40415
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 10:01:37 +0000 (UTC)
-X-FDA: 85019599434.26.FE1DB2E
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
-	by imf16.hostedemail.com (Postfix) with ESMTP id ABC14180004
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 10:01:35 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=B3tN3CMm;
-	spf=pass (imf16.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 30C426B00AF
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 06:09:15 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id ADEB41C063E
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 10:09:14 +0000 (UTC)
+X-FDA: 85019618628.22.478D4C7
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 530E020007
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 10:09:12 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=lKETDs2m;
+	spf=pass (imf31.hostedemail.com: domain of arvind.yadav@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=arvind.yadav@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784800896;
+	s=arc-20220608; t=1784801352;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/IOPEWFyLCrkOKDL5TmCaxllcKhpBFa1PGm5TdS+JwA=;
-	b=qH6S4RyQeRfxAMiRi1eh3e6veKqpzFepCPPchvQiy7VDKTrfmLSTHREvip5xYLKVX6eeHQ
-	RYrSS6SrmkyWZYql5ENlKs779ku4VuSY4TuNsXu8ySFv56qL6Wyj95RNwX0TE3ICYWlmNs
-	6leQwCGxZTkmfZWcgedlMxl9e/nVwro=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=T5/OOy9PepPZMF6ldXr0cCJHwqLGzbNL2lAXDRMQszE=;
+	b=ymvYCyHZlJ15qcHi3wL94SP7odC3knFqemyirEKuX2k8mRx46mqY9WH4QjS5Wm9ZdgrG2I
+	BPulxNUjHA2+KL/yT8wr2XMGJBcgyefmWwWaA8durCUyrdk5HYuNISARMpYGgHCcWi1z4y
+	PERMqm4IfFxL33HapldWLQ65iTu0/zY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784800896;
-	b=RKKJu83OtrVoB3fzXdnUoG8v1X2KBr42q9jejojLdof1qzuekfcFTHpRiZlHkZDi6J5S5y
-	bbNUB5usBhvs44kN8gqy79BHa+QyL4gmN3+GSP+PKhw/iza0AF89ps1KeIagJ0A8JpTnOV
-	5GCIJ06SC5dS+NzQ9ZJGBy78CmAITqQ=
+	t=1784801352;
+	b=sp3zF0+r4S/5yKERQQ0m7RIvabVWB8MI0dpqcPbaxSh32tiNuuVHnewEFl0/Aqsyh9NvzG
+	n45FbDP3vZrPRNhn+2bj1x/qrfrTVxEwYYtmBJXtHCOtk68eBxi55lZyTnXkIyTYDqjcqO
+	CknmoQDXTBHptU9vVp+QJ8KPjYcRsOA=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=B3tN3CMm;
-	spf=pass (imf16.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Date: Thu, 23 Jul 2026 18:01:07 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784800889;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/IOPEWFyLCrkOKDL5TmCaxllcKhpBFa1PGm5TdS+JwA=;
-	b=B3tN3CMmCpKLZ3NrTYsrJ4RLkX3LFQJRJLgVEIuQsXk/GkMvH5ZafyBK62EAo0LIvT2D50
-	fAKJeIjSiLb7ygdHnxWK0DaWeYIXONIZaWgnhZYOEC7DvUfbyNhUa9RtOtJ0mXfO3rfymO
-	FwBtaicdmtSjfbwmIZf+DeT8vEaPrX4=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Harry Yoo <harry@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Alexander Potapenko <glider@google.com>, 
-	Marco Elver <elver@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	cgroups@vger.kernel.org
-Subject: Re: [PATCH v2 12/13] mm/slab: add cache_ and slab_needs_objcg()
- helpers
-Message-ID: <amHldYIo_-Bgm7Ek@fedora>
-References: <20260720-b4-objext_split-v2-0-2fa7c6f60dbe@kernel.org>
- <20260720-b4-objext_split-v2-12-2fa7c6f60dbe@kernel.org>
- <amHbnLLrpOmwmusv@fedora>
- <e8b503fe-c97f-4747-aa95-97be42cdd832@kernel.org>
+	imf31.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=lKETDs2m;
+	spf=pass (imf31.hostedemail.com: domain of arvind.yadav@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=arvind.yadav@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784801352; x=1816337352;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Pd+h33cBRehgFOQwH2D+JNwQdZnkSg99+8xh6je/0rQ=;
+  b=lKETDs2mfR2PNRPDXmS5JpqCRCb172L0IbU3oknLehRFTAtvfNPPBwf0
+   +Y/9SfH4fKzijA1ux3I7tbcdq7gK5Rl/IMfXY5seVod8W8OWvrIFHpIrX
+   2ckonGY7iplwuQ8Ar47O41yQrXTLAYoQyXlQGDB6I3ZBMR9bYqbCi3xaQ
+   XDusr7NCuIZnQj5jObzWH0gbu8iD9iHAXCebsvE0KDwkNCDwMZA5mnVmF
+   pmcBXCk1x9ltqGgcHAEFYVwTKFlY8t3kBlsm1qKjH2HeooPbNrDHMN/uL
+   zPjxyW1n6hyJMhYuAaWYYpaAAu5tRaRqkacNOl0iFs/b+9IWPTHP+0VvW
+   A==;
+X-CSE-ConnectionGUID: zju87f5JQoirxG7cYMRAag==
+X-CSE-MsgGUID: mu3dSfxeT5+ZIAZ9a1s2ng==
+X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="96826892"
+X-IronPort-AV: E=Sophos;i="6.25,180,1779174000"; 
+   d="scan'208";a="96826892"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2026 03:09:11 -0700
+X-CSE-ConnectionGUID: nMq8FJj4SZmLDhwzODYFKA==
+X-CSE-MsgGUID: e/1xGqGiSbGpXSOyn4peDQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,180,1779174000"; 
+   d="scan'208";a="254018301"
+Received: from varungup-desk.iind.intel.com ([10.190.238.71])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2026 03:09:07 -0700
+From: Arvind Yadav <arvind.yadav@intel.com>
+To: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com,
+	ziy@nvidia.com,
+	rakie.kim@sk.com,
+	byungchul@sk.com,
+	gourry@gourry.net,
+	ying.huang@linux.alibaba.com,
+	apopple@nvidia.com
+Subject: [PATCH] mm/migrate_device: Clear stale mapping after freeing swapcache
+Date: Thu, 23 Jul 2026 15:38:46 +0530
+Message-ID: <20260723100846.1880865-1-arvind.yadav@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e8b503fe-c97f-4747-aa95-97be42cdd832@kernel.org>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: ABC14180004
-X-Stat-Signature: prmtcoq8dy9kn5od1h7rs3cqchdquaor
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1784800895-276286
-X-HE-Meta: U2FsdGVkX19qNyndwSUKtsPZMO/3+vdvRFbKwgVFTtDJDaNCeu+2xiXLN+qklAPR9RCQNkebfHjQduJT4J4jxyePIOk4wMOaFkjwubd7mJvTemNvIrHto3zNkenrFF33POhJj8xlxYRwoH89fGHUjcLZO/Vy/yWkNf8/vezy5n7gzsc8XWQlO+Ah6aBluwAOdkwASPZgh42XtFi/7aA2nPyU04MImW9I2l2btUnY3phy4ZaSmJ0OIKAt++sZDFUJMfdHw8GEZ/H6w2fkv52/gwjTbA+DttR/ugWZsQo2vLyzBPvbQ6xvGLD0eRQWsrww/h0a4nOnDyAj02G2fVBXBPXv1Px3ZO9KEbLIzWLB/Al1iihl7LCgoAr/V7UbgtTdKjsKfsu17t4NOaznuFJRjI+yUhTUzDUUUj/NNS4AjyquPDF7ZqXUWGKaUeHzx1XvEZnRLo66kfMdAbG35ui8efG6wMkvPgzkcHROf2DX+SmwOv5XS6lMHX3E4a4FW6pS/WbIXAIL/IlOlBJD7g7O+P5P2Tbc0IchGKZTnmWtAza+4+NGhT4PIW+fJAFFOklinBjSzhj3bPv4+rY+epYO1vFaKVG98cwXEaZv5FiMP8SpH2t2piQACxEFCXUge5eorUpchT0LZ+G8Oetj7ZDp8bEdaZnfyIsnjDo02u+uWgAlMYUBvhLdsFj8sEkmeDZOoZsP5VhFZlGGyLLgFFzKOKDKoijiIvQzfMEqi0s2CXVEX0fhgTnhBtQACI9D5tTWMXZgiqKSqEIcgXltlxNC2s3GLYLMoA0ZmJIbnZFDTXuO4lzY7o2w1T+GHB0ixNocg6YtkOLBgryGDtC0ao9XNIWgkwWmeFqXgpK8XRJeysmoSQXgfAu6+5TXUCQu45jpNL5KiYvI6gcjrdl3oxHH+QtDCUqbGqROAxgQ9wThd/ufpDg6kK0Tc667MqPh45a/mTV4l4Hmw/UIx0CHeQH
- C3Letkwu
- tohYzmXBJYy5rlDjLyiBjhsH4lagShgIWgCBxxe8eQQCW++YPLbQ+cHpQzdqBjjdyAYycOdtTaSMAy5vlQtgQp9Cs5slUaOV4EYU2Fy9APIdg8QM1z39qOs8cPAeTJKiOqG9xOejmBfFuIiEY18LJeFkt/YrZ5WEd1DQDO1NKzxJppXZeJ9hNrxkWzZhYKE2EiaDtakjZRW4gdK+RsKjaOUBir80Ss0s1mh0PnrlK6ojk/wjIogaHTig9qsoAiZpqe5uY
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 530E020007
+X-Stat-Signature: y3ucq48efxux5y5nahqghs9jqzkwc91h
+X-HE-Tag: 1784801352-770982
+X-HE-Meta: U2FsdGVkX1++fhsYl0GDBiVNH8uqmAYhuBWSDQMaUiarVbxieFX/LAY/mk7C55obPKmqHl1pEeUE1QljOHRd4+EUa7cNkhW8aNeaaxSopKRwQukgaabgB24VEbVtpie71HYbNmROMd21Wa9FqubfwqfE0gPYDOD9vP26UO44iOGNmqLTYBWWsd4Oa3V1LOXmdXCBnLplTYJM4Tfoa33rWasw0tPCSDpTCSA2DM2WhtmJ65h+86XR49LnCHfas0CATtoPH0kIOWMPcp/LYjz5rV8sepbTjq4ViNDm6Lul3M1wTephTglasRrYvglBjZfH8zhRhP/QHUSq28ysv+ZaeNoZu2XsmhGxnNGNMAIgppK0UFQR0KpZZcexjtuBzOEcZJq20Sk20EesIHwx/JfTbmKZxH6tp0VsMb5dYe4MguNltx1dxzbEmrB/fu5QTerRJAN7FqixVjKIsrGSpk59gMhYFin+zq9pn3pRKq7X5QVP2dwqjdopSwzwgMINvsneDjBaGisqhIInVAkStpQ1t3lHKhyEq9MnN5DRWmtJrumwp1XLjmkGcNje7Qlwg+nFtT7DUO6/JhTs51KLrmNoCgcI3/ABbe/Oq+4S2J8Tux3CAHi+V/JA2pZs0IH98/Vkarm1kZPwDszVPZcwv1rGPb4g5ttJAlwoP5373zDSCx7pdJ5KxbI/nT/zM35z+MSPI80KkKftAySF6rh9ishOZY1Ah+34bGpJSQH4Gn8kO9RMggGe8c3q+pxNRpx3hChbac9YvZ2tOJ76iJP9LzG2TfD4iTHBmrthpToQZNX6/qR0+xKDNUiSoK9lH8FCIgANoShPgoMWMnFjV+8wfckrKiIaqCpzGmd0GcAYFo5Zg6Cf4XYQysIookScdeR6TT/BUQT+5oJ19xjAH3UFhSmEwRvRX/4zdI07sl5eWiK3TCLk9f+fq54K/NgJ+C+4VQeTf9eks1F9DAZSwJPlMmT
+ A0aF40k4
+ jnArAdjo1WDOptethhAcMUqTRhdJoRtMot7sdAYneN4+1AZRspAJhst2px83Q7NE1qffsoA9c3/dTCDSxq1EzzYs3FwLhR/56WpIRJQRc1IS+eaXXOhErzxIBIJW4ENOvOUUhwu0e1jhOhPO7BwhQLk+7oY7OjhpV/7I17xJl572WOvjjP236l/uPfLmq6JngF/9gSzMXhH1DOINVXjyALjhR3l2g0fBykQ+9dcvqm+PP0pX3E43RkV4dWFVM0KusO/XU3+QVB8uCQaAs3PM+dfL3vsE49HQhXFFlBLJjer4oswLH9dFjAbUEzBd5Zwa+K4lyR63trGVYlP1v7gnz9TITltqKtJ5Xt1bU0VOKmToS61QWlXQNzEmCAuigwLLtFn9irfCdl9bnRQIR03GcFJap4l8cIdnAjVSYplaofcepgc4HCluSqKaCqP0v8orfOiHNFxQ1T/SuI62gIGSW/e00tp3iPdK9dC6E71oOiRSFY6oBkuG8XnmtDQ2OgZGhBO9IICiwGd+7PypdZw4paoro2jHEkwUVeZbHaWqzajdyF8evQ1H2SdIxgWOyilacNKPb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,104 +109,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 23, 2026 at 11:30:49AM +0200, Vlastimil Babka (SUSE) wrote:
-> On 7/23/26 11:25, Hao Li wrote:
-> > On Mon, Jul 20, 2026 at 04:16:26PM +0200, Vlastimil Babka (SUSE) wrote:
-> >> @@ -359,6 +359,13 @@ struct kmem_cache *__kmem_cache_create_args(const char *name,
-> >>  		goto out_unlock;
-> >>  	}
-> >>  
-> >> +	/*
-> >> +	 * For now we assume any cache can be used with __GFP_ACCOUNT and thus
-> >> +	 * may need to store objcg pointers for objects
-> >> +	 */
-> >> +	if (!mem_cgroup_kmem_disabled())
-> >> +		flags |= SLAB_MAY_ACCOUNT;
-> > 
-> > if memcg itself is disabled via `cgroup_disable`, mem_cgroup_kmem_disabled()
-> > still return false, so maybe we can use:
-> 
-> Aha, but then shouldn't rather mem_cgroup_kmem_disabled() take that into
-> account on its own?
+__migrate_device_pages() reads the folio mapping before calling
+folio_free_swap(). When folio_free_swap() succeeds, the folio is removed
+from the swap cache, but the saved mapping still points to swap_space.
 
-Yeah, it's better to handle two cases in mem_cgroup_kmem_disabled!
-This could also be a standalone patch, but including it to this patchset it totally
-fine.
+Passing the stale mapping to folio_migrate_mapping() makes it take the
+mapped-folio path after the swapcache reference has been dropped. This can
+cause an invalid swap_space lock access followed by a folio reference
+count BUG.
 
-> 
-> > if (!mem_cgroup_disabled() && !mem_cgroup_kmem_disabled())
-> > 	flags |= SLAB_MAY_ACCOUNT;
-> > 
-> >> +
-> >>  	/* Fail closed on bad usersize of useroffset values. */
-> >>  	if (!IS_ENABLED(CONFIG_HARDENED_USERCOPY) ||
-> >>  	    WARN_ON(!args->usersize && args->useroffset) ||
-> >> @@ -984,11 +991,19 @@ new_kmalloc_cache(int idx, enum kmalloc_cache_type type)
-> >>  #endif
-> >>  
-> >>  	/*
-> >> -	 * If CONFIG_MEMCG is enabled, disable cache merging for
-> >> -	 * KMALLOC_NORMAL caches.
-> >> +	 * If memcg_kmem is enabled and this is a KMALLOC_NORMAL cache and  not
-> >> +	 * aliased with any other type, make sure it's never merged with any other
-> >> +	 * cache.
-> >> +	 *
-> >> +	 * In other cases the kmalloc cache may end up being used for a
-> >> +	 * __GFP_ACCOUNT allocation so mark it as such
-> >>  	 */
-> >> -	if (IS_ENABLED(CONFIG_MEMCG) && (type == KMALLOC_NORMAL))
-> >> -		flags |= SLAB_NO_MERGE;
-> >> +	if (!mem_cgroup_kmem_disabled()) {
-> > 
-> > the same as above
-> > 
-> > Others look good to me.
-> > 
-> > Reviewed-by: Hao Li <hao.li@linux.dev>
-> 
-> Thanks!
-> 
-> > 
-> >> +		if (type == KMALLOC_NORMAL && KMALLOC_RECLAIM != KMALLOC_NORMAL)
-> >> +			flags |= SLAB_NO_MERGE;
-> >> +		else
-> >> +			flags |= SLAB_MAY_ACCOUNT;
-> >> +	}
-> >>  
-> >>  	if (minalign > ARCH_KMALLOC_MINALIGN) {
-> >>  		aligned_size = ALIGN(aligned_size, minalign);
-> >> diff --git a/mm/slub.c b/mm/slub.c
-> >> index d78d3e50c877..30435e2509ea 100644
-> >> --- a/mm/slub.c
-> >> +++ b/mm/slub.c
-> >> @@ -2557,7 +2557,7 @@ bool memcg_slab_post_charge(void *p, gfp_t flags)
-> >>  	 * of slab_obj_exts being allocated from the same slab and thus the slab
-> >>  	 * becoming effectively unfreeable.
-> >>  	 */
-> >> -	if (is_kmalloc_normal(s))
-> >> +	if (!cache_needs_objcg(s))
-> >>  		return true;
-> >>  
-> >>  	/* Ignore already charged objects. */
-> >> @@ -3435,6 +3435,10 @@ static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags,
-> >>  
-> >>  	slab->objects = oo_objects(oo);
-> >>  
-> >> +#ifdef CONFIG_64BIT
-> >> +	if (cache_needs_objcg(s))
-> >> +		slab->obj_exts_needs_objcg = 1;
-> >> +#endif
-> >>  	slab->slab_cache = s;
-> >>  
-> >>  	kasan_poison_slab(slab);
-> >> 
-> >> -- 
-> >> 2.55.0
-> >> 
-> > 
-> 
+Clear the saved mapping so the source is migrated as a mappingless
+anonymous folio.
 
+Fixes: df263d9a7dff ("mm/migrate_device: try to handle swapcache pages")
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: Rakie Kim <rakie.kim@sk.com>
+Cc: Byungchul Park <byungchul@sk.com>
+Cc: Gregory Price <gourry@gourry.net>
+Cc: Ying Huang <ying.huang@linux.alibaba.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Signed-off-by: Arvind Yadav <arvind.yadav@intel.com>
+---
+ mm/migrate_device.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+index 554754eb26ff..fa7fbacac514 100644
+--- a/mm/migrate_device.c
++++ b/mm/migrate_device.c
+@@ -1204,6 +1204,12 @@ static void __migrate_device_pages(unsigned long *src_pfns,
+ 					src_pfns[i] &= ~MIGRATE_PFN_MIGRATE;
+ 					goto next;
+ 				}
++
++				/*
++				 * folio_free_swap() removed the folio from the swap
++				 * cache. Migrate it as a mappingless anonymous folio.
++				 */
++				mapping = NULL;
+ 			}
+ 		} else if (folio_is_zone_device(newfolio)) {
+ 			/*
 -- 
-Thanks,
-Hao
+2.43.0
+
 
