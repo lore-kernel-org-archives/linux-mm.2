@@ -4,90 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35785C531CB
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 12:37:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F606C531CB
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 12:45:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D64886B007B; Thu, 23 Jul 2026 08:37:28 -0400 (EDT)
+	id 7805D6B007B; Thu, 23 Jul 2026 08:45:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D15516B0088; Thu, 23 Jul 2026 08:37:28 -0400 (EDT)
+	id 731ED6B0088; Thu, 23 Jul 2026 08:45:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C2C1B6B008A; Thu, 23 Jul 2026 08:37:28 -0400 (EDT)
+	id 646FE6B008A; Thu, 23 Jul 2026 08:45:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 985FA6B007B
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 08:37:28 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 032A4404A8
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 12:37:27 +0000 (UTC)
-X-FDA: 85019992176.09.E1D4222
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 9D05410000C
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 12:37:25 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Y+CpZNsJ;
-	spf=pass (imf05.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id 3520E6B007B
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 08:45:35 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id AFAD91A04BA
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 12:45:34 +0000 (UTC)
+X-FDA: 85020012588.29.9DCD0D8
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+	by imf04.hostedemail.com (Postfix) with ESMTP id B47DC40008
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 12:45:32 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=O6PCeemo;
+	spf=pass (imf04.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784810246;
+	s=arc-20220608; t=1784810733;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+3UKcAvC4cdqD6Ve05WpKpxH1iBS6zCA9CHEPJKcFSk=;
-	b=ydbZsYyU5/VqPkb3l3Gpw2B/xAJJ8yLCMk7F5CRy/WFcXwn4M0pAGgYP9XjRhhP+hS71y0
-	HXwPtyd4nwv9neQs47L+hBA3pflwZiWrbOS7AFaW1ZPoMaoJEaM5h4h/ogUJmNl/8z/N5F
-	t8PKFGczL83PKE7/K/sVV5qe1tzWKXE=
+	bh=Fi7Yg8IOfCZrBlHXrltI73qzUIgGZEMeZzt8zqMdn/E=;
+	b=Bru7UnBgatG/roJjQhdKrUQ15jTiRNU/JbeHKM3deNRyDhURPMmLCMAbOAgG0I0hvLeRMT
+	zR+yHePps45hRChhNAJsU4vDrj/6GjROcvSBxpQS5ya8Ut3+QEXJV9dgYl8U73pByjeXh1
+	yaSAhKICSoGf+IDifjHpMU8PJmiTUy8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784810246;
-	b=f7I6FDImaZi4m7j73Gluyi4iE3ubB//6u4NKMl0aYJTahzBv4NuRFpJNGGV4eiycpprfpP
-	/Q/dJpC5h89rn2lkbozvDXg3EGz/aSGWn1PMPP6TWayA17NTwkJEkSg7815qIfLyEyX6Wg
-	TEQfNXnDbS47S6pD4pGR0E+UyFq1hZQ=
+	t=1784810733;
+	b=SAcPhJBw1LATRj2ZIOELc0FEfF0Hjk9QDVSdYBDK8Rp1wZfmSTgfhIJVRnH/KieweHmZRL
+	0ZWx21wDEZdBDy+Vynr2NtDVqfivn069U0ZfUA0vbORKpBAwyAr6afZH/MGD4k9eQPyl/k
+	zSj8pRNE19hHy5adCp/JAVD88CFUmQA=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Y+CpZNsJ;
-	spf=pass (imf05.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=+3UKcAvC4cdqD6Ve05WpKpxH1iBS6zCA9CHEPJKcFSk=; b=Y+CpZNsJZHsnt/KMCgiVInCek2
-	Yq65XH+peUgp84wQqDIlJZ4TPQHVpNtqvX1haRdokLkB+97OTQyYHKMb6wF7iRPt+uWqNtOCU8pbQ
-	HieFMqFvlAzzO2kd1crbVJx4dyKjgX2P/8rOZNwauVjcgXF8M3XtSPbkqjWFmmqDLOJlNuQ7mDWO3
-	7AU9O26L/SW273UiUeOvxjFhYeHpQMOjMQSQn8YDfWxEDsGNWcDOMYULJ5C2pbcOzgTLsoCTD5Dae
-	3ihvRpYwTM/kWyt9kKQbyJ1qh4D+wx0706RQj2icepwmgh4U7L1FhQl0XDvOKgQRiebopFbcqCqrt
-	kfk9uvBQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wmsfz-00000000WFK-1HwQ;
-	Thu, 23 Jul 2026 12:37:23 +0000
-Date: Thu, 23 Jul 2026 13:37:23 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Qu Wenruo <wqu@suse.com>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
-	linux-btrfs@vger.kernel.org,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>
-Subject: Re: Help needed to address the dirty folio without fs notification
- delimma (Re: [PATCH RFC v2] btrfs: disable direct reads to avoid dirty
- folios without fs knowing)
-Message-ID: <amILA5-iY_er7ESL@casper.infradead.org>
-References: <c6dfdac9fc51c94183e51a861eec269185239660.1784787211.git.wqu@suse.com>
- <9b1d42c4-2c3f-410e-aceb-92400b8bc24f@linux.ibm.com>
- <f49478be-70fc-4cd6-a640-fb008c21c092@suse.com>
- <4beadb76-8500-452c-b84e-206c50456b8a@suse.com>
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=O6PCeemo;
+	spf=pass (imf04.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <ee172b01-54c3-47ef-9040-1342a1566796@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784810730;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Fi7Yg8IOfCZrBlHXrltI73qzUIgGZEMeZzt8zqMdn/E=;
+	b=O6PCeemoOgURF0840AgkMJOELEbNSRja2/yiK7zmwHaqO8NyAwa4fZtUa985iRRynONcbp
+	rTfkeI/IbBC32Rw/THBy43qi7WFikAn/uygPWv4SVBc7cDEB3c83VputH1O5q2wsw/eSh1
+	JMZRGCiFka5EAf7QBHPplXmzg3YUBww=
+Date: Thu, 23 Jul 2026 13:45:15 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4beadb76-8500-452c-b84e-206c50456b8a@suse.com>
-X-Stat-Signature: qs6x4wh64w4fogro591b78brweiwn5or
+Subject: Re: [PATCH v5 04/11] mm: zswap: add range lookup for large-folio
+ swapin
+To: Yosry Ahmed <yosry@kernel.org>, Alexandre Ghiti <alex@ghiti.fr>
+Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org,
+ chrisl@kernel.org, kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com,
+ linux-mm@kvack.org, ying.huang@linux.alibaba.com,
+ Baoquan He <baoquan.he@linux.dev>, willy@infradead.org,
+ youngjun.park@lge.com, hannes@cmpxchg.org, riel@surriel.com,
+ shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org, baohua@kernel.org,
+ dev.jain@arm.com, baolin.wang@linux.alibaba.com,
+ Nico Pache <nico.pache@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
+ ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>,
+ lance.yang@linux.dev, linux-kernel@vger.kernel.org, nphamcs@gmail.com,
+ shikemeng@huaweicloud.com, kernel-team@meta.com,
+ Alexandre Ghiti <alexghiti@fb.com>
+References: <20260722152043.2273289-1-usama.arif@linux.dev>
+ <20260722152043.2273289-5-usama.arif@linux.dev> <amFZmtGHEZjXEw5R@google.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <amFZmtGHEZjXEw5R@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: m4ikgpzgxmhdrjxcec33fjoomrpxubko
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 9D05410000C
-X-HE-Tag: 1784810245-61907
-X-HE-Meta: U2FsdGVkX18JcEvT9HJ23AhogDaRKbEs6cRTlMx66JJhnlE/oQmFrXeXBHTuMDs/aL65vdOtroGEJQKyGS59QKC8kbhagA1s76tXheG07rkKqmn7WnGL8wtm9OS5Rc2Xewh18pdBkfBMd3ce9qpbhzzlr6pVfJJAvYKZaOJ3hnAo86bcR93GRo0tGeY3wL6eng2fC3smKWKbgkiSqLy6nVWVlRj4/wkTILEc9TA/A4tOOqMi+KSNzu2A5K6CeyFwF/ZlZYHP9fQLlyXFOkudOgjLSqgpflDcLCC279JtQn0PwPFm6//e99rR3SVuZtIc+RF6Ba5Vf8s5M2KCSV13niysQeVoGM1VhZkAah+faPJPgWWuv1Rywnn9HntTblRhqONo1EBqPjGtJWo6vzW+2ORBFC85rsUcanthsT0ckueWH2ePyRlbjGnEF0fHzroXFaY/gtGbOYRKqtFMN8qvXIbIZlKO1GfPnIk2aTAF0CTaRJ53WAGcjopKfMMLgc/fZ5dfzwPPOROy+0emouR9m7dUfBb6xFkMmdAALL+cGNW+ZzDliY8Il1zPMNPuM2EzL3X8azzS0CN/rtsmbcgjlOnlkdS176b0trV1s2Iub+m5/5NkBoryAkRAiToxAy9w7MaoHlWoEZZf+5Nrq9Vv28f/95qLJInVErgy5YEAm819snq3FgM/1kVns1d9UIR2u6NzVgADMg2aKvsWQNfmcKxF/fVMPy9Zf43LZzRcEX7Yv+FBilCBDFh5krVio7NhPMYI3LoocGAheRmaN+0CipdTP+gCutUi1igqW9YuDmAieFdaf0CsShSs9At6euivdnN4PubnURdMO7IIYeS/um9krcrmi7PGVJWGjTlDPOzFmH+76RAdnSDDn4S8urcKkASzRv3VY5+VFZbNCGUmX9bMXk5SfyPAiRr44KLAJ3+hWZ/qaCfpsvnGZkYJNAdIxpeUjowuTWlr7FThhlW
- ZK1FAcTS
- kBk27ad5/yynF+vkPh7+Ma3U1drV3zV+8Hl1ZXwvMgC7O/O3jtBwpTvtxrs5wZjSgoN+NZPr5bne7NvBNF6h/jbRp7VIXNpnNpMlZ9Jl8gHyQo4R2oS3m8lRSl2XASJ+67xjywkh45RVFDVu04QgG9kmvvWRRJufQTAyvW5gTSAb/ugfv3EfBbbCnFUeLnbvjsTEIGVNVpzpOVNg2AJSp6ecPKS9F4kKWn9rlulE65Hlds8VyyzKN7vMsgWotrqA2sriaGQKfD4mYxOwqvJanMtfXngmQu6kSa1WbxuVVLg3yLhhSO0g47chL5cSyxVMEgoLtzP0i9vjkvErG/87iDcUypQ==
+X-Rspamd-Queue-Id: B47DC40008
+X-HE-Tag: 1784810732-767365
+X-HE-Meta: U2FsdGVkX19bHSQ8zaxK9+yg6AWaiU5YfSBRg/kkJ+4FH1U3VZKCz8R3HGiCetUKn/OAwWlALU19+03s4MK7P6130ut4Z3bRiNlScHw6yql6FmOgNUxvE91CH2eS66mCHLOs94eIhgTEOf4cYvaqJC0dVlIImGSqmzgZ/rzOO9hVf0RWMgFDQczbiH/APPY1BEkq+f16u8rX5Yp20wx6XMqNEQQmSo93K0/tXjLLnqWSYWZfqXn/wIYqi+oEAgQAt+ycud80cJrW/9egUsXPqJ5ObYtIZsj9fs7YMJHR4nPNkJdKIcBbqTegFsYKNbEzumrd0WDiXw53WAgd5UqPKPDC6d+JYbEQzK8qOPKNSV+BuZliaCkC4BYFTBURlFRMtDYqXuWPicj6CwCv6FEpsX9rbXZRUCi+klDhsggliWEP6qiFVvn0PQ9jV9/1MdkI2jdgnGxkjou9u8XtwfiRhb1I/GbTCWdLqMOZG40qeumSoD7lUOPIXNT+n2aqYCNATM4wYjswkDgnevPmBRLb+InybLyAMliLwhkaRgxtcrwzSrFyWnA6lRl/1mkOGFFVMsW91hImcl4Bo68r1Osp7hBDeScqs+rrOI1itedrj0vnEpk2SDQIVCwYSZQ3Xy8RPu1d6Nhm6XfOhMHz7Nl/TfwSgYeV2qAjtDF6Kh9Pxs9rX2D2F9lzmddg33lXlm5G+FLcA8TLI89ORhtwPBm+O+hyRh3DmDADdVASBuLi9SiyfGBexljML0fe4RTjG4NYLIbMmBxLKeyymGMK/T9dNByptoX002C6tdO3cz9qG3KZhaQ8q9wbBsbIRqviXYEtTOP/tsdb4k37C58ah10IXI7COH651EdpoZviT5foOFvtI68IZsykJ9U7w6As/RhVvARe4igwKaD5de0JwFzjp2OC2zeFNbBebp+FlNHpX1AKgACBRYpUgwgnSd/bvonOytn+UmB9aCVJA3hNGCp
+ CMPJGsRb
+ qn1w0GvDQseYtaK0PSToa4NkblYq7+m0jgMdHlqZ5j8UmV/eV8liCZDzOvOP5Hl+lbkTcShtCQc0Nislk9zE4FBhtBPA0uX9ttwgU+rmGRX+GovXCjCGNJpj6wsC1/tN7ndLtCJgdc0lYtX0DzfJmG4ZYnIN68F9dEKuYWxztdaOOmsUSuDzwZiMnBiln/+Bj/T+8+RW8kUMEWVMUxJTzW0Eq6Pq+QUoZbK9lTOnguRkAaSE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,12 +101,191 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 23, 2026 at 07:15:40PM +0930, Qu Wenruo wrote:
-> With that feature even if the folio is marked dirty without notifying the
-> fs, we can detect and later re-dirty them and do the proper space
-> reservation in a workqueue.
 
-Oh good, you started another thread for the same problem.  I alreaday
-told you what the problem is; you're not listening to the ->dirty_folio()
-call; you're just passing it straight through to the VFS.
+
+On 23/07/2026 01:01, Yosry Ahmed wrote:
+> On Wed, Jul 22, 2026 at 08:19:35AM -0700, Usama Arif wrote:
+>> From: Alexandre Ghiti <alexghiti@fb.com>
+>>
+>> A large folio reaches zswap_load() only when the caller expects
+>> the whole range to be on disk. Zswap still stores large folios as
+>> independent order-0 entries, so reconstructing a large folio from
+>> zswap entries would risk returning partially initialized data.
+>>
+>> Teach zswap_load() to scan the covered range. If no slot is in zswap,
+>> return -ENOENT so swap_read_folio() reads the backing device. If any
+>> slot is still in zswap, fail the large-folio read so the caller can
+>> fall back to per-page swapin.
+>>
+>> Return -EIO rather than -EINVAL for that conflict. Large-folio loads
+>> are now valid requests; the error means zswap cannot safely satisfy
+>> the request from partial per-page compressed state, not that the
+>> request is unsupported. Existing callers only distinguish -ENOENT,
+>> so this is a semantic clarification rather than a behavioral change.
+>>
+>> Add zswap_is_present() so PMD swap-entry consumers can make the same
+>> range decision before attempting PMD-order swapin.
+>>
+>> Signed-off-by: Alexandre Ghiti <alexghiti@fb.com>
+>> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+>> ---
+>>  include/linux/zswap.h |  6 ++++++
+>>  mm/zswap.c            | 42 ++++++++++++++++++++++++++++++++----------
+>>  2 files changed, 38 insertions(+), 10 deletions(-)
+>>
+>> diff --git a/include/linux/zswap.h b/include/linux/zswap.h
+>> index 30c193a1207e..cd9efcf9dec9 100644
+>> --- a/include/linux/zswap.h
+>> +++ b/include/linux/zswap.h
+>> @@ -35,6 +35,7 @@ void zswap_lruvec_state_init(struct lruvec *lruvec);
+>>  void zswap_folio_swapin(struct folio *folio);
+>>  bool zswap_is_enabled(void);
+>>  bool zswap_never_enabled(void);
+>> +bool zswap_is_present(swp_entry_t entry, unsigned int nr);
+>>  #else
+>>  
+>>  struct zswap_lruvec_state {};
+>> @@ -69,6 +70,11 @@ static inline bool zswap_never_enabled(void)
+>>  	return true;
+>>  }
+>>  
+>> +static inline bool zswap_is_present(swp_entry_t entry, unsigned int nr)
+>> +{
+>> +	return false;
+>> +}
+>> +
+>>  #endif
+>>  
+>>  #endif /* _LINUX_ZSWAP_H */
+>> diff --git a/mm/zswap.c b/mm/zswap.c
+>> index 4e76a4a87cdc..384492f1f696 100644
+>> --- a/mm/zswap.c
+>> +++ b/mm/zswap.c
+>> @@ -1561,6 +1561,23 @@ bool zswap_store(struct folio *folio)
+>>  	return ret;
+>>  }
+>>  
+>> +/**
+>> + * zswap_is_present() - is any slot in [entry, entry + nr) in zswap?
+>> + * @entry: base swap entry of the range
+>> + * @nr: number of contiguous slots to check (pass 1 for a single-slot query)
+>> + */
+>> +bool zswap_is_present(swp_entry_t entry, unsigned int nr)
+>> +{
+>> +	pgoff_t offset = swp_offset(entry);
+>> +	struct xarray *tree = swap_zswap_tree(entry);
+>> +	unsigned long index = offset;
+>> +
+>> +	if (!nr || zswap_never_enabled())
+>> +		return false;
+>> +
+>> +	return xa_find(tree, &index, offset + nr - 1, XA_PRESENT);
+>> +}
+>> +
+>>  /**
+>>   * zswap_load() - load a folio from zswap
+>>   * @folio: folio to load
+>> @@ -1573,10 +1590,9 @@ bool zswap_store(struct folio *folio)
+>>   *  NOT marked up-to-date, so that an IO error is emitted (e.g. do_swap_page()
+>>   *  will SIGBUS).
+>>   *
+>> - *  -EINVAL: if the swapped out content was in zswap, but the page belongs
+>> - *  to a large folio, which is not supported by zswap. The folio is unlocked,
+>> - *  but NOT marked up-to-date, so that an IO error is emitted (e.g.
+>> - *  do_swap_page() will SIGBUS).
+>> + *  -EIO: if a slot in a large-folio range is unexpectedly still in zswap.
+>> + *  The folio is unlocked, but NOT marked up-to-date, so that an IO
+>> + *  error is emitted (e.g. do_swap_page() will SIGBUS).
+>>   *
+>>   *  -ENOENT: if the swapped out content was not in zswap. The folio remains
+>>   *  locked on return.
+>> @@ -1595,13 +1611,19 @@ int zswap_load(struct folio *folio)
+>>  		return -ENOENT;
+>>  
+>>  	/*
+>> -	 * Large folios should not be swapped in while zswap is being used, as
+>> -	 * they are not properly handled. Zswap does not properly load large
+>> -	 * folios, and a large folio may only be partially in zswap.
+>> +	 * A large folio reaches zswap_load() only when its whole range is
+>> +	 * expected to be on disk: PMD swap-entry consumers split before
+>> +	 * calling into PMD-order swapin whenever any slot is still in zswap.
+>> +	 * Confirm the range is entirely absent from zswap and return -ENOENT
+>> +	 * so the caller reads it from disk; if a slot is unexpectedly still in
+>> +	 * zswap, fail the read rather than return partially-initialized data.
+>>  	 */
+>> -	if (WARN_ON_ONCE(folio_test_large(folio))) {
+>> -		folio_unlock(folio);
+>> -		return -EINVAL;
+>> +	if (folio_test_large(folio)) {
+>> +		if (zswap_is_present(swp, folio_nr_pages(folio))) {
+> 
+> Is dropping the warning here intentional (for the folio_test_large() &&
+> zswap_is_present() case)?
+> 
+
+
+Yes, so we can end up in a race, which should be handled gracefully.
+
+For example, lets say we have zswap writeback enabled, which means we
+can end up in a state where we have a PMD swap entry and 511 of the 512
+slots have been written to disk, but 1 slot (slot X) is still in zswap.
+
+We can then have the following race:
+
+
+  CPU A: PMD swap-in                  CPU B: split-PTE swap-in
+  ------------------                 ------------------------
+
+  Checks swap cache: empty
+
+                                       Faults slot X
+                                       Adds order-0 folio F
+                                       zswap_load(F):
+                                         removes X from zswap
+                                         marks F dirty
+
+  Checks zswap range: empty
+  A is preempted
+
+                                       Unmaps/reclaims F
+                                       zswap_store(F):
+                                         puts X back in zswap
+                                       Removes F from swap cache
+
+  A resumes
+  Allocates large swap-cache folio G
+  zswap_load(G) finds X in zswap
+
+
+
+The correct action would be to reject the PMD order read and fall back
+to per-page loading.
+
+I am bit torn about what to do for zswap here. The series is quite big
+already. Alexandre is looking at adding support for PMD swap, but will
+send patches once this series gets merged. My initial versions 1
+and 2, basically stopped installing PMD swap entry if zswap was ever enabled.
+From v3, I used Alexandre's suggestion to do zswap_is_present() test
+so that PMD swap entry can keep on working.
+
+Both of these paths are temporary till Alex sends his series. I
+do feel my initial version was simpler but will basically stop
+working if zswap is ever enabled. Do you have any suggestions on
+what your preference is for zswap?
+
+Thanks!
+Usama  
+
+
+>> +			folio_unlock(folio);
+>> +			return -EIO;
+>> +		}
+>> +		return -ENOENT;
+>>  	}
+>>  
+>>  	entry = xa_load(tree, offset);
+>> -- 
+>> 2.53.0-Meta
+>>
+
 
