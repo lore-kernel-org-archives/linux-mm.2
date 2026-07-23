@@ -4,93 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF73DC44536
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 00:29:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A28DCC44532
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 00:36:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C047B6B00B6; Wed, 22 Jul 2026 20:29:07 -0400 (EDT)
+	id 890316B00D5; Wed, 22 Jul 2026 20:36:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB5606B00B8; Wed, 22 Jul 2026 20:29:07 -0400 (EDT)
+	id 842706B00D7; Wed, 22 Jul 2026 20:36:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF8776B00B9; Wed, 22 Jul 2026 20:29:07 -0400 (EDT)
+	id 759EC6B00D8; Wed, 22 Jul 2026 20:36:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8B2896B00B6
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 20:29:07 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1871680300
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 00:29:07 +0000 (UTC)
-X-FDA: 85018156734.25.7B3488F
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4A3696B00D5
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 20:36:44 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B93E1160354
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 00:36:43 +0000 (UTC)
+X-FDA: 85018175886.01.B591285
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 78CFA20003
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 00:29:05 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZC8q84n8;
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf26.hostedemail.com (Postfix) with ESMTP id BC168140004
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 00:36:41 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=I1rExJ7H;
+	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784766545;
+	s=arc-20220608; t=1784767002;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1klxc6MvqPDoBZg4y3VrtQPMZwyGIj+K0awBUjVudaE=;
-	b=Qum8U/HSTmiqHMEslxaLHN/rgEylLzVTxDB780JjwuiZ/O/XTmQuLjQW/iHGLeM0uWZHXz
-	vPV/n2QRCzVFSNkprX8D8lASGwOTotTxq57u1O7ZcJkXaKJOS06FvP0F0ZNfTYNSSwqVWd
-	+dxkP2BJDE7nzPuZyuSS53BdS9iUd40=
+	bh=8fHddoiy2ssGES1+pkTKa3f6U/9rZANITkdG9dYpmkM=;
+	b=g4PcrG2YJ/6/cbWIWHxt6IpaworxuYwc8YuWJbMtooshvUewh+pvJKiKg7+mhes/DfiaUi
+	9HruixNaUjNumAA5xrW8FyhD/9TvIrQsX/EthNsPniTGPHjsMWlwt8L8gf1niigcIc332z
+	muF7YvX5oLyV+qUKjOfUdCbeGaDMtn0=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZC8q84n8;
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=I1rExJ7H;
+	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784766545;
-	b=57+oy2giIu2WEmOjrd/2jy5RQfeiHM7sy+BTV30FxCF6D/H/wFYPDznGQKdi2Fa4OnZJ7/
-	Ihg+irXr9WUVDqCvZ/uBaQKCnxu+PTyA7i4VRd7JLTlw7LY6EYJp7QbKZoc0pz1hKsW3Nn
-	7rmolFCEJVw9FA2GtbTWua8DC+FwpTA=
+	t=1784767002;
+	b=ZoE9wJ45vis7hEs09L/IZBcM9id3iFWNSA7rShJPFe/Bj5s1TZKpAIWFcAJj2pcnRGGNuQ
+	HYgAOZIt7Jud8FVySIwOKELZLPFU4nBv54A0oaJqDYOr8lG1OjDUIW8Ahvqa4DWoqeuD87
+	0alafsHbvKc0Zup2b3G6WHGmigpeqt4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BA4EF40A65;
-	Thu, 23 Jul 2026 00:29:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42D881F000E9;
-	Thu, 23 Jul 2026 00:29:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784766544;
-	bh=1klxc6MvqPDoBZg4y3VrtQPMZwyGIj+K0awBUjVudaE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZC8q84n8D4cCcVWG3ruQNYAZ7wB4HufMgOv7fxYaxFk+zpOeHFLglfBdflUnHM4Lg
-	 WUQvodDRWuxeg7x7gM2TWHfWy7jb8HLLPIfp6L86W4p+4U+O83Fm7kdg1qfkegt6Pt
-	 4s4jQWkp2iE7hHlnK8LHyfBXP5q6kdr0VQe8jS28EflHpsfCQF75bnuaYXHN2Bqoj4
-	 nB9QlYSyMHVv3bZJwY6TqMha/WvcJEPulzKaEiXawP4xrrVYYhqQGPZ1tStNlk+omX
-	 hvsI7OOV2C6sUZwCJ0/1nZM+Q/M28/rEM7uoTsU0i8obhMw18PNZuq3ysxfUns2bic
-	 mVAmeLyzSZz0w==
-From: SJ Park <sj@kernel.org>
-To: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
-Cc: SJ Park <sj@kernel.org>,
-	artem.kuzin@huawei.com,
-	stepanov.anatoly@huawei.com,
-	wangkefeng.wang@huawei.com,
-	yanquanmin1@huawei.com,
-	zuoze1@huawei.com,
-	damon@lists.linux.dev,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 0/3] mm/damon: Introduce a huge page collapsing mechanism using auto tuning
-Date: Wed, 22 Jul 2026 17:28:56 -0700
-Message-ID: <20260723002857.96284-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <1d91aa7f-1601-4cd9-8ef5-8599983bc42f@huawei-partners.com>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 78CFA20003
+	by sea.source.kernel.org (Postfix) with ESMTP id BA74B43D71;
+	Thu, 23 Jul 2026 00:36:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 168AA1F000E9;
+	Thu, 23 Jul 2026 00:36:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1784767000;
+	bh=8fHddoiy2ssGES1+pkTKa3f6U/9rZANITkdG9dYpmkM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=I1rExJ7HbucjG8Nn1+3y6cPgEqcv0oeMs54cOuvhn1mFD3lhLjY4JHzpWproZDE9g
+	 3v/GM6QlOwfpWIyAPWR46bGgxgNP0+Q4Da3I2NVtdmcJPsSwfvX5SbyX0g6Y/bYVZO
+	 g5ghIaYOOe3OhWBMxnJkY100QK2m+8yxOBG6LgE4=
+Date: Wed, 22 Jul 2026 17:36:39 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Link Lin <linkl@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>, "Michael S . Tsirkin"
+ <mst@redhat.com>, David Hildenbrand <david@kernel.org>,
+ virtualization@lists.linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, prasin@google.com, rientjes@google.com,
+ duenwen@google.com, jasowang@redhat.com, xuanzhuo@linux.alibaba.com, Ammar
+ Faizi <ammarfaizi2@openresty.com>, jiaqiyan@google.com,
+ ahwilkins@google.com, Greg Thelen <gthelen@google.com>, Alexander Duyck
+ <alexander.duyck@gmail.com>, jthoughton@google.com, stable@vger.kernel.org
+Subject: Re: [PATCH v3] mm/page_reporting: use system_freezable_wq to fix
+ UAF during suspend
+Message-Id: <20260722173639.34d3f58413354218b24a5b0d@linux-foundation.org>
+In-Reply-To: <20260721005603.1710551-1-linkl@google.com>
+References: <20260721005603.1710551-1-linkl@google.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: 63sa5m4jgw7uin9zp6bwhw8uyjsep4dj
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1784766545-89686
-X-HE-Meta: U2FsdGVkX19kL6HQlY+SgdLNtBZVUpKW1CKMf5+2O7GswSmuTYwaOC6PBw9Q7DUDvapnurmuj6R9gJdVUEgZDyayryj5/JeTxNBzGr+BYkacP0fkGLx5HWts5v/VZPeaZBSi5lPXlwKYMC+kXdt8BxyqtbTunNq0qR+ZUbLoFhrQZn5KqMT91QxOrSS0w8slv/f+o99Qt+qnbx0xdYLgx6xKHAwWIqwOlDLnVcWXd7eI965Quzv2evzs9z3pXwBMxQYS1ociFJbIqu/X+EIxfBabQ9n57qSsOhc380G2WIdLRjxazgIUtjl/7A6QkZjF7XStrBz3YNBf9bEX/xZ4j2UYkurQ5QGvPQBFDH7xzVEO40T2/O6ihc+jVxyamYu5ZTfjRdEIfM4B+9m+S5Q7P5qLo+n1lkFzL4T9+vzZ0pr1LtE79RoXthqnrLDdMPxEjkZ/9taETZcPbrw6fbTwLlEA6TlUOHth0PfoMgzAhwN2wNta23nuHlDz6i2SP6WS4rHB0YrT+gBXKrfLjlE+uCUqduMQk5jKd+wCqZxExltbb2DERH7Cdircu4sSmjKgkcgFnLEAM21MMF0VTMYkyNzd9eNh76MAPyKeQexR+bXVFVmB1Y2A+Ize2bPfe3OZmPNbwn/FFpGCKSuOXNFmrfWqvxC2TEgOARdYRzHhLr03DuYo353KqYgbV208thoY7ck3wFn+Mq7fzxKolo8uvSxbFOLQOjO3n4LA4BsXBgZ9yRg6aPkLflM/8K64GkbOo0gZ7uQaNGluQowHSnVVmxMgMzTtA4kb+9dZvpJyRQy8FcQr20smabHKyltJXIgn1mW2HSrcaNARtMuZxAU7QNeWIV2LW55tLyb9h/SuKEN1tiBeA48k4vR0Yf8H9Lbf7ieGfCgN2Jp3HGy989p0bWeTJ96ealaJIejhij7LqiPbYFtroCB0iTVXZWMdBelGeNUnuHnonNm6Mn3AwOc
- kjNREImW
- jbNZ8uoNLzF6LDWn6aBnqcTu84VRDbtUovn2W0HstaRmeHNqMlrTCDyecvSPkdhf7i9dekkxk6owHomRroB77g8QESHxexvpjlyyLcJZB5Mi21l6EK0IaIYJt3ncvaiTv7pOnoQKf2t32auw2mzSJ8NjZrXBwrTJg6toLPA17IWlIKDWwcouczMfziQY67T3sEzbQF5Nu346FIoGBVxJPFZEFrM9jeYP+ZjdgAY7hHu1bL2T3AMk/40ZrhQHCSp4xys1ySBsVOI1Au1nqoFxyF80SnGp9hDMYGcOp
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: BC168140004
+X-Stat-Signature: q56cko8gzcx3finersqtjimnpaf796hq
+X-HE-Tag: 1784767001-508842
+X-HE-Meta: U2FsdGVkX19v+OVOy3GqPHYBwB6R4jYxPqtkwzbb2b4PuqLfTGQBVYco7ljc6GlvqMWn7Obav1XR7p1ZyWUHKoQpMHqOVHVJkdXaqoRUVfHlvyAE8ATOHww6gt52AlE5Z4LM7qAJ7nkG/+gWsEXbE1CZgOQG71VmTMPe2JKrz+b3ExRxcHmFVTiZh+e9Dyf7PcGRn4gYeTxDXpgAoaa4Gc6Dnt8oDi7Iiy2GzvrHCmhrJUPIpXO7zEU2m8hg0PyjekCHp2rvN2AxFGGipU7yxZC7gbpJOtDKwHI2uVEZydJznLXRyGB7wuMs+p3EKiom8sSQ5gM7tFUlB+vBUepMKmtZNN2RTDnMbotxEmgpAgA0HbzqG93T7NfIzO2Ymd3nXi4h74V2qitf5zB5eSBHipB9Shg6cNDcrctnUVuSl+XOKfz3YvoR3u9QtgqB+eNqI3xgV/AgfRijjcIP2JoTdGnDeyIomr9x/rBjkuwA1gL62BdUh4ARb5Omguta2m8E2SoMNznDcSU+NrfR66egyil3Afj8PaZLvpBWIBsJ5qC4vHd73/f8euLSeJuVs+/Nvf63+CbSYEPB/RwRk1m+dvdk0w6hNwfk7tgW+im5iA2XSexpd8gc55etXLCXv71hgMdRgN+qsmzuG+++g8dRNpo5rJgv7dMSPxR8DObRIPrlG0vrGvG6nqiNdSoHYhHrQpcw/IyyBcoRVpIt7d5TghQHqjIc5QdusM90wPTG+UYPD59BVP1XHq1DQoD61f7m7IWpmS1EtDfWPRbCUAPc+WdZeHkC5sj15zT/Kh1gJS18kAIQXoP1eo76HlL2t+XjT8F7VFAQJffnIVGjKu1Xkqt98iXSOxuOS2UEJWR8WtqbF25Gyu537kjJpCjquQ6gj6Bm3ShhLyG7D0SbefgGX2+F3RzK9m458fcwLXGzBcehMsbOsuU54nsCqKu9jYQEkVL/JwehvgxO3MC+NKU
+ 9TRIbImt
+ Po0tiDcDIMO3+H84hJ949q5/xNDycEMBIQeOz30CGCfhKqGqibYgFIy17cf4XLE9DQedcWl12AcErbNQM+lXaUqZhlxYa4Z8UQR/IjsMkhudjUt7NRTWvEinsKuDRYDno0yFr9E4IX3QOCNXkHoj9EgImmXcpUCf6WYwqUnKwPv/KNtWKpZ4Gf5os2WtXsQGaLJ0+tcRPaNt5N3r6z5+zM13XtlIcPyihHRxegCSnl9++ehV5CI/MasLyuj5PYIRI98XkQ/Rt7GsINNY54YXqdaes0tgsUVqPMgLikT2bjGZwUPZGTtS7mlkpMzFUxD14V74dK41ewZnb2mRhlu3Uv0iTYfdFl75qF3h6Oob4yQsvzPDsuUHnOHTx2p2JuRrICmlLKekQxo6b+wGnk/p4huArZe/T7mj+SactZ2CCjEUxpvDq7WH9Z+U4VuzVEtsqxcdA14bF7l6cFc4MRR6J+B45t/51G+6rgq63
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,34 +96,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 22 Jul 2026 16:51:22 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
+On Tue, 21 Jul 2026 00:55:33 +0000 Link Lin <linkl@google.com> wrote:
 
-> Hi SJ,
+> During PM freeze (e.g. S3 suspend or S4 hibernation), device drivers like
+> virtio_balloon reset their underlying virtio devices and delete their
+> virtqueues via vdev->config->del_vqs().
 > 
-> On 7/22/2026 4:45 PM, SJ Park wrote:
-[...]
-> > We (mm community) now want to focus on making mm.git more stabilized and
-> > therefore ready for the next merge window, rather than adding more changes that
-> > are not really urgent.  I agree and want to help [1] that.  For the reason,
-> > unless Andre pick this first, I will request adding this to mm.git only after
-> > next -rc1 release.  Let me know if you think this is really urgent.
-> > 
-> > [1] https://lore.kernel.org/20260722133829.87607-1-sj@kernel.org
-> > 
-> > 
-> > Thanks,
-> > SJ
-> > 
-> > [...]
-> > 
+> ...
 > 
-> No problem at all. I am fine with it.
+> Fix this by switching page reporting work to system_freezable_wq.
+>
+> ...
+>
 
-Thank you for confirming, Asier!
+Thanks.
+
+> Fixes: 924a663f75e2 ("virtio-balloon: Reporting free page reservations")
+
+hm, now where did that come from.  I can find no such commit and that's
+the second time this very unusual thing has happened in 30 minutes!  I
+wonder what's going on.
+
+I'll use
+
+	36e66c554b5c ("mm: introduce Reported pages")
+
+OK?
+
+> Cc: stable@vger.kernel.org
+
+The bug is very old so I won't fast-track this fix into 7.2-rcX.
+
+AI review pointed at a possible pre-existing use-after-free issue,
+related to virtio-balloon.  But I think this is a rephrasing of the
+issue it flagged against your v2 patch.
+
+	https://sashiko.dev/#/patchset/20260721005603.1710551-1-linkl@google.com
 
 
-Thanks,
-SJ
-
-[...]
 
