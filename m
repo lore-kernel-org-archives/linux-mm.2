@@ -4,105 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B79CFC44536
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 00:05:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13634C44532
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 00:06:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B80C6B00CB; Wed, 22 Jul 2026 20:05:23 -0400 (EDT)
+	id 217886B0088; Wed, 22 Jul 2026 20:06:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 968A16B00CE; Wed, 22 Jul 2026 20:05:23 -0400 (EDT)
+	id 1EF656B008C; Wed, 22 Jul 2026 20:06:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 87ED96B00CF; Wed, 22 Jul 2026 20:05:23 -0400 (EDT)
+	id 108076B0092; Wed, 22 Jul 2026 20:06:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6625F6B00CB
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 20:05:23 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EA0AB1A0354
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 00:05:22 +0000 (UTC)
-X-FDA: 85018096884.07.027841E
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D0C866B0088
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 20:06:27 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 62B8C16033C
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 00:06:27 +0000 (UTC)
+X-FDA: 85018099614.12.334B89F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 3504140002
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 00:05:21 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QttpmbDm;
-	spf=pass (imf12.hostedemail.com: domain of mhiramat@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mhiramat@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784765121;
-	b=lPplNF/kT8u81C4KZbm71Wkk1joGP5eSKLUj38FjEbNLfsCGuyMulr3rXEa/YFhRb6q/4F
-	Dy5gZv0HIlWRlTUiGsHcKHuh7+o573XMG2ubJxZ8mjWTt58OhvphFdzrCO0MkDN6NLn7MN
-	rlZHf+CN/Ka0SaKY7CLj5M2F89vARnw=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QttpmbDm;
-	spf=pass (imf12.hostedemail.com: domain of mhiramat@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mhiramat@kernel.org;
+	by imf27.hostedemail.com (Postfix) with ESMTP id A59C140003
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 00:06:24 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JXapcB4F;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784765121;
+	s=arc-20220608; t=1784765184;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cERcVi3l194vR2K7MPvUZ59VryqFLMg43o/10bMmISM=;
-	b=aVlos89XFliT3VCgq37kJlA3X1lMeDXMcuGBH/rpMQy6Vjc8l+C2q9NzNOt5pW5jtoSDD5
-	mnECPUeoBsWxFemn40UTDE2XtxtU3E/iIwuQdQAnLUu829JZ2GooBy5hmM1lmrfoatJoB8
-	MLvcWaDtIslzY2qMkwUVjQhdk9uFl8M=
+	bh=hpCbtcUC2sXXWMpXDvfzAO/B8jNQgdzlMS6y9QE7+7o=;
+	b=ezXDzNu9AieGh3WkqfkgTGOn9IzPpFWexTn//fIvgKd6w6n0Lv2N6lVeD4TTsoI7qxwCXk
+	gzzBEENg3bTQUjhrHrMDaNg97c9+YEI0EExXM2HVtkjuff/KdPebNivKEWOvcwtj0W6fMu
+	eKaT2NxnN9cfol/nWTBZPDGKrDtwrsM=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JXapcB4F;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784765184;
+	b=P8XM1J/ov1FKe4UXwWGr5ygszmBF3lz3+OvxsPmbVdHS+KI2C6MpFGME7UEWOlLN7pJSTL
+	aNUITOobotLpTImY9X7AW8Z/VvlpwfHmNS/VSN9EX0LfjEpZSrMq17Dvk/KhpufCEJSdeR
+	OiMIwEFECsbG0NtVVLDE+/IBaQOb7nU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5156D40672;
-	Thu, 23 Jul 2026 00:05:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEE6B1F000E9;
-	Thu, 23 Jul 2026 00:05:13 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B3D6E40E11;
+	Thu, 23 Jul 2026 00:06:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF7281F000E9;
+	Thu, 23 Jul 2026 00:06:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784765120;
-	bh=cERcVi3l194vR2K7MPvUZ59VryqFLMg43o/10bMmISM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=QttpmbDmFm3XT7advN73O+eWorj1Ah46zEsaAUHvor3l+aSKENGVnf8JVCdfRJMoC
-	 UtILpVt6UfIYIJXf/mi8iq+Geg1cQwTn7RAO82o10FnFichBdWbjjPcQu/nuEYnDw3
-	 J9nPPAZuGX9RDBc4b/IjDypVrNUKXfd/dbOugDl50C/rH+2ey51sYFijTgfyPqp1EF
-	 J5i/WT8GDkNXkeZxffEoCJiV19FVq+XBCrTfmMPuRYUSdWm2J4uStkirxgsmga1tmE
-	 sY7TbKMmaarKpQLKirwlyrmklQal0pzhh7tj4avo7ifK5m9QezOMgb/JWh+fB+G02a
-	 wOisoMdBcnkYQ==
-Date: Thu, 23 Jul 2026 09:05:11 +0900
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-To: Jinchao Wang <wangjinchao600@gmail.com>
-Cc: Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@intel.com>,
- Andrew Morton <akpm@linux-foundation.org>, Peter Zijlstra
- <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, Steven Rostedt
- <rostedt@goodmis.org>, Ingo Molnar <mingo@redhat.com>, Dave Hansen
- <dave.hansen@linux.intel.com>, "H . Peter Anvin" <hpa@zytor.com>,
- x86@kernel.org, Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim
- <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, Mathieu
- Desnoyers <mathieu.desnoyers@efficios.com>, David Hildenbrand
- <david@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Matthew Wilcox
- <willy@infradead.org>, Alan Stern <stern@rowland.harvard.edu>, Randy Dunlap
- <rdunlap@infradead.org>, Alexander Potapenko <glider@google.com>, Marco
- Elver <elver@google.com>, Mike Rapoport <rppt@kernel.org>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
- linux-doc@vger.kernel.org
-Subject: Re: [RFC PATCH v2 00/13] mm/kwatch: dynamic hardware watchpoints
- for hunting memory corruption
-Message-Id: <20260723090511.bd1547ef01b8702a0449c887@kernel.org>
-In-Reply-To: <0565e7d4-fb0f-4b84-a20c-0c73ac964b51@gmail.com>
-References: <20260717125023.1895892-1-wangjinchao600@gmail.com>
-	<91f3486b-3b85-4b43-b099-0a5325643352@intel.com>
-	<20260717181004.GBalpv_MOaAflgFxgh@fat_crate.local>
-	<20260720232442.3e6b0e70c6939541b8362e05@kernel.org>
-	<0565e7d4-fb0f-4b84-a20c-0c73ac964b51@gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 8chymirb59wotu83r7go7eqisenc4e9e
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 3504140002
+	s=k20260515; t=1784765183;
+	bh=hpCbtcUC2sXXWMpXDvfzAO/B8jNQgdzlMS6y9QE7+7o=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=JXapcB4Fokth2Rq05nv7x+iAXVDRQ0PR9QOyVuhfxKEFbJWQyLPi60RkSNLxRZxqO
+	 9pzBtvAEpimpGzaeWTYloeDBwBvSVv1U2c5dcFcEwvdDuVrE8vmQfAwA8yzqvnjeg1
+	 nWOuRxQ7sd/UjFGMoiC+UxcLxNGgNjqScc6zJeR5R5357xCfD9MIZSrAoIq5olKEZM
+	 K32TNU9o9w7rVDymL5iinKM9Vq5Q/uMl7GecKz8AGly0nuG7+eVW75vtfIbhbN7AK3
+	 ANK7qFhI3UF7VXhsCr/QitDrDg6asQ07BXFxdgNE27h5WoT57M6zt+DRva3g52D/Ue
+	 HvEtdImcFtmFA==
+From: SJ Park <sj@kernel.org>
+To: pratmal@google.com
+Cc: SJ Park <sj@kernel.org>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Greg Thelen <gthelen@google.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	linux-doc@vger.kernel.org
+Subject: Re: [PATCH v2] mm/page_reporting: Add page_reporting_delay_ms sysctl
+Date: Wed, 22 Jul 2026 17:06:09 -0700
+Message-ID: <20260723000609.95657-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260722211517.1898228-1-pratmal@google.com>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1784765121-618156
-X-HE-Meta: U2FsdGVkX1/BrQ+wUoCR3LXLQmWaJVO/MGEqqfgeGaQ5SInWs2COhN6D/46n0dk/zy3+B1ZlD2+BRqZRiUyfUG0CmT3rxKK3lQGcPHCnqcvIp/L7IGmai2lnN7qa3mZ2kYc+OtgxJAX7kVJwVyCWjO6fQlTU8xeJWdD+ADXD2dKDf5qjnhgI2YDDZ9BnzkJK9AOp0lYAwPR8qKyJobB2kH+OgpgBhkJleWsPPMTiwlgXatnSB1sCCghzQ988TbhFD4wtlP3OIMA+nHveDL3w35DXR/PoQda9Pcw/GVkwpVHMBicc2DWLjabMEbuGROiaYkK5+mo0XlqJ9lph5gIHVVT+gtk5gwfIK2idJolrezpOF/MZdm0vmT4V1M44xzccczxKjrvXTHcdmV/LWwEsA7UNK1UoJ6cPGcLAEz5oRhRZZzesg7+3ttis/+Ch/VL16GJk4+/1DhawxVMWDldsNVZKUTi2zpbBLlg+v+lzaRTiSeHH8aiZa0SKn6/I65bxGxFXzPu/GlN5acIo9i4LTnRjcr84AHfiqNgsF7B6jT/GYVGZOw0yvPE09KXFT2m4YrQRW9bRIJwJDAdtba5sAJzgph46BiHf3tSPffFSB0qjFm8R/it69fdvhAIdx8g6eOaliPM2tmyT4zBwfOM+E4+orM03kHySNSx2eNPCsy/c6H1WxCTZh4i5mbtm6f9v3KvVobJyYAHHnjPZPqqXBk02R8umJZR4NkdMg6AShPp8FOfknnm0XjDxiVFvHwO1PxRQQXKwA1AVHBnOv4dVXiUtWzfSgGAMUF54XPhY1qxRYlF+fGkuMvorunkzxLsN3tUaFvPT1DzgLLoR5/Qiquk5dNXNeBYRLbE0L5Bp5JFv8kSC/YQCLrsqZnVtzChpgd3T4Tn41Y9h73YFEfJSEPrEmZpP1IfmTF4Q+eDJVjzdRM5mu7BN36SwHhmS3cet1WYCsu+29sDRuSMQeXq
- 6tafa0Lg
- 1MQnRadIp0AskNa/9gOWUXc5E7rt+Jf2wInGtGBL8yk47woat9iAgSKtYI9UaZWGdRfG/T9572l1xgUF4JxTTLHnznVUBVmDpVRegcOEDaNARAo4jVujYuAaN4Oy67dKWXiB6yVnd9npSfAPgcA+BB+5Z9+6ud67hML0PnIdjgFqEIfEGIoZca2WLmVZlSlvGAYVzrt4w0AJqXaLoD4wHSORyLrlAteGFYxBtWSe5AyBFrZ9tzx2S7GTbF3NraFTT7KutFKq3o8pASLqfHJTxnaUaK9aDohKsQIPFHcmw75PGt+c=
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: A59C140003
+X-Stat-Signature: nzi6n369uqatdb9n6agmgodgmmu3x9gb
+X-HE-Tag: 1784765184-718231
+X-HE-Meta: U2FsdGVkX18wH7i1kyVAHvBNZYK2qbiiCKK7xS1GPhGcsFRsZ511QBXoD0elyuxQMRuE5IOLjMk2HeX69oilI8ivKLQOI+VpJFjZu9R46syVINLxtW8tTRBFdin4CL/X73okqsrKIEv7eXx3Hu9XUc1bwBTf0P3TdkDsDT1aERZMLUV/eD22pXOt6zRuFHjqlNdZSVJRxrqhZTFGOHrJQvFOTldy6gUl727F5pWX9krcSuNO+3WAMEcYA9CETWF0j1hfqLDD6u5Zp85ElqoGvWslixrhvZp4h/pSDGBy535jnpt3Y8iEWP/X0UDxp1db/Szo56yq5wA+B6pgGGsFZZTUsDUzYbx/g0gF9txZElQH9/I8KuF1z/oX164DWqY6dOcP4WVup4L6n//YYygkRv+7bBIkNhGn26QF6U1hTWlC6DkHM3Ifp5AB/bsgDYnhFd7qSoUNO55OK7zwqr+pAIa8nRQF0CHADMclSYKYIFbq5eB1Ye60mW/k79l5m81uZhVf9E6Vfx8C6mS8+8SOr+tky4R7syEBDR/csiL86Z9KCbeMaIlbZxvwSHFXKGIASejL3Bx5sDqQiisDqfs64qZSQKWTk3LwnNZbQ8tFvUMnsRhNGVzf/KVBq60WxcP8j077BO40O3SWgnlQi/3q1CH9XYIGLxSrfVFlGhJ5a0NVqkAbqU90BX4KOWQEpozle0SDO71Yn7NQK4Gen49T8jAjGQ665xBl/iKAmVcGMDUjOMeDoB0hbJBDLfO4Th38U9UTanNbmNGtLDcyiAQHOwjbO1/3r2FMtFf6kV/AZ9RJZBabZJtrcvEDZG00eDaumlCSNXtFIrXgPosRVYnQE9HmuFUSK7Fwx1Buhac1Qg/kcya6Jaj3xECVHXP2BbUyTttpttmOc4i7OfDhjLbPJusx6vVnLM2ikU4JtAad9ZI1ejiazW82S0x7H8qIUSPffLvaUKE6nibcWZUraqY
+ nyTWaNVN
+ Cjy8H7h2xGLha++renMGiY5iAilV+DSDpcp9wx3tg2vPqVpyLAnwUl9u3t6Zizv8HhO0bJocOpG1K11u9BsI33jjzz0uHVqaoNrJfSviAhVgpg9oeFxN6NJsvmB3dWtGsakauEstdYJVHm/kAZN6abCIwy1MexP1Uix5WIcNBghunngYGt9gSLiLSCUb0HbdRDqKEonitQoLgTgoTa/XpBSyToNwamNP7lvJk1ELkAjo55s/rLz8D+RUKnV/CJYo8Irol+Vc7M40Z3R2Y+uVySYpa2nGwjty+NZy+hwHyeLMPHXZpJ+LqAiiNGanXdWCNUAQFur/MLH79p/VE3ZHpqFc3UMUtAyMQtpwpEeCvWVCgD49qlchDyZDWbkMnBsFVVo/LpbLW/4u+xXMxUyvKd2gSAewLGmPbcGrBH7z5VIqdefXTXxrJMv+mjcfC9vfnkNxeCSKDyZQepyJrWZy6kaOMWir4fj7/c+3A7HvDfLTsjlI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,65 +108,182 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 21 Jul 2026 08:36:01 -0400
-Jinchao Wang <wangjinchao600@gmail.com> wrote:
+get_maintainer.pl suggests adding below to the recipients list of this patch.
+Let me add them.  I show you already Cc-ed David, but with his old email
+address.
 
-> On 7/20/2026 10:24 AM, Masami Hiramatsu (Google) wrote:
-> > On Fri, 17 Jul 2026 11:10:04 -0700
-> > Borislav Petkov <bp@alien8.de> wrote:
+- David Hildenbrand <david@kernel.org>
+- Lorenzo Stoakes <ljs@kernel.org>
+- "Liam R. Howlett" <liam@infradead.org>
+- Mike Rapoport <rppt@kernel.org>
+- Jonathan Corbet <corbet@lwn.net>
+- Shuah Khan <skhan@linuxfoundation.org>
+- linux-doc@vger.kernel.org
+
+On Wed, 22 Jul 2026 21:15:17 +0000 pratmal@google.com wrote:
+
+> From: Pratyush Mallick <pratmal@google.com>
 > 
-> >> Looks to me like folks need to sit down and agree on strategy first.
-> > 
-> > Yeah, I need to talk with Jinchao.
-> > 
-> > Like kprobe, wprobe itself integrates watchpoint functionality into
-> > the tracing subsystem. Jinchao, I would like to ask you to redesign
-> > the kwatch tool based on fprobe and wprobe events in user space?
-> > I think that could reduce redundant efforts on the similar feature.
-> > 
-> > Using fprobe entry and exit event trigger, we can make a Function-
-> > scoped watch window. Also, since fprobe and wprobe are having BTF
-> > typecast support, you can access to the members of data structures
-> > more naturally.
-> > 
-> > If you are interested, I would be open to having you handle the
-> > development of the necessary features for wprobe.
-> > 
-> > Thank you,
-> > 
-> Thank you, Boris and Masami.
+> Currently, the free page reporting daemon uses a hardcoded delay of
+> (2 HZ) between reporting intervals. While this is a reasonable
+> default, it lacks the flexibility to adapt to varying guest workloads.
 > 
-> Boris is right that we should agree on the overall strategy before
-> moving either series forward, especially since they share the low-level
-> HWBP work. Masami is also right that fprobe and wprobe provide a more
-> appropriate foundation than introducing KWatch as another standalone
-> debugging tool.
-
-Agreed. I just sent v10 because v9 lacked base-commit and Sashiko did
-not reviewed. (so it just add a trigger-side BTF support which was
-dropped in v9).
-Think of v10 as the complete set of ideas we wanted to implement
-with this wprobe.
-
+> A low delay allows aggressive memory reclamation, returning unused
+> pages to the host as quickly as possible. However, during spiky
+> allocation/free churn, this immediate reporting can lead to a severe
+> performance penalty (nested page faults) as the guest re-allocates memory
+> that the host has just unmapped. In these scenarios, there is benefit
+> from increasing the delay to batch free pages over a longer window,
+> absorbing the churn without hypercall and re-fault overhead.
 > 
-> After reconsidering the design, I will stop the standalone KWatch
-> series. Instead, I would like to work with Masami on extending wprobe
-> to support the function-scoped dynamic-watchpoint use cases that
-> motivated KWatch.
-
-Thanks Jinchao, I appreciate to work with you on this project.
-
+> This patch refactors the delay into a dynamically tunable sysctl,
+> /proc/sys/vm/page_reporting_delay_ms, measured in milliseconds. The value
+> defaults to 2000ms to precisely match the original (2 HZ) behavior.
 > 
-> Masami, thank you for being open to having me develop the necessary
-> wprobe features. I am interested in taking that direction.
+> Signed-off-by: Pratyush Mallick <pratmal@google.com>
+> ---
+> v2:
+>  - Documented page_reporting_delay_ms in Documentation/admin-guide/sysctl/vm.rst.
+>  - v1: https://lore.kernel.org/linux-mm/20260722192935.1646848-1-pratmal@google.com/T/#u
+> v1: Fixed feedback from RFC.
+>  - Added lower and upper cap to sysctl value.
+>  - Reverted the reordering on page_reporting_delay_ms.
+>  - Dropped the mod_delayed_work() change.
+>  - RFC: https://lore.kernel.org/linux-mm/20260714171456.2350037-1-pratmal@google.com/T/#u
+>  Documentation/admin-guide/sysctl/vm.rst | 13 +++++++++++
+>  mm/page_reporting.c                     | 30 ++++++++++++++++++++++---
+>  2 files changed, 40 insertions(+), 3 deletions(-)
+> 
+> diff --git a/Documentation/admin-guide/sysctl/vm.rst b/Documentation/admin-guide/sysctl/vm.rst
+> index b9b0c218bfb4..6efa460b4547 100644
+> --- a/Documentation/admin-guide/sysctl/vm.rst
+> +++ b/Documentation/admin-guide/sysctl/vm.rst
+> @@ -66,6 +66,7 @@ Currently, these files are in /proc/sys/vm:
+>  - overcommit_ratio
+>  - page-cluster
+>  - page_lock_unfairness
+> +- page_reporting_delay
+>  - panic_on_oom
+>  - percpu_pagelist_high_fraction
+>  - stat_interval
+> @@ -896,6 +897,18 @@ stolen from under a waiter. After the lock is stolen the number of times
+>  specified in this file (default is 5), the "fair lock handoff" semantics
+>  will apply, and the waiter will only be awakened if the lock can be taken.
+>  
+> +page_reporting_delay
+> +=======================
 
-OK, please share your thoughts on watchpoint usage in the kernel.
+Why don't you make the lengths of the line and the section title same?
 
-Basically, I will fix the points raised in the review, but please
-let me know if you have any other suggestions.
+> +
+> +This value determines the delay in milliseconds between free page
+> +reporting intervals. A lower delay allows aggressive memory
+> +reclamation by returning unused pages to the host quickly, while a
+> +higher delay helps to batch free pages over a longer window, absorbing
+> +allocation/free churn without hypercall and re-fault overhead.
+> +
+> +The default value is 2000 (2 seconds). The minimum allowed value is
+> +0 (immediate reporting) and the maximum allowed value is 10000 (10 seconds).
 
-Thank you,
+So it is milliseconds.  Why don't you add the unit to the name, like
+page_reporting_delay_ms?
 
--- 
-Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Also, coule you elaborate why there is 10 seconds maximum limit?  What's the
+problem of having no limit, and why 10 seconds is the reasonable one?
+
+> +
+>  panic_on_oom
+>  ============
+>  
+> diff --git a/mm/page_reporting.c b/mm/page_reporting.c
+> index 942e84b6908a..805da4bc1101 100644
+> --- a/mm/page_reporting.c
+> +++ b/mm/page_reporting.c
+> @@ -6,6 +6,7 @@
+>  #include <linux/export.h>
+>  #include <linux/module.h>
+>  #include <linux/delay.h>
+> +#include <linux/sysctl.h>
+>  #include <linux/scatterlist.h>
+
+Too trivial nit, but, why don't you put the sysctl.h at the end of the list?
+
+>  
+>  #include "page_reporting.h"
+> @@ -47,7 +48,10 @@ MODULE_PARM_DESC(page_reporting_order, "Set page reporting order");
+>   */
+>  EXPORT_SYMBOL_GPL(page_reporting_order);
+>  
+> -#define PAGE_REPORTING_DELAY	(2 * HZ)
+> +#define PAGE_REPORTING_DELAY_MS_MAX	(10 * MSEC_PER_SEC)
+> +
+> +static unsigned int page_reporting_delay_ms = 2 * MSEC_PER_SEC;
+> +static unsigned int page_reporting_delay_ms_max = PAGE_REPORTING_DELAY_MS_MAX;
+>  static struct page_reporting_dev_info __rcu *pr_dev_info __read_mostly;
+>  
+>  enum {
+> @@ -56,6 +60,19 @@ enum {
+>  	PAGE_REPORTING_ACTIVE
+>  };
+>  
+> +
+> +static struct ctl_table page_reporting_sysctls[] = {
+> +	{
+> +		.procname	= "page_reporting_delay",
+> +		.data		= &page_reporting_delay_ms,
+> +		.maxlen		= sizeof(unsigned int),
+> +		.mode		= 0644,
+> +		.proc_handler	= proc_douintvec_minmax,
+> +		.extra1		= SYSCTL_ZERO,
+> +		.extra2		= &page_reporting_delay_ms_max,
+> +	},
+> +};
+> +
+>  /* request page reporting */
+>  static void
+>  __page_reporting_request(struct page_reporting_dev_info *prdev)
+> @@ -80,7 +97,7 @@ __page_reporting_request(struct page_reporting_dev_info *prdev)
+>  	 * now we are limiting this to running no more than once every
+>  	 * couple of seconds.
+>  	 */
+> -	schedule_delayed_work(&prdev->work, PAGE_REPORTING_DELAY);
+> +	schedule_delayed_work(&prdev->work, msecs_to_jiffies(page_reporting_delay_ms));
+>  }
+
+A trivial comment again.  Why don't you wrap the above line for 80 columns
+limit?  I know that's not a hard limit anymore and I show a few lines of this
+file already exceeds 80 columns.  But seems most lines of this file is still
+keeping the 80 columns limit?
+
+>  
+>  /* notify prdev of free page reporting request */
+> @@ -340,7 +357,7 @@ static void page_reporting_process(struct work_struct *work)
+>  	 */
+>  	state = atomic_cmpxchg(&prdev->state, state, PAGE_REPORTING_IDLE);
+>  	if (state == PAGE_REPORTING_REQUESTED)
+> -		schedule_delayed_work(&prdev->work, PAGE_REPORTING_DELAY);
+> +		schedule_delayed_work(&prdev->work, msecs_to_jiffies(page_reporting_delay_ms));
+
+Ditto.
+
+>  }
+>  
+>  static DEFINE_MUTEX(page_reporting_mutex);
+> @@ -416,3 +433,10 @@ void page_reporting_unregister(struct page_reporting_dev_info *prdev)
+>  	mutex_unlock(&page_reporting_mutex);
+>  }
+>  EXPORT_SYMBOL_GPL(page_reporting_unregister);
+> +
+> +static int __init page_reporting_sysctl_init(void)
+> +{
+> +	register_sysctl_init("vm", page_reporting_sysctls);
+> +	return 0;
+> +}
+> +late_initcall(page_reporting_sysctl_init);
+> -- 
+> 2.55.0.229.g6434b31f56-goog
+
+
+Thanks,
+SJ
 
