@@ -4,106 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19C29C531C7
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 08:46:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57D83C531C7
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 08:57:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EE47E6B0155; Thu, 23 Jul 2026 04:45:58 -0400 (EDT)
+	id 426576B00E5; Thu, 23 Jul 2026 04:57:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E47426B0157; Thu, 23 Jul 2026 04:45:58 -0400 (EDT)
+	id 388DD6B00E8; Thu, 23 Jul 2026 04:57:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D0E386B0158; Thu, 23 Jul 2026 04:45:58 -0400 (EDT)
+	id 250CA6B00E9; Thu, 23 Jul 2026 04:57:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A66CF6B0155
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 04:45:58 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 19597A0425
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 08:45:58 +0000 (UTC)
-X-FDA: 85019408796.17.2DF0C3D
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 9192A1C000A
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 08:45:55 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Slp45kXG;
-	spf=pass (imf20.hostedemail.com: domain of yuan1.liu@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=yuan1.liu@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E77486B00E5
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 04:57:49 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6A4481A0414
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 08:57:49 +0000 (UTC)
+X-FDA: 85019438658.19.D1D8EC7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 8DF6BA0011
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 08:57:47 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=none;
+	spf=pass (imf25.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784797067;
+	b=2NQtAZiG4jKhnLuxSTUCSrKJw9TFKWdWw+clFqELYAGZ0XZXWfyjXMVfCCZhrX2OB0Tl+5
+	LczdvmmTuaCqmxx+9RJBgYTZHnyKPtpDgLnx8UlrBX7916aJiDU/uercr/jbSwePx7fhkl
+	dXDUYmC1V9D22RIFf7UK32kiZGzVW/w=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=none;
+	spf=pass (imf25.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784796356;
+	s=arc-20220608; t=1784797067;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bB5nbXzOEEQWRYmh1v50F16YhcXrxa7ul/dckHOhha4=;
-	b=GJexK2Vmjc4kii7Qh4MELrnFtQQygggegtQYdhxdhLq/1Kg8IipH9n1r4wDOZ133nfhSh+
-	4LT2w913Sqiq5SpMWth8dV5i/ItmdRo+z5blXA4jMVbPTM0DHfeGVZqhnXXUBaL1GShIhT
-	h1eWFzSTjmzAD4xms6S8OcmFZooGWjs=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784796356;
-	b=DBlW1wgdvr5/WSdJj64n8/ghm/V3A4XZAcOQu8hzYIjbQtbdvPJjaENxCP94y6DFV9hxge
-	C1kAXVcNvOjIHcEzOynzfB8GK8JHmA6IBt9ZXi03hiq1TPLGRC1C4ccasQd3YAGAVG0t/Z
-	y6xh11IyaPaZuX9CgLWuV/HCgwj9dS4=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Slp45kXG;
-	spf=pass (imf20.hostedemail.com: domain of yuan1.liu@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=yuan1.liu@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784796356; x=1816332356;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=7rbY+wmZoNdck+weN1iewQCGpYuqzUNthhhl13Abfnc=;
-  b=Slp45kXGTl5xpTpJI7QjDpEcPCKiPdxuovtQ+skDsflWc8T80842V2l+
-   9FMWYtGmqlD6/EHJRm2BB4HRY9WyWa9ZjxvZS4Tg2sASvX6RS6MSouX5r
-   M59ciCTocXSjZGfYvOMrn6xMUFFIdKFp8luSLfjni2ZNUbvs4R/fCFpYQ
-   kcblU9dU4iVilni1hwteKcQRs51kBOAMnlZgDiAYDIiabp8xvrKY3RSoP
-   ScSeKRUEAIgWaZZnBXBSFohFsZPAD/c2zpVAkZJMBJYavYq7CW+WhyQFH
-   yuihpKfJM9dZeDkvCFPZ6yqVUbIECuZO8uJjOgAzR6Yc8ah8U/TqlFzVX
-   g==;
-X-CSE-ConnectionGUID: L9eXbrXGSFSJtwbavkUwig==
-X-CSE-MsgGUID: vzsC8KwATb2l9smUVKLJtQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="72986449"
-X-IronPort-AV: E=Sophos;i="6.25,180,1779174000"; 
-   d="scan'208";a="72986449"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2026 01:45:54 -0700
-X-CSE-ConnectionGUID: FUhMTWgORFmJguJuC3tvsA==
-X-CSE-MsgGUID: ID6ghIrQTSmIBXZJFQdXXQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,180,1779174000"; 
-   d="scan'208";a="254966703"
-Received: from spr10.sh.intel.com (HELO localhost) ([10.239.23.75])
-  by fmviesa007.fm.intel.com with ESMTP; 23 Jul 2026 01:45:52 -0700
-From: Yuan Liu <yuan1.liu@intel.com>
-To: David Hildenbrand <david@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Mike Rapoport <rppt@kernel.org>,
-	Wei Yang <richard.weiyang@gmail.com>
-Cc: linux-mm@kvack.org,
-	Nanhai Zou <nanhai.zou@intel.com>,
-	Yuan Liu <yuan1.liu@intel.com>,
-	Pan Deng <pan.deng@intel.com>,
-	Tianyou Li <tianyou.li@intel.com>,
-	Chen Zhang <zhangchen.kidd@jd.com>,
-	Jason Zeng <jason.zeng@intel.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v6 2/2] mm/memory_hotplug: improve shrink_zone_span() subsection boundary checks
-Date: Thu, 23 Jul 2026 04:49:46 -0400
-Message-ID: <20260723084946.189392-3-yuan1.liu@intel.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260723084946.189392-1-yuan1.liu@intel.com>
-References: <20260723084946.189392-1-yuan1.liu@intel.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oklOSaboSPhMpluJoBZeVgBHDXjeGvg5S3e8nTsOgHg=;
+	b=Bt45vmfCdHvY+4lhaLmkLYXw4YJ7b8tAdcgiv6G0mM7TBInWJWmivmU/ImBSBUmbjJrQch
+	N9pVECEz2brUDxWOXjvRGt3v2sQ9edm6Ufn3HwlM1DBKTE3HlXA5ErwT1RDAhtf/CqYmh9
+	iBaixhvBqu8VId+l5X38Xqctjy5dWOA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5C96E4170D
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 08:57:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55CFC1F000E9
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 08:57:46 +0000 (UTC)
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-92edb12cdf2so24297085a.3
+        for <linux-mm@kvack.org>; Thu, 23 Jul 2026 01:57:46 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RpLqZBG3PhiS6mqBNMn0SQOL0DBY4uEZKcnGyuAL26s44fYbKtnPNCrroBPMkKFUn4d0JKzH6vAsQ==@kvack.org
+X-Gm-Message-State: AOJu0YwgOIW5J/rfvmxDrSoyyNbIx6bLucFEvc+La1d2o30bhwyRQBU9
+	kz2OaYjs8xy8uF2E6HJfDHYiE7ORjW/4iwdHJa2lEi2SVlDK1nPizZe7wUmklqFAQWQYwKoMQbu
+	t094Lccw2uvfWxDXbUl0ibWFQtkegDJA=
+X-Received: by 2002:a05:620a:2403:10b0:92e:cad9:3540 with SMTP id
+ af79cd13be357-93103728103mr151218885a.70.1784797064796; Thu, 23 Jul 2026
+ 01:57:44 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 9192A1C000A
-X-Stat-Signature: 57czuaaj6pj34nkcu6hqd6fqqe3pch36
+References: <20260723045718.2052070-1-ridong.chen@linux.dev> <20260723045718.2052070-5-ridong.chen@linux.dev>
+In-Reply-To: <20260723045718.2052070-5-ridong.chen@linux.dev>
+From: Barry Song <baohua@kernel.org>
+Date: Thu, 23 Jul 2026 16:57:32 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4wtcP87bTPmm+aQ3pxn4eLW7KqU-0DJhBF639Muc2xzjg@mail.gmail.com>
+X-Gm-Features: AUfX_mwtuedh3AEXtY8PTrINLkSRxzHjvjpJJ30sQ1NdQRnQUsc53XGyeAvtqc0
+Message-ID: <CAGsJ_4wtcP87bTPmm+aQ3pxn4eLW7KqU-0DJhBF639Muc2xzjg@mail.gmail.com>
+Subject: Re: [PATCH v3 4/4] mm/mglru: fix anon-only reclaim evicting file
+ pages when swappiness=max
+To: Ridong <ridong.chen@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Zhongkun He <hezhongkun.hzk@bytedance.com>, Muchun Song <muchun.song@linux.dev>, 
+	Davidlohr Bueso <dave@stgolabs.net>, Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 8DF6BA0011
+X-Stat-Signature: uhatrnk9siir7ntmkt5jydqeax5khoin
 X-Rspam-User: 
-X-HE-Tag: 1784796355-780983
-X-HE-Meta: U2FsdGVkX1+XfCjGV7mLrS8H8c3atKO7+dCW+mo4s1a+zlNsYHatGIY1fQwdZZ9g69Lsu/039jVzeJgq6eiv5+R2PN8zLgtaqRMkF1bDe7D7WuXO2t8ZKufm7PXzNDYq7GoL4Hjh6OSRZp4/ccfLjex0CZTn3OaedM+/GpoS0eejwSQHtLbdkHTo22DaCHxVZcRfrsSOQvBW2rr3Govp9C/rfN9mZpGcwzbH8mwEhWUQsCRPLwCCDmHEzBWW7ctLKsAEzj/omkisuWM5TlQYaAL1wsI/rgS3pm9Hxkx31y0ReRoBH93WEpj9+jsOwPn2q2gHypgAPmkE4zjRFEJ+E2ouQBw4uIvbjjA0+TD/br9cLe1JCDz4K3HLXuCkameY3ed4zeJnG3rUlpAhg9tvqSpyw3Ba88q9slQEEKEtRjNIKIz/MGbFm9KUR4uG1+MErA8LxTX3QIJiTBBabsxqVTGw6HOX7QFisATZ6OVtYm1EbOLtjA7SJNIleUqD5h2Ye+vd5n3Zk01/QkovdvaMWNSFRqN7jQkMCvAoMpqY+01/W3iOpYLWLl6A1cRyiwG7Dqo50vgCFJo83ToRmWricZAGMP2RRa2AarCg0i4RM4c9nScoPV8FoJb8Zn+4vbVdaJLakYpuZbK7jnBnEL8wAHIOX4uhbEkfxoZNOIx1TDwjBJ1Tm7UsGtihSg6T2HTtkRCGOm/4D+tPmcj6ixJ3Alh/25QORBLFz+X05Y0U1Y1RYsqqTazfojkD1tfa8bUQ0KZRqycZ3jqprzK+ynrVU0Tyt3WbpdkOngcwpkruuKk7ScQ0UzxJgMDhrNMvQP/z4axgI1PK/NpIVg/0jFxNAOxbNJUsPZlRFsRh3nxGNg1za1lBIwAmLx4RERxHkFx4hPERColiV7lTwrcVz+ej0w6nXV35WtscReisY+yu+tvKdDjcSSMpc6skV1NOrfEAO7ikOC6avh60NsZNSYv
- h+Lea7hL
- IqFX7ogDuyNwzfx6Rs9BDLXsRXl5SmNURP1cGmXUCwIIT1zHFvjU1oQq607oPPy2NbmrEsEw1r1kuwQ30VfGx9bRmTrWB21Xg3qRwaC8iD8Rxq5wnGDrbBF5Szvc9BjE7nHJUAwZViqpQPDtCyTWGr8e24Fgr/6rpIRiY5c0lwLMfHzaXs6MJziQLDaD+iRllKwK0U8OrgVRXrcXtnuDozeW/OSSMAIgsJvbUIw4pA/Qnz0Itjd5jrF02PNeYzS8ijCTJeFToxd37db/wkfGYDj/gQ1uSn3axbgzFkJUf/VwRAJg=
+X-HE-Tag: 1784797067-759795
+X-HE-Meta: U2FsdGVkX19+X6XaKggQt6ZLSnQ5yDwEvUB6AIXDGpofYy7F7oLVtNQMpUhAkFqDaXDrkIm4FpiKrNyCJrGvKQYaEY7CwZM4UzOf27lMltWiAa6IJreUt8zi4CsIsUbUKaMCHEXtkA00BADE5hm2f3806/z8GsOkrrRy3r1w391eQpwgwhG16zf6PxGJjY0flQkUkm+yLNV4rEI9cc/sKy8C9jE0jDo7UuP21QSvZqt/jeRxS/6C+DGsMa3YkrRuR5EQY2Wt+WWtg0vBgc8ZvUH+Se+UgYiccksdzBV0wJDz+SFbGC+jMEG/RItsmJOcP5K/1tePZzJM058Ra7kiWcYFh+5KrfzpIUJx+v0AiaDigf8LKKzS6K+1uIjsszj9y9JzR9Qo2L1eL6jD9hO7O9/LuNp0ys1jLCEyVTZcPam2qIuw1yP5YoXeHtcjfCTG2cwVMqw/vR3uK4OLG/+fsSGkgDMqt9wd++fvoQunGKBv4nQp5IeWYx5dtKqFbQKWeqNC3wRgF/QzVZcK6ybD2qSSBjrVjXQ6OPh7EbJyS+vtK0JKj8hm0S3CL4DrbiGnVAhK4slF2nVS86HkOko0awAcUTGwSPO84x3HB13ZU2VPUcmubm06NvmkJM304ZTll2Iyua71r0UUeM2Xu2t4kcC8yU1/bpjDU5MOLU6uaaGwXvzpZVEWqv71IhLmXvnuVRRdAkQqtD8vnbw8IvS4wj8WsQMZppRZQrpLUo0l4ynClwmOr/8s/cSmdTEeKS2AA1utLngZ09sWse22UUT1VB8AY9F6mwjS8AGp0kbGoMnr2C55+YfjTe3dsmWv9C0qk49IWcX7/8Gr9OrED6SEZh9s/QSOSVABgN7NG3+7/BDCcBFIglhDXFuyBdWSojBt+R6dGPY6cJfnL0f8s47doJfK5DcYLEhbQU/cXUTg9wzbIyzDacjB/aVfMooq6tYLGW7Z27gUuK6ry7Pzl9I
+ CpoQZFvg
+ Gy/rDh+9BGVk6WIkC700I7BcSkmPp4RjPrOeGeucWbeCo9qiUgW17HqUdjaHFjtrrIIg8UOKUO69jWaLeY1iEf1n9dCUgAuiUD30V1YVoa/xKMalf65oj614tndn2500jQJdgtA3gpqv8DDS5htSwlTLLkgltv6bDL4wRmnMGklvAqTY4UZgQgJ4rpI6GiChpH1sYfZqetbhIiE8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,96 +99,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When shrinking a zone span after removing a PFN range,
-find_smallest_section_pfn() and find_biggest_section_pfn()
-only checked one edge PFN in each subsection for nid/zone matching.
+On Thu, Jul 23, 2026 at 12:58=E2=80=AFPM Ridong <ridong.chen@linux.dev> wro=
+te:
+>
+> From: Ridong Chen <chenridong@xiaomi.com>
+>
+> The previous patch fixed this issue for the traditional LRU. The same
+> problem exists in MGLRU [1]: when swappiness=3Dmax (SWAPPINESS_ANON_ONLY)
+> is set, reclaim is expected to evict anonymous pages exclusively, but
+> file pages can still be reclaimed when anonymous pages cannot be
+> reclaimed (e.g. no swap and no demotion target).
+>
+> With SWAPPINESS_ANON_ONLY, get_type_to_scan() always returns
+> LRU_GEN_ANON and for_each_evictable_type() only iterates the anon type.
+> But if get_nr_to_scan() does not bail out, evict_folios() still runs and
+> isolate_folios() falls back to scanning file pages in the !scanned case:
+>
+>   shrink_one
+>     try_to_shrink_lruvec
+>       get_swappiness   // returns SWAPPINESS_ANON_ONLY for swappiness=3Dm=
+ax
+>       get_nr_to_scan
+>       evict_folios
+>         isolate_folios // falls back to file type when !scanned
+>
 
-If a memory or hole boundary falls in the middle of a subsection,
-that edge PFN may belong to a different nid/zone, causing the helpers
-to miss a valid PFN within that subsection.
+I am not convinced this is correct. Although we do have `type =3D !type`,
+when `swappiness =3D=3D 201`, `for_each_evictable_type()` stops iterating
+after trying a single type, so there is no opportunity to fall back.
 
-Fix this by checking both subsection edge PFNs for nid/zone matching.
-Keep a single pfn_to_online_page() check per subsection, since online
-state is the same for all PFNs in a subsection.
+#define for_each_evictable_type(type, swappiness)                       \
+        for ((type) =3D min_type(swappiness); (type) <=3D
+max_type(swappiness); (type)++)
 
-Reviewed-by: Jason Zeng <jason.zeng@intel.com>
-Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
----
- mm/memory_hotplug.c | 42 +++++++++++++++++++++++++++---------------
- 1 file changed, 27 insertions(+), 15 deletions(-)
+So I'm really curious what's happening here.
 
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index 4c699fd9c479..3a281d595207 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -427,17 +427,24 @@ static unsigned long find_smallest_section_pfn(int nid, struct zone *zone,
- 				     unsigned long start_pfn,
- 				     unsigned long end_pfn)
- {
--	for (; start_pfn < end_pfn; start_pfn += PAGES_PER_SUBSECTION) {
--		if (unlikely(!pfn_to_online_page(start_pfn)))
--			continue;
-+	unsigned long next_pfn;
- 
--		if (unlikely(pfn_to_nid(start_pfn) != nid))
--			continue;
-+	for (; start_pfn < end_pfn; start_pfn = next_pfn) {
-+		unsigned long tail_pfn;
- 
--		if (zone != page_zone(pfn_to_page(start_pfn)))
-+		next_pfn = start_pfn + PAGES_PER_SUBSECTION;
-+		tail_pfn = next_pfn - 1;
-+
-+		if (unlikely(!pfn_to_online_page(start_pfn)))
- 			continue;
- 
--		return start_pfn;
-+		if (likely(pfn_to_nid(start_pfn) == nid) &&
-+		    zone == page_zone(pfn_to_page(start_pfn)))
-+			return start_pfn;
-+
-+		if (likely(pfn_to_nid(tail_pfn) == nid) &&
-+		    zone == page_zone(pfn_to_page(tail_pfn)))
-+			return start_pfn;
- 	}
- 
- 	return 0;
-@@ -448,21 +455,26 @@ static unsigned long find_biggest_section_pfn(int nid, struct zone *zone,
- 				    unsigned long start_pfn,
- 				    unsigned long end_pfn)
- {
--	unsigned long pfn;
-+	unsigned long pfn, prev_pfn;
- 
- 	/* pfn is the end pfn of a memory section. */
- 	pfn = end_pfn - 1;
--	for (; pfn >= start_pfn; pfn -= PAGES_PER_SUBSECTION) {
--		if (unlikely(!pfn_to_online_page(pfn)))
--			continue;
-+	for (; pfn >= start_pfn; pfn = prev_pfn) {
-+		unsigned long head_pfn;
- 
--		if (unlikely(pfn_to_nid(pfn) != nid))
--			continue;
-+		prev_pfn = pfn - PAGES_PER_SUBSECTION;
-+		head_pfn = prev_pfn + 1;
- 
--		if (zone != page_zone(pfn_to_page(pfn)))
-+		if (unlikely(!pfn_to_online_page(pfn)))
- 			continue;
- 
--		return pfn;
-+		if (likely(pfn_to_nid(pfn) == nid) &&
-+		    zone == page_zone(pfn_to_page(pfn)))
-+			return pfn;
-+
-+		if (likely(pfn_to_nid(head_pfn) == nid) &&
-+		    zone == page_zone(pfn_to_page(head_pfn)))
-+			return pfn;
- 	}
- 
- 	return 0;
--- 
-2.47.3
+static int isolate_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+                          struct scan_control *sc, int swappiness,
+                          struct list_head *list, int *isolated,
+                          int *isolate_type, int *isolate_scanned)
+{
+        int i;
+        int total_scanned =3D 0;
+        int type =3D get_type_to_scan(lruvec, swappiness);
 
+        for_each_evictable_type(i, swappiness) {
+                int scanned;
+                int tier =3D get_tier_idx(lruvec, type);
+
+                scanned =3D scan_folios(nr_to_scan, lruvec, sc,
+                                      type, tier, list, isolated);
+
+                ...
+                if (!scanned)
+                        type =3D !type;
+        }
+
+        return total_scanned;
+}
+
+since both min and max types are anon:
+#define min_type(swappiness) (!(swappiness))
+#define max_type(swappiness) ((swappiness) < SWAPPINESS_ANON_ONLY)
+
+I guess the real problem only occurs when `may_swap` is false?
+
+Thanks
+barry
 
