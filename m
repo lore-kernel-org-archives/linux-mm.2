@@ -4,145 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22403C531F7
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 16:38:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B762C531F7
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 16:40:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 036496B007B; Thu, 23 Jul 2026 12:38:30 -0400 (EDT)
+	id 1E6E66B008C; Thu, 23 Jul 2026 12:40:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 00E106B0088; Thu, 23 Jul 2026 12:38:29 -0400 (EDT)
+	id 197CA6B0092; Thu, 23 Jul 2026 12:40:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E40C46B008C; Thu, 23 Jul 2026 12:38:29 -0400 (EDT)
+	id 0D4D06B0093; Thu, 23 Jul 2026 12:40:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B21846B007B
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 12:38:29 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 46402C05A9
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 16:38:29 +0000 (UTC)
-X-FDA: 85020599538.07.81DD4EA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 77C5C140004
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 16:38:27 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CeMVKs5X;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DC4216B008C
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 12:40:15 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 748F31A058F
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 16:40:15 +0000 (UTC)
+X-FDA: 85020603990.26.0A51526
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 8521240013
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 16:40:13 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k2SZFsv2;
+	spf=pass (imf11.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784824707;
+	s=arc-20220608; t=1784824813;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CUO8C4g2gaArh4Y4Dlt29OXXWCzGAsxU5Y8v+yOgtp0=;
-	b=TnLxuhLwBa4EJy5IYddSRniQA1QC3pnAK1uCbJmvRWdmn2FwIpTnzZ6NZLN9RCzEHIOR6+
-	0p9W69giAfgYQBC5kPNeuMv3CAIfHddGWIOIFPnPUceNKf9C8zz+5qMsPwu/Wd0T1l0UFc
-	RK2mS7x9twYe/EyAjGr0IP7KxXXz2Rs=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CeMVKs5X;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=L1WF96ciKQolZmAE+pgzHAJ9kBo1cnaH8qexS6yH2DU=;
+	b=qQRkRrzkF/bAycy2IhGBenq3UcdITLNFaaWwdYtPmQ0WAuXF9gejUzEWgyQT7y2dJQr53c
+	tSUS0yJ8jnbt8Qj1CymcnBq+TkSLYZfkFs8gLpO7txOMOwuVWkbpsIyEQXLEaUu6CwWmI0
+	g6IVzQs+1L7xeE1YbLdRAhYkAbjrJ0k=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784824707;
-	b=wjzVD7qQHg/wJ3+pMT5oIfbJgQHs4jrpxjkvbfd2nBAbj2hXJVVAF8tfexSEPyrpUJbFc7
-	KFyv14PKEKyBsWaJ04PSVwiY2z63z3UnZVl3QYVkJa/MDjSd9G32mkA9igy3JZ82Rzevb+
-	e7QM3C7i+TfjvZ7bdmmWhOP4icGba7M=
+	t=1784824813;
+	b=0v1Otyjuo3IDexTBTvTqmJ0aQeVx1KHq5nHKenUN3GB8ztRH5/dkNnU+m1CTOironM1hgf
+	4VuYuijo7pUF2R+XpKOGFhts92ApKGcYXN9FA2PQykskMNuErss2dNG6szpLYxIx9+LouU
+	U2oVX7iOQ5M/7QOFjldp1bqLcULqrWo=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k2SZFsv2;
+	spf=pass (imf11.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C2FCA60A58;
-	Thu, 23 Jul 2026 16:38:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 155ED1F000E9;
-	Thu, 23 Jul 2026 16:38:14 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4D99B43BFB
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 16:40:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31DA31F00A3E
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 16:40:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784824706;
-	bh=CUO8C4g2gaArh4Y4Dlt29OXXWCzGAsxU5Y8v+yOgtp0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=CeMVKs5XYRbmdHnZWBRbIOqlnBLNOn4YY2wMWAwayfNfMto7y/YliPtgQRBpZUmTT
-	 vr19Tp4i8Wn8VkHl+4XE9zaPN4O1GKjEX2pMXsObb21kIktQoVMW4AxauYM7mFqsqy
-	 m9Vfa5aIPEAoUj2XLgE811bhN1BpHteetKbAGL5fm88oTXU8xJ0uJTDJgsw5Cdqvvv
-	 3kfPW67BOYQdcVgtsWd02pt9jPfjCc1B1jL3Qe4VFfPdK2ERG3xSGp2d2kucltgaZ4
-	 tsbkuGb4ZFTZOHIRVYEoFAE0PsnhkIQB2+/JG5y2b3OGNsB5jMcgjpaLsNqzciGxke
-	 LIL16JRMH+F/Q==
-Message-ID: <716f73c1-41cc-48a5-b0e1-a47403a30da1@kernel.org>
-Date: Thu, 23 Jul 2026 18:38:02 +0200
+	s=k20260515; t=1784824812;
+	bh=L1WF96ciKQolZmAE+pgzHAJ9kBo1cnaH8qexS6yH2DU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=k2SZFsv2xy+opCeeNnC+fKDLHy3UNkxpVryXRKTU1BptF7n6f10IRCtsC30NBz7Dj
+	 ELGj/S3Gt44bNURmMHLCEJLfvGc7QLVP4gWjMImI4Lu2zMw9gP4LS0ASDkPRt79JrJ
+	 S3SvPF1D6stcsLoticViw0CbMppmjC/oqr5BGo5j15fdjDOD/E81tvZLCAhPshSvHQ
+	 Puqv9LAYyTL7RrylT7U0gOS0gvxicOzv9YP8Djy60s/H50wn2UEfGkmmVLZyW1mp6X
+	 tjszSxu4zIUGtWSz4JHQSP7IGzlHM/q1xnqS939SYR53AOiDif4VBZWkvczSILImzI
+	 4abnqDrBduOJA==
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c1c52d920b8so124440666b.2
+        for <linux-mm@kvack.org>; Thu, 23 Jul 2026 09:40:12 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RpBsG+ccQxmiqxs6afZrS921D5OOPRsXA2mABN4b91qeu2oTOKywal7JysUIYpCB3doXRs8mMSLXg==@kvack.org
+X-Gm-Message-State: AOJu0Yy5Wt8Y3kQ07n339yNLTuT4UBQzxvze1c7OrW3M1dGMnvV0XZE2
+	/1GFLLj1deq+F9/O+seBcpC6sg3Tj7pL70WKzsuMxcSaF99ka46vAJApR3/np0La8xel/NB9IFr
+	QGxPnH5BF9QInrLgDbpKF8vEn8R5AQDA=
+X-Received: by 2002:a17:907:3e95:b0:c12:9b98:209e with SMTP id
+ a640c23a62f3a-c1c50779e7cmr200383466b.23.1784824788367; Thu, 23 Jul 2026
+ 09:39:48 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: mm: opaque hardware page-table entry handles
-To: Muhammad Usama Anjum <usama.anjum@arm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Zi Yan <ziy@nvidia.com>, Pedro Falcato <pfalcato@suse.de>,
- Ryan Roberts <ryan.roberts@arm.com>, Lorenzo Stoakes <ljs@kernel.org>,
- linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Samuel Holland <samuel.holland@sifive.com>, linux-s390@vger.kernel.org
-References: <74182e50-b54f-4d2d-a27f-3a59a538d6bc@arm.com>
- <31d36023-d728-4eee-90f8-158c7066f565@kernel.org>
- <e22407d8-4509-4a53-9ba4-491b9d5c5ef7@arm.com>
- <4bfeb697-9c1f-4316-96bb-9bfd66f959df@kernel.org>
- <6110202c-057b-4701-8c04-1a76ee7bb9ab@arm.com>
- <20260721124057.2820903Adf-agordeev@linux.ibm.com>
- <3c21586c-0ffe-4ebc-97f1-803e8acfc5c1@arm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <3c21586c-0ffe-4ebc-97f1-803e8acfc5c1@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260717085151.22822-1-jiahao.kernel@gmail.com>
+ <20260717085151.22822-3-jiahao.kernel@gmail.com> <amF7_GB5Rl6OJmt4@cmpxchg.org>
+ <CAO9r8zPaUPddYoLz8o+g+xkb-zdkfyB+LqaDOrkzqFSePEV-xA@mail.gmail.com> <amIdU1lFxqxTI3Gc@cmpxchg.org>
+In-Reply-To: <amIdU1lFxqxTI3Gc@cmpxchg.org>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Thu, 23 Jul 2026 09:39:35 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zPepaekOgaDaVBWyB_F05Ezvz+AJZ8M5+NGQ4BmiJNBkQ@mail.gmail.com>
+X-Gm-Features: AUfX_mzK8yuJuGvUphs6dtuGvP6iNql6l9OJrVUX_BJAcI_Tz-dPlTb80kJnY38
+Message-ID: <CAO9r8zPepaekOgaDaVBWyB_F05Ezvz+AJZ8M5+NGQ4BmiJNBkQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] mm/zswap: Support batch writeback in shrink_memcg()
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Hao Jia <jiahao.kernel@gmail.com>, akpm@linux-foundation.org, tj@kernel.org, 
+	shakeel.butt@linux.dev, mhocko@kernel.org, mkoutny@suse.com, 
+	nphamcs@gmail.com, chengming.zhou@linux.dev, muchun.song@linux.dev, 
+	roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, Hao Jia <jiahao1@lixiang.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: rrxtctgrqorf7xp9uqr8a1tyz5kchzjw
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 77C5C140004
-X-Rspamd-Server: rspam01
-X-Stat-Signature: hwsb7391igsk7995do7kfpjwxdxnbzm4
-X-HE-Tag: 1784824707-613156
-X-HE-Meta: U2FsdGVkX1+Tx9OB65dpd8NXeII3fmkT0URiSXjXyw/KYaQeSwiFR5tP+nRnNlpmYu5WMzYJceN8LD3V3/MKtt6MAiPmXPxKEqy7kEBVhgHlCfYMSBe3J/omb02Qti5+Xj93YxQAveuOAGVHb/IPgP9kNRliXImmmdnoG/r7l1OOb2puv2FJIX63AT7Hpq4UENpq4gjPdMHy9pr5HF9mBAN5/0aHpLQ1fHl+TXRPp4wVDh6INDeE2KNFXuSCL/ewniII8FM5i6hZzR0Z2gj+w6sDvrNymov3C/4iFguWx0k7jr5Ncz9GyTEmwP9dxlN91qzHj3NBETgPRinSQQuFcVzPPCzF6BD2YubjgiEl78Ja9KSQYpcNJpwvBfXT3lDvgn2MDOxMGrFQ60H3PlLK493ucm94xuF6GilKMQHgLVz0DK7qtmxfLBvVhzF938AEFPMX8Dqx94DRBeG/FZ2sSoTquVaBZErEy3/Gb88eZpcG6TrxYE0bB8Rpg4l1hXj9SynCJX9rXdPNHLI0dJWCVL8yCfHCB68zQYwmmgTyXWUTqXbU+8rsLkO2Fmoct0GhTPrbn4XNP0NCShu5ssPKpcE+KIOILi+v+iD7rteViLFSuN2u+Zjohh7F/g9pQRmp8jQ87hWVe8SWrLfOxeC8faEW9vly7NbVMmbsaZdHv350nC/urraMdxtQA+/GsXDa977x0W1gaBlX6UQvB7904kHbqfDz3IzC2vWOsHC89hE6bg/5wVf7Di6yvD0wJFhdVCoeVcv37XArizvLhWSjdbejhDkQPRAOoErm0hrXu6O8pa5AjXQygmoYXpT0C+aLRt2zMevVnYmf7kI7Yj4shuogQf4ZCvzWuHmZCupMx1Yz/Ki8uDFa7Mfpn1XQhYElF/mwNTJ5sL5Z4x/DyBlxRvgI5omh9OyoZT5iLyMmQaJUN4i/iOXEnTGhtkMHjonEC+Lr3K4A/7ht3OcUoLl
- 71Q3gkf1
- P5OLy9MjIi1INmtMkm8IekKAwXzRGs/uQ3YzGxjo0fjtak9TneT8Eeihi+O8EMZCB2TbX332Bm2wdvUeN4/1QOxDmX7VbA5e44rMao2D9P1aBrb1AKcbiA/tSR6TJAuAwlpF5IeVT+qChizA8sH0uBhx5zUd0EkQmYe+jzP1MecG0Z9VVcZ7xslC73dxWKB601C1q74T1Pi2mPyd+aipHihcWlXec0GYyDWOUhoPM63EK0PhGc0DYPwdEfNQJDrCX24Qu
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 8521240013
+X-HE-Tag: 1784824813-140507
+X-HE-Meta: U2FsdGVkX1+ongTXkONQ0V1XbXLI05Uhnhfe3SOKsneRy4G0qoBQJhsSTmnktCBZJHvQzpZMwAdGDWUU4dlhOz0u8lKrG/NMBu2jkcqqQgmx6SMon3Qz0cdwqxb+52qRMLBsBAySGmtNNR7s+9jnDgsR/15jfFV5Pay0PVuzFAM2Hi0hGurJT+xfTqeWr2WyDAAWwOQ+70FwpGSZWL6jxZbZaunYXLO9W9uU/NxGq7UlE1r/l9c2X9t7N5Q+9y2IA8oyK4unf/eXp7FepG1ltcnRb/CC2f2XUhsDoDnCo6/tdZkivVDcfCDvyL6CKoHylk7sOSgWkvOUKxp2xw5yOZJAw/jEg0rpGSE+vNJNi1E0s8sdofca+FP6UUmWJFC8dxfBiQFV6mNurcIVi6kNqmSjzFcKdcqfY1sRZRv7jwVNxCQQkSJprklLc9rbc3jFP8j8osX1zD0r2+GAeKENm6GIlHqJYCpzesz4x9jw9JFlNmi0MtORwH1UwXeZMbkyeQagdPt4iSh/CdX2Sv7RkhNVWBjJ/52kWOpQJBxR9DyQODrqzAaihj7kr3QzqNryim3Zv1G+Z4unUzxOCWd1kId9O0VQxTBWM2hUPDVQcii4UMFvakCDEBwtgiJVFDT6gqPwU+yzUlXw2FSczFgYBg+vb/T8lIz5u8ZEBBOA/mY4oS/e5b+gKuYQbO0QKQtYF5shZ8rJAQKlApplD25mlHwRMjyafZ6Pbxuz1z7XKzwHOO0aD3wHoxF8GebmD+VaQpeBmHI5IsAmLoh20al/olo503cJ4WfVTs1YUqKG17e0QugQZcbt8Z/0OmCpK+Hbu2w9YhE1pNKrUjSy38PEDKJlAl316vhHvzwsp+ER0QhKUR7BmjMY1WZdarxx5sdF0CAwNFB6ic3qp+VyQDPlJMVLlhFrc8zRSEZeuhIpYl9ZoY1ajH2RLsgmvIbLMfYp5KFUUYepSHnVZ6+b+8u
+ O0265VX6
+ ma7IRyBEcf7eYfy7PxzhZKZr4NgHYoAsmiJiQroWtKJO0lVbzPRJp1dJjBK4XfyjsqAp1TJ/qxZfPoP1Tsy9iXXiEVnPaaN95ST8l+wSuMPk3VdfHDnTwyArOWc+i7pOIC8VXav/KCHctLzpiZPZ7MX3wOd+7nwzG2f6GcSYrHCqtD1MzOzae9LKjyjj/B4GBjv4vmGtx6p6J8L7Tl9hm/c0MpfawSIrmjBYSxUg1+XchKFTPeQ26Ra1J6BIc8IEBEv4cxltHXt/DP+LNhNZQLHyBWITfsH2mrtxwGo81lGKFFfWR5ZW+GAYXibdGIyhkDj5qSbLWYkemTpbHrU0TGJxPk34fKORVNSSDKHScf1HwOjjXOTh8HLMPn8lOKuUOPmdYhslXUoBI8tbgCA7sysQRE8qTJLYm0eRsya/iZ2ndUAi7yWm+E1rVBEOTslQMTI6C/6dB4my1379f8IomHDxIPA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,38 +107,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Jul 23, 2026 at 6:55=E2=80=AFAM Johannes Weiner <hannes@cmpxchg.org=
+> wrote:
+>
+> On Wed, Jul 22, 2026 at 09:52:18PM -0700, Yosry Ahmed wrote:
+> > On Wed, Jul 22, 2026 at 7:27=E2=80=AFPM Johannes Weiner <hannes@cmpxchg=
+.org> wrote:
+> > >
+> > > On Fri, Jul 17, 2026 at 04:51:51PM +0800, Hao Jia wrote:
+> > > > @@ -1369,7 +1402,7 @@ static void shrink_worker(struct work_struct =
+*w)
+> > > >                       goto resched;
+> > > >               }
+> > > >
+> > > > -             ret =3D shrink_memcg(memcg);
+> > > > +             ret =3D shrink_memcg(memcg, NR_ZSWAP_WB_BATCH);
+> > > >               /* drop the extra reference */
+> > > >               mem_cgroup_put(memcg);
+> > > >
+> > > > @@ -1493,7 +1526,7 @@ bool zswap_store(struct folio *folio)
+> > > >       objcg =3D get_obj_cgroup_from_folio(folio);
+> > > >       if (objcg && !obj_cgroup_may_zswap(objcg)) {
+> > > >               memcg =3D get_mem_cgroup_from_objcg(objcg);
+> > > > -             if (shrink_memcg(memcg)) {
+> > > > +             if (shrink_memcg(memcg, 1)) {
+> > >
+> > > Why 64 for the global limit but only 1 for the cgroup limit? That
+> > > seems arbitrary in multiple ways.
+> >
+> > I suggested that we keep the writeback here without batching and do
+> > that change separately, mainly out of abundance of caution as
+> > writeback is done synchronously here so the extra latency could be
+> > problematic. I think we probably want to measure the performance
+> > impact of that separately.
+> >
+> > That being said, this path is potentially too expensive anyway due to
+> > the flush, but I would rather we do some basic measurements before
+> > batching here.
+> >
+> > What do you think?
+>
+> It's not an unknown, right? We know this works for direct reclaimers,
+> cgroup limit reclaim e.g., and what the latency implications are.
+>
+> Because of how reclaim works, we also know it'll call zswap_store() in
+> batches of SWAP_CLUSTER_MAX. If we don't batch here, they're likely to
+> each call shrink_memcg() once we're at the limit - while still risking
+> rejections due to compressibility differences.
+>
+> My worry is that if we start with an inconsistency, we'll be stuck
+> with it for a long time.
+>
+> I'd rather start with the clean, consistent version. Dial it back only
+> if we have data to justfiy the complication that we can put into a
+> comment and the changelog that outlines why exactly it's different.
 
-> So after the conversion, it doesn't makes sense to keep STRICT_MM_TYPECHECKS
-> around. Please correct me if I'm wrong.
-> 
-> This brings another thing in my mind that in ideal world we would just
-> turn STRICT_MM_TYPECHECKS on for all arches all the time. But the problem
-> with it is that STRICT_MM_TYPECHECKS defines pte_t which will stay double
-> meaning still. So we want sort of STRICT_MM_TYPECHECKS with different name
-> and separate stack and hardware types.
+I am fine with doing that and basically always using NR_ZSWAP_WB_BATCH
+as the batch size in shrink_memcg(), but I would be more comfortable
+if we did some sanity testing.
 
-I think STRICT_MM_TYPECHECKS is also to avoid catching when passing a pte_t into
-a function that consumes a pmd_t, and vice versa.
-
-STRICT_MM_TYPECHECKS makes the compiler generate worse code today, which is why
-we don't enable it always.
-
-> 
->>
->> We would like to keep it, and I guess some other architectures too.
-> David had summarized it well. We'll convert generic code to use hw_p*_t
-> types which would be typedef to p*_t for those architectures which don't
-> care about. But if an architecture wants to interpret these types
-> differently or want to make sure the type is enforced and not directly
-> dereferenced, they need to convert the arch code a well. But it can be
-> done slowly.
-
-I think what Alexander meant is: they want to keep STRICT_MM_TYPECHECKS (or
-something that achieves something similar :) ). So as long as that keeps on
-working, all good :)
-
--- 
-Cheers,
-
-David
+Hao, would you be able to do some smoke testing with NR_ZSWAP_WB_BATCH
+used for all paths, and memory.zswap.max set in a way that induces
+writeback? You can probably set memory.zswap.max to 1% of total memory
+instead of the global pool limit and rerun the same test.
 
