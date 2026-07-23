@@ -4,129 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BA47C531D1
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 22:56:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DEB8C531D1
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 22:58:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 852166B007B; Thu, 23 Jul 2026 18:56:45 -0400 (EDT)
+	id 327106B008A; Thu, 23 Jul 2026 18:58:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 802D66B0088; Thu, 23 Jul 2026 18:56:45 -0400 (EDT)
+	id 2D7346B008C; Thu, 23 Jul 2026 18:58:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6F2FD6B008A; Thu, 23 Jul 2026 18:56:45 -0400 (EDT)
+	id 1C7B66B0092; Thu, 23 Jul 2026 18:58:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3EA846B007B
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 18:56:45 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C2605A0227
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 22:56:44 +0000 (UTC)
-X-FDA: 85021552728.07.3A26536
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
-	by imf02.hostedemail.com (Postfix) with ESMTP id C1C7D80008
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 22:56:42 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=V4vDiDS7;
-	spf=pass (imf02.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.182 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D0FC46B008A
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 18:58:54 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 50750C01E6
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 22:58:54 +0000 (UTC)
+X-FDA: 85021558188.06.B251698
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 8604920006
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 22:58:52 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=op+0I2r0;
+	spf=pass (imf13.hostedemail.com: domain of vipinsh@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=vipinsh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784847402;
+	s=arc-20220608; t=1784847532;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FpdYfO2GUSLBiSa6MSguWwX6UOJE2iVOhfM84BSexIY=;
-	b=PTyidwzC+z+STFQnlz/CgMQrEYqzKAclwgwcjj29Cx58oCUskJ54OTc5VeWPoxzhr/PFn6
-	KBUF0ufJqWDAbLYuYSgBafl3B7s8NXE6GEW4J0Vm4XcFtt0JGiGby3TUZzJ8eSucN1v946
-	76f2YXbVLOHaih24JVvVMFyDAH15LXw=
+	bh=Zj8yGGu0ZvQspv+dm8spEGL6AmJp5gd8JQ+4SasQ24M=;
+	b=nKi35l2hfxjQDgpebAxMoKJe8JDZPMSvPar4H9bV3WJmlnLUTQzZAcK3nyPPDO4Oc/hE3d
+	Kqw1TW/WscMf2PzUFH4aTmfR9kO30RnSA5XUbY+VXor64i0OkLVaGVcxZ6+9GEb0sedmdS
+	NTmdd9vjjyxveEdB83rhZkstP/ID1iA=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=V4vDiDS7;
-	spf=pass (imf02.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.182 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=op+0I2r0;
+	spf=pass (imf13.hostedemail.com: domain of vipinsh@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=vipinsh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784847402;
-	b=YdpXRt3fz/GqURbNhK4lbS4kTgPVu/MLAvcaTAqLf5tdGVC1jxolTUaAQZZ76dRCk0Bkjg
-	JDtVmr2CcJ6mTjID4raY6PNJqAv7qRku7dcc3wguLHvbTOEkaZQk2JAwmS0UFuWr/kF1rl
-	nOzLKcfJ0j5eiwmz0eS2FJguMk+cuuc=
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-51bfa429aa6so9030541cf.0
-        for <linux-mm@kvack.org>; Thu, 23 Jul 2026 15:56:42 -0700 (PDT)
+	t=1784847532;
+	b=vUTZOsDzm05uiOIzocagyEzyy9hv1cwTrMSFuB1pMHJS1+K5pS3FVvy3LQOeSUv0ZDSqIo
+	MheqhNNEimEqajHN0JAffshXQAoGZrSkDOf6NNu1800Hca2mQvoYqkaLV2p7Ns9p7d3olN
+	u+V4BXvq+bEiYfpS+cMbnpMUuFowtnM=
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2cacef7d299so3055ad.1
+        for <linux-mm@kvack.org>; Thu, 23 Jul 2026 15:58:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1784847402; x=1785452202; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=FpdYfO2GUSLBiSa6MSguWwX6UOJE2iVOhfM84BSexIY=;
-        b=V4vDiDS7aE7tE9x0vn4CIA68nEIlzoDCjSdO7/U35Z/+WfS0NPvTRLwF8Vvm78a+Qd
-         F5OrRU+XMzEmeV+M/DMVC8o4z9zgqwyeEIsY3j2qMjhkyKm5iokK/qDw0Rsp447FD3Q5
-         08i7Q5pIs61UALPQ+vtJPWScMWpbt5inA7f9JXX6ASs0Uq3UXMSaA0yNbZ7lWyHo0mTx
-         rEwkKi2IaCco//5SNzfwUhWXOkrW3/SAN4Av63JL8z+2AbHxfcSknal0Df/QWN1WlqWM
-         3uxM2zWgVnQ7+hhLC7R+L7AtSELvE/g0pV1+YE82+RF/R+eudxyhhgTCSp+cYQO2KZkw
-         WPVg==
+        d=google.com; s=20251104; t=1784847531; x=1785452331; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Zj8yGGu0ZvQspv+dm8spEGL6AmJp5gd8JQ+4SasQ24M=;
+        b=op+0I2r0UcC9zwoz2t/WAO3OWAhNrSYZPRo+++8hlwqCv1PcKbxdcLLvDlSdA3Jdey
+         NCt/Hk0w1M4SITiE2rsdnfEcZmcKOb+Rl8BdmvUFxivNXVEFPz7A4ngg2ODoMOCrKAWv
+         FqIwTXdOyiZO/CQGjty/NVQikPIUpOkaa1SKkIiikWVSdZMEOup3Nw9oyDdJdmf5L1VG
+         d6N0s0w/rb3KIVkM3TPH9usVJGmOuDgF7sOiI6/SdtH2pzPV+XuAoIexAGELzUkCQlsp
+         rLVceykrewI+cVZP5xQpx5M0TFO1XHyF2B4/JClxuF1fj1he4F93jbGtQHIds1Ttzda5
+         bF+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784847402; x=1785452202;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=FpdYfO2GUSLBiSa6MSguWwX6UOJE2iVOhfM84BSexIY=;
-        b=Bb1Mx9tjBZ//b1Yk333scoN5Npx9RX97O/LelWw3VxVwTtZbm3m5mkmBHFh3sxOgGY
-         z3NqdScRD/WSC6rR2zo182poisdFUuHDi5zzP4O29uyKJrKmv5Xi2zqTaIjlVkeW/gm+
-         X7kkvX7Pcc1RgalkUuBMiE/1skeD5P9GsHqXQki4/bSfT5M0LeqOpWu0K7Zs69B1VI8I
-         T+igC9NS9ANv7tI4RIKOkPgdk0zxoFfQuptNwuZkEy1e67/0KCfDYg4pglmGboH48gT0
-         oCvv5NTVtnJmwNKzy8W2t5Pf+f4BC1+l/vjSFyFgdd9zY1Pk3/dASWGxSvKU32HLJ+D3
-         YH8g==
-X-Forwarded-Encrypted: i=1; AHgh+RogWxZJGbDcsq83snsgkv2KsU3Sb6Gr327YfJt+BVIF4sf5n/iDl3vVAc55z5634bWyxa8PP7a8TA==@kvack.org
-X-Gm-Message-State: AOJu0YzFdbD8ahOzhYocaqki0ZgDIZT4MdvuG3F8R0itsg6l/uqkOxEJ
-	5srHFn+3S+idgeJ0QH95wq0e+40KgC6IGQL/cA0pvZOp337gb99giRygmip5jZyk2ls=
-X-Gm-Gg: AR+sD12nPFu4FW/lbbwNcGG2EihDWl10f9ELl2NwbKNFlHXRQ+hoUKjMJ4FnDSLL/04
-	4o7ha5hROxi5QUMIQNV4olocX6cRwssZoYnlL0TTMh8UMPegSEJ7p38OUH/gOZvCRk7xx+Co08f
-	IryjAIlZUhmHCp8ufZEoxCzC5IbFQVm8sYjhH1EF5VP1XO9UypglFTKOJRKIzc8VQBnrBlUVHXT
-	TUHzjd20DaeEnuOMKWtmTwRBxASkyuzFYgMDh1EWXO7VdCyPspB9VYV1GF+mwGywqPxZm3wRkJt
-	/Bjz7Xknbifmr4JoKzWwW8jsTr+mtaQz7WcRiJhI6FrYnjOgEQB4tcTWPUhwhDwbwYOxbJSza+q
-	ks/C2+3Jmp0iNgKlF1dhB+dcSxEC77WjSwIDtERw5y1CijCS9fBxgRhRYdPtYrPTvGJ2eUkNctR
-	/YkP2Hx9SnEWkh/ptxMzKBG3F5ViF3/bNZDl8SJ2wlPJXw4GlFEtfbphuSDg==
-X-Received: by 2002:a05:622a:353:b0:51c:f8f:13b with SMTP id d75a77b69052e-5283edce92cmr47173041cf.23.1784847401808;
-        Thu, 23 Jul 2026 15:56:41 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-907ba8b5d70sm54929666d6.4.2026.07.23.15.56.40
+        d=1e100.net; s=20251104; t=1784847531; x=1785452331;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Zj8yGGu0ZvQspv+dm8spEGL6AmJp5gd8JQ+4SasQ24M=;
+        b=lh/vwilsHFoWi8+kryDPf4JgzHIHiW66s55qA6aYDo8ivG9bNa/rtIb1eAM17IFyQa
+         +TIDrfs4eCwR9uOoc2utnT+mTyAHS6wCbI1KwoOL3SsRhs1fnZeA8oD90/OlC1ju5Hmt
+         RkrJAnVtGRsZDIitcASozBHT2v/5+hoXA+7LmWawF8Fm8T+H52pT+tumJHTrCVss9taF
+         nINEdw3smBT5V7/l2aMCU4P3XQUb9i+f5Fxc4xDkSB21wU7geO8G/PuvG0sdLyALhtiA
+         BiQUnbDI8T3amS+r/i9Y1Pn/tCM0fq+RPrW+DyvNfkUHrPS3Br7d4AvQ1lQxrf70tTey
+         u+PQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoSNXOcuQ1chzNqRf8IkIfkXS0vkDs2T7mcZzQGAG/ixBi40ByhDcIcKCbejuCrviTo3qc3CFm0nQ==@kvack.org
+X-Gm-Message-State: AOJu0YzHgPI6NhGzByfzQbOBBFJV8zIRrv4sDL6zJsbsM2Szw0KsFQBI
+	+v2dQZEodteRuq8SZQWRjOxBwcTET8cspVJVG/bm1MJbqm58PZHWDZnqpIRvRz7HMA==
+X-Gm-Gg: AR+sD10D4+weQFaL4AGNhdmghrHF+i9CyFLY0rqP+eozMcm8HXtO0ZIygsS055QyCLP
+	rYqsKMXbqEYo/EukIh75jzahsxspzDmEep8QEAKD+RNgs7j8mfRsgT/GlKsu5nP/5XQhAVKAWn9
+	jgifNz0HmZ4vur8qdPCzPcUNAfK9Mc5lnasmGgIZxDWEnN7/kQcrUq/i1EiXmwJtiub97C/16yz
+	LjP2d+vnfw5bn+PVbUh5YbqdVEBI/LbRW6BaPwTYKQeu9LMyTdWWoKah2HUwkozxfKzP3aCxEqo
+	i4XYj6ApFOS6VUr41XK2/2iHojrZ75fF7bCsrrwugn9tqsWdoxnkLWy1+qeOZnsg6NCB1Mr09JP
+	RUlB0vIHMI2z79/I+xIK8bovpFXjQA5JatBICfdZhYvcuGXc5/WyAhL16JKpWta6jcOscpN+ihp
+	hchMeeUmoI3C8SNdJ6+MtChybGWsVTsPv3SKhhtpY=
+X-Received: by 2002:a17:902:d4c6:b0:2c9:a222:47e0 with SMTP id d9443c01a7336-2cfc049d8efmr1917685ad.20.1784847530903;
+        Thu, 23 Jul 2026 15:58:50 -0700 (PDT)
+Received: from google.com (176.13.105.34.bc.googleusercontent.com. [34.105.13.176])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e17236924sm3686474b3a.7.2026.07.23.15.58.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jul 2026 15:56:41 -0700 (PDT)
-Date: Thu, 23 Jul 2026 18:56:36 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, 
-	Sean Christopherson <seanjc@google.com>, Yan Zhao <yan.y.zhao@intel.com>, pbonzini@redhat.com, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Neha Gholkar <nehagholkar@gmail.com>, kvm@vger.kernel.org, 
-	rick.p.edgecombe@intel.com, vishal.l.verma@intel.com
-Subject: Re: [PATCH] mm: mempolicy: fix automatic numa balancing for shmem
-Message-ID: <amKb8sBroYNOiZhy@gourry-fedora-PF4VCD3F>
-References: <20260629163337.1264881-1-hannes@cmpxchg.org>
- <amGpEEqxoLq/Y7ZO@yzhao56-desk.sh.intel.com>
- <amIcXrS7nGX-adpG@google.com>
- <amIrDncrL4K-JRBO@cmpxchg.org>
- <amIxyy4Vg_TTE8Y4@gourry-fedora-PF4VCD3F>
- <amJKOPczNMb96NJv@cmpxchg.org>
- <amJQAs3Bm99ZR_sF@gourry-fedora-PF4VCD3F>
- <amJgdSXxFk24e94p@gourry-fedora-PF4VCD3F>
- <CAO9r8zN2mPsFiRTPYOPTq3gTVZwsj5hODke4asTTY-jXpSioxA@mail.gmail.com>
+        Thu, 23 Jul 2026 15:58:50 -0700 (PDT)
+Date: Thu, 23 Jul 2026 15:58:45 -0700
+From: Vipin Sharma <vipinsh@google.com>
+To: alex@shazbot.org, rppt@kernel.org, pasha.tatashin@soleen.com, 
+	pratyush@kernel.org
+Cc: ajayachandra@nvidia.com, amastro@fb.com, ankita@nvidia.com, 
+	apopple@nvidia.com, bhelgaas@google.com, chrisl@kernel.org, christian.koenig@amd.com, 
+	corbet@lwn.net, dmatlack@google.com, graf@amazon.com, 
+	jacob.pan@linux.microsoft.com, jgg@nvidia.com, jgg@ziepe.ca, jrhilke@google.com, 
+	julianr@linux.ibm.com, kees@kernel.org, kevin.tian@intel.com, leon@kernel.org, 
+	leonro@nvidia.com, lukas@wunner.de, mattev@meta.com, michal.winiarski@intel.com, 
+	parav@nvidia.com, praan@google.com, rananta@google.com, rientjes@google.com, 
+	rodrigo.vivi@intel.com, saeedm@nvidia.com, schnelle@linux.ibm.com, 
+	skhan@linuxfoundation.org, skhawaja@google.com, vivek.kasireddy@intel.com, witu@nvidia.com, 
+	yanjun.zhu@linux.dev, yi.l.liu@intel.com, kexec@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v5 00/20] vfio/pci: Base Live Update support for VFIO
+Message-ID: <20260723215749.GC260824.vipinsh@google.com>
+References: <20260714151505.3466855-1-vipinsh@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAO9r8zN2mPsFiRTPYOPTq3gTVZwsj5hODke4asTTY-jXpSioxA@mail.gmail.com>
+In-Reply-To: <20260714151505.3466855-1-vipinsh@google.com>
+X-Rspamd-Queue-Id: 8604920006
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: C1C7D80008
-X-Stat-Signature: m4yxw7pdu5po1zaokw4tjhodeppu5ahu
-X-HE-Tag: 1784847402-541874
-X-HE-Meta: U2FsdGVkX1/KDEtFTtVnfHwbKW1ri1v5xdvR8U1BAjjwgTP0X5vC1zbHeHJWL+1PKOSt+a/VzSwgO+PTeIIeVeuLnetvcxK1UYaU6Itm6qjrHmEZgUoFyJXa2uWxRhxH6HqjYXndDWwoeB9ZmL/jwoje/tl/w0lrwRBqEA593Su8UzGGnwlyfNzjCz7MFiiZWboFPfKWP7h3FNASpFwXOOqVsKXXyPjm2dPb06LHW7W/EFHAwahCGdNSFs9baBLspdB3JQ/C4+yjPLkKEsICgli/uI1/SUO+S+iYvMbjWk5grv71e3Vt4VCJDwQuG3kt8Of9p37VmT6NXhhiPf0IQ/0wvQ2TyIkXPH/Z580guyVxbpu3c9tbbupwFTlWbE+StZSe/Xs5GeQ3NYnYLxujliQ0YlIcPgeFP3+iwabXY2dlGaXD6/hQ7Fzp/lyx1SDECpE0Wmh4cWMdSbIfu4hNPrAe4m9bZe5t+9rC2LskUncAFw1125zdDnJCfcYEu0UKTmBf6U3pc3iNgCQ3PDX/cawYc/NOzM3vqj/r8WwFyeeCsr24p1IORQ7vatRw9U8kanvFZ7jk7p7ITNhFI9JvJ4C1ILH8KHW1PLNoNTDNrTrBI7nEFU2MR+Rkv5uplN7yz+CQsxDhdfrW6ClqeltL3+I5InEPrKFQgTDABLYiDW49xVPcdXi012JSMHoSXjj05TqcA+lEVRs+4E1bDnMETr5ZAj3GGj+jUUcgIPMZuXKEHxGMgeqtEpYpQlFDfz2PUcZWTERyHW1e5nUk4L0sUhbjVAXx+ZL7IGiC0lDv0VIWXwI9KGOANcC4qlnB5ABe3XJzpjByDMNo3i2pRu4A6+dk90gO3L/cshoJHRS3dJzS4HX7NCXxeagMtCJALYKVrhhG8YVu0PoRG1RIX4IX75EllPh9YrlO1Fp47Sx6pPV0HVtUEIjp/+FTlsKLFrHaC7kPffxMkWKHMwSmYxY
- OJRCjcic
- wv9otRnOaFL24aiJoPKe6Dtwd+MPDPE65uhDoTzeUVnzh12VVJES+BMJZflPD9NCRzrgST6shpEjkBmFqV53JlM/jBbEpCnIm4FGCO3rMovIvUnhrLj6Yyh6qRE7CV54gbRTgliFEfHInwJrSwK6FQ/MBo+VY2mxbO5DbIQrcKXhLCXM0M/Tj76mhKdK2OkN2D6MGuad4bD0CZTZZ2vOWTQBuX/AavJHsWHOt2lb+zUJcSgjT3eANWhU2cOhE5pMs1p5Ss2iZJz0ODNsvbPEfT/dGPGXeovJKzsAjwTqvK78jFEupKFZ7705Hq5nZ/jc07hDKiGSA0iH7+Oh0iRe1FBzm2mcqpB7w+kXGhGbANgYnzjgtOUdbSU0azSOiSsT2R2+q57I4vzcohnfxIypfd0Y4Wp0xhhhWRO3UMSmsbj183fv9at4LBfiql/hwJplYf+yWp/+CG5ZPrgxdmechkQGf6Y7vvmmhkrhDmkjEOwtKAJo=
+X-Stat-Signature: j496395xyknyn7zffse9tq8a79edyidt
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1784847532-389262
+X-HE-Meta: U2FsdGVkX1/i/k+JdHrnF7EHiddY0iq4hjXVzFwqBHGfl6b23VkHyo+Yyc/eB3xNLqx0c282/gQ4XXHB8vMDdUkeg0PWAfKULB/iE0ITHHYhZ8DTOZ3uDAP1vSiYLmUkuNZp5nhno8Q7X2DkP14rIYEiIXVokbX3mOFAgvljEkGX8tDXypcwG3wdAs2frFQaBiSGTnQapP02dQxI7gPWeDEROwTLkkNTrIFqIR9mhh1uwvWNJyMJ63Ohk/4Iko5mkqEihSQtafIH2XXuNMcYj/Sq1hrd9rnJpMVahUe3Zs8xJE5+eauNCZvq4YvJmVNpwdsLHRHWoTeuDpIdMHzENVOGGJZT7nraFohY/OJ3uxgIWfQ/WbZzvchWNS8nkZeOLMPBsixE82r17g+Rto2tW+TkKWJ9KzNNznubYeo3gk5yKbylQYWItbsObRKVk2g5S50VD2jyY45RITOy++BNzd/xdUjFwVo/uDPeVYQNxM8RHXUpXUKp8lJY4y+9U9pf4nT51K5gRec2QlAny43loPDw8hd6QO9yecpzq0pqB4UhF1/KvacP+by3qFZ+jtLDhRoRjgboSM2bgh11cCfFk/tD5kiW34C63m8jDYmt0uSqkg51dSvWc/lI0AQpiqnkk4QfErtBxL/zEKZE2IHub33UMYTcsVx3y3eY2w1tGFM/waYTeMmddXX8XVx6iIGIf32y0GgfcNKsmR928/0Qw549rnDkmk9EjOsAxpX+2G81AqWEoT+b9VcS7vxwSehzPCzP8H9V0Bu9QmqTEegCK/FXC70KGt5288jTPkF/DDz3aW+br4cY15Kpiu4MOf9DGJf1JqBiOCn15sJbo2mspbVoy0nCxzP5xsU+++rU9AXsiehnMJFhI/CvJ8jZRAlNN8J7WJqIhYi/BWmhitUeEFsZGGtzi/FO6pR4FcaPfHRBptUqrn06Z0C+9lEo13pYHvHwmuyF+aZMwJRxGwX
+ d82SB8P4
+ w+idNYFZPu8ioiKrdVvhgKk+fwyl32fVU5Mu3TNhbgSlyq/sPycIOftXJQ9lspLsW1TPPYulKKS9TrfOnx/o5AvakeefE8kU2AYULY8LEcq15a3ImT/gHifebq+VZjAteYNcHmdXI3A3dC2c6N7O4QvKR6A+kKqfhSGBB3XWuErKGfyevLbYPIXQNhn4pjMfhvK2pGzAeKPeZdRw5nKiQgv0RqWEblhDNk2nqq+jzhjhRMpdTrjeYmjKHVSIwCkFY3Mqt+EmtOC6NqwGllY6huKvdN+UR2CnEH7eeXGJBQdaccacGYR16mh4qxhw3eLO997Q+T3DH6Ig95v9mhIYmCzMviZ3nxU1hnUKr+bTB7CCrfcS18PzsFlHXttql21CFUiC11+TZmKzMKyU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,31 +129,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 23, 2026 at 03:30:52PM -0700, Yosry Ahmed wrote:
-> On Thu, Jul 23, 2026 at 11:45 AM Gregory Price <gourry@gourry.net> wrote:
-> >
-> > Walking this all back:
-> >
-> >   - MPOL_DEFAULT is the default policy
-> >   - numa_balancing=on means enable NUMA_BALANCING on the defaul policy
-> >   - shmem was broken and did not respect this
-> >
-> > Johannes' fix is correct, and there are no additional changes required.
-> >
-> > Users enabling numa balancing while running KVM with shared regions are
-> > not getting what they're asking for presently - that is a bug.
-> >
-> > They should get the performance hit they're asking for (and then either
-> > turn off numa balancing or set an explicit mempolicy for those tasks /
-> > memfd's).
+On Tue, Jul 14, 2026 at 08:14:45AM -0700, Vipin Sharma wrote:
+> Hello,
 > 
-> Does it make sense to add a pr_warn() or pr_info() to help users
-> figure this out when they see a regression?
+> This series can be found on Github:
+> 
+>   https://github.com/shvipin/linux vfio/liveupdate/v5
+> 
+> This series provides the base support to enable Live Update feature for
+> VFIO PCI devices using the Live Update Orchestrator (LUO) and Kexec
+> Handover (KHO).
+> 
 
-I'm not sure in what scenario we would do this that doesn't simple
-reduce to "You turned numa balancing on".
+Hi Alex, Pasha, Mike, and Pratyush,
 
-Not against it.
+I'd like to discuss which maintainer tree should take the VFIO Live
+Update series.
 
-~Gregory
+For context on related efforts:
+
+  - PCI Live Update is targeting the Live Update tree (maintained by
+    Pasha, Mike, and Pratyush, with David Matlack maintaining the
+    PCI-specific code).
+    https://lore.kernel.org/linux-pci/20260710212616.1351130-2-dmatlack@google.com/
+
+  - IOMMU Live Update is planned to go through the IOMMU tree.
+    https://lore.kernel.org/linux-iommu/20260614233728.2212104-3-skhawaja@google.com/
+
+Given these different approaches, what is your preference for routing
+the VFIO Live Update code?
+
+Thanks
+Vipin Sharma
+
 
