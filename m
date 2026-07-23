@@ -4,89 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 872E4C531D0
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 19:41:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CC44C531D0
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 20:21:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5F7D76B0088; Thu, 23 Jul 2026 15:41:58 -0400 (EDT)
+	id E838F6B007B; Thu, 23 Jul 2026 16:21:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5CF906B008A; Thu, 23 Jul 2026 15:41:58 -0400 (EDT)
+	id E61A96B0088; Thu, 23 Jul 2026 16:21:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 50FD66B008C; Thu, 23 Jul 2026 15:41:58 -0400 (EDT)
+	id D71486B008A; Thu, 23 Jul 2026 16:21:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E0036B0088
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 15:41:58 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9261EC014A
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 19:41:57 +0000 (UTC)
-X-FDA: 85021061874.30.B495477
-Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 065B91C000B
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 19:41:53 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="fud2iX/u";
-	spf=pass (imf21.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 68ED76B007B
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 16:21:25 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id ED2AAC0148
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 20:21:24 +0000 (UTC)
+X-FDA: 85021161288.24.CA37A67
+Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 20216180004
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 20:21:23 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=rgHez6Sc;
+	spf=pass (imf06.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.161.49 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784835715;
+	s=arc-20220608; t=1784838083;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K2dpb7jWuPRitxlaV2YlTpHdd3fdOnLFqMv+siPkyhY=;
-	b=aeU02mO4t5sQQS2oYHDDLLL2Dk6xUHqBltPrkyOaNhPs8yjMgbCHiOe93yvIh25sxtk1sB
-	s73F6vo3+eFivY2Cjlz5bL3/1Gm2hqnk/jO8FdR+duAvMZXwSdOTYzO0Wrchb/lekbazIF
-	6umfKQSw8lloVlA3yt8UQe8SAI/qF+I=
+	bh=a7NoLvTE348K+Na68Jw9OquhlDUzGX30hZ/eyZXWDcM=;
+	b=RyiBLgY8U6L0qDA/bbIE/H7TKNbOldDjuR+OucmUlag5OuB/j7EeTYI0/Zni8VJZsDNqaQ
+	5kW5vOZNSOzvNFZ2NtRMrqtbO5ypGIdIsGK4yaj/rm+t43w20b4QlL5V3Eq/MNdNnjbER+
+	+r2ViFMe3f9L8I2MaanONLPM4SC1w7E=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784835715;
-	b=2GBa5QIXYSUaw6rnXDvaDFmaMWcV4rnIPnMY/Bpm5EqJ1CL/7hj3Pi/iy6ZlpnlFrc3edl
-	SXCJNO4OR4tUJJi1yUZa0HXXZSYgtveYcA8F2ohhS0m+h/3Nq7/aGFJqY5EYp9mdgxABWs
-	EtuE81j4pB73QpFjdNucDvqhvB39rOk=
+	t=1784838083;
+	b=1mvOSJf1t2ZTP9UuodmNo6B2YVXHMxswHLqTRKz9ejNilKGrnW6O/WXKvQzNNL3+bKhkzX
+	B3T9uGpbrUT6TQRq3p/PrjMRl9DsIlWhQueGHFu3ITko3Rq3isubYwiDXFicVctkTX8V2N
+	hgPvI+J9B7bF5ckGUxQ7jb66ct4F6LY=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="fud2iX/u";
-	spf=pass (imf21.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Date: Thu, 23 Jul 2026 12:41:33 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784835710;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=K2dpb7jWuPRitxlaV2YlTpHdd3fdOnLFqMv+siPkyhY=;
-	b=fud2iX/uEPMDQW21ivxz6dX4hnscjMV6U/qz9xRug/rczHrbkmHEdPhtZNHjKahxBOSmXK
-	q6lsUaz58aBOe16dDPNNciOejdH+KFujrmiHgJmCvK/fMEmgWdzErisoR9SK2x1+QhagH4
-	ZrV9HmFTGzsQG6XJqEolEeFO0NEFScY=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, 
-	ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, 
-	surenb@google.com, mhocko@suse.com, kasong@tencent.com, qi.zheng@linux.dev, 
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, chrisl@kernel.org, 
-	nphamcs@gmail.com, baoquan.he@linux.dev, youngjun.park@lge.com, hannes@cmpxchg.org, 
-	roman.gushchin@linux.dev, muchun.song@linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, rientjes@google.com, 
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=rgHez6Sc;
+	spf=pass (imf06.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.161.49 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-6aae244ef49so247907eaf.2
+        for <linux-mm@kvack.org>; Thu, 23 Jul 2026 13:21:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784838082; x=1785442882; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=a7NoLvTE348K+Na68Jw9OquhlDUzGX30hZ/eyZXWDcM=;
+        b=rgHez6SclP0jJGfJFsfTPQiDp1mTa+p/y3s8oLkclzNsYqzTIy1xFvfcU3yBcqt0dA
+         iaSu02n56j0UC9vMBWUG/AuXvyYKmmiV42OmDj2SDjnmuV3/cvCU9fxoNHqU9uxJMtOw
+         kxLPQthRwn9GAg6Bt4h3bViPVWrx18/fRlDbSbMntAYqNCSQyWb9dPGxQJOCsrYqpX/e
+         2DMpltsLXA2qOwFwIuzL1adlKteXTKhve9iLdMlC9OiRMKn4ie+yJpHqdpgHRrIM/HbE
+         st7uvWJPBnC7MbXIWWJmSDRDGm0KkwRS/uvF7jXdXHb6jKKaAk64Loa3SnZl8y2aVGDy
+         LjYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784838082; x=1785442882;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=a7NoLvTE348K+Na68Jw9OquhlDUzGX30hZ/eyZXWDcM=;
+        b=gJRo1DJz4Q2ajD0Ju0yYUvxVWCQWSlnOH+wAShRT3COraSzMpaKhsfQMoGnKu1RfAN
+         fuj79KuXRaZunyM00VtDLvYoxQe01rn72h7IVasyhPNJ7/tJJ2tRPcdrMzkS7d5xhwMH
+         Zcgj+0WQufFG+83Rca6jWIF7h39aIbL901T7c2z8dyIejBbpwBQcKIUFtyfBreL+D+dy
+         63Z9143/yvlWQQL7tijWbRQiJzNz++nkrMDD5dTD6H9jF/BLdO3p+gqZNdK33g4EhJl7
+         eNda4bx5fvGAWdjnKPwpXImek4kS2om+GVffNy3WwIYA7yYNRkra6zDSG8/m/7T1CY4s
+         RV8A==
+X-Forwarded-Encrypted: i=1; AHgh+RoJM4THZNa2pQIT3aVhqmyTrFLLxRsigHdZRGALjNWFLe5NkbYS89sZEQCOMC1d7R2FmmSh71yrlA==@kvack.org
+X-Gm-Message-State: AOJu0Yw/E0DPAKjLLkuIFT3+TeuMtXY4Too68SAfrmwy9ieAo2F7D96e
+	DZCHMD/IiFdLP4iqPtkRMBJldPnCQFXIG8L4KOQoR7bAQ4yIPuxUGlGy
+X-Gm-Gg: AR+sD10w/mo+wGteCvNK/k4STS8llja9O8G9XVkOGlZtFireYcXOSEiX4sWwzVvHW9I
+	ep7QAdnUg8RNp0jffP0m3nIkCKjt+5obbkyFE8Mv7DkceuapxYVO7tXc89gUR9Qf6oTzEelaROe
+	oZ57D+uoeNgDzE6M9u4hEH7PheHyQJmSpFVyKmiSG2L5NiYng05hw1NQAxe/F3AeQSTZykcArdC
+	f29rA+a6A1hPsVogZWqBzFJBYdDvvbIlceaGlBixvyVL7iGBenWdTbez7N7yKeBz/qWylwan+Jp
+	NkVc0gCA7SwN67xkjvKhdgsOdd/OtH0iApCqP5paGFJFgAGDNpOObCEDCTtq/ggwcxRzCZlyjY2
+	oS8l2P1mw+GEHYD8yB3QZ0dngFftOwZUvU7VerQecIGre4b222/Pl4c1Pfnokt9vzOIkAaEY7Zh
+	kDnpzY68JvkrvQ58xUUvj9sIDknZdq5o0=
+X-Received: by 2002:a05:6820:7042:b0:69e:43a2:349 with SMTP id 006d021491bc7-6aad4139c06mr1581776eaf.47.1784838081210;
+        Thu, 23 Jul 2026 13:21:21 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:9::])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6aa79ef5a37sm4173918eaf.13.2026.07.23.13.21.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Jul 2026 13:21:20 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Gregory Price <gourry@gourry.net>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+	linux-mm@kvack.org,
+	Tejun Heo <tj@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Koutny <mkoutny@suse.com>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Baoquan He <bhe@redhat.com>,
+	Barry Song <baohua@kernel.org>,
+	Youngjun Park <youngjun.park@lge.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	Kaiyang Zhao <kaiyang2@cs.cmu.edu>,
+	David Rientjes <rientjes@google.com>,
+	Yiannis Nikolakopoulos <yiannis@zptcorp.com>,
+	"Rao, Bharata Bhasker" <bharata@amd.com>,
+	cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
 	kernel-team@meta.com
-Subject: Re: [PATCH v4 1/2] mm/vmstat, mm/memcontrol: add _monotonic vmstat
- readers
-Message-ID: <amJuV2zHAPYge56_@linux.dev>
-References: <20260720164207.450685-1-usama.arif@linux.dev>
- <20260720164207.450685-2-usama.arif@linux.dev>
+Subject: Re: [RFC PATCH 0/9 v2] mm/memcontrol: Make memory cgroup limits tier-aware
+Date: Thu, 23 Jul 2026 13:21:18 -0700
+Message-ID: <20260723202119.3688800-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <alkB4tnJxOLyVCi2@gourry-fedora-PF4VCD3F>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260720164207.450685-2-usama.arif@linux.dev>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 065B91C000B
-X-Stat-Signature: nt91rmd867i8k3mnq773379pjnxajgi6
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1784835713-135684
-X-HE-Meta: U2FsdGVkX18JR3FcZFGXEBOBpWZD5mgoLJY4HYp5OZzdQw0AMWFdGcVmCaD70/WJZY2/yczkDvYz6HBw0nMwYcdpBR4qvfEnJwrTnHZ7lGGIEjSxFMU5s7wVWgoxxO5rq12sAqGJaQWkWLJ3TCzW5EI944uHGK0ud7+1QR0tz9oFu37Ed+LmbHwo9vu5cKBmbZGRs1b5yhxldjQOOHyUi5MZ7salektjKvv2E20l1hWXZevlgTwSVS4tupeeOBZ9XtNm8n/u7bG9lWC3OaMQAzk1CHETWKTJ9c5SMnR6rqVhoBDVDN+NzPdirF2cpra6/AOg7j0f7iBab7v2hu6OI5DoIShOtkYb+u71xhUnCEIZBGEguEcc3ocW0AhXg1U2FWmwdc7SUvAxIUsZ1Rcr7tAufDWxmbtn0CtBVx7dM+5V+f+RWUP5PO4hhmFj6txE5x4QkMVAPooctVD0tn6eVaf8HDvLvSbvjiBkUQgHCrMMjZBNZi/pL8LRQ8RYIjpDh1RfQoE2j85OCDVPcD7J+j2yeoW5rbm7r7hgMxD8FlbBtGTEE42OWUqmMY5KxyuQQBFQcrMrDkd1B/+P4L/N80vOJ3vDaQGE/RRGMiogvYsEDCk0nLVzDatFiJJU5iSnplsrG17+cV3zMaX9jTsNym8CIZCoaLb+1CGXiTfzWnXvR2ziBEVMI75u+RGHrrAuvfByoF+Y0ljcHQaHyKPvXjiOOd7yfujKNEvw4E1EugNwsdryGm6fqE0qDCsNmvfZGXPMBdgLWJwCAATsXwEW0c7+dxjenivIqSWt1arVN9cvsBajlgb0u00U4xkyCVybqPc8UOmmEWxh7nJMkKEbwWN6sI1vqxUkyzHuyLSawyZlN+wEtkpGEa9DYt0WVbbHMeSmDrpH54aixzqwS+N9ozo7AWziuSAAo+r5RjIzW4s2dC9Z7bHm20IvoAOtZ54TPHw/1F5h61EzNr37f/r
- gcaR53zw
- EnBNLH4IBTR0nR9tqmvdRPrNKejaTb8jtVTzLOMhrfe9BUR1yxu/sEygtj3UWBddBrPhIRD8qKIgsF3mt/gTgl8tZkYztatnGltjYF6lwNEMo8Bfe+oRiV7uhPff/5dU95Iy94/yW9c2zcQNRkPuOqBjG0k1NvKqa2eJfX/Z9ItfjVhpV4AzApY0nMNN0K2/J9oqDXCnih9fTuDh9Vs0SkOUQpbs1SVq063x2floip320R1LD639h/efPtaSP++BS0Ra7rlRK9kIGUYv2qfJNY7apkn5tSZNnCoCfw9nc+D/PLl/guV//o1Wzz6CXRLynX1Ah
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 20216180004
+X-Stat-Signature: ofc7q49o1deja9ec7hwzihjji64tztqf
+X-HE-Tag: 1784838083-240737
+X-HE-Meta: U2FsdGVkX18mmEGUeo8vBwbvhD+luhYyfFSRfCZl91lvo2/3wPprXMbIq10NqaqaLC02nejJjE+zq9YmKMIJHmvnLIQ0hNouLDteXnEkE25O5tJe0vYOw4Y2WCc+ZLHF/uFjR8uFSi1JjjsES9gEtX+Dsi83y5k8bCm6ZVW88B3IFOkmZbn7wx2iNsQhC9pjkfcClIAYd0q2TqW2l8yAdQLAEe7Y3hXvfVc2n6xZCYjFhZJ1uLlNR7tSFQN2fAVLUBqPsUR4MC9oGCswp4sMli411f3imBCH99AqVa3u/FygHdPdNjgC7Qk3pAmUcA+2VBNaa2SrN0cBtyfQ62BdpHVfv7FakkKNw6pk8qlgNbLzEXfi8mjbVFJI49H8HC0SoomAx9EvRNqFDpoBikg/aZOntxTGHpj0k7SYS3LkKjl52eSgwZ1SlDNBuW4FFksmCEImq91QKTaiDElmxtgnb6TpviP3xAXbGSX2/GJQhKsoxIcHV/hD+95/d0iHr1JNJxEYH3QyEQwcqMKRL9QDcT0NQooU0T2sBXAIMOBAhKYn/KwD1j2op3av/UG7MvkmywLLKEGnIW6WwyAOw7ReGtY6q2gA6+24vk3Z0xP4bhbGJhH4g0O4B8IXFum0/hTZv4veki2y1yFGA9KxWd7nIJgOd/VS2DtEZCeGhQasmPrnGqqN9dNyCeVs4+07rddcAPMZmfo1IyHnNUDHWwZz8aXrDq5a2Gh6yv6NzhhrjsQhD4IUQPLzbIb+Bc1B0P/bQwz5K6lkZciONR5+PunvFmI0zqOFQrQaawa65R3xRKIIQQx3tm4f0kOoKPW3PWNwocJCsRhRQM5R2csIUOC2GJ8ZjwgxyuscX6W2YOWLlX3lzk/fUu9LqtdAGgmio17GEG5wCBMlGMay5fABMvW6EDdruqN19JcsXy7N7IItWSRqBSYZMBklXgIFODZmf9QRRy7ynRJ5aO5EpnAoGxu
+ +XQYZgUL
+ uSAT1gx41hyx0CjjlLlhac87WFALVqgUnidOk45aslHotmBR+RmHlms7Fr1rujvy5aZrtrJTdhNJBZI3/aolbg5os1CepKeeboCzHEQKJqcXXMgP4XpjBnk7UAszsNlL8CjEObrjnRxrFQ8f6dM8Q8qMflYA5dd3z+1B4xbull0+owd6o+8VckXJ7We38DwRSXc7oc7zA521B6QFGOz0ZN6K7HY2/diIUxLL9C+UC+ZvDSdbyDMgXzXPV8Vbh+3WU32eIgsHEp1MV9+jiEjfWaWClki0HaGg93klg2YDJjfkXEZ3JS9XfilALUM/aANKIQ13ZPpUB4NPbreZEJp05J00BChgOuWdM9HR2iWnMLk08olbypwoZMgVxbuLtxZ1gY8yiREcivbMfzPAO85OygQsPJE8RyC6tflj423nCX5jEDh3e9YQW/penqbQ79DYKMA7zD1zvLthptbKqwwM3iZsa9TaWCEA08/mVevSe/WfN474eBQTqeX4FavjCTf/Ueg9lhUbTf08LM0sNe11zH4sEaGYFJM8rn8b+823QeqSpN5dzRMyUXWhfo0YNpDucUAx9e02zXF6LzGwtdvNOzEMqdcTlKMrri8cVRKIXZ+yeEDY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,47 +148,126 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 20, 2026 at 09:41:22AM -0700, Usama Arif wrote:
-> lruvec_page_state(), node_page_state(), and global_node_page_state()
-> all clamp negative reads to zero on CONFIG_SMP so that a transient
-> per-CPU delta skew presents as zero pages rather than
-> as a garbage unsigned value. This is the right behaviour for
-> non-monotonic page-count readers.
-> 
-> It is however incorrect for callers that snapshot a monotonically-
-> incremented event counter and compute a delta from two samples.
-> Once the underlying signed long wraps past LONG_MAX, the clamped read
-> drops to zero while the previously-recorded snapshot still holds the
-> pre-wrap value; the unsigned subtraction then underflows into a
-> ~2^31 spurious delta for 32-bit architecture and corrupts the
-> caller's accumulator.
-> 
-> Add non-clamping siblings that return the underlying state value
-> cast to unsigned long:
-> 
->   global_node_page_state_monotonic()
->   node_page_state_monotonic()
->   lruvec_page_state_monotonic()
-> 
-> With both samples read via the _monotonic variant, unsigned modular
-> subtraction stays correct across a signed-long wraparound as long
-> as the true growth between two samples fits in unsigned long
-> (< 2^32 on 32-bit, < 2^64 on 64-bit); the 32-bit bound is the
-> practically-reachable one that motivates this helper.
-> 
-> The variants are only safe for monotonically-incremented counters.
-> Non-monotonic page-count readers must keep using the existing
-> clamped helpers so transient negative reads still present as zero.
-> 
-> This is a prerequisite for the following patch which
-> replaces the producer-side anon_cost/file_cost accumulators with a
-> read-side accumulator in prepare_scan_control() that samples
-> monotonic per-LRU vmstat counters (PGROTATE_*, PGRECLAIM_PAGEOUT_*,
-> WORKINGSET_RESTORE_*) via lruvec_page_state_monotonic() and folds
-> the unsigned modular delta into a per-lruvec cost_accum[].
-> 
-> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+On Thu, 16 Jul 2026 12:55:55 -0400 Gregory Price <gourry@gourry.net> wrote:
+> On Thu, Jul 16, 2026 at 03:11:30PM +0200, David Hildenbrand (Arm) wrote:
+> > > 
+> > > First, for the multi-numa-per-tier case, I think this is already pretty well
+> > > handled by my series. Once we realize that a memcg is consuming too much memory
+> > > from a tier, we trigger reclaim from that memcg via
+> > > try_to_free_mem_cgroup_pages,
+> > > which as far as I can tell already handles the multi-numa per memcg case.
+> > > Other than restricting the scan_control's nodemask to target the nodes
+> > > from that tier, I don't think there's anything else to be done.
+> > 
+> > I am not really sure about the "toptier" notion, in particular if your memory
+> > hierarchy is not static.
+> > 
+> > Imagine that you have only DRAM in your system. Then you hotplug some slow CXL
+> > memory. The you hotplug some HBM CXL memory.
+> > 
+> > The meanting of "toptier" changes, which is rather confusing to me.
 
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Hello Gregory, hello David,
+
+So circling back here a little bit (sorry that it took a while to get back)
+
+> I think this is a naming problem.
+> 
+> Maybe we should start calling this "initiator tier" or something.
+> Maybe tier is even the wrong notion here, but it's the best we have.
+
+I think the confusion is that "toptier-ness" doesn't give the full picture
+for whether a node is a promotion candidate, a promotion candidate node
+needs to both be toptier (adistance < toptier_adistance) AND also have
+CPUs. So a HBM node that is hotplugged can definitely be toptier
+in that it has a smaller adistance than the toptier_adistance, and will
+probably even have a smaller adistance than the DRAM node, but if it
+doesn't have CPUs, it won't be a promotion candidate.
+
+It gets a bit more confusing because this distinction is not a tier-wide
+distinction; you can have two HBM nodes hotplugged where only one of them
+is CPUless -- then we cannot make any statement on whether the tier is
+a proper promotion candidate, only that one of the nodes within that
+tier is a candidate.
+
+> But I agree "toptier" naming doesn't generalize to complex systems.
+
+The merits of calling a node a "toptier" node is therefore a little
+dubious I think, it's just one part of whether a node can be promoted to.
+
+Anyways, I think this is outside the scope of this series. I think that
+for the scope of what I am working on I will try to move away from
+referring to things as "toptier" nodes but rather call them 
+"promotion candidate" nodes. I hope that distinction will make this
+series easier to understand and read. 
+
+> > > $ cat memory.tiered_max
+> > > tier_0 20971520
+> > > tier_1 31457280
+
+One change here is that it is not really possible to have 0..N-1 indexed
+tiers, since those are not stable. For instance, hotplugging a HBM
+node (as David pointed out) would replace what tier_0 is. However,
+one thing that remains stable is the abstract distance (adistance) the
+tiers are associated with, so I'll preserve the ABI that I have right
+now, so we can have something like
+
+tier_42 20971520
+tier_128 31457280
+
+And if HBM does come up as the "highest tier" with the lowest abstract
+distance we will just have
+
+tier 16 1048576
+tier_42 20971520
+tier_128 31457280
+
+And we will not have any problems with tier_0 defining DRAM and then
+later switching to define HBM. It is certainly less interpretable but
+I think this is the only way to have a stable set of tiers, since
+adistance is pre-calculated for all possible nodes at lateinit time.
+
+> > memcgs are currently not NUMA aware, so this could be one possible direction.
+> > 
+> > But is "tier" the right abstraction? I really don't know.
+
+> Really I think we're trying to classify 3 general pools of memory
+> 
+> - Precious:      HBM
+> - Preferred:     DRAM  (initiator preferred targets)
+> - Non-Preferred: CXL   (fallback and demotion targets)
+> 
+> HBM nodes are already weird in terms of fallback ordering, but ignoring
+> that for a moment.
+> 
+> Non-preferred "tiers" are slightly different than preferred "tiers".
+> 
+> Under normal operation (assume no mempolicy or cgroup weirdness):
+> 
+> 1) Direct reclaim NEVER targets non-preferred tiers (kswapd only)
+> 2) Promotion NEVER targets non-preferred tiers (promotion -> toptier)
+> 3) Under total system pressure (direct reclaim on top tier), we swap
+>    directly from the preferred tier out to swap
+> 
+> So non-preferred tiers don't have the same reclaim behavior associated
+> with them.  In fact i'm pretty sure we could summarize non-preferred
+> tiers as being managed hyper-lazily in the current scheme.
+> 
+> (if there's space, have at it - otherwise you have to wait for kswapd).
+> 
+> In my head, I think what we mostly want is:
+>   - Precious      - controlled entry,  Private node?
+>   - Preferred     - semi-precious, fairness desired
+>   - Non-preferred - not precious, lazy managed, no fairness
+> 
+> Just some food for thought.  I've been poking at making non-preferred
+> tiers less lazily managed, and I'm just finding this results to massive
+> regressions.
+
+Thanks for your insights Gregory. All of what I am saying is just in
+aggressive agreement with what you and David have pointed out.
+
+I am working to make the next version generic across tiers.
+Thank you both! I hope you all have a great weekend,
+Joshua
 
