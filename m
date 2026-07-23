@@ -4,158 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB3DEC531D1
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 15:16:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 157BCC531F8
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 15:16:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 69D896B0098; Thu, 23 Jul 2026 11:16:10 -0400 (EDT)
+	id D2D286B009E; Thu, 23 Jul 2026 11:16:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 64F2E6B009E; Thu, 23 Jul 2026 11:16:10 -0400 (EDT)
+	id D04756B009F; Thu, 23 Jul 2026 11:16:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 515FE6B009F; Thu, 23 Jul 2026 11:16:10 -0400 (EDT)
+	id BCCC26B00A2; Thu, 23 Jul 2026 11:16:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DABCD6B0098
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 11:16:09 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6A7BFC053C
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 15:16:09 +0000 (UTC)
-X-FDA: 85020392058.09.79DF62C
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 2FC78C0004
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 15:16:05 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	spf=pass (imf22.hostedemail.com: domain of segher@kernel.crashing.org designates 63.228.1.57 as permitted sender) smtp.mailfrom=segher@kernel.crashing.org
+	by kanga.kvack.org (Postfix) with ESMTP id 917D46B009E
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 11:16:12 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1491DC0551
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 15:16:12 +0000 (UTC)
+X-FDA: 85020392184.20.A8330C9
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 40274180004
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 15:16:10 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=lyZnXOp3;
+	spf=pass (imf24.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784819767;
+	s=arc-20220608; t=1784819770;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=enmgVr9PISi1K5jH2HPI2RCziiUGCfxKtG+OtqZh+TE=;
-	b=ESAbgvZhQKiBsRrLPCVzPVuA2cRThQaAX7dA9jG2YZ5pXVoH5o9FKEl6peyMXS4axTKjLn
-	WqzqBkxrOEzDQnykQTfKwqstQVWe0bEGiMfQIjpehVDzz8X4Civk3oKULOrFWsMIG74ujt
-	VvdRqGvUyAyVEy/ko043gtE+Dhgetrc=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of segher@kernel.crashing.org designates 63.228.1.57 as permitted sender) smtp.mailfrom=segher@kernel.crashing.org
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=q7dX3fQLU+MQfWobvf+BU2EOiXlvtWcP5jxjjttRSJQ=;
+	b=rX/DQzjk6l9aq0rFrKVu6wLcS/8V9XPhnTCuYpp+dipqIJ1AJ/ioWL8Hfg5M4INzoMNvm6
+	r3Sq2ggMMJ9OfGMg+no3Adec+YRZZ3NIUi8Em0cq8KV9TZ4HK6nVai5PepSze80hUgyL3u
+	jzT6lH8nPRjXmZLlL/SF5j1OQS3u8uU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784819767;
-	b=z9kS0BVYr9QV8Jo6GavAJrOK6YCKEqvZV2BBuMnNGsupzLOcuPT04M2mvUurLAQxqM0G0R
-	CoVpiS9M1lYzSs0r6G+QjkSln9Ud1p8xVagGfEQgyx23X4Lz4Jm8WV6YwEGg4DwrHc2CAl
-	t5I8GAqEngKQVQ+kAlBiGt0nqYH5NgY=
-Received: from gate.crashing.org (localhost [127.0.0.1])
-	by gate.crashing.org (8.18.1/8.18.1/Debian-2) with ESMTP id 66NFEMq5259803;
-	Thu, 23 Jul 2026 10:14:22 -0500
-Received: (from segher@localhost)
-	by gate.crashing.org (8.18.1/8.18.1/Submit) id 66NFECrd259732;
-	Thu, 23 Jul 2026 10:14:12 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
-Date: Thu, 23 Jul 2026 10:14:12 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Andi Kleen <ak@linux.intel.com>
-Cc: Markus Elfring <Markus.Elfring@web.de>, acpica-devel@lists.linux.dev,
-        bpf@vger.kernel.org, coresight@lists.linaro.org, kvm@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-gpio@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-mm@kvack.org, linux-perf-users@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, mptcp@lists.linux.dev,
-        netdev@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        virtualization@lists.linux.dev,
-        Adrian Hunter <adrian.hunter@intel.com>, Alex Mastro <amastro@fb.com>,
-        Alex Williamson <alex@shazbot.org>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Ankur Arora <ankur.a.arora@oracle.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Bartosz Golaszewski <brgl@kernel.org>,
-        Bobby Eshleman <bobbyeshleman@meta.com>,
-        Christian =?iso-8859-1?Q?Borntr=E4ger?= <borntraeger@linux.ibm.com>,
-        Christophe Leroy <chleroy@kernel.org>,
-        Chun-Tse Shao <ctshao@google.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        Costa Shulyupin <costa.shul@redhat.com>,
-        Crystal Wood <crwood@redhat.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Daniel Lezcano <daniel.lezcano@kernel.org>,
-        David Hildenbrand <david@kernel.org>,
-        David Matlack <dmatlack@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Donald Hunter <donald.hunter@gmail.com>,
-        Eduard Zingerman <eddyz87@gmail.com>,
-        Emil Tsalapatis <emil@etsalapatis.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Gabriele Monaco <gmonaco@redhat.com>,
-        Geliang Tang <geliang@kernel.org>, Ian Rogers <irogers@google.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Ivan Pravdin <ipravdin.official@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>, James Clark <james.clark@linaro.org>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        Jason Xing <kerneljasonxing@gmail.com>, Jiri Olsa <jolsa@kernel.org>,
-        Joe Damato <joe@dama.to>, John Garry <john.g.garry@oracle.com>,
-        Josh Poimboeuf <jpoimboe@kernel.org>,
-        Kaushlendra Kumar <kaushlendra.kumar@intel.com>,
-        Kent Gibson <warthog618@gmail.com>,
-        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-        Len Brown <lenb@kernel.org>, Leo Yan <leo.yan@linux.dev>,
-        Lukasz Luba <lukasz.luba@arm.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Martin KaFai Lau <martin.lau@linux.dev>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Mat Martineau <martineau@kernel.org>,
-        Matthieu Baerts <matttbe@kernel.org>,
-        Michael Ellerman <mpe@ellerman.id.au>, Mike Leach <mike.leach@arm.com>,
-        Mina Almasry <almasrymina@google.com>,
-        Mykyta Yatsenko <yatsenko@meta.com>, Nam Cao <namcao@linutronix.de>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Nicholas Piggin <npiggin@gmail.com>, Paolo Abeni <pabeni@redhat.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Pawel Chmielewski <pawel.chmielewski@intel.com>,
-        Peter Zijlstra <peterz@infradead.org>, Quentin Monnet <qmo@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Raghavendra Rao Ananta <rananta@google.com>,
-        Saket Dumbre <saket.dumbre@intel.com>, Shuah Khan <shuah@kernel.org>,
-        Simon Horman <horms@kernel.org>, Song Liu <song@kernel.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Stanislav Fomichev <sdf@fomichev.me>,
-        Stefano Garzarella <sgarzare@redhat.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Swapnil Sapkal <swapnil.sapkal@amd.com>,
-        Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,
-        Tomas Glozar <tglozar@redhat.com>, Vipin Sharma <vipinsh@google.com>,
-        Wander Lairson Costa <wander@redhat.com>,
-        Will Deacon <will@kernel.org>,
-        Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-        Willy Tarreau <w@1wt.eu>, Yonghong Song <yonghong.song@linux.dev>,
-        Zhang Chujun <zhangchujun@cmss.chinamobile.com>,
-        Zhang Rui <rui.zhang@intel.com>, LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] tools: Use fputc() calls in some functions
-Message-ID: <amIvxECTIM5paT94@gate>
-References: <48f2d61f-d468-49b7-881e-f00777db073f@web.de>
- <amIbVOIsOeZgcBZF@tassilo>
+	t=1784819770;
+	b=G/BrvRF9j8MAOCMTTha9C+rpkDjOGXfPNvJVy/hvejxr3wB4ayh9mc10b71/v6uUn0hEkd
+	GWZB9r4fKII4HMoktcwb0itKK6ooVoQYy2LHEamwc8vgP0nLvmRmGMX11JdjlIiGPCfyFE
+	K353NAb29J1Rv3T+YhyOutHzNqDzu5E=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=lyZnXOp3;
+	spf=pass (imf24.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2cecc8a3dbfso1367955ad.0
+        for <linux-mm@kvack.org>; Thu, 23 Jul 2026 08:16:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784819769; x=1785424569; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=q7dX3fQLU+MQfWobvf+BU2EOiXlvtWcP5jxjjttRSJQ=;
+        b=lyZnXOp33/THTZtvzHqi6JBAqnEFHROJWO66Q/8J41q5BIRXMK/E+AtYtQMIX/HS3I
+         BdD2YvaO+uuPtaGA5mVfcdvJVPp2EXfvwpsQa3hbk1Wiufkf58ydxnAtMvMoYMZ7fpPS
+         7Z5D6+Vb3hNWSJ2yZ+c0B08bI2192yjHOHZfWt96QAYcVixhkZLMhK6k4XFWsZ/fb8kr
+         psgZzlxSFeSYbFOLbJIOLTF/pKxaHD+JAhOo3ny8b5nlpo7xFzIUcxlOwtU9ts2igOhN
+         eHl+zEfmyf5av506wVBs+Euzt/QMshi8chKhNxD4Eax9LD79hjDzdBnRBKlZCiPUfwdH
+         YGoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784819769; x=1785424569;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=q7dX3fQLU+MQfWobvf+BU2EOiXlvtWcP5jxjjttRSJQ=;
+        b=WYkHLGxz4mtfhAn2q6CrvaH0nh89XZ8iXwq1KyJy8I7SLW6Eo+tTV7+izPnlUPc04s
+         xu1/FyQUjS0px5Z0PCXD+YJ2slELspQfMfNqqHuxNRT8SNVn4TalS8GlDvuedT63pQ88
+         r55C5yS5vfAUlpZ6smVtzo8aWeKNPeffete89y59+tj+hpYbvP6kIXFolLel+Tiktj/t
+         IvXSiRUoOGw5lztC2bgCfGtTYEnqxzUhmBqPEhQrv5MxVXQh2RscBw1WLepMFOS87dTC
+         z56WHCz2D05SMtNfxe0Bi8JtF5DDIuJMZr31XrG1IWiipTSK2SJ2DjDzYCVBgSvJx9eG
+         Fwlw==
+X-Forwarded-Encrypted: i=1; AHgh+RoQHdEMPH+7zLe0avTPfh1poxiKAb1JVK9Sp7use2ZACR00EXH/mTtMET+5Ayg22uqn67N+F6BOjg==@kvack.org
+X-Gm-Message-State: AOJu0YzZ2pTD2nK9e61JL1OXo76kZIdE9/+SCm58HN4u0ZT09H7pOkIc
+	4amEp2qmbZLW6xGMBeEQ0SYltYQESN73Z3gpMKBAlVpS442ReFN+V6kx
+X-Gm-Gg: AR+sD10fAZvoKdWV8bPOL1Ii9WDcbMrEpjHNISqtMo9Fpm15X8fr5631WQ0IFqLAxuC
+	uXPAXpAwVwk3Tc7gvJ9v28Shhosuasljq6QxhOcki3uCWKrIflDCrO3gLOD+xFkg2YbF/QL9vH1
+	1KRKyOZoYIrs0FT/Qb2UjRS/FjaFUFoKWzkL+G73wpdZmnOpspY0tZk1ygAEkau5XVSgEIDa+EW
+	2emBflepFSbF2d5hukwYeHB8MOe55UXkfUKmwuRtWrUBPoxnVNjEdGYFljA6vunP4Gd0IdQyIuk
+	taezNZQyH6V5epx/VO7CYY+6niQfocZKKXg0YxySnKP1tcPtplh6JQrg3CrvnODJRzp6vhLdMT4
+	yIWQNhuvnTrFJ+15e7sFiwQlP2AqZyTk6v/Nc3jJA2cAlJiMQz97HbHreFEVBG/LfdVTMxFG1pJ
+	Hhk4UcGx90W3cDpi0gQiUXNoeCkI/NnhSwKfzQaOW9vew64NtIJEddzwcIodo2ODZ3ZpyUfMvH1
+	jeFWya502Ui/l8=
+X-Received: by 2002:a17:903:1a84:b0:2cc:d6de:d58e with SMTP id d9443c01a7336-2cfbd0a553amr478115ad.4.1784819768864;
+        Thu, 23 Jul 2026 08:16:08 -0700 (PDT)
+Received: from debian.lan ([155.117.85.27])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf8f312763sm35276065ad.61.2026.07.23.08.15.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Jul 2026 08:16:08 -0700 (PDT)
+From: Xueyuan Chen <xueyuan.chen21@gmail.com>
+To: youngjun.park@lge.com
+Cc: xueyuan.chen21@gmail.com,
+	akpm@linux-foundation.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	baohua@kernel.org,
+	zhaonanzhe@xiaomi.com,
+	hannes@cmpxchg.org,
+	mhocko@kernel.org,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	muchun.song@linux.dev,
+	chrisl@kernel.org,
+	kasong@tencent.com,
+	shikemeng@huaweicloud.com,
+	nphamcs@gmail.com,
+	bhe@redhat.com,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	qi.zheng@linux.dev,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	baolin.wang@linux.alibaba.com,
+	hughd@google.com
+Subject: Re: [RFC PATCH v3 2/4] mm: distinguish large folio swap allocation failures
+Date: Thu, 23 Jul 2026 23:15:47 +0800
+Message-ID: <20260723151547.377588-1-xueyuan.chen21@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <al+alXxG/8XRCM3y@yjaykim-PowerEdge-T330>
+References: <al+alXxG/8XRCM3y@yjaykim-PowerEdge-T330>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <amIbVOIsOeZgcBZF@tassilo>
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 2FC78C0004
-X-Stat-Signature: dmjooyz8rs8ss5pz3bm8fztwffsaqwpq
-X-HE-Tag: 1784819765-596878
-X-HE-Meta: U2FsdGVkX1+ERVnRumOPC3tID/jSiVnpYamwBvQWOkIlTO653WCPPf7LhxJ2YIjKS64gyZXmfsXhyyxO+m5RAQxGn2zBNhE0bTvacypkr+yVqI0j0RQh1PoPOSsjwgfdF1Lf37mLT3vLhiAULPLCCWDZM31lM1aMinkjOXpkSEb6wVuvU43/Kv5yEQiYhJm23TpYqGTpFlcVtccpihXddY/Q2VdKx7aFX7kt3LPMhsxsqSDlc/oG2HxEGXKjI8hLiG4dxSzRo5kN6dfKUWalQbCiU4KtpUP4Z1aSduXjrTp40RSmOhrt3C7rZ8bZPbBb8A2lxqOlnrcHlRuqR18vFNvh8aijse1oDotHbIGKsZmzLxp/cjGobQLjkUm8x+oDDY26TGz7Si28qth51Fy19Qe3W3VFpNHdzdA2WvpscZjC+m2JPKOiHWQdOd+DfHhbxBgm3F2on4+BSWIiTNaAU+YR637ae1NzuDTqvStAPCzh6NEp8wpdUfzwj9C8XmeqYUI72LYKw8YBxLMMe1zdqKGdKUqHjD9bV8aY3Xpvo7fMkyss3qsNtmAfG3ggrHHvmeDYnzjFsuGQRH7uhWzxSb+zq5Ey5LrzosZVQoub2v1+sq+5PrjAzVXCPnOn5utxR/q28/wadqGbI/RSGnSykTfDdsmW27ScIUPkbu9999dwM/BJFvF0XqEEmfB4rKEwN8Qi7BfnDekz6+I1r3y7pVSuoyYQDENvnGxxFaPgMRw5xuap6aGdWXQgptQ4aTpV7AnTAwbKHz0lF0fOnTZ2h/ZPHzuHfWfz/2nzztJpaiVnxM/v+JEhtrsRpK9Tp1C8X8NzH27+vLpYA9Tt6uazkyY1tX5cvae9Loa7vGqK5Ty/ay2fefyEwSE09EVIoU81MjBfgbO9mbnD3NzlidFQXn9mcOqgRflzWM+48N++6dJOohMAAmOacYNoke5smoK2jDDNH3/q6KK5q+sRG4P
- 9/WY+LcB
- simXOPqkx44SADz4uSiPTGRf7oN9fG6Myf/T7MSDe+7X8pqTK5zLDyFp0G1w08nPJaiAeOBQ0V3/cg9C8fvym4LIe8jIxNHGURqFcHGPE7+o8UQw6VFNFNV6Oin/ZAttGm5j30aNhZEr/NGqz7uB9r6v2/Y4KxkBkbvgFohAXH5R/0ILHQI+L05Knp8O1CNZSJVasPUVxVpw/BS9Hh/WljBBHoLcGM5nX5trI1RlpfVPJZ0ozBrGckekJkzAtcXYOHP9frjHrdiOGX9M=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 40274180004
+X-Stat-Signature: g4m5g95tm6ei8nh75mwfobfj8iykbdoi
+X-HE-Tag: 1784819770-640223
+X-HE-Meta: U2FsdGVkX1+U+12vyZJAPkax05NTDfB1YE50QkGKtp7ndIKe97QNegCOPHsBA75scTHoVD51pW8YgkJ1ZG1Hjg0r8K9k2Li8LgJSTddCVvSG95xMfjz/2/qOGStNcO/e42lkD2F36PGMKZZpZmQIW1loqtBLpJeRIj2BEE8pik88L3bG8Xjoi/3LDRAZaD8W2walKT7vBoyHQiFMRK3qe2OoUMYFDRoj1F7mGeapy/X+8eNoKWdzDhmqfd5P+sKSezBexlkbOQdJ/wBiCebAWeaEg9LW1qkawZuHX/IW3XJ0yX64RnkmGEXC/ZJgISPzsrJx1oyIuBiuzgk4+rLWTPavfGYTuy+Ufthc+srE+8C2XyFKArajbGZOSF8x16IiBONuPoABr3HDoFcgbszgStAkyfQKy9Oj686QY1cu4mgAcT6AMaYJiA9S+p7Sq08GJyWU/M/0frO9rBXHgZQblODYGma33V7kLaiVOZyg+aDxJTQIakcJl3i1j95vV9i8ogCiUPKG8wViVE8J6p0dFEfZcYTYjXyLQI/zZlJ60MsqgfAQti0Qd4jcmGdxEKL5z8F/dv+lcfnUvhRYJoXc+5sIFiZT9Ip0/98bo6kLJAckUWzhZfWP2h8orcCmdS5Pl6vLpKcW2S/D3KS1PoRiV8y4lj0Lisfjfy9yU3R4REsVfoRgWlX17W6+lUb3lceWqGotNmYuNvbD0qvc5XXB4Q5pmRgUMlxLf0HzklnS+2z4ghjFTUgv3ga+XXpinOEsSuubD85PAeWT0b5lNQEv7RkviFFyN4NEj62UTZcRL+g+2VM34571PZQlLciotPGFfN5cLyiBJ97DIsQg+weHS/ykqlzw0VqrLdDek0ft2Dw0WPsxGTod4pFkUbxfJSW7S6/OWsot+Bmj7YK59z4w7T5pPl68CKNZW84jkZ8VJYVgch4mR8uWEp1HuQq5Nx0PQ4uy/bD/gtSLc+CWqk5
+ xMofSRS8
+ dUiWC9P7yNe9NnhgvTTvitfquiJGt186axBUQt0RMWinXi/jqlnWRgWUTTST6MmJeZeXT0ZlZzh7x/F6BqXaD86ZWPzrgzNvaunZhv+xYEM81uja/RBa/Hc8LyTNqkodWpTpUVIcq+Oll3ujTOSFEOueyJJUUwP+8vVyTJ4ERzYHHCY3Ers3B9gQz1/Edpv8LGpN3Ildk/nafZWEzxiAXs6hruU3IgMr5av6Qwj139iqh7fSVHVw0Jsd6vOgk9q/U8pYVYVcMya14FXYNZ/kSoxEoV6z564A4oSLilX5KH5UhntyEbF0ODn6bavWKA2zvzo0Cp2lGwUnNW6gq+NLibrSANty0TV9EneCJteMDfbGtDHwYaJw1Xc+PHvRjpTITtUvR3VNGumAF++0DhmeOVNJtP8MsmrJBY2zpZPbT4VEWtC5/6uTGY9Ye+yeGoqg3yG8e6tK7MAmEBVChHPHuMob96IAJ+xqKrmt4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -163,26 +148,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 23, 2026 at 06:47:00AM -0700, Andi Kleen wrote:
-> On Thu, Jul 23, 2026 at 12:25:25PM +0200, Markus Elfring wrote:
-> > From: Markus Elfring <elfring@users.sourceforge.net>
-> > Date: Thu, 23 Jul 2026 11:13:30 +0200
-> > Subject: [PATCH] tools: Use fputc() calls in some functions
-> > MIME-Version: 1.0
-> > Content-Type: text/plain; charset=UTF-8
-> > Content-Transfer-Encoding: 8bit
-> > 
-> > Single characters should occasionally be transferred into the output.
-> > Thus use the corresponding function “fputc” (or even “putchar”).
-> > 
-> > The source code was transformed by using the Coccinelle software.
-> 
-> gcc already does this transformation automatically.
 
-Yup.  And the printf() form is much more regular, expected, readable.
-The primary consumers of source code are human beings, all programs
-should be written with that in mind!
+On Wed, Jul 22, 2026 at 01:13:09AM +0900, Youngjun Park wrote:
+>On Fri, Jul 17, 2026 at 08:25:12PM +0800, Xueyuan Chen wrote:
+>...
+>>  	local_lock(&percpu_swap_cluster.lock);
+>>  	if (!swap_alloc_fast(folio))
+>> @@ -1730,11 +1734,16 @@ int folio_alloc_swap(struct folio *folio)
+>>  	}
+>>  	/* Need to call this even if allocation failed, for MEMCG_SWAP_FAIL. */
+>> -	if (unlikely(mem_cgroup_try_charge_swap(folio, folio->swap)))
+>> +	if (unlikely(mem_cgroup_try_charge_swap(folio, folio->swap,
+>> +						&nr_swap_pages))) {
+>>  		swap_cache_del_folio(folio);
+>
+>IMHO,
+>If we get here the allocation succeeded and only the charge failed, so
+>we already know global swap space exists.
+>(And also swap_cache_del_folio right above even puts the slots back, 
+>so nr_swap_pages goes up again)
+>
+>Could we just take the margin and decide -E2BIG or -ENOMEM from that?
+>
+>Youngjun
+>
 
+Thank you for the review, Youngjun. You're right.
 
-Segher
+When the memcg charge fails at this point, the swap slot allocation has
+already succeeded. After swap_cache_del_folio() releases those slots,
+re-reading the global free swap count may also include the slots that
+were just returned, so it is not useful for classifying the charge
+failure.
+
+I changed the charge failure path to use the remaining memcg margin
+alone:
+
+	if (unlikely(mem_cgroup_try_charge_swap(folio, folio->swap,
+						&swap_margin))) {
+		swap_cache_del_folio(folio);
+		return order && swap_margin > 0 ? -E2BIG : -ENOMEM;
+	}
+
+The global free swap count is now considered separately when classifying
+swap allocation failures and the early rejection paths.
+
+Thanks for catching this. I will include the change in the next version.
+
+Thanks
+Xueyuan
 
