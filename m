@@ -4,140 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2785C531F7
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 15:49:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7417C531F7
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 15:57:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CCF846B0098; Thu, 23 Jul 2026 11:49:29 -0400 (EDT)
+	id 95C6A6B0095; Thu, 23 Jul 2026 11:57:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA72E6B009D; Thu, 23 Jul 2026 11:49:29 -0400 (EDT)
+	id 9335F6B0096; Thu, 23 Jul 2026 11:57:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BBD356B009F; Thu, 23 Jul 2026 11:49:29 -0400 (EDT)
+	id 849E96B009B; Thu, 23 Jul 2026 11:57:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8BDF96B0098
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 11:49:29 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 20EDCC0564
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 15:49:29 +0000 (UTC)
-X-FDA: 85020476058.23.4F9042C
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 2BC63180009
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 15:49:27 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=gnzLBB+C;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf16.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784821767;
-	b=z8q+9GNdRYRhu4M1DY4fi2vKZhHEkoTueu/o6UpXtmfzTDhk7vrlU3rV4V9P+x5svbVXHf
-	/CAJoxrPy7qix1iHbJ70LAoLxIUQ/PxiGzWpW+2a3Ry0rKgOQhjaQOqvRezixrmhw6IG6p
-	XP0CI5Z5VXT5pf9eHwcAJECh2re6TyI=
-ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=gnzLBB+C;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf16.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784821767;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 55ACA6B0095
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 11:57:02 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D92B6120495
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 15:57:01 +0000 (UTC)
+X-FDA: 85020495042.17.7A44D97
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 1CDB51C000C
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 15:56:59 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="j/RqNP4F";
+	spf=pass (imf18.hostedemail.com: domain of "SRS0=k6gO=FR=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=k6gO=FR=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784822220;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VOEwoWxhkHAzPl7z/kfmfgEp6lBpU3TPL7nXC62jp0M=;
-	b=gjR5kPkUEM2EMiTai03x2HcXlBQbJB4qH4wOxkvw+A3Xoeo4V/V1hDREKAD5K3b15cPQLU
-	61dXsC5uGf5W7zwAZAR7HHTE2nL/J1M7UKwFSQtAOS5fhwa779ety394JJyK/06sZP8JPO
-	yG6YzIOnGZHpT1WzUs7oz03I5qTQq0w=
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-4728c12ba97so511696f8f.0
-        for <linux-mm@kvack.org>; Thu, 23 Jul 2026 08:49:26 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784821766; cv=none;
-        d=google.com; s=arc-20260327;
-        b=MapcBZCCK6PjR2A7jI9STvpMdMB73qqcyf90a43gjHDbM3Le2FeqcJJZIWC1QXauhX
-         rnD/eqrBcCiTgcc4EwYydUfW5VOdm2XmN8B1DcpJWR3v5lxDxvOIeoudxH+SgH6Ib1I5
-         qnF+ugBiHFD/xd6eSkOl2aavWd/iyP3Zh3z1daNazh7F1ppDUppBhG3qeNj7dOaTwILW
-         ZmXRpev99kuSsaSQg+Z4b0VC0smQkZuuI6Z7jVeLsyLmX94jQALr0IXNgvqnZRcTtTIE
-         kKsHMx7ibg6ZTJ6kqhLwzLCVoZ/qI+FNTYolvn27D/byzBMKw0cek3boGe1iyZ0mWkZ7
-         6Vtg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=VOEwoWxhkHAzPl7z/kfmfgEp6lBpU3TPL7nXC62jp0M=;
-        fh=N8mZAJ9ConV/sFCWXVmJIHUJNy4XBERB0SVjapxSGeM=;
-        b=WGPpOiSAO3DZ+y4FjmmbLxA62TkiOUivlwBD+Q8mockCePt1bAdwxH1el0dsXgmUlc
-         N6aUuRIDs3XaNgcF9obxv2UFVCPAmsDSsK3/EVCpi40+LvdIbSl98b/yeZ9NIOUA/NF3
-         6PpeaUWeSroAV1Rv2MtKopU9kSu2Brkx7o1YbsK4Q6USG5uisCtBcePfLocLDASJzqTs
-         /aNOyItWdta8Y/SfDYRjUb63IXFeRJS0sc81QvRZpjreVI3/Zs5hlLUM8AmFmiUu8dJw
-         qGHppBgn+1TF4jqtFy8PDats5uWOfnUzxjBUjT6C5+JParC0L+a2ieMBRJ4tIx9aMRYZ
-         DqWA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784821766; x=1785426566; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=VOEwoWxhkHAzPl7z/kfmfgEp6lBpU3TPL7nXC62jp0M=;
-        b=gnzLBB+Ce8z/AQbNoQ5FW2l+MFiuT72LpUCaxa5Z1k6DlH9MweqS8mmcjLHjfoIcyl
-         jDdFpz2vr9on/G8P1pPBvZi5fKh8eoX2I7yDt2+ibdWvAPWcfLTbvJNvwhGVHBQxb+UU
-         uj3qXlI4kPhYEIjsh2zdM4r1JBh2O9EFi81/pgian8i2DFU9TOq8BtiMr/BiVI6AzoeL
-         eIuqCUrhQRrZ2MnwG0v0AaX9cOBFaSIp3S2Brmfq3YdzArnFgP3CjlDeSI2LcjdNgGhg
-         3WitJKxfx6oxTA5AzicoYs7Hul9JnHVKJtNtDAaJ1MDIEYA1A7DBeKiKWBEF+/ubOmbW
-         zkeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784821766; x=1785426566;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=VOEwoWxhkHAzPl7z/kfmfgEp6lBpU3TPL7nXC62jp0M=;
-        b=mzCFY9SW2aig/fA2I26R3byKMoTDL01Daytz+BSor5iZdgfGwBsepK21u6Ruddlpgd
-         VrveR5ZU64bvc+L/i/owzoqT+uUaYTNqaYQXGVrhX2ORkr+Rw8AFtzZB6ZqeTDm+Pljo
-         KSroK3j5G5d1X5v0dxamkkOScfr3xag75k+TQWsPmC4Dl8esTvunKOTouxwRxYCRCftG
-         izcBX27NRLv+PRWr+biDu45W+ntQylD31SQkn/JQbZiSVOcPxXW1fJfp5E7KvS4qaMt/
-         uUBq15lrcjiN+e4i6S3pV/AukowX2C40cGtxVv4HetnG5XPJ+MTPxK4HSjwZX3Vvv/v/
-         wQaQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoYyl/4HTVgypcFLa70XLthwepB5rCnt5nWHy7xL+ILp6gDJYVVFVYswlR0Cey/Z5JPQcx441lYIQ==@kvack.org
-X-Gm-Message-State: AOJu0Yz891pzkZrYh/6QKApmUKN1uuL+fIgwyYXZoe6YWa/ExhxA2CUH
-	XqAQH0WjVU36hA/FdQm8aZBR31NSYx6M+e5+A0mRdhUvCWGrOsCxPDiPgZNPemOmhsaHHxpH4h8
-	qvgyYgzJWKdfEcSAcXITDY2mQxo8WSyM=
-X-Gm-Gg: AR+sD10g4fl6mjPUl0oHopn2uCKz++RyhIJWV+txBQAiq48bT5oTXQ5RFazCW88CY2L
-	lgbI3P866LFagP83G4si9/es03MReK8lz2ewqCURQFaieWXkcR00Sl6MsNPkRdapAJpMPShXfk8
-	PLbF7aFGV0i4g6nK/rn395IOCQ98f9vlMnQpKOB3c06eONHJn97YyHbv/olmAAF8BkJ3eK0xb2u
-	AdA1I1p+b0CvYiKsW0IR7ll//uCuLgGaBMx5zGqN+kkd7/W5Wq0qjZhfWcvn+orTLlHDsKoMiHX
-	la+49La41+6WrVv2HJcGmjTK/UDR
-X-Received: by 2002:a05:6000:2501:b0:47f:93b4:2df3 with SMTP id
- ffacd0b85a97d-47f93b42e91mr1757333f8f.60.1784821765658; Thu, 23 Jul 2026
- 08:49:25 -0700 (PDT)
+	bh=hnLlhWiRynP6/ofod3foQ+AAh+0y6A4DSv+/njyBLhk=;
+	b=H6L/Px/0+wR533Jw9UbZftoUP0RouETfs/PKC+ZThaM4D9qPyNqLXEc9A7SrrkzTczNUKR
+	99X/ic+G7vu4fVNYxvkHBIQfZYjUlYID2rGec+fNBPbarmM0nez0WzBR++2osf6QiMsd95
+	/gkvqyGLB6tYHpNaU8zbIkZfBGf4mfI=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="j/RqNP4F";
+	spf=pass (imf18.hostedemail.com: domain of "SRS0=k6gO=FR=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=k6gO=FR=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784822220;
+	b=I8t0iEVEy14RctbZDSIWU/xreiUC2lOem4Eq/8b5GMyigGBY/JyExIxBj//oJnvS7yN2f0
+	iE2kt161CwqrVZmIrFS2iD5RC82hlEgc+mck4QfaJz1qVMkvvCKN1+n08fTxY6SPXLpnvG
+	9DSqGhp3gFs8giabYSjbSVwUBFf0Mmc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 10808408A4;
+	Thu, 23 Jul 2026 15:56:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E771C1F000E9;
+	Thu, 23 Jul 2026 15:56:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784822218;
+	bh=hnLlhWiRynP6/ofod3foQ+AAh+0y6A4DSv+/njyBLhk=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
+	b=j/RqNP4FNb4Os1gXyhKtdKfwqPKeDbNELuRzvh9cpAYIRLQx8uOQLbNhmD9pZKMcy
+	 vJHxgcX9VvyQ0Ix2KMvnDd7a0rJWynXgNAjgvdgzDtV9QzpXumbmDBCghjOj4JnEp5
+	 AceACFVIAsARZeXulWzpbGJ0DQz/aSNHU/JaehDbcRnsGUZbUQ4JWrf1vsqIkn+uKj
+	 NQ+EFQmFq7SPD/5Mrkc9RgV9meMuzI+QPAAwTH1zy8W9NJtQ5HWVWDE80LS96AcWau
+	 aZW2TIyCB0+rWBoLJ4Y3CzHIT9z4VY78ZajWpZU4ChbKz4jTg/ZenZLlQq6tSUx1My
+	 GWWGHnqdz8ghQ==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id 9B657CE0AD8; Thu, 23 Jul 2026 08:56:58 -0700 (PDT)
+Date: Thu, 23 Jul 2026 08:56:58 -0700
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Catalin Marinas <catalin.marinas@arm.com>, puranjay@kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH] mm/kmemleak: report RCU-tasks quiescent states during
+ the scan
+Message-ID: <ffa5d8d2-1157-4a30-995c-ddae3566e3a4@paulmck-laptop>
+Reply-To: paulmck@kernel.org
+References: <20260720-kmemleak_rcu_task-v1-1-5b460ade777d@debian.org>
+ <20260720153917.2e428e489cd0873ac6d4e6da@linux-foundation.org>
+ <5b83b0a0-708a-458a-bdbd-41c6d4610349@paulmck-laptop>
+ <amCT9QEgJRsLIb_y@gmail.com>
 MIME-Version: 1.0
-References: <20260718093723.153324-1-alex@ghiti.fr> <20260718093723.153324-2-alex@ghiti.fr>
- <amIZp7Ual_6Gu86T@cmpxchg.org> <CAKEwX=MxufM5aNw2xW0f1UcyfcCJbtXR_u3cK+coRaC+_bLspg@mail.gmail.com>
-In-Reply-To: <CAKEwX=MxufM5aNw2xW0f1UcyfcCJbtXR_u3cK+coRaC+_bLspg@mail.gmail.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Thu, 23 Jul 2026 08:49:13 -0700
-X-Gm-Features: AUfX_mzB18adyCkRw-msPjHBQg9MLv97pbCpvES0UbLhVV73Fu4FFLlFb-JLgCU
-Message-ID: <CAKEwX=NmAuo+-sXzQj51-sRGdfcjTb3_KaW2x_4DnjQM6n0piA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] mm: zswap: free synchronous-IO writeback folios directly
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Alexandre Ghiti <alex@ghiti.fr>, Yosry Ahmed <yosry@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: egysnnkyfzo7wcby4eijqb74yyhtgdzy
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 2BC63180009
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <amCT9QEgJRsLIb_y@gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1784821767-410057
-X-HE-Meta: U2FsdGVkX18kbNg8aVCpJUT87AkAcDExudwT51Rch+xdzqEBX9JcamFH3Lc4TO//2MHQXT1V+qhNS21T2VMTusaxL1Q9CbdNDmgUPbVD7P1r0liPpyDppyYSCx3pirPsCPjlnCl2afQDySeemcuviyJohezEqifSgKklL9ohq5NAbKEt5fvO6TBaCtVFwodGvro6GXL7+Kjrn3c+1gq0bMHHbfBrzyjHKNcJP/5E3mm5v08zCIXOC+MJpwi6hKlGroqeRGanZ6ICSj85aEZ2+Aitz8MXgSuVNp5vI3Aobh5FinpzpEa8h161aHeRLXfDKPBCjVZ4ja5ihX9pHVDV6VFVwWLudkVR0CjkNRe7LYcVsTvT7DQ1PCAlXpE31ZTOCly27sprFqpK/80x+kcBTLYc6yO75aa4yjp65+1KqOFlpa3FXwINhAgJwXGwLTFw2VueHza7ZwComT9dpghh6Dm4/80fwMzCZPEQUmNwHyfhAXt3YzT14gsbU1+lWfUhqt9eLOFwwKgylLkFNo3ynJG5U5VNhltE550BXValS5JwX48IobAKoXO1bb5jndXn3q4vlhIYv5682pSN0xW0yovcWtunKpZX863lYhrDmWYOe2ehDeB+9J2cjdkxTDrnq/d+ld3wuR5PE0NtkiY87VfxiReb3HJuYTjhlOY958ia31JfizAsqPsDXrsPo1PEnkQi0M0atHrlFBCALYTAKgla6xau+O2PmKy9Rs4W9AnLiqt8kXigj74xSgrquMmOV6FGsXabuxPdIF9OgmEZ/6Qp6YA+LV29WlVtmckeoT3SF309GFsMVDGtqVRwNu908SAiz9f/DZomYBTpxV0XOnLTRZPbJykJ/f3RfLYnJQ3+C72okhqQv9HVbe+D/t+2HAsbTJIyNvUc4suddPTSgRV6kWde8v5D88dH3zpvPzL8Lqwz80saxWhpwe8T1qHF3m89FaWLn0f1StYj5VG
- RToG0+UI
- Ad7SNfroCYWrxQcSYSGB2brSuqG881bg9YGoJ6Db4qZm/aszQBhC0Hk+qlyO2aqjphLZmtYS53ZjXIOIpISH9MdpMDzBUMRX7lrR1Soi+2TezDA/6XIu2044pulubb6ukY9SZ2naZN4HnzFWrAV0MVZwJJPRxo4B31bXqfOk9/APpDNWA3Qm7ABB/B2WTvXgIVX405WgsidXznsQWUjCyvt6SCe8SAlj8VfaQoJ4O/utFPtuI9qr1ArMEcpdb0EEZPL8/dNlCJqBGsfk2JK7jZCC3YEhw8n90ymNvhe1U0YBh9ssk0YVKQnS4HZSu5pKIUhxS+7VtMnhN+JuQwiDoN/xHtAZboyoXa4oWrggd2EmL9G7jTpaMu//+9pVd6CIdnwqi1H3eqZgPWXlkNjwOuDr4ynu01drSRN2+ktboNdGcuY4=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 1CDB51C000C
+X-Stat-Signature: 658echcgj4ncjy7fjeagut6e8xq5icse
+X-HE-Tag: 1784822219-30065
+X-HE-Meta: U2FsdGVkX18evHYY87H1vYWKQFBmK3iqd/6kzNAir4ZW2HaZPbU9LDq1Mtz57AXRj8Jj4vNzVwSav3dku2K6JO32j7JO1pcdFBp7y09BzggHOM997d45UhR7y4EJdZ0+VDITh9s8S+xD5M4CdRM+gzZcPfgDkxGwEpPCCD5fYNsVYqeFeCD+eUQbGzyw8i6CrbVFvVMwDn5Xb5lwStEs4vKqXHwNgcJXu7v9pY/5tfuF1JWeYizBPtONwehzLgfjOrLj/7X29oSfpQm96BqHsCyVkdL2t2F9bDqTgHEdoZAZeSJjfC9aNXGgjNc0LukGq+hNbR2m+G3FN+FMWN5hrGIpeorSmaJ5tns68JzeTLGD6TDSTe2AjgRT1lq3awnhJRpwYy6lS0fsd8ecwVRujSEu/1WROSqB/Y24t5PYrjJi6fzJ0kpkpgzMPcKr2remWSvTus2yG3ibeGaqlUE2NPNufykIevvj4qNZ4bH9OUABF2VTttwLMEfEzRW6xw2maELHnjn6VE9yfwoyyDS1oA6yGKxLL6ifCGbyBH0kRDDJysgMKjUBCEcFsQhzWQTfwuC1gMHr8+GDPuEoT0Jw6BzqrxYygWdrL4GQqt2vMXZtTMsAqC5JA7B4gTZKfj8RqTgWF14lDCmP2U7a7eV1Aqk7XmpsyzrZtVBawNDZSlNjcXvSznaq2TMbztgKKHDcm969Tobog80mAbAE1b6owVBm6mqcwE+gTuGoPorIbkqTnFrJ9diEaXnsFgKo0FE4DibRlJES+aWM109vIbDm5H7+Q7AtKttpv47Ed/58ELFSQV+UlRLttsMMnhmWteBk+aXtmKP04K8VmmePXwnw9A4buf1WTgMPMr9T5tn5N0VnOEMtoNsNX9ZcrQVsyp8xvDWNK7LRIZicbXXep5iVfPko2tDct7ArKGXs/R4O+VSa22Ft6sJihWTsSQk+CYqCrvdt5seotEIuKM8lGc+
+ m8WWkM2a
+ PmFRPYv1W5NvJJlS6UEBfQP/J5KHOMwy/QqHuleF37UA9W1Fabe82ofFCV7BkGorJX0EOH7lVnM7qPPLLvwRScqqJ+A15trbOKBDJXM4xqHDgmpTB2+eQPqVOkfFdYBXphGUDXpiYs+hdZWADLggu50bc1NGFwS+QWneVNFf6XbAL9pPwCuGxSEI+l6xID2NqmGf97gM6dp+nQOeHbu0VWba2elfgM9spRfy/YS2jYw2hDxfN0ZnnOPMUQ4HaXG81P56a24TrNyasFEt5KhJ7denYVwgViTkeKOJMZJECk7OINLDddeQjRKXwpsw0g5CMRo9Tble5o60xB2RmNDxTNguHIMjVz46svoMqGv8LbuIxWC3A98rvfuO9tawfX+c1ozyeBmnRLGWZ+izFfEb5tgPnmpV4qUTY45OLsn2XTEJQ+J9Jbv2mgGLhp9SozdhO2iNnVEmPaA9g/Kea9p++E5qxlSQIg3RRTOs+kP6cqC2+fFnHLMi5Slw8ugdSluRiGelfSOrRsp34+wFotL3487ENpKAJBwbZa5UyEpDLFOHc474anrQwc5d53dQHo6TXztsV+a3F374L8/xZW3dTbUBhv0mzk9FIFVGaBA3S95VnjZdxdbzeF4Dnpkh0IOCP7cxbtgHOa2sJ5c/lVigQTOuk+f7k7WkWWkeXxu2jX4gPNz7jL/ksxYAuWDCcQNKoDwdTsZf1zE/K1OFA9Bx0dvBUeELhAqVK/uww427Tg4fPAhvOEplJqeld8KEb23f+44xH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,21 +99,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 23, 2026 at 8:38=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wrote=
-:
->
-> >
-> > I just chatted with Alexandre off-list, but this path does not store
-> > an eviction shadow like the reclaim path does. That means no refaults
-> > are detected from dropbehind pages, which can fundamentally alter
-> > reclaim decisions, zswap shrinker force, and pressure detection.
->
-> I think it's a zswap shrinker bug even before this patch. When we
-> allocate a new buffer for the writeback request and add to swap cache,
-> we erase the old shadow :(
+On Thu, Jul 23, 2026 at 06:26:11AM -0700, Breno Leitao wrote:
+> Hello Paul,
+> 
+> On Mon, Jul 20, 2026 at 09:21:17PM -0700, Paul E. McKenney wrote:
+> > On Mon, Jul 20, 2026 at 03:39:17PM -0700, Andrew Morton wrote:
+> > > On Mon, 20 Jul 2026 06:23:45 -0700 Breno Leitao <leitao@debian.org> wrote:
+> > > 
+> > > > kmemleak_scan() can run for ages on large debug kernels. It was
+> > > > causing some soft-lockups which I got fixed with commit
+> > > > 3175fcfec8b16baeb ("mm/kmemleak: avoid soft lockup when scanning task
+> > > > stacks") with our beloved cond_resched().
+> > > > 
+> > > > I've got the fix above deployed in the Meta fleet, and now I am seeing:
+> > > > 
+> > > >   INFO: rcu_tasks detected stalls on tasks:
+> > > >     task:kmemleak state:R ... nvcsw: 274/274 holdout: 1 idle_cpu: -1/3
+> > > >      scan_block
+> > > >      scan_gray_list
+> > > >      kmemleak_scan
+> > > > 
+> > > > and, worse, blocks the callers waiting on that grace period. Here a BPF
+> > > > struct_ops map free, which waits via synchronize_rcu_mult(call_rcu,
+> > > > call_rcu_tasks), is stuck long enough to also trip the hung task check:
+> > > > 
+> > > >   INFO: task kworker/...:bpf_map_free_deferred blocked for 122 seconds
+> > > >      __wait_rcu_gp
+> > > >      bpf_struct_ops_map_free
+> > > > 
+> > > > Then I've learned that cond_resched() is not an RCU-tasks quiescent
+> > > > state, so, we need to use stronger primitives.
+> > > > 
+> > > > Use cond_resched_tasks_rcu_qs() at the scan reschedule points so the scan
+> > > > reports an RCU-tasks quiescent state as it proceeds.
+> > > > 
+> > > > Inspired by commit b96285e10aad ("tracing: Have osnoise_main() add a
+> > > > quiescent state for task rcu").
+> > > 
+> > > I'll add
+> > > 
+> > > Fixes: c4b28963fd79 ("mm/kmemleak: rely on rcu for task stack scanning")
+> > > Cc: <stable@vger.kernel.org>
+> > 
+> > Thanks to all three of you!
+> > 
+> > This adds fewer than ten calls to cond_resched_tasks_rcu_qs(), but still
+> > more than doubles the number of such calls outside of the RCU subsystem.
+> > 
+> > Which is most likely just fine, and in any case absolutely should not
+> > get in the way of Breno's patch, which after all solves a real problem
+> > in the here and now.
+> > 
+> > Nevertheless, on the off-chance that over the next few months or years
+> > we start playing cond_resched_tasks_rcu_qs() whack-a-mole, I figured it
+> > would be good to get a head start on writing up alternatives.  An initial
+> > draft may be found here:
+> > 
+> > https://docs.google.com/document/d/1s3fn29SCTYVw9jak4iraNIVQR59Wk5C6_I-_eu-MfQA/edit?usp=sharing
+> > 
+> > TL;DR:  Should we get into a rousing game of whack-a-mole, alternatives
+> > include continuing as we are, making the existing calls to cond_resched()
+> > in turn call cond_resched_tasks_rcu_qs(), decoupling mutex-induced
+> > hung-task warnings from synchronize_rcu_tasks(), and various
+> > not-so-practical alternatives to RCU Tasks for trampoline synchronization.
+> > 
+> > Thoughts?  Especially thoughts on other schemes?
+> 
+> While debugging this issue, I was surprised to discover that cond_resched()
+> doesn't provide RCU-tasks quiescent states. That led me to
+> cond_resched_tasks_rcu_qs(), which is the stronger primitive needed for
+> long-running kernel threads like kmemleak_scan(). Is this the common
+> case for cond_resched()? I got the impression that kmemleak is the
+> extreme side, but, I have no data on this.
 
-... and count it as a refault :| Which is even worse than just silent
-erasure. It throws off all our workingset tracking heuristics,
-inaccurately reporting refault on a really cold page (writeback
-candidate).
+And that discovery did in fact lead you correctly, and hence my
+giving you a Reviewed-by.
+
+> Worth noting that commit 7dadeaa6e851e7 ("sched: Further restrict the
+> preemption modes") continues to narrow PREEMPT_NONE, so the future of
+> cond_resched() itself may be uncertain, no?
+
+Especially given that one of the explicitly stated goals of lazy
+preemption was in fact to eliminate cond_resched().  ;-)
+
+Getting back to your point about kmemleak possibly being extreme, as far
+as I know, none of us have data on how many conversions of cond_resched()
+to cond_resched_tasks_rcu_qs() will be required, or, for that matter,
+how many additions of cond_resched_tasks_rcu_qs() above and beyond
+current cond_resched() instances will be required.
+
+There were concerns raised off-list, so I figured that it was time
+to lay out what we do know, hence the above gdoc.  I very much hope
+that we don't need many more calls to cond_resched_tasks_rcu_qs(), and
+thus that the time I spent writing that turns out to be wasted time.
+But better safe than sorry!
+
+							Thanx, Paul
 
