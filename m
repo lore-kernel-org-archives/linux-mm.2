@@ -4,94 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C04EC531D2
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 14:31:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B472C531D2
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 14:34:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4C5766B00A3; Thu, 23 Jul 2026 10:31:17 -0400 (EDT)
+	id 629CA6B00BB; Thu, 23 Jul 2026 10:34:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 475C16B00AA; Thu, 23 Jul 2026 10:31:17 -0400 (EDT)
+	id 600EF6B00BC; Thu, 23 Jul 2026 10:34:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 364636B00AB; Thu, 23 Jul 2026 10:31:17 -0400 (EDT)
+	id 53F6E6B00BD; Thu, 23 Jul 2026 10:34:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A94116B00A3
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 10:31:16 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2D22AC031C
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 14:31:16 +0000 (UTC)
-X-FDA: 85020278952.11.26158EC
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 53A7C20013
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 14:31:14 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=nms5fz2N;
-	spf=pass (imf13.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 25A2A6B00BB
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 10:34:08 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A204C1A0522
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 14:34:07 +0000 (UTC)
+X-FDA: 85020286134.26.3A92FC2
+Received: from relay.hostedemail.com (unirelay09 [10.200.18.72])
+	by imf08.hostedemail.com (Postfix) with ESMTP id DD38216000E
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 14:34:05 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784817074;
+	s=arc-20220608; t=1784817245;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lL216fIv4vvT2FQ3lahp26Y5N739lhMmfF6ZddEZbhg=;
-	b=f2zrkdP1HOgGWLiQ1OR04HPwLnjctrAOR3HtHSm/NlQeUGUH3FXsv/+rU7MCqX4/cNMTo7
-	xn+hE+hqsb5oSdqXXSQzgAgXMz9/gb/eNqZz8zj4Qv7w9qaCf2AojOmiAkB3OrRoiWkPOX
-	xpNUQykfqg27nTORlvfgCXSI/kvArSI=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=G62WB70PUaQjO1QNjtuHJOMdsuoe1S9HaxOa9yS7sRY=;
+	b=sB2oqdUYAgLxosKiQr1S+7qz4XVwVoqVNLgf0SLllavVScWKuM5R5zSHFkUwFOvka5TpJq
+	dOXc51gpMF/eYH7NQC1Z7Vd5pHc3yeqjRYiiR6VB6CN/+EkmDpMYrp6QuM2ZpPM44IJC26
+	DOmhoPvco28m6CkSb8B0KicBtewe8Ds=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=nms5fz2N;
-	spf=pass (imf13.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	imf08.hostedemail.com;
+	none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784817074;
-	b=y5O7yD2NnXo4HIo8Foda++6k3pAPvcYokjmq8agP4Er7BoHfnY1fmP/u6nfqrsnfTNeu6o
-	Qtg+h2CGvF0l7RLJHBGTbC06R+ia4WdikEknDG7lsdzVrUVE1CddaRrAjk78Livp4N3SCY
-	+o3DTM7OtPUbfnnLcmbhPcO41uWU/NQ=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=lL216fIv4vvT2FQ3lahp26Y5N739lhMmfF6ZddEZbhg=; b=nms5fz2NfDOxV/4tMhCFbx+MqB
-	Z4jlCPZPcl9bhmIuzworAqljm0an8UGg9GTy9zN2QfhZ8teyu59RUI/yYGAW9U3Ajtpu+zl1+Iw0W
-	v+yRZ9ezd6XKewJ8uAiTXOBrDC9SNP97CMQJ9QmdXSiFsgacgzST+FnZgVaMk4JxhAEse2Xaiatxh
-	Gb+5SObAsAXF1/z32gLJE5/gNjGMLeX0YvfClB416e9yWHRjDxE7bOFFImxGwYrPw1vlodxYaBChD
-	BoWJcdfJyB8tEaTIaEkib0UPDNrcPWO0creI8FuXCwrH+DSoBEcNSoZWQkKsH5HMgQHnQWgyeCy/I
-	xSjE7pCQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wmuRY-00000000jhv-3K3E;
-	Thu, 23 Jul 2026 14:30:36 +0000
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Jane Chu <jane.chu@oracle.com>,
-	linux-mm@kvack.org
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Jan Kara <jack@suse.cz>,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <christian@brauner.io>,
-	Jiaqi Yan <jiaqiyan@google.com>,
-	Usama Arif <usama.arif@linux.dev>
-Subject: [PATCH v4 04/14] hugetlb: Mark some function arguments as const
-Date: Thu, 23 Jul 2026 15:30:21 +0100
-Message-ID: <20260723143034.175661-5-willy@infradead.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260723143034.175661-1-willy@infradead.org>
-References: <20260723143034.175661-1-willy@infradead.org>
+	t=1784817245;
+	b=lUqypMWsDHxtItppoxTgg5Edkc+cIUdrrPOnGf+O4DLj43m5qJDoriEmp7nZHDenrSRKMc
+	ho9bHw2iMmnLAiA+L/VM6jubeOsgk+ODSkRvSNqno/pmSkysuBIFJ1jET0G/7Xyx/Qf/vI
+	gXNQKCSyJH/eYV13kYATVqkENpz0JKs=
+Received: from omf12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9876C804F4;
+	Thu, 23 Jul 2026 14:34:00 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf12.hostedemail.com (Postfix) with ESMTPA id 056E717;
+	Thu, 23 Jul 2026 14:33:13 +0000 (UTC)
+Date: Thu, 23 Jul 2026 10:33:36 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Andi Kleen <ak@linux.intel.com>
+Cc: Markus Elfring <Markus.Elfring@web.de>, acpica-devel@lists.linux.dev,
+ bpf@vger.kernel.org, coresight@lists.linaro.org, kvm@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-gpio@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mm@kvack.org, linux-perf-users@vger.kernel.org,
+ linux-pm@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, mptcp@lists.linux.dev,
+ netdev@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+ virtualization@lists.linux.dev, Adrian Hunter <adrian.hunter@intel.com>,
+ Alex Mastro <amastro@fb.com>, Alex Williamson <alex@shazbot.org>, Alexander
+ Shishkin <alexander.shishkin@linux.intel.com>, Alexei Starovoitov
+ <ast@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, Andrew Morton
+ <akpm@linux-foundation.org>, Andrii Nakryiko <andrii@kernel.org>, Ankur
+ Arora <ankur.a.arora@oracle.com>, Arnaldo Carvalho de Melo
+ <acme@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, Bobby Eshleman
+ <bobbyeshleman@meta.com>, Christian =?UTF-8?B?Qm9ybnRyw6RnZXI=?=
+ <borntraeger@linux.ibm.com>, Christophe Leroy <chleroy@kernel.org>,
+ Chun-Tse Shao <ctshao@google.com>, Claudio Imbrenda
+ <imbrenda@linux.ibm.com>, Costa Shulyupin <costa.shul@redhat.com>, Crystal
+ Wood <crwood@redhat.com>, Daniel Borkmann <daniel@iogearbox.net>, Daniel
+ Lezcano <daniel.lezcano@kernel.org>, David Hildenbrand <david@kernel.org>,
+ David Matlack <dmatlack@google.com>, "David S. Miller"
+ <davem@davemloft.net>, Donald Hunter <donald.hunter@gmail.com>, Eduard
+ Zingerman <eddyz87@gmail.com>, Emil Tsalapatis <emil@etsalapatis.com>, Eric
+ Dumazet <edumazet@google.com>, Gabriele Monaco <gmonaco@redhat.com>,
+ Geliang Tang <geliang@kernel.org>, Ian Rogers <irogers@google.com>, Ingo
+ Molnar <mingo@redhat.com>, Ivan Pravdin <ipravdin.official@gmail.com>,
+ Jakub Kicinski <kuba@kernel.org>, James Clark <james.clark@linaro.org>,
+ Janosch Frank <frankja@linux.ibm.com>, Jason Xing
+ <kerneljasonxing@gmail.com>, Jiri Olsa <jolsa@kernel.org>, Joe Damato
+ <joe@dama.to>, John Garry <john.g.garry@oracle.com>, Josh Poimboeuf
+ <jpoimboe@kernel.org>, Kaushlendra Kumar <kaushlendra.kumar@intel.com>,
+ Kent Gibson <warthog618@gmail.com>, Kumar Kartikeya Dwivedi
+ <memxor@gmail.com>, Len Brown <lenb@kernel.org>, Leo Yan
+ <leo.yan@linux.dev>, Lukasz Luba <lukasz.luba@arm.com>, Madhavan Srinivasan
+ <maddy@linux.ibm.com>, Mark Rutland <mark.rutland@arm.com>, Martin KaFai
+ Lau <martin.lau@linux.dev>, Masami Hiramatsu <mhiramat@kernel.org>, Mat
+ Martineau <martineau@kernel.org>, Matthieu Baerts <matttbe@kernel.org>,
+ Michael Ellerman <mpe@ellerman.id.au>, Mike Leach <mike.leach@arm.com>,
+ Mina Almasry <almasrymina@google.com>, Mykyta Yatsenko <yatsenko@meta.com>,
+ Nam Cao <namcao@linutronix.de>, Namhyung Kim <namhyung@kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Paolo Abeni <pabeni@redhat.com>, Paolo
+ Bonzini <pbonzini@redhat.com>, Pawel Chmielewski
+ <pawel.chmielewski@intel.com>, Peter Zijlstra <peterz@infradead.org>,
+ Quentin Monnet <qmo@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Raghavendra Rao Ananta <rananta@google.com>, Saket Dumbre
+ <saket.dumbre@intel.com>, Shuah Khan <shuah@kernel.org>, Simon Horman
+ <horms@kernel.org>, Song Liu <song@kernel.org>, Srinivas Pandruvada
+ <srinivas.pandruvada@linux.intel.com>, Stanislav Fomichev
+ <sdf@fomichev.me>, Stefano Garzarella <sgarzare@redhat.com>, Suzuki K
+ Poulose <suzuki.poulose@arm.com>, Swapnil Sapkal <swapnil.sapkal@amd.com>,
+ Thomas =?UTF-8?B?V2Vpw59zY2h1aA==?= <linux@weissschuh.net>, Tomas Glozar
+ <tglozar@redhat.com>, Vipin Sharma <vipinsh@google.com>, Wander Lairson
+ Costa <wander@redhat.com>, Will Deacon <will@kernel.org>, Willem de Bruijn
+ <willemdebruijn.kernel@gmail.com>, Willy Tarreau <w@1wt.eu>, Yonghong Song
+ <yonghong.song@linux.dev>, Zhang Chujun <zhangchujun@cmss.chinamobile.com>,
+ Zhang Rui <rui.zhang@intel.com>, LKML <linux-kernel@vger.kernel.org>,
+ kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] tools: Use fputc() calls in some functions
+Message-ID: <20260723103336.6593118b@gandalf.local.home>
+In-Reply-To: <amIbVOIsOeZgcBZF@tassilo>
+References: <48f2d61f-d468-49b7-881e-f00777db073f@web.de>
+	<amIbVOIsOeZgcBZF@tassilo>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 53A7C20013
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX1+f7u83oRUulG9XwKl2P+q3kHYGrSLtLJ0=
+X-HE-Meta: U2FsdGVkX19mSJrQ4yCgpa5T21s3DOyupJQtrDkbhb4BdFNkpGoXwq/ibfVmVhXFNmqX8uwKJldaBwfXYwLpcFxk6WAoDZEXT/gOP4/87ir9dCPM++yAwBRZudspVL4fEcLJ8BQR+IIioDSpRN3BUfGiJrTRVS7/uta9AmYBpm0bV/zvbFblUCnE1I0vyxTsAPHkh0LX+JrCxO4Fb8yldd7jKVRG3hDwMmD/y539S+5vq64BAxIp9RMpMFz5panzgBl/T6DnlC5NF2X6cBflLJ9t5of1YaVukjrextWC1Mkdf4ypcuVGdK7IR4N2F6BEhF3E+awXwxrLnbww9pI6GrXPJih6633rwSWNy/mC4FmaOinac79jHA==
 X-Rspam-User: 
-X-Stat-Signature: gpe9869nxpxrzs8kkzfts1jdsu69whg5
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1784817074-622984
-X-HE-Meta: U2FsdGVkX1+Z9YyHBVdJII/6Q1NTvDt9cWsRXcI3eAOTejIvlvLWcwiKiZWJk+HmsUJdegR7V89WEJD+7k2g+tFQ2AKFcfIC6MyX+X7Ftua72O7Z2QIqclrGg6YcIs7zG6cACME5jg+/ihnBBJgu33vsw6XETiat9RnjiNIEKV+zZIBrgLe4eM0ADkPpa1vQD2tVQAUKyH1yGeS61x6C1wWUnLJRVAQo/55RzZVcckvLfmNWQLLNI5UFA+x3bo89C/piIzwNpdYDAEMjDSaYV69FiDBGEuaLnviRXok5H1A2mjVf2hoKtQ2UidhrLyo4JVoQEO2kzvn0cF+1eyPb5ts9icwqjojfEBwe9gAnzuHOue7DSomz8oPLrtRXcexHt3HupvVNXDEBjvzMd9oQGqcn7k04/NhYX70eqiO8+Nm7zqD7LN/VeBqOoMheQ7RHoxdwKrfh9SkbA+geXKZJpqGA+OL3PnkkshHUHHV4API9tLWomREflx0ydYPSOa/O52A8yRuBiyZ0pRNcmSR3PBy/HCUokRNeuTraLKJAB5Sg+sLDQyHz1Wu9Rfy+SsI1JNNjMvIL15N2jH2uotsgiDve2b8FqCtcPris5V6VyozZjKkc4k68sBgQLB6bPc+1eTP24eEptRdXWLJVg679qraRYvhNq8uw69lLAZCpbe5FuZMuG8y2wgDN6oAlbGXgL0SqDjIHPOuJNaviQwM0AzaZxvh2RKe25Z/4g7vNoor99TChiSoC/Y7qCzBwyzKtnK6kn0TZodbLiw9cMXCWKUPR4TlqekZdTu4u8G5DK+k7o22X6iEaLrxs/RKYmV32/1aP122MfgeUS3wB0seTneDyWS++Wliw3osMNi5kMYNtCXUyVDWFNc+G2sTBN6qlflN1fXpS3bKkvvJOmbpQeqJ/gnL5UvzERiDBsRPKm9spkwkl7eujdxaMB3u3T47OBf9VwRdJuJsKLwlByAG
- 5i43Uw09
- T82FvGmT0EgNMMwOhuF9GNZibcZcXCwqi8Cv/ruyCB1cYYELFg4fp1Evsk7sY1ajvI4jDmWD/PFxZo6jzNwht/fRGsAEsYM7CdC7qOmvjNI/mK9lFEDaK/Jd4VfwQjO+V50zP9jW+LUVwlFWatKQVq0i0YoL3fILKvNC7HcNe0Yd1X4XHu7rocFaw1b119F8V+byRMc+kCdGZCccXESbDwt+ueJy21Od0uAD4FymQsjnWAq3P894BRzbnFpe0I5Sp26r5QcX7SoOn8xc6QzgKSN5GUmH7ikF0BeSba3qo9eiwo3HAodIZRuzyZYtobufWgWNBE1VXwNmvuzE=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: DD38216000E
+X-HE-Tag-Orig: 1784817193-538669
+X-Stat-Signature: ncsjbmpq4hct7p4sj4iefr1r53tacukj
+X-HE-Tag: 1784817245-281810
+X-HE-Meta: U2FsdGVkX1+aGFQADqXBhQcA3Qj0VIzFq/yxCpOO5DcOaRr8Y+m688PGcfGUMzhlwZLSRDPll3tAnJPJbE6+9OA+xyFXPRicqAzPQBXS16qnXMufKgdOujfc/tV3TNqhtvHsOluRst9E1easIInLQOTKmpL6U3EVHhzxbRyXgWSFIp4sBGHrrCbUs3uwE279BlrlE/f6WBlWzJZT3/HGyiMA3qxjLT1qr1PZkfOrGFIQRYAHA/l3pRzs9hupKnfgJ4wwRScVi1SEx2RDeNgYf3jP0JncQshWlW0DtUfiJYPqec51R+KUuRRjBGLRGmLpIZ8qBTcza/tjhWxLOoY3JA1Hr1FdRPXM8Y5zTwxoRN2kzgdbGrbvzFsi9RHOVoWqyPCpBL3Zpr6dOA2cbXY7rkmne8mnF0vNvstKZNedR+L05g+34sC4vPOPF5UGrAo3ktuUKRABZvBm4Wo15kpTBY3bw8yKMUfPtoyT67z2II2HWq2/ETBVHb0EGM4DHTM0UUiLcEZQAikdQjCYppR1YRCuNQ4/PRcABl9lO7MkYcuLGQhtJ+p9cdR5ITwtCGkVCN3R6KSzcB/sZgFQKSenA7e9hFURX5cqn7A77blfF7DVhxC+beLpw7gY/h1mFSs/EtOFXixYlHtogaiPo9gWTOsCrswlMekvQv6QzW4TW95P1e2zkVB1P4uENDgEiZi1zqEg8bIzRj+/IF8QChel/o8gntSNr8CPQResgfcnX0PDFy396cEU4quYPG4XoMt3D20d3Rc6Fnwup+xtSbjkVCVa/qvJvbompLJSZ+XNZmyIR0R76KQh5tOoQUNn9o3oUdV9bJzwVw+B/sNwahys+Lz3l9BgYu70Zw86LL6y2EgESc5gCCeJsxvMnfmrUdgAcMgf8W8erVQVqJlQg/4mKZSFTjIfTEkBH9CmXyCCFDUH6IJ6WUDw/cqKpJAAmfrboT9zeKvP+dNA7lmMQ2c
+ C+MZyo0p
+ 3XAUGhtIofBCNGZkK2GCtOf+5d44GNbocqFSVwSQtHJnbLMSw00tfmb7qcAt4mW6Ec79XfdyIVBpNYTeUN4V8AzoRdnxq72KjuKhyydxyeIr3oxg9llvR9m6+NpALcIAE4Yb7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,110 +139,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-These functions do not modify their folio argument, so we can mark them
-as being const which will allow for some minor optimisations and let us
-mark other function arguments as being const in the future.
+On Thu, 23 Jul 2026 06:47:00 -0700
+Andi Kleen <ak@linux.intel.com> wrote:
 
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Acked-by: Usama Arif <usama.arif@linux.dev>
----
- include/linux/hugetlb.h | 19 +++++++++----------
- mm/hugetlb.c            |  2 +-
- 2 files changed, 10 insertions(+), 11 deletions(-)
+> > The source code was transformed by using the Coccinelle software.  
+> 
+> gcc already does this transformation automatically.
 
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index 2abaf99321e9..18661a7cdb37 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -165,7 +165,7 @@ bool hugetlbfs_pagecache_present(struct hstate *h,
- 				 struct vm_area_struct *vma,
- 				 unsigned long address);
- 
--struct address_space *hugetlb_folio_mapping_lock_write(struct folio *folio);
-+struct address_space *hugetlb_folio_mapping_lock_write(const struct folio *folio);
- 
- extern int movable_gigantic_pages __read_mostly;
- extern int sysctl_hugetlb_shm_group __read_mostly;
-@@ -292,8 +292,7 @@ static inline unsigned long hugetlb_total_pages(void)
- 	return 0;
- }
- 
--static inline struct address_space *hugetlb_folio_mapping_lock_write(
--							struct folio *folio)
-+static inline struct address_space *hugetlb_folio_mapping_lock_write(const struct folio *folio)
- {
- 	return NULL;
- }
-@@ -595,8 +594,8 @@ enum hugetlb_page_flags {
- #ifdef CONFIG_HUGETLB_PAGE
- #define TESTHPAGEFLAG(uname, flname)				\
- static __always_inline						\
--bool folio_test_hugetlb_##flname(struct folio *folio)		\
--	{	void *private = &folio->private;		\
-+bool folio_test_hugetlb_##flname(const struct folio *folio)	\
-+	{	const void *private = &folio->private;		\
- 		return test_bit(HPG_##flname, private);		\
- 	}
- 
-@@ -616,7 +615,7 @@ void folio_clear_hugetlb_##flname(struct folio *folio)		\
- #else
- #define TESTHPAGEFLAG(uname, flname)				\
- static inline bool						\
--folio_test_hugetlb_##flname(struct folio *folio)		\
-+folio_test_hugetlb_##flname(const struct folio *folio)		\
- 	{ return 0; }
- 
- #define SETHPAGEFLAG(uname, flname)				\
-@@ -727,7 +726,7 @@ static inline struct hugepage_subpool *subpool_inode(struct inode *inode)
- 	return HUGETLBFS_SB(inode->i_sb)->spool;
- }
- 
--static inline struct hugepage_subpool *hugetlb_folio_subpool(struct folio *folio)
-+static inline struct hugepage_subpool *hugetlb_folio_subpool(const struct folio *folio)
- {
- 	return folio->_hugetlb_subpool;
- }
-@@ -857,7 +856,7 @@ static inline bool arch_has_huge_bootmem_alloc(void)
- }
- #endif
- 
--static inline struct hstate *folio_hstate(struct folio *folio)
-+static inline struct hstate *folio_hstate(const struct folio *folio)
- {
- 	VM_BUG_ON_FOLIO(!folio_test_hugetlb(folio), folio);
- 	return size_to_hstate(folio_size(folio));
-@@ -1088,7 +1087,7 @@ static inline unsigned long huge_page_mask_align(struct file *file)
- 	return 0;
- }
- 
--static inline struct hugepage_subpool *hugetlb_folio_subpool(struct folio *folio)
-+static inline struct hugepage_subpool *hugetlb_folio_subpool(const struct folio *folio)
- {
- 	return NULL;
- }
-@@ -1157,7 +1156,7 @@ static inline struct hstate *hstate_vma(struct vm_area_struct *vma)
- 	return NULL;
- }
- 
--static inline struct hstate *folio_hstate(struct folio *folio)
-+static inline struct hstate *folio_hstate(const struct folio *folio)
- {
- 	return NULL;
- }
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 571212b80835..cc8d98399913 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -1775,7 +1775,7 @@ void init_new_hugetlb_folio(struct folio *folio)
-  * stable.  Due to locking order, we can only trylock_write.  If we can
-  * not get the lock, simply return NULL to caller.
-  */
--struct address_space *hugetlb_folio_mapping_lock_write(struct folio *folio)
-+struct address_space *hugetlb_folio_mapping_lock_write(const struct folio *folio)
- {
- 	struct address_space *mapping = folio_mapping(folio);
- 
--- 
-2.47.3
+Yep, I showed this in my talk[1] that looked at what printf("Hello World!")
+does. Doing an objdump of:
 
+#include <stdio.h>
+
+int main(void) {
+	printf("Hello World!\n");
+	return 0;
+}
+
+has:
+
+0000000000001139 <main>:
+    1139:       55                      push   %rbp
+    113a:       48 89 e5                mov    %rsp,%rbp
+    113d:       48 8d 05 c0 0e 00 00    lea    0xec0(%rip),%rax        # 2004 <_IO_stdin_used+0x4>
+    1144:       48 89 c7                mov    %rax,%rdi
+    1147:       e8 e4 fe ff ff          call   1030 <puts@plt>  <<<--- puts and not printf
+    114c:       b8 00 00 00 00          mov    $0x0,%eax
+    1151:       5d                      pop    %rbp
+    1152:       c3                      ret
+
+-- Steve
+
+[1] https://www.youtube.com/watch?v=JRyrhsx-L5Y
 
