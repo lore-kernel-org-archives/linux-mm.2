@@ -4,128 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20AB7C531D4
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 14:18:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A606C531D2
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 14:19:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C5EF6B007B; Thu, 23 Jul 2026 10:18:12 -0400 (EDT)
+	id 5732B6B008A; Thu, 23 Jul 2026 10:19:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 19D686B0088; Thu, 23 Jul 2026 10:18:12 -0400 (EDT)
+	id 5228F6B008C; Thu, 23 Jul 2026 10:19:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0669C6B008A; Thu, 23 Jul 2026 10:18:12 -0400 (EDT)
+	id 3EB616B0092; Thu, 23 Jul 2026 10:19:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C99CA6B007B
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 10:18:11 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5416FC0523
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 14:18:11 +0000 (UTC)
-X-FDA: 85020245982.25.F8E73C4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 9560AC000D
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 14:18:09 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 019406B008A
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 10:19:03 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6FC16C0532
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 14:19:03 +0000 (UTC)
+X-FDA: 85020248166.21.85ACA01
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id CC38940010
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 14:19:01 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
 	dkim=none;
-	spf=pass (imf22.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784816289;
+	s=arc-20220608; t=1784816341;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UfiTlkqUJL8snJZ5Dsl8oDcXyp4LYeNIIi/q/akZuTw=;
-	b=VNUzR5hOY0gvGQsnb+QJOOHvQTDpGPcdgQFSfDsozsBn9xPthe5o+rlPsTywlrbCcTDIGE
-	eOHg2S8sdZMgrSJ0JDtY8crjlKvHKMMnKTBSFDPn0q579NCmxXv52fXkV8NFVMblt8saam
-	L9qP8/lpXC67XTRTLpRuOGzIc7uda+8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784816289;
-	b=Di1OevPedUPztXTHUqRvDPCn0nphFfYSOfZITSh/TcEBoPOq5hy5Az8zouoWN36YDk69cA
-	tsPcj8Cg5yUEwfwE5oSXG2zs4ELFDd1/Dm0ikd1v78odwL+a2DV9dXqB9LuhKw4Vf8bt8g
-	L7YjuK3QM6R0VRAvcCMvCL1aFqDhosM=
+	bh=WSN0r+iT6SfaE/qckT8h1gzZOTA2ZajGVSqgCAGFe7M=;
+	b=ANjhFMLB/NcopuEAY9dRZj3RlcX0qHpUF3ybH8sckFULlEpK10xtv78a3bjv7jqKBWyzj0
+	XDBHeD0jVkKHez9LpgIEwf0VhUDYrYlsuewYSVzCMAVmefdiqukW/8foJ9YhYYPkXmE0pw
+	pNbZyOwFYWhAxrR0kaVmAp90Byv7QAA=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
+	imf17.hostedemail.com;
 	dkim=none;
-	spf=pass (imf22.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784816341;
+	b=ib7KtRuBWwSO70er9sPiOJgHCh+XYoDoNUTc8miKSrWaPU4hLdr7nrYc5oX8/XKZJAx+Wu
+	hdHGNmHeKZna+wWTd8/ottsLlOAuBmgfLWfDx36NQWW1DQg5pOSxiEWJWZJusroSD6IHUQ
+	TZnvXTclmHEEwjQFQFl7sh8pXaIqKDw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9B29E41FC0;
-	Thu, 23 Jul 2026 14:18:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C0131F000E9;
-	Thu, 23 Jul 2026 14:18:05 +0000 (UTC)
-Message-ID: <00bb7fd0-998b-49f0-9941-cc4d796a8751@kernel.org>
-Date: Thu, 23 Jul 2026 16:17:51 +0200
+	by tor.source.kernel.org (Postfix) with ESMTP id 4F9D9600AD;
+	Thu, 23 Jul 2026 14:19:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5040D1F000E9;
+	Thu, 23 Jul 2026 14:18:54 +0000 (UTC)
+Date: Thu, 23 Jul 2026 15:18:24 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "Borah, Chaitanya Kumar" <chaitanya.kumar.borah@intel.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	Uladzislau Rezki <urezki@gmail.com>, Toshi Kani <toshi.kani@hpe.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Dev Jain <dev.jain@arm.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, David Carlier <devnexen@gmail.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	"Denis V. Lunev" <den@virtuozzo.com>, stable@vger.kernel.org, 
+	"intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>, 
+	"intel-xe@lists.freedesktop.org" <intel-xe@lists.freedesktop.org>
+Subject: Re: [REGRESSION]: [PATCH mm-hotfixes v5 3/5] x86/mm/pat: acquire
+ init_mm read lock on attribute change to avoid UAF
+Message-ID: <amIEC1qDW3kfeuHd@lucifer>
+References: <20260717-series-vmap-race-fix-v5-0-606a0ac6d3e5@kernel.org>
+ <20260717-series-vmap-race-fix-v5-3-606a0ac6d3e5@kernel.org>
+ <80993b70-352f-4069-84c7-39a04c061e98@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/4] mm: page_alloc: fix non-movable reclaim storm in
- defrag_mode
-Content-Language: en-US
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Sasha Levin <sashal@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
- Zi Yan <ziy@nvidia.com>, David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>,
- Mike Rapoport <rppt@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260722150006.3848560-1-hannes@cmpxchg.org>
- <20260722150006.3848560-5-hannes@cmpxchg.org>
- <20260722162207.31a2c491ffaf36d1e8948c14@linux-foundation.org>
- <67e1219e-9d47-4a30-a8dd-fdcf03229f58@kernel.org>
- <amIgT-l7PExKVJlW@cmpxchg.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <amIgT-l7PExKVJlW@cmpxchg.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 9560AC000D
-X-Stat-Signature: aofzekpaahakjpj9r34qxfowhj17fe79
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <80993b70-352f-4069-84c7-39a04c061e98@intel.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: CC38940010
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1784816289-696858
-X-HE-Meta: U2FsdGVkX18ECecPkRUK5n9SfiTTMO3Q4F29W0wR7wJyaKfWQvP7D7gKEzTFc4/ra0s577/e/gSwLPYvqRzO9PkbeFXjfrqJdippPm78ikU4pVszKJNI9/78kH5PrMk59/EN/gEf7fHc+oeGQJ+XRCmSi4NIsKc/QuvAJtqhSwgf46ZqtVXEdcarWJt+Cm9J5sW0mCll/Vr5MiQCsJxrWCOfPom5y1S6zfCRia2SiO5FYAixdrTXd9QG45lQ9XOnHvPFMelxlHAFPgTUDSyBtpcUrckNdECAq3ue+bXD+SlpnCJ0IZC5WuIdWXTpdH6PMy8331pdV+WKBwL7zQvyM4SnK2X03e9xqXaoPEqf/RDhrx5ija0Fbo5xgrsNs/c7M0k3c8zzgvfTrfsOzD/ENV8w20mfFauuLjWO1haqtGpYEvfMqj4FbTddhClY8P2jYViy5BIn2OdsbBaJUWxaFHouprWi7GqkqGKDef2ePE3t33bYl31uX44l0ZQyqpD/OofeNRaYlB4DF8jFoq4tifkxnqit1c33szz0cMfLk/9zcw2FHcy7Fcf1mMJLdzR9I9ms0Mek7qRblW8xn5NlDkStuVzCdHlFCoe2QdP9irv6/oY5zwN3FP4wtLkII8/WOdf/LgV7pZzAhmxWHcaGNmN9wAHYjS3L781y6u5gPhbW7Ne9Xl4l+bcJ7Crqxf7mPiWyvaZnBOuZLpV7hPu2zHy+ZUfmr6uwsGq2SGHaOTl9YT6hAJTiR9yztzTMLlfiyMFr+blWdPk4pWK0F+fj1feBwqPv+KFcNDp61z0EDbw4rpRelfmSTR2OkPU9FCAh/PEiPss+99tIrSSqKQHm1L2ifgylNHBHGsu7VjGh1LWByP6aXG2Uu7QDBHyZog70HSgsfkVa4t29RAt4Pl0BbOS7Tg0UsxLnhOuc3E1GwUXWtpnfvRlfVYnF0MddhYVXJard+KYKUyJMuzPaRM2
- KS3tUq/k
- Jecyi1bTaAZgGdK2fK3hWq/2zNbOHYa8fKAOS7FB+J2LEM1TPlAKZjTxq88UgYv0z4BFjSxlTfHgFc+LmTEryOCoB1bfsFFLDuYEAnXTA2g+bzD8ZhFmr/M00ttJ+va3WWO/bFGPX1v+X9ytowvQsoHz8Mx4l/mHjXlSvuvsNJuF9Pg7/uau+EYW3zbiWjG1kR8A7QJovACNrPrlFzFK1al51oVaEqci3L0ROoe0tDOjA4nkjsz1oZlrazb9dsNjCyxpbiPyHO5hOJ1YJ1Z/VGg6hY658ymvijfTl
+X-Stat-Signature: hhjzckibq53wgiuyhxeemc7njj5h6z4f
+X-HE-Tag: 1784816341-552809
+X-HE-Meta: U2FsdGVkX18Yv/qBIS1fitYcwfaKtGEh68996qBTZa27o9kXvZjB0Ak7IupVEFjtW03/hNxQbN0JY1INXr7hClgdcd4iWaecyb/2Y4+rRVwxO2PKB+WfE/E1tKVUidkZuM45goI+us00ewtaYwY8MpMMJ+3VqH47hN4dfZhXaZNAhdfd3jcJvL5A8gxVuclXfbB2vvIUTRoggD1CaLXf4y/ZYz58y53xZ9E5vDBsVuVYUgiCIasPp+LEq2bQj6b18KLP3Ljlixb/VR/nF89DV/ThGC34S+/aKDJUO/zxDPmB2CaneUWZdqnxJ9gKWqqAG8v2jO1b2318MM4unpEU1GMCa4SRcWVHzJPFPSRcijxuySllfwm99yJ70c5dSYXWXYtBTKqomiFTo39ADIuTjP6fpZp5HtEq84xmWYLIiihANLbIf3r4I242HmPAUGdsRA/Evqr6iqWFlIMoLSSyh+546Xa9yYbECUHOCnYoRJBDSPAckg64JYx9/Kp1uZz6OwZGMofVyErz2be7OaBNu1/MBcFKJxqevGgoleHy2KQ99Uq9F6G3Gd7mss8IssYavh1x9vYpTSX5/3mNrbPbiCMTYeMWCVkfT4LLU3jeSQPqi28jUSW8xkkWVSA33zsF9j05UnJ6Y6q3BfuiGELm0dLn1QOkCA++2iy5t+Q8J8OnYvEhztfV9NJTUWJancwq4L8KtQMUCcoJyeHKrEgJg6JCxn7lWF/FmXqP5KnQyAXeHnuT0LAZpoVFSzdVcjtcPAa96X2WNJLLwMlWbf80o/HjP6loKT6H7SuioF66wBc6hYYaBtDEgdsBAHvBus1xktCp8yrWIYiXzMgZu7NhBePZxD7gEWYvlqEpi/xuYm/ziAvO5FYvpfm5tl45I4J33QyW2apsfS0gtXypL8xLPrz4PhZXbA9fa1eZ59P6fXj3BXGsvJz6uR/FHpUMwRtj0nKh4x8BVO9ZoxVunI1
+ 0I0eIUTI
+ JuJbzHHGLtcrMwsaraT2HZ+ligA1pePz2VDzNSW22sjkQLv5/GtS9t3jLBWH1TTgxCOjjG1vdHW8EuRXP/YeiSPrGk6avYJyfO+jXOeqQKJOMe4yYygkL1mMKI6bXwfOaRpfPW6Wefhi9rp1EN2ibQOvPr+GOP1xDsQdFgQmvQ12yTVHzVdn2TETv26CN2HqnZBfew2AP7CSFV0mqTqPdDC9cOAQQhNmPJb33sYpho1l12rpDZXGyrluk041J7R8iUAa56RaGyRBl59gAYEIx7hTE0M5YT8cBi29fkWAvVxlFGmRCLtBX+Fp29xQhVQx6hKv9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,66 +96,227 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/23/26 16:08, Johannes Weiner wrote:
-> On Thu, Jul 23, 2026 at 12:22:58PM +0200, Vlastimil Babka (SUSE) wrote:
->> + Greg and Sasha
->> 
->> On 7/23/26 01:22, Andrew Morton wrote:
->> > On Wed, 22 Jul 2026 10:56:47 -0400 Johannes Weiner <hannes@cmpxchg.org> wrote:
->> > 
->> >> 
->> >> Fixes: e3aa7df331bc ("mm: page_alloc: defrag_mode")
->> >> Cc: <stable@vger.kernel.org>
->> >> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
->> > 
->> > This cc:stable fix doesn't apply to current mainline because the
->> > preceding non-cc:stable patches get in the way.
->> > 
->> > This means that the -stable maintainers will have to ask you to redo
->> > the fix to make it backportable.  And you'll then be preparing a patch
->> > which hasn't had standalone testing in mainline.  All very cumbersome.
->> 
->> Or they backport the whole series, even if only 4/4 has a Fixes: tag.
->> 
->> > So is it practical to make the fix come first, as a cc:stable hotfix so
->> > we can upstream the other patches in the next merge window?
->> 
->> I think it can't come first, it's simply a complex fix that can't be done in
->> a single patch that would be reviewable. 3/4 is certainly a strict
->> dependency. I'm not sure if 2/4 as well. Perhaps 2/4 does deserve a Fixes:
->> tag and Cc: stable on its own, as it also fixes a defrag_mode deficiency.
-> 
-> Yes. Only 1/4 could be argued away.
-> 
-> 2/4 actually came after 4/4 during development. Without it, compaction
-> cannot make sufficient forward progress on the promoted non-movable
-> requests. So it is a hard functional requirement.
+On Thu, Jul 23, 2026 at 12:00:42PM +0530, Borah, Chaitanya Kumar wrote:
+> Hello Lorenzo,
+>
+> On 7/17/2026 11:00 PM, Lorenzo Stoakes (ARM) wrote:
+> > A previous commit protected us against races between ptdump and CPA
+> > collapse, however one still exists between attribute changes and collapse
+> > as reported by Denis V. Lunev (linked).
+> >
+> > When an attribute change arises, a lockless page table walker obtains a PTE
+> > entry, which is later written to via set_pte_atomic():
+> >
+> > ...
+> > -> change_page_attr_set_clr()
+> > -> __change_page_attr_set_clr()
+> > -> __change_page_attr()
+> > 	-> _lookup_address_cpa()
+> > 	-> lookup_address_in_pgd_attr()
+> > 	-> [ lockless page table walker ]
+> > -> set_pte_atomic()
+> >
+> > There is nothing preventing a concurrent CPA collapse which can free the
+> > PTE that was retrieved here, resulting in a use-after-free.
+> >
+> > With the mmap write lock taken on init_mm over CPA collapse, we can now
+> > resolve this race by acquiring an mmap read lock on init_mm over
+> > __change_page_attr_set_clr().
+> >
+> > This locks across the whole operation over which the walk and the PTE entry
+> > write occurs, solving the race.
+> >
+> > It is safe to do this here, as no spinlocks are held upon entry to
+> > __change_page_attr_set_clr().
+> >
+> > The CPA_COLLAPSE flag is only set by set_memory_rox(), which exclusively
+> > operates upon vmalloc ranges, and on x86 only within the module mapping
+> > space.
+> >
+> > This is important, because some callers directly invoke
+> > __change_page_attr_set_clr(), bypassing this lock. However, none of these
+> > operate within the module mapping space.
+> >
+> > * cpa_process_alias() - a recursive helper called by
+> >    __change_page_attr_set_clr().
+> > * __set_memory_enc_pgtable() - operates on the direct mapping and (via
+> >    __vmbus_establish_gpadl()) the vmalloc mapping space.
+> > * __set_pages_[n]p() - called by set_direct_map_[invalid, default,
+> >    valid]_noflush(), __kernel_map_pages() - operates on the direct map.
+> > * kernel_[un]map_pages_in_pgd() - operates on EFI ranges.
+> >
+> > This work is based upon Denis V. Lunev's excellent analysis of the bug with
+> > gratitude.
+> >
+>
+> This seems to be causing regression in our linux-next CI [1] on some of the
+> older machines (fi-elk-e7500, fi-ilk-650, fi-pnv-d510)
 
-So that's the tricky part then. If it's a hard functional requirement for
-4/4 and yet leaving it out results in no conflicts when applying 3/4 and 4/4
-(as it indeed seems so, based on my local test), then it's quite possible
-stable folks will figure out themselves they need 3/4 as a stable-dep-off:
-4/4 but won't backport 2/4, unless you act quickly enough on their mails.
+Thanks for the report!
 
-> Whether it deserves an independent Fixes: depends on how many
-> GFP_KERNEL pageblock_order requests we have :-) I'm guessing not many.
+A small note - it'd be useful for you to clearly point
+out the revision of next to make our life a bit easier :)
 
-I don't know how else to indicate it though. It's kind of a co-fix with 4/4?
+I can see from below in the stack and the URI it's next-20260720. There was a
+broken merge in linux-next for a while but it's fixed by 20260720 so that's not
+it.
 
->> > (An alternative would be to put cc:stable on all four patches.  That's
->> > a bit abusive but we do it rarely).
->> 
->> I don't think it's necessary, the stable team are quite capable of figuring
->> out the deps and backporting them with a Stable-dep-off: tag. IIRC the
->> "fake" tagging is discouraged? Maybe they can clarify.
-> 
-> Yes, I *think* it should work with tagging just 4/4.
-> 
-> It won't apply cleanly or build without 3/4. So I'd assume if that
-> dependency is lost, the automated backport will bounce and I can send
-> a backport series by hand.
+>
+> <4> [196.236867] ======================================================
+> <4> [196.236878] WARNING: possible circular locking dependency detected
+> <4> [196.236890] 7.2.0-rc4-next-20260720-next-20260720-g3fe08b9796f3+ #1
+> Tainted: G S   U       L
+> <4> [196.236906] ------------------------------------------------------
+> <4> [196.236916] core_hotunplug/5687 is trying to acquire lock:
+> <4> [196.236927] ffffffff839048b8 ((init_mm).mmap_lock){++++}-{4:4}, at:
+> change_page_attr_set_clr+0x10a/0x220
 
-The way I see if often happen is that Greg sends a mail that it bounced and
-soon after Sasha replies with fixed up version/series. Which could very
-easily be 3/4 + 4/4 without 2/4.
+This is the result of my change indeed.
+
+> <4> [196.236958]
+> but task is already holding lock:
+> <4> [196.236969] ffff88810c852238 (&vm->mutex){+.+.}-{4:4}, at:
+
+So this is a lock dependency issue as this is obviously an entirely
+different lock.
+
+> i915_ggtt_driver_release+0xab/0x260 [i915]
+> <4> [196.237572]
+> which lock already depends on the new lock.
+> <4> [196.237585]
+> the existing dependency chain (in reverse order) is:
+> <4> [196.237597]
+> -> #2 (&vm->mutex){+.+.}-{4:4}:
+> <4> [196.237617]        i915_gem_shrinker_taints_mutex+0x35/0x70 [i915]
+> <4> [196.238267]        i915_address_space_init+0x226/0x2a0 [i915]
+> <4> [196.238961]        i915_ggtt_init_hw+0x2c/0x140 [i915]
+> <4> [196.239638]        i915_driver_hw_probe+0x208/0x380 [i915]
+> <4> [196.240260]        i915_driver_probe+0x113/0x5b0 [i915]
+> <4> [196.240883]        i915_pci_probe+0xe0/0x1d0 [i915]
+
+(another small note - running scripts/decode_stacktrace.sh would be hugely
+useful as these offsets aren't so useful unless I have the exact kernel
+binary you have with debug symbols :)
+
+>
+> Detailed log can be seen found in [2]
+>
+> We confirmed that reverting the patch solves the issue.
+>
+> Could you please check why the patch causes this regression and provide
+> a fix if necessary?
+>
+> Regards
+> Chaitanya
+>
+> [1] https://intel-gfx-ci.01.org/tree/linux-next/combined-alt.html?
+> [2] https://intel-gfx-ci.01.org/tree/linux-next/next-20260720/fi-ilk-650/igt@core_hotunplug@unbind-rebind.html
+
+<snip>
+
+So looking into it we have deadlock potential here:
+
+1. fs_reclaim -> &vm->mutex
+
+< device init >
+-> i915_address_space_init()
+-> ...
+-> i915_gem_shrinker_taints_mutex()
+(mark the dependency in lockdep)
+
+This is presumably because the shrinker needs to lock this mutex.
+
+2. init_mm -> fs_reclaim
+
+This was introduced by my patch and there we have:
+
+< caller needs to set memory, e.g. BPF >
+-> set_memory_rox()
+-> change_page_attr_set_clr()
+-> [acquire init_mm lock] <-- my change
+-> __change_page_attr_set_clr()
+-> __change_page_attr()
+-> split_large_page()
+-> pte_alloc_one_kernel()
+[ allocation ]
+< trigger direct reclaim >
+
+Thus init_mm -> fs_reclaim becasue in split_large_page() there's:
+
+	if (!debug_pagealloc_enabled())
+		spin_unlock(&cpa_lock);
+	pte = pte_alloc_one_kernel(&init_mm); <-- allocate
+	if (!debug_pagealloc_enabled())
+		spin_lock(&cpa_lock);
+	if (!pte)
+		return -ENOMEM;
+
+Note the CPA lock dance, will come back to that as that's how to solve this
+issue...
+
+3. &vm->mutex -> init_mm
+
+< device remove >
+-> i915_ggtt_driver_release()
+-> ggtt_cleanup_hw()
+-> [acquire &vm->mutex lock]
+-> ggtt->vm.cleanup == gmch_ggtt_remove()
+-> intel_gmch_remove()
+-> intel_gtt_teardown_scratch_page()
+-> set_pages_wb()
+-> set_memory_wb()
+-> _set_memory_wb()
+-> change_page_attr_clear()
+-> change_page_attr_set_clr()
+-> [acquire init_mm lock] <-- my change
+
+This &vm->mutex -> init_mm
+
+And so there is a circular dependency:
+
+ 	&vm->mutex ---> init_mm
+	      ^            |
+               \           v
+                \--- fs_reclaim
+
+(lockdep should totally do diagrams like this :)
+
+In reality to hit this you'd need something to be doing direct reclaim on
+allocating a split page table during a CPA operation with a simultaneous
+contended init_mm lock.
+
+But this issue is broader than that really - we can't be holding init_mm
+over an allocation.
+
+split_large_page() calls __split_large_page() after dropping the CPA lock,
+which opens with a revalidation:
+
+	spin_lock(&pgd_lock);
+	/*
+	 * Check for races, another CPU might have split this page
+	 * up for us already:
+	 */
+	tmp = _lookup_address_cpa(cpa, address, &level, &nx, &rw);
+	if (tmp != kpte) {
+		spin_unlock(&pgd_lock);
+		return 1;
+	}
+
+There's also revalidation in __change_page_attr() on every split:
+
+	err = split_large_page(cpa, kpte, address);
+	if (!err)
+		goto repeat;
+
+(Where goto repeat entails a complete rewalk)
+
+So dropping the init_mm lock here should not result in any problems with
+being raced by a collapse and was something already accounted for.
+
+So the broad strokes of the fix is to eliminate the init_mm -> fs_reclaim
+dependency and thus break the dependency loop.
+
+I'll send a respin with this addressed.
+
+Cheers, Lorenzo
 
