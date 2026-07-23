@@ -4,117 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75B4EC531C7
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 09:29:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4EDBC531CB
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 09:30:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 74B706B015B; Thu, 23 Jul 2026 05:29:32 -0400 (EDT)
+	id E79AE6B015D; Thu, 23 Jul 2026 05:30:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D4F36B015D; Thu, 23 Jul 2026 05:29:32 -0400 (EDT)
+	id E2A9C6B015F; Thu, 23 Jul 2026 05:30:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C3A46B015E; Thu, 23 Jul 2026 05:29:32 -0400 (EDT)
+	id D43E16B0160; Thu, 23 Jul 2026 05:30:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2FAED6B015B
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 05:29:32 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9FACC1203F0
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 09:29:31 +0000 (UTC)
-X-FDA: 85019518542.22.3C71778
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	by imf06.hostedemail.com (Postfix) with ESMTP id D023C180003
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 09:29:29 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=B7ppayUn;
-	spf=pass (imf06.hostedemail.com: domain of zhaomeijing100@gmail.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=zhaomeijing100@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A8B246B015D
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 05:30:57 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2C3C440402
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 09:30:57 +0000 (UTC)
+X-FDA: 85019522154.10.A191676
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 586A140005
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 09:30:55 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QrnqwayX;
+	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784798969;
+	s=arc-20220608; t=1784799055;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dyZbGE6s/GhiUQY1p3Ic3dHaqeDboCKAETdtIwyjiwg=;
-	b=Iuz2REUELlqLDGX+CEOfpprIQTBCfQnpADTbsZTkMdz6PyXtYUQyBPawQ/x5FuGDiefzL/
-	1ru8w1gAO4nFAO+qNg3vNp5AbL1/c5Wq/GZ+3L7/22Lf6GP7AHRJ+0Tyfrq7Vx839IbE2b
-	yUJ0tDLq79cCmZMIi/qDgvF05dT4m54=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=B7ppayUn;
-	spf=pass (imf06.hostedemail.com: domain of zhaomeijing100@gmail.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=zhaomeijing100@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	bh=wt67XsmwkQaRLRB+uB5Oux958CHUJdn7g1FXjqMrLvE=;
+	b=bYEI81BJbm5Fe8Zs6QY/f6zG6AJmbKvyTeooYgx4odYBQIKOY01X9dMSoaUMa+flqUWTfS
+	kT9oQGYWNdGHoUDJX+RbvnbL53n/Ei0gSqoS8JkBqc+J3tkOKy6LSUh/noShZBIkWcq9oV
+	Y2kUh+QtKM7XG3CUFm/lmT2zfiMrN7g=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784798969;
-	b=GszddUs8mAVYQV+2EPPxsg9PvvfG9gECMxV23uH/MnrfpA4+nJvZQkUQ8BTr3sIImEokaz
-	J4twPDA5rE3ZWGjHOKssaWrX2Zn48rOdaEOfD+PtGy5DjrQbFhgJmeEUCRuqsgoIFxieBr
-	yXxDne2lCBBe/k9aLAo8BVKTptWZeys=
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2cc7e86e7aeso4872545ad.2
-        for <linux-mm@kvack.org>; Thu, 23 Jul 2026 02:29:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784798969; x=1785403769; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=dyZbGE6s/GhiUQY1p3Ic3dHaqeDboCKAETdtIwyjiwg=;
-        b=B7ppayUnmnB2jgfEVB5vmdaZqAKCYT5gMfS1n1fkN9gk+U95c21xlvmEI31hULd5yN
-         emi9HHYAzzaRdguv8BQvFrleuGnBzSLkv46Yho4Q/yuizSqPjFH+C2aVbzBeJh5nZ000
-         2B/deMAjsLIkrbjnbYTYnpRRmioX+3TBhwfj7+ZgI0XkH6xZw9nuRp3dr57QvFNcGFjB
-         f/R21c94Ij23/pLW3z6QKznlKdmTxOkRjWKEXsCUvbKhW2yHqZ3P2okFDrkxKZa5smG+
-         PM0D4Sp2BGZq0yEk0qJpqjuM0dhJHD16WQKlu32h+P3cnSZVr8OeXBDuZ20Lh8J9I1fP
-         mPig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784798969; x=1785403769;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=dyZbGE6s/GhiUQY1p3Ic3dHaqeDboCKAETdtIwyjiwg=;
-        b=J7YOte5gq6x2TO5sAIfoltDaS+RTGo0wPdv7WS/Zi4TXory+9fRxNzyeGtuAbH89Z5
-         wTtDalhwxdLWZcc1+9GLaYc0GWbq+SOp2jsoBecL6rcq1Yd/195yt74UceolW0jsCynn
-         yNjDUqaxgAjdRvwPSILrhA6YI1yEY29SpiyeDiifQNMtcpIDWf5kbyxo7kHb1IgwoSqB
-         vEaARLef2XfSZl18FW7q6/1EfEA0881Y8Sgu2pIig+xGRIxP8hUvJVZjCq+Ctarxeqa3
-         KbrbcEiRlZ4YuTy6VdmctJG+/SZ6e/NXRzWWvvvBq+MZc/MUE7cmlfw+O9lYzEvzxv0C
-         g34A==
-X-Forwarded-Encrypted: i=1; AHgh+Rrm0Ul+Un7S/gxKjnDii79lSMtG5Tw4p//H21fbK09qpPbAKP9lSxb6+keSuHqi7PnOUTWMG4uuWQ==@kvack.org
-X-Gm-Message-State: AOJu0YyHjlWX9TT/rkyRF4284Lem2MmwUNjYFgq/mXPkcX3d1h5n0to6
-	WU84sNkilPepygWTwbVEGz9yOLfrHqj0xIjOn5Q1CYn+QAzuMo3531FS
-X-Gm-Gg: AR+sD11Yfn0bqPb7PJ6N7uc8cSYDkz8XcKoiAxQ5Pbt4/vnQaO0jFVBdTZPo2KMgP0W
-	KPBScwxNf7/lAtkMVtMRxg7IHIm+WcejtDgWlz1rlqB4apevjPcB0LQMgKAARRFtAXveTQ1Dh3w
-	57SbceKchLJb5t7mqdFmL2DPlkarKiolq5kZVde1yAlZhaEbQMnO9RT1IJNu6rtlEz6tYBwgUCx
-	z1e/VAo85H7pZ5mDQ3iEFpycb5o3kTJQEzs+4dj+k+tOMDgJmkFh5/RxXI+ujVT1aWe++0tqsze
-	sRw+2LZzxJbm6OTtlVT0P/yZWFrQqA6TENAtuojlOvCXVYRWJ4BsIxvxiGwZlIgwdWX5bypKGfJ
-	LMVO0bV5PYQGpYpKF3pEEz0xj7ePuwT47sP6P7Otjh8F22JgnSbaUx28HQ0rkaSIYL0lKA2tnRd
-	JdZBfoHPt33epLffG4Ag==
-X-Received: by 2002:a17:903:181:b0:2c9:97a7:f544 with SMTP id d9443c01a7336-2cfa6f81c55mr27454325ad.42.1784798968576;
-        Thu, 23 Jul 2026 02:29:28 -0700 (PDT)
-Received: from PC-2B0BA31200898.company.local ([210.184.73.204])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf8efa388fsm30298125ad.12.2026.07.23.02.29.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jul 2026 02:29:27 -0700 (PDT)
-From: Meijing Zhao <zhaomeijing100@gmail.com>
-To: Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-trace-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Meijing Zhao <zhaomeijing@lixiang.com>
-Subject: [PATCH RESEND 3/3] mm: trace: name protection key encoding bits
-Date: Thu, 23 Jul 2026 17:29:05 +0800
-Message-Id: <20260723092905.761037-4-zhaomeijing100@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260723092905.761037-1-zhaomeijing100@gmail.com>
-References: <20260723092905.761037-1-zhaomeijing100@gmail.com>
+	t=1784799055;
+	b=e7YB/Gmab9O1x/hk/JrvDhCXt3f/OQwl963qWd1hJNWfP0dFryebUjsR/yTEVc6Cj2320v
+	merJw8RyP8n1OmwpI6aTjk/pGEaBKPMVOyMifDkvEwPt+uXnVHv2S1EeOyLNK00mFh7rCq
+	VxjsKZhgxShJfuDOEnIZPMZ6ktNr6Ig=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QrnqwayX;
+	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2428D40818;
+	Thu, 23 Jul 2026 09:30:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C5431F00A3A;
+	Thu, 23 Jul 2026 09:30:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784799054;
+	bh=wt67XsmwkQaRLRB+uB5Oux958CHUJdn7g1FXjqMrLvE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=QrnqwayXlJrmoiZ0u1sB6zSrdj3atfwQyJsUJxcCMfxbHkmnZnv8ZLcdb4R9RpHBB
+	 FvQwOsQEGHluLfqGsSA6HgV0J27MWpP15ojOdmv22bKAWAx05QwuPO0y9xnXVC/WHN
+	 q3//A/panHvy6AOi4VBdoAtal6baa6STqbmSVoAwf0h5OCPvHSeDFREThUCsE/ZvIo
+	 GRywI7kYLfR2dIpMW0D1bgFxqn8o/tRVNyHirXRzQqQW2WEZhSTSeo1ZzAFdsEB1M7
+	 dWISBVl056PFk58nrAodqbCurGD+PmvhYzGuRKAY9SLP9i2Qas1pEnOC9/sI05LaIe
+	 zt6dFVgml2+Hg==
+Message-ID: <e8b503fe-c97f-4747-aa95-97be42cdd832@kernel.org>
+Date: Thu, 23 Jul 2026 11:30:49 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 12/13] mm/slab: add cache_ and slab_needs_objcg()
+ helpers
+Content-Language: en-US
+To: Hao Li <hao.li@linux.dev>
+Cc: Harry Yoo <harry@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter
+ <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+References: <20260720-b4-objext_split-v2-0-2fa7c6f60dbe@kernel.org>
+ <20260720-b4-objext_split-v2-12-2fa7c6f60dbe@kernel.org>
+ <amHbnLLrpOmwmusv@fedora>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <amHbnLLrpOmwmusv@fedora>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 586A140005
+X-Stat-Signature: 73ojb6bosyeqfzh7jg3cojsorepk5irj
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: D023C180003
-X-Stat-Signature: 1184rwjtuge839s1f5hk9uw3uifq7h84
-X-HE-Tag: 1784798969-41221
-X-HE-Meta: U2FsdGVkX18KZyN9J7YZZeoM2lM47s3IwHRgt1roSFAX4gxq396NTOtPfXvy8Jjvl3/iGp3kFjRibAhA/Gm377hzJfo9bF2ljnz03l5Yb1t93D95QSuc6I9PgMo8R33kIT+oTAXCta9GGipboJw8Vmt0vg0Rofx6SaVEq5ae2Fsvx8mfGYm+XG+MTYz7L3G1Vd6Ir9iFDBL8fKM8pY4+FoguMPHV/zip+PpWh23on7o1t4rghg2ljQtWzhLLbCgRuS38O2juTzFABDwEIe0b1+3wLyhKIdmC3hYQAN2ddbX1nPDEDvObyNvU9lUyxGgcXl3FbLPYDQf53NMF2I+uNXDJ68NYLPl/aItsev9gLr+h0OYFnEwUfYIiy3dzYMcRNR6C2fTXAKysevNlvoleYasiDt/+dpr1g/Pfz/02KHWHNYnGIDjxKEfTlVsyRGSYmEn/5PjMs3F12D29ef2zR49VRlc0znT6TsSXWKkYAUwYDL9OjAYi/M7rzDypGDtDn6XkRFnkCyy3Q2Xxc0L6QCGgPqgUG/zV84IWV8uxiwsMsCUvcihdaCm73XZ2radBsnNfx1hgr5PWdm8zfCkQ5yPzMpNWrJtRu0p6GZnHCe7K+0xJq/875IVuPa5M7RqwzmBwAZueFnAhuCayRwLAe4IfGZ9sgIcegQ5TdUCV7AsrRhHLxx00OTcfJq+hLdw6z733qZ4ib4qcZBCZJMubx0m693VccqPMmUZguTqvDv5LZPfnW5eZ6ypTInyW/tx3z8ZLj9ywvG25Bnid+vNF2DqcuJ/8dYmjhXx9smnh62nhSD0i1B/8kSPsQmQx0EEHGfv74AASTbHJ+VSrtnCYsRUVE3lrr+CL9HuEps8BB5PsnxQZP1C0Y6p+MAV2ojF7GgIrBNO8rLczWxfUiDSRIHpqY5cZ1senwXabqMvC61jhAoFK19LDBT4TTfvUiiCBmvlbGUxiwRh3Mn7uQzv
- TImmsBYb
- nW2SnYDPtIUA20pPPA+eZdZA2ajAsNcfeOEm2TIoGh05OVYO3Xgx9nUhkBSU8n0olxfdngYKvk7HfeOIL7lph+8BfB4EivCRXDNcJF0Q207mWGo6CXPb54U6czv4oFQFgaJsjlWgE9hj+dYLGlZMjd5YymmlPVUnUbevMb4Z5N8pgODEIPWL60oGT3NlH07HoJI0wfugfNQG5WNFgWu7Mb7oN9JI2c58SAUNE5z4GKVLMyLxlL/6kRDg0Oxy9iefZhjQnosTA8mM6l6Kow6EPWI6WNRg3aIaKCZqvdGBkj/SBpXkXg7KRjilPk94//AzssHiTpnRKtll/zug3XnE/lXQE8xPiimkvDNZYwcU5j2rrRR0R3U28uIo7VOcymvDqyDJhXjgl8D5tMUlXRv/GTTASj8w5wxjBFao7H//MViZF0JeUKiqF1ZSTfV1PfLNu8prRJ3zjC9WO1ly7b/JQOvGNKw==
+X-HE-Tag: 1784799055-128754
+X-HE-Meta: U2FsdGVkX19ECtg7DRJ0AZUhVY3Alp3tclHm+e9G3eCGvn9yzp06XtcYKzL17JDNsS6EIGt4YOhJ5kREeMfIIblCahdUhoFkgBRL+0axwynL0u2as+7DkcmAn3vvxAtNIeg0Kfpz0zzA7X8dDT53xLTrakXXd6IaI3rEl45ftq9NXxLI/bVlOzBDVP0e64SrLjHRc6xkxEqAOdAkS1YHQL8fhnGkCMh84JPdrvCNLCJRT00X0XV0KIiUmG5XVGiI/Mpa9jaypdRuRmchrDIG5iX0zJyqXBqiz2dtynu2VrE4C3fI9+NH/LkTK/weZNu/xd3nC8Z3zwooK3K6Ki6ButhxbzKRxxQbX8vOWQndFfETvflORjCX9tGCRq9YWDngM+Nc0q0VCUguttfqspvKJ/Ol8QiqOcEuJhbvtRzKHxbzeclb2OQapyLUbRlhfm1yKAtynqZ6slzHvBYjWMZVidIvGaxSN8gR5tu54w7luQbkGO/FmfpFwTLiZjMudV98zB9dP9ZWEJggeYrgTqTxqAIb3GEDEmnwyOCOE3Q7N5kJPm99gWv3vJgBoQ0ynlI4u/B7sPay4ABk3ga2T75Gh2Ka/axTrdkzT2KalnzeccF+b/45KA1tFxfAVxy58P8YEHbidWa4tJX5uMnc7zqwRl7TbsgRXhNy5kKVLSODRIAXTXd0AzoUUxvs+lWvU70JjBl2BZafAa6pekTfq5crSbWC4ua1t7KvYxIqeK9w00mdx9VON74nz70w7XBg/9LYxu3kYFNmGuSCj9Ez4fpCTwJSeliJeEQprgGxJyFrLKcc/7XivPpkMi+DlBPMG0+aFRi8/QEipr9AMU7WuLNihCCubQg8SgMcBsyZFrad3/2Fp+j6aMJ8C+vRdj9iPwBQ307UPcXIQzZUntscbXiC3TTxP8BgQbkdswL21nvp5okbBae79iArwhkrFVksJpSWoo77Lt99xNUqDWhQx/5
+ exAahaZR
+ F51C+WbAo+r25Ruuf7qtEIHEG1i3tiIDvlu81iwpZQWhp7s2rPqAH/HFtFk3ZQGnduJ76p19uvX8Po0Lxn+cYqHiMyLH63lq8CyraM9kaMpj7AGZz5X1srA9SADZmk4zG5AWWww21YrFwpey3gGAT6aXLOUznOuZEBS+2jclSEpe8WrYa6OM/ovzXLu5Pu8wm/1naBpUjOcukcWmqt65zoDV03NmCZto/VF9O8h0XT9GnTAH7fYPzLWosxW/hCAxpWj2hMDxyPNoj60eFZ42mUFur9S3KRqS24uHpsAjT51uVw8q3SkZStFTdjg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,68 +140,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Meijing Zhao <zhaomeijing@lixiang.com>
+On 7/23/26 11:25, Hao Li wrote:
+> On Mon, Jul 20, 2026 at 04:16:26PM +0200, Vlastimil Babka (SUSE) wrote:
+>> @@ -359,6 +359,13 @@ struct kmem_cache *__kmem_cache_create_args(const char *name,
+>>  		goto out_unlock;
+>>  	}
+>>  
+>> +	/*
+>> +	 * For now we assume any cache can be used with __GFP_ACCOUNT and thus
+>> +	 * may need to store objcg pointers for objects
+>> +	 */
+>> +	if (!mem_cgroup_kmem_disabled())
+>> +		flags |= SLAB_MAY_ACCOUNT;
+> 
+> if memcg itself is disabled via `cgroup_disable`, mem_cgroup_kmem_disabled()
+> still return false, so maybe we can use:
 
-Protection keys are encoded in architecture-specific HIGH_ARCH_* VMA
-flag bits.  show_vma_flags(), which is used by VMA tracepoints and %pGv,
-does not name those bits, leaving them as raw hexadecimal values.
+Aha, but then shouldn't rather mem_cgroup_kmem_disabled() take that into
+account on its own?
 
-Name the protection-key encoding bits pkey_bit0 through pkey_bit4 under
-CONFIG_ARCH_HAS_PKEYS.  The names make clear that these are bits of one
-protection-key value rather than independent protection keys.  For
-example, protection key 3 is represented as:
+> if (!mem_cgroup_disabled() && !mem_cgroup_kmem_disabled())
+> 	flags |= SLAB_MAY_ACCOUNT;
+> 
+>> +
+>>  	/* Fail closed on bad usersize of useroffset values. */
+>>  	if (!IS_ENABLED(CONFIG_HARDENED_USERCOPY) ||
+>>  	    WARN_ON(!args->usersize && args->useroffset) ||
+>> @@ -984,11 +991,19 @@ new_kmalloc_cache(int idx, enum kmalloc_cache_type type)
+>>  #endif
+>>  
+>>  	/*
+>> -	 * If CONFIG_MEMCG is enabled, disable cache merging for
+>> -	 * KMALLOC_NORMAL caches.
+>> +	 * If memcg_kmem is enabled and this is a KMALLOC_NORMAL cache and  not
+>> +	 * aliased with any other type, make sure it's never merged with any other
+>> +	 * cache.
+>> +	 *
+>> +	 * In other cases the kmalloc cache may end up being used for a
+>> +	 * __GFP_ACCOUNT allocation so mark it as such
+>>  	 */
+>> -	if (IS_ENABLED(CONFIG_MEMCG) && (type == KMALLOC_NORMAL))
+>> -		flags |= SLAB_NO_MERGE;
+>> +	if (!mem_cgroup_kmem_disabled()) {
+> 
+> the same as above
+> 
+> Others look good to me.
+> 
+> Reviewed-by: Hao Li <hao.li@linux.dev>
 
-  pkey_bit0|pkey_bit1
+Thanks!
 
-Honor CONFIG_ARCH_PKEY_BITS when exposing bit 3 and bit 4 so only bits
-provided by the architecture are included.
+> 
+>> +		if (type == KMALLOC_NORMAL && KMALLOC_RECLAIM != KMALLOC_NORMAL)
+>> +			flags |= SLAB_NO_MERGE;
+>> +		else
+>> +			flags |= SLAB_MAY_ACCOUNT;
+>> +	}
+>>  
+>>  	if (minalign > ARCH_KMALLOC_MINALIGN) {
+>>  		aligned_size = ALIGN(aligned_size, minalign);
+>> diff --git a/mm/slub.c b/mm/slub.c
+>> index d78d3e50c877..30435e2509ea 100644
+>> --- a/mm/slub.c
+>> +++ b/mm/slub.c
+>> @@ -2557,7 +2557,7 @@ bool memcg_slab_post_charge(void *p, gfp_t flags)
+>>  	 * of slab_obj_exts being allocated from the same slab and thus the slab
+>>  	 * becoming effectively unfreeable.
+>>  	 */
+>> -	if (is_kmalloc_normal(s))
+>> +	if (!cache_needs_objcg(s))
+>>  		return true;
+>>  
+>>  	/* Ignore already charged objects. */
+>> @@ -3435,6 +3435,10 @@ static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags,
+>>  
+>>  	slab->objects = oo_objects(oo);
+>>  
+>> +#ifdef CONFIG_64BIT
+>> +	if (cache_needs_objcg(s))
+>> +		slab->obj_exts_needs_objcg = 1;
+>> +#endif
+>>  	slab->slab_cache = s;
+>>  
+>>  	kasan_poison_slab(slab);
+>> 
+>> -- 
+>> 2.55.0
+>> 
+> 
 
-Signed-off-by: Meijing Zhao <zhaomeijing@lixiang.com>
----
- include/trace/events/mmflags.h | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
-
-diff --git a/include/trace/events/mmflags.h b/include/trace/events/mmflags.h
-index 2d76daacb70c..c8b8a980f8c7 100644
---- a/include/trace/events/mmflags.h
-+++ b/include/trace/events/mmflags.h
-@@ -204,6 +204,24 @@ IF_HAVE_PG_ARCH_3(arch_3)
- # define IF_HAVE_VM_DROPPABLE(flag, name)
- #endif
- 
-+#ifdef CONFIG_ARCH_HAS_PKEYS
-+# define IF_HAVE_VM_PKEY(flag, name) {flag, name},
-+#if CONFIG_ARCH_PKEY_BITS > 3
-+# define IF_HAVE_VM_PKEY3(flag, name) {flag, name},
-+#else
-+# define IF_HAVE_VM_PKEY3(flag, name)
-+#endif
-+#if CONFIG_ARCH_PKEY_BITS > 4
-+# define IF_HAVE_VM_PKEY4(flag, name) {flag, name},
-+#else
-+# define IF_HAVE_VM_PKEY4(flag, name)
-+#endif
-+#else
-+# define IF_HAVE_VM_PKEY(flag, name)
-+# define IF_HAVE_VM_PKEY3(flag, name)
-+# define IF_HAVE_VM_PKEY4(flag, name)
-+#endif
-+
- #ifdef CONFIG_ARM64_MTE
- # define IF_HAVE_VM_MTE(flag, name) {flag, name},
- #else
-@@ -251,6 +269,11 @@ IF_HAVE_VM_SOFTDIRTY(VM_SOFTDIRTY,	"softdirty"	)		\
- 	{VM_HUGEPAGE,			"hugepage"	},		\
- 	{VM_NOHUGEPAGE,			"nohugepage"	},		\
- IF_HAVE_VM_DROPPABLE(VM_DROPPABLE,	"droppable"	)		\
-+IF_HAVE_VM_PKEY(VM_PKEY_BIT0,		"pkey_bit0")		\
-+IF_HAVE_VM_PKEY(VM_PKEY_BIT1,		"pkey_bit1")		\
-+IF_HAVE_VM_PKEY(VM_PKEY_BIT2,		"pkey_bit2")		\
-+IF_HAVE_VM_PKEY3(VM_PKEY_BIT3,		"pkey_bit3")		\
-+IF_HAVE_VM_PKEY4(VM_PKEY_BIT4,		"pkey_bit4")		\
- IF_HAVE_VM_MTE(VM_MTE,			"mte")			\
- IF_HAVE_VM_MTE(VM_MTE_ALLOWED,		"mte_allowed")		\
- IF_HAVE_VM_SHADOW_STACK(VM_SHADOW_STACK, "shadow_stack")	\
--- 
-2.25.1
 
