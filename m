@@ -4,122 +4,149 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E2B7C531CF
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 13:39:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F826C531CA
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 13:42:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BDD966B007B; Thu, 23 Jul 2026 09:39:57 -0400 (EDT)
+	id 0BFC06B0088; Thu, 23 Jul 2026 09:42:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B8D416B0088; Thu, 23 Jul 2026 09:39:57 -0400 (EDT)
+	id 0703B6B008A; Thu, 23 Jul 2026 09:42:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A7B8D6B008A; Thu, 23 Jul 2026 09:39:57 -0400 (EDT)
+	id EC7E36B008C; Thu, 23 Jul 2026 09:42:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 711426B007B
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 09:39:57 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E1E201604A0
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 13:39:56 +0000 (UTC)
-X-FDA: 85020149592.14.71712B6
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
-	by imf23.hostedemail.com (Postfix) with ESMTP id B49D4140004
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 13:39:54 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=Dhd9yfdq;
-	spf=pass (imf23.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.179 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784813995;
+	by kanga.kvack.org (Postfix) with ESMTP id BA64B6B0088
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 09:42:57 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 44C3E1604C2
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 13:42:57 +0000 (UTC)
+X-FDA: 85020157194.26.34A19B9
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013013.outbound.protection.outlook.com [40.93.196.13])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 384A51C000C
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 13:42:54 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="npdW/myV";
+	spf=pass (imf20.hostedemail.com: domain of nirmoyd@nvidia.com designates 40.93.196.13 as permitted sender) smtp.mailfrom=nirmoyd@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784814174;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5OXNEFjRCaitHQKe2wfBmPOWIET8WKaJvN/RgwCYDNw=;
-	b=sF0OdlqnU5x0v5I8eaVO45San2v2G83WnyVKYDjm9MmVe9scI7NsSgC3y/pvoBq+tL0BHE
-	FYmyU4UntfMveCyGaJmKuxJRDMy/F5Prjuk6Wj5NZdey99mHxyU/7bWcKhJPs/zw9B18UA
-	soaNAls53yM++d3bQHriUlvgLlrO3xw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784813995;
-	b=fG2enh2dyGC5KlgJMtaJXhlodcnqp03yYEgO38Np5ovj9aqplSkYD+519vMf/rdS2MYf83
-	VQ3OiTiq/Jex5B/fegCff/cy29GD3d3Mz54WN/Ddr4NfgZcKyLV2neJQdBKwzfah3X7xIn
-	9rSYFkhPEYOKy59mMCZ7PqXebbv7/cU=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=Dhd9yfdq;
-	spf=pass (imf23.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.179 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-51c5382806fso6302821cf.2
-        for <linux-mm@kvack.org>; Thu, 23 Jul 2026 06:39:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1784813994; x=1785418794; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=5OXNEFjRCaitHQKe2wfBmPOWIET8WKaJvN/RgwCYDNw=;
-        b=Dhd9yfdq6k9H6lVintCecAB6V8j2a/l2xTUGZYeh4GJQHaY2tW2XjwuBjE45JGmvao
-         lu3gU+0Fwy9fYNUKpEZRx2I6X6cwo+LinCerVkS9pReiNiqGrk+E2aAsLYoTRieng2N9
-         dF4ZpLZyJDCqZrJOW8NyH3Y5x5jb5n0D+OL0BRfpcWAoJdGYAZhxOfQOo6/u+z4FyzzC
-         DqeBIeVVa4kWzdHjLm+h078+ykBKh8QVA0i34XwMeakJ+z6fqsC+PtJu5TMszMEsNsR4
-         JcVqqUwLbp1zGPEV3wgAAf9ClDX0f6GkKAYb94DoT2Wg9pCELsSaAy7yCsgFsMgmgxIP
-         rClw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784813994; x=1785418794;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=5OXNEFjRCaitHQKe2wfBmPOWIET8WKaJvN/RgwCYDNw=;
-        b=USyjARPU8uNNWjZSCjqI6/0yGvMaIbLcIkU5aUX/O+ESsrhWTHflZoAZVd+ri9c42S
-         cw8hIE2FVe5e2WIuxQjwjzTpvyUWIB8vFb66x2GPzDeoyGcElTkvUe/bIf/EIm4legEz
-         qZ8Bwa+Hxntvppqzf+sAuYjt3Ej2WhXPuZe4eLGdrP7bey8BQoFbzqgD0+3cM8w+bsR7
-         tc40SHIPG14B4jQd89NSsT6ZOv3joqsb0KPuxRNgJGFIRp9wDmuPP2LYTcUK6761jk/O
-         x1a2iLjPHXdHJMFCRC5BpREZFdtWh/VYGQqgmhzrY+Lgj/LFjOYyKSHMxv0MU+tiecaI
-         aozg==
-X-Forwarded-Encrypted: i=1; AHgh+Roszu74QeHHcu9ZpwUVC9ya/h82e6uYEG66RWFW+ctIUCqtXPvr1+9TPBpx9JcIgDp2hTUHn0dIJA==@kvack.org
-X-Gm-Message-State: AOJu0YxbvtilKiNPDBvaNDUjx04ctaN4O3dJAsIhRsHYbSkDleeUrr9V
-	NKSetgZPh8gMlaONcIH8ws6kKPi4q2v4X582aSLmLnGYH23SpuM5AMWMbl7CFTNCuYk=
-X-Gm-Gg: AR+sD13vGNTumFe/gNmdVoO69v+xt7nUnlwefnldlnY8jLYWShEU7KhyYbOPi0+cADt
-	aets932aiEPSOuMttQOUZG0MBSrURXq3ZAMSRs16RKs4zG41DoVX9Crn53jhDOPe2cd4E38uunV
-	XXD7Ajo1T1UrfdiMPUV49ZyOFeYPagV1WElFE/SgWPSktZC5YyiPU/EYaekCMeUb2dSe0gdTQ7S
-	Y2wTHxZZE+NWuyWkiAXm1Erk7clDUAbGJ7Cm1yUhWskB0IyvxmAMmiJ6cmBmbyGI/Rotf1IZheP
-	fGS0nEE6utM4nFQD8w0Cv5JW5stokoqpR1/YZxSuvxv7yFNL3UJv1MoKKqA38RBZiH6258MZd2n
-	kxeRcIvrAd9+R8voGyKUHkzjnUo704eHLskVaQThyQC9zeRr9ta7q94bekdCn/DTVJGVTinwBRE
-	ol
-X-Received: by 2002:a05:622a:5906:b0:528:30e1:b5d3 with SMTP id d75a77b69052e-5283e0419fdmr25761861cf.84.1784813993716;
-        Thu, 23 Jul 2026 06:39:53 -0700 (PDT)
-Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-527d0c4ce60sm35155751cf.7.2026.07.23.06.39.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jul 2026 06:39:52 -0700 (PDT)
-Date: Thu, 23 Jul 2026 09:39:51 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Alexandre Ghiti <alex@ghiti.fr>
-Cc: Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Jan Kara <jack@suse.cz>, Kemeng Shi <shikemeng@huaweicloud.com>,
-	Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH 1/2] mm: zswap: free synchronous-IO writeback folios
- directly
-Message-ID: <amIZp7Ual_6Gu86T@cmpxchg.org>
-References: <20260718093723.153324-1-alex@ghiti.fr>
- <20260718093723.153324-2-alex@ghiti.fr>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=JiuxZvgLU0P2vVsKoigYC8NM4FElFsTbCO4me9CXDic=;
+	b=cIZQEufkgYvmnqMnQSlRZlN91TVcKjpPOIjztiSWb71k2+IGiaVl+nl9RcJ8AlxUSzHJuu
+	ZALErJObl2Q23vzFcLa1vA/ssDAFSX78RtL4j3A5s0ylXVtRhtcJmwBWFOFhGdsMNBGGLF
+	ALLlwW6OUWJD2CHWBugDPJoweKl6+/A=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784814174;
+	b=UN4mmJKISSlDQQIdgr1LntriwTjoH64269b+6yqk+1cDHz7wwjFJzu+1YDktGVxU6f5rS0
+	J8T25SQ8I26LlTDGtOh4kStEoMdQr4PkNfzSx01uyX1U/JnUOaRmahOdomGQCs5K3ZM84f
+	TEqlatEpInXh6DOQgmF1xuIx7LZKZeY=
+ARC-Authentication-Results: i=2;
+	imf20.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="npdW/myV";
+	spf=pass (imf20.hostedemail.com: domain of nirmoyd@nvidia.com designates 40.93.196.13 as permitted sender) smtp.mailfrom=nirmoyd@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PwHSfT2NavbTYupQcZ680Q5W5jCcVLyYvKwFiWAIYqyFsHvtcQ7iBWzN8WYKKG8C3ei3mQKmr7abBz2DBHMDHRE+vV1L6Re+rbRDR9uz8VRCr0+BssS8Bc5jBefLd4nOq9A/ILC1LEknYcfZ0vqXIR7uAkqnRMTLO7vE26XzOSxqemyoA8mQ7BGSuFhufW3B83xQcBdQQjF87UsTJULO6+wJY/DfIXhJOJEUVh/resnCjFAmd62nJMHwP8P1VgVdCmcChmpI6BiJMqfLAR6bKhb8wJlYn4lW3DKhKB+QiN6hAKVUzPEny3PnUqDqn8RUuWYNOQEOr0KSL8grd07k7w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=JiuxZvgLU0P2vVsKoigYC8NM4FElFsTbCO4me9CXDic=;
+ b=pvMkC4zGNQKHMGBCP4ZC4XHs6BcyAwhqpX0e3cuuB4EZ+thc5lHLgj2t+Y352XAJCTj1a3FxQgzkWA73KpMWM5en4ycbSESmTxDZJgbNpri+0l+bi9gDdO6eLcwortmzRjcr1Hd3DYNKfVisC5TRX4QmAqwHIKlL88ApqgFu+Nb2OzRGhFg4o3ZAMCBEtIdKNfn9NmPFJmCLplBbt5WgY2BZL1k4i0NS3c09IF/nmsUbgXxbyrotuJ5F2+FX9wjEmVNfEg5o/f0sZqzYwL/3rV2uipu9dS/OF5bqYEqwNKl9boorLDwcMXfUh/dyW61SAl1oRce/6Hv3k25GCVf4gA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=linux-foundation.org
+ smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JiuxZvgLU0P2vVsKoigYC8NM4FElFsTbCO4me9CXDic=;
+ b=npdW/myVEc5vBlVVHkcEMFkLhZfIgdAVn1jY4iGiy3VGL5itkLjogh50z95upzzHcdeJz3mY40zxp06hQHHDtXxEAlz5CWINzTgNPOszPERJmyGb0yeW76IhX4AAojA/aHzvElqMPCQVSmFcvBcamXjqOHNL8Ku10X+H7H9ua3e5p+/RdweKJczilPlE/hz2wZjMzv1a4dSzLPJphYvppQcIRd6tlsmDWdeNJh7C+gU/F7DUMG1wEDcLvz9oiixagdqyHHRPxJrCVDv3U3Vx3gBChT5mqPM6sXbk1shbUir6u5jIjrwNJ4qatFHdmjPs0WkU5LgOtRWCX2U+WvtXvg==
+Received: from SA9PR03CA0008.namprd03.prod.outlook.com (2603:10b6:806:20::13)
+ by CY8PR12MB7170.namprd12.prod.outlook.com (2603:10b6:930:5a::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.11; Thu, 23 Jul
+ 2026 13:42:47 +0000
+Received: from SN1PEPF000397B4.namprd05.prod.outlook.com
+ (2603:10b6:806:20:cafe::1a) by SA9PR03CA0008.outlook.office365.com
+ (2603:10b6:806:20::13) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.245.11 via Frontend Transport; Thu,
+ 23 Jul 2026 13:42:47 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ SN1PEPF000397B4.mail.protection.outlook.com (10.167.248.58) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.270.5 via Frontend Transport; Thu, 23 Jul 2026 13:42:46 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Thu, 23 Jul
+ 2026 06:42:29 -0700
+Received: from 82875d6-lcedt.nvidia.com (10.126.230.37) by
+ rnnvmail201.nvidia.com (10.129.68.8) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.20; Thu, 23 Jul 2026 06:42:28 -0700
+From: Nirmoy Das <nirmoyd@nvidia.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+CC: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Shakeel Butt <shakeel.butt@linux.dev>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>, Nirmoy Das
+	<nirmoyd@nvidia.com>
+Subject: [RFC PATCH] mm: use precise current RSS for high-water accounting
+Date: Thu, 23 Jul 2026 06:41:58 -0700
+Message-ID: <20260723134158.1473841-1-nirmoyd@nvidia.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260718093723.153324-2-alex@ghiti.fr>
-X-Stat-Signature: koecgaf6w53kd9b6dkn115itn84imosb
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.126.230.37]
+X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN1PEPF000397B4:EE_|CY8PR12MB7170:EE_
+X-MS-Office365-Filtering-Correlation-Id: 40f3c0cb-e3ca-4e5d-a225-08dee8c047f4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|36860700016|376014|7416014|1800799024|82310400026|10067099003|11063799006|18002099003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	ZBZqjacDW/XR1iUM2d8Cj0EvuxADXF+uoYa2btWkFgT8vaZSICYf5wYU8INoZjgYoPlpuyimJuwypVHuXsjM+qIqJoa0dK4owgYyrHHn7aVyC9SGUfnMh6vXGaSFRiVNsCQTa8Enr/TfI/ccwP1ctN4LP7pv8Fv9SYsHcJTx9CGqq5AiQpADiy6c8HaGtKIH3LsueHkbeuZCLwSoRpm9u16nYtPA90YKxtyZ0XlM03ZMTdJU3hnt57wA+n/hC95lBf2TYzOaPubFyekT3jUKJ95PbnD+6ObNUA1VxGmFHBlN9YshaR6/jJDUlglEWaW2bb1zpZ45ELO3i8begwx6G1o/78lb907027wR7l0Oa9xx866PnPwX0IZS25eLazBIFL6kKnZwuaMHTewcj+aKFCUl63LYoWGTJV5U6ZGi/krjgP5MeQL2/Pw9dRiL8qd2Y2P0a+BI9V6v8Z/TQu3/m8mdzenm6UVtnRsgk4jw6J7vJznoQTrfp45LL/uYZApp5XITnEywVPMC8d5NfabZ0Hge63jdBIll07uqKpylBEJUdvhQuSYpGUUNmyo3D9Se3d16nUsmJz01ThqZfJ8rPHZzcQeFswMDiN7EfQQBd8I6ICUAQfs2vgGV22CtfkBkhfOIfe8cBKvNtj8RwnUmU8/7sTGiGc52fEBEnBoA74hnd8uuTD1Q14iUr5o9jPaI4GSGmZBngH6KRZrLWajPqA==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(23010399003)(36860700016)(376014)(7416014)(1800799024)(82310400026)(10067099003)(11063799006)(18002099003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	LH91GQdh1J6mSnxrxITljMx5oiuD/lOGyHqb1CGicraq/LGKc9bPvB6i+EslpWJQ1zqqL3CjYVDBqzrTD+OvySKR+ypWvt1TvCL3fZzNQ3H8W/AgpuZaKZ2+OLVtIGwmyP8gwMQf8UdMKcoRP2eKfyUVotefAGPsyo3EWGLllKJd6Gh0YWTNML/wZL4bQmt3sMZxQX+Mh0dqgBXitYY58EV/fTRm9qQiAmhdqKpBFMfjpt0EH1l+cktkosbuffA/NtPHdnU4obSew4UZCC8F0ZmcIjOs7uec28jcUmMV+BoTXeQvLbsmC90vKjv456Wb4p1p2IOxVhVrCRnHkPRbQI9L5tN4TL3zfSMhspWfekk7g4ZrcPkPXOexAlae8iz/wtS+p76NOKWL8r6m7v44DO7csFtJmJmvJ+XLGLE1xAx68NHDEhEbgChfry3sd0Up
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2026 13:42:46.9721
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 40f3c0cb-e3ca-4e5d-a225-08dee8c047f4
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SN1PEPF000397B4.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7170
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 384A51C000C
+X-Stat-Signature: 44bj7o4gfrng9kfbdhrn56i3efx9iogj
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B49D4140004
-X-HE-Tag: 1784813994-93087
-X-HE-Meta: U2FsdGVkX1+L7e4OQMDfJvbSimsZe71qtzgwvUixGP94lKRQ63xjy9f5eI/X2KCD3hMVsFPQXxQhGKxVayb+5f7RxTLzevU8zfFf1WL+myCzbQxpqfAsRlOcmsmb3NcEUgdXSOA+CLgsBdeLcHhoHlHMFTTJwxKmi7YWJPQkfkmc/Uo51Pu9bAkFIWqt5XyNnOLVsdS3uDMvuPHhbneq/tFVByk+TvQpuVqh0LSVxa1ehwH9VZdN0FjwqoEs3XbihBsl1l+q85nmlQqJlvLYa8zB6dDxbFsCG/CuBF1lku5Y8Z0LZAm1un83DTO4NF5svG2eqwG/dwRoDf9Gs7TUzYx4t7LRRpn9KueiiSEo9LhKMImjCRCVo1K/kN6HmooJeKckFuOHFCBI+V6VWhD8dV/beW1D8BRAMqs/zSOFliNUQwnftD0RNxCZJXP1xNh4qe7znyFdtOeSFT5vy9gqbIN0L66YAsqEzl4KOIuqX7QtlYuYczy4Iboi7gmj9RNWRwk4TzwcbIb0PcylVrOoSkGnERhMYacU7OTNytWDrpisJfSnt9DvvspPnmy5OTFrAExvQs3gEGTFUjn+B1Sb7SvxV+gD+6sUz5mWMWAoxdTSbwjRetLjVcb8FXs7PFeaBZeap0untBcA8R4OnKO4Zx8JSZGp9+IaIMIa9b04k7kteomaRZVJq7xwXRkEOrUsZ+4EQDyrqfDAoWc6euduMaFVy3Fa4W0cZhqB1YNcXNkuo/Sne053DxvoYh4o2d4986taqZlcwhUzHcU7wfkZbEVgAJ8uFKz1vWD+z/qKzajUa9B4ckI9Abr8Bck3RQ0drbQ5MsoH1W0GS7xN5uhbVqy180O5eKAyTDUlCoB1LwbjTA9Z+xhSgcj5fZSnMsYlxaCFY0dqWmHE4NvAr578Um0Rh500GYyx4VetQGvkd1m9jZSZ+EkStxCkXdZj/c58Ye0Op7OYLcCsDpYJq6M
- BqrfsrbY
- H6Yf4v+Jd2/nnnzjaon0oeVxRz6HGmu+acNGzhu85JjvQXvgnYVJkHyEke9rcW9pW457xdbcDI+NO3lceKety3oU/WZzOS13/G1ZTSS2oS3shmYel1QHOMHf7edq0R+cPaUnKVImw3QnXc2eizMs5qH+umy9f8Mhown5JIpRda6ZfYt21nhcXrODLIPWrbkE13QavbMItQOhqRizA9aYNntrrU26M0yDB2wtXQs339bMhdJXuBgfOijAzvonyM5XzRRJehjT05KT/nm/w/XxXvfoyYYwYsBDx9q1Ge2Geyh5TKoAVMYuYnakQL6lHwUZm/+OrxmBlWGcIn+U9dpcwV1gFPmZshSzQrkRkMMvyOCwp37YqPWCyLY6zSPkC1tWlc3uoTvd+xISSDXUok7kvbqWRNw==
+X-HE-Tag: 1784814174-812497
+X-HE-Meta: U2FsdGVkX1/gImsGlzYACmwowm4C5qdVLkEvkh0Kdtefb1/XK765Na5Mkh8p5NQF1ZKZf0c0gM1Jh3H9HTt3kdJaFQOLpFf4c9M7x5DvZT8YuLrbIaAhU7L5N9gveb/XePQ6N5AVfM4nzQsDfYNZEdxj2xxJ2yEnPvd47TvwkiBSfYUDvThB6NFVb+7yk0zuK+fJ1+4YtqgmgWn1Gr3Qt/vjKgS11shlnEJEIoIKbIiHbp0edkT+HEhdKyktkMFN+B3y1qbC8wiPfM0qgvXjcn9yUYTa8dCYGLzLF3GlKDROtvqk2/zzX7J7QaCO2n5ht4528EVst87VpUOp0CYo244J4ju+vFZLU5F17tB0e7+hVRw6Wv/bk+BtXkoYGDoUEk5PK1NXaBp/f190gbvD8G2MRchyymvgk1Zbp608r7Bocsi9Hq7MH+R0ZMhco0ouL/3qlEEYLjaukZfQH5oWKqNGxwSpAEnLio7TYQRFMENjLfAmueEtlifdRZp39T6Shx3xdjP/qNVawouCWa2xN8GD0HtAkudkfzNfzBrHy+PcQDUlAX1OQTRvhDsLxhqhBUvxXPI8DLBmxYdunC+KpFReYMq2+olgV65GbHTnbKT7/Gd2fb9sy9VfetAX4vSA8GCYz1/qbGPuqiGaYHhBE4CjNqHQrnFI9lzgFYdMeKb1NdgKiIY87FeT2U+lmTAwuLg5BZlpXC6w+Y3rf7+UmKet2WKGrQnbjCzdmHyP6w5P0E1QLLEXjnDbwGPuDpWRuD2TXdEGNRrZZUjew4qXz9Hu0T6rwLmQAx6BiZguE1otHf+68q3ufSENsE9MkYRFeDT57KGRsQwb5vLg51Bh4zx0XRinmDdY6/hv5Tat4IXu0pREvPAss5yDw0yAOid5AWhdMPMRPrfR+ciOHeD1MqI3eMp68yWyl9eyH+oIa444cj69T3QCW4DQhwS8zT7BwdJULFzdDhI/n3UFcQD
+ 9xq/NWLD
+ p6zZxBUpxxz9VuSksge2gxukLSI32TWyoTxdliyIesF2nC6CG88bQ5tNavTHEAYYQFiKPjTDt5Q4idSrYpeF8JmUP0eT2Wr7elCJAIwMAue3hYzS3EW230Ma7sc+LlDpGlqp1biS8l7BkWdVb3ASnCcnCGn2Gh+JukwtvppEMCu647bAWDxYgK/TfEnCUCJ0Eg/dEOrWPqlsk6Z3NGduKV7nvXm2EEBbwT/kdZpY+X8MCqNVFfwOk3KVuvjzuy1RDNkxqcOfGLNV5m6Fkc5CkD2FDaBIwceh1SSu23rthga1L8m4I4YFccH8j8fuFQ3Znio114XNgnMKKmynwg5Z3GHDXyfPtEskkTakGMZ2BZoztQ5laXDPq1zV5PsctiiLlxtn/S8Oqzi10vo3CRpmFww/ynMiZAwjtz1upZkAfDkAxgxtIPFp//TQA8k3IYNtJCe5OAeNz2mTn+GI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,29 +154,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Jul 18, 2026 at 11:36:39AM +0200, Alexandre Ghiti wrote:
-> @@ -972,6 +972,30 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
->  /*********************************
->  * writeback code
->  **********************************/
-> +static void zswap_writeback_free_folio(struct folio *folio)
-> +{
-> +	folio_lock(folio);
-> +
-> +	/* The folio was allocated off the LRU and nothing re-adds it here. */
-> +	VM_WARN_ON_ONCE_FOLIO(folio_test_lru(folio), folio);
-> +
-> +	/*
-> +	 * Gate remove_mapping() on folio_test_swapcache(): a racing swapin may
-> +	 * have freed the swap slot (folio_free_swap()) and dropped the folio from
-> +	 * the cache, and remove_mapping() must not run on a non-swapcache folio
-> +	 * (it would trip __remove_mapping()'s mapping == folio_mapping() check).
-> +	 */
-> +	if (folio_test_swapcache(folio) &&
-> +	    remove_mapping(swap_address_space(folio->swap), folio))
+get_mm_rss() reads approximate per-CPU RSS counters. On large systems,
+this can under-report the current RSS used for high-water accounting.
 
-I just chatted with Alexandre off-list, but this path does not store
-an eviction shadow like the reclaim path does. That means no refaults
-are detected from dropbehind pages, which can fundamentally alter
-reclaim decisions, zswap shrinker force, and pressure detection.
+On a 352-CPU, 2-node system with 64 KiB pages, reproduce with:
+
+  sudo -E env LTPROOT=/opt/ltp \
+      PATH=/opt/ltp/testcases/bin:$PATH LTP_TIMEOUT_MUL=5 \
+      bash -c "cd /opt/ltp/testcases/bin && ./getrusage03"
+
+The test failed 10/10 times with child.children=270336 instead of
+307200.
+
+Use get_mm_rss_sum() when reading and resetting high-water RSS. Keep
+update_hiwater_rss() on the approximate path because it runs before
+RSS-decreasing operations.
+
+The patched kernel passed getrusage03 20/20 times. getrusage01,
+getrusage02 and getrusage04 also passed.
+
+Fixes: f1a7941243c1 ("mm: convert mm's rss stats into percpu_counter")
+Cc: stable@vger.kernel.org
+Assisted-by: Cursor:claude-opus-4-8-thinking-max
+Signed-off-by: Nirmoy Das <nirmoyd@nvidia.com>
+---
+ include/linux/mm.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 485df9c2dbddb..1b613c6356baa 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -3405,7 +3405,7 @@ static inline unsigned long get_mm_rss_sum(struct mm_struct *mm)
+ 
+ static inline unsigned long get_mm_hiwater_rss(struct mm_struct *mm)
+ {
+-	return max(mm->hiwater_rss, get_mm_rss(mm));
++	return max(mm->hiwater_rss, get_mm_rss_sum(mm));
+ }
+ 
+ static inline unsigned long get_mm_hiwater_vm(struct mm_struct *mm)
+@@ -3429,7 +3429,7 @@ static inline void update_hiwater_vm(struct mm_struct *mm)
+ 
+ static inline void reset_mm_hiwater_rss(struct mm_struct *mm)
+ {
+-	mm->hiwater_rss = get_mm_rss(mm);
++	mm->hiwater_rss = get_mm_rss_sum(mm);
+ }
+ 
+ static inline void setmax_mm_hiwater_rss(unsigned long *maxrss,
+
+base-commit: 4539944e515183668109bdf4d0c3d7d228383d88
+-- 
+2.43.0
+
 
