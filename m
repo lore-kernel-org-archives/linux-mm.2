@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA420C531CB
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 09:29:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75B4EC531C7
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 09:29:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E28956B0159; Thu, 23 Jul 2026 05:29:27 -0400 (EDT)
+	id 74B706B015B; Thu, 23 Jul 2026 05:29:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD92A6B015B; Thu, 23 Jul 2026 05:29:27 -0400 (EDT)
+	id 6D4F36B015D; Thu, 23 Jul 2026 05:29:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC8B06B015C; Thu, 23 Jul 2026 05:29:27 -0400 (EDT)
+	id 5C3A46B015E; Thu, 23 Jul 2026 05:29:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A1B036B0159
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 05:29:27 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 32D6EA0BB0
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 09:29:27 +0000 (UTC)
-X-FDA: 85019518374.15.BEF5B98
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 66B17180007
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 09:29:25 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=LRdFtUe2;
-	spf=pass (imf24.hostedemail.com: domain of zhaomeijing100@gmail.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=zhaomeijing100@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2FAED6B015B
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 05:29:32 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9FACC1203F0
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 09:29:31 +0000 (UTC)
+X-FDA: 85019518542.22.3C71778
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	by imf06.hostedemail.com (Postfix) with ESMTP id D023C180003
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 09:29:29 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=B7ppayUn;
+	spf=pass (imf06.hostedemail.com: domain of zhaomeijing100@gmail.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=zhaomeijing100@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784798965;
+	s=arc-20220608; t=1784798969;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dPfVR8qOQpuRYvB5SnMtHyLaliAGnyBwBDTXNiCFaX4=;
-	b=zXl0oSV784yEXsojOpSNPAr2xayPdwcwYXdpgdYHlxqKHtWhYQ1Rj1NpJGgTkUVf1aIHb/
-	ktB+hfgfCtwn03LAju5IbNHW3jkIGd4bgh4gVqGuCvOqjZRIQ8mXJ1CuWOsENZAwrjZsYv
-	NIbjCjlH81uRV272JH20tujckWUSrR8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784798965;
-	b=tpzR3dADxvGhtzldKjpHtB3iNQ1/JIky7gy2jHwVuRH4tXJdd+pNsyxZtrsjdvh8YX7Fpi
-	8yS2uu6znnoxmYFRb5f3eaRxXnq/p0lAIhJ5z6bJ6brhtNwOE5Txp4F0JGsgqKXlAaDeCJ
-	n8E41f1zzYskBkm6WHYCb+TI5556U9Q=
+	bh=dyZbGE6s/GhiUQY1p3Ic3dHaqeDboCKAETdtIwyjiwg=;
+	b=Iuz2REUELlqLDGX+CEOfpprIQTBCfQnpADTbsZTkMdz6PyXtYUQyBPawQ/x5FuGDiefzL/
+	1ru8w1gAO4nFAO+qNg3vNp5AbL1/c5Wq/GZ+3L7/22Lf6GP7AHRJ+0Tyfrq7Vx839IbE2b
+	yUJ0tDLq79cCmZMIi/qDgvF05dT4m54=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=LRdFtUe2;
-	spf=pass (imf24.hostedemail.com: domain of zhaomeijing100@gmail.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=zhaomeijing100@gmail.com;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=B7ppayUn;
+	spf=pass (imf06.hostedemail.com: domain of zhaomeijing100@gmail.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=zhaomeijing100@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2cc97653887so5061015ad.1
-        for <linux-mm@kvack.org>; Thu, 23 Jul 2026 02:29:25 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784798969;
+	b=GszddUs8mAVYQV+2EPPxsg9PvvfG9gECMxV23uH/MnrfpA4+nJvZQkUQ8BTr3sIImEokaz
+	J4twPDA5rE3ZWGjHOKssaWrX2Zn48rOdaEOfD+PtGy5DjrQbFhgJmeEUCRuqsgoIFxieBr
+	yXxDne2lCBBe/k9aLAo8BVKTptWZeys=
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2cc7e86e7aeso4872545ad.2
+        for <linux-mm@kvack.org>; Thu, 23 Jul 2026 02:29:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784798964; x=1785403764; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1784798969; x=1785403769; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=dPfVR8qOQpuRYvB5SnMtHyLaliAGnyBwBDTXNiCFaX4=;
-        b=LRdFtUe27xitvX/n6BsRn0s9BK+vO9oCO1JLgcAHoHE7CqxonFtKhm+KWAQ5G1JQiU
-         EDv6Po4qVmApYftzT04CyB+/czNtQ6M98jqhvaEkofFTNidcy+4INfMiuNsT07sTRu2Y
-         A0/Caxohg7TY7f6cAQkTNsV1FMWWt429YKnLIV+Fao1eVOl+nAGsFiAxZbFIF8ZrCBqA
-         IAkCDZxxW2/JgAsHk2GgGmAyyNmRreDdNfh2fnacd+W6dHyhUNf+vfHYmTwGHDsQ/YEZ
-         mtckVHrDTv9md8KcO0g7Q+JFkb+LcrrLKpKZ52x2BkF+dZzdJNVXi1s6R8FAlNgWo2sJ
-         Cqxw==
+        bh=dyZbGE6s/GhiUQY1p3Ic3dHaqeDboCKAETdtIwyjiwg=;
+        b=B7ppayUnmnB2jgfEVB5vmdaZqAKCYT5gMfS1n1fkN9gk+U95c21xlvmEI31hULd5yN
+         emi9HHYAzzaRdguv8BQvFrleuGnBzSLkv46Yho4Q/yuizSqPjFH+C2aVbzBeJh5nZ000
+         2B/deMAjsLIkrbjnbYTYnpRRmioX+3TBhwfj7+ZgI0XkH6xZw9nuRp3dr57QvFNcGFjB
+         f/R21c94Ij23/pLW3z6QKznlKdmTxOkRjWKEXsCUvbKhW2yHqZ3P2okFDrkxKZa5smG+
+         PM0D4Sp2BGZq0yEk0qJpqjuM0dhJHD16WQKlu32h+P3cnSZVr8OeXBDuZ20Lh8J9I1fP
+         mPig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784798964; x=1785403764;
+        d=1e100.net; s=20251104; t=1784798969; x=1785403769;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=dPfVR8qOQpuRYvB5SnMtHyLaliAGnyBwBDTXNiCFaX4=;
-        b=K/Yxoh407sBZ6d0JJt087LWYuwT+xkBV9whkMpWeMg6yyWfsCJcyaq8u0WNxpMk0ds
-         m0qHgxGsZf2I3036mY/wc561NJzZwpaXDz3vetlxm+fD0gato74p7I5tfic0xU9r++m+
-         i5VPje3k1UR9fe80bbbgVNS73qeP1yXSus/UscLYLk86cz/s868wgNzkh8kaRzAQnoPF
-         pJvd4g3yoNy6BzU2AIbmDsT/GtiYnl6tVtenZDyzZtTmKz/kr4wN9aOBsD99HLsj+BkF
-         z/p1IaRL3DBK2V0vtPNUcPL3LRlBp3w+tiCBterVUeRrIceNvKSq0Yh/Y3XpFYZZ51qk
-         V6Cg==
-X-Forwarded-Encrypted: i=1; AHgh+RrjPGIbyq2Iz0qlW3hLnE1OS7MvOYMs21gSMCuhLDSWT51mPnChgHdu87VAsQQeg7/1QgrN1kAMnw==@kvack.org
-X-Gm-Message-State: AOJu0YwbWxbyXrGbNvTZgCCIdXdokYKL1jUeOgbkF4UhRDe4gr1d0Oz2
-	aICS5jz/B+S9ZHwEJaXQF8gi5/HsWG/LqW910+fLDMR1tkqPOPYOtlKm
-X-Gm-Gg: AR+sD10rxZluEp+y/Tv8KtKKJYU3m3v7mK7/eYNRAIwb3k6PclpzSrMvNYJher3KQnv
-	KTyYVw+19ya1vNOcLaLnl3KkqkLuacsF8xXRAT1CTiyOFERGBADTLJWNQ7TzsAx5C3NQR8M4Vg8
-	OZIGPtjaKeOaeW1tzD72UvoMzzOYJZq8hF2dfMDpJqIT3cUIx4wNLs2bbfFyDFIHs3hZnLiYPkz
-	48NCn+bXo43WIBHBnQMIc30Q/WqSDLV37N/nbSgurL78EBk0klST3QvYhZbEUH4CqFQX0RGARiL
-	b7xwR0Mys+gWiIH0w8UfVbH1HyAb14UffPnVAEkOVqwoar4Fjk2uTpBTeYoFtoc4Qk13BEze5/7
-	FrcKb54s02Kp0du3K0Gzutv4FAsBxEFogINkLbor8KVxPqadxstBR+iDroYhPKNztX8xDJASRLk
-	DuyIW/OMqpfXlT3cyWAg==
-X-Received: by 2002:a17:903:3d10:b0:2c7:f338:5691 with SMTP id d9443c01a7336-2cfa74b2ffdmr28199215ad.36.1784798964222;
-        Thu, 23 Jul 2026 02:29:24 -0700 (PDT)
+        bh=dyZbGE6s/GhiUQY1p3Ic3dHaqeDboCKAETdtIwyjiwg=;
+        b=J7YOte5gq6x2TO5sAIfoltDaS+RTGo0wPdv7WS/Zi4TXory+9fRxNzyeGtuAbH89Z5
+         wTtDalhwxdLWZcc1+9GLaYc0GWbq+SOp2jsoBecL6rcq1Yd/195yt74UceolW0jsCynn
+         yNjDUqaxgAjdRvwPSILrhA6YI1yEY29SpiyeDiifQNMtcpIDWf5kbyxo7kHb1IgwoSqB
+         vEaARLef2XfSZl18FW7q6/1EfEA0881Y8Sgu2pIig+xGRIxP8hUvJVZjCq+Ctarxeqa3
+         KbrbcEiRlZ4YuTy6VdmctJG+/SZ6e/NXRzWWvvvBq+MZc/MUE7cmlfw+O9lYzEvzxv0C
+         g34A==
+X-Forwarded-Encrypted: i=1; AHgh+Rrm0Ul+Un7S/gxKjnDii79lSMtG5Tw4p//H21fbK09qpPbAKP9lSxb6+keSuHqi7PnOUTWMG4uuWQ==@kvack.org
+X-Gm-Message-State: AOJu0YyHjlWX9TT/rkyRF4284Lem2MmwUNjYFgq/mXPkcX3d1h5n0to6
+	WU84sNkilPepygWTwbVEGz9yOLfrHqj0xIjOn5Q1CYn+QAzuMo3531FS
+X-Gm-Gg: AR+sD11Yfn0bqPb7PJ6N7uc8cSYDkz8XcKoiAxQ5Pbt4/vnQaO0jFVBdTZPo2KMgP0W
+	KPBScwxNf7/lAtkMVtMRxg7IHIm+WcejtDgWlz1rlqB4apevjPcB0LQMgKAARRFtAXveTQ1Dh3w
+	57SbceKchLJb5t7mqdFmL2DPlkarKiolq5kZVde1yAlZhaEbQMnO9RT1IJNu6rtlEz6tYBwgUCx
+	z1e/VAo85H7pZ5mDQ3iEFpycb5o3kTJQEzs+4dj+k+tOMDgJmkFh5/RxXI+ujVT1aWe++0tqsze
+	sRw+2LZzxJbm6OTtlVT0P/yZWFrQqA6TENAtuojlOvCXVYRWJ4BsIxvxiGwZlIgwdWX5bypKGfJ
+	LMVO0bV5PYQGpYpKF3pEEz0xj7ePuwT47sP6P7Otjh8F22JgnSbaUx28HQ0rkaSIYL0lKA2tnRd
+	JdZBfoHPt33epLffG4Ag==
+X-Received: by 2002:a17:903:181:b0:2c9:97a7:f544 with SMTP id d9443c01a7336-2cfa6f81c55mr27454325ad.42.1784798968576;
+        Thu, 23 Jul 2026 02:29:28 -0700 (PDT)
 Received: from PC-2B0BA31200898.company.local ([210.184.73.204])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf8efa388fsm30298125ad.12.2026.07.23.02.29.20
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf8efa388fsm30298125ad.12.2026.07.23.02.29.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jul 2026 02:29:23 -0700 (PDT)
+        Thu, 23 Jul 2026 02:29:27 -0700 (PDT)
 From: Meijing Zhao <zhaomeijing100@gmail.com>
 To: Steven Rostedt <rostedt@goodmis.org>,
 	Masami Hiramatsu <mhiramat@kernel.org>
@@ -99,22 +99,22 @@ Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Meijing Zhao <zhaomeijing@lixiang.com>
-Subject: [PATCH RESEND 2/3] mm: trace: decode MTE and shadow stack VMA flags
-Date: Thu, 23 Jul 2026 17:29:04 +0800
-Message-Id: <20260723092905.761037-3-zhaomeijing100@gmail.com>
+Subject: [PATCH RESEND 3/3] mm: trace: name protection key encoding bits
+Date: Thu, 23 Jul 2026 17:29:05 +0800
+Message-Id: <20260723092905.761037-4-zhaomeijing100@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260723092905.761037-1-zhaomeijing100@gmail.com>
 References: <20260723092905.761037-1-zhaomeijing100@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 66B17180007
-X-Stat-Signature: aypesb4uhtr6jirsx9hfbemskur5jdig
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1784798965-660284
-X-HE-Meta: U2FsdGVkX18KsSX2gRy7/jc8c99HOJhNuZFG7zNlX04cqzMByU358fBXDc9gORaKc95rVmtehThGBAL1VQXhckVIpyL/JxfxogJRHkHNeKcsuZ+XzI2/nRhsHikVT7NCUl8uJSTHLzSJdTCNhFHpyqd+anNX0y0QNjUnxG9tCDMM6fQi98b1QaWbwUPM9HlpRqNx5XZpqr3Ihiptq/D/HblyS7tjdt3y3Q8wV+X4rhJfwyFMPzwVR304pUXHMrvI44hYFXsPjqaLg7mHUu1SG2m7erMaPqXqRQRbssHgjl+IJIBKhWqJtKsVLTnpphnljKn/46jwJtaYS7Scygoxwf9EyuRz//jFHQDWOq0Kyj7q9ql2sUl+EYlwlq2X1IJ3XSMvUNI2V9tIVgMLlGSfxlqLpFdFdB8NC2HjCGdN4gJ7NRbh9eo19J+5CXjTv6Taejs/IwHRdLdlz/khioY77JsF+XSCtysIl+oVd768MPkZLsNOhZqmiY73EKD+J4UrqqPl3bO4UTwk7Agu2xry+q/zyuDLByQ3nTCDqenpsIB2wCRzgjO390j8RwicfliwayEQa5Rs8CrnRh6/+iNxAfAwbgrDvNhsYCHvhZ5VIycp9FwFcNX/JwoBmWKQL5GuqKV8w/hvkKeOfP3iujt/MKmFCxEvjOfEzjy2DWhGSSW6d7WhTtg1K4jVUr2EIs9yNnmYIz1NHTd0Ce9j85GUg/z13KzvVem7finqZ5m29MOsojg3MdMtuWR0zBJZqetHR9WjV61zPFnfgMG+8EH3vmMJ6Kpbvo4mu5EXkY4f7BUEsvf6XZ50qJAEyg1ed4MC10EXMF+EOrMwrClgDUe3YnqT4VFDcbuSOyR5G7E3jvPqOc1ddklPxjDnMSRp6k8HxdjyMynjZs5KwXZlMWjKf62RRBBxEx5STZLsEtPv5r2E6+8iC/5ZN0e/HRTb++XtOxWGAFPqCO8SdYAR0ES
- WZ4Dtnhg
- /yjky3kdNC2/iXV0M2OW8VJRy1EUOTKKyYX50CC1q4fUi0LEA41aPIaubtb2Rbsh8HlyNhcXt/ACXoWPLCTCsEuyd1GwIVAhSRcYhE956kXHXmr4abBFvqnzpl2h/8dHTeRQBGclGlU6Yfbs+fJXyDINViq8a5kyvIZYC4MZCFetDMFbv3KUVBKIx20Y2vOc0K7UICE5G8+D9n6GIb6etZsj18gTLtKeanMOodImVpbsslnMuoPW4wKWV2p8s2uOtIfLFgT/zivSoJFlP8FYmc2Wxa4EkHbiZpZw52QovTeClLn/YzOaIPPNbPvx9wv5L2IAMyM6/mbeQG8ylPa+FYW2IdpXPxZzADDQy8ruzSlcc1oKrlpnLRJ8KCE/KdAZDXsuJ5pda2raZZnwn566IQMbMzrdv3HBwDVtZN5zQhNLyhLqjdmbW3yrhk/vklZzKZCsJ9kp71yC4eTHItE4WR/wRaA==
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: D023C180003
+X-Stat-Signature: 1184rwjtuge839s1f5hk9uw3uifq7h84
+X-HE-Tag: 1784798969-41221
+X-HE-Meta: U2FsdGVkX18KZyN9J7YZZeoM2lM47s3IwHRgt1roSFAX4gxq396NTOtPfXvy8Jjvl3/iGp3kFjRibAhA/Gm377hzJfo9bF2ljnz03l5Yb1t93D95QSuc6I9PgMo8R33kIT+oTAXCta9GGipboJw8Vmt0vg0Rofx6SaVEq5ae2Fsvx8mfGYm+XG+MTYz7L3G1Vd6Ir9iFDBL8fKM8pY4+FoguMPHV/zip+PpWh23on7o1t4rghg2ljQtWzhLLbCgRuS38O2juTzFABDwEIe0b1+3wLyhKIdmC3hYQAN2ddbX1nPDEDvObyNvU9lUyxGgcXl3FbLPYDQf53NMF2I+uNXDJ68NYLPl/aItsev9gLr+h0OYFnEwUfYIiy3dzYMcRNR6C2fTXAKysevNlvoleYasiDt/+dpr1g/Pfz/02KHWHNYnGIDjxKEfTlVsyRGSYmEn/5PjMs3F12D29ef2zR49VRlc0znT6TsSXWKkYAUwYDL9OjAYi/M7rzDypGDtDn6XkRFnkCyy3Q2Xxc0L6QCGgPqgUG/zV84IWV8uxiwsMsCUvcihdaCm73XZ2radBsnNfx1hgr5PWdm8zfCkQ5yPzMpNWrJtRu0p6GZnHCe7K+0xJq/875IVuPa5M7RqwzmBwAZueFnAhuCayRwLAe4IfGZ9sgIcegQ5TdUCV7AsrRhHLxx00OTcfJq+hLdw6z733qZ4ib4qcZBCZJMubx0m693VccqPMmUZguTqvDv5LZPfnW5eZ6ypTInyW/tx3z8ZLj9ywvG25Bnid+vNF2DqcuJ/8dYmjhXx9smnh62nhSD0i1B/8kSPsQmQx0EEHGfv74AASTbHJ+VSrtnCYsRUVE3lrr+CL9HuEps8BB5PsnxQZP1C0Y6p+MAV2ojF7GgIrBNO8rLczWxfUiDSRIHpqY5cZ1senwXabqMvC61jhAoFK19LDBT4TTfvUiiCBmvlbGUxiwRh3Mn7uQzv
+ TImmsBYb
+ nW2SnYDPtIUA20pPPA+eZdZA2ajAsNcfeOEm2TIoGh05OVYO3Xgx9nUhkBSU8n0olxfdngYKvk7HfeOIL7lph+8BfB4EivCRXDNcJF0Q207mWGo6CXPb54U6czv4oFQFgaJsjlWgE9hj+dYLGlZMjd5YymmlPVUnUbevMb4Z5N8pgODEIPWL60oGT3NlH07HoJI0wfugfNQG5WNFgWu7Mb7oN9JI2c58SAUNE5z4GKVLMyLxlL/6kRDg0Oxy9iefZhjQnosTA8mM6l6Kow6EPWI6WNRg3aIaKCZqvdGBkj/SBpXkXg7KRjilPk94//AzssHiTpnRKtll/zug3XnE/lXQE8xPiimkvDNZYwcU5j2rrRR0R3U28uIo7VOcymvDqyDJhXjgl8D5tMUlXRv/GTTASj8w5wxjBFao7H//MViZF0JeUKiqF1ZSTfV1PfLNu8prRJ3zjC9WO1ly7b/JQOvGNKw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,66 +124,66 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Meijing Zhao <zhaomeijing@lixiang.com>
 
-show_vma_flags(), which is used by VMA tracepoints and %pGv, leaves
-architecture-specific HIGH_ARCH_* bits unnamed.  Arm64 MTE flags and
-user shadow stack flags are therefore printed as raw hexadecimal values.
+Protection keys are encoded in architecture-specific HIGH_ARCH_* VMA
+flag bits.  show_vma_flags(), which is used by VMA tracepoints and %pGv,
+does not name those bits, leaving them as raw hexadecimal values.
 
-These bit positions are shared between architectures.  For example, bit
-37 represents VM_MTE_ALLOWED on arm64 but VM_SHADOW_STACK on x86, so a
-shared HIGH_ARCH_* bit cannot be given an unconditional name.
+Name the protection-key encoding bits pkey_bit0 through pkey_bit4 under
+CONFIG_ARCH_HAS_PKEYS.  The names make clear that these are bits of one
+protection-key value rather than independent protection keys.  For
+example, protection key 3 is represented as:
 
-Add conditionally compiled names for VM_MTE, VM_MTE_ALLOWED and
-VM_SHADOW_STACK.  Keep the configuration guards aligned with the
-definitions of these aliases so each shared bit position is decoded
-according to the target architecture.
+  pkey_bit0|pkey_bit1
 
-For example, an arm64 VMA containing VM_MTE_ALLOWED is now printed as:
-
-  ...|account|mte_allowed|...
-
-instead of:
-
-  ...|account|0x2000000000
+Honor CONFIG_ARCH_PKEY_BITS when exposing bit 3 and bit 4 so only bits
+provided by the architecture are included.
 
 Signed-off-by: Meijing Zhao <zhaomeijing@lixiang.com>
 ---
- include/trace/events/mmflags.h | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ include/trace/events/mmflags.h | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
 diff --git a/include/trace/events/mmflags.h b/include/trace/events/mmflags.h
-index add5ad6843e8..2d76daacb70c 100644
+index 2d76daacb70c..c8b8a980f8c7 100644
 --- a/include/trace/events/mmflags.h
 +++ b/include/trace/events/mmflags.h
-@@ -204,6 +204,19 @@ IF_HAVE_PG_ARCH_3(arch_3)
+@@ -204,6 +204,24 @@ IF_HAVE_PG_ARCH_3(arch_3)
  # define IF_HAVE_VM_DROPPABLE(flag, name)
  #endif
  
-+#ifdef CONFIG_ARM64_MTE
-+# define IF_HAVE_VM_MTE(flag, name) {flag, name},
++#ifdef CONFIG_ARCH_HAS_PKEYS
++# define IF_HAVE_VM_PKEY(flag, name) {flag, name},
++#if CONFIG_ARCH_PKEY_BITS > 3
++# define IF_HAVE_VM_PKEY3(flag, name) {flag, name},
 +#else
-+# define IF_HAVE_VM_MTE(flag, name)
++# define IF_HAVE_VM_PKEY3(flag, name)
++#endif
++#if CONFIG_ARCH_PKEY_BITS > 4
++# define IF_HAVE_VM_PKEY4(flag, name) {flag, name},
++#else
++# define IF_HAVE_VM_PKEY4(flag, name)
++#endif
++#else
++# define IF_HAVE_VM_PKEY(flag, name)
++# define IF_HAVE_VM_PKEY3(flag, name)
++# define IF_HAVE_VM_PKEY4(flag, name)
 +#endif
 +
-+#if defined(CONFIG_X86_USER_SHADOW_STACK) || defined(CONFIG_RISCV_USER_CFI) || \
-+	defined(CONFIG_ARM64_GCS)
-+# define IF_HAVE_VM_SHADOW_STACK(flag, name) {flag, name},
-+#else
-+# define IF_HAVE_VM_SHADOW_STACK(flag, name)
-+#endif
-+
- #define __def_vmaflag_names						\
- 	{VM_READ,			"read"		},		\
- 	{VM_WRITE,			"write"		},		\
-@@ -238,6 +251,9 @@ IF_HAVE_VM_SOFTDIRTY(VM_SOFTDIRTY,	"softdirty"	)		\
+ #ifdef CONFIG_ARM64_MTE
+ # define IF_HAVE_VM_MTE(flag, name) {flag, name},
+ #else
+@@ -251,6 +269,11 @@ IF_HAVE_VM_SOFTDIRTY(VM_SOFTDIRTY,	"softdirty"	)		\
  	{VM_HUGEPAGE,			"hugepage"	},		\
  	{VM_NOHUGEPAGE,			"nohugepage"	},		\
  IF_HAVE_VM_DROPPABLE(VM_DROPPABLE,	"droppable"	)		\
-+IF_HAVE_VM_MTE(VM_MTE,			"mte")			\
-+IF_HAVE_VM_MTE(VM_MTE_ALLOWED,		"mte_allowed")		\
-+IF_HAVE_VM_SHADOW_STACK(VM_SHADOW_STACK, "shadow_stack")	\
- 	{VM_MERGEABLE,			"mergeable"	}		\
- 
- #define show_vma_flags(flags)						\
++IF_HAVE_VM_PKEY(VM_PKEY_BIT0,		"pkey_bit0")		\
++IF_HAVE_VM_PKEY(VM_PKEY_BIT1,		"pkey_bit1")		\
++IF_HAVE_VM_PKEY(VM_PKEY_BIT2,		"pkey_bit2")		\
++IF_HAVE_VM_PKEY3(VM_PKEY_BIT3,		"pkey_bit3")		\
++IF_HAVE_VM_PKEY4(VM_PKEY_BIT4,		"pkey_bit4")		\
+ IF_HAVE_VM_MTE(VM_MTE,			"mte")			\
+ IF_HAVE_VM_MTE(VM_MTE_ALLOWED,		"mte_allowed")		\
+ IF_HAVE_VM_SHADOW_STACK(VM_SHADOW_STACK, "shadow_stack")	\
 -- 
 2.25.1
 
