@@ -4,99 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42F77C531CA
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 03:52:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48F10C4452B
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 03:52:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 238716B0093; Wed, 22 Jul 2026 23:52:39 -0400 (EDT)
+	id 435186B0096; Wed, 22 Jul 2026 23:52:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1C32A6B0096; Wed, 22 Jul 2026 23:52:39 -0400 (EDT)
+	id 40CB36B0098; Wed, 22 Jul 2026 23:52:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 089AA6B0098; Wed, 22 Jul 2026 23:52:38 -0400 (EDT)
+	id 322DE6B009B; Wed, 22 Jul 2026 23:52:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BE9F06B0093
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 23:52:38 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1E405803AE
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 03:52:38 +0000 (UTC)
-X-FDA: 85018669596.30.B124D86
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 3FA0D80002
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 03:52:36 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mn9heTG6;
-	spf=pass (imf02.hostedemail.com: domain of farid.m.zakaria@gmail.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=farid.m.zakaria@gmail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 0103F6B0096
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 23:52:40 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6BEA6803AD
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 03:52:39 +0000 (UTC)
+X-FDA: 85018669638.05.5E65738
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 9AC55C0004
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 03:52:37 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=KBYrIWhS;
+	spf=pass (imf28.hostedemail.com: domain of farid.m.zakaria@gmail.com designates 209.85.215.173 as permitted sender) smtp.mailfrom=farid.m.zakaria@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784778756;
+	s=arc-20220608; t=1784778757;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xmQfb7RGeHqBIgAxcCBU2i2fNRwtMMc3p7Xugp36EHc=;
-	b=oFS9g/5hoCawjwvBUXgxV3moRl4WIYbTN1GdbcgoRFVknGVgSlrRGYhR0+09jAZE6JopxK
-	uOKkyRWqrWJVO8PWkKnEqyK7VcI18XoC2vNc7YUREcT1LI9tLhPSmh1T1lO4HEDz5TL2f5
-	euK+R/oes+3QjYbeRTkMMNUPttTGd7Q=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784778756;
-	b=AQZKB2WnIKmfquevDGHvwv7o31MBtYEnJbh+2jphuD7W/mXMi6u5FrYPtKB89FHsUvg4X/
-	obz5jL+hYPb+F9Y0fW8qKS7YaR3mFIV+kqddjDTz/IG5bAV6lWv1VrRlXR/Iq2buzbvX5N
-	aVH+irqC2N35jP9Z96phWO9vVItfQNI=
+	bh=+KjB9ERoiyCT7CFBhmVdB5j9kcQH+fYHM1d2cSu2txU=;
+	b=GKWPxvTVEnkoiqVHAChfcCVSEpC4CxqS7jbf12EylXr70B0NVXhyoH/imKMfQxA51UBkcr
+	S/WiV6SiH7HKPwUcxKfogoNTDeVTSRwqBwAQeft5hSRmvtYt7XxheGXDl0Lt9G66ccv4bH
+	aOXyb07U8snbmtZCgcxz6VXDsf2/dio=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mn9heTG6;
-	spf=pass (imf02.hostedemail.com: domain of farid.m.zakaria@gmail.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=farid.m.zakaria@gmail.com;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=KBYrIWhS;
+	spf=pass (imf28.hostedemail.com: domain of farid.m.zakaria@gmail.com designates 209.85.215.173 as permitted sender) smtp.mailfrom=farid.m.zakaria@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-3856d6fbcb3so137951a91.2
-        for <linux-mm@kvack.org>; Wed, 22 Jul 2026 20:52:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784778757;
+	b=ssTSc3nu7wh0/sYx9M4XlOaOCpfECZfsaA6+uQiKOQneGFfPZQQTyg1l4YhK0h6Wsi5GRO
+	MSooYVoBB9zW9P6om/lMF+rBjqzM9AKQXahaolwd0P/2HTi3XV0VMhYJGyLKsrirqswn/S
+	4hQRS4qwv/EZmLOP5rjtSf1GnN7lXtw=
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-c9cf07d2df6so136548a12.2
+        for <linux-mm@kvack.org>; Wed, 22 Jul 2026 20:52:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784778755; x=1785383555; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1784778756; x=1785383556; darn=kvack.org;
         h=message-id:date:references:in-reply-to:cc:to:from:subject
          :content-transfer-encoding:content-type:mime-version:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=xmQfb7RGeHqBIgAxcCBU2i2fNRwtMMc3p7Xugp36EHc=;
-        b=mn9heTG6LQ0cFH3nLUlY9FhHnGvVzZWMRP/wqZTN1iT7A77wLltz0L+2gF/d5dG4rg
-         kV3Wj7mkO8A0a9jsH9K/9n5m/B4TkL80w132lZgk/8NOtz7YCK9ya2y7i/ELRGL84lA0
-         DLagd3mh5EJ1FDWEhaW1DntHzl2fPUHxNgu2/u6PTB6OOO3wuI4jBLi8F21Mfh7dIKDi
-         0BMrKyFyrlm5K9DK33bTENdGbVC8hRqJOx/ec6MtedF8blG4Fo3ob1cle7HJpniVnHOf
-         tSQt3ivgiovMMwE+mQbmy6QCxA1sV/Mu3HNfH7/oSB4KoRSsxD9jtpEIgh0IWdb7I8fs
-         Wxtw==
+        bh=+KjB9ERoiyCT7CFBhmVdB5j9kcQH+fYHM1d2cSu2txU=;
+        b=KBYrIWhSboWA6VUxWeGqLAAndsK3FYPBW7wwi2sBhzXeb0vDzj9FBum656kGY9596l
+         b6EpA67cOCtCgfi13G6u3iGrI7PHD4C2yP2MkSMsZWqRYVlqvSl3vGDlXXNo3DVMb1cm
+         80FO+cBZYfHzceItme5+/dp24/nnd3gRpOO3UM57L+IiyAGa2dsKrSKb/vC7M7DHhYiK
+         xwJG8tpZWOoWqboFF/4/iIvijvlxmlePSFUXw5nhSylEuW4KwytmTZ2xAbuh9FtDEbDx
+         jH9OKM8CUg9ubzqjEuAcUEjyTVCBzcbLRXImsT4FfPbyfcg7TTR8oycRIjtxoy17206m
+         6LSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784778755; x=1785383555;
+        d=1e100.net; s=20251104; t=1784778756; x=1785383556;
         h=message-id:date:references:in-reply-to:cc:to:from:subject
          :content-transfer-encoding:content-type:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=xmQfb7RGeHqBIgAxcCBU2i2fNRwtMMc3p7Xugp36EHc=;
-        b=fo0MIYm+7/MiJj7xeWkAWeSgT4ya7LhUAPYuJ/AcRUJtrduAHyxFpqo/4LCHr7S8QY
-         DR5L4DRdkLsGTti1Q1kVHZtVAXk9VTrs8mVDPAqXZkxoM8Yxbbcbh2lVitqF0ZwBmgnX
-         VUHH38ZEozuOmd8G+V/5eqDQTk+ZQVUEqED2Y+0XIZ+oiFTSLz/6uI6wyAchlPmLjsDh
-         46D4haV+DUc27+B6VSIE51YvjjP0L9PLwbui/GNJ5uW+nPcTxNInPZvPnm5QQmfVJot8
-         mdP6Y0oFc9+anh7QkJgwhmJFzsNH1R1yKXXDc7KWbyfnU7qayytpj6VmOijtQwUFsdRu
-         ctzA==
-X-Forwarded-Encrypted: i=1; AHgh+Ro6UWQpoLuS9Qw/FNIV+gh3/RRjDAyjf9X3Nsnu+CvcLwCxc0Aj+2Hj0w+1L8GbMsR+9VKZUVLFQQ==@kvack.org
-X-Gm-Message-State: AOJu0Yw/wb+Vo5y2j5y9h3X1WKA4oAhBcR+eIVjTcEoRRATwEiNJj45i
-	uRPV6RZEWBS58BCfZP4SM+tbMayrSdbj9gAlGaDSS8m+Qq8CJpGPLIFh
-X-Gm-Gg: AR+sD12pJfGZTC2urkyXuceVKDVG6MDKzSia1jhH88MStwfpswdVlxzsP5x3jFN9ghA
-	7k5kfnKR7u2BGVEIQKYiKS5/rur+D0pw68A9cFK9FoLNpf+LumaTDrwyLu07h4a7W5fGNARvvWD
-	gnaptxu3hf44g2frHtxQgSzBA7gH6QNgvt/bkNxUFe6CNwdA08lbuIeGx+i0XzBIC9x/8jbrLHq
-	sonh7tLZrXQ2hR8n0FAc6cH4awdOQolEr2hCX5AfUx7GXFxmyBGFOIiooo9EdRUtj9L8xh8qs9A
-	RkQrSJ4RLarzoUf68qKX+tgeJc9YOpsVW4anE8NyBan1gpjnjcO+dqFGsQShRH6agPkwl8Q1K94
-	YvV235RSM51gG9M+NK5cGizQ3y0D2G0eSm1593pjeZGS4M3N9uSIfngwKskmu4QKNkZZxqJKoz0
-	Mkow/8gg==
-X-Received: by 2002:a17:90b:388e:b0:38e:bfe:81e3 with SMTP id 98e67ed59e1d1-38ec6495a20mr1338287a91.8.1784778755164;
-        Wed, 22 Jul 2026 20:52:35 -0700 (PDT)
+        bh=+KjB9ERoiyCT7CFBhmVdB5j9kcQH+fYHM1d2cSu2txU=;
+        b=AIDPZYQHLLnfVg8Mn5rt54tz0lkPSYvJw3kG/0BBTP0aXHdaL657Ozsx//15doilYh
+         7/fLlM93nuFTyqR9fI8KbmAU322bcJA/2vlLFeUE6nbYMyUp+iXjRE2vW9+nIWf4S6l6
+         UjZjYzpNh9get8E64rwfhBOlpqESyEucjGOKtya7BWdSfeh39FCnL1UxMz/Z01bOeTht
+         8z/yb08rEHkJsooDc8OlaxUR9VzGYFfMdVD1qmZfvBBu9qZIScUjjF/xSzOiSa1Uk6NC
+         yvckTJ65cvWql7s4I2Nq3rW9ueE4IPpXPQLQjgMeteHF//9rBKZgG515V4OivFa019S4
+         CSRA==
+X-Forwarded-Encrypted: i=1; AHgh+RrBQP67PrsuwYUzBKuz8yg2sJ9CRKuOpEAdjHQwTB+0d4Vs76aWPwMR7Kk8+Od5Um2OYnN8JqSq1g==@kvack.org
+X-Gm-Message-State: AOJu0Yw2l6L0d0vPJyRU4YP6invMMDQUuPkcQhFujfm/j84cbu8mYAzJ
+	WJEOB15qEBWoRmvHjO+FX3jJBNkcnWsc1eO+LtLr2WVQPQvfgXsM1U5q
+X-Gm-Gg: AR+sD12W2fnLem5rcsgldeikzPnT0rTlx+qYuO0uADpVlQkHw99o3eZd+LDhLPZDfE3
+	edYzSZkwiWgly0iVY4qy+4ZRhXO9iTaFwWxR8aggLjHsyC0hzV08YvSynPG1jPZQi5f3YEfS8i4
+	42zpoCWwYjoh8r1KjqV8dgfSkNyXmC4UpBmdcujmZyUHCzm4WZrQGz5PiMl2fwGdSJbV4F5TKOq
+	ZZ8HemqXrjBpkSZCrw/T7ThzvLrkgR1D9LKBaQZKQikOebNMgDEcRPjGvFbwIeiklgWLOMvzJac
+	SZOjTxM3MePZlpjrZWlGrKdRAiPJG9jcuezCBjDqrY+0+1aEx1eqhso1SjzSAMxg786zgO/lO4A
+	nFLJMvkQrxZrtATYPhGdtXRubF8XvkxH6ifT5kaaKmVRW+ZAD5rf9M3PigWLF6b/m9W0cxMhcfx
+	JIThv9Yg==
+X-Received: by 2002:a05:6a20:c784:b0:3c3:ac9c:9a66 with SMTP id adf61e73a8af0-3c44b25089bmr1370190637.69.1784778756493;
+        Wed, 22 Jul 2026 20:52:36 -0700 (PDT)
 Received: from [127.0.0.2] ([98.35.8.117])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13d12f267fdsm11497359c88.0.2026.07.22.20.52.34
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13d12f267fdsm11497359c88.0.2026.07.22.20.52.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Jul 2026 20:52:34 -0700 (PDT)
+        Wed, 22 Jul 2026 20:52:35 -0700 (PDT)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 01/21] binfmt_misc: require an absolute interpreter
- path with 'C'
+Subject: Re: [PATCH v2 02/21] docs, binfmt_misc: keep general usage out of
+ the handler sections
 From: Farid Zakaria <farid.m.zakaria@gmail.com>
 To: Christian Brauner <brauner@kernel.org>
 Cc: Farid Zakaria <farid.m.zakaria@gmail.com>, 
@@ -105,20 +105,20 @@ Cc: Farid Zakaria <farid.m.zakaria@gmail.com>,
  Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
  Jonathan Corbet <corbet@lwn.net>, linux-mm@kvack.org, bpf@vger.kernel.org, 
  jannh@google.com, mail@johnericson.me
-In-Reply-To: <20260721-work-bpf-binfmt_misc-ptinterp-v2-1-e57866e4ae0f@kernel.org>
+In-Reply-To: <20260721-work-bpf-binfmt_misc-ptinterp-v2-2-e57866e4ae0f@kernel.org>
 References: <20260721-work-bpf-binfmt_misc-ptinterp-v2-0-e57866e4ae0f@kernel.org>
- <20260721-work-bpf-binfmt_misc-ptinterp-v2-1-e57866e4ae0f@kernel.org>
+ <20260721-work-bpf-binfmt_misc-ptinterp-v2-2-e57866e4ae0f@kernel.org>
 Date: Wed, 22 Jul 2026 20:52:07 -0700
-Message-Id: <178477872729.254289.514226158931792401.b4-review@b4>
+Message-Id: <178477872730.254289.4208397694401695848.b4-review@b4>
 X-Mailer: b4 0.15.2
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 3FA0D80002
-X-Stat-Signature: x6tcwxguc731ohq66pqf1gio6mskpfk6
+X-Rspamd-Queue-Id: 9AC55C0004
 X-Rspam-User: 
-X-HE-Tag: 1784778756-405937
-X-HE-Meta: U2FsdGVkX199/kLZZWIlNEBNpdUMCu0l3vMyEyX1lugbsedXx5/sz7FcjiZCvy6NzCxAHd2srxGmPIMuPRnzpreXuHSSP4rw93oHE9vtmh7rvywPw8RaBxvl+rUvOf6QTP9D3wGgtMpo5MWSsi0MgTiAzaVccJ+DSWdFiu1fG07o794aXZa2F2s8UOkLbFriguOgZrA5XkyATBNYbXXfuDD0y/PFxWzrK5Y3KFR3lfHS7iGCXCOUjDJAHjMjJasRQE6IGvxRZ+qdyitME2cq2pFpTXckud4wJGy+2vmI+sBkGBNq/yA4TDdzwFnqZygEM3fey4nUJ4Tng26ooGgwM3R/NtaisMUawomr4Oioy+VXZkjEBzHmGUcxivPd1NR52w217jouTeYbKydlThnJchWDVBXIIfhLnsSjgTT12NVP2YmpZLyK30qvQ8LxxBe2Hm9qNp5d5TEhxnxFq2KM+d38GOAJnklOsBv/M11PTiox0y1lsIHpL6vWbL9D43A//8LgNbEMI41w/tEdnXRlYqUW1Bks1NiI/Wbv87gBMHcPMGVrgnWlVVNErdCk8p3gKCiY8HWE6T4LGlkvftH0kFAPMjU31pcbzW2P6Asz7RdvF0zkkY3X08zXZBZUo/Abj2CzNaTHJGmC8MfBU8NBchRLmEiwGjo/7yWYWa492zjFPyPOE1UHm/TbTtWwdssXzp4AmvlXatJVMYpBfITaI9nqfP5PWMTpiH+QrGeSO2VR5WKljqR3FKvLKLcsnGlcENfLPXnfYMkYV1nCoHwdZca/jA85Q4oiatQ/bsxTV/rjOrMpYyObuHK6lBf/4CM7l/2LRVgX7dcbTiFKMoVF99Z4oMdVIYon1irzySBOEi2FYwvVGKXl1fJkth8VEUUu+2cvtKtwSxZBAH2v6A2CqeJ9+HvyJCEbdl/FKcBjoonGs8/fzENalMMEU167LTlZae43jBnPTa8v/4fzlEI
- G1TLVihr
- xyCJeam6GvTEU9IZVVYuJgdcbZ+Lor2vOBGPV6FL4oTdHIdXLxacp015koj/ruSbXQ+dlPBBfAKIxkmPJsPo+f4oY8KDYf1t/Qv4gUxlrEvxLvixqNd97DX7uLdWNfei/qvj+kUsdLLlDAqRhchNqEqyuil+vfNNy9lporz2Zto/okGAzAwfXPZiG2XfqQ21T1TzJMAbJRFcJ17S5ZHJHpUf79eMZFHaIe4Did389mWPyTV2uDID1C+szNXUFHqSOXRBU2iKRBbp7wGVduvp3lKOHH8X/CeEoAfX/Yhb+pczjNmTXxn6saaXYYN+/xpBDovsnTaEMOegjdX80QQpBS2vOhP06ikpIpR8/h/HdQ3j9UvTSk3XgwXeJwkVk8pJzGiyK/D3cW3+kjv5ZslH2dJwPipLoLkdtRVXUyZsLEyGZwtPaVBjIIqpoiNpeKwjar/l6wQ6u+OkqbAp7tGWhy3FJUteUrJVykRTiGPB2rXTOr8+JN+RWUSqclQMys/Ryk1gKZyURFrJ8RaUB7JJBpd4V/b2Xaqffaj/81NiMqAl2RiNubm5darToDwuAsBk0Qv9f
+X-Stat-Signature: tkuwgyj5xugsnwbhgmkuyf1stna6tk65
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1784778757-959078
+X-HE-Meta: U2FsdGVkX1+sl991/UNy27/xVnC7Sm1gqLbyd/lWiRfi6C6JrmU/99vGNr7LuZbYzmenhMBEqTEeSQN/2COigKISKz6fTEkw4/txr/Eap2vyBZ+9hmvu7wZYijrLLeoaMXMTgLSIr+iowRKYBrP+SE1KTrkCqjZqeFfnlvnMz+mK2l054k8gS76xYpIba/5O+k7TpJaN3wkSN8/8WMtQCQzzNFixvUaVT12XsGNDlWdahM9o7yZyMHR1zMy859fbGo5LX8JPi1u5+/7M1PeGAZIO5Xhl2+275UbAcYzYy36H0Uwx6Tj12BBu6aT/qNArxwER4Fc9eF2Nkp1P3JDOp56ahE+fxKHta/SfKrz61DYjriL31dbr5mD1s0QHdCU9UulkuSSYyLeIdz32lwagnxmm4J5K1UB1lD3Pt0JYBl5wkf/1sXLNfDLoHTsDc+tc2CMhs6jR8IlWuNgmYQvdeiLeE0fiDoGWuss5nGcCTrzXI4nRhgqOYVmvBVJYuOHDCH168JJaBhxekgK9H3uCjWw4yBkagyqfEHFFAO8MMi1yDlSJWjALdyclF21xAJ/4oaRfaHNABeJ0Bbh5ZdFhQwue8KnxZO3KvPz4GVHnz9MllX0agUvCMzeoi2fwQUC4a10g5omvY7YIIapfvGsTox6I+newy2p+OQO739hV5wIQwvMeSSaq4GNRX4X5uRVzdDcD73DzTlJBuVyPoRKxdCTEmNG1ROCOV3JuwtgGjrGPrUSx4jgJHnvwPw5xcDyVSpEgSApLl0sTwLMoiZoh7IPraBMVBZG5MeiOkF8TgOrZwp1YT3QP8UzZjaHtEcLSZqc7syxpweT3zLon45CdaA7i2lqzE4g/h/Lx3/lEePxid2OndzDH1YnKuA8tTMTHQjdwE+E4Kg3UsiFCzlpcqClgOTga61II5A+DbobdTWQxdbEV+OgwdZa6icxQaoDkz1TG6rIZVrvVGEOLRNz
+ ZyHhbD1o
+ HmswIhc7ohGdbSc4gZIrrGa1G2CQEd8c0VX34/JyG8iuQAMlorzzk1BAPFrwPnSu579oFjGPMuO8l+TUrQFV72RqJSKHG+Fa0g+ofnycgw9Q2bMgp3Rfr2Qm+jB5pCwVe6RajmcaRwnCMz8F0de2n6qRg7FARCBEjVOaQPAb8UccfiaTkS5YPWGKNK8IwvykXgCGauUS/m681+geQAfCe1MiPSuKP0fAxBnlT+KH3cnPErMgFfLjNYyU8rHk77YOSgVRmuavgRDHjgdrMj+MfqVrPQa4LAecuZr/f9DTZ0wq8czocG6FEJWFENgZGD6Nb2hejxF0E5FanQM7wLdsnQaxBJv5akCO8JbGv/r+CTe6tFe0446o2b9xgP6swu5M0ccoDDIf4LrGiBcSGfliRKe8cEuCvnwv3JmhY3BrbSMkgyr9x89YaavUoD8GqwtG2uv4OBe0noJ6a0NyeP90//ctO+R49nRF+xipEqJSjBedba+ZELEMQ8fInSfaXyVZ4RF7y8q5xqg9vuhUrv6upNrkrx1QhQZFf4fOJ6K8uuHAgxf4A4CWWDKkJMKLEcjEsb3pT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,13 +126,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 21 Jul 2026 16:13:43 +0200, Christian Brauner <brauner@kernel.org> wrote:
-> A 'C' entry computes the credentials from the matched binary instead of
-> from the interpreter. So a set*id binary hands its credentials to
-> whatever the entry names as its interpreter.
+On Tue, 21 Jul 2026 16:13:44 +0200, Christian Brauner <brauner@kernel.org> wrote:
+> The general usage trails the bpf-backed handlers section and therefore
+> reads as part of it. It predates that section and applies to binfmt_misc
+> as a whole.
 > 
-> Without 'F' that interpreter is not opened until the exec happens and
-> open_exec() resolves the path relative to the current working directory.
+> Move it back up so the handler section ends where the file does.
+> Upcoming sections describing the transparent and loader dispatch modes
+> append after it without swallowing the general prose again.
 > 
 > [...]
 
