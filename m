@@ -4,124 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DEB8C531D1
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 22:58:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71C58C531FA
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 23:01:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 327106B008A; Thu, 23 Jul 2026 18:58:55 -0400 (EDT)
+	id 32BA26B008C; Thu, 23 Jul 2026 19:01:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D7346B008C; Thu, 23 Jul 2026 18:58:55 -0400 (EDT)
+	id 2DD066B0092; Thu, 23 Jul 2026 19:01:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C7B66B0092; Thu, 23 Jul 2026 18:58:55 -0400 (EDT)
+	id 1A7256B0095; Thu, 23 Jul 2026 19:01:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D0FC46B008A
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 18:58:54 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 50750C01E6
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 22:58:54 +0000 (UTC)
-X-FDA: 85021558188.06.B251698
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 8604920006
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 22:58:52 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=op+0I2r0;
-	spf=pass (imf13.hostedemail.com: domain of vipinsh@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=vipinsh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C7C3D6B008C
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 19:01:32 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 47CA3A0238
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 23:01:32 +0000 (UTC)
+X-FDA: 85021564824.24.CD735CB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 4E89D4001D
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 23:01:30 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eAEFQJJr;
+	spf=pass (imf17.hostedemail.com: domain of helgaas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=helgaas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784847532;
+	s=arc-20220608; t=1784847690;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Zj8yGGu0ZvQspv+dm8spEGL6AmJp5gd8JQ+4SasQ24M=;
-	b=nKi35l2hfxjQDgpebAxMoKJe8JDZPMSvPar4H9bV3WJmlnLUTQzZAcK3nyPPDO4Oc/hE3d
-	Kqw1TW/WscMf2PzUFH4aTmfR9kO30RnSA5XUbY+VXor64i0OkLVaGVcxZ6+9GEb0sedmdS
-	NTmdd9vjjyxveEdB83rhZkstP/ID1iA=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=op+0I2r0;
-	spf=pass (imf13.hostedemail.com: domain of vipinsh@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=vipinsh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	 in-reply-to:in-reply-to:references:dkim-signature;
+	bh=RdLv00N7jX58E8HADs11ire5JMHBSKT9IgqUk1JawYw=;
+	b=fxeAeS9raR4XuqdtBkSCS/d9MkulSJPmmbCDaaGmxYfcY71seEEjf2Lz/mvUk0zoFrRKnj
+	PKYpJcltLemee/7Q8ZaQQ6gB9FKD5MWF7GKUqO4g6WN7JGfmaOMGk8OymHWOSVjiNHXBdk
+	YZDwr2GjwyvDIg3C39qKhbVo565duAU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784847532;
-	b=vUTZOsDzm05uiOIzocagyEzyy9hv1cwTrMSFuB1pMHJS1+K5pS3FVvy3LQOeSUv0ZDSqIo
-	MheqhNNEimEqajHN0JAffshXQAoGZrSkDOf6NNu1800Hca2mQvoYqkaLV2p7Ns9p7d3olN
-	u+V4BXvq+bEiYfpS+cMbnpMUuFowtnM=
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2cacef7d299so3055ad.1
-        for <linux-mm@kvack.org>; Thu, 23 Jul 2026 15:58:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784847531; x=1785452331; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Zj8yGGu0ZvQspv+dm8spEGL6AmJp5gd8JQ+4SasQ24M=;
-        b=op+0I2r0UcC9zwoz2t/WAO3OWAhNrSYZPRo+++8hlwqCv1PcKbxdcLLvDlSdA3Jdey
-         NCt/Hk0w1M4SITiE2rsdnfEcZmcKOb+Rl8BdmvUFxivNXVEFPz7A4ngg2ODoMOCrKAWv
-         FqIwTXdOyiZO/CQGjty/NVQikPIUpOkaa1SKkIiikWVSdZMEOup3Nw9oyDdJdmf5L1VG
-         d6N0s0w/rb3KIVkM3TPH9usVJGmOuDgF7sOiI6/SdtH2pzPV+XuAoIexAGELzUkCQlsp
-         rLVceykrewI+cVZP5xQpx5M0TFO1XHyF2B4/JClxuF1fj1he4F93jbGtQHIds1Ttzda5
-         bF+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784847531; x=1785452331;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Zj8yGGu0ZvQspv+dm8spEGL6AmJp5gd8JQ+4SasQ24M=;
-        b=lh/vwilsHFoWi8+kryDPf4JgzHIHiW66s55qA6aYDo8ivG9bNa/rtIb1eAM17IFyQa
-         +TIDrfs4eCwR9uOoc2utnT+mTyAHS6wCbI1KwoOL3SsRhs1fnZeA8oD90/OlC1ju5Hmt
-         RkrJAnVtGRsZDIitcASozBHT2v/5+hoXA+7LmWawF8Fm8T+H52pT+tumJHTrCVss9taF
-         nINEdw3smBT5V7/l2aMCU4P3XQUb9i+f5Fxc4xDkSB21wU7geO8G/PuvG0sdLyALhtiA
-         BiQUnbDI8T3amS+r/i9Y1Pn/tCM0fq+RPrW+DyvNfkUHrPS3Br7d4AvQ1lQxrf70tTey
-         u+PQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoSNXOcuQ1chzNqRf8IkIfkXS0vkDs2T7mcZzQGAG/ixBi40ByhDcIcKCbejuCrviTo3qc3CFm0nQ==@kvack.org
-X-Gm-Message-State: AOJu0YzHgPI6NhGzByfzQbOBBFJV8zIRrv4sDL6zJsbsM2Szw0KsFQBI
-	+v2dQZEodteRuq8SZQWRjOxBwcTET8cspVJVG/bm1MJbqm58PZHWDZnqpIRvRz7HMA==
-X-Gm-Gg: AR+sD10D4+weQFaL4AGNhdmghrHF+i9CyFLY0rqP+eozMcm8HXtO0ZIygsS055QyCLP
-	rYqsKMXbqEYo/EukIh75jzahsxspzDmEep8QEAKD+RNgs7j8mfRsgT/GlKsu5nP/5XQhAVKAWn9
-	jgifNz0HmZ4vur8qdPCzPcUNAfK9Mc5lnasmGgIZxDWEnN7/kQcrUq/i1EiXmwJtiub97C/16yz
-	LjP2d+vnfw5bn+PVbUh5YbqdVEBI/LbRW6BaPwTYKQeu9LMyTdWWoKah2HUwkozxfKzP3aCxEqo
-	i4XYj6ApFOS6VUr41XK2/2iHojrZ75fF7bCsrrwugn9tqsWdoxnkLWy1+qeOZnsg6NCB1Mr09JP
-	RUlB0vIHMI2z79/I+xIK8bovpFXjQA5JatBICfdZhYvcuGXc5/WyAhL16JKpWta6jcOscpN+ihp
-	hchMeeUmoI3C8SNdJ6+MtChybGWsVTsPv3SKhhtpY=
-X-Received: by 2002:a17:902:d4c6:b0:2c9:a222:47e0 with SMTP id d9443c01a7336-2cfc049d8efmr1917685ad.20.1784847530903;
-        Thu, 23 Jul 2026 15:58:50 -0700 (PDT)
-Received: from google.com (176.13.105.34.bc.googleusercontent.com. [34.105.13.176])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e17236924sm3686474b3a.7.2026.07.23.15.58.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jul 2026 15:58:50 -0700 (PDT)
-Date: Thu, 23 Jul 2026 15:58:45 -0700
-From: Vipin Sharma <vipinsh@google.com>
-To: alex@shazbot.org, rppt@kernel.org, pasha.tatashin@soleen.com, 
-	pratyush@kernel.org
-Cc: ajayachandra@nvidia.com, amastro@fb.com, ankita@nvidia.com, 
-	apopple@nvidia.com, bhelgaas@google.com, chrisl@kernel.org, christian.koenig@amd.com, 
-	corbet@lwn.net, dmatlack@google.com, graf@amazon.com, 
-	jacob.pan@linux.microsoft.com, jgg@nvidia.com, jgg@ziepe.ca, jrhilke@google.com, 
-	julianr@linux.ibm.com, kees@kernel.org, kevin.tian@intel.com, leon@kernel.org, 
-	leonro@nvidia.com, lukas@wunner.de, mattev@meta.com, michal.winiarski@intel.com, 
-	parav@nvidia.com, praan@google.com, rananta@google.com, rientjes@google.com, 
-	rodrigo.vivi@intel.com, saeedm@nvidia.com, schnelle@linux.ibm.com, 
-	skhan@linuxfoundation.org, skhawaja@google.com, vivek.kasireddy@intel.com, witu@nvidia.com, 
-	yanjun.zhu@linux.dev, yi.l.liu@intel.com, kexec@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v5 00/20] vfio/pci: Base Live Update support for VFIO
-Message-ID: <20260723215749.GC260824.vipinsh@google.com>
-References: <20260714151505.3466855-1-vipinsh@google.com>
+	t=1784847690;
+	b=K5MXEULLq/UUO62Edf+PStQ2cee6t9MjaR5TP5DpPJ89aZH2uCw27aIlWczAq+XeCYPe7k
+	yYPmk/fEwy2kDDy/lj8ZQolxB9HM8sqBRNCOxlMgJQGAxI0fHmTfYkFJxisBzYhGZWOrMM
+	chgKR01W0n3SalL3OM7Owf4Pgaz6p0M=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eAEFQJJr;
+	spf=pass (imf17.hostedemail.com: domain of helgaas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=helgaas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 9BB95600AA;
+	Thu, 23 Jul 2026 23:01:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7C181F000E9;
+	Thu, 23 Jul 2026 23:01:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784847689;
+	bh=RdLv00N7jX58E8HADs11ire5JMHBSKT9IgqUk1JawYw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To;
+	b=eAEFQJJrZ7uwgqf0SgHo59C09zS97IR7/DOJa9wnEhNJHsi/MrkVGb5B4fpFV2gH9
+	 gQoMFN9p8WCk0BnTxe6oAiNlMc7l7E1fdeB6k6zOpKGBxd9IpltA4M2cpnBLTgx9ND
+	 s9SevN7RMHz3dtI6CumsFLt/WX6o2AdxtlaQGfwZUC7YQ3hJZrUu2ZtSVr9NtrdtNa
+	 7QxgfYUt5cDaogs4th4zU4gzR+2fYpW3UUrHQZCyLJ3QEqVxYaDRpT9FrGiiw8IzAf
+	 UPq0t40emte7mzuq2mEcT//7iVtv5WasN7ES9ptQPBCbkDoRRCAUPiDNjmXzAcdNJr
+	 dRuw+3ML3Ootg==
+Date: Thu, 23 Jul 2026 18:01:27 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: David Matlack <dmatlack@google.com>
+Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-pci@vger.kernel.org,
+	Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Alexander Graf <graf@amazon.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
+	Josh Hilke <jrhilke@google.com>,
+	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
+	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pranjal Shrivastava <praan@google.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>,
+	Yi Liu <yi.l.liu@intel.com>
+Subject: Re: [PATCH v7 05/12] PCI: liveupdate: Keep bus numbers constant
+ during Live Update
+Message-ID: <20260723230127.GA869843@bhelgaas>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260714151505.3466855-1-vipinsh@google.com>
-X-Rspamd-Queue-Id: 8604920006
+In-Reply-To: <20260710212616.1351130-6-dmatlack@google.com>
+X-Stat-Signature: y6eue3gtz6jcif87oz6j3pr9duyoado9
 X-Rspam-User: 
-X-Stat-Signature: j496395xyknyn7zffse9tq8a79edyidt
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1784847532-389262
-X-HE-Meta: U2FsdGVkX1/i/k+JdHrnF7EHiddY0iq4hjXVzFwqBHGfl6b23VkHyo+Yyc/eB3xNLqx0c282/gQ4XXHB8vMDdUkeg0PWAfKULB/iE0ITHHYhZ8DTOZ3uDAP1vSiYLmUkuNZp5nhno8Q7X2DkP14rIYEiIXVokbX3mOFAgvljEkGX8tDXypcwG3wdAs2frFQaBiSGTnQapP02dQxI7gPWeDEROwTLkkNTrIFqIR9mhh1uwvWNJyMJ63Ohk/4Iko5mkqEihSQtafIH2XXuNMcYj/Sq1hrd9rnJpMVahUe3Zs8xJE5+eauNCZvq4YvJmVNpwdsLHRHWoTeuDpIdMHzENVOGGJZT7nraFohY/OJ3uxgIWfQ/WbZzvchWNS8nkZeOLMPBsixE82r17g+Rto2tW+TkKWJ9KzNNznubYeo3gk5yKbylQYWItbsObRKVk2g5S50VD2jyY45RITOy++BNzd/xdUjFwVo/uDPeVYQNxM8RHXUpXUKp8lJY4y+9U9pf4nT51K5gRec2QlAny43loPDw8hd6QO9yecpzq0pqB4UhF1/KvacP+by3qFZ+jtLDhRoRjgboSM2bgh11cCfFk/tD5kiW34C63m8jDYmt0uSqkg51dSvWc/lI0AQpiqnkk4QfErtBxL/zEKZE2IHub33UMYTcsVx3y3eY2w1tGFM/waYTeMmddXX8XVx6iIGIf32y0GgfcNKsmR928/0Qw549rnDkmk9EjOsAxpX+2G81AqWEoT+b9VcS7vxwSehzPCzP8H9V0Bu9QmqTEegCK/FXC70KGt5288jTPkF/DDz3aW+br4cY15Kpiu4MOf9DGJf1JqBiOCn15sJbo2mspbVoy0nCxzP5xsU+++rU9AXsiehnMJFhI/CvJ8jZRAlNN8J7WJqIhYi/BWmhitUeEFsZGGtzi/FO6pR4FcaPfHRBptUqrn06Z0C+9lEo13pYHvHwmuyF+aZMwJRxGwX
- d82SB8P4
- w+idNYFZPu8ioiKrdVvhgKk+fwyl32fVU5Mu3TNhbgSlyq/sPycIOftXJQ9lspLsW1TPPYulKKS9TrfOnx/o5AvakeefE8kU2AYULY8LEcq15a3ImT/gHifebq+VZjAteYNcHmdXI3A3dC2c6N7O4QvKR6A+kKqfhSGBB3XWuErKGfyevLbYPIXQNhn4pjMfhvK2pGzAeKPeZdRw5nKiQgv0RqWEblhDNk2nqq+jzhjhRMpdTrjeYmjKHVSIwCkFY3Mqt+EmtOC6NqwGllY6huKvdN+UR2CnEH7eeXGJBQdaccacGYR16mh4qxhw3eLO997Q+T3DH6Ig95v9mhIYmCzMviZ3nxU1hnUKr+bTB7CCrfcS18PzsFlHXttql21CFUiC11+TZmKzMKyU=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 4E89D4001D
+X-HE-Tag: 1784847690-177692
+X-HE-Meta: U2FsdGVkX1/0e3Sec8yd/DtEiJz1ADfWjtJYP4P2T0bbECn7UwzS6pZpWPL8FdRBTjgrh2V5bq8ZucB32Wq+VSf9jYvdy1zmpw00riqWOSYeWaXWHngOBDNjB85ZY2l6tmcJaG8Vc9bIJq+e1z7vIZIa6Jw1gerpr9GbZOQBMFdN948Eyf4Jp7jzishJaUqLcjJ52C01WNW77/Dq6f36U2gL8C2qqaO8meOumEWoSTnHJPVhyxa2kxQd29lxP7WX4azAOVqGWc6pRbmaZnBX08maftM1gTd8TNFBr3VSTCVwBiyp3V7HhyaSQnTB2+iET6ql/wQVVBo7TEg86mnFl2iwSGRkByxJFNZsHlqaNkKzPsDbshng0GxaX2UwTyQ2r+KBP4CDcSsKa14ma3X4/ySVJpScGrNfd+1lhcoxLJV+xP/hZw69CM/6cAKijeG+rZx3pDaZZCZQwlJp39IRVxUxa96s1Wzcj/ybKSY9Al2/4kdSXfEjvFWUd7HB4vRU1/pulaB+k0+wqwASH5kEOq08AXNFTewkd7odM8ADS0K7SjBaa26t3EaTa7t3briiCsc7Ax1nwPg4JUhdGVMUADlCyhLq5/PHM0EK5+P5oF+StQ3kyM9g78KJHVnS7xrIL7sIoBH/UyNmfyusJgtxhIK9d3oFL6bTBdddwI2BDwP/pBA9kEQ8UzoESJIGLEJptnHqN+K8FwPqhpcQGIqzsYnt1Djxs8glHdMWpHGe1sxXk3deADM9GLj4igAf6hVVrYLP8hbuJoi642QLXiGEYTpu7vogsNJQDPQTnz8acgdnYIs1+UMQDOMbTJIGERMQtgmcq6Vheu+50dNlY5oqYxwpulWyW3JC5MPMTuCIB8L1nua3TgoypPEHNGqC6fNU4mHwzK+COrkus15QZCBUIQLqTuI8BmudHrqRHyKwmI8MQfreDbdgX+P6LUzJpkIMFqeg97kICxnnKG8FOsw
+ MGQFOriQ
+ oqCdoGoGwM7fYbQgK6km/PDykJjFFE9jfVE7SP9nd84lHOwVowVKHkPg8pnPtg/D5sJtVHk5SSG5m1gg7LJzf6YPGsmdkD5a0hfBL0tzYxN7SY1Um52XN6XkCArC1BLls5KyhP5mvX3Et+V0zPsP75diAxHU0CY214zAveB2cZf5uVIHpP/z0nYze/evupqFZxyZOtVgFbU8odsySz5SB04TvH8s6FJT7+epR9tiHIkyVPtLFSuiPanboDX2QNKw7g4VP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,37 +109,164 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 14, 2026 at 08:14:45AM -0700, Vipin Sharma wrote:
-> Hello,
+On Fri, Jul 10, 2026 at 09:26:08PM +0000, David Matlack wrote:
+> During a Live Update, preserved devices must be allowed to continue
+> performing memory transactions so the kernel cannot change the fabric
+> topology, including bus numbers, since that would require disabling
+> and flushing any memory transactions first.
 > 
-> This series can be found on Github:
+> To keep bus numbers constant, always inherit the secondary and
+> subordinate bus numbers assigned to bridges during scanning, instead of
+> assigning new ones, if any PCI devices are being preserved. Note that
+> the kernel inherits bus numbers even on bridges without any downstream
+> endpoints that were preserved. This avoids accidentally assigning a
+> bridge a new window that overlaps with a preserved device that is
+> downstream of a different bridge.
+
+I know there are many references already, but I think "preserve"
+conveys more of the meaning here than "inherit".
+
+> + * pci_liveupdate_scan_bridge_begin() - Determine if a bridge should inherit bus numbers
+
+Wrap to fit in 80 columns.
+
+> + * @bus: The parent bus of the bridge.
+> + * @dev: The PCI bridge device.
+> + * @pass: The scan pass (0 for first pass, 1 for second pass).
+> + *
+> + * This function is called by the PCI core when it begins scanning a bridge.
+> + * It determines whether the bridge should inherit the secondary and subordinate
+> + * bus numbers assigned to it by the previous kernel. This is necessary to
+> + * keep bus numbers constant for preserved devices downstream of the bridge.
+> + *
+> + * Return: True if bus numbers should be inherited, false otherwise.
+> + */
+> +bool pci_liveupdate_scan_bridge_begin(struct pci_bus *bus, struct pci_dev *dev,
+> +				      int pass)
+
+I see that you named it this way to have a begin/end pair, but I think
+this function name should be a predicate, i.e., it should ask a
+question with a yes/no or true/false answer.  Something like
+"preserve_bus_numbers".
+
+> + * pci_liveupdate_scan_bridge_end() - Finish scanning a PCI bridge
+> + * @dev: The PCI bridge device.
+> + * @pass: The scan pass (0 for first pass, 1 for second pass).
+> + *
+> + * This function is called by the PCI core when it finishes scanning a bridge.
+> + * It clears the inheritance status after the second pass so it can be
+> + * re-evaluated on future scans.
+> + */
+> +void pci_liveupdate_scan_bridge_end(struct pci_dev *dev, int pass)
+> +{
+> +	/*
+> +	 * Clear inherit_buses after the second pass so it can be re-evaluated
+> +	 * on future scans.
+> +	 */
+> +	if (pass)
+
+I think the decision based on "pass" belongs in the caller because
+it's really an implementation detail of the pci_scan_bridge*() code,
+and I think it's important that readers of that code understand that
+we no longer need to preserve bus numbers without having to follow the
+chain into liveupdate.
+
+I guess the point here is that we've always known to preserve bus
+numbers of existing devices, so after we've enumerated all the
+liveupdate-preserved devices, it's safe to assign new bus numbers for
+hot-adds, bus rescans, etc.  Right?
+
+> @@ -1397,6 +1397,7 @@ static int pci_scan_bridge_extend(struct pci_bus *bus, struct pci_dev *dev,
+>  				  int max, unsigned int available_buses,
+>  				  int pass)
+>  {
+> +	bool liveupdate, assign_new_buses = pcibios_assign_all_busses();
+
+I have a pretty strong preference for non-negated booleans, but I also
+think "assign_buses" is an unfortunate historical choice.  By default
+Linux owns all resources, including bus numbers, so the exception case
+is that we need to *preserve* things that were previously configured.
+Especially in liveupdate, "assign buses" is the wrong sense -- the
+requirement is that we preserve them.
+
+So I think here a name like "preserve_buses" will express the intent
+better even though it will lead to negation here and in tests of
+"!preserve_buses" below.
+
+>  	struct pci_bus *child;
+>  	u32 buses;
+>  	u16 bctl;
+> @@ -1406,6 +1407,10 @@ static int pci_scan_bridge_extend(struct pci_bus *bus, struct pci_dev *dev,
+>  	u8 fixed_sec, fixed_sub;
+>  	int next_busnr;
+>  
+> +	liveupdate = pci_liveupdate_scan_bridge_begin(bus, dev, pass);
+> +	if (liveupdate)
+> +		assign_new_buses = false;
+> +
+>  	/*
+>  	 * Make sure the bridge is powered on to be able to access config
+>  	 * space of devices below it.
+> @@ -1449,8 +1454,7 @@ static int pci_scan_bridge_extend(struct pci_bus *bus, struct pci_dev *dev,
+>  		goto out;
+>  	}
+>  
+> -	if ((secondary || subordinate) &&
+> -	    !pcibios_assign_all_busses() && !broken) {
+> +	if ((secondary || subordinate) && !assign_new_buses && !broken) {
+>  		unsigned int cmax, buses;
+>  
+>  		/*
+> @@ -1492,8 +1496,7 @@ static int pci_scan_bridge_extend(struct pci_bus *bus, struct pci_dev *dev,
+>  		 * do in the second pass.
+>  		 */
+>  		if (!pass) {
+> -			if (pcibios_assign_all_busses() || broken)
+> -
+> +			if (assign_new_buses || broken)
+>  				/*
+>  				 * Temporarily disable forwarding of the
+>  				 * configuration cycles on all bridges in
+> @@ -1507,6 +1510,11 @@ static int pci_scan_bridge_extend(struct pci_bus *bus, struct pci_dev *dev,
+>  			goto out;
+>  		}
+>  
+> +		if (liveupdate) {
+> +			pci_err(dev, "Cannot reconfigure bridge during Live Update, skipping\n");
+> +			goto out;
+> +		}
+> +
+>  		/* Clear errors */
+>  		pci_write_config_word(dev, PCI_STATUS, 0xffff);
+>  
+> @@ -1567,6 +1575,7 @@ static int pci_scan_bridge_extend(struct pci_bus *bus, struct pci_dev *dev,
+>  	pci_write_config_word(dev, PCI_BRIDGE_CONTROL, bctl);
+>  
+>  	pm_runtime_put(&dev->dev);
+> +	pci_liveupdate_scan_bridge_end(dev, pass);
+>  
+>  	return max;
+>  }
+> diff --git a/include/linux/pci_liveupdate.h b/include/linux/pci_liveupdate.h
+> index cfdc3d62ec02..2be98819e313 100644
+> --- a/include/linux/pci_liveupdate.h
+> +++ b/include/linux/pci_liveupdate.h
+> @@ -17,10 +17,14 @@
+>   * struct pci_liveupdate - PCI Live Update state for a struct pci_dev
+>   * @outgoing: State preserved for the next kernel.
+>   * @incoming: State preserved by the previous kernel.
+> + * @inherit_buses: True if the PCI core should inherit the secondary and
+> + *                 subordinate bus numbers assigned to this device due to
+> + *                 an ongoing Live Update.
+>   */
+>  struct pci_liveupdate {
+>  	struct pci_dev_ser *outgoing;
+>  	struct pci_dev_ser *incoming;
+> +	bool inherit_buses;
+>  };
+>  
+>  struct pci_dev;
+> -- 
+> 2.55.0.795.g602f6c329a-goog
 > 
->   https://github.com/shvipin/linux vfio/liveupdate/v5
-> 
-> This series provides the base support to enable Live Update feature for
-> VFIO PCI devices using the Live Update Orchestrator (LUO) and Kexec
-> Handover (KHO).
-> 
-
-Hi Alex, Pasha, Mike, and Pratyush,
-
-I'd like to discuss which maintainer tree should take the VFIO Live
-Update series.
-
-For context on related efforts:
-
-  - PCI Live Update is targeting the Live Update tree (maintained by
-    Pasha, Mike, and Pratyush, with David Matlack maintaining the
-    PCI-specific code).
-    https://lore.kernel.org/linux-pci/20260710212616.1351130-2-dmatlack@google.com/
-
-  - IOMMU Live Update is planned to go through the IOMMU tree.
-    https://lore.kernel.org/linux-iommu/20260614233728.2212104-3-skhawaja@google.com/
-
-Given these different approaches, what is your preference for routing
-the VFIO Live Update code?
-
-Thanks
-Vipin Sharma
-
 
