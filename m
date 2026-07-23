@@ -4,106 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64955C531C7
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 07:10:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D198C531C7
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 07:49:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3D0646B00B6; Thu, 23 Jul 2026 03:10:22 -0400 (EDT)
+	id C079F6B00AE; Thu, 23 Jul 2026 03:49:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A75D6B00B8; Thu, 23 Jul 2026 03:10:22 -0400 (EDT)
+	id BDE756B00AB; Thu, 23 Jul 2026 03:49:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E48E6B00B9; Thu, 23 Jul 2026 03:10:22 -0400 (EDT)
+	id AF4216B00B3; Thu, 23 Jul 2026 03:49:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C96F6B00B6
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 03:10:22 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 966721A03F0
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 07:10:21 +0000 (UTC)
-X-FDA: 85019167842.22.63E9CAA
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf04.hostedemail.com (Postfix) with ESMTP id D7DCA40008
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 07:10:19 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=R5MPS6w6;
-	spf=pass (imf04.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 75CEA6B00AB
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 03:49:00 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B6DBD1403C2
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 07:48:59 +0000 (UTC)
+X-FDA: 85019265198.10.26A6E8E
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 18E2B120009
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 07:48:57 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=cb599Woe;
+	spf=pass (imf29.hostedemail.com: domain of 3aMdhagcKCNcCR7L53L9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--jyescas.bounces.google.com designates 209.85.216.69 as permitted sender) smtp.mailfrom=3aMdhagcKCNcCR7L53L9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--jyescas.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784790620;
+	s=arc-20220608; t=1784792938;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nIoKGEePLaBcdqBNiIRu9M84lwec+W6DGlNhgHzjGSc=;
-	b=ntfrP8Y+/Y+lflcdXMVCzqAll2ChnmBL5NtJhitaNNzidfsozvmMkXpMVti62wcAs2J2Cm
-	iKKzGGxmnGjVeEJpTpEf7nsLYLtAqnI6PKzW4p6yhKJaJM2mWfl1SSUBcNBl4INaPmvjbI
-	SczD/m/fS16PX5M6O56CuAHqhibvig4=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=R5MPS6w6;
-	spf=pass (imf04.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=gusZRfFfKa7qtypbT3scclATimT0ZS8Q0+Rj2BZOw1s=;
+	b=r2TtRWNp/9pYySBzY4yO1GHwvI2B/0/eUpo1QRBCr5Jf2lH+37b1Sc26F6LrCnw97WtpKR
+	M6iYmaAo/l1LYh+sqdQcJfFu6ptlu/Dv4pI3ftAEEyUDao9I3bLqH0Zz8AugNL7UjJYIl0
+	7hSYd3jVCLa7WqK/6ELyEDIuq5qRHok=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784790620;
-	b=sDxAb7BXkNlqDqrjxl4ySwIn1uRNlEhtTS9KndopnP4r8/munG2eUfv2IA6cInHpcTmhLI
-	ImOn5dhDZgZsZHToIxjOmITJYdLj5WsVpnAXapqlVxlzCE543b0RbGoTTdhkymxdLF0rAo
-	Ftw6WaO9SS4//DiR+4aQd8A38GLEsbA=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D31DC1AED;
-	Thu, 23 Jul 2026 00:10:14 -0700 (PDT)
-Received: from cesw-amp-gbt-1s-m12830-01.blr.arm.com (cesw-amp-gbt-1s-m12830-01.blr.arm.com [10.164.195.33])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 238753F66F;
-	Thu, 23 Jul 2026 00:10:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784790619; bh=PxwT6mWSPP9EyD8pHEjnkgPbq1rD2M7Uz/EHtUtZK2c=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R5MPS6w6WsooTFscBvjQ2SWWUz9XC1/NrthfP05QZsEBYHT46n4gn6a7Wpo7JBfwx
-	 ZQPUhLhlBOTSgNxBssd/kY6lKUoyp9z0+Fb8aGYjpXMlUwx/0F9MQ4hM2x7fYzEGmK
-	 lbPpjvgsyS1/UxxXP0sy1oUJgnRNgzP2I/wBZNvM=
-From: Dev Jain <dev.jain@arm.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	hughd@google.com,
-	chrisl@kernel.org,
-	kasong@tencent.com
-Cc: Dev Jain <dev.jain@arm.com>,
-	riel@surriel.com,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	harry@kernel.org,
-	jannh@google.com,
-	lance.yang@linux.dev,
-	baolin.wang@linux.alibaba.com,
-	shikemeng@huaweicloud.com,
-	nphamcs@gmail.com,
-	baoquan.he@linux.dev,
-	baohua@kernel.org,
-	youngjun.park@lge.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	pfalcato@suse.de,
-	ryan.roberts@arm.com,
-	anshuman.khandual@arm.com
-Subject: [PATCH 8/8] mm/rmap: batch unmap anonymous swap-backed large folios
-Date: Thu, 23 Jul 2026 07:09:04 +0000
-Message-ID: <20260723070905.3422276-9-dev.jain@arm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260723070905.3422276-1-dev.jain@arm.com>
-References: <20260723070905.3422276-1-dev.jain@arm.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	t=1784792938;
+	b=Q0Hzrl4ey0CCyhpJMUm7Z6WFIhna0RxCKdztopSSsSf/kbQJZfIrwKD8Pr4mOaOMZYSOdY
+	mlwHIuUGlCr0FaqrkxPf8idnm4rk8GJbkpr71amXt3dggl7K1mQN+zyj7zfui+TFS4lGok
+	VS7tAMFcaUYid3dpnqu3/YDkmYKfR4Y=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=cb599Woe;
+	spf=pass (imf29.hostedemail.com: domain of 3aMdhagcKCNcCR7L53L9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--jyescas.bounces.google.com designates 209.85.216.69 as permitted sender) smtp.mailfrom=3aMdhagcKCNcCR7L53L9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--jyescas.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-38e7ff7b375so589851a91.1
+        for <linux-mm@kvack.org>; Thu, 23 Jul 2026 00:48:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784792937; x=1785397737; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=gusZRfFfKa7qtypbT3scclATimT0ZS8Q0+Rj2BZOw1s=;
+        b=cb599WoeU1mYPz1BItABlAjavAOo3qMOlTFzfh+kTiFyp8nhLvtNfSCBVUZPpCbidj
+         pd/GicAlHJ2jczaGoZDGjsTRUv8Zr6nXGXb95+yEmRVgVH6BH7ZZzcnaOB1Lb9VAlsly
+         WvHrkz41T6FmV8ljCVeDMJuxpKVpfCMNxAPoaKaxSDAtU1k29c/3QvhF5PN5txrAilIv
+         QyYti2qtHSYugs9hYmEXgvVsXnzdpc7Q/JgDVJWzlIEcrpH7NuKfiWORwyir7VKjHA5C
+         cdtqlzj6u3eYGYkfsLYh99CQguvQ2dHWw+FTiKb/dWTtx8z48OLr2XAr7/B/SAK+rco1
+         0pLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784792937; x=1785397737;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=gusZRfFfKa7qtypbT3scclATimT0ZS8Q0+Rj2BZOw1s=;
+        b=iLnrlx5oNS9vXWUKo5ihfZsDd9c15Cpy/TgUcXwZCJo+Yc3DPDeOWc2hhDZ7HTOFL2
+         q0lJondOrtDpSVrjWGsj+JHXdrgaP/uCShcjh4Li/Srs+w7PwRlKRnjyyi4DwBXAK1ik
+         vfd3Lf8qJVPC6Od6mYOfNQLiAGkdF27SO2LNwyBIsGnT+2zWOkeczPWfORN8hL9kW2Qr
+         svKVmuu4NgKz5dalprM6bvKJ4mAT3yckjqTgWnmDjNvH1z5+R6K4FbEIgcal6WtfmAZc
+         4fB4K9xX5LTFDyxxAzIKVgNCd2WX4ZB626DDG+WAv5/gy2v68WmixPrZW7EzYaLMeFYf
+         MXLA==
+X-Forwarded-Encrypted: i=1; AHgh+Rof3yjI2X2RSvja5IpO91LsdFXT0LFFmknQyTByQAFRDxBAttcmYNv1dbII1ARKBBm5l849jgB84A==@kvack.org
+X-Gm-Message-State: AOJu0YxTi2p0deaKMOt3/mJzvC7v/6nOmB/Kxg2slT5C74SUH4/bA+gQ
+	FkwbR+rxHGTXIkYsOY817nrt6Su3BzmlwZb518eCFzAsLWrGBbuZG6f7jnY9iVo10/coNEbz6u4
+	oFOq0oPr99w==
+X-Received: from dlbsj2-n2.prod.google.com ([2002:a05:7022:f902:20b0:13d:210b:71ca])
+ (user=jyescas job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:d887:b0:387:e0db:bc2b
+ with SMTP id 98e67ed59e1d1-38ec661c2bemr1938697a91.43.1784792936485; Thu, 23
+ Jul 2026 00:48:56 -0700 (PDT)
+Date: Thu, 23 Jul 2026 00:47:04 -0700
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.229.g6434b31f56-goog
+Message-ID: <20260723074854.1013941-1-jyescas@google.com>
+Subject: [RFC PATCH 00/16] Page Alloc Hogger
+From: Juan Yescas <jyescas@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, open list <linux-kernel@vger.kernel.org>, 
+	"open list:MEMORY MANAGEMENT - CORE" <linux-mm@kvack.org>
+Cc: jyescas@google.com, android-mm@google.com, fvdl@google.com, 
+	tkjos@google.com, minchan@google.com, dskiba@google.com, 
+	open list <linux-kernel@vger.kernel.org>, 
+	"open list:MEMORY MANAGEMENT - CORE" <linux-mm@kvack.org>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: D7DCA40008
-X-Stat-Signature: rwpqdrfy5k87pejc8rhwhqcqc9thkub1
-X-HE-Tag: 1784790619-302505
-X-HE-Meta: U2FsdGVkX19gVS/SjLq6qgBGq6LeaqFdM7qbFTUn2BTFBFNVcfhguTEaGGfd7hKFbI1R1BTLe06yOb5QTTddB9tj0D9y1GH1nzUd8CXMidoupVYk35vkrS1xBV2KZ1rFdyCMjWDIbTelmGhL35dqyjyQPJXLq/Voi62F/cIO5UzS4pSkC+4M1T/EY5/olEhjn9d7Pve5IZhMP2Onk6io5owMlCh7XqLwBvybqBUXvf/Rx2Y+dC5omi2pU5CLb//OuKlytP618hcyrfxSWD98a+Do30mCEiiONmoZuT17NVteqqa2EhYZBSnIex3NEbWx9mDaxV7pnPZfqbadVS3nDjubv2A0o+7JI/boL7j4+BBvOas7ra58g5ykUdUAeVqpb5bMOmtMOOveuGG+r84k2wusFCy/OAZwNcdiiA4VtRnvtkDJ/q0vu4QwYU+sBOa3NSqd5JJC+0f1RixBXkmMmwVopaUxHPpjccNWXh8WsOvMnONHJTxp2eDm66VB4aNx/8f9KtT0UWMKxr2dE6o0D960agJFurEI091SLFyn7r6hVEdVwhUwhYrjqo+YqkynSKcCw+DoOxACtotl+9yN6dbnIZ+TrqxMFm/wmnDS01MLE4IqM75EXX55L/SSM3T8QkwDrfd6lhzpsVSfxGepf0Kx92+EsX3H98R9uFRKPv7JAR3u5mfFOOvTybiMCChNQdCN4utYi3hSG7UjMeCLSb6630cpZ5RlGvAibdXCwG2mLqtLxbE9Uq4m834i5xnzPYZGddAUI6pgaxcGZIfXZlvl+4PE8moxsmL2wyDHfMFZdOKfJv9YoAzcGL/R5nHml3sNLN6chnA4EQ6Na6lQirdaJD0CYXXMuYPKJC64X3qWIP/kQC6h/8qZY9y/EVTFj/B18khWG2qKLUYtzJUy6KaWjt2oLhKqj6bAo3echqt+ai2SWrdIviW0Zu7M/j9LI+d9quFWqTunGJVo50J
- jO7YoPlY
- CWGeg8Kasldg4U2ChxZ0chLbZaai+IIJdZ8wAhCaUneRzGl1f65IcluxFI/sCqXvu3CfOlyYO5CUZcmkvrM66LPfttTUacCeG3kgSaaUfWqCVRdrQxOJ0Z54CY8ox2mbYfvaz0MXcA6FDMsezkhG2roWuYqDFRulsbC/3LGwXuQCpmrKdR4BPRhkbJvei7KTlBFmxx1PNSPn0tmKnclfc2ALdstXEqvNZBM38xIzPfFQORYrHOejAu+Nn5g==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 18E2B120009
+X-Stat-Signature: puw46ds4fjuh88w6age8c4zx33fwwbhz
+X-HE-Tag: 1784792937-408823
+X-HE-Meta: U2FsdGVkX1/WBuQUF31tqQeYCZqtEnVmlFPK75rJXzKxSs0LzOW5/9RRCh/jRy2UCaaDwc6bTOtQj/NWbDXdhdIt2EZUkwbMkdKwE920nRUuNuLQsiUsjNUsHtbwv4WFbiPh/znMAHz/X7YlDGa6XQt29ZxnXA7VV/BD0W6obsvt9rRiNnixJpDuag6Hoavslut6qeH+Nfh/pNwq5bPBDCXogxwph1VivTACUj88dpcMMnSYbfSOAWEb9nKKojsGI8luQUKJSJRdM8zVIA7wVc/yag5KWDBEb/JruMSY2KrhBQ9jofxfkFBiZvtJNSiyEOGoxFhEqEH/6Gdxkcx9uwUn/tBoh9C8pgjmA3LsThsLUFVmfPI/ZdVdWbD5KSmqPs8AKALd5/wmI7KsTG5JAJU/w0q7tcPxjmAXylFcUTHFfpK635BUDkDW6cJO/Bt4SAlzxmuBoKV283CJFdn8uDOStamm/nUMlfIk5UtrjGYl8MDDcvxPGhKZEYMq1VfIf38uI6ZidgxkjsyaMV0aXcqSAI05cyWuqe5laZhlGltD4tjp+OnGz67PTHtHvNOmPAp842vWJCxwBouH81UKNolsM3nwlv0X2fdJXjRGikTjvWMgzOYT5KU9Xl6I6mP8lE8iTasxfvk6YVdPpXyUlk7V3qukODQ/jRmigt2rnpeyzK0c5sZPja/p0LMaoFXWdltnkd9tO+gtEnaBIpWSGFgqLF62n02Xk2h3h3bpUwdwpVOlQQE/GEfb7nEeIEw3iFWe27YiUjPaHPKEpzThR1MCOyf/B0TnqEJUQGSbVDUfkQOyzBZ/p/FGqrmEdbHe1qD1Qxc5CL9Nws3oOjOzVgyGFCPN8+SehWWg+kc3AJUmO2DyX8J3K/KVmf9m0u7QEExxf1wCodYQ9rkzAFTLZuM10xsVuxwxBnPcretZG01bwNl3JXunl30SuW5vcB/Vs7q5qg/pZXt4x4AtmTS
+ fWA4NVV7
+ A8M0cdv3fBAbnC1bmWg8NfBBxglfnLeBOB4Vz4EH0zmZqViH9W6L3K9nyP/zlcSsnVnAcZaFT2L9HW60j35fovNI/cjVKMnysjZ0J3JOEkccNpEVId84xnhnC+M531LP+/x2oCafv2b5RlEtMjhL4WBvnANhwgraB/4H7zdNXRYhrYz8a1p6F2hmhsJXFcSEh5J+Ydym00aryO/vj9k9ZczhuJLdISOtrjSLtNtA9fcImUDow5EP/FzouCcGmC+C5hjIetoE4hdQDuown5sieVIoo9iVhk+d1ZciJdBpTd18ljqEDYL5eggXwRkA0yvHVv/nOi4f3hskLphp6V6LD8HmhB7X/AwHe7URaUBg0HlBvEP+cK7WAo+YSBGr1tWaan24eyJv9cP/YMLDRpEIOgtRYPaN60z7FDHpMNWUOWG8uxT/gJfS4LCmYSnc+8qkJeuKzK5ZEEBsQ3W62Gn35nquhoQfK6WdV9YEtiLENk7hWRvLnC+3xz39VjoAMA2SYPlnjgeYnx7Ate7J4TAfCzFzJQudbUotdclvpVRTBEsW42oJFGs6+EXcaDehGu7yqpRO5/oxiWRHP+SLwbj1twcrGSgHpBsGLrUtsZpHn4rmgvgg9FjRUpxve1VZPjbQpZ4Ztnegw51Km4bo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,238 +111,149 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Enable batch clearing of ptes, and batch swap setting of ptes for anon
-swap-backed folio unmapping.
+This patch series introduces the Page Alloc Hogger. The Page Alloc Hogger
+allows you to allocate memory pages from specific nodes, zones, migration
+types, and orders directly via debugfs. This provides key benefits for
+testing and debugging:
 
-Processing all ptes of a large folio in one go helps us batch across
-atomics (add_mm_counter etc), barriers (in the function
-__folio_try_share_anon_rmap), repeated calls to page_vma_mapped_walk(),
-to name a few. In general, batching helps us to execute similar code
-together, making the execution of the program more memory and
-CPU friendly.
+- Reproduce low-memory conditions: Easily trigger and inspect kernel
+mechanisms like direct reclaim, kswapd, the OOM killer, and allocation
+fallbacks.
 
-On arm64-contpte, batching also helps us avoid redundant ptep_get() calls
-and TLB flushes while breaking the contpte mapping.
+- Simplify memory pressure debugging: Debug issues that only manifest under
+memory stress without needing custom kernel drivers or userspace programs
+to allocate memory.
 
-The handling of anon-exclusivity is very similar to commit cac1db8c3aad
-("mm: optimize mprotect() by PTE batching"). Since folio_unmap_pte_batch()
-won't look at the bits of the underlying page, we need to process
-sub-batches of ptes pointing to pages which are same w.r.t exclusivity,
-and batch set only those ptes to swap ptes in one go.
+- Simplify unit testing: Verify that memory management subsystems
+(direct reclaim, OOM killer, kswapd) trigger as expected in test suites.
 
-arch_unmap_one() is only defined for sparc64; I am not comfortable
-regarding the nuances between retrieving the pfn from pte_pfn() or from
-(paddr = pte_val(oldpte) & _PAGE_PADDR_4V).
+- Measure performance under stress: Evaluate how applications behave and
+perform during severe memory pressure.
 
-(And, pte_next_pfn() can't even be called from arch_unmap_one() because
-that file does not include pgtable.h) So just disable the
-"sparc64-anon-swapbacked" case for now.
+Usage:
 
-We need to take care of rmap accounting (folio_remove_rmap_ptes) and
-reference accounting (folio_put_refs) when anon folio unmap succeeds.
-In case we partially batch the large folio and fail, we need to correctly
-do the accounting for pages which were successfully unmapped. So, put
-this accounting code (which is finish_folio_unmap()) in
-__ttu_anon_swapbacked_folio() itself, instead of doing some horrible
-goto jumping at the callsite of ttu_anon_folio().
+1. To trigger the allocation, navigate to the debugfs path corresponding
+   to your target node, memory zone, allocation order, and migration type,
+   then write the requested allocation count to nr_pages_allocs.
 
-Similarly, do the finish_folio_unmap() in ttu_anon_folio itself for
-the non-swapbacked (lazyfree) case.
+   For example, to make 3 allocs of order 9, Migrate Type Movable,
+   Zone Normal and Node 0, run:
 
-If the batch length is less than the number of pages in the folio, then
-we must skip over this batch.
+   $ echo 3 > /sys/kernel/debug/mm/node-0/zone-Normal/order-9/migrate-Movable/nr_pages_allocs
 
-The page_vma_mapped_walk API ensures this - check_pte() will return true
-only if any of [pvmw->pfn, pvmw->pfn + nr_pages) is mapped by the pte.
-There is no pfn underlying a swap pte, so check_pte returns false and we
-keep skipping until we hit a present pte, which is where we want to start
-unmapping from next.
+2. For each allocation created, a corresponding file named sequentially
+   (1, 2, n) will appear in that directory.
 
-Remove the label finish_unmap since no goto callers are left now.
+   $ ls /sys/kernel/debug/mm/node-0/zone-Normal/order-9/migrate-Movable/
+   1   2   3  nr_pages_allocs
 
-Signed-off-by: Dev Jain <dev.jain@arm.com>
----
- mm/rmap.c | 109 +++++++++++++++++++++++++++++++++++++++---------------
- 1 file changed, 80 insertions(+), 29 deletions(-)
+3. To free the allocation, write the allocation file name in
+   /sys/kernel/debug/mm/free. For example, to release the 2nd allocation run:
 
-diff --git a/mm/rmap.c b/mm/rmap.c
-index c1988dae8d4a2..d28a113e8c705 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -1964,11 +1964,11 @@ static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
- 	end_addr = pmd_addr_end(addr, vma->vm_end);
- 	max_nr = (end_addr - addr) >> PAGE_SHIFT;
- 
--	/* We only support lazyfree or file folios batching for now ... */
--	if (folio_test_anon(folio) && folio_test_swapbacked(folio))
-+	if (pte_unused(pte))
- 		return 1;
- 
--	if (pte_unused(pte))
-+	if (__is_defined(__HAVE_ARCH_UNMAP_ONE) && folio_test_anon(folio) &&
-+	    folio_test_swapbacked(folio))
- 		return 1;
- 
- 	/*
-@@ -2139,16 +2139,25 @@ static pte_t swp_pte_prepare(swp_entry_t entry, pte_t old_pte,
- 	return swp_pte;
- }
- 
--static bool ttu_anon_swapbacked_folio(struct vm_area_struct *vma,
-+static void finish_folio_unmap(struct vm_area_struct *vma,
-+		struct folio *folio, struct page *page, unsigned long nr_pages)
-+{
-+	folio_remove_rmap_ptes(folio, page, nr_pages, vma);
-+	if (vma->vm_flags & VM_LOCKED)
-+		mlock_drain_local();
-+	folio_put_refs(folio, nr_pages);
-+}
-+
-+static bool __ttu_anon_swapbacked_folio(struct vm_area_struct *vma,
- 		struct folio *folio, struct page *page, unsigned long address,
--		pte_t *ptep, pte_t pteval)
-+		pte_t *ptep, pte_t pteval, unsigned long nr_pages,
-+		bool anon_exclusive)
- {
--	const bool anon_exclusive = folio_test_anon(folio) &&
--				    PageAnonExclusive(page);
- 	swp_entry_t entry = page_swap_entry(page);
- 	struct mm_struct *mm = vma->vm_mm;
-+	pte_t swp_pte;
- 
--	if (folio_dup_swap_pages(folio, page, 1) < 0)
-+	if (folio_dup_swap_pages(folio, page, nr_pages) < 0)
- 		return false;
- 
- 	/*
-@@ -2157,21 +2166,57 @@ static bool ttu_anon_swapbacked_folio(struct vm_area_struct *vma,
- 	 * so we'll not check/care.
- 	 */
- 	if (arch_unmap_one(mm, vma, address, pteval) < 0) {
--		folio_put_swap_pages(folio, page, 1);
-+		VM_WARN_ON(nr_pages != 1);
-+		folio_put_swap_pages(folio, page, nr_pages);
- 		return false;
- 	}
- 
- 	/* See folio_try_share_anon_rmap(): clear PTE first. */
--	if (anon_exclusive && folio_try_share_anon_rmap_pte(folio, page)) {
--		folio_put_swap_pages(folio, page, 1);
-+	if (anon_exclusive &&
-+	    folio_try_share_anon_rmap_ptes(folio, page, nr_pages)) {
-+		folio_put_swap_pages(folio, page, nr_pages);
- 		return false;
- 	}
- 
- 	mm_prepare_for_swap_entries(mm);
--	dec_mm_counter(mm, MM_ANONPAGES);
--	inc_mm_counter(mm, MM_SWAPENTS);
--	set_pte_at(mm, address, ptep,
--		   swp_pte_prepare(entry, pteval, anon_exclusive));
-+	add_mm_counter(mm, MM_ANONPAGES, -nr_pages);
-+	add_mm_counter(mm, MM_SWAPENTS, nr_pages);
-+	swp_pte = swp_pte_prepare(entry, pteval, anon_exclusive);
-+	set_softleaf_ptes(mm, address, ptep, swp_pte, nr_pages);
-+	finish_folio_unmap(vma, folio, page, nr_pages);
-+	return true;
-+}
-+
-+static bool ttu_anon_swapbacked_folio(struct vm_area_struct *vma,
-+		struct folio *folio, struct page *first_page,
-+		unsigned long address, pte_t *ptep, pte_t pteval,
-+		unsigned long nr_pages)
-+{
-+	unsigned long batch_idx = 0;
-+
-+	while (nr_pages) {
-+		bool anon_exclusive = PageAnonExclusive(first_page + batch_idx);
-+		unsigned long len = page_anon_exclusive_batch(batch_idx,
-+				nr_pages, first_page, anon_exclusive);
-+
-+		if (!__ttu_anon_swapbacked_folio(vma, folio,
-+				first_page + batch_idx, address, ptep, pteval,
-+				len, anon_exclusive)) {
-+			/* Restore the remaining PTEs that were cleared. */
-+			set_ptes(vma->vm_mm, address, ptep, pteval, nr_pages);
-+			return false;
-+		}
-+
-+		nr_pages -= len;
-+		if (!nr_pages)
-+			break;
-+
-+		pteval = pte_advance_pfn(pteval, len);
-+		address += len * PAGE_SIZE;
-+		batch_idx += len;
-+		ptep += len;
-+	}
-+
- 	return true;
- }
- 
-@@ -2184,15 +2229,22 @@ static bool ttu_anon_folio(struct vm_area_struct *vma, struct folio *folio,
- 	 * See handle_pte_fault() ...
- 	 */
- 	if (WARN_ON_ONCE(folio_test_swapbacked(folio) !=
--			 folio_test_swapcache(folio)))
-+			 folio_test_swapcache(folio))) {
-+		set_ptes(vma->vm_mm, address, ptep, pteval, nr_pages);
- 		return false;
-+	}
- 
--	if (!folio_test_swapbacked(folio))
--		return ttu_anon_lazyfree_folio(vma, folio, nr_pages);
-+	if (!folio_test_swapbacked(folio)) {
-+		if (!ttu_anon_lazyfree_folio(vma, folio, nr_pages)) {
-+			set_ptes(vma->vm_mm, address, ptep, pteval, nr_pages);
-+			return false;
-+		}
-+		finish_folio_unmap(vma, folio, page, nr_pages);
-+		return true;
-+	}
- 
--	/* nr_pages > 1 not supported yet */
- 	return ttu_anon_swapbacked_folio(vma, folio, page, address, ptep,
--					 pteval);
-+					 pteval, nr_pages);
- }
- 
- /*
-@@ -2373,13 +2425,15 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
- 			 */
- 			dec_mm_counter(mm, mm_counter(folio));
- 		} else if (folio_test_anon(folio)) {
-+
-+			/* finish_folio_unmap handled internally */
- 			if (!ttu_anon_folio(vma, folio, page, address,
--					    pvmw.pte, pteval, nr_pages)) {
--				set_ptes(mm, address, pvmw.pte, pteval, nr_pages);
-+					    pvmw.pte, pteval, nr_pages))
- 				goto walk_abort;
--			}
- 
--			goto finish_unmap;
-+			if (nr_pages == folio_nr_pages(folio))
-+				goto walk_done;
-+			continue;
- 		} else {
- 			/*
- 			 * This is a locked file-backed folio,
-@@ -2394,11 +2448,8 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
- 			 */
- 			add_mm_counter(mm, mm_counter_file(folio), -nr_pages);
- 		}
--finish_unmap:
--		folio_remove_rmap_ptes(folio, page, nr_pages, vma);
--		if (vma->vm_flags & VM_LOCKED)
--			mlock_drain_local();
--		folio_put_refs(folio, nr_pages);
-+
-+		finish_folio_unmap(vma, folio, page, nr_pages);
- 
- 		/*
- 		 * If we are sure that we batched the entire folio and cleared
+   $ echo 2 > /sys/kernel/debug/mm/free
+
+Example:
+
+$ cat /proc/pagetypeinfo
+Page block order: 9
+Pages per block:  512
+
+Free pages count per migrate type at order 0  1  2  3  4  5  6  7  8  9   10
+Node 0, zone    DMA, type   Unmovable      0  0  0  0  0  0  0  0  0  0    0
+Node 0, zone    DMA, type     Movable      1  1  1  0  1  1  2  2  1  3  732
+Node 0, zone    DMA, type Reclaimable      0  0  0  0  0  0  0  0  0  0    0
+Node 0, zone    DMA, type  HighAtomic      0  0  0  0  0  0  0  0  0  0    0
+Node 0, zone    DMA, type         CMA      0  0  0  0  0  0  0  0  0  1    7
+Node 0, zone    DMA, type     Isolate      0  0  0  0  0  0  0  0  0  0    0
+Node 0, zone Normal, type   Unmovable     13  7  0  1  0  0  1  0  1  0    0
+Node 0, zone Normal, type     Movable      1  1  1  1  1  1  1  0  1  1 1221
+Node 0, zone Normal, type Reclaimable      1  0  0  0  0  0  1  0  0  1    0
+Node 0, zone Normal, type  HighAtomic      0  0  0  0  0  0  0  0  0  0    0
+Node 0, zone Normal, type         CMA      0  0  0  0  0  0  0  0  0  1    7
+Node 0, zone Normal, type     Isolate      0  0  0  0  0  0  0  0  0  0    0
+
+Number of blocks type  Unmovable  Movable Reclaimable HighAtomic CMA Isolate
+Node 0, zone      DMA          0     1520           0          0  16       0
+Node 0, zone   Normal         12     2530           2          0  16       0
+
+$ echo 1200 > /sys/kernel/debug/mm/node-0/zone-Normal/order-10/migrate-Movable/nr_pages_allocs
+
+$ cat /proc/pagetypeinfo
+Page block order: 9
+Pages per block:  512
+
+Free pages count per migrate type at order 0  1  2  3  4  5  6  7  8  9   10
+Node 0, zone    DMA, type   Unmovable      0  0  0  0  0  0  0  0  0  0    0
+Node 0, zone    DMA, type     Movable      1  1  1  0  1  1  2  2  1  3  732
+Node 0, zone    DMA, type Reclaimable      0  0  0  0  0  0  0  0  0  0    0
+Node 0, zone    DMA, type  HighAtomic      0  0  0  0  0  0  0  0  0  0    0
+Node 0, zone    DMA, type         CMA      0  0  0  0  0  0  0  0  0  1    7
+Node 0, zone    DMA, type     Isolate      0  0  0  0  0  0  0  0  0  0    0
+Node 0, zone Normal, type   Unmovable     13  7  1  1  0  0  0  0  1  0    0
+Node 0, zone Normal, type     Movable      1  1  1  1  1  1  1  0  1  1   21
+Node 0, zone Normal, type Reclaimable      0  1  0  0  1  0  0  0  1  0    0
+Node 0, zone Normal, type  HighAtomic      0  0  0  0  0  0  0  0  0  0    0
+Node 0, zone Normal, type         CMA      0  0  0  0  0  0  0  0  0  1    7
+Node 0, zone Normal, type     Isolate      0  0  0  0  0  0  0  0  0  0    0
+
+Number of blocks type  Unmovable  Movable Reclaimable HighAtomic CMA Isolate
+Node 0, zone      DMA          0     1520           0          0  16       0
+Node 0, zone   Normal         12     2530           2          0  16       0
+
+$ for i in `seq 1 1200`; do echo $i > /sys/kernel/debug/mm/free; done
+
+$ cat /proc/pagetypeinfo
+Page block order: 9
+Pages per block:  512
+
+Free pages count per migrate type at order 0  1  2  3  4  5  6  7  8  9   10
+Node 0, zone    DMA, type   Unmovable      0  0  0  0  0  0  0  0  0  0    0
+Node 0, zone    DMA, type     Movable      1  1  1  0  1  1  2  2  1  3  732
+Node 0, zone    DMA, type Reclaimable      0  0  0  0  0  0  0  0  0  0    0
+Node 0, zone    DMA, type  HighAtomic      0  0  0  0  0  0  0  0  0  0    0
+Node 0, zone    DMA, type         CMA      0  0  0  0  0  0  0  0  0  1    7
+Node 0, zone    DMA, type     Isolate      0  0  0  0  0  0  0  0  0  0    0
+Node 0, zone Normal, type   Unmovable     13  7  1  1  0  0  0  0  1  0    0
+Node 0, zone Normal, type     Movable      1  1  1  1  1  1  1  0  1  1 1221
+Node 0, zone Normal, type Reclaimable      0  1  0  0  1  0  0  0  1  0    0
+Node 0, zone Normal, type  HighAtomic      0  0  0  0  0  0  0  0  0  0    0
+Node 0, zone Normal, type         CMA      0  0  0  0  0  0  0  0  0  1    7
+Node 0, zone Normal, type     Isolate      0  0  0  0  0  0  0  0  0  0    0
+
+Number of blocks type  Unmovable  Movable Reclaimable HighAtomic CMA Isolate
+Node 0, zone      DMA          0     1520           0          0  16       0
+Node 0, zone   Normal         12     2530           2          0  16       0
+
+Notes:
+
+- The only zone that is not supported is ZONE_DEVICE.
+- MIGRATE_CMA will be supported soon
+
+Juan Yescas (16):
+  mm: Page Alloc Hogger module
+  mm: Define structs for allocation requests and store allocations
+  mm: Define the caches for the structs req_alloc and page_alloc
+  mm: Define function to create a dir for each online node
+  mm: Define function to create a dir for populated zone
+  mm: Define function to create a dir for each page order
+  mm: Define function to create a dir for each migrate type
+  mm: Define function that creates the "nr_pages_allocs" file
+  mm: Read the nr_pages_allocs value given by user
+  mm: Set the selected zone in gfp_t flags
+  mm: Sets the migrate type in gfp_t flags
+  mm: Define the make_alloc() function
+  mm: Create the file asociated with an allocation
+  mm: Free pages, remove files and clean cache when one alloc fails
+  mm: Create the "free" file to release the previously allocated pages
+  mm: Release resources when the page alloc hogger module exits
+
+ mm/Kconfig.debug       |  12 +
+ mm/Makefile            |   1 +
+ mm/page_alloc_hogger.c | 611 +++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 624 insertions(+)
+ create mode 100644 mm/page_alloc_hogger.c
+
 -- 
-2.43.0
+2.55.0.229.g6434b31f56-goog
 
 
