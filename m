@@ -4,149 +4,187 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F826C531CA
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 13:42:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44C1DC531CA
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 13:47:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0BFC06B0088; Thu, 23 Jul 2026 09:42:58 -0400 (EDT)
+	id 4BF436B007B; Thu, 23 Jul 2026 09:47:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0703B6B008A; Thu, 23 Jul 2026 09:42:58 -0400 (EDT)
+	id 4978A6B008C; Thu, 23 Jul 2026 09:47:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC7E36B008C; Thu, 23 Jul 2026 09:42:57 -0400 (EDT)
+	id 33B996B0092; Thu, 23 Jul 2026 09:47:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BA64B6B0088
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 09:42:57 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id EC45C6B007B
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 09:47:11 -0400 (EDT)
 Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 44C3E1604C2
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 13:42:57 +0000 (UTC)
-X-FDA: 85020157194.26.34A19B9
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013013.outbound.protection.outlook.com [40.93.196.13])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 384A51C000C
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 13:42:54 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="npdW/myV";
-	spf=pass (imf20.hostedemail.com: domain of nirmoyd@nvidia.com designates 40.93.196.13 as permitted sender) smtp.mailfrom=nirmoyd@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784814174;
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 73EF91204B6
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 13:47:11 +0000 (UTC)
+X-FDA: 85020167862.26.234F20C
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	by imf26.hostedemail.com (Postfix) with ESMTP id C4F7D140012
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 13:47:08 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=fdz4nRXt;
+	spf=pass (imf26.hostedemail.com: domain of ak@linux.intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=ak@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784814429;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=JiuxZvgLU0P2vVsKoigYC8NM4FElFsTbCO4me9CXDic=;
-	b=cIZQEufkgYvmnqMnQSlRZlN91TVcKjpPOIjztiSWb71k2+IGiaVl+nl9RcJ8AlxUSzHJuu
-	ZALErJObl2Q23vzFcLa1vA/ssDAFSX78RtL4j3A5s0ylXVtRhtcJmwBWFOFhGdsMNBGGLF
-	ALLlwW6OUWJD2CHWBugDPJoweKl6+/A=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784814174;
-	b=UN4mmJKISSlDQQIdgr1LntriwTjoH64269b+6yqk+1cDHz7wwjFJzu+1YDktGVxU6f5rS0
-	J8T25SQ8I26LlTDGtOh4kStEoMdQr4PkNfzSx01uyX1U/JnUOaRmahOdomGQCs5K3ZM84f
-	TEqlatEpInXh6DOQgmF1xuIx7LZKZeY=
-ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="npdW/myV";
-	spf=pass (imf20.hostedemail.com: domain of nirmoyd@nvidia.com designates 40.93.196.13 as permitted sender) smtp.mailfrom=nirmoyd@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PwHSfT2NavbTYupQcZ680Q5W5jCcVLyYvKwFiWAIYqyFsHvtcQ7iBWzN8WYKKG8C3ei3mQKmr7abBz2DBHMDHRE+vV1L6Re+rbRDR9uz8VRCr0+BssS8Bc5jBefLd4nOq9A/ILC1LEknYcfZ0vqXIR7uAkqnRMTLO7vE26XzOSxqemyoA8mQ7BGSuFhufW3B83xQcBdQQjF87UsTJULO6+wJY/DfIXhJOJEUVh/resnCjFAmd62nJMHwP8P1VgVdCmcChmpI6BiJMqfLAR6bKhb8wJlYn4lW3DKhKB+QiN6hAKVUzPEny3PnUqDqn8RUuWYNOQEOr0KSL8grd07k7w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JiuxZvgLU0P2vVsKoigYC8NM4FElFsTbCO4me9CXDic=;
- b=pvMkC4zGNQKHMGBCP4ZC4XHs6BcyAwhqpX0e3cuuB4EZ+thc5lHLgj2t+Y352XAJCTj1a3FxQgzkWA73KpMWM5en4ycbSESmTxDZJgbNpri+0l+bi9gDdO6eLcwortmzRjcr1Hd3DYNKfVisC5TRX4QmAqwHIKlL88ApqgFu+Nb2OzRGhFg4o3ZAMCBEtIdKNfn9NmPFJmCLplBbt5WgY2BZL1k4i0NS3c09IF/nmsUbgXxbyrotuJ5F2+FX9wjEmVNfEg5o/f0sZqzYwL/3rV2uipu9dS/OF5bqYEqwNKl9boorLDwcMXfUh/dyW61SAl1oRce/6Hv3k25GCVf4gA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=linux-foundation.org
- smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
- header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JiuxZvgLU0P2vVsKoigYC8NM4FElFsTbCO4me9CXDic=;
- b=npdW/myVEc5vBlVVHkcEMFkLhZfIgdAVn1jY4iGiy3VGL5itkLjogh50z95upzzHcdeJz3mY40zxp06hQHHDtXxEAlz5CWINzTgNPOszPERJmyGb0yeW76IhX4AAojA/aHzvElqMPCQVSmFcvBcamXjqOHNL8Ku10X+H7H9ua3e5p+/RdweKJczilPlE/hz2wZjMzv1a4dSzLPJphYvppQcIRd6tlsmDWdeNJh7C+gU/F7DUMG1wEDcLvz9oiixagdqyHHRPxJrCVDv3U3Vx3gBChT5mqPM6sXbk1shbUir6u5jIjrwNJ4qatFHdmjPs0WkU5LgOtRWCX2U+WvtXvg==
-Received: from SA9PR03CA0008.namprd03.prod.outlook.com (2603:10b6:806:20::13)
- by CY8PR12MB7170.namprd12.prod.outlook.com (2603:10b6:930:5a::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.11; Thu, 23 Jul
- 2026 13:42:47 +0000
-Received: from SN1PEPF000397B4.namprd05.prod.outlook.com
- (2603:10b6:806:20:cafe::1a) by SA9PR03CA0008.outlook.office365.com
- (2603:10b6:806:20::13) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.245.11 via Frontend Transport; Thu,
- 23 Jul 2026 13:42:47 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- SN1PEPF000397B4.mail.protection.outlook.com (10.167.248.58) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.270.5 via Frontend Transport; Thu, 23 Jul 2026 13:42:46 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Thu, 23 Jul
- 2026 06:42:29 -0700
-Received: from 82875d6-lcedt.nvidia.com (10.126.230.37) by
- rnnvmail201.nvidia.com (10.129.68.8) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.20; Thu, 23 Jul 2026 06:42:28 -0700
-From: Nirmoy Das <nirmoyd@nvidia.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-CC: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Shakeel Butt <shakeel.butt@linux.dev>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>, Nirmoy Das
-	<nirmoyd@nvidia.com>
-Subject: [RFC PATCH] mm: use precise current RSS for high-water accounting
-Date: Thu, 23 Jul 2026 06:41:58 -0700
-Message-ID: <20260723134158.1473841-1-nirmoyd@nvidia.com>
-X-Mailer: git-send-email 2.43.0
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=7Fpk2WKAWM+YPzh7ROaNhvy+pn5sojtp4vaQLCD7QZU=;
+	b=KBEe06PNM4kGkIq2EAhKpM6x9/hb/JAI2xDUmdW5hFN4z00HLC4iXy16msEDvO/KQ9pNMd
+	xHFiTlK4qc2Yle+Zg8UD3pWeKcUWMCj5rMe0ZwXdJ53M2sIeWdUQQTjCoDpCh1m1B8bPiB
+	1yd0JGj639JnTauc4s8Jd0ki2taGdwc=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784814429;
+	b=ErdpprMuvTkRNlMG5cU54nZhwiAWeV9zJulFDxeFyZ8XPeIZVcqsLV/1U5px1giFqiwcqV
+	xkOwltku3wADWfx9vrqJElwI0zvaVIlLhEXiR22jBs0vLMYWOp1QIlMvRZsKTgouBZUtHv
+	WfjzvR6rjBE2B/ecxoQEq+AxCHQAYAo=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=fdz4nRXt;
+	spf=pass (imf26.hostedemail.com: domain of ak@linux.intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=ak@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784814429; x=1816350429;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=TTOiuNpKd3ZCkUsJNnXQtcBfFIarUNgpz9bYK41z5To=;
+  b=fdz4nRXtroDBxeS4KpceBLPGBWyc/nivJBjrYwdPLokxpGFhJ0o7MSBy
+   qXGsZBWI3Dy9NmnE7t/wT9TI9+dlKz3+X9cerGLrOuiZstiubK2250ST+
+   2ue/Qhic11jQNYk5b2kzauhHqwY//Q9vHdnlHfGABY8t/RIr3zeoNT553
+   0sNAGokwH+hLNbVklnoximOpiy57YkdXJtBV9UhfZ8O3+djHcoZc0WAha
+   GxuGvqTnfNyyEe5m4OgqfJDUhCzgUQxQ0pCblsGxKm+DOBTp4mVQrGokV
+   2g0kdfGDecF8ttHKLRX43LI5M+vZust/KPjktFAUPM8nbK5HhDeoKt3+t
+   Q==;
+X-CSE-ConnectionGUID: E0CW7FOgSAiDwqLaY0iwsQ==
+X-CSE-MsgGUID: +Xd6xE5vTjKIUZFCZLESZQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="88008514"
+X-IronPort-AV: E=Sophos;i="6.25,180,1779174000"; 
+   d="scan'208";a="88008514"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2026 06:47:07 -0700
+X-CSE-ConnectionGUID: 5I8g06L0RzW2DP7JqA5g0A==
+X-CSE-MsgGUID: b1+2gPZ+TkuUBaWrc2aoow==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,180,1779174000"; 
+   d="scan'208";a="261962172"
+Received: from tassilo.jf.intel.com (HELO tassilo) ([10.54.38.190])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2026 06:47:07 -0700
+Date: Thu, 23 Jul 2026 06:47:00 -0700
+From: Andi Kleen <ak@linux.intel.com>
+To: Markus Elfring <Markus.Elfring@web.de>
+Cc: acpica-devel@lists.linux.dev, bpf@vger.kernel.org,
+	coresight@lists.linaro.org, kvm@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-gpio@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org, linux-perf-users@vger.kernel.org,
+	linux-pm@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, mptcp@lists.linux.dev,
+	netdev@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alex Mastro <amastro@fb.com>, Alex Williamson <alex@shazbot.org>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Ankur Arora <ankur.a.arora@oracle.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Bartosz Golaszewski <brgl@kernel.org>,
+	Bobby Eshleman <bobbyeshleman@meta.com>,
+	Christian =?iso-8859-1?Q?Borntr=E4ger?= <borntraeger@linux.ibm.com>,
+	Christophe Leroy <chleroy@kernel.org>,
+	Chun-Tse Shao <ctshao@google.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Costa Shulyupin <costa.shul@redhat.com>,
+	Crystal Wood <crwood@redhat.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	David Matlack <dmatlack@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Gabriele Monaco <gmonaco@redhat.com>,
+	Geliang Tang <geliang@kernel.org>, Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Ivan Pravdin <ipravdin.official@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	James Clark <james.clark@linaro.org>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Jiri Olsa <jolsa@kernel.org>, Joe Damato <joe@dama.to>,
+	John Garry <john.g.garry@oracle.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Kaushlendra Kumar <kaushlendra.kumar@intel.com>,
+	Kent Gibson <warthog618@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Len Brown <lenb@kernel.org>, Leo Yan <leo.yan@linux.dev>,
+	Lukasz Luba <lukasz.luba@arm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Mike Leach <mike.leach@arm.com>,
+	Mina Almasry <almasrymina@google.com>,
+	Mykyta Yatsenko <yatsenko@meta.com>, Nam Cao <namcao@linutronix.de>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Pawel Chmielewski <pawel.chmielewski@intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Quentin Monnet <qmo@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Raghavendra Rao Ananta <rananta@google.com>,
+	Saket Dumbre <saket.dumbre@intel.com>,
+	Shuah Khan <shuah@kernel.org>, Simon Horman <horms@kernel.org>,
+	Song Liu <song@kernel.org>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Swapnil Sapkal <swapnil.sapkal@amd.com>,
+	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,
+	Tomas Glozar <tglozar@redhat.com>,
+	Vipin Sharma <vipinsh@google.com>,
+	Wander Lairson Costa <wander@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Willy Tarreau <w@1wt.eu>, Yonghong Song <yonghong.song@linux.dev>,
+	Zhang Chujun <zhangchujun@cmss.chinamobile.com>,
+	Zhang Rui <rui.zhang@intel.com>,
+	LKML <linux-kernel@vger.kernel.org>,
+	kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] tools: Use fputc() calls in some functions
+Message-ID: <amIbVOIsOeZgcBZF@tassilo>
+References: <48f2d61f-d468-49b7-881e-f00777db073f@web.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.126.230.37]
-X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF000397B4:EE_|CY8PR12MB7170:EE_
-X-MS-Office365-Filtering-Correlation-Id: 40f3c0cb-e3ca-4e5d-a225-08dee8c047f4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|36860700016|376014|7416014|1800799024|82310400026|10067099003|11063799006|18002099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	ZBZqjacDW/XR1iUM2d8Cj0EvuxADXF+uoYa2btWkFgT8vaZSICYf5wYU8INoZjgYoPlpuyimJuwypVHuXsjM+qIqJoa0dK4owgYyrHHn7aVyC9SGUfnMh6vXGaSFRiVNsCQTa8Enr/TfI/ccwP1ctN4LP7pv8Fv9SYsHcJTx9CGqq5AiQpADiy6c8HaGtKIH3LsueHkbeuZCLwSoRpm9u16nYtPA90YKxtyZ0XlM03ZMTdJU3hnt57wA+n/hC95lBf2TYzOaPubFyekT3jUKJ95PbnD+6ObNUA1VxGmFHBlN9YshaR6/jJDUlglEWaW2bb1zpZ45ELO3i8begwx6G1o/78lb907027wR7l0Oa9xx866PnPwX0IZS25eLazBIFL6kKnZwuaMHTewcj+aKFCUl63LYoWGTJV5U6ZGi/krjgP5MeQL2/Pw9dRiL8qd2Y2P0a+BI9V6v8Z/TQu3/m8mdzenm6UVtnRsgk4jw6J7vJznoQTrfp45LL/uYZApp5XITnEywVPMC8d5NfabZ0Hge63jdBIll07uqKpylBEJUdvhQuSYpGUUNmyo3D9Se3d16nUsmJz01ThqZfJ8rPHZzcQeFswMDiN7EfQQBd8I6ICUAQfs2vgGV22CtfkBkhfOIfe8cBKvNtj8RwnUmU8/7sTGiGc52fEBEnBoA74hnd8uuTD1Q14iUr5o9jPaI4GSGmZBngH6KRZrLWajPqA==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(23010399003)(36860700016)(376014)(7416014)(1800799024)(82310400026)(10067099003)(11063799006)(18002099003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	LH91GQdh1J6mSnxrxITljMx5oiuD/lOGyHqb1CGicraq/LGKc9bPvB6i+EslpWJQ1zqqL3CjYVDBqzrTD+OvySKR+ypWvt1TvCL3fZzNQ3H8W/AgpuZaKZ2+OLVtIGwmyP8gwMQf8UdMKcoRP2eKfyUVotefAGPsyo3EWGLllKJd6Gh0YWTNML/wZL4bQmt3sMZxQX+Mh0dqgBXitYY58EV/fTRm9qQiAmhdqKpBFMfjpt0EH1l+cktkosbuffA/NtPHdnU4obSew4UZCC8F0ZmcIjOs7uec28jcUmMV+BoTXeQvLbsmC90vKjv456Wb4p1p2IOxVhVrCRnHkPRbQI9L5tN4TL3zfSMhspWfekk7g4ZrcPkPXOexAlae8iz/wtS+p76NOKWL8r6m7v44DO7csFtJmJmvJ+XLGLE1xAx68NHDEhEbgChfry3sd0Up
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2026 13:42:46.9721
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 40f3c0cb-e3ca-4e5d-a225-08dee8c047f4
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SN1PEPF000397B4.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7170
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 384A51C000C
-X-Stat-Signature: 44bj7o4gfrng9kfbdhrn56i3efx9iogj
+In-Reply-To: <48f2d61f-d468-49b7-881e-f00777db073f@web.de>
+X-Rspamd-Queue-Id: C4F7D140012
+X-Stat-Signature: ek6qjzx3ncomfmuoizjyuxi9r7hpuagn
 X-Rspam-User: 
-X-HE-Tag: 1784814174-812497
-X-HE-Meta: U2FsdGVkX1/gImsGlzYACmwowm4C5qdVLkEvkh0Kdtefb1/XK765Na5Mkh8p5NQF1ZKZf0c0gM1Jh3H9HTt3kdJaFQOLpFf4c9M7x5DvZT8YuLrbIaAhU7L5N9gveb/XePQ6N5AVfM4nzQsDfYNZEdxj2xxJ2yEnPvd47TvwkiBSfYUDvThB6NFVb+7yk0zuK+fJ1+4YtqgmgWn1Gr3Qt/vjKgS11shlnEJEIoIKbIiHbp0edkT+HEhdKyktkMFN+B3y1qbC8wiPfM0qgvXjcn9yUYTa8dCYGLzLF3GlKDROtvqk2/zzX7J7QaCO2n5ht4528EVst87VpUOp0CYo244J4ju+vFZLU5F17tB0e7+hVRw6Wv/bk+BtXkoYGDoUEk5PK1NXaBp/f190gbvD8G2MRchyymvgk1Zbp608r7Bocsi9Hq7MH+R0ZMhco0ouL/3qlEEYLjaukZfQH5oWKqNGxwSpAEnLio7TYQRFMENjLfAmueEtlifdRZp39T6Shx3xdjP/qNVawouCWa2xN8GD0HtAkudkfzNfzBrHy+PcQDUlAX1OQTRvhDsLxhqhBUvxXPI8DLBmxYdunC+KpFReYMq2+olgV65GbHTnbKT7/Gd2fb9sy9VfetAX4vSA8GCYz1/qbGPuqiGaYHhBE4CjNqHQrnFI9lzgFYdMeKb1NdgKiIY87FeT2U+lmTAwuLg5BZlpXC6w+Y3rf7+UmKet2WKGrQnbjCzdmHyP6w5P0E1QLLEXjnDbwGPuDpWRuD2TXdEGNRrZZUjew4qXz9Hu0T6rwLmQAx6BiZguE1otHf+68q3ufSENsE9MkYRFeDT57KGRsQwb5vLg51Bh4zx0XRinmDdY6/hv5Tat4IXu0pREvPAss5yDw0yAOid5AWhdMPMRPrfR+ciOHeD1MqI3eMp68yWyl9eyH+oIa444cj69T3QCW4DQhwS8zT7BwdJULFzdDhI/n3UFcQD
- 9xq/NWLD
- p6zZxBUpxxz9VuSksge2gxukLSI32TWyoTxdliyIesF2nC6CG88bQ5tNavTHEAYYQFiKPjTDt5Q4idSrYpeF8JmUP0eT2Wr7elCJAIwMAue3hYzS3EW230Ma7sc+LlDpGlqp1biS8l7BkWdVb3ASnCcnCGn2Gh+JukwtvppEMCu647bAWDxYgK/TfEnCUCJ0Eg/dEOrWPqlsk6Z3NGduKV7nvXm2EEBbwT/kdZpY+X8MCqNVFfwOk3KVuvjzuy1RDNkxqcOfGLNV5m6Fkc5CkD2FDaBIwceh1SSu23rthga1L8m4I4YFccH8j8fuFQ3Znio114XNgnMKKmynwg5Z3GHDXyfPtEskkTakGMZ2BZoztQ5laXDPq1zV5PsctiiLlxtn/S8Oqzi10vo3CRpmFww/ynMiZAwjtz1upZkAfDkAxgxtIPFp//TQA8k3IYNtJCe5OAeNz2mTn+GI=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1784814428-44459
+X-HE-Meta: U2FsdGVkX1+aonvkIZnCdjx0QTGttz8GelMIggJ7yFfSv8/q2vFnicihfGP/XxXP1OdkeioMf3s3OjV3O9oT9iOTn7e9kCt2+37tXnjI/xO6QRw1kPtlDs3zCuvfnZCRuELLihLTe1Fo7xfq/3aUv1DBfd17sRy0MtY6nfrD7AAbg1fMUZj4r9kyIKi/MUyYLmnmkHumGHXEWffCC35ik6XD4EcjYFt7vPHxzjg+c4oI912z8bVlBR7JV/ivqgDn6Cc7hl9NYsm6ceygAsSC2A7JuUe2mAg5o5zECQTHHt5obHCIrkFXr4dTUEoGgibUnqzFZg8hcCyydnq0urSBFJpJS5oM5GDT0aditOKW8EVsRdo+K5oCEslMbIX6t9Eet5M1piCoQHn6krz+5CjcUFI560S3MSBPuyxJyRxNq4ysvDBCMFivBi8UBFtYNSxiIBKYNesZo7T1fDJ277I+pclvQyOpisCV1xF9fzSKO9UZAWQBJgDsbOybo1MVHdHyg31MFUMhsOKHEjwwDRjL0FMJkPGlt/Yya+YvkwqimfBF3Wkd/mIvKVPjWDZZ+LNou8wJkN7BE/0ZL7zBhYN6fOfaUnIN/tEavPjWokegJqtMkwLKGN3G/pdk41BSrUbRbDSqTa730a+3/DmNkn3ngF3OR5hLvtozcHzNsQpXtrQ58lt18LMFXpmTbSB6DppMTzAGodMjfzgdI5ulhqnhNZrc3yowW9SF668IdBRUwzsXmPoDTn2+AwrBxgXpp6ZorqrqfUN0ytdEhybDN8W/DhEuVfsWOyZrUsx/xrl+hTNwDEQEG7f0qhdgtjxyOuF4t+vqnx8chZILkbukOCKzw6xoijhH/4R8wBIBUMPpR433fjG99jBjdFrMypD4ejSJAJqgzPmzpa5r+kSu7vMYWa825+IujhoFtaIJ1zKuHl6k92N/BYdaC1b4C+GC3FxLANnZgjjpKUqVu9i3AEq
+ RnrvuA4V
+ wEHylboWBt6FTXAeGz6OXQ3xq62VhVfhNqK1qwlKHpig86GRExXYzBs0ioie3AyBwX53itSytL1RkTZFxeS/wRjcbYOokLkjH6Wiveph/d9FlaE7c8OQ1GiI93Ft57Rl+lQSl6Vz6lGS2G0tpMNybnWsCIIbN3twjg2+K8DmBWflXYPZ6mPmYC/bpN4GtFstSBuQBOBuokvjMa5BOzBr45GHKg9fhybYdbDJgtQ7bqfuTNSEHWAOLjM1+9n4jgUf5EWVzjjMimJJO7y4O86mlb9TmVZsXT0UDMMbSdxZePGYT+01wGT5erWd2cuo77XU9fjMhA0v1p//GEzYnGqfQUtEhQESEWxr6ip2iBVe94SSO2eWuoQg3OJjvEwT74NTkKCwj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,58 +192,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-get_mm_rss() reads approximate per-CPU RSS counters. On large systems,
-this can under-report the current RSS used for high-water accounting.
+On Thu, Jul 23, 2026 at 12:25:25PM +0200, Markus Elfring wrote:
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Thu, 23 Jul 2026 11:13:30 +0200
+> Subject: [PATCH] tools: Use fputc() calls in some functions
+> MIME-Version: 1.0
+> Content-Type: text/plain; charset=UTF-8
+> Content-Transfer-Encoding: 8bit
+> 
+> Single characters should occasionally be transferred into the output.
+> Thus use the corresponding function “fputc” (or even “putchar”).
+> 
+> The source code was transformed by using the Coccinelle software.
 
-On a 352-CPU, 2-node system with 64 KiB pages, reproduce with:
-
-  sudo -E env LTPROOT=/opt/ltp \
-      PATH=/opt/ltp/testcases/bin:$PATH LTP_TIMEOUT_MUL=5 \
-      bash -c "cd /opt/ltp/testcases/bin && ./getrusage03"
-
-The test failed 10/10 times with child.children=270336 instead of
-307200.
-
-Use get_mm_rss_sum() when reading and resetting high-water RSS. Keep
-update_hiwater_rss() on the approximate path because it runs before
-RSS-decreasing operations.
-
-The patched kernel passed getrusage03 20/20 times. getrusage01,
-getrusage02 and getrusage04 also passed.
-
-Fixes: f1a7941243c1 ("mm: convert mm's rss stats into percpu_counter")
-Cc: stable@vger.kernel.org
-Assisted-by: Cursor:claude-opus-4-8-thinking-max
-Signed-off-by: Nirmoy Das <nirmoyd@nvidia.com>
----
- include/linux/mm.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 485df9c2dbddb..1b613c6356baa 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -3405,7 +3405,7 @@ static inline unsigned long get_mm_rss_sum(struct mm_struct *mm)
- 
- static inline unsigned long get_mm_hiwater_rss(struct mm_struct *mm)
- {
--	return max(mm->hiwater_rss, get_mm_rss(mm));
-+	return max(mm->hiwater_rss, get_mm_rss_sum(mm));
- }
- 
- static inline unsigned long get_mm_hiwater_vm(struct mm_struct *mm)
-@@ -3429,7 +3429,7 @@ static inline void update_hiwater_vm(struct mm_struct *mm)
- 
- static inline void reset_mm_hiwater_rss(struct mm_struct *mm)
- {
--	mm->hiwater_rss = get_mm_rss(mm);
-+	mm->hiwater_rss = get_mm_rss_sum(mm);
- }
- 
- static inline void setmax_mm_hiwater_rss(unsigned long *maxrss,
-
-base-commit: 4539944e515183668109bdf4d0c3d7d228383d88
--- 
-2.43.0
-
+gcc already does this transformation automatically.
 
