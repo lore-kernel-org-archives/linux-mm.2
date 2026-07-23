@@ -4,143 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CC44C531D0
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 20:21:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A24BC531D0
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 20:25:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E838F6B007B; Thu, 23 Jul 2026 16:21:25 -0400 (EDT)
+	id 2A4E06B008A; Thu, 23 Jul 2026 16:25:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E61A96B0088; Thu, 23 Jul 2026 16:21:25 -0400 (EDT)
+	id 255B86B008C; Thu, 23 Jul 2026 16:25:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D71486B008A; Thu, 23 Jul 2026 16:21:25 -0400 (EDT)
+	id 145F66B0092; Thu, 23 Jul 2026 16:25:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 68ED76B007B
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 16:21:25 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id ED2AAC0148
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 20:21:24 +0000 (UTC)
-X-FDA: 85021161288.24.CA37A67
-Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 20216180004
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 20:21:23 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=rgHez6Sc;
-	spf=pass (imf06.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.161.49 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DCF0C6B008A
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 16:25:44 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 482A61C0110
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 20:25:44 +0000 (UTC)
+X-FDA: 85021172208.11.C0091E2
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+	by imf28.hostedemail.com (Postfix) with ESMTP id E2752C0011
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 20:25:41 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=NY6399Bg;
+	spf=pass (imf28.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.176 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784838083;
+	s=arc-20220608; t=1784838342;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a7NoLvTE348K+Na68Jw9OquhlDUzGX30hZ/eyZXWDcM=;
-	b=RyiBLgY8U6L0qDA/bbIE/H7TKNbOldDjuR+OucmUlag5OuB/j7EeTYI0/Zni8VJZsDNqaQ
-	5kW5vOZNSOzvNFZ2NtRMrqtbO5ypGIdIsGK4yaj/rm+t43w20b4QlL5V3Eq/MNdNnjbER+
-	+r2ViFMe3f9L8I2MaanONLPM4SC1w7E=
+	bh=IFF4yQtEVs6i5fdto4RrDVs1x4A+ievAa0eCNbUcchk=;
+	b=bkkcIkKoaL4G10UQ5WC0n6UDcnQt1HDppv3mZpts2reVPnWFrCJgIZkb9XixgUm26vqGiY
+	Wuh3yEHQ9W3JFIx1eEO7Ct9C4lMcBraAzLhiTVfxORxmeZUCE8IKIxVyhSuUuC4fvnQR43
+	MeNcU40la+DsC15uNXT3RsVOj3QKzTQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784838083;
-	b=1mvOSJf1t2ZTP9UuodmNo6B2YVXHMxswHLqTRKz9ejNilKGrnW6O/WXKvQzNNL3+bKhkzX
-	B3T9uGpbrUT6TQRq3p/PrjMRl9DsIlWhQueGHFu3ITko3Rq3isubYwiDXFicVctkTX8V2N
-	hgPvI+J9B7bF5ckGUxQ7jb66ct4F6LY=
+	t=1784838342;
+	b=iwdLRFSy4+0ZzFCX23LsFyyUIpVzRk1gevhByUhdazHkoN1MHY9hD3k1d++6kcpXXKKxVu
+	7fkIqAVM22VO2ZjkxRwT23OcKLXX+6Lhkg+z4tT1kt+n2S7syeCHTv+gub69A6jm2TJHSE
+	PGntm7GlRqY99PYs3YYgN2gQ9zBlNGg=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=rgHez6Sc;
-	spf=pass (imf06.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.161.49 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-6aae244ef49so247907eaf.2
-        for <linux-mm@kvack.org>; Thu, 23 Jul 2026 13:21:22 -0700 (PDT)
+	imf28.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=NY6399Bg;
+	spf=pass (imf28.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.176 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-92e5b048375so89487685a.1
+        for <linux-mm@kvack.org>; Thu, 23 Jul 2026 13:25:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784838082; x=1785442882; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=a7NoLvTE348K+Na68Jw9OquhlDUzGX30hZ/eyZXWDcM=;
-        b=rgHez6SclP0jJGfJFsfTPQiDp1mTa+p/y3s8oLkclzNsYqzTIy1xFvfcU3yBcqt0dA
-         iaSu02n56j0UC9vMBWUG/AuXvyYKmmiV42OmDj2SDjnmuV3/cvCU9fxoNHqU9uxJMtOw
-         kxLPQthRwn9GAg6Bt4h3bViPVWrx18/fRlDbSbMntAYqNCSQyWb9dPGxQJOCsrYqpX/e
-         2DMpltsLXA2qOwFwIuzL1adlKteXTKhve9iLdMlC9OiRMKn4ie+yJpHqdpgHRrIM/HbE
-         st7uvWJPBnC7MbXIWWJmSDRDGm0KkwRS/uvF7jXdXHb6jKKaAk64Loa3SnZl8y2aVGDy
-         LjYQ==
+        d=cmpxchg.org; s=google; t=1784838341; x=1785443141; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=IFF4yQtEVs6i5fdto4RrDVs1x4A+ievAa0eCNbUcchk=;
+        b=NY6399BgBsrU2YinRJ2Rd4ySfVkz/3oDgNXxcUGbSmL87DnkYOkaO6LQwxcFrKGRbW
+         TqGxm7PdjGC/QdLMyjXw+a0oSl15j6Iymin9/8eHV+wBoSppsG2i9Wzrvd/zMldbdK5Y
+         eKNc/EZT24VwRBfM4I+HpQWlsIr8JR53Pz2teXivKtj4xgsKke9oVQm6juFP3rFfVxai
+         f6knaQRYtDsESHsPkENI5RtAuPrJ+U9IY8XO8m/D0CyELw3GXWqvK2PCdwV6GncAxqUP
+         H5jlaufruh4ZxX5xlgddMPbBp70zJR+sXOcSgl1LbVLbp0HnjQn8JX0A4OvmFTB3BhXk
+         9x8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784838082; x=1785442882;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=a7NoLvTE348K+Na68Jw9OquhlDUzGX30hZ/eyZXWDcM=;
-        b=gJRo1DJz4Q2ajD0Ju0yYUvxVWCQWSlnOH+wAShRT3COraSzMpaKhsfQMoGnKu1RfAN
-         fuj79KuXRaZunyM00VtDLvYoxQe01rn72h7IVasyhPNJ7/tJJ2tRPcdrMzkS7d5xhwMH
-         Zcgj+0WQufFG+83Rca6jWIF7h39aIbL901T7c2z8dyIejBbpwBQcKIUFtyfBreL+D+dy
-         63Z9143/yvlWQQL7tijWbRQiJzNz++nkrMDD5dTD6H9jF/BLdO3p+gqZNdK33g4EhJl7
-         eNda4bx5fvGAWdjnKPwpXImek4kS2om+GVffNy3WwIYA7yYNRkra6zDSG8/m/7T1CY4s
-         RV8A==
-X-Forwarded-Encrypted: i=1; AHgh+RoJM4THZNa2pQIT3aVhqmyTrFLLxRsigHdZRGALjNWFLe5NkbYS89sZEQCOMC1d7R2FmmSh71yrlA==@kvack.org
-X-Gm-Message-State: AOJu0Yw/E0DPAKjLLkuIFT3+TeuMtXY4Too68SAfrmwy9ieAo2F7D96e
-	DZCHMD/IiFdLP4iqPtkRMBJldPnCQFXIG8L4KOQoR7bAQ4yIPuxUGlGy
-X-Gm-Gg: AR+sD10w/mo+wGteCvNK/k4STS8llja9O8G9XVkOGlZtFireYcXOSEiX4sWwzVvHW9I
-	ep7QAdnUg8RNp0jffP0m3nIkCKjt+5obbkyFE8Mv7DkceuapxYVO7tXc89gUR9Qf6oTzEelaROe
-	oZ57D+uoeNgDzE6M9u4hEH7PheHyQJmSpFVyKmiSG2L5NiYng05hw1NQAxe/F3AeQSTZykcArdC
-	f29rA+a6A1hPsVogZWqBzFJBYdDvvbIlceaGlBixvyVL7iGBenWdTbez7N7yKeBz/qWylwan+Jp
-	NkVc0gCA7SwN67xkjvKhdgsOdd/OtH0iApCqP5paGFJFgAGDNpOObCEDCTtq/ggwcxRzCZlyjY2
-	oS8l2P1mw+GEHYD8yB3QZ0dngFftOwZUvU7VerQecIGre4b222/Pl4c1Pfnokt9vzOIkAaEY7Zh
-	kDnpzY68JvkrvQ58xUUvj9sIDknZdq5o0=
-X-Received: by 2002:a05:6820:7042:b0:69e:43a2:349 with SMTP id 006d021491bc7-6aad4139c06mr1581776eaf.47.1784838081210;
-        Thu, 23 Jul 2026 13:21:21 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:9::])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6aa79ef5a37sm4173918eaf.13.2026.07.23.13.21.20
+        d=1e100.net; s=20251104; t=1784838341; x=1785443141;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=IFF4yQtEVs6i5fdto4RrDVs1x4A+ievAa0eCNbUcchk=;
+        b=XwvDymSSqG2Prd0YnQTzMfF4Xz4cyI+3txgDfiTJ+byJNqqeUISxd0UMEXuXkWPYbc
+         ZK6bnBhSbyaB48v7h9SdZO65DG4JyjXPfFHwKtEDWoQ47NzRfuyZjpPf1UILuuYvzkyw
+         JG7sgmYUJ0JmfpMI1vWNwQkyi1uQyyCrtFMEeg4rZxwNNmHKkQyw+5XTChZzo0L4+yNM
+         Nfa2i310IWMsT61Ou07o9bErUUlfzewWdoMVc/v+xsG0dxDr8/jMQggTb2SGN95Xe+ER
+         pkMvzKfyZHm+U3KnI9HDDVWliM6iPWKMX/jVO00/kXZg1k7b9IKu6/Vq6hIzncVCQg80
+         W3kg==
+X-Forwarded-Encrypted: i=1; AHgh+Rox2J3cgw8Qw7+8nsXtp5qYpnjbAlH7MAGsSkbil2i5E7Tn5AVgbAi5wkUiHUbTNElLO6T1RZVKuw==@kvack.org
+X-Gm-Message-State: AOJu0YwkeosJ4l56NnMvlGe4WT769XAWRlkrjAby4FRQAfxJXezuLtT8
+	Ca/1lfqpp2UqMmy4vpsihkaSWqX+923SmY5igIVaLtf8wyy7O4FY4YVGbuqZUuvfK2E=
+X-Gm-Gg: AR+sD12We2JCljHir+DIwp/SlcUEdmcPV4hcJUIZfIfbepefOC1wgT2sJP1Mlz7IWN1
+	asm+plSedNqyPgfmScv+cr/fUdq3LaULN81+9LFvXKh1DdUGmQ8kEcUwwaYnUB3GOnEK9no3DkP
+	yW090BLEp7G0neypsWvuCw0Du+0ykkBT054cuoHSwa2InKUKoloLCWf1bBdepst2o3dvLpWvP0i
+	m77OXFCwP0HcxZ6+68nyU1wx+2zOWSV66V8zUNptpVbReRPobv1gRt7ju4wc1weR00Rro543Tbe
+	/4VsgUWESSVvFJwQOmkiSU62fqbgqHpAvMQgPHSVRziPEg3CbImBIrhTNTBRHfsYJrSGgkuJyTB
+	Vi+QmuduvmsPTCuSXpIQbMi6zgsO99WFMeXG4OztXyWoI+Pr5yp0pZ97MjgroqAlje2cUAVDnRv
+	nG
+X-Received: by 2002:a05:620a:4550:b0:931:3d2:6fd with SMTP id af79cd13be357-93103d226f4mr481862985a.43.1784838340842;
+        Thu, 23 Jul 2026 13:25:40 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-930f6a0ab39sm506266585a.26.2026.07.23.13.25.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jul 2026 13:21:20 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Gregory Price <gourry@gourry.net>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
-	linux-mm@kvack.org,
-	Tejun Heo <tj@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Koutny <mkoutny@suse.com>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <bhe@redhat.com>,
-	Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	Kaiyang Zhao <kaiyang2@cs.cmu.edu>,
-	David Rientjes <rientjes@google.com>,
-	Yiannis Nikolakopoulos <yiannis@zptcorp.com>,
-	"Rao, Bharata Bhasker" <bharata@amd.com>,
-	cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [RFC PATCH 0/9 v2] mm/memcontrol: Make memory cgroup limits tier-aware
-Date: Thu, 23 Jul 2026 13:21:18 -0700
-Message-ID: <20260723202119.3688800-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <alkB4tnJxOLyVCi2@gourry-fedora-PF4VCD3F>
-References: 
+        Thu, 23 Jul 2026 13:25:39 -0700 (PDT)
+Date: Thu, 23 Jul 2026 16:25:35 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org,
+	ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+	kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev,
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+	chrisl@kernel.org, nphamcs@gmail.com, baoquan.he@linux.dev,
+	youngjun.park@lge.com, roman.gushchin@linux.dev,
+	muchun.song@linux.dev, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+	rientjes@google.com, kernel-team@meta.com
+Subject: Re: [PATCH v4 2/2] mm/vmscan: reduce lru_lock contention via
+ vmstat-derived scan-balance cost
+Message-ID: <amJ4v3QD2wym14ap@cmpxchg.org>
+References: <20260720164207.450685-1-usama.arif@linux.dev>
+ <20260720164207.450685-3-usama.arif@linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260720164207.450685-3-usama.arif@linux.dev>
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 20216180004
-X-Stat-Signature: ofc7q49o1deja9ec7hwzihjji64tztqf
-X-HE-Tag: 1784838083-240737
-X-HE-Meta: U2FsdGVkX18mmEGUeo8vBwbvhD+luhYyfFSRfCZl91lvo2/3wPprXMbIq10NqaqaLC02nejJjE+zq9YmKMIJHmvnLIQ0hNouLDteXnEkE25O5tJe0vYOw4Y2WCc+ZLHF/uFjR8uFSi1JjjsES9gEtX+Dsi83y5k8bCm6ZVW88B3IFOkmZbn7wx2iNsQhC9pjkfcClIAYd0q2TqW2l8yAdQLAEe7Y3hXvfVc2n6xZCYjFhZJ1uLlNR7tSFQN2fAVLUBqPsUR4MC9oGCswp4sMli411f3imBCH99AqVa3u/FygHdPdNjgC7Qk3pAmUcA+2VBNaa2SrN0cBtyfQ62BdpHVfv7FakkKNw6pk8qlgNbLzEXfi8mjbVFJI49H8HC0SoomAx9EvRNqFDpoBikg/aZOntxTGHpj0k7SYS3LkKjl52eSgwZ1SlDNBuW4FFksmCEImq91QKTaiDElmxtgnb6TpviP3xAXbGSX2/GJQhKsoxIcHV/hD+95/d0iHr1JNJxEYH3QyEQwcqMKRL9QDcT0NQooU0T2sBXAIMOBAhKYn/KwD1j2op3av/UG7MvkmywLLKEGnIW6WwyAOw7ReGtY6q2gA6+24vk3Z0xP4bhbGJhH4g0O4B8IXFum0/hTZv4veki2y1yFGA9KxWd7nIJgOd/VS2DtEZCeGhQasmPrnGqqN9dNyCeVs4+07rddcAPMZmfo1IyHnNUDHWwZz8aXrDq5a2Gh6yv6NzhhrjsQhD4IUQPLzbIb+Bc1B0P/bQwz5K6lkZciONR5+PunvFmI0zqOFQrQaawa65R3xRKIIQQx3tm4f0kOoKPW3PWNwocJCsRhRQM5R2csIUOC2GJ8ZjwgxyuscX6W2YOWLlX3lzk/fUu9LqtdAGgmio17GEG5wCBMlGMay5fABMvW6EDdruqN19JcsXy7N7IItWSRqBSYZMBklXgIFODZmf9QRRy7ynRJ5aO5EpnAoGxu
- +XQYZgUL
- uSAT1gx41hyx0CjjlLlhac87WFALVqgUnidOk45aslHotmBR+RmHlms7Fr1rujvy5aZrtrJTdhNJBZI3/aolbg5os1CepKeeboCzHEQKJqcXXMgP4XpjBnk7UAszsNlL8CjEObrjnRxrFQ8f6dM8Q8qMflYA5dd3z+1B4xbull0+owd6o+8VckXJ7We38DwRSXc7oc7zA521B6QFGOz0ZN6K7HY2/diIUxLL9C+UC+ZvDSdbyDMgXzXPV8Vbh+3WU32eIgsHEp1MV9+jiEjfWaWClki0HaGg93klg2YDJjfkXEZ3JS9XfilALUM/aANKIQ13ZPpUB4NPbreZEJp05J00BChgOuWdM9HR2iWnMLk08olbypwoZMgVxbuLtxZ1gY8yiREcivbMfzPAO85OygQsPJE8RyC6tflj423nCX5jEDh3e9YQW/penqbQ79DYKMA7zD1zvLthptbKqwwM3iZsa9TaWCEA08/mVevSe/WfN474eBQTqeX4FavjCTf/Ueg9lhUbTf08LM0sNe11zH4sEaGYFJM8rn8b+823QeqSpN5dzRMyUXWhfo0YNpDucUAx9e02zXF6LzGwtdvNOzEMqdcTlKMrri8cVRKIXZ+yeEDY=
+X-Rspamd-Queue-Id: E2752C0011
+X-Stat-Signature: chshz9npnomnu857wnagdmdnkjbma5xy
+X-HE-Tag: 1784838341-581354
+X-HE-Meta: U2FsdGVkX18YUFARpmlUor4TvveoAlZTHZBIWweS9sPSvRswapUkM2kOGrfl7zkkrkVD2ZcPvVqVqtTv5v0RK7GPV+K3qRnsrhPFE177ozL+3TqCRNTkLOcroTBtHuGzLKyXhKQChmNpCDkgFrMvwYq6LAgeUo0NmiTPL4U72LtNRliOfjoAVuVq1jv8jGyYVqwgsDHptjrfwAlbKDNXK3+vF6y359azDZX291mfWyF0QV7O/BHQB8BMcxc8/BdBIimruOIFy3EI/rgUlmsQDkrEd2kZWKCm8eMIUVEM32yQUpd8aaQUNTdyswdL3UxjZ+8ICHNHdxLoveg3Sjp+msLS8o8KTmzVOQU8xm17hewNT6rD400Nfs839Y1XXFG408FvzvsDb04eK86WKEIL+5xD3zqJGaZOxuuhj/eJPrVftzDdqf0l9yXJJNfaKLGWrvPTkQCOe3E4S/CMSqsptQj1AehA/jueNAiaQIPkG05j4t34FauOs2AqD/FL6ky8DHFJp0e0QBa1TFXZSsZmA28r21lk4GmRnXy6aM2zze0heal83LgdFcHgQzZOAjczQbG9UNirFSNi8iHWMiBSZVgx9qVavYpkhsQvPl4QMrTDL96ofC0URj3iF47WY0o4d2V3pUCDhKqW73qekRRrSBNf7FWw9KGBEv8WEcbbkVB5X8FPt4hD085iDYpuAyFkoiBIrJ/5g5eCjiAsXAm3r4J2FwWuQGgrhKbuHqQYlojOF/9UUGuFhht3V4acHtpMDRkb6fbUxtYzMjmHgPviwU/y2qCFPrlLxXuDxtsCbvpB28Det4Lk+zjUVTiwDZOHOM2ohbuWdSt3I899JB5EQ1khLDcT3IXByZlZqZf0VbdXMreneqkJJqt6G3AQ8gOR3wPO2fPN7ULX+/i6PKiTTIJGDi4f3WpCV6sivmg8RP0ctuNx1t8UpMi64YwfnLTt/Wz3L664lL2EN9jCq0Y
+ hXYy++6G
+ sVi4n/rtOgfza7nCz/dPTWw7vipiKyTGvNnyV7p3m7gvkTzYcr0bHeNMIcIUOuc8mudDijVD6HPXQnZ1PHeAW+Jq1C+UdDwWio0GB4/ILJeoMfgLtbkKGNNIrTGZoi5lSFfENdHA4ydlh5tyczQeq2BeADhATuF6m7hCsP6XTp8TMVFqXYVR63wDF5Okh6AOOel+/rrqpULRQNNRbyVRYvU8ZLzQ39ktywDAE1OfNU+MXlMz2+LvHr9MDnpr0JmLR7JMeqGQkM1by0gyocuksg6h2ODlL9tVRsIT7bi18hFSL0TeNjpBOPkt3ww3v3EL4bx9SfAEle76mQxAymCIl53agwU00yan/h7q5ZHQ69JijNzpjBl+xUgOUANG5Fn+acprQeIoqvM2Df96Ke+l3qArbIOwdzBXGpFPyCPak+lX8LW3IEx1taOfI4OhgjJvRgurN6AkDmo1SDZSZVEjjMTo0bRzXhf+6J1cy
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,126 +128,132 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 16 Jul 2026 12:55:55 -0400 Gregory Price <gourry@gourry.net> wrote:
-> On Thu, Jul 16, 2026 at 03:11:30PM +0200, David Hildenbrand (Arm) wrote:
-> > > 
-> > > First, for the multi-numa-per-tier case, I think this is already pretty well
-> > > handled by my series. Once we realize that a memcg is consuming too much memory
-> > > from a tier, we trigger reclaim from that memcg via
-> > > try_to_free_mem_cgroup_pages,
-> > > which as far as I can tell already handles the multi-numa per memcg case.
-> > > Other than restricting the scan_control's nodemask to target the nodes
-> > > from that tier, I don't think there's anything else to be done.
-> > 
-> > I am not really sure about the "toptier" notion, in particular if your memory
-> > hierarchy is not static.
-> > 
-> > Imagine that you have only DRAM in your system. Then you hotplug some slow CXL
-> > memory. The you hotplug some HBM CXL memory.
-> > 
-> > The meanting of "toptier" changes, which is rather confusing to me.
-
-Hello Gregory, hello David,
-
-So circling back here a little bit (sorry that it took a while to get back)
-
-> I think this is a naming problem.
+On Mon, Jul 20, 2026 at 09:41:23AM -0700, Usama Arif wrote:
+> The anon/file scan balance in get_scan_count() is driven by two scalars
+> in struct lruvec, anon_cost and file_cost, accumulated by every reclaim
+> producer under lruvec->lru_lock. The acquisition sites for cost work
+> specifically are:
 > 
-> Maybe we should start calling this "initiator tier" or something.
-> Maybe tier is even the wrong notion here, but it's the best we have.
-
-I think the confusion is that "toptier-ness" doesn't give the full picture
-for whether a node is a promotion candidate, a promotion candidate node
-needs to both be toptier (adistance < toptier_adistance) AND also have
-CPUs. So a HBM node that is hotplugged can definitely be toptier
-in that it has a smaller adistance than the toptier_adistance, and will
-probably even have a smaller adistance than the DRAM node, but if it
-doesn't have CPUs, it won't be a promotion candidate.
-
-It gets a bit more confusing because this distinction is not a tier-wide
-distinction; you can have two HBM nodes hotplugged where only one of them
-is CPUless -- then we cannot make any statement on whether the tier is
-a proper promotion candidate, only that one of the nodes within that
-tier is a candidate.
-
-> But I agree "toptier" naming doesn't generalize to complex systems.
-
-The merits of calling a node a "toptier" node is therefore a little
-dubious I think, it's just one part of whether a node can be promoted to.
-
-Anyways, I think this is outside the scope of this series. I think that
-for the scope of what I am working on I will try to move away from
-referring to things as "toptier" nodes but rather call them 
-"promotion candidate" nodes. I hope that distinction will make this
-series easier to understand and read. 
-
-> > > $ cat memory.tiered_max
-> > > tier_0 20971520
-> > > tier_1 31457280
-
-One change here is that it is not really possible to have 0..N-1 indexed
-tiers, since those are not stable. For instance, hotplugging a HBM
-node (as David pointed out) would replace what tier_0 is. However,
-one thing that remains stable is the abstract distance (adistance) the
-tiers are associated with, so I'll preserve the ABI that I have right
-now, so we can have something like
-
-tier_42 20971520
-tier_128 31457280
-
-And if HBM does come up as the "highest tier" with the lowest abstract
-distance we will just have
-
-tier 16 1048576
-tier_42 20971520
-tier_128 31457280
-
-And we will not have any problems with tier_0 defining DRAM and then
-later switching to define HBM. It is certainly less interpretable but
-I think this is the only way to have a stable set of tiers, since
-adistance is pre-calculated for all possible nodes at lateinit time.
-
-> > memcgs are currently not NUMA aware, so this could be one possible direction.
-> > 
-> > But is "tier" the right abstraction? I really don't know.
-
-> Really I think we're trying to classify 3 general pools of memory
+>   - shrink_inactive_list() re-takes lru_lock at function exit purely
+>     to call lru_note_cost_unlock_irq() with (nr_pageout, nr_scanned -
+>     nr_reclaimed). One acquisition per inactive shrink.
+>   - shrink_active_list() does the same with (0, nr_rotated). One
+>     acquisition per active shrink.
+>   - workingset_refault() takes the lock via folio_lruvec_lock_irq()
+>     purely to record the refault cost. One acquisition per refault.
+>   - prepare_scan_control() takes lru_lock just to snapshot the two
+>     scalars into sc->{anon,file}_cost.
+>   - lru_note_cost_unlock_irq() itself walks parent_lruvec and
+>     re-acquires lru_lock on each ancestor to propagate the update,
+>     adding O(memcg-depth) acquisitions per producer call.
 > 
-> - Precious:      HBM
-> - Preferred:     DRAM  (initiator preferred targets)
-> - Non-Preferred: CXL   (fallback and demotion targets)
-> 
-> HBM nodes are already weird in terms of fallback ordering, but ignoring
-> that for a moment.
-> 
-> Non-preferred "tiers" are slightly different than preferred "tiers".
-> 
-> Under normal operation (assume no mempolicy or cgroup weirdness):
-> 
-> 1) Direct reclaim NEVER targets non-preferred tiers (kswapd only)
-> 2) Promotion NEVER targets non-preferred tiers (promotion -> toptier)
-> 3) Under total system pressure (direct reclaim on top tier), we swap
->    directly from the preferred tier out to swap
-> 
-> So non-preferred tiers don't have the same reclaim behavior associated
-> with them.  In fact i'm pretty sure we could summarize non-preferred
-> tiers as being managed hyper-lazily in the current scheme.
-> 
-> (if there's space, have at it - otherwise you have to wait for kswapd).
-> 
-> In my head, I think what we mostly want is:
->   - Precious      - controlled entry,  Private node?
->   - Preferred     - semi-precious, fairness desired
->   - Non-preferred - not precious, lazy managed, no fairness
-> 
-> Just some food for thought.  I've been poking at making non-preferred
-> tiers less lazily managed, and I'm just finding this results to massive
-> regressions.
+> This hurts because lru_lock is already a heavy contention point on
+> memory-heavy workloads: every isolate_lru_folios(), move_folios_to_lru()
+> and folio_add_lru() takes it. The cost work itself is trivial (two
+> scalar bumps and one comparison), but it contends with and causes
+> contention for actual LRU manipulation. The parent_lruvec() walk also
+> multiplies cost-update overhead by memcg hierarchy depth.
 
-Thanks for your insights Gregory. All of what I am saying is just in
-aggressive agreement with what you and David have pointed out.
+vvv
 
-I am working to make the next version generic across tiers.
-Thank you both! I hope you all have a great weekend,
-Joshua
+> Replace the producer-side accumulators with a read-side accumulator fed
+> from per-LRU vmstat counters. The old producer formula was:
+> 
+>   cost = nr_io * SWAP_CLUSTER_MAX + nr_rotated
+> 
+> Reuse NR_VMSCAN_WRITE for reclaim-driven anon pageout submissions. It is
+> already bumped by writeout() for the same successful outcome that fed
+> reclaim_stat.nr_pageout. Reclaim does not submit filesystem folios from
+> this path, so there is no file pageout term. Charge NR_VMSCAN_WRITE via
+> lruvec_stat_mod_folio() and include it in memcg_node_stat_items so it can
+> be sampled per lruvec and aggregated through the memcg hierarchy.
+> 
+> Add explicit PGROTATE_{ANON,FILE} node_stat counters for the remaining
+> producer-local input. They are bumped from shrink_inactive_list() by
+> nr_scanned - nr_reclaimed and from shrink_active_list() by nr_rotated.
+> WORKINGSET_RESTORE_{ANON,FILE} already captures the refault IO that
+> lru_note_cost_refault() used to bill.
+> 
+> Add a per-side struct lru_cost { count, last_rotated, last_io } to
+> struct lruvec. In prepare_scan_control() the two monotonic inputs are
+> sampled separately - rotated from PGROTATE_ANON/FILE, io from
+> WORKINGSET_RESTORE_BASE + f plus (for anon) NR_VMSCAN_WRITE - and the
+> raw per-side deltas are computed against cost->last_rotated and
+> cost->last_io before the SWAP_CLUSTER_MAX IO weighting is applied.
+> Extracting the deltas from the individual counters (rather than from a
+> pre-weighted sum) keeps the unsigned modular subtraction bounded by the
+> true per-counter growth, so a signed-long wraparound of any underlying
+> vmstat still yields the correct delta on 32-bit. The weighted delta is
+> folded into cost->count. Since one vmstat delta can cover many producer
+> events between reclaim passes, halve cost->count on both sides until
+> their sum is back within the lrusize/4 bound instead of halving only
+> once.
+
+^^^
+
+This is a quite a bit of explaining the code, which is kind of
+drowning out what's really going on. How about something like:
+
+---
+
+The balance formula for anon and file, respectively, is this:
+
+    cost = nr_io * SWAP_CLUSTER_MAX + nr_rotated
+
+Instead of recording cost and running averaging logic directly when
+these events occur, snapshot running vmstat counters once per reclaim
+cycle and derive the balance from event deltas since the last run.
+
+WORKINGSET_RESTORE_* and NR_VMSCAN_WRITE already exist and have been
+accounted all along; PGROTATE_* are added for replacing the rotation
+event callbacks.
+
+This is overall cheaper and has fewer lock aquisition sites.
+
+---
+
+> Moving accumulation and decay to the reclaim side also improves the cost
+> model across reclaim gaps. With producer-side decay, events that happen
+> while reclaim is idle still age each other before reclaim ever samples
+> the costs. If a workload refaults a large anon set and then a smaller
+> file set before reclaim runs again, the later file activity can age the
+> earlier anon activity out of the cost model. The new scheme observes the
+> whole between-reclaim delta and decays anon and file proportionally, so
+> the scan-balance history better represents what happened since the last
+> reclaim pass.
+> 
+> A dedicated per-lruvec spinlock, cost_lock, serialises the delta
+> extraction, the cost->count update and the halving loop against
+> concurrent reclaimers in the same memcg+node.
+> 
+> Hierarchy aggregation is now implicit in the vmstat accounting. The
+> producer-side parent_lruvec() walk and lru_reparent_memcg() cost splice
+> existed only because anon_cost/file_cost were private lruvec fields. With
+> the cost expressed as lruvec vmstats, rstat propagates the underlying
+> counters through the memcg hierarchy and prepare_scan_control() consumes
+> the same ratelimited rstat view as the surrounding reclaim heuristics.
+> 
+> NR_VMSCAN_WRITE is accounted at writeout(), so reclaim_stat.nr_pageout is
+> no longer needed and is removed.
+> 
+> memcg-v1's memory.stat anon_cost/file_cost is now sourced from
+> cost[].count instead of the removed lruvec anon_cost/file_cost fields.
+> The reported values only refresh when prepare_scan_control() runs and
+> are bounded at ~lrusize/4 by the halving loop; the scan-balance signal
+> they express is unchanged.
+> 
+> Under pure MGLRU the scan-balance signal itself is not consumed (both
+> prepare_scan_control() and get_scan_count() are short-circuited on the
+> MGLRU paths, and MGLRU's own type/tier selection comes from read_ctrl_pos()
+> on lrugen->{avg_refaulted,avg_total,refaulted,evicted}, not from
+> anon_cost/file_cost). NR_VMSCAN_WRITE naturally covers writeout from
+> either reclaim implementation, and PGROTATE_{ANON,FILE} are bumped from
+> evict_folios() so per-memcg observability of rotation-driven reclaim work
+> stays consistent across both implementations.
+> 
+> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+
+Otherwise, looks good to me.
+
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 
