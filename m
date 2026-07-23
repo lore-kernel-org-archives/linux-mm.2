@@ -4,103 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13634C44532
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 00:06:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B961C44536
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 00:19:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 217886B0088; Wed, 22 Jul 2026 20:06:28 -0400 (EDT)
+	id 0CF656B008C; Wed, 22 Jul 2026 20:19:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1EF656B008C; Wed, 22 Jul 2026 20:06:28 -0400 (EDT)
+	id 0A71E6B0092; Wed, 22 Jul 2026 20:19:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 108076B0092; Wed, 22 Jul 2026 20:06:28 -0400 (EDT)
+	id ED7A66B0093; Wed, 22 Jul 2026 20:19:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D0C866B0088
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 20:06:27 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 62B8C16033C
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 00:06:27 +0000 (UTC)
-X-FDA: 85018099614.12.334B89F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id A59C140003
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 00:06:24 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JXapcB4F;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E9EB6B008C
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 20:19:27 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1361CC0324
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 00:19:27 +0000 (UTC)
+X-FDA: 85018132374.03.03B9239
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+	by imf20.hostedemail.com (Postfix) with ESMTP id D33461C0007
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 00:19:24 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=XTFmqZOD;
+	spf=pass (imf20.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784765184;
+	s=arc-20220608; t=1784765965;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hpCbtcUC2sXXWMpXDvfzAO/B8jNQgdzlMS6y9QE7+7o=;
-	b=ezXDzNu9AieGh3WkqfkgTGOn9IzPpFWexTn//fIvgKd6w6n0Lv2N6lVeD4TTsoI7qxwCXk
-	gzzBEENg3bTQUjhrHrMDaNg97c9+YEI0EExXM2HVtkjuff/KdPebNivKEWOvcwtj0W6fMu
-	eKaT2NxnN9cfol/nWTBZPDGKrDtwrsM=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=OLFnQzsIACb+c2PDBsFQsonnUveD7tbT8/TMCAkTouo=;
+	b=xOuvqgLZnuSMWD++tT24PPXLxBGFCXZwPo0yyFcGNy/ziueLPHKwNccv2GWHR/WfH5AE4e
+	2UWDiDKOaRsrH84ES372NKbsjHN+Kr1dVqnPGB10c4YB8m01U7+4XIYqiIz6I9OBXHhIh7
+	mEaUuA8KNjqE60T4/ZfxxS2SbQptGT8=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JXapcB4F;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=XTFmqZOD;
+	spf=pass (imf20.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784765184;
-	b=P8XM1J/ov1FKe4UXwWGr5ygszmBF3lz3+OvxsPmbVdHS+KI2C6MpFGME7UEWOlLN7pJSTL
-	aNUITOobotLpTImY9X7AW8Z/VvlpwfHmNS/VSN9EX0LfjEpZSrMq17Dvk/KhpufCEJSdeR
-	OiMIwEFECsbG0NtVVLDE+/IBaQOb7nU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B3D6E40E11;
-	Thu, 23 Jul 2026 00:06:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF7281F000E9;
-	Thu, 23 Jul 2026 00:06:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784765183;
-	bh=hpCbtcUC2sXXWMpXDvfzAO/B8jNQgdzlMS6y9QE7+7o=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JXapcB4Fokth2Rq05nv7x+iAXVDRQ0PR9QOyVuhfxKEFbJWQyLPi60RkSNLxRZxqO
-	 9pzBtvAEpimpGzaeWTYloeDBwBvSVv1U2c5dcFcEwvdDuVrE8vmQfAwA8yzqvnjeg1
-	 nWOuRxQ7sd/UjFGMoiC+UxcLxNGgNjqScc6zJeR5R5357xCfD9MIZSrAoIq5olKEZM
-	 K32TNU9o9w7rVDymL5iinKM9Vq5Q/uMl7GecKz8AGly0nuG7+eVW75vtfIbhbN7AK3
-	 ANK7qFhI3UF7VXhsCr/QitDrDg6asQ07BXFxdgNE27h5WoT57M6zt+DRva3g52D/Ue
-	 HvEtdImcFtmFA==
-From: SJ Park <sj@kernel.org>
-To: pratmal@google.com
-Cc: SJ Park <sj@kernel.org>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Greg Thelen <gthelen@google.com>,
-	Suren Baghdasaryan <surenb@google.com>,
+	t=1784765965;
+	b=xLjuqFaJUhk4B9yXOYEcpbgUmIf3R8GmvUSH4n+oC+kon39XZ/esQxSBQdDpDfbkF0trTv
+	HHlffPXlFwY4K3qdFGul+aQ7Iax/NmOcbLzfitD12lXCG4BI/NscddzqPjkfH1hTWTC0dM
+	3wGJEbm+t3fFybjKYRBXLDlf0RUc99o=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784765961;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=OLFnQzsIACb+c2PDBsFQsonnUveD7tbT8/TMCAkTouo=;
+	b=XTFmqZODNpQdcNXG6C68aEfUOyYsaoZNxpiqt+mC3OSp1YNLhDOJk8PyN31GiUoi5Ehb/d
+	U0G/RKHQAKfiUr/pVJTm4I/LxdGLuv8P2sbJaUEZHOBatNvDXQzZIBQqqDhcLoyoXHUvGA
+	s+aaVaE7T5pyUfYwpw+SfbH5IL7d8UA=
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
 	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>,
+	David Rientjes <rientjes@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Usama Arif <usama.arif@linux.dev>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Darren Hart <dvhart@infradead.org>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	=?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Yosry Ahmed <yosry@kernel.org>,
+	Rik van Riel <riel@surriel.com>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Meta kernel team <kernel-team@meta.com>,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	linux-doc@vger.kernel.org
-Subject: Re: [PATCH v2] mm/page_reporting: Add page_reporting_delay_ms sysctl
-Date: Wed, 22 Jul 2026 17:06:09 -0700
-Message-ID: <20260723000609.95657-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260722211517.1898228-1-pratmal@google.com>
-References: 
+	cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [RFC] Robust futex causing memcg OOM storm on exit
+Date: Wed, 22 Jul 2026 17:19:07 -0700
+Message-ID: <20260723001908.4046643-1-shakeel.butt@linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: A59C140003
-X-Stat-Signature: nzi6n369uqatdb9n6agmgodgmmu3x9gb
-X-HE-Tag: 1784765184-718231
-X-HE-Meta: U2FsdGVkX18wH7i1kyVAHvBNZYK2qbiiCKK7xS1GPhGcsFRsZ511QBXoD0elyuxQMRuE5IOLjMk2HeX69oilI8ivKLQOI+VpJFjZu9R46syVINLxtW8tTRBFdin4CL/X73okqsrKIEv7eXx3Hu9XUc1bwBTf0P3TdkDsDT1aERZMLUV/eD22pXOt6zRuFHjqlNdZSVJRxrqhZTFGOHrJQvFOTldy6gUl727F5pWX9krcSuNO+3WAMEcYA9CETWF0j1hfqLDD6u5Zp85ElqoGvWslixrhvZp4h/pSDGBy535jnpt3Y8iEWP/X0UDxp1db/Szo56yq5wA+B6pgGGsFZZTUsDUzYbx/g0gF9txZElQH9/I8KuF1z/oX164DWqY6dOcP4WVup4L6n//YYygkRv+7bBIkNhGn26QF6U1hTWlC6DkHM3Ifp5AB/bsgDYnhFd7qSoUNO55OK7zwqr+pAIa8nRQF0CHADMclSYKYIFbq5eB1Ye60mW/k79l5m81uZhVf9E6Vfx8C6mS8+8SOr+tky4R7syEBDR/csiL86Z9KCbeMaIlbZxvwSHFXKGIASejL3Bx5sDqQiisDqfs64qZSQKWTk3LwnNZbQ8tFvUMnsRhNGVzf/KVBq60WxcP8j077BO40O3SWgnlQi/3q1CH9XYIGLxSrfVFlGhJ5a0NVqkAbqU90BX4KOWQEpozle0SDO71Yn7NQK4Gen49T8jAjGQ665xBl/iKAmVcGMDUjOMeDoB0hbJBDLfO4Th38U9UTanNbmNGtLDcyiAQHOwjbO1/3r2FMtFf6kV/AZ9RJZBabZJtrcvEDZG00eDaumlCSNXtFIrXgPosRVYnQE9HmuFUSK7Fwx1Buhac1Qg/kcya6Jaj3xECVHXP2BbUyTttpttmOc4i7OfDhjLbPJusx6vVnLM2ikU4JtAad9ZI1ejiazW82S0x7H8qIUSPffLvaUKE6nibcWZUraqY
- nyTWaNVN
- Cjy8H7h2xGLha++renMGiY5iAilV+DSDpcp9wx3tg2vPqVpyLAnwUl9u3t6Zizv8HhO0bJocOpG1K11u9BsI33jjzz0uHVqaoNrJfSviAhVgpg9oeFxN6NJsvmB3dWtGsakauEstdYJVHm/kAZN6abCIwy1MexP1Uix5WIcNBghunngYGt9gSLiLSCUb0HbdRDqKEonitQoLgTgoTa/XpBSyToNwamNP7lvJk1ELkAjo55s/rLz8D+RUKnV/CJYo8Irol+Vc7M40Z3R2Y+uVySYpa2nGwjty+NZy+hwHyeLMPHXZpJ+LqAiiNGanXdWCNUAQFur/MLH79p/VE3ZHpqFc3UMUtAyMQtpwpEeCvWVCgD49qlchDyZDWbkMnBsFVVo/LpbLW/4u+xXMxUyvKd2gSAewLGmPbcGrBH7z5VIqdefXTXxrJMv+mjcfC9vfnkNxeCSKDyZQepyJrWZy6kaOMWir4fj7/c+3A7HvDfLTsjlI=
+X-Rspamd-Queue-Id: D33461C0007
+X-Rspamd-Server: rspam01
+X-Stat-Signature: 463psioq5t4dpt7t6op13smc7nh98ft7
+X-HE-Tag: 1784765964-309649
+X-HE-Meta: U2FsdGVkX1/lyhAO/juB7PaQmN2r4+1qZsY1FI2GAAxEmqDxGaJxwf6hmZfOw9LExkyFWIVdSoICTENuNJf4AKsB9QsCTsDMtCZzLpx1s1zldNmnH9R9otmbnZG3pXFwbwwXcVOfavvGSNKk9sL5xWiKLcCynMmDljpoLzhq4BYNeX9GZZ25DrKppA9c2Y5PR86lJ13+DJWAX/g7JvklwKKih+q1nqScyTmbkFnitVBoFS54OwkZj/pCJ3IDfaEYahpBMXkfe25ZY8oxQVxMj/FKtbBZuDggEdjUK71onxaeMWVcAuP2aR1xfS3N4oZ5Y5t+RbDJmIwANuRQIJyltCZ+quCLKLEQJy4Dcm+5FC29HepSbtMTGoKcwRmpM0wyEBC8bcTs2/aIGC+iwJsG5JkMofuzVRlS4dWFZBD93a7dRwJ1Kkc21fa9qFaVKDl9XAY//NQ2THv3/TbTv4Z/dhrbQfl5nDOFeex2IBPW8cBaR2HS7370odS4rtn0GpA599upxgrVxJQK3AJE+7IIW2jc9iwag8gaJBYJMRjLdjN1c2ZojuhKADe5FxAX+OQ5IRRwQDuA9s4Atu6zh6V4PBLZEQz0X5uGuAcNv0roQoMh/k3QZ8NIovNRifiz87eh19SROGxHtAVOQhGa9Nwq+7Qe7mB3nkNA57SOTYZls/X8Pu1bU8FynI5DMSD3sqBmusRFFnQhKPKaq/Q43po/53K9Q6s8B+4KXHVJ3EnwEDJkXabXoYd5e6YROBcyn3zlH4aTmQ5+UZwJNjYhiYYYIeHu4x3RYSGz1/nNsWtgB7UxX3Hkx45HSHFCrophDMV49+72IsctsEqtkdnr+hVdmm6C+C3IkHT/FbVBPmdagjqlmMWGWScXSzTfYjHNzoP5bOb/IliDHyZOktkcEFKB33RJ/8G/5X+9ACOWdKiPSIsmGS5JrJUjXZLMWDDuOV2rGpd4QMSr0w7kZ8kY8hS
+ r7WZ93ym
+ q2QqK/xADdyBB6c8RRX81REL8aNWdn2yj/juySE8BTBXIggBUJQPhj4Cma1Cf4b/FAoOMd3IZRmiyKOckl5jeRMY5RzzFr9jYgPmQyKRJuh8KSHjQTRcxbAUY8yCVxmc/asXpyMGgbnmyJu5Jlajj8QxSZ9+x51dzOwJ/25M2Tp9jKjvxdAPele6e4W+rBJInujN7kOCisWpVF5qvqvue/3HORC56iHXctMlN9H9PU8sLg7YjGmrLhP4hs7P5NJhU6CckUE2wk/FfhDdeHsoDT23MU7qUevThBeWLDTtGsS4o7dA0yA0wA6kq9dOI8kjM6C4M
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,182 +103,702 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-get_maintainer.pl suggests adding below to the recipients list of this patch.
-Let me add them.  I show you already Cc-ed David, but with his old email
-address.
+At Meta, we are seeing instances where an OOM killed job is stuck in the
+exit path for several hours. In one particular case, the job was stuck
+for more than 8 hours and I had to manually remove the memory.max limits
+to allow the process to exit.
 
-- David Hildenbrand <david@kernel.org>
-- Lorenzo Stoakes <ljs@kernel.org>
-- "Liam R. Howlett" <liam@infradead.org>
-- Mike Rapoport <rppt@kernel.org>
-- Jonathan Corbet <corbet@lwn.net>
-- Shuah Khan <skhan@linuxfoundation.org>
-- linux-doc@vger.kernel.org
+The job was a single process job and had ~55 GiB memory.max and zswap
+enabled. It had almost 0 anon in memory and ~111 GiB in zswap compressed
+to ~51 GiB zswap pool (i.e. almost all of memory.current was zswap).
+Nothing was left on the LRUs to reclaim.
 
-On Wed, 22 Jul 2026 21:15:17 +0000 pratmal@google.com wrote:
+On further inspection, I observed ~20k threads of that process stuck
+with the following stack:
 
-> From: Pratyush Mallick <pratmal@google.com>
-> 
-> Currently, the free page reporting daemon uses a hardcoded delay of
-> (2 HZ) between reporting intervals. While this is a reasonable
-> default, it lacks the flexibility to adapt to varying guest workloads.
-> 
-> A low delay allows aggressive memory reclamation, returning unused
-> pages to the host as quickly as possible. However, during spiky
-> allocation/free churn, this immediate reporting can lead to a severe
-> performance penalty (nested page faults) as the guest re-allocates memory
-> that the host has just unmapped. In these scenarios, there is benefit
-> from increasing the delay to batch free pages over a longer window,
-> absorbing the churn without hypercall and re-fault overhead.
-> 
-> This patch refactors the delay into a dynamically tunable sysctl,
-> /proc/sys/vm/page_reporting_delay_ms, measured in milliseconds. The value
-> defaults to 2000ms to precisely match the original (2 HZ) behavior.
-> 
-> Signed-off-by: Pratyush Mallick <pratmal@google.com>
-> ---
-> v2:
->  - Documented page_reporting_delay_ms in Documentation/admin-guide/sysctl/vm.rst.
->  - v1: https://lore.kernel.org/linux-mm/20260722192935.1646848-1-pratmal@google.com/T/#u
-> v1: Fixed feedback from RFC.
->  - Added lower and upper cap to sysctl value.
->  - Reverted the reordering on page_reporting_delay_ms.
->  - Dropped the mod_delayed_work() change.
->  - RFC: https://lore.kernel.org/linux-mm/20260714171456.2350037-1-pratmal@google.com/T/#u
->  Documentation/admin-guide/sysctl/vm.rst | 13 +++++++++++
->  mm/page_reporting.c                     | 30 ++++++++++++++++++++++---
->  2 files changed, 40 insertions(+), 3 deletions(-)
-> 
-> diff --git a/Documentation/admin-guide/sysctl/vm.rst b/Documentation/admin-guide/sysctl/vm.rst
-> index b9b0c218bfb4..6efa460b4547 100644
-> --- a/Documentation/admin-guide/sysctl/vm.rst
-> +++ b/Documentation/admin-guide/sysctl/vm.rst
-> @@ -66,6 +66,7 @@ Currently, these files are in /proc/sys/vm:
->  - overcommit_ratio
->  - page-cluster
->  - page_lock_unfairness
-> +- page_reporting_delay
->  - panic_on_oom
->  - percpu_pagelist_high_fraction
->  - stat_interval
-> @@ -896,6 +897,18 @@ stolen from under a waiter. After the lock is stolen the number of times
->  specified in this file (default is 5), the "fair lock handoff" semantics
->  will apply, and the waiter will only be awakened if the lock can be taken.
->  
-> +page_reporting_delay
-> +=======================
+[<0>] mem_cgroup_out_of_memory+0x4e/0xa0
+[<0>] charge_memcg+0x8bf/0x990
+[<0>] mem_cgroup_swapin_charge_folio+0x4e/0x80
+[<0>] __read_swap_cache_async+0x10c/0x260
+[<0>] swapin_readahead+0x116/0x3f0
+[<0>] do_swap_page+0x13c/0x1ce0
+[<0>] handle_mm_fault+0x61d/0x11f0
+[<0>] do_user_addr_fault+0x3e7/0x6d0
+[<0>] exc_page_fault+0x8f/0x110
+[<0>] asm_exc_page_fault+0x22/0x30
+[<0>] __get_user_8+0x14/0x20
+[<0>] futex_cleanup+0x27/0x1c0
+[<0>] futex_exit_release+0x47/0x60
+[<0>] do_exit+0x107/0x940
+[<0>] do_group_exit+0x81/0xa0
+[<0>] get_signal+0x2b1/0x6e0
+[<0>] arch_do_signal_or_restart+0x1a/0x1c0
+[<0>] exit_to_user_mode_loop+0xa8/0x1c0
+[<0>] do_syscall_64+0x152/0x250
+[<0>] entry_SYSCALL_64_after_hwframe+0x4b/0x53
 
-Why don't you make the lengths of the line and the section title same?
+In addition the dmesg was filled with "Out of memory and no killable
+processes..." messages.
 
-> +
-> +This value determines the delay in milliseconds between free page
-> +reporting intervals. A lower delay allows aggressive memory
-> +reclamation by returning unused pages to the host quickly, while a
-> +higher delay helps to batch free pages over a longer window, absorbing
-> +allocation/free churn without hypercall and re-fault overhead.
-> +
-> +The default value is 2000 (2 seconds). The minimum allowed value is
-> +0 (immediate reporting) and the maximum allowed value is 10000 (10 seconds).
+I have no idea why oom reaper was not able to reap/unmap the process. My
+guess is that since oom reaper tries to acquire mmap_lock in read mode
+limited number of times and then gives up, there might a thread of that
+process which had mmap_lock in write mode at that time.
 
-So it is milliseconds.  Why don't you add the unit to the name, like
-page_reporting_delay_ms?
+My initial suspicion was the futex_cleanup and kernel page fault causing
+infinite fault and charge retries but that was put to rest in previous
+discussions happened on similar problem [1].
 
-Also, coule you elaborate why there is 10 seconds maximum limit?  What's the
-problem of having no limit, and why 10 seconds is the reasonable one?
+My current theory is that it is just a simple slow serialization behind
+the oom_lock. Unlike page allocator, memcg charge code takes the
+oom_lock without the "try". Though memcg oom code uses
+mutex_lock_killable(),  note that in the call stack get_stack() consumes
+SIGKILL (or sigdelset(SIGKILL)) before calling do_cgroup_exit(). So this
+mutex_lock_killable() is just a mutex_lock() here. Therefore 10s of
+thousands of threads are waiting on oom_lock and one by one they get
+-EFAULT from get_user() in the futex cleanup code and bails out.
 
-> +
->  panic_on_oom
->  ============
->  
-> diff --git a/mm/page_reporting.c b/mm/page_reporting.c
-> index 942e84b6908a..805da4bc1101 100644
-> --- a/mm/page_reporting.c
-> +++ b/mm/page_reporting.c
-> @@ -6,6 +6,7 @@
->  #include <linux/export.h>
->  #include <linux/module.h>
->  #include <linux/delay.h>
-> +#include <linux/sysctl.h>
->  #include <linux/scatterlist.h>
+Discussion from [1] lead to the commit a75ffa26122b ("memcg, oom: do not
+bypass oom killer for dying tasks") which routes dying tasks into the OOM
+path precisely so the oom_reaper can reap their mm and free the memory
+asynchronously. But the reaper is best-effort and one-shot: if it cannot
+take mmap_lock for read (e.g. a sibling thread holds it for write) it
+sets MMF_OOM_SKIP and never retries, leaving only the glacial
+oom_lock-serialized synchronous drain.
 
-Too trivial nit, but, why don't you put the sysctl.h at the end of the list?
+Let's short-circuit that path: once reclaim has failed, if current is
+dying, force the charge instead of invoking the OOM killer for it. A
+dying task frees its memory as soon as it finishes exiting, so running
+the (necessarily no-victim) OOM killer for it is pointless - and doing so
+for 10s of thousands of exiting threads is exactly what serializes them
+behind oom_lock. The dying task instead faults its page in, completes
+exit and releases its memory, including the zswap pool, so the memcg
+recovers on its own without the oom_lock serialization and dump_header
+storm.
 
->  
->  #include "page_reporting.h"
-> @@ -47,7 +48,10 @@ MODULE_PARM_DESC(page_reporting_order, "Set page reporting order");
->   */
->  EXPORT_SYMBOL_GPL(page_reporting_order);
->  
-> -#define PAGE_REPORTING_DELAY	(2 * HZ)
-> +#define PAGE_REPORTING_DELAY_MS_MAX	(10 * MSEC_PER_SEC)
-> +
-> +static unsigned int page_reporting_delay_ms = 2 * MSEC_PER_SEC;
-> +static unsigned int page_reporting_delay_ms_max = PAGE_REPORTING_DELAY_MS_MAX;
->  static struct page_reporting_dev_info __rcu *pr_dev_info __read_mostly;
->  
->  enum {
-> @@ -56,6 +60,19 @@ enum {
->  	PAGE_REPORTING_ACTIVE
->  };
->  
-> +
-> +static struct ctl_table page_reporting_sysctls[] = {
-> +	{
-> +		.procname	= "page_reporting_delay",
-> +		.data		= &page_reporting_delay_ms,
-> +		.maxlen		= sizeof(unsigned int),
-> +		.mode		= 0644,
-> +		.proc_handler	= proc_douintvec_minmax,
-> +		.extra1		= SYSCTL_ZERO,
-> +		.extra2		= &page_reporting_delay_ms_max,
-> +	},
-> +};
-> +
->  /* request page reporting */
->  static void
->  __page_reporting_request(struct page_reporting_dev_info *prdev)
-> @@ -80,7 +97,7 @@ __page_reporting_request(struct page_reporting_dev_info *prdev)
->  	 * now we are limiting this to running no more than once every
->  	 * couple of seconds.
->  	 */
-> -	schedule_delayed_work(&prdev->work, PAGE_REPORTING_DELAY);
-> +	schedule_delayed_work(&prdev->work, msecs_to_jiffies(page_reporting_delay_ms));
->  }
+Unlike the unconditional bypass that commit a4ebf1b6ca1e ("memcg:
+prohibit unconditional exceeding the limit of dying tasks") removed -
+which force-charged every dying task before even attempting reclaim - the
+force charge here happens only after reclaim has failed, and only for a
+dying task, whose excess is bounded and transient: it is exiting and
+frees its memory immediately after. A non-dying task still goes to the
+OOM killer and can still get -ENOMEM.
 
-A trivial comment again.  Why don't you wrap the above line for 80 columns
-limit?  I know that's not a hard limit anymore and I show a few lines of this
-file already exceeds 80 columns.  But seems most lines of this file is still
-keeping the 80 columns limit?
+I tried to reproduce this scenario using AI and I was able to trigger
+the futex cleanup trigerring memcg oom but I couldn't emulate the
+slowness we saw in the production environement. I am attaching the repro
+for others to see and provide feedback.
 
->  
->  /* notify prdev of free page reporting request */
-> @@ -340,7 +357,7 @@ static void page_reporting_process(struct work_struct *work)
->  	 */
->  	state = atomic_cmpxchg(&prdev->state, state, PAGE_REPORTING_IDLE);
->  	if (state == PAGE_REPORTING_REQUESTED)
-> -		schedule_delayed_work(&prdev->work, PAGE_REPORTING_DELAY);
-> +		schedule_delayed_work(&prdev->work, msecs_to_jiffies(page_reporting_delay_ms));
+Mainly I am looking for discussion on how to effectively resolve this
+issue and if force charing the only path. However I don't see how this
+same situation can not happen for the global reclaim, so maybe we should
+aim for a general solution.
 
-Ditto.
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+Link: https://lore.kernel.org/7a4e5591f45df455e6a485fc5400989569d3d22d.camel@surriel.com/ [1]
+---
+ memcg-oom-repro/Makefile          |  14 ++++
+ memcg-oom-repro/README.md         | 107 +++++++++++++++++++++++
+ memcg-oom-repro/repro_futex_oom   | Bin 0 -> 17840 bytes
+ memcg-oom-repro/repro_futex_oom.c | 135 ++++++++++++++++++++++++++++++
+ memcg-oom-repro/run.sh            |  97 +++++++++++++++++++++
+ memcg-oom-repro/trace.sh          |  69 +++++++++++++++
+ mm/memcontrol.c                   |  19 +++--
+ 7 files changed, 434 insertions(+), 7 deletions(-)
+ create mode 100644 memcg-oom-repro/Makefile
+ create mode 100644 memcg-oom-repro/README.md
+ create mode 100755 memcg-oom-repro/repro_futex_oom
+ create mode 100644 memcg-oom-repro/repro_futex_oom.c
+ create mode 100755 memcg-oom-repro/run.sh
+ create mode 100755 memcg-oom-repro/trace.sh
 
->  }
->  
->  static DEFINE_MUTEX(page_reporting_mutex);
-> @@ -416,3 +433,10 @@ void page_reporting_unregister(struct page_reporting_dev_info *prdev)
->  	mutex_unlock(&page_reporting_mutex);
->  }
->  EXPORT_SYMBOL_GPL(page_reporting_unregister);
-> +
-> +static int __init page_reporting_sysctl_init(void)
-> +{
-> +	register_sysctl_init("vm", page_reporting_sysctls);
-> +	return 0;
-> +}
-> +late_initcall(page_reporting_sysctl_init);
-> -- 
-> 2.55.0.229.g6434b31f56-goog
+diff --git a/memcg-oom-repro/Makefile b/memcg-oom-repro/Makefile
+new file mode 100644
+index 000000000000..07b9b3abf914
+--- /dev/null
++++ b/memcg-oom-repro/Makefile
+@@ -0,0 +1,14 @@
++# Reproducer for the memcg exit-path OOM-lock serialization.
++CC      ?= cc
++CFLAGS  ?= -O2 -Wall -Wextra
++LDFLAGS ?= -pthread
++
++all: repro_futex_oom
++
++repro_futex_oom: repro_futex_oom.c
++	$(CC) $(CFLAGS) -o $@ $< $(LDFLAGS)
++
++clean:
++	rm -f repro_futex_oom
++
++.PHONY: all clean
+diff --git a/memcg-oom-repro/README.md b/memcg-oom-repro/README.md
+new file mode 100644
+index 000000000000..b9be2a6a0002
+--- /dev/null
++++ b/memcg-oom-repro/README.md
+@@ -0,0 +1,107 @@
++# memcg exit-path OOM-lock serialization reproducer
++
++Reproduces a production failure where an OOM-killed, multi-threaded job got
++stuck in the exit path for hours, with dmesg flooded by
++`Out of memory and no killable processes...`.
++
++## The bug
++
++A cgroup's memory is dominated by its own **zswap pool** (compressed anon that
++is charged back to `memory.max`, with no writeback), so nothing is reclaimable
++and the memcg is pinned at its limit. When the job is OOM-group-killed, every
++one of its (10s of) thousands of threads takes an exit-time page fault while
++walking its **robust-futex list** in `futex_cleanup()`, on a page that lives in
++the zswap pool:
++
++```
++out_of_memory
++mem_cgroup_out_of_memory
++try_charge_memcg / charge_memcg
++mem_cgroup_swapin_charge_folio
++__swap_cache_alloc / swapin
++do_swap_page
++handle_mm_fault
++do_user_addr_fault
++exc_page_fault
++__get_user_8            <- robust-futex list walk (exit_robust_list, inlined)
++futex_cleanup
++futex_exit_release
++do_exit
++do_group_exit
++get_signal              <- the thread is dying (SIGKILL already dequeued here)
++...
++entry_SYSCALL_64_after_hwframe
++```
++
++Each swap-in charge invokes the memcg OOM killer, which finds no victim (all
++tasks are dying). `mem_cgroup_out_of_memory()` takes `oom_lock` *without* a
++trylock, so thousands of exiting threads serialize behind it one at a time —
++turning a should-be-instant process exit into a multi-hour stall.
++
++## The fix under test
++
++`memcg: force charge dying tasks instead of invoking the OOM killer` — in
++`try_charge_memcg()`, once reclaim has failed, a dying task force-charges
++instead of entering the (no-victim) OOM path, so it never contends on
++`oom_lock` and exits promptly.
++
++## Requirements
++
++- cgroup v2, `CONFIG_ZSWAP`, a swap device (`run.sh` uses zram, needs
++  `CONFIG_ZRAM`), `CONFIG_FUTEX`.
++- Run as **root**, in a **throwaway VM** — this deliberately drives a cgroup
++  into a sustained OOM. `trace.sh` additionally needs `CONFIG_KPROBE_EVENTS`
++  and `CONFIG_STACKTRACE`.
++
++## Build & run
++
++```sh
++make
++sudo ./run.sh 10000 512 2G 64M     # nthreads filler_mb max_hi max_lo
++```
++
++`run.sh` creates a cgroup, spawns `nthreads` threads each with a robust-futex
++head on its own page, pushes the process's anon (a `filler_mb` region plus the
++robust pages) into the zswap pool, then drops `memory.max` from `max_hi` to
++`max_lo` (below the pool) to trigger the OOM-group-kill, and reports:
++
++- `memcg_oom_invocations` — `memory.events:oom`, the degree of the
++  oom_lock-serialized storm (the key metric).
++- `exit_time_seconds` — wall-clock for the whole process to leave the cgroup.
++
++### Example (10k threads, in a VM)
++
++| kernel | memcg_oom_invocations | exit_time |
++|--------|-----------------------|-----------|
++| baseline            | ~14000 | ~4 s |
++| with the fix        | ~20    | ~2 s |
++
++The 600x drop in OOM invocations is the signal. (Wall-clock is far smaller in a
++VM than on the real host: production's per-OOM cost was `dump_header` output
++over **netconsole** under `oom_lock`, which a local VM's ring buffer doesn't
++incur. The invocation count is the faithful, reproducible measure.)
++
++## Confirm the exact path (optional)
++
++```sh
++sudo ./trace.sh 300 512 64M
++```
++
++kprobes `mem_cgroup_swapin_charge_folio` and `out_of_memory` and prints a full
++stack for each, showing they originate from `get_signal -> ... ->
++futex_cleanup -> __get_user_8 -> swap-in -> charge -> out_of_memory`, and that
++`memory.current` stays pinned throughout.
++
++## Notes / tuning
++
++- The filler is filled ~2x-compressible on purpose. A trivially compressible
++  filler shrinks the zswap pool to near nothing, the memcg is no longer pinned,
++  and the storm does not reproduce.
++- `max_lo` must be below the resulting zswap pool size (check
++  `memory.stat:zswap` printed by `run.sh`) so the memcg stays over the limit for
++  the whole exit.
++- Running under virtme-ng (vng), from a kernel tree built with the options
++  above:
++  ```sh
++  vng --cpu 16 -m 8G -- bash -c "cd $PWD && make && ./run.sh 10000 512 2G 64M"
++  ```
+diff --git a/memcg-oom-repro/repro_futex_oom b/memcg-oom-repro/repro_futex_oom
+new file mode 100755
+index 0000000000000000000000000000000000000000..edb7143497744d127694307efab2d52d8b95a95c
+GIT binary patch
+literal 17840
+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
+CDtJKv
 
+literal 0
+HcmV?d00001
 
-Thanks,
-SJ
+diff --git a/memcg-oom-repro/repro_futex_oom.c b/memcg-oom-repro/repro_futex_oom.c
+new file mode 100644
+index 000000000000..1491103720da
+--- /dev/null
++++ b/memcg-oom-repro/repro_futex_oom.c
+@@ -0,0 +1,135 @@
++// Reproducer for the memcg exit-path swap-in OOM storm.
++//
++// Spawns N threads, each of which registers a robust-futex list whose head
++// lives on its own page in a large anonymous region. That region is then
++// pushed out to (z)swap. When the process is OOM-group-killed, every thread
++// runs futex_cleanup()->exit_robust_list() on the way out, which does a
++// get_user() on its (swapped-out) head page -> do_swap_page() -> swap-in
++// charge against the (now over-limit) memcg -> memcg OOM killer. With no
++// eligible victim the charge serializes thousands of threads on oom_lock.
++//
++// Build: gcc -O2 -o repro_futex_oom repro_futex_oom.c -pthread
++// Run:   repro_futex_oom <nthreads> <filler_mb> <pageout 0|1>
++
++#define _GNU_SOURCE
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <unistd.h>
++#include <errno.h>
++#include <pthread.h>
++#include <sys/syscall.h>
++#include <sys/mman.h>
++
++#ifndef MADV_PAGEOUT
++#define MADV_PAGEOUT 21
++#endif
++
++#define PAGE_SIZE 4096UL
++
++/* Must match the kernel ABI (uapi/linux/futex.h). */
++struct rl { struct rl *next; };
++struct rl_head {
++	struct rl list;
++	long futex_offset;
++	struct rl *list_op_pending;
++};
++
++static long nthreads;
++static char *robust_area;
++static volatile long ready_count;
++
++static void *thread_fn(void *arg)
++{
++	long i = (long)arg;
++	struct rl_head *head =
++		(struct rl_head *)(robust_area + (size_t)i * PAGE_SIZE);
++
++	/* Build an (empty) robust list head on our own page. */
++	head->list.next = &head->list;
++	head->futex_offset = 0;
++	head->list_op_pending = NULL;
++
++	/* Override glibc's per-thread head (which points at resident TLS)
++	 * with our head, which is about to be swapped out. */
++	syscall(SYS_set_robust_list, head, sizeof(*head));
++
++	__atomic_add_fetch(&ready_count, 1, __ATOMIC_SEQ_CST);
++
++	/* Park until SIGKILL. pause() never touches robust_area. */
++	for (;;)
++		pause();
++	return NULL;
++}
++
++int main(int argc, char **argv)
++{
++	nthreads    = (argc > 1) ? atol(argv[1]) : 10000;
++	size_t fmb  = (argc > 2) ? (size_t)atol(argv[2]) : 256;
++	int pageout = (argc > 3) ? atoi(argv[3]) : 0;
++	size_t rsize = (size_t)nthreads * PAGE_SIZE;
++	size_t fsize = fmb * 1024UL * 1024UL;
++
++	robust_area = mmap(NULL, rsize, PROT_READ | PROT_WRITE,
++			   MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
++	if (robust_area == MAP_FAILED) { perror("mmap robust"); return 1; }
++
++	char *filler = NULL;
++	if (fsize) {
++		filler = mmap(NULL, fsize, PROT_READ | PROT_WRITE,
++			      MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
++		if (filler == MAP_FAILED) { perror("mmap filler"); return 1; }
++		/*
++		 * ~2x compressible so zswap keeps a large in-cgroup pool that
++		 * pins the memcg above the limit for the whole exit storm
++		 * (like the incident's ~51 GiB pool).  First half of each page
++		 * is xorshift pseudo-random (incompressible), second half is
++		 * left zero.  A constant-byte fill would compress ~64x and the
++		 * pool would be too small to pin the cgroup.
++		 */
++		unsigned int rng = 0x9e3779b9;
++		for (size_t o = 0; o < fsize; o += PAGE_SIZE) {
++			for (size_t i = 0; i < PAGE_SIZE / 2; i++) {
++				rng ^= rng << 13;
++				rng ^= rng >> 17;
++				rng ^= rng << 5;
++				filler[o + i] = (char)rng;
++			}
++		}
++	}
++
++	pthread_attr_t attr;
++	pthread_attr_init(&attr);
++	pthread_attr_setstacksize(&attr, 64 * 1024);
++	pthread_attr_setguardsize(&attr, PAGE_SIZE);
++
++	long created = 0;
++	for (long i = 0; i < nthreads; i++) {
++		pthread_t t;
++		int rc = pthread_create(&t, &attr, thread_fn, (void *)i);
++		if (rc) {
++			fprintf(stderr, "pthread_create failed at %ld: %s\n",
++				i, strerror(rc));
++			break;
++		}
++		pthread_detach(t);
++		created++;
++	}
++
++	while (__atomic_load_n(&ready_count, __ATOMIC_SEQ_CST) < created)
++		usleep(2000);
++
++	if (pageout) {
++		madvise(robust_area, rsize, MADV_PAGEOUT);
++		if (filler)
++			madvise(filler, fsize, MADV_PAGEOUT);
++	}
++
++	printf("READY pid=%d threads=%ld robust_mb=%zu filler_mb=%zu\n",
++	       getpid(), created, rsize / 1024 / 1024, fmb);
++	fflush(stdout);
++
++	for (;;)
++		pause();
++	return 0;
++}
+diff --git a/memcg-oom-repro/run.sh b/memcg-oom-repro/run.sh
+new file mode 100755
+index 000000000000..15961696c038
+--- /dev/null
++++ b/memcg-oom-repro/run.sh
+@@ -0,0 +1,97 @@
++#!/bin/bash
++# Reproduce the memcg exit-path OOM-lock serialization.
++#
++# Run as root, inside a throwaway VM (it drives the whole cgroup into OOM).
++# Requires: cgroup2, zswap, a swap device (this script sets up zram),
++# CONFIG_FUTEX (robust futex).
++#
++# Usage: ./run.sh [nthreads] [filler_mb] [max_hi] [max_lo] [pageout] [timeout_s] [oom_dump_tasks]
++# Example: ./run.sh 10000 512 2G 64M
++#
++# Metric: "memcg_oom_invocations" (memory.events:oom) is the degree of the
++# oom_lock-serialized storm, and "exit_time_seconds" is the wall-clock for the
++# whole process to leave the cgroup. A baseline kernel shows a large OOM count;
++# a fixed kernel (force-charge dying tasks) shows a handful.
++set -u
++
++NTHREADS=${1:-10000}
++FILLER_MB=${2:-512}
++MAX_HI=${3:-2G}
++MAX_LO=${4:-64M}
++PAGEOUT=${5:-1}
++TIMEOUT=${6:-300}
++DUMP=${7:-0}
++
++HERE="$(cd "$(dirname "$0")" && pwd)"
++REPRO="$HERE/repro_futex_oom"
++CG=/sys/fs/cgroup/repro
++RDY=/tmp/repro.out
++
++[ -x "$REPRO" ] || { echo "FATAL: build first ('make'); missing $REPRO"; exit 1; }
++[ "$(id -u)" = 0 ] || { echo "FATAL: run as root"; exit 1; }
++
++echo "===== kernel: $(uname -r) ====="
++
++ulimit -u 4000000 2>/dev/null || ulimit -u unlimited 2>/dev/null || true
++sysctl -q -w kernel.threads-max=4000000 kernel.pid_max=4000000 \
++	vm.max_map_count=2000000 vm.oom_dump_tasks="$DUMP" 2>/dev/null || true
++echo 1 4 1 7 > /proc/sys/kernel/printk 2>/dev/null || true	# keep OOM spam off the console
++
++# cgroup v2
++grep -q 'cgroup2 /sys/fs/cgroup ' /proc/mounts || \
++	mount -t cgroup2 none /sys/fs/cgroup || { echo "FATAL: cgroup2 mount"; exit 1; }
++echo "+memory" > /sys/fs/cgroup/cgroup.subtree_control 2>/dev/null || true
++mkdir -p "$CG"
++
++# backing swap via zram (zswap sits in front of it)
++[ -e /dev/zram0 ] || cat /sys/class/zram-control/hot_add >/dev/null 2>&1 || true
++echo 6G > /sys/block/zram0/disksize 2>/dev/null || echo "WARN: zram disksize"
++mkswap /dev/zram0 >/dev/null 2>&1
++swapon /dev/zram0 2>/dev/null || echo "WARN: swapon zram0 (need CONFIG_ZRAM)"
++echo "zswap enabled=$(cat /sys/module/zswap/parameters/enabled 2>/dev/null) comp=$(cat /sys/module/zswap/parameters/compressor 2>/dev/null)"
++
++echo "$MAX_HI" > "$CG/memory.max"
++echo 1 > "$CG/memory.oom.group"
++echo 0 > "$CG/memory.zswap.writeback" 2>/dev/null || echo "WARN: no memory.zswap.writeback"
++
++# launch the reproducer inside the cgroup
++rm -f "$RDY"
++( echo $BASHPID > "$CG/cgroup.procs"; exec "$REPRO" "$NTHREADS" "$FILLER_MB" "$PAGEOUT" ) >"$RDY" 2>&1 &
++for i in $(seq 1 180); do grep -q READY "$RDY" 2>/dev/null && break; sleep 1; done
++grep -q READY "$RDY" 2>/dev/null || { echo "FATAL: repro not READY"; cat "$RDY"; exit 1; }
++echo "repro: $(cat "$RDY")"
++
++# push the process's anon into the zswap pool
++echo 8G > "$CG/memory.reclaim" 2>/dev/null || true
++sleep 1
++echo "memory.stat: $(grep -E '^(anon|zswap|zswapped) ' "$CG/memory.stat" | tr '\n' ' ')"
++echo "memory.current pre-trigger: $(cat "$CG/memory.current")"
++
++oom0=$(awk '/^oom /{print $2}' "$CG/memory.events")
++
++# trigger: shrink memory.max below the (pinned) zswap pool -> OOM-group-kill
++echo "===== drop memory.max -> $MAX_LO ====="
++T0=$(date +%s.%N)
++echo "$MAX_LO" > "$CG/memory.max"
++done=0
++for i in $(seq 1 $((TIMEOUT * 2))); do
++	[ -n "$(cat "$CG/cgroup.procs" 2>/dev/null)" ] || { done=1; break; }
++	sleep 0.5
++done
++T1=$(date +%s.%N)
++oom1=$(awk '/^oom /{print $2}' "$CG/memory.events")
++
++echo "===== RESULT ====="
++if [ "$done" = 1 ]; then
++	echo "process_exited=yes exit_time_seconds=$(awk "BEGIN{printf \"%.2f\", $T1-$T0}")"
++else
++	echo "process_exited=NO(timeout=${TIMEOUT}s) still=$(wc -l < "$CG/cgroup.procs")"
++fi
++echo "memcg_oom_invocations=$((oom1 - oom0))"
++
++# cleanup
++echo "$MAX_HI" > "$CG/memory.max" 2>/dev/null || true
++[ -n "$(cat "$CG/cgroup.procs" 2>/dev/null)" ] && kill -9 $(cat "$CG/cgroup.procs") 2>/dev/null
++sleep 1; rmdir "$CG" 2>/dev/null || true
++swapoff /dev/zram0 2>/dev/null || true
++echo "===== DONE ====="
+diff --git a/memcg-oom-repro/trace.sh b/memcg-oom-repro/trace.sh
+new file mode 100755
+index 000000000000..c8f0af1b2804
+--- /dev/null
++++ b/memcg-oom-repro/trace.sh
+@@ -0,0 +1,69 @@
++#!/bin/bash
++# Confirm the OOM path with kprobes (needs CONFIG_KPROBE_EVENTS + CONFIG_STACKTRACE).
++# Shows that the swap-in charge and out_of_memory come from the dying threads'
++# get_signal -> futex_cleanup (robust-futex) exit path, and that memory.current
++# stays pinned. Run as root inside a VM.  Usage: ./trace.sh [nthreads] [filler_mb] [max_lo]
++set -u
++NTHREADS=${1:-300}
++FILLER_MB=${2:-512}
++MAX_LO=${3:-64M}
++HERE="$(cd "$(dirname "$0")" && pwd)"
++REPRO="$HERE/repro_futex_oom"
++CG=/sys/fs/cgroup/repro
++RDY=/tmp/repro.out
++T=/sys/kernel/tracing
++
++[ -x "$REPRO" ] || { echo "build first (make)"; exit 1; }
++echo "kernel: $(uname -r)"
++ulimit -u 4000000 2>/dev/null || true
++sysctl -q -w kernel.threads-max=4000000 kernel.pid_max=4000000 \
++	vm.max_map_count=2000000 vm.oom_dump_tasks=0 2>/dev/null || true
++echo 1 4 1 7 > /proc/sys/kernel/printk 2>/dev/null || true
++
++grep -q 'cgroup2 /sys/fs/cgroup ' /proc/mounts || mount -t cgroup2 none /sys/fs/cgroup
++echo "+memory" > /sys/fs/cgroup/cgroup.subtree_control 2>/dev/null || true
++mkdir -p "$CG"
++[ -e /dev/zram0 ] || cat /sys/class/zram-control/hot_add >/dev/null 2>&1 || true
++echo 6G > /sys/block/zram0/disksize 2>/dev/null || true
++mkswap /dev/zram0 >/dev/null 2>&1; swapon /dev/zram0 2>/dev/null || true
++echo 2G > "$CG/memory.max"; echo 1 > "$CG/memory.oom.group"
++echo 0 > "$CG/memory.zswap.writeback" 2>/dev/null || true
++
++# kprobes (exit_robust_list is usually inlined into futex_cleanup, so that probe
++# may fail; the swap-in/OOM stacks still show the full path).
++[ -d "$T" ] || mount -t tracefs none /sys/kernel/tracing 2>/dev/null
++[ -d "$T" ] || T=/sys/kernel/debug/tracing
++echo 0 > "$T/tracing_on"; : > "$T/trace"; : > "$T/kprobe_events" 2>/dev/null || true
++echo 'p:kp_swpin mem_cgroup_swapin_charge_folio' >> "$T/kprobe_events" 2>/dev/null || true
++echo 'p:kp_oom out_of_memory' >> "$T/kprobe_events" 2>/dev/null || true
++
++rm -f "$RDY"
++( echo $BASHPID > "$CG/cgroup.procs"; exec "$REPRO" "$NTHREADS" "$FILLER_MB" 1 ) >"$RDY" 2>&1 &
++for i in $(seq 1 120); do grep -q READY "$RDY" 2>/dev/null && break; sleep 1; done
++echo "repro: $(cat "$RDY")"
++echo 8G > "$CG/memory.reclaim" 2>/dev/null || true; sleep 1
++echo "zswapped=$(awk '/^zswapped /{print $2}' "$CG/memory.stat") current=$(cat "$CG/memory.current")"
++
++echo 1 > "$T/events/kprobes/kp_swpin/enable" 2>/dev/null
++echo 1 > "$T/events/kprobes/kp_oom/enable" 2>/dev/null
++echo stacktrace > "$T/events/kprobes/kp_swpin/trigger" 2>/dev/null || true
++echo stacktrace > "$T/events/kprobes/kp_oom/trigger" 2>/dev/null || true
++echo 1 > "$T/tracing_on"
++
++echo "===== drop memory.max -> $MAX_LO ====="
++echo "$MAX_LO" > "$CG/memory.max"
++for i in $(seq 1 240); do [ -n "$(cat "$CG/cgroup.procs" 2>/dev/null)" ] || break; sleep 0.5; done
++echo 0 > "$T/tracing_on"
++
++echo "===== TRACE RESULTS ====="
++echo "swapin_charge calls   : $(grep -c 'kp_swpin:' "$T/trace")"
++echo "out_of_memory calls   : $(grep -c 'kp_oom:' "$T/trace")"
++echo "memcg oom events      : $(awk '/^oom /{print $2}' "$CG/memory.events")"
++echo "----- one swap-in charge stack (exit path) -----"
++awk '/<stack trace>/{b=1;s="";next} b&&/=>/{s=s $0 "\n";next}
++     b{b=0; if(s ~ /mem_cgroup_swapin_charge_folio/ && s ~ /futex_cleanup/){printf "%s",s; exit}}' "$T/trace"
++echo "----- one out_of_memory stack (exit path) -----"
++awk '/<stack trace>/{b=1;s="";next} b&&/=>/{s=s $0 "\n";next}
++     b{b=0; if(s ~ /out_of_memory/ && s ~ /futex_cleanup/){printf "%s",s; exit}}' "$T/trace"
++echo "===== DONE ====="
++[ -n "$(cat "$CG/cgroup.procs" 2>/dev/null)" ] && kill -9 $(cat "$CG/cgroup.procs") 2>/dev/null
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 8319ad8c5c23..5ffe612e0c08 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -2605,7 +2605,6 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+ 	struct mem_cgroup *mem_over_limit;
+ 	struct page_counter *counter;
+ 	unsigned long nr_reclaimed;
+-	bool passed_oom = false;
+ 	unsigned int reclaim_options;
+ 	bool drained = false;
+ 	bool raised_max_event = false;
+@@ -2690,18 +2689,24 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+ 	if (gfp_mask & __GFP_RETRY_MAYFAIL)
+ 		goto nomem;
+ 
+-	/* Avoid endless loop for tasks bypassed by the oom killer */
+-	if (passed_oom && task_is_dying())
+-		goto nomem;
++	/*
++	 * A dying task frees its memory as soon as it exits, so invoking
++	 * the OOM killer for it is pointless - it finds no victim but
++	 * itself.  Worse, when 10s of thousands of threads take exit-time
++	 * faults at once (e.g. robust futex cleanup on swapped-out memory)
++	 * they all serialize behind oom_lock in a fruitless no-victim OOM
++	 * storm.  Force the charge instead so the task can make progress
++	 * and exit without contending on oom_lock.
++	 */
++	if (task_is_dying())
++		goto force;
+ 
+ 	/*
+ 	 * keep retrying as long as the memcg oom killer is able to make
+-	 * a forward progress or bypass the charge if the oom killer
+-	 * couldn't make any progress.
++	 * a forward progress.
+ 	 */
+ 	if (mem_cgroup_oom(mem_over_limit, gfp_mask,
+ 			   get_order(nr_pages * PAGE_SIZE))) {
+-		passed_oom = true;
+ 		nr_retries = MAX_RECLAIM_RETRIES;
+ 		goto retry;
+ 	}
+-- 
+2.53.0-Meta
+
 
