@@ -4,114 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0288DC531D2
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 14:23:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D7A4C531D4
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 14:30:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E04FA6B0092; Thu, 23 Jul 2026 10:23:42 -0400 (EDT)
+	id 5124F6B0092; Thu, 23 Jul 2026 10:30:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB6D36B0093; Thu, 23 Jul 2026 10:23:42 -0400 (EDT)
+	id 4C3586B0093; Thu, 23 Jul 2026 10:30:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C7E706B0095; Thu, 23 Jul 2026 10:23:42 -0400 (EDT)
+	id 3D8D16B0095; Thu, 23 Jul 2026 10:30:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E4F06B0092
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 10:23:42 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1FD461604CC
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 14:23:42 +0000 (UTC)
-X-FDA: 85020259884.15.A3F7997
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 6EA89180002
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 14:23:40 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=nM2EReCD;
-	spf=pass (imf06.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 182DE6B0092
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 10:30:48 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 82C1280404
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 14:30:47 +0000 (UTC)
+X-FDA: 85020277734.30.9E73294
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf30.hostedemail.com (Postfix) with ESMTP id CA2518000B
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 14:30:44 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=p0BjXa2k;
+	spf=pass (imf30.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784817045;
+	b=ltcPVypTtzFshspdk8iE/OJGqoOyjrvcl0IvbIF1Gm16B7YwobPiz04K+I+ybxiJHrPWPY
+	N6VInfya1OnftYifJHYbK1og6rmID6oak4UMK8+C1He3/C2h7C3KnFikU8OLmbuNpesuCi
+	u771QqdHbcyWg/BXHkErNgCxHguZElk=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=p0BjXa2k;
+	spf=pass (imf30.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784816620;
+	s=arc-20220608; t=1784817045;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=raiZlCjLYoxwWdZZtszlEGRShmj11jqdgovnWEaS/WQ=;
-	b=3M+PNKkj0oYw9H4TGoqs0JlX2HaZ3C5Rqpt+v3tmTqTCyaCRYQcYVsOQzqfVnw858l5E17
-	0RN7QYaXHfy5JPxrbjcC4fNLyaIHfL7D5ofimjiT8pWI0EJvDPObaD7UNAGD3ipWk0AU6K
-	RrlFUt2WIZHhtdOZSlLR7usiNLcHavU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784816620;
-	b=lvvOLXfj5FQ5uaD0eKD58ELB9u4lB2G72aN7slvZLE6Nj2LJyk5ndSPRsAeSCQ9vYjuylf
-	SWM2HFT4XBSqv1hyAIY3ckQi7Nj5Ic44P8FrCitUFXAx6jm5tj7CXtIBwuqd6+jNioGi8C
-	KD9kr+utGvC6PEotcA6f98J73fD17XE=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=nM2EReCD;
-	spf=pass (imf06.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=raiZlCjLYoxwWdZZtszlEGRShmj11jqdgovnWEaS/WQ=; b=nM2EReCDBV+IOIf8cpmGoorWGW
-	13jC5JXQgpYpx1e7+EgQ+2PndqTSEXbmS+qmcFIP83nHpvBYfh0/1TPT0S5862I59Fp4cK0QRak3N
-	keO8AYen2fcVKWozOu2iqECeDVgw8N5B4SMhRm4FvdJPnKk+gorI4W3XCnt3LcgSI+1l5LXIXRdYH
-	Dwxp1UY/wjocKYhYfOCt7b/vGBsFBknNH51oucAyB1gARF0OTmyrHT7cF2UbgWvwkIed5Qsqn01OV
-	98BWcuqmR5WoxZrWFe1W8qZoGxfa9xukx0Q7zYxNA6+Qp1Rj2RTtkHGcWZhrv1RcIGZpBKdrg8TUM
-	ZaP36zVg==;
-Received: from fangorn.home.surriel.com ([10.0.13.7])
-	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <riel@surriel.com>)
-	id 1wmuKf-0000000079L-3g6A;
-	Thu, 23 Jul 2026 10:23:29 -0400
-Message-ID: <4439df28abd5150ac587b6a27ae51fb78bf8d340.camel@surriel.com>
-Subject: Re: [PATCH v2] hugetlb: only adjust reservation during unmapping if
- mapcount is 0
-From: Rik van Riel <riel@surriel.com>
-To: Guillaume Morin <guillaume@morinfr.org>, linux-mm@kvack.org
-Cc: Breno Leitao <leitao@debian.org>, muchun.song@linux.dev
-Date: Thu, 23 Jul 2026 10:23:29 -0400
-In-Reply-To: <amH3AeO-PeAQoc34@bender.morinfr.org>
-References: <amH3AeO-PeAQoc34@bender.morinfr.org>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+	bh=cwsU3Mhrg9KcuFxTAl0Tes+dvmZix99ipM91bAbmnN8=;
+	b=wku05+OKKD5TJLYwynGfezV8XtyVk4INCp+eOlEDC3xfxGX4zjvhlZfX6mMuG7S7RG5zUm
+	ZFyO9dVmLIpHbtl78cRG4k1LQC9tTXZr7z52WfX3CQO9qW6BwVDnmUHNA49pApfNX6K2Dn
+	QAiT0wXnb9XkFKhpBKqV3fTt1MbpIUg=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description;
+	bh=cwsU3Mhrg9KcuFxTAl0Tes+dvmZix99ipM91bAbmnN8=; b=p0BjXa2kEzvTX3Es+vq2+xSUBh
+	yMDm18HK8DuM1ZL/O43br5EnYTlMFmswaGnixSTRvIi/62M74RVfGJJ9MsDxMkip/QR7Tp8I7vfBc
+	LxJE0vnlOGEns0fF+c1/u9fRsr1Ggk+HbVb3G0Bu8s3cYjI/iNwLlJ3sryLtgIQElsveLp0mnzkEM
+	BPja3cde6PwbqXTBCd1D7oVZi0/XcUN0Xl46EYds+Ku8Shi805YWRGTfwS2tJWW4XMEMXbFFJ9tAO
+	Fwj1HMjKQgKOVIL8jeOcKtNkGeXb0Z1VB12O3FbmYm2Qk+NWe8HjWcMy+ARt+QRPjX4rFrxpUGpp2
+	FBCiGZzg==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wmuRY-00000000jht-2pEi;
+	Thu, 23 Jul 2026 14:30:36 +0000
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Jane Chu <jane.chu@oracle.com>,
+	linux-mm@kvack.org
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Jan Kara <jack@suse.cz>,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <christian@brauner.io>,
+	Jiaqi Yan <jiaqiyan@google.com>,
+	Usama Arif <usama.arif@linux.dev>
+Subject: [PATCH v4 03/14] mm: Rename folio_contain_hwpoison_page() to folio_has_hwpoison_page()
+Date: Thu, 23 Jul 2026 15:30:20 +0100
+Message-ID: <20260723143034.175661-4-willy@infradead.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260723143034.175661-1-willy@infradead.org>
+References: <20260723143034.175661-1-willy@infradead.org>
 MIME-Version: 1.0
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 6EA89180002
-X-Stat-Signature: tsa16gx6wy64nefor5665f9c9bn537g6
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: CA2518000B
+X-Stat-Signature: kcpnwg4trqqzko49ea8p41hwkuah6tc8
 X-Rspam-User: 
-X-HE-Tag: 1784816620-186861
-X-HE-Meta: U2FsdGVkX19A9CqCe4rK3je51s5QK8P3z+HxmLsa5abh0IESnNmZhUzit0A91t6g5QjSY4Vy8GtnxLCkjxemy5fGX53+Oy7UFVPVuvhtznP8+D9GCN/L2OAOUA9h2auDny//zwW41p6D1n8yIyhYtT0hSN/CtejP9QewoLgYCh7PZdyz3PH1XFbdzVpDNAEJN718noK+QwcbJyZYfIskuqgTQF8bsdl6ILVrM5GzUcRx5EhCAEw/KUPUHtznOyCvpvAvtLmJsVX5XQh0813bXzdUVwhgFu0yczW45LjxpxabQG/t8r7Aww4Xo8wrjnVfJbiftr0TEKdzpOH6aMvhzs0rNlyDdR7YM68tYaQo9ITcw9UE68mBFWPYWptWNtbNZ/hXOXt2sDea8rzdd+P05lnqSyCnngzFx9CU4YXzMUUdHt/C2h6KNWLp5CXenmutcX3IT6U1gUwTF++SzQQrz7oh1i+yDkHkUe5CsCAuLBUpPV3DsVnVtzHd5ygoioIA07QJpsXmhAdbhYuOmIVSo9tGwxfuAsq0T/ta224qHjXnrmBzKjAvwpkbcYD8v95qUwlPtOjrb8khji1oaSxiPnXJOYbpFSZSIyUJbLAR2JG9nPoctBB49V7xZ1RucTAgo/TfE5E3COH+c26dpZBX3JUlhQtjT4HDNE6F0IPltgTATYQYIr2vEXxzRTcAXj2lNXlIWeAonhYWM7u6E5zjnKuqEmlwtKH57VHK00A92JxVzqjENuCTJ4eP6ZJoKi/UGY86tjaToiuZzHaGoXnP/2vyiRx6jHm5WY5RuRWo27C9efJr+qTSN8SJZB8GZ09Ig6XpHmEzUB+5wS4FQVrKr7ULJvgdm5DWNLgKnhXN5bX4GgoOpF4hXe/8vS/pOxKX/8OKon8PC8x4nIaba8uVdPg31PkEOTqbC4iM3SsYqlTPUpJ2IKocPgqt1ey39pyqS1m+PMO+QvD164oUGnI
- ggFqLAAe
- /I+1GcBYwpFRZv2beHNfBvZmbiixX9PQup1pRGg9ldjh2+n3WP2q9xMCvRN+58Qat5N+EFXJT0vD/q6m7mLzz9s3/11N+NGYyU+VQB5Ef+ZvfusU99SO7NcNsSnCxURhEQqpxZgAqtp+G1E7oBNeSlx3qrMalZsmtdVFQVbEpJkX7PrOUzLbdD5NxbNkCHNNX1hTz/Gq2gd4pnWitCM/tMI59oaBAt9B1KcBu
+X-HE-Tag: 1784817044-779547
+X-HE-Meta: U2FsdGVkX1+MeUswloAPAob84Y4CL1vKOfcTFR0JCA8bwFBUYXrEsyR0cULeeinafE2t40yl8FfWdfwk3rq/FWy0eRYwKVTghkCI+HmbziONAvuM95jxi2KfT4X81KBq/ylh+bYzUVNLQG0P6AS5pTkxyTjqI+v/DqpaE2/rXm6UkEVSJKPZTWNWMuVV1VHawvtdBDKEyvjOMczP1Flps0iI3O+H9FwASKEqm+V3iCw+jc/CyXY40QE+SVrg0MWvksIrXzO3WzkZ9RUezTHdeGwD1j0db51F2/wu5z3EW87qGN0K0eQQFUFaxWq6cjpabRZ25nLgdVszjj2y3waPOxr7DwgzCyBZ56Q++NaJpdUDM5K+nzls2l5kAfp2xjCCul+3Z+UdSsTqhs4usY+2no2OAE+OFWBBYA9j1YIU5awI6iWg/41lNrEcjlOnt+8+UoW+T3O9znjIEwnthqwr5xsBltvMH+TtNF2l3EHEhf/n9rmrEsaCHlXb6PcNV0qaDBVMZLMDGJSGzjQTGqLaA9KWTIpfsSZQ4h9kHvVuArTOEzlh/w6yPqQg15CxQUeu+Z97bae3mr8xfghxLT6DWF7KJ7ePcu7IDn3wEFSipRUykGFfqdG7plomlhz1V3U3EmEUnlyI70tiiLdWDGHDX4sbkhVRhi19y9xZS2XaVH6hb8Oh3EABDZhwum84eivu1Ie/F+2ZrWjQTWzamqEVfKrSLO1JmQhj+HlT1jYhEzQWy6nJJSonYvYOwd/szPDlkAUDvitquOKJA8XuQS46gIN+oUgg19dWMG/8QCx3lyt0sfVhCVooGaH8QeuCfN+z1iaFQ35Sy4aX8aTWy8uLI/JSImlmiyhOKYXMwYz2AXtKODE2sfoD1NXFT71jtWb8+VA9BCZAOMaMViOdbBnu6V+61NjV3/mY3kKAKUmA55eAE6o87eeW0gEjx/HvsMeWpJuTG9QizH99CzDM6Lc
+ TGVtdfnF
+ AMnsvV0WZ+bI5cvGGCtY+R7Pvxd878ybRY00wyRCVia/vClgHZsKjNcmA8vysIer97eCfXed1Jb6iPBoGUwi8z9nMkY5lj4pEioP/X/7qhzUqSF6EDl6HSrvPZ2gM4PTovM0ExeMbndKzZ9hyLEhI5sfnSz3/ckzipq5teVXcCy4FKvV129eoLSYrsbmNkXDJoh6IqaiQoAF0jhciqvqL3o+Kefk4JXwxBA7ipX4wQfyjvUrOPZTpgORK+zpj3icBKaLM/NK37Cvw4CpN5/MPIxkcGl59pWSAKU/gefORL55y7lltI92gtkvzinJD2Di8Lfw6nM8L0qwDr/9y8rVN5O87yFYUOGAD3im/RfY7EIu+dhtcxuvirxRQOw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,38 +99,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 2026-07-23 at 13:12 +0200, Guillaume Morin wrote:
->=20
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 571212b80835..3feeac0f8eca 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
->=20
-> @@ -5252,7 +5254,7 @@ void __unmap_hugepage_range(struct mmu_gather
-> *tlb, struct vm_area_struct *vma,
-> =C2=A0
-> =C2=A0		spin_lock_irq(&hugetlb_lock);
-> =C2=A0		if (!h->surplus_huge_pages &&
-> __vma_private_lock(vma) &&
-> -		=C2=A0=C2=A0=C2=A0 folio_test_anon(folio)) {
-> +		=C2=A0=C2=A0=C2=A0 folio_mapcount(folio) =3D=3D 0 &&
-> folio_test_anon(folio)) {
-> =C2=A0			folio_set_hugetlb_restore_reserve(folio);
-> =C2=A0			/* Reservation to be adjusted after the spin
-> lock */
-> =C2=A0			adjust_reservation =3D true;
+This is a better name for this predicate.  Also make the argument const
+to allow other callers to be made const.  No functional change.
 
-The safety of this seems to depend on the caller of
-__unmap_hugepage_range() holding i_mmap_lock_write(mapping)
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Acked-by: Usama Arif <usama.arif@linux.dev>
+---
+ include/linux/page-flags.h | 4 ++--
+ mm/huge_memory.c           | 2 +-
+ mm/memory_hotplug.c        | 2 +-
+ mm/shmem.c                 | 2 +-
+ mm/vmscan.c                | 2 +-
+ 5 files changed, 6 insertions(+), 6 deletions(-)
 
-Could you document that with a quick comment above this
-block, and also add a lockdep_assert to the start of
-__unmap_hugepage_range() to make sure that the mapping=C2=A0
-is indeed locked for write?
+diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+index 7223f6f4e2b4..4185a03a45cf 100644
+--- a/include/linux/page-flags.h
++++ b/include/linux/page-flags.h
+@@ -1083,10 +1083,10 @@ static inline bool is_page_hwpoison(const struct page *page)
+ 	return folio_test_hugetlb(folio) && PageHWPoison(&folio->page);
+ }
+ 
+-static inline bool folio_contain_hwpoisoned_page(struct folio *folio)
++static inline bool folio_has_hwpoisoned_page(const struct folio *folio)
+ {
+ 	return folio_test_hwpoison(folio) ||
+-	    (folio_test_large(folio) && folio_test_has_hwpoisoned(folio));
++	       (folio_test_large(folio) && folio_test_has_hwpoisoned(folio));
+ }
+ 
+ bool is_free_buddy_page(const struct page *page);
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 2bccb0a53a0a..353340309107 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -4413,7 +4413,7 @@ static bool thp_underused(struct folio *folio)
+ 	if (khugepaged_max_ptes_none == HPAGE_PMD_NR - 1)
+ 		return false;
+ 
+-	if (folio_contain_hwpoisoned_page(folio))
++	if (folio_has_hwpoisoned_page(folio))
+ 		return false;
+ 
+ 	for (i = 0; i < folio_nr_pages(folio); i++) {
+diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+index 7ac19fab2263..33007e8e546a 100644
+--- a/mm/memory_hotplug.c
++++ b/mm/memory_hotplug.c
+@@ -1813,7 +1813,7 @@ static void do_migrate_range(unsigned long start_pfn, unsigned long end_pfn)
+ 		if (folio_test_large(folio))
+ 			pfn = folio_pfn(folio) + folio_nr_pages(folio) - 1;
+ 
+-		if (folio_contain_hwpoisoned_page(folio)) {
++		if (folio_has_hwpoisoned_page(folio)) {
+ 			/*
+ 			 * unmap_poisoned_folio() cannot handle large folios
+ 			 * in all cases yet.
+diff --git a/mm/shmem.c b/mm/shmem.c
+index b51f83c970bb..492c9bef3620 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -3240,7 +3240,7 @@ shmem_write_begin(const struct kiocb *iocb, struct address_space *mapping,
+ 	if (ret)
+ 		return ret;
+ 
+-	if (folio_contain_hwpoisoned_page(folio)) {
++	if (folio_has_hwpoisoned_page(folio)) {
+ 		folio_unlock(folio);
+ 		folio_put(folio);
+ 		return -EIO;
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 35c3bb15ae96..70e54ace0e74 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -1086,7 +1086,7 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+ 		if (!folio_trylock(folio))
+ 			goto keep;
+ 
+-		if (folio_contain_hwpoisoned_page(folio)) {
++		if (folio_has_hwpoisoned_page(folio)) {
+ 			/*
+ 			 * unmap_poisoned_folio() can't handle large
+ 			 * folio, just skip it. memory_failure() will
+-- 
+2.47.3
 
-This seems like a fairly fragile area, and the locking
-requirements should not be left undocumented.
-
---=20
-All Rights Reversed.
 
