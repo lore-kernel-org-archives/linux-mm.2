@@ -4,89 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8869FC531CB
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 08:14:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2E0BC531C7
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 08:15:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C37F06B0139; Thu, 23 Jul 2026 04:14:51 -0400 (EDT)
+	id 003016B013B; Thu, 23 Jul 2026 04:14:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BEA256B013B; Thu, 23 Jul 2026 04:14:51 -0400 (EDT)
+	id ECFF66B013D; Thu, 23 Jul 2026 04:14:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B25516B013C; Thu, 23 Jul 2026 04:14:51 -0400 (EDT)
+	id E0CA26B013E; Thu, 23 Jul 2026 04:14:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 81C836B0139
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 04:14:51 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BD7581C08D2
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 08:14:50 +0000 (UTC)
-X-FDA: 85019330340.10.83B7CD8
-Received: from va-2-26.ptr.blmpb.com (va-2-26.ptr.blmpb.com [209.127.231.26])
-	by imf05.hostedemail.com (Postfix) with ESMTP id CD7C610000C
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 08:14:48 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=lixiang-com.20200927.dkim.feishu.cn header.s=s1 header.b=bcvTY5UO;
-	spf=pass (imf05.hostedemail.com: domain of zhaomeijing@lixiang.com designates 209.127.231.26 as permitted sender) smtp.mailfrom=zhaomeijing@lixiang.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AC6996B013B
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 04:14:52 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0B8D11A0402
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 08:14:52 +0000 (UTC)
+X-FDA: 85019330424.03.E3DF6FA
+Received: from va-2-35.ptr.blmpb.com (va-2-35.ptr.blmpb.com [209.127.231.35])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 0896A160012
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 08:14:46 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=lixiang-com.20200927.dkim.feishu.cn header.s=s1 header.b=cWeqUg+9;
+	spf=pass (imf08.hostedemail.com: domain of zhaomeijing@lixiang.com designates 209.127.231.35 as permitted sender) smtp.mailfrom=zhaomeijing@lixiang.com;
 	dmarc=pass (policy=quarantine) header.from=lixiang.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784794488;
+	s=arc-20220608; t=1784794487;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZZ/PodPZ15LIxOQN8pZJFNNm++1lzIljfenjna5igvg=;
-	b=AGP6jZ5d58BrZt3gBVDlzl5lkNfstzu5QyS/lwKlb/VZlltD0DYgNwODGgHmyFEp83rD8d
-	Du3YEY5Cj/ZEigno+Am5aXyH7pPl4/0Wki+zWGSg2tsn94Q1s4PEio7TsWQXLhdfDclHfz
-	nif3fACzw0WwMvgO+1CGIQT3SCad0lY=
+	bh=u9UuNWq0gTy9Ty/9mZd1M32eFbtoNsmqK0vyCguT4AY=;
+	b=fOC/K91n5tLG32A6r8bp5FJCVRB5/Hsqf8xnDdvIZbuxXEOIBY/eQruecdE7AHW4K61Phv
+	SbjZXP3lWEJ3frw6GDVw1Gze2s/SsfT2KGuByKruOZF4UM51ia7flNkONtFlb9gfg0YBBr
+	ZSJfPlMjST+smU58l22Pgm7euo/gumc=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=lixiang-com.20200927.dkim.feishu.cn header.s=s1 header.b=bcvTY5UO;
-	spf=pass (imf05.hostedemail.com: domain of zhaomeijing@lixiang.com designates 209.127.231.26 as permitted sender) smtp.mailfrom=zhaomeijing@lixiang.com;
+	imf08.hostedemail.com;
+	dkim=pass header.d=lixiang-com.20200927.dkim.feishu.cn header.s=s1 header.b=cWeqUg+9;
+	spf=pass (imf08.hostedemail.com: domain of zhaomeijing@lixiang.com designates 209.127.231.35 as permitted sender) smtp.mailfrom=zhaomeijing@lixiang.com;
 	dmarc=pass (policy=quarantine) header.from=lixiang.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784794488;
-	b=r3l+ICeehyHB4oild+UsQKzv1hsF+a2+x6malbKv0YI6rMTrI/VwkCyCbWUlr+lcmqWVm0
-	sutMWukE1XY/sBX/bPHCQhCaWBECHeEMGDe3NkkJDQBN3EtbBekNAPG5zL7J60KgZnuKRA
-	DVq1koj3lEJTjvsfiOTtIrZ2y+DqTZE=
+	t=1784794487;
+	b=acSfjpLPUXiqYadX5K2yn7ViyxKtjjeGo2o/CrlFW9lCY1sqZBheYX9xaUXG5jHHmovQNw
+	uSsxCJzllFKSCywHTGE7dRY7UVrSDq9iDeOtQo2II46Qhh6AQwu8XXqAS3RjZtJLw7sXRj
+	80UcnNTz/r7NmQH8f+EbU5UTPNkMxs8=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=s1; d=lixiang-com.20200927.dkim.feishu.cn; t=1784794484;
+ s=s1; d=lixiang-com.20200927.dkim.feishu.cn; t=1784794480;
   h=from:subject:mime-version:from:date:message-id:subject:to:cc:
  reply-to:content-type:mime-version:in-reply-to:message-id;
- bh=ZZ/PodPZ15LIxOQN8pZJFNNm++1lzIljfenjna5igvg=;
- b=bcvTY5UOTHFaEZ25o7AibPK0ZlxMwc4yNbf3aotb1NcXJIPT2dJxj+j/Tu9PBTNLi1S99U
- n8bogZjPytqqL5t9RGnXXf6SdNhaq7aARNL7h6powyAVYDILiKvoMkk+4B1+2NKSP79OiP
- g0FeUZu7U7Xd18JnnC2hFWSGIeaY6a6+fc//smQtM+/UsNSknHLYF05Sf3yzW3hiVvSEib
- 0qYZyxRj0lJTZeEyQqP1PjvyOZ1dqGtygXcpXFw1ALv/1+UD5Wly0neTByQzLOHeHjMVSZ
- e2nLPL/NbgdeZNwJvlheqUFaDBShWoeaAN+8p0nYwSRh4g9tUBwzObdOOvnWdA==
-Content-Type: multipart/alternative;
- boundary=2f0f836d04ce310c9d8a5f2c350653a259aa3f266d1338c545ee2bf85654
+ bh=u9UuNWq0gTy9Ty/9mZd1M32eFbtoNsmqK0vyCguT4AY=;
+ b=cWeqUg+9dmPkAk5ca5lXD6bJLHkZBeTlH/bIY1FRFYhTSXfeuAgU2KI/7sb+xrm7CfFb0d
+ 65Zj0rFkTr/8HCPffoM70/sieZL5bBi5UToYWUSGi9d0SWLv9hle7Ce1Ctk+r+NQADbAAe
+ SfExILZViw565W0vTBPYB24kcp6LStYDjIDAkcQoPjX3BjErm4JfR2NhF8/xJvORCpLnDh
+ aRnCRi2MakpGOrVbKYkWRvFZvKREBmSYJtqVZmczKMeQsP9nMKJfeAggtqo9TUZHiE6ZiK
+ XpfryL2ncITjekqVoOXOFwZIgOv7SFAbp0F4kkuxd7tLmTY5w/d81ysKsvqUmQ==
+In-Reply-To: <20260723081427.587283-1-zhaomeijing@lixiang.com>
+Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20260723081427.587283-1-zhaomeijing@lixiang.com>
+X-Lms-Return-Path: <lba+26a61cd6c+f205c7+kvack.org+zhaomeijing@lixiang.com>
+From: "Meijing Zhao" <zhaomeijing@lixiang.com>
+Subject: [PATCH 1/3] mm: trace: decode arm64 and sparc64 VM_ARCH_1 flags
+Date: Thu, 23 Jul 2026 16:14:25 +0800
+Message-Id: <20260723081427.587283-2-zhaomeijing@lixiang.com>
+To: "Steven Rostedt" <rostedt@goodmis.org>, 
+	"Masami Hiramatsu" <mhiramat@kernel.org>
 Cc: "Mathieu Desnoyers" <mathieu.desnoyers@efficios.com>, 
 	"Andrew Morton" <akpm@linux-foundation.org>, 
 	<linux-trace-kernel@vger.kernel.org>, <linux-mm@kvack.org>, 
 	<linux-kernel@vger.kernel.org>, "Meijing Zhao" <zhaomeijing@lixiang.com>
-Message-Id: <20260723081427.587283-4-zhaomeijing@lixiang.com>
-Mime-Version: 1.0
-Date: Thu, 23 Jul 2026 16:14:27 +0800
 X-Mailer: git-send-email 2.25.1
-To: "Steven Rostedt" <rostedt@goodmis.org>, 
-	"Masami Hiramatsu" <mhiramat@kernel.org>
-In-Reply-To: <20260723081427.587283-1-zhaomeijing@lixiang.com>
+Received: from PC-2B0BA31200898.company.local ([220.248.55.69]) by smtp.feishu.cn with ESMTPS; Thu, 23 Jul 2026 16:14:35 +0800
 X-Original-From: Meijing Zhao <zhaomeijing@lixiang.com>
-References: <20260723081427.587283-1-zhaomeijing@lixiang.com>
-Content-Transfer-Encoding: 8bit
-X-Lms-Return-Path: <lba+26a61cd73+d4604f+kvack.org+zhaomeijing@lixiang.com>
-From: "Meijing Zhao" <zhaomeijing@lixiang.com>
-Subject: [PATCH 3/3] mm: trace: name protection key encoding bits
-Received: from PC-2B0BA31200898.company.local ([220.248.55.69]) by smtp.feishu.cn with ESMTPS; Thu, 23 Jul 2026 16:14:42 +0800
-X-Rspamd-Queue-Id: CD7C610000C
+Content-Type: multipart/alternative;
+ boundary=e521202af606818774e5ec49e2ed41cd606f7b6435b62dac2131dfbf19bf
 X-Rspam-User: 
-X-Stat-Signature: cwrzh5bf8mp8o19sicfgzg9afq8x8dod
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1784794488-441796
-X-HE-Meta: U2FsdGVkX1+S9RYlrwLfubxQG9/4GI08wuN4/K3UHdtRSeKAvyiEhwiBdowcMZaXc6C6kyQBEPaqI9tbAgkVAd5okOVps3J29SKo7FfxeXHvTbWmzCcMMod/givq4Rs+jZOAyZPejSEP2o8QKXD8Bn7oLgh2Fx1TpNZ8rQi2DZjyazlwkJTFMl6DaNog2clArFg6kc46cXuyyXX37rPxnJfMwY014NryUZjgnPkjWNpEeCuIJn1k4w0VqoOcM6SVvY86KgB6R/0bdU+g1yjqSn25ShVKPdG1RNM0oZhRvyajlfNShZeEb2n6pwQ8sdWzoevuw6SIoC1/tYoXxjgm0hfrk9eHG0C0NwDwxjVBoiNWwWUuNNGt864rvqPLVH5VHQ1Vroz/PCCPOyeTvQ/QrG/67hwt4aeP2FupAI2/98xdpYltnAvOyBv4XTtvBRaG+8ur9nggD2Z6ZexRcr17UzPS3ZfEHkWNSpCX2+hvQcB6Gaz1ObOzY24J+ntLaFtPCerpomIZ+KNcmzOnXgcCf6hWEXQ1sK6BCc7s5ym1c4fhLS8ds0yaliBfaoEuHKxpeWYXMQWPZzYIHqG+n9hxBZ68AKC/TxaIj9hDgkonexJdCc9ju3uE+Dik1gD84dmfUBE7gYERoqOLOVSducAr2lQMAXLoG2+jTOWcdGcHYXr1gLBDlna8QDR0c2U8CpC9px1Jn08I22HITJrHhKkO818gzZw18ZPhCOqJmmln+4spcZSTTqAHP5Pi9B7zlXEUZgaHpWi6uEX2TtwSK8iJwRipUsKwbkhamf4/u6Edy2fCOCtlb3z+UmfLzCjxsenOrGutjnQ5b8hBrMpikacMgr0ukwb4v3/pIF4WggfHY6NOlTbnPYigteWa4woOXgSbAzr53iMt3mYB8zxlM0PoFoZ9rHthjcykkNpV2dSISt/Nqs/h8aQ51ECiE4LdAu4UTnfUOKQQpaSh7NuB6mN
- 23x2w9YB
- HkGCSppV9aXGP7PxmcGfHsINz7VVMqB3w7w4VIKaCECQUpcJjE1eYA+C+G/rEICr+6cso3DErGcAn0hWH7IWmJkfS9xg+8i82CuC47DDKPYjv/D+Sa5iLYynZc8uV1Bap54p1tSxpa3Lr5bREAHZyGhN1Nj+Ue6ZSsbr+AhR2d0Bv/XGBnMwuwlTUTQ94FFr/h3e7zlQWy1n1P9AW9PHdUd6HrK6WWhbxAvpiNjipxLGIO0WxV3v62tXlXyA1PIt9W6sx1/d4IOZkz4K/7TqkwHckzoTMS0HrysmSsL+/gmF+ncPyJXzID0J9a5xFISPHeX1FI6NM6ga5aWqFbWkr7PMeTO3mKgnjBoLQ1qQUw5Uy3XTFVgFHSqFGo7MO5uQNPQ9nZ8+36KnjdCwobzq+iUECKhDH4pm8M/ZEhoU2rRPVyMw4JjYyHf+ziq4Z99xNWrfz9dyV2uVqLLilUIQWz0IA8JqRAdlF/2RVU8unqocyvA8=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 0896A160012
+X-Stat-Signature: y7wu1ni7kng17s6zd5smk1ssqz967yxf
+X-HE-Tag: 1784794486-263669
+X-HE-Meta: U2FsdGVkX181e4tvdlQ+x/9qf4pUi1YP2K9yqa2yc6JszWZfKPdIgYqH1f5QPlvmarXXIA+lK39H2uPT3lVwbH/e5FSYDTozAw/rJo9F9Yaqj+zHX4uxr9MlL8FAw/G7u99pLbEBFyhSm1eiYnbO70DosS/cx8rWn/hAyA5EGfVUoXrsrdTwgZgP/TupjeWpVV8Yv2ZTVAw+kxUCqkKn2t1HWunjYuZb2bvtVBP+ZkNj3ndPIcktw6bgtDr0TMdwVlZWO93FraxgRc+tdLD8Ls9mPm2rCaQpv4G3ZXwTgr7PLSfm96ueIwoJSJk4a89uwXA48KkigyJm6CR9XDaqQXZxfCmnDProuFPHQWvr7mtWyMJkK1bXP4KHKCfASH0qD2809xLOZPTOKPY02eeZgMUBqnpk3ANRZ0LZrlV/8Krd6bAV4ZYQjSPED14acRyhDbz6vUV+4xQOfG4SZ+j/JxWUEAfZjpuy4yJTrZOIQLV5QQ6M2pAD/0JkPlHOuUlV4xYVYcIc3FOCT0rFMGFHwjikkr3om2t1EUpYsA8Vl+JyJRiDP1UHUUPLA44xBvaNNyf6Uatd1JXhlHTgk1qSzL6YSW9IBmBVmvC2h3j+gYGj/e+VWBzzuk5OzY88a3KvrWqS3PxqlfOaApIpy7oq4BTwjzvOXcz0joY7CmwSBzjVekYQX8Ns1SIBKBWSm0AThyq/yA4XZbQe/RW+ZVKOGCEMchKAYACeG7NsT/mUOwGPePFWcUYdBt/xhDaQrnYisLyah/ImkB5eo7pzAjol/EIhUUKRyXIP3MN5VTSNLEYgsT7lneXjSaDldDJJRGJ+bhmFqOuD4CzuMoOg7TpZcMdfTjU4ELGWFi7M0BGUNLAwmwfSJpsay7RMPIfKZJd01HzUn4PGjIrKID1p0ezxfK+CoOiRXka7cMeH70BG69UME/60XaDrpugvtspWwsschgtPvzZa4P+eYuAH7da
+ PCDkm/gC
+ W9Z4r0kmKrNTsuU1VKdwFOYGEyMZZ1qjcg3vO3pkMMIQtjXH/Zqovm5j6fwyb+AYtlCkp9GrLFOSWJGwMwAb80zekcp3LWtecaAn/owMbdx+ZjCWkhNg8j1OHBlXtCaNoHBrbriCLK5lZLknIF0eSdUf+qQaj1ZGCLRrXO1d7fhd2x7dvUaEl/42YXXcYVWv2kuba/28mOQ9G85hvDGQWOo8lls5ffe7bAMCnSnR9migK3O0R2HJ3ajGZDYCK7x3L8iYMf8jgtrb04x5vQ4/zH2/qMNEzwhCsLzaDz7wx4W9ZY7aO5dhCCwzo2QKouuOMsmfDE+BJl8a65AS273O2ljqzqivV97ZQmdt2nCwcqOIatgxvnl3woNNc+VNXQHCs1FCYSzXUkXIpFK66RVXj0b54Axrror2aUbN8h+WeuyNVuhZzZZ1r2OVoQE4wlZXB+z9313heV4oUk0yFKF2t3qCDavNnBrPW8xi0NO0uAQuh3L9fKb++1j5taRfLjYf8v2zVh6tTlYEFAGeQttXMvgaxsA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,71 +94,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---2f0f836d04ce310c9d8a5f2c350653a259aa3f266d1338c545ee2bf85654
+--e521202af606818774e5ec49e2ed41cd606f7b6435b62dac2131dfbf19bf
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
 
-Protection keys are encoded in architecture-specific HIGH_ARCH_* VMA
-flag bits.  show_vma_flags(), which is used by VMA tracepoints and %pGv,
-does not name those bits, leaving them as raw hexadecimal values.
+The VM_ARCH_1 bit has architecture-specific meanings.  show_vma_flags(),
+which is used by VMA tracepoints and %pGv, already reports the powerpc,
+parisc and no-MMU meanings, but falls back to the generic "arch_1" name
+on arm64 and sparc64.
 
-Name the protection-key encoding bits pkey_bit0 through pkey_bit4 under
-CONFIG_ARCH_HAS_PKEYS.  The names make clear that these are bits of one
-protection-key value rather than independent protection keys.  For
-example, protection key 3 is represented as:
-
-  pkey_bit0|pkey_bit1
-
-Honor CONFIG_ARCH_PKEY_BITS when exposing bit 3 and bit 4 so only bits
-provided by the architecture are included.
+Report VM_ARM64_BTI as "bti" and VM_SPARC_ADI as "adi" so trace output
+and %pGv dumps expose the actual architecture-specific state.  These
+names also match the mnemonics used by /proc/<pid>/smaps.
 
 Signed-off-by: Meijing Zhao <zhaomeijing@lixiang.com>
 ---
- include/trace/events/mmflags.h | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ include/trace/events/mmflags.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/include/trace/events/mmflags.h b/include/trace/events/mmflags.=
 h
-index 2d76daacb70c..c8b8a980f8c7 100644
+index a6e5a44c9b42..add5ad6843e8 100644
 --- a/include/trace/events/mmflags.h
 +++ b/include/trace/events/mmflags.h
-@@ -204,6 +204,24 @@ IF_HAVE_PG_ARCH_3(arch_3)
- # define IF_HAVE_VM_DROPPABLE(flag, name)
- #endif
-=20
-+#ifdef CONFIG_ARCH_HAS_PKEYS
-+# define IF_HAVE_VM_PKEY(flag, name) {flag, name},
-+#if CONFIG_ARCH_PKEY_BITS > 3
-+# define IF_HAVE_VM_PKEY3(flag, name) {flag, name},
-+#else
-+# define IF_HAVE_VM_PKEY3(flag, name)
-+#endif
-+#if CONFIG_ARCH_PKEY_BITS > 4
-+# define IF_HAVE_VM_PKEY4(flag, name) {flag, name},
-+#else
-+# define IF_HAVE_VM_PKEY4(flag, name)
-+#endif
-+#else
-+# define IF_HAVE_VM_PKEY(flag, name)
-+# define IF_HAVE_VM_PKEY3(flag, name)
-+# define IF_HAVE_VM_PKEY4(flag, name)
-+#endif
-+
- #ifdef CONFIG_ARM64_MTE
- # define IF_HAVE_VM_MTE(flag, name) {flag, name},
+@@ -176,6 +176,10 @@ IF_HAVE_PG_ARCH_3(arch_3)
+ #define __VM_ARCH_SPECIFIC_1 {VM_SAO,     "sao"           }
+ #elif defined(CONFIG_PARISC)
+ #define __VM_ARCH_SPECIFIC_1 {VM_GROWSUP,	"growsup"	}
++#elif defined(CONFIG_SPARC64)
++#define __VM_ARCH_SPECIFIC_1 {VM_SPARC_ADI, "adi"		}
++#elif defined(CONFIG_ARM64)
++#define __VM_ARCH_SPECIFIC_1 {VM_ARM64_BTI, "bti"		}
+ #elif !defined(CONFIG_MMU)
+ #define __VM_ARCH_SPECIFIC_1 {VM_MAPPED_COPY,"mappedcopy"	}
  #else
-@@ -251,6 +269,11 @@ IF_HAVE_VM_SOFTDIRTY(VM_SOFTDIRTY,	"softdirty"	)		\
- 	{VM_HUGEPAGE,			"hugepage"	},		\
- 	{VM_NOHUGEPAGE,			"nohugepage"	},		\
- IF_HAVE_VM_DROPPABLE(VM_DROPPABLE,	"droppable"	)		\
-+IF_HAVE_VM_PKEY(VM_PKEY_BIT0,		"pkey_bit0")		\
-+IF_HAVE_VM_PKEY(VM_PKEY_BIT1,		"pkey_bit1")		\
-+IF_HAVE_VM_PKEY(VM_PKEY_BIT2,		"pkey_bit2")		\
-+IF_HAVE_VM_PKEY3(VM_PKEY_BIT3,		"pkey_bit3")		\
-+IF_HAVE_VM_PKEY4(VM_PKEY_BIT4,		"pkey_bit4")		\
- IF_HAVE_VM_MTE(VM_MTE,			"mte")			\
- IF_HAVE_VM_MTE(VM_MTE_ALLOWED,		"mte_allowed")		\
- IF_HAVE_VM_SHADOW_STACK(VM_SHADOW_STACK, "shadow_stack")	\
 --=20
 2.25.1
 
@@ -189,73 +158,40 @@ ions expressed in the email are those of the author and do not necessarily =
 represent those of the Company.
 
 
---2f0f836d04ce310c9d8a5f2c350653a259aa3f266d1338c545ee2bf85654
+--e521202af606818774e5ec49e2ed41cd606f7b6435b62dac2131dfbf19bf
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/html; charset=UTF-8
 
-<p>Protection keys are encoded in architecture-specific HIGH_ARCH_* VMA
-<br>flag bits.  show_vma_flags(), which is used by VMA tracepoints and %pGv=
-,
-<br>does not name those bits, leaving them as raw hexadecimal values.
+<p>The VM_ARCH_1 bit has architecture-specific meanings.  show_vma_flags(),
+<br>which is used by VMA tracepoints and %pGv, already reports the powerpc,
+<br>parisc and no-MMU meanings, but falls back to the generic "arch_1" name
+<br>on arm64 and sparc64.
 <br>
-<br>Name the protection-key encoding bits pkey_bit0 through pkey_bit4 under
-<br>CONFIG_ARCH_HAS_PKEYS.  The names make clear that these are bits of one
-<br>protection-key value rather than independent protection keys.  For
-<br>example, protection key 3 is represented as:
-<br>
-<br>  pkey_bit0|pkey_bit1
-<br>
-<br>Honor CONFIG_ARCH_PKEY_BITS when exposing bit 3 and bit 4 so only bits
-<br>provided by the architecture are included.
+<br>Report VM_ARM64_BTI as "bti" and VM_SPARC_ADI as "adi" so trace output
+<br>and %pGv dumps expose the actual architecture-specific state.  These
+<br>names also match the mnemonics used by /proc/<pid>/smaps.
 <br>
 <br>Signed-off-by: Meijing Zhao <zhaomeijing@lixiang.com>
 <br>---
-<br> include/trace/events/mmflags.h | 23 +++++++++++++++++++++++
-<br> 1 file changed, 23 insertions(+)
+<br> include/trace/events/mmflags.h | 4 ++++
+<br> 1 file changed, 4 insertions(+)
 <br>
 <br>diff --git a/include/trace/events/mmflags.h b/include/trace/events/mmfl=
 ags.h
-<br>index 2d76daacb70c..c8b8a980f8c7 100644
+<br>index a6e5a44c9b42..add5ad6843e8 100644
 <br>--- a/include/trace/events/mmflags.h
 <br>+++ b/include/trace/events/mmflags.h
-<br>@@ -204,6 +204,24 @@ IF_HAVE_PG_ARCH_3(arch_3)
-<br> # define IF_HAVE_VM_DROPPABLE(flag, name)
-<br> #endif
-<br>=20
-<br>+#ifdef CONFIG_ARCH_HAS_PKEYS
-<br>+# define IF_HAVE_VM_PKEY(flag, name) {flag, name},
-<br>+#if CONFIG_ARCH_PKEY_BITS > 3
-<br>+# define IF_HAVE_VM_PKEY3(flag, name) {flag, name},
-<br>+#else
-<br>+# define IF_HAVE_VM_PKEY3(flag, name)
-<br>+#endif
-<br>+#if CONFIG_ARCH_PKEY_BITS > 4
-<br>+# define IF_HAVE_VM_PKEY4(flag, name) {flag, name},
-<br>+#else
-<br>+# define IF_HAVE_VM_PKEY4(flag, name)
-<br>+#endif
-<br>+#else
-<br>+# define IF_HAVE_VM_PKEY(flag, name)
-<br>+# define IF_HAVE_VM_PKEY3(flag, name)
-<br>+# define IF_HAVE_VM_PKEY4(flag, name)
-<br>+#endif
-<br>+
-<br> #ifdef CONFIG_ARM64_MTE
-<br> # define IF_HAVE_VM_MTE(flag, name) {flag, name},
+<br>@@ -176,6 +176,10 @@ IF_HAVE_PG_ARCH_3(arch_3)
+<br> #define __VM_ARCH_SPECIFIC_1 {VM_SAO,     "sao"           }
+<br> #elif defined(CONFIG_PARISC)
+<br> #define __VM_ARCH_SPECIFIC_1 {VM_GROWSUP,	"growsup"	}
+<br>+#elif defined(CONFIG_SPARC64)
+<br>+#define __VM_ARCH_SPECIFIC_1 {VM_SPARC_ADI, "adi"		}
+<br>+#elif defined(CONFIG_ARM64)
+<br>+#define __VM_ARCH_SPECIFIC_1 {VM_ARM64_BTI, "bti"		}
+<br> #elif !defined(CONFIG_MMU)
+<br> #define __VM_ARCH_SPECIFIC_1 {VM_MAPPED_COPY,"mappedcopy"	}
 <br> #else
-<br>@@ -251,6 +269,11 @@ IF_HAVE_VM_SOFTDIRTY(VM_SOFTDIRTY,	"softdirty"	)		=
-\
-<br> 	{VM_HUGEPAGE,			"hugepage"	},		\
-<br> 	{VM_NOHUGEPAGE,			"nohugepage"	},		\
-<br> IF_HAVE_VM_DROPPABLE(VM_DROPPABLE,	"droppable"	)		\
-<br>+IF_HAVE_VM_PKEY(VM_PKEY_BIT0,		"pkey_bit0")		\
-<br>+IF_HAVE_VM_PKEY(VM_PKEY_BIT1,		"pkey_bit1")		\
-<br>+IF_HAVE_VM_PKEY(VM_PKEY_BIT2,		"pkey_bit2")		\
-<br>+IF_HAVE_VM_PKEY3(VM_PKEY_BIT3,		"pkey_bit3")		\
-<br>+IF_HAVE_VM_PKEY4(VM_PKEY_BIT4,		"pkey_bit4")		\
-<br> IF_HAVE_VM_MTE(VM_MTE,			"mte")			\
-<br> IF_HAVE_VM_MTE(VM_MTE_ALLOWED,		"mte_allowed")		\
-<br> IF_HAVE_VM_SHADOW_STACK(VM_SHADOW_STACK, "shadow_stack")	\
 <br>--=20
 <br>2.25.1</p><meta data-version=3D"editor_version_1.2.12"/><div data-zone-=
 id=3D"0" data-line-index=3D"0" data-line=3D"true" style=3D"white-space: pre=
@@ -298,5 +234,5 @@ pan style=3D"font-family: helvetica;"><span style=3D"color: rgb(143, 149, 1=
 </span></span></span></div></div><div data-zone-id=3D"0" data-line-index=3D=
 "3" data-line=3D"true" style=3D"white-space: pre-wrap; margin-top: 4px; mar=
 gin-bottom: 4px; line-height: 1.6;"><br></div>
---2f0f836d04ce310c9d8a5f2c350653a259aa3f266d1338c545ee2bf85654--
+--e521202af606818774e5ec49e2ed41cd606f7b6435b62dac2131dfbf19bf--
 
