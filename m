@@ -4,98 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB933C4453A
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 02:05:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF4CCC4453A
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 02:13:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 963D66B00A9; Wed, 22 Jul 2026 22:05:22 -0400 (EDT)
+	id D1ABA6B00A7; Wed, 22 Jul 2026 22:13:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 93ACB6B00AA; Wed, 22 Jul 2026 22:05:22 -0400 (EDT)
+	id CCC246B00AC; Wed, 22 Jul 2026 22:13:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 87A576B00AB; Wed, 22 Jul 2026 22:05:22 -0400 (EDT)
+	id C0A0A6B00AD; Wed, 22 Jul 2026 22:13:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E5D26B00A9
-	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 22:05:22 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A95B8C03B8
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 02:05:21 +0000 (UTC)
-X-FDA: 85018399242.20.61F2AB3
-Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 9DE4A20009
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 02:05:18 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=j21Jbnt7;
-	spf=pass (imf03.hostedemail.com: domain of xiqi2@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=xiqi2@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784772319;
-	b=eTUZgNx0Gza0O7ZDrIEpMgXJtvpxEMXWypSUGEf8SRUgBfquDuV6G73N+LINsbSPGiNQND
-	sz+NkfVQYxp6m7kAxhqVUAE9cU88U90hoPTmpSCEB2Sr3NSES4q8d0M0JWKK07NbCKSA+m
-	6Y7rFIBiLVthOgDJGSGxzuKbBFVVpOQ=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=j21Jbnt7;
-	spf=pass (imf03.hostedemail.com: domain of xiqi2@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=xiqi2@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 910B66B00A7
+	for <linux-mm@kvack.org>; Wed, 22 Jul 2026 22:13:37 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 218CE140344
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 02:13:37 +0000 (UTC)
+X-FDA: 85018420074.17.E658320
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+	by imf31.hostedemail.com (Postfix) with ESMTP id E33402000E
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 02:13:34 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b="YeYK/zMm";
+	spf=pass (imf31.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.169 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784772319;
+	s=arc-20220608; t=1784772815;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hzYIGpBXbFZonwDEQCBbDgP46W9DkA6XzZteCy3etkg=;
-	b=rk3FmyZOzTRgYTg7QbZRQEd24YkYW+MtqRK3pAc2HUyIT0oJlLMmdclwgvKY/lBvtDBn9K
-	973DRbExH2UvC4J8nCRnh1rF4yg6PAWE7ytQnTBs0QDx3K+bk3gdtlZs6IF0fpJl3KRXDd
-	zfDPEppW3PG2m9FgJO28FQ1wzhY1dBk=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=hzYIGpBXbFZonwDEQCBbDgP46W9DkA6XzZteCy3etkg=;
-	b=j21Jbnt74JDV9NCT72cBGojfiVTFeBkYsniDEPCn/vszEk51Xxy62OO7uzzzjhsOyN0VBrTjE
-	8WcqQwo0IFxJ4fVzYbQHXRU5xLMiXyO2Zu3tLKDghEulrlrN1iV06FDO80v7dkdcDMTNoWTziJL
-	2gvYE0V/Eqdn1V3W7kfskB4=
-Received: from mail.maildlp.com (unknown [172.19.162.197])
-	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4h5Djc4m4kz1prlh;
-	Thu, 23 Jul 2026 09:55:48 +0800 (CST)
-Received: from kwepemo200010.china.huawei.com (unknown [7.202.195.178])
-	by mail.maildlp.com (Postfix) with ESMTPS id C98C04057D;
-	Thu, 23 Jul 2026 10:05:13 +0800 (CST)
-Received: from [10.174.178.56] (10.174.178.56) by
- kwepemo200010.china.huawei.com (7.202.195.178) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Thu, 23 Jul 2026 10:05:12 +0800
-Message-ID: <0adae468-745f-4f38-bb1a-151b91bb47dd@huawei.com>
-Date: Thu, 23 Jul 2026 10:05:12 +0800
+	bh=63wl+OLSuyt8DrGkM/Vj7SgGoUiR2AzArICs+kt8mlg=;
+	b=Q7BKVDi5PfgbTnEaXlryN5xX4mERPZAoiLe+jKZbQwva3utNL/xR6Ph3jS1S3J1zUTG27x
+	jus4ddUwdviNQ1pUic/7WNyQR5BaBfmbyzIOG+qdnAkr10YLjCWntH/ZoCpYbXqlwjVxTX
+	lrQtM0+AcXuxnXT1g2S7KEN0m+LjwBM=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784772815;
+	b=sOybFAB7A2QTCANhkkyY8FfP5H4YrTcgiycNI0YDWuOiNOoIeIMKGs9l3pBaOENs+G2kwn
+	72FZB7szPZ7BfDcNiCwXdt/tJ/Xqa8s84XCeoZUGnhFMZvZ9lP/pblBoSpHAIXWM1obGJl
+	I9JobdQofD/iFkAwNYez2D91EIbsCJU=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b="YeYK/zMm";
+	spf=pass (imf31.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.169 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-92f0b5ed131so12371685a.3
+        for <linux-mm@kvack.org>; Wed, 22 Jul 2026 19:13:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1784772814; x=1785377614; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=63wl+OLSuyt8DrGkM/Vj7SgGoUiR2AzArICs+kt8mlg=;
+        b=YeYK/zMm47JGRufHIB0l6T/kVVA2sXLp6hjyasKbKyoxL0zKYFPEsv1rv6D/D0B6eo
+         Jwi+6BJ/ANTQkWzr0XjdnYVpRCEYeHOjo18+g2u2Nj1Ewsu/357DKK8EVSThXG5QxEAQ
+         eEdlpSgk+tFqMRYdPfA1Y3Hzii92T3/C75wK6F7Cfw0Iwn/a45Gnwefq6Q8XrkJzPyLe
+         RrRtmnYsLfNjBrXmBS2KVIvUzjULpc25JmVti1vJi/7IUVpj0E6a2j+JeaGuOCWJwXND
+         SchP9E9Fys3rr7YnQWNH2IaThwjnFhsB6PAhfNPBn4WhGOj1rNqU5+0ZVlE4qXqOaHmU
+         jQIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784772814; x=1785377614;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=63wl+OLSuyt8DrGkM/Vj7SgGoUiR2AzArICs+kt8mlg=;
+        b=UCoAdeo84Nn4DGkhdgqv3pVoa0td6QHTZCyKa/CGuGTA7kgCaB6UHTIjKQlzt7aQCl
+         EgIBVsLF8bLrp0dtiHfuKPWfT5JeuKoGRuPKi076qkHYF1giyRPt7TXhTWIAwzIKeUr/
+         gKcTxZ6FPEOd/gyH1hjIDgLJ1bYDAxwoxMeCbsktiFPsjJVeBZZiQ3R/a5ZEkVmyrEhk
+         OObUSS7d61YGErcFc7tO056sIRAXls+UcWvbmuCJnKyQJThJ0UBR2e0QjnwlzOA7ylJ+
+         noV71i72DklwtebXo2HBvrAgZ+EExa2IrbQQLJwuN132DcKQpfK+7spzib4IeDY+MuKi
+         1Lsw==
+X-Forwarded-Encrypted: i=1; AHgh+Rq41xeKHEiXaJpRKaPl3nELb45Z2mKZOvl0xTsskb4NfKXmss8vXxvvSk7EEqAK+5L8sJy6i41LKQ==@kvack.org
+X-Gm-Message-State: AOJu0Yy3hJFtC8r8kT29jDaVqJCF906KyAkOajCTOEnBTAMQyqqDPS2q
+	3GfrGBHcW17Ml0vJUPp8jiSHat3w52L2vkhTGwWt5hx4FzqqfSa+I6zg867YiC+IVpA=
+X-Gm-Gg: AR+sD13jDnxCBSehMaXK9FxyXbtUl9RtyNDAMDjliiSM65Vyf9mIJ/BPSh7TNRJDftF
+	DQTq8d8fgayk+ikM+8T0gFtibWhG68gdVelY3IhcIUOIKfiNyoPS2Hxy1/sSPrbeW+JwNyqvOWz
+	g9fH64hOuVZmuJou8CxPOvvOGpMHC2KaRaWiMN1HoHd63V6Vz+4u08r+cPBuXR2O+yq6tkZXQre
+	q5USHPRH5kEOUIZxJNn4X/dChzRzL2lqhg2Kk9Nzaa0FDHihjCphOOyprgSCcdbkx1NIsLjAekQ
+	TqBnDojuTGaQ52P2bu+WJ/RudAHoIRrp0i2PAmJBFtW3DdARD7Xh/Kum4E45zxjyfwcNlh2W5Yo
+	6jMThcbg3vyVEt3/DZxtToprZyqMtGBSjXX7MpeEnoOxCJia62QTh6zcZ/u1ncWjiM+6Px5fGRH
+	6o
+X-Received: by 2002:a05:620a:1726:b0:930:9a5e:bbc3 with SMTP id af79cd13be357-93103aee31bmr115743585a.49.1784772813954;
+        Wed, 22 Jul 2026 19:13:33 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-931062c4ea8sm22128285a.28.2026.07.22.19.13.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Jul 2026 19:13:33 -0700 (PDT)
+Date: Wed, 22 Jul 2026 22:13:29 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Hao Jia <jiahao.kernel@gmail.com>
+Cc: akpm@linux-foundation.org, tj@kernel.org, shakeel.butt@linux.dev,
+	mhocko@kernel.org, yosry@kernel.org, mkoutny@suse.com,
+	nphamcs@gmail.com, chengming.zhou@linux.dev, muchun.song@linux.dev,
+	roman.gushchin@linux.dev, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	Hao Jia <jiahao1@lixiang.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] mm/zswap: Fix global shrinker when memory cgroup
+ is disabled
+Message-ID: <amF4yRobGT9x67y3@cmpxchg.org>
+References: <20260717085151.22822-1-jiahao.kernel@gmail.com>
+ <20260717085151.22822-2-jiahao.kernel@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6.y] mm/memory-failure: fix missing ->mf_stats count
- when hugetlb folio already poisoned
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: <stable@vger.kernel.org>, Naoya Horiguchi <naoya.horiguchi@nec.com>,
-	Andrew Morton <akpm@linux-foundation.org>, Miaohe Lin <linmiaohe@huawei.com>,
-	Sasha Levin <sashal@kernel.org>, Jane Chu <jane.chu@oracle.com>,
-	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-	<sunnanyong@huawei.com>, <wangkefeng.wang@huawei.com>, <david@kernel.org>
-References: <20260721121956.124887-1-xiqi2@huawei.com>
- <2026072119-facial-encircle-f1c8@gregkh>
-Content-Language: en-GB
-From: Qi Xi <xiqi2@huawei.com>
-In-Reply-To: <2026072119-facial-encircle-f1c8@gregkh>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.178.56]
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemo200010.china.huawei.com (7.202.195.178)
-X-Stat-Signature: wmqy1q1658515myqshi84fcuuu3dagmf
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 9DE4A20009
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260717085151.22822-2-jiahao.kernel@gmail.com>
+X-Stat-Signature: ynkusygs1wu3wfsikxsn7krmw67g9uhw
 X-Rspam-User: 
-X-HE-Tag: 1784772318-51287
-X-HE-Meta: U2FsdGVkX19hsUgqrQ/X7GHxbQGCSyCoMe9cQrqUtY/anELH0z2mo09KwXBIUCOAyhQPOlJrhAV9Q9H16H/VVyRwPOOlNISOGf7IIcf+yfS99E2NUPzSR7PSOkENTSVgfUKMQPTrZU/fMq+sEiuWOLrn9KPmQRAI+aAKY758OQyojizcJoO90l+YcC7C+fO11c2o3TdwmpQdFOfxisgFVcMSszH8yZQ3EkU261aV7AfcXYR1KN0KnLYJxx21GlToy1k07eyBRID0shExw4MojmnranbfQlDQYA2Heyazya720yMbW6p07hnVVPhJpIMmc63XCC8Cq+5d/n3PevAV9JI78jdMjRJWj9+z5jdHi2ZX4ReeNSjgyP59jBzejaZNIi0SVY9niFG1GFkwY3+W0hRTwPRiI9okjUv/V0JVrWaqUJRJn5wsngP1JZ6gR+HANiU6NQkjqxEICuN6hT48aEuoak3MXSLlJc1duztbTE0pHBNyCbOn9N5Oe7n0rQWdhXdfXhDo984GeTpZRhxIyvaUF74jAVVpL+Xdl3wqm8n+vasTAUC9IaN5e7ECMdnvi3FM5oNA10mJzY7bRI97NcX7L+G7QMX9jjaZcf5Xaka7P/JPZWzrnTb5P7eyWw+PpsMwa3WJ2um78nDSg1qNMoTViBN8CwCt3EbHyXgYv1ezpYAiEuN3W6VcF6Fuz4zyV5yvugQ8n+qw4FPJ+9zPgZoadIndr4e9kWb6ewXi773pAe36rZfTYmduxtYqT9mtuuNhOOyuj755M8IjKNeYN9loVYc8qs9cu9B07KX+9i4FyN/cRjerDYp9rLw/TeQfBImd+UrQqEne6uya4D+jM8BOFwY6iGhNlua+jrctqhCI3KScAnlFouqw2swysEM5V42VX7eTZ4OEU6mjKZ4ls/EX30/aBDH8uzHPIZCBu2/6WEzPSCkKJSzXIN+dm/sGcgSxEqR3f6nSswkAQVP
- jYVSpL8l
- 4FbY3gLiAUNwLFw58HSnIJEZ7NjpasPzouWu6vslbCEPTf5IoGIBGUbj/KMe+6dsc8m/ruVC/dShlLgZVr2m8dxc13GEYHQSfcDsD9JKQ8SZj5DVaxtBgiAbMXDQv7EuSlJb8GYd0eqSFbTBOjT9aKcJ77g4TeeZMwypdSxl8nSOPwYrFjL6b3ni7iFbzb5sNs6yrm+T4a3v9qEdk7uUf5vVtephm6iZFFrOJqAsU+k7Py8xauXJwFFnS5I0oc8NEnTegxXK3LrNBg8RI7ItF7loas2unH9Yv006SLV8z49xaxK1z5QH1I04tqGieICA8PQQ80u3wjVEgGrjL+nP0mlmEfVpQvlw9xnt94S7/fPpHYXfRUyAV//UAgvY1CtCXOGeHIInj//uJK6M=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E33402000E
+X-HE-Tag: 1784772814-860287
+X-HE-Meta: U2FsdGVkX19cawgn7B9z6qgRxP/6xuuPBVGW2x3imZUz3YYRb1H+N5N21dueItzpUxin6QUIYlImHVohCIIgl4P16ve5YL27hskRAxh76VsPK2pXPckAthvniThChk0ETBTIVG4dws3tw5lHLLkuW1UuFruiAEa/EzYNxY3/IUGm7xLD0K66tLOsyNjDgTtrejdVUKWGXY/x1Jj1ny2aznfzG4fj2Z0EMva+W1TbDDT9pOS1Aa6TPPY4YIYb/p1qGeBrmfa2Ubw8drj8hDHeufaqbZQLbAQWsHnlCYYS0IqvzyUcf0lSxcr+DN8XozX72Gkhub+LiXJSv9TsAHqmyb8pD/ypcTGpsuYVKkZq8EhsGwhAhJ7kdUroxP0bTIrhzUTl1Cyzmcya+FH6EhHw9Iq45HOVUHKFgdv8PikqwOt9KNrZC5Yl/9hwhXAH1UAT3wpORxCRKV56OdMJvFkm9FJ3hGbK30cLmDVyjocekFi5VAjDbUcmWQ4HI2lPWbclvAjg59MZWiUFi2X9YDDqZk27LbJ3C5xMNEEPTBbT9SINZv3SMkm0Lcqbr5xcTiJCBjSEk/P4hbjHIjzPHuipKXMDSdC5yAVtIGvPAO1tcmcyFd+WDT9GgabwHJebipI3S+rgKsZLgrT3JZScLZAsHhrNmwsmS3R7mQsZiHPo6eHw5g0luwD4KS5ezLKQxY9YXyKUbbeIXy4122mczV7KZz6kQ3dfNOti0YshkWfGixvURPqBHCsUlhbheCUA72eaRQrl8VcTCSJOjPoelSdof0fHLPLOhZlMZt9Sc/I8Nmo+uHd1AtmE43zK3900X9zc3su9YPvkqr3OUafXctzhrIm/zWlra9y6azMgDxQ8RFjlDYVjuFk2PjCLxeAYrgJukHz0aJs7H2wcmqa9wq8wiB8/4UBXhdpIaPjxNdBFgV5AjTAQ5coJXdW7Fv7YR3FzCXgFQzP4jZbZtiHUrG1
+ IXguY+wN
+ GP44CMe7MjEd3HFl2bDqQBD2EKR+wCnMyt32u/nFyRFGXrEqdFkVAChRxSIlglNRt20rDv8n0Sa6MmNxxHp44FCAZYX6t2gonGnA5wGdpSXxztmQFzvNASxxrGkORuJAVsFWWqiaslVlNmeIoZ4GGw/mgR/93fXovXoWpnm7IONuMdH6Kul1G6P7S6qwodTjf/yimLzQyzQmfkWKGkduuR9VFJGY9j3piM7DgpF42lG+3QnstDpKOykZo+xTU0ORHhhfWMMUltN9d+Gf27HdBdY+iGLK2GOV5ckiQhrnwotLmm7hU7t5cGmc6q9bi202In9/UyXX/8Nv3yv3o6Msl+EA7stPZolKO3JqFp6ospv2fuQ2Z34B3EiMHSBbKxjTevkRaDkhENwjSf8ZUIIddVOzaHwy1g53lksEw+C5gNEZkqCngg9hsisL7ZkGu4O2x/NELmSbpO1eZ5NFu2gQ2MYRzeMXOuMkEWhmlsTZoonTkdAm7hSGevrz3FpRuean0aXpRROONq1a3XaGVYHfC2onr4ncYep5m1yUjK/xpqyUmTY8pVWduNznJcKNHUf0M6Gxfq5BYwcNgMjmXW1rKP7iB01VozqBiITR85C2ZYceGTQ0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,22 +124,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-You're right, I apologize for the misleading tag. This patch is a
-follow-up fix for the defective backport 252bb328b36f — the bug does
-not exist on mainline, so it's not a direct backport of any upstream
-commit. I'll correct this in the next version.
+On Fri, Jul 17, 2026 at 04:51:50PM +0800, Hao Jia wrote:
+> From: Hao Jia <jiahao1@lixiang.com>
+> 
+> Zswap writeback on hitting the pool limit is broken when memory cgroup
+> is disabled, because mem_cgroup_iter() always returns NULL. Therefore,
+> the global shrinker shrink_worker() always takes the !memcg branch.
+> After MAX_RECLAIM_RETRIES empty walks, the worker simply gives up, so it
+> fails to write back anything.
+> 
+> Therefore, when memory cgroup is disabled, fall through with the !memcg
+> branch and shrink the root memcg directly.
+> 
+> With memcg disabled, shrink_memcg() only returns -ENOENT when the root
+> LRU is empty, which means the total pages are already below thr. In the
+> absence of heavy concurrent zswap stores, the loop then safely bails out
+> via the zswap_total_pages() <= thr check; otherwise, it will resume
+> shrinking the memcg after processing the reschedule check. For any other
+> return value from shrink_memcg(), the loop is guaranteed to terminate,
+> either after MAX_RECLAIM_RETRIES failures or once the threshold is met.
+> 
+> Fixes: a65b0e7607cc ("zswap: make shrinking memcg-aware")
+> Cc: stable@vger.kernel.org
+> Suggested-by: Nhat Pham <nphamcs@gmail.com>
+> Acked-by: Nhat Pham <nphamcs@gmail.com>
+> Acked-by: Yosry Ahmed <yosry@kernel.org>
+> Reported-by: Yosry Ahmed <yosry@kernel.org>
+> Closes: https://lore.kernel.org/all/CAO9r8zPVzMKFbCixxD-qgtRrkFxWVrHiZZeLc=eyTPKPVQgX4g@mail.gmail.com
+> Signed-off-by: Hao Jia <jiahao1@lixiang.com>
 
-Also, as in your earlier comment on the v1 thread about needing
-maintainer acks — I'll ask for feedback from maintainers first before
-sending the next revision.
-
-Thanks,
-Qi
-
-On 21/07/2026 22:11, Greg Kroah-Hartman wrote:
-> On Tue, Jul 21, 2026 at 08:19:56PM +0800, Qi Xi wrote:
->> [ Upstream commit a148a2040191b12b45b82cb29c281cb3036baf90 ]
-> That is not what this commit is :(
->
->
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 
