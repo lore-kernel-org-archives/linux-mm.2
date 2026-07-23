@@ -4,100 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 569FDC531CC
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 17:43:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 308C7C531D0
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 17:48:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C48566B00A5; Thu, 23 Jul 2026 13:43:40 -0400 (EDT)
+	id 1A1C16B0095; Thu, 23 Jul 2026 13:48:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF82E6B00A6; Thu, 23 Jul 2026 13:43:40 -0400 (EDT)
+	id 12CFC6B0099; Thu, 23 Jul 2026 13:48:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B0ED76B00A7; Thu, 23 Jul 2026 13:43:40 -0400 (EDT)
+	id F38C56B009E; Thu, 23 Jul 2026 13:48:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C8566B00A5
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 13:43:40 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id F2B59A00B8
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 17:43:39 +0000 (UTC)
-X-FDA: 85020763758.05.C536573
-Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net (zg8tmtyylji0my4xnjqumte4.icoremail.net [162.243.164.118])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 62D5518000B
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 17:43:36 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	spf=pass (imf16.hostedemail.com: domain of chengfenglin@stu.xmu.edu.cn designates 162.243.164.118 as permitted sender) smtp.mailfrom=chengfenglin@stu.xmu.edu.cn
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B7CBA6B0095
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 13:48:36 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AE0781C0033
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 17:48:35 +0000 (UTC)
+X-FDA: 85020776190.02.F991387
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
+	by imf25.hostedemail.com (Postfix) with ESMTP id C4345A0012
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 17:48:33 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=PbYGeDh1;
+	spf=pass (imf25.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.43 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784828913;
+	b=eiY4aFVbQJKhH9GXVAfNdz0TbO8nfCKsOtYL0Qnfi/3CQ4Gsci1xMYKK25q3ZgOqt1kGtu
+	iVOGmt+hx1/sEA4/sfml4fdcHN/peHsFEZzSL7u0d0IpAY2mmH9VrSFd71FGMMIglf0q0f
+	IBj9x20PteCraDKbCmFTFUO1Ky7q52U=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=PbYGeDh1;
+	spf=pass (imf25.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.43 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784828618;
+	s=arc-20220608; t=1784828913;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=u2ztcILl2aTcBDKu4FgKWIcqDEZIrdTwbJEIGB7kdcQ=;
-	b=O14pHj9sIx3b02rse4uNQTURslVe/iK/Qk74wOGDBE0zYeVnWIMRjWts9kWe15zGjXM0x6
-	LZFEbxBZma4U40OIb/fL1WFOIgUSxTqukHt87XlTDXx/J6GwZT1v19yrJL/1XWv5IAWm7x
-	+iX0AnE+P8daWhcjbljHbQPv9mIBsn8=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf16.hostedemail.com: domain of chengfenglin@stu.xmu.edu.cn designates 162.243.164.118 as permitted sender) smtp.mailfrom=chengfenglin@stu.xmu.edu.cn
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784828618;
-	b=LebErRn8mh3OOw75uKLQETBkBSMCx94qYcfnFwwzU/zenpDtsBgb0IQueTGBFc4hWdt3id
-	/e9gSMOZzas9uAWmPquDlGUHIIFHugruEgx/clu4WB1MKq6M0JtTKjcOx3zGHE8KzO7aGi
-	zxPzHmfP40Gd6ugx0TL79llQ4rvG2jU=
-Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
-	by hzbj-icmmx-6 (Coremail) with UTF8SMTP id AQAAfwA3GJnFUmJqoQNkAA--.23686S2;
-	Fri, 24 Jul 2026 01:43:33 +0800 (CST)
-Received: from chengfenglin$stu.xmu.edu.cn ( [23.249.17.30] ) by
- ajax-webmail-mail (Coremail) ; Fri, 24 Jul 2026 01:43:31 +0800 (GMT+08:00)
-X-Originating-IP: [23.249.17.30]
-Date: Fri, 24 Jul 2026 01:43:31 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From: "Chengfeng Lin" <chengfenglin@stu.xmu.edu.cn>
-To: "Dev Jain" <dev.jain@arm.com>
-Cc: "Pedro Falcato" <pfalcato@suse.de>,
-	"Andrew Morton" <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	"Liam R. Howlett" <liam@infradead.org>,
-	"Lorenzo Stoakes" <ljs@kernel.org>,
-	"Vlastimil Babka" <vbabka@kernel.org>,
-	"Jann Horn" <jannh@google.com>, linux-kernel@vger.kernel.org,
-	regressions@lists.linux.dev
-Subject: Re: [REGRESSION] mm/mprotect: shared-dirty base-page toggle slower
- since v6.17
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2025.3-cmXT6 build
- 20260202(ad063891) Copyright (c) 2002-2026 www.mailtech.cn OP_ICM_ICMVM
-In-Reply-To: <03f91210-e0b7-43b9-9a95-755b986b3c40@arm.com>
-References: <7c9eeb21.1c04f.19efaacbb2f.Coremail.chengfenglin@stu.xmu.edu.cn>
- <433d619a.1e8a6.19f1d4d1be6.Coremail.chengfenglin@stu.xmu.edu.cn>
- <6c8d9b6c.24a8b.19f84afccdd.Coremail.chengfenglin@stu.xmu.edu.cn>
- <dc402537-1527-4433-839e-960b6eb32bc4@arm.com>
- <4dceab6f.24e3b.19f8966e8ed.Coremail.chengfenglin@stu.xmu.edu.cn>
- <03f91210-e0b7-43b9-9a95-755b986b3c40@arm.com>
-X-CM-CTRLMSGS: =?B?Hs6GYTiH6nJ5xwDR7hwMki1N8jM=
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=G2+4/YWWiPL/NjZ7kD3wcGqD98ci6jBKaqWoskADH3c=;
+	b=K1UIkHbf1vBAe8ztIkHhI4bkFlQ7F7nAzIhaXEgFKC3OKWVt9XjgziRzf9uddq+sF6UOz+
+	KcNbcBosVffQJf8Kv2J4gJ9DntD5qC2q+oF3DMuxvK6xLKNBTGZJrltF/QStTfVr5mG5a6
+	xPVzLxgZ/3CMCcI5481aT9/7QRJvmq0=
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-8eeb4508f29so10290416d6.0
+        for <linux-mm@kvack.org>; Thu, 23 Jul 2026 10:48:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1784828913; x=1785433713; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=G2+4/YWWiPL/NjZ7kD3wcGqD98ci6jBKaqWoskADH3c=;
+        b=PbYGeDh1xXI8/6Z1MP7jNdMGRZ6SlXg8pMG1+/DNx+ZStdGd+lxyFghOn1O/MkyTYV
+         RAoOkDkwk9p8UI0BzDzfczLn51D+rt93m/F8SU1Ix7V+B5SgYqC5N/O2Ipml2hjYYKMf
+         NtZa7h1FqHMCdFWIn1z8hs10msgbjIaSOifjbKqDuHAOFBtOI5AqUuCcXzQNIw8oNKwB
+         pApxLiLJlX8+BC2lo2EXnpf3gBvPlIjYmgHjP6FbGomAYOR9H9EuLX4ARlG3U2S2uX/+
+         cjtM9CBkGtFPRLahjWTvRqL6YV3dHbXx22Hfq5xHfYLQK8F9EBwYR+PCPwR6N19fh6lx
+         TxDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784828913; x=1785433713;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=G2+4/YWWiPL/NjZ7kD3wcGqD98ci6jBKaqWoskADH3c=;
+        b=FRI9uiYdkeCwlvSjVCByNmWOxFyfYItgYkRSmfOlqezAhANVrU2D9Rvnp1F89nf1nh
+         fv7NH2n4s5VGZmVDvfMA1JjUDak5o57KQGgPHjE4PejooIj3ZQj/7DqSTfPVAxasHyWA
+         sdtiDTfNfyGU6z42rQjSfRmeMxBY9a670QFCd1J5a3mj8kzcg5NKU5U5ebLX9txk9Fv+
+         fX/nr5LTIE+1aGh1jMG2rS/oQDqfWg4U3EAfFhythAkRWNkvJUBBcCY+OeE6EZUrFvoo
+         BGonTjvV8m0I4YJtvDDsTG3WKCG9DWXr3RU/03dDAjgut2ukcP+mZ6Xvzny53x5PvDUl
+         5mlw==
+X-Forwarded-Encrypted: i=1; AHgh+RrfRMMuoELitBKDG1ha0Y3c+zmguKa/NKPU++rq36oI5nVbLrSLwsu0QULnqO8xR4mMuzTB9iXr0w==@kvack.org
+X-Gm-Message-State: AOJu0Yz6zgBY0EySagpKcS+noC7yTe4XHuh2L92f+wmZbPGWJh9cHD4b
+	fF8xLl+xX7j4kCwEPOyCHOMYG9d+eRjmU4IetHnHALmNfxCIjfTy6/RHLj3y/qJkvw0=
+X-Gm-Gg: AR+sD13mVSAvyHtdx/cpSbeb8ejHHyARcdeMF/NrBP8XhY4e03OXcTEj+OaPag+HqrM
+	HH6Jc1ut8WvKloucA6Rzx7slKCcNCXc1YbtKTrJtJqI7pWk7rylOiQt7Z8C3k7Exy43vWtOejVs
+	nShsN3DKSkEuJEHK8c2SCHe8Zgwq8emrQu3RKgShhl8FQf8PY1qwffz4rc3IuoQsSl/d/blpWCa
+	UNRly++iiTxYxPTlBRP6VYYjOVItoQBH4ZkZDWMtwp386wlnYg1Z726PQHEJP2MlFnilyo0EAgn
+	ZnKubbte+5UktrPU3O3NtpXoZWhC/jIr3yYuej5MkaRNgX/fUS1vvdIEIWx8VKZIYfJWlj9H1tt
+	ddHeOVGFtJoY3r/lVCvR/JhPNY/1ZF2MY7Za+j91DupltYh2jpYli1zSoNeJgBBRJABkXmBSIPb
+	ladIS2wDe7QnS6V7xIdpfa3sYbRrgaiCC7aRzXN/TXzuagzWZKhAOARnAaQA==
+X-Received: by 2002:a05:6214:3b87:b0:907:75b9:b101 with SMTP id 6a1803df08f44-907ca3506dbmr49693546d6.32.1784828912139;
+        Thu, 23 Jul 2026 10:48:32 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-907baa09dbcsm50354966d6.34.2026.07.23.10.48.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Jul 2026 10:48:31 -0700 (PDT)
+Date: Thu, 23 Jul 2026 13:48:27 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Sean Christopherson <seanjc@google.com>, 
+	Yan Zhao <yan.y.zhao@intel.com>, pbonzini@redhat.com, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Neha Gholkar <nehagholkar@gmail.com>, kvm@vger.kernel.org, 
+	rick.p.edgecombe@intel.com, vishal.l.verma@intel.com
+Subject: Re: [PATCH] mm: mempolicy: fix automatic numa balancing for shmem
+Message-ID: <amJQAs3Bm99ZR_sF@gourry-fedora-PF4VCD3F>
+References: <20260629163337.1264881-1-hannes@cmpxchg.org>
+ <amGpEEqxoLq/Y7ZO@yzhao56-desk.sh.intel.com>
+ <amIcXrS7nGX-adpG@google.com>
+ <amIrDncrL4K-JRBO@cmpxchg.org>
+ <amIxyy4Vg_TTE8Y4@gourry-fedora-PF4VCD3F>
+ <amJKOPczNMb96NJv@cmpxchg.org>
 MIME-Version: 1.0
-Message-ID: <6aa94b03.25351.19f90134c6a.Coremail.chengfenglin@stu.xmu.edu.cn>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:AQAAfwCXsfLEUmJqAmnOAA--.15800W
-X-CM-SenderInfo: astqjiysvrikiuszmqhvwxh5lpxovvfxof0/1tbiAQAQEGpf17YD4
-	QADs0
-X-Coremail-Antispam: 1Uk129KBjvJXoWxGF4DAw4xWr1fWw15Cw1kAFb_yoWrGryUpF
-	Zak3ZxJrWDGr1Iya48Aw4UXFWFkrs5Ja18XF1kGryfAa95CF1I9rZ3t3W0qFy3Gryvqa4F
-	vFs5C34kJFn8CaDanT9S1TB71UUUUUJqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
-	DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
-	UUUUU
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <amJKOPczNMb96NJv@cmpxchg.org>
+X-Stat-Signature: gimidhzwehp63g6kbf1woaodcnftmz56
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: C4345A0012
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 62D5518000B
-X-Stat-Signature: xs75see3ajzh7ij4bwsrjwopjf7w4wfx
-X-HE-Tag: 1784828616-109505
-X-HE-Meta: U2FsdGVkX1/YLZFMpLe3L1ZaNvXSOGjjz2stOQSC6Yn2Wg0cAiiNXHaL30yR9+8Z43iRAXTpxJdRz7GYKWMFGg8CmKTotWjf2oX9sU1wpSYRVUQ+rEiCd6x4r+aZxK3NH+Cjtbkno1XGRlVAPHhIgyQ/0iRk6LbkOlxewZmhQXGSAoNwJr9KokGxze0OZ7EuH9RuCZkEzy9ubepCed/sNCAYhIs4R8gN+Wo6Sr/5KY4uEC4lXe4nCq/8Bb7po311xTDoSXZS1NhVTsI+m4tJslnkHuJ3ofb2Y5zlfMCks7gbKqY8w7QULmcbwk3GENe4+cOuJLTqqdSXptIdYHKQLddTokwe5HLVlp9KZ6iQo44+Px7aASdI8KdnBDDmXl6IKaqQKQjAzdXdzucVjMeSUzsWQKRB/hzEtxOv9sel4pTerB2sMY0FrVnuOJCzVuSFXekFxTeO5D3B3I3nZLZtoZcG7NqpzDJz3NVx7ADrenai4QN2fpUeelrex5G+JT+mRirVHB1yLrkSGX3hrb92sHXpJhPR0Gxrfc1G5t+kzzcJUPQfab0dO1PypHucaXHqz40mLGYnc+ZXeZCWVX1cxwZuzvou3o5f/RejIau4a3b2oIhCU4+e7OXVojAM/0Ef+U/BINzOHb0jonQNNXsBQM6+0WWNrCtPhOD9ThtJjmh/kCMVjoca9Z0PLtLNjD2wU3g/FPNXb3gpaO6Kvv7JdE6nJDJps4AT7cXDiKaVVANaFQLaLTPwnbIw/L4wy7Q8Jv54xjkKBpohxPoOsBMMjpsAirUbWfrm43AEjIwLBnqSuvc5+b0cJ3/k4dIBk2K86pxHgGU/sq2rUmLe/rrwWxCLE8CvSqTAgfrf7x95sxI5ZvJ0nfKorrG0g7GbS4rAGKmcKb78ftARZ4d+2svIMpGSoK2lhdMtvcW4TdSnM9wxmHyp7IcDfNeZEIWwnBVPgTV31NG1YgT9sOAlylh
- n9w9SjNh
- 74GkU9wo8sNthCzaaGEzU4s+V7q9OAx4brZPr/dl7fUWU5x78aL+hUrsQIf6E2HjUYMlLL30RyLdNIU4VLWYgmBVJpDUKUG83rVSZGDMDE8Zy5XZezx6XdKprS390bk1YYetM8wS6F2pWkMCJmc0YAHFbhd7Mwkx6wB0YuMN8ScodAZXwNevxg60xOOTY2l4Wx7wYi4QSZ0ToqCYGSRl7l3F50aDDsVPuEOxv0aMOmYGSi2+dM5c8s4W7kqvgAvyaOiMCROu3aC9rejU=
+X-HE-Tag: 1784828913-765720
+X-HE-Meta: U2FsdGVkX1+fFbmcPYOBvX6o55Enn2fMVu9wbY2gMIh3/ByH9A/vMLQaBb8lQz0acUf4raOeuw8uue8onZUHhgX+JO98MtQBE9dtmRqsbqVfj53Dgnm9PsrwWI9m1Dd5d8hkja7BA9YBma6cd/4BtPLuoAFL0hjnFqC3123EG3LqbmHHoCjbCj1lUows4TSSH33vUclyIyOwvwAczNsEm+ZM3kLquaXry7igwNAdIlTGaHFthtP5nsLTkphdDvDoeRbsv1mLDiwCrjOdtHfmLRa0e83tZ9jqagmx6M99zVIgAEkLKreHhjMrUk4dqnIaM9KJCGmXPJt+H8vzPqAA/awJj1HXcLqQ495/BjziOALRIKXlMdHH7iq+xdpaO2cOmByq2D/HzbeVWUOv/t7q0rJDmV4hQw0pnb3kVbkbPL1JIwU+9bsazPZGH3/wi7b29sPp55nCl75iiqDxANPQBseg+N/Q+IMOnpaN3LXPtFKjG10zRyVkzVOpTOi0sy0ECyOAKlu0JVs4A2wHYUPjXXrtkQKg3cmUJRw+nJnKYtPPtoeIt/nEPdQpUZ0BUMixGEQMEfZT8tNfbyioJgp9VvxEvr+NqdsVRhvz4C3StmGh49EvdAXC4qhYUTeBsoGDrhAND8tQ+M+Q9RgdL50qa22bCX/iOW0XJAEgyPaBJ8vRkLnjVVERwJuD+HqOQFCNmSxQXrw2M5OdbP6MsWpmSQfiTUoHq6vBTXinfJ1KKmfSy14bmTsZWPu/KYmqambp81ztyTVJl0LNxTIPO8aX20He0MVI9Xm7/RgGCakRECspx4onApV4MCrwqaW5cfqTS2cyx5ajcQAdNskZYqrLc5dl6ZHmJRb+8TxJ5P2u+Hej5Gn0jJg9YSwDT0Rt/YxqNbKLmxwZZQWkx4tYkkrVEoecEBRV6oa+PFRWOZfo2bRvNebMALbp+2PZw+cy3aQtL3P0evImd0qhBnVAavF
+ Es0knce0
+ alkeLsZmyfmeQ3A5/VgAor5ZK+w97q1nscGcgBiJ+jjnve6j2pBtDS8Ko7m+jXxovAj9HSv4o2qHTwNgdx5XmGxy2n/jitkbRdAN7yXVEyRYe0M+LRMUhNOHRVRprzLfDsk2FoefnOr1G0WBNV5Qh3XEjWgmMc4KorAGDSwXhmMevYE8xeCCOW+6G5FAGOXcJ45f9iJnLHQm6VvR+ZEIzSlm3+E3p35A1pSvBwJvoYGpbxqea7t3e7AYCR7ez2IYZ2aAvNBCVgbIkPU/R3KH4rqvK4/JPsv9JQzqx69/tlDHVTkIW7vq3BHAoyRob2pN8e9uCKOiqdn0Oju2ij/B9YojNTOIpDyjhRwMkynW9BmSWoro2mmdpmACnSIyNImbmVACi8xnItyEVgbeo6gXwc1IIsA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,72 +128,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-SGksCgpUaGFua3MgZm9yIHRoZSBjb21tZW50cy4KCkZpcnN0LCB0aGUgZXhhY3QgZGlyZWN0IHBh
-cmVudC9jaGlsZCB0ZXN0IHNob3dlZCB0aGF0IGNhYzFkYjhjM2FhZAooIm1tOiBvcHRpbWl6ZSBt
-cHJvdGVjdCgpIGJ5IFBURSBiYXRjaGluZyIpIG1hZGUgdGhpcyB3b3JrbG9hZCAzOS43NyUgc2xv
-d2VyLgpBIHNlcGFyYXRlIG1hdGNoZWQgUGVkcm8gdjMgdGVzdCBkaWQgbm90IGhlbHA6IG9uIHY3
-LjEuMywgZnVsbC12MyB3YXMgNi4yMCUKc2xvd2VyIHRoYW4gdGhlIG1pZHBvaW50IG9mIHRoZSBu
-by12MyBjb250cm9scy4gSSBkbyBub3QgdHJlYXQgdGhhdCBzbWFsbApkaWZmZXJlbmNlIGFzIGEg
-c2VwYXJhdGUgcmVncmVzc2lvbi4KCkZvciBjb250ZXh0LCB0aGlzIHJlbWFpbnMgdGhlIHNhbWUg
-bmFycm93IHN5bnRoZXRpYyBtaWNyb2JlbmNobWFyazogYSA2NCBNaUIKc2hhcmVkIGFub255bW91
-cyBtYXBwaW5nLCBkaXJ0eSA0IEtpQiBiYXNlIHBhZ2VzIHdpdGggbm8gVEhQLCBhbmQgcmVwZWF0
-ZWQKZnVsbC1yYW5nZSBwcm90ZWN0LCByZXN0b3JlLCBhbmQgd3JpdGUtdG91Y2ggY3ljbGVzLgoK
-RXhhY3QtY29tbWl0IGRlY29tcG9zaXRpb24KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KCkkg
-cmFuIGEgbmluZS1wb2ludCwgZnJlc2gtYm9vdCBuZXN0ZWQgYWJsYXRpb24gYXJvdW5kIHRoZSBl
-eGFjdCBwYXJlbnQvY2hpbGQKcGFpciwgcmV0dXJuaW5nIHRocm91Z2ggbWF0Y2hlZCBjb250cm9s
-cyB0byBsaW1pdCB0aW1lIGRyaWZ0LiBJdCByZXByb2R1Y2VkIGEKMzYuNTElIGNoaWxkIHNsb3dk
-b3duLiBNZWFzdXJlZCBhcyBhIGZyYWN0aW9uIG9mIHRoYXQgZ2FwOgoKICBkaWFnbm9zdGljIGNo
-YW5nZSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZ2FwIHJlY292ZXJlZAog
-IHBhcmVudC1zdHlsZSBzaW5nbGUtUFRFIHVwZGF0ZS9mbHVzaCBwYXRoICAgICAgICAgICAgICAg
-ICAgICAgIDQzLjA2JQogIHNraXAgbm9ybWFsLXBhdGggYmF0Y2ggZGlzY292ZXJ5ICAgICAgICAg
-ICAgICAgICAgIG5vIG1lYXN1cmFibGUgZWZmZWN0CiAgYWRkaXRpb25hbGx5IHNraXAgdGhlIG5v
-cm1hbC1wYXRoIGZvbGlvIGxvb2t1cCAgICAgICAgICAgICAgICAgNDQuNDclCiAgYWxsIHRocmVl
-IGRpYWdub3N0aWMgY2hhbmdlcyBjb21iaW5lZCAgICAgICAgICAgICAgICAgICAgICAgICAgODcu
-MjklCgpUaGUgZmlyc3QgZGlhZ25vc3RpYyBrZXB0IHRoZSBjaGlsZCdzIGxvb2t1cCBhbmQgYmF0
-Y2ggZGlzY292ZXJ5IHVuY2hhbmdlZCwKcmVzdG9yaW5nIHRoZSBwYXJlbnQtc3R5bGUgdXBkYXRl
-L2ZsdXNoIHBhdGggb25seSB3aGVuIGRpc2NvdmVyeSByZXR1cm5lZCBvbmUKUFRFLiBJdCByZWNv
-dmVyZWQgNDMuMDYlIG9mIHRoZSBnYXAsIHBsYWNpbmcgYSBzdWJzdGFudGlhbCBjb3N0IGFmdGVy
-CmRpc2NvdmVyeSBpbiB0aGUgZ2VuZXJpYyBzaW5nbGUtUFRFIGhhbmRsaW5nLCB0aG91Z2ggbm90
-IGF0IGEgc3BlY2lmaWMKaW5zdHJ1Y3Rpb24uIEluIHRoZSBuZXN0ZWQgc2VxdWVuY2UsIHRoZSBp
-bnRlcm1lZGlhdGUgZGlzY292ZXJ5IGJ5cGFzcyBoYWQKbm8gbWVhc3VyYWJsZSBlZmZlY3Q7IGFk
-ZGl0aW9uYWxseSBza2lwcGluZyB0aGUgbm9ybWFsLXBhdGggZm9saW8gbG9va3VwCnJlY292ZXJl
-ZCBhbm90aGVyIDQ0LjQ3JSwgc28gbG9va3VwIGNvbnRyaWJ1dGVzIGEgc2ltaWxhcmx5IGxhcmdl
-IHNoYXJlLgpUaGVzZSBjb3N0cyBvY2N1ciBpbiBzZXF1ZW5jZSwgYW5kIGJvdGggdGhlIHByb3Rl
-Y3QgYW5kIHJlc3RvcmUgd2Fsa3MgcGF5CmJvdGguCgpUaGUgY29tYmluZWQgcHJvYmUgd2FzIHN0
-aWxsIDQuNjQlIHNsb3dlciB0aGFuIHRoZSBwYXJlbnQsIGxlYXZpbmcgMTIuNzElIG9mCnRoZSBv
-cmlnaW5hbCBnYXAgdW5leHBsYWluZWQuIEFsbCAxMzUgbWVhc3VyZWQgcHJvY2Vzc2VzIHBhc3Nl
-ZCB0aGUgc2VtYW50aWMKYW5kIDQgS2lCL25vLVRIUCBjaGVja3M7IHRoZSBtYXhpbXVtIENWIHdh
-cyAxLjU2JS4KCnY3LjEuMyBsb29rdXAgc2FmZXR5IGNoZWNrCi0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tCgpUaGUgZXhhY3Qgc2VxdWVuY2UgYWJvdmUgdXNlcyB0aGUgY2FjMWRiOGMzYWFkIGNo
-aWxkLCB3aGljaCBjYWxscwp2bV9ub3JtYWxfZm9saW8oKS4gVGhpcyBzZXBhcmF0ZSBjaGVjayB1
-c2VzIHVubW9kaWZpZWQgdjcuMS4zLCB3aGVyZSB0aGUKY29ycmVzcG9uZGluZyBwYXRoIGNhbGxz
-IHZtX25vcm1hbF9wYWdlKCkgZm9sbG93ZWQgYnkgcGFnZV9mb2xpbygpOyBpdHMKcGVyY2VudGFn
-ZXMgYXJlIG5vdCBwYXJ0IG9mIHRoZSBleGFjdC1jb21taXQgZGVjb21wb3NpdGlvbi4KCkZvciBh
-IHNoYXJlZCwgbm9uLU5VTUEgUFRFIHdpdGggcHRlX2JhdGNoX2hpbnQoKSA9PSAxLCBhIGRpYWdu
-b3N0aWMgdGhhdCBza2lwcwp0aGUgY3VycmVudCBwYWdlL2ZvbGlvIGxvb2t1cCBhbmQgYmF0Y2gg
-ZGlzY292ZXJ5IHdhcyAxNy4zNiUgZmFzdGVyIG9uIHRoZQo0IEtpQiB3b3JrbG9hZC4gQSBwYWly
-ZWQgdHJhY2UgcmVtb3ZlZCBleGFjdGx5IDIsMDQ4IHZtX25vcm1hbF9wYWdlKCkgY2FsbHMsCmJ1
-dCB0aGlzIGlzIG5vdCBhIHN0YW5kYWxvbmUgdGltaW5nIG9mIHRoYXQgZnVuY3Rpb24uCgpUaGUg
-c2FtZSBkaWFnbm9zdGljIHdhcyA2NS44MCUgc2xvd2VyIGZvciBhIHZlcmlmaWVkIHNoYXJlZCAy
-IE1pQiBmb2xpbyBtYXBwZWQKYnkgNTEyIFBURXMsIGJlY2F1c2Ugb24geDg2IHRoZSBoaW50IGlz
-IGFsc28gb25lIGFuZCB0aGUgZGlhZ25vc3RpYyBkaXNhYmxlcwpmb2xpbyBiYXRjaGluZy4KCkFs
-bCB0ZXN0cyB1c2VkIGZyZXNoIGJvb3RzIG9uIGFuIGk3LTEyNzAwS0Ygd2l0aCAzMiBHaUIgUkFN
-LiBXaXRoaW4gZWFjaApjb21wYXJpc29uLCBidWlsZHMgdXNlZCBtYXRjaGVkIGNvbmZpZ3MgYW5k
-IEdDQyAxNS4yLjAuIFRoZSBiZW5jaG1hcmsgdXNlZApQLWNvcmUgQ1BVIDIsIHBlcmZvcm1hbmNl
-IGdvdmVybm9yIGFuZCBFUFAsIFR1cmJvIG9mZiwgYW5kIHByZWVtcHQ9bm9uZS4KClRodXMsIHRo
-ZSBnZW5lcmljIHNpbmdsZS1QVEUgdXBkYXRlL2ZsdXNoIHBhdGggYW5kIHRoZSBsb29rdXAgYWNj
-b3VudCBmb3IKYWJvdXQgODclIG9mIHRoZSBleGFjdC1jb21taXQgZ2FwLiBUaGUgdjcuMS4zIGJ5
-cGFzcyBpcyB1bnNhZmUgZm9yIFBURS1tYXBwZWQKbGFyZ2UgZm9saW9zLCBzbyBJIGFtIG5vdCBw
-cm9wb3NpbmcgaXQgYXMgYSBmaXguCgpQZWRybyBkaWQgbm90IG9ic2VydmUgdGhlIHNhbWUgbG9v
-a3VwIGNvc3Qgb24gaGlzIGRlc2t0b3AuIFRoYXQgZGlmZmVyZW5jZQptYXkgYmUgbWFjaGluZS1z
-cGVjaWZpYywgYnV0IEkgaGF2ZSBub3QgdGVzdGVkIGVub3VnaCBzeXN0ZW1zIHRvIGVzdGFibGlz
-aAp3aHkuIEkgaGF2ZSBhbHNvIG5vdCBtZWFzdXJlZCBhcHBsaWNhdGlvbi1sZXZlbCBpbXBhY3Qu
-CgpDb21wYWN0IGV2aWRlbmNlIGJ1bmRsZToKCiAgaHR0cHM6Ly9naXRodWIuY29tL2xjZjAzOTkv
-bGludXgtcmVncmVzc2lvbi1ldmlkZW5jZS90cmVlL2VhM2VjMmQ0MTcwMjUwMjMzNmI5ODU0Yjlk
-YTc4YzQzODQwYjg2ZTgvbXByb3RlY3Qtc2hhcmVkLWRpcnR5LXRvZ2dsZS9iYXJlLW1ldGFsCgpT
-dGFuZGFsb25lIHJlcHJvZHVjZXJzOgoKICBodHRwczovL2dpdGh1Yi5jb20vbGNmMDM5OS9saW51
-eC1yZWdyZXNzaW9uLWV2aWRlbmNlL3RyZWUvZWEzZWMyZDQxNzAyNTAyMzM2Yjk4NTRiOWRhNzhj
-NDM4NDBiODZlOC9tcHJvdGVjdC1zaGFyZWQtZGlydHktdG9nZ2xlL3JlcHJvZHVjZXIKClRoYW5r
-cywKQ2hlbmdmZW5nCgo=
+On Thu, Jul 23, 2026 at 01:07:04PM -0400, Johannes Weiner wrote:
+> On Thu, Jul 23, 2026 at 11:58:27AM -0400, Gregory Price wrote:
+> > 
+> > I lean towards Johannes' stance here that consistency is better, and if
+> > KVM has a known-poor interaction with numa balancing, maybe KVM should
+> > simply set a default policy (when none are present) to avoid this.
+> > 
+> > That said, this is painful because MPOL_F_MOF / MPOL_F_MORON are already
+> > a silently inherited policy on boot (added during init).  This will be
+> > confusing for users.
+> > 
+> > This is not documented anywhere.  Maybe this change should come with a
+> > docs addition that says the default global policy is ACTUALLY:
+> > 
+> >    MPOL_LOCAL + (MPOL_F_MOF | MPOL_F_MORON)
+> > 
+> > Instead of just MPOL_LOCAL and letting that silent implementation
+> > detail bite people.
+> 
+> Hm, where do you see "Instead of just MPOL_LOCAL"?
+> 
 
+MPOL_LOCAL is effectively the default, that's what most people expect.
+
+> Documentation/filesystems/tmpfs.rst says it defaults to "default" and
+> points me to set_mempolicy(2). That in turn in general makes little
+> mention of numa balancing and doesn't mention MPOL_F_MOF/MPOL_F_MORON.
+> In fact these are documented as internal flags.
+> 
+
+They're "internal" and generated by passing MPOL_F_NUMA_BALANCING...
+which is basically shorthand for "use (F_MOF | F_MORON)".  There is
+no other user of MPOL_F_NUMA_BALANCING.
+
+The internal/external state of uapi/linux/mempolicy.h is frustrating
+to say the last.
+
+
+> The numa_balancing entry in
+> Documentation/admin-guide/sysctl/kernel.rst however DOES say plainly
+> that enabling this feature will sample and migrate mapped process
+> memory to where it's used, and that this has a performance penalty.
+> 
+> It seems there is a general lack of documented interactions between
+> user-requested policies and the system-wide numa-balancing behavior.
+
+Agreed, that's basically what i'm pointing out.
+
+This is what most think they're getting:
+
+    static struct mempolicy default_policy = {
+        .refcnt = ATOMIC_INIT(1), /* never free it */
+        .mode = MPOL_LOCAL,
+    };
+
+This is what they're actually getting:
+
+    struct mempolicy *get_task_policy(struct task_struct *p)
+    {
+        ...
+                pol = &preferred_node_policy[node];
+                /* preferred_node_policy is not initialised early in boot */
+                if (pol->mode)
+                        return pol;
+    }
+
+    void __init numa_policy_init(void)
+    {
+    ...
+            for_each_node(nid) {
+                preferred_node_policy[nid] = (struct mempolicy) {
+                    .refcnt = ATOMIC_INIT(1),
+                    .mode = MPOL_PREFERRED,
+                    .flags = MPOL_F_MOF | MPOL_F_MORON,
+                    .nodes = nodemask_of_node(nid),
+            };
+        }
+    }
+
+So the default global mempolicy is effectively:
+
+    (MPOL_PREFERRED | (MPOL_F_MOF | MPOL_F_MORON)
+
+which is just MPOL_F_NUMA_BALANCING without MPOL_F_NUMA_BALANCING.
+
+The user can't actually see that - because the MOF/MORON flags get
+stripped out when it's queried (because they're internal only).
+
+Maybe we should just set MPOL_F_NUMA_BALANCING in the default/preferred
+policies and document that the global preferred policy default-enables
+MPOL_F_NUMA_BALANCING - and that if a user (KVM) doesn't want to be
+affected by numa balancing it needs to set a policy to disable it.
+
+~Gregory
 
