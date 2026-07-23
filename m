@@ -4,80 +4,199 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F4CAC531F7
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 16:58:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBE50C531F7
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 17:03:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3DFDE6B007B; Thu, 23 Jul 2026 12:58:53 -0400 (EDT)
+	id 965D36B0088; Thu, 23 Jul 2026 13:03:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B7476B0088; Thu, 23 Jul 2026 12:58:53 -0400 (EDT)
+	id 8EFAA6B008A; Thu, 23 Jul 2026 13:03:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F49F6B008A; Thu, 23 Jul 2026 12:58:53 -0400 (EDT)
+	id 769806B008C; Thu, 23 Jul 2026 13:03:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 065056B007B
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 12:58:52 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 840D11C09E2
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 16:58:52 +0000 (UTC)
-X-FDA: 85020650904.19.FE1CDC0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id F3DFD160003
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 16:58:50 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784825931;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 378486B0088
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 13:03:07 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B75A5120555
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 17:03:06 +0000 (UTC)
+X-FDA: 85020661572.26.D3BF8A6
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013000.outbound.protection.outlook.com [52.101.72.0])
+	by imf26.hostedemail.com (Postfix) with ESMTP id BF513140009
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 17:03:01 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=l7Pj1zdg;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=l7Pj1zdg;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2");
+	spf=pass (imf26.hostedemail.com: domain of Usama.Anjum@arm.com designates 52.101.72.0 as permitted sender) smtp.mailfrom=Usama.Anjum@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784826183;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0rosnFueFk5L+rbQoTyhq77sYbaq4m804yU4PWOXAks=;
-	b=p9Ug0iEl4wkETlbY7CtXrO9LWCH9f7+cVmzZ/0LYqY94r0iXXzmEqLKmzuzvxYq4cBV53l
-	yU6FomWv0bpWopf+Yev0JSulKg88UOEWQSn4SmAPTGkbZsHO+0MilbHhNOAsoWZp9wjB1t
-	oZC3pyzR0SCwxgR8eTDVJwV+UkiPpSg=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784825931;
-	b=zFmReL+GCTqw2lEVHovRRmpyrIyYvV0tEP8pp12DOwnbD2m9moo0Vr99bkBdOPuuTwgdzk
-	abf+PRDg2DDtFZn+vRecN3ErWy5MXQWoSb6FfpKYVponLrFhOkf6IXlMUECNkKfJya/2iC
-	2G5a8S907HAhtM3t5RxQ6Lwl+wwD2mo=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 08CA141495;
-	Thu, 23 Jul 2026 16:58:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DD0A1F000E9;
-	Thu, 23 Jul 2026 16:58:46 +0000 (UTC)
-Date: Thu, 23 Jul 2026 17:58:31 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Nirmoy Das <nirmoyd@nvidia.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	"Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Shakeel Butt <shakeel.butt@linux.dev>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [RFC PATCH] mm: use precise current RSS for high-water accounting
-Message-ID: <amJHS7EV4UJMqFVT@lucifer>
-References: <20260723134158.1473841-1-nirmoyd@nvidia.com>
- <bd3facf5-cc4e-4fa3-95cf-0f4aa926ae23@efficios.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=0RzewoZLDE2rAlD15CzIQzW0NEiPr58IQ8Fi4keIROY=;
+	b=Ql1P35LCDoTUCOm1YwyIJZZD1V3RkdtwOSKbcgFUdn5f2uK2opRBwMs9r7grrpOSVGeP1q
+	j8M36MFFFLwihrxSSluWV8/QQ/XWzSAfW6+lZMGk1IGL1FegEPxKcdw3/ZNVGW2xUtvrHW
+	0iLLSnfujPpZgkOUT7DiYAnOktgN9l0=
+ARC-Authentication-Results: i=3;
+	imf26.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=l7Pj1zdg;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=l7Pj1zdg;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2");
+	spf=pass (imf26.hostedemail.com: domain of Usama.Anjum@arm.com designates 52.101.72.0 as permitted sender) smtp.mailfrom=Usama.Anjum@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=3; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784826183;
+	b=zA7PvCwK2CMhsom10gtKsVbGVLXRS8bfXHe8awLDjtuMz7Qt67YVWhBSGm3DV/RFrmNtFV
+	5IJAARU/Lmvh94OFSZV8MsWKNsFp3hs5AfPkAdyaa7pg9fnZInOo+T6Iwu94ZV5hOoulsv
+	sCm6GoUyOlkZuRFbsDYgO8zObftn7m0=
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=SSMgymGLfw8ekxZfNkpFlNrJtBwGctc0MkmgIge4PJuzSBaM3+EwCKz4yV85SPAtrY0sGxad3djG5hqf/vmRqLuhUcqMKuxLJn0JKaOcgiaYKQAJub+fL5inkjL3GUz9sWr7VPVTn2yivjTG8JVkkqLpBvma4PKgNY482TEFWQhNW+FUbe7ektLTpThWzskkXuDQm3PMqXlklFePUC/4pSVFHom+IsAHN/NlEBnXvagN3TFR3VR7A2GkDth+4+7JyDIPu5UDmqGKxG7saVH8KleUeo7UpOolgIZKU7XuobnOb8/QEvHuTcHiJndM/eL+c2Gu+A9NqZ/Jw8Jggdq6uQ==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0RzewoZLDE2rAlD15CzIQzW0NEiPr58IQ8Fi4keIROY=;
+ b=CLeQO3RDmexaDVCDtzIjMiXtOupzUjr6hFfb2pva5ggPMYZJhs5HOGal7e1SkYNTTFtiB1SZ0UbBO6HVvIe5D/E9u0JCU5BEtlPm/tkpmNwO0yrN4CTO+2qLzcsBfVlM+3KhSN7rZKwrFAr90yb2YYL9CkHYuHIKe9+jRL8SLB5I3kyRCEu73lQjH6l19wNtrKUC51AB2b5MNtV/7HsP0sFZt8hl5BwtMJoFSj8PgH1BhVTRePtAkonRwS+/QONHarzx2m+k41fQt4Ro4wsLGSKVDhIc3yHTcEYc1129tIw9z/dpmAA09LVI32pFwSpzYmmhcIn9x4x8HqFuVoFsow==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 4.158.2.129) smtp.rcpttodomain=kernel.org smtp.mailfrom=arm.com; dmarc=pass
+ (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
+ (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
+ spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
+ dmarc=[1,1,header.from=arm.com])
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0RzewoZLDE2rAlD15CzIQzW0NEiPr58IQ8Fi4keIROY=;
+ b=l7Pj1zdgY84smYMC3AnEJwcDVKYtFlO+zmISQi9PWBB4LivQQRJ0dAN8zcdgyHsf+R2SU1KifjIiujjcWi0ZK615b656qtIbHy7PtLhARk1Cs5iN7guz7FZv7y2Tf/DsYp6/6d1Vxd3FegI39Sttf3QGLKke05TJr0Czp5iCtMs=
+Received: from AS9PR06CA0060.eurprd06.prod.outlook.com (2603:10a6:20b:463::26)
+ by AMDPR08MB11508.eurprd08.prod.outlook.com (2603:10a6:20b:719::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.11; Thu, 23 Jul
+ 2026 17:02:54 +0000
+Received: from AM3PEPF0000A79A.eurprd04.prod.outlook.com
+ (2603:10a6:20b:463:cafe::37) by AS9PR06CA0060.outlook.office365.com
+ (2603:10a6:20b:463::26) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.245.11 via Frontend Transport; Thu,
+ 23 Jul 2026 17:02:54 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
+ smtp.mailfrom=arm.com; dkim=pass (signature was verified)
+ header.d=arm.com;dmarc=pass action=none header.from=arm.com;
+Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
+ 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
+ client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
+Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
+ AM3PEPF0000A79A.mail.protection.outlook.com (10.167.16.105) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.270.5
+ via Frontend Transport; Thu, 23 Jul 2026 17:02:53 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=U/A3n3hkhjq4QFpLYjDllwPBcRmmrhnI67RzIBOwUyHwUXXL2BRTZWYL8MSyqRLNqffwwGx5hSmz6tAobVExOoYetuZWOAP9mMJFhmsocw5ACUDrnQDZ2ke/p99MBroWVaUUXQ3D7he2esYbaHQooo96flB4whwP58LF3XWh6UgvnnHRTrKBtl5hhyl5bMJmNYQg3J0mCwI3S3AMLEFtlmoJeJmBectnm6+H+SNGeHUi24pwYCWs3YTx9HV6fN1wPaE4Vw5J2K3sXd5g6MvEA2LaikoaSzWNq7Y20iCLy8jX61YEE+cy3LIVVTPG2BknSGDv/p8vZqRs72gTQ6PJTQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0RzewoZLDE2rAlD15CzIQzW0NEiPr58IQ8Fi4keIROY=;
+ b=MQuxA6wapgtqpLLhFAY/3oSuyhBA/VTP2Mb86QBnCtUVIuDHoshtoVqMk4H/U1v9VxXn5sgGFUSIuiiGGw7jEaQ8mAUF/5jyByMieZfMP7QA9kVkvU5VGeiI3BBOz+SqI1feqAqa4qgOqo1V7a6/YcE2PkUpKhXsZmLSmAPM8LmxSwjx37mOhFz/Q5cfwEsWGGvKjTVwRbsgmtn148AYiLew2PRy3yqwvD2g1uOE78l8/n627FyIetnc9PBKOODA/iNPPLZSQJ8g6SqLEiAEXTcuVesUZOGj33gKyDHwvS+q2Uy72N547f2J4SLGfpeHCZjrbiC9kmZe7I4luOm4RQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
+ header.d=arm.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0RzewoZLDE2rAlD15CzIQzW0NEiPr58IQ8Fi4keIROY=;
+ b=l7Pj1zdgY84smYMC3AnEJwcDVKYtFlO+zmISQi9PWBB4LivQQRJ0dAN8zcdgyHsf+R2SU1KifjIiujjcWi0ZK615b656qtIbHy7PtLhARk1Cs5iN7guz7FZv7y2Tf/DsYp6/6d1Vxd3FegI39Sttf3QGLKke05TJr0Czp5iCtMs=
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=arm.com;
+Received: from VI1PR08MB3421.eurprd08.prod.outlook.com (2603:10a6:803:80::16)
+ by PAWPR08MB10973.eurprd08.prod.outlook.com (2603:10a6:102:468::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Thu, 23 Jul
+ 2026 17:01:51 +0000
+Received: from VI1PR08MB3421.eurprd08.prod.outlook.com
+ ([fe80::e079:6bd:fbe0:89b4]) by VI1PR08MB3421.eurprd08.prod.outlook.com
+ ([fe80::e079:6bd:fbe0:89b4%3]) with mapi id 15.21.0245.009; Thu, 23 Jul 2026
+ 17:01:51 +0000
+Message-ID: <47b4e62e-b001-465c-9c3b-ea0636925387@arm.com>
+Date: Thu, 23 Jul 2026 18:01:49 +0100
+User-Agent: Mozilla Thunderbird
+Cc: usama.anjum@arm.com, Zi Yan <ziy@nvidia.com>,
+ Pedro Falcato <pfalcato@suse.de>, Ryan Roberts <ryan.roberts@arm.com>,
+ Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Samuel Holland <samuel.holland@sifive.com>, linux-s390@vger.kernel.org
+Subject: Re: mm: opaque hardware page-table entry handles
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Alexander Gordeev <agordeev@linux.ibm.com>
+References: <74182e50-b54f-4d2d-a27f-3a59a538d6bc@arm.com>
+ <31d36023-d728-4eee-90f8-158c7066f565@kernel.org>
+ <e22407d8-4509-4a53-9ba4-491b9d5c5ef7@arm.com>
+ <4bfeb697-9c1f-4316-96bb-9bfd66f959df@kernel.org>
+ <6110202c-057b-4701-8c04-1a76ee7bb9ab@arm.com>
+ <20260721124057.2820903Adf-agordeev@linux.ibm.com>
+ <3c21586c-0ffe-4ebc-97f1-803e8acfc5c1@arm.com>
+ <716f73c1-41cc-48a5-b0e1-a47403a30da1@kernel.org>
+Content-Language: en-US
+From: Muhammad Usama Anjum <usama.anjum@arm.com>
+In-Reply-To: <716f73c1-41cc-48a5-b0e1-a47403a30da1@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO3P123CA0032.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:388::8) To VI1PR08MB3421.eurprd08.prod.outlook.com
+ (2603:10a6:803:80::16)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bd3facf5-cc4e-4fa3-95cf-0f4aa926ae23@efficios.com>
-X-Rspamd-Queue-Id: F3DFD160003
+X-MS-TrafficTypeDiagnostic:
+	VI1PR08MB3421:EE_|PAWPR08MB10973:EE_|AM3PEPF0000A79A:EE_|AMDPR08MB11508:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3fe14330-8f29-4ebb-25a2-08dee8dc3c78
+x-checkrecipientrouted: true
+NoDisclaimer: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted:
+ BCL:0;ARA:13230040|1800799024|366016|7416014|376014|23010399003|18002099003|22082099003|4143699003|11063799006|10067099003|56012099006;
+X-Microsoft-Antispam-Message-Info-Original:
+ Cawm+FfjxnM7wLmzkgmEVFXFTZY0YMsJgthdJttvTxqwDA5xuCycNi6R0G7KFF5dHthH9JmLeFJswuMztpPii8MhndUDDmS9lmi6MKJSr5P4q7VLfzfgonjnU7JVKt+mAqTXSepIFq3Bnf42ltnM2MMDqVT9ov96aTF84di34SiCvteu80UXn4Uk4oXPq4tUvBbeW4GOOZufJhZDpY9rMt2K8kEWnsdhIvb5XplqAaC1f2o2ucUr1YO1OnCVSSWgFLqJ21XCGlZRW74mjH64Dzlxt8a33yc1DxhoPacy6vhDDwRea8DxgBwUJR2HqTe4XuuP6S5t6PBTZrrKjI2UKuxxs2/3Ia1j8IKEiiWPVv8AZA13AnY5CorVmQlPaFy2E7Vhacp3C8khoeMySqqO6ThPU4EqCn9KJ9+/w0hxojk5wU+8dLxsj2IiA4O/Y/ASjQ3yVBYfi0AwFCzKUvxa1bCluGnNlkW3JvGp2GTVSW8AzSK4N7J6COyK79tYOMF0uKRL8N/QYOFleIL9Tp/l9L60JrQsrkfTskSVyv7LlAkCayDHgeokFrQsCtO8eXyBblMjSnmQHfeJkdlfOkfYT/BbXusH/k/VDktrw79ZwRBpp55i6VxWZnqNlrLYkf01hnoiq73hoJWAvFgF03nNUHithYsAWt75cv4BgxsMa/Y=
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR08MB3421.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(23010399003)(18002099003)(22082099003)(4143699003)(11063799006)(10067099003)(56012099006);DIR:OUT;SFP:1101;
+X-Exchange-RoutingPolicyChecked:
+ gQh8vBYgSPdVTncSOL3f6FF4kgNP/WGQsGezgKIawLZu8+5MJcyP6iQdEahY5QBUIru/pc3+DvVGlVx9e0YrYAicoYnhh6FblZcQ75F9Qje+JulMoZfX16SQU6+EFajThApylUp+wqUmgf/9t5g8292JVGYOISy+1rhiI9e80WhEeWirQNuXNlOvY3mF01QmByxRbpcXryJAfGsorpfq6AG9OxUK8cuTwF5zim0WbFGDhJmJJak10wNNpy8OD0R/kFEHd1tOe3Ozeu/FOpFQEeOo2MJtN4Fh1t/01FX5XJ3uUWZYkwdUt4ZjuhIt9osuLj39uyTZp5RAcDEmal3ZHw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR08MB10973
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ AM3PEPF0000A79A.eurprd04.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	7160bd6c-6af5-4e81-3b22-08dee8dc1703
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|36860700016|7416014|14060799003|35042699022|82310400026|376014|1800799024|4143699003|56012099006|11063799006|10067099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	HCQMKbyDfOmNIiKHLzXGPrsIXJpb1dVgcal8fl7qnCm1qqO8wom0SQmMYG63eLrIj/L/jILL4U/jaURe9VNelfI7lMw0do4OUX2ODenR/KUgH/vM4uW/6qEhhyXxox/KEvCG6enP65R5AJWSvXrySkWMnstN2hiQUhw3IRdlRk0ZJTx7OaOyROftjfvY1pYCl8WsfwTxGga/K1GaS/6y0V+ACRDZFLUYEW+UPwa5A8jmuVEisWCPXjt5G1bgJ7bQAjllAgRzMl6avrPWLBbM8IIoZ6XFlns2HqUfctQA4pZUJEfzVz+QU0TYJbn3DWHgWOaTVX5RBl6PG/AmuF3EVj/VNJ+5zJnnL4CCCDZoiFAAoyx9AlPa2nDqK0uPZR79Xgm/TuxBTKnf9GhcExuB4FvMM5BpC0YKIMuxZiyT9yjUapDMzJxJfPF5O7nZftdLq9xd/1LQNkT4pg10gXCDHaO2EfJ+FEfYiKYI2INji9il0gepSH1suuiiXTVDhNkbGI/TxpehG7AeXL6yBzo3J/9Sey1VMXswcvAvl92nPSq8fYrXGgfvy/jJqvGeNUN0/9BVyo3Z2CNSgchc7H0yacvw4/rZ5ecDvbW+0jGQjElJ3SwLeirEqJMP8e5mCfsBeyDv6ZBH5xEfIjzizevY2gqbjxQ2jFU88TOpzAFlSbRxGVAhTD0XmlLrUfnqMeCjUBuX3BiG1lxaE3FveyqcKA==
+X-Forefront-Antispam-Report:
+	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(36860700016)(7416014)(14060799003)(35042699022)(82310400026)(376014)(1800799024)(4143699003)(56012099006)(11063799006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	EfROl10OGV8zCSeqHdPpYq3ow2lVeSGecm/impmA7wzt+LPtapgiruEXBa8tVCWtQa7Rxvu6FZuP28hnoyDYAyU9J/b+0Ulp1UhgKRCjm52S3QtpNcSJ6w4MyLzSI+pQ64UIbarpM2FPPozLn+dpU+qVEdz+0Ze1Xfb8dvYamBXhL8xCtgmxwKC6K1vWrrR7jnYiYh1Zd8sIlcBFGBR7o0j8Q24AybgkE8QGtFpRik5NpH70iC8M38a1QHdMNcKUYzWxU1U2wy1Nshdb9zPdF6+OdteHE/I+rO5lxQ9e0v79YnNt4VDPGQRB/nsiMkabJB3WlspwmVBM+QdI65XoRrjsDQ0lU/XOOujpa5saJE2rKarEyT0/hOWprLRU7Tap4h/vW8+p0k7MHmGfWpdpwcm+0PuskK1kiKr8XFbGnxu2RDHKmkpeCqKxXVva+M40
+X-OriginatorOrg: arm.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2026 17:02:53.7252
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3fe14330-8f29-4ebb-25a2-08dee8dc3c78
+X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AM3PEPF0000A79A.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AMDPR08MB11508
 X-Rspam-User: 
-X-Stat-Signature: 9cqu68bt9y3nm3p3fjd6uw63oi8chr57
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1784825930-567207
-X-HE-Meta: U2FsdGVkX19azfkBUoGuVIfETWdW4D95/l2TMf1+ZcxF4hzWRAmV1KlaxezujTrX/8VB9DipYoIaPouGeqLr+DNE5keEuLQuK9ubST4oZ+CRAaPLN7Rf2r6qtwF59cq3ZpcPBbVm73UwJf73PNN7uRiornsPDAbLqJpml7HP2/IXr8/S+ZmV3B+NZtKYZIZAjyRkFzTjHnZlpCWS8fjRnyamsjoEuapbPVbQkFN6jnQcGRgCqI7Jw3Ic+CY/HcSCtls8nDqPV5pNaH8ElxC8djPokBC2VeqezP9cAEmYyrtrQBb+YTr0Vg8qakAOSY3S368Y8KwFISzNdNIMxK0AiPOmwu0im53BPFffmFotpm+hQzOtUQlV1ve567uOiiMkZgy1b2BFVwyK6aBT4rHmr6ENEBBTiY6YneIq1qm10tCICw1KBr6+OqMM0bP8eaR5KRAsOjv2/DvH6Mz5OWhAQu3zDBIddcyHbnLK13yKLv94nqUY/pMOSGjAcQ+dEtibp+jZfORKQzD2NDip7LERYIFlAwlh+oHLt/C4NKWp9XIY3iU/w4Ej1J74ApDPU8ECHIMwI5O4ABRsnJ2t93J8gZmbfS64lXOmhcQQ2Hr+ByMAofWFEOZOI53Z6PeUnLukLx16W7YOqOsDFt9s5vPt/qELsY990b2kTcOs7JKKoo/YVkj4wXIr0cx1mtb0YwrVNrHZBcuEi4SSh8l+QePYmTX7Bng0sjcK94vSrC1JTUu++UTfhPFYSi7Aa0Q0C2gUuGA0TYA9fPTQJa/xOmur6O0AeP4mFZZofLBarUt9EQtc7LWK0Hi1CuHZw6OBOiBx6tGInZkKyhKYoDemnb66H5vCTUzM8QH2zBboQ5RRfNSV9BgPVktIuGuS6gHMKpOZ+OE4dIqOmv+oRlv+ENuFG8XmU3rFHwjvjtsAOUGnd1zMQJjIsJg66mTiCu5Ndjtay+Mrquamzr8kl6Dd4MZ
- sS2x7US/
- Duo0Ae9CmDlEbYGQbttno4qhmvDYC3/0t3kJnFk8jB7tM/FJ/cckHWRUOn5uWmRpXsMsoxH4FjoLTjjmf+93p3jUzTokLxw7wSyfsL0d8m2PQq9CDMpnAQJCtIcZclCFf4NjMJwTFBm2CLElGVuIvBPIS/VC4pvWnaE2Jv0daN2/kJOVAFXKtp+BSw227W827wDYliZzenyrrFLu/PS8q74pBV+giuu2MNmo+
+X-Rspamd-Queue-Id: BF513140009
+X-Rspamd-Server: rspam01
+X-Stat-Signature: hewhyzo79fdfpa3c5qsx6h3dwenrrfyt
+X-HE-Tag: 1784826181-926614
+X-HE-Meta: U2FsdGVkX18505Gchs5BXDg5lDjzfkUw/EmJ/091GPWAplDxeO61eNVTZ+ZDhgKt5SV/ZTEfUU90+k1Zu+3OdVPqaGaC6UScOn+ZE6mk42jSfECl0HHO1CMrP3A6I1fhXLSUv1nHBSaoltlbrAbfi+D3MKdVMFz36xHxQ5P16QkzieOBOnbe9Ihgoy1Fy3OGqUENsGHlJmakirRDTNenzLZWhnX29OSPECJBatt6s0qMZ7CvA3oht2e2ReSTSgxjirhoASyeHsjjQZXJlY0jDZc5wlPPs5nbbRylvlz7nLrJ7hONPIc9lgzV70H0iczGlasOVr6X1RPU3D/ixC0whGmLVOoquqRb26KdznmIoOnpj05/7Hs7eulEYNJIIRNN6gEFxMXtrVX4h4KHc0CtrnT3POVeXLeMfVBd43dLv0VwLbWuld5oXw4N2ggz8qRQWC+0pNrjUzPeO2mF7cM7iTplizUPOFYf4WgDafq+sa2CGGEL8vMVnO/KmdSxSKP7KatXPxrR/2JC57UJkO2Z2WYIy7+6sdBnK7jOfkqyCjlFY1g2okLfQ9YDUhOzR0ldYq3ObVxh701XhsUlsFONAO3MoDCy8xyv1H+UgHT/A9V9fnbndTM0SNeH3YZsXrBtlBPP5/VadqxjTEvJa7lLLeuGlHJoB8cFDNeuY7Ot8UbiZgMe2tVK39zj6hAQh8OnLE4WsikTd/72PPe37pdF0CIoEZ2g4iWbodZujwqOGLsdn+7uK1MEglGwPBTYdpikL/TrY9uACwjOk5BVP4pBWNCXXTIkmPHnp1PYcnS/3MaiIGifC4x2M9Jq6kFGQaTaEbG4JCDBrEoO2sGkr/X7umxkW96mV9h9vWF82T2qApWB1RnAc0YJN6KufmZalN1zX+JoI8G1rx+cTMDHf0TBfwiuHtAb0KahKAzCMKgeDnC7IXn6gDfabYF2NUgTidHbNjEsfQ+/nzrB2Pka81l
+ RFbz/lIe
+ 81INLT/ahCA7T5L9IVumgUIQSbgacpVQY9YyL9/MzelR2LDClCq1yrh7qmXdt5PflnKZbTdl2Q+oDpUf1ggkJSxFX1DgsS4MbmHw844xTW7dLAjCT72P9ZvBe/EvU7XzNChXKDaZgJ/1lEVyWczEsbFyxlrxGQRJ0+bBN6KkQnVV5M2nsWaQjxCg/SqFgi4w39+UBkM5skHlXwLYVyaUX6uLf9ck6okTT56rvo6u/ijFbpaNoqJ9n4YSwEZQK6nNlCeUs7A5eQfd/eTKRztELbbTg4aCKrfa3dfEL9mCkCv3h2/JrFPAgH4GGGwEWLUMpMzxhqqcQOGuz+qrq00fz4dKg1fiYAW5xi4UYmXr4unQUO4j/DU1ShN2M3DndRmRDTBBOSqWBO3rSTy9/UxG4CzWGp5TQ15losdBimgGmIr2RpyexLHOmckntuh6Zg++/21DJtUosMVhJB2VVM9WS3I4b04nuIYyQGzvXeN8gSbkvlyMJH1St3NCzIISQnaZRMWRuKFkT8srgkFo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -85,22 +204,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 23, 2026 at 09:47:13AM -0400, Mathieu Desnoyers wrote:
-> Did you compare this with my hierarchical percpu counters series ?
->
-> https://lore.kernel.org/lkml/20260707131544.75906-1-mathieu.desnoyers@efficios.com/
->
-> I've sent it to Andrew two weeks ago but have not heard back from him
+On 23/07/2026 5:38 pm, David Hildenbrand (Arm) wrote:
+> 
+>> So after the conversion, it doesn't makes sense to keep STRICT_MM_TYPECHECKS
+>> around. Please correct me if I'm wrong.
+>>
+>> This brings another thing in my mind that in ideal world we would just
+>> turn STRICT_MM_TYPECHECKS on for all arches all the time. But the problem
+>> with it is that STRICT_MM_TYPECHECKS defines pte_t which will stay double
+>> meaning still. So we want sort of STRICT_MM_TYPECHECKS with different name
+>> and separate stack and hardware types.
+> 
+> I think STRICT_MM_TYPECHECKS is also to avoid catching when passing a pte_t into
+> a function that consumes a pmd_t, and vice versa.
+> 
+> STRICT_MM_TYPECHECKS makes the compiler generate worse code today, which is why
+> we don't enable it always.
+> 
+>>
+>>>
+>>> We would like to keep it, and I guess some other architectures too.
+>> David had summarized it well. We'll convert generic code to use hw_p*_t
+>> types which would be typedef to p*_t for those architectures which don't
+>> care about. But if an architecture wants to interpret these types
+>> differently or want to make sure the type is enforced and not directly
+>> dereferenced, they need to convert the arch code a well. But it can be
+>> done slowly.
+> 
+> I think what Alexander meant is: they want to keep STRICT_MM_TYPECHECKS (or
+> something that achieves something similar :) ). So as long as that keeps on
+> working, all good :)
+Thank you for clarifying.
 
-It'll need sign off from relevant maintainers, I suspect this is simply a
-product of your series being complicated and the incredibly overwhelming
-amount of review load at the moment :)
+It has been a month since I started this discussion. We don't have any
+disagreement on it. Should I proceed to post first part patch series considering
+most people must already have viewed these emails and are on-board with it?
 
-Do ping on the thread though if it's not been responded to within a week or
-two, we're usually (much) better than that in mm!
+-- 
+Thanks,
+Usama
 
-(I'm not sure I personally have the bandwidth to review, but thought I'd
-chime in to maybe help you bump it a bit :)
-
-Cheers, Lorenzo
 
