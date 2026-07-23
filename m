@@ -4,120 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F11C7C531CB
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 09:37:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8E23C531CB
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Jul 2026 09:45:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A1BA36B0162; Thu, 23 Jul 2026 05:37:56 -0400 (EDT)
+	id AEE476B0163; Thu, 23 Jul 2026 05:45:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9CC436B0163; Thu, 23 Jul 2026 05:37:56 -0400 (EDT)
+	id A9ED66B0165; Thu, 23 Jul 2026 05:45:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E20E6B0164; Thu, 23 Jul 2026 05:37:56 -0400 (EDT)
+	id 9B48D6B0166; Thu, 23 Jul 2026 05:45:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 601826B0162
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 05:37:56 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C5998403DC
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 09:37:55 +0000 (UTC)
-X-FDA: 85019539710.23.60C07C6
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	by imf26.hostedemail.com (Postfix) with ESMTP id E67D7140007
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 09:37:53 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=EEYQ03Dw;
-	spf=pass (imf26.hostedemail.com: domain of mkchauras@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=mkchauras@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5F68A6B0163
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 05:45:49 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D83308043E
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 09:45:48 +0000 (UTC)
+X-FDA: 85019559576.26.C58835F
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	by imf27.hostedemail.com (Postfix) with ESMTP id D261840007
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 09:45:46 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=bVIL28DJ;
+	spf=pass (imf27.hostedemail.com: domain of wqu@suse.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=wqu@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784799473;
+	s=arc-20220608; t=1784799947;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oPUgpb0frsnp1JVUTki2lmBuU8fGYW5E1pXwN+DTdbc=;
-	b=g+oIvhGd34lmm+21ryF4gSnyEFOpzMJKh+ufnk8A9Zmd4uxpoNaRDwd9/VoZe+zN8dYrDJ
-	jnngtGFOZx39onrLgGS0WuEJjlO+GnrTWdFMxrn2uEtEFYYk4xTkboCBwl/Lca0Y2Ta/OT
-	oIRtsILEUqa6wxjb+NRAL8WOKQvEe/0=
+	bh=9E0aa1/ah54xEiL5PB/XabSsE+mN8+R2RhZTY/b4HPs=;
+	b=R8XlH2UYlmUbFJrsNgYDfEs23It8A7yM2HP9ifzUrbBtnOVoLl52gYrzgxSoS750ChynBz
+	IPGqyqqavp1lqgjmPMCdQ9A/MKNlmCJ9cHnI3gpNaDI2oLVTcT6EgZDAa3rh2LYFjFO0Pr
+	HW3nVAumO45tDcYVamRh8zW7I6FYRtU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784799473;
-	b=qzfDyGKf3iO+u+o/o4PisOYYwOIl2E6Ms4XX4rPqs8GKJzK5CHQ/lkJK0vIgkUcMc6FFGJ
-	nRwijaUEfwRQ90te/6+ac0mlwF7WdqjEbhtGfgM2F3VChDmSXuGsZfhkXQKtQrsFwCwjZT
-	+FudBRGLdzZgE9uqHzjBShk4A1J/n8E=
+	t=1784799947;
+	b=LOv5pJs8BU+DpRc2DtYLZ3/sSYusbpeXDyDnVzGT9WTp2aUrzG2sBdRfG1OKu+yw5mT9bV
+	fZnO2+WHOZwDJRLqymAAWy1CDAQxwyYDDogJMh01bZpADtQdSEndLLreGRUuiiD7uDOzXB
+	/HekYQcG0dQbvL+rcDWWnI79kk6f9oE=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=EEYQ03Dw;
-	spf=pass (imf26.hostedemail.com: domain of mkchauras@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=mkchauras@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-8487214ad2bso587609b3a.1
-        for <linux-mm@kvack.org>; Thu, 23 Jul 2026 02:37:53 -0700 (PDT)
+	imf27.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=bVIL28DJ;
+	spf=pass (imf27.hostedemail.com: domain of wqu@suse.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=wqu@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4954aff6088so3541955e9.3
+        for <linux-mm@kvack.org>; Thu, 23 Jul 2026 02:45:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784799473; x=1785404273; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=oPUgpb0frsnp1JVUTki2lmBuU8fGYW5E1pXwN+DTdbc=;
-        b=EEYQ03Dw+MCXPLLR0rO/BXqiQdF/JyUCVTDscPvDQVv+Xc12Tf02oFKhNoXFw6vhxW
-         rREGQdD9B8DIvDOsGLmsAawm21S5l0L676j/ERV3C5+T2Yqc+E3QC0Jp1tDFaBDPoAeY
-         2ODz3m28JWyttK1TQ2gk31vkTESIUeyf8PpUARJp5RBSJ+fixzzXXEGhLLQoLu9z+i38
-         mhSHchC0wIt0Hz8gdXEtuzPgx6QSotI5HXGtwoTh5PQL6eR5p/QLud+eybge87J0+zsx
-         G8T49hhGpwBvar0stNjFRrMdlShhhVYvAEWP+kW6Cb7F9YJdlTlSmFn9thgmmTnnRKkH
-         eYwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784799473; x=1785404273;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=suse.com; s=google; t=1784799945; x=1785404745; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
+         :content-language:references:to:from:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=oPUgpb0frsnp1JVUTki2lmBuU8fGYW5E1pXwN+DTdbc=;
-        b=Jiqxezbr+OHsU1Tz426k1dSmlY5IjAKj3OG/OiPYBWbKewhKwc6t2UWldVk1iOmBz/
-         69l48qBWdzARGWr9wHE2KNivCIqMGPIrZTu+4s4bz6Pduobq1TPkff1avYf37j6lbhtD
-         IfSKr7S7tMi1Z8cO7cQXq1j2fWWsblGIUUeboQWtkXB8n6WY+qd1uhpjv/yHrAZBfOGd
-         1KVbHiCgt2A91zBdBFCPyHD91tHSSZGda8T1eee35XdPCqb1lv3eSbGcLd5jgCBQrKr0
-         AC5HxMee08KdI/cjeSZqqJgBJlh237LJOXGdO5VMaUvyJZ0QQrbnOn/sI3gw7KdmPxw/
-         OsfA==
-X-Forwarded-Encrypted: i=1; AHgh+RoEyVd4Iwpsly1RkEZBcI5s1Larub9ZM1v8S/PiwYYsMUF3i2zOaW7U2sUdBt8PUs+RzrVMVFUgcg==@kvack.org
-X-Gm-Message-State: AOJu0YwvhNTdc4iBhfFBsoCCkbCUC7fBPdRx7pIVTZZ8SGRt2aCIHXVD
-	fuTLpPq7gPRcfqJHjno8GXMnfRkLba8urkxwcmQuvYnBsUaXVDgyRKv9
-X-Gm-Gg: AR+sD10+MtWY48uUbk68z3ORWVOCxNGATSLEcpAb6nPyMRKtJEywSNoyygWEe11T7bn
-	vFlPDb9bQywG4H8N9Vr/+JyYfkp9jRWFP2Y4gJqGh842wpF9XknN99voTJ1ZPest7oI7+pFRoO0
-	HoU29EMAK5uyS4DqNghlNPmD6aUjE748aU1RgIuEpoW39bLx0mpG/XgdVEj7wZOMdWhKAJm7lz3
-	Snxnx5+rELMWshvlvF/RmQGP0JJi2calb3HCt+LL4FNyITieB/bHhhnrbvPOsPR5h5EiVvn5yrl
-	mDbXcMZoUkU21ogzEE5iOmgZ55rOAjKtgX3ytHgF9GgTlD1JXPZQT4ovKeD1J7/iWmJmdjoKdNw
-	a3qzQulITVgfTN9BXd6LfrJ7a3xm8cuFANHEq7owbZ1yl6iegutDhQPP+sojkuLBZe1NxjFZn76
-	VyBsxmgqIKKHwMVhrLvnplkrG6k3QmaYNTwmw+shusgbCzuKUo
-X-Received: by 2002:a05:6a00:409a:b0:847:8650:69cd with SMTP id d2e1a72fcca58-84e2bd889a5mr3035099b3a.33.1784799472690;
-        Thu, 23 Jul 2026 02:37:52 -0700 (PDT)
-Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com ([106.51.160.24])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e175d4133sm2738565b3a.50.2026.07.23.02.37.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jul 2026 02:37:51 -0700 (PDT)
-Date: Thu, 23 Jul 2026 15:07:42 +0530
-From: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
-To: Gou Hao <gouhao@uniontech.com>
-Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
-	chleroy@kernel.org, maarten.lankhorst@linux.intel.com, mripard@kernel.org, 
-	tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch, bharat@chelsio.com, 
-	jgg@ziepe.ca, leon@kernel.org, akpm@linux-foundation.org, ynorov@nvidia.com, 
-	namcao@linutronix.de, sshegde@linux.ibm.com, nilay@linux.ibm.com, kees@kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	linux-rdma@vger.kernel.org, linux-mm@kvack.org, gouhaojake@163.com, kernel@uniontech.com
-Subject: Re: [PATCH 1/4] powerpc/xive: remove dead NULL check after
- GFP_NOFAIL allocation
-Message-ID: <amHgkkMT4nrWLSka@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
-References: <20260723081813.176792-1-gouhao@uniontech.com>
- <20260723081813.176792-2-gouhao@uniontech.com>
+        bh=9E0aa1/ah54xEiL5PB/XabSsE+mN8+R2RhZTY/b4HPs=;
+        b=bVIL28DJH7oopcEcwIOoHeSy3llxtZ6LSetAXaVz72u15tNLJwn7ObiELD6M7WA7gk
+         X/3ROGeHjzEZCAr0OvANaOnpXZVUmmScY4x6hBf/x7sO5oUrpUbOei6akDnOuypLe1YF
+         tS7p1+ulw6CCQewIoxg+rCIA30AjSP8fPTDdcfZT50x97cJlkyADXSvP1wto8MzwM+j/
+         oJvdTmlTFfcahj6L/aFzmxhRPaw6p0jkNUnavrw4m3CSOvuJj0zZvwe6Q7rwACg0P2yq
+         Rw51SLyClwjBKrMgxdua2Q7B/tyZwlz4OPmQe66kXdQgH5THpeKURA9PrtUd3+jQ+JRA
+         hz4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784799945; x=1785404745;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
+         :content-language:references:to:from:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=9E0aa1/ah54xEiL5PB/XabSsE+mN8+R2RhZTY/b4HPs=;
+        b=LHD1Rh4avg4nx1OBcDL04FM4502jmJ2qGXKHq3kB8NWRHEQbDQZR3I9z9VESaRuyHO
+         gRbqFdOx5N+dNMbqaKwET+aRCRymhKYKaT8/CQbbHChVfz8gLB5VbSIvBpMUYZ+31QpB
+         hHHFrxtq9uM98ytVrvTZDVfEvvFEWQvNH8/G+ghXAm4wZ3Hn20ahFQRl3PZzMuobVsRK
+         vLu9eQBPNkKkO7B7X8iWqtLVsRtOHartHjp8oNdhLy5zr8NzFIn/lCRPO9y0W8JTQFla
+         K4b82vudfal0AhFXT3RmxQleMvHJtsukGS1neykpji8Cz8vKplTGehnx5XE0kpC99nLd
+         Ydiw==
+X-Forwarded-Encrypted: i=1; AHgh+Ro62o7/MVvhNEr4WhLOPf4IVc4BP0cn/099g2mDQ+iw0P0GEYzlNsr8KLvg5wQO5f94VLV1Em0S2Q==@kvack.org
+X-Gm-Message-State: AOJu0YyO2qnnbB+YOuyHYgNZrIwk7p60YQfEVxkLHicC4sdq7nrSiufm
+	hm0wYxormtWUSWM57Og0xcRs51Y4PZX10ypnRed7UpChsTlelP5dl97Ch0Ge1y0S1IM=
+X-Gm-Gg: AR+sD10nqNOYVhsckf9GOGNLQ0ZMhTasKXerwNjRjDXROKMmL++CMy+NMwv5utp+cXP
+	+KyzmUB1Wf3K/2xY/8HOxLHdEqtdDC+L6CnxId6QirMdh6tz4BerVwiZ/TxVTQamJBTc1OtNeph
+	48rbCcz9Mshvx49WhXvIqGV0jhbBOo3rZYwN4OPRzIZfCi1i1CH7F8abWxDltimEYdSuBdOcH5w
+	Tdm+SEoeJCFAvPer4CLfaxA03mQ7v9y+UbtklBDC/I+oYazLNogrr9uK/lW67ySPHYtUrTJCHlj
+	hd+fKriYN/4neT+L0cAZvYHmv4v1gkKsJIDQim4d+RC+22aTJelWFbH/s9ukXgF46F6EU5+GmkK
+	bb1/q+ZpohRpa3h4loHLqBn8V3G4C6hcoF6/zdOoc5/2waLzLeu5d477yjv0rA+PYiTa8ev4=
+X-Received: by 2002:a05:600c:2101:b0:495:5b4a:53c9 with SMTP id 5b1f17b1804b1-49573cff13bmr18544355e9.39.1784799945210;
+        Thu, 23 Jul 2026 02:45:45 -0700 (PDT)
+Received: from [172.16.0.229] ([159.196.52.54])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3147d47960dsm17274786eec.0.2026.07.23.02.45.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 23 Jul 2026 02:45:44 -0700 (PDT)
+Message-ID: <4beadb76-8500-452c-b84e-206c50456b8a@suse.com>
+Date: Thu, 23 Jul 2026 19:15:40 +0930
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260723081813.176792-2-gouhao@uniontech.com>
+User-Agent: Mozilla Thunderbird
+Subject: Help needed to address the dirty folio without fs notification
+ delimma (Re: [PATCH RFC v2] btrfs: disable direct reads to avoid dirty folios
+ without fs knowing)
+From: Qu Wenruo <wqu@suse.com>
+To: Christian Borntraeger <borntraeger@linux.ibm.com>,
+ linux-btrfs@vger.kernel.org,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>
+References: <c6dfdac9fc51c94183e51a861eec269185239660.1784787211.git.wqu@suse.com>
+ <9b1d42c4-2c3f-410e-aceb-92400b8bc24f@linux.ibm.com>
+ <f49478be-70fc-4cd6-a640-fb008c21c092@suse.com>
+Content-Language: en-US
+Autocrypt: addr=wqu@suse.com; keydata=
+ xsBNBFnVga8BCACyhFP3ExcTIuB73jDIBA/vSoYcTyysFQzPvez64TUSCv1SgXEByR7fju3o
+ 8RfaWuHCnkkea5luuTZMqfgTXrun2dqNVYDNOV6RIVrc4YuG20yhC1epnV55fJCThqij0MRL
+ 1NxPKXIlEdHvN0Kov3CtWA+R1iNN0RCeVun7rmOrrjBK573aWC5sgP7YsBOLK79H3tmUtz6b
+ 9Imuj0ZyEsa76Xg9PX9Hn2myKj1hfWGS+5og9Va4hrwQC8ipjXik6NKR5GDV+hOZkktU81G5
+ gkQtGB9jOAYRs86QG/b7PtIlbd3+pppT0gaS+wvwMs8cuNG+Pu6KO1oC4jgdseFLu7NpABEB
+ AAHNGFF1IFdlbnJ1byA8d3F1QHN1c2UuY29tPsLAlAQTAQgAPgIbAwULCQgHAgYVCAkKCwIE
+ FgIDAQIeAQIXgBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJnEXVgBQkQ/lqxAAoJEMI9kfOh
+ Jf6o+jIH/2KhFmyOw4XWAYbnnijuYqb/obGae8HhcJO2KIGcxbsinK+KQFTSZnkFxnbsQ+VY
+ fvtWBHGt8WfHcNmfjdejmy9si2jyy8smQV2jiB60a8iqQXGmsrkuR+AM2V360oEbMF3gVvim
+ 2VSX2IiW9KERuhifjseNV1HLk0SHw5NnXiWh1THTqtvFFY+CwnLN2GqiMaSLF6gATW05/sEd
+ V17MdI1z4+WSk7D57FlLjp50F3ow2WJtXwG8yG8d6S40dytZpH9iFuk12Sbg7lrtQxPPOIEU
+ rpmZLfCNJJoZj603613w/M8EiZw6MohzikTWcFc55RLYJPBWQ+9puZtx1DopW2jOwE0EWdWB
+ rwEIAKpT62HgSzL9zwGe+WIUCMB+nOEjXAfvoUPUwk+YCEDcOdfkkM5FyBoJs8TCEuPXGXBO
+ Cl5P5B8OYYnkHkGWutAVlUTV8KESOIm/KJIA7jJA+Ss9VhMjtePfgWexw+P8itFRSRrrwyUf
+ E+0WcAevblUi45LjWWZgpg3A80tHP0iToOZ5MbdYk7YFBE29cDSleskfV80ZKxFv6koQocq0
+ vXzTfHvXNDELAuH7Ms/WJcdUzmPyBf3Oq6mKBBH8J6XZc9LjjNZwNbyvsHSrV5bgmu/THX2n
+ g/3be+iqf6OggCiy3I1NSMJ5KtR0q2H2Nx2Vqb1fYPOID8McMV9Ll6rh8S8AEQEAAcLAfAQY
+ AQgAJgIbDBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJnEXWBBQkQ/lrSAAoJEMI9kfOhJf6o
+ cakH+QHwDszsoYvmrNq36MFGgvAHRjdlrHRBa4A1V1kzd4kOUokongcrOOgHY9yfglcvZqlJ
+ qfa4l+1oxs1BvCi29psteQTtw+memmcGruKi+YHD7793zNCMtAtYidDmQ2pWaLfqSaryjlzR
+ /3tBWMyvIeWZKURnZbBzWRREB7iWxEbZ014B3gICqZPDRwwitHpH8Om3eZr7ygZck6bBa4MU
+ o1XgbZcspyCGqu1xF/bMAY2iCDcq6ULKQceuKkbeQ8qxvt9hVxJC2W3lHq8dlK1pkHPDg9wO
+ JoAXek8MF37R8gpLoGWl41FIUb3hFiu3zhDDvslYM4BmzI18QgQTQnotJH8=
+In-Reply-To: <f49478be-70fc-4cd6-a640-fb008c21c092@suse.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: D261840007
+X-Stat-Signature: gd7tej63n3zaiewx1gx5586999sttkfq
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: E67D7140007
-X-Stat-Signature: armxdzhsrrueenuedmxci9bfbr6ijisy
-X-HE-Tag: 1784799473-980863
-X-HE-Meta: U2FsdGVkX1/9AUR4KOtGU4CBg4hFZNEDq6vszRzWa9LiT3vHablOs7XBrKzUASdP/0F1yOTaeio0fG5okYizVvxKoqQsFGSaJ13oOoys3wvC1NEgeZED9v5QAAuy/CNKpSm6XznuSAWvnEDrAZAxi1qURY1ygu/wV85dwa76smOdBQSzE5JpnZAai6Rsol07KAOH142Q4GUAzfCYZ7TlnANW2dz417QVokVP0cMGUGaEKA7urNv8WwtDpIennsekXFZD8oDI/rxltcDM/SaBsrQkftDZbx0zf406i4zJ7D3EfXeiRRpzqZ2qOtvuXMfJPtBCUTwib6EQb2MYU+DO5dCslwG1p4FE5LYIlBMioDVJe6Mo0kt9GTd+Ftcta+qN16q2RHqrOu4Ac8ZSHeI8FxceutZqsujQFLCQp01Rlj92Nh8RgrkGBcDsZDnZkXZIJR/50jC2O7pVDBYCb35Fr/X138mWno1oYo8I473wgpNgQUlhZYQjyS5kCYp40WZyK+Dqdnm5jpyzGu5SxxpO6KZP1AxaYyIE5lbp9m+obd/SrVEJt21tzZ1V5kAs2S+rBGVnQbxnASqGgO0aU+nGCvAPdiMMBsZ0SwILYNqHG/Tor7p6Woz39OEqJnR5I9VukGnhkNe80FBdM5/I/Trj9vzQLDy5zNftGLWWLp0rOKTFxjx2o0f1z83ZS+AIG+slFSLDbecEQARPxdBE3NkX74ksPvHmWQpFWJSc1+o3dII9MlsR0H/lnt9l2UnVlI/YtiVfBl03pfN4mQzXhHuOxlC6gCwRfKiV+2WxTtVJGpfLt4OksKtv7c/cOKRLRFk9IjXq5nAzk9w4Jqxjfr66nat1uZ9r+F60lcvYZh9aDn0JAq44BGPD77sJbtC3fbwjT8cV8FIidVSGcNntTACw8Pl105G1k4BKftSob8aFExLqvwmq9RlbRPqsHQNXl34IPSsTfkbyw/aHnRlgNwu
- ZlRZgLBI
- Ti1nRh2omf2523WrB0FRcGL320kRlAGuChjSEw3J2cS37Oi89FFn8MvWMjitFitCWxu9492tsO3hWWsQx5yHdZb50mGdYGyqkYySgTzlvhpiPYUb+XUy3TCG8gIXhGXbpe9fPxY7lKpI5T+NhyGmJFxYOkotLBZL3bhD3tncGwKZ0KDGPVpHiZEz+SqcjScNY8GgAiAc2LsCPLiYDuyAhR5yRPTUK5+//fB42ykkuBwNeR6MUsB4cLBlHi1NmEGFfkiDTyQJSW5lfAJ74oy2OZmIwRXSPjCFOYyOph/ip6QYddK8yCczux0xuY2pJm10dv3ZQWAd+VCl8BNTl+VMiG3dxqtEHzh9umuwXgE36zjbNaesdVLBUWxl7AqoBrGts8B+9F0QH10knfZg8ZXf6G6SCGK6b0vRL6oLnmVZCbkBa9/dIzRLqHU94fXRP27IA7nBi4cxm9/IhSVgw54c62ps9Ca9TMspp3MLxrsMr2U3Nkn5nhFArw3uldA==
+X-HE-Tag: 1784799946-969151
+X-HE-Meta: U2FsdGVkX1/7U+NUcjj/dmHBFsIFzwJ5UPreNywt1CO/25CGRQYXW1MDW6lEB+zD0CSNz/DwOmW86pbJ8faVvQZ3BY+32U3yzAqb1NdZLSVpHQkJsCMludGLPIipbCmj2GkdD9QhH/CEns9wLoGWQXxRxu42aDl5+VH/Y4TB70v65NK/X95/U3NLyGyUpT8Z7z5bUDLvumHr35uu8HlMGKBTTR7+q3pdBKhz4tgSNJKwqP7J4Z9n8E7aH38AwuVSGa4T/lHBnqydJrUCnZChS4pph/p4goQhp8bzJ40uFelUueodjolKnEqtTFqbAj6LhIM+FaQNE114cYVW9ByQ0+g4V4iCH/gYb9HsPSZZCVGWemKv4tp+WMx0ITgpQnIqjtMM5PrWxpCTiu/G+bWDrauZG2sxaITKlL5DOTjRkB792e9eFwG554CoR8D6TmgKSprU9vO83chGVvtf3A9Ip8ikNtjjwp+5Iehgdau/9IxEMR9JYU3N9Ro5cPRoaGGNFqtyE/1m8G/lu8ezffgrxzcTEli8QZS3jYjtTfE6Grg6m7wE+L52gZJhOmUKyWmtrtLNQkdZY0JnLUZO7rC+WetkP57TDKhPnHKZbe81VTl8ZDPet8lxzJ2aI09/NUGdEVkKEtlRdyj+GYz1UXsPUvgbVLoXzfhUWDOpo3FLZ87j+dJ900VN5iGsn9WWdSfG53d895+o5IqVKiUl5i7oRRQ45FIVeSXBW+o79AM+O3hDTWF/quoLKkrGdflRs3Z3eSAqbLnPaSua8wAMG/Q2g9WjH7dSjtWsnGAzlwYYJTibDAOU2HKTkZhHX76iZzfObq1RmUhB6bZ+G+DkZO3dau4pcG7w8sqoj94JDKAW/mmJWtFa/sZW/pZfGMZV5UPnzt34Kt09XHZfY+rwd8ErZnDfvdl65NA9GiMlHhthRfYHPLBrS+X80W6UYIB5rXfH+R6+qj/wwoezaK6z4y1
+ HiBxiesL
+ a5FG8Dz9LX6za4B05bC+m/lHD1d2qVRCpIqr2k1fZuSYhmW06xlemoqymTaWTJJugTcYJbOrTEXOFJ2LZIHZDhcirM3du1gsJe/XSyh1H4AuEEF11dV8U8TANBf/jBAslB5zn82/UP75xksgPJkfYops+jLc7PLQTyxrquYLmpeoFp6iF5ayxcvK/i2PXZ64fYHgBGFCHFx9fTx9HBJgl7hOzsolg09mxZV5FGKqXlB7k2Vpag1EOBYl/TscEvozPngY8bDA2dz6PTGp4n0Z85uzI5xs5/30TSE4dbFV1/MjrBJPWBLnhNT2IFUD4j0gqhKugDDRwYvDB3jdTb/8sS49KlzgSsJK2JoLgA4kFYphMPJ8lKWqRM55PcZHJ/8rKHkGJfmIzoQfQDtsPuDA7B7Q70yG1PYeTAm19TztJaFWwdURcwkcN8e0CxeGhfzO8GhuclNqnU/zIEflFOcOtJgcqUDorsG1IMnrIa6rtC3N+fFVasweyt29EPALBYoBUa7Nv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,34 +150,168 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 23, 2026 at 04:18:10PM +0800, Gou Hao wrote:
-> kzalloc_objs with the __GFP_NOFAIL flag will never return NULL, so the
-> subsequent NULL check is unreachable dead code. Remove it.
-> 
-> Signed-off-by: Gou Hao <gouhao@uniontech.com>
-> ---
->  arch/powerpc/sysdev/xive/common.c | 3 ---
->  1 file changed, 3 deletions(-)
-> 
-> diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive/common.c
-> index dadd1f46ec93..79d7854259cb 100644
-> --- a/arch/powerpc/sysdev/xive/common.c
-> +++ b/arch/powerpc/sysdev/xive/common.c
-> @@ -1134,9 +1134,6 @@ static int __init xive_init_ipis(void)
->  
->  	xive_ipis = kzalloc_objs(*xive_ipis, nr_node_ids,
->  				 GFP_KERNEL | __GFP_NOFAIL);
-> -	if (!xive_ipis)
-> -		goto out_free_domain;
-This will be an unused label after this.
 
-Regards,
-Mukesh
-> -
->  	for_each_node(node) {
->  		struct xive_ipi_desc *xid = &xive_ipis[node];
->  		struct xive_ipi_alloc_info info = { node };
-> -- 
-> 2.20.1
+
+在 2026/7/23 16:29, Qu Wenruo 写道:
 > 
+> 
+> 在 2026/7/23 16:18, Christian Borntraeger 写道:
+>> Am 23.07.26 um 08:13 schrieb Qu Wenruo:
+>>> There is a bug report that a reproducer which doing the following
+>>> workloads in two threads:
+>>>
+>>> - Direct read into memory mapped from page cache
+>>> - Sync the above range
+>>>
+>>> This can lead to dirty folios without fs knowing, this can be a huge
+>>> problem for btrfs, as even on the very basic bs == ps cases without
+>>> large folios, such reproducer can screw up the ordered extent accounting
+>>> already:
+>>>
+>>>   ------------[ cut here ]------------
+>>>   WARNING: fs/btrfs/ordered-data.c:390 at 
+>>> can_finish_ordered_extent.isra.0+0x56/0x1f0 [btrfs], CPU#1: kworker/ 
+>>> u42:0/68
+>>>   CPU: 1 UID: 0 PID: 68 Comm: kworker/u42:0 Tainted: G E       7.2.0- 
+>>> rc4-custom+ #415 PREEMPT(full) 74dbeafab12c410178747d5bec9fb200ae56949f
+>>>   Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS unknown 
+>>> 02/02/2022
+>>>   Workqueue: btrfs-endio simple_end_io_work [btrfs]
+>>>   RIP: 0010:can_finish_ordered_extent.isra.0+0x56/0x1f0 [btrfs]
+>>>   Call Trace:
+>>>    <TASK>
+>>>    btrfs_finish_ordered_extent+0x39/0xd0 [btrfs 
+>>> 7d1ffd99bb9696179883f257e5fd838e2d1a0ca3]
+>>>    end_bbio_data_write+0x1ff/0x280 [btrfs 
+>>> 7d1ffd99bb9696179883f257e5fd838e2d1a0ca3]
+>>>    btrfs_bio_end_io+0x76/0xf0 [btrfs 
+>>> 7d1ffd99bb9696179883f257e5fd838e2d1a0ca3]
+>>>    process_one_work+0x198/0x380
+>>>    worker_thread+0x1c8/0x330
+>>>    kthread+0xee/0x120
+>>>    ret_from_fork+0x28f/0x310
+>>>    ret_from_fork_asm+0x11/0x20
+>>>    </TASK>
+>>>   ---[ end trace 0000000000000000 ]---
+>>>   BTRFS critical (device dm-3): bad ordered extent accounting, root=5 
+>>> ino=257 OE offset=3465216 OE len=2826240 to_dec=319488 left=135168
+>>>
+>>> Unfortunately we have removed cow fixup mechanism, which is to work
+>>> around such dirty folios by re-dirtying them and reserve space for them,
+>>> across several kernel releases, meaning we can not easily revert a
+>>> single commit to bring it back.
+>>> And without doubt, that old cow fixup mechanism is not support larger
+>>> folios.
+>>>
+>>> As a hot fix, disable btrfs direct reads for non-experimental builds for
+>>> now, so this can buy some time before we find out a proper way to 
+>>> address
+>>> this.
+>>>
+>>> Reported-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+>>> Link: https://lore.kernel.org/linux-btrfs/f12f70e5-d84d-4a9f- 
+>>> ac94-693be4c863ac@linux.ibm.com/
+>>> Signed-off-by: Qu Wenruo <wqu@suse.com>
+>>
+>>
+>> Wow that is a big hammer. Doesnt that break typical usecases (like 
+>> databases on a file,
+>> qemu/kvm aio+direct image files etc)?
+> 
+> It falls back to buffered read, which has a good side effect that if the 
+> reader is also modifying the buffer, it will not cause a csum mismatch 
+> warning.
+> 
+> Although it causes huge performance drop.
+> 
+>>
+>> Even worse, this does not fix the other GUP use cases that still 
+>> exist? So its only
+>> a partial fix. Have you considered to add my RFC patch on top to close 
+>> another
+>> problem that I can reproduce easily.
+
+BTW, if you really want to get everything fixed for the very basic bs == 
+ps cases, you have to go back to v7.0 with CONFIG_BTRFS_EXPERIMENTAL 
+disabled.
+
+In that kernel we have cow fixup, which is unfortunately removed in 
+v7.2-rc by commit b2a9f217ad3f ("btrfs: remove the COW fixup mechanism").
+
+With that feature even if the folio is marked dirty without notifying 
+the fs, we can detect and later re-dirty them and do the proper space 
+reservation in a workqueue.
+
+But again, that COW fixup mechanism is not well tested (I believed we 
+shouldn't require it and we never hit any reports about that), and can 
+not handle large folios or bs < ps cases either.
+
+Furthermore it's not an easy revert in upstream, at least we have a lot 
+of involved patches that are removing the cow fixup code step by step:
+
+9bce95edb1b4d2802de9273b5170bfcff3090d24 btrfs: move large data folios 
+out of experimental features
+115421e29b845d521e3dc24b67d83e8695f621f6 btrfs: remove folio checked 
+subpage bitmap tracking
+b2a9f217ad3fa8012940744059956b20a3971135 btrfs: remove the COW fixup 
+mechanism
+4927b141877c35b1af4e32c7876cd2e0a0f16196 btrfs: remove folio ordered 
+flag and subpage bitmap
+aea704836e47decbdcac77872385c9a3fb51da42 btrfs: remove 
+folio_test_ordered() usage
+7d97bdca4bcb0e36b2d1251bffac3ff4e4e09c8c btrfs: use dirty flag to check 
+if an ordered extent needs to be truncated
+095be159f3eb4670fab75f795ce9539a381ebd3f btrfs: unify folio dirty flag 
+clearing
+b066155f06eeb4d6d696668cc58b6101adf6c1c2 btrfs: detect dirty blocks 
+without an ordered extent more reliably
+
+Not to mention there are also quite some conflicts with other changes.
+
+So the assumption of every dirtied page folio is dirtied by either 
+buffered write or ->page_mkwrite(), is really the core idea of recent 
+btrfs update and the basis of the subpage support since v5.15.
+
+
+I do not have any good idea to go forward.
+
+Full revert is hefty and can only handle bs == ps cases, subpage/large 
+folios are still affected.
+Although I can revert the large folio support, that's a pretty cheap one.
+
+The RFC patch from the reporter is not going to address the very basic 
+bs == ps cases either, just check the OE accounting error message in the 
+commit message.
+
+Finally I do not have enough mm knowledge to address it from 
+mm/block/vfs/gup layer either.
+
+So any help/advice on how to address this situation would be very 
+appreciated.
+
+Thanks,
+Qu
+
+> 
+> Because that doesn't fix the problem at all.
+> It's just masking a corner error.
+> 
+> With or without your RFC, on x86_64 with large folios disable 
+> intentionally, it still triggers the OE accounting problem mentioned in 
+> the commit message.
+> 
+> I believe if you switch an older kernel, or disable large folios 
+> manually (reverting commit 9bce95edb1b4d2802de9273b5170bfcff3090d24), 
+> then you should hit the same warning on s390x, and also fail the 
+> reproducer (error out, not hang though).
+> 
+> 
+> Again, dirty folios without fs knowing is the root cause, your RFC is 
+> only avoiding one symptom, all the other problems are still not 
+> addressed, and those problems are not any less serious than the hang.
+> 
+> Thanks,
+> Qu
+> 
+
 
