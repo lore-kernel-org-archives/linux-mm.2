@@ -4,68 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CA0BC53200
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 16:23:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22170C531C9
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 16:25:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 529356B0088; Fri, 24 Jul 2026 12:23:01 -0400 (EDT)
+	id 0EB6D6B008C; Fri, 24 Jul 2026 12:25:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 500D26B008A; Fri, 24 Jul 2026 12:23:01 -0400 (EDT)
+	id 09C6A6B0095; Fri, 24 Jul 2026 12:25:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F0276B008C; Fri, 24 Jul 2026 12:23:01 -0400 (EDT)
+	id ECC926B0096; Fri, 24 Jul 2026 12:25:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 18A656B0088
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 12:23:01 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 914A780465
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 16:23:00 +0000 (UTC)
-X-FDA: 85024189320.12.C45D3F6
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C27B56B008C
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 12:25:56 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5C3E61A0427
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 16:25:56 +0000 (UTC)
+X-FDA: 85024196712.26.4850508
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 7343920005
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 16:22:58 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=iUC98dpb;
-	spf=pass (imf31.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	by imf01.hostedemail.com (Postfix) with ESMTP id 51A6140010
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 16:25:54 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=LSeaOheA;
+	spf=pass (imf01.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784910178;
-	b=g1BMys9+eARMCTkoqwDrceW9icAlPYdRUSxOEnQfwwuuLgrKieJXOEMqR9jwFD6M4ZY3s0
-	gFx19HbL/endXFQNGixptMQDw3EfCm1d72TTBwH5OBKV4njzPJAAFStzeovWklg4rEA+yX
-	hzxiCUHOrrb2ZQXY/OZw3wInbJNLm0Y=
+	t=1784910354;
+	b=SaFzh+Hw3tzNij0wzoFtAqTHWytEx149vaeU6K7YCR0uqyjmspDEEAOZJxyu7F0i+V2S9c
+	21q5Tyv4ftrLYBiR3EZwshbdUIHZ4EtqpDfd054c8njM5sNSJf+DXiSW129kfnxNzL9+X+
+	cJTHDdckr3ynh8FwF/kMOAWCef9rVvE=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=iUC98dpb;
-	spf=pass (imf31.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	imf01.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=LSeaOheA;
+	spf=pass (imf01.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784910178;
+	s=arc-20220608; t=1784910354;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R4roeXRjJcUf/JwCqMmQlNS5gCdrtAP9Td7ApgTux+8=;
-	b=YG3JfYWygHLuEVvVGR0a3Ai5ryd1yuUSFTvx4Mn6rN7akiCVqI5TZNJNaJ2rPVq1PMAyXF
-	DNH0ABZlKXq5LpqylEMyLzTohFB2hCBleOY06KBLH8AMIKWY0g9+Jv1WHlHUYOquEnhwEm
-	ErsPdNQcWWS4bFl0dQiLGvV5gKdpWqE=
+	bh=ZObIlia0bF/5KoAO7QHOC3KkZX1rkeg1RIL22kW+K4Y=;
+	b=qTU5TDMhOvsLZWEnEjknK9irFwuTrDfmexdZsMrBZa4FQGtUUKP1AVlCjQ9xHB2JMuu/0C
+	ktcIaKPzd+Q3wPE+agDGBE+4T0GQc9ogfs+INComy2ucEEAS5yvrbbUfNIOKybhPl41ktp
+	sRXYoLE2MeNpWiGHqXt9adtLBDKMk1Q=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 930E91684;
-	Fri, 24 Jul 2026 09:22:52 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 820DC1BB0;
+	Fri, 24 Jul 2026 09:25:48 -0700 (PDT)
 Received: from [10.57.0.90] (unknown [10.57.0.90])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0C7F03F66F;
-	Fri, 24 Jul 2026 09:22:42 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8D9153F66F;
+	Fri, 24 Jul 2026 09:25:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784910176; bh=C02uWs/fpXnABbH43y4jX8fXPGtwBqhc0kWtZDPeayg=;
+	t=1784910352; bh=90PjtwWiYZulmqV39H8fGSHBZ8shBRidW6H3XBOLz1E=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=iUC98dpbFgd+i9SnSkYL0GKvWGOk7xpTRmX2UXYjyfh9B/6bLE/WuAx7CloLocREN
-	 hl9aaz1HKjYAaCZbwP0FbaUIknYs8KANk5nrYXdBG0Da9JXUPnYnhocq3QUWcdY9Et
-	 OVQZdbXfa8qUjKcrVhyZR4pIQLBjcpiml/L4ONBo=
-Message-ID: <d312f635-7c34-4452-b879-d29137a7f450@arm.com>
-Date: Fri, 24 Jul 2026 18:22:40 +0200
+	b=LSeaOheALTDiD44xvkD55jNPMvVMiWCKhoAY3QOMhLgjHKQ4vGk/sCbVALnk8LQcs
+	 UGzo+QT8sgIjgylea7jT8NDptv0jyxQHH1Yl0mF7+8llAZ/r++VL9OJQZ9z7INpPWZ
+	 IvaE6ewh0IBZMWQRx7oS05rwa6Tfr8Ub24gxyRR8=
+Message-ID: <13be2648-f68d-46ae-ae8a-5ca9e067cc90@arm.com>
+Date: Fri, 24 Jul 2026 18:25:35 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 04/22] mm: use mm_is_kernel() in generic page table code
+Subject: Re: [PATCH 15/22] mm: only initialise pt_share_count for user
+ pgtables
 To: "David Hildenbrand (Arm)" <david@kernel.org>, linux-mm@kvack.org
 Cc: Andrew Morton <akpm@linux-foundation.org>,
  Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
@@ -101,22 +102,21 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  "Matthew Wilcox (Oracle)" <willy@infradead.org>,
  linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org
 References: <20260714-remove_pgtable_cdtor-v1-0-44be8a7685d7@arm.com>
- <20260714-remove_pgtable_cdtor-v1-4-44be8a7685d7@arm.com>
- <02565237-d777-4c63-8b17-817df59feac4@arm.com>
- <0d75daa4-a034-4094-bce5-57938d294163@kernel.org>
+ <20260714-remove_pgtable_cdtor-v1-15-44be8a7685d7@arm.com>
+ <e95aabc0-522b-4660-958a-d648c1cfa78f@kernel.org>
 From: Kevin Brodsky <kevin.brodsky@arm.com>
 Content-Language: en-GB
-In-Reply-To: <0d75daa4-a034-4094-bce5-57938d294163@kernel.org>
+In-Reply-To: <e95aabc0-522b-4660-958a-d648c1cfa78f@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 7343920005
-X-Stat-Signature: fba1zihxguu4s948azah3frcgcwda4yg
+X-Stat-Signature: 95ei3h7o83e5i5txy8ppgspo57cxw5n7
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 51A6140010
 X-Rspam-User: 
-X-HE-Tag: 1784910178-25731
-X-HE-Meta: U2FsdGVkX1+NWerHwtl85X12zXVRAsChITymAQ8F4jHothk7uXUJ/NFWpXrQQnOq0bsgKcNwhiDZoQcjq8hukNZbhrHzfibsY30GfdcPEk2xtwBDJYLqxQK6yrfn9qmsdk++hOAinbTw1hTvHonmODJVz2t7FxWFOpMw32JETsbJWkMsQXnpzTbY32RiLAuWM3DnPQoTN49eGDNAOktFNXBuA16gkUXP5D8mcnTDdAO2YVe6aPt9e/+ohrCqkP/15/jXzt87UgNRZ31TkgCmZmP2bbu2hgZu1LNTj2wFFib+qKobyOeHnSqGD9ZJGN1h4M5b4srrAW2m/4je73Jo5XkOXseP1WYJTAqp9COSy4KWOvWj82zZXGfe5OWqezAXJyLOdFJpXtTz/WI9fxRnNTNTAWa9hAPihSkqdeQCLX85z0THOD7fODO3wOZclJQkHCN9JJvZQGzX0UwgOmMkvrNFtegXDuw3bKOsGTbvDmH2reZM4qR9iAOfeUPzoFw4CcY6HCThL9/RIqSKBX9jwKvAghSlmJzOej9dcZa2nADsLvbtDH7+dBgaNiHsY6QgC4Kg23bLw/ZnU5cFoQh0b24i92YgsilwQ76B3wjoxkjXnXBTj+fEpHeTX9t6Gk2uz9omU13YNFkHjx4G3AwBm+2xCHXCbwV14yAja/MPnRHm4iQgjd+GlA6yOgGxEu1LCB/Fc0f8llUQsL1lwkKUwuTLVjmouLEK8ShHYKQcxfRdJ5TWeswQAmddT6DDi0Z3VaBnG8amW5vwZoBUc4Cey0ikE/0XCXUkUkdSqrFiyAsvQ689GBOZN0ypH38DnrdnpQIMux8RJVuJjWpmD9+T7FzL/ZtnDmz+YGhObH+YMrrf+T7feYFEsXXrouLiDuGoXfTcPsaRiO/FAERzkMT6dBT0l1KtnilkNmCVOwUSsc9DZGPKe9At9Jea4coh04VOfIlVFVl+RmP4mjWiG2B
- kMo9DeuQ
- jXXOYWAI48fWg180ehwM4962yagrVKJ08RsGsoxwgMVr22W4SOfdZ/PIB46nxCC+yk5Q/3+0313QJE0WanIxfmmssYzqKYJr57eM1iK7FHcUBfc9FXT1/n6diyLjspgvFlkvzSIVWGWLH9JrWJUgjxFoO2OvqwYE1lp4ps6yz5D60XbldWp115OiB1KZ68lC/OG0cyFL2cw6X96P3K1TKu2fRz56RdlbQQjjEL3VyP+NqTlrYi2CYuKLD2pdwUzTEoMN5/idDgOf88uKlWGmzP3yFsIBY8l+dtuod/OOFIDKx4/zOkX01QquPtqoaFt+khXzPyF4SgUtj/Kf9Rkh9MoRfd3S+L3PtLmaE8+yQpIc7Sa0=
+X-HE-Tag: 1784910354-405285
+X-HE-Meta: U2FsdGVkX1+2D+Nxp8QYOHOTrDGeheD+xRgS9ib5l+zOBLncXEdZATOfLQenZA0vov5aTkfk0w/mM+gcJDQe7GBwzCwf8/nL3lJpBEEacEM4lcTLSjvkxrJK3EnBUmBzdTnxu8BLWvZeFSkNShMrpgmkSscrGclN0JD5M2l38m3WUQnv+PyBiZCpuTNcIbzkc6quIH/O1WIb384CgywtjGOvm6SclZ4T7iBngT3lb7wOPeyhuq6U+VSGjCseXFxg60JyAZYR7qh9JeScp1jJDp7lRmopxqZWfjv7ECD14/n+sgK/37QnwZO+i0YqxPd1dklqlL8pMWXx2JHM8ULvN/53j7IUuIjKllSqdLH9Sfwz1VpHD/D08vFh3LGzFSGnRwwKF5OVvGnKzrnNNKz4tQEKHM6zjdTen05X8xqLBP+7YXePl9zNEA6D6A8+g9Q09OtGrg+Hghhh4MAmhIlmU8Hm3Z+r8/X68///cGZEcvZNYTKi6QiQP28GzhvA4ldhr63AkOVxCivHa0y0r/cAJMbHGqXSuqRt/6vCyqMciISrXYHaU5y/xjbo+QNQoiz2Q8dU9WRybxb7u0QL3MVVEj1gt8pq6JjqUFEIPAiaj3tXSZPjA3AVCEovNUnSIwVWHcAD44DkcOVEDvQvEUSw3u7gFqp6iO+ccnJx0IqyMmh0JGmTZrWl67QcfkpLkHL/9PdZfbAv52qotAiSBvhzjGS2zY2vKz2a7zmn54jgcVLlUq2KW3B80gqKosLcfgR5SQtFqI+73mWE9Av+/8h+Fv6y/srDcAGNrbm4HL7YaKiDPpQY+3a8pNTqWjFTwmt7fGLK1/lkEFLPdg3O5X3FzGIpUpd01V7Nr7mSbALcsIcRiDgNqZeU7nnaFnS95vRfsGb8stLQXdIv0mGm84JzcOyIpd39kiE2nD+PsViMSx9m7hTQSGqAbXZUNgL4f+kCIvXZRO5/KLUDiWMSZFj
+ gdHK7jYl
+ 4o0DNurLR7HEfDyz4jCcZP8DTqWmeMZcDtVFoXPT0mlh14EN30F2uZ8FF3+PQzuPNUosshaYkSSzY9oGk65Vk3w7oS0lVPr1pJ9D+19CbWY4UddqdBo+r717Z/jvkkDG0eoSM+M90ZVV0OHGm8z7R0cYg0o28+MOxjVWMg8vNm4f3s8HGkwBAau5HUaFQyx03J0xPt3GIYb+/Hm8gBtierIipX3X1l5Z/YP+/DKgYg8WNoMJBi+u9wASlQWMOUbvXbRNlzuHm+ns6UhjAP9653MZbtkJKr8RBysrRCIgPt2VTvCeCIKbkws6ceY86dWw0egLWaQHISSiRRi7u2GsbL74/UwZfKCZIsr2xOC4AhjhJeeeoFYZmxQYMMemjMx/ydDXQZcG4p3Df/7Za5ewW5N5qDtDsO7eHNzak6DTfMSnItsIjtGZpgW5Zbw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,32 +124,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 21/07/2026 17:07, David Hildenbrand (Arm) wrote:
-> On 7/16/26 11:35, Kevin Brodsky wrote:
->> On 14/07/2026 16:03, Kevin Brodsky wrote:
->>> diff --git a/mm/memory.c b/mm/memory.c
->>> index d5e87624f692..c0244c0b0756 100644
->>> --- a/mm/memory.c
->>> +++ b/mm/memory.c
->>> @@ -3394,13 +3394,13 @@ static int apply_to_pte_range(struct mm_struct *mm, pmd_t *pmd,
->>>  	spinlock_t *ptl;
->>>  
->>>  	if (create) {
->>> - mapped_pte = pte = (mm == &init_mm) ?
->>> + mapped_pte = pte = mm_is_kernel(mm) ?
->>>  			pte_alloc_kernel_track(pmd, addr, mask) :
->>>  			pte_alloc_map_lock(mm, pmd, addr, &ptl);
->> As noted by Sashiko, this is a little problematic because if
->> apply_to_page_range() is called on efi_mm, then we will end up with
->> __pte_alloc_kernel() taking the init_mm lock, since that's hardcoded.
+On 21/07/2026 17:12, David Hildenbrand (Arm) wrote:
+> On 7/14/26 16:04, Kevin Brodsky wrote:
+>> ptdesc_pmd_pts_init() initialises the pt_share_count ptdesc field.
+>> That field is only used for hugetlb tracking purposes, so there is
+>> no need to initialise it for kernel page tables. Skip the call for
+>> kernel page tables, like pmd_ptlock_init().
 >>
->> That probably means we should pass the mm to __pte_alloc_kernel().
-> Agreed.
->
-> I guess we have to audit all existing init_mm usage?
+>> From now on pagetable_*_ctor() and pagetable_dtor() do nothing for
+>> kernel page tables.
+>>
+>> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
+>> ---
+>>  include/linux/mm.h | 9 ++++++---
+>>  1 file changed, 6 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/include/linux/mm.h b/include/linux/mm.h
+>> index 94f0fb1c662a..b217ccbed5a3 100644
+>> --- a/include/linux/mm.h
+>> +++ b/include/linux/mm.h
+>> @@ -3905,9 +3905,12 @@ static inline spinlock_t *pmd_lock(struct mm_struct *mm, pmd_t *pmd)
+>>  static inline bool pagetable_pmd_ctor(struct mm_struct *mm,
+>>  				      struct ptdesc *ptdesc)
+>>  {
+>> -	if (!mm_is_kernel(mm) && !pmd_ptlock_init(ptdesc))
+>> -		return false;
+>> -	ptdesc_pmd_pts_init(ptdesc);
+>> +	if (!mm_is_kernel(mm)) {
+>> +		if (!pmd_ptlock_init(ptdesc))
+>> +			return false;
+>> +		ptdesc_pmd_pts_init(ptdesc);
+>> +	}
+>> +
+> I'd have said "the initialization is cheap, why bother", but we already do have
+> the mm_is_kernel() check in place, so
 
-Indeed, I looked through comparisons with &init_mm but really all
-references to init_mm should be checked. Will do for v2.
+This isn't mainly about the overhead, but rather the fact that from here
+on the ctor/dtor do nothing for kernel page tables. Patch 20-22 rely on
+this, and in part 2 I would go further and only ever call the ctor/dtor
+for user page tables, so that the mm_is_kernel() check can be dropped.
+
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+
+Thanks for the reviews!
 
 - Kevin
 
