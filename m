@@ -4,118 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5DF1C531FA
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 09:52:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0282CC531FA
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 09:57:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A5C516B007B; Fri, 24 Jul 2026 05:52:00 -0400 (EDT)
+	id E5EE96B007B; Fri, 24 Jul 2026 05:57:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A33DC6B0088; Fri, 24 Jul 2026 05:52:00 -0400 (EDT)
+	id E0FD56B0088; Fri, 24 Jul 2026 05:57:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 971726B008A; Fri, 24 Jul 2026 05:52:00 -0400 (EDT)
+	id D25B96B008A; Fri, 24 Jul 2026 05:57:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6678F6B007B
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 05:52:00 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BDBDCA0FC0
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 09:51:59 +0000 (UTC)
-X-FDA: 85023203958.28.26A5E52
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	by imf29.hostedemail.com (Postfix) with ESMTP id E9F49120007
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 09:51:57 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="Bx+1MQ/8";
-	spf=pass (imf29.hostedemail.com: domain of mahad.ibrahim.dev@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=mahad.ibrahim.dev@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A8E456B007B
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 05:57:40 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2BED612030A
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 09:57:40 +0000 (UTC)
+X-FDA: 85023218280.19.EC0252D
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 7260E20003
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 09:57:38 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LxqBLyNF;
+	spf=pass (imf31.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784886717;
+	s=arc-20220608; t=1784887058;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3iYJh8X4zydZm5lth8crx9Gn9ZUVYixAi1/OUo5y+Tc=;
-	b=TGtok8ADh2urblS2c58pLXcdV/n5Jw20n0MOl36bQ6/GbGIFK5sVFsWjEJxOnClUVbsvaF
-	4U86vizWqYPLTCafJXC4NHIFANNOf+iyW5K/oy8qdZpzI0WEAJuWuyBFq6l+KrifFKb88Z
-	GUq3gl24gSjcgkgW+P233Jbl3QSKjl8=
+	bh=gtzI0WrHpPQ8NxhzSfdbFVkPslhXcvXb+1WfK67Ct6A=;
+	b=eARBNkQEFLq3MYCv/OCAyowMUck3E2gDUm9WxDFKhvwOSRtkPK4ZtTMlx4oMoxtUJLlLSi
+	IRTOoOC61hLfsYuwjqirIHu0koc1KAspGe8IGe9eUI29jxpxtjUuNFA3CbG4nEtbwQM89i
+	bLyy1O39Jj8jzTvaaXYOBOGwvGxSopY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784886717;
-	b=V6mA/Xqw6kCd5WxjVtVgv8YYUy2bd63QUCP9eF+6vCaI16TqrlS9lVMtX/8nMnNfg1gJlQ
-	PmN/rwwxWgrsSqejTKnKF6oo/ixnRnaM0glPYvaRGnnL9+1AJtDujOwSSNjt3WMOGj9oh0
-	6gHidxeg9bS/iR8WcWcEaYjsPVjZKfc=
+	t=1784887058;
+	b=EZTtqY5qEgNc6d5DrzywbMP0UCgz9Hgha2nF3VW0s5oEpVMeYBZ1s/Kq7JYBEu3N9P9L/A
+	OZivQ3YYmcwaGqDnwSi3PQf7+HFnOoLwZku/ZoEbMV9wS6qUXoRnuST3iEas6MAMLy6nIT
+	wKn+pacDBHpjDBS7/TjXBDg493mXRic=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="Bx+1MQ/8";
-	spf=pass (imf29.hostedemail.com: domain of mahad.ibrahim.dev@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=mahad.ibrahim.dev@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-47c2b362ee2so235314f8f.1
-        for <linux-mm@kvack.org>; Fri, 24 Jul 2026 02:51:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784886716; x=1785491516; darn=kvack.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=3iYJh8X4zydZm5lth8crx9Gn9ZUVYixAi1/OUo5y+Tc=;
-        b=Bx+1MQ/8Fkd7v+NV1883Z3h1zsIDkP/oonNDc3P0cDvc6R1PZPa8mm4xzidMxddKut
-         ulbE2D78qwDtM74kOJuhcVDOrz1uby6vidtH1kv4CaWEUH5xZ6cmMUDzkEO+wCs301XQ
-         Gt44XbaLPTkPKNvfegwf638eOAnq3MnF+ZqgmfVQb+AeGeM8uvr9IdCtfkH81Qp93d8B
-         V/sS4VEId6mB5QHycxUc9f6j5V/JRoSwYb79CluMhh9WKRxOP9R+RMY1Giw0mRRJ2Cyp
-         iKGV6eo7U2fri7nfW+eRCQUrJIKX1slI6txEbR3+duGJBsc7IFsOSAE/NaPwmc4wxLkh
-         S33g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784886716; x=1785491516;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=3iYJh8X4zydZm5lth8crx9Gn9ZUVYixAi1/OUo5y+Tc=;
-        b=e6WUq+A2VMBv8M+UlB7bEJqSwFe4dkWU7CXw1qLlVORne0Ypa0zX1I469lc87uwSwp
-         t1rVWT3qxc+uhx8/nibgaa5xytENBmRCjEN9genfSIS0gfHelMQPVup7t8KrwdT2Wjdi
-         MxOOzZWLbHnEYPmqL9FnrsDBhLsIAx0X3Jid3UIvpgZGstP3ZB7ZVps3aiPRyY6GKGnD
-         YrDXAe4sx9bMTPZC/dyicBq6+2Wk04hUwSZftSKoDT8/369ixycs4uWsrMvw8YkhRGvK
-         59PO1YhGFD77ytKJJyL1N3s/9SYwibMBC1pNTanLeMdnZGseW6K0iw6oicTus6csF6uC
-         ntVA==
-X-Forwarded-Encrypted: i=1; AHgh+RqeeB4GwZcpOpUg6hm5ZCSHpTKwvUckE6rUomwBl/UJD8w4I/Qg3S9pcyrgbjLayS6e6vuFfRjDPg==@kvack.org
-X-Gm-Message-State: AOJu0YwqdgSWhd66PHMtkRhfqc/AZ3c7iKBZCOLoNw1f3y+dTYgMalFs
-	ag3KXpLCnnvATMo59ncby32wvzkUVAbAfj+cqIp5tY+C8MSC2T0AHi8m
-X-Gm-Gg: AR+sD12fRrtKQOJvWLKHrlK5AWIbte0pR9CblfV15lFoeuYZxgV+rAypTHVaf3nrWAM
-	ypu8Jl+hFBrho5JI8cR/gjsHROZ3cAZbR0Dw8eJ8AXNFp3EZRI45THqXoOJAljdvYWTPNZn45R/
-	ZV7Ue/ZS65DJeIisrbXV2H+KIihhVs4fNmSgm4siYdmhVN5Eyshq3jzEw2y9LT6uEsHDKa7mMsc
-	nIL+Sipig+aUARAIHqwd2i2XDZQyAZIZbt06zSomzBrPf0CDTEVsxeYJQtNNSKRqMLBvN42aRx7
-	nPlm2atDEeKHyhQh732yeCdRn6duUHlL7SWB9mdF+nctYEe0d+Sk2Jp2p1RiTtmWE0IL7j2jiJS
-	TgSn72F4Hmyto/kAr1wzEUzbmWkRFXDK8p4YU/SMxGA0P6UXBrpUIN8wJ6NdtAepkZOGqVtJE3x
-	zNfjGhNnw6
-X-Received: by 2002:a5d:5d0f:0:b0:47e:81aa:3822 with SMTP id ffacd0b85a97d-47f8d760694mr8193784f8f.42.1784886716194;
-        Fri, 24 Jul 2026 02:51:56 -0700 (PDT)
-Received: from localhost ([72.255.58.127])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f85b9a60asm23320630f8f.3.2026.07.24.02.51.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 24 Jul 2026 02:51:55 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 24 Jul 2026 09:51:52 +0000
-Message-Id: <DK6PJ7XQ7N5A.13FN4A33JJOA9@gmail.com>
-Cc: "Arnd Bergmann" <arnd@arndb.de>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, "Mike Rapoport" <rppt@kernel.org>,
- <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] lkdtm: use kmalloc() instead of __get_free_page
-From: "Mahad Ibrahim" <mahad.ibrahim.dev@gmail.com>
-To: "Kees Cook" <kees@kernel.org>, "Mahad Ibrahim"
- <mahad.ibrahim.dev@gmail.com>
-X-Mailer: aerc 0.21.0
-References: <20260722230246.2869-1-mahad.ibrahim.dev@gmail.com>
- <DK5HY1IKXNC5.36QEPX9H8SUHB@gmail.com> <202607222046.D287828@keescook>
-In-Reply-To: <202607222046.D287828@keescook>
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LxqBLyNF;
+	spf=pass (imf31.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Fri, 24 Jul 2026 17:57:15 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784887056;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gtzI0WrHpPQ8NxhzSfdbFVkPslhXcvXb+1WfK67Ct6A=;
+	b=LxqBLyNFCuRzvSTEZvQ+k7G4esSrSkIg3NL0E6nP9CWPApkKEhtzDaDQM/QTeJLcnFBqVl
+	oHxoQs49THjbvWSHHm3yBfJq52vZKB1Sr2HHwBpnppRGMGUcmb7Xm6Swk5s6TktpmIskll
+	agvkNhLDpxuI1IL7m2PtL80iYRQxKYM=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Li <hao.li@linux.dev>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Harry Yoo <harry@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Alexander Potapenko <glider@google.com>, 
+	Marco Elver <elver@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	cgroups@vger.kernel.org
+Subject: Re: [PATCH v2 13/13] mm/slab: stop allocating objcg pointers when
+ unnecessary
+Message-ID: <amM2ybmTYfjlvDV7@fedora>
+References: <20260720-b4-objext_split-v2-0-2fa7c6f60dbe@kernel.org>
+ <20260720-b4-objext_split-v2-13-2fa7c6f60dbe@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260720-b4-objext_split-v2-13-2fa7c6f60dbe@kernel.org>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: E9F49120007
-X-Stat-Signature: 6fthpbosa67ayws8unqqcbzrc4gg1ykt
-X-HE-Tag: 1784886717-56919
-X-HE-Meta: U2FsdGVkX1/30aqlHXhi1JhT1iJIndHcl430+4PcyBjHLQaKAHmgZNVdvUq8DAXX+eAHl80oUqVFaN/MKykwKc+Y+EH874R2pnOgWCm+QTh9QDMqkhbU8rnen4vOkOi6x7XIO4JsY2+lQOTIWNQJ8bdX30YPd32jDE1J331bw2VkvsOZ5jxkroCDbL3lTjReX9mb38F0c7YbJxtJZJ/5tY15+4qbviPbU4g+tXd3zqXjGH0yYob1th5wHwWnmFfK8eKZqvKqpbHttm2WaKh3rIN8t0I0At1flRonD0WVNYvAVRRxglrt/rpOb/9b+CkXEy+ZOqEALyDBgRk1zqtZm7myjWaMWbnlxkthD+7j0pfDO/naVZRJukC8BzVTcynAjJXnw5fDhbCFNr0Ebe1qymk9Q/BgMbhB9500CLtKrQb1S3/Q1Tb/hPGqwXikkbVj6h3Odg9822lHe5Un2ul5+jy1hcuWzLr7aocIb2A/tPKKKL6el9+LYNUDE8q81lZZ76Og0nl+x7o2lwCl/RDYLN5HYilK0XBNJt4pv2W4O/6gPCIeET0iSC59CQo3LkDCoEs7Ui9oskh5r6KHgVOJTYJp5FgvhD3U6FcXsoXElQibxlGykYmwSkK77+Nh2TIgtbUY5gN02wLif4KRx9EDgH/fVP8Sr1DJnUdEZ65u+EDPgi+3ve88MrwGTmscj084FGuXJbgWXQWDjgx6ISpU7mP2ARqKIoVFL3L+wvRFp7adEO0GY2R2yj2S0XrjOplkLXv+mWWHQxycm6h1Hn36vO5lxzFRu9tfLYsR0nKIniffVTm1pOfDn52xlDy+nhGRwL1RBkpxHp3vRE3VbP8nJ8wTdSqCG2Pj/tvnkkXEUyh0GqgWWV1w+YvFTWTo0KXcI/yv1A2KWZeA+bCndIU/jExoCI7hWoEoipu5Bixk2XGiK3CmLoYn3W4IPTiJRcx7Mz6mCHzYTConKyEjIR8
- C83qJKmU
- 90CfLYE9pZM5NuMGyzi9yEs5Q9wYZbren2zMCH3zzN70BpsAbSR5U7j3CK2X+OUfQqR57i4NBtiTpOKlfCqC4MeG3UDKv/oUXmBC8P4S1wsJkLVglIth+qvBYlv/XoniwFKnX6gZhaNVvNCTuGG9mUTFE9+Angai3QpiAXvrOnf6jCncPAPdj/dcB1tyjhuS/7V8rAv40txRdzZdj+gc0ERlWuQWXL8GdT87fT32j/Lc14LE37QC244AwcFSHFhOBFokc/vEn9nMAU0O/9hVQVVGwK2Zjs8YYZ0usAYsuSxRQZFo8Y61AzlZdsbxdOtXOI5SX6/HGg7OEMFnkobFnD5NzRdkO6zRTkaUyfPhEpek1N4sVYPtCt4NiRoWrzIIuevToJyB935731e357krNa/zFMb4d6KC7f6SZPXB7Ue4LSRj/z1gXtjxUX41eo5ZYRXDe20SrgNthHLtF/0pH4a+ZQ0k8CouYlI1ECNUlribhiFI9tlQgIE4QLbq5zNMU5Xc5GbwmeV/EoQevTityRr8FNkSFaUcT7sxMCH2j4LyNonznCyhwtDXiXNzxRR7VUYK1bFKf9v0Y1TbcvBXLTKupyg==
+X-Rspamd-Queue-Id: 7260E20003
+X-Stat-Signature: 7hmqn94uqgxfjzfiru595bq9794pdzbi
+X-HE-Tag: 1784887058-163928
+X-HE-Meta: U2FsdGVkX19wY/mTOojvZ7z2OPirwQTJuwvirmd94wk4z8vNPogyRiqGk08pHrUWD9foWb68VmBW5cvL4Vv2KUSv9YcViLI+JqPWXXR14t0+r/nbIrmK8DHiULBP+2WDWn2Lx+7vzmWapld3VszQCQAwY4sGhi7tTG0ZcYH6L8KtGvxuNLKWnMyxWn3m72HE1lVYnoVzzUgo080KZqhAIRGcbvH/pEU2epHIYZqK4fNujUAl9Feb2+/tKMkHpMVmJjKRBAXxSQf71U7Pcn3sTdsPhWFF/mlUK0g5+6jTCTFekdKksX9pZTx4pWWuHnQ3/ypu5gZQsQrOnKSJ8gVBOzF/hpEzIpkllej5xlcloAXXPmqEeZEpOIToEdgHdhqdOKOybNM3AWVOuMzKxRSKffIOmtCHt0V5S0eNJ9jwycfX95jS0GOvmr1juM8rYpFzAm6ZSlTWTcY+svqZZtvdqULv/M/qKzE5NUp+sJzbd/MUtyWd7N1Q5WpBAXHvkjVV/R5Vl0DGkI39svoHpG6Buh5P/3Pq1ie/FYtfeyFhSpJ/GN4oHjA1AiqrP7sEzOBSa2XQwTCzP3B4qYxkUxsP+M27EMWX3sHQIePBDT6jq23oR7Y5ggYwv0k23pvUylSCSFMN0Vie8Jf06FC4NAWtunFB9P6acfuzxbM+XumgKb+hXogo5BZc3w/3cW4V80+WrT9iThJJzO5OgORXosvZyVIWe9s3A9sKakC+LVyCv//votfoq3fceS4bzI47zxmrhscwlBDP5rAs09i7IGhjfrw3Zo/IGVQ5kniqJMZt1GFWhq1IWTGmlcwpzCjysKqodQ3OE7T6oW/P3XttWSZrQ75OMUs4ro8HI7auejplboNe54I3EHBLW5dhG8XzUIwZCc6IL2n5hPbXvgkMmjTlIN1mw/orMuloV7fJHiVjTQK6X0L4nEac5fmBYRkF4Dfm3Of4QekTgdYPWa0O8KB
+ FDzMsiSa
+ h1VhA1sbvlN3wPrJhbNACnhUCzLRKuMJ/0itzxL9ec1zasMVdL++VAjkgTeT/53ENlcGvk5ZJP0+Tgs3dxrunM+/70ZS+DNVGycaraChmuOYappG9Bvldl+N8m7oN+qHbae5TaFq26/Gu16dzG9crt5BEsOa97ETfIjoOJiNzVVfeJTbzWHqRx+CuCaLGCngUqRw4m0lz8EvZpIzIn9ECfMGgyOzzx+R/KhIoq0sXHB6asBxMtlWVp/8UzavHwLsevINjmy8ivWjwodkZxypeBBQcFQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,13 +92,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Kees,
+On Mon, Jul 20, 2026 at 04:16:27PM +0200, Vlastimil Babka (SUSE) wrote:
+> Start using the slab_needs_objcg() helper to calculate slabobj_ext size.
+> Caches that we know to never need objcg pointers (currently
+> KMALLOC_NORMAL caches) will thus stop wasting memory on them when memory
+> allocation profiling is enabled.
+> 
+> For things to work properly, we need to also add slab_needs_objcg()
+> checks to mem_cgroup_from_obj_slab() and memcg_slab_free_hook(), because
+> when obj_exts array exists for a slab only due to mem_alloc profiling,
+> we would otherwise attempt to access a non-existing objcg pointer in
+> that slab.
+> 
+> The function __memcg_slab_post_alloc_hook() should not be possible to
+> call for a slab where slab_needs_objcg() is false, but add a DEBUG_VM
+> check there to prevent breaking this assumption accidentally.
+> 
+> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-Your tree would be better.
+Looks good to me.
+Reviewed-by: Hao Li <hao.li@linux.dev>
 
-There are no dependencies, nor is drivers/misc/lkdtm/ in Mike's gfp-to-kmal=
-loc branches, so there would be nothing to conflict with.
-
-Thank you,
-Mahad Ibrahim
+-- 
+Thanks,
+Hao
 
