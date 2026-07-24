@@ -4,140 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4D91C531F9
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 12:57:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06731C531C9
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 13:21:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A81F36B008A; Fri, 24 Jul 2026 08:57:52 -0400 (EDT)
+	id 901356B007B; Fri, 24 Jul 2026 09:21:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A59456B008C; Fri, 24 Jul 2026 08:57:52 -0400 (EDT)
+	id 8B1F46B0088; Fri, 24 Jul 2026 09:21:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 96FD66B0092; Fri, 24 Jul 2026 08:57:52 -0400 (EDT)
+	id 7C86E6B008A; Fri, 24 Jul 2026 09:21:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6365E6B008A
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 08:57:52 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D67ACA0345
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 12:57:51 +0000 (UTC)
-X-FDA: 85023672342.05.B583A5C
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf30.hostedemail.com (Postfix) with ESMTP id A678180002
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 12:57:49 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="tpg/AegW";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=wYjmyrL6;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="tpg/AegW";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=wYjmyrL6;
-	spf=pass (imf30.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D1D26B007B
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 09:21:11 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D30DDA0B25
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 13:21:10 +0000 (UTC)
+X-FDA: 85023731100.12.7D46632
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 816E0A0013
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 13:21:08 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Lr0qAArm;
+	spf=pass (imf15.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784897870;
+	s=arc-20220608; t=1784899269;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jwqlQxogPnZR3j3vZatDYSH4YbGvS2weAZ8abPdxsk8=;
-	b=xuIBVgwKsGlOuM0Za1NsMiPv1A+8w6UMnS1g5THDUA7YwOSILqxBwl/r2PQvvOIyff5xG0
-	LyMN0VG0C63K6AQnw2xfuI8uLERGLfprBZii6Z+g+L19APZZAf5qt+Oo77yF3Gf2k2bCyI
-	ccweUzYHpnTwO9EPeDWTteL1r+s9WlY=
+	bh=B1sCc/4/2+c9lGryyMIrT+t7xrQYTOS4UkDA1UHfcbk=;
+	b=b8JuhqcPiJV4fIbgJs11Fir4lQqHJr5Mj6lpZcP2hhnhPe8Fni5/xUQJF2yVnP/qq2D5pg
+	M9Y3F3DkgrIUvoFVNzBF3+mwdBEVpMECIfVYwE6tqVPPPoMowshYqpx+1ah/YoDOOgVoGU
+	1p/jVUW9UiMmwL3TS6Ol12mi0vONdDE=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="tpg/AegW";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=wYjmyrL6;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="tpg/AegW";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=wYjmyrL6;
-	spf=pass (imf30.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	imf15.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Lr0qAArm;
+	spf=pass (imf15.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784897870;
-	b=UVx0WQ5RoLrNyXJnkhIcFGxbwJJRExsVA6DiPr22QqJ0QBessQCgTgdHaCapHRnaSmVM4Z
-	xvnkOZNQ+D4eyck0XxbNnj8A+tjd/4EjyEXi/AcKYRB+mcVnWJAOX5rRBAa5p3YSeU850q
-	LwSne/tb1VkaHo/nHbr5rdHeCN1EnaM=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 134753ECD;
-	Fri, 24 Jul 2026 12:57:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1784897868; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jwqlQxogPnZR3j3vZatDYSH4YbGvS2weAZ8abPdxsk8=;
-	b=tpg/AegWEEyQF9NL3NQe2dNMX5JujfVpqG5fC1Nc4EXxmT5E4LtC5ahHxaM7OXE8D40XUV
-	VwAZMPotr2+KQx5XFISeCjDTQYMCrKsvycbLLpqToRj5oRBo2zDFi8rrdj5ato0KWxXq3e
-	ItdiDPtlV2Mms3c2Gx90skTbZ0vvBXI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1784897868;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jwqlQxogPnZR3j3vZatDYSH4YbGvS2weAZ8abPdxsk8=;
-	b=wYjmyrL6U3rCCRtwBOXDHGnCz5StpbG4eKz69wfh3VCRU/PAF30jeR51gKTW3uKue0JZgm
-	86ndZlfes+8ZpGAg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1784897868; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jwqlQxogPnZR3j3vZatDYSH4YbGvS2weAZ8abPdxsk8=;
-	b=tpg/AegWEEyQF9NL3NQe2dNMX5JujfVpqG5fC1Nc4EXxmT5E4LtC5ahHxaM7OXE8D40XUV
-	VwAZMPotr2+KQx5XFISeCjDTQYMCrKsvycbLLpqToRj5oRBo2zDFi8rrdj5ato0KWxXq3e
-	ItdiDPtlV2Mms3c2Gx90skTbZ0vvBXI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1784897868;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jwqlQxogPnZR3j3vZatDYSH4YbGvS2weAZ8abPdxsk8=;
-	b=wYjmyrL6U3rCCRtwBOXDHGnCz5StpbG4eKz69wfh3VCRU/PAF30jeR51gKTW3uKue0JZgm
-	86ndZlfes+8ZpGAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DE4F0779BA;
-	Fri, 24 Jul 2026 12:57:46 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id hn4FM0phY2ogBAAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Fri, 24 Jul 2026 12:57:46 +0000
-Date: Fri, 24 Jul 2026 13:57:45 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Muhammad Usama Anjum <usama.anjum@arm.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Zi Yan <ziy@nvidia.com>, Ryan Roberts <ryan.roberts@arm.com>, 
-	Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>, 
-	Anshuman Khandual <anshuman.khandual@arm.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Samuel Holland <samuel.holland@sifive.com>, 
-	linux-s390@vger.kernel.org
-Subject: Re: mm: opaque hardware page-table entry handles
-Message-ID: <amNgK4WYP9yZe7iM@pedro-suse.lan>
-References: <31d36023-d728-4eee-90f8-158c7066f565@kernel.org>
- <e22407d8-4509-4a53-9ba4-491b9d5c5ef7@arm.com>
- <4bfeb697-9c1f-4316-96bb-9bfd66f959df@kernel.org>
- <6110202c-057b-4701-8c04-1a76ee7bb9ab@arm.com>
- <20260721124057.2820903Adf-agordeev@linux.ibm.com>
- <3c21586c-0ffe-4ebc-97f1-803e8acfc5c1@arm.com>
- <716f73c1-41cc-48a5-b0e1-a47403a30da1@kernel.org>
- <47b4e62e-b001-465c-9c3b-ea0636925387@arm.com>
- <amMvuPZ0tglCoi1M@pedro-suse.lan>
- <67ee9da4-cbf9-40d1-92c7-49710fb15f1d@arm.com>
+	t=1784899269;
+	b=Ri8UmlFNIOcHHdDEghEzcEtbfH4XkO6oD7vl/sIoup2fV6QzEB6a9AFeryR/+Q9x8UC4Yr
+	y3ZJGBIHx9ZoW4dLK5dFkHlonB54kF58vUk5QuN4Wo7PlRbembdMb+5Y2qywJzMLNKcYas
+	AidTTGEXE8C6QDa8UI8XW87v3zLDV1U=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=B1sCc/4/2+c9lGryyMIrT+t7xrQYTOS4UkDA1UHfcbk=; b=Lr0qAArm/6fzGDvHy+WFibQPFT
+	H4P7PEcDF7n5ILR+emVLh4kAJdiZiQ4FCxf/S4iCdZz79LfMHlcEevk3lQkvCyzMDMs70FXx+HBQ6
+	qlOnAagDuOqQDAj1HD5cCLfucV8qN6GsZm1l6Pq1DQ3S57AmsdlZIa1q2wAUgkHXjJkIDFGHLZSzY
+	q8H9FAD8XXcEBUvFHuX4jL2v4MWT1pB3c/mKzZAficbtwGTfXzxqynN6EqL9koZGpbc2Km7b8t7s9
+	QZj/tI8UgrygUuej7T17juSh7ycCf13QflR2CELqhChJAe292dAACVmcbLTzHBIHpeHGGRjQ/cxXb
+	e1X/mf7w==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wnFpm-00000003XfT-3Efs;
+	Fri, 24 Jul 2026 13:21:02 +0000
+Date: Fri, 24 Jul 2026 14:21:02 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Jane Chu <jane.chu@oracle.com>, linux-mm@kvack.org
+Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Jan Kara <jack@suse.cz>,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <christian@brauner.io>,
+	Jiaqi Yan <jiaqiyan@google.com>
+Subject: Re: [PATCH v4 07/14] hugetlb: Use the has_hwpoisoned flag
+Message-ID: <amNmvtOLZxEwF-cg@casper.infradead.org>
+References: <20260723143034.175661-1-willy@infradead.org>
+ <20260723143034.175661-8-willy@infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <67ee9da4-cbf9-40d1-92c7-49710fb15f1d@arm.com>
-X-Rspamd-Action: no action
+In-Reply-To: <20260723143034.175661-8-willy@infradead.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A678180002
-X-Stat-Signature: d34s6q3od8syrtc1zi3pnpx543x1cdqi
-X-HE-Tag: 1784897869-595029
-X-HE-Meta: U2FsdGVkX1/4Nm92ZN6KglSecPh8Hrjj9q2micaLryl1c5kyaJugJfRfnfDBEX95/+cZ/NL5FgX3VIVsGlKrHKby1kaDnD1aXB+Y/KO2QE5nydcHG0dQPDLVWioPzGPo8jBCXoqtAMRY8ATjTgGNVU77xo8lIAuAMZcTWW2y0e9FDlaX4BKlqPspFiyMZg9CzuhtmW/mYiISimg/rjIO8pH8R0b6QUIN+s1Eb7I9S+C3FK3NU2FwluJD6XC1xp1wS61Zvl2dgryGvYBpN3CoUdC922tezUoNAl4gSVcHYQyTI5CbH3PnTK1/CZRWbRh72vChqNwLmUe6lwiHt6POIZ8FbjV1NMSkgpft+Q9T8fm2IBIgktws/WVeCg6KB3F3qUUbpgpaMUBe7DUemZpCuf8nIeVK3vcauO8KhdPniwl1GHZgAi/YrPhUV2g/mpfhueMq8u2VpU4bpjzOnOJ3LAV1i63/oEkt4tvX0EDNIi4UUm1hMYYKVqJv6YKptD7PE/mKAva9R6u9FplSNclESNXQxQ/G6oUmfmzL4zZWD+jQWVbEidV75Fz5oxsr73QnUd8cwd0mjOaXxEdBMTr0M8nHibOzapnkCgHF+SON+SjpmJkWZg+qygeYzcxUo5V+M2fRnrH0cyMFAGMjBl3zlibdCpG68OE9KFYvV6dUfM8jENC+AR462E7V091H5haBNo0K7PmgLmhG0gmgEAgLC4rxWmGSBnJdFJgUuse0Fb5+I2rUt8VLOQ6GKNcl9rFjdy22hcC/arNoqoAT4cCk2TZVabtU54TYBAxwqQjE3ysGKpoRJx1JvsStyJMqTT6ajzpQT+8UeqcruZMYvi1vKfvJ5sDBPfw+/tWdb0X9sDxY3MWTrU8S8bDpTbj8/FR+7J5YbwJoCs9p5TSUqzE8rvzmo3AVpiqISxi7xTzkBT+lJ0g5IBgTGwHhUeRECnIt7Onu/qWJcMmPo01wM4p
- xktcLt4U
- w1yyciHUVKknieOdc7Kq+FIAFQCFqQ5wL5Ag28H6q7CZmJ4AGkATC5lfbNqXgV8T+FZvpQg2ZExztw/Fwn8qbZtBqnm+rDbXuvIZ2mvob7GdUY7N+HFLL/DamINIJp/s8f3kNVA4GNCuEm4cYd8V1bSwOGp3ohgHk6d9qaZPBkBsM7isCB4+eCea428Kqvosqo/pFBkZiaT/oE4eVRiOV6ueHCJuYXJ+hgu8euCCYwwxcMcejiwyIMDj79AVN+DeoJ5AOkKqTvIsLEgQ=
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 816E0A0013
+X-Stat-Signature: r68x1uqki3oacuzzhn7tbqbirh6gxhun
+X-HE-Tag: 1784899268-924720
+X-HE-Meta: U2FsdGVkX1/+bs9DTSHFkxkBYUBthMc3Zf4gNW/s2nGsGnhUxwhv/43z9AG/79O0Nlg1Q3z+doJzPGL6DOBpu7qXpHBqrxz815dtxcgXzYklnFZJu5UPOyA39FhBA06azJWn5MO4U/mw1fHnTSFm6ImA3Dn7PE2sypGHXjj/xHuIqtMspbInT0TRhoxjRovUGkTyoVBl0YFpdPdFF53fvmY2P5+9g1V65uemcoesGlihDBUDzXcWp4FP4rNnUy03Ay+rOiTFyuIX89GXEH+wMq7+00qcGANd3FMKVGKht7oDGArFUZ+KPiXLFmsdth5DxYdDkP7ijFVEbFXEzIARo/Zdaa4toUPqWaoXhkscCXjhAgCM2Gnwxw/L8TJ+b78mPAQY6wCdPKhoMJ91snjpW8z97NbTJn64qimuqcZKhoPQceSYo1zwJ4XOWYjVPZBJdyJwHh7D0wKdrQTpf8Qk5txVm/Ol8wlM+7HgLn2Ppy1JNYOl5VwZu2WsaB+2ks7vQgvivehAq3p2Ie1qVil6lgt/IYQv3/TUFxfeT4Wpq+ZrKNOUXPPR4LhAtjssgUds1In5FmJsiS3myoEYr9ROoY2sKhyo4XvgySI37hZpE2liezb/MTWr2FjphSuWQ197W83jLXh4+fM1ymoOLEcJpoTbxVlg2YljnwcJx2VPkH+g5UpK29y8AG445hLH44NjuJ21pkTuaBr+SZkQMVTwLhjSm/+MsAa1Y+4ZeHh8dtbJIQUesw5kSbNpOeYC84E/rEELEQZx4ZGgFV5QjPmz8Zjv37JalPyxb5sKlgI+tep03rQg0YKS9+R8MdN3CcD3fNkad2q80NxF7kFLCT8/PR4WgXt7+wZjHEnSir3gI9Yukne7XuJDYbwMkATzIwFPgMEAbMHk3pcULEbK8ycsW84DrPHGCyVPFiP6Qa5xhyAf14CWO/nc5OBVItFsyOTcpj5HvfNuf0ljk3VqAJw
+ vDvEFvJg
+ TJ1KTX7DtIzKVBtVFNkZepEsgceaEkb8mMvHm6Zl0JoGhylzoSVEv+PlJRJDFGYIaeQzsI8gVM2BqiFiscRFkNPeG5ollGGH+bnVSPEeaDq6rOSI+zg0hu+NoDbToxTPkhFEW4u0LyWNaSIQ5lR6K+C1lR8YvOUsH968TCwV1FuGb6LkiGVR/185T+6G1I4hEXjhECA50dS24z4PFWAuOyzEQMvG+LpOlKDXm/cwKDX8u9dAxWi1eoVk30YJa78Hx4UEdlSCWaxNzLcPasLSEhdwqZseswtfKEyI1xBfnxy0LtDbQofIbg8DgBU10iKo6qGhrmRN7b7u91D7JewKCc+12Tu6Gv/nvtjCDO+qi10F7Mn0GUALDQsYH0RE8gb//LlWRJ1VqBsGcRyAmSMWVHbK2pJQ2h74VyCnB2HcKlOneGcTdGEMNr67a1uNSYz7cJBMdjkEGn5Cl4po=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,71 +95,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 24, 2026 at 11:34:52AM +0100, Muhammad Usama Anjum wrote:
-> On 24/07/2026 10:30 am, Pedro Falcato wrote:
-> > On Thu, Jul 23, 2026 at 06:01:49PM +0100, Muhammad Usama Anjum wrote:
-> >> On 23/07/2026 5:38 pm, David Hildenbrand (Arm) wrote:
-> >>>
-> >>>> So after the conversion, it doesn't makes sense to keep STRICT_MM_TYPECHECKS
-> >>>> around. Please correct me if I'm wrong.
-> >>>>
-> >>>> This brings another thing in my mind that in ideal world we would just
-> >>>> turn STRICT_MM_TYPECHECKS on for all arches all the time. But the problem
-> >>>> with it is that STRICT_MM_TYPECHECKS defines pte_t which will stay double
-> >>>> meaning still. So we want sort of STRICT_MM_TYPECHECKS with different name
-> >>>> and separate stack and hardware types.
-> >>>
-> >>> I think STRICT_MM_TYPECHECKS is also to avoid catching when passing a pte_t into
-> >>> a function that consumes a pmd_t, and vice versa.
-> >>>
-> >>> STRICT_MM_TYPECHECKS makes the compiler generate worse code today, which is why
-> >>> we don't enable it always.
-> >>>
-> >>>>
-> >>>>>
-> >>>>> We would like to keep it, and I guess some other architectures too.
-> >>>> David had summarized it well. We'll convert generic code to use hw_p*_t
-> >>>> types which would be typedef to p*_t for those architectures which don't
-> >>>> care about. But if an architecture wants to interpret these types
-> >>>> differently or want to make sure the type is enforced and not directly
-> >>>> dereferenced, they need to convert the arch code a well. But it can be
-> >>>> done slowly.
-> >>>
-> >>> I think what Alexander meant is: they want to keep STRICT_MM_TYPECHECKS (or
-> >>> something that achieves something similar :) ). So as long as that keeps on
-> >>> working, all good :)
-> >> Thank you for clarifying.
-> >>
-> >> It has been a month since I started this discussion. We don't have any
-> >> disagreement on it. Should I proceed to post first part patch series considering
-> >> most people must already have viewed these emails and are on-board with it?
-> > 
-> > Besides the vague disagreement I have (about whether this is worth it or
-> > not), I have an actual objection: I've been doing some constifying of pte_t*
-> > for various reasons lately, and something that just just came up is how
-> > hw_ptep will _not_ work with const, unless you do something like
-> > const_hw_ptep, in which case welcome to Win32 programming or something :|
-> > 
-> > (I'm assuming the idea still is typedef struct { pte_t *pte; } hw_ptep;)
-> We have moved on from this as it was very disruptive. Now we envision the
-> following:
+Sashiko review:
+> --- Patch [7]: [PATCH v4 07/14] hugetlb: Use the has_hwpoisoned flag ---
+> commit f67cbd0b3ba7a67258490d423b9fc8352cb972aa
+> Author: Matthew Wilcox (Oracle) <willy@infradead.org>
 > 
-> typedef struct {pte_t __pte;} hw_pte_t;
+> hugetlb: Use the has_hwpoisoned flag
 > 
-> With this, const wouldn't be a problem.
-
-Ok, great!
-
+> Other large folios use the has_hwpoisoned flag.  Convert hugetlb to match.
+> This will help us use the per-page hwpoison flag in the future.
 > 
-> > 
-> > Have you tried sparse instead?
-> We want to ensure safety during compile time. Without going into more detail,
-> more features would be build on top of this type conversion. 
+> > diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> > index 18691c905ac94..4200deab2c3c4 100644
+> > --- a/mm/memory-failure.c
+> > +++ b/mm/memory-failure.c
+> 
+> [ ... ]
+> 
+> > @@ -1874,6 +1874,23 @@ static unsigned long __folio_free_raw_hwp(struct folio *folio, bool move_flag)
+> >  #define	MF_HUGETLB_FOLIO_PRE_POISONED	3	/* folio already poisoned */
+> >  #define	MF_HUGETLB_PAGE_PRE_POISONED	4	/* exact page already poisoned */
+> >  #define	MF_HUGETLB_RETRY		5	/* hugepage is busy, retry */
+> > +
+> > +static inline int hugetlb_set_poison(struct folio *folio)
+> > +{
+> > +	if (folio_test_set_has_hwpoisoned(folio))
+> > +		return MF_HUGETLB_FOLIO_PRE_POISONED;
+> > +	folio_set_huge_poison(folio);
+> > +	return 0;
+> > +}
+> 
+> By replacing folio_test_set_hwpoison(folio) and no longer propagating 
+> PG_hwpoison to the head page, does this break memory failure unmapping and 
+> silently bypass hwpoison swap entry creation?
+> 
+> If a hardware memory error occurs on a tail page of a hugetlb folio, 
+> memory_failure() calls TestSetPageHWPoison(p) on the exact tail page. It then 
+> calls hugetlb_set_poison(), which sets PG_has_hwpoisoned but no longer sets 
+> PG_hwpoison on the head page.
+> 
+> When unmapping the folio in try_to_unmap_one() in mm/rmap.c, the code 
+> extracts the base PFN from the hugetlb PTE, calculates subpage as the head 
+> page, and checks PageHWPoison(subpage):
+> 
+> mm/rmap.c:try_to_unmap_one() {
+>     ...
+>     VM_BUG_ON_PAGE(!PageHWPoison(subpage), subpage);
+>     ...
+>     if (PageHWPoison(subpage) && (flags & TTU_HWPOISON)) {
+>         pteval = swp_entry_to_pte(make_hwpoison_entry(subpage));
+>     ...
+> }
+> 
+> Since PG_hwpoison is no longer on the head page, this check fails, triggering 
+> VM_BUG_ON_PAGE. Without DEBUG_VM, the code skips inserting the hwpoison swap 
+> entry, simply clearing the PTE, which silently allocates a new zeroed page on 
+> subsequent accesses instead of delivering SIGBUS.
 
-I understand corporate/business goals may be tying your hands together, but
-it's really difficult to think about your proposal critically if we don't have
-all the details.
+Oh; this is a good catch.  I have now reworked try_to_unmap() to handle
+hugetlb pages a bit better and it'll be part of this patch in v5.
 
--- 
-Pedro
+> > +
+> > +static inline int hugetlb_clear_poison(struct folio *folio)
+> > +{
+> > +	if (!folio_test_clear_has_hwpoisoned(folio))
+> > +		return -EBUSY;
+> > +	folio_clear_huge_poison(folio);
+> > +	return 0;
+> > +}
+> 
+> Does this sequence open a race window with concurrent hugetlb freeing that 
+> results in memory corruption?
+> 
+> When unpoison_memory() is called on a free hugetlb folio, 
+> hugetlb_clear_poison() atomically clears PG_has_hwpoisoned first. This 
+> exposes the folio to concurrent hugetlb demotion (demote_pool_huge_page()), 
+> which can pick up the folio and call __update_and_free_hugetlb_folio(). This 
+> function sets folio->page.page_type = UINT_MAX to return it to the buddy 
+> allocator.
+> 
+> Concurrently, hugetlb_clear_poison() proceeds to execute 
+> folio_clear_huge_poison() (defined in include/linux/page-flags.h), which 
+> performs a non-atomic read-modify-write:
+> 
+> include/linux/page-flags.h:folio_clear_huge_poison() {
+>     folio->page.page_type &= ~(1 << 23);
+> }
+> 
+> This non-atomic write can overwrite the buddy allocator's UINT_MAX with 
+> 0xFF7FFFFF. When the buddy allocator receives the page, it expects 
+> page_type == UINT_MAX and will crash.
+
+I'm not sure that it can be demoted while we're holding a reference to
+the folio.  But I think it makes sense to change thusly:
+
++static inline int hugetlb_clear_poison(struct folio *folio)
++{
++	if (!folio_test_has_hwpoisoned(folio))
++		return -EBUSY;
++	folio_clear_huge_poison(folio);
++	folio_clear_has_hwpoisoned(folio));
++	return 0;
++}
+
+(looking at Jiaqi's patches, maybe we shouldn't be clearing has_hwpoisoned
+before freeing the folio?)
 
