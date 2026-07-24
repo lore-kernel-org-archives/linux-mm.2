@@ -4,95 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A00C7C531D0
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 01:11:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 239CFC531D0
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 01:34:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 30D786B007B; Thu, 23 Jul 2026 21:11:34 -0400 (EDT)
+	id BC6B86B007B; Thu, 23 Jul 2026 21:34:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 296EF6B0088; Thu, 23 Jul 2026 21:11:34 -0400 (EDT)
+	id B77B26B0088; Thu, 23 Jul 2026 21:34:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 162126B008A; Thu, 23 Jul 2026 21:11:34 -0400 (EDT)
+	id A66BB6B008A; Thu, 23 Jul 2026 21:34:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DCE836B007B
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 21:11:33 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4B8A140259
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 01:11:33 +0000 (UTC)
-X-FDA: 85021892466.23.936143D
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 2465380002
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 01:11:30 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Yakm3+hH;
-	spf=pass (imf02.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 6B5406B007B
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 21:34:49 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CC4484025C
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 01:34:48 +0000 (UTC)
+X-FDA: 85021951056.15.0CBE2D5
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf26.hostedemail.com (Postfix) with ESMTP id A29A5140002
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 01:34:46 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KLnKEKi5;
+	spf=pass (imf26.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784855491;
+	s=arc-20220608; t=1784856887;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sRSJBzhHabeY3v8/MCt6zskXys5KcGp37U7Whb22Mjg=;
-	b=jnARp4eRChXjB5LGs5i410YmmFyHIXPbpJ3VW0zFoftiqARyyTXlEDsG1D2YLKi4BqOsiu
-	yOoLj37UBNgNDrG3z1Ux6fPRRfHXEJ5E9ZUHbdJRQk17UxcI4exSUe6iXA8HWTCkmYVHnP
-	3VCg+OkYZlDhaVFOhRmPM/msOxjO23I=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=xI+LRT8kY6CDYQcWOQ3Jqu9CtuH4Lj/6FnUZ6ovGQIo=;
+	b=paUrJ7f55V535RAqXCN20aGprP4cQO+HmZBcmvlkGqk4THTjua52E4O4KZfTnBHrSYdQBz
+	klUN/5HDFzSaIt1uR4MD1/noTKpU7n4AkmJVGf8I4M0CAy+eK+8iV0CazCaljTZSAcjWzo
+	VmJXZx8GIWXrte2AXfLDMT/T2jlVkQ8=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Yakm3+hH;
-	spf=pass (imf02.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf26.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KLnKEKi5;
+	spf=pass (imf26.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784855491;
-	b=mNkJPYuCSWwZlOoQCpVyanuabEG4goqpqYMmNS9EVG5bPOCbspAy6Jfr0wuVIEApsb4aaO
-	sWo2LMBO+2HwEczCjrdKjq1aKVZRwYXfZT9WL7ffRoGHC62bX3rwDI6cXwD6WJS8At6voO
-	oy3wdO/cSFO3JpUmmdrGg9MRsx6DpUU=
-Message-ID: <5e8d124b-c96f-466d-8947-68cde3014a17@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784855488;
+	t=1784856887;
+	b=ZvT3kEw1t9eXvxi7WsoA9TORnEPjMz0XSys0ERbol8Q2H8pPNubPct7+IOox/I5SCYt33j
+	VSKoYEx0A8ki1pX57hjXV2xTZymRYJISwRmZi5HWvwjEummLgECjpZbBGU2P4IE59j4c27
+	8l3PUnujvrcwy3JyfzfYfkWe6/RR7V8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784856886;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sRSJBzhHabeY3v8/MCt6zskXys5KcGp37U7Whb22Mjg=;
-	b=Yakm3+hHVWosoKkIcbUWUVD0bxF53ix1pmcMT+x6uqW2PIiszrBGMV7Xtpxg3rrlMbvLuZ
-	dHiedtkB5Ia35jz7DP36wg64XbLQi5ZvAuLhCiA7tY3NkSIJRuoiZxG2M7ZU3aZ/i8NA0p
-	+jApLnlffCMhcMdPjHOj+dyomlNsxu4=
-Date: Fri, 24 Jul 2026 09:11:18 +0800
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=xI+LRT8kY6CDYQcWOQ3Jqu9CtuH4Lj/6FnUZ6ovGQIo=;
+	b=KLnKEKi518Rmq5EFToDU1zShvbf1PfF4mFCXFKj0QT1+9NLBTktzQXmzxwVpu9H+EA6t6b
+	8rjh5WKB14tOsgknkKnfYTpyzkPF3Ux5eCrPObC388Nh3lv4UQl+2av0BY+Lo2rjvzNLNq
+	5qNnXFuXKOT2Udf4Hhmp7ESHU7fFUwE=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-619-7wbqbz5JP3aw4mhfj6tAXg-1; Thu,
+ 23 Jul 2026 21:34:40 -0400
+X-MC-Unique: 7wbqbz5JP3aw4mhfj6tAXg-1
+X-Mimecast-MFC-AGG-ID: 7wbqbz5JP3aw4mhfj6tAXg_1784856877
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BE5CF1944EAD;
+	Fri, 24 Jul 2026 01:34:35 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.22.80.238])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 61088180059C;
+	Fri, 24 Jul 2026 01:34:30 +0000 (UTC)
+From: Luiz Capitulino <luizcap@redhat.com>
+To: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	david@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	ziy@nvidia.com,
+	lance.yang@linux.dev
+Cc: corbet@lwn.net,
+	tsbogend@alpha.franken.de,
+	maddy@linux.ibm.com,
+	mpe@ellerman.id.au,
+	agordeev@linux.ibm.com,
+	gerald.schaefer@linux.ibm.com,
+	hca@linux.ibm.com,
+	gor@linux.ibm.com,
+	x86@kernel.org,
+	tglx@kernel.org,
+	mingo@redhat.com,
+	bp@alien8.de,
+	ira.weiny@intel.com,
+	hughd@google.com,
+	dave.hansen@linux.intel.com,
+	djbw@kernel.org,
+	vishal.l.verma@intel.com,
+	dave.jiang@intel.com,
+	akpm@linux-foundation.org,
+	yintirui@huawei.com,
+	ljs@kernel.org,
+	dev.jain@arm.com
+Subject: [PATCH v6 00/14] mm: thp: always enable mTHP support
+Date: Thu, 23 Jul 2026 21:34:04 -0400
+Message-ID: <cover.1784856856.git.luizcap@redhat.com>
 MIME-Version: 1.0
-Subject: Re: [PATCH -v4 0/2] mm: vmscan: fix node reclaim ignoring swappiness
- parameter
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Muchun Song <muchun.song@linux.dev>,
- Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
- Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
- Youngjun Park <youngjun.park@lge.com>, David Hildenbrand <david@kernel.org>,
- Qi Zheng <qi.zheng@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Davidlohr Bueso <dave@stgolabs.net>,
- cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Song Hu <husong@kylinos.cn>, Ridong Chen <chenridong@xiaomi.com>
-References: <20260723032434.2016749-1-ridong.chen@linux.dev>
- <20260723173418.010e38f655f83850d92c2c8e@linux-foundation.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Ridong Chen <ridong.chen@linux.dev>
-In-Reply-To: <20260723173418.010e38f655f83850d92c2c8e@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 2465380002
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Mimecast-MFC-PROC-ID: oz-J0qsGsHJoEE9GHvSs_rViWdoRav3y30QjDtEPX_4_1784856877
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: gj9wpo3twrr8iatpoo6uetm1r5rb13ej
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1784855490-891671
-X-HE-Meta: U2FsdGVkX1+N08gPWLYkHJzcTe/UYA0oTsEQYVNQhfRrCbgXbEfEOQUr/OM4LUQNeBZUjIgMTfEP0jpYMVTwzhYs4e1x4NmUXtiGXuWQSS/FJTqhaaKp3eZ6lUphyR6GN46X1a95twgkcQUGzdOXaa5Ol9U60AVTckCzVHcGItcotmi5lqeZwpVy2iiussRiksJ1U3zWHs7EOBYSvGKhH7P6HtBpyfkDyHlvu2aA9/2+8GGYmCTcBhKWDVOHlFV6MM/mMPMmmqymMlWt/CbXfvpHEHAfWjAbQKPUkV70w7SY3LEO0ucx9o5Wf2C+agVqL7Ug1PvYpZ52lZJewdKZu2fYAAQs+a5HjlzksxvrOtpuhrTh6o4EEKSco9/phQsy70hcyMSPFW0oAVulXc0a3Jg2hUSRkWRLoqdl91wFIQ7Y45qIK8IslxtCDNIEWqVOlwHDy+a3wN+ubfTErek8OxX1D7WR99YBAHXFLkpBW83VMf6iMu6MRnTfQIhrMZ3KNrMDBTVz40LpXD1yT0f+ED8CTH4XGdbKYTPvRFdekLPhJsRe+b1oQkeS/odxsqJRxLTEgV1uuQA74X/gKbz4E9sVE/VoxjZCePq1V8YlUIytkBcAk25ChqJ3n6YWJogx31CqgAGwAWsjEJ6Sc24GQx9geTkMVl1FJ5mRoYZgVzSFZhu0DvWStE+W7ba/RGDuhscKBIv1Yyww+T2/JbDS65hl0vqojFGLY3G4w04tCSQ+mqXBinErzDy2cDfZD78ES3svY11yVSR8+Sv8QWs2hiMxZ8prCHfD9tcJJf27eD9MmdRC+yHzRf3zQIkbfFzGSGJDCE8Pd9lOiTqdIClc4/a5Tlymp+N0GVsXsDqnCCJFwuxXcfoUMEqji87YrKSNC0J3Z6zfLrVzkTNRdRRtwGt8EN8Y802mN8NYIB2TF5qst9ZrkVphn1e5VYHDRsz5+I2dJG++E5B1Me6+heX
- 90n2iaz5
- +K0NVp/SrQotw9352PVEFiBzujdkLmLXd8IaR8mbxryizp5O6UuTDIw81o7AHkxLlcYeAKjM910r3c2BKO5DVNJ9qsuSTJ5LlZSzTsfdSAMqGAh5UYkxNI5ldv1H/dFlQSmJwGB3ZP2xPIc/88MvJD8qi6N77/fXowJtq1S0eOvSIQPwtUCrdtAHNGpKJ6ga1bUnW6cXv3x5TjhmXJc4PI1ACd1lcq4tchFgolcBEKbXwivo=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A29A5140002
+X-Stat-Signature: qt98bqr7khbjypwxgt8xfwdgtsug5njj
+X-HE-Tag: 1784856886-29690
+X-HE-Meta: U2FsdGVkX1+Y2LYtfeOoo1nxDWDx/1qbzsNFhECEXj9CVjvBbOau5XBAlLLgZ05RdJ/yijeXQB/DmkFe4fPpA1KHzteBviHcBjW0G7R0WzyfgxZ81gfh7jYneLBKWouxeVv9zNP5S3nLOKecW154CiZcQzQ4PYEchy8xaO/KMz/l7RhlQS7QNLigefJOwXbW9yP7CTKhFA1+KBygSautgzqOrg+1E7QjkFnh9EfNFn1FNPp9ClhiuSemc5Ty38bE+ALM1I95/PsECJSls5MStrQkWItTEWaP8463FZi0IyvGfJS75KFUiZeMusoO0wwGQ27UHoxpdplrUanddXahRW2w/eGUJhG7ODoTVt53JMReCbUl7h+ZZGL5fil8e6De7So7wk6L1DLRqS+4eCvJhCeKmmqvdumfutT/LtlOPYjvW0Dg+o4NQLC03xx0JslRgFCR5EGxkXWGxEmHgFAVZiLYCMDMCtJ1dUOnsAC/yH1b1ROc4BwrnAuqVt5KilhD7IMA527qqBTJng4sHUgKtcZDTV8RUCp+CmsAwSB1lyrXzaeavLZl7rsd6nwPYanaV5GQXS4PwkoMSD/wJAca+eVfFJVvLRe9cQbDYd/60939/MR9UPn9thJktP8VrZ1hboLejyfISEmPJvjaWcTUdo7hwktRAW7Q/FOf6wcKI9pnW2DNvDr+uPySuiFRHRDEAhW6zWwICX7aJHcYlyBD9O+oRTahkW1CgprEx2wfYRErRlY4fOLYtL8yI4aPDi31NWJQtHYdWg7piNieOHOA2yZyYTEt4mfw/JDw5KQYfnRM4Y441gCSk9eEWYBa03SptmZ1u2nB5w3jYMNzSqJDLUbsp3QMvy717eMJKzqOYCiRUf0H+I7yjtOfZ0eySrJ9h1l5YV4ujq9lJLBQN80C0MlFyTozJQdK2g028aAZux1gMhOCyOZ91M5LEcOUPWClmOGfzel+NYGkP3l5vJj
+ TuGEjIpY
+ +y5Vup0Cixpz+5oKmtFsl90sH83mH1smE6GjFk9Yz4kIzu8G5Iugc/eHEnicafXXySts6NGRrXx2avgFSrLvv9H8RLEdCWd9mDlF7SNabqIB5F0l66UvEwOkQZ+3GRfkenuHHQGfIyFyLtZ5tl0oYNbz7Em7M9K3r0XlBHIqKgoBxGA36nzSiLTGXGpJYqqwfMCd+//S3gAnosN2806e8e+jTYdDp5GwLJ7Vfx9ft+cQHAhFfgLmqmZD/wBWGuzn4XckKKJoLSW/B7ZCiSNR027/o609kz+JPcxwB9YhFtQgOJoBlAdYxiYUzy4Rysh1ih9Z7x9TI63aMrSHWgs+SQ0eiLw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,33 +126,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Today, if an architecture implements has_transparent_hugepage() and the CPU
+lacks support for PMD-sized pages, the THP code disables all THP, including
+mTHP. In addition, the kernel lacks a well defined API to check for
+PMD-sized page support. It currently relies on has_transparent_hugepage()
+and thp_disabled_by_hw(), but they are not well defined and are tied to
+THP support.
 
+This series addresses both issues by introducing a new well defined API
+to query PMD-sized page support: pgtable_has_pmd_leaves(). Using this
+new helper, we ensure that mTHP remains enabled even when the
+architecture or CPU doesn't support PMD-sized pages.
 
-On 7/24/2026 8:34 AM, Andrew Morton wrote:
-> On Thu, 23 Jul 2026 11:24:32 +0800 Ridong <ridong.chen@linux.dev> wrote:
-> 
->> From: Ridong Chen <chenridong@xiaomi.com>
->>
->> The per-node proactive reclaim interface
->> (/sys/devices/system/node/nodeX/reclaim) accepts a swappiness parameter,
->> but it is silently ignored when CONFIG_MEMCG is disabled. The root cause
->> is that sc_swappiness() has separate implementations for CONFIG_MEMCG and
->> !CONFIG_MEMCG, and the latter never checks proactive_swappiness.
->>
->> Patch 1 moves mem_cgroup_swappiness() and vm_swappiness out of the public
->> include/linux/swap.h into the mm-private mm/swap.h, and makes the helper
->> handle both CONFIG_MEMCG and !CONFIG_MEMCG in a single inline function.
->> This is a prerequisite for unifying sc_swappiness().
->>
->> Patch 2 consolidates sc_swappiness() into a single definition that works
->> regardless of CONFIG_MEMCG, fixing the node reclaim swappiness bug.
-> 
-> Thanks, I updated mm.git to this version.
-> 
-Thanks.
+Thanks to David Hildenbrand for suggesting this improvement and for
+providing guidance (all bugs and misconceptions are mine).
+
+This applies to mm-unstable 71a7a58818a3 ("fs: stable_page_flags():
+simplify KPF_IDLE handling").
+
+v6
+--
+- Rebased on top of mm-unstable (required a minor conflict resolution)
+- Added more Reviewed-by and Acked-by tags
+
+v5
+--
+- Moved init_arch_has_pmd_leaves() to mm_core_init() (David)
+- Renamed init_arch_has_pmd_leaves() to pgtable_leaf_support_init() (Lance)
+- Added new patch changing shmem_getattr() to set blksize according to
+  highest supported THP order (Baolin)
+- Added new patches to move has_transparent_hugepage() out of
+  CONFIG_TRANSPARENT_HUGEPAGE guards (Sashiko)
+- shmem_allowable_huge_orders(): rename variable and only disable
+  PMD_ORDER (David)
+- Added <linux/jmp_label.h> to include/linux/pgtable.h (Sashiko)
+- Added new tags and removed Reviewed-by from changed patches
+
+v4
+--
+- Used static key for pgtable_has_pmd_leaves() API (Lance)
+- Moved shmem pgtable_has_pmd_leaves() check to
+  shmem_allowable_huge_orders() (Baolin)
+- Default pgtable_has_pmd_leaves() implementation to
+  IS_ENABLED(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE) (Zi)
+- Dropped patch “mm: thp: x86: cleanup PSE feature bit usage” (Dave)
+
+v3
+--
+- Rebased on top of latest Linus tree
+- Removed i915 patch as driver dropped has_transparent_hugepage() usage
+- Moved init_arch_has_pmd_leaves() call in start_kernel() to avoid conflict
+  with early_param handlers clearing CPU feature flags
+- Fixed build error with CONFIG_MMU=n (kernel test robot)
+- Fixed huge_anon_orders_inherit default setting when !pgtable_pmd_leaves() (Baolin)
+- Small commit changelog improvements
+
+v2
+--
+- Added support for always enabling mTHPs for shmem (Baolin)
+- Improved commits changelog & added reviewed-by
+
+v1
+--
+- Call init_arch_has_pmd_leaves() from start_kernel()
+- Keep pgtable_has_pmd_leaves() calls tied to CONFIG_TRANSPARENT_HUGEPAGE (David)
+- Clear PUD_ORDER when clearing PMD_ORDER (David)
+- Small changelog improvements (David)
+- Rebased on top of latest mm-new
+
+Luiz Capitulino (14):
+  docs: tmpfs: remove implementation detail reference
+  mm: shmem: shmem_getattr(): set blksize to highest supported THP order
+  mm: introduce pgtable_has_pmd_leaves()
+  drivers: dax: use pgtable_has_pmd_leaves()
+  drivers: nvdimm: use pgtable_has_pmd_leaves()
+  mm: debug_vm_pgtable: use pgtable_has_pmd_leaves()
+  mm: shmem: allow THP support determination at folio allocation time
+  s390: move has_transparent_hugepage() out of THP guard
+  powerpc: move has_transparent_hugepage() out of THP guard
+  mips: move has_transparent_hugepage() out of THP guard
+  x86: move has_transparent_hugepage() out of THP guard
+  treewide: introduce arch_has_pmd_leaves()
+  mm: replace thp_disabled_by_hw() with pgtable_has_pmd_leaves()
+  mm: thp: always enable mTHP support
+
+ Documentation/filesystems/tmpfs.rst           |  5 ++--
+ arch/mips/include/asm/pgtable.h               |  6 ++--
+ arch/mips/mm/tlb-r4k.c                        |  8 ++---
+ arch/powerpc/include/asm/book3s/64/hash-4k.h  |  2 +-
+ arch/powerpc/include/asm/book3s/64/hash-64k.h |  2 +-
+ arch/powerpc/include/asm/book3s/64/pgtable.h  | 18 ++++++------
+ arch/powerpc/include/asm/book3s/64/radix.h    | 14 ++++-----
+ arch/powerpc/mm/book3s64/hash_pgtable.c       |  8 ++---
+ arch/s390/include/asm/pgtable.h               |  6 ++--
+ arch/x86/include/asm/pgtable.h                | 12 ++++----
+ drivers/dax/dax-private.h                     |  2 +-
+ drivers/nvdimm/pfn_devs.c                     |  6 ++--
+ include/linux/huge_mm.h                       |  7 -----
+ include/linux/pgtable.h                       | 20 +++++++++++--
+ mm/debug_vm_pgtable.c                         | 20 ++++++-------
+ mm/huge_memory.c                              | 27 ++++++++++++-----
+ mm/memory.c                                   | 11 ++++++-
+ mm/mm_init.c                                  |  1 +
+ mm/shmem.c                                    | 29 ++++++++++++-------
+ 19 files changed, 120 insertions(+), 84 deletions(-)
 
 -- 
-Best regards
-Ridong
+2.55.0
 
 
