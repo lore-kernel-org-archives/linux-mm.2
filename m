@@ -4,89 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37AACC531F9
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 14:39:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0BDDC531FA
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 14:56:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D3AA36B007B; Fri, 24 Jul 2026 10:39:27 -0400 (EDT)
+	id 9B3716B007B; Fri, 24 Jul 2026 10:56:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D11EB6B0088; Fri, 24 Jul 2026 10:39:27 -0400 (EDT)
+	id 9639D6B0088; Fri, 24 Jul 2026 10:56:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C03E96B008A; Fri, 24 Jul 2026 10:39:27 -0400 (EDT)
+	id 87C786B008A; Fri, 24 Jul 2026 10:56:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8EBB76B007B
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 10:39:27 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 24DA4403C8
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 14:39:27 +0000 (UTC)
-X-FDA: 85023928374.21.E017465
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 531ED6B007B
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 10:56:33 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AEA6DC03D5
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 14:56:32 +0000 (UTC)
+X-FDA: 85023971424.04.0590A71
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 6F6FE14000E
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 14:39:25 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kwAol3re;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf19.hostedemail.com (Postfix) with ESMTP id 03C5E1A0011
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 14:56:30 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="bR89Uyd/";
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784904991;
+	b=rK7Mx32EEdwG8IU4mTIdlJtHGl4BT5kzbdvjqOHdg+Mz1w5xhMH+acg06KIEaiZYhGAfxP
+	WJLYgo70/NwV3iazwhd2ixnxwtCJhKPMYV+P//l/HPqZnZ8DVUJ1iZcuLWNQdjxTVMFs0n
+	EPeL+i+FILyH6yp8YjjhS5iHsGtTMVY=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="bR89Uyd/";
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784903965;
+	s=arc-20220608; t=1784904991;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yPJB9R+BtGXKtqq0HHHEWwuGdoJGjUsGQ6ieAQzTjYY=;
-	b=1Cp6RJzkX+R34+MmYOgAN5+wNFUbXa9/TdPjE5c8BTg10lYS8iv/dJCLbtD/npX7/wilsV
-	jtYK8xA8SdFLQnsRP1a31BKxjxyD/67pmZorq9B/u0qSNfPQegFS8WXNJ4gni69eM6Ozch
-	PQkpS7AjGqNoEcfF+Ou/Rfoz6aqohyc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784903965;
-	b=CB9N2yh2E1UFCMR3+Kncg88uSr7hYu+DfkO3dtlFCTud6xW4vEqf3QTr37+VAaFyKUjTjm
-	KHMwbHAqXMdZjvOnWhpiM1Gi6HLH5Nes4BIlH2cWNLJBzGJ+/lJVJPTqlQNBtgsOpJDTuw
-	mAKwQMWbbxTmcON9yplXZ5BDOWaKQ8A=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kwAol3re;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=JiA6gXTuTGgHW28jlCoj+TMMGhFDB5U5k/MPS6FjwGg=;
+	b=gdPFCgN4jbPn0iAPVmt/AjKLsS4MillB2KbvR6lLoiEaA5hYzS6kXiuwvhgbgkmgFTGx2s
+	Jqzt5WAQUxC8Xk/rWk75UXVRp0AscNJ19ars2k/zhsCIeN+D2N/VyVTUGvWFO/yEZvACQ5
+	Q5XNWnuolWoRYiAuRpcJTMPr5nzgSVM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8E01540B11;
-	Fri, 24 Jul 2026 14:39:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F6171F000E9;
-	Fri, 24 Jul 2026 14:39:24 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 24E3143ADA;
+	Fri, 24 Jul 2026 14:56:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6F1A1F000E9;
+	Fri, 24 Jul 2026 14:56:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784903964;
-	bh=yPJB9R+BtGXKtqq0HHHEWwuGdoJGjUsGQ6ieAQzTjYY=;
+	s=k20260515; t=1784904990;
+	bh=JiA6gXTuTGgHW28jlCoj+TMMGhFDB5U5k/MPS6FjwGg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kwAol3refeVf20YGm/UOA+ujIPTna1HVD3qxYvbowWy8qLj5ubn0oNRILAXeVwy3b
-	 YiJGx3XS3W3b2u3vVNyokpkGpFWufMqFfzfLwqkbDUsTLNi1n+u1hqlnKKFpWGhYzi
-	 H5Wc0axNZdJTilq9FXVq6rcFdsfnQ4BsoyYZ/t/WvhJd2ZxXURxVUx8u0N6/+m3DUS
-	 fiD3zgmldjgLxUBNCHHEqO8iWyJGG+ZAolYgSbP8RTs7MOG5fyGx7NrJZnNPRB3YSp
-	 OyTkEd6BqKk2w6IbEWEql4Vb/zO/gIE3a3oES5R+Nk09Xh1Nph1Ur8vFKW0IGCEmSM
-	 RwuFA9beoHYCg==
+	b=bR89Uyd/XgB4oBVh4s0lK8ELkkaAN+12cpSPi49dnRldX1bdswC+CnbYQfU90xzYV
+	 Tbh72IMrIgWPAj0dEi/aR+lfmdDrpNI/TJJVMuMQUTCKVdM2NCvz5xK5gDRr3kQjIn
+	 8CUL3N6wVpkg0qZGkoVyDVr+k743IfqtGsRbVSb5rgEmpoLIpOYy0pkvKhYT9eoVWf
+	 nowmH4vDHueWAQAESjh/5vi0H3SDonbhTpqJ9357TyZFoYcES0t2ZiOnTJKEyVtfKp
+	 z1sCYa4F5jI6ban+BjGttzEZwHsNxGduDi4+MYwnU38rf46caVB3+lIvltJZJVJnLn
+	 C/TiXP7pFsvbg==
 From: SJ Park <sj@kernel.org>
-To: dayou5941@163.com
-Cc: SJ Park <sj@kernel.org>,
+To: SJ Park <sj@kernel.org>
+Cc: dayou5941@163.com,
 	akpm@linux-foundation.org,
 	damon@lists.linux.dev,
 	liyouhong <liyouhong@kylinos.cn>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v2 2/2] mm/damon/ops-common: factor out damon_putback_folio_list()
-Date: Fri, 24 Jul 2026 07:39:16 -0700
-Message-ID: <20260724143917.94375-1-sj@kernel.org>
+Date: Fri, 24 Jul 2026 07:56:19 -0700
+Message-ID: <20260724145620.94967-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260724060135.3014676-2-dayou5941@163.com>
+In-Reply-To: <20260724143917.94375-1-sj@kernel.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 03C5E1A0011
+X-Stat-Signature: 4wcura8n8u917mzj6spfwpw6inyamyp4
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 6F6FE14000E
-X-Stat-Signature: i5ubtea9dhgxa47r6q8woe8bzzfqbzoe
-X-HE-Tag: 1784903965-129889
-X-HE-Meta: U2FsdGVkX18hXxVzEsmzju4ZeFOAg2qmU75p+77el47DF7uUxx76Vlh0cP6Q+Uliiuuht2oCKr2s+NnYebDbThDaUlMswB4HS/AN6Z77Jw6+9ezx67T+tKD7vrGMWMt2pweGWEHi9SDCc8nxpm9XRNefJOWUkGptBP1934rhmkiRsqVz+IzIqHAk7XXLqqcIZGuWy9thcgORpNI0GC1MlvWkIbwxkMGVOvoNWXj6LTcq7C4GBr4T8GtupC1l8ZliGIXm+q0gOGNPBf2hoUHNQGDsXc7aDwSMzquMeyPeS8hA+ZniAHhDfI+U4gMGdClUsR4rPQyEGUG3SXsIa/kTkeb58MswAXCeUQHTnQ5lqN7lygJSNpYwZWGE2XXtA9tKjhY45NEJzvzJgt+1g1mj+E9e/fTDnvt0CJy9QuKnU3VbsB/cLDUPLdMy0xcL9r89iPvw5exajoUaQkZ7SFxasLp/4yCq3FUECPeGMU2BxLUy/2Kf1xN30vm7WfAuYhk8ALaasTkoqA4CGwFxzgjtAfX7Z+w0fZKyfzO5Ftl65hpXYD/OBnK/c96GonspKCImARuKNPxeT/qNB/XC/565XwuHmkJUI+35MKi/BWa4tAN+c/+c8MFDAwN/KQuS/vY18SjKxeV9nPOGyHpVT15DApqXHPGE7c9AEcbpuXPOilde2kXa8LI0G0f6pKqPs2xCdx4ZzAdFbOcx+jFPHchOO/tUO9kom8IMyzfEJ8HF5hfp3H9/+Vhv2DXPBB1OqeDbbkkLsYKma5NIVzIcV09XOva3nZx4/UfMWQ+Plko44s3p+zV5Fff6vb7oNxkfdAXkto9cOJ8bwL+N02DcT4ArFw9ksVNA+w0jSEXvc9AiGdhuh9WvWaUTDVetd4pOwkfp6PlD0bqRJQJ+0BxTuYgcklxit8s75fv7AWHjG6FfyLyMKjERNjOcf/8Gt/OODsm3NvcCUivRtvKreYj3yPz
- rjOo6Dzk
- 0udMf+wSb7iwSvITxAEWs8QZAgDsi4vsuWo9tsAGXzuU/qtna4UvuoI5VW3Dfpt7q8jc1Em5KyBmLmKqrqBU5nojAHZSo2i+dUY/h4eL/R7xUMx4YC1hS4Pz8gUGapuU0nhESWaUiNKovZ+OmpnX9x8Jh196eQZIoItp4gFs0kxrDivkVvxlz5+vF68tZV57JuASAUGmF5T01TVDZjgi5zLRAR2wwpZc+JIVLweDNURdtBBdJKtKIc09a35WMMKBU9BTwfhdFtHEOp0St90c3Zmgp5JN68L+teLvjDh9/UcjxK5HxxS093pvI9D60Tp3SbI9uIH4cpSvSTpe3d8APnbcesGiJPM1Sn0VbtdPwOMTOHRo=
+X-HE-Tag: 1784904990-753961
+X-HE-Meta: U2FsdGVkX1+0K5daqiXeVUViqWFQGdpc4T7p1SdylvQW3RIY/AqBMbkizp4tlwKtGQBCgFcZOsJJID+KfEPmx2qDuqMdUWC6Ge7C737vlGyPcvD0q+/4eU/LITIEkZdX2pXHicEu2n2pjg/gWIq2LdtvVY77mYapM0hVCPQyU3yRovxM5m9MjZE5pFMwBz0ZgIthTYzIoqgzlTlFJjRDAcmXgVGlssqLyWLNXHOgBwTe3PkoFi3ZjgkWz0Djb2uazGtBZ0FDtRo5+BQ6+h8pC2dXQU6az+0ggKJpB8eWV4YlhJn9EM64ErNSmdUKjlCayBb7DHiQXkoqACZ4Rw8qtlpVhqBFf6Ng6hl+GftZegjYxTiTLX4+HmZELpCxWUQ7yeJRM4vl8IUlANrOob8hzRRqi+FocP2IboR/Oh/GDAmuM1D3IBv+cLZVVhENrhPpFx9bcIBXYUwkxM3uHIKlenqhPyZ/rZrUfPVSIo07zMVk46r+xQ+6gKKPWfqwCNA2/wdy2sG5Jw26RqZ2mNarSVOosP4WAQ5UI5t09R7UhKJ+KsHbULmNZ43Ai3kCYfn7bIls/+YE1h7lSrApVML9o3mVd39Q8FkCC+mx9gz1f184CY3JyB3fZs4U3UUrEU9PFQNwmP9A4KO/kxul3GA6dg17ZFKlMGNLRLcAID1URSSrNCsxfdj6EfC2CYwsJ3Q1lnBhs+GC/Zl9T79XJ55rmWE/BG6rda2mGXbcOPeMiyJoqMDnanhfbuQBSrXt+oCdLho8e1p/gvrMgLW6SQVmWo4hZfJMhh0RPq2PwbUoajHlG11ND1R2/muk3MnHypma0sCikF3l3QUzD3hVDbMBci/oDiqzmoCibntABCQjgkdq4vQ9QM5lm3W6OAY5eAh/7vOG9k2k8FPp8xQJu5KdkotFDmhIf2m6rfnm6+VHBcVkQD7J7qBS2t8Irfh7dKodygVx1EpvjuxvYgDX3lX
+ n+edU3LJ
+ s2tvRCXimMTrGHOwnieaZgoov8VkJFD8b7/EtwFIFgQf/d/x4zzHEq5xexSXV7OAManZwIZOuPkM22SAJhgle3qF0volHD+ou+RIjsG8Mars4FNXAnYYgizrGIjXWNArDsOH1bn68OPftbvr0M3WljmUT2d1usuddYZt8Zu/bRyhD2vWjnicbfGLyItaY3LQljq7/S5xL5/nmz+ZoPJsUeJPHvlgtjJgjEqqke8e/jk9Rk3eF6O09r4d/CnsB/5PW6ytEff2FpcIxCK+okKil85Li1+ZLqJHE9gTRWoocuz3I/qGdcmdeJFsSO64BgnZDp6y6Q8iuI6wP9qV9EgpTNndr71myUHpceG/Y10vFFZuQMM8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,135 +94,148 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-'get_maintainer.pl --nogit --nogit-fallback' suggests adding below recipients.
-I added them.  Please consier using get_maintainer.pl from the next time.
+On Fri, 24 Jul 2026 07:39:24 -0700 SJ Park <sj@kernel.org> wrote:
 
-- linux-mm@kvack.org
-- linux-kernel@vger.kernel.org
-
-On Fri, 24 Jul 2026 14:01:35 +0800 dayou5941@163.com wrote:
-
-> From: liyouhong <liyouhong@kylinos.cn>
+> 'get_maintainer.pl --nogit --nogit-fallback' suggests adding below recipients.
+> I added them.  Please consier using get_maintainer.pl from the next time.
 > 
-> The putback loop is duplicated in damon_migrate_folio_list() and on the
-> invalid-nid path of damon_migrate_pages().  Factor it into a small helper
-> for readability.  No functional change.
-
-This is not a hotfix.  I'd suggest sending this separately, not together with
-the first patch of this series.  Sending hotfix together with non-hotfix when
-they don't really need to be applied together only makes it complicated.
-
+> - linux-mm@kvack.org
+> - linux-kernel@vger.kernel.org
 > 
-> Signed-off-by: liyouhong <liyouhong@kylinos.cn>
-> ---
->  mm/damon/ops-common.c | 25 +++++++++++++------------
->  1 file changed, 13 insertions(+), 12 deletions(-)
+> On Fri, 24 Jul 2026 14:01:35 +0800 dayou5941@163.com wrote:
 > 
-> diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
-> index f5ded45fabd1..9a1e8aec5444 100644
-> --- a/mm/damon/ops-common.c
-> +++ b/mm/damon/ops-common.c
-> @@ -331,12 +331,22 @@ static unsigned int __damon_migrate_folio_list(
->  	return nr_succeeded;
->  }
->  
-> +static void damon_putback_folio_list(struct list_head *folio_list)
-> +{
-> +	struct folio *folio;
-> +
-> +	while (!list_empty(folio_list)) {
-> +		folio = lru_to_folio(folio_list);
-> +		list_del(&folio->lru);
-> +		folio_putback_lru(folio);
-> +	}
-> +}
-> +
->  static unsigned int damon_migrate_folio_list(struct list_head *folio_list,
->  						struct pglist_data *pgdat,
->  						int target_nid)
->  {
->  	unsigned int nr_migrated = 0;
-> -	struct folio *folio;
->  	LIST_HEAD(ret_folios);
->  	LIST_HEAD(migrate_folios);
->  
-> @@ -374,11 +384,7 @@ static unsigned int damon_migrate_folio_list(struct list_head *folio_list,
->  
->  	list_splice(&ret_folios, folio_list);
->  
-> -	while (!list_empty(folio_list)) {
-> -		folio = lru_to_folio(folio_list);
-> -		list_del(&folio->lru);
-> -		folio_putback_lru(folio);
-> -	}
-> +	damon_putback_folio_list(folio_list);
->  
->  	return nr_migrated;
->  }
-> @@ -395,12 +401,7 @@ unsigned long damon_migrate_pages(struct list_head *folio_list, int target_nid)
->  
->  	if (target_nid < 0 || target_nid >= MAX_NUMNODES ||
->  			!node_state(target_nid, N_MEMORY)) {
-> -		while (!list_empty(folio_list)) {
-> -			struct folio *folio = lru_to_folio(folio_list);
-> -
-> -			list_del(&folio->lru);
-> -			folio_putback_lru(folio);
-> -		}
-> +		damon_putback_folio_list(folio_list);
->  		return nr_migrated;
->  	}
+> > From: liyouhong <liyouhong@kylinos.cn>
+> > 
+> > The putback loop is duplicated in damon_migrate_folio_list() and on the
+> > invalid-nid path of damon_migrate_pages().  Factor it into a small helper
+> > for readability.  No functional change.
+> 
+> This is not a hotfix.  I'd suggest sending this separately, not together with
+> the first patch of this series.  Sending hotfix together with non-hotfix when
+> they don't really need to be applied together only makes it complicated.
+> 
+> > 
+> > Signed-off-by: liyouhong <liyouhong@kylinos.cn>
+> > ---
+> >  mm/damon/ops-common.c | 25 +++++++++++++------------
+> >  1 file changed, 13 insertions(+), 12 deletions(-)
+> > 
+> > diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
+> > index f5ded45fabd1..9a1e8aec5444 100644
+> > --- a/mm/damon/ops-common.c
+> > +++ b/mm/damon/ops-common.c
+> > @@ -331,12 +331,22 @@ static unsigned int __damon_migrate_folio_list(
+> >  	return nr_succeeded;
+> >  }
+> >  
+> > +static void damon_putback_folio_list(struct list_head *folio_list)
+> > +{
+> > +	struct folio *folio;
+> > +
+> > +	while (!list_empty(folio_list)) {
+> > +		folio = lru_to_folio(folio_list);
+> > +		list_del(&folio->lru);
+> > +		folio_putback_lru(folio);
+> > +	}
+> > +}
+> > +
+> >  static unsigned int damon_migrate_folio_list(struct list_head *folio_list,
+> >  						struct pglist_data *pgdat,
+> >  						int target_nid)
+> >  {
+> >  	unsigned int nr_migrated = 0;
+> > -	struct folio *folio;
 
-Looks better.  But, how about further simplifying it by moving the folios
-putback from damon_migrate_pages(), and doing that from damon_migrate_pages()?
-damon_migrate_pages() would do the putback always before returning, and the
-taregt_nid path will 'goto' the path.  E.g.,
-
---- a/mm/damon/ops-common.c
-+++ b/mm/damon/ops-common.c
-@@ -391,15 +391,8 @@ unsigned long damon_migrate_pages(struct list_head *folio_list, int target_nid)
-                return nr_migrated;
-
-        if (target_nid < 0 || target_nid >= MAX_NUMNODES ||
--                       !node_state(target_nid, N_MEMORY)) {
--               while (!list_empty(folio_list)) {
--                       struct folio *folio = lru_to_folio(folio_list);
--
--                       list_del(&folio->lru);
--                       folio_putback_lru(folio);
--               }
--               return nr_migrated;
--       }
-+                       !node_state(target_nid, N_MEMORY))
-+               goto out;
-
-        noreclaim_flag = memalloc_noreclaim_save();
-
-@@ -424,6 +417,14 @@ unsigned long damon_migrate_pages(struct list_head *folio_list, int target_nid)
-
-        memalloc_noreclaim_restore(noreclaim_flag);
-
-+out:
-+
-+       while (!list_empty(folio_list)) {
-+               struct folio *folio = lru_to_folio(folio_list);
-+
-+               list_del(&folio->lru);
-+               folio_putback_lru(folio);
-+       }
-        return nr_migrated;
- }
-
-This could be applied to the first patch.  And this patch can simply remove the
-redundanty putback.
-
->  
-> -- 
-> 2.25.1
+I forgot mentioning this breaks build, as Sashiko also pointed [1] out.  This
+patch cannot be applied as-is.
 
 [1] https://lore.kernel.org/20260724060707.CE1F81F000E9@smtp.kernel.org
 
 
 Thanks,
 SJ
+
+> >  	LIST_HEAD(ret_folios);
+> >  	LIST_HEAD(migrate_folios);
+> >  
+> > @@ -374,11 +384,7 @@ static unsigned int damon_migrate_folio_list(struct list_head *folio_list,
+> >  
+> >  	list_splice(&ret_folios, folio_list);
+> >  
+> > -	while (!list_empty(folio_list)) {
+> > -		folio = lru_to_folio(folio_list);
+> > -		list_del(&folio->lru);
+> > -		folio_putback_lru(folio);
+> > -	}
+> > +	damon_putback_folio_list(folio_list);
+> >  
+> >  	return nr_migrated;
+> >  }
+> > @@ -395,12 +401,7 @@ unsigned long damon_migrate_pages(struct list_head *folio_list, int target_nid)
+> >  
+> >  	if (target_nid < 0 || target_nid >= MAX_NUMNODES ||
+> >  			!node_state(target_nid, N_MEMORY)) {
+> > -		while (!list_empty(folio_list)) {
+> > -			struct folio *folio = lru_to_folio(folio_list);
+> > -
+> > -			list_del(&folio->lru);
+> > -			folio_putback_lru(folio);
+> > -		}
+> > +		damon_putback_folio_list(folio_list);
+> >  		return nr_migrated;
+> >  	}
+> 
+> Looks better.  But, how about further simplifying it by moving the folios
+> putback from damon_migrate_pages(), and doing that from damon_migrate_pages()?
+> damon_migrate_pages() would do the putback always before returning, and the
+> taregt_nid path will 'goto' the path.  E.g.,
+> 
+> --- a/mm/damon/ops-common.c
+> +++ b/mm/damon/ops-common.c
+> @@ -391,15 +391,8 @@ unsigned long damon_migrate_pages(struct list_head *folio_list, int target_nid)
+>                 return nr_migrated;
+> 
+>         if (target_nid < 0 || target_nid >= MAX_NUMNODES ||
+> -                       !node_state(target_nid, N_MEMORY)) {
+> -               while (!list_empty(folio_list)) {
+> -                       struct folio *folio = lru_to_folio(folio_list);
+> -
+> -                       list_del(&folio->lru);
+> -                       folio_putback_lru(folio);
+> -               }
+> -               return nr_migrated;
+> -       }
+> +                       !node_state(target_nid, N_MEMORY))
+> +               goto out;
+> 
+>         noreclaim_flag = memalloc_noreclaim_save();
+> 
+> @@ -424,6 +417,14 @@ unsigned long damon_migrate_pages(struct list_head *folio_list, int target_nid)
+> 
+>         memalloc_noreclaim_restore(noreclaim_flag);
+> 
+> +out:
+> +
+> +       while (!list_empty(folio_list)) {
+> +               struct folio *folio = lru_to_folio(folio_list);
+> +
+> +               list_del(&folio->lru);
+> +               folio_putback_lru(folio);
+> +       }
+>         return nr_migrated;
+>  }
+> 
+> This could be applied to the first patch.  And this patch can simply remove the
+> redundanty putback.
+> 
+> >  
+> > -- 
+> > 2.25.1
+> 
+> [1] https://lore.kernel.org/20260724060707.CE1F81F000E9@smtp.kernel.org
+> 
+> 
+> Thanks,
+> SJ
+> 
 
