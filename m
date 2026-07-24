@@ -4,130 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34616C531CC
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 02:31:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92FFAC531CC
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 02:43:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 185E56B00A3; Thu, 23 Jul 2026 22:31:55 -0400 (EDT)
+	id 2619A6B0096; Thu, 23 Jul 2026 22:43:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 15DC86B00A4; Thu, 23 Jul 2026 22:31:55 -0400 (EDT)
+	id 213296B0098; Thu, 23 Jul 2026 22:43:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 09D646B00A5; Thu, 23 Jul 2026 22:31:55 -0400 (EDT)
+	id 103156B009B; Thu, 23 Jul 2026 22:43:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D6A2C6B00A3
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 22:31:54 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6064DA01C3
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 02:31:54 +0000 (UTC)
-X-FDA: 85022094948.24.5F681FE
-Received: from smtpbgeu1.qq.com (smtpbgeu1.qq.com [52.59.177.22])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 4D8F7C0003
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 02:31:50 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=JfRBL6vG;
-	spf=pass (imf22.hostedemail.com: domain of gouhao@uniontech.com designates 52.59.177.22 as permitted sender) smtp.mailfrom=gouhao@uniontech.com;
-	dmarc=pass (policy=none) header.from=uniontech.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D90136B0096
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 22:43:36 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 504F51401D9
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 02:43:36 +0000 (UTC)
+X-FDA: 85022124432.15.08673B1
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 85450C0004
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 02:43:34 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=DnsTpQu6;
+	spf=pass (imf10.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784860312;
+	s=arc-20220608; t=1784861014;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Yn0Gyoe5DqjP71R2buJi41mG3iZ0k1ZX3eDGImr8Sq0=;
-	b=4BEmeiETWmLYW5X9XM7GucWEXiU8roQIp9i53agA5Ud9sjTJes0ZuHV7BF3NqYtY4iBMGK
-	jiMDmK9TdBHoOxorl4igxw14G7pE+Bk7Atty3l04E2zqac7k/RPvAAfS403+XhuJsav8z7
-	V9eC6AXhdhII/eOrWYE0BQYpGiPxCeM=
+	bh=bDCqTywiR4s5nLQyaf6i50wmBQjCRcVwZ9olAr2XKwM=;
+	b=CeryO8mxyTHb/cyjsYfaRWf1+K1ITVT7aeRU3ukx4KCCaBWs72TTXCfnd+KSYohjP1MACL
+	NDQeSnuNrVC0vxKuLOP3jmn+NTDyvv4efCitQJM1IiMFpiTu3cwZyQluuCmpHQ9IPnz08x
+	deHSnM0jlA199wK+PuK2XX7Ctcu8gfc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784860312;
-	b=KJBcx0TwQKaRPcNeMnyBnd30L6PNAoZoE1X29XxHrXy/kJMUJQLpeaQcBo96LmLFSWNva3
-	u6pfFFQLAeL1NMaPypWDQAwS6bubCW2U9bIObthhJvA3/tYHh98xN+4wQUJvAgJYg8hQrM
-	eGSzUsw5PRop8K7oU+3iQHhlYSvpqvs=
+	t=1784861014;
+	b=q3X6U/PJ9Qm/Jr7E8fwrHTcLB2e39mE583hSWRdV4MIWszx9Vyj1VZ69wBPFlqMU0A9fZw
+	vhR8ukkcageEA3Kgu1bm8jo5u02z6D02NSLLL9WYowB4xrnD1xZYsGj89BkFnwvRdWtAH8
+	M9sIMeJgXTfSyupeXbaaP5fRD82kung=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=JfRBL6vG;
-	spf=pass (imf22.hostedemail.com: domain of gouhao@uniontech.com designates 52.59.177.22 as permitted sender) smtp.mailfrom=gouhao@uniontech.com;
-	dmarc=pass (policy=none) header.from=uniontech.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1784860173;
-	bh=Yn0Gyoe5DqjP71R2buJi41mG3iZ0k1ZX3eDGImr8Sq0=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=JfRBL6vGX+km3YMzXlEy7HJjnZqr5bN52rjPOVAQnKRIbluO+xg2UR2JNwgYqwD0z
-	 SXyUg4OftBJTjKaq6Dj2Mo8/uGJrhggOebDVx6pkjdosAv8MRFez9vbIMWQeQE8m6Q
-	 WIIski7wchHE/k3u849ZwaM0Ku3cvTGxYk+Yhn7A=
-X-QQ-mid: zesmtpip4t1784860167t2acc5bb8
-X-QQ-Originating-IP: qIXv24m5LF8xLoOUC1kXo/DM9tGPxEiRVtvDS4LSMeI=
-Received: from localhost.localdomain ( [localhost])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 24 Jul 2026 10:29:24 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 530311859156334886
-EX-QQ-RecipientCnt: 26
-From: Gou Hao <gouhao@uniontech.com>
-To: maddy@linux.ibm.com,
-	mpe@ellerman.id.au,
-	npiggin@gmail.com,
-	chleroy@kernel.org,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	bharat@chelsio.com,
-	jgg@ziepe.ca,
-	leon@kernel.org,
-	akpm@linux-foundation.org,
-	gouhao@uniontech.com,
-	namcao@linutronix.de,
-	ynorov@nvidia.com,
-	sshegde@linux.ibm.com,
-	nilay@linux.ibm.com,
-	clg@kaod.org
-Cc: linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	linux-rdma@vger.kernel.org,
-	linux-mm@kvack.org,
-	gouhaojake@163.com,
-	kernel@uniontech.com
-Subject: [PATCH v2 6/6] RDMA/cxgb4: remove dead NULL checks after GFP_NOFAIL allocations
-Date: Fri, 24 Jul 2026 10:28:51 +0800
-Message-Id: <20260724022851.466017-7-gouhao@uniontech.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20260724022851.466017-1-gouhao@uniontech.com>
-References: <20260724022851.466017-1-gouhao@uniontech.com>
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=DnsTpQu6;
+	spf=pass (imf10.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <8336e48a-ab3a-4db9-a7f9-5bb6af2b22c3@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784861012;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bDCqTywiR4s5nLQyaf6i50wmBQjCRcVwZ9olAr2XKwM=;
+	b=DnsTpQu6+6hScxk3UNzHkxZ+9oUCyQoZu3i6pZIRcPs6V5oPVGV+fGVxbo2cHPs8fq6isl
+	UlEBUVPrZBt/ciDvZZREkRR41w5enOI7A3d39Qdm/elQTUIykkXPqO/3VMY64Q2/koJTYK
+	X9va7hKIQ6OCHzf8nd67U7o9/N2O+yk=
+Date: Fri, 24 Jul 2026 10:43:22 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz5b-2
-X-QQ-XMAILINFO: MNU5/P5d/Qy9RNPRk664Q0Xw109pxpzpMGKL379ZUzcshP83H9MiEsd1
-	IyV+Onok3MeRQ1T+ngmr1xzbcU1xx+vFpwEVY+wuxNIJ201zV+NLvRFmflO7umpKgp1BOqJ
-	z96wlYlqfUeBqPpOrRu4Laygf+MwqB4o3eF9GDKsAqt1h1VQsiKHgtTL078FspqslJclih/
-	LSAdIRnaQcF3IsZ1FJYVJGUgcyRdHm3VLF50Ti6RUr0HwtqBlNFPHlKZMXhexrgtrw+Cphc
-	JxY4JP/I25QaZKybpvkHDPy08pNjAmBdVxjk0nf/6T5JalR1ahtqR1+/MMoONxBhdS2CsHv
-	xV2HJAgpiNZDWaaU5uNCEb8xAmJQqQRbeOo4oMDIYKkBIknl1Y2SKe2EtrMIhYHgYrLnR1p
-	gpvduyt1R9gOS9tB9ky8rDkPS8a93XY/5/nFLCw526fv+nxxOpLAPFA2QeC33sEk5hEOIoj
-	jxlWS3gKZXLrPbp7sz3IgyUWYT0KgMJmS2eU/TrQmKHZqCf+A6FEOh7ojp1+ZCsflDc0So3
-	hDt8vEmZCr4JboY7d0ioM7Ik1oPszFjKauAqy9I/eMTzw4T6SC74qx+BWS6DHBgdpmK4EgZ
-	+oSX/7H/vhqwP6G+ZcKjg9apZetYQghWsY00AzS6acYNqzs6N+6O1s28hNCPtwTflFQ29Hc
-	j4Wm8jlXEFJwQ8dF/uge/PUGtom7egTNBopX5QYvI6AqFuNpql4a4YCGllUNzkHD+EB6hTY
-	1sXdeMhMu5RMuOmHNYdgvRq90t2lH+BpCB45/yhvHe8d+b4mo8a61E5Tmr3FyYtwYzQ2C1k
-	g50UjxEbNb63M5p5MDZjalDvYBmhXZVavsT52GOJIoelTYVS57GN9n+2LsZuRhmYg3901xe
-	TZUqUqMPxqlw9dxzw1uzo5NR/JK0hfLbc5BRBqhys6pO/TYlWDrDUomU5GAa6KikVlW1Emx
-	7zRhVMRn6Gw+Kpk4/7xPqX4HtdKoLinAtIJM709TwoMwB1MvH1A2AobZFepeMpyuEHBmEsD
-	YCa4gwXfwzozIlgRG18qaCcxyGCN5lPeUDTUEgeScH5/oFd5PlvpxkI5HE4sGUDT4K5RUPf
-	PQAKWbWwxwx2FrvruhkVRaqZqEn1ylT8XAY5Ly8DqJqJwep8AItIZU=
-X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
-X-QQ-RECHKSPAM: 0
-X-Stat-Signature: gso5ww5z4e318ihwft4hz3g188ndu955
+Subject: Re: [PATCH v3 0/4] mm/vmscan: fix swappiness=max and clean up
+ per-node proactive reclaim
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand
+ <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+ Zhongkun He <hezhongkun.hzk@bytedance.com>,
+ Muchun Song <muchun.song@linux.dev>, Davidlohr Bueso <dave@stgolabs.net>,
+ Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>
+References: <20260723045718.2052070-1-ridong.chen@linux.dev>
+ <20260723171842.137e45eb36b21b3b45245da0@linux-foundation.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Ridong Chen <ridong.chen@linux.dev>
+In-Reply-To: <20260723171842.137e45eb36b21b3b45245da0@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 85450C0004
+X-Stat-Signature: 97y9u5cg8sk6c8d5yzobqo3xu5f88pag
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 4D8F7C0003
-X-HE-Tag: 1784860310-545005
-X-HE-Meta: U2FsdGVkX1+R3U30vXqXa8B+BZTBLGHQ29I1pfrDzZVy17umMmjVKegWllQFQgmCtPBUk4eqbBwCg2IICZYvqX2ZsqoJL76BjsSwJ3xI7qDXlax7LIOjEGdJEAA0olL5tJtnTRNYG/Okf6RG/0q9lnhiPEONbc5KB93nHJJ0o2e+9D51BbxIkfYnY7Q5U+g5EwmZFclcCh1k4Jlp8FMXGWTowXbEGwDSr8uUqmVPt20fSWwgMQUw0jL6H+kD0KLByTD9lSww4WokLMKAZvvLvfEhfFcHDjVLJAyMF7Mm30j3xPjNPN7EWPT38Opx9xdhjd1BzOfehNM7A2+Qf7unhEnOnHEnnz88TYIJdOKz/CG4Kuqzjgbd6Wxkb3HGJso6Xl95KeT57S+kpW5zKo0pTdLIZF0VHbRwHYn2205o32W4QsCDuD/HjAzQ6XliBVnCGELJiZ5qrmi/PK0x+6jA0KJ9uL03j0Z6euFuTCKKcgJpyXb8InzZKtJr8FXcRUwskPB9/lURrOfbVENhCCvBpNK15QbUG1jgRlgtLKhE1lcAfaXs+qs0LNp9aRAgMsGDzAfTXGEUj167t7euz63rCajKUEHq7na27UzRnQyvn9TcefE6ZjcmR/lhMEFAwR30dvhVXaw631wjL6JX6OeTLiulsNn/ht280PhOf3YDHrSdurH4Uh3O3ceDF9qodvh6gLkfj5maQ/waqEeiA1WEZbhl9q3yEQv6TvC++aGUaxf8LBBC9xWphPzSOtEDbAxTRTEc8kM8CQ6meZIKDXp9yq03RnIetqQ8eQtjye/G1tijSqJTey87JfiXdO6YhfNcKenZepK092lfjJxREUL6/ofahymTFrEnxNErZsFv9Mp+7UddydhqLRZduKyGtBrNO5vdJmqOhqZzmU1D5rr+RdZgWk/bxR5rM1Y6SJEGqkcKJ1iygfhVrNgZ8MxF4pX2mErlZ+ulrHAIMCU3ieC
- 9NnUGump
- i4E9WLXJEHO2ta6w8eq1qbop9eMqEqbC2zDFNYRJFR7PgI0pdaAqHeMGbNNFSZGN7rmTaSuL5fCKVLyVy+RAmrD3y+KOPF4zP7xaYbDTY6eh++zUyEetV+QNoWdBUhZhpBHPtlMH9ZXTlfZXhu4lXhqwoQF9+Hwxnd4wcnxvAV6VjKu+999r4oc2TyDWWFAl9tXylt+AKFhpw5Kw/fDbQrT4Uc1Znxiw7lE3pkJ+MRLvI9RSV4apxiqkmMfNxuivrtpFaiEhTEKNmjcTWOsbqDseFdYaSxcWM6WzIz0eherkJCITR/hvGDatD3I6+Uxq9r/UotMZbp1qMnf9/rzKGJHBabR9AODc0Vc/0
+X-HE-Tag: 1784861014-428600
+X-HE-Meta: U2FsdGVkX1+gMzolEgam2/xPheG7pYGf5k3zbqF8rqK4+A90p4/RcQqBk6NHN+gDLFDvTzkwTTfX2F1cUWKmavUuWqeCktlkJyMXG8HTm4FXrlahJmtMqRG3durbKQe5Xa9vM1T+NsNNnz+rVPpkYzTIV1vxwUQCAm8VTyEifLQrBJBNTr4e5G7NWF0sc8I9REyUPByotLq1eDzSVg2WaMJuRqEhpd6EGOBmtJeAD8ZUIFqzuBFrfjHSEaCZ0NyMCiscQ2ONzj9b2cQSCQDgkLHAcyub1bbjprbqRJvB6VGHQBFfW7nzoIyWPuXtb58FoEqidxkEz4RO08sdGhnbehYp8kqTi9pXjCTGvLjFl8nG1OsMrmfarYbZ8+c2bH1QOh/ev9yv2HX+VtSCAs8zERmuVjnLe0HgBV8mH6SLPuJ8V0tmgkkbScVLZdnhqWxPRNxrsJiZMx1MD5zT2qWN2nv3oaoMx2QSNajfTUzIOUfHikat+5LQHtHSjidAniIcP5X7hiusORMvMQrz0r3D9Pt5HpECSR41+A102cwfGQ6WMjiD/XWm/pl989liOZhe5fvQ+22K+SEOAseH7OPBkfhPoLbjajvI1fKReIVHa6mftHn/8N5oAek0/6JwIm8TVDvXBt0L4cKnJE3ZghtZtUaHGmSj4D/+uxUwZQ6Izc60H01luDhV6MTz4kJU0G0WwRWFxbob41wYmR2D1GaHcchaPdzrnfrIvkJuydpgW3OFR3tbcePGfYQNTOuOIPCh/0NgOd9s8duzQtdIT4wd9ImOMeDLKmWxgV9ArqfZab6VcRv7aZRXX7V0GO3alLOTMeBsousEEfuf8ueuyxkR8un02B/poNDZcJoHXy8O6BS5uq5THYpeHNJFajryipaZBgj8a07A4ZfvQEcO36sDmla6TZWCvTQUfshvA52rKKiRiJ5VZnoc6swyQ8ZLUzkKLFxc/Ps+/o4U3ZOyztl
+ TzYMxXiT
+ zy2QmA84yIS5SXGhO4DAkzPKqXGQqtaMzg0CWdjUznPIHFHnxUqSoCv+NWaC0RNLAzC3Azb84KvUFqO6tyyqsGB22E/jJ6MEWz6pE3QthH1bkMy4gwdpRKncIdr24xbZaAsNR43rDNx1FmrXbwEdl1PhLeRGR90FQk4Mh/GI8dGHVExDBrkDWrGZd3ORhTCcP4i4FnpeghltJP/FR4KuWmSQkHyrlnL7kKDf6gP/c33aXtk59Hs5xaeTb04G94RAvmtz++oLFmwbXeF4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,46 +98,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-alloc_skb() with the __GFP_NOFAIL flag will never return NULL,
-so the subsequent NULL checks and error handling are unreachable
-dead code. Remove them.
 
-Signed-off-by: Gou Hao <gouhao@uniontech.com>
----
- drivers/infiniband/hw/cxgb4/mem.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/infiniband/hw/cxgb4/mem.c b/drivers/infiniband/hw/cxgb4/mem.c
-index cd1b010141984..08631de17c0a3 100644
---- a/drivers/infiniband/hw/cxgb4/mem.c
-+++ b/drivers/infiniband/hw/cxgb4/mem.c
-@@ -74,11 +74,8 @@ static int _c4iw_write_mem_dma_aligned(struct c4iw_rdev *rdev, u32 addr,
- 		c4iw_init_wr_wait(wr_waitp);
- 	wr_len = roundup(sizeof(*req) + sizeof(*sgl), 16);
- 
--	if (!skb) {
-+	if (!skb)
- 		skb = alloc_skb(wr_len, GFP_KERNEL | __GFP_NOFAIL);
--		if (!skb)
--			return -ENOMEM;
--	}
- 	set_wr_txq(skb, CPL_PRIORITY_CONTROL, 0);
- 
- 	req = __skb_put_zero(skb, wr_len);
-@@ -134,11 +131,8 @@ static int _c4iw_write_mem_inline(struct c4iw_rdev *rdev, u32 addr, u32 len,
- 					 roundup(copy_len, T4_ULPTX_MIN_IO),
- 				 16);
- 
--		if (!skb) {
-+		if (!skb)
- 			skb = alloc_skb(wr_len, GFP_KERNEL | __GFP_NOFAIL);
--			if (!skb)
--				return -ENOMEM;
--		}
- 		set_wr_txq(skb, CPL_PRIORITY_CONTROL, 0);
- 
- 		req = __skb_put_zero(skb, wr_len);
+On 7/24/2026 8:18 AM, Andrew Morton wrote:
+> On Thu, 23 Jul 2026 12:57:14 +0800 Ridong <ridong.chen@linux.dev> wrote:
+> 
+>> Fixes and one cleanup.
+>>
+>> Patch 1 fixes "swappiness=max": the anon-only test in get_scan_count()
+>> sat after the "cannot reclaim anon" check, so when no anon was
+>> reclaimable the request fell back to SCAN_FILE and evicted page cache
+>> instead.
+>>
+>> Patch 2 fixes reclaim_store() collapsing every error into -EAGAIN, so
+>> callers can no longer tell an invalid argument from a busy interface;
+>> propagate the real error code, matching the memcg path.
+>>
+>> Patch 3 drops the now-unused gfp_mask parameter from __node_reclaim().
+>>
+>> Patch 4 fixes the same "swappiness=max" issue for MGLRU.
+> 
+> Thanks.  AI review might have found several pre-existing issues which
+> might interest the maintainers.  Also a suggestion against your [4/4]:
+> 
+> 	https://sashiko.dev/#/patchset/20260723045718.2052070-1-ridong.chen@linux.dev
+
+Hi all, sashiko review:
+
+   This is a pre-existing issue, but I noticed that per-node proactive reclaim
+   fails to reclaim memory if the node's unmapped file or slab pages are below
+   minimum thresholds, completely ignoring anonymous memory.
+   In mm/vmscan.c:__node_reclaim():
+   	if (node_pagecache_reclaimable(pgdat) > pgdat->min_unmapped_pages ||
+   	    node_page_state_pages(pgdat, NR_SLAB_RECLAIMABLE_B) > 
+pgdat->min_slab_pages) {
+   Does this condition incorrectly block proactive reclaim of anonymous memory
+   by applying legacy zone-reclaim thresholds?
+   It seems to bypass shrink_node() entirely if file/slab pages are low, even
+   when sc->proactive is set, which could falsely return -EAGAIN to userspace
+   for anon-heavy workloads.
+
+Should we add:
+
+if (sc->proactive ||
+     node_pagecache_reclaimable(pgdat) > pgdat->min_unmapped_pages ||
+     node_page_state_pages(pgdat, NR_SLAB_RECLAIMABLE_B) > pgdat->min_slab_pages) {
+
 -- 
-2.20.1
+Best regards
+Ridong
 
 
