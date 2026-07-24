@@ -4,141 +4,187 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 052C7C531FA
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 07:19:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9E1BC531FA
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 07:28:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A7BF96B007B; Fri, 24 Jul 2026 03:19:02 -0400 (EDT)
+	id 55D7F6B008A; Fri, 24 Jul 2026 03:28:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A2D826B0088; Fri, 24 Jul 2026 03:19:02 -0400 (EDT)
+	id 50D646B008C; Fri, 24 Jul 2026 03:28:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 91BD86B008A; Fri, 24 Jul 2026 03:19:02 -0400 (EDT)
+	id 389CA6B0092; Fri, 24 Jul 2026 03:28:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 616D26B007B
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 03:19:02 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id CE909120290
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 07:19:01 +0000 (UTC)
-X-FDA: 85022818482.12.14414F0
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	by imf14.hostedemail.com (Postfix) with ESMTP id E09B0100002
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 07:18:59 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=BsYBeuLj;
-	spf=pass (imf14.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784877539;
+	by kanga.kvack.org (Postfix) with ESMTP id 091876B008A
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 03:28:02 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 935E91202A7
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 07:28:01 +0000 (UTC)
+X-FDA: 85022841162.25.FB3FFF7
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013061.outbound.protection.outlook.com [52.101.83.61])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 7160E160006
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 07:27:57 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=bAGBznYi;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=bAGBznYi;
+	spf=pass (imf08.hostedemail.com: domain of Sarthak.Sharma@arm.com designates 52.101.83.61 as permitted sender) smtp.mailfrom=Sarthak.Sharma@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2")
+ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784878078;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p1o/TeKLAsvOU5K4a5S381+TPlp4Jx2uMS/eZkpsUOs=;
-	b=5TquyktM71hAdP0K9gq2pWg+4WUedWHDO1Hjxhm67Yuuh1VeG8mHOsBrGJ9W8dNT1ma0MQ
-	BeWE8Fo8rlmg8ab3tClMlJlLcu50feh3O3nPVx0Oge1+/4KibYdEgfv6ImLjN7bJPXIm0G
-	cghBzTHhiQuJpdhtru5+uVRgoqDgfg8=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784877539;
-	b=U50i5FCTaXriEOM2UrH8AzkNbbX0fxmz8sCpOak75HOsrOnJJ8lr20ZJPBwifQKRmWrUU0
-	Ucd+tEaK58CBgJ9jRlBD9g7aAPIgrS3jo3LFqhs3UdKmD/0IK2F6k5DQxad1kfVQZTFWCf
-	/ylgXS1fi0T7v4Q6YCIlm8rCXlQdYtE=
-ARC-Authentication-Results: i=2;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=BsYBeuLj;
-	spf=pass (imf14.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-699fbcd23ccso148579a12.1
-        for <linux-mm@kvack.org>; Fri, 24 Jul 2026 00:18:59 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784877538; cv=none;
-        d=google.com; s=arc-20260327;
-        b=arZRme5s8O3jen9lX4D1cj9GizLWnI/R+ZYfGa2DAMy9o8fDSPtQzeT559g+Nsa/P1
-         9x9Mo/PrELyz2ymLc/dv23wWAykNencIPa9f3vyavc7F7IFA3gN1Cbl7P23e35ygDFC5
-         BYkceg368qfS9e16nADdJ1xLynlGXmaLA1/PFshqbl+Ke3wHmwI9zJKT6zzkYWJ/BJmk
-         U3YNoVG7DXrqw7TfGP8PCXivwrIDAAgYjk4AhbpiQRmWiaRC/pQSm3BwMR43JTRm4/ej
-         1jloKKYHEDiLJx56t50g2q9f/6VwFnG268V0lg4jk5FbnDWa0RGdxavwt02laeTM2aDX
-         48NQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=p1o/TeKLAsvOU5K4a5S381+TPlp4Jx2uMS/eZkpsUOs=;
-        fh=wb1PeqIpk/Y1qz9esoosEqgP8ai3UwCxH1Xn2SbtkCg=;
-        b=nKKqcgJNZ75CSf7KuOAcggpqd9dfybRtfgs/eZLMncCMdZRSkVDD6A9y+0WMDkWPir
-         8+3QcjYLZdO/1cXQrWyQiDVVhy84U5uGsbBnjVm2ENF2Dus15NW3jcRKCvdMCl9gcx4x
-         fYW2/13MsQhl+Ueh3zHTEscmwbUel3jyVvad80NAHf2LqDN4j43u7i1kOiVPtCfZHBFd
-         pGJFh1IVb6ZKgPxsoBZzGyiipme5KVhu4v7+rG168mFJhPSjsOWiWI0VpMVDfSPQuIS+
-         UJiOxlAWvItsQJVn127gHHNViOXVq8BLe2H5ioAHLKmzmrUJcv2nDFmV9dUEGi8gRbTS
-         WSNw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784877538; x=1785482338; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=p1o/TeKLAsvOU5K4a5S381+TPlp4Jx2uMS/eZkpsUOs=;
-        b=BsYBeuLjPnU5TWLNLRFKuCXPvPZp3ttsw1QoW9ceSHzG3tEUK3c6KLY53vUs9NzIsC
-         5sNh9aREpBLXjJeP+WRMHSCXjpdBZBYW/dtGv/598xRjkCWpjEb9cVw1DGej+lfY6BHg
-         871dJQOGsTTEPPiFOYyi1ALS+ww4wVYrNERdmY4/qfxF86qMlhziyqXcCZTZ+5TDWz7T
-         sNJyFfUnqM0KAQLQ2DcGaD8ZO7iqQz/Z/ncQYKj/CY8OaFq3gZfscXk1KN+A0Fgm/F20
-         MbQxFTeG5BaAj5UfBcL/7eCnW1iy2y4YBhEk3y0khVeGB0yo1sQsenknaxP3hN6F9VrL
-         sqVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784877538; x=1785482338;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=p1o/TeKLAsvOU5K4a5S381+TPlp4Jx2uMS/eZkpsUOs=;
-        b=d7fOjdHQiCij6M11tZcm5yqzbw5CbvZyzhhd0RRLp3LtRTixkpiMsxDrqDe4RiLpKP
-         acCA0dc58PUCu4aftjnkd6WrRokt140AcMI35kNcgYYKYl3bHp8TlT9TT5x6lOMLiuAg
-         nwTp72DODNIbIqStHoHTDzUXkh8yFJDbyJH4T++P+NOccT5ZawMhXA5MI3gUy0/3bpuF
-         thy+qf1H8DkGy1hKHLOM32gKL23jUHqFrf8RejO4yBJTgRNpCDBzygAWA4qiBHgmEACk
-         lBI9Cr9lg6zWF7yQ0x8P/FntWdKnmmXD8ys/cBB5fFOzxuaEsszkyoQTDWszNod+tq67
-         B7Rw==
-X-Forwarded-Encrypted: i=1; AHgh+RqGepv4bF1BEqG6N6eYIChrFWrwTJMWqYa1Uda8qKyhYLK8JP7ILD3npUhTbLEVNB5eCI2g1H3acA==@kvack.org
-X-Gm-Message-State: AOJu0YziVxV07C7/GZlu0H1CoblyV2NLI/gc++2sYPVQxUELBclUcYH1
-	KBFumDaJ6wJySPf+nYpM5Hyd7O0FyYSkjnNNdHZGrrh4tSpEAhuTuT8zN47n58zU7V0WSY2w8jd
-	MF6v60rB6VmH+HaDk/kAYqkANJtD+q54=
-X-Gm-Gg: AR+sD10i6jtaIvN+yaOwIk77olzKg6Szr5DQFs5KhZp+5k1e7+7h2PtaHPQxsBi06BG
-	uk40bZUFE0nlIRU6C2m/v6GhC2PMm6UDAZO3NBaXBlKFoPmmPNWXq46HKxyqSvow51h0/xadKMx
-	mA5XcLi+U1exdTy/WQo3UdxjiseK/veqBvRchRAz1TM9xHyVB524K0KABTHoPn4WeB/taCS0foF
-	KBOAWi4/dqfptbr/QniGrh6QABo1/hjZZP+BHH9h5+rXWvfgcj2kUeJabWNwET9emsOlPUohUd3
-	5hIib5S2W+uFBZ2Bt8Js+Fx6ahPO0Q==
-X-Received: by 2002:a17:907:d11:b0:c16:b05c:b9cf with SMTP id
- a640c23a62f3a-c1c509a9500mr275206666b.26.1784877538025; Fri, 24 Jul 2026
- 00:18:58 -0700 (PDT)
+	bh=6V7yNqjLIr/nDC81oUF4rWd9PpJc7GXqTnBEwNyPgO8=;
+	b=rVPx9tX6+Mti2wtF0f1vxFxyGYpvt59vvliAaLYdQHIOEhsYoW3RvkqmPjLHnQbqtLbY1a
+	XjXhLs5wRnOVhnXJsQZ7ZMD4JSsadEssjGUmJJWwbeOmlI/0OCLyxJgmCZoVEEj9+IPSvV
+	IMmShzpNpH/6UXN6khmH+dLxhdCwQJg=
+ARC-Seal: i=3; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784878078;
+	b=sNaSHcqETLa9gUq+WxJ04sV/8p+X7d9tx+/a9IE9LJqyUjtohXMEIjruofOyQEaeJyASHJ
+	/UdohdmMSg6ka3HqGuUKYZXhl9iVxXtd2jG2WOUVAa0Py6cOz5cloVGJqDNf2y0CdE/5Lc
+	/ZukAAIsPxc4f5hG8ugkc7mQME63pP8=
+ARC-Authentication-Results: i=3;
+	imf08.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=bAGBznYi;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=bAGBznYi;
+	spf=pass (imf08.hostedemail.com: domain of Sarthak.Sharma@arm.com designates 52.101.83.61 as permitted sender) smtp.mailfrom=Sarthak.Sharma@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2")
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=toHmTB5Y6twRXX/6k/alUsNLGCjIoRJE5IpDiAy8zzoF8BSh48O1qwZ5nCNbEC8NpgTsJdX+IMpC7wE/lfJcKL5oQLGWfQ7fl90DMoFWiIkFjU8nyJru86PZznvS+5kQTnmy5rUGL1mqXu2TqNG3qTDSdk3P/fnlRJ7KmiqMSmkf55zxksmJL5Kl7BXY+zlq73T9fl5C5s87rotqTEYbPXc6gHfVnx++csBSNe10/pwTucs9ZRI4HI5aHeT9GeNxXAKDwQZbLXammhS5HvulkhzJvAkb0+3wOrpzU+zmX8LtzB6ZL2fDxKB+Odkt296P0KuCYtR/zU1thZZ9S6HSNw==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6V7yNqjLIr/nDC81oUF4rWd9PpJc7GXqTnBEwNyPgO8=;
+ b=W4CjyZNE4qPht4x6QlrMgTpEEgrqQ/qMcG8Y6LFHYjZXO2iTHepDGtSia6xALn/LuCSddsUpKWOfugUEu8f314cSkr1j8zj+UYorGA0qu0CXhXbaqNiz3Ujel38lFUmODxACMJJIrF/9EWctS0NkIvQC5EljZd6Gd8kewmU/QI0GKa/6z1afjKdPyiF231VOJCYLTEzeFIZLokhHw0O4ec9rQF/4HDx0/ErrJqDhdsageTwP4FVursh0Hfc8Ac1ley8dpd8ZBNdNcSbfTojYc1/dvIEZR5b8EpAjkLZNJIwDsYolOML0gzvpoq2+I4+4JzLS0eO1KBVJzFKSkJfh4Q==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 4.158.2.129) smtp.rcpttodomain=uniontech.com smtp.mailfrom=arm.com;
+ dmarc=pass (p=none sp=none pct=100) action=none header.from=arm.com;
+ dkim=pass (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
+ spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
+ dmarc=[1,1,header.from=arm.com])
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6V7yNqjLIr/nDC81oUF4rWd9PpJc7GXqTnBEwNyPgO8=;
+ b=bAGBznYi5e9iw3hKJ1sipQptvFZLv/EfRgORWJcdrAewH5rwx7hv1u+G2NGr5qDYb2TxGnGlR80276RMA2CbZK61GY/ULi9EpZ0kuMjnLTcB3xLWOhYlrHYQ7YYDvlxiZDvS33zoRy7ldJDMB84xRj4eJfWDvO54/5QsKbGxmRY=
+Received: from DUZPR01CA0047.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:469::16) by AS8PR08MB9767.eurprd08.prod.outlook.com
+ (2603:10a6:20b:614::14) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.11; Fri, 24 Jul
+ 2026 07:27:49 +0000
+Received: from DU2PEPF00028D0B.eurprd03.prod.outlook.com
+ (2603:10a6:10:469:cafe::14) by DUZPR01CA0047.outlook.office365.com
+ (2603:10a6:10:469::16) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.245.10 via Frontend Transport; Fri,
+ 24 Jul 2026 07:27:49 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
+ smtp.mailfrom=arm.com; dkim=pass (signature was verified)
+ header.d=arm.com;dmarc=pass action=none header.from=arm.com;
+Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
+ 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
+ client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
+Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
+ DU2PEPF00028D0B.mail.protection.outlook.com (10.167.242.171) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.245.5
+ via Frontend Transport; Fri, 24 Jul 2026 07:27:48 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=br5VIvv5KIXvJZAlAsQv1Quzy81sLNYztWgrgfy0nfAMNp7ZFbnt0Oo/0g44MFSNrRREmxOBG6Qq/Kmi4JmRfTn+y5+EUwr9H52ogrlZopn6vjzLWvJX76l29/Kc0zsRvOKns/hbfILdlei95XZNOeoD1rYTyj0ptQfqXTnRCkqlDY0HqrH06T1S2na5rSAZ5kuYp+jOIMCuip7OZB5k61dmzTX+Kyo3tGc4q0Yi1WDtBRBGJAWfE+/wEE8A6XS3EOKAoGJEXbMKGOsGSH2meC7cZkJQzq8pLPvDhD0Z9OqiE/plTJF6HCqaAaebSiRJSHoOfdmtScokrfjcEDIeKg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6V7yNqjLIr/nDC81oUF4rWd9PpJc7GXqTnBEwNyPgO8=;
+ b=QD2urU9YAIBlwyCEhiqgyfOIuNVgRGnNMANt0jCXmXrZTlOmQLbmXW5ElcCVdwpZ9ejcOsjnRc9WVismKY0CCIWi2pZiZJzyVbWvGWzBD4Bx/cOKZFcxQjhXNI21/Vw3x09TRn9ohO8FG+ugWAziwCzplI9FCeZGabuQjUb2B6KZqm8x7BPcYxo5Q0oWE6jhrRYWpJrc8Ag77T+8hH6c6pHQm5I24P9TxFLFhOR9aZudO24D6ByaZlnqToO7W4b3aMoMCqlG9IJCQw3acsXy0HDJQdOTn9JTEKIGY5bHF6SduuarazU1+T9ytZH+J3TRsf0kVjOdMlyqEoiI1eWSWA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
+ header.d=arm.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6V7yNqjLIr/nDC81oUF4rWd9PpJc7GXqTnBEwNyPgO8=;
+ b=bAGBznYi5e9iw3hKJ1sipQptvFZLv/EfRgORWJcdrAewH5rwx7hv1u+G2NGr5qDYb2TxGnGlR80276RMA2CbZK61GY/ULi9EpZ0kuMjnLTcB3xLWOhYlrHYQ7YYDvlxiZDvS33zoRy7ldJDMB84xRj4eJfWDvO54/5QsKbGxmRY=
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=arm.com;
+Received: from DU0PR08MB9203.eurprd08.prod.outlook.com (2603:10a6:10:417::12)
+ by DU0PR08MB8812.eurprd08.prod.outlook.com (2603:10a6:10:47b::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.11; Fri, 24 Jul
+ 2026 07:26:45 +0000
+Received: from DU0PR08MB9203.eurprd08.prod.outlook.com
+ ([fe80::f1e:73f2:57df:4047]) by DU0PR08MB9203.eurprd08.prod.outlook.com
+ ([fe80::f1e:73f2:57df:4047%6]) with mapi id 15.21.0245.010; Fri, 24 Jul 2026
+ 07:26:44 +0000
+Message-ID: <6b2f4fde-0da2-4c0c-aa97-f23982fb7e18@arm.com>
+Date: Fri, 24 Jul 2026 12:56:38 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] selftests/mm: fix gup_longterm EINVAL error message
+To: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>,
+ David Hildenbrand <david@kernel.org>, Shuah Khan <shuah@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe
+ <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <8A3ADC563A32EF67+20260724065929.1474539-1-zhaozhengzhuo@uniontech.com>
+From: Sarthak Sharma <sarthak.sharma@arm.com>
+Content-Language: en-US
+In-Reply-To: <8A3ADC563A32EF67+20260724065929.1474539-1-zhaozhengzhuo@uniontech.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MA5P287CA0066.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:1b3::11) To DU0PR08MB9203.eurprd08.prod.outlook.com
+ (2603:10a6:10:417::12)
 MIME-Version: 1.0
-References: <20260724033435.2573323-1-ridong.chen@linux.dev> <20260724033435.2573323-5-ridong.chen@linux.dev>
-In-Reply-To: <20260724033435.2573323-5-ridong.chen@linux.dev>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Fri, 24 Jul 2026 15:18:20 +0800
-X-Gm-Features: AUfX_mwxRBF3SV1pnYd66b762DS2w7hBVFmVUzb7XbFbo2-Tk9fj0mZXFQv5doQ
-Message-ID: <CAMgjq7AzMic8kBviymFi2qz+VcvwSysJTS=a2ca9cjDjC3xAMA@mail.gmail.com>
-Subject: Re: [PATCH -v4 4/4] mm/mglru: fix anon-only reclaim evicting file
- pages when swappiness=max
-To: Ridong <ridong.chen@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Zhongkun He <hezhongkun.hzk@bytedance.com>, 
-	Muchun Song <muchun.song@linux.dev>, Davidlohr Bueso <dave@stgolabs.net>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Ridong Chen <chenridong@xiaomi.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: E09B0100002
-X-Stat-Signature: y7a47xurptj4wg8w13ngux79961eq48x
+X-MS-TrafficTypeDiagnostic:
+	DU0PR08MB9203:EE_|DU0PR08MB8812:EE_|DU2PEPF00028D0B:EE_|AS8PR08MB9767:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3cb2f76b-8eaf-4a24-c6f3-08dee955106b
+x-checkrecipientrouted: true
+NoDisclaimer: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted:
+ BCL:0;ARA:13230040|366016|376014|7416014|23010399003|1800799024|6133799003|18002099003|22082099003|56012099006|11063799006|10067099003;
+X-Microsoft-Antispam-Message-Info-Original:
+ Z48sk7lBz5jV51S98VuWfvbhWRsZo7Yuz3U6d7Ic7/F/Ix/h9w8FeLkL8IxErGoJFWJg/GtZzC8zNwSvXpebNQONFfLZTDPjfpdm7J0ZtrwkbjoN+WUdfvHIdmi0p6lExu/2niXnZhIVyR5QMj48GW8BWfQStHs1VKNTZG13y31LONk0ZxxUgnnD8gXxlHYYftoFnm4ZJ/oWRBE5sk7LJ7RTj4NbiIMwREjCs5z+4+nP8SRfOXfmSU2a+ZuS3iP+i44u5JqBGdH5ZGeqQTakH9OjI3QNjo8NR/+a5247d8cY9m4IFf+3XAEPr0aySxArbKua/xxa2Z5WXus2CVG2yEQi0pzwjta53EyJVnqTiougz+15uBZWNpifdM6Rt5zFZbLTTPglFJr+C5tlQB99PKshS8lm9ne6dMIsADoz8jD6oB+r/s2J+u25la5xYBft5TD+VYSCGUOiRZYf0Dcg+tt8MAoBLi/RJVcyzZuc/mVfyfWwhbBLOQWSd9GugVE6f6IXeqHxaw6WOan4zTWUtp3q3WK3toRX1TwNDibdnrQp0wjJDaOS8gNQg5rlOiNXVIxRuaIDQr4KKvBka5p75xnG2CrbVkAYmbnDQsAl7Zgh5+72KUvjbnAo2TpjRV+J07Iu5NrWN0E3aclsmphu27xBn71xBg66PYvkMFkg3N0=
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR08MB9203.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(23010399003)(1800799024)(6133799003)(18002099003)(22082099003)(56012099006)(11063799006)(10067099003);DIR:OUT;SFP:1101;
+X-Exchange-RoutingPolicyChecked:
+ CcOL+SK2017Rk+mV1lLQOmfQeFf3CzV+rnAUo99SZzb12nR80zsX4fdmUVmLpbBCohcfZjKRQWr4qrKw79F8V95PL3bf4UTjTl66YHmzgZhGyvKXn/qwEnXL4kGPKWYw4nszb74V0xpXs1BGmZ8WSC7x+RPVvBsJ9XLh7YAE+HiogdVe2qQQF2lGodkJX/BOy7kyKefVD3cBu+P4AKZyEZcvLUTGPyfRZcb7qkeaEHOuJuYLkbmhu9NQ44tgaFmBIoPrpaIA0PqgIUaMhcxSz3oAbrXOxRwjxShY+noBvZ3PbWQ5bpIvDYDDMauqE18ht5z1u/gHgLaCie9zkDJY2Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR08MB8812
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ DU2PEPF00028D0B.eurprd03.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	2ad7df65-4ff2-4285-37a9-08dee954e9cb
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|1800799024|35042699022|7416014|376014|82310400026|23010399003|14060799003|18002099003|22082099003|56012099006|11063799006|6133799003|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	1Acc2sTvcqO30+BGw+gQv1nfLEIITn+TjSH2TUzl/z9+703hEl9avypaE4Q6kpjVa6ILBcFTmWahBGpaimF5eOW2t+KcP3Fe4dNum0kZ0NdvP5vheToQdVwU+99kogrHfL4wBn7GCOSpmm3eYXWa0Gnaqlzl1M3j4JIuVVvavqhIgnvSkAxF+8N+RmiGCN1tCyqEFmGy8pmGEpRyIfeIBOLvJ4zs49qdmno3vM0xoy/i0tWkYZlKFWFDNixJ117+JBMYjbxxAMPR3exoXcTfzGsq/WQ5YSaNwr/Te8h3ErIE2ztbIBFkx+Nof0N7hdRbgK+5SCQCSFi3nnUNHkjuo9QezwRq4paabt2ucHzbpVTXH/Cn8je9p8pO9p+R4GLT2AkEkNoDYIS3KLoFxXFIPtyg7nGyeef77y0TmtwmEFIDngmVCnX4tYGogdCmZ+5/xGXZE0iMPNXlbgx1W1hO3dHv7Ne9DSJUQRlTELebt0/LMLRRmmAKo5w1KLnKBS69SMfpgnNofWaSgRV6TVv6ouDqvzd2Z97rhPydA7tyIXw4YNlkuDD/FF1tVZZuMU2blNfIsBx/lUtO9/MPu9NgP9VqkpxTO4dV0kz1X2VFE/H9FRBJ9CjFUc3pyO5EvIErulZWRn5/Y1EFwI6sBINUIJ1BnYv8jl6oFiNLRutUWQlfakkoe3J2fx82pE8DHDrP7zFYYf/PNZ21oO3zllIcLg==
+X-Forefront-Antispam-Report:
+	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(1800799024)(35042699022)(7416014)(376014)(82310400026)(23010399003)(14060799003)(18002099003)(22082099003)(56012099006)(11063799006)(6133799003)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	Dz4NcBf1kX5nnX8Ru7O24uCFpbFgACz366W+63X2GgKfJRtObbZ7Pjo51XiUCYYz1olp+7mWik9wxyVCE2sB0HD3YI1gQclMBnXkP99dgdQus0aE6aYuWqYMrijOcZWXo8ELKND2NSQHDosoTFdem1Jt3OgiPYe+1rmjFnBpe3FBh7vjsZDTlAfOhQh+UPCuSPye0gVSGmAG7+eDCWcp8bmdH5Gjy+HU5ZIT9BpEuZZ1hEj+vvU80tPEK8wVGcYQbFfld9g34Fy/GcewmVOrAGSWQ62yCeldLeHlxYYXrz7eWWWgDJTyDw1RmjgUb/L3vMR7/84OMN+eBJoKlLcpylZOMIQx+tXlgFW4197Kx6flLkYh2uviK6tYUdlyvY69OetppWheFcMf1grgrrjxyEFvYE0xFQzy5IOgb6yiz0AZyG+wsaV2QHL3oh91z6zF
+X-OriginatorOrg: arm.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2026 07:27:48.9199
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3cb2f76b-8eaf-4a24-c6f3-08dee955106b
+X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DU2PEPF00028D0B.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR08MB9767
+X-Rspamd-Queue-Id: 7160E160006
+X-Stat-Signature: axafo3ofn74i6ei6iodamugu6jdy5c7o
 X-Rspam-User: 
-X-HE-Tag: 1784877539-498235
-X-HE-Meta: U2FsdGVkX1+9zjKFHs3JQDv58nG6BmjhJhF18Dc+WdooQm6BT2HSFz2JJU7ZcltA0QzRTgmhJB3vA5w3hUOZplWX+wNuG678Gvum8uG73C2uVp76+SIm+ZTTN1dMmLpeaRe4Au9/swHcF/433rNabQpf8dqG8G6HDiljzaeOvaNokOQaaRYcs1wkv7sYLKzw4IishEk+u8X9NK78Gn6ZKPR4TVMJLPqOP9a8iWWUn51xzPW4IfhMLhMwHBT0ROlg8gwy8HLLd/hh4v8yYV/kzfx3yqMDUuAY1Wo+YV1gea3rIZP+o+g5OkypdyyDJG4cuXHsO0BBCwiuN6D/P96K8jS910TQL1rNJ0tBAV9HFPtFIH+G0tnuu853h4HANeUjh4uooSPgLSRSLS+5XRA++jMcBSX6WUDY4iCGhZ+yH57HoJvTiCNpVDuIERlN2S1Wv19XcNCoRLkvmgb4NMW6l/W2iAeL/1nvDFLch15PEolEahA57w38SuwaNYrN+0dfzhSMh7TYqSO43/Jv0vQFznF8XYRC8VHxJ2dqD2ZOF+fjGYFQNR6Ogu7bsU+XBUDsdb8YwOJeYOEYE7eBGLHahoyMygIFckRLOe9iqVDWWyQ2drSruAF841NkGcr9yvR/6xFhy4Y1+XlCGpZuislVUvJzDqB9KpGXR/0airlGhh6UdQYIRqHisSXbvJLDKOR5HsRDRdJxj5S+U9nI4GxK93nJZxS+CW4xe9D4TwdUr6LJy1DGaHbs2L71ke0eg6FRmtWaeXw2XTOjECiqg8iJFIVG/9kimwKrz/LA22XS3KWXPmBuXkkA3IhtASvl8Xs+BF+ld8oKSIDqTPm5Owi8Ey0XrZGbRcqMW8y5b+r5loFf4ML/OgL4Ww6xhsaXtdOQbnc9Pv11sROXm6EKjkJwGizApfGwqolICqFaFB75ZvrdPDVNmWRUfnnoATAZtSJ8KvE04cdq5IxsRU0hXkK
- tF4aYf29
- 2rIwE39mdbm/JHIjgEAYkSwola3FnY5wGJ9N+1Kx4hS2vCb7ikURkfr8a2Lr4lZ8NE4FSczLStmKDeKiSoq061mC8YkMnv0PFv7VPVQ3h0bffKlOJs7UYyvkoaoo/KRYjLNVBJV8Dw1LChPoXnEzK/UnLRBbmVplbWWmlF1GLu9AmI/XiuUq/wQtZlURRQazkSTBVOoBYxgLO8Zmt1/iYDhJFyWwrmjYJ6VXW1a4TafmDs7JaLVWwtwMogI9lVnn3yo5ifJkFgm61TiDrgVlEG1GXy8Q4CTXOKpH2uSrHMZ1OlDwb74cP76Hu4SUil63ahZDGMJPL4xHyJble8PCnatEe+FGOG56zKuKOyjwzYmXIEmxu1jBmDEATY0+6aM+mRfgSKaLck8lkgD21xnxGuY/s+3u/4YV8ESE0nWiDDavFY9r7XJc0uPkPWlIb6/uPiLotqBJpi/QQpt+061Hx4z7l4/uZgal6HzQyK2C+FuJ1MxOpm6CtLGuO0IzHJMUesCLa
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1784878077-482859
+X-HE-Meta: U2FsdGVkX1/Tvr2PiM5PP6r04XfHVc4S/jP+F1n3sEZ+3vtraQe0orgN+GvnZVrViFzMby9s3UdjnRlW82yGqZkR15zwDnsnXoDP0yLo8BLIWYvCO67csjNSeqle257AX1tyKjipo5/OGtdgzAL/7poPPVE320ddISbIffwIRoNZDtUebhiscav3qhoUHhBD1Ntyos17opzIB/wGfIU41596H0bZ6eXxcovfDLSZo/El+dd5HX/34yaRo2pfJY+Nx+b1qNrsWAV1mb5Jb8oTx9ZEflyKPLmfTbEIkAdeASahrXoj4lkO3yaVK1MBQEYzDOeXqBqx+wBhgtvYTFlndKImB5lbLpRYN1BUiWPnIMvP2cPKObyVdTnHs8X5OiwSechySG9RnxYmBvgkIEg/gs/veHeiCoN4wy8d7eLVg+GrlAKi9KkpXo3dw5DTCuNhDZ5FWzEc9zIYSN2aZgOiQA+tKzNSV/JQE5+UOEiSvUu5sp25nP8OMvqaq/FFw33K5+AvtZOT/ED8qb1i0N+HG2izuXWg8CtnGzID7VrMqV7sCdV76cZOoIE8+q1QJvryCZoM4wSsf6yA8PlvYZ4v3Xzs3zcJSCOtBUFZP4CPEmdBXHGypu8U4A9RV+5BFShqn9KN83xUqQ2X9XfdYOgaTQXeS5OOiyT3nB5x/GyUf1VVW2y3ta6zpSVCMY5ZYRfZgeQ6TWNL1pN1qGxsEgnWT185J+jLIpZpBe71yaWAedc80/XFGT2DQXprHG+ikoyM1e010/oSIYGlqjd4AiJlpkRHP7+6NSz5A4hUJIxNF1UT0/aeLIAxEbGafvSJAhAsWNsRYqI7y8vu9SOYzU2bV3vmD2OC6DSBQQGpxjkkLEypb7uxryHVkUBPrB7X8n3mW9Xwvyt42LUTe1HL9IGpZx9hM5WcXtGoKgH97OqJxTJxFX6ZlNgVdl2navsOI8MMsDt6x2LY+0569KrB9p6
+ 6VrcAYZx
+ ScycNu8ZxCFaHpW474Dcl/34wllGHiCR/J1dsBeLhOyVna/OsgBjrsJrD/IqGW4BNn8Zfd35f4W+P2zBamx9G7ckeFgRLgQtQwWcf0ETOFA4fBp+zHjNzGa51MgXnpJ6GU6nb7vUwhOcvd1IjDdMBfJD/t8oHq2GfB68FxQXVJKA+HNX502GCMY0FptfykziU2151rISaC07AueFDJgzsTYcDvzc2nSHWUyEhXXTwP+th7yUyvOPNrVW90zOu/NF292CNf0WZCDo9egWITEJjhu0NfDLZwi6t3Gbj5wa8poTId4KtErvdHll9dZetpI2aVOhLLfItevlBCl6Dt3VZCVGwWWwrZJAIMB0B0sMgiMRDqRObO8CqSDAR1mr22nvybKVdRlGRkuUXhXRBXzMTU0+c+Lbrf6ETi5YgmwuRiupr6x44ApPvdqYTPZA/km6IUFAFQ4AHA4lWyC3JrWRNhuxlEzTn6orCs2eaR9Fm7rr4v8I6k1Hb0EuC6AwPhVa4R7+D84+5pcq+25FOCQH2zJXDlTumm7oDLjSJpluOksmyklnOAAVEW1l0Uz/f8WO8wBJlTKOZK1HzHVFBwbUYdpDheUFq9Xh2kEhGUpSf5/zmcjeGfyZWNXLZbFF8OJ35sX0OularCrjSbZrApO4Mh6aJESEtzqxl2WPoLGvl2M5Y0b50yY1wvSPHgw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,129 +192,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 24, 2026 at 11:36=E2=80=AFAM Ridong <ridong.chen@linux.dev> wro=
-te:
->
-> From: Ridong Chen <chenridong@xiaomi.com>
->
-> The previous patch fixed this issue for the traditional LRU. The same
-> problem exists in MGLRU [1]: when swappiness=3Dmax (SWAPPINESS_ANON_ONLY)
-> is set, reclaim is expected to evict anonymous pages exclusively, but
-> file pages can still be reclaimed when anonymous pages cannot be
-> reclaimed (e.g. no swap and no demotion target).
->
-> Fix it the same way as the traditional LRU: keep returning
-> SWAPPINESS_ANON_ONLY in get_swappiness(), and return 0 from
-> get_nr_to_scan() when SWAPPINESS_ANON_ONLY is set but anon pages cannot
-> be reclaimed. Since get_nr_to_scan() decides how much MGLRU scans,
-> returning 0 skips the scan entirely and avoids the useless scan work
-> when there is nothing eligible to reclaim.
->
-> The test result:
-> Before fix:
->
->   # cat /sys/kernel/mm/lru_gen/enabled
->   0x0007
->   # cat memory.stat
->   anon 204800
->   file 67108864
->   ...
->   pgsteal_proactive 0
->   pgscan_proactive 0
->
->   # echo "64M swappiness=3Dmax" > memory.reclaim
->   # cat memory.stat
->   anon 208896
->   file 0
->   ...
->   pgsteal_proactive 16384
->   pgscan_proactive 16384
->
-> After fix:
->
->   # cat memory.stat
->   anon 188416
->   file 67215360
->   kernel 1970176
->   ...
->   pgsteal_proactive 0
->   pgscan_proactive 0
->
->   # echo "64M swappiness=3Dmax" > memory.reclaim
->   -bash: echo: write error: Resource temporarily unavailable
->   # cat memory.stat
->   anon 204800
->   file 67215360
->   ...
->   pgsteal_proactive 0
->   pgscan_proactive 0
->
-> [1] https://sashiko.dev/#/patchset/20260717113300.214717-1-ridong.chen@li=
-nux.dev
->
-> Fixes: 68a1436bde00 ("mm: add swappiness=3Dmax arg to memory.reclaim for =
-only anon reclaim")
-> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+Hi!
+
+On 7/24/26 12:29 PM, zhaozhengzhuo wrote:
+> The gup_longterm test prints a literal "n" when
+> PIN_LONGTERM_TEST_START fails with EINVAL because the string is missing the
+> newline escape sequence.
+> 
+> Print a newline instead.
+> 
+> Signed-off-by: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
+
+Can you add a Fixes: tag here? For this patch, it would be
+
+Fixes: 800ddf3cd74b ("selftests/mm: report errno when things fail in
+gup_longterm")
+
+Rest looks good to me.
+
+Reviewed-by: Sarthak Sharma <sarthak.sharma@arm.com>
+
 > ---
->  mm/vmscan.c | 20 +++++++++++++++++++-
->  1 file changed, 19 insertions(+), 1 deletion(-)
->
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 859655fcf60d..254827544461 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -2708,6 +2708,10 @@ static int get_swappiness(struct lruvec *lruvec, s=
-truct scan_control *sc)
->  {
->         struct mem_cgroup *memcg =3D lruvec_memcg(lruvec);
->         struct pglist_data *pgdat =3D lruvec_pgdat(lruvec);
-> +       int swappiness =3D sc_swappiness(sc, memcg);
-> +
-> +       if (swappiness =3D=3D SWAPPINESS_ANON_ONLY)
-> +               return swappiness;
->
->         if (!sc->may_swap)
->                 return 0;
-> @@ -2716,7 +2720,7 @@ static int get_swappiness(struct lruvec *lruvec, st=
-ruct scan_control *sc)
->             mem_cgroup_get_nr_swap_pages(memcg) < MIN_LRU_BATCH)
->                 return 0;
->
-> -       return sc_swappiness(sc, memcg);
-> +       return swappiness;
->  }
->
->  static int get_nr_gens(struct lruvec *lruvec, int type)
-> @@ -4921,6 +4925,20 @@ static long get_nr_to_scan(struct lruvec *lruvec, =
-struct scan_control *sc,
->                            struct mem_cgroup *memcg, int swappiness)
->  {
->         unsigned long nr_to_scan, evictable;
-> +       struct pglist_data *pgdat =3D lruvec_pgdat(lruvec);
-> +
-> +       /*
-> +        * Proactive reclaim initiated by userspace for anonymous memory =
-only.
-> +        * SWAPPINESS_ANON_ONLY is set only on the proactive reclaim path=
-, so
-> +        * warn if it shows up elsewhere. When anon cannot be reclaimed (=
-e.g.
-> +        * no swap), return 0 to skip the scan entirely, avoiding useless=
- scan
-> +        * work when there is nothing eligible to reclaim.
-> +        */
-> +       if (swappiness =3D=3D SWAPPINESS_ANON_ONLY) {
-> +               WARN_ON_ONCE(!sc->proactive);
-> +               if (!can_reclaim_anon_pages(memcg, pgdat->node_id, sc))
-> +                       return 0;
-> +       }
->
->         evictable =3D lruvec_evictable_size(lruvec, swappiness);
->
-> --
-> 2.34.1
+>  tools/testing/selftests/mm/gup_longterm.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tools/testing/selftests/mm/gup_longterm.c b/tools/testing/selftests/mm/gup_longterm.c
+> index eb8963e9d..c03b4f891 100644
+> --- a/tools/testing/selftests/mm/gup_longterm.c
+> +++ b/tools/testing/selftests/mm/gup_longterm.c
+> @@ -196,7 +196,7 @@ static void do_test(int fd, size_t size, enum test_type type, bool shared)
+>  		args.flags |= rw ? PIN_LONGTERM_TEST_FLAG_USE_WRITE : 0;
+>  		ret = ioctl(gup_fd, PIN_LONGTERM_TEST_START, &args);
+>  		if (ret && errno == EINVAL) {
+> -			ksft_print_msg("PIN_LONGTERM_TEST_START failed (EINVAL)n");
+> +			ksft_print_msg("PIN_LONGTERM_TEST_START failed (EINVAL)\n");
+>  			result = KSFT_SKIP;
+>  			break;
+>  		} else if (ret && errno == EFAULT) {
+> 
+> base-commit: c04df384b55dd9dcf72c36b661becb5aaba371a9
 
-Looks good to me, thanks!
-
-Reviewed-by: Kairui Song <kasong@tencent.com>
 
