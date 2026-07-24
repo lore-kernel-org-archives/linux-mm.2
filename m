@@ -4,92 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FDAEC531C9
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 13:31:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7023C531F9
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 13:34:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8279F6B0088; Fri, 24 Jul 2026 09:31:57 -0400 (EDT)
+	id D5D066B008A; Fri, 24 Jul 2026 09:34:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D8266B008A; Fri, 24 Jul 2026 09:31:57 -0400 (EDT)
+	id D34566B008C; Fri, 24 Jul 2026 09:34:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6EF5F6B008C; Fri, 24 Jul 2026 09:31:57 -0400 (EDT)
+	id C4C5C6B0092; Fri, 24 Jul 2026 09:34:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D216D6B0088
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 09:31:56 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2A3DF12032D
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 13:31:56 +0000 (UTC)
-X-FDA: 85023758232.06.34A460F
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 3FDF720005
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 13:31:54 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jSYp83tW;
-	spf=pass (imf31.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 98D836B008A
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 09:34:13 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 24A931A0399
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 13:34:13 +0000 (UTC)
+X-FDA: 85023763986.03.152F0EB
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	by imf16.hostedemail.com (Postfix) with ESMTP id AA51418000C
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 13:34:10 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="M/fFo/94";
+	spf=pass (imf16.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784899914;
+	s=arc-20220608; t=1784900051;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0L14fpsDjK7+KbfhNaWx2JjhNpl8Qbr0apeF37K42Uc=;
-	b=UHU5thT9XwkcxxvbWbaCDt0V5mBem6gUOP7Z8bEkSDDlPibv5IOlWymzmiT10Nv6jlQtFj
-	BK0MIRXeoyviwChWV7+s3FkWYK3Xrwkaki7IqlpVPkForM7D4lhenpZKPC8lyBZ3VrztTV
-	o2HVsVTMcQ9bs6XvYUrpIvkfzMbD6eI=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=Gz4viE8dOBjBXdN6lTFFvwoCis0aeCWu3yW7zM1hAxg=;
+	b=Td6R0thvmBM8iLc4/8BJE0Li0Bo1bB5esUsVR9kfuRvYHOG3reLKpJbz7aOla/pGxWDcud
+	OHHrxhwP8mkUhJhxjAYllV9J1kbp4DdlBrkJxvET4WUa8tZJwPCihJeI3w9YuXjwRvBT3X
+	KIvhn3OGLF9YgiaCvFAIFbVBGD+NwAE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784899914;
-	b=057bLUgYC9cR9MGdN+6X5cxtj+5vyV8+k+GDcI+WmXaNTSMD3hncxKGokPTg9hMy0V8OUO
-	OyPYRdOG6mXMsFM8GdxfjkeMD6U30UJvAHGuLU5wqsmJshTfFl8vGYkqe5NeN8pkjUVE1v
-	n/rEITK8TeZ/5sCAkiKagvPM6xkJ5ac=
+	t=1784900051;
+	b=kSco2iyIa4uVojranvNBvFNwYrR+vQW0iLkC9p/T2N58Qyh1WE4r1k0o7Jm1gJbkDbJahi
+	1VdZb1A0PetEIbm8tsELj/9pAonvgWxStPvYCGKRt4J9/iA2nMMrUDXhNDJ1C0zCCRdVnA
+	BVXtNUmIDC2pM2u6M9n2tpAvOcpyR4U=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jSYp83tW;
-	spf=pass (imf31.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <fb6b983e-843d-454c-bfa1-ec802228f981@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784899912;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0L14fpsDjK7+KbfhNaWx2JjhNpl8Qbr0apeF37K42Uc=;
-	b=jSYp83tWZQIV6kKKIgu/juSKjF6BY5bm7gikrfI/fIOwDQL6r8L4HWUN0Fade11N9zar4E
-	l4mS+UfVZ/mb7Db9jfrbc5B5IirlKduEBGG2NLHImr9CD/20BXJ80YZPjPrDPuoPxgA3mi
-	SBmFW/AO83AMMm8uTAXutSlMsPIZynw=
-Date: Fri, 24 Jul 2026 14:31:12 +0100
-MIME-Version: 1.0
-Subject: Re: [PATCH v4 0/2] mm/vmscan: reduce lru_lock contention via
- vmstat-derived scan-balance cost
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, kasong@tencent.com,
- qi.zheng@linux.dev, shakeel.butt@linux.dev, axelrasmussen@google.com,
- yuanchu@google.com, weixugc@google.com, chrisl@kernel.org,
- nphamcs@gmail.com, baoquan.he@linux.dev, youngjun.park@lge.com,
- hannes@cmpxchg.org, roman.gushchin@linux.dev, muchun.song@linux.dev,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
- rientjes@google.com, kernel-team@meta.com
-References: <20260720164207.450685-1-usama.arif@linux.dev>
- <20260723133548.2e12b638bd629ef63b935113@linux-foundation.org>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <20260723133548.2e12b638bd629ef63b935113@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+	imf16.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="M/fFo/94";
+	spf=pass (imf16.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784900051; x=1816436051;
+  h=date:from:to:cc:subject:message-id;
+  bh=HCi4xO+oZO+F1vmtPFTVqw36/Cr9j3p5ty+lqMpqkjU=;
+  b=M/fFo/94Zw9zPQnivtJ6QUJvE7yUgAARFzlWiFDarBXkLkOYB4EvnKCo
+   bNkX05dtswmYe6otIGlAo6gfkVLcfyqJTEHRFQPzaIu9B96wId+w6/hDR
+   IZpnVzEzyKDL2oKCCiVkNYgKy6YeC3ssFq2alwoaNYU7JpxdaYrcdQh6Q
+   8xz1ZAdZ3LJosFuGu7oNAuo5gp/84ZIIbsOXuw7GF838aXVdL9CrPHNYN
+   h/XO/xG3xXjE0g1onSSLT1VAXmbRRv7uAVIIY2Hl0vxYQOYZmrZgrsikx
+   Vn+VAtYgVkJmfhmlngg7lLi3wb3Tx3otxizDng6niazb6A6UgmD8k4PLc
+   Q==;
+X-CSE-ConnectionGUID: dYptPqqhQd2Z79bkYHy7OA==
+X-CSE-MsgGUID: i3cheqYlRkCzINcr9t180A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="89455821"
+X-IronPort-AV: E=Sophos;i="6.25,182,1779174000"; 
+   d="scan'208";a="89455821"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2026 06:34:09 -0700
+X-CSE-ConnectionGUID: 8yJCjbu3R+imxNNkEgibFg==
+X-CSE-MsgGUID: vx2i6CJeRiWRKF1Kh5dX1w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,182,1779174000"; 
+   d="scan'208";a="259368202"
+Received: from lkp-server02.sh.intel.com (HELO ea128546eb3d) ([10.239.97.151])
+  by orviesa009.jf.intel.com with ESMTP; 24 Jul 2026 06:34:08 -0700
+Received: from kbuild by ea128546eb3d with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wnG2P-00000000apb-0AIu;
+	Fri, 24 Jul 2026 13:34:05 +0000
+Date: Fri, 24 Jul 2026 21:33:08 +0800
+From: kernel test robot <lkp@intel.com>
+To: Josh Law <objecting@objecting.org>
+Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>
+Subject: arch/mips/boot/compressed/decompress.c:undefined reference
+ to `__ashldi3'
+Message-ID: <202607242144.ZsfAPGBh-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: AA51418000C
+X-Stat-Signature: xrkmfci851t75heeqo3ppsadymsq3y6m
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 3FDF720005
-X-Stat-Signature: yfuyinejizxunbyh75eyf57qgh6zrx45
-X-HE-Tag: 1784899914-636462
-X-HE-Meta: U2FsdGVkX1+ouZDvtXM3E+AKovActC4xiRc1H9Ca15jZmHdVM9FctiD6DSnaOsG9g0AFP0pp6XIXRxNAJXaOV6/xnwSFKAYBQqRvlEqdexI8ZAfeGZQX5ETSLRnTqqCXXBImM4iKpAOjThOCfJcHzf1a87qyq9mwgtIsyt4P331Ba4sNstOHnZqrKtsnhju1qu+fs2HEV004pDgrdaKsDIiZCeQtB7QbIN1sTqY/7z63h3GmLCtzFZ1YxsbA6NyTaiFtsHQkAIHQuav8DDM2fvNTlequOLEJtGeWDfTDOM80RqeCQximfhEinRzXSbiUSzjlqe2L2cUhd8K5sHm8pEkfwuW1B2DW1Crfds5rJdGD3CyVbTA4YjPmjJ4x3GyK5/84+9MttcW4h2/pzsWtlVnnkiXeZ1qYGtnh7RveeOF+6Xy8QP9X6hFCQVizEob5Q8FKZVQd4VKvLZR2HrFD+MG/hnQM7ptpe7v9oUDYOopQprGpROmWApBUawpIoNDo5hSee6YToJXjPzfkbyI+YtXibOGlbeTLl3/SwXVeMSZ61GUuRpyjCog5ua4RvRkvy7Xd8k4VYTvMYFqw6AVru2X1/LmBK2TZs+LQ0bQfAIO0rRtdH3ySTaNGNQRT5UkNMeemhJ4bpLbE2zPDrDqNzr74Uh1WOBt+cWPtuzFElwACI2w6k18KmVJv7mNGPxaiQItdwi9t5kV6nhS4+nOaQ+vpi0qXmZjFlHnL4aIPuIgH8exOJV87y/yElIGfHfs47UdwC8CIoE+AR/XcIrrDAiIVP9AcbRXEYfFBEptavVL0YQ29hBYgAARxipd1OiotbepXwIbUJv7aLhLAdBmLU0l9Uc6Fs6TZt5GD3orn7ihi4/sfT7y1L1hGGOioh3cRUdlpstbACieL3aI1r+iQoQ9vjluQkBp44zA6ZJ97fbKo+deDWaY19E+b86/c+bHnMqKRnRKdEE98ZNl5E2d
- +moVSREP
- V9s9NUmpOoHG7eZRoA0L4UVLIVfEjgF9Qawsf5iy1eTmUsbRhIfIzXzwexpge+i2y/LrsGsxtR+lnmWSNMMAwoubn7ZDUunLQtHzjxV5Tf672DZI+IMd73dYt9O5sWT1PNgbcng1goqiJ2jxNSnPLHD2aYBdM2ZvbSE5AxUjFXudOxdgjCZyuI1vRtQWx6BZC5rrJN8DksYqkParwG3ORQ9M7+l+EmGXgcN4hiK4joFC0iAw68f4zuICkxdZnbucyUAKl
+X-HE-Tag: 1784900050-764743
+X-HE-Meta: U2FsdGVkX1/6TeYq7v5YdkLqt0zMPmJuFiOR6MKedLbYZBfp7GR8pWzHrmm9ixqIg99CNjOiPEKiYgU2jZrikRLtUsDYtwj8+MhOIsD8cvrYv9MnEuxbNVoY/tDgcfrJ7pfpv6OWJxyRxO5ZJcbI6ZndfprMdQZLkJl3uaSGNPt05spF1aUHNwgDVhS0Q++nJ4Qa7dD8kb2RmgTU03Ip44LWGzGDkHVsDA9YUcDYtFhJOgYMkn/Z9DLQjxB0QJX2yGxSSMv+iGXSnqNVTlS9VYMUTdGFOATXzP5Z5iS6GinY+czGhh+NEf8XtQ8+P+ds6RS9qhkmsy+lbg4ZDaP9c8JJUYOS/nDPVw+ARN+nunIEbfSGMubVsoFByzTVIM+sjoPxyGGpmfLMX5a8xEBtLH2lMVqoVUbgJRTxSq0uVTwbG6H/X5AZHSUPpgs7EuYcrRp5bArY/WOKWMA+pjKIvpB6JPvt+4FX6VkUWM0TN1BLV/mfEUI2U/ox0mGNdAPFC6VRpgMwLhvxqovEfiTtKVASWMZk1WdaM0T368D8/4AaWwPofgfh30zw1Xa/Ug2NGuls2n3j7n96yeSq+4XaKodbXs8WoCJxq2jMD22IkRsynnmlagu27+ZIw7MDwxWrQqLryByM2wPLIJyzvUQSjdAEla3xiZWyGEfDnW8fj7uzVNi+cH945fYbekHI8p5rRwns3sE3iJHmvIv4Fwaefe6AG37DM8/IdUNIT7teX/tlPDgV3iUTzBnLpQcF7jkL9Km6+5hIlSTqHpUCw895JzuS6iArQvhwde+93y2xH1vjCq986vP5/L9ibomntUMspUVupmIc+w5l11j3C6YdxanNUh4iccY63/8De5RTbjehD8PYsivi4sUxNvcoQQXCtIP9TEz20IWK1TgxxrA6uXzl/maHX7wc+9MNgHGdToAA0pi/TJ2rVb8+bCIHkGQsf26TRt83M8OQO2hewno
+ R/h2/4bN
+ 49nnpbDHN1NkGV+sFZxnZU520UQsUCfyNF3XnPvEdAZ4RRWcU0JgoMbGANto7uvrJktGeYFoetKdMT5UMnjvXzcJ/N49CEI6YIC2UfnnWjn4MgcVgsssCHkxxIImxsmosgXMIxjIbj+FsfQyxUDDUoLrO7J1JHH+p+AJguZD34wLsBwgiEFXlwL2z0PnAA3rAv9MAtCSqr+/6yhZztTQ1OoI4BXNriJLo7/QAFZHvOdJ1LRbcIhi0gk7CRLdJjbRcmbrkgsbw8R44cObJ4DQ/qrg2MkSCNRbPzVGByoE3azPpnMBHMCi/Pp24jkLtVtxVXurcN5iTBMMZ3FFUhWl5u9ZideLLTMh08S9s
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,66 +102,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+head:   4539944e515183668109bdf4d0c3d7d228383d88
+commit: d4dba3b9c03a326cfa73833d6b166aeb442f82b5 lib: decompress_bunzip2: fix 32-bit shift undefined behavior
+date:   4 months ago
+config: mips-randconfig-r134-20260724 (https://download.01.org/0day-ci/archive/20260724/202607242144.ZsfAPGBh-lkp@intel.com/config)
+compiler: mips-linux-gcc (GCC) 8.5.0
+sparse: v0.6.5-rc1
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260724/202607242144.ZsfAPGBh-lkp@intel.com/reproduce)
 
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Fixes: d4dba3b9c03a ("lib: decompress_bunzip2: fix 32-bit shift undefined behavior")
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202607242144.ZsfAPGBh-lkp@intel.com/
 
-On 23/07/2026 21:35, Andrew Morton wrote:
-> On Mon, 20 Jul 2026 09:41:21 -0700 Usama Arif <usama.arif@linux.dev> wrote:
-> 
->> The anon/file scan balance heuristic in get_scan_count() is fed by two
->> scalars in struct lruvec (anon_cost, file_cost) that every reclaim
->> producer updates under lruvec->lru_lock. The cost-recording work
->> itself is trivial, but it both contends for and contributes to
->> contention on lru_lock - which is often a contention point on
->> memory-pressured workloads. Specifically:
->>
->> - shrink_inactive_list() re-acquires lru_lock at function exit just
->>   to call lru_note_cost_unlock_irq().
->> - shrink_active_list() does the same after rotation accounting.
->> - workingset_refault() takes folio_lruvec_lock_irq() purely to
->>   record the refault cost.
->> - prepare_scan_control() snapshots anon_cost/file_cost under
->>   lru_lock.
->> - lru_note_cost_unlock_irq() itself walks parent_lruvec() and
->>   re-acquires lru_lock on every ancestor, multiplying the cost
->>   of every update by memcg-hierarchy depth.
->>
->> This series removes those producer-side acquisitions entirely.
-> 
-> Thanks.  We're still awaiting review of [2/2].  I'll get this under
-> test in order to parallelize things.
+All errors (new ones prefixed by >>):
 
-Thanks Andrew! Yes I think we have the reviews, but just 1 outstanding
-comment from Shakeel and need to shorten commit message as Johannes
-mentioned. Hopefully we will have a final version next week.
+   mips-linux-ld: arch/mips/boot/compressed/decompress.o: in function `$L13':
+>> arch/mips/boot/compressed/decompress.c:(.text+0xfc): undefined reference to `__ashldi3'
+   mips-linux-ld: arch/mips/boot/compressed/decompress.o: in function `$L12':
+   arch/mips/boot/compressed/decompress.c:(.text+0x168): undefined reference to `__ashldi3'
 
-> 
->> Measurement is a 30 s `perf lock record -a` window
->> over otherwise-idle hardware.
->>
->> Workload rates are identical on both kernels (the bench drives the
->> same memory pressure):
->>
->>                           baseline    patched      delta
->>   pgscan_direct  / s      172,662     171,817      ~0%
->>   pgsteal_direct / s       67,162      66,306      ~0%
->>   workingset_refault_anon / s
->>                            40,696      39,830      ~0%
->>
->> perf lock contention (total wait per 30 s window):
->>
->>   Lock Name                Before      After     % change
->>   shrink_lruvec+0x770     722.84 ms    0         -100% (eliminated)
->>         (= lru_note_cost_unlock_irq)
->>   workingset_refault+0x167 385.26 ms   0         -100% (eliminated)
->>         (= lru_note_cost_refault)
->>   shrink_node+0x4ad       689.43 ms    26.95 ms  -96%
->>   shrink_active_list      208.34 ms    15.97 ms  -92%
->>   lru_add_drain_cpu+0x34    1.96 s    917.71 ms  -53%
->>
->>   Total LRU lock wait      ~4.23 s     ~1.66 s   -61%
-> 
-> So it saves 2.5 seconds out of 30 seconds?
-
-Yes 2.5 seconds total CPU time in the 30 second perf record.
-
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
