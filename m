@@ -4,108 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6818C53209
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 10:20:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B88CAC531FA
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 10:20:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E61606B008C; Fri, 24 Jul 2026 06:20:34 -0400 (EDT)
+	id BF1566B0092; Fri, 24 Jul 2026 06:20:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DEE376B0092; Fri, 24 Jul 2026 06:20:34 -0400 (EDT)
+	id BA1846B0095; Fri, 24 Jul 2026 06:20:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C16CE6B0095; Fri, 24 Jul 2026 06:20:34 -0400 (EDT)
+	id A1AC16B0096; Fri, 24 Jul 2026 06:20:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8EC616B008C
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 06:20:34 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0FDF140324
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 64D076B0092
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 06:20:35 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id ED74AA108B
 	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 10:20:34 +0000 (UTC)
-X-FDA: 85023275988.10.870163B
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf10.hostedemail.com (Postfix) with ESMTP id F0165C0009
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 10:20:31 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=SxlDuhdm;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ujI4Wd2G;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=SxlDuhdm;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ujI4Wd2G;
-	spf=pass (imf10.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+X-FDA: 85023275988.11.B2BF88F
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 03937120009
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 10:20:32 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=q1RMzMUl;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=CFLIuEI0;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=q1RMzMUl;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=CFLIuEI0;
+	spf=pass (imf29.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
 	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784888432;
+	s=arc-20220608; t=1784888433;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=twduMmeEWgelZFZshyHJ1uGfEjZlzuBRFqWfJVNkv/M=;
-	b=l/pR0BvVmAWm6yKxFmfEygm9j4w7foyu4UfanLRazTSk2som75CFAv14mKv7yaxnJ7rjVT
-	ZIDNBTiIP+VZ5H7+58Jj3ZzJ+6RPO1Arydyi6zA0N+NsXW9VcTeLwDZlpolPAqceZ+sqZ7
-	a5nkI1nQFrKYF4IR9DWNI+J+z9nfML8=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=SxlDuhdm;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ujI4Wd2G;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=SxlDuhdm;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ujI4Wd2G;
-	spf=pass (imf10.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	bh=VF9+9aXKTFOiyKVpG0eaSz51PqWtaVxgoEgQhQrqJwc=;
+	b=JKHg9624IS7Q5+VYc+ijKH0WpXofSxktp9wcomjN019NqJKu+9YYJQE9Yo3Zcp0IT9TDpX
+	E1Q47iHPVtepJ3HycZcjHelLNj1fTB4EGxMVDD0HvPkxzJoICSJ+HJhJ2Pfj6etqdn8r57
+	JGAG5NB8IuW1TZVo/3hUSiGy+y0+eyM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784888432;
-	b=lgZVqQSPQvHsD8o1FghJsnFzLL8aCZWgsHAdxH1ViYTu+iGvWkMdNheHbaUgUruTybr59d
-	0L5DLwuDGdoalqUEiQYQt7qBrJA7FH1tE2ETBWURcbkp9cwFgXjGJTt2KzbMrT+jLSEyAh
-	aFRxDTpbs5KmHJxsahxNzQlYoHPq6u8=
+	t=1784888433;
+	b=tR4gcHGPJXaobM8+2CyzbcImJUHUCQX1vhmCrpywjA0XgBhkxhzr2kvS/z1IYq3S8PnL87
+	7uUbVZO0iYHlZ/r7sRBiBSw6K1UQIN56swxk2Ujh8PLQPWxmVsgwi7J+cHaioP9HyiCJKg
+	613s/futrCQXh2EvQ8q3i/p5hCY+8g4=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=q1RMzMUl;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=CFLIuEI0;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=q1RMzMUl;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=CFLIuEI0;
+	spf=pass (imf29.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 41C557B6D1;
-	Fri, 24 Jul 2026 10:20:27 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id E1B443E87;
+	Fri, 24 Jul 2026 10:20:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1784888427; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1784888431; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=twduMmeEWgelZFZshyHJ1uGfEjZlzuBRFqWfJVNkv/M=;
-	b=SxlDuhdm9/gJHTiydudXOtHLrbiAAe4QPGMGricn9OURt/YQ1jYLoNASQ7rLBFmCqz2nh7
-	LHoCXMRcnonSZLvrYSKtJyKCm58cs12ud3kPnjRbVQWGzRncaUWw91EbQfsX/gLtynDW3M
-	SrbJvmgWvNFfcNslZjZ6wm9gi/WZ6Os=
+	bh=VF9+9aXKTFOiyKVpG0eaSz51PqWtaVxgoEgQhQrqJwc=;
+	b=q1RMzMUlwCrVMfVNtSiCUY4CDMkRnRgyGM65TVYOQADInq4UOGSp64phdLPTVxL0t04tnE
+	MWxUaOiQWD0Eb72Ky38+/9WYZsDTSJZe2zI1zslYOn9ZENrMmp185IWgdTQRYnewlQgu5s
+	zQDcgV3NB0RaSLjD/OZsYy1MWdoUGgw=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1784888427;
+	s=susede2_ed25519; t=1784888431;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=twduMmeEWgelZFZshyHJ1uGfEjZlzuBRFqWfJVNkv/M=;
-	b=ujI4Wd2GfWYZueixCfqt1ZdfL+YX/avZQzXLSVhOTjMbmIwZDL0nLfgZgfAjO8WL3FIdfd
-	9ua5XK298g4YhNDA==
+	bh=VF9+9aXKTFOiyKVpG0eaSz51PqWtaVxgoEgQhQrqJwc=;
+	b=CFLIuEI0lsvi7etRaA0czxajNB6MTttLI1tC7g3rtn2pfl9hGJKffR6W1KeRQqV6OGSXPk
+	rXiwymbw0JJHXmDg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1784888427; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1784888431; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=twduMmeEWgelZFZshyHJ1uGfEjZlzuBRFqWfJVNkv/M=;
-	b=SxlDuhdm9/gJHTiydudXOtHLrbiAAe4QPGMGricn9OURt/YQ1jYLoNASQ7rLBFmCqz2nh7
-	LHoCXMRcnonSZLvrYSKtJyKCm58cs12ud3kPnjRbVQWGzRncaUWw91EbQfsX/gLtynDW3M
-	SrbJvmgWvNFfcNslZjZ6wm9gi/WZ6Os=
+	bh=VF9+9aXKTFOiyKVpG0eaSz51PqWtaVxgoEgQhQrqJwc=;
+	b=q1RMzMUlwCrVMfVNtSiCUY4CDMkRnRgyGM65TVYOQADInq4UOGSp64phdLPTVxL0t04tnE
+	MWxUaOiQWD0Eb72Ky38+/9WYZsDTSJZe2zI1zslYOn9ZENrMmp185IWgdTQRYnewlQgu5s
+	zQDcgV3NB0RaSLjD/OZsYy1MWdoUGgw=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1784888427;
+	s=susede2_ed25519; t=1784888431;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=twduMmeEWgelZFZshyHJ1uGfEjZlzuBRFqWfJVNkv/M=;
-	b=ujI4Wd2GfWYZueixCfqt1ZdfL+YX/avZQzXLSVhOTjMbmIwZDL0nLfgZgfAjO8WL3FIdfd
-	9ua5XK298g4YhNDA==
+	bh=VF9+9aXKTFOiyKVpG0eaSz51PqWtaVxgoEgQhQrqJwc=;
+	b=CFLIuEI0lsvi7etRaA0czxajNB6MTttLI1tC7g3rtn2pfl9hGJKffR6W1KeRQqV6OGSXPk
+	rXiwymbw0JJHXmDg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EC3F3779BA;
-	Fri, 24 Jul 2026 10:20:24 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C13D8779C3;
+	Fri, 24 Jul 2026 10:20:29 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 4CtyNmg8Y2oSaQAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Fri, 24 Jul 2026 10:20:24 +0000
+	id iM7EKm08Y2oSaQAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Fri, 24 Jul 2026 10:20:29 +0000
 From: Pedro Falcato <pfalcato@suse.de>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>
@@ -140,22 +140,22 @@ Cc: Pedro Falcato <pfalcato@suse.de>,
 	linuxppc-dev@lists.ozlabs.org,
 	linux-mm@kvack.org,
 	linux-fsdevel@vger.kernel.org
-Subject: [PATCH 2/5] mm/arm64: constify pte_get*() and contpte get logic
-Date: Fri, 24 Jul 2026 11:20:14 +0100
-Message-ID: <20260724102017.141532-3-pfalcato@suse.de>
+Subject: [PATCH 4/5] mm/powerpc/8xx: constify ptep_get() argument
+Date: Fri, 24 Jul 2026 11:20:16 +0100
+Message-ID: <20260724102017.141532-5-pfalcato@suse.de>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260724102017.141532-1-pfalcato@suse.de>
 References: <20260724102017.141532-1-pfalcato@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: F0165C0009
+X-Rspamd-Queue-Id: 03937120009
+X-Stat-Signature: 1gqjgigmx89k8ngzghu7iogs1p7x1391
 X-Rspam-User: 
-X-Stat-Signature: rzqb1w997xxnhp3jkz5k66kpktxsyofn
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1784888431-353923
-X-HE-Meta: U2FsdGVkX1+6rWv+Wupxa5mJrmjg0aQ7Rz1nBgu1brw7Y25sObZGEz472qnQ3+gR+PIWth5ILV2Lj/bQna3T1CTrCUVA5PfHgkbKKVA2lV3ZAWhqvRoj7nMJEoe/SeWfaV67ve7UUwhkkvN6bvFb+/Ryv0eaNQQ4+8f8U8HJqn1aOTD3UeBAKzCBHyLdtewle4NYM8SyZ+K0401iNIaD7D9EAIgW31AGUnlcjp7Gx97TCf0WYlVbifk7cD+8lALI49fvt+nH97EUCc/FR1nmJAo4U+3QzTnhFxsREPnpf+5OSLRTKk0lLsRwzb7mvsZfnJFl+iwy9etUM9ZXMnRjEpfSeDfPa5uNVP+p66OqnWaLlvSj0e5bdwl01k47Gpz5ejmDUuk00Am1I12bWacxY3SN7JocO0zDj13SQQmLucSeEXyGNhcZVZxfwI9s4sxRLw3iDhHCIWvKhc5IfCY/J5LFI9rokMhH92YTa+BZy+UDEAg6qi4LD8s7x93iNPPoWkqBpGVneIvto/TxlUX1Ydh3O2zACQy4f5vuOLFtrZ8/pJDLtFSpsOhgozwrOSj3SInWypKAkIcq3tVZM8dnDxbwGBiPIs160G0a/AMt1qv7FM59VxE3pkM/wX2zmzO57OMHLrfA9TFitK8ze+ZugZsr5O2Et/ZY70mzDsuppoU0gHbegDCIV4Lvk96Auw4VEDMX8zNVk7Mc6LGPrRMFoVIJEqYXrh1l/zFTj1YM8SSBxaqHaWML8Gu0EtfoOhE8+TUUQMjctyXvKAwSbgCFi3KSIX0dz+e3aJBUISH1GG6jl63VfCPUAZCbfyvNcVC8iakFiJYGAax2c5ikwqKCdqFQ9qEANfQ3o26h0l3i4YujR9nSYEEt2H/hgLRBzkzOjoGkhn5Ayio6KzgDCee5bK6TdRhcf7eRY5/U/A8xHy6NE120su9cSrhqPr8RBEIAb2LScB3cu7oYXv3263y
- xBBtaBje
- Pay/oHPLqKrT8DAgGujbnUxHFqyjQAkERtnz9FEMjnSFztpUPISOTGN+z7912GwEFysOU+ISLwNpRwyRuUNdTO0s2kr2mTqmy7DXxSfWaHi97s5Ykdmpbp8DHLGG0CXu+WqpXCpDMHF27Xwgtaz0HCKq19bdMqLS4oadA7zG9byDcbyu+zeJx3n3/eMsmYfnj9mGUZBB78yeAm1JJbsR+OYVi/WaLAUkJFSjS440mbsCIDZ5YyWsfyfZ642oVoSSdsopwj+altYY/67b9vW79iDx0OznxKSillZ7WVYBVtPdyWVCry0d5HmFnUf2GvCvSlDOOUbmrOPVpMd8O5W/iQOyKneQeQ2nz9pZyQFHX1QrQXWtisBRkF7EjEG9CG7evOHSW
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1784888432-242436
+X-HE-Meta: U2FsdGVkX1+7jeTcRMtirzg6+U9cWOR/I8jfcGd1D96qe3UPoSe6CUqxUXrMkl2Hep5MhpX4gRA/lY5cqgaEohx494nQe07zSAHrgNVly68exXAUs/1yIiqVRFnVMyMDdEF+yNPxu/Yp8q8gXrxS8UHA9deTddj8raD8umr4B+FeTO07jtnWIqN9gooOzVWkFbQ18FifyPaiboeiWu3Uju+KVtr+nOJb2THZeSMdwvO2GX7OyKMLmPoVoXFgWwV4kMfV1nck90hv9kqPnEdYvz0hwYlrvXN/+N4wngVHWLCMLv/QbnGplVo5KzSyvAOuLtHHS9bMy6BSRtQNoQFjRqcolmDM0EG4Gjo1WJF8ZyWemm9cvTeHnQAMp2jlw8ifIuRuLNoIT0B3PhYHmZS4U7UKb8sKmqEI/sxSv8dUrha0gD3RNpljpJuUxw8ri+RMIpp7d4c27tQNiMuK3BQ6vlLodhwVKRdPblL1kAytRo4Jzl5pGhKuGm7u0pWFqOJzQM/v+UHavZSrPuGqpYKiKsdp82dCajbzxcvKUCi7TULB8pHbjuekiwNydz45Wu6fUvEu9u6u4gtcs+JgI/S+TuTVE3oC21s3XPNsAYTILn/uVGMi0RfbsrbBJT2ZnrhmuoYpAAUEiV44zkBtep+ZXy0/O5SoC/WZl97dI5iBxkjGCn8T1yn3r6ad0BIwK3wcRw/kkJMNSHNYQ1z0hC5lW8SpB2OMUXbP4QT6QHsfJWB1tpu/6VLwF2qqkxuXU1eYgRZkbtnn5gCXLdCvSFhzosVTbN4ISGq/kVMEmc6wirYKIZtKT7zhEgIiE+Vuq47/xHEswhHjG/lgO5GIEY5tRqYLJtE0M1EwiPHhxiJX2jIM+aq4uZndJx+FAMQFo/el04lGRPClmW6gMF9LFBnIkfIklZkSwzzoHa0M7fyBF8a69PYDpj324Zk9gfA7eJ5VT/rPqhd8opO41jNnnUe
+ hsoCFJTA
+ /t2nLErlsGqCrMn+DS9mdzvfR1+9HngIUrTdAaTFf52131yOm0/Cy/q6Zw5KzDzK6kF0It3Nd4xa9Pm1Stu4OR+6Nkz85s1AcAq8Rb1aLQIP5d8zIY/e3TNhXfD5N0VUu2ySKX7e59mes+tBFIxpo+xaHH2VU1Yi5hC+Xr4IzlnlnLQgG1lRyNhTNQ+o5CuMq1D8XXU3dJaLQU9s1EsgAF7pmFl6luBy2iNj2TwpYb8weKxOBmPokoco1SiMvkyMA3uuAGLRc/AHwTO1nWDQwigS+4Yy4HUOD3sbr7YuS0MMA9r1EotivMeN1jGLFvNeNQAS5kHdbtAC9/DnPu4thw9hi9ZJTVKAON3VhkyD+4+a0N3mjPupp/DUuKPTSZW12ofCgAifw9F2oKypHIXk1LT4htw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -163,78 +163,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-None of the contpte code needs write access to the PTEs.
+There is no need for write access to the PTE.
 
 Signed-off-by: Pedro Falcato <pfalcato@suse.de>
 ---
- arch/arm64/include/asm/pgtable.h | 10 +++++-----
- arch/arm64/mm/contpte.c          |  4 ++--
- 2 files changed, 7 insertions(+), 7 deletions(-)
+ arch/powerpc/include/asm/nohash/32/pte-8xx.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index a2681d755358..043bc0649cee 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -378,7 +378,7 @@ static inline void __set_pte(pte_t *ptep, pte_t pte)
- 	__set_pte_complete(pte);
- }
+diff --git a/arch/powerpc/include/asm/nohash/32/pte-8xx.h b/arch/powerpc/include/asm/nohash/32/pte-8xx.h
+index e2ea8ba9f8ca..f2bab31040c7 100644
+--- a/arch/powerpc/include/asm/nohash/32/pte-8xx.h
++++ b/arch/powerpc/include/asm/nohash/32/pte-8xx.h
+@@ -226,7 +226,7 @@ static inline pte_basic_t pte_update(struct mm_struct *mm, unsigned long addr, p
  
--static inline pte_t __ptep_get(pte_t *ptep)
-+static inline pte_t __ptep_get(const pte_t *ptep)
- {
- 	return READ_ONCE(*ptep);
- }
-@@ -1652,8 +1652,8 @@ extern void __contpte_try_fold(struct mm_struct *mm, unsigned long addr,
- 				pte_t *ptep, pte_t pte);
- extern void __contpte_try_unfold(struct mm_struct *mm, unsigned long addr,
- 				pte_t *ptep, pte_t pte);
--extern pte_t contpte_ptep_get(pte_t *ptep, pte_t orig_pte);
--extern pte_t contpte_ptep_get_lockless(pte_t *orig_ptep);
-+extern pte_t contpte_ptep_get(const pte_t *ptep, pte_t orig_pte);
-+extern pte_t contpte_ptep_get_lockless(const pte_t *orig_ptep);
- extern void contpte_set_ptes(struct mm_struct *mm, unsigned long addr,
- 				pte_t *ptep, pte_t pte, unsigned int nr);
- extern void contpte_clear_full_ptes(struct mm_struct *mm, unsigned long addr,
-@@ -1732,7 +1732,7 @@ static inline unsigned int pte_batch_hint(pte_t *ptep, pte_t pte)
-  */
- 
+ #ifdef CONFIG_PPC_16K_PAGES
  #define ptep_get ptep_get
 -static inline pte_t ptep_get(pte_t *ptep)
 +static inline pte_t ptep_get(const pte_t *ptep)
  {
- 	pte_t pte = __ptep_get(ptep);
- 
-@@ -1743,7 +1743,7 @@ static inline pte_t ptep_get(pte_t *ptep)
- }
- 
- #define ptep_get_lockless ptep_get_lockless
--static inline pte_t ptep_get_lockless(pte_t *ptep)
-+static inline pte_t ptep_get_lockless(const pte_t *ptep)
- {
- 	pte_t pte = __ptep_get(ptep);
- 
-diff --git a/arch/arm64/mm/contpte.c b/arch/arm64/mm/contpte.c
-index 2de12656b4d8..3853ecd2cee9 100644
---- a/arch/arm64/mm/contpte.c
-+++ b/arch/arm64/mm/contpte.c
-@@ -310,7 +310,7 @@ void __contpte_try_unfold(struct mm_struct *mm, unsigned long addr,
- }
- EXPORT_SYMBOL_GPL(__contpte_try_unfold);
- 
--pte_t contpte_ptep_get(pte_t *ptep, pte_t orig_pte)
-+pte_t contpte_ptep_get(const pte_t *ptep, pte_t orig_pte)
- {
- 	/*
- 	 * Gather access/dirty bits, which may be populated in any of the ptes
-@@ -367,7 +367,7 @@ static inline bool contpte_is_consistent(pte_t pte, unsigned long pfn,
- 			pgprot_val(prot) == pgprot_val(orig_prot);
- }
- 
--pte_t contpte_ptep_get_lockless(pte_t *orig_ptep)
-+pte_t contpte_ptep_get_lockless(const pte_t *orig_ptep)
- {
- 	/*
- 	 * The ptep_get_lockless() API requires us to read and return *orig_ptep
+ 	pte_basic_t val = READ_ONCE(ptep->pte);
+ 	pte_t pte = {val, val, val, val};
 -- 
 2.55.0
 
