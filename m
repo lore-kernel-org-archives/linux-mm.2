@@ -4,75 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 239CFC531D0
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 01:34:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B3D5C531D0
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 01:34:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BC6B86B007B; Thu, 23 Jul 2026 21:34:49 -0400 (EDT)
+	id BED8C6B0088; Thu, 23 Jul 2026 21:34:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B77B26B0088; Thu, 23 Jul 2026 21:34:49 -0400 (EDT)
+	id BC4B66B008A; Thu, 23 Jul 2026 21:34:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A66BB6B008A; Thu, 23 Jul 2026 21:34:49 -0400 (EDT)
+	id ADB3D6B008C; Thu, 23 Jul 2026 21:34:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B5406B007B
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 21:34:49 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CC4484025C
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 01:34:48 +0000 (UTC)
-X-FDA: 85021951056.15.0CBE2D5
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf26.hostedemail.com (Postfix) with ESMTP id A29A5140002
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 01:34:46 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KLnKEKi5;
-	spf=pass (imf26.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 779AA6B0088
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 21:34:53 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CFB84140130
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 01:34:52 +0000 (UTC)
+X-FDA: 85021951224.18.29918F6
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf25.hostedemail.com (Postfix) with ESMTP id CCB66A0012
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 01:34:50 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=e9d9IL0h;
+	spf=pass (imf25.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784856891;
+	b=nSzL4GCZrRI1/jYlId/u0qlIVt3BAT259v7ogz0/KLCosrWkcB6UAV9BZuPMrMx7AJobXL
+	Kvw4zu9MH0HtnZwpevXUWgZbR68CTGqf1q1W4qEFkOaVSXnFWb0jk3bAHuOU/WQvwl/5W5
+	0vMu3x9WxkIU6rKJ3+3xSoTVZSX1JFM=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=e9d9IL0h;
+	spf=pass (imf25.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784856887;
+	s=arc-20220608; t=1784856891;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=xI+LRT8kY6CDYQcWOQ3Jqu9CtuH4Lj/6FnUZ6ovGQIo=;
-	b=paUrJ7f55V535RAqXCN20aGprP4cQO+HmZBcmvlkGqk4THTjua52E4O4KZfTnBHrSYdQBz
-	klUN/5HDFzSaIt1uR4MD1/noTKpU7n4AkmJVGf8I4M0CAy+eK+8iV0CazCaljTZSAcjWzo
-	VmJXZx8GIWXrte2AXfLDMT/T2jlVkQ8=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KLnKEKi5;
-	spf=pass (imf26.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784856887;
-	b=ZvT3kEw1t9eXvxi7WsoA9TORnEPjMz0XSys0ERbol8Q2H8pPNubPct7+IOox/I5SCYt33j
-	VSKoYEx0A8ki1pX57hjXV2xTZymRYJISwRmZi5HWvwjEummLgECjpZbBGU2P4IE59j4c27
-	8l3PUnujvrcwy3JyfzfYfkWe6/RR7V8=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=aTPhd0YOiSXsclxv5AA53kAUpU9ZSjRHrVegM1KWz8s=;
+	b=FYmJbG/iT3XAyJniksJJJDzhCLS6op44QzGf7AZR6RmdJ1q2so57tDqH9BAg5nSdB4SGlo
+	WQkjguL25jwx7AIVQ/lJK3l0qFG07t/xI97+iZUPNF4k9cieqCZpJBuz03vv8vT6ADh1fV
+	wyxKJsGtkFd8frcGMfeRwDqUJ2uGTCg=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784856886;
+	s=mimecast20190719; t=1784856890;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=xI+LRT8kY6CDYQcWOQ3Jqu9CtuH4Lj/6FnUZ6ovGQIo=;
-	b=KLnKEKi518Rmq5EFToDU1zShvbf1PfF4mFCXFKj0QT1+9NLBTktzQXmzxwVpu9H+EA6t6b
-	8rjh5WKB14tOsgknkKnfYTpyzkPF3Ux5eCrPObC388Nh3lv4UQl+2av0BY+Lo2rjvzNLNq
-	5qNnXFuXKOT2Udf4Hhmp7ESHU7fFUwE=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aTPhd0YOiSXsclxv5AA53kAUpU9ZSjRHrVegM1KWz8s=;
+	b=e9d9IL0hrPG9ztGwtNVh8dms6pdbxckR0tKXgg/e1T00aWte8EnFOYpF1rDFcDA8qzAiNb
+	48NNuO1ounl2zztb+VtO198PTzPsQuXIuF/fr1BN47ZCCTbZi4IIqQTNnmczibiZyddG2t
+	S1T81p3nPNo9OZbbbvpf82mCWfOBc0M=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-619-7wbqbz5JP3aw4mhfj6tAXg-1; Thu,
- 23 Jul 2026 21:34:40 -0400
-X-MC-Unique: 7wbqbz5JP3aw4mhfj6tAXg-1
-X-Mimecast-MFC-AGG-ID: 7wbqbz5JP3aw4mhfj6tAXg_1784856877
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-440-UQzh6pdIO4SVB24qQpwLsw-1; Thu,
+ 23 Jul 2026 21:34:45 -0400
+X-MC-Unique: UQzh6pdIO4SVB24qQpwLsw-1
+X-Mimecast-MFC-AGG-ID: UQzh6pdIO4SVB24qQpwLsw_1784856882
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BE5CF1944EAD;
-	Fri, 24 Jul 2026 01:34:35 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F1A221830331;
+	Fri, 24 Jul 2026 01:34:40 +0000 (UTC)
 Received: from fedora.redhat.com (unknown [10.22.80.238])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 61088180059C;
-	Fri, 24 Jul 2026 01:34:30 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id F3AE31800594;
+	Fri, 24 Jul 2026 01:34:35 +0000 (UTC)
 From: Luiz Capitulino <luizcap@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
@@ -102,23 +104,25 @@ Cc: corbet@lwn.net,
 	yintirui@huawei.com,
 	ljs@kernel.org,
 	dev.jain@arm.com
-Subject: [PATCH v6 00/14] mm: thp: always enable mTHP support
-Date: Thu, 23 Jul 2026 21:34:04 -0400
-Message-ID: <cover.1784856856.git.luizcap@redhat.com>
+Subject: [PATCH v6 01/14] docs: tmpfs: remove implementation detail reference
+Date: Thu, 23 Jul 2026 21:34:05 -0400
+Message-ID: <86170cc663c4bc70db88363f41e3b4dbb93d4a9e.1784856856.git.luizcap@redhat.com>
+In-Reply-To: <cover.1784856856.git.luizcap@redhat.com>
+References: <cover.1784856856.git.luizcap@redhat.com>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Mimecast-MFC-PROC-ID: oz-J0qsGsHJoEE9GHvSs_rViWdoRav3y30QjDtEPX_4_1784856877
+X-Mimecast-MFC-PROC-ID: CptYAlDdURxWzHbsxv21ARkBqRe2FijChNxAlwOCUCM_1784856882
 X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: CCB66A0012
+X-Stat-Signature: c9tiqhz11yk7rfjik8htqyhetrpcchfw
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A29A5140002
-X-Stat-Signature: qt98bqr7khbjypwxgt8xfwdgtsug5njj
-X-HE-Tag: 1784856886-29690
-X-HE-Meta: U2FsdGVkX1+Y2LYtfeOoo1nxDWDx/1qbzsNFhECEXj9CVjvBbOau5XBAlLLgZ05RdJ/yijeXQB/DmkFe4fPpA1KHzteBviHcBjW0G7R0WzyfgxZ81gfh7jYneLBKWouxeVv9zNP5S3nLOKecW154CiZcQzQ4PYEchy8xaO/KMz/l7RhlQS7QNLigefJOwXbW9yP7CTKhFA1+KBygSautgzqOrg+1E7QjkFnh9EfNFn1FNPp9ClhiuSemc5Ty38bE+ALM1I95/PsECJSls5MStrQkWItTEWaP8463FZi0IyvGfJS75KFUiZeMusoO0wwGQ27UHoxpdplrUanddXahRW2w/eGUJhG7ODoTVt53JMReCbUl7h+ZZGL5fil8e6De7So7wk6L1DLRqS+4eCvJhCeKmmqvdumfutT/LtlOPYjvW0Dg+o4NQLC03xx0JslRgFCR5EGxkXWGxEmHgFAVZiLYCMDMCtJ1dUOnsAC/yH1b1ROc4BwrnAuqVt5KilhD7IMA527qqBTJng4sHUgKtcZDTV8RUCp+CmsAwSB1lyrXzaeavLZl7rsd6nwPYanaV5GQXS4PwkoMSD/wJAca+eVfFJVvLRe9cQbDYd/60939/MR9UPn9thJktP8VrZ1hboLejyfISEmPJvjaWcTUdo7hwktRAW7Q/FOf6wcKI9pnW2DNvDr+uPySuiFRHRDEAhW6zWwICX7aJHcYlyBD9O+oRTahkW1CgprEx2wfYRErRlY4fOLYtL8yI4aPDi31NWJQtHYdWg7piNieOHOA2yZyYTEt4mfw/JDw5KQYfnRM4Y441gCSk9eEWYBa03SptmZ1u2nB5w3jYMNzSqJDLUbsp3QMvy717eMJKzqOYCiRUf0H+I7yjtOfZ0eySrJ9h1l5YV4ujq9lJLBQN80C0MlFyTozJQdK2g028aAZux1gMhOCyOZ91M5LEcOUPWClmOGfzel+NYGkP3l5vJj
- TuGEjIpY
- +y5Vup0Cixpz+5oKmtFsl90sH83mH1smE6GjFk9Yz4kIzu8G5Iugc/eHEnicafXXySts6NGRrXx2avgFSrLvv9H8RLEdCWd9mDlF7SNabqIB5F0l66UvEwOkQZ+3GRfkenuHHQGfIyFyLtZ5tl0oYNbz7Em7M9K3r0XlBHIqKgoBxGA36nzSiLTGXGpJYqqwfMCd+//S3gAnosN2806e8e+jTYdDp5GwLJ7Vfx9ft+cQHAhFfgLmqmZD/wBWGuzn4XckKKJoLSW/B7ZCiSNR027/o609kz+JPcxwB9YhFtQgOJoBlAdYxiYUzy4Rysh1ih9Z7x9TI63aMrSHWgs+SQ0eiLw==
+X-HE-Tag: 1784856890-512685
+X-HE-Meta: U2FsdGVkX18X08/7TOALV0ol0DyMn+NZrzi5r8ov0+m1Gbr2PFg+kyamqnacoaXqSAAWRPzLreo8l3OenoSSh2gP79b3s4WKUW58V3929aQQmvyW9DSz3q3GWkGgrMzZXBcCZBnI0MNmM1nRIxvtiw/JcKVIOKbmU/KQr239tfOX1YPyDNOLuXFl0nnUUOp1whVVXsVqaCo5ZWV7u19irKkGRxSBfBFXmk2yG2jeHc/cVfQQtQuAftcBq02XAOP8UoVmFM2w8JKKsZIjBFOOK4SLIEzNJNCo7ziAIuSmHMiLDxfZSF4gjE8nfkVlnMzp1s3PYza4bGUDHLkbvIT+bS60z5arHcMQzjwNedvXwPcH5fFjEqxHHQjzQUi/6zVlPjerpkW9mxDvFBRLCqSA+Bh0hGatCvSya2pGW2dGCSUo7v2xYcte+EdL8syZXIOx+GepyO1DYZpNYkKN48Zezm7lQ2NmVwXHrK0sRBpkuvIUTOKppWNGd1msoxb65PF3woPgw0gzfhjyvGfb+qfjxfHyTQ784CUI4SEgAZPm/yFkjuAkhEOCbZ1lr7M/uVe2Sy2MIcEq5hmw/68RZ2r6pTMua/JlSbwkHCTv7dJyQb4sxoCcV9J4iosp5NjcImLs7X6Xm/Cnmoengr0dJ5Q2OJJV7yBGJMQfiNgW17KtDxSrQuORFKYFQCXD3TLaNqwQitPbtY6q490Fgz81mLbLQ4n2+XoHmXdc4F6GShZIg3lRRSmoBKw2UsZcSqus9djTdR6j8vut417XD28EzL6uQsrr9yFq+Kjh5w8z5lqc30GNp+8nzfYD9GUkTo13THOnoJeXOlThnTQRIXplzRi49XvDp8BkdBlsf5bQawfeynk7v6qamOvAXcPVkPItDWTHZ6Uog+zXcLScQhWQjuD7FtGWkQ1gAEJnHrrbDQx1ONIk0Hk74IvIWCYWuhdvV+S5RD6KFnnpwAi961Efm7V
+ 3I5cO4uV
+ vK+BzK1PaEwM4Jwil93OSBPUNqF88c/gRIt7ATZSWJbt8Ma/plEqKdhZ7R94QpKxKGN0eaK0iMFPUM/pVIdpwkKSIKjMK4ZXA24IyhBo0AR57TQH98KkCNSnIyizl4WKBiNCCG7fU970o5yUsQgxXuIXtlcm3f0OGFfZuSmmrcVvupzxZYYbhQ3fhlTMDvGwEnBQfWs8aN6aXN1fa5xwdp7+Io4JWRdQHWcxLHZdiur85u8ba9AJa0Q6Hvu7uEl0EdSvYSmT5KpK8yiX3xg2T2I7hzIwhVMFXvPI/liax2+duxLCVUardwZQO116zvgh8JI5GhPOGc/j3Vw5IUba9lFiOYSybF9PeZHDE55w96uMYTxJDgTdGJtnofz84x4PbWHRoQXOSFAKpJTlA5euVOVy7BfNrqrcSOBqYY/gEnxR9sIETqDKaL9HtTjfLW6BNZAg3zQBT7aLBn9tuVjQP2WJyzg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,111 +130,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Today, if an architecture implements has_transparent_hugepage() and the CPU
-lacks support for PMD-sized pages, the THP code disables all THP, including
-mTHP. In addition, the kernel lacks a well defined API to check for
-PMD-sized page support. It currently relies on has_transparent_hugepage()
-and thp_disabled_by_hw(), but they are not well defined and are tied to
-THP support.
+The tmpfs.rst doc references the has_transparent_hugepage() helper, which
+is an implementation detail in the kernel and not relevant for users
+wishing to properly configure THP support for tmpfs. Remove it.
 
-This series addresses both issues by introducing a new well defined API
-to query PMD-sized page support: pgtable_has_pmd_leaves(). Using this
-new helper, we ensure that mTHP remains enabled even when the
-architecture or CPU doesn't support PMD-sized pages.
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
+---
+ Documentation/filesystems/tmpfs.rst | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-Thanks to David Hildenbrand for suggesting this improvement and for
-providing guidance (all bugs and misconceptions are mine).
-
-This applies to mm-unstable 71a7a58818a3 ("fs: stable_page_flags():
-simplify KPF_IDLE handling").
-
-v6
---
-- Rebased on top of mm-unstable (required a minor conflict resolution)
-- Added more Reviewed-by and Acked-by tags
-
-v5
---
-- Moved init_arch_has_pmd_leaves() to mm_core_init() (David)
-- Renamed init_arch_has_pmd_leaves() to pgtable_leaf_support_init() (Lance)
-- Added new patch changing shmem_getattr() to set blksize according to
-  highest supported THP order (Baolin)
-- Added new patches to move has_transparent_hugepage() out of
-  CONFIG_TRANSPARENT_HUGEPAGE guards (Sashiko)
-- shmem_allowable_huge_orders(): rename variable and only disable
-  PMD_ORDER (David)
-- Added <linux/jmp_label.h> to include/linux/pgtable.h (Sashiko)
-- Added new tags and removed Reviewed-by from changed patches
-
-v4
---
-- Used static key for pgtable_has_pmd_leaves() API (Lance)
-- Moved shmem pgtable_has_pmd_leaves() check to
-  shmem_allowable_huge_orders() (Baolin)
-- Default pgtable_has_pmd_leaves() implementation to
-  IS_ENABLED(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE) (Zi)
-- Dropped patch “mm: thp: x86: cleanup PSE feature bit usage” (Dave)
-
-v3
---
-- Rebased on top of latest Linus tree
-- Removed i915 patch as driver dropped has_transparent_hugepage() usage
-- Moved init_arch_has_pmd_leaves() call in start_kernel() to avoid conflict
-  with early_param handlers clearing CPU feature flags
-- Fixed build error with CONFIG_MMU=n (kernel test robot)
-- Fixed huge_anon_orders_inherit default setting when !pgtable_pmd_leaves() (Baolin)
-- Small commit changelog improvements
-
-v2
---
-- Added support for always enabling mTHPs for shmem (Baolin)
-- Improved commits changelog & added reviewed-by
-
-v1
---
-- Call init_arch_has_pmd_leaves() from start_kernel()
-- Keep pgtable_has_pmd_leaves() calls tied to CONFIG_TRANSPARENT_HUGEPAGE (David)
-- Clear PUD_ORDER when clearing PMD_ORDER (David)
-- Small changelog improvements (David)
-- Rebased on top of latest mm-new
-
-Luiz Capitulino (14):
-  docs: tmpfs: remove implementation detail reference
-  mm: shmem: shmem_getattr(): set blksize to highest supported THP order
-  mm: introduce pgtable_has_pmd_leaves()
-  drivers: dax: use pgtable_has_pmd_leaves()
-  drivers: nvdimm: use pgtable_has_pmd_leaves()
-  mm: debug_vm_pgtable: use pgtable_has_pmd_leaves()
-  mm: shmem: allow THP support determination at folio allocation time
-  s390: move has_transparent_hugepage() out of THP guard
-  powerpc: move has_transparent_hugepage() out of THP guard
-  mips: move has_transparent_hugepage() out of THP guard
-  x86: move has_transparent_hugepage() out of THP guard
-  treewide: introduce arch_has_pmd_leaves()
-  mm: replace thp_disabled_by_hw() with pgtable_has_pmd_leaves()
-  mm: thp: always enable mTHP support
-
- Documentation/filesystems/tmpfs.rst           |  5 ++--
- arch/mips/include/asm/pgtable.h               |  6 ++--
- arch/mips/mm/tlb-r4k.c                        |  8 ++---
- arch/powerpc/include/asm/book3s/64/hash-4k.h  |  2 +-
- arch/powerpc/include/asm/book3s/64/hash-64k.h |  2 +-
- arch/powerpc/include/asm/book3s/64/pgtable.h  | 18 ++++++------
- arch/powerpc/include/asm/book3s/64/radix.h    | 14 ++++-----
- arch/powerpc/mm/book3s64/hash_pgtable.c       |  8 ++---
- arch/s390/include/asm/pgtable.h               |  6 ++--
- arch/x86/include/asm/pgtable.h                | 12 ++++----
- drivers/dax/dax-private.h                     |  2 +-
- drivers/nvdimm/pfn_devs.c                     |  6 ++--
- include/linux/huge_mm.h                       |  7 -----
- include/linux/pgtable.h                       | 20 +++++++++++--
- mm/debug_vm_pgtable.c                         | 20 ++++++-------
- mm/huge_memory.c                              | 27 ++++++++++++-----
- mm/memory.c                                   | 11 ++++++-
- mm/mm_init.c                                  |  1 +
- mm/shmem.c                                    | 29 ++++++++++++-------
- 19 files changed, 120 insertions(+), 84 deletions(-)
-
+diff --git a/Documentation/filesystems/tmpfs.rst b/Documentation/filesystems/tmpfs.rst
+index d677e0428c3f..46fc986c3388 100644
+--- a/Documentation/filesystems/tmpfs.rst
++++ b/Documentation/filesystems/tmpfs.rst
+@@ -109,9 +109,8 @@ noswap  Disables swap. Remounts must respect the original settings.
+ ======  ===========================================================
+ 
+ tmpfs also supports Transparent Huge Pages which requires a kernel
+-configured with CONFIG_TRANSPARENT_HUGEPAGE and with huge supported for
+-your system (has_transparent_hugepage(), which is architecture specific).
+-The mount options for this are:
++configured with CONFIG_TRANSPARENT_HUGEPAGE and with huge pages
++supported for your system. The mount options for this are:
+ 
+ ================ ==============================================================
+ huge=never       Do not allocate huge pages.  This is the default.
 -- 
 2.55.0
 
