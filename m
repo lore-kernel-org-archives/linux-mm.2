@@ -4,144 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 631B3C531F9
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 21:54:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2088C531F9
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 22:02:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1A2236B008A; Fri, 24 Jul 2026 17:54:43 -0400 (EDT)
+	id B4D666B007B; Fri, 24 Jul 2026 18:02:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 12C376B008C; Fri, 24 Jul 2026 17:54:43 -0400 (EDT)
+	id AFE696B0088; Fri, 24 Jul 2026 18:02:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F11CA6B0092; Fri, 24 Jul 2026 17:54:42 -0400 (EDT)
+	id 9EE066B0092; Fri, 24 Jul 2026 18:02:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B4E866B008A
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 17:54:42 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 360801601A3
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 21:54:42 +0000 (UTC)
-X-FDA: 85025025204.01.96A353F
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5B1BE6B007B
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 18:02:19 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id AFF70401AF
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 22:02:18 +0000 (UTC)
+X-FDA: 85025044356.10.DAEC766
 Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 48684140003
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 21:54:40 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=T+Q282iZ;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf09.hostedemail.com: domain of dmatlack@google.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784930080;
+	by imf17.hostedemail.com (Postfix) with ESMTP id DF4284000A
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 22:02:16 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=iO+79Yg2;
+	spf=pass (imf17.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784930536;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/VuhMIt3y5/j6Le1Z4BNgwX3UBNQKNT5cbNU5pubERw=;
-	b=gtEOWdxKOEhh7d73A3EK/uFfqPW/z0shzDwH4aL7j3XD5xNxZQ1uQEQZZbVWscniJXx6v9
-	S8jqsd7f8kFqoIoDBjEHwWARfjnv9aEbBYbGJYyFabd7U2CZh+jfXwQBQAOjqDCbtnhUub
-	ckpY2Jpc3zjfJ+lxRGxsQek6JncVp7E=
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=T+Q282iZ;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf09.hostedemail.com: domain of dmatlack@google.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784930080;
-	b=v264pyi9C9Nym8c5/xAgUrkhI/TOkr8zE+3CgY6ahWgRvrlDEwhmolpSQlFvxP9/VONoVo
-	PeGT18N4DV1sfevXw0QixJEXqFsxdm1/3K1scXrpIfoipLVO5iFq7mwxWu6d8TX/XKAJ1+
-	xtA3Sl4Vs5c/dWKUssn/bgYz4il86TM=
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-38e58034d05so988158a91.2
-        for <linux-mm@kvack.org>; Fri, 24 Jul 2026 14:54:40 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784930079; cv=none;
-        d=google.com; s=arc-20260327;
-        b=iZ68UJnKfe+lf0tORQTyZ2lWAoLkOSFGDUWfE5eijRYSunQjbMUg+AsdReEZFL1BgT
-         xma7IFZaHY7RAoNZNKZ/YyBO1Fx1QMuBswWHCcmynWebdSDwcOjc8lVMsCS6t/2VrjGf
-         WvXEcim8hCUfZ19up2/t7NylS1gzsXknlztIkK3bRdXl4XmylyCZd6CvoHADBFvfdKUc
-         WFB7pSxFoYSAZuMe31P+1b9bFrgqU6GjzfX8cxVNWEujbu445xjKl1PQrNH/jm94a783
-         wTOS6+7zMoBv1DzcGrMXWh5e0vFwSG2+k/jQqqLGCtuvYF07u9zVcszz/eoUwmCgDxkL
-         t1SA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=/VuhMIt3y5/j6Le1Z4BNgwX3UBNQKNT5cbNU5pubERw=;
-        fh=YLstPe3qywdtWK6U2GrScgnu05j4YWTGZjarg1jpfOg=;
-        b=oXf8fnFnSz6UAEfzfRFpU4zvQd7EBWhXVOOKEylOQbmGEzosBIizpRlchvbzWHSUWF
-         frBZMjAUR3Km4mVOoX7amYE8j9sti/aZQf/o7pgmNFyFzHdILBJz7JdwH9QQLe9ozuEE
-         uzw4b6Ill0dRuVQoAAJDy8DzdxrPF1/vJUDybvE9OWcqsbW9X7BRhFGxzYI9N/Qhz+9I
-         C4iJyKb/wafxAuGjo28+9VijSrkcjGKtsazWkSiDRTMq6GlcWFHxAwZ03eYu49y9woqw
-         LDmIIlA7tpGEqs+UyK3pG+Q3lesKZ3xSZRqjZ1dsd3OuzRqdQd7qPIcgYQBujbDqO/7h
-         /9Ow==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=n6CRZO4TQnwktiK+/QOoKau6pbWNZvFfGLDoCZ5eJ/I=;
+	b=R1gw0hmEmeeUge5BzuVb/CaAHHxx5ULvrWyjDET2/B0eA4vR5hi0mjykSPkc15ElAzNcsK
+	BdWUJjk6cIfeyPVJx6o8+749SqFija8wNKXybTAu8UWemlrW5rYsLfRum+oDk/mbbDwfzz
+	fHRy9RZaLKBUE1hXaM6xSfPK96fNHFM=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=iO+79Yg2;
+	spf=pass (imf17.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784930536;
+	b=VwJphgtBfvJI+Dch+SHVtyi9qiQ+IkcEtdQKqULxE4SMgZVaqG8GHRJtTCpWEQ1ZvlRY+j
+	pGYB/v162oGw7zDezozOIxP6IYze/snoP4tn9PGCJ88sCmC3ZyyFTMEfGaFkwJwekAqeQT
+	e8iojpZ2oWO9wtfwiM86/LQRFk7r4Tw=
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-38e07ebd263so648084a91.1
+        for <linux-mm@kvack.org>; Fri, 24 Jul 2026 15:02:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784930079; x=1785534879; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=/VuhMIt3y5/j6Le1Z4BNgwX3UBNQKNT5cbNU5pubERw=;
-        b=T+Q282iZp5N9Ixa5kwLUglB+AzkP5Ws9gpyTni4vtHsqg7RZLU+z1/vEnR1iOooOVs
-         J2gAMAKOxAF6hSOTi2u0Vn4qGi8+EeBr6nFSUCaubgmpTUrQ+NppD9D2LqnxvnGcaaQY
-         KODGQ4AIfKR65RGapfxM46DDg+kOeDZo198xwhYBXe5449Mhi4Sniozt4sddARKIhRy2
-         6Hqqt7HOE0ZCrugiJPpxf+CO38ecQ8Z8kJKK8isernu/Q7+RyWKnqoL/Bp8JNueFhIl9
-         VcKodx+iRpzAoIIK+M/p/+PUhjTqBCb5O22StxCv89bx/vHsLuunWw4Bf9DtwI69NDQE
-         nSdQ==
+        d=gmail.com; s=20251104; t=1784930536; x=1785535336; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=n6CRZO4TQnwktiK+/QOoKau6pbWNZvFfGLDoCZ5eJ/I=;
+        b=iO+79Yg2rSxU5o74URgWgZOQ8brmW/TbDYSogMRkc+0GXN0nfqXJET+D6cF6q1n6Hv
+         Nz00A2UwmO3OKBqi0u4PU26Vduovhzc+aBpuHRXTAKyDKbYXa4rxbgZhHyX/iCpvbENY
+         48fwqi3oc5feo4Xy7kKWJpMWtB+jjdkrS/mVKiiawfSGru6KrPVDEq7g2mFqFUbFe2jg
+         ytlNfPtkLaw0vXjqPhE5lexVF8FuB5M+GYSDr6LCIFHd2otoAaySG9xJQcyU5Rn6J7xW
+         RmuWXk6EPKavr/SAP+kIgd3ERiSK1duSaIHn9Z3JHuyJL4DC/Ggua+6z7B+bywM1wlT/
+         DI9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784930079; x=1785534879;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=/VuhMIt3y5/j6Le1Z4BNgwX3UBNQKNT5cbNU5pubERw=;
-        b=MgY7eJ+0DjN4rRvIaTdoQAwofdypxDEMTcENpmG9iDucYbK5VQJvF/c3cNjjEQlB21
-         kPQIWCAu7Hq0tD1feI/AwWvXjTELuS+xmXIx6O446c86dlbqITwqfgF8BeBEV6e9JnvX
-         kKD81fgCNEbA6Zx/1sSkQwKY7WZogcLgmH/ohus+bKjDGOMiQec5BuEFNFhoTTloINQp
-         XV1wcuXsamo+zmLpJPAVo/mavYeNzwgjeP7km5J7r1e55G2TXZBV14XRa9BAlDVLK7lc
-         I6QKif5JMx6SSbiFA9CMo2AFASZ+2JSo6lfDLrb95QyN8AXRC5QVTTR5E/zdYfuT+P6G
-         urYA==
-X-Forwarded-Encrypted: i=1; AHgh+RrNa/EHxbURZEN/ogn187CqPrzjHJIBDF5Yg0jsObR4ytC2ra8isJjdXZk52esWpis2YXFReH+O8w==@kvack.org
-X-Gm-Message-State: AOJu0Yy45eP+1cy1jd7f49IfDnpe5N4+/nEH+b90QUoEfOVLf6Z31SQe
-	yjV5H7VD7mqIhRWMGGTNLNGqyYKREdEu66394WQ8bhPMpPXMV7Hl3dWTOSEE6+A3lj16PlOIhqB
-	KUby7kIV6aoQGyn6qv1i9tr9hr9yWXf/Rf+lgTqWJ
-X-Gm-Gg: AR+sD10tpFqb6vChhKTetvUUSLTZf7xQqnRo4Z9mdJkl685uYvPdBi1VNidyKpCB5yH
-	GyasJlVeavqBxGk4sq8EF/zJFLVBQ+rjVxgbll55E3bxXKOlt2w/bSdvfMVW7ST8MLsP0hkIl7p
-	lsvvbY+uWTJ0Hfbk+N/8pJiat9n5QhHyjOdn+D8lXrbZ7DptD1oRZErVrF+SusDPpLEozBlV5KI
-	9gXWgAAprQAURNdmWB0LE84URYbkFVJILCjCzmIqUH97zawaNdIeu71ZLqPBQ==
-X-Received: by 2002:a17:90b:3f0c:b0:387:e0bb:57f1 with SMTP id
- 98e67ed59e1d1-38f2975d581mr178977a91.34.1784930078557; Fri, 24 Jul 2026
- 14:54:38 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1784930536; x=1785535336;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=n6CRZO4TQnwktiK+/QOoKau6pbWNZvFfGLDoCZ5eJ/I=;
+        b=d54Sf5p0/xanYgolKHZ+zu4Z5LQ5xE9+QvoP0miZMeQjcVeXWaTPIdFVIWVadslYuU
+         TQY1ipN22+3rx0ZWd2482HW9FWO3sVq1AZxWnpmHOZ/jzDWX+RwZHf2Xr+2sPdosqwwv
+         oLQVi2bTbYijf6383o+gtUXvXXWNbDLsiSDs0k3/h6YC37DzRmItC5U6J5N6RFbWmJe6
+         pEEWFY1KLL4EwhIJT5bEyx4TIK4mhipYREqKi4leXC16G+eghkxAYOhDAPRUwkcgt8jP
+         93fGY5cBYDnqf4kpo2xW8zcsS6ax95FkRYo0dLrRdnNNR/o+wsakOXxD+ujx12LSWAix
+         azFQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrAyOWD1HJhacaynoouABzaSdicrY0g6n6v8bTdrhlqYCl82aKZ8PXJ3CLQu1hLYhffXbJz02+D6g==@kvack.org
+X-Gm-Message-State: AOJu0YyhDARsfPbpmBFNFI4S1WMhxQjG2Y3we6RSGObwSkZEMCI7808R
+	jM/qlg/49+PEqD9QSFhakWVO+wuPwqXX2qKCMmHoyc/IpeDnQ6Flf9qh
+X-Gm-Gg: AR+sD10p970sEe1qP+HiHGUaLDVa4Yf1AiHmujC1+vH0mvfd9C/JpxA063Atose87XT
+	ueVwZ0+6Mhd5fVpx0Q1tkxJTU1yKqDfUwB1GjyymD7h4oF4WYBemfdg8JtA7Q9O1N5m7rOSyNyG
+	26QUBkL8OpXh2lAPVIlLLbzxoHsFqpvPawNOlsQQKXRPcSdzxeihjP3l17WaAg6btfF+E+OkZfX
+	o/JBp7cBsaHH77fYvwqMI+eZCCJiF473npTGmP7JgOx0Z9G5DjDXuh2uPGaDdasrqXQXl6pIkC+
+	V8QgcInz3kwF8edl+Apck2uAMRP5XcHZgLNKcxfS62FsI247avqTCorDKwYh30fbq0/gWZ4ujox
+	8qKVGxNe8dUiiLThqGwiDejOzIomvnPeIYXgvn5nRooYzL7/srxT3eXQKv77NzZcFwIokTcW7T+
+	sJIofInOul8pkri908XemxHEWBqMim0Pt9axPRk67xl1a20Y1YyNCJh7essJYl
+X-Received: by 2002:a17:90b:55c3:b0:381:5a08:6291 with SMTP id 98e67ed59e1d1-38f29612543mr164935a91.20.1784930535581;
+        Fri, 24 Jul 2026 15:02:15 -0700 (PDT)
+Received: from pop-os.tail4adac7.ts.net ([2601:647:6802:dbc0:546a:e1b0:9574:3a29])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-314bc5a67f3sm2962631eec.29.2026.07.24.15.02.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Jul 2026 15:02:14 -0700 (PDT)
+From: Cong Wang <xiyou.wangcong@gmail.com>
+To: Andy Lutomirski <luto@amacapital.net>
+Cc: Kees Cook <kees@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	Will Drewry <wad@chromium.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-mm@kvack.org,
+	Cong Wang <cwang@multikernel.io>
+Subject: [PATCH v7 0/8] seccomp: non-cooperative pinned-memfd argument redirect
+Date: Fri, 24 Jul 2026 15:01:39 -0700
+Message-ID: <20260724220147.214396-1-xiyou.wangcong@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20260710212616.1351130-7-dmatlack@google.com> <20260724205506.GA1012423@bhelgaas>
-In-Reply-To: <20260724205506.GA1012423@bhelgaas>
-From: David Matlack <dmatlack@google.com>
-Date: Fri, 24 Jul 2026 14:54:11 -0700
-X-Gm-Features: AUfX_myY_bxyw4-P1Rbrabgs4s-tLloBKDJhDTUU1nvReA0LfPMvmIQUGRTYqPg
-Message-ID: <CALzav=c8amq1hTRCwHbQOZvhNKtissagzzXX+RGeRgUiKPOcbw@mail.gmail.com>
-Subject: Re: [PATCH v7 06/12] PCI: liveupdate: Auto-preserve upstream bridges
- across Live Update
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org, 
-	Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, 
-	Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>, 
-	David Rientjes <rientjes@google.com>, Jacob Pan <jacob.pan@linux.microsoft.com>, 
-	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, 
-	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>, Mike Rapoport <rppt@kernel.org>, 
-	Parav Pandit <parav@nvidia.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Pranjal Shrivastava <praan@google.com>, Pratyush Yadav <pratyush@kernel.org>, 
-	Saeed Mahameed <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>, 
-	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: DF4284000A
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 48684140003
-X-Rspamd-Server: rspam01
-X-Stat-Signature: b91h7xuu6mnc4du1fb36w4ddzbnm7b5k
-X-HE-Tag: 1784930080-265255
-X-HE-Meta: U2FsdGVkX1+okmfP+hV+euKxPLehEGRZZaoECamsegQBzSf51iiy3FjAt/JiUxCLBW6ABic23oFJlY+TckJALW47kHsI2WXnjFQtXm2rD0UUKRz7qCoPTC+/cy2LX1+CIEoM2SAB2goedWUhqkQ8ya3Ff18qMu/7q0Up0yAa4yIS8QQMIbJ6U7j5ZJ+K+15rfb+1sgkfbAtgKYF08d6O2g1oZ118A92EyiVddXoeVKkOYQEOc7lIf7DTbi71ld4FfZiwhR8x1JImTgrfBksJmyUAOucYm55MSWoZZxfAAmbLxSbRz2tg4JnzA+RKUFitwjCG5UOGpJHDg1jaQQ5ykho9Z8CMp8j4xhRx23GyYGmYSp6N1pDhwmnU8luITr1zy4Y/xR0AGUCzxPb1seboPd8uFsws2GLue7tuk2R0EQz3MmnRIuMNaJeKfuEiEM3U9/GsT03NPAt2JXexRBjlMChjXCv36fyuBRcoi3Ec1LUYSwjZYMdXC3oBQexhgAbSrJnYmOI4hO9cB3dTQjfvm7xAow9UHQzOV43D4lMxgN333QAhMcQ34LUq4DxrgbZFBhjYTr3SUE+/8djprjRQopeMI6s7XeHdeFpe/1HuFgwxppvkW+Zw2sZ5US8VVWVLgUVhHbhnR86WD29aN0rdwcLSEw8rDcX71pSpcfUKRsd8u7FAY69vNKHOGkQCaxQx/B37UZGBkM4iWix8egrfG1Cdq6+bXfnXt2Iw/v3adXRqI/9muP8Iyac6+NrOI1IkFNQB/JtBjuzWuVRAIXkmU8iF9R8m4p6b0rO50eQePROl4jpXCYuwl4sI8P9/kJmBTzTAUBIicMQeLUXU+mVQyFvisJhGDwqualUC+xDEhz8mjFdW748ANK5KLR2Sg6NPCtSUHnq2TUA99WgxraEzddv/TjodfLSE/2uFpCsFkfLAK30qmJd1ofwQ7A6ytRYKkTlsgfHYU0hRTGs88u8
- PDdxZcYF
- zgS0e9XZiRxwW4mPA59N35ZLQA3cr5I2V8TdLjoSl685Ht5bVAtJBceatkwYskIJXp7We4+Axqllxn6V72Arwnc0jbP2PfJXs0TH7+ZP8LrH66mnHbUu9N9E/jVBLDEGgTgZVz0s7rCpGuSIZA/ZQmMJHd1leh88yhApZ6Ve0eEAbpDaGqqD1JRcOC4zx7YhGFllW0JvDx5VzwEQ4sBtwKnjzC+tYd3De7qgz7rJCW6Ux6gLPGIqp5M+Yzlc2EUbW4XIJkr3tUAVndiDVhRFxd0ZP+S6BGMarF+53KJaWNdbkV+Y=
+X-Stat-Signature: wdoha6e3otzr1sf5ftwekpnzzswkjgng
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1784930536-350307
+X-HE-Meta: U2FsdGVkX19zlvqKgKzQqRh68d5PDLPj5uzhh75qeKFshH4lAwedW6nIiuwDWSlGqicwnwk/D1QDzxGNHc9P44CdcBHFz1UNUf0JBuZASzapHPBpy24Wn5jivi4I+kjTh08nq/wUsuXK+YqnURonNNDldjAcEM+MDlu3EOybbLk45hpJmEb/fSldA+H8m8PKnY7JIEM6z7AD8UZX3EflJmJT7d3KVXYBbWqZq1bvbPj9vFldQM8eTcihpW2fkFfJeQ+WdzBL2DrDXS4xktDzKQQ139TEAvmIzf//PvT/i49GSxOy8p549diu8A0sIVeFFcnG26RHScf0wo0Rf5fsEOg8owZBozRcy1bvM86XTeTTrtwwRjHiq/iC9YwyrKVrxT4i+BzwMFOVfSCJPd6ZpkVG1sxslrTCYvtaWvUS9cIhyXq21W0LIPI+7YBvfGkibJaJNyI4xvF4sdmYBymnxfRLXa0/JT+3qeG6dZToX77XOxlYzXBZaJSL6eEa1MBudT+z+Z2pGA7DBlGz5U+AdeUqwQH6pJxM2otwpqXemVfyrv+/ZZCfHw6WcnEAitHRANMXa9iT/Ha3iLFR9uqNC5y9qftEh/jKRB5ymd+4Rmnq3gNl18GCGwibdmoBJkaGX3FpQoS5SCw/5hNxmhqAs9vtJS76ImSpQDRSwaxQWkXbim13AxZfY6sTl8jmpmoOJOYyRb/+Ntko2OOQXloJp2cH2GM42fXZSYsZVq32nti6bKsi1YTfeOdJIhw94BOjL7QrwpuF/Wta+gr9tJ7uThDvXCGk/phFTi5/sqr076ZTtz2/8bTN3IRPAYwN2e6O4fNUhtoB8GD5rUsdRdsPDydzKN9Njhyl0a20740WsSWqb0WbrUgFZB2fTDmRXPOBVWNeQYh8dImjmFabdiW3ZKXGaFE86rS37lvyYxViXr58otI8ZrPr4lGUsBzKQIXmhdNcT9xYmJ8CAewJoQl
+ r+JOzOlc
+ 4OeS2efuBPPEDpHC1qSAx6lhySaF1g5f6NS97CREQQiYJt6rQhZFSlhb95jLSWxksuiO5iYgf7hW+k8OH1gTmBcYciGKhiw7BRgxCMhvS1kR/uCF0unIkffyKmcqw1JCp/1qIu4Nf6fSswoUG8+VrRFkYAIXMgjqLstts5z2uMuS9HgOPCDbKTAw+/9wxqHBYP4pBojCZJ+SysPysZJoILPqGTn2VntXs2s0e9eASEc+J1O60GMlDvd7/pC7TvfYpvrUSNjWCtjMQfkMCwZSgoTw15Wb0boV3BD6IwrxMnl9Hw0XCRar/jkoJCOtbg1UyfeO5sg1+MF77aGP0Gp+b56382qkdcspLMeVqIJ75P0ACW0wnp+ObBZNwchHlTJRPeECQQOSFugqEe9W7FyzDPHsEioYVzSZAMGAXWWpFAl86J3UjfV8pHt8ZmLhpSIoVD8iEuQcwrnMEWdTjwtu9nk6Z4FOuZDSoSVaxb72GhwIIxPLrrmIKt3Yu4w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,69 +119,243 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 24, 2026 at 1:55=E2=80=AFPM Bjorn Helgaas <helgaas@kernel.org> =
-wrote:
->
-> On Fri, Jul 10, 2026 at 09:26:09PM +0000, David Matlack wrote:
+From: Cong Wang <cwang@multikernel.io>
 
-> > -static int pci_liveupdate_preserve_device(struct pci_flb_outgoing *out=
-going, struct pci_dev *dev)
-> > +static int pci_liveupdate_preserve_device_again(struct pci_dev *dev)
->
-> Could pci_liveupdate_preserve_device_again() be folded into
-> pci_liveupdate_preserve_device()?  That's the only caller, and having
-> so many *liveupdate_preserve*() functions gets to be a bit of a maze
-> of small functions:
->
->   __pci_liveupdate_preserve_device
->   pci_liveupdate_preserve_device_again
->   pci_liveupdate_preserve_device
->   pci_liveupdate_preserve_path
->   pci_liveupdate_preserve
->
-> Maybe even more could be squashed; pci_liveupdate_preserve() is the
-> only caller of pci_liveupdate_preserve_path(), which is itself the
-> only caller of pci_liveupdate_preserve_device().
->
-> As a reader, I think there's some advantage in collecting the whole
-> "preserve" flow in one place, but maybe nesting depth would be an
-> issue, especially for the unpreserve cleanup in the failure path.
-> Maybe a "goto" error path could mitigate part of that.
->
-> If there's any squashing, I guess the place to start would be in
-> earlier patches, e.g., "PCI: liveupdate: Track outgoing preserved PCI
-> devices" and "PCI: liveupdate: Track incoming preserved PCI devices".
+The seccomp user-notification SECCOMP_USER_NOTIF_FLAG_CONTINUE response
+carries an inherent TOCTOU: once the supervisor decides to let a syscall
+continue, the target (or a CLONE_VM peer) can rewrite the memory behind a
+pointer argument before the kernel reads it. This is documented in the
+UAPI header and is why the notifier "cannot be used to implement a
+security policy" today.
 
-I'll see what I can do in v8 to avoid splitting the
-preserve/unpreserve logic across so many functions. I suspect it can
-go from 5 to 2-3 while still having a reasonable amount of nesting.
+The cooperative way around this is for the target to map a shared memfd
+and mseal() it during a trusted setup window, so the supervisor can hand
+the kernel an immutable buffer. That window does not exist for the common
+fork()+execve() sandbox model, where the supervisor wants to confine an
+uncooperative (or legacy) binary it did not write.
 
-> > +#define for_each_pci_dev_in_path(_d, _start, _end) \
-> > +     for ((_d) =3D (_start); (_d) !=3D (_end); (_d) =3D (_d)->bus->sel=
-f)
->
-> I think you might want pci_upstream_bridge() instead of (_d)->bus->self;
-> see https://git.kernel.org/linus/c6bde215acfd ("PCI: Add
-> pci_upstream_bridge()").  I think VFs are currently out of scope, but
-> no harm in making this future-proof.
+This series lets the supervisor close the TOCTOU without any target-side
+cooperation:
 
-Yes in fact I noticed pci_upstream_bridge() while working on other
-changes in v8 and already swapped to it :). It also makes the code
-more readable.
+  - The kernel installs a sealed, read-only, MAP_SHARED mapping of a
+    supervisor-owned memfd directly into the trapped task's mm
+    (SECCOMP_IOCTL_NOTIF_PIN_INSTALL). The mapping is VM_SEALED at
+    creation, so neither the target nor a CLONE_VM peer can unmap,
+    remap, mprotect or MAP_FIXED-stomp it. The backing memfd must be
+    write-sealed (F_SEAL_WRITE / F_SEAL_FUTURE_WRITE), so its bytes
+    cannot be rewritten through any other reference either; the
+    supervisor stages the argument data through its own pre-seal mapping.
 
-> Other than "_end", this looks fairly generic and might be a candidate
-> for putting in include/linux/pci.h.  I think there might be other
-> potential users, e.g., calc_map_type_and_dist(),
-> pci_enable_atomic_ops_to_root(), pcie_bandwidth_available(),
-> get_upstream_port(), pcie_find_root_port(),
-> pci_is_thunderbolt_attached().
->
-> The "_end" termination case could perhaps be done in the body instead
-> of the macro since it depends on the use case and several of the other
-> loops that iterate over the path already include terminations in the
-> body.
+  - The supervisor then resumes the syscall with selected argument
+    registers rewritten (SECCOMP_IOCTL_NOTIF_SEND_REDIRECT), the pointer
+    ones aimed into a pin. Each pointer substitution is validated so the
+    whole access [ptr, ptr+len) lies inside a sealed, read-only pin of
+    the supervisor's memfd that still lives in the target's current mm;
+    original registers are restored at syscall exit for ABI compliance.
 
-Sounds good. I'll move it to include/linux/pci.h and and handle _end
-in the loop bodies. Then once this series lands I can send a follow up
-to convert those users to use the new iterator.
+Because the data the kernel acts on lives in an immutable pin, the
+target can no longer win the race. execve() is handled as a first-class
+case: its pathname is copied from the pin before the old mm is torn
+down, and the register-restore is skipped once the program image has
+been replaced (detected via self_exec_id).
+
+A redirected syscall is re-validated against the outer filters in the
+target's filter chain, so an inner notifier cannot use a redirect to
+smuggle a syscall past a policy an outer filter enforces (e.g. redirect
+to a blocked unshare()); see patch 6.
+
+sandlock [1], a non-cooperative seccomp sandbox supervisor, will use
+this to enforce argument-level policy on uncooperative targets.
+
+[1] https://github.com/multikernel/sandlock
+
+Patch 1 passes the target mm through the get_unmapped_area family, so a
+placement can be computed in another task's address space. Patch 2 adds
+__do_mmap(), a variant of do_mmap() that targets a caller-supplied mm
+(do_mmap() stays a current->mm wrapper, so no existing caller changes),
+and vm_mmap_remote()/vm_munmap_remote(), high-level helpers for
+installing and removing the sealed pin. Patch 3 adds PIN_INSTALL, patch
+4 adds the __NR_seccomp_* syscall aliases, patch 5 adds SEND_REDIRECT,
+patch 6 adds the outer-filter re-validation, patch 7 documents the ABI,
+and patch 8 adds selftests.
+
+Changes since v6:
+  - mm: vm_mmap_remote() now restricts the mmap flags it accepts to
+    MAP_SHARED plus MAP_FIXED/MAP_FIXED_NOREPLACE, refusing anything
+    else with -EOPNOTSUPP (patch 2).
+  - seccomp: PIN_INSTALL now charges the pin against the target's
+    RLIMIT_AS and rejects the install if it would exceed the limit
+    (patch 3).
+  - seccomp: seccomp_pin_check() now takes the target mm and
+    mmap_read_lock once, validating all redirected pointer arguments
+    against a single address-space snapshot instead of re-locking per
+    pointer (patch 5).
+  - Selftests: skip instead of failing when the kernel or arch lacks
+    SECCOMP_FILTER_FLAG_REDIRECT, so the suite is clean on non-x86_64;
+    fix a SIGPIPE on a target-attack failure path; correct an inaccurate
+    comment and compact the per-test comments.
+
+Changes since v5:
+  - New patch 1: pass the target mm through the get_unmapped_area
+    family, split out of the old mm patch.
+  - The __NR_seccomp_* aliases (patch 4) are now gated behind a
+    SECCOMP_ARCH_REDIRECT opt-in
+  - Reworked the re-validation (patch 6) into a self-contained walk,
+    seccomp_redirect_revalidate(), instead of re-entering
+    __seccomp_filter() with ugly goto's.
+  - Selftests: two new tests. redirect_outer_trace: an attached tracer
+    must not receive a PTRACE_EVENT_SECCOMP for the substituted call
+    and the target sees ENOSYS. redirect_outer_notify: an outer
+    listener-less USER_NOTIF verdict still blocks the substituted call
+    with ENOSYS.
+  - Fixed other reasonable issues reported by sashiko
+  - Fixed document warnings reported by kernel test robot
+
+Changes since v4:
+  - Fixed READ_IMPLIES_EXEC and VM warning in patch 1
+  - Fixed TRACE re-validation case in patch 5
+  - New patch 3: split the __NR_seccomp_* syscall aliases (arch-
+    overridable, covering rt_sigreturn and the clone/fork family) into
+    their own patch; x86 maps the compat (ia32) numbers.
+  - SEND_REDIRECT now also refuses the clone/fork family (clone, clone3,
+    fork, vfork) with -EOPNOTSUPP, not just rt_sigreturn: rewriting a
+    task-creating syscall's registers has no use case and is unsafe.
+  - Renamed vm_mmap_seal_remote() and added the vm_mmap_remote()
+    counterpart (patch 1).
+  - vm_mmap_remote() now bounds the mapping within the target mm's own
+    address space with an overflow-safe task_size check, including the
+    caller-supplied fixed-address path.
+  - Compat: for SECCOMP_ARCH_COMPAT targets, redirected pointer arguments
+    are truncated to 32 bits before the pin range is validated.
+  - Selftests: two new tests -- redirect_denied_syscalls (rt_sigreturn
+    and the clone/fork family are all rejected with -EOPNOTSUPP) and
+    redirect_revalidate_chain (the re-validation walks the entire outer
+    filter stack, not just the nearest filter); plus error-path hardening
+    so a broken kernel fails or skips rather than hanging.
+
+Changes since v3:
+  - Split the single seccomp patch into PIN_INSTALL (patch 2) and
+    SEND_REDIRECT (patch 4) for reviewability.
+  - New patch 5: re-validate a redirected syscall against the outer
+    filters in the stack, closing the bypass Andy described (an inner
+    notifier redirecting to a syscall an outer filter blocks, e.g.
+    unshare()).
+  - Signals: the argument restore now runs before signal/restart
+    processing. It is queued as task_work with TWA_RESUME -- not the
+    TWA_SIGNAL discussed on-list, which makes signal_pending() true for
+    the whole redirected syscall and livelocks an interruptible one.
+    TWA_RESUME still runs the restore at the top of get_signal(), before
+    the signal frame is built and before any -ERESTART* rewind; on a
+    restart the syscall re-traps seccomp and the supervisor is notified
+    again. rt_sigreturn is refused (-EOPNOTSUPP).
+  - At most one redirect-capable notifier may exist in a filter chain
+    (-EBUSY); ordinary notifiers are unconstrained. Syscalls with
+    complex signal/restart behaviour (nanosleep, futex(FUTEX_WAIT), ...)
+    are out of scope and should not have their arguments redirected.
+  - PIN_INSTALL: target_addr == 0 lets the kernel pick a free address in
+    the target mm (avoids a racy userspace /proc/<pid>/maps scan), and a
+    new offset field lets one memfd back several disjoint pins.
+  - New patch 6: Documentation/userspace-api/seccomp_filter.rst.
+  - Selftests expanded: install into a fresh post-execve mm, stateless
+    churn, outer-filter re-validation, ABI/versioning, and a
+    signal-ordering regression test.
+
+Changes since v2:
+  v3 was a redesign that dropped the v2 SECCOMP_IOCTL_NOTIF_INJECT
+  approach (an in-kernel reimplementation of a syscall whitelist) in
+  favour of redirecting the real syscall into a sealed pin, as suggested
+  by Andy.
+
+Changes since v1:
+  v2 was a redesign that dropped the v1 SECCOMP_IOCTL_NOTIF_PIN_ARGS
+  approach.
+
+All pinned-memfd and redirect selftests pass (seccomp_bpf: 121/121).
+
+Cong Wang (8):
+  mm: pass the target mm parameter through get_unmapped_area family
+  mm: add __do_mmap() and vm_mmap_remote()/vm_munmap_remote()
+  seccomp: introduce SECCOMP_IOCTL_NOTIF_PIN_INSTALL
+  seccomp: add __NR_seccomp_* aliases for rt_sigreturn and clone/fork
+  seccomp: add kernel-installed pinned-memfd redirect
+  seccomp: re-validate a redirected syscall against outer filters
+  docs/seccomp: document pinned-memfd redirect ioctls
+  selftests/seccomp: cover non-cooperative pinned-memfd install
+
+ Documentation/filesystems/locking.rst         |    2 +-
+ Documentation/filesystems/vfs.rst             |    2 +-
+ .../userspace-api/seccomp_filter.rst          |  109 ++
+ arch/alpha/kernel/osf_sys.c                   |   21 +-
+ arch/arc/mm/mmap.c                            |    7 +-
+ arch/arm/mm/mmap.c                            |   19 +-
+ arch/csky/abiv1/mmap.c                        |    7 +-
+ arch/loongarch/mm/mmap.c                      |   28 +-
+ arch/mips/mm/mmap.c                           |   28 +-
+ arch/parisc/kernel/sys_parisc.c               |   28 +-
+ arch/powerpc/include/asm/book3s/64/slice.h    |    3 +-
+ arch/powerpc/mm/book3s64/slice.c              |   28 +-
+ arch/s390/mm/mmap.c                           |   25 +-
+ arch/sh/mm/mmap.c                             |   21 +-
+ arch/sparc/include/asm/pgtable_64.h           |    6 +-
+ arch/sparc/kernel/sys_sparc_32.c              |    7 +-
+ arch/sparc/kernel/sys_sparc_64.c              |   32 +-
+ arch/x86/include/asm/elf.h                    |    2 +-
+ arch/x86/include/asm/seccomp.h                |   15 +-
+ arch/x86/kernel/cpu/sgx/driver.c              |   13 +-
+ arch/x86/kernel/sys_x86_64.c                  |   32 +-
+ arch/x86/kernel/uprobes.c                     |    4 +-
+ arch/x86/mm/mmap.c                            |    4 +-
+ arch/xtensa/kernel/syscall.c                  |    8 +-
+ drivers/char/mem.c                            |   15 +-
+ drivers/dax/device.c                          |   11 +-
+ drivers/gpu/drm/drm_gem.c                     |    9 +-
+ drivers/gpu/drm/drm_gem_dma_helper.c          |    4 +-
+ drivers/media/v4l2-core/v4l2-dev.c            |    3 +-
+ drivers/mtd/mtdchar.c                         |    3 +-
+ drivers/video/fbdev/core/fb_chrdev.c          |    3 +-
+ fs/cramfs/inode.c                             |    3 +-
+ fs/hugetlbfs/inode.c                          |    9 +-
+ fs/proc/inode.c                               |   15 +-
+ fs/ramfs/file-mmu.c                           |    5 +-
+ fs/ramfs/file-nommu.c                         |    6 +-
+ fs/romfs/mmap-nommu.c                         |    3 +-
+ include/asm-generic/seccomp.h                 |   30 +
+ include/drm/drm_gem.h                         |    3 +-
+ include/drm/drm_gem_dma_helper.h              |    3 +-
+ include/linux/bpf.h                           |    3 +-
+ include/linux/fs.h                            |    5 +-
+ include/linux/huge_mm.h                       |   18 +-
+ include/linux/hugetlb.h                       |    6 +-
+ include/linux/mm.h                            |   31 +-
+ include/linux/proc_fs.h                       |    5 +-
+ include/linux/sched/mm.h                      |   37 +-
+ include/linux/seccomp.h                       |   12 +-
+ include/linux/shmem_fs.h                      |    5 +-
+ include/uapi/linux/seccomp.h                  |   87 +
+ io_uring/memmap.c                             |    8 +-
+ io_uring/memmap.h                             |    3 +-
+ ipc/shm.c                                     |    8 +-
+ kernel/bpf/arena.c                            |    5 +-
+ kernel/bpf/syscall.c                          |    8 +-
+ kernel/seccomp.c                              |  587 +++++-
+ mm/huge_memory.c                              |   27 +-
+ mm/internal.h                                 |    5 +
+ mm/mmap.c                                     |  134 +-
+ mm/mprotect.c                                 |    2 +-
+ mm/nommu.c                                    |   27 +-
+ mm/shmem.c                                    |   13 +-
+ mm/util.c                                     |  117 ++
+ mm/vma.c                                      |   62 +-
+ mm/vma.h                                      |   18 +-
+ sound/core/pcm_native.c                       |    3 +-
+ tools/testing/selftests/seccomp/seccomp_bpf.c | 1569 +++++++++++++++++
+ tools/testing/vma/include/dup.h               |    1 +
+ tools/testing/vma/tests/mmap.c                |    8 +-
+ 69 files changed, 3011 insertions(+), 379 deletions(-)
+
+
+base-commit: 48a5a7ab8d6ab7090564339e039c421f315de912
+-- 
+2.43.0
+
 
