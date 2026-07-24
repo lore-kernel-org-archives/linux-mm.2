@@ -4,99 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C07B8C531F9
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 05:58:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65628C531F9
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 06:07:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7ECFE6B007B; Fri, 24 Jul 2026 01:58:37 -0400 (EDT)
+	id 342A86B008A; Fri, 24 Jul 2026 02:07:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C5446B0088; Fri, 24 Jul 2026 01:58:37 -0400 (EDT)
+	id 31BAB6B008C; Fri, 24 Jul 2026 02:07:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6DB1F6B008A; Fri, 24 Jul 2026 01:58:37 -0400 (EDT)
+	id 230E26B0092; Fri, 24 Jul 2026 02:07:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BDC16B007B
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 01:58:37 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E7F976B008A
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 02:07:55 -0400 (EDT)
 Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CD5EE14025A
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 05:58:36 +0000 (UTC)
-X-FDA: 85022615832.18.B8F6BA7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id D15931C000B
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 05:58:34 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=gjsUKBMm;
-	spf=pass (imf18.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 719201C046D
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 06:07:55 +0000 (UTC)
+X-FDA: 85022639310.18.6B0D34C
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by imf07.hostedemail.com (Postfix) with ESMTP id C639940005
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 06:07:51 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	spf=pass (imf07.hostedemail.com: domain of yangtiezhu@loongson.cn designates 114.242.206.163 as permitted sender) smtp.mailfrom=yangtiezhu@loongson.cn
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784873273;
+	b=MWta7wv0o2B+IIuNtz3peBeZTh1UTXdS+j90GPWIzD74Zo1RKFfpwtu1WikE+UEjQL931N
+	FwOnbeMANuSAFhU1SJQ6lnGMLumH7mx8TbTR82kCyBeGAlqAqgfQE5UUdvAuDdQwLWXvoh
+	eTYV6G2He9c+xElbyfbJeKDqnX3rSXw=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=none;
+	spf=pass (imf07.hostedemail.com: domain of yangtiezhu@loongson.cn designates 114.242.206.163 as permitted sender) smtp.mailfrom=yangtiezhu@loongson.cn;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784872715;
+	s=arc-20220608; t=1784873273;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pQm1ddMox3vEUAJvm6IXwOnF8UxrgOIpTNbU2CB4GxI=;
-	b=Uoy3p38wkEkTCaKBQMPyyKuaaeWrPxryCSwBD/rAXMaKt72O/i1cVyHhnkl0TKvzn5+uEy
-	ar1DV8i786ys7NHvSmuG7GNpayE2/Bn+O3UbfNvxVfK5hAFP+lq5HhoK87NvmfNX/Zeg3d
-	ovCzmD4CmxWWckPAEMXwu8pW8DCp5MM=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=gjsUKBMm;
-	spf=pass (imf18.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784872715;
-	b=dVUpv0FeR2FOwfHj9hT7QDux2kUzwSml345MAKr6yFaPvOG70t2q6kqFWJeOg8Y2YXykTe
-	03F9gKUP2GOf+4i78T1cIBLFczKVGHD+b9umFYDYttNNLGksPyx2CMhRUhbDmCy06gGw1w
-	ZaEAQ49i2lS0aJYbXb+PQtiY41oy5Ao=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 19D1060A5E;
-	Fri, 24 Jul 2026 05:58:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 499B51F000E9;
-	Fri, 24 Jul 2026 05:58:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1784872713;
-	bh=pQm1ddMox3vEUAJvm6IXwOnF8UxrgOIpTNbU2CB4GxI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=gjsUKBMmXyhpiY95M8Kz5bEMNbqsjbYtAZ2aGfKzJP1iQ5IwpQ0Z5qRYHCub1GNiq
-	 VOQDb/2uAVhQWj/EXaFb0DPjeSDQhOdQHjte2b1TtTTC3bfnJyvzQpgYMhT0byHuir
-	 oVI6cdnBF4VK7tE5Y0E161TXXdQl+SCqUBfxdIMI=
-Date: Fri, 24 Jul 2026 07:58:23 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 4/4] mm: page_alloc: fix non-movable reclaim storm in
- defrag_mode
-Message-ID: <2026072426-exodus-deck-e14a@gregkh>
-References: <20260722150006.3848560-1-hannes@cmpxchg.org>
- <20260722150006.3848560-5-hannes@cmpxchg.org>
- <20260722162207.31a2c491ffaf36d1e8948c14@linux-foundation.org>
- <67e1219e-9d47-4a30-a8dd-fdcf03229f58@kernel.org>
- <amIgT-l7PExKVJlW@cmpxchg.org>
- <00bb7fd0-998b-49f0-9941-cc4d796a8751@kernel.org>
- <20260723170249.98d83bd68698fff2629391c4@linux-foundation.org>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1ClFEpUvHPe08zN0hpbpovG9qEE8USI0KPFPwubrb+s=;
+	b=ChQD67VS6bQkdidzDxleInEYiuxs87DrXNgQFMEYwbkSujS5Ksobs9yDJDGldJLzNtXJ8V
+	e7ST2WzRz0ySQ+Vp6yyAkDNUDIBzSrrc0KnmilTHBbmjv/2Vm4mvbPdAXinZS0Fa8f5zWI
+	jyEL6wzE+XTgfyj+ZuSN/cKdOy9jQvs=
+Received: from loongson.cn (unknown [113.200.148.30])
+	by gateway (Coremail) with SMTP id _____8BxJOgwAWNq2tQGAA--.2201S3;
+	Fri, 24 Jul 2026 14:07:44 +0800 (CST)
+Received: from [10.130.40.83] (unknown [113.200.148.30])
+	by front1 (Coremail) with SMTP id qMiowJCxPscpAWNqcyUXAA--.59809S2;
+	Fri, 24 Jul 2026 14:07:38 +0800 (CST)
+Subject: Re: [PATCH v2 2/2] LoongArch: Skip address pairing for non-exec
+ sections
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: linux-mm@kvack.org, loongarch@lists.linux.dev,
+ linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Mike Rapoport <rppt@kernel.org>
+References: <20260721090606.8982-1-yangtiezhu@loongson.cn>
+ <20260721090606.8982-3-yangtiezhu@loongson.cn>
+Message-ID: <11c42b7c-7805-cce7-305d-6e52c14db20e@loongson.cn>
+Date: Fri, 24 Jul 2026 14:07:36 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260723170249.98d83bd68698fff2629391c4@linux-foundation.org>
-X-Rspamd-Queue-Id: D15931C000B
+In-Reply-To: <20260721090606.8982-3-yangtiezhu@loongson.cn>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJCxPscpAWNqcyUXAA--.59809S2
+X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxGryfuw17Cr4DZry8tr4fWFX_yoWrCFy3pr
+	sxCrs5uFWkGF1DJ3s5tw1kua4UWaykuF4aqF95tryxAFnxXF95t3ZxtrnxJayUuws5Aw40
+	qryFgw4Fv3WUCabCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUvFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+	6r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
+	Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE
+	14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1c
+	AE67vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8C
+	rVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtw
+	CIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x02
+	67AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr
+	0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxU25Ef
+	UUUUU
+X-Stat-Signature: ewacjky8a8sbu8xi39dsdkt1fof6b7pi
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: C639940005
 X-Rspam-User: 
-X-Stat-Signature: 1pqadsfyqf6ki9gf6rsyb366k7mggsqf
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1784872714-628168
-X-HE-Meta: U2FsdGVkX1+48oktPfxCTbVg6C2MSatIBlgOVXBM0OFyCFxPWGr9xr2UhHLhLnhIBr7g3p48NTuWb6JSKzMbjRyySOIXsT6Vwz1EO2Jywcz34H9oL8OYb9lS/Yqf4NytJC09hBKNLQm5om8lz+Dcfxixzx7/vS1tBgxIL4EP7myEBMjG8gJhQ2zZySdPeVNpyTp5VcJmFHlVXweHvOAT+aZoiinyVgi+M8wQ447yJuIA3y9IhLki6Hm+WAs4/yD4ofnLEQwe4C6LSWbHISXdXVtrVW6Q4DIKjeuRMUZ2M+nOo6bbGGXqz7kxuD0+564TjN/yD5YTbu5Qt9FJyGJ5zKrRlfFoYQeLQWoeNmYtyRPUziPC0c7aZJZieL8NCdS54pTDDzXyTsQkN6zmJAevXBEXvuMD0/FhRaZt1+glySPMg1aOWahnKwapfOMB8YvjgM8R7H9FHYE7MH4euiLIH6kP130qOoeDo9m0kkpzfF+yJTLmBUc165h4oLFwyHT2OG1oCTckNYS7M+7pQaAlOrOSf/u6aH9vVWJbUyEIgmogV2xqS8amJ2duYgBrw5iBt28z4yaONScu5jHBcIaIgRbkuSVHWup7UNmE+tZsVE31cs39ARu2SqK5+RKSxCf4kpptd5XlLMiCNHTj95/yCNJnAK9rmQSqDEqtGTG4pdbPitQMwiISP9evCU5gI/InbCGnaGN1bQcLQR3Vbl7S85RX1CSS2IBn/+BxyOYHlEErIFli2Bx56AwFA2zXu/7Ap+Er7MKhZE4vJhMoKQ1aoTmNRVxlPYRK5r17q9IBBwHq5wCackVJR2GaTaao/ewYC5509tuRg9BrWgK9YZ4LJ8McpN1uRFE/8jVBAnLJFBRxWzzAGy+0XZnI9ZB1daafCCBdVuSKMDAY4KRvjEb4FBTcpMZx5a9gM23AYVOViKnbriF1HtOa67z5X6fW830nlCq4ZyZ/MPoYwld5tvX
- e8Wnr4sn
- l4/f/kQoT5bK5B56SL2USNyMbvbv2AkXq7w+ux7vyGWwg4TC3fODATakg2qzlS5baoiXlOlZQTMNIB7nBlSgC9H2XiCJQ8ObxGsVbd8FrPMPV4YMCJMbrAMY3Onc1aZ07pHK5mLxZ1NqUbyO+QzNt+Xp+P+hBebcEbkOy382oa/6VJOmRqG5KPopvQnnnIT+Zeposb5ti+LJ/ZfTr1oV9O310EGnWPk5wflA+JJzENQsswyhPRAMIZ4P8YGWBoBj8LgfaphAKfXAvWE1BtLKbmwqx/L+c2OEA2mcmPplMGV8ZalO+ilbOIKaCPdxmvTnJ/Zcvlj0e0PivKoUj+HCbO60qj4S+SjqPOcZmrRomcT7QG37yOgvw3CbEeWMhyhvcZyrPhu7kCkT2ErM=
+X-HE-Tag: 1784873271-986900
+X-HE-Meta: U2FsdGVkX18yAHy5UjflwJ+EBHCCTXJGieijZvlsQsfyQPi3Qb5dre3F1Re8G/PhX1/zwk1cb9WqfeI3LweVf+OmuMUa0hEv4urtBIDaKYH/I4aKQGdGeZ2z/lEKX/wqTDTi2RMyRHJagdpPqc6aX5JgGkliva0la0QoTx3qEN49eiEBG3sXBiPOSTjCiWzWeW9fZ700c1L073c+yvTacj5ABzABSnVv6LrPSb2oIdcqVkMd/lPPimXIujgV+p5MP8xE/NcyPPrIBvAZ6bthdO5FiQy5BpaYjWuCAweU+9XN834jNAUTHksneExOA195kdAus2TPSIWbK9fkPDliMRC1Ke3m/Jv6+V7eWAHhUBHul2Mp3zWOz5cGI7cyZM1uVG6vurfBagyDIpkjZdExF0MoYiscGjDPybdho61GxkqhjSJ/+mE6Oa2SzYGCB/YwA779bIyqF1BiYymEhwG7tdnfyKcFAv/xwB9kSevQoKzSs/+N21q4fejIlagcANQVgQ2V0jvgYv5gDes8y80qMLLqAR1pLhQw+loqucBwu/NHUtHZTJ2VOU5UgjVD80YoydiGVQPSaIC4dFLQUS/cxLNUUS+BXIlbo2osS2ZIRiE8Dd3LwVqgxzhxdiGg1yFsLt5Mp24Fx2uRv55TQ5JiQ6xVPdvqBeqyZsNLCoUIw+uMTxK72rfMzc5Wq4ofR22ND/QaESerdDZVoOK2SjHiBcbJ5KiEs09SspOgXWdzJyDgpTPpO+V+1L5G8kKnpGLXgpmZV6L41IA2WI05DtpCkdsY/ixP6uZAEGgQQTQUtDLabElglou1paeg13I3RIBUaNhzTAtDWOo6y6A+mgp/Qc2QhNFvJeNMsbKkYgwJgq3UaDihzL6CZ+0UCRoEpBrhnkQinSHaX1fdqsOl6PektnpdCiXDyGX/E/MHoaHYV0lzSR2cq82IbXhlEij+OGsN8puMzLF6F7k9orzyhYp
+ dDf5LDYu
+ jPkJ97Uhkckvy05+ZuiMm4narAM8x0ptf1EIIOU8VWpU30mlzp6M8L8b6+e7WExd8KVQlVCrKLybqDOiqdkbULNYUWjcZQy+I92hP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,53 +105,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 23, 2026 at 05:02:49PM -0700, Andrew Morton wrote:
-> On Thu, 23 Jul 2026 16:17:51 +0200 "Vlastimil Babka (SUSE)" <vbabka@kernel.org> wrote:
+On 2026/7/21 下午5:06, Tiezhu Yang wrote:
+> The module loader currently runs expensive address pairing logic for all
+> sections blindly during relocation. For massive modules like amdgpu, this
+> causes the loader to waste lots of CPU cycles analyzing non-exec sections.
 > 
-> > > 2/4 actually came after 4/4 during development. Without it, compaction
-> > > cannot make sufficient forward progress on the promoted non-movable
-> > > requests. So it is a hard functional requirement.
-> > 
-> > So that's the tricky part then. If it's a hard functional requirement for
-> > 4/4 and yet leaving it out results in no conflicts when applying 3/4 and 4/4
-> > (as it indeed seems so, based on my local test), then it's quite possible
-> > stable folks will figure out themselves they need 3/4 as a stable-dep-off:
-> > 4/4 but won't backport 2/4, unless you act quickly enough on their mails.
-> > 
-> > > Whether it deserves an independent Fixes: depends on how many
-> > > GFP_KERNEL pageblock_order requests we have :-) I'm guessing not many.
-> > 
-> > I don't know how else to indicate it though. It's kind of a co-fix with 4/4?
-> > 
-> > >> > (An alternative would be to put cc:stable on all four patches.  That's
-> > >> > a bit abusive but we do it rarely).
-> > >> 
-> > >> I don't think it's necessary, the stable team are quite capable of figuring
-> > >> out the deps and backporting them with a Stable-dep-off: tag. IIRC the
-> > >> "fake" tagging is discouraged? Maybe they can clarify.
-> > > 
-> > > Yes, I *think* it should work with tagging just 4/4.
-> > > 
-> > > It won't apply cleanly or build without 3/4. So I'd assume if that
-> > > dependency is lost, the automated backport will bounce and I can send
-> > > a backport series by hand.
-> > 
-> > The way I see if often happen is that Greg sends a mail that it bounced and
-> > soon after Sasha replies with fixed up version/series. Which could very
-> > easily be 3/4 + 4/4 without 2/4.
+> Furthermore, there is an inconsistency since module_frob_arch_sections()
+> already ignores non-exec sections during the counting phase.
 > 
-> My brain hurts.  I'll include
+> Check the SHF_EXECINSTR flag in apply_relocate_add(). If the section is
+> non-exec, skip address pairing and then jump to normal relocation. This
+> eliminates redundant search loops to improve module loading efficiency.
 > 
-> Fixes: e3aa7df331bc ("mm: page_alloc: defrag_mode")
-> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+> ---
+>   arch/loongarch/kernel/module.c | 6 ++++++
+>   1 file changed, 6 insertions(+)
 > 
-> in all four patches.
+> diff --git a/arch/loongarch/kernel/module.c b/arch/loongarch/kernel/module.c
+> index 7d4d571ee55e..c84ac1546dc6 100644
+> --- a/arch/loongarch/kernel/module.c
+> +++ b/arch/loongarch/kernel/module.c
+> @@ -484,6 +484,7 @@ int apply_relocate_add(Elf_Shdr *sechdrs, const char *strtab,
+>   	Elf_Addr v;
+>   	Elf_Sym *sym;
+>   	Elf_Rela *rel = (void *) sechdrs[relsec].sh_addr;
+> +	Elf_Shdr *dst_sec = sechdrs + sechdrs[relsec].sh_info;
+>   
+>   	pr_debug("%s: Applying relocate section %u to %u\n", __func__, relsec,
+>   	       sechdrs[relsec].sh_info);
+> @@ -522,6 +523,10 @@ int apply_relocate_add(Elf_Shdr *sechdrs, const char *strtab,
+>   
+>   		v = sym->st_value + rel[i].r_addend;
+>   
+> +		/* Skip address pairing for non-exec sections */
+> +		if (!(dst_sec->sh_flags & SHF_EXECINSTR))
+> +			goto apply_normal;
+> +
+>   		if (type == R_LARCH_PCADD_LO12 || type == R_LARCH_GOT_PCADD_LO12) {
+>   			bool found = false;
+>   			unsigned int j = idx;
+> @@ -562,6 +567,7 @@ int apply_relocate_add(Elf_Shdr *sechdrs, const char *strtab,
+>   			idx = j; /* Record the previous j-loop end index */
+>   		}
+>   
+> +apply_normal:
+>   		switch (type) {
+>   		case R_LARCH_B26:
+>   			err = apply_r_larch_b26(mod, sechdrs, location,
+> 
 
-Thank you!  Don't make us "figure it out" as that way lies struggles and
-time delays and the huge chance I get it wrong.  Tagging them all
-ensures none of this happens and it all "just works".
+According to the LoongArch ABI specification, the following relocation
+types exist exclusively in executable code sections:
 
-thanks,
+R_LARCH_PCADD_LO12
+R_LARCH_GOT_PCADD_LO12
+R_LARCH_B26
+R_LARCH_GOT_PC_HI20...R_LARCH_GOT_PC_LO12
+R_LARCH_GOT_PCADD_HI20...R_LARCH_GOT_PCADD_LO12
+R_LARCH_SOP_PUSH_PLT_PCREL
 
-greg k-h
+https://github.com/loongson/la-abi-specs/blob/release/laelf.adoc
+
+Thus, here is a better way:
+
+```
+diff --git a/arch/loongarch/kernel/module.c b/arch/loongarch/kernel/module.c
+index 7d4d571ee55e..b1452b8adc63 100644
+--- a/arch/loongarch/kernel/module.c
++++ b/arch/loongarch/kernel/module.c
+@@ -484,6 +484,8 @@ int apply_relocate_add(Elf_Shdr *sechdrs, const char 
+*strtab,
+         Elf_Addr v;
+         Elf_Sym *sym;
+         Elf_Rela *rel = (void *) sechdrs[relsec].sh_addr;
++       Elf_Shdr *dst_sec = sechdrs + sechdrs[relsec].sh_info;
++       bool is_exec = !!(dst_sec->sh_flags & SHF_EXECINSTR);
+
+         pr_debug("%s: Applying relocate section %u to %u\n", __func__, 
+relsec,
+                sechdrs[relsec].sh_info);
+@@ -522,6 +524,14 @@ int apply_relocate_add(Elf_Shdr *sechdrs, const 
+char *strtab,
+
+                 v = sym->st_value + rel[i].r_addend;
+
++               /* Skip relocation types that exist exclusively in 
+executable sections */
++               if (!is_exec) {
++                       err = handler(mod, location, v, rela_stack, 
+&rela_stack_top, type);
++                       if (err)
++                               return err;
++                       continue;
++               }
++
+                 if (type == R_LARCH_PCADD_LO12 || type == 
+R_LARCH_GOT_PCADD_LO12) {
+                         bool found = false;
+                         unsigned int j = idx;
+```
+
+For the non-exec sections such as .orc_unwind_ip:
+
+fedora@linux:~/7.2-rc3.git$ objdump -h 
+drivers/gpu/drm/amd/amdgpu/amdgpu.ko | grep -A 1 .orc_unwind_ip
+  32 .orc_unwind_ip 000ac104  0000000000000000  0000000000000000 
+18592470  2**0
+                   CONTENTS, ALLOC, LOAD, RELOC, READONLY, DATA
+
+there are 176193 relocation entries:
+
+fedora@linux:~/7.2-rc3.git$ readelf -rW 
+drivers/gpu/drm/amd/amdgpu/amdgpu.o | grep .rela.orc_unwind_ip
+Relocation section '.rela.orc_unwind_ip' at offset 0x3a5321e8 contains 
+176193 entries:
+
+Using the section flag check reduces the operation to a single check for
+massive data sections; otherwise, the loader would have to perform six
+redundant type comparisons across the if-statement and switch-case for
+every single relocation entry.
+
+Thanks,
+Tiezhu
+
 
