@@ -4,67 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FE40C531C9
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 22:30:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF1C3C531F9
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 22:30:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C3EF6B008C; Fri, 24 Jul 2026 18:30:18 -0400 (EDT)
+	id 0D4B96B0092; Fri, 24 Jul 2026 18:30:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 874876B0092; Fri, 24 Jul 2026 18:30:18 -0400 (EDT)
+	id 0AD0E6B0095; Fri, 24 Jul 2026 18:30:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 78B076B0095; Fri, 24 Jul 2026 18:30:18 -0400 (EDT)
+	id F2B2D6B009B; Fri, 24 Jul 2026 18:30:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 51C746B008C
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BF9A76B0092
 	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 18:30:18 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CA5FD401C2
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 22:30:17 +0000 (UTC)
-X-FDA: 85025114874.15.C936BEA
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 49E3B1401AA
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 22:30:18 +0000 (UTC)
+X-FDA: 85025114916.26.C0661DA
 Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 15D5C20005
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 22:30:15 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=jlvsnQJ6;
+	by imf14.hostedemail.com (Postfix) with ESMTP id B9064100002
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 22:30:16 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=lDGkdWSg;
 	dmarc=none;
-	spf=pass (imf13.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+	spf=pass (imf14.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1784932216;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VoZs+loVAhBwkjc5A6PJBaB7eEBwxAF4Y2TdD3Br7Qs=;
-	b=evMSwnI4A5NodmgjT/xuqvTO/Zkrqs92pZV2YpEZht3m+LGHll50kx42LB9ApOjQfcuQBY
-	oKh0xfAsAHVYjojCT2rD/724mfBrcURR5PC8pea5UDvfk+ESNakxyNzJ6M8qhbNmi/pY5I
-	zpIYJk4KZANNgQhCh0KeAPhw/4maXEw=
+	bh=phv1B9Yxat6YIEopEPUTNjYYzL54eFSY9r4GoCdruM0=;
+	b=HXzl4qBjubUdCYT0RSymQAOUWr/uNQllqxNMkomGNjc1RPPT3aD3wO1Bi7G1bVnE69ESfS
+	H526Zo2GOuZ9vroR5OGMzOBG1YiIwf1sF63nRKVMmUAYT6BERO8QngCGpONtYzoZetcoAQ
+	6I+Gaz60KCxQ6i4lstHfjgezYeQgCqo=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=jlvsnQJ6;
+	imf14.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=lDGkdWSg;
 	dmarc=none;
-	spf=pass (imf13.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+	spf=pass (imf14.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1784932216;
-	b=skJuPGqPz/Djv5EVS0PaQj4HfMjITZz4KntTUtA5qZekanLCJqB3e/eYY0G5czHNQm4XqW
-	6TJIBh3spD6Dbmv9sC5GYpoW1Yo5tjRUbCRflZIc1lvdIUtdLv5Can1204uJbpLBUPKwWH
-	kZ8u+9+ur9J8NBWuFHi0P8T7d7zMpRA=
+	b=W3+9xS0sBIqeAf/OpISXDl6GFCjZEjCyx5Nu4SE8neePP19b0tyq+LOO6LlMgnLOG41MMf
+	T0Ohz8NYR/ybZ9BWUV56eCuSznjfEU/ePz/+Lyi8zToCAOX/5mmK8jEiJQMHU7ZR0diiip
+	Hx+3S1YhDKYTyHfOVSgkzvSR+pxNJwc=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
 	; s=mail; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
 	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=VoZs+loVAhBwkjc5A6PJBaB7eEBwxAF4Y2TdD3Br7Qs=; b=jlvsnQJ6OfYza2IkSyBJe1yYTQ
-	djHcHMT23M8KZMD8bBxVN78RuuiujT9B3csAmMEx29Wj4UcB3QOV6j7K+R5W/zDKp0EjWijdzTsis
-	NQFFdlIGG0OQko1SKqWL6/hLu3MIkF9H9M9k/jR7sssLzOBWj1+ZPre8jmZKanZzDWikQKi3tvwo1
-	c9UaZWccOxUWHRbiKwR8/70hRWTz81a2lKjg2t77yv0C2LbAmYwks1lkn9TQGBzLwDziLvM+xsukY
-	yV7UEJdIzukIrnqT9F48pjx8ZFtSd6m+n/pbY3mvux3pv+tAmDo8z/3UrDf4kQI7FqonhJK6ZBfxy
-	VB/qlljw==;
+	bh=phv1B9Yxat6YIEopEPUTNjYYzL54eFSY9r4GoCdruM0=; b=lDGkdWSgenq2WUBSSLwgIoU2bb
+	iq5fO5pwGwjNj4bxQlt4EaiKdpGhKGWYtAlH8V4HscBe+rLdz3LpbJ1rz4Eo+8VHi5Cf2YozwpoKa
+	/EOf7b6Fj1trVqdHRewh1VGmUqt2Uelwy48tNNXJNpUrXhxN2zVXjdupFpQVDCV2E7dnQLmXL8+iR
+	L2uoBhWRMCi66UhaWFlC12UuNvV8vGwQzSm9dIYb5f6FEjYNYvE+3V+Vz3IqDYqTDL0zb61Ac86UM
+	/peYQvZJXj0L62/5Os+HC3VsJDdWWxk6zGgLEgSYvF8x6yeOIqsGogSrLBPrd15tBYdhgtMl7L8QJ
+	6fXo9UZA==;
 Received: from fangorn.home.surriel.com ([10.0.13.7])
 	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.97.1)
 	(envelope-from <riel@surriel.com>)
-	id 1wnOOs-0000000027h-1JWz;
+	id 1wnOOs-0000000027h-1kjG;
 	Fri, 24 Jul 2026 18:29:50 -0400
 From: Rik van Riel <riel@surriel.com>
 To: Andrew Morton <akpm@linux-foundation.org>
@@ -85,23 +85,25 @@ Cc: linux-kernel@vger.kernel.org,
 	Peter Xu <peterx@redhat.com>,
 	Matthew Wilcox <willy@infradead.org>,
 	Usama Arif <usamaarif642@gmail.com>,
-	Rik van Riel <riel@surriel.com>
-Subject: [PATCH RFC v4 04/12] mm/gup: let check_vma_flags() ignore selected VMA flags
-Date: Fri, 24 Jul 2026 18:29:26 -0400
-Message-ID: <20260724222934.1463812-5-riel@surriel.com>
+	Rik van Riel <riel@surriel.com>,
+	Shuah Khan <shuah@kernel.org>,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH RFC v4 08/12] selftests/mm: cover /proc/pid/mem access to VM_PFNMAP memory
+Date: Fri, 24 Jul 2026 18:29:30 -0400
+Message-ID: <20260724222934.1463812-9-riel@surriel.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260724222934.1463812-1-riel@surriel.com>
 References: <20260724222934.1463812-1-riel@surriel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 15D5C20005
+X-Rspamd-Queue-Id: B9064100002
 X-Rspam-User: 
-X-Stat-Signature: hb7bm4xjkrn4jc8ipo4gzcd31np4znfe
-X-HE-Tag: 1784932215-294755
-X-HE-Meta: U2FsdGVkX1/n76ejN+z5uIRLajLIm4Hgym903gJHsl88o3oo23IA8HUKiW8phnZpB4gLqyeG/38kUqL6jWOP4qqLCaBewYJue6eXazVQVaq7dOxcnzGmhCc1vvzQaekJ0pGxCh7/bpaPazQ/eSZuowHisS87GonGpnVEGE8sp+IZeC+dhkl4s/90gY8PugTzESSL8eJCO+16bywpArFfYVQuWHdlTeUoapv2jAtifD8hspb51pKZamwIwFlpAKhO77mWuPzirH08YdemakBksO0BpTRYzKeYuJJpu7awNfdxYXgfZaiXnsNH/l8zaQwGBFZVlUib0R48JA9LZGzBpMy56nFHSLzTVvHYiSzXbxAT/9K56VFy+lpIDCSJLW395SZ4W73u/kZIu0jC9fqm/8O+HN3ObjIyUSnRhpDKUxJKUvliJea/70Zv8z7i+GQijLOpvPQivU2KqHUugLSI9QVzguaY1xlFfMGBM8T7NI1v5L0XJsRGpgYsyj7LIpSXlY0oNOINiwX2DEiETa0xqUFf32xbXZL4wsZC8MgcNBDCZ0S+NLJyR9pde7db3oqOYSneD13v1FJlv9AJnwBtdJOkcySk2Nzn2NlCD1K4ixxRwaNJnazvk4ykINqTQoRk44GjehdNtgOyfYLaTDD2p5s/OoqbP96GQl/H4h6V0Jd5/clEr+dj21ssOyvKt1PnsyttXxI+ty+kcZGpD8hult/OJIVZdT3n70ocQqw6Ret1/cCX7f1CsxtE67Fu5ijvz5r0dZontHiJe3YhMZfu/uJa6KV66RYlXbN94bV9EI/7MML+yz3FSQ/Y/cd9LTk+o6o50EER98NdVNzgbdSXR2tXrdSgf69qxJcQpFi0C/T9j/jtZtvNp+eJzAk31Aa5GUqC/pINxjwqbSwKeqBxEdPSbrHqY0wlwgJpKmuMqVYan5BOHyNamvz1WfioAFf5tOQhhtK/75f0pF/kmHK
- xeuJDMZ8
- CUAaSlpxFAwCGnsrwZAC06mHlUL93g24OxqefRtTcE+JKdQFxs9E/op73J6ebbu6rp+3FKxwoCudqS9XI8x8bLdrRFT7Nwkm23ExXrwUJ2gyd0mMR+c0CfszvOXOh9agRhcQJ+Z8hJVB55X38noH6j8VAMxn1zhfydcIAXlol6ydi+3JBDVAOqTX93TWSqjzxI+caHI/RVo4RPiH7vkjwVNlqjorodiob42T/LxjeYFdeF1Mz5Z3lz/Z+hUxoztdsjiVUNUQSHzVdjYzRkd7GNZlvJUVo/mMCN6iWfbvTOhjaWG9QPKfC8cFbnRmG9+Y7vEtm
+X-Stat-Signature: 7ozyxtoj9qkrdcsobpobnuc3x7eg7qga
+X-HE-Tag: 1784932216-294135
+X-HE-Meta: U2FsdGVkX1+IZST1Uwx0uWIPQvIKayGx9PKNtBwTSVRDPiQoaDnYBCqktmkN5nIjt5qzxednR3gLo4rPCtbLybgjLgJEQnvZId0wbLbj/AfrE/9DUlVWQM18qZTw0TUwZ+8cAELXwTO1q4dU7l1b+Vw+kLoG+c5R3F7BsjhA9adQKgQTbkbJfUuHcMS3XkL3hF6c3chKIO8EXgPwEhyWayAt3Q/cHCCDBjncOlOBF5pcehWZfOLrn3Gc5L5J6kO32P80vwEygiOJiE1UJPdhaAB0lZj6ckSd7t+rxg0CE1vnb94TEaDxWbKtjPZ8SEs5JMTThoHTAkl6nKGjhhPix24zMXLgFfB8Hzevu8hINBUIyHzxli5zvCRPeloiqqBmCvDvYeEX70C1uVyjdzaNl3/TAjhYM3uxFEOvm6RWi2K9Vr6UfC6pmTopEkQcwA6s/T8unnVJiTSAEe1IBUcOQTg30DHKQd6LkG7qxfaJRTfI3M4lVz899Hk03RjJNHmyTnWWkDk/0eU3xgyUMVihrz+YqSAmT5/5UvmReW3p9gVx8+PubVYRFxz2kHpSR178DSnWV+iGt2jrr2g2cVlTSUwgAum1wDtP5YiLqz6HcftJYipfzoUiDYQ+XE0OZpeTvbClRi4Kruac/VZn5QJ8yanm/5SAUF6qGYJBZDpBPqHsyixKGxEvvwalPs8JH9+mCcp3wTxblzxoIAEGvhykdReNXc3lDKFq5FkT+e1ywG9of3evwTrI6bx1Hf4K/Hy6OsE7S8fG8jy92YoQUaTCQnBFo+7s475aGFFIPhPUqENsyDO9p2hOMIqIDczq2zJQlVRfGW5ALvKGS38vlDr3NXZRKZ8XfDEiURLT6hGdiNYQjxdHNcy5WjjrgsaKQ0ajS0g7e3xGZZkGCy3KGdVx3oTIS3FoKABGi+TCH7XKe4q79Ow+YwzKKJeJhqnyQ53IZ+pu9JIK8atw4MUkJO6
+ F+r0qsJA
+ 8QP+bWzjwMRykZ6Co0LigU58QhvFqpZdNw6niIPHTl7mTJLr1/VCrnjZO6Reo5hB2aXh1/a/nZmCadrETRJqQtV6AS1mw+5dl71APqYHHW+b0QmUsoyjmpNrthgt/4NB9tHf2BoaPkVcIEnhx0AFaKvLMjMFGLVRYB1hfI6/gEBe8vvsArzkzJYvw/pV3Y7fI0S0NGIFc4GtcbO+b92dmWEfs/hBeqiIiCCL8Gs9rkQ7WlgZD+Wqb6pzfyjxNL+TK3/n/2rV6ii+l79k07PZziuEfjony3jyBiCidbG54Wqcl8IeT89HUUMPl/A+5Jmh5aBvL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,72 +111,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-check_vma_flags() rejects a VMA whose flags gup cannot handle. A caller
-that wants to reach a COWed page in a VM_IO or VM_PFNMAP VMA, where that
-page does have a struct page, cannot express the exception and has to
-repeat the flag test itself.
+Reading a VM_PFNMAP mapping through /proc/pid/mem exercises
+__access_remote_vm() two ways: a COWed page has a struct page and is
+returned by get_user_page_vma(), while a raw PFN has none and is reached
+through vma->vm_ops->access().
 
-Add an ignore_flags argument that check_vma_flags() clears from its local
-copy of vma->vm_flags before the flag checks. A caller can drop a single
-rejection this way while keeping every other check. All current callers
-pass 0.
+Add two tests to pfnmap.c, both reading VM_PFNMAP memory through
+/proc/self/mem.
 
-This prepares for get_user_page_vma(), which passes VM_IO | VM_PFNMAP to
-reach those COWed pages.
+procmem_cow_read maps the file MAP_PRIVATE and writable, writes to COW a
+page, then reads it back. Without the struct-page path in
+get_user_page_vma() this read is short: the access falls back to
+generic_access_phys(), which ioremaps the PFN, and ioremap of a COWed RAM
+page is rejected.
 
-No functional change intended.
+procmem_pfn_read reads a raw PFN back through ->access(). ioremap rejects
+RAM, so it runs only for genuine device memory and is skipped for the
+default /dev/mem System RAM target.
 
 Assisted-by: Claude:claude-opus-4.8
 Signed-off-by: Rik van Riel <riel@surriel.com>
 ---
- mm/gup.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ tools/testing/selftests/mm/pfnmap.c | 66 +++++++++++++++++++++++++++++
+ 1 file changed, 66 insertions(+)
 
-diff --git a/mm/gup.c b/mm/gup.c
-index 0692119b7904..dcece7b5253c 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -1197,13 +1197,21 @@ static bool writable_file_mapping_allowed(struct vm_area_struct *vma,
- 	return !vma_needs_dirty_tracking(vma);
+diff --git a/tools/testing/selftests/mm/pfnmap.c b/tools/testing/selftests/mm/pfnmap.c
+index 4f550822385a..6ff5d1029517 100644
+--- a/tools/testing/selftests/mm/pfnmap.c
++++ b/tools/testing/selftests/mm/pfnmap.c
+@@ -31,6 +31,7 @@ static sigjmp_buf sigjmp_buf_env;
+ static char *file = "/dev/mem";
+ static off_t file_offset;
+ static int fd;
++static int target_is_ram;
+ 
+ static void signal_handler(int sig)
+ {
+@@ -113,6 +114,7 @@ static void pfnmap_init(void)
+ 		if (err)
+ 			ksft_exit_skip("Cannot find ram target in '/proc/iomem': %s\n",
+ 				       strerror(-err));
++		target_is_ram = 1;
+ 	} else {
+ 		file_offset = 0;
+ 	}
+@@ -271,6 +273,70 @@ TEST_F(pfnmap, fork)
+ 	ASSERT_EQ(ret, 0);
  }
  
--static int check_vma_flags(struct vm_area_struct *vma, unsigned long gup_flags)
-+static int check_vma_flags(struct vm_area_struct *vma, unsigned long gup_flags,
-+			   vm_flags_t ignore_flags)
- {
- 	vm_flags_t vm_flags = vma->vm_flags;
- 	int write = (gup_flags & FOLL_WRITE);
- 	int foreign = (gup_flags & FOLL_REMOTE);
- 	bool vma_anon = vma_is_anonymous(vma);
- 
-+	/*
-+	 * Opt out of the flag checks that read this local copy (the
-+	 * VM_IO/VM_PFNMAP gate and the write/read/cow bits); checks that
-+	 * re-read vma->vm_flags through helpers are unaffected.
-+	 */
-+	vm_flags &= ~ignore_flags;
++TEST_F(pfnmap, procmem_cow_read)
++{
++	char *priv, *buf;
++	ssize_t rc;
++	int mem_fd;
 +
- 	if (vm_flags & (VM_IO | VM_PFNMAP))
- 		return -EFAULT;
- 
-@@ -1387,7 +1395,7 @@ static long __get_user_pages(struct mm_struct *mm,
- 					ret = -ENOMEM;
- 					goto out;
- 				}
--				if (check_vma_flags(vma, gup_flags)) {
-+				if (check_vma_flags(vma, gup_flags, 0)) {
- 					ret = -EINVAL;
- 					goto out;
- 				}
-@@ -1408,7 +1416,7 @@ static long __get_user_pages(struct mm_struct *mm,
- 				ret = -EFAULT;
- 				goto out;
- 			}
--			ret = check_vma_flags(vma, gup_flags);
-+			ret = check_vma_flags(vma, gup_flags, 0);
- 			if (ret)
- 				goto out;
- 		}
++	/*
++	 * A COWed page in a VM_PFNMAP mapping has a struct page, so reading it
++	 * through /proc/self/mem -- __access_remote_vm() -> get_user_page_vma()
++	 * -- returns it directly, instead of routing to vma->vm_ops->access(),
++	 * which ioremaps the PFN and cannot reach a COWed RAM page.
++	 *
++	 * Map the file MAP_PRIVATE and writable, write to COW a page into anon
++	 * memory, then read the page back through /proc/self/mem.
++	 */
++	self->size2 = self->pagesize;
++	self->addr2 = mmap(NULL, self->size2, PROT_READ | PROT_WRITE,
++			   MAP_PRIVATE, fd, file_offset);
++	if (self->addr2 == MAP_FAILED)
++		SKIP(return, "Cannot create a writable private pfnmap mapping");
++	priv = self->addr2;
++
++	/* COW the page and stamp known bytes into the anon copy. */
++	priv[0] = 0x42;
++	priv[self->pagesize - 1] = 0x24;
++
++	buf = malloc(self->pagesize);
++	ASSERT_NE(buf, NULL);
++
++	mem_fd = open("/proc/self/mem", O_RDONLY);
++	ASSERT_GE(mem_fd, 0);
++	rc = pread(mem_fd, buf, self->pagesize, (off_t)(uintptr_t)priv);
++	close(mem_fd);
++
++	ASSERT_EQ(rc, (ssize_t)self->pagesize);
++	EXPECT_EQ(buf[0], 0x42);
++	EXPECT_EQ(buf[self->pagesize - 1], 0x24);
++
++	free(buf);
++}
++
++TEST_F(pfnmap, procmem_pfn_read)
++{
++	char buf[64];
++	ssize_t rc;
++	int mem_fd;
++
++	/*
++	 * A raw PFN of a VM_IO/VM_PFNMAP mapping has no struct page, so
++	 * __access_remote_vm() reaches it through vma->vm_ops->access()
++	 * (generic_access_phys()). That ioremaps the PFN, which is rejected for
++	 * RAM, so this only applies to genuine device memory.
++	 */
++	if (target_is_ram)
++		SKIP(return, "Target is System RAM; ->access() cannot ioremap RAM");
++
++	mem_fd = open("/proc/self/mem", O_RDONLY);
++	ASSERT_GE(mem_fd, 0);
++	rc = pread(mem_fd, buf, sizeof(buf), (off_t)(uintptr_t)self->addr1);
++	close(mem_fd);
++
++	ASSERT_EQ(rc, (ssize_t)sizeof(buf));
++}
++
+ int main(int argc, char **argv)
+ {
+ 	for (int i = 1; i < argc; i++) {
 -- 
 2.53.0-Meta
 
