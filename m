@@ -4,93 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 469C0C531FA
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 09:58:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DF5FC531C9
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 09:59:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 38C216B0088; Fri, 24 Jul 2026 05:58:39 -0400 (EDT)
+	id 2F1B16B008A; Fri, 24 Jul 2026 05:59:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 33BD46B008A; Fri, 24 Jul 2026 05:58:39 -0400 (EDT)
+	id 2A1BF6B008C; Fri, 24 Jul 2026 05:59:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2037A6B008C; Fri, 24 Jul 2026 05:58:39 -0400 (EDT)
+	id 16C8E6B0092; Fri, 24 Jul 2026 05:59:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DF81C6B0088
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 05:58:38 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 58012C0335
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 09:58:38 +0000 (UTC)
-X-FDA: 85023220716.22.F19F761
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf10.hostedemail.com (Postfix) with ESMTP id A9A6FC0009
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 09:58:36 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=obJNvxuD;
-	spf=pass (imf10.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+	by kanga.kvack.org (Postfix) with ESMTP id D38BC6B008A
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 05:59:51 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 47521C01D9
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 09:59:51 +0000 (UTC)
+X-FDA: 85023223782.18.CB00849
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 9BC8440009
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 09:59:47 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=k0HxrWGF;
+	spf=pass (imf17.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784887116;
+	s=arc-20220608; t=1784887189;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L541VKiqXeegrdDBGEbQltr0E3niQlPmGsrvV1AIcQA=;
-	b=InoTxi3Z+nYRg+1ziAsaWdLjunpsrHErvswFqgUX/OPr3+ccYd5gdHHBslYHrTZbblLqZc
-	GJcfHTFAyLidHFeFS6zaJw6f+FmZTeVewnG9QyO0yvkFHcNrQv/9Qt9biAL2GJa70ty88a
-	/NDwPbnqsfanM42Z5HdYhY0yrxRBrOc=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=obJNvxuD;
-	spf=pass (imf10.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+	bh=ViiLl9ZFF0UEdOn7wLcmnHat7EVRXfbwbFG0wZYEi10=;
+	b=hFuHzHtOvSMyS5rz4OHmXvtejiuiCEtkt2YtLySYBh4lmhZgzhM3Nfpc5wNbi5ii+VyU6a
+	8SmWJ43A16lhzsEro0SpqX1A6YG/sNVHhU40M5wEFZSmWv8WB0XCpQDIKwYrPrN9Fgywa0
+	86+4MH0wHtuDahZBpJo6zImPUHR8i7A=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784887116;
-	b=L2W12aoGpHGNveG5rLbLhDzS8+ofeXX4X3W2uDr+amglBYwSikePm1U/UjQkBiJENYEom1
-	Bq/oydTffiRhBGLByhQyTpOgH9X4cKCYjPRvxkXblymzQQFDLac3/jcyEUKuyTK0dj7k1+
-	TNg8+IpgGuXKK98E5xlFrQ0ZnsWdEYM=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=L541VKiqXeegrdDBGEbQltr0E3niQlPmGsrvV1AIcQA=; b=obJNvxuDYRmXOhnzrCkICh5HBw
-	BXHtwOW/lFdNmrivFjCW3TMe27FdHA/ZFw40SMfexgW0SzeNpNXg9Vns/alM6TRrqkI9GEuwGqrog
-	GXQJYl0SW8+E3+u/ls9rsMqVhetAUsFrqJfH6sVY4EZkDcaCkxVjvqD5Ib7AHiB6x+eUVahrcHS/T
-	UumxVay4PbaY2CqkBaW4Qcnox1s5wV03aLZm4tHtLzn5Dtfi7AEH4466GdG0H85HUndhHUbPLjRm1
-	0uugn6XPyPxOhkpEFFXms+rmHdGNSuuqNC/p2DiUMU+3xWvPBYGPtCVbSnQEFzkOMJRuLdlpd7hHz
-	M0Z1hSBg==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wnCfl-004TYP-07;
-	Fri, 24 Jul 2026 09:58:29 +0000
-Date: Fri, 24 Jul 2026 02:58:24 -0700
-From: Breno Leitao <leitao@debian.org>
-To: "Paul E. McKenney" <paulmck@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, puranjay@kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH] mm/kmemleak: report RCU-tasks quiescent states during
- the scan
-Message-ID: <amM1xUOhcpGpqIpe@gmail.com>
-References: <20260720-kmemleak_rcu_task-v1-1-5b460ade777d@debian.org>
- <20260720153917.2e428e489cd0873ac6d4e6da@linux-foundation.org>
- <5b83b0a0-708a-458a-bdbd-41c6d4610349@paulmck-laptop>
- <amCT9QEgJRsLIb_y@gmail.com>
- <ffa5d8d2-1157-4a30-995c-ddae3566e3a4@paulmck-laptop>
+	t=1784887189;
+	b=4HISZBdfgfP6dkbC0vvDvFnYI1LGdwOzjZcIq7Mm08yxywyoxt6iGKSzjIR54uZnurQH1p
+	/MJRd2JyY9oLXEyQpiiUwxkP4QeDtkDEFzGVjM7qGyxG9ym5Jjk68KfhblFO5QWFJQzt9F
+	1L+p4Vh+vyG+lpuI791wD9iJuGAeW4c=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=k0HxrWGF;
+	spf=pass (imf17.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <c40f4a8b-1f60-45ea-962d-0597c413ec3d@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784887185;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ViiLl9ZFF0UEdOn7wLcmnHat7EVRXfbwbFG0wZYEi10=;
+	b=k0HxrWGFl2ltc7kB+r1juMoWhA3cgV5epPavsYp57+2JiERhX+D4oeLdbHCEwKtwhy6ele
+	jMSgTe4dzXRGXhKy+j7N+gv3IFru1lL8m4dFAlzICSatZDbo9F9VTeGpWxh9yi5+lcdLCW
+	7TcoyNw+C5AkTZM54vbVq6/RiE2eWZw=
+Date: Fri, 24 Jul 2026 10:59:40 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ffa5d8d2-1157-4a30-995c-ddae3566e3a4@paulmck-laptop>
-X-Debian-User: leitao
+Subject: Re: [PATCH v5 04/11] mm: zswap: add range lookup for large-folio
+ swapin
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Alexandre Ghiti <alex@ghiti.fr>, Andrew Morton
+ <akpm@linux-foundation.org>, david@kernel.org, chrisl@kernel.org,
+ kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, linux-mm@kvack.org,
+ ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>,
+ willy@infradead.org, youngjun.park@lge.com, hannes@cmpxchg.org,
+ riel@surriel.com, shakeel.butt@linux.dev, kas@kernel.org, baohua@kernel.org,
+ dev.jain@arm.com, baolin.wang@linux.alibaba.com,
+ Nico Pache <nico.pache@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
+ ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>,
+ lance.yang@linux.dev, linux-kernel@vger.kernel.org, nphamcs@gmail.com,
+ shikemeng@huaweicloud.com, kernel-team@meta.com,
+ Alexandre Ghiti <alexghiti@fb.com>
+References: <20260722152043.2273289-1-usama.arif@linux.dev>
+ <20260722152043.2273289-5-usama.arif@linux.dev> <amFZmtGHEZjXEw5R@google.com>
+ <ee172b01-54c3-47ef-9040-1342a1566796@linux.dev>
+ <CAO9r8zMzjCf620EHwzfosngc94fu=vAb=ukrtOi9Qf3rA3vv7w@mail.gmail.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <CAO9r8zMzjCf620EHwzfosngc94fu=vAb=ukrtOi9Qf3rA3vv7w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 9BC8440009
+X-Stat-Signature: do8k7wpwikzbxf938bu69zpgf7ge7sjn
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A9A6FC0009
-X-Stat-Signature: 5cqnk8kxwrd4qqm6euuus5sgtpqe7x9a
-X-HE-Tag: 1784887116-2210
-X-HE-Meta: U2FsdGVkX194ONS94ejsJcPpF0CC7BsgpxZlN2Fta6IDAOUIo5ndrnpJB955NJ9OaYireG/q8KUyeiryQj4/0kseVhHJDURSQMZVILKhgZ3eHZ4T0FJXf+M1Lo7hUM4S93Ul2k+J3iTpKdJQonHQ+J7C7/K1+vc17TMTi8Hg1fucBffW+3tIp5Y/xclhuPmnsV6VyuX+www8bEIfemkI0UUGwdg67by8a4GR/efJM0Z+VvcOEla9NlAxStyzM/RDFwIaZctz8HB58raTugoyLQ2/P56fqRckYZLdMoaxkquG/luF01VFpfebdZBWPZNhnJ1P0KR7mEUHdZ185gn77gFFPPJhNjheEiOutpLCPmoV5jA93opo+QedDUthIefyPJA3jf4Nvj9V64DolJpeEHUrQQ6+JYu07zm8agKWoA2iWFcZ5pJJ4v1F5yXGftVDL0km8ythR1yMiW5Ci+SGyZ7J+3XNPBL+pAbZVhOShVIcmKQmkjzg5xJBiPUj5famtMVgeO998z36yVG3felG4XprycQ03tRjPfqOw6jagqBuL3naiLVY8guWY3G3hcZpabaydP2km2vY4UZJGjyhDyRl2sU97Yr69IDEBdJea2x5jJjwPDWv1y9/IDhNJL//CE9uJD2Rg2uB9qFu/ue8RQSIs8QNyZlieeI4gN+ryzhTS+bpx4/g5Ircl2I4oEuQilKo+Og7Oxvod5s7Tq22RGG89Fz4NZ7DC/WbHwvb8BPCGH6XdP/tmcdhl24iK23ZDiFk1j2lVRuYeRTaUKXKiFG4+Nm+ZfDnMsC3Tv4zWgWWQrr8UbZQFHeB38+wmDp7Ulkj83Bd/R5vIP3P4YgZDmMRg/MPFsqlCHzVP0V4nfb6fVkN5EjHDxUHjXGSMRfnJgvbtIePbvG+cqW9L7DNhfuS0u0AoIkmL4JIP+no7anKezpzVwzyXnEksviSjIMS++M4SfpSQuUPIlwoqnW
- i4KZ7+g7
- fphk/50UwgKvHf6XQIbBRG2ULyMJ67ZJSR404JkWeP04R/Egptc6ys3Z0QyfGjLQwVtruC+aqMBYIUC8ok0Cy8GT1MxHaz946mwjw/1/ls6zRWEIJFRAqqHzhN941rEc5OOw+TabGuH/Ncs/WCrCuvbuMKKQprU1B2chM0X5hrCl2OFaD0nO40dcWZJa9qMIVNwypCsY+ZmhyJtodwlLtMH4oQ2NYqdzsZpYKnhvLTWIANPw/gYcOnMLV16V/wO/SXtB4il6+rcWrMHU2t4JeUVRAw3Oe4BDgvIGS3pxLeonYyPh86NBtwsHJGNqPp3mHXPXy6l/i2sxDCnk=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1784887187-316250
+X-HE-Meta: U2FsdGVkX199836w3XtmWAmWdO/nU2B7y+4KJLKT+0elOV9QmMDFqPdnZq1inf66EHt8pfomqa6jH8Xq3ZEHKk/123z9/8SS7lZiDM0uvuqgDpJezNzHh3iLoPDzqEnUz9H2AXF+JdrRrSWAk+YjX4ufzgXyj7tObrGF0QsMnmcXvVD74b6DkK1nRDE1hVdK611KGg+/bOgouYTwcpZdHSae/PSg7Y+sHP9opYZzmQt0C15WKJSmgoQUxKpvP74PizbDuKIAuj2WreFW9cUYGMSrRS/JobVWRTUI1+9Vgi/zSBNDj31RIMiDmcIvWyeAG7Z0ZenDS3c+xSLi94DcfZm4nc9r46Zg10Zx0AopHP/BdFBsvXeHFQAvv+hbXg62rxWOVGzquYdcD10Ed2OGUFvCXHUt8SNbNUlk/2PzMj79IubUylhxq/ov+X5v97nNMjxK6JZ6uX+5d0mr+Abxy5J/KcCzM/Jufo0IDBgj/n3RwXV1tYCguKrXzO/f+xs7T2MRIMIsRJm7wUusa8uYrPLz1IyQNbMo0WFFXViyYMa7aBd5GaPtzsBSWUajHPkbMnI8ttVwypl01hNW/bXOdC4If3TmRAUzosoPczgNDRyV36SU0ntMs7JiFemiHYFXCouEyXFQK+2kM78Y4aP5vm46acDdM7G7VcOva9CM9grJQ233YSOsSg05bvvexSZlxUjB/f1PxeqGO5QdWaLIojfjsbXm61q+mZRvATdN2HANnK0IYgV9IQDZw+g/z+8fQq2b4a8a75pjoQHRmeDgzjrHfckoQnqUzjGO3Iz9JtYVAbgV6hu08mO5Xl4Osidi/O+P5ZeVfna9jn0yWN7m/4FK/C9gY1F0o1y8FwumSMxJEHl30NwtyEFOdooxZvd/Gn9fhnbG90vL0og+UeEoAKctArGI8Cq+yN1DvOz+HjVtJt4quEhAZ3phFNdQIoLO8sKoxEIVuiH5QRqeS9R
+ XmOodnZR
+ BqwMjVSnEMPJb40M44NJ4MmlIl5IxTSmBHmQkfjBiDBBQo+VrjoukE0yJKiVuPALC9gkrSKP0A0P3C/13kGWO2tAVrHxfCF8psyxCy92JEj4WLWr16ZkJwdGm2zD8e1cjyyFW3PfVPfoKfGT4yl8/n+J+nfAoWwpYqnsQSxpK8ez74vIkQSVm5Ba/2PVaLXzXGca9FlvPOGqgXli817Vv8vnWDw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,111 +103,127 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 23, 2026 at 08:56:58AM -0700, Paul E. McKenney wrote:
-> On Thu, Jul 23, 2026 at 06:26:11AM -0700, Breno Leitao wrote:
-> > Hello Paul,
-> > 
-> > On Mon, Jul 20, 2026 at 09:21:17PM -0700, Paul E. McKenney wrote:
-> > > On Mon, Jul 20, 2026 at 03:39:17PM -0700, Andrew Morton wrote:
-> > > > On Mon, 20 Jul 2026 06:23:45 -0700 Breno Leitao <leitao@debian.org> wrote:
-> > > > 
-> > > > > kmemleak_scan() can run for ages on large debug kernels. It was
-> > > > > causing some soft-lockups which I got fixed with commit
-> > > > > 3175fcfec8b16baeb ("mm/kmemleak: avoid soft lockup when scanning task
-> > > > > stacks") with our beloved cond_resched().
-> > > > > 
-> > > > > I've got the fix above deployed in the Meta fleet, and now I am seeing:
-> > > > > 
-> > > > >   INFO: rcu_tasks detected stalls on tasks:
-> > > > >     task:kmemleak state:R ... nvcsw: 274/274 holdout: 1 idle_cpu: -1/3
-> > > > >      scan_block
-> > > > >      scan_gray_list
-> > > > >      kmemleak_scan
-> > > > > 
-> > > > > and, worse, blocks the callers waiting on that grace period. Here a BPF
-> > > > > struct_ops map free, which waits via synchronize_rcu_mult(call_rcu,
-> > > > > call_rcu_tasks), is stuck long enough to also trip the hung task check:
-> > > > > 
-> > > > >   INFO: task kworker/...:bpf_map_free_deferred blocked for 122 seconds
-> > > > >      __wait_rcu_gp
-> > > > >      bpf_struct_ops_map_free
-> > > > > 
-> > > > > Then I've learned that cond_resched() is not an RCU-tasks quiescent
-> > > > > state, so, we need to use stronger primitives.
-> > > > > 
-> > > > > Use cond_resched_tasks_rcu_qs() at the scan reschedule points so the scan
-> > > > > reports an RCU-tasks quiescent state as it proceeds.
-> > > > > 
-> > > > > Inspired by commit b96285e10aad ("tracing: Have osnoise_main() add a
-> > > > > quiescent state for task rcu").
-> > > > 
-> > > > I'll add
-> > > > 
-> > > > Fixes: c4b28963fd79 ("mm/kmemleak: rely on rcu for task stack scanning")
-> > > > Cc: <stable@vger.kernel.org>
-> > > G
-> > > Thanks to all three of you!
-> > > 
-> > > This adds fewer than ten calls to cond_resched_tasks_rcu_qs(), but still
-> > > more than doubles the number of such calls outside of the RCU subsystem.
-> > > 
-> > > Which is most likely just fine, and in any case absolutely should not
-> > > get in the way of Breno's patch, which after all solves a real problem
-> > > in the here and now.
-> > > 
-> > > Nevertheless, on the off-chance that over the next few months or years
-> > > we start playing cond_resched_tasks_rcu_qs() whack-a-mole, I figured it
-> > > would be good to get a head start on writing up alternatives.  An initial
-> > > draft may be found here:
-> > > 
-> > > https://docs.google.com/document/d/1s3fn29SCTYVw9jak4iraNIVQR59Wk5C6_I-_eu-MfQA/edit?usp=sharing
-> > > 
-> > > TL;DR:  Should we get into a rousing game of whack-a-mole, alternatives
-> > > include continuing as we are, making the existing calls to cond_resched()
-> > > in turn call cond_resched_tasks_rcu_qs(), decoupling mutex-induced
-> > > hung-task warnings from synchronize_rcu_tasks(), and various
-> > > not-so-practical alternatives to RCU Tasks for trampoline synchronization.
-> > > 
-> > > Thoughts?  Especially thoughts on other schemes?
-> > 
-> > While debugging this issue, I was surprised to discover that cond_resched()
-> > doesn't provide RCU-tasks quiescent states. That led me to
-> > cond_resched_tasks_rcu_qs(), which is the stronger primitive needed for
-> > long-running kernel threads like kmemleak_scan(). Is this the common
-> > case for cond_resched()? I got the impression that kmemleak is the
-> > extreme side, but, I have no data on this.
-> 
-> And that discovery did in fact lead you correctly, and hence my
-> giving you a Reviewed-by.
-> 
-> > Worth noting that commit 7dadeaa6e851e7 ("sched: Further restrict the
-> > preemption modes") continues to narrow PREEMPT_NONE, so the future of
-> > cond_resched() itself may be uncertain, no?
-> 
-> Especially given that one of the explicitly stated goals of lazy
-> preemption was in fact to eliminate cond_resched().  ;-)
-> 
-> Getting back to your point about kmemleak possibly being extreme, as far
-> as I know, none of us have data on how many conversions of cond_resched()
-> to cond_resched_tasks_rcu_qs() will be required, or, for that matter,
-> how many additions of cond_resched_tasks_rcu_qs() above and beyond
-> current cond_resched() instances will be required.
 
-I've searched for "rcu_tasks detected stalls on tasks" on Meta's
-fleet "dmesg depot" and I was suprised to see we have many of them, in
-which seems to be on hypervisor workloads (running VMs).
 
-> There were concerns raised off-list, so I figured that it was time
-> to lay out what we do know, hence the above gdoc.  I very much hope
-> that we don't need many more calls to cond_resched_tasks_rcu_qs(), and
-> thus that the time I spent writing that turns out to be wasted time.
-> But better safe than sorry!
+On 23/07/2026 17:42, Yosry Ahmed wrote:
+>>>> @@ -1595,13 +1611,19 @@ int zswap_load(struct folio *folio)
+>>>>              return -ENOENT;
+>>>>
+>>>>      /*
+>>>> -     * Large folios should not be swapped in while zswap is being used, as
+>>>> -     * they are not properly handled. Zswap does not properly load large
+>>>> -     * folios, and a large folio may only be partially in zswap.
+>>>> +     * A large folio reaches zswap_load() only when its whole range is
+>>>> +     * expected to be on disk: PMD swap-entry consumers split before
+>>>> +     * calling into PMD-order swapin whenever any slot is still in zswap.
+>>>> +     * Confirm the range is entirely absent from zswap and return -ENOENT
+>>>> +     * so the caller reads it from disk; if a slot is unexpectedly still in
+>>>> +     * zswap, fail the read rather than return partially-initialized data.
+>>>>       */
+>>>> -    if (WARN_ON_ONCE(folio_test_large(folio))) {
+>>>> -            folio_unlock(folio);
+>>>> -            return -EINVAL;
+>>>> +    if (folio_test_large(folio)) {
+>>>> +            if (zswap_is_present(swp, folio_nr_pages(folio))) {
+>>>
+>>> Is dropping the warning here intentional (for the folio_test_large() &&
+>>> zswap_is_present() case)?
+>>>
+>>
+>>
+>> Yes, so we can end up in a race, which should be handled gracefully.
+>>
+>> For example, lets say we have zswap writeback enabled, which means we
+>> can end up in a state where we have a PMD swap entry and 511 of the 512
+>> slots have been written to disk, but 1 slot (slot X) is still in zswap.
+>>
+>> We can then have the following race:
+>>
+>>
+>>   CPU A: PMD swap-in                  CPU B: split-PTE swap-in
+>>   ------------------                 ------------------------
+>>
+>>   Checks swap cache: empty
+>>
+>>                                        Faults slot X
+>>                                        Adds order-0 folio F
+>>                                        zswap_load(F):
+>>                                          removes X from zswap
+>>                                          marks F dirty
+>>
+>>   Checks zswap range: empty
+>>   A is preempted
+>>
+>>                                        Unmaps/reclaims F
+>>                                        zswap_store(F):
+>>                                          puts X back in zswap
+>>                                        Removes F from swap cache
+>>
+>>   A resumes
+>>   Allocates large swap-cache folio G
+>>   zswap_load(G) finds X in zswap
+> 
+> Why don't we check the zswap range after allocating a folio in the
+> swap cache? I am assuming at this point we have the folio locked and
+> the result should be stable?
+> 
 
-The document was not a waste of time. it helped people like me to
-understand what the issue is, and what are the decisions we have ahead
-of us.
+Yes that makes sense. The folio is locked and the result will be stable.
+How about something like below?
 
-Back to what is the best decision/design, I honestly don't have an
-opinion, but I am happy to get more data about Meta production servers
-to help with the decision.
+diff --git a/mm/swap_state.c b/mm/swap_state.c
+index 1f08fb522036..41f168377cb1 100644
+--- a/mm/swap_state.c
++++ b/mm/swap_state.c
+@@ -12,6 +12,7 @@
+ #include <linux/kernel_stat.h>
+ #include <linux/mempolicy.h>
+ #include <linux/swap.h>
++#include <linux/zswap.h>
+ #include <linux/leafops.h>
+ #include <linux/init.h>
+ #include <linux/pagemap.h>
+@@ -500,6 +501,17 @@ static struct folio *__swap_cache_alloc(struct swap_cluster_info *ci,
+        __folio_set_locked(folio);
+        __folio_set_swapbacked(folio);
+        __swap_cache_do_add_folio(ci, folio, entry);
++       /*
++        * Reject mixed zswap/disk backing before starting the read.
++        */
++       if (order && zswap_is_present(entry, nr_pages)) {
++               __swap_cache_do_del_folio(ci, folio, entry, shadow);
++               spin_unlock(&ci->lock);
++               folio_unlock(folio);
++               /* nr_pages refs from swap cache, 1 from allocation */
++               folio_put_refs(folio, nr_pages + 1);
++               return ERR_PTR(-EBUSY);
++       }
+        spin_unlock(&ci->lock);
+ 
+        if (mem_cgroup_swapin_charge_folio(folio, memcg_id,
+
+
+>>
+>> The correct action would be to reject the PMD order read and fall back
+>> to per-page loading.
+>>
+>> I am bit torn about what to do for zswap here. The series is quite big
+>> already. Alexandre is looking at adding support for PMD swap, but will
+>> send patches once this series gets merged. My initial versions 1
+>> and 2, basically stopped installing PMD swap entry if zswap was ever enabled.
+>> From v3, I used Alexandre's suggestion to do zswap_is_present() test
+>> so that PMD swap entry can keep on working.
+>>
+>> Both of these paths are temporary till Alex sends his series. I
+>> do feel my initial version was simpler but will basically stop
+>> working if zswap is ever enabled. Do you have any suggestions on
+>> what your preference is for zswap?
+> 
+> Even with PMD zswap load support, we still have to deal with the case
+> where some order-0 pages are in zswap and some are on disk, right? I
+> don't see how that would eliminate the case you mentioned above.
+
+Ack, yeah writeback will still mess with things. I will keep the current
+implementation.
+
 
