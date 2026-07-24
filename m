@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36B0CC531CC
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 02:31:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34616C531CC
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 02:31:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 09AA76B00A1; Thu, 23 Jul 2026 22:31:21 -0400 (EDT)
+	id 185E56B00A3; Thu, 23 Jul 2026 22:31:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 072346B00A3; Thu, 23 Jul 2026 22:31:21 -0400 (EDT)
+	id 15DC86B00A4; Thu, 23 Jul 2026 22:31:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF70A6B00A1; Thu, 23 Jul 2026 22:31:20 -0400 (EDT)
+	id 09D646B00A5; Thu, 23 Jul 2026 22:31:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C7F5A6B00A1
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 22:31:20 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 52CB740233
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 02:31:20 +0000 (UTC)
-X-FDA: 85022093520.23.DE30548
-Received: from smtpbgsg2.qq.com (smtpbgsg2.qq.com [54.254.200.128])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 36C7D40009
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 02:31:16 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=ImOl3V+3;
-	spf=pass (imf17.hostedemail.com: domain of gouhao@uniontech.com designates 54.254.200.128 as permitted sender) smtp.mailfrom=gouhao@uniontech.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D6A2C6B00A3
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 22:31:54 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6064DA01C3
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 02:31:54 +0000 (UTC)
+X-FDA: 85022094948.24.5F681FE
+Received: from smtpbgeu1.qq.com (smtpbgeu1.qq.com [52.59.177.22])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 4D8F7C0003
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 02:31:50 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=JfRBL6vG;
+	spf=pass (imf22.hostedemail.com: domain of gouhao@uniontech.com designates 52.59.177.22 as permitted sender) smtp.mailfrom=gouhao@uniontech.com;
 	dmarc=pass (policy=none) header.from=uniontech.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784860278;
+	s=arc-20220608; t=1784860312;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OyqXJDBODKL4i9r4faSbxqKqbqbjK9rOASLwkWPXzB4=;
-	b=tSDrKHhTCS1P0FgbIMXG0DdihMDimtgKQyaWz28N/mt2OZ+3KhH84MB3u1Zs2EgTJWlJ2F
-	dou8jev/p+aMdNtSQacb6JsJbc4Jwcl17/VdFBojHWG+ggEm45rwRq6chI58UnjngiCwIe
-	pbrRqgvM3++8G4l8dx6IK8fLimNyjwM=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=ImOl3V+3;
-	spf=pass (imf17.hostedemail.com: domain of gouhao@uniontech.com designates 54.254.200.128 as permitted sender) smtp.mailfrom=gouhao@uniontech.com;
-	dmarc=pass (policy=none) header.from=uniontech.com
+	bh=Yn0Gyoe5DqjP71R2buJi41mG3iZ0k1ZX3eDGImr8Sq0=;
+	b=4BEmeiETWmLYW5X9XM7GucWEXiU8roQIp9i53agA5Ud9sjTJes0ZuHV7BF3NqYtY4iBMGK
+	jiMDmK9TdBHoOxorl4igxw14G7pE+Bk7Atty3l04E2zqac7k/RPvAAfS403+XhuJsav8z7
+	V9eC6AXhdhII/eOrWYE0BQYpGiPxCeM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784860278;
-	b=GQEgSmAfRh/7dtYbF52MIuys8hPqBFSl1wfDSBXjpkJtGDLnog3ALOj884eYqsj0OzZVmH
-	zLGsZYbejW4v9paBl97PC9CbuFsLSA4voSxdd9CSDFBrPfNbAKZiwWJqofnj0zIOG9NsP1
-	CveHeyx6cCst5+fIotjH+We0t/k9pOU=
+	t=1784860312;
+	b=KJBcx0TwQKaRPcNeMnyBnd30L6PNAoZoE1X29XxHrXy/kJMUJQLpeaQcBo96LmLFSWNva3
+	u6pfFFQLAeL1NMaPypWDQAwS6bubCW2U9bIObthhJvA3/tYHh98xN+4wQUJvAgJYg8hQrM
+	eGSzUsw5PRop8K7oU+3iQHhlYSvpqvs=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=JfRBL6vG;
+	spf=pass (imf22.hostedemail.com: domain of gouhao@uniontech.com designates 52.59.177.22 as permitted sender) smtp.mailfrom=gouhao@uniontech.com;
+	dmarc=pass (policy=none) header.from=uniontech.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1784860168;
-	bh=OyqXJDBODKL4i9r4faSbxqKqbqbjK9rOASLwkWPXzB4=;
+	s=onoh2408; t=1784860173;
+	bh=Yn0Gyoe5DqjP71R2buJi41mG3iZ0k1ZX3eDGImr8Sq0=;
 	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=ImOl3V+3qmGjRisyVUVd9mh2AZ0NFSJDdEzDIqUpNvqoNTKhOzOi6KGDffGACMmtR
-	 Ieie27rcygsxcHg/b5/K/9wRnsRHf46IlOy9eN5HlR7Vl9LPGQaDr1c7Xc6lm8x8IL
-	 1q3YhVXJS2PN8fyIiZ8h9JL89x+DGRIhNn+dO7mU=
-X-QQ-mid: zesmtpip4t1784860161t8fb1ed23
-X-QQ-Originating-IP: aBJCglJ9q/YAKBS1d2e+RK0bytOzmdANKIZ+RTuS4uM=
+	b=JfRBL6vGX+km3YMzXlEy7HJjnZqr5bN52rjPOVAQnKRIbluO+xg2UR2JNwgYqwD0z
+	 SXyUg4OftBJTjKaq6Dj2Mo8/uGJrhggOebDVx6pkjdosAv8MRFez9vbIMWQeQE8m6Q
+	 WIIski7wchHE/k3u849ZwaM0Ku3cvTGxYk+Yhn7A=
+X-QQ-mid: zesmtpip4t1784860167t2acc5bb8
+X-QQ-Originating-IP: qIXv24m5LF8xLoOUC1kXo/DM9tGPxEiRVtvDS4LSMeI=
 Received: from localhost.localdomain ( [localhost])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 24 Jul 2026 10:29:19 +0800 (CST)
+	id ; Fri, 24 Jul 2026 10:29:24 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 645947347967007313
+X-BIZMAIL-ID: 530311859156334886
 EX-QQ-RecipientCnt: 26
 From: Gou Hao <gouhao@uniontech.com>
 To: maddy@linux.ibm.com,
@@ -91,9 +91,9 @@ Cc: linuxppc-dev@lists.ozlabs.org,
 	linux-mm@kvack.org,
 	gouhaojake@163.com,
 	kernel@uniontech.com
-Subject: [PATCH v2 5/6] lib/test_hmm: remove dead NULL checks after GFP_NOFAIL allocations
-Date: Fri, 24 Jul 2026 10:28:50 +0800
-Message-Id: <20260724022851.466017-6-gouhao@uniontech.com>
+Subject: [PATCH v2 6/6] RDMA/cxgb4: remove dead NULL checks after GFP_NOFAIL allocations
+Date: Fri, 24 Jul 2026 10:28:51 +0800
+Message-Id: <20260724022851.466017-7-gouhao@uniontech.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20260724022851.466017-1-gouhao@uniontech.com>
 References: <20260724022851.466017-1-gouhao@uniontech.com>
@@ -101,32 +101,33 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: zesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz5b-2
-X-QQ-XMAILINFO: NIUeOSCg5F57kgxr1lqCbn/SJBSqwA1IrTVEXu2ygEjwZckr9zVvzqCY
-	/vD7LZoEIB8y7ROJCRgV1sIMNXGKXKXIv+HsYav3muF0liIZp6MXJ6EKPjCgLGxspq7nayb
-	8HAu9cCNCyLaxh6c229GMr+9UGghqmVquqzk4LCKKeKeK3srMHF9MevpYo+ZSD05zw3Sj/O
-	tEiwKU3zGRqK1HpAk6nM1uil5M+01McN4aNHBEu5zGtwTRBeiciMFzFjsmMJGwXs25Y0Tz6
-	VnvLatJ5DmEdqogd4G+xyjlgKPRYIqKr90+xQlfLUyOPog2vy5JLMqU0fkjYdNZo3dwyuqb
-	FNz6IDnm/2JmCzHvsK0geiBQIK56hkRgOTZeo1bAdLD2DvACycsbLBBrHeZDTiXDW39LylK
-	gKMKN0gEkTAvsbRG+2tZE57cDCV+Q0iVBm0sKA6en5PcfmsEwjBpJ8FfXOX5hs0L+TPqwd4
-	SlMTF+hP7hhJbEM1+h/zE/0znH3+podHWxcHmfyVmY/kHcg+tunLZ2rygaGxPKVmbmI1Xcr
-	6vRiD+a6QjS24PDNglBLVXasFknlC5oGCJKzaNkT0CtLguh7DzF4UUGoy2OhHP/FZdcjJGe
-	uGFC3di8m5OJ0qOHvRfSukBoB9TFc3QhfJovtEe6qC3RSOs4RtCrQ/D8Axr/KgYrHTQW+ir
-	cBrbD05QTgqi0EB3VmKLq4/61QW8mVkbwb61KSdNaVSopDRw61mAEm5j/p5qYqZvtORXKOq
-	WkmhtAtoiRVyrqGEZt2Hl6FmNXLk48icEJyodEFRganGyMoAX5iNyDaTpAQiBy7VJIl74tW
-	zT8WRExQj9T0cX5uHxdqQDw0R1D2QqrTXltygM9TPW6qoSFJ1iW/+c/IyBfgNTiHzhPI1PY
-	z2nbU9PyBJxbHWsoEuJv9nyWdngBUtEE2efmW5cRo2cY1zT8WJH5ZtPZB1R7ntvAZtmbVMq
-	a3KaLNuFSmRwutssPOlmDuN5AnrBxdfRzFfOZzRfDL0GCODya98FsuCmGLsc0DLlUJXnZpN
-	MVWCDutezrjfiNGDHO11qjuIDJBbfjc+oz+009+6cOwIvSbSpuOXXIavaY400=
-X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
+X-QQ-XMAILINFO: MNU5/P5d/Qy9RNPRk664Q0Xw109pxpzpMGKL379ZUzcshP83H9MiEsd1
+	IyV+Onok3MeRQ1T+ngmr1xzbcU1xx+vFpwEVY+wuxNIJ201zV+NLvRFmflO7umpKgp1BOqJ
+	z96wlYlqfUeBqPpOrRu4Laygf+MwqB4o3eF9GDKsAqt1h1VQsiKHgtTL078FspqslJclih/
+	LSAdIRnaQcF3IsZ1FJYVJGUgcyRdHm3VLF50Ti6RUr0HwtqBlNFPHlKZMXhexrgtrw+Cphc
+	JxY4JP/I25QaZKybpvkHDPy08pNjAmBdVxjk0nf/6T5JalR1ahtqR1+/MMoONxBhdS2CsHv
+	xV2HJAgpiNZDWaaU5uNCEb8xAmJQqQRbeOo4oMDIYKkBIknl1Y2SKe2EtrMIhYHgYrLnR1p
+	gpvduyt1R9gOS9tB9ky8rDkPS8a93XY/5/nFLCw526fv+nxxOpLAPFA2QeC33sEk5hEOIoj
+	jxlWS3gKZXLrPbp7sz3IgyUWYT0KgMJmS2eU/TrQmKHZqCf+A6FEOh7ojp1+ZCsflDc0So3
+	hDt8vEmZCr4JboY7d0ioM7Ik1oPszFjKauAqy9I/eMTzw4T6SC74qx+BWS6DHBgdpmK4EgZ
+	+oSX/7H/vhqwP6G+ZcKjg9apZetYQghWsY00AzS6acYNqzs6N+6O1s28hNCPtwTflFQ29Hc
+	j4Wm8jlXEFJwQ8dF/uge/PUGtom7egTNBopX5QYvI6AqFuNpql4a4YCGllUNzkHD+EB6hTY
+	1sXdeMhMu5RMuOmHNYdgvRq90t2lH+BpCB45/yhvHe8d+b4mo8a61E5Tmr3FyYtwYzQ2C1k
+	g50UjxEbNb63M5p5MDZjalDvYBmhXZVavsT52GOJIoelTYVS57GN9n+2LsZuRhmYg3901xe
+	TZUqUqMPxqlw9dxzw1uzo5NR/JK0hfLbc5BRBqhys6pO/TYlWDrDUomU5GAa6KikVlW1Emx
+	7zRhVMRn6Gw+Kpk4/7xPqX4HtdKoLinAtIJM709TwoMwB1MvH1A2AobZFepeMpyuEHBmEsD
+	YCa4gwXfwzozIlgRG18qaCcxyGCN5lPeUDTUEgeScH5/oFd5PlvpxkI5HE4sGUDT4K5RUPf
+	PQAKWbWwxwx2FrvruhkVRaqZqEn1ylT8XAY5Ly8DqJqJwep8AItIZU=
+X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
 X-QQ-RECHKSPAM: 0
+X-Stat-Signature: gso5ww5z4e318ihwft4hz3g188ndu955
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 36C7D40009
-X-Stat-Signature: meigccgaaozntuqu61ppmft8mro6mi94
-X-HE-Tag: 1784860276-638774
-X-HE-Meta: U2FsdGVkX1/1qV3K7XTs/eRK0mm0Caew7owLDkMq4fVuBTKG3FdRkWRR0NaBKRS2/fTXSKDFoO0HhBpt2o91HvYCP44sM3LmLIgOsHguiVxfeYWMvv6so5jXHCQfEgXBS+ISR/FM6KXGgXJZs5xq/buN+mrRGhAMsNj0TE6QFxVERpIEUXNqCrqKxGsVQPZmjUmnLifH/o+JlEO6njV2aZe94NWI7MSbmhj6yaKKTHoWFS+bBLJzig8iDVlUKdt1CqPTR+xl1uKgubZLdW1qpyvAD/8mzw5xA4f20Lw0ZebYG8YN79d1Fgos3ZfAupWW/39UaSmVVi+zfy7Ep0jdx/73RD10Q3Dyu8ZLR8nNWAeb1FgTqJSDxA3VbjN09rJ/I0iJghIWIwJ7N4PJMNidtF2wGpV2aVy+TANZJjE92ejlmiVKwKUth5WeFVIxXBV/w74Emfp73Bd8aIo7Ref5k0gGwYjkrfsiTvjpECrN6sTrbFp2uyoE84ha1b3liCdBgVT3XgKB1qvNIcOkV/KIJQtcX+6J+KDv4G/mgAVEp6hZcGZUxHYR3qJtBvnWliIcWqxpV8qgA2u9AIv7o0iTbqUEWn21IHEtow8c9zQ0wOT31JJKVc0STSF6u6aisB8gi+OhyAbIJA8Y9sth2kZiXrex7qg6HCa8iwCsnOQ9FEDyMoSbnxpXq60Xck2NfG+2OjEe1xtgsC4h4jYBhDlTYSnRnB6f0KZnjqJgT7PdKtwmkwpaAMfMuDdxs+LifHk9biSAiHDTwXVTUT1QAZt8L4dwAVCqrQRzMVro52vYek2Plmgbf2mMxvV/BlvSx6IAmZKMF9T4kUDQPoPYVT6KVSJU3obzS7azQElMGbQ8Z6DxecuTNAuFYrobInw+a7EQ5vBURojZ3M9oU8e+7rXy000sFhrkTK2J/M11Fnw3t6y/uEGRkop1Gym7jmMQghOj4mBRYF5PO7fFTCnIl0F
- 4oJptZws
- uG+cKVh0UQlaNP/gjgPhJqnI8ASIYkYq6DSyo4RT8DiQApU7jjLHNjtJdBV+H7YdMojef6ETt8hyfUZ+9pLIb50tsbJI87Km2maXX9Vh9/py4ueJpPw8RvhtdXbxcKcAOvvzQi2sNW+1zWdRfhPLGmh0f7MzW00d12WSBKM9SM9UH/J+RZ+dA4eAH1Y8vH9mtzHHCVdHZPK9k74jAKu8FgrTCBf4m0DFl3yxP8t2U3l1UUaL+EP9YvBoASN2iUWS+9BXjjdvLqsw5LxN/KsM9LEZIOGRMuKLD7yQT8MYOIalzguwu7peGR2qxqQA8lribaWNjLOsH7tg4joJsiimlaOybLppegpUw6ZB1I2CmLFTS5Ng=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 4D8F7C0003
+X-HE-Tag: 1784860310-545005
+X-HE-Meta: U2FsdGVkX1+R3U30vXqXa8B+BZTBLGHQ29I1pfrDzZVy17umMmjVKegWllQFQgmCtPBUk4eqbBwCg2IICZYvqX2ZsqoJL76BjsSwJ3xI7qDXlax7LIOjEGdJEAA0olL5tJtnTRNYG/Okf6RG/0q9lnhiPEONbc5KB93nHJJ0o2e+9D51BbxIkfYnY7Q5U+g5EwmZFclcCh1k4Jlp8FMXGWTowXbEGwDSr8uUqmVPt20fSWwgMQUw0jL6H+kD0KLByTD9lSww4WokLMKAZvvLvfEhfFcHDjVLJAyMF7Mm30j3xPjNPN7EWPT38Opx9xdhjd1BzOfehNM7A2+Qf7unhEnOnHEnnz88TYIJdOKz/CG4Kuqzjgbd6Wxkb3HGJso6Xl95KeT57S+kpW5zKo0pTdLIZF0VHbRwHYn2205o32W4QsCDuD/HjAzQ6XliBVnCGELJiZ5qrmi/PK0x+6jA0KJ9uL03j0Z6euFuTCKKcgJpyXb8InzZKtJr8FXcRUwskPB9/lURrOfbVENhCCvBpNK15QbUG1jgRlgtLKhE1lcAfaXs+qs0LNp9aRAgMsGDzAfTXGEUj167t7euz63rCajKUEHq7na27UzRnQyvn9TcefE6ZjcmR/lhMEFAwR30dvhVXaw631wjL6JX6OeTLiulsNn/ht280PhOf3YDHrSdurH4Uh3O3ceDF9qodvh6gLkfj5maQ/waqEeiA1WEZbhl9q3yEQv6TvC++aGUaxf8LBBC9xWphPzSOtEDbAxTRTEc8kM8CQ6meZIKDXp9yq03RnIetqQ8eQtjye/G1tijSqJTey87JfiXdO6YhfNcKenZepK092lfjJxREUL6/ofahymTFrEnxNErZsFv9Mp+7UddydhqLRZduKyGtBrNO5vdJmqOhqZzmU1D5rr+RdZgWk/bxR5rM1Y6SJEGqkcKJ1iygfhVrNgZ8MxF4pX2mErlZ+ulrHAIMCU3ieC
+ 9NnUGump
+ i4E9WLXJEHO2ta6w8eq1qbop9eMqEqbC2zDFNYRJFR7PgI0pdaAqHeMGbNNFSZGN7rmTaSuL5fCKVLyVy+RAmrD3y+KOPF4zP7xaYbDTY6eh++zUyEetV+QNoWdBUhZhpBHPtlMH9ZXTlfZXhu4lXhqwoQF9+Hwxnd4wcnxvAV6VjKu+999r4oc2TyDWWFAl9tXylt+AKFhpw5Kw/fDbQrT4Uc1Znxiw7lE3pkJ+MRLvI9RSV4apxiqkmMfNxuivrtpFaiEhTEKNmjcTWOsbqDseFdYaSxcWM6WzIz0eherkJCITR/hvGDatD3I6+Uxq9r/UotMZbp1qMnf9/rzKGJHBabR9AODc0Vc/0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,35 +135,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-kvcalloc with the __GFP_NOFAIL flag will never return NULL, so the
-subsequent NULL checks are unreachable dead code. Remove them.
+alloc_skb() with the __GFP_NOFAIL flag will never return NULL,
+so the subsequent NULL checks and error handling are unreachable
+dead code. Remove them.
 
 Signed-off-by: Gou Hao <gouhao@uniontech.com>
 ---
- lib/test_hmm.c | 6 ------
- 1 file changed, 6 deletions(-)
+ drivers/infiniband/hw/cxgb4/mem.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/lib/test_hmm.c b/lib/test_hmm.c
-index 9c59d1ceb5b57..d615e4e5fc447 100644
---- a/lib/test_hmm.c
-+++ b/lib/test_hmm.c
-@@ -1209,16 +1209,10 @@ static int dmirror_migrate_to_device(struct dmirror *dmirror,
- 	if (!mmget_not_zero(mm))
- 		return -EINVAL;
+diff --git a/drivers/infiniband/hw/cxgb4/mem.c b/drivers/infiniband/hw/cxgb4/mem.c
+index cd1b010141984..08631de17c0a3 100644
+--- a/drivers/infiniband/hw/cxgb4/mem.c
++++ b/drivers/infiniband/hw/cxgb4/mem.c
+@@ -74,11 +74,8 @@ static int _c4iw_write_mem_dma_aligned(struct c4iw_rdev *rdev, u32 addr,
+ 		c4iw_init_wr_wait(wr_waitp);
+ 	wr_len = roundup(sizeof(*req) + sizeof(*sgl), 16);
  
--	ret = -ENOMEM;
- 	src_pfns = kvcalloc(PTRS_PER_PTE, sizeof(*src_pfns),
- 			  GFP_KERNEL | __GFP_NOFAIL);
--	if (!src_pfns)
--		goto free_mem;
--
- 	dst_pfns = kvcalloc(PTRS_PER_PTE, sizeof(*dst_pfns),
- 			  GFP_KERNEL | __GFP_NOFAIL);
--	if (!dst_pfns)
--		goto free_mem;
+-	if (!skb) {
++	if (!skb)
+ 		skb = alloc_skb(wr_len, GFP_KERNEL | __GFP_NOFAIL);
+-		if (!skb)
+-			return -ENOMEM;
+-	}
+ 	set_wr_txq(skb, CPL_PRIORITY_CONTROL, 0);
  
- 	ret = 0;
- 	mmap_read_lock(mm);
+ 	req = __skb_put_zero(skb, wr_len);
+@@ -134,11 +131,8 @@ static int _c4iw_write_mem_inline(struct c4iw_rdev *rdev, u32 addr, u32 len,
+ 					 roundup(copy_len, T4_ULPTX_MIN_IO),
+ 				 16);
+ 
+-		if (!skb) {
++		if (!skb)
+ 			skb = alloc_skb(wr_len, GFP_KERNEL | __GFP_NOFAIL);
+-			if (!skb)
+-				return -ENOMEM;
+-		}
+ 		set_wr_txq(skb, CPL_PRIORITY_CONTROL, 0);
+ 
+ 		req = __skb_put_zero(skb, wr_len);
 -- 
 2.20.1
 
