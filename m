@@ -4,67 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16E8DC531C9
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 22:30:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4C90C531C9
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 22:30:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A719C6B009D; Fri, 24 Jul 2026 18:30:20 -0400 (EDT)
+	id 89E696B00A4; Fri, 24 Jul 2026 18:30:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A23B86B009E; Fri, 24 Jul 2026 18:30:20 -0400 (EDT)
+	id 84F066B00A0; Fri, 24 Jul 2026 18:30:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9398E6B00A0; Fri, 24 Jul 2026 18:30:20 -0400 (EDT)
+	id 6EF686B00A3; Fri, 24 Jul 2026 18:30:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5A6146B009D
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 18:30:20 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E26361C014B
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 22:30:19 +0000 (UTC)
-X-FDA: 85025114958.25.A31C978
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 310156B009F
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 18:30:21 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AE4921401B5
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 22:30:20 +0000 (UTC)
+X-FDA: 85025115000.06.A3EF482
 Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 1C9AA40003
+	by imf23.hostedemail.com (Postfix) with ESMTP id 0BD2C140009
 	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 22:30:18 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=MS9beTn9;
-	spf=pass (imf11.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784932218;
-	b=EVuIsWD64ELhQnNLnL6yMWps4B+Q8QNqdXiDqPlEOwmXK+ok02rznF7mWbZCb97bGOHRcN
-	wPK0/yzqRDQ+eans/hB3l1rKskPHhbe2qxi+JwtKhUgmpal4kls/8HBMVLsisZk7HmyWVe
-	UEwlwuo3R3oaaw1qB//GzXzRnGpQQ3Y=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=MS9beTn9;
-	spf=pass (imf11.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=DwRMlYPQ;
+	spf=pass (imf23.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784932218;
+	s=arc-20220608; t=1784932219;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=laFb2+2OJHBjt42yZcZ3hsZQhNcm9lH5QpuUTZr6hlo=;
-	b=lsigybAxBDFXnHIE4NZhVttEMarP0N968kPYexgdahFZoSir5jgJy4sDaC+EtHDVZi8wpp
-	yvh1PlYeqLgX0c0QpuLkYBztD2LXMOviJQsY1d+TJ+ljgdjpezZ+W//nMmIMI+GR9UVnUG
-	oasBZY5e7oEi4/DP1N0QGMhxZAixHSY=
+	bh=IF4h0IOGesCPD6JnizKVFYQDqwHWpzKQAHqpitemykk=;
+	b=qqbSTXHgnmGkhdvWsWMq3A+nfLDm44Dh4jwIOILQGuajhg+jCPT8X2O6v0Wray9EHAzlsz
+	P/2OjzDrM8zO98GCBVOVfI/J6P7i58i4O1SZPYXeg3wrvsBEH/S1IIFM0RPPfqHbYysicD
+	8KTSwhbFRinAPeGuT+Mm4aM0gy29cJk=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784932219;
+	b=tqS9LEHgWrXFcLEcuTFhHF8gIcR9M9H6m3Xd+Vaa+7cMfIVdVnK99BiOI3D14SNgAEJFvv
+	8F4ShKyayMvGklfLy5/ivVPNTMng4XINODYTRAR1DQ9gnntaOUY6Hm5mWKc3c0qqc7qGcz
+	X1fh0DK1eKzsebjmMwwT11Ytz6gAf0M=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=DwRMlYPQ;
+	spf=pass (imf23.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=none
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
 	; s=mail; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
 	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=laFb2+2OJHBjt42yZcZ3hsZQhNcm9lH5QpuUTZr6hlo=; b=MS9beTn9E8RTJJ4e2NxUs4APQF
-	lAXN0Zcyhkx0y+7Mtv/RePRaBeHwPGyHKX5pv22oE72E+K3e2CemBHeOJQ9PfLCo/p58tVLwnJIAf
-	rV4awksMHY2ke6Lar0t7F7nBQEmsaHCdS4g0vM7Jm8fSYiL9FSVy8o6AWz03JvGdI93FHR8NU6YK9
-	PgHLj0T4iLAF9pqDWeSR/4GWTTlGKBm7U70OsI6A75EWGs7LGXi0x4MRr/g4r6Fus+Cfsi3RujiBg
-	BE1K/icV7oT4ieExMWcBru/LRH81jK04qt/z40d1zgRltnZXmSiMAEp2LBrmvW4kg0HpsyfNRtfR/
-	BoUcWQYQ==;
+	bh=IF4h0IOGesCPD6JnizKVFYQDqwHWpzKQAHqpitemykk=; b=DwRMlYPQpIsFsEsXZzPPL3sxm/
+	XwEli1sW2qLlJIwTseXX2o/q1glQCXOW/6qb3eWO+YB9NsZJ21DXr8JDOmcD4G8gCuqrbySUNPK0X
+	AeN9ZFPsQawYFLRUwxaTF0qcs/+YwkcQm3g17KMh1EuuHv6EHqkdEfHW5IDK3KUSQ5zpTkQ75MAe7
+	xMin7ON9QwNgwRZWPvemLN7ReOBz/2+blnX+hqbzOcZ+CVBqoJItKziZOvlfBfywfefvI80kHSH7u
+	48Irw4hOCzBUYEdb5XsYKbjnzXSQK4vHCnAHc0nabbE43UPB8NzmeRB55+/i970oo+hEwo0d6bduS
+	oRzqlBOA==;
 Received: from fangorn.home.surriel.com ([10.0.13.7])
 	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.97.1)
 	(envelope-from <riel@surriel.com>)
-	id 1wnOOs-0000000027h-1eMx;
+	id 1wnOOs-0000000027h-14Iy;
 	Fri, 24 Jul 2026 18:29:50 -0400
 From: Rik van Riel <riel@surriel.com>
 To: Andrew Morton <akpm@linux-foundation.org>
@@ -86,23 +86,27 @@ Cc: linux-kernel@vger.kernel.org,
 	Matthew Wilcox <willy@infradead.org>,
 	Usama Arif <usamaarif642@gmail.com>,
 	Rik van Riel <riel@surriel.com>,
-	bpf@vger.kernel.org
-Subject: [PATCH RFC v4 07/12] mm: read remote strings under the per-VMA lock
-Date: Fri, 24 Jul 2026 18:29:29 -0400
-Message-ID: <20260724222934.1463812-8-riel@surriel.com>
+	Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	linux-riscv@lists.infradead.org
+Subject: [PATCH RFC v4 02/12] riscv/mm: add untagged_addr_remote_unlocked()
+Date: Fri, 24 Jul 2026 18:29:24 -0400
+Message-ID: <20260724222934.1463812-3-riel@surriel.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260724222934.1463812-1-riel@surriel.com>
 References: <20260724222934.1463812-1-riel@surriel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 1C9AA40003
-X-Stat-Signature: w3ih576748hr36hp1x45zpgk1x6abek5
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 0BD2C140009
+X-Stat-Signature: 35t5byeo7gjpubwp9n9sya35p6qcr16u
 X-Rspam-User: 
-X-HE-Tag: 1784932218-998140
-X-HE-Meta: U2FsdGVkX1/29eldx0QxjtecUbXrTmojANs31XFEiErHF4KuqVKYEJqth8E+1+8R/GFRyzehUGjzEMr1S8cMv5shQ060VMaSmFmm89O8KVEYbZc90/bW3hViGM0ZoddCneG7iIxY4132/9iFmGoygDgG3HeV2aKN3k4alLqDpJXzhv4GhKhRNe6dunwizu+Vfnx4egh0UctxV3dxeV6I4ESwp4NzSb2kzOLtPPA0GYI51AgzKw3shFQBhnK/L1wWUpbWOBXPYxRtibGpvXF9mA7QJIyye5Z6ei8lfaf5EUVMeEgSwZL0bu7ZNB77V5XGYAJRG3pndDFOMXrHS2EuqNzZ3se8ttd03rYYzfEN4kBLV4xxL6V4fb9Dg2T0lil6LoeFArwfxNGzcKq8ZJjBRminsf39YFeSttRtz+y2o2GLUqaXtguDeVXz1Lt85c6Q/rCCxL57FMiEM7fbf235NjNeqN0odMNt5vKJuUhig1ZvjrczpP2C2EuHKO/cMV3pjF2L0Gv4sBvzO+3Vr1wxjBlLUQj29AwedUjCi7fmZuQPwFxNEO06IepCpkntJG92y7km6u0rMwMHkN95Nl4WY4EpnkctW+h4JHVycwW/c4VlpS9CcVFjLnQUGg7XWIVPX3oqN7n/+2jLTFlTYGiyJXpoCzmgBUrp6XNvILkj+c/8myhfn0UY5HzAKjtmlg8GGST07eLRtdaDx5A8CZ2U70MGXIAlPyvVzDtVMsG7lyujsHJQye5xtcEtS6VAtFORHQPZTPa8xr2ahaAWSExgrV8jPYhfQygvJqvKa75bsbpwQRjPpeaEiBRoU5mBX7wKiZbAzk0hBiMStfIpUOHiBP1H2Pgvjwp+q5Nf3iA/ziXjwXvuosy+mDB3QyUO0fp8iiMUpDFVUdVSM4OSrLg5ImG/2L4tDAQ2HDqZZIfdRicNU4VzIxS5WxPply9Py3qRxmeZsfFDsOO/XaIfSL/
- N6DDY8Ku
- BOph6t1odd1LiEqAxoctnS9EocjVMifTHy3jfaXM6xAajwSFECWymBUODvyUSFx9h6YrqV4UokYYHZHxert1tBx3eUxuWOpHTOwiifRnxS6NqZ597gvNSiZ7SnNm2ZFp7sZQKIviFsWlvjGmvlpknOfmFm+AEecegxix/9sIYPC9Vvkq0dlCRrWie60nnyhsd6ursyT/qKewJXUbKPc3Dl7n4BVAJszp4DVixgX0gIhSB9Y/lqDLa7Kzu76Ifql/dZ4cske7rTabi/+3MExUYEB7cmA==
+X-HE-Tag: 1784932218-209358
+X-HE-Meta: U2FsdGVkX198cCIFJ2SjOF5raSYPOL04FUwC2uK6Vq84YseLwXlA7iXNafBUPtXserku6IzTu/HvZ14C7JLOLPUaMDf3ZD7wbsMQFuDprpUkBI1kJCt3d52JOZasgv4Y1a/f4HQh1o+YPigZ3NfS4Ny426hF5aWDMhzaqtqyqYLx0CISauEiTiNibmmmj8KyMX0jbl4oNzqwAJP4mZleYQFz3CkzmK2JylamV2tnhlAxoMRrT5AjeLUK8j45U5lbR2kpT3rySoFxV61TVIuXLbnY0abkwNx+5EL19lyuKWqVyUM3kXABcalklNUkPfceFs36HzvkF9QafdMfdi61d1cC9mjH11BRdDmQlK+ZDbAxjJk6bA9HXer6Wxx2lDHAceY5eurIxC2mQD6jMaspQjrpiuXkHj18W/gQVKj4zYFPLmshej07+xVL4Fsao3O/WMP7AUY/CnmeAwjxW9qdHUVN+VkO2hjq6GRgRPoEfK1ADh5kLaBobEOmSR//whTrN4el5cNOeMBeFywFLD0SkNCciJHObFAV0VKOFZq2K8fdJaAJdcqqQcBOOUsjJOLClLgu3nEqJCK7ytzSy+397luQqVqh96TmTZT2sA/VJCrkA+DERyOFja+eultErrI/UeDaiSt1wTv+Vxo3qrjcjbZHiIq2OnqRlDv8kUmH1Q5mSnfmshXZskcvWFyJS8h8pOWPJFxNxfFCysNhAiRdhJ2UxFvbU7U04b3w+twfgL3VdwFcwrt1ZBhf8Qt9rcyvgaHhUrYxuBACHo3FM6lzeMjTGtv+lW2JvqNIMl7Azyx0l49M+5tVffCQG3ufCcfJzo5amddUlxgUqsKU6kOlf6VA00Sm+94VpickmoKf5yAcVEDcgd8PfO2rNZFJWxFZHaINYEia/5t3unVb072HZWWT5dHhxSynCMqf56IGnosEADAj21ztp5t3Ghr/G0nPR1J5ELTZF0ZM84sec63
+ f+78hDFZ
+ hljCiBl6ko4z+Irs/Y/CHqcsEVWOu3w05FaR68gwZFzyKfqbFXEH0z9F5nwPMjz8AwQvoM2C9Re+htyMx7kjWH79Vbgr9w9LWf9nu5UuLuzRRTPr11pV+LlJMi7vecpdcF+08MROjg/pHbg9lUCMmM7Mz3Pq5DWTyRQXLRZMG32UpPRlrBkL6klOMO2qKPwzLCzdyvnnOzF8RgXyj8belhVVH6d95aOfvun6hn+WwWWAhOeOzy4O1WiSUFzkJhDQb9VMFzB1uBYqJdijjDVX5UHcvfFbLuKfAL20K2oi2/F6W/sGiLNY3+RqtYcPgMA8nsyyq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,169 +114,126 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-__copy_remote_vm_str() reads another process's memory under the mmap read
-lock for the whole copy, and looks the VMA up again for every page through
-get_user_page_lookup_vma().
+__access_remote_vm() reads another task's memory under the mmap lock. That
+lock is contended on large multi-threaded workloads, where an mmap() or
+munmap() stalls readers like /proc/PID/cmdline or process_vm_readv() even
+though the target memory is resident and reachable under the per-VMA lock.
 
-This is the mmap-lock-only form that __access_remote_vm() used before it
-moved to the per-VMA lock, and it shares the same contention: an mmap() or
-munmap() stalls a bpf_copy_from_user_task_str() reader even though the
-string is resident.
+Reaching it under the per-VMA lock means looking up the VMA first, which
+requires untagging the remote address without the mmap lock. riscv's
+untagged_addr_remote() asserts that lock and has no unlocked variant; the
+generic untagged_addr_remote_unlocked() falls back to untagged_addr(),
+which masks against current->mm, not the target mm.
 
-Read the string through remote_vm_walk(), the walk __access_remote_vm()
-already uses, with a copy_vm_str() action that strscpy()s each page and
-stops at the NUL. Bounding the copy by its maximum length keeps the per-VMA
-path inside a single VMA, so no VMA is looked up again while that lock is
-held.
+Add untagged_addr_remote_unlocked(), which masks @addr against the target
+mm without asserting the lock, and redefine untagged_addr_remote() on top
+of it so it keeps the assertion.
 
-A copy the per-VMA lock cannot finish falls back to the mmap lock: a fault
-that dropped the lock, or a string running past the VMA. Memory with no
-struct page (VM_IO/VM_PFNMAP) and stack expansion stay on the mmap lock
-path and still return -EFAULT, as before; ->access() support is left for
-later.
+The mask width is mm->context.pmlen, written while a program is single
+threaded, and frozen with MM_CONTEXT_LOCK_PMLEN once it spawns a second
+thread.
+
+That read need not be stable: pmlen is already read locklessly by
+untagged_addr() and mm_untag_mask(), and a remote untag is best-effort.
+Annotate the lockless reads with READ_ONCE() and the writes with
+WRITE_ONCE(), so a reader sees one whole value and the accesses are
+KCSAN-clean.
 
 Assisted-by: Claude:claude-opus-4.8
 Signed-off-by: Rik van Riel <riel@surriel.com>
 ---
- mm/memory.c | 111 ++++++++++++++++++++++------------------------------
- 1 file changed, 47 insertions(+), 64 deletions(-)
+ arch/riscv/include/asm/mmu_context.h |  4 ++--
+ arch/riscv/include/asm/uaccess.h     | 10 +++++++---
+ arch/riscv/kernel/process.c          | 12 +++++++-----
+ 3 files changed, 16 insertions(+), 10 deletions(-)
 
-diff --git a/mm/memory.c b/mm/memory.c
-index 273dfe12bc6d..aaf620017f34 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -7296,84 +7296,67 @@ EXPORT_SYMBOL_GPL(access_process_vm);
- 
- #ifdef CONFIG_BPF_SYSCALL
- /*
-- * Copy a string from another process's address space as given in mm.
-- * If there is any error return -EFAULT.
-+ * Copy a NUL-terminated string from @addr into *@buf, up to @len bytes,
-+ * stopping at the NUL. strscpy() always NUL terminates, so recopy the last
-+ * byte of a page when more pages follow. A string is never read from
-+ * struct-page-less VM_IO / VM_PFNMAP memory.
-  */
--static int __copy_remote_vm_str(struct mm_struct *mm, unsigned long addr,
--				void *buf, int len, unsigned int gup_flags)
-+static int copy_vm_str(struct vm_area_struct *vma, struct page *page,
-+		       unsigned long addr, void **buf, int len, int write)
+diff --git a/arch/riscv/include/asm/mmu_context.h b/arch/riscv/include/asm/mmu_context.h
+index dbf27a78df6c..3ce16796e5a2 100644
+--- a/arch/riscv/include/asm/mmu_context.h
++++ b/arch/riscv/include/asm/mmu_context.h
+@@ -21,7 +21,7 @@ static inline void activate_mm(struct mm_struct *prev,
+ 			       struct mm_struct *next)
  {
--	void *old_buf = buf;
--	int err = 0;
--
--	*(char *)buf = '\0';
-+	struct folio *folio;
-+	int bytes, offset, retval;
-+	void *maddr;
- 
--	if (mmap_read_lock_killable(mm))
-+	if (!page)
- 		return -EFAULT;
- 
--	addr = untagged_addr_remote(mm, addr);
-+	bytes = len;
-+	offset = addr & (PAGE_SIZE - 1);
-+	if (bytes > PAGE_SIZE - offset)
-+		bytes = PAGE_SIZE - offset;
- 
--	/* Avoid triggering the temporary warning in __get_user_pages */
--	if (!vma_lookup(mm, addr)) {
--		err = -EFAULT;
--		goto out;
-+	folio = page_folio(page);
-+	maddr = kmap_local_folio(folio, folio_page_idx(folio, page) * PAGE_SIZE);
-+	retval = strscpy(*buf, maddr + offset, bytes);
-+	if (retval >= 0) {
-+		/* Found the end of the string. */
-+		*buf += retval;
-+		folio_release_kmap(folio, maddr);
-+		return 0;
- 	}
- 
--	while (len) {
--		int bytes, offset, retval;
--		void *maddr;
--		struct folio *folio;
--		struct page *page;
--		struct vm_area_struct *vma = NULL;
-+	*buf += bytes - 1;
-+	if (bytes != len) {
-+		copy_from_user_page(vma, page, addr + bytes - 1, *buf,
-+				    maddr + (PAGE_SIZE - 1), 1);
-+		*buf += 1;
-+	}
-+	folio_release_kmap(folio, maddr);
- 
--		page = get_user_page_lookup_vma(mm, addr, gup_flags, &vma);
--		if (IS_ERR(page)) {
--			/*
--			 * Treat as a total failure for now until we decide how
--			 * to handle the CONFIG_HAVE_IOREMAP_PROT case and
--			 * stack expansion.
--			 */
--			*(char *)buf = '\0';
--			err = -EFAULT;
--			goto out;
--		}
-+	return bytes;
-+}
- 
--		folio = page_folio(page);
--		bytes = len;
--		offset = addr & (PAGE_SIZE - 1);
--		if (bytes > PAGE_SIZE - offset)
--			bytes = PAGE_SIZE - offset;
--
--		maddr = kmap_local_folio(folio, folio_page_idx(folio, page) * PAGE_SIZE);
--		retval = strscpy(buf, maddr + offset, bytes);
--		if (retval >= 0) {
--			/* Found the end of the string */
--			buf += retval;
--			folio_release_kmap(folio, maddr);
--			break;
--		}
-+/*
-+ * Copy a string from another process's address space as given in mm.
-+ * If there is any error return -EFAULT.
-+ */
-+static int __copy_remote_vm_str(struct mm_struct *mm, unsigned long addr,
-+				void *buf, int len, unsigned int gup_flags)
-+{
-+	int bytes, err;
- 
--		buf += bytes - 1;
--		/*
--		 * Because strscpy always NUL terminates we need to
--		 * copy the last byte in the page if we are going to
--		 * load more pages
--		 */
--		if (bytes != len) {
--			addr += bytes - 1;
--			copy_from_user_page(vma, page, addr, buf, maddr + (PAGE_SIZE - 1), 1);
--			buf += 1;
--			addr += 1;
--		}
--		len -= bytes;
-+	*(char *)buf = '\0';
- 
--		folio_release_kmap(folio, maddr);
-+	bytes = remote_vm_walk(mm, addr, buf, len, gup_flags, false,
-+			       copy_vm_str, &err);
-+	if (err) {
-+		/* The contract guarantees a terminated buffer even on error. */
-+		((char *)buf)[bytes] = '\0';
-+		return err;
- 	}
- 
--out:
--	mmap_read_unlock(mm);
--	if (err)
--		return err;
--	return buf - old_buf;
-+	return bytes;
+ #ifdef CONFIG_RISCV_ISA_SUPM
+-	next->context.pmlen = 0;
++	WRITE_ONCE(next->context.pmlen, 0);
+ #endif
+ 	switch_mm(prev, next, NULL);
  }
+@@ -44,7 +44,7 @@ DECLARE_STATIC_KEY_FALSE(use_asid_allocator);
+ #define mm_untag_mask mm_untag_mask
+ static inline unsigned long mm_untag_mask(struct mm_struct *mm)
+ {
+-	return -1UL >> mm->context.pmlen;
++	return -1UL >> READ_ONCE(mm->context.pmlen);
+ }
+ #endif
  
- /**
+diff --git a/arch/riscv/include/asm/uaccess.h b/arch/riscv/include/asm/uaccess.h
+index 5d4ec15584cf..53806e0f7dcf 100644
+--- a/arch/riscv/include/asm/uaccess.h
++++ b/arch/riscv/include/asm/uaccess.h
+@@ -16,7 +16,7 @@
+ static inline unsigned long __untagged_addr_remote(struct mm_struct *mm, unsigned long addr)
+ {
+ 	if (riscv_has_extension_unlikely(RISCV_ISA_EXT_SUPM)) {
+-		u8 pmlen = mm->context.pmlen;
++		u8 pmlen = READ_ONCE(mm->context.pmlen);
+ 
+ 		/* Virtual addresses are sign-extended; physical addresses are zero-extended. */
+ 		if (IS_ENABLED(CONFIG_MMU))
+@@ -33,12 +33,16 @@ static inline unsigned long __untagged_addr_remote(struct mm_struct *mm, unsigne
+ 	(__force __typeof__(addr))__untagged_addr_remote(current->mm, __addr);	\
+ })
+ 
+-#define untagged_addr_remote(mm, addr) ({					\
++#define untagged_addr_remote_unlocked(mm, addr) ({				\
+ 	unsigned long __addr = (__force unsigned long)(addr);			\
+-	mmap_assert_locked(mm);							\
+ 	(__force __typeof__(addr))__untagged_addr_remote(mm, __addr);		\
+ })
+ 
++#define untagged_addr_remote(mm, addr) ({					\
++	mmap_assert_locked(mm);							\
++	untagged_addr_remote_unlocked(mm, addr);				\
++})
++
+ #define access_ok(addr, size) likely(__access_ok(untagged_addr(addr), size))
+ #else
+ #define untagged_addr(addr) (addr)
+diff --git a/arch/riscv/kernel/process.c b/arch/riscv/kernel/process.c
+index b2df7f72241a..6ae7552fed09 100644
+--- a/arch/riscv/kernel/process.c
++++ b/arch/riscv/kernel/process.c
+@@ -357,13 +357,15 @@ long set_tagged_addr_ctrl(struct task_struct *task, unsigned long arg)
+ 	if (mmap_write_lock_killable(mm))
+ 		return -EINTR;
+ 
+-	if (test_bit(MM_CONTEXT_LOCK_PMLEN, &mm->context.flags) && mm->context.pmlen != pmlen) {
+-		mmap_write_unlock(mm);
+-		return -EBUSY;
++	if (test_bit(MM_CONTEXT_LOCK_PMLEN, &mm->context.flags)) {
++		if (READ_ONCE(mm->context.pmlen) != pmlen) {
++			mmap_write_unlock(mm);
++			return -EBUSY;
++		}
+ 	}
+ 
+ 	envcfg_update_bits(task, ENVCFG_PMM, pmm);
+-	mm->context.pmlen = pmlen;
++	WRITE_ONCE(mm->context.pmlen, pmlen);
+ 
+ 	mmap_write_unlock(mm);
+ 
+@@ -394,7 +396,7 @@ long get_tagged_addr_ctrl(struct task_struct *task)
+ 		break;
+ 	}
+ 
+-	if (task->mm->context.pmlen)
++	if (READ_ONCE(task->mm->context.pmlen))
+ 		ret |= PR_TAGGED_ADDR_ENABLE;
+ 
+ 	return ret;
 -- 
 2.53.0-Meta
 
