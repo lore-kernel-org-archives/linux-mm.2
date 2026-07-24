@@ -4,112 +4,149 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FBE1C531C9
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 10:06:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1E21C531C9
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 10:20:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 40E116B0096; Fri, 24 Jul 2026 06:06:04 -0400 (EDT)
+	id ADF1F6B007B; Fri, 24 Jul 2026 06:20:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E5C66B0098; Fri, 24 Jul 2026 06:06:04 -0400 (EDT)
+	id A69936B0088; Fri, 24 Jul 2026 06:20:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2FEB66B0099; Fri, 24 Jul 2026 06:06:04 -0400 (EDT)
+	id 9092A6B008A; Fri, 24 Jul 2026 06:20:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 035096B0096
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 06:06:03 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A4E98A1041
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 10:06:03 +0000 (UTC)
-X-FDA: 85023239406.30.9D17971
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 03DF618000A
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 10:06:01 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=YRj2o3Zk;
-	spf=pass (imf16.hostedemail.com: domain of uqbarz@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=uqbarz@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 519466B007B
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 06:20:26 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id CF4B71C080A
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 10:20:25 +0000 (UTC)
+X-FDA: 85023275610.22.2DC2AE1
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf02.hostedemail.com (Postfix) with ESMTP id BD0B680002
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 10:20:23 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=VDT9W77a;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=bn2TWpyR;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=VDT9W77a;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=bn2TWpyR;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf02.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784887562;
+	s=arc-20220608; t=1784888424;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=o0x9J44qVBxsbkEywzSNqZdp3EOTpYHRk69RjXAekuw=;
-	b=1gg92PnMc2l0EEUOzzXTQHXrSCyxMFJU7RPta+2JOl9qh8WeStzsUwcKfafy91mOxUsvKl
-	W+MART27czt7iBmamIa61E48QxBUJTQ9FCuU8t/tEM2TbXFo0Pe6Drvh6YtgAhzu3bMb0b
-	huHLvYp251oKHeuQDWbTnI1XqtpgptM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784887562;
-	b=4KcqVLGwOQsGEvepdfYxecdoZNRjVy+Dgco3rqfSTy/UDL3zgtB4/PlHfSubNTpkpZQhoY
-	0L3fIvJoOTjvpcsJR2Gzt3GUYs8dRGcaq/iMxeL0tlzb/hu2c5u7njqtQWlpHfwq7Z6LyV
-	LYXPy3QkeduOlxix2rtoo1ZosnOkp4U=
+	bh=SePwpieQyuy4I1jGDOGIB8gwV902Jt9JP/rZL79vbug=;
+	b=U1GEqmoT+UNE6jOghjNuc1xuXcyAetpIiLTcEHwDk3FVwofJ2XQJ4umpxjWWMKVvh3ffYy
+	N693uFG2B+ONPz7on1/Hkv8c/SD61ahLVmMcukyefqBMrcccVTZLZteRoCXpo681X9RoN9
+	SEfx2aXN4te3y7k8y6LJ2Xun5BwE5ZQ=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=YRj2o3Zk;
-	spf=pass (imf16.hostedemail.com: domain of uqbarz@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=uqbarz@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2cf52d15d88so2719035ad.2
-        for <linux-mm@kvack.org>; Fri, 24 Jul 2026 03:06:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784887561; x=1785492361; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=o0x9J44qVBxsbkEywzSNqZdp3EOTpYHRk69RjXAekuw=;
-        b=YRj2o3ZkJHKCEhLcl++JpIk9FqGQqiY+JQreuPIi5Qobn82+kSlkZGoRD4ughCJ19C
-         fiKVEgVdcjjitaNWeJ07lH+pm5FPAqm52ZPNifOXdJp2g69IyxgACskfH3ACShD6kI0h
-         V34F7E+JHM8dUUUcI+fPM2dh/3gck7KMVFXdZNPqWi9CFD9wJII9lQ5qp1Edi/8lLgWv
-         mQrABuGCyo8oeNZBVoNXIK3UC9kDXCLTAFB4DIynYxmsi8In4pDD+HHXvYXNH1a96oNM
-         mpii04M6WpjI7EMSpal8SGsZUy3Fvd7HYK9nGNn6lUmUE3YmdhGIkG9WTOquVzarse28
-         p4gg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784887561; x=1785492361;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=o0x9J44qVBxsbkEywzSNqZdp3EOTpYHRk69RjXAekuw=;
-        b=JaWR7gjQc1IGm/4bYGgKQGeMq+V8Ou/onRmE4hAaN8gEjleG8JggW9mtlajXA4u2pp
-         uXa6szlpFXP+PPez7q8ANSw56qrSV75IoBlkxpVJQCfIrKLHTekzRh9AwgKXMwX32CEg
-         G17yKWAZG0G5n3mhPODpIagpdaPKwUjbNrxUWrG4Q2VN7f6PrcBaQM/2+1on4MT6iI6h
-         002WPUQt4arG/kK/aSoR3DtmAefQjul+HZF0AvkHOcR7LS5Y8CioUg190bxoi36nWegZ
-         ELByac2SosQJLR2rt3K01+FB6q3JPV4aHEkJNSMOeYnarBa4oYdvDsqTm+zbPEiKq/NK
-         UKZQ==
-X-Gm-Message-State: AOJu0YxjP+82+ZYzjoz961RaRxlB0UUZDC8yp9oXJIAH8aWcDBi5JUsW
-	M6O06Q9RlYaEwD+26gJ/oZS6wvswYu1wWCYqZBrUdO0h3Wfiz2XhK6ySfQS94mxWzAzOXVgM
-X-Gm-Gg: AR+sD10lcUTYSWsWVIP5WU3ICvWx2buCG8aaz9JV5oimUUj/mrrFSNSPYdUF5juuWtZ
-	pGhLUFckZcQgZnjNkgYKarkSneaSZfO5zhd6bwMrcfT+JlYGOWvZaMIfH8NAWbv0M6bdjOA1k5c
-	aBTb0L1qkMVD2/q6KGeXTEIk0cV33vruelRIiRaouvaVIQYXLqc71/XdaY/I+GhukggIMpddGrL
-	gMSSl8mXf3WmUlIgW5gLSmqIS7AfiYEqb4jfCG4OU73D+ORJ7Y2bEe28aOJBtC0aXZKjfjeGFNq
-	haPcye/Faf+DwJa7aUNndzmf1LcD4CKo/cLp/Lp37AIyMgkzCf+bzHNcqU4b/nHfhNlUjvdW63B
-	CCn3OHsTRvv01B9ElBxvlNtL3GeJkXzNoUqtyctGlmJHr2hMV7n6gB1b3mbKFJKnMs9AgmwN5K2
-	Olfo7w01GQeWA8vDigRDND
-X-Received: by 2002:a17:903:22c7:b0:2c9:ed16:8d8d with SMTP id d9443c01a7336-2cfa6d8797bmr76515745ad.38.1784887560837;
-        Fri, 24 Jul 2026 03:06:00 -0700 (PDT)
-Received: from spr1.ipads-lab.se.sjtu.edu.cn ([202.120.40.82])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf8efa2cd0sm48600405ad.4.2026.07.24.03.05.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Jul 2026 03:06:00 -0700 (PDT)
-From: Hengbin Zhang <uqbarz@gmail.com>
-To: linux-mm@kvack.org,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org
-Cc: ziy@nvidia.com,
+	imf02.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=VDT9W77a;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=bn2TWpyR;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=VDT9W77a;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=bn2TWpyR;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf02.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784888424;
+	b=3AhOZgUJFRSUEnm3HQ0/14eyuZThA1Ijorc+pSKVf7KkcYqU/m/g68msVfRjqMhkZGZfzW
+	SERhMypTDAbrlFu7lwZx+/wm3jEOVGlq/AUGyIo2vhRdTq/MvuOBbSWUhZIKMgo/AC5Bc2
+	YqNktV4r1U42Qci+MXj4P49swjkFzuQ=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 5047B3E84;
+	Fri, 24 Jul 2026 10:20:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1784888422; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=SePwpieQyuy4I1jGDOGIB8gwV902Jt9JP/rZL79vbug=;
+	b=VDT9W77aoBJtno7DnLsVeBLRgtj2LXvFKwTE0PXCYEdHHfO91QqREBPGaLCIhTGHDFNntC
+	AiWg4dDHFY6+8unZqaryY3sp2ZEzsVaeyRKvQeyjkdTU3XMYZyz4UYgSLyTJ+7b3zMxUl0
+	mY2USsenCuGvMW3sy4pS2u2oFzaGYYc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1784888422;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=SePwpieQyuy4I1jGDOGIB8gwV902Jt9JP/rZL79vbug=;
+	b=bn2TWpyRVadTfHe1fCfM1+C+Z0Xe/9VGdfB1U9tnLWA+i0QkT9sJ6DMME1JIwKJpQvjKX1
+	0vPiy8tbTwcCApAw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1784888422; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=SePwpieQyuy4I1jGDOGIB8gwV902Jt9JP/rZL79vbug=;
+	b=VDT9W77aoBJtno7DnLsVeBLRgtj2LXvFKwTE0PXCYEdHHfO91QqREBPGaLCIhTGHDFNntC
+	AiWg4dDHFY6+8unZqaryY3sp2ZEzsVaeyRKvQeyjkdTU3XMYZyz4UYgSLyTJ+7b3zMxUl0
+	mY2USsenCuGvMW3sy4pS2u2oFzaGYYc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1784888422;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=SePwpieQyuy4I1jGDOGIB8gwV902Jt9JP/rZL79vbug=;
+	b=bn2TWpyRVadTfHe1fCfM1+C+Z0Xe/9VGdfB1U9tnLWA+i0QkT9sJ6DMME1JIwKJpQvjKX1
+	0vPiy8tbTwcCApAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0C0E0779BA;
+	Fri, 24 Jul 2026 10:20:19 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id AJmVOWM8Y2oSaQAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Fri, 24 Jul 2026 10:20:19 +0000
+From: Pedro Falcato <pfalcato@suse.de>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>
+Cc: Pedro Falcato <pfalcato@suse.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	Helge Deller <deller@gmx.de>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Jan Kara <jack@suse.cz>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	Muhammad Usama Anjum <usama.anjum@arm.com>,
+	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	Hengbin Zhang <uqbarz@gmail.com>
-Subject: [RFC PATCH] mm/thp: order huge zero folio PFN invalidation before removal
-Date: Fri, 24 Jul 2026 10:05:09 +0000
-Message-Id: <20260724100509.2300200-1-uqbarz@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	linux-parisc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH 0/5] mm: add basic PTE const type-safety
+Date: Fri, 24 Jul 2026 11:20:12 +0100
+Message-ID: <20260724102017.141532-1-pfalcato@suse.de>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 03DF618000A
-X-Stat-Signature: e7dbozc53fzjrt9j6rwzazczoa9eskeq
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: BD0B680002
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1784887561-121506
-X-HE-Meta: U2FsdGVkX1+eZacT38up+FhrcQ92LmmQiiYNIcfvRJos+ND7Am1xcwud6APqa22B03V1OSSoxrPyvoO5LH7XgEVOEspRVZ9Fb2HcW0s+XGMoaJW1MDPmBt7dr6JD440cClOe8jKr9wde8/CaQ6R8+GCZOPSx0rRiz/K535Ojs95IALccX/C073N+kWUtSaoe8UeBRCxGklt/YOC29sfdPjaIc9JgI9kMpE5g5YmtAopEed2LM7UzPw7G7OLhWvaLAxCVKdB3Qhreg+NnlavqsuNbNVH2D3y89YwfmXT76PjOdexEANwhwKumk32kt9ddRy8cpfsZY09S3bFY/R0SUYkK+oGnxYzT/suvPGoYa+N8ktV3PyjEgmTYtcLE8u+PnSNDmNhw/yJSfV0p3jgvuw7pT+KXvaIDGz8+w4DZhKbgpYhV4HiiExsphY6zlLf7tTy3FmIm/4Ofs7Hy4R/yRnIK9w0avIgGA4TpT5cWYTMJFnx8GIb5x2kIwrZJlV2Kqwk12oNIAGcGs/SPoC0MsUOuKuN46ZOwjBKLBfC7Xz4eit/OsZqgrIGxqCTmZ3+inmG98UDNajeLr88Kv2tewzt99PrHK/+qiOAK4zbPyJAGwqcGlLUwNu+VkW57wXUk08fFgMHrAugiP0hLqNpybhKDLf3tIlNM8DG+H4nIrAt0tg3KeVtzp6Bfo/XuVtHUbHHgRpF4i0mmuFPYDQdzoZDe9cjiMByViWK34vR5mVQrP4jV7k9dgKDT3VoH30VAXQb4D9D24ngyryZIkJkZUnW/19te35C4Y81TxTmO+mWu+zXtBPmaQ1nAxNioTAOO5C8eIKM08DORDCfZz7tw0T6vKjSHaVHihPbeDavdS7duHonJhFp8kNia25u7gjnfogBh9lXMMHMAhs6ZehdlZ6T1Rn0WAgqeDKqvnIvhvi9EO6OpHBC05foN5sAA8ReT4g1/tLYJxsPYz303+Ca
- Nk8fYTuM
- Fb0DDsOLhVvsFu93m9Tm1tlghCpSb9LG4MKBaL99k2DvByI2VQ3QuHxCotFvPX/yxRQKQiL8OGUa6QjcCmf56xD1dKssLVOAz4Agm19VD3q3jQv7ra2G6H+0qMeYZiWgIMqnUCFg1XnDlDNUJiVz9+Tb52qbidt0BAcfB8IazRT2RC8lmhhPq40zZZ8ASd40GyCzS0F5mJVctmoGNCCA0tEKifkYOLOZU11TQDawzh2qJWu2jSFAdsi+K4/UJj+yDHWutFvqviGLMPa7FybL29Na9MH/Ri0gkbAjr0Dk+fPq9QvfRjw8/MrbFcT9p6b8Dg880Er1+giRkDPo4dIGfB0xB/VXkfOVF+jsrvL4zlIymOa+z2ozDYKEVPqh1LvBIb48FZXq5Fb9XcbxSfd6xV6QkKJKy9w04K2JL
+X-Stat-Signature: yekj9j9s19wzt39suj15qm5w8u7rpdap
+X-HE-Tag: 1784888423-67809
+X-HE-Meta: U2FsdGVkX19LfgiedP10ME996D8HWsviQ6KWdYzeN74pfCMaK7cm8R19/7+b2wuhVv3ozj8Gh95+W16DkMG5OzKkNMJBrVgFQOfTfoMnvLAPF0T80St+TvjJ3DPdZcD07X6lHatYMinsr4DMMrBUK9etuQeZHWjf7OczUyYDuJYDvQ1H/h9v0zQi1uDmd26PR/NDWeXrMK36Nx2XWi5aIlfHbaxgUwcNKI1XKrUhaosSmTtb2meWdCfUG7tnFEN77ngeVT618qUFJ40QaXXKUASO1A5diCTy2cN6/gLtwGWw44BdqiAkFAOasxTrOy2dChHGLuKv/pa15a03X3OUJo3nGlXtb+s7DactA2U3pGgoQD6dgeXRUP9ZrkNmev5pqbyOBZ2UtFZUSo8qW7Of1+hWOEKvCMug9U7NAVCfpSsBQkiFZ3NRO9ltlF8/+fXlZo4Qae4AQkMgEBPi5s+9MvckE6YdEqub11spJUHggBaTnNSCgSzKCRijwxQq2uC90spf6JpdtIqMEVPtoziqR+tNN+D/zQ5xiPz3zy09MGIWrX1902WgWyUXVoJbwIeMTHCLbQ318W2CoKh9/5i6jLnH7lJ1Co1iFm3sM5PkGiPUHySu9w0FV7htw7U/ADveOa9dHkwJQfbBctPolN4ox3kr6rdIY+9LoP1nITYZiSieritRr3WpBzK5f4a8wNwmVQGt6eHw7y5fucfF621te0qIeXy0xXNM3RsBOLRRzJJhtHnVuNo9UJaNXtgYXVXkyAK3NRj+Qb4Ymclop3J8dA3uWQkCmRjpImV3MZtfvw5q7774Wk9LoGSqLubEcEt/Q9jngdQYNi8+V00UmGbnf2NGo4r4T+d2YU9rLSb/MccV8SADiv0S5X+ntprzfb/qZCCDjlH5lM+l5M3JSxGBFNnvIkOoMCX3GJ0eHirmaGvHGrSjD+VA5DIQ4lH9EBWUJ4zig1Rzd2QblY1gA2Q
+ D5l/CDpt
+ Hrqz5Y1XKHLWVV5g9PQ0fpyV6y4/6X87OT8j3esMVxfZxktXH+83wNxoEKVoJIIAlU2xRSXv/ra/ArA4spryvw0LbQ2sG2mhmloMPOcYuGMwJ+PlIfUmLD/9X+nHdhtt4jilctD5KMxSStGW+/BkQhscQzMtYm5QOk4iPEklh2DreqYYH+GnFBjY04LbY9b/H3g184FhWoZ0MZyGDbeyE7HG32RPnFTSTz12GOgLhPK7a5T3/sZUB6SJfh6hXV+pn0TF02t1tmMrIswZblZxxRQPUI2zFaVRPctbByQtHZfl/X9/T4bwqai2pQ0ZaCibJ21e1RJptcmpo46RC4bSngyz+fjlMAPgM0CUWUtKm29Q2gjkcImNQX9bHigCVhPkqf3K94ouyDLoGzFYocH6MUsMb7Xl3l6WPRcxvu+xlLoZdGqOtzdtYwI6IjMYdk/mVHRVNo6Q2Bj0ZPQXv6IoqxZx3FI/1LHFiKmPrJmZesEMMgwZ9Rp7fnv7UxsT7azjylGp1f0hiM30M/RkEzxihzjbdBsTNc+kwmjyv9M7/5LsV7wN8LxlbbWL73YPsh58O6dZ1xKXbxyLPWc8QfwIMGnQZE3ttwkk1CnzmrkwPTLueOl/LxO+mbPahXlx4rZ+IrbkEi7FYuMplmS2jnoVMKH0Nqy6P99jrVRNkQ1am4lHC2iCdcK1+Hjvq3beCwjnxzLgyYZiFsIA8eUEL9AauedERbuxTRJOXRSViduLL3wHf708jZ+MnlVIXKjHoMGeKEo5C54MT3obQVp+EMKYpIPk91Mw8F/kPD5VI5i3yMi3NnVQ82McIiUtzEQbg/S4qnoUxl9rzFlNdNog=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,46 +154,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The nonpersistent huge-zero shrinker removes huge_zero_folio with
-xchg() and then invalidates huge_zero_pfn. A concurrent fault can
-publish a new folio and its PFN between these operations, after which
-the old shrinker invalidates the new generation's PFN identity.
+Since forever, MM code has thrown pte_t * around with no concern for const
+safety, or typesafety of any kind. This is confusing. Attempt to address it
+by:
+1) Making sure pte_get*() helpers can cope with const pte_t * arguments
+2) Constifying the pte_offset_map_ro_nolock() return type, which by definition
+already pledges that users will not write to it.
 
-A later partial mprotect() can misclassify the live special PMD and
-enter the ordinary anonymous THP split path.
+These two simple steps were already able to uncover code smell from
+khugepaged + do_swap_page().
 
-Invalidate huge_zero_pfn before making huge_zero_folio NULL. A getter
-which observes a zero refcount while the old pointer is still present
-cannot publish a new folio: its cmpxchg() fails and it retries. A
-getter which succeeds does so after the invalidation and publishes the
-new PFN afterwards.
+Separate steps could include introducing pte_offset_map_ro_lock() for more
+widespread usage of this.
 
-Fixes: 3b77e8c8cde5 ("mm/thp: make is_huge_zero_pmd() safe and quicker")
+Benefits of this include less confusion and better type-safety. It could also
+futurely aid in efforts such as [0] which may want semantic annotation of these
+accesses.
 
-Signed-off-by: Hengbin Zhang <uqbarz@gmail.com>
----
- mm/huge_memory.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Based on mm-unstable and compile-tested on a handful of architectures.
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index b5d1e9d4463d..fcc492368160 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -298,9 +298,11 @@ static unsigned long shrink_huge_zero_folio_scan(struct shrinker *shrink,
- 						 struct shrink_control *sc)
- {
- 	if (atomic_cmpxchg(&huge_zero_refcount, 1, 0) == 1) {
--		struct folio *zero_folio = xchg(&huge_zero_folio, NULL);
--		BUG_ON(zero_folio == NULL);
-+		struct folio *zero_folio;
-+
- 		WRITE_ONCE(huge_zero_pfn, ~0UL);
-+		zero_folio = xchg(&huge_zero_folio, NULL);
-+		BUG_ON(zero_folio == NULL);
- 		folio_put(zero_folio);
- 		return HPAGE_PMD_NR;
- 	}
+No functional changes intended.
+
+[CC list editorially trimmed for brevity reasons; apologies if you're not on it]
+
+Link: https://lore.kernel.org/linux-mm/20260526-kpkeys-v8-0-eaaacdacc67c@arm.com/#t [0]
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: Helge Deller <deller@gmx.de>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Lorenzo Stoakes <ljs@kernel.org>
+Cc: "Liam R. Howlett" <liam@infradead.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Nico Pache <npache@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Lance Yang <lance.yang@linux.dev>
+Cc: Usama Arif <usama.arif@linux.dev>
+Cc: Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: Muhammad Usama Anjum <usama.anjum@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-parisc@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-mm@kvack.org
+Cc: linux-fsdevel@vger.kernel.org
+
+Pedro Falcato (5):
+  mm: constify generic pte_get*()
+  mm/arm64: constify pte_get*() and contpte get logic
+  mm/parisc: constify ptep_get() argument
+  mm/powerpc/8xx: constify ptep_get() argument
+  mm: constify the pte_offset_map_ro_nolock() return value
+
+ arch/arm64/include/asm/pgtable.h             | 10 +++++-----
+ arch/arm64/mm/contpte.c                      |  4 ++--
+ arch/parisc/include/asm/pgtable.h            |  2 +-
+ arch/powerpc/include/asm/nohash/32/pte-8xx.h |  2 +-
+ arch/powerpc/mm/pgtable.c                    |  2 +-
+ include/linux/mm.h                           |  4 ++--
+ include/linux/pgtable.h                      |  8 ++++----
+ mm/filemap.c                                 |  2 +-
+ mm/khugepaged.c                              |  2 +-
+ mm/pgtable-generic.c                         |  4 ++--
+ 10 files changed, 20 insertions(+), 20 deletions(-)
+
 -- 
-2.34.1
+2.55.0
 
 
