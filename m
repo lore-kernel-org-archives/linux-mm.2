@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B2D7C531C9
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 12:32:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C68ADC531F9
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 12:34:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4AD8A6B008A; Fri, 24 Jul 2026 08:32:33 -0400 (EDT)
+	id B67CF6B0095; Fri, 24 Jul 2026 08:34:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 485256B008C; Fri, 24 Jul 2026 08:32:33 -0400 (EDT)
+	id B192B6B0096; Fri, 24 Jul 2026 08:34:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C2B56B0092; Fri, 24 Jul 2026 08:32:33 -0400 (EDT)
+	id A318F6B0098; Fri, 24 Jul 2026 08:34:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 02A076B008A
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 08:32:32 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 75B1C1A0342
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 12:32:32 +0000 (UTC)
-X-FDA: 85023608544.05.1B0B44B
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D40E6B0095
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 08:34:15 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0DD52A036B
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 12:34:15 +0000 (UTC)
+X-FDA: 85023612870.28.493F8EA
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 647F4100009
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 12:32:29 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=wWDleT+K;
-	spf=pass (imf05.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784896351;
-	b=6IoOw2BoOZkcfVOwNwxilSF7Vh8LPoiXD3VzYwyjBISQ/00YILTHBd22BbwTC4lhQJcMLi
-	oURDJKfkvHh1ZaCWf75+k/uUbBTqxlBSxD4e4TmhgeYGnUULIOz2vTG+bryvJ+MZfM0luI
-	ZUCWWR9BzINjSBCNzqewcqe2lf1gW5A=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=wWDleT+K;
-	spf=pass (imf05.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	by imf04.hostedemail.com (Postfix) with ESMTP id D63494000E
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 12:34:12 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=fwRUj95j;
+	spf=pass (imf04.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784896351;
+	s=arc-20220608; t=1784896453;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ffuOTgmZJuwKmEXpuYSL7eRuSEjsYAbCNuPmD0+STOY=;
-	b=uxm+VXO6KOrYCb98HEumJIu0FqvsGlNyqMFlHIwfffqTXP25z66QWEXJX14A8+8kc1sMHl
-	SxAnkeURkzecNsuInqAVlpHfi5Tl6zH1UklQaQsqhkCsAa0GYvr4gzA8mx+NnBEIfmNZKF
-	Nxzy8Kf9wh9zIfQW5r83y/l1ANrIbJc=
+	bh=HHb3eG+eg47H5YO0KxXiu0C9/zV2I23bNqZBVHabCyw=;
+	b=BIAsUZhrqtEJ69t7nOf4Qp0BiPCxeSGymyBc8OZY1ZlbKqCeBOOWDoTHYUM2P/wqsOCmAK
+	rx48z2fjn3Kj8a/x4C4jEr+wfKX1bGgeURYcv2/UluThoNgWLLW7JPjMN1wWXPoNRMSWVI
+	incEltXNJMrI12R/fxvSQFw+Knpb9Pk=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=fwRUj95j;
+	spf=pass (imf04.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784896453;
+	b=MOnTvFzsBUFblSsTtXP/w8t7YUyhNKpGifdhdRzHnBq+s2C9YfcYYUslCqvvPZ56pEAA97
+	Emx9WrZ9Xamgb7q4x6cRJzOBdPKrGJRRL7i/ihjNKM2sNQCsGHuygm8iJvKTDEsojCAdMl
+	S/waKVYu6As8WeQ1SMrFhw+5QtqlECM=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=ffuOTgmZJuwKmEXpuYSL7eRuSEjsYAbCNuPmD0+STOY=; b=wWDleT+K/GwFH9pZ9+ycsN9MoM
-	hdIMW5V17AcWQUCV6JOzItWaoC+NzT0f/mk3ke7RGQjNJgPRnNexQGChIATLo0N9Dw8rlLJue1IfL
-	qSE8+9cAdYJ8r6JxRIY1MduEZ7/U68vzPpI+mXSTzOeTjmsCyib/9mVPnb/TQOstziKPGf8evIDLY
-	dTOKKN8Tb5XgFki0a23U87ZBKVAXIUAV7XnRTxgIyFbeu5emqjfCuFUM7BrvtbKdTL/RxfPWFYOwe
-	1/d6aYRNq169GZfcJWgjTVO3QN2njOmMwq4baBIAF948dkpz/JDFrWi5XYQUiky+xvEu4TGSgMcrm
-	aFT61TYw==;
+	bh=HHb3eG+eg47H5YO0KxXiu0C9/zV2I23bNqZBVHabCyw=; b=fwRUj95j56RO6lhoEW7vqtAWZv
+	mEWA2xgYkx2aWUlUxnnpDRxIKfWJMPvFf9Nhk/0Xc8FT0h3zKA/UTsp867EW8Tpj7jMA6O+2QLDZL
+	X8+wfV4wz45J5iGq5eUPdjr0v/UHwDHCwF6OpiE79ZgwuW0csjd6813dfXTy/MW67drFOANZ4AYRK
+	sxiKWtAIXn8yFbMjXL4xHj4ndiFPXuBBzLy6pnRyJ9b3uf4F+C5G87iGF3tNTrA85lA2cdI9PnjFX
+	x5hvdrYUJsbX/CrslwdqOd4pahYzAJq14M1ng65HN16yQ/i7cEwL36yHoq9r0KaY8YT2zZW7wdAS6
+	ixNbRn4Q==;
 Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wnF4h-00000003SWX-0gG5;
-	Fri, 24 Jul 2026 12:32:23 +0000
-Date: Fri, 24 Jul 2026 13:32:22 +0100
+	id 1wnF6Q-00000003Sfq-1Yqa;
+	Fri, 24 Jul 2026 12:34:10 +0000
+Date: Fri, 24 Jul 2026 13:34:10 +0100
 From: Matthew Wilcox <willy@infradead.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Jane Chu <jane.chu@oracle.com>, linux-mm@kvack.org
@@ -71,25 +71,24 @@ Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
 	Naoya Horiguchi <nao.horiguchi@gmail.com>, Jan Kara <jack@suse.cz>,
 	linux-fsdevel@vger.kernel.org,
 	Christian Brauner <christian@brauner.io>,
-	Jiaqi Yan <jiaqiyan@google.com>, stable@vger.kernel.org,
-	Naoya Horiguchi <naoya.horiguchi@nec.com>
-Subject: Re: [PATCH v4 01/14] memory-failure: Fix hardware poison check in
- unpoison_memory() again
-Message-ID: <amNbVpvrxRBbuGoi@casper.infradead.org>
+	Jiaqi Yan <jiaqiyan@google.com>
+Subject: Re: [PATCH v4 02/14] memory-failure: Test the page is hwpoison
+ before taking the mutex
+Message-ID: <amNbwmd6mV9Fte3V@casper.infradead.org>
 References: <20260723143034.175661-1-willy@infradead.org>
- <20260723143034.175661-2-willy@infradead.org>
+ <20260723143034.175661-3-willy@infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260723143034.175661-2-willy@infradead.org>
-X-Stat-Signature: r3mh377558kk1d1ti585esg55jijdeur
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 647F4100009
+In-Reply-To: <20260723143034.175661-3-willy@infradead.org>
 X-Rspam-User: 
-X-HE-Tag: 1784896349-589545
-X-HE-Meta: U2FsdGVkX18r6AEDrn3iNR6uUqvM+zsIT0PDdAwbIBi09ioa8Bg5KlzOyw3vR1bJ9xtBXNYWaoVs5nvxRl7aswRenoosE2Ol17EFRAlLBkbYgubrsvJ27oEeEZxpdQ0i4pmS59RVAaP7wTwd6ECW+FdXGZc7W3Wi+ZDRLMqAwR88/6V2A7BH0IlFFEZvFtS5kcrpHvvqXpoHPecHYKai9YtHrm1Gm6z1V4Dvlfn3xFmUqw9aM1xlLd/ZXmzk2NjF8rGewSAYFpgsJUhjIqq1LcQcE5kZJ9Xpy1cuzPQxl/Wnst4D5j4A3BxS0OGhbCqgH2GAYd0Wqqf6Y0b0qTH6mPc3QkWbUCD0sI7u+DsKTHcDsLu8tNpdiTJmDyrUBagesX0Um91JmGKCtoOnHxUHqaTBQlI2wlVYvZEULNujyWIsaKhvtTEWp7nJxi7rSGW0fd4059wQzoTw3kUIYM8AFy7Ql1SDUNW3NVDpPcXnHBTAZFImF34k5x6wqy2y76LagcB0aiGPyIdnBbUTwInjX6J0HhDwC8qeJPHpprYLUdXmH7ThXI0ten4bFfhi9VHaovMSb9pqprKyWnqv9kcJJGTux8IM96MIDBEoe46YXV7glmTH3AXGMZyWBRxpHxSb3aqXbAzXZ4MYes0U9TK7ji5y3nOAZnCH77GB03GeRZavyOtYPP25q/mB+7t4EiBDkmpDrB0VDmaLSFw1JIrgQDZZ+68Tk6JTeSW7TVwThyPEcucpS9Ey+SzG4d6LwCCq1DpHtCBvoEaBFGZLgAwU2RIE6IYScR9jY6BFNa10T503tMCLaEee9ky4VigL87GjkxceMDWTucGAGHOHGG87ioZVrO2oRGl6ykQlrInemVK2mPFgMsbZbjQmPvtaDAci6s1kHSx4hyY2iwhNTnbjUy/pr2poAlJLEKIcS4twMOP2AIVhY0kTggdT+3ta3L6eRR2aQlQ3yTkIYfyXI90
- KRqHSM7h
- +g1+K6QhZQQTArlUhyN+d3IQ37Z6anlzLjWWu+On0fUJIR7rWUeVetXt54lAaZ/RV9sKwhGR3dUyPSgVJFtgdBoXiroG9KHkh16R0ybaSd+b0y9ssgN5zvWvs4dDht5c27QZaU19j+hU2+dNK3fcwiL0vBccCJCx9Yg/oXC83o9fn76etI9gqNPAWkNbK3HmwV5N6RM5RtCniB4OlKHEOleiJe3hhqkygj56+SxMZK2ddLzTU3qwH6/pfahjHsOf6ujzg1fxIFA6+S/9bY0BM4rK+cyFh+gIByadbrupE4ipXnYd+Mn+iDHNc4fwzkjaAB0IJKJ9kljGaw4kejWkcgEFX+Yc/NUbY5K4j6MihuEwZaFGQ3yb78Xy3QLsuTw1dpNrN57V40X6+JU86ew582a5vcQk+BLWrSTs+epowzkI1VdQ=
+X-Rspamd-Queue-Id: D63494000E
+X-Rspamd-Server: rspam01
+X-Stat-Signature: 591jzqcbn3u4ni6jgzod36z6fjdigxxp
+X-HE-Tag: 1784896452-243753
+X-HE-Meta: U2FsdGVkX18x380sKDA9azRwahofpVF7d4JhjoRpJ4M7agnO8MEOoR16bvptHFcAtHsxdTIcY4EsE7QBJhpTA0vpwyfOV4vptjmXPxMG1T8vwyAQm1l9foDIVnaaO3aN3u77zZmUQtlE7bI5JIYswk3/2pRTJ0jcD0mnFYsN7cI4lcMuburDpOTvldbd5hf7xb5kilvAZRhrZfkNNTqYPo6qx/TfflqFJpLXxSmQydVTlDXcEYSgUEp1NA/nShwRRH53tNVn6bASLRmeslSPsxb7yAMM1qwjseWMPHjRVyeuaKjLovtWwSvkRB7Ep8+g7TbxRcHkRzQXSOVrB0+MW4cECkJmGiUPUXlCo1/p2cQJjvBndo2CevQyO01lgzffz6DXFBWiJAiNv/vaz5xdpqWmFCnktxpPVj/UwtHXs8+D/P+x8JWnz9UuIadKQMGyzAqn5imCLccE9FuwJzBz0W8FNJ3ZQ1NipYzhqdw4Jy0h69eC0tr/RvmbtFlKwNgqAz3m+Abnf/yzgtfg3ojKEj+qaG+kDfLc2CSOSLrQGRdDHU7/zeRo38hTWL0QjnAGtMd71hijt5G25G6A3BzSC9UDdvszBSzYljXUAXV1nS7idGlYebDuifg2NMs3eDpe9K9sgBoEnRwc/+JTpuJfalZHK+tesgFRZatLaRLaGLKZByfsoLQF7gGTEn78eiMXfR7r0PI0I40DqJefdqTCI5646bvnGvPkZ5jLfXpiXMwsD3QCBNW1uWeK1WvtMhMUflQohSROe5Kc6/7p9xgSd42FvuDxgdR8W6gRQdZJxmyjUvly5AQhhlV7hScoetq02JkQwaCTIM70HolMIA78GYlxo6fQU2NmA4WKHW0DmTEtgn8gRWiUL/oVdXk3SV78EAdUVZrfIYHsJGfC+KtxvZzbZO4YxAwK5yu7MtBY+pTfWtcmKu2xbUEVLf2DTkh3o3ZnxgVZN8ThB+CvS9u
+ Fef3h/bU
+ 6JDWoa13gRswAD5vQNb5rSpe9FZhF9VYkDtHjcSZ0TZiDq3bDEc/uwuC7gtEyLNwXrHsYhcCz6hKZ1xOkm02KULvaKUWvF9QCN0fcUIchK/6ZJkfG1tTweaRqvGplFIZtTuHSP+2c+DTGlRzP5RVAU4N5KoY96l26QUH1SF3rGAbSfgq/zVrbrZ8MNRHEOBN7U0wLG6Jnb6giKhC0NNeHmI07WiXBxIGvvSbd+SbJsRGx13lBzzMhH7jC9Ln9BNwhVn2Me0iiFn/qJhLQ+r911LzB5RCV/ftfIM8al+QUfPqgxNo4FVujblY9bJO0kwwaysQyL3IftCt9mm5i3iJlCNFUlfgei8gaFNAdMYfvilGOBXv6ojpaOeJDrA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,102 +96,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Sashiko feedback:
-> --- Patch [1]: [PATCH v4 01/14] memory-failure: Fix hardware poison check in unpoison_memory() again ---
-> commit 5a43cce770d0c716bb5c78ee2c21e1cb711e5331
+Sashiko review:
+> --- Patch [2]: [PATCH v4 02/14] memory-failure: Test the page is hwpoison before taking the mutex ---
+> commit 1cca344401408425fcfd4ca129165f85229f9227
 > Author: Matthew Wilcox (Oracle) <willy@infradead.org>
 > 
-> memory-failure: Fix hardware poison check in unpoison_memory() again
+> memory-failure: Test the page is hwpoison before taking the mutex
 > 
-> This commit addresses a bug in unpoison_memory() for hugetlb folios. It uses
-> is_page_hwpoison() instead of checking the head page, and correctly targets
-> the precise page for clearing the HWPoison flag.
+> This patch moves the is_page_hwpoison() check in unpoison_memory() outside
+> of mf_mutex. This avoids synchronizing with memory failure just to filter
+> out pages which are not hwpoisoned.
 > 
 > > diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> > index 51508a55c4055..944e6e1d49719 100644
+> > index 944e6e1d49719..3615ced0a11bc 100644
 > > --- a/mm/memory-failure.c
 > > +++ b/mm/memory-failure.c
-> > @@ -2695,8 +2695,8 @@ int unpoison_memory(unsigned long pfn)
-> >  		goto unlock_mutex;
-> >  	}
-> >  
-> > -	if (!PageHWPoison(p)) {
-> > -		unpoison_pr_info("%#lx: page was already unpoisoned\n",
+> > @@ -2677,7 +2677,12 @@ int unpoison_memory(unsigned long pfn)
+> >  	p = pfn_to_online_page(pfn);
+> >  	if (!p)
+> >  		return -EIO;
+> > -	folio = page_folio(p);
+> > +
 > > +	if (!is_page_hwpoison(p)) {
 > > +		unpoison_pr_info("%#lx: page is not poisoned\n",
-> >  				 pfn, &unpoison_rs);
+> > +				 pfn, &unpoison_rs);
+> > +		return -EBUSY;
+> > +	}
+> >
+> >  	mutex_lock(&mf_mutex);
+> >
+> > @@ -2688,6 +2693,8 @@ int unpoison_memory(unsigned long pfn)
 > >  		goto unlock_mutex;
 > >  	}
+> >
+> > +	folio = page_folio(p);
+> > +
+> >  	if (is_huge_zero_folio(folio)) {
+> >  		unpoison_pr_info("%#lx: huge zero page is not supported\n",
+> >  				 pfn, &unpoison_rs);
+> > @@ -2695,12 +2702,6 @@ int unpoison_memory(unsigned long pfn)
+> >  		goto unlock_mutex;
+> >  	}
+> >
+> > -	if (!is_page_hwpoison(p)) {
+> > -		unpoison_pr_info("%#lx: page is not poisoned\n",
+> > -				 pfn, &unpoison_rs);
+> > -		goto unlock_mutex;
+> > -	}
+> > -
 > 
-> This isn't a bug introduced by this patch, but can the speculative folio
-> access without stabilization cause a use-after-free and reference leak?
+> Does removing this check from inside the mutex introduce a time-of-check to
+> time-of-use race?
 > 
-> Looking at unpoison_memory(), if the PFN belongs to a THP tail page and
-> the THP is concurrently split, could the folio pointer refer to a stale
-> head page?
+> If two threads call unpoison_memory() concurrently on the same PFN, both could
+> pass the lockless check. Thread A takes the lock, unpoisons the page, and the
+> page is returned to the buddy allocator.
 > 
-> unpoison_memory() {
->         ...
->         folio = page_folio(p);
->         ...
->         ghp = get_hwpoison_page(p, MF_UNPOISON);
->         ...
->         folio_put(folio);
-> }
+> When Thread B acquires the lock, it will now proceed without re-checking
+> is_page_hwpoison(). If the page was concurrently reallocated as a compound tail
+> page, the speculative folio_ref_count() or folio_test_slab() checks below
+> could trigger a VM_BUG_ON_PGFLAGS crash.
 > 
-> Since get_hwpoison_page() takes a reference on the new order-0 page, does
-> calling folio_put() on the stale head page drop the wrong reference and leak
-> the reference on the order-0 page?
+> >  	if (folio_ref_count(folio) > 1) {
+> >  		unpoison_pr_info("%#lx: someone grabs the hwpoison page\n",
+> >  				 pfn, &unpoison_rs);
 
-Uh.  I don't know.  If it does, I didn't make this problem _worse_,
-so I'm not going to address it.
+Uh.  Yeah.  I wasn't thinking about two simultaneous calls to
+unpoison_memory().  I'll just drop this patch; it wasn't important.
 
-> This is a pre-existing issue, but does unpoison_memory() clear the
-> PG_hwpoison flag on the wrong page for unsplit THPs?
-> 
-> For THP tail pages, if get_hwpoison_page() returns 0 because their
-> _refcount is 0, does the code fall into the !ghp branch and call
-> folio_test_clear_hwpoison(folio)?
-> 
-> Because PF_HEAD redirects to the head page, this clears the flag on the
-> head page. Since THPs set PG_hwpoison on the exact corrupted tail page
-> (PF_ANY), does the tail page remain poisoned and fail to restore?
-
-Hm.  Maybe?  This code probably needs to be more careful in general.
-
-> [ ... ]
-> 
-> > @@ -2748,6 +2748,7 @@ int unpoison_memory(unsigned long pfn)
-> >  				folio_put(folio);
-> >  				goto unlock_mutex;
-> >  			}
-> > +			p = &folio->page;
-> >  		}
-> >  
-> >  		folio_put(folio);
-> 
-> This is a pre-existing issue, but does unpoison_memory() fail to clear
-> the per-folio PG_has_hwpoisoned flag when unpoisoning THPs?
-> 
-> When successfully unpoisoning a THP head page (where get_hwpoison_page
-> succeeds), TestClearPageHWPoison() clears the per-page PG_hwpoison flag.
-> 
-> However, since the per-folio fast-indicator PG_has_hwpoisoned is never
-> cleared, will folio_contain_hwpoisoned_page() continue to return true,
-> causing the kernel to erroneously treat the unpoisoned THP as poisoned in
-> future operations?
-
-Yes, it does fail to clear the has_hwpoisoned flag.  We can have more
-than one HWPoison page in a folio, so we either have to leave it set,
-or scan all pages in the folio to know that it's safe to clear.
-
-Again, I'm not making this worse for THP in this series, so I'm
-not addressing it.  For hugetlb pages, later on I change to use the
-has_hwpoisoned flag, and that does get cleared because there's no scan
-of page bits involved, just a list of poisoned pages, and it's easy to
-check when that's empty.
-
-It's mostly moot because we always try to split large folios that aren't
-THP, and that usually succeeds.  So all the large folio has_hwpoisoned
-paths are very undertested.
 
