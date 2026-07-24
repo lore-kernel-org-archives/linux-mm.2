@@ -4,113 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3B84C531C9
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 10:39:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 418AFC531FA
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 10:40:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E5F956B00A5; Fri, 24 Jul 2026 06:39:14 -0400 (EDT)
+	id 49CD56B00A7; Fri, 24 Jul 2026 06:39:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE9386B00A7; Fri, 24 Jul 2026 06:39:14 -0400 (EDT)
+	id 425996B00AC; Fri, 24 Jul 2026 06:39:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB15C6B00AA; Fri, 24 Jul 2026 06:39:14 -0400 (EDT)
+	id 2EE8C6B00AD; Fri, 24 Jul 2026 06:39:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9ECCB6B00A5
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 06:39:14 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 25BCFC0376
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 10:39:14 +0000 (UTC)
-X-FDA: 85023323028.23.E9F8D2C
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 2F7BF8000C
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 10:39:12 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E64036B00A7
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 06:39:58 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 676A7A0CF8
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 10:39:58 +0000 (UTC)
+X-FDA: 85023324876.08.F756430
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id D50CE80002
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 10:39:56 +0000 (UTC)
 Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=nPz4q9Un;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf02.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784889552;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/5FfeGZ8ZGKn9Ad6ByGszcDZ17FyujPG7USz2ODcO/Y=;
-	b=syqCB5U/kzc0urX9Ti7oNXZpPcqp5puNUbOcjSyTkrO2o9V6Df2BFzv4ErpOjTlLCqM8bh
-	5THmcwuRd2xHTA0IDmw/vdnPe7K/shDFOiTY3auvnUyyMlXg2ABIJk5pmoX7gdm3Z6RykD
-	6zKQE8rxjhZM9OQxLFHMnuL13h/7lqI=
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aXbmem+d;
+	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784889596;
+	b=gla5N5ob4IgSfeb4buEZWh5kYcoIr5Qbpuzz6dp1kOCugN2ESqobYDOc5IERh+i1BFkzGG
+	jgg1Civ5d5XmZO1o2Z2gNQTujdJzxHTniGuu0LaVXQCEiJq9chnNiWpO7sRBdDouwVEqaz
+	KNpxDJeD8JPaa98gVgUlCWiy/4osin0=
 ARC-Authentication-Results: i=1;
 	imf02.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=nPz4q9Un;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf02.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784889552;
-	b=0GXh5EXQ1OFSTRj9x/+dnl19xyPp5Nvkf4paG5dsM2ECqT7UTxFXxnjb0Yi7UOuSxaPZOf
-	Q/cJqDy5NAFVzykCm9nFUrPdh73g6eW2OQTPBReX/bkB9PsMxwGiqmqZ+tgXLTeds6waei
-	Lu5QmKHs1ibOyDvNZ67l3tvBX7IAlIk=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6E56B1477;
-	Fri, 24 Jul 2026 03:39:06 -0700 (PDT)
-Received: from [10.2.198.93] (unknown [10.2.198.93])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5EF243F66F;
-	Fri, 24 Jul 2026 03:38:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784889550; bh=8ucxzJzKRncGbmLH/iEQkI2exC3zh2zSlJ8zSRx26rg=;
-	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
-	b=nPz4q9UnTmIpC3f1IrnhhOXc+A/Z2VLc2MvO7S07Y0dMBj6vYrB5Dye4ym8oVNhXD
-	 BOcxcXhOs2SceDUmzESNakuvRw/Lz60Kb4I5oFZwEpDHzbiEUv3iW7H4ZPf9e+CZSj
-	 HrNea7YK425Wt8aVXd2zUUsc5hB2FRPkxg9XWQf4=
-Message-ID: <85146377-9c7a-43d9-a5af-b976d25cb93f@arm.com>
-Date: Fri, 24 Jul 2026 11:38:40 +0100
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aXbmem+d;
+	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784889596;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=k1trzLOTSSBfNm7/sau6v2fY72W8z8j69UrS0D94NOA=;
+	b=5culR9IczWUvbtf9t12UKDSTtJ6uIF3IVwnu33dOaPDtp+ynhlxy1cy7TSxBmYW9YBSsJx
+	x8cqlEl5YvNkuPpWoypur7XSoHkEoAGuvJSCgA+TYVac5t5AwSMoDBqWphb+inxXKwAaf5
+	Op2jRGF3nPmI04tCjVoVLKqQ23eWNHw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4741A600AF;
+	Fri, 24 Jul 2026 10:39:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCAB71F000E9;
+	Fri, 24 Jul 2026 10:39:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784889596;
+	bh=k1trzLOTSSBfNm7/sau6v2fY72W8z8j69UrS0D94NOA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=aXbmem+dAM9EaM9cONRg9ANY7SZTSo+LGgOOT2IbZAxM+q6pB5nQK6uwQ1HVXkye+
+	 fHxUKI8wZxjWbdf9YfBX3O0iHMgdbo3cPMsaavHhM092T4Y7Cmwj5xKPUQUKkXmq5Q
+	 sj11QRyiuQfNxHpQLpVH+5O1MXYOhluz8vFMkrkObnzDq94fwCQdwagCBRzIaEM4DG
+	 PQOhHIcqIlp5kNRpeh2NPAVRM+CE5EvN4lBDcxdMuZgJB6Wpju0pbOEVTW2niv2ah6
+	 TSuj8r+3BqzTwlaJvpKwSjgCVa6PJnouB9CPVpIGSkcATKUkmoeJZmJiqDRmtSG95t
+	 Htd9ZhHYXxslg==
+Date: Fri, 24 Jul 2026 11:39:39 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Dev Jain <dev.jain@arm.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, muchun.song@linux.dev, 
+	osalvador@suse.de, riel@surriel.com, liam@infradead.org, vbabka@kernel.org, 
+	harry@kernel.org, jannh@google.com, lance.yang@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, ryan.roberts@arm.com, anshuman.khandual@arm.com
+Subject: Re: [PATCH v3 2/5] mm/rmap: Add try_to_unmap_hugetlb_one
+Message-ID: <amMyhkFX6Dj1UqJD@lucifer>
+References: <20260713050050.1017741-1-dev.jain@arm.com>
+ <20260713050050.1017741-3-dev.jain@arm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: usama.anjum@arm.com, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
- linux-mips@vger.kernel.org, linux-arch@vger.kernel.org, linux-mm@kvack.org,
- kvm@vger.kernel.org, kvm-riscv@lists.infradead.org,
- linux-riscv@lists.infradead.org, linux-openrisc@vger.kernel.org
-Subject: Re: [PATCH RFC v2 08/20] mm: vmscan: remove stack copy address of pud
- pass in wallk_pud_range()
-To: Yeoreum Yun <yeoreum.yun@arm.com>, Russell King <linux@armlinux.org.uk>,
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Arnd Bergmann <arnd@arndb.de>, Andrew Morton <akpm@linux-foundation.org>,
- Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Tianrui Zhao <zhaotianrui@loongson.cn>,
- Bibo Mao <maobibo@loongson.cn>, Anup Patel <anup@brainfault.org>,
- Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, Dave Hansen <dave.hansen@linux.intel.com>,
- Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jonas Bonn <jonas@southpole.se>,
- Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
- Stafford Horne <shorne@gmail.com>
-References: <20260722-dummy_ptxp3-v2-0-d9e4bad31e0a@arm.com>
- <20260722-dummy_ptxp3-v2-8-d9e4bad31e0a@arm.com>
-From: Usama Anjum <usama.anjum@arm.com>
-Content-Language: en-US
-In-Reply-To: <20260722-dummy_ptxp3-v2-8-d9e4bad31e0a@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 2F7BF8000C
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260713050050.1017741-3-dev.jain@arm.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: D50CE80002
+X-Stat-Signature: uen7mknjtqzphow7iax7yq44wnhk1o9t
 X-Rspam-User: 
-X-Stat-Signature: k43q5wfossnonnx7uxzjqqdoqu4tyhyu
-X-HE-Tag: 1784889552-306075
-X-HE-Meta: U2FsdGVkX18dq520/RZlGl5FA7jWMd+CYCFEfe+E9V1P4T4VqHLW7se+XjYAwwQbCf5TAe+AgcmbNh3T94Zyt1Dqd5hUPB84lgpgvwfsXtqPAbLBZ6vGJtUj9pSsJ2HcOta7VEnU15ALi8xR0WdtGoR3E2pmkDjTsG7/L7f9h28ZqedNxWii/yCQJQb/W/NJHwQy2XZpV00BDQdKqgnjSk8rp2oQl84fBNut2yPESN1SMVvNSMkwGsxWwHO0WdNjykH8EsP/jjocITEnMjjCdDKbJkoUyv6iFzgpfE3vPNC1jFipbBxpAwSZrDSZ+9N00wS+IkA+Lrw6Ge5HT4WpAjtwxh46pQzqBDYZDF5niK1/9y2nVcF6onXK65m+h/N98WqX4DkVVZ6G78ZDa1MKqD5CHlhDpRagb9WQVCrlaJPHzgtqa/wAhLPczmOq5xLyq0TO3QdU9bagKzHkLHhFiXXpK2GC/VaitfG47LD5hKglwumMwHJzehooGGsFgbmcRBtB1DanBzMneU5sGKBymbVPNC3afxTDXZ3Q+ViCAvEPO7AvtLUk84+Y+uE1Pi3kvM9NJqYleXDdYiTU0a0svRNr0Jcwgx8cMcZGHI94rQoBJeDeSrFUDvSnrFr1TNoWXdwvx8bENOBpEXLW0PXGdJ0BOm2L5kW2uAgKXgOsZMVxigYAPRC9SZiYQZIZIBpBzf1v0CwqUTHh4ewmdl0w8kSSeU5mSJ1PQ/ZsPX6UviN3uZinSnsnPtJRUdRwhWGQGM/V79bBf7Fnqm6aaf97HwYAwVclsVVEUWlJA81bjPRxyMrV+hlQDdG/OBrBfz1peJclyfj/iK7qjgC2Wb+BiRKGmRkxqidHOrGgDkjY24MPDrTVubgx2FDOJhDVqi7IR1yKbaXe1MM8A7u4OF4iYM9ZMnprEpo4Qbdm6YuRLRbV1I7WoR9VHjoaRx6BPr2LgQ8q9AGHdAxCObIBRXA
- UyriNR9n
- 8Dq8aZsPrNtlxVKrYf1q1cCdY68DQ1/zX+OJm1fLV8Pd0pLhkdmF9pQiUkOx3nljfdD2SZla2s578m7t9e5g7D4N3BOaTf5srKw5T8Ho2+Q75PcDknphyli3P1HqbvEuwMMMlMOpqF1O+b2OzTfACFX7Ed6NbQM9iAutjUEa8dr5m907/A78Q/ev7FPacQwPoCz6f8laKpdSygW82PUrXjehM4cb/hS/r0GdysWPPIkFNQa+ScsULpTVApeRiiiihHtNdidK/4nBjY5SzZG+pFGEkQTiLGc4ukLJ4BJxOlUeCTEDxxMUA7NoZWs+KWZB60SCAbcJXNIuEzwV2RFGPTTJdeQ==
+X-HE-Tag: 1784889596-520542
+X-HE-Meta: U2FsdGVkX18HL1fQ3l7jEA3dHeK3eYfHjK1Fv0YgiJbgHGUxHafZb/INe8IANLAaBXJPHI3iYRP726eaFii12KKZ5cLjQ6feFncUIwyh6NZDF3zsO5HKArX1Nyz8BqYo9VqN6mpTuLAp7Fhikq9TMogSuoDk048zCSEKN1kSyvbdC8nsFGdnn5u97NNvjRCSYwRx/Qm1odj4JrKDzenDyrEEV5n035pX+gBotLZPF9G5k/aEjT+8Q0YFlup3253b+wS24y7GL8Uefa1Rm5y8ifmu5BApJIrlNJFHzuaz0KF6Z0ynUkH22UtMUgNcInNIfbQ2G/s1J5x9mzPnNBb13rM8RgfZXHAJvYNozJpHAL1nVURQXAP84Y3+idoN76ti501C6aPDZ3HhwfeBBrWLajOB4pby0haYHJyz0Sd7TFyooPjF6G+gD/2ZsnYZC4J9MXRTK+4G5tUbaZzcoRY/SduksMqw+mHR7HwyQgp4bDDm9oOaJnkPRAVyG4KczDdyJxrrReyRr2nv3LAX5iNskY12VZluQewvU0N8yGoB6jcwRBSJZXRoTqaweaCJ4E4mhIoLuwVkTDWC7CO//8TrZoAix7FA+6fqud4vK/Fj2vXxIxaXh1F0BVVlWpwdeZGdnyt5jjycfjhX7PAhWL1NkPcK9hX/1d5QTSTIT4nK8ATjpcHjtRlUxdNU6zjdpYO32+D9Cc+VVjg4hyr8k9H6dbuSxpbhiseqF/iFY/xYG2C/X2MaxO2ckrddTviRvrptqxkrGmswbgpTaDu0y4tSUUaE6F6E97nDz5Bw7h/7fEZXycDMn8JFr4OpiE0CPNLrpWNxlxGn9o0olwzsuoqhQOpqhG4Ivczj/PC/Pzeu3YOPPk3EQdfcMxu04Dnf3I5W9MAl0dEgJ9wl6TIeAEwn739kvP9F89Vta40S0cMy1g8FTplnAsO5nkAvMkA0BU8rvDODu9TwPCk1fxCA4XF
+ +NVAlleF
+ v0JZn5OPAkOUfWosvFLcJ8sUxFbD5EQnGyoRfKIrSBfANhwaz25CtgXIz4FTk9hY6foNMyZBlF1buo1wewge8U7Y+1OMM4XRy3Q17b4lc6OYzp+2Kklai3AvvLYnG4i+xP6tEPp3L4HDBcH/2Rjvv8yj+WQgezXX40PgW6N4tZegV8FOmx+mFohPiCDQnU3UGC4Ki06RwX8bsKb2sRm6tS0mMI6C2laO8m7bu0qh3d23IZqVe+xvFdsAG/m27FvFehcLytm7934u/um5vvIs6hx4g8fcMERyjkPZhYlDSTgYyDktU12P1rJtmbFFdE2wUEydeaT/Lf+7Ow00VmFm1mLtus/c6+Uk/nm5F3QXWLewr4EYuCEn0F8dsxU7LUR1kIQbI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,36 +93,361 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 22/07/2026 4:30 pm, Yeoreum Yun wrote:
-> The behaviour of pXdp_get() will change with generic compile-time folded
-> page tables. To prepare for that, replace passing the address of a stack
-> copy of a pXd to walk_pmd_range() with passing the pud pointer directly,
-> allowing folded entries to be ignored.
-> 
-> There should be no functional change.
-> 
-> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Probably my reviewed-by tag was lost in previous version. Posting here again:
+On Mon, Jul 13, 2026 at 05:00:45AM +0000, Dev Jain wrote:
+> Simplify try_to_unmap_one() by separating the hugetlb parts into
+> try_to_unmap_hugetlb_one().
 
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+I hate that we have this separate hugetlb stuff but while we have it,
+better to be explicit :)
+
+>
+> To understand the correctness of the refactoring, the following points
+> are noted:
+>
+> 1. try_to_unmap() is called for hugetlb folios only when they are
+>    hwpoisoned.
+>
+> 2. A hugetlb VMA cannot be mlocked.
+>
+> 3. page_vma_mapped_walk() returns at most one hugetlb mapping in a VMA,
+>    and that mapping points at the head PFN.
+>
+> 4. We won't ever process a softleaf entry that encodes a hugetlb folio;
+>    hugetlb folios are never swapped out, migration entries will be
+>    skipped (PVMW_MIGRATION not passed), and device-exclusive does not
+>    work for hugetlb.
+>
+> 5. The hwpoison entry is constructed from the poisoned folio, just as in
+>    the pre-refactor code. Any previous uffd-wp state is deliberately not
+>    preserved for the hwpoison entry.
+>
+> 6. TTU_HWPOISON is always present; for it to not be present, either the
+>    folio has to be in swapcache, or mapping_can_writeback() is true (see
+>    unmap_poisoned_folio), none of which is true for hugetlb folios.
+>
+> 7. Hugetlb uses separate counters from normal rss counters, therefore
+>    update_highwater_rss() need not be called.
+
+I wonder whether you could bundle some of this up into a comment around
+try_to_unmap_hugetlb_one()?
+
+>
+> While at it:
+>
+>  - Change VM_BUG_* to VM_WARN_*.
+>
+>  - Do not declare variables which are only used once.
+>
+>  - Constify some variables.
+>
+>  - Add some more VM_WARN_* to assert some invariants.
+>
+> Except the above 4 points, no functional change intended.
+>
+> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
+
+A bunch of nits but those addressed LGTM:
+
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
+Thanks very much for doing this is a big improvement!
 
 > ---
->  mm/vmscan.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 06e103f9781e..0c9c4ac89e09 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -3727,7 +3727,7 @@ static int walk_pud_range(p4d_t *p4d, unsigned long start, unsigned long end,
->  		if (!pud_present(val) || WARN_ON_ONCE(pud_leaf(val)))
->  			continue;
->  
-> -		walk_pmd_range(&val, addr, next, args);
-> +		walk_pmd_range(pud + i, addr, next, args);
->  
->  		if (need_resched() || walk->batched >= MAX_LRU_BATCH) {
->  			end = (addr | ~PUD_MASK) + 1;
-> 
+>  include/linux/hugetlb.h |   1 +
+>  mm/rmap.c               | 183 +++++++++++++++++++++-------------------
+>  2 files changed, 98 insertions(+), 86 deletions(-)
+>
+> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+> index 4115076e4922a..bf7e163e3779d 100644
+> --- a/include/linux/hugetlb.h
+> +++ b/include/linux/hugetlb.h
+> @@ -1271,6 +1271,7 @@ static inline void hugetlb_count_sub(long l, struct mm_struct *mm)
+>  }
+>
+>  pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr, pte_t *ptep);
+> +unsigned long huge_pte_dirty(pte_t pte);
+>
+>  static inline pte_t huge_ptep_clear_flush(struct vm_area_struct *vma,
+>  					  unsigned long addr, pte_t *ptep)
+> diff --git a/mm/rmap.c b/mm/rmap.c
+> index 2b74668f356d6..7720c49ada4c3 100644
+> --- a/mm/rmap.c
+> +++ b/mm/rmap.c
+> @@ -1978,6 +1978,96 @@ static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
+>  				     FPB_RESPECT_WRITE | FPB_RESPECT_SOFT_DIRTY);
+>  }
+>
+> +static bool try_to_unmap_hugetlb_one(struct folio *folio,
+> +		struct vm_area_struct *vma, unsigned long address, void *arg)
+> +{
+> +	DEFINE_FOLIO_VMA_WALK(pvmw, folio, vma, address, 0);
+> +	const unsigned long hsz = huge_page_size(hstate_vma(vma));
+> +	const enum ttu_flags flags = (enum ttu_flags)(long)arg;
+> +	struct mm_struct *mm = vma->vm_mm;
+> +	struct mmu_notifier_range range;
+> +	bool ret = true;
+> +	pte_t pteval;
+> +
+> +	/*
+> +	 * The try_to_unmap() is only passed a hugetlb folio in the case
+> +	 * where the hugetlb folio is poisoned.
+> +	 */
 
+I wonder if the function should be try_to_unmap_poisoned_hugetlb_one() as a
+result?
+
+> +	VM_WARN_ON_FOLIO(!folio_test_hwpoison(folio), folio);
+
+NIT: Should be VM_WARN_ON_ONCE_FOLIO() for consistency with below and to avoid
+repeated warnings?
+
+> +	VM_WARN_ON_ONCE(!(flags & TTU_HWPOISON));
+> +
+> +	range.end = vma_address_end(&pvmw);
+> +	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, vma->vm_mm,
+> +				address, range.end);
+> +	adjust_range_if_pmd_sharing_possible(vma, &range.start, &range.end);
+> +	mmu_notifier_invalidate_range_start(&range);
+> +
+> +	/* There is only a single mapping in a VMA. */
+> +	if (!page_vma_mapped_walk(&pvmw))
+> +		goto range_end;
+> +
+> +	VM_WARN_ON_ONCE(address != pvmw.address);
+> +
+> +	pteval = huge_ptep_get(mm, address, pvmw.pte);
+> +	VM_WARN_ON_ONCE(!pte_present(pteval));
+> +	VM_WARN_ON_ONCE(pte_pfn(pteval) != folio_pfn(folio));
+
+I guess no TTU_SYNC is possible for hugetlb poison unmap?
+
+> +
+> +	/*
+> +	 * huge_pmd_unshare may unmap an entire PMD page. There is no way of
+> +	 * knowing exactly which PMDs may be cached for this mm, so we must
+> +	 * flush them all. start/end were already adjusted above to cover this
+> +	 * range.
+> +	 */
+> +	flush_cache_range(vma, range.start, range.end);
+> +
+> +	/*
+> +	 * To call huge_pmd_unshare, i_mmap_rwsem must be held in write mode.
+> +	 * Caller needs to explicitly do this outside rmap routines.
+> +	 *
+> +	 * We also must hold hugetlb vma_lock in write mode. Lock order dictates
+> +	 * acquiring vma_lock BEFORE i_mmap_rwsem. We can only try lock here and
+> +	 * fail if unsuccessful.
+> +	 */
+> +	if (!folio_test_anon(folio)) {
+> +		struct mmu_gather tlb;
+> +
+> +		VM_WARN_ON(!(flags & TTU_RMAP_LOCKED));
+
+VM_WARN_ON_ONCE()?
+
+> +		if (!hugetlb_vma_trylock_write(vma)) {
+
+How I hate that hugetlb calls their lock a 'VMA lock'...
+
+> +			ret = false;
+> +			goto walk_done;
+> +		}
+> +
+> +		tlb_gather_mmu_vma(&tlb, vma);
+> +		if (huge_pmd_unshare(&tlb, vma, address, pvmw.pte)) {
+> +			hugetlb_vma_unlock_write(vma);
+> +			huge_pmd_unshare_flush(&tlb, vma);
+> +			tlb_finish_mmu(&tlb);
+> +			/*
+> +			 * The PMD table was unmapped, consequently unmapping
+> +			 * the folio.
+> +			 */
+> +			goto walk_done;
+> +		}
+> +		hugetlb_vma_unlock_write(vma);
+> +		tlb_finish_mmu(&tlb);
+> +	}
+> +	pteval = huge_ptep_clear_flush(vma, address, pvmw.pte);
+> +	if (huge_pte_dirty(pteval))
+> +		folio_mark_dirty(folio);
+> +
+> +	pteval = swp_entry_to_pte(make_hwpoison_entry(folio_page(folio, 0)));
+> +	hugetlb_count_sub(folio_nr_pages(folio), mm);
+> +	set_huge_pte_at(mm, address, pvmw.pte, pteval, hsz);
+> +	hugetlb_remove_rmap(folio);
+> +	folio_put_refs(folio, 1);
+
+Do we want an assert here somehow that we are only walking one folio?
+
+> +
+> +walk_done:
+> +	page_vma_mapped_walk_done(&pvmw);
+> +range_end:
+> +	mmu_notifier_invalidate_range_end(&range);
+> +	return ret;
+> +}
+> +
+>  /*
+>   * @arg: enum ttu_flags will be passed to this argument
+>   */
+> @@ -1993,7 +2083,6 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+>  	enum ttu_flags flags = (enum ttu_flags)(long)arg;
+>  	unsigned long nr_pages = 1, end_addr;
+>  	unsigned long pfn;
+> -	unsigned long hsz = 0;
+>  	int ptes = 0;
+>
+>  	/*
+> @@ -2007,8 +2096,6 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+>
+>  	/*
+>  	 * For THP, we have to assume the worse case ie pmd for invalidation.
+> -	 * For hugetlb, it could be much worse if we need to do pud
+> -	 * invalidation in the case of pmd sharing.
+>  	 *
+>  	 * Note that the folio can not be freed in this function as call of
+>  	 * try_to_unmap() must hold a reference on the folio.
+> @@ -2016,17 +2103,6 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+>  	range.end = vma_address_end(&pvmw);
+>  	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, vma->vm_mm,
+>  				address, range.end);
+> -	if (folio_test_hugetlb(folio)) {
+> -		/*
+> -		 * If sharing is possible, start and end will be adjusted
+> -		 * accordingly.
+> -		 */
+> -		adjust_range_if_pmd_sharing_possible(vma, &range.start,
+> -						     &range.end);
+> -
+> -		/* We need the huge page size for set_huge_pte_at() */
+> -		hsz = huge_page_size(hstate_vma(vma));
+> -	}
+>  	mmu_notifier_invalidate_range_start(&range);
+>
+>  	while (page_vma_mapped_walk(&pvmw)) {
+> @@ -2111,66 +2187,13 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+>  			const softleaf_t entry = softleaf_from_pte(pteval);
+>
+>  			pfn = softleaf_to_pfn(entry);
+> -			VM_WARN_ON_FOLIO(folio_test_hugetlb(folio), folio);
+>  		}
+>
+>  		subpage = folio_page(folio, pfn - folio_pfn(folio));
+>  		anon_exclusive = folio_test_anon(folio) &&
+>  				 PageAnonExclusive(subpage);
+>
+> -		if (folio_test_hugetlb(folio)) {
+> -			bool anon = folio_test_anon(folio);
+> -
+> -			/*
+> -			 * The try_to_unmap() is only passed a hugetlb folio
+> -			 * in the case where the hugetlb folio contains a
+> -			 * poisoned page.
+> -			 */
+> -			VM_WARN_ON_FOLIO(!folio_test_hwpoison(folio), folio);
+> -			/*
+> -			 * huge_pmd_unshare may unmap an entire PMD page.
+> -			 * There is no way of knowing exactly which PMDs may
+> -			 * be cached for this mm, so we must flush them all.
+> -			 * start/end were already adjusted above to cover this
+> -			 * range.
+> -			 */
+> -			flush_cache_range(vma, range.start, range.end);
+> -
+> -			/*
+> -			 * To call huge_pmd_unshare, i_mmap_rwsem must be
+> -			 * held in write mode.  Caller needs to explicitly
+> -			 * do this outside rmap routines.
+> -			 *
+> -			 * We also must hold hugetlb vma_lock in write mode.
+> -			 * Lock order dictates acquiring vma_lock BEFORE
+> -			 * i_mmap_rwsem.  We can only try lock here and fail
+> -			 * if unsuccessful.
+> -			 */
+> -			if (!anon) {
+> -				struct mmu_gather tlb;
+> -
+> -				VM_BUG_ON(!(flags & T][\TU_RMAP_LOCKED));
+> -				if (!hugetlb_vma_trylock_write(vma))
+> -					goto walk_abort;
+> -
+> -				tlb_gather_mmu_vma(&tlb, vma);
+> -				if (huge_pmd_unshare(&tlb, vma, address, pvmw.pte)) {
+> -					hugetlb_vma_unlock_write(vma);
+> -					huge_pmd_unshare_flush(&tlb, vma);
+> -					tlb_finish_mmu(&tlb);
+> -					/*
+> -					 * The PMD table was unmapped,
+> -					 * consequently unmapping the folio.
+> -					 */
+> -					goto walk_done;
+> -				}
+> -				hugetlb_vma_unlock_write(vma);
+> -				tlb_finish_mmu(&tlb);
+> -			}
+> -			pteval = huge_ptep_clear_flush(vma, address, pvmw.pte);
+> -			if (pte_dirty(pteval))
+> -				folio_mark_dirty(folio);
+> -		} else if (likely(pte_present(pteval))) {
+> +		if (likely(pte_present(pteval))) {
+>  			nr_pages = folio_unmap_pte_batch(folio, &pvmw, flags, pteval);
+>  			end_addr = address + nr_pages * PAGE_SIZE;
+>  			flush_cache_range(vma, address, end_addr);
+> @@ -2205,20 +2228,11 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+>  		/* Update high watermark before we lower rss */
+>  		update_hiwater_rss(mm);
+>
+> -		/*
+> -		 * With TTU_HWPOISON, we only expect small folios or hugetlb
+> -		 * folios here for now.
+> -		 */
+> +		/* With TTU_HWPOISON, we only expect small folios here. */
+
+I mean you can further simplify the simplified version this way :)
+
+>  		if (folio_test_hwpoison(folio) && (flags & TTU_HWPOISON)) {
+>  			pteval = swp_entry_to_pte(make_hwpoison_entry(subpage));
+> -			if (folio_test_hugetlb(folio)) {
+> -				hugetlb_count_sub(folio_nr_pages(folio), mm);
+> -				set_huge_pte_at(mm, address, pvmw.pte, pteval,
+> -						hsz);
+> -			} else {
+> -				dec_mm_counter(mm, mm_counter(folio));
+> -				set_pte_at(mm, address, pvmw.pte, pteval);
+> -			}
+> +			dec_mm_counter(mm, mm_counter(folio));
+> +			set_pte_at(mm, address, pvmw.pte, pteval);
+>  		} else if (likely(pte_present(pteval)) && pte_unused(pteval) &&
+>  			   !userfaultfd_armed(vma)) {
+>  			/*
+> @@ -2346,11 +2360,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+>  			add_mm_counter(mm, mm_counter_file(folio), -nr_pages);
+>  		}
+>  discard:
+> -		if (unlikely(folio_test_hugetlb(folio))) {
+> -			hugetlb_remove_rmap(folio);
+> -		} else {
+> -			folio_remove_rmap_ptes(folio, subpage, nr_pages, vma);
+> -		}
+> +		folio_remove_rmap_ptes(folio, subpage, nr_pages, vma);
+>  		if (vma->vm_flags & VM_LOCKED)
+>  			mlock_drain_local();
+>  		folio_put_refs(folio, nr_pages);
+> @@ -2398,7 +2408,8 @@ static int folio_not_mapped(struct folio *folio)
+>  void try_to_unmap(struct folio *folio, enum ttu_flags flags)
+>  {
+>  	struct rmap_walk_control rwc = {
+> -		.rmap_one = try_to_unmap_one,
+> +		.rmap_one = folio_test_hugetlb(folio) ?
+> +				try_to_unmap_hugetlb_one : try_to_unmap_one,
+>  		.arg = (void *)flags,
+>  		.done = folio_not_mapped,
+>  		.anon_lock = folio_lock_anon_vma_read,
+> --
+> 2.43.0
+>
+
+Cheers, Lorenzo
 
