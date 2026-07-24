@@ -4,125 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97D59C531FA
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 10:21:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76AA4C531FC
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 10:22:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A1CE86B0099; Fri, 24 Jul 2026 06:21:04 -0400 (EDT)
+	id 4EF8F6B00A0; Fri, 24 Jul 2026 06:22:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F5C46B009B; Fri, 24 Jul 2026 06:21:04 -0400 (EDT)
+	id 4C6FC6B00A1; Fri, 24 Jul 2026 06:22:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E6E36B009D; Fri, 24 Jul 2026 06:21:04 -0400 (EDT)
+	id 390A56B00A2; Fri, 24 Jul 2026 06:22:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 609FC6B0099
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 06:21:04 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E846FA1096
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 10:21:03 +0000 (UTC)
-X-FDA: 85023277206.05.D896E4D
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 05556140002
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 10:21:01 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=lxuT+V3N;
-	spf=pass (imf26.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 074B36B00A0
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 06:22:14 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8AC741402F2
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 10:22:14 +0000 (UTC)
+X-FDA: 85023280188.08.555ED36
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	by imf17.hostedemail.com (Postfix) with ESMTP id AC5AD4000A
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 10:22:12 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=fb+lMHDO;
+	spf=pass (imf17.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784888462;
+	s=arc-20220608; t=1784888532;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OHv4nBZUAA4QHT3/Nk9dUVsgZ03YSj5oD2kL/0soAWU=;
-	b=ccUWbXSXvw0m7NklwI9OEtnRNdlifFfMUPtYyUIgch1Hg3NDWpVyf5EIv0iC5mwefIt1u/
-	/jb1RXksMiXnfV+T2fqQy8+c72H2LQqAFeeQZ2kH3QDHCKNtYUVSL5LgiP2RfG7QdOWFsu
-	ZtyJpFTcqhHF96WLwyFsm8z/AtmMzT8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784888462;
-	b=iN+ALaL3Lh66fPn6Dd/yrTsFhayJp6wxs9jrVS5QmFGCtOtW414DHBn2bgs9RP3SRpvjY2
-	hZdUWGevJphm+D4JosfHcoBRwtO72Fd5JbzilCQ+9SPur3QCzKBESPpzKjQxbDczHJk2K+
-	9Qbsy80Y2OsFQwUrZ07N2OwUwoA2/kA=
+	bh=PjEtanJscU+kRHtICYaoHdn0dLIQ0TxUX75oiJzMbAk=;
+	b=yMW1X8woZeztxpUYYbtsxZn3087mRqXiq7mdZ9uI5QLlwBZ2RCdvXIpXq7x2zNq+HwLB0n
+	Lp+hBrDam4RqgwUhM8f7qwn5FvVGBH/btgE8tyV3/M8LpHaLE0qE1MKuaja4n+99uib8cY
+	EYLl2ExqRd3dIIh0pKwdIiPUh3GKE2k=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=lxuT+V3N;
-	spf=pass (imf26.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=fb+lMHDO;
+	spf=pass (imf17.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2cc7e86e7aeso2790825ad.2
-        for <linux-mm@kvack.org>; Fri, 24 Jul 2026 03:21:01 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784888532;
+	b=i9fIeYIAKrY/un/LTO/hRzveNjIi/U9BYR8bg7r4xfNMa2xyg2kX/PMcVN/pDCHzVp47wr
+	05juwV26fAvXZfPul8Rw7kL3F1TjsFnagQBQB7pIWJHXc4Wb25JX6eaHi00+HFtywqAcg5
+	LDzPQKlzAgDx67ut4fA7ku7nVsiQDhw=
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-84830c774a0so190473b3a.1
+        for <linux-mm@kvack.org>; Fri, 24 Jul 2026 03:22:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784888461; x=1785493261; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1784888531; x=1785493331; darn=kvack.org;
         h=content-transfer-encoding:content-type:in-reply-to:from:references
          :cc:to:subject:user-agent:mime-version:date:message-id:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=OHv4nBZUAA4QHT3/Nk9dUVsgZ03YSj5oD2kL/0soAWU=;
-        b=lxuT+V3NWFrVOxHtneiozOXTqTC2Q8ZI+Z07TxO4cA82zq9ZMZ22FDfh4JSizTyRoO
-         Wq82yvxgGT4FdpYZAWkVauGBeyAyxwikdn8ms09jveM4/aXNdpr9MVktr7CMZ7K+IGY2
-         sDg5IqNt4EkttJ+xvRrpWZRT+8GSsN2zIKPEEEQjBiPXcp4bwA3auLhvp4GXvSyCKMb1
-         zRGS3nOT1ej6IQjNNRKwwMR5C2jXFkB+hbxF8E2PpBTPXwQS1qpPqO8YCC0waJqPoi6o
-         1SdlzNpJxci/bOVyXsbo9jlu2ZeTpeJy3ehX1lA0HFMEZ54JaOJDQsLzxfwJrteVAZmC
-         qRkg==
+        bh=PjEtanJscU+kRHtICYaoHdn0dLIQ0TxUX75oiJzMbAk=;
+        b=fb+lMHDOAuL8y5pnOjlNlV19d0Ag6KWQiiA/li/Hk2rEGiCOaT0ZJvhBzQuN6e/pGl
+         GmDJJ2d0RWWejiMSjyMd5r7EN0E/dUI/1Fe0FpJSeCQ6F5YYXZZ1hfFa/7F2U47XTT9H
+         hsEythGZZnvvm33/ZFDhodpEVxgj1l87s3Nb8a4WbZ/miedYnV1Zgu9tNiF8U6b3PhsW
+         3+jmLdarHtsQ37+Os/DYrfn1DQi65qRoxENceXCIcz79/teNow43anXZpgovZxp5rkza
+         T0ORs++QgcLhXYz4bsTj0bV2YTaBbY6NeJ+UAj+PLF9jZ+P3rQuAN7kYd/yyzIonDa5R
+         E60g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784888461; x=1785493261;
+        d=1e100.net; s=20251104; t=1784888531; x=1785493331;
         h=content-transfer-encoding:content-type:in-reply-to:from:references
          :cc:to:subject:user-agent:mime-version:date:message-id:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=OHv4nBZUAA4QHT3/Nk9dUVsgZ03YSj5oD2kL/0soAWU=;
-        b=asYzw+67+OZqVxRqwNdlRR3fCqaSdC3cnI/OJ9KywG75fHFb8JxywY/XH3cYCNZhwq
-         C8KR3mcCjpDS8JnQ51uY0PX5NUJiKPLzITeYTNOl/4xVN1iiwaiAOPF9EAiF9ZMN6Yzb
-         AXeOg+FS7+ver2aJqnkQCb1//3pUWsz1aD8rNBXI3N+XYW+1gMTubjPPddIIAkiaDjPq
-         syp4FWVhFV0F6iBIdj9Vkll9+tFIi7iqJuWxdsCPFWdrM5fKyA62rXUMmySnxYaYZUJe
-         UAbTzajAoJgLyI+NVEpG+trn6TanFKG6g6VAchhQ18uag9lGyjRaXHtiPXJffJkSn60s
-         cGkg==
-X-Forwarded-Encrypted: i=1; AHgh+Rp3qy8CtS6oxFoIiiPfgMDXU86akq8cIqp1U8PRUKf0XHoWVlN8Xa025mx5nQZLFWo6DryyffUs5g==@kvack.org
-X-Gm-Message-State: AOJu0Yy3fkyMBDpsAPT1CqEdWBQyK7VYBKJ32gkJZCe4tDMFaETNbZqs
-	jY4M5fzfSCsX3JPpqQ9jdpPWEvYbmtTeD0FO95/q4gMBxsc0chS9vRxJ
-X-Gm-Gg: AR+sD13B9uPLiWUGFGjsqLTsesN4fu76iDLvpqivSMFKwUSggRkH1+cEekkI6fMgy04
-	VySXl5wZllrc/2vCXpr7KzndTE0BfnSA/GKFdexlKt9t7gLOO3AfZVWtu36+etQlp3nplD3bBcK
-	TDRHHTSbF5g3I6GobErGPDEbZPuk2Jc+4+XCsDRyMshQq/2cGrLHnVY2TXuokhM60jtdOK8ZdJE
-	p5DE07c7aiQqhjTdc1A4FJzSK13RLfWiLtmZGiprBBMG0L+3wkEg3D7xihw6jQDKpG0KmFvVnrb
-	1QWoz3P9l6GcTIoCAVv/zIIvHY1brT/hF4tbhHe4xPH6R9Xf83YuWDj4+OcPfeW1VT5bxLkWgKn
-	dfeGYWV5VMfbxBOi8UPcuRaQhnvundLQMCP/Tpr/SQ4Vg954iCt1Av1Jiv9GIddsSfioQ+dsjz7
-	Fk3lqV9UCvw2rNCxPetaBelQ==
-X-Received: by 2002:a17:903:2f88:b0:2cf:bf32:b754 with SMTP id d9443c01a7336-2cfbf32bf7amr33103845ad.8.1784888460802;
-        Fri, 24 Jul 2026 03:21:00 -0700 (PDT)
+        bh=PjEtanJscU+kRHtICYaoHdn0dLIQ0TxUX75oiJzMbAk=;
+        b=T/1T6gPCPrNtiP+23N7DVeWn8dQOCzWwQaAdq8McQjSTSXynqnkwZO6C2qgUB5XeZh
+         7nRUoRvh58f5JGHM4d28Zb0sxJ8C5c0M5yaJFXOmZujE+s3QrBkQXJSj+JTl5gHn1bp+
+         trtR4DaDZeo1zmleYDtE8ly6q7dIeVeDBed0A0g7UjZPtCYDJtbb7SFYqC990nANttF7
+         6d+b5cLo4pHCsAk/ocGdTP+R+ChCfK4WCZ8FWg7ZpuQF6GrpYG4wnj1r1Ytybsu5hTCs
+         S3POGX5+kMFswuKIAdSt1+w6lwUw4D6gEvKbU5PQYTcGD5PgKg2s1LqYsPAAWyKtQauA
+         fL/A==
+X-Forwarded-Encrypted: i=1; AHgh+RpPh60IX6iJjJZzZMgp73fhWMpkUclMlg9xfsTFfTjUf1crN375/zG0qWFc6aXIf7KWKMSDjW9Xsw==@kvack.org
+X-Gm-Message-State: AOJu0Ywl7qZC6H3SUwluAb269RG8Ah174szkwm2bLQW4WRUrvZ8bQ6JD
+	aGGoWKkWfxi/vQNZ9U7bEpjjGX4q5QPt3yPIz7JSBe7LhnIQzyzKjzv5
+X-Gm-Gg: AR+sD10PEXnIl9W7i3xoig4Viv2zh5bgRIPeHSuIAmRCoUVSCcEn3f9RO2H6zoR+0fx
+	arKlFaG/8VxmH1etn0QVMrHxdnRo8LstPDTFvTmKQcecJLyTWD+MFrJOdmLZyvEab7x0UM8a6uq
+	QlsHXeROWQcUfDRsiZvpkNBqoAXgtEnniKzAgPIRfLvPG95jmJV3ZdLAxqVgXUKzKx15fsvet9d
+	Suq8diAOPR2/MrgTDHrxffT+GdA+Dx5hk/5Uaw+bgYk2NcY1XfyjSGhK5bp+oSTUAjrQDwo7gQz
+	U2q0qaAwq1RfndjmPzC1oTlvvXLDTJjzce04oz0JAYJdrDSEYO9Fa0iKY0SbfOxOo4kRFyigHKB
+	htiZI9owwzUzcOZw4TIOxKcYPlXqH9EDC+Kc6Do2nPWQ4zdcC/lrgslBiE1ppQQnbV5VRyy9V6K
+	gQXHFeyQ+sbEKKODGbWyeJew==
+X-Received: by 2002:a05:6a00:ab83:b0:848:65fa:542 with SMTP id d2e1a72fcca58-84e2bbba2b5mr7126501b3a.53.1784888531583;
+        Fri, 24 Jul 2026 03:22:11 -0700 (PDT)
 Received: from [10.125.192.96] ([210.184.73.204])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf8efa2cd0sm48812475ad.4.2026.07.24.03.20.53
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e17573c0esm4486650b3a.38.2026.07.24.03.22.03
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 24 Jul 2026 03:21:00 -0700 (PDT)
-Message-ID: <d8de419d-0077-c47c-a5f1-37c229a853ed@gmail.com>
-Date: Fri, 24 Jul 2026 18:20:50 +0800
+        Fri, 24 Jul 2026 03:22:11 -0700 (PDT)
+Message-ID: <2e61a4e1-20ed-4fe0-158c-5a9d060ce01a@gmail.com>
+Date: Fri, 24 Jul 2026 18:22:00 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH v2 2/2] mm/zswap: Support batch writeback in
- shrink_memcg()
-To: Yosry Ahmed <yosry@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>
-Cc: akpm@linux-foundation.org, tj@kernel.org, shakeel.butt@linux.dev,
- mhocko@kernel.org, mkoutny@suse.com, nphamcs@gmail.com,
- chengming.zhou@linux.dev, muchun.song@linux.dev, roman.gushchin@linux.dev,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+Subject: Re: [PATCH v2 0/2] mm/zswap: Fixes and improves the zswap global
+ shrinker
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, nphamcs@gmail.com,
+ tj@kernel.org, hannes@cmpxchg.org, shakeel.butt@linux.dev,
+ mhocko@kernel.org, mkoutny@suse.com, chengming.zhou@linux.dev,
+ muchun.song@linux.dev, roman.gushchin@linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
  Hao Jia <jiahao1@lixiang.com>
 References: <20260717085151.22822-1-jiahao.kernel@gmail.com>
- <20260717085151.22822-3-jiahao.kernel@gmail.com>
- <amF7_GB5Rl6OJmt4@cmpxchg.org>
- <CAO9r8zPaUPddYoLz8o+g+xkb-zdkfyB+LqaDOrkzqFSePEV-xA@mail.gmail.com>
- <amIdU1lFxqxTI3Gc@cmpxchg.org>
- <CAO9r8zPepaekOgaDaVBWyB_F05Ezvz+AJZ8M5+NGQ4BmiJNBkQ@mail.gmail.com>
+ <20260717181839.c94d0335ccef0084707d3d85@linux-foundation.org>
+ <CAO9r8zOrXqsEaCEJUUAxbAhhN_OQb8ejogeUa6k8hX_JV8hxxw@mail.gmail.com>
+ <20260717214031.8b22e9a37ea3b0c564b466f0@linux-foundation.org>
+ <7dbde343-fbbf-6a1d-1785-ebf9f5a04f6b@gmail.com>
+ <0a96b7ec-0d8d-2abd-afaa-739c562bc985@gmail.com>
+ <CAO9r8zO6AsdZZWoYibAj6urMxgM3eq4bg9JDhr443UZONPF_6Q@mail.gmail.com>
 From: Hao Jia <jiahao.kernel@gmail.com>
-In-Reply-To: <CAO9r8zPepaekOgaDaVBWyB_F05Ezvz+AJZ8M5+NGQ4BmiJNBkQ@mail.gmail.com>
+In-Reply-To: <CAO9r8zO6AsdZZWoYibAj6urMxgM3eq4bg9JDhr443UZONPF_6Q@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: qt8xio6qb9tccqtc7bfs9esis1zs7xxt
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 05556140002
-X-HE-Tag: 1784888461-86482
-X-HE-Meta: U2FsdGVkX1/Rk09B0NORDrrXS0V5mJSFd4xqaI4d8C4EEQ8Tr6F0MaDcVMdjSg2rZ6iMaPE6iKefrp/nRXF+sIDcOBrcquEkW/9TWAB8E/2Seo6BaTRt2+TAilUG+dLnfz0kPrli2wzvm0q7nGvIt3TSyUFqMJOVuCwEuYzQxNc6ezWndmgtLCuSffhbYPl4LL0TY4+NuSgbPIGRN553NnN/7iPb+dzGLNNATHP+ovQgyzw6Iymt/AryCMvcl7oyKB2wvCIqCGFjhbiH7qvECqRhjpjaRRX0gTsnmcfmQTlmNq9fBkaZVNQ5Tpv2nI0EHiEXt5FI3/QIoBqnXRZhazPo4roCDB94lR07TdbLDtk6xHf6Pmnnk2x8HXWN0tXEzMg0k6JSOGNFjd+hkcWWD3MrxlyhXVuDYmGbhvbOfJWbZXuj5sZO/aWP9dzSVF1KEbeFtRd88Wm8md99cl6lIYLZDQY06a7+GUkazB2PIvLMrIAkIfKQa2SuG3reLyfUa2UcDJPr24kRQ7m4TcY5JVl0UlfR3e8huVjWXX4NSfFwJ1r12L8dVpErtbKqKNUiWEPRbdBjpO8IfwtFa7IpKJ6J+cB4QO29FdrECoPtdngcEE+7fg4BkFO4mDclLnShRl1IeKVIyTZeSWm6OhIbl583lYwZBEoy3+c+IP1uFScUMfXVEzIAimTZLvUSWI9NVBurjVmfESzwm8zf4h/hZg2cZglfnUTgHsWeFz2Qm55PfprGyw/y1A9xxx7j5uw59r5sNnZSYn/KmY8hZNWZ4rjXBQ8/Dj4vFJ+UOahVxwH9IV/sCwHYGFQ/dtZRX101t46N/QPihporOu0By054gW9bXckby9PIjOJvXioVipWI4PmC5jLO0oe2xNPX//ucSoCtbK59eFLP/zvs1Vrx1q/DfVfF9/hsHlZI9wAwf5hMpCEhajo2Vw7WdEJSMnQx8WvfDtkhfiM8yngZYIh
- 0EE3Rv3a
- csCXd+TqC+D8KWVYmL86uPsz/7cBtzLQWtzwnsALhmUT8A8XqJXOaQ4BU7l9GcnHTT3P5ILtMApkHHThNI2sV3P6KHHv4n2RjA+al96GWXJyFrh8jKeuSWQDgX4RodN3XURbu263yQ9iANwUgM9B5uB4FQjF49LAnxUbVlc7DqgUzSibQ7JV1PTzuW0mpICe/Wqb8CXW1gpVcqQLHbN5spUjNSSmv5y/87+rsoLn667+dzj3utBIgbKJ4IF2aa76XUmmP6BN+/I25LxJ9ORC8ioN4AJ8O3aUpZg+sWZMjAHg0MDjSFeGPS6a13izjuaqXvA0vZP8sIC2g7mGWYi76KLQKfwZdnM6YP5UN3iESMrBlmBAlwQSdExTsG4Ziwr0xS+XOGTywN+oonlL2oCMOD6LZnrXo2vMz63+QMdD6m1h5a/Uym/lHikAuFJEdAJ9BQP8rm3FLaopgtf9z5yxtapCyUwzxohMjrDbiXTEMXqq+S4wplSwa1XtvPijeV1oHpQETg39US8WAnp78q9faI5JMz88K4dnPuVNJQtN9OfLVKMfqK96cEFom+eRNVK9Y+zjJ
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: AC5AD4000A
+X-Stat-Signature: ts97iapnpj7wrgtxqh3ia9fzbaps5f7b
+X-HE-Tag: 1784888532-726037
+X-HE-Meta: U2FsdGVkX1/CJkhlaE4ueqglde810/InCKMCvPtM7+qIVua7UW/kjnbdsOp1q5LnpIP4w/viB9kHJBibdfEojI1Kr+05stsVCoSwkALwpKQbo4LByNC58Fk7DexkP1F+yqgTohB2XFeuQxz0BVBB12QiVgJiPSqdvB+r79h5Zib45Gtj3tGcmKLzvTZIH3Kq4VBf8KiMhPGT4OwqENWDqcMB0f9dSYebivTj9p3bfR/ufKhU5d2JQxM4lPf/GnT8RKhxB06gZKyKeyXQGyNWzkCbEnxKwghBgObRrp3tA4nxSUsRKMTXLE/8QCdH416f/jjGplnqXB7vn21+jks7DJy8UlnjUIJW2wPdcxxWvQSadxVx4vHkuv30JukIatXwbhnGI81hRvad9DSwDnbTG+GsRlKUUc6XSFB1HrWPlGCFgcvDIWH4A8rn6lJ88dEggam/4O1US/1okaPxTCoVNy0qnknmpNbkynXsowxpXaOGxCAs4pOrGCap0kDgh1fcbjsqzrixyNnzXDafk0xKUTO/0DVOzWn18IrThLuM/vCrPCUxlimc6rLuh8gGHCUtbVUpzohPjsDSXcIxjy7ZnABMnw0rowRpgxTUJ0Z5IQSu83hXeSkO9SPE50MmlVW8/CfQPSbk6YI54ZIsy4YycVXjIJV4Soe4FarOiAUvBaLkMZp7alIpn3EjIWu995pxnAmTejGWqJq5J6xVZsi+a032S8ndq6odArDnfuoimfTtSylH95Tp8OPvtitymyIv0vyPcFI42TI7RebWgj/qK00Qr3I2M6HKlfjbT6oVZUyBYpX6pd0UHsT1RUoMFgTQWKXkKbSsh9xekOGO1Hwfo4taLn5TkP0Qq8wOjygT+Gj3vRxH2bOxaiyBFV0Z/H/MX3cdN87DmXgTyu7Ey1WX9E7+b8QRxhN1aq0Idxt8qViYnxW+rRkua4NSP4hrZPevxu7jwAZL4MqReYDOQKN
+ afldR0uU
+ oM8lxgsv25K95aoSAH7TVSobPS0G8R+npQC4dPHXeO/DpN0gJlaOhTYKrgG0f3NzdsZsZ4L8/W35/l8cSO63RNfAbPrO5P5nDlb0reYVPI+4rEsIqOZxUbJiBGXdj29hVJfLqiI8jMjNt6tz3zUFcCl+YmBXScMtmkfv2nSB1DPrFYmUmighofdlT7rY5XM7uReWzujtAuiGQqWi7MMLTUj4ATMYearYv4c1kT5HPyZi4DszagKxZMQ1FZwEDyjJNf+em7Hyp77jvxFDtTv0TjLGjNvXQkEN2vatWg7cZtlLaDntjvCOVVZvfVYg6FwqiUF0GzhMMa19fdr/dNDdJbnpKPcgEhh2ecrW0PrIwZMZgKfgpSLb5lkN7Pz5Qs/tFODUMiG3XDaz0HcIC3QR0Kmkds+7/6HiktKK3WLlTFQq12IE6LaiVAhnBLUiLCAFoNN1AxaZI4BjSgg2Vv0iyVH+Z4OK9r0yK07UBWIEJJRS8RHqrAPJofV6o8e2e/UWGnjJV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,85 +134,53 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 2026/7/24 00:39, Yosry Ahmed wrote:
-> On Thu, Jul 23, 2026 at 6:55 AM Johannes Weiner <hannes@cmpxchg.org> wrote:
+On 2026/7/23 12:49, Yosry Ahmed wrote:
+> On Wed, Jul 22, 2026 at 6:21 PM Hao Jia <jiahao.kernel@gmail.com> wrote:
 >>
->> On Wed, Jul 22, 2026 at 09:52:18PM -0700, Yosry Ahmed wrote:
->>> On Wed, Jul 22, 2026 at 7:27 PM Johannes Weiner <hannes@cmpxchg.org> wrote:
+>>
+>>
+>> On 2026/7/20 09:26, Hao Jia wrote:
+>>>
+>>>
+>>> On 2026/7/18 12:40, Andrew Morton wrote:
+>>>> On Fri, 17 Jul 2026 18:28:04 -0700 Yosry Ahmed <yosry@kernel.org> wrote:
 >>>>
->>>> On Fri, Jul 17, 2026 at 04:51:51PM +0800, Hao Jia wrote:
->>>>> @@ -1369,7 +1402,7 @@ static void shrink_worker(struct work_struct *w)
->>>>>                        goto resched;
->>>>>                }
+>>>>>>
+>>>>>> The [1/2] changelog lacks a description of how the flaw impacts users.
+>>>>>> Please describe this fully and maintain that info within the
+>>>>>> changelogging.  This info helps -stable maintainers and others
+>>>>>> understand why we're proposing a backport and helps myself and others
+>>>>>> with timing decisions.
 >>>>>
->>>>> -             ret = shrink_memcg(memcg);
->>>>> +             ret = shrink_memcg(memcg, NR_ZSWAP_WB_BATCH);
->>>>>                /* drop the extra reference */
->>>>>                mem_cgroup_put(memcg);
->>>>>
->>>>> @@ -1493,7 +1526,7 @@ bool zswap_store(struct folio *folio)
->>>>>        objcg = get_obj_cgroup_from_folio(folio);
->>>>>        if (objcg && !obj_cgroup_may_zswap(objcg)) {
->>>>>                memcg = get_mem_cgroup_from_objcg(objcg);
->>>>> -             if (shrink_memcg(memcg)) {
->>>>> +             if (shrink_memcg(memcg, 1)) {
+>>>>> The first line in the changelog should be sufficient imo: "Zswap
+>>>>> writeback on hitting the pool limit is broken when memory cgroup is
+>>>>> disabled"
 >>>>
->>>> Why 64 for the global limit but only 1 for the cgroup limit? That
->>>> seems arbitrary in multiple ways.
+>>>> "broken"?  Perhaps this means "fails to occur".
+>>>>
+>>>> But what is the userspace-visible impact?  IOW, why are we proposing a
+>>>> backport?
+>>>>
 >>>
->>> I suggested that we keep the writeback here without batching and do
->>> that change separately, mainly out of abundance of caution as
->>> writeback is done synchronously here so the extra latency could be
->>> problematic. I think we probably want to measure the performance
->>> impact of that separately.
+>>> Perhaps the first paragraph of the commit1 message could be modified as
+>>> follows? I have added a description of the issues that occur without
+>>> this patch.
 >>>
->>> That being said, this path is potentially too expensive anyway due to
->>> the flush, but I would rather we do some basic measurements before
->>> batching here.
->>>
->>> What do you think?
 >>
->> It's not an unknown, right? We know this works for direct reclaimers,
->> cgroup limit reclaim e.g., and what the latency implications are.
->>
->> Because of how reclaim works, we also know it'll call zswap_store() in
->> batches of SWAP_CLUSTER_MAX. If we don't batch here, they're likely to
->> each call shrink_memcg() once we're at the limit - while still risking
->> rejections due to compressibility differences.
->>
->> My worry is that if we start with an inconsistency, we'll be stuck
->> with it for a long time.
->>
->> I'd rather start with the clean, consistent version. Dial it back only
->> if we have data to justfiy the complication that we can put into a
->> comment and the changelog that outlines why exactly it's different.
+>> Hi Andrew, Yosry, and Nhat,
+>> Any thoughts on this change?
 > 
-> I am fine with doing that and basically always using NR_ZSWAP_WB_BATCH
-> as the batch size in shrink_memcg(), but I would be more comfortable
-> if we did some sanity testing.
+> I would front load the user impact in the first paragraph:
 > 
-> Hao, would you be able to do some smoke testing with NR_ZSWAP_WB_BATCH
-> used for all paths, and memory.zswap.max set in a way that induces
-> writeback? You can probably set memory.zswap.max to 1% of total memory
-> instead of the global pool limit and rerun the same test.
+> Zswap writeback when the global pool limit is hit fails when memory
+> cgroups are disabled. The pool remains full until it is organically
+> drained by swapins or memory freeing, leading to zswap store failures
+> and pages bypassing getting written directly to the backing swap device,
+> causing LRU inversion (hotter pages with higher fault latency).
+> 
+> ...
 
-Building on Test Case 2, I set zswap.max=320M (~1% of total system 
-memory) and updated both invocation paths of shrink_memcg() to process 
-batches of 32 or 64. The resulting benchmark data is shown below.
-(Note: Test Case 2 also sets max_pool_percent=1.)
-
-                       baseline-cgroup   batch-all-32-cgroup 
-batch-all-64-cgroup
-shrink_worker wakeups        7,238             766               367
-shrink_memcg calls      12,059,142       1,961,194           983,878
-written_back                28,277         301,157           327,997
-zswap_store calls         1,349,572       1,168,190         1,114,549
-   store succeeded            492,861         521,315           459,246
-   store rejected             856,712         646,875           655,303
-   store reject rate            ~63%           ~55%              ~58%
-pool_limit_hit              510,130          50,096            57,715
-pswpout                     884,989         948,032           983,300
-pswpin                    1,251,268       1,638,668         1,878,453
+Will done.
 
 Thanks,
 Hao
