@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34BD7C531C9
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 22:02:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28B0DC531C9
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 22:02:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 818B66B0099; Fri, 24 Jul 2026 18:02:33 -0400 (EDT)
+	id B74726B009B; Fri, 24 Jul 2026 18:02:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C9A46B009B; Fri, 24 Jul 2026 18:02:33 -0400 (EDT)
+	id AD7226B009D; Fri, 24 Jul 2026 18:02:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B9206B009D; Fri, 24 Jul 2026 18:02:33 -0400 (EDT)
+	id 99EC86B009E; Fri, 24 Jul 2026 18:02:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F0B46B0099
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 18:02:33 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 90DC9C01A7
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 66D906B009B
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 18:02:35 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BE4C4A08CE
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 22:02:34 +0000 (UTC)
+X-FDA: 85025045028.12.F9C7901
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+	by imf28.hostedemail.com (Postfix) with ESMTP id E676EC000E
 	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 22:02:32 +0000 (UTC)
-X-FDA: 85025044944.06.D565AEC
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	by imf07.hostedemail.com (Postfix) with ESMTP id BA7D54000E
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 22:02:30 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Iq6kod3b;
-	spf=pass (imf07.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=VB21aog5;
+	spf=pass (imf28.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784930550;
+	s=arc-20220608; t=1784930552;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PAzNTf9Ao1Jd+i4HQ1y+PwV6f9J/K6SmB5ui1Xz+21c=;
-	b=RICG3DqSnyfXljN4MhAuz0D5YheSuBR7Zhq+0FyKD08OEeIx9YlBTNpj43HVtZsdzo3+cP
-	ucSX6X5aXOS57OWWZjrTvyBKwbBGsTqyWt+8qTEYYTH2wfnhYbDYDfey6qoh0yjmStdRbx
-	BMkFd4TAs4hyDiFWiL1DkXs6yL9jXjk=
+	bh=e1GNNEUTrXfcasiBfiMqOJUDgRwUpOC+gV6LgyALCys=;
+	b=3njbVXMlJafnhtREkt1gQDBNXB4DeL6k00HECedLgdU0QHP7COiZNffG0z91qtHyVq0trk
+	/XjCxO5Tkh5ZsLfXJmV7RnyWiBTEacxeo4SFw8HBD2iiVDsnjJ/juLvhRxs+fQqbmIGPDe
+	gR/budAqApA7T37I6S5Tug4rUq3WNt4=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Iq6kod3b;
-	spf=pass (imf07.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=VB21aog5;
+	spf=pass (imf28.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784930550;
-	b=XmD9AY+pmVp1gXlKPYVKP5/sfSR+gESJFGl8RxK54p6u14j+xcYtSdBxXyl9hzywQ+V2lI
-	gjuCM6xbhlgl6tfCZnOfSkeToRUP1ntxik5Kf6mJBjNZQhZbAPMQtRECi6dfrfEYWJkKrV
-	n+KN2Ghb3+z5VAXTxsXrO4eDfstZKmw=
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-848743155bcso422073b3a.0
-        for <linux-mm@kvack.org>; Fri, 24 Jul 2026 15:02:30 -0700 (PDT)
+	t=1784930552;
+	b=3BhRoMwMuw6gZrUBw6u+xInVV566BIUZCkF3z5EqBU0SibpJq4rOn0bp9Tn2z/KNHWjS1D
+	1d/wLHByQrVPFIokG8ZpsxKTlwDGoovpNH5JYIXJ8U1wq9O+jFTKdflcgJ2bDKyb+aU23/
+	Jy9CE5oy5JkgqrXbqIZ2pn/U+O9DKiI=
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-c999f162c9aso654588a12.3
+        for <linux-mm@kvack.org>; Fri, 24 Jul 2026 15:02:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784930550; x=1785535350; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1784930552; x=1785535352; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=PAzNTf9Ao1Jd+i4HQ1y+PwV6f9J/K6SmB5ui1Xz+21c=;
-        b=Iq6kod3bpEFugU82kTIe5OLGWPX1ujTKB+zBEKiaHEfUN7D1w+Ik2ZZd5U6T7F7xmM
-         eAMi9zGcA0cijl36z2YzDgiEEgJgJwsXKf9yFhTWf5wxTVKD149Axt3LeHJndnQ1c4Fm
-         VXSOz17wBMSUWpIU0ACXSwhwJGEXEUsW1MCfkPcKrGGVbfW0ZfkADcRpB0tlq37meAQU
-         QoRNdxslxLSVP9N1qNTZ9KxsQcAhyCVkipejSiA3bkM4nv72QBG/QNFlRgwRk1k2G+F2
-         PwmhnipaqLv1iM3c0guR5PVxz9USghNh2VNe7KwRtwrnoqGt+ERTPsyjpkCbLUfgZ2Qw
-         ur6A==
+        bh=e1GNNEUTrXfcasiBfiMqOJUDgRwUpOC+gV6LgyALCys=;
+        b=VB21aog5aIQGiFjEKbzujLno3vj2+7YlRXeUGKpwHU8yTSbvrB8Tw/TTCgLE7ldGVf
+         7+T5crWv/HtiLdqwc9Lg5WD9skVDl1EjW6RJTQ8nGCIb344tStG6uupO1DKcWgdAdKtW
+         JMGJ+RjPpswc/E6f04brqAZ+RUxtbTwSrjQZNQl0ThVSBUz1T1+jv2HKFUOJtA9bZAYv
+         liHAvcdtXLP6rCn5JrhZnOmrcOucI6t2QklZjsGIFGRQ8kOVn/RynppY4n27OYYr7NPz
+         CZKL7EJd39FIVLyqBEzhn9dBmNXugsm6ZoOpZ3U1RL1ymXE860sTJk0ti5crfLmo81GG
+         cFgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784930550; x=1785535350;
+        d=1e100.net; s=20251104; t=1784930552; x=1785535352;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=PAzNTf9Ao1Jd+i4HQ1y+PwV6f9J/K6SmB5ui1Xz+21c=;
-        b=ZB/4SM1nbKoaLFYOpWL8X7JEt3WCOHTargFMeD4nhUnDA3sKn2RKmYNLNUYEU4bs2/
-         RekdkpK4FzYulmey16Bat71cg5UFK6xKIRPZONPzO629H/6f0QpRmgPMsMCJznoO5VqM
-         LyqhRpX4OmGMm2EdRgsyq0vrxaSeTbJT4Q3aQm98CcRt/dntl7Gm7gyLUIMSe42pi/Xf
-         ppb28inGSb9Sm6iAoQkiHu0Vv74gIH+WY6ZaHbVwNkQW/RPyxxxoFpKXhfNg8Qu1FfYl
-         1tSziSLYyN2Qb0t71kbZKUPmGxBtXPuh08XvWglPWBw63b+94S1p/xn2xtdg/P+LBAij
-         Rr4g==
-X-Forwarded-Encrypted: i=1; AHgh+Rrgkk5Pzxz5AEHnUPlNTzX7yhpWa81fKphOgmW6DkutSgu0hbcWLZPK23Xw2k1v+neC5NXTm3t+uw==@kvack.org
-X-Gm-Message-State: AOJu0YyWKIeAD7phn6aFouNPdInQ07QtSRvdnV3jMc+59kew0q1lz42u
-	vWksiHwbJYlUF7cVnfejhJnRfWgkizclW/CSKyZRwQFdCdbQznB+Zbeu
-X-Gm-Gg: AR+sD13fELLrOVdESn0Bl+8PM/nbVIBGxWL+8L8Z5S7h9gbyAH1LgNaAUzEOf1YFuJ+
-	p6da1yBnpAnF8TqTmUVkxR7ib++SXTaUH2C5VXopDkI8WlgKDhCMLnnGbIHyqlWR8idBAwDJe49
-	OwJpnzdfjdBglu9/u52hJ+L4U6zSd+fJwOOGEqknm+X50UHuT6QAU/4qE015fxd3u3QbiNpEjWE
-	ttzc4diYLppN6emi35zA396+vVwrA8Cv1W9Go3szf9zpp9Guyn5p0ioPHgQkUuGf3ea6+KazGXg
-	ghfx/07ab7cyIXWQvj5qvqYlcQsZ0NCP8r6TFYSSGRx87bHgLc1q7yY44T25Ysy4Jhq7E0n4Gpr
-	daZbYNeWRCQlO8K0198DumGJjRsxMmWlrkBKUDtxh2IJq+u9dCCBDEcDfv1osIS9pcQZfvjyfy0
-	WhrmKn+jg+Dore+WWoIjGljdptSrAhTeGaKu4LHvgOSce8wkxuGF6EKL+JuS3I
-X-Received: by 2002:a05:6a21:495:b0:39f:59c8:f302 with SMTP id adf61e73a8af0-3c67df10d07mr125091637.37.1784930549615;
-        Fri, 24 Jul 2026 15:02:29 -0700 (PDT)
+        bh=e1GNNEUTrXfcasiBfiMqOJUDgRwUpOC+gV6LgyALCys=;
+        b=p0BWCcRiYyN6r/CAZMJoIRSjERUzwgSgGPo2gVCfacxMICptO74Gje27+ZjwILtKUu
+         p2h13rO/I2ecx5U0Gq4f6jkjyY2dgIygAMnsI+vnWTf9QbZ6Bfqd0XowDkz+goddOmdl
+         MEbiXg2UB/deUA5rfMIDRieZD4spon2HcrGgydEtXGQpZOWaJtFUHJTuZ4MO1053TXRe
+         JjtA/prrlE9SKrEdE8WhyPVcYVYKs1JFiNC8TGWPwoHeDUWLROGK5WI9UMdiRRVZ2TlI
+         JDFIZdS5K9Ot7Nn5JHK81aOH5JQC0ydlw8PYo7db2708srAvsf3Ik6pZW6mwXzhYoraw
+         1f+w==
+X-Forwarded-Encrypted: i=1; AHgh+RoO76kZy4cfNTRpkcQ7ZjZ0kEFPiZYX0ru7OrLN06FLmjPqXYQADI678GmTmJIlxYUPAXAUkiGp1g==@kvack.org
+X-Gm-Message-State: AOJu0YzihBO8jTnR8Sr1fU8rHehVfSWEz8T1GDmwyU5+HwHWj+0+uZ6L
+	t/PyvkZVZB8HzrxJ4mYQybTnZAaicUID2hlfL4+Tn+YsTl0YFN+EHS4J
+X-Gm-Gg: AR+sD12PST8myun5kyUJCjEmQ581/ihLbP5q6UykHOEhb4XH6nthx0+xM/ycDTJcztl
+	l3sd7vD3WCGWY3VlZaEFp6J5g8EWED1uulTgp/D86bjFH2u9rPs+YeGHnDTChzkVlEjAXBMKGHm
+	YOepJJMzRphbWiw1t3oT0tkZbO4kf5gTcdeSgE7sMoMmrd1vD0L+9ppJUYECmMMtcqie5zm2nrt
+	J2WqUnp+cp+/9Po4r6QacO6TmydSSW59Cw1lGYaIENVI7su1pMP7kJ839FyaMBGq8kbK+GDQLqW
+	Ky5HY4X+SUcoHHtvpV4Ood5TkPAQ/g6HJqNdUhH8N8eTIUCIUy1LFsrvi+9x9dGcpFWHKTl3XI3
+	ILSuVvYtJRegv8PcXTumaa3OU2Pc6nDj8S8hcUz478UVM7+RXNTa4aX5upQXr3g7njmoMjVZv/i
+	NBGp1KILlJNtbSWE+Spi6ZIsIedGVM/Zb1mw6C0MmbnSYelpE7vYVS4UEtjSLs
+X-Received: by 2002:a05:6a21:6e96:b0:3c0:9c1a:8941 with SMTP id adf61e73a8af0-3c67e17d26dmr101841637.73.1784930551744;
+        Fri, 24 Jul 2026 15:02:31 -0700 (PDT)
 Received: from pop-os.tail4adac7.ts.net ([2601:647:6802:dbc0:546a:e1b0:9574:3a29])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-314bc5a67f3sm2962631eec.29.2026.07.24.15.02.27
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-314bc5a67f3sm2962631eec.29.2026.07.24.15.02.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Jul 2026 15:02:28 -0700 (PDT)
+        Fri, 24 Jul 2026 15:02:30 -0700 (PDT)
 From: Cong Wang <xiyou.wangcong@gmail.com>
 To: Andy Lutomirski <luto@amacapital.net>
 Cc: Kees Cook <kees@kernel.org>,
@@ -99,22 +99,22 @@ Cc: Kees Cook <kees@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	linux-mm@kvack.org,
 	Cong Wang <cwang@multikernel.io>
-Subject: [PATCH v7 6/8] seccomp: re-validate a redirected syscall against outer filters
-Date: Fri, 24 Jul 2026 15:01:45 -0700
-Message-ID: <20260724220147.214396-7-xiyou.wangcong@gmail.com>
+Subject: [PATCH v7 7/8] docs/seccomp: document pinned-memfd redirect ioctls
+Date: Fri, 24 Jul 2026 15:01:46 -0700
+Message-ID: <20260724220147.214396-8-xiyou.wangcong@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260724220147.214396-1-xiyou.wangcong@gmail.com>
 References: <20260724220147.214396-1-xiyou.wangcong@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: BA7D54000E
-X-Stat-Signature: 1y3h6o7jx6yarr96b96r9a5wymrbp83b
-X-HE-Tag: 1784930550-24309
-X-HE-Meta: U2FsdGVkX1/O9PcZZmDJNOEQ51aI3uCtmGOeCEBReyDzd+fm6e6b6LFdNDvYmCswQeYMrSUjg7Rx0212UFAtnZ3x+ZydUQtMobijydFmgYkO9mftk7QHa/USLlzgX/kuB4iw0fcQZ25xjjuW44aB4EldH6OrEcMKCDaXroDEkGQw9/sbYqdNKapuyd1+nBuqPGgg0yyNbFlNdicQ6BAiE0XDUe2UzmsNkdCQYDs4gEiMeMXO3rzPW8+JfGwgxyQXycgojlUeULS28qNaZ7P9yWok2jmqqW6U23igR2OK/F0N59dIrc+RLn4w6S/fP6/Ux6IMxk1uL0y/M1c1pbExI+z0IJH+l5U+J3XFOh0mSEkaXrMvlsZ75vicQtcYQnkgzQn9ETyxFOPM9KbXfAHQIaRwxAPfc53wd+9J8aG8dPmgqngrlaum4P8p+ZDziTkQ3CnJztrx2W+u3IGfODFFGlZbN1Ko8NWwVl92M3zOwOSe0yUzkI2LuWPgLaKTyf3hmwJ5TNk8X4oxDErFiDfJ5zBE/0NEu7lM6m8BmOX8yjqI2BcQgf2vsE+f7nLUP5H3m2YHF2IgG//sN5yeQrtJhnZRlMD3/UyTaIo37BFeFwIRc8dydY/gllaxJtsGsAcDTJLCZy/pHpKNvFQIwGy0GE03xg3udEEgwdIvXiR8X3yMV9lJNgBeU5eGc6P9JW8hOgCDDyBeP4q6ynRqwViYeN977rKW5mmTRlfTnEu4J8EBpbUgWiiwRcBfnkbxq1Udhmx0nE7+qIN6ik19zuBrRdktQ9YX89raiEfVvDc5w0h//fbJf7jk6ULfSDRaUiGyZJrYbl4nCt8z1Z4uxCLbQdqMU6oFf3vxfpBhcsXnHFz6vtAhhO9254vv3X2EnuJjvSI8E4h4LtdGan+lzFzDyQGxHm2n2pvuGUqZhjIuIkgq1KkZZstFzh+m+M4TPO4sQGGPxDxKbPSeTw9BNvP
- +bINBu1F
- GjOP4rGEw9Q2rltjmh7iylI9lPu/lLo6zx3Ow9yrcgVoS87YyZdgPZfcNubHW2HQvadn/zCpR6C68xcFC0Mt8TUrnJywzTJgnK++7flqLVaKWfFmr2vV4ah9kX5M0pZ1DMhuWSxUI24aLyd6zbl4r/t6TjxbmlpHexwisfXU5wsS9XZs4isSAgU1QFp0dHfila2zreVpEuqDhBlG59tGtyKAvZXUMcwc3detzJOidy2EnytnpYYlmQwSJ4lNib0Rq7imC14hKktVd0DU/Q6/yxB30qwaMhXnfGlsU08GQzd++LgWrNnFwnYV/1ATNlJGHZKpaA54q+stJ4QuryMQ8CXKaCTKhqgVy7A1/xhhgjye9KAgbDovflpxWtFqEGEBbIDsN4DHZoaCbVSqoqbR0D9X2ajI15+0fiT3AJlulocCeo5UFIS4gYWl6jfMDax8MnMTrnUcLfoMAthvkRvMMxOnCoHduvJvjqadR
+X-Rspamd-Queue-Id: E676EC000E
+X-Rspamd-Server: rspam01
+X-Stat-Signature: nsethsru1a943f44e3aspfnowba16ir9
+X-HE-Tag: 1784930552-702416
+X-HE-Meta: U2FsdGVkX1/1WsVzQaN7sS8rkmQ611NCJ/FzMNhOWsPaq4KAqt9zOUiy5pbkDgxsggv/ADAH6qvtJ45SlfA7vacp8NhM5VKGlOVb7PNfw3G9XMYtq6mAlqut3A2ub7kBeG4pScjJGjso5wKK4UM6wDKrlC7FfrU74XDqYroAFDmNRayJfKJqP9a/S4ETUU9qO7xaj0vFD3inv4iSVxxLDZUhwWwOxMvjzsAWVAYzwdKPDOiOaI4DxGLAEkS58f36BAA90hdZwg14s/abzxBE1WdR9F0LbZ6O//Uo9QUwR0pq/qNkvOZt09hscKqc/nWBIUJ3py8/H4DVAlkr2lDnNij0ir/OYHyiLfH+Xa/wPKPMQrmvTgJXDSQ8CxlTiJ9/OTNiJmUASyxlVoUVtVp8VhsasEmTvc9+AL9bs8Z5Y/7fnDBODgA936U3RbeyV8QqOiGZ+7RZ0w7OmBvVtpGSZxgOZFOXGE8A2TijrdKF29LB4Shb8P+MHAnh+tJWMVpJzckqYlROkVnVzOImqlAyNtGNQOyXCN5IHmsgJi04+L1DQ3tYz2QGaskMumpd4vsy/UHAJ0qqbukrt1E1FOx8zT3UXYHdNPL+bPx71SrkMCL9NjAxNjuK9SHayb/LF9bt1phhXQj7w+V8uDCEWhfixtBX8WWgjsnLNNDHnMSHMUYHI1Qa6/UFeQsQxSUl3EyvG+9mp0k22u3Xr3n/UoB7J2uiIkb//JMClx3mkf2jcZs5JwrKnXvgulzqrapTSVpKpC/qUFhEQvXJY9C18LLz1+zJGKIaZuqBgRb9zh6eM/+85/2la5sEz+7EjyO/qIuqDcad+liL/WsFa2sw8v7y5GIKfNto9TZUxUdECj+A7iSULba6WHgFPouFb0tQ3rjlBxDEBO7RxTdfzA/qFgBYloMsW0GTr7v9Ofm6ro4C/eajTHdjxpw4lGrI/nAjrCx4x7LhKB9MubPxl6oPW5M
+ u9WyUzjS
+ NbeM+zexm/MwMZ0SShAs/gYzDYXWRlwCVV916h1GKTZEdIt9A51LbEuqrEQ3mFw9iNfQwqU+RX8bn+/CefVrRGMyde+k9GI88KXBOnvIExGaiGgbRmYH5UC+LJbzbLr47vBnbiq+QBACn7qHrpdDUdGHloZ2Y90K9P+5A0GepNO976rSbJ5mEA2n1t4c41qTC6a0Rv+91TmC22Sx+Q4kCdavkmyLQ1ldr6nqzPx/S9YS4X/DmCa3tIZEVs84oOvc+ojS621dkEE2jok9fuTEWlFV4kFJqkiDu5vaVEZRt+6QssoBZYIe6X2vhtuG26h5ZUJ4cr4mDaqrD2Kp7vSuix3WcolmmIWrQPtAbg3jTDhR+vEdW7klOiffWKY/Wk6jE4NUsbZyP2l3IN6UnCqH0o0GajwTZoJ5MN7+2h5HqKEgqd3KZClw9MR5ZCqyFB/0tsQJVup9F6OGz2p4DGwZ+0/FTHuq6wyUrrsFc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,244 +124,144 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Cong Wang <cwang@multikernel.io>
 
-Stacked filters compose by taking the most restrictive verdict over one
-evaluation of a single seccomp_data, assuming the syscall they voted on
-is the syscall that runs. SECCOMP_IOCTL_NOTIF_SEND_REDIRECT breaks that:
-the supervisor rewrites the argument registers and the syscall resumes
-without the stack being re-consulted, so an inner, container-installed
-filter can redirect a syscall into a form an outer filter would have
-blocked.
+Document SECCOMP_IOCTL_NOTIF_PIN_INSTALL and
+SECCOMP_IOCTL_NOTIF_SEND_REDIRECT in the userspace API guide: the
+SECCOMP_FILTER_FLAG_REDIRECT opt-in and the single-redirector
+restriction, the two response structures, and how the pair closes the
+user-notification TOCTOU for non-cooperative fork+execve sandboxes.
 
-Close the hole with seccomp_redirect_revalidate(): after a redirect it
-walks from the notifier outward, judging the substituted syscall one
-filter at a time; the innermost filter that does not allow it decides.
-ALLOW and LOG fall through; ERRNO, TRAP and KILL are terminal;
-USER_NOTIF consults the outer supervisor, whose plain FLAG_CONTINUE
-keeps the walk going; TRACE fails closed with -ENOSYS, since a tracer
-rewrite cannot be soundly re-composed mid-walk.
-
-The walk is strictly outward, so the notifier is never reconsulted and
-no re-notify loop exists, so a deep chain cannot exhaust the kernel
-stack. A redirect never changes the syscall number, only the argument
-registers differ.
+Also spell out the scope the implementation deliberately enforces or
+relies on: read-only input pointers only, same-syscall-number only
+(rt_sigreturn and the clone/fork family are refused), the per-interruption
+re-notification of restartable syscalls and the restart-block behaviour,
+and the ptrace syscall-stop semantics.
 
 Assisted-by: Claude:claude-opus-4.8
 Signed-off-by: Cong Wang <cwang@multikernel.io>
 ---
- kernel/seccomp.c | 141 ++++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 126 insertions(+), 15 deletions(-)
+ .../userspace-api/seccomp_filter.rst          | 109 ++++++++++++++++++
+ 1 file changed, 109 insertions(+)
 
-diff --git a/kernel/seccomp.c b/kernel/seccomp.c
-index f23dbee12ab7..2475aff55ec2 100644
---- a/kernel/seccomp.c
-+++ b/kernel/seccomp.c
-@@ -93,6 +93,13 @@ struct seccomp_knotif {
- 	long val;
- 	u32 flags;
+diff --git a/Documentation/userspace-api/seccomp_filter.rst b/Documentation/userspace-api/seccomp_filter.rst
+index cff0fa7f3175..be2c338224ac 100644
+--- a/Documentation/userspace-api/seccomp_filter.rst
++++ b/Documentation/userspace-api/seccomp_filter.rst
+@@ -289,6 +289,115 @@ above in this document: all arguments being read from the tracee's memory
+ should be read into the tracer's memory before any policy decisions are made.
+ This allows for an atomic decision on syscall arguments.
  
-+	/*
-+	 * Set by SEND_REDIRECT: the reply rewrote the syscall's registers,
-+	 * so on resume the syscall must be re-evaluated against the filters
-+	 * outer to the one that notified (see __seccomp_filter()).
-+	 */
-+	bool redirect;
++Non-cooperative pinned-memfd redirect
++=====================================
 +
- 	/*
- 	 * Signals when this has changed states, such as the listener
- 	 * dying, a new seccomp addfd message, or changing to REPLIED
-@@ -1183,10 +1190,12 @@ static bool should_sleep_killable(struct seccomp_filter *match,
++The TOCTOU described above means ``SECCOMP_USER_NOTIF_FLAG_CONTINUE`` cannot
++enforce a policy on pointer arguments: after the supervisor inspects the
++target's memory and lets the syscall continue, the target (or a thread sharing
++its address space) can rewrite that memory before the kernel reads it. The
++cooperative workaround, the target ``mmap()`` + ``mseal()``-ing a shared
++buffer, is unavailable in the fork+execve sandbox model, where the supervisor
++confines a binary it did not write.
++
++Two ioctls let the supervisor close this race without target cooperation. The
++redirect step (below) requires a listener created with
++``SECCOMP_FILTER_FLAG_REDIRECT`` (in addition to
++``SECCOMP_FILTER_FLAG_NEW_LISTENER``). Because it rewrites another task's
++registers, at most one such listener may exist in a task's filter chain; a
++second fails with ``-EBUSY``:
++
++.. code-block:: c
++
++    fd = seccomp(SECCOMP_SET_MODE_FILTER,
++                 SECCOMP_FILTER_FLAG_NEW_LISTENER | SECCOMP_FILTER_FLAG_REDIRECT,
++                 &prog);
++
++``ioctl(SECCOMP_IOCTL_NOTIF_PIN_INSTALL)`` installs a sealed mapping of a
++supervisor-owned ``memfd`` directly into the trapped task's address space:
++
++.. code-block:: c
++
++    struct seccomp_notif_pin_install {
++        __u64 id;
++        __u32 flags;       /* reserved, must be 0 */
++        __u32 memfd;
++        __u64 target_addr;
++        __u64 size;
++        __u64 offset;      /* page-aligned offset into memfd */
++    };
++
++``id`` names an active notification (the trapped task to install into).
++``target_addr``, ``size`` and ``offset`` are page-aligned; ``offset`` selects
++where in ``memfd`` the mapping starts, so one memfd can back several pins. If
++``target_addr`` is ``0`` the kernel picks a free address and writes it back;
++otherwise an existing mapping there yields ``-EEXIST``. The pin is read-only
++and sealed, the target and its threads cannot unmap, move, reprotect or
++overwrite it, and lasts until the target calls ``execve()`` or exits.
++
++``memfd`` must be write-sealed (``F_SEAL_WRITE`` or ``F_SEAL_FUTURE_WRITE``)
++or the ioctl returns ``-EINVAL``; otherwise the target could rewrite the pin's
++bytes through a separate writable handle to the same memfd.
++``F_SEAL_FUTURE_WRITE`` still lets the supervisor update the contents through
++its own mapping made before the seal.
++
++``ioctl(SECCOMP_IOCTL_NOTIF_SEND_REDIRECT)`` then resumes the trapped syscall
++like ``SECCOMP_USER_NOTIF_FLAG_CONTINUE``, but with selected argument
++registers replaced:
++
++.. code-block:: c
++
++    struct seccomp_notif_resp_redirect {
++        __u64 id;
++        __u32 flags;      /* SECCOMP_REDIRECT_FLAG_CONTINUE must be set */
++        __u32 args_mask;  /* which arg registers to replace */
++        __u32 ptr_mask;   /* which of those are pointers into a pin */
++        __u32 memfd;      /* the pin's backing memfd */
++        __u64 args[6];    /* replacement values */
++        __u64 ptr_len[6]; /* validated access length for each pointer arg */
++    };
++
++Each bit in ``ptr_mask`` (a subset of ``args_mask``) marks ``args[i]`` as a
++pointer; the access ``[args[i], args[i] + ptr_len[i])`` must lie within a
++single read-only pin of ``memfd`` in the target, or the ioctl returns
++``-EFAULT``. ``ptr_len[i]`` must be non-zero for those bits and ``0``
++otherwise. Bits in ``args_mask`` but not ``ptr_mask`` are scalar replacements
++written verbatim, e.g. to set the length register that goes with a redirected
++pointer. The original registers are restored at syscall exit, so the
++substitution is invisible to the target and the TOCTOU is closed.
++
++Scope and limitations
++---------------------
++
++The redirect mechanism is deliberately narrow and is *not* a general syscall
++rewriting facility:
++
++- **Read-only input pointers only.** A pin is read-only, so only an argument
++  the syscall *reads* (a pathname, a ``sockaddr``) may be redirected into it.
++  Aiming an output or in/out argument at a pin makes the syscall fail with
++  ``-EFAULT`` when it writes back.
++
++- **Same syscall only.** A redirect replaces arguments, never the syscall
++  number. ``rt_sigreturn()`` (and its compat variant) cannot be redirected and
++  return ``-EOPNOTSUPP``.
++
++- **Signals and restarts.** The redirected syscall really runs, so it can be
++  interrupted and restarted. On a restart the original arguments are restored
++  and the syscall re-traps, so the supervisor is notified again and must answer
++  consistently. Syscalls the kernel restarts without re-trapping (e.g.
++  ``nanosleep()``, ``futex(FUTEX_WAIT)``) keep the substituted arguments --
++  safe for read-only inputs, but a reason not to redirect arguments of syscalls
++  that block or wait.
++
++- **clone()/fork().** The task-creation family (``clone``, ``clone3``,
++  ``fork``, ``vfork``) cannot be redirected and returns ``-EOPNOTSUPP``. A new
++  child inherits the substituted argument registers but not the restore, so it
++  would return to user space with the pinned values still in its registers.
++
++- **ptrace.** A tracer sees the substituted arguments at the syscall-exit stop;
++  they are restored before the task resumes, so a ``PTRACE_SETREGS`` of a
++  substituted register at that stop is overwritten.
++
+ Sysctls
+ =======
  
- static int seccomp_do_user_notification(int this_syscall,
- 					struct seccomp_filter *match,
--					const struct seccomp_data *sd)
-+					const struct seccomp_data *sd,
-+					bool *redirected)
- {
- 	int err;
- 	u32 flags = 0;
-+	bool redirect = false;
- 	long ret = 0;
- 	struct seccomp_knotif n = {};
- 	struct seccomp_kaddfd *addfd, *tmp;
-@@ -1243,6 +1252,7 @@ static int seccomp_do_user_notification(int this_syscall,
- 	ret = n.val;
- 	err = n.error;
- 	flags = n.flags;
-+	redirect = n.redirect;
- 
- interrupted:
- 	/* If there were any pending addfd calls, clear them out */
-@@ -1269,19 +1279,120 @@ static int seccomp_do_user_notification(int this_syscall,
- 	mutex_unlock(&match->notify_lock);
- 
- 	/* Userspace requests to continue the syscall. */
--	if (flags & SECCOMP_USER_NOTIF_FLAG_CONTINUE)
-+	if (flags & SECCOMP_USER_NOTIF_FLAG_CONTINUE) {
-+		*redirected = redirect;
- 		return 0;
-+	}
- 
- 	syscall_set_return_value(current, current_pt_regs(),
- 				 err, ret);
- 	return -1;
- }
- 
-+static void seccomp_kill_task(int this_syscall, u32 action, int data)
-+{
-+	current->seccomp.mode = SECCOMP_MODE_DEAD;
-+	seccomp_log(this_syscall, SIGSYS, action, true);
-+	/* Dump core only if this is the last remaining thread. */
-+	if (action != SECCOMP_RET_KILL_THREAD ||
-+	    (atomic_read(&current->signal->live) == 1)) {
-+		/* Show the original registers in the dump. */
-+		syscall_rollback(current, current_pt_regs());
-+		/* Trigger a coredump with SIGSYS */
-+		force_sig_seccomp(this_syscall, data, true);
-+	} else {
-+		do_exit(SIGSYS);
-+	}
-+}
-+
-+static int seccomp_redirect_revalidate(struct seccomp_filter *notifier)
-+{
-+	struct seccomp_filter *f;
-+	struct seccomp_data sd;
-+	bool redirected = false;
-+	int this_syscall;
-+	u32 action;
-+	int data;
-+
-+	populate_seccomp_data(&sd);
-+	this_syscall = sd.nr;
-+
-+	for (f = notifier->prev; f; f = f->prev) {
-+		u32 cur_ret = bpf_prog_run_pin_on_cpu(f->prog, &sd);
-+
-+		data = cur_ret & SECCOMP_RET_DATA;
-+		action = cur_ret & SECCOMP_RET_ACTION_FULL;
-+
-+		switch (action) {
-+		case SECCOMP_RET_ALLOW:
-+			continue;
-+
-+		case SECCOMP_RET_LOG:
-+			seccomp_log(this_syscall, 0, action, true);
-+			continue;
-+
-+		case SECCOMP_RET_ERRNO:
-+			/* Set low-order bits as an errno, capped at MAX_ERRNO. */
-+			if (data > MAX_ERRNO)
-+				data = MAX_ERRNO;
-+			syscall_set_return_value(current, current_pt_regs(),
-+						 -data, 0);
-+			goto skip;
-+
-+		case SECCOMP_RET_TRAP:
-+			/* Show the handler the original registers. */
-+			syscall_rollback(current, current_pt_regs());
-+			/* Let the filter pass back 16 bits of data. */
-+			force_sig_seccomp(this_syscall, data, false);
-+			goto skip;
-+
-+		case SECCOMP_RET_USER_NOTIF:
-+			/*
-+			 * The outer supervisor judges the substituted call:
-+			 * an error reply skips it, a plain FLAG_CONTINUE
-+			 * keeps the walk going, or this reply would slip the
-+			 * call past a stricter filter further out. It cannot
-+			 * redirect again: at most one redirect-capable
-+			 * listener exists in a chain, and the walk starts
-+			 * outside it.
-+			 */
-+			if (seccomp_do_user_notification(this_syscall, f, &sd,
-+							 &redirected))
-+				goto skip;
-+			continue;
-+
-+		case SECCOMP_RET_TRACE:
-+			/*
-+			 * A tracer may rewrite the syscall, and there is no
-+			 * defensible way to restart composition mid-walk.
-+			 * Fail closed exactly like TRACE with no tracer
-+			 * attached: skip with -ENOSYS.
-+			 */
-+			syscall_set_return_value(current, current_pt_regs(),
-+						 -ENOSYS, 0);
-+			goto skip;
-+
-+		case SECCOMP_RET_KILL_THREAD:
-+		case SECCOMP_RET_KILL_PROCESS:
-+		default:
-+			seccomp_kill_task(this_syscall, action, data);
-+			return -1;
-+		}
-+	}
-+
-+	return 0;
-+
-+skip:
-+	seccomp_log(this_syscall, 0, action, f->log);
-+	return -1;
-+}
-+
- static int __seccomp_filter(int this_syscall, const bool recheck_after_trace)
- {
- 	u32 filter_ret, action;
- 	struct seccomp_data sd;
- 	struct seccomp_filter *match = NULL;
-+	bool redirected = false;
- 	int data;
- 
- 	/*
-@@ -1356,9 +1467,19 @@ static int __seccomp_filter(int this_syscall, const bool recheck_after_trace)
- 		return 0;
- 
- 	case SECCOMP_RET_USER_NOTIF:
--		if (seccomp_do_user_notification(this_syscall, match, &sd))
-+		if (seccomp_do_user_notification(this_syscall, match, &sd,
-+						 &redirected))
- 			goto skip;
- 
-+		/*
-+		 * A redirect rewrote the argument registers; every filter
-+		 * outer to the notifier must judge the substituted syscall
-+		 * before it runs. A redirect from the outermost filter has
-+		 * no outer filter left to judge it.
-+		 */
-+		if (redirected && match->prev)
-+			return seccomp_redirect_revalidate(match);
-+
- 		return 0;
- 
- 	case SECCOMP_RET_LOG:
-@@ -1376,18 +1497,7 @@ static int __seccomp_filter(int this_syscall, const bool recheck_after_trace)
- 	case SECCOMP_RET_KILL_THREAD:
- 	case SECCOMP_RET_KILL_PROCESS:
- 	default:
--		current->seccomp.mode = SECCOMP_MODE_DEAD;
--		seccomp_log(this_syscall, SIGSYS, action, true);
--		/* Dump core only if this is the last remaining thread. */
--		if (action != SECCOMP_RET_KILL_THREAD ||
--		    (atomic_read(&current->signal->live) == 1)) {
--			/* Show the original registers in the dump. */
--			syscall_rollback(current, current_pt_regs());
--			/* Trigger a coredump with SIGSYS */
--			force_sig_seccomp(this_syscall, data, true);
--		} else {
--			do_exit(SIGSYS);
--		}
-+		seccomp_kill_task(this_syscall, action, data);
- 		return -1; /* skip the syscall go directly to signal handling */
- 	}
- 
-@@ -2223,6 +2333,7 @@ static long seccomp_notify_send_redirect(struct seccomp_filter *filter,
- 		goto out_unlock_free;
- 	}
- 
-+	knotif->redirect = true;
- 	knotif->state = SECCOMP_NOTIFY_REPLIED;
- 	knotif->error = 0;
- 	knotif->val = 0;
 -- 
 2.43.0
 
