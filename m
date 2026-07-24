@@ -4,95 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9F7EC531C9
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 10:27:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B434C531FA
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 10:29:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BD8206B00AE; Fri, 24 Jul 2026 06:27:46 -0400 (EDT)
+	id 943626B0088; Fri, 24 Jul 2026 06:29:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B88AB6B00AF; Fri, 24 Jul 2026 06:27:46 -0400 (EDT)
+	id 8F3B76B008A; Fri, 24 Jul 2026 06:29:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A79E56B00B0; Fri, 24 Jul 2026 06:27:46 -0400 (EDT)
+	id 7E5FA6B00AF; Fri, 24 Jul 2026 06:29:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 83B776B00AE
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 06:27:46 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1DDA8A01C4
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 10:27:46 +0000 (UTC)
-X-FDA: 85023294132.24.EB68D0B
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
-	by imf21.hostedemail.com (Postfix) with ESMTP id B972D1C0007
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 10:27:42 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=N4ziqE8w;
-	spf=pass (imf21.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 57A256B0088
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 06:29:49 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DB186C0360
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 10:29:48 +0000 (UTC)
+X-FDA: 85023299256.19.A0558C0
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 1536E100004
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 10:29:46 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=JsITWa66;
+	spf=pass (imf05.hostedemail.com: domain of mahad.ibrahim.dev@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=mahad.ibrahim.dev@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784888864;
+	s=arc-20220608; t=1784888987;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ccsuifxVD4ccTawr4skf2XENOpZrUTl0tM5ESKoH++4=;
-	b=GPmr7Kjoyd37gswB+1lIx4JDOG1Pm2PUPjC6P80mLGVexe/moQnhRTJjw3q4hckUb4J0HL
-	sYo6QgwcZcl/O2U2JxCvP9kGxDubNOaByxLCvZzZ7pyAowwAAvTzH4aZ62MKRlwGguftRO
-	Z9m8dxCdlj2MN++C8A5swAKAvi8fwvM=
+	bh=9ljpgHhdLekhht1ZGLPz0kXgl8PWBaG+hNTc2Nu++YU=;
+	b=22tGDYY8yWxys05KKKpgjnpfzx/rUwtELmWucoEF6UPleWJ1Zmut2+nAn0ZscSXBJZe6h2
+	/10IA2NE73Hd8xAMnRrgbGljWf4+Qw1Nz5oF2IJFJJBv06NZsMN6dmTEM58S4YcGZNZ9ZF
+	Zmwv4SHHuHp2xkYs3ih6KwfimlYfV0g=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784888864;
-	b=yn/u19No4IYRAT43IHRhOUmcEqkE/opyU4WOlv4VNbaPZrCBxSPMXe/rdAoIRUrPl9mzEW
-	5/mdDO6Lwn5NTQ2jiJ8tFeAgJ3E4bIP8phAmi8ozANFt0SVEs/hDQFT9paLZE8WRFo9MIZ
-	8r3Lf6d2chVHddCZS14GWey1EhOTHzU=
+	t=1784888987;
+	b=fVfbIsB04S2QeriYn4mxNFlRp2fd0zA+jtHuHeFemf0fcQNe1PsY4nXUUKFHt/Y3Th/8eD
+	EeJ+TteBKuPqysX/B34dwQH+BOh+9LUL6NJAkxEwYzYXuH+y/rgWGzrQSFJpQ7i2O/Losy
+	GAzUqxmovhFYb6AU0Z4hYriqHN9B/Gk=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=N4ziqE8w;
-	spf=pass (imf21.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <f6b71e13-0eb4-41bd-b2c5-30bf48a174f1@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784888858;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ccsuifxVD4ccTawr4skf2XENOpZrUTl0tM5ESKoH++4=;
-	b=N4ziqE8wqT1nGDUzerglRm6kGNykObDiNIcnOZpr5A5XqStRs+sJFKIlJBhGUnWym+FzhA
-	LD3d0d2X+zuK+vVMdutpO0/xLyNlBurgiNU9erAcSpt/tLEAPt+Cuz3FjQqh2lHQiU1Le4
-	YV8rWix0eKZneWpH/PlsA3p2OqygvIg=
-Date: Fri, 24 Jul 2026 11:27:26 +0100
-MIME-Version: 1.0
-Subject: Re: [PATCH v5 10/11] mm: install PMD swap entries on swap-out
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org,
- chrisl@kernel.org, kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com,
- linux-mm@kvack.org, ying.huang@linux.alibaba.com,
- Baoquan He <baoquan.he@linux.dev>, youngjun.park@lge.com,
- hannes@cmpxchg.org, riel@surriel.com, shakeel.butt@linux.dev, alex@ghiti.fr,
- kas@kernel.org, baohua@kernel.org, dev.jain@arm.com,
- baolin.wang@linux.alibaba.com, Nico Pache <nico.pache@linux.dev>,
- "Liam R. Howlett" <liam@infradead.org>, ryan.roberts@arm.com,
- Vlastimil Babka <vbabka@kernel.org>, lance.yang@linux.dev,
- linux-kernel@vger.kernel.org, nphamcs@gmail.com, shikemeng@huaweicloud.com,
- yosry@kernel.org, kernel-team@meta.com
-References: <20260722152043.2273289-1-usama.arif@linux.dev>
- <20260722152043.2273289-11-usama.arif@linux.dev>
- <amJoe_iRHEaMdo9i@casper.infradead.org>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <amJoe_iRHEaMdo9i@casper.infradead.org>
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=JsITWa66;
+	spf=pass (imf05.hostedemail.com: domain of mahad.ibrahim.dev@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=mahad.ibrahim.dev@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-493b966dd74so2061195e9.3
+        for <linux-mm@kvack.org>; Fri, 24 Jul 2026 03:29:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784888985; x=1785493785; darn=kvack.org;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=9ljpgHhdLekhht1ZGLPz0kXgl8PWBaG+hNTc2Nu++YU=;
+        b=JsITWa66ag56hXOEtBn/ZlpJjX4qFeQMkFVsZF7A2k7Q5SFTsQ0uIEnTVZaZ9CLxSC
+         zymT4+22sa9PdGshlwUiiCTbTa81JGw1+JfN1uebxmf0xBZn6pLPeMhpJBExUhDha+Eg
+         HZR7/od0JTtiRF2w26yIGVOKsxw4vJdwA9YfijqaT0VNGz7IkHh67RF8LVbnrSKcPb7i
+         tyIOItH1vWl0DYgxAmRs6v7toBejXlSpHTWcAWKPkO6NEcsNfhTQTzrNEjJaf/08Nc8V
+         OL89vECXxhizVPLCWzmVEOzyXc8U9eHn0px6Dn/FJ0INGiovdCfxuskpn+4rFTUCzfI+
+         hRDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784888985; x=1785493785;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=9ljpgHhdLekhht1ZGLPz0kXgl8PWBaG+hNTc2Nu++YU=;
+        b=bsST7ZADYvYvZ4Leksj2XSivArnUGXMBFR7VRoPeS59uNW76UPeQld0Ii7+Hvzj6+3
+         6dFxFqiihSj5c6i7Wtej/LUR4KbCrIqd7rLOe+S4J46Y2ex19hs5bI2mJ4MxWMxH73WV
+         wEJzLP1C/crQ1C98XGoC5qX+SKp7l4RX/NOkg1wBLGkv1mjAdDM10BoIeBJjMG5iHAfe
+         QH9Zmr1YkKzLPMYvsccLsYAjZ9K1nDPIjeOin7WCYFiC4ygdDylfL8Dat7oU8Si84El2
+         yG0Gbn0nYfQsSrcHyjwbnkLHKl5D966AY4w2Ih7ZfrUh6OoKg0QkOhGfYdkFkogybNvQ
+         oVYg==
+X-Forwarded-Encrypted: i=1; AHgh+Rop3g+dU2u56OdBne3XjHSFNHAljBYxQMrUVR+p2tGquaq1/pPZ+RTMyNbEQgdDar85NPKbc7rn8g==@kvack.org
+X-Gm-Message-State: AOJu0YxTnYkUEsZiEvgmO0RqZ9/7e8PVREaIw3XMhkwa6udfBZYaWBhH
+	jnDPPYNj5INJa7wJqu/simUU56JlYjQt0yaudgJkui2n4LXSh/AYsieU
+X-Gm-Gg: AR+sD11XmOGaHstUPz2djGMDiMBeeVogDuwn7yyNuDmT/4X4Iz5MKv0Yx8j4+kyB8x1
+	qEX0qyLwAN2X4b+NM+Dn9GJPceyHSqJDUzL7hXNmDqWaIOlyU6EBWaza3B+9MHDSeHSnDTTRlnY
+	hptW/P0g13VJMErE+0MSog0qcHD4d20zkA5R2T/NbS5MUJo9xI11UNFRll7N9Auih2tTcIm2d3X
+	dRQZqZuHma6kGUoNOVVlEErmi4RHYyczfU6DirLDGWwpiIE2IHCl+bAj4HUtya3r4QACQ989pvw
+	jPAOTsx33wBsVS7DLZaMUgk2ZzgYWD2WRzXo9aeRUJ1V+PAp4N+jhViNaWmm4Wp/JXjntsvhOi0
+	Bz+uHdZt8JU6esB056sGbRJCyvu3BLh/GRaq/MuA6eqa/L9rtjOCxbxRDlTEgHT86a4S+6vrAz8
+	bH1KU2HHuU
+X-Received: by 2002:a05:600c:5706:b0:495:7287:293f with SMTP id 5b1f17b1804b1-49573d26dd5mr57558265e9.35.1784888985421;
+        Fri, 24 Jul 2026 03:29:45 -0700 (PDT)
+Received: from localhost ([72.255.58.127])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4957afac44bsm68368515e9.9.2026.07.24.03.29.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 24 Jul 2026 03:29:44 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: B972D1C0007
-X-Stat-Signature: 151ejb9whi5aoc6iapc77zak4uz5t8yt
+Date: Fri, 24 Jul 2026 10:29:40 +0000
+Message-Id: <DK6QC5V98I8T.1YC6J6RN8XK5X@gmail.com>
+Subject: Re: [PATCH] lkdtm: use kmalloc() instead of __get_free_page
+From: "Mahad Ibrahim" <mahad.ibrahim.dev@gmail.com>
+To: "Arnd Bergmann" <arnd@arndb.de>, "David Laight"
+ <david.laight.linux@gmail.com>, "Mahad Ibrahim"
+ <mahad.ibrahim.dev@gmail.com>
+Cc: "Kees Cook" <kees@kernel.org>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, "Mike Rapoport" <rppt@kernel.org>,
+ <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
+X-Mailer: aerc 0.21.0
+References: <20260722230246.2869-1-mahad.ibrahim.dev@gmail.com>
+ <20260723094522.535b284c@pumpkin>
+ <e9bb1f61-03ce-4f37-b3c0-cb87f11b8f72@app.fastmail.com>
+In-Reply-To: <e9bb1f61-03ce-4f37-b3c0-cb87f11b8f72@app.fastmail.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 1536E100004
+X-Stat-Signature: jxo9hembsucgxhoj44zfzrnitxhe616d
 X-Rspam-User: 
-X-HE-Tag: 1784888862-387343
-X-HE-Meta: U2FsdGVkX18REdlgE7z5yKJb4tDEj+e5wP2Z4EQVd8lHbKAXzQ1YvCBrBmVsgxJgiMZi8SN7C9vWk43s5+3m3ZvQ2lIJC8NQ7/cBPLCwTd6f9zKOs3SwA7eBYUGaIT4Qm8SAJNsuO4FNZnUa7EzwfvxQz0EH/NpopN5xaNfX/y8amQ7nY4x62wlIfmhEbGW0gSf7/Pr+izyt8AQTkAC+ZakgsyzJmbGmkSVaZ9GBOiTCa/hXxUwRBSEUtnHzAWOKNc+9TM1Pkn2oquNr+ZxBHo3VlO5b6JPEERa9+mQqRQOUtW4AFsm6dv8vd0wvI97ac3nwDMmplOBXFytkAR5soYf3Q9KbQ1fegiVpuP+TRIw6gkM04SCXYqVYMcIEj99hXXD3EHg/c0Ad7K0PZMRNpzb6N4rT1fMugzkg5xq8mu3vnIUENtFgvPKqba6NPLMXk6Vfx3Yrutr81oGNZB0nBsCCrBNYHqV2fY/zzebvR4sIqTEhYHejTZyNGuEN/oQ/CiNMbRpBYxjg0XFYE3LR4j8OIwpSp4SqW/Sh8kUiHBwumaZ+p9DnYqdziz+2UE3McCstVcl99N8b76BnmSpT4T1t5X6YyYX/cDIGWXiJhQ+E0peiLi0O8MuEQSC/FDQN+P3rxSwL814X0nRdLIuLggNhevdWqKNFj+R2309OCldk3pvTk5QTgoiU/CjwgszhHPYtHmaMNIYUiq9gqcIe7JATLVP0t5aVvqMQ1g3q/dXUhh2HPCqfSVc/icSuxvq3OwtxDi6x5KDWNJSgGc/siDV1wsA+fUxRJCD0VsDVyKE4Ti/+CXfJ7zBrg+wURuxzT0yLHqW52KrrU71MWUIhTmKFo4JW2dY6t3SgkThk6Ds2bsbtNVkDSh9Rp5fU8DM2I49NFFaQwx+u5VUQDe26hTtOtZbvEUIfHBm1Oh5ag0V4K9/vM+MkwvSWqqz/TjNwwQy0O7pd8dJPRHeUSnx
- eqObcgLr
- 63tVjX4Kkzs1yop0Af20OTnKCu7uXk5DQ/qnxFLnzMn2uhpLWjqJhccGWq0/gKAlkqjzHoY2k5JMbynUN7h0NtSOZMTxbJ36DpjoVw5l36wQQzWkbjravbTZ6mKl2Fgtdp9NwpVjTmGJXXCyR3TKbDLBrE9NgT53Jr5An+Kuagdv8qw8oHpWr8kciG9P0WwI969gJ2iHoCcOSFsXIyXudnzKjKA==
+X-HE-Tag: 1784888986-631812
+X-HE-Meta: U2FsdGVkX18ssYNHYpLxZTBpdHCTUF2lkkSaFB8xg52Tb0gzs3pOVFqOcUWIvOxlgBmnFIpFbUxYumS/oqa8DLyD9+I2B+iZHxf/rqgWpPTF5aRB0rNLieJ2VwZV6bKY9v0PJqHbMxCHUw8RNqy3pRgUQgp2DBEFM+pW75tVT7hxn5juOW78wPNSB4PnyNX//DI5QpM3o9BH4h+eno7u4F82SeO0OYgDT5Toz/uwhMF5lHZCOtpSCTuP4qtaxCFYmrNZblj4GGnqKdke14m0gOhbylJT/aJnsz6wg2kKq5rim+FcoIpSakd9xN/61QVsakOPwac70+14dP5IXFYUAz7aGgsJbVwhnFjRmeMo1Bk98we9irc/Og/YxavIcMKqh6wD6iwcqcQAPqcVTuMxr4zpLGsM6e9kSsgQRRjxab8O7Cw5uQT56UD9SW+LLpxMTHjkbKEA7sWs4D9CheDI2NrAJKZ0hMbZrYC0l49laEDJyxAW+ff/g2DwxNt53mwtCjpRXcGKVaA6gBJpZFYdHkodslDhQHurJmGQ3yAxMGpw8pumF9BzvmtmF3jMWnrmzLiPePserB5O0lqof9VB9BTzGizcSFT3GdExFbIdyScrQfL86VckEDt4MDnzm6riuNPGCR8viJjvJVdcynFQWnxlUCtIkXq+JBDaUAIvuoP7zhxNGbq9P+ZW2YcVuBCjLAOBbjAVyIy25ON27HCSAwmguXtiiI1ehTORo6GgudyFm/Fr5fHz0lDW0o01TFf131dx3M0c8AFxYYZ/gzF/2eFvHGaS41c3ZfPhvpMigjYxhX3kHPWTVAfojnMv9ncGODXQL2QQPosFvKMdEr1KUSSZQHT7XggLTVRbNkt5foNjGLxkoax79blIOW1nbbGr5EMuvTHsio6ri4VEUA/iynBskdTVzFBtejVTFyI8kWs/BkNCsFmFcNwgR4hnVl075Qofe7kVxygSiE3W5Bw
+ xsxhjNeb
+ eCMwd4mgSssjyiGO5XuO9FU0whTm5o5xFw+Oe1RyriYkRWCUiLxa+5kSCWWyLQdKIDi1VfUR1uBCKPKzYaSAGB1tT8iqOizHJJH0JpKxMkMzUlnS6YxjexQdhZh0K566Ll51tXSeylcnkaP5R8/CrO+WG+WC9Hzcalue50KniB+KYK2SfRAUP4huqrt/D/scCLVOqpBTuCIyjA1UH8eFL39rIXTlFy3HmQCSz/ozC+kjJosIn8BxnLC2oRKx9hgUO2mASVr/ch6wV4vIoMZ5cgxuMUErg8/dFuH9glS1uMLGa/8iBhztHGHzDk0f/qB142I5brLBQsFF2d89TEwHWKRKrKTuCzMzotiSVjIXa5TjwHXzbm5n1/STjRmCDTeg7iCKDnFptBlYDlz5W7z+Np3Qrx3Z/tFw3/1ZOxb/o1JXrxXJ0AaHL47fcPA3WIRCgAqW21y7ZW+fGtIAD9ZBpa1OHC0+NYy1qLm25kv3jqD3wzAPiTg9H8qj39uR5IpMXATbnGO8/WYUiOLq8e1kZszfkeoz2pXY1oMxi+p36i4FokSg6eTCyJrBwSwk3/TxQ44ZPE3QAKOmXCVoHN8+FkiLviA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,50 +125,13 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hello Arnd,
 
+Thank you for the feedback and review.
 
-On 23/07/2026 20:16, Matthew Wilcox wrote:
-> On Wed, Jul 22, 2026 at 08:19:41AM -0700, Usama Arif wrote:
->> +++ b/mm/rmap.c
->> @@ -2282,6 +2282,25 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
->>  				goto walk_abort;
->>  			}
->>  
->> +#ifdef CONFIG_THP_SWAP
->> +			/*
->> +			 * If the folio is in the swap cache and we're not
->> +			 * asked to split, install a PMD-level swap entry.
->> +			 */
->> +			if (!(flags & TTU_SPLIT_HUGE_PMD) &&
->> +			    folio_test_anon(folio) &&
->> +			    folio_test_swapcache(folio)) {
->> +				if (set_pmd_swap_entry(&pvmw, folio))
->> +					goto walk_abort;
->> +
->> +				add_mm_counter(mm, MM_ANONPAGES,
->> +					       -HPAGE_PMD_NR);
->> +				add_mm_counter(mm, MM_SWAPENTS,
->> +					       HPAGE_PMD_NR);
->> +				goto walk_done;
->> +			}
->> +#endif
->> +
->>  			if (flags & TTU_SPLIT_HUGE_PMD) {
->>  				/*
->>  				 * We temporarily have to drop the PTL and
-> 
-> This makes me sad.  It feels like we're bolting more complexity onto
-> try_to_unmap() instead of removing TTU_SPLIT_HUGE_PMD entirely.
-> 
-> Ideally we'd just cope with folios of whatever size (including
-> PMD and PUD mapped folios) and only handle hugetlb weirdness when we
-> absolutely have to.  Similarly, we could split PUDs to PMDs and
-> PMDs to PTEs when we need to, without the caller specifying
-> TTU_SPLIT_anything.
-> 
-> Is there a reason we can't do that?
+Your suggestion would replace the write paths; if Kees would prefer, I can
+send it as a v2, if not I can do it as a follow up patch.
 
-I will prototype what the code would look like without TTU_SPLIT_HUGE_PMD
-and get back to you on this. Looking at the code right now, I feel like I
-would be shifting complexity, but let me try and do something about this.
+Thank you,
+Mahad Ibrahim
 
