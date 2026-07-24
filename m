@@ -4,88 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D10C4C531C9
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 06:53:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6B1CC531C9
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 07:00:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A27DF6B0092; Fri, 24 Jul 2026 02:53:58 -0400 (EDT)
+	id F15DA6B007B; Fri, 24 Jul 2026 03:00:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9D6FE6B0095; Fri, 24 Jul 2026 02:53:58 -0400 (EDT)
+	id EC6406B0088; Fri, 24 Jul 2026 03:00:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 917876B0096; Fri, 24 Jul 2026 02:53:58 -0400 (EDT)
+	id DDCE46B0092; Fri, 24 Jul 2026 03:00:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 67DCD6B0092
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 02:53:58 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E5D26802DE
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 06:53:57 +0000 (UTC)
-X-FDA: 85022755314.28.DF3B31E
-Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 7F91AA0005
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 06:53:55 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=fKcoAGrr;
-	spf=pass (imf15.hostedemail.com: domain of guopeng.zhang@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=guopeng.zhang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BD0986B007B
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 03:00:56 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 216491602AB
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 07:00:56 +0000 (UTC)
+X-FDA: 85022772912.09.BE7C7AD
+Received: from smtpbgsg2.qq.com (smtpbgsg2.qq.com [54.254.200.128])
+	by imf07.hostedemail.com (Postfix) with ESMTP id B133C40008
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 07:00:51 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=Cj8RwvZk;
+	spf=pass (imf07.hostedemail.com: domain of zhaozhengzhuo@uniontech.com designates 54.254.200.128 as permitted sender) smtp.mailfrom=zhaozhengzhuo@uniontech.com;
+	dmarc=pass (policy=none) header.from=uniontech.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784876454;
+	b=fnMePROX6YSalEk1xx6f1bZgi2PUYFQcn1rCeD6a2ol7Mq1APbmqu9WePbNdU1nufuizBZ
+	KZ1IVCwag7g6dm8Ijb8eko8nGU1s/kK37PAU3Urxzyjp/fiKslPsQL1Nsp0c8TNHO+VcaW
+	DPI3iZeFdzW2EIwvsl/lRlHicgPcfhI=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=Cj8RwvZk;
+	spf=pass (imf07.hostedemail.com: domain of zhaozhengzhuo@uniontech.com designates 54.254.200.128 as permitted sender) smtp.mailfrom=zhaozhengzhuo@uniontech.com;
+	dmarc=pass (policy=none) header.from=uniontech.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784876036;
+	s=arc-20220608; t=1784876454;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=APONQVsPJkkQx8mNtrNVFM4P3UKPMmWHeB8nUygzPiE=;
-	b=RNETKdMnwuRzNF8QaFTeEUvEiItcCo/WZ2RBAxiToxZUfDzLDDJCsDim3wpZxK1aYvKbkU
-	i7Y4bpe9GN09VnTXqD+dyiosRIOrV9fVDPuFY8TP3KwoIFxOTRZyhqqfVQ/xIOH+EPyOqj
-	DcONNLbGKlGYnD6TAim8f6zFj0AdzKk=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=fKcoAGrr;
-	spf=pass (imf15.hostedemail.com: domain of guopeng.zhang@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=guopeng.zhang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784876036;
-	b=T1cFnIK0aVeAI0pKOnPMFXxDxfjbNI0q+BG5ZqtuuUZrx15HsaKWAAgl17D5bsmG6WQCcH
-	OlzsMrL8qrUZC9rikkDktq6O3rrsl60cs8GelIXFhamWJjPI5U8DMFp3rL13zUh3hJJ57q
-	+VeJ8k95yN6SMZxCdk+k5Ku8FgsAVz4=
-Message-ID: <cf2df458-2b0e-46bd-9eea-f3c15265d90e@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784876031;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=APONQVsPJkkQx8mNtrNVFM4P3UKPMmWHeB8nUygzPiE=;
-	b=fKcoAGrrAnA635Yh9d/uLCwMRNa9LD5bxnO4YgA2+uFrLRy0La+iXderjPvz4yoAv3efz8
-	Z8yOoE74pSaM0nn1NfQT2Gr9E7SPCtWd1jupNsaGo0G/ZfD7GxHXuOCCRbxT3+WrZTma1T
-	X+pi5BI/4WATlWg0CzclnMNkKhRpus0=
-Date: Fri, 24 Jul 2026 14:53:29 +0800
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=W7eO75WQ6Iz53aPxHGA+pWTqSaMtwGzSjlsEmYlxr0g=;
+	b=YR8hfhXZQbjV3RdfE7n+ez96H/HCNcN1VMwwc/oUA59levKDhwSrMHCjBQA71KmdSAqbPY
+	jEL0GS6ps0X6Tj3MFYl6WPgYiSb90BXpiqBPfkBcSnCXvpF7RPAYyqXLqCYUgwSBYpq2mM
+	+Rj+JrneqlFLJZIQdko8lRjgtU9tgOU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1784876438;
+	bh=W7eO75WQ6Iz53aPxHGA+pWTqSaMtwGzSjlsEmYlxr0g=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=Cj8RwvZkBDOPWBOxGGiUhn6GEuh1EyhTf2CL2OHxYYI5ArPZVDca1kD7R6OW9Icu8
+	 LDtCXGPoz02DhLFLXkP8ySBu+WCdlS1Pb6jCkR5wYiVACsGgq7RsWK77zNTxC/SBDB
+	 MgIr1lZxJwqEZa3VpXyG2EbQ2I69UvVdS5W8YORI=
+X-QQ-mid: zesmtpsz3t1784876420tbd8998f7
+X-QQ-Originating-IP: Vyt5qy7KqQvsjOwB9C0qk1I1TDMXxLRBNON0HVtOncQ=
+Received: from zzz-PC ( [113.57.152.160])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Fri, 24 Jul 2026 15:00:12 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 2749011430090212202
+EX-QQ-RecipientCnt: 10
+From: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
+To: David Hildenbrand <david@kernel.org>,
+	Shuah Khan <shuah@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Peter Xu <peterx@redhat.com>,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
+Subject: [PATCH] selftests/mm: fix gup_longterm EINVAL error message
+Date: Fri, 24 Jul 2026 14:59:29 +0800
+Message-ID: <8A3ADC563A32EF67+20260724065929.1474539-1-zhaozhengzhuo@uniontech.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-Subject: Re: [PATCH] mm: memcg: stop reclaim when a limit update is superseded
-To: Tao Cui <cui.tao@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>,
- Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Guopeng Zhang <zhangguopeng@kylinos.cn>
-References: <20260724021805.1234583-1-guopeng.zhang@linux.dev>
- <da7f525e-077c-4fc2-99bf-04685b1d8225@linux.dev>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Guopeng Zhang <guopeng.zhang@linux.dev>
-In-Reply-To: <da7f525e-077c-4fc2-99bf-04685b1d8225@linux.dev>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpsz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz5b-2
+X-QQ-XMAILINFO: MvdkdJf/zMeNq6Gdr4/GWj+x1cjfk1QMJLKvHmyo69uiV16HwW/Mv8IZ
+	Uo7/6bLwpXMwrcos5nVAv1BtvISXRiFrL23rhEm8O+90SMpoEpgPzHsTtvbn2Y+OB/CY+G4
+	kJaRIpStOw4GndBTLfch0XJyFahuhRzKohyvQEBX8pXVikHVtQkGAuUakjhYdaGVRNR7Lz8
+	wci0ZxWFYGvGpPDrhMV0iZGLlfdSVsI/srezOvxFj8FvwtTcbxB8EaNabO1YO2wmpROnVxL
+	RAewdLKd2DQKF82lZhY65OJqTz6BDJsxS9HQYkZac56ULBUrbOr0gOB85aHvflbTFEQVp7M
+	5Pp2qcKgorX8tSjCCxL/6s9WRjsocgfj7DMiYvMl4tfpey8o8z4oMc/imqep19zazyNDx/5
+	MXRQJy6m7Itoqz9gdZQ59Kal+hzGDzHmvNPsp9TIrUxMapL17TMIisE6P8A4waCvSgmzrKb
+	vCFHQtZCaG9M4ip4xfdF/zVm5Xmo2r/Hc+jhU++Pboaep2KH9W6rZT3G+oU1MhzEMkKEwAU
+	LB1NbNkWF+RrOc/ObmDpVZ1NvtFNwf3jMBGieeyTmqDv/lRY46uevCHQ0zRJgljZ7ZZxZ9s
+	8OO7zeyGxbLC+BJll5lcqvIsHHYU1H3/9032DcEXDanlmDIPDjN2demNZoXVM/KeKLf5UZw
+	ZbbpLXsZUE6rMwrWQkLaOteusL/1ew1ivL1KpogeyxeYk2/55nGDsEvWS0jzFisMwgJKh80
+	1+0yu3NgcXyZCTD0UTD63mOoTUPvpkjxUQ5HTHriDSk4GaFQ40hxqIBSc76DIhKwsemZ27J
+	RfSy+Ki87E86KO2wrI0tMtZAnzw6wezawJ57Yj8HfOB0iv6Nj9WIDUtorbbch5F9XCiICg6
+	2kvTBMRcT3vgJVGFFnlCgezAYStZ7g2iJ5nqXenDEyDqfIWO55W096R3+a548G/w1lKfOMY
+	JlCL+52DQmuKAOd83xGY9zQMF6HryPMSuRXWfWLwELEMbJayGqEf5mtYv6Idcli6doFsT9D
+	kwYX2Qp6khjk3VjtuaRK0e/jFyETlrxbHuq55FvdQ4bantRDGSec1qRDoRpgB19z37FiXeL
+	lU6TigE7DHEly1KhyTxuLncYoW3ekcyGg==
+X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
+X-QQ-RECHKSPAM: 0
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: B133C40008
+X-Stat-Signature: e3i7ka7uern996xz5315bsxd1od677df
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7F91AA0005
-X-Rspamd-Server: rspam01
-X-Stat-Signature: jti34z7i7xpqo861ckihgcf1acseb9nm
-X-HE-Tag: 1784876035-835927
-X-HE-Meta: U2FsdGVkX19AXUnyPYQMKcVwyVy6s2bmeZZDuDhl7sC5wh2YZyA4tKdhxx3uiMC4Mf730SQK//3ZRuAAsbSUu5ptCZMckX3BuzLG/nKWakq2x88h0eVs25NquSyNDYj8mmZ4zT/JL9vc1mO+Ai9x+t3Q6dykwjMN2y1BnOaviJYfjhhtsS1mhlFQFXoji9vBq22c+7uF4xwXVGoWojKEKsGxlZglxYCFAnWkfwFSkJrYsCCWh7e7bAZmiqdNr+Z0evAS/xEHRmMSw2EIdEZ8BB1Lokno2ECQvoM1a0uGYGE606yB2tnebylJq+ZRKOmP/byckT78kDJXa7gwoUOZ4OYu4v0m4c1hqHX3hBclKS4izc3JnFTZ/Srr8yHdgJWxVdzgkANK1aXGxYin8InXuQT8Mj135o5zQvC3/BgjUqtsmzsfwgVpU+1MB/LmMuqP/jsCm4P2bf2fRSs3Wi4q5V6U+I+rYbi/Xs7KEH6olLGOUMTvanXpXDCU90V0ROD3NH8ZubPOxACWUpaW4MK12CPbV1JjUUHS8mmaXIljy+oKc8awC7XI2VDuesmJ3syh9R5yc7UA/pmUaiyKXa4LMvkOpSwbIAW4abjN+VZ5P7KJxshBlynusLD3COFdJWRM7vNKl1XrlLywUWgvO7seIyjvA7g4eIPXyoUgeshtp3cy7zSgmfCBryfOL5ywZYx3g/n0T4WOILegUIP+BaWmfI9ClHcal6yiU7zdISqGko0bgXNgmmT7mcHLd5SDyOkpgDiCCQcywbcrBmVJbUInzMs4eQCXLrijb9QLA+MSfKGTWo3rd+6Zzc/37vW4aQfpFM9esuZxeEA3fJJdXIGqA4ckpUCoPqPjlnolEMd6frjOysXwmpnK4G2NTh8TvM4aCF41ZAxeooAZw0vMStPqhebBuf+pCCVjpdTXXicLxOZK2saImXaQQTvWRgdSLnLC6EMX67mOcVrRhU5l62l
- ZlcG0JI6
- 59vRadrbJZiPjTWqR394XYbMF/xqehNaHr1uSJ45j9b27E7O22cx5ue6bs35upjOvcn2egOHacyy8nUhsuYX8YgQzukQfoA5Bt8t4814SrqSgx34RjUgHokar58Gi5HIpws6Lh40m6VbU0Eh/47gnhUQoLfvZ3QRoVUMqAZYXYbB+sXe54+qyHpLanR/eawARsRcQ2vmKY+HiXQT+xx6kHyNxwAvjB7aknOYaYQaRlPOj4S8=
+X-HE-Tag: 1784876451-798024
+X-HE-Meta: U2FsdGVkX1/LUzBfFRUHXliUhYvL5dUjyvDPmQHkAsY4iuIyFXFHrmch1BGRaKMr848SWa2pYxDDsjB72fZAD3Q0RvFKBKSVxgRKn2O66L0HVVHk6X1PyQLlKFI+TIo3PUxplOiIfWa6RIkk9j4Ep2Cubww7fDD3fR+4zT6HmEUwG87P32CSuXPkicx3diFEDM4Lj7z33qLVqLKQCgX16EEikZNNbMryqfWWORMJ8nnHx4cavYPAuEBPuL9UZf6OoVCineIkLBi1v6/aoV1DJpiBYctBDKPzq9aLyFhHfNYW/WEwcA8T281tDmgPv+HpxRtq6Ih+9liKGcYAuT1mjyfkigUz6hdLNxjk2jnjmPYeX9oTOdohdp0Q7qNOSN1l/Ujsf0CynILaWQe/xi/UNaQHVuqjeFqk4THH7xQWRMCmKJLi1r7ZLO+ciF1vXM9yYJTw6zTSt2xwMHV91Dra7BecdjB7HyWfn9qp8+VM4IoewhV8NA9VflWXDhtBbpL/4jwqUGxIRwqIKKwKzIgH07nLYFJgdEPMf6VSQsEIkOIHeLyS/XQ7lo/4scTI06bdDK3vdrG/X44mtdWnUlj1EMlM2JbYMu+8RY4rhRNZwNH09kSq40PFl8T/SEVx7WKiI5gt/XcVtPqjIZOR+BA++c3bL8RxWK7r8Ap01SVE1a+N7b1wj6+FEuTLlB1KAiY/Xw5ENyTgyjFGu0GmcYK4Y6sD3882E+6e/PmEUGHii04s7m5gM+c+LUDYcZrI8PMmrQEDtMwn7Ne73xlP1Izra09bEiOi5eJbfbdUxKcaSWSoZkFMnW2x1sgWeuugZcF3hiZqaoT+gKA81srjwbYNJaM29o9YDdD5tFpCofwv6D06eeLuTDGLA3lpX8VoFXkXX4AKActJAc7+jdsl3K+KhbI2spooqWmQBl3/eq2W/NHefmG8FXxTcM1iKE04gqdlikzYlFV8R90m/BjvIO4
+ 0vC8GdUG
+ m+Fwzwewnr7tiB5lkoxe+4yzMRmAGVl2xkD7jLj6Kx9YBE5txpJau/7Xa3G37j3bzVyXhR7+3W/xHDXixYFr5kIbH1S3VmhS5khjgLL+1kTIi8SEd0Hd1GK37vQ2b7GgcB3sOBbLlhaq7FSf5vtM6PqcbdXKYoM+7xXW+loA2u5gJUkezAqSFrYCE/uis5TOii2eFzwALnjiXtgboUWohNvni5z3AVtsz4b7UARp1ajYlikebpg3JL1S0a1C5pO1Ye5obeAlXuFzIItPcmbQYmoNQx+xP8tbgg9fh8fhOT2hqjBaWHYdvG2qE4VwywN0fEIoHURTLOWP7nsUFyWNkImQeDqVFVse8NoprZyFAqcmGbfoR/+fC+Mm29rQMx8KG3t+jv5hLDb1oo5qyDjra58/lhQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,100 +117,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+The gup_longterm test prints a literal "n" when
+PIN_LONGTERM_TEST_START fails with EINVAL because the string is missing the
+newline escape sequence.
 
+Print a newline instead.
 
-在 2026/7/24 11:32, Tao Cui 写道:
-> 
-> 
-> 在 2026/7/24 10:18, Guopeng Zhang 写道:
->> From: Guopeng Zhang <zhangguopeng@kylinos.cn>
->>
->> kernfs serializes file operations only per open file, so separate open
->> files can update the same memory.high or memory.max file concurrently.
->> Both handlers store the new limit before synchronous reclaim, but
->> continue to use the writer's local target in the reclaim loop. If another
->> writer raises or removes the limit, the first writer can continue
->> reclaiming toward a stale target.
->>
->> For memory.max, this can leave the writer looping indefinitely once
->> reclaim retries are exhausted. The OOM path sees sufficient margin under
->> the current limit and returns true without killing, while the writer
->> still compares usage against its stale target and records another OOM
->> event.
->>
->> Check the current limit at the start of each reclaim iteration and stop
->> if it no longer matches the writer's target.
->>
-> 
-> Fix looks correct to me.
-> 
-> Acked-by: Tao Cui <cuitao@kylinos.cn>
-> 
-> Nit: the message lumps both paths together, but only memory.max loops
-> indefinitely. memory.high has no OOM path, so it just spins
-> MAX_RECLAIM_RETRIES times and breaks on its own. Worth a line to avoid
-> conflating the severity.
-> 
-Hi,
+Signed-off-by: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
+---
+ tools/testing/selftests/mm/gup_longterm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks for the review and Ack.
+diff --git a/tools/testing/selftests/mm/gup_longterm.c b/tools/testing/selftests/mm/gup_longterm.c
+index eb8963e9d..c03b4f891 100644
+--- a/tools/testing/selftests/mm/gup_longterm.c
++++ b/tools/testing/selftests/mm/gup_longterm.c
+@@ -196,7 +196,7 @@ static void do_test(int fd, size_t size, enum test_type type, bool shared)
+ 		args.flags |= rw ? PIN_LONGTERM_TEST_FLAG_USE_WRITE : 0;
+ 		ret = ioctl(gup_fd, PIN_LONGTERM_TEST_START, &args);
+ 		if (ret && errno == EINVAL) {
+-			ksft_print_msg("PIN_LONGTERM_TEST_START failed (EINVAL)n");
++			ksft_print_msg("PIN_LONGTERM_TEST_START failed (EINVAL)\n");
+ 			result = KSFT_SKIP;
+ 			break;
+ 		} else if (ret && errno == EFAULT) {
 
-The message separates the two cases: the first paragraph describes the
-stale-target reclaim behavior common to both, while the "For memory.max"
-paragraph describes the OOM-based indefinite loop.
-
-One detail is that memory.high is not limited to MAX_RECLAIM_RETRIES
-iterations. The retry counter is decremented only when reclaim makes no
-progress:
-
-        if (!reclaimed && !nr_retries--)
-                break;
-
-If reclaim continues to make progress while pages are refaulted,
-nr_retries is not decremented and the loop can still fail to converge.
-
-Thanks,
-Guopeng
->> Fixes: 8c8c383c04f6 ("mm: memcontrol: try harder to set a new memory.high")
->> Fixes: b6e6edcfa405 ("mm: memcontrol: reclaim and OOM kill when shrinking memory.max below usage")
->> Signed-off-by: Guopeng Zhang <zhangguopeng@kylinos.cn>
->> ---
->> Reproducer:
->>
->> Populate a cgroup with anonymous memory and disable swapping. Lower
->> memory.max from one open file, then restore it to "max" through another
->> open file after the new limit becomes visible.
->>
->> Without the patch, the first writer remains blocked and repeatedly
->> increments the OOM event counter. With the patch, it returns normally.
->>
->>  mm/memcontrol.c | 6 ++++++
->>  1 file changed, 6 insertions(+)
->>
->> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
->> index 8319ad8c5c23..638bdc766616 100644
->> --- a/mm/memcontrol.c
->> +++ b/mm/memcontrol.c
->> @@ -4798,6 +4798,9 @@ static ssize_t memory_high_write(struct kernfs_open_file *of,
->>  		unsigned long nr_pages = page_counter_read(&memcg->memory);
->>  		unsigned long reclaimed;
->>  
->> +		if (high != READ_ONCE(memcg->memory.high))
->> +			break;
->> +
->>  		if (nr_pages <= high)
->>  			break;
->>  
->> @@ -4853,6 +4856,9 @@ static ssize_t memory_max_write(struct kernfs_open_file *of,
->>  	for (;;) {
->>  		unsigned long nr_pages = page_counter_read(&memcg->memory);
->>  
->> +		if (max != READ_ONCE(memcg->memory.max))
->> +			break;
->> +
->>  		if (nr_pages <= max)
->>  			break;
->>  
-> 
+base-commit: c04df384b55dd9dcf72c36b661becb5aaba371a9
+-- 
+2.51.0
 
 
