@@ -4,102 +4,152 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0787CC531C9
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 22:06:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8D1CC531F9
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 22:07:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9811E6B00A6; Fri, 24 Jul 2026 18:06:16 -0400 (EDT)
+	id E3D4B6B008A; Fri, 24 Jul 2026 18:07:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 957A86B00A7; Fri, 24 Jul 2026 18:06:16 -0400 (EDT)
+	id DEDD76B008C; Fri, 24 Jul 2026 18:07:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 848086B00A9; Fri, 24 Jul 2026 18:06:16 -0400 (EDT)
+	id CDD686B00A7; Fri, 24 Jul 2026 18:07:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 579736B00A6
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 18:06:16 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D3FEB1601BE
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 22:06:15 +0000 (UTC)
-X-FDA: 85025054310.12.9DDE880
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id F1B4714000C
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 22:06:13 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="fpmg/N6H";
-	spf=pass (imf09.hostedemail.com: domain of linusw@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=linusw@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784930774;
+	by kanga.kvack.org (Postfix) with ESMTP id A3BE66B008A
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 18:07:23 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 279251601BF
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 22:07:23 +0000 (UTC)
+X-FDA: 85025057166.05.86FF0F0
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 49518C0007
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 22:07:21 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=BKg5ohAw;
+	spf=pass (imf22.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784930841;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZK/qXqHwCHYaftZ/w1GoLbX5tP80qRmxiIDWeISJO6Q=;
-	b=GYMCBnv5QaAwXGDDvKvARGAO6OiBXkICn1ZOqjAkeR8aokjXdcKUrlDaDHDWQdCNIuki4U
-	nnakE72NcbHOfqKEvlSXwXFnCjhgO2yZY8CJGi6sdwxJOhYipQ6NezddLZ/l+CPAFUiqKy
-	7EjaMbKEaINSJZ8w5Jw9iVA/nKxuK/A=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="fpmg/N6H";
-	spf=pass (imf09.hostedemail.com: domain of linusw@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=linusw@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784930774;
-	b=mXFMtd6JlMpqL+bWobKEPLhExl1z7JemjAMXAWpKWkm9cGsmTZpZ1YMKrEfSTB8QDEE9Wo
-	dU566zcvUFnSDSqyJvCeRG3qvxTVaAlhtTDLPhfqmKutXdIR53hmrtgbV1DKm0/UlQ0WKJ
-	vjflSEkLFf8+Xoh8k5X2+YrbcIIFFeg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 22E5E60A85
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 22:06:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C75F91F0155B
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 22:06:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784930772;
-	bh=ZK/qXqHwCHYaftZ/w1GoLbX5tP80qRmxiIDWeISJO6Q=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=fpmg/N6H4iLzNaEYpIheWxuLoPYqARr98BQMPUPoDfLeUOQ3SUhup8BjYe5I/YSsw
-	 +z1fmszvtnfUlJh21r6pA6BLwwcwoMiq+k045FawsKK6ElqCdl2gyWEWa+/jgStKFb
-	 hMlgsNcJgaQYABY1AnauxjqU73T3oJOBXQUawm53ooM1oIYy8iBrK3CmFV6BiuTynp
-	 VnmCeBu/ezj6bYMDeV2Wr+htc2ljCOleiwsU8PlmgyvXUUNCCtx3aBxoyZCSYco2JL
-	 LQbvgbVKxE2pPDE9v0CFtvTHGhsp6WTr8NoLWdme/4FFbsb3MfvDxskhmOQTKU8axj
-	 jju0Cy7bUINKw==
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5b0117d49dcso784230e87.3
-        for <linux-mm@kvack.org>; Fri, 24 Jul 2026 15:06:12 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Rpu0yT5+5/wSYrKNUFLI4fp5GrwUpr/MXvPex9BOhoDHjtMU7mIF/JVXVD7AkBNT1r3ml930cD3eQ==@kvack.org
-X-Gm-Message-State: AOJu0YwXkl2tiIdAXPJQiH3Rp2t/ZWg3D27cqQOwMFVHmntjpvU70HS7
-	Iq3hy0TuR0YZba0UT0nwvhgH8vx6rxB1pQ3DaDMU2w7odYCs2QdI4UsATYXa1Vv8MpmLALHpXfe
-	ceS6rENUef+DuGhyw940eNpNgWpyHDEM=
-X-Received: by 2002:ac2:419a:0:b0:5b2:a339:b422 with SMTP id
- 2adb3069b0e04-5b2b2e57025mr1270110e87.14.1784930771522; Fri, 24 Jul 2026
- 15:06:11 -0700 (PDT)
+	bh=wU5Q1P1K0Sn+giEIKHhvyXiMnp5Z1SqaRAMuahPIEyE=;
+	b=lwsPCFf6rLQrBXuYNZfHvked1z6pTxP8oYKJ1qBGCjWV0JTvULz86uxTjvy2/2sr9KJcjQ
+	em9590eGM8TmW0mDNRFdHnvB/tzw74WAQOrgvIbhmVDuz3WQgTywsJTGku2hDstazBuk9q
+	ImI7H7ov/q3c36h5of0bBKYwVT2btAg=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784930841;
+	b=zQpbBlVDq1H9WVWP+UL62aBM8tsJY7tYu7athjBxRvx61wTOxc3m+c4If0ETCZJKqaUvrd
+	/zGbG6VYsxj/qA9BZVEoSMJTAwCE9wMM+Zt93tvHdvxd0Qps9Ou2eTlmEQg+oQTz0W/Km5
+	TCldGhLaCxk/2VgrRvekJm6Lx6TDgUI=
+ARC-Authentication-Results: i=2;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=BKg5ohAw;
+	spf=pass (imf22.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-47f7854678cso592974f8f.1
+        for <linux-mm@kvack.org>; Fri, 24 Jul 2026 15:07:21 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784930840; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ZBRyigQKol60sRt3O0At17XqMhzdVBuiV3QS4eYSpUyw/YFdwdD1FBz0JDZitl+fRp
+         dVQJrGfyLsFSPqMCAopKn+OViYLAHGQgX8DXBqWFclGlllf3Q1P05vKL85AcMF3JW14S
+         zCBrB34A9dVnk5v5rN+6icLUXsDPcA3j97+tzwarfKJH61h4F30rOSJjKzvGKnlqLHZS
+         8XLoq/J4+Kbep8aQv9ajGg0dIElNGKPQFbHjtPE/UiamFhxjagZcX84hswuVmlnYihoS
+         YDXrhGLzS1Fuf6GIUMktYr4UoqLQV5+z5CseqlVJcXTPKa2kmkqwb04AvFA2y9GtWM5b
+         Y8Tg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=wU5Q1P1K0Sn+giEIKHhvyXiMnp5Z1SqaRAMuahPIEyE=;
+        fh=Tc/aLweBsa0xbbqVM6ol2N0BOMwFMr9HApctnn/RP6Q=;
+        b=nAdARAzdxkW8N3Tz/cKy14vrmDUiSmZ+YAsXIjSsVhfY8JFCyQH4no826eb7/rt/dU
+         f/RenMPIe8DyeGKJQiNlvpEv6EknT+Elkfq1PBxyWCAemMSCtxu8T6dKiqQaPlqF6esT
+         F386tK1wbwQIIkfeeJOkbjKsBBmDTj3KJL8F2bzEIKL+dSG7DJ/vSejyYeT6MI3sSWWo
+         JRAGvCS3Qed+boAATtagWiL6tITulW7MIXq+w5G6yr0DXVZIRjd77Fbq+87/+Tq+8rLm
+         9WalPBgu4IpzUQXeZCRBT04AgaZpOg0L9aIkhVh7JOPo9JEFEvuR4cLZzhpfH7qze+vS
+         tzyA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784930840; x=1785535640; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=wU5Q1P1K0Sn+giEIKHhvyXiMnp5Z1SqaRAMuahPIEyE=;
+        b=BKg5ohAwhOJcT4JGrBATqucEt8xMKcTO2/LbiKy2qqVPDf8ha0XcLa9c750iLaMofF
+         iZVYx+MXaLg1JgP/kqW0TILhY/T0OB8+8JwlbCwEEsQk8Nz0PrxUUuQ/GG4GpeP+OHo3
+         MOUpkQYkYZ309OU4dtCmueVN0nlmowG6s8YUEN4LTyuSiM9lu71Sn3bouuTIxRN/DFCs
+         KnMd1lFw3WzEj1KNdHoC4B1O0/d0yuWfyt9u736dglNniKFYGE8pDeld2LE9A2pf39xJ
+         IsDFARV9BSKntDgWU6MkTdhlFLuJcbzmfNxGPmX+X1CuKXVY4SBzsNKQ0lqHH8TNX5xU
+         mqHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784930840; x=1785535640;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=wU5Q1P1K0Sn+giEIKHhvyXiMnp5Z1SqaRAMuahPIEyE=;
+        b=Y5uZv7nKrsJjNmpMSfX2X+1uO3vvLPfbLsNLLOp2gMuvB+HWjAnY+KTwREbZ/DmFYP
+         7sf+3HnFng1ReS7OOvvH2BLaOWWjn8Fdj5SSB6O8DIg1ijF7e3b9p/8+IWx4g4kcRWU6
+         o158Ut6JDZE0XVFsAK2Pvjri83DtKRctaT8urO6eXBMhys3z60FJbMkkg4+3kRX4gBN1
+         Yl2B3yS4Nnnr8ZL9pmB45voXnjsxAbPfrLfw4eG+Dzu3nb+MocBDIhzmLARUOnfKEqdo
+         0ojYqo5wuQODQ55MF4s9kNdbQglJGV3Nafw42MomEXYgw1qVQqv16EXtANnpe82kz5dD
+         82bg==
+X-Gm-Message-State: AOJu0YyVdZOWaTuKVFR0iGZO2S7tW0qnmSkn7SNLfagE7eK2Zv2pG8HR
+	gaxiJQpV836Gk79JJ3w0GhsXm3RallQiwd+6LzzFsPVGZMi1H6InNp4UrqhnvYnAzHBjbBf/vCI
+	/qpkQkJ4uY3j34JtN3vud5Orv0ltipAw=
+X-Gm-Gg: AR+sD12e0q7TZqCx4wwzt+7KXuxJP3o4yomYaraX0z6aI0woyJpeNHml/j75bKexHbv
+	9Gm/X7hQbhgLV1h5bxEdyAaSDIga5k75H/Ji/e1iwU6nDdIJ63F2AWWQJGWqPKZDPCz1eMTV1a1
+	49nCIVS11BhOC6SAxDKjcvXmZmT2f+KmREePm0kZGa2zcG1Ckl2EEHondm4YnF6XoV3vfX23cJL
+	m7BFAir2JB7t8wKXhNOcfRPCjGnpwi8uMJPJX3TaxQ+QaPl/1YguF61afzF2kUoOhitdUd2zHin
+	79tEJqhg9zZEqASG/wbI9l4kuY6RjEOP3Z745jzi0xAfqbiRB3mbNdWKaHD4NeVFwLKbLCeLJsJ
+	tSAO6MBxYmosI++RHN68jPTQ2
+X-Received: by 2002:a5d:588d:0:b0:47f:9022:8530 with SMTP id
+ ffacd0b85a97d-47f9feb3429mr29047f8f.53.1784930839429; Fri, 24 Jul 2026
+ 15:07:19 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260716014022.2823-1-xieyuanbin1@huawei.com>
-In-Reply-To: <20260716014022.2823-1-xieyuanbin1@huawei.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Sat, 25 Jul 2026 00:05:58 +0200
-X-Gmail-Original-Message-ID: <CAD++jLn_DDvWAudHC2Qtz9kaaonuC0YGTXn9nvPtZfGLbtUsOA@mail.gmail.com>
-X-Gm-Features: AUfX_mx2hFCYIaz4S_jxIhA6OwkPZhUBrv5ELnxYqV8yBlY24tuCz2ltyfNSBms
-Message-ID: <CAD++jLn_DDvWAudHC2Qtz9kaaonuC0YGTXn9nvPtZfGLbtUsOA@mail.gmail.com>
-Subject: Re: [PATCH v4] ARM: mm: acquire mmap write lock around show_pte() for
- user faults
-To: Xie Yuanbin <xieyuanbin1@huawei.com>
-Cc: linux@armlinux.org.uk, ljs@kernel.org, akpm@linux-foundation.org, 
-	xiqi2@huawei.com, david@kernel.org, liam@infradead.org, vbabka@kernel.org, 
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com, will@kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, liaohua4@huawei.com, lilinjie8@huawei.com, 
-	sunnanyong@huawei.com
+References: <20260502-mglru-fg-v1-0-913619b014d9@tencent.com>
+ <CAJnrk1b-5eQrPtug7i7n0h7=j0gaaGhihf3tbBZLfxz5fABUiw@mail.gmail.com>
+ <CAMgjq7CmQjuOgeU5XOEwA532TB0=8U2aDXBz_prKVdFY0uyxWQ@mail.gmail.com>
+ <CAJnrk1YqpLhsbC5m0vL-w3HG8dXGSPOH7Qq3-XAnJYTBdgN9qQ@mail.gmail.com> <CAMgjq7A=NB6qJL1WLu6b+EonLKnDjbFG20Fq6OM_Vq=798sDmQ@mail.gmail.com>
+In-Reply-To: <CAMgjq7A=NB6qJL1WLu6b+EonLKnDjbFG20Fq6OM_Vq=798sDmQ@mail.gmail.com>
+From: Joanne Koong <joannelkoong@gmail.com>
+Date: Fri, 24 Jul 2026 15:07:07 -0700
+X-Gm-Features: AUfX_myIBEQNvjQnywZKwgcUPr_Hqzmhc_uHAGI4pS_88gOAKqEl8BxJzWwm880
+Message-ID: <CAJnrk1ZXB2Kt=3F3q8ksQqcyyjKUpzw-GNkzEZBCxkdNM7Mx_w@mail.gmail.com>
+Subject: Re: [PATCH RFC 00/32] mm/mglru: MGLRU-FG and refault distance support
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
+	Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>, 
+	Gregory Price <gourry@gourry.net>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>, SeongJae Park <sj@kernel.org>, 
+	David Rientjes <rientjes@google.com>, Yu Zhao <yuzhao@google.com>, 
+	Vernon Yang <vernon2gm@gmail.com>, Zicheng Wang <wangzicheng@honor.com>, 
+	Chen Ridong <chenridong@huaweicloud.com>, Tal Zussman <tz2294@columbia.edu>, 
+	LKML <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 49518C0007
+X-Stat-Signature: 3m3a1iuqkxq3zrhjh6p3wmsu918kjiyi
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: F1B4714000C
-X-Stat-Signature: dbwnuoiuqjq1o4aqdwixzd8zyee1nxbw
-X-HE-Tag: 1784930773-696458
-X-HE-Meta: U2FsdGVkX18ByJ+uQqJ7FCFLCG/6Lmr5pXd3cnykoAXpwXCbQcxXIfm0vHPuLOWj/cMOvozDfJz7UOr0eqJErpjLxbyU85cwulrLg5Aixysg5alJV0Yj3tzcKgc/2fROrCJjVsgR8hp+qjpjJ1ZuqH6JE09Aqw4PmzNfyZmLJ2Dyd66em3ZtujPg1brIycvPhrR/w8VsZn1T6cQltsVevUsOCxD7OXNpcx1dfXRpiaxmxF8Z5ilyex9dESQ6qMpMQ1eQyyaCTu47ckFYuQh+gDSzjxImY3UEvtY5kbZPqm/QxBQFhKQHiA3YNwkD1A6brqtcAPzzmYVhBt3YPBa0+ufu0kcJgeyJt7Pf00oIJ3XB8QPnZd2saHcYLfMbgVSwdzIcCl2o9myf1uO5wMd12ZCJ4x9EB4wr/bi7asjKoJrLHr6FNKW4KV0ylf0L2NoQs7LbySLi8pwrx9VAwUO19NHx5TmgGckanbUZk7Bjk+FkxwsWhPaimyfQJ8pI93GhBYHYiS5+obRjgLaBh4rsPaChDN/86V9FCJGWc1mG9fXQVPmuK6t6kM9Jbx5n5YpCv5NUrDZw+cgaBGyBvmwzL+dyUbqJalev1JaB/eYrgvF8DmX9+Kz390A1HlOKzgqxpnXPJpF99Yg+8QBfz6PgV37+kaSISPi1fFxj9Rv/UtC8tLW4vqXnId4Pa1h5e8/MZ3I7HeYcj3dX5Kz6/00I3WvtllhKL9dZL/AzDe69HRxdlhpnbbsP+6ph3rC71um9WvPh3xf/c3wUGlqfTPHj2Vs6CHcryt2FZV0Dcm9gOLyEPxnTsIP/yhA7LCTUGWFXHiOH3a5V5+s/LOtcc1SeS/abRwO3nXzgjTV0pnJzKmEO1oWI14xNSI2SN808TTjwKTje/ut3JC37CvNc9h93DmNoy9DfR1fh2rVdsnI+E7aaHGvy9KFwdGX72lUnZAUhwi0AJ1Iilhqnk11XUCo
- iaME67/Q
- 9SJYMYY8rAhf/ndZ5mby+2FVqQMJQz1TAhnXTYnrFJ4yiiIrwX4vSudfMIKGApErXngJa0IwXoKs4/zsHsBlfXiHO2QOoeN8TayZLvyO6GBfVIN8Hv1g59c0Gt8wGXRvHWyB7IICHIxH/QCCwuUUpmk2+XxDygPqwjkiZykQp1j+n5USkdWlo4ZZ+ZydmwZYS3FFRIf/P4abW4y+bbsAlGuERM9d87XHIYQcMY9ppARTt674dbw1xWRW+WrWV0J+5iiOan6BuyIj9bGx8F0tTV7Yj0nksWt5bKvo52c4HSG2LqWVpRRRZPFkAXO0mpbFp1+lUqYjaQxQLTYn7sj4MLBVCfR6iEL89esWPx/IjIpKSkLu98CFM/RZ7sFjbfFGrqVEypZBdu7Dtf/wnkXRBJX4Wn4uTz+8XNCoTZfsj6MOPKai7mRzNxaAyAw==
+X-HE-Tag: 1784930841-483973
+X-HE-Meta: U2FsdGVkX19cLYcFhglRBsWR4pu1enKRFVV2n/5vrET3u81utQBsxd97AJOi2MXm8Xvs5XTYO5vkg5E8Y6WiiqxpgLJb3QEDTWeGRAUThtG/3PhUtxicFsGGZeoE1uEsEAJ/WdbXcs8hRxf3x0OmoxOkk3Yn0ISaZrNFdzisIYGJartfd5Q3ikwy5UTYZcqWBcqN7kcwATWzTSRVvAqsrapJV10jPJFMn7za00vYVCPMA1a5F4JhTbgqyqvD0/8VONA1g9MmfhrGENDl2R2ePps0bwe9RGAFJbfQ4jv7SMMTcTI+VHR9dp8SuRoppLFihBDKq37/3/XA7/MzN0UwgZX28RcSMl6S2k2lY4ab9NHhnLcr4MWEEJClB5wxadk8WgdrRpXjoRKS+Ri3f1sCsKs6eF/OIz5Uw6sSXW0aDsaIhXPNnOReinSsO9KZZfqftkzx1qCOSYPevFtUOICW5xpFXsVh8T8Jyc50lbdTUylJzgwW4MrHThZZbK+eXuixEADPMuJQroTpuQCciCUWoRDAicmiaZrgN31YyMdAQTOnZZKtxiSjraw7JYqJP8fB89cxb81HL18JjDZSbtairQiseYqwuxvW46it5GltqQi3PaGexNRd9agmSKtrxIVtPYNPAeHr1K8JXP9UVaRjYILWiJnUhibnMFciMZ9/Oy0fthxGwSGZJyJ2lGmnC9aMI6bqybslJuZvVQ0f0+SJ1zeqG8H4JO/utXZwa9WHh4nzTVYKIzAYtkhNWUjNzE32W3qFFDySQokKorXKjj/sAl5dnTMfye2jazWUyLtYIHfzdNvZ65rIi/B420WL2053ZShRtFtWIBIYUJ0l8ukPiUex9bxXTxN4zGPKeH0fFq62V5x/0Y9a222nKpdOL+tNdwjC7cTDWSChm+wcPbC4UIY404eFs7SU3vp3bpo+36YbcwQLMj6X5sC6Zp988+iJZvthuHOk+DB9mN6SmpM
+ wfCpwNRb
+ Xq/oGPSo7IZAM1I86053N8lCazawneNvcSilOWd4csUvPPg6+1SCuHWCHU3y2kHV0mvm84NDLtSmICpwavDDRkWzfdd4WPXEadCvJtnCrqv07OmhMpxeN6LGrP8TJ8Zu9DNULkQANZpDx+C39EYhMFoTLJJZiMhmVgkl/xi1xTV1HyczdRMk68m14eQlA1Y3DXr67lFuK4bTZ/UWhFZerlVKZ+KPMCoiqJIszfM9HkssQdz/43+nsLNL7DgZDtWxV4yctp6WnVAIehqWhlhCC97SUswrF0xhYbroPpAGS8OrN3/wV/RXi8YluizfZi63echSR6iZmgoFUoJZxwjO6BiQ/EwXvsh7TRfqTBCOZRje+jxK9O9RdWnUJS4by21nM+sNBm72svwKc3WuhxoSWCIbkL1+3fevZIM4bcOPqi1PoBOs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,54 +157,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 16, 2026 at 3:42=E2=80=AFAM Xie Yuanbin <xieyuanbin1@huawei.com=
-> wrote:
-
-> When CONFIG_DEBUG_USER=3Dy, and cmdline "user_debug=3D31" is set,
-> a user fault may trigger show_pte() without any lock.
-> If another thread in the same process concurrently calls munmap(),
-> the page table pages may be freed while show_pte() is still traversing
-> them, causing a use-after-free in show_pte().
+On Thu, Jul 23, 2026 at 1:38=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wrot=
+e:
 >
-> If CONFIG_ARM_LPAE=3Dy, this may cause a kernel panic if the pages table
-> of PMD are freed when show_pte() is running.
+> Joanne Koong <joannelkoong@gmail.com> =E4=BA=8E 2026=E5=B9=B47=E6=9C=8823=
+=E6=97=A5=E5=91=A8=E5=9B=9B 08:49=E5=86=99=E9=81=93=EF=BC=9A
+> >
+> > Gotcha. Can I ask what speaks against having the flags unification
+> > work ordered first, with the MGLRU-FG patches based on top of that and
+> > submitted in parallel as a separate series? It seems like the two
+> > could be reviewed upstream concurrently, and I think that would make
+> > the MGLRU-FG series easier to review with it on top of the flags
+> > cleanup, and freeing the two page flags seems like a sweet win on its
+> > own :) Is your concern that the FG series would then be gated on the
+> > flag series landing and you anticipate that the flag series would take
+> > longer to land than the FG series?
 >
-> Acquire mmap_write_lock() around show_pte() for user faults to fix the
-> contention.
+> Hi,
 >
-> For user faults, additionally restrict that show_pte() is called only
-> when the addr is a user-space address (addr < TASK_SIZE). This is because
-> the lock of tsk->mm only protects the virtual memory of user address spac=
-e,
-> furthermore, dumping the page tables of a kernel-space address for user
-> faults is unnecessary and may have security implications.
+> That's not how it works, though. Without the MGLRU-FG, it takes four
+> bits for tracking the tier and these two flag bits have special
+> meanings. After FG, only three bits are needed and these two original
+> flag bits are just the lower two bits of a three-bit counter now. So,
+> there is an advantage to rearranging them together and removing the
+> single-bit (flag) operations to always use them as a whole. Before
+> that, that conversion will actual make thing more ugly.
+
+Hi Kairui,
+
+That makes sense, thanks for the context.
+
 >
-> Keep everything unchanged for kernel faults, because the kernel is
-> already in the "oops" state, acquiring a lock may risk a deadlock.
->
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Fixes: 6d021b724481 ("ARM: dump pgd, pmd and pte states on unhandled data=
- abort faults")
-> Depends-on: <20260629123349.134224-1-xieyuanbin1@huawei.com>
-> Depends-on: 59e4f3b45b96 ("ARM: ensure interrupts are enabled in __do_use=
-r_fault()")
+> BTW will there be any feature change with your splitting plan? If
+> there is no feature change, that should be easy to review.
 
-This looks a bit odd. I don't get the first fix tag, drop it.
-I think drop both Depends-on as well.
+There will be no behavior change with the splitting. It will only be
+structural.
 
-> Cc: Russell King <linux@armlinux.org.uk>
-> Suggested-by: Lorenzo Stoakes <ljs@kernel.org>
-> Co-developed-by: Qi Xi <xiqi2@huawei.com>
-> Signed-off-by: Qi Xi <xiqi2@huawei.com>
-> Signed-off-by: Xie Yuanbin <xieyuanbin1@huawei.com>
-
-Looks correct to me otherwise.
-
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-
-Put it in Russell's patch tracker after dropping the weird
-tags.
-
-Yours,
-Linus Walleij
+Thanks,
+Joanne
 
