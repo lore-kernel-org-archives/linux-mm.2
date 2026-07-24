@@ -4,102 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A1F8C531F9
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 13:39:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E15C3C531C9
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 13:41:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8AB3F6B0088; Fri, 24 Jul 2026 09:39:24 -0400 (EDT)
+	id EC7EF6B008A; Fri, 24 Jul 2026 09:41:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 85B8C6B008C; Fri, 24 Jul 2026 09:39:24 -0400 (EDT)
+	id E792E6B0092; Fri, 24 Jul 2026 09:41:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 74BFB6B0092; Fri, 24 Jul 2026 09:39:24 -0400 (EDT)
+	id D918C6B0095; Fri, 24 Jul 2026 09:41:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 48DD26B0088
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 09:39:24 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BAC4514035C
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 13:39:23 +0000 (UTC)
-X-FDA: 85023777006.11.7CB2502
-Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
-	by imf30.hostedemail.com (Postfix) with ESMTP id EC9F080004
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 13:39:21 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=eDTwShkh;
-	spf=pass (imf30.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B82C16B008A
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 09:41:22 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 42562C034B
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 13:41:22 +0000 (UTC)
+X-FDA: 85023782004.26.4F4E382
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 57DBC180003
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 13:41:20 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=fjUMa1+b;
+	spf=pass (imf24.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784900362;
+	s=arc-20220608; t=1784900480;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dtkHIMsEHxohdqGiQq6BVLpCvEimV8PjsiIPAtDV6MA=;
-	b=6qumgcDL7Iy0NFDo7+3JlSu5mw6ehb0nbNnWFhpw3Bp6BdZOEU9bP/mqCSNv+oY0sbjY1Q
-	MpXw0oAJ81XsioCzkGTqiwNwmj78aGrt5dnfDJ/SIdP37mWms+ZK4+M/3fd1YV8VTGta5W
-	AclLF0FxKy5FBRyXYEq9bVsPLCm2jaU=
+	bh=2oFbcbP9GUrTzCBiqlNDgP43sOQHVXZdlfi2dyJMC18=;
+	b=PtXsnvpJa9Z9l+oe8ualHVj2SZd4vNbHNNshseCK/ZQDG2DfYEKpbDXArdmtEdLLYR7gj6
+	Ro2LGi5RUriT5wguS6dIbfS+OHVGDJICOMX8WhK6CX0M0ThRZm97Rad95HxAH05AkDuFlL
+	wKBdsm91tfF1WE5hBGKQ744V2Zlq2oE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784900362;
-	b=rqoewWNDd3rX5Ael8EA/jfqQcWo7FCksSWFlV64lkgRMw5+cShxIxzsJg2De3kqOyqEGWi
-	7+m2XouB0/pz5m28794DBfJNxNHuisof3QgGnXlFV2oHdjnA137F41OHpr7hXgcd8MNZ4i
-	RX/4gu1RvSVn0Iis2ywk33+qnEv+wR8=
+	t=1784900480;
+	b=lfC1h0scJ6FRXHZRMDhrRfz6QMyO1VC66+6eRYDo+BQsE7/aJ34NYuvoKsuUOdQ6Nu6PEY
+	9pyjISUNxpUeMGcFwgtG/GOC/8Ga2OtdaeAwm59Od5PkbgL3ZrVvK2QUfwfm/jZlYVLxGk
+	ze/KkwSNA+aYibZ0VaMm9wk09CoyY7M=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=eDTwShkh;
-	spf=pass (imf30.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <d2e1d8ae-74d1-4f46-9871-5f7f3e69ccb2@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784900360;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dtkHIMsEHxohdqGiQq6BVLpCvEimV8PjsiIPAtDV6MA=;
-	b=eDTwShkhPSDeT8mihmnbGk+NrbBCBLhM+nD1HZW+oBfEZrqFb6NjOtIaESZOxn77AzFWdg
-	9LeWIw0KQXz1l4VXonWtM/pdvX0EyV+ApzI/ikSYzaE5jld3fucFcDwwx4pVOTJwrOXqOe
-	MSEbodEKd6e5fXXMD4SFUOkiXzv7YrQ=
-Date: Fri, 24 Jul 2026 14:39:08 +0100
+	imf24.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=fjUMa1+b;
+	spf=pass (imf24.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=2oFbcbP9GUrTzCBiqlNDgP43sOQHVXZdlfi2dyJMC18=; b=fjUMa1+bvke2jKzKthKkemhDUm
+	Zbl1OGeBkqqkfzRZDRU+H4Sk4I41atce5K3Cme1OQFlyunDlvCg9ttew66CnAJs8Nfzqa8rySK9Oo
+	eK4dmC8LpXq5vPS/n1opBpefbBQNO5POCutw7OnfWx/eCia4gSfuYVu+8Kq2Psm4vatrlkVTfd10G
+	csrBeWzR00412/bUjYnUdJNAJuGmnyrLAsmFnnFDnC/GR3aNby9iRTyIQlu89+YyVDwzWbFOWJQMS
+	PPZLtAr88sEesBwFThVSndwy228sXXs0kJens6Z5v6QXobJnSKRv52qRpDfobvuCKD8YZYoxRZYfl
+	pgIo3Naw==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wnG9N-00000003b4v-3FmK;
+	Fri, 24 Jul 2026 13:41:17 +0000
+Date: Fri, 24 Jul 2026 14:41:17 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Jane Chu <jane.chu@oracle.com>, linux-mm@kvack.org
+Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Jan Kara <jack@suse.cz>,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <christian@brauner.io>,
+	Jiaqi Yan <jiaqiyan@google.com>
+Subject: Re: [PATCH v4 08/14] mm: Remove locking mf_mutex in
+ is_raw_hwpoison_page_in_hugepage()
+Message-ID: <amNrfc_FDfEdPaD6@casper.infradead.org>
+References: <20260723143034.175661-1-willy@infradead.org>
+ <20260723143034.175661-9-willy@infradead.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH 3/5] mm/parisc: constify ptep_get() argument
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Usama Arif <usama.arif@linux.dev>
-To: Pedro Falcato <pfalcato@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Helge Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, "Matthew Wilcox (Oracle)"
- <willy@infradead.org>, Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Kevin Brodsky <kevin.brodsky@arm.com>,
- Muhammad Usama Anjum <usama.anjum@arm.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
-References: <20260724102017.141532-1-pfalcato@suse.de>
- <20260724102017.141532-4-pfalcato@suse.de>
- <0fd713a8-e4ab-4c07-b36e-79dd138b4a86@linux.dev>
-Content-Language: en-US
-In-Reply-To: <0fd713a8-e4ab-4c07-b36e-79dd138b4a86@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: r3y744azjsgjga3xphbz36wnomg4msn5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260723143034.175661-9-willy@infradead.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: EC9F080004
-X-HE-Tag: 1784900361-24510
-X-HE-Meta: U2FsdGVkX1/EGBv1KmoF4t9n87q3rNcSMGAwL+ZV/JGIgnNWbP2YktwtKIKccXVHEFrU6t395LAOO1w0RSa+QHIcDHfTFecMK2r49R2gVv0Cw5OueBMg6l2Ozez5ov5aOvzvF71346CWM4isuGcUqgwX5PY9pZf3ZlrxDz86nIyguVRMeHrEV3ghRwYFn8mQRdYhCAkLNVMB1oETuvQ53FoyH3jPdptaYvug8aL6aqOM/v83Ngox1Nky10/NSWzEEOX/Aigw7jRjNVQginSbwAefZ7j4wdaINY3LKNeAQnPBUigExMbx1LNvt+2Rm8mnC2wnAq++G/7JbLzDt3bZTFkkPfthnRw2WUu8fn+3wzxin9R//gExWUxGbnh5+e6gQmWcJmbD/krRH84RhTUkTPp2bIem9jZeiBtqD51zBrO8ukeZijASN21DbGx0xfa6Y80/Pn5EtD5gjVGlkXUPuzj1glUtPAkWS3lcNg2MCP6jnPmxdgh9JN2d0gJ4eSdI6dahkObZsEN7ZThyvlHe166VoqKqR2ylTdDFb+F6b+2IdGYrg9J4iGV9N1SkVAMGQQ4AAGMY1CXFgIeec9frypq966H7x0h2K8asJqZMztlMXksJHWBs6bLTgSlpgUF9//gk/m1RJ2qRwlIwzwhfKT5FHYyb1ikdx1TsdYN98bYX5QJRap4cnyJdOYfj/M+C1eo8QTXxNRqtR4bfwyvK7/p8hxXcfxz0zvS3UfT9rJcl4QvM7dwHYErO8waKSriJ0ah1KcZ0YQ0Jl4Dq+d8hylpczHs0vREqkHC5Rf+vDYcaaD90LfHGlwQMSEebWjBcSDf3LJ7kO7ohsuGOMhQp3zy2jkdJNu6UAeXB7O8gDeOnlS7sSjf8YLbcZKIXPEBydhy+TNvC+7K40cZVVK/VUbrsAB1WRTkUryG42qi+PTupLeiYY+9zkDOuEmmKHmqdDnpGd4zlpST3TzhOY/r
- LwkOBUY7
- 0gcdPm6gkGEEt71Ksr47ElLhlwgnx+zMSree6ZfaXWRhBlGm30eQpx2aRsLZKQMpovkEz6zeJ1MiYcv5eJt61VmG+s0KwWJedgGNHLrKQEsI4hK7oOMTEeGKloywIyeCmyFXGDIe6Br6Vsf4vXCen5Jf5i0EumixdsaQ32omuRXDTuEbF6wRSG58bhXyKXBKNP9QLgBABkuVn+x8rO2Rdx07qJlx/2XKGU7IwK7Vse3W2dxGj1kcnbmYAjWmSqup37wPlWsSgs4Eb9rS17yt2+FJX9lFCinnplZ7xRhW3RZ/ngCQ9WpndBXfbNLfEgjVl8el3EjumunxxCLhC7msoxO1WYXYkQRGUDhUwPWZwjSm32n0=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 57DBC180003
+X-Stat-Signature: oz4cyfacx8t6w7gsmq89cncioquayjyb
+X-HE-Tag: 1784900480-332111
+X-HE-Meta: U2FsdGVkX1+A431M4htF1ADi0MqSiCy9VPxavLv7Z94GaaOFfuneAirMHp2Mb6el8WzXJxHD8XGiggUlX+s+53FYcEFLNaSan9/JDXno/uzWuTDbI52gHKl57IMhVbQxstD9TdXOXPEYjF3JruFtH9/yHM1QJBbcLTfwOKhk3hHrU9dx/d1XiG8OjlC4wKyPCDNrdRf3KGAElRMbuMKouZgpw6N0QSxyPWxCBEW3C7S3uGYeMwtHF3thAG6iJv1n/UzsLqSKFuaLWHZKu8nhpWu3jCUflg9kSQRls1dVk7LL+MA4IepqrMBY+xK8H0apB1Bo585qTEZ3qRxe9XmdvdBtJ5JAkMupnJ47j8hb7htyHKKWoEkzAxcEqx5m19VEAbBKEuGc5r0z2j4YzP8DBK/WGqZDgq6sRNP1ZNyHQFX5E0fXJyauteG5SrKO0ngU291CAaZBvltqBUf4AOZQCBhEDC1G1Uu8w1+cGo0xURpbulNdQM75rLzMvYMNn4wHR7zUJ+oxlQBibcdLaQozG5mZSiRiwOrHiaQEmINYNIbcm27RKIYtyWWXL/s3DcDh7gL8fQiRoF9+nb41tcUsZ6ML8OZYWr/eHt6F794hV+Ph2aaQ88RA2EVuLabrdEAxU5/TpGuAF09yrPizOEetHIQnGFd8a1FpUQXyYLcKUlrG9pEgCgz5Vhtd/G4PboCEs2rtpf7DFUcJV8N3LD4NhHG4TNvoprZnOmVwU7oUAZxjlUpYi2pqcTau7NnL6UWjmJ9+5L78uaJ/XkwHZQj6PL3n/FUrhHrIr7KMwk+XLAAtynb6MHEFADxm+InNtmQQ13H72i3wcrBcwZHhrhrPV0G0QV/M8daI9oNkNBhytP0H/iJDw5Fqcnzad3mJVjE+Pt0kQIiSyAagPrycAZIJ86T7B3eGThQZX70pBAClFRsdCW5I2uXCzSyl8g6WuhCHxZBFY8Y6laOiVZ26SoB
+ YLcjKozi
+ do+un3nuKLpIYRsWOmiQvtaeFFreCy367ne8LP7Cof2zu9CgocdBdoWSxPfrKmUhTbRZxDQ0txH7J/LBHBPikHH+UnfCnXzNLwLiEXugyGqMC9WQWIa2+hGYj0AoIqIsJexWdkr+fXQRi6tTdjvtx0ZJIIZ+2iWDH1PMdIVlv911dcxqB1rXwIo3JtrdsJr3OYly9hGJc2CLF9npONRGdVifnGwaaIjm61t97XTS5QMJUsYd421ZUd/K8Uls3giuS3KnCElwIgBgElaEMA5JQU52KPbCW73+EM2hZCbSm8CENbm9co4a1ctEAoA0It7gHo3mSlD8FAsHvRpbDjKZFbclNTM++rgskw6Gl6fKHUKfURr4HqVA774qv2GiMvG7sgrDyKcFakpTMoLzfXAfPQ8K3iel7afY7S6V8dU6BjsjqIn6yLSiLL2FiCqC16hLhzE3EbpMBNd7p81A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,22 +96,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 24/07/2026 14:36, Usama Arif wrote:
+Sashiko review:
+> --- Patch [8]: [PATCH v4 08/14] mm: Remove locking mf_mutex in is_raw_hwpoison_page_in_hugepage() ---
+> commit c0f68557b399585852271ea0bc6a590caa47b3ad
+> Author: Matthew Wilcox (Oracle) <willy@infradead.org>
 > 
+> mm: Remove locking mf_mutex in is_raw_hwpoison_page_in_hugepage()
 > 
-> On 24/07/2026 11:20, Pedro Falcato wrote:
->> ptep_get() does not need write access to the PTE.
->>
->> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
->> ---
->>  arch/parisc/include/asm/pgtable.h | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
-> hmm I think you might break build bisectibility if
-> you separate out the patches, you should squash patch 3 and 4,
-> with patch 1.
+> This commit removes the mf_mutex protection from the raw hwpoison list
+> iteration in hugetlb_page_hwpoison(), relying on lockless llist traversal
+> using READ_ONCE(). It also renames the function and modifies it to take a
+> folio.
+> 
+> > diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> > index 4200deab2c3c4..5076ee5d4788d 100644
+> > --- a/mm/memory-failure.c
+> > +++ b/mm/memory-failure.c
+> [ ... ]
+> > @@ -1817,37 +1817,30 @@ struct raw_hwp_page {
+> >  	struct page *page;
+> >  };
+> >  
+> > -bool is_raw_hwpoison_page_in_hugepage(struct page *page)
+> > +/*
+> > + * Check if a given @page in a hugetlb folio is HWPOISON.
+> > + */
+> > +bool hugetlb_page_hwpoison(const struct folio *folio, const struct page *page)
+> >  {
+> [ ... ]
+> > -	mutex_lock(&mf_mutex);
+> > -
+> > -	llist_for_each_entry(p, folio->hugetlb_hwpoison.first, node) {
+> > -		if (page == p->page) {
+> > -			ret = true;
+> > -			break;
+> > -		}
+> > +	llist_for_each_entry(p, READ_ONCE(list->first), node) {
+> > +		if (page == p->page)
+> > +			return true;
+> >  	}
+> 
+> Is the assumption in the commit message that updates only add to the head of
+> the list accurate?
+> 
+> Looking at __folio_free_raw_hwp() in mm/memory-failure.c, the entire list can
+> be concurrently detached and its nodes freed via kfree() without an RCU grace
+> period:
+> 
+>     head = llist_del_all(&folio->hugetlb_hwpoison);
+>     llist_for_each_entry_safe(p, next, head, node) {
+>         ...
+>         kfree(p);
+>     }
+> 
+> This freeing can happen while the folio is still in active use. For example,
+> if a subsequent memory failure on the same folio fails a GFP_ATOMIC allocation
+> in hugetlb_update_hwpoison():
+> 
+>     } else {
+>         folio_set_hugetlb_raw_hwp_unreliable(folio);
+>         __folio_free_raw_hwp(folio, false);
+>     }
+> 
+> Since callers like hugetlbfs_read_iter() explicitly drop the folio lock before
+> calling adjust_range_hwpoison() (which triggers this lockless traversal),
+> could a concurrent memory failure free these list nodes while this loop is
+> still accessing them, leading to a use-after-free?
+> 
+> > -	mutex_unlock(&mf_mutex);
+> > -
+> > -	return ret;
+> > +	return false;
+> >  }
 
-* squash patch 2, 3 and 4 with patch 1.
+argh.  I give up on this cleverness.  I'm going with the new spinlock
+approach (like I did in v3) but retaining the per-folio list of pages
+rather than having a global hash table.
 
