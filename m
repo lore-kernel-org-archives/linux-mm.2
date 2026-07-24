@@ -4,102 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3722C531F9
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 14:11:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C7C3C531C9
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 14:14:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A1EDB6B007B; Fri, 24 Jul 2026 10:11:05 -0400 (EDT)
+	id 3BBF96B008A; Fri, 24 Jul 2026 10:14:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9AE6B6B0088; Fri, 24 Jul 2026 10:11:05 -0400 (EDT)
+	id 36D436B008C; Fri, 24 Jul 2026 10:14:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 872356B008A; Fri, 24 Jul 2026 10:11:05 -0400 (EDT)
+	id 25C2A6B0092; Fri, 24 Jul 2026 10:14:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5F02A6B007B
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 10:11:05 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DE2FD1C02AF
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 14:11:04 +0000 (UTC)
-X-FDA: 85023856848.21.3969DFE
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 3FFFA2000C
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 14:11:02 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf31.hostedemail.com: domain of hu.shengming@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id EE1886B008A
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 10:14:27 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id F1315C03C5
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 14:14:26 +0000 (UTC)
+X-FDA: 85023865332.10.48587C2
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 2E0FD40002
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 14:14:24 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="b3FaE/15";
+	spf=pass (imf01.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784902262;
+	s=arc-20220608; t=1784902465;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MikfvCv97mEOefApOotfNAywscEsetuTTqIDlrf1kE8=;
-	b=UkCFZv178g/ORLzLrxEnzuGSx/7YjX3LgexNc06ko4VAx4X1/dbcINqYzXn4LncPon4x61
-	E4mhpg2IzlLzQ70kHif0mVpfg+iFVopiuDeX1lPOX6hgaUxJaymxXbGKeMXGleKxZbvUPz
-	NOo0PG1nNL0j7cj1WZRArdTwxOZwIZE=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=sqQq2Owm1obwOGEA9eotW/m1MLzuoJQfAmp5HBaVcd8=;
+	b=bUUSAaKPGSaD1tWpSPqsk+TVbvnWPrKYtxSIAuIyKQpDw9P+eL/4/D3a053VsLoibrcQ9q
+	SxenGM2hxBIH5F0UpL2AbYODP4QVeBBZTv9sVsXFv+0omrmqKhbaNeGX3EOv/hnTSUQ9/u
+	RAvDXnAk/5CcEezG1p3dbmFbj9u3bGg=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf31.hostedemail.com: domain of hu.shengming@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn
+	imf01.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="b3FaE/15";
+	spf=pass (imf01.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784902262;
-	b=lzUgmMnoqWE/qJvwcgA/oQ3MGvP34cnOkNnozU2yEEf5R3pPD1cSk+XcqQ7NVkz78sBiWA
-	bfSJsibAXJurxFJkNDaJiwbLgBNesXroKTgab9Q+zb599HW+kuBvrB2fAGeiw0ZSd/1x1M
-	f4eH6dTkWqwzcpTnPA7r1rs2F4UD1EE=
-Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4h68zN50w9z57DCg;
-	Fri, 24 Jul 2026 22:10:56 +0800 (CST)
-Received: from xaxapp05.zte.com.cn ([10.99.98.109])
-	by mse-fl2.zte.com.cn with SMTP id 66OEAgtq042932;
-	Fri, 24 Jul 2026 22:10:42 +0800 (+08)
-	(envelope-from hu.shengming@zte.com.cn)
-Received: from mapi (xaxapp01[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Fri, 24 Jul 2026 22:10:45 +0800 (CST)
-X-Zmail-TransId: 2af96a637265cff-29079
-X-Mailer: Zmail v1.0
-Message-ID: <20260724221045574FnnXVxYyUtRhSz3-sGtLr@zte.com.cn>
-In-Reply-To: <07adab0f-12cc-4f48-bf23-4aaef67ab405@kernel.org>
-References: 20260723182727858gUQJ4TgRU2b6v1kdgpkfV@zte.com.cn,07adab0f-12cc-4f48-bf23-4aaef67ab405@kernel.org
-Date: Fri, 24 Jul 2026 22:10:45 +0800 (CST)
-Mime-Version: 1.0
-From: <hu.shengming@zte.com.cn>
-To: <harry@kernel.org>
-Cc: <vbabka@kernel.org>, <akpm@linux-foundation.org>, <hao.li@linux.dev>,
-        <cl@gentwo.org>, <rientjes@google.com>, <roman.gushchin@linux.dev>,
-        <ast@kernel.org>, <andrii@kernel.org>, <puranjay@kernel.org>,
-        <ameryhung@gmail.com>, <bigeasy@linutronix.de>, <clrkwllms@kernel.org>,
-        <rostedt@goodmis.org>, <paulmck@kernel.org>, <frederic@kernel.org>,
-        <neeraj.upadhyay@kernel.org>, <joelagnelf@nvidia.com>,
-        <josh@joshtriplett.org>, <boqun@kernel.org>, <urezki@gmail.com>,
-        <mathieu.desnoyers@efficios.com>, <jiangshanlai@gmail.com>,
-        <qiang.zhang@linux.dev>, <pfalcato@suse.de>, <surenb@google.com>,
-        <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-        <linux-rt-devel@lists.linux.dev>, <rcu@vger.kernel.org>,
-        <bpf@vger.kernel.org>
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCBzbGFiL2Zvci1uZXh0IHY0IDQvOF0gbW0vc2xhYjogZXh0ZW5kIGRlZmVycmVkIGZyZWUgbWVjaGFuaXNtIHRvIGhhbmRsZSByY3Ugc2hlYXZlcw==?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl2.zte.com.cn 66OEAgtq042932
-X-TLS: YES
-X-ENVELOPE-SENDER: hu.shengming@zte.com.cn
-X-SOURCE-IP: 10.5.228.133 unknown Fri, 24 Jul 2026 22:10:56 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A637270.000/4h68zN50w9z57DCg
+	t=1784902465;
+	b=KX/ogGiWWOkwnii5PjKqsz+gQKeuRUeQJ/XM8++b8PNvgZjiRn7ttmJyCO8W6UnG+TC2eC
+	dYeDrM1BPI9fq9Pmv+untlD0MAFFyYRrK5eK+1+FznuaUnTcJ4aSCJFyy+eMRBJE/9N6vO
+	QdpIz8cqTVqgyCfjb1na8+SrcXA2NoE=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=sqQq2Owm1obwOGEA9eotW/m1MLzuoJQfAmp5HBaVcd8=; b=b3FaE/15gGHycdVRSEH7kk8gXg
+	ziED/cLtyY3G9U83si7GAn5Ol84senjYN1m4jLjO0UtBZIPJDA8wUFOchOARYzauL2VUm0k7nZpzN
+	K07SPvCGF24b8xDHwesu9/XXFOC/xHyVYN0uSucmDm+HCF3RUQvxf7WqMkuuVnzM1qoNRsMjxDcj9
+	uhiGquYmGmqrNAnYWz2mPt+rVVhLzVIZYA3vpLT1TxNs0sooD2gummR7OMhrl7SLQIfux9q544RXB
+	8pK5bJXka726CjSXoWptNMLW0fFoYyvvcYKrkavP6fm72xKjr3YlkbnKKrHXHEs0HDQz3K+4Q60X8
+	AYR/0EFw==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wnGf7-00000003fU1-11AE;
+	Fri, 24 Jul 2026 14:14:05 +0000
+Date: Fri, 24 Jul 2026 15:14:05 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Pedro Falcato <pfalcato@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Helge Deller <deller@gmx.de>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	Muhammad Usama Anjum <usama.anjum@arm.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 3/5] mm/parisc: constify ptep_get() argument
+Message-ID: <amNzLXuwflIZFKtI@casper.infradead.org>
+References: <20260724102017.141532-1-pfalcato@suse.de>
+ <20260724102017.141532-4-pfalcato@suse.de>
+ <0fd713a8-e4ab-4c07-b36e-79dd138b4a86@linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0fd713a8-e4ab-4c07-b36e-79dd138b4a86@linux.dev>
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 3FFFA2000C
-X-Stat-Signature: 65uesp4g6t5srg7t8jqqem6fnuzpmshj
-X-HE-Tag: 1784902262-792429
-X-HE-Meta: U2FsdGVkX1/xLjRmWT2u4HOEISHeeynrYpi0nVb6kbBw+K9Aijuo0UvJzrwgOBspsN/lZ6RZPykzgvMxcztb74UQG/dFRGq2AXJv3D4vlZNvV83up3RnyY1xM1a57kxMziOhSe0O7nknhO30VRlZvnZbSXI70VoWr+ALQRTwjlxBelkSe6gNcLZ6BeT0L0JWwvmN0kFTa2zeaejISucmdmXURXJuEKkn4UdDA9gIJNRRpoNSNbxARYHwjs73BgGgMjDjpY7eCBz7TY0TLWkPdgJIw49Rwp6JFrXv1s3J3pweaavwhX4PE6axPupMEAeZFOZ+cZxCMWcqW7vk+hppAoIBz6ahP+jMoBa0RvN3X95WO3vBUvqkSD8wEnP0jklSI/kqrGe3/mpyq6vooK5K+4Usb8NVyIvaHW6Ccv1VJ+Q2LtvcWAWJSHj3kkwhlgv5lkbDtsKQFEFkA2PHMYPWkh+9qm7HFjITdg7VSFPAXmIdT4YMtKloLfAM9+odYdcDfruDNGlsZysf2gNGV7Qns7QriomTr5mqNW7uFe9XcSOH8rcX3tpjDaEqtG+KYrJkOl3nso7Se8W6NDbgf5oLo+oCXGM5r8+tAZH9ODJP20WGMVyzGnVurNSFa8YV6pCcaskoQBBGCVPd3OizO8VlQ9D/53kajvz1SPrysS/qxwZKLBAK07YirFhSMtRvB7bzySNTikeT37VqmV91nZD7tdwjWohr5kzsQDLT8Cw57qcwUNE57SIhsoUN4B8zVR2v8gbfqaXBFh2GohPpf1HY1FwDv4ynnkF0Wm9t8BgpcCc/tFwvV8RjSaE1evST10PU/PtoUV+o6vHu4r7jCmE0Z43Qj5iXpwwZQovE2h1d+8jzT8FceNzR+B/SmdqfrRrFQgmmi1iyxL3SYnrDTwHNsmfwXsRzrkfTZwHVMcgEnUJInKYWRguZrc2t+ehbdMXaTOa1VW7osiCZxoJ5FDR
- 8xP5rTq5
- 6sN8yIDPB3sSW6CoZ6Scu3sniiPzYcKMGzcLMxgg3wijWu8R1+73WQnzur92aSase8vICQQFRHfExiR2y0mnPfY922rCcJC3+EzPiAQwPQZZ1KI9vBWgJrcwDHlib4tnPj48acjMqvLzbmC5CjMkVDtNl9A2MjKHxAQ4+Iyk2e2OzQrpRj3/5/Ki2arl2ELMBvTwNlJgdoEl+1lTASvc1wLB+dOnmXsqGlWhghQ43oOId7lwg4MaOmXaaUQ==
+X-Rspamd-Queue-Id: 2E0FD40002
+X-Rspamd-Server: rspam01
+X-Stat-Signature: a3dx96ot8pkwyfbromk4qxpgon6w4j5z
+X-HE-Tag: 1784902464-20450
+X-HE-Meta: U2FsdGVkX19vDPAapMu6Xai1wmX3ZHzz0WMxmt8y1EXzmHc2YEfcQP5G13dqLpdG+WRqaPwTOnNnEYAw2bqnMwKf2sIzn9EA3SOLVwC5FKCkj2j3GM982Rv+nTB6/Vde3ORwPyBn/GKTHfhccL5FQuYgRcbLSivItmFmrim6r5pEREJckmekWk2100yZax/T7bCWgDSFOlBE8qRg0/dYM9fNYTkMy4z3GdscT/JHt7KzWGxmMDLoxqWgoFxIJ16bVL3f+uN6kRE8wpW8S+Isq2S4GRKAYl8+wedi0vcHFmqWooAPEUv6Xx2ATVjgbPP0Q4T6/qPIsHgcJ+ln0wxRzn8RbuhAn0OnMls17Zg6n8Sa9MEOOcsfNO7WyyhVyfb6x7ePGbkRGdAjGBRXo/WAg+JSXimi74BL16wj/1UOwczW5gmNZgbHDAAL4cMzxP3XRnPzY1Hfe01TGkEXZbjsk6uQIHzQog2KvYO6peq+zTWk/L1EZFcx2Ows2odbSLmw0pG8zSqFsb/xjAOVSOscSC/2Ylj3n04xXjq7aAr1qdlXPBCiktxHbM7mOcb1JaIHWHvnsqQk/+RB6nHEj5YuS/iyIEOfq2x/oHI0lixDrd+n3VfC1rgcPBHvXuZGvDUTRAfIRA4NzglZ4mVnFiTbxWKi/LS/cqqoXnFYFnhGcpqT3jwuCc5yKdDHA2icxgeDSmD0BJ3D8+QGtIechujPayFNti/3ceN2J6uq/T8ZsJ+gFo3FyUVPQ9PmDlSnEZi3QctOGAZnYFijzLOAd4p9V5ZkGRr6QqKzBqjktf3De98hFaOmx7OsZ/dRRKjiv6NjhLb1p3NZC0XsiYsJiHcu+yL7wlnxyUgHmaDoJbey63FaXsVsUOnVYNFvuK2TImTQ3CmfOCkNopgwRQFrTUvUjxse7AiA1NUvBW8KgX1Rhe2gomsJsU0JSGEZf7LQ5aCpfXneV2NEs29dyJ5Kzis
+ vDQEET9g
+ UrcNXi1XLvb9bj8gSW6B1sEmqgyV37ReltgjU2rnlBvB1VmV3T1gZORvTAWMiVK4LWC3rfn+rX0crgI6VnwjVNr33+nbSnxq1/umjJzOrIgpHZ+dSPq8vcPXdzSC38Tj1qSSwDMMbZ7rx/mC+Vp6jQbB5tKQ/AR2iiCUQ/8nYeLQJPw/pI8W78n6a4m2LFlBd6DO6YLsCaMulofvWFW6EpR9CNY0Vco76sYTIfHi5cl74AxMUBSJfYLHWDxxNc6apdNaUqPFnrc5FT5xNpGsiz2/SUiQSGzs07cHBkrRwqC38kiSt0SZGXQ7GlBRxKRqQf5E8WNA8j3gYx0ivC4DK8NKV3GTAcOY67/bPyg9MDZXYUco/7AJy8cADkgMDNrkdiUg7qlXvWiHevVI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,80 +113,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Harry wrote:
-> On 7/23/26 7:27 PM, hu.shengming@zte.com.cn wrote:
-> > Harry wrote:
-> >> __kfree_rcu_sheaf() cannot invoke call_rcu() when spinning is not
-> >> allowed and IRQs are disabled. To relax the limitation, extend the
-> >> deferred free fallback so that a full rcu sheaf can be submitted to
-> >> call_rcu() via the existing IRQ work.
-> >>
-> >> Since the deferred mechanism does more than deferred freeing of objects,
-> >> rename the struct to deferred_percpu_work and adjust names accordingly.
-> >>
-> >> When a sheaf is queued on an IRQ work, it is detached from
-> >> pcs->rcu_free but call_rcu() is not invoked until the irq_work runs.
-> >> To keep the kvfree_rcu barrier's promise, call irq_work_sync() on each
-> >> CPU before calling rcu_barrier().
-> >>
-> >> In the meantime, remove the TODO item as apparently there is no simple
-> >> and effective way to achieve that. This is because, unlike sheaves,
-> >> kfree_rcu() batches objects from different caches together.
-> >>
-> >> Suggested-by: Alexei Starovoitov <ast@kernel.org>
-> >> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-> >> Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> >> Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
-> >> ---
-> >>  mm/slab.h        |  2 +-
-> >>  mm/slab_common.c |  7 ++---
-> >>  mm/slub.c        | 85 +++++++++++++++++++++++++++++++++-----------------------
-> >>  3 files changed, 53 insertions(+), 41 deletions(-)
-> >>
-> >> diff --git a/mm/slab_common.c b/mm/slab_common.c
-> >> index e07b4e6d6679..9c9ae1384f47 100644
-> >> --- a/mm/slab_common.c
-> >> +++ b/mm/slab_common.c
-> >> @@ -551,7 +551,7 @@ void kmem_cache_destroy(struct kmem_cache *s)
-> >>      }
-> >>  
-> >>      /* Wait for deferred work from kmalloc/kfree_nolock() */
-> >> -    defer_free_barrier();
-> >> +    deferred_work_barrier();
-> >>  
-> >>      cpus_read_lock();
-> >>      mutex_lock(&slab_mutex);
+On Fri, Jul 24, 2026 at 02:36:59PM +0100, Usama Arif wrote:
+> 
+> 
+> On 24/07/2026 11:20, Pedro Falcato wrote:
+> > ptep_get() does not need write access to the PTE.
 > > 
-> > Hi Harry,
-> 
-> Hi Shengming,
-> 
-> > I noticed that your fix in [1] serializes defer_free_barrier() to
-> > avoid concurrent irq_work_sync() waiters.
-> 
-> Right.
-> 
-> > However, this patch still calls the renamed deferred_work_barrier()
-> > outside that serialization scope, including the new call sites in
-> > kvfree_rcu_barrier_on_cache() and flush_all_rcu_sheaves().
-> 
-> Good point!
-> 
-> I didn't _fix_ that as part of this patch since that would be confusing
-> and the fix didn't land the mainline or slab yet.
+> > Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+> > ---
+> >  arch/parisc/include/asm/pgtable.h | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> hmm I think you might break build bisectibility if
+> you separate out the patches, you should squash patch 3 and 4,
+> with patch 1.
 
-Thanks for the clarification!
-
-> > Is this series expected to depend on [1], with these call sites
-> > moved under the same serialization? Or am I missing something?
-> 
-> I was thinking of rebasing the fixes as there won't be much conflicts,
-> nobody except for sashiko complained about this, and we're not going to
-> backport them anyway.
-
-Rebasing the fixes sounds good to me.
-
---
-With Best Regards,
-Shengming
+I don't see how this breaks bisectability.  Can you elaborate on what
+you think would break?
 
