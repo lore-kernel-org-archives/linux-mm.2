@@ -4,100 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65628C531F9
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 06:07:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E7AEC531F9
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 06:10:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 342A86B008A; Fri, 24 Jul 2026 02:07:56 -0400 (EDT)
+	id B38AE6B007B; Fri, 24 Jul 2026 02:10:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 31BAB6B008C; Fri, 24 Jul 2026 02:07:56 -0400 (EDT)
+	id B0F276B0088; Fri, 24 Jul 2026 02:10:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 230E26B0092; Fri, 24 Jul 2026 02:07:56 -0400 (EDT)
+	id A25986B008C; Fri, 24 Jul 2026 02:10:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E7F976B008A
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 02:07:55 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 719201C046D
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 06:07:55 +0000 (UTC)
-X-FDA: 85022639310.18.6B0D34C
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by imf07.hostedemail.com (Postfix) with ESMTP id C639940005
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 06:07:51 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	spf=pass (imf07.hostedemail.com: domain of yangtiezhu@loongson.cn designates 114.242.206.163 as permitted sender) smtp.mailfrom=yangtiezhu@loongson.cn
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784873273;
-	b=MWta7wv0o2B+IIuNtz3peBeZTh1UTXdS+j90GPWIzD74Zo1RKFfpwtu1WikE+UEjQL931N
-	FwOnbeMANuSAFhU1SJQ6lnGMLumH7mx8TbTR82kCyBeGAlqAqgfQE5UUdvAuDdQwLWXvoh
-	eTYV6G2He9c+xElbyfbJeKDqnX3rSXw=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=none;
-	spf=pass (imf07.hostedemail.com: domain of yangtiezhu@loongson.cn designates 114.242.206.163 as permitted sender) smtp.mailfrom=yangtiezhu@loongson.cn;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 78C166B007B
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 02:10:52 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 01ED512029A
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 06:10:51 +0000 (UTC)
+X-FDA: 85022646744.08.90535FA
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 99DC780006
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 06:10:47 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="HU/a7MTW";
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf02.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784873273;
+	s=arc-20220608; t=1784873448;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1ClFEpUvHPe08zN0hpbpovG9qEE8USI0KPFPwubrb+s=;
-	b=ChQD67VS6bQkdidzDxleInEYiuxs87DrXNgQFMEYwbkSujS5Ksobs9yDJDGldJLzNtXJ8V
-	e7ST2WzRz0ySQ+Vp6yyAkDNUDIBzSrrc0KnmilTHBbmjv/2Vm4mvbPdAXinZS0Fa8f5zWI
-	jyEL6wzE+XTgfyj+ZuSN/cKdOy9jQvs=
-Received: from loongson.cn (unknown [113.200.148.30])
-	by gateway (Coremail) with SMTP id _____8BxJOgwAWNq2tQGAA--.2201S3;
-	Fri, 24 Jul 2026 14:07:44 +0800 (CST)
-Received: from [10.130.40.83] (unknown [113.200.148.30])
-	by front1 (Coremail) with SMTP id qMiowJCxPscpAWNqcyUXAA--.59809S2;
-	Fri, 24 Jul 2026 14:07:38 +0800 (CST)
-Subject: Re: [PATCH v2 2/2] LoongArch: Skip address pairing for non-exec
- sections
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: linux-mm@kvack.org, loongarch@lists.linux.dev,
- linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Mike Rapoport <rppt@kernel.org>
-References: <20260721090606.8982-1-yangtiezhu@loongson.cn>
- <20260721090606.8982-3-yangtiezhu@loongson.cn>
-Message-ID: <11c42b7c-7805-cce7-305d-6e52c14db20e@loongson.cn>
-Date: Fri, 24 Jul 2026 14:07:36 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=lXb99Tnv57pcrI8S5LLsibaYJImwUhZe8y5wxuPa8eE=;
+	b=BS7FLjJY9mh1aaFxcnYZp4EXGE1jy9oxuH+DfclAxoAxlc7t4Cnw7ldD/4Xc+Y+Qh+QNr6
+	EX4S3QlD7zjC2orjCR4s9DoclXPiKRxkvk8Ci8kFZAQkHP6sRG96pnwIR9KshddCXof5zo
+	sSwiGJNDmHyvxNpfLkUsBhGJETzv/aw=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="HU/a7MTW";
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf02.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784873448;
+	b=UQbVll00Mfy6a1h7EdkUPRysVknil3+T0BUbc7r51crLb76ZZ66qwWwz3FOUzwcJT+MS0u
+	dicCjwDYgDwN0rcB97+09vTHj3oG5FuxWf0Rs1sxjLHgo5yl44N1PyFuGfLLbeHiqEZSoN
+	QJ7qpgcdKLDqVObJq49K70LvmEVN8i8=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 058041477;
+	Thu, 23 Jul 2026 23:10:42 -0700 (PDT)
+Received: from [10.164.19.44] (unknown [10.164.19.44])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DCA483F66F;
+	Thu, 23 Jul 2026 23:10:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1784873446; bh=J96VFyk9PGn8YyeTGzVOaRpj+S3LUu9gshct9gb/QeQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=HU/a7MTWgbwkE3Cn0OZG0UUhbr8qMmr+Tpq7RykHBoVU17RtBX2K47oKjYS78Tand
+	 uYU406QHXG4sRORMa/qI7Xvc7yLjwhocEVFRj4T7jCv4zOwmg+jSSFkOmgh7hylKcy
+	 VMBln1PeS4uylznX5Yn8k0iWLilj/famGa4IywEE=
+Message-ID: <a3f9dba0-8ec9-413e-82a2-75f4f90911c7@arm.com>
+Date: Fri, 24 Jul 2026 11:40:36 +0530
 MIME-Version: 1.0
-In-Reply-To: <20260721090606.8982-3-yangtiezhu@loongson.cn>
-Content-Type: text/plain; charset=utf-8; format=flowed
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 01/11] mm: add PMD swap entry detection support
+To: Usama Arif <usama.arif@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, david@kernel.org,
+ chrisl@kernel.org, kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com,
+ linux-mm@kvack.org
+Cc: ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>,
+ willy@infradead.org, youngjun.park@lge.com, hannes@cmpxchg.org,
+ riel@surriel.com, shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org,
+ baohua@kernel.org, baolin.wang@linux.alibaba.com,
+ Nico Pache <nico.pache@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
+ ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>,
+ lance.yang@linux.dev, linux-kernel@vger.kernel.org, nphamcs@gmail.com,
+ shikemeng@huaweicloud.com, yosry@kernel.org, kernel-team@meta.com
+References: <20260722152043.2273289-1-usama.arif@linux.dev>
+ <20260722152043.2273289-2-usama.arif@linux.dev>
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJCxPscpAWNqcyUXAA--.59809S2
-X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxGryfuw17Cr4DZry8tr4fWFX_yoWrCFy3pr
-	sxCrs5uFWkGF1DJ3s5tw1kua4UWaykuF4aqF95tryxAFnxXF95t3ZxtrnxJayUuws5Aw40
-	qryFgw4Fv3WUCabCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUvFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
-	Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE
-	14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1c
-	AE67vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8C
-	rVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtw
-	CIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x02
-	67AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr
-	0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxU25Ef
-	UUUUU
-X-Stat-Signature: ewacjky8a8sbu8xi39dsdkt1fof6b7pi
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: C639940005
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20260722152043.2273289-2-usama.arif@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 99DC780006
 X-Rspam-User: 
-X-HE-Tag: 1784873271-986900
-X-HE-Meta: U2FsdGVkX18yAHy5UjflwJ+EBHCCTXJGieijZvlsQsfyQPi3Qb5dre3F1Re8G/PhX1/zwk1cb9WqfeI3LweVf+OmuMUa0hEv4urtBIDaKYH/I4aKQGdGeZ2z/lEKX/wqTDTi2RMyRHJagdpPqc6aX5JgGkliva0la0QoTx3qEN49eiEBG3sXBiPOSTjCiWzWeW9fZ700c1L073c+yvTacj5ABzABSnVv6LrPSb2oIdcqVkMd/lPPimXIujgV+p5MP8xE/NcyPPrIBvAZ6bthdO5FiQy5BpaYjWuCAweU+9XN834jNAUTHksneExOA195kdAus2TPSIWbK9fkPDliMRC1Ke3m/Jv6+V7eWAHhUBHul2Mp3zWOz5cGI7cyZM1uVG6vurfBagyDIpkjZdExF0MoYiscGjDPybdho61GxkqhjSJ/+mE6Oa2SzYGCB/YwA779bIyqF1BiYymEhwG7tdnfyKcFAv/xwB9kSevQoKzSs/+N21q4fejIlagcANQVgQ2V0jvgYv5gDes8y80qMLLqAR1pLhQw+loqucBwu/NHUtHZTJ2VOU5UgjVD80YoydiGVQPSaIC4dFLQUS/cxLNUUS+BXIlbo2osS2ZIRiE8Dd3LwVqgxzhxdiGg1yFsLt5Mp24Fx2uRv55TQ5JiQ6xVPdvqBeqyZsNLCoUIw+uMTxK72rfMzc5Wq4ofR22ND/QaESerdDZVoOK2SjHiBcbJ5KiEs09SspOgXWdzJyDgpTPpO+V+1L5G8kKnpGLXgpmZV6L41IA2WI05DtpCkdsY/ixP6uZAEGgQQTQUtDLabElglou1paeg13I3RIBUaNhzTAtDWOo6y6A+mgp/Qc2QhNFvJeNMsbKkYgwJgq3UaDihzL6CZ+0UCRoEpBrhnkQinSHaX1fdqsOl6PektnpdCiXDyGX/E/MHoaHYV0lzSR2cq82IbXhlEij+OGsN8puMzLF6F7k9orzyhYp
- dDf5LDYu
- jPkJ97Uhkckvy05+ZuiMm4narAM8x0ptf1EIIOU8VWpU30mlzp6M8L8b6+e7WExd8KVQlVCrKLybqDOiqdkbULNYUWjcZQy+I92hP
+X-Stat-Signature: kfhbp51qu48s8ut34y3y8t4zjr69czb5
+X-HE-Tag: 1784873447-46035
+X-HE-Meta: U2FsdGVkX18uNDXbaQEbuJbluiVLlwiV+Sp+LUMPAgx0q5Qh7tLf6NErRw6MBhb1iMz2eQyQ3LAkI5j0lPUPiKZKlPD5mFPY5rksWrhHwm9CsgjIcS0U4MGgysFBM7Z6USQuRy28IxdKk3tlATqOM4xJxCpTzIhibRSkDSzT+tFXPhDbq/MZfiHfxJ22ZI3FbxsIm3mGm1OAoIeOnsIlvznYU2AwsYIKzYmmFmkaX9xPyv+f/XKKBSIdYUarAVhXYo2m2+/KQ2fkOvzXBTv2MuV3/U+JoJFG/EQxLxlS+8g3kwYKYVm5XzgUe4U2m3YrUt/87Zud52icJ/9F3/b9Iwji+8UUIO+ktGc7T8/p2AYRLmfUdukXRpJzEMD/ZQ8SsvJDaxZAnw5x5Wfc43KW2XA1YnTkJQNOSLqkHeExfcaLW+VmU0GUd+n96e4XDPHyphD0xTqPrG9MA7qB69WTsXmpJXpcucRjmbWAQJChMbAgNNJl973lMRKFk2Rdmm+RGApuBTee/l/Gv9eS/qUtpLmvblUQDZsW7zk9cv2UvPMdakkn0AE0/InwN/ZkIRrtBviO10Sq9tRdjyazrmgaCswEaeI2G2CTuT1xKZUka3OX7gzDwMofGx7IBNfHtxyRT+6OCGchCo0YXM83oTOp6NIrx7r3/8gpQmUorOR764lWQryjSo9EZsrJAuV8rhi4LMLuAWG0QGnRXUuMxUYHIS4JC8J3qcPscgdF8yMNpbi/WXyJbYOa7XsQSHKYPxBoG1pSBv20MndA/TtTw/sWBLeb6+oSLG337HEVbvIf/btq4drK98EWf1YQAamZuMStaa0gjTvp+3TAo03eet7S1yRNufdVqIYRXpg4vdHZIFf1OU2B8uG/RePVbreQSrfpM/yL2JUVusQJX668rmC7gtqpNye5bmcDyjp584Qy1oI6gE5XIqvwClDot6ONS6TfV/0iN1XMpkAr1cbNQvX
+ DyyokLpi
+ q+6uJSLYcIUDc7QakwME3I+cqX+U3PtweN0DXFnsda8XMcImaTr5L5cuEMh8HsVchbxfBM084KT83Jnya9wJeX1O1H2tHBJAoIJx8WeNXVGPl1WZzIneRHACtMaDRH27SBkjzw5aZJuhE/MhWCGswSXzqwGyWhnw3e7h+c3y4fRsKVkM4KRUqu0gmRJLLUKEj8QoWPb2Qu8YM3D+nqnSStuc6EEPm6b6QBg0uhKTy36RrjDM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,128 +100,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/7/21 下午5:06, Tiezhu Yang wrote:
-> The module loader currently runs expensive address pairing logic for all
-> sections blindly during relocation. For massive modules like amdgpu, this
-> causes the loader to waste lots of CPU cycles analyzing non-exec sections.
-> 
-> Furthermore, there is an inconsistency since module_frob_arch_sections()
-> already ignores non-exec sections during the counting phase.
-> 
-> Check the SHF_EXECINSTR flag in apply_relocate_add(). If the section is
-> non-exec, skip address pairing and then jump to normal relocation. This
-> eliminates redundant search loops to improve module loading efficiency.
-> 
-> Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-> ---
->   arch/loongarch/kernel/module.c | 6 ++++++
->   1 file changed, 6 insertions(+)
-> 
-> diff --git a/arch/loongarch/kernel/module.c b/arch/loongarch/kernel/module.c
-> index 7d4d571ee55e..c84ac1546dc6 100644
-> --- a/arch/loongarch/kernel/module.c
-> +++ b/arch/loongarch/kernel/module.c
-> @@ -484,6 +484,7 @@ int apply_relocate_add(Elf_Shdr *sechdrs, const char *strtab,
->   	Elf_Addr v;
->   	Elf_Sym *sym;
->   	Elf_Rela *rel = (void *) sechdrs[relsec].sh_addr;
-> +	Elf_Shdr *dst_sec = sechdrs + sechdrs[relsec].sh_info;
->   
->   	pr_debug("%s: Applying relocate section %u to %u\n", __func__, relsec,
->   	       sechdrs[relsec].sh_info);
-> @@ -522,6 +523,10 @@ int apply_relocate_add(Elf_Shdr *sechdrs, const char *strtab,
->   
->   		v = sym->st_value + rel[i].r_addend;
->   
-> +		/* Skip address pairing for non-exec sections */
-> +		if (!(dst_sec->sh_flags & SHF_EXECINSTR))
-> +			goto apply_normal;
+[------]
+
+> diff --git a/include/linux/leafops.h b/include/linux/leafops.h
+> index 4c1476ae3234..8397193ba399 100644
+> --- a/include/linux/leafops.h
+> +++ b/include/linux/leafops.h
+> @@ -102,6 +102,8 @@ static inline softleaf_t softleaf_from_pmd(pmd_t pmd)
+>  		pmd = pmd_swp_clear_soft_dirty(pmd);
+>  	if (pmd_swp_uffd(pmd))
+>  		pmd = pmd_swp_clear_uffd(pmd);
+> +	if (pmd_swp_exclusive(pmd))
+> +		pmd = pmd_swp_clear_exclusive(pmd);
+>  	arch_entry = __pmd_to_swp_entry(pmd);
+>  
+>  	/* Temporary until swp_entry_t eliminated. */
+> @@ -634,18 +636,30 @@ static inline bool pmd_is_migration_entry(pmd_t pmd)
+>   */
+>  static inline bool softleaf_is_valid_pmd_entry(softleaf_t entry)
+>  {
+> -	/* Only device private, migration entries valid for PMD. */
+> +	/* Device private, migration, and swap entries valid for PMD. */
+>  	return softleaf_is_device_private(entry) ||
+> -		softleaf_is_migration(entry);
+> +		softleaf_is_migration(entry) ||
+> +		softleaf_is_swap(entry);
+> +}
 > +
->   		if (type == R_LARCH_PCADD_LO12 || type == R_LARCH_GOT_PCADD_LO12) {
->   			bool found = false;
->   			unsigned int j = idx;
-> @@ -562,6 +567,7 @@ int apply_relocate_add(Elf_Shdr *sechdrs, const char *strtab,
->   			idx = j; /* Record the previous j-loop end index */
->   		}
->   
-> +apply_normal:
->   		switch (type) {
->   		case R_LARCH_B26:
->   			err = apply_r_larch_b26(mod, sechdrs, location,
-> 
+> +/**
+> + * pmd_is_swap_entry() - Does this PMD entry encode an actual swap entry?
+> + * @pmd: PMD entry.
+> + *
+> + * Returns: true if the PMD encodes a swap entry, otherwise false.
+> + */
+> +static inline bool pmd_is_swap_entry(pmd_t pmd)
+> +{
+> +	return softleaf_is_swap(softleaf_from_pmd(pmd));
+>  }
+>  
+>  /**
+>   * pmd_is_valid_softleaf() - Is this PMD entry a valid softleaf entry?
+>   * @pmd: PMD entry.
+>   *
+> - * PMD leaf entries are valid only if they are device private or migration
+> - * entries. This function asserts that a PMD leaf entry is valid in this
+> - * respect.
+> + * PMD leaf entries are valid only if they are device private, migration,
+> + * or swap entries. This function asserts that a PMD leaf entry is valid
+> + * in this respect.
+>   *
+>   * Returns: true if the PMD entry is a valid leaf entry, otherwise false.
+>   */
+> @@ -673,6 +687,8 @@ static inline struct folio *pmd_to_softleaf_folio(pmd_t pmd)
 
-According to the LoongArch ABI specification, the following relocation
-types exist exclusively in executable code sections:
+Nit: This function really should have been named "softleaf_pmd_to_folio", or
+"pmd_softleaf_to_folio", perhaps throw in a patch to rename?
 
-R_LARCH_PCADD_LO12
-R_LARCH_GOT_PCADD_LO12
-R_LARCH_B26
-R_LARCH_GOT_PC_HI20...R_LARCH_GOT_PC_LO12
-R_LARCH_GOT_PCADD_HI20...R_LARCH_GOT_PCADD_LO12
-R_LARCH_SOP_PUSH_PLT_PCREL
 
-https://github.com/loongson/la-abi-specs/blob/release/laelf.adoc
+>  		VM_WARN_ON_ONCE(true);
+>  		return NULL;
+>  	}
+> +	if (!softleaf_has_pfn(entry))
+> +		return NULL;
 
-Thus, here is a better way:
+I am guessing that after the later patches add swp support, we should
+never reach pmd_to_softleaf_folio() with a swap entry, in which case,
+we could add a WARN_ON_ONCE() here. (didn't check if you have done that
+later, just writing this here)
 
-```
-diff --git a/arch/loongarch/kernel/module.c b/arch/loongarch/kernel/module.c
-index 7d4d571ee55e..b1452b8adc63 100644
---- a/arch/loongarch/kernel/module.c
-+++ b/arch/loongarch/kernel/module.c
-@@ -484,6 +484,8 @@ int apply_relocate_add(Elf_Shdr *sechdrs, const char 
-*strtab,
-         Elf_Addr v;
-         Elf_Sym *sym;
-         Elf_Rela *rel = (void *) sechdrs[relsec].sh_addr;
-+       Elf_Shdr *dst_sec = sechdrs + sechdrs[relsec].sh_info;
-+       bool is_exec = !!(dst_sec->sh_flags & SHF_EXECINSTR);
-
-         pr_debug("%s: Applying relocate section %u to %u\n", __func__, 
-relsec,
-                sechdrs[relsec].sh_info);
-@@ -522,6 +524,14 @@ int apply_relocate_add(Elf_Shdr *sechdrs, const 
-char *strtab,
-
-                 v = sym->st_value + rel[i].r_addend;
-
-+               /* Skip relocation types that exist exclusively in 
-executable sections */
-+               if (!is_exec) {
-+                       err = handler(mod, location, v, rela_stack, 
-&rela_stack_top, type);
-+                       if (err)
-+                               return err;
-+                       continue;
-+               }
-+
-                 if (type == R_LARCH_PCADD_LO12 || type == 
-R_LARCH_GOT_PCADD_LO12) {
-                         bool found = false;
-                         unsigned int j = idx;
-```
-
-For the non-exec sections such as .orc_unwind_ip:
-
-fedora@linux:~/7.2-rc3.git$ objdump -h 
-drivers/gpu/drm/amd/amdgpu/amdgpu.ko | grep -A 1 .orc_unwind_ip
-  32 .orc_unwind_ip 000ac104  0000000000000000  0000000000000000 
-18592470  2**0
-                   CONTENTS, ALLOC, LOAD, RELOC, READONLY, DATA
-
-there are 176193 relocation entries:
-
-fedora@linux:~/7.2-rc3.git$ readelf -rW 
-drivers/gpu/drm/amd/amdgpu/amdgpu.o | grep .rela.orc_unwind_ip
-Relocation section '.rela.orc_unwind_ip' at offset 0x3a5321e8 contains 
-176193 entries:
-
-Using the section flag check reduces the operation to a single check for
-massive data sections; otherwise, the loader would have to perform six
-redundant type comparisons across the if-statement and switch-case for
-every single relocation entry.
-
-Thanks,
-Tiezhu
+>  	return softleaf_to_folio(entry);
+>  }
+>  
+> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+> index 8c093c119e5a..e10a7e91e426 100644
+> --- a/include/linux/pgtable.h
+> +++ b/include/linux/pgtable.h
+> @@ -1917,6 +1917,23 @@ static inline pmd_t pmd_swp_clear_soft_dirty(pmd_t pmd)
+>  }
+>  #endif
+>  
+> +#ifndef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
+> +static inline pmd_t pmd_swp_mkexclusive(pmd_t pmd)
+> +{
+> +	return pmd;
+> +}
+> +
+> +static inline bool pmd_swp_exclusive(pmd_t pmd)
+> +{
+> +	return false;
+> +}
+> +
+> +static inline pmd_t pmd_swp_clear_exclusive(pmd_t pmd)
+> +{
+> +	return pmd;
+> +}
+> +#endif
+> +
+>  #ifndef __HAVE_PFNMAP_TRACKING
+>  /*
+>   * Interfaces that can be used by architecture code to keep track of
 
 
