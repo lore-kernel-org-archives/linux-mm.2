@@ -4,108 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DED41C531FA
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 15:03:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75B94C531FA
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 15:04:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CF4FB6B008C; Fri, 24 Jul 2026 11:03:45 -0400 (EDT)
+	id 666176B0095; Fri, 24 Jul 2026 11:04:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA6106B0092; Fri, 24 Jul 2026 11:03:45 -0400 (EDT)
+	id 6190D6B0096; Fri, 24 Jul 2026 11:04:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BBBC86B0095; Fri, 24 Jul 2026 11:03:45 -0400 (EDT)
+	id 52DEB6B0098; Fri, 24 Jul 2026 11:04:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A6B96B008C
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 11:03:45 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 129E1403EE
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 15:03:45 +0000 (UTC)
-X-FDA: 85023989610.25.779063F
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 11FC0120012
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 15:03:42 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gc8TcsBO;
-	spf=pass (imf29.hostedemail.com: domain of rrobaina@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=rrobaina@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2E2BC6B0095
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 11:04:08 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 90F581603E9
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 15:04:07 +0000 (UTC)
+X-FDA: 85023990534.03.8562367
+Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 13C44C0014
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 15:04:03 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="n5/Rd4ev";
+	spf=pass (imf28.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784905423;
+	s=arc-20220608; t=1784905445;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=c0ViCeYIvDvbmJchKqAuBa754g93eEZt4PnUI1bl52Q=;
-	b=mfcvgQWHhRGtsXRm3Xhxb+7tzx+j/2kJ3Y3Z0wqFx5b4zRx3Coptnjh0Lhb7SqIPpHELua
-	R33ppeTimN4KgG4OeAqQchIZgoo9KE7G9i5uDtuJdXfGOdpbo66/X4pT/0Rfx/pIZWOusV
-	OPhzQEqxFECrlifvbNhNfyLJskIXgLw=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=CdO7KCyyIro+bfenb1xkDQljGGt5dLLkhErcCFsE/Qg=;
+	b=8BMk/rKwjzp87NoG5XUrfZDgTTQtKDUZg5Nx8bwDuwQTCH+IWlet9xAA4oBgKaygivf8cr
+	hK1/MysSaUJ3pdmWnDpB7JYrSjmvH9+dKIn0IzjZumIakYAIhkVk15vBQAhqYCog1VmJ6i
+	2GtYivCau/wS9gFHm68kajurebv6tPo=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gc8TcsBO;
-	spf=pass (imf29.hostedemail.com: domain of rrobaina@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=rrobaina@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="n5/Rd4ev";
+	spf=pass (imf28.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784905423;
-	b=RyVu8Cih2U5Ku7K/mbs4sheydLo2jvsPZMTa3CyvVLQJQa60Xg2ZYHifWxeyxFa/xicDFu
-	PrrF04N2mis2omDOYX/RDLkMTK35+Cvd26gFNQgkWOqSPpQFbl29bphGN7cTUcdwuuTOVd
-	OzH3stMP/OBSd5Jl6WbCnaFzUvjwSUY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784905422;
+	t=1784905445;
+	b=Yd4L7Ly4YJ2bIZJRemd2I1IobykUCHKFTkPiquYy7Nnr1G7zCj29rH+WEtrLKzukkuuCz6
+	4nSlGOFwAShUd02Cd/kZu/YdhkAL7Y9ddOm1mdrn9JSTIQNIBVRtpNxAa6G7sS0/w2Vf5l
+	uaMDqsLky5aMui0ZjovqCPyjHP/XGO8=
+Message-ID: <253f7ac0-205b-42f1-9fb5-d19eceb581b6@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784905439;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=c0ViCeYIvDvbmJchKqAuBa754g93eEZt4PnUI1bl52Q=;
-	b=gc8TcsBO4TqrgwoDZD0MWWeZ/IeR/br2lJcJAJ/btu+lJNZIpNqlWNSR3g9fZAEn3LUacX
-	c+fKVMziUsXzIF9urWWUtORAsiX9ZTm11/IZvO/7Fm/fvid/5hHPW8cCI/pxA0iR44Ttr1
-	Mn3JuWZipsP2L/mMSA6IwjK0D2t8sm0=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-126-P1r0y-izPyOZOjBHnfPl1Q-1; Fri,
- 24 Jul 2026 11:03:39 -0400
-X-MC-Unique: P1r0y-izPyOZOjBHnfPl1Q-1
-X-Mimecast-MFC-AGG-ID: P1r0y-izPyOZOjBHnfPl1Q_1784905417
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1050A19775FC;
-	Fri, 24 Jul 2026 15:03:37 +0000 (UTC)
-Received: from wsxc.redhat.com (unknown [10.96.134.40])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C82F330002D5;
-	Fri, 24 Jul 2026 15:03:31 +0000 (UTC)
-From: Ricardo Robaina <rrobaina@redhat.com>
-To: audit@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: paul@paul-moore.com,
-	eparis@redhat.com,
-	sgrubb@redhat.com,
-	kees@kernel.org,
-	mingo@redhat.com,
-	peterz@infradead.org,
-	juri.lelli@redhat.com,
-	vincent.guittot@linaro.org,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	brauner@kernel.org,
-	Ricardo Robaina <rrobaina@redhat.com>
-Subject: [PATCH] audit: add CLONE3 auxiliary record to log process cloning
-Date: Fri, 24 Jul 2026 12:02:59 -0300
-Message-ID: <20260724150258.560396-2-rrobaina@redhat.com>
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CdO7KCyyIro+bfenb1xkDQljGGt5dLLkhErcCFsE/Qg=;
+	b=n5/Rd4evPANGbx1Hmm1azC85wU0nheG46FNmmGZJPiYVUUuGaxBTO3RHHaSsxBQmXrEiYH
+	w9WBY2Cs+toTZTVSry5TJuqptsIkQ9usv7g3oI2qlLAi3yC1kjAzyk0KK+DRltA6b8/OHH
+	0wfJYfPBAYVBhVVxrB7ixiXxNmqIs70=
+Date: Fri, 24 Jul 2026 16:03:44 +0100
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-MFC-PROC-ID: Of3Xby2RZJcxmKg2y8Xf7-jzGuTJVut2j9pHaSSAIXk_1784905417
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
+Subject: Re: [PATCH 3/5] mm/parisc: constify ptep_get() argument
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Pedro Falcato <pfalcato@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Helge Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Kevin Brodsky <kevin.brodsky@arm.com>,
+ Muhammad Usama Anjum <usama.anjum@arm.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
+References: <20260724102017.141532-1-pfalcato@suse.de>
+ <20260724102017.141532-4-pfalcato@suse.de>
+ <0fd713a8-e4ab-4c07-b36e-79dd138b4a86@linux.dev>
+ <amNzLXuwflIZFKtI@casper.infradead.org>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <amNzLXuwflIZFKtI@casper.infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 11FC0120012
-X-Stat-Signature: spsof33hb1bpwbxwasmnhdd7a9j9bqdn
-X-HE-Tag: 1784905422-640034
-X-HE-Meta: U2FsdGVkX1/aUNpHpfytle9LOQCa6vTTChrfRG+GP/6X3cA2Z5WfCFsykVoPayQEfBKcDyjdnJTY1G05EpdGzNm/onxgRYXhNZf9U5ZhjssR+bbs6EeZfa/awUg5fgx5CoXrqQisMoH1x9s1JfG8TI/VPO0cpggrAngZi+tLeJadAYl/TtnY3HCGoor26qV3hmqCFHJ2Mkn9fjwT+7UpZQKf2UZ9nufl8gPZm3ro7BugXVvRXb3w+BPPXxO8EFVPOhXPNn3AcRaOOLXRactsZfCwzPdPOqmgEsAelqxAWdbT/EdPg6LMgk017xyZ5YgL66aH9b53UFj9T5ee1BwA83LWfmwx9cGxONwnJuVeQUNAvK7WHXfsdXyD8qJiiM2G+5CCBlOX3ZeGE8EPmKhmaKB56kn+iCflkUdVD8DVa1UxaSFWh6kUH83VvaHUIretFK3K+4Z7Xuva29qt3ZWFBCpAvlcnC2VwUnL1gf26QoJj7j9lWj+YBqc6h7+V8rc1D6TZXXoFlO0+1lJ5zzBWudBwy1sCKIjLHc9dCjac9UQOo6tgxr3MxA9RGpjbb0OkggtVacN9Ldud/5ats+U55iPy//G3EgBNa8aFKWuCyaKvqFRvKpmXfD1pwuUKxM3GgFL+pCBbGaqp7sj1s12T3I+3Sf6gMg8fMPd3xTZAYtCGmOSIUKeqWaRqKe7iY913lyZucBDlmfSQHH1ZjcIpgz5RGr0uGqD51Y51IHKm89bCZJniF0/XEfqTkR/C8R34qOYxvDNwqFIzVVQ4u5SEyZBVees5oNkVmIYa2KMvD40DvgOZIyz56I/lpQr6v77x2YsTM/sUpup/FkNrgybD5+00lpQ7WQgcbgDTMay1OYUA3j0kx1wAQpLCYN9skGmSa6cbc3n/4UDb42z8w6iKk24LHC2Oh8A76UTeJ1InwMr/i7DCORQqxRutPoyNUO0haBvWaQiVTw7hQ+5h+4m
- 30IAj5hM
- pO2q67L5nM4eLY991orjgbrrKScqLhP8r9bEsZkxVxc6MhcoUAmXzBpOZHylb292C0LwBToDPSKjjTjnH7PuMOGNo/DxwMpqaRq6+UHKtdJioZDaxtWICXDcIpOu9ejgQuwchgGnPW0Yk740IIVFVRFtGueLtcHXR3toNmmKEqBz5Jj2y1NfLNnaY/ByHZ8hdpk4IZJugmaRreI4yC7UyR/tcL/zMGbvT8drRNXEG9TMhQ3BeU1tvTjdL1HaZ885SYsEOgi1uc+rE3uCva81fVFr2YhFIp3zxL7uPQL7l+kVU0UYTtCk2sa+6bOah1WsMo9mOV9/Dm7HyuWm2SkNVGtNxMkoHBbhso3gQ0gFXEzIOvdA=
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 13C44C0014
+X-Stat-Signature: dfotgfa9rwspx855a9hws5ua7rcgwmub
+X-HE-Tag: 1784905443-632896
+X-HE-Meta: U2FsdGVkX19cChd7+2RwDKW4r7ceVU4CSmMRwz3TZZ9WKz1QWZh00EwIUz9pqcwSGouKizNFKHqS1wWqX7YVINzEhIlTKX2Y5Zcmau5fPF681clb0fM1gtEuRxHH6dgAtS3Wi00mnBgNtw7SVKFst+5IUg1ZI4NZsGfTQrI0TrKVad3lqfAfHS3owmNK/82W1AWAgeLoE4qHPNSvIvxHZZIQ2OYK5YBodzZQKBQJqg79p+iTtbwudzcS+7c/grVqDQxrXmY2gLskDTpomZjQOxHYzk3xZwtZu0ccOtSBbd4M+KYg5RVaykx0LgZ0I2K9x+AEwRWE0wwsqmfQBU4lXFGd6cxIqyTfjiz8mkHNftaxkGU/aAxtWQmWfS5t4WVA70r2/9eQcnl0AWMg/ra8Ho0AXYqS+4KjXqpT1j3K97KoUN+huwRsvqqJWHil419x3vzOwnPkemKYdWziyddcIk5+imi8u0Y6xwn8KWSQcNMggGi9zqFXfJfEU/wdwYVLpdipdmanjVeQFyBF3KfzkbO+/KRr9v3f+WEKrWcyIjB7hYOsqJTcgv75Mjvag67+GXU5u67rT6uRyNzbfgmverBAe6iqmbXh2qRyLj4r9tuOhPvveIjcD6Se1mOL9rbjAhc6sTqmwbSwjZ9Az6hpb2kGG+h8FXMER9fUdpEfz+TEpusd93IvTNCaoXHFTz0/hfyTsz5SjlSArd2VL9Y0/1Hg2t5oBMZxbiqtaGNraVLkmxiFXagE/HE2JgeRzN2OJNdteZSzYYPjptGYuEKnB9RV1VQaBl2dPr5k2B2CAe54yoHJQMkKEASgEj4IeJOwMA1BiaLNOGKfx3OB2g46emK8xnwNoZzR5aJ03o0DCaqcokfoisqLKNfItFdLjnDm3cdLmcIXaMkFgBc0rqoF7tXdDCrxsVJ/yis+4m83TpSP8lGwEbRw/NgA/ZLDAIER05r9jD5ne1aYlv/XpY4
+ dGJ5RXw0
+ XabkP+KGqTKW490FbTUk8sAW+Xr5f2rxsCFC5IIpXAMA4dPrvEhHIFNyVAvFl0MYN/RTMLHFjlW0UCB/LWVDRH6vIpHX4Jy8gtaRH2qDZ+ZZa5A8iA7545z4HkuwyFmk4/F+seduNyuSwyQGsTb9QxH1UAD4hozXNTWMN/8Ehi1EApCLQwadKQt39lkY/vazYnrC9M9KSKcO9QstByp4N5hYYGzQxkV6hrm92YTYsYM3Jzhd3f9XJs/mo/ambix8i1uJr34WnQWqeWqwJKmV2HNgLv6D6VpMR8IEHJznwEv28yiwHlqJw1Y7G0psEeFNVHTlB0BhtmnyOJ0I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,122 +108,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The clone3(2) syscall moves most parameters to struct clone_args.
-For this reason, the generic SYSCALL audit record does not capture
-the structured arguments.
 
-Add a CLONE3 auxiliary record that logs: flags, exit_signal, cgroup,
-and pidfd fields from struct clone_args. When CLONE_PIDFD is set and
-the syscall succeeds, the resolved pidfd is logged; otherwise
-pidfd=(null).
 
- ----
- type=SYSCALL : syscall=clone3 a0=0x7ffe7f1ec640 a1=0x58 a2=0x0 ...
- type=CLONE3 : cl3_flags=0x1000 exit_signal=17 cgroup=0 pidfd=3
+On 24/07/2026 15:14, Matthew Wilcox wrote:
+> On Fri, Jul 24, 2026 at 02:36:59PM +0100, Usama Arif wrote:
+>>
+>>
+>> On 24/07/2026 11:20, Pedro Falcato wrote:
+>>> ptep_get() does not need write access to the PTE.
+>>>
+>>> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+>>> ---
+>>>  arch/parisc/include/asm/pgtable.h | 2 +-
+>>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>> hmm I think you might break build bisectibility if
+>> you separate out the patches, you should squash patch 3 and 4,
+>> with patch 1.
+> 
+> I don't see how this breaks bisectability.  Can you elaborate on what
+> you think would break?
 
-Link: https://github.com/linux-audit/audit-kernel/issues/151
-Signed-off-by: Ricardo Robaina <rrobaina@redhat.com>
----
- include/linux/audit.h      | 10 ++++++++++
- include/uapi/linux/audit.h |  1 +
- kernel/auditsc.c           | 20 ++++++++++++++++++++
- kernel/fork.c              |  4 +++-
- 4 files changed, 34 insertions(+), 1 deletion(-)
+Patch 1 does:
 
-diff --git a/include/linux/audit.h b/include/linux/audit.h
-index 45abb3722d30..833f349bf415 100644
---- a/include/linux/audit.h
-+++ b/include/linux/audit.h
-@@ -449,6 +449,7 @@ extern void __audit_tk_injoffset(struct timespec64 offset);
- extern void __audit_ntp_log(const struct audit_ntp_data *ad);
- extern void __audit_log_nfcfg(const char *name, u8 af, unsigned int nentries,
- 			      enum audit_nfcfgop op, gfp_t gfp);
-+extern void __audit_log_clone3(struct kernel_clone_args *kargs, int ret);
- 
- static inline void audit_ipc_obj(struct kern_ipc_perm *ipcp)
+-static inline pte_t ptep_get_lockless(pte_t *ptep)
++static inline pte_t ptep_get_lockless(const pte_t *ptep)
  {
-@@ -598,6 +599,12 @@ static inline void audit_log_nfcfg(const char *name, u8 af,
- 		__audit_log_nfcfg(name, af, nentries, op, gfp);
+ 	return ptep_get(ptep);
  }
- 
-+static inline void audit_log_clone3(struct kernel_clone_args *kargs, int ret)
-+{
-+	if (!audit_dummy_context())
-+		__audit_log_clone3(kargs, ret);
-+}
-+
- extern int audit_n_rules;
- extern int audit_signals;
- #else /* CONFIG_AUDITSYSCALL */
-@@ -730,6 +737,9 @@ static inline void audit_log_nfcfg(const char *name, u8 af,
- 				   enum audit_nfcfgop op, gfp_t gfp)
- { }
- 
-+static inline void audit_log_clone3(struct kernel_clone_args *kargs, int ret)
-+{ }
-+
- #define audit_n_rules 0
- #define audit_signals 0
- #endif /* CONFIG_AUDITSYSCALL */
-diff --git a/include/uapi/linux/audit.h b/include/uapi/linux/audit.h
-index e8f5ce677df7..37357e17adbf 100644
---- a/include/uapi/linux/audit.h
-+++ b/include/uapi/linux/audit.h
-@@ -122,6 +122,7 @@
- #define AUDIT_OPENAT2		1337	/* Record showing openat2 how args */
- #define AUDIT_DM_CTRL		1338	/* Device Mapper target control */
- #define AUDIT_DM_EVENT		1339	/* Device Mapper events */
-+#define AUDIT_CLONE3		1343	/* Record showing clone3 args */
- 
- #define AUDIT_AVC		1400	/* SE Linux avc denial or grant */
- #define AUDIT_SELINUX_ERR	1401	/* Internal SE Linux Errors */
-diff --git a/kernel/auditsc.c b/kernel/auditsc.c
-index 6610e667c728..c0106bb71c19 100644
---- a/kernel/auditsc.c
-+++ b/kernel/auditsc.c
-@@ -2882,6 +2882,26 @@ void __audit_log_nfcfg(const char *name, u8 af, unsigned int nentries,
- }
- EXPORT_SYMBOL_GPL(__audit_log_nfcfg);
- 
-+void __audit_log_clone3(struct kernel_clone_args *kargs, int ret)
-+{
-+	struct audit_buffer *ab;
-+	int pidfd;
-+
-+	ab = audit_log_start(audit_context(), GFP_KERNEL,
-+			     AUDIT_CLONE3);
-+	if (!ab)
-+		return;
-+
-+	audit_log_format(ab, "cl3_flags=0x%llx exit_signal=%d cgroup=%d",
-+			 kargs->flags, kargs->exit_signal, kargs->cgroup);
-+	if ((kargs->flags & CLONE_PIDFD) && ret >= 0 &&
-+	    !get_user(pidfd, kargs->pidfd))
-+		audit_log_format(ab, " pidfd=%d", pidfd);
-+	else
-+		audit_log_format(ab, " pidfd=(null)");
-+	audit_log_end(ab);
-+}
-+
- static void audit_log_task(struct audit_buffer *ab)
- {
- 	kuid_t auid, uid;
-diff --git a/kernel/fork.c b/kernel/fork.c
-index f0e2e131a9a5..0f52e8c0e900 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -3047,7 +3047,9 @@ SYSCALL_DEFINE2(clone3, struct clone_args __user *, uargs, size_t, size)
- 	if (!clone3_args_valid(&kargs))
- 		return -EINVAL;
- 
--	return kernel_clone(&kargs);
-+	err = kernel_clone(&kargs);
-+	audit_log_clone3(&kargs, err);
-+	return err;
- }
- 
- void walk_process_tree(struct task_struct *top, proc_visitor visitor, void *data)
--- 
-2.53.0
+
+
+ptep_get() takes a non-const arg till patch 3 for example for parsic.
+I don't think you can pass a const variable to non const function arg?
+
+So parsic won't compile in patch 1 and 2, powerprc wont compile
+for patches 1, 2 and 3..
+
+
+
 
 
