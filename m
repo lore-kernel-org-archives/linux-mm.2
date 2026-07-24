@@ -4,91 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6323CC531C9
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 16:29:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DF76C531C9
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 16:31:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6E4566B007B; Fri, 24 Jul 2026 12:29:48 -0400 (EDT)
+	id 70DFE6B0088; Fri, 24 Jul 2026 12:31:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6957F6B0092; Fri, 24 Jul 2026 12:29:48 -0400 (EDT)
+	id 6BED36B008A; Fri, 24 Jul 2026 12:31:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5AABC6B0096; Fri, 24 Jul 2026 12:29:48 -0400 (EDT)
+	id 5D6396B0096; Fri, 24 Jul 2026 12:31:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 391546B007B
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 12:29:48 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3BB516B0088
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 12:31:51 -0400 (EDT)
 Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B5BD81602FF
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 16:29:47 +0000 (UTC)
-X-FDA: 85024206414.02.AA9F8E7
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 3C63D120007
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 16:29:46 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=hZVt3P9Q;
-	spf=pass (imf29.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D30C21A03F7
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 16:31:50 +0000 (UTC)
+X-FDA: 85024211580.02.C40D6D6
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 98DCDA000D
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 16:31:48 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=rJ2DJJ7D;
+	spf=pass (imf15.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784910586;
+	s=arc-20220608; t=1784910709;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sOZZlCJxNPr51QtdtbTR7W+DtVn2iPlfQzvwzGkEI3E=;
-	b=krKAHHjPvy4nV237Wn8eeEo59FqW68V490D1g76lp5l9J6SnUUDxiZ8jmIrwDxQzBG236G
-	8rlwQCfEjeDgPuDd3f3U0+tcp7Qxhug9+j/vwIMxdZkc/lUmXWq7Sopfe6M+SCJKIgWgXV
-	yrfFRshw1LLATq90nlEG7V0oJNZ1xfA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784910586;
-	b=fIs13R6y1rFKYfEkt6B2tZm3IF3fp756vJh9M39U+E/qA4MHMErlMx7gwdZpzjdbP+qYgO
-	fOurRtsIy1K3nPGQwNAsYq9vP98/aH76XA+NnZPNhcwNRf087zxhGMoC8utIK9l3RvgqCK
-	8372omciK4E+aJL6KJbcALllDWWqMQ0=
+	bh=NEwnT35D7tuzT3xeTQQMHkJEWGepfSu0cwMv30sxXLk=;
+	b=rxGHwZ8SAg8pmO73mfcPS0PNGYV0tFzgDUbpu8tY/S4WoHn/9EhgKzOv65R/GgAoZMezwo
+	mtL7uCBI40BTYwLvxbxedAQtqHS3sEbJknBDyaH4fuYQ4rhwhiqWO9Ic+JZhgCTZgv2v6m
+	PwkdmbODyITk5DJ0qrHFBGJwr0wEoG4=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=hZVt3P9Q;
-	spf=pass (imf29.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=sOZZlCJxNPr51QtdtbTR7W+DtVn2iPlfQzvwzGkEI3E=; b=hZVt3P9QAnETqCWd8fAxY8nSli
-	ropuX5BBnaiGoppwSfjNW8v2sVuCaYVW1UmNoII4fsAU4vP4TW8wy8lV8uRSn+fryoFN1KH7T56VH
-	tplAO4DN98c1V06e9ZGoXKmIKerzz4OjvkXGUugIqd24z0VfMkIHuHcvRHIFI3tlNenHTJbyor474
-	493Nra6c1gtx+cRqzqdtS/+eO1MQwdWNVFLdxWSPyf549lVtmrCxdJNJ2z//ieZHE1MV/qvxXl+dV
-	Y6j4lQl6H3Qaor4gm1dywZV1ydxrLBv+Mbh4HpfAcQnWmfbDD6oNZJ/7p8NLCB0n0O48z7feGlroh
-	KBpap71w==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wnImM-00000003ul9-3uU4;
-	Fri, 24 Jul 2026 16:29:42 +0000
-Date: Fri, 24 Jul 2026 17:29:42 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Jane Chu <jane.chu@oracle.com>, linux-mm@kvack.org
-Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Jan Kara <jack@suse.cz>,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <christian@brauner.io>,
-	Jiaqi Yan <jiaqiyan@google.com>
-Subject: Re: [PATCH v4 13/14] filemap: Add support for authoritative mappings
-Message-ID: <amOS9nXAJDIM5KCA@casper.infradead.org>
-References: <20260723143034.175661-1-willy@infradead.org>
- <20260723143034.175661-14-willy@infradead.org>
- <amOPh_oXhrIE44nE@casper.infradead.org>
+	imf15.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=rJ2DJJ7D;
+	spf=pass (imf15.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784910709;
+	b=5rmpoPlLrlJyNFLKkLRlfTz2bnfh6PHfYhdH0+gvqoWMI/GL3cSIDpgSmy2vj9OzpmQ2QJ
+	bnZJMtY76vSQOKf2iZCtaX19N3+PrDBu/eHy/DzbyFnKlvCXBOrKJ/SG3VhQNJl1I8/gah
+	yDt2IkiM/chEi0UDdxA9JkMQD5oKT5A=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4AE7F1BB2;
+	Fri, 24 Jul 2026 09:31:43 -0700 (PDT)
+Received: from [10.57.0.90] (unknown [10.57.0.90])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id ACA703F66F;
+	Fri, 24 Jul 2026 09:31:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1784910707; bh=NEwnT35D7tuzT3xeTQQMHkJEWGepfSu0cwMv30sxXLk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=rJ2DJJ7D9c7D1FVu9FvWF7Hq7v5HoLI/CdhriAp1fJ4dLBnD8EJRRWBa3d3TSeSRj
+	 y4giJ+zCCtRJVGca1Zy4119yCr4CT8kuPBEs9cPEAEswfrfTiiEZd9fOxFya5yiDAq
+	 5lH15CX22toaprtjLQyFDxQHqVRAyMvOmxdmryBU=
+Message-ID: <c17ccb0b-9f6b-4521-a992-bdc658b91597@arm.com>
+Date: Fri, 24 Jul 2026 18:31:32 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <amOPh_oXhrIE44nE@casper.infradead.org>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 3C63D120007
-X-Stat-Signature: tk1511udmxk14te6ynn5fcz7bn7h37r7
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 14/22] mm: set page table page type when allocated
+To: Vishal Moola <vishal.moola@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Russell King <linux@armlinux.org.uk>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Ryan Roberts <ryan.roberts@arm.com>, linux-arm-kernel@lists.infradead.org,
+ Huacai Chen <chenhuacai@kernel.org>, loongarch@lists.linux.dev,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org,
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, linux-riscv@lists.infradead.org,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>, linux-s390@vger.kernel.org,
+ "David S. Miller" <davem@davemloft.net>,
+ Andreas Larsson <andreas@gaisler.com>, sparclinux@vger.kernel.org,
+ Richard Weinberger <richard@nod.at>,
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+ Johannes Berg <johannes@sipsolutions.net>, linux-um@lists.infradead.org,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Ning Sun <ning.sun@intel.com>,
+ x86@kernel.org, tboot-devel@lists.sourceforge.net,
+ Ard Biesheuvel <ardb@kernel.org>,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>, linux-efi@vger.kernel.org,
+ Alistair Popple <apopple@nvidia.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org
+References: <20260714-remove_pgtable_cdtor-v1-0-44be8a7685d7@arm.com>
+ <20260714-remove_pgtable_cdtor-v1-14-44be8a7685d7@arm.com>
+ <alZSwAM4pwmMOeaD@fedora> <f3afa5df-73f3-49da-87a6-d75eb5f3610f@arm.com>
+ <al5xZHiFwatn518I@fedora>
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+Content-Language: en-GB
+In-Reply-To: <al5xZHiFwatn518I@fedora>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1784910586-133527
-X-HE-Meta: U2FsdGVkX1/hBIWnT22niGE7VwHAifeN0DKdmeKjtl8lK3c7yH9FnkuxOHFAw3A/rwW6jGhAwYIfUeEouk6SbttiEuE6Zh7LteWsQsWrSeggjTb1RxVPxtC/ZGshDOpZ8OynFiN4D7mXplivsEA9mTy0YZvI3G0pZx43BSsQpjWK5WZ4pIHuaF6AeZZlMwTud7WgDtqcoPjn5wjudAQkbK+1WsueWGiI9A3YFF074AVU2wAoABGB1FhIJIZvNQH+2eh3mCMAfDAcRVRh1uIkl8mGKNUVZg790wYXy0uqL4M0pox32ml2CCv+VV8f/r+aFW35TkDUR4F5rkINABMyVMiClr9rI/TvlqhVQVvsXUb7E0x1UjJC17Q4xxpcj409W+ELB3o4JIp2khU4XXssUyClj6DanmjwBjvfJg26g+fAXoYnifN6dcjtcqblpIFhzMPThPeIL3Pk99cbmEaVn3bOgqduQUyR1npH0JKWAq1+VirT8A6IIx48shJFAeTqdnBtM4QgEMvsPlXjCSkeMTg2GAAjFO1bJWELdQ6Mq1aUHirhAhpg4dkgSPWdEvYmYD9pYN7o8c69J6lZ+a0x3CeJ9y9EBpQFFLQ7dSnLXDPcxlqFzpEX60SyCwRKIC64bSeppBUKztNz1lbAOd90Y0ESWYsPjC+/opyRyGuaYnGL/LQeLdbT7NX4MCCgPeZDsz45vhKA1//YkcdTMGAAJ7cWeiLK3nF23V7+8HfipL+YQInxAgjlu29WyHXSnLc5Qix51eOxZEft7OFdt6QW9x4YaisTkLb8CXBTD4RxtswYoTH4ExT54UD6cWsNed96FjhKONoyMqhjEVjyfE/0lB8Ha3Bk0V32OZoXxj1LLRG/MicMBe830eneAwnDsNtUKrMo/oC5uKvxN8I8oX/P8N+JLrWYsp5t+27wIU1u93To7zWrgEH2YuDHJghwkREbKXaQp1WWGU9itdz4WZ0
- jjLXclLB
- VrbJT8jRmLtRvNUZCs4DAtr0ZLWKNV2eJ9z+T/LUKf8OkTHCVzDH8Y7xZolmURbOJ3sY+SEus9o76fhR09rneasxMMDf67Xlb2PQMPppC+ljKaBLT3kMPQWF0JiMfLLPqF/6kD57pCwL+YE7LFwba/OSHJuh4I4u2qPBB5qrI4DIPFuFXtEWM/YrOVFJ6wCq+u6D2BDka44XAcINW978Ie4Mdmc+tkahMw+l6Srx3h1DEljE0DnRpu6QlrdjC9yZVw7bqwZKpLNyPbgyb9fQhC7eoz4717knpAQdQXzNPBZ0KnggmDLQf6ery7eXJOWiYQJZWC5Ysw6rNmYL+6HJwAwYA0sZZ/lOhOroH30ismnEBAtclPNXmFg1I8YRVNqO+4u4eI1JRqJo5d2Cj7NiV5rivkw==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 98DCDA000D
+X-Stat-Signature: 1ywo6jmhnxbdfw5n6qpbs9ckd1cohnqe
+X-HE-Tag: 1784910708-491751
+X-HE-Meta: U2FsdGVkX1/ea6fliWIMO4Ez2JbH39Mq15Jxxjnsvg+ToyUPYtAIaDvCYpJoPc73L5UACvMmtOVbfq1KCUBowkxTDwPkTLjvr5PGPv+qmcS5isXjYsc+UBoBITPcjt+F9K31egltPp7QjjxhBRMJRzpT2ykBtg6ggPAd1mxcifp8yul5C9fSnzEUwOIxSnCYFdKSU/ttLAZPjXz6dCyG9BRw+rbvy1erf2CYtnZowjJnK6nJ9ahRAH5h/ZV8/riexIo25TnBMMpWyBgowq54OFCjQBTDLjqbnFLSRFv6qY83xtxaQB3EXuh4msW0toPx1wDaUShlXtebeol4Qu8OCIiPuBFdWm7KEQP2ah0BKfc8FXzULIJQbRyPi5i/ifGR8x/WvwF/xJQszKWQStHWwSva0GHv+zrha8V4z7UGK4irVmpAxkRBe2fKkpsQP4AJzi1RseSNTe8ZRME9QOjJNMrg3BVsvaBzMUoChco/gkd0h83MXvD0ujtf6qOhfFdgp4JByIXznm217D68lWVIGops7/EJEHQdXQ4RN78Zm316ErxpY28FjbUUoGgXoQD7tvcZtP9NSO6OESabwmvh1yzvMZqSi/4dp1PpPiGcPkosxb9CqrjWfT5pvpSkRJUPGvzc4S99JFn516NEI/ChxGObqxyxbf01pyhRoyOL5siGp/ao01lvDGJ5V/Cie/PrHx1f++ajp9yI+VgtGXl258sJ4j9GZyic+QiX6No1SPA+3vXvEReDJw8R7p4kgeABJOu1T8OP6vwB7TTa4AgBM23aE9XNFu6wR5QfHbVFLB26+tEx7WECEfpkwCZ9SL81zvcjUaypo2AkdOu0rgTvSoAYEspo/fDqhT67KsvsnBdRH/aBC5YoVp1d/mCkLNmEwWvJTBHb7UHqXCXmdBqLXQ3Eg3bXwJ3YhsGGAbsdMOCh6fq9vE3gg1IAmkCfveUvp0N5Oa1AIXyXOXrBsgr
+ JZAySnJ8
+ wQrilnxGeFG2gykNrPNLPEuNAp9PTJnxAtpY2F5SioPcadzyRhwS/bfkAjWNrlMH7XTvt8hHyVe+aFrl/CeQU4hXwrOXJT13TmI7fPeMU7ia3PwkBuPK/yxJJtrHu9UE98qlzW20RQ+UcMJcY98mNm/yGMXVR3muCpzMZZnGZ5Rbr78bm5mxQC7pGu13jiI74DuqQCBV7RNoV4JaC6tS4068fOx0hSc+Fb3k6mWyJwr88/8aBPvdjgsaSbLed+OeZka77+NNWJ36yhbphJ6q+MKDuo5WCeo9TKxWcXhGnMUbJ33Q+E9QxZ7ohCw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,62 +124,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 24, 2026 at 05:15:03PM +0100, Matthew Wilcox wrote:
-> Sashiko review identifies only a problem identified in the previous patch.
-Er, this should have been the reply to patch 12, not 13.
+On 20/07/2026 21:05, Vishal Moola wrote:
+> On Thu, Jul 16, 2026 at 11:49:31AM +0200, Kevin Brodsky wrote:
+>>> We should switch over from __folio_set_pgtable() to __SetPagePgtable()
+>>> in this patch. Ptdescs and folios should be treated as distinctly
+>>> independent of each other.
+>> I sure remember the previous discussion, but my reading of your comments
+>> [1] is that we cannot really change this as long as pagetable_alloc()
+>> can be called with order > 0, right? Multiple archs still rely on that.
+> Kinda...
+>
+> The concern was about callers accessing tail pages directly for that
+> information. Using the folio API ensures that we always look into the
+> head page.
+>
+> Since we're now doing it at allocation time, we know we always have the
+> head page, so it's fine.
 
-Sashiko review:
-> --- Patch [13]: [PATCH v4 13/14] filemap: Add support for authoritative mappings ---
-> commit f97ea9a8250c2693263cf2f409975e439e79ddd4
-> Author: Matthew Wilcox (Oracle) <willy@infradead.org>
-> 
-> filemap: Add support for authoritative mappings
-> 
-> An authoritative mapping knows about all the folios in the mapping.
-> If read() finds a missing folio, we know it's a zero region of the file
-> and can call iov_iter_zero() instead of allocating and trying to read one.
-> 
-> > diff --git a/mm/filemap.c b/mm/filemap.c
-> > index 26a5f18121f90..5a8cc20e624e4 100644
-> > --- a/mm/filemap.c
-> > +++ b/mm/filemap.c
-> > @@ -2697,6 +2697,8 @@ static int filemap_get_pages(struct kiocb *iocb, size_t count,
-> >  	if (!folio_batch_count(fbatch)) {
-> >  		DEFINE_READAHEAD(ractl, filp, &filp->f_ra, mapping, index);
-> >
-> > +		if (mapping_is_authoritative(mapping))
-> > +			return 0;
-> >  		if (iocb->ki_flags & IOCB_NOIO)
-> >  			return -EAGAIN;
-> 
-> Does this early return cause an infinite loop in filemap_splice_read()
-> when reading a hole?
-> 
-> When an AS_AUTHORITATIVE mapping has a hole, filemap_get_pages() now
-> returns 0 and leaves fbatch empty. filemap_read() was updated in this patch
-> to handle an empty batch, but filemap_splice_read() appears to assume that
-> a return value of 0 means progress was made.
-> 
-> If filemap_splice_read() receives an empty fbatch:
-> 
-> mm/filemap.c:filemap_splice_read() {
->         ...
->         error = filemap_get_pages(&iocb, len, &fbatch, true);
->         if (error < 0)
->                 break;
-> 
->         ...
->         for (i = 0; i < folio_batch_count(&fbatch); i++) {
->                 struct folio *folio = fbatch.folios[i];
->                 // updates to *ppos and len
->         }
-> 
->         folio_batch_release(&fbatch);
->     } while (len);
-> 
-> Since the for loop is skipped, len and *ppos remain unchanged, which
-> could cause the outer do-while loop to spin indefinitely.
+Ah got it, that makes sense.
 
-This is a latent footgun, I guess.  When we come to it, we can move the
-code from shmem_file_splice_read() here.
+>
+> The dtor/free should be more questionable because the underlying api
+> uses virt_to_page() which could look at a tail page... oopsie. I
+> haven't seen any reports tied to it so its probably fine (the
+> setting/clearing has been using the folio API since ptdescs).
+
+Right, that should be fine - calling pagetable_free() on anything else
+than a ptdesc allocated by pagetable_alloc() is a bug, so if we get any
+crash because of this we should just go and fix the underlying issue.
+I'd still switch to __SetPagePgtable() in a separate commit to improve
+bisectability.
+
+FWIW there are definitely cases where pagetable_free() and
+pagetable_alloc() calls aren't properly matched (see my reply to the
+cover letter), this needs to be addressed for this series anyway.
+
+> We can say thats a happy accident that makes distinguishing ptdescs
+> and folios easier :)
+
+Indeed!
+
+- Kevin
 
