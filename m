@@ -4,94 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84297C531CC
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 02:21:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2662DC531CC
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 02:27:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 652FB6B0092; Thu, 23 Jul 2026 22:21:03 -0400 (EDT)
+	id 500046B008A; Thu, 23 Jul 2026 22:27:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 603F06B0098; Thu, 23 Jul 2026 22:21:03 -0400 (EDT)
+	id 4D78B6B0096; Thu, 23 Jul 2026 22:27:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 519666B0099; Thu, 23 Jul 2026 22:21:03 -0400 (EDT)
+	id 414876B0098; Thu, 23 Jul 2026 22:27:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B85E6B0092
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 22:21:03 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id AC8C74026C
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 02:21:02 +0000 (UTC)
-X-FDA: 85022067564.30.C52180A
-Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 00F20160004
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 02:20:59 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="MF/5NYKf";
-	spf=pass (imf08.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1A7E26B008A
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 22:27:40 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 977751C02D6
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 02:27:39 +0000 (UTC)
+X-FDA: 85022084238.27.40F3B1C
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 2DC0CC000B
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 02:27:37 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LF6mDkow;
+	spf=pass (imf28.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784859661;
+	s=arc-20220608; t=1784860058;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p3F27zBrceeZbGaaILb47jwwDwAQwrNTSWn2X4PwsM0=;
-	b=8SkFJhfrcvM/1eP5v0ACmZMvx8COnJt1Flf+MnSgmH1p86YTQMZzdIX88Vb/829/PjRFMj
-	vrwSYIMCv5cv28Ce98WyF1saSNJP+3af6T42Tq8h+g3hSbpYQi3VWjRSfzTNM2GYQGbBL5
-	qrvM/JmuBgO2OWcs2DtZHhPQklmGL5M=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="MF/5NYKf";
-	spf=pass (imf08.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=FShZWoUeiR8yaTtWAzmWYXgtRV6e+45cRzM/BkLtoQI=;
+	b=IqCCrhllZgwatf5fY+TR47FANyruKYRVnOcIAiIMbn/u69jshs5Enc+biHnoZDk4MqqY+I
+	lM5JRNEuO3JkMVGM2DrGrfsyGzpQjbODIG4dCfBC6T/980MmNVPErpx3cz3mR9Lgs3joKJ
+	/vTd0q/olomePGTpNvZRoPdBCcplRrY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784859661;
-	b=SLPz0P5qqG0LyA5q4xj9cVNPpjkEiZp13TobkO5barK0gUwRryRuyARh48vEIJJEufn64K
-	M3OFXBnf998iGw4Emv1IZzMszJvpERDrZzVYKMeBHFjDqRNNSuux65X27JJ8JLZAwZheu+
-	Uxa+dEihSvEN12zwSR7Ahv648s79F94=
-Message-ID: <5b26565b-300a-498e-afb3-e5ee1d7fe84b@linux.dev>
+	t=1784860058;
+	b=vX613zolQYtMGWx5p+LUU8Bu6ytAM3QofEFmX1SPP8CxZ6RNNbrVR/TKeQqRrVLWqkHrs0
+	glxhrZEqKnzZaAkqApy3AHZ93l1z//jGXyOiWIMGeQjSAOPVkz1TntENyIlCwXyXh41/Ae
+	A7ZgETCl1iwZHUcTg/h/ud3UJwXK3f8=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LF6mDkow;
+	spf=pass (imf28.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <76a3a049-fbe4-434b-b4da-0b8cdd154141@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784859658;
+	t=1784860055;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=p3F27zBrceeZbGaaILb47jwwDwAQwrNTSWn2X4PwsM0=;
-	b=MF/5NYKfUFVC4TwZgMWGbDo3Xx1CUS/Z+8ZSw3ZSegNIJ/W0PAFnzElyNINp3EfbSW8A2V
-	g+9gIXC/pmcMI0l/Vk3vsqpOW70OPx9hC5c/spOwDjKsWLbtvdd2RUh2FVLJCM4ys3nqrc
-	O2yhdJkpdQdXyrHGvNSAMH598aQOjio=
-Date: Fri, 24 Jul 2026 10:20:40 +0800
+	bh=FShZWoUeiR8yaTtWAzmWYXgtRV6e+45cRzM/BkLtoQI=;
+	b=LF6mDkowv1vF7N4G2MH4TZH4n1BPDHc8Ace0C+zzJUTppm6NTA+vElOa64uZWamdA9+09O
+	5SPw4EM06Q8u7Ww4HhcH0HtFwLcSbypqkY22VyU5tKWveJvjf0av4+lVX5xjUv3QFsCwkr
+	Xv9fmX2K8+pHkAVXikdm8yO/kV6Gvwg=
+Date: Fri, 24 Jul 2026 10:27:24 +0800
 MIME-Version: 1.0
-Subject: Re: [PATCH v3 4/4] mm/mglru: fix anon-only reclaim evicting file
- pages when swappiness=max
-To: Barry Song <baohua@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>,
- Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- Kairui Song <kasong@tencent.com>, Axel Rasmussen <axelrasmussen@google.com>,
+Subject: Re: [PATCH v3 0/4] mm/vmscan: fix swappiness=max and clean up
+ per-node proactive reclaim
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand
+ <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
  Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
  Zhongkun He <hezhongkun.hzk@bytedance.com>,
  Muchun Song <muchun.song@linux.dev>, Davidlohr Bueso <dave@stgolabs.net>,
  Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>
 References: <20260723045718.2052070-1-ridong.chen@linux.dev>
- <20260723045718.2052070-5-ridong.chen@linux.dev>
- <CAGsJ_4wtcP87bTPmm+aQ3pxn4eLW7KqU-0DJhBF639Muc2xzjg@mail.gmail.com>
+ <20260723171842.137e45eb36b21b3b45245da0@linux-foundation.org>
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Ridong Chen <ridong.chen@linux.dev>
-In-Reply-To: <CAGsJ_4wtcP87bTPmm+aQ3pxn4eLW7KqU-0DJhBF639Muc2xzjg@mail.gmail.com>
+In-Reply-To: <20260723171842.137e45eb36b21b3b45245da0@linux-foundation.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 2DC0CC000B
+X-Stat-Signature: 87cnfmepphixw1z6wkfa9b7pnjrwktop
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 00F20160004
-X-Rspamd-Server: rspam01
-X-Stat-Signature: ri7epoccmwq9pgs1kgnarczjb668dkxz
-X-HE-Tag: 1784859659-796908
-X-HE-Meta: U2FsdGVkX1+SEWlj6Y6jW7EIZuCzjvI+XM8adDkZty8Y9LB6qUKQsk+AUcCBjPBfKDFLmW9YKp4l+8zvaP24viKKDnmJhnypLMXaWz5ZT+F5DOHaDF5Kn+xISHOpRH/gH9JkRQnNbOaUmWee+BesAq0U5EYRkYoSCanh4kZFW1HG2ruVg0/N14Ym9F91AXkKNnjjCM79uODVzJhDIaQo+6+omBnijTuyiB6RGn5/BkUXDHd8ZIqXMnIva3lxRuPDe9u4xqAteAjGFr22TXJUFhkRwh6fcGX0JRrQesinobb60o9E0+w9qm1opPylJ/FS2XNQ45CXpYMZ3up+FygcR06cQCgO/v1w3qRemw2BqZrfBBWqba8LDd6Tvg+aGXqV4Q97phhyV2xjQVOWrN7ac3AsI0RgugLDsRLGIJj+o06P6gspI/ExldNz+1y2LiKF4kqZoUg62wBUIiDmTEgc/phQTXi/Xr1lYvJBc3pCyc74I/V7wLb5eYb8iBMwazE5MdyXOKaSPIB8MSwx20xChPzIIk3GeA3oTyas6rGOJZS7Oqio0CYSDkRyXEideVhIQhQm+2JBCQjT/n2LkjLap4xtWSSHK5ZFo/x1iIRkf4kcQaubNmOe2BX+y3xvWdLKXCxaI0N/rb/b2ZDtD7U7BnE//aRa7y+kWfH2eS98MKzei63bDlLhRX2tOPhtTrlbMOE7GZVZFcGSPrY9DgYq4uv17Ok01UaXOGPLY0bhOvNd4+QbaYth4Vubf/RYoOnfqGhl78RMz4q89lz1O3dUJAWZqF8B0ZXEceKoNEzS3rRwBci4aOrfvii7lQwBxXt8hCk8BfmLok+Vs+aFd1lsOLphLVgewiAZPnQPQFz+T8bWpCYPdf1PSRNuN6n5YN+G4Jtqe+l4dp5ToBpux926S+D4NX0dJXN8UUX85WMtiV/kpw4E0RWbhY43HFVbWSSX12L5poax9kkCUNVOK1/
- xai1qboz
- BuI5v07WVQPVaVG4VI9jgLEsorOOUCE95+QeiJWgfSW7FSiQQdzwm48Gfd+nQOjcsc5baznfYGJOLdWZER6S6m2yRU0PkJyfEfF9dDUO2G1wibdvZd51pHb+v1ZUVr3DA3rC4AA9Uqqhcx/yqzExnfDTM60GrbFh086Fn2+vzQKesnx+YVTC9ChRdOO9ZCcUuc6LFofnvUNuirsijLWqsZv0Unx6v+LFn5sV10+A+6un04EA2m+aFXoxfjHwsgYoNrexi
+X-HE-Tag: 1784860057-660853
+X-HE-Meta: U2FsdGVkX1/nyu9EiawADWLTLiUYFdlSe9b7/8aRsYLwybMHOVDy+ptoCPQLs5ytfpVsk2aCS35+TSyn5sb5qj/WqWf2yGAjsre4Wc0ZxosHpFxUKaYCK4EMc3ACo34PIRIhN642M6CHT76LbvvRBZDqiRmIrR+dAUfAk0LqYW1wiShyKzjzJ7H+qPhkIwUvwGBfZTEg1epa6jK2sCZcTjDJkfptJ3Aw9U6gD1Zwy9GD+sRGvfoXtLvm+RLeiDByePrpz+0jzoOExKdwx2peHKuz8DGv5A9nR4OltFdFuYsfcfgXWZnXO9xOrWrDFGVPowzqP8kkg718bFtqrpQIs+vMFpxBLZV5wiltV0vWFDyL06MdvZbxrslEZkOEEkK9ipT2vQxse1HfC6VQj+3Wl5kcJLamQyacrM3Lmvp5SV7cYv5fjqfE+NZOBTTMmaG0Mi6C1wtvwpnZnsOJhRQsula3wLQvjzH4LdvpUQyQo+Wz02czN/TVzjUwZRIpw4HRGCqZAlzc0lntjoa/A660FZcBCL1N8iIRPqKyATYijB+hJTKZoDch9XQgredGc4o12zqpGIzO5960HHHkgvx7QEYQ9/vD52ipeVfYilmugdGPAjAzIHlJpdkOQUDqDmSNgTWP/JFMCVwxspcS9MwAXIkWicHZKbaYW+3NuP7VlTG3QwYQMl44TS1teWpsCJ4VOcsDA+ahbBbNmDmE1Pr+JdZAMUMTJG1mCrYFXpsi/wS5tVvOF5j9f83zbydGq7hhqOL1sAZM7vhXZNGXwq0FiP+ZecpyoxBU7fUqeZm15CejOl7QlnTw/FkS/sngfNeq3MWhUliTwfWj8KzlAaWJ0E7ftBSpJzli4ml7rbbBs6zKsm8PNkVP+Xx2xk370NGg6LBVBsH32+iOLZOLRfw0yxMvmlXLiuwjBzg6imjHMnLCWLYtgyPfW+FYbCPmww093PmGN8UneFTSEwHJ6Ng
+ aPWY941x
+ b/XNUZQhII514HtiZJ6aCDR4zC1tjSVm5AncwLFLWiZ69mDZr5VIyoQiXpB+h9bQsJZGWyYwTTXnCobuTd2CnCd9jyi7qHHD/WtmCk4JM2a2imwDfGInHIrQ5xd3yWag41w8Jp4X5+Q/cO9/kL+xmCWUyQKw3aBvqLrbBYaq+jMpLLwW1hlK4jnpvSPVvWkgVl1dDa1aQyOSgNQQrsukQIt/thjApI9YXFWMKYE/ACmobs+/CUwpCP+7XltV7cqAzb/pBxoNPlGKNh5Y=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,96 +100,31 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 7/23/2026 4:57 PM, Barry Song wrote:
-> On Thu, Jul 23, 2026 at 12:58 PM Ridong <ridong.chen@linux.dev> wrote:
+On 7/24/2026 8:18 AM, Andrew Morton wrote:
+> On Thu, 23 Jul 2026 12:57:14 +0800 Ridong <ridong.chen@linux.dev> wrote:
+> 
+>> Fixes and one cleanup.
 >>
->> From: Ridong Chen <chenridong@xiaomi.com>
+>> Patch 1 fixes "swappiness=max": the anon-only test in get_scan_count()
+>> sat after the "cannot reclaim anon" check, so when no anon was
+>> reclaimable the request fell back to SCAN_FILE and evicted page cache
+>> instead.
 >>
->> The previous patch fixed this issue for the traditional LRU. The same
->> problem exists in MGLRU [1]: when swappiness=max (SWAPPINESS_ANON_ONLY)
->> is set, reclaim is expected to evict anonymous pages exclusively, but
->> file pages can still be reclaimed when anonymous pages cannot be
->> reclaimed (e.g. no swap and no demotion target).
+>> Patch 2 fixes reclaim_store() collapsing every error into -EAGAIN, so
+>> callers can no longer tell an invalid argument from a busy interface;
+>> propagate the real error code, matching the memcg path.
 >>
->> With SWAPPINESS_ANON_ONLY, get_type_to_scan() always returns
->> LRU_GEN_ANON and for_each_evictable_type() only iterates the anon type.
->> But if get_nr_to_scan() does not bail out, evict_folios() still runs and
->> isolate_folios() falls back to scanning file pages in the !scanned case:
+>> Patch 3 drops the now-unused gfp_mask parameter from __node_reclaim().
 >>
->>    shrink_one
->>      try_to_shrink_lruvec
->>        get_swappiness   // returns SWAPPINESS_ANON_ONLY for swappiness=max
->>        get_nr_to_scan
->>        evict_folios
->>          isolate_folios // falls back to file type when !scanned
->>
+>> Patch 4 fixes the same "swappiness=max" issue for MGLRU.
 > 
-> I am not convinced this is correct. Although we do have `type = !type`,
-> when `swappiness == 201`, `for_each_evictable_type()` stops iterating
-> after trying a single type, so there is no opportunity to fall back.
+> Thanks.  AI review might have found several pre-existing issues which
+> might interest the maintainers.  Also a suggestion against your [4/4]:
 > 
-> #define for_each_evictable_type(type, swappiness)                       \
->          for ((type) = min_type(swappiness); (type) <=
-> max_type(swappiness); (type)++)
-> 
+> 	https://sashiko.dev/#/patchset/20260723045718.2052070-1-ridong.chen@linux.dev
 
-You're right. In my initial version, the intention was to bail out early and 
-avoid unnecessary work.
 
-I recall that during your review of Kairui's series, you sent a patch that used 
-a fallback mechanism with type = !type. I was thinking that this could become an 
-issue if we call isolate_folios() when swappiness is set to max.
-
-> So I'm really curious what's happening here.
-> 
-> static int isolate_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->                            struct scan_control *sc, int swappiness,
->                            struct list_head *list, int *isolated,
->                            int *isolate_type, int *isolate_scanned)
-> {
->          int i;
->          int total_scanned = 0;
->          int type = get_type_to_scan(lruvec, swappiness);
-> 
->          for_each_evictable_type(i, swappiness) {
->                  int scanned;
->                  int tier = get_tier_idx(lruvec, type);
-> 
->                  scanned = scan_folios(nr_to_scan, lruvec, sc,
->                                        type, tier, list, isolated);
-> 
->                  ...
->                  if (!scanned)
->                          type = !type;
->          }
-> 
->          return total_scanned;
-> }
-> 
-> since both min and max types are anon:
-> #define min_type(swappiness) (!(swappiness))
-> #define max_type(swappiness) ((swappiness) < SWAPPINESS_ANON_ONLY)
-> 
-> I guess the real problem only occurs when `may_swap` is false?
-I added some trace logs to verify this behavior. If we don't make 
-get_nr_to_scan() return 0 when swappiness=max, it won't fall back to scanning 
-file pages, but it will still perform useless scanning that yields no reclaim.
-
-Log:
-   # echo "64M swappiness=max" > memory.reclaim
-   [   78.914972] vmscan: in isolate_folios swappness 201
-   [   78.916841] vmscan: call scan_folios type 0
-   [   78.918311] vmscan: fall back 1  <-  can't call scan_folios, loop ends.
-   [   78.919479] vmscan: out isolate_folios total_scanned 0
-   [...]
-
-   # cat memory.stat | grep proactive
-   pgdemote_proactive 0
-   pgsteal_proactive 0
-   pgscan_proactive 1808
-
-I will update the commit message to clarify that get_nr_to_scan() returns 0 to 
-avoid this useless work.
+Thanks. I will update patch 4/4 as suggested.
 
 -- 
 Best regards
