@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 830D3C531F9
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 07:48:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3989C531FA
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 08:22:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3D4DC6B0092; Fri, 24 Jul 2026 03:48:27 -0400 (EDT)
+	id 5C1466B007B; Fri, 24 Jul 2026 04:22:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 385E26B0095; Fri, 24 Jul 2026 03:48:27 -0400 (EDT)
+	id 572746B0088; Fri, 24 Jul 2026 04:22:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 278046B0096; Fri, 24 Jul 2026 03:48:27 -0400 (EDT)
+	id 488696B008A; Fri, 24 Jul 2026 04:22:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EEB856B0092
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 03:48:26 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id F3F31C02DB
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 07:48:25 +0000 (UTC)
-X-FDA: 85022892570.02.807CF8A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 4E45280003
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 07:48:24 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SOaXFBuR;
-	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 256176B007B
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 04:22:15 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A037112021A
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 08:22:14 +0000 (UTC)
+X-FDA: 85022977788.14.3FD0AB1
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 8640FC000A
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 08:22:12 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=AdMMi+Al;
+	spf=pass (imf10.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784879304;
+	s=arc-20220608; t=1784881333;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bO3E9Wlp8V9BbDWot4WwlaXnfOfYvMBhEhsCHrbT5DU=;
-	b=ETS817c5jIUtHeRdfMnOZz69HPf+PCR2fzeGUI1179MhJaNgUfrkB6SyPdU+PHhaRrOcKJ
-	QbwBYUaXgN7swFTO4UmYxBsDHi55Dtn7MqIO13FDQqqPsQ7GUcj6WVGbnrMsK66QB3TOT2
-	+551XlUaiSOk8fl3IkOEiAyaSYk7PxE=
+	bh=QzFh7CcpBCrPwXZDhxjoaOcW8ZjrFDk7RHqbv99ICuQ=;
+	b=J4a1rUhhDWYZw+3vl55AC7X//0UigyB+ozPWiobWX0D6Vjmfxhw4BrXSXe19XCQWApHDCc
+	OnTxyk1gyzE9Y9jBEfvKiPhmd73QUj+ZzzbuaFRkoT72bdnBAGIjBzb5sfMd/LTkJOjYa6
+	/Y5c6KyrKkxZzeUd58vBMxhPe5UssDA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784879304;
-	b=Erg0ZkUJvh/+Orw8v0VtCO1ltybo2aJiHNvYnJ/kxtMIZRrLFIuyg1V7y0g6nwtebAZEfU
-	cxi1nY2oLhrO0RW7xiuP9lwu3H8sZiPRMn9VJRx6x1oMhveNNUP0X57cEyt9Qnymf8kVFh
-	JlBuNAcGjGDxRGtNIe4bCM1q8UvC0hA=
+	t=1784881333;
+	b=pP1+qyo8CwKdHDwVUZ23h2etX9KQ7G0DHANB7wp0Ts53SL4ebgVN0ZSTwK2jvsir6CLp86
+	7c+R+oKae6IaKd+uF03Kvgu9mge1HAHL4n/jKKsXKmZx6I44EO0KW10FIAZTE+DiYaJSRd
+	6av/eHLPZ+MXa53v54sk9L8zl0JCkqI=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SOaXFBuR;
-	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2A91940B29;
-	Fri, 24 Jul 2026 07:48:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6B6D1F000E9;
-	Fri, 24 Jul 2026 07:48:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784879303;
-	bh=bO3E9Wlp8V9BbDWot4WwlaXnfOfYvMBhEhsCHrbT5DU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=SOaXFBuRKELMe8KH64C7KST7n8Oh9frVdPW5uggd8hhm9ZcUMhgc0VxjKYDYyntAR
-	 RgpRZm8msALLb35JkjbKvh6OQDWgDrgi9rVCTyy0dbFRLVWdQeKE5GnI6YwpUWYXFH
-	 2vcSCKYQdqbw/yISMhIszPpPx0PxpULTXPc683yh3hwXurIMEyStUlCTTPN0/HZZxk
-	 YiyxMeve7rv8BqbMoY6PxtQEG7rHICXKlA6gsJDDsxjr2kITVLSJBwk5ZeHJHvKEiu
-	 tIjnOeCN/B31GCf0HayMEfBAXgVhiKspcV0CXc3TGSKzS4J8u4Ju5+oeYp/7wQbxnk
-	 14DFgIcMW8FLA==
-Date: Fri, 24 Jul 2026 08:48:05 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Dev Jain <dev.jain@arm.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, muchun.song@linux.dev, 
-	osalvador@suse.de, riel@surriel.com, liam@infradead.org, vbabka@kernel.org, 
-	harry@kernel.org, jannh@google.com, lance.yang@linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, ryan.roberts@arm.com, anshuman.khandual@arm.com
-Subject: Re: [PATCH v2 1/5] mm/rmap: convert page -> folio for hwpoison checks
-Message-ID: <amMYSap75IRc--tz@lucifer>
-References: <20260710055915.638659-1-dev.jain@arm.com>
- <20260710055915.638659-2-dev.jain@arm.com>
- <amIzQmZ3eeYiVXo4@lucifer>
- <cdd37c17-b2c2-4dc0-8f1c-7f4cbd2fefdc@arm.com>
+	imf10.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=AdMMi+Al;
+	spf=pass (imf10.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A672C1477;
+	Fri, 24 Jul 2026 01:22:06 -0700 (PDT)
+Received: from [10.164.19.44] (unknown [10.164.19.44])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BCFBD3F66F;
+	Fri, 24 Jul 2026 01:22:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1784881330; bh=mw8GMJBoAr0TSzOlQ2s8pvtCmil3Xo8vPxz6aH4bq30=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=AdMMi+AlHl7dxWpvlR3U4+adYGUgCFMySue09WG0pcsg7WANzAfxP+jBFrmLeXmHa
+	 Twshh24OCU7p7LMe+bU2EJ0MYwWbHEjB8iJKgJCDbQwu+LpnIvmUM19kK+vrUx2ugh
+	 Oz89jPMLUfYSmCAPTkN8M0tpKQjYidHFO8SETJcc=
+Message-ID: <b7f59901-f0d5-4ff0-839e-cd45440b87ed@arm.com>
+Date: Fri, 24 Jul 2026 13:52:04 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cdd37c17-b2c2-4dc0-8f1c-7f4cbd2fefdc@arm.com>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 4E45280003
-X-Stat-Signature: 8z467e4iydmtct1jfgit3ndz4gr4qhsi
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] selftests/mm: fix gup_longterm EINVAL error message
+To: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>,
+ David Hildenbrand <david@kernel.org>, Shuah Khan <shuah@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe
+ <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Sarthak Sharma <sarthak.sharma@arm.com>,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <8A3ADC563A32EF67+20260724065929.1474539-1-zhaozhengzhuo@uniontech.com>
+ <23557F4CB8CF36FF+20260724074603.1479243-1-zhaozhengzhuo@uniontech.com>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <23557F4CB8CF36FF+20260724074603.1479243-1-zhaozhengzhuo@uniontech.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1784879304-793519
-X-HE-Meta: U2FsdGVkX1//MSM3DoZgCv6LWBfBJgQrBdSLrQvRUeOmTNxGcx1DvoR5VZ747dem6Eqaph0SJtH840VYjIU/R/9pkTyNL7aiEXJs7mdG2mXCNjMGjj//iDnm8isV8LbHKZBZJVhKO4OvTo3VbdZyw6BPo200Fy94NMIn+b+Hgbl36LUSrD0LpURhr+fe0rHotUBf66QSB7I2brm4Rj1hb0DAEpuJKCxpx95lRax4giCPZILkAEj+ioyi/sZdNN28TdskY6blM3kmZY7/tseNWXbphsV2CwIJoq2w6VmPckVQf3N59P9mENEl3Zr3TN2eWObSUQR51veDu4Ko9IWJaRH5l5G+GEqq/V8oyrzkbhA2VtEqr362EQg9Ej/R6zkk4VuLUaVOla4mYB8L1ky5YpWaXXEvLYwpsDZE2mUAsEbzZbUb9FxD97wPl6QfNTdNqWC/FP25C0xHwr/4EmSXbGK9SPaaL3pHxJRFG5DTsi2IEOJUGdWqv7UcgUvQCZHH9LbRNEs1fUQcwzc/CcxJNvv8pI4SwdqkAivenqhLxuhtlNjaS7OYXNVS77ffWgyfTO+JHeYBm5guuhIQ+V+OSACUKVq3NDFpyEpAnqU/7JFJRDbk2THFBMumKWOEKKY4DHAbV+cMnz38VeqQJorxtsS0nXoF7PuuJkoMCN7tl9Jz1zA1Q6wNzvFQgRlueVzzFXNbioGPqMVgWiPS5TNikSGntq/mnJsfUmtrHdCE8+pk2iZBGRModYwqNG8+1EkZUHZny6rnCYu6Nx164Tv4ESUzt8ZrljquluQIzAbyCptiB16fk0XoKt5szF/u2g2JST/gPbEmFlpgMrqAHi6RtWJKSaol4gA+KG9J0VEr2c23aec8dUuPPsvW3j+6llXwQ5TigXLB/x7u1Zs+ZFFmFLl53UYpAxyNrPdqPxeYAp7J+xTaVp+OwUHXxYGyME530OVLYWu821uaItEJY2F
- Wc9eTg2k
- XzcKxrXqtpuaRfAl3J54rg4zJgkAWZGXUZBfNpRL4rOUyUyRswENF+Mye+e7naINBksyZwtk+XdNniAlU6QPCMpqMCNKiHgH7C4ttk24K6BoJrobXD489HPKkbtl9yQTAP3Sq1FApI8QalyE+0WQvk3CsfOPWPrtdhki4rRFA7S69RdhKnNj5AG+PYVtCkavo/IYmuFkdPPkmqM74Q6mSNbTdqTSe6lxpySMmeEMjOYDcvV4uhBhVTkgVdgTrWJ3LnYV49S1QygpSfr7GyUU0Wbo7dC6PMY0Sut/VSBp4pD7MFQrXkncHHwNHHO1DJyKGoFHa69zzzdQZSg+11fHRDWLWOA==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 8640FC000A
+X-Stat-Signature: 9zeizgqtjdathuxkxzj1if3nrbjrbgf8
+X-HE-Tag: 1784881332-253758
+X-HE-Meta: U2FsdGVkX19zau8cR6Z2zOTZg5ENESS30u7U7n8m68VOWiwKUMOQgEHXsvPOl+G6UBb6ynX2cGDcLq2SzpgtYU7JBDER2Ld9kC3LxyrLdVBwq1y51t2MQ0vIKK0VfU5L9sO6CDejOoBLR7D4ewFmdKQTL+Ujz4SjUge1P3UjGUw7dv38jhTnIof9JUHGx1poawyYTFGF3WCmVeNleLnZrl3SnhCdTt8ISb/h6YbCmCwpaTTOi+mKN32bEGn7F3+ES0l2EppTszj875aNMAIBnvCi9OZVIknmGy96SG5Kjs+kZA+osnpewG9W6Txif3F5KwB33Z3M89tuuTAvqPp2cp9HN/83rZAfE1/4j7kNvRh8+yrjEgoDNJLuWS2xvljMw/9JieOwPPzAO3+L0+r6Xl58l9PezsmO8IC3Y2bAhmLAUN/5itzBscDxi7L6vvMHA/CkQ3AdHHnyMb0ZaL89xwQ8+DM702R3EgeMXnlcHfr0Omvp0paJEaPfG2oA/+QYGircpTFHrsVZqFQJWT3avZrWPXPdCFk2wedDRSWqhy4DsjbicEz/IFtvl2u6wlaVLouVeG1PxG5hF5GPWJeIL4HwQLyS1W2e93Mnj2TIdwdi6x1TMydoijrZlVM1gVpHQJrEqdKkqpDOWWX+Cyvx5i5QDZfqiYybcDl/Mkos1ikTTYt0yP5x1Hm+MigbVPrgVRCRNsc+NUA/Nn1xUrr3wx6dWTwnVNSoCAPSqI0VcGznsjnBbvtj8lGi4nyPmkpmA8QC+XH416xTRX3b17f/CN1QkeFmA7RrBQwin88awVq0GPkpLjTNFfOQX8/gAOTQGJ+AN97Lb61zOiW68xye60uSlohF6BIasV/WxzL79azRWdXy92r/NNq8E5jKNSytVQRtNd3L1D5pa8ac5b+Don/I1k28glo4qjL66fF4zKnbUY+CTfTzszrepwuiomM13GvfIvyQgP1bPythbRg
+ TOwk0fj9
+ oKEn7yLEOnpIvBZJlsT6B6y+U4w62zWt6dfIC0dhYkvYGMIBrtEZVQY4aTZAgHdtQudNe3ODqtg4QmvpBHtpubUXyzJVgd62D9TmmEdCUUzkiEEO7fCXaOntZWP/u2jhvbsZtInzohbh8l/lkG09wjaah6/T/JmfRz+J+3dPOLdmKfVsXqo46q+4tozg20BOh/JjOQCOuf+FUxtFN+XqyfHiFEo01Fchal9zCFE0VzgDoI2OZoVA0wSYG72opehdElTxws6ykzYgvQJrYehXiRWQSN6/iZ3SuUom/uRPdBmNmJ8W3rabXxAwe3+8XXoLudanmP3Tzejy3Vn3C3PfmOJyGSgG2w5i4tqOx4Iywj+Hop29ALDrj2SKeyl5/SWDGdf/MPDVW8N7EkckSK8Vu98+upw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,100 +95,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 24, 2026 at 10:35:34AM +0530, Dev Jain wrote:
->
->
-> On 23/07/26 10:45 pm, Lorenzo Stoakes (ARM) wrote:
-> > On Fri, Jul 10, 2026 at 05:59:10AM +0000, Dev Jain wrote:
-> >> try_to_unmap() receives hugetlb folios only from the hwpoison path.
-> >
-> > Horrifying :)
-> >
-> >> hugetlb_update_hwpoison() sets the hugetlb folio's head-page
-> >> hwpoison bit, and page_vma_mapped_walk() reports the hugetlb mapping at
-> >> the head PFN, so the previous PageHWPoison(subpage) check happened to
-> >> work for hugetlb.
-> >>
-> >> For non-hugetlb folios, unmap_poisoned_folio() currently rejects large
-> >> folios before calling try_to_unmap(). Hence it is always the case that
-> >> if try_to_unmap_one() handles an hwpoisoned folio, then the head page is
-> >> marked with the poison bit.
-> >>
-> >> Therefore, convert the poisoned subpage checks to folio_test_hwpoison().
-> >>
-> >> No functional change intended, except that, while at it,
-> >> convert VM_BUG_* to VM_WARN_*.
-> >>
-> >> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> >> Signed-off-by: Dev Jain <dev.jain@arm.com>
-> >
-> > Small nit below but generally LGTM so:
-> >
-> > Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> >
-> >> ---
-> >>  mm/rmap.c | 13 +++++++++----
-> >>  1 file changed, 9 insertions(+), 4 deletions(-)
-> >>
-> >> diff --git a/mm/rmap.c b/mm/rmap.c
-> >> index 9939400e77c79..dbb077f8443e3 100644
-> >> --- a/mm/rmap.c
-> >> +++ b/mm/rmap.c
-> >> @@ -2122,10 +2122,11 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
-> >>  			bool anon = folio_test_anon(folio);
-> >>
-> >>  			/*
-> >> -			 * The try_to_unmap() is only passed a hugetlb page
-> >> -			 * in the case where the hugetlb page is poisoned.
-> >> +			 * The try_to_unmap() is only passed a hugetlb folio
-> >> +			 * in the case where the hugetlb folio contains a
-> >> +			 * poisoned page.
-> >>  			 */
-> >> -			VM_BUG_ON_PAGE(!PageHWPoison(subpage), subpage);
-> >> +			VM_WARN_ON_FOLIO(!folio_test_hwpoison(folio), folio);
-> >>  			/*
-> >>  			 * huge_pmd_unshare may unmap an entire PMD page.
-> >>  			 * There is no way of knowing exactly which PMDs may
-> >> @@ -2204,7 +2205,11 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
-> >>  		/* Update high watermark before we lower rss */
-> >>  		update_hiwater_rss(mm);
-> >>
-> >> -		if (PageHWPoison(subpage) && (flags & TTU_HWPOISON)) {
-> >> +		/*
-> >> +		 * With TTU_HWPOISON, we only expect small folios or hugetlb
-> >> +		 * folios here for now.
-> >> +		 */
-> >
-> > I think probably we can drop this? It seems implied by the code (David comment
-> > similarly I think? :)
->
-> I had posted a v3 here:
-> https://lore.kernel.org/all/20260713050050.1017741-1-dev.jain@arm.com/
 
-Oh sorry, missed that one! Will take a look.
 
->
-> In that I had fixed this comment to drop "or hugetlb folios ..." . But I would
-> still like to retain the "only expect small folios" comment, it adds cognitive
-> load when I am reading try_to_unmap_one and then have to go read hwpoison code
-> to figure that large folios would be split before coming here.
+On 24/07/26 1:16 pm, zhaozhengzhuo wrote:
+> The gup_longterm test prints a literal "n" when
+> PIN_LONGTERM_TEST_START fails with EINVAL because the string is missing the
+> newline escape sequence.
+> 
+> Print a newline instead.
+> 
+> Fixes: 800ddf3cd74b ("selftests/mm: report errno when things fail in gup_longterm")
+> Signed-off-by: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
+> Reviewed-by: Sarthak Sharma <sarthak.sharma@arm.com>
+> ---
 
-Yeah fair point. I wonder if we could rephrase it a bit, 'small folios' feels a
-bit ambigious. But I'll look at v3 and comment there!
+Thanks.
 
->
->
-> >
-> >> +		if (folio_test_hwpoison(folio) && (flags & TTU_HWPOISON)) {
-> >>  			pteval = swp_entry_to_pte(make_hwpoison_entry(subpage));
-> >>  			if (folio_test_hugetlb(folio)) {
-> >>  				hugetlb_count_sub(folio_nr_pages(folio), mm);
-> >> --
-> >> 2.43.0
-> >>
-> >
-> > Cheers, Lorenzo
->
+For future, please send the next version of the patch in a separate thread, not as a
+reply to the previous.
 
-Cheers, Lorenzo
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+
+
+> Changes in v2:
+> - Add Fixes tag as suggested by Sarthak.
+> - Add Reviewed-by tag from Sarthak.
+> 
+>  tools/testing/selftests/mm/gup_longterm.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tools/testing/selftests/mm/gup_longterm.c b/tools/testing/selftests/mm/gup_longterm.c
+> index eb8963e9d..c03b4f891 100644
+> --- a/tools/testing/selftests/mm/gup_longterm.c
+> +++ b/tools/testing/selftests/mm/gup_longterm.c
+> @@ -196,7 +196,7 @@ static void do_test(int fd, size_t size, enum test_type type, bool shared)
+>  		args.flags |= rw ? PIN_LONGTERM_TEST_FLAG_USE_WRITE : 0;
+>  		ret = ioctl(gup_fd, PIN_LONGTERM_TEST_START, &args);
+>  		if (ret && errno == EINVAL) {
+> -			ksft_print_msg("PIN_LONGTERM_TEST_START failed (EINVAL)n");
+> +			ksft_print_msg("PIN_LONGTERM_TEST_START failed (EINVAL)\n");
+>  			result = KSFT_SKIP;
+>  			break;
+>  		} else if (ret && errno == EFAULT) {
+> 
+> base-commit: c04df384b55dd9dcf72c36b661becb5aaba371a9
+
 
