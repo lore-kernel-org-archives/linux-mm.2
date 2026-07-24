@@ -4,109 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2774C531D0
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 03:09:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DC02C531D0
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 03:24:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B6D66B007B; Thu, 23 Jul 2026 23:09:12 -0400 (EDT)
+	id E6CE06B007B; Thu, 23 Jul 2026 23:24:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 266B26B0088; Thu, 23 Jul 2026 23:09:12 -0400 (EDT)
+	id E1D8E6B0088; Thu, 23 Jul 2026 23:24:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 17CA66B008A; Thu, 23 Jul 2026 23:09:12 -0400 (EDT)
+	id D5B976B008A; Thu, 23 Jul 2026 23:24:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D33CC6B007B
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 23:09:11 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5D01F1A01C3
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 03:09:11 +0000 (UTC)
-X-FDA: 85022188902.16.79B0C22
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 89305160006
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 03:09:09 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=AzFpsjix;
-	spf=pass (imf08.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.41 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B05676B007B
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 23:24:43 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4A754A0274
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 03:24:43 +0000 (UTC)
+X-FDA: 85022228046.29.75D6818
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	by imf24.hostedemail.com (Postfix) with ESMTP id A165C180003
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 03:24:40 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=NUEmSxl2;
+	spf=pass (imf24.hostedemail.com: domain of lkp@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784862549;
+	s=arc-20220608; t=1784863481;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IkK9Ic+plNLgIM9fugN/4zQ1Q3nP9xjTpKSDbJc/Qzw=;
-	b=5GiKs/hV2YXSmOUyyNhf/HsnIBT8Qos+0fH9QrOntavmNMbi9xbPmETSdFWiklQIQWTDSk
-	vOSGfKlHdnLZ/6r85CNHAevY8gY5NGOsVY/U+ttOYhqnrrHQd7Uo7wTmE65rPNyU2eDWys
-	AxUaIVryVvAYc5qcnUF0hB9LBMRVnN4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784862549;
-	b=qXX7DtrNt4U4iTYgn1RHZSSuWSvSvJOtUpagCUMtxxt2bXPNWHe6zlJoBzxNvI/v4hNfU/
-	KeVMXQx4Sr6P/qkKblvSKp1IlDMtm+Snf3aKhrW5IOKuC027fPXcA6D68amx/DR42M4ivs
-	MFm0NlaO+q8bx+ZpNTmSJ5qAjaxtSU4=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=mHmude6UeGkXjBzLk0hXCeTHQhOrGo/+cKGpc7rWg/w=;
+	b=KtkfccBeqFIoytOJsQ4MbjtucpGXnTTecVeNtnYc3Li7o4bUYtrwWA0TCOvLuzS3sGhl3W
+	/bOoh/Q/Uvau4LrZa8qKn1Efkbq/t1o22adQGqGZR5pKLhgu3D7ZDLBYE3zxqSWyPU6/Cn
+	NWcNAPrZDd2YDhCdsS/GS+alMkwtaag=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=AzFpsjix;
-	spf=pass (imf08.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.41 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-381216921aaso1214422a91.1
-        for <linux-mm@kvack.org>; Thu, 23 Jul 2026 20:09:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1784862548; x=1785467348; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=IkK9Ic+plNLgIM9fugN/4zQ1Q3nP9xjTpKSDbJc/Qzw=;
-        b=AzFpsjixvCVFQc2mK0W4SiW6E2jWLrOTZVe+jZ7ZFT2kY6UaZoq7zkKf7me0b/bQ50
-         aWEogUqvpMQBg1Sy8MH9eHG+DIDVUb2xsLIylJAYq7d5TUfK8hO1FPKAjC7X9z8D3tpg
-         Ye2ZcHlIPuND49x3LWFPY/kIqywNX4zVA8vRQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784862548; x=1785467348;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=IkK9Ic+plNLgIM9fugN/4zQ1Q3nP9xjTpKSDbJc/Qzw=;
-        b=nAC+Rm2VKt+jsSFX8lNr+HcVKrXqQaKAZzraK3Otijgvpw3UQXOBN98RMAHta9Faq8
-         tNryIZpSC/Mxl8LYavvquVrK6FALwdy3GPoZb9WHfJWse9Y9gKTJ3cjJP4HzxQp8b0kg
-         9g5USY8JBJsvHgogcYoJJSRisfQrnkXrxFBmIDKeRNcb2jlph4/TjRLoajE2ZcgUyjTL
-         YpRli5yGWuSQ34Wa/TyUjtXLHmjgmJdzqw2/v+xESVFTSLgbl+SXDr3RGKHtSVg+RP6C
-         gPloOcKwTcURTkF2XvwaKtXSIJyHWWtdaxsAMf9C0EOqx1dX9LON2ZSzGABf4Cdhmh/g
-         xlhQ==
-X-Gm-Message-State: AOJu0YyM3jA94enM8J0DS2OcybUK/yVReJLSG4VOcyzGdGhaxHYugIcH
-	RlI/1Hb6K7p7Kiq4SSTopR9EuGc4uXzeUWLuKoI/sgwuwwTDtnjIeUvStu7VSDUD88T8TRHoGXH
-	k1oQ=
-X-Gm-Gg: AR+sD10FN7Ug4z8KD62+BZuRdMjQ2RJQHsoT3hwLrJilolVGLLd/E4JHiltkOME4AI4
-	nP0kTwjevUriqFIDi7L/tOvV1K4WUFCjqG6NoJQjmWHmKLkJCxMk7ozNFSbe2QcfanqhPHUGO/S
-	FEtCDIv1VFptKTuLqUT5wVH1pXY3zMdE4KcFN3Uu+YcVuF2/8y1QkylciBYt0KYGrDzJ0LzT+9e
-	S8WvshZRqwT2mq7RuwAag031BrjTtoff4B/UHyOZkwUua0oxntHzM/OEx0406OjHoe6dy7KBqIn
-	1RF9hviFw8h9XaD/onCnzPJBtTZqBlscaqGpU8e5KRiwbXdt4SMJ56Boa7yMqw0/9ynBBJTsDDN
-	dmhqkq+GV5lcF5nUQFAhVGZ3uQs1fPrub86ykWA/AdiMYVmpW9JhJghJx9uqjBNJ9GKTwApawWP
-	d9WHXska4U5GtiILgLQWNFteL+qqB2Tx7vNZv2onanKw==
-X-Received: by 2002:a17:90b:2b88:b0:38e:ab33:9551 with SMTP id 98e67ed59e1d1-38ec66604ddmr5709201a91.42.1784862548389;
-        Thu, 23 Jul 2026 20:09:08 -0700 (PDT)
-Received: from google.com ([2a00:79e0:2031:6:c102:f12d:5168:6be5])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f04175831sm715874a91.11.2026.07.23.20.09.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jul 2026 20:09:07 -0700 (PDT)
-Date: Fri, 24 Jul 2026 12:09:05 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Andrew Morton <akpm@linux-foundation.org>
+	imf24.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=NUEmSxl2;
+	spf=pass (imf24.hostedemail.com: domain of lkp@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784863481;
+	b=VfbcepO5wIRAnnRnWZBprMk9JU+OgiaY/lpkkSVMX5hy1E30snu7AOXMV61surbxPhLlgt
+	dRTJj7EgJH61idCNmXD6HNjh08lwwsTY+pna+zPKYzqiTw/tBamfHyPLva1e1mIwFy2gDR
+	II7UNSNGodVGf6E+WQxNHdFo191N6hM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784863481; x=1816399481;
+  h=date:from:to:cc:subject:message-id;
+  bh=nPG1Tl1z3G6zT2+DF2QPCPY8DOD4TzJ7w3r7UpfKoGw=;
+  b=NUEmSxl2fwhZ4j/u+g3h5LjU8OP3xccx5bAkjkl/uKxEKSNSDCn3ykHg
+   AibU5W6Kq9RpThriwDIXwH5jZ5fSw/IKASLPGcFT/+1XKGHUYfIk28WLB
+   isSAkpsSaMHy0l3ddqfRbnB8ynQcVgqHXPzbsN4toufSgIfIoN1iTk/lW
+   1BU2yIC1sLfQiBt1efXVL5a30xbDGVLOOgL9FUr6mI1F1bvPobjuL5/A4
+   zDrN71KvYLcKcJLMDfOpCKATj2E0hcH7cotZKRapX9XOdTQ3KYlTTpKWP
+   spuYEM58eN46mHj7qpg9/I8zWs/QT9rzL2L7bvpqkP/d91OgW5047Aiwd
+   g==;
+X-CSE-ConnectionGUID: 0m9FxTpqRTK/DtAZ+FjmrQ==
+X-CSE-MsgGUID: YvsDfUuLS92jUZW/owlPVA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="85617882"
+X-IronPort-AV: E=Sophos;i="6.25,181,1779174000"; 
+   d="scan'208";a="85617882"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2026 20:24:39 -0700
+X-CSE-ConnectionGUID: x26MgaD3QyGg+Tc7t3AhAg==
+X-CSE-MsgGUID: Kz9qdryFSEmlwIlFcANPKw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,181,1779174000"; 
+   d="scan'208";a="254264458"
+Received: from lkp-server02.sh.intel.com (HELO ea128546eb3d) ([10.239.97.151])
+  by fmviesa006.fm.intel.com with ESMTP; 23 Jul 2026 20:24:38 -0700
+Received: from kbuild by ea128546eb3d with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wn6Vs-00000000aSm-0gnV;
+	Fri, 24 Jul 2026 03:24:23 +0000
+Date: Fri, 24 Jul 2026 11:23:09 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 Cc: linux-mm@kvack.org
-Subject: Re: mm.git review status at 7.2-rc4
-Message-ID: <amLXLip9U9H532tL@google.com>
-References: <20260721225139.fd654a3a40e755d3e621899d@linux-foundation.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260721225139.fd654a3a40e755d3e621899d@linux-foundation.org>
+Subject: [rppt-memblock:misc] BUILD SUCCESS
+ d7bfd98ba01d2af48cc238d5525201c83fdef251
+Message-ID: <202607241151.sNgCwxsd-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 89305160006
-X-Stat-Signature: krnt13tkfbk9qxphryk71zojzqzbz5cu
-X-HE-Tag: 1784862549-963187
-X-HE-Meta: U2FsdGVkX1/7SVEfTTAPAYmjIozui0ezlfwfjgZ7BXoMH2+RokMKVccelklkH6fI1raIho3yEMlif7Kec98s3PcV5pUWR5HYDjqIiZlsl/R1DVMze+BwmqZQRRS73I2X44yWySPJb/cTTIZXJQPbgu3ZqEAQE22fK5D8Ouk98m5wPrFAI+Vf0HsfhRQx/r9gSWSVtZT8uXt6/cTf3wLnXnqDvdqawuvvohtHtGivFCLV8pvqzSep6mbBP2HebDY1v0Vcc9Ga+QLR/ThGaealfe700D1VPCaASIpa0OjDOEpLv2Y41gbhEmLnlWF+zrKoAPgqEIZHEDLQWPWCdfrR85gV0O/kAu/4wgH5aiYo1n/gMkPxPDB1bSj4BkZqF3j3NoR9xDaeet6w2pdZWgqjnzLzX0DNL8UotP5Yw4ZFC7E3qiEyQMGh8zBA8wSuBwpw5oH/eY5udlQzM+hfJKquGuwGKMf4xud1T/6alqJEI6OQKw/8Chjb60Zm46WRwqsitqbNM88DiJFW90NnrTMo6F1EB6EnTD90taS8pRa9YgciD2UN4gCIOrJK2tLE2fRAr0BzWSYNIkkge8J+k/qevlMU2HQKvOBB7y6+QotCl25rP3BhbnVdHSPIUgNsgotHNlptdm3Emk/pJ/6Ccij4LRwgC8oegniO5HgCc9c05VmQIIUlpwkzoRkDFFU9Jyk5HBSrhCcBybS+iDpLKlpEAhq6BDB4Sjd4HJwupL4sdZ70GzFZDOOctvMaFEn8lG9fUvPxmtRcucvDi1En2tW/Q0qWl9/sCE8nAF1Bj8KKa+VwO24qJwfmAG1QrIzCKJuVHpoZ4w5l5k9biBE8EAPuKIbcSSM0LSqGaW1vhW7QoYhLGtRV8yVEPdNfICxTbIsEnJ/N+1HpOT2QDptcseCOiKcYl2pbEMZ+uuABS34dahwUmH2sMYIBWvKWOfzhelZPDK4dhd6Ets8j871N5BA
- OJNPBukC
- KrDWf/F2URAHPo/GJv8gq5Mte7KAk6tXd26hPCUXWO7vMYmw6NCpBUQ6OF418svvBBg11vBxR5arOMYaeRM4fwE33AYY+uoYQ9h3h4PN7rc1lhk+r11OigpxhNGSSQpUzgnBZ9BJw+RQ6CFgiiiu8ZJd9As5OZnXaCRmbZkLaF1bUZ1DjhTa4NKAv8ZSyA0oMHaTWWuXtlIPCzunmF+0MN6qlllv7ATGay3YUOsrjLfIVTYsAc59/KwahxZohz0Rdr1Xae6q09YxFeoV4Ve+PckPc8LnA4wcQc0ohkMICFJlEl/uQf8BClAEj01x7znNbxFb5RWxBrVUZYkUH3WQwfgtWGOrYASLPkCJ0yyhX23rjtppv+OiC5wXZv0E1mEXGNGImjdOkPWFpelYaIAbQxRpQ/Kzl8qNMl69A2kmTJiE+f9tFiJMfmGh2tMNyrG0u4VnNooGofEMWajY=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A165C180003
+X-Stat-Signature: n9iwykah63dwj5cqqscdxdxdn7fqxdrj
+X-HE-Tag: 1784863480-256151
+X-HE-Meta: U2FsdGVkX1/5qMv71cU7Orm7NnevjyHEkhoPGHygDGLDeuzVjBgNrQnGzlsYToNZouAKeX/JcVhom2FS180AV+PzGvJol7/XmzPj9JgKpRCn3eQTTQSLvhUmgaEOa+1jEvvwEklNuw6WQ4RqsRSjqfQwe1E5B3cTmi1QwOqGjRn3LmVg9qw54HZZ15hQVI7cGWIjp58fHrvfCtWZFz+0GK3zzpDSmk84darO/n2m0/jVngHPtXd4bgvPLz99C6nJYyU6gzo+CB8+l34ga1Gb4jceoQduAAMCyGhLa6s7eO2tRsvu8wXqdtqEiGGUP5Qx3cSSloaRYCAbKSrU1ZzG8qOOQcntXxvVP8yfA/Ci3F71zFgJgoVIBrnqt3rLY4A4JuSKFqujOdcu5e+05TtEFTCYDa18rAhf9814nG8UQh3rmOTXYeI5uhyEUTx7MXUIzpaJyFmMO7Zcl8KCRqL93uEOmPAbSSAwgECVnoYeXoWHymZgzN+7thxxEA1xnPUmGOtVmyVXzC9oAEKBJVCu/A8r7jAtk2bUhgbNLiEtUzlhOsMnMVGkJqUxCFK7tdQe6GLAvBiFBlAEg19EUw0/sMCVHlEXfNRXSaHAmJaPb5MILj7IqyPZLuaDFwdA50gDvJZGJ8aThqm0DsOrkfSEFXX50Oyydg7aDZr7G4YZns9P3CJS1k0W54z6dMDHqCDzzEinv4HCUU22dO5+iG7DR2B0JNiL7HcfvR8wgZtk9xwIEO0Af8pZv+VeCRxDjXwRru/Zz3MB9DgbsUZL3nSrUpA+GOZ8iXxU9pZyzdS521p7TFqgABJNPIO0+HjQs6KYLsPgJuVI2QQM2X2wH4xqGPtl7H9iuho93mDVz8SjiVASOFaiDUdnmqu8abt1Zq4UlScjEHaZf/2VwF5jpVnHfxR3V9YCEtZXjQVAcdPXyzg0mmq5qa/2r9G5G//XmoYpzOaV/xFih8m9QYObI85
+ src7s269
+ K/bFiWIRODHYtDXpPzrul6E1Qs1G3RQ0+FzvdqK8zyyDq0usaJrETJFIyZGE37P+KDKGlGqba2/fL4RrMyR3l4Cx3IE7adwI2hOiri+4D/dZ+bbURJ+lUfrw7dMtJHZrBC7sIJRhzgHNpcKfzjwSEQx/v9gPd1Zt66s+ujZe2UdHDO4o3GCriaMJQXZvjx4i8KD41iONnA9LZOXE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,15 +100,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On (26/07/21 22:51), Andrew Morton wrote:
-> Andrew Morton <akpm@linux-foundation.org> (5 total)
->     "mm-zsmalloc-encode-class-index-in-obj-value-for-lockless-class-lookup-fix"
->     "mm-zsmalloc-drop-pool-lock-from-zs_free-on-64-bit-systems-fix"
->     "mm-zsmalloc-drop-pool-lock-from-zs_free-on-64-bit-systems-fix-fix"
->         Link: https://lore.kernel.org/202607020359.FMDmPwjF-lkp@intel.com
->     "mm-rmap-use-huge_ptep_get-in-try_to_migrate_one-checkpatch-fixes"
->     "mm-drop-stale-folio_ref_count==1-check-in-do_swap_page-reuse-logic-fix"
->         Link: https://lore.kernel.org/3a185a5d-2f2c-4e9d-9cd9-8bdb236dfc5c@kernel.org
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock.git misc
+branch HEAD: d7bfd98ba01d2af48cc238d5525201c83fdef251  mm/mm_init: remove redundant memset in free_area_init()
 
-I will review these.
+elapsed time: 1145m
+
+configs tested: 36
+configs skipped: 0
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+alpha                            allnoconfig    gcc-16.1.0
+alpha                           allyesconfig    gcc-16.1.0
+alpha                              defconfig    gcc-16.1.0
+arc                             allmodconfig    gcc-16.1.0
+arc                             allyesconfig    gcc-16.1.0
+csky                            allmodconfig    gcc-16.1.0
+hexagon                       randconfig-001    clang-17
+hexagon              randconfig-001-20260724    clang-24
+hexagon              randconfig-002-20260724    clang-24
+i386                            allmodconfig    gcc-14
+i386                 randconfig-011-20260724    gcc-14
+i386                 randconfig-012-20260724    gcc-14
+i386                 randconfig-015-20260724    gcc-14
+loongarch                          defconfig    clang-24
+loongarch            randconfig-001-20260724    gcc-16.1.0
+loongarch            randconfig-002-20260724    gcc-16.1.0
+m68k                          virt_defconfig    gcc-16.1.0
+nios2                           allmodconfig    gcc-11.5.0
+nios2                            allnoconfig    gcc-11.5.0
+nios2                randconfig-001-20260724    gcc-8.5.0
+nios2                randconfig-002-20260724    gcc-8.5.0
+parisc                          allmodconfig    gcc-16.1.0
+parisc                          allyesconfig    gcc-16.1.0
+parisc                             defconfig    gcc-16.1.0
+riscv                randconfig-002-20260724    gcc-16.1.0
+s390                 randconfig-001-20260724    gcc-8.5.0
+s390                 randconfig-002-20260724    gcc-13.4.0
+sh                                 defconfig    gcc-16.1.0
+sh                   randconfig-001-20260724    gcc-16.1.0
+sh                   randconfig-002-20260724    gcc-16.1.0
+sparc                randconfig-002-20260724    gcc-15.2.0
+x86_64     buildonly-randconfig-001-20260724    clang-22
+x86_64     buildonly-randconfig-003-20260724    gcc-14
+x86_64     buildonly-randconfig-004-20260724    clang-22
+x86_64     buildonly-randconfig-005-20260724    clang-22
+x86_64     buildonly-randconfig-006-20260724    clang-22
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
