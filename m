@@ -4,131 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8665C531C9
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 12:52:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4D91C531F9
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 12:57:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 82DAC6B0096; Fri, 24 Jul 2026 08:52:24 -0400 (EDT)
+	id A81F36B008A; Fri, 24 Jul 2026 08:57:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7DF596B0098; Fri, 24 Jul 2026 08:52:24 -0400 (EDT)
+	id A59456B008C; Fri, 24 Jul 2026 08:57:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6F5156B0099; Fri, 24 Jul 2026 08:52:24 -0400 (EDT)
+	id 96FD66B0092; Fri, 24 Jul 2026 08:57:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3BC586B0096
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 08:52:24 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id AF628120373
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 12:52:23 +0000 (UTC)
-X-FDA: 85023658566.08.7DD8E43
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 33756C000A
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 12:52:21 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fIMJeZoV;
-	spf=pass (imf10.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6365E6B008A
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 08:57:52 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D67ACA0345
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 12:57:51 +0000 (UTC)
+X-FDA: 85023672342.05.B583A5C
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf30.hostedemail.com (Postfix) with ESMTP id A678180002
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 12:57:49 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="tpg/AegW";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=wYjmyrL6;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="tpg/AegW";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=wYjmyrL6;
+	spf=pass (imf30.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784897541;
+	s=arc-20220608; t=1784897870;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JLQ5O+fUlC8SWGd2qEWM0svM8AGuw9DKpa1kqaGNOlc=;
-	b=rw3Ov0BhDfLuYKgQ8spvXOPdykZ33vtPPttV6uZZTl6LRwy8jXsJo/iBYJrDQZJjKH8OZC
-	tlZxeok6zLC+qhaKgshTOSBz9JrZA68t8d5IEtkUNTL8+Mo/mZFFQVM3pkrs213SiFnsCy
-	C6dGm6zqisjCXI7ilibyrBq1p8Jskv8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784897541;
-	b=0p1hKVrJ1rwAAPwCAAfZPq4f/eF+rNM5WcXvjO5wCgnuKBCJ1cdrQbPWdV0fRUmgUUqWQD
-	GEW0hdYIo4OUiHDOhuRk58taJwBk6sB0jV+23LiKshsDcb1tm9U+Kklcdb2i0knAnr6FdF
-	wW8OrA6jotBJ148h24FwADkQf5jv07U=
+	bh=jwqlQxogPnZR3j3vZatDYSH4YbGvS2weAZ8abPdxsk8=;
+	b=xuIBVgwKsGlOuM0Za1NsMiPv1A+8w6UMnS1g5THDUA7YwOSILqxBwl/r2PQvvOIyff5xG0
+	LyMN0VG0C63K6AQnw2xfuI8uLERGLfprBZii6Z+g+L19APZZAf5qt+Oo77yF3Gf2k2bCyI
+	ccweUzYHpnTwO9EPeDWTteL1r+s9WlY=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fIMJeZoV;
-	spf=pass (imf10.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784897540;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	imf30.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="tpg/AegW";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=wYjmyrL6;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="tpg/AegW";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=wYjmyrL6;
+	spf=pass (imf30.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784897870;
+	b=UVx0WQ5RoLrNyXJnkhIcFGxbwJJRExsVA6DiPr22QqJ0QBessQCgTgdHaCapHRnaSmVM4Z
+	xvnkOZNQ+D4eyck0XxbNnj8A+tjd/4EjyEXi/AcKYRB+mcVnWJAOX5rRBAa5p3YSeU850q
+	LwSne/tb1VkaHo/nHbr5rdHeCN1EnaM=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 134753ECD;
+	Fri, 24 Jul 2026 12:57:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1784897868; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=JLQ5O+fUlC8SWGd2qEWM0svM8AGuw9DKpa1kqaGNOlc=;
-	b=fIMJeZoVWYhun3WlUlSAxGVbiTl+hAbuAGp6qpnU1OQW0Wo4K61PIARx9BfIMxp2gVLggN
-	RUyBRB+QjLr70hCysu0C50meRFpzKLZogIcWbGRyvJALFmfdKcNy2JnMJnjIAd39kKJRrr
-	vhPSou44yIlCLIWH35+ybqukNVUVj7A=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-364-JUxFlmoeOdqdFzgAhpK7Kw-1; Fri, 24 Jul 2026 08:52:19 -0400
-X-MC-Unique: JUxFlmoeOdqdFzgAhpK7Kw-1
-X-Mimecast-MFC-AGG-ID: JUxFlmoeOdqdFzgAhpK7Kw_1784897538
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-490a767b782so3595895e9.2
-        for <linux-mm@kvack.org>; Fri, 24 Jul 2026 05:52:19 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784897538; x=1785502338;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=JLQ5O+fUlC8SWGd2qEWM0svM8AGuw9DKpa1kqaGNOlc=;
-        b=gPT0PAdXrdguqwpYtWRZVuxD9+BhSiPERxdBiZwV5CiNwy1WWQEf7IIFGGKF57ysN/
-         KbwcbIFUB6hRYyI4Khg0L7S7/+63/+j/r7rYEI1SAHWqrPw9WPNG6RWJ3bMB9dbF0B7x
-         tyFuIlmrpBoIb4Pi/JFfIy4SaZJL7Impre0QZV+IynWLauf0zvsORScKH6HpeIbgZnQ3
-         xJWFfqXHe/L+8R9Ov554pNUEHNl/ERfnWr6EzZNVpDDu3rMaCpY24M2fyEpNeFGvpN4f
-         HLq4NUDJUPeJjdDcr3JkJ12ihqrUl6CKyX8sohZ/j+GaymqwpoxqZAOI/dvlAV70OIcn
-         L1kQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rq43mG1+DLy4HfQ0IxwjCOFYMK1wE4Iy5+mB+U57ZFyFBNXgmoe6PhyfTsGetu+GZyfRBYJthXIsQ==@kvack.org
-X-Gm-Message-State: AOJu0YwgIYc4tXH1Ei+xQ996g5x1il/T7Jy1j6oVUPtDvrl0HPx3AJWl
-	ydsKbUeKo0vZbf7dxCF7WJIsyM3/P4zXQRbEeVVlHQV8wvu6FokOHVuzQixFTHVfaOJyC37x100
-	ScOKLpF+2LJFXiHgiTXyZxwNO9ofOY7Zlv7EFKb5YJyFsTtEnSGzU
-X-Gm-Gg: AR+sD11UyR4ZrKn5LHl5tFWgsUz9TdqFcwbYPS0SQuoD/9O/vLD7DXRsc/AwGD8D6om
-	6B04EK6Lry7GJraqW3TnAzZFhylhv3j2h4oQyJiGnwJYxzvaXA22L3GUbA/dfn09SPt4vv1kFM6
-	O7uQPXC6dbahgcbI34OYMApnuJSTplr4YdHKBeSQ3DFAP7GBdhtlRiGF0/tGbm6WUm617HcWV1N
-	FecB8v4oY8RApJxnV7niu+YSbOuHyxv6Q/KxxyAEFr+v6WoIZjo8dBXN1KAAgpV9lQtbWz627ah
-	Pl6PCFJCT7M+8v+wTcRzYihkCYw3FvJkD9ovVLHu9LVU8HVmWvrXDe7uDViyF5MMnM595obbBEH
-	Ql5Aa4NGxarPTR6FS4Vgi/Q==
-X-Received: by 2002:a05:600c:63d1:b0:493:e79e:da98 with SMTP id 5b1f17b1804b1-49573cf1b3cmr56863845e9.39.1784897537746;
-        Fri, 24 Jul 2026 05:52:17 -0700 (PDT)
-X-Received: by 2002:a05:600c:63d1:b0:493:e79e:da98 with SMTP id 5b1f17b1804b1-49573cf1b3cmr56863385e9.39.1784897537206;
-        Fri, 24 Jul 2026 05:52:17 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-37-66.inter.net.il. [80.230.37.66])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4957bfc2ff2sm44919945e9.4.2026.07.24.05.52.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Jul 2026 05:52:16 -0700 (PDT)
-Date: Fri, 24 Jul 2026 08:52:13 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Jane Chu <jane.chu@oracle.com>, linux-mm@kvack.org,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Jan Kara <jack@suse.cz>,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <christian@brauner.io>,
-	Jiaqi Yan <jiaqiyan@google.com>, Usama Arif <usama.arif@linux.dev>
-Subject: Re: [PATCH v4 03/14] mm: Rename folio_contain_hwpoison_page() to
- folio_has_hwpoison_page()
-Message-ID: <20260724085124-mutt-send-email-mst@kernel.org>
-References: <20260723143034.175661-1-willy@infradead.org>
- <20260723143034.175661-4-willy@infradead.org>
+	bh=jwqlQxogPnZR3j3vZatDYSH4YbGvS2weAZ8abPdxsk8=;
+	b=tpg/AegWEEyQF9NL3NQe2dNMX5JujfVpqG5fC1Nc4EXxmT5E4LtC5ahHxaM7OXE8D40XUV
+	VwAZMPotr2+KQx5XFISeCjDTQYMCrKsvycbLLpqToRj5oRBo2zDFi8rrdj5ato0KWxXq3e
+	ItdiDPtlV2Mms3c2Gx90skTbZ0vvBXI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1784897868;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jwqlQxogPnZR3j3vZatDYSH4YbGvS2weAZ8abPdxsk8=;
+	b=wYjmyrL6U3rCCRtwBOXDHGnCz5StpbG4eKz69wfh3VCRU/PAF30jeR51gKTW3uKue0JZgm
+	86ndZlfes+8ZpGAg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1784897868; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jwqlQxogPnZR3j3vZatDYSH4YbGvS2weAZ8abPdxsk8=;
+	b=tpg/AegWEEyQF9NL3NQe2dNMX5JujfVpqG5fC1Nc4EXxmT5E4LtC5ahHxaM7OXE8D40XUV
+	VwAZMPotr2+KQx5XFISeCjDTQYMCrKsvycbLLpqToRj5oRBo2zDFi8rrdj5ato0KWxXq3e
+	ItdiDPtlV2Mms3c2Gx90skTbZ0vvBXI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1784897868;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jwqlQxogPnZR3j3vZatDYSH4YbGvS2weAZ8abPdxsk8=;
+	b=wYjmyrL6U3rCCRtwBOXDHGnCz5StpbG4eKz69wfh3VCRU/PAF30jeR51gKTW3uKue0JZgm
+	86ndZlfes+8ZpGAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DE4F0779BA;
+	Fri, 24 Jul 2026 12:57:46 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id hn4FM0phY2ogBAAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Fri, 24 Jul 2026 12:57:46 +0000
+Date: Fri, 24 Jul 2026 13:57:45 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Muhammad Usama Anjum <usama.anjum@arm.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Zi Yan <ziy@nvidia.com>, Ryan Roberts <ryan.roberts@arm.com>, 
+	Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>, 
+	Anshuman Khandual <anshuman.khandual@arm.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Samuel Holland <samuel.holland@sifive.com>, 
+	linux-s390@vger.kernel.org
+Subject: Re: mm: opaque hardware page-table entry handles
+Message-ID: <amNgK4WYP9yZe7iM@pedro-suse.lan>
+References: <31d36023-d728-4eee-90f8-158c7066f565@kernel.org>
+ <e22407d8-4509-4a53-9ba4-491b9d5c5ef7@arm.com>
+ <4bfeb697-9c1f-4316-96bb-9bfd66f959df@kernel.org>
+ <6110202c-057b-4701-8c04-1a76ee7bb9ab@arm.com>
+ <20260721124057.2820903Adf-agordeev@linux.ibm.com>
+ <3c21586c-0ffe-4ebc-97f1-803e8acfc5c1@arm.com>
+ <716f73c1-41cc-48a5-b0e1-a47403a30da1@kernel.org>
+ <47b4e62e-b001-465c-9c3b-ea0636925387@arm.com>
+ <amMvuPZ0tglCoi1M@pedro-suse.lan>
+ <67ee9da4-cbf9-40d1-92c7-49710fb15f1d@arm.com>
 MIME-Version: 1.0
-In-Reply-To: <20260723143034.175661-4-willy@infradead.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: vldeJgL-LjrdINrH5g8ogfvi9xl4_GDenEsScrqETpA_1784897538
-X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 33756C000A
-X-Stat-Signature: ng5erabpqtyzf3anusjrwma9m3o7zpny
+In-Reply-To: <67ee9da4-cbf9-40d1-92c7-49710fb15f1d@arm.com>
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-HE-Tag: 1784897541-392037
-X-HE-Meta: U2FsdGVkX19jrHZ0YKHN+bJvmPXD1aHZNUnR3fADPPcGShAX5dTKIxI/ZqIxApawgRD31VJ9OP/UQBj2l3xepOFxgJm94V/+4DPvtw3y9et5Zgj5JyH8zatTvB9xt1y32lGFDfEoVQWj5vDvpHMBHRxAWQY3LEEbWZ/pZO9iNcIgaJ8wMEc9mTfchVSejNAmzuOpuulWOZH/9LkpZ0FTrxF+xP26JOYPn13nWPbLDZylrfhwoRK8QpcD/LQ1Et0cvCkRi4uJKaVQatqWLnt+70zYGW3NCoh/2dTzODgC5UlWWjJwATHs06pHv0un58zB0BphcOvqd7hcNqNZmkP5VVdVAvzob+hBIAvtsVKWaQNQ105Sa402Wm5iT0grgIMvHBnzNrPGeV0uRaXE0DCn1AShzI9EH5ob1NVRXD9Z+1MSVmVeAVdj9LTTyzmXtFallUspC60f4Qx32/qT8sa6xyx2U3jDjHyKs/1WuAB9xWOe4N6KaX9cxzP47JfTk52Wk8TROj4CpNDFcrq/fZwwIZLC0Dp2xnE+X1eMX1+kRQd1JQroQwnJf7Pv7XMkR2mFT3qU3Dl/u2BsnfJ3zDXoey5x477JVXgYcPqG/VxV3c02NGt8bF4AdlPa9CwP22x4di+WRYkIMtLO55EU0560Cc8ufEDELSY/R9oJAMLPb1zH0FFXZcnfXnGDz5YdqDCFvjpopRRU2CC+nubIUvuTpqtdMXwJS6W390TVddKfFj9WoDC9IFvrsDLU52w6ER9zT1CCBDa+MvJqcDCXc4J3xxQKJ1UAKnPH3B1q25eXGPqnLf98keJ7in1Z/UVL3wOajFbDlumwC/QrRKhZD4UIfyYB4bZ8hyKwHWL74XxkAFhADJrmVSVziCgrL3NPuvAr0xeA62owzyDSJpo/pGeWFHaCEw0JctzSmkkh/HFblVU6nupQ8BlgFGPTrKH3uZLn7kZvXV8chZEPkQ7kHKZ
- n8yJi6/n
- 3naaxDy1hwmbu0cfP3azbP6KVvmSFSDb8bpATGEQ4ppSf5mtGgF2Poflu23/zrqM2TVjSe5cloBKpQooq79s62pIVIbkXPal5S5zeOlsKpk4ty22z8dbQUlB6S8h1EU/a8iTu2tolytZOD89ekrThsX4ZVAc+0ELER0V9PORkPsI0ZrHpKW/gvkrv6cJkTfCArAAVEVVKJ6hygdWHvCzVEHSi4BEnUbi8tXD7EJt7LF87cIB1X5Bg3zNVvX8ZeU+CAkAlttnjSZT8ypoxoUau5q9MXqMQDxXg456aUvvxQ6sQJ6texglOfWXIrz00eWmRfUjEOhawRDfuhRfA9NHHabamA8B8wu9utZjFja/vKhtK7/2KtaVsu/Hg3yUhzCjLSoGwScCT8EWidMDVGEZJOAlvqpkGrYOul0ysSUQ6UHefUV/xo2AqlmIrW4OnT+bxXG0mgalwLYEs5O4QER7HyzDdlecepNv40R2c
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A678180002
+X-Stat-Signature: d34s6q3od8syrtc1zi3pnpx543x1cdqi
+X-HE-Tag: 1784897869-595029
+X-HE-Meta: U2FsdGVkX1/4Nm92ZN6KglSecPh8Hrjj9q2micaLryl1c5kyaJugJfRfnfDBEX95/+cZ/NL5FgX3VIVsGlKrHKby1kaDnD1aXB+Y/KO2QE5nydcHG0dQPDLVWioPzGPo8jBCXoqtAMRY8ATjTgGNVU77xo8lIAuAMZcTWW2y0e9FDlaX4BKlqPspFiyMZg9CzuhtmW/mYiISimg/rjIO8pH8R0b6QUIN+s1Eb7I9S+C3FK3NU2FwluJD6XC1xp1wS61Zvl2dgryGvYBpN3CoUdC922tezUoNAl4gSVcHYQyTI5CbH3PnTK1/CZRWbRh72vChqNwLmUe6lwiHt6POIZ8FbjV1NMSkgpft+Q9T8fm2IBIgktws/WVeCg6KB3F3qUUbpgpaMUBe7DUemZpCuf8nIeVK3vcauO8KhdPniwl1GHZgAi/YrPhUV2g/mpfhueMq8u2VpU4bpjzOnOJ3LAV1i63/oEkt4tvX0EDNIi4UUm1hMYYKVqJv6YKptD7PE/mKAva9R6u9FplSNclESNXQxQ/G6oUmfmzL4zZWD+jQWVbEidV75Fz5oxsr73QnUd8cwd0mjOaXxEdBMTr0M8nHibOzapnkCgHF+SON+SjpmJkWZg+qygeYzcxUo5V+M2fRnrH0cyMFAGMjBl3zlibdCpG68OE9KFYvV6dUfM8jENC+AR462E7V091H5haBNo0K7PmgLmhG0gmgEAgLC4rxWmGSBnJdFJgUuse0Fb5+I2rUt8VLOQ6GKNcl9rFjdy22hcC/arNoqoAT4cCk2TZVabtU54TYBAxwqQjE3ysGKpoRJx1JvsStyJMqTT6ajzpQT+8UeqcruZMYvi1vKfvJ5sDBPfw+/tWdb0X9sDxY3MWTrU8S8bDpTbj8/FR+7J5YbwJoCs9p5TSUqzE8rvzmo3AVpiqISxi7xTzkBT+lJ0g5IBgTGwHhUeRECnIt7Onu/qWJcMmPo01wM4p
+ xktcLt4U
+ w1yyciHUVKknieOdc7Kq+FIAFQCFqQ5wL5Ag28H6q7CZmJ4AGkATC5lfbNqXgV8T+FZvpQg2ZExztw/Fwn8qbZtBqnm+rDbXuvIZ2mvob7GdUY7N+HFLL/DamINIJp/s8f3kNVA4GNCuEm4cYd8V1bSwOGp3ohgHk6d9qaZPBkBsM7isCB4+eCea428Kqvosqo/pFBkZiaT/oE4eVRiOV6ueHCJuYXJ+hgu8euCCYwwxcMcejiwyIMDj79AVN+DeoJ5AOkKqTvIsLEgQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,97 +145,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 23, 2026 at 03:30:20PM +0100, Matthew Wilcox (Oracle) wrote:
-> This is a better name for this predicate.  Also make the argument const
-> to allow other callers to be made const.  No functional change.
+On Fri, Jul 24, 2026 at 11:34:52AM +0100, Muhammad Usama Anjum wrote:
+> On 24/07/2026 10:30 am, Pedro Falcato wrote:
+> > On Thu, Jul 23, 2026 at 06:01:49PM +0100, Muhammad Usama Anjum wrote:
+> >> On 23/07/2026 5:38 pm, David Hildenbrand (Arm) wrote:
+> >>>
+> >>>> So after the conversion, it doesn't makes sense to keep STRICT_MM_TYPECHECKS
+> >>>> around. Please correct me if I'm wrong.
+> >>>>
+> >>>> This brings another thing in my mind that in ideal world we would just
+> >>>> turn STRICT_MM_TYPECHECKS on for all arches all the time. But the problem
+> >>>> with it is that STRICT_MM_TYPECHECKS defines pte_t which will stay double
+> >>>> meaning still. So we want sort of STRICT_MM_TYPECHECKS with different name
+> >>>> and separate stack and hardware types.
+> >>>
+> >>> I think STRICT_MM_TYPECHECKS is also to avoid catching when passing a pte_t into
+> >>> a function that consumes a pmd_t, and vice versa.
+> >>>
+> >>> STRICT_MM_TYPECHECKS makes the compiler generate worse code today, which is why
+> >>> we don't enable it always.
+> >>>
+> >>>>
+> >>>>>
+> >>>>> We would like to keep it, and I guess some other architectures too.
+> >>>> David had summarized it well. We'll convert generic code to use hw_p*_t
+> >>>> types which would be typedef to p*_t for those architectures which don't
+> >>>> care about. But if an architecture wants to interpret these types
+> >>>> differently or want to make sure the type is enforced and not directly
+> >>>> dereferenced, they need to convert the arch code a well. But it can be
+> >>>> done slowly.
+> >>>
+> >>> I think what Alexander meant is: they want to keep STRICT_MM_TYPECHECKS (or
+> >>> something that achieves something similar :) ). So as long as that keeps on
+> >>> working, all good :)
+> >> Thank you for clarifying.
+> >>
+> >> It has been a month since I started this discussion. We don't have any
+> >> disagreement on it. Should I proceed to post first part patch series considering
+> >> most people must already have viewed these emails and are on-board with it?
+> > 
+> > Besides the vague disagreement I have (about whether this is worth it or
+> > not), I have an actual objection: I've been doing some constifying of pte_t*
+> > for various reasons lately, and something that just just came up is how
+> > hw_ptep will _not_ work with const, unless you do something like
+> > const_hw_ptep, in which case welcome to Win32 programming or something :|
+> > 
+> > (I'm assuming the idea still is typedef struct { pte_t *pte; } hw_ptep;)
+> We have moved on from this as it was very disruptive. Now we envision the
+> following:
 > 
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Acked-by: Usama Arif <usama.arif@linux.dev>
-> ---
->  include/linux/page-flags.h | 4 ++--
->  mm/huge_memory.c           | 2 +-
->  mm/memory_hotplug.c        | 2 +-
->  mm/shmem.c                 | 2 +-
->  mm/vmscan.c                | 2 +-
->  5 files changed, 6 insertions(+), 6 deletions(-)
+> typedef struct {pte_t __pte;} hw_pte_t;
 > 
-> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-> index 7223f6f4e2b4..4185a03a45cf 100644
-> --- a/include/linux/page-flags.h
-> +++ b/include/linux/page-flags.h
-> @@ -1083,10 +1083,10 @@ static inline bool is_page_hwpoison(const struct page *page)
->  	return folio_test_hugetlb(folio) && PageHWPoison(&folio->page);
->  }
->  
-> -static inline bool folio_contain_hwpoisoned_page(struct folio *folio)
-> +static inline bool folio_has_hwpoisoned_page(const struct folio *folio)
->  {
->  	return folio_test_hwpoison(folio) ||
-> -	    (folio_test_large(folio) && folio_test_has_hwpoisoned(folio));
-> +	       (folio_test_large(folio) && folio_test_has_hwpoisoned(folio));
->  }
->
+> With this, const wouldn't be a problem.
 
-It probably makes sense to document when this should be used
-in preference to folio_test_hwpoison, given a lot of people
-got this wrong?
+Ok, great!
 
-  
->  bool is_free_buddy_page(const struct page *page);
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 2bccb0a53a0a..353340309107 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -4413,7 +4413,7 @@ static bool thp_underused(struct folio *folio)
->  	if (khugepaged_max_ptes_none == HPAGE_PMD_NR - 1)
->  		return false;
->  
-> -	if (folio_contain_hwpoisoned_page(folio))
-> +	if (folio_has_hwpoisoned_page(folio))
->  		return false;
->  
->  	for (i = 0; i < folio_nr_pages(folio); i++) {
-> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index 7ac19fab2263..33007e8e546a 100644
-> --- a/mm/memory_hotplug.c
-> +++ b/mm/memory_hotplug.c
-> @@ -1813,7 +1813,7 @@ static void do_migrate_range(unsigned long start_pfn, unsigned long end_pfn)
->  		if (folio_test_large(folio))
->  			pfn = folio_pfn(folio) + folio_nr_pages(folio) - 1;
->  
-> -		if (folio_contain_hwpoisoned_page(folio)) {
-> +		if (folio_has_hwpoisoned_page(folio)) {
->  			/*
->  			 * unmap_poisoned_folio() cannot handle large folios
->  			 * in all cases yet.
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index b51f83c970bb..492c9bef3620 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -3240,7 +3240,7 @@ shmem_write_begin(const struct kiocb *iocb, struct address_space *mapping,
->  	if (ret)
->  		return ret;
->  
-> -	if (folio_contain_hwpoisoned_page(folio)) {
-> +	if (folio_has_hwpoisoned_page(folio)) {
->  		folio_unlock(folio);
->  		folio_put(folio);
->  		return -EIO;
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 35c3bb15ae96..70e54ace0e74 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -1086,7 +1086,7 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
->  		if (!folio_trylock(folio))
->  			goto keep;
->  
-> -		if (folio_contain_hwpoisoned_page(folio)) {
-> +		if (folio_has_hwpoisoned_page(folio)) {
->  			/*
->  			 * unmap_poisoned_folio() can't handle large
->  			 * folio, just skip it. memory_failure() will
-> -- 
-> 2.47.3
 > 
+> > 
+> > Have you tried sparse instead?
+> We want to ensure safety during compile time. Without going into more detail,
+> more features would be build on top of this type conversion. 
 
+I understand corporate/business goals may be tying your hands together, but
+it's really difficult to think about your proposal critically if we don't have
+all the details.
+
+-- 
+Pedro
 
