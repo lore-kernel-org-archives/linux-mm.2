@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0F92C531D0
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 01:35:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F950C531D0
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 01:35:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3FEA96B0098; Thu, 23 Jul 2026 21:35:12 -0400 (EDT)
+	id 9CB996B0095; Thu, 23 Jul 2026 21:35:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3AFB26B0096; Thu, 23 Jul 2026 21:35:12 -0400 (EDT)
+	id 9A2C66B0096; Thu, 23 Jul 2026 21:35:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2C5946B0098; Thu, 23 Jul 2026 21:35:12 -0400 (EDT)
+	id 843D16B0099; Thu, 23 Jul 2026 21:35:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 93C536B0095
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 21:35:10 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2F3BB4025C
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 01:35:09 +0000 (UTC)
-X-FDA: 85021951938.10.6AF9078
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 43DEAC0006
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 01:35:07 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TQuD1T99;
-	spf=pass (imf28.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3BBAF6B0095
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 21:35:15 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B336A160116
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 01:35:14 +0000 (UTC)
+X-FDA: 85021952148.05.9C45FD7
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf20.hostedemail.com (Postfix) with ESMTP id CAEC41C000A
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 01:35:12 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="N/2pNWvk";
+	spf=pass (imf20.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784856907;
+	s=arc-20220608; t=1784856912;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vWKt08g60DdFG3Icxm2Us7CxOftu08depFwjwgt6DxU=;
-	b=wVU19eNN1tuMT8uCifFl+myQ5DZF1nDbbAQvMPxzOCv+EqByyvP4Vtqp/6h0qQz2TCCCr/
-	ZNKGtoiwbN3XauaSmJcK+ayQoAKZEk/cl88gONTRBcGDDElBhvVNVoMU/PoaRD4uAl3DH+
-	llLgn14JO1ro5fcKeQHAy5HVvGii7+I=
+	bh=jaZuFD7TaK5q+SRf/M6wNF+Sb+xKBaTWhSdcsCrRx7E=;
+	b=ciD7VIe5h7IoH1KevnYyAlkRGooSHIeCxeERVXASb4ZmPB2mZ4ekz9vyILCPvYOflDY4sa
+	pqyWVX2v3PUbzkX8jP6MY5SoJudUVkQYiJzpRiFLVbChLKjsYd3G20F0N9bFQeGMby5wW1
+	5b+r8Zr/jxJ/WjhfNX12gMEcFgCQyD0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784856907;
-	b=FmYDMJQwhZcYXXpAdBojGKbcF97cDY0DKg6/2PTVLG7+MTWuo1rK972NCOKuRLhfx4u+xd
-	cTvz7Q9QOgUmrNqWFKeFlL9cQhO6k9dBAaGg3/B62ZsH/G6Xobn0GhHYvvMg3jYMldQiWs
-	n0IUCzmDSQtHhmLZaAxvjDdw6juQLsk=
+	t=1784856912;
+	b=VYPA+zFVTSz5sYNsqIS9FJlXDhkaBpohNDjqwmg7hL/t+pcm24n4WEBVyWE8b8dufN9512
+	ywhk4arpA/XamCi2UfanMujccMWN3D/c6nCC5eoAXvBLfi+LyvrVbCZGhryfq1ewCCeNc3
+	Pc/LrLQhWEwsgcV51PFZ//sd8dL6oYk=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TQuD1T99;
-	spf=pass (imf28.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	imf20.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="N/2pNWvk";
+	spf=pass (imf20.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784856906;
+	s=mimecast20190719; t=1784856912;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=vWKt08g60DdFG3Icxm2Us7CxOftu08depFwjwgt6DxU=;
-	b=TQuD1T99utDthJlB+3dFkMRpeB44CJPN3JNwkirEHYOQwc30NNi3yu/HSVKlRiUf6dfAwC
-	JEUh+iT67szBwa6gf8CqDppYOFClkMqdtu2VJGCz9gPVd5ewXiRymSHU/ufDbVc4guIXfJ
-	x1cY5hTkueaPlZUbiP78lXzxXsTg/T8=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=jaZuFD7TaK5q+SRf/M6wNF+Sb+xKBaTWhSdcsCrRx7E=;
+	b=N/2pNWvk1P80DbnJSl66pzjOR4tclsDDlEUT9LmOgA0L6zgQw/7HwPolDSIO/5ZpWMkMmk
+	vd8ra/MNU9cVDVcCVTd7GX/c2G7n0GJL4w7/OZNn/N0eBtFfgKM47ZjBdkl5TjcGsqZGhs
+	aY3EM7j2dDgCCERcx89AoIiNrz7Gk1s=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-279-cG1cyqeGNnapWIvwGoKkEw-1; Thu,
- 23 Jul 2026 21:35:02 -0400
-X-MC-Unique: cG1cyqeGNnapWIvwGoKkEw-1
-X-Mimecast-MFC-AGG-ID: cG1cyqeGNnapWIvwGoKkEw_1784856899
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-172-qqWkX9JjOvmV6bXqg4KyxA-1; Thu,
+ 23 Jul 2026 21:35:06 -0400
+X-MC-Unique: qqWkX9JjOvmV6bXqg4KyxA-1
+X-Mimecast-MFC-AGG-ID: qqWkX9JjOvmV6bXqg4KyxA_1784856903
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7644D183130E;
-	Fri, 24 Jul 2026 01:34:59 +0000 (UTC)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5A5601944EB1;
+	Fri, 24 Jul 2026 01:35:03 +0000 (UTC)
 Received: from fedora.redhat.com (unknown [10.22.80.238])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 59A301800594;
-	Fri, 24 Jul 2026 01:34:55 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id AB501180059C;
+	Fri, 24 Jul 2026 01:34:59 +0000 (UTC)
 From: Luiz Capitulino <luizcap@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
@@ -104,25 +104,25 @@ Cc: corbet@lwn.net,
 	yintirui@huawei.com,
 	ljs@kernel.org,
 	dev.jain@arm.com
-Subject: [PATCH v6 05/14] drivers: nvdimm: use pgtable_has_pmd_leaves()
-Date: Thu, 23 Jul 2026 21:34:09 -0400
-Message-ID: <726742b1d017f569eaae3df1a543a18aed290988.1784856856.git.luizcap@redhat.com>
+Subject: [PATCH v6 06/14] mm: debug_vm_pgtable: use pgtable_has_pmd_leaves()
+Date: Thu, 23 Jul 2026 21:34:10 -0400
+Message-ID: <2bd3de77beffbc6130737ffc77a00cb080efcb8c.1784856856.git.luizcap@redhat.com>
 In-Reply-To: <cover.1784856856.git.luizcap@redhat.com>
 References: <cover.1784856856.git.luizcap@redhat.com>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Mimecast-MFC-PROC-ID: blpiqLb3k21qua6R_XmQigRuXSLj6fN9u9hDKxVAbSs_1784856899
+X-Mimecast-MFC-PROC-ID: N_Kcv5XHFryXiLwL-cMK1ownDyM3p4f2YOohLjCA2D0_1784856903
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 43DEAC0006
-X-Stat-Signature: ro6pq9odawm8tja6ffo1rr5jgnonihex
 X-Rspam-User: 
-X-HE-Tag: 1784856907-772758
-X-HE-Meta: U2FsdGVkX1+MclAP24sSeqPj3sZ9pFs+11fOzZyc5oa6Bt3NhnLxT9HVhG1MQE940Fit1cosH5Gb1Mq49sfhom5MFDcB8az4olp9HXItB/EFmH6lCiObWppiPtylJvKc92Q5zvaWkPdbGiKe8oLfbrRZ2mqECoIzoscG95dzmL8wWVInOVRi0GyWkX/aPfZsBcHvu50e17ExykyNrhYbhtFq+AakPfLR4+AtBWGRMRIlRUg8OCUzFYcD9kzbSQK4j0SPTNY1LZ8K4S0fEPHCf7KikmtEEmU9v9ZQh56xNyRwbD6YWYUGW0URXbGaNRtGuWGtAtnFCnjoG3j+tvVuJumb/fdmjCN+iEkY/BKzKb7vLK5oNz+0xDaX26BdY317HH7oCtFRzLTb77FR9pVenKwS6PRbZmzCq1qtGxpvWazItvCV4wDhKzh3bcENrpcFtvylwY/LnNoQyVPwYE/FFKsyhFlYutWslo+IJq31Lkh35ah5rZCR+pQciSuCohWwEK+4ZzhUcAceISTCW5MDPcNuM100BADWRvdk+C9iSC4Sx0psOZlB0tQF5T0xd5Q4P3PWHpbzs3J1pwtUtLYqimCfeXtKFC0etkL72/gacqcGL9oKiiYv4+yt+xe/Ouhbm7ojtP/hMr9GI6djDQGb1uis2uitBjmusXpIoZKHpP60d/XizrJhRtm+McGUw60rMINivnAUgdsZpWptVXF7U8bswfymRusbD4kSeZ03w3wNZ3hXuwb0paukZRnroM1bP3DFTx7V8EYjg50fQc5A48zZ6MXtEL2Vyt3/wBIgEg5GZ4FoU4s1yi5UVYEpYFoTNDPz5tIuIogAImngM9uBG5/Im3yXt0kiUtdPbTe24ZcOD5B3hMcMazPKaC8CGGcyPdzw0M4LXM0Wcm855Ks+d+dmJY1AYCj5jkHse5uRX4yYDnNfHHla4rJCV0VRYbIkA3/rJOB5cCqWMQmDBPg
- YPIsoDIf
- cw+3cqYrdH1kNvcFkCLM9Q+pQ7QjUmFIhe2b0qREEDe6a7wTHfxtND+v60+cN1RxHzHNoHnAk2Q0d4Qp7hXm6K7PSKVlGe7mZIV2RIdkac8MI29q63wPNwSlgcSZBRzuQzqmBiuCJ/M1aBc+bew+jbafRK41F5amqgCVl4DgjS2aYRGdT1CztNFNjY0o94A7/LyMDrbWLe1ZznGgb39CSuzYPNdrmKUG0QYjvGomNBw2MO2zeb4zh+lHmIAmzx5lRNynJTCLDgdgfjNhWDI4iNI+nJeTnmmClx5/P9QlSkGr4i/9ojtQDVvdziPk7Q/CcNuEYDBpcSabAlyVa2q4iBuxDSkV4E60NapLYTysJehzERDJASnLuzwU3i0I6bCPpsHwtWUP2/exlw1//usBgkzIbj8XQH8Ux3FbH
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: CAEC41C000A
+X-Stat-Signature: ucwwu67k6171ghqtzj4478zezyqdryne
+X-HE-Tag: 1784856912-151014
+X-HE-Meta: U2FsdGVkX19xxvjOHsaSbKRR7MaluBwCfd1yUdfrXHK+cPmQrM2XCIgd9s5cm9wVQt1oVT2MK4wU/1/by78DiouZLbQeHzbANJcHItpQ/K+ollpglPheLxigrJ0i+3IMh777g+cMc3a1I6FF1yDnp9mHd6hpkLmPRqqx8nU27akwcdrbzU8MYTXAHV7ObOGR38R6EjN8Vvi3kS13IuV0GF/TRy/6U2kJgRYINkrEvOgMPhbiMWBF8YHZFwBpsPAVgtWW3cpj2cOkEYYrHgNiZacZ5DlFNDPphqlE8K0fxVAioxzhX5CwJ3vqUf28KkJzJOAFCAjESMHoCbYTNWPlC+kDuImrwzNMG8Un9nEn6MzMmnr6kLJKM/4oEd9irDZufylzsyjNAWCyVCcci0/DCiWou/vuw0I1wlUnB/zj5J2GWbIMjvaw0moePZmyVfbbc+9z03wL6RUQpuNle09XZXC83CrHcFQUzjEF99Y9rcAmhWYd3YCkMtF3CP+g6HygGAjnCPQjz4f0rhAVeFU7y/lXNbwxu5OeV4SzUFsvdhuvZaG9hWRcit9zAFpCTb4ZKXO6i7I0YEkKdAnD6Db0W3q/Nf/H7aL2anek3mJfg+d6bA4YxCwYK3BD6bKZyJJPWNffliA4fm7yLLdIUMvGZTVnPOAasGf4GSJcqGcDqmgMap/IP+oVrD/ZejFkMzhRPk0Flmor4Wye0gxwtFQH5gZzn7B/Fr4KWCAYYmq6JVGWi0HLZyw5tyMv3zfzUCQj6i0KhDww6O7KmxndNFzr1lBADTJgpvE7sxtZU7fwLIQcQTuh74RPwfk/uOgdjymtSYKlG9ij43SjNb/BV9Yl2nSTf2HCpqt9FqurFyH9mi+RJhSqCc0RuP2xNyz5JsFwVFBGFA2hmf0ouXNvQvl8QgtYk45CDthEYYmJOAmF78pXsxxUnltPXIdeqRFLStC681jKM4fKYY8t43qPx5+
+ p+md7h49
+ yG+P4h9DGMls42CFX/+AlImI/nlO/sSfsKm90qgppHTKvCiz20Jo+RawND9DbkdfEKTbF/O/x2xASLuDjCmcpfn1k3153QVj6OQv2++QUxsqE81LpvtQLGwNfopSjnc1DQ+YlcaKeX358jEyumxl1gRjaTXK+al2S2W6OWK5KnaX602MFzQzj4xjX+5ftgrE1unyyKYA97K/E0Vdt+jno2pW//DmiHtllRgXwrDOQdOGG0oAbNg+CrVHssNuXqL5sAIrJ96PHjHnDjCoXvWFEkozFbgqSZlUyZsmalq9M8RsFwTeZXgt9vqsVpiaic78WOOPkEOGSy8KSuip1rW9ZGUh+L2oJF1L55DPtCB1I8GAtSjPwJLOw1Ynw8OB1oOE/0UGjQHr9u8vmEzw4yj0SqPJruIN5v+LJqK1Y
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,42 +130,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-nd_pfn_supported_alignments() and nd_pfn_default_alignment() use
-has_transparent_hugepage() to check if THP is supported with PMD-sized
-pages. Use pgtable_has_pmd_leaves() instead. Also, check for
-IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) to preserve the current
-implementation semantics.
+debug_vm_pgtable calls has_transparent_hugepage() in multiple places to
+check if PMD-sized pages are supported, use pgtable_has_pmd_leaves()
+instead.
 
-Acked-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
 Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
 ---
- drivers/nvdimm/pfn_devs.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ mm/debug_vm_pgtable.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/nvdimm/pfn_devs.c b/drivers/nvdimm/pfn_devs.c
-index 8fa9c16aba7e..457eb54e7ab6 100644
---- a/drivers/nvdimm/pfn_devs.c
-+++ b/drivers/nvdimm/pfn_devs.c
-@@ -94,7 +94,8 @@ static unsigned long *nd_pfn_supported_alignments(unsigned long *alignments)
+diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
+index 2875fd22d7bb..25038b74c7bc 100644
+--- a/mm/debug_vm_pgtable.c
++++ b/mm/debug_vm_pgtable.c
+@@ -177,7 +177,7 @@ static void __init pmd_basic_tests(struct pgtable_debug_args *args, int idx)
+ 	unsigned long val = idx, *ptr = &val;
+ 	pmd_t pmd;
  
- 	alignments[0] = PAGE_SIZE;
+-	if (!has_transparent_hugepage())
++	if (!pgtable_has_pmd_leaves())
+ 		return;
  
--	if (has_transparent_hugepage()) {
-+	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
-+	    pgtable_has_pmd_leaves()) {
- 		alignments[1] = HPAGE_PMD_SIZE;
- 		if (has_transparent_pud_hugepage())
- 			alignments[2] = HPAGE_PUD_SIZE;
-@@ -109,7 +110,8 @@ static unsigned long *nd_pfn_supported_alignments(unsigned long *alignments)
- static unsigned long nd_pfn_default_alignment(void)
+ 	pr_debug("Validating PMD basic (%pGv)\n", ptr);
+@@ -222,7 +222,7 @@ static void __init pmd_advanced_tests(struct pgtable_debug_args *args)
+ 	pmd_t pmd;
+ 	unsigned long vaddr = args->vaddr;
+ 
+-	if (!has_transparent_hugepage())
++	if (!pgtable_has_pmd_leaves())
+ 		return;
+ 
+ 	page = (args->pmd_pfn != ULONG_MAX) ? pfn_to_page(args->pmd_pfn) : NULL;
+@@ -283,7 +283,7 @@ static void __init pmd_leaf_tests(struct pgtable_debug_args *args)
  {
+ 	pmd_t pmd;
  
--	if (has_transparent_hugepage())
-+	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
-+	    pgtable_has_pmd_leaves())
- 		return HPAGE_PMD_SIZE;
- 	return PAGE_SIZE;
- }
+-	if (!has_transparent_hugepage())
++	if (!pgtable_has_pmd_leaves())
+ 		return;
+ 
+ 	pr_debug("Validating PMD leaf\n");
+@@ -688,7 +688,7 @@ static void __init pmd_protnone_tests(struct pgtable_debug_args *args)
+ 	if (!IS_ENABLED(CONFIG_ARCH_HAS_PTE_PROTNONE))
+ 		return;
+ 
+-	if (!has_transparent_hugepage())
++	if (!pgtable_has_pmd_leaves())
+ 		return;
+ 
+ 	pr_debug("Validating PMD protnone\n");
+@@ -737,7 +737,7 @@ static void __init pmd_soft_dirty_tests(struct pgtable_debug_args *args)
+ 	if (!pgtable_supports_soft_dirty())
+ 		return;
+ 
+-	if (!has_transparent_hugepage())
++	if (!pgtable_has_pmd_leaves())
+ 		return;
+ 
+ 	pr_debug("Validating PMD soft dirty\n");
+@@ -754,7 +754,7 @@ static void __init pmd_leaf_soft_dirty_tests(struct pgtable_debug_args *args)
+ 	    !IS_ENABLED(CONFIG_ARCH_HAS_PMD_SOFTLEAVES))
+ 		return;
+ 
+-	if (!has_transparent_hugepage())
++	if (!pgtable_has_pmd_leaves())
+ 		return;
+ 
+ 	pr_debug("Validating PMD swap soft dirty\n");
+@@ -825,7 +825,7 @@ static void __init pmd_softleaf_tests(struct pgtable_debug_args *args)
+ 	swp_entry_t arch_entry;
+ 	pmd_t pmd1, pmd2;
+ 
+-	if (!has_transparent_hugepage())
++	if (!pgtable_has_pmd_leaves())
+ 		return;
+ 
+ 	pr_debug("Validating PMD swap\n");
+@@ -906,7 +906,7 @@ static void __init pmd_thp_tests(struct pgtable_debug_args *args)
+ {
+ 	pmd_t pmd;
+ 
+-	if (!has_transparent_hugepage())
++	if (!pgtable_has_pmd_leaves())
+ 		return;
+ 
+ 	pr_debug("Validating PMD based THP\n");
+@@ -997,7 +997,7 @@ static void __init destroy_args(struct pgtable_debug_args *args)
+ 	}
+ 
+ 	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
+-	    has_transparent_hugepage() &&
++	    pgtable_has_pmd_leaves() &&
+ 	    args->pmd_pfn != ULONG_MAX) {
+ 		debug_vm_pgtable_free_huge_page(args, args->pmd_pfn, HPAGE_PMD_ORDER);
+ 		args->pmd_pfn = ULONG_MAX;
+@@ -1249,7 +1249,7 @@ static int __init init_args(struct pgtable_debug_args *args)
+ 	}
+ 
+ 	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
+-	    has_transparent_hugepage()) {
++	    pgtable_has_pmd_leaves()) {
+ 		page = debug_vm_pgtable_alloc_huge_page(args, HPAGE_PMD_ORDER);
+ 		if (page) {
+ 			args->pmd_pfn = page_to_pfn(page);
 -- 
 2.55.0
 
