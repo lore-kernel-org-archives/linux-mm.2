@@ -4,93 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04B8CC531C9
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 05:37:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BE1AC531C9
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 05:43:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B8A16B007B; Fri, 24 Jul 2026 01:37:11 -0400 (EDT)
+	id D01996B007B; Fri, 24 Jul 2026 01:43:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 469576B0088; Fri, 24 Jul 2026 01:37:11 -0400 (EDT)
+	id C8B5A6B0088; Fri, 24 Jul 2026 01:43:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 37F166B008A; Fri, 24 Jul 2026 01:37:11 -0400 (EDT)
+	id B2E2F6B008A; Fri, 24 Jul 2026 01:43:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F30326B007B
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 01:37:10 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3B1FC1C0417
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 05:37:10 +0000 (UTC)
-X-FDA: 85022561820.04.7C92878
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id E7D5814000B
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 05:37:07 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=MnLxdN9h;
-	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6EF976B007B
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 01:43:23 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C6B314022E
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 05:43:22 +0000 (UTC)
+X-FDA: 85022577444.29.7337C95
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 949E210000D
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 05:43:20 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZBlFDwU7;
+	spf=pass (imf05.hostedemail.com: domain of cui.tao@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784871428;
+	s=arc-20220608; t=1784871801;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wJtbvJ1YpwlbmNpCTYOzLU+4UtJm/ekub34SmAtyOvA=;
-	b=AyQ/BRXDU5dITtirNSo/qbiXpURI3eYNOyHsT32hlABehqh44ANBlEZXaSh1+Y3SC+ktsO
-	nXen8dT3H+zKhBlfW/w53gc2Lr2480955CYDlS9c5KzWjm5lnxQv+fDOXH+fH6uOiE5/Ay
-	HLeGFo0o/0rnuKrKlQUML6VSXPDMYnM=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=WN4Rv67wT+Zm0X2Y2iPxniSvUeDNwworrnfhHDaXBV4=;
+	b=dtBM4NPt+MtIdStG5XOkHiA6h/p//3PHM/OxEKVFE2d6IW4KetltSwo5jRSjzb7WpjZy5L
+	2TeiQQGHOuVeyeOwuTsudZxO8M5tLKMEqTnzIEq4Qi8CwR3KGaZynYK7bRiabvFY2SEm8V
+	GaRxEpBY2xDV+8TzkZdOEqVnZ4tnNVc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784871428;
-	b=NpE/Fr3cICCEtbXpDx2UmbF5M8mYlgE/wtQ58UsdBmeceUf2jEwj9wI+QEpayPAgiIXrJb
-	6NUJKunPfFB303zUPce9Yz8yndedOZ0wt7m/NP4ibScFzjYJJz2gRJO3uNm58Hldmg0AM9
-	tho0YDhECNQaZjMR/5FXLRrY5b57JyU=
+	t=1784871801;
+	b=vWpf8AHIGs/DyQId0cjW2Q3NZN1Y/S+USlknaeTybN+X/A/kJM6ro98MfZ8rQS6lKur9GJ
+	UGr7Nn5lWtysr4e+fHJcvuikxZmMl4aHavwCxkGmhRXcixlgKYZl4X844LRND5ts9Z5l+B
+	8yt6ITzojJ7gYuQOc6W5n11w5X1Aejo=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=MnLxdN9h;
-	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2D10043572;
-	Fri, 24 Jul 2026 05:37:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 598E81F000E9;
-	Fri, 24 Jul 2026 05:37:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1784871426;
-	bh=wJtbvJ1YpwlbmNpCTYOzLU+4UtJm/ekub34SmAtyOvA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=MnLxdN9hGGlqIFi8VE0gKP3pUPuVEzC6vNzl8hLsC6T/fK7yLqycMOyGXYaVGypVo
-	 JEc3mJxsVwxN7qQG+homPj5qs+4cVW26R++IKAID02jk4nzYNX+n0vIPo+kLqOWomL
-	 wpvvSFwgBWKlcHbCTtEC1zTDHvnMnYUeZab1okvI=
-Date: Thu, 23 Jul 2026 22:37:04 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Ridong <ridong.chen@linux.dev>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand
- <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, Qi Zheng
- <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo
- Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>, Barry Song
- <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie
- <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Zhongkun He
- <hezhongkun.hzk@bytedance.com>, Muchun Song <muchun.song@linux.dev>,
- Davidlohr Bueso <dave@stgolabs.net>, Roman Gushchin
- <roman.gushchin@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>
-Subject: Re: [PATCH -v4 0/4] mm/vmscan: fix swappiness=max and clean up
- per-node proactive reclaim
-Message-Id: <20260723223704.b030220f6ca120c53c2f68d7@linux-foundation.org>
-In-Reply-To: <20260724033435.2573323-1-ridong.chen@linux.dev>
-References: <20260724033435.2573323-1-ridong.chen@linux.dev>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: oswic9qamqck5jdpphpy8wmei1d8kacd
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZBlFDwU7;
+	spf=pass (imf05.hostedemail.com: domain of cui.tao@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784871798;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=WN4Rv67wT+Zm0X2Y2iPxniSvUeDNwworrnfhHDaXBV4=;
+	b=ZBlFDwU7OC0cdAAWcB/mjlOKOY4b7AJDiYXymsXjb663Tc7xCo7hOAEjCz4k6kxhmxB3wX
+	arUCaxdjP7a7k13aLHy84HaLlIxro5T3Lzz+yWoriwhsGwuDT4Yg1Fj+qJdcHhPBQ4RHwI
+	312R+TNR6z1lo3R8Xp45LBDL3aXPoas=
+From: Tao Cui <cui.tao@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	Tao Cui <cuitao@kylinos.cn>,
+	cui.tao@linux.dev
+Subject: [PATCH] mm/vmpressure: scale the vmpressure window with machine size
+Date: Fri, 24 Jul 2026 13:43:05 +0800
+Message-ID: <20260724054305.516126-1-cui.tao@linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E7D5814000B
-X-HE-Tag: 1784871427-49230
-X-HE-Meta: U2FsdGVkX18DiDnkWdchj+7MfkjkxEy2IQV9uWLrkFWxz5LDc5i9lFaj08eW5d6UihiTe5a4lmVf09AaST3PhubFfXI3HCH/3CrALkXFWPsJgoeGUBSILhSf3TBIfmjIuD6YOZbNJYviHjdlwwyImWjnzhNwe6w1pzRZ1Ph//sAyVP+fio8D8sKgw0ggMuDpYXTz5kBO8j3thVGHUMvYlosfwmn/sRUNb0MY6t/nzcAeUuTasxA0RcEaHr4nzAmnTva5vafGv6iRGv78pcRbGm7zd3gmJ7kHPLczqFS2uXmemYSzwMRYqtQEG5gcNCILBTbfWV/U7RGK5pl6RAx2fWAFiUgBnpVE/jNScUnS53E6MW/nIoVwrHZOe2Vove1ch40UXhbUfGhWWuCPOcTVphM4O+apwYOoZzbeIEWvnsVhqFsMSzNSR9ZEJvlvV8dQfFWuX2B5Mpde7fyLJWqUvf+GlCl1BQMlFMvb/gEpc6VnHFPJrfynqqe3YI8zCiFoPv62X4HyhPjL/pt7kNcY0N9+hlf+n0/ykyin2u7NvFz7S3QIq9SrrnsBW8cRGJ9ldjNeYmSXjHLhsHvA0EnuREjNCiEoR9pbjlfQ/3sBJx2ZpHAtMRkUxbr9ilv/ouw8QKfHNwLckOOaY9H2Lc6tCLnIB8ydfNFY4JhcjgUnAyreoA32EE4jqcpRDQTVgfrIPk5mBPbkD4ySx5wUyjSNUP6DKpdD1v6bpLE1RDL2yx3HrzHlrraOG6bhQ7tVeZZ0Jckf1whqy9FaRex4P2xYI8NugRM239l4auZNeIYjdMEbYisq8v3bZwwqqTSS4D3tpArSf6MaopDZcG7PNCt/1mlP3Er93HqgumzYwJOtv9cjuBC00BD8cFiyrnnx/vO50LhtDrZiNTT2u2dn08F+0wpEUGZx2Wl9ZJ1qoeoJ2uokAzCh84mmbpShnoa4cGrdTDFkpQ+NbV1cEIBZwXs
- mC/Xr3sG
- zNhljNBvX50K3lE1YV3+4jwwJnbjk6t2WAz2jjqOdk3sQKoG8H3N1KgkrDi81KHI5VV5vCsKZ+q6SMYk1AR12vc3MENW6MXhoSA9/qGcivksZx03OqkjXUZftuYlr0Q+FUYG0d0cBcDkeWwlfMfYnc/BMne+c5OrK3l6pxPyYpXbMl4JUJ6SXKZx9pAf7ay2v514FxkL85ahsQ8He6dXOFRbty5CpAFZqlO9KfG1T0OQgR/wQX/z0u59ACpmPVRP+S0oekTapBQQPs0kVQckgJXvA0KUqKGoaQWNv9rwIlYIUswmyTiiYPblPcOooOcQuyuxZIhLBU+Etc2raFtJdEaSMtA==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 949E210000D
+X-Stat-Signature: gjnchmpf7knfr9bzqcd4sw5djoj83euz
+X-HE-Tag: 1784871800-172453
+X-HE-Meta: U2FsdGVkX19xHjhKymfBugEkwE4zVn0PWe9whVWl+T/Iun1qPzSik+IoU7IDeTcF0B8B2NCXoxGP9M5Yu3YoNyh+TnqUOchvN2XxH6An3MEecavj1M706eaBJ+bzZ1Eob/ZGzZZXszS1AxFK66jReInwQppHlzouHd+Hru38dsZ4N0ZfYKd/6txOZL2r5m7wNNi2d2o+TsQ++JqMxewqN8ITak5ann1yiM8891p9Ij7zwy7DvnKDqja9ZOPRy6TRqZMDV4igqFqNRy2srC8FQ2lLqtU2qFUvB6WEVlPQ3MQxzbvBW8mduQE7r1t2Rs29LbCz/7aglQIbqxH+nvySAVFSJCxthjvPwNjp3E2NpHWlx1VGQKX460ujv/KBPpO7dgXoznKf9pj/EHKjeS+gzYa3uZ9P7vzKfFNujnns5ncsN/TV7sCn9U6wBpyVTWujN7DuZ93tdeF4O6dJAyfxHE82DyNqm18jXBN9ypyZws2czw0SBSWKr+pqCoGFkl0UrQPG2p27MYVgO1Z4XKknm/nEEnIEGdsRjr6jracfICEukSHh/RMLl0jezqFSngMk+E8hiUHA0WZRILh+AUpex7VYtR7sxXT1SK764OLofJagghKHWs/CC8B630dybZti5rGgxd0Xvu+cr1zv5pgVvGSOIHbSJ/ZONPl8lH2dvXwhDEvexH0VH5J3l1F3Ghn7uL78LrXydCFmkVIzIdEHh4YrS8fJn/sh82zx8lEWs0Xf1VmiuwvvvLiS2cmkxbUXMld0xNg8nFoUhMPmjoTvxePJpFq6ztEjPICv3PkueOj/7y/8TrcG1Bm2XxSgjHkX/5oWb8tsoh2sD9uv6w4Gbr2iDGEsf+FAVoUA6NrjXzmSXkSHY3eShuI7lKzDvvQfTp5FyOjGL5eDgx7BYXO1KX43RgPhOayMxh3AxnRyhm1YK80hb4yU+yheCvSs6muC2Ag2FcTeazee/Y9C+nj
+ YpXerOlb
+ ycTnuGsvSZeJu73movRUJaLV/tAABRznWa0GL5VL3jNmUWVW3OM6BJ346WFKy5BuBihS/4zrDHzDjsuRoDzpQJW4EH6LTwI7fpnRBRlH2a/FZImKPUgAmrFr3iY4B/7lSK+DGDw/Lb/yhk6xjkIV6KHGaNLiYQomA4eo+wOhGDdrPctWgaPEgdSFcCAi7t0Mn94AVWlwFBxCJXuQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,99 +92,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 24 Jul 2026 11:34:31 +0800 Ridong <ridong.chen@linux.dev> wrote:
+From: Tao Cui <cuitao@kylinos.cn>
 
-> Fixes and one cleanup.
-> 
-> Patch 1 fixes "swappiness=max": the anon-only test in get_scan_count()
-> sat after the "cannot reclaim anon" check, so when no anon was
-> reclaimable the request fell back to SCAN_FILE and evicted page cache
-> instead.
-> 
-> Patch 2 fixes reclaim_store() collapsing every error into -EAGAIN, so
-> callers can no longer tell an invalid argument from a busy interface;
-> propagate the real error code, matching the memcg path.
-> 
-> Patch 3 drops the now-unused gfp_mask parameter from __node_reclaim().
-> 
-> Patch 4 fixes the same "swappiness=max" issue for MGLRU.
+vmpressure_win -- the number of pages the reclaimer must scan before
+socket pressure is re-evaluated -- has been a fixed 512 pages (2 MB) since
+vmpressure was introduced.  The reclaimer scans more pages on a larger
+machine, so the window is reached far more often there and socket pressure
+is re-armed every handful of scanned pages.  The comment at the definition
+has asked for the window to scale with machine size "as we do for vmstat
+thresholds" for over a decade.
 
-Thanks, I've updated mm.git's mm-unstable branch to this version.
+Scale it the same way calculate_normal_threshold() does: logarithmically
+with memory (fls of memory in 128 MB units), computed once in a
+subsys_initcall once totalram_pages() is known.  A machine under 128 MB
+keeps the historical 512 pages; the window then grows by SWAP_CLUSTER_MAX
+* 16 per doubling of memory.
 
-Sashiko said one thing, but you've examined this before.  Hopefully
-MGLRU maintainers will consider your suggestion in
-https://lore.kernel.org/8336e48a-ab3a-4db9-a7f9-5bb6af2b22c3@linux.dev
+Why this matters: the scanned/reclaimed ratio that drives socket pressure
+is averaged over the window, and the window rate-limits the evaluation.
+With a fixed 2 MB window the evaluation runs the same number of times
+regardless of machine size, which is disproportionately many on a large
+machine.  Measured by cold-booting one VM at each size and running the
+same cgroup-bound reclaim workload (so the page count is identical across
+sizes):
 
-	https://sashiko.dev/#/patchset/20260723045718.2052070-1-ridong.chen@linux.dev
+    config   scaled_win   pages scanned   512-win evals   scaled evals
+    4 GB     3072         11.9 M          23267           3877
+    8 GB     3584         11.9 M          23306           3329
+    16 GB    4096         11.9 M          23281           2910
+    32 GB    4608         11.9 M          23268           2585
+    64 GB    5120         11.9 M          23281           2328
 
-> v3 -> v4:
->  - Patch 4: Update comments and commit message.
->  - Patch 4: Adopted Sashiko's suggestion to use WARN_ON_ONCE.
+For the same reclaim work the fixed window evaluates ~23k times at every
+machine size; the scaled window evaluates fewer times the larger the
+machine -- a 6x reduction at 4 GB growing to 10x at 64 GB (and the
+logarithmic growth continues: ~11x projected at 128 GB).  Each evaluation
+takes the per-memcg sr_lock and may write the socket_pressure seqlock, so
+on larger machines with more memcgs under pressure this is real overhead
+the fixed window pays needlessly.
 
-Here's how v4 altered mm.git:
+The default stays 512 until the initcall runs, so early-boot reclaim is
+unchanged.
 
+Signed-off-by: Tao Cui <cuitao@kylinos.cn>
+---
+ include/linux/vmpressure.h |  2 +-
+ mm/vmpressure.c            | 20 +++++++++++++++++---
+ 2 files changed, 18 insertions(+), 4 deletions(-)
 
- mm/vmscan.c |   28 ++++++++++++++++++++++++++--
- 1 file changed, 26 insertions(+), 2 deletions(-)
-
---- a/mm/vmscan.c~b
-+++ a/mm/vmscan.c
-@@ -2492,7 +2492,13 @@ static void get_scan_count(struct lruvec
- 	enum scan_balance scan_balance;
- 	enum lru_list lru;
+diff --git a/include/linux/vmpressure.h b/include/linux/vmpressure.h
+index b4d13457bc2a..09111f5bdc88 100644
+--- a/include/linux/vmpressure.h
++++ b/include/linux/vmpressure.h
+@@ -51,7 +51,7 @@ extern struct vmpressure *memcg_to_vmpressure(struct mem_cgroup *memcg);
+ extern struct mem_cgroup *vmpressure_to_memcg(struct vmpressure *vmpr);
  
--	/* Proactive reclaim initiated by userspace for anonymous memory only */
-+	/*
-+	 * Proactive reclaim initiated by userspace for anonymous memory only.
-+	 * SWAPPINESS_ANON_ONLY is set only on the proactive reclaim path, so
-+	 * warn if it shows up elsewhere. When anon cannot be reclaimed (e.g.
-+	 * no swap), bail out instead of falling back to evicting file pages,
-+	 * which would violate the anon-only semantics.
-+	 */
- 	if (swappiness == SWAPPINESS_ANON_ONLY) {
- 		WARN_ON_ONCE(!sc->proactive);
- 		if (!can_reclaim_anon_pages(memcg, pgdat->node_id, sc)) {
-@@ -2693,6 +2699,10 @@ static int get_swappiness(struct lruvec
- {
- 	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
- 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
-+	int swappiness = sc_swappiness(sc, memcg);
+ /* Shared with the v1 vmpressure block in mm/memcontrol-v1.c. */
+-extern const unsigned long vmpressure_win;
++extern unsigned long vmpressure_win;
+ extern enum vmpressure_levels vmpressure_calc_level(unsigned long scanned,
+ 						    unsigned long reclaimed);
+ 
+diff --git a/mm/vmpressure.c b/mm/vmpressure.c
+index 9629240d77ad..4c8671273c79 100644
+--- a/mm/vmpressure.c
++++ b/mm/vmpressure.c
+@@ -31,10 +31,24 @@
+  * As the vmscan reclaimer logic works with chunks which are multiple of
+  * SWAP_CLUSTER_MAX, it makes sense to use it for the window size as well.
+  *
+- * TODO: Make the window size depend on machine size, as we do for vmstat
+- * thresholds. Currently we set it to 512 pages (2MB for 4KB pages).
++ * Scale the window with machine size, the way vmstat thresholds do: on a
++ * larger machine the reclaimer scans more pages, so a fixed window would
++ * re-evaluate pressure every handful of pages. The scaling is logarithmic
++ * (fls, like calculate_normal_threshold()), keeping the growth moderate.
++ * The default is the historical 512 pages; an early initcall applies the
++ * scaling once totalram_pages() is known.
+  */
+-const unsigned long vmpressure_win = SWAP_CLUSTER_MAX * 16;
++unsigned long vmpressure_win __read_mostly = SWAP_CLUSTER_MAX * 16;
 +
-+	if (swappiness == SWAPPINESS_ANON_ONLY)
-+		return swappiness;
- 
- 	if (!sc->may_swap)
- 		return 0;
-@@ -2701,7 +2711,7 @@ static int get_swappiness(struct lruvec
- 	    mem_cgroup_get_nr_swap_pages(memcg) < MIN_LRU_BATCH)
- 		return 0;
- 
--	return sc_swappiness(sc, memcg);
-+	return swappiness;
- }
- 
- static int get_nr_gens(struct lruvec *lruvec, int type)
-@@ -4903,6 +4913,20 @@ static long get_nr_to_scan(struct lruvec
- 			   struct mem_cgroup *memcg, int swappiness)
- {
- 	unsigned long nr_to_scan, evictable;
-+	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
++static int __init vmpressure_init_window(void)
++{
++	unsigned long mem128m;	/* machine memory in 128MB units */
 +
-+	/*
-+	 * Proactive reclaim initiated by userspace for anonymous memory only.
-+	 * SWAPPINESS_ANON_ONLY is set only on the proactive reclaim path, so
-+	 * warn if it shows up elsewhere. When anon cannot be reclaimed (e.g.
-+	 * no swap), return 0 to skip the scan entirely, avoiding useless scan
-+	 * work when there is nothing eligible to reclaim.
-+	 */
-+	if (swappiness == SWAPPINESS_ANON_ONLY) {
-+		WARN_ON_ONCE(!sc->proactive);
-+		if (!can_reclaim_anon_pages(memcg, pgdat->node_id, sc))
-+			return 0;
-+	}
++	mem128m = totalram_pages() >> (27 - PAGE_SHIFT);
++	vmpressure_win = SWAP_CLUSTER_MAX * 16 * (1 + fls(mem128m));
++	return 0;
++}
++subsys_initcall(vmpressure_init_window);
  
- 	evictable = lruvec_evictable_size(lruvec, swappiness);
- 
-_
+ /*
+  * These thresholds are used when we account memory pressure through
+-- 
+2.43.0
 
 
