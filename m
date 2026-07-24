@@ -4,95 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39453C531D0
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 01:58:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A4D6C531D0
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 02:18:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 674E56B00A6; Thu, 23 Jul 2026 21:58:10 -0400 (EDT)
+	id 53C846B0095; Thu, 23 Jul 2026 22:18:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 625AC6B00A7; Thu, 23 Jul 2026 21:58:10 -0400 (EDT)
+	id 4ECE46B0096; Thu, 23 Jul 2026 22:18:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 53E606B00A9; Thu, 23 Jul 2026 21:58:10 -0400 (EDT)
+	id 401A96B0099; Thu, 23 Jul 2026 22:18:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0D6B56B00A6
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 21:58:09 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 58E0EC024A
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 01:58:09 +0000 (UTC)
-X-FDA: 85022009898.06.4608236
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	by imf17.hostedemail.com (Postfix) with ESMTP id C107A4000A
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 01:58:06 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=dZnQ8DHW;
-	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 180036B0095
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 22:18:07 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8BAB040221
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 02:18:06 +0000 (UTC)
+X-FDA: 85022060172.23.EB71022
+Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
+	by imf24.hostedemail.com (Postfix) with ESMTP id CA6E3180004
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 02:18:04 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=m6LyyPZe;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf24.hostedemail.com: domain of guopeng.zhang@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=guopeng.zhang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784858287;
+	s=arc-20220608; t=1784859485;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=E/y6a+jdDJvppYt+jx2v9YMz0hljpdHIa7V1fF3S0+M=;
-	b=e7CoXYePHMS89Qw9YMIJ1wtqQAlkeaQH9a4KcKPTacw9RGpyAkYR1MUGq7/rLm9BHNKODL
-	AOAmTVR/JBCJowguHqqWZZVGe8y31Q+L9tr+/G94XylBo9bvJgY9pFmecBPe5hdqr67Q/r
-	PPEy0dlAZi0aBNWmdHIkMqkd9B+tlww=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=dkDxI/YU4h74RWLt0j/KtkqxL8bNC1CurQ3sW+7Nc40=;
+	b=kfpIwKBsTc66yBQ9e4e+4H+Ue+w7nmQYQLXrLzgOAkOQ/V9D1N1u1uiMT+GPK5YMNTz+RE
+	80MI47w2X4fRgbtCo8LQzPLbsvxTlCPhx0HR5uIprW4B/7WNvzyRV5WjvfRG5IvCd+Jzvn
+	NjIRGvsHdMJoiQgD/dqzZy3oYgVt6ss=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=dZnQ8DHW;
-	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=m6LyyPZe;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf24.hostedemail.com: domain of guopeng.zhang@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=guopeng.zhang@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784858287;
-	b=jbF6HkKFP4cBSU4HApkdK/blRomqnaa0MyLsdmOQG//7QA8ftxg0Kz038TU4y3yaxMmaIA
-	7YgsL0CG5q/3NJdP8kHgNI+NLlngsbwGIZOt+EAgrJQ2zlIp91B7dthPK8IxqpBPd2z82J
-	uN8x6eTJpj6MAWZAugLHNaF7bd9P5e0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784858287; x=1816394287;
-  h=date:from:to:cc:subject:message-id;
-  bh=MCPfWbWDu/fx2Z+J5DBf0rF3V3snUtzBU/nJYQmOLm8=;
-  b=dZnQ8DHWasE+fXbAeH+0/hOR9o5yHn0sTA38JWPjRm5fB0CpVqLTic0z
-   Lns4GewIEgfECZtIxGP6bOGv3KhgEWTINeTh1RR7Yi2vMeLfWypyVhdvQ
-   k16gbdIOeqfNotP/LXpjq0Zf1fx7/jOuLcnLd8rdLdj1cLS9xGgjm0FGs
-   LCobiUHLh5zTa1qm1E+219+maXgWmwb9AQzV/grpI6e7gvD7UIU1DeUCd
-   L9zW5DaXVnoRY2BzbkZ6jxx/mlNJtB1dpNu++qtyj0VIRWNpwrAJEAGHn
-   VDggWqWJvn5iiVA5090Aun6CqPfFH3tQRYJD3lG/srDGYsuCzlI6j3T79
-   w==;
-X-CSE-ConnectionGUID: 4aZc6W/ESZ+GeDpGqEDRCQ==
-X-CSE-MsgGUID: ImDSPcyWQSWb5zzl/2RrrQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="85716903"
-X-IronPort-AV: E=Sophos;i="6.25,181,1779174000"; 
-   d="scan'208";a="85716903"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2026 18:58:06 -0700
-X-CSE-ConnectionGUID: 3F7aKxWCSF+i7J1AEkGlxg==
-X-CSE-MsgGUID: xYQl2M74TmiekoHcXr6+bw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,181,1779174000"; 
-   d="scan'208";a="263553960"
-Received: from lkp-server02.sh.intel.com (HELO ea128546eb3d) ([10.239.97.151])
-  by fmviesa005.fm.intel.com with ESMTP; 23 Jul 2026 18:58:03 -0700
-Received: from kbuild by ea128546eb3d with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wn5An-00000000aN2-2ZNq;
-	Fri, 24 Jul 2026 01:58:01 +0000
-Date: Fri, 24 Jul 2026 09:57:17 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: linux-mm@kvack.org
-Subject: [rppt-memblock:for-next] BUILD SUCCESS
- a000f52cffe0e577ff4519cc2c23e073278b9c7f
-Message-ID: <202607240906.fJo4Pv0G-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	t=1784859485;
+	b=q1IVS4wa6BhmVcWZbFCZIwK7FABP85iu9NPww97g4UkxXuorN/vvS6uothfCRyXeUkeg3r
+	Djk842LB2ZNi9HPDP29VjxJ+nG3XVv4tcv+3JiNrgsoxLgkw5m1N63GSZHPXIr9KMUy/+M
+	LOgn7RaqEXFaKNp6YTYmXINxLW/4RxA=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784859482;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=dkDxI/YU4h74RWLt0j/KtkqxL8bNC1CurQ3sW+7Nc40=;
+	b=m6LyyPZeNG8i5rjVFkZXPlsO0v9FnA42zs3OT99CGDpyOYelE39pPRuFwb2gnhWuxVFMi5
+	fWw090Je9B4PLWam00PonOTRKdW/2S9MztGP9S/nourLMlqjLDNLuCKWh+CnH9S1UymNES
+	SQMQVCqlWejoODsnz7GdinNbRZ0xZls=
+From: Guopeng Zhang <guopeng.zhang@linux.dev>
+To: Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Muchun Song <muchun.song@linux.dev>,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Guopeng Zhang <guopeng.zhang@linux.dev>,
+	Guopeng Zhang <zhangguopeng@kylinos.cn>
+Subject: [PATCH] mm: memcg: stop reclaim when a limit update is superseded
+Date: Fri, 24 Jul 2026 10:18:05 +0800
+Message-Id: <20260724021805.1234583-1-guopeng.zhang@linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: CA6E3180004
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C107A4000A
-X-Rspamd-Server: rspam01
-X-Stat-Signature: 76xopcfk44w8ia98eo5iw8qp3mtqgge9
-X-HE-Tag: 1784858286-531060
-X-HE-Meta: U2FsdGVkX18RhYr7LnEHiW4M9/aT9lgkc4YRviPxCoEQG2BGVW3RiduuHa1CQC/uF3fVoR0y0JyAbtaN9kqOrb2rzDgoQsB27uMn5oDqu3qcHsv11b8toyJua4o/QD7SWfLU3Qcw14DHKBijqjLR7JH+VA5qKL3XGqoM+UxJDcZJ5Afzbo6uMZ1eX8vh0guQg5JHAJo7oHN31hTpe85rLZ5n8uH8Cw3p/rCFeAhSBnv4wDt6MqIzcRuB2B/Cv4SVy9IV4fCvJjSd2VEjDnvlrqt9n4epH8bIM7d/hVOAwaly+If2WOuNSTfP4kzCjCPyJ//UTt7uyLl/Hj3U0K1YEqAvLezlqlZvMWp8ADNC/+win6hKxdIGKF6ZSNZT/9gvggd8QGOKA6PeJoWnZuMD5x7T4zik+hXQmhvU7PGDtni7GDMB7nVnXEhO2dDLHRAtBmcuHAjbsBYjfpaLcskhSagjiDrpGxo+BMQQWrdSKe09tOuALmaPCMhjlXK5sQjVEySqsazrlBzITIYFejgpwwnUZvRbLKWPayuZnlE7v2F3MfWylp7hajcO4zYhvNlZGlmtRGmC5YI7He2mgnlTt3IHAN8Msjo4WcxWl7wzBTLslOS+Os6s3g3j8as+rIIs01q5qzqGL0zb7T4cBehBzvrtv44YVD4IDhqE3/3gam9sjo2tjgx3lDVNRpV5DQWbHZQxLd0z0kGEJgE9RXEyvGMKXMhWOGPrqpXI15KwyBBxlSRTBzPqz9Q9dqM6gweVM8kqWNfxxWdNLsrNdoHsr4iAIVLlwrvNp7niYU6oLXIhJ5oRPltuGwzFwPHvKoDW9TA/9qmbVg/18Q1Kl+pva+wYXIdPdT83Eml5mEVTsTZrBMCFOYlKV4tmK61mx0ViQMUa6r9ltzobeRbn97wo7tSs9CDKJecIn/vLUdKttozpuxnxLxjSSNYMmlLDwYVIT9U6QsA3gykp24b7I1h
- E+xDGzYT
- 0YtN5ToVRVhbFq0osvH3MT2oTgQIY/28FyugHDwxeMuOU6rkteR4Dte3uNEUO6EdUxQ0YjFK0d9RAQV36dfkekNz24eqdHBxKAWLO+j5tGXqPpUtew5TbnTXbAtXVHIoqYbWA4nUedstLVv+6gLAtphZhHXWy6sJzioNu+5m9/edx1MTlhMP6EWid8Z4uEvqMPqIuA9foPWN2EpY=
+X-Stat-Signature: uafjzwg1sb7igh934tuqd3eg8xhqa38i
+X-HE-Tag: 1784859484-329806
+X-HE-Meta: U2FsdGVkX1+aKBQyoQCqKRfspmZ791tQ0i5i0mrOnTRTRznPqBy3Y2bEQxh71j1Ppf5/ZB66ZT2WyXvshPTl2lIGOjaUwzRaBCRfUTTBffYzf3gqVg/XO6G9xXeVVZ2/Bj19UyYio4Wdlhx3ooZUbuSQHN9QPhxRoCFcQ4lOjQk0HcQr9i96wPtXqfs8a4X/qILdRcChDNabBWk1Psvun1AB+lQ31+KkrzW6BP4swVNk6IuEsrJpSMEFY6HuE7Qb0vbEzsCq2kkbtRbqUiF5mpVPV/51hRN5ZGjWe7m1ioEzN+jJ/Q01m9FqYhDn5IQL8ldcpgovGx85ESBnwp5BuRcD5NQHLpeCG7qbp/A2GONJ6vbaNIZS4LrV0OLAS3sViugcpYfOPPCxCvMBSVsDLzCKU2HCWErC4Cs7E09lMq1WjtZ+F58z/z0euiGxfakEmLoBAH/5Ga5F3CPIBU03eC100kNVyQdVfmmFaZcOiKuh6bllZsVHn/xb8Hr/MxwnBJrs5IeRtZgZKWSU6GMjqK1JxJnO8YNfMfdEjZFlalw3IewTr05oNa0i/b2ETNRWv3P7yTW34NlRa2303Hl4Uju4Q18jcdmQwcz+KTHmzNVz+s7uFOu7XTBTqE21/8smSTk7yy+8H3pLJQ7GZ+J3F9hfQQxiqbATbZ2QBos9aR87qZrubnmMi7BuEPyG848/KKZtdZgQ4nqzh6kDRfiS6xyrOVE178UG+EmBZP2wFOPxlaVpBsgTnPBgYaXPsKUWIqXelnVeV/ihYeVxaiNCKW+vQ70sRGsURdkJeRhGuaq+CNOypROazU/ckcglttPUcL+R4xrsPcWKh4zapWeNGlAxvUIL1BFpoaDzTEJtlNBiV5uvWaUaqVoty4J4j3mHOoLZRJMNkip1yMt8sJV8/vZKWWc3H+WBHutGeeaHtPvPUPh4ISwVUy8k4/Ii9Do56hAeW3E+0ywdOqcmwo3
+ bJsrAleM
+ HXQV8umGXVtzyA6xNmXnFpziijfm09A7bESGFyS3Y406JiKwNCBvkBrx3qzXBdNG/RwFBqMfPmnfuLzSd4s8jR9Nr+ZfFSiVhZpC4iQZzArj/3pnKyaAv1vTS7dXa0ryjWEWpNG29UAlxPuLz8nxg1j7/CIA4bEaGPHdCsALex0+5xEANC15x3B2DJjFkkCtflDNn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,61 +91,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock.git for-next
-branch HEAD: a000f52cffe0e577ff4519cc2c23e073278b9c7f  Merge branch 'misc' into for-next
+From: Guopeng Zhang <zhangguopeng@kylinos.cn>
 
-elapsed time: 1061m
+kernfs serializes file operations only per open file, so separate open
+files can update the same memory.high or memory.max file concurrently.
+Both handlers store the new limit before synchronous reclaim, but
+continue to use the writer's local target in the reclaim loop. If another
+writer raises or removes the limit, the first writer can continue
+reclaiming toward a stale target.
 
-configs tested: 41
-configs skipped: 0
+For memory.max, this can leave the writer looping indefinitely once
+reclaim retries are exhausted. The OOM path sees sufficient margin under
+the current limit and returns true without killing, while the writer
+still compares usage against its stale target and records another OOM
+event.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Check the current limit at the start of each reclaim iteration and stop
+if it no longer matches the writer's target.
 
-tested configs:
-alpha                            allnoconfig    gcc-16.1.0
-alpha                           allyesconfig    gcc-16.1.0
-alpha                              defconfig    gcc-16.1.0
-arc                             allmodconfig    gcc-16.1.0
-arc                             allyesconfig    gcc-16.1.0
-arc                  randconfig-001-20260724    gcc-10.5.0
-arc                  randconfig-002-20260724    gcc-8.5.0
-arm                        vf610m4_defconfig    gcc-16.1.0
-arm64                randconfig-001-20260724    gcc-8.5.0
-arm64                randconfig-002-20260724    gcc-16.1.0
-arm64                randconfig-003-20260724    clang-24
-arm64                randconfig-004-20260724    clang-24
-csky                            allmodconfig    gcc-16.1.0
-csky                 randconfig-001-20260724    gcc-12.5.0
-csky                 randconfig-002-20260724    gcc-16.1.0
-hexagon              randconfig-001-20260724    clang-24
-hexagon              randconfig-002-20260724    clang-24
-i386                            allmodconfig    gcc-14
-loongarch                          defconfig    clang-24
-loongarch            randconfig-001-20260724    gcc-16.1.0
-loongarch            randconfig-002-20260724    gcc-16.1.0
-nios2                           allmodconfig    gcc-11.5.0
-nios2                            allnoconfig    gcc-11.5.0
-nios2                randconfig-001-20260724    gcc-8.5.0
-nios2                randconfig-002-20260724    gcc-8.5.0
-parisc                          allmodconfig    gcc-16.1.0
-parisc                          allyesconfig    gcc-16.1.0
-parisc                             defconfig    gcc-16.1.0
-parisc               randconfig-002-20260724    gcc-9.5.0
-s390                 randconfig-002-20260724    gcc-13.4.0
-sh                                 defconfig    gcc-16.1.0
-sh                   randconfig-001-20260724    gcc-16.1.0
-sh                   randconfig-002-20260724    gcc-16.1.0
-sparc                randconfig-002-20260724    gcc-15.2.0
-x86_64     buildonly-randconfig-003-20260724    gcc-14
-x86_64               randconfig-001-20260724    gcc-14
-x86_64               randconfig-002-20260724    gcc-14
-x86_64               randconfig-003-20260724    clang-22
-x86_64               randconfig-004-20260724    gcc-14
-x86_64               randconfig-005-20260724    clang-22
-x86_64               randconfig-006-20260724    clang-22
+Fixes: 8c8c383c04f6 ("mm: memcontrol: try harder to set a new memory.high")
+Fixes: b6e6edcfa405 ("mm: memcontrol: reclaim and OOM kill when shrinking memory.max below usage")
+Signed-off-by: Guopeng Zhang <zhangguopeng@kylinos.cn>
+---
+Reproducer:
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Populate a cgroup with anonymous memory and disable swapping. Lower
+memory.max from one open file, then restore it to "max" through another
+open file after the new limit becomes visible.
+
+Without the patch, the first writer remains blocked and repeatedly
+increments the OOM event counter. With the patch, it returns normally.
+
+ mm/memcontrol.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 8319ad8c5c23..638bdc766616 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -4798,6 +4798,9 @@ static ssize_t memory_high_write(struct kernfs_open_file *of,
+ 		unsigned long nr_pages = page_counter_read(&memcg->memory);
+ 		unsigned long reclaimed;
+ 
++		if (high != READ_ONCE(memcg->memory.high))
++			break;
++
+ 		if (nr_pages <= high)
+ 			break;
+ 
+@@ -4853,6 +4856,9 @@ static ssize_t memory_max_write(struct kernfs_open_file *of,
+ 	for (;;) {
+ 		unsigned long nr_pages = page_counter_read(&memcg->memory);
+ 
++		if (max != READ_ONCE(memcg->memory.max))
++			break;
++
+ 		if (nr_pages <= max)
+ 			break;
+ 
+-- 
+2.25.1
 
