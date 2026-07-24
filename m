@@ -4,89 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F9B6C531C9
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 05:05:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04B8CC531C9
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 05:37:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F04DF6B007B; Fri, 24 Jul 2026 01:05:49 -0400 (EDT)
+	id 4B8A16B007B; Fri, 24 Jul 2026 01:37:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EDC706B0088; Fri, 24 Jul 2026 01:05:49 -0400 (EDT)
+	id 469576B0088; Fri, 24 Jul 2026 01:37:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF1E66B008A; Fri, 24 Jul 2026 01:05:49 -0400 (EDT)
+	id 37F166B008A; Fri, 24 Jul 2026 01:37:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AE9F76B007B
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 01:05:49 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 358471A027D
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 05:05:49 +0000 (UTC)
-X-FDA: 85022482818.23.121A61A
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 58C08140007
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 05:05:46 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=GUmn4JfB;
-	spf=pass (imf23.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F30326B007B
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 01:37:10 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3B1FC1C0417
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 05:37:10 +0000 (UTC)
+X-FDA: 85022561820.04.7C92878
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id E7D5814000B
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 05:37:07 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=MnLxdN9h;
+	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784869547;
+	s=arc-20220608; t=1784871428;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JJ03iSRjfoG18YBBghpxDuIwEaUcBDpAc+uxq/WXxnw=;
-	b=1N4v7+D/e+PYmiz6EZsaFH38tynL4RM/OHJHg72qJekT6BaREzC6kK000TEJB3GVkp1/pC
-	qrbf383lGmvnTfbxxwqiGsGpBNQGe1j6wjw2OrDZ1fSOujBRMaPXP/f02KCc8hlloPOOdt
-	n6Mnhi2jH6dSNxaIoSWBkUqyMrDBTJ4=
+	bh=wJtbvJ1YpwlbmNpCTYOzLU+4UtJm/ekub34SmAtyOvA=;
+	b=AyQ/BRXDU5dITtirNSo/qbiXpURI3eYNOyHsT32hlABehqh44ANBlEZXaSh1+Y3SC+ktsO
+	nXen8dT3H+zKhBlfW/w53gc2Lr2480955CYDlS9c5KzWjm5lnxQv+fDOXH+fH6uOiE5/Ay
+	HLeGFo0o/0rnuKrKlQUML6VSXPDMYnM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784869547;
-	b=e1rH0ve1bhf+uMObUy1PhwQqgYMVwgz3JWNJWblb+sUqQ9IQCecbbY1sI8hZ03Mk1SM0Lo
-	H0rg/vn+nAnfFq8GkbRkLBEUslrS76PbAZz4zzZBWH+bfcQVyrlbqJRuvvDZBo/L+DnhgO
-	Z2ksLo98u81khsKX1RhpBWIOhEQyLqY=
+	t=1784871428;
+	b=NpE/Fr3cICCEtbXpDx2UmbF5M8mYlgE/wtQ58UsdBmeceUf2jEwj9wI+QEpayPAgiIXrJb
+	6NUJKunPfFB303zUPce9Yz8yndedOZ0wt7m/NP4ibScFzjYJJz2gRJO3uNm58Hldmg0AM9
+	tho0YDhECNQaZjMR/5FXLRrY5b57JyU=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=GUmn4JfB;
-	spf=pass (imf23.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E9E9B1477;
-	Thu, 23 Jul 2026 22:05:40 -0700 (PDT)
-Received: from [10.164.148.44] (MacBook-Pro.blr.arm.com [10.164.148.44])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DE9113F86F;
-	Thu, 23 Jul 2026 22:05:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784869545; bh=9z1bk8upQShwtNFSq0+22MPZuPf4R/Mr2jz7W5iVWLQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=GUmn4JfB0jh0NLkd/QxuENHfGYYuCh4n25zdfDVPY0Ej30DIrxWLwvOm0/eySV8Kf
-	 pDQ5QEBRaNUX8aDLq4hX/UCYJciU8PSbEOmcJRk8tR/aA316X5X8xG9X66sz4fb0zF
-	 KaFk4h0OpI6u8PnOeMcq20BAXqsc7d92Dw2b8cgw=
-Message-ID: <cdd37c17-b2c2-4dc0-8f1c-7f4cbd2fefdc@arm.com>
-Date: Fri, 24 Jul 2026 10:35:34 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/5] mm/rmap: convert page -> folio for hwpoison checks
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: akpm@linux-foundation.org, david@kernel.org, muchun.song@linux.dev,
- osalvador@suse.de, riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
- harry@kernel.org, jannh@google.com, lance.yang@linux.dev,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, ryan.roberts@arm.com,
- anshuman.khandual@arm.com
-References: <20260710055915.638659-1-dev.jain@arm.com>
- <20260710055915.638659-2-dev.jain@arm.com> <amIzQmZ3eeYiVXo4@lucifer>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <amIzQmZ3eeYiVXo4@lucifer>
-Content-Type: text/plain; charset=UTF-8
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=MnLxdN9h;
+	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2D10043572;
+	Fri, 24 Jul 2026 05:37:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 598E81F000E9;
+	Fri, 24 Jul 2026 05:37:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1784871426;
+	bh=wJtbvJ1YpwlbmNpCTYOzLU+4UtJm/ekub34SmAtyOvA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=MnLxdN9hGGlqIFi8VE0gKP3pUPuVEzC6vNzl8hLsC6T/fK7yLqycMOyGXYaVGypVo
+	 JEc3mJxsVwxN7qQG+homPj5qs+4cVW26R++IKAID02jk4nzYNX+n0vIPo+kLqOWomL
+	 wpvvSFwgBWKlcHbCTtEC1zTDHvnMnYUeZab1okvI=
+Date: Thu, 23 Jul 2026 22:37:04 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Ridong <ridong.chen@linux.dev>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand
+ <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, Qi Zheng
+ <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo
+ Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>, Barry Song
+ <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie
+ <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Zhongkun He
+ <hezhongkun.hzk@bytedance.com>, Muchun Song <muchun.song@linux.dev>,
+ Davidlohr Bueso <dave@stgolabs.net>, Roman Gushchin
+ <roman.gushchin@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>
+Subject: Re: [PATCH -v4 0/4] mm/vmscan: fix swappiness=max and clean up
+ per-node proactive reclaim
+Message-Id: <20260723223704.b030220f6ca120c53c2f68d7@linux-foundation.org>
+In-Reply-To: <20260724033435.2573323-1-ridong.chen@linux.dev>
+References: <20260724033435.2573323-1-ridong.chen@linux.dev>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: sgxgbsogikuyr3nomsecg9cam4x8soz3
+X-Stat-Signature: oswic9qamqck5jdpphpy8wmei1d8kacd
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 58C08140007
-X-HE-Tag: 1784869546-334574
-X-HE-Meta: U2FsdGVkX18f/AVMphKbIfm8kCiCHleU0j+5C3yyDg2f/G055V7U4ghcfeEQgSLBq+UVZY5lrk+rrIOYRTJJIQhT49qqlMmvwqcdXmRGssjvVpXyC9fsXNw04taDGCDF00z41WC6mBbyqjEBQvACrh6xuAPVieIg6ZN/Q3utgZWFT++5yhYblG5YDSmjBAyvkX+Lhh7xXuPUhCf7UtNt4Kk8fy7UQI/o/G0ebBfvL85/8ytvwgaN5my1IkU1F8cX0PtwMU8oVCeJnFA+g+vQ6xtc7uR5fd3lBVLJTXaZwGTVDruBC4ik8jtpefrVr/VlBSWxg86CFi1TW3STAFFyUxR9cB+vYg+7CYz8qJgN4FMfMhTvcUV16vHLu3S5InndxbeiCum5wrguHrn9gHQyoGQRpwUh+qjxerFB1cu4Jm7I6pRLOiSG1NmAC6nS4bL/wzePTq2quGtrUvzfVKA7E7/l8FMoBpmo9zCapuXM7i6fniwXvF0SX4bJym8Q1vTxGpO9NbcLxaamu4zzUdZbOhsklxdzslGzeakyBYuBRxHVnUkPlbQ4QScfUnD9nIQLJqF5cRiMZTWHCXmXIu+tmhHOuJWKVRuEDJdDFPINlzJlnaTXUq6VePH10C0PCelIPs6wbzv8wWx2RLOvnLl1PjLeYAiDDd8cyqhTHuSQFgZCYqX9BKRrHv1ydQ5xNZvZAm4W8iU6XfCcWncfwQP4cHLVtablATAL0/JABD7pslU6ZENplM8pCOfUO5pNRTl1Pccbw+4uMZJZNt9BHnjMSwmddq1ffNdDAQ6QE1yLKfHqaNyYrxVGr6YTThiI9JW+5G61zPN10bfv8QyUv5Qab4p9sf9gp4dy990JMehwyNtxJEce9+Ma7CZfMH94Ijb6UXB1Tc4GHVPHUSikhDSoclHkjU2Cbclgf0+BbelUSdI+gONXnJ5k+U4oKEeQuZNHIhmx+Fw/zBEH44BJ8aB
- qvngReVz
- ssWT8VtNHylg3/9I1GOad4r5bEb+0OPq0psiS5OESSMNBLEbtDkWyhXZObfSSrxIM7x+KzyjjlKPVRQRO6Sib1qxPL1QkxtixBz8RqJzNegc3haP1o1/l4SQcuWpbS5xDMxSKS2R1QqVFF+HZr06yky31+hlVEiil9xp/QqjTPyUs1XCbpDh/41kyQJ+hphf/RHyeob6Vp+nXqhQxkD7AaAklJ74DF5sw8wCD+f/rtQ2D0yKbj8voGt/mhGs27HVDt3MZaxw41Z4vmVvYy1x3IuPZ+Ih1ZBT7fZ2QubHMz9jVrozt1AFVzEhjDKxZES5sCY5V
+X-Rspamd-Queue-Id: E7D5814000B
+X-HE-Tag: 1784871427-49230
+X-HE-Meta: U2FsdGVkX18DiDnkWdchj+7MfkjkxEy2IQV9uWLrkFWxz5LDc5i9lFaj08eW5d6UihiTe5a4lmVf09AaST3PhubFfXI3HCH/3CrALkXFWPsJgoeGUBSILhSf3TBIfmjIuD6YOZbNJYviHjdlwwyImWjnzhNwe6w1pzRZ1Ph//sAyVP+fio8D8sKgw0ggMuDpYXTz5kBO8j3thVGHUMvYlosfwmn/sRUNb0MY6t/nzcAeUuTasxA0RcEaHr4nzAmnTva5vafGv6iRGv78pcRbGm7zd3gmJ7kHPLczqFS2uXmemYSzwMRYqtQEG5gcNCILBTbfWV/U7RGK5pl6RAx2fWAFiUgBnpVE/jNScUnS53E6MW/nIoVwrHZOe2Vove1ch40UXhbUfGhWWuCPOcTVphM4O+apwYOoZzbeIEWvnsVhqFsMSzNSR9ZEJvlvV8dQfFWuX2B5Mpde7fyLJWqUvf+GlCl1BQMlFMvb/gEpc6VnHFPJrfynqqe3YI8zCiFoPv62X4HyhPjL/pt7kNcY0N9+hlf+n0/ykyin2u7NvFz7S3QIq9SrrnsBW8cRGJ9ldjNeYmSXjHLhsHvA0EnuREjNCiEoR9pbjlfQ/3sBJx2ZpHAtMRkUxbr9ilv/ouw8QKfHNwLckOOaY9H2Lc6tCLnIB8ydfNFY4JhcjgUnAyreoA32EE4jqcpRDQTVgfrIPk5mBPbkD4ySx5wUyjSNUP6DKpdD1v6bpLE1RDL2yx3HrzHlrraOG6bhQ7tVeZZ0Jckf1whqy9FaRex4P2xYI8NugRM239l4auZNeIYjdMEbYisq8v3bZwwqqTSS4D3tpArSf6MaopDZcG7PNCt/1mlP3Er93HqgumzYwJOtv9cjuBC00BD8cFiyrnnx/vO50LhtDrZiNTT2u2dn08F+0wpEUGZx2Wl9ZJ1qoeoJ2uokAzCh84mmbpShnoa4cGrdTDFkpQ+NbV1cEIBZwXs
+ mC/Xr3sG
+ zNhljNBvX50K3lE1YV3+4jwwJnbjk6t2WAz2jjqOdk3sQKoG8H3N1KgkrDi81KHI5VV5vCsKZ+q6SMYk1AR12vc3MENW6MXhoSA9/qGcivksZx03OqkjXUZftuYlr0Q+FUYG0d0cBcDkeWwlfMfYnc/BMne+c5OrK3l6pxPyYpXbMl4JUJ6SXKZx9pAf7ay2v514FxkL85ahsQ8He6dXOFRbty5CpAFZqlO9KfG1T0OQgR/wQX/z0u59ACpmPVRP+S0oekTapBQQPs0kVQckgJXvA0KUqKGoaQWNv9rwIlYIUswmyTiiYPblPcOooOcQuyuxZIhLBU+Etc2raFtJdEaSMtA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,90 +98,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, 24 Jul 2026 11:34:31 +0800 Ridong <ridong.chen@linux.dev> wrote:
+
+> Fixes and one cleanup.
+> 
+> Patch 1 fixes "swappiness=max": the anon-only test in get_scan_count()
+> sat after the "cannot reclaim anon" check, so when no anon was
+> reclaimable the request fell back to SCAN_FILE and evicted page cache
+> instead.
+> 
+> Patch 2 fixes reclaim_store() collapsing every error into -EAGAIN, so
+> callers can no longer tell an invalid argument from a busy interface;
+> propagate the real error code, matching the memcg path.
+> 
+> Patch 3 drops the now-unused gfp_mask parameter from __node_reclaim().
+> 
+> Patch 4 fixes the same "swappiness=max" issue for MGLRU.
+
+Thanks, I've updated mm.git's mm-unstable branch to this version.
+
+Sashiko said one thing, but you've examined this before.  Hopefully
+MGLRU maintainers will consider your suggestion in
+https://lore.kernel.org/8336e48a-ab3a-4db9-a7f9-5bb6af2b22c3@linux.dev
+
+	https://sashiko.dev/#/patchset/20260723045718.2052070-1-ridong.chen@linux.dev
+
+> v3 -> v4:
+>  - Patch 4: Update comments and commit message.
+>  - Patch 4: Adopted Sashiko's suggestion to use WARN_ON_ONCE.
+
+Here's how v4 altered mm.git:
 
 
-On 23/07/26 10:45 pm, Lorenzo Stoakes (ARM) wrote:
-> On Fri, Jul 10, 2026 at 05:59:10AM +0000, Dev Jain wrote:
->> try_to_unmap() receives hugetlb folios only from the hwpoison path.
-> 
-> Horrifying :)
-> 
->> hugetlb_update_hwpoison() sets the hugetlb folio's head-page
->> hwpoison bit, and page_vma_mapped_walk() reports the hugetlb mapping at
->> the head PFN, so the previous PageHWPoison(subpage) check happened to
->> work for hugetlb.
->>
->> For non-hugetlb folios, unmap_poisoned_folio() currently rejects large
->> folios before calling try_to_unmap(). Hence it is always the case that
->> if try_to_unmap_one() handles an hwpoisoned folio, then the head page is
->> marked with the poison bit.
->>
->> Therefore, convert the poisoned subpage checks to folio_test_hwpoison().
->>
->> No functional change intended, except that, while at it,
->> convert VM_BUG_* to VM_WARN_*.
->>
->> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
->> Signed-off-by: Dev Jain <dev.jain@arm.com>
-> 
-> Small nit below but generally LGTM so:
-> 
-> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> 
->> ---
->>  mm/rmap.c | 13 +++++++++----
->>  1 file changed, 9 insertions(+), 4 deletions(-)
->>
->> diff --git a/mm/rmap.c b/mm/rmap.c
->> index 9939400e77c79..dbb077f8443e3 100644
->> --- a/mm/rmap.c
->> +++ b/mm/rmap.c
->> @@ -2122,10 +2122,11 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
->>  			bool anon = folio_test_anon(folio);
->>
->>  			/*
->> -			 * The try_to_unmap() is only passed a hugetlb page
->> -			 * in the case where the hugetlb page is poisoned.
->> +			 * The try_to_unmap() is only passed a hugetlb folio
->> +			 * in the case where the hugetlb folio contains a
->> +			 * poisoned page.
->>  			 */
->> -			VM_BUG_ON_PAGE(!PageHWPoison(subpage), subpage);
->> +			VM_WARN_ON_FOLIO(!folio_test_hwpoison(folio), folio);
->>  			/*
->>  			 * huge_pmd_unshare may unmap an entire PMD page.
->>  			 * There is no way of knowing exactly which PMDs may
->> @@ -2204,7 +2205,11 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
->>  		/* Update high watermark before we lower rss */
->>  		update_hiwater_rss(mm);
->>
->> -		if (PageHWPoison(subpage) && (flags & TTU_HWPOISON)) {
->> +		/*
->> +		 * With TTU_HWPOISON, we only expect small folios or hugetlb
->> +		 * folios here for now.
->> +		 */
-> 
-> I think probably we can drop this? It seems implied by the code (David comment
-> similarly I think? :)
+ mm/vmscan.c |   28 ++++++++++++++++++++++++++--
+ 1 file changed, 26 insertions(+), 2 deletions(-)
 
-I had posted a v3 here:
-https://lore.kernel.org/all/20260713050050.1017741-1-dev.jain@arm.com/
-
-In that I had fixed this comment to drop "or hugetlb folios ..." . But I would
-still like to retain the "only expect small folios" comment, it adds cognitive
-load when I am reading try_to_unmap_one and then have to go read hwpoison code
-to figure that large folios would be split before coming here.
-
-
-> 
->> +		if (folio_test_hwpoison(folio) && (flags & TTU_HWPOISON)) {
->>  			pteval = swp_entry_to_pte(make_hwpoison_entry(subpage));
->>  			if (folio_test_hugetlb(folio)) {
->>  				hugetlb_count_sub(folio_nr_pages(folio), mm);
->> --
->> 2.43.0
->>
-> 
-> Cheers, Lorenzo
+--- a/mm/vmscan.c~b
++++ a/mm/vmscan.c
+@@ -2492,7 +2492,13 @@ static void get_scan_count(struct lruvec
+ 	enum scan_balance scan_balance;
+ 	enum lru_list lru;
+ 
+-	/* Proactive reclaim initiated by userspace for anonymous memory only */
++	/*
++	 * Proactive reclaim initiated by userspace for anonymous memory only.
++	 * SWAPPINESS_ANON_ONLY is set only on the proactive reclaim path, so
++	 * warn if it shows up elsewhere. When anon cannot be reclaimed (e.g.
++	 * no swap), bail out instead of falling back to evicting file pages,
++	 * which would violate the anon-only semantics.
++	 */
+ 	if (swappiness == SWAPPINESS_ANON_ONLY) {
+ 		WARN_ON_ONCE(!sc->proactive);
+ 		if (!can_reclaim_anon_pages(memcg, pgdat->node_id, sc)) {
+@@ -2693,6 +2699,10 @@ static int get_swappiness(struct lruvec
+ {
+ 	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
+ 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
++	int swappiness = sc_swappiness(sc, memcg);
++
++	if (swappiness == SWAPPINESS_ANON_ONLY)
++		return swappiness;
+ 
+ 	if (!sc->may_swap)
+ 		return 0;
+@@ -2701,7 +2711,7 @@ static int get_swappiness(struct lruvec
+ 	    mem_cgroup_get_nr_swap_pages(memcg) < MIN_LRU_BATCH)
+ 		return 0;
+ 
+-	return sc_swappiness(sc, memcg);
++	return swappiness;
+ }
+ 
+ static int get_nr_gens(struct lruvec *lruvec, int type)
+@@ -4903,6 +4913,20 @@ static long get_nr_to_scan(struct lruvec
+ 			   struct mem_cgroup *memcg, int swappiness)
+ {
+ 	unsigned long nr_to_scan, evictable;
++	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
++
++	/*
++	 * Proactive reclaim initiated by userspace for anonymous memory only.
++	 * SWAPPINESS_ANON_ONLY is set only on the proactive reclaim path, so
++	 * warn if it shows up elsewhere. When anon cannot be reclaimed (e.g.
++	 * no swap), return 0 to skip the scan entirely, avoiding useless scan
++	 * work when there is nothing eligible to reclaim.
++	 */
++	if (swappiness == SWAPPINESS_ANON_ONLY) {
++		WARN_ON_ONCE(!sc->proactive);
++		if (!can_reclaim_anon_pages(memcg, pgdat->node_id, sc))
++			return 0;
++	}
+ 
+ 	evictable = lruvec_evictable_size(lruvec, swappiness);
+ 
+_
 
 
