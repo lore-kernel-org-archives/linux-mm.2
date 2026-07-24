@@ -4,175 +4,148 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2AA6C531C9
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 06:29:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6E43C531C9
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 06:48:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5B42A6B007B; Fri, 24 Jul 2026 02:29:40 -0400 (EDT)
+	id 895906B007B; Fri, 24 Jul 2026 02:48:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 564C16B0088; Fri, 24 Jul 2026 02:29:40 -0400 (EDT)
+	id 81EBE6B0088; Fri, 24 Jul 2026 02:48:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 42C4D6B008A; Fri, 24 Jul 2026 02:29:40 -0400 (EDT)
+	id 6BFB76B008A; Fri, 24 Jul 2026 02:48:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 08A0A6B007B
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 02:29:39 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7B71812029B
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 06:29:39 +0000 (UTC)
-X-FDA: 85022694078.22.E1D4FFD
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012058.outbound.protection.outlook.com [40.93.195.58])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 95B5A20003
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 06:29:36 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=BbnuJlKx;
-	spf=pass (imf31.hostedemail.com: domain of icheng@nvidia.com designates 40.93.195.58 as permitted sender) smtp.mailfrom=icheng@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784874576;
+	by kanga.kvack.org (Postfix) with ESMTP id 3134F6B007B
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 02:48:02 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9BDFA1202A6
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 06:48:01 +0000 (UTC)
+X-FDA: 85022740362.18.70EBEB0
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 52E6340005
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 06:47:59 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=g3h428OK;
+	spf=pass (imf12.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784875679;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1i8eOhJ3/JC/GfQ3HizjJjoOnsvAYLcBkgkjs33XBs4=;
-	b=svoELsOWrNEspYjBo4PD8WSRIqKEKarI7KdtebWhS8A1VsChSR7LG/T6976AjD3wyIW2S+
-	U0s4Hnr3+jpiTu6v5M2Thjm9KxC/xkFpxI0ce4zBn1OpYwOr0sr2iiN73GvVxq/uSob8zN
-	+au81j9YCE1s1TlMLpL0NaAuFMKo6Es=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784874576;
-	b=3zOG6VwQvlFs1UBghKWMFU9mBy6s+KMQ6GcezbT3Qwx0rCSDQa4J22KTBeu+NTS8SDEoaq
-	dWWqmJmraJvgwRLGxqB1cWtx//ghVgX8JIYfQ4JFi4BaUnH7dGCvJd+EWy7FNA+4zDaMDD
-	6vA075dM/UXb4Ciz/aGiYMaeD5TSxgw=
-ARC-Authentication-Results: i=2;
-	imf31.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=BbnuJlKx;
-	spf=pass (imf31.hostedemail.com: domain of icheng@nvidia.com designates 40.93.195.58 as permitted sender) smtp.mailfrom=icheng@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZdARlGKTLH0ACuwiwK4wpiw1vx3zON9eQiTwYZAXqeSO48yqRNX9Nxiuc/VvQ1cpWsUULpdHU6uJfXHMtY2Dpfd/3zRzwK13VDoUSPFgWLfSqfBRl08LCWdcqJZxRnkLmpg3r8iKVpXhpdMnG1t6o3uWQrFL8k1tgnv6ZlsgTVVG5bYv02TXEb6sfUceUDbbFjkB/RQkFpPvbOZI8uWar3vO34KtyosBxNflCuhyqg2ynHy5l7LsweSwGNlx5Qz6iOtggPlSGEPo0MVurpTzTveWOq92pmRxwkEXZ59B7RMPPr6olEBntQPORn+6BlY1m3XW1KQvvLuE6occX2x/jA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1i8eOhJ3/JC/GfQ3HizjJjoOnsvAYLcBkgkjs33XBs4=;
- b=uiq7UWazwj+JmF5iHi6haMBJMX5mQquQxqHoMMPDOXizrXLG+8Q0v5o5u76DB2mg7bTvTKa5E2L69JJHzTYxUCftYYyGkhaGtEBQkKl9C1hjgIZokw/5AUxcUi+qiSRw2FgAQnxIGLLNz9L31zBsPGOzgNZgBE7CpAmyOtCT6eolTKzdiSwcOegqKVrBjC28yvlAUJ2S/PGIdX582ZZJ4vdCHfSPrZrQTDfeVGoJi+ItzQjsf3qIC2tj3M4zsVWxLY2cxep7/AulprIMaslX1YqwcjPgu24bUxnQdxweJIHeAUMwGy+5oEKu3qwtiO++k6rCz8nxdzP51Y1+GnlzDw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1i8eOhJ3/JC/GfQ3HizjJjoOnsvAYLcBkgkjs33XBs4=;
- b=BbnuJlKxyyJC4qqrgeTVHym7vtbBTO/BJxxmjm/BqGAPaK7A9LSpeGBo64RhPmrYTEvqxS7EbA5sWbo2rjkxurpd0J+I0MXh2bRIsi+xTwJr5NKyvGjmgi5T38cMNMpixqsdQy349hG8DXlssSMxingB/1ma9fdoky6pRQgR5Y73r+qYVwTY4pnRNxsQYtyTyCDRz7aHaMo1/o9rrJqZWR7c3VN/EH+E6hb2FAU2GzbaM/8PhThrKWe+acBLLM10Ni/RR3d9ZVapISjmQXX5ItLxiJTlt3UpMtfKWrAgQ34tvuocr25Dc/5DflQqXCJMZFHhhGgSJcdK7iUzmjFUYg==
-Received: from BL0PR12MB2370.namprd12.prod.outlook.com (2603:10b6:207:47::27)
- by IA0PR12MB7676.namprd12.prod.outlook.com (2603:10b6:208:432::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.11; Fri, 24 Jul
- 2026 06:29:29 +0000
-Received: from BL0PR12MB2370.namprd12.prod.outlook.com
- ([fe80::86cf:c3ec:2cf5:74c8]) by BL0PR12MB2370.namprd12.prod.outlook.com
- ([fe80::86cf:c3ec:2cf5:74c8%5]) with mapi id 15.21.0245.010; Fri, 24 Jul 2026
- 06:29:29 +0000
-Date: Fri, 24 Jul 2026 14:29:22 +0800
-From: Richard Cheng <icheng@nvidia.com>
-To: Gregory Price <gourry@gourry.net>
-Cc: linux-mm@kvack.org, Zhigang.Luo@amd.com, arun.george@samsung.com, 
-	balbirs@nvidia.com, brendan.jackman@linux.dev, yuzenghui@huawei.com, 
-	apopple@nvidia.com, alucerop@amd.com, matthew.brost@intel.com, 
-	akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, liam@infradead.org, 
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
-	corbet@lwn.net, skhan@linuxfoundation.org, gregkh@linuxfoundation.org, 
-	rafael@kernel.org, dakr@kernel.org, djbw@kernel.org, vishal.l.verma@intel.com, 
-	dave.jiang@intel.com, alison.schofield@intel.com, osandov@osandov.com, 
-	jannh@google.com, pfalcato@suse.de, jackmanb@google.com, hannes@cmpxchg.org, 
-	ziy@nvidia.com, pbonzini@redhat.com, osalvador@suse.de, joshua.hahnjy@gmail.com, 
-	rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com, 
-	kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev, baohua@kernel.org, 
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, yury.norov@gmail.com, 
-	linux@rasmusvillemoes.dk, longman@redhat.com, ridong.chen@linux.dev, tj@kernel.org, 
-	mkoutny@suse.com, sj@kernel.org, jgg@ziepe.ca, jhubbard@nvidia.com, 
-	peterx@redhat.com, baolin.wang@linux.alibaba.com, npache@redhat.com, 
-	ryan.roberts@arm.com, dev.jain@arm.com, lance.yang@linux.dev, usama.arif@linux.dev, 
-	xu.xin16@zte.com.cn, chengming.zhou@linux.dev, roman.gushchin@linux.dev, 
-	muchun.song@linux.dev, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	driver-core@lists.linux.dev, nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org, 
-	linux-debuggers@vger.kernel.org, linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org, 
-	cgroups@vger.kernel.org, damon@lists.linux.dev, linux-kselftest@vger.kernel.org, 
-	kernel-team@meta.com
-Subject: Re: [PATCH v5 00/36] Private Memory NUMA Nodes
-Message-ID: <amMEai0Fo9dL63lP@MWDK4CY14F>
-References: <20260720193431.3841992-1-gourry@gourry.net>
- <amDL80BSEP6u9XfE@MWDK4CY14F>
- <amDVQopyvolxfX8K@gourry-fedora-PF4VCD3F>
+	bh=Bz4FQ5jmc709A3eMeBYUWFkEN5AKWfEdeKuy38oGkhA=;
+	b=kTC2fd9z3KgwbeNQs7X76aX7iuxBnd+mDOhIMyS0/9wAZfnPRfP0klkXF7n97/3ZjaRAMp
+	mYx8RDehRmK1tKfF5xyZf7Oc9z6itQVh7eC0As1RCIG+8EhnaRuHzgbHgZJJY6DlEGx537
+	FGezHNlLH47XNdgsFD6wlPVs//rmLl4=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=g3h428OK;
+	spf=pass (imf12.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784875679;
+	b=oLquKw+ssdy86VXLDOudLk7RzxDXu2Nh/avoMfnN4V3OLpWFNiJqpvZ5f2t8lqCpX9eW1d
+	0C+IU9Txy9gRNSu20RXeuw8BqfQzrMXl4hql56HGEYnNlqHxC9Mj/suQWs+XyAUQur3+h5
+	j91T6jIi5Ku085YV2nWRrSdBhZeOuD0=
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66O5BrMl797780;
+	Fri, 24 Jul 2026 06:47:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=Bz4FQ5jmc709A3eMeBYUWFkEN5AKWf
+	EdeKuy38oGkhA=; b=g3h428OKCzzPoSqB8XV+lKeLHwpg6VmJCEYbhOmBGdyH6I
+	peZV4MRmfjJ07u2XtmttxsGlGXWPxbvEjQBZN4SdwqDjOQL4Q/b/pSfOCIwLSbL1
+	Aj5PNhdLhXXSZSLu9gcTk/NzDQjyAWkdUeQUTB02oMEujhUyCiRSM4mqBsaMQPbS
+	QgcMlgI9ftv1bKAz8FkecZxYw26J7zeoj0P32g9HGR5Qo+b6UAFRsYgH0dlDNE8K
+	kmpNhQDCzs8boLxeHgaPtSzgm44ZNMzEAKhMFRhNl94nO68Unaxl87nRn4/jT0a8
+	tyEj0OWc+x5FFySUVYQWpnEX1WT7zoMpMo/g9eDg==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fg78gjqk8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Jul 2026 06:47:45 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66O6Yc1M015117;
+	Fri, 24 Jul 2026 06:47:45 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fgp1gqkes-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Jul 2026 06:47:44 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66O6lgJq31457836
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 24 Jul 2026 06:47:42 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B89902010F;
+	Fri, 24 Jul 2026 06:47:42 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 45B2320109;
+	Fri, 24 Jul 2026 06:47:29 +0000 (GMT)
+Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.111.82.167])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Fri, 24 Jul 2026 06:47:29 +0000 (GMT)
+Date: Fri, 24 Jul 2026 08:47:27 +0200
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Muhammad Usama Anjum <usama.anjum@arm.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+        Pedro Falcato <pfalcato@suse.de>, Ryan Roberts <ryan.roberts@arm.com>,
+        Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "Liam R. Howlett" <liam@infradead.org>,
+        Mike Rapoport <rppt@kernel.org>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Samuel Holland <samuel.holland@sifive.com>, linux-s390@vger.kernel.org
+Subject: Re: mm: opaque hardware page-table entry handles
+Message-ID: <650903a4-0dd9-4e6b-9d4b-3c32c5657236-agordeev@linux.ibm.com>
+References: <74182e50-b54f-4d2d-a27f-3a59a538d6bc@arm.com>
+ <31d36023-d728-4eee-90f8-158c7066f565@kernel.org>
+ <e22407d8-4509-4a53-9ba4-491b9d5c5ef7@arm.com>
+ <4bfeb697-9c1f-4316-96bb-9bfd66f959df@kernel.org>
+ <6110202c-057b-4701-8c04-1a76ee7bb9ab@arm.com>
+ <20260721124057.2820903Adf-agordeev@linux.ibm.com>
+ <3c21586c-0ffe-4ebc-97f1-803e8acfc5c1@arm.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <amDVQopyvolxfX8K@gourry-fedora-PF4VCD3F>
-X-ClientProxiedBy: KL1P15301CA0053.APCP153.PROD.OUTLOOK.COM
- (2603:1096:820:3d::15) To BL0PR12MB2370.namprd12.prod.outlook.com
- (2603:10b6:207:47::27)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL0PR12MB2370:EE_|IA0PR12MB7676:EE_
-X-MS-Office365-Filtering-Correlation-Id: 918eef5c-2365-41b1-d53f-08dee94cea6f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|366016|7416014|1800799024|6133799003|56012099006|10067099003|4143699003|11063799006|5023799004|18002099003|22082099003|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	vEDmYT1VI4A6AhBLfy9fkzQ6ar6Im01hIe2HWPpRa3tJgVKFFI1vxEtY6HV+12WDOtgypI2sSTffMhr3WxX3h+oMDpaihMLAJ3b29JOn9R7g/OipTCp9E/KkQCc6yXQIcKLonhAw7vzKeTToxO8M2t5N9/MShK27UyeJjUtl/T3dTP1lS0nw8RocQ12qLQ80Lp4EQInv2eY643gZF+zMlz1XprAfigp9Cliy2lMqzyJzsnU+ROeTT38eLK0sopcgw4etzuzsS3V9GiORUsTzapPstD+9T+K807++Cj+tycez0PtR3OSV2Oe2zrbi6gieSMnI5mT8pGYliAglQUHNxS3UBXiMknA9Udn3xGJ67ZanGVe/QP6o3AeORwxGiDN1bmgJ/+2rIP7sq1+DNm11g1edTiuLQXT+V9ZQZ3guVqqau3l+geYgBkK8u3VRvr8IrulGJRe5acxzsAd5ppCQ0yVcE2z61UtIHanwdSq+sGVdDD3csSctX1Hjiwbz1s4FkcOCGMBEGRHWczUi1BYGSorgcA2/h+yPEhjxBUPYMok77L8vc/N6b24cc/JPEi+quHxQ3uoQudZ0Asm+aFa8UKwXkoyxqOM+1FIIZ87t3su30OaEbGo2ZjhdnFuk9at72t+EpPEZWguLLDzcySqrZ1oTdo7TmRIZ1ZlGc6HoPJ4=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB2370.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(366016)(7416014)(1800799024)(6133799003)(56012099006)(10067099003)(4143699003)(11063799006)(5023799004)(18002099003)(22082099003)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?L30NxugFTWN7x58WxFBGJv27aQ1arWC+2oRHTJMpWZ/AKxX6Gw/VTisL2czl?=
- =?us-ascii?Q?RO2U6y/NHTx+4JEO4lB2rkRbTCMrZ6SFmv9KcpSfkLKxIl+o5A98gEJY4+cI?=
- =?us-ascii?Q?3gDMSjcZRh2tj7WOos2ux990Bqk+TnLqH6s6y4+g5eF5B84oSEjgm1rtvPuj?=
- =?us-ascii?Q?o7G5TNcWt14C12O2H+9knC4Poxf+4vVgHFbBaw7ynrbBUWCbPDqed0pM4ZFN?=
- =?us-ascii?Q?agnc+4FnccRLn0v50bbGbbokI8O06Q8MMlAdmjs7XTss+66cLdeuPrSB6U7n?=
- =?us-ascii?Q?jDRMP+KpBNv4cz8KiyPwg8iCXQy20SCqexHv0FH43dWCjaTgXt33lLP9iup4?=
- =?us-ascii?Q?7/HLFh6FEVYNqCU8SEXqMnQpWPKL1kRrcg+yCKyaLYM1YFqWbzN9ItxSbZ4T?=
- =?us-ascii?Q?C5ujaPF88X+06gMU80hP9rHOoSyJC/Ms+9CVzSGZki4kC6cJKeAZrOJYt6dL?=
- =?us-ascii?Q?arSdqiG4noxeu/WscgPId8ny+oADBKyDsn8K1c0CXsS3MObqByakAisP/lGL?=
- =?us-ascii?Q?8ULNT0bdUjpVNrb83Upaae3NMea2aGOTTH2e9bOTt9qnxkfflgKY7zgJqRPY?=
- =?us-ascii?Q?J0OVTm9pEweqXllwQNC+w+38O7wPFYr+ukmF2KpLkrCVU5Mp94MbmVI/XT5U?=
- =?us-ascii?Q?5VLNoWHSzC1N1eDmjumE2mdSwzeDSha0xZMMQEJZyrhRmBCAxs9wZYfsTSQt?=
- =?us-ascii?Q?QFJucdgGdf2LVqxPBtVPRaHeLoL7cDRATNOiuVqmAbgUHlIOXkHJjGopA8Og?=
- =?us-ascii?Q?sYFghfYniyc6gArHviEm4kzw7/6zGRucObtcsBwkm/B6AApyOE29VpaY/kZx?=
- =?us-ascii?Q?XBnINaeMFCzwVISP/8+M+UoiZbjZYXRKS2WXK1tXergb7jKOjN1R5oCvSKco?=
- =?us-ascii?Q?cAzjybUgnDanE4p3Uv1ws7cDeEQ7M+Rm8KO9lj1e0sM2Jsaqb5ZNGqlG94VV?=
- =?us-ascii?Q?7acDVAEseR+BaK9ChvFJ9dpeFJFcvFdypYRc9jt58NPxMTIOhLLtZQ5LV7Nf?=
- =?us-ascii?Q?wc5GfKGxy1Eq+R6/MIRnQzk3IaHSGRrWgkn2jj1ih1IHCUZoQce1B8NAdvWH?=
- =?us-ascii?Q?uEcBBa+Fha62ZtIWnbY83ifFc+TYtvNCCYrB2AqLDtV9MilSU5vkDx/hmEUU?=
- =?us-ascii?Q?CsoT7UBoEpMSuqyXkaVy0LH7wLFeXMgt79T52wmYb7jrhONMVLs53KinWD50?=
- =?us-ascii?Q?Ce0El/HQ3JFFhfzhtNWSPiMS65F8N+F3DNdw3SRfMBSlwtxyeJjYmjAcSd7/?=
- =?us-ascii?Q?wl/LlEpJHjyG6+0iRSc83Bn98fKkP2JgmGTNUDgC+2Zlf8RpaEvD8C41sTDS?=
- =?us-ascii?Q?GwnXg9mv8sRn1YYY0Ldcl75pZ59ovi5h7vc7qDmH1Jd4nBvdg/EMU2oPvaYW?=
- =?us-ascii?Q?Qd6dy4FWi3DzkilzTy0pufs5QhYqgP11qx8KMudgnQsA4l7N7XCzL4JYiPtn?=
- =?us-ascii?Q?OYR70JPRjPmleOTGaOukLjFgoO6xtcXIHSgZ2dQTmbJ/V3FROIUZd7bnXLs2?=
- =?us-ascii?Q?OlOtJOp073MU4Ooz72FILTWqjstOr3KEr9jYjFVieW+rJE7S4r356KTzU1Xl?=
- =?us-ascii?Q?ZG8EcBKk4UPoOkLJNmW05A7t5L5By0spcqVMPpCTZTy1x1iOMPnQ4RZ6EI3i?=
- =?us-ascii?Q?UmbFkkSgqdGq7MEY7L5dHBO99AGCG/1ebLJWBU7K8jlDFN+NpJXSLqRXcT3y?=
- =?us-ascii?Q?xcv/ut6sWftZxMZ325qk5rsYiylrbWurXqPXUKeYTY+Ab/1p?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 918eef5c-2365-41b1-d53f-08dee94cea6f
-X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB2370.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2026 06:29:29.6113
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YBQPvhpbfZj/xc94d305n/Zn9DY7juNf1aOm/Z/FEJjBN+4J5lfeYAxomWhKZr5jTissVLBywL2hU4gSUISLrw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7676
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 95B5A20003
-X-Stat-Signature: xhqo1mwtkq79wfwjuc138jhoiitrgo7u
+In-Reply-To: <3c21586c-0ffe-4ebc-97f1-803e8acfc5c1@arm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI0MDA1OSBTYWx0ZWRfXzlFigHNkFWj2
+ t9hi/jre+Al1JN0frsNghldBoD21auGpUml1xQ5J721fYpyN63WbmfyJdBCh9hAUbh6WmY1rKpw
+ 0k2fWDRoEqNFoZSlrOFOHUulkVENmwU8+8mBO0CAM0QbrkbPYM8UZcWRjZPKjFCFM3fY+e55eLR
+ cuw9KtGk3WSTvzGw+4MAEJg/c5ko0AnU8j8fcpcDPGkWGzA8oVdLAYRHWdtda/QbhwAl3pK4MMF
+ NcwHTEeOVVtEpRgs0oFW7f29+8l6D1K1s5sUdIRK4UxCAdm7SOsGyiP52j3AKgiXXrNFfE8Y7qQ
+ dRrEWS9AHKuB6iwTa8yqADaPq0OcenUex0g2GaFLca7zKA5bApBnkZuXXH6ldHwOhVENW2wekK0
+ KSG5qh04l7k97obFFkOTMsuQrD44zdFLlgqlogrJ25P39s4l1w3qw092t5lxTL34wMDKHFcwRJk
+ zrvcIRumN19NLpf2u8A==
+X-Proofpoint-GUID: cgm4jN9fLf9Qsn28utO7rXLOo2b9D7Ul
+X-Authority-Analysis: v=2.4 cv=MelcfZ/f c=1 sm=1 tr=0 ts=6a630a92 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=kj9zAlcOel0A:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=HaULLMyEdzRlmM9AAFEA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI0MDA1OSBTYWx0ZWRfX/zo0r8/H+8dn
+ soXkn1jwrjRy9UrcQ5w1CVmUlvOa9TRvdy8RI24PyPUxjJurIllH39Iy++2v7LyL4KamDfqZE8a
+ GFj7DfXPIGeFrLqxXnvIxa/HRf6BNwE=
+X-Proofpoint-ORIG-GUID: cgm4jN9fLf9Qsn28utO7rXLOo2b9D7Ul
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-24_01,2026-07-22_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 lowpriorityscore=0 priorityscore=1501 bulkscore=0 spamscore=0
+ clxscore=1015 malwarescore=0 phishscore=0 adultscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607240059
 X-Rspam-User: 
-X-HE-Tag: 1784874576-692618
-X-HE-Meta: U2FsdGVkX1+Mop8G4Rt19aKVTqrU2IvzNgW2N7xLCiAjqS4Cje+QNa+GRErXAVTdYbpZ8wDMz0SZPo7YgabnXjuKJQmokP7B4CFuCmy1sX5zM5RLcy4CU2M+PkASlXeWcZpfKmkAfzyc4cpFnzSy+RSg3M0ecE1hGYftPsxYH/gBysPq1O2w2/Rj3/qh2dEisOfmg+oSHDFcJLM4K08qI9mSVRK9IQJh/QXKaxkhMTYiyfL2kIodz02/qkA40fYc9gJJcEr1Srtfj50HLxQMTDhOQpVQzdPZJK+AfWgXis/JKscRFq6QVYdUU6MryhzEQ3ckZidD4/jPae76IR62LzETlmUYjD2T4F5K4VdcsfgcwE0zT9gQw1NWgvhXYVdxlhIcKpLMMyqlswkg/o6ucF1PuAYQW/xtIRy8S6DMmw4A4gUK+ygOr4BPNFhfxaots7Avl6DD+xDl/apRKO9opp574BtSZJkuc6MUaB5WzjTq1hZhI7Uxm65XEjnVLQHVH0qG7S6Oc6O3l08L5k5sSYjCFFfXxF90r9gIZxC4WZRnjIXv1FkVSlE7Yasay6LWif77R9ltWNappG0Ua5sUAFWOG/4nfNsIi9Oz2ILLvEFqgvO33IqNbj7LfVvbok9v6MWB/DjTChFdy9DhhVUfM4uOzN1m8uK7Jp9B1LYJJAdzgZ7DSY/PKxoOFaZONRVmlaJGNBMONDDyJmw3ur/qb9yubbEjF8uj7EPnmn3835+iuiLY+NomhI2iOBF42KM+gSwmL6qO6TCZVQVVhLWrlJuDK8qsp1nrgIzz1fdDids+uoFV0qlfBhf8ulIhmi/tfYxVFHCRGGQddP1RjeDv3SxtuF2oHEv4AmH8YAnE++RySvMvFDtyQdQLuBl3/uaoE323HkWCylY0Y9Y4XtV0uJrOs8TOMaOqT1DvCWo4FDAHmEje6/n4u2+wF9vfsACoVaOCvYT5AlW05YxMpOo
- duqVM+kT
- G12w4bqA5HujrxxVc93+p/UQt+PBk5yEiSIKc0X1xtpI267gILSRqVdN9MsYYCzvdPnOhbHlFDWbTPcC4Rq+AIefUeW5r37g4m2QsL2mSxsbtG4OzkflklC3YLsTW3Uis/y7zjwpI3fahQnLt9bjl5UafVY5FWRgJAfwqSAJNpRymWxcQKDp5ELjXeOdo2dCR43sucjx2tl4hXBkuX7ICT0MRy4VNYJLmWJ3PGWEgqNfu74OC2pJSYSHm9Tgip+FgcN7qdKO8mD5v7+Zh1BbxGWNI4PsECQIOt8ECAFGZLrf42sB1KFXXbxeuF6IbQW+VnhOOg84mKnSyLfc8QffIF4LwwsScZWH1p7/nbPDDqkt86Ze7H6kRFBkFsBXdk3r2mslckYtnVQs5y8rOd+Tomv9fP2Q+mMEkd2zAXcGSriVl36OW2MRdQFF08vMVUVhV9jVh4KtMHVxvewfl3eG4Icp9aQm8dhAl7KTfCK1K9gYUrlQ8lZlFBlfepU0NS6RbJZTS
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 52E6340005
+X-Stat-Signature: kmtsohpwtiqxpwsgsf478csopxkp88xm
+X-HE-Tag: 1784875679-458755
+X-HE-Meta: U2FsdGVkX1+l+yJoNvIrbBSNki6G76jyEVUCALZFri5Qimq0WYppKpKZPq68EgveMs+7WODUsLagFXVqbDxr7YWTvM+4BT7DHYTk/bJ7VFAx2/uCzcIfxvTSNDM2KtG/spKPwNlzc6hNB5US2i6rV3re0uvTljaOLa9M7STOQaVB/Uuaya68DAfc8EgJP7qVAmaCBCErltY5mFCtQe5wNk9Gk+u6tSqYFuuQOtXHhVHnsHVIs/+St8x4LHGwiy+6dT60b/zySFjN6B5DLFJKPVons6L6u20A987qJrEXIB3A3ZJz+xql4NshXGtQeD2DwrwuWk2Yoqv196dWNc92PD64ZE46UZgFl3vxdKP+sXQkQW3d721DC+hbpb8na1MqAfJMAkO1kjJfBKYpzhKLAayqCNXdMKH8t+kj08dJ05hSLDmPtbcE0kyILLASx3a4o+JrGLyUkBnUGK+EPBAGXXvJyu99aSAtTDZmyvuhmA1TrO/4X8MHiWbWPr3eMl/cyHb8L2d94JhWViHVfkc5XTGUmUwkMoSk/0hF5Tf7fpQsre7hgva1BGK3WmGp6LvR65ZrCfLxlMVS2aURapxXhCoi7QQmSxY3w9Kl3xhc8Fqwzysk/SfV0Li6UU8O11NbWpApFTA+VypZ+MQzqKYwK8Mijl8KJtcGJExvRQKkIpKZkPzj2kN5wQG9kG1l5r2XDlECkfLrkoPrtJudAeiD7WEYYwznkPdUHMmoN6QQLMRuCdyYBgJAkfYEx0t2YF2+khHmGMwbsoEp2Z01VYvv4naEk3JKhi84zDfRYqkR1j21mjf8YfUkJJ9hbWEo5pD5QSGbOL3Y7G8B/m3KJcBsesCS949PZBsEJ8F19zClAGYJ6BvPMv57Trw/zJeS6CWvborJ2DGaSSB4KKyCM4IpMFlCIsF4oNsIvhrLEmdf8r9l3c1+b4xfW4dtZijIaPrMBIlTVkkfANpoRhu3I2M
+ uy9/bUqn
+ ILNVQt9P0iQ+gaGJo3K8Aly1ocCAVuhckHMkhpFfvuPLECMhetw3yrFxtz+WyIjqn6CdRTBmLdFmbkdn7cKXIIyI/lK38OVPOtZQqOpRbWI9smcyaDU+ij5/YcVvTj/GAVq9zV9q4HnFt9Cq0SbVJa2hZPpeF2VcoXG5mfn60BiLlQHm0VgDT+7zHiZLNBkv0tUwbeRqA2hfkpjmxTDYyRbppRUtRlA3YofDt5QamojQIu3frjEYykzjT3VYVmVL6K6A9o7ThrTlh0jAqWxqbg2ltHa61OgEZBHR8IiqlEyd16mQyF3sIqSecjYTWktx/IHvAKqGby1gprC72Cr/c1TYJaaf7mp9oHyD7LtH+MIEuRxs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -180,335 +153,242 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 22, 2026 at 11:40:06AM +0800, Gregory Price wrote:
-> On Wed, Jul 22, 2026 at 10:20:00PM +0800, Richard Cheng wrote:
-> > On Mon, Jul 20, 2026 at 03:33:54PM +0800, Gregory Price wrote:
-> > Hi Gregory,
+On Thu, Jul 23, 2026 at 09:21:32AM +0100, Muhammad Usama Anjum wrote:
+> Hi Alexander,
+> 
+> Thank you for reviewing.
+> 
+> On 21/07/2026 1:40 pm, Alexander Gordeev wrote:
+> > On Wed, Jul 15, 2026 at 05:15:36PM +0100, Muhammad Usama Anjum wrote:
+> >> Hi,
+> >>
+> >> [Moved some already involved people to To. So they can help with the plan
+> >> details mentioned below.]
+> >>
+> >> On 07/07/2026 2:17 pm, David Hildenbrand (Arm) wrote:
+> >>> [...]
+> >>>
+> >>>>>
+> >>>>> typedef struct {
+> >>>>> 	pte_t __pte;
+> >>>>> } hw_pte_t;
+> >>>>>
+> >>>>> And then simply use
+> >>>>>
+> >>>>> hw_pte_t *hptep;
+> >>>> Make sense. So you have suggested to just hide put pte_t inside a structure
+> >>>> instead of complex structure of pointer. I've tried to implement and it reduces
+> >>>> churn enormously.
+> >>>
+> >>> Right. And for most architectures we can probable leave both types be the same
+> >>> under the hood.
+> >>>
+> >>> So we'd only have to convert common code first, and can then e.g., look into
+> >>> making architectures that care about the difference (e.g., arm64) actually have
+> >>> it be two separate types.
+> >> It makes a lot of sense.
+> >>
+> >> Let's even divide the series into more parts as there are several places where
+> >> conversion is controversial. (Xi Yan had mentioned one example earlier in this
+> >> thread.) Most of those controversial conversions are pmd related. I propose
+> >> that we convert pte_t first, then pmd_t and others. It'll keep the number of
+> >> patches manageable and easier to review. 
+> >>
+> >> I think wider agreement for this approach will be very helpful before I post the
+> >> actual code.
+> >>
+> >>>
+> >>> Just an idea to further reduce the churn and limit it only to core code (because
+> >>> I saw some very ugly stuff in some arch code that would make such a conversion
+> >>> harder).
+> >>>
+> >>> [...]
+> >>>
+> >>>>> Why do we need this and what would we use it for?
+> >>>> The idea was that there should be two different functions to read value. Let's
+> >>>> leave this out of the first initial series. It is complicating the original
+> >>>> proposal.
+> >>>
+> >>> Right, let's leave that out for now. I'm currently working with Levi on an
+> >>> approach that tries to avoid the overhead due to READ_ONCE with folded page
+> >>> tables. [1]
+> >> So you are referring to page folding improvements. I also stumbled upon those
+> >> while doing a dirty implementation.
+> >>
+> >>>
+> >>> We're still struggling with some bits, but looks like we can make it fly and
+> >>> have it be fairly robust.
+> >>>
+> >>> With that, maybe there is no reason left to have separate pXXp_get() vs.
+> >>> pXXp_get_once(). TBD :)
+> >> Yeah, I was reviewing that series earlier today. I've not looked deeply, but it
+> >> seems there are still a lot of cases where (mostly) pmd is getting dereferenced
+> >> directly. To complete the conversion, direct dereferences need to be converted
+> >> into an API. I've been thinking if there should be a dereference macro or we
+> >> must always use pmdp_get() even though it ensures ordering. It may add excessive 
+> >> ordering in some functions if pmdp_get() is getting called multiple times. But
+> >> storing its output in a tmp variable would solve this. 
+> >>
+> >> Do you agree with converting all direct dereferences into pXXp_get()?
 > > 
-> > I applied your series on mm-next and give a quick review,
-> > not thoroughly, still I have some questions below regarding the design.
-> >  
-> 
-> Hi Richard,
-> 
-> Thank you for the read.
-> 
-> Just a heads up, this was based on mm-new because of some recent work
-> on Brendan's page_alloc.h cleanup, but if you managed to get it applied
-> then maybe that's made its way forward already.
-> 
-> > > The goal here is to flip that dynamic, isolate by default and then
-> > > opt-in to specific services that the device says is safe.
-> > > 
-> > > Isolation at the NUMA/Zonelist layer provides a powerful mechanism for
-> > > memory hosted on accelerators - re-use of the kernel mm/ code.
-> > > 
-> > >  - Accelerators (GPUs) can use demotion, numactl, and reclaim.
-> > >  - Special memory devices (Compressed RAM) with special access controls
-> > >    (promote-on-write) can have generic services written for them.
-> > >  - Network devices with large memory regions intended for ring buffers
-> > >    can use the buddy and standard networking stack.
-> > >  - Slow, disaggregated memory pools which aren't suitable as general
-> > >    purpose memory get cleaner interfaces (no need to re-write the buddy
-> > >    in userland, can use migration interface, etc).
-> > >  - Per-workload dedicated memory nodes (disaggregated VM memory)
-> > > 
+> > For the clarity (e.g. on the PTE level) is it goint to be converted to?
 > > 
-> > For accelerator part, take CXL Type-2 as example, it has its own protocol
-> > CXL.cache, CXL.mem which is the rule they need to obey during memory transaction,
-> > Adding more rules for them since they are NUMA node confused me, I wonder the reason ?
-> > 
+> > pte_t ptep_get(hw_pte_t *ptep);
+> Yes, that's correct. 
 > 
-> CXL protocols simply state how to do the memory transaction at a
-> physical / transport level.  It does not make any statement on how the
-> operating systems are to make sense of these devices or what constructs
-> / abstractions to build to actually manage the devices themselves.
->
+> > pte_t set_pte(hw_pte_t *ptep, pte_t pte);
+> Yeah, probably it has void type:
+> void set_pte(hw_pte_t *ptep, pte_t pte);
+> 
+> > 
+> > While variables on stack are still may be dereferenced directly via pte_t*?
+> Yes. The conversion would force us to never directly dereference a hardware type.
+> 
+> > 
+> > What about unlinked/temporary page tables in memory?
+> I've thought about it multiple times and it is best to represent using hw_p*_t
+> type. Even though they aren't installed or live, but it makes more sense to use
+> hardware type as they may get installed soon. 
 
-Ahhh thanks this clears my question.
-Then this abstraction makes sense.
+My concern is in the long run the dedicated hw_pte_t APIs may want to do something
+special with a hw_pXX_t pointers: accounting, HW resources allocation, tracking,
+link a shadow, whatever. Some of those might be wrong when applied against a
+temporary copy, even though that copy constitutes a formatted page table in memory.
 
-> This series is not necessarily attached to CXL in particular, you could
-> just as easily carve out memory from the general pool onto a private
-> node to ensure it only gets used for a particular use.
-> 
-> In fact, that is how I have been testing this with dax/kmem:
-> https://github.com/gourryinverse/linux/commit/f279e741d9c3643597525bfab916b29b95cb635b
-> 
-> > Because NUMA node, at least for me, representing topology/locality rather than
-> > something with ownership or capability or rules.
-> > 
-> 
-> The NUMA abstraction representing topology/locality is a construct we
-> (the OS developers) have decided on historically - but there's nothing
-> that dictates we can never create new useful abstractions with it.
-> 
-> Consider:
->     N_NORMAL_MEMORY,        /* The node has regular memory */
->     N_HIGH_MEMORY,          /* The node has regular or high memory */
-> 
-> These have nothing to do with topology or locality, they are node states
-> that only have meaning in the context of linux mm/.
-> 
+E.g. right now [1] has the following ptep_get() implementation:
 
-Ok, I see.
+#define ptep_get ptep_get
+static inline pte_t ptep_get(pte_t *ptep)
+{
+	pte_t res;
 
-> 
-> To make something clear - there is no *requirement* for any particular
-> device to use this abstraction.  It simply enables a cleaner way for
-> devices carrying memory to re-utilize mm/ services while ensuring their
-> memory does not silently get used under system pressure (or some vagrant
-> in userspace doing `numactl --interleave all`).
-> 
-> Ignoring all the CAP bits entirely, if you just took the base series
-> your driver could re-use the buddy allocator without any special logic
-> AND have confidence that your driver is the only possible user of that
-> memory (barring some truly obscene bug).
-> 
-> > >  - isolation via a dedicated zonelist:
-> > >      - private nodes are omitted from FALLBACK/NOFALLBACK
-> > >      - added ZONELIST_PRIVATE(_NOFALLBACK)
-> > 
-> > I saw the reply in patch 5, so in fact there's not only one
-> > dedicate zonelist, but numerous ?
-> > I raise the question because zonelist was supposed to be a
-> > global, unbypasssable thing in MM design, but now what you
-> > are trying to do is to seperate the whole global list into several
-> > parts ?
-> > 
-> > Can you explain why in current design you don't consider to support
-> > something like ZONELIST_PRIVATE[n]={0, .. ,n-1} ? that's my imagination
-> > of what a global zonelist should look like, no matter private or non.
-> > 
-> 
-> First let me say that there's nothing that prevents us from doing this,
-> and we *could* make this the default case - but this decision was
-> intentional by me.
-> 
-> Having them all present in each-other's zonelists by default creates a
-> number of implicit opt-ins that are unclear:
-> 
->   - any direct zonelist iterator now iterates all zones on all private
->     nodes, even those nodes do not opt into the same services
-> 
->     e.g. zonelist iteration in reclaim that targets Private Node A would
->     attempt to reclaim Private Node B as well.  That would require and
->     extra explicit filter.
-> 
->     I ask: Why do this? Just isolate in the zonelist, and if there is
->            a desire for intersections - make it explicit, not implicit.
-> 
+	if (!is_lazy_mmu_active() || !__lazy_mmu_ptep_get(ptep, &res))
+		res = __ptep_get(ptep);
+	return res;
+}
 
-Fair enough, thanks for the headup.
+Right now it would not hurt to get called against an unlinked hw_pte_t,
+but it is certainly suboptimal.
 
->   - fallback allocations can now occur across private nodes, even
->     if those nodes are intended for different purposes.
-> 
->     Obviously you can use nodemask to tighten the allocation target, but
->     I use `numactl --interleave --all` as an example of a clear case
->     where intersected nodelists may not give you the behavior you want.
-> 
-> 
-> So for consistency - everything including zonelists have full isolation.
-> This way all interactions with a private node must be explicit - always.
-> 
+> The difference between representing stack type with pte_t and unlinked/temporary
+> page table with hw_pte_t is that unlinked/temporary page tables are complete tables
+> and not just some copied value.
 
-Good choice I think, avoiding those implicit opt-in assumption will make
-future developers more aware of things and do not just stumble into them.
+Well, in the past we had linked lists of page tables, which could well
+be handled using direct dereferences even after this rework (assuming we
+did not removed those lists).
 
-> 
-> This is actually one of the problems with ZONE_DEVICE - and you can see
-> it in this patch set.  Some of the hooks in mm/ for zone_device only
-> apply to PTE cases, and are absent from PMD cases - only because PMD
-> mappings in ZONE_DEVICE aren't supported.
-> 
-> That kind of implicit behavior is quite bad.
-> 
-> That said, future improvements could include something like:
-> 
-> for_reclaimable_zone(ZONELIST_PRIVATE) {}
-> 
-> where we loosen this isolation, and formalize a filter, but I would
-> like to see the usecase for it first.  Loosening the isolation defeats
-> the entire purpose of the series, so there should be a strong reason to
-> do so.
+Sorry for bringing up the classification question from your original
+message again:
 
-Totally agree.
+- "a pointer to a live entry in the hardware page table, or
+- "the pointer points into real page-table memory and that table is complete,
+   whether or not it's linked in yet"
 
-> 
-> > > Allocation Isolation
-> > > ====================
-> > > page_alloc presently controls whether a node's memory can be allocated
-> > > on a given call by 4 things (in order of authority)
-> > > 
-> > >   1) ZONELIST membership
-> > >      If a node is not in the walked zonelist, it's unreachable.
-> > >
-> > 
-> > So a device gets hotplugged in the system will get a dedicated zonelist here ?
-> 
-> Yes.
-> 
-> > And make sure it obeys the device's own protocol if it has one ?
-> > 
-> 
-> I'm not sure i follow this question, can you help me understand?
-> 
+...but the semantics of the former still looks to me stronger than one of
+the latter. I am afraid this question is going to pop up time and again.
 
-Nevermind, you just answer this part above, thanks alot.
+1. https://lore.kernel.org/linux-s390/71acca838bd3c5bb690ccb4a36313a889a48f383.1784121418.git.agordeev@linux.ibm.com/
 
-> If by protocol you mean the CAP bits (opting into reclaim, demotion,
-> etc), then yes.  If you mean something else (CXL) then I think that's
-> orthogonal and unrelated.
-> 
-> > > Private nodes:
-> > >   1) Never appear in any ZONELIST_FALLBACK
-> > >   2) Have an empty ZONELIST_NOFALLBACK
-> > >   3) Only appear in their own ZONELIST_PRIVATE(_NOFALLBACK)
-> > > 
-> > > 1 & 2 mean all existing in-tree callers to page_alloc can NEVER
-> > > accidentally allocate from a private node.
-> > > 
-> > > An allocation must explicitly ask via a zonelist and a nodemask.
-> > > 
-> > >   alloc_flags |= ALLOC_ZONELIST_PRIVATE; /* use ZONELIST_PRIVATE */
-> > >   __alloc_pages(..., nodemask);     /* with the private node set */
-> > > 
+> >>> [1] https://lore.kernel.org/all/08ecabe9-0664-4aea-82fb-f9cb1739f762@kernel.org/
+> >>>
+> >>> [...]
+> >>>
+> >>>>>
+> >>>>> I'm still not sure about the _once() really, and if we need that right now. We
+> >>>>> survived without is so far, why do we need it now?
+> >>>> The idea is to convert all current pXXp_get() to pXXp_get_once() and convert raw
+> >>>> dereference to pXXp_get(). Let's keep this idea separate for the other work. Let's
+> >>>> discuss it later sometime again later.
+> >>>
 > > 
-> > As I stated above, NUMA concept was quite naive at first glance for my
-> > limited knowledge.
+> >>> Sounds good.
+> >>
+> >> I've tried to do conversions already. Converting by call hierarchy wise is very
+> >> difficult and error prune.
+> >>
+> >> Converting component by component (such as page walk, huge page) is also difficult
+> >> as code is tangled. Some helper which is getting used in one component is also used
+> >> in another component.
+> >>
+> >> I see the following way forward:
+> >> * Add the new type
+> >> * Identify which functions need explicitly pointer to a stack variable. These
+> >>   must not be converted. These variables must be renamed to a common name. For
+> >>   pte_t pointers on stack some functions already use ptentp, which is unique name
+> >>   if we look at generic code. So ptentp would be used for all such variables.
+> >> * One commit per controversial change would be done at this point. We need new
+> >>   separate function for stack types. Also we can do more renaming to a name which
+> >>   will not be converted.
+> >> * Run Coccinelle script directory-by-directory which would ignore converting any
+> >>   ptentp (and similarly for other types). Coccinelle doesn't converts in some case
+> >>   (pte_t *a. *b) which can be done by hand at this point.
+> >> * Update any remaining functions
 > > 
-> > This is quite alot to add for NUMA node concept, I'll want to see
-> > more explanation in v6 and learn from it, thanks.
-> > 
+> > What is the approach to STRICT_MM_TYPECHECKS?
+> I've tested after converting couple of arches, it doesn't
+> break STRICT_MM_TYPECHECKS. I intend to keep STRICT_MM_TYPECHECKS working.
+> But once the architectures which uses STRICT_MM_TYPECHECKS are converted,
+> we don't need STRICT_MM_TYPECHECKS anymore as those checks would be enforced
+> by the conversion itself. Thinking out loud:
 > 
-> Sure, I can expand on it.  I think it's not as much to add as you think
-> though - it's simply adding the concept of isolation to a NUMA node.
+> Normally:
+> typedef pteval_t pte_t;
 > 
-> Some more explanation below, but if you think there is something i
-> should explicit spell out in v6 cover, please let me know.
+> In case of STRICT_MM_TYPECHECKS:
+> typedef struct { pteval_t pte; } pte_t;
 > 
-> ---
+> After introducing type conversions:
+> Normally:
+> typedef pteval_t pte_t;
+> typedef struct {pte_t __pte;} hw_pte_t;
 > 
-> I agree that NUMA as a concept was best-effort for, comically enough,
-> somewhat *Uniform* memory access - instead of *Non*-Uniform memory access.
+> In case of STRICT_MM_TYPECHECKS:
+> typedef struct { pteval_t pte; } pte_t;
+> typedef struct { pte_t __pte;} hw_pte_t;
 > 
-> The current abstraction quite nicely handles the case where all memory
-> on the system is roughly of the same calibre (DDR4, DDR5, etc) and
-> roughly for the same purpose (general system memory).
-> 
-> But it is quite incapable of handling truly heterogeneous memory systems
-> (precious HBM attached to the CPU, GPU's with HBM over a coherent link,
-> hardware-compressed memory expansion, network devices w/ memory, etc).
-> 
-> If you look at the history of ZONE_DEVICE, what it fundamentally does is
-> slaps an isolation mechanism on top of NUMA nodes because the NUMA
-> abstraction doesn't provide one. 
-> 
-> The problem with that approach is now you have to reason about a node
-> having both fungible and non-fungible memory.  It creates the need for
-> something like migrate_device.c when a properly isolated NUMA node could
-> just use migrate.c directly (with a coherent link).
-> 
-> 
-> One example of what isolation on the node enables:
-> 
-> A Private Node can hotplug memory in ZONE_NORMAL - which means it
-> can be GUP pinned.  That means driver support for GPU direct storage
-> is simply `alloc_pages_node() + pin()`. The driver doesn't have to
-> worry about something like SLAB accidentally using that same memory.
-> 
-> All without having to rewrite a bunch of mm/ in a driver, and with
-> having to do some kind of heroics with ZONE_DEVICE that causes even
-> more special mm/ interactions.
-> 
-> That only comes from adding an isolation primitive to a NUMA node.
-> 
-> 
-> > > Isolating private node folios from kernel services
-> > > ==================================================
-> > > We implement filter points in mm/ to prevent operations on
-> > > private node memory.  Where possible, we even re-use existing
-> > > filter points from ZONE_DEVICE.
-> > > 
-> > > Most filter points are one or two lines of code:
-> > > 
-> > > Combining ZONE_DEVICE and N_MEMORY_PRIVATE opt-out spots:
-> > >   -     if (folio_is_zone_device(folio))
-> > >   +     if (unlikely(folio_is_private_managed(folio)))
-> > > 
-> > > Disabling a service:
-> > >   +  if (!node_is_private(nid)) {
-> > >   +      kswapd_run(nid);
-> > >   +      kcompactd_run(nid);
-> > >   +  }
-> > > 
-> > > Disallowing a uapi interaction:
-> > >   +  if (node_state(nid, N_MEMORY_PRIVATE))
-> > >   +      return -EINVAL;
-> > > 
-> > 
-> > I'm not sure of why do we re-implement more filter and basically
-> > doing the same thing ? Any unavoidable scenario ?
-> > 
-> > re-using the exisintg filter would be nice if that's possible.
-> > 
-> 
-> We re-use (combine) existing filters where possible.
-> 
-> We add new ones where ZONE_DEVICE did not implement filters due to some
-> *implicit* filter already existing.
-> 
-> Two clear examples:
->    - reclaim does not target ZONE_DEVICE
->    - ZONE_DEVICE does not support PMD
-> 
-> Both cases result in private-node filters that otherwise would have to
-> exist for ZONE_DEVICE (and if ZONE_DEVICE ever grows PMD support, those
-> filters will have to be added).
-> 
-> > > Bonus Configuration: HBM device memory tiering
-> > > ==============================================
-> > > echo 1 > dax0.0/private       # make the node private
-> > > echo 0 > dax0.0/adistance     # highest tier
-> > > echo 1 > dax0.0/reclaim       # reclaim active
-> > > echo 1 > dax0.0/demotion      # may demote from the node
-> > > echo 1 > dax0.0/user_numa     # mbind()
-> > > echo online_movable > dax0.0/state
-> > > echo 1 > numa/demotion_enabled
-> > > 
-> > > This is an HBM device which is treated as the top-tier in the
-> > > system but for which memory can only enter via explicit mbind().
-> > > 
-> > > It can be overcommitted because it can be reclaimed (demotions
-> > > go to CPU DRAM, and reclaim can swap from it).
-> > > 
-> > > If the HBM is managed by an accelerator (GPU), the mmu_notifier
-> > > allows it to know when reclaim is moving memory out to do
-> > > device-mmu invalidation prior to migration.
-> > > 
-> > > Prereqs, base commit, references
-> > > ================================
-> > > akpm/mm-new - for Brendan Jackman's mm/page_alloc.h work[3]
-> > > 
-> > 
-> > Still thanks for the work, I learn alot from your work as well, thanks.
-> > 
-> 
-> Of course, and thank you for reading.
-> 
-> If nothing else I hope this series helps folks understand the page
-> allocator better (it certainly has helped me).  If there is anything
-> you think I can improve or better explain, I am happy to discuss.
-> 
-> I am planning a larger publication of all my research sometime in the
-> future, but I think code is more impactful and useful - so I am
-> prioritizing that for now :].
-> 
-> ~Gregory
+> So after the conversion, it doesn't makes sense to keep STRICT_MM_TYPECHECKS
+> around. Please correct me if I'm wrong.
 
-That would be helpful for me, thanks alot for all the explanation again !
+s390 ABI has an unfortunate quirk so that a struct return value
+is passed via memory (as opposed to via registers). To avoid that
+we turn on STRICT_MM_TYPECHECKS for debug kernels only like this:
 
---Richard
+#ifdef STRICT_MM_TYPECHECKS
 
+typedef struct { unsigned long pte; } pte_t;
+
+#else /* STRICT_MM_TYPECHECKS */
+
+typedef unsigned long pte_t;
+
+#endif /* STRICT_MM_TYPECHECKS */
+
+So if possible we would like to keep STRICT_MM_TYPECHECKS for performance
+reasons.
+
+> This brings another thing in my mind that in ideal world we would just
+> turn STRICT_MM_TYPECHECKS on for all arches all the time. But the problem
+> with it is that STRICT_MM_TYPECHECKS defines pte_t which will stay double
+> meaning still. So we want sort of STRICT_MM_TYPECHECKS with different name
+> and separate stack and hardware types.
+> 
+> > We would like to keep it, and I guess some other architectures too.
+> David had summarized it well. We'll convert generic code to use hw_p*_t
+> types which would be typedef to p*_t for those architectures which don't
+> care about. But if an architecture wants to interpret these types
+> differently or want to make sure the type is enforced and not directly
+> dereferenced, they need to convert the arch code a well. But it can be
+> done slowly.
+
+I am bit lost here, but I think STRICT_MM_TYPECHECKS per se could be
+reworked to address the s390 quirk above indeed.
+
+Looking forward to see the patches ;)
+
+> -- 
+> Thanks,
+> Usama
+
+Thanks!
 
