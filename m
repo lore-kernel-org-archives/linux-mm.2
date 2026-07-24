@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A482AC531D0
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 02:30:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 265F9C531D0
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 02:30:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 999546B0095; Thu, 23 Jul 2026 22:30:13 -0400 (EDT)
+	id D90AF6B0099; Thu, 23 Jul 2026 22:30:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8FBB66B0096; Thu, 23 Jul 2026 22:30:13 -0400 (EDT)
+	id D68966B009D; Thu, 23 Jul 2026 22:30:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 838386B0099; Thu, 23 Jul 2026 22:30:13 -0400 (EDT)
+	id CA6346B009E; Thu, 23 Jul 2026 22:30:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5063C6B0095
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 22:30:13 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 96041A0BB3
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 02:30:12 +0000 (UTC)
-X-FDA: 85022090664.01.5139698
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 918C96B0099
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 22:30:23 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 19A6F1201BA
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 02:30:23 +0000 (UTC)
+X-FDA: 85022091126.06.2D98EA6
 Received: from smtpbg150.qq.com (smtpbg150.qq.com [18.132.163.193])
-	by imf07.hostedemail.com (Postfix) with ESMTP id A4C0F40007
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 02:30:09 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=Thpc9fD+;
-	spf=pass (imf07.hostedemail.com: domain of gouhao@uniontech.com designates 18.132.163.193 as permitted sender) smtp.mailfrom=gouhao@uniontech.com;
+	by imf23.hostedemail.com (Postfix) with ESMTP id 1896A140004
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 02:30:19 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=VEpWfQTO;
+	spf=pass (imf23.hostedemail.com: domain of gouhao@uniontech.com designates 18.132.163.193 as permitted sender) smtp.mailfrom=gouhao@uniontech.com;
 	dmarc=pass (policy=none) header.from=uniontech.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784860210;
+	s=arc-20220608; t=1784860221;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XcvnlsC3HhT/It5VuOwr2y7sGHW1GiSiBgnaGk3guqk=;
-	b=pXb9ugDatymtWiaLl6MOlUKjodFG4V5iKodzInE28N5bP6nAnFWLn5M4zrBxDrBnhvmt44
-	yPagCGWIlkPu7y48gC4y6sK2BQB2/0sFih6hL/uq2wfQxLDmWwhYe7CimJKQ6zTYV+Wy0L
-	zoe91jInpsJNb8b5uFh0rzsrImyVohs=
+	bh=nFjFFaXMkLzxoExHNfOEPPaBXmUVyvwpIJWfb32uFmU=;
+	b=gctcTe3X7E6xbmIFe1F44qpVjlB+qVB5ho4AcKoyzyB2djAiPjUs7sDsQxBsefIzgsxCaf
+	AseiChqEYYh0maQbjev85ouS0mioiGfq/haah9e/yvHABsoybjxl8IHwWCesQ7hxRFfos+
+	MaJFBLkb/Ij3TJhbMnqiJTokYbvr82M=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784860210;
-	b=Ea/avfMGwtiMNpj1hn5UzQ2xJ34qH62vs8fmoNOJmoKmuug3EcmwlOpmVh1XL+n+1KGJHA
-	3xTvbMALyWGrlmN1ai7A+IVVnwvWlOZCswNnl16dxYkl+A3ZV6Pcbk2r7x7FEi7CZJP8HS
-	/TjrUFFQcbdAvmHdYISdTWC0iU+REJE=
+	t=1784860221;
+	b=zNCVLva4UlR4qfllhYw1QU2V9qDVAist6PT8p63x9FQJ1HEu8f6HnB6jDm1cM1oCRAcevy
+	Dn2FaaMYMLR4w5ivB9GQdQMq4VaFokC31w/XC+6RFKXdTRUsILNQJ9xgKDs1Mu5gpjV6go
+	K/G24rj90pm6YbGNH/4sYnTUDQsASEI=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=Thpc9fD+;
-	spf=pass (imf07.hostedemail.com: domain of gouhao@uniontech.com designates 18.132.163.193 as permitted sender) smtp.mailfrom=gouhao@uniontech.com;
+	imf23.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=VEpWfQTO;
+	spf=pass (imf23.hostedemail.com: domain of gouhao@uniontech.com designates 18.132.163.193 as permitted sender) smtp.mailfrom=gouhao@uniontech.com;
 	dmarc=pass (policy=none) header.from=uniontech.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1784860149;
-	bh=XcvnlsC3HhT/It5VuOwr2y7sGHW1GiSiBgnaGk3guqk=;
+	s=onoh2408; t=1784860159;
+	bh=nFjFFaXMkLzxoExHNfOEPPaBXmUVyvwpIJWfb32uFmU=;
 	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=Thpc9fD+snLZvia4IvIECJR4/9ngZ61H2O5O1Og1QqoADevADqPMz/Bq1/8BXRRWz
-	 JCrXR8+gXkama1LSqp+3/GKFYENpvhaX29P6kuiuDXji9ZyCg63LOcE/Yq33QZNkGR
-	 BEJyJj84Px6hBhmJtbdXUe181psxM+dEj5Zv63ag=
-X-QQ-mid: zesmtpip4t1784860141tf7457151
-X-QQ-Originating-IP: mFrNixuyb/9G3t9a9hZZYveY0Gmd34ZMyBS60EAtLAY=
+	b=VEpWfQTOL9zLFbyFogjNmCQMlKaiv1ch5DwkSrh7BZ+2RGOKv9qZ7NQ96vbvWgZmY
+	 KwQNpO8VjSAxaUait8NuD9BWwrJ1h3vH+OgEytvIu6MQ1/hxpbQjl0nsQJY4UcPi9c
+	 xu9ZTSK/V3GsC9xazytGPIPjuS5mw3UeNUlk2aLo=
+X-QQ-mid: zesmtpip4t1784860151te3c12dad
+X-QQ-Originating-IP: Q0VsYdJjns2x4KkOcgSLM6b/xTyYuD8mV2X7QLUMAvc=
 Received: from localhost.localdomain ( [localhost])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 24 Jul 2026 10:28:58 +0800 (CST)
+	id ; Fri, 24 Jul 2026 10:29:08 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 9941543075585726979
+X-BIZMAIL-ID: 9743323694755543151
 EX-QQ-RecipientCnt: 26
 From: Gou Hao <gouhao@uniontech.com>
 To: maddy@linux.ibm.com,
@@ -91,9 +91,9 @@ Cc: linuxppc-dev@lists.ozlabs.org,
 	linux-mm@kvack.org,
 	gouhaojake@163.com,
 	kernel@uniontech.com
-Subject: [PATCH v2 1/6] powerpc/xive: remove dead NULL check after GFP_NOFAIL allocation
-Date: Fri, 24 Jul 2026 10:28:46 +0800
-Message-Id: <20260724022851.466017-2-gouhao@uniontech.com>
+Subject: [PATCH v2 3/6] powerpc/xive: fix use-after-free of xive_ipis
+Date: Fri, 24 Jul 2026 10:28:48 +0800
+Message-Id: <20260724022851.466017-4-gouhao@uniontech.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20260724022851.466017-1-gouhao@uniontech.com>
 References: <20260724022851.466017-1-gouhao@uniontech.com>
@@ -101,33 +101,32 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: zesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz5b-2
-X-QQ-XMAILINFO: MyUUUoyOTIIuc0qvOZTgAWFYtPGeBvErdxgM61UBMZtGYDS1d7YEFbCV
-	EC+5aagfWcDwUYtBQSqXmA2Ou8wgw7CJ68r2JzeTCbAyw0A30WJSIlLMZ0syCA2VcnWcY5N
-	JdezyXm7x7g4dIdwBt1Zsb6OubMcCBlx3X6G9mSTZnW1t+HJCY/pUC790uaWtXS15Ryhciu
-	bVPyhb3RANLomJvpoR4yqUizeQvh5OWR34napoHi/9d6EUlBMmQOqQZDXOIysak68PI2Byi
-	SP4GDIKHAkakTIgXDPr+5YAx08BWxvPW8QFghC6LlOFKleEC6lcDWEyvqSdQPOAlb7o1lD2
-	oumV9r/w9DTmhm+RDT5mq8+SIlCg3RNrv8KGU0NpBRd4JdU5JTCq+h0UcpAUFB9iFzAqRK2
-	41A0krRGGIbDaZJiruMvHioEk0luwe68514j4LbAFb4srQ6/cqyaMT8vf6ztsrVLDbkd2CR
-	3nt/KZ2XYCKjhzurtaPO8UZZqAJIFsZ5LdyAHAHLjuirRVsP3o4o/IZn+lCU1UHF5Kn4LNf
-	Mna9Zu1id/tT/wzqhGeuraQzLgpMSfLyc67k+dtLqzcMowhYL+/vIpXpCO+U9P9q1ohm9ax
-	zvrc0JNqPVMHp51VuyXmz1JeiiWVfXwZibD3HPgzd3CTz2rbCKMcCvbdFaISLD7qzWIa7Yo
-	7t90D7fbXtdsRaO4QKBOw4ZzOXi90zBED/IPyxasP1G2+PtOin4oQghbxLy1DBnUfPzkoX6
-	PeR62r79L9ZhZhHLfqiBQ95YdzFGbwNxVTxjC1y2gKr35BqD230sEDvNitVoz2LHbg4/urU
-	6n+xdK7X5QKmBydiuvXo3ek2SPLFMW42g6j22f5aXiajyJ7hNyI7986z8Sg5v0PEVmVKWUV
-	/vYgqgzYy0nbwONyAFwF76W1ANd6HZlQm6pCAACm9SI4Gp6BW+l17Ckz0Hjo1wQjQJeDsr/
-	3tRvVuYfmj+ioLwBBDsK+brcU3KbqWiQ/LZ8kVG5QuuB3VrWIjt8hpTBEd4Ox27vYa+8HfK
-	q+sPhe1Aj7m7eXnOj4RpSJvqRR+YEe1VYuVu9XyWEkTjYqrssgwak0wykIbqpZXcWy0JQRf
-	r+G1UvsfWrBcMIhhG1ayQE=
-X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
+X-QQ-XMAILINFO: N4WhQbLQyIqSPgzBttvoGSM0rHIoDOFdOVlvtNsNl44gq9z78OzWrIQn
+	6gTUsLCO36PpNFC0aA0PRmQnKvNci4ZQCuiVBpPbpXXISn8zdTFbgp3vKkE6ZTbobi1ogUE
+	jATLyFsKHyR0ky86uD5CPeWt4gVZ3ayOK4w0Nv73iUfhXxwuohHPDR2QOkSXwKafi+gdb0h
+	1X4BV8pTOicrYDaJjzUgKGlx9or5UZcU1K8SNsa37VetUCDaiU/d0CaIbuy97xGqFr6CB6E
+	AzCoAY4qG7oHl+WKxvsj95cwOvTv9qDVxkL1IkZQlh4KXHmp7spDG/qS6tfu3WZLbS24DEG
+	tBZ0fLHQFzaigA4CKBN/BkwdiKDNV98VH7swM35UHPCb05m6mI/yyjP4yw9ISxU5M5aMw1i
+	LRcTYcQ0Kb+ZQoqRhYWH+ANL/sT0mwXjNj4ct1K1VFbmWCTYtJKNQWU5mKh9BSdaMUXlzm1
+	gjUQ2XdDE7+xTon2+AW+culXQWK+nKPYFKsZS2gAnwEz3hhqW0eHlpqFezzWzc/n9T+BW1F
+	USfm8IEoAt9mMb3IGT6KEBGnnH/BbAS4m+tUQwNFxKwNwcOSW5cLXvGeVL+V2FszAciqtqv
+	a+67zkvAWR2kxz2PyFSIDwZ0kdKlk+5jxO3QPySjDh3+fGncTY5QZC+UiYStS1SQ4dpxPxS
+	VyCPuwluLgsOqTnob3KzueH755NsrSdey9aMQ9lvEtiv9JKZQp5/lXQhcmlWoA7lVxGNEgL
+	ozyPBRAVhe+T3Sh/Fu5CP5xqCW9BhWPbBZ5qOxwwHpyLTiScNYfgEXrYLFSBbrJDGuJuXpR
+	p1dRHRV+4fDuKy1kQCxQjKypoZA5aVe+ujIKuDbZENUKLEelQ3eCqBx6RxgMulVxp5Q2QhM
+	G2hZkRtPGSrsZoLO0m85p1NxOqKy85Elc0TYzaN71kA87lyWHSzO4PhGwn2psCCPI4lLFTi
+	rtNDeat6HTyZApeULdkEsXOeFnRiftQ7ErQ61jheOn7erktHgbKaShSSlZSvNp3fZgmvkmC
+	bCJ7UCKhsIkqyX9n66pXkL+khsHQYr8jD+XbN2EiDOf9A1pSEOnRcnwcItIRM=
+X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
 X-QQ-RECHKSPAM: 0
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: A4C0F40007
-X-Stat-Signature: pmpgsa1jdbn15wwiqo1izscpcqd6qeds
 X-Rspam-User: 
-X-HE-Tag: 1784860209-168884
-X-HE-Meta: U2FsdGVkX18RX8F4TuiH4jt3aeou+sM4Jb8vpkxdmMwbe1JpgSCfdZbdlEb7blKBEdKni5BlgkxwuQaqiiWfzjHhf60xzpkbBhFGQYZ4i0EMBXk5HTdYRmNQRlIyEtwHAGrXr2/bLA3aSF+HOovydmTqDfJzQwyRDgVlZ4vpq7/lO58AkZNau3mHKBPWw/95gGetaxLC7CufXqygfKqZr5Cz9jeXFz6rbDSvLRBivd9bKsINNbuczdw50+AhwIZ5p6yySQVVZzvCzLdZsaFaXDQEzHRZ2l4F2TyNU4CmHMy7OtoC3dhW1lfIFCNFukrykhXFRtR51M0JVJIcGiGK6CWFfkC898OWt2UUHf1idQj9gvAJvHdS3W6if4vLZZVnfgk7nM0/HJK30XJCqOd3SD1FJibWJmTJEvElXhlYVFQkay7lb1M/3yWQ5m1C9ucaSsI40IWiAxpIk93oSda1knrcoDyyaU8uYD4cEHOzunJDSHcE3HcuteKeNhO8bw4qkyCXQuV67uKO8/DHTYv/bNewyvC3XIhkR0IIOY4Ng6zkaViqCF9Lpel1qZtpG/1ScaY7NClINTiuqPbZznffrlBNOlXQEF089U05Aia2c1cAfXGQterPcEgxTCq3FJA2UMxfsWPhVgAHtM6Qc/CBU+yghRX6ITD9de7zXDNzbCdcjg3Kx8wjY4nLxOtagnGkiWRoxuLqVsuM3hNhWutJjGXkYjO4TNf8cqu1ZESmGySWf/QvQYGqQmH9ca2GtbPtWwxpsNiGv60b06hcJWcMmdvn7D1gscBWCyXBgE3mmT/S9rE1PomWsv+vBDC3ZkvtmnvOwYZWCGNnjpWjwh79HvkwgU+HSaQGMdV1R1arYP7++miLu9jG9ZqJXkZP2AjPWmvUpDxFGIEtZNctuEvJzqn1xFiGOMzPXb7MFxoi4Vmpgr0DqoVQTo91S4OP/MmkmQvyAOZ4TccIFdNCxPo
- tZBHWw0L
- dfTc+ZEU8FCLaU1ZVYJCGlXcSCspET3ZT3vJHNnmgJuMlnGVGOKLq0ULRVCKFVGgZGrGA+qF4hiHsvMMH6wAAdEePcIYzsQ4CX7uBx66DZ9Loc68FPLR6uouawLDT/IJdDhpfCPskvLiGgN0fazQfvJDA7S/hZNu9z53+youcnpAqGbWAHhfbwI8O+5fAiJzYvSiP9rOXz28JFPAK4ia06Bve+Xp15WNeae357zJq6WAW/LkNps+V0VqCpg7kL2KDPSnYBNt26CUesD5oJTOhgQaBpTR50Y9YQM+9ai0KNqHXcMk+04fktUASJ6UmWEhoLcYLOLoBcHhvuNiP7RPhrkEeYw805raUaAG67h5Y4xpZuUKbMKX1sOz/r1DsyZrfPBG+izf3BOUe7V8=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 1896A140004
+X-Stat-Signature: 5o3587eew3yeqsqwdik65z8r79isxmn7
+X-HE-Tag: 1784860219-322282
+X-HE-Meta: U2FsdGVkX18BHSZkN3ofhX7l3MAUDaLO5iqus5JaBDvBDFQn7iTwA29K4iKfBnNVd+bcx7sHzPRlrf4KZRLpBJgbXx4/cxWhrmdCVgase0QJpp1fIojgtAYHhR8eogQ0SU+zxgcAbjP6gKVxzjE9wT+n2pQeVRnhifSYXEhx+wuoI3hCLGtMk75kohHiE/C8F2nLNdc2qlEtrgKiBqbUwRyKEPA4tv8F8bcOLVSfviaiucd9Dv/CfUFtLQP7wTpnpAE/7LDv+kmIz6efc/luk/58k4ngPHA51d4MaR5GzzmxRBHyLwx/0lJFOYHHkVAiDUXGR5sh8VXPMndwuWSSf77YRrtN5V262/mGskuyn74V2Wk7oKznB7bhbbPpsXGS8Mggoq9DxrrFl+8NBul3Q2UoglsKfa2MuMzidJRCLTdvTpWwoxh396RMgiONId4qMt1tnRFc99w27iDQ4EA25Zrg70G6a3AyCnVJjJd2iOtFrBe4kN23KqVgpOjRJAzfndMIUUa/EMWgJRijztORVUABGUV+2/33HYcx5noJ+I27rExqnGjeqL7MXqzwv4QkSBNYfhmagcVDVgJFSc9J9ox9yoDauAV+UYdEeTSg70G71ctiRsioC7ClJ8Xl12OKeJrIptHpqkewi5GUwnP2RgF3gxy3jLIojrfej2pGEhPpTy49yssxrFTFnajXcF0BC2f/F5urA4szGLLXAJqjDoYVGRzSCG20rGDd/e+BIXM0i2iXJvXb2S5Fca40hzOMD6Oqk87rGv+M4DyHzv6hoBMuAqLGcAkIGVV63Ccs+qvlBf6uGxreZwqh5/5heT5Uekt/vbMcqdBjXi4J0rI0oIsnoECRWeRchXZdCf7o3VWtL/d9JkTxHzNlmEaVM0dZR8omkK+cxK2lgyZpch9syTsMqh6Nkjwb37zBixe9QpieU2o6Pe/xtl+KAJzGxtfuOret/YuuQXct/1gIZ26
+ ng1m6i4f
+ Ts+24bn5HUTa4+yfPebhrhY3w2ObdarSjDDL/cUTXw+0mHDZvidzx1uGq9u61kn06htiO5R4K1h9g694oxSwZ9wssRzZG3jMQBTqJuUTDjGQqaUG+zHDOf2pQlKeDLHrDjMpH7X74VqFApT/VVZeUAF8kJ0yy1meoI6XolYHfF18rolwfOS0LGMMOO1ooJSAuseBD8jGlZM2AIKm8WKrrS34ZBlWys2lhp5R7wAMlTDDeSeyh7gAyGh//WQVvKaSfiPUQ0J+p00KU2XVJhj/a2WCN5eYFKMRZshB6zb26cc3Fdutu3ZSuIbTpzp7qK9lYw1I9C7OyHcJ9nHacVZuR17/SIC2P3xML3bLrxzXL0NT1q5o=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,39 +134,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-kzalloc_objs with the __GFP_NOFAIL flag will never return NULL, so the
-subsequent NULL check is unreachable dead code. Remove it.
+When irq_domain_alloc_irqs() fails in xive_init_ipis(), the error
+path frees the global xive_ipis array via kfree().  However,
+xive_smp_probe() ignores the error return and proceeds to call
+xive_setup_cpu_ipi(), which dereferences the already-freed xive_ipis
+pointer, resulting in a use-after-free.
 
+Propagate the error from xive_init_ipis() through xive_smp_probe()
+and check it in both pnv_smp_probe() and pSeries_smp_probe() so that
+IPI setup is aborted cleanly on failure.
+
+Fixes: 7dcc37b3eff9 ("powerpc/xive: Map one IPI interrupt per node")
 Signed-off-by: Gou Hao <gouhao@uniontech.com>
 Reviewed-by: Wentao Guan <guanwentao@uniontech.com>
 Reviewed-by: jiazhenyuan <jiazhenyuan@uniontech.com>
 ---
- arch/powerpc/sysdev/xive/common.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ arch/powerpc/platforms/powernv/smp.c | 8 +++++---
+ arch/powerpc/platforms/pseries/smp.c | 8 +++++---
+ arch/powerpc/sysdev/xive/common.c    | 6 +++++-
+ 3 files changed, 15 insertions(+), 7 deletions(-)
 
+diff --git a/arch/powerpc/platforms/powernv/smp.c b/arch/powerpc/platforms/powernv/smp.c
+index 8f41ef364fc6f..b1201dbafcaf6 100644
+--- a/arch/powerpc/platforms/powernv/smp.c
++++ b/arch/powerpc/platforms/powernv/smp.c
+@@ -332,10 +332,12 @@ static void pnv_cause_ipi(int cpu)
+ 
+ static void __init pnv_smp_probe(void)
+ {
+-	if (xive_enabled())
+-		xive_smp_probe();
+-	else
++	if (xive_enabled()) {
++		if (xive_smp_probe() < 0)
++			return;
++	} else {
+ 		xics_smp_probe();
++	}
+ 
+ 	if (cpu_has_feature(CPU_FTR_DBELL)) {
+ 		ic_cause_ipi = smp_ops->cause_ipi;
+diff --git a/arch/powerpc/platforms/pseries/smp.c b/arch/powerpc/platforms/pseries/smp.c
+index db99725e752bd..14cd0634eeca8 100644
+--- a/arch/powerpc/platforms/pseries/smp.c
++++ b/arch/powerpc/platforms/pseries/smp.c
+@@ -194,10 +194,12 @@ static int pseries_cause_nmi_ipi(int cpu)
+ 
+ static __init void pSeries_smp_probe(void)
+ {
+-	if (xive_enabled())
+-		xive_smp_probe();
+-	else
++	if (xive_enabled()) {
++		if (xive_smp_probe() < 0)
++			return;
++	} else {
+ 		xics_smp_probe();
++	}
+ 
+ 	/* No doorbell facility, must use the interrupt controller for IPIs */
+ 	if (!cpu_has_feature(CPU_FTR_DBELL))
 diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive/common.c
-index dadd1f46ec939..f2904a5c2b7bf 100644
+index f9a1229cede73..bb6ce07c1699e 100644
 --- a/arch/powerpc/sysdev/xive/common.c
 +++ b/arch/powerpc/sysdev/xive/common.c
-@@ -1134,9 +1134,6 @@ static int __init xive_init_ipis(void)
+@@ -1256,10 +1256,14 @@ noinstr static void xive_cleanup_cpu_ipi(unsigned int cpu, struct xive_cpu *xc)
  
- 	xive_ipis = kzalloc_objs(*xive_ipis, nr_node_ids,
- 				 GFP_KERNEL | __GFP_NOFAIL);
--	if (!xive_ipis)
--		goto out_free_domain;
--
- 	for_each_node(node) {
- 		struct xive_ipi_desc *xid = &xive_ipis[node];
- 		struct xive_ipi_alloc_info info = { node };
-@@ -1158,7 +1155,7 @@ static int __init xive_init_ipis(void)
+ int __init xive_smp_probe(void)
+ {
++	int ret;
++
+ 	smp_ops->cause_ipi = xive_cause_ipi;
  
- out_free_xive_ipis:
- 	kfree(xive_ipis);
--out_free_domain:
-+	xive_ipis = NULL;
- 	irq_domain_remove(ipi_domain);
- out_free_fwnode:
- 	irq_domain_free_fwnode(fwnode);
+ 	/* Register the IPI */
+-	xive_init_ipis();
++	ret = xive_init_ipis();
++	if (ret < 0)
++		return ret;
+ 
+ 	/* Allocate and setup IPI for the boot CPU */
+ 	xive_setup_cpu_ipi(smp_processor_id());
 -- 
 2.20.1
 
