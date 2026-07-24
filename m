@@ -4,87 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BE1AC531C9
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 05:43:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C07B8C531F9
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 05:58:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D01996B007B; Fri, 24 Jul 2026 01:43:23 -0400 (EDT)
+	id 7ECFE6B007B; Fri, 24 Jul 2026 01:58:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C8B5A6B0088; Fri, 24 Jul 2026 01:43:23 -0400 (EDT)
+	id 7C5446B0088; Fri, 24 Jul 2026 01:58:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B2E2F6B008A; Fri, 24 Jul 2026 01:43:23 -0400 (EDT)
+	id 6DB1F6B008A; Fri, 24 Jul 2026 01:58:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6EF976B007B
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 01:43:23 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C6B314022E
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 05:43:22 +0000 (UTC)
-X-FDA: 85022577444.29.7337C95
-Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 949E210000D
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 05:43:20 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZBlFDwU7;
-	spf=pass (imf05.hostedemail.com: domain of cui.tao@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4BDC16B007B
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 01:58:37 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CD5EE14025A
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 05:58:36 +0000 (UTC)
+X-FDA: 85022615832.18.B8F6BA7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id D15931C000B
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 05:58:34 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=gjsUKBMm;
+	spf=pass (imf18.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784871801;
+	s=arc-20220608; t=1784872715;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=WN4Rv67wT+Zm0X2Y2iPxniSvUeDNwworrnfhHDaXBV4=;
-	b=dtBM4NPt+MtIdStG5XOkHiA6h/p//3PHM/OxEKVFE2d6IW4KetltSwo5jRSjzb7WpjZy5L
-	2TeiQQGHOuVeyeOwuTsudZxO8M5tLKMEqTnzIEq4Qi8CwR3KGaZynYK7bRiabvFY2SEm8V
-	GaRxEpBY2xDV+8TzkZdOEqVnZ4tnNVc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784871801;
-	b=vWpf8AHIGs/DyQId0cjW2Q3NZN1Y/S+USlknaeTybN+X/A/kJM6ro98MfZ8rQS6lKur9GJ
-	UGr7Nn5lWtysr4e+fHJcvuikxZmMl4aHavwCxkGmhRXcixlgKYZl4X844LRND5ts9Z5l+B
-	8yt6ITzojJ7gYuQOc6W5n11w5X1Aejo=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=pQm1ddMox3vEUAJvm6IXwOnF8UxrgOIpTNbU2CB4GxI=;
+	b=Uoy3p38wkEkTCaKBQMPyyKuaaeWrPxryCSwBD/rAXMaKt72O/i1cVyHhnkl0TKvzn5+uEy
+	ar1DV8i786ys7NHvSmuG7GNpayE2/Bn+O3UbfNvxVfK5hAFP+lq5HhoK87NvmfNX/Zeg3d
+	ovCzmD4CmxWWckPAEMXwu8pW8DCp5MM=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZBlFDwU7;
-	spf=pass (imf05.hostedemail.com: domain of cui.tao@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784871798;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=WN4Rv67wT+Zm0X2Y2iPxniSvUeDNwworrnfhHDaXBV4=;
-	b=ZBlFDwU7OC0cdAAWcB/mjlOKOY4b7AJDiYXymsXjb663Tc7xCo7hOAEjCz4k6kxhmxB3wX
-	arUCaxdjP7a7k13aLHy84HaLlIxro5T3Lzz+yWoriwhsGwuDT4Yg1Fj+qJdcHhPBQ4RHwI
-	312R+TNR6z1lo3R8Xp45LBDL3aXPoas=
-From: Tao Cui <cui.tao@linux.dev>
+	imf18.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=gjsUKBMm;
+	spf=pass (imf18.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784872715;
+	b=dVUpv0FeR2FOwfHj9hT7QDux2kUzwSml345MAKr6yFaPvOG70t2q6kqFWJeOg8Y2YXykTe
+	03F9gKUP2GOf+4i78T1cIBLFczKVGHD+b9umFYDYttNNLGksPyx2CMhRUhbDmCy06gGw1w
+	ZaEAQ49i2lS0aJYbXb+PQtiY41oy5Ao=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 19D1060A5E;
+	Fri, 24 Jul 2026 05:58:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 499B51F000E9;
+	Fri, 24 Jul 2026 05:58:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1784872713;
+	bh=pQm1ddMox3vEUAJvm6IXwOnF8UxrgOIpTNbU2CB4GxI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=gjsUKBMmXyhpiY95M8Kz5bEMNbqsjbYtAZ2aGfKzJP1iQ5IwpQ0Z5qRYHCub1GNiq
+	 VOQDb/2uAVhQWj/EXaFb0DPjeSDQhOdQHjte2b1TtTTC3bfnJyvzQpgYMhT0byHuir
+	 oVI6cdnBF4VK7tE5Y0E161TXXdQl+SCqUBfxdIMI=
+Date: Fri, 24 Jul 2026 07:58:23 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org,
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Sasha Levin <sashal@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>,
 	David Hildenbrand <david@kernel.org>,
 	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
 	Mike Rapoport <rppt@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	Tao Cui <cuitao@kylinos.cn>,
-	cui.tao@linux.dev
-Subject: [PATCH] mm/vmpressure: scale the vmpressure window with machine size
-Date: Fri, 24 Jul 2026 13:43:05 +0800
-Message-ID: <20260724054305.516126-1-cui.tao@linux.dev>
+	Shakeel Butt <shakeel.butt@linux.dev>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 4/4] mm: page_alloc: fix non-movable reclaim storm in
+ defrag_mode
+Message-ID: <2026072426-exodus-deck-e14a@gregkh>
+References: <20260722150006.3848560-1-hannes@cmpxchg.org>
+ <20260722150006.3848560-5-hannes@cmpxchg.org>
+ <20260722162207.31a2c491ffaf36d1e8948c14@linux-foundation.org>
+ <67e1219e-9d47-4a30-a8dd-fdcf03229f58@kernel.org>
+ <amIgT-l7PExKVJlW@cmpxchg.org>
+ <00bb7fd0-998b-49f0-9941-cc4d796a8751@kernel.org>
+ <20260723170249.98d83bd68698fff2629391c4@linux-foundation.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260723170249.98d83bd68698fff2629391c4@linux-foundation.org>
+X-Rspamd-Queue-Id: D15931C000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 949E210000D
-X-Stat-Signature: gjnchmpf7knfr9bzqcd4sw5djoj83euz
-X-HE-Tag: 1784871800-172453
-X-HE-Meta: U2FsdGVkX19xHjhKymfBugEkwE4zVn0PWe9whVWl+T/Iun1qPzSik+IoU7IDeTcF0B8B2NCXoxGP9M5Yu3YoNyh+TnqUOchvN2XxH6An3MEecavj1M706eaBJ+bzZ1Eob/ZGzZZXszS1AxFK66jReInwQppHlzouHd+Hru38dsZ4N0ZfYKd/6txOZL2r5m7wNNi2d2o+TsQ++JqMxewqN8ITak5ann1yiM8891p9Ij7zwy7DvnKDqja9ZOPRy6TRqZMDV4igqFqNRy2srC8FQ2lLqtU2qFUvB6WEVlPQ3MQxzbvBW8mduQE7r1t2Rs29LbCz/7aglQIbqxH+nvySAVFSJCxthjvPwNjp3E2NpHWlx1VGQKX460ujv/KBPpO7dgXoznKf9pj/EHKjeS+gzYa3uZ9P7vzKfFNujnns5ncsN/TV7sCn9U6wBpyVTWujN7DuZ93tdeF4O6dJAyfxHE82DyNqm18jXBN9ypyZws2czw0SBSWKr+pqCoGFkl0UrQPG2p27MYVgO1Z4XKknm/nEEnIEGdsRjr6jracfICEukSHh/RMLl0jezqFSngMk+E8hiUHA0WZRILh+AUpex7VYtR7sxXT1SK764OLofJagghKHWs/CC8B630dybZti5rGgxd0Xvu+cr1zv5pgVvGSOIHbSJ/ZONPl8lH2dvXwhDEvexH0VH5J3l1F3Ghn7uL78LrXydCFmkVIzIdEHh4YrS8fJn/sh82zx8lEWs0Xf1VmiuwvvvLiS2cmkxbUXMld0xNg8nFoUhMPmjoTvxePJpFq6ztEjPICv3PkueOj/7y/8TrcG1Bm2XxSgjHkX/5oWb8tsoh2sD9uv6w4Gbr2iDGEsf+FAVoUA6NrjXzmSXkSHY3eShuI7lKzDvvQfTp5FyOjGL5eDgx7BYXO1KX43RgPhOayMxh3AxnRyhm1YK80hb4yU+yheCvSs6muC2Ag2FcTeazee/Y9C+nj
- YpXerOlb
- ycTnuGsvSZeJu73movRUJaLV/tAABRznWa0GL5VL3jNmUWVW3OM6BJ346WFKy5BuBihS/4zrDHzDjsuRoDzpQJW4EH6LTwI7fpnRBRlH2a/FZImKPUgAmrFr3iY4B/7lSK+DGDw/Lb/yhk6xjkIV6KHGaNLiYQomA4eo+wOhGDdrPctWgaPEgdSFcCAi7t0Mn94AVWlwFBxCJXuQ=
+X-Stat-Signature: 1pqadsfyqf6ki9gf6rsyb366k7mggsqf
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1784872714-628168
+X-HE-Meta: U2FsdGVkX1+48oktPfxCTbVg6C2MSatIBlgOVXBM0OFyCFxPWGr9xr2UhHLhLnhIBr7g3p48NTuWb6JSKzMbjRyySOIXsT6Vwz1EO2Jywcz34H9oL8OYb9lS/Yqf4NytJC09hBKNLQm5om8lz+Dcfxixzx7/vS1tBgxIL4EP7myEBMjG8gJhQ2zZySdPeVNpyTp5VcJmFHlVXweHvOAT+aZoiinyVgi+M8wQ447yJuIA3y9IhLki6Hm+WAs4/yD4ofnLEQwe4C6LSWbHISXdXVtrVW6Q4DIKjeuRMUZ2M+nOo6bbGGXqz7kxuD0+564TjN/yD5YTbu5Qt9FJyGJ5zKrRlfFoYQeLQWoeNmYtyRPUziPC0c7aZJZieL8NCdS54pTDDzXyTsQkN6zmJAevXBEXvuMD0/FhRaZt1+glySPMg1aOWahnKwapfOMB8YvjgM8R7H9FHYE7MH4euiLIH6kP130qOoeDo9m0kkpzfF+yJTLmBUc165h4oLFwyHT2OG1oCTckNYS7M+7pQaAlOrOSf/u6aH9vVWJbUyEIgmogV2xqS8amJ2duYgBrw5iBt28z4yaONScu5jHBcIaIgRbkuSVHWup7UNmE+tZsVE31cs39ARu2SqK5+RKSxCf4kpptd5XlLMiCNHTj95/yCNJnAK9rmQSqDEqtGTG4pdbPitQMwiISP9evCU5gI/InbCGnaGN1bQcLQR3Vbl7S85RX1CSS2IBn/+BxyOYHlEErIFli2Bx56AwFA2zXu/7Ap+Er7MKhZE4vJhMoKQ1aoTmNRVxlPYRK5r17q9IBBwHq5wCackVJR2GaTaao/ewYC5509tuRg9BrWgK9YZ4LJ8McpN1uRFE/8jVBAnLJFBRxWzzAGy+0XZnI9ZB1daafCCBdVuSKMDAY4KRvjEb4FBTcpMZx5a9gM23AYVOViKnbriF1HtOa67z5X6fW830nlCq4ZyZ/MPoYwld5tvX
+ e8Wnr4sn
+ l4/f/kQoT5bK5B56SL2USNyMbvbv2AkXq7w+ux7vyGWwg4TC3fODATakg2qzlS5baoiXlOlZQTMNIB7nBlSgC9H2XiCJQ8ObxGsVbd8FrPMPV4YMCJMbrAMY3Onc1aZ07pHK5mLxZ1NqUbyO+QzNt+Xp+P+hBebcEbkOy382oa/6VJOmRqG5KPopvQnnnIT+Zeposb5ti+LJ/ZfTr1oV9O310EGnWPk5wflA+JJzENQsswyhPRAMIZ4P8YGWBoBj8LgfaphAKfXAvWE1BtLKbmwqx/L+c2OEA2mcmPplMGV8ZalO+ilbOIKaCPdxmvTnJ/Zcvlj0e0PivKoUj+HCbO60qj4S+SjqPOcZmrRomcT7QG37yOgvw3CbEeWMhyhvcZyrPhu7kCkT2ErM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,100 +104,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Tao Cui <cuitao@kylinos.cn>
+On Thu, Jul 23, 2026 at 05:02:49PM -0700, Andrew Morton wrote:
+> On Thu, 23 Jul 2026 16:17:51 +0200 "Vlastimil Babka (SUSE)" <vbabka@kernel.org> wrote:
+> 
+> > > 2/4 actually came after 4/4 during development. Without it, compaction
+> > > cannot make sufficient forward progress on the promoted non-movable
+> > > requests. So it is a hard functional requirement.
+> > 
+> > So that's the tricky part then. If it's a hard functional requirement for
+> > 4/4 and yet leaving it out results in no conflicts when applying 3/4 and 4/4
+> > (as it indeed seems so, based on my local test), then it's quite possible
+> > stable folks will figure out themselves they need 3/4 as a stable-dep-off:
+> > 4/4 but won't backport 2/4, unless you act quickly enough on their mails.
+> > 
+> > > Whether it deserves an independent Fixes: depends on how many
+> > > GFP_KERNEL pageblock_order requests we have :-) I'm guessing not many.
+> > 
+> > I don't know how else to indicate it though. It's kind of a co-fix with 4/4?
+> > 
+> > >> > (An alternative would be to put cc:stable on all four patches.  That's
+> > >> > a bit abusive but we do it rarely).
+> > >> 
+> > >> I don't think it's necessary, the stable team are quite capable of figuring
+> > >> out the deps and backporting them with a Stable-dep-off: tag. IIRC the
+> > >> "fake" tagging is discouraged? Maybe they can clarify.
+> > > 
+> > > Yes, I *think* it should work with tagging just 4/4.
+> > > 
+> > > It won't apply cleanly or build without 3/4. So I'd assume if that
+> > > dependency is lost, the automated backport will bounce and I can send
+> > > a backport series by hand.
+> > 
+> > The way I see if often happen is that Greg sends a mail that it bounced and
+> > soon after Sasha replies with fixed up version/series. Which could very
+> > easily be 3/4 + 4/4 without 2/4.
+> 
+> My brain hurts.  I'll include
+> 
+> Fixes: e3aa7df331bc ("mm: page_alloc: defrag_mode")
+> Cc: <stable@vger.kernel.org>
+> 
+> in all four patches.
 
-vmpressure_win -- the number of pages the reclaimer must scan before
-socket pressure is re-evaluated -- has been a fixed 512 pages (2 MB) since
-vmpressure was introduced.  The reclaimer scans more pages on a larger
-machine, so the window is reached far more often there and socket pressure
-is re-armed every handful of scanned pages.  The comment at the definition
-has asked for the window to scale with machine size "as we do for vmstat
-thresholds" for over a decade.
+Thank you!  Don't make us "figure it out" as that way lies struggles and
+time delays and the huge chance I get it wrong.  Tagging them all
+ensures none of this happens and it all "just works".
 
-Scale it the same way calculate_normal_threshold() does: logarithmically
-with memory (fls of memory in 128 MB units), computed once in a
-subsys_initcall once totalram_pages() is known.  A machine under 128 MB
-keeps the historical 512 pages; the window then grows by SWAP_CLUSTER_MAX
-* 16 per doubling of memory.
+thanks,
 
-Why this matters: the scanned/reclaimed ratio that drives socket pressure
-is averaged over the window, and the window rate-limits the evaluation.
-With a fixed 2 MB window the evaluation runs the same number of times
-regardless of machine size, which is disproportionately many on a large
-machine.  Measured by cold-booting one VM at each size and running the
-same cgroup-bound reclaim workload (so the page count is identical across
-sizes):
-
-    config   scaled_win   pages scanned   512-win evals   scaled evals
-    4 GB     3072         11.9 M          23267           3877
-    8 GB     3584         11.9 M          23306           3329
-    16 GB    4096         11.9 M          23281           2910
-    32 GB    4608         11.9 M          23268           2585
-    64 GB    5120         11.9 M          23281           2328
-
-For the same reclaim work the fixed window evaluates ~23k times at every
-machine size; the scaled window evaluates fewer times the larger the
-machine -- a 6x reduction at 4 GB growing to 10x at 64 GB (and the
-logarithmic growth continues: ~11x projected at 128 GB).  Each evaluation
-takes the per-memcg sr_lock and may write the socket_pressure seqlock, so
-on larger machines with more memcgs under pressure this is real overhead
-the fixed window pays needlessly.
-
-The default stays 512 until the initcall runs, so early-boot reclaim is
-unchanged.
-
-Signed-off-by: Tao Cui <cuitao@kylinos.cn>
----
- include/linux/vmpressure.h |  2 +-
- mm/vmpressure.c            | 20 +++++++++++++++++---
- 2 files changed, 18 insertions(+), 4 deletions(-)
-
-diff --git a/include/linux/vmpressure.h b/include/linux/vmpressure.h
-index b4d13457bc2a..09111f5bdc88 100644
---- a/include/linux/vmpressure.h
-+++ b/include/linux/vmpressure.h
-@@ -51,7 +51,7 @@ extern struct vmpressure *memcg_to_vmpressure(struct mem_cgroup *memcg);
- extern struct mem_cgroup *vmpressure_to_memcg(struct vmpressure *vmpr);
- 
- /* Shared with the v1 vmpressure block in mm/memcontrol-v1.c. */
--extern const unsigned long vmpressure_win;
-+extern unsigned long vmpressure_win;
- extern enum vmpressure_levels vmpressure_calc_level(unsigned long scanned,
- 						    unsigned long reclaimed);
- 
-diff --git a/mm/vmpressure.c b/mm/vmpressure.c
-index 9629240d77ad..4c8671273c79 100644
---- a/mm/vmpressure.c
-+++ b/mm/vmpressure.c
-@@ -31,10 +31,24 @@
-  * As the vmscan reclaimer logic works with chunks which are multiple of
-  * SWAP_CLUSTER_MAX, it makes sense to use it for the window size as well.
-  *
-- * TODO: Make the window size depend on machine size, as we do for vmstat
-- * thresholds. Currently we set it to 512 pages (2MB for 4KB pages).
-+ * Scale the window with machine size, the way vmstat thresholds do: on a
-+ * larger machine the reclaimer scans more pages, so a fixed window would
-+ * re-evaluate pressure every handful of pages. The scaling is logarithmic
-+ * (fls, like calculate_normal_threshold()), keeping the growth moderate.
-+ * The default is the historical 512 pages; an early initcall applies the
-+ * scaling once totalram_pages() is known.
-  */
--const unsigned long vmpressure_win = SWAP_CLUSTER_MAX * 16;
-+unsigned long vmpressure_win __read_mostly = SWAP_CLUSTER_MAX * 16;
-+
-+static int __init vmpressure_init_window(void)
-+{
-+	unsigned long mem128m;	/* machine memory in 128MB units */
-+
-+	mem128m = totalram_pages() >> (27 - PAGE_SHIFT);
-+	vmpressure_win = SWAP_CLUSTER_MAX * 16 * (1 + fls(mem128m));
-+	return 0;
-+}
-+subsys_initcall(vmpressure_init_window);
- 
- /*
-  * These thresholds are used when we account memory pressure through
--- 
-2.43.0
-
+greg k-h
 
