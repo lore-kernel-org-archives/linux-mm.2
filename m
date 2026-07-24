@@ -4,94 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72D21C531FC
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 19:00:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E142DC531C9
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 19:02:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 605006B008A; Fri, 24 Jul 2026 15:00:40 -0400 (EDT)
+	id C71C96B0092; Fri, 24 Jul 2026 15:02:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B62D6B008C; Fri, 24 Jul 2026 15:00:40 -0400 (EDT)
+	id C22886B0095; Fri, 24 Jul 2026 15:02:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A4E06B0092; Fri, 24 Jul 2026 15:00:40 -0400 (EDT)
+	id AEBA96B0096; Fri, 24 Jul 2026 15:02:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1FBF66B008A
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 15:00:40 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9CDF816014E
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 19:00:39 +0000 (UTC)
-X-FDA: 85024586598.11.2B86BDA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id AC7A01C0016
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 19:00:37 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BySPDMLU;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 817E66B0092
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 15:02:45 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0ACE21A0113
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 19:02:45 +0000 (UTC)
+X-FDA: 85024591890.08.E5CAB39
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 6161340012
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 19:02:42 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ptz1Bosi;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784919637;
+	s=arc-20220608; t=1784919762;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t/DUzw2XQL2VWs73JF/hBihkxhoiKQkVH9v4AAAkPbI=;
-	b=6FBdil3Mj7g8MHWyKxhWjB4ju9xECq/fhIh07FsW0mXSbECXA8r+l2FyI+QragSrfTSssp
-	ZLglG3F5xLYYlaBYwfUrAFt2QldA44I5u2MzrHy1eqVoJtoNdp+GuUxf1t83mhVGP5jkwS
-	l3EPPhy2WYalN8/oET+2DhdiZqKuTls=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BySPDMLU;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=IK+FSk8TPRYJ8bU7YCHvZXlgGoXXp9viF8QREY8bK2A=;
+	b=BebrpKANjNWJnR6VroF2J2wSE0TZ9QKA81XMIZkhb7XOar1Xp86ip5bP2GXTXlHcarlw8K
+	aLObrsl+eSzIZddEoDiKOZxDEvyrdoTGPIi+oJA3OVK/bFEt+AgeTMyNCIom4kxNX/MRFn
+	ZiI04NOb25ktIY/lDn2EeOGBjY83wCQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784919637;
-	b=fntXxdHlKFnepbn2vjKDUvTAvcQ5h0U0/95AX39QPqlYCCgzS+Zw//2pteDKGZytTv5oXt
-	FEUjHgjuumIIM/j7QaJfcCLdg4+7DXJDOF70zDqvxo6feHq9XYh7HS5RLO+3Jew5FdjTzW
-	NEOd7wGImrATw7DEIuFkTgl3AVqenV8=
+	t=1784919762;
+	b=g2oThBkg+GleFP2rvCFgwR0bXx5hNtStXt3g86hj1iUN4DrWfQ2mJHPYw/OyLrXx5CiNxx
+	DkTxsWSDrfn89665R+ZxyUrT35U6zd98shRNvQd/GrPQEbZSAa42aquVYwwqXFjkx8i7iv
+	BsDlsrhUN/PBA0ojO/6HHEEJfNH45fk=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ptz1Bosi;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 441A74382B;
-	Fri, 24 Jul 2026 19:00:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 978A21F000E9;
-	Fri, 24 Jul 2026 19:00:27 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id AF9CA600AD;
+	Fri, 24 Jul 2026 19:02:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB8871F000E9;
+	Fri, 24 Jul 2026 19:02:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784919636;
-	bh=t/DUzw2XQL2VWs73JF/hBihkxhoiKQkVH9v4AAAkPbI=;
+	s=k20260515; t=1784919761;
+	bh=IK+FSk8TPRYJ8bU7YCHvZXlgGoXXp9viF8QREY8bK2A=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=BySPDMLUedTvFGRdY+q6sY5P40LHYi/KfYHWFxuW9N0D9mj4H/mlNHZJVOWlR1/p+
-	 rk1X1AM0CdVOtPPO9W2THyVVLk3WKJZiPTzi60gZfswKiJbaMq+vD3Z8YSnURusXIG
-	 sKuyYxi/svOx7URz5YRNX+w+wtcAQ7hfJIM0hAybzvpoQDYPzhW0di3qOHASv22by7
-	 e93dJyd8YnhDYPvay5xBlWlD/x4+P2ulvqVLT/WmLaFHzBN8fnN5i1PXzJHe5gBraB
-	 381Kn7NmIcSEIjSO0hdvZ3rmECO6r3S1PPeJKItdYdqommPu39Z7AXgQyvkJ2lrm6+
-	 DftE3CxOyiI/A==
-Message-ID: <7655eaad-dcbf-4275-93f6-1f92ffedfa76@kernel.org>
-Date: Fri, 24 Jul 2026 21:00:24 +0200
+	b=Ptz1BosibiIn4xQQwLjKo3BnaOcPfV6rhhcYiV9E0tVQr1ebj9AaATPuktt1YMa6p
+	 NaMrcLUwv53NewAAEPiyiHMoSk7vkiiB0EE3Sncs1rIeHWKheOhGTaeM/DAwlpGSL2
+	 3Pn+rWC8gd7Vsf16ucfAuB2FPgAKSbo8DdVuGoqXmzIFOk6eLj2kSZj0WDadOCwXdc
+	 K2CDPS0o1VGEXKZagR6twix6FaFsc0up8E3JLmtNPw31jmWBJUJb9TKsLw9nGFI+eF
+	 JVA4Y7lW5jnTzroJLHlar+e+3nmnNtXikOQNIRGLflmz2NPq1zymA/LPX4qf8tb4pG
+	 e+504rZ+cTzEw==
+Message-ID: <0abb768f-cd8d-44f4-aec6-a4971ea5f104@kernel.org>
+Date: Fri, 24 Jul 2026 21:02:35 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 1/8] mm/hmm: move page fault handling out of walk
- callbacks
-To: Stanislav Kinsburskii <skinsburskii@gmail.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, Shuah Khan <shuah@kernel.org>,
- "K. Y. Srinivasan" <kys@microsoft.com>,
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
- Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>,
- Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Min Ma <mamin506@gmail.com>, Lizhi Hou <lizhi.hou@amd.com>,
- Oded Gabbay <ogabbay@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-hyperv@vger.kernel.org, dri-devel@lists.freedesktop.org,
- nouveau@lists.freedesktop.org, linux-rdma@vger.kernel.org
-References: <20260723-hmm-v10-v11-0-c55b003a4b61@gmail.com>
- <20260723-hmm-v10-v11-1-c55b003a4b61@gmail.com>
+Subject: Re: [PATCH v2] selftests/mm: fix gup_longterm EINVAL error message
+To: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>, Shuah Khan <shuah@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe
+ <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Sarthak Sharma <sarthak.sharma@arm.com>,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <8A3ADC563A32EF67+20260724065929.1474539-1-zhaozhengzhuo@uniontech.com>
+ <23557F4CB8CF36FF+20260724074603.1479243-1-zhaozhengzhuo@uniontech.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -138,17 +123,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260723-hmm-v10-v11-1-c55b003a4b61@gmail.com>
+In-Reply-To: <23557F4CB8CF36FF+20260724074603.1479243-1-zhaozhengzhuo@uniontech.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: AC7A01C0016
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 6161340012
+X-Stat-Signature: o3ipgmszzcfxsdrdtghthiqzg3xd7d8h
 X-Rspam-User: 
-X-Stat-Signature: rukox74d7n1nbhmxch6dzmjj8nq5enzk
-X-HE-Tag: 1784919637-847944
-X-HE-Meta: U2FsdGVkX1+SPunAD3sTyhA2g6mDcFTZlgslngkXUh9sF0bE3I6QS7M5OkD/l8Kb+5bd3LcTqu6dU6Ioh/l/gDWwok/fZL9eP6DthYiURzOvJzL5ir75nWSB7NwXYJbM5vTSI04Po2QTbnSbAWHcy6wYbgtLDz/dugiKM79UfyNIapQHmY/hPBQINCu4hZMnjMg1ieo6BGuO4dXiWOlGLTpqrO5DlnCz1GnhYEG5z57rdi4lTRlxfVPracrJKJArDmoCQqKzT3BofFlt4Dch6MyAiCCQ3r4LsWbbasFHYM2Qa6p3Y8M5BRTQx9pU1sQGM76Li6aUxQ8uuJ3/TGUmDioOdU4zr2CV0cJUUlCKuZNzu+lxOZ4UWIlWobSb3IeDL6b6s7Q8BP8KVXLqHF2iD8gLJBT78FfsjjfyukQi2KJY0wtUDMsp8HOJxg7KSwIR2Z9lQPCoxB5byU+86m+38GWfSGOzo3NJDZTSs/neiaOyeJDc54Amf3v0xmSKSe0mn0Q6DYCDPEHv9GpnpUaMKWl5n6RjA8hne1Wongaez4y/xogzr9aHGe3Mhn1bqXy6/wIw95knodm+ME0Y3r3u6kQnHAfcWN/Ua9hUiiQ9bojk5iM2AMqJ98j/gtfD5AwpXMxlxfufV1W8IUF0nSBI3yMiD1LjkB5D9DHgPFqlXu02OqemeB3NsGeA+mnZe/lbtnaMMIi1DULRzAipcGsWo9yGlb1v/zKLDFhHRmgfcz14Gx6A8oKs6aMwSQtLrG0eQvrjLEH/t12AL036Ze9ocwlazlF5zJW9sbfcIva2V6jorsWWXOvJk45dzOjuVgs8fLgqFn/AMQCaxe83YTI8d5nTpAmesx19wAnoUb0hv2I/DO864Qrne02dGFritEA9kv3UwVkeEIM+HSxctvPlocQkZvohUs68ZCzqwkzQckaAdGCcgxuxGyubnG6q8NJXnU5lCb9N2zjZxWq0QIs
- dTs05SRu
- 0UAxVVobSQhVi9IH2UNteZs/NbnVA02ktAPfKxK+vlGx8ak0X8bokBI8Tw4owtZ48ZLIH//lcbxjL2K0R+Mywrdi9ClsMaP+mRDJeaGWUeI0TeC7JfaPMjYLMO1kY62jrNdrvNY7fZAPUwswzDEj7ZJYr6/tXnApM8pw6YsWHvb80NWVu11Qhm6uMLwGnkKjtooLwXHfdvla77EoTiT5nXKgKeNSlFiOqrKs79yJt/4ryJGvXCQr2FavO3ssaPKwDxyYmWkVGR0vEkhTTVxy675RFPeNwPCvTmAM3FogJfeU5eoSsdgLvM/SPVpyXXXq46NNlBAHxBspr2og=
+X-HE-Tag: 1784919762-184731
+X-HE-Meta: U2FsdGVkX18kCaQh0e3Z7YbJYJbhmy60QJSTdMakCqBBnlzcjbCfli3vKHDz3uhsAUrsSxW+/08lWnCeEiXHzw38Q7vCYOBAzr7SBUuZjzZlNuxqW4afNz2BhGP6ccA8fZ2Xq9d1MEvVC673+z8+NiHKCzpYqbyFJchvTrvcpHIod+QvdBuJ6WtCDbf0ichZFsXZbIiCQFKrnTRO3zWUdt6y3gRCfdKpTGsTd8Z6B2rVLtHw8b6rA4hLIbX9adKgX1iHQp+WJ5bG2+xMGvVVQNXTGO1v+FJv3rWgQUMqo3PfHdb1bwiHqquacOdgCz7CrDweEsTFRJkgi7/mLjT1BYNsDQoab6c0RqLZbjEKT6TTZ8DNFF9D3KuhlzEXoKIs+X9gEFZEbd0Vx2PjKzfG8p+wygHX88SS738LlZe25DBKAK1RvBU00xNu6F4leyegUqBtrQAFSPcAKnKQ6Xd3fqFAVPAnyFsue1IBdqsgbH3KQ0aehiglqtZjhK1ztZSL9Gcy42+rDd8z8xOTaJc7ZZE4+NQdYAVpNfowukAdmDM3Sgm1ua3IxeMak2VbLXx7VRTvwSvgT8KLXleP9D8ElkpV5CPAup5NnzRoL60OS5Wd/VIpDjPWRP0aMyVApuGkIsCL6pH6a/D4xNXWdL5j4Kinvvk9Eb6aRjOKOBdstzVcB9fc3ZwUegIGXUmI+ko5tKTp3Zjx6jcnZ8oOoQlUGFbtSA1zcbbID5Jb5UyUFh6Gz3Tn25jjkzx4LwKOfFXLfImSA6kf++1N7HzXDx5Hfh1W51mU7Us4JZ12RpYjbKzcMzZX1ch9XG96VR0g6V48NPNXJglAW9K/iRecmX738gu7zyWVut3hiW5nT8jhRLnKyrkP0Hbth/IfUY+NqX89go8+nyiM6rQ997De05YJ1xp4UaB4UIBkk7IZ7L6LpzxyZTBFw1wnUGi9vgB2Zl0GXRDimlAcLdOZbE3Duk2
+ 0NxwLqLJ
+ SNj6cbywr+opz7MFdVaNcgBUOETZZDpHM5PLTqkn1MJ8waLf3sWLOgV2lNFFdlK+TnlGlUpNW9G/uUvI5iXe37+9roCQDrtoOMssSIhlzYRu57jp2jC4De5GlM2hhj9FXWWLAhZzzYyiKyuVGJDTmRiJCgfn48xxMYNYRy8UwK140Mwwj284XbhbR5dHOmijTNEK79d/uILkLmJmvdQFGAdQYkeKhXMOjFpxxhFNua/grqFommLxG7DdXMS+I0FxiwDwOcVsQumo6M4Sr+8N3J7/zj9Z8eyKERy4VBV09yK2Tm8V5e7jIvVUT5iR26cl9vgMdT8SHdboc61w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,43 +141,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/23/26 19:36, Stanislav Kinsburskii wrote:
-> hmm_range_fault() currently triggers page faults from inside the page-table
-> walk callbacks: hmm_vma_walk_pmd(), hmm_vma_walk_pud(),
-> hmm_vma_walk_hugetlb_entry() and the pte-level helper all call
-> hmm_vma_fault(), which in turn calls handle_mm_fault() while the walker
-> still holds nested locks.  The pte spinlock is dropped explicitly by each
-> caller, and the hugetlb path manually drops and retakes
-> hugetlb_vma_lock_read around the fault to dodge a deadlock against the walk
-> framework's unconditional unlock.
+On 7/24/26 09:46, zhaozhengzhuo wrote:
+> The gup_longterm test prints a literal "n" when
+> PIN_LONGTERM_TEST_START fails with EINVAL because the string is missing the
+> newline escape sequence.
 > 
-> This layering does not extend cleanly to fault handlers that may release
-> mmap_lock (VM_FAULT_RETRY, VM_FAULT_COMPLETED). If the lock is dropped
-> while walk_page_range() is mid-traversal, the VMA can be freed before the
-> walk framework's matching hugetlb_vma_unlock_read(), turning that unlock
-> into a use-after-free.
+> Print a newline instead.
 > 
-> Split the responsibilities the way get_user_pages() does. Walk callbacks
-> become inspect-only: when they detect a range that needs to be faulted in,
-> they record it in struct hmm_vma_walk and return a private sentinel
-> (HMM_FAULT_PENDING). The outer loop in hmm_range_fault() then drops out of
-> walk_page_range(), invokes a new helper hmm_do_fault() that calls
-> handle_mm_fault() with only mmap_lock held, and restarts the walk so the
-> now-present entries are collected into hmm_pfns.
-> 
-> No functional change for existing callers. As a side effect the hugetlb
-> callback no longer needs the hugetlb_vma_{un}lock_read dance, and every
-> fault-path exit from the callbacks now releases the pte spinlock on a
-> single, common path. This refactor is also a precursor for adding an
-> unlockable variant of hmm_range_fault() in a follow-up patch.
-> 
-> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-> Signed-off-by: Stanislav Kinsburskii <skinsburskii@gmail.com>
-> ---
+> Fixes: 800ddf3cd74b ("selftests/mm: report errno when things fail in gup_longterm")
 
-Any reason my RB got dropped?
+Drop this: it confuses people that care about backporting actual fixes into
+downstream kernels.
 
-https://lore.kernel.org/all/0b9be5b3-93aa-407f-b83d-409bec4b55e1@kernel.org/
+Acked-by: David Hildenbrand (arm) <david@kernel.org>
 
 -- 
 Cheers,
