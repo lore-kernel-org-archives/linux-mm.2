@@ -4,97 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7023C531F9
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 13:34:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96506C531F9
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 13:37:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D5D066B008A; Fri, 24 Jul 2026 09:34:13 -0400 (EDT)
+	id 460DE6B007B; Fri, 24 Jul 2026 09:37:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D34566B008C; Fri, 24 Jul 2026 09:34:13 -0400 (EDT)
+	id 4115A6B0088; Fri, 24 Jul 2026 09:37:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C4C5C6B0092; Fri, 24 Jul 2026 09:34:13 -0400 (EDT)
+	id 32A246B008C; Fri, 24 Jul 2026 09:37:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 98D836B008A
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 09:34:13 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0EE036B007B
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 09:37:14 -0400 (EDT)
 Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 24A931A0399
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 13:34:13 +0000 (UTC)
-X-FDA: 85023763986.03.152F0EB
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	by imf16.hostedemail.com (Postfix) with ESMTP id AA51418000C
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 13:34:10 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="M/fFo/94";
-	spf=pass (imf16.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784900051;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=Gz4viE8dOBjBXdN6lTFFvwoCis0aeCWu3yW7zM1hAxg=;
-	b=Td6R0thvmBM8iLc4/8BJE0Li0Bo1bB5esUsVR9kfuRvYHOG3reLKpJbz7aOla/pGxWDcud
-	OHHrxhwP8mkUhJhxjAYllV9J1kbp4DdlBrkJxvET4WUa8tZJwPCihJeI3w9YuXjwRvBT3X
-	KIvhn3OGLF9YgiaCvFAIFbVBGD+NwAE=
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8BBF08033E
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 13:37:13 +0000 (UTC)
+X-FDA: 85023771546.03.2AA2F41
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 65C3E1C0002
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 13:37:11 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UvQ7Evnd;
+	spf=pass (imf21.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784900051;
-	b=kSco2iyIa4uVojranvNBvFNwYrR+vQW0iLkC9p/T2N58Qyh1WE4r1k0o7Jm1gJbkDbJahi
-	1VdZb1A0PetEIbm8tsELj/9pAonvgWxStPvYCGKRt4J9/iA2nMMrUDXhNDJ1C0zCCRdVnA
-	BVXtNUmIDC2pM2u6M9n2tpAvOcpyR4U=
+	t=1784900231;
+	b=XFOSC7E87c6Ks25GOGrtXPRA+uaDxdw7zImWJAGCQ7OsO05Xz874t3bzU4EuoWPZa+cPkI
+	pr8OhZKDtclrcrMQN/8kLZa34RjjdhLTB4qKXs/tE1A9YETNJiYokzXnjCJhWXhLhAVZZr
+	YLZiEml96hPQzPZJfFvvAQqxbROK2j4=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="M/fFo/94";
-	spf=pass (imf16.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784900051; x=1816436051;
-  h=date:from:to:cc:subject:message-id;
-  bh=HCi4xO+oZO+F1vmtPFTVqw36/Cr9j3p5ty+lqMpqkjU=;
-  b=M/fFo/94Zw9zPQnivtJ6QUJvE7yUgAARFzlWiFDarBXkLkOYB4EvnKCo
-   bNkX05dtswmYe6otIGlAo6gfkVLcfyqJTEHRFQPzaIu9B96wId+w6/hDR
-   IZpnVzEzyKDL2oKCCiVkNYgKy6YeC3ssFq2alwoaNYU7JpxdaYrcdQh6Q
-   8xz1ZAdZ3LJosFuGu7oNAuo5gp/84ZIIbsOXuw7GF838aXVdL9CrPHNYN
-   h/XO/xG3xXjE0g1onSSLT1VAXmbRRv7uAVIIY2Hl0vxYQOYZmrZgrsikx
-   Vn+VAtYgVkJmfhmlngg7lLi3wb3Tx3otxizDng6niazb6A6UgmD8k4PLc
-   Q==;
-X-CSE-ConnectionGUID: dYptPqqhQd2Z79bkYHy7OA==
-X-CSE-MsgGUID: i3cheqYlRkCzINcr9t180A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="89455821"
-X-IronPort-AV: E=Sophos;i="6.25,182,1779174000"; 
-   d="scan'208";a="89455821"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2026 06:34:09 -0700
-X-CSE-ConnectionGUID: 8yJCjbu3R+imxNNkEgibFg==
-X-CSE-MsgGUID: vx2i6CJeRiWRKF1Kh5dX1w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,182,1779174000"; 
-   d="scan'208";a="259368202"
-Received: from lkp-server02.sh.intel.com (HELO ea128546eb3d) ([10.239.97.151])
-  by orviesa009.jf.intel.com with ESMTP; 24 Jul 2026 06:34:08 -0700
-Received: from kbuild by ea128546eb3d with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wnG2P-00000000apb-0AIu;
-	Fri, 24 Jul 2026 13:34:05 +0000
-Date: Fri, 24 Jul 2026 21:33:08 +0800
-From: kernel test robot <lkp@intel.com>
-To: Josh Law <objecting@objecting.org>
-Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UvQ7Evnd;
+	spf=pass (imf21.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784900231;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=6/FxFds0ZblJiTDVn0Zh6YSzNFtgG6KSsc6BX2Vp7N0=;
+	b=n+zvb9KCG8FcJ6ALenaHqRRUE4ZfUER+tat1oDvLeztFDK8k6ecuNY29MJvZvgiWHPqBSn
+	fkEs3eGOQ+GsEWhuZsb3sQm9u0hBY6EOVoOJwmkYHT3HTKADzIupm+smoMyXyUgGnsMpu4
+	H+O5NmBTx6ZNqqmZ/ThHySY2BO2p6Zo=
+Message-ID: <0fd713a8-e4ab-4c07-b36e-79dd138b4a86@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784900227;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6/FxFds0ZblJiTDVn0Zh6YSzNFtgG6KSsc6BX2Vp7N0=;
+	b=UvQ7Evndl12aryBj5Gzh/4Kx4IFxjvJ4rQR7z7ZeZ02IkJcBysdcs4RGKKa4/VtIk/MUN4
+	kFv0UzKogYSnjvY8paSxOYiT0jsEqzPaZPtCX7Fha6cYM3qT2NMr9omxqoVR6rqLt06FcV
+	aqyG0djpQWd5Myh9Rdt5ZWa+1GWgLE8=
+Date: Fri, 24 Jul 2026 14:36:59 +0100
+MIME-Version: 1.0
+Subject: Re: [PATCH 3/5] mm/parisc: constify ptep_get() argument
+To: Pedro Falcato <pfalcato@suse.de>,
  Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>
-Subject: arch/mips/boot/compressed/decompress.c:undefined reference
- to `__ashldi3'
-Message-ID: <202607242144.ZsfAPGBh-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: AA51418000C
-X-Stat-Signature: xrkmfci851t75heeqo3ppsadymsq3y6m
+ David Hildenbrand <david@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Helge Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, "Matthew Wilcox (Oracle)"
+ <willy@infradead.org>, Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Kevin Brodsky <kevin.brodsky@arm.com>,
+ Muhammad Usama Anjum <usama.anjum@arm.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
+References: <20260724102017.141532-1-pfalcato@suse.de>
+ <20260724102017.141532-4-pfalcato@suse.de>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <20260724102017.141532-4-pfalcato@suse.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 65C3E1C0002
+X-Stat-Signature: 1pcc7985pn5a6w4rf46up4ay4aqhn4td
 X-Rspam-User: 
-X-HE-Tag: 1784900050-764743
-X-HE-Meta: U2FsdGVkX1/6TeYq7v5YdkLqt0zMPmJuFiOR6MKedLbYZBfp7GR8pWzHrmm9ixqIg99CNjOiPEKiYgU2jZrikRLtUsDYtwj8+MhOIsD8cvrYv9MnEuxbNVoY/tDgcfrJ7pfpv6OWJxyRxO5ZJcbI6ZndfprMdQZLkJl3uaSGNPt05spF1aUHNwgDVhS0Q++nJ4Qa7dD8kb2RmgTU03Ip44LWGzGDkHVsDA9YUcDYtFhJOgYMkn/Z9DLQjxB0QJX2yGxSSMv+iGXSnqNVTlS9VYMUTdGFOATXzP5Z5iS6GinY+czGhh+NEf8XtQ8+P+ds6RS9qhkmsy+lbg4ZDaP9c8JJUYOS/nDPVw+ARN+nunIEbfSGMubVsoFByzTVIM+sjoPxyGGpmfLMX5a8xEBtLH2lMVqoVUbgJRTxSq0uVTwbG6H/X5AZHSUPpgs7EuYcrRp5bArY/WOKWMA+pjKIvpB6JPvt+4FX6VkUWM0TN1BLV/mfEUI2U/ox0mGNdAPFC6VRpgMwLhvxqovEfiTtKVASWMZk1WdaM0T368D8/4AaWwPofgfh30zw1Xa/Ug2NGuls2n3j7n96yeSq+4XaKodbXs8WoCJxq2jMD22IkRsynnmlagu27+ZIw7MDwxWrQqLryByM2wPLIJyzvUQSjdAEla3xiZWyGEfDnW8fj7uzVNi+cH945fYbekHI8p5rRwns3sE3iJHmvIv4Fwaefe6AG37DM8/IdUNIT7teX/tlPDgV3iUTzBnLpQcF7jkL9Km6+5hIlSTqHpUCw895JzuS6iArQvhwde+93y2xH1vjCq986vP5/L9ibomntUMspUVupmIc+w5l11j3C6YdxanNUh4iccY63/8De5RTbjehD8PYsivi4sUxNvcoQQXCtIP9TEz20IWK1TgxxrA6uXzl/maHX7wc+9MNgHGdToAA0pi/TJ2rVb8+bCIHkGQsf26TRt83M8OQO2hewno
- R/h2/4bN
- 49nnpbDHN1NkGV+sFZxnZU520UQsUCfyNF3XnPvEdAZ4RRWcU0JgoMbGANto7uvrJktGeYFoetKdMT5UMnjvXzcJ/N49CEI6YIC2UfnnWjn4MgcVgsssCHkxxIImxsmosgXMIxjIbj+FsfQyxUDDUoLrO7J1JHH+p+AJguZD34wLsBwgiEFXlwL2z0PnAA3rAv9MAtCSqr+/6yhZztTQ1OoI4BXNriJLo7/QAFZHvOdJ1LRbcIhi0gk7CRLdJjbRcmbrkgsbw8R44cObJ4DQ/qrg2MkSCNRbPzVGByoE3azPpnMBHMCi/Pp24jkLtVtxVXurcN5iTBMMZ3FFUhWl5u9ZideLLTMh08S9s
+X-HE-Tag: 1784900231-944693
+X-HE-Meta: U2FsdGVkX1/XPujTP/yhhB1O780UkQpsMg+05pPq7Ts9Fh9XPZo2DrWZgdTfXCp8sI5ZiNW3EMe6fc9MDRnymWvfltewaxZFCZG5g4h3X8APzmGKZxfjUNcB66K5Y/l69lfAP7MPdaY12ENTIVq3enCb7z3hcZKnzXqQfeQa58Di2OPRB53ilC3jTe52SuvA3PT866MzLJ9a5OOKkpfESsR/JfsT/eRvdiXOXoGAKLLE43AL9GQjigE0qA55mWJH5ocSS6TcWUP7bjedbdyNR8ikQdzFz3IjQkRVBSwHp38NwOQ2umM2OHeADrWOesNMCKtq/AV5vFz+F3Fg9m+SXaet+Njv81t9AMA0IEz3sFWlN3mphtOzy6+GPbpDrvIcsghs4Ab6WyR0PlVJhvz8PnIuHU0vdzZ1Ytu+HEI3g3PoXEmbdYFmUYZB72QClWjVvJ+NWJ4EY/OHyZ5hCQvT3jy2LhuW+weadaT/MuLMlUZfPP7yR7g0g5BEjj1ULVODWXxdLuQSUpZxFeukWSzIJozbmEsKv+LrBYgj6+wrZDT+yw9XD9nkyoWnOsOW3hp+/VOLBqcEQb8ywH99gNOfRMsdTNe8+DXpGyZ7w9+Kl8tVY5moEpZEQA3SsBrZTadiHgCocysF6Xi2lBIXqYkc/FrdEj1llWq3tRmFmaE5pnMX8v7H8IcZJlOno7cL1He4DljTL6IYSq59FKWDrHWt0eUOeXONbOFDEdaYtz4nPq5jLdf6iqWuU/vxHH6QFV4uhGSuoDbv4Mu2z1F3ZIQy+8AvI7hbcJnNj9jV3dN/c23r/2lbAiEj5Ta8NhdlpObeoHckK6sAd/prx+k5QUiX2h8u4mmys/bCJSC0Yayw0ENdwP8saNCyoh7M1VyNKFOkNcIAaDZCRfKjgBQhU5ZlhkayLKzJUXcTPLtsRUGilQ1Fgv8LvyrV36shCaPwPuBtITB/TkKXQf8zFeDvCdy
+ I8k4Du5m
+ uF0FZxUe1aqBGX1JL5HCg6nisX+A+bU7Mp5nE9ZrDamHLbvyl53gLwAZ4SVNtKR0UJajRLR8KFoNt6BbNbtznMFXaJPMQDPGj7Z9TV8PDxiT/xjw8FaYChuTYoFnQE49VQ9EA938RCSM5r4OHu2sgyn5UUBOwnobOMW0FBPg/HVrmASVWH0Fc3+WwsUBEGa8MMcZwqvq6Vq6orYOnFagGF674Ut3Xu0+NiyH6GxW/ffXk3zoVw6EuXprGPM/ZeaKs0b6Qn5f9wq7ngWIPr9JYi/h11tRLeDQhlIteDDUdCkS2UJQkEFaRbPYtS9C8XByOssnY5ZqBYuYwzrhKqnh6uypXSQWweIyqnjKPL0FAw3GUgdo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,29 +106,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
-head:   4539944e515183668109bdf4d0c3d7d228383d88
-commit: d4dba3b9c03a326cfa73833d6b166aeb442f82b5 lib: decompress_bunzip2: fix 32-bit shift undefined behavior
-date:   4 months ago
-config: mips-randconfig-r134-20260724 (https://download.01.org/0day-ci/archive/20260724/202607242144.ZsfAPGBh-lkp@intel.com/config)
-compiler: mips-linux-gcc (GCC) 8.5.0
-sparse: v0.6.5-rc1
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260724/202607242144.ZsfAPGBh-lkp@intel.com/reproduce)
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Fixes: d4dba3b9c03a ("lib: decompress_bunzip2: fix 32-bit shift undefined behavior")
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202607242144.ZsfAPGBh-lkp@intel.com/
 
-All errors (new ones prefixed by >>):
-
-   mips-linux-ld: arch/mips/boot/compressed/decompress.o: in function `$L13':
->> arch/mips/boot/compressed/decompress.c:(.text+0xfc): undefined reference to `__ashldi3'
-   mips-linux-ld: arch/mips/boot/compressed/decompress.o: in function `$L12':
-   arch/mips/boot/compressed/decompress.c:(.text+0x168): undefined reference to `__ashldi3'
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+On 24/07/2026 11:20, Pedro Falcato wrote:
+> ptep_get() does not need write access to the PTE.
+> 
+> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+> ---
+>  arch/parisc/include/asm/pgtable.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+hmm I think you might break build bisectibility if
+you separate out the patches, you should squash patch 3 and 4,
+with patch 1.
 
