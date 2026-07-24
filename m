@@ -4,90 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3989C531FA
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 08:22:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE7D6C531F9
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 08:27:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5C1466B007B; Fri, 24 Jul 2026 04:22:15 -0400 (EDT)
+	id 8B0A06B008A; Fri, 24 Jul 2026 04:27:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 572746B0088; Fri, 24 Jul 2026 04:22:15 -0400 (EDT)
+	id 861346B008C; Fri, 24 Jul 2026 04:27:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 488696B008A; Fri, 24 Jul 2026 04:22:15 -0400 (EDT)
+	id 776C56B0092; Fri, 24 Jul 2026 04:27:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 256176B007B
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 04:22:15 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A037112021A
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 08:22:14 +0000 (UTC)
-X-FDA: 85022977788.14.3FD0AB1
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 8640FC000A
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 08:22:12 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=AdMMi+Al;
-	spf=pass (imf10.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 554286B008A
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 04:27:23 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C92391602C8
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 08:27:22 +0000 (UTC)
+X-FDA: 85022990724.20.663B0B8
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 3A8F440005
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 08:27:20 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=dU+ar9n2;
+	spf=pass (imf27.hostedemail.com: domain of arvind.yadav@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=arvind.yadav@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784881333;
+	s=arc-20220608; t=1784881641;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QzFh7CcpBCrPwXZDhxjoaOcW8ZjrFDk7RHqbv99ICuQ=;
-	b=J4a1rUhhDWYZw+3vl55AC7X//0UigyB+ozPWiobWX0D6Vjmfxhw4BrXSXe19XCQWApHDCc
-	OnTxyk1gyzE9Y9jBEfvKiPhmd73QUj+ZzzbuaFRkoT72bdnBAGIjBzb5sfMd/LTkJOjYa6
-	/Y5c6KyrKkxZzeUd58vBMxhPe5UssDA=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=EaocjWbzimqvaCTbL3/9+GGO459GIUX0kk46sIWMY/c=;
+	b=k1gzVoL9RHLzEZh1ujlza8aq/5COLbuaotYmo21t2fFX0ihc++gPGIs30nbT6zskJt60l5
+	nh1XTTF1LV0nDBBU7fiWqeIcdXR5a5F/Xwb7i6+LXgLADENGkkXbvYPI3D+xXGyfQ96pTF
+	HRVjxBpneNFGkOBDop1a3iPdmVr0/aI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784881333;
-	b=pP1+qyo8CwKdHDwVUZ23h2etX9KQ7G0DHANB7wp0Ts53SL4ebgVN0ZSTwK2jvsir6CLp86
-	7c+R+oKae6IaKd+uF03Kvgu9mge1HAHL4n/jKKsXKmZx6I44EO0KW10FIAZTE+DiYaJSRd
-	6av/eHLPZ+MXa53v54sk9L8zl0JCkqI=
+	t=1784881641;
+	b=7v2ja3ASrL0oeUqYjGl0DOFZZ/KBGcSkYm/EW8zr469o/hFDvd61LmRVPZmSN0PuU9mcpa
+	M2240ce4/El/+d7tx6y5MtUBIATdG2wkbh3N92IpU0FBIQ/C1Ap2AHOC/Sdr0283e4A5Q3
+	6hpUtk59sSP4B/m+sRwAlh5N6miZMe4=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=AdMMi+Al;
-	spf=pass (imf10.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A672C1477;
-	Fri, 24 Jul 2026 01:22:06 -0700 (PDT)
-Received: from [10.164.19.44] (unknown [10.164.19.44])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BCFBD3F66F;
-	Fri, 24 Jul 2026 01:22:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784881330; bh=mw8GMJBoAr0TSzOlQ2s8pvtCmil3Xo8vPxz6aH4bq30=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=AdMMi+AlHl7dxWpvlR3U4+adYGUgCFMySue09WG0pcsg7WANzAfxP+jBFrmLeXmHa
-	 Twshh24OCU7p7LMe+bU2EJ0MYwWbHEjB8iJKgJCDbQwu+LpnIvmUM19kK+vrUx2ugh
-	 Oz89jPMLUfYSmCAPTkN8M0tpKQjYidHFO8SETJcc=
-Message-ID: <b7f59901-f0d5-4ff0-839e-cd45440b87ed@arm.com>
-Date: Fri, 24 Jul 2026 13:52:04 +0530
+	imf27.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=dU+ar9n2;
+	spf=pass (imf27.hostedemail.com: domain of arvind.yadav@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=arvind.yadav@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784881640; x=1816417640;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=m0kTrC2uUZ8YmP9OPjcJHDDgn6fwYkzc3W9o6qAN0fA=;
+  b=dU+ar9n2GH59CgsVK9nEXhSanT195uBtzWvjhNs1kBFKQ7Vw48ElubUO
+   ESqgAuNBJyW06UrcNJ0FfzwofllBbPUzWHLVwDXG+CxDTORGnXwnTV8v1
+   xAxMGWmLEloHqP4qG/GmBrg1LNd9XpvNQOF4tuevE1I8QAfG9qtyWTbvC
+   HHK03qNe7/FWiTjedMj2X1w3v8LjQZqOm3FhJh5nYlxqD4aDu/1v9j9l+
+   tDr+DbIs4U3ngDDM2BPqAVLskdNcpgNcOzJ/uH7BmCxOPyErccxfQw6cI
+   GqaM6JIHK9r4KZXwQPg2NOLbBClnqOm/h/rhFjeOs9GR3pQPAFLxJTpub
+   A==;
+X-CSE-ConnectionGUID: D+y4vQRpQJCyIE+vgZl7KA==
+X-CSE-MsgGUID: +ubm7VU8SriX2izj4QDbrQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="108334267"
+X-IronPort-AV: E=Sophos;i="6.25,182,1779174000"; 
+   d="scan'208";a="108334267"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2026 01:27:19 -0700
+X-CSE-ConnectionGUID: CmLsW23cSkGK5yzJmu7CDA==
+X-CSE-MsgGUID: tgt31lqRSLSNjfZz0rfEHw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,182,1779174000"; 
+   d="scan'208";a="254714608"
+Received: from varungup-desk.iind.intel.com ([10.190.238.71])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2026 01:27:15 -0700
+From: Arvind Yadav <arvind.yadav@intel.com>
+To: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com,
+	ziy@nvidia.com,
+	rakie.kim@sk.com,
+	byungchul@sk.com,
+	gourry@gourry.net,
+	ying.huang@linux.alibaba.com,
+	apopple@nvidia.com
+Subject: [PATCH v2] mm/migrate_device: Clear stale mapping after freeing swapcache
+Date: Fri, 24 Jul 2026 13:57:02 +0530
+Message-ID: <20260724082702.2531024-1-arvind.yadav@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] selftests/mm: fix gup_longterm EINVAL error message
-To: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>,
- David Hildenbrand <david@kernel.org>, Shuah Khan <shuah@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe
- <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Sarthak Sharma <sarthak.sharma@arm.com>,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <8A3ADC563A32EF67+20260724065929.1474539-1-zhaozhengzhuo@uniontech.com>
- <23557F4CB8CF36FF+20260724074603.1479243-1-zhaozhengzhuo@uniontech.com>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <23557F4CB8CF36FF+20260724074603.1479243-1-zhaozhengzhuo@uniontech.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 3A8F440005
+X-Stat-Signature: xmwrf4i6b41j84bw87kw6upyn64cuuh8
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 8640FC000A
-X-Stat-Signature: 9zeizgqtjdathuxkxzj1if3nrbjrbgf8
-X-HE-Tag: 1784881332-253758
-X-HE-Meta: U2FsdGVkX19zau8cR6Z2zOTZg5ENESS30u7U7n8m68VOWiwKUMOQgEHXsvPOl+G6UBb6ynX2cGDcLq2SzpgtYU7JBDER2Ld9kC3LxyrLdVBwq1y51t2MQ0vIKK0VfU5L9sO6CDejOoBLR7D4ewFmdKQTL+Ujz4SjUge1P3UjGUw7dv38jhTnIof9JUHGx1poawyYTFGF3WCmVeNleLnZrl3SnhCdTt8ISb/h6YbCmCwpaTTOi+mKN32bEGn7F3+ES0l2EppTszj875aNMAIBnvCi9OZVIknmGy96SG5Kjs+kZA+osnpewG9W6Txif3F5KwB33Z3M89tuuTAvqPp2cp9HN/83rZAfE1/4j7kNvRh8+yrjEgoDNJLuWS2xvljMw/9JieOwPPzAO3+L0+r6Xl58l9PezsmO8IC3Y2bAhmLAUN/5itzBscDxi7L6vvMHA/CkQ3AdHHnyMb0ZaL89xwQ8+DM702R3EgeMXnlcHfr0Omvp0paJEaPfG2oA/+QYGircpTFHrsVZqFQJWT3avZrWPXPdCFk2wedDRSWqhy4DsjbicEz/IFtvl2u6wlaVLouVeG1PxG5hF5GPWJeIL4HwQLyS1W2e93Mnj2TIdwdi6x1TMydoijrZlVM1gVpHQJrEqdKkqpDOWWX+Cyvx5i5QDZfqiYybcDl/Mkos1ikTTYt0yP5x1Hm+MigbVPrgVRCRNsc+NUA/Nn1xUrr3wx6dWTwnVNSoCAPSqI0VcGznsjnBbvtj8lGi4nyPmkpmA8QC+XH416xTRX3b17f/CN1QkeFmA7RrBQwin88awVq0GPkpLjTNFfOQX8/gAOTQGJ+AN97Lb61zOiW68xye60uSlohF6BIasV/WxzL79azRWdXy92r/NNq8E5jKNSytVQRtNd3L1D5pa8ac5b+Don/I1k28glo4qjL66fF4zKnbUY+CTfTzszrepwuiomM13GvfIvyQgP1bPythbRg
- TOwk0fj9
- oKEn7yLEOnpIvBZJlsT6B6y+U4w62zWt6dfIC0dhYkvYGMIBrtEZVQY4aTZAgHdtQudNe3ODqtg4QmvpBHtpubUXyzJVgd62D9TmmEdCUUzkiEEO7fCXaOntZWP/u2jhvbsZtInzohbh8l/lkG09wjaah6/T/JmfRz+J+3dPOLdmKfVsXqo46q+4tozg20BOh/JjOQCOuf+FUxtFN+XqyfHiFEo01Fchal9zCFE0VzgDoI2OZoVA0wSYG72opehdElTxws6ykzYgvQJrYehXiRWQSN6/iZ3SuUom/uRPdBmNmJ8W3rabXxAwe3+8XXoLudanmP3Tzejy3Vn3C3PfmOJyGSgG2w5i4tqOx4Iywj+Hop29ALDrj2SKeyl5/SWDGdf/MPDVW8N7EkckSK8Vu98+upw==
+X-HE-Tag: 1784881640-339134
+X-HE-Meta: U2FsdGVkX18UAIOmnPqtSzybnNfY+OkrcbrI97aJa3MQQwQxX30H9nRgTc1YMSie5HvFiKtnKCkJIT1Hq5GEa05wBLOOJGYoKsr3QoeHKgsKmXlJ3f8Y5qpCupX2Up6cehr9YZvfpwBBDEExgDTMnAU3KL35FuhO9XEAar+0xGNPG0DQfrMb4Ob+xlPvbt+b0GPHRm/ekFEa9gQlLwFgyYLrZj4dtMCULrKRcjT/C7CMgjpZTj6XU8I1GwNPVhsoxh2Gg8M3qywAjg4PuXyOxgLpA51DcwwY2hAF34XQnGE37cAlpjzYVzXGtEL7nLWBkjY3rDC6IVEGkHxo9kA1VBp1WcYv3JqM3U3hSSP1Yhphb48iYJolNg8D3BJmH8o4mFVsR0hj/FCl04VxJic01+F0yGZMvF7FOMo16hqBBUCMDj2hdVshweEl0Th4LyXIzpoVxomIMUp71avr27rAKV4tjgTb7OL9oyJKnF8RaPckQrXE1RDWSFc/4DXUZKB3h6GpIMAdez+sLLAr7pYVmWDaMNT9S6/uwM6Rra/aTQ6S9B6UKnw9nfNltbYoqIDSaNrfwRPSn/Y0C4b3VfL/MV9/NTieLl6C2Y2bI6ZwZHCDYEo2QPUTvoyo31aI4H/Pg/25Fji/1ms9V16gGEjSv8QYDNVmTY0kK5B0RGKTEYXKEVsbqBDot9Fb9KZpMhPDYREfae7qYcSRyomdCaY04sTRC+0M9dcCsaskXOuWZNZIL7X/BehpmXjiRdk2fEHBuZF+rx3KTJZC7mvG8AbGlmN3Pf9Erf9KiVAIVQBmYfDwbUTQ141DlZEyaUYyEc+MNcDgVkVXbX4FSgDqOcPxjmgitCegZMGJLVEZG4JloE8+Oly6NsemeiXaXxFQucJ5t1kHXh+reWcH4QwBIwNyrEvvIMNix4oxPW5XpEFPYVsMXE/ahO4LHUqvOc3OgUjXUk9n1kMnDN7oNQXaql5
+ WxlULAQ2
+ ekun1EjJaR09CKxSKuAwDgZhAyZLx+SXcQ1IlGTgOwTtlGNRgplut03wLs3IkX8m0Vdr3ow5M/R7UE48pknoDx12fbQL1WYn/85Ot4SMq6+plfY0IsNQswXEms6tUjqOXxp6LnxvhhfOITTZrkKCSpUC1xpBf63D5FR2VBpndK5TTuERtrMHttvQ+891fHRbLXZ6oEbZZ/Fgi16hiSvQw4MDZk86vsGxtsdmk402HOARNIA/uLzQfeiKDi3XQqGKKXVRmea2oedGnjZd8qG3NzRM8Oyk3ayU/Fv9CkT3Hfl7ikb0CX2nGaFa1/+IkFVvq+TYkXl/6ATN4UrbBYtWbxYnVQlHTXDWND0hrXv9MObigs299+15LWPxQl1Mk/oMz89Rno75RKLFbv0UUeA5SLorYvCLtIH6medo4AtAimDxI1IOmLmDqcflbNsNs+KRbF//1FmnqfCdJRRpN0PatPmEEAlj90MJY+R6rMhOXwkS1BnX24ba/Z4HwADbVf2M4fO8phVzkdhw8DixYzQrpLpYuEaPRCn79qQR+Iw478DUdL5hWuAl2jDVTAb7lFDnREUAy
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,49 +109,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+__migrate_device_pages() reads the folio mapping before calling
+folio_free_swap(). When folio_free_swap() succeeds, the folio is removed
+from the swap cache, but the saved mapping still points to swap_space.
 
+Passing the stale mapping to folio_migrate_mapping() makes it take the
+mapped-folio path after the swapcache reference has been dropped. This can
+cause an invalid swap_space lock access followed by a folio reference
+count BUG.
 
-On 24/07/26 1:16 pm, zhaozhengzhuo wrote:
-> The gup_longterm test prints a literal "n" when
-> PIN_LONGTERM_TEST_START fails with EINVAL because the string is missing the
-> newline escape sequence.
-> 
-> Print a newline instead.
-> 
-> Fixes: 800ddf3cd74b ("selftests/mm: report errno when things fail in gup_longterm")
-> Signed-off-by: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
-> Reviewed-by: Sarthak Sharma <sarthak.sharma@arm.com>
-> ---
+Refresh the saved mapping after folio_free_swap() so the current folio
+state is used during migration.
 
-Thanks.
+v2:
+- Refresh the mapping using folio_mapping(), as suggested by Zi Yan.
 
-For future, please send the next version of the patch in a separate thread, not as a
-reply to the previous.
+Fixes: df263d9a7dff ("mm/migrate_device: try to handle swapcache pages")
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: Rakie Kim <rakie.kim@sk.com>
+Cc: Byungchul Park <byungchul@sk.com>
+Cc: Gregory Price <gourry@gourry.net>
+Cc: Ying Huang <ying.huang@linux.alibaba.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Signed-off-by: Arvind Yadav <arvind.yadav@intel.com>
+---
+ mm/migrate_device.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-
-
-> Changes in v2:
-> - Add Fixes tag as suggested by Sarthak.
-> - Add Reviewed-by tag from Sarthak.
-> 
->  tools/testing/selftests/mm/gup_longterm.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tools/testing/selftests/mm/gup_longterm.c b/tools/testing/selftests/mm/gup_longterm.c
-> index eb8963e9d..c03b4f891 100644
-> --- a/tools/testing/selftests/mm/gup_longterm.c
-> +++ b/tools/testing/selftests/mm/gup_longterm.c
-> @@ -196,7 +196,7 @@ static void do_test(int fd, size_t size, enum test_type type, bool shared)
->  		args.flags |= rw ? PIN_LONGTERM_TEST_FLAG_USE_WRITE : 0;
->  		ret = ioctl(gup_fd, PIN_LONGTERM_TEST_START, &args);
->  		if (ret && errno == EINVAL) {
-> -			ksft_print_msg("PIN_LONGTERM_TEST_START failed (EINVAL)n");
-> +			ksft_print_msg("PIN_LONGTERM_TEST_START failed (EINVAL)\n");
->  			result = KSFT_SKIP;
->  			break;
->  		} else if (ret && errno == EFAULT) {
-> 
-> base-commit: c04df384b55dd9dcf72c36b661becb5aaba371a9
+diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+index 554754eb26ff..ae895758b72c 100644
+--- a/mm/migrate_device.c
++++ b/mm/migrate_device.c
+@@ -1204,6 +1204,12 @@ static void __migrate_device_pages(unsigned long *src_pfns,
+ 					src_pfns[i] &= ~MIGRATE_PFN_MIGRATE;
+ 					goto next;
+ 				}
++
++				/*
++				 * folio_free_swap() removed the folio from the swap
++				 * cache. Refresh the saved mapping before migration.
++				 */
++				mapping = folio_mapping(folio);
+ 			}
+ 		} else if (folio_is_zone_device(newfolio)) {
+ 			/*
+-- 
+2.43.0
 
 
