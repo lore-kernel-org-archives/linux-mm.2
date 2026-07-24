@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B1C8C531F9
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 04:55:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DA14C531FF
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 04:55:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2BB306B008A; Fri, 24 Jul 2026 00:55:40 -0400 (EDT)
+	id 665C66B0092; Fri, 24 Jul 2026 00:55:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2449D6B008C; Fri, 24 Jul 2026 00:55:40 -0400 (EDT)
+	id 63DED6B0095; Fri, 24 Jul 2026 00:55:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 134A16B0092; Fri, 24 Jul 2026 00:55:40 -0400 (EDT)
+	id 507946B0096; Fri, 24 Jul 2026 00:55:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DE4C86B008A
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 00:55:39 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 58E5414015E
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 04:55:39 +0000 (UTC)
-X-FDA: 85022457198.23.E459998
-Received: from smtpout6.mo540.mail-out.ovh.net (smtpout6.mo540.mail-out.ovh.net [51.210.91.55])
-	by imf21.hostedemail.com (Postfix) with ESMTP id D20B91C000A
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 04:55:36 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kaod.org header.s=ovhmo393970-selector1 header.b=Jrl9vdmH;
-	dmarc=pass (policy=none) header.from=kaod.org;
-	spf=pass (imf21.hostedemail.com: domain of clg@kaod.org designates 51.210.91.55 as permitted sender) smtp.mailfrom=clg@kaod.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1ABFF6B0092
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 00:55:56 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 90301A0297
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 04:55:55 +0000 (UTC)
+X-FDA: 85022457870.19.6A9009F
+Received: from smtpout1.mo537.mail-out.ovh.net (smtpout1.mo537.mail-out.ovh.net [51.210.91.20])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 02252100005
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 04:55:52 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kaod.org header.s=ovhmo393970-selector1 header.b=fptsVdey;
+	spf=pass (imf14.hostedemail.com: domain of clg@kaod.org designates 51.210.91.20 as permitted sender) smtp.mailfrom=clg@kaod.org;
+	dmarc=pass (policy=none) header.from=kaod.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784868953;
+	b=Cv9Bd90gpIpwwSp/eq7uaqm2k7K50HNpx1a+siyoM41m+b6Udu5OBQSFvFa4uW8NriLiQQ
+	7mfmsdxHng8rapX09gxgFHjHHvSiFnvyzQoQwfpGByPhv/mmy8qCp8Vua30LfP9LHoEwkz
+	9HY/pd3FO1fnnAT5nrgNWfKWDtux5z0=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kaod.org header.s=ovhmo393970-selector1 header.b=fptsVdey;
+	spf=pass (imf14.hostedemail.com: domain of clg@kaod.org designates 51.210.91.20 as permitted sender) smtp.mailfrom=clg@kaod.org;
+	dmarc=pass (policy=none) header.from=kaod.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784868937;
+	s=arc-20220608; t=1784868953;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=McrFHMF4OqCuGHN2JECR9Xz9tBdtSI1b0xMZalX69Vg=;
-	b=TtoBCh+l97veBW1ulDXXp6kZr5on5C6myDIX24HzVH4iZJwptKXzhnAvrHGju5PdqbWCp8
-	bOgK9MV2m95KuXGd7Sg2nTRs08HTqWUBaa7uwvfywBn8/PiByWpDfG9k0wrbZXBoBKCcY3
-	SMFiafkXCw9F1B70k0sGySuQCByHVvw=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kaod.org header.s=ovhmo393970-selector1 header.b=Jrl9vdmH;
-	dmarc=pass (policy=none) header.from=kaod.org;
-	spf=pass (imf21.hostedemail.com: domain of clg@kaod.org designates 51.210.91.55 as permitted sender) smtp.mailfrom=clg@kaod.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784868937;
-	b=ENOU16rs6XcDJZ9678vj9Wd9lYv9URtELyAYsv8HtAY6bshbLibx+M9yexYBv9L0vTHUL2
-	kWEBl45eZJHGyQUnKtJOg+Drwx1Unl5htH8RIr8QO8AtyFmiHA6B/np6NQSDZK6P1aRq0s
-	rdTSOtvDoonVAOSRdNz02W3aNbZUVhw=
-Received: from director2.derp.mail-out.ovh.net (director2.derp.mail-out.ovh.net [79.137.60.36])
-	by mo540.mail-out.ovh.net (Postfix) with ESMTPS id 4h5wfY2K4qz3wbY;
-	Fri, 24 Jul 2026 04:55:33 +0000 (UTC)
-Received: from director2.derp.mail-out.ovh.net (director2.derp.mail-out.ovh.net. [127.0.0.1])
-        by director2.derp.mail-out.ovh.net (inspect_sender_mail_agent) with SMTP
-        for <gouhaojake@163.com>; Fri, 24 Jul 2026 04:55:33 +0000 (UTC)
-Received: from mta2.priv.ovhmail-u2.ea.mail.ovh.net (unknown [10.110.101.119])
-	by director2.derp.mail-out.ovh.net (Postfix) with ESMTPS id 4h5wfY0fFRz1xp5;
-	Fri, 24 Jul 2026 04:55:33 +0000 (UTC)
-Received: from kaod.org (unknown [10.1.6.3])
+	bh=lpsNKuaDzpZhNqp4w16ugJf4ExexmLy2gskQEsg/tcU=;
+	b=G+xESzap0k/+/8R2bOmGAADxmeYg+GrqSbTYCK08fpmyKHP/PnXSA3Mu9Gnf892qKsbAHn
+	UaxI2LYTFiG+WChr/Fs/I3z0GSTn5Uv2aKVHrm0QBZS2kvNqqOBlu7+5eb/Neh7iQm3M3V
+	yP564NTyCEyMz4jw6IrIBSqdUGJJeqY=
+Received: from director5.derp.mail-out.ovh.net (director5.derp.mail-out.ovh.net [57.128.106.70])
+	by mo537.mail-out.ovh.net (Postfix) with ESMTPS id 4h5wfr2v2qz3yvC;
+	Fri, 24 Jul 2026 04:55:48 +0000 (UTC)
+Received: from director5.derp.mail-out.ovh.net (director5.derp.mail-out.ovh.net. [127.0.0.1])
+        by director5.derp.mail-out.ovh.net (inspect_sender_mail_agent) with SMTP
+        for <gouhaojake@163.com>; Fri, 24 Jul 2026 04:55:48 +0000 (UTC)
+Received: from mta11.priv.ovhmail-u2.ea.mail.ovh.net (unknown [10.110.0.198])
+	by director5.derp.mail-out.ovh.net (Postfix) with ESMTPS id 4h5wfq6fzlz7t8k;
+	Fri, 24 Jul 2026 04:55:47 +0000 (UTC)
+Received: from kaod.org (unknown [10.1.6.4])
 	(Authenticated sender: clg@kaod.org)
-	by mta2.priv.ovhmail-u2.ea.mail.ovh.net (Postfix) with ESMTPSA id E5285941A0E;
-	Fri, 24 Jul 2026 04:55:29 +0000 (UTC)
+	by mta11.priv.ovhmail-u2.ea.mail.ovh.net (Postfix) with ESMTPSA id 809112403E2D;
+	Fri, 24 Jul 2026 04:55:44 +0000 (UTC)
 X-OVh-ClientIp:82.64.250.170
-Message-ID: <87ff73dc-3d4b-400d-93f9-f9640c5196a6@kaod.org>
-Date: Fri, 24 Jul 2026 06:55:29 +0200
+Message-ID: <82bebd8a-0376-4fd6-8e8b-125bd895208e@kaod.org>
+Date: Fri, 24 Jul 2026 06:55:43 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/6] powerpc/xive: remove dead NULL check after
- GFP_NOFAIL allocation
+Subject: Re: [PATCH v2 2/6] powerpc/xive: add error return value to
+ xive_smp_probe()
 To: Gou Hao <gouhao@uniontech.com>, maddy@linux.ibm.com, mpe@ellerman.id.au,
  npiggin@gmail.com, chleroy@kernel.org, maarten.lankhorst@linux.intel.com,
  mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
@@ -79,7 +79,7 @@ Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
  dri-devel@lists.freedesktop.org, linux-rdma@vger.kernel.org,
  linux-mm@kvack.org, gouhaojake@163.com, kernel@uniontech.com
 References: <20260724022851.466017-1-gouhao@uniontech.com>
- <20260724022851.466017-2-gouhao@uniontech.com>
+ <20260724022851.466017-3-gouhao@uniontech.com>
 Content-Language: en-US, fr
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
 Autocrypt: addr=clg@kaod.org; keydata=
@@ -124,29 +124,29 @@ Autocrypt: addr=clg@kaod.org; keydata=
  3GlqivBNkmYsHYSlFsbxc37E1HpTEaSWsGfAHQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4Pls
  ZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQizDiU6iOrUzBThaMhZO3i927SG2DwWDVzZlt
  KrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gDuVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20260724022851.466017-2-gouhao@uniontech.com>
+In-Reply-To: <20260724022851.466017-3-gouhao@uniontech.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-x-ovh-tracer-id: 17313244342570036456
+x-ovh-tracer-id: 17317466469420608744
 X-VR-SPAMSTATE: OK
 X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: dmFkZTFag79TUuknUcEyJ+fUBsqHM0xcaveY2xgVNjxV+qnKwhwsNTHa/2zdKcagVjzZotwGF8tiTuYDFnLfCREPZ40TItmps8VQlgCYXtQ5s/8YhU27P1l3fNA5vFk0wHWnMhXlAGEERA1YXEkq6NvX3J7mbulyb4PCNyOiCS02W8K6KQos/fdl/UFRJLB+bcrtLX5zpkrqLCS8UVIBGkLg2pXo1dt253286tHqmpjN4aJU4Momxnq4NCIh4qjGOU8oLxiXXbSRp93kS9K9HRz8GsPUGJVR2g6ypPWuPrcsxVVwSadqKe62E2LhGeYWeQK5G59ftKSi6eFNdIHZZqSwCU/JZgUTU2jQdp4fspPo3fPc+HP2egDV1EgUQzjxFw2a9A0wMtH5xWzPjQWRAF+Sg635i6W7cB4f3mMjRG7+yRxV1dsUXEG767heBlRrqZr6fLWKRZ+fvtQ5LVaoEnlx6Ht+BxYS5/Z/50NYJvsBrzTkngXeqe90vtZ1wS+mqVfi6dyIM27fChLynqPhuW4tfkFg1Zo6miZLGXX8BLGGc5mbauuAe2273a3bCM3BX1Db9UaW0FYe2HqxNXCA1Q8gEfl4x7UOC3VeJlgqD6btGHUq+zVcARFFkfqSmP+dxy3oGOa4myNk+cI0ojqOw3aWmNQLUXW6yG3Pgeys3eP+VZywcw
-DKIM-Signature: a=rsa-sha256; bh=McrFHMF4OqCuGHN2JECR9Xz9tBdtSI1b0xMZalX69Vg=;
+X-VR-SPAMCAUSE: dmFkZTFag79TUuknUcEyJ+fUBsqHM0xcaveY2xgVNjxV+qnKwhwsNTHa/2zdKcagVjzZotwGF8tiTuYDFnLfCREPZ40TItmps8VQlgCYXtQ5s/8YhU27P1l3fNA5vFk0wHWnMhXlAGEERA1YXEkq6NvX3J7mbulyb4PCNyOiCS02W8K6KQos/fdl/UFRJLB+bcrtLX5zpkrqLCS8UVIBGkLg2pXo1dt253286tHqmpjN4aJU4Momxnq4NCIh4qjGOU8oLxiXXbSRp93kS9K9HRz8GsPUGJVR2g6ypPWuPrcsxVVwSadqKe62E2LhGeYWeQK5G59ftKSi6eFNdIHZZqSwCU/JaoOMXGmkxCnRclM/OCuhglaDeN3BHUfDx3r50MC2T73P2UNZ4JGhwl2sLnvSRV5LGbJuTiqZGgGzrzVM58GD4zLNB/RZeH1wc/0zRk//2Xue9NMmuW3qm/WtzV0vO0tyeZ6VmTIaU8OL/f9xBiPfV0fE/kMqrHEve6qNThviQfG/EHH3yRZxfJigHWxirAmm9MAf+s4tK0hD0PvourVEzAQseAzpPKZt+8rZhPPA6izowE5nGl+xljFZggcijL58lcU0Yms0/rAA2LHfWPtHKlO6eeyK0wVywjt04umh2B8l/lldWqZzfzJYrhkT2FaXaL+nW6q+n2cziaIMo66PEg
+DKIM-Signature: a=rsa-sha256; bh=lpsNKuaDzpZhNqp4w16ugJf4ExexmLy2gskQEsg/tcU=;
  c=relaxed/relaxed; d=kaod.org; h=From; s=ovhmo393970-selector1;
- t=1784868935; v=1;
- b=Jrl9vdmH9ieiS5O1IR6RPvsCe6nbV3My+drtWyHnNimGFqNrk9xS2t6F95Jp0+/mkGW4lTra
- cNzcfHHg7EGzqFY4EFcUh5r8PatIIQhwDgODODrVtUU5dvrhViZSZmFI5ZJUQk8JXOGeT3MVtZ4
- wdkhxLfIBDmVr35+w4fSRxa3tXVAwqP+BH+AyElt9BhcL7dfy4CnObRW2j+pmVdgdv/1ZEg7tcM
- TnFasx/O4qYkAlFPqI+/2Li99Y7zDe9YY6qguVGd7xbWnBaKFte7zDOEVOCEM1znrzZbpR25eBL
- aaba/1mL1nEGtRW+y/gGaprznU29+DYZC1c9dCahQ7SjQ==
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D20B91C000A
+ t=1784868951; v=1;
+ b=fptsVdeywA8AchGltVZrfsyqfHnxUSVi6auYkCr/g+DeI4HXpU8HYp+DbN7oTXhYVS2ihiKM
+ 4b69/7eP+iHECpIXC2LTivylvJ98jAv0CMv3u85/H74PB67ZB4u19dNmFN3fhoLr2igRhuRorVL
+ 5Eh+uV+CGcQJ2/NOqO2nTQb9bZPtg8O0vEXVncHpTp+XokQWucfrtmkurvAXbAv8RHiaMCg1jFc
+ 6G3Tomtqc5CGsr8TvF/Fq5RYYeCLQAyy7kMYRDt1Z32/CHdfoZuS8+YrrvNvhICbwMvmJ3tzjU8
+ avuwNOU2N25aPFejN/Y4ZZC0k/R8/U/JNu484CDDGZbmQ==
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 02252100005
+X-Stat-Signature: 36i43n1m9ue5j3ox8yr5nh6mju3u9zuq
 X-Rspam-User: 
-X-Stat-Signature: ky4wnaqabcb78zn34sttnb5s1is1znbk
-X-HE-Tag: 1784868936-831726
-X-HE-Meta: U2FsdGVkX1/6VO7OLvBYTHCl+V4hLX+lKRWkkLbrjxoINaAVxrjGLlVYiyoUuFyd817EWUhlNTUTvbIq2lcpOz0F9GrQPVX2MAswclE2gS+ZwSjD8UWpF2qfeoxm+qIiU9RQVIYn64PxkaMITFhX5S3Z+aDzuPl11Ci/S0BjUZPkweXpy4S62r5GBCMXB+pRanH7GOpQAhpCWU9SK/QcrulTbWJ1AlacphE19T+HqYOwk5MsgnztCGv2yRE4WKBK2TPIcpGGt0pcPeGea+pepVEgQigLMAN9mGbdaQzZ+Uh/4OCw5us7Q6Q+C2kT4BUTpLYBYcW5hGVMXxPgS3sPBilTTNho+dp/vAjpLnol9gqaKr7yUS91hzMPB9fTyhSZK0IhsUtOuo2LrcQ3iUMf4ompTR2XQTjgTbw6ys9noO/+eF8CsEl8WCPt7LVBmr5qUN/FtlbZ+8ZpK7y1tOdSTrByl/NZIxs/YyzyVcmYn2CqhNLLmWbirzEjDmOgsii1SmAqo+AtGmUE1RnQBDcTXJhWeK5bg2iJ96IHuWMtIBIndtR/rBlhxVpBOameMUiEAOHOtb4TiKfK5zeSk1i0GKYbc3n7nfdAN37LLhRCP2u/9ZHgsLcU2k0q0b8BAyxZXTGtIB6GGVBwgbAXzi47Zr2WMv28G6mdwmhG++YV6wSVA80CXdsF5q2QUrRtcG8nknX5IqqAdGtdXtszwmVCQZ7norm7y6Tbjo36gEqwLC35yp1926LvaVPxuyQrsbxsAzKQgMgmQ1IFH48Ie/5Q3X4ehVTT50Nsri7loajbhqNaKJBRppnQP547klXDmZIHa6cSB46pftl5IatMPeFqMQN0w+Xg5xEFBF+JPc2xW5K9CpWJEoAj0JTu69BXR9+0VWMIMMxhxHt3+4f8k1CkkikLEQKwvtXtiF1YkQ0+K82nULlpA3y6aJQ3fHJrIkyoSyigajs8Fpcnj5u8LUF
- H5Y/nbze
- v+kfUFCCy2bQEicUKcbChzNPjPK29g4KCYHUuhX144KIOVOXUGJTNlH96S9DY4MZ6SNndL1N3enq6zkx9CAGapYGCseGa3aDWCbYYIluaHbgOK3xhszYJBCWNh6/Yxm0L+7TVQg52La4NHj6ZDK7Vv3wGe0crS/KW4dtn967v+zcSgnEjHILdM5INzy2W6Rm8BFHqneat5jopukHBO934UdEuSWI/Mz62OdY9pTpd+JGk78d84SOdqaky3tCK03HUPY4+J6M9vHw0iXTOZczRF5Ri93qbX6BChSNxUMxjlUFMhRGMQa6B9PYRw4U1KKr7gukl4uy2XnAafEeEyYfYqbY2sRHjlX5oX3wg4lCAXa1glJ7Fm7BKWttAw2To0zWfQVrXdrEVyJDoJHBACPLMva0QpK0VAtzULuLjprQ40gD2+MKIQYi9rsAHt/bmNyT1e6bS7LfXMXeR4hbLhoaOgIA86YXQHEGF/RqjiOqTvhB39ssrfrNrIp5SAxNUSzugN5evF6h1ST9J+RmJsEEE7yWksSRvf6JI+EsPbVyjBBU9hYGz6lsK+e040HK0p2xdezj1o5unvunObY07FWkBs52imw==
+X-HE-Tag: 1784868952-601156
+X-HE-Meta: U2FsdGVkX1+xg1mqrs1gN0JUW9sVN/Oreuz1RwnJHY3e6PYZjwi8VQAiHxZpaN/1n9OUZfSkv/ZJGqBWItKqxUB+tAW3T6GU4NWN6g7zFJGcRGz7oQW9vij2vBJ12V7qOP7wZzY3i2LT2rWBg7cnecfyfdUhrT4B2uQzsMyCD3i3SVaZTm3v9GmH+R7sbkJcEadT/ijeU6avkJ1R2HgFkYW7y1TwbJZ6wjzbWhMv1eRIji1kHNGYxsosFiSrR/sIcJFv50hXHbHAW4VrM6avAEewd5oFj+rnu8O7dpk9pEePltZLJDMIAGF+vGkFXzlu6DkfS17ZkXYVhZHLfK0hdAaB079gOBqRggnJQjY1z2b4YbusmqIIOeYNRVTyXbB+fw26yGs4A+jgoKgUtXXp5p60n6mkZ+4sMLSO8zxCehO+tSyvdNRRbKU2kPhgdifVRJmplfTJmRTZGb3OG5gsRdoxMdLairxOOVOG/ZCPiJGzeU6sdPp8Y20BszuOkNPThWu1clWRUeuqMOGNE4EVxWBUPkdOnRKfeCC4mjSZfcWsLc2rM9fsgcwb8We9KNKefWFNi8zhwr9SF3xFBx7o6bzq14VbZ0dj9pfeG/AHVmcbkI14XUkWpvY3NdNeQEyvhoS4alPD/IjG7TNm6PCd8NN8HZXEdhdxh/hAt1kImk1HCf2RF38ztL+xPzTpGtreyxq14GVLPG5q2qnP3BY4R5p8QXXPep9MCXJUxZ9vCsMG6PjnUkDh0dipaL0E9keBRR+8NAtyK6SgpTt3McP0M53IbmNWNUInK9o6gN+wHXYu2S/CRyWrFegy25gRWkZ6EjAnX6Sb97zRzQUC45H0cepgEr5FayKQ8nZqSzZmczhBju5LtOVAyBFCg3dul4KBck03QqxyQHwoerdom3ZNZ0hh2UarpJ8WhNfon69T2G4f2ho5c0yiJLVpUhzPUq6hQwISo4IJ1iRV0tAuosb
+ GJHH9lzg
+ vSBrLf/jD44rsP6F9lihqwEczL4qMGTwGK3z6nDZKc+48qPfLZFUF1HcaD5cIx0gGc85Mw+ekl2A0jNUOxT4KklqYo7E/iy6+w0SfpkftCMndOPnkfejjUO2lJSMnwEg18AdZRn5WxVcWCHFyp1DVEADclpt3tXqIZlToPuiyqj28n5GrldTNBD9gOi/YmZRuYiqEpJfOYWPiYruBXvY5jB+VqhynPjs4F0tkC4aPQryqgItv+r3zg6F5HvDqsKvEQk9V1KtQDbOEUN/m8AmI31T2YibtfgfoyFiiYPB+3AOKK48Ln9G1dVFQYGRhSnDXRzhH5xhamQpRAp4hcfTUSQOExbB95lur7WonWUcpsSWv17yPHAP9HCgfStb0lLbQTGihifF5zbL2kCq9YAX4tnYxag+55wWU0cliP1IIZ7UJKZ1VYzvuzHSzGnPMAwmmPeqP882NLdLHD1sOr8RMpTGizyFuN80lGCCKkQ6242/6g3cn7cujM7iU+apKZX2pMz89syKkTOhjsZbsFIJswtKB5ZLzGWDB9xvrN7SReGDFiGeJQW3eL8iZuLYmsvsZDj4l1w453y6JUGWrOsIDNl0toQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,39 +155,66 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 7/24/26 04:28, Gou Hao wrote:
-> kzalloc_objs with the __GFP_NOFAIL flag will never return NULL, so the
-> subsequent NULL check is unreachable dead code. Remove it.
+> xive_smp_probe() calls xive_init_ipis() which can fail, but its
+> return value is currently ignored.  Change xive_smp_probe() to
+> return int so that errors can be propagated to callers.
+> 
+> This is a preparatory patch for the next one.
+> 
+> No functional change yet; the return value is always 0 at this point.
 > 
 > Signed-off-by: Gou Hao <gouhao@uniontech.com>
 > Reviewed-by: Wentao Guan <guanwentao@uniontech.com>
 > Reviewed-by: jiazhenyuan <jiazhenyuan@uniontech.com>
 > ---
->   arch/powerpc/sysdev/xive/common.c | 5 +----
->   1 file changed, 1 insertion(+), 4 deletions(-)
+>   arch/powerpc/include/asm/xive.h   | 4 ++--
+>   arch/powerpc/sysdev/xive/common.c | 4 +++-
+>   2 files changed, 5 insertions(+), 3 deletions(-)
 > 
+> diff --git a/arch/powerpc/include/asm/xive.h b/arch/powerpc/include/asm/xive.h
+> index efb0f5effcc69..4e3e3358993c0 100644
+> --- a/arch/powerpc/include/asm/xive.h
+> +++ b/arch/powerpc/include/asm/xive.h
+> @@ -91,7 +91,7 @@ static inline bool xive_enabled(void) { return __xive_enabled; }
+>   
+>   bool xive_spapr_init(void);
+>   bool xive_native_init(void);
+> -void xive_smp_probe(void);
+> +int xive_smp_probe(void);
+>   int  xive_smp_prepare_cpu(unsigned int cpu);
+>   void xive_smp_setup_cpu(void);
+>   void xive_smp_disable_cpu(void);
+> @@ -153,7 +153,7 @@ static inline bool xive_enabled(void) { return false; }
+>   
+>   static inline bool xive_spapr_init(void) { return false; }
+>   static inline bool xive_native_init(void) { return false; }
+> -static inline void xive_smp_probe(void) { }
+> +static inline int xive_smp_probe(void) { return -EINVAL; }
+>   static inline int  xive_smp_prepare_cpu(unsigned int cpu) { return -EINVAL; }
+>   static inline void xive_smp_setup_cpu(void) { }
+>   static inline void xive_smp_disable_cpu(void) { }
 > diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive/common.c
-> index dadd1f46ec939..f2904a5c2b7bf 100644
+> index f2904a5c2b7bf..f9a1229cede73 100644
 > --- a/arch/powerpc/sysdev/xive/common.c
 > +++ b/arch/powerpc/sysdev/xive/common.c
-> @@ -1134,9 +1134,6 @@ static int __init xive_init_ipis(void)
+> @@ -1254,7 +1254,7 @@ noinstr static void xive_cleanup_cpu_ipi(unsigned int cpu, struct xive_cpu *xc)
+>   	xive_ops->put_ipi(cpu, xc);
+>   }
 >   
->   	xive_ipis = kzalloc_objs(*xive_ipis, nr_node_ids,
->   				 GFP_KERNEL | __GFP_NOFAIL);
-> -	if (!xive_ipis)
-> -		goto out_free_domain;
-> -
->   	for_each_node(node) {
->   		struct xive_ipi_desc *xid = &xive_ipis[node];
->   		struct xive_ipi_alloc_info info = { node };
-> @@ -1158,7 +1155,7 @@ static int __init xive_init_ipis(void)
+> -void __init xive_smp_probe(void)
+> +int __init xive_smp_probe(void)
+>   {
+>   	smp_ops->cause_ipi = xive_cause_ipi;
 >   
->   out_free_xive_ipis:
->   	kfree(xive_ipis);
-> -out_free_domain:
-> +	xive_ipis = NULL;
->   	irq_domain_remove(ipi_domain);
->   out_free_fwnode:
->   	irq_domain_free_fwnode(fwnode);
+> @@ -1263,6 +1263,8 @@ void __init xive_smp_probe(void)
+>   
+>   	/* Allocate and setup IPI for the boot CPU */
+>   	xive_setup_cpu_ipi(smp_processor_id());
+> +
+> +	return 0;
+>   }
+>   
+>   #endif /* CONFIG_SMP */
 
 Reviewed-by: Cédric Le Goater <clg@kaod.org>
 
