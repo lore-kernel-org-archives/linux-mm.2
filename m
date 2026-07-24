@@ -4,136 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E142DC531C9
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 19:02:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 095E3C531F9
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 19:23:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C71C96B0092; Fri, 24 Jul 2026 15:02:45 -0400 (EDT)
+	id B13686B007B; Fri, 24 Jul 2026 15:23:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C22886B0095; Fri, 24 Jul 2026 15:02:45 -0400 (EDT)
+	id AEAF06B0088; Fri, 24 Jul 2026 15:23:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AEBA96B0096; Fri, 24 Jul 2026 15:02:45 -0400 (EDT)
+	id A28A36B008A; Fri, 24 Jul 2026 15:23:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 817E66B0092
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 15:02:45 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0ACE21A0113
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 19:02:45 +0000 (UTC)
-X-FDA: 85024591890.08.E5CAB39
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 84C0B6B007B
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 15:23:33 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 12C9A120146
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 19:23:33 +0000 (UTC)
+X-FDA: 85024644306.03.ECDD1ED
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 6161340012
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 19:02:42 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ptz1Bosi;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf31.hostedemail.com (Postfix) with ESMTP id 37E6120003
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 19:23:31 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="hpCwonE/";
+	spf=pass (imf31.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784919762;
+	s=arc-20220608; t=1784921011;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IK+FSk8TPRYJ8bU7YCHvZXlgGoXXp9viF8QREY8bK2A=;
-	b=BebrpKANjNWJnR6VroF2J2wSE0TZ9QKA81XMIZkhb7XOar1Xp86ip5bP2GXTXlHcarlw8K
-	aLObrsl+eSzIZddEoDiKOZxDEvyrdoTGPIi+oJA3OVK/bFEt+AgeTMyNCIom4kxNX/MRFn
-	ZiI04NOb25ktIY/lDn2EeOGBjY83wCQ=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:
+	 references:references:dkim-signature;
+	bh=4C7azbQxPyf0Q0RZ9NaohHKFJZ863QDX4y6W/XLd6OU=;
+	b=GhpTw2/hq+P3C/3cee1aNzXttcrRdYQixIqhIBimvRQwMPwamcGzJTM6nDy3bgXWuFaswR
+	2kgIeLx9h96wpPQdJLCR0Aiq6t/Bi0ahGdoRLtuxISZw5IxPFG9nm7FgUYMaxVg/vYtqga
+	8sUPoOnUqr+6vvvr7dEmg2/1yrH5plc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784919762;
-	b=g2oThBkg+GleFP2rvCFgwR0bXx5hNtStXt3g86hj1iUN4DrWfQ2mJHPYw/OyLrXx5CiNxx
-	DkTxsWSDrfn89665R+ZxyUrT35U6zd98shRNvQd/GrPQEbZSAa42aquVYwwqXFjkx8i7iv
-	BsDlsrhUN/PBA0ojO/6HHEEJfNH45fk=
+	t=1784921011;
+	b=6QwVXSVMWlcawk7prk/Amavgdj1YxKVc6350/Sq5IYshPW1xJWhR4ovdjWcqGEgytObvzS
+	aKhad+IPAHNU9QkqZaAyF3hpKOSKpQcJOCec/LDyUGlfmj0oZgQgcHjDuSut7/CZQoIXT7
+	gMyAUsxB8EKyPz4BMqpHkhPb6T+r4Eo=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ptz1Bosi;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="hpCwonE/";
+	spf=pass (imf31.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id AF9CA600AD;
-	Fri, 24 Jul 2026 19:02:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB8871F000E9;
-	Fri, 24 Jul 2026 19:02:38 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 783B160A61;
+	Fri, 24 Jul 2026 19:23:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AA231F000E9;
+	Fri, 24 Jul 2026 19:23:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784919761;
-	bh=IK+FSk8TPRYJ8bU7YCHvZXlgGoXXp9viF8QREY8bK2A=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Ptz1BosibiIn4xQQwLjKo3BnaOcPfV6rhhcYiV9E0tVQr1ebj9AaATPuktt1YMa6p
-	 NaMrcLUwv53NewAAEPiyiHMoSk7vkiiB0EE3Sncs1rIeHWKheOhGTaeM/DAwlpGSL2
-	 3Pn+rWC8gd7Vsf16ucfAuB2FPgAKSbo8DdVuGoqXmzIFOk6eLj2kSZj0WDadOCwXdc
-	 K2CDPS0o1VGEXKZagR6twix6FaFsc0up8E3JLmtNPw31jmWBJUJb9TKsLw9nGFI+eF
-	 JVA4Y7lW5jnTzroJLHlar+e+3nmnNtXikOQNIRGLflmz2NPq1zymA/LPX4qf8tb4pG
-	 e+504rZ+cTzEw==
-Message-ID: <0abb768f-cd8d-44f4-aec6-a4971ea5f104@kernel.org>
-Date: Fri, 24 Jul 2026 21:02:35 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] selftests/mm: fix gup_longterm EINVAL error message
-To: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>, Shuah Khan <shuah@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe
- <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Sarthak Sharma <sarthak.sharma@arm.com>,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <8A3ADC563A32EF67+20260724065929.1474539-1-zhaozhengzhuo@uniontech.com>
- <23557F4CB8CF36FF+20260724074603.1479243-1-zhaozhengzhuo@uniontech.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <23557F4CB8CF36FF+20260724074603.1479243-1-zhaozhengzhuo@uniontech.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 6161340012
-X-Stat-Signature: o3ipgmszzcfxsdrdtghthiqzg3xd7d8h
+	s=k20260515; t=1784921010;
+	bh=4C7azbQxPyf0Q0RZ9NaohHKFJZ863QDX4y6W/XLd6OU=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc;
+	b=hpCwonE/IpabcOMsGIgqUxm8VGVSsirLh5n42HiBdxMOl1oC1BhUOZAnJ56vUdUSE
+	 LhL+4wiWn0PQPtAG5eVndu3+eRAOPxwN2qze3L4TnHDax0AspHLkHKjUt5Y5l+Gyxt
+	 0Fs64DeUAvJ3S24w1v/9Ux4/+RYdbYAxbYkOpsHItnNjOPGoyndTo5bSnPt7Tb6sHK
+	 NeeBVOtg+h3w9q7GKTKrsdQu9Aw5H7RVhnbttH8WNIGfq/BLmTZLq6HK9cyUWwIf96
+	 N/6kuaq+cPeUqNUzmenxwH5W0P88Q3RF8JX8MSCMczCKW+WgVQEjiDAKxwdw0IQKW4
+	 /3O5weIJPOHGQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93BDB380CEF6;
+	Fri, 24 Jul 2026 19:22:58 +0000 (UTC)
+Subject: Re: [GIT PULL] slab fixes for 7.2-rc4
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <abd000de-e6d6-492c-b50f-09d1309afc83@kernel.org>
+References: <abd000de-e6d6-492c-b50f-09d1309afc83@kernel.org>
+X-PR-Tracked-List-Id: <linux-mm.kvack.org>
+X-PR-Tracked-Message-Id: <abd000de-e6d6-492c-b50f-09d1309afc83@kernel.org>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git tags/slab-for-7.2-rc4
+X-PR-Tracked-Commit-Id: 5ff172f6c94d282d83cb88bdfec5f647ad9c6105
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 86ba24c41adcf1d6e63827a828a9b5120a86917d
+Message-Id: <178492097709.3280582.11868370257429116027.pr-tracker-bot@kernel.org>
+Date: Fri, 24 Jul 2026 19:22:57 +0000
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Harry Yoo <harry.yoo@oracle.com>, Hao Li <hao.li@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, David Rientjes <rientjes@google.com>, Christoph Lameter <cl@gentwo.org>, Roman Gushchin <roman.gushchin@linux.dev>, "linux-mm@kvack.org" <linux-mm@kvack.org>, LKML <linux-kernel@vger.kernel.org>, Suren Baghdasaryan <surenb@google.com>, Shakeel Butt <shakeel.butt@linux.dev>
 X-Rspam-User: 
-X-HE-Tag: 1784919762-184731
-X-HE-Meta: U2FsdGVkX18kCaQh0e3Z7YbJYJbhmy60QJSTdMakCqBBnlzcjbCfli3vKHDz3uhsAUrsSxW+/08lWnCeEiXHzw38Q7vCYOBAzr7SBUuZjzZlNuxqW4afNz2BhGP6ccA8fZ2Xq9d1MEvVC673+z8+NiHKCzpYqbyFJchvTrvcpHIod+QvdBuJ6WtCDbf0ichZFsXZbIiCQFKrnTRO3zWUdt6y3gRCfdKpTGsTd8Z6B2rVLtHw8b6rA4hLIbX9adKgX1iHQp+WJ5bG2+xMGvVVQNXTGO1v+FJv3rWgQUMqo3PfHdb1bwiHqquacOdgCz7CrDweEsTFRJkgi7/mLjT1BYNsDQoab6c0RqLZbjEKT6TTZ8DNFF9D3KuhlzEXoKIs+X9gEFZEbd0Vx2PjKzfG8p+wygHX88SS738LlZe25DBKAK1RvBU00xNu6F4leyegUqBtrQAFSPcAKnKQ6Xd3fqFAVPAnyFsue1IBdqsgbH3KQ0aehiglqtZjhK1ztZSL9Gcy42+rDd8z8xOTaJc7ZZE4+NQdYAVpNfowukAdmDM3Sgm1ua3IxeMak2VbLXx7VRTvwSvgT8KLXleP9D8ElkpV5CPAup5NnzRoL60OS5Wd/VIpDjPWRP0aMyVApuGkIsCL6pH6a/D4xNXWdL5j4Kinvvk9Eb6aRjOKOBdstzVcB9fc3ZwUegIGXUmI+ko5tKTp3Zjx6jcnZ8oOoQlUGFbtSA1zcbbID5Jb5UyUFh6Gz3Tn25jjkzx4LwKOfFXLfImSA6kf++1N7HzXDx5Hfh1W51mU7Us4JZ12RpYjbKzcMzZX1ch9XG96VR0g6V48NPNXJglAW9K/iRecmX738gu7zyWVut3hiW5nT8jhRLnKyrkP0Hbth/IfUY+NqX89go8+nyiM6rQ997De05YJ1xp4UaB4UIBkk7IZ7L6LpzxyZTBFw1wnUGi9vgB2Zl0GXRDimlAcLdOZbE3Duk2
- 0NxwLqLJ
- SNj6cbywr+opz7MFdVaNcgBUOETZZDpHM5PLTqkn1MJ8waLf3sWLOgV2lNFFdlK+TnlGlUpNW9G/uUvI5iXe37+9roCQDrtoOMssSIhlzYRu57jp2jC4De5GlM2hhj9FXWWLAhZzzYyiKyuVGJDTmRiJCgfn48xxMYNYRy8UwK140Mwwj284XbhbR5dHOmijTNEK79d/uILkLmJmvdQFGAdQYkeKhXMOjFpxxhFNua/grqFommLxG7DdXMS+I0FxiwDwOcVsQumo6M4Sr+8N3J7/zj9Z8eyKERy4VBV09yK2Tm8V5e7jIvVUT5iR26cl9vgMdT8SHdboc61w=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 37E6120003
+X-Stat-Signature: 8bfbfjrd44hhmntjucd7e4f74zz74axp
+X-HE-Tag: 1784921011-911397
+X-HE-Meta: U2FsdGVkX1/gzN+OFbkFcihbJGhpdm2B5RDmrFS48Qzz/1dQRyPrYtIPC64ylU1nS7Bbae63baWZN+SqhyFeY66iVRr2myJiHU5s7vTJsuSJLrYVR7UAGaAko3qs2ld0VkIjB++5wB9l20GLGUcikwmgQZZJytpNxJUypU5/YJHoZE/Z79ZOUqhynPAe/tc/u9jmW88aq+/7xweoopTYKcPT8BuBBTaalpZzj+0vnam9mUbs76cekRxStJRdsO4s/0RIuBz9Tb8piptYJcYv4aX4AfdjweDo9wergGCjrPys3lBSUTfGaDSyUdv0e9SLI08hPFYg72/rJwJ8tWtY5sLrh3y3bGOHlKkN1mHSYXMhnnr1WlFISqbefrpIOGC40dUaBiU6dQ0zgSA2jSLXUJYQi47gcWJWlSzOBnPE8uIo8ygxEv9ateBz96hOXPLSm78RPKcTRXL1YHR54NbC7tkt1+KHKYjwLXANuC7m1AgvIV3Fln1wEduuo7z7OwcOIY6CSCihaPKfkDVvnoX0KJGxT63741aqjyeZROYdgr+OXMfskb/sYqJocTGUFuMNaTtbvhKRSMrbx52zAM/8ULSVefPui846p8ipYHpJOBQBCfsyIiS/eGKtwIY0qiwaN0QFYDQppbOzKQIalSMyugwbE5mlCZQsNFHHRrjaeAWVp5tXhXCImfHRYIzUOTzwZn1UW5JUcsXmCj/vOxQnIhtl4psnrvzxoYWTPe+awm1Lxbbu9MS3bsCJLQSZes56mjYrubXxYMBkPFb/3LyA3G6/tXRtQN0XLeVF8v7TG5d19d+ibEC3zP3u2GCecfmZXsIrG5yUmoQ7bdLpW2XIXXmNK/0CN/LjtwyYg2Z/VI6/hiM+rwIY7w7ULFhTcc/KfXbZSVNhoDUs+lXl1jxTGHrzPh8nLtmcFiDSTdESyH0/PU6PiFCABQIElw9v4DvNzUmFc85Li5ZX4vUvOQm
+ mncgHIYN
+ UNXtPPus4979gw78E5UZp53YaHVEp0wfGvZL7NVrk2ulFJM1OXPOP9AIET8DRFYywpzb32cn7Hw7yqPy158Xl3nu5TFREAqCoAHBwuo40j5BgGT8O3qsLZbDLbInK4jjP06EkHxSL/HiBb0XxuKcil0DH5X1oA4xJuYVXMAnTlCWtUjmf6q8969qrt98lXbZ4RBs5b5gdttsHYoHVAaiWOUySFFWLh6hQ93XuToJIzq+gncxpTuHalhqYa88B17lm9d+R2TIJFA4GcxqQ5NLrr86JcN0wq534ddBn6d+swXkOVRo05fTR3FG//TqxDApGur6PhaEUGwju1IC56CwiBQGA8yYpVJDTRx2ZnhxaxOeanrg4CYDFZH+xjImJ3qHtSCwARPqVm7WarzrHmv0tR/XRp0S0U9Ppw3sDUeJdrgiT3py6f03aW6g+DI5nH2TqlPLB2vfEFh9UevfSEG3/joQFE2MpYE/n0lHH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,22 +96,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/24/26 09:46, zhaozhengzhuo wrote:
-> The gup_longterm test prints a literal "n" when
-> PIN_LONGTERM_TEST_START fails with EINVAL because the string is missing the
-> newline escape sequence.
-> 
-> Print a newline instead.
-> 
-> Fixes: 800ddf3cd74b ("selftests/mm: report errno when things fail in gup_longterm")
+The pull request you sent on Fri, 24 Jul 2026 14:32:13 +0200:
 
-Drop this: it confuses people that care about backporting actual fixes into
-downstream kernels.
+> git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git tags/slab-for-7.2-rc4
 
-Acked-by: David Hildenbrand (arm) <david@kernel.org>
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/86ba24c41adcf1d6e63827a828a9b5120a86917d
+
+Thank you!
 
 -- 
-Cheers,
-
-David
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
 
