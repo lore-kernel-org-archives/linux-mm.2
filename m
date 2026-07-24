@@ -4,137 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F725C531C9
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 21:07:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B835C531C9
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 21:48:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5B87B6B008A; Fri, 24 Jul 2026 17:07:41 -0400 (EDT)
+	id BA8EF6B007B; Fri, 24 Jul 2026 17:48:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 569196B008C; Fri, 24 Jul 2026 17:07:41 -0400 (EDT)
+	id B59456B0088; Fri, 24 Jul 2026 17:48:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 431266B0092; Fri, 24 Jul 2026 17:07:41 -0400 (EDT)
+	id A48846B008A; Fri, 24 Jul 2026 17:48:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 153636B008A
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 17:07:41 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9E872A0755
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 21:07:40 +0000 (UTC)
-X-FDA: 85024906680.30.2BD23AE
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 38892A0011
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 21:07:38 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=c1aq4PvS;
-	spf=pass (imf25.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6CCA76B007B
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 17:48:29 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CFB8A1601A6
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 21:48:28 +0000 (UTC)
+X-FDA: 85025009496.18.E294AAA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 4C7122000B
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 21:48:27 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bhpTuvSZ;
+	spf=pass (imf03.hostedemail.com: domain of kuba@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kuba@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784927258;
+	s=arc-20220608; t=1784929707;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3+l6zQ2UyUka+UgzsNomoD+GF98S9wcKfqgbKY9mofg=;
-	b=M6kmEaDzubiOurSX/5lBo7M+TfbjVqhXgr5wdMHYPeTXiS0LGO0CfD1EZqGacW7GBm+lPX
-	9Udu0+FdSgOJmCcfS55S3ZfeqE3mKNQDM2qv7SYj600dHYqfPOrmaBa1Z5vn3DyS524oWu
-	bIyUQyd7MuObm9B5eHICsOejIRAlIAc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784927258;
-	b=54Cg+cco9dUpKlVmZzRmkLk36t2WZ+GLHa2q0tkDWc71XGYNL6n9qlq/irFG1ooaQMgPwp
-	S7evy5JdHK36mZkGuJNyzKW7e5Dv2/8DcO6C8lq8qjmT3/8KgVbpFSI5h8x9hPBy2HqolQ
-	uVgWvOyqK3hgUmMUbCnFcHOUHUY4Uxo=
+	bh=GTdZSgSwBlfAlIxva5M6ZU/kD9VYoe26BBxVBJ5WdPE=;
+	b=rdzcU0+E/M7ipttCVLsbke0kyyvg8k5KglIO5+vkZqko1dsw6mPC2y0pP8TpuIMaIBqYCe
+	yIYDaLLVAnHaC5siVRR+XvU/pAL1Hf/Ak+0mjPTOJs+BT05HBK6ZQHYaSQlEGY5zx6A/W9
+	NMKbqCS8U5lxVtcmMeJKtD+w4sSLsFU=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=c1aq4PvS;
-	spf=pass (imf25.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784927257;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3+l6zQ2UyUka+UgzsNomoD+GF98S9wcKfqgbKY9mofg=;
-	b=c1aq4PvSPV2FsJPHeBPb61ZEe2tzWlqz9/2jX7L2cEpDZJIVZ7+3WRjgFjhCtnr0rfmz/6
-	8jkiBpKVD5xKj2qeRlDkzZt3ajurSgeLTLnR9WJ/G0V93P2fM5H3HneoUQajuNqZWsrofq
-	xgpDvwCOl+j2bsj84otijcZL5q10Ji0=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-507-tQU5k1nCNhOJ3aq3h37PNw-1; Fri, 24 Jul 2026 17:07:36 -0400
-X-MC-Unique: tQU5k1nCNhOJ3aq3h37PNw-1
-X-Mimecast-MFC-AGG-ID: tQU5k1nCNhOJ3aq3h37PNw_1784927255
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-49561facb1dso7228525e9.3
-        for <linux-mm@kvack.org>; Fri, 24 Jul 2026 14:07:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784927255; x=1785532055;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=3+l6zQ2UyUka+UgzsNomoD+GF98S9wcKfqgbKY9mofg=;
-        b=KVSEMBH6Ch4ep/5pJ7K7xWe7ue+Yle8ELsrm6qCKLSLtXJb8fAyeCr11JWXUYwxaJx
-         qmcbLTjOt+LwNkcFAzSv63S+OPBKin61Qsh4+c3F2/G5UZTqg00CFoWues4YBDvnc9YN
-         XJiQlc/ieo6GvCYghzZzZljwxsk0HCeE0+592Dfhjj77rxoXuWJD+ncnrdXtqrEJDxom
-         Xm70d6TA03ZkrNZIvE3nhZk/7H6lwIC3l98d0J6qLkMdmNdLvlIpTgI07cAfbyrJH0SE
-         NzK3puUyBeKIEdCOIsqpjFTgqjGv1xE7vquNF+KIf8afbzRE8sqEUJsGLtR6Cb5TrC+K
-         R1YA==
-X-Forwarded-Encrypted: i=1; AHgh+Rq5E2S+j1YrPLjd2i84LoREn/pEd0x4PcJal5Do5BMa+Sq9Tlgz8szshPOB/77/BxNJDF8NQiF4xw==@kvack.org
-X-Gm-Message-State: AOJu0Yw6pDoHD0TNl25e8BYTDCkFtICjrWDjuv0GzG+jhZWoUV3zx2jy
-	SFgEdu1EeWR9xiwyt2TbFOjy66kmW6lmhYYqBdqPiRFJ/o7CIkTcfLNXQ4vQlvHsuz1RUuEY1S0
-	J+FVh5/AKWEb6QC3zNe2tRp6Ova5ZMulxvR+opWJbl3KhdOW1VIvT
-X-Gm-Gg: AR+sD12jXDWF0UcyyTVFRFGykj/6IN63vUedP0kvm+anPabblc/0I0PKsPVlLBiX/nD
-	XKmbs/FN0Fi7doa/KRijweXwGfXuDti8LCi9ShwJk0k5c7vDtJ3u6FU0+1GfjLSJ6Nk/anocInv
-	0z0086emiFi+M71YzCa+0Q6jK2FcMQoCwnsBu2DORCuDwrSZxq5OVdkxl+2UNnZ+15mIKu7IdZf
-	oTWDZ6lsZTXSIHQt+tYsnvmUlioGJ09E2Edbk4g9ZlvLJUCTNim89u8HIsSEFpktcSlXD2xMSmY
-	b27wHVusQL2XZPrO8Yds63FK92f4ZR6VB9hXgZxROYCDtlHmIbgd2b2a03a4OhgxKWb8I3nOIoj
-	TquHKD7X/ExFNHpS+tjSPpxxgzYH9pfI=
-X-Received: by 2002:a05:600c:4d06:b0:495:7a23:1eee with SMTP id 5b1f17b1804b1-496b56f39d0mr18995e9.12.1784927254856;
-        Fri, 24 Jul 2026 14:07:34 -0700 (PDT)
-X-Received: by 2002:a05:600c:4d06:b0:495:7a23:1eee with SMTP id 5b1f17b1804b1-496b56f39d0mr18715e9.12.1784927254347;
-        Fri, 24 Jul 2026 14:07:34 -0700 (PDT)
-Received: from redhat.com (bzq-79-177-145-168.red.bezeqint.net. [79.177.145.168])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-496b4ee4504sm11539515e9.6.2026.07.24.14.07.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Jul 2026 14:07:33 -0700 (PDT)
-Date: Fri, 24 Jul 2026 17:07:30 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Sean Christopherson <seanjc@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jane Chu <jane.chu@oracle.com>, linux-mm@kvack.org,
-	kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
-	Ackerley Tng <ackerleytng@google.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Jan Kara <jack@suse.cz>,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <christian@brauner.io>,
-	Jiaqi Yan <jiaqiyan@google.com>
-Subject: Re: [PATCH v4 05/14] guest_memfd: Use folio_has_hwpoisoned_page()
-Message-ID: <20260724170606-mutt-send-email-mst@kernel.org>
-References: <20260723143034.175661-1-willy@infradead.org>
- <20260723143034.175661-6-willy@infradead.org>
- <amNeKcDZ66VrQ5PL@casper.infradead.org>
- <amOByZH4oWzmO3Zj@google.com>
- <amOpRMpkyFGm0j9c@casper.infradead.org>
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bhpTuvSZ;
+	spf=pass (imf03.hostedemail.com: domain of kuba@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kuba@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784929707;
+	b=eMT8RIk886+R4JPobUni7evvy+Vr4psAMmvdCsJMlYSl33oKUoqJZVq3ba1c0VJHLlMWo3
+	1EvLNW4obkl2enmfWiBEoFE7sam3XAzqQTUXRRAjQoE9u2Vo0V3avFlc/on1/PF6zLvUBw
+	LmhwHzD+zwOu1WkFUbdKEbsI8U5Jeic=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1DC3C60A60;
+	Fri, 24 Jul 2026 21:48:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A6FC1F000E9;
+	Fri, 24 Jul 2026 21:48:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784929705;
+	bh=GTdZSgSwBlfAlIxva5M6ZU/kD9VYoe26BBxVBJ5WdPE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=bhpTuvSZWBV7iq9keKc8+pixk18qLEuyMz3ZTlqKcB81KF/CnyeLGI6JSyvHGt9tA
+	 E+SxQVBXcXsXsZgtn3HAr+6nPULrU5HRAYu13tTfnL5ffRJr3w0sXxS3y6FSy3SRlS
+	 Qe3XQkADPgbjY9nioQHCBPR4pvKP4dL5d3HxM/ORX/63JYStNE+wqJy61XHcdbEpWF
+	 xaZAuoqTpynwYjXBJP4BY73AhLP471MMWjcWFGi91teQEabAfmboMZJJ2AI9mVl919
+	 5Vj52Ap+SYxCLa6sCvz56w/tCisRBng0kD6I+yiTKpyHAoJV1VexiywmsHK9mBuUsB
+	 8QLvkwcrgPftA==
+Date: Fri, 24 Jul 2026 14:48:22 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Sang-Heon Jeon <ekffu200098@gmail.com>
+Cc: Julia.Lawall@inria.fr, Alex Deucher <alexander.deucher@amd.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>, Alexandre Belloni
+ <alexandre.belloni@bootlin.com>, Andrew Lunn <andrew@lunn.ch>, Andrew
+ Morton <akpm@linux-foundation.org>, Arkadiusz Kubalewski
+ <arkadiusz.kubalewski@intel.com>, Borislav Petkov <bp@alien8.de>, Christian
+ =?UTF-8?B?S8O2bmln?= <christian.koenig@amd.com>, Daniel Lezcano
+ <daniel.lezcano@kernel.org>, David Airlie <airlied@gmail.com>, "David S.
+ Miller" <davem@davemloft.net>, Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+ Eric Dumazet <edumazet@google.com>, Florian Westphal <fw@strlen.de>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, Hans de Goede
+ <hansg@kernel.org>, Hans Verkuil <hverkuil@kernel.org>, Heikki Krogerus
+ <heikki.krogerus@linux.intel.com>, Herbert Xu
+ <herbert@gondor.apana.org.au>, Ilpo =?UTF-8?B?SsOkcnZpbmVu?=
+ <ilpo.jarvinen@linux.intel.com>, "James E.J. Bottomley"
+ <James.Bottomley@HansenPartnership.com>, Jani Nikula
+ <jani.nikula@linux.intel.com>, Jaroslav Kysela <perex@perex.cz>, Jason
+ Gunthorpe <jgg@ziepe.ca>, Jiri Pirko <jiri@resnulli.us>, "Joerg Roedel
+ (AMD)" <joro@8bytes.org>, Johan Hovold <johan@kernel.org>, Jonathan Cameron
+ <jic23@kernel.org>, Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Julian Anastasov <ja@ssi.bg>, Leon Romanovsky <leon@kernel.org>, Liam
+ Girdwood <lgirdwood@gmail.com>, Linus Walleij <linusw@kernel.org>, Maarten
+ Lankhorst <maarten.lankhorst@linux.intel.com>, Mark Brown
+ <broonie@kernel.org>, "Martin K. Petersen" <martin.petersen@oracle.com>,
+ Matthew Sakai <msakai@redhat.com>, Mauro Carvalho Chehab
+ <mchehab@kernel.org>, Maxime Ripard <mripard@kernel.org>, Michael Turquette
+ <mturquette@baylibre.com>, Mike Rapoport <rppt@kernel.org>, Miri Korenblit
+ <miriam.rachel.korenblit@intel.com>, Nicolas Palix <nicolas.palix@imag.fr>,
+ Pablo Neira Ayuso <pablo@netfilter.org>, Paolo Abeni <pabeni@redhat.com>,
+ Ping-Ke Shih <pkshih@realtek.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Sebastian Reichel <sre@kernel.org>,
+ Shuah Khan <shuah@kernel.org>, Simona Vetter <simona@ffwll.ch>, Simon
+ Horman <horms@verge.net.au>, Stephen Boyd <sboyd@kernel.org>, Steve French
+ <sfrench@samba.org>, Takashi Iwai <tiwai@suse.com>, Thomas Renninger
+ <trenn@suse.com>, Thomas Zimmermann <tzimmermann@suse.de>, Tony Luck
+ <tony.luck@intel.com>, Tvrtko Ursulin <tursulin@ursulin.net>, Vadim
+ Fedorenko <vadim.fedorenko@linux.dev>, Vinod Koul <vkoul@kernel.org>, Will
+ Deacon <will@kernel.org>, Yazen Ghannam <Yazen.Ghannam@amd.com>,
+ cocci@inria.fr, amd-gfx@lists.freedesktop.org, dmaengine@vger.kernel.org,
+ dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org,
+ intel-gfx@lists.freedesktop.org, intel-wired-lan@lists.osuosl.org,
+ iommu@lists.linux.dev, linux-cifs@vger.kernel.org,
+ linux-clk@vger.kernel.org, linux-crypto@vger.kernel.org,
+ linux-edac@vger.kernel.org, linux-gpio@vger.kernel.org,
+ linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+ linux-mm@kvack.org, linux-pm@vger.kernel.org, linux-rdma@vger.kernel.org,
+ linux-rtc@vger.kernel.org, linux-s390@vger.kernel.org,
+ linux-scsi@vger.kernel.org, linux-sound@vger.kernel.org,
+ linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
+ lvs-devel@vger.kernel.org, netdev@vger.kernel.org,
+ netfilter-devel@vger.kernel.org, nouveau@lists.freedesktop.org,
+ platform-driver-x86@vger.kernel.org
+Subject: Re: [PATCH 00/36] treewide: remove conditional returns with no
+ effect
+Message-ID: <20260724144822.6af8213f@kernel.org>
+In-Reply-To: <20260723184538.3888637-1-ekffu200098@gmail.com>
+References: <20260723184538.3888637-1-ekffu200098@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <amOpRMpkyFGm0j9c@casper.infradead.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: y9PUJZ1TSuHsc6xJLchScx61sotoAmH6E3r4UhyeHOk_1784927255
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 38892A0011
-X-Stat-Signature: ucfuq11tz4zg49jbqeada3sh45ccnmk3
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1784927258-654647
-X-HE-Meta: U2FsdGVkX1+76eqloy+gN96mDq14bo0Ku0EGSUlp6ll8VLO/BCX3KGROtT1Uob9rI1EgggAaQGmOyulTm+pIUMlVXxk0S8uL/nGz2kqULewYzI99+meHeCGWhgcXVnDWBfOOpSTVDEPeW7KdZoiuGAKizNKyb7exClFU2RiCfTfQnvD8v1O+fAwN/uEKxk9i+gl1PnFI5+jUUEG+MOXukPxl5n9mb1f/4PpHS+/MXsqScu88ZuX4agKJYxmdTKcnOe2l1Axsr/TU2Qe/kMT9rkmpQGpYwiwenC9UvUVTZsDaen3+4aKbCC/DosdAs3b0JPj3KBB8EgOISZgHeVcAFFT5MqPOCJq3PIbT2rZ/8gFRJ+VFufbykZ/gIl4uDCDT8wVvRRkrA0ButCHvC7crHJqguahYifMZhvPlKXxTr1QbgvYfO1vNm51djFt1VpS9IcW5RySbsP9gSfxEibfC0FEa7pE7XodOe9FCSU7vJB4MqoVrwKtx+KUQPajp3T70X8UWAwyVIrKXcqBqpsVXM0b3MQsdCAjwEZnwbHTTtJwPPa7Ku6UqqD0Nx4yPcRoLUh0X8mHY+5nhGtkr9zWqDK3BQA/c2FZFWqSY20kdrE97PvSZ/JDSPOizpshmIVUogDUIAQ9MgrmRg+u89/fHRDDZ7hKEfxy/de62XC5SiVQ3GeckX5UtC3xsNZQ6fzFiypK2aMAri/BgIi2ElvMBlWxzcDC4F+cRMlmhhgD9xi71gbGyLaW7VE7DY0c82fxQTcTOA6IMMPC/swpVLZYNywpl13QLyhQ+qMaa5zYVm/iNbt+gXWEPOujI4rqKm0f/b0mjPClrgIP2ZwQRBaA4w3x4vnfMHTChAxLCvw6yw/mpdMY1BPEUXRowihl2WQqM9vM0w2+jDP9aJkQamXynfB6k0FhkEYwnfUMfxKNEywNeg9yJrrzc1CQjeRGC0ninfafI3ewxiYWKeTwN/S+
- Us8r3O0u
- EHKRgxB1GEJLQActuWyiY+lyDpNoOerBjA29DXuYW8jIJVuzDw5GM8sRQfwJaHGv1kWX5JCpB6NRLHTHwFgIAVuQlKZ71IfVeaVnCjDtyl3vB76zIqmnunnWj0JMu9Iw36goBws2AfVPCfgPEAEeHXDmRCg128xmh3WPXQSOTyF3vi+qczw4VqobogGhbE1Pcvq22DmjSMADquBKEU9QCXX88a7ZrOofLGjBBgWuVRl7I2AGCGev6DxKPGGcbCVXHwFtt6hsMMETsRN/p1NADTJ3EAURkywFdVHXIBfgvjCSQeM1id3UNo7UmDtKWNwqybzHvVdptXuKSnOQ4LdIr/7FGuqC/E8El9fZCd+V1LFXRVFOUt91ZW+vzpsOboZvn50dKMaitsI8bFkMFvWKou70ZZyq1NCdrhLO1+ghRDP6vsln0mRr0wt+dQFXT1hD9IujhL4G87olrZMRmDfsiMod34Ldx54aDg5JzEk2SMM0svmw6Hh20pLcKJDy1sa+mWrlD
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 4C7122000B
+X-Stat-Signature: zzr587sdq4ijiuokdpoj5beddx639epj
+X-HE-Tag: 1784929707-369758
+X-HE-Meta: U2FsdGVkX1+eUrBjktoLZ0n1QgGmFMKhE/ez88RMSXK9UYFoM5g75y2t8m9hi8TCd7Pr9LAV7aP8FIylxoVWgxy6oOmnFrsjAGpFjpbqV3f/Cnz1CJP1FaaLJOZBfCQk0vqEzXsMsf4J+NPr6rU5JZH+b2F+UHmnhtW7CVil8u1L+k49XaI28QSC3X+qAcF7QI7RqhALYBvv2G2tV381SUr3q1TCnbbJMq80ob6vDZFerBq0hQIS+Rc0HdE2oDXpXGmZR3hHdtHll+/UnRawb911wjsNZYmNaLP/Y9/Q1nQDTsXKrp19KkvoTg0Du4c+6gDb1HXQyyVQl6F7grWw5H3qqfO8J6L5A7NrQYm6XD1G2/0FJi6HCz+wh2r5UwwgGpnP4J7UKs2rSLAXRz/qY6dyI2j5I7OshqIy6ydE4YYldnu+KkHvvdf8iWTFX4UCAXKLnuZbbIGRdksLMHErcg1ix1YqazNHSj9FDDCtOu8g9NIWVgKIc9wHUr4nQoIPqohWkCDILU5k/lrOxBCxsgpcuvUC7BXVF4/rzMvDcvrvWuSL2QAvP4bBB5fKYLYECLS4PYaOuX8z04PLudS406c/v+RczTW2FaXcu6wnKMEDZNoiLNpfhHcgvrVD/vQSsjeQpC+BW2c5yJHf2zkjZNrZumWeV/FCdcpkSnMj/VE3VqbWW6AsSclo4KMEjGClQpbpOapN+dNXlU9NlQiL8qHbRqMRZzeLdPXaXpB8MFz5lsOQCUrvQiIJcVYfA4+CSFj0Q558OwaxU9JhqkY5Mpoh4A9GQtOBXO2KO1oXd4JzjMLR5gvO0IRWTaxNp8lM0Onr/CB20fzRfhbl8v61EQ4f53571MdOGWq+Xc7zN6BgTejzET/JsOfPFKuf8AnaKZJp/TmklHWc2YCQ3715JLBLDxKohDiToeStYvOso6OlC9A7oMfS1eX+ztl4Jd9GzfJB+lE7m6SKYZWJCH4
+ mzCBrWfX
+ SwiaLetCZrqcVZr+jug896qMGsR+AnFgz5vE94ojdZtNxmhUjcX/QfR6tclaNrHShIbftV2rjCoaiy0z2yMPR/DZLnh2LNj6RIoVNtYbI0jdcte+ZbchHJBIbvei3DWJD/KuB6IpPf58njKLu59ZWmmCCIvMmYjSY5kOl4DndDbJUolBOPEai6p9ELWrGEnDgNzJJnU1PMYzoXwBk5pGsLD1f/Sj0B5VQijYxpk1dB4GVSeIzBDOHqkVJdzemtJW/NFd4SeNY58AskKMcjFSBSpU3Wv6TLSaf66LWOBsDDSokW7cx0TEJl8+dv1bG0/OV4irIgfIMrLYmzp4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,36 +142,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 24, 2026 at 07:04:52PM +0100, Matthew Wilcox wrote:
-> On Fri, Jul 24, 2026 at 08:16:25AM -0700, Sean Christopherson wrote:
-> > Heh, you don't want to sign up for a week or two of onion peeling?
-> 
-> Oh, you have no idea!
-> 
-> Here's my onion so far ...
-> 
-> 1. I want to simplify filemap_fault()
-> 2. That requires changing all the architecture fault handlers
-> 3. So let's push some of that down to the MM with a new wrapper around
->    handle_mm_fault()
-> 4. This would be easier if we could hoist the creation of struct
->    vm_fault from __handle_mm_fault() to handle_mm_fault()
-> 5. Which would be possible if Jane's series to fix hugetlb use of pgoff
->    had landed
-> 6. Oh, hang on, handling hwpoison on hugetlb is actually broken in a
->    few different ways (some pointed out by Sashiko, some I noticed
->    myself)
-> 
-> I honestly thought I was just going to rearrange Jane's patch series
-> a bit and resubmit it, but fixing the hugetlb hwpoison handling has
-> consumed me for the past couple of weeks.
+On Fri, 24 Jul 2026 03:45:02 +0900 Sang-Heon Jeon wrote:
+> Patch 1 adds a Coccinelle script that matches the pattern, including
+> negation and constant-comparison variants. Where a local variable is
+> assigned right before the check, the assignment and the two returns
+> turn into a single return of the assigned expression.
 
+Huh, I thought we already had such script. Various script children have
+been sending such "cleanups" in the past.
 
-Last time I tried to fix hwpoison, i wasted untold hours on it, only
-to decide that it was always racy and does not seem to be worth fixing.
-At least yours isn't a race.
+> Patches 2-36 are generated by the script, with hand fixes to restore
+> unexpectedly removed comments and to fix the formatting checkpatch.pl
+> complained about.
 
--- 
-MST
-
+Please post patches 4,7,8,9 as a separate series. Since you only CCed
+netdev on subset of the series patchwork thinks there are patches
+missing and doesn't kick off any CI.
 
