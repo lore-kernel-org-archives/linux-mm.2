@@ -4,126 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D3B9C531F9
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 18:41:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAB6DC531F9
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 18:48:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4F6226B0092; Fri, 24 Jul 2026 14:41:04 -0400 (EDT)
+	id A82636B007B; Fri, 24 Jul 2026 14:48:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4CDB56B0095; Fri, 24 Jul 2026 14:41:04 -0400 (EDT)
+	id A33516B0088; Fri, 24 Jul 2026 14:48:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E4546B0096; Fri, 24 Jul 2026 14:41:04 -0400 (EDT)
+	id 9232D6B008A; Fri, 24 Jul 2026 14:48:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 09A126B0092
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 14:41:04 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 856ACA0114
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 18:41:03 +0000 (UTC)
-X-FDA: 85024537206.11.F26A09F
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 64A3114000C
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 18:41:01 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=VexYpNmY;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf09.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.175 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5E1616B007B
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 14:48:50 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D04AEA00F6
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 18:48:49 +0000 (UTC)
+X-FDA: 85024556778.01.68AC923
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 0E479140007
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 18:48:47 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="fgzv/HRT";
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784918928;
+	b=iFMT4Ha4fZs908h1iYO69CYvx0M1VBiDHln68oTvfvcyGx8VSgnbTO0f+sN70q1z/HCD56
+	pGm9lcHO8cKqVBzFq42pXlyyAxNJxh0at4RuJSLhUC/577PIrQ22+IEkgN0rCK6gnn0QSN
+	Xgxz1PBjnlsSzJyvTAcgerkoq4YrdO0=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="fgzv/HRT";
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784918461;
+	s=arc-20220608; t=1784918928;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t1qXGBunFwcH0vasyDsq+hrXxoqTsrx29FgrXHzj3JQ=;
-	b=n+j5WG8pe3Nbmj6EtTRv/vyFWLe4b2uo46NJgzGmlG/po5x0gvcgHaqG5qALxGVyU86rKv
-	p3hxyulTGOsUZ1ltsDfJ1n4zrf59jBFeJMvw79NGoLN9oLZJOVwkILHY2XdQYazomh6ScB
-	ePlOeG9bPy6kpM7vLIwbSGRu3Ch5S/o=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=VexYpNmY;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf09.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.175 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784918461;
-	b=ub0q4TLSBNjj1ylHUmzSJ2ywkiwf9vWNx5aQ7oYYFYlCFmgZuwRreRlQoTuB0u+Ldo9zBV
-	H46kf+XyJmClNlyRtUpdYsh5pqzW5mxJQKs+Z5D6L4+j1eJ7RVJhL8yzMdj/+fgB086QKt
-	HtKptf7xbfeKifZhPwpPVEKqaK69S+k=
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-52192509869so5578791cf.1
-        for <linux-mm@kvack.org>; Fri, 24 Jul 2026 11:41:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1784918460; x=1785523260; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=t1qXGBunFwcH0vasyDsq+hrXxoqTsrx29FgrXHzj3JQ=;
-        b=VexYpNmYM24ORJ8iJVrLnvP7+PPrJPL02ORL+QLG+j50I/0tqNI6aOJeMBd1uM4/Yb
-         OBTAfrXFIoBoXbH+wYD6oAd2eJOqrUXJvCuI/sbIdt/fPkLCX/te5hsuQXVYYFkx7V7r
-         pOi+9673u11fAbr42L+iRfLj9kYxFZyxFx8LFXWWLZIoMyZesxQ4HoKBnpf3qoYv46D0
-         0T03sGozAaQpMMe9/yVwUKTwRnwzozhe1ENJWSUp37HWyyr+Yz17kFyUHTQD3cbYK51o
-         QW7LXQ5fQBq3pEXc9U5RUMAgxfTg7wUwP/t0Q169u2kDixyYcecoKq+pCHRzkL1Orztb
-         BOpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784918460; x=1785523260;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=t1qXGBunFwcH0vasyDsq+hrXxoqTsrx29FgrXHzj3JQ=;
-        b=mxx3YAIyJMDLL4FHATmfge/LrpNjxBaWhZjCVNm92GaH/1DarjVGUJMcG1WjY4Hpqi
-         QDji0quopvVcRGUfnISqiWrNFwfl+8wr1QrJ1Y14mBpvj6Jm688RwJ3OyqFK4vnlbBcx
-         u5BLeJcfXJG8b3GKG0SZY3ogdYNlQTfmxtLUYiVXN2Bk3reCjhHYyFtNTyB0rqyHj4A1
-         EqYih5j2Aiw2mEYyjSr2Vv+xxk5Bo42gNwrOWzJoyG1XQXkICEsSfNdrh5w4iyZWGR6i
-         e3bvPujoYjubdMXaCTAfUMVVbyC+QZnqlco1RaTZ70cJz2jKHGLvm8o1SoW/guNKqEfx
-         5uiA==
-X-Forwarded-Encrypted: i=1; AHgh+Rqd9C5ezN351hQYlscdR4kYilvILP9iKLRCNrt1dFcDfydMNI1GtOp1Prw8VHpiqGWaLChazHUW1w==@kvack.org
-X-Gm-Message-State: AOJu0YyCg3LZG5IrFM7grlOTjNGK+koIQoX1NU+HAYpwNiCA1/J/Bbed
-	7fHhhxTCWziYp4/c/IT4mtBL+0JHm18S5DadNK7JWKsoRy09B09CYV0XGExSruUstB0=
-X-Gm-Gg: AR+sD10sWTJGIq8mNEeRY1aqSZUvmtNKeoCx7MbS34cOoZMfI0QLnPJEcTr7+4tcKfj
-	Hr3RhrNX7j+hO3x38D1JP0Lj3y7Dz4l6JEbXxa5n8ZxxHIU+JXqqvuXyvn2Y5k3sJBAmmyb2oww
-	opOPG9fAhU7eb45+bdQJzGl9PrdfWugKoQ3lP4vVFUjjPDQkGWHlKMas9aLx3PCDIIePWbxo7wi
-	O5DlDVOYuTWVurYV4NmL7757QlmDbwYMUUwZdl0rjheMFRGI3O8UKNFNKLeA3GncOyzZKqDNtSb
-	kSkDDtDmCUV8AZcwco7t5qzmk8tRIYuOT2hrX+Hdi7i449QRvJvGYmgn4fjaOXk18jqyMac480o
-	DxXqKxq2bTN86dw4VkGwPVOKYshiEBoSXOlqXRehiMltkvjoqyysJKHOK4EH+lFVi7IUH0AQ/BO
-	90
-X-Received: by 2002:a05:622a:c08:b0:51b:f40b:2fac with SMTP id d75a77b69052e-5283df4fea9mr83122981cf.50.1784918460467;
-        Fri, 24 Jul 2026 11:41:00 -0700 (PDT)
-Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-907e854e497sm4176346d6.11.2026.07.24.11.40.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Jul 2026 11:40:59 -0700 (PDT)
-Date: Fri, 24 Jul 2026 14:40:59 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Hao Jia <jiahao.kernel@gmail.com>
-Cc: Yosry Ahmed <yosry@kernel.org>, akpm@linux-foundation.org,
-	tj@kernel.org, shakeel.butt@linux.dev, mhocko@kernel.org,
-	mkoutny@suse.com, nphamcs@gmail.com, chengming.zhou@linux.dev,
-	muchun.song@linux.dev, roman.gushchin@linux.dev, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	Hao Jia <jiahao1@lixiang.com>
-Subject: Re: [PATCH v2 2/2] mm/zswap: Support batch writeback in
- shrink_memcg()
-Message-ID: <amOxu56ibbhKP8qJ@cmpxchg.org>
-References: <20260717085151.22822-1-jiahao.kernel@gmail.com>
- <20260717085151.22822-3-jiahao.kernel@gmail.com>
- <amF7_GB5Rl6OJmt4@cmpxchg.org>
- <CAO9r8zPaUPddYoLz8o+g+xkb-zdkfyB+LqaDOrkzqFSePEV-xA@mail.gmail.com>
- <amIdU1lFxqxTI3Gc@cmpxchg.org>
- <CAO9r8zPepaekOgaDaVBWyB_F05Ezvz+AJZ8M5+NGQ4BmiJNBkQ@mail.gmail.com>
- <d8de419d-0077-c47c-a5f1-37c229a853ed@gmail.com>
+	bh=CqEW7l6AG8iqRWq/zb16CXiDHGZlqAaWI/Tl1NSoTUg=;
+	b=Or21rKzuwIfDBbSWoQL9F5otQkDpXh57LH5u1FtTVV+U3hdjf7jyfKi9xf9EzG00SI3l3J
+	OnZENNrruxIfef0pXsYwy0OapkzRDPWoh+xC3igt+BcyqWDZbUvib4fDSW4BbfhuGEKnHo
+	ccOmWWoa2Wtna/KQPHHENRJl7Bdc5R4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2669F414D7;
+	Fri, 24 Jul 2026 18:48:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B7381F000E9;
+	Fri, 24 Jul 2026 18:48:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784918927;
+	bh=CqEW7l6AG8iqRWq/zb16CXiDHGZlqAaWI/Tl1NSoTUg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=fgzv/HRTcwYMAihvkw0CrcHkZXL70ubrFGsRZYmMHdlj+0kbOIucftR6RWdHGK1T1
+	 GDhNixpIb6LWRgONJ3vUgxG3l9AmweCzKB2kJJi5M0bxf1wW7xwiUwW675wkkfGgij
+	 Sv9m3JIFbws5QKOedwAiI2dynIOupIWQEOechHS+VXK5BU0evODs5KTcwTD9jHShqr
+	 QTbxZ9hDc4uJT0e7/Vbl0A0cOa9kXefz13EY9upIWFM8BAGJzKwJgj0tRT9d10WP1s
+	 y0C2QtAQue4vsnori8Ir5Pt9THZoxbDHs+1rOWTS3h7adwZTucw/fIdfra9ucSVV35
+	 R35jxkCcPTz2g==
+Message-ID: <177a1767-c782-4210-b377-44c520c74619@kernel.org>
+Date: Fri, 24 Jul 2026 20:48:42 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <d8de419d-0077-c47c-a5f1-37c229a853ed@gmail.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 64A3114000C
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] mm/thp: order huge zero folio PFN invalidation before
+ removal
+To: Hengbin Zhang <uqbarz@gmail.com>, linux-mm@kvack.org,
+ akpm@linux-foundation.org, ljs@kernel.org
+Cc: ziy@nvidia.com, linux-kernel@vger.kernel.org
+References: <20260724100509.2300200-1-uqbarz@gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260724100509.2300200-1-uqbarz@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 0E479140007
+X-Stat-Signature: 4zc94tqofzx8mnug5r5ycm1wj6wpasna
 X-Rspam-User: 
-X-Stat-Signature: 471d51i1f4x48uuoib1kxajwtp1quk41
-X-HE-Tag: 1784918461-306189
-X-HE-Meta: U2FsdGVkX1+UMt1wAUOVItqHNMrgtGFveOv+WTj3Q4l5K9l8Kc6+tHNC9TsstoL1p/DJ4uqQOd/4jziR3mLJK+/zNev9wU1FSvPHaOLQIEg/QKzatMTwIQYrb7L7V8RgeizWbIb9gy54JHOELlqy5AlGuySG+cvV3zkrcAtWSInjZCoTy6muwTGOAQgK2SL5zKd0EdD/D5LgGN6WftPjWGeU26OhTAx0EOJzX4kDQqX7nVD9QwdcvolRGFtyR7H6BDXIDib+Hm0Amxnwvr5/46zauv6FLW8AKAneMAKYAWxSXu6W1ya6zfkpM7gn3ghiKfLncXPeatqQ9xJ19YEfPSBnXj/8vuCtJVsbFME4mVUesvNl6txjSyJEzghbbJmgkSxg4GS/yufaLWqRe56kyQijWBu3+3chOvs/CQbgezcvYgn658m+rIgFPh7reeAdsZXdyigwS8BnXyEZ7iqKypvaRyTm4TfSprAsyGKdV1Y26EnznjopTP0g1eiD2dBP0FCRtTIXepDf5Otz5sJLMsduc3g8f7F2S9QEmCtIkoLt2+m7jQv0LP8iaep7VqE9F7SmQCtQIlV+ugt0rw6cd4mjfoze/9jKSdxd2Scaqh8oDkhBRSHGNH3gT2KHgsRE2WdnNG6YA6WCfm+gASzBIM3Ij6YB9/f9dXE0BqFWF198/ySa0POdJ75ExEqHsCZRsm32KLOndVU974eR49BI9D4ouRsda7O1MaK/4lS59iOkf2qJDwWbuUalgoWixKeQEkLzJNWv/WyqeMRTXGWI5DBaN1G43sH5+gPx7iEt78P5lgxswIPyzwwrrjV42BxCcoj9qQnSCWShgRChkfaAExBfVYzobRJeLKAhR5I2dc7qDtL2Af9x+Zndc/wsJOqMFYYjaoAgyLwET1fereO2rWnP5yNKcYl/4AOCYzQG+I2TYb4Ige2N4M2m41QrOb07sVFQyv1CmJOa3t40rZx
- AKX8c+47
- tok1P1QV95BMgtWsN1ik3zIn7hmrD6ceCUjnv8ofm3e3+C4OdKtKZDakAAMa4fDAzdHRrmxx/rPbTgNQheA1Abk5pDMyCI9dK4SJzl6HwIAm+6pjCZk69EWwKq0TYBkC5tLTWcGX3GqzNdu7e41Z07kqX+d7mZSR7Tz4rx+7aBDowSREQgYd0BFiJ96gxl0xhuyMyN9aQTZqxjbN3odi/pvcS6g5rz8wTCvOkK/DCtOzY9i0swjJD9UkUuBkY40yb21i+h+Kbd9mmp6VIwF02UZAeO9Xj6DdeWP1prON7LaDOgEPE/lLIrX49IzaVdc1I/wdiI96oXNmEfQ8s8+Rtitz1vmQcrblFiXhLw24rYBNhVKImh4eq0FoveQLgbPVuWIhI+P41lYIvGf0SbffmBTyYlgdIcYOg3A0KueKWNa7yT9n4p8kdxth2qHneB7vHfBUFDWncHUpliXl+20+zUC33Q37SHiN7L/B0Sr7QCPqzAuZtUvz2c+RAM8gm2sukX60SPznZ+YYho9p1Wy5+aAa4uR9wq/TcItFzPF8hN9/kKtu0IanuuCQJ8QrcFS0v5O2xx6P1XrFzXOM=
+X-HE-Tag: 1784918927-754411
+X-HE-Meta: U2FsdGVkX1+cfGpX1lzMSlHBiTMtxh0vqtAAMvAc341KwY2eq0vVTMnWCUJdS1YHdaWIk1yOZziJ2xZ+IshrWfP5RU2CCD88obGP+lneMKhie1bCFOriSOxWaTEwFZDcJ1olmWu4PZTvtVmb4WUqHHQ1CBDI6L5ykFUgIYpD16YIYONXUverzzss7s+GgzDkj8hcImyFIBCgexhximodqdlVeHzKLO8NoPaNlc3u/NaBtUHocEM197B1JHosfLQqpU3xwWQRxKQcWnEpXc0L11EPOADSwq+JgKCgf5rumnyfE7TQQDYvsgyWkVbpy0IhynMvsRs3xr4jRffuB1jgUczocNZ7TDI3AQ6amjeH9xTo9AiZWZtquUVrSanNv0Y5N6RRrl9Hl7IIv1WdN531VSSmY4cfkOgc3/L7G1tj+YFVSbiyRpqwesfOTFtSzAg/qTzms3VuG9epJGXlj7+hFZ24CVxycs1euVHuHfbK+iqYOsbAI2K4magGCc/f4aTtOZnVdORsqtE2gxDl69SfHkT1d4FYDqTBjNASaxRZkoh3SOOXa8KRxY93x5HQ/eXsXruXtd8gKTLjaN1uLgK5I5fi07htgf1ayyZZCL7oiCoBo1oWZwzAZCY/liN5j/ydLZP6nvjV7KAqJQKOxu6fLJ0SbPGUn/6ZVN5xbol2OO1Ib2dDBsnIK16TlYITp0KurspNfyfafX+LyBpu2Go9hbYwphIqRVqbDMOwiD8nCVOGHn0j2JvM9whIllqLol4t9Dd1LfdkQJ01QZsZ2R3hGIAulYHSrLc3grIYVWz110H7G1yFou1LVgJyEDuQ55bajPX22uu+vLrxVPs/uBwSrLZHyaUP9LEMpuXcDGSUP1pxdUVAzBNM90tOxjwqWEOaONlqtZa/R6pB2PZq0qqkUURUlVQ1bmyiZK22wv5imxbYSvQ3WnZ/I7GPjiu2akWpHq2ioaXP3ZrV0AMd3du
+ /hpj09jE
+ zQ9XDaseeKc4N/GcKIXUW7o1uMVvvE5sHFiR0SlDjsTRWvJ8VXlcYjV8WvlVHIauWSZZPV1kIOR2mLZCRqqOP/zN8u53/hVPF3So+8fPzMacAfYsm2hl2YDUjuGnn9bMYW6niU535qFb4jEtndIoV4/akjegLcmwCBY74eKk7yzviQC+bK4iczU9mtlKV2d2FiCQn1k0FcPu8rS7jzQvb/rBmxsHAaRQgrbdJLuQDpLrKr+RskVmXa/u6k/fzWfd5c3EV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,94 +138,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 24, 2026 at 06:20:50PM +0800, Hao Jia wrote:
-> 
-> 
-> On 2026/7/24 00:39, Yosry Ahmed wrote:
-> > On Thu, Jul 23, 2026 at 6:55 AM Johannes Weiner <hannes@cmpxchg.org> wrote:
-> >>
-> >> On Wed, Jul 22, 2026 at 09:52:18PM -0700, Yosry Ahmed wrote:
-> >>> On Wed, Jul 22, 2026 at 7:27 PM Johannes Weiner <hannes@cmpxchg.org> wrote:
-> >>>>
-> >>>> On Fri, Jul 17, 2026 at 04:51:51PM +0800, Hao Jia wrote:
-> >>>>> @@ -1369,7 +1402,7 @@ static void shrink_worker(struct work_struct *w)
-> >>>>>                        goto resched;
-> >>>>>                }
-> >>>>>
-> >>>>> -             ret = shrink_memcg(memcg);
-> >>>>> +             ret = shrink_memcg(memcg, NR_ZSWAP_WB_BATCH);
-> >>>>>                /* drop the extra reference */
-> >>>>>                mem_cgroup_put(memcg);
-> >>>>>
-> >>>>> @@ -1493,7 +1526,7 @@ bool zswap_store(struct folio *folio)
-> >>>>>        objcg = get_obj_cgroup_from_folio(folio);
-> >>>>>        if (objcg && !obj_cgroup_may_zswap(objcg)) {
-> >>>>>                memcg = get_mem_cgroup_from_objcg(objcg);
-> >>>>> -             if (shrink_memcg(memcg)) {
-> >>>>> +             if (shrink_memcg(memcg, 1)) {
-> >>>>
-> >>>> Why 64 for the global limit but only 1 for the cgroup limit? That
-> >>>> seems arbitrary in multiple ways.
-> >>>
-> >>> I suggested that we keep the writeback here without batching and do
-> >>> that change separately, mainly out of abundance of caution as
-> >>> writeback is done synchronously here so the extra latency could be
-> >>> problematic. I think we probably want to measure the performance
-> >>> impact of that separately.
-> >>>
-> >>> That being said, this path is potentially too expensive anyway due to
-> >>> the flush, but I would rather we do some basic measurements before
-> >>> batching here.
-> >>>
-> >>> What do you think?
-> >>
-> >> It's not an unknown, right? We know this works for direct reclaimers,
-> >> cgroup limit reclaim e.g., and what the latency implications are.
-> >>
-> >> Because of how reclaim works, we also know it'll call zswap_store() in
-> >> batches of SWAP_CLUSTER_MAX. If we don't batch here, they're likely to
-> >> each call shrink_memcg() once we're at the limit - while still risking
-> >> rejections due to compressibility differences.
-> >>
-> >> My worry is that if we start with an inconsistency, we'll be stuck
-> >> with it for a long time.
-> >>
-> >> I'd rather start with the clean, consistent version. Dial it back only
-> >> if we have data to justfiy the complication that we can put into a
-> >> comment and the changelog that outlines why exactly it's different.
-> > 
-> > I am fine with doing that and basically always using NR_ZSWAP_WB_BATCH
-> > as the batch size in shrink_memcg(), but I would be more comfortable
-> > if we did some sanity testing.
-> > 
-> > Hao, would you be able to do some smoke testing with NR_ZSWAP_WB_BATCH
-> > used for all paths, and memory.zswap.max set in a way that induces
-> > writeback? You can probably set memory.zswap.max to 1% of total memory
-> > instead of the global pool limit and rerun the same test.
-> 
-> Building on Test Case 2, I set zswap.max=320M (~1% of total system 
-> memory) and updated both invocation paths of shrink_memcg() to process 
-> batches of 32 or 64. The resulting benchmark data is shown below.
-> (Note: Test Case 2 also sets max_pool_percent=1.)
-> 
->                        baseline-cgroup   batch-all-32-cgroup 
-> batch-all-64-cgroup
-> shrink_worker wakeups        7,238             766               367
-> shrink_memcg calls      12,059,142       1,961,194           983,878
-> written_back                28,277         301,157           327,997
-> zswap_store calls         1,349,572       1,168,190         1,114,549
->    store succeeded            492,861         521,315           459,246
->    store rejected             856,712         646,875           655,303
->    store reject rate            ~63%           ~55%              ~58%
-> pool_limit_hit              510,130          50,096            57,715
-> pswpout                     884,989         948,032           983,300
-> pswpin                    1,251,268       1,638,668         1,878,453
+Hi,
 
-Thanks for testing both!
+How was this issue identified or observed?
 
-Looks like 32 shows the better matching with the reclaim batches than
-64: it writes back less and swaps in less, while still having the
-improved rejection rate. It even rejects slightly less than 64, but
-that might be noise? Absolute stores win handily in any case - not
-sure if that's meaningful in your test design.
+On 7/24/26 12:05, Hengbin Zhang wrote:
+> The nonpersistent huge-zero shrinker removes huge_zero_folio with
+> xchg() and then invalidates huge_zero_pfn. A concurrent fault can
+> publish a new folio and its PFN between these operations, after which
+> the old shrinker invalidates the new generation's PFN identity.
+
+
+You mean, the freeing path does
+
+1) xchg(&huge_zero_folio, NULL);
+2) WRITE_ONCE(huge_zero_pfn, ~0UL);
+
+Whereby the allocation path does
+
+1) cmpxchg(&huge_zero_folio, NULL, zero_folio)
+2) WRITE_ONCE(huge_zero_pfn, folio_pfn(zero_folio));
+
+Sashiko also IMHO correctly complains about a missing barrier when we re-set the
+refcount.
+
+So I wonder whether we should just stop these cmpxch games and just use a
+spinlock around updating huge_zero_folio+huge_zero_pfn?
+
+-- 
+Cheers,
+
+David
 
