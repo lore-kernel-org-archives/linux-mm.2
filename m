@@ -4,97 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFB4CC531D0
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 00:13:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A57F9C531D0
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 00:15:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BF2D36B007B; Thu, 23 Jul 2026 20:13:50 -0400 (EDT)
+	id 5DC386B008A; Thu, 23 Jul 2026 20:15:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BA4226B0088; Thu, 23 Jul 2026 20:13:50 -0400 (EDT)
+	id 58CBF6B008C; Thu, 23 Jul 2026 20:15:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB9C76B008A; Thu, 23 Jul 2026 20:13:50 -0400 (EDT)
+	id 4C9F66B0092; Thu, 23 Jul 2026 20:15:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8668C6B007B
-	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 20:13:50 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 19A28401C6
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 00:13:50 +0000 (UTC)
-X-FDA: 85021747020.27.E0922FF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 78AF4100002
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 00:13:48 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dY1l+6xN;
-	spf=pass (imf14.hostedemail.com: domain of broonie@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=broonie@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1A8CA6B008A
+	for <linux-mm@kvack.org>; Thu, 23 Jul 2026 20:15:22 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 27F1080248
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 00:15:20 +0000 (UTC)
+X-FDA: 85021750800.13.07DFC5D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id EB76E180005
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 00:15:17 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=QZDSnRYo;
+	dmarc=none;
+	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784852028;
+	s=arc-20220608; t=1784852118;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vV8SHVjTvcYQq16HYBY/lONPVrjZ6kNVzEGGtrciPts=;
-	b=uehurojF8QcFEYbIYXhVnUIjHrA1AwA4fPgZUvi6gOj0j03k3OVeET3N9eHsXQ7eYmzemB
-	GOAG7i8XRqbfT5BYeL7poceEJBWKQ/Kgog4qpAa9pDCwaulWAM4LjW5sQs2I90xk3paqjq
-	N4CkmXe6sEfuxAX6bVpDZI8OuWxtCwo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784852028;
-	b=VerPLNQp2MUA521gUyTo8wenPXfwqm5dQpMtR/uQ007/DZzjtnf3uzhAk7oo5lG9mW+ds0
-	DJr8MvP0svQiIjDCPBEbDRKxyJ8EkWBj/3csmrffWwU6Ew238oH1i9rcJsbaTwckyDyj55
-	dPnO4abeNTA+y6cQaB+fvXNn5BPgk6M=
+	bh=Y5aYK3g7NYOnUMQLXgxW5eDWWXLVLMQ0qcKu8Hb6xp0=;
+	b=ahJ5xjJm9qBoXbyoyUL6rqX7yuvt9a8Ha/2pE42UoJUvgH2KKxw6CfBfjIMLfkUAGvCcEE
+	TaAvP9IZxOdV6sq89peIXOwJDe4Ot1Z4TJxRjqYz2Ig2XBHzbXS89e3i7Ps9R82SuW6Nzo
+	ljg6jw2bQ3EUkifMd1FN4DWD0NLEJ4Q=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dY1l+6xN;
-	spf=pass (imf14.hostedemail.com: domain of broonie@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=broonie@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=QZDSnRYo;
+	dmarc=none;
+	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784852118;
+	b=8DVhA6VvE86w7CHsKN6G8qHKHqSib2cGYXRXpEuXBvSYWh/BR586lTFxIWLKpcnv/a8hY/
+	S3Bky8W/wCqbcMurZ2hQJCTCLNFM4pzHVC8EqWablNaZ5bizSPZw1W+oR25XszFOSD9Ekk
+	KqRXeslZukyNXI5K3t27H/3Vd/T0yOM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D639B600B1;
-	Fri, 24 Jul 2026 00:13:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C9DC1F000E9;
-	Fri, 24 Jul 2026 00:13:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784852027;
-	bh=vV8SHVjTvcYQq16HYBY/lONPVrjZ6kNVzEGGtrciPts=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=dY1l+6xNcFo3rz4Dt3iclqEw2EUP3Ft0aroaZGaGqL6/XjguFqJ+XWMcYGYWWfYfG
-	 MNfgUiONFWs7JFanWwteVGQ+kVLIA6g9/yqBElieVwGy07CjuBsdurJY3iAFJcyaGU
-	 C/qkzvreZslcgvgowrVZXciNyzkAakDqsTU0xfepRjyaV2dCVDqTLr7TtJD9ZMZW2B
-	 ceze1n/B4MKPrz2a5tBh3M1memlPANA6Vxn0aIEQODZp0MQB9tJdsee3gYulDNv1tP
-	 E17ArD9dgqxzy+Iu1+JINh3pn2fee9OW8j1/az4JtG/9DYjMSd0YB8I5S8v2pMckZH
-	 impkerrA2eyRQ==
-Date: Fri, 24 Jul 2026 01:13:42 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Matthew Brost <matthew.brost@intel.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Usama Arif <usama.arif@linux.dev>, linux-mm@kvack.org,
-	dri-devel@lists.freedesktop.org, linux-next@vger.kernel.org
-Subject: Re: Semantic conflict between 04b177544a04 in drm-misc-fixes and
- 0b6b1bb28482 in -mm
-Message-ID: <93289e91-ef9f-4786-bf49-e93d91afc1ad@sirena.org.uk>
-References: <20260722225605.GA1910198@ax162>
- <amFPJc1NQbuYWlSp@gsse-cloud1.jf.intel.com>
- <20260723212724.GA999236@ax162>
- <20260723160942.b58b065d771401aba117bc77@linux-foundation.org>
- <amKftG6NRZy0Ii2/@gsse-cloud1.jf.intel.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="fKoPW98d3CeKyWXz"
-Content-Disposition: inline
-In-Reply-To: <amKftG6NRZy0Ii2/@gsse-cloud1.jf.intel.com>
-X-Cookie: (null cookie
-X-Stat-Signature: j64yocqtso16d4t7gh96sdr57ruskj7x
+	by sea.source.kernel.org (Postfix) with ESMTP id 1650B4329A;
+	Fri, 24 Jul 2026 00:15:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F9171F000E9;
+	Fri, 24 Jul 2026 00:15:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1784852117;
+	bh=Y5aYK3g7NYOnUMQLXgxW5eDWWXLVLMQ0qcKu8Hb6xp0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=QZDSnRYopXKAJMRYUmq5QTkslx6Kh9jmh3HWibjIAp+ME/RfgEQBlX9t25t75zs0k
+	 0F2rSaC1mFzk4YlMjOSHAJ6mC1v/YxZ6J6YUTP/SNlMo7E9J/gWzbDhDwoeoSzEkn8
+	 xwxRkzO1dZQfsB92x8fYnXHh6cOrQ8glU21g9Z+4=
+Date: Thu, 23 Jul 2026 17:15:15 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Sean Christopherson <seanjc@google.com>, Yan Zhao
+ <yan.y.zhao@intel.com>, pbonzini@redhat.com, David Hildenbrand
+ <david@kernel.org>, Zi Yan <ziy@nvidia.com>, Matthew Brost
+ <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim
+ <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price
+ <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, Alistair
+ Popple <apopple@nvidia.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Neha Gholkar <nehagholkar@gmail.com>,
+ kvm@vger.kernel.org, rick.p.edgecombe@intel.com, vishal.l.verma@intel.com
+Subject: Re: [PATCH] mm: mempolicy: fix automatic numa balancing for shmem
+Message-Id: <20260723171515.b5ddbc59c5c36ad01ef8f7fb@linux-foundation.org>
+In-Reply-To: <amIrDncrL4K-JRBO@cmpxchg.org>
+References: <20260629163337.1264881-1-hannes@cmpxchg.org>
+	<amGpEEqxoLq/Y7ZO@yzhao56-desk.sh.intel.com>
+	<amIcXrS7nGX-adpG@google.com>
+	<amIrDncrL4K-JRBO@cmpxchg.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: EB76E180005
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 78AF4100002
-X-HE-Tag: 1784852028-4100
-X-HE-Meta: U2FsdGVkX18bzLkvgHTNJFqdPccM0ydOIsd/L1BNs63xQazYWKh2/6ppBVFgyGEpEEFlsGT5UUwFaApDsj6T4m66bkcWNcraC8XPApDOkjz1KUOzvWGW1SVGhJTM9wMaSng503CW8x5CA2/Q27VCGNZDCLz40e/hGSxD8Gp/wiA6f2Ji3rClDWU1uNArmLHAsyoeED3f4iR6lFRPG0pt9VAVPEIvABYOqJsf2KxvTC1739Z9A0mJOF3/+Cx8SOt6L2k45UmtkvZ/XhqNbgsARaimRZNNlmBVIIV1CK+4Tkto1FmNl01w2YSes7HtDA8xqxZUbwHKdr/0gJeuhFxrJtmikOcW3q/RwJBHVhY65OXHWJ4QTJVLbkdPXyRWigdTR448Tpne0gN2P1ggRhnxaE2gaNN2jINoKDrvbPTqM0Y7pLlmsBVWAzwZW69wl6kTGQP3Lh6LkU8Slg9PXy8c8woPGjBKpJ3Hznr9MoLSzCS+/qlpj/MMFDjfizfAUGpbuPZNgFNw6vHEZdL5GuAMU9o72ypNXpJFsUcVhQv96OY2WzvlpQWcTxZvWKnS40Bzg6DecCIvAsD3Siac3o0Wqc3fkF3p6Oy6nJGzr4m6InOanKMXCiwHa0EP+yB/5EyOpKHAuyH54RuvFAuHE89xy2VRI7sBxqjwK/5Y2lWnWJBqrg20oF6ZX1n+veSNFsWUYhoawDAiKc6TWyJi4K+UGG4DSceIDH7XlFhlN2sY/RQ64y1bD9igZo1poo6ST+SNoLZLS/cQyzeKNgjG9gvqEtK1CWIspYLmZeA8LyhMF1DcglEfbAEwUM6vU8MiMHQkwTDXxkMHLUCnm5/lFtX7Dy5lTvGAisbnnWL76KPfAC8Q3cRWg9ltMgnL8Ayy15PqhebsHkGOxlpTfoThoC02afL6A++CkR64bASwMMv4eI0fuPxi3xNvaRh2jP7NU0ihuruVx6B8c2fkAUUJbNl
- 41AO6LPU
- B+yLiwkYHJl0LVpKgA6dbdFuEmo/5jwgR6F6uJXFeHnCcCdkLqRO7VLl4RAB/Ejd/6yeEshr0Q1VNYx8Z0xAkVWiQn9BgCOvs3dl8liDagGoMfMXPkx1i7J7d3Ugp/pWjyrsUaaJ1M7qYJfD+vr3Kgb7zV0SaFu5lngV1eb+sogcOL0pW1dTwD1ox54H6cTt4JMsEgjlc9lYsj53xCstFTXKzp2Olqh/GPxw0mROtOQm9njIHMyg0SAQpu9o4AEBCgxjiNiuj58+P/CvstFKRAnbimWGZlg+1vMhKFhREJwSfDTcCt6w5s6TV7Q==
+X-Stat-Signature: f4mqqrzxyj7xism1inixka1c341yfpau
+X-HE-Tag: 1784852117-237890
+X-HE-Meta: U2FsdGVkX18GFCDVjxEdUqynP/5PNvgyqvHUKpt6ilcOOfugO9i+jDjeknT0OPtxNNQ6KWXQKVFcqL5q0vwMXIhX6kF9yjIW/BPiPPIDpDx5x8JDcPZX9Q8S0SnqgW3X81wBPRFwObFwGClce64Ox1lGMrA1r8ArQ2CTQiG9HhpVx3zVe1+OhPJpeWTDKkmLy0zXpx752S36Iw2O5CbNqaoFsi7EDGuuzHVGUNQO1MpuBgY0guCk7uvm6Xdkslw01b6LI1XzYv2I44usxDpg51qcWe+1yifdlWPRhvjW2S7n8fvlt1WGMZSX9fiaGck/799A3S6CD7GBjZHXFbmB1ss6cPqOi+iDMYphSPVvwraEfngxFvuHUtoSAxowQ54wmr20emM6bZLm23fXi/J+i5d6zVDBt+k1+i+ic8MaLnIhBVoWZaLegav2vzIcE1T9jSIsogP1+z/+jxDnecNayGb6h3ur2tune9nGAT6CYiJ6WErgoD6xuUSg2flxwuYA/Jva89jQS7j4h94rhrHjQXHDfD0sNSfS1nIafbZXAH7Xa7833waC041u0DadYBMxUBK9AksgvuAAFO5HDvIvqwRPTWCpvGtPYGe2IljvX6oXIQQsGV3KPYabTIK189YgkUH39y++UOLmdLY4QjZo3Ci+/Ig6wGd4Gd8ShvSP3oeC39FOPv/ukiDr1vbqTs1WkdJq9aE0VJOVBjw+TxJZ9yCVcHlfFgOSALV4Buil4tnaHeIBjEmX5qGOm+8wAKuhN/HEzsxx5XfQBJXKoqzx51Uh50YEKPAhzfctlbkAk3oh9q/D4hfLh1SOWP9SV5ruDlNKq4jeklB2YJS5tA/rPfMNwewRZO5JJlWfPbGpCTKxv1sj0cKidjQACY1aDknV42N9JcUo8q+bRyy4BTPocUcHQVB8SwgBGMnyMqtIDtkCt9Rtczag3VVrZ31pZkqZcZMgg+kLXvHZm1u6s4A
+ V8LNBocp
+ +FigZguToOPdx7qypKYgDEc4adWWcnaDoexmTbZm9TkLEK0A71RDg8cjSVpRzNXA/Kt0+C3VD5zb1rEVf2w7sEsnEydKi4puI1d/dFjQQY2QkmZm/QU/hKgXxidL9FauYDplZVm6GnFVCY8WJGeCIlZuiLUqzifXwoFEqcFi23/3f7Im2NuqUSC+qdSvzfwUvanec1yIYE/5Ft6mnCvFyQymK0cg7dUdfh6D4CpLQYRdC33ocgdetR5/mFJK8S8vNsbYYfMrqi0kYiKvM76PWlptDXvQ//1/h++F1DSDpM7Ymq/V67jokiTRidfKR9hkO7AhpxzDZ42hHdMx+IKnuPfrH6paPtMAUNKY74Md/8A2cSJxxZJKTo9AEDAU+srL9d0pQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,35 +99,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, 23 Jul 2026 10:54:06 -0400 Johannes Weiner <hannes@cmpxchg.org> wrote:
 
---fKoPW98d3CeKyWXz
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> > But in this case, IIUC, this change will "silently" enable NUMA balancing for
+> > shmem-based KVM setups where it was previously disabled (albeit unintentionally).
+> > 
+> > I'm not fundamentally opposed to the change, but I do worry that downstream KVM
+> > users could be in for a nasty surprise.
 
-On Thu, Jul 23, 2026 at 04:11:48PM -0700, Matthew Brost wrote:
-> On Thu, Jul 23, 2026 at 04:09:42PM -0700, Andrew Morton wrote:
+It is a bit concerning.
 
-> > I'm fine the drm people changing things ;)
+> This should be very visible in early kernel validation after an
+> upgrade. VM hosts tend to not do much else, with VM memory dominating
+> the host. You'd expect a significant uptick in numa_pte_updates,
+> numa_hint_faults, and a change in per-node nr_shmem stats. And the
+> patch subject makes it trivial to find in a commit delta scan.
 
-> I'll jump make a DRM change so this is all worked out when it gets to
-> Linus.
-
-So should I drop Nathan's fixup then?
-
---fKoPW98d3CeKyWXz
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmpirjYACgkQJNaLcl1U
-h9AqhQf+KthYj9FPBRNjt7aix5PlE9HA5FGCZpsxTVHHy1cvEyiZw/wwp9hNVUTe
-emIcdoj3CNZDT5pkVttPqtDC2T/TOi+CSQ4oA9tJjENnDXAsT/riLdxeagqz76Vo
-hkwo1c3ixmlItxRnTmPAu2f7fK5WpXaJS+ra6FUmyv00wKd3nwqWG+Bk5xNUZVLU
-z3sE4+IlkU/EXO51fH//NX0bqW77sLFRr40gSDzAITZmizC66LIXf2s0SGWRtJlE
-nhYpApQ96bL9os5zg3RP38naQQa2ri5ibgSsQ6XAVs7L7XIQ5E0lNmwjSOl80BQu
-fVPDJ/W9/bQkgUEFFfxGmM5eCiIBqA==
-=lo9P
------END PGP SIGNATURE-----
-
---fKoPW98d3CeKyWXz--
+Is there anything we can do to make this process less painful? 
+Documentation of course, but what about detecting the situation and
+emitting a once-off warning?
 
