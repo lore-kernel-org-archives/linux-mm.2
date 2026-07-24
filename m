@@ -4,104 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE878C531F9
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 08:29:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1FE1C53209
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 08:57:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8DB316B008C; Fri, 24 Jul 2026 04:29:47 -0400 (EDT)
+	id 6C3586B007B; Fri, 24 Jul 2026 04:57:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 88C156B0092; Fri, 24 Jul 2026 04:29:47 -0400 (EDT)
+	id 674566B0088; Fri, 24 Jul 2026 04:57:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 77C4F6B0095; Fri, 24 Jul 2026 04:29:47 -0400 (EDT)
+	id 53EAF6B008A; Fri, 24 Jul 2026 04:57:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 59BB06B008C
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 04:29:47 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D2DF0A02F6
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 08:29:46 +0000 (UTC)
-X-FDA: 85022996772.11.442BC7B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id D869440009
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 08:29:44 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GYAw9Mmt;
-	spf=pass (imf04.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 218C16B007B
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 04:57:07 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A70C41201F3
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 08:57:06 +0000 (UTC)
+X-FDA: 85023065652.02.1E33992
+Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 992DB100004
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 08:57:04 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="qlQJL/gn";
+	spf=pass (imf05.hostedemail.com: domain of cui.tao@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784883425;
+	b=m14XaP5MMHsL2OuWXeC3fDb3BsbtQsw6nhyY4Q20PsMNdWTa4kMon2GRUBMEGThGEHCF8B
+	m3VvBBEDSmy+KUQRIFK1il8gFZVeW47+AwF6qaX5PPo7JjslTOJLIIhawBQb/x4DC7abC2
+	/hrBtLr5f1aEzdLUMS1tL527/zyNcu8=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="qlQJL/gn";
+	spf=pass (imf05.hostedemail.com: domain of cui.tao@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784881785;
+	s=arc-20220608; t=1784883425;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ErEZwXhE1T+cZKwmA2MG4EYvttNqoH8rOstv+1j1lps=;
-	b=z7Df3NhH4lBznXJ2PKuVaXvXHiSIrrwLMq2HugOIvS/4ncdosdQt3aKam7rNsC47lHpFM8
-	UZRFA+Em4EYhYCF1KIGWJVpmwSC+QogfPJWtsgrtxuqX/PZUZZIR4CGbSaFyUe+He3PIi9
-	Pd/YDWEyX1ZBmgs6r6ZHnY9dN0GpDMs=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784881785;
-	b=NAT1plSLyXoVFeNN/rKjWkZlzMKe8ZsQ6Tk1o+tfFzgr8Zqo+ljCEROh+iGiHadIey4jqJ
-	sFuea+UrGUVPl6WR/qNG5g5lFLgYkl5PIcOYsUdrWIncENoXunr/N0BUDk1yrH6C2ZckoW
-	7bDqt2nHrX4SoA3+4EIJjsddJuJi8Fs=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GYAw9Mmt;
-	spf=pass (imf04.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id EFF764361E
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 08:29:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4C461F00A3A
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 08:29:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784881783;
-	bh=ErEZwXhE1T+cZKwmA2MG4EYvttNqoH8rOstv+1j1lps=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=GYAw9Mmt5QXq8ZGfnR1HNG3yWOyIcH0lDQKzqs30lhixh653FuxRrWuWWIGlTsQyO
-	 hWLgwJko11MdDwZB4ozgcWPx/qHW7rV7QbyS+yHpB/A6muDmosIRL1w90uaj2G0sRC
-	 8aGs9bAWzid4qf7Og3F+lhD1pZgrhc7q5R5Ezm2mgGCkBYWLkFJn1zG+NN7/8vHSSa
-	 t34zHJmDG0sqJc4RqQzam7f50WyqnJRs/7/yzFBaSQj80ynNqCSEf2f4BvfVL+jz++
-	 UqQF2dSF4HGUaZWDordiBZSuVyf/0By10+9Ajdq1dKgjPEA7v3lT68VeSqB4aGyv6u
-	 Ha0gtMjAd5q4A==
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-51c04bf4711so1861851cf.2
-        for <linux-mm@kvack.org>; Fri, 24 Jul 2026 01:29:43 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RqGmLPDz6qh5F5ry9ZfjAJiyjQzDjWYeKcEapKid+39Z7jLsviS2XsYk5sbE5LR+qpPOLIPTKZBdA==@kvack.org
-X-Gm-Message-State: AOJu0YyzpfPoRxWCeYB8TKD48yng9X0iKs/uSjaQtGbpk5NMO8BFNHiS
-	NdYiq72Ohtdo9OEFF1Uo08jq9AaDhBU1hjrw2xGQNYcdHnfkuqZ2GXnMr5oVQsOYUptr1PGi5cY
-	lIXwol0qpg+bfAfmmffU0NOBNXVQU7i4=
-X-Received: by 2002:a05:622a:30a:b0:51c:d1c:474d with SMTP id
- d75a77b69052e-5283de1aa43mr56748471cf.19.1784881783309; Fri, 24 Jul 2026
- 01:29:43 -0700 (PDT)
+	bh=PNHjK+/JGmMsSbCYCMJWygTh1XzjGhubS/Qib62Lnjk=;
+	b=rn+BeMpVm7guEtnYn53UzCIzDLFiZb7+CAdqb9sdgNeXNsJsySBrPhlCMkNp4XHRFTjQAP
+	oafvZrjSKDmZ0gdxcOzuApNv5YD0sIReaR+oxsbM5St2epMsLqCvj51jIudiII0yzvgUfA
+	LxXFwGDmoooxvbLqOOtDYpj+6IjaCK8=
+Message-ID: <c12338c1-b39d-4cc5-80e2-03ced05168bb@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784883422;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PNHjK+/JGmMsSbCYCMJWygTh1XzjGhubS/Qib62Lnjk=;
+	b=qlQJL/gn5rJBc/IMw2KZPnUQAINlqiE87xelpStFVuECZ4i9cTMPSWq5APX4caYZFxON9+
+	xJf3i5YRIWOVE8jwGLezx9B2+SJ/3s84S/UGV42e9Qayz2bz0jA6FmahgZfZiz6KZ/ED2y
+	rjhOWzsUZOk9VwEDJz51ATTx1vc9YZY=
+Date: Fri, 24 Jul 2026 16:56:41 +0800
 MIME-Version: 1.0
-References: <20260724033435.2573323-1-ridong.chen@linux.dev> <20260724033435.2573323-5-ridong.chen@linux.dev>
-In-Reply-To: <20260724033435.2573323-5-ridong.chen@linux.dev>
-From: Barry Song <baohua@kernel.org>
-Date: Fri, 24 Jul 2026 16:29:32 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4xEoLxoNYQRk7KAc5yw0BTE5c2j=Du23EA8FaGM0ZO94A@mail.gmail.com>
-X-Gm-Features: AUfX_mygGBUWgM0xKbPBtDr4hMRbV6y4ZGhJ-OW5Dna5gHMaUF5YGWwMvGsDdNA
-Message-ID: <CAGsJ_4xEoLxoNYQRk7KAc5yw0BTE5c2j=Du23EA8FaGM0ZO94A@mail.gmail.com>
-Subject: Re: [PATCH -v4 4/4] mm/mglru: fix anon-only reclaim evicting file
- pages when swappiness=max
-To: Ridong <ridong.chen@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Zhongkun He <hezhongkun.hzk@bytedance.com>, Muchun Song <muchun.song@linux.dev>, 
-	Davidlohr Bueso <dave@stgolabs.net>, Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: D869440009
-X-Stat-Signature: 6143ecnn5ismtuu7bg16aro8qhqn3a8o
+Cc: cui.tao@linux.dev, Andrew Morton <akpm@linux-foundation.org>,
+ linux-mm@kvack.org, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, David Hildenbrand <david@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, linux-kernel@vger.kernel.org,
+ Tao Cui <cuitao@kylinos.cn>
+Subject: Re: [PATCH] mm/vmpressure: scale the vmpressure window with machine
+ size
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+References: <20260724054305.516126-1-cui.tao@linux.dev>
+ <amMPWbcKoXQ1Mxjw@lucifer>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Tao Cui <cui.tao@linux.dev>
+In-Reply-To: <amMPWbcKoXQ1Mxjw@lucifer>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 992DB100004
+X-Stat-Signature: y8scnyyuf1x7mgdnk6iusxizgebd4iep
 X-Rspam-User: 
-X-HE-Tag: 1784881784-666697
-X-HE-Meta: U2FsdGVkX1/2FOsTvYYEmZ59w+8EvKUgRkVMR/0cDckF9ib3FJQj430K7/6gqcI+9A6VN/H6dMLUCG/GVsvxINKSuMbcC85tw8LZXeFsFD4GYsFWO4KmlULX6VoCqhqT/JS9kzwNoA52dqAxyzOXPfv59/C+n9wzIpuzgCkQ83Fw9vd5HZ/PCPZ/5NmZNPyJKEBeNhawKbHgV/iXob/XtcqxfMEeR2LcYNOhinl+ZxYEIPdw83Qt8gHXiSeyXXzD8JwF6OD+ETNlrEfuTD9hBKoo9DL5juEOidPBCVKMej37K5oDv3CcmIa5cfajdoD7hfrKYyMoFpGYDlYJ01P5s/fT6L1A3f/+a73PksDLDLaPP6PQe175sLgeus+43cJ1F6+tR/KHHn4jp06ikgXk0UMz0xpJqls0LCh32XaVOGJl0xPPTrQ9CpUnGYij/RJuUsACONjyRHwCrjeCNLycy4rzmlQzJAMJXz23QnOcZmbYk6SuSDELBKFIR0SPH7vMsiwpVz/O76FgtI5PA+bhPphVj1vCwbSlrYisUY73H3QXl45tYwz82WMmdxk/suXGABtTbejVLMvDWT4aJmFpukRYCdBBMacxIa2QHd4icMV1lgZh0hB6UZ+TMyAESv0Ab9JRcLPzvPU0kxw/vJVkYawxclc7povXYPFQRrZl9449UcllTFN7S2DD3ZMwl0TH8mnHcL3e1k8RG5zINZv6MGKvUrjD3i5PHpBUW8I0MXg2IIxovTpXiEWedma+/EX7V/mrhedzcZl0MPhW/1XEWs1pNfxfcZ4LwJhFoDAZVqGnzl7PJSF6/4MCAg6Fz4CjgKzyfzQI06APXgOAwv808IZ4yDHSzHvjhdoCmyeSNrYTsgbJw+2z6h9zF0FB5ZQxgpau5oUNPCMfZfqF/8GUz/vUQwdlmY3jpkk5OQa9KaoU5ITqVbApMrknrhmiXY47/+HvWU1wiHbNu6tDgD2
- olmVbGNd
- LoKDInVd37X2fn5BSWMgVpeVfvD3rrrcugX5VuAFHZYZPY8t/y2Lixv7DMq7ar2TclgKjUngJ9PdsQmZKt5uW6qxRQEHCRiVan0HU+XSw879fqJbFz9/kd9rO1iEnZzVo2tK+ulnXlrCmFCwFGmJRsxnA6XpV7qFDrP4zPD7wq8BvYg8IcBPoWHi4BJnQm5sgP+WI+en8yGFXYXc08x+v80b6Ekj3PsgWibDAw7OZKb5a4ZzvpfDJkEzaPk6AWGrwfIGIE+BoqAmLKFkCsX1lCJz91PIist37lxQd3h7D8tZ621WGOOiOqzrMmMz9sYeb0cjyzxhP/VeRnJydF0LjqoHJZ6iNa7sT94V/VWS/2WZRw786lWl/SNdqGGkFKQtx7oz9iQSwmKbel+E=
+X-HE-Tag: 1784883424-182188
+X-HE-Meta: U2FsdGVkX1+3TLIvrk+yAgENjdfEZagnJpAiN2F9uZ0POZxNVAkdflq3sopOahAfaxdhTzBmUC5jadbk+SoQzdJb4nw9LLroLcGuDP7CUXMpyK47cu5I880YYHJJjuL6xHk/jQrRa6P/dJnsSWzPzmxtHP4wq7e5xwmBqOFb5gGv9EzPpjieXmsd0k6eEa58MoZzS0q3cj6Tkwsd+5K9Oxc0FPrLxEFD9kZIOV6iSUj9Yv/wTAJXoUeasIW8PvBdZzAIta4tBnoQyDtuL4fCLVgjERMOUBS3BDvMst6HKliUsuxgni/x34eOlah3fC8pa3Vs6cAcHjMFJhzmSwogOsxsgB/ji68qb16w5N5W/fO1Noc+jEiHSwbibp/uaHl5g/jrGQZvVk5Cf3zPTh5MjZTomcd9QoOwIpcgBBhJFv4MTB0B0Pxqjh7QeRM5vtcV7aOyS8Ma3wOaa+h8MqJn36e5b+34FqdXqQk2kvWS+7MqCJqhlSos08T3k2Lvjs0SYtFaiPLEoDb+xplGkkT5zyeo4y76Tg/MaCcKOdqwpUUvrWJFl0ihMmaBca0xuV578AW0aXBa5SRPK7Xo/J/w3PUozgBt/lnqEB36ElMQW0pS0Hn5A/KzqudcPHNW0cxyvPzTWw6WLyTOnzyw53BCle7rw2hNDT2cQQiH2Zts0QZW0sU875HrVdZ/NBdHhdGDAkFXv6+sQltGJDjlCpkJtHQz6yg85r3kIo6aRzn0R96PCw8PA7YzmubVxPsjXzHIv1SdJQXo2pcif79p9etxwaiPoWkyUM/Okgev5emA305JD6absjG8XTQDBw0IIz/GIvfTnNLXDoOj8ZvyA04MLUOcxLB+mh2QOQtrC0KT4MIy+2ljATSsJWDmnmrLRk/bUy15fsbhnkwEYrA9ulz65kZiWUw9w1MaZeJIvHn286nyTwMR2NyUG0KG1qjW5vGZSEOtxYM6ZjLfVJgODuV
+ knZXB6Yu
+ VYMqAtbw44HzFOYglDdib6hP+iwuyDPwsMIIc3upBLIi5rULMuoBQeeMDUOVJd+L41RwXG3oQXDZIl1lneYmjh55GoewfznldU+YI26ZIYC0zua4zvt13nbn3i5XPaTS6ekq8uA/KpotD+HivSbJBKEWJLKMdq8CMzkMT6xznEP+wZj+tWyZtXWkpxVtZ3E8G9JhKGV0x95icXaLK3g1HqfKhAxuU0/Sn4PF3H6ZQwQzF7euI4DL0b7U3O1EYgyMcQIqWaTVfcIytTwwL0Q8Gz5A7M/CllM4AyOvX36dusKfBmQeMLlSAhVw/1JrqzsWD0TF/xOOqMfFIKF9gLdd7zOs2WA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,70 +94,147 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 24, 2026 at 11:35=E2=80=AFAM Ridong <ridong.chen@linux.dev> wro=
-te:
->
-> From: Ridong Chen <chenridong@xiaomi.com>
->
-> The previous patch fixed this issue for the traditional LRU. The same
-> problem exists in MGLRU [1]: when swappiness=3Dmax (SWAPPINESS_ANON_ONLY)
-> is set, reclaim is expected to evict anonymous pages exclusively, but
-> file pages can still be reclaimed when anonymous pages cannot be
-> reclaimed (e.g. no swap and no demotion target).
->
-> Fix it the same way as the traditional LRU: keep returning
-> SWAPPINESS_ANON_ONLY in get_swappiness(), and return 0 from
-> get_nr_to_scan() when SWAPPINESS_ANON_ONLY is set but anon pages cannot
-> be reclaimed. Since get_nr_to_scan() decides how much MGLRU scans,
-> returning 0 skips the scan entirely and avoids the useless scan work
-> when there is nothing eligible to reclaim.
->
-> The test result:
-> Before fix:
->
->   # cat /sys/kernel/mm/lru_gen/enabled
->   0x0007
->   # cat memory.stat
->   anon 204800
->   file 67108864
->   ...
->   pgsteal_proactive 0
->   pgscan_proactive 0
->
->   # echo "64M swappiness=3Dmax" > memory.reclaim
->   # cat memory.stat
->   anon 208896
->   file 0
->   ...
->   pgsteal_proactive 16384
->   pgscan_proactive 16384
->
-> After fix:
->
->   # cat memory.stat
->   anon 188416
->   file 67215360
->   kernel 1970176
->   ...
->   pgsteal_proactive 0
->   pgscan_proactive 0
->
->   # echo "64M swappiness=3Dmax" > memory.reclaim
->   -bash: echo: write error: Resource temporarily unavailable
->   # cat memory.stat
->   anon 204800
->   file 67215360
->   ...
->   pgsteal_proactive 0
->   pgscan_proactive 0
->
-> [1] https://sashiko.dev/#/patchset/20260717113300.214717-1-ridong.chen@li=
-nux.dev
->
-> Fixes: 68a1436bde00 ("mm: add swappiness=3Dmax arg to memory.reclaim for =
-only anon reclaim")
-> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+	
 
+在 2026/7/24 15:30, Lorenzo Stoakes (ARM) 写道:
+> No thanks.
+> 
+> Firstly, a change like this should be RFC, especially from somebody who has not
+> established trust in the community yet.
+> 
+> Secondly, this is more or less identical to a previously rejected patch ([0]) so
+> seems to be plagiarism since you don't reference that at all.
+> 
+> Thirdly, this is the 2nd time I've seen a submission copying that patch
+> unacknowledged (see my response to the last one at [1]).
+> 
+> I suspect actually that you're not plagiarising here but rather sending
+> unacknowledged LLM-generated code in violation of kernel guidelines ([2]) -
+> since the TODO must be a pretty obvious trigger for agents generating this
+> patch.
+> 
+> But regardless of which it is, this patch is not welcome.
+> 
+> Thanks, Lorenzo
+> 
+> [0]:https://lore.kernel.org/all/20260227221555.29969-1-mcq@disroot.org/
+> [1]:https://lore.kernel.org/linux-mm/aljYxLusTzZkTfnH@lucifer/
+> [2]:https://docs.kernel.org/process/coding-assistants.html
+> 
+> Sorry but no - this is a subtle problem that requires expertise and a strong
+> argument in favour with data to back it not... this.
+> 
+Understood. Thanks for the review, and for the pointer to the earlier
+patch [0]. I should have searched for prior attempts and referenced it
+rather than sending this; my apologies. Withdrawing it.
 
-Reviewed-by: Barry Song <baohua@kernel.org>
+I've read the coding-assistants guidelines [2] and will follow them going
+forward.
+
+Thanks,
+Tao Cui
+> On Fri, Jul 24, 2026 at 01:43:05PM +0800, Tao Cui wrote:
+>> From: Tao Cui <cuitao@kylinos.cn>
+>>
+>> vmpressure_win -- the number of pages the reclaimer must scan before
+>> socket pressure is re-evaluated -- has been a fixed 512 pages (2 MB) since
+>> vmpressure was introduced.  The reclaimer scans more pages on a larger
+>> machine, so the window is reached far more often there and socket pressure
+>> is re-armed every handful of scanned pages.  The comment at the definition
+>> has asked for the window to scale with machine size "as we do for vmstat
+>> thresholds" for over a decade.
+>>
+>> Scale it the same way calculate_normal_threshold() does: logarithmically
+>> with memory (fls of memory in 128 MB units), computed once in a
+>> subsys_initcall once totalram_pages() is known.  A machine under 128 MB
+>> keeps the historical 512 pages; the window then grows by SWAP_CLUSTER_MAX
+>> * 16 per doubling of memory.
+>>
+>> Why this matters: the scanned/reclaimed ratio that drives socket pressure
+> 
+> "Why this matters"... oh I wonder where I've heard that kind of phrasing
+> before...
+> 
+>> is averaged over the window, and the window rate-limits the evaluation.
+>> With a fixed 2 MB window the evaluation runs the same number of times
+>> regardless of machine size, which is disproportionately many on a large
+>> machine.  Measured by cold-booting one VM at each size and running the
+>> same cgroup-bound reclaim workload (so the page count is identical across
+>> sizes):
+>>
+>>     config   scaled_win   pages scanned   512-win evals   scaled evals
+>>     4 GB     3072         11.9 M          23267           3877
+>>     8 GB     3584         11.9 M          23306           3329
+>>     16 GB    4096         11.9 M          23281           2910
+>>     32 GB    4608         11.9 M          23268           2585
+>>     64 GB    5120         11.9 M          23281           2328
+>>
+>> For the same reclaim work the fixed window evaluates ~23k times at every
+>> machine size; the scaled window evaluates fewer times the larger the
+>> machine -- a 6x reduction at 4 GB growing to 10x at 64 GB (and the
+>> logarithmic growth continues: ~11x projected at 128 GB).  Each evaluation
+>> takes the per-memcg sr_lock and may write the socket_pressure seqlock, so
+>> on larger machines with more memcgs under pressure this is real overhead
+>> the fixed window pays needlessly.
+>>
+>> The default stays 512 until the initcall runs, so early-boot reclaim is
+>> unchanged.
+>>
+>> Signed-off-by: Tao Cui <cuitao@kylinos.cn>
+>> ---
+>>  include/linux/vmpressure.h |  2 +-
+>>  mm/vmpressure.c            | 20 +++++++++++++++++---
+>>  2 files changed, 18 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/include/linux/vmpressure.h b/include/linux/vmpressure.h
+>> index b4d13457bc2a..09111f5bdc88 100644
+>> --- a/include/linux/vmpressure.h
+>> +++ b/include/linux/vmpressure.h
+>> @@ -51,7 +51,7 @@ extern struct vmpressure *memcg_to_vmpressure(struct mem_cgroup *memcg);
+>>  extern struct mem_cgroup *vmpressure_to_memcg(struct vmpressure *vmpr);
+>>
+>>  /* Shared with the v1 vmpressure block in mm/memcontrol-v1.c. */
+>> -extern const unsigned long vmpressure_win;
+>> +extern unsigned long vmpressure_win;
+>>  extern enum vmpressure_levels vmpressure_calc_level(unsigned long scanned,
+>>  						    unsigned long reclaimed);
+>>
+>> diff --git a/mm/vmpressure.c b/mm/vmpressure.c
+>> index 9629240d77ad..4c8671273c79 100644
+>> --- a/mm/vmpressure.c
+>> +++ b/mm/vmpressure.c
+>> @@ -31,10 +31,24 @@
+>>   * As the vmscan reclaimer logic works with chunks which are multiple of
+>>   * SWAP_CLUSTER_MAX, it makes sense to use it for the window size as well.
+>>   *
+>> - * TODO: Make the window size depend on machine size, as we do for vmstat
+>> - * thresholds. Currently we set it to 512 pages (2MB for 4KB pages).
+>> + * Scale the window with machine size, the way vmstat thresholds do: on a
+>> + * larger machine the reclaimer scans more pages, so a fixed window would
+>> + * re-evaluate pressure every handful of pages. The scaling is logarithmic
+>> + * (fls, like calculate_normal_threshold()), keeping the growth moderate.
+>> + * The default is the historical 512 pages; an early initcall applies the
+>> + * scaling once totalram_pages() is known.
+>>   */
+>> -const unsigned long vmpressure_win = SWAP_CLUSTER_MAX * 16;
+>> +unsigned long vmpressure_win __read_mostly = SWAP_CLUSTER_MAX * 16;
+>> +
+>> +static int __init vmpressure_init_window(void)
+>> +{
+>> +	unsigned long mem128m;	/* machine memory in 128MB units */
+>> +
+>> +	mem128m = totalram_pages() >> (27 - PAGE_SHIFT);
+>> +	vmpressure_win = SWAP_CLUSTER_MAX * 16 * (1 + fls(mem128m));
+>> +	return 0;
+>> +}
+>> +subsys_initcall(vmpressure_init_window);
+>>
+>>  /*
+>>   * These thresholds are used when we account memory pressure through
+>> --
+>> 2.43.0
+>>
+> 
+> Cheers, Lorenzo
+
 
