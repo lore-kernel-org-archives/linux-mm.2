@@ -4,94 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A110C531C9
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 10:05:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FBE1C531C9
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 10:06:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 210E26B007B; Fri, 24 Jul 2026 06:05:43 -0400 (EDT)
+	id 40E116B0096; Fri, 24 Jul 2026 06:06:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1C3E26B0088; Fri, 24 Jul 2026 06:05:43 -0400 (EDT)
+	id 3E5C66B0098; Fri, 24 Jul 2026 06:06:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0DB966B0096; Fri, 24 Jul 2026 06:05:43 -0400 (EDT)
+	id 2FEB66B0099; Fri, 24 Jul 2026 06:06:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D948A6B007B
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 06:05:42 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 50911A1009
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 10:05:42 +0000 (UTC)
-X-FDA: 85023238524.18.F30CD5D
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 8113C10000C
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 10:05:40 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=a2wTIYut;
-	spf=pass (imf05.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 035096B0096
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 06:06:03 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A4E98A1041
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 10:06:03 +0000 (UTC)
+X-FDA: 85023239406.30.9D17971
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 03DF618000A
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 10:06:01 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=YRj2o3Zk;
+	spf=pass (imf16.hostedemail.com: domain of uqbarz@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=uqbarz@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784887540;
+	s=arc-20220608; t=1784887562;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lXYzAMJrIyhnjgtgqeRInUg03/n0tGgIY8htWWcGIJA=;
-	b=IsUSbplMQ22ueAgCcmAKbX1oEEi1Ns7YrlR8b2limvu/oFdNEQN/Lcow2Fy9eMZCywktVy
-	ukjCxwzvytaGvbWUo7RTtdTwBUh/mSetfVv4qfgG5cDlzZmayRmU6uZo8ffTMSG/EpCinU
-	U2Uv5RXRat8XN0B9bA3WzQRN+oX2EHU=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=a2wTIYut;
-	spf=pass (imf05.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=o0x9J44qVBxsbkEywzSNqZdp3EOTpYHRk69RjXAekuw=;
+	b=1gg92PnMc2l0EEUOzzXTQHXrSCyxMFJU7RPta+2JOl9qh8WeStzsUwcKfafy91mOxUsvKl
+	W+MART27czt7iBmamIa61E48QxBUJTQ9FCuU8t/tEM2TbXFo0Pe6Drvh6YtgAhzu3bMb0b
+	huHLvYp251oKHeuQDWbTnI1XqtpgptM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784887540;
-	b=iFqKgYqBiPyL799fblQfjGqbYsXTJRORhHBCnGmf8EuNCjyoeH/8filCdaVo0FPJ8tCwCQ
-	viXks9N5SarkD2B1OyM9opUm5bOWBhG3+2bZAC5ko0/qo6RmQJt++cc0VlD36nca5p4eEs
-	7rVNOKs6ha8KQJlryOAuGTib3a5ejXQ=
-Message-ID: <740589e1-0c1e-4457-8781-05589151c06f@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784887538;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lXYzAMJrIyhnjgtgqeRInUg03/n0tGgIY8htWWcGIJA=;
-	b=a2wTIYutEZ0AFU+lwq6wQDQOLLm/VBDKtpQHds8WfHvu2c3a5ZIAo0qmSR6aCEjg5MMuDk
-	AripeeEuk01hjqotkbVkaEAbRURYxkZR9JAcgsf1XfCOQD1Oexesd4Y8Y/pUqQL1fur7cY
-	CTIIud+yQ5soiCnxdTkswW8xmFatxxw=
-Date: Fri, 24 Jul 2026 11:05:34 +0100
+	t=1784887562;
+	b=4KcqVLGwOQsGEvepdfYxecdoZNRjVy+Dgco3rqfSTy/UDL3zgtB4/PlHfSubNTpkpZQhoY
+	0L3fIvJoOTjvpcsJR2Gzt3GUYs8dRGcaq/iMxeL0tlzb/hu2c5u7njqtQWlpHfwq7Z6LyV
+	LYXPy3QkeduOlxix2rtoo1ZosnOkp4U=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=YRj2o3Zk;
+	spf=pass (imf16.hostedemail.com: domain of uqbarz@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=uqbarz@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2cf52d15d88so2719035ad.2
+        for <linux-mm@kvack.org>; Fri, 24 Jul 2026 03:06:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784887561; x=1785492361; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=o0x9J44qVBxsbkEywzSNqZdp3EOTpYHRk69RjXAekuw=;
+        b=YRj2o3ZkJHKCEhLcl++JpIk9FqGQqiY+JQreuPIi5Qobn82+kSlkZGoRD4ughCJ19C
+         fiKVEgVdcjjitaNWeJ07lH+pm5FPAqm52ZPNifOXdJp2g69IyxgACskfH3ACShD6kI0h
+         V34F7E+JHM8dUUUcI+fPM2dh/3gck7KMVFXdZNPqWi9CFD9wJII9lQ5qp1Edi/8lLgWv
+         mQrABuGCyo8oeNZBVoNXIK3UC9kDXCLTAFB4DIynYxmsi8In4pDD+HHXvYXNH1a96oNM
+         mpii04M6WpjI7EMSpal8SGsZUy3Fvd7HYK9nGNn6lUmUE3YmdhGIkG9WTOquVzarse28
+         p4gg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784887561; x=1785492361;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=o0x9J44qVBxsbkEywzSNqZdp3EOTpYHRk69RjXAekuw=;
+        b=JaWR7gjQc1IGm/4bYGgKQGeMq+V8Ou/onRmE4hAaN8gEjleG8JggW9mtlajXA4u2pp
+         uXa6szlpFXP+PPez7q8ANSw56qrSV75IoBlkxpVJQCfIrKLHTekzRh9AwgKXMwX32CEg
+         G17yKWAZG0G5n3mhPODpIagpdaPKwUjbNrxUWrG4Q2VN7f6PrcBaQM/2+1on4MT6iI6h
+         002WPUQt4arG/kK/aSoR3DtmAefQjul+HZF0AvkHOcR7LS5Y8CioUg190bxoi36nWegZ
+         ELByac2SosQJLR2rt3K01+FB6q3JPV4aHEkJNSMOeYnarBa4oYdvDsqTm+zbPEiKq/NK
+         UKZQ==
+X-Gm-Message-State: AOJu0YxjP+82+ZYzjoz961RaRxlB0UUZDC8yp9oXJIAH8aWcDBi5JUsW
+	M6O06Q9RlYaEwD+26gJ/oZS6wvswYu1wWCYqZBrUdO0h3Wfiz2XhK6ySfQS94mxWzAzOXVgM
+X-Gm-Gg: AR+sD10lcUTYSWsWVIP5WU3ICvWx2buCG8aaz9JV5oimUUj/mrrFSNSPYdUF5juuWtZ
+	pGhLUFckZcQgZnjNkgYKarkSneaSZfO5zhd6bwMrcfT+JlYGOWvZaMIfH8NAWbv0M6bdjOA1k5c
+	aBTb0L1qkMVD2/q6KGeXTEIk0cV33vruelRIiRaouvaVIQYXLqc71/XdaY/I+GhukggIMpddGrL
+	gMSSl8mXf3WmUlIgW5gLSmqIS7AfiYEqb4jfCG4OU73D+ORJ7Y2bEe28aOJBtC0aXZKjfjeGFNq
+	haPcye/Faf+DwJa7aUNndzmf1LcD4CKo/cLp/Lp37AIyMgkzCf+bzHNcqU4b/nHfhNlUjvdW63B
+	CCn3OHsTRvv01B9ElBxvlNtL3GeJkXzNoUqtyctGlmJHr2hMV7n6gB1b3mbKFJKnMs9AgmwN5K2
+	Olfo7w01GQeWA8vDigRDND
+X-Received: by 2002:a17:903:22c7:b0:2c9:ed16:8d8d with SMTP id d9443c01a7336-2cfa6d8797bmr76515745ad.38.1784887560837;
+        Fri, 24 Jul 2026 03:06:00 -0700 (PDT)
+Received: from spr1.ipads-lab.se.sjtu.edu.cn ([202.120.40.82])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf8efa2cd0sm48600405ad.4.2026.07.24.03.05.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Jul 2026 03:06:00 -0700 (PDT)
+From: Hengbin Zhang <uqbarz@gmail.com>
+To: linux-mm@kvack.org,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org
+Cc: ziy@nvidia.com,
+	linux-kernel@vger.kernel.org,
+	Hengbin Zhang <uqbarz@gmail.com>
+Subject: [RFC PATCH] mm/thp: order huge zero folio PFN invalidation before removal
+Date: Fri, 24 Jul 2026 10:05:09 +0000
+Message-Id: <20260724100509.2300200-1-uqbarz@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Subject: Re: [PATCH v5 02/11] mm: add PMD swap entry splitting support
-To: Dev Jain <dev.jain@arm.com>, Andrew Morton <akpm@linux-foundation.org>,
- david@kernel.org, chrisl@kernel.org, kasong@tencent.com, ljs@kernel.org,
- ziy@nvidia.com, linux-mm@kvack.org
-Cc: ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>,
- willy@infradead.org, youngjun.park@lge.com, hannes@cmpxchg.org,
- riel@surriel.com, shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org,
- baohua@kernel.org, baolin.wang@linux.alibaba.com,
- Nico Pache <nico.pache@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
- ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>,
- lance.yang@linux.dev, linux-kernel@vger.kernel.org, nphamcs@gmail.com,
- shikemeng@huaweicloud.com, yosry@kernel.org, kernel-team@meta.com
-References: <20260722152043.2273289-1-usama.arif@linux.dev>
- <20260722152043.2273289-3-usama.arif@linux.dev>
- <7c8b0e38-f13e-449d-a2a7-de1032b831dd@arm.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <7c8b0e38-f13e-449d-a2a7-de1032b831dd@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 8113C10000C
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 03DF618000A
+X-Stat-Signature: e7dbozc53fzjrt9j6rwzazczoa9eskeq
 X-Rspam-User: 
-X-Stat-Signature: m85a4eryt13suaqqruuwb6wbpuaq1rw5
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1784887540-532755
-X-HE-Meta: U2FsdGVkX18hxftg+YxvCgj9VWdZXPduixMYtNZG8wVBe3h64/7wvE5KQNkMdN/LAwMbM6R5T5BOielHYxEt+riwAEcYGrSwB9NSvk0hY6Vn99i68cnsNmD++4xxIp9s8tWMphiUiXX8raPSK9bYmnwbp0wTjnQxBYnfhsW6EmKebaOcz0lf8DF4M7ZAcohSVpsvKsZfbrt1txaQrz2I8934tYWF4Q/D7fPxHKTehLZ9YYnas1CP/8AyrxSKfEGKBisM4mWm54UQdvSu73BjkwX6zqOMVTWAe0N1k5+lXqh25jdUOK/wctyRcVGS85sxGGoDuxH50yhw3QeDTG4MsNDG/f2VrwoZnP5B/LclF/kRTu7TM3He6QlUANzpgOzw5B5n9RsD3HAB5o4RGdRfcL60XijiYrmrNC5Lh8Pi/XEWoH21z0h5Az++eRgI8GBQbszFG4N3YRK2lQMMCgS7rX/NlXTMPGFv2zSRcK5ipSawLLG5mRuJga97DtcTKIERI+MvPOIVEX8Fj20UQBy4IgXFv6VM7bH56k1TyQoCxgPmEsjDvcR4XYOdFNmx4Z6Htdhwol59N7rFHSDReiCzm9fC6qqtYkQ+uZfkHrUwBqVvg3lgDHN5Bfz+Vvrc3sIyg5L8UgGesAK6gGcGjX2QMKtTyFiG5VCuQ1+jRevoMvYBTuEuxr6Wyq9a+t9bRipAduJwtHhBWt3sW7BM0gKOrMPSQHD7Sma9QmozTfQ/Lr6BQw0MuguvMC76RR97HB/r+DkcBDu7ufFGc7z1I8QPBJ8uj73WGPcLI9UponfQUID5e5Uvv2TERQ9HoOp2JAi3fD876GlleISX1Yc9yWAmPRna54oQ6gX52m5GPff/mZZ3FoEVu/h19WtHhqM3D8I5sQ2sKU07gfKB+DvNdawaEL31GLaBhLEmQQXrp1wl1wQrgwUt34u437tMda+C4dBlE8unb8gNJezE2YOzJVt
- zQvGK4Sy
- b5Ws+OSxjpiTpiyqcRJhro5Xc+4UN5Wiv2iI5QZ7iJvBanHAHVGr4BWMpZn5niwsqaojDKMe1soGTdwntZnyWbVxDxcbzpOf9Nb6vmnmQWmVoMfE5/KbrPQqS0A4YrOKo6ysDeNnVSuIrdhAOTxOTXOHtz5t5ibtRWlTjV0GL/QFu+EH4ozHE64pVtUivsfM795gChZoPcnSfdGgnA3lcPClFjMdoXqRLfBMbFOdagbHXR1nh8rVS6++eSv+xD2uXnVB0L08jKoiXnrlOY0GaetVzsjkviDg+VB4rHltqyPfQZuU=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1784887561-121506
+X-HE-Meta: U2FsdGVkX1+eZacT38up+FhrcQ92LmmQiiYNIcfvRJos+ND7Am1xcwud6APqa22B03V1OSSoxrPyvoO5LH7XgEVOEspRVZ9Fb2HcW0s+XGMoaJW1MDPmBt7dr6JD440cClOe8jKr9wde8/CaQ6R8+GCZOPSx0rRiz/K535Ojs95IALccX/C073N+kWUtSaoe8UeBRCxGklt/YOC29sfdPjaIc9JgI9kMpE5g5YmtAopEed2LM7UzPw7G7OLhWvaLAxCVKdB3Qhreg+NnlavqsuNbNVH2D3y89YwfmXT76PjOdexEANwhwKumk32kt9ddRy8cpfsZY09S3bFY/R0SUYkK+oGnxYzT/suvPGoYa+N8ktV3PyjEgmTYtcLE8u+PnSNDmNhw/yJSfV0p3jgvuw7pT+KXvaIDGz8+w4DZhKbgpYhV4HiiExsphY6zlLf7tTy3FmIm/4Ofs7Hy4R/yRnIK9w0avIgGA4TpT5cWYTMJFnx8GIb5x2kIwrZJlV2Kqwk12oNIAGcGs/SPoC0MsUOuKuN46ZOwjBKLBfC7Xz4eit/OsZqgrIGxqCTmZ3+inmG98UDNajeLr88Kv2tewzt99PrHK/+qiOAK4zbPyJAGwqcGlLUwNu+VkW57wXUk08fFgMHrAugiP0hLqNpybhKDLf3tIlNM8DG+H4nIrAt0tg3KeVtzp6Bfo/XuVtHUbHHgRpF4i0mmuFPYDQdzoZDe9cjiMByViWK34vR5mVQrP4jV7k9dgKDT3VoH30VAXQb4D9D24ngyryZIkJkZUnW/19te35C4Y81TxTmO+mWu+zXtBPmaQ1nAxNioTAOO5C8eIKM08DORDCfZz7tw0T6vKjSHaVHihPbeDavdS7duHonJhFp8kNia25u7gjnfogBh9lXMMHMAhs6ZehdlZ6T1Rn0WAgqeDKqvnIvhvi9EO6OpHBC05foN5sAA8ReT4g1/tLYJxsPYz303+Ca
+ Nk8fYTuM
+ Fb0DDsOLhVvsFu93m9Tm1tlghCpSb9LG4MKBaL99k2DvByI2VQ3QuHxCotFvPX/yxRQKQiL8OGUa6QjcCmf56xD1dKssLVOAz4Agm19VD3q3jQv7ra2G6H+0qMeYZiWgIMqnUCFg1XnDlDNUJiVz9+Tb52qbidt0BAcfB8IazRT2RC8lmhhPq40zZZ8ASd40GyCzS0F5mJVctmoGNCCA0tEKifkYOLOZU11TQDawzh2qJWu2jSFAdsi+K4/UJj+yDHWutFvqviGLMPa7FybL29Na9MH/Ri0gkbAjr0Dk+fPq9QvfRjw8/MrbFcT9p6b8Dg880Er1+giRkDPo4dIGfB0xB/VXkfOVF+jsrvL4zlIymOa+z2ozDYKEVPqh1LvBIb48FZXq5Fb9XcbxSfd6xV6QkKJKy9w04K2JL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,108 +117,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+The nonpersistent huge-zero shrinker removes huge_zero_folio with
+xchg() and then invalidates huge_zero_pfn. A concurrent fault can
+publish a new folio and its PFN between these operations, after which
+the old shrinker invalidates the new generation's PFN identity.
 
+A later partial mprotect() can misclassify the live special PMD and
+enter the ordinary anonymous THP split path.
 
-On 24/07/2026 07:52, Dev Jain wrote:
-> 
-> 
-> On 22/07/26 8:49 pm, Usama Arif wrote:
->> Add a swap branch in __split_huge_pmd_locked() that splits a PMD swap
->> entry into 512 PTE swap entries.  Unlike migration splits, no folio
->> reference is needed because swap entries point to swap slots, not
-> 
-> Confusing wording. swap entries need reference of swap slots instead
-> of folios. I would drop the mention of migration here.
+Invalidate huge_zero_pfn before making huge_zero_folio NULL. A getter
+which observes a zero refcount while the old pointer is still present
+cannot publish a new folio: its cmpxchg() fails and it retries. A
+getter which succeeds does so after the invalidation and publishes the
+new PFN afterwards.
 
-I added about migration because its the other if part of the if else and
-was a good comparison. Will remove it. Thanks!
+Fixes: 3b77e8c8cde5 ("mm/thp: make is_huge_zero_pmd() safe and quicker")
 
+Signed-off-by: Hengbin Zhang <uqbarz@gmail.com>
+---
+ mm/huge_memory.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-> 
->> pages.  Each PTE inherits the correct sub-slot offset and preserves
->> soft_dirty, uffd_wp, and exclusive flags.
->>
->> The folio_remove_rmap_pmd() gate at the end must inspect old_pmd
->> rather than *pmd: for a present THP split, *pmd has already been
->> cleared by pmdp_invalidate(), and that invalidated bit pattern can
->> decode as a plausible swap entry.
->>
->> This branch is reached from the explicit __split_huge_pmd() callers
->> that hit a non-present PMD: partial-range mprotect / munmap, the
->> wp_huge_pmd() PMD-COW fallback, and the swap-in / swapoff fallbacks
->> added in later patches when the cached folio is no longer PMD-sized.
->> page_vma_mapped_walk() does not iterate PMD swap entries, so
->> try_to_unmap_one() and try_to_migrate_one() do not reach this branch
->> and freeze=true cannot occur in this branch today.  page and folio
->> are therefore left uninitialized in the swap branch; a
->> VM_WARN_ON_ONCE(freeze) catches any future caller that breaks this
->> invariant before the freeze path dereferences page_to_pfn(page + i)
->> or put_page(page).
->>
->> Signed-off-by: Usama Arif <usama.arif@linux.dev>
->> ---
->>  mm/huge_memory.c | 29 ++++++++++++++++++++++++++++-
->>  1 file changed, 28 insertions(+), 1 deletion(-)
->>
->> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->> index 04e8a6b55343..9819c0ae228a 100644
->> --- a/mm/huge_memory.c
->> +++ b/mm/huge_memory.c
->> @@ -3210,6 +3210,14 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
->>  			folio_add_anon_rmap_ptes(folio, page, HPAGE_PMD_NR,
->>  						 vma, haddr, rmap_flags);
->>  		}
->> +	} else if (pmd_is_swap_entry(*pmd)) {
->> +		VM_WARN_ON_ONCE(freeze);
->> +		/* Swap entries have no page for the migration freeze path. */
->> +		freeze = false;
->> +		old_pmd = *pmd;
->> +		soft_dirty = pmd_swp_soft_dirty(old_pmd);
->> +		uffd_wp = pmd_swp_uffd(old_pmd);
->> +		anon_exclusive = pmd_swp_exclusive(old_pmd);
->>  	} else {
->>  		/*
->>  		 * Up to this point the pmd is present and huge and userland has
->> @@ -3346,6 +3354,25 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
->>  			VM_WARN_ON(!pte_none(ptep_get(pte + i)));
->>  			set_pte_at(mm, addr, pte + i, entry);
->>  		}
->> +	} else if (pmd_is_swap_entry(old_pmd)) {
->> +		softleaf_t sl_entry = softleaf_from_pmd(old_pmd);
->> +		pte_t swp_pte;
->> +		swp_entry_t sub_entry;
->> +
->> +		for (i = 0, addr = haddr; i < HPAGE_PMD_NR;
->> +		     i++, addr += PAGE_SIZE) {
->> +			sub_entry = swp_entry(swp_type(sl_entry),
->> +					      swp_offset(sl_entry) + i);
->> +			swp_pte = swp_entry_to_pte(sub_entry);
->> +			if (soft_dirty)
->> +				swp_pte = pte_swp_mksoft_dirty(swp_pte);
->> +			if (uffd_wp)
->> +				swp_pte = pte_swp_mkuffd(swp_pte);
->> +			if (anon_exclusive)
->> +				swp_pte = pte_swp_mkexclusive(swp_pte);
->> +			VM_WARN_ON(!pte_none(ptep_get(pte + i)));
->> +			set_pte_at(mm, addr, pte + i, swp_pte);
->> +		}
-> 
-> All these for loops could later benefit from the set_softleaf_ptes() helper:
-> https://lore.kernel.org/all/20260723070905.3422276-6-dev.jain@arm.com/
-> 
-> 
->>  	} else {
->>  		pte_t entry;
->>  
->> @@ -3373,7 +3400,7 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
->>  	}
->>  	pte_unmap(pte);
->>  
->> -	if (!pmd_is_migration_entry(*pmd))
->> +	if (!pmd_is_migration_entry(old_pmd) && !pmd_is_swap_entry(old_pmd))
->>  		folio_remove_rmap_pmd(folio, page, vma);
->>  	if (freeze)
->>  		put_page(page);
-> 
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index b5d1e9d4463d..fcc492368160 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -298,9 +298,11 @@ static unsigned long shrink_huge_zero_folio_scan(struct shrinker *shrink,
+ 						 struct shrink_control *sc)
+ {
+ 	if (atomic_cmpxchg(&huge_zero_refcount, 1, 0) == 1) {
+-		struct folio *zero_folio = xchg(&huge_zero_folio, NULL);
+-		BUG_ON(zero_folio == NULL);
++		struct folio *zero_folio;
++
+ 		WRITE_ONCE(huge_zero_pfn, ~0UL);
++		zero_folio = xchg(&huge_zero_folio, NULL);
++		BUG_ON(zero_folio == NULL);
+ 		folio_put(zero_folio);
+ 		return HPAGE_PMD_NR;
+ 	}
+-- 
+2.34.1
 
 
