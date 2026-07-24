@@ -4,140 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1973C531FA
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 15:32:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C975C531FA
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 15:42:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D2876B007B; Fri, 24 Jul 2026 11:32:52 -0400 (EDT)
+	id 1A7E46B007B; Fri, 24 Jul 2026 11:42:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 982EB6B0088; Fri, 24 Jul 2026 11:32:52 -0400 (EDT)
+	id 159246B0088; Fri, 24 Jul 2026 11:42:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 872426B008A; Fri, 24 Jul 2026 11:32:52 -0400 (EDT)
+	id 04A386B008A; Fri, 24 Jul 2026 11:42:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 594F46B007B
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 11:32:52 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DDBC014038F
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 15:32:51 +0000 (UTC)
-X-FDA: 85024062942.02.FFB4B5E
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf11.hostedemail.com (Postfix) with ESMTP id BFEEE4000F
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 15:32:49 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=2LOVYft9;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ngn5ZFPe;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=2LOVYft9;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ngn5ZFPe;
-	spf=pass (imf11.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	by kanga.kvack.org (Postfix) with ESMTP id D34506B007B
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 11:42:39 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5D9671402AA
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 15:42:39 +0000 (UTC)
+X-FDA: 85024087638.19.2C1EEBD
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id AF4831C000E
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 15:42:37 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SVEHUOBA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784907170;
+	s=arc-20220608; t=1784907757;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MgLR94cnov6/P8Yl4U/7T81H0kr3VMn5Pq5dQ8bzHh8=;
-	b=0JwRw7lV5cq39U7HdB5BH6BacQYL9pwmfsrKa0XxssAYrS3iY90vVgkuSWUxCR1P45kROk
-	0cbr0Vb3bMTgQbUvxLuf/HDFrv1hqo6Rc6mrMg4kkk8TbKa/g3ZqyVk56I+kK8xqiv6mU5
-	Ld3AKfLyEx2GB+kFwwpAQPbvnh2g6Tc=
+	bh=e9MBK5ih5pJH5Tkk041YfkIpZ8EYnsh61ntJ2y5AuKU=;
+	b=PHs3JUeQ2g6E6WDeRhCRawVa+qz+ZrUlQ7NY5SRMRZ1rNqugrQENh2Uw6PTOh9s8G7XLCW
+	Kt+XqAbcTx0E22QocekIDvITOTEcolw0AHEDV8fCTUyG4AigoWL3BiotWrN3tqWpvbaK1L
+	7R4a2xZi5yXrtWxqJE9kBCYHZukDtPc=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=2LOVYft9;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ngn5ZFPe;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=2LOVYft9;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ngn5ZFPe;
-	spf=pass (imf11.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SVEHUOBA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784907170;
-	b=H6l0nuFqHgIHLh2Js3yPrpR7nix3ozgrs63TcmmacdRKGX0Kjc9tN+Y65bC6K+Y6RBshsc
-	mj8pURsR8beIQX4fhaMLCLstRJylbFAuOFkj25p9g7wVnJbodbd2AZerisBvd51KQNiEEh
-	CSOV4BkSVIJz2S5TVhN1AwBxgTe6LYY=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 401727BA2C;
-	Fri, 24 Jul 2026 15:32:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1784907168; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MgLR94cnov6/P8Yl4U/7T81H0kr3VMn5Pq5dQ8bzHh8=;
-	b=2LOVYft95wMJIyhJa6PZSbwOiNmbFFPbcqUTuJ8eG3N/5dEfFfS1xnrE15U2j40DHgjDmq
-	6SVMdKicnUTzPnTNepl6LS43ziFb719IQZ/YpmgYwEQMWN5wsTERRtQjRxILqRY7bav/0w
-	AiPtTwFDpTdCdCi2BNy9lyN9DKbBWuU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1784907168;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MgLR94cnov6/P8Yl4U/7T81H0kr3VMn5Pq5dQ8bzHh8=;
-	b=ngn5ZFPemuxkfH460JBtHk6gBgwLnC/4m+F/Wm5dLwshckWwMM8hRMhkcYUYLvLbPxDwRh
-	a99cvpioZ+OPOGDQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1784907168; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MgLR94cnov6/P8Yl4U/7T81H0kr3VMn5Pq5dQ8bzHh8=;
-	b=2LOVYft95wMJIyhJa6PZSbwOiNmbFFPbcqUTuJ8eG3N/5dEfFfS1xnrE15U2j40DHgjDmq
-	6SVMdKicnUTzPnTNepl6LS43ziFb719IQZ/YpmgYwEQMWN5wsTERRtQjRxILqRY7bav/0w
-	AiPtTwFDpTdCdCi2BNy9lyN9DKbBWuU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1784907168;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MgLR94cnov6/P8Yl4U/7T81H0kr3VMn5Pq5dQ8bzHh8=;
-	b=ngn5ZFPemuxkfH460JBtHk6gBgwLnC/4m+F/Wm5dLwshckWwMM8hRMhkcYUYLvLbPxDwRh
-	a99cvpioZ+OPOGDQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C990E779BA;
-	Fri, 24 Jul 2026 15:32:45 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id KCyrLZ2FY2ozGgAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Fri, 24 Jul 2026 15:32:45 +0000
-Date: Fri, 24 Jul 2026 16:32:43 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Matthew Wilcox <willy@infradead.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>, 
-	Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Kevin Brodsky <kevin.brodsky@arm.com>, Muhammad Usama Anjum <usama.anjum@arm.com>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH 3/5] mm/parisc: constify ptep_get() argument
-Message-ID: <amOEUZlp1BxYh6_t@pedro-suse>
-References: <20260724102017.141532-1-pfalcato@suse.de>
- <20260724102017.141532-4-pfalcato@suse.de>
- <0fd713a8-e4ab-4c07-b36e-79dd138b4a86@linux.dev>
- <amNzLXuwflIZFKtI@casper.infradead.org>
- <253f7ac0-205b-42f1-9fb5-d19eceb581b6@linux.dev>
+	t=1784907757;
+	b=tx/rF6xY+uPaUFQLob9yEUn1H2Mawzx8kNB5l3fwk3wNi1cXBv7+Qevmsz+YxA/FYJBgq+
+	R352gAyh4+G5R9jIvLvBXOqnFIyN3IWQIVLH033VDPhVSgMGhxgRLkrI41RNsmNH9raj8F
+	Njj2c8Ru8ndR/d3r13GIx6+/iOg7eKo=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2D7FA600DA;
+	Fri, 24 Jul 2026 15:42:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E15F1F00A3F;
+	Fri, 24 Jul 2026 15:42:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784907756;
+	bh=e9MBK5ih5pJH5Tkk041YfkIpZ8EYnsh61ntJ2y5AuKU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=SVEHUOBA7CyCoOVLY/ESfqlRLqBpy+D4VC2WG7oRWQawBvKmGC6GXqF0e/l2CLrh7
+	 Re42J+XY+5+BtaEx1DNNnTecrDLK6VhrY4YQn+OTxKzsFcT9DJmaWb4ajk3Ok/Q8S+
+	 ndtBJlUw7rPBkHi+ita3ubgG3I0pT9dVXl9kAXvV8QdmsCyn5LhfKHVlsBNl0xSUZr
+	 +nsaWW02S0oMAAPOr12qfJhAq7Q9JqV7eJ+ca2k8PQvm55YSirsY7iKVJtQKa1RKcE
+	 qNgbG9zMXjzQKAFOXs9d0nv2z5fNF0CAXu517NsTlSLDWrvYA27zotLoavtsHt0oxy
+	 fKXpv466jMQlQ==
+Message-ID: <e3f283e3-27a4-4e3e-bc4c-39fafbcfe1ee@kernel.org>
+Date: Fri, 24 Jul 2026 17:42:32 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <253f7ac0-205b-42f1-9fb5-d19eceb581b6@linux.dev>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 09/13] mm/slab: change struct slabobj_ext to a union
+Content-Language: en-US
+To: Hao Li <hao.li@linux.dev>, Harry Yoo <harry@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter
+ <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+References: <20260720-b4-objext_split-v2-0-2fa7c6f60dbe@kernel.org>
+ <20260720-b4-objext_split-v2-9-2fa7c6f60dbe@kernel.org>
+ <amGEY5w-cBm4_uhx@fedora> <9b2dadb7-8e3d-4b9b-a870-969be9a7a432@kernel.org>
+ <amHkbJsvOjcfUR3D@fedora>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <amHkbJsvOjcfUR3D@fedora>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: AF4831C000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: BFEEE4000F
-X-Stat-Signature: ntw7exwf8qghmhifheundzru5b5wre5t
-X-HE-Tag: 1784907169-321684
-X-HE-Meta: U2FsdGVkX1+AMU9/tibOlerMM2/ynLVXceW7A2+1uES37J9AqGM2jDNDF8IOWbuUUFV9+WCINsj+s6suQhd9/MS5cXZAosJViiX3NJkuMhoSVdbLKVkf5CE1+KA7t1g3fXx1Hmv2r21z2NNPyU8mG4HkertoJoh5jVrdnoKpVHZ573VHohnOhkCe8oTKZ2fM6I90VH6NeqwEu1WnkuNOMT8uahoJOPAEQsH+TjD4vQTPBcx3D45N55Xpb474lXcL0I7XfGrEEyIWoZ7Rnvwn8fpvyQV2LEM5+O5VM51DYvOWvaKvkjqItM0ZNNbBJcgApy/1fRSsQhjKmyjD7X4D0TCNL2DIiNtoDz1WJpWEo3ujCD+glVXgbDUF1g6JP1XY9ZctLsdtF0C2jPWIQkO6dtpl9kcWDQwIHdwINl04ilnwOEoYE3vb61Ud+kdkJMLNjyttCBOu6eVhBlU27pEsDnEG18Fu+wPBEXGMU7+b56YUfQ22JNb8gucSI/ogbejWPA1g9/PwpWM/8+uFAfJvBwT+q18Jg/j9jrn/PdcbCHyU7Uo44DOXDty16vgjYMHdvngLBbaC27fZCr2q2i0vez5iS2787tTFFsVBeWA+dhUNs7yonM+JOobENatfUdTsPFlwdfMuyCNR2g9xXJuu38YzOY2e26UYecO/9bNgncTOjeRBbsdz4YrTiR4SF9aomUc7zaIk1k56uKbetoGohW30JtY/q//MjuYNVj45aDMrHcU6gsCBTvIDpSvRxRmhG2P4YQkIhHMIpPJenFswWCi6VU/ibF8rAVtk5l4/ZFCaIh8c5UfMzUKcrbcr94EBDsshqan1P72xngibO2c1xfr4GUz5YWwM9DLTWEl9wYOloRmJPVSxADbJEFU5a90QwJ5Tdx57G4fVtsyfjmqTiAg46tkP4+g19+FjF0J9QV1Fpz+y0KfFKuz5oOLd+lCP0g6Az/8yTVNLg07R6hW
- 86nQDoad
- G/Ppc4gcpl5uE/eiSyK1kIsTaSAIcA1xFz2kPpIVBiF6RQ3lUs3CJM6n/UeZokikaiVxryP10SqvTVAK8cId5YCFzXW+AcNBdaZPtp3yu6wkjn4wBFZIRqll0xSJf2EIlHe+aTqFiH+5EAQZjcsDCiGIodp4AtWytbocG4ylgjS0T4RwsDng4UpuWxFlMiz/DCkheYUrAq5MPl5b92vGQXjON3/hgOEKbsUNWIdKzUNMRAjbVXtdNtCWGWByDp/IIrnzxjFfGa4RUIoFzYNq4G/fG0e1MEV3h1OSItfUfvwSUI/owC01lTl9H+zJlrCNAcBoVnP+mgAttbEiEzmonk04/DaRUaX4QK5Ti2WXLhceIa3qFwy3LWusLH67k/fRKPZ0OCiov+fTbqVT7QOuy1sEQt1ylPenqRJkiOt7vjqcK0OQ=
+X-Stat-Signature: 73rrbsj5rsiz1qujwnqyeq5p6hswb39s
+X-HE-Tag: 1784907757-538493
+X-HE-Meta: U2FsdGVkX1+uGUizfaZF69N+LfaT3AgAB+DrEAfV6JrrPqMibf42jozFvdpaZ19fCrBsXxO6yFj/DreNdk+PIus2KF/uMNPFVE/NnzxLiG+m52ZBiGxi4ZOt+F1RhQcDkY8jdbyCw9OnMgpDfsHfz7qGrfVFpvuUKiV+E6/IPR2kUdU7nz4SUzf/lbR84qWPJ/0exePA73lH7OYVfVlkRQ3vEyMqmlQSQqCVlEPEVOPteYYocSK1CHWBDo2pYplL6uXNJ+r65t3Vq0wqlUCUwAbjLwVliaGojtmTxtxwpE00MErGpF2t39bk/kEtfekDODjvSTfUR9mVxDeoWerRPzSOo7np6zT3tvKtLNhSIWzkpUDtRvwPkUt4uBojUbyhdZWflE14Z9PsIVBBrkVzwxRLlzVdf3fMCG0sf5UVIBxv/6S5oUYfq8nCsdUpEMQAR9sBe1PDP08MpejOjFBoh0PsxpNdIHUiam893UujojUmO2WXityJPbj4otJcVeq9Dhrq1O2qqcTfgMwZcx7Ho0iOfm59ZFRIriIKLXkXGr95a9bW+5Zafjwcyn6awoRVAkEXspFl0bTPEGzEoGrzAtGOcWxWinkvOJNCtvTzVEFxySICuJBn26CPV1xnQUXn2SDgos7kmaNAtBnhpJFZy0yvrhG8OlbFj0sDmDKYS+Si+vZqfLEoPH522AxSUzR4fIhDtbf02DntDBxiB5c7UdYNQYOHqB5KVjjm0DJele95fNiVFfulbxbX0iF6ShQ9aO1yJfXz+omCDcVk/3JU6jp0s2pPr5HcdKXjdDYWIwmuouKFbxiqhzDxWFVVnU9aVK/AIZlakYDrk5M7aQNz1MkVso4ZaKNWk6WdNs3OjyTD3hskkA+0zOG8ZpkOhqRKkPoZuxtdmMvAYVu9JkjHuiHfPSJlAUuLWx5+IK5qFdQPUYSH3zGd6mEcig+ScSktdkFHZKp8qV/k8rXMBaK
+ I1lxbwOY
+ QCaPBivZsPD6K4WnFttoBMS7VnAyh3JaX60Ny43npxOiDgqeo6r1qa1FxYu75N1+wDXupfuGZjMgmEmdONN8DKY/1qk9wQJXzJI+bPFqpnjgPM2Dx7qlVneqts2Fck+tug7ZvkzO1cwLBp6QBJh2my2EVbfzTrgozSQPWc6jc9f0KYy084FK+hZ6IBT90jIZb0ui82LhpBenr2OFp4r3h7EDGmKeHtLz+GY1+u+nJaSTgcizjYNIIByFT3F3KSdRBX2BEyeL/JYekPjxkEK0b2E0C6WWkH4rJsq8C95BvFRGqddl8U4gnjQNwyg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,55 +140,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 24, 2026 at 04:03:44PM +0100, Usama Arif wrote:
+On 7/23/26 11:56, Hao Li wrote:
+> On Thu, Jul 23, 2026 at 03:27:51PM +0900, Harry Yoo wrote:
+>> 
+>> and drop OBJEXT_FLAG_UNUSED.
 > 
+> Yes, this idea is insightful and I think it may need a standalone patch without
+> blocking current patchset.
 > 
-> On 24/07/2026 15:14, Matthew Wilcox wrote:
-> > On Fri, Jul 24, 2026 at 02:36:59PM +0100, Usama Arif wrote:
-> >>
-> >>
-> >> On 24/07/2026 11:20, Pedro Falcato wrote:
-> >>> ptep_get() does not need write access to the PTE.
-> >>>
-> >>> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
-> >>> ---
-> >>>  arch/parisc/include/asm/pgtable.h | 2 +-
-> >>>  1 file changed, 1 insertion(+), 1 deletion(-)
-> >>>
-> >> hmm I think you might break build bisectibility if
-> >> you separate out the patches, you should squash patch 3 and 4,
-> >> with patch 1.
-> > 
-> > I don't see how this breaks bisectability.  Can you elaborate on what
-> > you think would break?
+>> 
+>> ...not sure how much we care about this on 32bit though.
 > 
-> Patch 1 does:
-> 
-> -static inline pte_t ptep_get_lockless(pte_t *ptep)
-> +static inline pte_t ptep_get_lockless(const pte_t *ptep)
->  {
->  	return ptep_get(ptep);
->  }
-> 
-> 
-> ptep_get() takes a non-const arg till patch 3 for example for parsic.
-> I don't think you can pass a const variable to non const function arg?
-> 
-> So parsic won't compile in patch 1 and 2, powerprc wont compile
-> for patches 1, 2 and 3..
+> Yeah, 32bit is a rare arch today :)
 
-Aha, yes, nice catch! I'll have to rethink that. Maybe squashing the patches
-would be the cleanest way forward.
-
-FWIW, the vast majority of architectures aren't doing funny things on
-ptep_get(). E.g PA-RISC, loongarch only define these so they can use it in
-their own asm/pgtable.h. I'd really like to delete these but I can't tell
-if they are *actually* required.
-
-With those gone only PPC 8xx and generic would need to be squashed (arm64 also
-defines its own version of ptep_get_lockless()).
-
-
--- 
-Pedro
+Agreed with you both. Let's deal with it later.
+Also AFAICS the memory was already wasted on 32bit prior this series when
+e.g. CONFIG_MEM_ALLOC_PROFILING was disabled, so there was just 4-byte objcg
+pointer in 8-byte aligned slabobj_ext, right?
 
