@@ -4,91 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2088C531F9
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 22:02:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EF3FC531C9
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 22:02:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B4D666B007B; Fri, 24 Jul 2026 18:02:19 -0400 (EDT)
+	id 1D72D6B0088; Fri, 24 Jul 2026 18:02:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AFE696B0088; Fri, 24 Jul 2026 18:02:19 -0400 (EDT)
+	id 1AFDB6B0092; Fri, 24 Jul 2026 18:02:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9EE066B0092; Fri, 24 Jul 2026 18:02:19 -0400 (EDT)
+	id 028636B0095; Fri, 24 Jul 2026 18:02:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B1BE6B007B
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 18:02:19 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id AFF70401AF
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 22:02:18 +0000 (UTC)
-X-FDA: 85025044356.10.DAEC766
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	by imf17.hostedemail.com (Postfix) with ESMTP id DF4284000A
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 22:02:16 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=iO+79Yg2;
-	spf=pass (imf17.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 77DBA6B0088
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 18:02:22 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B1C2E401AF
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 22:02:21 +0000 (UTC)
+X-FDA: 85025044482.09.D76CCF8
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 864204000E
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 22:02:19 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="Sx/Hogtw";
+	spf=pass (imf04.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784930536;
+	s=arc-20220608; t=1784930539;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=n6CRZO4TQnwktiK+/QOoKau6pbWNZvFfGLDoCZ5eJ/I=;
-	b=R1gw0hmEmeeUge5BzuVb/CaAHHxx5ULvrWyjDET2/B0eA4vR5hi0mjykSPkc15ElAzNcsK
-	BdWUJjk6cIfeyPVJx6o8+749SqFija8wNKXybTAu8UWemlrW5rYsLfRum+oDk/mbbDwfzz
-	fHRy9RZaLKBUE1hXaM6xSfPK96fNHFM=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=iO+79Yg2;
-	spf=pass (imf17.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=8IX3CybTbQbjQjEh5WM2j4ukbfHE6wlKdSHlOsft0Ic=;
+	b=t4Cu+pJH25iXMlkfdarHMbasGjoiEQZ7aT8AHvNSGP/4D0K6DYEB2fJd1vNLWq6esdGk98
+	0+eRRgXvLRWjnMGwbGMx4AUQ7QRJxbXYRYMn4emTvlLK2XUBOLChNiHI+lZumcXn7st5Az
+	kw2hVzqo+5WORKXwTpeXTnnrlEuBA+A=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784930536;
-	b=VwJphgtBfvJI+Dch+SHVtyi9qiQ+IkcEtdQKqULxE4SMgZVaqG8GHRJtTCpWEQ1ZvlRY+j
-	pGYB/v162oGw7zDezozOIxP6IYze/snoP4tn9PGCJ88sCmC3ZyyFTMEfGaFkwJwekAqeQT
-	e8iojpZ2oWO9wtfwiM86/LQRFk7r4Tw=
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-38e07ebd263so648084a91.1
-        for <linux-mm@kvack.org>; Fri, 24 Jul 2026 15:02:16 -0700 (PDT)
+	t=1784930539;
+	b=TsLoDStPAS7G/x+JFUQ+jdOZbgvH0uSO1P49GUgL30l347DksA0KFpx86AODPJPK4zqAdW
+	rokkIoX9rxLVZYC371W4GCPQbG3HLyX2ef6ACj5RFmo7ajfPDSDH0F8KCrIk4NrWR/49/o
+	W9LiTQYeQVSQTRDbKcFMBBpgAZ09VpU=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="Sx/Hogtw";
+	spf=pass (imf04.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-c9b373d5af0so697025a12.2
+        for <linux-mm@kvack.org>; Fri, 24 Jul 2026 15:02:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784930536; x=1785535336; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=n6CRZO4TQnwktiK+/QOoKau6pbWNZvFfGLDoCZ5eJ/I=;
-        b=iO+79Yg2rSxU5o74URgWgZOQ8brmW/TbDYSogMRkc+0GXN0nfqXJET+D6cF6q1n6Hv
-         Nz00A2UwmO3OKBqi0u4PU26Vduovhzc+aBpuHRXTAKyDKbYXa4rxbgZhHyX/iCpvbENY
-         48fwqi3oc5feo4Xy7kKWJpMWtB+jjdkrS/mVKiiawfSGru6KrPVDEq7g2mFqFUbFe2jg
-         ytlNfPtkLaw0vXjqPhE5lexVF8FuB5M+GYSDr6LCIFHd2otoAaySG9xJQcyU5Rn6J7xW
-         RmuWXk6EPKavr/SAP+kIgd3ERiSK1duSaIHn9Z3JHuyJL4DC/Ggua+6z7B+bywM1wlT/
-         DI9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784930536; x=1785535336;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1784930538; x=1785535338; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=n6CRZO4TQnwktiK+/QOoKau6pbWNZvFfGLDoCZ5eJ/I=;
-        b=d54Sf5p0/xanYgolKHZ+zu4Z5LQ5xE9+QvoP0miZMeQjcVeXWaTPIdFVIWVadslYuU
-         TQY1ipN22+3rx0ZWd2482HW9FWO3sVq1AZxWnpmHOZ/jzDWX+RwZHf2Xr+2sPdosqwwv
-         oLQVi2bTbYijf6383o+gtUXvXXWNbDLsiSDs0k3/h6YC37DzRmItC5U6J5N6RFbWmJe6
-         pEEWFY1KLL4EwhIJT5bEyx4TIK4mhipYREqKi4leXC16G+eghkxAYOhDAPRUwkcgt8jP
-         93fGY5cBYDnqf4kpo2xW8zcsS6ax95FkRYo0dLrRdnNNR/o+wsakOXxD+ujx12LSWAix
-         azFQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrAyOWD1HJhacaynoouABzaSdicrY0g6n6v8bTdrhlqYCl82aKZ8PXJ3CLQu1hLYhffXbJz02+D6g==@kvack.org
-X-Gm-Message-State: AOJu0YyhDARsfPbpmBFNFI4S1WMhxQjG2Y3we6RSGObwSkZEMCI7808R
-	jM/qlg/49+PEqD9QSFhakWVO+wuPwqXX2qKCMmHoyc/IpeDnQ6Flf9qh
-X-Gm-Gg: AR+sD10p970sEe1qP+HiHGUaLDVa4Yf1AiHmujC1+vH0mvfd9C/JpxA063Atose87XT
-	ueVwZ0+6Mhd5fVpx0Q1tkxJTU1yKqDfUwB1GjyymD7h4oF4WYBemfdg8JtA7Q9O1N5m7rOSyNyG
-	26QUBkL8OpXh2lAPVIlLLbzxoHsFqpvPawNOlsQQKXRPcSdzxeihjP3l17WaAg6btfF+E+OkZfX
-	o/JBp7cBsaHH77fYvwqMI+eZCCJiF473npTGmP7JgOx0Z9G5DjDXuh2uPGaDdasrqXQXl6pIkC+
-	V8QgcInz3kwF8edl+Apck2uAMRP5XcHZgLNKcxfS62FsI247avqTCorDKwYh30fbq0/gWZ4ujox
-	8qKVGxNe8dUiiLThqGwiDejOzIomvnPeIYXgvn5nRooYzL7/srxT3eXQKv77NzZcFwIokTcW7T+
-	sJIofInOul8pkri908XemxHEWBqMim0Pt9axPRk67xl1a20Y1YyNCJh7essJYl
-X-Received: by 2002:a17:90b:55c3:b0:381:5a08:6291 with SMTP id 98e67ed59e1d1-38f29612543mr164935a91.20.1784930535581;
-        Fri, 24 Jul 2026 15:02:15 -0700 (PDT)
+        bh=8IX3CybTbQbjQjEh5WM2j4ukbfHE6wlKdSHlOsft0Ic=;
+        b=Sx/HogtwtwsmlGvgGTBxnhCJAfBATcx/WLYmA818PZ79VV00iRQT3co4C63fHyWncD
+         zHEMlHki55ma5YG2mYqCVCNOWXbhUMdvLs9ad9hXEOdLoCp1wZuNE0MdogV01wHObYAm
+         AwPqJqx3gb/5V4hC2FaMkQWS1NHYHvfOhLlBThTHn+kEOIH8rmkpeQzdf40LLlHjjcmI
+         CvV/FpNPWL3TeJ0/NyEZJPQT8lWeqfLi8iylTKsVmT7VWQclD/amZBlDpeotJ7C1lZj2
+         gmI2Nlt8D1jjb4DyUsNuy0ThqM2fj+3LIFjVEfu8lq3mn81fL3zIPa9mqF4vEWN8hL7D
+         8yig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784930538; x=1785535338;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=8IX3CybTbQbjQjEh5WM2j4ukbfHE6wlKdSHlOsft0Ic=;
+        b=JnpKaXPT2+6f+mUc7OBbhEkXe5QNt5PfNZ6SElR7/3hJReYMuAFOxd3d4xX4sATjsx
+         zarXMXiwFe+gTuswK5AsxDM8K3vAcWzu8QVENPR61x6bJOKL25+2WpYJ49NqQedqgZky
+         eyc4GUwEqyLc8YKyb92+yMjnB/46l6xg8G5/8XCumWtPqleVmv5Am4sZymAmwpGNHtk7
+         NMEqyNTv0+S6a3WpN9IxX6TIOF8OttD9699BXfwyiNrrSNx7U12He3uDMIVAChqAvNlA
+         N7ono+Vnoe8LfFv4AYvBGkgv6s7HrP3R9RJhsOFCVaYTC0Hv3PnCJ5/hFGEyQ0HkRlLe
+         kl0w==
+X-Forwarded-Encrypted: i=1; AHgh+RqxSrvWjng5qFT5ht8tpS+vTLFmx0/2I4fjhFM/QYb1K8pXUI6QzR1S4hkyzdKfqt+o6ZA9aOH4Vw==@kvack.org
+X-Gm-Message-State: AOJu0YyVoeVH517WGzzsEqL+Nzc9dOH+3FgT8EbJ7++6lEW//FmOU9rF
+	GaZ8jTg46ZCMgTqwc61jKX9WzoPID1eoEXW754vdTO9273GMbv4xdWg/
+X-Gm-Gg: AR+sD11Whz5mKAu/RsSSjUsC4Mt/XgJwHdQ0pPyAbDtBoUJYEJ2TJ8BuehWEiCzdbsf
+	LHP2Fo5HunsUr4bRUsGiLWge4lWIcwT7npTuOsumsSIUDC5Trc3O77phKCTMZqDwHVHYiKRuvPQ
+	ygveFMAcdLoA09O75Pq4ppoiv2xt4obemV5cL+T4T5FwREeNvVDdzLDc0Laf8/Lyo50qlVkshwQ
+	58zZfPRvXXz/BNSnF+VTHOhvtVQVnoJBCJry7DzMf4q3fp2xoY4Oqo/ZqV/7OikKAuKPxvEwo5q
+	WM+b9uBaJb5Kpa28Uv8zm+6OYEqbZfek9H0cg2/0Wi3/dtwBu4clTr9fRcIDXC/D4f/w4URM9zm
+	tvzdXmeXwkFZPwiSh+CldEZN0ytbKic03P9qfTN1hV8kLZ9qRBxUZikp2QMH0qgY1WcszeOPlMm
+	d6Wcg3tPXRe3K6Z2QcmnWnbbyAmEGP3ZW+Fil8t8ezZRAUbq5qnd9YJ9bX2Ck0
+X-Received: by 2002:a17:90b:2dc5:b0:38d:e0c4:c955 with SMTP id 98e67ed59e1d1-38f2950e5b0mr219022a91.15.1784930537606;
+        Fri, 24 Jul 2026 15:02:17 -0700 (PDT)
 Received: from pop-os.tail4adac7.ts.net ([2601:647:6802:dbc0:546a:e1b0:9574:3a29])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-314bc5a67f3sm2962631eec.29.2026.07.24.15.02.13
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-314bc5a67f3sm2962631eec.29.2026.07.24.15.02.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Jul 2026 15:02:14 -0700 (PDT)
+        Fri, 24 Jul 2026 15:02:16 -0700 (PDT)
 From: Cong Wang <xiyou.wangcong@gmail.com>
 To: Andy Lutomirski <luto@amacapital.net>
 Cc: Kees Cook <kees@kernel.org>,
@@ -98,20 +99,22 @@ Cc: Kees Cook <kees@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	linux-mm@kvack.org,
 	Cong Wang <cwang@multikernel.io>
-Subject: [PATCH v7 0/8] seccomp: non-cooperative pinned-memfd argument redirect
-Date: Fri, 24 Jul 2026 15:01:39 -0700
-Message-ID: <20260724220147.214396-1-xiyou.wangcong@gmail.com>
+Subject: [PATCH v7 1/8] mm: pass the target mm parameter through get_unmapped_area family
+Date: Fri, 24 Jul 2026 15:01:40 -0700
+Message-ID: <20260724220147.214396-2-xiyou.wangcong@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260724220147.214396-1-xiyou.wangcong@gmail.com>
+References: <20260724220147.214396-1-xiyou.wangcong@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: DF4284000A
+X-Stat-Signature: x3sfatjpdc347i7pp8bpsw1jatpr6n98
 X-Rspam-User: 
-X-Stat-Signature: wdoha6e3otzr1sf5ftwekpnzzswkjgng
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1784930536-350307
-X-HE-Meta: U2FsdGVkX19zlvqKgKzQqRh68d5PDLPj5uzhh75qeKFshH4lAwedW6nIiuwDWSlGqicwnwk/D1QDzxGNHc9P44CdcBHFz1UNUf0JBuZASzapHPBpy24Wn5jivi4I+kjTh08nq/wUsuXK+YqnURonNNDldjAcEM+MDlu3EOybbLk45hpJmEb/fSldA+H8m8PKnY7JIEM6z7AD8UZX3EflJmJT7d3KVXYBbWqZq1bvbPj9vFldQM8eTcihpW2fkFfJeQ+WdzBL2DrDXS4xktDzKQQ139TEAvmIzf//PvT/i49GSxOy8p549diu8A0sIVeFFcnG26RHScf0wo0Rf5fsEOg8owZBozRcy1bvM86XTeTTrtwwRjHiq/iC9YwyrKVrxT4i+BzwMFOVfSCJPd6ZpkVG1sxslrTCYvtaWvUS9cIhyXq21W0LIPI+7YBvfGkibJaJNyI4xvF4sdmYBymnxfRLXa0/JT+3qeG6dZToX77XOxlYzXBZaJSL6eEa1MBudT+z+Z2pGA7DBlGz5U+AdeUqwQH6pJxM2otwpqXemVfyrv+/ZZCfHw6WcnEAitHRANMXa9iT/Ha3iLFR9uqNC5y9qftEh/jKRB5ymd+4Rmnq3gNl18GCGwibdmoBJkaGX3FpQoS5SCw/5hNxmhqAs9vtJS76ImSpQDRSwaxQWkXbim13AxZfY6sTl8jmpmoOJOYyRb/+Ntko2OOQXloJp2cH2GM42fXZSYsZVq32nti6bKsi1YTfeOdJIhw94BOjL7QrwpuF/Wta+gr9tJ7uThDvXCGk/phFTi5/sqr076ZTtz2/8bTN3IRPAYwN2e6O4fNUhtoB8GD5rUsdRdsPDydzKN9Njhyl0a20740WsSWqb0WbrUgFZB2fTDmRXPOBVWNeQYh8dImjmFabdiW3ZKXGaFE86rS37lvyYxViXr58otI8ZrPr4lGUsBzKQIXmhdNcT9xYmJ8CAewJoQl
- r+JOzOlc
- 4OeS2efuBPPEDpHC1qSAx6lhySaF1g5f6NS97CREQQiYJt6rQhZFSlhb95jLSWxksuiO5iYgf7hW+k8OH1gTmBcYciGKhiw7BRgxCMhvS1kR/uCF0unIkffyKmcqw1JCp/1qIu4Nf6fSswoUG8+VrRFkYAIXMgjqLstts5z2uMuS9HgOPCDbKTAw+/9wxqHBYP4pBojCZJ+SysPysZJoILPqGTn2VntXs2s0e9eASEc+J1O60GMlDvd7/pC7TvfYpvrUSNjWCtjMQfkMCwZSgoTw15Wb0boV3BD6IwrxMnl9Hw0XCRar/jkoJCOtbg1UyfeO5sg1+MF77aGP0Gp+b56382qkdcspLMeVqIJ75P0ACW0wnp+ObBZNwchHlTJRPeECQQOSFugqEe9W7FyzDPHsEioYVzSZAMGAXWWpFAl86J3UjfV8pHt8ZmLhpSIoVD8iEuQcwrnMEWdTjwtu9nk6Z4FOuZDSoSVaxb72GhwIIxPLrrmIKt3Yu4w==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 864204000E
+X-HE-Tag: 1784930539-353319
+X-HE-Meta: U2FsdGVkX1+OJYkdaGLhPaq9aj+Ez55DuX0aQ8G8YTmRzJXPD/n5scZMZS+UjiQB6bxFdXp9+i5LFlBeVoFrOuTH3+VS+exeAc8Fk+0gS2jz/JJ8cTvIX7S1oANzmpztm0IHs3ly3zbt3RvAMokqEbuGvOJRBdJaDzwaNWRGi+z05CG8J7m7b0zGIbmg5pSn+XQJlT5adRPUcO1JFFsJI140/yKq8DbLqUo8rADMCVY4xuudLTjMWdDAyRlPf0C+E4HgiZA4Ztzi3f+hdc3kVZCdKYDp8v23mkhT0kgtLub5WymMsPEGEQuZFMv7AkA+7l1NDaxO1Zdl6Q+myN6qV+PFUhbt3QzFcWXT1A1d8t/hC5Q9gggsKN9yScn77WuPJJsr7wT4v2Z6fg+FOjYpKxYIS9JhepfIMs00fLchM2Mc2IL5FIECSu2HJtBYwThPgKA6IzdhGYloAD0z/6Rey2payLfyoM9b6ZlgBVjYdrSbqjHNjo8sEc21QpdRrwiTaQKhrp7q7TKnNxJjTivj3yeJaIOjGnzP/YyQ9webGf9Xl5D/VBITkkudaI5OPTncfCWbf42Txmrkbd4W4LJ4WVEJ0GyO6QmjoHaQV2s0kJj3oM5pK1ATdVIifznJPoLuhplWJcZRDo0wGaFVtYtuLOSGe8CMKYzGpBF8/BGeeor65J8TkBpnh1FEYDARhHJb7379MXarqQcvm6y3iSDiRKkKpGMLtZKdWMzjj42iRvbI4aowh3cHEZkz4i3QuebbDzxzJgsUShIJvlzW0bFKRYRpzIfbB2+POUzaoC5/1eegBUe9TSVvsJSKJlp5SvXLPw5v9Pec2hwTWrt+JqFzfCZuAgJXAMjfKv5UXrVPU1H76SNF01f5C2jv4CGw0f6vEBFlmTqLwSq4KtCiNSZf3YqCdYnAldWYusC3Q4WgW3PEBnuskDVUTbHhH65eqLDcBmGP/0IymvIdo8vehaJ
+ XTDUkgUg
+ t/QIpDsa8e3HjqMkM9f5+KDSvKihavyk0dDLcAAru2FhGpiaaQNvKSaJC3Px92X3bRnyVOszP7z0ir+ZphDQ2gra/1iFw6nEhdNQVbjcWIOAj1rt5gMem6jAAnQAOUCKor2QeQijlIGQoc3vSp7V8lCwe051PsKGLXADfjE65uoOzLBQtEt3ZaOx80nMbM8qkX2zn6AkdyxcdqEMaGJ6i8EWoir+0ILK1X4iax1BepiXwYN78sTkea3CBaABeBOiEN2CCoM4iOOCIlzmn23n8p7GHzvKfjOSd3reuLqlI0cBawt21EmQOxGHfUrbfAi+kJfePOjipmgsQYolCnuK7nU7tzAqQQDtf0+IkH5OWKo14NlvvYpMRQdjlPdR/tp+H2yLZKnqe75s2eM8w636BciQFNHjZs/rYqeqVeO1yeCpn/Juk20wdsYIpkQDIdzgHFOnQFvXOa1DuqBmZGR5RNLReLTRxnERN3oZGJ0L5RNDgPXwwY4TrFNVc70muOFm67to9XQ7yaKSEjYbrhXXpN4nHEn6tLi71tCMd0VJ1Tx9PK+U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,240 +124,2141 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Cong Wang <cwang@multikernel.io>
 
-The seccomp user-notification SECCOMP_USER_NOTIF_FLAG_CONTINUE response
-carries an inherent TOCTOU: once the supervisor decides to let a syscall
-continue, the target (or a CLONE_VM peer) can rewrite the memory behind a
-pointer argument before the kernel reads it. This is documented in the
-UAPI header and is why the notifier "cannot be used to implement a
-security policy" today.
+Every placement callback in the mmap path implicitly resolves against
+current->mm, so a placement cannot be computed in another task's address
+space. vm_mmap_remote() in the next patch needs this: without it a remote
+install cannot run the file's own ->get_unmapped_area() and file-specific
+placement rules are bypassed or rejected at MAP_FIXED validation.
 
-The cooperative way around this is for the target to map a shared memfd
-and mseal() it during a trusted setup window, so the supervisor can hand
-the kernel an immutable buffer. That window does not exist for the common
-fork()+execve() sandbox model, where the supervisor wants to confine an
-uncooperative (or legacy) binary it did not write.
+Make the mm an explicit first parameter of the get_unmapped_area family
+across the entire tree. It is difficult and not elegant to avoid such a
+big change.
 
-This series lets the supervisor close the TOCTOU without any target-side
-cooperation:
+The get_unmapped_area() convenience inline keeps its old signature and
+passes current->mm, so ordinary callers do not change. So no functional
+change.
 
-  - The kernel installs a sealed, read-only, MAP_SHARED mapping of a
-    supervisor-owned memfd directly into the trapped task's mm
-    (SECCOMP_IOCTL_NOTIF_PIN_INSTALL). The mapping is VM_SEALED at
-    creation, so neither the target nor a CLONE_VM peer can unmap,
-    remap, mprotect or MAP_FIXED-stomp it. The backing memfd must be
-    write-sealed (F_SEAL_WRITE / F_SEAL_FUTURE_WRITE), so its bytes
-    cannot be rewritten through any other reference either; the
-    supervisor stages the argument data through its own pre-seal mapping.
+Assisted-by: Claude:claude-opus-4.8
+Signed-off-by: Cong Wang <cwang@multikernel.io>
+---
+ Documentation/filesystems/locking.rst      |  2 +-
+ Documentation/filesystems/vfs.rst          |  2 +-
+ arch/alpha/kernel/osf_sys.c                | 21 +++---
+ arch/arc/mm/mmap.c                         |  7 +-
+ arch/arm/mm/mmap.c                         | 19 +++--
+ arch/csky/abiv1/mmap.c                     |  7 +-
+ arch/loongarch/mm/mmap.c                   | 28 ++++----
+ arch/mips/mm/mmap.c                        | 28 ++++----
+ arch/parisc/kernel/sys_parisc.c            | 28 ++++----
+ arch/powerpc/include/asm/book3s/64/slice.h |  3 +-
+ arch/powerpc/mm/book3s64/slice.c           | 28 ++++----
+ arch/s390/mm/mmap.c                        | 25 ++++---
+ arch/sh/mm/mmap.c                          | 21 +++---
+ arch/sparc/include/asm/pgtable_64.h        |  6 +-
+ arch/sparc/kernel/sys_sparc_32.c           |  7 +-
+ arch/sparc/kernel/sys_sparc_64.c           | 32 +++++----
+ arch/x86/include/asm/elf.h                 |  2 +-
+ arch/x86/kernel/cpu/sgx/driver.c           | 13 ++--
+ arch/x86/kernel/sys_x86_64.c               | 32 +++++----
+ arch/x86/kernel/uprobes.c                  |  4 +-
+ arch/x86/mm/mmap.c                         |  4 +-
+ arch/xtensa/kernel/syscall.c               |  8 +--
+ drivers/char/mem.c                         | 15 ++--
+ drivers/dax/device.c                       | 11 +--
+ drivers/gpu/drm/drm_gem.c                  |  9 ++-
+ drivers/gpu/drm/drm_gem_dma_helper.c       |  4 +-
+ drivers/media/v4l2-core/v4l2-dev.c         |  3 +-
+ drivers/mtd/mtdchar.c                      |  3 +-
+ drivers/video/fbdev/core/fb_chrdev.c       |  3 +-
+ fs/cramfs/inode.c                          |  3 +-
+ fs/hugetlbfs/inode.c                       |  9 +--
+ fs/proc/inode.c                            | 15 ++--
+ fs/ramfs/file-mmu.c                        |  5 +-
+ fs/ramfs/file-nommu.c                      |  6 +-
+ fs/romfs/mmap-nommu.c                      |  3 +-
+ include/drm/drm_gem.h                      |  3 +-
+ include/drm/drm_gem_dma_helper.h           |  3 +-
+ include/linux/bpf.h                        |  3 +-
+ include/linux/fs.h                         |  5 +-
+ include/linux/huge_mm.h                    | 18 ++---
+ include/linux/hugetlb.h                    |  6 +-
+ include/linux/mm.h                         | 12 ++--
+ include/linux/proc_fs.h                    |  5 +-
+ include/linux/sched/mm.h                   | 37 +++++-----
+ include/linux/shmem_fs.h                   |  5 +-
+ io_uring/memmap.c                          |  8 ++-
+ io_uring/memmap.h                          |  3 +-
+ ipc/shm.c                                  |  8 +--
+ kernel/bpf/arena.c                         |  5 +-
+ kernel/bpf/syscall.c                       |  8 ++-
+ mm/huge_memory.c                           | 27 +++----
+ mm/mmap.c                                  | 83 ++++++++++++----------
+ mm/nommu.c                                 |  5 +-
+ mm/shmem.c                                 | 13 ++--
+ mm/vma.c                                   | 16 +++--
+ mm/vma.h                                   |  6 +-
+ sound/core/pcm_native.c                    |  3 +-
+ 57 files changed, 391 insertions(+), 307 deletions(-)
 
-  - The supervisor then resumes the syscall with selected argument
-    registers rewritten (SECCOMP_IOCTL_NOTIF_SEND_REDIRECT), the pointer
-    ones aimed into a pin. Each pointer substitution is validated so the
-    whole access [ptr, ptr+len) lies inside a sealed, read-only pin of
-    the supervisor's memfd that still lives in the target's current mm;
-    original registers are restored at syscall exit for ABI compliance.
-
-Because the data the kernel acts on lives in an immutable pin, the
-target can no longer win the race. execve() is handled as a first-class
-case: its pathname is copied from the pin before the old mm is torn
-down, and the register-restore is skipped once the program image has
-been replaced (detected via self_exec_id).
-
-A redirected syscall is re-validated against the outer filters in the
-target's filter chain, so an inner notifier cannot use a redirect to
-smuggle a syscall past a policy an outer filter enforces (e.g. redirect
-to a blocked unshare()); see patch 6.
-
-sandlock [1], a non-cooperative seccomp sandbox supervisor, will use
-this to enforce argument-level policy on uncooperative targets.
-
-[1] https://github.com/multikernel/sandlock
-
-Patch 1 passes the target mm through the get_unmapped_area family, so a
-placement can be computed in another task's address space. Patch 2 adds
-__do_mmap(), a variant of do_mmap() that targets a caller-supplied mm
-(do_mmap() stays a current->mm wrapper, so no existing caller changes),
-and vm_mmap_remote()/vm_munmap_remote(), high-level helpers for
-installing and removing the sealed pin. Patch 3 adds PIN_INSTALL, patch
-4 adds the __NR_seccomp_* syscall aliases, patch 5 adds SEND_REDIRECT,
-patch 6 adds the outer-filter re-validation, patch 7 documents the ABI,
-and patch 8 adds selftests.
-
-Changes since v6:
-  - mm: vm_mmap_remote() now restricts the mmap flags it accepts to
-    MAP_SHARED plus MAP_FIXED/MAP_FIXED_NOREPLACE, refusing anything
-    else with -EOPNOTSUPP (patch 2).
-  - seccomp: PIN_INSTALL now charges the pin against the target's
-    RLIMIT_AS and rejects the install if it would exceed the limit
-    (patch 3).
-  - seccomp: seccomp_pin_check() now takes the target mm and
-    mmap_read_lock once, validating all redirected pointer arguments
-    against a single address-space snapshot instead of re-locking per
-    pointer (patch 5).
-  - Selftests: skip instead of failing when the kernel or arch lacks
-    SECCOMP_FILTER_FLAG_REDIRECT, so the suite is clean on non-x86_64;
-    fix a SIGPIPE on a target-attack failure path; correct an inaccurate
-    comment and compact the per-test comments.
-
-Changes since v5:
-  - New patch 1: pass the target mm through the get_unmapped_area
-    family, split out of the old mm patch.
-  - The __NR_seccomp_* aliases (patch 4) are now gated behind a
-    SECCOMP_ARCH_REDIRECT opt-in
-  - Reworked the re-validation (patch 6) into a self-contained walk,
-    seccomp_redirect_revalidate(), instead of re-entering
-    __seccomp_filter() with ugly goto's.
-  - Selftests: two new tests. redirect_outer_trace: an attached tracer
-    must not receive a PTRACE_EVENT_SECCOMP for the substituted call
-    and the target sees ENOSYS. redirect_outer_notify: an outer
-    listener-less USER_NOTIF verdict still blocks the substituted call
-    with ENOSYS.
-  - Fixed other reasonable issues reported by sashiko
-  - Fixed document warnings reported by kernel test robot
-
-Changes since v4:
-  - Fixed READ_IMPLIES_EXEC and VM warning in patch 1
-  - Fixed TRACE re-validation case in patch 5
-  - New patch 3: split the __NR_seccomp_* syscall aliases (arch-
-    overridable, covering rt_sigreturn and the clone/fork family) into
-    their own patch; x86 maps the compat (ia32) numbers.
-  - SEND_REDIRECT now also refuses the clone/fork family (clone, clone3,
-    fork, vfork) with -EOPNOTSUPP, not just rt_sigreturn: rewriting a
-    task-creating syscall's registers has no use case and is unsafe.
-  - Renamed vm_mmap_seal_remote() and added the vm_mmap_remote()
-    counterpart (patch 1).
-  - vm_mmap_remote() now bounds the mapping within the target mm's own
-    address space with an overflow-safe task_size check, including the
-    caller-supplied fixed-address path.
-  - Compat: for SECCOMP_ARCH_COMPAT targets, redirected pointer arguments
-    are truncated to 32 bits before the pin range is validated.
-  - Selftests: two new tests -- redirect_denied_syscalls (rt_sigreturn
-    and the clone/fork family are all rejected with -EOPNOTSUPP) and
-    redirect_revalidate_chain (the re-validation walks the entire outer
-    filter stack, not just the nearest filter); plus error-path hardening
-    so a broken kernel fails or skips rather than hanging.
-
-Changes since v3:
-  - Split the single seccomp patch into PIN_INSTALL (patch 2) and
-    SEND_REDIRECT (patch 4) for reviewability.
-  - New patch 5: re-validate a redirected syscall against the outer
-    filters in the stack, closing the bypass Andy described (an inner
-    notifier redirecting to a syscall an outer filter blocks, e.g.
-    unshare()).
-  - Signals: the argument restore now runs before signal/restart
-    processing. It is queued as task_work with TWA_RESUME -- not the
-    TWA_SIGNAL discussed on-list, which makes signal_pending() true for
-    the whole redirected syscall and livelocks an interruptible one.
-    TWA_RESUME still runs the restore at the top of get_signal(), before
-    the signal frame is built and before any -ERESTART* rewind; on a
-    restart the syscall re-traps seccomp and the supervisor is notified
-    again. rt_sigreturn is refused (-EOPNOTSUPP).
-  - At most one redirect-capable notifier may exist in a filter chain
-    (-EBUSY); ordinary notifiers are unconstrained. Syscalls with
-    complex signal/restart behaviour (nanosleep, futex(FUTEX_WAIT), ...)
-    are out of scope and should not have their arguments redirected.
-  - PIN_INSTALL: target_addr == 0 lets the kernel pick a free address in
-    the target mm (avoids a racy userspace /proc/<pid>/maps scan), and a
-    new offset field lets one memfd back several disjoint pins.
-  - New patch 6: Documentation/userspace-api/seccomp_filter.rst.
-  - Selftests expanded: install into a fresh post-execve mm, stateless
-    churn, outer-filter re-validation, ABI/versioning, and a
-    signal-ordering regression test.
-
-Changes since v2:
-  v3 was a redesign that dropped the v2 SECCOMP_IOCTL_NOTIF_INJECT
-  approach (an in-kernel reimplementation of a syscall whitelist) in
-  favour of redirecting the real syscall into a sealed pin, as suggested
-  by Andy.
-
-Changes since v1:
-  v2 was a redesign that dropped the v1 SECCOMP_IOCTL_NOTIF_PIN_ARGS
-  approach.
-
-All pinned-memfd and redirect selftests pass (seccomp_bpf: 121/121).
-
-Cong Wang (8):
-  mm: pass the target mm parameter through get_unmapped_area family
-  mm: add __do_mmap() and vm_mmap_remote()/vm_munmap_remote()
-  seccomp: introduce SECCOMP_IOCTL_NOTIF_PIN_INSTALL
-  seccomp: add __NR_seccomp_* aliases for rt_sigreturn and clone/fork
-  seccomp: add kernel-installed pinned-memfd redirect
-  seccomp: re-validate a redirected syscall against outer filters
-  docs/seccomp: document pinned-memfd redirect ioctls
-  selftests/seccomp: cover non-cooperative pinned-memfd install
-
- Documentation/filesystems/locking.rst         |    2 +-
- Documentation/filesystems/vfs.rst             |    2 +-
- .../userspace-api/seccomp_filter.rst          |  109 ++
- arch/alpha/kernel/osf_sys.c                   |   21 +-
- arch/arc/mm/mmap.c                            |    7 +-
- arch/arm/mm/mmap.c                            |   19 +-
- arch/csky/abiv1/mmap.c                        |    7 +-
- arch/loongarch/mm/mmap.c                      |   28 +-
- arch/mips/mm/mmap.c                           |   28 +-
- arch/parisc/kernel/sys_parisc.c               |   28 +-
- arch/powerpc/include/asm/book3s/64/slice.h    |    3 +-
- arch/powerpc/mm/book3s64/slice.c              |   28 +-
- arch/s390/mm/mmap.c                           |   25 +-
- arch/sh/mm/mmap.c                             |   21 +-
- arch/sparc/include/asm/pgtable_64.h           |    6 +-
- arch/sparc/kernel/sys_sparc_32.c              |    7 +-
- arch/sparc/kernel/sys_sparc_64.c              |   32 +-
- arch/x86/include/asm/elf.h                    |    2 +-
- arch/x86/include/asm/seccomp.h                |   15 +-
- arch/x86/kernel/cpu/sgx/driver.c              |   13 +-
- arch/x86/kernel/sys_x86_64.c                  |   32 +-
- arch/x86/kernel/uprobes.c                     |    4 +-
- arch/x86/mm/mmap.c                            |    4 +-
- arch/xtensa/kernel/syscall.c                  |    8 +-
- drivers/char/mem.c                            |   15 +-
- drivers/dax/device.c                          |   11 +-
- drivers/gpu/drm/drm_gem.c                     |    9 +-
- drivers/gpu/drm/drm_gem_dma_helper.c          |    4 +-
- drivers/media/v4l2-core/v4l2-dev.c            |    3 +-
- drivers/mtd/mtdchar.c                         |    3 +-
- drivers/video/fbdev/core/fb_chrdev.c          |    3 +-
- fs/cramfs/inode.c                             |    3 +-
- fs/hugetlbfs/inode.c                          |    9 +-
- fs/proc/inode.c                               |   15 +-
- fs/ramfs/file-mmu.c                           |    5 +-
- fs/ramfs/file-nommu.c                         |    6 +-
- fs/romfs/mmap-nommu.c                         |    3 +-
- include/asm-generic/seccomp.h                 |   30 +
- include/drm/drm_gem.h                         |    3 +-
- include/drm/drm_gem_dma_helper.h              |    3 +-
- include/linux/bpf.h                           |    3 +-
- include/linux/fs.h                            |    5 +-
- include/linux/huge_mm.h                       |   18 +-
- include/linux/hugetlb.h                       |    6 +-
- include/linux/mm.h                            |   31 +-
- include/linux/proc_fs.h                       |    5 +-
- include/linux/sched/mm.h                      |   37 +-
- include/linux/seccomp.h                       |   12 +-
- include/linux/shmem_fs.h                      |    5 +-
- include/uapi/linux/seccomp.h                  |   87 +
- io_uring/memmap.c                             |    8 +-
- io_uring/memmap.h                             |    3 +-
- ipc/shm.c                                     |    8 +-
- kernel/bpf/arena.c                            |    5 +-
- kernel/bpf/syscall.c                          |    8 +-
- kernel/seccomp.c                              |  587 +++++-
- mm/huge_memory.c                              |   27 +-
- mm/internal.h                                 |    5 +
- mm/mmap.c                                     |  134 +-
- mm/mprotect.c                                 |    2 +-
- mm/nommu.c                                    |   27 +-
- mm/shmem.c                                    |   13 +-
- mm/util.c                                     |  117 ++
- mm/vma.c                                      |   62 +-
- mm/vma.h                                      |   18 +-
- sound/core/pcm_native.c                       |    3 +-
- tools/testing/selftests/seccomp/seccomp_bpf.c | 1569 +++++++++++++++++
- tools/testing/vma/include/dup.h               |    1 +
- tools/testing/vma/tests/mmap.c                |    8 +-
- 69 files changed, 3011 insertions(+), 379 deletions(-)
-
-
-base-commit: 48a5a7ab8d6ab7090564339e039c421f315de912
+diff --git a/Documentation/filesystems/locking.rst b/Documentation/filesystems/locking.rst
+index 08d01bc62c31..b5defd74e302 100644
+--- a/Documentation/filesystems/locking.rst
++++ b/Documentation/filesystems/locking.rst
+@@ -471,7 +471,7 @@ prototypes::
+ 	int (*fsync) (struct file *, loff_t start, loff_t end, int datasync);
+ 	int (*fasync) (int, struct file *, int);
+ 	int (*lock) (struct file *, int, struct file_lock *);
+-	unsigned long (*get_unmapped_area)(struct file *, unsigned long,
++	unsigned long (*get_unmapped_area)(struct mm_struct *, struct file *, unsigned long,
+ 			unsigned long, unsigned long, unsigned long);
+ 	int (*check_flags)(int);
+ 	int (*flock) (struct file *, int, struct file_lock *);
+diff --git a/Documentation/filesystems/vfs.rst b/Documentation/filesystems/vfs.rst
+index 7c753148af88..4f95a272eab8 100644
+--- a/Documentation/filesystems/vfs.rst
++++ b/Documentation/filesystems/vfs.rst
+@@ -1023,7 +1023,7 @@ This describes how the VFS can manipulate an open file.  As of kernel
+ 		int (*fsync) (struct file *, loff_t, loff_t, int datasync);
+ 		int (*fasync) (int, struct file *, int);
+ 		int (*lock) (struct file *, int, struct file_lock *);
+-		unsigned long (*get_unmapped_area)(struct file *, unsigned long, unsigned long, unsigned long, unsigned long);
++		unsigned long (*get_unmapped_area)(struct mm_struct *, struct file *, unsigned long, unsigned long, unsigned long, unsigned long);
+ 		int (*check_flags)(int);
+ 		int (*flock) (struct file *, int, struct file_lock *);
+ 		ssize_t (*splice_write)(struct pipe_inode_info *, struct file *, loff_t *, size_t, unsigned int);
+diff --git a/arch/alpha/kernel/osf_sys.c b/arch/alpha/kernel/osf_sys.c
+index 7b6543d2cca3..80ae6d03e266 100644
+--- a/arch/alpha/kernel/osf_sys.c
++++ b/arch/alpha/kernel/osf_sys.c
+@@ -1201,21 +1201,22 @@ SYSCALL_DEFINE1(old_adjtimex, struct timex32 __user *, txc_p)
+ /* Get an address range which is currently unmapped. */
+ 
+ static unsigned long
+-arch_get_unmapped_area_1(unsigned long addr, unsigned long len,
+-		         unsigned long limit)
++arch_get_unmapped_area_1(struct mm_struct *mm, unsigned long addr,
++			 unsigned long len, unsigned long limit)
+ {
+ 	struct vm_unmapped_area_info info = {};
+ 
+ 	info.length = len;
+ 	info.low_limit = addr;
+ 	info.high_limit = limit;
+-	return vm_unmapped_area(&info);
++	return vm_unmapped_area(mm, &info);
+ }
+ 
+ unsigned long
+-arch_get_unmapped_area(struct file *filp, unsigned long addr,
+-		       unsigned long len, unsigned long pgoff,
+-		       unsigned long flags, vm_flags_t vm_flags)
++arch_get_unmapped_area(struct mm_struct *mm, struct file *filp,
++		       unsigned long addr, unsigned long len,
++		       unsigned long pgoff, unsigned long flags,
++		       vm_flags_t vm_flags)
+ {
+ 	unsigned long limit = TASK_SIZE;
+ 
+@@ -1236,19 +1237,19 @@ arch_get_unmapped_area(struct file *filp, unsigned long addr,
+ 	   this feature should be incorporated into all ports?  */
+ 
+ 	if (addr) {
+-		addr = arch_get_unmapped_area_1 (PAGE_ALIGN(addr), len, limit);
++		addr = arch_get_unmapped_area_1(mm, PAGE_ALIGN(addr), len, limit);
+ 		if (addr != (unsigned long) -ENOMEM)
+ 			return addr;
+ 	}
+ 
+ 	/* Next, try allocating at TASK_UNMAPPED_BASE.  */
+-	addr = arch_get_unmapped_area_1 (PAGE_ALIGN(TASK_UNMAPPED_BASE),
+-					 len, limit);
++	addr = arch_get_unmapped_area_1(mm, PAGE_ALIGN(TASK_UNMAPPED_BASE),
++					len, limit);
+ 	if (addr != (unsigned long) -ENOMEM)
+ 		return addr;
+ 
+ 	/* Finally, try allocating in low memory.  */
+-	addr = arch_get_unmapped_area_1 (PAGE_SIZE, len, limit);
++	addr = arch_get_unmapped_area_1(mm, PAGE_SIZE, len, limit);
+ 
+ 	return addr;
+ }
+diff --git a/arch/arc/mm/mmap.c b/arch/arc/mm/mmap.c
+index 2185afe8d59f..d33d5443b616 100644
+--- a/arch/arc/mm/mmap.c
++++ b/arch/arc/mm/mmap.c
+@@ -22,11 +22,10 @@
+  * SHMLBA bytes.
+  */
+ unsigned long
+-arch_get_unmapped_area(struct file *filp, unsigned long addr,
+-		unsigned long len, unsigned long pgoff,
++arch_get_unmapped_area(struct mm_struct *mm, struct file *filp,
++		unsigned long addr, unsigned long len, unsigned long pgoff,
+ 		unsigned long flags, vm_flags_t vm_flags)
+ {
+-	struct mm_struct *mm = current->mm;
+ 	struct vm_area_struct *vma;
+ 	struct vm_unmapped_area_info info = {};
+ 
+@@ -56,7 +55,7 @@ arch_get_unmapped_area(struct file *filp, unsigned long addr,
+ 	info.low_limit = mm->mmap_base;
+ 	info.high_limit = TASK_SIZE;
+ 	info.align_offset = pgoff << PAGE_SHIFT;
+-	return vm_unmapped_area(&info);
++	return vm_unmapped_area(mm, &info);
+ }
+ 
+ static const pgprot_t protection_map[16] = {
+diff --git a/arch/arm/mm/mmap.c b/arch/arm/mm/mmap.c
+index 3dbb383c26d5..5d1169539ce3 100644
+--- a/arch/arm/mm/mmap.c
++++ b/arch/arm/mm/mmap.c
+@@ -27,11 +27,10 @@
+  * in the VIVT case, we optimise out the alignment rules.
+  */
+ unsigned long
+-arch_get_unmapped_area(struct file *filp, unsigned long addr,
+-		unsigned long len, unsigned long pgoff,
++arch_get_unmapped_area(struct mm_struct *mm, struct file *filp,
++		unsigned long addr, unsigned long len, unsigned long pgoff,
+ 		unsigned long flags, vm_flags_t vm_flags)
+ {
+-	struct mm_struct *mm = current->mm;
+ 	struct vm_area_struct *vma;
+ 	int do_align = 0;
+ 	int aliasing = cache_is_vipt_aliasing();
+@@ -74,16 +73,16 @@ arch_get_unmapped_area(struct file *filp, unsigned long addr,
+ 	info.high_limit = TASK_SIZE;
+ 	info.align_mask = do_align ? (PAGE_MASK & (SHMLBA - 1)) : 0;
+ 	info.align_offset = pgoff << PAGE_SHIFT;
+-	return vm_unmapped_area(&info);
++	return vm_unmapped_area(mm, &info);
+ }
+ 
+ unsigned long
+-arch_get_unmapped_area_topdown(struct file *filp, const unsigned long addr0,
+-		        const unsigned long len, const unsigned long pgoff,
+-		        const unsigned long flags, vm_flags_t vm_flags)
++arch_get_unmapped_area_topdown(struct mm_struct *mm, struct file *filp,
++		const unsigned long addr0, const unsigned long len,
++		const unsigned long pgoff, const unsigned long flags,
++		vm_flags_t vm_flags)
+ {
+ 	struct vm_area_struct *vma;
+-	struct mm_struct *mm = current->mm;
+ 	unsigned long addr = addr0;
+ 	int do_align = 0;
+ 	int aliasing = cache_is_vipt_aliasing();
+@@ -125,7 +124,7 @@ arch_get_unmapped_area_topdown(struct file *filp, const unsigned long addr0,
+ 	info.high_limit = mm->mmap_base;
+ 	info.align_mask = do_align ? (PAGE_MASK & (SHMLBA - 1)) : 0;
+ 	info.align_offset = pgoff << PAGE_SHIFT;
+-	addr = vm_unmapped_area(&info);
++	addr = vm_unmapped_area(mm, &info);
+ 
+ 	/*
+ 	 * A failed mmap() very likely causes application failure,
+@@ -138,7 +137,7 @@ arch_get_unmapped_area_topdown(struct file *filp, const unsigned long addr0,
+ 		info.flags = 0;
+ 		info.low_limit = mm->mmap_base;
+ 		info.high_limit = TASK_SIZE;
+-		addr = vm_unmapped_area(&info);
++		addr = vm_unmapped_area(mm, &info);
+ 	}
+ 
+ 	return addr;
+diff --git a/arch/csky/abiv1/mmap.c b/arch/csky/abiv1/mmap.c
+index 1047865e82a9..62eaca7a0d50 100644
+--- a/arch/csky/abiv1/mmap.c
++++ b/arch/csky/abiv1/mmap.c
+@@ -22,11 +22,10 @@
+  * We unconditionally provide this function for all cases.
+  */
+ unsigned long
+-arch_get_unmapped_area(struct file *filp, unsigned long addr,
+-		unsigned long len, unsigned long pgoff,
++arch_get_unmapped_area(struct mm_struct *mm, struct file *filp,
++		unsigned long addr, unsigned long len, unsigned long pgoff,
+ 		unsigned long flags, vm_flags_t vm_flags)
+ {
+-	struct mm_struct *mm = current->mm;
+ 	struct vm_area_struct *vma;
+ 	int do_align = 0;
+ 	struct vm_unmapped_area_info info = {
+@@ -68,5 +67,5 @@ arch_get_unmapped_area(struct file *filp, unsigned long addr,
+ 	}
+ 
+ 	info.align_mask = do_align ? (PAGE_MASK & (SHMLBA - 1)) : 0;
+-	return vm_unmapped_area(&info);
++	return vm_unmapped_area(mm, &info);
+ }
+diff --git a/arch/loongarch/mm/mmap.c b/arch/loongarch/mm/mmap.c
+index 1df9e99582cc..600943121362 100644
+--- a/arch/loongarch/mm/mmap.c
++++ b/arch/loongarch/mm/mmap.c
+@@ -18,11 +18,11 @@
+ 
+ enum mmap_allocation_direction {UP, DOWN};
+ 
+-static unsigned long arch_get_unmapped_area_common(struct file *filp,
+-	unsigned long addr0, unsigned long len, unsigned long pgoff,
+-	unsigned long flags, enum mmap_allocation_direction dir)
++static unsigned long arch_get_unmapped_area_common(struct mm_struct *mm,
++	struct file *filp, unsigned long addr0, unsigned long len,
++	unsigned long pgoff, unsigned long flags,
++	enum mmap_allocation_direction dir)
+ {
+-	struct mm_struct *mm = current->mm;
+ 	struct vm_area_struct *vma;
+ 	unsigned long addr = addr0;
+ 	int do_color_align;
+@@ -74,7 +74,7 @@ static unsigned long arch_get_unmapped_area_common(struct file *filp,
+ 		info.flags = VM_UNMAPPED_AREA_TOPDOWN;
+ 		info.low_limit = PAGE_SIZE;
+ 		info.high_limit = mm->mmap_base;
+-		addr = vm_unmapped_area(&info);
++		addr = vm_unmapped_area(mm, &info);
+ 
+ 		if (!(addr & ~PAGE_MASK))
+ 			return addr;
+@@ -89,14 +89,14 @@ static unsigned long arch_get_unmapped_area_common(struct file *filp,
+ 
+ 	info.low_limit = mm->mmap_base;
+ 	info.high_limit = TASK_SIZE;
+-	return vm_unmapped_area(&info);
++	return vm_unmapped_area(mm, &info);
+ }
+ 
+-unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr0,
+-	unsigned long len, unsigned long pgoff, unsigned long flags,
+-	vm_flags_t vm_flags)
++unsigned long arch_get_unmapped_area(struct mm_struct *mm, struct file *filp,
++	unsigned long addr0, unsigned long len, unsigned long pgoff,
++	unsigned long flags, vm_flags_t vm_flags)
+ {
+-	return arch_get_unmapped_area_common(filp,
++	return arch_get_unmapped_area_common(mm, filp,
+ 			addr0, len, pgoff, flags, UP);
+ }
+ 
+@@ -104,11 +104,11 @@ unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr0,
+  * There is no need to export this but sched.h declares the function as
+  * extern so making it static here results in an error.
+  */
+-unsigned long arch_get_unmapped_area_topdown(struct file *filp,
+-	unsigned long addr0, unsigned long len, unsigned long pgoff,
+-	unsigned long flags, vm_flags_t vm_flags)
++unsigned long arch_get_unmapped_area_topdown(struct mm_struct *mm,
++	struct file *filp, unsigned long addr0, unsigned long len,
++	unsigned long pgoff, unsigned long flags, vm_flags_t vm_flags)
+ {
+-	return arch_get_unmapped_area_common(filp,
++	return arch_get_unmapped_area_common(mm, filp,
+ 			addr0, len, pgoff, flags, DOWN);
+ }
+ 
+diff --git a/arch/mips/mm/mmap.c b/arch/mips/mm/mmap.c
+index 5d2a1225785b..8905bba30aa0 100644
+--- a/arch/mips/mm/mmap.c
++++ b/arch/mips/mm/mmap.c
+@@ -26,11 +26,11 @@ EXPORT_SYMBOL(shm_align_mask);
+ 
+ enum mmap_allocation_direction {UP, DOWN};
+ 
+-static unsigned long arch_get_unmapped_area_common(struct file *filp,
+-	unsigned long addr0, unsigned long len, unsigned long pgoff,
+-	unsigned long flags, enum mmap_allocation_direction dir)
++static unsigned long arch_get_unmapped_area_common(struct mm_struct *mm,
++	struct file *filp, unsigned long addr0, unsigned long len,
++	unsigned long pgoff, unsigned long flags,
++	enum mmap_allocation_direction dir)
+ {
+-	struct mm_struct *mm = current->mm;
+ 	struct vm_area_struct *vma;
+ 	unsigned long addr = addr0;
+ 	int do_color_align;
+@@ -79,7 +79,7 @@ static unsigned long arch_get_unmapped_area_common(struct file *filp,
+ 		info.flags = VM_UNMAPPED_AREA_TOPDOWN;
+ 		info.low_limit = PAGE_SIZE;
+ 		info.high_limit = mm->mmap_base;
+-		addr = vm_unmapped_area(&info);
++		addr = vm_unmapped_area(mm, &info);
+ 
+ 		if (!(addr & ~PAGE_MASK))
+ 			return addr;
+@@ -94,14 +94,14 @@ static unsigned long arch_get_unmapped_area_common(struct file *filp,
+ 
+ 	info.low_limit = mm->mmap_base;
+ 	info.high_limit = TASK_SIZE;
+-	return vm_unmapped_area(&info);
++	return vm_unmapped_area(mm, &info);
+ }
+ 
+-unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr0,
+-	unsigned long len, unsigned long pgoff, unsigned long flags,
+-	vm_flags_t vm_flags)
++unsigned long arch_get_unmapped_area(struct mm_struct *mm, struct file *filp,
++	unsigned long addr0, unsigned long len, unsigned long pgoff,
++	unsigned long flags, vm_flags_t vm_flags)
+ {
+-	return arch_get_unmapped_area_common(filp,
++	return arch_get_unmapped_area_common(mm, filp,
+ 			addr0, len, pgoff, flags, UP);
+ }
+ 
+@@ -109,11 +109,11 @@ unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr0,
+  * There is no need to export this but sched.h declares the function as
+  * extern so making it static here results in an error.
+  */
+-unsigned long arch_get_unmapped_area_topdown(struct file *filp,
+-	unsigned long addr0, unsigned long len, unsigned long pgoff,
+-	unsigned long flags, vm_flags_t vm_flags)
++unsigned long arch_get_unmapped_area_topdown(struct mm_struct *mm,
++	struct file *filp, unsigned long addr0, unsigned long len,
++	unsigned long pgoff, unsigned long flags, vm_flags_t vm_flags)
+ {
+-	return arch_get_unmapped_area_common(filp,
++	return arch_get_unmapped_area_common(mm, filp,
+ 			addr0, len, pgoff, flags, DOWN);
+ }
+ 
+diff --git a/arch/parisc/kernel/sys_parisc.c b/arch/parisc/kernel/sys_parisc.c
+index 1a676a9bf80c..b9bf734cf678 100644
+--- a/arch/parisc/kernel/sys_parisc.c
++++ b/arch/parisc/kernel/sys_parisc.c
+@@ -100,11 +100,11 @@ unsigned long mmap_upper_limit(const struct rlimit *rlim_stack)
+ 
+ enum mmap_allocation_direction {UP, DOWN};
+ 
+-static unsigned long arch_get_unmapped_area_common(struct file *filp,
+-	unsigned long addr, unsigned long len, unsigned long pgoff,
+-	unsigned long flags, enum mmap_allocation_direction dir)
++static unsigned long arch_get_unmapped_area_common(struct mm_struct *mm,
++	struct file *filp, unsigned long addr, unsigned long len,
++	unsigned long pgoff, unsigned long flags,
++	enum mmap_allocation_direction dir)
+ {
+-	struct mm_struct *mm = current->mm;
+ 	struct vm_area_struct *vma, *prev;
+ 	unsigned long filp_pgoff;
+ 	int do_color_align;
+@@ -152,7 +152,7 @@ static unsigned long arch_get_unmapped_area_common(struct file *filp,
+ 		info.flags = VM_UNMAPPED_AREA_TOPDOWN;
+ 		info.low_limit = PAGE_SIZE;
+ 		info.high_limit = mm->mmap_base;
+-		addr = vm_unmapped_area(&info);
++		addr = vm_unmapped_area(mm, &info);
+ 		if (!(addr & ~PAGE_MASK))
+ 			return addr;
+ 		VM_BUG_ON(addr != -ENOMEM);
+@@ -167,22 +167,22 @@ static unsigned long arch_get_unmapped_area_common(struct file *filp,
+ 
+ 	info.low_limit = mm->mmap_base;
+ 	info.high_limit = mmap_upper_limit(NULL);
+-	return vm_unmapped_area(&info);
++	return vm_unmapped_area(mm, &info);
+ }
+ 
+-unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr,
+-	unsigned long len, unsigned long pgoff, unsigned long flags,
+-	vm_flags_t vm_flags)
++unsigned long arch_get_unmapped_area(struct mm_struct *mm, struct file *filp,
++	unsigned long addr, unsigned long len, unsigned long pgoff,
++	unsigned long flags, vm_flags_t vm_flags)
+ {
+-	return arch_get_unmapped_area_common(filp,
++	return arch_get_unmapped_area_common(mm, filp,
+ 			addr, len, pgoff, flags, UP);
+ }
+ 
+-unsigned long arch_get_unmapped_area_topdown(struct file *filp,
+-	unsigned long addr, unsigned long len, unsigned long pgoff,
+-	unsigned long flags, vm_flags_t vm_flags)
++unsigned long arch_get_unmapped_area_topdown(struct mm_struct *mm,
++	struct file *filp, unsigned long addr, unsigned long len,
++	unsigned long pgoff, unsigned long flags, vm_flags_t vm_flags)
+ {
+-	return arch_get_unmapped_area_common(filp,
++	return arch_get_unmapped_area_common(mm, filp,
+ 			addr, len, pgoff, flags, DOWN);
+ }
+ 
+diff --git a/arch/powerpc/include/asm/book3s/64/slice.h b/arch/powerpc/include/asm/book3s/64/slice.h
+index 6e2f7a74cd75..d95d9e292443 100644
+--- a/arch/powerpc/include/asm/book3s/64/slice.h
++++ b/arch/powerpc/include/asm/book3s/64/slice.h
+@@ -25,7 +25,8 @@
+ 
+ struct mm_struct;
+ 
+-unsigned long slice_get_unmapped_area(unsigned long addr, unsigned long len,
++unsigned long slice_get_unmapped_area(struct mm_struct *mm,
++				      unsigned long addr, unsigned long len,
+ 				      unsigned long flags, unsigned int psize,
+ 				      int topdown);
+ 
+diff --git a/arch/powerpc/mm/book3s64/slice.c b/arch/powerpc/mm/book3s64/slice.c
+index 28bec5bc7879..ab8b24f6287d 100644
+--- a/arch/powerpc/mm/book3s64/slice.c
++++ b/arch/powerpc/mm/book3s64/slice.c
+@@ -311,7 +311,7 @@ static unsigned long slice_find_area_bottomup(struct mm_struct *mm,
+ 		}
+ 		info.high_limit = addr;
+ 
+-		found = vm_unmapped_area(&info);
++		found = vm_unmapped_area(mm, &info);
+ 		if (!(found & ~PAGE_MASK))
+ 			return found;
+ 	}
+@@ -362,7 +362,7 @@ static unsigned long slice_find_area_topdown(struct mm_struct *mm,
+ 		}
+ 		info.low_limit = addr;
+ 
+-		found = vm_unmapped_area(&info);
++		found = vm_unmapped_area(mm, &info);
+ 		if (!(found & ~PAGE_MASK))
+ 			return found;
+ 	}
+@@ -422,7 +422,8 @@ static inline void slice_andnot_mask(struct slice_mask *dst,
+ #define MMU_PAGE_BASE	MMU_PAGE_4K
+ #endif
+ 
+-unsigned long slice_get_unmapped_area(unsigned long addr, unsigned long len,
++unsigned long slice_get_unmapped_area(struct mm_struct *mm,
++				      unsigned long addr, unsigned long len,
+ 				      unsigned long flags, unsigned int psize,
+ 				      int topdown)
+ {
+@@ -433,7 +434,6 @@ unsigned long slice_get_unmapped_area(unsigned long addr, unsigned long len,
+ 	int fixed = (flags & MAP_FIXED);
+ 	int pshift = max_t(int, mmu_psize_defs[psize].shift, PAGE_SHIFT);
+ 	unsigned long page_size = 1UL << pshift;
+-	struct mm_struct *mm = current->mm;
+ 	unsigned long newaddr;
+ 	unsigned long high_limit;
+ 
+@@ -649,7 +649,8 @@ static int file_to_psize(struct file *file)
+ }
+ #endif
+ 
+-unsigned long arch_get_unmapped_area(struct file *filp,
++unsigned long arch_get_unmapped_area(struct mm_struct *mm,
++				     struct file *filp,
+ 				     unsigned long addr,
+ 				     unsigned long len,
+ 				     unsigned long pgoff,
+@@ -659,17 +660,19 @@ unsigned long arch_get_unmapped_area(struct file *filp,
+ 	unsigned int psize;
+ 
+ 	if (radix_enabled())
+-		return generic_get_unmapped_area(filp, addr, len, pgoff, flags, vm_flags);
++		return generic_get_unmapped_area(mm, filp, addr, len, pgoff,
++						 flags, vm_flags);
+ 
+ 	if (filp && is_file_hugepages(filp))
+ 		psize = file_to_psize(filp);
+ 	else
+-		psize = mm_ctx_user_psize(&current->mm->context);
++		psize = mm_ctx_user_psize(&mm->context);
+ 
+-	return slice_get_unmapped_area(addr, len, flags, psize, 0);
++	return slice_get_unmapped_area(mm, addr, len, flags, psize, 0);
+ }
+ 
+-unsigned long arch_get_unmapped_area_topdown(struct file *filp,
++unsigned long arch_get_unmapped_area_topdown(struct mm_struct *mm,
++					     struct file *filp,
+ 					     const unsigned long addr0,
+ 					     const unsigned long len,
+ 					     const unsigned long pgoff,
+@@ -679,14 +682,15 @@ unsigned long arch_get_unmapped_area_topdown(struct file *filp,
+ 	unsigned int psize;
+ 
+ 	if (radix_enabled())
+-		return generic_get_unmapped_area_topdown(filp, addr0, len, pgoff, flags, vm_flags);
++		return generic_get_unmapped_area_topdown(mm, filp, addr0, len,
++							 pgoff, flags, vm_flags);
+ 
+ 	if (filp && is_file_hugepages(filp))
+ 		psize = file_to_psize(filp);
+ 	else
+-		psize = mm_ctx_user_psize(&current->mm->context);
++		psize = mm_ctx_user_psize(&mm->context);
+ 
+-	return slice_get_unmapped_area(addr0, len, flags, psize, 1);
++	return slice_get_unmapped_area(mm, addr0, len, flags, psize, 1);
+ }
+ 
+ unsigned int notrace get_slice_psize(struct mm_struct *mm, unsigned long addr)
+diff --git a/arch/s390/mm/mmap.c b/arch/s390/mm/mmap.c
+index ef7bfc87758c..92332e9f5229 100644
+--- a/arch/s390/mm/mmap.c
++++ b/arch/s390/mm/mmap.c
+@@ -75,11 +75,11 @@ static unsigned long get_align_mask(struct file *filp, unsigned long flags)
+ 	return 0;
+ }
+ 
+-unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr,
+-				     unsigned long len, unsigned long pgoff,
+-				     unsigned long flags, vm_flags_t vm_flags)
++unsigned long arch_get_unmapped_area(struct mm_struct *mm, struct file *filp,
++				     unsigned long addr, unsigned long len,
++				     unsigned long pgoff, unsigned long flags,
++				     vm_flags_t vm_flags)
+ {
+-	struct mm_struct *mm = current->mm;
+ 	struct vm_area_struct *vma;
+ 	struct vm_unmapped_area_info info = {};
+ 
+@@ -103,7 +103,7 @@ unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr,
+ 	info.align_mask = get_align_mask(filp, flags);
+ 	if (!(filp && is_file_hugepages(filp)))
+ 		info.align_offset = pgoff << PAGE_SHIFT;
+-	addr = vm_unmapped_area(&info);
++	addr = vm_unmapped_area(mm, &info);
+ 	if (offset_in_page(addr))
+ 		return addr;
+ 
+@@ -111,12 +111,15 @@ unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr,
+ 	return check_asce_limit(mm, addr, len);
+ }
+ 
+-unsigned long arch_get_unmapped_area_topdown(struct file *filp, unsigned long addr,
+-					     unsigned long len, unsigned long pgoff,
+-					     unsigned long flags, vm_flags_t vm_flags)
++unsigned long arch_get_unmapped_area_topdown(struct mm_struct *mm,
++					     struct file *filp,
++					     unsigned long addr,
++					     unsigned long len,
++					     unsigned long pgoff,
++					     unsigned long flags,
++					     vm_flags_t vm_flags)
+ {
+ 	struct vm_area_struct *vma;
+-	struct mm_struct *mm = current->mm;
+ 	struct vm_unmapped_area_info info = {};
+ 
+ 	/* requested length too big for entire address space */
+@@ -142,7 +145,7 @@ unsigned long arch_get_unmapped_area_topdown(struct file *filp, unsigned long ad
+ 	info.align_mask = get_align_mask(filp, flags);
+ 	if (!(filp && is_file_hugepages(filp)))
+ 		info.align_offset = pgoff << PAGE_SHIFT;
+-	addr = vm_unmapped_area(&info);
++	addr = vm_unmapped_area(mm, &info);
+ 
+ 	/*
+ 	 * A failed mmap() very likely causes application failure,
+@@ -155,7 +158,7 @@ unsigned long arch_get_unmapped_area_topdown(struct file *filp, unsigned long ad
+ 		info.flags = 0;
+ 		info.low_limit = TASK_UNMAPPED_BASE;
+ 		info.high_limit = TASK_SIZE;
+-		addr = vm_unmapped_area(&info);
++		addr = vm_unmapped_area(mm, &info);
+ 		if (offset_in_page(addr))
+ 			return addr;
+ 	}
+diff --git a/arch/sh/mm/mmap.c b/arch/sh/mm/mmap.c
+index c442734d9b0c..d7a790521539 100644
+--- a/arch/sh/mm/mmap.c
++++ b/arch/sh/mm/mmap.c
+@@ -51,11 +51,10 @@ static inline unsigned long COLOUR_ALIGN(unsigned long addr,
+ 	return base + off;
+ }
+ 
+-unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr,
+-	unsigned long len, unsigned long pgoff, unsigned long flags,
+-	vm_flags_t vm_flags)
++unsigned long arch_get_unmapped_area(struct mm_struct *mm, struct file *filp,
++		unsigned long addr, unsigned long len, unsigned long pgoff,
++		unsigned long flags, vm_flags_t vm_flags)
+ {
+-	struct mm_struct *mm = current->mm;
+ 	struct vm_area_struct *vma;
+ 	int do_colour_align;
+ 	struct vm_unmapped_area_info info = {};
+@@ -94,16 +93,16 @@ unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr,
+ 	info.high_limit = TASK_SIZE;
+ 	info.align_mask = do_colour_align ? (PAGE_MASK & shm_align_mask) : 0;
+ 	info.align_offset = pgoff << PAGE_SHIFT;
+-	return vm_unmapped_area(&info);
++	return vm_unmapped_area(mm, &info);
+ }
+ 
+ unsigned long
+-arch_get_unmapped_area_topdown(struct file *filp, const unsigned long addr0,
+-			  const unsigned long len, const unsigned long pgoff,
+-			  const unsigned long flags, vm_flags_t vm_flags)
++arch_get_unmapped_area_topdown(struct mm_struct *mm, struct file *filp,
++		const unsigned long addr0, const unsigned long len,
++		const unsigned long pgoff, const unsigned long flags,
++		vm_flags_t vm_flags)
+ {
+ 	struct vm_area_struct *vma;
+-	struct mm_struct *mm = current->mm;
+ 	unsigned long addr = addr0;
+ 	int do_colour_align;
+ 	struct vm_unmapped_area_info info = {};
+@@ -144,7 +143,7 @@ arch_get_unmapped_area_topdown(struct file *filp, const unsigned long addr0,
+ 	info.high_limit = mm->mmap_base;
+ 	info.align_mask = do_colour_align ? (PAGE_MASK & shm_align_mask) : 0;
+ 	info.align_offset = pgoff << PAGE_SHIFT;
+-	addr = vm_unmapped_area(&info);
++	addr = vm_unmapped_area(mm, &info);
+ 
+ 	/*
+ 	 * A failed mmap() very likely causes application failure,
+@@ -157,7 +156,7 @@ arch_get_unmapped_area_topdown(struct file *filp, const unsigned long addr0,
+ 		info.flags = 0;
+ 		info.low_limit = TASK_UNMAPPED_BASE;
+ 		info.high_limit = TASK_SIZE;
+-		addr = vm_unmapped_area(&info);
++		addr = vm_unmapped_area(mm, &info);
+ 	}
+ 
+ 	return addr;
+diff --git a/arch/sparc/include/asm/pgtable_64.h b/arch/sparc/include/asm/pgtable_64.h
+index 74ede706fb32..b8bed39cddc9 100644
+--- a/arch/sparc/include/asm/pgtable_64.h
++++ b/arch/sparc/include/asm/pgtable_64.h
+@@ -1141,9 +1141,9 @@ static inline bool pte_access_permitted(pte_t pte, bool write)
+ /* We provide a special get_unmapped_area for framebuffer mmaps to try and use
+  * the largest alignment possible such that larget PTEs can be used.
+  */
+-unsigned long get_fb_unmapped_area(struct file *filp, unsigned long,
+-				   unsigned long, unsigned long,
+-				   unsigned long);
++unsigned long get_fb_unmapped_area(struct mm_struct *mm, struct file *filp,
++				   unsigned long addr, unsigned long len,
++				   unsigned long pgoff, unsigned long flags);
+ #define HAVE_ARCH_FB_UNMAPPED_AREA
+ 
+ void sun4v_register_fault_status(void);
+diff --git a/arch/sparc/kernel/sys_sparc_32.c b/arch/sparc/kernel/sys_sparc_32.c
+index fb31bc0c5b48..930ca7f8a7dc 100644
+--- a/arch/sparc/kernel/sys_sparc_32.c
++++ b/arch/sparc/kernel/sys_sparc_32.c
+@@ -40,7 +40,10 @@ SYSCALL_DEFINE0(getpagesize)
+ 	return PAGE_SIZE; /* Possibly older binaries want 8192 on sun4's? */
+ }
+ 
+-unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr, unsigned long len, unsigned long pgoff, unsigned long flags, vm_flags_t vm_flags)
++unsigned long arch_get_unmapped_area(struct mm_struct *mm, struct file *filp,
++				     unsigned long addr, unsigned long len,
++				     unsigned long pgoff, unsigned long flags,
++				     vm_flags_t vm_flags)
+ {
+ 	struct vm_unmapped_area_info info = {};
+ 	bool file_hugepage = false;
+@@ -74,7 +77,7 @@ unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr, unsi
+ 	} else {
+ 		info.align_mask = huge_page_mask_align(filp);
+ 	}
+-	return vm_unmapped_area(&info);
++	return vm_unmapped_area(mm, &info);
+ }
+ 
+ /*
+diff --git a/arch/sparc/kernel/sys_sparc_64.c b/arch/sparc/kernel/sys_sparc_64.c
+index ecefcffcf7b1..e9f5e1b37ee9 100644
+--- a/arch/sparc/kernel/sys_sparc_64.c
++++ b/arch/sparc/kernel/sys_sparc_64.c
+@@ -98,9 +98,11 @@ static unsigned long get_align_mask(struct file *filp, unsigned long flags)
+ 	return 0;
+ }
+ 
+-unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr, unsigned long len, unsigned long pgoff, unsigned long flags, vm_flags_t vm_flags)
++unsigned long arch_get_unmapped_area(struct mm_struct *mm, struct file *filp,
++				     unsigned long addr, unsigned long len,
++				     unsigned long pgoff, unsigned long flags,
++				     vm_flags_t vm_flags)
+ {
+-	struct mm_struct *mm = current->mm;
+ 	struct vm_area_struct * vma;
+ 	unsigned long task_size = TASK_SIZE;
+ 	int do_color_align;
+@@ -147,25 +149,25 @@ unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr, unsi
+ 	info.align_mask = get_align_mask(filp, flags);
+ 	if (!file_hugepage)
+ 		info.align_offset = pgoff << PAGE_SHIFT;
+-	addr = vm_unmapped_area(&info);
++	addr = vm_unmapped_area(mm, &info);
+ 
+ 	if ((addr & ~PAGE_MASK) && task_size > VA_EXCLUDE_END) {
+ 		VM_BUG_ON(addr != -ENOMEM);
+ 		info.low_limit = VA_EXCLUDE_END;
+ 		info.high_limit = task_size;
+-		addr = vm_unmapped_area(&info);
++		addr = vm_unmapped_area(mm, &info);
+ 	}
+ 
+ 	return addr;
+ }
+ 
+ unsigned long
+-arch_get_unmapped_area_topdown(struct file *filp, const unsigned long addr0,
+-			  const unsigned long len, const unsigned long pgoff,
+-			  const unsigned long flags, vm_flags_t vm_flags)
++arch_get_unmapped_area_topdown(struct mm_struct *mm, struct file *filp,
++			  const unsigned long addr0, const unsigned long len,
++			  const unsigned long pgoff, const unsigned long flags,
++			  vm_flags_t vm_flags)
+ {
+ 	struct vm_area_struct *vma;
+-	struct mm_struct *mm = current->mm;
+ 	unsigned long task_size = STACK_TOP32;
+ 	unsigned long addr = addr0;
+ 	int do_color_align;
+@@ -215,7 +217,7 @@ arch_get_unmapped_area_topdown(struct file *filp, const unsigned long addr0,
+ 	info.align_mask = get_align_mask(filp, flags);
+ 	if (!file_hugepage)
+ 		info.align_offset = pgoff << PAGE_SHIFT;
+-	addr = vm_unmapped_area(&info);
++	addr = vm_unmapped_area(mm, &info);
+ 
+ 	/*
+ 	 * A failed mmap() very likely causes application failure,
+@@ -228,20 +230,22 @@ arch_get_unmapped_area_topdown(struct file *filp, const unsigned long addr0,
+ 		info.flags = 0;
+ 		info.low_limit = TASK_UNMAPPED_BASE;
+ 		info.high_limit = STACK_TOP32;
+-		addr = vm_unmapped_area(&info);
++		addr = vm_unmapped_area(mm, &info);
+ 	}
+ 
+ 	return addr;
+ }
+ 
+ /* Try to align mapping such that we align it as much as possible. */
+-unsigned long get_fb_unmapped_area(struct file *filp, unsigned long orig_addr, unsigned long len, unsigned long pgoff, unsigned long flags)
++unsigned long get_fb_unmapped_area(struct mm_struct *mm, struct file *filp,
++				   unsigned long orig_addr, unsigned long len,
++				   unsigned long pgoff, unsigned long flags)
+ {
+ 	unsigned long align_goal, addr = -ENOMEM;
+ 
+ 	if (flags & MAP_FIXED) {
+ 		/* Ok, don't mess with it. */
+-		return mm_get_unmapped_area(NULL, orig_addr, len, pgoff, flags);
++		return mm_get_unmapped_area(mm, NULL, orig_addr, len, pgoff, flags);
+ 	}
+ 	flags &= ~MAP_SHARED;
+ 
+@@ -254,7 +258,7 @@ unsigned long get_fb_unmapped_area(struct file *filp, unsigned long orig_addr, u
+ 		align_goal = (64UL * 1024);
+ 
+ 	do {
+-		addr = mm_get_unmapped_area(NULL, orig_addr,
++		addr = mm_get_unmapped_area(mm, NULL, orig_addr,
+ 					    len + (align_goal - PAGE_SIZE), pgoff, flags);
+ 		if (!(addr & ~PAGE_MASK)) {
+ 			addr = (addr + (align_goal - 1UL)) & ~(align_goal - 1UL);
+@@ -273,7 +277,7 @@ unsigned long get_fb_unmapped_area(struct file *filp, unsigned long orig_addr, u
+ 	 * be obtained.
+ 	 */
+ 	if (addr & ~PAGE_MASK)
+-		addr = mm_get_unmapped_area(NULL, orig_addr, len, pgoff, flags);
++		addr = mm_get_unmapped_area(mm, NULL, orig_addr, len, pgoff, flags);
+ 
+ 	return addr;
+ }
+diff --git a/arch/x86/include/asm/elf.h b/arch/x86/include/asm/elf.h
+index 0de9df759c99..12c66609889e 100644
+--- a/arch/x86/include/asm/elf.h
++++ b/arch/x86/include/asm/elf.h
+@@ -307,7 +307,7 @@ static inline int mmap_is_ia32(void)
+ 
+ extern unsigned long task_size_32bit(void);
+ extern unsigned long task_size_64bit(int full_addr_space);
+-extern unsigned long get_mmap_base(int is_legacy);
++extern unsigned long get_mmap_base(struct mm_struct *mm, int is_legacy);
+ extern bool mmap_address_hint_valid(unsigned long addr, unsigned long len);
+ extern unsigned long get_sigframe_size(void);
+ 
+diff --git a/arch/x86/kernel/cpu/sgx/driver.c b/arch/x86/kernel/cpu/sgx/driver.c
+index 9268289cd9f9..f81652086909 100644
+--- a/arch/x86/kernel/cpu/sgx/driver.c
++++ b/arch/x86/kernel/cpu/sgx/driver.c
+@@ -121,11 +121,12 @@ static int sgx_mmap(struct file *file, struct vm_area_struct *vma)
+ 	return 0;
+ }
+ 
+-static unsigned long sgx_get_unmapped_area(struct file *file,
+-					   unsigned long addr,
+-					   unsigned long len,
+-					   unsigned long pgoff,
+-					   unsigned long flags)
++static unsigned long sgx_get_unmapped_area(struct mm_struct *mm,
++					    struct file *file,
++					    unsigned long addr,
++					    unsigned long len,
++					    unsigned long pgoff,
++					    unsigned long flags)
+ {
+ 	if ((flags & MAP_TYPE) == MAP_PRIVATE)
+ 		return -EINVAL;
+@@ -133,7 +134,7 @@ static unsigned long sgx_get_unmapped_area(struct file *file,
+ 	if (flags & MAP_FIXED)
+ 		return addr;
+ 
+-	return mm_get_unmapped_area(file, addr, len, pgoff, flags);
++	return mm_get_unmapped_area(mm, file, addr, len, pgoff, flags);
+ }
+ 
+ #ifdef CONFIG_COMPAT
+diff --git a/arch/x86/kernel/sys_x86_64.c b/arch/x86/kernel/sys_x86_64.c
+index 776ae6fa7f2d..d9c4353913a4 100644
+--- a/arch/x86/kernel/sys_x86_64.c
++++ b/arch/x86/kernel/sys_x86_64.c
+@@ -89,8 +89,9 @@ SYSCALL_DEFINE6(mmap, unsigned long, addr, unsigned long, len,
+ 	return ksys_mmap_pgoff(addr, len, prot, flags, fd, off >> PAGE_SHIFT);
+ }
+ 
+-static void find_start_end(unsigned long addr, unsigned long flags,
+-		unsigned long *begin, unsigned long *end)
++static void find_start_end(struct mm_struct *mm, unsigned long addr,
++			   unsigned long flags, unsigned long *begin,
++			   unsigned long *end)
+ {
+ 	if (!in_32bit_syscall() && (flags & MAP_32BIT)) {
+ 		/* This is usually used needed to map code in small
+@@ -108,7 +109,7 @@ static void find_start_end(unsigned long addr, unsigned long flags,
+ 		return;
+ 	}
+ 
+-	*begin	= get_mmap_base(1);
++	*begin	= get_mmap_base(mm, 1);
+ 	if (in_32bit_syscall())
+ 		*end = task_size_32bit();
+ 	else
+@@ -124,10 +125,11 @@ static inline unsigned long stack_guard_placement(vm_flags_t vm_flags)
+ }
+ 
+ unsigned long
+-arch_get_unmapped_area(struct file *filp, unsigned long addr, unsigned long len,
+-		       unsigned long pgoff, unsigned long flags, vm_flags_t vm_flags)
++arch_get_unmapped_area(struct mm_struct *mm, struct file *filp,
++		       unsigned long addr, unsigned long len,
++		       unsigned long pgoff, unsigned long flags,
++		       vm_flags_t vm_flags)
+ {
+-	struct mm_struct *mm = current->mm;
+ 	struct vm_area_struct *vma;
+ 	struct vm_unmapped_area_info info = {};
+ 	unsigned long begin, end;
+@@ -135,7 +137,7 @@ arch_get_unmapped_area(struct file *filp, unsigned long addr, unsigned long len,
+ 	if (flags & MAP_FIXED)
+ 		return addr;
+ 
+-	find_start_end(addr, flags, &begin, &end);
++	find_start_end(mm, addr, flags, &begin, &end);
+ 
+ 	if (len > end)
+ 		return -ENOMEM;
+@@ -160,16 +162,16 @@ arch_get_unmapped_area(struct file *filp, unsigned long addr, unsigned long len,
+ 		info.align_offset += get_align_bits();
+ 	}
+ 
+-	return vm_unmapped_area(&info);
++	return vm_unmapped_area(mm, &info);
+ }
+ 
+ unsigned long
+-arch_get_unmapped_area_topdown(struct file *filp, unsigned long addr0,
+-			  unsigned long len, unsigned long pgoff,
+-			  unsigned long flags, vm_flags_t vm_flags)
++arch_get_unmapped_area_topdown(struct mm_struct *mm, struct file *filp,
++			  unsigned long addr0, unsigned long len,
++			  unsigned long pgoff, unsigned long flags,
++			  vm_flags_t vm_flags)
+ {
+ 	struct vm_area_struct *vma;
+-	struct mm_struct *mm = current->mm;
+ 	unsigned long addr = addr0;
+ 	struct vm_unmapped_area_info info = {};
+ 
+@@ -204,7 +206,7 @@ arch_get_unmapped_area_topdown(struct file *filp, unsigned long addr0,
+ 	else
+ 		info.low_limit = PAGE_SIZE;
+ 
+-	info.high_limit = get_mmap_base(0);
++	info.high_limit = get_mmap_base(mm, 0);
+ 	if (!(filp && is_file_hugepages(filp))) {
+ 		info.start_gap = stack_guard_placement(vm_flags);
+ 		info.align_offset = pgoff << PAGE_SHIFT;
+@@ -224,7 +226,7 @@ arch_get_unmapped_area_topdown(struct file *filp, unsigned long addr0,
+ 		info.align_mask = get_align_mask(filp);
+ 		info.align_offset += get_align_bits();
+ 	}
+-	addr = vm_unmapped_area(&info);
++	addr = vm_unmapped_area(mm, &info);
+ 	if (!(addr & ~PAGE_MASK))
+ 		return addr;
+ 	VM_BUG_ON(addr != -ENOMEM);
+@@ -236,5 +238,5 @@ arch_get_unmapped_area_topdown(struct file *filp, unsigned long addr0,
+ 	 * can happen with large stack limits and large mmap()
+ 	 * allocations.
+ 	 */
+-	return arch_get_unmapped_area(filp, addr0, len, pgoff, flags, 0);
++	return arch_get_unmapped_area(mm, filp, addr0, len, pgoff, flags, 0);
+ }
+diff --git a/arch/x86/kernel/uprobes.c b/arch/x86/kernel/uprobes.c
+index 3af979fb41d3..417153d02c54 100644
+--- a/arch/x86/kernel/uprobes.c
++++ b/arch/x86/kernel/uprobes.c
+@@ -661,13 +661,13 @@ static unsigned long find_nearest_trampoline(unsigned long vaddr)
+ 	/* Search up from the caller address. */
+ 	info.low_limit = call_end;
+ 	info.high_limit = min(high_limit, TASK_SIZE);
+-	high_tramp = vm_unmapped_area(&info);
++	high_tramp = vm_unmapped_area(current->mm, &info);
+ 
+ 	/* Search down from the caller address. */
+ 	info.low_limit = max(low_limit, PAGE_SIZE);
+ 	info.high_limit = call_end;
+ 	info.flags = VM_UNMAPPED_AREA_TOPDOWN;
+-	low_tramp = vm_unmapped_area(&info);
++	low_tramp = vm_unmapped_area(current->mm, &info);
+ 
+ 	if (IS_ERR_VALUE(high_tramp) && IS_ERR_VALUE(low_tramp))
+ 		return -ENOMEM;
+diff --git a/arch/x86/mm/mmap.c b/arch/x86/mm/mmap.c
+index 82f3a987f7cf..75c864f3c0d8 100644
+--- a/arch/x86/mm/mmap.c
++++ b/arch/x86/mm/mmap.c
+@@ -143,10 +143,8 @@ void arch_pick_mmap_layout(struct mm_struct *mm, const struct rlimit *rlim_stack
+ #endif
+ }
+ 
+-unsigned long get_mmap_base(int is_legacy)
++unsigned long get_mmap_base(struct mm_struct *mm, int is_legacy)
+ {
+-	struct mm_struct *mm = current->mm;
+-
+ #ifdef CONFIG_HAVE_ARCH_COMPAT_MMAP_BASES
+ 	if (in_32bit_syscall()) {
+ 		return is_legacy ? mm->mmap_compat_legacy_base
+diff --git a/arch/xtensa/kernel/syscall.c b/arch/xtensa/kernel/syscall.c
+index dc54f854c2f5..51bfe06746d7 100644
+--- a/arch/xtensa/kernel/syscall.c
++++ b/arch/xtensa/kernel/syscall.c
+@@ -54,9 +54,9 @@ asmlinkage long xtensa_fadvise64_64(int fd, int advice,
+ }
+ 
+ #ifdef CONFIG_MMU
+-unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr,
+-		unsigned long len, unsigned long pgoff, unsigned long flags,
+-		vm_flags_t vm_flags)
++unsigned long arch_get_unmapped_area(struct mm_struct *mm, struct file *filp,
++		unsigned long addr, unsigned long len, unsigned long pgoff,
++		unsigned long flags, vm_flags_t vm_flags)
+ {
+ 	struct vm_area_struct *vmm;
+ 	struct vma_iterator vmi;
+@@ -81,7 +81,7 @@ unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr,
+ 	else
+ 		addr = PAGE_ALIGN(addr);
+ 
+-	vma_iter_init(&vmi, current->mm, addr);
++	vma_iter_init(&vmi, mm, addr);
+ 	for_each_vma(vmi, vmm) {
+ 		/* At this point:  (addr < vmm->vm_end). */
+ 		if (addr + len <= vm_start_gap(vmm))
+diff --git a/drivers/char/mem.c b/drivers/char/mem.c
+index 63253d1de5d7..204bf406173d 100644
+--- a/drivers/char/mem.c
++++ b/drivers/char/mem.c
+@@ -280,7 +280,8 @@ static pgprot_t phys_mem_access_prot(struct file *file, unsigned long pfn,
+ #endif
+ 
+ #ifndef CONFIG_MMU
+-static unsigned long get_unmapped_area_mem(struct file *file,
++static unsigned long get_unmapped_area_mem(struct mm_struct *mm,
++					   struct file *file,
+ 					   unsigned long addr,
+ 					   unsigned long len,
+ 					   unsigned long pgoff,
+@@ -515,14 +516,16 @@ static int mmap_zero_prepare(struct vm_area_desc *desc)
+ }
+ 
+ #ifndef CONFIG_MMU
+-static unsigned long get_unmapped_area_zero(struct file *file,
++static unsigned long get_unmapped_area_zero(struct mm_struct *mm,
++				struct file *file,
+ 				unsigned long addr, unsigned long len,
+ 				unsigned long pgoff, unsigned long flags)
+ {
+ 	return -ENOSYS;
+ }
+ #else
+-static unsigned long get_unmapped_area_zero(struct file *file,
++static unsigned long get_unmapped_area_zero(struct mm_struct *mm,
++				struct file *file,
+ 				unsigned long addr, unsigned long len,
+ 				unsigned long pgoff, unsigned long flags)
+ {
+@@ -534,7 +537,7 @@ static unsigned long get_unmapped_area_zero(struct file *file,
+ 		 * get_unmapped_area(), so as not to confuse shmem with our
+ 		 * handle on "/dev/zero".
+ 		 */
+-		return shmem_get_unmapped_area(NULL, addr, len, pgoff, flags);
++		return shmem_get_unmapped_area(mm, NULL, addr, len, pgoff, flags);
+ 	}
+ 
+ 	/*
+@@ -543,9 +546,9 @@ static unsigned long get_unmapped_area_zero(struct file *file,
+ 	 * fall back to system page size mappings.
+ 	 */
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+-	return thp_get_unmapped_area(file, addr, len, pgoff, flags);
++	return thp_get_unmapped_area(mm, file, addr, len, pgoff, flags);
+ #else
+-	return mm_get_unmapped_area(file, addr, len, pgoff, flags);
++	return mm_get_unmapped_area(mm, file, addr, len, pgoff, flags);
+ #endif
+ }
+ #endif /* CONFIG_MMU */
+diff --git a/drivers/dax/device.c b/drivers/dax/device.c
+index d0c9b4e03b47..80df897b6535 100644
+--- a/drivers/dax/device.c
++++ b/drivers/dax/device.c
+@@ -295,9 +295,9 @@ static int dax_mmap_prepare(struct vm_area_desc *desc)
+ }
+ 
+ /* return an unmapped area aligned to the dax region specified alignment */
+-static unsigned long dax_get_unmapped_area(struct file *filp,
+-		unsigned long addr, unsigned long len, unsigned long pgoff,
+-		unsigned long flags)
++static unsigned long dax_get_unmapped_area(struct mm_struct *mm,
++		struct file *filp, unsigned long addr, unsigned long len,
++		unsigned long pgoff, unsigned long flags)
+ {
+ 	unsigned long off, off_end, off_align, len_align, addr_align, align;
+ 	struct dev_dax *dev_dax = filp ? filp->private_data : NULL;
+@@ -317,13 +317,14 @@ static unsigned long dax_get_unmapped_area(struct file *filp,
+ 	if ((off + len_align) < off)
+ 		goto out;
+ 
+-	addr_align = mm_get_unmapped_area(filp, addr, len_align, pgoff, flags);
++	addr_align = mm_get_unmapped_area(mm, filp, addr, len_align, pgoff,
++					  flags);
+ 	if (!IS_ERR_VALUE(addr_align)) {
+ 		addr_align += (off - addr_align) & (align - 1);
+ 		return addr_align;
+ 	}
+  out:
+-	return mm_get_unmapped_area(filp, addr, len, pgoff, flags);
++	return mm_get_unmapped_area(mm, filp, addr, len, pgoff, flags);
+ }
+ 
+ static const struct address_space_operations dev_dax_aops = {
+diff --git a/drivers/gpu/drm/drm_gem.c b/drivers/gpu/drm/drm_gem.c
+index e3ed684ddcf2..f3d4f71e61d4 100644
+--- a/drivers/gpu/drm/drm_gem.c
++++ b/drivers/gpu/drm/drm_gem.c
+@@ -1316,6 +1316,7 @@ drm_gem_object_lookup_at_offset(struct file *filp, unsigned long start,
+ #ifdef CONFIG_MMU
+ /**
+  * drm_gem_get_unmapped_area - get memory mapping region routine for GEM objects
++ * @mm: mm_struct the mapping is placed in
+  * @filp: DRM file pointer
+  * @uaddr: User address hint
+  * @len: Mapping length
+@@ -1336,7 +1337,8 @@ drm_gem_object_lookup_at_offset(struct file *filp, unsigned long start,
+  * If a GEM object is not available at the given offset or if the caller is not
+  * granted access to it, fall back to mm_get_unmapped_area().
+  */
+-unsigned long drm_gem_get_unmapped_area(struct file *filp, unsigned long uaddr,
++unsigned long drm_gem_get_unmapped_area(struct mm_struct *mm,
++					struct file *filp, unsigned long uaddr,
+ 					unsigned long len, unsigned long pgoff,
+ 					unsigned long flags)
+ {
+@@ -1348,9 +1350,10 @@ unsigned long drm_gem_get_unmapped_area(struct file *filp, unsigned long uaddr,
+ 		obj = NULL;
+ 
+ 	if (!obj || !obj->filp || !obj->filp->f_op->get_unmapped_area)
+-		ret = mm_get_unmapped_area(filp, uaddr, len, 0, flags);
++		ret = mm_get_unmapped_area(mm, filp, uaddr, len, 0, flags);
+ 	else
+-		ret = obj->filp->f_op->get_unmapped_area(obj->filp, uaddr, len, 0, flags);
++		ret = obj->filp->f_op->get_unmapped_area(mm, obj->filp, uaddr,
++							 len, 0, flags);
+ 
+ 	drm_gem_object_put(obj);
+ 
+diff --git a/drivers/gpu/drm/drm_gem_dma_helper.c b/drivers/gpu/drm/drm_gem_dma_helper.c
+index 1c00a71ab3c9..59f517a4f283 100644
+--- a/drivers/gpu/drm/drm_gem_dma_helper.c
++++ b/drivers/gpu/drm/drm_gem_dma_helper.c
+@@ -330,6 +330,7 @@ EXPORT_SYMBOL_GPL(drm_gem_dma_vm_ops);
+ #ifndef CONFIG_MMU
+ /**
+  * drm_gem_dma_get_unmapped_area - propose address for mapping in noMMU cases
++ * @mm: mm_struct the mapping is placed in
+  * @filp: file object
+  * @addr: memory address
+  * @len: buffer size
+@@ -344,7 +345,8 @@ EXPORT_SYMBOL_GPL(drm_gem_dma_vm_ops);
+  * Returns:
+  * mapping address on success or a negative error code on failure.
+  */
+-unsigned long drm_gem_dma_get_unmapped_area(struct file *filp,
++unsigned long drm_gem_dma_get_unmapped_area(struct mm_struct *mm,
++					    struct file *filp,
+ 					    unsigned long addr,
+ 					    unsigned long len,
+ 					    unsigned long pgoff,
+diff --git a/drivers/media/v4l2-core/v4l2-dev.c b/drivers/media/v4l2-core/v4l2-dev.c
+index 5516b2bbb08f..1cf7c36fc945 100644
+--- a/drivers/media/v4l2-core/v4l2-dev.c
++++ b/drivers/media/v4l2-core/v4l2-dev.c
+@@ -373,7 +373,8 @@ static long v4l2_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+ #ifdef CONFIG_MMU
+ #define v4l2_get_unmapped_area NULL
+ #else
+-static unsigned long v4l2_get_unmapped_area(struct file *filp,
++static unsigned long v4l2_get_unmapped_area(struct mm_struct *mm,
++		struct file *filp,
+ 		unsigned long addr, unsigned long len, unsigned long pgoff,
+ 		unsigned long flags)
+ {
+diff --git a/drivers/mtd/mtdchar.c b/drivers/mtd/mtdchar.c
+index bf01e6ac7293..e208a8de8716 100644
+--- a/drivers/mtd/mtdchar.c
++++ b/drivers/mtd/mtdchar.c
+@@ -1340,7 +1340,8 @@ static long mtdchar_compat_ioctl(struct file *file, unsigned int cmd,
+  *   mappings)
+  */
+ #ifndef CONFIG_MMU
+-static unsigned long mtdchar_get_unmapped_area(struct file *file,
++static unsigned long mtdchar_get_unmapped_area(struct mm_struct *mm,
++					   struct file *file,
+ 					   unsigned long addr,
+ 					   unsigned long len,
+ 					   unsigned long pgoff,
+diff --git a/drivers/video/fbdev/core/fb_chrdev.c b/drivers/video/fbdev/core/fb_chrdev.c
+index ba1d0bc214c5..cf8590b64b54 100644
+--- a/drivers/video/fbdev/core/fb_chrdev.c
++++ b/drivers/video/fbdev/core/fb_chrdev.c
+@@ -383,7 +383,8 @@ __releases(&info->lock)
+ }
+ 
+ #if defined(CONFIG_FB_PROVIDE_GET_FB_UNMAPPED_AREA) && !defined(CONFIG_MMU)
+-static unsigned long get_fb_unmapped_area(struct file *filp,
++static unsigned long get_fb_unmapped_area(struct mm_struct *mm,
++				   struct file *filp,
+ 				   unsigned long addr, unsigned long len,
+ 				   unsigned long pgoff, unsigned long flags)
+ {
+diff --git a/fs/cramfs/inode.c b/fs/cramfs/inode.c
+index 4edbfccd0bbe..d3aee6705b8d 100644
+--- a/fs/cramfs/inode.c
++++ b/fs/cramfs/inode.c
+@@ -449,7 +449,8 @@ static int cramfs_physmem_mmap(struct file *file, struct vm_area_struct *vma)
+ 	return is_nommu_shared_mapping(vma->vm_flags) ? 0 : -ENOSYS;
+ }
+ 
+-static unsigned long cramfs_physmem_get_unmapped_area(struct file *file,
++static unsigned long cramfs_physmem_get_unmapped_area(struct mm_struct *mm,
++			struct file *file,
+ 			unsigned long addr, unsigned long len,
+ 			unsigned long pgoff, unsigned long flags)
+ {
+diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+index 216e1a0dd0b2..f5d3c182cc7c 100644
+--- a/fs/hugetlbfs/inode.c
++++ b/fs/hugetlbfs/inode.c
+@@ -170,9 +170,9 @@ static int hugetlbfs_file_mmap(struct file *file, struct vm_area_struct *vma)
+  */
+ 
+ unsigned long
+-hugetlb_get_unmapped_area(struct file *file, unsigned long addr,
+-			    unsigned long len, unsigned long pgoff,
+-			    unsigned long flags)
++hugetlb_get_unmapped_area(struct mm_struct *mm, struct file *file,
++			    unsigned long addr, unsigned long len,
++			    unsigned long pgoff, unsigned long flags)
+ {
+ 	unsigned long addr0 = 0;
+ 	struct hstate *h = hstate_file(file);
+@@ -184,7 +184,8 @@ hugetlb_get_unmapped_area(struct file *file, unsigned long addr,
+ 	if (addr)
+ 		addr0 = ALIGN(addr, huge_page_size(h));
+ 
+-	return mm_get_unmapped_area_vmflags(file, addr0, len, pgoff, flags, 0);
++	return mm_get_unmapped_area_vmflags(mm, file, addr0, len, pgoff,
++					    flags, 0);
+ }
+ 
+ /*
+diff --git a/fs/proc/inode.c b/fs/proc/inode.c
+index b7634f975d98..3e542fe3118d 100644
+--- a/fs/proc/inode.c
++++ b/fs/proc/inode.c
+@@ -435,22 +435,25 @@ static int proc_reg_mmap(struct file *file, struct vm_area_struct *vma)
+ }
+ 
+ static unsigned long
+-pde_get_unmapped_area(struct proc_dir_entry *pde, struct file *file, unsigned long orig_addr,
++pde_get_unmapped_area(struct proc_dir_entry *pde, struct mm_struct *mm,
++			   struct file *file, unsigned long orig_addr,
+ 			   unsigned long len, unsigned long pgoff,
+ 			   unsigned long flags)
+ {
+ 	if (pde->proc_ops->proc_get_unmapped_area)
+-		return pde->proc_ops->proc_get_unmapped_area(file, orig_addr, len, pgoff, flags);
++		return pde->proc_ops->proc_get_unmapped_area(mm, file,
++					orig_addr, len, pgoff, flags);
+ 
+ #ifdef CONFIG_MMU
+-	return mm_get_unmapped_area(file, orig_addr, len, pgoff, flags);
++	return mm_get_unmapped_area(mm, file, orig_addr, len, pgoff, flags);
+ #endif
+ 
+ 	return orig_addr;
+ }
+ 
+ static unsigned long
+-proc_reg_get_unmapped_area(struct file *file, unsigned long orig_addr,
++proc_reg_get_unmapped_area(struct mm_struct *mm, struct file *file,
++			   unsigned long orig_addr,
+ 			   unsigned long len, unsigned long pgoff,
+ 			   unsigned long flags)
+ {
+@@ -458,9 +461,9 @@ proc_reg_get_unmapped_area(struct file *file, unsigned long orig_addr,
+ 	unsigned long rv = -EIO;
+ 
+ 	if (pde_is_permanent(pde)) {
+-		return pde_get_unmapped_area(pde, file, orig_addr, len, pgoff, flags);
++		return pde_get_unmapped_area(pde, mm, file, orig_addr, len, pgoff, flags);
+ 	} else if (use_pde(pde)) {
+-		rv = pde_get_unmapped_area(pde, file, orig_addr, len, pgoff, flags);
++		rv = pde_get_unmapped_area(pde, mm, file, orig_addr, len, pgoff, flags);
+ 		unuse_pde(pde);
+ 	}
+ 	return rv;
+diff --git a/fs/ramfs/file-mmu.c b/fs/ramfs/file-mmu.c
+index c3ed1c5117b2..e070ca06499b 100644
+--- a/fs/ramfs/file-mmu.c
++++ b/fs/ramfs/file-mmu.c
+@@ -31,11 +31,12 @@
+ 
+ #include "internal.h"
+ 
+-static unsigned long ramfs_mmu_get_unmapped_area(struct file *file,
++static unsigned long ramfs_mmu_get_unmapped_area(struct mm_struct *mm,
++		struct file *file,
+ 		unsigned long addr, unsigned long len, unsigned long pgoff,
+ 		unsigned long flags)
+ {
+-	return mm_get_unmapped_area(file, addr, len, pgoff, flags);
++	return mm_get_unmapped_area(mm, file, addr, len, pgoff, flags);
+ }
+ 
+ const struct file_operations ramfs_file_operations = {
+diff --git a/fs/ramfs/file-nommu.c b/fs/ramfs/file-nommu.c
+index 2f79bcb89d2e..2e20fc9c0d37 100644
+--- a/fs/ramfs/file-nommu.c
++++ b/fs/ramfs/file-nommu.c
+@@ -23,7 +23,8 @@
+ #include "internal.h"
+ 
+ static int ramfs_nommu_setattr(struct mnt_idmap *, struct dentry *, struct iattr *);
+-static unsigned long ramfs_nommu_get_unmapped_area(struct file *file,
++static unsigned long ramfs_nommu_get_unmapped_area(struct mm_struct *mm,
++						   struct file *file,
+ 						   unsigned long addr,
+ 						   unsigned long len,
+ 						   unsigned long pgoff,
+@@ -199,7 +200,8 @@ static int ramfs_nommu_setattr(struct mnt_idmap *idmap,
+  *   - the pages to be mapped must exist
+  *   - the pages be physically contiguous in sequence
+  */
+-static unsigned long ramfs_nommu_get_unmapped_area(struct file *file,
++static unsigned long ramfs_nommu_get_unmapped_area(struct mm_struct *mm,
++					    struct file *file,
+ 					    unsigned long addr, unsigned long len,
+ 					    unsigned long pgoff, unsigned long flags)
+ {
+diff --git a/fs/romfs/mmap-nommu.c b/fs/romfs/mmap-nommu.c
+index 7c3a1a7fecee..18c1e8545b0d 100644
+--- a/fs/romfs/mmap-nommu.c
++++ b/fs/romfs/mmap-nommu.c
+@@ -15,7 +15,8 @@
+  *   mappings)
+  * - attempts to map through to the underlying MTD device
+  */
+-static unsigned long romfs_get_unmapped_area(struct file *file,
++static unsigned long romfs_get_unmapped_area(struct mm_struct *mm,
++					     struct file *file,
+ 					     unsigned long addr,
+ 					     unsigned long len,
+ 					     unsigned long pgoff,
+diff --git a/include/drm/drm_gem.h b/include/drm/drm_gem.h
+index 8a704f6a65c1..a99d525f0369 100644
+--- a/include/drm/drm_gem.h
++++ b/include/drm/drm_gem.h
+@@ -536,7 +536,8 @@ int drm_gem_mmap_obj(struct drm_gem_object *obj, unsigned long obj_size,
+ int drm_gem_mmap(struct file *filp, struct vm_area_struct *vma);
+ 
+ #ifdef CONFIG_MMU
+-unsigned long drm_gem_get_unmapped_area(struct file *filp, unsigned long uaddr,
++unsigned long drm_gem_get_unmapped_area(struct mm_struct *mm,
++					struct file *filp, unsigned long uaddr,
+ 					unsigned long len, unsigned long pgoff,
+ 					unsigned long flags);
+ #else
+diff --git a/include/drm/drm_gem_dma_helper.h b/include/drm/drm_gem_dma_helper.h
+index f2678e7ecb98..127f52f192a9 100644
+--- a/include/drm/drm_gem_dma_helper.h
++++ b/include/drm/drm_gem_dma_helper.h
+@@ -232,7 +232,8 @@ drm_gem_dma_prime_import_sg_table_vmap(struct drm_device *drm,
+  */
+ 
+ #ifndef CONFIG_MMU
+-unsigned long drm_gem_dma_get_unmapped_area(struct file *filp,
++unsigned long drm_gem_dma_get_unmapped_area(struct mm_struct *mm,
++					    struct file *filp,
+ 					    unsigned long addr,
+ 					    unsigned long len,
+ 					    unsigned long pgoff,
+diff --git a/include/linux/bpf.h b/include/linux/bpf.h
+index 7719f6528445..d72a5ba49654 100644
+--- a/include/linux/bpf.h
++++ b/include/linux/bpf.h
+@@ -147,7 +147,8 @@ struct bpf_map_ops {
+ 	int (*map_mmap)(struct bpf_map *map, struct vm_area_struct *vma);
+ 	__poll_t (*map_poll)(struct bpf_map *map, struct file *filp,
+ 			     struct poll_table_struct *pts);
+-	unsigned long (*map_get_unmapped_area)(struct file *filep, unsigned long addr,
++	unsigned long (*map_get_unmapped_area)(struct mm_struct *mm,
++					       struct file *filep, unsigned long addr,
+ 					       unsigned long len, unsigned long pgoff,
+ 					       unsigned long flags);
+ 
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index 50ce731a2b78..58e00b320efd 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -1939,7 +1939,10 @@ struct file_operations {
+ 	int (*fsync) (struct file *, loff_t, loff_t, int datasync);
+ 	int (*fasync) (int, struct file *, int);
+ 	int (*lock) (struct file *, int, struct file_lock *);
+-	unsigned long (*get_unmapped_area)(struct file *, unsigned long, unsigned long, unsigned long, unsigned long);
++	unsigned long (*get_unmapped_area)(struct mm_struct *mm,
++			struct file *file, unsigned long addr,
++			unsigned long len, unsigned long pgoff,
++			unsigned long flags);
+ 	int (*check_flags)(int);
+ 	int (*flock) (struct file *, int, struct file_lock *);
+ 	ssize_t (*splice_write)(struct pipe_inode_info *, struct file *, loff_t *, size_t, unsigned int);
+diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+index ad20f7f8c179..5760710c3c5d 100644
+--- a/include/linux/huge_mm.h
++++ b/include/linux/huge_mm.h
+@@ -388,11 +388,12 @@ static inline bool thp_disabled_by_hw(void)
+ 	return transparent_hugepage_flags & (1 << TRANSPARENT_HUGEPAGE_UNSUPPORTED);
+ }
+ 
+-unsigned long thp_get_unmapped_area(struct file *filp, unsigned long addr,
+-		unsigned long len, unsigned long pgoff, unsigned long flags);
+-unsigned long thp_get_unmapped_area_vmflags(struct file *filp, unsigned long addr,
+-		unsigned long len, unsigned long pgoff, unsigned long flags,
+-		vm_flags_t vm_flags);
++unsigned long thp_get_unmapped_area(struct mm_struct *mm, struct file *filp,
++		unsigned long addr, unsigned long len, unsigned long pgoff,
++		unsigned long flags);
++unsigned long thp_get_unmapped_area_vmflags(struct mm_struct *mm,
++		struct file *filp, unsigned long addr, unsigned long len,
++		unsigned long pgoff, unsigned long flags, vm_flags_t vm_flags);
+ 
+ enum split_type {
+ 	SPLIT_TYPE_UNIFORM,
+@@ -614,9 +615,10 @@ static inline unsigned long thp_vma_allowable_orders(struct vm_area_struct *vma,
+ #define thp_get_unmapped_area	NULL
+ 
+ static inline unsigned long
+-thp_get_unmapped_area_vmflags(struct file *filp, unsigned long addr,
+-			      unsigned long len, unsigned long pgoff,
+-			      unsigned long flags, vm_flags_t vm_flags)
++thp_get_unmapped_area_vmflags(struct mm_struct *mm, struct file *filp,
++			      unsigned long addr, unsigned long len,
++			      unsigned long pgoff, unsigned long flags,
++			      vm_flags_t vm_flags)
+ {
+ 	return 0;
+ }
+diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+index 2abaf99321e9..b2743931f927 100644
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -543,9 +543,9 @@ static inline struct hstate *hstate_inode(struct inode *i)
+ #endif /* !CONFIG_HUGETLBFS */
+ 
+ unsigned long
+-hugetlb_get_unmapped_area(struct file *file, unsigned long addr,
+-				    unsigned long len, unsigned long pgoff,
+-				    unsigned long flags);
++hugetlb_get_unmapped_area(struct mm_struct *mm, struct file *file,
++				    unsigned long addr, unsigned long len,
++				    unsigned long pgoff, unsigned long flags);
+ 
+ /*
+  * huegtlb page specific state flags.  These flags are located in page.private
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 485df9c2dbdd..560bc369a54c 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -4138,14 +4138,17 @@ unsigned long randomize_stack_top(unsigned long stack_top);
+ unsigned long randomize_page(unsigned long start, unsigned long range);
+ 
+ unsigned long
+-__get_unmapped_area(struct file *file, unsigned long addr, unsigned long len,
+-		    unsigned long pgoff, unsigned long flags, vm_flags_t vm_flags);
++__get_unmapped_area(struct mm_struct *mm, struct file *file,
++		    unsigned long addr, unsigned long len,
++		    unsigned long pgoff, unsigned long flags,
++		    vm_flags_t vm_flags);
+ 
+ static inline unsigned long
+ get_unmapped_area(struct file *file, unsigned long addr, unsigned long len,
+ 		  unsigned long pgoff, unsigned long flags)
+ {
+-	return __get_unmapped_area(file, addr, len, pgoff, flags, 0);
++	return __get_unmapped_area(current->mm, file, addr, len, pgoff,
++				   flags, 0);
+ }
+ 
+ extern unsigned long do_mmap(struct file *file, unsigned long addr,
+@@ -4194,7 +4197,8 @@ struct vm_unmapped_area_info {
+ 	unsigned long start_gap;
+ };
+ 
+-extern unsigned long vm_unmapped_area(struct vm_unmapped_area_info *info);
++extern unsigned long vm_unmapped_area(struct mm_struct *mm,
++				      struct vm_unmapped_area_info *info);
+ 
+ /* truncate.c */
+ void truncate_inode_pages(struct address_space *mapping, loff_t lstart);
+diff --git a/include/linux/proc_fs.h b/include/linux/proc_fs.h
+index 47d7deaeed8f..e7998a303519 100644
+--- a/include/linux/proc_fs.h
++++ b/include/linux/proc_fs.h
+@@ -47,7 +47,10 @@ struct proc_ops {
+ 	long	(*proc_compat_ioctl)(struct file *, unsigned int, unsigned long);
+ #endif
+ 	int	(*proc_mmap)(struct file *, struct vm_area_struct *);
+-	unsigned long (*proc_get_unmapped_area)(struct file *, unsigned long, unsigned long, unsigned long, unsigned long);
++	unsigned long (*proc_get_unmapped_area)(struct mm_struct *mm,
++			struct file *file, unsigned long addr,
++			unsigned long len, unsigned long pgoff,
++			unsigned long flags);
+ } __randomize_layout;
+ 
+ /* definitions for hide_pid field */
+diff --git a/include/linux/sched/mm.h b/include/linux/sched/mm.h
+index 95d0040df584..adc11009fedf 100644
+--- a/include/linux/sched/mm.h
++++ b/include/linux/sched/mm.h
+@@ -181,19 +181,22 @@ extern void arch_pick_mmap_layout(struct mm_struct *mm,
+ 				  const struct rlimit *rlim_stack);
+ 
+ unsigned long
+-arch_get_unmapped_area(struct file *filp, unsigned long addr,
+-		       unsigned long len, unsigned long pgoff,
+-		       unsigned long flags, vm_flags_t vm_flags);
++arch_get_unmapped_area(struct mm_struct *mm, struct file *filp,
++		       unsigned long addr, unsigned long len,
++		       unsigned long pgoff, unsigned long flags,
++		       vm_flags_t vm_flags);
+ unsigned long
+-arch_get_unmapped_area_topdown(struct file *filp, unsigned long addr,
+-			       unsigned long len, unsigned long pgoff,
+-			       unsigned long flags, vm_flags_t);
++arch_get_unmapped_area_topdown(struct mm_struct *mm, struct file *filp,
++			       unsigned long addr, unsigned long len,
++			       unsigned long pgoff, unsigned long flags,
++			       vm_flags_t);
+ 
+-unsigned long mm_get_unmapped_area(struct file *filp, unsigned long addr,
+-				   unsigned long len, unsigned long pgoff,
+-				   unsigned long flags);
++unsigned long mm_get_unmapped_area(struct mm_struct *mm, struct file *filp,
++				   unsigned long addr, unsigned long len,
++				   unsigned long pgoff, unsigned long flags);
+ 
+-unsigned long mm_get_unmapped_area_vmflags(struct file *filp,
++unsigned long mm_get_unmapped_area_vmflags(struct mm_struct *mm,
++					   struct file *filp,
+ 					   unsigned long addr,
+ 					   unsigned long len,
+ 					   unsigned long pgoff,
+@@ -201,13 +204,15 @@ unsigned long mm_get_unmapped_area_vmflags(struct file *filp,
+ 					   vm_flags_t vm_flags);
+ 
+ unsigned long
+-generic_get_unmapped_area(struct file *filp, unsigned long addr,
+-			  unsigned long len, unsigned long pgoff,
+-			  unsigned long flags, vm_flags_t vm_flags);
++generic_get_unmapped_area(struct mm_struct *mm, struct file *filp,
++			  unsigned long addr, unsigned long len,
++			  unsigned long pgoff, unsigned long flags,
++			  vm_flags_t vm_flags);
+ unsigned long
+-generic_get_unmapped_area_topdown(struct file *filp, unsigned long addr,
+-				  unsigned long len, unsigned long pgoff,
+-				  unsigned long flags, vm_flags_t vm_flags);
++generic_get_unmapped_area_topdown(struct mm_struct *mm, struct file *filp,
++				  unsigned long addr, unsigned long len,
++				  unsigned long pgoff, unsigned long flags,
++				  vm_flags_t vm_flags);
+ #else
+ static inline void arch_pick_mmap_layout(struct mm_struct *mm,
+ 					 const struct rlimit *rlim_stack) {}
+diff --git a/include/linux/shmem_fs.h b/include/linux/shmem_fs.h
+index e729b9b0e38d..3912836b375f 100644
+--- a/include/linux/shmem_fs.h
++++ b/include/linux/shmem_fs.h
+@@ -109,8 +109,9 @@ extern struct file *shmem_file_setup_with_mnt(struct vfsmount *mnt,
+ 		const char *name, loff_t size, vma_flags_t flags);
+ int shmem_zero_setup(struct vm_area_struct *vma);
+ int shmem_zero_setup_desc(struct vm_area_desc *desc);
+-extern unsigned long shmem_get_unmapped_area(struct file *, unsigned long addr,
+-		unsigned long len, unsigned long pgoff, unsigned long flags);
++extern unsigned long shmem_get_unmapped_area(struct mm_struct *mm,
++		struct file *file, unsigned long addr, unsigned long len,
++		unsigned long pgoff, unsigned long flags);
+ extern int shmem_lock(struct file *file, int lock, struct ucounts *ucounts);
+ #ifdef CONFIG_SHMEM
+ bool shmem_mapping(const struct address_space *mapping);
+diff --git a/io_uring/memmap.c b/io_uring/memmap.c
+index 23e8a85111bc..255fd80fd2f2 100644
+--- a/io_uring/memmap.c
++++ b/io_uring/memmap.c
+@@ -318,7 +318,8 @@ __cold int io_uring_mmap(struct file *file, struct vm_area_struct *vma)
+ 	return io_region_mmap(ctx, region, vma, page_limit);
+ }
+ 
+-unsigned long io_uring_get_unmapped_area(struct file *filp, unsigned long addr,
++unsigned long io_uring_get_unmapped_area(struct mm_struct *mm,
++					 struct file *filp, unsigned long addr,
+ 					 unsigned long len, unsigned long pgoff,
+ 					 unsigned long flags)
+ {
+@@ -361,7 +362,7 @@ unsigned long io_uring_get_unmapped_area(struct file *filp, unsigned long addr,
+ #else
+ 	addr = 0UL;
+ #endif
+-	return mm_get_unmapped_area(filp, addr, len, pgoff, flags);
++	return mm_get_unmapped_area(mm, filp, addr, len, pgoff, flags);
+ }
+ 
+ #else /* !CONFIG_MMU */
+@@ -420,7 +421,8 @@ unsigned int io_uring_nommu_mmap_capabilities(struct file *file)
+ 	return NOMMU_MAP_DIRECT | NOMMU_MAP_READ | NOMMU_MAP_WRITE;
+ }
+ 
+-unsigned long io_uring_get_unmapped_area(struct file *file, unsigned long addr,
++unsigned long io_uring_get_unmapped_area(struct mm_struct *mm,
++					 struct file *file, unsigned long addr,
+ 					 unsigned long len, unsigned long pgoff,
+ 					 unsigned long flags)
+ {
+diff --git a/io_uring/memmap.h b/io_uring/memmap.h
+index f4cfbb6b9a1f..40104ed26dbe 100644
+--- a/io_uring/memmap.h
++++ b/io_uring/memmap.h
+@@ -12,7 +12,8 @@ struct page **io_pin_pages(unsigned long uaddr, unsigned long len, int *npages);
+ #ifndef CONFIG_MMU
+ unsigned int io_uring_nommu_mmap_capabilities(struct file *file);
+ #endif
+-unsigned long io_uring_get_unmapped_area(struct file *file, unsigned long addr,
++unsigned long io_uring_get_unmapped_area(struct mm_struct *mm,
++					 struct file *file, unsigned long addr,
+ 					 unsigned long len, unsigned long pgoff,
+ 					 unsigned long flags);
+ int io_uring_mmap(struct file *file, struct vm_area_struct *vma);
+diff --git a/ipc/shm.c b/ipc/shm.c
+index b3e8a58e177d..c49e1461ff9c 100644
+--- a/ipc/shm.c
++++ b/ipc/shm.c
+@@ -649,13 +649,13 @@ static long shm_fallocate(struct file *file, int mode, loff_t offset,
+ 	return sfd->file->f_op->fallocate(file, mode, offset, len);
+ }
+ 
+-static unsigned long shm_get_unmapped_area(struct file *file,
+-	unsigned long addr, unsigned long len, unsigned long pgoff,
+-	unsigned long flags)
++static unsigned long shm_get_unmapped_area(struct mm_struct *mm,
++	struct file *file, unsigned long addr, unsigned long len,
++	unsigned long pgoff, unsigned long flags)
+ {
+ 	struct shm_file_data *sfd = shm_file_data(file);
+ 
+-	return sfd->file->f_op->get_unmapped_area(sfd->file, addr, len,
++	return sfd->file->f_op->get_unmapped_area(mm, sfd->file, addr, len,
+ 						pgoff, flags);
+ }
+ 
+diff --git a/kernel/bpf/arena.c b/kernel/bpf/arena.c
+index 80b7b8a69446..839ebaae301d 100644
+--- a/kernel/bpf/arena.c
++++ b/kernel/bpf/arena.c
+@@ -543,7 +543,8 @@ static const struct vm_operations_struct arena_vm_ops = {
+ 	.fault          = arena_vm_fault,
+ };
+ 
+-static unsigned long arena_get_unmapped_area(struct file *filp, unsigned long addr,
++static unsigned long arena_get_unmapped_area(struct mm_struct *mm,
++					     struct file *filp, unsigned long addr,
+ 					     unsigned long len, unsigned long pgoff,
+ 					     unsigned long flags)
+ {
+@@ -566,7 +567,7 @@ static unsigned long arena_get_unmapped_area(struct file *filp, unsigned long ad
+ 			return -EINVAL;
+ 	}
+ 
+-	ret = mm_get_unmapped_area(filp, addr, len * 2, 0, flags);
++	ret = mm_get_unmapped_area(mm, filp, addr, len * 2, 0, flags);
+ 	if (IS_ERR_VALUE(ret))
+ 		return ret;
+ 	if ((ret >> 32) == ((ret + len - 1) >> 32))
+diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
+index 6db306d23b47..5092fc8707c5 100644
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -1150,16 +1150,18 @@ static __poll_t bpf_map_poll(struct file *filp, struct poll_table_struct *pts)
+ 	return EPOLLERR;
+ }
+ 
+-static unsigned long bpf_get_unmapped_area(struct file *filp, unsigned long addr,
++static unsigned long bpf_get_unmapped_area(struct mm_struct *mm,
++					   struct file *filp, unsigned long addr,
+ 					   unsigned long len, unsigned long pgoff,
+ 					   unsigned long flags)
+ {
+ 	struct bpf_map *map = filp->private_data;
+ 
+ 	if (map->ops->map_get_unmapped_area)
+-		return map->ops->map_get_unmapped_area(filp, addr, len, pgoff, flags);
++		return map->ops->map_get_unmapped_area(mm, filp, addr, len,
++						       pgoff, flags);
+ #ifdef CONFIG_MMU
+-	return mm_get_unmapped_area(filp, addr, len, pgoff, flags);
++	return mm_get_unmapped_area(mm, filp, addr, len, pgoff, flags);
+ #else
+ 	return addr;
+ #endif
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index b5d1e9d4463d..d75c5bd5f94d 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -1193,8 +1193,8 @@ static inline bool is_transparent_hugepage(const struct folio *folio)
+ 		folio_test_large_rmappable(folio);
+ }
+ 
+-static unsigned long __thp_get_unmapped_area(struct file *filp,
+-		unsigned long addr, unsigned long len,
++static unsigned long __thp_get_unmapped_area(struct mm_struct *mm,
++		struct file *filp, unsigned long addr, unsigned long len,
+ 		loff_t off, unsigned long flags, unsigned long size,
+ 		vm_flags_t vm_flags)
+ {
+@@ -1212,7 +1212,7 @@ static unsigned long __thp_get_unmapped_area(struct file *filp,
+ 	if (len_pad < len || (off + len_pad) < off)
+ 		return 0;
+ 
+-	ret = mm_get_unmapped_area_vmflags(filp, addr, len_pad,
++	ret = mm_get_unmapped_area_vmflags(mm, filp, addr, len_pad,
+ 					   off >> PAGE_SHIFT, flags, vm_flags);
+ 
+ 	/*
+@@ -1231,32 +1231,35 @@ static unsigned long __thp_get_unmapped_area(struct file *filp,
+ 
+ 	off_sub = (off - ret) & (size - 1);
+ 
+-	if (mm_flags_test(MMF_TOPDOWN, current->mm) && !off_sub)
++	if (mm_flags_test(MMF_TOPDOWN, mm) && !off_sub)
+ 		return ret + size;
+ 
+ 	ret += off_sub;
+ 	return ret;
+ }
+ 
+-unsigned long thp_get_unmapped_area_vmflags(struct file *filp, unsigned long addr,
+-		unsigned long len, unsigned long pgoff, unsigned long flags,
+-		vm_flags_t vm_flags)
++unsigned long thp_get_unmapped_area_vmflags(struct mm_struct *mm,
++		struct file *filp, unsigned long addr, unsigned long len,
++		unsigned long pgoff, unsigned long flags, vm_flags_t vm_flags)
+ {
+ 	unsigned long ret;
+ 	loff_t off = (loff_t)pgoff << PAGE_SHIFT;
+ 
+-	ret = __thp_get_unmapped_area(filp, addr, len, off, flags, PMD_SIZE, vm_flags);
++	ret = __thp_get_unmapped_area(mm, filp, addr, len, off, flags,
++				      PMD_SIZE, vm_flags);
+ 	if (ret)
+ 		return ret;
+ 
+-	return mm_get_unmapped_area_vmflags(filp, addr, len, pgoff, flags,
++	return mm_get_unmapped_area_vmflags(mm, filp, addr, len, pgoff, flags,
+ 					    vm_flags);
+ }
+ 
+-unsigned long thp_get_unmapped_area(struct file *filp, unsigned long addr,
+-		unsigned long len, unsigned long pgoff, unsigned long flags)
++unsigned long thp_get_unmapped_area(struct mm_struct *mm, struct file *filp,
++		unsigned long addr, unsigned long len, unsigned long pgoff,
++		unsigned long flags)
+ {
+-	return thp_get_unmapped_area_vmflags(filp, addr, len, pgoff, flags, 0);
++	return thp_get_unmapped_area_vmflags(mm, filp, addr, len, pgoff,
++					     flags, 0);
+ }
+ EXPORT_SYMBOL_GPL(thp_get_unmapped_area);
+ 
+diff --git a/mm/mmap.c b/mm/mmap.c
+index 2311ae7c2ff4..54915ac478ab 100644
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -405,7 +405,7 @@ unsigned long do_mmap(struct file *file, unsigned long addr,
+ 	/* Obtain the address to map to. we verify (or select) it and ensure
+ 	 * that it represents a valid section of the address space.
+ 	 */
+-	addr = __get_unmapped_area(file, addr, len, pgoff, flags, vm_flags);
++	addr = __get_unmapped_area(mm, file, addr, len, pgoff, flags, vm_flags);
+ 	if (IS_ERR_VALUE(addr))
+ 		return addr;
+ 
+@@ -662,14 +662,15 @@ static inline unsigned long stack_guard_placement(vm_flags_t vm_flags)
+  * - is at least the desired size.
+  * - satisfies (begin_addr & align_mask) == (align_offset & align_mask)
+  */
+-unsigned long vm_unmapped_area(struct vm_unmapped_area_info *info)
++unsigned long vm_unmapped_area(struct mm_struct *mm,
++			       struct vm_unmapped_area_info *info)
+ {
+ 	unsigned long addr;
+ 
+ 	if (info->flags & VM_UNMAPPED_AREA_TOPDOWN)
+-		addr = unmapped_area_topdown(info);
++		addr = unmapped_area_topdown(mm, info);
+ 	else
+-		addr = unmapped_area(info);
++		addr = unmapped_area(mm, info);
+ 
+ 	trace_vm_unmapped_area(addr, info);
+ 	return addr;
+@@ -687,11 +688,11 @@ unsigned long vm_unmapped_area(struct vm_unmapped_area_info *info)
+  * This function "knows" that -ENOMEM has the bits set.
+  */
+ unsigned long
+-generic_get_unmapped_area(struct file *filp, unsigned long addr,
+-			  unsigned long len, unsigned long pgoff,
+-			  unsigned long flags, vm_flags_t vm_flags)
++generic_get_unmapped_area(struct mm_struct *mm, struct file *filp,
++			  unsigned long addr, unsigned long len,
++			  unsigned long pgoff, unsigned long flags,
++			  vm_flags_t vm_flags)
+ {
+-	struct mm_struct *mm = current->mm;
+ 	struct vm_area_struct *vma, *prev;
+ 	struct vm_unmapped_area_info info = {};
+ 	const unsigned long mmap_end = arch_get_mmap_end(addr, len, flags);
+@@ -717,16 +718,17 @@ generic_get_unmapped_area(struct file *filp, unsigned long addr,
+ 	info.start_gap = stack_guard_placement(vm_flags);
+ 	if (filp && is_file_hugepages(filp))
+ 		info.align_mask = huge_page_mask_align(filp);
+-	return vm_unmapped_area(&info);
++	return vm_unmapped_area(mm, &info);
+ }
+ 
+ #ifndef HAVE_ARCH_UNMAPPED_AREA
+ unsigned long
+-arch_get_unmapped_area(struct file *filp, unsigned long addr,
+-		       unsigned long len, unsigned long pgoff,
+-		       unsigned long flags, vm_flags_t vm_flags)
++arch_get_unmapped_area(struct mm_struct *mm, struct file *filp,
++		       unsigned long addr, unsigned long len,
++		       unsigned long pgoff, unsigned long flags,
++		       vm_flags_t vm_flags)
+ {
+-	return generic_get_unmapped_area(filp, addr, len, pgoff, flags,
++	return generic_get_unmapped_area(mm, filp, addr, len, pgoff, flags,
+ 					 vm_flags);
+ }
+ #endif
+@@ -736,12 +738,12 @@ arch_get_unmapped_area(struct file *filp, unsigned long addr,
+  * stack's low limit (the base):
+  */
+ unsigned long
+-generic_get_unmapped_area_topdown(struct file *filp, unsigned long addr,
+-				  unsigned long len, unsigned long pgoff,
+-				  unsigned long flags, vm_flags_t vm_flags)
++generic_get_unmapped_area_topdown(struct mm_struct *mm, struct file *filp,
++				  unsigned long addr, unsigned long len,
++				  unsigned long pgoff, unsigned long flags,
++				  vm_flags_t vm_flags)
+ {
+ 	struct vm_area_struct *vma, *prev;
+-	struct mm_struct *mm = current->mm;
+ 	struct vm_unmapped_area_info info = {};
+ 	const unsigned long mmap_end = arch_get_mmap_end(addr, len, flags);
+ 
+@@ -769,7 +771,7 @@ generic_get_unmapped_area_topdown(struct file *filp, unsigned long addr,
+ 	info.start_gap = stack_guard_placement(vm_flags);
+ 	if (filp && is_file_hugepages(filp))
+ 		info.align_mask = huge_page_mask_align(filp);
+-	addr = vm_unmapped_area(&info);
++	addr = vm_unmapped_area(mm, &info);
+ 
+ 	/*
+ 	 * A failed mmap() very likely causes application failure,
+@@ -782,7 +784,7 @@ generic_get_unmapped_area_topdown(struct file *filp, unsigned long addr,
+ 		info.flags = 0;
+ 		info.low_limit = TASK_UNMAPPED_BASE;
+ 		info.high_limit = mmap_end;
+-		addr = vm_unmapped_area(&info);
++		addr = vm_unmapped_area(mm, &info);
+ 	}
+ 
+ 	return addr;
+@@ -790,31 +792,36 @@ generic_get_unmapped_area_topdown(struct file *filp, unsigned long addr,
+ 
+ #ifndef HAVE_ARCH_UNMAPPED_AREA_TOPDOWN
+ unsigned long
+-arch_get_unmapped_area_topdown(struct file *filp, unsigned long addr,
+-			       unsigned long len, unsigned long pgoff,
+-			       unsigned long flags, vm_flags_t vm_flags)
++arch_get_unmapped_area_topdown(struct mm_struct *mm, struct file *filp,
++			       unsigned long addr, unsigned long len,
++			       unsigned long pgoff, unsigned long flags,
++			       vm_flags_t vm_flags)
+ {
+-	return generic_get_unmapped_area_topdown(filp, addr, len, pgoff, flags,
+-						 vm_flags);
++	return generic_get_unmapped_area_topdown(mm, filp, addr, len, pgoff,
++						 flags, vm_flags);
+ }
+ #endif
+ 
+-unsigned long mm_get_unmapped_area_vmflags(struct file *filp, unsigned long addr,
++unsigned long mm_get_unmapped_area_vmflags(struct mm_struct *mm,
++					   struct file *filp, unsigned long addr,
+ 					   unsigned long len, unsigned long pgoff,
+ 					   unsigned long flags, vm_flags_t vm_flags)
+ {
+-	if (mm_flags_test(MMF_TOPDOWN, current->mm))
+-		return arch_get_unmapped_area_topdown(filp, addr, len, pgoff,
+-						      flags, vm_flags);
+-	return arch_get_unmapped_area(filp, addr, len, pgoff, flags, vm_flags);
++	if (mm_flags_test(MMF_TOPDOWN, mm))
++		return arch_get_unmapped_area_topdown(mm, filp, addr, len,
++						      pgoff, flags, vm_flags);
++	return arch_get_unmapped_area(mm, filp, addr, len, pgoff, flags,
++				      vm_flags);
+ }
+ 
+ unsigned long
+-__get_unmapped_area(struct file *file, unsigned long addr, unsigned long len,
++__get_unmapped_area(struct mm_struct *mm, struct file *file,
++		unsigned long addr, unsigned long len,
+ 		unsigned long pgoff, unsigned long flags, vm_flags_t vm_flags)
+ {
+-	unsigned long (*get_area)(struct file *, unsigned long,
+-				  unsigned long, unsigned long, unsigned long)
++	unsigned long (*get_area)(struct mm_struct *, struct file *,
++				  unsigned long, unsigned long,
++				  unsigned long, unsigned long)
+ 				  = NULL;
+ 
+ 	unsigned long error = arch_mmap_check(addr, len, flags);
+@@ -841,15 +848,15 @@ __get_unmapped_area(struct file *file, unsigned long addr, unsigned long len,
+ 		pgoff = 0;
+ 
+ 	if (get_area) {
+-		addr = get_area(file, addr, len, pgoff, flags);
++		addr = get_area(mm, file, addr, len, pgoff, flags);
+ 	} else if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) && !file
+ 		   && !addr /* no hint */
+ 		   && IS_ALIGNED(len, PMD_SIZE)) {
+ 		/* Ensures that larger anonymous mappings are THP aligned. */
+-		addr = thp_get_unmapped_area_vmflags(file, addr, len,
++		addr = thp_get_unmapped_area_vmflags(mm, file, addr, len,
+ 						     pgoff, flags, vm_flags);
+ 	} else {
+-		addr = mm_get_unmapped_area_vmflags(file, addr, len,
++		addr = mm_get_unmapped_area_vmflags(mm, file, addr, len,
+ 						    pgoff, flags, vm_flags);
+ 	}
+ 	if (IS_ERR_VALUE(addr))
+@@ -865,10 +872,12 @@ __get_unmapped_area(struct file *file, unsigned long addr, unsigned long len,
+ }
+ 
+ unsigned long
+-mm_get_unmapped_area(struct file *file, unsigned long addr, unsigned long len,
++mm_get_unmapped_area(struct mm_struct *mm, struct file *file,
++		     unsigned long addr, unsigned long len,
+ 		     unsigned long pgoff, unsigned long flags)
+ {
+-	return mm_get_unmapped_area_vmflags(file, addr, len, pgoff, flags, 0);
++	return mm_get_unmapped_area_vmflags(mm, file, addr, len, pgoff,
++					    flags, 0);
+ }
+ EXPORT_SYMBOL(mm_get_unmapped_area);
+ 
+diff --git a/mm/nommu.c b/mm/nommu.c
+index ed3934bc2de4..d6393bd2844e 100644
+--- a/mm/nommu.c
++++ b/mm/nommu.c
+@@ -1145,8 +1145,9 @@ unsigned long do_mmap(struct file *file,
+ 		 *   tell us the location of a shared mapping
+ 		 */
+ 		if (capabilities & NOMMU_MAP_DIRECT) {
+-			addr = file->f_op->get_unmapped_area(file, addr, len,
+-							     pgoff, flags);
++			addr = file->f_op->get_unmapped_area(current->mm, file,
++							     addr, len, pgoff,
++							     flags);
+ 			if (IS_ERR_VALUE(addr)) {
+ 				ret = addr;
+ 				if (ret != -ENOSYS)
+diff --git a/mm/shmem.c b/mm/shmem.c
+index b51f83c970bb..1349e00bc7fd 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -2711,7 +2711,8 @@ static vm_fault_t shmem_fault(struct vm_fault *vmf)
+ 	return ret;
+ }
+ 
+-unsigned long shmem_get_unmapped_area(struct file *file,
++unsigned long shmem_get_unmapped_area(struct mm_struct *mm,
++				      struct file *file,
+ 				      unsigned long uaddr, unsigned long len,
+ 				      unsigned long pgoff, unsigned long flags)
+ {
+@@ -2725,7 +2726,7 @@ unsigned long shmem_get_unmapped_area(struct file *file,
+ 	if (len > TASK_SIZE)
+ 		return -ENOMEM;
+ 
+-	addr = mm_get_unmapped_area(file, uaddr, len, pgoff, flags);
++	addr = mm_get_unmapped_area(mm, file, uaddr, len, pgoff, flags);
+ 
+ 	if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
+ 		return addr;
+@@ -2803,7 +2804,8 @@ unsigned long shmem_get_unmapped_area(struct file *file,
+ 	if (inflated_len < len)
+ 		return addr;
+ 
+-	inflated_addr = mm_get_unmapped_area(NULL, uaddr, inflated_len, 0, flags);
++	inflated_addr = mm_get_unmapped_area(mm, NULL, uaddr, inflated_len, 0,
++					     flags);
+ 	if (IS_ERR_VALUE(inflated_addr))
+ 		return addr;
+ 	if (inflated_addr & ~PAGE_MASK)
+@@ -5730,11 +5732,12 @@ void shmem_unlock_mapping(struct address_space *mapping)
+ }
+ 
+ #ifdef CONFIG_MMU
+-unsigned long shmem_get_unmapped_area(struct file *file,
++unsigned long shmem_get_unmapped_area(struct mm_struct *mm,
++				      struct file *file,
+ 				      unsigned long addr, unsigned long len,
+ 				      unsigned long pgoff, unsigned long flags)
+ {
+-	return mm_get_unmapped_area(file, addr, len, pgoff, flags);
++	return mm_get_unmapped_area(mm, file, addr, len, pgoff, flags);
+ }
+ #endif
+ 
+diff --git a/mm/vma.c b/mm/vma.c
+index 9eea2850818a..9a6cb0338ed8 100644
+--- a/mm/vma.c
++++ b/mm/vma.c
+@@ -2957,20 +2957,22 @@ int do_brk_flags(struct vma_iterator *vmi, struct vm_area_struct *vma,
+ 
+ /**
+  * unmapped_area() - Find an area between the low_limit and the high_limit with
+- * the correct alignment and offset, all from @info. Note: current->mm is used
++ * the correct alignment and offset, all from @info. Note: @mm is used
+  * for the search.
+  *
++ * @mm: The mm_struct to search.
+  * @info: The unmapped area information including the range [low_limit -
+  * high_limit), the alignment offset and mask.
+  *
+  * Return: A memory address or -ENOMEM.
+  */
+-unsigned long unmapped_area(struct vm_unmapped_area_info *info)
++unsigned long unmapped_area(struct mm_struct *mm,
++			    struct vm_unmapped_area_info *info)
+ {
+ 	unsigned long length, gap;
+ 	unsigned long low_limit, high_limit;
+ 	struct vm_area_struct *tmp;
+-	VMA_ITERATOR(vmi, current->mm, 0);
++	VMA_ITERATOR(vmi, mm, 0);
+ 
+ 	/* Adjust search length to account for worst case alignment overhead */
+ 	length = info->length + info->align_mask + info->start_gap;
+@@ -3016,19 +3018,21 @@ unsigned long unmapped_area(struct vm_unmapped_area_info *info)
+ /**
+  * unmapped_area_topdown() - Find an area between the low_limit and the
+  * high_limit with the correct alignment and offset at the highest available
+- * address, all from @info. Note: current->mm is used for the search.
++ * address, all from @info. Note: @mm is used for the search.
+  *
++ * @mm: The mm_struct to search.
+  * @info: The unmapped area information including the range [low_limit -
+  * high_limit), the alignment offset and mask.
+  *
+  * Return: A memory address or -ENOMEM.
+  */
+-unsigned long unmapped_area_topdown(struct vm_unmapped_area_info *info)
++unsigned long unmapped_area_topdown(struct mm_struct *mm,
++				    struct vm_unmapped_area_info *info)
+ {
+ 	unsigned long length, gap, gap_end;
+ 	unsigned long low_limit, high_limit;
+ 	struct vm_area_struct *tmp;
+-	VMA_ITERATOR(vmi, current->mm, 0);
++	VMA_ITERATOR(vmi, mm, 0);
+ 
+ 	/* Adjust search length to account for worst case alignment overhead */
+ 	length = info->length + info->align_mask + info->start_gap;
+diff --git a/mm/vma.h b/mm/vma.h
+index 8e4b61a7304c..d0a45718deb9 100644
+--- a/mm/vma.h
++++ b/mm/vma.h
+@@ -467,8 +467,10 @@ int do_brk_flags(struct vma_iterator *vmi, struct vm_area_struct *brkvma,
+ 		 unsigned long addr, unsigned long request,
+ 		 vma_flags_t vma_flags);
+ 
+-unsigned long unmapped_area(struct vm_unmapped_area_info *info);
+-unsigned long unmapped_area_topdown(struct vm_unmapped_area_info *info);
++unsigned long unmapped_area(struct mm_struct *mm,
++			    struct vm_unmapped_area_info *info);
++unsigned long unmapped_area_topdown(struct mm_struct *mm,
++				    struct vm_unmapped_area_info *info);
+ 
+ static inline bool vma_wants_manual_pte_write_upgrade(struct vm_area_struct *vma)
+ {
+diff --git a/sound/core/pcm_native.c b/sound/core/pcm_native.c
+index 7dc0060617f1..f01465a70ddd 100644
+--- a/sound/core/pcm_native.c
++++ b/sound/core/pcm_native.c
+@@ -4202,7 +4202,8 @@ static int snd_pcm_hw_params_old_user(struct snd_pcm_substream *substream,
+ #endif /* CONFIG_SND_SUPPORT_OLD_API */
+ 
+ #ifndef CONFIG_MMU
+-static unsigned long snd_pcm_get_unmapped_area(struct file *file,
++static unsigned long snd_pcm_get_unmapped_area(struct mm_struct *mm,
++					       struct file *file,
+ 					       unsigned long addr,
+ 					       unsigned long len,
+ 					       unsigned long pgoff,
 -- 
 2.43.0
 
