@@ -4,107 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D428C531C9
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 22:22:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FE40C531C9
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 22:30:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 693966B007B; Fri, 24 Jul 2026 18:22:49 -0400 (EDT)
+	id 8C3EF6B008C; Fri, 24 Jul 2026 18:30:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 643496B008A; Fri, 24 Jul 2026 18:22:49 -0400 (EDT)
+	id 874876B0092; Fri, 24 Jul 2026 18:30:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5354D6B009F; Fri, 24 Jul 2026 18:22:49 -0400 (EDT)
+	id 78B076B0095; Fri, 24 Jul 2026 18:30:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1C1396B007B
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 18:22:49 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 861DBA01B6
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 22:22:48 +0000 (UTC)
-X-FDA: 85025096016.01.09DF67E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 9F49BA0007
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 22:22:46 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jX0NIuST;
-	spf=pass (imf25.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784931766;
-	b=iDaRngrs3K2ypIlXO78lko67L4M7cRQXucHAUAgp3X1TftkYtqkjuN7WWnHmdvGRiIQA+r
-	AcmJMwrCUJvwsiwPWrHU6N5Bs7vYZi9Ob2sTSUSQG6M0WiIryABjJ7upFaXfD/WLUCI1H7
-	kj+di5MJYWwjUqgPifzI9f6ww3U7QA4=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jX0NIuST;
-	spf=pass (imf25.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 51C746B008C
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 18:30:18 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CA5FD401C2
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 22:30:17 +0000 (UTC)
+X-FDA: 85025114874.15.C936BEA
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 15D5C20005
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 22:30:15 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=jlvsnQJ6;
+	dmarc=none;
+	spf=pass (imf13.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784931766;
+	s=arc-20220608; t=1784932216;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OXZKDQ87kQqy8zSD4SMdY4M6jHe3cDz0dPfx73Mi5sU=;
-	b=RUAYvUsweJcSIjImPGi4VoilAit4Lf+b23S9GhmKVinyZNMpDj02GLOkYSb994ghfFY54q
-	DSjdtN+lZcsEyTOy9C4CqNb8p2c54xlpASrrE/lHntOcTmXAWc8rCjx5wK8cbParD7KFfC
-	p9Fk3RGSG+WgicsLpj6MlfsYNW5GOUQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0EACB60A85
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 22:22:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC0DC1F00A3A
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 22:22:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784931765;
-	bh=OXZKDQ87kQqy8zSD4SMdY4M6jHe3cDz0dPfx73Mi5sU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=jX0NIuST7H7h4aKAPJAsCqGkVwC7H3437UBy3bFE5wsiTdrixGUpvAjGuhZ4YgGOj
-	 6rjxAyJ/tLJ7KRw7fue9YeK4aXKQHhHT0vY1a7A8IU9Ry6TK9ivv7XqgsC12QRiEKs
-	 bFmkmgLBC7LaFcEu7+XE9lzsN66c2r1ZsM7HzvpchQ2tK58mycdX5Smobmv3QtFV0G
-	 W8t7Llz06hxUfIGnzbZTIzFTvnFUc+LDdhNJ2U9JBQsri9WvsrMUsubyG9vi7orHCg
-	 jWEs+o/o5QW+t9hBxBPwkXPkntjDgGLYLolo4KJzm5vjX6/QZn0ZwIZSxw/JmyFzoX
-	 Z0n47iAZ56Iwg==
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-c1c4c7ddaf6so139004966b.3
-        for <linux-mm@kvack.org>; Fri, 24 Jul 2026 15:22:45 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RokJt322H0ZSWlIQ3iatyouyQJLF70k73YhHVLoziSpOslVfVZjH27jcgV7jihyt+SdzaCZfmHEuQ==@kvack.org
-X-Gm-Message-State: AOJu0YxgztWKSOTK8ICMSq26YNLd+JE/AnnQEKsapmc886igFtmFj3Iq
-	Ce7+QnOLkl/ZvXdKSb52pKjjFvDnM7COP7gcAWnr2J/BYpDw5lOBRXT3WheopTW8HFtzgGMvmFx
-	MA41yXBVImxlzBpu496njSD01pWvB9Qw=
-X-Received: by 2002:a17:906:794a:b0:c1c:4858:c19f with SMTP id
- a640c23a62f3a-c1f1eabc1f5mr9842466b.5.1784931764726; Fri, 24 Jul 2026
- 15:22:44 -0700 (PDT)
+	bh=VoZs+loVAhBwkjc5A6PJBaB7eEBwxAF4Y2TdD3Br7Qs=;
+	b=evMSwnI4A5NodmgjT/xuqvTO/Zkrqs92pZV2YpEZht3m+LGHll50kx42LB9ApOjQfcuQBY
+	oKh0xfAsAHVYjojCT2rD/724mfBrcURR5PC8pea5UDvfk+ESNakxyNzJ6M8qhbNmi/pY5I
+	zpIYJk4KZANNgQhCh0KeAPhw/4maXEw=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=jlvsnQJ6;
+	dmarc=none;
+	spf=pass (imf13.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784932216;
+	b=skJuPGqPz/Djv5EVS0PaQj4HfMjITZz4KntTUtA5qZekanLCJqB3e/eYY0G5czHNQm4XqW
+	6TJIBh3spD6Dbmv9sC5GYpoW1Yo5tjRUbCRflZIc1lvdIUtdLv5Can1204uJbpLBUPKwWH
+	kZ8u+9+ur9J8NBWuFHi0P8T7d7zMpRA=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
+	; s=mail; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=VoZs+loVAhBwkjc5A6PJBaB7eEBwxAF4Y2TdD3Br7Qs=; b=jlvsnQJ6OfYza2IkSyBJe1yYTQ
+	djHcHMT23M8KZMD8bBxVN78RuuiujT9B3csAmMEx29Wj4UcB3QOV6j7K+R5W/zDKp0EjWijdzTsis
+	NQFFdlIGG0OQko1SKqWL6/hLu3MIkF9H9M9k/jR7sssLzOBWj1+ZPre8jmZKanZzDWikQKi3tvwo1
+	c9UaZWccOxUWHRbiKwR8/70hRWTz81a2lKjg2t77yv0C2LbAmYwks1lkn9TQGBzLwDziLvM+xsukY
+	yV7UEJdIzukIrnqT9F48pjx8ZFtSd6m+n/pbY3mvux3pv+tAmDo8z/3UrDf4kQI7FqonhJK6ZBfxy
+	VB/qlljw==;
+Received: from fangorn.home.surriel.com ([10.0.13.7])
+	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <riel@surriel.com>)
+	id 1wnOOs-0000000027h-1JWz;
+	Fri, 24 Jul 2026 18:29:50 -0400
+From: Rik van Riel <riel@surriel.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	kernel-team@meta.com,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Peter Xu <peterx@redhat.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Usama Arif <usamaarif642@gmail.com>,
+	Rik van Riel <riel@surriel.com>
+Subject: [PATCH RFC v4 04/12] mm/gup: let check_vma_flags() ignore selected VMA flags
+Date: Fri, 24 Jul 2026 18:29:26 -0400
+Message-ID: <20260724222934.1463812-5-riel@surriel.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260724222934.1463812-1-riel@surriel.com>
+References: <20260724222934.1463812-1-riel@surriel.com>
 MIME-Version: 1.0
-References: <20260717085151.22822-1-jiahao.kernel@gmail.com>
- <20260717085151.22822-3-jiahao.kernel@gmail.com> <amF7_GB5Rl6OJmt4@cmpxchg.org>
- <CAO9r8zPaUPddYoLz8o+g+xkb-zdkfyB+LqaDOrkzqFSePEV-xA@mail.gmail.com>
- <amIdU1lFxqxTI3Gc@cmpxchg.org> <CAO9r8zPepaekOgaDaVBWyB_F05Ezvz+AJZ8M5+NGQ4BmiJNBkQ@mail.gmail.com>
- <d8de419d-0077-c47c-a5f1-37c229a853ed@gmail.com> <CAO9r8zNq3bRN+mumA5tcdizStpgoqTc++FYuGjvL8spbv4Q8YQ@mail.gmail.com>
- <CAKEwX=MG0F1+my1krUiOrHCn-Lypq2gq-g8Rv07Mz7sC=YEKaw@mail.gmail.com>
- <CAO9r8zOH93mfdjHq+Ljm7X+ykZS_rjzAvp9OBCzo+uyTbM1fDQ@mail.gmail.com> <amO-hwo8OGV5Goz0@cmpxchg.org>
-In-Reply-To: <amO-hwo8OGV5Goz0@cmpxchg.org>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Fri, 24 Jul 2026 15:22:32 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zMgVmgQET+PUGexAgNqCZavA2YoTTXKSbWWoUv=A=ytSQ@mail.gmail.com>
-X-Gm-Features: AUfX_mxJB29BzNphsC7-RiJPu217rkOtkTuaNG2bcSLXzPxEK8QFDnuX2f3Sw9k
-Message-ID: <CAO9r8zMgVmgQET+PUGexAgNqCZavA2YoTTXKSbWWoUv=A=ytSQ@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] mm/zswap: Support batch writeback in shrink_memcg()
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Nhat Pham <nphamcs@gmail.com>, Hao Jia <jiahao.kernel@gmail.com>, 
-	akpm@linux-foundation.org, tj@kernel.org, shakeel.butt@linux.dev, 
-	mhocko@kernel.org, mkoutny@suse.com, chengming.zhou@linux.dev, 
-	muchun.song@linux.dev, roman.gushchin@linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	Hao Jia <jiahao1@lixiang.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 8qa93ei59hy3cj17bohrtnch5fnndtbj
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 9F49BA0007
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 15D5C20005
 X-Rspam-User: 
-X-HE-Tag: 1784931766-564472
-X-HE-Meta: U2FsdGVkX19SFsA5w8BbyqzUKOgwYN82ZeJAAkVq8cpRB+c672S6ubS5/F0eJPP5QdXkRGAXodxEx0DGMS1EODl1RZd9ClA2EnAB/M1wJYoSEJxWW37S49EUF7OT0eUhqzHtYJk0kc9vBWpaJAsqNw46Fih+QHe9k6ciN6TkLe5DNquW3BSvfdeacbVz811dgGwjpScX1TVMi0grWjjvt6ouQsIghZlH7icbsI0gZ2UwSWcYj8mStMCfkXbbJlKfxy5g7t+EV7MJ/pzwraDK7/lQVmdtZ54FUZQEi0OiMfOBLMroHRpPYs+Owmu9gKOpkwT4ELzd6+3sTTB4m1yCA80ftcAdotQuHaXVGTjMZChZhWsx1+FHa7uhzksQ2Ij474+abpFlJBYiwXhLCwLGXLJEGSeldasjcg/vxL1lKTKiEIyDzgSWxeLXRaycemWAPqyMFv2/CZNtATwFpnqpMv0UKfMhD09B8v83+lWtudd9SsmhZFuoNdtqOWIFTfPJ7D54oA+eSe7W1tp4fFSdxRXJZ9KzRUA0RQGVtGE1v7bx14SseQ44nKWlycSGkYA3MynVwT6A6XgxD3mxIcdTOH/8MpX8aAdq6pDDOZnWT6ovgebenoLsmwZzWqXhImrtHbVbSqc4/2MJYl1Wm7NPmcIv7rvAqTVJVlNA7j0CndFwCUfZYSjrHV7dwIYJO+BCgxAAUYhkwNGB3VKd555Ctp/lhRrC1obbiCakzoIJCEro+qnYzpDr4L6Kk+j2eqCezT49MifvUpyq5jnno2vB9zIZKoirAovO43N+zjucxadBPSewAR/qlXjcwjwEWWOd1w6WphvXTsyO4QmrytLoS6gvhZD+qWKAPATQBOjoDiNvgvy3S/vNK8HFDz7GqFv5NHO3S/OPooyahcS9B2bc1CUonBlcoRF/TxbiTCUun/BAM6wPZxFincCN4qKNCzYlrZnz5Jhq+WP91I78/Mx
- ZrpTpEX2
- d1iKA03MyqJXHCBricIUNiTley1y9G5nZ2kMUN99tspYXe/5qb9KQd4AjWqBIljtv8OM0goDKIvKdgZZUSDhATkYn/PFzbLo3rwURebF0l67yvJfwVdLnnhm/HzjBG9NXOwDX0h8AMO39KCGaGuQWv0MrIQEvxZ/hga/y2xg6Css+n5ZBNa0Ycslcqayn9UCPYAqwdTMyobNmLClldi1g7RvOLnLsR3eQwxCcWU0kWCzfBrRn0rm3YVHK9pG/OMt48GQSUeH1MJcxbheJ4HtE/GXVzhCUwcTa6whgzt+Ml7RUGIIti8jv1ytpVxMFvJ3rvhhZU61TCfdyPsq4cK5ilbjkYoQQ8PAmTPOd3ZG4B6l0KYa1T39+R/NjQhgGM3DunFTLprNp3jrA4+FcX7jGZ8bC7MnRDU/AKEYJVy4uvRW5wclRdqEcdNzIf8PRu6Yo5KeLv5XBoWK8vEcd41351mHcyJ4NnkpBfYdnxA0cINI+kNl6NxkEE7vJ+rJEQtjxeATu
+X-Stat-Signature: hb7bm4xjkrn4jc8ipo4gzcd31np4znfe
+X-HE-Tag: 1784932215-294755
+X-HE-Meta: U2FsdGVkX1/n76ejN+z5uIRLajLIm4Hgym903gJHsl88o3oo23IA8HUKiW8phnZpB4gLqyeG/38kUqL6jWOP4qqLCaBewYJue6eXazVQVaq7dOxcnzGmhCc1vvzQaekJ0pGxCh7/bpaPazQ/eSZuowHisS87GonGpnVEGE8sp+IZeC+dhkl4s/90gY8PugTzESSL8eJCO+16bywpArFfYVQuWHdlTeUoapv2jAtifD8hspb51pKZamwIwFlpAKhO77mWuPzirH08YdemakBksO0BpTRYzKeYuJJpu7awNfdxYXgfZaiXnsNH/l8zaQwGBFZVlUib0R48JA9LZGzBpMy56nFHSLzTVvHYiSzXbxAT/9K56VFy+lpIDCSJLW395SZ4W73u/kZIu0jC9fqm/8O+HN3ObjIyUSnRhpDKUxJKUvliJea/70Zv8z7i+GQijLOpvPQivU2KqHUugLSI9QVzguaY1xlFfMGBM8T7NI1v5L0XJsRGpgYsyj7LIpSXlY0oNOINiwX2DEiETa0xqUFf32xbXZL4wsZC8MgcNBDCZ0S+NLJyR9pde7db3oqOYSneD13v1FJlv9AJnwBtdJOkcySk2Nzn2NlCD1K4ixxRwaNJnazvk4ykINqTQoRk44GjehdNtgOyfYLaTDD2p5s/OoqbP96GQl/H4h6V0Jd5/clEr+dj21ssOyvKt1PnsyttXxI+ty+kcZGpD8hult/OJIVZdT3n70ocQqw6Ret1/cCX7f1CsxtE67Fu5ijvz5r0dZontHiJe3YhMZfu/uJa6KV66RYlXbN94bV9EI/7MML+yz3FSQ/Y/cd9LTk+o6o50EER98NdVNzgbdSXR2tXrdSgf69qxJcQpFi0C/T9j/jtZtvNp+eJzAk31Aa5GUqC/pINxjwqbSwKeqBxEdPSbrHqY0wlwgJpKmuMqVYan5BOHyNamvz1WfioAFf5tOQhhtK/75f0pF/kmHK
+ xeuJDMZ8
+ CUAaSlpxFAwCGnsrwZAC06mHlUL93g24OxqefRtTcE+JKdQFxs9E/op73J6ebbu6rp+3FKxwoCudqS9XI8x8bLdrRFT7Nwkm23ExXrwUJ2gyd0mMR+c0CfszvOXOh9agRhcQJ+Z8hJVB55X38noH6j8VAMxn1zhfydcIAXlol6ydi+3JBDVAOqTX93TWSqjzxI+caHI/RVo4RPiH7vkjwVNlqjorodiob42T/LxjeYFdeF1Mz5Z3lz/Z+hUxoztdsjiVUNUQSHzVdjYzRkd7GNZlvJUVo/mMCN6iWfbvTOhjaWG9QPKfC8cFbnRmG9+Y7vEtm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,57 +109,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 24, 2026 at 12:35=E2=80=AFPM Johannes Weiner <hannes@cmpxchg.or=
-g> wrote:
->
-> On Fri, Jul 24, 2026 at 11:39:41AM -0700, Yosry Ahmed wrote:
-> > On Fri, Jul 24, 2026 at 11:37=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> =
-wrote:
-> > >
-> > > On Fri, Jul 24, 2026 at 10:57=E2=80=AFAM Yosry Ahmed <yosry@kernel.or=
-g> wrote:
-> > > >
-> > > > The numbers generally look good, the store rejection rate is
-> > > > decreasing and we are naturally doing more writeback which makes
-> > > > sense. The store rejection rate actually increases when the batch s=
-ize
-> > > > increases to 64, maybe aggressive writeback is more likely to fail =
-and
-> > > > cause a store rejection, so that also makes sense.
-> > > >
-> > > > The only part I can't immediately reason about is pswpin. How are w=
-e
-> > > > reading from physical swap more than we ever wrote to it?
-> > >
-> > > The same page can be swapped out once, and swap in multiple times :)
-> > >
-> > > Unlike zswap, physical swap in is not necessarily exclusive. You load
-> > > the page in memory, but if the swapfile is not full, etc. etc. you
-> > > don't invalidate the copy of the data on the swapfile. At reclaim
-> > > time, we notice the page is not dirty, so we just skip (z)swapout.
-> >
-> > Oh right, I forgot about that, thanks.
-> >
-> > I still don't fully understand why pswpin is significantly increased
-> > with batching here. I would hope that with less LRU inversion we end
-> > up with less disk swapin. Probably the test access patterns are just
-> > too random compared to real workloads?
->
-> Maybe more time in zswap for those tail entries left behind with the
-> smaller batch?
->
-> That's a 32 entry window that could zswpin with the smaller batch but
-> pswpin with the larger one.
+check_vma_flags() rejects a VMA whose flags gup cannot handle. A caller
+that wants to reach a COWed page in a VM_IO or VM_PFNMAP VMA, where that
+page does have a struct page, cannot express the exception and has to
+repeat the flag test itself.
 
-Oh I was talking about going from no batching to batch=3D32. pspwin
-increased by 387,400 (~30%). We are writing back 272,880 more pages
-but we also have 209,837 less store rejections. So overall ~ 63,043
-more pages should end up on disk, which doesn't explain the increase
-in pspwin.
+Add an ignore_flags argument that check_vma_flags() clears from its local
+copy of vma->vm_flags before the flag checks. A caller can drop a single
+rejection this way while keeping every other check. All current callers
+pass 0.
 
-The only explanation I can think of is that the test is just randomly
-accessing memory, so it ends up accessing colder memory that we moved
-to disk more than hotter memory that we kept in zswap. IOW, the access
-patterns do not conform to a "normal" workload that benefits from the
-LRU.
+This prepares for get_user_page_vma(), which passes VM_IO | VM_PFNMAP to
+reach those COWed pages.
+
+No functional change intended.
+
+Assisted-by: Claude:claude-opus-4.8
+Signed-off-by: Rik van Riel <riel@surriel.com>
+---
+ mm/gup.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
+
+diff --git a/mm/gup.c b/mm/gup.c
+index 0692119b7904..dcece7b5253c 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -1197,13 +1197,21 @@ static bool writable_file_mapping_allowed(struct vm_area_struct *vma,
+ 	return !vma_needs_dirty_tracking(vma);
+ }
+ 
+-static int check_vma_flags(struct vm_area_struct *vma, unsigned long gup_flags)
++static int check_vma_flags(struct vm_area_struct *vma, unsigned long gup_flags,
++			   vm_flags_t ignore_flags)
+ {
+ 	vm_flags_t vm_flags = vma->vm_flags;
+ 	int write = (gup_flags & FOLL_WRITE);
+ 	int foreign = (gup_flags & FOLL_REMOTE);
+ 	bool vma_anon = vma_is_anonymous(vma);
+ 
++	/*
++	 * Opt out of the flag checks that read this local copy (the
++	 * VM_IO/VM_PFNMAP gate and the write/read/cow bits); checks that
++	 * re-read vma->vm_flags through helpers are unaffected.
++	 */
++	vm_flags &= ~ignore_flags;
++
+ 	if (vm_flags & (VM_IO | VM_PFNMAP))
+ 		return -EFAULT;
+ 
+@@ -1387,7 +1395,7 @@ static long __get_user_pages(struct mm_struct *mm,
+ 					ret = -ENOMEM;
+ 					goto out;
+ 				}
+-				if (check_vma_flags(vma, gup_flags)) {
++				if (check_vma_flags(vma, gup_flags, 0)) {
+ 					ret = -EINVAL;
+ 					goto out;
+ 				}
+@@ -1408,7 +1416,7 @@ static long __get_user_pages(struct mm_struct *mm,
+ 				ret = -EFAULT;
+ 				goto out;
+ 			}
+-			ret = check_vma_flags(vma, gup_flags);
++			ret = check_vma_flags(vma, gup_flags, 0);
+ 			if (ret)
+ 				goto out;
+ 		}
+-- 
+2.53.0-Meta
+
 
