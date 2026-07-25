@@ -4,97 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEDC1C531C9
-	for <linux-mm@archiver.kernel.org>; Sat, 25 Jul 2026 18:21:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1DC7C531D0
+	for <linux-mm@archiver.kernel.org>; Sat, 25 Jul 2026 18:26:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C447B6B008A; Sat, 25 Jul 2026 14:21:47 -0400 (EDT)
+	id 93FCF6B009F; Sat, 25 Jul 2026 14:26:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C1BA26B008C; Sat, 25 Jul 2026 14:21:47 -0400 (EDT)
+	id 8EFB46B00A1; Sat, 25 Jul 2026 14:26:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B0D6C6B0092; Sat, 25 Jul 2026 14:21:47 -0400 (EDT)
+	id 7DE8C6B00A3; Sat, 25 Jul 2026 14:26:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7483A6B008A
-	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 14:21:47 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D41A012038E
-	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 18:21:45 +0000 (UTC)
-X-FDA: 85028117370.27.3703A46
-Received: from ewsoutbound.kpnmail.nl (ewsoutbound.kpnmail.nl [195.121.94.168])
-	by imf01.hostedemail.com (Postfix) with ESMTP id B7B9A40009
-	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 18:21:43 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=xs4all.nl header.s=xs4all01 header.b=uDcpzhx7;
-	spf=pass (imf01.hostedemail.com: domain of jkoolstra@xs4all.nl designates 195.121.94.168 as permitted sender) smtp.mailfrom=jkoolstra@xs4all.nl;
-	dmarc=pass (policy=reject) header.from=xs4all.nl
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 542AE6B009F
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 14:26:34 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D431EA02B5
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 18:26:33 +0000 (UTC)
+X-FDA: 85028129466.17.AB4549C
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 2E0D0A0009
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 18:26:32 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=rOOCGxeH;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf15.hostedemail.com: domain of nsd.project.dev@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=nsd.project.dev@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785003704;
+	s=arc-20220608; t=1785003992;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JKAv7Rcb+XF+MTf6/2o5bbMRxppJLao2u2LZeNBPHHw=;
-	b=0VOUFwkUpx2TO4wUeROIo5O52xbv9sHzjyBfgtvNbNMPvOGkMaF8YUFBhOXjArAWOX3SQm
-	zvVINWoWbh7ldCzrBo+Z+5WLor9iI1bSzvk4A70+L2CMIUI1WeKqgaVIzYtEmnwybWdram
-	R7wtTE1vM56gTMu3fcBb/3Z0isVgX1k=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785003704;
-	b=URZjFcw3SuR2HPHrzG2ayZzHJ2NfndU110OMAHssV0K6+P0J1MnSpJ6r8vLekOYXRfXZn9
-	Iado7yn8boMXWqmobd4VK2k7N11pXoqeMfvFsmLfSVDnt3ivnZiuVvrStP4Ft9OteZgPHU
-	MXSodTVtFXNyq2wdetsv1Y08RGro25c=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=B3mFtNIDwmIHE/JWuXcFpV7vETg69hB4Zppykix3hko=;
+	b=26+upc+J+XT05RIASlxNHtndDwO+7aGWzAEMXIR6mJrYOqVUOOn9n1NSaJurNnAv1ssYAG
+	c0Im9bHVVsoJp1BxFuKFFoOo04c1Krq98hmyIW1tM+m6TeDr3mxWAbx/CRrpSAcucp6vhP
+	DMpo9moMENpI5imUm/xLwvZf0ji3oQI=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=xs4all.nl header.s=xs4all01 header.b=uDcpzhx7;
-	spf=pass (imf01.hostedemail.com: domain of jkoolstra@xs4all.nl designates 195.121.94.168 as permitted sender) smtp.mailfrom=jkoolstra@xs4all.nl;
-	dmarc=pass (policy=reject) header.from=xs4all.nl
-X-KPN-MessageId: aeb9bd64-8855-11f1-861c-005056aba152
-Received: from smtp.kpnmail.nl (unknown [10.31.155.39])
-	by ewsoutbound.so.kpn.org (Halon) with ESMTPS
-	id aeb9bd64-8855-11f1-861c-005056aba152;
-	Sat, 25 Jul 2026 20:21:41 +0200 (CEST)
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=rOOCGxeH;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf15.hostedemail.com: domain of nsd.project.dev@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=nsd.project.dev@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785003992;
+	b=TIW3vSMHAbhxZ8Ffban6WsEVVyGQkS5MV/cGKIwkLMTF4O5HaBkizg3vZ+zTYbcjAdj26l
+	1wGYpA5LOesUuEVA7YCl6QfdQpyAHvnAt62N31Ua0IS+hCueZwZWzHYqvntps2KAffd9pY
+	mpcq/EZ701Y981/opZjdMf42fpSG6/Y=
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-493f6de72faso11814275e9.0
+        for <linux-mm@kvack.org>; Sat, 25 Jul 2026 11:26:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=xs4all.nl; s=xs4all01;
-	h=content-type:mime-version:message-id:subject:to:from:date;
-	bh=JKAv7Rcb+XF+MTf6/2o5bbMRxppJLao2u2LZeNBPHHw=;
-	b=uDcpzhx7R1Dhfftos+ax8g7JM3qDGjVogjQ/l1L4Y9rkdq3w1LuW+goHBLL/WHWHklltK3/voBEpR
-	 k0w/QLvpaN2KIfyJ4pMg2ABod9PuLwWHQSCdwWfBvcF+EKO55lQPXUXCdQoWwSsMBUO5d2Y1Y0viO7
-	 Ok2+7r6g+7PuHZrA6FetpflUdkEYXGXU1fS5FzDJnzVcPQkU2xnQ7qv364uFVpNX8qE+bmP3scSz7b
-	 xcSuGLOVgWDIPJW9fXi0wA9fsE29sLpn7G4O9PWkiC1Th7TtD1NeCpcWPp0CVkGoy19U795Jag7eh3
-	 H+Sbgw0AT3Bk4DHBmLVjQVMCk6BBMMg==
-X-KPN-MID: 33|6qfqhItQ4gQ5bHeJtFSjfF40qFU6dL4YnwbgV8RVeAF99lAyDpv7gAzT84HJeDM
- n2iv05l+Wxd+l9b6s5j31Io370crtYt2nea1WtsMKMbU=
-X-KPN-VerifiedSender: Yes
-X-CMASSUN: 33|7H6mtHItgB5zCIATCF614+EYUstmPoLgrrw52T/gFNOaWHcagi4/WCgHU82Z3wz
- aJnTpx6QbASd67+IveF+cGQ==
-X-Originating-IP: 178.226.150.234
-Received: from localhost (unknown [178.226.150.234])
-	by smtp.xs4all.nl (Halon) with ESMTPSA
-	id ae932332-8855-11f1-a8b6-005056ab7447;
-	Sat, 25 Jul 2026 20:21:40 +0200 (CEST)
-Date: Sat, 25 Jul 2026 20:21:34 +0200
-From: Jori Koolstra <jkoolstra@xs4all.nl>
-To: Christian Brauner <brauner@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, linux-mm@kvack.org, 
-	Farid Zakaria <farid.m.zakaria@gmail.com>, jannh@google.com
-Subject: Re: [PATCH v3 24/24] binfmt_misc: allow removing entries via
- unlink(2)
-Message-ID: <amT-nhNiupmKweJj@lt-jori.localdomain>
-References: <20260710-work-binfmt_misc-locking-v3-0-a162f7cb58d6@kernel.org>
- <20260710-work-binfmt_misc-locking-v3-24-a162f7cb58d6@kernel.org>
+        d=gmail.com; s=20251104; t=1785003991; x=1785608791; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=B3mFtNIDwmIHE/JWuXcFpV7vETg69hB4Zppykix3hko=;
+        b=rOOCGxeHAIKe4P+nQxKxNowp6eC38OsrIXlJQbeZmg+qGhTxt/6xb/vY6876Nkv89I
+         4kxeiw5nysOiRDgYftKzJByYc4k+t3SsIr57R5GSxCgKQtfxvqwt1aRXDVvNsqaolm5C
+         azlaaHGfDfnSZTzW2p5tnWl+iNgBiBlwo+07HI8pZp38DxBxQnDnctZKUOpBJgYWmK8+
+         yoFfZt2Jqsn+xxUa1sn9C5MOyrukHj96SpauJUovK1fKvq+cYNrOO/A7DBA3E2f9pN2F
+         2v3QvTMlLJgdpIby18mnps8ZxNzB2zVHJ7Buz/euLSHpUdllG5p0QvIuzC/jdjCifkVv
+         NzAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785003991; x=1785608791;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=B3mFtNIDwmIHE/JWuXcFpV7vETg69hB4Zppykix3hko=;
+        b=LfUM141hZ/6a+3LM5pkY7DzvmmtxEyij7ktfeVcvpX0b1U6oaN6uBZaAZsVxWaMYUV
+         OYjw5uuLsrBcYXZO+dLTJkzpKPLgX711KL9g7ftf4bp9HHjyRcWGJddNxAjfRhjAF5IC
+         xVlBsEh10vWeelpTKSdlVdBYvjQi5HTTUR221VdNnNbeUieKGcnT+7moMeXl4UStfVN9
+         iRiiVIS7FoMMsp4nM7LWqfJpaHWGTY18skfJPWHKaKFpzXBay4qJx/eE/svmPBGLMVVq
+         TUhWmQOt0tmuQ57PcA4LEJeVlp1DCOoFR1ftRlc6lFhi9WKatXCj3mc80zo2jwU7DeAJ
+         pkbQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrBspFSJIsLZDJ1GDtZJI4mcFTYBEXdK7mw/P1JSLFS66QlMfKp962t6/MkKR1Doo/8kiQvVllXHA==@kvack.org
+X-Gm-Message-State: AOJu0YxJPE+5bafzEivr70UODtJJ+HNKo+dFiHri9UUakfN/nNItHaSP
+	0MMav3jjWyYszNW2XP2oYzJ+dj3QvHN8rWtZU+UhmUFy4Od5CT4gzbF4
+X-Gm-Gg: AR+sD11gl+xzlQVV4F9JkkxBJ6IbwmUcUAYhu3jUNU5o9y4PEBYkiS567aDRS5+UDlB
+	2qTb3VuBtKwcH6kYTPM4rat2dQhUlnDfA8MTi9Uu6sbvvR/l2ZQXjwYHn+F9Ih+Xis1aCT4vgCs
+	DDmpgXGJFsopyjMVsMSZPT4SPm5sMfQo26GGhpCz1Ir2qkAWfIFms90zLln/L0efLzopG3RHfdl
+	dzzeN6uhGONc++ihFQ7wmbpwqltQcbtUul9nUeIdUw474VxrL9DojfyQW7TDhrB0GUDEgEhnPxF
+	/Mblli0V+EfOtdkF5qLuZBFubLNXk5X8df+O6EysdMwvD7Pyronupcog6hHFBDy0i/bvXLMbkf2
+	DHyQhYLM1q70IcsdAeKtevBjueXFu45G9dVxlHOgvfIb2DWjvDhpDL//oAZPeQkmd/+gc+x3syz
+	yjIgfojSs=
+X-Received: by 2002:a05:600c:4ed2:b0:495:6934:4146 with SMTP id 5b1f17b1804b1-496b5c71914mr33588635e9.11.1785003990446;
+        Sat, 25 Jul 2026 11:26:30 -0700 (PDT)
+Received: from localhost ([178.241.98.184])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-496b485ff2csm111107805e9.6.2026.07.25.11.26.29
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sat, 25 Jul 2026 11:26:30 -0700 (PDT)
+From: Ayhan Aydin <nsd.project.dev@gmail.com>
+To: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Cc: nsd.project.dev@gmail.com
+Subject: [RFC PATCH 0/3] Neural Storage Driver - learning page cache prefetcher
+Date: Sat, 25 Jul 2026 21:26:25 +0300
+Message-ID: <20260725182628.221603-1-nsd.project.dev@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260710-work-binfmt_misc-locking-v3-24-a162f7cb58d6@kernel.org>
-X-Rspamd-Queue-Id: B7B9A40009
-X-Stat-Signature: 6mhsbgrmx6j4pdeuix9sqe7rfif5pgde
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2E0D0A0009
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1785003703-400355
-X-HE-Meta: U2FsdGVkX1+JthZrjW4mTxvbg0vj47O51Nf1yy6zPoI4LQa4RFHW3m5Yf+X7UgEjzMv5U0HKzILRNxky4jJ9M0w2C4LZlVr28ViI6oSQMTiJZ1+Vly4cA0fWpZEmRlnaGgQsnwdT6aUwqgKh1Zfu2HNGV/JxOQd2WkK3ZI1DdvkyACUovWCR+vlfBkF5kIYRo/VDxvy+s0WqHBDOhoy07hNFWQcU2RtxpV9VQ2upNz1OeKksZbnfYzNwH0iKOMBdSoWGPHwMeEoDcYE6AjIlyg7t6aR5o47IAi6byJJ4hv/l3nTmaAV8/Jucjk2npAKqlgCuzBWuHyumjV9UsxPLQloeEnWC5QDI/Gn3TBuH8Xo4MDzhRTm4q/KNFoLrSRQBC1/Z0MWG/nsTfcOHCYelw1hCImTtj4k1V7KOLfIMR13LDYLuQhduyz02zYKcLgxmEd5POnlRTpE2KI9D5ZqOXtsZWW3C8MQBIRT7fmqWBLU0IDOK0ujrllALZwaGucsidWRsI9ZB/w+IlkE8HnLZ/r6Yb2qB+qwbWYryhpeAEyeg4/fcjMmFc3uUyMzQTuj64Jwv6zxyJUGmhuVEwLyhFz5Oc+mrdKjkdFCj7OYwDmkExShHUKKJsbbNngcohtTG4GpeHcy4sXJYz/X1MZ/UTIbo8mBdXu+PLOupv1IlRrn3n26XBDQ/gBA8QQaQ5+3H8B0GCGDPO3TbaQPva+r+nrsIZ2S4irUm7EM2GZDvhDWhjB0JcAkyYbVJ7Otsm5VCx9hdm3gwDjW6Q/QqLa5AN8Ntkpy4NrJEkyzIfg6qQ1Pa4RB2AXaO9/rTiYQCvDA8YbQ0vXOuFnzbFJaU09SXXk3uA7Slm1LmzmDsvv4ICY8cTwQQaoI1Azp6PwnC1VU65XTPThOQbXUO/Zz/hgtlmV4bH6D88/9NNcGD/5QxyefL1j5WdmeQUmze/UPwpcFCWwLrA5bjrVqVjzjXGg/
- Dob6FT/w
- +ZZtQYgCBlK1rQIcmQs/2hb8HqQpzUQH7xyhMuOSO+exqjvzK61WbIpOwIMh6bJc6by91LoPjN4dtgyIPaO7LZPHWI2shhVBD8s85rpA9fP/bx57tZijDYRitxeZpYqRk0NdCr12SWGpKPl6TZ3mXvy5hpG0QdFCizBSGux+o+2cXU5e/+wR5Dop8IpmNxIwaQf0YC42DMzw0Vc+DBjaHpXIugOdFC0VLnTaqekne1F+ozmL4+q0vMKA0SPWPR/DC5E0VKbiK+QzOao855Jql11s4fJAlRClPmHX8iiy7o2OHowLV3f1qvBpmX7fIWa5jaNDJwVjZk5W4aBw5Mv1p/PVSTviThjjp+aTh23jhDf2X7bBXvq0cU1wlK42deN6fpvrN43AFc/4XXrpnU2NlVbUOb4/hlpzT++s0F7AUhmFzPr6pzFQfCGb4pDh+YfbnUqTv2Uj6nz3c7w4z2qjBARMlPqRnJyZyds3wMYhHsr7T0xoZ0Oy1cvdfWZa3X0FJ87Oax37nQ76hF8ZeRISJZmSZewbL4nwg414+UHAV6DuLGb/uxYVpZjSfOA==
+X-Stat-Signature: 6d4zowtz7kbhmo6w4ygfqnq1zhpa75e1
+X-HE-Tag: 1785003992-922871
+X-HE-Meta: U2FsdGVkX1/XCLcklmeLdfLniP7JYJi5XuIZ4cAMO6iZYJv38K7GAQTTYVwzA8gBx9b0+WL8TzBJpd86L41tOs1sNBCCI9YwxK4S50rBMrwUtUY0TKyLVitCxdfnzc77Y6/nBAX9lCYJjE1TXXQl7EezIfYxiOY5GbmzkKyh05PxSZ+t3AbriB3y6zOo3wEO2f4XNW0RvWyw1hHuOMqoL6gaJjjnhenM2cBHGASUkZyQVYXp2PhriHIr+V3bRNRBHQHlsHVJP1ioeJ63gUi3SqcKN++yqFkbP6/U0kaZrmvJrziB0OV/VbExwZgb85ib+ZFPukvGjzqW1FZ0fOunySd2DmdlHFEhBqiyho2ckCU/9TqNNHmKbYY+47ZhkfdXuAH6eo2mmsMS60tgtm3FScjsSdpeiSdf8BKtLBGHzYsEhjMRnH7/gERqxQ4U+2+x8Lx0WALCT7GPTi0jleZJdLhZ0T51I9UC0Nhc7VVsSUdWIAcM4MNXxRyehh8ONViA2CI/BgKwqSzDvaqHYrhy4CxPEwocSnrGU4/pPGHyAeswudZb3/RbnhWw8zTJ/+fydUQeXji6RDZFu9Ao6gn1znbLqdGHdj4BGIzZNK8H77IVB9bfo+trD9L2tlv/t5mVHzmcoCQtN9hBFfneAxjmSOing5TdpOitK0VdMnzUwmUix2wbM++aQ9GyB08W6fN4+bziHH6BnJizYfG7ixoCZKd6E+bOzGpU8wBp8hyA5fjSitQdPRuEb5EJr6CfNgwa50m6jISQPuEfat4TKgbyiTuXLY5aba6UKtb0i90opU/GmA5ziJtBYGQvBem6Wf7OUR1KH1PWS6lHPjTgGgrAmHSTVS/MsnuNPyGuzGRG49Y/GCGfXoBhx5iznN5f9Q28DMA3vidh8a/roQ8Wy4Wv33DN0+rM5j3tPYIa6ea7xSeTOwgxoucWhgK3WFZXHOQYcVLi1Ss9wb1gkytFAxi
+ q9mUpKub
+ pThzGagAJIFf8BBfcJhMBc+RDha3Ic4tm4nt1+j6c9AoSxZVCdJWCIua+R4907jDELxBelw2Nla5FSx4jkfFM3miGlG9cefYBaoMlhQKH9hGbebOrbYpCH7DV9sm3HDr1VNFQwC8X+5SDp7hxrFruHyuHxFltmqrqx5oNk9JgyndcZQhMGdW7WPy12gwu7P2AOKz0Ok865CQ9KaAINsCPl/9DpThKSOUt9KvlaawDYdN86P1vkZBQN3yEvpLYAyGqoy30SeHAzagxzsMPea/CS7T8Aj5GpYbh5KMSDLTKx3+luKVxpI0oeQKe5jh5bdA35s+Abaqn3E2PUhZF6lwmsevHoWxAP+0Mra4jZNIdS4h/gfHouJvummzak036gvU/YOSVzamzQSDbC+HpboogegQp1e6BAZA0t1vsffVdDYAwtD5bjhW6XDm1/y73SOi3ZM7Gnsh3vmyM+mY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,174 +114,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 10, 2026 at 11:33:25AM +0200, Christian Brauner wrote:
-> Removing a binary type handler requires echoing -1 into its entry
-> file which works but is an odd interface to discover for something
-> that already looks like a plain file in a filesystem. The comment on
-> remove_binfmt_handler() has been suggesting a proper ->unlink()
-> method for years, so add one: unlinking an entry file unhashes the
-> entry from the handler list and removes the file, exactly like
-> writing -1 to it does. The status and register control files refuse
-> removal with EPERM the same way binderfs protects binder-control.
-> Writing -1 keeps working.
-> 
-> Permission-wise nothing new is exposed: unlink(2) requires write
-> access to the root directory which is owned by the (user namespace)
-> root with mode 0755, matching the privilege needed to write to the
-> 0644 entry files. The VFS calls ->unlink() with the root inode lock
-> held so the existing writer serialization scheme applies unchanged,
-> and eviction of the unlinked inode drops the entry reference exactly
-> as for the write based removal.
-> 
-> Document the new way in admin-guide/binfmt-misc.rst.
-> 
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
-> ---
->  Documentation/admin-guide/binfmt-misc.rst |  3 +-
->  fs/binfmt_misc.c                          | 77 ++++++++++++++++++++++---------
->  2 files changed, 58 insertions(+), 22 deletions(-)
-> 
-> diff --git a/Documentation/admin-guide/binfmt-misc.rst b/Documentation/admin-guide/binfmt-misc.rst
-> index c0a34fbf8022..306ef48f5de6 100644
-> --- a/Documentation/admin-guide/binfmt-misc.rst
-> +++ b/Documentation/admin-guide/binfmt-misc.rst
-> @@ -133,7 +133,8 @@ or 1 (to enable) to ``/proc/sys/fs/binfmt_misc/status`` or
->  Catting the file tells you the current status of ``binfmt_misc/the_entry``.
->  
->  You can remove one entry or all entries by echoing -1 to ``/proc/.../the_name``
-> -or ``/proc/sys/fs/binfmt_misc/status``.
-> +or ``/proc/sys/fs/binfmt_misc/status``. A single entry can also be removed
-> +by simply unlinking (``rm``) ``/proc/.../the_name``.
->  
->  
->  Hints
-> diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
-> index 46c65a618b19..fcaad14f81a3 100644
-> --- a/fs/binfmt_misc.c
-> +++ b/fs/binfmt_misc.c
-> @@ -639,8 +639,8 @@ static struct binfmt_misc *i_binfmt_misc(struct inode *inode)
->   * entry is removed or the filesystem is unmounted and the super block is
->   * shutdown.
->   *
-> - * If the ->evict call was not caused by a super block shutdown but by a write
-> - * to remove the entry or all entries via bm_{entry,status}_write() the entry
-> + * If the ->evict call was not caused by a super block shutdown but by
-> + * removing the entry via bm_{entry,status}_write() or unlink(2) the entry
->   * will have already been removed from the list. We keep the hlist_unhashed()
->   * check to make that explicit.
->  */
-> @@ -662,6 +662,26 @@ static void bm_evict_inode(struct inode *inode)
->  	}
->  }
->  
-> +/**
-> + * unlink_binfmt_handler - unhash a binary type handler
-> + * @misc: handle to binfmt_misc instance
-> + * @e: binary type handler to unhash
-> + *
-> + * Adding and removing entries via bm_{entry,register,status}_write() and
-> + * unlink(2) happens under the exclusively held inode lock of the root
-> + * dentry keeping the list stable for writers. load_misc_binary() walks it
-> + * concurrently under RCU. The entries_lock is only held around the actual
-> + * unlink to serialize against bm_evict_inode() which unlinks entries
-> + * during umount without holding the root inode lock.
-> + */
-> +static void unlink_binfmt_handler(struct binfmt_misc *misc,
-> +				  struct binfmt_misc_entry *e)
-> +{
-> +	spin_lock(&misc->entries_lock);
-> +	hlist_del_init_rcu(&e->node);
-> +	spin_unlock(&misc->entries_lock);
-> +}
-> +
->  /**
->   * remove_binfmt_handler - remove a binary type handler
->   * @misc: handle to binfmt_misc instance
-> @@ -669,29 +689,15 @@ static void bm_evict_inode(struct inode *inode)
->   *
->   * Remove a binary type handler from the list of binary type handlers and
->   * remove its associated dentry.
-> - *
-> - * Adding and removing entries via bm_{entry,register,status}_write()
-> - * happens under the exclusively held inode lock of the root dentry keeping
-> - * the list stable for writers. load_misc_binary() walks it concurrently
-> - * under RCU. The entries_lock is only held around the actual unlink to
-> - * serialize against bm_evict_inode() which unlinks entries during umount
-> - * without holding the root inode lock.
-> - *
-> - * In the future, we might want to think about adding a proper ->unlink()
-> - * method to binfmt_misc instead of forcing callers to use writes to files
-> - * in order to delete binary type handlers. But it has worked for so long
-> - * that it's not a pressing issue.
->   */
->  static void remove_binfmt_handler(struct binfmt_misc *misc,
->  				  struct binfmt_misc_entry *e)
->  {
-> -	spin_lock(&misc->entries_lock);
-> -	hlist_del_init_rcu(&e->node);
-> -	spin_unlock(&misc->entries_lock);
-> +	unlink_binfmt_handler(misc, e);
->  	locked_recursive_removal(e->dentry, NULL);
->  }
->  
-> -/* Remove @e unless a concurrent write already unlinked it. */
-> +/* Remove @e unless it was already removed. */
->  static void bm_remove_entry(struct binfmt_misc_entry *e, struct super_block *sb)
->  {
->  	struct inode *root = d_inode(sb->s_root);
-> @@ -716,6 +722,32 @@ static void bm_remove_all_entries(struct binfmt_misc *misc,
->  	inode_unlock(root);
->  }
->  
-> +/**
-> + * bm_unlink - remove a binary type handler via unlink(2)
-> + * @dir: inode of the root directory
-> + * @dentry: entry file to remove
-> + *
-> + * Removing the entry file removes its binary type handler, exactly like
-> + * writing -1 to it does. The status and register control files can't be
-> + * removed. The VFS calls this with the root inode lock held which
-> + * serializes against the write based add and remove paths.
-> + */
-> +static int bm_unlink(struct inode *dir, struct dentry *dentry)
-> +{
-> +	struct binfmt_misc_entry *e = d_inode(dentry)->i_private;
-> +
-> +	if (!e)
-> +		return -EPERM;
-> +
-> +	unlink_binfmt_handler(i_binfmt_misc(dir), e);
-> +	return simple_unlink(dir, dentry);
-> +}
-> +
-> +static const struct inode_operations bm_dir_inode_operations = {
-> +	.lookup		= simple_lookup,
-> +	.unlink		= bm_unlink,
-> +};
-> +
->  /* /<entry> */
->  
->  static int bm_entry_open(struct inode *inode, struct file *file)
-> @@ -966,9 +998,12 @@ static int bm_fill_super(struct super_block *sb, struct fs_context *fc)
->  	WRITE_ONCE(misc->enabled, true);
->  
->  	err = simple_fill_super(sb, BINFMTFS_MAGIC, bm_files);
-> -	if (!err)
-> -		sb->s_op = &bm_super_ops;
-> -	return err;
-> +	if (err)
-> +		return err;
-> +
-> +	sb->s_op = &bm_super_ops;
-> +	d_inode(sb->s_root)->i_op = &bm_dir_inode_operations;
-> +	return 0;
->  }
->  
->  static void bm_free(struct fs_context *fc)
-> 
-> -- 
-> 2.53.0
-> 
+Hello,
 
-Reviewed-by: Jori Koolstra <jkoolstra@xs4all.nl>
+This RFC introduces NSD (Neural Storage Driver), a learning prefetcher
+for the Linux kernel page cache. NSD monitors I/O patterns via a hook
+in filemap_read() and prefetches pages using page_cache_sync_readahead().
+
+Background
+==========
+The kernel existing readahead uses a fixed-window approach that works
+well for purely sequential access. NSD builds on this by learning
+access patterns at 4KB region granularity using a synaptic Markov chain:
+
+  - Records transitions between file regions
+  - Detects sequential strides of arbitrary length
+  - Issues page_cache_sync_readahead() for predicted pages
+  - Achieves 98% real hit rate on prefetched pages (SSD)
+
+Performance (x86_64, SATA SSD, kernel 7.0.0)
+=============================================
+  SQLite FTS (4GB table):  -18.8% query time
+  Sequential 64K buffered: +22.6% throughput
+  Random 4K buffered:      +1.1% (noise)
+
+Read latency:              130us (no regression)
+
+Key Question
+============
+Is this approach suitable for the Linux readahead infrastructure?
+I would like to hear your opinions on the architecture.
+
+The module currently hooks filemap_read() and issues prefetch via
+page_cache_sync_readahead(). Would a deeper integration with the
+existing ra_state / file_ra_struct be preferred? Should we extend
+file_ra_struct to accommodate pattern history, or keep the predictor
+as a separate subsystem?
+
+Patch Summary
+=============
+  1/3: mm/filemap: Add NSD prefetch hook point (+5 lines)
+  2/3: nsd: Core prediction engine (fs/nsd/, ~480 lines)
+  3/3: Documentation: Add NSD documentation and MAINTAINERS entry
+
+Signed-off-by: Ayhan Aydin <nsd.project.dev@gmail.com>
+---
 
