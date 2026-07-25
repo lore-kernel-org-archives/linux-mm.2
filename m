@@ -4,138 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D0AEC531C9
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Jul 2026 23:35:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1E74C531C9
+	for <linux-mm@archiver.kernel.org>; Sat, 25 Jul 2026 00:58:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 410E16B007B; Fri, 24 Jul 2026 19:35:14 -0400 (EDT)
+	id 571276B007B; Fri, 24 Jul 2026 20:58:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3C1C26B0088; Fri, 24 Jul 2026 19:35:14 -0400 (EDT)
+	id 521B16B0088; Fri, 24 Jul 2026 20:58:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2B2E26B008A; Fri, 24 Jul 2026 19:35:14 -0400 (EDT)
+	id 437536B008A; Fri, 24 Jul 2026 20:58:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 058D16B007B
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 19:35:13 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 75060A0C42
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 23:35:13 +0000 (UTC)
-X-FDA: 85025278506.17.7AB057D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id D5C1FC0009
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 23:35:11 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=none;
-	spf=pass (imf28.hostedemail.com: domain of sre@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sre@kernel.org;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=collabora.com (policy=none)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 143E46B007B
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 20:58:06 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 89AE31A023F
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 00:58:05 +0000 (UTC)
+X-FDA: 85025487330.13.BA35C06
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	by imf17.hostedemail.com (Postfix) with ESMTP id BF87840004
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 00:58:02 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=kBYs7bZF;
+	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784936111;
+	s=arc-20220608; t=1784941083;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4ZsZf8mlcRgO4a30pXSf1rO5CYE8B1uYHjFerDlxN7c=;
-	b=sOsrBOnLsq2jCF6ZZEJuUFRsK+ZAg3UKbKlUgAM+kP8inIgLZVWkMddY0DWwSeiGOTEaqY
-	WmyhmQlAaWhcfcj/RoybAE0XW0KZXjGZ8vFBsEuY0jL87/9uvwy8qx96M5GohkkmxmIzRJ
-	AAw0hYE83xTp2pNpKZY0+gJqY5wNZoc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784936111;
-	b=YJqAxpPUzAzn1HDyEepqGUBmant0SM6jH7N8KV5UFyNno/McYn1B3LSolr+nd36MS2hAGM
-	e4HiYXUVHlBumHRKpRbQPpZDivBwLZobOm6wztTPwtXHsFIzn17VFGWUCKmSnoGWEYWdG/
-	aQ8LMdRZ3H08HmG3p92zZMzYw4Ygir8=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=D3cCY8vYvI98ztYBy6jPpL4C9FECBY+REAs150M6C2s=;
+	b=B2nxf2GZ7fP/0EMwxN+culcbBRP7o9F6X+e1BL9tevi/T7yKkuW5/LN1qb+4urJMH9SXYV
+	wjzgCPU1v0qtwyiX506MbU+tPlQRvWEiniuKI74K/lhDhvEAhm0U7yFLYtzXoiaqNfPxw9
+	oaoS8a+8SMTe7XwJ8/eqoO4uTwgY7Ds=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=none;
-	spf=pass (imf28.hostedemail.com: domain of sre@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sre@kernel.org;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=collabora.com (policy=none)
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9C2FC60A8E;
-	Fri, 24 Jul 2026 23:35:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BFD41F00ACA;
-	Fri, 24 Jul 2026 23:35:10 +0000 (UTC)
-Received: by venus (Postfix, from userid 1000)
-	id 93CE9181F1C; Sat, 25 Jul 2026 01:35:08 +0200 (CEST)
-From: Sebastian Reichel <sebastian.reichel@collabora.com>
-To: Julia.Lawall@inria.fr, Alex Deucher <alexander.deucher@amd.com>, 
- Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
- Alexandre Belloni <alexandre.belloni@bootlin.com>, 
- Andrew Lunn <andrew@lunn.ch>, Andrew Morton <akpm@linux-foundation.org>, 
- Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>, 
- Borislav Petkov <bp@alien8.de>, 
- =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
- Daniel Lezcano <daniel.lezcano@kernel.org>, 
- David Airlie <airlied@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
- Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
- Eric Dumazet <edumazet@google.com>, Florian Westphal <fw@strlen.de>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Hans de Goede <hansg@kernel.org>, Hans Verkuil <hverkuil@kernel.org>, 
- Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
- Herbert Xu <herbert@gondor.apana.org.au>, 
- =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
- Jakub Kicinski <kuba@kernel.org>, 
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
- Jani Nikula <jani.nikula@linux.intel.com>, Jaroslav Kysela <perex@perex.cz>, 
- Jason Gunthorpe <jgg@ziepe.ca>, Jiri Pirko <jiri@resnulli.us>, 
- "Joerg Roedel (AMD)" <joro@8bytes.org>, Johan Hovold <johan@kernel.org>, 
- Jonathan Cameron <jic23@kernel.org>, 
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, 
- Julian Anastasov <ja@ssi.bg>, Leon Romanovsky <leon@kernel.org>, 
- Liam Girdwood <lgirdwood@gmail.com>, Linus Walleij <linusw@kernel.org>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Mark Brown <broonie@kernel.org>, 
- "Martin K. Petersen" <martin.petersen@oracle.com>, 
- Matthew Sakai <msakai@redhat.com>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Maxime Ripard <mripard@kernel.org>, 
- Michael Turquette <mturquette@baylibre.com>, 
- Mike Rapoport <rppt@kernel.org>, 
- Miri Korenblit <miriam.rachel.korenblit@intel.com>, 
- Nicolas Palix <nicolas.palix@imag.fr>, 
- Pablo Neira Ayuso <pablo@netfilter.org>, Paolo Abeni <pabeni@redhat.com>, 
- Ping-Ke Shih <pkshih@realtek.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Sebastian Reichel <sre@kernel.org>, 
- Shuah Khan <shuah@kernel.org>, Simona Vetter <simona@ffwll.ch>, 
- Simon Horman <horms@verge.net.au>, Stephen Boyd <sboyd@kernel.org>, 
- Steve French <sfrench@samba.org>, Takashi Iwai <tiwai@suse.com>, 
- Thomas Renninger <trenn@suse.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
- Tony Luck <tony.luck@intel.com>, Tvrtko Ursulin <tursulin@ursulin.net>, 
- Vadim Fedorenko <vadim.fedorenko@linux.dev>, Vinod Koul <vkoul@kernel.org>, 
- Will Deacon <will@kernel.org>, Yazen Ghannam <Yazen.Ghannam@amd.com>, 
- Sang-Heon Jeon <ekffu200098@gmail.com>
-Cc: cocci@inria.fr, amd-gfx@lists.freedesktop.org, 
- dmaengine@vger.kernel.org, dm-devel@lists.linux.dev, 
- dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, 
- intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev, 
- linux-cifs@vger.kernel.org, linux-clk@vger.kernel.org, 
- linux-crypto@vger.kernel.org, linux-edac@vger.kernel.org, 
- linux-gpio@vger.kernel.org, linux-iio@vger.kernel.org, 
- linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-media@vger.kernel.org, linux-mm@kvack.org, linux-pm@vger.kernel.org, 
- linux-rdma@vger.kernel.org, linux-rtc@vger.kernel.org, 
- linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, 
- linux-sound@vger.kernel.org, linux-usb@vger.kernel.org, 
- linux-wireless@vger.kernel.org, lvs-devel@vger.kernel.org, 
- netdev@vger.kernel.org, netfilter-devel@vger.kernel.org, 
- nouveau@lists.freedesktop.org, platform-driver-x86@vger.kernel.org
-In-Reply-To: <20260723184538.3888637-1-ekffu200098@gmail.com>
-References: <20260723184538.3888637-1-ekffu200098@gmail.com>
-Subject: Re: (subset) [PATCH 00/36] treewide: remove conditional returns
- with no effect
-Message-Id: <178493610858.699463.6794401814873674138.b4-ty@collabora.com>
-Date: Sat, 25 Jul 2026 01:35:08 +0200
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: D5C1FC0009
-X-Stat-Signature: f6of4x5d7uijmotzgnfi3inek8br55ik
+	imf17.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=kBYs7bZF;
+	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784941083;
+	b=dBsqMPwnkeFImp6RZBi5hkNZFjdx5zLMThD3s0XqKhbznfViVCkI39KJ1VyM/lwFlhgMwE
+	zYuOAOFECXchBSDKFNnvxfy8HrTnDeteVYhctnPkQ5vCAR0WKNQ6P5yby++e6sbJyYr9ko
+	aGkUEhqjzLYKsCpQ+hh7H0ocO6b4hL0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784941083; x=1816477083;
+  h=date:from:to:cc:subject:message-id;
+  bh=OAC6lBYbl8VKrUKfiQCex2CU2yUl/JiNEBgpQiMRODM=;
+  b=kBYs7bZFbLyyfWY94rheQ6sllpTg0XoTswPEP+P91dkOGPRP7lG6GiP0
+   13tdOdmiYY3NWaR70zqTjvhiODvUeGW0GjwW2iHZ6wxMeyGLjNFVDafk+
+   tdhPGDgAviZo5k0wHw4+1vymfp6pQY/h84LsuD5njiZtTIoHND6CV2Tjy
+   qGztgDrzqmL3BET9n2WA+63Jtg5uioL/Rac5qoZMYYAixrSJhevQWcpOx
+   AAzz+D2wgLU7FQfWQL07ptxRkW1aR4vVMI8jcUq5DJhJuR6f73WM8QoWx
+   0Hun/zSLcv9ZIvb8sE05FI0Dw76pK/zMrWpiujc46jHfNvuPMbI7tqCR9
+   g==;
+X-CSE-ConnectionGUID: dq28lrsEQlqSGRtnY6ecow==
+X-CSE-MsgGUID: EkRaTL3tSGSn4wnArHgQzQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11855"; a="96984156"
+X-IronPort-AV: E=Sophos;i="6.25,183,1779174000"; 
+   d="scan'208";a="96984156"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2026 17:58:00 -0700
+X-CSE-ConnectionGUID: WWJvxTpxS3yqv0N+7GfukQ==
+X-CSE-MsgGUID: HVpGNqwLR3q7V+kGTWL2/w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,183,1779174000"; 
+   d="scan'208";a="263850546"
+Received: from lkp-server02.sh.intel.com (HELO ea128546eb3d) ([10.239.97.151])
+  by fmviesa005.fm.intel.com with ESMTP; 24 Jul 2026 17:57:58 -0700
+Received: from kbuild by ea128546eb3d with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wnQiB-00000000bNy-2WA9;
+	Sat, 25 Jul 2026 00:57:55 +0000
+Date: Sat, 25 Jul 2026 08:56:41 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ mm-commits@vger.kernel.org
+Subject: [akpm-mm:mm-unstable 340/601]
+ include/linux/compiler_types.h:702:38: error: call to
+ '__compiletime_assert_501' declared with attribute error: BUILD_BUG failed
+Message-ID: <202607250853.VaJWGLeA-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 X-Rspam-User: 
-X-HE-Tag: 1784936111-603043
-X-HE-Meta: U2FsdGVkX195oTnqC8eZNga7/wSzlcqm8Y8jiRqc1hCJaubzeDMkf8NZpQU42NS3zxjFqYZ9ZVx2Fa4bG6rUNotkjnNhulPF2bxJmfO6gspecB15iczoWwwQXJIG5yvrew79RAdtr9sSOFarSeSZB9fhWkUlvcOSSq3/xig0jf79UMp5E+0FMtXx8bfZ5/FkJ+YZJeLe6/dJJ0yzeYCSvyX5nQp275prr8iuiRgRwEIelFQE1nQCgfZkaPys3oBo9gkjQum/vRT/i3E3WmxZbSTzVni2Qf8Qv7fVDEkBj4R8iruY1hjQ7bMKuQN2hLhyvS4GNKcuiUTBGU5Hvber5H3pqZP5A3SjI8rMIP8YTpDliPaM+YzJxoakPGh5hT/MvjGzKmHXS13ogzbO4T9u/4tbWTFwKhWO+dTnhi26Viinb5LdcRo0GoDFMtdwxK4QmZv7CFIw0n/OY2bvgh1k3CvQYenGR2s3XF+iSG41h7aN9n/D11dbaGViFySNjypdZQvzxtksB9wHqIaHCDk1q97plQ5qrT2SNX8em5f8kDq5v2AezUcikgpQ4JN2U0bKTz4AYglxHL2FP5vIz7AQAmNnDP1UterzG/HDWHeD/AvV7zRbp0X+Ryv08wnx68FmjViYe3YB8Gp4JTpb/AFQb/2zgghmwOq8toFmtD4jkbqHzqWLqXAtwkRs0M5NhJ/TQAcDBFC2s0IfLe/6e1PmfLUWHHUd/6SE0CE7M2VZ9h6SK/alPsxRwrUMFpJdYc6FitDTC4ctcJFD2+AE6Ip+zHaqqYpCKhj6BP3mjL8enKrzvk6rDSMUkvQjuFKWLjBqsXFixRDhqy596n5djvU1NtTy4yhpzQD7vzHV7Fqeawq/2bSmky/SWHBq8J688XH4LgYhMu0B8MY1JHs1Uxdge8jYodFxx4gpd4uoP8vtLzoGmApTk+34sJb2zndo5Uts7l01Rr9bT0ss51j34k6
- SZtl6j0w
- cE8t/EtMRoPA2b84eKhWBBNsqxTfIfKjrr2ja53Mx44Ezky2QAzzrTfmqFaC+IClFCUsqeorD8w9e65oww2o1yx8RbBke5cyl2rC21oY/rLB/aRzgEnkGbDIJQE8mgg+BYwQJokZswWXM+RwfL78ZimDNfAccgX6HG6hsHzjt80npRNECF145hCHSfkQ17YSOgmaNhefdmluFCObBR9L7DhjmupJqMBS30qhc02ijdMryvDSMaN69D2CN8hsiZawjIfuSNIYN08yH4XMb07H/aVE3ocDmdxHrDCa/6uOA+UpvyTQB+P9bcwbWiCvscEJH0YJvYBWgRDIwtvrfJ7AAvDUIcr160ijmLsIi/jZ6tObg8NTyNg0OqyP2TgepBtWm+GN8xuKa1flB5e6jmcVuWNfmsTAdX8VV4P0NsUJnwAhWpj5129ATa8sYm9eVp0UeNCwxqz8IfXqAQ/I=
+X-Rspamd-Queue-Id: BF87840004
+X-Rspamd-Server: rspam01
+X-Stat-Signature: uom3phfm1cidut7nhtidu4tyccc3zc8s
+X-HE-Tag: 1784941082-516625
+X-HE-Meta: U2FsdGVkX1+1pr/p3IoDYgQZf2WIVu5N4dIAlAr1HYsNxTnJ84coZ+4jGmDfwgMZlWqM3ZKjDswcj2NfTm7I+UFoS3VqEWnYsN9sItSjNUFDzWMwkvydshEdPo+cU9lebfv+H2JctQ3hLT/80VuGITKlGQlL0qjRWfQZQoA1Vk3sY3SI348qoEU9kn3hjiGoysrL2pVzyHdxbouWchcvKka7QlF9dkh01AiNE4i0BVVR6en2PXU9IWkWSMxJ37R6Jgl9A5M4HhhbAyocGSvE9hwkeEs9yCUA+b89Gi0JN6il8nAR1CxhHrYQYkzNu9/HHm/dKO2YxXYGdYeLr8XpQCYkDTe9Pw1k9Crl/p3YVYx1OsVESP09/FLZZLzTdBu8TcxYSqHAaUSk7C3hVS0voOCyB7fxF9M6OH+0mk2LbmtxpqEeItqFyGiUB9hhknXWocCT7CwUQh/mo56Fe6CgBVL9S38fbipX/xSnJHerErYKAKpFeFVVqcoebOsDDkZn3FhvHaPdMUV5r3M7OnSF7/zngJV2kEUK8EzQdXQGp8l2iAlqSFccyaBetQH+6oULeLfydURNZs55QWRlETc748NmhTqLvkG+QjqoI1mH4rPKN096w90aF/R+QQUZ9o0V7waMmSwKvOqs4nmF3lX6SyHwvCrzhBpkgT4fuwTV4kbNbRpvcCIwsPgWTSgxD46V7BZj2i/5ciAYAcrDw7XyQkouCOj2cePHHYdDsYnFt6Y8ZsdtJBh8OFXZeloM8muNEsjpYLT+Rf9kneQ/6m32ApF1AqoPa/7UpjItjqmjKrjA7ToYR9pnM0TWuqsrO4qPWwyfCC1nxCvbPqsk+Ioe3wK6W+XOlorSDLiAJuI/tkpXyxldz8ObnmMu08racHNPlEBLdZfu18a0UKxFJc27y2Bi47kJjlmlWXpj9jZKpZWyqGigm0Sl9EwbGqNNpsMo/LIhzcFLlyKmmdlza+K
+ KmMZj+R/
+ e6mn9VbPz6nqT5AZN9fE3k+xXg4uXrX9UA8a43cwV+P+VUwbqetiKO4Kt75a34FgGzGax2TNn2U+13/rRyLzURYmVbnWLQA6XcHfo7ObCT0s0VshgaZTiyWosySsSCvhy7kBrW5ygXBV5rlOhXr+hLky4zhLR5tc2MajwM38dHecGi0aNXw/LBuZmaPRuT4L65fbnQMGirrWY8F77a0IRDNZqiO8Q6earmRgo4wnCyPSdrYhCP2ujCYHxG4yC05L2LEi0EcQ6bz1X4fy1g/qCO4AvxIpjEKlNF6SRZyBNhy2J5DtvBrM1iEE06strhdcLkJgKlUhHC50zsKs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,25 +104,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-unstable
+head:   c04df384b55dd9dcf72c36b661becb5aaba371a9
+commit: d2aed7c02fafacb9d055a2f683ac12e977ef16e0 [340/601] mm: preserve RWP marker across PTE rewrites
+config: sparc64-randconfig-r134-20260725 (https://download.01.org/0day-ci/archive/20260725/202607250853.VaJWGLeA-lkp@intel.com/config)
+compiler: sparc64-linux-gcc (GCC) 8.5.0
+sparse: v0.6.5-rc1
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260725/202607250853.VaJWGLeA-lkp@intel.com/reproduce)
 
-On Fri, 24 Jul 2026 03:45:02 +0900, Sang-Heon Jeon wrote:
-> While reading mm/memblock, I found a conditional return where both
-> branches return the same value:
-> 
-> 	err = do_something();
-> 	if (err)
-> 		return err;
-> 	return err;
-> 
-> [...]
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202607250853.VaJWGLeA-lkp@intel.com/
 
-Applied, thanks!
+All errors (new ones prefixed by >>):
 
-[26/36] power: supply: pm8916_lbc: remove conditional return with no effect
-        commit: b7c8d46411317f135e7791c0eddc56691de63f07
+   In file included from <command-line>:
+   mm/huge_memory.c: In function 'move_pages_huge_pmd':
+>> include/linux/compiler_types.h:702:38: error: call to '__compiletime_assert_501' declared with attribute error: BUILD_BUG failed
+     _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+                                         ^
+   include/linux/compiler_types.h:683:4: note: in definition of macro '__compiletime_assert'
+       prefix ## suffix();    \
+       ^~~~~~
+   include/linux/compiler_types.h:702:2: note: in expansion of macro '_compiletime_assert'
+     _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+     ^~~~~~~~~~~~~~~~~~~
+   include/linux/build_bug.h:40:37: note: in expansion of macro 'compiletime_assert'
+    #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
+                                        ^~~~~~~~~~~~~~~~~~
+   include/linux/build_bug.h:60:21: note: in expansion of macro 'BUILD_BUG_ON_MSG'
+    #define BUILD_BUG() BUILD_BUG_ON_MSG(1, "BUILD_BUG failed")
+                        ^~~~~~~~~~~~~~~~
+   include/linux/pgtable.h:2145:22: note: in expansion of macro 'BUILD_BUG'
+    #define PAGE_NONE ({ BUILD_BUG(); (pgprot_t){0}; })
+                         ^~~~~~~~~
+   mm/huge_memory.c:2874:35: note: in expansion of macro 'PAGE_NONE'
+      _dst_pmd = pmd_modify(_dst_pmd, PAGE_NONE);
+                                      ^~~~~~~~~
 
-Best regards,
--- 
-Sebastian Reichel <sebastian.reichel@collabora.com>
 
+vim +/__compiletime_assert_501 +702 include/linux/compiler_types.h
+
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  688  
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  689  #define _compiletime_assert(condition, msg, prefix, suffix) \
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  690  	__compiletime_assert(condition, msg, prefix, suffix)
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  691  
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  692  /**
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  693   * compiletime_assert - break build and emit msg if condition is false
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  694   * @condition: a compile-time constant condition to check
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  695   * @msg:       a message to emit if condition is false
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  696   *
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  697   * In tradition of POSIX assert, this macro will break the build if the
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  698   * supplied condition is *false*, emitting the supplied error message if the
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  699   * compiler has support to do so.
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  700   */
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  701  #define compiletime_assert(condition, msg) \
+eb5c2d4b45e3d2 Will Deacon 2020-07-21 @702  	_compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  703  
+
+:::::: The code at line 702 was first introduced by commit
+:::::: eb5c2d4b45e3d2d5d052ea6b8f1463976b1020d5 compiler.h: Move compiletime_assert() macros into compiler_types.h
+
+:::::: TO: Will Deacon <will@kernel.org>
+:::::: CC: Will Deacon <will@kernel.org>
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
