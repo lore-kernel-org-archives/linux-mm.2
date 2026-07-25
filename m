@@ -4,94 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C50FC531D0
-	for <linux-mm@archiver.kernel.org>; Sat, 25 Jul 2026 03:57:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 434A2C531D0
+	for <linux-mm@archiver.kernel.org>; Sat, 25 Jul 2026 04:32:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4BBF86B008A; Fri, 24 Jul 2026 23:57:42 -0400 (EDT)
+	id BD6E96B007B; Sat, 25 Jul 2026 00:32:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 46D156B008C; Fri, 24 Jul 2026 23:57:42 -0400 (EDT)
+	id B881C6B0088; Sat, 25 Jul 2026 00:32:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 35CA86B0092; Fri, 24 Jul 2026 23:57:42 -0400 (EDT)
+	id A9E216B008A; Sat, 25 Jul 2026 00:32:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EF6206B008A
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 23:57:41 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7DDEE140243
-	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 03:57:41 +0000 (UTC)
-X-FDA: 85025939922.14.224E01A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id CAFD440005
-	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 03:57:39 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VawCDvWX;
-	spf=pass (imf27.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784951859;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=k27M1ifd+dlCcvlTjTpk5IYjKpC55yJlcfhppDsrzdk=;
-	b=Z9vSfVXixBQP1Xk8WEqSuiA7O8uCOh/y2ZnFaTf2AAnJLLOdfaSx2JRl9H2jTRCGKYiSP+
-	PZ6HDKNQYZv9cOYED+Rvv7XIfr8cM4e+gcFWECrtIQrAh9Veck5P+0HF8u9vwbQDyXFeOh
-	ESqep3rLwTIXnqL+By7kZRxrcegnPoQ=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VawCDvWX;
-	spf=pass (imf27.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 80F306B007B
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 00:32:36 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DC199160263
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 04:32:35 +0000 (UTC)
+X-FDA: 85026027870.16.9BF6AA4
+Received: from mail-ot1-f71.google.com (mail-ot1-f71.google.com [209.85.210.71])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 4647020007
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 04:32:34 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=none;
+	spf=pass (imf31.hostedemail.com: domain of 3YTxkagkbAMQ289ukvvo1kzzsn.qyyqvo42o1myx3ox3.myw@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.71 as permitted sender) smtp.mailfrom=3YTxkagkbAMQ289ukvvo1kzzsn.qyyqvo42o1myx3ox3.myw@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784951859;
-	b=fKQwntYdLUY7+3a/559ieNWhTSdTPUuNUK1LHkFUr8FBPNtY2o3xJ6tPalB4zqiPqsyBGH
-	71LmlvqhtzwWISZ/fPva4AfLr0G/+WY5TkGbHRZhyvO4xN2GlrHUaKLOk+sdwJI4fPoRdF
-	Wpe2P0sDqhxEsZ9NEUXGASr3mmG3ghE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9BD0A40110;
-	Sat, 25 Jul 2026 03:57:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0E8A1F000E9;
-	Sat, 25 Jul 2026 03:57:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784951858;
-	bh=k27M1ifd+dlCcvlTjTpk5IYjKpC55yJlcfhppDsrzdk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VawCDvWXILXVBYEk9LeoNq5jQOG6vtTu0/IQgEP0y9WMso66ndvfswCLyjgJngG5Q
-	 sn983AGJTIMjEZNI9lpv10NOkD1ViTHdqcuHAAsEm92HOA7LYvJLnx0419ZwcFOqBY
-	 JD/JGsjtob3YZp7lciyvTBIYj4Ro16V18ToWdK8Xyewl9B5lMjWYIJd1de8FfX8/p7
-	 3UlnFfR5Cmjp16IuMUKQqL7Z8ARJe2oAeduCyZWB4VWKAvCeoP3vJnWDLfC2IYrBEL
-	 a5/nryA4cusXJ81RnvR9y7i0UFEMwMVJbpnqZ+KMpUC06/O+qyZHIabU5mGaLoktzR
-	 BeQ5VpQhAwhxg==
-From: "Barry Song (Xiaomi)" <baohua@kernel.org>
-To: senozhatsky@chromium.org
-Cc: akpm@linux-foundation.org,
-	baohua@kernel.org,
-	haowenchao22@gmail.com,
-	haowenchao@xiaomi.com,
-	joshua.hahnjy@gmail.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	minchan@kernel.org,
-	nphamcs@gmail.com
-Subject: Re: [PATCH v6 0/4] mm/zsmalloc: reduce lock contention in zs_free()
-Date: Sat, 25 Jul 2026 11:57:33 +0800
-Message-Id: <20260725035733.53241-1-baohua@kernel.org>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <akynv_js-5G88rGd@google.com>
-References: <akynv_js-5G88rGd@google.com>
+	t=1784953954;
+	b=eo2lLzdLv2tcRXSXhYvh/YOjguwxfZh709conZkQM4UAONuD04Ki2gKl/uozhzGZfjcb2N
+	dBwxAfEetqgBsm0BNQ7FMoAPLjgmJHPisbzowChysc0K0Ju8C9aZ0M4QdmqRg3IOFQWWxA
+	U+NwzvEPkIZdl40zKe9hKx8zIUHPMN0=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=none;
+	spf=pass (imf31.hostedemail.com: domain of 3YTxkagkbAMQ289ukvvo1kzzsn.qyyqvo42o1myx3ox3.myw@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.71 as permitted sender) smtp.mailfrom=3YTxkagkbAMQ289ukvvo1kzzsn.qyyqvo42o1myx3ox3.myw@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784953954;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=LiVGmaeeFRXjqPL4tRh1qrOg6P3LftulYA2XqVQquYw=;
+	b=RG/dWXAwZIfeKnzTXLDbAqrMrqM+2wo5OS+r64CNh/8fH4SqdzqW+mJrES0V2ZQ16qr6/I
+	cUmBnY00Ks2iD2otMJKc6o4lU4CHnsvQ+kE7xFg3Sh94yQgwbkoASShS7uuOlf5qsy0GGr
+	d3Q/Kz3Juh4eg06wqRGjE0IFJx4dq70=
+Received: by mail-ot1-f71.google.com with SMTP id 46e09a7af769-7e9dee2f7b5so1427458a34.1
+        for <linux-mm@kvack.org>; Fri, 24 Jul 2026 21:32:34 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784953953; x=1785558753;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=LiVGmaeeFRXjqPL4tRh1qrOg6P3LftulYA2XqVQquYw=;
+        b=bSjnNrXC3GWsi+qqlGDP7qjRtIBNPpu3yC9Xl3RTZSzI7ftaIhhQzI/KVm5Pzj55Xd
+         jSEsNBUotvCc8LqL38Iw0lMNJp4O7yc5kQz91c2GzJtLkhON66KY3/tjEOdFNq0E26DG
+         tt2uWWQ9ei4Q6ll33+ZefWDDCoJsUhE+SLorf0jLO117FSdJzUq2iMJSrRqSJspl0xZF
+         CHQS3y2kg4v5OLpNxo4zwtUTzrmxED4XdFOUqpRSxSr8KAKBC1G7GD+znhgyU3SLh5cD
+         OvcyyirC18mg9ZxPp+FK3dZn6bYCLKWJoAEC2gTohR/al6W3Rs+fbNCS4bOjt4hKmL1v
+         O1sw==
+X-Forwarded-Encrypted: i=1; AHgh+RpRZWvrytCSva4y3qqcJ+W+SMztSNwsmmUvzunRPGCRzVr2FvnV8D2qRBpz1P+eZSEhxgc7Yyh8zg==@kvack.org
+X-Gm-Message-State: AOJu0Yxp2f5kL5KR+G6f14GUXnLXyIl/yLn6PvOu2BQKrPw0Ab+6kmap
+	jyNnEOrmXWoQtBwAJ9u4gNgWuV/ZcSIJNyqqsLX3p46J+6s5Jer9P9iDyG41qT6Kk6U1wfG2pwJ
+	wbYLbEyCsEzS5b7VJrSDiUege56QXF2g1PefAHiaMsms4q77hQdH7Zofy2CQ=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6808:1456:b0:496:a01:458b with SMTP id
+ 5614622812f47-4ab69f8a83fmr1366237b6e.2.1784953953423; Fri, 24 Jul 2026
+ 21:32:33 -0700 (PDT)
+Date: Fri, 24 Jul 2026 21:32:33 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a643c61.a2ea2cc8.fbad6.0010.GAE@google.com>
+Subject: [syzbot] Monthly mm report (Jul 2026)
+From: syzbot <syzbot+listbe3110d878037a751c37@syzkaller.appspotmail.com>
+To: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: ucfqwmndzan8pqbemkmwfrusdd18cfdf
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 4647020007
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: CAFD440005
-X-Stat-Signature: qxwtakw76urd3ekizo3twamg3qochmm4
-X-HE-Tag: 1784951859-569867
-X-HE-Meta: U2FsdGVkX1+imLE91Y/R358zTtFtKbr2zicWLXryASOvCnwtRAiLXlvM6AkUBBV2su7BJyax+wHEQzt9eOJPUGjWuM+inwzYKQN3/tRD86v+pYUrUrNaF1M/ZaXKrrpqqW/JGOZDU0Qmee5qWewzsPck7XwMLZJE3wrqKi08573z8bfpNT4omct084W3zkkL9AunRIPAGNB9V9qOMEKF/c+bBPMk3iS/CE/3WwD5uCUkxwCK9OAJEjUcx/7SD1dO938z1unJyS65edpZv9EEQmSqvIefpX7zGX1q0cjoaLm9wOdNiyxnpwnjfg1eKT/Mc8mg3dr9d60r2JJTySOW/B6Pg9/VsIThlui+QagUVhsgXwhLYmDI0RD1MUnEIkqpcCP9KDPo18ukpaw2P2DrwqW1/EVX+IK55TYla59t38a6yjP9EElAaFFdR8aBK0lKgCWV+SMJJaO3nO0UApnPtOVuj+019HqRfw8lww47wFE54YtR1MjTeJ+mXcUNgUzQqFR2d1xHpanZ4xXxIgpE2byImCAC5pOaIpU/NocCdTYn1gqNcP3eo35a+ghm6X2DdebFYv6CNkIdZtPc6gJtql6D78YmigkCrOoToWZOVbU+/WenRAD1QTkF3S6428bzmLInNTv9SXvwcXMx44HUjMzf++bMeNrlHq2kBatpFn4LyJGFpVoRHD3K83LD22M/Mcn8BJAFMYlkxjHMngIzcXKnnrwjBDEYn+IWh/BoRNp5T+nI17pkLFW/gnHUKMFE01fwCfMUfGDswVg5DgQOSnC7h1e5N5DHPPCl1Ab4guW11xOm1vocpMis/bvx5J7drVnwVF/dVQzfjEGalUVUxHQMsqFEFyeke773DlLwxKXZ3L6UOCOMsDfwiAouvkkffSVvM9KX5CW67ISikweqpCqMTnVTDDaeqV+2dGppp4+Gp2RYdq4/G12OuxPG+LPn/cq3ZUHRu21Pd8qOmsN
- fN66km3N
- aDq66JJrAPeyRLn/cS8k9NqWfTy9dF/tDrrKg82IFNmLjSBrIzjAlPC6ti31RDkiVDfZZzmJCM6qdJAuGd5yB/NPUCg2mN2TvWqToYe6lL5MbbXAVksPGR/B8AuEddnfbRsDsOASPZhn+IwwH5bY0SkCr7JB6iHDn6EZ2pqLybnH1TAxSbzVqidFc7tvAyP4bkLVCjb9JUtCfxRopCHqQpLizmN4XsopBMZ0FoFiCsc4t8/VZN2YcXCYuMjYCMNym5EGte5Zq1NdjjgAQbMrIZZvTTxLndZ2vYTMO1zm1ZLIaDgS/DqBFztOmyMYObzAN3UuIF9mT/xtqtfuV7C/74gT5HB01aOUhbDuJe+pxJ3wvEbS8gdBkjhRNEXJGvK6HYmtqwvTqvqmcY2Do2UqjU21WqbJbiqC1gcUM
+X-HE-Tag: 1784953954-271971
+X-HE-Meta: U2FsdGVkX1/CdzrJjyEtrKwZNdXn7p0Njx41aiyrvSm9tO8ETYYG+R0HqFRP/Va2izxlLYUxO4XuLmOrW/lwcJHahkKDa4SX2Ia3UwDmjsJU+mXukibIWt2fRa7iHyogI9lIUqHDd5m6kZPSkjHxHYSLGcmCWWzJH1d4VioOlcxvbS0JhvCLy2Maj+/6Qtsj53HD71Z99gFMY+4BDen/f3dnzTJMkfD4jHwYIIXAQa6AFFBhI+jSeSG8AkhnnJ89DuZ//Q5kzV83OjxXb3bFpTAzOkWi2VMkE4MlWwgbyv0DqnkCvF7LwCJ2CUxneylybCd9crZnXBm4OPIcoBBmm1J2mMohSZEU5p9S3YjUebGHPXVQiZMcCbw5MeBRqHQ1YeXwQBYkSny7EcTVNxCBmH/Km5mSf8Zt9HFQEQm/B9Fuger+Qikr85LvqMFqJ4Tr5a7aSL1iBs0ztLSPt8INsKeO2mTXuJIcAEjblgwyP5dKCuRaL6Fgpq87RXeh83Sq/QMgAWsAyOBvh6+5djVbdeP0Hd/rSpT/2bnllrmF5AEIp76hwGeRykGzR2xzt5zwsT6h0dTG5CUDn9VKTUvG8zu7XGyG7Y07Ssf1QEFxQH9N5LxGNSSv5bS4yo5JoJOqEpAKLwnZagM30PQlvHvr/gqAj7Dc3rViQsgbaYa7zUbPtGlPmD4iCuTPxbNd6hdKP9C0fm1Db/g0s+6hfUMTduksx6hQMTbFeV8KjmlbkUDwUtUMfOY6vevRzDCu/crnWOLaH9RfXhUNE30X3xSNtsKzu8DYtEwEJ4QBfURr6aP8YDwtLP424YnfTiwZCl0VTgc9CbfASw9dg1MtS+tt26YaTQpQ3jRUCljxaBX/rXpcmXOftXm0TKekJ4jOndEBebCcsxBqrKWpOadHQ69frfFN3xbPq4vsnpQJ1NsLr93uQo/bAXNktxuyzufO4nvDcXFrzJPVDskHlCT4Lr/
+ B/Qj5j6R
+ 7m8gJsNJ57aVDNEhOojRvPdOOq3KJUPk7w4YPXmVPrtTk6TRg5CXWfD2HSp6wRW77k7E5ACRoYR8Q+lWCTbGUEstWsCbzrTL4jpRZzcP+ZCkYC1dJunz0iyx0Cbd1BKFhhSG6LKdU7bAb96jCEutFSrhH5uq5REec2uDsCmsJFRzXkdFKV12TuXvoRnpiJdjV/7R393kDbpQmnkaXL7cwCj1Ae6ddbgOjE7CENmngtwJakPb6OBORotwc6fSponolSZM2TdtzS0VOMsxmKvy/Ln2M4J/I8SeOdXT5wu6QCvcE5PE9ipBEHCRFJzAOuCrczltiKGvQ83Am49LBcrBAdNC6nwrRLZN1pw7U686M8c3NgeFuO7tRcqUVZHGVwtRd4JO46ESP5zeAU65DzAMgJap2HawAVCo0ek0FV8hTh89STKIMN86BDb1X0W/6xwa4L99zWLjA3YcOPSvEGPcMcAH/f8j/ROgAUQ4jAynMYIfYgjXSf2ZfGrBFazEkJ9t+za+jeIqLPaIGgfVvfbzeRsZrGBjvh8nXeZ6GfPc721BTivFHhRk5uHg2KPoYDlhKqE7pesIGLc3Nvifh3kygFhVEtLXEptZ5cYK+j2Rt8J8j/qMiDG3irquAgv5gPVb85KDdM7eTe0WczrsAHSYYhPfmpmQrsLdb17uUA+Lq7ZQDof84nifw7hloJdrAmN5crsXahhDptQ0dBBlPeVO7wxKgSww41BM+R/eYzi/Jgqs+EB2QONs/xpVTqmovwdbNXzPwsiJIlq6Crbd16i2b2ImL+n8oPGaUSgQA7XGAKetLJiuBVKkJioWxfpl76ckI5XeuoRMzdo5Th6xMCDNXfmAv4X7WSA37rlq+ZrhWdrEBgzuPGAhMoxoPkrSHiFc7OZwc4FTxiw/Ka0/okUCcpEpv9sIkPwlxc0kkPvhsVShjCL7TMs7Q1oz1HQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,92 +93,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 24, 2026 at 12:55 PM Sergey Senozhatsky <senozhatsky@chromium.org> wrote:
->
-> Apologies for the delay.
->
-> On (26/06/27 21:36), Andrew Morton wrote:
-> [..]
-> > > Raspberry Pi 4B (4-core ARM64 Cortex-A72):
-> > >
-> > >   mode        Base       Patched     Speedup
-> > >   single      59.0ms     56.0ms      1.05x
-> > >   multi 2p    94.6ms     66.7ms      1.42x
-> > >   multi 4p    202.9ms    110.6ms     1.83x
-> > >
-> > > x86 (20-core Intel i7-12700, 16 concurrent processes):
-> > >
-> > >   mode        Base       Patched     Speedup
-> > >   single      11.7ms     9.8ms       1.19x
-> > >   multi 2p    24.1ms     17.2ms      1.40x
-> > >   multi 4p    63.0ms     45.3ms      1.39x
-> >
-> > Well that's a nice result.
->
-> Indeed.
->
-> > Sashiko AI review said ....  nothing.  I don't recall seeing that
-> > before ;)
->
-> grep-ing the code, I wonder if we maybe want to tweak some comments.
-> Namely, zs_page_migrate() says:
->
->         The pool migrate_lock protects the race between zpage migration
->         and zs_free
->
-> which is not entirely true anymore, as zs_free() has a lockless path
-> that doesn't take pool look (when ZS_OBJ_CLASS_BITS permit).
->
-> Likewise, __zs_compact() says the following about pool migrate_lock:
->
->         protect the race between zpage migration and zs_free
->
-> None of these are critical, very minor.
+Hello mm maintainers/developers,
 
-Does it look good to you if we squash the below change into patch2/4:
+This is a 31-day syzbot report for the mm subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/mm
 
-From 49091bd19445c8927ae063042bc7394e7cc359c0 Mon Sep 17 00:00:00 2001
-From: "Barry Song (Xiaomi)" <baohua@kernel.org>
-Date: Sat, 25 Jul 2026 11:45:09 +0800
-Subject: [PATCH] mm: zsmalloc: update the comment about pool lock
+During the period, 1 new issues were detected and 0 were fixed.
+In total, 78 issues are still open and 373 have already been fixed.
+There are also 42 low-priority issues.
 
-Update the comment to reflect that `zs_free()` can be lockless when
-`ZS_OBJ_CLASS_BITS` applies.
+Some of the still happening issues:
 
-Suggested-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+Ref  Crashes Repro Title
+<1>  29106   Yes   KASAN: use-after-free Read in copy_folio_from_iter_atomic (2)
+                   https://syzkaller.appspot.com/bug?extid=6cc93ec9a4035badb85f
+<2>  3862    Yes   WARNING in trace_suspend_resume
+                   https://syzkaller.appspot.com/bug?extid=99d4fec338b62b703891
+<3>  3102    Yes   possible deadlock in filemap_fault
+                   https://syzkaller.appspot.com/bug?extid=7736960b837908f3a81d
+<4>  588     Yes   INFO: rcu detected stall in sys_newfstatat (4)
+                   https://syzkaller.appspot.com/bug?extid=1c02a56102605204445c
+<5>  497     Yes   kernel BUG in filemap_unaccount_folio
+                   https://syzkaller.appspot.com/bug?extid=17a207d226b8a5fb0fd9
+<6>  283     No    kernel BUG in __page_table_check_zero (3)
+                   https://syzkaller.appspot.com/bug?extid=2b5fe617654be3d8848b
+<7>  264     No    INFO: task hung in migrate_pages_batch (4)
+                   https://syzkaller.appspot.com/bug?extid=f523acb98cd782b4872e
+<8>  132     Yes   INFO: rcu detected stall in __dentry_kill
+                   https://syzkaller.appspot.com/bug?extid=f8ccdac0a7eede0e1ae5
+<9>  96      Yes   INFO: rcu detected stall in sys_setsockopt (4)
+                   https://syzkaller.appspot.com/bug?extid=6e61d59e9d2150c8492b
+<10> 57      Yes   memory leak in xas_create
+                   https://syzkaller.appspot.com/bug?extid=a785d07959bc94837d51
+
 ---
- mm/zsmalloc.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
-index 3d566a3ee96f..b5eadee0e8f0 100644
---- a/mm/zsmalloc.c
-+++ b/mm/zsmalloc.c
-@@ -1865,8 +1865,8 @@ static int zs_page_migrate(struct page *newpage, struct page *page,
- 	pool = zspage->pool;
- 
- 	/*
--	 * The pool migrate_lock protects the race between zpage migration
--	 * and zs_free.
-+	 * The pool migrate_lock protects against races between zpage migration
-+	 * and zs_free(), but only when ZS_OBJ_CLASS_BITS does not apply.
- 	 */
- 	write_lock(&pool->lock);
- 	class = zspage_class(pool, zspage);
-@@ -2045,8 +2045,9 @@ static unsigned long __zs_compact(struct zs_pool *pool,
- 	unsigned long pages_freed = 0;
- 
- 	/*
--	 * protect the race between zpage migration and zs_free
--	 * as well as zpage allocation/free
-+	 * Protect against races between zpage migration and zs_free()
-+	 * (only when ZS_OBJ_CLASS_BITS does not apply), as well as
-+	 * zpage allocation and free.
- 	 */
- 	write_lock(&pool->lock);
- 	spin_lock(&class->lock);
--- 
-2.39.3 (Apple Git-146)
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
 
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
+
+You may send multiple commands in a single email message.
 
