@@ -4,111 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81767C531D0
-	for <linux-mm@archiver.kernel.org>; Sat, 25 Jul 2026 13:25:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 106BEC531C9
+	for <linux-mm@archiver.kernel.org>; Sat, 25 Jul 2026 14:06:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7594E6B0092; Sat, 25 Jul 2026 09:25:02 -0400 (EDT)
+	id DE8466B007B; Sat, 25 Jul 2026 10:06:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 731186B0095; Sat, 25 Jul 2026 09:25:02 -0400 (EDT)
+	id D72B86B0088; Sat, 25 Jul 2026 10:06:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 620536B0096; Sat, 25 Jul 2026 09:25:02 -0400 (EDT)
+	id C3D306B008A; Sat, 25 Jul 2026 10:06:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3195A6B0092
-	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 09:25:02 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 95E831C07F7
-	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 13:25:01 +0000 (UTC)
-X-FDA: 85027369602.28.8DD3B2C
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	by imf28.hostedemail.com (Postfix) with ESMTP id DF038C000C
-	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 13:24:59 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=R1UfZ7SA;
-	spf=pass (imf28.hostedemail.com: domain of adobriyan@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=adobriyan@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9819C6B007B
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 10:06:42 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 078CBC0322
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 14:06:42 +0000 (UTC)
+X-FDA: 85027474644.11.7FD9E25
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 1FC6D1C000E
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 14:06:39 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=opPXCvuE;
+	spf=pass (imf18.hostedemail.com: domain of linusw@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=linusw@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784985899;
+	s=arc-20220608; t=1784988400;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=QO6c0NAa41KyFoNrwQ1pPzcFHMUFnGc1iyAMb42cKjs=;
-	b=51q1eyChiE276XDzL3lQBapPN7ZNGVU7yNPZOjkFRsohB6t0YI/56Wjtqfotfuzo5RMEA3
-	04YOLy7b+CLYSObCgRPt1E2LdsmAK2g6fnYLNxXX9zihzp1MU0/e2LOO3a9+ekKDxGzRcO
-	A27TSTZL+YnxP4w80GYPUMe1mnaTMKo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784985899;
-	b=sZ01fYBhigEy9nr6oUHUjpk6npsfG98s78Ef5fhHA4I7EQIj1Jk448mHL8MD31MxJUhd/N
-	Xa0yiIaCQuRuG0Xil8098O/TEDAr2pbPHsOB2VNlhpMbUyL9ZUvgcE+6tcvN1yUqOXo4lL
-	5aNf8pP1ioaASpb0oHrhQ7TAYqJOHp4=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ssP/vx2xvZFVkpWUGpEHUbU2ssgcSty0tchErGpJGIY=;
+	b=OXKZ4hz9niJ3ifeoKjSVpU0eLzdmS8ZM8AHUb8RvTVr//RXy/ScFX9dFQOsg+cS0kcD9wO
+	OKdzOrEnOLDJx4aK91KdCYH5SWdH0R0v9679TBtmPbCHp8PEPPwm+wLqliaXh2uUdu3bgA
+	j3nO3PZvAVcTrNTxPBFZLU8qe76jnjs=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=R1UfZ7SA;
-	spf=pass (imf28.hostedemail.com: domain of adobriyan@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=adobriyan@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-49553515a8bso14907785e9.1
-        for <linux-mm@kvack.org>; Sat, 25 Jul 2026 06:24:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784985898; x=1785590698; darn=kvack.org;
-        h=content-disposition:content-type:mime-version:message-id:subject:cc
-         :to:from:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=QO6c0NAa41KyFoNrwQ1pPzcFHMUFnGc1iyAMb42cKjs=;
-        b=R1UfZ7SAZAvHsgzBfUQkSuOLh6te76W/NOdZRbdSSPJ8JXXXF/a9ytEabQh5DQrSpF
-         t8vxSE2eM5q7g99oknHcLgLQ56lkfq9PyElSCMx39xv+8nCYWGIyOq+FlaVDs66lwjCo
-         +PMM2SfLkTmqUJ5YdjzqGNEPJXuyMUt+g8SLLO04pA84XAAxn9ubcApsALs8N00jCfj/
-         vzNTYZsnd2vCPTZP3GW+i4EX1RIEncIZx9vVVfuQXs1WWPmzA+wQBvM7yhhR5umFbdOj
-         gZPvDB7hIN6QdZe6mEbA4Srjl35UdrkzqLO+KY45E4Xg1ks2gINuqyJ0esjiClgyHgpb
-         jF9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784985898; x=1785590698;
-        h=content-disposition:content-type:mime-version:message-id:subject:cc
-         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=QO6c0NAa41KyFoNrwQ1pPzcFHMUFnGc1iyAMb42cKjs=;
-        b=FEyZXLuiNvyWUyqoB3IqzFiiTd4JMKfFaUnHdMsY5uS3+7+Y6ursN1ljnfp6S8MKIN
-         WZkBmGBqQmjpQwlRtf29D9LfrOp7/Q5HsNomjRaPREsG4rSkMfWKd3/Hiw4JSH7iy0rZ
-         9MNfe9oe8VosCBN7KBjtLJeYC9rJz3zlA6cO9izn9kCcO0CCuvik8np917rKXeJf8PPs
-         5MNJCIYLAPY2Jzsv5Hlnxa4gfTz37FOSM6pmJWYaetdG5a9ITTIenZMMdMMIhQTk1yqs
-         pydV15JTQ2o56nd5pvnD4roW3zxmNsToAMn4Tp3U1A4GB40AO6Nq49iUTfFJPFJTmz41
-         7W/g==
-X-Forwarded-Encrypted: i=1; AHgh+RpPvy3+M7XgCDh6EvRQkQwchGQowB034PYgZGojmNXgXwT5gkV//8MPqV7bCrEU1MKqnrYFy7FJWQ==@kvack.org
-X-Gm-Message-State: AOJu0YwV0exlQFNOJHvuBZNoK8rJ2urfbHkc1U3FmKRCvMbqBcECtYd8
-	HuSy+lai5stOf23jZnTTF8BuyPHJsJ+TTXHcCdoiGlWdTpVsyQQ0d+E=
-X-Gm-Gg: AR+sD10k4POabuvOIURYrXUNniXOnaKO9kjcCvDQwtjE06IXo1LzkZL9v+axPtMm4qn
-	GZ53J9cqjzQkVl4oQzt/XhJLtzVffLMZNvSQ/eb6wdj/uF6xt83+VbfyQ5lfgnjSkvZ4rXaAPxX
-	t5tCbV80FoNldLK0tOfmwD0PFSR2SjzA7NtaEd69ooPIV78K+dTyz/XHplrHgdrWsAd6NJEtv1s
-	3Bl2BxnBDnI3I32/IW0lVNf6HJgWAqLqqvTg8Gd5A5vr3i18nAM9wog38qegrk4MPBZj9YTx96O
-	t0+zHRz5rYopDmHHS95Mkfp8OfqbYmyvYrVRCywy6aS5y5FNhi6tVvYplUi6q6J2L47TRZg7U07
-	fIkbGt0v1ialHSkgLGGfQb5Ji1dGxSn41pdcAj/PN5YqCpxfqh9GAZLzio8GaH3i4ZonO/k6k6W
-	p+zA==
-X-Received: by 2002:a05:600c:a4f:b0:493:b877:fbc with SMTP id 5b1f17b1804b1-496b5717d48mr33724205e9.21.1784985898131;
-        Sat, 25 Jul 2026 06:24:58 -0700 (PDT)
-Received: from p183 ([178.172.147.242])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-496b4858cfdsm75279965e9.3.2026.07.25.06.24.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 25 Jul 2026 06:24:57 -0700 (PDT)
-Date: Sat, 25 Jul 2026 16:28:30 +0300
-From: Alexey Dobriyan <adobriyan@gmail.com>
-To: Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org
-Subject: [PATCH] slub: print just the function name in /sys/kernel/slab/*/ctor
-Message-ID: <456c0a37-9074-45b5-9be2-a5f2fe345400@p183>
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=opPXCvuE;
+	spf=pass (imf18.hostedemail.com: domain of linusw@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=linusw@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784988400;
+	b=SIg26lXqMUdFKRr8o+oE8/71MZnv5bw9EIitV79TyRhqfL6iiJ8TCCdZnXoc73h5Nc6QWM
+	Gs4BmI28BXiaLWF1n69W4Dcd4JZYcxgCyN81d8jN0XsfX/dK3ZZtvlgNTDdfHaU5YJ2nPU
+	glQcJRo5oLg6X9dx4X6yxmiWOpu5Bmc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3BCD860A6A
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 14:06:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A916F1F0155A
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 14:06:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784988398;
+	bh=ssP/vx2xvZFVkpWUGpEHUbU2ssgcSty0tchErGpJGIY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=opPXCvuEe8n3PPU7M5ujJZqB3rWQBT0RU4WQlsETK0tRQHs33oDIN6jn6wQT7O3T7
+	 Z5H9hYbLDjmqf/m7XQ+/0SyxTk6y58P9hkJf1EGhKCJL9Qym2K83B+CXayO1MRo9Il
+	 yfnvle/hPdRoHm3+J3abaORHTu7X6SFEElZMyCLvddn24xsZMadinGc8QlSF+XoK/0
+	 uYirOsJuF68uhWVAJtb9vCYGkn+nXnFWFcQwTryaOAAcZRHOKPSZF8uRI8IjaeRi9U
+	 +jSSheJTq1J7WPkby85QC3EEzGx8Gh06C1Iua+RRCdwA+nig7Mkyl2vWi5oaY9FWk0
+	 4hNREfU5/WzfA==
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-39c923b8c2aso13841891fa.2
+        for <linux-mm@kvack.org>; Sat, 25 Jul 2026 07:06:38 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RpxO6HBo/kgZBJDwrfJcVBz7pdKPFNPq3Dz5RONmg/fUaQ51ddSrwPddbiXWH2Y4rQVv2mCWGEVDg==@kvack.org
+X-Gm-Message-State: AOJu0YwWrrWNj7b2EC83X8v6Vxf93BnSYE7welmQ4dk93fukFK1KBAmZ
+	BrX7Rl7J76qYIAkOKSxfktYjQ2hJVOc9YrZHpcmq7xf/UoZ0VgfMgOM9lclUtIPbzAdHDasmYa1
+	u1PFK/PdfNDM24Ok3pWEE/mYs34PDERQ=
+X-Received: by 2002:a05:6512:3d07:b0:5b0:1108:c575 with SMTP id
+ 2adb3069b0e04-5b2c1afb4c9mr313282e87.7.1784988397379; Sat, 25 Jul 2026
+ 07:06:37 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-X-Rspamd-Queue-Id: DF038C000C
-X-Stat-Signature: mfcf1tkjfhhp91tw6fmc539c8ou4nop6
+References: <CAD++jLn_DDvWAudHC2Qtz9kaaonuC0YGTXn9nvPtZfGLbtUsOA@mail.gmail.com>
+ <20260725020926.11440-1-xieyuanbin1@huawei.com>
+In-Reply-To: <20260725020926.11440-1-xieyuanbin1@huawei.com>
+From: Linus Walleij <linusw@kernel.org>
+Date: Sat, 25 Jul 2026 16:06:24 +0200
+X-Gmail-Original-Message-ID: <CAD++jLnHow_nx+kJ6Q8JjX0qPgR8jwwLi_a8xHzgc9gQHbcNzg@mail.gmail.com>
+X-Gm-Features: AUfX_mzSvjKHLHaKmkayyxfaSojjziIW6z21biYafMhxP1NfGfMVkYwI0HZIC1c
+Message-ID: <CAD++jLnHow_nx+kJ6Q8JjX0qPgR8jwwLi_a8xHzgc9gQHbcNzg@mail.gmail.com>
+Subject: Re: [PATCH v4] ARM: mm: acquire mmap write lock around show_pte() for
+ user faults
+To: Xie Yuanbin <xieyuanbin1@huawei.com>
+Cc: linux@armlinux.org.uk, akpm@linux-foundation.org, david@kernel.org, 
+	liam@infradead.org, liaohua4@huawei.com, lilinjie8@huawei.com, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, ljs@kernel.org, mhocko@suse.com, rppt@kernel.org, 
+	sunnanyong@huawei.com, surenb@google.com, vbabka@kernel.org, will@kernel.org, 
+	xiqi2@huawei.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1784985899-339416
-X-HE-Meta: U2FsdGVkX18EvQeBg/9J6vRt4VmHs3AVnvm/E+49WzNpYHzYQt4mwmELGQHMhoPN40lGKBLXgkiNsSI060o4cPfsX4Zr8rQh8vh+HITd7DH9bxshtgxUPrFo3bICN7PN5zz7vaXJpPYFd6O6ooTUS4ilxUytQWTm4VB2trBO0ua7QzRAS6D/uy2YR2S/jjM7upg79B27jT2Yv7aznaXqW49DKe6yieX/0Q+mBWx5WSaUBxhbe7VUZLJSmXvorrFaz1/G8EtcF7KrgZjrJ1tLtnHMZBXeiVdEjxQKo0YyiyRZ4Jaq5amGisWOpr0wyTBBV0eLk/DYEA5I+BbdJUbdhrQULW59+9/Gr81IIb0q3KsLKytBP/IFOI+N1XcJzfy/MjEuFh08n7dp9JPNXr7N7B0Wju1icwgioI+0z+b9p5MNp02gr3MyK/SKAssXePI9vcjtt8JALgtGfc6fbm9Gzjis6PG/X+xJKajD0wtzoobxP3c2iGTcGGaahitVOvI1lbu0SqrMhvB39N9+SE/3Q0PxsPyJeGMa+ucE86mjr5EAc8ie1OVm3/Y24W7t+aZzZ/TqjtrV7R6XmF7QHcGYvyCYucwvlNVAt8UiRHnrz+gUezO+yIJicEjLkCllqCI2fLFVCR/U/jPC/MUXUXIyd/+DDd3PK6bGynU9Gf2tbJF0lBtOYaxBWY0/N3H9V9xAkAr8anazVdHOh2MEo2Zs2GjXxaq493SYUQ61Yphhcxp2+0WvomYOmEh6YrZ3nYK6IvmzypVra8kEevw0vb0pgVGROHZAeZY/TWCArcyiwDFj8Y+ZlIGF05b8w0le5LVQZSFEBDMneHgW24wtM31Rq17wGzEP18PmhlsGprXKUYI3kg77vu68GD1t7u4banHuOLNOpju0h3s6sHdGXgYHeoNpJ5DNBEvJO1/z+A8XCq8/dKRdRJ82xx9wmG9vfrZhS7CGUeXWnB5oRJaSJ+1
- KHGaaccN
- DSM2qj4PitR31Ghm/chV0/EMU1qxAyArhL89DHMpRm5VIkUmcVF/N97sY4SzA/a5FlRIabsYKGV0BBpzb6kUNFg8+dvEeVMGwvAtFnzTDEJIgq8KNGexpwCaNu+dLojW1tqO2KvEhNSNDEOaOzR4UjEGbp6aKs++AX5RReiJdTwpSvJZA9me1tGIQtUtEM+YjajiNjRBCvSAUOILgs6s3Kd1n6wV8kFii3KUvPaGCy697LqTX/ly1sfJqYHpDW8K8Kf8FUghAvM8g+6u3qLV5SJhapzTIRnlh/F3ZqTQAiMbgdib1kvaeUUCOyVEWtdptp81NUPwahkcXVLWlBq072pbn83vpjhjBt3DSHOO1NwvMXvPLbwPSQXjMmdKv2nfxAhOzpAjh+LhXuYIxv/8Dg5wiiUlZ847MXLm0BNSyQEAPaJb57ceAIR19H5fj4yuAmM6DQOHy9kKJ/co=
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 1FC6D1C000E
+X-Stat-Signature: c9d8e9k383iu1bgfwqdpu89gayym5qzy
+X-HE-Tag: 1784988399-897569
+X-HE-Meta: U2FsdGVkX18j+whOwYt8jBrODveFmGglD+8LHL8P2FPIR1w0rq88eGFynRUhz5lFU5fTc+0vhWQQlhyYXbkXLraiLpQWQ9xxhaOUl5zc0qvrPKHsm6gdu3DseKxko1a/Sv5+LhydBpU8339xWjpyyY0hNWydA/Cwr5Kek34GOrb03pTVJyrNRd99TtiTI+/EqAOmzLV1e3QKOwEzh2joH6LGBcjhs76Jf97cHLetNpdC+8fZtTqxeWo5qIjppMTX8fnVkJmCSmL2Rj0dZgPh8Yq33q4pSeLitmeOAYdJyFIIWmeX3lc9TAu4c4vp8ODW6k5HSyIszDG8xRBY9Z+7RHnYvEc4m429jvHMKXRyB16aYTWtoDYAZYxyuXi+rzDQuMRj4CVYQ0fs/pgk1Eq5ISG4VvAUZK60DcESbHCyYaSm3HHk+7gzkeNlJCM+VKBP61MI+OTJVJBSB8Up0IpVnvHQ72ErwWEZ+HclL3YiVWuQa74SAp9Hw5LyUWkZbxzcMHqB0bXOIDf2Ce2tatiSqvvocmFRPTYm2Z8dQyFMunz4DnzKX9BooZQM2bM/UXU9/t3XqFa2RC5r2PJma2J07IwgE5+FDpNo1Aofyc9Qibc586jgX1CUbVXUWH+LEsx3Xo1afRHlgfUYM64ylte+/3LidBuKb6keG15Oc9s6dXc3T4yQ6sa9q5SVLgBPuV32KV1On318FmUeCvdK4XUbC0DR8sg5yIKYcywiG3xYTzgLy0ezGnr4OoxDd48tkf4bZw25ZncCHuNvl6tI4N4DALMfr7Y2XvFGwd21gDXIBB/enFSt+6gcb8UBJ3jIl6Ol5yVIkjpqvbFC323bZvPgnT7CFZq0u4hWvfVueJUsvx2/0Zit2ZwXg0C+FIve8AzQ1smVEsPCn9duQ/PIB4bH4fh713Dc5qbtot0Jd5cPxH4AmgoCp17rhEuCsJU/NtucvbkiCrVqHpRVaKWisK9
+ Eab9/LWA
+ jzMtiZBOZlSL3qYIlMoyRHEnqVdSQjRkgWAhsR1PgL8wPQJVPMHsouYSMonQNDzabe+Tijw5FK52HkUkrMUDmgiyf/kr9M4Pvv/gIN0gyDN0xs1Ci3vuMXZ5kzcTvxTQ4GkjY9oxgXKYipp7Uu/tZV3mEKDK0w+TRf8gnFyDPU1jMcpf3jiqXjy/QblYxp9FPFIEeArkPxeGYDMuy4LbaWDksXsNZPRdd+HwhWdMB3dkdHeZ8ZG9u7PMiTTYXVNqdtG6rkVNRkeaw+AtvCiwmehcUOrpmyd/vXrQjVeTfDu+NsZrB4yhkjf7YUIyHmhjU/JgEkmT/QShWVySZFlsBE2AcMdjL5RIWjpUNRvI6PwzRRHc6wDCKNmpsi7afKxEe/VcauyQJSryiGppQjgAxEfgLBg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,33 +108,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Sysfs "ctor" file prints offset/length of the cache's ctor function
+On Sat, Jul 25, 2026 at 4:10=E2=80=AFAM Xie Yuanbin <xieyuanbin1@huawei.com=
+> wrote:
+> On Sat, 25 Jul 2026 00:05:58 +0200, Linus Walleij wrote:
+> > On Thu, 16 Jul 2026 09:40:22 +0800, Xie Yuanbin <xieyuanbin1@huawei.com=
+> wrote:
 
-	$ sudo cat /sys/kernel/slab/bdev_cache/ctor
-	init_once+0x0/0x10
+> >> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> >> Fixes: 6d021b724481 ("ARM: dump pgd, pmd and pte states on unhandled d=
+ata abort faults")
+> >> Depends-on: <20260629123349.134224-1-xieyuanbin1@huawei.com>
+> >> Depends-on: 59e4f3b45b96 ("ARM: ensure interrupts are enabled in __do_=
+user_fault()")
+> >
+> > This looks a bit odd. I don't get the first fix tag, drop it.
+>
+> The first fix tag can be open as:
+> Link: https://github.com/torvalds/linux/commit/1da177e4c3f41524e886b7f1b8=
+a0c1fc7321cac2
+> Link: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/co=
+mmit/?id=3D1da177e4c3f41524e886b7f1b8a0c1fc7321cac2
+> It seems that a 12-character hash is no longer sufficient to index it. :)
+>
+> May I increase the number of hash characters or just drop it?
 
-This is not useful:
+You still don't explain why you add this odd Fixes tag, which is
+why I ask.
 
-Offset will always be 0 because ctor is a function.
+If your point is that this bug goes back before the start of git, then
+just write that in the commit message, no-one will backport it
+to 2.6.x.
 
-I'm not sure what ctor function size is doing here, it should be in
-/proc/kallsyms
+> These tags are for the maintainers of the stable/LTS branches. Since
+> the bug is very old (we discovered it in linux-5.10), they are likely to
+> be backported to the LTS versions. However, the depends-on commits may
+> not be merged to the LTS versions.
 
-Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
----
+They will figure it out anyway, both Greg and Sasha are very clever
+people with very clever scripts.
 
- mm/slub.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -9149,7 +9149,7 @@ static ssize_t ctor_show(struct kmem_cache *s, char *buf)
- {
- 	if (!s->ctor)
- 		return 0;
--	return sysfs_emit(buf, "%pS\n", s->ctor);
-+	return sysfs_emit(buf, "%ps\n", s->ctor);
- }
- SLAB_ATTR_RO(ctor);
- 
+Yours,
+Linus Walleij
 
