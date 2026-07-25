@@ -4,114 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A05D6C531C9
-	for <linux-mm@archiver.kernel.org>; Sat, 25 Jul 2026 05:30:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45AE4C531D0
+	for <linux-mm@archiver.kernel.org>; Sat, 25 Jul 2026 05:45:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5DCC46B007B; Sat, 25 Jul 2026 01:30:36 -0400 (EDT)
+	id 0EFDB6B007B; Sat, 25 Jul 2026 01:45:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 58DFC6B0088; Sat, 25 Jul 2026 01:30:36 -0400 (EDT)
+	id 0C7C16B0088; Sat, 25 Jul 2026 01:45:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A5636B008A; Sat, 25 Jul 2026 01:30:36 -0400 (EDT)
+	id F22A86B008A; Sat, 25 Jul 2026 01:45:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 171606B007B
-	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 01:30:36 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 82EF61601E2
-	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 05:30:35 +0000 (UTC)
-X-FDA: 85026174030.05.DF6B82A
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	by imf19.hostedemail.com (Postfix) with ESMTP id A80191A0006
-	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 05:30:33 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=U5H1WfcC;
-	spf=pass (imf19.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.174 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BF0F56B007B
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 01:45:08 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 38A0CA0EF1
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 05:45:08 +0000 (UTC)
+X-FDA: 85026210696.03.4A57139
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 363F140003
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 05:45:06 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LmBJWFAb;
+	spf=pass (imf12.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784957433;
+	s=arc-20220608; t=1784958306;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q9DTVZXLp+TNicZH9cYEyTowjXvC1RszrtcpW4YmnMo=;
-	b=0tWptFcOzVfdqHIL+qggp6OZ04nhlLRRaVNcaDnmSuPZWAJiyPDZD6HAFpY8Yu3JMOmVSL
-	12ZKq+1S5RDANWE+I/hrZneA0hFnBghzRUDrsmPAEOvXtASg1kqrYgHDBNpU7Qa8rX5ulJ
-	LmchV/k3cTtTb8S8fhkGLsw4i1nEBeI=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=U5H1WfcC;
-	spf=pass (imf19.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.174 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+	bh=t3qBjNX9IGmyjU2kexl4//bO2wn+DnODKQrpG0AjYwc=;
+	b=1W9YgyEG2RfoiSxwelSwOEPnVCAIR9+HcT+js3bnL4y/XgcMx/RJLthIXgfIvdjLSZOFR1
+	CYkXQwGRgMWYU9bTWTTBmhR6nSw9YDMwqvvvVV5v2UsToF49ERrEmh1bM8z5CrrY/8ZPSy
+	DLBTSegG/UiBhKsfzWZ2KBsGEeuaYu4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784957433;
-	b=8gb8rqVo9ISx1qYdCQNPpIWRwHSG3P5PRmSL/jOag8hDj7LCdh3JoV/xYy9NgMIPvzv/ju
-	zOuzs6cqexZWexxq/i3Zsv8d/h2VjBnObCygHxinZ88XDtqnQd5jPYgknLimbZBhftXKy9
-	xRreR1/Jy4UljmeA2yTHmb/BPOSnzew=
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2ccf2360620so11043725ad.3
-        for <linux-mm@kvack.org>; Fri, 24 Jul 2026 22:30:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1784957432; x=1785562232; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Q9DTVZXLp+TNicZH9cYEyTowjXvC1RszrtcpW4YmnMo=;
-        b=U5H1WfcCroheQt6n1uS2IBt6fZIOoIAaeLF2JZOh7PiB9zoMdphutCcSS91tuJ6L26
-         00rQD1iB0woX21ZOt0VYn22jX3OKeIm3+MjZUcoI4WZzfG4CcNA0DcLMCKsWK9HbkOVj
-         Fh1oFOXCzTx4m/pLTlr5oJ8AQDQ4AaoKB3GIk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784957432; x=1785562232;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=Q9DTVZXLp+TNicZH9cYEyTowjXvC1RszrtcpW4YmnMo=;
-        b=U8qzatoS3D4i1y6J6HrKzzKunIU7p4otiiaYIsOv26PFVymEGibuQturwrsm77ztqa
-         YPgtmEylxkJG1WPnOGSforaHoq5CL/BXeGiVvzRuok9ONuRlxPaw62kC2lTzwGR5oe2s
-         OSS0xV+DMk6Yjj7DvuRiBjuU5jITXEdluEtbj1JHKDDPDMbZHCllYkKMIZr6T1s25cmz
-         inewvG0jgeZcyHk3mJauMtwvWD35qB2QRK7RUYw2fXSPlJTb8sX6lL5SVmhMycRRfUju
-         t01n/YoskIZVkCUJGRajUOdhD8bc3g1NlrBIASbRgl0yX35wb7bCP87LqsxWYJ3aLBux
-         01GA==
-X-Forwarded-Encrypted: i=1; AHgh+RpycVyEBXX7FMh1ceP17LYhUna1EBit5o+XxyIZBdPBXWGRqNCKjDs6oMcVXjxV5aVjY+PMzCQf0A==@kvack.org
-X-Gm-Message-State: AOJu0YyPqMEGedMFy1GT69I13F5rd5SDbpRji03hvRtUKbhP4ccXi+46
-	y9DxsnaoE5F8Go+7x+OAuAl3iapT44SFmIoIuYwXf1ubj5S9Pe+pCwtbdwgV6A9zQQ==
-X-Gm-Gg: AR+sD12sNtR+qBeNpVhfkZl0+tNJ3D7+oWn/t+uvuqswWFmQnG3iTwf06DBhXBlFgu+
-	Kss97ARJLuoEzfrhxk02xoRWvlH9dx4EMA45FbkAhAyMPWDmNDffNnjkIVVGJtLFcDPkiyUDgZe
-	eoDN5ya6Ld0phqHB2SzZS7LQ2PUD59UrY5AtlTt54KR43brTIKt0paDyAVo/V8pNe1Ca0O+N6Hk
-	/eZyJebkVwBHs5bNEMXrlCaRz5SkecduCI1ZeO/a2VYEUgsFv4e4E5Q3r/nPrBYt1vQFtGM7tLL
-	y2frXlZWvSOGTbyGd4vdHNyWBEWmZuI7a2FvXnPtMdsqWZfjl/stkAaj0skhBsqm7GhMfxmN5sC
-	yYVz9lfyFotZAnTKgDpVOHUFHEW94LMQfmE48Lnw+d0OC3AR5Slt6i9uP5MO7aDuoMZyzyQeoUK
-	zPgomIGv/Zd1ZgxM3eIcXcT5+eHSrebIRj8OajxWPkyTxkjWGF8dQq
-X-Received: by 2002:a17:902:f689:b0:2ca:3b31:ef4f with SMTP id d9443c01a7336-2cfde881841mr12489805ad.40.1784957432564;
-        Fri, 24 Jul 2026 22:30:32 -0700 (PDT)
-Received: from google.com ([2a00:79e0:2031:6:fbee:e165:c3f8:38a4])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cfde7bbdacsm4958385ad.47.2026.07.24.22.30.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Jul 2026 22:30:32 -0700 (PDT)
-Date: Sat, 25 Jul 2026 14:30:27 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: "Barry Song (Xiaomi)" <baohua@kernel.org>
-Cc: senozhatsky@chromium.org, akpm@linux-foundation.org, 
-	haowenchao22@gmail.com, haowenchao@xiaomi.com, joshua.hahnjy@gmail.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, minchan@kernel.org, nphamcs@gmail.com
-Subject: Re: [PATCH v6 0/4] mm/zsmalloc: reduce lock contention in zs_free()
-Message-ID: <amRJ1kbq1-zv64fl@google.com>
-References: <akynv_js-5G88rGd@google.com>
- <20260725035733.53241-1-baohua@kernel.org>
+	t=1784958306;
+	b=yDGehxN8VRxTXVkzXPkhtFJTTTIPW95XDSzKIJfwEKL09PK5BsHCOGSC3JEpQPkdM5FHMT
+	+RHw/f7ufqJ9/FBFMEJ6laVsgPnWnGBkK3+P/pKApJhHQUPacx8kf1myIwtkIcKNK4Q6iB
+	YLyVUG9gzKJCjmiy0jUKUENqL+5Ylww=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LmBJWFAb;
+	spf=pass (imf12.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id F0DE64503D
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 05:45:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7B5D1F00ADB
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 05:45:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784958304;
+	bh=t3qBjNX9IGmyjU2kexl4//bO2wn+DnODKQrpG0AjYwc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=LmBJWFAbLlQ7K5WSuxkohr0/P2tyJac1WkR4DSSqYH41/0xJD2A8FU0uZvVfHJ/km
+	 ehzxvQgwpP8bx54m1Qj04j+bAYbgD1R/zHOfckfIJMnfsv+TSsdZtlEqU9YALD7aQm
+	 r2xeabZnFOGriOinu46S5bRnUgQF0zvXm13twtYpnLLQLixvrBnsDWK2cDwRkO8JRA
+	 35xSlyPLDSspkFga2wtiw2pWxB2yPmVoYdxMGRVtvDcNUe/MG2J/Ak/xFbCzT4UgJN
+	 SAWfxQ4EmNH/o3L1nqfTt7T+4H+m4uJ/TR0xJh7wkmNMmL0dtoXV3vlYRWHCE1UAOY
+	 +iEudIuj6qhMw==
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-930f4e5eed1so92871085a.2
+        for <linux-mm@kvack.org>; Fri, 24 Jul 2026 22:45:04 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RrVZXo2rhZmd7urung3vu3W5n+YJ3cSmQ8luOZpTo84loJ24H0o79fojdrJqB8jovjWpgJPOpQqNQ==@kvack.org
+X-Gm-Message-State: AOJu0Yzp/pUZiSsm/quVplKcD62hUael0SqwWwHAjm678QwmnxLlrbd3
+	JUqeUsUevJkeA9ltIGG1cp6vF7fJ8WHsp0+cb+xzVacjO7mfLjDABjcjSPwwLsfu5AX03tP+fAq
+	9kEJpAj10dgb4GGkhi0xzt5TrnZmiWns=
+X-Received: by 2002:a05:620a:4008:b0:92e:5856:bdcd with SMTP id
+ af79cd13be357-932df708b5amr90245385a.53.1784958304055; Fri, 24 Jul 2026
+ 22:45:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260725035733.53241-1-baohua@kernel.org>
-X-Rspamd-Queue-Id: A80191A0006
+References: <20260722142936.3287702-1-dev.jain@arm.com>
+In-Reply-To: <20260722142936.3287702-1-dev.jain@arm.com>
+From: Barry Song <baohua@kernel.org>
+Date: Sat, 25 Jul 2026 13:44:52 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4wetarsg0fFvNdeWrCa+Ka97jjmgdRsmPJJZbUFyUxjEw@mail.gmail.com>
+X-Gm-Features: AUfX_mxNkc16w4WJcIVQZjkpKej00po33fTMdmd1bQ675RV-4AjKTHcthRpmOqY
+Message-ID: <CAGsJ_4wetarsg0fFvNdeWrCa+Ka97jjmgdRsmPJJZbUFyUxjEw@mail.gmail.com>
+Subject: Re: [PATCH] mm/usercopy: harden bounds checking for vmalloc allocations
+To: Dev Jain <dev.jain@arm.com>
+Cc: kees@kernel.org, akpm@linux-foundation.org, gustavoars@kernel.org, 
+	linux-hardening@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, ryan.roberts@arm.com, anshuman.khandual@arm.com, 
+	david@kernel.org, urezki@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 363F140003
+X-Stat-Signature: p5k664wqqqe7j6gyn3zhg8rgbpgtynnd
 X-Rspam-User: 
-X-Stat-Signature: 87zxe6b9er1wym9udsxs7gce5ngdnuoq
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1784957433-245680
-X-HE-Meta: U2FsdGVkX18GGqjyP6p88tRlDity87iC3g9o7pg9Fp7jCt8lHX9SVTZr4LcuSBYftJSzKYgFpJ97EXbA4SvO+yxaKMsyrigQKbk6qeW8/uwGAinUm+u9Zbm1u/iIFLkOJR8GI7qvMoMCT2anH2fgR9hp/CymxWsqPweLuYEsCtZzndUcyF6NmQ3oujDI7n2YqvbIRWgRKMnzJM6Kp3a3E1KJE4ea9+kT/LeMBp9XFZfLNJAT/UFwQhj6AAcKgfEvzIo1II2QK+NF1QU7eNIgCB5VLSfz+ULy7+zI3cdzPWeFt7bCilJhoqiW8q/1D+8o0+FDBm5COIiYO/8C2JGwJsYHhk98Qbi0dISK4Ocihv8D9UJHLcQx8nC+anI6er23N7nbdFZeHFgH8oRHBHPQt7bqQIVta5E/NzJfDnS15RWWevrPH8Q80Lg4ZO6cXhwoTeXmShJbxmP20mosd/m+XBW+c7PfsdgGiScQr9kcGLaChnWGxrL30lrEkmtF14XGM3jForK6H+sDmCWWYMjwD+xSEQItGMmwO9/7H8/rbN2+5EZfvJ6cyX58IxQGZAlK9hGNkhJZw3PvXrcHthlP1S4gCrB9SlR+zCWQoTtPzfwT1afG33SlTBZOoC1fdbzculUlPQtsY+jUqgQliba0QrONn21ScEXZMaivGvJooE+AwTqu/DmEmNxze+5NEjUY5UqNHW7sWETtQm/NoSdsfgzPiEULRPPexEEigZQLuS2czyCC0SNdyyIXFArSSpYpSrecKl/CXpCh59l/hEgP27H8MP+bw2AjkDP8C8ewRWyXiHBxTK8MVwTa4xiCm/qO0eU6bg7c3yp2pIwMaeXfiT1okxX2sHeJ+AWcs9WT9ubDKOfavzYp/iXrGfaI5YOHW34OAztkopNeoRRqCbtsR3uMx69+1dWbEHCjLDxG4ozelVEUboSzKxR6geI7Wu+cMAY2uBr0p09u0ExbHTs
- z3jE9hj5
- /r6NhuCrmPkS6nTWQ32R9LlO4PyLwe/z6qVf6G5jkBUnWSInB+RaU14u8LF2KhwWRUc3BvF02VvVsYY+sn8SfZMbCuasC5kop1PEsQ/JKVDgttEBZcVPDTp8fgKdDi2G7HUBgBu/FbOzPHVIpJS1eHgrfE+7TBztUhTiiaCEh8BWOicLLW5zCxUWvN4n/4N0Zn89Cf1aBOk8gkJ55GyqRRv+xKl+hdrFXOLWZU8RJQ1dDIS3hWqCYm3MbcPE5oT7OITdm4Qg+xe7T2njO5QoOOxyYhZDZTIh0eWdvEUWJuL2uChrbT00fDJt2sk6bYiOdWfiGf2OEx2hmaVFKhX5OYhOjUWz9RoOTv6mlPhdakdCq1HTinQc4qv8OX5OPc9BsK0ujJu7ce+pZEy6Q6htlzM43hLynqcwewxrWP4zjc/ZwMggOJiQSsDJTssj+d7hMJrBmAEt015GcCoPFNimIpUik5bxNv6S+5V/Mkk5fvO+e45XLLQrs0EwIew==
+X-HE-Tag: 1784958306-961083
+X-HE-Meta: U2FsdGVkX19eEJj4kifMQeddgiry3p+g93FmSVJ12W12RxMMPEGhol2gUuNUqQA4DsuATTIwLocmJbiWRxCyHMbdChukeK5fIarugeR1vl39DlULkEPlgfQTZCYye5jHqtvBiL8JIbiHP1KHoajJbf/os1czqQL8jdaiwoRO7rjp9Csl7BqoBL9rO/r1Pv11XPbFLvwUEAF4mmomrIRAJtwH+3U1MPUV4T66AvLTycvOXVU/JwI1TdVOoPuR4dFMHrEWF1qzz7yEBXc4xnKn+MXt2lg8lwQLv8ItOBc1GFMc+3tkC7YVazdXSUkpauKLJN71kBbZTZgoQksWNfekLKazIKk8UiE5D5bGAY5CGO1CeqUMX4lurWNGrqIlAYoSG6GcJ6W2OwfzSbRrSeSJTHXv+Z6X7UVggQRp4cE3sn1yhV4yZjoZ5xjrNZV+WDLLSKv34X+IFGv6AF9P3Tg+/KrZEtrbje/uZbmwLOHY+fklTQkB6ZIxuEwh23gfYg8yFVa7b6VTm6iKPan3BX/DpRjsSyMhH//zaExIRfbUWcrhozWN4JA+sr1uJvJoJH2YMqB/tpq/83Mnt8ngSN+EAv+qCJtQgnp3Ym1lc1JGsOlmt/7Fvk2W1k/9k5I8u91/2Zn/brI84ZJjsSbYuMsLSE3DY/WUv0CWz8JEQ1gtHKvQJKVIcBcLJGKSr9wc1//BEx3FI917EFEvQjRcVea0EWlxveMHx7HK7b/eESvgPAygDn1gRJuX0TDoQt/A0uaq0F7086DikhQht0A+T9k/1roefGfefTLbZsjOkhpiXVBwoeMQ0TOCaTk8UaxFbvjNxeY59rA5FltP71J/qtA/u5u96RQ3K1xhWTTC3BccCpnMvmZ4aWfywVXhfKLaC2YimNCI3pMy0fMtDFPvsDWYdNFcfcZL9ES4wdq/iHNwiQm9SaRsM/vaBd2BlrboCxsmFUgAtjxqthaeA5Y6hLG
+ CzS0jAJ3
+ q4Mm/2gKB8OcEe9SECp+3VH4akxq4Mwc1WCWN8t7c9z5QaIOQmNbmu/VUKj0oVxvN+N6hArV6rAtOMlzxTTAlqfUd5f9aZjbSBSKTI1GS5ZCFFc4XD1AgOgv8YsWF2R0XJ05aNORw7ul2a4MmkRw1RVaLDK3HXBXYjasR0z7pEKui67r6jZWQX2+HzLgcb7JQy98mrLYJOQItAMGMXMWQDEugvKSWRMWq31k/s1Mo3JIPVQ3GodqdZJB56M2Xbn4AB59mGGLT33F2WJqpAQ7hGr4sBST10ahPJiiCdX2/IRoE/TfTjkkkMLwxR0gFmHT59lOLe10Za8VMvpjx+fCE2YbayuhLNBk+vrYtpzk3LnXZyw+ZBOHJ0fkIBg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,50 +104,140 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On (26/07/25 11:57), Barry Song (Xiaomi) wrote:
-> On Fri, Jul 24, 2026 at 12:55 PM Sergey Senozhatsky <senozhatsky@chromium.org> wrote:
-> >
-> > Apologies for the delay.
-> >
-> > On (26/06/27 21:36), Andrew Morton wrote:
-> > [..]
-> > > > Raspberry Pi 4B (4-core ARM64 Cortex-A72):
-> > > >
-> > > >   mode        Base       Patched     Speedup
-> > > >   single      59.0ms     56.0ms      1.05x
-> > > >   multi 2p    94.6ms     66.7ms      1.42x
-> > > >   multi 4p    202.9ms    110.6ms     1.83x
-> > > >
-> > > > x86 (20-core Intel i7-12700, 16 concurrent processes):
-> > > >
-> > > >   mode        Base       Patched     Speedup
-> > > >   single      11.7ms     9.8ms       1.19x
-> > > >   multi 2p    24.1ms     17.2ms      1.40x
-> > > >   multi 4p    63.0ms     45.3ms      1.39x
-> > >
-> > > Well that's a nice result.
-> >
-> > Indeed.
-> >
-> > > Sashiko AI review said ....  nothing.  I don't recall seeing that
-> > > before ;)
-> >
-> > grep-ing the code, I wonder if we maybe want to tweak some comments.
-> > Namely, zs_page_migrate() says:
-> >
-> >         The pool migrate_lock protects the race between zpage migration
-> >         and zs_free
-> >
-> > which is not entirely true anymore, as zs_free() has a lockless path
-> > that doesn't take pool look (when ZS_OBJ_CLASS_BITS permit).
-> >
-> > Likewise, __zs_compact() says the following about pool migrate_lock:
-> >
-> >         protect the race between zpage migration and zs_free
-> >
-> > None of these are critical, very minor.
-> 
-> Does it look good to you if we squash the below change into patch2/4:
+On Wed, Jul 22, 2026 at 10:43=E2=80=AFPM Dev Jain <dev.jain@arm.com> wrote:
+>
+> The vmalloc allocator stores the actual allocation size inside the
+> vm_struct structure. We can use this bound in usercopy instead of the
+> page-aligned va_end to catch usercopy beyond the actual allocation size.
+>
+> For vmap, the requested_size field is always page-aligned since it maps a
+> certain number of pages. Same for vm_map_ram (alongwith, not even having
+> a vm_struct). So the check is only relevant for vmalloc mappings.
+>
+> Because there are early vm areas registered even before vmalloc_init,
+> requested_size may be zero. So also check whether the requested_size
+> is set.
+>
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
+> ---
 
-Sure, looks good to me!
+I wrote the test module below to verify the impact on user-space behavior.
+
+#include <linux/module.h>
+#include <linux/kernel.h>
+#include <linux/proc_fs.h>
+#include <linux/uaccess.h>
+#include <linux/vmalloc.h>
+
+#define PROC_NAME "copy_bug"
+
+static ssize_t copy_bug_read(struct file *file, char __user *buf,
+size_t count, loff_t *ppos)
+{
+        volatile int alloc_len =3D 5 * 1024, copy_len =3D 6 * 1024;
+        void *kbuf;
+        int ret;
+
+        if (*ppos)
+                return 0;
+
+        kbuf =3D vmalloc(alloc_len);
+        if (!kbuf)
+                return -ENOMEM;
+        memset(kbuf, 0, alloc_len);
+
+        ret =3D copy_to_user(buf, kbuf, copy_len);
+        pr_info("copy_bug: copy_to_user returned %d count:%ld\n", ret, coun=
+t);
+        vfree(kbuf);
+        return count;
+}
+
+static const struct proc_ops copy_bug_ops =3D {
+        .proc_read =3D copy_bug_read,
+};
+
+static int __init copy_bug_init(void)
+{
+        proc_create(PROC_NAME, 0444, NULL, &copy_bug_ops);
+        return 0;
+}
+
+static void __exit copy_bug_exit(void)
+{
+        remove_proc_entry(PROC_NAME, NULL);
+}
+
+module_init(copy_bug_init);
+module_exit(copy_bug_exit);
+MODULE_LICENSE("GPL");
+
+without the patch:
+/ # cat /proc/copy_bug
+[    6.517711] copy_bug: copy_to_user returned 0 count:131072
+[    6.655611] copy_bug: copy_to_user returned 0 count:131072
+[    6.783372] copy_bug: copy_to_user returned 0 count:131072
+[    6.912167] copy_bug: copy_to_user returned 0 count:131072
+[    7.039019] copy_bug: copy_to_user returned 0 count:131072
+
+with the patch:
+
+/ # cat /proc/copy_bug
+[   11.298890] usercopy: Kernel memory exposure attempt detected from
+vmalloc (offset 0, size 6144)!
+[   11.299246] ------------[ cut here ]------------
+[   11.299276] kernel BUG at mm/usercopy.c:102!
+[   11.299616] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
+[   11.300458] CPU: 1 UID: 0 PID: 74 Comm: cat Not tainted
+7.2.0-rc4-g6b5aeb5cf21a-dirty #1033 PREEMPT
+[   11.300730] Hardware name: linux,dummy-virt (DT)
+[   11.300940] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=
+=3D--)
+[   11.301088] pc : usercopy_abort+0x94/0x98
+[   11.301190] lr : usercopy_abort+0x94/0x98
+[   11.301280] sp : ffff800083643c40
+[   11.301358] x29: ffff800083643c50 x28: ffff000004373700 x27: 00000000000=
+00000
+[   11.301994] x26: 0000000000000000 x25: 0000000000000000 x24: 00000000000=
+00001
+[   11.302152] x23: 0000000000020000 x22: 0000000000000001 x21: ffff8000833=
+a6800
+[   11.302298] x20: 0000000000001800 x19: ffff8000833a5000 x18: 00000000fff=
+fffff
+[   11.302440] x17: 2820636f6c6c616d x16: 76206d6f72662064 x15: 65746365746=
+56420
+[   11.302580] x14: 74706d6574746120 x13: 0000000000020000 x12: 00000000000=
+08000
+[   11.302720] x11: ffff800082271138 x10: ffff800082181534 x9 : ffff8000801=
+2842c
+[   11.302878] x8 : ffff000004373700 x7 : ffff80008012782c x6 : 00000000000=
+00001
+[   11.303024] x5 : 0000000000001297 x4 : 0000000000000000 x3 : 00000000000=
+00000
+[   11.303162] x2 : 0000000000000000 x1 : ffff000004373700 x0 : 00000000000=
+00055
+[   11.303378] Call trace:
+[   11.303572]  usercopy_abort+0x94/0x98 (P)
+[   11.303744]  __check_object_size+0x1dc/0x360
+[   11.303834]  copy_bug_read+0x9c/0x1a0
+[   11.303910]  proc_reg_read+0xa4/0x100
+[   11.303986]  vfs_read+0xcc/0x2f8
+[   11.304064]  ksys_read+0x74/0x118
+[   11.304134]  __arm64_sys_read+0x24/0x38
+[   11.304212]  invoke_syscall+0x5c/0x120
+[   11.304288]  el0_svc_common.constprop.0+0x48/0xf0
+[   11.304378]  do_el0_svc+0x24/0x38
+[   11.304448]  el0_svc+0x58/0x3f0
+[   11.304518]  el0t_64_sync_handler+0xa0/0xe8
+[   11.304598]  el0t_64_sync+0x1ac/0x1b0
+[   11.304814] Code: aa0003e3 d000e3e0 91378000 97ffec92 (d4210000)
+[   11.305138] ---[ end trace 0000000000000000 ]---
+[   11.305390] note: cat[74] exited with irqs disabled
+[   11.305542] note: cat[74] exited with preempt_count 1
+[   11.307308] ------------[ cut here ]------------
+
+So:
+
+Tested-by: Barry Song <baohua@kernel.org>
+Reviewed-by: Barry Song <baohua@kernel.org>
 
