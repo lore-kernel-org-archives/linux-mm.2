@@ -4,112 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29BC8C531D0
-	for <linux-mm@archiver.kernel.org>; Sat, 25 Jul 2026 18:26:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01E49C531D0
+	for <linux-mm@archiver.kernel.org>; Sat, 25 Jul 2026 18:26:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 67F426B00A1; Sat, 25 Jul 2026 14:26:36 -0400 (EDT)
+	id 9B5386B00A4; Sat, 25 Jul 2026 14:26:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6305A6B00A4; Sat, 25 Jul 2026 14:26:36 -0400 (EDT)
+	id 93E216B00A6; Sat, 25 Jul 2026 14:26:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4841C6B00A5; Sat, 25 Jul 2026 14:26:36 -0400 (EDT)
+	id 853976B00A7; Sat, 25 Jul 2026 14:26:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0AAD76B00A1
-	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 14:26:36 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 870EC120380
-	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 18:26:35 +0000 (UTC)
-X-FDA: 85028129550.25.3BBE000
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	by imf25.hostedemail.com (Postfix) with ESMTP id C491BA000A
-	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 18:26:33 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=NT6Keh+6;
-	spf=pass (imf25.hostedemail.com: domain of nsd.project.dev@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=nsd.project.dev@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 387CC6B00A4
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 14:26:39 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8BB2D403A1
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 18:26:38 +0000 (UTC)
+X-FDA: 85028129676.02.FD944DF
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	by imf07.hostedemail.com (Postfix) with ESMTP id C1A2440002
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 18:26:36 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=BxNzIP5e;
+	spf=pass (imf07.hostedemail.com: domain of nsd.project.dev@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=nsd.project.dev@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785003993;
+	s=arc-20220608; t=1785003996;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bgiBPl+4CC8BJ96aRSlhbbIqzt82+u8UvxwlbobLLI8=;
-	b=uum4dcUaD7/vGwHJ68BMCWH9/gam/tDv4aCfc4iNWowb3QK3XT9D/lf284weQ1nadyeeZf
-	Sevh8e2622s5R/fVhYypSAhGp8o6Ydb+8UsnEu4qRAsZ90N7d2kOtcwqv8P4h2F/vihS5y
-	WvIJDm3yVXr7IxY/jN+7Ut2gvaLbitc=
+	bh=pQdZdu+GEqOuh+POT8SK+LbvisqRrlELTO7OGW9vi2E=;
+	b=r9ucxNjQ+BZEHAiqj8kiWxRvecjFnxw7skGhHAxrCf/Ect1AcxcCFvOBx/k4z9ZQc4Pfjv
+	+SXA/mHqHFBF5hAxlK35yfF6Vc/btFa1vYTS2cjHkbnHOuUnIByPIcvttJSJFua7KbKcox
+	0jPtqVNa2hfvsLmo6bXTLVxEIXUxtPk=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=NT6Keh+6;
-	spf=pass (imf25.hostedemail.com: domain of nsd.project.dev@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=nsd.project.dev@gmail.com;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=BxNzIP5e;
+	spf=pass (imf07.hostedemail.com: domain of nsd.project.dev@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=nsd.project.dev@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785003993;
-	b=FH58hhHifzSk/s946IvYxqRZRT+P5ZLuCDy0JZTLFhoArQNug+hz1uTsrSVC09EG5rYf9b
-	dcBEE1szKEvLAp0cNXCtt4nGWIUBCNsFMTSICatx28kwnYpNrGZCU7EBizyEn8WeVZ8thW
-	ibIL89DWw4SKrEt9hnf+W8CSx80Z7wg=
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-49548e01d02so7591995e9.0
-        for <linux-mm@kvack.org>; Sat, 25 Jul 2026 11:26:33 -0700 (PDT)
+	t=1785003996;
+	b=UFAP1WlJvoDtMDEQqeaxHSlxYSlydo+5NA6EvDdqPxlUPsRDjfjTKBN0mZTgOMzPfsz4q9
+	Gs1aBbDSq/+JBIKLUc/UB5BzPY+Xc6nErbX7hVpDRxQxJOPbjYVNz/ppg+NoBmzyHnE36E
+	TDMh8ske2v7g7e8xfn4OyS2Ml7D41fQ=
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4954afac04bso15956485e9.0
+        for <linux-mm@kvack.org>; Sat, 25 Jul 2026 11:26:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785003992; x=1785608792; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1785003995; x=1785608795; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=bgiBPl+4CC8BJ96aRSlhbbIqzt82+u8UvxwlbobLLI8=;
-        b=NT6Keh+6OhsdznuRub21UHoWzHGOoRekQnfcU5UprRhq/MAYNtW1CtyxlSwKeWxdg7
-         mmp60kF21ulclPr//QD6d/7WP2y7DYG86yzZlwLOTBmDsqzEKTuw0E2FD0XAsMKohyDh
-         LlBFEBRsB9ZdvP4urZhlSpdcYxPCxTmoKUD/ojc4dyfg1VDHkVL6MBz7pz0ZuVy1cWit
-         Gg1O7EBtjsFk/9PPREyoyCBDq2Uwyma3Omo4EBHLKbIXJnRWxeQrN1gwKHDJY7zj1I5C
-         41fyBGZdz99odJDop/Y/aZtmqOyfkDwTvNovUnbqWAF4P/gwA1NHdEsI25YrtEpghTHj
-         jiIQ==
+        bh=pQdZdu+GEqOuh+POT8SK+LbvisqRrlELTO7OGW9vi2E=;
+        b=BxNzIP5eGEO5wIBqcnaC+NVQVASbMIv2Dh32yXLsYTfF/W2z6upaSa8KkjP/N17rE+
+         3NWWvoGBb3qtn7zbLyys4H4e/poNDRuLbEJLS9z67rkORODtQ+GOQGs0FZ09sQ4TTska
+         1bnALjFmZ5h7SLYD3KihXKo5O2zpZxRxv3DG2VIFcJ4vagqvdmPaEc6IWC7Fnw3V19sA
+         FMLLYscGkNyqto3pRlN4VgxjfFUnHC8eTF6T2U4IEpqQyeBg0Q5JPYAJntFGkBAoAONa
+         zwhty1STJSqhXW2oaQqlD0hbqzPgQIg0TrkPn5/b+jN+4EKITdhkr4+vRj8xbTfUexO7
+         fhEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785003992; x=1785608792;
+        d=1e100.net; s=20251104; t=1785003995; x=1785608795;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=bgiBPl+4CC8BJ96aRSlhbbIqzt82+u8UvxwlbobLLI8=;
-        b=pS3QGxuoHStS8r9G2DinyZc1BSe6Kbla8RRWzsavTeaspbQKibV8RbQfSzbjWp3gqT
-         /1vbcV7jP4QsvZVNSNjZrxfHBM9e7fo8mts5EDmzVFZ93gKIVuoHKWPdN/ku7yKpFd/E
-         0kpcrlg3QooMKGQLSZRk3a5+c5BaFF2OWfTakvqoq52LeBv+yoW7VOdkBeZhaGzggGWr
-         iVnpDbYUx3zFCKWTkizo5pTtPswv+jgRiV9YHrvdCiLcUm3rePB4IfuaOyqV0JTwP15U
-         QsJFW7f28x7+WkONSa3Jh4E7G02CbrDxmwiFdn5ONUEji2cSClt+r64jWwo+OLKOIBWR
-         wEoQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoXGaZcDTF1Ictpednuo1fbx78P20HOqJwuLy1AjacrfE7KK69/gdn0kEVzVwsAU0HgdA2bxcHhHA==@kvack.org
-X-Gm-Message-State: AOJu0YxCsbbCauvTS/DyLesWckFljmFtdp8aeO52bXZG7NVe0SUL2qoJ
-	Jshz6bf1P0SPgwUBpZMeeyNZEg119z08yvmd5ni1LiBiGYf87cfjvVg09eofR0Sp
-X-Gm-Gg: AR+sD11Z4rTMseT1ApXiVJ1vpjySu0Yxh9kbJWo9WFdH96C+pil+t5rho/hwmNlpBVp
-	mIDkyyx3FGA9tmqjHTeMOs3O6fQGGaI1BVcDUGkQyQSBRP7hkbE6e6KR/K119WDTWncHpPpG4GD
-	aE/c8QZ4JPNZJGC5yKAxWGWim7KQlLcLErScoE6D6ZCfYsgoW69108ac54bSoitKOW0UUX4b4cq
-	WMdG+XHAR/5cu4XvuDFgmFuDr1TSoUrpQ0pF/voh2paHP6RHPncoJGC62oF2VFemwNYLAcwOJM0
-	zbzVFMqY2HVa1Vu5SEFWioxwZIjlgh0ZwU+Lor9oFgnnAYOHo/6Ogg6PosxvsPHXA9IyU0hWf35
-	VoZ06KSLzu45Sf2i98Zm6NPrB/SJL1+zrtyq+Us4zK5XYqc6wZjNfO6sWqG/eHu4OZbm7l6f2e3
-	kah6YJlvg0nhb84aJ7mw==
-X-Received: by 2002:a7b:c3cb:0:b0:495:607e:5ee7 with SMTP id 5b1f17b1804b1-496b571fef8mr25075355e9.17.1785003992490;
-        Sat, 25 Jul 2026 11:26:32 -0700 (PDT)
+        bh=pQdZdu+GEqOuh+POT8SK+LbvisqRrlELTO7OGW9vi2E=;
+        b=aGaWjscR116swGsMjlsPQWbND8ag//8fTLGCrNigMJj9fgTC5ThvBwPJz/131lSKgl
+         X1VzjUFiPez0R5BrAMGDXcUOrOaMK9Uh0ZV/tzwDooZ3PAfC9FKzgwTBa+P/WSTuiTGc
+         KlOsyd9MAVpioILvu/RCdg2aEHFTiGle+NKNzNyIH3jZgHigLeAiQ+cBjb84id5goOE2
+         oLUp4DI/2lP5EouKqPXt7ZALrCJnvcwnKxiaJbloNefrkIbeSngMqnNggkNsyUJkqlft
+         PiYafT7sEva4ENlFSwtF/PN2tUyed4ZFrKmCbU5nueXAM/83flMO1NWtpU3TjtZgit/E
+         m5DA==
+X-Forwarded-Encrypted: i=1; AHgh+Ro9A08dk6ZUof3h6JtDBEWVFBCxuqRg/tawXuMpZv/38gNJie58fgh4l06yNGZ6DIPf+qG8ssV4wQ==@kvack.org
+X-Gm-Message-State: AOJu0Yx9ZushPopjI1TelcuWk6zIeT36Pn0rY7MQtQKw1PdCCMRlDlFr
+	ytQpXrthZnysWOXMno6cjwCn8LBZ2hA5gSCrIxzvTy9ZnjxNszPrIzdt
+X-Gm-Gg: AR+sD109UYczFZYV1eyXQYYVStUc5Qs7JSW7j/+zfTRTn97/eNE/FjRtESE6KnA2WDE
+	cCkuInxByjNEIIaiRSgyeZz3tXnBXXvdPEJrMsDLyuOLWkJpN5hew4oWaPrB/54TsXXgDrIwj/7
+	a0Y3npA9ufhj+JyNxP8wCwciyqregGzDyjyDQ2L2wnbb4efX8k7jN7779b/ZXUM3oPX88fk2UUt
+	0iqzeUufq7WP6Cpl2YxGePpj2b8jFjNcPhOU9gjoTULiFrWSpmN9Xi8K1LNzIo7VVNbmUJfp/GW
+	P+17nelbd0fiJc008mtIu/WEpj914IQhpJ1DDFOUwr0IMLdbbsUMiTuLcD9U3YhGiOsd2/Kge0J
+	cwm2y9qYoqIJkoRBxA1zAJiHPy1bdXXZV/qV9w0ZNquk2jvQajFBlRKKbioBo9bb7am0x0lOTTY
+	+lor3yV1Q=
+X-Received: by 2002:a05:600c:630d:b0:495:4d00:2fc0 with SMTP id 5b1f17b1804b1-496b56bec0cmr40434825e9.12.1785003995320;
+        Sat, 25 Jul 2026 11:26:35 -0700 (PDT)
 Received: from localhost ([178.241.98.184])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-496b49b2ffdsm83976835e9.15.2026.07.25.11.26.31
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-496b485ff2csm111111645e9.6.2026.07.25.11.26.33
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sat, 25 Jul 2026 11:26:32 -0700 (PDT)
+        Sat, 25 Jul 2026 11:26:35 -0700 (PDT)
 From: Ayhan Aydin <nsd.project.dev@gmail.com>
 To: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
 Cc: nsd.project.dev@gmail.com
-Subject: [RFC PATCH 1/3] mm/filemap: Add NSD prefetch hook point
-Date: Sat, 25 Jul 2026 21:26:26 +0300
-Message-ID: <20260725182628.221603-2-nsd.project.dev@gmail.com>
+Subject: [RFC PATCH 2/3] nsd: Core prediction engine
+Date: Sat, 25 Jul 2026 21:26:27 +0300
+Message-ID: <20260725182628.221603-3-nsd.project.dev@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260725182628.221603-1-nsd.project.dev@gmail.com>
 References: <20260725182628.221603-1-nsd.project.dev@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C491BA000A
 X-Rspam-User: 
-X-Stat-Signature: 7esscmx6bf1fdexqdujdy1ni5mf8i3tx
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1785003993-651578
-X-HE-Meta: U2FsdGVkX1+RP1n9zrfEAxbZb+JelGj73kwOmJeciBJccwGB54Fy+KPBloATj/MXR3N90+2Gz7yYjC3CCK/0gMlFJpfS0+GT6D+iGwj2ofPa2hwC4oIVIAbfETJrsxn95ZwYzc5oCCopU1EVYQWeJX1UGPuo4HgqRpMOuRdKaBnRdZEL6LYWsYyAU8eNa9LzPWIjmEr5DC83hHRcMXm158UfEQGwXPXH6ybVDWSzoVz8JylAX+yC6/HpXd3AKHWj9rLAj9vuHjNYLidmtM+/ay3ak0fD6DhwV+hz5nvbR/fpps1L1ZHdc0XUg83DnmOzMlyplIUKT7LbcGPQNsvODOVKA3pG0Mqw0DFiCwP5+d8pbUkA3INERz62My0L+0pPfe3qf/bDmgfTzg3A/88MwMSNAz0xduz/GssCZ6Ex0EF48C9nOMiVh2gsLFAYLs9MDgyEZKx3sst+SZHgRwQWb7t2tGLkIImxiWuTFS3Gk3SOdP+OWfws/hX/9YW6eGIkzA2meaxV2pgPkFJrnHF3m5LYK0lcRyurs7qcf36EQjU33ncnzYG9x71g1K6RUAdo7z+e8mi+816qHgiB/gCZLM7r+h7EQYJfoEuR5Vl9n32w7JCMUGpPLwZjPLnbTkhR1WJ+BAaS2+up3qOcPbTxjpRQWr2FE8uSO7dyKvM7ORKmUwX1nNUwRDhoAyeHlYYc9mALTXoqtO1FK29Vu8cCMlAyvhAzR0HyPxK57OfICVfqlG8NLDQL7WG4inExsQgmL+EviEpbd2SFMFpntENSbYJ8w8+sksrdWxZlSvU55aGAiK7m/3uPFvWC+mONSnt1m6owzo+0MBmVVCYcKsL8pVWX63o1vImwDwAOg29A/PiYHfnshYrDEzZgLPk9Ger4/YlblREIhfteZ9t3MV4Dvke4b/ORTZUeyuCg6/yXGM0JkAoBdtQuOQMhgVwUbgdd23b4UY37fafcCs6wTf8
- sXMCyeib
- MLcI+Kx2w9aP/4uR1cKsB2/5EUP9Uez643G92IB5D8o/jkp7t3s5bek8b8rBeMkX+S5ET/H3fgjn2ItwthpO8embYXYxH3+pKuCMq2r3V7VEbM2aVHigX6oMihC59BuNEcHPacDjDP6ymDo30yLc2aLvg6ElxMmQ39jbNZxbUeqPtCYx1hv3YsAVJLqsv1JdYONdW+6NBC8hwwWoP5y+U31CKgxiI5sd4ieFaeoR0IupnaNyat/GxVao5wyYsBBzx9M6xrofspz/118FmRg2AahKUziCUWoSel9UXyMnALvR9M3QIs1xsVkfMv1L0zpUKW62IULWCe4fWMK+Gg5UR4gHP1ZLrCcCFYpY8wBLK8uHiVdnS/ofi/GMNwcrxTQ/mbXB1a/QGuQFazq41dxNKuIo4hewOc9b90AM4Po+uqI5V9z6rWU3mvc8tEOsn1CdCYjeipLQo+g46esspLlKTJe8K9d3cY0oHZtxtc/5RXJCNKBk=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C1A2440002
+X-Stat-Signature: igar6fnuzrms864cbdkimts8wtqzgigz
+X-HE-Tag: 1785003996-704773
+X-HE-Meta: U2FsdGVkX1+OX19sbVsK/k2qjVV/G8STINVImYlBThWMMof7MxxpS07gYoJtwdM8vHDtWjHbzesOIQOk5ghVaha4cFoVMGgVSAjnJV/2QveWnglSil/4PMWFt4SgjHMS1GyxGW3qyn5yLbU14UM+q6VDY7wxfFtGWeAKaDkyLUwvVZ1vTDqIislJBqusg8PfAlVQiRJ6JdHxxP1RxTdGb5Y2p2b2iEPNuwW2GXu7ul9x+yXRy0mvkMSjQP/X7ecgtVQ8ZLZfwr4YP0cBXX+fQnRpdArSPExSliagwRGDHswUiHTSgQXBZpAHzJDvXjYexOiUwt2lZCSkPxluWOeVAK5+SSmsS0UWWEMzVlqjNivTCPZQz9glmp2iPi4kJOP8zXWyKrDkWWzKXAVY/ytmwf3Toqy75LPFLgDeyrZeqgsx+CtfOS6G3wep0YLpAdXns2flqzNvj8OLXtudunw5LBYvADuzK+CBCEt++qhwG/158+hHsQiESDnWAglRa4PKGmngu09W3bABJNwVLv/zX+yPJ4NYTQAHyt0InLRSVYl1fX/ieVccBzgPl0tBKAnUnG/qGJ1k7I5p5Vb6BvtBz/bABJCE9/xmsgLB8p1+Lr6M4I0TN7YXJ9kMFj98uNa18m1VN/ErKoGyyjUDJjwQ08clBh56bvu7/C7fg7Ph1NCPpRSDVwVqY1IDq/habloY3Eu7FMvTuhWe5OL2DuR/LBQXWf+4KfwmHyZT1f0KPbPDL3OwEwz8wrU4JCOixj3hVnjlUdpWhKpBTrKH6Phee7AgCWHjyI9PNKbNpUoIURgfs3/taqWIE/cVnla9GaLvNeqXaDnn4ToBbEStI5hbV0MIIxCSdstvH3gDthhZv7onazdnpkqsk2D8i/EIUGN6ObYgiBxSmXZUJCTHcE3xRDDF1d+MPVlEJldI84zgVYZCh5nbvCzHZ04x2bRAbnOKeS4UJGl+n5TCjUu2FsD
+ NLn6h9fy
+ 8lIf5CvJoIGSHcDjn1zmOAyYNUZZzqm8Nt7Ioxo8/zwSNY57ZGPeGrwY62bOSy+gUyDOJ565RtbyysDrUa05+jkQ+rlXkW8SXldzE1Uju4DFILF03pV9sTVN6rLzIxcjXXERWabQirNQw1SdwZK0XHk/UxWOmWGTzMQonZvITfHl9DKeF0LewdXoJGLJFeIp0JQENkzn42/lCwoCK3wg5kq9tymKNHLYscV5VeLQ/fUM0ZxXlgvXHqXlRcghjU/wFobrf4WReFT1Evhh7EOVOs7Pwv8dtdVY6PNNUnUYEGsmRsHvs4NephyB4+k5i1lupqaanPp/7DMxwjv8pVMrZ5ReAqDt7sYhiOIqdWarUQYb/TbOKUdZqv84lqpxDEp3G31f4MehR11jlNfyoHIuSCmiiv+qv3hgMENdnfdJd4ovOELVgfKwqD56w3VUNQuieMB28nreKri+2EL8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,60 +117,517 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a single function call in filemap_read() to notify the NSD
-prefetcher of I/O events.
-
-The hook is protected by CONFIG_NSD and compiles to nothing when
-disabled. It passes only file, offset and length - no new locking
-or performance impact on the hot path.
+Add the NSD prediction engine with synaptic Markov chain,
+stride predictor, sysfs interface, and prefetch worker.
+See Documentation/filesystems/nsd.rst for details.
 
 Signed-off-by: Ayhan Aydin <nsd.project.dev@gmail.com>
 ---
- include/linux/nsd.h | 12 ++++++++++++
- mm/filemap.c        |  5 +++++
- 2 files changed, 17 insertions(+)
- create mode 100644 include/linux/nsd.h
+ fs/nsd/Kconfig  |  16 ++
+ fs/nsd/Makefile |   8 +
+ fs/nsd/core.c   | 453 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 477 insertions(+)
+ create mode 100644 fs/nsd/Kconfig
+ create mode 100644 fs/nsd/Makefile
+ create mode 100644 fs/nsd/core.c
 
-diff --git a/include/linux/nsd.h b/include/linux/nsd.h
+diff --git a/fs/nsd/Kconfig b/fs/nsd/Kconfig
 new file mode 100644
-index 00000000..abcd1234
+index 0000000..5ddd8cc
 --- /dev/null
-+++ b/include/linux/nsd.h
-@@ -0,0 +1,12 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+#ifndef _LINUX_NSD_H
-+#define _LINUX_NSD_H
++++ b/fs/nsd/Kconfig
+@@ -0,0 +1,16 @@
++config NSD
++	tristate "Neural Storage Driver (NSD) - learning prefetcher"
++	depends on MMU
++	help
++	  NSD is a learning prefetcher that monitors I/O patterns via a hook
++	  in the kernel page cache read path and prefetches pages using
++	  page_cache_sync_readahead().
 +
-+#ifdef CONFIG_NSD
-+void nsd_notify_read(struct file *f, loff_t pos, size_t len);
-+#else
-+static inline void nsd_notify_read(struct file *f, loff_t pos, size_t len) {}
-+#endif
++	  It builds a synaptic Markov chain model of access patterns at
++	  4KB region granularity, detecting sequential strides, repeating
++	  patterns, and learned transitions.
 +
-+#endif /* _LINUX_NSD_H */
-diff --git a/mm/filemap.c b/mm/filemap.c
-index abcdef01..abcdef02 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -36,6 +36,7 @@
- #include <linux/pipe_fs_i.h>
- #include <linux/splice.h>
- #include <linux/rcupdate_wait.h>
++	  When loaded, NSD adds a small hook in filemap_read() that
++	  compiles to a no-op when NSD is disabled.
++
++	  To compile as a module: M, leave blank to disable.
+\ No newline at end of file
+diff --git a/fs/nsd/Makefile b/fs/nsd/Makefile
+new file mode 100644
+index 0000000..db5126c
+--- /dev/null
++++ b/fs/nsd/Makefile
+@@ -0,0 +1,8 @@
++# SPDX-License-Identifier: GPL-2.0-only
++#
++# Makefile for NSD (Neural Storage Driver)
++#
++
++obj-$(CONFIG_NSD) += nsd.o
++
++nsd-y := core.o
+diff --git a/fs/nsd/core.c b/fs/nsd/core.c
+new file mode 100644
+index 0000000..1f42fa9
+--- /dev/null
++++ b/fs/nsd/core.c
+@@ -0,0 +1,453 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * core.c - Neural Storage Driver core prediction engine
++ *
++ * A learning prefetcher using a synaptic Markov chain model
++ * to predict and prefetch pages in the kernel page cache.
++ *
++ * Called from filemap_read() via nsd_notify_read(). The function
++ * is exported for CONFIG_NSD=m; if built-in, it is called directly.
++ */
++
++#define pr_fmt(fmt) "nsd: " fmt
++
++#include <linux/module.h>
++#include <linux/kernel.h>
++#include <linux/slab.h>
++#include <linux/spinlock.h>
++#include <linux/atomic.h>
++#include <linux/workqueue.h>
++#include <linux/kthread.h>
++#include <linux/delay.h>
++#include <linux/percpu.h>
++#include <linux/jiffies.h>
++#include <linux/random.h>
++#include <linux/sched.h>
++#include <linux/fs.h>
 +#include <linux/nsd.h>
- #include <asm/pgalloc.h>
- #include <asm/tlb.h>
- 
-@@ -2642,6 +2643,10 @@ ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
- 	if (!count)
- 		goto out;
- 
-+	if (IS_ENABLED(CONFIG_NSD))
-+		nsd_notify_read(iocb->ki_filp, iocb->ki_pos,
-+				iov_iter_count(iter));
++#include <linux/sysfs.h>
++#include <linux/kobject.h>
++#include <linux/string.h>
++#include <linux/mm.h>
++#include <linux/pagemap.h>
++#include <linux/version.h>
 +
- 	already_read = 0;
- 	if (!iov_iter_count(iter))
- 		goto out;
++#define NSD_VERSION             "1.0.0"
++#define NSD_REGION_SHIFT        12
++#define NSD_REGION_BYTES        BIT(NSD_REGION_SHIFT)
++#define NSD_SYN_TABLE_SIZE      BIT(20)
++#define NSD_SYN_MASK            (NSD_SYN_TABLE_SIZE - 1)
++#define NSD_STRIDE_PRED_MAX     256
++#define NSD_PREFETCH_DEPTH      256
++#define NSD_RING_SIZE           256
++#define NSD_HOT_ENTRIES         1024
++#define NSD_WORKQUEUE_NAME      "nsd_prefetch"
++
++struct nsd_synapse {
++	u64                     key;
++	u32                     next_region;
++	u32                     strength;
++	u32                     hits;
++	u32                     maybe_hits;
++	u32                     chain_count;
++	struct nsd_synapse      *next;
++};
++
++struct nsd_ring_entry {
++	u32             file_id;
++	u32             region;
++	u64             ts;
++};
++
++struct nsd_pcpu_ring {
++	struct nsd_ring_entry   entries[NSD_RING_SIZE];
++	unsigned int            head;
++	unsigned int            tail;
++};
++
++static DEFINE_PER_CPU(struct nsd_pcpu_ring, nsd_rings);
++
++struct nsd_hot_entry {
++	u32             file_id;
++	u32             last_region;
++	u32             stride;
++	s32             stride_count;
++	u32             regions[8];
++	unsigned int    pos;
++};
++
++static struct nsd_hot_entry nsd_hot[NSD_HOT_ENTRIES];
++static DEFINE_SPINLOCK(nsd_hot_lock);
++
++static struct nsd_synapse *nsd_syn_table[NSD_SYN_TABLE_SIZE];
++static DEFINE_SPINLOCK(nsd_syn_lock);
++
++static atomic_t nsd_prefetch_count = ATOMIC_INIT(0);
++static atomic_t nsd_used_count = ATOMIC_INIT(0);
++static atomic_t nsd_waste_count = ATOMIC_INIT(0);
++static atomic_t nsd_stride_preds = ATOMIC_INIT(0);
++static atomic64_t nsd_syn_entries = ATOMIC64_INIT(0);
++static unsigned int nsd_chain_depth;
++static bool nsd_observe_only;
++static bool nsd_penalty_state = true;
++static bool nsd_waste_track;
++
++static struct task_struct *nsd_worker_thread;
++static DECLARE_WAIT_QUEUE_HEAD(nsd_worker_wait);
++static struct workqueue_struct *nsd_wq;
++static struct kobject *nsd_kobj;
++
++module_param_named(observe_only, nsd_observe_only, bool, 0644);
++MODULE_PARM_DESC(observe_only, "Start in observe-only mode");
++module_param_named(penalty_state, nsd_penalty_state, bool, 0644);
++MODULE_PARM_DESC(penalty_state, "Enable penalty on waste");
++module_param_named(waste_track, nsd_waste_track, bool, 0644);
++MODULE_PARM_DESC(waste_track, "Enable waste tracking");
++
++static u32 nsd_file_id(struct file *file)
++{
++	return (u32)((unsigned long)file >> 6);
++}
++
++static u32 nsd_off_to_region(loff_t off)
++{
++	return (u32)(off >> NSD_REGION_SHIFT);
++}
++
++static u64 nsd_syn_key(u32 file_id, u32 region)
++{
++	return ((u64)file_id << 32) | region;
++}
++
++static u32 nsd_syn_hash(u64 key)
++{
++	return (u32)(key ^ (key >> 20)) & NSD_SYN_MASK;
++}
++
++static struct nsd_synapse *nsd_syn_lookup(u64 key)
++{
++	u32 hash = nsd_syn_hash(key);
++	struct nsd_synapse *s = nsd_syn_table[hash];
++
++	while (s) {
++		if (s->key == key)
++			return s;
++		s = s->next;
++	}
++	return NULL;
++}
++
++static struct nsd_synapse *nsd_syn_insert(u64 key, u32 region)
++{
++	u32 hash = nsd_syn_hash(key);
++	struct nsd_synapse *s;
++
++	s = kmalloc(sizeof(*s), GFP_ATOMIC);
++	if (!s)
++		return NULL;
++
++	s->key = key;
++	s->next_region = 0;
++	s->strength = 1;
++	s->hits = 0;
++	s->maybe_hits = 0;
++	s->chain_count = 0;
++	s->next = nsd_syn_table[hash];
++	nsd_syn_table[hash] = s;
++	atomic64_inc(&nsd_syn_entries);
++	return s;
++}
++
++static void nsd_syn_learn(u32 file_id, u32 prev_region, u32 cur_region)
++{
++	u64 key;
++	struct nsd_synapse *s;
++	unsigned long flags;
++
++	if (!prev_region)
++		return;
++
++	key = nsd_syn_key(file_id, prev_region);
++	spin_lock_irqsave(&nsd_syn_lock, flags);
++	s = nsd_syn_lookup(key);
++	if (!s) {
++		s = nsd_syn_insert(key, cur_region);
++		if (!s) {
++			spin_unlock_irqrestore(&nsd_syn_lock, flags);
++			return;
++		}
++	}
++	if (s->next_region == cur_region) {
++		if (s->strength < 1000)
++			s->strength++;
++	} else if (s->strength > 1) {
++		s->strength--;
++	} else {
++		s->next_region = cur_region;
++	}
++	s->hits++;
++	spin_unlock_irqrestore(&nsd_syn_lock, flags);
++}
++
++static int nsd_check_stride(struct nsd_hot_entry *h, u32 region)
++{
++	s32 diff;
++
++	if (!h->last_region)
++		goto update;
++
++	diff = (s32)(region - h->last_region);
++	if (diff > 0 && diff <= 256) {
++		if (h->stride == (u32)diff) {
++			if (h->stride_count < 1000)
++				h->stride_count++;
++		} else {
++			if (h->stride_count > 0)
++				h->stride_count--;
++			else
++				h->stride = (u32)diff;
++		}
++	} else {
++		h->stride_count = 0;
++	}
++
++update:
++	h->last_region = region;
++
++	if (h->stride_count >= 2) {
++		atomic_inc(&nsd_stride_preds);
++		return (int)h->stride;
++	}
++	return 0;
++}
++
++static void nsd_pcpu_push(u32 file_id, u32 region)
++{
++	struct nsd_pcpu_ring *ring = this_cpu_ptr(&nsd_rings);
++	unsigned int next = (ring->head + 1) & (NSD_RING_SIZE - 1);
++
++	if (next == ring->tail)
++		return;
++
++	ring->entries[ring->head].file_id = file_id;
++	ring->entries[ring->head].region = region;
++	ring->entries[ring->head].ts = jiffies;
++	ring->head = next;
++}
++
++static void nsd_prefetch(struct file *file, pgoff_t index, unsigned int count)
++{
++	struct address_space *mapping = file->f_mapping;
++
++	if (!mapping)
++		return;
++
++	page_cache_sync_readahead(mapping, &file->f_ra, file, index, count);
++	atomic_add(count, &nsd_prefetch_count);
++}
++
++static void nsd_process_events(void)
++{
++	struct nsd_pcpu_ring *ring;
++	int cpu;
++
++	for_each_possible_cpu(cpu) {
++		ring = per_cpu_ptr(&nsd_rings, cpu);
++		while (ring->tail != ring->head) {
++			struct nsd_ring_entry *e;
++			u64 key;
++
++			e = &ring->entries[ring->tail];
++			key = nsd_syn_key(e->file_id, e->region);
++
++			struct nsd_synapse *s;
++			spin_lock(&nsd_syn_lock);
++			s = nsd_syn_lookup(key);
++			if (s) {
++				s->maybe_hits++;
++				s->chain_count++;
++			}
++			spin_unlock(&nsd_syn_lock);
++
++			ring->tail = (ring->tail + 1) & (NSD_RING_SIZE - 1);
++		}
++	}
++}
++
++static int nsd_worker_fn(void *data)
++{
++	while (!kthread_should_stop()) {
++		wait_event_timeout(nsd_worker_wait,
++				   kthread_should_stop() || nsd_observe_only,
++				   HZ / 10);
++
++		if (kthread_should_stop())
++			break;
++		if (nsd_observe_only)
++			continue;
++
++		nsd_process_events();
++	}
++	return 0;
++}
++
++void nsd_notify_read(struct file *file, loff_t pos, size_t len)
++{
++	u32 file_id, cur_region, prev_region;
++	unsigned long flags;
++	struct nsd_hot_entry *h = NULL;
++	int i, stride;
++	pgoff_t prefetch_idx;
++
++	if (!file || nsd_observe_only)
++		return;
++
++	file_id = nsd_file_id(file);
++	cur_region = nsd_off_to_region(pos);
++	nsd_pcpu_push(file_id, cur_region);
++
++	spin_lock_irqsave(&nsd_hot_lock, flags);
++	for (i = 0; i < NSD_HOT_ENTRIES; i++) {
++		if (nsd_hot[i].file_id == file_id) {
++			h = &nsd_hot[i];
++			break;
++		}
++	}
++	if (!h) {
++		for (i = 0; i < NSD_HOT_ENTRIES; i++) {
++			if (!nsd_hot[i].last_region) {
++				h = &nsd_hot[i];
++				h->file_id = file_id;
++				break;
++			}
++		}
++	}
++	if (!h)
++		h = &nsd_hot[0];
++
++	prev_region = h->last_region;
++	h->last_region = cur_region;
++	spin_unlock_irqrestore(&nsd_hot_lock, flags);
++
++	nsd_syn_learn(file_id, prev_region, cur_region);
++
++	stride = nsd_check_stride(h, cur_region);
++	prefetch_idx = (pos >> PAGE_SHIFT) + stride;
++	if (stride > 0) {
++		nsd_prefetch(file, prefetch_idx,
++			     min_t(unsigned int, stride, NSD_PREFETCH_DEPTH));
++		wake_up(&nsd_worker_wait);
++	}
++}
++EXPORT_SYMBOL_GPL(nsd_notify_read);
++
++/* sysfs */
++static ssize_t nsd_stats_show(struct kobject *kobj,
++			      struct kobj_attribute *attr, char *buf)
++{
++	unsigned long prefetched = atomic_read(&nsd_prefetch_count);
++	unsigned long used = atomic_read(&nsd_used_count);
++	unsigned long wasted = atomic_read(&nsd_waste_count);
++	unsigned long hit_rate = prefetched ? (used * 100 / prefetched) : 0;
++
++	return sysfs_emit(buf,
++		"prefetched   %lu\n"
++		"used         %lu\n"
++		"wasted       %lu\n"
++		"hit_rate_real %lu%%\n"
++		"stride_preds %u\n"
++		"chain_depth  %u\n"
++		"synapse_ents %llu\n"
++		"mode         %s\n",
++		prefetched, used, wasted, hit_rate,
++		atomic_read(&nsd_stride_preds),
++		nsd_chain_depth,
++		atomic64_read(&nsd_syn_entries),
++		nsd_observe_only ? "observe" : "active");
++}
++
++static struct kobj_attribute nsd_stats_attr = __ATTR(stats, 0444, nsd_stats_show, NULL);
++
++#define NSD_BOOL_ATTR(name)                                             \
++static ssize_t name##_show(struct kobject *kobj,                        \
++			   struct kobj_attribute *attr, char *buf)      \
++{                                                                       \
++	return sysfs_emit(buf, "%d\n", nsd_##name);                    \
++}                                                                       \
++static ssize_t name##_store(struct kobject *kobj,                        \
++			    struct kobj_attribute *attr,                \
++			    const char *buf, size_t count)              \
++{                                                                       \
++	bool val;                                                       \
++	if (kstrtobool(buf, &val))                                      \
++		return -EINVAL;                                         \
++	nsd_##name = val;                                               \
++	return count;                                                   \
++}                                                                       \
++static struct kobj_attribute name##_attr =                              \
++	__ATTR(name, 0644, name##_show, name##_store)
++
++NSD_BOOL_ATTR(observe_only);
++NSD_BOOL_ATTR(penalty_state);
++NSD_BOOL_ATTR(waste_track);
++
++static struct attribute *nsd_attrs[] = {
++	&nsd_stats_attr.attr,
++	&observe_only_attr.attr,
++	&penalty_state_attr.attr,
++	&waste_track_attr.attr,
++	NULL,
++};
++ATTRIBUTE_GROUPS(nsd);
++
++static int __init nsd_init(void)
++{
++	int ret;
++
++	pr_info("NSD v%s loading\n", NSD_VERSION);
++
++	nsd_wq = alloc_workqueue(NSD_WORKQUEUE_NAME, WQ_UNBOUND, 1);
++	if (!nsd_wq)
++		return -ENOMEM;
++
++	nsd_worker_thread = kthread_run(nsd_worker_fn, NULL, "nsd_worker");
++	if (IS_ERR(nsd_worker_thread)) {
++		destroy_workqueue(nsd_wq);
++		return PTR_ERR(nsd_worker_thread);
++	}
++
++	nsd_kobj = kobject_create_and_add("nsd", kernel_kobj);
++	if (!nsd_kobj) {
++		kthread_stop(nsd_worker_thread);
++		destroy_workqueue(nsd_wq);
++		return -ENOMEM;
++	}
++
++	ret = sysfs_create_groups(nsd_kobj, nsd_groups);
++	if (ret) {
++		kobject_put(nsd_kobj);
++		kthread_stop(nsd_worker_thread);
++		destroy_workqueue(nsd_wq);
++		return ret;
++	}
++
++	pr_info("NSD ready | /sys/kernel/nsd/ | observe_only=%d\n", nsd_observe_only);
++	return 0;
++}
++
++static void __exit nsd_exit(void)
++{
++	sysfs_remove_groups(nsd_kobj, nsd_groups);
++	kobject_put(nsd_kobj);
++	kthread_stop(nsd_worker_thread);
++	destroy_workqueue(nsd_wq);
++	pr_info("NSD unloaded\n");
++}
++
++module_init(nsd_init);
++module_exit(nsd_exit);
++
++MODULE_LICENSE("GPL");
++MODULE_AUTHOR("Ayhan Aydin <nsd.project.dev@gmail.com>");
++MODULE_DESCRIPTION("Neural Storage Driver - learning prefetcher");
++MODULE_VERSION(NSD_VERSION);
 -- 
 2.43.0
+
 
