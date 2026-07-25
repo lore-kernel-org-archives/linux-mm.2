@@ -4,97 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81922C531C9
-	for <linux-mm@archiver.kernel.org>; Sat, 25 Jul 2026 15:54:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 130B3C531C9
+	for <linux-mm@archiver.kernel.org>; Sat, 25 Jul 2026 15:55:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8478E6B0095; Sat, 25 Jul 2026 11:54:03 -0400 (EDT)
+	id 0A8756B0098; Sat, 25 Jul 2026 11:55:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 81E2F6B0096; Sat, 25 Jul 2026 11:54:03 -0400 (EDT)
+	id 081166B0099; Sat, 25 Jul 2026 11:55:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 736206B0098; Sat, 25 Jul 2026 11:54:03 -0400 (EDT)
+	id EDBCF6B009B; Sat, 25 Jul 2026 11:55:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A9C16B0095
-	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 11:54:03 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AC14E140304
-	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 15:54:02 +0000 (UTC)
-X-FDA: 85027745124.17.D77FA8D
-Received: from ewsoutbound.kpnmail.nl (ewsoutbound.kpnmail.nl [195.121.94.184])
-	by imf25.hostedemail.com (Postfix) with ESMTP id BA850A0007
-	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 15:54:00 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=xs4all.nl header.s=xs4all01 header.b=ZQjDvkn4;
-	spf=pass (imf25.hostedemail.com: domain of jkoolstra@xs4all.nl designates 195.121.94.184 as permitted sender) smtp.mailfrom=jkoolstra@xs4all.nl;
-	dmarc=pass (policy=reject) header.from=xs4all.nl
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784994840;
-	b=XJPA6noXXLPaj6iZuLRhfoLpdSJDVjT81SXlDIAEvWaDr/Y2/BKfJfkzqi0PLb2tUhY0Nl
-	HKh4GKDIwywQ+AJkfvwSr3NomY68tlgnAHhlxwLdqI/1y+R5MGqyrOEnuxJPLGKCiymcnc
-	XTJNeLmOjj2o2v4Il5o5AKVeXphBfH4=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=xs4all.nl header.s=xs4all01 header.b=ZQjDvkn4;
-	spf=pass (imf25.hostedemail.com: domain of jkoolstra@xs4all.nl designates 195.121.94.184 as permitted sender) smtp.mailfrom=jkoolstra@xs4all.nl;
+	by kanga.kvack.org (Postfix) with ESMTP id B30296B0098
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 11:55:30 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3AFE98031A
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 15:55:30 +0000 (UTC)
+X-FDA: 85027748820.21.A4ABF45
+Received: from ewsoutbound.kpnmail.nl (ewsoutbound.kpnmail.nl [195.121.94.183])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 3F7D7140008
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 15:55:28 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=xs4all.nl header.s=xs4all01 header.b=YlaC956p;
+	spf=pass (imf09.hostedemail.com: domain of jkoolstra@xs4all.nl designates 195.121.94.183 as permitted sender) smtp.mailfrom=jkoolstra@xs4all.nl;
 	dmarc=pass (policy=reject) header.from=xs4all.nl
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784994840;
+	s=arc-20220608; t=1784994928;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uvvy4ZDdcswg3rQnKPRfjVI+F4d66zq2fU5XaCFzDL8=;
-	b=0O3DrnSVfTvEqN/eovZ89z1OHGchbNMP/B3lHvQh6aK1Vc5Bdmfo+eFrtVw7VGipuX7C5v
-	cwXNkc+5j4ut0U/57rFqY3jAYKIIYs0hmbskwD72FynDEaGEQ5vXy+vPC7aNtGSTkqK0m/
-	AFi00cy1NtZok6XpHj5wFCowFlKC5Oc=
-X-KPN-MessageId: 0c6d650a-8841-11f1-a5a1-005056994fde
-Received: from smtp.kpnmail.nl (unknown [10.31.155.6])
+	bh=N2caielAy5YWpSfpB/EvCdmvT5rYo4ECYSr3Z0BRh1k=;
+	b=bVxzK/h398uA8aRyPOmmLQjJecXoKCKfbxP4sOo/u5nYv1oufsbuyMzcblG+aeZsEDai2+
+	My3LFteMpVOMkrx+pShzLSh988z8wd8sM3d76Kiabi6RI7832mmMyCUPyUldonKQeD1xZj
+	oWGq2RcsjvKYZ61213sEf3ZLN+PBl2c=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=xs4all.nl header.s=xs4all01 header.b=YlaC956p;
+	spf=pass (imf09.hostedemail.com: domain of jkoolstra@xs4all.nl designates 195.121.94.183 as permitted sender) smtp.mailfrom=jkoolstra@xs4all.nl;
+	dmarc=pass (policy=reject) header.from=xs4all.nl
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784994928;
+	b=ySJiArrviJQjBIB0BSdB/bNktlqbobBVJGwTRpoQCwnb/gLiPT/5+omzYGxN9rfpTzNHA/
+	B29yydxT2+efzxcDS0+4MQ9P+3th4YGYPo/ucAPKluFIfTbUWJgMOayCxmgkkM9+gaWDrc
+	UMmWZ8qewUFcxeQdHX68C1gvfxqBY/w=
+X-KPN-MessageId: 40948ed9-8841-11f1-8f54-005056992ed3
+Received: from smtp.kpnmail.nl (unknown [10.31.155.7])
 	by ewsoutbound.so.kpn.org (Halon) with ESMTPS
-	id 0c6d650a-8841-11f1-a5a1-005056994fde;
-	Sat, 25 Jul 2026 17:53:58 +0200 (CEST)
+	id 40948ed9-8841-11f1-8f54-005056992ed3;
+	Sat, 25 Jul 2026 17:55:26 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=xs4all.nl; s=xs4all01;
 	h=content-type:mime-version:message-id:subject:to:from:date;
-	bh=uvvy4ZDdcswg3rQnKPRfjVI+F4d66zq2fU5XaCFzDL8=;
-	b=ZQjDvkn4iMfo/8VkPSOy8ljjN8hYriXoHoX7gYZsBFcX56/QwrXk8o/0or/YDqGfET+e8cNkBG229
-	 32UFv58SwfqpN7VLCDxpPTEmdQqdWUrnUPo0dOx1BlWTHYFX21/biz8vxDlcHtSZTi2G/IQOYJU3g8
-	 jNo/F2OpDNmFqUgOdClT7xlTOu8r3uvr1mU6Ysyi2bam5Fa8dFhxN4q4XZrW5LesgBQlcfA2gL8n/a
-	 IsO3CRajx87Gt1V9w1i/to3V1x6CjPOCw9brL68wdkokxn0onM1sLdICQbGoHoG7vDJiBapUoxW2gJ
-	 tqaKMgzhqtrYkOqXMGjGHsDvywKa7Rg==
-X-KPN-MID: 33|SYoO7BKxnSp3q+Q2zAJ+7SXDVW4QgsJw++Dyl3VqxY6PIx6G5hp/NvmtqCLduSv
- E4W+IOvkTuabtk60FNEaL+nVQxHXTfohazi68c5Idzac=
+	bh=N2caielAy5YWpSfpB/EvCdmvT5rYo4ECYSr3Z0BRh1k=;
+	b=YlaC956pxurcbVdpySmYk4W1hG0rWtqeLuOXN0FesBalrGE6LRXyt0jhoufOiZrHOz0O0L3kJYvMd
+	 WxYGGkfFpxk9zuTbAOSGTQbn8C4w3j7TJx0nBwgC3TZxyN4MZoCMNJuNmLgkx3AMiChd5lJX12IVOx
+	 ln0vlt4hW/fpPDb5EoC9k1mWJGl+mbNJS3XiFHw71jody+LyxpvLPypjZBsu688DvkdioI3C87HHV+
+	 luBw1L+Hc8qF3OS5ECGQhYyVwY/DZHNJPXXyPYIqbWFRRP2PsLkH7ytlS1GIQZy8fBgxCL/0Dlt6Ww
+	 fOafHXtd1rGfigOPaGsUkP/xrq0i3tQ==
+X-KPN-MID: 33|B+iYy1xhRWmj0mq9FQCVTULLba/wIX0QZ4uD5umAj/VgNq3X306kFN7L7VogFfD
+ aX8XwpILauRRhWBzDeDHQAdj8MRe6FiAeSh3UULWhqYA=
 X-KPN-VerifiedSender: Yes
-X-CMASSUN: 33|LdJrb658pFOTEgi/Onzb7Ly4knMgFixcDhSMTOsvwBDK9Z/O/vPiMUddWNpTtMl
- KBOn8kLU42qu8SIAjaWGm8g==
+X-CMASSUN: 33|5gvSlG1MYtR2kFh3LM/ln0e9EiGfxMcSrfPFBq1WvKYa12t7NavajxYZmyQrm61
+ b9mM5EverqLBHkX+M8CEeHQ==
 X-Originating-IP: 85.144.169.142
 Received: from localhost (142-169-144-85.ftth.glasoperator.nl [85.144.169.142])
 	by smtp.xs4all.nl (Halon) with ESMTPSA
-	id 0c20c08f-8841-11f1-a789-00505699772e;
-	Sat, 25 Jul 2026 17:53:58 +0200 (CEST)
-Date: Sat, 25 Jul 2026 17:53:56 +0200
+	id 40379afb-8841-11f1-8089-005056998788;
+	Sat, 25 Jul 2026 17:55:26 +0200 (CEST)
+Date: Sat, 25 Jul 2026 17:55:24 +0200
 From: Jori Koolstra <jkoolstra@xs4all.nl>
 To: Christian Brauner <brauner@kernel.org>
 Cc: linux-fsdevel@vger.kernel.org, 
 	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, linux-mm@kvack.org, 
 	Farid Zakaria <farid.m.zakaria@gmail.com>, jannh@google.com
-Subject: Re: [PATCH v3 16/24] binfmt_misc: give the parse_command() results
- names
-Message-ID: <amTcDFzdK5a2KB6A@lt-jori.localdomain>
+Subject: Re: [PATCH v3 17/24] binfmt_misc: factor out the entry removal
+Message-ID: <amTcOh-bqBGgp8me@lt-jori.localdomain>
 References: <20260710-work-binfmt_misc-locking-v3-0-a162f7cb58d6@kernel.org>
- <20260710-work-binfmt_misc-locking-v3-16-a162f7cb58d6@kernel.org>
+ <20260710-work-binfmt_misc-locking-v3-17-a162f7cb58d6@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260710-work-binfmt_misc-locking-v3-16-a162f7cb58d6@kernel.org>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: BA850A0007
-X-Stat-Signature: 4b3d38m58abuhdn8rcy8bswaee54rths
+In-Reply-To: <20260710-work-binfmt_misc-locking-v3-17-a162f7cb58d6@kernel.org>
+X-Rspamd-Queue-Id: 3F7D7140008
 X-Rspam-User: 
-X-HE-Tag: 1784994840-410203
-X-HE-Meta: U2FsdGVkX1/P2jTdYxPxMF3lHmq2HBygOE2IkRidZy9awPPRUYfGq5A+LdXUa17FiGqrlN80NE6jB+FKTGL1vAXz31vJIHF9tqbhbRf8niei9AFwwujwBIDH3xcBi0oEFj0LOOQM1Lh12NQDZVN23mUmxqBrvwyL0dVYK1VGenAye2ajD3RBWAAAyspmoTZJTdRwB5h4Q+OmU8MRb0Jou2UKRFWvfThquW1/V/Kz/+MvkBmLmssMebg5K89UumSOXQJHIH6muSpLl06IdjAF0tIdJDZDPNjzSgjJctcRrH82/StS+gPc8MWVhKbGXG4v0lnA9ZdWfIS5h1zx0Kad8OWcB6nPAETYTx9Si3FPZgXUylkYboZgGnPr8k22/wBOlBUBhjcgXACtPbc1YVhS4nXoTwe6gyf1iFSCRejuSzyqfi6raXCDWQKckrZ14IYQa6piIEZ8H4wncfHN6jUetmEkg9Dj24jHCO3bZXYbXEbIkH7AapX3IfOb47scprL/T0L/TTqYlCiAS7EDt7rnOl/Jm8RpBFhlfl27dGfKpDruc+t5vifuMsmE7k9IEiGDkwe1tgzja/iVHhUtyQhBgU/MV4WcC6dMxZbanB2G6M0KLzp6PlWZ98NABvBvjcE4NonIfSsE0U4lvPevSlk8p/lg4tYeNUZK6pc+YuV9EXUQshEYwxB3WTBsm6TJ8D32Qn56YEm0iIPFPm4HElMgsBWSP3merA5zuh31QjNyOpTLvb0Hp8aQcW0BZByB87f2JuGh560XkEV4K1u72Pt9H9N2iVnRpQ08e34HM2Xqo1qfPE8b4YEoh/1JslaodmtsOLFQnSsIPSoY8pGZKxphvw6z1AvLuGRqjIKSjRleuKiaW3+MOYS1wh9wAI6Q+7r1fjLKJPfV8GWlYCOepCE/vC4R1ffmUlhBUa27CvtqCViUk4kLOu0O2ZMBkhG4zyYkeYoII4CEV5GvBs4l8op
- C5LACchi
- jamPk5Prs+dSiw/T5wJh020dV65lXIcaj61iEvtCxPszlUMPsBxuoRddD75ibC66qLNLTTXtOYCN93A7yVXPPlQ0rLQ6AXxHJDaU8EjwvdjCAcwOWd6YI+tH+oNO1TOl/gpnAg9qdEA+V9FtblscJOUUCiatRMq/Jtah7i5OV7gbKVCpkcK50ZHSdl5y/tL7nSRWzeBy9fYnlmJ0ne/puWakECRaR4jp4A8zHz7l+VTctN3/IHGCu+Nzp8W3rr76ZLWYG7FW0fwbFxgiMuj9CWbvajU3D4Zb/36NnxvANzZ2xMVgBO5BmdgPgT7iMg6XxjMhHJ93E4eV6Z6F+mvEssEHYeue6J13ykyrmBVDiFB/mHatwiDeXXHKmxWQFGjMFdLkY3wrb+PSdhY/HjScVCwFUzDKQ4vk2xNJX4Fwl84gA3A6/kUm34SA6cpk1wW1UKcSmlLN1yIDuRx4K6GZ3tQQpt4wA8lSerAmSVE7b+bBt77B74MfCb/L/WGMLUxbETq3oLicxr8ExaP4pJD+r1nacsau/5jh6gljis/0HNtSrddNxgcNQLgJwBQ==
+X-Stat-Signature: hh4tur3gw1uaeuqqxkobqw46cfx5xdh9
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1784994928-938836
+X-HE-Meta: U2FsdGVkX19qR+yBut2TTP1byBKae/oMWeixRHZigT6B6e+rpTUnmEcsad2Car0v0ZP1W9qwiry5q0bTJHAjJRpJCx4fKpfrcyuNIM95qwry6WVKot0ZSfyqe8H8ybYPY1nQDJ3ayXxdvaj2tbwisdRRT55KBpwi6x1EAo4nRe2wWsv/VlKnNrEHaKBzoeyUaYtAyNRzoLYEkCUOkZNTvAv6prfPpVGea1s7orAw8JQ+e9t5ddrW7cQyXhgn7nUVMi8Y27i+dpJL7rHtlRR5BwpMPJyW4jRz049JTTgKo7ofaj8K4xUojz/OgO9xD6ARykKLpNv+pY77aH6LFSXKQNslDg3D2GZIMPiwyaGyVNJYFZil4XQFuK6Sq/G2ZeozpP67HvS9d8W2nqer9ASD4mD0jEt78MYX2hOzR7G7w7mDlIAKoAXYXPz2MDfXy9tBId47fIQU2Jvn+xltJ/irwGuxCQ3eh+kCrFkVR4zUWC9G7iyHrou/MOTNaXo/L4+AKYxtonSxhmkwYub/85GPb/sugo2jaI8J3eB200RWhf7Q/wIJ+JLKRK3OYpp6gwiMqPLoAZWIURooQAvdSwKY1nOEzXfuBb0Cne6i2+nggYXBZbs48BYS1G3EAJuFBKjnr76o2AKZbjW3BOTXmAbGWXwfC052mT0CJqc775DIdtmfL5BhigK7zySbSCwfbtx0f176T6Px2kWxTKWFwoGwlpEFKXaJUekMyOHu6yygnmVTWXkeF3dkEEPvt/j8QuPO0vtx+iUReqNdT5o4xMzRPklbeDtJCcMbbkrYaavLq3vtfhqSWrlQ8sV31Yv6XQh2zTmcW/DG10QloFJGvMQaJ4zOI+B2PzeE8e8oTB4RudMfuMrMKijWnc0ZwNKdkGqE9DSyktT3PL7OCMFN0c2mxfBBVRPvJilsN2FqbEGl6ZEg4oAiWwXNJDMFzs/rgeoc3wUal14+KSZ84JfMV6I
+ 0VsFp6wI
+ bn2y/O7N6ScREbFcAZLeCuaWyi3/4bsUY/E3i0Yu5T8rc0DYvBJf+BwDqdCUJn8a1KMxVB9qBN753FU3O2FlPdGa70juko+PwuGMcbOfbLRo8E9X9VoYyWAX8mD2LRy9mNXst+z1EY3xngDZhM3B456AzIPO84BHVSUIa/mIOf4XP9c759Cy0CofPvhHRzdO04zqxxMpjaKm3kzkKY9bJtDCqTYGSKhRrsmiiCqwF/dz04eAJpQL7fiq1U1IGrPYZraM8AJ1wLiO24v8mpgba4+wt4VJ30TbiueKZaJNcDJir9dv+S6R4U0KjTqPSxtZFJCLx0CUgrLlzIi5dHFRESucvlP9vmwD5KosrDc+mMuTQUr0GyYitX06PV7e6Dso5d/IbcYcX+AcHuzG+BH1X+4TeEr7MW0yspwWtfGJqJEfB0zkH0+ueSReotHWqPf/u+u17+chMvTuYapMJ5YAqbBPmGtJ8LTxFY2aLS4BRoCqm6XIx1JBP2NHCXtJpQzAeBVElFrixt46+lSHcJUiXy1pXKYZLlaQa5lm8KiX/Omf8OAz/9Yd68jI61w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,109 +101,156 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 10, 2026 at 11:33:17AM +0200, Christian Brauner wrote:
-> parse_command() maps "0" to 1, "1" to 2 and "-1" to 3 and the write
-> handlers switch on those bare numbers, leaving every reader to redo
-> the mapping in their head. Name the commands and drop the per-case
-> comments that only existed to translate the numbers back.
+On Fri, Jul 10, 2026 at 11:33:18AM +0200, Christian Brauner wrote:
+> Both write handlers open-code the same removal dance - grab the root
+> inode lock, unlink, unlock - each carrying a verbatim copy of the
+> same eleven-line locking comment, and bm_entry_write() reuses its
+> inode variable for the root inode halfway through to pull it off.
+> Move the dance into bm_remove_entry() and bm_remove_all_entries()
+> and the locking rules into the kernel-doc of remove_binfmt_handler()
+> which both helpers wrap.
 > 
 > No functional change.
 > 
 > Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 > ---
->  fs/binfmt_misc.c | 38 ++++++++++++++++++++------------------
->  1 file changed, 20 insertions(+), 18 deletions(-)
+>  fs/binfmt_misc.c | 84 +++++++++++++++++++++++++++-----------------------------
+>  1 file changed, 40 insertions(+), 44 deletions(-)
 > 
 > diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
-> index 06f4849cf1ad..1f2b1d136819 100644
+> index 1f2b1d136819..d6bc2abc4a7f 100644
 > --- a/fs/binfmt_misc.c
 > +++ b/fs/binfmt_misc.c
-> @@ -543,9 +543,17 @@ static struct binfmt_misc_entry *create_entry(const char __user *buffer,
->  	return ERR_PTR(-EINVAL);
->  }
->  
-> +/* Commands accepted by the /status and /<entry> files. */
-> +enum bm_command {
-> +	BM_CMD_IGNORE,	/* empty write */
-> +	BM_CMD_DISABLE,	/* "0" */
-> +	BM_CMD_ENABLE,	/* "1" */
-> +	BM_CMD_REMOVE,	/* "-1" */
-> +};
-> +
->  /*
-> - * Set status of entry/binfmt_misc:
-> - * '1' enables, '0' disables and '-1' clears entry/binfmt_misc
-> + * Parse what userspace wrote to /status or an entry file: '1' enables,
-> + * '0' disables and '-1' removes the entry or all entries.
+> @@ -686,11 +686,19 @@ static void bm_evict_inode(struct inode *inode)
+>   * @e: binary type handler to remove
+>   *
+>   * Remove a binary type handler from the list of binary type handlers and
+> - * remove its associated dentry. This is called from
+> - * binfmt_{entry,status}_write(). In the future, we might want to think about
+> - * adding a proper ->unlink() method to binfmt_misc instead of forcing caller's
+> - * to use writes to files in order to delete binary type handlers. But it has
+> - * worked for so long that it's not a pressing issue.
+> + * remove its associated dentry.
+> + *
+> + * Adding and removing entries via bm_{entry,register,status}_write()
+> + * happens under the exclusively held inode lock of the root dentry keeping
+> + * the list stable for writers. load_misc_binary() walks it concurrently
+> + * under RCU. The entries_lock is only held around the actual unlink to
+> + * serialize against bm_evict_inode() which unlinks entries during umount
+> + * without holding the root inode lock.
+> + *
+> + * In the future, we might want to think about adding a proper ->unlink()
+> + * method to binfmt_misc instead of forcing callers to use writes to files
+> + * in order to delete binary type handlers. But it has worked for so long
+> + * that it's not a pressing issue.
 >   */
->  static int parse_command(const char __user *buffer, size_t count)
->  {
-> @@ -556,15 +564,15 @@ static int parse_command(const char __user *buffer, size_t count)
->  	if (copy_from_user(s, buffer, count))
->  		return -EFAULT;
->  	if (!count)
-> -		return 0;
-> +		return BM_CMD_IGNORE;
->  	if (s[count - 1] == '\n')
->  		count--;
->  	if (count == 1 && s[0] == '0')
-> -		return 1;
-> +		return BM_CMD_DISABLE;
->  	if (count == 1 && s[0] == '1')
-> -		return 2;
-> +		return BM_CMD_ENABLE;
->  	if (count == 2 && s[0] == '-' && s[1] == '1')
-> -		return 3;
-> +		return BM_CMD_REMOVE;
->  	return -EINVAL;
+>  static void remove_binfmt_handler(struct binfmt_misc *misc,
+>  				  struct binfmt_misc_entry *e)
+> @@ -701,6 +709,31 @@ static void remove_binfmt_handler(struct binfmt_misc *misc,
+>  	locked_recursive_removal(e->dentry, NULL);
 >  }
 >  
-> @@ -717,16 +725,13 @@ static ssize_t bm_entry_write(struct file *file, const char __user *buffer,
->  	int res = parse_command(buffer, count);
+> +/* Remove @e unless a concurrent write already unlinked it. */
+> +static void bm_remove_entry(struct binfmt_misc_entry *e, struct super_block *sb)
+> +{
+> +	struct inode *root = d_inode(sb->s_root);
+> +
+> +	inode_lock_nested(root, I_MUTEX_PARENT);
+> +	if (!hlist_unhashed(&e->node))
+> +		remove_binfmt_handler(i_binfmt_misc(root), e);
+> +	inode_unlock(root);
+> +}
+> +
+> +/* Remove all entries of the binfmt_misc instance @misc belonging to @sb. */
+> +static void bm_remove_all_entries(struct binfmt_misc *misc,
+> +				  struct super_block *sb)
+> +{
+> +	struct inode *root = d_inode(sb->s_root);
+> +	struct binfmt_misc_entry *e;
+> +	struct hlist_node *next;
+> +
+> +	inode_lock_nested(root, I_MUTEX_PARENT);
+> +	hlist_for_each_entry_safe(e, next, &misc->entries, node)
+
+
+I do wonder, we are relying on superblock lifetime rules to make this
+iteration safe afais, and the reason we take the spinlock at all is to
+not implicitly rely on that, but then here we do that anyway. But this
+is already an assumption in the old code too, so
+
+Reviewed-by: Jori Koolstra <jkoolstra@xs4all.nl>
+
+> +		remove_binfmt_handler(misc, e);
+> +	inode_unlock(root);
+> +}
+> +
+>  /* /<entry> */
 >  
->  	switch (res) {
-> -	case 1:
-> -		/* Disable this handler. */
-> +	case BM_CMD_DISABLE:
->  		clear_bit(MISC_FMT_ENABLED_BIT, &e->flags);
->  		break;
-> -	case 2:
-> -		/* Enable this handler. */
-> +	case BM_CMD_ENABLE:
+>  static int bm_entry_open(struct inode *inode, struct file *file)
+> @@ -732,24 +765,7 @@ static ssize_t bm_entry_write(struct file *file, const char __user *buffer,
 >  		set_bit(MISC_FMT_ENABLED_BIT, &e->flags);
 >  		break;
-> -	case 3:
-> -		/* Delete this handler. */
-> +	case BM_CMD_REMOVE:
->  		inode = d_inode(inode->i_sb->s_root);
->  		inode_lock_nested(inode, I_MUTEX_PARENT);
->  
-> @@ -866,16 +871,13 @@ static ssize_t bm_status_write(struct file *file, const char __user *buffer,
+>  	case BM_CMD_REMOVE:
+> -		inode = d_inode(inode->i_sb->s_root);
+> -		inode_lock_nested(inode, I_MUTEX_PARENT);
+> -
+> -		/*
+> -		 * In order to add new element or remove elements from the list
+> -		 * via bm_{entry,register,status}_write() inode_lock() on the
+> -		 * root inode must be held.
+> -		 * The lock is exclusive ensuring that the list can't be
+> -		 * modified. Only load_misc_binary() can access the list
+> -		 * concurrently and it does so under RCU. So entries_lock only
+> -		 * needs to be held when an entry is actually unlinked to
+> -		 * serialize against bm_evict_inode() during umount which
+> -		 * unlinks without holding inode_lock.
+> -		 */
+> -		if (!hlist_unhashed(&e->node))
+> -			remove_binfmt_handler(i_binfmt_misc(inode), e);
+> -
+> -		inode_unlock(inode);
+> +		bm_remove_entry(e, inode->i_sb);
+>  		break;
+>  	default:
+>  		return res;
+> @@ -865,9 +881,6 @@ static ssize_t bm_status_write(struct file *file, const char __user *buffer,
+>  {
+>  	struct binfmt_misc *misc;
+>  	int res = parse_command(buffer, count);
+> -	struct hlist_node *next;
+> -	struct inode *inode;
+> -	struct binfmt_misc_entry *e;
 >  
 >  	misc = i_binfmt_misc(file_inode(file));
 >  	switch (res) {
-> -	case 1:
-> -		/* Disable all handlers. */
-> +	case BM_CMD_DISABLE:
->  		WRITE_ONCE(misc->enabled, false);
->  		break;
-> -	case 2:
-> -		/* Enable all handlers. */
-> +	case BM_CMD_ENABLE:
+> @@ -878,24 +891,7 @@ static ssize_t bm_status_write(struct file *file, const char __user *buffer,
 >  		WRITE_ONCE(misc->enabled, true);
 >  		break;
-> -	case 3:
-> -		/* Delete all handlers. */
-> +	case BM_CMD_REMOVE:
->  		inode = d_inode(file_inode(file)->i_sb->s_root);
->  		inode_lock_nested(inode, I_MUTEX_PARENT);
->  
+>  	case BM_CMD_REMOVE:
+> -		inode = d_inode(file_inode(file)->i_sb->s_root);
+> -		inode_lock_nested(inode, I_MUTEX_PARENT);
+> -
+> -		/*
+> -		 * In order to add new element or remove elements from the list
+> -		 * via bm_{entry,register,status}_write() inode_lock() on the
+> -		 * root inode must be held.
+> -		 * The lock is exclusive ensuring that the list can't be
+> -		 * modified. Only load_misc_binary() can access the list
+> -		 * concurrently and it does so under RCU. So entries_lock only
+> -		 * needs to be held when an entry is actually unlinked to
+> -		 * serialize against bm_evict_inode() during umount which
+> -		 * unlinks without holding inode_lock.
+> -		 */
+> -		hlist_for_each_entry_safe(e, next, &misc->entries, node)
+> -			remove_binfmt_handler(misc, e);
+> -
+> -		inode_unlock(inode);
+> +		bm_remove_all_entries(misc, file_inode(file)->i_sb);
+>  		break;
+>  	default:
+>  		return res;
 > 
 > -- 
 > 2.53.0
 > 
-
-Good clean-up.
-
-Reviewed-by: Jori Koolstra <jkoolstra@xs4all.nl>
 
