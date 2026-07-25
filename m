@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29A81C531C9
-	for <linux-mm@archiver.kernel.org>; Sat, 25 Jul 2026 17:21:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 870D2C531C9
+	for <linux-mm@archiver.kernel.org>; Sat, 25 Jul 2026 17:21:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 08A9D6B007B; Sat, 25 Jul 2026 13:21:49 -0400 (EDT)
+	id BAD9D6B008C; Sat, 25 Jul 2026 13:21:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 013556B0088; Sat, 25 Jul 2026 13:21:48 -0400 (EDT)
+	id B0F5B6B0092; Sat, 25 Jul 2026 13:21:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E6C596B008A; Sat, 25 Jul 2026 13:21:48 -0400 (EDT)
+	id A4C4F6B0095; Sat, 25 Jul 2026 13:21:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B65416B007B
-	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 13:21:48 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 319FE1A0362
-	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 17:21:48 +0000 (UTC)
-X-FDA: 85027966296.15.AA6C11E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id AAA15C0009
-	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 17:21:46 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kXutIP05;
-	spf=pass (imf28.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 79EAC6B008C
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 13:21:54 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DE98A1A039D
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 17:21:53 +0000 (UTC)
+X-FDA: 85027966506.05.2457E4A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 398BD80002
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 17:21:52 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WtfXeI51;
+	spf=pass (imf02.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785000106;
+	s=arc-20220608; t=1785000112;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=7dyLDTbuNQ4Mnu9158Q9qb9Rt9Em+4XSabywoE206Cw=;
-	b=3oKRPbApH1MoMn1E+g2adBI8SLa1VzuNZ4teXXD8YesV45mf8RyCoRkk0mcWbQSbwvIcJZ
-	GrDZT5vPmtDdAb6xRGEwP9ODwNYL3mKTsCCW6UDz05FrLV7edjZ5UVWY9h+3Os0Y6/ZZcO
-	8odM49Wnd4VP/azUKgmoEET0xQwiTlQ=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kXutIP05;
-	spf=pass (imf28.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=PmT/6roT1kwL/qDIR/q2nRmsuARqI7eTSUoDfPCwI3o=;
+	b=inv54PQ79d3f+Yay1mOongufLlRTSjbHEgVnSGvEiYneiZi4hulwK2aqnkL22EeXTxMj3H
+	AlfU3dN5Ts9pPvNbgDoAo/1zT8Z70jBZeF/JsdZsaejhY6EHHWgMuobWQKz5dehsBrOdcv
+	eOIOR9icdtveKpR0ndnPvLZjowSozZ4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785000106;
-	b=ld3JNKsYx/Uyby79jA/IpAIMYgo6Ik273HLaPW6rF2b+sXdwoKPwKucP91LpRFco0LnVJP
-	9mz9R6MCGiGBYKznlzuvrIJSSGXYFEsV9H/b8zUjdAqJ2tt/GtReoNZcr0f4ik+w/Qg9yC
-	NrQ9qY8xASa8uBGuTZSaUa0YlDBs98A=
+	t=1785000112;
+	b=Y9fTT2RbS5zzMFDQu37SGNMZFK0IDgqCg9R6mp50Knruh9G9mho+bzH+keWa8tk3C2sNMW
+	0aa+Yki0Rj9+jPNckR24fhJ8xB/iWx3NruUx9raPQmbTbhUUVfI8x6Qre5dGI8izQy8AyZ
+	jRNMxclYIcuzDhe/cnc6adfNO483l9s=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WtfXeI51;
+	spf=pass (imf02.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 158E660A6E;
-	Sat, 25 Jul 2026 17:21:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9680D1F000E9;
-	Sat, 25 Jul 2026 17:21:43 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 02EAB44E9D;
+	Sat, 25 Jul 2026 17:21:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2E091F00A3D;
+	Sat, 25 Jul 2026 17:21:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785000105;
-	bh=7dyLDTbuNQ4Mnu9158Q9qb9Rt9Em+4XSabywoE206Cw=;
-	h=From:To:Cc:Subject:Date;
-	b=kXutIP05PHKcUzLMdZRTJpvovjOLdtpVVt8KYwQmxS7nnaQetnkvmwIG0x93vYcaZ
-	 QE6QP8+gPQ1xt+Yd214BzNCTNfBQd2dekM/kpbQcxnEyBTwTWbTEkKAa5WG5zJsLpg
-	 8yLy8h1qCz6bRvuVFnSu1+c46gwdBR7ESuQhg1LdBxZtVXGHjVMV26kVFh5lf5k3vq
-	 ilcaYUwUh1Qy3Vaqnzvs4WDfUIbjEqjo4VNJwK41rlSiU6tBlLJUZDTP9Z+l8Mr6ot
-	 wvOrllJSIcUkTjc8bTDrTm9cFaO/JGU8IRKPd9ypUMAeIpx4aIVlIe764oRGtzzU/Z
-	 fT+vF8cx+owIw==
+	s=k20260515; t=1785000110;
+	bh=PmT/6roT1kwL/qDIR/q2nRmsuARqI7eTSUoDfPCwI3o=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=WtfXeI51Twzy/ijI0jUUiqEZozeRV7tA5iCxHFkqBzN7dAoX5hy75KdvdyRMVLjMp
+	 1tRmTt5JQkE4yd0B1hRfXtu7G3ELBPiEYK++pg+J2jS2svYFm0iRkQIvsZb/Bclr2F
+	 uWwWzWHhyK5rLg/6Ig/i42xxkk9npaBi21xhjhJtWQ/hR+bgLymnvaf6UitdSuo9f2
+	 Av++jXhQ9pJpmNfZYF5PPiSuVihELl/neHf89YO8bl5jBShIXgXiKy1Z29FJlV9j62
+	 RTUAuGkS98sdJhEXVOoSfoqoCYoYrUs7ocwd3ht0mwxn/y7ofHb91yqPcAG6t8ybqP
+	 sWK+PwfRDzTIw==
 From: Pratyush Yadav <pratyush@kernel.org>
 To: Mike Rapoport <rppt@kernel.org>,
 	Pasha Tatashin <pasha.tatashin@soleen.com>,
@@ -77,20 +77,22 @@ To: Mike Rapoport <rppt@kernel.org>,
 Cc: kexec@lists.infradead.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v4 00/21] kho: make boot time huge page allocation work nicely with KHO
-Date: Sat, 25 Jul 2026 19:21:00 +0200
-Message-ID: <20260725172133.4018491-1-pratyush@kernel.org>
+Subject: [PATCH v4 02/21] kho: make radix max key width more obvious
+Date: Sat, 25 Jul 2026 19:21:02 +0200
+Message-ID: <20260725172133.4018491-3-pratyush@kernel.org>
 X-Mailer: git-send-email 2.55.0.229.g6434b31f56-goog
+In-Reply-To: <20260725172133.4018491-1-pratyush@kernel.org>
+References: <20260725172133.4018491-1-pratyush@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 398BD80002
+X-Stat-Signature: si8re5z8dy7iugzp8qdjqbuzb6qeimco
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: AAA15C0009
-X-Stat-Signature: 1zpbp4f5szif1yj5atftkbhtuqey1cmb
-X-HE-Tag: 1785000106-706319
-X-HE-Meta: U2FsdGVkX18P9B26DRprTuvciFguMTpaRqMj7foFzoxr9MUDt+YXtmqKMyo6jihjkNC+EpjrO4U0vAqiyh2TmVeRqKKH7kErO9al3HnR1/XrARlh8wy6You/tk9vSl1tUMtvf1/9C77/0Eoj6NZ1Wfpnh7sErm5trvDU1IMDuY25qBM7+f87i7XVkA4iSqClreFcyHF1TOcMM+aQZwop+WlA4lAPoIIvtMI0UCQAu4XUrrYJIKK9HYF1DA21Og5Whkmkxc7/042DtYU7ODmR0k2Ohl0wvfAfNSRhnVHUbDZNTA+mg3GgWe6e4AErAtzLmr0R7g9Ke0ojJ0unncmTRtLY4KRbExSX5/L3WaZvO1cRKe0qYVoWShZTGi7fciG93pKHhffr00X4SK0j0fcdUIBX9S8VCpv63Oznsp/64lgK9aZSLJQNXxoQmQDN6ETKXGaW7wZPLVRWRW53lALQ2l3yMnIAfkJIUWfVjEZ0znls68KpktUDpCiYyuZGNjkCHnK3Doyl0yGPjcDn+AK5X4PlemtKN1BubdTomuE8+ARXCQPveej2Cg+5comij7KSluJ0rHaRNpZYZc5faYzneZbUqr6T94fbl60t2F1tV8x+sA5Biiz1MeOm31aX2DctqUfnDNZPQbFohb18ZHWc/dNfhHMCO0sF2B3RDFeB80TUwIcsfsbKrdXEELch4e2DnTTp9DQ2piYEal4hrGQYFxgYTuE37kZrrbRoRHXDOxFmCpSLGCZESeOwhhBZs2bd0OD1tK0GVbGasix0J2mL2GxDctVbs602qSA19nO8s9blMXla6q7TsgxqVOy99FjZa4EzgjLhW0ETpviY0O+JBRX+oqV1vSX/pMt3xRfnUjMj3+jkA4htT+cFLfHh8DZ52YdGYw8qxWZd6DYisYYFmvprq374WAtbv4ihyy2/pQnfmgIPCmeuhQ75hYzWU8sWmKU9hmNQCH6YKqYG8vX
- qD+0mexd
- ag0itLl15bD5MhwxIeOioJeo9R7L/f5/o1D0AqVQbufGD9E4W2v46Xvrs8LMKRYrLhehQ7ByvnC4aEXq4ql54nu29DxJLCbp6vz28EDTwKtwQr07AxoUNaqhs8oAmViUaF7hfDEqApyWEtIKy1dyuQLp24gGWGsdn9PwXaOPoMTUa0+jPe4H44WutAfbIGM5WRvEp+nBjUYQaAxXkUc3CtQcovmCesn3XlE1p6mD9v9hiMHCsJSTfMxOnQjXPgubD8p09
+X-HE-Tag: 1785000112-929161
+X-HE-Meta: U2FsdGVkX19nLYSK/6ROIbZP+2VhhvHK7OGDDRC5k9pSukOtUQO/1Z0mo0TBk+l6DLDQ7lz+tS2Vp031dceQHLz+96eJrJcU64a31rfzlrJfUCXQW++h4vVOhcg9G6irMuaBGhnzFvLCU4+q2G+G8aZmT6qS7rexRPcjvPzropdbpGTvkBe6wTI4xWgvxpPTTZSjJl3jEwfrx2hSudLHESZbTcWqLdSuflvsms03m8CzXzFxbV+NkjpYnwBixVEONXf+cNpt0h3qkZHzgEg/6KDNBdusTO+JaEy41MGRhNFVHfPPRj0AnEaVHZeHPLQyrE2BnC/50Tp6q/QlAmXXMRYgQAjzp0bx/dys0CR8lqv8B5hCHAU61AoRt/KLDB0wd3Z9kIibkmhGzrZP2dFSAXwL8YICw2/nB6CkqIjWmR/7hG9jyiE6HtQj40Ms2vl08xyt4BUSxEHM/d1ybNrN/hZHPjTqsO44mCWzjJ6z0k1RmE+WfBCLcrmDHKgOf8Btmzc4utd6RbJOqIQhqr2odQcDgXhyqbh707q4vf9bcvFY2lyQqWVmHybuQ/Lq8Dz7sR5nJIvMtoQln3ttqWxeBkmp96gbpNnrCPixjJHYA3ZwZ+CLSSKqizxgWCUerfXT/W5phljK7INlhNQVCgI5MIOkw9ckkarTmt1P4fvJSbnZzrKveMv652rx2s3bTpnpfgK8rmEJQXaIPvEZMtE8CWwuFhIad8czeVn/YyLLXsFVa/QIRef5IASjEwVH216Q0kN4HPCwTr8MUjO7+6QsOoWX/hX1FZxGuhv204xndQRLG9xJ2jecryiXQQlEVr9aQQWfy84h+WGgHJkBki+FswEYiZLZnu2PaACOvXJOOdOl/3TKOKUevftJhkNpE20AJtNrDBWoSr4SRk4yN+YzPh/oYAOmZcqSzRNWsFlYGVLo5pu7CYFdmknjGZJPvAALazEHpeH289OnXYH61G5
+ IXJ3fhdr
+ 2FPVaXAcMGV4+snda5KtDKnbv7yLVRX66EbwicmtSGpubJ9PbbYoWfy04UQd08OKIe/bcSkNGwQ08WaWropeR8+nFC5tLFhe/u1yhQZdjHytw8fOiDf3g2Sq6Xo0CHYAhQ8XccHlGG7IcRpmJ9nyY7bv6Db1M8p6CwjPW7phCpveqjBZAtG1kc1iV5OWB1vocsW3gPZTrSOeUaJbGwKpo5Ua6x9IuRoxMVNYoesS3K76lIGQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,161 +102,104 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
 
-Hi,
+The KHO radix tree constants are somewhat hard to understand. The tree
+depth essentially comes from the max key width. The max key width comes
+from the need to store a 52-bit PFN plus one more bit for the order.
 
-Gigantic huge page allocation is somewhat broken currently with KHO.
+All this is very obscure with the corrent code. The PFN width is defined
+as KHO_ORDER_0_LOG2, which makes very little sense to a new reader not
+already familiar with what the value means. Then the fact that an extra
+bit is needed is hidden in the KHO_TREE_MAX_DEPTH calculation.
 
-First, they break scratch size accounting. Since they are allocated
-using the memblock alloc APIs, they count towards RSRV_KERN, and this
-scratch size when using scratch_scale. This means if huge pages take a
-large enough chunk of system memory scratch size will blow up and fail
-to allocate.
+Simplify this by removing KHO_ORDER_0_LOG2 and replace it with
+KHO_RADIX_KEY_WIDTH. Update the comment to explain why this value is
+used. This moves the +1 from KHO_TREE_MAX_DEPTH to KHO_RADIX_KEY_WIDTH,
+making things clearer.
 
-Second, scratch can not contain preserved memory, and if hugepages are
-allocated from scratch, they will fail to be preserved with the upcoming
-hugetlb preservation series [0].
+Update kho_{encode,decode}_radix_key() to not use KHO_ORDER_0_LOG2.
+Instead, refactor the code and comments to make it clearer how the
+encoding and decoding is done.
 
-Fix this by introducing the concept of extended scratch areas. They are
-areas that the kernel discovers on boot by walking the radix tree and
-finding free memory ranges. See patch 10 for more details.
+In kho_encode_radix_key(), add a new variable for the shift for physical
+address. Use that in calculating where the order bit goes and in
+calculating the shifted PFN. Update comments to make this clearer.
 
-Discovering the scratch areas needs some preparatory changes to KHO, the
-radix tree APIs, and to memblock. Patches 1-17 do that.
+In kho_radix_decode_key(), turn order_bit to 0-indexed to simplify the
+eventual calculation for order. Touch up comments to make the
+computation clearer.
 
-Patch 18 adds the scratch discovery logic.
+Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+---
+ include/linux/kho/abi/kexec_handover.h |  9 +++------
+ kernel/liveupdate/kexec_handover.c     | 19 +++++++++++--------
+ 2 files changed, 14 insertions(+), 14 deletions(-)
 
-Patch 19 adds the dedicated memblock hugetlb allocator.
-
-Patch 20-21 fix the scratch size calculation with using scratch_scale.
-
-This series is based on top of the liveupdate/kho-scratch branch.
-
-[0] https://lore.kernel.org/linux-mm/20251206230222.853493-1-pratyush@kernel.org/T/#u
-
-Changes in v4:
-
-- Commit message fixups.
-- Rename leaktrace to kmemleak_trace in memblock_prep_allocation().
-- Move definition of kho_scratch_overlap() in
-  tools/testing/memblock/internal.h to the patch that exposed it.
-- Rename KHO_EXT_SHIFT to KHO_EXT_BLKSHIFT.
-- Add a comment above kho_decode_radix_key() call in kho_ext_walk_leaf()
-  which makes it clearer what the key is for and what it decodes to.
-- Get rid of kho_init_scratch_migratetype(). Call
-  kho_scratch_migratetype() for each pageblock.
-- Use Muchun's patch
-  https://lore.kernel.org/linux-mm/20260612035903.2468601-6-songmuchun@bytedance.com/
-  to simplify migratetype init for deferred init.
-- Drop #ifdef CONFIG_KEXEC_HANDOVER around KHO includes in memblock to
-  make sure it builds when the config is disabled. This is because
-  memblock_alloc_hugetlb() uses kho_scratch_overlap(), and KHO header
-  provides a stub when the config is disabled.
-
-Changes in v3:
-
-More notable changes:
-
-- Refactor how key width and table depth is calculated.
-- I noticed that extended scratch breaks migrate type init during
-  testing. Below two changes fix it:
-- Remove memblock_is_kho_scratch_memory() and kho_scratch_migratetype().
-  Instead, add kho_init_scratch_migratetype() and rework how migrate
-  type for scratch pages is initialized.
-- Move migrate type initialization from deferred_free_pages() to
-  deferred_init_pages().
-
-Other changes:
-
-- Use kho_get_mem_map() directly in kho_populate() and add a comment on
-  why it is okay to use.
-- Don't say "export kho_scratch_overlap()".
-- Add a comment in kho_extend_scratch() that it should always be called
-  after efi_init()::reserve_regions().
-- Get rid of memblock_reserved_size_flags(). Use
-  memblock_reserved_hugetlb_size() instead.
-- Define KHO_EXT_BLKSIZE to SZ_1G and add a comment explaining why the
-  size was picked.
-- Fix memblock tests build.
-- Rename kho_ext_walk_key() to kho_ext_walk_leaf().
-- Add some comments around the kho_ext tree callbacks to clarify which
-  tree the function is called for and which one it uses.
-- Move initialization of kho_in.radix_tree to kho_memory_init_early().
-- Do not check if the tree is already initialized in kho_radix_init_tree().
-
-Changes in v2:
-
-Detailed changelog below.
-
-At a high level, the major change in this version is to remove
-MEMBLOCK_KHO_SCRATCH_EXT. Keep MEMBLOCK_KHO_SCRATCH as the only memory
-type and mark the discovered areas with it. For HugeTLB, add a dedicated
-allocation routine and if allocated memory lands in scratch, do a retry.
-Also introduce MEMBLOCK_RSRV_HUGETLB to help with accounting of scratch
-area sizes.
-
-- Fixup commit message in patch 1 to make namespacing change clearer.
-- Use @key in kernel-doc for radix functions.
-- Add a runtime check on key width.
-- Move all mem retrieval logic to kho_mem_retrieve().
-- Add a comment in kho_mem_retrieve() explaining why mem_map won't be NULL.
-- Rename callbacks to ->leaf() and ->node().
-- Fixup commit messages.
-- Clear tree->root in kho_radix_destroy_tree(). This lets the tree be
-  re-initialized by calling kho_radix_init_tree()
-- Add kho_get_mem_map() earlier in the series.
-- Export kho_scratch_overlap() and use it in memblock_is_kho_scratch_memory().
-- Get rid of MEMBLOCK_KHO_SCRATCH_EXT.
-- Introduce MEMBLOCK_RSRV_HUGETLB.
-- Introduce memblock_alloc_hugetlb() for hugetlb bootmem allocations.
-- Refactor memblock_reserved_kern_size() to allow calculating size by flags.
-- Exclude hugetlb memory from scratch size calculation.
-- Collect R-bys.
-
-Regards,
-Pratyush Yadav
-
-Muchun Song (1):
-  mm/mm_init: simplify deferred_free_pages() migratetype init
-
-Pratyush Yadav (Google) (20):
-  kho: generalize radix tree APIs
-  kho: make radix max key width more obvious
-  kho: disallow wide keys in radix tree
-  kho: return virtual address of mem_map from kho_get_mem_map()
-  kho: store incoming radix tree in kho_in
-  kho: move all memory retrieval logic to kho_mem_retrieve()
-  kho: add a struct for radix callbacks
-  kho: add callback for table pages
-  kho: add data argument to radix walk callback
-  kho: allow early-boot usage of the KHO radix tree
-  kho: allow destroying KHO radix tree
-  kho: add kho_radix_init_tree()
-  kho: expose kho_scratch_overlap() to kexec_handover.h
-  kho: initialize kho_scratch pointer earlier in boot
-  kho: initialize preserved memory map radix tree earlier
-  mm/mm_init: don't rely on memblock to get KHO scratch migratetype
-  kho: extend scratch
-  memblock: make HugeTLB bootmem allocation work with KHO
-  memblock: add memblock_reserved_hugetlb_size()
-  kho: exclude hugetlb memory from scratch size calculation
-
- include/linux/kexec_handover.h              |  25 +
- include/linux/kho/abi/kexec_handover.h      |   9 +-
- include/linux/kho_radix_tree.h              |  44 +-
- include/linux/memblock.h                    |  23 +-
- kernel/liveupdate/Makefile                  |   1 -
- kernel/liveupdate/kexec_handover.c          | 526 +++++++++++++++-----
- kernel/liveupdate/kexec_handover_debug.c    |  25 -
- kernel/liveupdate/kexec_handover_internal.h |   9 -
- mm/hugetlb.c                                |  22 +-
- mm/memblock.c                               | 146 ++++--
- mm/mm_init.c                                |  45 +-
- tools/testing/memblock/internal.h           |   5 +
- 12 files changed, 614 insertions(+), 266 deletions(-)
- delete mode 100644 kernel/liveupdate/kexec_handover_debug.c
-
-
-base-commit: 08412b8c707fdbccb7bf2116f0554fe09113cd53
+diff --git a/include/linux/kho/abi/kexec_handover.h b/include/linux/kho/abi/kexec_handover.h
+index 5e2eb8519bda..2f4fb9c63942 100644
+--- a/include/linux/kho/abi/kexec_handover.h
++++ b/include/linux/kho/abi/kexec_handover.h
+@@ -257,11 +257,8 @@ struct kho_vmalloc {
+  * memory. These constants govern the indexing, sizing, and depth of the tree.
+  */
+ enum kho_radix_consts {
+-	/*
+-	 * The bit position of the order bit (and also the length of the
+-	 * shifted physical address) for an order-0 page.
+-	 */
+-	KHO_ORDER_0_LOG2 = 64 - PAGE_SHIFT,
++	/* Need to store the PFN, plus one bit for order. */
++	KHO_RADIX_KEY_WIDTH = 64 - PAGE_SHIFT + 1,
+ 
+ 	/* Size of the table in kho_radix_node, in log2 */
+ 	KHO_TABLE_SIZE_LOG2 = const_ilog2(PAGE_SIZE / sizeof(phys_addr_t)),
+@@ -274,7 +271,7 @@ enum kho_radix_consts {
+ 	 * and 1 bitmap level.
+ 	 */
+ 	KHO_TREE_MAX_DEPTH =
+-		DIV_ROUND_UP(KHO_ORDER_0_LOG2 - KHO_BITMAP_SIZE_LOG2 + 1,
++		DIV_ROUND_UP(KHO_RADIX_KEY_WIDTH - KHO_BITMAP_SIZE_LOG2,
+ 			     KHO_TABLE_SIZE_LOG2) + 1,
+ };
+ 
+diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+index 7349cc82f6dc..ea24f23ce292 100644
+--- a/kernel/liveupdate/kexec_handover.c
++++ b/kernel/liveupdate/kexec_handover.c
+@@ -97,10 +97,12 @@ static struct kho_out kho_out = {
+  */
+ static unsigned long kho_encode_radix_key(phys_addr_t phys, unsigned int order)
+ {
+-	/* Order bits part */
+-	unsigned long h = 1UL << (KHO_ORDER_0_LOG2 - order);
+-	/* Shifted physical address part */
+-	unsigned long l = phys >> (PAGE_SHIFT + order);
++	/* The physical address is encoded by shifting the PFN by its order. */
++	unsigned long shift = PAGE_SHIFT + order;
++	/* Order bit goes right before the shifted PFN. */
++	unsigned long h = 1UL << (64 - shift);
++	/* Shifted PFN. */
++	unsigned long l = phys >> shift;
+ 
+ 	return h | l;
+ }
+@@ -118,12 +120,13 @@ static unsigned long kho_encode_radix_key(phys_addr_t phys, unsigned int order)
+  */
+ static phys_addr_t kho_decode_radix_key(unsigned long key, unsigned int *order)
+ {
+-	unsigned int order_bit = fls64(key);
++	/* fls64() indexes starting from 1. */
++	unsigned int order_bit = fls64(key) - 1;
+ 	phys_addr_t phys;
+ 
+-	/* order_bit is numbered starting at 1 from fls64 */
+-	*order = KHO_ORDER_0_LOG2 - order_bit + 1;
+-	/* The order is discarded by the shift */
++	/* order bit goes right before the shifted PFN. */
++	*order = 64 - (PAGE_SHIFT + order_bit);
++	/* The order bit is discarded by the shift */
+ 	phys = key << (PAGE_SHIFT + *order);
+ 
+ 	return phys;
 -- 
 2.55.0.229.g6434b31f56-goog
 
