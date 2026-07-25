@@ -4,96 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 130B3C531C9
-	for <linux-mm@archiver.kernel.org>; Sat, 25 Jul 2026 15:55:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2D66C531D0
+	for <linux-mm@archiver.kernel.org>; Sat, 25 Jul 2026 15:56:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0A8756B0098; Sat, 25 Jul 2026 11:55:31 -0400 (EDT)
+	id E3EDA6B0099; Sat, 25 Jul 2026 11:56:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 081166B0099; Sat, 25 Jul 2026 11:55:31 -0400 (EDT)
+	id E17146B009B; Sat, 25 Jul 2026 11:56:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EDBCF6B009B; Sat, 25 Jul 2026 11:55:30 -0400 (EDT)
+	id D2F086B009D; Sat, 25 Jul 2026 11:56:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B30296B0098
-	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 11:55:30 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3AFE98031A
-	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 15:55:30 +0000 (UTC)
-X-FDA: 85027748820.21.A4ABF45
-Received: from ewsoutbound.kpnmail.nl (ewsoutbound.kpnmail.nl [195.121.94.183])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 3F7D7140008
-	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 15:55:28 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=xs4all.nl header.s=xs4all01 header.b=YlaC956p;
-	spf=pass (imf09.hostedemail.com: domain of jkoolstra@xs4all.nl designates 195.121.94.183 as permitted sender) smtp.mailfrom=jkoolstra@xs4all.nl;
-	dmarc=pass (policy=reject) header.from=xs4all.nl
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A49216B0099
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 11:56:15 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2477EA0370
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 15:56:15 +0000 (UTC)
+X-FDA: 85027750710.14.1E5B26C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 7A5B8120007
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 15:56:13 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kr4+GvU9;
+	spf=pass (imf29.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784994928;
+	s=arc-20220608; t=1784994973;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=N2caielAy5YWpSfpB/EvCdmvT5rYo4ECYSr3Z0BRh1k=;
-	b=bVxzK/h398uA8aRyPOmmLQjJecXoKCKfbxP4sOo/u5nYv1oufsbuyMzcblG+aeZsEDai2+
-	My3LFteMpVOMkrx+pShzLSh988z8wd8sM3d76Kiabi6RI7832mmMyCUPyUldonKQeD1xZj
-	oWGq2RcsjvKYZ61213sEf3ZLN+PBl2c=
+	bh=fI8EblvjWzjGCZk7JcnyrfLB78roRKFER5ZnFfas16U=;
+	b=rhz56I6E3FBz8TOkoLrmps3DfUWx0QHjuAiTK3m6lzwJWq8LU8YdCSf6Nxp6zwtrsCkLpK
+	4m4rNPyYumXdcpRRsltoODKqt6fYo30wohOl8mwaK/q+/Fe2LTTMSZL6Sd32vjx1BZ6+t9
+	e3geVT+AJSkuvWxOMchFI20E0yPCdR4=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=xs4all.nl header.s=xs4all01 header.b=YlaC956p;
-	spf=pass (imf09.hostedemail.com: domain of jkoolstra@xs4all.nl designates 195.121.94.183 as permitted sender) smtp.mailfrom=jkoolstra@xs4all.nl;
-	dmarc=pass (policy=reject) header.from=xs4all.nl
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kr4+GvU9;
+	spf=pass (imf29.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784994928;
-	b=ySJiArrviJQjBIB0BSdB/bNktlqbobBVJGwTRpoQCwnb/gLiPT/5+omzYGxN9rfpTzNHA/
-	B29yydxT2+efzxcDS0+4MQ9P+3th4YGYPo/ucAPKluFIfTbUWJgMOayCxmgkkM9+gaWDrc
-	UMmWZ8qewUFcxeQdHX68C1gvfxqBY/w=
-X-KPN-MessageId: 40948ed9-8841-11f1-8f54-005056992ed3
-Received: from smtp.kpnmail.nl (unknown [10.31.155.7])
-	by ewsoutbound.so.kpn.org (Halon) with ESMTPS
-	id 40948ed9-8841-11f1-8f54-005056992ed3;
-	Sat, 25 Jul 2026 17:55:26 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=xs4all.nl; s=xs4all01;
-	h=content-type:mime-version:message-id:subject:to:from:date;
-	bh=N2caielAy5YWpSfpB/EvCdmvT5rYo4ECYSr3Z0BRh1k=;
-	b=YlaC956pxurcbVdpySmYk4W1hG0rWtqeLuOXN0FesBalrGE6LRXyt0jhoufOiZrHOz0O0L3kJYvMd
-	 WxYGGkfFpxk9zuTbAOSGTQbn8C4w3j7TJx0nBwgC3TZxyN4MZoCMNJuNmLgkx3AMiChd5lJX12IVOx
-	 ln0vlt4hW/fpPDb5EoC9k1mWJGl+mbNJS3XiFHw71jody+LyxpvLPypjZBsu688DvkdioI3C87HHV+
-	 luBw1L+Hc8qF3OS5ECGQhYyVwY/DZHNJPXXyPYIqbWFRRP2PsLkH7ytlS1GIQZy8fBgxCL/0Dlt6Ww
-	 fOafHXtd1rGfigOPaGsUkP/xrq0i3tQ==
-X-KPN-MID: 33|B+iYy1xhRWmj0mq9FQCVTULLba/wIX0QZ4uD5umAj/VgNq3X306kFN7L7VogFfD
- aX8XwpILauRRhWBzDeDHQAdj8MRe6FiAeSh3UULWhqYA=
-X-KPN-VerifiedSender: Yes
-X-CMASSUN: 33|5gvSlG1MYtR2kFh3LM/ln0e9EiGfxMcSrfPFBq1WvKYa12t7NavajxYZmyQrm61
- b9mM5EverqLBHkX+M8CEeHQ==
-X-Originating-IP: 85.144.169.142
-Received: from localhost (142-169-144-85.ftth.glasoperator.nl [85.144.169.142])
-	by smtp.xs4all.nl (Halon) with ESMTPSA
-	id 40379afb-8841-11f1-8089-005056998788;
-	Sat, 25 Jul 2026 17:55:26 +0200 (CEST)
-Date: Sat, 25 Jul 2026 17:55:24 +0200
-From: Jori Koolstra <jkoolstra@xs4all.nl>
-To: Christian Brauner <brauner@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, linux-mm@kvack.org, 
-	Farid Zakaria <farid.m.zakaria@gmail.com>, jannh@google.com
-Subject: Re: [PATCH v3 17/24] binfmt_misc: factor out the entry removal
-Message-ID: <amTcOh-bqBGgp8me@lt-jori.localdomain>
-References: <20260710-work-binfmt_misc-locking-v3-0-a162f7cb58d6@kernel.org>
- <20260710-work-binfmt_misc-locking-v3-17-a162f7cb58d6@kernel.org>
+	t=1784994973;
+	b=WNZzvIDf7VL0ubOg0tGd2kjWs8zW5ivKKTk+G3W+Q0UH45dWvrwtteCrvPahDo7uVvveUI
+	055yUqwbmsvQqtzMFHwxMaL9+zkjGI8d6C/rTfqv+qWf/ER3SjXfGjcdN9dRkBEGRMDmXH
+	sZnAEUYh9bpoOAhdLkiBXFX4Q/jNi1o=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 57739413C5;
+	Sat, 25 Jul 2026 15:56:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EDF01F000E9;
+	Sat, 25 Jul 2026 15:56:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784994972;
+	bh=fI8EblvjWzjGCZk7JcnyrfLB78roRKFER5ZnFfas16U=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=kr4+GvU9/gKyPFM6yyLN+aKhTi7LD5HoR5e8OS2lwtoltA0FEPaMWfd5J4bKjkClc
+	 IphZ1GcZ9QAt60rtotgq75gmGmCcTnKeHrz9aF+P5LLZgk4R8OZXMPGxunOyZd81Zt
+	 UGUAZ5kORt54bbc8Jhr+kbJnMh1ENd0Ii6WCgkfiE7b/+EZy6qjKQ94YQh4BISGbBx
+	 VR/nBed0i/FrUTEMDe/f5sYx+H0/n/NACV4olQaJQ62cFlx5a9lNzHqJYxmW4+wukk
+	 q+mE7hgf1Xj0RajHCrKvMWgbGSyMD4vHzE99kKTR/S6I7rZyLFU/CQ6p4HcqEStaNE
+	 +wpjJZZt/qsig==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  Pasha Tatashin
+ <pasha.tatashin@soleen.com>,  Alexander Graf <graf@amazon.com>,  Muchun
+ Song <muchun.song@linux.dev>,  Oscar Salvador <osalvador@suse.de>,  David
+ Hildenbrand <david@kernel.org>,  Andrew Morton
+ <akpm@linux-foundation.org>,  Jason Miu <jasonmiu@google.com>,  Jork
+ Loeser <jloeser@linux.microsoft.com>,  kexec@lists.infradead.org,
+  linux-mm@kvack.org,  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 17/21] mm/mm_init: don't rely on memblock to get KHO
+ scratch migratetype
+In-Reply-To: <178410811939.820181.7932476003120213021.b4-review@b4> (Mike
+	Rapoport's message of "Wed, 15 Jul 2026 12:35:19 +0300")
+References: <20260709173821.429921-1-pratyush@kernel.org>
+	<20260709173821.429921-18-pratyush@kernel.org>
+	<178410811939.820181.7932476003120213021.b4-review@b4>
+Date: Sat, 25 Jul 2026 17:56:08 +0200
+Message-ID: <2vxzfr17gj1j.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260710-work-binfmt_misc-locking-v3-17-a162f7cb58d6@kernel.org>
-X-Rspamd-Queue-Id: 3F7D7140008
+Content-Type: text/plain
 X-Rspam-User: 
-X-Stat-Signature: hh4tur3gw1uaeuqqxkobqw46cfx5xdh9
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1784994928-938836
-X-HE-Meta: U2FsdGVkX19qR+yBut2TTP1byBKae/oMWeixRHZigT6B6e+rpTUnmEcsad2Car0v0ZP1W9qwiry5q0bTJHAjJRpJCx4fKpfrcyuNIM95qwry6WVKot0ZSfyqe8H8ybYPY1nQDJ3ayXxdvaj2tbwisdRRT55KBpwi6x1EAo4nRe2wWsv/VlKnNrEHaKBzoeyUaYtAyNRzoLYEkCUOkZNTvAv6prfPpVGea1s7orAw8JQ+e9t5ddrW7cQyXhgn7nUVMi8Y27i+dpJL7rHtlRR5BwpMPJyW4jRz049JTTgKo7ofaj8K4xUojz/OgO9xD6ARykKLpNv+pY77aH6LFSXKQNslDg3D2GZIMPiwyaGyVNJYFZil4XQFuK6Sq/G2ZeozpP67HvS9d8W2nqer9ASD4mD0jEt78MYX2hOzR7G7w7mDlIAKoAXYXPz2MDfXy9tBId47fIQU2Jvn+xltJ/irwGuxCQ3eh+kCrFkVR4zUWC9G7iyHrou/MOTNaXo/L4+AKYxtonSxhmkwYub/85GPb/sugo2jaI8J3eB200RWhf7Q/wIJ+JLKRK3OYpp6gwiMqPLoAZWIURooQAvdSwKY1nOEzXfuBb0Cne6i2+nggYXBZbs48BYS1G3EAJuFBKjnr76o2AKZbjW3BOTXmAbGWXwfC052mT0CJqc775DIdtmfL5BhigK7zySbSCwfbtx0f176T6Px2kWxTKWFwoGwlpEFKXaJUekMyOHu6yygnmVTWXkeF3dkEEPvt/j8QuPO0vtx+iUReqNdT5o4xMzRPklbeDtJCcMbbkrYaavLq3vtfhqSWrlQ8sV31Yv6XQh2zTmcW/DG10QloFJGvMQaJ4zOI+B2PzeE8e8oTB4RudMfuMrMKijWnc0ZwNKdkGqE9DSyktT3PL7OCMFN0c2mxfBBVRPvJilsN2FqbEGl6ZEg4oAiWwXNJDMFzs/rgeoc3wUal14+KSZ84JfMV6I
- 0VsFp6wI
- bn2y/O7N6ScREbFcAZLeCuaWyi3/4bsUY/E3i0Yu5T8rc0DYvBJf+BwDqdCUJn8a1KMxVB9qBN753FU3O2FlPdGa70juko+PwuGMcbOfbLRo8E9X9VoYyWAX8mD2LRy9mNXst+z1EY3xngDZhM3B456AzIPO84BHVSUIa/mIOf4XP9c759Cy0CofPvhHRzdO04zqxxMpjaKm3kzkKY9bJtDCqTYGSKhRrsmiiCqwF/dz04eAJpQL7fiq1U1IGrPYZraM8AJ1wLiO24v8mpgba4+wt4VJ30TbiueKZaJNcDJir9dv+S6R4U0KjTqPSxtZFJCLx0CUgrLlzIi5dHFRESucvlP9vmwD5KosrDc+mMuTQUr0GyYitX06PV7e6Dso5d/IbcYcX+AcHuzG+BH1X+4TeEr7MW0yspwWtfGJqJEfB0zkH0+ueSReotHWqPf/u+u17+chMvTuYapMJ5YAqbBPmGtJ8LTxFY2aLS4BRoCqm6XIx1JBP2NHCXtJpQzAeBVElFrixt46+lSHcJUiXy1pXKYZLlaQa5lm8KiX/Omf8OAz/9Yd68jI61w==
+X-Rspamd-Queue-Id: 7A5B8120007
+X-Rspamd-Server: rspam01
+X-Stat-Signature: sbmrmtifbcbxbhx8mkmiykyked5mzx3e
+X-HE-Tag: 1784994973-965850
+X-HE-Meta: U2FsdGVkX19oIi7QSv2rBW+EM5YWXdZ9gW/DZJd5YTwl31gXgW0YB6lBh585odcqDgX5p7LBRpCL2oiZ8TIAyQV4ti+TKOMGQ5owfwgHUvsvmnqf33Y3mwI0J8EnFQwICkBoqRdXDQn2Rca4XBiOxoGLBAwcjmLM6wI8YuIvaqsq3CFUcULq2w2ChIt5Hnc5LKUscqoLi8wW2WlV4XXI8QXt1lygeCqCE6uSucL3hSWFwnZsmsq2fL4bze01gcgiUn3pQKokBI0SG4d5Oi+6KnvFqbWRdL2tRYXW/OPsSpUXiTHlJY4lGx65lcYemcuWXXy8Hbw26jg2B+viNr80vCk7J2xgfEZFdB7bgyoxhwJQ9IWCS3oiHHsVAkQEgX97v7vl8D+A0umEy9QJCwpfA5IQswd8UFPEMcGQJhQF0LAFcgPUAklgOgUJEbgINHVpz7bb1rgD9DR2lgll+zr/r9upSVa7ai3s5DEBWzOX/stKkOpfA9NGmQu/rlvrqyC8+8fNH/XSPYwtO5/JobOPwkNFK7w2rZ2iE/0s3wcK9uIctTRPKjCVcG1q/2tMqDXk+0bHFPq1oPMxO1C5pXAU4w4tQudV+z+I35ZXIiKaZSJthFFmEswi46mlSGZhLhgFEMmigzLt9FRS0YtywjyyXLEQVVcmZNhoYdng5XNg1jImzHc4G/g/FOQAaPXX8sm4P570bMaEGTfMiLkS0QnYCDkb3DOlPPNA+bzU8RtfK02UcPXnPUNWIhTEBAvsBB8EKrJzMMh/WCzV5+vNNSf/hCnhaqYERnYP+rEijpshV96yU4LwvGfxu2Wd7eeJCpzRM5XYUzq2E1UDq3I+uHcFxjV7T6+T7Di7LJjY8FOGWz9vFBvETRKFPIff3PEH8McYLwHR8HQf0ghj75Dxp38FKuc4CWQtbvr+niBIAAqM2fjiIFNLQLUGzD0N5Z5MQ/a9dxyxXTL3Q8K53beMohO
+ 1V/06kk+
+ vmXHkDD3QBlp+0XiqVnnPdHzfapmERIKma7DcEJeCp22vFXplZfqos4drctKWoV8qM0ta9PfalogfUwfqpYBXyK2bswjHjJwZZFWpF/OpbG8qVjbh0oJEhbc8wzKawwmu2B5Mr7Av7l7rK9MpjKvgUbaruVH2v76W4nzgFk0Lvqat9nfBs8HEmWIPsnf2/idaZgRNEW6al+OFPkdVzhmukRVa6JME58fkmZm0hWg9W39gtYwkURLyPlFeYc0kV+wM222Eh4WCstbGzYsttnNRxKxoO2+it/B4hnM2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,156 +99,124 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 10, 2026 at 11:33:18AM +0200, Christian Brauner wrote:
-> Both write handlers open-code the same removal dance - grab the root
-> inode lock, unlink, unlock - each carrying a verbatim copy of the
-> same eleven-line locking comment, and bm_entry_write() reuses its
-> inode variable for the root inode halfway through to pull it off.
-> Move the dance into bm_remove_entry() and bm_remove_all_entries()
-> and the locking rules into the kernel-doc of remove_binfmt_handler()
-> which both helpers wrap.
-> 
-> No functional change.
-> 
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
-> ---
->  fs/binfmt_misc.c | 84 +++++++++++++++++++++++++++-----------------------------
->  1 file changed, 40 insertions(+), 44 deletions(-)
-> 
-> diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
-> index 1f2b1d136819..d6bc2abc4a7f 100644
-> --- a/fs/binfmt_misc.c
-> +++ b/fs/binfmt_misc.c
-> @@ -686,11 +686,19 @@ static void bm_evict_inode(struct inode *inode)
->   * @e: binary type handler to remove
->   *
->   * Remove a binary type handler from the list of binary type handlers and
-> - * remove its associated dentry. This is called from
-> - * binfmt_{entry,status}_write(). In the future, we might want to think about
-> - * adding a proper ->unlink() method to binfmt_misc instead of forcing caller's
-> - * to use writes to files in order to delete binary type handlers. But it has
-> - * worked for so long that it's not a pressing issue.
-> + * remove its associated dentry.
-> + *
-> + * Adding and removing entries via bm_{entry,register,status}_write()
-> + * happens under the exclusively held inode lock of the root dentry keeping
-> + * the list stable for writers. load_misc_binary() walks it concurrently
-> + * under RCU. The entries_lock is only held around the actual unlink to
-> + * serialize against bm_evict_inode() which unlinks entries during umount
-> + * without holding the root inode lock.
-> + *
-> + * In the future, we might want to think about adding a proper ->unlink()
-> + * method to binfmt_misc instead of forcing callers to use writes to files
-> + * in order to delete binary type handlers. But it has worked for so long
-> + * that it's not a pressing issue.
->   */
->  static void remove_binfmt_handler(struct binfmt_misc *misc,
->  				  struct binfmt_misc_entry *e)
-> @@ -701,6 +709,31 @@ static void remove_binfmt_handler(struct binfmt_misc *misc,
->  	locked_recursive_removal(e->dentry, NULL);
->  }
->  
-> +/* Remove @e unless a concurrent write already unlinked it. */
-> +static void bm_remove_entry(struct binfmt_misc_entry *e, struct super_block *sb)
-> +{
-> +	struct inode *root = d_inode(sb->s_root);
-> +
-> +	inode_lock_nested(root, I_MUTEX_PARENT);
-> +	if (!hlist_unhashed(&e->node))
-> +		remove_binfmt_handler(i_binfmt_misc(root), e);
-> +	inode_unlock(root);
-> +}
-> +
-> +/* Remove all entries of the binfmt_misc instance @misc belonging to @sb. */
-> +static void bm_remove_all_entries(struct binfmt_misc *misc,
-> +				  struct super_block *sb)
-> +{
-> +	struct inode *root = d_inode(sb->s_root);
-> +	struct binfmt_misc_entry *e;
-> +	struct hlist_node *next;
-> +
-> +	inode_lock_nested(root, I_MUTEX_PARENT);
-> +	hlist_for_each_entry_safe(e, next, &misc->entries, node)
+On Wed, Jul 15 2026, Mike Rapoport wrote:
 
+>> Currently struct page init via memmap_init() or deferred_init_memmap()
+>> only queries the migrate type from KHO for each discrete memory range.
+>> That works currently since KHO scratch memory has a different memory
+>> type so it is always it its own region.
+>> 
+>> An upcoming patch will add support for discovering blocks of memory with
+>> no preservations and it will mark it as MEMBLOCK_KHO_SCRATCH to allow
+>> allocations from them. This can lead to the bootmem KHO scratch areas to
+>> be merged into larger free ranges. This merging breaks the selection of
+>> migrate type.
+>> 
+>> Get rid of kho_scratch_migratetype(). Instead, let the struct page init
+>> logic set the migratetype to MIGRATE_MOVABLE for all pages, and then
+>> give KHO a chance to update the migrate type of its bootmem scratch
+>> areas to MIGRATE_CMA. Since scratch areas should be a few order of
+>> magnitues smaller than the total system memory, doing it this way is
+>> more efficient than searching the kho_scratch array for every pageblock.
+>
+> It's true for non-deferred case, but with deferred initialization of
+> struct pages the static part is small and deferred chunks are small, so
+> we are going to update the migratetype nearly as much as we would check
+> it with kho_scratch_migratetype().
+>
+> For simplicity of this patchset I'd keep kho_scratch_migratetype(), just
+> move it over to kexec_handover.h and make it rely on kho_scratch_overlap().
+>
+> The bulk optimization can be a separate patch on top.
 
-I do wonder, we are relying on superblock lifetime rules to make this
-iteration safe afais, and the reason we take the spinlock at all is to
-not implicitly rely on that, but then here we do that anyway. But this
-is already an assumption in the old code too, so
+Sure, will do.
 
-Reviewed-by: Jori Koolstra <jkoolstra@xs4all.nl>
+>
+>> Since kho_scratch_migratetype() no longer exists, drop the migratetype
+>> argument to memmap_init_zone_range() and deferred_init_pages().
+>> 
+>> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+>>
+[...]
+>> +/*
+>> + * Mark all KHO scratch pageblocks between start_pfn and end_pfn as
+>> + * MIGRATE_CMA.
+>> + */
+>> +void kho_init_scratch_migratetype(unsigned long start_pfn, unsigned long end_pfn)
+>> +{
+>> +	for (unsigned int i = 0; i < kho_scratch_cnt; i++) {
+>> +		unsigned long scratch_start, scratch_end, pfn;
+>> +
+>> +		scratch_start = PHYS_PFN(kho_scratch[i].addr);
+>> +		scratch_end = PHYS_PFN(kho_scratch[i].addr + kho_scratch[i].size);
+>> +
+>> +		/* Target range doesn't overlap with scratch. */
+>> +		if (start_pfn >= scratch_end || end_pfn <= scratch_start)
+>> +			continue;
+>> +
+>> +		pfn = max_t(unsigned long, start_pfn, scratch_start);
+>> +		pfn = pageblock_start_pfn(pfn);
+>> +
+>> +		while (pfn < end_pfn && pfn < scratch_end) {
+>> +			init_pageblock_migratetype(pfn_to_page(pfn),
+>> +						   MIGRATE_CMA, false);
+>> +			pfn += pageblock_nr_pages;
+>> +		}
+>> +	}
+>> +}
+>
+> static inline enum migratetype kho_scratch_migratetype(unsigned long pfn,
+> 						       enum migratetype mt)
+> {
+> 	if (kho_scratch_overlap(PFN_PHYS(pfn)), PAGE_SIZE)
+> 		return MIGRATE_CMA;
+> 	return mt;
+> }
+>
+> Is way easier to parse and reason about ;-)
+>
+>> +
+>>  /**
+>>   * kho_reserve_scratch - Reserve a contiguous chunk of memory for kexec
+>>   *
+[...]
+>> @@ -2012,8 +2021,7 @@ static inline void __init pgdat_init_report_one_done(void)
+>>   * Return number of pages initialized.
+>>   */
+>>  static unsigned long __init deferred_init_pages(struct zone *zone,
+>> -		unsigned long start_pfn, unsigned long end_pfn,
+>> -		enum migratetype mt)
+>> +		unsigned long start_pfn, unsigned long end_pfn)
+>>  {
+>>  	int nid = zone_to_nid(zone);
+>>  	unsigned long nr_pages = end_pfn - start_pfn, pfn = start_pfn;
+>> @@ -2027,7 +2035,14 @@ static unsigned long __init deferred_init_pages(struct zone *zone,
+>>  	pfn = pageblock_align(start_pfn);
+>>  	page = pfn_to_page(pfn);
+>>  	for (; pfn < end_pfn; pfn += pageblock_nr_pages, page += pageblock_nr_pages)
+>> -		init_pageblock_migratetype(page, mt, false);
+>> +		init_pageblock_migratetype(page, MIGRATE_MOVABLE, false);
+>> +
+>> +	/*
+>> +	 * Update the migrate type for any pageblocks that fall in a KHO scratch
+>> +	 * area. Since most pageblocks will not be KHO scratch, do it outside
+>> +	 * the loop to only do the search once.
+>> +	 */
+>> +	kho_init_scratch_migratetype(start_pfn, end_pfn);
+>
+> And here the chunks are at most MAX_ORDER_NR_PAGES, so bulk init also
+> wouldn't save much.
 
-> +		remove_binfmt_handler(misc, e);
-> +	inode_unlock(root);
-> +}
-> +
->  /* /<entry> */
->  
->  static int bm_entry_open(struct inode *inode, struct file *file)
-> @@ -732,24 +765,7 @@ static ssize_t bm_entry_write(struct file *file, const char __user *buffer,
->  		set_bit(MISC_FMT_ENABLED_BIT, &e->flags);
->  		break;
->  	case BM_CMD_REMOVE:
-> -		inode = d_inode(inode->i_sb->s_root);
-> -		inode_lock_nested(inode, I_MUTEX_PARENT);
-> -
-> -		/*
-> -		 * In order to add new element or remove elements from the list
-> -		 * via bm_{entry,register,status}_write() inode_lock() on the
-> -		 * root inode must be held.
-> -		 * The lock is exclusive ensuring that the list can't be
-> -		 * modified. Only load_misc_binary() can access the list
-> -		 * concurrently and it does so under RCU. So entries_lock only
-> -		 * needs to be held when an entry is actually unlinked to
-> -		 * serialize against bm_evict_inode() during umount which
-> -		 * unlinks without holding inode_lock.
-> -		 */
-> -		if (!hlist_unhashed(&e->node))
-> -			remove_binfmt_handler(i_binfmt_misc(inode), e);
-> -
-> -		inode_unlock(inode);
-> +		bm_remove_entry(e, inode->i_sb);
->  		break;
->  	default:
->  		return res;
-> @@ -865,9 +881,6 @@ static ssize_t bm_status_write(struct file *file, const char __user *buffer,
->  {
->  	struct binfmt_misc *misc;
->  	int res = parse_command(buffer, count);
-> -	struct hlist_node *next;
-> -	struct inode *inode;
-> -	struct binfmt_misc_entry *e;
->  
->  	misc = i_binfmt_misc(file_inode(file));
->  	switch (res) {
-> @@ -878,24 +891,7 @@ static ssize_t bm_status_write(struct file *file, const char __user *buffer,
->  		WRITE_ONCE(misc->enabled, true);
->  		break;
->  	case BM_CMD_REMOVE:
-> -		inode = d_inode(file_inode(file)->i_sb->s_root);
-> -		inode_lock_nested(inode, I_MUTEX_PARENT);
-> -
-> -		/*
-> -		 * In order to add new element or remove elements from the list
-> -		 * via bm_{entry,register,status}_write() inode_lock() on the
-> -		 * root inode must be held.
-> -		 * The lock is exclusive ensuring that the list can't be
-> -		 * modified. Only load_misc_binary() can access the list
-> -		 * concurrently and it does so under RCU. So entries_lock only
-> -		 * needs to be held when an entry is actually unlinked to
-> -		 * serialize against bm_evict_inode() during umount which
-> -		 * unlinks without holding inode_lock.
-> -		 */
-> -		hlist_for_each_entry_safe(e, next, &misc->entries, node)
-> -			remove_binfmt_handler(misc, e);
-> -
-> -		inode_unlock(inode);
-> +		bm_remove_all_entries(misc, file_inode(file)->i_sb);
->  		break;
->  	default:
->  		return res;
-> 
-> -- 
-> 2.53.0
-> 
+Hmm, right. I didn't think of that. On my system pageblock order is 9
+and max page order is 10, so it does halve the amount of work done, but
+still, I see your point. It took me a couple of tries to get
+kho_init_scratch_migratetype() right, and kho_scratch_overlap() is
+certainly easier to reason about.
+
+Oh well, I suppose this gets added to the list of performance
+improvements we do at some point down the line
+
+-- 
+Regards,
+Pratyush Yadav
 
