@@ -4,88 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 434A2C531D0
-	for <linux-mm@archiver.kernel.org>; Sat, 25 Jul 2026 04:32:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 685ABC531D0
+	for <linux-mm@archiver.kernel.org>; Sat, 25 Jul 2026 04:35:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BD6E96B007B; Sat, 25 Jul 2026 00:32:36 -0400 (EDT)
+	id 377C16B0088; Sat, 25 Jul 2026 00:35:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B881C6B0088; Sat, 25 Jul 2026 00:32:36 -0400 (EDT)
+	id 3285F6B008A; Sat, 25 Jul 2026 00:35:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A9E216B008A; Sat, 25 Jul 2026 00:32:36 -0400 (EDT)
+	id 217526B008C; Sat, 25 Jul 2026 00:35:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 80F306B007B
-	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 00:32:36 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DC199160263
-	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 04:32:35 +0000 (UTC)
-X-FDA: 85026027870.16.9BF6AA4
-Received: from mail-ot1-f71.google.com (mail-ot1-f71.google.com [209.85.210.71])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 4647020007
-	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 04:32:34 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=none;
-	spf=pass (imf31.hostedemail.com: domain of 3YTxkagkbAMQ289ukvvo1kzzsn.qyyqvo42o1myx3ox3.myw@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.71 as permitted sender) smtp.mailfrom=3YTxkagkbAMQ289ukvvo1kzzsn.qyyqvo42o1myx3ox3.myw@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784953954;
-	b=eo2lLzdLv2tcRXSXhYvh/YOjguwxfZh709conZkQM4UAONuD04Ki2gKl/uozhzGZfjcb2N
-	dBwxAfEetqgBsm0BNQ7FMoAPLjgmJHPisbzowChysc0K0Ju8C9aZ0M4QdmqRg3IOFQWWxA
-	U+NwzvEPkIZdl40zKe9hKx8zIUHPMN0=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=none;
-	spf=pass (imf31.hostedemail.com: domain of 3YTxkagkbAMQ289ukvvo1kzzsn.qyyqvo42o1myx3ox3.myw@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.71 as permitted sender) smtp.mailfrom=3YTxkagkbAMQ289ukvvo1kzzsn.qyyqvo42o1myx3ox3.myw@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id EA34E6B0088
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 00:35:17 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 557E0120266
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 04:35:17 +0000 (UTC)
+X-FDA: 85026034674.19.677E959
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 76B8880008
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 04:35:15 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a0xrF3mv;
+	spf=pass (imf02.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784953954;
+	s=arc-20220608; t=1784954115;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=LiVGmaeeFRXjqPL4tRh1qrOg6P3LftulYA2XqVQquYw=;
-	b=RG/dWXAwZIfeKnzTXLDbAqrMrqM+2wo5OS+r64CNh/8fH4SqdzqW+mJrES0V2ZQ16qr6/I
-	cUmBnY00Ks2iD2otMJKc6o4lU4CHnsvQ+kE7xFg3Sh94yQgwbkoASShS7uuOlf5qsy0GGr
-	d3Q/Kz3Juh4eg06wqRGjE0IFJx4dq70=
-Received: by mail-ot1-f71.google.com with SMTP id 46e09a7af769-7e9dee2f7b5so1427458a34.1
-        for <linux-mm@kvack.org>; Fri, 24 Jul 2026 21:32:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784953953; x=1785558753;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=LiVGmaeeFRXjqPL4tRh1qrOg6P3LftulYA2XqVQquYw=;
-        b=bSjnNrXC3GWsi+qqlGDP7qjRtIBNPpu3yC9Xl3RTZSzI7ftaIhhQzI/KVm5Pzj55Xd
-         jSEsNBUotvCc8LqL38Iw0lMNJp4O7yc5kQz91c2GzJtLkhON66KY3/tjEOdFNq0E26DG
-         tt2uWWQ9ei4Q6ll33+ZefWDDCoJsUhE+SLorf0jLO117FSdJzUq2iMJSrRqSJspl0xZF
-         CHQS3y2kg4v5OLpNxo4zwtUTzrmxED4XdFOUqpRSxSr8KAKBC1G7GD+znhgyU3SLh5cD
-         OvcyyirC18mg9ZxPp+FK3dZn6bYCLKWJoAEC2gTohR/al6W3Rs+fbNCS4bOjt4hKmL1v
-         O1sw==
-X-Forwarded-Encrypted: i=1; AHgh+RpRZWvrytCSva4y3qqcJ+W+SMztSNwsmmUvzunRPGCRzVr2FvnV8D2qRBpz1P+eZSEhxgc7Yyh8zg==@kvack.org
-X-Gm-Message-State: AOJu0Yxp2f5kL5KR+G6f14GUXnLXyIl/yLn6PvOu2BQKrPw0Ab+6kmap
-	jyNnEOrmXWoQtBwAJ9u4gNgWuV/ZcSIJNyqqsLX3p46J+6s5Jer9P9iDyG41qT6Kk6U1wfG2pwJ
-	wbYLbEyCsEzS5b7VJrSDiUege56QXF2g1PefAHiaMsms4q77hQdH7Zofy2CQ=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=qsaTBfu55V+jF7MXDxgG5KXQHT7/Yb7ASTy7J8iGFfs=;
+	b=UQzdurLEyvTCJqrWuqC513YEDpGkLBYfl3u/t3LOOtjC+0hBOVIjESakNGDKhIq7xJax59
+	9NQIEorqU2HlH55Up0wBq7UWz3JOgBtK9urQKsavooKU3mshTNQNVU9rgakZrgyLIG50SI
+	H+vQJS+qeYPq90iUUKYgATqFlTJWrPs=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a0xrF3mv;
+	spf=pass (imf02.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784954115;
+	b=ggFHRufC1FmjWhFka6iWP/WIM+FLl90OYwYT4H+sQoSC0I6BWKUb4afbz5LsFR0ZmZ/QBZ
+	n7WNhhvwrQ9yvDFnJbHwrUj2idibEiD6kEw0M2atl6iTMyzkeAC6Qc/EhVAl7p61XP7g6y
+	JKBZwivslXYr+VWCY3F4jXQ9JhifAZQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id A6AC560A80
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 04:35:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C5CA1F00ACF
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 04:35:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784954114;
+	bh=qsaTBfu55V+jF7MXDxgG5KXQHT7/Yb7ASTy7J8iGFfs=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=a0xrF3mv/imeEoVSUdmboKqQhnNB2wyG4079JOyafxrY4aMaYcqcnPYJZH0+MyjAj
+	 oI8P/wVzDh9wUgLIfo1PKsOPxwxIHLKyoqnVS2HU/G2k/VT1ErGm2sFy9Gruoe6RRw
+	 VIBLaDNSzrIKdHzBAMA70yEZuMGQcWyIImnu66WF+QTGzqVe0tlJMeRaRHlhu2C92v
+	 h7u0E2V/KmqpmwyIshiv5p+AWIEOuq/PYgyqh/IJaSQWZsYy9X1S93KRoy1kg/CwGx
+	 ahRg563fze2jMUUDXMCO7FKIUXii/9wY6LcrYIYydhsbbmo3nNiT+qBnH1DU7ctUVj
+	 iagBSx7C9129w==
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-9309d4ea213so102741585a.1
+        for <linux-mm@kvack.org>; Fri, 24 Jul 2026 21:35:14 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RqaismUiXz4xu/8BYUh6RFV8eId+n173RH8/OZ0YNyEOswOLsIE9sacIB8objbnhdL7FWTneaSlOA==@kvack.org
+X-Gm-Message-State: AOJu0YyfXu4j/1aoPDku7xajIGmhwz+t4XDZ9V0TKUoxeL/QqJg+gX1o
+	KomFo2cJsDR4IOgmTFrOren6vNICSYt/4viEzv8K0TF4K89biFOBvjTZ+bTNDk4xjfBWZN2C7J3
+	eqnBjD+8rBYVsHT/gcP68BW5ADAk6XtM=
+X-Received: by 2002:a05:620a:2806:b0:930:a212:2712 with SMTP id
+ af79cd13be357-932df68a7e3mr81582385a.54.1784954113581; Fri, 24 Jul 2026
+ 21:35:13 -0700 (PDT)
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:1456:b0:496:a01:458b with SMTP id
- 5614622812f47-4ab69f8a83fmr1366237b6e.2.1784953953423; Fri, 24 Jul 2026
- 21:32:33 -0700 (PDT)
-Date: Fri, 24 Jul 2026 21:32:33 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a643c61.a2ea2cc8.fbad6.0010.GAE@google.com>
-Subject: [syzbot] Monthly mm report (Jul 2026)
-From: syzbot <syzbot+listbe3110d878037a751c37@syzkaller.appspotmail.com>
-To: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	syzkaller-bugs@googlegroups.com
+References: <20260723070905.3422276-1-dev.jain@arm.com> <20260723070905.3422276-2-dev.jain@arm.com>
+In-Reply-To: <20260723070905.3422276-2-dev.jain@arm.com>
+From: Barry Song <baohua@kernel.org>
+Date: Sat, 25 Jul 2026 12:35:02 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4wCh8igrhiygETBOKc-2AXkG+DYjmAwm_3n5dm6FLgduw@mail.gmail.com>
+X-Gm-Features: AUfX_mzaWCVWY6soSKp7-78egYXC6lSmKeaUt7S4hiXiUxoPMgD7c_LYDqwxpYM
+Message-ID: <CAGsJ_4wCh8igrhiygETBOKc-2AXkG+DYjmAwm_3n5dm6FLgduw@mail.gmail.com>
+Subject: Re: [PATCH 1/8] mm/swapfile: add batched version of folio_dup_swap
+To: Dev Jain <dev.jain@arm.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
+	hughd@google.com, chrisl@kernel.org, kasong@tencent.com, riel@surriel.com, 
+	liam@infradead.org, vbabka@kernel.org, harry@kernel.org, jannh@google.com, 
+	lance.yang@linux.dev, baolin.wang@linux.alibaba.com, 
+	shikemeng@huaweicloud.com, nphamcs@gmail.com, baoquan.he@linux.dev, 
+	youngjun.park@lge.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com, pfalcato@suse.de, 
+	ryan.roberts@arm.com, anshuman.khandual@arm.com
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: ucfqwmndzan8pqbemkmwfrusdd18cfdf
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 4647020007
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1784953954-271971
-X-HE-Meta: U2FsdGVkX1/CdzrJjyEtrKwZNdXn7p0Njx41aiyrvSm9tO8ETYYG+R0HqFRP/Va2izxlLYUxO4XuLmOrW/lwcJHahkKDa4SX2Ia3UwDmjsJU+mXukibIWt2fRa7iHyogI9lIUqHDd5m6kZPSkjHxHYSLGcmCWWzJH1d4VioOlcxvbS0JhvCLy2Maj+/6Qtsj53HD71Z99gFMY+4BDen/f3dnzTJMkfD4jHwYIIXAQa6AFFBhI+jSeSG8AkhnnJ89DuZ//Q5kzV83OjxXb3bFpTAzOkWi2VMkE4MlWwgbyv0DqnkCvF7LwCJ2CUxneylybCd9crZnXBm4OPIcoBBmm1J2mMohSZEU5p9S3YjUebGHPXVQiZMcCbw5MeBRqHQ1YeXwQBYkSny7EcTVNxCBmH/Km5mSf8Zt9HFQEQm/B9Fuger+Qikr85LvqMFqJ4Tr5a7aSL1iBs0ztLSPt8INsKeO2mTXuJIcAEjblgwyP5dKCuRaL6Fgpq87RXeh83Sq/QMgAWsAyOBvh6+5djVbdeP0Hd/rSpT/2bnllrmF5AEIp76hwGeRykGzR2xzt5zwsT6h0dTG5CUDn9VKTUvG8zu7XGyG7Y07Ssf1QEFxQH9N5LxGNSSv5bS4yo5JoJOqEpAKLwnZagM30PQlvHvr/gqAj7Dc3rViQsgbaYa7zUbPtGlPmD4iCuTPxbNd6hdKP9C0fm1Db/g0s+6hfUMTduksx6hQMTbFeV8KjmlbkUDwUtUMfOY6vevRzDCu/crnWOLaH9RfXhUNE30X3xSNtsKzu8DYtEwEJ4QBfURr6aP8YDwtLP424YnfTiwZCl0VTgc9CbfASw9dg1MtS+tt26YaTQpQ3jRUCljxaBX/rXpcmXOftXm0TKekJ4jOndEBebCcsxBqrKWpOadHQ69frfFN3xbPq4vsnpQJ1NsLr93uQo/bAXNktxuyzufO4nvDcXFrzJPVDskHlCT4Lr/
- B/Qj5j6R
- 7m8gJsNJ57aVDNEhOojRvPdOOq3KJUPk7w4YPXmVPrtTk6TRg5CXWfD2HSp6wRW77k7E5ACRoYR8Q+lWCTbGUEstWsCbzrTL4jpRZzcP+ZCkYC1dJunz0iyx0Cbd1BKFhhSG6LKdU7bAb96jCEutFSrhH5uq5REec2uDsCmsJFRzXkdFKV12TuXvoRnpiJdjV/7R393kDbpQmnkaXL7cwCj1Ae6ddbgOjE7CENmngtwJakPb6OBORotwc6fSponolSZM2TdtzS0VOMsxmKvy/Ln2M4J/I8SeOdXT5wu6QCvcE5PE9ipBEHCRFJzAOuCrczltiKGvQ83Am49LBcrBAdNC6nwrRLZN1pw7U686M8c3NgeFuO7tRcqUVZHGVwtRd4JO46ESP5zeAU65DzAMgJap2HawAVCo0ek0FV8hTh89STKIMN86BDb1X0W/6xwa4L99zWLjA3YcOPSvEGPcMcAH/f8j/ROgAUQ4jAynMYIfYgjXSf2ZfGrBFazEkJ9t+za+jeIqLPaIGgfVvfbzeRsZrGBjvh8nXeZ6GfPc721BTivFHhRk5uHg2KPoYDlhKqE7pesIGLc3Nvifh3kygFhVEtLXEptZ5cYK+j2Rt8J8j/qMiDG3irquAgv5gPVb85KDdM7eTe0WczrsAHSYYhPfmpmQrsLdb17uUA+Lq7ZQDof84nifw7hloJdrAmN5crsXahhDptQ0dBBlPeVO7wxKgSww41BM+R/eYzi/Jgqs+EB2QONs/xpVTqmovwdbNXzPwsiJIlq6Crbd16i2b2ImL+n8oPGaUSgQA7XGAKetLJiuBVKkJioWxfpl76ckI5XeuoRMzdo5Th6xMCDNXfmAv4X7WSA37rlq+ZrhWdrEBgzuPGAhMoxoPkrSHiFc7OZwc4FTxiw/Ka0/okUCcpEpv9sIkPwlxc0kkPvhsVShjCL7TMs7Q1oz1HQ==
+X-Rspamd-Queue-Id: 76B8880008
+X-Rspamd-Server: rspam01
+X-Stat-Signature: 6ykzro5dkuw38gpzjae73suo81ceijjf
+X-HE-Tag: 1784954115-566648
+X-HE-Meta: U2FsdGVkX1+cq68Vi2ZVT9XOmBEqT8bd9H7+DoKnSCM0uF27hD6tEMLPAwP7c3pvjHoyZ2/dwkOnbd+zIABkJ0CEcMe95liwYT9WwX4hVoYppy3FKWPJMtOsDxqrzBcd2z567t2OT383QELliMCr3jNQxJYR6NkMeLLx0UyUlr3PiZ05Kfs6LDRP0uJfBQbrKhfz2Ewnnwb2GvEhr5Kt2XSBu9ax8jO+icfBhTTxLa9/omNVCosZpd4mVLM+fsmK2SRERc7mwoJ1yo/AKQY2Rb2tG/Lq1hdYCaxVOhL2VhZKjGBX4URlBlrY+uEmC5JqK1vX1P7vIvlBp02kqTFap/sJQ3OEHuEjIvvBpJjUkK0kkLQIH25dKjEOoR/K0DlqbB2FXblgQ2jV9m93Eik/nLxoY+d7V+DgrzggYFYnxNR4L8wmaofZAKYH5vApB9bgA4o0wmDhiyTvyHyWivve67dLbrwsCYpG0i/xgJSIDOStPiN+WJgKvPAO63LCyNI7lbPsILKwNIds47yxqJMA9Lnx26wkGXIoU91n40CD1uJYdlLCCAHMf++bwQJCh1ZYIMj9ec2aaptHXbw8PcICc8Tqa/k0jGD7mgz45fHaKTICzrVL/+1lu2Qvt0gblM0P/AW595zCswondVZoYjVS1a4bMGQOnVvrxBQwOg5YSHxk8f5Bi6C7qd4mBD+l0co/nmkHlIsWNinHx44rQndA5wiZbDohzplkFZ/OZKZajA3ZJZeWBhWdTfiR0A6uOcZFr4OJcBS08zAOs6AcRoqdQ0QhkCTadHvQ5CmF+n762ERNuSAR1opqx0vUyXc4Mu3dVcLenoDIeNQV74cddjNPxVRo++vREBrImVZJw3JT+Z18+dc48BV+XOvydNMupFDRGio7USe49aS7zFliiPCC3GIvCIqCLe3p5TDZx5t96EAI9hM9glc8mkNZS27Z7Juc8Gb3/9MYquYG1XjceDt
+ /OVXbOm9
+ Y8bJZK2F3/BjOBpHfpu1I4SN5XFt5yy8ZhlECg53MCH3z/xLWzFo8S3iAIb8QZr3C0IkjoLuGD0CK3XbEIW+r2msw/pVYddtFzYejGmVE+CmgfK5W9gxjmA+wZtnbJLOlj+jPZw6z0q9qqwbPS2AHPyxrjhBTQOOBOuh7dJ2e88xacZpGtBqMtLRUUoQyJx78dNIipPPYKfvSHntoqR3i/iAuaBd8kWg/xaMGsVsvbUHd2WZFlDTfhrQCYiQEVbZpgJqOgssrBMYrbCIUUQPgY5urjRfitz7r0Mz1VEnWjrBDPDaYDLVp9ze5oDFEEfIDIeoPlevOP/evOgLWJJGmykCEZXJ3XJpAmQgSilR3Vc0J02Xxqif4U2/CwogrxnR5q1We/Tf7BYkSryPqiyd7Ng5Izh0bXHKrk9pT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,50 +108,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello mm maintainers/developers,
+On Thu, Jul 23, 2026 at 3:09=E2=80=AFPM Dev Jain <dev.jain@arm.com> wrote:
+>
+> Add folio_dup_swap_pages to handle a batch of consecutive pages. Note
+> that folio_dup_swap already can handle a subset of this: nr_pages =3D=3D =
+1 and
+> nr_pages =3D=3D folio_nr_pages(folio). Generalize this to any nr_pages.
+>
+> Currently we have a not-so-nice logic of passing in subpage =3D=3D NULL i=
+f
+> we mean to exercise the logic on the entire folio, and subpage !=3D NULL =
+if
+> we want to exercise the logic on only that subpage. Remove this
+> indirection: the caller invokes folio_dup_swap_pages() if it wants to
+> operate on a range of pages in the folio (i.e nr_pages may be anything
+> between 1 and folio_nr_pages()), and invokes folio_dup_swap() if it
+> wants to operate on the entire folio.
+>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
 
-This is a 31-day syzbot report for the mm subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/mm
+Yep, also I like that the page =3D=3D NULL case is no longer needed in shme=
+m.c.
 
-During the period, 1 new issues were detected and 0 were fixed.
-In total, 78 issues are still open and 373 have already been fixed.
-There are also 42 low-priority issues.
-
-Some of the still happening issues:
-
-Ref  Crashes Repro Title
-<1>  29106   Yes   KASAN: use-after-free Read in copy_folio_from_iter_atomic (2)
-                   https://syzkaller.appspot.com/bug?extid=6cc93ec9a4035badb85f
-<2>  3862    Yes   WARNING in trace_suspend_resume
-                   https://syzkaller.appspot.com/bug?extid=99d4fec338b62b703891
-<3>  3102    Yes   possible deadlock in filemap_fault
-                   https://syzkaller.appspot.com/bug?extid=7736960b837908f3a81d
-<4>  588     Yes   INFO: rcu detected stall in sys_newfstatat (4)
-                   https://syzkaller.appspot.com/bug?extid=1c02a56102605204445c
-<5>  497     Yes   kernel BUG in filemap_unaccount_folio
-                   https://syzkaller.appspot.com/bug?extid=17a207d226b8a5fb0fd9
-<6>  283     No    kernel BUG in __page_table_check_zero (3)
-                   https://syzkaller.appspot.com/bug?extid=2b5fe617654be3d8848b
-<7>  264     No    INFO: task hung in migrate_pages_batch (4)
-                   https://syzkaller.appspot.com/bug?extid=f523acb98cd782b4872e
-<8>  132     Yes   INFO: rcu detected stall in __dentry_kill
-                   https://syzkaller.appspot.com/bug?extid=f8ccdac0a7eede0e1ae5
-<9>  96      Yes   INFO: rcu detected stall in sys_setsockopt (4)
-                   https://syzkaller.appspot.com/bug?extid=6e61d59e9d2150c8492b
-<10> 57      Yes   memory leak in xas_create
-                   https://syzkaller.appspot.com/bug?extid=a785d07959bc94837d51
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
-
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
-
-You may send multiple commands in a single email message.
+Reviewed-by: Barry Song <baohua@kernel.org>
 
