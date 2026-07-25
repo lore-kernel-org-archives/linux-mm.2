@@ -4,97 +4,155 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E5DCC531D0
-	for <linux-mm@archiver.kernel.org>; Sat, 25 Jul 2026 16:30:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1203C531D0
+	for <linux-mm@archiver.kernel.org>; Sat, 25 Jul 2026 17:02:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 818B76B009D; Sat, 25 Jul 2026 12:30:02 -0400 (EDT)
+	id 2D6666B007B; Sat, 25 Jul 2026 13:02:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C94D6B00A3; Sat, 25 Jul 2026 12:30:02 -0400 (EDT)
+	id 287106B0088; Sat, 25 Jul 2026 13:02:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B8FE6B00A7; Sat, 25 Jul 2026 12:30:02 -0400 (EDT)
+	id 179656B008A; Sat, 25 Jul 2026 13:02:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A9486B009D
-	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 12:30:02 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D6CCE6B007B
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 13:02:12 -0400 (EDT)
 Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D6B181C04B5
-	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 16:30:01 +0000 (UTC)
-X-FDA: 85027835802.01.8F8AEA5
-Received: from ewsoutbound.kpnmail.nl (ewsoutbound.kpnmail.nl [195.121.94.185])
-	by imf15.hostedemail.com (Postfix) with ESMTP id E6089A0006
-	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 16:29:59 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=xs4all.nl header.s=xs4all01 header.b=ldVHvzU3;
-	spf=pass (imf15.hostedemail.com: domain of jkoolstra@xs4all.nl designates 195.121.94.185 as permitted sender) smtp.mailfrom=jkoolstra@xs4all.nl;
-	dmarc=pass (policy=reject) header.from=xs4all.nl
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 50986A0390
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 17:02:12 +0000 (UTC)
+X-FDA: 85027916904.01.A2F71B8
+Received: from cmx-mtlrgo002.bell.net (mta-mtl-002.bell.net [209.71.208.12])
+	by imf31.hostedemail.com (Postfix) with ESMTP id EDB9F2000F
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 17:02:09 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=bell.net header.s=selector1 header.b=U+AUept7;
+	spf=pass (imf31.hostedemail.com: domain of dave.anglin@bell.net designates 209.71.208.12 as permitted sender) smtp.mailfrom=dave.anglin@bell.net;
+	dmarc=permerror reason="Multiple policies defined in DNS" header.from=bell.net (policy=permerror)
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784998930;
+	b=KzRfXBKl7enUvD04b7tj9XbeLWkUmIwnnt2pMFlvvV/dvRMRxpQz2YAzslcXLWxey9Zc9N
+	iQHzk67waYSR/r1AwgZIQI+elGK1UL3CACD83qnIr95USUMDaaEkZ4OHb5s2i/cspAjyd0
+	oylcaGvxhHUfBfIestk92EPhDqlRfiM=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=bell.net header.s=selector1 header.b=U+AUept7;
+	spf=pass (imf31.hostedemail.com: domain of dave.anglin@bell.net designates 209.71.208.12 as permitted sender) smtp.mailfrom=dave.anglin@bell.net;
+	dmarc=permerror reason="Multiple policies defined in DNS" header.from=bell.net (policy=permerror)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784997000;
+	s=arc-20220608; t=1784998930;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9NOBUv49T7ToX/K4H4kKJPsi+EKjIl7Ooc3WRNcdlZM=;
-	b=IwxrVQ3YQC7I7T0/wEHSJG7YOZydHJSo6g07Rlq8Iqho8SlisP+c07I0W71dFcUR5pyXEk
-	a1/fkWOQH0uc2YZ1ZlZ8iAtvkEqmAbed/43erdMrQYAagDmHEOH+Xq0lZ8o4SW4Fu6Xmbk
-	F3Zf1COywpTuYccMh0y//BOOnnZh3+o=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=xs4all.nl header.s=xs4all01 header.b=ldVHvzU3;
-	spf=pass (imf15.hostedemail.com: domain of jkoolstra@xs4all.nl designates 195.121.94.185 as permitted sender) smtp.mailfrom=jkoolstra@xs4all.nl;
-	dmarc=pass (policy=reject) header.from=xs4all.nl
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784997000;
-	b=Yajj6E4l4TVFmVQzwz7cko813HpgW/7UVX9Ydnbg84JUJNAaFBvc7+eBBB+9Yj+SD78BiN
-	7ZfMVD2q1/MgxXUP9N/U29PZW3Izi7Vmij/uNSVXMrTnTBBT2ebktFHsphll69BpcpASB0
-	WOZ7fFyBeCvx5afP/9wIobvmyVkQ0Vc=
-X-KPN-MessageId: 13459b61-8846-11f1-9e8e-005056999439
-Received: from smtp.kpnmail.nl (unknown [10.31.155.5])
-	by ewsoutbound.so.kpn.org (Halon) with ESMTPS
-	id 13459b61-8846-11f1-9e8e-005056999439;
-	Sat, 25 Jul 2026 18:29:57 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=xs4all.nl; s=xs4all01;
-	h=content-type:mime-version:message-id:subject:to:from:date;
-	bh=9NOBUv49T7ToX/K4H4kKJPsi+EKjIl7Ooc3WRNcdlZM=;
-	b=ldVHvzU3DXavEc2TreKqR8kVf5AVNuwEojW2WOFht0LxX1+BthGysSlVCBGMe1RMEjpmqTIoM7Cmy
-	 dVSRJPLufhvAdduqe704J/kglRVRWTvQHkK4FSrY1qHa8J+B7sVvGz5OSfDDlbD7GMQURU+nH3eJt/
-	 jz/9yLbFNkLMhxuRzoe5eKfPxUHf90EI7u9b89o33b2gbdGZjKgbRX2FxwgIv6lRmpZK9loXFSeuDq
-	 9v/kRS6xwrf5XcFfoM+PnPs2bJE2+58DPDBc+1pwONHaECblieXiA6NmR97Qdv9nWhE2306AoqnM4t
-	 7H0ji1N30+bx+SgFd3X2fUvqthYMMSw==
-X-KPN-MID: 33|CBRkVaaFRB9b3xzdQF5ESsZIRaX8E/Efedu2g3wzDlrEYL54Uo0IaGUfv2DQrpM
- eKzeqkkrdIiNKGO0sLm08m00wfqKoDFJ/trcK1sEdaa4=
-X-KPN-VerifiedSender: Yes
-X-CMASSUN: 33|53lsszmG0L4fuDZW6ajWlyv7INCwvFMlLH17wQmkZGInxrTobbciV6WGiwSsUAa
- lbV244g63yzd+/vWi0is3JQ==
-X-Originating-IP: 85.144.169.142
-Received: from localhost (142-169-144-85.ftth.glasoperator.nl [85.144.169.142])
-	by smtp.xs4all.nl (Halon) with ESMTPSA
-	id 1304f40e-8846-11f1-87f8-00505699b758;
-	Sat, 25 Jul 2026 18:29:57 +0200 (CEST)
-Date: Sat, 25 Jul 2026 18:29:52 +0200
-From: Jori Koolstra <jkoolstra@xs4all.nl>
-To: Christian Brauner <brauner@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, linux-mm@kvack.org, 
-	Farid Zakaria <farid.m.zakaria@gmail.com>, jannh@google.com
-Subject: Re: [PATCH v3 19/24] binfmt_misc: use a flexible array member for
- the register string
-Message-ID: <amTkcITPlXlFk7VK@lt-jori.localdomain>
-References: <20260710-work-binfmt_misc-locking-v3-0-a162f7cb58d6@kernel.org>
- <20260710-work-binfmt_misc-locking-v3-19-a162f7cb58d6@kernel.org>
+	bh=Wqzc1rdrD9/zZgtfkeN/lk6lY1WJu6IQP1Gt28locAY=;
+	b=oK9S2C2MLJcT7uu6OFAcouVAUZUaQxEHgmTCCHzLzP5WXRnY91LNtVnjcuTU/Lf+ZyHAqE
+	DGuSluNAoCDVelV2ElnLuYwURDDrMRdAEU6HOMxwXME0iiHQTuPaA7J2r3D+eyusuM/ySR
+	Dmr6/XB6TmOM+p+UBeJESZRkkLH7YN8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bell.net; s=selector1; t=1784998929; 
+        bh=Wqzc1rdrD9/zZgtfkeN/lk6lY1WJu6IQP1Gt28locAY=;
+        h=Message-ID:Date:MIME-Version:Subject:To:References:From:In-Reply-To:Content-Type;
+        b=U+AUept7gbPpeWuUbYktIyhCIiPSrjtryU54pQBdZP4yIGUIGmbYWOhEwY9mCr5S6HsCV7FS7UASCLaftAfhxzAFgu3+e34dogXZP8h4jEr6vDj8KfVyukeA7F8vuQcyfaAXzGz2/4/4V3IM5VhDwVIlbolaqYQIfAdL2bpT5XP7ELyWTMBd+Uun5MDKmFOjKXqNxmA+VIVOIVHGEyqhMp9QKaputfSZFKpUS1uwmK/6fPy7i04s3PBJiFeLWxIxcUm1p2qyW5oSfV8PyvaEgy1Cil4XtEOlwx2cmAr3ynVuf145tFJS/QEsLfzWW3EMgWXT0vw3ckF9iKuE0Ku6bA==
+X-RG-SOPHOS: Clean
+X-RG-VADE-SC: 0
+X-RG-VADE: Clean
+X-Originating-IP: [70.26.67.32]
+X-RG-Env-Sender: dave.anglin@bell.net
+X-RG-Rigid: 69B7AEA70B5C1637
+X-RazorGate-Vade: dmFkZTFBL85r2oEp4gvfdK9Qq+Fk279rWqVJnzUbNG9fBvLFR/dedrP8wVgFqykZFUTtnttUvrht+OPOiRl/1oU1X3DnhmkwJ+4FUfJN4YMM1Uvc+FmDjW+MWZJ4A0FjpNpERM53NIjMWcPZhyZQFlG4htjVqZ7TJEV4FI7ta2yH4wzyax6s/4E4T4WCOk4oS7RVnzZ9H7irp28HQyCyZeltVxOz9AOr3uOwK79TyneqiRNx+3a7ieGIx7Rrh1xt7fPNGAbDlI7/re/7tVsLMnTzaM8sIoSYfJrV5YxItpSXdxwsobLjy7j764yoaItE9IWqOZ8nHnzugNBwWYuDikcsYd4ZIeOFwBtFev92vMT/vouaEKz+Ah1vjLT+QwgLhdKduIi9iaJDNNkjELFJJE/yNIszKpKlgjW1HQwxXcm3pFfMYsehZFbAmRqL5QVr4EPAW+cvXuonKobvy9fNczSRBD1tyEDCCz/SgvyoOPUZfFsRv1qGgvtqzStwN7Zbtrj68SxbRBYbLYJaroia6vW6b+bLrsEw/meOFF91HfqL8XVq9KdlPKuyvJg40LZ7ScGPqA+pM8+6XXzL1HD4rQYkQoM2CqPSkFuWO81zqkSvf6vLU4tetFZnIofxXAd0aTEd9y+bczB4IJxuzjc+nVt1JlVepAHkbCONpd6s8mfBgySdAQ
+X-RazorGate-Vade-Verdict: clean 0
+X-RazorGate-Vade-Classification: clean
+Received: from [192.168.2.49] (70.26.67.32) by cmx-mtlrgo002.bell.net (authenticated as dave.anglin@bell.net)
+        id 69B7AEA70B5C1637; Sat, 25 Jul 2026 13:00:55 -0400
+Message-ID: <4606e13f-6827-45d0-b3b8-6bc26358f7ae@bell.net>
+Date: Sat, 25 Jul 2026 13:00:55 -0400
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260710-work-binfmt_misc-locking-v3-19-a162f7cb58d6@kernel.org>
-X-Rspamd-Queue-Id: E6089A0006
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/5] mm/parisc: constify ptep_get() argument
+To: Helge Deller <deller@gmx.de>, Usama Arif <usama.arif@linux.dev>,
+ Pedro Falcato <pfalcato@suse.de>
+Cc: Matthew Wilcox <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Kevin Brodsky <kevin.brodsky@arm.com>,
+ Muhammad Usama Anjum <usama.anjum@arm.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
+References: <20260724102017.141532-1-pfalcato@suse.de>
+ <20260724102017.141532-4-pfalcato@suse.de>
+ <0fd713a8-e4ab-4c07-b36e-79dd138b4a86@linux.dev>
+ <amNzLXuwflIZFKtI@casper.infradead.org>
+ <253f7ac0-205b-42f1-9fb5-d19eceb581b6@linux.dev>
+ <amOEUZlp1BxYh6_t@pedro-suse>
+ <fd239383-dcbe-4daf-b337-32facef07076@linux.dev>
+ <3e9dece8-4e86-4ce5-bd74-b3ec305f3003@gmx.de>
+Content-Language: en-US
+From: John David Anglin <dave.anglin@bell.net>
+Autocrypt: addr=dave.anglin@bell.net; keydata=
+ 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
+ T70V9SSrl2hiw38vRzsl
+In-Reply-To: <3e9dece8-4e86-4ce5-bd74-b3ec305f3003@gmx.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 9bbop86arztr98sae3x944gaqu3ffhxh
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: EDB9F2000F
 X-Rspam-User: 
-X-Stat-Signature: ii17dqf1fimrseaqd1ogszddumyd3wf7
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1784996999-678977
-X-HE-Meta: U2FsdGVkX1+5KLTyj39xOZXRF4pA4zKHWOc47xZlUkHNBjvyL/TmNK9r/pP2As+pWX+S/gVOECAht6FsrsbIc5vB45lL3dt78hJNK9Kr9TzPXrQNpHTKMbxXN0NHbFFzwlMvBzPBYU3RJ160maf5EPXnmt/kHl1hL/EyLN/qIV4D+G4ZIM8LIgZrZJ9mwsyM4qPRoEqml8A4LWZO6bMRHoEMAXjqvmPIkzzOwwWgbkI5fruFVJcC9Q1IvJEB10lu6fxQLN8CyKJJBzjafAATRWpoa5zbNTjaLlOHbE7CxFiObC/QYdY9MPL9s3Aujr6f+NJJCTjlZadtAjzZ4K5SpoznvPOvdDozSE5CQaqlRXEERxDinLo3CGsjvl4uBAjcskbxyNCQKTU6FffDQ8Ndd6QPkhdToBdUTGCIgNwbOt3vOAlxAF+XIF3QcLFx5uTTjTRz2DDHPNzqFEMJP8Gge4AtiQcSedNgqs0YQAwl3JNbnQqD34Z4p8BTUWJfgtEFFNj6e0BGQaz94b8c4a/KtxsnB/Lc0SIOgDfsZqYvH4YCrL4sU38g+0OQzJ2PrqbIvPHQKK+CTWNQhCA4tRJRY3FIEthOBEhqYCU3RAx9sVpUgayygcfPauXgWYMJlRmwqPcm3L7jtaFJ3KqHuiFJwfEhpTPHWJLupX/1yAoOaVXE5zk9uhoCqtoz3DEdeL/nBcoF4q16pj1ebQ5ZFBiBfEbYgpp6aKwIYzTTbprznxXV4CSaZbG/7jeGqEOxGtOFr7uAWQRAj6oxjKs/02ixy9lxkzUcH98Hwzs3vzwPK+PHh8f69Uj7ek8+I485htEM1BVqYn6lY7eQ3TBvpBW/taUntYnj4xCzLRJpcj9dWexkyqucMDBCbB7XRL4VVhEBRTTjLek2ET2WwoETN0ge1GCaEZGWQnPnac3hDrlsaEd3Uewc4KJOq6U0fOtJDl+428P3vBhzEcpQMaH2MjM
- GjYyKXx6
- BlDW2OzsiOknqjyp2DB+hiC8PQCsAu5obA/OfJCgWHG5mBYTrTmIA+vNmXg9aeMpfQGqnV/Ee+lpu6IGEM/OQTQYSafTejMeWjIy8Nt1FgWQDVC6a5Lp3lNBU/O6dZxxi95TZxEZTlLC4pt7tEZWf4+xJLlYHxObkFfaodHQFNM9XdFXAwk+CaOjRf0m7NTe/30B2zszMnV6ZORyG5cPgKa5KohSaIhOf9ko22gWPhRfUqiJ06HT/ld6Qda7KaPUV2xRWmTmF8c84ewbZNTIe4eutMLn1t14u37ZVIyUJTvx67gx0/6cxJVfC+d7xkn773CLGHnQuVBArSuwphOW3ow8Fx9vr1pJbw24SmVQPL41UoMgUck6k4/BFBiFFA2hWRAReQdCPoIXoF6PERsPMYfKMm8qUMfMb7HnV00pKCSV+1xZCC51fh1IqAFp0aA4dukNjSfmQfX736/hizjoUbYKHo15N+CyNJd3kzm2DeOUJpT5kOw4uD4GNyTrCdeAmxjGqTm8rGjNt3GzzgEgG8C7DXijdb2zc/YIBR8R/7bKQiCWPxpEEPqWRpA==
+X-HE-Tag: 1784998929-653300
+X-HE-Meta: U2FsdGVkX1/doJrws9EUkJgDFoQCUppqENPe9PIWHfBCSm5aafaojmoFVgQPzuc2jiu4JNmB+KeJTDr6wU/pX1pxGpXC0JNezd9B4YOr+QeLDfup/X0Bb9MZc2MxgoJvFT/4y+57wMyzfChxDcFtc5QWsPFCuhG/v0QsCl5oqdt1cjK+meis5FgJO40imRt21qvGVs/TE0rkZM2Z7/ikEhYMzaKDJLEC1MyzHQYPA//S3zKSDKFIrLOQ5cCFPfMdug9zM3fHWmrjAlw5Qpp8Eq0RwjW93AIXRo1u6Ydk5z029Fiyh4G6WPVXtPtE4NfQ2/qd8/yqmPBdNY4d/rvvJCUd+IpPWyzkneKXUwKE+H8h7+Jj7B6VamrxNZwM0OhXSkKHPBO4eEO3crOR3rRXX/KOy8EE27zGACf+YK5l1cF7875rDWdciY67C2bQOOAFyXiNvYRjUrVPcxOWx+aNmszKbYidspgc0tB7JHA2N8AQDuJvdVW+AEgKvvjCFdrTLGOntE9lc9dDyV9GhwF/5qB7y4dpiLWYfRQhDgRxjWuMv5gGFDg7qqW0bEPA9Srqh4fbEgXI1ptVtIPsaTOoiGVnbE6vY62sayPch/8ttyjMYU8d1JOC1oacbyEfXFmcS3wV26RUECuDVtMrSF+sWqZ2wjqOjhojCWOggneaVWdz+GKgFWEZilEo7wkL5hz4gGKasHfBLF5aNr3iOSte0cMovotxTesFXGgr8bLUScKEcNFPCYOBfpZoaCdFBqlxR06gIZ9CslXUPfh9nBqIZhBihPqgwSCHjkXcwP3hcZdPLF7DHrSMVGezCK6uulFLpyNmN3bzQ5bXrY+MOLzBluI2cjmQ0BOHigFWAk1sTWkIxEyAWPRzYVF5lPXs79SJFRrfeWrEDC0Pf2zkUjT/nFOj96+1Nx/sgFSXlYT6LYzh1rA7208tMTV81/uOX9kMTJ+lXbFuGYajtnoeNcY
+ JA+ZNXze
+ nzmugVfUztGURSzI4aiMw3P3WwDd/gD563An8TY2CQL0/eI73RYT2griGylkC8xypR71/33H78ZdqJ1gsYpfk/15fw+xUF49OcITxbkSEDuN/dd+R4NuwTbFxcJBoSi79pKmZoMvCkFiZ3e0ZNNkM3uzyINXRM/i3YS1077Kww2YmjctXJr045ILvOUIS3WAGf1dlVmIibYYQvltXItKqiwVUCKN8mdJxBt500eJua6YLWOKf2HmbtqAdmDbhgFGcEyA+lRH4NjtncWSoS7njWQzO7I8I8IQpHhZC5Dulb0TqFZgY6xGNtC3gFYVI7hk6OnvKlqqLCEqmukyJyoOBgARXeFl5xShXfI1zcl/0Qzm1F8zi3hK3HKKSrRcmGys3mvY33UsH6aDMLeuOUj+Tn6A6RmpJShh2eW3oCI6sVPelVx60TwFX6u4uQYAgJ7MdIP/by08sSzK6ABOjaIUixFDOT5Oe17CvVS0PBwvA0so2IpzkypQ3lzMGB8Xa0yz8Ein0k/iciKwDHcVjz88k03ct+tz8paX4otZaHMt9dVDmIPzoF2aTkVWfJCrhtfwTJlzvdxy6sSwASY66Cj+6MV7pMy9TVbTIHJPxk+Hu3MyIHBY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,82 +160,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 10, 2026 at 11:33:20AM +0200, Christian Brauner wrote:
-> create_entry() allocates the entry and the register string it parses
-> into in one chunk and finds the string part again through manual
-> pointer arithmetic behind a cast. Make the layout explicit with a
-> flexible array member and struct_size(), and give the magic pad of
-> trailing delimiters a name while at it.
+On 2026-07-25 12:27 p.m., Helge Deller wrote:
+> On 7/24/26 17:48, Usama Arif wrote:
+>>
+>>
+>> On 24/07/2026 16:32, Pedro Falcato wrote:
+>>> On Fri, Jul 24, 2026 at 04:03:44PM +0100, Usama Arif wrote:
+>>>>
+>>>>
+>>>> On 24/07/2026 15:14, Matthew Wilcox wrote:
+>>>>> On Fri, Jul 24, 2026 at 02:36:59PM +0100, Usama Arif wrote:
+>>>>>>
+>>>>>>
+>>>>>> On 24/07/2026 11:20, Pedro Falcato wrote:
+>>>>>>> ptep_get() does not need write access to the PTE.
+>>>>>>>
+>>>>>>> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+>>>>>>> ---
+>>>>>>>   arch/parisc/include/asm/pgtable.h | 2 +-
+>>>>>>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>>>>
+>>>>>> hmm I think you might break build bisectibility if
+>>>>>> you separate out the patches, you should squash patch 3 and 4,
+>>>>>> with patch 1.
+>>>>>
+>>>>> I don't see how this breaks bisectability.  Can you elaborate on what
+>>>>> you think would break?
+>>>>
+>>>> Patch 1 does:
+>>>>
+>>>> -static inline pte_t ptep_get_lockless(pte_t *ptep)
+>>>> +static inline pte_t ptep_get_lockless(const pte_t *ptep)
+>>>>   {
+>>>>       return ptep_get(ptep);
+>>>>   }
+>>>>
+>>>>
+>>>> ptep_get() takes a non-const arg till patch 3 for example for parsic.
+>>>> I don't think you can pass a const variable to non const function arg?
+>>>>
+>>>> So parsic won't compile in patch 1 and 2, powerprc wont compile
+>>>> for patches 1, 2 and 3..
+>>>
+>>> Aha, yes, nice catch! I'll have to rethink that. Maybe squashing the patches
+>>> would be the cleanest way forward.
+>>>
+>>
+>> Yes, squashing is the simplest way forward.
+>>
+>>> FWIW, the vast majority of architectures aren't doing funny things on
+>>> ptep_get(). E.g PA-RISC, loongarch only define these so they can use it in
+>>> their own asm/pgtable.h. I'd really like to delete these but I can't tell
+>>> if they are *actually* required.
+>>>
+>>
+>> Ah maybe there is something in git history on why it was needed?
+>>
+>> If not, hopefully someone from the arch lists could clarify..
+> I tried to remove ptep_get() and ptep_test_and_clear_young() from
+> arch/parisc/include/asm/pgtable.h, but this then triggers compile errors:
 > 
-> No functional change.
+>  CC      arch/parisc/kernel/asm-offsets.s
+> In file included from /home/cvs/parisc/git-kernel/linus-linux-2.6/include/linux/mm.h:31,
+>                  from /home/cvs/parisc/git-kernel/linus-linux-2.6/include/linux/pid_namespace.h:7,
+>                  from /home/cvs/parisc/git-kernel/linus-linux-2.6/include/linux/ptrace.h:10,
+>                  from /home/cvs/parisc/git-kernel/linus-linux-2.6/arch/parisc/kernel/asm-offsets.c:21:
+> /home/cvs/parisc/git-kernel/linus-linux-2.6/include/linux/pgtable.h: In function ‘clear_young_dirty_ptes’:
+> /home/cvs/parisc/git-kernel/linus-linux-2.6/include/linux/pgtable.h:683:25: error: implicit declaration of function ‘ptep_test_and_clear_young’;
+> did you mean ‘pmdp_test_and_clear_young’? [-Wimplicit-function-declaration]
+>   683 |                         ptep_test_and_clear_young(vma, addr, ptep);
+>       |                         ^~~~~~~~~~~~~~~~~~~~~~~~~
+>       |                         pmdp_test_and_clear_young
 > 
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
-> ---
->  fs/binfmt_misc.c | 14 +++++++++-----
->  1 file changed, 9 insertions(+), 5 deletions(-)
+> So, I think the answer is, that the local copy of ptep_get() is used in the parisc implementation of
+> ptep_test_and_clear_young() function.
 > 
-> diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
-> index d9dc9546d199..4cfd3ce5e47e 100644
-> --- a/fs/binfmt_misc.c
-> +++ b/fs/binfmt_misc.c
-> @@ -59,6 +59,7 @@ struct binfmt_misc_entry {
->  	struct file *interp_file;
->  	refcount_t users;		/* sync removal with load_misc_binary() */
->  	struct rcu_head rcu;
-> +	char buf[];			/* register string, fields point in here */
->  };
->  
->  static struct file_system_type bm_fs_type;
-> @@ -78,6 +79,9 @@ static struct file_system_type bm_fs_type;
->   */
->  #define MAX_REGISTER_LENGTH 1920
->  
-> +/* Trailing delimiter pad so field parsing always terminates at a delimiter. */
-> +#define MISC_DELIM_PAD 8
-> +
->  /* Check if @e's magic matches @bprm's buffer, applying the mask if set. */
->  static bool entry_matches_magic(const struct binfmt_misc_entry *e,
->  				const struct linux_binprm *bprm)
-> @@ -345,9 +349,9 @@ static struct binfmt_misc_entry *create_entry(const char __user *buffer,
->  					      size_t count)
->  {
->  	struct binfmt_misc_entry *e;
-> -	int memsize, err;
->  	char *buf, *p;
->  	char del;
-> +	int err;
->  
->  	pr_debug("register: received %zu bytes\n", count);
->  
-> @@ -357,12 +361,12 @@ static struct binfmt_misc_entry *create_entry(const char __user *buffer,
->  		goto out;
->  
->  	err = -ENOMEM;
-> -	memsize = sizeof(*e) + count + 8;
-> -	e = kmalloc(memsize, GFP_KERNEL_ACCOUNT);
-> +	e = kmalloc(struct_size(e, buf, count + MISC_DELIM_PAD),
-> +		    GFP_KERNEL_ACCOUNT);
->  	if (!e)
->  		goto out;
->  
-> -	p = buf = (char *)e + sizeof(*e);
-> +	p = buf = e->buf;
->  
->  	memset(e, 0, sizeof(*e));
->  	if (copy_from_user(buf, buffer, count))
-> @@ -377,7 +381,7 @@ static struct binfmt_misc_entry *create_entry(const char __user *buffer,
->  		goto einval;
->  
->  	/* Pad the buffer with the delim to simplify parsing below. */
-> -	memset(buf + count, del, 8);
-> +	memset(buf + count, del, MISC_DELIM_PAD);
->  
->  	/* Parse the 'name' field. */
->  	e->name = p;
-> 
-> -- 
-> 2.53.0
-> 
+> Switching to the default include/linux/pgtable.h seems not easy doable....
 
-Reviewed-by: Jori Koolstra <jkoolstra@xs4all.nl>
+Did you remove define for __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG in parisc version of pgtable.h?
+
+Dave
+-- 
+John David Anglin  dave.anglin@bell.net
 
