@@ -4,97 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97BADC531D0
-	for <linux-mm@archiver.kernel.org>; Sat, 25 Jul 2026 19:23:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20166C531C9
+	for <linux-mm@archiver.kernel.org>; Sat, 25 Jul 2026 19:36:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C50B6B007B; Sat, 25 Jul 2026 15:23:50 -0400 (EDT)
+	id C81BA6B007B; Sat, 25 Jul 2026 15:36:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 676086B0088; Sat, 25 Jul 2026 15:23:50 -0400 (EDT)
+	id C33176B0088; Sat, 25 Jul 2026 15:36:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 565106B008A; Sat, 25 Jul 2026 15:23:50 -0400 (EDT)
+	id B24366B008A; Sat, 25 Jul 2026 15:36:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 16CD26B007B
-	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 15:23:50 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 72B8F140373
-	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 19:23:49 +0000 (UTC)
-X-FDA: 85028273778.30.6541356
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	by imf20.hostedemail.com (Postfix) with ESMTP id A0F5A1C0009
-	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 19:23:46 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 842F66B007B
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 15:36:22 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E4405160355
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 19:36:21 +0000 (UTC)
+X-FDA: 85028305362.22.148C304
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 341AC1C0009
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 19:36:20 +0000 (UTC)
 Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=RZijIaxq;
-	spf=pass (imf20.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TXjqhrcX;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785007427;
+	s=arc-20220608; t=1785008180;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=CX+tgQpKBQLzIjT0b29sdrk080pd9HNF43Zn1Gfk8Fk=;
-	b=d5HH17EJ+MIyKendkfqPhefFIgKaNy39dbVLwyR1THi8Gtsq1E5CCRMC/kqojvn9anZKTv
-	/8OXMuJInRBGdD5lYjUDo9cP309ySGtoXJ4Jp1In8KNpTkt9l8LUR4n6aZCujvtw9S30cH
-	B2fD9k49B67EN58V2f2s2la//+uYDsI=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=3ZZhAf0CJEZdivGSgmOWBEKJyiTupFZwINCwx6RoVKg=;
+	b=3A+iWTvx9QkGe4bAZnprXA+bFPQkasRHFtd/+Ocrqq2o28W5rY+nkyL/nhYPksWlANj4Ma
+	v+I86q3x2/b4RsSDbyVutOWTFrrEPAkiJHq6PmFk+wdTzPD9Fe/qsHbMhkBHpKbhcXXg0O
+	R1Xkq83RqkZ4ODyaGX+gHpjRQgiwEfw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785007427;
-	b=FVbowZ7cUlXl4GFFkC1xID0ymKuO84ozc21qiwFNpFOu/pwEtPGXvN1/PbBajwagCejJMZ
-	P3xcD7bdR69AD6sFU3cjtBzVkhH6HHREbiUqZWuqtZj3P5k0LzMm52W5eqAaCnjXF8/142
-	w8JbyClqogLjaIVe6wJNDAz0VcdTmzc=
+	t=1785008180;
+	b=PV+ylmHTyN1o8FSeskL/KV81e5OzW2MrD06XSWw2p3tXGdDJjmXpdo9ee1hYkAoz8400Ni
+	6s2HfAXstJwSHwkB/+/XaKTCG7hBKMbQW1rAVJ/n6NOIcHO0pZ6xW/UYc5gF7l97kY9JeH
+	2eshg8uM4tYHnsjEDqaGCg8hKb8SWQo=
 ARC-Authentication-Results: i=1;
 	imf20.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=RZijIaxq;
-	spf=pass (imf20.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785007427; x=1816543427;
-  h=date:from:to:cc:subject:message-id;
-  bh=jVg+L2Exyf4K4F6Gf2i3SjiVAQ4iYbUyeTmPcEkO1YM=;
-  b=RZijIaxqJfOgPsX59b4x8mwz4seTk3gs6yIFad5JcfhwPbG8IseR4xdW
-   9lNVC8iNSLDHjZrDBMfG3wGHsYPvfyQpUwk/SDh7gbipYT9Q1CEX3pWVx
-   pL3MN8C45ackgIVYwrNQbHj4FkbFPMB5nWKnqf4kQ8Ywi8N/VzYDP25Tw
-   kPt6qVfuCGvVLEPLbZRQim2pP3NE8Jx7kzBZ+sd39xR7kYChQ3bnC4pCq
-   FzQLIhvmhuzBVczHEV3ywNfScfvZbkbkAyGEEghKDYoDmzQL1WMDHZwub
-   PQQENEgRwA99EsNrnKEqddx7JJlQYh7Wmwjou2/lYATtp6JaGxiaBpy6B
-   A==;
-X-CSE-ConnectionGUID: g9ebHIN6QC2+S1QO2q15MQ==
-X-CSE-MsgGUID: tf0hxLznTdq9BsUP06vrOA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11856"; a="97151587"
-X-IronPort-AV: E=Sophos;i="6.25,185,1779174000"; 
-   d="scan'208";a="97151587"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jul 2026 12:23:45 -0700
-X-CSE-ConnectionGUID: GVhADuxjT2KVmxX9FvsHxQ==
-X-CSE-MsgGUID: VoxEGVhSSMGW3Jyvys9FwA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,185,1779174000"; 
-   d="scan'208";a="297242565"
-Received: from lkp-server02.sh.intel.com (HELO ea128546eb3d) ([10.239.97.151])
-  by orviesa001.jf.intel.com with ESMTP; 25 Jul 2026 12:23:43 -0700
-Received: from kbuild by ea128546eb3d with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wnhxn-00000000c1u-03lw;
-	Sat, 25 Jul 2026 19:23:32 +0000
-Date: Sun, 26 Jul 2026 03:22:35 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linux Memory Management List <linux-mm@kvack.org>,
- linux-fsdevel@vger.kernel.org, linux-xfs@vger.kernel.org,
- Mark Brown <broonie@kernel.org>
-Subject: [linux-next:master] BUILD SUCCESS WITH WARNING
- 9eebf259d5352b87080d67758f483583d9e763d7
-Message-ID: <202607260311.Mnd1CzmA-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: A0F5A1C0009
-X-Stat-Signature: ozmjaz34oiqhtuqb7x3hf3ohod8y8rid
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TXjqhrcX;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5CDC060052;
+	Sat, 25 Jul 2026 19:36:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEA031F000E9;
+	Sat, 25 Jul 2026 19:36:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785008179;
+	bh=3ZZhAf0CJEZdivGSgmOWBEKJyiTupFZwINCwx6RoVKg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=TXjqhrcXnZbevt5d4RO3LmI5jCEnv/fVnfUw351QZTElbpkkBXSUwJoCayfKSaS70
+	 JvHuohNyIj1RHtdeNFR3QpTOeSkpHN6eXkncBEQ/8Z3tKmRtjxRpWsKrOk6ta6h97i
+	 hQUhBLJnLuGj0ij9zwF6ZKrkw2s4dRIgCM4GmOCj2fJ48P5KmgjxpvxYt3Jw8Y+CWP
+	 LNT5yVFSpJhaFVgFkMjIwsH2RMLqyTpOy1plWEA7Uf+hDcQXJhaI99iF6zTfwdkX0/
+	 sy7i6CwCsfzvkGtBqx10HEBH9LkD7qZllO5zo/ecYQIaioRbY+yQyB6RFI0CwRAGCH
+	 4Z0/ZcL6HwkLA==
+Message-ID: <2b2fe98d-1a7b-4aef-a1ff-0fbe43339180@kernel.org>
+Date: Sat, 25 Jul 2026 21:36:12 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/migrate_device: Clear stale mapping after freeing
+ swapcache
+To: Andrew Morton <akpm@linux-foundation.org>,
+ Arvind Yadav <arvind.yadav@intel.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ matthew.brost@intel.com, joshua.hahnjy@gmail.com, ziy@nvidia.com,
+ rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
+ ying.huang@linux.alibaba.com, apopple@nvidia.com,
+ Balbir Singh <balbirs@nvidia.com>
+References: <20260724082702.2531024-1-arvind.yadav@intel.com>
+ <20260724214307.a50ed52cf78fdc73bc42f9bf@linux-foundation.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260724214307.a50ed52cf78fdc73bc42f9bf@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 341AC1C0009
+X-Stat-Signature: 1z1c6xjfksjwxhqs94i8fikx8m4j6p78
 X-Rspam-User: 
-X-HE-Tag: 1785007426-332209
-X-HE-Meta: U2FsdGVkX1/rSIAT74Z9meB06/6AIpfXx/Zo2CgefccMEwYr/LgE67rYt9xAdy/eoWybLj7uUFpuZZJSVREZNp87kA0inzmaT2UvUFUJ+NY2dekYJicPI2RFb4LeR/mv0h8f1+0pJQ+Vmg8mCsg6ZqUjRq5u2+OVG4RLFqT35RfPqWk2IrxPq3H3u5Ew0GLa0wIZG2VI0FCwcHR9Bgf10Z0X9m9hyktFs9/SavuGGfL48ku/veR3NgA58LjUu23Az2FhsiDQTPo2DaOS1miaTa47tY74qAxSEFYgtKwYoUjcgXRAn3NH2VyTBkTNUFvE0MDZdQwj1oL7EUamLnKHBs/V+XbpRwuPTmEPbq2CjWfCyhwS1AVzTugaaqQq6jpOf3NfQJNiO2XGGcrgP8m5pPHN6BEMrx+Cd0BPDhFOkPmYOdIL0pWBBQlzm7UpOKzyR8tQlyAWVWwRXilXYwMhTUwSdBSumknTBpqKhy2SM6y1/S9mqY4HqBnWMYFiGJ6rk1jqIcPI8VOgfvmrPvVu24wbL8x0m3QRlK4C/2n/CzmZTs64kufg0fGLfp+wh8Au8pq1mJkSKPqy9CpEqOFW4yKgGbL/6LnwWig+gdNPgtOFBD7HjDgcRtRO+qqK2UwCvjM+Hfebq1nxQoGL5GMbiYGWyI10CWjLRAM9toPP0PMrkPFDkQYlHWQgh4+UDS2QgEPQF3V05k3xGL0xT4k6mwxJjl9rq6VzJnvlj2xm12lvsvXRkbULSTAa29ugzTvCLKjKIYIk1fjekK+MH6tzVWQNoYbSMvO6LXs5KMIUcUpk3ddeAv5WVN8Y4zX+GS7FAl8M329z7alnEi4kLEYXFf4rzjkTXAFBx1gobyWjGEzZJHJc9hD0qWf9PDAxHRCN3iwnYODSll7cB160v4BiVFGuM1iNtDeIgI4JTXv9Om66k0ChBsJJN57osVzf8K+lG/8Kiq/Y2wRLDPdPMld
- hWa5QDtu
- mwn5wpCF2UJdZUtFADrIsIm66EFMest0jQDV8bGr2mLsijZ5olacWn7vxSqw4pMltpR3vdN/YaEA/5VVaPjcuf4gkPw5WVVgZITtM7bBB22S4v9XX/koJWk3/ucNMic8KMumaaTy7znKH5BaMxH+HtGl7ibIePwC0vFVhuIsNYoy1JnJ2AN1YfwG7qbYp51VZCtRaPv3usC2MmHWLgu7QuYQLVQzRk82R0AC0
+X-HE-Tag: 1785008180-590624
+X-HE-Meta: U2FsdGVkX1+cnXC9UGJI7VqIy1Zufgye7k0nPtZ5F3Go6z5zwju6YggAexR27lwXdUmqkjmcU8NYVagUZXs02+iex3mPhvm+Rc+CysE3JXuusemy8r+B8fvhqavG15uWXv3GYdKy4yz2oEaHTEdx4HNeK8MNR059nLOELqJCecGIxRx1VuWbZqyzYtQ1puqmPaS8wuUr32aG6WUFRtPsK3elBaf4IxbRuea59g56sBkMMUp/8PTPbnaMM+qJ4OUwLuAbYVltIExBtpw7HfenhYQrdnnXQgVz9qIL+vLVC4pRipQk0kM0Sut2ubI/JVstEGtAwclqEirbMY2irnO9LKacxTGBxQUfbCwqGe7yZVNym1dPdX39XSELJPxY5hQdghNb8Wcyb/L9jAWO126mw6M6+h2/+easK15WNNsSEXPHuXuzXANHTjyckyWDYSA4uSgXjhKTmymWxdo0gyTa4Hctxsk2ws4+U/b/5Zf794kUYod+H449hEz23mtEljWIc3L0kozkmyHZkko6Lj6rQZee4G/IHorGHszddDFwSRBPJQWSkAclqV971vuvNi2lBVpk+ZHhvjjBKrPBql5nLz/TeN6ARq32AEJt2s8W21fIK2O52YVWEYviVQYMCihPIqr+/u5pbYV1BZlQ73tefBEFm828BhrQPqjmToRslhINaP3GkgHHoSqqgFYC0all/NbQSCVfcbwqEZZ2zYc2CraruUrygrtfAZIHjSKQ9uQQfGKJB7wCczToF12x7FDNI56ILPhSWDOSM4rCgbTe61r2I0MkM+JTBk8qu5GBuW+6d7dCiZ/m4QWgCCyIzGTK+FjI45xVFLusou/ossHAy2xeA+N3rEIBZmVG1CXHeoo7s0A2QdY3KEOYchmG2kmn2NrfaBLvN7YvlfVOGJjK8obUCjzAkIpCyBdVQKVZelkW4NhanlU/q03QVWkCFaUc/CpiEwtpv2P73RbtmF7
+ kvx+i0cY
+ jO184ZvlcdiTySrhRx1oj14prdQhkV0fszQORDM1XGCFM6t6ILZKyklIEEsGLdaqNFhf8hvx84JhUDWb8d8ilzPs4U4cEya5+immbo+qnZ+z6hfEyTJf6j1NgaIP/LepjGFcZ1DwsOU5riv3uor8vena2YjBacYtHgSH5eW7UNPH/KF9QaRr4AmxM+9jUA2brslVx80W1icwwEbP1+k+nhPhU7QcIiNhjzDy/B5mF4iof38KaCwJlEZgspLlnUB1VdwUb6llXBWKcWU5VNVDHRBWLInFEhTB/7jbKpJw7gfmPKY8JPgvRLZxUdvIwItN7rV60K2ogt8Xag6w5J+U01r08qiGkZNPexZiYx3TCdRTf+tAnljH0+MFSHWKymzh36VDq87ahcvb49n0KnQpZO9TrN//cUbykd6c97c1iL8wnT/GRXnrg/kcqnhilsEjaUX1mtbjNzBOWhAAu4AYP7G+K0LNCTm7gEIMRHYg+W1ZuIAU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,216 +143,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-branch HEAD: 9eebf259d5352b87080d67758f483583d9e763d7  Add linux-next specific files for 20260723
+On 7/25/26 06:43, Andrew Morton wrote:
+> On Fri, 24 Jul 2026 13:57:02 +0530 Arvind Yadav <arvind.yadav@intel.com> wrote:
+> 
+>> __migrate_device_pages() reads the folio mapping before calling
+>> folio_free_swap(). When folio_free_swap() succeeds, the folio is removed
+>> from the swap cache, but the saved mapping still points to swap_space.
+>>
+>> Passing the stale mapping to folio_migrate_mapping() makes it take the
+>> mapped-folio path after the swapcache reference has been dropped. This can
+>> cause an invalid swap_space lock access followed by a folio reference
+>> count BUG.
+>>
+>> Refresh the saved mapping after folio_free_swap() so the current folio
+>> state is used during migration.
+>>
+> 
+> Thanks.  AI review might have found an issue with this.  And one
+> possible pre-existing issue in the code which Alistair and Balbir
+> worked on.
+> 
+> 	https://sashiko.dev/#/patchset/20260724082702.2531024-1-arvind.yadav@intel.com
 
-Warning (recently discovered and may have been fixed):
+Yeah, this might need another careful look.
 
-    Warning: drivers/gpu/drm/panthor/panthor_fw.c:143 Excess struct member 'end' description in 'panthor_fw_binary_section_entry_hdr' (did you mean one of: 'va.end', 'data.end')
-    Warning: drivers/gpu/drm/panthor/panthor_fw.c:143 Excess struct member 'start' description in 'panthor_fw_binary_section_entry_hdr' (did you mean one of: 'va.start', 'data.start')
-    Warning: drivers/gpu/drm/panthor/panthor_fw.c:200 Excess struct member 'buf' description in 'panthor_fw_section' (did you mean one of: 'data.buf')
-    Warning: drivers/gpu/drm/panthor/panthor_fw.c:200 Excess struct member 'size' description in 'panthor_fw_section' (did you mean one of: 'data.size')
-    Warning: drivers/gpu/drm/panthor/panthor_fw.c:273 Excess struct member 'ping_work' description in 'panthor_fw' (did you mean one of: 'watchdog.ping_work')
-    Warning: drivers/gpu/drm/panthor/panthor_mmu.c:405 Excess struct member 'kernel_auto_va.size' description in 'panthor_vm' (did you mean one of: 'kernel_auto_va.end', 'kernel_auto_va', 'kernel_auto_va.start')
-    Warning: drivers/mtd/nand/raw/omap2.c:671 Excess function parameter 'ecc_data2' description in 'omap_compare_ecc' (did you mean one of: 'ecc_data1', 'page_data')
-    Warning: drivers/phy/apple/atc.c:631 Excess struct member 'sw' description in 'apple_atcphy' (did you mean one of: 'swap_lanes')
-    Warning: drivers/tee/qcomtee/async.c:107 Excess function parameter 'msg' description in 'async_release' (did you mean one of: 'async_msg')
-    Warning: drivers/tty/serial/mux.c:117 Excess function parameter 'ports' description in 'mux_set_mctrl' (did you mean one of: 'port')
-    Warning: fs/inode.c:1300 Excess function parameter 'isnew' description in 'inode_insert5' (did you mean one of: 'inode')
-    Warning: fs/inode.c:1303 Excess function parameter 'isnew' description in 'inode_insert5' (did you mean one of: 'inode')
+-- 
+Cheers,
 
-Unverified Warning (likely false positive, kindly check if interested):
-
-    https://lore.kernel.org/oe-kbuild/202607260226.sVPNzyMU-lkp@intel.com
-
-    fs/iomap/direct-io.c:939:36-37: WARNING opportunity for min()
-
-Warning ids grouped by kconfigs:
-
-recent_errors
-|-- arc-allyesconfig
-|   |-- Warning:drivers-gpu-drm-panthor-panthor_fw.c-Excess-struct-member-buf-description-in-panthor_fw_section-(
-|   |-- Warning:drivers-gpu-drm-panthor-panthor_fw.c-Excess-struct-member-end-description-in-panthor_fw_binary_section_entry_hdr-(
-|   |-- Warning:drivers-gpu-drm-panthor-panthor_fw.c-Excess-struct-member-ping_work-description-in-panthor_fw-(
-|   |-- Warning:drivers-gpu-drm-panthor-panthor_fw.c-Excess-struct-member-size-description-in-panthor_fw_section-(
-|   |-- Warning:drivers-gpu-drm-panthor-panthor_fw.c-Excess-struct-member-start-description-in-panthor_fw_binary_section_entry_hdr-(
-|   |-- Warning:drivers-gpu-drm-panthor-panthor_mmu.c-Excess-struct-member-kernel_auto_va.size-description-in-panthor_vm-(
-|   `-- Warning:drivers-phy-apple-atc.c-Excess-struct-member-sw-description-in-apple_atcphy-(
-|-- csky-allmodconfig
-|   |-- Warning:drivers-mtd-nand-raw-omap2.c-Excess-function-parameter-ecc_data2-description-in-omap_compare_ecc-(
-|   `-- Warning:drivers-tee-qcomtee-async.c-Excess-function-parameter-msg-description-in-async_release-(
-|-- i386-buildonly-randconfig-001-20260724
-|   `-- Warning:fs-inode.c-Excess-function-parameter-isnew-description-in-inode_insert5-(
-|-- i386-buildonly-randconfig-002-20260724
-|   `-- Warning:fs-inode.c-Excess-function-parameter-isnew-description-in-inode_insert5-(
-|-- i386-buildonly-randconfig-003-20260724
-|   `-- Warning:fs-inode.c-Excess-function-parameter-isnew-description-in-inode_insert5-(
-|-- i386-buildonly-randconfig-004-20260724
-|   `-- Warning:fs-inode.c-Excess-function-parameter-isnew-description-in-inode_insert5-(
-|-- i386-buildonly-randconfig-005-20260724
-|   `-- Warning:fs-inode.c-Excess-function-parameter-isnew-description-in-inode_insert5-(
-|-- i386-buildonly-randconfig-006-20260724
-|   `-- Warning:fs-inode.c-Excess-function-parameter-isnew-description-in-inode_insert5-(
-|-- i386-randconfig-r053-20260724
-|   `-- Warning:fs-inode.c-Excess-function-parameter-isnew-description-in-inode_insert5-(
-|-- loongarch-defconfig
-|   `-- Warning:fs-inode.c-Excess-function-parameter-isnew-description-in-inode_insert5-(
-|-- m68k-randconfig-r051-20260724
-|   `-- Warning:fs-inode.c-Excess-function-parameter-isnew-description-in-inode_insert5-(
-|-- microblaze-randconfig-r053-20260725
-|   `-- fs-iomap-direct-io.c:WARNING-opportunity-for-min()
-|-- parisc-defconfig
-|   `-- Warning:drivers-tty-serial-mux.c-Excess-function-parameter-ports-description-in-mux_set_mctrl-(
-|-- sh-defconfig
-|   `-- Warning:fs-inode.c-Excess-function-parameter-isnew-description-in-inode_insert5-(
-|-- sparc-randconfig-r052-20260724
-|   `-- Warning:fs-inode.c-Excess-function-parameter-isnew-description-in-inode_insert5-(
-|-- x86_64-buildonly-randconfig-001
-|   `-- Warning:fs-inode.c-Excess-function-parameter-isnew-description-in-inode_insert5-(
-|-- x86_64-buildonly-randconfig-001-20260724
-|   `-- Warning:fs-inode.c-Excess-function-parameter-isnew-description-in-inode_insert5-(
-|-- x86_64-buildonly-randconfig-002-20260724
-|   `-- Warning:fs-inode.c-Excess-function-parameter-isnew-description-in-inode_insert5-(
-|-- x86_64-buildonly-randconfig-003-20260724
-|   `-- Warning:fs-inode.c-Excess-function-parameter-isnew-description-in-inode_insert5-(
-|-- x86_64-buildonly-randconfig-004-20260724
-|   `-- Warning:fs-inode.c-Excess-function-parameter-isnew-description-in-inode_insert5-(
-|-- x86_64-buildonly-randconfig-005-20260724
-|   `-- Warning:fs-inode.c-Excess-function-parameter-isnew-description-in-inode_insert5-(
-|-- x86_64-buildonly-randconfig-006-20260724
-|   `-- Warning:fs-inode.c-Excess-function-parameter-isnew-description-in-inode_insert5-(
-|-- x86_64-randconfig-161
-|   `-- Warning:fs-inode.c-Excess-function-parameter-isnew-description-in-inode_insert5-(
-|-- x86_64-randconfig-161-20260724
-|   `-- Warning:fs-inode.c-Excess-function-parameter-isnew-description-in-inode_insert5-(
-`-- x86_64-randconfig-r054-20260724
-    `-- Warning:fs-inode.c-Excess-function-parameter-isnew-description-in-inode_insert5-(
-
-elapsed time: 3026m
-
-configs tested: 117
-configs skipped: 1
-
-tested configs:
-alpha                            allnoconfig    gcc-16.1.0
-alpha                           allyesconfig    gcc-16.1.0
-alpha                              defconfig    gcc-16.1.0
-arc                             allmodconfig    gcc-16.1.0
-arc                             allyesconfig    gcc-16.1.0
-arc                           randconfig-001    gcc-8.5.0
-arc                  randconfig-001-20260725    gcc-11.5.0
-arc                  randconfig-002-20260725    gcc-8.5.0
-arm                  randconfig-001-20260725    gcc-8.5.0
-arm                  randconfig-002-20260725    clang-21
-arm                  randconfig-003-20260725    gcc-10.5.0
-arm                  randconfig-004-20260725    gcc-15.2.0
-arm64                randconfig-001-20260725    clang-24
-arm64                randconfig-002-20260725    gcc-13.4.0
-arm64                randconfig-003-20260725    clang-24
-arm64                randconfig-004-20260725    clang-24
-csky                            allmodconfig    gcc-16.1.0
-csky                 randconfig-001-20260725    gcc-9.5.0
-csky                 randconfig-002-20260725    gcc-16.1.0
-hexagon                       randconfig-001    clang-17
-hexagon              randconfig-001-20260725    clang-17
-hexagon              randconfig-002-20260725    clang-24
-i386                            allmodconfig    gcc-14
-i386       buildonly-randconfig-001-20260724    clang-22
-i386       buildonly-randconfig-001-20260725    clang-22
-i386       buildonly-randconfig-002-20260724    gcc-14
-i386       buildonly-randconfig-002-20260725    gcc-14
-i386       buildonly-randconfig-003-20260724    gcc-14
-i386       buildonly-randconfig-003-20260725    clang-22
-i386       buildonly-randconfig-004-20260724    gcc-13
-i386       buildonly-randconfig-004-20260725    clang-22
-i386       buildonly-randconfig-005-20260724    clang-22
-i386       buildonly-randconfig-005-20260725    gcc-14
-i386       buildonly-randconfig-006-20260724    clang-22
-i386       buildonly-randconfig-006-20260725    gcc-14
-i386                          randconfig-001    clang-22
-i386                 randconfig-001-20260725    clang-22
-i386                 randconfig-002-20260725    gcc-14
-i386                 randconfig-003-20260725    gcc-14
-i386                 randconfig-004-20260725    gcc-12
-i386                 randconfig-005-20260725    clang-22
-i386                 randconfig-006-20260725    gcc-14
-i386                 randconfig-007-20260725    gcc-14
-i386                 randconfig-011-20260725    gcc-14
-i386                 randconfig-012-20260725    gcc-14
-i386                 randconfig-013-20260725    gcc-14
-i386                 randconfig-014-20260725    clang-22
-i386                 randconfig-015-20260725    clang-22
-i386                 randconfig-016-20260725    clang-22
-i386                 randconfig-017-20260725    clang-22
-loongarch                          defconfig    clang-24
-loongarch            randconfig-001-20260725    gcc-16.1.0
-loongarch            randconfig-002-20260725    gcc-13.4.0
-nios2                           allmodconfig    gcc-11.5.0
-nios2                            allnoconfig    gcc-11.5.0
-nios2                randconfig-001-20260725    gcc-11.5.0
-nios2                randconfig-002-20260725    gcc-9.5.0
-parisc                          allmodconfig    gcc-16.1.0
-parisc                          allyesconfig    gcc-16.1.0
-parisc                             defconfig    gcc-16.1.0
-parisc               randconfig-001-20260725    gcc-10.5.0
-parisc               randconfig-002-20260725    gcc-12.5.0
-powerpc              randconfig-001-20260725    gcc-9.5.0
-powerpc              randconfig-002-20260725    gcc-15.2.0
-powerpc64            randconfig-001-20260725    clang-17
-powerpc64            randconfig-002-20260725    clang-24
-riscv                randconfig-001-20260725    gcc-8.5.0
-riscv                randconfig-002-20260725    gcc-8.5.0
-s390                 randconfig-001-20260725    gcc-10.5.0
-s390                 randconfig-002-20260725    gcc-16.1.0
-sh                                 defconfig    gcc-16.1.0
-sh                       edosk7760_defconfig    gcc-16.1.0
-sh                   randconfig-001-20260725    gcc-16.1.0
-sh                   randconfig-002-20260725    gcc-11.5.0
-sparc                randconfig-001-20260725    gcc-16.1.0
-sparc                randconfig-002-20260725    gcc-8.5.0
-sparc64              randconfig-001-20260725    gcc-8.5.0
-sparc64              randconfig-002-20260725    gcc-10.5.0
-um                   randconfig-001-20260725    gcc-14
-um                   randconfig-002-20260725    clang-24
-x86_64              buildonly-randconfig-001    gcc-12
-x86_64     buildonly-randconfig-001-20260724    clang-22
-x86_64     buildonly-randconfig-001-20260725    clang-22
-x86_64     buildonly-randconfig-002-20260724    clang-22
-x86_64     buildonly-randconfig-002-20260725    clang-22
-x86_64     buildonly-randconfig-003-20260724    gcc-14
-x86_64     buildonly-randconfig-003-20260725    clang-22
-x86_64     buildonly-randconfig-004-20260724    clang-22
-x86_64     buildonly-randconfig-004-20260725    gcc-12
-x86_64     buildonly-randconfig-005-20260724    clang-22
-x86_64     buildonly-randconfig-005-20260725    gcc-12
-x86_64     buildonly-randconfig-006-20260724    clang-22
-x86_64     buildonly-randconfig-006-20260725    gcc-14
-x86_64                                 kexec    clang-22
-x86_64                        randconfig-001    gcc-14
-x86_64               randconfig-001-20260725    gcc-14
-x86_64               randconfig-002-20260725    clang-22
-x86_64               randconfig-003-20260725    clang-22
-x86_64               randconfig-004-20260725    clang-22
-x86_64               randconfig-005-20260725    clang-22
-x86_64               randconfig-006-20260725    clang-22
-x86_64                        randconfig-011    gcc-14
-x86_64               randconfig-011-20260725    gcc-14
-x86_64               randconfig-012-20260725    gcc-14
-x86_64               randconfig-013-20260725    gcc-14
-x86_64               randconfig-014-20260725    gcc-14
-x86_64               randconfig-015-20260725    gcc-14
-x86_64               randconfig-016-20260725    gcc-14
-x86_64               randconfig-071-20260725    gcc-14
-x86_64               randconfig-072-20260725    gcc-14
-x86_64               randconfig-073-20260725    gcc-14
-x86_64               randconfig-074-20260725    gcc-14
-x86_64               randconfig-075-20260725    gcc-14
-x86_64               randconfig-076-20260725    clang-22
-x86_64                          rhel-9.4-bpf    gcc-14
-xtensa               randconfig-001-20260725    gcc-16.1.0
-xtensa               randconfig-002-20260725    gcc-8.5.0
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+David
 
