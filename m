@@ -4,122 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C76AAC531C9
-	for <linux-mm@archiver.kernel.org>; Sat, 25 Jul 2026 03:06:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AEF36C531C9
+	for <linux-mm@archiver.kernel.org>; Sat, 25 Jul 2026 03:06:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6CD016B007B; Fri, 24 Jul 2026 23:06:11 -0400 (EDT)
+	id 8A2096B0088; Fri, 24 Jul 2026 23:06:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 67E176B0088; Fri, 24 Jul 2026 23:06:11 -0400 (EDT)
+	id 853156B008A; Fri, 24 Jul 2026 23:06:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 56CDA6B008A; Fri, 24 Jul 2026 23:06:11 -0400 (EDT)
+	id 769526B008C; Fri, 24 Jul 2026 23:06:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1DBBE6B007B
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 23:06:11 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 61DC1140234
-	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 03:06:10 +0000 (UTC)
-X-FDA: 85025810100.27.CC851DA
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 75DBAA000C
-	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 03:06:08 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=a+Gz72ay;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf25.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784948768;
-	b=1/bsweDQHHTvPYRumlCtzrk4o2cMeCPGQwZ+b7h0vJb1LYGdWWUOq7LLim4nvUWWD9ZcTv
-	OrLtrlBUkjMtH7L4mN7YHR4b6047dsbzfdXhpCDR15k4DNVmfJpNG1LPcIyuUw2f2JIrHr
-	LTBGgvsNhWuWYELsoue3xQgfyA/rh/k=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=a+Gz72ay;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf25.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 454856B0088
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 23:06:15 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id BA57D16023D
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 03:06:14 +0000 (UTC)
+X-FDA: 85025810268.09.F1BCCE1
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+	by imf26.hostedemail.com (Postfix) with ESMTP id CD022140002
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 03:06:12 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=hPezswbX;
+	spf=pass (imf26.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784948768;
+	s=arc-20220608; t=1784948772;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=irNbnFIYJEygdH7Nv+c574HKymSb443hYjEGyIauYac=;
-	b=rC2VJufKopaM124W7+fmGwVNdMAvmUU+Of60cFFuY+4KEGZAx4Xe7Ti/hMfJZY44HebSuq
-	qr5Ohf5F/gROpWIyc1WWkbp2qF/zTcDWyBz5C7NtmoSZVsP4HdPa903ao+XmdgREfu+sdL
-	CjzjfYXVaCLnrzq9Qla39bAFVpc8mqs=
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-51c10e86e52so65031cf.1
-        for <linux-mm@kvack.org>; Fri, 24 Jul 2026 20:06:08 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784948767; cv=none;
+	bh=XIiMlCPc8Mt7Alei7lSmaxgcI/fmuRXko3LEZs3caok=;
+	b=weEP+y2uAAUgp/qaPKgDIv4XzBsj1ntuItRn9A6yqP+dlqmu+F2mdAaeyQ9QQZJ7fGUsJ0
+	rQ1Wzlsrlg8oa/FoEy+PErnE/v6+muvO2ofi9D4Yp3mGr18C76KnuqOB3ccrq3luoaN0L8
+	bsHCc9e+beMTElEmkjCm8MlKnSVn5QY=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784948772;
+	b=vGTB0zQn9OUPhwVv5/kqVd7bB1+0OcERByFWKOxtOz3CDTYjVaJrraSjJ61AS4YdOS4ZH3
+	zIe2BRe5ZoeaYt0c+LQ4eNv+eURV79D0Bze0X8tE8HiQeEkekcjsZnQ3lI1C7R2arDNV5A
+	+Lgt92ekWzBbSeBpz+0CmOTGrpTOb/I=
+ARC-Authentication-Results: i=2;
+	imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=hPezswbX;
+	spf=pass (imf26.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-51c10e86e52so65171cf.1
+        for <linux-mm@kvack.org>; Fri, 24 Jul 2026 20:06:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784948772; cv=none;
         d=google.com; s=arc-20260327;
-        b=LJpx1Hht4bDOVdIrNzrnqWVMaDQkCCgyLiIDiTLZlFH3QvRSzH/5IPtae5DMfiGJBa
-         06AwGzpolJROgvh0T4/u4hfjvstphnF8PLb3u4Iew/hg1fiFo4Yq8A9YejkoEN/RTp59
-         Smulo0lAXIubnXuW1REcbdYe8db2i1iESQtMKRWghCNwiKwqUBgq1K+J6nOnpkxU2/XQ
-         HEk4oeP/9tvshTCVw1X0FBCTX4IoLQsrHIDR+SQRdv+kk8AYnjFHiJIfUvpGaMt1hLFs
-         AOBkg5QrF8jdHj2PgONO5YawlusxtYH3kFiGO3Ojlt1rG1fofJ35eKt54HB1Cy10KPD4
-         RRcA==
+        b=Iyha6PpWJJPuKNbFTS5uoMefcWdVjGd0bwt4odcIVMOIetEAnCcmqzOuuDvagdbJgk
+         KUzKRlD8/GOqxoTRVRf2jjZYHTf1Hj1R2g76d4krDN/gerfqwoJAQc7DyWqheQFUU7fa
+         0T7Dt9FV9ylwboEsgfZ/yx/lHICRSKkZyPK9DlYptQ5zfGl1YlhBNTWbpQB3hVayg29C
+         JLA6E1yw5wmZsYS1kB+ts9r0DEyp0NtJn6a6W7GBJNB4f1IQdIWOEEbu4xeSgD3V+Uby
+         WNrG0Y18GQfh2MOf7Vnh0DMC5f2OeoBMIpyQKXmRd8Kt8RRm6e/kwmgPgzXdU9V+HfRX
+         XbWg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=irNbnFIYJEygdH7Nv+c574HKymSb443hYjEGyIauYac=;
-        fh=dKop7XH3xT2gStLIv8cCC810xqZg5L5XHiA+BfKeMsk=;
-        b=bto3NHuYAH5FaPY5MUVArbzjMcXGeFMhaYtnyGKc9XzmoivE9lblvr947ekT1Nqb+8
-         twboMv/Z+TIrBHzrH7WFoD6YBr0sP70Zhzy8tYFhSyXf4HR3Gpig06iEkSdnSG2O+LCk
-         gvfNQwQXRhmPSgFQkIO5ajwPsFi6/EQ/5ojuARiuqc3Y9hzoHPzK06g/H7YX0XBafUAu
-         ZCD1X+l7ikSex4GkR6p+kPZXJRYe0t2JEHYtNTwrCrSOv//WiLa42hQHn95lKDGhZoCZ
-         6UvEu/yf/MSlgN7FHVwhDJb4KFj4ot2gI8YH9gUjs7JkqQ0CuluZdhpMgnwjCtM0K05A
-         L55w==;
+        bh=XIiMlCPc8Mt7Alei7lSmaxgcI/fmuRXko3LEZs3caok=;
+        fh=CsKebz/FiJtYXIa5aG+ZW88TBy7qLdNp6qpjYwl1n7c=;
+        b=pVBoN+kDw3fF4mKyBR6UW4PcxgZf+mFB83gS9kk51EwtzWXucKz73c0x4O8MrDyIs7
+         xEI/fcPZZA5TbIbRYH0mwOwAp2u3ANUnlaUhQWe/50NbK9kPXy3vVQ2wZSZJLV/InTP2
+         BW6ZYFan5mje9/fBGNTi2M+g6HWCUVlKg82bpmNOzSqbvpP4aDTthlC8drzZY05r9m6w
+         grsq4PS/rr5YyFjvL3LyvKbtvnOtb2NJnMPtyfK1TQp+I3iCLJvFjsYrESuhCmYcevpP
+         AM9QQtXbEazEYYbgqrA+9pODwoiBKENPbFvh5Nogd/tZ2X9Tk17ldDHVuxYlesqZkge/
+         2dxg==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784948767; x=1785553567; darn=kvack.org;
+        d=google.com; s=20251104; t=1784948772; x=1785553572; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=irNbnFIYJEygdH7Nv+c574HKymSb443hYjEGyIauYac=;
-        b=a+Gz72ayE10YJghkKVXLMrHZ0BUbTpX5Ehn766ocOmQnpCKQ9/c0czUI5PPBUq4JXA
-         W6sXeTqWWIcn7SM31ilNf9xGOjmiW4AgQqFU8lFL/79HO1Ij7sJTnO+uD8z0U3TBYyp9
-         nDcfm0XxhU3M7fl8rHa0UUyfzSNPugAWj/xVjfWpondNLBmRlRwOps1f2gUvLVSjI54K
-         HfVeGNodPRpZOsXEteQ9LS7aZ8mv+nEWT42vcBnkZej65ZNlh4gndltEvjt+pWt5egTu
-         c54uEMRLw2ttWgW3eNWZWod5YQw1Pdo0nNkk0jm1TBLv3RbRLqvCIqqaQJnbQFrZkhSG
-         tIlA==
+        bh=XIiMlCPc8Mt7Alei7lSmaxgcI/fmuRXko3LEZs3caok=;
+        b=hPezswbXJftyJUk0MTgLJgYpCE18nLSGe8UsGsblHingDXSwHOQ2kEVfazOfVF+ffs
+         yqqVgGYxx/HozlGbrJfM06JBdgLY+CoDcb3Csrcla1V4I4OnqWdSuTGitoZp2erCpCc7
+         YVeD/isQU7i8hRLzRVPKOBKIoi+75LwZsOeBagzOACycnEr5l/cLsx2fHKrKAlpnLgMH
+         Mi3rZvz6/FXszmwbPbGlbfOJU5NWi4Q4fVGZpHiBzT3ZySSFSqr50DV1AabSRRwM2jrv
+         ajOCMseGzTZk82NolYilPSghUTKWcbK1mjKhGjedM2ztI0FizG8iSKy6Qn39bglNV+TG
+         H+4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784948767; x=1785553567;
+        d=1e100.net; s=20251104; t=1784948772; x=1785553572;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=irNbnFIYJEygdH7Nv+c574HKymSb443hYjEGyIauYac=;
-        b=gcPm2MlAsZBftRpkBEnMblol3m29H5GRYCeQEUe5Z4212W/PmTV+6rFoXJVX2tNXRR
-         rhLc25LUBJXzDqrjOGioA11CLT8VSUb96/y2Wpt+x8Q9+8rPOxmx4DB6t/+IRBmAfxtt
-         aH1XWvW98Kg5Ip/wPXF3KjuEZLXm4oi8YjavWtTHjqhA+oz20f9y6/NI/F6ueEv0cMhz
-         GfA+96Qr1v2XH+17K6V0Rkb8vUVXoAAvpqXzOKvaqSRk4iIChQe/wLjXNUvH18A4LtU0
-         Vx0USFIRAXdrz2CdJl8G+hfy9OpzmK9SsxdKRb5OGx/n1cBoyRMGXm2qOmVuovx4745Z
-         I8eg==
-X-Forwarded-Encrypted: i=1; AHgh+Rqvbi//NpnZE1KmG24bL3BuawdzEenmS7ldPg9ADIdc+kU5/zqa8pISmnu7rXU2QiqQkWnCgznnWw==@kvack.org
-X-Gm-Message-State: AOJu0Yw0yafbD7Y2cA1clO//M3EY1STV3/SoYdj7LL6/eex615VIpiVj
-	ySig/CJEuEFbSOSC5VefQGNtuZqtNy+F1zrCJ0chw60NEPlcPgPDSpT46FLE6s+iRthV2D5Szzi
-	QEoye4IRbPnmKKCDuUTNydHnHOQuukZuocnwYTJi+
-X-Gm-Gg: AR+sD10a185btTR6ej9BKBJ1Y7gLTajIZ5nArWMIZafTLUmkCMA2pG+klpY4WIAM0eU
-	euR1aChptQHTrTwggFiYt+3HghfDRcqpUv8TNe5WeU8zpnonuAebNiULoydXfvAFOFljE1gMfgm
-	45Jc6qoGxy2QYxpDDVZUYNE2sv4crZQw8RU8aKaJt1XwNL65K/Wdht+Pl7tPDi004aOENMhkd8a
-	x+5OJ+lH/3R0cbRfDauzx+QDuJYm8L2e14ngkm1osVYaQLw5ndDf3lZdNALvCOALtcG36pBGwwO
-	h3q0O45vJpJKHcPJa3Q=
-X-Received: by 2002:a05:622a:a989:20b0:517:5d71:84e5 with SMTP id
- d75a77b69052e-529a766c095mr5563691cf.5.1784948766958; Fri, 24 Jul 2026
- 20:06:06 -0700 (PDT)
+        bh=XIiMlCPc8Mt7Alei7lSmaxgcI/fmuRXko3LEZs3caok=;
+        b=E/RxN1HP9PcGh2ggJH0rC8jkYP60UnBx+OHOgADOpN6grbd0gqEAx+fSD2qquYqtDg
+         fDGdRwISJvG5XfXPMTPeKGzdhDus+A5OsFLd5icpw9W1vYT0zx3QYWY8C0aWWrkjHTgk
+         wD4GiZC4T9stCx5JZaTH1TyobuamKYT6c06XnwWKq0x1xLRH8dFoEh1n5seZ64stg5g8
+         6zbs2gr6pwaexeneEhXMH50w+qQLsoqvnBPTtpNuUvjKLUvwdPDwzCDpUu8Hz5GSIwny
+         j850+VU8Fm8/j/t1X5vNKr42a3bT7SJsLbsyxbeQmnXcqbP1BP1yP6KjIqG66rE12/xH
+         bRag==
+X-Forwarded-Encrypted: i=1; AHgh+RrIVOaap17APlnvkVUFtESXaItQYSfIPMvqPW4XZ0JyHhx2WTWdQQVql96s7d6GNRDF6xxnEvoxcA==@kvack.org
+X-Gm-Message-State: AOJu0YxDVLMMx5eVz5zxfabbzBCdzabUBkpcXP+YV11Q+wCiRHLZE6Ye
+	D84cqeLJovN4WAGHxN8L8cEH72PvbDCyk69BURUcd491P/sREoZDxFFFKkE50/MtsmUpjgN4BLX
+	FI6IYIRxxsJ0CLAe0vLLzIECUDgT8QUl0I9Yte1l4
+X-Gm-Gg: AR+sD11LCMdK7g49+F/ol5FFBItFEgGTapKxhG+Fje+feyhwLjS6w34Jgp5wi4ChrN6
+	+F+K/oe057UFadrAlIQuic380WCXkV1jCh4WnZ0LQV54NOGb90tCKI7k/vkGhZPr3ATDzcCQ1Fx
+	lajSYDpiYyrUl3FsfrO+7MDtCYgE9MJui4ufpKOoeFndzHpLr3zyc0sv5DMZEr9yIzIY0tBT+E7
+	EBppt8bPLFQD2DkujUpO6DlJc18+wf0N3lUjmUYSaQbkGhe/QZYUyE9qj8Oj44kmphk6+kNr9HI
+	luug5UfJc+XzVmrcmZ8=
+X-Received: by 2002:a05:622a:684b:10b0:50f:af60:3496 with SMTP id
+ d75a77b69052e-529a755e7cfmr5926321cf.1.1784948771491; Fri, 24 Jul 2026
+ 20:06:11 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260705180714.3708947-1-jiaqiyan@google.com> <20260705180714.3708947-6-jiaqiyan@google.com>
-In-Reply-To: <20260705180714.3708947-6-jiaqiyan@google.com>
+References: <20260705180714.3708947-1-jiaqiyan@google.com> <20260705180714.3708947-4-jiaqiyan@google.com>
+In-Reply-To: <20260705180714.3708947-4-jiaqiyan@google.com>
 From: Jiaqi Yan <jiaqiyan@google.com>
-Date: Fri, 24 Jul 2026 20:05:54 -0700
-X-Gm-Features: AUfX_myIFFaUjfDx5aw5ISEvSaCmn3BHQrluKZ5peFeDhY7GfyFGFx2PqiFBCFI
-Message-ID: <CACw3F53b2kmok37Yt26HpCTDZ9Ymd-QnF8yFwHzy==_ObwX=1A@mail.gmail.com>
-Subject: Re: [PATCH v6 5/5] selftests/mm: add hard memory failure anonymous
- HugeTLB test
+Date: Fri, 24 Jul 2026 20:05:57 -0700
+X-Gm-Features: AUfX_mygfMIShG1yt5lqpmJZUvrUXftJG9DC9IwiUwtsRAM6fxepq_9WQEtZdSI
+Message-ID: <CACw3F52vONdu0jY4YcSLzAQ-esbUWQ5DcrpdJtex_NtKUjqu2A@mail.gmail.com>
+Subject: Re: [PATCH v6 3/5] mm/memory-failure: set has_hwpoisoned flags on
+ dissolved HugeTLB folio
 To: linmiaohe@huawei.com, ljs@kernel.org, ziy@nvidia.com, vbabka@kernel.org
 Cc: osalvador@kernel.org, harry.yoo@oracle.com, willy@infradead.org, 
 	osalvador@suse.de, jackmanb@google.com, hannes@cmpxchg.org, 
@@ -132,14 +132,14 @@ Cc: osalvador@kernel.org, harry.yoo@oracle.com, willy@infradead.org,
 	boudewijn@delta-utec.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 75DBAA000C
-X-Stat-Signature: wfe44fe9yre38pa3eain459oerowohmu
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: CD022140002
+X-Stat-Signature: 1mak8ufzz64m7gc4gfpdbe46dejzhy9q
 X-Rspam-User: 
-X-HE-Tag: 1784948768-83377
-X-HE-Meta: U2FsdGVkX1+KYtejmwEn6szC1JaU4xIHi1lNPobQ1QZA7OvPG8cHkWRjnONZ3zxZ+chymJQBilS7aXp19uwUcZamgEn/I0BAXdHOvjnLi/DpEAwm/Gg1vSt+JJyouOgqBciLlM4vdbQrbRftDHvruCVNhpHUmZs2ZUz4DDVc+PcEOtrjUs41hlocKTE1xCtWrcvKA/Nh4gFXEHdEovgUmN+vkyrj63ewavb9In97GLfqyQ39LQEgNaA8JHe5Um4dfTktrqJBfp6XXss6cKFWW6RowFJNl9eOlNr4tVJZ1IRqqP643Mzf5c1rRDkXdP/CjpDs8VzfHOCwMbX5RhzFwQR00f8+/VMlb21nY0ktP9fVf8dPwOayxOmr1S4grHhDAZMVtY59+I8iqDStnwSA0xb5ArsgcMqzoVoWZue21AYcdDtnp8dHLs5n625wAYEu7U+XFJNE2QHr5tpkoLEL6kj0PRpGcnxCntHMtqWk1pFkYcZuMB3uAsKOC20wLCNVtJLMQphL4UzV/q9pw1UMWephU7Es+LWK6Wxjmn0LsFe+8tHlBZWsT3jYY3tQzzH2a+EaBCqsqXuU33jgxcO5+6otPKhKiGo7mAwT6ttahNyJW/r+Vq0sygEnfRxF+lFK0xlkvpZ2I4aBk1jvVoCZdA5AU46jXhhNEtqAPijpRoCytWJg+BF/jOO0+EWl5Fx4tBN1SOoJ0uRdXbRz++fnqDepp6ZxP7HiHvYEXEmzBzO2AtiDKM8xWkrbyBdMyOy9BkKHbZUGFpCKdydMIjs+6eiYvvJzLhFKIie6utpW7bhIY0oZeSZPy/BOX8IIbSbRkXzJPKtYvoj2afL0ZK9dLvgZoYxt3DPgO5W/ZaNdj39k+74Ol7cw/RutVsCsTIS4k4PCX3yiPV10GttWZfpJFo+8Np0owJpyq3NCwqhT6Yv4q7Bw8pSrt1wpwVoFpBQqC1nM4De1YzMCABlC9CW
- Ob5KaXvQ
- 4j/plyiNaYDcjmvMJMWT78pyRFFMP8cJdPcB/Ln/vvkunNENbQa7lesCKipHANZm28HKZKLg1QUdJWdEHEskrDjrLFmjLnm7PJqb+zRyiIzZAvtIvoZ88o0e3n5fl3zx9MrD/47Z8ZvdustQfQkdyULLsK2gibuN7/jhTIMgw85F6pl+o9q71p30nXYRUKglxTegWZmPkc8EuyJVsIKTMIT1Ql3sv9P3mfTdZh95MQgsu5hUx8ujZ7fuIiB+M2qr/VQrV7VTfRNd2YQRd1bdCr1hA3TehFKR4Om1cUSgREl0QBFzACYwEBao9SQ8IlTxqzBh/2KOXROtWIz5npYXUn5mp/5ah7IUbsj6TgtPvz2LQnr5rFpo4Ol19iDdIOQLBfNGvW5FrTq8s9xIHzQREcVepqz5IwBHctzGRghRpLAM19wpET0xAWiqRHzMY+Jze2dhYKOZat8tIB+/P3U+HfnV9VYiqZ6OxUXt7
+X-HE-Tag: 1784948772-383963
+X-HE-Meta: U2FsdGVkX19PlQZzKAspWuIM4uaDgTs35ysDHgSufEykGAEH0RATLOrVm1U+DC5lNezBp3w7uK0nOqbotf7qUm6FtNCrOX2/y8MPfclCAlfGtCpx6nBhM6fGTfYA99JLD6bzl9tH23Lqlu08ylPLKibD+iMKffX82dLnny7QSlolb6LmNtCCuh988AtGu6BwCC0o/AF1XcIXxb+hh4OLuXy5eQxpMV9UbpyGv7U2m1yYfVC1AAXslk3YJQOEAY496KxKeVPJ7yiXOu20w6J1dTJo33BwYhqpHwO42MJ13E9MI81NWnskxJwSW9gqBliydFll2+aP8BoQk4tFN3fHCnz8fATcUufwH0rhAMoOD16O5VKmSefrOJlnFn8gPxsNBEqp7cWNs2wzOybhjKnimmSY9vRwAlwusROP2OvO4ygS58aOOzrHUvvasCu5fT0Xq1NuRhFdUgqRisQAMCNjPC6TN9v/R40QM1EsufCAaEoBtz19V833o99I5Cp6SdixzT6P+lTNlyXg0P1NDJiGGJdbF+NQvwu3K2RoOVuICkszFhnceRzht2uu7y/FJwREq6BJtIoJqM7XuUGJU/MwPR8Wv+jTe/5Cl/zcFy62l9o8mh4Lh444tEUNEMGiZ/s91Ao73rcpHQm92WvGzYeoG9kvLcfF5Z1UhoqHZBpAUUMP/oIBuQySvREsoVgtXXei9DgYsbvKTa/SmnPPncAEpl7wA2jxEL3cW2WnQEA/t4+sQiMZWqRIw4Uyjl7GpqPEMbvoqmiUSsndKhTk9UMlnlFLrukn4ey6Voa3qlXy4b2CN/PfxcQS35pVThkasHP7yQGvemrNiYr0INFY64pjKOTFLuhJzkke8AhrXq9M+UlMbHCquE/kLtw5xqps3qHTZOt+MSySS45dRNqtrlc1T0B3ijcfsyUuR7VPbzM+u1HnCXWIqhjPF71HkIW/rdvAO3TMhGpdnkaTnT5MPTZ
+ 7ZmZVLnp
+ 17cFYprRc7WsIt8KLsHTGi7fE9fqa2Q1f3VJCkpKqw94C83sUy10zYJInA0p8kZAJTFb2oXwU+VZ6r6ja14K2VJYaRW2OutuMd3MHanR9MufmKAw706DZMWRiT28xrMYC86B9W63Vo2BHVm2EW2TCkBNMJuoeYk0DktoA8feBj42ZV6TnRmQ+AyoNjVHgilrrJ7tWbS+bfriHsHP8As1y4CclvvGQO+pv1R9ta3VBVVNv4YSdTHDkDVFo2rpWnN97/KH3YYnwQgVb71H7s1wEMVxqMcQVq0b2UZAqY8MK16CODffj2IEzAliuggpIxfRoqtHZbztchCwZFaSQ4iVw98WpiAsAlXr+L8E7P9mpWEbCeicJIY1l5RwC2aGOKxO8x204O4zOZT3ns1F5HaJcWoyyOumH0XMq6fpITvP4jEzFyC7o0VPpZA8nERrjkDwbF43wCvWAeVZLlJSXFHDsqR0EPg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,225 +150,93 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On Sun, Jul 5, 2026 at 11:07=E2=80=AFAM Jiaqi Yan <jiaqiyan@google.com> wro=
 te:
 >
-> Add a new testcase to validate memory failure recovery for HWPoison
-> anonymous HugeTLB page, including proper SIGBUS delivery, releasing
-> a HugeTLB page containing one HWPoison page to buddy allocator, and
-> isolation of the raw HWPoison page.
+> When a free HWPoison HugeTLB folio is dissolved, it becomes
+> non-HugeTLB and is released to buddy allocator as a high-order
+> folio.
 >
-> The test uses HugeTLB's default hugesize.
->
-> Although can be added in future, this patch does not support testing
-> the MADV_SOFT variant.
+> Set has_hwpoisoned flags on the high-order folio so that buddy
+> allocator can tell that it contains certain HWPoison page(s),
+> and can handle it specially with free_has_hwpoisoned().
 >
 > Signed-off-by: Jiaqi Yan <jiaqiyan@google.com>
+> Acked-by: Miaohe Lin <linmiaohe@huawei.com>
 > ---
->  tools/testing/selftests/mm/memory-failure.c | 70 ++++++++++++++++++++-
->  1 file changed, 67 insertions(+), 3 deletions(-)
+>  include/linux/page-flags.h | 2 +-
+>  mm/memory-failure.c        | 1 +
+>  2 files changed, 2 insertions(+), 1 deletion(-)
 >
-> diff --git a/tools/testing/selftests/mm/memory-failure.c b/tools/testing/=
-selftests/mm/memory-failure.c
-> index 032ed952057c..78c105ce2af1 100644
-> --- a/tools/testing/selftests/mm/memory-failure.c
-> +++ b/tools/testing/selftests/mm/memory-failure.c
-> @@ -18,6 +18,7 @@
->  #include <linux/magic.h>
->  #include <errno.h>
+> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+> index 7a863572adce..3cd524e04a30 100644
+> --- a/include/linux/page-flags.h
+> +++ b/include/linux/page-flags.h
+> @@ -879,7 +879,7 @@ FOLIO_FLAG_FALSE(partially_mapped)
 >
-> +#include "hugepage_settings.h"
->  #include "vm_util.h"
+>  #define PG_head_mask ((1UL << PG_head))
 >
->  enum inject_type {
-> @@ -27,6 +28,7 @@ enum inject_type {
->
->  enum result_type {
->         MADV_HARD_ANON,
-> +       MADV_HARD_ANON_HUGETLB,
->         MADV_HARD_CLEAN_PAGECACHE,
->         MADV_HARD_DIRTY_PAGECACHE,
->         MADV_SOFT_ANON,
-> @@ -47,6 +49,8 @@ FIXTURE(memory_failure)
->         int pagemap_fd;
->         int kpageflags_fd;
->         bool triggered;
-> +       /* Number of initial HugeTLB pages with default page size. */
-> +       unsigned long nr_hugetlb_pages;
->  };
->
->  FIXTURE_VARIANT(memory_failure)
-> @@ -157,6 +161,7 @@ static void check(struct __test_metadata *_metadata, =
-FIXTURE_DATA(memory_failure
->                   void *vaddr, enum result_type type, int setjmp)
->  {
->         unsigned long size;
-> +       unsigned long nr_hugetlb_pages;
->         uint64_t pfn_flags;
->
->         switch (type) {
-> @@ -174,6 +179,7 @@ static void check(struct __test_metadata *_metadata, =
-FIXTURE_DATA(memory_failure
->                 ASSERT_NE(pagemap_get_pfn(self->pagemap_fd, vaddr), self-=
->pfn);
->                 break;
->         case MADV_HARD_ANON:
-> +       case MADV_HARD_ANON_HUGETLB:
->         case MADV_HARD_DIRTY_PAGECACHE:
->                 /* The SIGBUS signal should have been received. */
->                 ASSERT_EQ(setjmp, 1);
-> @@ -184,8 +190,15 @@ static void check(struct __test_metadata *_metadata,=
- FIXTURE_DATA(memory_failure
->                 ASSERT_EQ(1UL << siginfo.si_addr_lsb, self->page_size);
->                 ASSERT_EQ(siginfo.si_addr, vaddr);
->
-> -               /* XXX Check backing pte is hwpoison entry when supported=
-. */
-> -               ASSERT_TRUE(pagemap_is_swapped(self->pagemap_fd, vaddr));
-> +               if (type !=3D MADV_HARD_ANON_HUGETLB)
-> +                       /*
-> +                        * Check backing pte is hwpoison entry when suppo=
-rted.
-> +                        * Although try_to_unmap_one() also installs hwpo=
-ison
-> +                        * entry for HugeTLB, pagemap_hugetlb_range() doe=
-sn't
-> +                        * parse swap entries at all.
-> +                        */
-> +                       ASSERT_TRUE(pagemap_is_swapped(self->pagemap_fd, =
-vaddr));
-> +
->                 break;
->         default:
->                 SKIP(return, "unexpected inject type %d.\n", type);
-> @@ -193,7 +206,19 @@ static void check(struct __test_metadata *_metadata,=
- FIXTURE_DATA(memory_failure
->
->         /* Check if the value of HardwareCorrupted has increased. */
->         ASSERT_EQ(get_hardware_corrupted_size(&size), 0);
-> -       ASSERT_EQ(size, self->corrupted_size + self->page_size / 1024);
-> +
-> +       if (type =3D=3D MADV_HARD_ANON_HUGETLB) {
-> +               /*
-> +                * Only one page is hardware corrupted; the rest should a=
-ll be
-> +                * released to buddy allocator.
-> +                */
-> +               ASSERT_EQ(size, self->corrupted_size + getpagesize() / 10=
-24);
-> +               /* HugeTLB should have lost the HWPoison HugeTLB page. */
-> +               nr_hugetlb_pages =3D hugetlb_nr_default_pages();
-> +               ASSERT_EQ(nr_hugetlb_pages + 1, self->nr_hugetlb_pages);
-> +       } else {
-> +               ASSERT_EQ(size, self->corrupted_size + self->page_size / =
-1024);
-> +       }
->
->         /* Check if HWPoison flag is set. */
->         ASSERT_EQ(pageflags_get(self->pfn, self->kpageflags_fd, &pfn_flag=
-s), 0);
-> @@ -247,6 +272,45 @@ TEST_F(memory_failure, anon)
->         ASSERT_EQ(munmap(addr, self->page_size), 0);
->  }
->
-> +TEST_F(memory_failure, anon_hugetlb)
-> +{
-> +       char *addr;
-> +       int ret;
-> +       const unsigned long nr_alloc_hugetlb_pages =3D 4;
-> +       unsigned long alloc_size;
-> +
-> +       if (variant->type =3D=3D MADV_SOFT)
-> +               SKIP(return, "Soft offline test is not implemented");
-> +
-> +       /* HugeTLB settings will be automatically restored when test exit=
-s. */
-> +       hugetlb_setup_default(nr_alloc_hugetlb_pages);
+> -#if defined(CONFIG_MEMORY_FAILURE) && defined(CONFIG_TRANSPARENT_HUGEPAG=
+E)
+> +#if defined(CONFIG_MEMORY_FAILURE) && (defined(CONFIG_TRANSPARENT_HUGEPA=
+GE) || defined(CONFIG_HUGETLB_PAGE))
+>  /*
+>   * PageHasHWPoisoned indicates that at least one subpage is hwpoisoned i=
+n the
+>   * compound page.
+> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> index 4916ab145325..3d15b4c1b694 100644
+> --- a/mm/memory-failure.c
+> +++ b/mm/memory-failure.c
+> @@ -2008,6 +2008,7 @@ void folio_clear_hugetlb_hwpoison(struct folio *fol=
+io)
+>         if (folio_test_hugetlb_vmemmap_optimized(folio))
+>                 return;
+>         folio_clear_hwpoison(folio);
+> +       folio_set_has_hwpoisoned(folio);
 
-From Sashiko [1]
+From Sashiko [1]:
 
-> Will the sysfs hugepage settings actually be restored when the test exits=
-?
+> Does setting this flag and relying on free_has_hwpoisoned() to skip the
+> poisoned subpages introduce a permanent memory leak if unpoison_memory() =
+is
+> later called?
 
-> The anon_hugetlb test calls hugetlb_setup_default() which registers the
-> hugepage_restore_settings_atexit handler via atexit().
+> Since the subpages are isolated without using take_page_off_buddy(), they
+> are left with a refcount of 0 and without the MAGIC_HWPOISON
+> (PageHWPoisonTakenOff) tag.
 
-> However, this test is implemented using the kselftest_harness.h TEST_F()
-> macro, which forks a child process to run the test case. When the test
-> completes, the child process terminates using _exit() or abort(), both of
-> which bypass atexit() handlers.
+> If an administrator later runs unpoison_memory() on these pages,
+> __get_unpoison_page() checks PageHWPoisonTakenOff() (which is false) and
+> evaluates get_page_unless_zero() (which returns 0 because refcount is 0).
+> unpoison_memory() observes ghp =3D=3D 0:
+> unpoison_memory() {
+>    ...
+>    ghp =3D get_hwpoison_page(p, MF_UNPOISON);
+>    if (!ghp) {
+>    ...
+>    ret =3D folio_test_clear_hwpoison(folio) ? 0 : -EBUSY;
+>    } else if (ghp < 0) {
+>    ...
+> }
 
->  As a result, the cleanup handler is never executed, permanently leaking =
-the
-> modified nr_hugepages sysfs setting on the host machine.
+> Will this cause unpoison_memory() to clear the poison flag and return suc=
+cess
+> without ever calling put_page_back_buddy(), permanently leaking the memor=
+y?
 
-This is true, and I double checked with this test.
+I believe so, the software-poisoned page will leak.
 
-> Could this cleanup be moved to a FIXTURE_TEARDOWN() block so the kselftes=
-t
-> harness guarantees it will execute?
-
-However, this suggestion doesn't fix the problem. The harness runs
-FIXTURE_TEARDOWN() inside the forked child process too, so it will be compl=
-etely
-bypassed in any of the following cases:
-- An assertion fails
-- The test crashes with a segmentation fault
-- The test process is killed by a signal
-
-I believe the correct fix is to use HUGETLB_SETUP_DEFAULT_PAGES() like
-[2] did, and I have validated:
-
-$ echo 16 > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
-$ ./memory-failure -r memory_failure.madv_hard.anon_hugetlb
-# [INFO] detected hugetlb page size: 2048 KiB
-# [INFO] detected hugetlb page size: 32768 KiB
-# [INFO] detected hugetlb page size: 64 KiB
-# [INFO] detected hugetlb page size: 1048576 KiB
-TAP version 13
-1..1
-# Starting 1 tests from 1 test cases.
-#  RUN           memory_failure.madv_hard.anon_hugetlb ...
-#            OK  memory_failure.madv_hard.anon_hugetlb
-ok 1 memory_failure.madv_hard.anon_hugetlb
-# PASSED: 1 / 1 tests passed.
-# Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
-$ cat /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
-16
+To prevent that, free_has_hwpoisoned() can just do
+SetPageHWPoisonTakenOff() for each page it found HWPoison. That should
+be enough in my test, and no need to do take_page_off_buddy().
+me_huge_page() will page_ref_inc(). Later during unpoison, ghp will
+become -EHWPOISON and page's refcount will be 1 when it is invoked
+with put_page_back_buddy().
 
 [1] https://sashiko.dev/#/patchset/20260705180714.3708947-1-jiaqiyan@google=
 .com
-[2] https://patchew.org/linux/20260511162840.375890-1-rppt@kernel.org/20260=
-511162840.375890-46-rppt@kernel.org/
 
-> +
-> +       alloc_size =3D default_huge_page_size() * nr_alloc_hugetlb_pages;
-> +       self->page_size =3D default_huge_page_size();
-> +       self->nr_hugetlb_pages =3D hugetlb_nr_default_pages();
-> +
-> +       addr =3D mmap(0, alloc_size, PROT_READ | PROT_WRITE,
-> +                   MAP_ANONYMOUS | MAP_PRIVATE | MAP_HUGETLB, -1, 0);
-> +       if (addr =3D=3D MAP_FAILED)
-> +               SKIP(return, "mmap failed, not enough memory or hugetlb n=
-ot supported.\n");
-> +       memset(addr, 0xce, alloc_size);
-> +
-> +       prepare(_metadata, self, addr);
-> +
-> +       ret =3D sigsetjmp(signal_jmp_buf, 1);
-> +       if (!self->triggered) {
-> +               self->triggered =3D true;
-> +               ASSERT_EQ(variant->inject(self, addr), 0);
-> +               FORCE_READ(*addr);
-> +       }
-> +
-> +       check(_metadata, self, addr, MADV_HARD_ANON_HUGETLB, ret);
-> +
-> +       cleanup(_metadata, self, addr);
-> +
-> +       ASSERT_EQ(munmap(addr, alloc_size), 0);
-> +}
-> +
->  static int prepare_file(const char *fname, unsigned long size)
->  {
->         int fd;
+>         folio_free_raw_hwp(folio, true);
+>  }
+>
 > --
 > 2.55.0.rc0.799.gd6f94ed593-goog
 >
