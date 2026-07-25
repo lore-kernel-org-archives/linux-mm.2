@@ -4,91 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9713C531C9
-	for <linux-mm@archiver.kernel.org>; Sat, 25 Jul 2026 12:34:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 641E0C531C9
+	for <linux-mm@archiver.kernel.org>; Sat, 25 Jul 2026 13:22:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4641D6B007B; Sat, 25 Jul 2026 08:34:42 -0400 (EDT)
+	id 383286B007B; Sat, 25 Jul 2026 09:22:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 43B476B0088; Sat, 25 Jul 2026 08:34:42 -0400 (EDT)
+	id 30CB86B0088; Sat, 25 Jul 2026 09:22:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 378426B008A; Sat, 25 Jul 2026 08:34:42 -0400 (EDT)
+	id 18A166B008C; Sat, 25 Jul 2026 09:22:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1373B6B007B
-	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 08:34:41 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 777D0A101F
-	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 12:34:41 +0000 (UTC)
-X-FDA: 85027242762.03.96BB4A6
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 7104B1C0006
-	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 12:34:39 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="ALV/u6lo";
-	spf=pass (imf18.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id D47096B007B
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 09:22:30 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 317F88031A
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 13:22:30 +0000 (UTC)
+X-FDA: 85027363260.06.1051447
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 7E03920006
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 13:22:28 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Ky4QwzGc;
+	spf=pass (imf03.hostedemail.com: domain of iprintercanon@gmail.com designates 209.85.208.170 as permitted sender) smtp.mailfrom=iprintercanon@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784982879;
+	s=arc-20220608; t=1784985748;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m4DKSBe6gBg9NpOljhRHmSDeJ/S4jLtsYwVLPovDP8M=;
-	b=JvAMX2KAnNi3Y/n/KKxwUIMKOsrTwSs0rPat+V0SHH3peqmOatijem/GqBSeUuBtNngmud
-	UBiWeR5YGDPI0bSLvyR2Uj7SKkvysK7vecLP53vP0/2s+uu7xEllk3FiK/xkO0lLe3nuyM
-	dVsireqKcx4eTUKsoCTgp5A3ESlezGA=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="ALV/u6lo";
-	spf=pass (imf18.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=8V6nDAFq04ExKfk2MYmWny5A/bytyCIfag+WKXl4F4I=;
+	b=o80Ii9yPtq4E5AzQAVST0AI78G4sNInY7l/cb54nhRNvuSwf1ABqBeFhnODs5FFWqVtOCV
+	ltTQs3s2GBwKHlH90QSEWLc/+RjlrIQaaKl/mFUEUKLGQrDIJDTvaQz/ahXcraSucSpfwa
+	05BV1L+iKf7/goKESvG8YCQXJCbHyoc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784982879;
-	b=y1NU+ta/vYiCV5E5rm5MQV1M1IAxjHjTyNTLes4zUueWAE5Mz358EK4Vq8IFyVjFshK9Na
-	UQR4Xth7G2BTchXEpVPbToH2WE1JKtbNVrTCJiVNXCmqe6z1hnVnQYpUK/Esj3dXXA54FF
-	9YzuFmZMoVV3TEHSjWFbeGaiu2JXdd8=
-Mime-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784982877;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=m4DKSBe6gBg9NpOljhRHmSDeJ/S4jLtsYwVLPovDP8M=;
-	b=ALV/u6loawzgaAOeUKoTBEZiF0fdJTuauRBaojnTcEvDW19TwfPHaQ0ng0Pv/5U1ImHfZ7
-	KrvaY9pYQ2kWkc9/6+g6kDUIMCB/jsDQ1P3L5HMinU1M5CkX//40NgJNYSo2ovGqty3Hoa
-	am7oY+SAh7d2fNfyg4queB/HMVNGUyE=
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 25 Jul 2026 12:34:29 +0000
-Message-Id: <DK7NM9RPUJOD.11PNJJ5N2OBED@linux.dev>
-Cc: "Suren Baghdasaryan" <surenb@google.com>, "Michal Hocko"
- <mhocko@suse.com>, "Brendan Jackman" <jackmanb@google.com>, "Zi Yan"
- <ziy@nvidia.com>, "David Hildenbrand" <david@kernel.org>, "Lorenzo Stoakes"
- <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>, "Mike Rapoport"
- <rppt@kernel.org>, "Shakeel Butt" <shakeel.butt@linux.dev>,
- <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
- <stable@vger.kernel.org>
-Subject: Re: [PATCH v2 4/4] mm: page_alloc: fix non-movable reclaim storm in
- defrag_mode
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Brendan Jackman" <brendan.jackman@linux.dev>
-To: "Johannes Weiner" <hannes@cmpxchg.org>, "Andrew Morton"
- <akpm@linux-foundation.org>, "Vlastimil Babka" <vbabka@kernel.org>
-References: <20260722150006.3848560-1-hannes@cmpxchg.org>
- <20260722150006.3848560-5-hannes@cmpxchg.org>
-In-Reply-To: <20260722150006.3848560-5-hannes@cmpxchg.org>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 7104B1C0006
+	t=1784985748;
+	b=eqJ1S8kbjcgcPwstAG6IJ+XpqYT0bvJx1CmriABiwdNn8jQ4rzJV7BcLRCeEar5Ev6wixy
+	aGlV3/Z+URDiEM9r4+KdGiqyXuIy5lci4XnG4mGiR4scQ3B8ydIidWmJ8QnH+Pi7OL4ULm
+	L7SoJnFvuTI1dziVQwAW0EkEDE0YJPA=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Ky4QwzGc;
+	spf=pass (imf03.hostedemail.com: domain of iprintercanon@gmail.com designates 209.85.208.170 as permitted sender) smtp.mailfrom=iprintercanon@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-39b22d0e488so12425051fa.3
+        for <linux-mm@kvack.org>; Sat, 25 Jul 2026 06:22:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784985747; x=1785590547; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=8V6nDAFq04ExKfk2MYmWny5A/bytyCIfag+WKXl4F4I=;
+        b=Ky4QwzGcwH47ntuFcTP5WuvVzNjRizu2L+/lGGSs3Y5sIrMCRXtjE3TY8lVmYb+thh
+         a0zokbGR31CqV/llfZWChCYYfWdJKNjFaVtkIs+KRfqZUt/Acj9sLceokS5RviERzz44
+         ApGNmtl+oOPsSte++noWLXftF5k19xMY31YFoeam2Jaf0ZCpw4ArcuzKMIIneA0XAp7D
+         oHkIb1JGJTjYxlKDtvGaUUm6/bRwcP2jJ66glKyQO/EU2rCG5H+BmKlHMnlANPhshmdZ
+         Mqlua3xW8MA/mWlwhK7TvTpj9225yMsk1DAhknNixoz+FONiyauNvnQ7jkBnnM9Hh6Me
+         bPHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784985747; x=1785590547;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=8V6nDAFq04ExKfk2MYmWny5A/bytyCIfag+WKXl4F4I=;
+        b=hfLn6nDq9ZhTtuYlcAjE3vSdIoVeU80qmmKWh+Bs8tPS1Oe5h8QxR/QdgOXjOahDGp
+         BxKn7Pt96VTJWIFgwCUdxCB0/xWc1JhjjI+gDHTU91Xfa8y5aATRkwb0FowJO8zqH/48
+         xShbn72Rd9A2zSd+AxBH1SCpD41ATi6LMR40conRp4X2rlJTAtSEIv4/i/88I0GDLH/h
+         lQY37drcjWoCiiUsoch07YGg4/7X/0vQdH7mNJduu2Gaf4ffgBvtADXl4r8VTo3x3rzw
+         llpohdTdu9136EcSP4bSa3RMjDUFyypTT6qHfl6+4raKGaM1B2XsCeH35EZV9Xtdn1XS
+         VNyw==
+X-Gm-Message-State: AOJu0Yw/Ud75bCG90ouiD/F5E4b5cOuhJ5wDjutj4uBuGpCyokT2DSAV
+	x5qUOtAPi3Nk9u03FJCevMBMfzJnzHCObdoMqjPlOxo9wm/2tYqkuum1GgIlP8tAGqs=
+X-Gm-Gg: AR+sD10qj1LTqvmlOdxsaPCNKVhsS1Dar2kGYHPD/xdhNnnUf34zbW/RjjTdJtw9X6D
+	TKAZznKe094ZpiGn2VtwP/Tnkg+Ebs5Vizatf6fOk610zjU0d+TBRtoo1eS+baNSdb7jDzGXUTD
+	W7BqHJhA7Wz8pMub6cDlCW8ZOE9so1qnlEBwb5tq//BbqJI8ase6rfj9//OrLWyL06mM40txr90
+	2kaNFo7bGzjwARSbtcMmQIlJTXNCEF5xPp7e/QA3WJCUMF1SM2Co6fyhyeZAT4W9brNnfL5OpQm
+	qTvxAU1+sHNmSGDXl0bnRPh+UOpBLvgIC1zl8Xq1zloBw08kWWaAHHkgj6ZuvIUHo6GocHOR0uB
+	K216KniCAmHL+TLQcIQBaht2x1npXSMQTCZXoJdyOdPBqH/0Bl3zJokbsdC2ecFx3YnkWeVar+O
+	XyLF2vH7ajqhHkgmqVpPSRgke/Cnbvqh+Zu8Sp7pZ/bp+PibjgjchrTSdXE6kHStlksfyYKdQ=
+X-Received: by 2002:a05:6512:31d4:b0:5b1:5e05:31df with SMTP id 2adb3069b0e04-5b2c1af7890mr413460e87.13.1784985746780;
+        Sat, 25 Jul 2026 06:22:26 -0700 (PDT)
+Received: from localhost.localdomain (46-138-176-102.dynamic.spd-mgts.ru. [46.138.176.102])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b2be1d8509sm417670e87.38.2026.07.25.06.22.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 25 Jul 2026 06:22:26 -0700 (PDT)
+From: Artem Lytkin <iprintercanon@gmail.com>
+To: linux-mm@kvack.org
+Cc: akpm@linux-foundation.org,
+	urezki@gmail.com,
+	shivamkalra98@zohomail.in,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 2/2] mm/vmalloc: fix 32-bit truncation in the vrealloc() grow-in-place check
+Date: Sat, 25 Jul 2026 16:22:01 +0300
+Message-ID: <20260725132201.88279-2-iprintercanon@gmail.com>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 7E03920006
+X-Stat-Signature: hh64ruzm4cgmdt9xgeokhaceuy58zuyr
 X-Rspam-User: 
-X-Stat-Signature: 8wx8tgk8f1sbf7qtscynr1mjm677aasb
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1784982879-605294
-X-HE-Meta: U2FsdGVkX18wYT9hkEQ5bRhPFvJgMzAZ631jyooGDfTpdFUtiBX7GswFf4fHx80rNxbLLF9EttVjcn0PZxgoTCzL8zkb5YQ1KqfBlsda7cqF3hqNA916CK/KU5IFK8cbJ1mnhZV9+IMFapG9Qa3odUDOR8cVxhIB9QroZk9PFF5Pj4w3mTEgYx+qEldK4S+j6HgMyLrzeRQgG29nQBfm/nW64qfA8UmH0UqYVHAlXUB2xpZ/ig+kIZAcyTQy5HU1nvimN2ToYBL8DfS8sjZig304z6OhNHz6dH//KxHY/2uTrpMh3COXvW2OWNy2IvSCHhwCq9ZuTFz+ddDPMu00g8dHUO7+EubidYxQEuMS2HJYroViQeSiXHZM6mFwLvfn6cX6hqc5pCA9czRWY3mGNK4Don2zKlgdOBblmGGVlhnIKe8MSSu5vln8g7jhn3BJRNT+h4XeDOoB6L84/fySClh0V4pMNB3kYx9Ft+nm455HrwE1+YytFl4M6KF6utCQ4gcNG9XS0DHWAfvkteXfmyWgsMo8XjlRBUN+jjjolZ8YidyfaMMKLJAKm+qvoB2BUuVv32qXyimQfxTJDnCgha+HlzBcZd9rf71Rw0J0GNkZNPEdPzPCzrXgTIuBltIsRgeUqOst1K2IDoXgk5wZF3wuFfGczywVJmoyKPgH0DiYccqBMef2uCaiNEHBGAZ6tqOo5uam34m413ydVBszsJim/mkWBW5U1AbUlVm9vbOLHMeYMg46w/+81icftjZCneaqMPD8ns0oW0HfQB+PpyCv5EYqhBtGjb7yvHpzKmVrtDXCa1/aCSkztCZMqn60HqZPhAwCl+XJqKTCpNqBvKvu1CXP0xga98voJ3PT3SZr14DapZFtiHWSpLY3xuzUDnEmqeIN5YY+xfuHlJfcBERJ2+TS0GmflMn6WYE4O5XkPcyb9+HHIu0kyuamOneH9A5wwU1x/YN3FoQ4qf9
- lSFvOYVC
- 10g4/29QLbeFO4DiDdxPMiWMUJ7u376SeHt2LU2VMl1bVe1w06SJmXs8mB6Lqyc46bOhUQdH0leyvclDgrZLY6Oy/0uJM/GIqckp0TS28GtxWYFy577Y8o+oyQ26sXgXRZMtG/OxVCJFgQhsB9WVpS0U0bG8NgY3OxuhYkow23daRNOK6EgsFUDntPnIqkM3MQ2v4WO1trDb8UWmNJrbIaraK+gAhh6062dSSFNw7w7G57zc3ewEe5zEz6Stp56yVKoDga//mStwBG6Ox3imymtMEEDvm73YhU/bL
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1784985748-209416
+X-HE-Meta: U2FsdGVkX180/NOAYvIMZIImWPSrdlzQU7E5dTo44U9JHljaBZztP8Uo6Ha82htPKi6nsBAWFFQF4gG2j6067u3RfSSp4nJDjfF0yM3pl3+gED3i1Io+bF/PNADip6IOxTTI0ySBNCsJ0jBaTNoBVG1r2xXB44QjRYI+GbjqR6vC+BiusfDVB2eqNYdScw6z7OGEX0yIO3FaRSHBr/mc20WYr3ctCz7yP6XVBTLIkB3yYTtATR3ze2F+kQjbvfSpKSqDq7bXTCUkFPIHKxVTOxeG9xcRRmQtAKSp+iM+/B2PbYkNCDLM80Q0DRywPoKuFnRbSUyx4EmU7FeKQVu8uGu184R5MHbu0ZWEjd8VViuq/qfJlGmZEsOYtK2863MORsRzqUePYghoaVVaCQSG1CaJtBxmgMulsJtX1oFljFXqO6JTDeV1P7+qPYFhmHreU5ccH6wRtujUdMLotbJTjFkp7gxcQI0y1ZeZoCWMf/y1r/L0a/6KCrx9cCKXEQiIA3F1DIcpCxZUP5+uIZwj1jo8dOmUIjOIeat9tkfCyy3rUjTdc0Bq+Xdnk8nqHFi6rVbK27lplMB9dI19r8wvtS5L4tBOcgcimG80xT6tnWywuPmZvXnD0FYmM9a3wf7Qgk6SXpzFJIGfhDhfZlBfdU/RopLacqR93BxmCyjSo9Oa7bxTWp2pMRUMMBy5dvG4e7tucMz98X+atan02mfV50DpUxU8QwDqYMKNKt1Ot0uLm3y+rYBcz1ld48mUYDpzbcoBWq3RS5jdOr2bmUEnXtqBb/P/BaE37OEzs1qh8J977jECDf+2V+OBrHjejOLW1x6zGsklVIum6cf01rB6y+EdMsBOQ21pgPkCSp8aolBOPbBD/DHY94GLmYttgS4bSZx26thacOSEJGhN+9gHtAOtaHq1f38KfS7V69Ti7W2CI+OJSTA08EJj+m3ungIkLVEKTqEaYdfT+RE/gPE
+ KpVtRlhj
+ Hd7079SawVDOlH14Q421fDo8JktNqS0E4rgi/ANnl5NyBuIP66fEgztnsD7iPLSE5Jat0z1jNeHyW2P+PFfwLO/b21B7SfvRdIrql0fIIlJ4eAqEXz0T9DGoFiwiWQsp+PsMY1edSTE9nE/9CzemMf+LUhamgI1PXJUDWgv/V8yyepXmPnxATN4OnX11KSmv/mHvg03E9trbmz6wHc1cvGhe1jnELHWXsBy6heRtMMvwzPnORP6bDT7LthpGrHbfqQHkgDr1x08h5qkjul0NsYzZCgW/wQOTk9+qj91Rs0wC/qx7F3ogn6FfJbObmVcFVvf7bc1w6Tk1vTI8R0G4KBI174PnCW9LWhov05Gx4Luue7nK7JTLhcTUuQKpPxoselS6iXHrI2CLDlv2KD7DkvjxeDgNjMg7v0aOdIPjEwwKyNslhKgSMb+hrG9/ceijctJdsnS8kZPY63z3qfdZZ35TU4cW9JX8Zmc4R9mR2jCPmMuzpU5ozzBx8Eg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,37 +115,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed Jul 22, 2026 at 2:56 PM UTC, Johannes Weiner wrote:
-> @@ -4169,8 +4185,8 @@ __alloc_pages_direct_compact(gfp_t gfp_mask, unsign=
-ed int order,
->  	barrier();
->  	WRITE_ONCE(current->capture_control, &capc);
-> =20
-> -	*compact_result =3D try_to_compact_pages(gfp_mask, order, alloc_flags, =
-ac,
-> -							       prio, &capc);
-> +	*compact_result =3D try_to_compact_pages(gfp_mask, compact_order,
-> +					       alloc_flags, ac, prio, &capc);
-> =20
+Commit d57ac904ffdc ("mm/vmalloc: use physical page count for vrealloc()
+grow-in-place check") introduced
 
-Nit: the comment for try_to_compact_pages() is falsified by this,
-we need something like:
+	if (size <= vm->nr_pages << PAGE_SHIFT) {
 
-diff --git i/mm/compaction.c w/mm/compaction.c
-index 0568623d9384d..ca57403dc1522 100644
---- i/mm/compaction.c
-+++ w/mm/compaction.c
-@@ -2823,7 +2823,7 @@ static enum compact_result compact_zone_order(struct =
-zone *zone, int order,
- /**
-  * try_to_compact_pages - Direct compact to satisfy a high-order allocatio=
-n
-  * @gfp_mask: The GFP mask of the current allocation
-- * @order: The order of the current allocation
-+ * @order: The order to try and make available
-  * @alloc_flags: The allocation flags of the current allocation
-  * @ac: The context of current allocation
-  * @prio: Determines how hard direct compaction should try to succeed
+in place of a comparison against a size_t. As vm->nr_pages is an
+unsigned int and a shift is evaluated in the type of its promoted left
+operand, the right hand side is computed in 32-bit arithmetic and wraps
+for areas of 4 GiB or more. Twelve lines above, in the same function,
+four expressions cast for exactly this reason:
 
+	kmemleak_free_part((void *)addr + ((unsigned long)new_nr_pages
+					   << PAGE_SHIFT), ...);
+
+The consequence here is benign. Truncation only ever makes the right
+hand side smaller than the real capacity, so the test can only fail when
+it should have succeeded: vrealloc() then falls through to need_realloc,
+allocates a new area, copies min(size, old_size) bytes and frees the old
+one. That is correct, only wasteful, and no in-tree caller currently
+grows an allocation past 4 GiB, so this is a latent fix rather than a
+user-visible one.
+
+Widen the shift to match the surrounding code. Note that comparing page
+counts instead, as in PAGE_ALIGN(size) >> PAGE_SHIFT <= vm->nr_pages,
+would avoid the cast but introduce a real bug: PAGE_ALIGN() wraps to 0
+for sizes within a page of ULONG_MAX and the test would then wrongly
+succeed.
+
+Fixes: d57ac904ffdc ("mm/vmalloc: use physical page count for vrealloc() grow-in-place check")
+Assisted-by: Claude:claude-fable-5
+Signed-off-by: Artem Lytkin <iprintercanon@gmail.com>
+---
+ mm/vmalloc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index 44647e189f7d6..baf7e396e3fc7 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -4415,7 +4415,7 @@ void *vrealloc_node_align_noprof(const void *p, size_t size, unsigned long align
+ 	/*
+ 	 * We already have the bytes available in the allocation; use them.
+ 	 */
+-	if (size <= vm->nr_pages << PAGE_SHIFT) {
++	if (size <= (unsigned long)vm->nr_pages << PAGE_SHIFT) {
+ 		/*
+ 		 * No need to zero memory here, as unused memory will have
+ 		 * already been zeroed at initial allocation time or during
+-- 
+2.43.0
 
 
