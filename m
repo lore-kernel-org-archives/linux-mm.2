@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71432C531C9
-	for <linux-mm@archiver.kernel.org>; Sat, 25 Jul 2026 03:55:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C50FC531D0
+	for <linux-mm@archiver.kernel.org>; Sat, 25 Jul 2026 03:57:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BBD146B007B; Fri, 24 Jul 2026 23:55:10 -0400 (EDT)
+	id 4BBF86B008A; Fri, 24 Jul 2026 23:57:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B45B76B0088; Fri, 24 Jul 2026 23:55:10 -0400 (EDT)
+	id 46D156B008C; Fri, 24 Jul 2026 23:57:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A105A6B008A; Fri, 24 Jul 2026 23:55:10 -0400 (EDT)
+	id 35CA86B0092; Fri, 24 Jul 2026 23:57:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FE1D6B007B
-	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 23:55:10 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B314316024F
-	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 03:55:09 +0000 (UTC)
-X-FDA: 85025933538.05.4E7DB6A
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 153A9160004
-	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 03:55:06 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=PzKn2Y8S;
-	spf=pass (imf08.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EF6206B008A
+	for <linux-mm@kvack.org>; Fri, 24 Jul 2026 23:57:41 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7DDEE140243
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 03:57:41 +0000 (UTC)
+X-FDA: 85025939922.14.224E01A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id CAFD440005
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 03:57:39 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VawCDvWX;
+	spf=pass (imf27.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784951708;
+	s=arc-20220608; t=1784951859;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nFdW8Apb0lNay40VhfzizdVH02etiqNvRj5AEYt7aMk=;
-	b=kjcRfvvrQl2axt5QaATQr2k4NlLjS8UZIWOMUB4RazYV2Yxs0kRJjATrnAbf3qb7ska+CK
-	r06il8wrowYMgoRRu+KJSr6jBNs7P+8ING7eqNG9FnOPhu2EXvCPheNZFX6G7jnqAt5TV5
-	ERS8j6DR43dC8PLNO1OuzPqnOvYgfZ8=
+	bh=k27M1ifd+dlCcvlTjTpk5IYjKpC55yJlcfhppDsrzdk=;
+	b=Z9vSfVXixBQP1Xk8WEqSuiA7O8uCOh/y2ZnFaTf2AAnJLLOdfaSx2JRl9H2jTRCGKYiSP+
+	PZ6HDKNQYZv9cOYED+Rvv7XIfr8cM4e+gcFWECrtIQrAh9Veck5P+0HF8u9vwbQDyXFeOh
+	ESqep3rLwTIXnqL+By7kZRxrcegnPoQ=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=PzKn2Y8S;
-	spf=pass (imf08.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VawCDvWX;
+	spf=pass (imf27.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784951708;
-	b=SMy5xvaBn848J3JxZVwrjoblX9D6iTDm9iGm2EbySywtE/wvj2bk1yatwrXJzHkARC2Qjv
-	2tUA1WIClnk8O8FhVL0428IpvTUouItC4x84rUg/bO0EuO1YX6YYv50z7Q36CP9PaiV6cY
-	l1pKlDtALV4M5e19cWLGAvieoNnSB0Q=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=nFdW8Apb0lNay40VhfzizdVH02etiqNvRj5AEYt7aMk=; b=PzKn2Y8SEq6X5iOWOyPiwAYTue
-	g+9He0EYlQR5lEZMpSTfEKtG4pDe7N9+MxYmtTldz/iIb6N9C7gKsV0nJOuWXtG26wb065PEK0GpE
-	OTxSZ7jPuP7AqTZ/XdbFy4GIBPs5y12Uaq+GqaXmWI5flM5yg55gz6eHGMgqSUyfSv65mzio+K96Q
-	89Lt7/1PGQYn5Biivo5HB9DlOlsTA/+xp2GFvDnIXzm/z8AYY5yljz/lWCMn5BVR0Eb2txUyK+Boj
-	E5xDsHAClQDzatZFDy7GygLc6dktx6PCTmwLe77d7nxkz6j6CEltm+OdcNUDTKVuXDqJonBYOp3DY
-	VsstCmEQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wnTTS-00000005LGf-3LOs;
-	Sat, 25 Jul 2026 03:54:54 +0000
-Date: Sat, 25 Jul 2026 04:54:54 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Jiaqi Yan <jiaqiyan@google.com>
-Cc: linmiaohe@huawei.com, ljs@kernel.org, ziy@nvidia.com, vbabka@kernel.org,
-	osalvador@kernel.org, harry.yoo@oracle.com, osalvador@suse.de,
-	jackmanb@google.com, hannes@cmpxchg.org, nao.horiguchi@gmail.com,
-	david@kernel.org, william.roche@oracle.com, tony.luck@intel.com,
-	wangkefeng.wang@huawei.com, jane.chu@oracle.com,
-	akpm@linux-foundation.org, muchun.song@linux.dev,
-	liam@infradead.org, rientjes@google.com, duenwen@google.com,
-	jthoughton@google.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, vbabka@suse.cz, rppt@kernel.org,
-	shuah@kernel.org, surenb@google.com, mhocko@suse.com,
-	boudewijn@delta-utec.com
-Subject: Re: [PATCH v6 1/5] mm/page_alloc: introduce
- __free_prepared_contig_range() with fpi_t
-Message-ID: <amQzjkVKYBw4vf9t@casper.infradead.org>
-References: <20260705180714.3708947-1-jiaqiyan@google.com>
- <20260705180714.3708947-2-jiaqiyan@google.com>
+	t=1784951859;
+	b=fKQwntYdLUY7+3a/559ieNWhTSdTPUuNUK1LHkFUr8FBPNtY2o3xJ6tPalB4zqiPqsyBGH
+	71LmlvqhtzwWISZ/fPva4AfLr0G/+WY5TkGbHRZhyvO4xN2GlrHUaKLOk+sdwJI4fPoRdF
+	Wpe2P0sDqhxEsZ9NEUXGASr3mmG3ghE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9BD0A40110;
+	Sat, 25 Jul 2026 03:57:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0E8A1F000E9;
+	Sat, 25 Jul 2026 03:57:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784951858;
+	bh=k27M1ifd+dlCcvlTjTpk5IYjKpC55yJlcfhppDsrzdk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=VawCDvWXILXVBYEk9LeoNq5jQOG6vtTu0/IQgEP0y9WMso66ndvfswCLyjgJngG5Q
+	 sn983AGJTIMjEZNI9lpv10NOkD1ViTHdqcuHAAsEm92HOA7LYvJLnx0419ZwcFOqBY
+	 JD/JGsjtob3YZp7lciyvTBIYj4Ro16V18ToWdK8Xyewl9B5lMjWYIJd1de8FfX8/p7
+	 3UlnFfR5Cmjp16IuMUKQqL7Z8ARJe2oAeduCyZWB4VWKAvCeoP3vJnWDLfC2IYrBEL
+	 a5/nryA4cusXJ81RnvR9y7i0UFEMwMVJbpnqZ+KMpUC06/O+qyZHIabU5mGaLoktzR
+	 BeQ5VpQhAwhxg==
+From: "Barry Song (Xiaomi)" <baohua@kernel.org>
+To: senozhatsky@chromium.org
+Cc: akpm@linux-foundation.org,
+	baohua@kernel.org,
+	haowenchao22@gmail.com,
+	haowenchao@xiaomi.com,
+	joshua.hahnjy@gmail.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	minchan@kernel.org,
+	nphamcs@gmail.com
+Subject: Re: [PATCH v6 0/4] mm/zsmalloc: reduce lock contention in zs_free()
+Date: Sat, 25 Jul 2026 11:57:33 +0800
+Message-Id: <20260725035733.53241-1-baohua@kernel.org>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <akynv_js-5G88rGd@google.com>
+References: <akynv_js-5G88rGd@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260705180714.3708947-2-jiaqiyan@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 153A9160004
-X-Rspamd-Server: rspam01
-X-Stat-Signature: z1imut655rk95c7izf564m7x8bo3ipt5
-X-HE-Tag: 1784951706-633043
-X-HE-Meta: U2FsdGVkX19Uth5Cr3ObL/lK5YWyFxaomOoOYR6fzAHko917tuIJjUaBydr/QdYQpIH8PtfueP0sSjp9ZOO+QFC9h3VDpv+qHNCqDXq5uxoeho3dYXyOhHuxSg0K7cY7lM+klCN3QvS+Uk23shEVSDSQhlfxzKASocPQ/CyHm3M0MOU62Nb6hgDYKpnGD2YZZt95xUfShyr2mUnOJpRTXFawpdbYtKKssiFaDSPQcjuR9smn3+EdAv/szfiyr3KUjjc2WA1PG96l2eoKKxmdIRtYeg1ieyCg2lL993VVY9fXvpVYvvpnMYqIlEik0Aphecih3J8hbe0029aPfXT8YPwAMCbi0QoBFjwgKpiAapwIW5Fqpwx8ATv3WXgko/YWkR8ohOudgjSFC3kvdSEZjTkBMY5dtM0P/+PQuY0Og7fxZsrvwuwN8IP8jIOOATtba0vZ5HOkv3Nbar6JCIewD49tJiOL/HLSzX1T3zEVA9dtLrvaoX92bE91ouPSiQwntRF9SQ6Yyu27ko9sXKM/KXsMQcKFua2Cl7tRTJWGAWuiAD+a1x8T1TZnEQPn0BOD6iFIaOA/OPXEUbabuL54hetJ9xiQnOErlvkcwqAs+YqRtA/6bb1vJ41ONHQ6y6sKLvgyhetF6rjVqsknQGoY3Dnf4PUb+IPiebz9RvnSp+RyMUBsq87QtF0DvA95LwCVAIgg8YPRY4bDS5DscYuLqxtjCxdv9C0cA0Bl+w0W34hoaXk7yxg9TU6Zg3OIK6jZCmUMqoYT4kvcyNG1JHjRbDVyWPmoOohI3XyBLCGhIab9B5nS7vir6Q4FHE4u3f3EuJ8LM27Gd0trfd+VKYomIYa3VmG1SdKaq2tkqH0WKFp4z49N8d+hkKFaWXK3FmBPHpJE19MG4bg8ND5DExW3qPF7ECrzt6ghwBr8yeZ6OB7OAuw6ITpmaOtbggFWX0IeUPq/mqs8VtlBNtjQOOV
- 5xjLr04f
- JKawpNwzvtEHwxcjw1d24bLewLS9//RLVE+GHU4b828gpJbvT85ehMgTYZesdhoCC21EuOXlrVjuT7IJSlBdcEKIAowSz/7O+I9gCtC5yUewlYRfN6YB0q5s6oiWaESiVgpIwjHL6AQDeptkHfNdI0ZtHlUt+UXgTo6wyr6D4+WHg1yfWPRSvW/kFDQ3DREGhIOtqa8+tVITIX0XO7u6t3Xngnqi3kwktzOrjzDqla8HLUGu8En1wskIWhfzyEuewgw0ZrtvJt2uVEhDUvIqd/6Ww+68CrHojd6EFCInTz0Jnptm7ilLg5QjZD4iIr2xZdgwirwipF2b0lfNch9DkkeA0tXvpLtKDSOKuos95Q68aaSkwaO2jYq38Kw==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: CAFD440005
+X-Stat-Signature: qxwtakw76urd3ekizo3twamg3qochmm4
+X-HE-Tag: 1784951859-569867
+X-HE-Meta: U2FsdGVkX1+imLE91Y/R358zTtFtKbr2zicWLXryASOvCnwtRAiLXlvM6AkUBBV2su7BJyax+wHEQzt9eOJPUGjWuM+inwzYKQN3/tRD86v+pYUrUrNaF1M/ZaXKrrpqqW/JGOZDU0Qmee5qWewzsPck7XwMLZJE3wrqKi08573z8bfpNT4omct084W3zkkL9AunRIPAGNB9V9qOMEKF/c+bBPMk3iS/CE/3WwD5uCUkxwCK9OAJEjUcx/7SD1dO938z1unJyS65edpZv9EEQmSqvIefpX7zGX1q0cjoaLm9wOdNiyxnpwnjfg1eKT/Mc8mg3dr9d60r2JJTySOW/B6Pg9/VsIThlui+QagUVhsgXwhLYmDI0RD1MUnEIkqpcCP9KDPo18ukpaw2P2DrwqW1/EVX+IK55TYla59t38a6yjP9EElAaFFdR8aBK0lKgCWV+SMJJaO3nO0UApnPtOVuj+019HqRfw8lww47wFE54YtR1MjTeJ+mXcUNgUzQqFR2d1xHpanZ4xXxIgpE2byImCAC5pOaIpU/NocCdTYn1gqNcP3eo35a+ghm6X2DdebFYv6CNkIdZtPc6gJtql6D78YmigkCrOoToWZOVbU+/WenRAD1QTkF3S6428bzmLInNTv9SXvwcXMx44HUjMzf++bMeNrlHq2kBatpFn4LyJGFpVoRHD3K83LD22M/Mcn8BJAFMYlkxjHMngIzcXKnnrwjBDEYn+IWh/BoRNp5T+nI17pkLFW/gnHUKMFE01fwCfMUfGDswVg5DgQOSnC7h1e5N5DHPPCl1Ab4guW11xOm1vocpMis/bvx5J7drVnwVF/dVQzfjEGalUVUxHQMsqFEFyeke773DlLwxKXZ3L6UOCOMsDfwiAouvkkffSVvM9KX5CW67ISikweqpCqMTnVTDDaeqV+2dGppp4+Gp2RYdq4/G12OuxPG+LPn/cq3ZUHRu21Pd8qOmsN
+ fN66km3N
+ aDq66JJrAPeyRLn/cS8k9NqWfTy9dF/tDrrKg82IFNmLjSBrIzjAlPC6ti31RDkiVDfZZzmJCM6qdJAuGd5yB/NPUCg2mN2TvWqToYe6lL5MbbXAVksPGR/B8AuEddnfbRsDsOASPZhn+IwwH5bY0SkCr7JB6iHDn6EZ2pqLybnH1TAxSbzVqidFc7tvAyP4bkLVCjb9JUtCfxRopCHqQpLizmN4XsopBMZ0FoFiCsc4t8/VZN2YcXCYuMjYCMNym5EGte5Zq1NdjjgAQbMrIZZvTTxLndZ2vYTMO1zm1ZLIaDgS/DqBFztOmyMYObzAN3UuIF9mT/xtqtfuV7C/74gT5HB01aOUhbDuJe+pxJ3wvEbS8gdBkjhRNEXJGvK6HYmtqwvTqvqmcY2Do2UqjU21WqbJbiqC1gcUM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,13 +99,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Jul 05, 2026 at 06:07:10PM +0000, Jiaqi Yan wrote:
-> Rename the core logic to __free_prepared_contig_range() to accept
-> an fpi_t argument. It bitwise ORs with the required FPI_PREPARED
-> flag.
+On Fri, Jul 24, 2026 at 12:55 PM Sergey Senozhatsky <senozhatsky@chromium.org> wrote:
+>
+> Apologies for the delay.
+>
+> On (26/06/27 21:36), Andrew Morton wrote:
+> [..]
+> > > Raspberry Pi 4B (4-core ARM64 Cortex-A72):
+> > >
+> > >   mode        Base       Patched     Speedup
+> > >   single      59.0ms     56.0ms      1.05x
+> > >   multi 2p    94.6ms     66.7ms      1.42x
+> > >   multi 4p    202.9ms    110.6ms     1.83x
+> > >
+> > > x86 (20-core Intel i7-12700, 16 concurrent processes):
+> > >
+> > >   mode        Base       Patched     Speedup
+> > >   single      11.7ms     9.8ms       1.19x
+> > >   multi 2p    24.1ms     17.2ms      1.40x
+> > >   multi 4p    63.0ms     45.3ms      1.39x
+> >
+> > Well that's a nice result.
+>
+> Indeed.
+>
+> > Sashiko AI review said ....  nothing.  I don't recall seeing that
+> > before ;)
+>
+> grep-ing the code, I wonder if we maybe want to tweak some comments.
+> Namely, zs_page_migrate() says:
+>
+>         The pool migrate_lock protects the race between zpage migration
+>         and zs_free
+>
+> which is not entirely true anymore, as zs_free() has a lockless path
+> that doesn't take pool look (when ZS_OBJ_CLASS_BITS permit).
+>
+> Likewise, __zs_compact() says the following about pool migrate_lock:
+>
+>         protect the race between zpage migration and zs_free
+>
+> None of these are critical, very minor.
 
-There are only three callers of free_prepared_contig_range(), all
-in the same function.  It would seem like less effort to just
-modify free_prepared_contig_range() to take an fpi_t than
-introduce this wrapper.
+Does it look good to you if we squash the below change into patch2/4:
+
+From 49091bd19445c8927ae063042bc7394e7cc359c0 Mon Sep 17 00:00:00 2001
+From: "Barry Song (Xiaomi)" <baohua@kernel.org>
+Date: Sat, 25 Jul 2026 11:45:09 +0800
+Subject: [PATCH] mm: zsmalloc: update the comment about pool lock
+
+Update the comment to reflect that `zs_free()` can be lockless when
+`ZS_OBJ_CLASS_BITS` applies.
+
+Suggested-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+---
+ mm/zsmalloc.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
+index 3d566a3ee96f..b5eadee0e8f0 100644
+--- a/mm/zsmalloc.c
++++ b/mm/zsmalloc.c
+@@ -1865,8 +1865,8 @@ static int zs_page_migrate(struct page *newpage, struct page *page,
+ 	pool = zspage->pool;
+ 
+ 	/*
+-	 * The pool migrate_lock protects the race between zpage migration
+-	 * and zs_free.
++	 * The pool migrate_lock protects against races between zpage migration
++	 * and zs_free(), but only when ZS_OBJ_CLASS_BITS does not apply.
+ 	 */
+ 	write_lock(&pool->lock);
+ 	class = zspage_class(pool, zspage);
+@@ -2045,8 +2045,9 @@ static unsigned long __zs_compact(struct zs_pool *pool,
+ 	unsigned long pages_freed = 0;
+ 
+ 	/*
+-	 * protect the race between zpage migration and zs_free
+-	 * as well as zpage allocation/free
++	 * Protect against races between zpage migration and zs_free()
++	 * (only when ZS_OBJ_CLASS_BITS does not apply), as well as
++	 * zpage allocation and free.
+ 	 */
+ 	write_lock(&pool->lock);
+ 	spin_lock(&class->lock);
+-- 
+2.39.3 (Apple Git-146)
+
 
