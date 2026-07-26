@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1064C531C9
-	for <linux-mm@archiver.kernel.org>; Sun, 26 Jul 2026 22:23:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41529C531C9
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Jul 2026 22:24:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 035016B0099; Sun, 26 Jul 2026 18:23:35 -0400 (EDT)
+	id 208FA6B009B; Sun, 26 Jul 2026 18:23:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 00BB06B009B; Sun, 26 Jul 2026 18:23:34 -0400 (EDT)
+	id 1E0C26B009D; Sun, 26 Jul 2026 18:23:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E8BA86B009D; Sun, 26 Jul 2026 18:23:34 -0400 (EDT)
+	id 11E706B009E; Sun, 26 Jul 2026 18:23:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B188A6B0099
-	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 18:23:34 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 32EBE1405CA
-	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 22:23:34 +0000 (UTC)
-X-FDA: 85032355548.11.7FD0F60
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com [209.85.208.72])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 7CAA3180002
-	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 22:23:32 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=b36Joras;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf06.hostedemail.com: domain of 34ohmaggKCOcSJLTVJWKPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--jackmanb.bounces.google.com designates 209.85.208.72 as permitted sender) smtp.mailfrom=34ohmaggKCOcSJLTVJWKPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--jackmanb.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C9E3B6B009B
+	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 18:23:35 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 303911A05BD
+	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 22:23:35 +0000 (UTC)
+X-FDA: 85032355590.21.6A4F675
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com [209.85.128.72])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 86FD11C000A
+	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 22:23:33 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=h+iSFEKO;
+	spf=pass (imf20.hostedemail.com: domain of 35IhmaggKCOkULNVXLYMRZZRWP.NZXWTYfi-XXVgLNV.ZcR@flex--jackmanb.bounces.google.com designates 209.85.128.72 as permitted sender) smtp.mailfrom=35IhmaggKCOkULNVXLYMRZZRWP.NZXWTYfi-XXVgLNV.ZcR@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785104612;
+	s=arc-20220608; t=1785104613;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t3PhqaxxZ1xAjFZ/fCk/opbDZbTshcWyWRb6oD1k9p0=;
-	b=3fY/A5SVmj31WsOmxpCwjIpo/vTjErb3KT2r6qO9TQ2vF8e/JPl169xsNhyQ9QbnbGijxM
-	3pJvUlnOZWlXhFTfvXpfMG37iRTBXf+VfwPdGJWbAbGV3IaAfWf1x+fnIoPmDLbtZfrebm
-	s1zetmS5UR9wymRTb2+ndUBuHlZHKlI=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=b36Joras;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf06.hostedemail.com: domain of 34ohmaggKCOcSJLTVJWKPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--jackmanb.bounces.google.com designates 209.85.208.72 as permitted sender) smtp.mailfrom=34ohmaggKCOcSJLTVJWKPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--jackmanb.bounces.google.com
+	bh=Tm0BvJAKZPCt0zL1nFBZwS1cb/7w8R7o2etn3uisi0o=;
+	b=T1QaFwjA5VA/TXO/ND2CMEAYilZcrTkN/TzUBueal6FZqKM+h7nNtkv3DHS7D6zYzA0CZ2
+	ivZacSl9MvzKE5NJbEpY8TKfOzMMoPPTOwLlodagBUNU0BDdsoScMKHCCdf0ujNvD9F22C
+	E5aboIYej7AVDnYriV6bGpQkOlF6G1U=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785104612;
-	b=kYAuguv9jva/6ltIMcxStby2y27yb7B7NIGQ+OZhKzpF6gFRNlw2TEp5O0eieZ4SY0xrz1
-	p9461hJImcdKISy5UT6NZzqI7r7z+gPen+rXcLz2UrNz7csAOb4DFyxe8bfrWuzSX69cB+
-	ECMvGxDDtyI8yrjgNP8JpB4iQwDIXUQ=
-Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-698addf0a80so2125965a12.1
-        for <linux-mm@kvack.org>; Sun, 26 Jul 2026 15:23:32 -0700 (PDT)
+	t=1785104613;
+	b=IlpNZUK+Nqs0XZ4sBji1RLK60dB9KQiMXSdbOXigeRS3gU4dPTeW7sn+U39J89nO0Qvrm6
+	LlAcZBExKWZ/6UtUJeD+P8CEFGGr7tYZAfiQgIXYWHLTtxgLuTJZ5iyOimabKZBVjrG6M5
+	dRsu1m9uxDRo3CUaequL6b5cg5kXXVI=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=h+iSFEKO;
+	spf=pass (imf20.hostedemail.com: domain of 35IhmaggKCOkULNVXLYMRZZRWP.NZXWTYfi-XXVgLNV.ZcR@flex--jackmanb.bounces.google.com designates 209.85.128.72 as permitted sender) smtp.mailfrom=35IhmaggKCOkULNVXLYMRZZRWP.NZXWTYfi-XXVgLNV.ZcR@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4954fe32d6eso10041095e9.1
+        for <linux-mm@kvack.org>; Sun, 26 Jul 2026 15:23:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785104611; x=1785709411; darn=kvack.org;
+        d=google.com; s=20251104; t=1785104612; x=1785709412; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=t3PhqaxxZ1xAjFZ/fCk/opbDZbTshcWyWRb6oD1k9p0=;
-        b=b36Joras+L6syXZJBMEa7svSWxZDrrmDVcjkhVsUe0UihxKlCR63blhaX2hLupnIqm
-         P3RHnD1eyqnlvFiRKc8DUZYh6B7LId2Wm7ji7pa1OkgrUTe69gPD2wyhhV2KBb3S/5XO
-         rdRnlMHchs+l8CILrhF/okzlO2V8gEIWbzFeNFs6zhy+69I9eNvKdq4Kn+LkWCQGtA3H
-         qhItYz+hQqEQgdOd/iud86al3UdC/uHrtjJ3uX6nOapQAOffcdbI/lPjbl9gyomKpg2X
-         so41D3Wuwt+SoDIlkaqFavOjE3bQL82i42hKIhz4+zJSZ8w1RZC16D8C8wHQzpVF0xt+
-         1VCw==
+        bh=Tm0BvJAKZPCt0zL1nFBZwS1cb/7w8R7o2etn3uisi0o=;
+        b=h+iSFEKOpUq26VHEWYj8gB4SmQcr1lUDrRZZfsEAoRIS1zNi5lYKRcdGyeUNPe9HaF
+         GNEQgPLq0rmJvBpcZQcPUSwfKbww5d9kHVG22E/CSp0Rg2A8tySmI7beBcUC+XzS0I2p
+         KuJV4dlXRFwwmprK5YTOawKwE1l8YRW/4kJBMmLjh+9OmldPhxJxJIEK6USMpI287329
+         btI84P4f/pRZj3AxFno0V+CVPPqdKxqgC8UkuGNhOFhYvHN7t0jfQCYuxsRiyMsQ8Kql
+         doWD0cYoJFf/wM/mICCmixFLqoQtTPHGIhevwrVfHZf/xTWbRhpXKMXyI1QYF6FqbnSN
+         97yA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785104611; x=1785709411;
+        d=1e100.net; s=20251104; t=1785104612; x=1785709412;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=t3PhqaxxZ1xAjFZ/fCk/opbDZbTshcWyWRb6oD1k9p0=;
-        b=gDxvHylBhpo/+Ao7Uz/KqhtZCdmOJPEUHa1u3LO2Swa7quqDbkHML5ojiV/+jAs78A
-         r+rv0c4RLda1HspuKMvC0fq1TqTfTIiAK44R+DxPiw9a8Atut3xwuyCZLLrMShGobzfA
-         KMDuQVNpNdqHiCCKrUBMV+XEDKK9S9bZ/fZLUgJLIV97SJhYm+eJsTcr/XiLkvNKpLrk
-         0eTFGWXeGuBFcxC2zHr+DLI7vuvX4sa9mNM9R1p6aqOKfvCd+KaQcTsgEms98Rr7Y3Tp
-         EIKPxoLD1FZo1AqX9pi8d6EDP+W72Ad/YH5eTAPRy0DZGx7N0NVDVOu5nj5bE+LxXf1G
-         PTkQ==
-X-Gm-Message-State: AOJu0YyZglP3JGAVAk00G2hiIUpsK5x+EU+kljqrC+NI/cnQacNObIhM
-	o8Z1FO2IRgfuBOb25ebY0AMs7+zEjJaPhxx8zwFec7JBgajeNR/nxmMFhFJ04LVvOFbDe2W+Xzo
-	cE/w1X07db3kPnA==
-X-Received: from edqj22.prod.google.com ([2002:aa7:c416:0:b0:69f:b160:de14])
+        bh=Tm0BvJAKZPCt0zL1nFBZwS1cb/7w8R7o2etn3uisi0o=;
+        b=KyoSsSk2zV9dRpRlzIlpp2o9Muo8j7XXMmjxl2CXKKh6lmrHW2qyYyRNogXcPiUsKR
+         GQqUSZRM0GdwtbzcykC+g8dojUDcc4c/iiINMf/QQdQtW4/X/pi3pBUPmcFOY3YbQ0Z4
+         W+R2Kb3oMavLqRwnAvuKw9aegaOnMiTog3847Ht9rwWyZDBTQMn3N6VoDAhocyzyKFe9
+         PdULb5La1zeCgcOog3B9uBqiHUbqgtTSCe83QScQj/2WdYoYU27sSHs5AsyhDh7OLBjc
+         3/dw73qxLGFH2H5bGL41uo1yQnuiFeHRQhPQgaDrbhmpzqziqQn7u1QvyYz4LH+FK0eU
+         GIgg==
+X-Gm-Message-State: AOJu0YxcrY9+XKHKa3VEU/tIJbYKiyp0yenO8/HPfgQb88W8DveKMxAe
+	H2litKD+Q+ZevdXdf6TqmzArDP53T/YfYyAxCVRpyUoH1rLRO7/cBz2tleDycwBtTSOBSl0nf1s
+	QqVPfjSYjCajAGw==
+X-Received: from wrxn16.prod.google.com ([2002:a5d:6b90:0:b0:470:5ce8:b634])
  (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:2b8a:b0:698:3b7c:7e56 with SMTP id 4fb4d7f45d1cf-69fc116ad83mr2202096a12.34.1785104610714;
- Sun, 26 Jul 2026 15:23:30 -0700 (PDT)
-Date: Sun, 26 Jul 2026 22:22:40 +0000
+ 2002:a05:600c:1f8c:b0:496:bbcb:b0bb with SMTP id 5b1f17b1804b1-496bbcbb36emr44098055e9.18.1785104612089;
+ Sun, 26 Jul 2026 15:23:32 -0700 (PDT)
+Date: Sun, 26 Jul 2026 22:22:41 +0000
 In-Reply-To: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
 Mime-Version: 1.0
 References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
 X-Mailer: b4 0.16-dev
-Message-ID: <20260726-page_alloc-unmapped-v3-7-6f5729aa9832@google.com>
-Subject: [PATCH v3 07/26] x86/mm: introduce mm-local region
+Message-ID: <20260726-page_alloc-unmapped-v3-8-6f5729aa9832@google.com>
+Subject: [PATCH v3 08/26] x86/mm: move LDT remap into mm-local region
 From: Brendan Jackman <jackmanb@google.com>
 To: Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
 	Peter Zijlstra <peterz@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
@@ -103,14 +103,14 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org,
 	Patrick Bellasi <derkling@google.com>, Reiji Watanabe <reijiw@google.com>, 
 	Sean Christopherson <seanjc@google.com>, Brendan Jackman <jackmanb@google.com>
 Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 7CAA3180002
+X-Stat-Signature: dd9n8a7obh76s1a1krat8ww17qchptt9
 X-Rspam-User: 
-X-Stat-Signature: a86rjwipgn6qmkpzpmjuubb63tw4mcgq
-X-HE-Tag: 1785104612-670491
-X-HE-Meta: U2FsdGVkX18eOEfMxl3O95gG9ZT2fuo3YT+sfM/l4GiUfYhxoQkub6qICWZ0XG1qwtJd5AEODoS5R7OKY+14GSGU/nOrZiq3qTEWd7R1SkwbQTRtisL2DX5I+NbLYr9/wrk+SDVS96srsNzh4jWQhT3IAiHLq5Ox2k/51RYW/CQuc3BadsK6cPsCz3nCTUfA1FBTMw20VlOSYtyvTUf6+rmSmUNdBSSrahaTJTgGR3nP09ce48T4XLaWVEqoAxxGr0EYAC/tiA8ZT2Uu4slwqZec69+TWm5hP5+vNxGRAa2Io2MKTsE2616nxIcfyr9UDU3rsAmJBfDoFC5/HiJ6WbXv5eQPnWDS+IxoVtjfJovBmPpCkdGklCrzronN2qt5638vpOTcQ8ZUQJuXRmAaZG093rPu+D5zJ0qsht0G5RLmTYqJSa3FISKK5d1BHe0M5JftoKIH9WrjXtWwOMOnzTX0p4uhaPaS+OzvsXPKJKYspsn7VF6tIuN+ygLuFseTpBHHLl5BZ9C6NaCSRNtFvQPfVSzMIKRBZywbN2hfqWD4YOnbn09JETEXo+yHLLBviRl3ONBYAfKPtKaNPoB8F7CFY60Ptc+M3Yt5yk3j47injIzfViSYELL/X9euo2VbmrDCG8uD3MXMHe8zvwmt40nOd1JWW4O6/FvIPT+vZgBcld9lRe1Rr/A1QsoEYFMNbsqemV7XnxkgOJyERdTT5veTID4XQlBGBHue97rXmizbUAyBuxjzreRCVBuZDfX+Cjx6Tk3p/j1Eu02W9R7faZ0yceT9Oz9pnmvWYbTmJdHSkl/h6R91l0OQOXE8R1u2FWrN1iVFnP96Q5hVOk1q0hM9F4iCvD1bIiJhVq6PlafOFjuRRX+h6n2Eibqv6laHvrRCc1gJ8IrJZWWRvuRseHL2Z8AXcy/2wfPyiyqh/bOhOh9Qnp7m22Ihn0vkqiGaVeiNSsYvmkqb+lg09/l
- c6rBp3TM
- 0YKIQ0uUm+rN8h+ngkpNiqt8FMMamyj9jiCEQIh9xu2LLvpK70ZwNPKVhq5DN9WruHlSttTaHFNDPUvGgqZqkTbHMgxaUPcjNzIxUbKjA6lmcTuf3/l2ZIVZDZPFnxsC/oTU9toxFKym8Kuz6450Z1YLBTRN4uwSLSJYOQWMuG1Ed7fcesyWym3x93QeP0XRqC4Xri55BxWPcreGyxoEoOrDvkNs1G0m00HFulatjLjRn4XWcDA2QYriz2hx2ffkic0dOSPMtu7J8St3vSCewwK/G95z1VCyHvwA7NCNrWFzytEdww4UxT7RbNrhOO046CRQcrlTyH6eRIiiLdH7BWdL/XAWfn1H94GJVRboM7ql81Ui4OGaB6edVCZupd2VBUaOCZEXoypBFedqUr2scEfr6Vj/rn9e8FF69SBbS2apG96VU7eQgBmJHBWUiK2zd1NK9UzB4+VpH+x415B10YCEUnblbPU+Tinp86cQx4ZN+htov/C6FFaye0/cvEq7mBTFy9iETr/12cCblQS4Tuj5u9bdm3u6LIpQipcQvMSHY4paKV7ia9ZYVBtOnYwum4xLdrEhS2KqeRph8roHNsNMn41tZZ9bal/lGL/NHwbZPqUgYo1/sj7sSo94kdbww1y0s7oHQ21Nifh4n7H9m/ZbmwmRQNd9isTNU/hpSK1KdipnFRp25OS5XBVvB1hWwCFy3DyUfW2wqlKM=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 86FD11C000A
+X-HE-Tag: 1785104613-638084
+X-HE-Meta: U2FsdGVkX19UXk6Fe7hpRZT09W2bRPOEmyIJTqrQ1qzKOBoHYLJLXmb7HNfA4F4k0eGkdr2rfWSpEss8Hunk9t5uMUOJVXdr6IrhWTb2sa/TGCwSIdOnJfjEyhXp4icYa5hequ1CZ4A1lnWqVJ6RyXwZZw/xztV1Rx/cyY2dqVUfC4k7RCxcQBlFSQXezPhBcpcCHZTv5Jyli+sDvvXXl+4BeRAdkZtZZ5B5zd/LfXhpK5bhhWH16PY0LsynKpD3ttByzMWC0I4T/UOaALwc3fXIcnnb0d5G/EFa2Z/q2ka3HzKwOxSYRHU7QACesWWV71JtHCDKJsnzYMrNfwEjKAHxQpH2gYKt6BrBLJdO4R5R9YTSfR2tjxIqu7ltincJZYQyE18FRlDR8iw6oVErfNIWAEUNEXLRtNTOCCuTi1uN0HS63FwmOlfClibpOKFdiiUpn3DCD94AU/0OJmH6qmUH73I8+55GIpghSmV54edFlk+sS/HaA+PKxL3xc4PoSpyklQydiUsUnrTaLsQcHfVgLx2f6j2ujE+qj5Y4cUrpyvPAN8+2KlJcwaIsZjikBni6X8x07/PezGmROQGWt36wQvC8NVOc667MM6uKquXJYCM4EWhLlkN2NA0BzTcwB2VlfHXHPrmU4Zeh+3pERvot4Kc7WFpduOQ8zieo4Hp+nFzxxiJQKUGgbQE59O6jY60XWX/PBxTTTJp45h/fuZkbqWcyyXQeHcxwnPGRPR86zQ0RhybjjU/Khyk/GAidiuj7eESFZB/Lv0ww+7qbTTz+zI3SwCUza9mP3NbQpyYdYNpxMxchqhaoVo04cKWGLhA7fR0dqDCX3eVh5hw7F0+5yNHnGxUP/1TU2yP6mkxaxQMjhEC4wJKoFGmj39D9LFXPMxgw5Jw9OaYqQnlw4qbN5uC8b/A/05cxv66BohSrkS3X4wu38rHnzVxmIIlMoFtcssECEdAXzBIn4PK
+ W8AI6BbX
+ o3WkQ4eUSiLJGnwYn0Ja7YNGO6OGDglBVQRgT2MnXFeroYY2LeNJuVOpPw6FmNHSzeR6oHpUavbkt4UUUqd+4Xo5A3K0KLjdLwWVDcKdDt/pLT24CQiBnYQJ+F05AwoO1rRJroVmeXhcnA7sChfz3yIGMySyr09UgjnOJsccfRjafy0i5DIEBNLcFK2DIVFBYB/3lPJLubA9iouw0WtTIzZNvHWDu2pHD70AFiSlLVYH4C37IJBezNfTlzMumcmzDJBCdxK+bXMD86Jx5agxgk0SfqzVMArNEt5nSkvRMW5F/hvRRiCdO4sbWbZhTN/C3M1BPDWPsuruwgZs7X2xgfl+dIOYHew8W6XXQxjaEHYoFsk+9G+2gT8dKtcTXLijZ1eeBfqKnZQyXvRd6c9H03YS3apkhFUVuGlIH3L5pX0jbMkMaAqk/P5tBe156Y+mdK9u+2PHY0MgwMbMbpQ/1mzeVdZJ/3c0FR84fhdmQbnA8cQUjoK0JJ1M6MBtUmSMwO7V64XW2asikZc+puCsaQDVyMG3KUCCXUXhTdt6Tm3rLsjsmTG0bjIOdCHq6n6qkJyMl+sjxf15HqbQIRHNH4VRSCF/CyKNu6PN7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,338 +118,289 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Various security features benefit from having process-local address
-mappings within the kernel. Examples include no-direct-map guest_memfd
-[2] and significant optimizations for ASI [1].
+Now that x86 processes have a general mm-local region, the LDT-specific
+management of the higher-level pagetables can mostly be replaced by just
+using the generic mm-local API.
 
-With the currently envisaged usecases, there will be many situations
-where almost no processes have any need for the mm-local region.
-Therefore, avoid its overhead (memory cost of pagetables, alloc/free
-overhead during fork/exit) for processes that don't use it by requiring
-its users to explicitly initialize it via the new mm_local_* API.
-
-As pointed out by Andy in [0], x86 already has a PGD entry that is local
-to the mm, which is used for the LDT. In a subsequent patch, the LDT
-remap will be unified with the general mm-local region, but to help
-keep the patch to a manageable size, first just introduce the mm-local
+Drop all management of pagetable allocation and freeing; that is now
+handled automatically by virtue of the pagetables being in the mm-local
 region.
 
-On 64-bit, give the mm-local region a whole PGD. On 32-bit, just give it
-one PMD. No investigation has been done into whether it's feasible to
-expand the region on 32-bit. Most likely there is no strong usecase for
-that anyway.
+Drop explicit logic to map LDTs into the user pagetables under PTI; that
+also happens automatically for this region.
 
-In order to combine the need for an on-demand mm initialisation, with
-the desire to transparently handle propagating mappings to userspace
-under KPTI, the user and kernel pagetables are shared at the highest
-level possible. For PAE that means the PTE table is shared and for
-64-bit the P4D/PUD. This is implemented by pre-allocating the first
-shared table when the mm-local region is first initialised.
+Unify the sanity-checking logic between x86_64 and PAE: use the generic
+set_memory.c mechanism to walk pagetables. This means the
+sanity-checking is slightly more relaxed, since lookup_address_in_pgd()
+is more flexible than pgd_to_pmd_walk(), but this seems to be worth it
+for the simplified code. It means that ldt.c doesn't have to know about
+the exact structure of the mm-local region's pagetables.
 
-[0] https://lore.kernel.org/linux-mm/CALCETrXHbS9VXfZ80kOjiTrreM2EbapYeGp68mvJPbosUtorYA@mail.gmail.com/
-[1] https://linuxasi.dev/
-[2] https://lore.kernel.org/all/20250924151101.2225820-1-patrick.roy@campus.lmu.de
 Signed-off-by: Brendan Jackman <jackmanb@google.com>
 ---
- arch/x86/Kconfig                        |   2 +
- arch/x86/include/asm/mmu_context.h      | 118 +++++++++++++++++++++++++++++++-
- arch/x86/include/asm/pgtable_32_areas.h |   9 ++-
- arch/x86/include/asm/pgtable_64_types.h |  12 +++-
- arch/x86/mm/pgtable.c                   |   3 +
- include/linux/mm.h                      |  13 ++++
- include/linux/mm_types.h                |   2 +
- kernel/fork.c                           |   1 +
- mm/Kconfig                              |   7 ++
- 9 files changed, 161 insertions(+), 6 deletions(-)
+ Documentation/arch/x86/x86_64/mm.rst |   4 +-
+ arch/x86/Kconfig                     |   4 +-
+ arch/x86/include/asm/mmu_context.h   |   2 -
+ arch/x86/kernel/ldt.c                | 124 +++++------------------------------
+ 4 files changed, 20 insertions(+), 114 deletions(-)
 
+diff --git a/Documentation/arch/x86/x86_64/mm.rst b/Documentation/arch/x86/x86_64/mm.rst
+index a6cf05d51bd8c..fa2bb7bab6a42 100644
+--- a/Documentation/arch/x86/x86_64/mm.rst
++++ b/Documentation/arch/x86/x86_64/mm.rst
+@@ -53,7 +53,7 @@ Complete virtual memory map with 4-level page tables
+   ____________________________________________________________|___________________________________________________________
+                     |            |                  |         |
+    ffff800000000000 | -128    TB | ffff87ffffffffff |    8 TB | ... guard hole, also reserved for hypervisor
+-   ffff880000000000 | -120    TB | ffff887fffffffff |  0.5 TB | LDT remap for PTI
++   ffff880000000000 | -120    TB | ffff887fffffffff |  0.5 TB | MM-local kernel data. Includes LDT remap for PTI
+    ffff888000000000 | -119.5  TB | ffffc87fffffffff |   64 TB | direct mapping of all physical memory (page_offset_base)
+    ffffc88000000000 |  -55.5  TB | ffffc8ffffffffff |  0.5 TB | ... unused hole
+    ffffc90000000000 |  -55    TB | ffffe8ffffffffff |   32 TB | vmalloc/ioremap space (vmalloc_base)
+@@ -123,7 +123,7 @@ Complete virtual memory map with 5-level page tables
+   ____________________________________________________________|___________________________________________________________
+                     |            |                  |         |
+    ff00000000000000 |  -64    PB | ff0fffffffffffff |    4 PB | ... guard hole, also reserved for hypervisor
+-   ff10000000000000 |  -60    PB | ff10ffffffffffff | 0.25 PB | LDT remap for PTI
++   ff10000000000000 |  -60    PB | ff10ffffffffffff | 0.25 PB | MM-local kernel data. Includes LDT remap for PTI
+    ff11000000000000 |  -59.75 PB | ff90ffffffffffff |   32 PB | direct mapping of all physical memory (page_offset_base)
+    ff91000000000000 |  -27.75 PB | ff9fffffffffffff | 3.75 PB | ... unused hole
+    ffa0000000000000 |  -24    PB | ffd1ffffffffffff | 12.5 PB | vmalloc/ioremap space (vmalloc_base)
 diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index fb298e2191792..3efab3524a6cf 100644
+index 3efab3524a6cf..33c1282bfbf93 100644
 --- a/arch/x86/Kconfig
 +++ b/arch/x86/Kconfig
-@@ -132,6 +132,8 @@ config X86
+@@ -132,8 +132,7 @@ config X86
  	select ARCH_SUPPORTS_LTO_CLANG
  	select ARCH_SUPPORTS_LTO_CLANG_THIN
  	select ARCH_SUPPORTS_RT
-+	# LDT remap temporarily clashes with mm-local region, can't have both.
-+	select ARCH_SUPPORTS_MM_LOCAL_REGION	if X86_64 || X86_PAE && !MODIFY_LDT_SYSCALL
+-	# LDT remap temporarily clashes with mm-local region, can't have both.
+-	select ARCH_SUPPORTS_MM_LOCAL_REGION	if X86_64 || X86_PAE && !MODIFY_LDT_SYSCALL
++	select ARCH_SUPPORTS_MM_LOCAL_REGION	if X86_64 || X86_PAE
  	select ARCH_USE_BUILTIN_BSWAP
  	select ARCH_USE_CMPXCHG_LOCKREF
  	select ARCH_USE_MEMTEST
+@@ -2280,6 +2279,7 @@ config CMDLINE_OVERRIDE
+ config MODIFY_LDT_SYSCALL
+ 	bool "Enable the LDT (local descriptor table)" if EXPERT
+ 	default y
++	select MM_LOCAL_REGION if MITIGATION_PAGE_TABLE_ISOLATION || X86_PAE
+ 	help
+ 	  Linux can allow user programs to install a per-process x86
+ 	  Local Descriptor Table (LDT) using the modify_ldt(2) system
 diff --git a/arch/x86/include/asm/mmu_context.h b/arch/x86/include/asm/mmu_context.h
-index ef5b507de34e2..3d4f54673014f 100644
+index 3d4f54673014f..09b8d8e6a56ea 100644
 --- a/arch/x86/include/asm/mmu_context.h
 +++ b/arch/x86/include/asm/mmu_context.h
-@@ -8,8 +8,10 @@
- 
- #include <trace/events/tlb.h>
- 
-+#include <asm/tlb.h>
- #include <asm/tlbflush.h>
- #include <asm/paravirt.h>
-+#include <asm/pgalloc.h>
- #include <asm/debugreg.h>
- #include <asm/gsseg.h>
- #include <asm/desc.h>
-@@ -223,10 +225,124 @@ static inline int arch_dup_mmap(struct mm_struct *oldmm, struct mm_struct *mm)
- 	return ldt_dup_context(oldmm, mm);
+@@ -61,7 +61,6 @@ static inline void init_new_context_ldt(struct mm_struct *mm)
  }
+ int ldt_dup_context(struct mm_struct *oldmm, struct mm_struct *mm);
+ void destroy_context_ldt(struct mm_struct *mm);
+-void ldt_arch_exit_mmap(struct mm_struct *mm);
+ #else	/* CONFIG_MODIFY_LDT_SYSCALL */
+ static inline void init_new_context_ldt(struct mm_struct *mm) { }
+ static inline int ldt_dup_context(struct mm_struct *oldmm,
+@@ -70,7 +69,6 @@ static inline int ldt_dup_context(struct mm_struct *oldmm,
+ 	return 0;
+ }
+ static inline void destroy_context_ldt(struct mm_struct *mm) { }
+-static inline void ldt_arch_exit_mmap(struct mm_struct *mm) { }
+ #endif
  
-+#ifdef CONFIG_MM_LOCAL_REGION
-+static inline void mm_local_region_free(struct mm_struct *mm)
-+{
-+	if (!mm_local_region_used(mm))
-+		return;
-+
-+	struct mmu_gather tlb;
-+	unsigned long start = MM_LOCAL_BASE_ADDR;
-+	unsigned long end = MM_LOCAL_END_ADDR;
-+
-+	/*
-+	 * Although free_pgd_range() is intended for freeing user
-+	 * page-tables, it also works out for kernel mappings on x86.
-+	 * Use tlb_gather_mmu_fullmm() to avoid confusing the
-+	 * range-tracking logic in __tlb_adjust_range().
-+	 */
-+	tlb_gather_mmu_fullmm(&tlb, mm);
-+	free_pgd_range(&tlb, start, end, start, end);
-+	tlb_finish_mmu(&tlb);
-+
-+	mm_flags_clear(MMF_LOCAL_REGION_USED, mm);
-+}
-+
-+#if defined(CONFIG_MITIGATION_PAGE_TABLE_ISOLATION) && defined(CONFIG_X86_PAE)
-+static inline pmd_t *pgd_to_pmd_walk(pgd_t *pgd, unsigned long va)
-+{
-+	p4d_t *p4d;
-+	pud_t *pud;
-+
-+	if (pgd->pgd == 0)
-+		return NULL;
-+
-+	p4d = p4d_offset(pgd, va);
-+	if (p4d_none(*p4d))
-+		return NULL;
-+
-+	pud = pud_offset(p4d, va);
-+	if (pud_none(*pud))
-+		return NULL;
-+
-+	return pmd_offset(pud, va);
-+}
-+
-+static inline int mm_local_map_to_user(struct mm_struct *mm)
-+{
-+	BUILD_BUG_ON(!PREALLOCATED_PMDS);
-+	pgd_t *k_pgd = pgd_offset(mm, MM_LOCAL_BASE_ADDR);
+ #ifdef CONFIG_MODIFY_LDT_SYSCALL
+diff --git a/arch/x86/kernel/ldt.c b/arch/x86/kernel/ldt.c
+index 40c5bf97dd5cc..685664c1ee770 100644
+--- a/arch/x86/kernel/ldt.c
++++ b/arch/x86/kernel/ldt.c
+@@ -186,10 +186,16 @@ static struct ldt_struct *alloc_ldt_struct(unsigned int num_entries)
+ 
+ #ifdef CONFIG_MITIGATION_PAGE_TABLE_ISOLATION
+ 
+-static void do_sanity_check(struct mm_struct *mm,
+-			    bool had_kernel_mapping,
+-			    bool had_user_mapping)
++static void sanity_check_ldt_mapping(struct mm_struct *mm)
+ {
++	pgd_t *k_pgd = pgd_offset(mm, LDT_BASE_ADDR);
 +	pgd_t *u_pgd = kernel_to_user_pgdp(k_pgd);
-+	pmd_t *k_pmd, *u_pmd;
-+	int err;
++	unsigned int k_level, u_level;
++	bool had_kernel_mapping, had_user_mapping;
 +
-+	k_pmd = pgd_to_pmd_walk(k_pgd, MM_LOCAL_BASE_ADDR);
-+	u_pmd = pgd_to_pmd_walk(u_pgd, MM_LOCAL_BASE_ADDR);
++	had_kernel_mapping = lookup_address_in_pgd(k_pgd, LDT_BASE_ADDR, &k_level);
++	had_user_mapping   = lookup_address_in_pgd(u_pgd, LDT_BASE_ADDR, &u_level);
 +
-+	BUILD_BUG_ON(MM_LOCAL_END_ADDR - MM_LOCAL_BASE_ADDR > PMD_SIZE);
-+
-+	/* Preallocate the PTE table so it can be shared. */
-+	err = pte_alloc(mm, k_pmd);
-+	if (err)
-+		return err;
-+
-+	/* Point the userspace PMD at the same PTE as the kernel PMD. */
-+	set_pmd(u_pmd, *k_pmd);
-+	return 0;
-+}
-+#elif defined(CONFIG_MITIGATION_PAGE_TABLE_ISOLATION)
-+static inline int mm_local_map_to_user(struct mm_struct *mm)
-+{
-+	pgd_t *pgd;
-+	int err;
-+
-+	err = preallocate_sub_pgd(mm, MM_LOCAL_BASE_ADDR);
-+	if (err)
-+		return err;
-+
-+	pgd = pgd_offset(mm, MM_LOCAL_BASE_ADDR);
-+	set_pgd(kernel_to_user_pgdp(pgd), *pgd);
-+	return 0;
-+}
-+#else
-+static inline int mm_local_map_to_user(struct mm_struct *mm)
-+{
-+	WARN_ONCE(1, "mm_local_map_to_user() not implemented");
-+	return -EINVAL;
-+}
-+#endif
-+
-+/*
-+ * Do initial setup of the mm-local region. Call from process context.
-+ *
-+ * Under PTI, userspace shares the pagetables for the mm-local region with the
-+ * kernel (if you map stuff here, it's immediately mapped into userspace too).
-+ * LDT remap. It's assuming nothing gets mapped in here that needs to be
-+ * protected from Meltdown-type attacks from the current process.
-+ */
-+static inline int mm_local_region_init(struct mm_struct *mm)
-+{
-+	int err;
-+
-+	if (boot_cpu_has(X86_FEATURE_PTI)) {
-+		err = mm_local_map_to_user(mm);
-+		if (err)
-+			return err;
-+	}
-+
-+	mm_flags_set(MMF_LOCAL_REGION_USED, mm);
-+
-+	return 0;
-+}
-+
-+#else
-+static inline void mm_local_region_free(struct mm_struct *mm) { }
-+#endif /* CONFIG_MM_LOCAL_REGION */
-+
- static inline void arch_exit_mmap(struct mm_struct *mm)
- {
- 	paravirt_arch_exit_mmap(mm);
--	ldt_arch_exit_mmap(mm);
-+	mm_local_region_free(mm);
+ 	if (mm->context.ldt) {
+ 		/*
+ 		 * We already had an LDT.  The top-level entry should already
+@@ -210,76 +216,6 @@ static void do_sanity_check(struct mm_struct *mm,
+ 	}
  }
  
- #ifdef CONFIG_X86_64
-diff --git a/arch/x86/include/asm/pgtable_32_areas.h b/arch/x86/include/asm/pgtable_32_areas.h
-index 921148b429676..7fccb887f8b33 100644
---- a/arch/x86/include/asm/pgtable_32_areas.h
-+++ b/arch/x86/include/asm/pgtable_32_areas.h
-@@ -30,9 +30,14 @@ extern bool __vmalloc_start_set; /* set once high_memory is set */
- #define CPU_ENTRY_AREA_BASE	\
- 	((FIXADDR_TOT_START - PAGE_SIZE*(CPU_ENTRY_AREA_PAGES+1)) & PMD_MASK)
- 
--#define LDT_BASE_ADDR		\
--	((CPU_ENTRY_AREA_BASE - PAGE_SIZE) & PMD_MASK)
-+/*
-+ * On 32-bit the mm-local region is currently completely consumed by the LDT
-+ * remap.
-+ */
-+#define MM_LOCAL_BASE_ADDR	((CPU_ENTRY_AREA_BASE - PAGE_SIZE) & PMD_MASK)
-+#define MM_LOCAL_END_ADDR	(MM_LOCAL_BASE_ADDR + PMD_SIZE)
- 
-+#define LDT_BASE_ADDR		MM_LOCAL_BASE_ADDR
- #define LDT_END_ADDR		(LDT_BASE_ADDR + PMD_SIZE)
- 
- #define PKMAP_BASE		\
-diff --git a/arch/x86/include/asm/pgtable_64_types.h b/arch/x86/include/asm/pgtable_64_types.h
-index 7eb61ef6a185f..1181565966405 100644
---- a/arch/x86/include/asm/pgtable_64_types.h
-+++ b/arch/x86/include/asm/pgtable_64_types.h
-@@ -5,8 +5,11 @@
- #include <asm/sparsemem.h>
- 
- #ifndef __ASSEMBLER__
-+#include <linux/build_bug.h>
- #include <linux/types.h>
- #include <asm/kaslr.h>
-+#include <asm/page_types.h>
-+#include <uapi/asm/ldt.h>
- 
+-#ifdef CONFIG_X86_PAE
+-
+-static pmd_t *pgd_to_pmd_walk(pgd_t *pgd, unsigned long va)
+-{
+-	p4d_t *p4d;
+-	pud_t *pud;
+-
+-	if (pgd->pgd == 0)
+-		return NULL;
+-
+-	p4d = p4d_offset(pgd, va);
+-	if (p4d_none(*p4d))
+-		return NULL;
+-
+-	pud = pud_offset(p4d, va);
+-	if (pud_none(*pud))
+-		return NULL;
+-
+-	return pmd_offset(pud, va);
+-}
+-
+-static void map_ldt_struct_to_user(struct mm_struct *mm)
+-{
+-	pgd_t *k_pgd = pgd_offset(mm, LDT_BASE_ADDR);
+-	pgd_t *u_pgd = kernel_to_user_pgdp(k_pgd);
+-	pmd_t *k_pmd, *u_pmd;
+-
+-	k_pmd = pgd_to_pmd_walk(k_pgd, LDT_BASE_ADDR);
+-	u_pmd = pgd_to_pmd_walk(u_pgd, LDT_BASE_ADDR);
+-
+-	if (boot_cpu_has(X86_FEATURE_PTI) && !mm->context.ldt)
+-		set_pmd(u_pmd, *k_pmd);
+-}
+-
+-static void sanity_check_ldt_mapping(struct mm_struct *mm)
+-{
+-	pgd_t *k_pgd = pgd_offset(mm, LDT_BASE_ADDR);
+-	pgd_t *u_pgd = kernel_to_user_pgdp(k_pgd);
+-	bool had_kernel, had_user;
+-	pmd_t *k_pmd, *u_pmd;
+-
+-	k_pmd      = pgd_to_pmd_walk(k_pgd, LDT_BASE_ADDR);
+-	u_pmd      = pgd_to_pmd_walk(u_pgd, LDT_BASE_ADDR);
+-	had_kernel = (k_pmd->pmd != 0);
+-	had_user   = (u_pmd->pmd != 0);
+-
+-	do_sanity_check(mm, had_kernel, had_user);
+-}
+-
+-#else /* !CONFIG_X86_PAE */
+-
+-static void map_ldt_struct_to_user(struct mm_struct *mm)
+-{
+-	pgd_t *pgd = pgd_offset(mm, LDT_BASE_ADDR);
+-
+-	if (boot_cpu_has(X86_FEATURE_PTI) && !mm->context.ldt)
+-		set_pgd(kernel_to_user_pgdp(pgd), *pgd);
+-}
+-
+-static void sanity_check_ldt_mapping(struct mm_struct *mm)
+-{
+-	pgd_t *pgd = pgd_offset(mm, LDT_BASE_ADDR);
+-	bool had_kernel = (pgd->pgd != 0);
+-	bool had_user   = (kernel_to_user_pgdp(pgd)->pgd != 0);
+-
+-	do_sanity_check(mm, had_kernel, had_user);
+-}
+-
+-#endif /* CONFIG_X86_PAE */
+-
  /*
-  * These are used to make use of C type-checking..
-@@ -100,9 +103,12 @@ extern unsigned int ptrs_per_p4d;
- #define GUARD_HOLE_BASE_ADDR	(GUARD_HOLE_PGD_ENTRY << PGDIR_SHIFT)
- #define GUARD_HOLE_END_ADDR	(GUARD_HOLE_BASE_ADDR + GUARD_HOLE_SIZE)
+  * If PTI is enabled, this maps the LDT into the kernelmode and
+  * usermode tables for the given mm.
+@@ -290,7 +226,7 @@ map_ldt_struct(struct mm_struct *mm, struct ldt_struct *ldt, int slot)
+ 	unsigned long va;
+ 	bool is_vmalloc;
+ 	spinlock_t *ptl;
+-	int i, nr_pages;
++	int i, nr_pages, err;
  
--#define LDT_PGD_ENTRY		-240UL
--#define LDT_BASE_ADDR		(LDT_PGD_ENTRY << PGDIR_SHIFT)
--#define LDT_END_ADDR		(LDT_BASE_ADDR + PGDIR_SIZE)
-+#define MM_LOCAL_PGD_ENTRY	-240UL
-+#define MM_LOCAL_BASE_ADDR	(MM_LOCAL_PGD_ENTRY << PGDIR_SHIFT)
-+#define MM_LOCAL_END_ADDR	((MM_LOCAL_PGD_ENTRY + 1) << PGDIR_SHIFT)
+ 	if (!boot_cpu_has(X86_FEATURE_PTI))
+ 		return 0;
+@@ -304,6 +240,10 @@ map_ldt_struct(struct mm_struct *mm, struct ldt_struct *ldt, int slot)
+ 	/* Check if the current mappings are sane */
+ 	sanity_check_ldt_mapping(mm);
+ 
++	err = mm_local_region_init(mm);
++	if (err)
++		return err;
 +
-+#define LDT_BASE_ADDR		MM_LOCAL_BASE_ADDR
-+#define LDT_END_ADDR		(LDT_BASE_ADDR + PMD_SIZE)
+ 	is_vmalloc = is_vmalloc_addr(ldt->entries);
  
- #define __VMALLOC_BASE_L4	0xffffc90000000000UL
- #define __VMALLOC_BASE_L5 	0xffa0000000000000UL
-diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
-index 8f3505b1eefec..cc768ea8c19c8 100644
---- a/arch/x86/mm/pgtable.c
-+++ b/arch/x86/mm/pgtable.c
-@@ -335,6 +335,9 @@ pgd_t *pgd_alloc(struct mm_struct *mm)
+ 	nr_pages = DIV_ROUND_UP(ldt->nr_entries * LDT_ENTRY_SIZE, PAGE_SIZE);
+@@ -339,9 +279,6 @@ map_ldt_struct(struct mm_struct *mm, struct ldt_struct *ldt, int slot)
+ 		pte_unmap_unlock(ptep, ptl);
+ 	}
  
- void pgd_free(struct mm_struct *mm, pgd_t *pgd)
+-	/* Propagate LDT mapping to the user page-table */
+-	map_ldt_struct_to_user(mm);
+-
+ 	ldt->slot = slot;
+ 	return 0;
+ }
+@@ -390,28 +327,6 @@ static void unmap_ldt_struct(struct mm_struct *mm, struct ldt_struct *ldt)
+ }
+ #endif /* CONFIG_MITIGATION_PAGE_TABLE_ISOLATION */
+ 
+-static void free_ldt_pgtables(struct mm_struct *mm)
+-{
+-#ifdef CONFIG_MITIGATION_PAGE_TABLE_ISOLATION
+-	struct mmu_gather tlb;
+-	unsigned long start = LDT_BASE_ADDR;
+-	unsigned long end = LDT_END_ADDR;
+-
+-	if (!boot_cpu_has(X86_FEATURE_PTI))
+-		return;
+-
+-	/*
+-	 * Although free_pgd_range() is intended for freeing user
+-	 * page-tables, it also works out for kernel mappings on x86.
+-	 * We use tlb_gather_mmu_fullmm() to avoid confusing the
+-	 * range-tracking logic in __tlb_adjust_range().
+-	 */
+-	tlb_gather_mmu_fullmm(&tlb, mm);
+-	free_pgd_range(&tlb, start, end, start, end);
+-	tlb_finish_mmu(&tlb);
+-#endif
+-}
+-
+ /* After calling this, the LDT is immutable. */
+ static void finalize_ldt_struct(struct ldt_struct *ldt)
  {
-+	/* Should be cleaned up in mmap exit path. */
-+	VM_WARN_ON_ONCE(mm_local_region_used(mm));
-+
- 	pgd_mop_up_pmds(mm, pgd);
- 	pgd_dtor(pgd);
- 	paravirt_pgd_free(mm, pgd);
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 7fabe6c66b4b7..28022c96edcb5 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -989,6 +989,19 @@ static inline void mm_flags_clear_all(struct mm_struct *mm)
- 	bitmap_zero(ACCESS_PRIVATE(&mm->flags, __mm_flags), NUM_MM_FLAG_BITS);
+@@ -472,7 +387,6 @@ int ldt_dup_context(struct mm_struct *old_mm, struct mm_struct *mm)
+ 
+ 	retval = map_ldt_struct(mm, new_ldt, 0);
+ 	if (retval) {
+-		free_ldt_pgtables(mm);
+ 		free_ldt_struct(new_ldt);
+ 		goto out_unlock;
+ 	}
+@@ -494,11 +408,6 @@ void destroy_context_ldt(struct mm_struct *mm)
+ 	mm->context.ldt = NULL;
  }
  
-+#ifdef CONFIG_MM_LOCAL_REGION
-+static inline bool mm_local_region_used(struct mm_struct *mm)
-+{
-+	return mm_flags_test(MMF_LOCAL_REGION_USED, mm);
-+}
-+#else
-+static inline bool mm_local_region_used(struct mm_struct *mm)
-+{
-+	VM_WARN_ON_ONCE(mm_flags_test(MMF_LOCAL_REGION_USED, mm));
-+	return false;
-+}
-+#endif
-+
- extern const struct vm_operations_struct vma_dummy_vm_ops;
- 
- static inline void vma_init(struct vm_area_struct *vma, struct mm_struct *mm)
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index b5d4cd3b067bf..d39fddf57edc8 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -1997,6 +1997,8 @@ enum {
- #define MMF_TOPDOWN		31	/* mm searches top down by default */
- #define MMF_TOPDOWN_MASK	BIT(MMF_TOPDOWN)
- 
-+#define MMF_LOCAL_REGION_USED	32
-+
- #define MMF_INIT_LEGACY_MASK	(MMF_DUMP_FILTER_MASK |\
- 				 MMF_DISABLE_THP_MASK | MMF_HAS_MDWE_MASK |\
- 				 MMF_VM_MERGE_ANY_MASK | MMF_TOPDOWN_MASK)
-diff --git a/kernel/fork.c b/kernel/fork.c
-index f0e2e131a9a5a..4fb23ea33b7da 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -1154,6 +1154,7 @@ static struct mm_struct *mm_init(struct mm_struct *mm, struct task_struct *p)
- fail_nocontext:
- 	mm_free_id(mm);
- fail_noid:
-+	WARN_ON_ONCE(mm_local_region_used(mm));
- 	mm_free_pgd(mm);
- fail_mm_init:
- 	free_mm(mm);
-diff --git a/mm/Kconfig b/mm/Kconfig
-index c52ab6afcb159..cb531c1436f77 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -1500,6 +1500,13 @@ config LAZY_MMU_MODE_KUNIT_TEST
- 
- 	  If unsure, say N.
- 
-+config ARCH_SUPPORTS_MM_LOCAL_REGION
-+	bool
-+
-+config MM_LOCAL_REGION
-+	bool
-+	depends on ARCH_SUPPORTS_MM_LOCAL_REGION
-+
- source "mm/damon/Kconfig"
- 
- endmenu
+-void ldt_arch_exit_mmap(struct mm_struct *mm)
+-{
+-	free_ldt_pgtables(mm);
+-}
+-
+ static int read_ldt(void __user *ptr, unsigned long bytecount)
+ {
+ 	struct mm_struct *mm = current->mm;
+@@ -645,10 +554,9 @@ static int write_ldt(void __user *ptr, unsigned long bytecount, int oldmode)
+ 		/*
+ 		 * This only can fail for the first LDT setup. If an LDT is
+ 		 * already installed then the PTE page is already
+-		 * populated. Mop up a half populated page table.
++		 * populated.
+ 		 */
+-		if (!WARN_ON_ONCE(old_ldt))
+-			free_ldt_pgtables(mm);
++		WARN_ON_ONCE(old_ldt);
+ 		free_ldt_struct(new_ldt);
+ 		goto out_unlock;
+ 	}
 
 -- 
 2.54.0
