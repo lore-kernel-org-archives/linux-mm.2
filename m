@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33D18C531D0
-	for <linux-mm@archiver.kernel.org>; Sun, 26 Jul 2026 01:30:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9119C531FA
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Jul 2026 01:30:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 55DC16B0088; Sat, 25 Jul 2026 21:29:59 -0400 (EDT)
+	id 6E4CB6B008A; Sat, 25 Jul 2026 21:30:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 50EB96B008A; Sat, 25 Jul 2026 21:29:59 -0400 (EDT)
+	id 647046B008C; Sat, 25 Jul 2026 21:30:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 44AF76B008C; Sat, 25 Jul 2026 21:29:59 -0400 (EDT)
+	id 583E66B0092; Sat, 25 Jul 2026 21:30:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0575F6B0088
-	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 21:29:58 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 46A8240436
-	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 01:29:58 +0000 (UTC)
-X-FDA: 85029196476.01.13FF358
+	by kanga.kvack.org (Postfix) with ESMTP id 2BBE96B008A
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 21:30:02 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7CD7D40436
+	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 01:30:01 +0000 (UTC)
+X-FDA: 85029196602.02.EAE271F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id AD1A340009
-	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 01:29:56 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E1KtG1cB;
-	spf=pass (imf11.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	by imf02.hostedemail.com (Postfix) with ESMTP id D708F80002
+	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 01:29:59 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ULsCowlT;
+	spf=pass (imf02.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785029396;
+	s=arc-20220608; t=1785029399;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y1405Ze3xDfa95m+4L62HBoV5HB+8jDRTFTlAXIoI1A=;
-	b=3BHE00qm4sBG8EOESBDCOnY6VlyfiS0kjmLOGwH+wGnDejyAS19m4hQORnRC2g278zg5bf
-	oBbRkZQEfw1vvN8RHnfQNBFNZ4134kdXl/sA+q7WsWWrsrJdWaaRf5mPEooIoTaRVpRScU
-	AEo4AtFboXlnG4ZTp5dTaVbTfeZqqj4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785029396;
-	b=lV4Sc3iWBUpHEk+XIq7oAun17KOtjqyY+mzm1Tbiua1arXfWeL8/mxSWE5SvduAvWbbcHb
-	WgnD1amz89n8IvIX1FS2feTyEH3SuKbL+PxHi0C9IyZI2C+eKeMf/0acZXU3m6eLk0J3/6
-	J3zmJeNPzv5+gqdWY+6EeCXnO6vnyAY=
+	bh=b3pRRG3K7S6YtKl2WqEHDfcoPnCFtKvVlvjr+gl6TKw=;
+	b=eL8frT4m1FPpU7Vledl89yO93RVAaOjH66C7Fla6ojtZAiM3yqwlEeWmjeJ9X7c70nKlH2
+	8JOBV7NKRsHgr25BIh4y3PMMkm+dQhgH4b40AzaKfO9qI9CVVUd84Cnoa+8HOFHqrtvU38
+	URe5wLH685DXzrsoHw7Rlb/6OX2A7oI=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E1KtG1cB;
-	spf=pass (imf11.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ULsCowlT;
+	spf=pass (imf02.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785029399;
+	b=C86pyfkbG2XF93Nfe1OojgUao5H6f5WtEuKYiBfCDvMzCPcvEQBw+TIpVHe5uxiyUK7+Tg
+	BKW/gK9xppgeQlF6howUHFCUKRw6lzqApfA/GxZ/71rcGe88JyjkycMXFrhMeVDWCUi5DY
+	JaCSl1hKh7+VfSGrXWO4gr1b1P1Q7YI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0209B4056E;
+	by sea.source.kernel.org (Postfix) with ESMTP id 35DAE4056E;
+	Sun, 26 Jul 2026 01:29:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 466CA1F000E9;
 	Sun, 26 Jul 2026 01:29:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A24A1F00A3E;
-	Sun, 26 Jul 2026 01:29:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785029395;
-	bh=Y1405Ze3xDfa95m+4L62HBoV5HB+8jDRTFTlAXIoI1A=;
+	s=k20260515; t=1785029399;
+	bh=b3pRRG3K7S6YtKl2WqEHDfcoPnCFtKvVlvjr+gl6TKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=E1KtG1cBh3txhpViXIqbLP0yE3ILIk9Rhj9EXYQke/MQNX6103UJDdN6gnsRa6WkD
-	 CLHYf9bkoAI69RVJ+ES7fQkYB3jxvRUP15khmt9OYBiN6JtBxNKCF6sxmmmy5XNKoH
-	 yJ4y/vUsDT3mxdHKl26XVe+qiEpdbsuyi08ojNLpEPx7tcykHE023zcHS9H4az/Qb8
-	 faN8hTnEeD6RundhoGRduKJLDtqFE8KU/9Lo6M7eDs5IJWT8FRJkPFVXF3sUmsTSUg
-	 bOWFm7Wldx3+mSxNLm0coq83E5sXZQ8grBhSPJG+7jSo2qSJJYch4LwDk+UBwuYDab
-	 D0I59yXBHHOmA==
+	b=ULsCowlTGKT7KW+wQQRN4qtCy3SRG/u243dxUHDYOkuGLQWFS5qfFbgi8+WpKhFik
+	 xwsJZdIaH3TU+Ao2P4IjFh1lj/siNkyyR1BtCa4c/Aa13r4O7GWfNpmJpqA5acbL7Y
+	 kDsBPIl6GA+XkHMihvZndhnbyNgfGCCrK5hkpp44MbDYnXQ3bzDv/usGip0f+trycm
+	 GLMrhnXswQCbSrfLfvmKTlDYIaTp0jULhC1qAAny71UO7/L9PIRoSG3IxNzohfMKiD
+	 /VpxB7fYD0G9hEgb+roat96z+YDIvXjl5agg+KG9VTkLeCrXL0S4Q0EWoqyp+Fy6MP
+	 wZe/b0WBXHm1A==
 From: "Barry Song (Xiaomi)" <baohua@kernel.org>
 To: akpm@linux-foundation.org,
 	linux-mm@kvack.org
@@ -80,22 +80,22 @@ Cc: hannes@cmpxchg.org,
 	lyugaofei@xiaomi.com,
 	stevensd@chromium.org,
 	"Barry Song (Xiaomi)" <baohua@kernel.org>
-Subject: [RFC PATCH 1/4] mm: mglru: only fall back when reclaim is running at high priority
-Date: Sun, 26 Jul 2026 09:29:43 +0800
-Message-Id: <20260726012946.18684-2-baohua@kernel.org>
+Subject: [RFC PATCH 2/4] mm: mglru: do try_to_inc_min_seq if scanned==0
+Date: Sun, 26 Jul 2026 09:29:44 +0800
+Message-Id: <20260726012946.18684-3-baohua@kernel.org>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 In-Reply-To: <20260726012946.18684-1-baohua@kernel.org>
 References: <20260726012946.18684-1-baohua@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: AD1A340009
-X-Stat-Signature: wm9gani7ciepd5exxu57sh9m61qgudzj
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1785029396-913647
-X-HE-Meta: U2FsdGVkX1/SQos8Dtr4rBOmUvFYshMYdn0RsRrlMFXTfkidiuSuzi4Pme3w/s4W99i26FJ6iT6QvSpYD4v/ubgUehhVba2vlvLOTS22O/Yhj0vQBXAvtcjND9SdWuqkKGW+EXShNNiI439krWAkFULqB30vCiKCyXJeN4UJ1RPZ+KrPB1YV8+73hfyoD/novi3zUEBKuPb8LR4f330gKX4dmlwPPag/vp2R2xH/OHENDdaYRFNIo0+6mGg7ywIstJJ3+sjLJcSIsDrxoZB7x0AW0Iq9FWR9PM+Id2P6bPW1TU5wOwhDTpwMLfjC2MmOQ1utzi8sG5jnjArtk0qSR4ns4ejqwdfV9c8J6qeGRxadexvc+BVmKn1e0JRV/ug6U7+9mneJFd0ukiv5bOh4bwnWUpPc+y0vIKBuvIJ8T4o5HA02euZ4baipPKOWEgrR2jb5cqFu6Hp2Qoefy78oCIQ/KqaKtP6bqbCXpmI86LE5Y4Prd069YbwP6hOo8HdInmWI9xMur3HjFDV9661TgsERetKRwZyfz6OKPXdYliQpHF3c0erLzxS6KX4F69vxdREociFP6txyPDTQU8Te1I37zLzhfATK1H5tX6IehkX+Gs4K6AK6Hs1g6OPZxQlX18h1m/SJo4P0BslVUOGxxyZpKvek7WN0TcybwLFqBnVaVIiZ5uNGcMBSXvxvxRxgJMcvIbQ0lBhHnJLY0ailRtEeez4QBN4WBkExLmDrZZhwexYc6E0VgLo9kaM9YevtA7u5yj2QEeAbeTdUNUvC9WVz7Fj2gx50AGwOZv9/fbkCCIEY5upCd7rOnuKGgmh+0mGuFa1RBWMJ8Vf6tWrseQPh5/rKGlS3QDwmGAUCYyQ/DXuhHObD0Ykt+BGnCItgVdokqAOkN2+pdSqW9nt1jGwnKsw8vmGpuzRaluRqJ7p2QFR+2m41VLeoHLli+GTbpw3DNo9vyTWtu2ov/cO
- pmYoE39r
- 1wFT/6BW7FXsF1Xrd+GHyGt0zmatkEmiHhUYs/Ez0vtEnUbunL0K+dX96AIe6wPkoo7EcnQX9QgOlq3cFWCYhO6IBVZg7fnFW08GBPv8RmGetecnsMJa7RJZFSZgtWLEimIzZB1JR/2b6UR/oUAZKaEbmk0SKBCng/yAFBxm1/TdMVhLstybWLPAYulY5iqFauCvwCJf1ZHojEYzlR4GiJZF9ev8L4C9XeYBehcxS8npk0+gA6PLtpCDwOdMfuGwOk9k0
+X-Rspamd-Queue-Id: D708F80002
+X-Rspamd-Server: rspam01
+X-Stat-Signature: k9ch5ft76qdnkafr9npg5fy9ctpcga4t
+X-HE-Tag: 1785029399-209909
+X-HE-Meta: U2FsdGVkX1+bBrGZeQ9zeMBo5oINVRkj9uek3Y6poArOx5N4aTj60pE9OiUhJHC+zmbSoMjsY38F5zbpfaGDGix7Vk+NQ2tqqgkvrszAcSiRcu8z281qje+E7D7KtPABKroW/qrqF0q1etWlW+ohnomhBg/QhJyabdvNYnk1jHd9CU7kcsMdVQ0mipqKPwWQ90xO3i9Jw0elxwgNiaw4dEUMxctAVO/GwCnYMlllkftZJjX5/MdWC85uSUcHAYkmWrKerkP0qxs0cvp0TlD6nBrCNwlkEGXe+bF5M+UQK0FE2W1dWMQuW5cPh4z21dlIakWAnh6ezs/fPn9KuEk6oQetjlCf6N0nDVzn3xev4VMo9JLGMDNof/CS8UCgDGx5BM41B1EFOwX6xy2UqerqfnzUnFDs9gwfE5754jrC9drKvp/4aOJbI1OF0ZvetWxZFRGtvC+o3/XUfs9nDeNwzz90lQlU0J8909suTfvyqTmRuTVOx0XvbVGgq2y0CR7KHWINF4hi/GABwXFLaiyoWJ9sWI3YVTGjc98UJoXF3yZwEJTlznzMOa2+7Dy3qjfTBALHAua6W1I4erdWjtNpGOcnf6vZSHVOODspzAggaYvqX7eFJmF/k6uS+6Be80IRcHh9DWNBITSwL4zX1gz1QLSUHZXEQkOkIFqJJLTs3eeuvNVvZc5Fg98wlouI/q1MEqvBz0k4QwO39HUwJJTL6d4oVw657ErgOnAXqhFRljKIo5L0E86UtdrpdWk5333qd4aH+xW6IRvRXIGEhNvwvqUjYg6TpeyMzkmsMyT9MfZWg+lARdxArTbEgC7OCMc4gUDvqaJtMQcv1s9khLAb8+tVBQvuf6svqtOSq4dCFZmHCmLaxS8JlnKufhBYWwiLe8v9VkqsPG+cTeKKeiiQzXp5G3WMEo8mpRH8DtZhyuzyBrGVw/K0O94vb38cpJxWCo10D95cwKkurRPMAM4
+ my7onUXx
+ gLxBFGltkHEafeskNBLRv4n3ObTUmEL4hhE8l9iuQMTGN3/oSoLvrVH1SMMJx8cWMI5oUcKqWv0XhtGOimPilYmVkyFJH3MQ8BPgt9h8pZiHQ3hTwh4AZiDw4PW3B09xDmTIDujmlGZ61QxE5QgljwqLeEeYuycYFfzWUCAlvimLyoffz+TzPzGWplCL4oQOmps+E0ixMOwfOOa38UHjGi7pygHHYaYVNy5i2DT+KbJhc7JbslP8qkRZX5mn0aOScRutirE0iEVbOCgZqgo+ctRiBfV1Zkwgp9DZ6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,34 +103,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Respect the type selected by positive_ctrl_err(), where swappiness
-controls the relative weights of SP and PV. Falling back too readily
-violates that bias.
+If scanned == 0, we are likely running out of folios in the
+reclaimable gens. Advance min_seq to keep it in sync with the
+current reclaimable state.
 
 Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
 ---
- mm/vmscan.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ mm/vmscan.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 566c4e837c7d..f79402760776 100644
+index f79402760776..4f3a375de86e 100644
 --- a/mm/vmscan.c
 +++ b/mm/vmscan.c
-@@ -4855,9 +4855,12 @@ static int isolate_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
- 		 * If scanned > 0 and isolated == 0, avoid falling back to the
- 		 * other type, as this type remains sufficient. Falling back
- 		 * too readily can disrupt the positive_ctrl_err() bias.
-+		 * Only fall back when reclaim is running at high priority.
+@@ -4858,6 +4858,7 @@ static int isolate_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 		 * Only fall back when reclaim is running at high priority.
  		 */
--		if (!scanned)
--			type = !type;
-+		if (!scanned) {
-+			if (!sc->priority)
-+				type = !type;
-+		}
- 	}
- 
- 	return total_scanned;
+ 		if (!scanned) {
++			try_to_inc_min_seq(lruvec, swappiness);
+ 			if (!sc->priority)
+ 				type = !type;
+ 		}
 -- 
 2.39.3 (Apple Git-146)
 
