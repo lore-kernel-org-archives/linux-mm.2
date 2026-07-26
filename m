@@ -4,70 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3731C531C9
-	for <linux-mm@archiver.kernel.org>; Sun, 26 Jul 2026 16:57:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0472CC531C9
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Jul 2026 17:04:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3042D6B008A; Sun, 26 Jul 2026 12:57:25 -0400 (EDT)
+	id A15416B007B; Sun, 26 Jul 2026 13:04:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B5276B008C; Sun, 26 Jul 2026 12:57:25 -0400 (EDT)
+	id 9C6116B0088; Sun, 26 Jul 2026 13:04:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A4EA6B0093; Sun, 26 Jul 2026 12:57:25 -0400 (EDT)
+	id 88F1E6B008A; Sun, 26 Jul 2026 13:04:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DD8126B008A
-	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 12:57:24 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 453C91A0535
-	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 16:57:24 +0000 (UTC)
-X-FDA: 85031533608.25.0447083
-Received: from smtpout2.mo538.mail-out.ovh.net (smtpout2.mo538.mail-out.ovh.net [51.210.91.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 9833B20003
-	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 16:57:21 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kaod.org header.s=ovhmo393970-selector1 header.b=pO2ygG3O;
-	spf=pass (imf31.hostedemail.com: domain of clg@kaod.org designates 51.210.91.31 as permitted sender) smtp.mailfrom=clg@kaod.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 51F366B007B
+	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 13:04:36 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C1315A054A
+	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 17:04:35 +0000 (UTC)
+X-FDA: 85031551710.30.1C10AD5
+Received: from smtpout8.mo536.mail-out.ovh.net (smtpout8.mo536.mail-out.ovh.net [51.210.91.17])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 72A1740006
+	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 17:04:33 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kaod.org header.s=ovhmo393970-selector1 header.b=X8S4U0su;
+	spf=pass (imf12.hostedemail.com: domain of clg@kaod.org designates 51.210.91.17 as permitted sender) smtp.mailfrom=clg@kaod.org;
 	dmarc=pass (policy=none) header.from=kaod.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785085042;
+	s=arc-20220608; t=1785085473;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=leejA4oXNKzlCWvwsksqJsxtR+ZVpBQOirzyOlDDiHc=;
-	b=MPSU2fqjcxoGihvFccH6d6Mu4NHiTlQHXQNgtbu4dn1x9Dg+usHqWjNV9Ryz5vCdmj5ZTJ
-	R6qgNkjPrqwqxcuNTOSbK7T+Zb/bFmMD3dytcHwT/6W35TzLxPgfIRS41y0w6ihxWjaOTm
-	sK2fBKf805ixO4QFnPqIi7GArMLnv78=
+	bh=krixYWDv1svSaZWzY29VuHk3LCe+gkNbeFXejSkZhpM=;
+	b=4Fw0ot2I9DSS0u1LPH4Fi4zxqfwXx1U5XhIv/wAPck1KMfzuEr+79+Bjk/Ep1BBltlxI0N
+	Bz/XAA7kXqeaOp86zKLfZdhN9kSh0jss2TDCYCyU1vrgDM6VgMczTevlQptk8EEkmaYmY2
+	ZxB7TojgO+A81pS1BcYuQV2RroqyUKI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785085042;
-	b=2FYeB/LcbLW+a1OlOH3E+4eNMXMf9J4MJYKEo7qAugi2sDc0WFsEjjU7lSL3B0TrclHntN
-	ZBF89LRYsictf+B4y1TnlvEzig82CGSj6pmIG4yLwaTZGQ10z2jhDesIG2CqSnip+v56+S
-	xf6UYtiEP1Shv8ldh+MqyRCiirDrtj8=
+	t=1785085473;
+	b=YG2yQCcx0Zmb/2hhwR0sfGMZWetD62sczUeUX+TXr34mjlHJW7R4NPOPoiF1Q6iURSW3px
+	TlNDfCLzL0Sp3tJxcn1OBmhHKlT/fErSCBPJ+qtASA1XMmzo1tNaJ3RTr3TkO2SaPyvx91
+	YMs9MuQj3Vz/4rUPzWL3rwm/MMmwEHg=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kaod.org header.s=ovhmo393970-selector1 header.b=pO2ygG3O;
-	spf=pass (imf31.hostedemail.com: domain of clg@kaod.org designates 51.210.91.31 as permitted sender) smtp.mailfrom=clg@kaod.org;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kaod.org header.s=ovhmo393970-selector1 header.b=X8S4U0su;
+	spf=pass (imf12.hostedemail.com: domain of clg@kaod.org designates 51.210.91.17 as permitted sender) smtp.mailfrom=clg@kaod.org;
 	dmarc=pass (policy=none) header.from=kaod.org
-Received: from director1.derp.mail-out.ovh.net (director1.derp.mail-out.ovh.net [51.210.158.128])
-	by mo538.mail-out.ovh.net (Postfix) with ESMTPS id 4h7SZP1B6jz6GZp;
-	Sun, 26 Jul 2026 16:57:17 +0000 (UTC)
-Received: from director1.derp.mail-out.ovh.net (director1.derp.mail-out.ovh.net. [127.0.0.1])
-        by director1.derp.mail-out.ovh.net (inspect_sender_mail_agent) with SMTP
-        for <gouhaojake@163.com>; Sun, 26 Jul 2026 16:57:16 +0000 (UTC)
-Received: from mta10.priv.ovhmail-u2.ea.mail.ovh.net (unknown [10.110.188.121])
-	by director1.derp.mail-out.ovh.net (Postfix) with ESMTPS id 4h7SZN4q0Bz60Mc;
-	Sun, 26 Jul 2026 16:57:16 +0000 (UTC)
-Received: from kaod.org (unknown [10.1.6.3])
+Received: from director3.derp.mail-out.ovh.net (director3.derp.mail-out.ovh.net [152.228.215.222])
+	by mo536.mail-out.ovh.net (Postfix) with ESMTPS id 4h7Skj5WHwz882D;
+	Sun, 26 Jul 2026 17:04:29 +0000 (UTC)
+Received: from director3.derp.mail-out.ovh.net (director3.derp.mail-out.ovh.net. [127.0.0.1])
+        by director3.derp.mail-out.ovh.net (inspect_sender_mail_agent) with SMTP
+        for <gouhaojake@163.com>; Sun, 26 Jul 2026 17:04:29 +0000 (UTC)
+Received: from mta6.priv.ovhmail-u2.ea.mail.ovh.net (unknown [10.110.113.67])
+	by director3.derp.mail-out.ovh.net (Postfix) with ESMTPS id 4h7Skj3KCsz5vVC;
+	Sun, 26 Jul 2026 17:04:29 +0000 (UTC)
+Received: from kaod.org (unknown [10.1.6.5])
 	(Authenticated sender: clg@kaod.org)
-	by mta10.priv.ovhmail-u2.ea.mail.ovh.net (Postfix) with ESMTPSA id 8E1C11923E00;
-	Sun, 26 Jul 2026 16:57:13 +0000 (UTC)
+	by mta6.priv.ovhmail-u2.ea.mail.ovh.net (Postfix) with ESMTPSA id 1B6971B43E36;
+	Sun, 26 Jul 2026 17:04:26 +0000 (UTC)
 X-OVh-ClientIp:82.64.250.170
-Message-ID: <518d7bc3-06a5-4afc-8d40-5cf6f538c402@kaod.org>
-Date: Sun, 26 Jul 2026 18:57:13 +0200
+Message-ID: <3fba3c54-ea4f-449c-8cd3-f24c516bb31d@kaod.org>
+Date: Sun, 26 Jul 2026 19:04:25 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/6] powerpc/xive: fix use-after-free of xive_ipis
+Subject: Re: [PATCH v2 1/6] powerpc/xive: remove dead NULL check after
+ GFP_NOFAIL allocation
 To: Gou Hao <gouhao@uniontech.com>, maddy@linux.ibm.com, mpe@ellerman.id.au,
  npiggin@gmail.com, chleroy@kernel.org, maarten.lankhorst@linux.intel.com,
  mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
@@ -78,7 +79,7 @@ Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
  dri-devel@lists.freedesktop.org, linux-rdma@vger.kernel.org,
  linux-mm@kvack.org, gouhaojake@163.com, kernel@uniontech.com
 References: <20260724022851.466017-1-gouhao@uniontech.com>
- <20260724022851.466017-4-gouhao@uniontech.com>
+ <20260724022851.466017-2-gouhao@uniontech.com>
 Content-Language: en-US, fr
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
 Autocrypt: addr=clg@kaod.org; keydata=
@@ -123,29 +124,29 @@ Autocrypt: addr=clg@kaod.org; keydata=
  3GlqivBNkmYsHYSlFsbxc37E1HpTEaSWsGfAHQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4Pls
  ZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQizDiU6iOrUzBThaMhZO3i927SG2DwWDVzZlt
  KrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gDuVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20260724022851.466017-4-gouhao@uniontech.com>
+In-Reply-To: <20260724022851.466017-2-gouhao@uniontech.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-x-ovh-tracer-id: 4353854940871437544
+x-ovh-tracer-id: 4475733607526477032
 X-VR-SPAMSTATE: OK
 X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: dmFkZTElj8EdMObDu/kTnUp4apBD75PFPnpQg7NK68v/jHHR89xrg/xRx6yL7/M5JszXyamJKVqXasWixZpg+jG5pUnq2FJQf3RcH/p7BKF9ShGlxlpKb3medBYbwthOHi6WsKyEAUII4SyASMtTZ67ElEmVWlENG6n9/a9Xy2ya7vcBVw8XB9wVn4imkDjuTq6JWRHyLfhwScsQhrHfaxNwybRQY2TYKagJKm/0LjebKQNrDxRvOJTt3x1m+Q96I2WYaK+roFi2QVhsaL+TOm0mxD0rN7fdAcld8gqKDR8O0FAZfQq93UO3beSddZOvIXhUq/Du8CZbFzlxVR1/YoZGE97eAe1nD/pvpp/H9wjYlmpd6En5TEwzRgHnwgA0hn4jZxKIwAZl1a2WuQm9q6Ajq6t/2pISIXe8NrYhNveZxkW5AmvJ9PA7UsRYqILeFJa4l/t+ziBmkl2C3mhB9K9WBgl028n0/N/mogcwCkGh9Dohg09N9e/NkWowVYe8bXOADLN+Ehv2sOxfFwCb9C5r/If3VHWeZdfCtqtV4oXnzqL52JTOrcYLCZQRwcBSYfVag5LP9W6Kq9KTyBusOQMf+Lzj07P9l8h4R9C/uaJKnLf9IWEigh7DrBb8Y+NbF9hrvtCeJQ7PzrWJPe5j7JV4mg8NOfRjA1xcvX2Fs8q1ysm3cA
-DKIM-Signature: a=rsa-sha256; bh=leejA4oXNKzlCWvwsksqJsxtR+ZVpBQOirzyOlDDiHc=;
+X-VR-SPAMCAUSE: dmFkZTGNUD/+lU0f0AV58YzXXMeoOgI7stSGyQnUCLQTWUGjvNOg7AleMWmlvL1AgQx1M8wgC4bgr4szg237ncgeIJDZ+21t72QULiNJxfn2ypx7ESKEsDkwNFT/KaG9Ou7F0gvqmqmBLNrdtJYzZ5qYhgWsWla08Bseg7Xpkrjl2p87WGeplH4EpGCS7dYfqmI6A4lpi95O5qDCkRRoUs+EC5jWqJtM5uXWan1v5qA9NCCgpHlrxvVPRY7Hn3DhdZQkZBaKYFg8zO5LIeckwhiTW3SMxEetii9yfr/FEhXMld9qH/YNBJX3hjNDYQS3sLkToe0EYHV/9JXljOdtYCbLlneQsR753AUr41RvRhFyKctvwNr5F/8/J+qsTGI811PHLMmU6RT/F3iIBgfpZqOi/nE1UYWqXM+csgHmgyhyNwBAMZkx985ViqOvuDuzcKc7BrzavCKYN5G7vCktO/8OtEvXjog9mo0c80sGwGWtb77aSHBWMO/6cnc0EQcHiZ09CB8m7Qr+m356rRbZ5fZ3mgsc+FoQ+OJa01Y/JAKiMNwEj1BCazbU2BlmWcn2PSy3orIRTkrRc5MrKlxCQm1N0LAm+lIESi8/BJg470MxPPNAKCuBdEU5nLIOt6TX+rW+Vq+qtAgW/9XKopwVq3TswU2qAmS4mQtnZ00WKCxyZ7e7ow
+DKIM-Signature: a=rsa-sha256; bh=krixYWDv1svSaZWzY29VuHk3LCe+gkNbeFXejSkZhpM=;
  c=relaxed/relaxed; d=kaod.org; h=From; s=ovhmo393970-selector1;
- t=1785085039; v=1;
- b=pO2ygG3Oy8MBfiWrP1EukCLQ33a59NiKcul5zOMyXuQbsm5GLsEiJCxoLEb4hFA4eaDGCFxC
- r3qr3Zn1XUrKX5VY9IdN8AhewaV1axthkVBO7D2sxIJVIJJ7yxpVCpueehGbUL5B/6o1WhzKlo4
- GtM+3XgyHYfY3bJJTGhXRGhcJMlzbRYpq7EU9WgReJpKgmAN+H6judUya9S0BNHN9V48ghl+p8q
- k+j0li5RJqNkXRzBfqqm4rg/MJP1WeNA3JkjJaGzaXwRuVS3+IBiUNfvVc3qgN976jtcMaaGlLy
- y2pKYNDOuzw5FfcvM2dxM13TPgvLPaJXLBka1twHqaYwA==
-X-Rspamd-Queue-Id: 9833B20003
-X-Stat-Signature: 3u39ams6cdseccwjs6egrxiwxmyxmwoa
+ t=1785085472; v=1;
+ b=X8S4U0suPQzDD/KTpp4BPSUm520wFOWzHCIbmVCsIfU9YnZrdvOnYdVxVlsjZYrWga7m0RiF
+ UXz4Wi8pMb61wLgCH6NIsLfxzBeISoZ9Eef4QFayBeUXrLRIxR53tyZgbfujWbBWqCfQQVATZ4s
+ yxatMiRgJNvxPshv40aYCD2TTWCGZnGHRXiWnwosQbaFIO91NQ8X0xYRrD4e5pfUfTtapXZz3JV
+ 8zZdj2lkez1xd0y1xOKj5iOWLk6jcfsbN4qcu7bdzysdRqHkqG5qTcpAg8EznPMWzgggIEW8UGo
+ /OFvB/Y3d05Pku4dsMx23lBWaUzFUq+HhW/f95+OaHcHQ==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 72A1740006
+X-Stat-Signature: jwup9wo3xpc6zabjue5x9d9dyxmye54h
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1785085041-969325
-X-HE-Meta: U2FsdGVkX19eR6FCdHf9e9lB1QD5r04I7DuMo0XlguU2mwlXb4M0rnM9ipdSohc6l+qaOfLvaALQumrxuZHSqwPvAlado57Uiqr76USr2JRSqzF+MH0IEJb8ZUUkOm3OLnGcuDJ2FAn6/Oc5sgtmE5mHfW6d+QEfppiIptT5jEWbxRM4nlV4w+DV7/DLQ6vXWeaLMmmuU9ONQX8GRZp/FfzfdTyBoceD+5VXPUmhnMXop8ojsiuFyMcnt6NoCwkdwQtagVDDHKn+Rev4zoidbJ5HzAJyABVPF/BmwXA9z8Ok6eyOsEe5HdHZ2Uvf8FpJYBlI58N3YDpmPB6uxELx5zvB20a1697gpOAAR5y/rAoLnZ6FEwpsdiLkfbWAPhXoNmiUdsU71cfKN5MukkpFtu4jbLmZugIV6rqV8GxI2GV3Bc4gx4NKxY6JaAXWZwkYHR+7/F8Yf96liFWCTIqs4GIFbFybHx3LU4iTnI5buVlft/W3REngBKF5gCWincoc9xXaS2etpR3r08rC3GPttF/yJybnR/cMUVcCerv0VYR43o9cGX5dhGFtiOPOAsgHm+6ssOPbK6KR3pQe7i9DRJDHxHb+R65d3HjDkVVrXpkol9AqQTOq8RYr2EN//iBsRpRiSUaMdLTJ0dm9W8rcFBcjpMHOoTn3R2hZBngqz6VpEYZ9n4abYhtcEomTcLXzIaoW222JVj5R4fFGHpINE1awNzeHz0gy/6IXYq/G6AcIs75I/Q9+VltGHsnI12lAv8AJqHrbWsab7AoVK2zxYWmHg49XESp/Wj+2sP3mX3i1Jm48kT/RJzmeQmNXMl9XTrnNrI9L8ZfuzX4MHN/LyDvJ5it9opbyzWWBLHgdMzJ7yyanYAK8WrLidYfjDWtc8aeFRca922TGm58qIAr/Dg4vqXbJeotjskQzlG1d678wWmLUyOnOZr4TFF1sBTOWmlOh+jXHmYjg/Hy/sXP
- w9+pOm8f
- ubBToqEg70H/HM8tAoaea4o7jolkUgSbZ7Hg530LWbC0SyJWOd/ScVnOH5CgmI13XbpR99TiycMfcQFBSQMqrID8hcgauZ9AdKtbeWU09nHWa4Gxz7t9XX93WxTdy6t6FSndVg6GDFIoRqOknVy5VAkBQnDfZrkS3wLhZx7htnUWI2JjQOLphH+v81KkGp1Le/Iby9DthMSsZS18LanD1HytfUGXipG2QIWj3m7sOBx7J+a6VRlU3q9r6qcocUX4xhKT/y2o1qZYtFBmM+qjPtKYv8SrQI0GHttGIonPLsgwQ1PvrxluUPaKKMqZv/10RE1Npzf6D5+4xUoXo6L1m28IuUSz5+E1mKUn5qGikrvv+l4/bE7J5aqZ/BcbGvDpniombHssVVfmbjKRTqUKnm+jHCLiKSuEHzlBnrt2sRI4r9BjxvtHdWrIud5e1wsBlTpIBW1QMuTyFRNQh+fQAcUUVVpRsTqAh9OoUwe43BrUyNeuZ64/XnK0U3mf/LBH/lHQQJH/Az8fNELgKu2fpTfUFHtRxI8SVVVBryCAp5LiLwKA=
+X-HE-Tag: 1785085473-402186
+X-HE-Meta: U2FsdGVkX1/YmKRH3EXBGl09rqWNJ934BoOFHVs6eqd9sDVN9FnhnbSziDa246ZDe7JkDZxdlSghzHoQeVRyCAcmTqFRsjKIFf8QNiNjt5j3EeWLypWgudo/SBYAWYQzxT2w6HrYLk3oxbUcXR6zp9wyPaSMf0SODFeNj1feLuBDWFcN2qeM2vnkRptbzvVQwphltrEMtTB4sUkjZOdomHA3CycV1FZX/C/i2wCN4bB5CLsTul4kb8dCDQJMHc+IOwA9fGhPz2KAyTkffVS22MLNeSQ3xgQHcNRVNyEi98Ek+E6RwZqssOGp4XgjgVezhvnCyMT6PirSN7bQWnW8W7mHLXvvGPGIRUN3pk1SwRlgfTrRFTZ6mJ2nMFrj3rRg0LbaQ2oiP3inE3d5GK+eGmb4eclvBDPhAeRQE3B/Qei1zYY4J5/9jNY10wfcBE/9RkP3gR9I9AFdNYwpOHkfnyEgtlMwh8waFcWf0uY/y8wsmVfKfYHRRUKq+oJslX30Nk6L7MxpWNWxi6dJUrktghzeaq5W0najXP5q4+HVpi242WeCplkyik6abo+Fb2RL7y8zxoqr8WM7zCqlwwUytFCjzKmzICqbne4356vVyLLdRBrWpU4iKfPyIqZOIYDpEjGY2Zk9fq6JiYfjJruzHm95JdieMrfVzid+7r19LkaxZ/6RNXNJQ7ce71Pn6jYk1+ZDPDDTjP6ImGFjfqabg3SAEMNbye3NrUUn0Leh0UOoTaieFcLGvb0CWofTLqM2RuH8S6Ac3G+d7LhTnQOoZHPmhbcaYIRT6jQU6JBLG5jE4YUlbZdB44LWdO+pOulc1hs1ZovV7IXaK/5JS+LOU9AJqrzSmodeIEy/+X0GnmboT6P7AMZap4dCM6S9zo3Z8Jrb2fZzoH354Zog+c4PnWFj8BDIPG7kFKhNtdoy42XOdlH5/cCPugGzBvWOkIE/27gBecUhGdiBHLibjb8
+ zmi4afVR
+ C8uOzstwpB9rqbArMIqNcShMDBNK+IOaDpgHAyxqYNYYYxHvOiiEtJssSK4lihoW1Ij05tDkbbEW8sRp/15RDcPpXVG1oQtyyvrNjcgao0XGxI2dBUmyL+zxgoX6YLC/xVwRUL3SQWyLaX2/L7zyeL8HLnjAU+Z4yS9I0TBtZ75CrK9h9XliYBVcKAJN8wQcS0uZLf3voNt2MuXJyNhet949/EzCXyusAlMZaTe/xw1xjE1Y3zMjU5OXwlICoy026dEUv47baJIg7T6fBPTtoKDS9k9lrHmORtIm01d/+PqfnpT1LMwz2yBsvucWxckjeI6pbGalgUhpX3F/G+0tINfQk+dBu+UZ8/Yjc+gl6JdZ5d8j2SZa8ABFezZ4DrDpyuEbJMCy+a7QwHtCScrAyFHtJI8y5t1gqNKh1rt6qyGnmcXnrENKUtZEp/LJkbLGh0QaA7g7yzlC3dJpD+/7c8Gxb1fPya0rAvwAiUjWKdreZ0A6J9L20QKVCnK9TjkcbvGMzNxKhvwxZzOPN/E6i9edDYdyVmYN8J0a5tcvyV/gJEYI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,99 +154,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+As suggested by Andrew, let's change the approach and remove entirely
+__GFP_NOFAIL instead and make all xive_ipis access paths NULL-safe.
+   
 On 7/24/26 04:28, Gou Hao wrote:
-> When irq_domain_alloc_irqs() fails in xive_init_ipis(), the error
-> path frees the global xive_ipis array via kfree().  However,
-> xive_smp_probe() ignores the error return and proceeds to call
-> xive_setup_cpu_ipi(), which dereferences the already-freed xive_ipis
-> pointer, resulting in a use-after-free.
+> kzalloc_objs with the __GFP_NOFAIL flag will never return NULL, so the
+> subsequent NULL check is unreachable dead code. Remove it.
 > 
-> Propagate the error from xive_init_ipis() through xive_smp_probe()
-> and check it in both pnv_smp_probe() and pSeries_smp_probe() so that
-> IPI setup is aborted cleanly on failure.
-> 
-> Fixes: 7dcc37b3eff9 ("powerpc/xive: Map one IPI interrupt per node")
 > Signed-off-by: Gou Hao <gouhao@uniontech.com>
 > Reviewed-by: Wentao Guan <guanwentao@uniontech.com>
 > Reviewed-by: jiazhenyuan <jiazhenyuan@uniontech.com>
 > ---
->   arch/powerpc/platforms/powernv/smp.c | 8 +++++---
->   arch/powerpc/platforms/pseries/smp.c | 8 +++++---
->   arch/powerpc/sysdev/xive/common.c    | 6 +++++-
->   3 files changed, 15 insertions(+), 7 deletions(-)
+>   arch/powerpc/sysdev/xive/common.c | 5 +----
+>   1 file changed, 1 insertion(+), 4 deletions(-)
 > 
-> diff --git a/arch/powerpc/platforms/powernv/smp.c b/arch/powerpc/platforms/powernv/smp.c
-> index 8f41ef364fc6f..b1201dbafcaf6 100644
-> --- a/arch/powerpc/platforms/powernv/smp.c
-> +++ b/arch/powerpc/platforms/powernv/smp.c
-> @@ -332,10 +332,12 @@ static void pnv_cause_ipi(int cpu)
->   
->   static void __init pnv_smp_probe(void)
->   {
-> -	if (xive_enabled())
-> -		xive_smp_probe();
-> -	else
-> +	if (xive_enabled()) {
-> +		if (xive_smp_probe() < 0)
-> +			return;
-> +	} else {
->   		xics_smp_probe();
-> +	}
->   
->   	if (cpu_has_feature(CPU_FTR_DBELL)) {
->   		ic_cause_ipi = smp_ops->cause_ipi;
-> diff --git a/arch/powerpc/platforms/pseries/smp.c b/arch/powerpc/platforms/pseries/smp.c
-> index db99725e752bd..14cd0634eeca8 100644
-> --- a/arch/powerpc/platforms/pseries/smp.c
-> +++ b/arch/powerpc/platforms/pseries/smp.c
-> @@ -194,10 +194,12 @@ static int pseries_cause_nmi_ipi(int cpu)
->   
->   static __init void pSeries_smp_probe(void)
->   {
-> -	if (xive_enabled())
-> -		xive_smp_probe();
-> -	else
-> +	if (xive_enabled()) {
-> +		if (xive_smp_probe() < 0)
-> +			return;
-> +	} else {
->   		xics_smp_probe();
-> +	}
->   
->   	/* No doorbell facility, must use the interrupt controller for IPIs */
->   	if (!cpu_has_feature(CPU_FTR_DBELL))
 > diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive/common.c
-> index f9a1229cede73..bb6ce07c1699e 100644
+> index dadd1f46ec939..f2904a5c2b7bf 100644
 > --- a/arch/powerpc/sysdev/xive/common.c
 > +++ b/arch/powerpc/sysdev/xive/common.c
-> @@ -1256,10 +1256,14 @@ noinstr static void xive_cleanup_cpu_ipi(unsigned int cpu, struct xive_cpu *xc)
+> @@ -1134,9 +1134,6 @@ static int __init xive_init_ipis(void)
 >   
->   int __init xive_smp_probe(void)
->   {
-> +	int ret;
-> +
->   	smp_ops->cause_ipi = xive_cause_ipi;
+>   	xive_ipis = kzalloc_objs(*xive_ipis, nr_node_ids,
+>   				 GFP_KERNEL | __GFP_NOFAIL);
+
+So let's remove __GFP_NOFAIL here.
+
+> -	if (!xive_ipis)
+> -		goto out_free_domain;
+> -
+
+Let's keep it now that allocation can really fail.
+
+>   	for_each_node(node) {>   		struct xive_ipi_desc *xid = &xive_ipis[node];
+>   		struct xive_ipi_alloc_info info = { node };
+> @@ -1158,7 +1155,7 @@ static int __init xive_init_ipis(void)
 >   
->   	/* Register the IPI */
-> -	xive_init_ipis();
-> +	ret = xive_init_ipis();
-> +	if (ret < 0)
-> +		return ret;
+>   out_free_xive_ipis:
+>   	kfree(xive_ipis);
+> -out_free_domain:
 
-the cause_ipi handler assignment should be moved when we know
-IPIs have been allocated. Here :
+and keep the out_free_domain label
 
-    smp_ops->cause_ipi = xive_cause_ipi;
+> +	xive_ipis = NULL;
+
+and yes we should add 'xive_ipis = NULL;'
+
+>   	irq_domain_remove(ipi_domain);
+>   out_free_fwnode:
+>   	irq_domain_free_fwnode(fwnode);
 
 
->   
->   	/* Allocate and setup IPI for the boot CPU */
->   	xive_setup_cpu_ipi(smp_processor_id());
+The prepare_cpu() path is broken. To fix, we need to check xive_ipis
+is not NULL in xive_setup_cpu_ipi() and xive_cleanup_cpu_ipi(). It
+should be a straight forward local change. Nothing complex.
 
+You can test with QEMU. The pSeries and the PowerNV machines are well
+supported under emulation. Ping me if you need help.
 
 Thanks,
 
 C.
+
+
 
 
 
