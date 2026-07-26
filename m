@@ -4,91 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37AE2C531F9
-	for <linux-mm@archiver.kernel.org>; Sun, 26 Jul 2026 09:11:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8452EC531CC
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Jul 2026 09:47:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 23CAC6B007B; Sun, 26 Jul 2026 05:11:10 -0400 (EDT)
+	id DFC616B007B; Sun, 26 Jul 2026 05:47:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1EDB06B0088; Sun, 26 Jul 2026 05:11:10 -0400 (EDT)
+	id D86776B0088; Sun, 26 Jul 2026 05:47:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 107296B008A; Sun, 26 Jul 2026 05:11:10 -0400 (EDT)
+	id C4E866B008A; Sun, 26 Jul 2026 05:47:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DF19E6B007B
-	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 05:11:09 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 68C8AC040F
-	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 09:11:09 +0000 (UTC)
-X-FDA: 85030358658.20.FE28154
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 7BEBE40005
-	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 09:11:07 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=AuXDgXiD;
-	spf=pass (imf12.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8C1E46B007B
+	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 05:47:05 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id F217380490
+	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 09:47:04 +0000 (UTC)
+X-FDA: 85030449168.04.76D7231
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 4263A80002
+	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 09:47:03 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=UOcugSjQ;
+	spf=pass (imf02.hostedemail.com: domain of iprintercanon@gmail.com designates 209.85.208.169 as permitted sender) smtp.mailfrom=iprintercanon@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785059223;
+	b=zTQKjOlhIrnz2AHfPQ9FOdtKgqNzrSF3hn5cIH+mjcVXPPlVqohxFhQYYg8yL3EOAR6VrG
+	nVdQOZw7KDsmn+esnPAK+gg0LaYexnKUEkGb8hjpmrPNMYeAHSh1oWWbmQ710m/n7IqZrZ
+	gMiAWTiOfYamNQDnU145C5lIolmfPkc=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=UOcugSjQ;
+	spf=pass (imf02.hostedemail.com: domain of iprintercanon@gmail.com designates 209.85.208.169 as permitted sender) smtp.mailfrom=iprintercanon@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785057067;
+	s=arc-20220608; t=1785059223;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ICOJwuSDvuHi9URQG65TdcLtMh67S626va+a/RQ8YeI=;
-	b=h+p02Y0WWnEglsKJARuogvHNym6gCVO8EdGz9Tu9VzdPyVE8LN/raxTxICG/OdWIuoiKJi
-	2n+FQmuYwORV+5Ogr6CqTM61Y7HsZOyutq/jAi0qu34lTqyFCZtLxHG2lDDeb4qaipRzbE
-	rQ+MEXSZQe5ZtbPnuEuoCw3k0Yy86Os=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785057067;
-	b=1OzaCeCg2ToY1CnBHyul9zTUeXcgdyXoFwSC0OGsZFBfb9XVff5gLXM8XLwKAoMsccth2B
-	23K+iaaZgaSHBae6v6+Vr1PQafR+Gn/BV/Jt/9RZ5tU7VFB7IflJ6XE1twnmjBi3M35GTT
-	WjHr14KG+ZciTL7IqkoTEYXpKw98IVI=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=AuXDgXiD;
-	spf=pass (imf12.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5A8452F;
-	Sun, 26 Jul 2026 02:11:02 -0700 (PDT)
-Received: from [10.164.11.0] (unknown [10.164.11.0])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E95443F9AB;
-	Sun, 26 Jul 2026 02:10:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1785057066; bh=W9hN+Hjprkh7hB1ShaJYeWbFQzeyeWs59WNhDGKcnXE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=AuXDgXiDoyVrBC5JrhEuQsaqUDh9/48zErLZQxIA82cxV+RSfYsEOVClCu6slrQJt
-	 VGOMgszc9vYffiaH7TeimUlbGlwTPS99Frnomrlgm2Ooagv6ietgC0KpLAlx+uW+0l
-	 LXbXpj7Q2Tm8mRWqD7VP/6qU6c+CsAKq6pJeKr04=
-Message-ID: <0f337417-2fdb-4f78-b98c-0571c16ca210@arm.com>
-Date: Sun, 26 Jul 2026 14:40:57 +0530
+	bh=zGTNSNOhln5X4OCPRtTEj9R34uYX6rw/604aiiTGhzE=;
+	b=RN4E//lEEdLhX45/DyZqHNHgzdAN3sMjwVIOmNhdrk8sdNHuLvtG/PhjRPBWz9aiqM+zVw
+	/Xc7YHowJwYiYqcqCxJevhNLLGYH93f8eDBl5gvbKH88pMaFl541ZtujQV7YPgqHBFQ81L
+	hyYDf8JOK3ubhfiCv+8c2BkpXG0E3C4=
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-39ee96f8047so13622761fa.1
+        for <linux-mm@kvack.org>; Sun, 26 Jul 2026 02:47:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785059221; x=1785664021; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=zGTNSNOhln5X4OCPRtTEj9R34uYX6rw/604aiiTGhzE=;
+        b=UOcugSjQrl++dUZDU0TNWw3KD9uHJrpUn5DvxlALe0QP8IpziN6ce6TdpAenRWqWVk
+         k0LDhf3JkQ6CLAAZEcxbCFMEYAw9y5OulNYcCHF0hpLA03N/x2mpbDjqCEkoWNXtmLsB
+         wmTK4GpueARWl9N2R/EGrESCpnpnKi4GRQ9PNZfWWazI+6QNmHllas5nWYaFXuc/XtnR
+         iPdB8YeSM7DiauE69QHbBZougw+PftkZIv0C7otxqy5HUkVVO9iBR+G7ZUOtgOfxsBhx
+         ysjWHl8RmRTmid87dj7Q1GZX+z7x6Qq/9Beis9GqaL90JN3bKaQFKOLqfAGz2il3iLv5
+         g0tQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785059221; x=1785664021;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=zGTNSNOhln5X4OCPRtTEj9R34uYX6rw/604aiiTGhzE=;
+        b=iKqUyj0P6jWjSJPY5BnRx5CGdh0r5ctVfhRMS+bASAaDnQaiWjBYpPgDM/xSgKTvFv
+         7djw95huj5QpqOCa6v9FZzA9sNZa7sOECaYcbZx8YMY9gElqVin8iRbvSmc6tWCUULvQ
+         qAwa10cook0r/N+Uzg6PEL+yip+/SP2zcAZBkdUVRxOT0u4YsYMicI6TDhil2qh7MIQb
+         iH0W6jP6HJSwYmlxRG4JeWKZ9cZpyk1ud03Lpl2w8Y0V514rvH/Y3atj7cqwuiuP/moi
+         kiU64a/UWgzPvhisKZyPOFnx9pyyT8hrf1fMrrvU01ogQkM6x4E3H8jrlhfw7Wvdy1fr
+         6pgQ==
+X-Gm-Message-State: AOJu0YzSH7P1/MJNi/AjcoKStphpNCIJJ+beAaxfX1n0XgKoBiSZynqf
+	EJBVgadwI8OO4uttsxkV3TxYSjQaek8fBHYoeewWmyIkXKcoOlXPevpd
+X-Gm-Gg: AR+sD11WMfwrKEPXYcuaNgmtbVRjFFGk3iwqLCjfGtKptwCaEUdAuVuOAyqNAtrk5gq
+	/a+MVxRYbvPBQ1U8ODuM8nBBrCQIMBKc0OhTl9uxAdTgHuxhL8B/RftnTGyTq/hyGcKF1Wk2+R1
+	3GWpNlepc1LQcebLU2m7F9KG2lXSeaBFN2zZJeyZRp+E0p4fwVYWaXMWGcn767kwP+R5cAcZYOs
+	DwnGIsvLU6LWnsY59qw1EUxPohAmGg9F01p0zyV1GSPEHYztcxm16MoN5xpCD5kYoTtqGPAz3so
+	j/5MQy12lSUTa6rVaD8kkIr9+JqSqP5TL/M+ZVT6H3NP3pEuZneRO3E+1/BRRWJmXXYuCkfbg3y
+	rn7WWoHwIrjsZ9WyFVH6I3kNYbF4karwsYycU//c3nbY7f5wysoPGQpjCiMGsoTWwPb8v4/5qhf
+	owe7p4v9vz62N49tH/Nnkf/NCNdc7eK77yqsD9biSTiPZBoJhhOjn2VYysFZwWvZSKTduOzYZhU
+	FAK
+X-Received: by 2002:a05:6512:1244:b0:5b2:aa3b:deee with SMTP id 2adb3069b0e04-5b2c1b54a62mr878564e87.35.1785059221326;
+        Sun, 26 Jul 2026 02:47:01 -0700 (PDT)
+Received: from localhost.localdomain (46-138-176-102.dynamic.spd-mgts.ru. [46.138.176.102])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-39f22236390sm7723271fa.25.2026.07.26.02.47.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 26 Jul 2026 02:47:00 -0700 (PDT)
+From: Artem Lytkin <iprintercanon@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org,
+	urezki@gmail.com,
+	shivamkalra98@zohomail.in,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] mm/vmalloc: fix 32-bit truncation of the area size in vread_iter()
+Date: Sun, 26 Jul 2026 12:46:37 +0300
+Message-ID: <20260726094637.3210-1-iprintercanon@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260725144834.76cd9aa557e72aa02688948f@linux-foundation.org>
+References: <20260725132201.88279-1-iprintercanon@gmail.com> <20260725144834.76cd9aa557e72aa02688948f@linux-foundation.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/8] Optimize anonymous swapbacked large folio unmapping
-To: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
- hughd@google.com, chrisl@kernel.org, kasong@tencent.com
-Cc: riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
- harry@kernel.org, jannh@google.com, lance.yang@linux.dev,
- baolin.wang@linux.alibaba.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
- baoquan.he@linux.dev, baohua@kernel.org, youngjun.park@lge.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, pfalcato@suse.de, ryan.roberts@arm.com,
- anshuman.khandual@arm.com
-References: <20260723070905.3422276-1-dev.jain@arm.com>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20260723070905.3422276-1-dev.jain@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 7BEBE40005
-X-Stat-Signature: dmwwzhbgoa1r3diszutue7ckofitrarg
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 4263A80002
+X-Stat-Signature: 649js4y78c4yrha5rqrsdqm1tuarc8kk
 X-Rspam-User: 
-X-HE-Tag: 1785057067-593117
-X-HE-Meta: U2FsdGVkX1/Zh9AALUMaMhvgy/jPJdiC0BcT0g05BdgA8J8ExPCUWwHeP+IvgYp/v9jhcVW/97hg/HkyNLdH/8v58YlALV2jlWtBvJKKU36nkZKzVu2//3g5Cb3ihGmnKrVYWjXnfR22BGxh3LDB7X78KtClwPZjcGagvdCvrPga3wJCOlNbc6y/SoyT/JoVI+bhd9OOYNwOREdylZ+4IN0RyCf0tULj0Efaw9Gw8I7/yza+AM9uRen48+Xlo0NtNY9YiMKNY99XGDJiaS3gM2hDhUSYmvSHFXe25ZNT7MSFtcv3gbWVbcUHGB+A8STQ769zrwIHz9hyPYbe+shZ/NlKgtTR9D7Vq/Vx11uB+KNnTaU0hkkZMjTr6ePxa5E0l3HqE4k47YJr/YW7L7POFR0Y1X/dHxDRnaGfQ6LkdF/u68iQY0+MIOLkHxnT04Z5LjnPJyhV5yKiqwYvUq6f9atA1W2nvLQTei1ZgQZILcv0KL9qu9b1HxyqWpt8Jw0B4wHk9aqTfIa93MDJqCWxXKC1SB26vUQ24rf/4jHvFkKSj1RekD6qfBzgMjO+CURHMaUCNO1bnOG0B0iCipxFpIoScbocitUSYaRBZkKrsJXyCs8UY+URc0IerRqK5I5EPPAAimVbkXl/UyNjddIfaTlChuDbLAfBwYNxF6xCmi4d66Y6WjPDTQxGZGSlG0vv3WNkmxg9mY4/32V5w7lg+S8UiTaIxUjrzmKUVR2bFcC0PUDLYkbNfpopTd9TtTk65eqA3u6bJFdEjjARUOZhTKltjBHEiYqMrCpFjf6u+jyDn0oR7tGMTCIBqiUH7aXjZW+GXHFd2yeRmunleD0yR+Y97l5Q5yBF4Jqv7tZkgdHP578rK6bZkgsTky7DM/w6Fj7vHJ0VvPU9CH31mK53529g35EK1VgVAQHVWpxTFp+JVcLhSVRNWYLhrRaXJZutn+HLa5hK/wmdtIZSq/j
- kM1u0Ohg
- 8UZGFF6IUZ3QaCa5nn8FyHIE+5I4Ai84rH9fhmKVPefa1WJpKNOkN2h4UHxi8UGu+sdD3FZJ13/2j7dHuMDaeAhR3MuZuBLqWFKq+5gRTX1ui2T7xDlcfnWojMM4afUhEeU6dYD/2ezLl7tJEh1XPy7OhLScXtPwO8liJcKzDrBkSRIMUwZa/hk62v2xMMOos/LQuAEr4oH7rDIvuIdbev1mT8bo10UzqiU2iEemlPYmQO3s=
+X-HE-Tag: 1785059223-832807
+X-HE-Meta: U2FsdGVkX1/htmcu4lJkQwqRjvH0PrnTmAHX3z7DVATbUGIuFVlG6zm+rghyFLsipFX3RR2BSMMm+yCbCtSDTC0muBlR+SPIQ6qzNokyTmbjSZ+Exqj3dd70VNxhBshJ1CzwrF2PzelJT4k2I2zPz2wEf44gO8mvCXNrpKLADpxxAz7RY7w4WfKomVgFP9xYSKoQXLXqw358VVXULbUL5x+bJuCTzoIfj8Je/4Yrb+JnZsyN+iduoN1hxG0BuHlV0AY/zsn0EmNF67si97sInmonXNxlaVDt2AeLsU5VfZDeYLDLQhUwODZVYercSOJPMkbRXZMDC5xQeWIRSVOyYaXXFYsnLQl4fsyL9XtEMIMIZhc8z1Y8WyqQARCL6GgpQhUow+LBxWDy9JpgcsPEMLjY6MAb86ALSxpTjIvTXTTdsa7Q2B7upxmZ3TIVJhsur/n5UcdN3lPEOzXjpG1WIqmbj0rQcLIWHCeCCTrpy7EMRbCFyGGWXzgLVcp4L28oKV+9JpmLNjz4OwDoXRZlBmzMSpXIDYxsmlksi8EepTBQC6hy+eJE6nGacpHiR6ZQLSyx06MIXKRyynNgKszfN33J72RKDCipAfOLtYSxORtJwkJv5+/wKit01cB7Cvu8NnPdYGFj1phTmV5PtrF/x1yhDSu9o65tXPsBQ20VeU5Ii6IDwHS+bkF3eCe7SY33oRGhME0Isqq6J4zJWytIUN2JSUaXuLygMPgMMTqh5hD9PrqEpGjiC8XaLSysbRqxNvVLm5PqSeGR7EufCYvhtw/nQIbdv09EmnmfeM2S88fSdP/TyhFlfXj5cBa79ASJVo7XcFcJbT+etz45TSAtSGw7/SwqVN/cXanueVeU3copX0qs28MtwottFAIHCpzbYMdcHrUZrv/DUg1uX7pJHPowUHNPm0pdrg5WqwfcQbrvgexgHFPEdi1VO5PoeUxj3ExNl6xcklWcA+pTWeM
+ KToXVQ1h
+ md2+QaLb+4dp6YCp+EygBMSuJaNl1XTFKFBrL/87XPGZLQovyf6cB+axcsGdNbJrm+/0pbCk7h7NRgHdnGJbAHh8cm8nWoK+exHNqs4lIf7DBH4D1aEErsIl9mlt+JhzC+EWrbuXLaY3fjVUqTDPbU3DayfX+GY06n2AQ1VObeYqys/36t2Jrc+Ou+jRWdyjv+fU3m+rsElev38gfGw12iYlK6+pAMg7DF9OF1m69KnpTtu8bic3h17cFyNX/06q4/Ce2O2ulHJy09gAoKSqq1ZC/23jluxQJC+ZIGQA3iSgKKK7WXG0B4nwhPB57pOIHoRy4LJXeu+jGM1nvvwY6Su8dIopF1oQxEa9npB/+3JDk42j9iM4Xkc7Lq9EoWEfsZ1Hy8VQJ8+E0VkZDZvO2zuskYmWbVs9+/KwYtoIxpbyGPCfCkhaVn70nzCu886+4RBRg6Cl1v4+O/LTXZscccHSMSqwhKsVonfHgakVtgHI6jupi2hbDiQbf7ksj078BGRxjrI3tO7E5RayH/FS2wxci2u9ag7W+Va4xdA+/aR3pTPt7C+0GsTegoc8MHXqiTTW9G4ySKtz6Yfw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,97 +119,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Sat, 25 Jul 2026 14:48:34 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
 
+> I wonder how much of this stuff would go away if we were to make
+> vm_struct.nr_pages an unsigned long?  It's already using 64 bits in the
+> CONFIG_HAVE_ARCH_HUGE_VMALLOC=n case.
 
-On 23/07/26 12:38 pm, Dev Jain wrote:
-> Speed up unmapping of anonymous swapbacked large folios by clearing
-> the ptes, and setting swap ptes, in one go.
-> 
-> The following benchmark (stolen from Barry) is used to measure the
-> time taken to swapout 256M worth of memory backed by 64K large folios:
-> 
->  #define _GNU_SOURCE
->  #include <stdio.h>
->  #include <stdlib.h>
->  #include <sys/mman.h>
->  #include <string.h>
->  #include <time.h>
->  #include <unistd.h>
->  #include <errno.h>
-> 
->  #define SIZE_MB 256
->  #define SIZE_BYTES (SIZE_MB * 1024 * 1024)
-> 
->  int main() {
->      void *addr = mmap(NULL, SIZE_BYTES, PROT_READ | PROT_WRITE,
->                        MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
->      if (addr == MAP_FAILED) {
->          perror("mmap failed");
->          return 1;
->      }
-> 
->      memset(addr, 0, SIZE_BYTES);
-> 
->      struct timespec start, end;
->      clock_gettime(CLOCK_MONOTONIC, &start);
-> 
->      if (madvise(addr, SIZE_BYTES, MADV_PAGEOUT) != 0) {
->          perror("madvise(MADV_PAGEOUT) failed");
->          munmap(addr, SIZE_BYTES);
->          return 1;
->      }
-> 
->      clock_gettime(CLOCK_MONOTONIC, &end);
-> 
->      long duration_ns = (end.tv_sec - start.tv_sec) * 1e9 +
->                         (end.tv_nsec - start.tv_nsec);
->      printf("madvise(MADV_PAGEOUT) took %ld ns (%.3f ms)\n",
->             duration_ns, duration_ns / 1e6);
-> 
->      munmap(addr, SIZE_BYTES);
->      return 0;
->  }
-> 
-> Performance as measured on a Linux VM on Apple M3 (arm64):
-> 
-> Vanilla - Mean: 37401913 ns, std dev: 12%
-> Patched - Mean: 17420282 ns, std dev: 11%
-> 
-> resulting in more than 2x speedup.
-> 
-> No regression observed on 4K folios.
-> 
-> Performance as measured on bare metal x86:
-> 
-> Vanilla - mean: 54986286 ns, std dev: 1.5%
-> Patched - mean: 51930795 ns, std dev: 3%
-> 
-> I tried magnifying the difference on x86 by using 1M large folios, but
-> can't spot an obvious improvement (looks like my system is too fast to
-> benefit from batched atomic operations!), hinting that the benefit lies
-> mainly in the reduction of ptep_get() calls and the reduction of TLB
-> flushes during contpte-unfolding, on arm64.
-> 
-> No regression is observed on 4K folios on x86 too.
-> 
-> ---
->
-Sashiko:
+All the casts, and it's free.
 
-Patch 1: at that point there is no caller passing 1 < nr_pages < folio_nr_pages to
-folio_dup_swap_pages(), so doesn't apply.
+sizeof(struct vm_struct) is 72 today either way. As unsigned long it
+stays 72 with HUGE_VMALLOC=n, the 4 byte hole before phys_addr takes it,
+and goes to 80 with =y where page_order and nr_pages share a slot. Both
+land in kmalloc-96, which is what __get_vm_area_node() allocates from, so
+nothing really grows.
 
-Patch 3:
-a) yes I can add a sanity check here, something like VM_WARN_ON_ONCE(page_anon_exclusive_batch != nr_pages).
+That kills both casts here plus the four in vrealloc_node_align_noprof(),
+as long as new_nr_pages and old_nr_pages get widened with it. Nothing
+outside mm/vmalloc.c needs touching.
 
-b) There is no caller passing level == PGTABLE_LEVEL_PUD, but for future-proofing I can change this
-to level != PGTABLE_LEVEL_PTE.
+It doesn't get all the narrowing though: vm_area_alloc_pages() still
+takes and returns unsigned int, nr_small_pages is its own local off size,
+"pages=%d" wants %lu, and show_numa_info() uses one unsigned int for both
+the page index and the node id.
 
+I'd rather not fold that in here, 1/2 is the kcore regression and the bit
+worth backporting. I'll send the widening on top with all of the above in
+it.
 
-Patch 8:
+As for the findings: the vrealloc truncation is 4418, which is 2/2 here,
+and there's nothing else narrow left in that function.
 
-the is_defined() thingy is wrong, I'll change that. This was pointed out before too, but in between
-splitting that series into multiple sub-series, I forgot to incorporate this change, sorry.
+nr_small_pages is real but needs more than 16 TiB of RAM, since
+__vmalloc_node_range_noprof() checks size >> PAGE_SHIFT against
+totalram_pages() first, and I couldn't find a caller allocating that much
+in one go. Fixing it alone buys nothing while the other counts are 32
+bit, so it goes in the widening patch.
 
+The __GFP_ZERO one I don't think is a bug. The shrink path zeroes when
+want_init_on_free() or want_init_on_alloc() is set, and the kerneldoc
+already requires callers passing __GFP_ZERO to pass it on every call.
 
+Thanks,
+Artem
 
