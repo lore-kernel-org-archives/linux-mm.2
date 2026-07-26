@@ -4,95 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CEDBC53200
-	for <linux-mm@archiver.kernel.org>; Sun, 26 Jul 2026 08:24:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3067BC531CC
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Jul 2026 08:39:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 09DBC6B008A; Sun, 26 Jul 2026 04:24:26 -0400 (EDT)
+	id 1329F6B007B; Sun, 26 Jul 2026 04:39:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 04DCA6B008C; Sun, 26 Jul 2026 04:24:25 -0400 (EDT)
+	id 0E3AB6B0088; Sun, 26 Jul 2026 04:39:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E7FEC6B0093; Sun, 26 Jul 2026 04:24:25 -0400 (EDT)
+	id F14566B008A; Sun, 26 Jul 2026 04:39:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C18306B008A
-	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 04:24:25 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 32DEA14048A
-	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 08:24:25 +0000 (UTC)
-X-FDA: 85030240890.18.3D00DA9
+	by kanga.kvack.org (Postfix) with ESMTP id D1BF56B007B
+	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 04:39:16 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 61F46140460
+	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 08:39:16 +0000 (UTC)
+X-FDA: 85030278312.24.053C5F5
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 7D76F140003
-	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 08:24:23 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=naYCHlv2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org
+	by imf08.hostedemail.com (Postfix) with ESMTP id ACA29160003
+	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 08:39:14 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fFDSuwxR;
+	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785054263;
+	s=arc-20220608; t=1785055154;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1h8J0+r+HKDH96f38eGX//+FYYpw9kc8NPw1oyEbaDg=;
-	b=ylFkMPlUkDR+0vpcrXRKkz/AzChhpm+biMphuHF0yxeItHxkNz5kdVE66DTBNchntQyFLM
-	HTfvY4UQ3gz+eQf7L3V28yhPPrvsZicGzkaKQywJImwDCp3Wz57VcUX6GqzBBoBSpO/jAy
-	ZdBIpYHubbhDMT99f47KqcP5y3avX9w=
+	bh=PyTNe/wP4dK9zJvFPt1+xa2X0L9wsLyFKMsBt48c8o8=;
+	b=E8ov5YJvzGvzBWaSlJP/Oc98S1QMNW70om39EdLwyvlIgNGzcXm9kcHlnT0dzewAGxV3Hh
+	O9/bFuAwHL3HDpWab4+jYBwWmYljr9i6nbAzs0pCnHAO7i3ab2t+FmHDWjuzKNlh8AM80w
+	+4ynaXCJTJFgugq2RMgm1YrReFFr+aU=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=naYCHlv2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fFDSuwxR;
+	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785054263;
-	b=j68SjFrhMDM2P4vJ/hQSmBX6i8cS2xt45rOTRIe19bnDun3umq4yDaCbcxaPKHueQx+ek6
-	8wBn/cqoAmSRknIe7i23YqTWcZL7q/qkvebJVem5HpXE35Iy1pULn+Flbp6qxqHR0/cVJo
-	q2SWQmuCTjfZuJxawv0cm864i+5x/dw=
+	t=1785055154;
+	b=6QzzoFjRFQ7EXahzS9HBEl9wy8DYhikEKJuHnV4ZK9RT92L/wtUzZeuzwDKu3sL/Vk+B6S
+	LsWBB02r/Fn1IsxOvEGGofiHP68rG817jgGFzjxfKVZwfe2RGrJ1Ie/1FZzQUqOkkmBu/h
+	aPukXmwvs1rdght1qw9jAAj5AioHtuw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C015640AEE;
-	Sun, 26 Jul 2026 08:24:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9CFF1F000E9;
-	Sun, 26 Jul 2026 08:24:21 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A36B7417BF;
+	Sun, 26 Jul 2026 08:39:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8720C1F000E9;
+	Sun, 26 Jul 2026 08:39:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785054262;
-	bh=1h8J0+r+HKDH96f38eGX//+FYYpw9kc8NPw1oyEbaDg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=naYCHlv2BL4Vo5IMZ+rucI1IUcm2W+5FvAdPLeFy/8TMfofkrUngKY0lHlo/vG6F4
-	 Lrr+4uVz6/cfuXZg0bnFRsvN2neMPceWNnPfBHNLESE+J5QuKgZ1YioVZSyBz5oJtJ
-	 ze2up/U4UFtMocCPZjFKPedCx8NGK25mUxbyfXm7gzZOOz/U5J95ePcwWQiSnduZia
-	 ZyS0JORzuiIOFYHqZDSK6REAX4/Td3RhawVi2D5joirUlDtFDsZ6vA1RSYiIc4ixK9
-	 4TddXhyhT4jfAdrJmhVXMLJFQ1qORwSvUj8wIbVzE81kkbXNMgjtbTKzuymVgH9sGl
-	 Wlt66JKBy459Q==
-Date: Sun, 26 Jul 2026 11:24:19 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Gou Hao <gouhao@uniontech.com>, maddy@linux.ibm.com, mpe@ellerman.id.au,
-	npiggin@gmail.com, chleroy@kernel.org,
-	maarten.lankhorst@linux.intel.com, mripard@kernel.org,
-	tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
-	bharat@chelsio.com, jgg@ziepe.ca, namcao@linutronix.de,
-	ynorov@nvidia.com, sshegde@linux.ibm.com, nilay@linux.ibm.com,
-	clg@kaod.org, linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linux-rdma@vger.kernel.org, linux-mm@kvack.org, gouhaojake@163.com,
-	kernel@uniontech.com
-Subject: Re: [PATCH v2 0/6] remove dead NULL checks after GFP_NOFAIL
- allocations and fix xive use-after-free
-Message-ID: <20260726082419.GF12003@unreal>
-References: <20260724022851.466017-1-gouhao@uniontech.com>
- <20260725202632.dcb325658896a470df91cf57@linux-foundation.org>
+	s=k20260515; t=1785055153;
+	bh=PyTNe/wP4dK9zJvFPt1+xa2X0L9wsLyFKMsBt48c8o8=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=fFDSuwxRDAIJWYcA+wC8tfxnYXF2mdc6VRujjn1cMx8aD0Ru+jnC1V/AjcZ0J3VPd
+	 ofjhazwjA4wIayWEvEXSjDrLNqeiXmYzDt8MlbrBHPNpJLF1pqR70QMRPtCnV4LSA/
+	 FxyWFva9hR14qQRzI8bbnjvOfXZL8dTsxoGAgwj8TWNsBgdBgJb+uoLPSKcKl4Jbey
+	 vujtQkurmvXVg++L6lPs8gyTfudR58UOo7grnP6llchBWhtqssK1/Hbjm4PPiIlejq
+	 0GN3TL5C8rm7OdSOZm5HnFkQeXaFJoJswXNclh29vT6glD6zl4n3jXg8TDfC9ZviAv
+	 Ewu0STnRSOpVQ==
+From: Mike Rapoport <rppt@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>, 
+ Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>, 
+ Samiullah Khawaja <skhawaja@google.com>
+Cc: David Matlack <dmatlack@google.com>, tarunsahu@google.com, 
+ open list <linux-kernel@vger.kernel.org>, 
+ "open list:KEXEC HANDOVER (KHO)" <kexec@lists.infradead.org>, 
+ "open list:KEXEC HANDOVER (KHO)" <linux-mm@kvack.org>
+In-Reply-To: <20260723202912.1467112-1-skhawaja@google.com>
+References: <20260723202912.1467112-1-skhawaja@google.com>
+Subject: Re: [PATCH v2 0/1] liveupdate: Add internal APIs for file
+ preservation
+Message-Id: <178505509460.1083364.11626390494173240451.b4-ty@b4>
+Date: Sun, 26 Jul 2026 11:38:14 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260725202632.dcb325658896a470df91cf57@linux-foundation.org>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 7D76F140003
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16-dev
 X-Rspam-User: 
-X-Stat-Signature: tuuijpzqbuhxa9mkz5si6bg6e3bsw4cq
-X-HE-Tag: 1785054263-942318
-X-HE-Meta: U2FsdGVkX19F1kk/Uo0tAtmzYEvB3lvlDOCw93Iys133hw3ouh2rI5doSkIBQq/xCavTWRbfmnEzCX/V8pxjkd2GPOSE48I2FxWbEuT+OwFc1WB9kXY+WodNOw3gjrXJjyDB+E+QJ32oVqUbmNtCMwyXMV6MGRACF6Z564f8RfrJbsptJ5vEHSAx21E1ehjgk86wkO+xF3GzagOljVqDbse73sO+pgbdnMCvmYAVNeWurSJmrJ5uNDiBFtoqWvYSns+bfjbyiwCgIK7P3HNDum2KQtCdswUPAjHH2Z9nessGFImiq3t/UWeZBGBW0bnnpJ91Xtk73ooqoDcaEFmw/bYykp7r87cDOtEQ24M17qJyBoKJfEUCz23AXGRMAZnPSiLHIixa8Eb4i/ScXoPmpH5WQtAhp7m+AkeQoj2osfNyayVX1ZhdqBBPV7Ps8sgAg4URhje9T1UKlLtGeAm26rFQUKT8OVHORzOnjl8Fbc0fi34xloBOgIlCPvaIBhELcQrpt0TlbPZZp/zKQ5yQJuGNorwqtPYu+ei7mukoVWyeD9GfKLx5dsUXO0qykOY8QQ4BNrSt5RAB984a+fWarIZBCd4XJVaIVy8zZWv4HCIf1FaDur20dmjxlgaqYrxkAsjpdE+OETG1cs9v1/yuqfPGHxAWFt0kybl72c4UWNq2zpn6lijnzOqzj+cfJEmE/YfhR+915DTYYI2f7z0xa0Lulv2SsvJ1JeEuzsprNQsSjbvBPcoICeI9mUPryTmQFUpOZaVI3LXTw24nUB61ZjUVQXp6V2pRHZHdYHnkcsUfFU4VcZsFk135M0JBphY+C7fe33kqe9Voz4Unc2HPxLAN7AEFANnHkgXnO7z1JTJ7QIkTfSfcmi1Bwyr0l6blF8hfK0d5e9zj0tmMwj1h1U89SIYeXOWlrqRycbNzhjm/gj4SK/yrEnkqyu3VPuGQIqL1gnM1+fAXsi39KeX
- TyIQZtRt
- 2OthKiYH92/MH5Qv1MKNzseq2Khyvy2jTnIfgAGnfGZxVh9oZUpszp+tg6VPecQ+e6JEbcHMgEywEQMY6/XL3uj6+bK1vJFYKgyT2KVi5LuxapLkIOGuHkovJHXJyg0fXEEZ7QCTWp3EBDd0GS0G+9QTPByfDrIpqA0WWlkmB4FvWrwI1UjGtyZPc7oXmEt26zJLkE6JJVtixa3rqIt0ZsJA8y68DoSRyPTjIwiT2mkdzpAt6KCghaYfjHclmqX63eiPrqJGIg+b0Hdmk6l1Mpum85IUDWNYJHcoHdxNpaKyGeoxl9taRnzlelo1J8Oeuvlb1ySrkQpPCR2Uyld5qbnOkCmPzvabJs/a8RHcQ1JYNfCNTB1YgrNxWknSyC2T0UfctdTs5rZl5u7/3dgMNjSU6nUrTbIs57hmVy3Vbk1uPRXY=
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: ACA29160003
+X-Stat-Signature: 5tor8q3p36ogqxpmxuet7twfod5rswun
+X-HE-Tag: 1785055154-440987
+X-HE-Meta: U2FsdGVkX1/Cr2ika/0+8CYPKzfp8DeuO4RcfqFdoQtEKLrHdWKJgF2YXeQF+SXxgfpyGSFoxGveGvgNJVMxgdbVH40B6Fpnmf7yyuN2EvCuzAb4L9rMkQceeKvdIhSfWeS2QbTQ6sUEX/E9v7EZBbRHqtmiJXfZJQBDCMQfrZsLyjUdoglA8nT9wZ41XAeY9fpC88HHJMUPsz9XUN13RGBS9eKuPshoMc8Fsb+y6U6nTjRS+KM+16KiNlSaGU9HvO+dcRedA5b9K5Th1a5UCN0huNhb1fanKgV0GTESN8Xc1Ex+xtO6p4y2hB//vrH4k3JcqnP6EuXIhg7z3e6aCbXCxESauTwmp9RY2vUHc35eC24OB2bU4oX9G4W1UnOcmxSBgBZU0ej+QZ2T4XvAUL8VOthnBnqxxDalHEFdUxTz5yL+LupuyNmTD+4MpgeZA16FHoXlkqUBhu+7wLu8DSc3jSJeWRyD5LeSXkOa8nyh1VxXjpYlshskOWjs5/CKLCnTwKNVE7I8K3EdqTbzBM2AgUnqE5CKl53qWK6LVX4WaSk+RwNqTZQNftFpqMrdQ37GavpHVtyIe51CVqUbdvQbvCK+yoHWm/ln1lZWk0WrCwwL3e8Rk0BDpOInUfYVysb1maMaTf6+w7OMzBrnrChPoShgHcHJJLlEH3eFFcPiTuDP4/tedLbD+hn3tC++NlIDs6nXdp/z604DN2+P2NYFjHn5WafdnsaMb+KFsIXecbXEML4wZj8zSj3ZmDX3ycnPyyxNgD66z/QM0d5dBQ/M0BYPc4xEOM9A/16XVxwshDYOU2pYnpDy4G7kV+SHHmUICZ7g+ipKIcfcOAPsSHMVSTki0khvxjPqHKr3DgMxuLngzpKJpNmjsQiU4/k6uvd6CoXDjp7+sEDWihO45uLhA3j4/PJcXZrMkue2+J/ZsesEwEE3XsXa28wGHPMy7IEHSRDWASjsdbuchFn
+ getdLYpk
+ xU+5DDAzDTYE0DvGNrGWvAQCpYQFnGycWuKQm4/SDbSZE6l87Uoe81XxrOq6dxLJw5UTVtfRh07+XCtD+6xsNTKLt93sgF4a5TkAMe6DbgHgjJ3cr1HqdxSFlVAtKg2iG3WAGz96CZSGUrLI/vwgdGp0A6s1d2nvOR1OTROEqqEG3bNqB32RIZkVYw1gYYvMAiuIlR96kra+SNnyaAnzOQg8g5tx9md6E9ATrUNuACwKQpH4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,46 +97,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Jul 25, 2026 at 08:26:32PM -0700, Andrew Morton wrote:
-> On Fri, 24 Jul 2026 10:28:45 +0800 Gou Hao <gouhao@uniontech.com> wrote:
+On Thu, 23 Jul 2026 20:29:11 +0000, Samiullah Khawaja wrote:
+> liveupdate: Add internal APIs for file preservation
 > 
-> > This is a code cleanup series that removes unreachable
-> > NULL checks (and associated error handling) that follow allocations
-> > using __GFP_NOFAIL, which guarantees non-NULL return.
+> Live update orchestrator file handlers depend on the preservation of
+> other files. To make sure that the dependency is preserved, the file
+> handlers needs to fetch the preservation token of the preserved
+> dependency. Similarly during restore, a file handler wants to fetch the
+> restored file of the dependency.
 > 
-> Sigh.
-> 
-> Back when Linux ran on an abacus, I added __GFP_NOFAIL because four or
-> five sites (file systems) were infinitely looping on alloc_pages until
-> it succeeded.  I figured we should move this operation into the page
-> allocator so we could easily find those sites and fix them to Not Do
-> That.
-> 
-> I made it very clear (changelog and code comments) that no new code
-> should use __GFP_NOFAIL.  How did that work out?
-> 
-> hp2:/usr/src/linux-7.2-rc4> grep -r __GFP_NOFAIL | wc -l
-> 241
-> 
-> So much lameness!   My immediate reaction to your patchset is "No.  Fix
-> the damn code instead".  But I've resoundingly lost that fight.
-> 
-> 
-> Thanks, I'll scoop up the entire series.  If individual patches pop up
-> in linux-next then I'll drop the mm.git copies.
-> 
-> 
-> 
-> AI review has a shower of possible pre-existing issues.  I'm seeing
-> use-after-free, double-free, leak, system hang, NULL pointer
-> dereference, usual stuff :(
-> 
-> They're in powerpc and cxgb4, if maintainers are interested.
-> 
-> 	https://sashiko.dev/#/patchset/20260724022851.466017-1-gouhao@uniontech.com
+> [...]
 
-Regarding cxgb4, yes, I'm looking into it.
+Applied to luo-internal-api branch of liveupdate/linux.git tree, thanks!
 
-Thanks
+[1/1] liveupdate: luo_file: Add internal APIs for file preservation
+      commit: f4d2e4f0d12d88155cd1128ed3294f7827bf4c5d
+
+tree: https://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux
+branch: luo-internal-api
+
+--
+Sincerely yours,
+Mike.
+
 
 
