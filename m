@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95F82C53209
-	for <linux-mm@archiver.kernel.org>; Sun, 26 Jul 2026 22:23:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD3A8C53209
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Jul 2026 22:23:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 984286B0093; Sun, 26 Jul 2026 18:23:28 -0400 (EDT)
+	id 5D97A6B0095; Sun, 26 Jul 2026 18:23:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 95B756B0095; Sun, 26 Jul 2026 18:23:28 -0400 (EDT)
+	id 58AF16B0096; Sun, 26 Jul 2026 18:23:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 870706B0096; Sun, 26 Jul 2026 18:23:28 -0400 (EDT)
+	id 4C7616B0098; Sun, 26 Jul 2026 18:23:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 407306B0093
-	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 18:23:28 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id AB5481205D1
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1B0C06B0095
+	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 18:23:30 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 96CF2A168C
+	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 22:23:29 +0000 (UTC)
+X-FDA: 85032355338.04.E1D408E
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com [209.85.128.70])
+	by imf18.hostedemail.com (Postfix) with ESMTP id F30E11C0010
 	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 22:23:27 +0000 (UTC)
-X-FDA: 85032355254.01.7E26021
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com [209.85.221.71])
-	by imf11.hostedemail.com (Postfix) with ESMTP id D1C944000E
-	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 22:23:25 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="GnwFk/NQ";
-	spf=pass (imf11.hostedemail.com: domain of 33IhmaggKCOEMDFNPDQEJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--jackmanb.bounces.google.com designates 209.85.221.71 as permitted sender) smtp.mailfrom=33IhmaggKCOEMDFNPDQEJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--jackmanb.bounces.google.com;
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=pATHm1Q5;
+	spf=pass (imf18.hostedemail.com: domain of 33ohmaggKCOMOFHPRFSGLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--jackmanb.bounces.google.com designates 209.85.128.70 as permitted sender) smtp.mailfrom=33ohmaggKCOMOFHPRFSGLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785104608;
+	b=5iJVdbEg32t87KrkTFqTMbV5BXuGU/PsCszQgsQDA9a5XrpyS+0vpXLVBwSdPsmcjtu0m4
+	RRUTErvfwJBidHWd+7sFvKoR86emNi3vfM+nzQmlGx3IpLhDMgJd+s0OyfBiSLiXtATyLH
+	UXFGmCc6cY7FRfxtTbgWdyYXlnRxh+s=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=pATHm1Q5;
+	spf=pass (imf18.hostedemail.com: domain of 33ohmaggKCOMOFHPRFSGLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--jackmanb.bounces.google.com designates 209.85.128.70 as permitted sender) smtp.mailfrom=33ohmaggKCOMOFHPRFSGLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--jackmanb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785104605;
+	s=arc-20220608; t=1785104608;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eB8OI+MlZTz5D3APUhcjArQ/zs3ia39JBatnu9AogOs=;
-	b=ZWceT6FaczHNN7MgKko/qn538o4QgZ3TbzetC7sFLV/5r8VqRSPPDnsI1ioSbaUDXyHDgV
-	EDooccGaBaCHgU49KXCODe0GpcZq5vK0Heu+jFwrFv9TvNf6Yaq+OO/+iO9faNxgcJRsbl
-	p+ThnelkfdVz6Pt7SKsu5hwl8s1QmT4=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="GnwFk/NQ";
-	spf=pass (imf11.hostedemail.com: domain of 33IhmaggKCOEMDFNPDQEJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--jackmanb.bounces.google.com designates 209.85.221.71 as permitted sender) smtp.mailfrom=33IhmaggKCOEMDFNPDQEJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785104605;
-	b=3Vu7dB+t3t+vGmBg4bprmZOUZM9o3Mtu4oszi6svLWikTrsGWmOXiuACg2f2DsFXXpzPHC
-	uv5kRoGbcBnGmT2kX3RW8HfwTGOQfMsZi3K+ln05VeXRrKSNAUDeo0LO3hrp1s1sPvHzh4
-	WIeh/GkrIa/ziOybhHPen+uC4ddoDJs=
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-47f6d70223dso1304585f8f.1
-        for <linux-mm@kvack.org>; Sun, 26 Jul 2026 15:23:25 -0700 (PDT)
+	bh=6BiXc+2inU2lDJU0ldFQE+FFEl2R2e3zkQ3EIvc1jU4=;
+	b=YDfjXtgMvPcac50tddd52k83M2R9SdxLoH7Zr2uUB8mg47jYubGgy3e6Ydc+D59y2V2NCR
+	RstOgJyo416jcw3yhSM36qZmyAdQXZp/8CvnlkR9A+U8CueZqDLM97e5sW11NO3mT8VuNd
+	60QWlMteUEp0K4aaXLwA5VVBNkMrY/Y=
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4954fe32d6eso10040875e9.1
+        for <linux-mm@kvack.org>; Sun, 26 Jul 2026 15:23:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785104604; x=1785709404; darn=kvack.org;
+        d=google.com; s=20251104; t=1785104607; x=1785709407; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=eB8OI+MlZTz5D3APUhcjArQ/zs3ia39JBatnu9AogOs=;
-        b=GnwFk/NQF6aq/PdgQaLBp7ynmz+S4JtM7jLCgug6s4XVmqqAi7ZdRSzxc53od+cjuu
-         0geE4drXUbqDIwbOHAoeWO8jbDJlIyDjiH8/IVArreJTzNnOmp15Vmot9jfVbjUqwQQH
-         FZqt+2GfRZ2WVJuy+e5msidsUYP8rp9q4bDU6Hox+t2wQmKxD1/7SFDhYs9EzD7JWF76
-         9/gN8D1SSPO1FXnZQoqD9/kICNzp3pdqJ8klfyfEoH0kZgHOq1DpcqShsBG0hNYOQPpi
-         nM8Ak2wGrdi8QsHPbLICo3Y5qdakgdAnCYW8TP/asWHhsCsyQWlGpMwqrP3WUS5LgzYz
-         DHTA==
+        bh=6BiXc+2inU2lDJU0ldFQE+FFEl2R2e3zkQ3EIvc1jU4=;
+        b=pATHm1Q5sU01hT70sCUTrRQSmF1FQdr8Ke5QjAEZAskjxi27jQcgQkHHP+GHtHpaga
+         oHvabbybvx9BlOWLHLwlMRsa81UqxKrnQQmhp37ZY5IcDR2RkdEiMmZ+U/HgrpAcXHKI
+         ClCJSkcVCzjir9SHkqAZEErPpUO+jMLevAnJgOBdfE76TKHayIVg97PM9pk7is29Do1E
+         1KJdNoGLvr7bSQYGvUbZqBtaAu2Twch+bR9etqByz/06uLPVbs6yrUCZLpxSk/V9BYhz
+         J90CFEHcYNvZU6lbE/BsDswZb2FvoBRxEgkjiqgP89cIcL3A9c1PM1VLnxOESBfeumX6
+         xuNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785104604; x=1785709404;
+        d=1e100.net; s=20251104; t=1785104607; x=1785709407;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=eB8OI+MlZTz5D3APUhcjArQ/zs3ia39JBatnu9AogOs=;
-        b=ky+byYsLZj6yNVp6LCi1M6elUCn8MD5PtZP9LWE4jJ2fu7mNaVGYrgPBI++YXWteBk
-         pO+JY2B4TX6QzT9DFz7hdusB2zr9nZuXouZPQISyt8e2JTMf2xDwaws9cUFIYiBncnSZ
-         uLe9eQTNJYXfvgORgxbhcPwY3nXn1BfmMauEumCKpUDNbaSJclr3Oeojqb3MlcmXul4p
-         uPF1oHMwG6nAC2KUNZMPMIxSAg8rPrR/QuivaoWLMzuIV2bcmyjINzB+q78frUY0R6Lw
-         kVsxRI/BmT0xnqnwI1O0q1mqOHjNqr42ZR6mRZ2IV42EvAkXZN4OfFgGgbUqzbz9tzQG
-         DMFQ==
-X-Gm-Message-State: AOJu0YyYNh0SmxA1vHmh6CRCx/BaqgSzekGX94Rmdt0TbBFmHVO5lU+2
-	Be45dUJL+qFAEaH/s9njCadm6Nmq+Z+VzwV+ZxiMv6IJuWP35OvZ+PVBwSRumMkFMtD+jn+UZtt
-	MDsT3Jf34LqKFqw==
-X-Received: from wrvi2.prod.google.com ([2002:a5d:5582:0:b0:460:2d58:857f])
+        bh=6BiXc+2inU2lDJU0ldFQE+FFEl2R2e3zkQ3EIvc1jU4=;
+        b=IhFtS7MZKZKlGa/IRYJs673LPSHe8j4z5cffavF0ujNopZSkOY3Wg8r9EWWbA2trCK
+         ZfgWKFLfHIDM29qTMrGv1Df2xlc49sZ39R3FyhFrzIm7CI4y7VeB1pGGHsuUJfuCaVvB
+         6FfZPLAUGUtkqSX1eV1HoWxAw317YBCxGR8HyJzJPYYm2SQC47JnVBvTuCKYEFiG4MYz
+         y+oi4/oDZcOfkrRVLYWRD3Fr/9STOAmg8EFYt8Y4ZJmHyacsvB11j6neK02KV0quNjJt
+         earvOTzRYKS/KlmC+3nieC1Xhsym7pob6FaQPtxdBpUBjHe+eL7QR9kJXr9LiP5PDXgu
+         xjtA==
+X-Gm-Message-State: AOJu0Yy7uGUI8iqZNszrToUigyE7CHVrocg4FcilTk2MGuCGrAUDVu+e
+	qCpcW5VzPGEX8wsRu4LHM2qK4gGYxG8FD5sFGa3lApNewJ4C4rqxLceAVQ6y+b+SopT0j/JW3Q+
+	RmlUwUDWDSWP+uw==
+X-Received: from wmog3.prod.google.com ([2002:a05:600c:3103:b0:495:56f8:8afd])
  (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:1887:b0:47a:b86f:3ed1 with SMTP id ffacd0b85a97d-47f9fc8fa65mr7892542f8f.21.1785104604220;
- Sun, 26 Jul 2026 15:23:24 -0700 (PDT)
-Date: Sun, 26 Jul 2026 22:22:36 +0000
+ 2002:a05:600c:35d5:b0:490:e5c1:b8bf with SMTP id 5b1f17b1804b1-496b56f385dmr81438395e9.13.1785104606288;
+ Sun, 26 Jul 2026 15:23:26 -0700 (PDT)
+Date: Sun, 26 Jul 2026 22:22:37 +0000
 In-Reply-To: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
 Mime-Version: 1.0
 References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
 X-Mailer: b4 0.16-dev
-Message-ID: <20260726-page_alloc-unmapped-v3-3-6f5729aa9832@google.com>
-Subject: [PATCH v3 03/26] mm: introduce AS_NO_DIRECT_MAP
+Message-ID: <20260726-page_alloc-unmapped-v3-4-6f5729aa9832@google.com>
+Subject: [PATCH v3 04/26] x86/mm: split out preallocate_sub_pgd()
 From: Brendan Jackman <jackmanb@google.com>
 To: Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
 	Peter Zijlstra <peterz@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
@@ -101,17 +101,16 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org,
 	"Itazuri, Takahiro" <itazur@amazon.co.uk>, Andy Lutomirski <luto@kernel.org>, 
 	David Kaplan <david.kaplan@amd.com>, Thomas Gleixner <tglx@kernel.org>, Yosry Ahmed <yosry@kernel.org>, 
 	Patrick Bellasi <derkling@google.com>, Reiji Watanabe <reijiw@google.com>, 
-	Sean Christopherson <seanjc@google.com>, Brendan Jackman <jackmanb@google.com>, 
-	Nikita Kalyazin <nikita.kalyazin@linux.dev>
+	Sean Christopherson <seanjc@google.com>, Brendan Jackman <jackmanb@google.com>
 Content-Type: text/plain; charset="utf-8"
+X-Stat-Signature: hosb3fsfkny8bxi7oohmtgmoqpsxrhpx
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: F30E11C0010
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D1C944000E
-X-Rspamd-Server: rspam01
-X-Stat-Signature: cdx6k9xiz77t6iub7dx65iqaoyp38e3w
-X-HE-Tag: 1785104605-602183
-X-HE-Meta: U2FsdGVkX1+OOT4GyGdpg/F+0alP6d+Q7cPuaR7sybv6RgKBghAFYMsr0JGcWC56rBaCUlTgURsLJd15Z16MHmT5Z5AviK0LI9nrYjpkUFsb/sr0JlsLP+WAUNV0N8uuuyPixZP6GANQuukUIete0xA67LY+mZDOFnoQCyZ+6FnSJRKffptybxPc/i3b6kacZiW9P9nHKppKHlC8PLUFWIq4NBk37UseWMk7OlaXOWlcBdXdJXPwzp5rtVvWosItCf1l/xYBN7Vg/wUempc7XeSTfR11T7sUHA60MTIu/MQ11r7ZzkeBgY+TZRew5EShbe7SIW2OxvATzaKvW8f3RbpGEpDUVh6juq6XOYPP3w4Y7Q1kyq0o5CH7Y/24KrPXt6gt40hpfRY8bChN3flo+wAgzP4DJOBZS1mfL1dQov83z4RBZKsBrbIUFQ19jyHf6lNiHGKUbkRRxS+ovvCVAF033e6wIcz033cv+t6QIwh7cMKNjoXU/BaJNYxhKDcleA5orqsmgE2L3QX91NjGx4lR+tunT+oA3sF2vroNVvww7hlq6GhDweP0ZktLuP1cEqINDDMUH9Gnv6obEe1LpKyoxTb9sPc/AcAsJHgKsfjqHndLCDWnPjjplsryMQmyPDJnhU1j3N4oQ+v545jm5CuFYmR2ET95SrCjmgLXg+TQBBLRo1YyS198AlxBmYzQN2fhrtKMxdwSk/OInpki5y6VCOtzoFUxymb2pHOSCZ7uZPcfOZmhyo3OE8eTwcqgYblgcGlUTqNkUhz2ZqWO82eVLTKGkGjR6dLqYKuHi3RjOU60lWDjXiArvynWZ0Vokp3CVBdlAbSJxip0+5jbSIzXaN7sqQtyUO4fAiG534wOdCqKg0iJS07Cpgpp8PGAH8AjXFDe22dOhRNFBqYgMEtilpBEdJ1ao2DZjYo23HhpLhNKXlW3FrxVtVJslEUU61vVwAG5+NsiUaPpbnL
- j3Z8tUkY
- 9U2ILI5q76bSwNaEbroLveFdACV+ALlBWFkMHNVNUJ7s4GyGiyaXpWk/9IFciE/+kaBoFynPxopD1NXrbWePTAfLtoYJwWazoBDjvJd7W079b5txlGtmFnNYca9oOgOF8KI7uoYu0BvAU4PKxigEYuWYqZ2pjNEt59hc8/D4wozT6wLwMT94xWcvFyyZJma4CXxKrcadhG5kheH4LCJzOPRhVTeDI90FhrGKMBYrvnVCyJ5/Pwbt4jJe4S4izHJIcvQHcxn92nUnz4fuM2ny0fUTTATeI8iUsc8a5+8lxwxsMpWJ0UyvvuMM4dhwMwfdy5vBuBWBKYhBIZzYoqMsNuYWxPArkXbNHJeVunXiL2L8CIchvewV5MR9iMzfSyyAlfiXjVIoXaS9eYgl4zFRAX6EmJ/eTwg9KHA/DjR6Knv1zr6FlXXlmppeiKFJwGC5fooOPV/05LfMm+8hQm67vmmJp2M4zg/mZBKE9UqN91s0aa2vOxEO29Jeq8z/7CJe6yE+vzWPkPtOXkIv3hyFZJkaLEjg+KfPLnlMd32gVHk4eQhbt2oErJ845Rx842XlWXQ9FKQWU5AxszgOSdwqYxC7fbDXMG2AqOWc4NB+TwI84/wg0OtEvoGzN5TyjLRoQm+lOmN5x7ucELF8=
+X-HE-Tag: 1785104607-129883
+X-HE-Meta: U2FsdGVkX1++RYTeA1O9C1mRhUDHe3q645hHo2AoEFmBMIeUdiT2nVpmDOV34p5qUeLbyGee2X37QN5ivm6WLufmZpU7C2Z6wjaNKP98bkn5InVC1vVoGlIVN2FsVWFWeu7eu79v4Yd6LpMFyNRX8O0AdZj2rvi/1VBBvCjHy93guTX6Twn0pzOz6PDlfTtnIZzgczPqwotfU95D+EMeKGFn/qF3A3QyAceQcmuzr/mtltqzDslyfJyw6dsPUnhBo/OGNVEWEm0AexwImT3B5wM4sLbOFOWygQMl9PwKMmA9McEGxTlO6qQyvVX40duvBPdwgIl0ASgWTT9u3IfMDoPMiXG+blEaTxvXIn2Y6Smp3+y/uBUPVvcNGhbX41Eitkgj3ozz4LFphBCj/wJnhT82tS08kwtl8eTJcGuPO33dr+G7mkV/wMR4rlS4wMgrizGgKrbbJ6COLiXkRAsVFGBvAFtbqlpzHUTF1eo6Lp6brZwARbPhama+uGcPWo5wzK8Vbjn4tzjmorImwelhY9iWUnsvyM33KiMUbASTXOBM3cnDiwKMkuhf/V60FqVVOxcmo/a9rPIbM/3QKiwqoMxuOg2nWaFx2YSjO0WL6e5ejVm7kBXbu+ZnQyoZ3GWpnXRJfP5ZsQOIjjDGbgjifdOkUQVvut4hU1JX3YxbllXBSjSDtcqUHOGBofy8ginXEGqALwp//wZsCq1S6DCn8k9c4ARWt7J+eCctIQOVDdarmy1ovQuY41KRldyB/5Rf7i7r88aMv6enZO1WG6QWFRUFDFCeawUCxvbUAJNnouqPDb0dBIW99Ju7MefBHvCVHmZtlWiO0B9fqNuKPkNhialJNU60S0PDm7jbqldnhcGV14oKT6fySlmTit07GDrpiEBoq8dJ2xaYOVSm01k85qsE1fqQRo8Jg2O6HSmL9PNqTw08SLGes/hMTCC3qbMcV0+1a3V+P1PHVglKQHk
+ hMUeJXPS
+ BRnn0RSUrAn0X+sGwoLzfKP1At6/yW3OftXGUjQcYekjWeeKHpPbQ1NB6+HKg4iAycVladcAjymFMzrmDfYRz63Syw4gn/q80hIn2Bvb+JTRuF0GAjIVYotSVk8eumBViT2A6N4E5gvLkRGTbN++h1uNAE/oQu2YIHskff9cehgwPWVwc61jZGXvfDj8BMQjsaZocw1LN9X9kn3cojrmeuD+9J2OZiBY6p4NMbGtFTwEnWD+zX65RJ0XKpihhMpbyh5HUgzrFr7rJVYet2t07Px8RcLIABMvPB0fLhIeoW40sajDxYR417epROAnmKn0BCsfAhclpiwnmw/FtXoyfjfxEhOIXldwAABR7LSAz7RLvaErKEhaG3Bckm2WpEYGCh+R9kfUerI0yAargWm2nHJkR+9imb5eKdO/aPJDEf67Ee3LSsL3L/18NkIFmDNFAArx99z73m6HN9MdruXEd+P0aQIKCBot6AxFYMIJJOdoM4TNrIYASBSIEHP/GA20DB/RuMQcmDX6QmlgzbKBoEDtq+nMa2DSSUgtchGycVk6JqOPGwAIb4qrk8Mx2DclnB89q9Zb7kj0X78v2+FQgKhAvWJ8pFnGpaMc5edmVrTWJ9lGW+taLp92YU8rfm8lJovbmScepfMeoUNk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,474 +118,149 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Patrick Roy <patrick.roy@linux.dev>
+This code will be needed elsewhere in a following patch. Split out the
+trivial code move for easy review.
 
-Add AS_NO_DIRECT_MAP for mappings where direct map entries of folios are
-set to not present. Currently, mappings that match this description are
-secretmem mappings (memfd_secret()). Later, some guest_memfd
-configurations will also fall into this category.
+As a side effect, change the logging slightly: instead of directly
+reporting the level of the failure in panic(), show a generic panic
+message, will be preceded by a separate warn that reports the level of
+the failure. This is a simple way to have this helper suit the needs of
+its new user as well as the existing one.
 
-Reject this new type of mappings in all locations that currently reject
-secretmem mappings, on the assumption that if secretmem mappings are
-rejected somewhere, it is precisely because of an inability to deal with
-folios without direct map entries, and then make memfd_secret() use
-AS_NO_DIRECT_MAP on its address_space to drop its special
-vma_is_secretmem()/secretmem_mapping() checks.
+Other than logging, no functional change intended.
 
-Use a new flag instead of overloading AS_INACCESSIBLE (which is already
-set by guest_memfd) because not all guest_memfd mappings will end up
-being direct map removed (e.g. in pKVM setups, parts of guest_memfd that
-can be mapped to userspace should also be GUP-able, and generally not
-have restrictions on who can access it).
-
-Signed-off-by: Patrick Roy <patrick.roy@linux.dev>
-Signed-off-by: Nikita Kalyazin <nikita.kalyazin@linux.dev>
-[Moved zapping to page cache; removed review tags]
 Signed-off-by: Brendan Jackman <jackmanb@google.com>
 ---
- include/linux/pagemap.h    |  25 +++++++++++
- include/linux/secretmem.h  |  18 --------
- include/linux/set_memory.h |   2 +
- lib/buildid.c              |   8 +++-
- mm/filemap.c               | 105 ++++++++++++++++++++++++++++++++++++---------
- mm/gup.c                   |   9 ++--
- mm/mlock.c                 |   2 +-
- mm/secretmem.c             |  46 +++-----------------
- 8 files changed, 128 insertions(+), 87 deletions(-)
+ arch/x86/include/asm/pgalloc.h |  3 +++
+ arch/x86/mm/init_64.c          | 44 +++++++-----------------------------------
+ arch/x86/mm/pgtable.c          | 38 ++++++++++++++++++++++++++++++++++++
+ 3 files changed, 48 insertions(+), 37 deletions(-)
 
-diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-index 4e8b2b29f6d3e..011f6e34859cc 100644
---- a/include/linux/pagemap.h
-+++ b/include/linux/pagemap.h
-@@ -15,6 +15,7 @@
- #include <linux/bitops.h>
- #include <linux/hardirq.h> /* for in_interrupt() */
- #include <linux/hugetlb_inline.h>
-+#include <linux/set_memory.h>
+diff --git a/arch/x86/include/asm/pgalloc.h b/arch/x86/include/asm/pgalloc.h
+index c88691b15f3c6..2aba6cfabf495 100644
+--- a/arch/x86/include/asm/pgalloc.h
++++ b/arch/x86/include/asm/pgalloc.h
+@@ -2,6 +2,7 @@
+ #ifndef _ASM_X86_PGALLOC_H
+ #define _ASM_X86_PGALLOC_H
  
- struct folio_batch;
- 
-@@ -210,6 +211,7 @@ enum mapping_flags {
- 	AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM = 9,
- 	AS_KERNEL_FILE = 10,	/* mapping for a fake kernel file that shouldn't
- 				   account usage to user cgroups */
-+	AS_NO_DIRECT_MAP = 11,	/* Folios in the mapping are not in the direct map */
- 	/* Bits 16-25 are used for FOLIO_ORDER */
- 	AS_FOLIO_ORDER_BITS = 5,
- 	AS_FOLIO_ORDER_MIN = 16,
-@@ -345,6 +347,9 @@ static inline bool mapping_writeback_may_deadlock_on_reclaim(const struct addres
- 	return test_bit(AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM, &mapping->flags);
++#include <linux/printk.h>
+ #include <linux/threads.h>
+ #include <linux/mm.h>		/* for struct page */
+ #include <linux/pagemap.h>
+@@ -128,6 +129,8 @@ static inline void __pud_free_tlb(struct mmu_gather *tlb, pud_t *pud,
+ 	___pud_free_tlb(tlb, pud);
  }
  
-+static inline unsigned int
-+mapping_max_folio_order(const struct address_space *mapping);
++extern int preallocate_sub_pgd(struct mm_struct *mm, unsigned long addr);
 +
- static inline gfp_t mapping_gfp_mask(const struct address_space *mapping)
+ #if CONFIG_PGTABLE_LEVELS > 4
+ static inline void pgd_populate(struct mm_struct *mm, pgd_t *pgd, p4d_t *p4d)
  {
- 	return mapping->gfp_mask;
-@@ -366,6 +371,24 @@ static inline void mapping_set_gfp_mask(struct address_space *m, gfp_t mask)
- 	m->gfp_mask = mask;
- }
- 
-+static inline void mapping_set_no_direct_map(struct address_space *mapping)
-+{
-+	WARN_ON(!can_set_direct_map());
-+	/* folio_zap_direct_map() doesn't support large folios. */
-+	WARN_ON(mapping_max_folio_order(mapping));
-+	set_bit(AS_NO_DIRECT_MAP, &mapping->flags);
-+}
-+
-+static inline bool mapping_no_direct_map(const struct address_space *mapping)
-+{
-+	return test_bit(AS_NO_DIRECT_MAP, &mapping->flags);
-+}
-+
-+static inline bool vma_has_no_direct_map(const struct vm_area_struct *vma)
-+{
-+	return vma->vm_file && mapping_no_direct_map(vma->vm_file->f_mapping);
-+}
-+
- /*
-  * There are some parts of the kernel which assume that PMD entries
-  * are exactly HPAGE_PMD_ORDER.  Those should be fixed, but until then,
-@@ -454,6 +477,8 @@ static inline void mapping_set_folio_min_order(struct address_space *mapping,
-  */
- static inline void mapping_set_large_folios(struct address_space *mapping)
+diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
+index ab4c5a02326f7..ac6688c70872e 100644
+--- a/arch/x86/mm/init_64.c
++++ b/arch/x86/mm/init_64.c
+@@ -1293,46 +1293,16 @@ static struct kcore_list kcore_vsyscall;
+ static void __init preallocate_vmalloc_pages(void)
  {
-+	/* folio_zap_direct_map() doesn't support large folios. */
-+	WARN_ON(mapping_no_direct_map(mapping));
- 	mapping_set_folio_order_range(mapping, 0, MAX_PAGECACHE_ORDER);
- }
+ 	unsigned long addr;
+-	const char *lvl;
  
-diff --git a/include/linux/secretmem.h b/include/linux/secretmem.h
-index e918f96881f56..0ae1fb057b3d2 100644
---- a/include/linux/secretmem.h
-+++ b/include/linux/secretmem.h
-@@ -4,28 +4,10 @@
- 
- #ifdef CONFIG_SECRETMEM
- 
--extern const struct address_space_operations secretmem_aops;
+ 	for (addr = VMALLOC_START; addr <= VMEMORY_END; addr = ALIGN(addr + 1, PGDIR_SIZE)) {
+-		pgd_t *pgd = pgd_offset_k(addr);
+-		p4d_t *p4d;
+-		pud_t *pud;
 -
--static inline bool secretmem_mapping(struct address_space *mapping)
--{
--	return mapping->a_ops == &secretmem_aops;
--}
+-		lvl = "p4d";
+-		p4d = p4d_alloc(&init_mm, pgd, addr);
+-		if (!p4d)
+-			goto failed;
 -
--bool vma_is_secretmem(struct vm_area_struct *vma);
- bool secretmem_active(void);
- 
- #else
- 
--static inline bool vma_is_secretmem(struct vm_area_struct *vma)
--{
--	return false;
--}
+-		if (pgtable_l5_enabled())
+-			continue;
 -
--static inline bool secretmem_mapping(struct address_space *mapping)
--{
--	return false;
--}
--
- static inline bool secretmem_active(void)
- {
- 	return false;
-diff --git a/include/linux/set_memory.h b/include/linux/set_memory.h
-index 1bf2a15bca118..0eff85b6d3980 100644
---- a/include/linux/set_memory.h
-+++ b/include/linux/set_memory.h
-@@ -53,6 +53,8 @@ static inline bool kernel_page_present(struct page *page)
- {
- 	return true;
- }
-+
-+#define can_set_direct_map() false
- #else /* CONFIG_ARCH_HAS_SET_DIRECT_MAP */
- /*
-  * Some architectures, e.g. ARM64 can disable direct map modifications at
-diff --git a/lib/buildid.c b/lib/buildid.c
-index c4b7376406215..ba79bf28f7e69 100644
---- a/lib/buildid.c
-+++ b/lib/buildid.c
-@@ -47,6 +47,10 @@ static int freader_get_folio(struct freader *r, loff_t file_off)
- 
- 	freader_put_folio(r);
- 
-+	/* reject folios without direct map entries (e.g. from memfd_secret() or guest_memfd()) */
-+	if (mapping_no_direct_map(r->file->f_mapping))
-+		return -EFAULT;
-+
- 	/* only use page cache lookup - fail if not already cached */
- 	r->folio = filemap_get_folio(r->file->f_mapping, file_off >> PAGE_SHIFT);
- 
-@@ -87,8 +91,8 @@ const void *freader_fetch(struct freader *r, loff_t file_off, size_t sz)
- 		return r->data + file_off;
+-		/*
+-		 * The goal here is to allocate all possibly required
+-		 * hardware page tables pointed to by the top hardware
+-		 * level.
+-		 *
+-		 * On 4-level systems, the P4D layer is folded away and
+-		 * the above code does no preallocation.  Below, go down
+-		 * to the pud _software_ level to ensure the second
+-		 * hardware level is allocated on 4-level systems too.
+-		 */
+-		lvl = "pud";
+-		pud = pud_alloc(&init_mm, p4d, addr);
+-		if (!pud)
+-			goto failed;
++		if (preallocate_sub_pgd(&init_mm, addr)) {
++			/*
++			 * The pages have to be there now or they will be
++			 * missing in process page-tables later.
++			 */
++			panic("Failed to pre-allocate pagetables for vmalloc area\n");
++		}
  	}
- 
--	/* reject secretmem folios created with memfd_secret() */
--	if (secretmem_mapping(r->file->f_mapping)) {
-+	/* reject folios without direct map entries (e.g. from memfd_secret() or guest_memfd()) */
-+	if (mapping_no_direct_map(r->file->f_mapping)) {
- 		r->err = -EFAULT;
- 		return NULL;
- 	}
-diff --git a/mm/filemap.c b/mm/filemap.c
-index 08cb1efe665ac..341c7c5b28bc7 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -14,6 +14,7 @@
- #include <linux/compiler.h>
- #include <linux/dax.h>
- #include <linux/fs.h>
-+#include <linux/set_memory.h>
- #include <linux/sched/signal.h>
- #include <linux/uaccess.h>
- #include <linux/capability.h>
-@@ -239,6 +240,54 @@ static void filemap_free_folio(const struct address_space *mapping,
- 	folio_put_refs(folio, folio_nr_pages(folio));
+-
+-	return;
+-
+-failed:
+-
+-	/*
+-	 * The pages have to be there now or they will be missing in
+-	 * process page-tables later.
+-	 */
+-	panic("Failed to pre-allocate %s pages for vmalloc area\n", lvl);
  }
  
-+#ifdef CONFIG_ARCH_HAS_SET_DIRECT_MAP
-+static inline int prep_add_unmapped_folio(struct address_space *mapping,
-+					  struct folio *folio)
+ void __init arch_mm_preinit(void)
+diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
+index f32facdb30354..fdd3709509946 100644
+--- a/arch/x86/mm/pgtable.c
++++ b/arch/x86/mm/pgtable.c
+@@ -833,3 +833,41 @@ void arch_check_zapped_pud(struct vm_area_struct *vma, pud_t pud)
+ 	/* See note in arch_check_zapped_pte() */
+ 	VM_WARN_ON_ONCE(!(vma->vm_flags & VM_SHADOW_STACK) && pud_shstk(pud));
+ }
++
++#if CONFIG_PGTABLE_LEVELS > 3
++/*
++ * Allocate all possibly required hardware page tables pointed to ths
++ * top hardware level. In other words, allocate a p4d on 5-level or a
++ * pud on 4-level.
++ */
++int preallocate_sub_pgd(struct mm_struct *mm, unsigned long addr)
 +{
-+	if (!mapping_no_direct_map(mapping))
++	const char *lvl;
++	p4d_t *p4d;
++	pud_t *pud;
++
++	lvl = "p4d";
++	p4d = p4d_alloc(mm, pgd_offset_pgd(mm->pgd, addr), addr);
++	if (!p4d)
++		goto failed;
++
++	if (pgtable_l5_enabled())
 +		return 0;
 +
-+	return folio_zap_direct_map(folio);
-+}
-+
-+static inline void prep_remove_unmapped_folio(struct address_space *mapping,
-+					      struct folio *folio)
-+{
-+	if (!mapping_no_direct_map(mapping))
-+		return;
-+
-+	folio_restore_direct_map(folio);
-+}
-+
-+static inline void prep_remove_unmapped_batch(struct address_space *mapping,
-+					      struct folio_batch *fbatch)
-+{
-+	if (!mapping_no_direct_map(mapping))
-+		return;
-+
-+	for (int i = 0; i < folio_batch_count(fbatch); i++)
-+		folio_restore_direct_map(fbatch->folios[i]);
-+}
-+#else
-+static inline int prep_add_unmapped_folio(struct address_space *mapping, struct folio *folio)
-+{
-+	VM_WARN_ON(mapping_no_direct_map(mapping));
++	/*
++	 * On 4-level systems, the P4D layer is folded away and
++	 * the above code does no preallocation.  Below, go down
++	 * to the pud _software_ level to ensure the second
++	 * hardware level is allocated on 4-level systems too.
++	 */
++	lvl = "pud";
++	pud = pud_alloc(mm, p4d, addr);
++	if (!pud)
++		goto failed;
 +	return 0;
-+}
 +
-+static inline void prep_remove_unmapped_folio(struct address_space *mapping,
-+					      struct folio *folio)
-+{
-+	VM_WARN_ON(mapping_no_direct_map(mapping));
-+}
-+
-+static inline void prep_remove_unmapped_batch(struct address_space *mapping,
-+					      struct folio_batch *fbatch)
-+{
-+	VM_WARN_ON(mapping_no_direct_map(mapping));
++failed:
++	pr_warn_ratelimited("Failed to preallocate %s\n", lvl);
++	return -ENOMEM;
 +}
 +#endif
-+
- /**
-  * filemap_remove_folio - Remove folio from page cache.
-  * @folio: The folio.
-@@ -260,6 +309,8 @@ void filemap_remove_folio(struct folio *folio)
- 		inode_lru_list_add(mapping->host);
- 	spin_unlock(&mapping->host->i_lock);
- 
-+	prep_remove_unmapped_folio(mapping, folio);
-+
- 	filemap_free_folio(mapping, folio);
- }
- 
-@@ -339,6 +390,8 @@ void delete_from_page_cache_batch(struct address_space *mapping,
- 		inode_lru_list_add(mapping->host);
- 	spin_unlock(&mapping->host->i_lock);
- 
-+	prep_remove_unmapped_batch(mapping, fbatch);
-+
- 	for (i = 0; i < folio_batch_count(fbatch); i++)
- 		filemap_free_folio(mapping, fbatch->folios[i]);
- }
-@@ -963,28 +1016,38 @@ int filemap_add_folio(struct address_space *mapping, struct folio *folio,
- 		return ret;
- 
- 	__folio_set_locked(folio);
-+
-+	ret = prep_add_unmapped_folio(mapping, folio);
-+	if (unlikely(ret))
-+		goto err;
-+
- 	ret = __filemap_add_folio(mapping, folio, index, gfp, &shadow);
--	if (unlikely(ret)) {
--		mem_cgroup_uncharge(folio);
--		__folio_clear_locked(folio);
--	} else {
--		/*
--		 * The folio might have been evicted from cache only
--		 * recently, in which case it should be activated like
--		 * any other repeatedly accessed folio.
--		 * The exception is folios getting rewritten; evicting other
--		 * data from the working set, only to cache data that will
--		 * get overwritten with something else, is a waste of memory.
--		 */
--		WARN_ON_ONCE(folio_test_active(folio));
--		if (!(gfp & __GFP_WRITE) && shadow)
--			workingset_refault(folio, shadow);
--		folio_add_lru(folio);
--		if (kernel_file)
--			mod_node_page_state(folio_pgdat(folio),
--					    NR_KERNEL_FILE_PAGES,
--					    folio_nr_pages(folio));
--	}
-+	if (unlikely(ret))
-+		goto err_restore;
-+
-+	/*
-+	 * The folio might have been evicted from cache only
-+	 * recently, in which case it should be activated like
-+	 * any other repeatedly accessed folio.
-+	 * The exception is folios getting rewritten; evicting other
-+	 * data from the working set, only to cache data that will
-+	 * get overwritten with something else, is a waste of memory.
-+	 */
-+	WARN_ON_ONCE(folio_test_active(folio));
-+	if (!(gfp & __GFP_WRITE) && shadow)
-+		workingset_refault(folio, shadow);
-+	folio_add_lru(folio);
-+	if (kernel_file)
-+		mod_node_page_state(folio_pgdat(folio),
-+				    NR_KERNEL_FILE_PAGES,
-+				    folio_nr_pages(folio));
-+	return ret;
-+
-+err_restore:
-+	prep_remove_unmapped_folio(mapping, folio);
-+err:
-+	mem_cgroup_uncharge(folio);
-+	__folio_clear_locked(folio);
- 	return ret;
- }
- EXPORT_SYMBOL_GPL(filemap_add_folio);
-diff --git a/mm/gup.c b/mm/gup.c
-index 1d32e9a3dc79c..5297f0f84101d 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -11,7 +11,6 @@
- #include <linux/rmap.h>
- #include <linux/swap.h>
- #include <linux/swapops.h>
--#include <linux/secretmem.h>
- 
- #include <linux/sched/signal.h>
- #include <linux/rwsem.h>
-@@ -1216,7 +1215,7 @@ static int check_vma_flags(struct vm_area_struct *vma, unsigned long gup_flags)
- 	if ((gup_flags & FOLL_SPLIT_PMD) && is_vm_hugetlb_page(vma))
- 		return -EOPNOTSUPP;
- 
--	if (vma_is_secretmem(vma))
-+	if (vma_has_no_direct_map(vma))
- 		return -EFAULT;
- 
- 	if (write) {
-@@ -2731,7 +2730,7 @@ EXPORT_SYMBOL(get_user_pages_unlocked);
-  * This call assumes the caller has pinned the folio, that the lowest page table
-  * level still points to this folio, and that interrupts have been disabled.
-  *
-- * GUP-fast must reject all secretmem folios.
-+ * GUP-fast must reject all folios without direct map entries (such as secretmem).
-  *
-  * Writing to pinned file-backed dirty tracked folios is inherently problematic
-  * (see comment describing the writable_file_mapping_allowed() function). We
-@@ -2769,7 +2768,7 @@ static bool gup_fast_folio_allowed(struct folio *folio, unsigned int flags)
- 	if (WARN_ON_ONCE(folio_test_slab(folio)))
- 		return false;
- 
--	/* hugetlb neither requires dirty-tracking nor can be secretmem. */
-+	/* hugetlb neither requires dirty-tracking nor can be without direct map. */
- 	if (folio_test_hugetlb(folio))
- 		return true;
- 
-@@ -2812,7 +2811,7 @@ static bool gup_fast_folio_allowed(struct folio *folio, unsigned int flags)
- 	 * At this point, we know the mapping is non-null and points to an
- 	 * address_space object.
- 	 */
--	if (check_secretmem && secretmem_mapping(mapping))
-+	if (mapping_no_direct_map(mapping))
- 		return false;
- 	/* The only remaining allowed file system is shmem. */
- 	return !reject_file_backed || shmem_mapping(mapping);
-diff --git a/mm/mlock.c b/mm/mlock.c
-index efa6716e4dfbd..045b6779440b1 100644
---- a/mm/mlock.c
-+++ b/mm/mlock.c
-@@ -474,7 +474,7 @@ static int mlock_fixup(struct vma_iterator *vmi, struct vm_area_struct *vma,
- 	int ret = 0;
- 
- 	if (vma_flags_same_pair(&old_vma_flags, new_vma_flags) ||
--	    vma_is_secretmem(vma) || !vma_supports_mlock(vma)) {
-+	    vma_has_no_direct_map(vma) || !vma_supports_mlock(vma)) {
- 		/*
- 		 * Don't set VMA_LOCKED_BIT or VMA_LOCKONFAULT_BIT and don't
- 		 * count.  For secretmem, don't allow the memory to be unlocked.
-diff --git a/mm/secretmem.c b/mm/secretmem.c
-index 4a4934769f8ba..c043c53687d95 100644
---- a/mm/secretmem.c
-+++ b/mm/secretmem.c
-@@ -52,49 +52,20 @@ static vm_fault_t secretmem_fault(struct vm_fault *vmf)
- 	struct address_space *mapping = vmf->vma->vm_file->f_mapping;
- 	struct inode *inode = file_inode(vmf->vma->vm_file);
- 	pgoff_t offset = vmf->pgoff;
--	gfp_t gfp = vmf->gfp_mask;
- 	struct folio *folio;
- 	vm_fault_t ret;
--	int err;
- 
- 	if (((loff_t)vmf->pgoff << PAGE_SHIFT) >= i_size_read(inode))
- 		return vmf_error(-EINVAL);
- 
- 	filemap_invalidate_lock_shared(mapping);
- 
--retry:
--	folio = filemap_lock_folio(mapping, offset);
-+	folio = filemap_grab_folio(mapping, offset);
- 	if (IS_ERR(folio)) {
--		folio = folio_alloc(gfp | __GFP_ZERO, 0);
--		if (!folio) {
--			ret = VM_FAULT_OOM;
--			goto out;
--		}
--
--		err = folio_zap_direct_map(folio);
--		if (err) {
--			folio_put(folio);
--			ret = vmf_error(err);
--			goto out;
--		}
--
--		__folio_mark_uptodate(folio);
--		err = filemap_add_folio(mapping, folio, offset, gfp);
--		if (unlikely(err)) {
--			/*
--			 * If a split of large page was required, it
--			 * already happened when we marked the page invalid
--			 * which guarantees that this call won't fail
--			 */
--			folio_restore_direct_map(folio);
--			folio_put(folio);
--			if (err == -EEXIST)
--				goto retry;
--
--			ret = vmf_error(err);
--			goto out;
--		}
-+		ret = vmf_error(PTR_ERR(folio));
-+		goto out;
- 	}
-+	folio_mark_uptodate(folio);
- 
- 	vmf->page = folio_file_page(folio, vmf->pgoff);
- 	ret = VM_FAULT_LOCKED;
-@@ -129,11 +100,6 @@ static int secretmem_mmap_prepare(struct vm_area_desc *desc)
- 	return 0;
- }
- 
--bool vma_is_secretmem(struct vm_area_struct *vma)
--{
--	return vma->vm_ops == &secretmem_vm_ops;
--}
--
- static const struct file_operations secretmem_fops = {
- 	.release	= secretmem_release,
- 	.mmap_prepare	= secretmem_mmap_prepare,
-@@ -147,11 +113,10 @@ static int secretmem_migrate_folio(struct address_space *mapping,
- 
- static void secretmem_free_folio(struct folio *folio)
- {
--	set_direct_map_default_noflush(folio_page(folio, 0));
- 	folio_zero_segment(folio, 0, folio_size(folio));
- }
- 
--const struct address_space_operations secretmem_aops = {
-+static const struct address_space_operations secretmem_aops = {
- 	.dirty_folio	= noop_dirty_folio,
- 	.free_folio	= secretmem_free_folio,
- 	.migrate_folio	= secretmem_migrate_folio,
-@@ -200,6 +165,7 @@ static struct file *secretmem_file_create(unsigned long flags)
- 
- 	mapping_set_gfp_mask(inode->i_mapping, GFP_USER);
- 	mapping_set_unevictable(inode->i_mapping);
-+	mapping_set_no_direct_map(inode->i_mapping);
- 
- 	inode->i_op = &secretmem_iops;
- 	inode->i_mapping->a_ops = &secretmem_aops;
 
 -- 
 2.54.0
