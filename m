@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D071CC53209
-	for <linux-mm@archiver.kernel.org>; Sun, 26 Jul 2026 22:25:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46615C53209
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Jul 2026 22:25:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 677906B00B2; Sun, 26 Jul 2026 18:24:03 -0400 (EDT)
+	id 2CD416B00B3; Sun, 26 Jul 2026 18:24:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 64F096B00B3; Sun, 26 Jul 2026 18:24:03 -0400 (EDT)
+	id 2303C6B00B4; Sun, 26 Jul 2026 18:24:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 479F86B00B4; Sun, 26 Jul 2026 18:24:03 -0400 (EDT)
+	id 16CF46B00B5; Sun, 26 Jul 2026 18:24:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0DFC76B00B2
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D632C6B00B3
 	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 18:24:03 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 624BE1205D0
-	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 22:24:02 +0000 (UTC)
-X-FDA: 85032356724.23.60C8EC3
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com [209.85.221.69])
-	by imf10.hostedemail.com (Postfix) with ESMTP id B4C48C0009
-	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 22:24:00 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=NweAl4MS;
-	spf=pass (imf10.hostedemail.com: domain of 3_4hmaggKCAYpgiqsgthmuumrk.iusrot03-ssq1giq.uxm@flex--jackmanb.bounces.google.com designates 209.85.221.69 as permitted sender) smtp.mailfrom=3_4hmaggKCAYpgiqsgthmuumrk.iusrot03-ssq1giq.uxm@flex--jackmanb.bounces.google.com;
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3DB45C0573
+	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 22:24:03 +0000 (UTC)
+X-FDA: 85032356766.04.61266E7
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com [209.85.128.70])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 99666A000C
+	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 22:24:01 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=YYDcsEnK;
+	spf=pass (imf25.hostedemail.com: domain of 3AIlmaggKCAcqhjrthuinvvnsl.jvtspu14-ttr2hjr.vyn@flex--jackmanb.bounces.google.com designates 209.85.128.70 as permitted sender) smtp.mailfrom=3AIlmaggKCAcqhjrthuinvvnsl.jvtspu14-ttr2hjr.vyn@flex--jackmanb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785104640;
+	s=arc-20220608; t=1785104641;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sE7JJfWSnmXwNSqLQXzEAPpj56tITjEMwhehkr9vEgs=;
-	b=AR7MnRD/+uW42B7qwRSxsiYRfDKvqLURkKwmpslUVoIcPv3QgdpncNFv+nteo2WEh1FZcZ
-	h4rfdwyY61OSFaI3Xe0WHzeYU845xerK5vvskQJqyTrQYGgZWeHQUG6bhq+pbJYhR+qMaV
-	L2pGY2amcbhUXG8paYl7Xl6QSuAxbu8=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=NweAl4MS;
-	spf=pass (imf10.hostedemail.com: domain of 3_4hmaggKCAYpgiqsgthmuumrk.iusrot03-ssq1giq.uxm@flex--jackmanb.bounces.google.com designates 209.85.221.69 as permitted sender) smtp.mailfrom=3_4hmaggKCAYpgiqsgthmuumrk.iusrot03-ssq1giq.uxm@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	bh=9AIcMu2nLYJvhdOcrbtzHu48B893eoAGC4k3fk2E0qU=;
+	b=NNs5FhPEhddGwBIk+mYpa6eSQtsh3EyLsrjmu+eqkXL3WMfl75MoQapFTvgmmJGSrl0Cf3
+	rP4jNkZkjXGw7X8b5MyOhyzAPI47dk4PXgal6qY73Mg3wTxKy8A76NCHln4aJTtlkuc1di
+	94MNMbhD7jCPhylCySNCv2V+kjmVKJs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785104640;
-	b=wwuWYRWdYCM0awOewjUP12bQoSWrBuacHxw7HCIRoeCstMEe5Z0YBxNyCGW3D5zmqjLHkH
-	exPELAzTjgOfomY704TA7uE5uinfqm5Qgb2JVL/OFNCUNZcsuCcvYedRgmgtVFjfyf+cXh
-	TfrvpCYbMzcPxkAcoU4fah5drqsReLg=
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-47f6e8b5996so1987811f8f.2
-        for <linux-mm@kvack.org>; Sun, 26 Jul 2026 15:24:00 -0700 (PDT)
+	t=1785104641;
+	b=yl7ZdSOl2cQ6TObERVc79eTbXgIW5GTGWQRlJNx+8ro9Cf3KGTzg5IkUw3mkYmPH4AS/AF
+	D/LXAlSl+71YMuFMqslffzOW08HRNoJL6mVKCjoAEhxWcYeSdUWumQw3pQI+uBx4sqfuOn
+	rq3AorPvs2Z3O13tz89yedEXpBU2aQU=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=YYDcsEnK;
+	spf=pass (imf25.hostedemail.com: domain of 3AIlmaggKCAcqhjrthuinvvnsl.jvtspu14-ttr2hjr.vyn@flex--jackmanb.bounces.google.com designates 209.85.128.70 as permitted sender) smtp.mailfrom=3AIlmaggKCAcqhjrthuinvvnsl.jvtspu14-ttr2hjr.vyn@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-49544a639e9so10570915e9.1
+        for <linux-mm@kvack.org>; Sun, 26 Jul 2026 15:24:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785104639; x=1785709439; darn=kvack.org;
+        d=google.com; s=20251104; t=1785104640; x=1785709440; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=sE7JJfWSnmXwNSqLQXzEAPpj56tITjEMwhehkr9vEgs=;
-        b=NweAl4MS1/EO3TkcvaL7oRofpqSzckouejkEKtcA3dMymnx7J3WKtWVlfCiPIy6zLa
-         2FXrE7oSup8cw0d97mRcYqSrmDv3U2hEYIk2bKYsEmIlgY8Y1QLFcLHcBvb9X+Il4ZzM
-         e5VYILTZzI7JdT/Suvv8JRUJzUhxV9YyzAmG3UO6lWRwKXJlXqNlBcZJ8xRAS5xzsBum
-         U+jpXN+6vKmR4TVDp4mFMQzbcxAY6bgiu2aQv9T1zAzZe6U9/KqRebn/QIN2XZFlL9Gw
-         YsQnaEsadIDILfE7LPBNoNvDzB8b8SVi/NpkQzGfHVbSfT4A8b0uohZKo90kbsRsyHJY
-         mW3w==
+        bh=9AIcMu2nLYJvhdOcrbtzHu48B893eoAGC4k3fk2E0qU=;
+        b=YYDcsEnKc50VNlPgFDxCzx7SODGRl2VQrX7iX+Qn8knHkmRQ9vt/GQ6b50C5uwKsqT
+         r98FXZtnvIM9lXF5OeG/asb6JZwuNOCq4rXjSNuD7UK9NDYjZBT002OVIISWn00Aiake
+         AVJgyMz40Wgpp505TB189fvy1O3pB6OXxaJk0Bu8jmO0uspfUG15sokLCAvdDFzpNPiR
+         3bM+t8CWDpb39Yq8OSGz92medj6Uq8LtaaJbKE+OnS4UVt7cSRzeq7IzvEoG0/UGGrv3
+         zZJFg45SgtviHLSSJm5toEeo3eVe+tlpt71wn+pbol4azYeRsqSx8DhUR3QSYUIjKRJF
+         okdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785104639; x=1785709439;
+        d=1e100.net; s=20251104; t=1785104640; x=1785709440;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=sE7JJfWSnmXwNSqLQXzEAPpj56tITjEMwhehkr9vEgs=;
-        b=k4WVNbZs6xPeNyFHorN/Ad84vbvSGEAunESDD0HgDQsvJsYZiTCoNUL5nMyJ/ZKd2e
-         KRP6RY99fw/kuahJutL0utJqbAl5s8oQ/GzNdxSPcOVj/gY/C3zZ1AvhK+2CnUgYwEHh
-         zqJYtO+oZM+GH3/oYGFoVEnYlTWnMx5JvI+OhtQHbiW98Z7a9AyjJWvOdYpDVUGX++Ix
-         EfqOumhAsmtxMHH1wTG7f80HTv43t9mDEwtpnpLS2RSKGUZ6t+8oik9NKsnHSxkFa0OB
-         a2MDzpqdpI5boOIm4beuIjCfqix7H97nQr+Wgiim/ozXOQMRfK97EBo4C+cs1jplj8FO
-         5nzw==
-X-Gm-Message-State: AOJu0YxCYvuq0xPrM/45nTsBTVuJM94p3wN0u00vFmvSAzvUVzBlN8I0
-	g9O6GsrC2tJzXQgx4Mw4UDZelNjWYHM2lID0O/y35GYg5+ZHxRReBnIOjx6jxmnoMQlyF+YGfho
-	rLNUHw+C0FoZvFg==
-X-Received: from wmpg38.prod.google.com ([2002:a05:600c:4ca6:b0:495:49a0:9476])
+        bh=9AIcMu2nLYJvhdOcrbtzHu48B893eoAGC4k3fk2E0qU=;
+        b=VqUuNUlsOYu2jO/XNyo+IsIKgZCUmW7IS9jKL8nVKpzBeCZ4f66h1vh0BBZ6bURgRE
+         Vfao2Hy3vzqgGNgFIQlS81qBzwYNNB1hHBwPGwb0JXZXhhOpXvE1qJQMm0v3vHYJ/Sl7
+         mInOCV+0nkCARdQUrVJvH5fdv+3N5kxKny+23qANM4ZpDe/a1lquHN6LE0vayU7B7jQX
+         gpDW7X6QxIKJ7mfQBaN/+SgeSgTV2slN1c9/AP9GChzH7Us9zdunHRaiDPW9RCB5Jtqh
+         eZfNSjTntHL5D/AspXHhnqulKHyUXc7IwrI2tGwjbRjj2/jcUfR27Ocx9gsf1uOoS9Ax
+         VKUA==
+X-Gm-Message-State: AOJu0YwAeMc2hQTViHTOIfh8WsIym7hXE9b7cCFPhQ7GezXlh6nXOJm4
+	lcUMe0/lIGr+N7tiqa72CNAp/FyFlg27tR9VjKTTeVubmOdEDg42mLgAwo049O8rGQdnIAOokpi
+	SFlCB/Eg5jeqaYg==
+X-Received: from wmbjj2.prod.google.com ([2002:a05:600c:6a02:b0:495:5422:15e3])
  (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1553:b0:493:e97c:216e with SMTP id 5b1f17b1804b1-496b5731987mr83419515e9.39.1785104639198;
- Sun, 26 Jul 2026 15:23:59 -0700 (PDT)
-Date: Sun, 26 Jul 2026 22:22:57 +0000
+ 2002:a05:600c:19c8:b0:495:5205:86c with SMTP id 5b1f17b1804b1-496b5747d8dmr86884375e9.22.1785104640206;
+ Sun, 26 Jul 2026 15:24:00 -0700 (PDT)
+Date: Sun, 26 Jul 2026 22:22:58 +0000
 In-Reply-To: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
 Mime-Version: 1.0
 References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
 X-Mailer: b4 0.16-dev
-Message-ID: <20260726-page_alloc-unmapped-v3-24-6f5729aa9832@google.com>
-Subject: [PATCH v3 24/26] mm/page_alloc: always direct compact for unmapped allocs
+Message-ID: <20260726-page_alloc-unmapped-v3-25-6f5729aa9832@google.com>
+Subject: [PATCH v3 25/26] mm: plumb alloc flags into some alloc funcs
 From: Brendan Jackman <jackmanb@google.com>
 To: Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
 	Peter Zijlstra <peterz@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
@@ -103,14 +103,14 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org,
 	Patrick Bellasi <derkling@google.com>, Reiji Watanabe <reijiw@google.com>, 
 	Sean Christopherson <seanjc@google.com>, Brendan Jackman <jackmanb@google.com>
 Content-Type: text/plain; charset="utf-8"
+X-Rspamd-Queue-Id: 99666A000C
+X-Stat-Signature: he1r1zy3fmwradg86ckj363ku7wnkgny
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: B4C48C0009
-X-Stat-Signature: yx13rzysnmdgn7gi1rmuxtwcp84jfw96
-X-HE-Tag: 1785104640-470205
-X-HE-Meta: U2FsdGVkX19IcXi2k4v0icNGBTjIX1zcu443KBkYBHeB3nbkYVtJNkq1jNSFG20TXBOYCCZ2TlszuNnRk9ZrQfZDzlkXrVJSfqc4vdJFuxP2DszicRhbxNWQMb1cpIe7SMkoUgjRc8gLOXlSnLcH0tz9+s8r/R3wNV+Jspyf4ppW8Nl2IlJ3nbofCzv0/Ql1C9yO4q2KrJyifK0iZcyRyidggWsSUKtT1dL/mBdOdxp7piENFih5h+LH39zIC8vPFw4qi+ngmkbczxmB+krXcaHlujt25NwQe4eMpTIhmdxK/v67Q1z+8E8AbrZzRWnBY8R0XFy7SBkubduhMqR4zwfm4vNZ3TE8TfMA9wcjpyUUf9cvBe7L0+I+bssGhGrF57i/9S1JrLYDMZP/DlyDr7L/+n5pL1jj2Z33lbVLQ4TrHWJ5L8OmW+ck/TKGh00Dzk3Jq/amhGsEg2mHNnyLsei2w8A2XwON0GwXCAR/LtzSOiHLt27wYkGa/MmfHeVp4yu3q+Kd8t65tiuK7HfAnKU/aA1nj2LgsxruOf6z4Miz6eRU0KM4CUw1J8ADSdHSWysZA/a5amDJDVbmSnR15GLMzIcz3X4RcNNEtFRegCK5veE9lLKIoGB+pSMQdRD/A2lB1+uutpwpT6C5Bf77fdI+JK89gqpouOHJ9WPY1AJGJKYazb3HSacclynPxnr22hdYa2O92Y/k5RSCWVyXs97or5WvpvmhCnKRYQ3rzn4vfVeTP/Fs4rmNym0p8UK5OfqNHt0Hj9qyq6+AP9YdMFKtABuAvzbwy5Dwr+/bk835/KACgpkptkSPqsvZrEOSbrqWZwG1xPMKNoPgu3pFJQUp086TswB8OPqnFBrvjMJ+u6RzU25tqv51sadOjDdSDRgUFPWZSGJnd9s/lPdGIsztVGnIvjRATjpVDicWD7H1/91pkeIMgr9IVySKYFWlaXgONVGZ0r2KRsx4ksY
- S7h0mfRI
- yXNUcweDtXeH9wKGj7usHhqPi1FN2PHFprVYAR+XMmBBLxjwygT/Fq1wmXOnS58rwdE4rSteD8wUbICnhjr6Ygxvu37ZEIK5gFbdEv/4Hm++RFP5slbfgVubBwOggtRGeSHAIKnUEBma+l3LMplGZIiYn2YhtqF+yqwF8GIsowsDFKtYc5onwXCCVaHNoVv0pnRjKl5IIfTpBT99LzuPntlbWcs9sj/anhHiPs38cC1dljHQbZoC9eGv9NbGQ0cnkGSrcYUyt5jQeRPGyBvEoTjQctKTSCG+g4WSKNRHat3b+anK7tWx99QdhMPdrj7BQBVHVA6fvoZdO6lRLGESI7t6zigs6mhN6lbXexjlgiJULA/gE2DFPI4wuzhWD0+zZX7Sjif0jPI85Ipk8lnplH8ZEdVgDZh8f9bY05h6BfqCDJLDBUtS05tVgMPIQglQcO8JReSa3yp7xA8d3WRgmAu/XI58YK+M6bpnk0XT5IkO06c/Xsbj77sLcZk4VapPxOmfIJpsaWMq6ACpwnBEFtbVtRujWC+JJK/MfCAhS9bcVtLyMCMRRqnwe3Dk5Uwda1k+a0OCoVs4VHOmFvi2chaBG++gQDc4aPEcBBEj1HW/JxvMViwKCXUkMmZ27KUh2kYye/DpJkz3kfr0=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1785104641-695793
+X-HE-Meta: U2FsdGVkX1+0H7XWcpzv9ziOrTQR2MEVJCXZ97kwNHtuVmxrsmZylZIA5syjYWUHvyMpkd8yeIOIt6r+gVc5txik38fIv/dRTIaUXV2a/0sh9mPhzekfqv38pqeLRmeM8+4hmPAAKskz22id9Tq44/ANSX3qpnBtox12ncojBCzOfTrc8k0jdUgIGjjf5dwK6KEdQna0u6t0cwakSHZQimBIjc4onilzrIWZ/neRo0KDfyV0xiK1AusOBlXeUxKWVsjCJMqkVck8jLVF6X3lI7vm4dLE4cdk5OdUtb3fNS+w86MnnaqHjsFu4l+YDZjv18IWY0Da4cSp3bMeovNzakWy4yPPZSezA3AIIxLCTaoaH2mBdXrssubM7ZFiNtaww22HQXOcz6SrY6cwx3qgwTJxM+meNMGJEJ+eZ4cgD0lCAxsPRwv5a9xKtXC4Z1L5t7HQ0xN7kh/jPRK1rVoVxJTq5vvZXCPQoNceiSeynlAexD3n+hw5xZY79SjVoeaYCHCz+Q5R1EciLQUhG1iqp7rfMuRhdapIIWJ6rRAHTtBVrlvCfpYMJkzK/OR/itc1QvN6VDoVxC/lv/vg48McCliLoyDUB9yuFULJpmaXpIfqxTrI0VYU2sEPnwlzYXd8ZUP8pXniBKxpLFnm39Gr2HlBxcv9RnfVv65Y8Zlxqr6z1ET0QUXthOTSqhWLWLaqzGR9klTmLIDbyFCqj3kCe2GY8Z+pZKTpruH2eQmmPAySJ6CTBHOc38Dl6LUkjQGnr3yTjv+4JCNN2DNUQZ3eGG2m5r2tZVw2aiWQQpT+aotnsB9YaUgc2LGgq2g/EjHrXielpR6piTbxxasF8e34Qk7ITCsMzeAOUMA5OIPzR8PVzAs2EmLPIyNjYyfKsNXDYU+UR+dkIMq/Q7xwoAt4IvpWt3WsmX2GDgeYNlriUnQyNbKYfEOflwYzI5hF9j/PFaaKmR2stuOZ3Bgw7t9
+ pyqcBC3l
+ +QsO8yYGLe7Yycw4Log5pHwCto31OW8KnofoJx2BcbiQA36M5qVhhRLseUXm4VYyOtt3lCstGtKhfcsagUNwRBJF0ICJW5pgfVVE7zePYjuxjvBRbxmwTWv4RjyHTdHC8DY1sRgQNuT10lQrsosV5Ehi7b07u9+Je1zLPUcXSla0hguWwHqfE4p2HqXaKTlGEKdnjRxdP2Jh4lb90eFGpz2gNjAh5qUiWjAIVLdwXzroxzFsO80LfPnihQ6quyO1y2dgJgLwgGNMtzFfbAbxVO3u8HaiZ3ddli8ugoklsF0q1I2pLtUkkem8Iy9vWU1hCZTblAAtro18+TYhQ77WX/nk9r98NI5pNpSf55/7t59v1CFAx154JRpWmMMXE4idgL+ztCmMJ6SrpKUehTaFU6hWct6cmQ/2HN5ATFT0K/KCOHe0ISe/XX5s38rLFnfJ9JPpYJgiRhcraZ65gv3BAT1P3ZQ2Pl1ckSzoxfDPROW8+9DcNzVf2dmFztimv1qaGTeDs26RBzZ/Y56JpL02rYUfYIqolyrXlOFIZAbli4qDhY7ZyDTjMBciUtpuynBWn0t6CH3CdrGjdn65BRV4p201bPQXfPqDDhshv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,115 +118,247 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is the minimal solution for ensuring that compaction can service
-unmapped allocations. Without this, it's possible for compaction to just
-check watermarks and see plenty of free pages, without being aware of
-the direct map state, and thereby cause an ALLOC_UNMAPPED allocation to
-fail unnecessarily.
+A subsequent patch will want to set ALLOC_UNMAPPED in the allocator APIs
+used by filemap.c. To keep that patch from getting overwhelming,
+split out the arg plumbing into a separate one.
 
-Instead, with this change, promote compact_order to pageblock order for
-unmapped allocations, much like defrag_mode. Then, check specifically in
-compaction for the presence of wholly mapped blocks that can be unmapped
-once direct compact is complete.
-
-This all takes advantage of a major simplification: since unmapped
-blocks are currently always unmovable, this can be asymmetric. There is
-never a need to promote a !ALLOC_UNMAPPED allocation to compacting at
-pageblock_order, because compaction would be trying to generate a
-currently-unmapped block to map; that will always fail because it would
-require migrating unmapped pages, which is not supported at the moment.
+No functional change intended.
 
 Signed-off-by: Brendan Jackman <jackmanb@google.com>
 ---
- mm/compaction.c | 22 ++++++++++++++++++----
- mm/page_alloc.c |  9 +++++++++
- 2 files changed, 27 insertions(+), 4 deletions(-)
+ mm/filemap.c    |  2 ++
+ mm/khugepaged.c |  2 +-
+ mm/mempolicy.c  | 31 ++++++++++++++++++++-----------
+ mm/mempolicy.h  | 24 ++++++++++++++++++++++++
+ mm/migrate.c    |  2 +-
+ mm/page_alloc.c |  6 +++---
+ mm/page_alloc.h |  2 +-
+ 7 files changed, 52 insertions(+), 17 deletions(-)
 
-diff --git a/mm/compaction.c b/mm/compaction.c
-index ed12d2fc6fad3..fe1aaf293bbce 100644
---- a/mm/compaction.c
-+++ b/mm/compaction.c
-@@ -2531,12 +2531,25 @@ bool compaction_zonelist_suitable(struct alloc_context *ac, int order,
- static enum compact_result
- compaction_suit_allocation_order(struct zone *zone, unsigned int order,
- 				 int highest_zoneidx, unsigned int alloc_flags,
--				 bool async, bool kcompactd)
-+				 bool unmapped, bool async, bool kcompactd)
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 341c7c5b28bc7..bf62fee570d8b 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -53,6 +53,8 @@
+ 
+ #include <asm/tlbflush.h>
+ #include "internal.h"
++#include "mempolicy.h"
++#include "page_alloc.h"
+ 
+ #define CREATE_TRACE_POINTS
+ #include <trace/events/filemap.h>
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 27e8f3077e80f..89ce6bcbc376b 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -1243,7 +1243,7 @@ static enum scan_result alloc_charge_folio(struct folio **foliop, struct mm_stru
+ 	int node = collapse_find_target_node(cc);
+ 	struct folio *folio;
+ 
+-	folio = __folio_alloc(gfp, order, node, &cc->alloc_nmask);
++	folio = __folio_alloc(gfp, order, node, &cc->alloc_nmask, ALLOC_DEFAULT);
+ 	if (!folio) {
+ 		*foliop = NULL;
+ 		if (is_pmd_order(order))
+diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+index 5720f7f54d942..73aeda071f5d7 100644
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -119,6 +119,7 @@
+ #include <linux/memory.h>
+ 
+ #include "internal.h"
++#include "mempolicy.h"
+ #include "page_alloc.h"
+ 
+ /* Internal flags */
+@@ -2406,7 +2407,8 @@ bool mempolicy_in_oom_domain(struct task_struct *tsk,
+ }
+ 
+ static struct page *alloc_pages_preferred_many(gfp_t gfp, unsigned int order,
+-						int nid, nodemask_t *nodemask)
++						int nid, nodemask_t *nodemask,
++						unsigned int alloc_flags)
  {
- 	unsigned long free_pages;
- 	unsigned long watermark;
+ 	struct page *page;
+ 	gfp_t preferred_gfp;
+@@ -2420,10 +2422,10 @@ static struct page *alloc_pages_preferred_many(gfp_t gfp, unsigned int order,
+ 	preferred_gfp = gfp | __GFP_NOWARN;
+ 	preferred_gfp &= ~(__GFP_DIRECT_RECLAIM | __GFP_NOFAIL);
+ 	page = __alloc_frozen_pages_noprof(preferred_gfp, order, nid, nodemask,
+-					   ALLOC_DEFAULT);
++					   alloc_flags);
+ 	if (!page)
+ 		page = __alloc_frozen_pages_noprof(gfp, order, nid, NULL,
+-						   ALLOC_DEFAULT);
++						   alloc_flags);
  
--	if (kcompactd && defrag_mode)
-+	/*
-+	 * When trying to generate an unmapped block, check the counter for
-+	 * direct-mapped blocks specifically, since we'll need to unmap the
-+	 * whole block to service the allocation.
-+	 *
-+	 * Why doesn't this apply to the other way around too? (Mightn't we need
-+	 * to _map_ a whole block, to service a !ALLOC_UNMAPPED allocation?) No,
-+	 * because of a likely-temporary simplification: currently, unmapped
-+	 * blocks never contain movable pages, so compaction isn't going to free
-+	 * up one of those.
-+	 */
-+	if (unmapped)
-+		free_pages = zone_page_state(zone, NR_FREE_PAGES_BLOCKS_MAPPED);
-+	else if (kcompactd && defrag_mode)
- 		free_pages = zone_free_pages_blocks(zone);
- 	else
- 		free_pages = zone_page_state(zone, NR_FREE_PAGES);
-@@ -2599,6 +2612,7 @@ compact_zone(struct compact_control *cc, struct capture_control *capc)
- 		ret = compaction_suit_allocation_order(cc->zone, cc->order,
- 						       cc->highest_zoneidx,
- 						       cc->alloc_flags,
-+						       freetype_unmapped(cc->freetype),
- 						       cc->mode == MIGRATE_ASYNC,
- 						       !cc->direct_compaction);
- 		if (ret != COMPACT_CONTINUE)
-@@ -3084,7 +3098,7 @@ static bool kcompactd_node_suitable(pg_data_t *pgdat)
- 		ret = compaction_suit_allocation_order(zone,
- 				pgdat->kcompactd_max_order,
- 				highest_zoneidx, alloc_flags,
--				false, true);
-+				false, false, true);
- 		if (ret == COMPACT_CONTINUE)
- 			return true;
+ 	return page;
+ }
+@@ -2435,11 +2437,12 @@ static struct page *alloc_pages_preferred_many(gfp_t gfp, unsigned int order,
+  * @pol: Pointer to the NUMA mempolicy.
+  * @ilx: Index for interleave mempolicy (also distinguishes alloc_pages()).
+  * @nid: Preferred node (usually numa_node_id() but @mpol may override it).
++ * @alloc_flags: ALLOC_* flags.
+  *
+  * Return: The page on success or NULL if allocation fails.
+  */
+ static struct page *alloc_pages_mpol(gfp_t gfp, unsigned int order,
+-		struct mempolicy *pol, pgoff_t ilx, int nid)
++		struct mempolicy *pol, pgoff_t ilx, int nid, unsigned int alloc_flags)
+ {
+ 	nodemask_t *nodemask;
+ 	struct page *page;
+@@ -2447,7 +2450,7 @@ static struct page *alloc_pages_mpol(gfp_t gfp, unsigned int order,
+ 	nodemask = policy_nodemask(gfp, pol, ilx, &nid);
+ 
+ 	if (pol->mode == MPOL_PREFERRED_MANY)
+-		return alloc_pages_preferred_many(gfp, order, nid, nodemask);
++		return alloc_pages_preferred_many(gfp, order, nid, nodemask, alloc_flags);
+ 
+ 	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
+ 	    /* filter "hugepage" allocation, unless from alloc_pages() */
+@@ -2471,7 +2474,7 @@ static struct page *alloc_pages_mpol(gfp_t gfp, unsigned int order,
+ 			 */
+ 			page = __alloc_frozen_pages_noprof(
+ 				gfp | __GFP_THISNODE | __GFP_NORETRY, order,
+-				nid, NULL, ALLOC_DEFAULT);
++				nid, NULL, alloc_flags);
+ 			if (page || !(gfp & __GFP_DIRECT_RECLAIM))
+ 				return page;
+ 			/*
+@@ -2483,7 +2486,7 @@ static struct page *alloc_pages_mpol(gfp_t gfp, unsigned int order,
+ 		}
  	}
-@@ -3127,7 +3141,7 @@ static void kcompactd_do_work(pg_data_t *pgdat)
  
- 		ret = compaction_suit_allocation_order(zone,
- 				cc.order, zoneid, cc.alloc_flags,
--				false, true);
-+				false, false, true);
- 		if (ret != COMPACT_CONTINUE)
- 			continue;
+-	page = __alloc_frozen_pages_noprof(gfp, order, nid, nodemask, ALLOC_DEFAULT);
++	page = __alloc_frozen_pages_noprof(gfp, order, nid, nodemask, alloc_flags);
  
+ 	if (unlikely(pol->mode == MPOL_INTERLEAVE ||
+ 		     pol->mode == MPOL_WEIGHTED_INTERLEAVE) && page) {
+@@ -2499,11 +2502,11 @@ static struct page *alloc_pages_mpol(gfp_t gfp, unsigned int order,
+ 	return page;
+ }
+ 
+-struct folio *folio_alloc_mpol_noprof(gfp_t gfp, unsigned int order,
+-		struct mempolicy *pol, pgoff_t ilx, int nid)
++struct folio *__folio_alloc_mpol_noprof(gfp_t gfp, unsigned int order,
++		struct mempolicy *pol, pgoff_t ilx, int nid, unsigned int alloc_flags)
+ {
+ 	struct page *page = alloc_pages_mpol(gfp | __GFP_COMP, order, pol,
+-			ilx, nid);
++			ilx, nid, alloc_flags);
+ 	if (!page)
+ 		return NULL;
+ 
+@@ -2511,6 +2514,12 @@ struct folio *folio_alloc_mpol_noprof(gfp_t gfp, unsigned int order,
+ 	return page_rmappable_folio(page);
+ }
+ 
++struct folio *folio_alloc_mpol_noprof(gfp_t gfp, unsigned int order,
++		struct mempolicy *pol, pgoff_t ilx, int nid)
++{
++	return __folio_alloc_mpol_noprof(gfp, order, pol, ilx, nid, ALLOC_DEFAULT);
++}
++
+ /**
+  * vma_alloc_folio - Allocate a folio for a VMA.
+  * @gfp: GFP flags.
+@@ -2555,7 +2564,7 @@ struct page *alloc_frozen_pages_noprof(gfp_t gfp, unsigned order)
+ 		pol = get_task_policy(current);
+ 
+ 	return alloc_pages_mpol(gfp, order, pol, NO_INTERLEAVE_INDEX,
+-				       numa_node_id());
++				numa_node_id(), ALLOC_DEFAULT);
+ }
+ 
+ /**
+diff --git a/mm/mempolicy.h b/mm/mempolicy.h
+new file mode 100644
+index 0000000000000..92d0bb3640962
+--- /dev/null
++++ b/mm/mempolicy.h
+@@ -0,0 +1,24 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/*
++ * mm-internal API for mempolicy.c. Public API lives in
++ * include/linux/mempolicy.h.
++ */
++#ifndef __MM_MEMPOLICY_H
++#define __MM_MEMPOLICY_H
++
++#include <linux/gfp.h>
++#include <linux/mempolicy.h>
++#include "page_alloc.h"
++
++#ifdef CONFIG_NUMA
++struct folio *__folio_alloc_mpol_noprof(gfp_t gfp, unsigned int order,
++		struct mempolicy *pol, pgoff_t ilx, int nid, unsigned int alloc_flags);
++#else
++static inline struct folio *__folio_alloc_mpol_noprof(gfp_t gfp, unsigned int order,
++		struct mempolicy *pol, pgoff_t ilx, int nid, unsigned int alloc_flags)
++{
++	return __folio_alloc_noprof(gfp, order, numa_node_id(), NULL, alloc_flags);
++}
++#endif
++
++#endif
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 0c772571610d3..583e74cd179c0 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -2233,7 +2233,7 @@ struct folio *alloc_migration_target(struct folio *src, unsigned long private)
+ 	if (is_highmem_idx(zidx) || zidx == ZONE_MOVABLE)
+ 		gfp_mask |= __GFP_HIGHMEM;
+ 
+-	return __folio_alloc(gfp_mask, order, nid, mtc->nmask);
++	return __folio_alloc(gfp_mask, order, nid, mtc->nmask, ALLOC_DEFAULT);
+ }
+ 
+ #ifdef CONFIG_NUMA_MIGRATION
 diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index d12ce84662ab7..5f1dea7eee15b 100644
+index 5f1dea7eee15b..f39b6af3a6b73 100644
 --- a/mm/page_alloc.c
 +++ b/mm/page_alloc.c
-@@ -827,6 +827,9 @@ compaction_capture(struct capture_control *capc, struct page *page,
- 	    capc_mt != MIGRATE_MOVABLE)
- 		return false;
+@@ -5888,7 +5888,7 @@ struct page *alloc_pages_node_noprof(int nid, gfp_t gfp_mask, unsigned int order
+ EXPORT_SYMBOL(alloc_pages_node_noprof);
  
-+	if (freetype_flags(freetype) != freetype_flags(capc->freetype))
-+		return false;
-+
- 	if (migratetype != capc_mt)
- 		trace_mm_page_alloc_extfrag(page, capc->order, order,
- 					    capc_mt, migratetype);
-@@ -4523,6 +4526,12 @@ __alloc_pages_direct_compact(gfp_t gfp_mask, unsigned int order,
- 	if ((alloc_flags & ALLOC_NOFRAGMENT) &&
- 	    free_to_migratetype(ac->freetype) != MIGRATE_MOVABLE)
- 		compact_order = max(order, pageblock_order);
-+	/*
-+	 * Unmapped allocations benefit from compaction even at order 0, because the
-+	 * allocator will actually grab a whole block.
-+	 */
-+	if (freetype_flags(ac->freetype) & FREETYPE_UNMAPPED)
-+		compact_order = max(order, pageblock_order);
+ struct folio *__folio_alloc_noprof(gfp_t gfp, unsigned int order, int preferred_nid,
+-		nodemask_t *nodemask)
++		nodemask_t *nodemask, unsigned int alloc_flags)
+ {
+ 	struct page *page;
  
- 	if (!compact_order)
- 		return NULL;
+@@ -5898,13 +5898,13 @@ struct folio *__folio_alloc_noprof(gfp_t gfp, unsigned int order, int preferred_
+ 	warn_if_node_offline(preferred_nid, gfp);
+ 
+ 	page = __alloc_pages_noprof(gfp | __GFP_COMP, order,
+-				    preferred_nid, nodemask, ALLOC_DEFAULT);
++					preferred_nid, nodemask, alloc_flags);
+ 	return page_rmappable_folio(page);
+ }
+ 
+ struct folio *folio_alloc_node_noprof(gfp_t gfp, unsigned int order, int nid)
+ {
+-	return __folio_alloc_noprof(gfp, order, nid, NULL);
++	return __folio_alloc_noprof(gfp, order, nid, NULL, ALLOC_DEFAULT);
+ }
+ EXPORT_SYMBOL(folio_alloc_node_noprof);
+ 
+diff --git a/mm/page_alloc.h b/mm/page_alloc.h
+index 5fa8fc527347c..be83a974edc2b 100644
+--- a/mm/page_alloc.h
++++ b/mm/page_alloc.h
+@@ -279,7 +279,7 @@ struct page *__alloc_pages_noprof(gfp_t gfp, unsigned int order, int preferred_n
+ #define __alloc_pages(...)			alloc_hooks(__alloc_pages_noprof(__VA_ARGS__))
+ 
+ struct folio *__folio_alloc_noprof(gfp_t gfp, unsigned int order, int preferred_nid,
+-		nodemask_t *nodemask);
++		nodemask_t *nodemask, unsigned int alloc_flags);
+ #define __folio_alloc(...)			alloc_hooks(__folio_alloc_noprof(__VA_ARGS__))
+ 
+ extern void zone_pcp_reset(struct zone *zone);
 
 -- 
 2.54.0
