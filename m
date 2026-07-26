@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A287BC53209
-	for <linux-mm@archiver.kernel.org>; Sun, 26 Jul 2026 22:25:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64000C53209
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Jul 2026 22:25:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E17D96B00AF; Sun, 26 Jul 2026 18:23:59 -0400 (EDT)
+	id C914F6B00B1; Sun, 26 Jul 2026 18:24:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC8B36B00B0; Sun, 26 Jul 2026 18:23:59 -0400 (EDT)
+	id C69B36B00B2; Sun, 26 Jul 2026 18:24:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CDECD6B00B1; Sun, 26 Jul 2026 18:23:59 -0400 (EDT)
+	id BA6866B00B3; Sun, 26 Jul 2026 18:24:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 987AD6B00AF
-	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 18:23:59 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 10FB51A05C8
+	by kanga.kvack.org (Postfix) with ESMTP id 7B5BA6B00B1
+	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 18:24:01 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D70561A05C8
+	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 22:24:00 +0000 (UTC)
+X-FDA: 85032356640.30.C276A60
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com [209.85.128.71])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 336E5A0006
 	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 22:23:59 +0000 (UTC)
-X-FDA: 85032356598.13.0A8CF3B
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com [209.85.128.70])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 5A9C71C000A
-	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 22:23:57 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=tnMt1R7b;
-	spf=pass (imf20.hostedemail.com: domain of 3-4hmaggKCAIlcemocpdiqqing.eqonkpwz-oomxcem.qti@flex--jackmanb.bounces.google.com designates 209.85.128.70 as permitted sender) smtp.mailfrom=3-4hmaggKCAIlcemocpdiqqing.eqonkpwz-oomxcem.qti@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785104637;
-	b=PWX2MizQI3IcQqgbjqPs4MXaOqBjpDMguUHvYEXOUEoOYh8hL6si3TmlvrVptQN89fCLCJ
-	TgLN+lBFpab0dwt3M34jukbdk/55q1L8zB6CPKkOYSpYOPqBzSO9LAD+f/CfGx8sNMn6vY
-	wMCGBtzwUAbVFxaf5Ggpm1U+WQD1kh4=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=tnMt1R7b;
-	spf=pass (imf20.hostedemail.com: domain of 3-4hmaggKCAIlcemocpdiqqing.eqonkpwz-oomxcem.qti@flex--jackmanb.bounces.google.com designates 209.85.128.70 as permitted sender) smtp.mailfrom=3-4hmaggKCAIlcemocpdiqqing.eqonkpwz-oomxcem.qti@flex--jackmanb.bounces.google.com;
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=QQFUi4mE;
+	spf=pass (imf15.hostedemail.com: domain of 3_YhmaggKCAQnegoqerfksskpi.gsqpmry1-qqozego.svk@flex--jackmanb.bounces.google.com designates 209.85.128.71 as permitted sender) smtp.mailfrom=3_YhmaggKCAQnegoqerfksskpi.gsqpmry1-qqozego.svk@flex--jackmanb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785104637;
+	s=arc-20220608; t=1785104639;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Xd3JgApfCvRDv7qicdFEsm7ichMoDmXLKaQkBNLpibM=;
-	b=6iUfvlREv2D9gMIfv4r6QXYtLPQIb3JJC+giNU4G7RI2nFl7wzyEusxp0XxwNREaK6DaBo
-	K539Ps3wx35C1c59GIButDeGizaiiNBxEW5WSbCdtxy1rMS4Mp8c1nRAKPCk2yXLz6fV9m
-	Z0vpV2HixuiVbgx+34UxWXEb6w9ccsI=
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-49544a639e9so10570775e9.1
-        for <linux-mm@kvack.org>; Sun, 26 Jul 2026 15:23:57 -0700 (PDT)
+	bh=m2xuI/zeM0UttuNeFOz41CO3X9EkXjzbyKL0Tm6Mtd0=;
+	b=BGOOBnUP3rjHmwpkS6XYLN9k/ENW+28rcI2PGdbpqm87QVQSppL+DEmKN86KYOj1y+auhi
+	ktI0tLFCthUaz3bgFh1y0vRDWU9bXyQLtL2frslJ2cQqytwglDnA6FNCkprj9x4LANZ2U0
+	NIf+HXHtuNK/D46Nh9SlwO8Qr9XjV3k=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785104639;
+	b=kE92ZG9bKCvApvVYLXDcRonEcK4xv65R7Bt+d5K76R2kpmYhqpkpbRg3AFK26b+XkAR7NB
+	vO5QeU2HnFe2Or9ib/1W5l1gti9aDHkEX3l9M8b8yHXhBhB1SfcGWAAvUsfa5veHx4XdNX
+	J8Ih78kH/Jyk1Kt2zHgoMH22rTLMN1E=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=QQFUi4mE;
+	spf=pass (imf15.hostedemail.com: domain of 3_YhmaggKCAQnegoqerfksskpi.gsqpmry1-qqozego.svk@flex--jackmanb.bounces.google.com designates 209.85.128.71 as permitted sender) smtp.mailfrom=3_YhmaggKCAQnegoqerfksskpi.gsqpmry1-qqozego.svk@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-49544a639e9so10570845e9.1
+        for <linux-mm@kvack.org>; Sun, 26 Jul 2026 15:23:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785104636; x=1785709436; darn=kvack.org;
+        d=google.com; s=20251104; t=1785104638; x=1785709438; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Xd3JgApfCvRDv7qicdFEsm7ichMoDmXLKaQkBNLpibM=;
-        b=tnMt1R7bC2L0LFzGc1nXfc+qcED2RBkmaynJPPxYcM0qpBa1aZW9R9r0juAch+yuR8
-         9PwFkK1mWCpi1WPxIRCw0UewiK0HVtXc7UQlDPV8SUjOG87yIzpGLxqBFtke+64wrxSu
-         kh+1cZaLAtffip5N4oh20cTWp9WpsTSpHQA46vtgj9XFD3gwIKlypP4LfsoZKauoKWnZ
-         5GHPCvdkd0oCOWW6ZHtNjFRGWvBXTm6dCoIMkRFwtUvobtsCuXWlob3+RMacGu2+XQJP
-         tSSzlNPR0OFwqxwDzVQOB4/RS7i9YZrvHPuL2hR0wofCCNX0c4A8Fu8xM4yfVjBUtkO/
-         xctA==
+        bh=m2xuI/zeM0UttuNeFOz41CO3X9EkXjzbyKL0Tm6Mtd0=;
+        b=QQFUi4mEPrwkbhLyLblb/OBzoccgPYjMqbACPl+T4iMGryNtFnluDo5lYMu64vGkH3
+         F/RiwHrO8buR3vfXup+xmbHcEpz9tRwkYxdi0s0nSrXOe4K7uJljsveUfGsHBHHHdHKI
+         WSrvCxNkIL3/JtWTFx97cLj/XKjE30MQeJHFqi71Mwg5SQD27dV/Q+7ZlS9yrAi9Vnay
+         OH6X8rkD+ISEbs03/o4W+WjG9XtkmbYRDO/KAgaNzqEMYw9PQnd8Wtz5vHyeZwNrueiS
+         wK6ZXfH9KhIoN/XJ1MKlqQadlgfROJGtmnG4MsF43rffo77+9nbEeB1IXBGS+eaTLDdM
+         qOpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785104636; x=1785709436;
+        d=1e100.net; s=20251104; t=1785104638; x=1785709438;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Xd3JgApfCvRDv7qicdFEsm7ichMoDmXLKaQkBNLpibM=;
-        b=AvFKs7mpo1eZjdOSvBLjoLPcsrZNUcxg3kQzu41+Mj8isPnA8u81J2Swl03Y5YuQrj
-         wUJ2YUAJ7lPj5cAySLj4EZz2ccmEPk5Tc+8hiD8xPmMyoFO3nDLhupFX5TuIVFU8QsXs
-         e73lFWVhwSkNIzqXSIQr/Oge69p789JRvHCU3QxwA0/QGfXly4AnOzUoMAPxk8oncEJs
-         6WyxbItqJXDm+S2rWMrpEqWmv3VxcUmWFqw9ghgOL0Wvm1KzKhd+B7Ec4X2yMjDQnmz3
-         JsqA9bZDKK3ymogKrAtubFw519JGdMEKHg4ZEUAeWxhGd5OXZUO+Uzopln16x5kAWYxj
-         WEew==
-X-Gm-Message-State: AOJu0YwKJnnwpqDzGIeczN09rKLhINkCA9w0Ib2laJ4+yfx/qwxFGz1i
-	pamsTo6sqqt1ObdHygrGJ7WwKH5d0YTx7ZmimXyQ0ggUz2ALDhE/StgOMtgP0UnOS42m4GvWHTe
-	VHeg+vE7+NccFWg==
-X-Received: from wmfx22.prod.google.com ([2002:a05:600c:2d16:b0:493:d884:f722])
+        bh=m2xuI/zeM0UttuNeFOz41CO3X9EkXjzbyKL0Tm6Mtd0=;
+        b=EexoNCFRGW4zX+dfUBkT/WTTr8IL0Y71s+ui0GH0bzGwY5VXi6VgvmuMEkTXC7ryVB
+         6NE60QM0VmXRPaPOg/bWt2ZgfyXBQ3Ng9q2pe9bmllWo+cHKEEf7XjHc/lTMZUGeetZj
+         2uR7AT6oLB46Oc9M/9bOoZJ6e+Q3s9mMu5B7Nnn0mVTRqfwuBRm+QS1iCNb+kfk672ME
+         OohUVwEPmT6Jm9JdxvjWu1RQz62qcWVtezJlXka08b/rAN5W2NS+XlJAGqs38sRJRedm
+         cdNl7l/Gy69kPYqNelcyg2z8BAS5s1Vsm2iBK4QTSGfK7ii2ELYuzKAac1fn1IEjtt2M
+         C+5g==
+X-Gm-Message-State: AOJu0YxxeuqGtdWF7W47PBbbWYAkqRiCJO4H4exvK2EVuRaky4RqhVqR
+	T4HuB9G719GSmH/Qn9PUmYJx2Z4huH6WjaWSznf42aOFF2RN1NGwN1LiN3/WMxqex5z4uzI0dEa
+	fpM+w6PI7ZNzFgQ==
+X-Received: from wmaj2.prod.google.com ([2002:a05:600c:6c02:b0:494:133:ddd3])
  (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:a49:b0:495:4e12:6ae5 with SMTP id 5b1f17b1804b1-496b5754379mr81953355e9.26.1785104635734;
- Sun, 26 Jul 2026 15:23:55 -0700 (PDT)
-Date: Sun, 26 Jul 2026 22:22:55 +0000
+ 2002:a05:600c:a102:b0:493:c77c:108a with SMTP id 5b1f17b1804b1-496b575ded2mr61716775e9.36.1785104637810;
+ Sun, 26 Jul 2026 15:23:57 -0700 (PDT)
+Date: Sun, 26 Jul 2026 22:22:56 +0000
 In-Reply-To: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
 Mime-Version: 1.0
 References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
 X-Mailer: b4 0.16-dev
-Message-ID: <20260726-page_alloc-unmapped-v3-22-6f5729aa9832@google.com>
-Subject: [PATCH v3 22/26] mm: Minimal KUnit tests for some new page_alloc logic
+Message-ID: <20260726-page_alloc-unmapped-v3-23-6f5729aa9832@google.com>
+Subject: [PATCH v3 23/26] mm: Split out NR_FREE_PAGES_BLOCKS_[UN]MAPPED
 From: Brendan Jackman <jackmanb@google.com>
 To: Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
 	Peter Zijlstra <peterz@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
@@ -103,14 +103,14 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org,
 	Patrick Bellasi <derkling@google.com>, Reiji Watanabe <reijiw@google.com>, 
 	Sean Christopherson <seanjc@google.com>, Brendan Jackman <jackmanb@google.com>
 Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 5A9C71C000A
-X-Stat-Signature: obn11fgqzf9rd11jxushjscjqra5qgsz
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 336E5A0006
+X-Stat-Signature: qx5upoag3n48g4omj889zwiimg1czyy7
 X-Rspam-User: 
-X-HE-Tag: 1785104637-849965
-X-HE-Meta: U2FsdGVkX18jS8KInQsxyw4luc0P0LzGC2ScCe4K+3gcOVCuobnejPYZYB68H4tfUk+Tv2HQdxa+z6rzc9L4sbzRLAYo00rEHpgr3HicZ7Dt7h2I+etaWRmuTKyVd+nNPPgcIPmLzZkLKNGoBBtg17f+xnCo/v0LU/Kkt9qBi7j1qV7Qcuc0d1F1XBT5OkoWmiaFhizdWTS9CfjmIh2sh0tGFGW0san1g0pu8qPUvVIJnmx8eSn/TWtCKLFxNtBBcw2Iex/MO+zRtVlDPb6Mezh0TlOHgHYJT+Yx4xdMzI54Dfns/NLeFJxqVMu/zuXtLqoeOFTALjpPNFvtoEaOzVwBn7E20MyOLWzzHqi2rTvgw62+nWyqt9KZUmlKN1AuKu6tOzXZyvcSECTAwuaDrqmpWx7VY52gfy1BPeKr3jGkvH3gLljUJM2EsbgFTFoh0aI2IKfubmMswPaJ5cVKth5yT+XPVs+swWoOVZQ6CkU1xf+atfrELEYy9ZO8orXoMZJHHIIfE86n8c0dXck6NJxHVTkvFFJAYBmtcoNp/M/dwFRkIQiV3PXBDOriz4YeJ+aW+lqDejA4zAw9PG0f6Zx/JhNhywZL/xzPJvKUyUbmSmgKAdjUB/JaGCxglXl7XDMnuz9L0HxerqeNy6n4NyK5/Vv0DT6u7nY0gGXgUIZSyX6FGIkMZKGPB7+BYrpQAn3h/VEgQKoJhdeDllAFDFgHcAVQTWDCmkChdbWSQpEMTINEroLlrP2kAEadM7+Zi4yu9pWo7/+5GwRG2dgWCkT3OTzpg1rDK97ylpNVUyBEckEk8qyTvTbcZMqT+VVHtyVITX5jz3otBbPPwzhiOUS0mCsnHFnWmyLDIRtxf7JB83Bi2uh708yABZ8lXtaK74M4+5M1FRFCFEghOv/kQ2Gb0TP1+hFoQpDG4J2aTl9tyH0MR4hLTPa+RluuDtijX5RFDuSjXbNY546YAds
- M0cawY3d
- HFajWsPODveaAdDmcZBJSTIy8YSX9TKOWcNtzKcHjbBDy/aH14QXPn17oEWMgaD//lLTMiC+QpDqe+gtbim80vNXaeDL8bpOmXqwVcanxJfdE+l0ylkxOKN/sO/KqMiKzOQcH3eX4WbCGq39LvC/u6++zMwxbv7lRGtT3RGH9F8VhsCWma6x7d9nRJPmLZWPvMqCXWP3qd8cHUmz5pdmnMfxcO8WaHOvFF8xFC6dlWDMA3OIRSIqitGHIDzEjV6PXEkyqwd6zkxeBrcj3gjx7kCJY5wng0HCf+Q96r6BDrvthfcOk3WOiMSGuoga9Q/OReqPSbfMtP4eaawHInZr+jdzEF3R8+kzt5p31aHZ0R61NnHtZufcpoSsfMKompNJ8mPJJrgmEYITkwTQmcGycuEfDEpzU+S3xlAWAVqf+KiMsGw3mW8qzI3x6nO5ZgGdyOgHOqqwJRYTEkYT9wIEKjvDzpZDJnGpiqh5lfx5iL6yaU/B+Qgu9WArPZ2NS3T0ftMRwcg/lrzccqzuMd0ctMVbJDL6eZndbhEShquiVHWTgo/oMchMaNPu6HWmID7NQjg6XydT7kKpEIu99BdOUpV2E6eD+o/RR4tAA6OqbqtB4CiDtYHxVz0/9qxWUVx8KWOk2+e4ZVzFtK4c=
+X-HE-Tag: 1785104639-41409
+X-HE-Meta: U2FsdGVkX19zT+lG2YAjeej51t4hIjdJ9pkvRhuD007lJmZ4NktsqPOhC0nekd3Csr0Ljd3BbwhaXDJfG5PXImz1UhrTbaNlq04pOz7bsgiEtrieBFTK6YWGcCEnVBT8t44DScw9B9ECjap08FoyKhik29WRYb1T/ngZOZYKMaxBlRPLneqE3D6W/VqSCEFrnQz/RlGdNPSI87r1Vq639j49+ubM8Wa294hbRMCkuvkyI+FTUEKJbI7FC6R0pEzQYNR/XB8WYjWeovAKk42xAND1zpfbDEoQDQi9Q5Sh0PbEw5rp2FxdjMMiTHmNro6QGbSWLMeIoElbpdPYx/jybEAVOXrtdAdjmyPkvewciP68dvIT8Iag2NVHvE4VY5s/quTiM9gSyGXcNtH2oXHAunei57W8OnooMhCyTuCK1fiIT9S2do+7AoOZx2aTZyY+QiBtkX0KS7lFKO7zYXGnXfpLlep211Y13kc6tZ3KJplBHv0x/ikwx4CwJe73mDwnAnNPzEh7MMtllOU4ZMWyOzmN+fvTkzQ87YX+Rq5dh6s2TzUTrZNo2k0ynVL3vuXn6RuRgnUBfaTzNtEeNcmBKqS4JWKZopCXFk3OB71XlV2ulmJqpHe962miijZa4jCotKg1WGxEDrb+unva1ON/I/PMbVn0fFbgZC5KXpc2Yzf3fpsV13xTxlUOeNceAy83KSuhWor9+Q0Xnruq7NHSwQ8dDX0+ugXPgVngdI48hzgVS8B1eD9DWoNMmHBGkjSxk9AowZRracvw0ls2CBL5URKB7mFQ8ekdhN8NqWbkcOCwtiYzcIYAIwjuU8fOR1rv8eiO8miVT8Z9V+OaktIy6l+JEXXGCRS/DL7m2UqAEG22mlGUN3cta3uhm505p2b+RqDIMcUovjSTICoqcAxY5Am/pBGnlhFyAy6NUo4NAuExJ+2S5SCklUQDD2M9kcnBs++bbvNAbfM8MBPWMe3
+ FheWxbZU
+ rOTZE53coE6qe5JtLhzoVzNaZ/3KUHvw4VkHxR6wXMRYVvoGC/kULTGB5geqe45449fIDkaCYOj3zX7ktoT4oDNDSE6DZt1z/5042z3Fzylm663WsCBMhRj7oQ1QL2F711Vbhh1ynlXtbkKaq2TJtG45qJ0216xF4ae3PNnO9u2bgmh9Q4vv3DK3o1wGCtLvtuJLHJzlB6EfBLO337FsGzZbt5k7dG72fJxYsvaroIqI//szB2I8UqKhwRf6FQh7exTLP1YOLBtHl226fTS3ue69S1hCjOLh0yq6uXc9MAbk3YmqfVR+MDLDnsgLnH0jJ1PLGBarRik3VEAISHR1c5jLvFgRP7da5CX7NmLjLRFuxbCE3/30hw+9GZO/STAULYlfSrvnHrlcKzgnvhqGSoHU3jO/9nbbuk0anAE9EgwhnWLs8A2pfitqeCpkGETiwdofBo1OTiPenWYTxkhBP2bsjQrH05TcKPWGwvVuBx4KwgBvAZov7OMCvZ9VhHT80G4uH8vK6fMsr2vp3OtywxKesJejc0vNnbvjf6CfRA4A0CWthIFTUFuSyzYDQyR9x7nF4r7U3paOTY7HlmXCQ8IzdrYh6qX0RvsSRdcSUUYtULztv9cwG1DX+oLDXEPZ/BjULLASbsn+r5jI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,375 +118,213 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a simple smoke test for ALLOC_UNMAPPED that tries to exercise
-flipping pageblocks between mapped/unmapped state.
-
-Also add some basic tests for some freelist-indexing helpers.
-
-Simplest way to run these on x86:
-
-tools/testing/kunit/kunit.py run --arch=x86_64 "page_alloc.*" \
-	--kconfig_add CONFIG_MERMAP=y --kconfig_add CONFIG_PAGE_ALLOC_UNMAPPED=y
+In order to infer whether compaction is likely to enable an allocation
+that maps/unmaps a pageblock, we need to know how many fully-free
+pageblocks of each type there are.
 
 Signed-off-by: Brendan Jackman <jackmanb@google.com>
 ---
- mm/Kconfig                  |   7 ++
- mm/Makefile                 |   1 +
- mm/internal.h               |   6 ++
- mm/page_alloc.c             |  11 +-
- mm/tests/page_alloc_kunit.c | 243 ++++++++++++++++++++++++++++++++++++++++++++
- 5 files changed, 265 insertions(+), 3 deletions(-)
+ include/linux/mmzone.h |  5 ++++-
+ include/linux/vmstat.h | 10 ++++++++++
+ mm/compaction.c        |  5 ++---
+ mm/page_alloc.c        | 13 ++++++++++---
+ mm/vmscan.c            | 49 ++++++++++++++++++++++++++++---------------------
+ mm/vmstat.c            |  3 ++-
+ 6 files changed, 56 insertions(+), 29 deletions(-)
 
-diff --git a/mm/Kconfig b/mm/Kconfig
-index 6a89cbf8e8c6e..bdd3e083520c0 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -1531,6 +1531,13 @@ config PAGE_ALLOC_UNMAPPED
- 	bool
- 	depends on !HIGHMEM
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index 2533a228f71fd..e063a59bbc883 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -181,7 +181,10 @@ enum numa_stat_item {
  
-+config PAGE_ALLOC_KUNIT_TEST
-+	tristate "KUnit tests for the page allocator" if !KUNIT_ALL_TESTS
-+	depends on KUNIT
-+	default KUNIT_ALL_TESTS
-+	help
-+	  Builds KUnit tests for the page allocator.
+ enum zone_stat_item {
+ 	NR_FREE_PAGES,
+-	NR_FREE_PAGES_BLOCKS,
++	/* Number of free pages in entirely free pageblocks, with direct map */
++	NR_FREE_PAGES_BLOCKS_MAPPED,
++	/* Ditto, without direct map */
++	NR_FREE_PAGES_BLOCKS_UNMAPPED,
+ 	NR_ZONE_LRU_BASE, /* Used only for compaction and reclaim retry */
+ 	NR_ZONE_INACTIVE_ANON = NR_ZONE_LRU_BASE,
+ 	NR_ZONE_ACTIVE_ANON,
+diff --git a/include/linux/vmstat.h b/include/linux/vmstat.h
+index 5b31d8e7ae405..debd593756149 100644
+--- a/include/linux/vmstat.h
++++ b/include/linux/vmstat.h
+@@ -224,6 +224,16 @@ static inline unsigned long zone_page_state(struct zone *zone,
+ 	return x;
+ }
+ 
++/*
++ * Approx number of pages in entirely free pageblocks. Due to races this could
++ * actually return a value more than the number of pages in the zone.
++ */
++static inline unsigned long zone_free_pages_blocks(struct zone *zone)
++{
++	return  zone_page_state(zone, NR_FREE_PAGES_BLOCKS_MAPPED) +
++		zone_page_state(zone, NR_FREE_PAGES_BLOCKS_UNMAPPED);
++}
 +
- source "mm/damon/Kconfig"
+ /*
+  * More accurate version that also considers the currently pending
+  * deltas. For that we need to loop over all cpus to find the current
+diff --git a/mm/compaction.c b/mm/compaction.c
+index c9eb3947ffc79..ed12d2fc6fad3 100644
+--- a/mm/compaction.c
++++ b/mm/compaction.c
+@@ -2353,8 +2353,7 @@ static enum compact_result __compact_finished(struct compact_control *cc)
+ 		if (__zone_watermark_ok(cc->zone, cc->order,
+ 					high_wmark_pages(cc->zone),
+ 					cc->highest_zoneidx, cc->alloc_flags,
+-					zone_page_state(cc->zone,
+-							NR_FREE_PAGES_BLOCKS)))
++					zone_free_pages_blocks(cc->zone)))
+ 			return COMPACT_SUCCESS;
  
- endmenu
-diff --git a/mm/Makefile b/mm/Makefile
-index 3507cb7ed6a9a..12366f8c0f537 100644
---- a/mm/Makefile
-+++ b/mm/Makefile
-@@ -149,3 +149,4 @@ obj-$(CONFIG_LAZY_MMU_MODE_KUNIT_TEST) += tests/lazy_mmu_mode_kunit.o
- obj-$(CONFIG_MEM_ALLOC_PROFILING) += alloc_tag.o
- obj-$(CONFIG_MERMAP) += mermap.o
- obj-$(CONFIG_MERMAP_KUNIT_TEST) += tests/mermap_kunit.o
-+obj-$(CONFIG_PAGE_ALLOC_KUNIT_TEST) += tests/page_alloc_kunit.o
-diff --git a/mm/internal.h b/mm/internal.h
-index fada318d13541..089c53bf9a336 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -1695,4 +1695,10 @@ int __apply_to_page_range(struct mm_struct *mm, unsigned long addr,
- 			  unsigned long size, pte_fn_t fn,
- 			  void *data, unsigned int flags);
+ 		return COMPACT_CONTINUE;
+@@ -2538,7 +2537,7 @@ compaction_suit_allocation_order(struct zone *zone, unsigned int order,
+ 	unsigned long watermark;
  
-+#if IS_ENABLED(CONFIG_KUNIT)
-+unsigned int order_to_pindex(freetype_t freetype, int order);
-+int pindex_to_order(unsigned int pindex);
-+bool pcp_allowed_order(unsigned int order);
-+#endif /* IS_ENABLED(CONFIG_KUNIT) */
-+
- #endif	/* __MM_INTERNAL_H */
+ 	if (kcompactd && defrag_mode)
+-		free_pages = zone_page_state(zone, NR_FREE_PAGES_BLOCKS);
++		free_pages = zone_free_pages_blocks(zone);
+ 	else
+ 		free_pages = zone_page_state(zone, NR_FREE_PAGES);
+ 
 diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index ce06ed0d65d8d..ac2f6190117ae 100644
+index ac2f6190117ae..d12ce84662ab7 100644
 --- a/mm/page_alloc.c
 +++ b/mm/page_alloc.c
-@@ -56,6 +56,7 @@
- #include <linux/cacheinfo.h>
- #include <linux/pgalloc_tag.h>
- #include <asm/div64.h>
-+#include <kunit/visibility.h>
- #include "internal.h"
- #include "mm_init.h"
- #include "page_alloc.h"
-@@ -465,6 +466,7 @@ freetype_t get_pfnblock_freetype(const struct page *page, unsigned long pfn)
- {
- 	return __get_pfnblock_freetype(page, pfn, false);
- }
-+EXPORT_SYMBOL_IF_KUNIT(get_pfnblock_freetype);
- 
- 
- /**
-@@ -691,7 +693,7 @@ static void bad_page(struct page *page, const char *reason)
- 	add_taint(TAINT_BAD_PAGE, LOCKDEP_NOW_UNRELIABLE);
+@@ -866,6 +866,13 @@ static inline void account_freepages(struct zone *zone, int nr_pages,
+ 			   zone->nr_free_highatomic + nr_pages);
  }
  
--static inline unsigned int order_to_pindex(freetype_t freetype, int order)
-+VISIBLE_IF_KUNIT inline unsigned int order_to_pindex(freetype_t freetype, int order)
- {
- 	int migratetype = free_to_migratetype(freetype);
++static inline enum zone_stat_item free_pages_blocks_stat(freetype_t ft)
++{
++	if (freetype_flags(ft) & FREETYPE_UNMAPPED)
++		return NR_FREE_PAGES_BLOCKS_UNMAPPED;
++	return NR_FREE_PAGES_BLOCKS_MAPPED;
++}
++
+ /* Used for pages not on another list */
+ static inline void __add_to_free_list(struct page *page, struct zone *zone,
+ 				      unsigned int order, freetype_t freetype,
+@@ -890,7 +897,7 @@ static inline void __add_to_free_list(struct page *page, struct zone *zone,
+ 	area->nr_free++;
  
-@@ -719,8 +721,9 @@ static inline unsigned int order_to_pindex(freetype_t freetype, int order)
- 
- 	return (MIGRATE_PCPTYPES * order) + migratetype;
+ 	if (order >= pageblock_order && !is_migrate_isolate(free_to_migratetype(freetype)))
+-		__mod_zone_page_state(zone, NR_FREE_PAGES_BLOCKS, nr_pages);
++		__mod_zone_page_state(zone, free_pages_blocks_stat(freetype), nr_pages);
  }
-+EXPORT_SYMBOL_IF_KUNIT(order_to_pindex);
- 
--static inline int pindex_to_order(unsigned int pindex)
-+VISIBLE_IF_KUNIT int pindex_to_order(unsigned int pindex)
- {
- 	unsigned int unmapped_base = NR_LOWORDER_PCP_LISTS + NR_PCP_THP;
- 	int order;
-@@ -741,8 +744,9 @@ static inline int pindex_to_order(unsigned int pindex)
- 
- 	return order;
- }
-+EXPORT_SYMBOL_IF_KUNIT(pindex_to_order);
- 
--static inline bool pcp_allowed_order(unsigned int order)
-+VISIBLE_IF_KUNIT inline bool pcp_allowed_order(unsigned int order)
- {
- 	if (order <= PAGE_ALLOC_COSTLY_ORDER)
- 		return true;
-@@ -752,6 +756,7 @@ static inline bool pcp_allowed_order(unsigned int order)
- #endif
- 	return false;
- }
-+EXPORT_SYMBOL_IF_KUNIT(pcp_allowed_order);
  
  /*
-  * Higher-order pages are called "compound pages".  They are structured thusly:
-diff --git a/mm/tests/page_alloc_kunit.c b/mm/tests/page_alloc_kunit.c
-new file mode 100644
-index 0000000000000..b7f900a93cbcf
---- /dev/null
-+++ b/mm/tests/page_alloc_kunit.c
-@@ -0,0 +1,243 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+#include <linux/gfp.h>
-+#include <linux/kernel.h>
-+#include <linux/mermap.h>
-+#include <linux/mm_types.h>
-+#include <linux/mm.h>
-+#include <linux/pgtable.h>
-+#include <linux/set_memory.h>
-+#include <linux/sched/mm.h>
-+#include <linux/types.h>
-+#include <linux/vmalloc.h>
-+
-+#include <kunit/resource.h>
-+#include <kunit/test.h>
-+
-+#include "internal.h"
-+#include "page_alloc.h"
-+
-+struct free_pages_ctx {
-+	unsigned int order;
-+	struct list_head pages;
-+};
-+
-+static inline void action_many__free_pages(void *context)
-+{
-+	struct free_pages_ctx *ctx = context;
-+	struct page *page, *tmp;
-+
-+	list_for_each_entry_safe(page, tmp, &ctx->pages, lru)
-+		__free_pages(page, ctx->order);
-+}
-+
+@@ -926,7 +933,7 @@ static inline void move_to_free_list(struct page *page, struct zone *zone,
+ 	    is_migrate_isolate(old_mt) != is_migrate_isolate(new_mt)) {
+ 		if (!is_migrate_isolate(old_mt))
+ 			nr_pages = -nr_pages;
+-		__mod_zone_page_state(zone, NR_FREE_PAGES_BLOCKS, nr_pages);
++		__mod_zone_page_state(zone, free_pages_blocks_stat(new_ft), nr_pages);
+ 	}
+ }
+ 
+@@ -954,7 +961,7 @@ static inline void __del_page_from_free_list(struct page *page, struct zone *zon
+ 	zone->free_area[order].nr_free--;
+ 
+ 	if (order >= pageblock_order && !is_migrate_isolate(free_to_migratetype(freetype)))
+-		__mod_zone_page_state(zone, NR_FREE_PAGES_BLOCKS, -nr_pages);
++		__mod_zone_page_state(zone, free_pages_blocks_stat(freetype), -nr_pages);
+ }
+ 
+ static inline void del_page_from_free_list(struct page *page, struct zone *zone,
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 566c4e837c7d5..5789c39a0a729 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -6935,6 +6935,28 @@ static bool pgdat_watermark_boosted(pg_data_t *pgdat, int highest_zoneidx)
+ 	return false;
+ }
+ 
 +/*
-+ * Allocate a bunch of pages with the same order and GFP/alloc_flags,
-+ * transparently take care of error handling and cleanup. Does this all via a
-+ * single KUnit resource, i.e. has a fixed memory overhead.
++ * Helper to get *FREE_PAGES* zone stats with accuracy heuristics.
++ *
++ * When there is a high number of CPUs in the system, the cumulative error from
++ * the vmstat per-cpu cache can blur the line between the watermarks. In that
++ * case, be safe and get an accurate snapshot.
++ *
++ * TODO: NR_FREE_PAGES_BLOCKS_* move in steps of pageblock_nr_pages, while the
++ * vmstat pcp threshold is limited to 125. On many configurations that counter
++ * won't actually be per-cpu cached. But keep things simple for now; revisit
++ * when somebody cares.
 + */
-+static inline struct free_pages_ctx *
-+do_many_alloc_pages(struct kunit *test, unsigned int alloc_flags,
-+		    unsigned int order, unsigned int count)
++static inline unsigned long get_free_pages_stat(struct zone *zone,
++						enum zone_stat_item item)
 +{
-+	struct free_pages_ctx *ctx = kunit_kzalloc(
-+		test, sizeof(struct free_pages_ctx), GFP_KERNEL);
-+	gfp_t gfp = GFP_KERNEL | __GFP_THISNODE;
++	unsigned long free_pages = zone_page_state(zone, item);
 +
-+	KUNIT_ASSERT_NOT_NULL(test, ctx);
-+	INIT_LIST_HEAD(&ctx->pages);
-+	ctx->order = order;
++	if (zone->percpu_drift_mark && free_pages < zone->percpu_drift_mark)
++		return zone_page_state_snapshot(zone, item);
++	return free_pages;
++}
 +
-+	for (int i = 0; i < count; i++) {
-+		struct page *page = __alloc_pages(gfp, order, numa_node_id(),
-+			NULL, alloc_flags);
-+
-+		if (!page) {
-+			struct page *page, *tmp;
-+
-+			list_for_each_entry_safe(page, tmp, &ctx->pages, lru)
-+				__free_pages(page, order);
-+
-+			KUNIT_FAIL_AND_ABORT(test,
-+				"Failed to alloc order %d page (GFP *%pG) iter %d",
-+				order, &gfp, i);
+ /*
+  * Returns true if there is an eligible zone balanced for the request order
+  * and highest_zoneidx
+@@ -6950,7 +6972,6 @@ static bool pgdat_balanced(pg_data_t *pgdat, int order, int highest_zoneidx)
+ 	 * meet watermarks.
+ 	 */
+ 	for_each_managed_zone_pgdat(zone, pgdat, i, highest_zoneidx) {
+-		enum zone_stat_item item;
+ 		unsigned long free_pages;
+ 
+ 		if (sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING)
+@@ -6968,26 +6989,12 @@ static bool pgdat_balanced(pg_data_t *pgdat, int order, int highest_zoneidx)
+ 		 * has dropped order, simply ensure there are enough
+ 		 * base pages for compaction, wake kcompactd & sleep.
+ 		 */
+-		if (defrag_mode && order)
+-			item = NR_FREE_PAGES_BLOCKS;
+-		else
+-			item = NR_FREE_PAGES;
+-
+-		/*
+-		 * When there is a high number of CPUs in the system,
+-		 * the cumulative error from the vmstat per-cpu cache
+-		 * can blur the line between the watermarks. In that
+-		 * case, be safe and get an accurate snapshot.
+-		 *
+-		 * TODO: NR_FREE_PAGES_BLOCKS moves in steps of
+-		 * pageblock_nr_pages, while the vmstat pcp threshold
+-		 * is limited to 125. On many configurations that
+-		 * counter won't actually be per-cpu cached. But keep
+-		 * things simple for now; revisit when somebody cares.
+-		 */
+-		free_pages = zone_page_state(zone, item);
+-		if (zone->percpu_drift_mark && free_pages < zone->percpu_drift_mark)
+-			free_pages = zone_page_state_snapshot(zone, item);
++		if (defrag_mode && order) {
++			free_pages = get_free_pages_stat(zone, NR_FREE_PAGES_BLOCKS_UNMAPPED) +
++				get_free_pages_stat(zone, NR_FREE_PAGES_BLOCKS_MAPPED);
++		} else {
++			free_pages = get_free_pages_stat(zone, NR_FREE_PAGES);
 +		}
-+		list_add(&page->lru, &ctx->pages);
-+	}
-+
-+	KUNIT_ASSERT_EQ(test,
-+		kunit_add_action_or_reset(test, action_many__free_pages, ctx), 0);
-+	return ctx;
-+}
-+
-+#ifdef CONFIG_PAGE_ALLOC_UNMAPPED
-+
-+/* Do some allocations that force the allocator to map/unmap some blocks.  */
-+static void test_alloc_map_unmap(struct kunit *test)
-+{
-+	unsigned long page_majority;
-+	struct free_pages_ctx *ctx;
-+	struct page *page;
-+
-+	kunit_attach_mm();
-+	mermap_mm_prepare(current->mm);
-+
-+	/* No cleanup here - assuming kthread "belongs" to this test. */
-+	set_cpus_allowed_ptr(current, cpumask_of_node(numa_mem_id()));
-+
-+	/*
-+	 * First allocate more than half of the memory in the node as
-+	 * unmapped. Assuming the memory starts out mapped, this should
-+	 * exercise the unmap.
-+	 */
-+	page_majority = (node_present_pages(numa_mem_id()) / 2) + 1;
-+	ctx = do_many_alloc_pages(test, ALLOC_UNMAPPED, 0, page_majority);
-+
-+	/* Check pages are unmapped */
-+	list_for_each_entry(page, &ctx->pages, lru) {
-+		freetype_t ft = get_pfnblock_freetype(page, page_to_pfn(page));
-+
-+		/*
-+		 * Logically it should be an EXPECT, but that would
-+		 * cause heavy log spam on failure so use ASSERT for
-+		 * concision.
-+		 */
-+		KUNIT_ASSERT_FALSE(test, kernel_page_present(page));
-+		KUNIT_ASSERT_TRUE(test, freetype_flags(ft) & FREETYPE_UNMAPPED);
-+
-+		cond_resched();
-+	}
-+
-+	/*
-+	 * Now free them again and allocate the same amount without
-+	 * ALLOC_UNMAPPED. This will exercise the mapping logic.
-+	 */
-+	kunit_release_action(test, action_many__free_pages, ctx);
-+	ctx = do_many_alloc_pages(test, ALLOC_DEFAULT, 0, page_majority);
-+
-+	/* Check pages are mapped. */
-+	list_for_each_entry(page, &ctx->pages, lru) {
-+		KUNIT_ASSERT_TRUE(test, kernel_page_present(page));
-+		cond_resched();
-+	}
-+}
-+
-+#endif /* CONFIG_PAGE_ALLOC_UNMAPPED */
-+
-+static void __test_pindex_helpers(struct kunit *test, unsigned long *bitmap,
-+				  int mt, unsigned int ftflags, unsigned int order)
-+{
-+	freetype_t ft = migrate_to_freetype(mt, ftflags);
-+	unsigned int pindex;
-+	int got_order;
-+
-+	if (!pcp_allowed_order(order))
-+		return;
-+
-+	if (mt >= MIGRATE_PCPTYPES)
-+		return;
-+
-+	if (freetype_idx(ft) < 0)
-+		return;
-+
-+	pindex = order_to_pindex(ft, order);
-+
-+	KUNIT_ASSERT_LT_MSG(test, pindex, NR_PCP_LISTS,
-+		"invalid pindex %d (order %d mt %d flags %#x)",
-+		pindex, order, mt, ftflags);
-+	KUNIT_EXPECT_TRUE_MSG(test, test_bit(pindex, bitmap),
-+		"pindex %d reused (order %d mt %d flags %#x)",
-+		pindex, order, mt, ftflags);
-+
-+	/*
-+	 * For THP, two migratetypes map to the same pindex,
-+	 * just manually exclude one of those cases.
-+	 */
-+	if (!(IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
-+		order == HPAGE_PMD_ORDER &&
-+		mt == min(MIGRATE_UNMOVABLE, MIGRATE_RECLAIMABLE)))
-+		clear_bit(pindex, bitmap);
-+
-+	got_order = pindex_to_order(pindex);
-+	KUNIT_EXPECT_EQ_MSG(test, order, got_order,
-+		"roundtrip failed, got %d want %d (pindex %d mt %d flags %#x)",
-+		got_order, order, pindex, mt, ftflags);
-+}
-+
-+/* This just checks for basic arithmetic errors. */
-+static void test_pindex_helpers(struct kunit *test)
-+{
-+	DECLARE_BITMAP(bitmap, NR_PCP_LISTS);
-+
-+	/* Bit means "pindex not yet used". */
-+	bitmap_fill(bitmap, NR_PCP_LISTS);
-+
-+	for (unsigned int order = 0; order < NR_PAGE_ORDERS; order++) {
-+		for (int mt = 0; mt < MIGRATE_TYPES; mt++) {
-+			__test_pindex_helpers(test, bitmap, mt, 0, order);
-+			if (FREETYPE_UNMAPPED)
-+				__test_pindex_helpers(test, bitmap, mt,
-+						      FREETYPE_UNMAPPED, order);
-+		}
-+	}
-+
-+	KUNIT_EXPECT_TRUE_MSG(test, bitmap_empty(bitmap, NR_PCP_LISTS),
-+		"unused pindices: %*pbl", NR_PCP_LISTS, bitmap);
-+}
-+
-+static void __test_freetype_idx(struct kunit *test, unsigned int order,
-+				int migratetype, unsigned int ftflags,
-+				unsigned long *bitmap)
-+{
-+	freetype_t ft = migrate_to_freetype(migratetype, ftflags);
-+	int idx = freetype_idx(ft);
-+
-+	if (idx == -1)
-+		return;
-+	KUNIT_ASSERT_GE(test, idx, 0);
-+	KUNIT_ASSERT_LT(test, idx, NR_FREETYPE_IDXS);
-+
-+	KUNIT_EXPECT_LT_MSG(test, idx, NR_PCP_LISTS,
-+		"invalid idx %d (order %d mt %d flags %#x)",
-+		idx, order, migratetype, ftflags);
-+	KUNIT_EXPECT_TRUE(test, freetypes_equal(freetype_from_idx(idx), ft));
-+	clear_bit(idx, bitmap);
-+}
-+
-+static void test_freetype_idx(struct kunit *test)
-+{
-+	unsigned long bitmap[bitmap_size(NR_FREETYPE_IDXS)];
-+
-+	/* Bit means "pindex not yet used". */
-+	bitmap_fill(bitmap, NR_FREETYPE_IDXS);
-+
-+	for (unsigned int order = 0; order < NR_PAGE_ORDERS; order++) {
-+		for (int mt = 0; mt < MIGRATE_TYPES; mt++) {
-+			__test_freetype_idx(test, order, mt, 0, bitmap);
-+			if (FREETYPE_UNMAPPED)
-+				__test_freetype_idx(test, order, mt,
-+						    FREETYPE_UNMAPPED, bitmap);
-+		}
-+	}
-+
-+	KUNIT_EXPECT_TRUE_MSG(test, bitmap_empty(bitmap, NR_FREETYPE_IDXS),
-+		"unused idxs: %*pbl", NR_FREETYPE_IDXS, bitmap);
-+}
-+
-+static struct kunit_case test_cases[] = {
-+#ifdef CONFIG_PAGE_ALLOC_UNMAPPED
-+	KUNIT_CASE(test_alloc_map_unmap),
-+#endif
-+	KUNIT_CASE(test_pindex_helpers),
-+	KUNIT_CASE(test_freetype_idx),
-+	{}
-+};
-+
-+static struct kunit_suite test_suite = {
-+	.name = "page_alloc",
-+	.test_cases = test_cases,
-+};
-+
-+kunit_test_suite(test_suite);
-+
-+MODULE_LICENSE("GPL");
-+MODULE_IMPORT_NS("EXPORTED_FOR_KUNIT_TESTING");
+ 
+ 		if (__zone_watermark_ok(zone, order, mark, highest_zoneidx,
+ 					0, free_pages))
+diff --git a/mm/vmstat.c b/mm/vmstat.c
+index cb57714539fb5..f5ab6ab641c6d 100644
+--- a/mm/vmstat.c
++++ b/mm/vmstat.c
+@@ -1200,7 +1200,8 @@ const char * const vmstat_text[] = {
+ 	/* enum zone_stat_item counters */
+ #define I(x) (x)
+ 	[I(NR_FREE_PAGES)]			= "nr_free_pages",
+-	[I(NR_FREE_PAGES_BLOCKS)]		= "nr_free_pages_blocks",
++	[I(NR_FREE_PAGES_BLOCKS_MAPPED)]	= "nr_free_pages_blocks_mapped",
++	[I(NR_FREE_PAGES_BLOCKS_UNMAPPED)]	= "nr_free_pages_blocks_unmapped",
+ 	[I(NR_ZONE_INACTIVE_ANON)]		= "nr_zone_inactive_anon",
+ 	[I(NR_ZONE_ACTIVE_ANON)]		= "nr_zone_active_anon",
+ 	[I(NR_ZONE_INACTIVE_FILE)]		= "nr_zone_inactive_file",
 
 -- 
 2.54.0
