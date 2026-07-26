@@ -4,94 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CB27C531CC
-	for <linux-mm@archiver.kernel.org>; Sun, 26 Jul 2026 04:30:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FACBC531FA
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Jul 2026 05:57:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 04B576B007B; Sun, 26 Jul 2026 00:30:41 -0400 (EDT)
+	id 880436B007B; Sun, 26 Jul 2026 01:57:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F166A6B0088; Sun, 26 Jul 2026 00:30:40 -0400 (EDT)
+	id 830E86B0088; Sun, 26 Jul 2026 01:57:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DDF276B008A; Sun, 26 Jul 2026 00:30:40 -0400 (EDT)
+	id 746B46B008A; Sun, 26 Jul 2026 01:57:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AB4B26B007B
-	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 00:30:40 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3558D401F7
-	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 04:30:40 +0000 (UTC)
-X-FDA: 85029651840.29.9598E6B
-Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 69E6220005
-	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 04:30:36 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=GiFdDpLs;
-	spf=pass (imf13.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 499D06B007B
+	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 01:57:54 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B88DB12031F
+	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 05:57:53 +0000 (UTC)
+X-FDA: 85029871626.08.2D4121A
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+	by imf02.hostedemail.com (Postfix) with ESMTP id D37FA80002
+	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 05:57:51 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="gu7fnFA/";
+	spf=pass (imf02.hostedemail.com: domain of guopeng.zhang@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=guopeng.zhang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785040238;
+	s=arc-20220608; t=1785045472;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fk0u0C46PSOxjn1bmvTNC2VObm0AdVqBqTpTwS4dVgg=;
-	b=BoS3zYmO9RJXd9p3uLcYpbcPszGNJs/KIAjkGOOasU6rxPdTnwKFc4LmcdMJgsgW9U7Gik
-	zWe8Kay6yT/Ou/uIdznJfGVB0tncKHTA3d+Jme1MgINUejmlA5/2slgrd5DnsO/T2ynxON
-	oUCSdyxEiX6FokaGsRrTtiaEEdu0Sog=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=GiFdDpLs;
-	spf=pass (imf13.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=jgy7HKoDwUU1q2Cv23+1u+utSeqsqofimkXnRhKfzCc=;
+	b=2CEDAOjvUQ5tqXqCeB9YZDB1YsiaV95uOsyYSUm/O2HgAibvxzkuTnsFM+R0zRCZ9zsZx7
+	xm7NZMgMMMElExOy28gOpMgGBzrdXJUF5b7qbYaICudQH9AMIza/pixy9YY+9K0S//LX85
+	1DOvnZQHcPrOohB2huCcD6DuZ11zK8M=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785040238;
-	b=DMMGh3p64+eqXvJD8Z9MNXczNMx4matNot7JAqE3eRz21ganw0vlp0Sn3LmEBa0hsM/YCm
-	Dr+xSWFXa4gDOGM4h7VDcyX8pJF5Vu4qS2JjMVbNogd7j+F21lSqLWnLoTLt6AoPclth6k
-	FJOSE5dionJBmuKwXwTbEGRUYY7SrpM=
-Content-Type: text/plain;
-	charset=utf-8
+	t=1785045472;
+	b=m9OMgqM+kHy6OWKqKJT4ehRFKehDo5twu8T/geCqfpCgbSMZlMFybTVOcFRIZoHufUSzLX
+	OeHbC9JEP6xd1IbDG5MJnzOViY7+GvgPK2BS82heyufjKMiwzyrscCXVSea1rSETvG8fwx
+	xrM5hIo1e02RDhxEJQ3RfMJYRgD/Kyc=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="gu7fnFA/";
+	spf=pass (imf02.hostedemail.com: domain of guopeng.zhang@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=guopeng.zhang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <d1ad2a71-ae4f-4c2b-a322-0bbcea951287@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785040233;
+	t=1785045469;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=fk0u0C46PSOxjn1bmvTNC2VObm0AdVqBqTpTwS4dVgg=;
-	b=GiFdDpLsCY9O1i08dsREM5xkTYbyL+dVDaGJel+m+k75TqnYJ//NhZM7IkH78BNqN+0Ivj
-	T/D3mNCoYJOIdJLpLPcHgCDLByC4Hoz+CjiLxoA5m3MA5p1hjFFd7O15tEQe2b+mTFSaLH
-	9a0ivHwWzxxZsjbaxUhaWVdqbywg/pU=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
-Subject: Re: [PATCH v2 03/17] mm/mm_init: skip initializing shared vmemmap
- tail pages
+	bh=jgy7HKoDwUU1q2Cv23+1u+utSeqsqofimkXnRhKfzCc=;
+	b=gu7fnFA/IB/GMxZ3sgqLwB1o1wUe1twXi7uByBDbnQAuPZaCqOl1U+zE9dBDSly0rmdqAA
+	cpaMmW1Ky1ZaTy9Hm2ZVm5vPZVUFrJTPTO7QIGZ7LIRSKajURoyAF1DOASUA9+vlOLDcjX
+	+zLk0RyFgwxBnzwtS8oacP2vq2Gx/LQ=
+Date: Sun, 26 Jul 2026 13:57:29 +0800
+MIME-Version: 1.0
+Subject: Re: [PATCH] mm: memcg: stop reclaim when a limit update is superseded
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Guopeng Zhang <zhangguopeng@kylinos.cn>
+References: <20260724021805.1234583-1-guopeng.zhang@linux.dev>
+ <20260725204251.f96eddc5fbc8e965546cc292@linux-foundation.org>
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260720093127.540540-4-songmuchun@bytedance.com>
-Date: Sun, 26 Jul 2026 12:30:17 +0800
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Oscar Salvador <osalvador@suse.de>,
- David Hildenbrand <david@kernel.org>,
- Mike Rapoport <rppt@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>,
- Michal Hocko <mhocko@suse.com>,
- David Laight <david.laight.linux@gmail.com>,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <5005C7D3-B3ED-4C62-B611-8465D2BC69FD@linux.dev>
-References: <20260720093127.540540-1-songmuchun@bytedance.com>
- <20260720093127.540540-4-songmuchun@bytedance.com>
-To: Muchun Song <songmuchun@bytedance.com>
+From: Guopeng Zhang <guopeng.zhang@linux.dev>
+In-Reply-To: <20260725204251.f96eddc5fbc8e965546cc292@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: D37FA80002
+X-Stat-Signature: b7ounsocofr84nb3htmik9o39dqgbiry
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 69E6220005
-X-Stat-Signature: xtrai7ogx8injyga7wr3beq9898xtwsi
-X-HE-Tag: 1785040236-960676
-X-HE-Meta: U2FsdGVkX1+OKoUytpePW2ZkmxpI5oWdlHGl91K0nCU0ldMKL2EJfbJVB3wdI8p+vY9ZUM/obiSdGsdYYEOHRugCjjG26nNQwnttn2N4v6krQx91SjQo1G1Sjj1+cWPbB6nUN69Vi1s3kwYQrzaDI9M0/60iGj8FdUMH/uiVxQg+ilzm6iCC0YbjZRGeB4ytgyRg8WoensGH9JQ0yk3p0fU5CuTuQaJAgGFNO1ofAerbMqBMOt+LWHJPiRlO6FbEKkyVmRZ150dvhpSy2whlDIXtDegtiW4i7OQl1I8wpq2ML7c+nIOAP1qICCUaq7DxettsjON/SUrLVCut8DB8/tyjmbOYGdNdS9jNXu0zmmNEwwN9Aovv55YVYCsYdhT1ZOV4Iu4aqzb+3gsk9JgHkVkZgA2R5IDu/u8qUtanhN53Kxmnva6du1LkflNAWgyJgE2byw5ESv+lYZ/Rq7dff22REUdwcf6FK+RounMn0O6BZ56snDQPideannIVpoafXg3Rqm/MRSjrvqAQPctcV6/xiixAsI5s5nOO3748jKCfHo8ZvhLk2MQuoNODD1SV5fTh4e/EjrBaWqfLz5g3gX/47MByzWUsg/RmmveSoid6D1FeGJpW/7kPmk1qhzTj9+jwAS3x+jXGjBLf9l1GevbyiuHABN7K2y/pXefF4hYjD62iqoTf/YI8KKlCwRAxwPSwdGnD2LLL7PV8+0eQ4+0RXPXvnHxRF2MJdZwI5mS5RGn6MinvyBWNC5II9LDyZOJS6C9YEJl1v8fuG1AAukHHMSJ6G0SLsWGpBtYrcyZW3r0j05NT2Whrpv6n/D2xsLTpkn5cHJRYJs2hgC0zq9Ino3N/NOAH8S1B3DnfpXxC/s+WpJ48GIGP90LvaqallpzqGhVWws2WSd5jg4wXGuzDtQlErwot8PQP/5YLjz/f88ghTgMBRQHB31dh0q9zanxbVXvuY7CnpmYSCCi
- JQgmdbs3
- lXbauPXIVomDUlmsnuXrVm5ISRT3PCq+yhnd6dbon2YICf761fonKSzQOWaTez5vIJvHx0Jsqq/dbATB8Bj/7vhSiKm7kNAMIOH/rztzH+VR46kg7/7FYeTUPk6Mj34Qj1Qmx90iAo4LIkw2hI+7/mUpK+X7la46+2wDaiSKlSN7b+/HnLOUYX0974pN+Goan6uI9XIrio4gUZzUbVyf6Ns9fFKdOQe7IX7hRGcrmHRbOOi/9f3qj+FBMYUjolLjv4hY2QyDHAa8xExaW4zpRNBMdhBGg1cYTIVrCEEm3KR0NAMHAD31OkSgSVx8vGVDD69TnhHF3nW5YMW1sk7okxwl+NqrQ/b65O1pnXcjRcXhlhV6oqA3fqlyuTGEwPepK2LIf
+X-HE-Tag: 1785045471-568056
+X-HE-Meta: U2FsdGVkX19s55jZS3T1gah3VXkGbzQFWxr5KXE7Oqdyn57zB8iVmizh0u+uLSR3ho1W9L2Gqic5/kORJRDYaX9EoQrEyu5nPefvIgd8rEcrw2ZiewfW0F2KF7625cS0SrkCr6lVf6LKROUDZAeRxZDvBHohYOFD2bsp6c0SbQraY1Rk+X8iNwstLlaTcybb+N6lPaqvdOzkmVKkZdvPFSg91B1dTffbCqmzZK22IbHTVG2Z+9Efq7VNgzWjWze/GDfrJjlofvIJDIu6a3PRKD+ysK+RLdcUtYCG4eHSiNid8jdKSkaUjLA0gtC1LSCSU0VIcKQyQ068Z5S0hg1pISxyF0XYd/YEr5BcrUsMIUN3VZZUw9ynr+LZQi9BqSmb3uZWK0cShZQrIONACCaSuBDuCmWdMjAJMcG9lfTO2rTsQQQgd20kqEiCjxqDk5gzJhWBwOfN5Hd5WHOhbHZqwQoIQKq9V06BhzOy4p9dnz03+cN3Q8ZuMiWQqRhO81NhorEj1SEw2TGWckHLTHRfaM/SnQP7+MpJ0ktEFMnu4zYesojw9YXs+gDFeF85RkDMHkE1eibf3bFidrDh5e+WC1Z0T4jKdfsidiT3OuxmrODIbtY286N9DibOmm7Yyn3QHB8MQNbtYftsoPyt5oVHBh63cJO0iZa3G5wOyb7MWNDf97rQ6vR1dLoY9sYJHFkFfHHrAyjLYbP7YsR5B0jOE9Z0ArVkTq5vNfMdI1GxtATsmjhxahCWpii/JGHcb1gQntORTPhF7OFE9lLAy2wHuYJQ8EIvTssV9ccAUVa/b7YpR4IMLp7rbghtjC6LHxyz4XKy3yaKSDwyhWCRPcph4XgnNdgNxr1jvohztTGLx9eu//2eaS1bKbFl4qW0z5KGKEzTeHsHk1nds6Nv0kzaD+bApWyQfG1QK0Xr8ZX9ZXZm8Gwkf0jl7SN0Sacts/qJ8mUZcAUnXw1PKQ7Iggq
+ u/UM4nJA
+ pPbB7VnoIZOh1aOLbdHLHFnrtfW2ze0S/LmXIEASAHURPbXnzuQprK64CzzFBU/7wTRtQbOYJNeGjopMlWKcvySjXSHLs0yGPoKTtb57nsHKedVDcRgtAiRt4JWcGFJk+hnHw4L9kKooT+6qFn4PmrxeqWg9w8z42vLgtMOvvpTxKxWSgn4uXjxvgamhUFcrzEdLr3nWaACyQ+Mzn3EwdcRbilGCSH2FBcS36VjbDtiVxTWA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,99 +94,69 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-> On Jul 20, 2026, at 17:31, Muchun Song <songmuchun@bytedance.com> =
-wrote:
->=20
-> memmap_init_range() initializes every struct page in the target range.
-> For compound pages with vmemmap optimization, the tail struct pages =
-are
-> backed by a shared vmemmap page.
->=20
-> Initializing those tail struct pages would overwrite the shared
-> vmemmap page contents, requiring users such as HugeTLB to restore the
-> metadata afterwards.
->=20
-> Track the compound order for HVO-backed sections and use that metadata
-> to detect struct pages that fall into the shared tail vmemmap range.
-> Skip those shared tail pages in memmap_init_range(), then initialize
-> pageblock migratetypes for the processed range with a helper after the
-> per-page initialization loop.
->=20
-> The !SPARSEMEM __pfn_to_section() stub is needed only for the build:
-> memmap_init_range() references __pfn_to_section() after checking
-> pfn_vmemmap_optimizable(), and !SPARSEMEM builds still have to compile
-> that code even though pfn_vmemmap_optimizable() folds to false.
->=20
-> This is a preparatory change for consolidating handling across users =
-of
-> vmemmap optimization, and it also avoids redundant initialization of
-> shared tail vmemmap pages during early boot.
->=20
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> ---
-> v2:
-> - Fold section order tracking into the first user instead of keeping a
->  standalone API-only patch (suggested by Mike Rapoport)
-> - Rename page_vmemmap_optimizable() to pfn_vmemmap_optimizable() and
->  pass a PFN directly (suggested by Mike Rapoport)
-> - Initialize pageblock migratetypes from a helper after the per-page
->  loop (suggested by Mike Rapoport)
-> - Use a 1G PFN chunk for cond_resched() in the pageblock helper
->  (suggested by Mike Rapoport)
-> - Guard section_order() with CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP so
->  it returns 0 when HVO is disabled and lets the compiler optimize the
->  code as much as possible (suggested by Mike Rapoport)
-> - Explain why the !SPARSEMEM __pfn_to_section() stub belongs here
->  (suggested by Mike Rapoport)
-> ---
-> include/linux/mmzone.h | 14 ++++++++++++++
-> mm/mm_init.c           | 33 +++++++++++++++++----------------
-> mm/sparse.h            | 23 +++++++++++++++++++++++
-> 3 files changed, 54 insertions(+), 16 deletions(-)
->=20
-> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> index 82b0155d886f..2a32101d55e6 100644
-> --- a/include/linux/mmzone.h
-> +++ b/include/linux/mmzone.h
-> @@ -2011,6 +2011,14 @@ struct mem_section {
-> unsigned long section_mem_map;
->=20
-> struct mem_section_usage *usage;
-> +#ifdef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
-> + 	/*
-> +	 * Normally, sections hold regular (order-0) pages. However, for
-> +	 * sections with HVO enabled, this tracks the compound page =
-order
-> +	 * to enable deduplication of redundant vmemmap pages.
-> +	 */
-> + 	unsigned int order;
-> +#endif
-> #ifdef CONFIG_PAGE_EXTENSION
-> 	/*
-> 	 * If SPARSEMEM, pgdat doesn't have page_ext pointer. We use
-> @@ -2365,8 +2373,14 @@ static inline unsigned long =
-next_present_section_nr(unsigned long section_nr)
-> #endif
->=20
-> #else
-> +struct mem_section;
-> +
-> #define sparse_vmemmap_init_nid_early(_nid) do {} while (0)
-> #define pfn_in_present_section pfn_valid
-> +static inline struct mem_section *__pfn_to_section(unsigned long pfn)
-> +{
-> + 	return NULL;
-> +}
+在 2026/7/26 11:42, Andrew Morton 写道:
+> On Fri, 24 Jul 2026 10:18:05 +0800 Guopeng Zhang <guopeng.zhang@linux.dev> wrote:
+> 
+>> From: Guopeng Zhang <zhangguopeng@kylinos.cn>
+>>
+>> kernfs serializes file operations only per open file, so separate open
+>> files can update the same memory.high or memory.max file concurrently.
+>> Both handlers store the new limit before synchronous reclaim, but
+>> continue to use the writer's local target in the reclaim loop. If another
+>> writer raises or removes the limit, the first writer can continue
+>> reclaiming toward a stale target.
+>>
+>> For memory.max, this can leave the writer looping indefinitely once
+>> reclaim retries are exhausted. The OOM path sees sufficient margin under
+>> the current limit and returns true without killing, while the writer
+>> still compares usage against its stale target and records another OOM
+>> event.
+>>
+>> Check the current limit at the start of each reclaim iteration and stop
+>> if it no longer matches the writer's target.
+> 
+> Thanks.
+> 
+>> Fixes: 8c8c383c04f6 ("mm: memcontrol: try harder to set a new memory.high")
+> 
+> Dec 2019
+> 
+>> Fixes: b6e6edcfa405 ("mm: memcontrol: reclaim and OOM kill when shrinking memory.max below usage")
+> 
+> Mar 2016
+> 
+> Having two Fixes: targets is confusing.  The Fixes: identifies which
+> kernel versions should be patched, so how is anyone to figure out
+> whether their 2018 kernel actually needs the patch?
+> 
+> I assume one of the two hunks is for 2019 and the other is for 2016, so
+> two separate patches each with a single Fixes: would be more useful.
+> 
 
-I'd like to propose an alternative implementation that doesn't require
-exposing the mem_section. The idea is to add a new helper function,
-pfn_to_section_order(), so that for non-sparse-memory configurations,
-the mem_section concept stays hidden internally. I'd really appreciate
-any thoughts or concerns =E2=80=94 if everyone is comfortable with it, I =
-can go
-ahead and implement this in the next version.
+Thanks, that makes sense.
 
-Muchun,
-Thanks.
+For similar cases where separate code paths were introduced by different
+commits and have different affected-version ranges, I will split the
+fixes into separate patches, each with its own Fixes tag.
+
+> That being said, both versions are so ancient that it probably doesn't
+> matter.  In fact the bug seems so obscure that I'm not planning on
+> adding cc:stable to this anyway.  Maintainers, please advise.
+> 
+>> Reproducer:
+>>
+>> Populate a cgroup with anonymous memory and disable swapping. Lower
+>> memory.max from one open file, then restore it to "max" through another
+>> open file after the new limit becomes visible.
+>>
+>> Without the patch, the first writer remains blocked and repeatedly
+>> increments the OOM event counter. With the patch, it returns normally.
+> 
+> This is nice info - I'll promote it into the permanent changelog.
+> 
+> 
+> I'll queue the patch for 7.3-rc1 and shall await maintainer input,
+> please.
+> 
 
 
