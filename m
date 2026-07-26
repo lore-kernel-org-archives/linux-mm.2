@@ -4,89 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D65FC531D0
-	for <linux-mm@archiver.kernel.org>; Sun, 26 Jul 2026 01:48:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4282DC531D0
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Jul 2026 02:07:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BEAF56B0088; Sat, 25 Jul 2026 21:48:41 -0400 (EDT)
+	id 1AED96B007B; Sat, 25 Jul 2026 22:07:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B9BB16B008C; Sat, 25 Jul 2026 21:48:41 -0400 (EDT)
+	id 1605E6B0088; Sat, 25 Jul 2026 22:07:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB4316B0093; Sat, 25 Jul 2026 21:48:41 -0400 (EDT)
+	id 075AB6B008A; Sat, 25 Jul 2026 22:07:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 889266B0088
-	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 21:48:41 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EDA91A1487
-	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 01:48:40 +0000 (UTC)
-X-FDA: 85029243600.09.378DD10
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
-	by imf05.hostedemail.com (Postfix) with ESMTP id BA6A110000A
-	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 01:48:37 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id CA3076B007B
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 22:07:25 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4D01C1401BA
+	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 02:07:25 +0000 (UTC)
+X-FDA: 85029290850.20.3FCE883
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 26006100009
+	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 02:07:23 +0000 (UTC)
 Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=KXqdHSQH;
-	spf=pass (imf05.hostedemail.com: domain of dayou5941@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=dayou5941@163.com;
-	dmarc=pass (policy=none) header.from=163.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785030519;
-	b=BNTmjucfy4sEe3EVNZ5gkif1FHrjw/2hvrSPDX5ph2I4O3kWp03FPvA2i+MbT8TLGBM4wX
-	gQSJRTUWefpzeqk8PKjLjcvr+8e+dVxhXIKQBHFacNk2xim0flm9RBiABJ4uQOUo+/VRCc
-	4EPFVyZNBqnduASZPIHwXVM54NgxdJA=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=KXqdHSQH;
-	spf=pass (imf05.hostedemail.com: domain of dayou5941@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=dayou5941@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=rqpHEHE3;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785030519;
+	s=arc-20220608; t=1785031643;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=adku3ZUyolT1/aAV+9p6y7s5z/CUYnjGXtUnLeZtGPk=;
-	b=F6zi8LRX5dBnsvgH3S/FZm4q1K8jZYZ6oQG7/aJq+lJKrPeYBQX8xz3nAU3z5ujsiOdXqL
-	XaF7rldVp+NiYCp/PbnYLQO5d+3nXAPdzPDzR4CCuamdUfZBDB3yNgRXZ57lGq/GKmBt//
-	wkHWZQZ3kj54feMWFtXsIRt7m2mlr8Y=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=ad
-	ku3ZUyolT1/aAV+9p6y7s5z/CUYnjGXtUnLeZtGPk=; b=KXqdHSQH3dSnhciUEx
-	O1Yo8IFYTnfrT3VJb5lvl/yioTCFqgrLGm1toOfLLOE8bu5Q5lnU0Atrcgn3xqCs
-	kaLSn7c2BmTCOaFxWZPZp84iTNAxf+/6SpdXMrwv88HAsyA3+D7qyOV6Hbzkjl2P
-	YCToDhIDdT1NWi+jPBPO/Su5g=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wAXbRJhZ2VqI91GKQ--.1854S2;
-	Sun, 26 Jul 2026 09:48:18 +0800 (CST)
-From: dayou5941@163.com
-To: sj@kernel.org,
-	akpm@linux-foundation.org
-Cc: damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	joshua.hahnjy@gmail.com,
-	liyouhong <liyouhong@kylinos.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH v3] mm/damon/ops-common: putback folios on invalid migrate nid
-Date: Sun, 26 Jul 2026 09:48:15 +0800
-Message-Id: <20260726014815.1280757-1-dayou5941@163.com>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wAXbRJhZ2VqI91GKQ--.1854S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7tF4UGF4kZryfJry3KF48Zwb_yoW8ur43pr
-	1rKa4rC39xtryI93WfXFZYvry0yrW3Jr15GF9xGFs7A3Z8X3409347t3ZF9ay5Jry5Kr4f
-	Aa1qyas09F47JrDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jwID7UUUUU=
-X-Originating-IP: [116.128.244.169]
-X-CM-SenderInfo: 5gd103ivzuiqqrwthudrp/xtbC3QPllGplZ2PVYQAA3Q
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: BA6A110000A
-X-Stat-Signature: usgf47gnqmqzzb5p67o5odzztwz1ufz5
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=jpS1B8a886qs16d5r0p1aEXd05mNAw05WBa0cxlnrRo=;
+	b=r98Zt0G5qtS4BAPiNwwN/6NGbsvYRODsqU8sT/1KaF1+sKdJbooJZd2sptk0rdARK63jnp
+	3wWEJbGb0CdQ7CaeaaB6c9p8xK4YReIPKWN+ufCpSvwJp8hDxkEHDtI6CaMTjjP/QoQq5Z
+	WC1MC+h+6oKMoipD5gAUbYoQvb7FZcY=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=rqpHEHE3;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785031643;
+	b=BUima8dj9TxdctOwKIBmc75vVKqilO8CX15HGLEJYvaxA5F4vdkb9sncQ5Y8LO+7MemT1A
+	u4tT5/MRhKCpX0iWhxIQlvG8ICGvJSMBPyzmWjhxx96cQcAlwxWvHM3cLMlfSMtKGPV+5V
+	GZ5HBK39ouxoM7P5EIy2VEB9UFaMqMw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6BE9960008;
+	Sun, 26 Jul 2026 02:07:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 954091F000E9;
+	Sun, 26 Jul 2026 02:07:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1785031642;
+	bh=jpS1B8a886qs16d5r0p1aEXd05mNAw05WBa0cxlnrRo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=rqpHEHE3dWIiDp9qwv4GP3PS/PvMosPq/5u+hq8fGt9a2Rea8tbzjficfSCq+jv23
+	 SMXifRgp8SBonUPe5DDBWrkNrYQq5g46XjM3pmyFbcAEfzMYUbMCm7Asc2pJymXbOf
+	 38vNQGtr38lbJNCNEvhAZAKE4BtMlFXXsqutO8Z8=
+Date: Sat, 25 Jul 2026 19:07:21 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Dev Jain <dev.jain@arm.com>
+Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, david@kernel.org,
+ muchun.song@linux.dev, osalvador@suse.de, riel@surriel.com,
+ liam@infradead.org, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
+ lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ ryan.roberts@arm.com, anshuman.khandual@arm.com
+Subject: Re: [PATCH v3 1/5] mm/rmap: convert page -> folio for hwpoison
+ checks
+Message-Id: <20260725190721.f2e121f118ef817e42bb3874@linux-foundation.org>
+In-Reply-To: <8d2f756a-12a2-43bb-8849-3e71c1ce5d8f@arm.com>
+References: <20260713050050.1017741-1-dev.jain@arm.com>
+	<20260713050050.1017741-2-dev.jain@arm.com>
+	<amMtRejoVMX2IV2V@lucifer>
+	<8d2f756a-12a2-43bb-8849-3e71c1ce5d8f@arm.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 26006100009
 X-Rspam-User: 
-X-HE-Tag: 1785030517-240585
-X-HE-Meta: U2FsdGVkX1+qDy1DWlk/Jf7MZ4BTpwOXDXTjbknGXOVncR8prQnLcOKUrUFvnwzrukzqmfojRV1z+P7qwUqHMzsGdwCQN/fmRChk7eZt16TNf4VRnYsfvM7MOYtw5dk+CZBAFBBiJeZF8B4Zw+++fPzWGcx/EHD9AFm4LaGO20dZGEVSO/e3Ifa5/Y3YPyudfy1aYYcNtL7KGdWdLSg+7HL121shJ815cCb+rHl9nvvvMgW7TlynsAT1o1t81xef9P8bwriL0JiG6MuQb7SS7hKx5sW/oqkhDJ6pwreCYvGsFSqCIy3VKKs6a5Pd1Sk1PKKCYmeindo+edgQopxTMiBokch4dpV7ckZB5tb0mv4jHEM/b+1ae82DuVg0sq+ywojwx+i+UbI3SSc49rq3XrZ2ujQHrWvQ5SL0wA8AVRWsuKofQkQ1ViLTFKpPPQ2zQNiWnytu1Z8fns1JSHIHygF6Vrh/yNUcxNbj9ZidjLr7BEC+E4mkthiBs58APC8mfdOhQF8n+P2UZeYgRLD8/mzr7Y5IEKHQgf4JkVsnLnnNS9q43sU9C8L1fiz0bVC9hoqLeAGuHpM6mbaS0ny5wkpKD+P4pPUlUT3sad65pdLfif6Cncduqv46BCU/wjfvleuasUh1ai88hLOzjtgCrVG1x3Gh7cRbhutZRuCfP19c+w3AX4SktS4RSBwtXFabfJJNO7cA0/wCwHg/o9xTKnTmhbIzwpfja3Z8W0OLBjvEQi/Wuar93/ds5GKllpg4cyNel798ac2q1e7RPFGof9LmE1yRjDkbZ+kz61/I4qqD4SeQuSC5z0pvGfXL5e+KiLzePsRbHwiLzlSXRAUIaYoH13flPho/wEPcUT7gIVztuNtacS+mJd3f9iiuCt8GKXwaZAF6zaU513hkicCuDAl/K03XRV1fk1J5XFTMZ6TOl6tZEv+SSz0A4xHcBe1/ahrXg+GShYPQ+lqLN+h
- cYpfz+Sg
- /iMIzoowz9rGq0wTHRzOWsuJASBx1vufZWLpC/ZwSseE9PuBfs7LGCMr86JjnYDKXNGa3Nk6F6hmrSzlc+e8Th0AmVTxrVicp1BfvU8O3cwsjF01JQ2lnKtO0ylPoJLAtZ7+fIFEZ7mtp+NGmJ9tvhJ8ppwR3hXGiy7orQKXzDpd9U8Acx7T/vuKc22rVRwsvlfN/rnE13TdM6/cmxXt2pTjzS7TJ57y5PDIqez1t/vQrIRpp+ARheYUAFTKm+GYM3waTb2r5zGaL/NGPKQgDmU54bE2fCc/hdN/qHfrI6tfgtH1w6I2LFIi/bv4pK2jGGkg8lC8aaSBwQSp17x47jUww0u3N5umPPhsH176+BqA7gMNqOZHauC9cle2wis9NuJDP3cFI+m40uw+EIlIkk1mz9Lvbnti0Bul2cuq64r9+aWjSZTDKEc2arjDgofUWGYLyFZYQXg7WbLYHS85/7nrFlA==
+X-Stat-Signature: q9cfwwqdhu5ofi4ctuodsjhi85ms4hjm
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1785031643-966934
+X-HE-Meta: U2FsdGVkX19OC5darW4FTelDTJGlgO3KPRZjiC8rgxX6Wou2TzDoZk9LOdwIT9C7sHewYecJ865oc7P8EcgieZGfe52iA9dC4rYEMhft3XZJmo1shM4fZW7+K62jqq881ODlvQ/Kre2pqFfDa3BJCjumoUkqhf17JSYh9sFFHmOHScwjpTESrkI1fzkWgi4KeyGfDM9kxkYhKANXzLpBrd7TvjwMTLyAKGG0OPPOIg8kclBQoufgxYvuLzAumKn0uWyXq1WjPPSMH3DFehxAIAHrWqL278IcTnjnavC7esD9rYBpcgCEYUbzwjYU63SseO/WZ0a+LZscqDLRzSlaK7EXefNM/ZHA8B3P/1cxDnTvLnpZ5fho2BYSNbR76AxqUUDnrcC6RKZVAMLggVhsasx7DcFkw5C6jsbTHY5ns/CkfZh19PTBlLYvKkk/xHv8l5ew08zwVEWS9EppOGCSlK6fzrI+Gw2YwbZINMavk5AvhzNA+C4FOVbX2JlAfRXFFe6A9weipxMmXZdbPH9sdLSUYHIHZ83qLSqjVXmrhQnf28eZlDcp6KGglZ0lz6YQsdon/anF3VjLMtq0QQs4hAy8XNToIaw35UHHCZlnFCisRiGC5DuONwcJazjYEb3t7mWTGtYeRJOx+m5t0JI6TiwX3FhIC3iP8GoXTxpgOIlP4v0sDJxk7L9ku9X1YzPvSe1RFDNIzEypkMILW028SFIdlZe+ZTitwFf8ZkTEfxRMG5f0EtLZJlr/03zDR/Ig5dmMm03/Mj9RAS6o6jATc8D5E+XPNC91FrtvlCAOQH2ifMie+Ob1yCkbV3yF5nJTsrK/gdVoM3V9GF23vL2Ux6Dti/1/XqUsXC8L3qUtPg6eqg6WHG9yj+h8R2eeK/Q6+eC1fcQKLKWBD3AP5tIn5A9SJbmn1HwDlJdjxNTN7CzYJ7RpnY8EUFgz1VgVyvzGPCINXFxPVeKgnbRH2EA
+ 2NIeyto4
+ Tl9iB+EY6l47w73Ri4tgK74TqcAhDQRY42IXur4RhkXZnrComiRQXMw0tfvUl+1UqVgM+LPZaUhyhmO//bn3HH4lQiFgkUY09o+DGw3r2ZPpxuofJmt6W/SA1PK9hQi+dO5JPNDW9/th1dw5B5ScRhpHk+HW38l/ViN7i5089gUtrhH66ifL+VkvssTw3O4+CPqUTtoc+lHpM9wQU901WJuAahKfYitzVy6ja6kSZgw79sbo2gWBEvFnVXHDTIbirIFb4SotUQBAlAIGZ5GPN4+tlHkMuEZejy0+EP4rzOuW1Lon11GKCouAaxA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,64 +96,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: liyouhong <liyouhong@kylinos.cn>
+On Sat, 25 Jul 2026 13:06:25 +0530 Dev Jain <dev.jain@arm.com> wrote:
 
-damon_pa_migrate() and damos_va_migrate() isolate folios into a local list
-and then call damon_migrate_pages().  When target_nid is invalid (including
-the scheme default NUMA_NO_NODE / -1), damon_migrate_pages() returns early
-without putting the folios back to the LRU.
+> >> @@ -2204,7 +2205,11 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+> >>  		/* Update high watermark before we lower rss */
+> >>  		update_hiwater_rss(mm);
+> >>
+> >> -		if (PageHWPoison(subpage) && (flags & TTU_HWPOISON)) {
+> >> +		/*
+> >> +		 * With TTU_HWPOISON, we only expect small folios or hugetlb
+> >> +		 * folios here for now.
+> >> +		 */
+> >> +		if (folio_test_hwpoison(folio) && (flags & TTU_HWPOISON)) {
+> > 
+> > As per v2 discussion, I feel this could be tightened up, maybe something like:
+> > 
+> > 		/* unmap_poisoned_folio() only refs order-0 or hugetlb folios */
+> > 
+> 
+> I can do this. But note that this series is in mm-unstable already - what should
+> I base the v4 on?
 
-Callers then discard the list head while those folios remain isolated with
-an extra reference taken by folio_isolate_lru().  The pages stay off the
-LRU for as long as the mapping exists (anon active+inactive counts drop
-while RSS does not), and the leftover references can pin the pages after
-the mapping is gone.
+Ordinarily basing on latest Linus works.  But this patchset has ~450
+patches ahead of it and a quick trial merge wasn't promising.
 
-Put the folios back on the invalid-nid path so ignored migration requests
-still return them to the LRU.
+I could drop the v3 series so you can base on next mm-new, please lmk.
 
-Fixes: 7e6c3130690a ("mm/damon/ops-common: ignore migration request to invalid nodes")
-Cc: <stable@vger.kernel.org>
-Assisted-by: Cursor:grok-4.5
-Reviewed-by: SJ Park <sj@kernel.org>
-Signed-off-by: liyouhong <liyouhong@kylinos.cn>
+Or
 
----
-v3:
-- Drop the 2/2 cleanup patch as suggested; keep open-coded putback only
-
-v2:
-- Drop the putback helper for easier stable backport
-- Open-code putback only on the invalid-nid path
-- Keep the original indentation and Cc stable@
-- Add a separate cleanup as 2/2 (factor out damon_putback_folio_list)
-
----
- mm/damon/ops-common.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
-
-diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
-index d1842e2b00ef..f5ded45fabd1 100644
---- a/mm/damon/ops-common.c
-+++ b/mm/damon/ops-common.c
-@@ -394,8 +394,15 @@ unsigned long damon_migrate_pages(struct list_head *folio_list, int target_nid)
- 		return nr_migrated;
- 
- 	if (target_nid < 0 || target_nid >= MAX_NUMNODES ||
--			!node_state(target_nid, N_MEMORY))
-+			!node_state(target_nid, N_MEMORY)) {
-+		while (!list_empty(folio_list)) {
-+			struct folio *folio = lru_to_folio(folio_list);
-+
-+			list_del(&folio->lru);
-+			folio_putback_lru(folio);
-+		}
- 		return nr_migrated;
-+	}
- 
- 	noreclaim_flag = memalloc_noreclaim_save();
- 
--- 
-2.25.1
-
+mm> git log --oneline | grep "mm/rmap: convert page -> folio for hwpoison checks"
+bb2f8a7eb126 mm/rmap: convert page -> folio for hwpoison checks
+mm> git checkout bb2f8a7eb126^
 
