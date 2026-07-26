@@ -4,85 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C4AEC531D0
-	for <linux-mm@archiver.kernel.org>; Sat, 25 Jul 2026 21:48:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2C07C531D0
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Jul 2026 00:53:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C4CF6B00A7; Sat, 25 Jul 2026 17:48:39 -0400 (EDT)
+	id 454AF6B007B; Sat, 25 Jul 2026 20:53:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 64DDF6B00A9; Sat, 25 Jul 2026 17:48:39 -0400 (EDT)
+	id 406BD6B0088; Sat, 25 Jul 2026 20:53:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F2356B00AB; Sat, 25 Jul 2026 17:48:39 -0400 (EDT)
+	id 31D8B6B008A; Sat, 25 Jul 2026 20:53:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 239ED6B00A7
-	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 17:48:39 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 912701C07BC
-	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 21:48:38 +0000 (UTC)
-X-FDA: 85028638716.07.190742E
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0D0136B007B
+	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 20:53:36 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 85371A042D
+	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 00:53:35 +0000 (UTC)
+X-FDA: 85029104790.20.6E3A746
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id D3C04C0004
-	for <linux-mm@kvack.org>; Sat, 25 Jul 2026 21:48:36 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Q5tlCJp+;
-	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785016117;
-	b=7Y4ecjuZ3Oj+NC4i7naFlXxyeU1q65QAsmEcBSRJY2Kpbx2ZYhwAGltrgI3oMIAw6wAsWr
-	rLoyYNxTYn9bez01/6NNess81LDQdKsICoxPw4qz6daUuqK4aqdUxDZmswxSPjFenngQh9
-	xyZB/C256mclrZgwAHw/7qjYS/Y4WVc=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Q5tlCJp+;
-	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	by imf09.hostedemail.com (Postfix) with ESMTP id 82363140008
+	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 00:53:33 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=FMabStzN;
+	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785016117;
+	s=arc-20220608; t=1785027213;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gIBRr+eBTgXMBBErT9R9Qg8c/kYBgNwObuWPPZqXvs8=;
-	b=lpmpqzvqj8Qqsqw7IaEiJc4VAg2xSMgsZRQQ7piywFjLuI87T7r/bwrM3xE6eLdXU6i13H
-	UkIghZJtM/r+DIEEg4CtiuuctH+/FusN3yxNCtuZUtViYnNIFRf/fRCSGDJYdfayrm8Lrl
-	JX/x+YDem+4E7eabYMluTMolMz+Lsuk=
+	bh=D9RJYrPyKu4j2C1jazqGEHEdAG3mVPG/Lir/eORzk/o=;
+	b=8C0/e3aavnPEpG7UYZ7AMincHVbU41vm8KS8UuS2iWdDc7MSd3Oph9M8CX6rwLMn5sK7Zg
+	UnNvP2hzDGRRxe9N357/JKuU+ijTAzzyQYCvZWvNWStgA+eH2C3Gvo4PNPhLoYFpC3pz3C
+	vxxbiberIuA6FMcVZBJE+8WebMLassE=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785027213;
+	b=h/0keQiKqc2Nso3LGDiYNlZ+qbwK12/mRsJ1MVkFXAWwXkmk/CPdi49WZI9ZE4NoXFsy5o
+	av4pHLr784G7nU/Cn0GEeT9Wcy029O6Um/Yh4ug2B70DseGq3zeIQYWZ7/SIhLwz3zjVhf
+	CP+pCq2dbO5O0+QMrwycSz+dTYXKnhc=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=FMabStzN;
+	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D41434182D;
-	Sat, 25 Jul 2026 21:48:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 949C41F000E9;
-	Sat, 25 Jul 2026 21:48:35 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id EEB3141A7A;
+	Sun, 26 Jul 2026 00:53:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05CE61F000E9;
+	Sun, 26 Jul 2026 00:53:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1785016115;
-	bh=gIBRr+eBTgXMBBErT9R9Qg8c/kYBgNwObuWPPZqXvs8=;
+	d=linux-foundation.org; s=korg; t=1785027211;
+	bh=D9RJYrPyKu4j2C1jazqGEHEdAG3mVPG/Lir/eORzk/o=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Q5tlCJp+5kuvY8cf4kWXUs0ywqiXTM00bNoINk9L7CfTK+LqKuTIO70qsQz5IE5hP
-	 KEM81/NBfIpRsjhozaJ2js6/6U1rIr9GFGEDrHFPBRa/e8zgZC4F5yGxnVHBaLPnYg
-	 yMAEidr703Tt5V+55KBOrapa6Nm+LUS4HcsAzT3U=
-Date: Sat, 25 Jul 2026 14:48:34 -0700
+	b=FMabStzNIfu4BbASuRyUJpfWNjOtTeoXLye+5n6j+SyyzME5KViEIVwVi552hWN7z
+	 K+V3VXq6r/hMEnTwAecCk3iT20TTRVyUCWwE92HChBFBQuYN2UwlY2BGOoGjGXekpm
+	 1WmVE0lbN3o2krSVS5ne6vZZeceftxEnprBiJ5dc=
+Date: Sat, 25 Jul 2026 17:53:30 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Artem Lytkin <iprintercanon@gmail.com>
-Cc: linux-mm@kvack.org, urezki@gmail.com, shivamkalra98@zohomail.in,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] mm/vmalloc: fix 32-bit truncation of the area size
- in vread_iter()
-Message-Id: <20260725144834.76cd9aa557e72aa02688948f@linux-foundation.org>
-In-Reply-To: <20260725132201.88279-1-iprintercanon@gmail.com>
-References: <20260725132201.88279-1-iprintercanon@gmail.com>
+To: Matt Fleming <matt@readmodwrite.com>
+Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
+ <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain
+ <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, Lance Yang
+ <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, Dave Chinner
+ <david@fromorbit.com>, Qi Zheng <qi.zheng@linux.dev>, Roman Gushchin
+ <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, Kairui
+ Song <ryncsn@gmail.com>, Shakeel Butt <shakeel.butt@linux.dev>, Matthew
+ Wilcox <willy@infradead.org>,
+ syzbot+c5b060ce82921a2fd500@syzkaller.appspotmail.com,
+ stable@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ kernel-team@cloudflare.com, Matt Fleming <mfleming@cloudflare.com>, Roman
+ Gushchin <roman.gushchin@linux.dev>, Chris Mason <clm@fb.com>
+Subject: Re: [PATCH v2] mm/huge_memory: Initialise workingset state before
+ folio split
+Message-Id: <20260725175330.dd30f4e9b6f9fd28c5b41aa9@linux-foundation.org>
+In-Reply-To: <20260725101419.3938406-1-matt@readmodwrite.com>
+References: <20260725101419.3938406-1-matt@readmodwrite.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: D3C04C0004
-X-Stat-Signature: np4kq39jbf1bqogrf1be1sek4atundnc
+X-Stat-Signature: 1zcdz6uz9y36yhear6hy5xak6d65eseq
 X-Rspam-User: 
-X-HE-Tag: 1785016116-718112
-X-HE-Meta: U2FsdGVkX1/49X6+JCGBj7opRc8MWU5SYnfHTkBWzDpMkoxeGGrYPlkP2yJgALrRXuaWlPbz53/Cugfc9mzipT6JPic5aHGfMfKzljlrF3lInQ6LQswiNjQxtBO+mlI6BGgwxEuEy3adb28nZ/Ry/4X2eYkGcilwZV18HwWT/O/GI+ZPyXoIuW/bK8fumqkHEIxIxHvaLoKcgphUahoovZx8zfJ7mOoABFuUbIsyknicz1XiGlteE4k/wbv4jFs6ohAChsqb38mjJozKOgKcI0ehNzwAP5gtfvPDFxkEr5KKmWdphruaN+WA+hrdGef7Q8+HbkHfe37+fUU1/bnGLMj3rhudfZ1Lylb7ykBFlod3sMc7CNXbNeO4rnFGeG2QQSXxLoNbRb9ylUBD3VApVCeqqMuKPoMf9nyJrjBa6JYhtHcJC09VEJHGY8ik1yuyrz9uAYTASBz8Rbpmjolus77xCKe/YGFeP+FLF67tJ3/hNWn6g/Nst/JSY6OXKXOwcksv5tsK/Z1rspiD+hL36DsO44rU+txnab19I1BxcfJRIzJAyQ6ev0zygFhjL0Isy+gJdrdNAUb2V7o8/EGy6J9OeJ8uu1chcikEpuomRmgIrw9DAP5HQRZn+xEwduBTYRWEbOEN9GbiDFL5TFF+lgKAYljLfZDNXAHfNFvAFDjPTsD/lE7fjSmb+YLxGXcI4X5wtFUkd5C1F4q8ptr9RcT+mvSKjfhBPwUOKhZi3d7DqpmrZ3S3EcHRPczMlmvqp4y8T1lSvRA5QnjKb14Bt4Hn/tgSIxUyAf2ANOyT3c6CGrEAe4WJQlQSQhcr1y5yYwqbz+1fjQTXSMpj2J2THxw8yTwgbsPJVQvnyRdwTf2IMNuQi2LriYpNTjIva3GPt6bSUOvPjzA7v9012pEXbNnjVgdRB3bqKmJmZWLHZAcvEdwS22bt6fkpS+VtynIaPhdaIBBXFlDV3E494kn
- vQWSxISI
- XLMUUDht7PNRDammfIRRoix/MjG7hJNKtcapWNdPVoAMhf9uYAA78Dc1MGbX+WX2hBLi9k2+QDECB/aFWZ/1CPekIxADH2cmhFUYl1vQqQ8A0evuEmgkjN2ELRTbxICebhL2UnLhT++izNngo2yzToSNt8/ZFfhuY5JMtaRQK4SevaS96R3j1+u0wDNd+b/yCKX/3T97DrcffoYJMxdA0rH1QzzbQyjko6lNWLDjHcTcI0KzaA1HtI8vA4V+8LCnUkIiWWXNiT1koyUZJxgEaqSvrUJbwY76i6Jpggjh0sEuJSvY03+OhuJ447xBxMNabPPVHgRTZCvySYQhnAb5loxxdXPZmaFNmo/zQH+eujKfZYFSajxqd3kDSrilihDget4US
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 82363140008
+X-HE-Tag: 1785027213-80123
+X-HE-Meta: U2FsdGVkX1+fOcXR2EH+qY6ckjOi4+7l55w5zgsSUG4H6tG6geP4ZRJEf0R1sRAq92pL0OJq+sxPtAzbO02+TMzvRQBVuGKwZWaeUS6KP8SK0Qp/arzJSnDZPby9/Maw3Pg7nfHEHNIOnvmlI4prxBMNH239A25waxxpmgxkqMPtxn9W5F+lH7tkpNIho7Qpt5fqI78QPV4R8W4Hob+Ea9v2lCQvxc7H2UeZ10Z3/jONqYPQc7iRcJqgaa/3x8z5R4Os16BlPwEH6NWMxsj1QhZGS/vRerxYSfK80dGJ7W7roQQnieHoRYYk0cSk0WVExnSgsR6/Cy7e/BleIw6R7WgRJIhYS2zCR38SdEtXT/40X/hOgrZru0DwzCXzIP4SrEz36NbXnm0eRhKN2Dnho6cvfHfBxhKmqLHGNt7pr8GQ5ERvQUaFKyztwUXHRwfKx1bMDH7Y5yUlLkvY661korGl2rJUfHqGCJLkODUrkyuQVe6glCEPrIK7wXBwG0gBTRc5p1UetIwfvZLKOMDwsdZwUyQ0nY/1hKgRFGaGvlS4etCBaW/U4ZQUC7ORlF99frorpGrL7LRppYrD92qxUFDql5m1v66fbmsfN7lw7my9P0O+dRdRj8FiJ0ydqHDtTBorzOS99qdk3mHPmgjv2GcXLFrfS0mWVhfOo0e9monrufjHRjdaeDBxiau6bPKO3MCFK7DFWUrk7tunVyDLAleX/9NMLRm+T1MhTa+tbZRjip5b3dm9gtUP4V24Hs6SEzEKFvgo0COYuCJDn4fil0MYPTe5+rcQdJ+IF0bWxQDcdhlutB2QAjxq5Yp5J9qiB0+IRUFdSgas4o89XZB0i3PDij3b2Hf5dJVFK9tEMVq9FgdFd7rooRhmN+EywaGwEXsWh+B8yHXg2gB5CkuP5SnqnV7GokOIsZjyK1NPZsx6h3nODLqMrDLlqbJjoMseQFoT1O68y0j77QNoLOh
+ jD4u5HeC
+ 8Ln9R0nQsWHcF0RaF3k+3F6cy6Z0+nwy5TgwGoqmA8uil4cb5PVjun5x07WRNoo7IhRLE93fO2aUdh5wLtu34g5FrR9iXSM4vOKEFxLdKYkYljd8w3tY5sDfKtY47XHTT5hlWVzG+hYze6w+MsTR+gPl1JyBr1/K4G9z2tsJAhIp5p3Dkmw+InjT43AfvBnlWwgt9nbGr5q9Ta5jaFUqg27/uhUpSXe7D/Ty6hV7TuN22iITyXNjZ1srtC+BSO8gfLcOvdycnQUUyfZMLk5T5dLX6qqACkejJDoOnksgnliT2I8k/Tbi0lCcix5oEPfG0+PqgR3pfRiDmaRx3PVKljxvTCplK3h+B6nCjz488czwK9mVbuN7MpjXp0cUGiVVBR8T3bZOHGxin2JfM/vYZi4pPnGiMYGQ+Tbc2EozvWLBmoNpAbFD9NebM7eTuiVbR2y+el94zhBd2h2rNqL7KFSaGnzTCBkGCXmrToBue7mU3PNUaCWknyGMXXYqnoYgyeIWyLXzyKM7PF/qa9YCeQdc3TuABkWTjmf07VexH2NFwPZk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,41 +102,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 25 Jul 2026 16:22:00 +0300 Artem Lytkin <iprintercanon@gmail.com> wrote:
+On Sat, 25 Jul 2026 11:14:19 +0100 Matt Fleming <matt@readmodwrite.com> wrote:
 
-> Commit 0bca23804632 ("mm/vmalloc: use physical page count in
-> vread_iter() for VM_ALLOC areas") replaced get_vm_area_size(vm), which
-> returns a size_t, with vm->nr_pages << PAGE_SHIFT.
+> xas_try_split() adds __GFP_ACCOUNT for page-cache xa_nodes, but
+> __folio_split() leaves the xa_state's xa_lru unset. That lets a live,
+> memcg-charged xa_node exist without being linked into the mapping's
+> shadow_nodes list_lru; when reclaim later walks the list_lru it trips
+> VM_WARN_ON(!css_is_dying()).
 > 
-> struct vm_struct::nr_pages is an unsigned int. The shift operator does
-> not perform the usual arithmetic conversions: the integer promotions are
-> applied to each operand and the type of the result is that of the
-> promoted left operand. The expression is therefore evaluated in 32-bit
-> arithmetic no matter how PAGE_SHIFT is typed, and no matter that the
-> result is assigned to a size_t. Once an area reaches 4 GiB the byte
-> count wraps, at 1 << 20 pages with 4 KiB pages, 1 << 18 with 16 KiB and
-> 1 << 16 with 64 KiB.
-> 
-> ...
-> 
-> Fix it by widening the shift, which also makes the expression consistent
-> with the four (unsigned long)nr_pages << PAGE_SHIFT expressions in
-> vrealloc_node_align_noprof().
-> 
-> On 32-bit a widening cast cannot help, size_t being 32 bits there as
-> well, but a 4 GiB vmalloc area is not reachable on 32-bit either. On
-> 64-bit the cast removes the truncation entirely, which is why replacing
-> get_vm_area_size() introduced a regression rather than inheriting a
-> pre-existing wart.
-> 
+> Use mapping_set_update() to install both the workingset update callback
+> and the shadow_nodes list_lru on the xa_state.
 
-Thanks.  AI review might have found a few things.  Most are
-pre-existing but they are basically "more of the same thing", so you
-may choose to address them?
+Thanks, I'll queue this as a hotfix.
 
-	https://sashiko.dev/#/patchset/20260725132201.88279-1-iprintercanon@gmail.com
+Sashiko is wrong, methinks.  "Calling local_irq_disable() strictly
+disables hardware interrupts" isn't true on PREEMPT_RT.
 
-I wonder how much of this stuff would go away if we were to make
-vm_struct.nr_pages an unsigned long?  It's already using 64 bits in the
-CONFIG_HAVE_ARCH_HUGE_VMALLOC=n case.
+	https://sashiko.dev/#/patchset/20260725101419.3938406-1-matt@readmodwrite.com  
 
