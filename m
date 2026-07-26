@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1B9AC531C9
-	for <linux-mm@archiver.kernel.org>; Sun, 26 Jul 2026 22:24:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A294C531C9
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Jul 2026 22:24:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2CEAD6B009F; Sun, 26 Jul 2026 18:23:40 -0400 (EDT)
+	id 2F3D76B00A0; Sun, 26 Jul 2026 18:23:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 27D016B00A0; Sun, 26 Jul 2026 18:23:40 -0400 (EDT)
+	id 27D416B00A2; Sun, 26 Jul 2026 18:23:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 146716B00A1; Sun, 26 Jul 2026 18:23:40 -0400 (EDT)
+	id 1940B6B00A3; Sun, 26 Jul 2026 18:23:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CD7EE6B009F
-	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 18:23:39 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4EE49805BA
-	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 22:23:39 +0000 (UTC)
-X-FDA: 85032355758.26.CA19139
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com [209.85.128.71])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 9626440007
-	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 22:23:37 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ZqpDuGRH;
-	spf=pass (imf27.hostedemail.com: domain of 354hmaggKCOwXOQYaObPUccUZS.QcaZWbil-aaYjOQY.cfU@flex--jackmanb.bounces.google.com designates 209.85.128.71 as permitted sender) smtp.mailfrom=354hmaggKCOwXOQYaObPUccUZS.QcaZWbil-aaYjOQY.cfU@flex--jackmanb.bounces.google.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D3BF56B00A0
+	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 18:23:40 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4071A405B2
+	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 22:23:40 +0000 (UTC)
+X-FDA: 85032355800.15.2801DD4
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com [209.85.128.69])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 8E13A14000A
+	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 22:23:38 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="tFd8AC/v";
+	spf=pass (imf09.hostedemail.com: domain of 36YhmaggKCO4ZQSacQdRWeeWbU.SecbYdkn-ccalQSa.ehW@flex--jackmanb.bounces.google.com designates 209.85.128.69 as permitted sender) smtp.mailfrom=36YhmaggKCO4ZQSacQdRWeeWbU.SecbYdkn-ccalQSa.ehW@flex--jackmanb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785104617;
+	s=arc-20220608; t=1785104618;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4EehayEF6PE+dVjTzVxUExaSQ5/A35bcakQSkMtI1JI=;
-	b=R3MikhIFVzy/vdk5YJy7335zchG8K1lWPrhBxu2zQe4D0TzMNoGcwD+4xc7i6DNMZZ+SxF
-	QfVwHYoh6z8L6bzXdXqTAppmW08D7ex0hi10Q8UgaXxS80QR5HsZdLQWjcSJpeKAW3zW8v
-	JX8GGHvu0aTFThIrcUqMUtW+Ac2A/sU=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ZqpDuGRH;
-	spf=pass (imf27.hostedemail.com: domain of 354hmaggKCOwXOQYaObPUccUZS.QcaZWbil-aaYjOQY.cfU@flex--jackmanb.bounces.google.com designates 209.85.128.71 as permitted sender) smtp.mailfrom=354hmaggKCOwXOQYaObPUccUZS.QcaZWbil-aaYjOQY.cfU@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	bh=xRmKMCTmLt6AK1jKePrzTm1mCt1DLyi3k62vpYouu48=;
+	b=RXISHlLiTRnSRHre+i0CYf1Oa5bSPoSxyfNlEHejMVO7lDM9bLxQ92N4KUkdTHCudOm2GB
+	TskidDaF4LDVJKDvIX/tQ7w/XzOj0PtlA7Hv6lkMiqa9cz2OQiY6jZhwDEcq0Dv4ec2Ez7
+	kFSgJZshBZCm4meJbk/tRWyp7jaPNoA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785104617;
-	b=gIOLrXA4u2qjbx6k7lNsfBYVgOcqP1j941WymTnujni1WVi1A7oo9ta5u3X1pQLNyPYnsR
-	lHWMMFjGa2CrX676HmvA2ipI97AIdfjqaOEuvoPX4AEZlR2Itm/HHe35+3gOTDVmh4+nv/
-	zo3lzcZwMVwCsqvEB97gprY6/xiZw54=
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4954b1c6310so19836145e9.0
-        for <linux-mm@kvack.org>; Sun, 26 Jul 2026 15:23:37 -0700 (PDT)
+	t=1785104618;
+	b=qzPW/JuiL+nWeJ1Kd+N4+Jb5mJImBTGzG0ZgafBHFV6weRjSYrPQuTF6P1GHtdpXg8NFmT
+	Neqel0+7wUfFATiO2qEDOr4/ioBMjcjEa735scjHLZQLaz1WVfowGHbUGuG271QYsunWfj
+	ZIcx1Vgdz4BSVTL71N1b5cXPtzEhZ3g=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="tFd8AC/v";
+	spf=pass (imf09.hostedemail.com: domain of 36YhmaggKCO4ZQSacQdRWeeWbU.SecbYdkn-ccalQSa.ehW@flex--jackmanb.bounces.google.com designates 209.85.128.69 as permitted sender) smtp.mailfrom=36YhmaggKCO4ZQSacQdRWeeWbU.SecbYdkn-ccalQSa.ehW@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-496b61bd846so11863825e9.2
+        for <linux-mm@kvack.org>; Sun, 26 Jul 2026 15:23:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785104616; x=1785709416; darn=kvack.org;
+        d=google.com; s=20251104; t=1785104617; x=1785709417; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=4EehayEF6PE+dVjTzVxUExaSQ5/A35bcakQSkMtI1JI=;
-        b=ZqpDuGRHpv1hIOmnTAWQGXoLu9jHHHfFMmHESkSRRgCtEcd3cuygprWy0UIapGyrA3
-         y33UxcYWIvmzH8HIQhEf1L2R4E41OcfF7tOr/xR+nDgx2fXJMhMINSmiiIKdB9s8q2Nq
-         Dwrj0Elyu+O5k/LMgrPdsRxz30rsB9LLeXyfC7yw3MfnwkKaSBtl1ZgPbwxaZxgDnY2A
-         LAUv4wKYFzIsoDLuk1VTX1AWU6ccNoHWMQxTllC29qb0WOJMpdvYz0VVI3jx682xbSXR
-         gb43uyMk2Zne9Zr4QM3Z3B6vAidX95qkSQoX/BFvBbi4XiYY05ufuuiiAfGSLvQzFLu6
-         EgXg==
+        bh=xRmKMCTmLt6AK1jKePrzTm1mCt1DLyi3k62vpYouu48=;
+        b=tFd8AC/vdxYSt6AimSR5VzP5QeErCq355uHe6F+5rHSmf/KEXWonXLA3+tIxnHxGKl
+         VclkxDgBUD77Bgdn8GtCxNQuab9uiQx+RIrl/mMwpI129xwyTCTbIrK0c8CyafBh80N8
+         yUYWDROmsfOGHg1o1IDxKTEsUkrlyk3nP6kfjVUgYfXcTChdcAxipTxjznCoyAp3/ioE
+         IjF/DdwMffEx5GDrwXkV4r6/9LcKvM1EjXtK/syUIzv/jaEYXN+j6WmARnjTpslCCaZP
+         XU+LuLWXrRpmGBHeTaXxxKfkW8ZC/p9s8Eh6HBSYulImop8XKjWOtRGGfNpILGNNYplH
+         2PAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785104616; x=1785709416;
+        d=1e100.net; s=20251104; t=1785104617; x=1785709417;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=4EehayEF6PE+dVjTzVxUExaSQ5/A35bcakQSkMtI1JI=;
-        b=Cotw3kYlmHQlnrM55WqBIA1CPefur/XLF4lyELG59kfUmZ3e925cH0L1vYoCyP6hm0
-         ZezBwsUIvv2L+2dxAqv4Lo1VnfKilrRNFkY9g5zPgxpjl0MoDB1VkdRAWi0P1IDNDwXP
-         /KoC52pnSRvCb8Vp/pxzg6mgc55JvySBYHCP8VDG8HM3p+hQeW030iT5ioOKbaN16o2n
-         LzK/8T2Bum6nC8YvP8rrBlTOmRSuqmunqm5+J+UmktGok66SlMAxmH1nTHotF/jA98h7
-         NJTovPKNDXHh1lAispz7wLHHebc03DJmo0ZTG1pfkeEcaGhFSAFt4aWaCmJi4bdLGZRg
-         4FGA==
-X-Gm-Message-State: AOJu0YweM5Y5Ba6LJ7zQzWNKryx/C6F2+IsnIq3KsXSojKJ9BBFSOiE3
-	zQFloysXbta6WC2j1OjfBTswtKLQUvDQLzXOg4+OFna82Uks9GU/c22r0eZ/xTMCH5PezDvDqE1
-	DojKrWBhHJCvfOQ==
-X-Received: from wmaq23.prod.google.com ([2002:a05:600c:6c97:b0:493:bd80:da9b])
+        bh=xRmKMCTmLt6AK1jKePrzTm1mCt1DLyi3k62vpYouu48=;
+        b=nFNGrXdVVAIayYmaUiGNRrMEYRUZ43+FwAjDynkodlwCyZIVTwEd+2srjyhjf5DM6f
+         9XS1xTUaZHDIqKINQsyHlxWiB4fH90mqkwcCGXkDOni3uUtf0ol2z2mA+IProf974Ili
+         S7tHq7EPMV7yRX1Z12EsCXf1QTtys+fJj+rCuO56MxDoTk3SisTRGP9pTvL6N7QVr8cL
+         exT/BfyRtoziQkmUda6BnnDInCLcbUnMlfqg4kQfuoDeUNOOiiev9U385pkpw2534Ciz
+         5bHYIDuniOCoX9IKm2NFaiCPYT767dLLyDxCr/9IkVviG/z6SeWpqY6cRsUhIAKf6rg6
+         oWPA==
+X-Gm-Message-State: AOJu0YybgzcvduMOeGzEsqDCdgjIAYCQIXR1+h1fbpHubaXzndBr3Rk2
+	tO0WGVnh+cEPt6AihopvXHGzibtWqIG8Gzl1+d816XHqokEiM0KgBTJfP+3sC7zL/4LePzC993E
+	px1Oa/2w+fyArMw==
+X-Received: from wmoy18.prod.google.com ([2002:a05:600c:17d2:b0:495:7a24:18e3])
  (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:630d:b0:495:7952:64df with SMTP id 5b1f17b1804b1-496b570d9e3mr86371495e9.36.1785104615991;
- Sun, 26 Jul 2026 15:23:35 -0700 (PDT)
-Date: Sun, 26 Jul 2026 22:22:44 +0000
+ 2002:a05:600c:820e:b0:493:e365:ace9 with SMTP id 5b1f17b1804b1-496b56e6603mr73576495e9.11.1785104617159;
+ Sun, 26 Jul 2026 15:23:37 -0700 (PDT)
+Date: Sun, 26 Jul 2026 22:22:45 +0000
 In-Reply-To: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
 Mime-Version: 1.0
 References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
 X-Mailer: b4 0.16-dev
-Message-ID: <20260726-page_alloc-unmapped-v3-11-6f5729aa9832@google.com>
-Subject: [PATCH v3 11/26] x86/mm: introduce the mermap
+Message-ID: <20260726-page_alloc-unmapped-v3-12-6f5729aa9832@google.com>
+Subject: [PATCH v3 12/26] mm: KUnit tests for the mermap
 From: Brendan Jackman <jackmanb@google.com>
 To: Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
 	Peter Zijlstra <peterz@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
@@ -103,14 +103,14 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org,
 	Patrick Bellasi <derkling@google.com>, Reiji Watanabe <reijiw@google.com>, 
 	Sean Christopherson <seanjc@google.com>, Brendan Jackman <jackmanb@google.com>
 Content-Type: text/plain; charset="utf-8"
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 8E13A14000A
+X-Stat-Signature: zssdskiasn93asrfjbwfge9x7jd16gpk
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 9626440007
-X-Stat-Signature: 1niyfxk97iezu3crkyingtghgdbsyzsn
-X-HE-Tag: 1785104617-735106
-X-HE-Meta: U2FsdGVkX1+I3rQrlgp+2WpMY5GGUnn3y/uTKC2FchfYX4PljurIlFsM1j2G1bU5GGR+IXX5sSVSOt88FmbkWRxR0K3uU8BG/h/m0zPZ4PsO6QvyP5njbhKbDJQbYPt8CmBhspzHehiAjfKEKnV9hQMq6Bl7Xg9VU8BO68Dfy7ll+lV86Sd5jMJpd1iWYxIl41iM+uW9t/QZPaaUgcm6gXFmlDMyi0vYwOMqLqd9BJWxtNPeCdZjtSrQid6FxyzwmEl2+3+7YejcpFcUT1Kt+yRCIJ1P2kslqM0kaiBoeM6pWzE4zMMTVHUegUfYzWYgg5bG1kYzDXk1YsWO9T6DLrICBj5hmKuPR+LZpvfJ7sBAFQhdR8NA68Y7k1XEdJzEQyGeYqQ88v+35ygsFU4TPS50nZ0y4i1zcBNPaEAZBGX9lT1uAqfJnLSgshBQWbGdyKqWWaPCpek7JUwpgOWXRdWHCYLpYAWvz7tVGJfB1clKpY/B18pfBjD+VVdKUDkyf79PoxqTJD3admc+vaLvavZEsNQ4+DorwlvX63/U4TftyC/wiJ3YgTTej2UCQiwQrVc2Z9Twv5LRNTl40f4I9de4XxClnMV+7jd8lNdwFPU77/GEm7oE99gDKh6x1bdB4hR7QJt/ImPb9Y4rwOZMVL5TAwYgwjZCdF3I5Ab3Dqt8p03xJM88nWDQvy7zbnFGYYMqjOzTh/zXMKciCZ03pVTSVBzpqBE9c3tXslXIgSyOpnzC6BisTi6oeBQcaBt3k5fHgfOWS8hsE3XvUqy8LKY2lwRjHCWF3RjPn9+afH9/rgra5m8Pn02HeQ8jv3k85Ny/hZ9JKDim3cS2Q7wJTwWWM+6FQAX++exi8AJqZe6pamzGTCmXJRK3OB/7l+CKiMH46HY6KBoFHZzN+MJY5yoQf3A0zWW0yEpNv4cIAYHLuBuZV6gDHOy4mlLtVj6n/TbvRfLtYakfznLBhPa
- 2xa3P2/f
- wzYhSdzyKkObeySISPTbkVZi/ts83s/gymmQzmVce+AuVjIM3oskj2lpZAYLQNtLQknpLexZzju+0QXOHUAe4U2R7R8S9BngBb6F+PT9Q3IQc8HjFbOsM4k1NptcmrxaBLH6lONd7P6d5JNtmMyYiENx5dbjoclrxg5Hw8qSyEte4XUp6v+K1WeozfXda/80e0X/d669e2EMnDXmdbCPFShSq6fjbuwTMzlks5ys1AxoGlvmS/N+s4JN9NPDzxG801WDV0iMb2ajeaMFNhoE+UFBlwT3zUbqRKofN5Nn9kbSiYEH2rzr8UpBSZ2QRJj1CndWM/ZZPuKCncLJRx7EnBfw4HZHqkIbENIIAmq3zVw1yyqD3mWZO0TA0S7lr1BFPma14Lkm7Maewhc7LFK7qyc/l++9wuOI07XjIsTxK96KaxkvzEIwV/VsF4Zp6wl66SeefWbU04gdBLflMMu4ShafwNRoH2LmVEio0NYXlHvV6ApH20x0PdEzHy0GA06fC2m4feTjZV+I9mw3EUg1ZEyn7HU44bTkGgWoEGTx535ctExq8MWugiwec2Bmd9+wtFv6red4NoDgA7DYJ57xDD5hz+9tQWo9+0531APuQ+bFYYiLGrSaHNkBqg1S9C7YhDbttPAYEh/02/KIDTjzID2gl2BVnBDzEXMIfvlBAFVE9MdyiAUKFDHiacRpVh53N6sShC90/OG72/kI=
+X-HE-Tag: 1785104618-663378
+X-HE-Meta: U2FsdGVkX18d5H/LtlnEHr5j36YfSBrVLkfv31jn79xjQcxyqnPjWVN6t0hwTA3eHxo8kNp6I7gDIoX9PidvLUO8KM3VNHjstESn53oq7OUtGe/qTbwaRC+hjb8ghVvoIIvU6u27MLQdeoNKCa+1Sjaj7zsYl4vzBt7sDkCCx/GaaLzkWMNqHbtTLZ7RPUz1QvzLh/XWTMDKkDkrUTrt5wY9Pv1hU1DUVEJpS6UU1KvhPZsx26x+QlLvKmWZy6TZre104bV5mTV4QvkpO9zRXx+jnALKw70ihPPxGaiGlLkIR4yJUd/aU7pZI0Up1FCsB+xRnKagNb+xkLUucDNmZoV0X6EnsODRaCPTkg2eMFj0qWmk2WmUjkvyMjbIg6VdflNJMW6H/ohPqfhk28YyNXV/TF3Sj5ydK3p8lA7UwtugEDtMflFnMClAg1oAQHeVHKfft3zMkmWDkhUapkfG+6UYElQ53IxKHkNxvX9ad0N7BKh7qRUIvKf187oVg3H4p+QMjrQw0lqgJ16+FFiaUsKGQ1PULM63+N/+dFQnrsT8X7NBBlX+iyGVa4N4uPnkwL17tTMktnNiy5aR7FjZ+xKAjlKVumsarc/fOglt9PLDzt9vG1E3goel29PX2ItPxQ/huzZ3E2pJFyLSyLSmXAaUCnNuHrJdgCvtLojEQ7IF2AGUWPZoyF3k9YFOBu5kaEd2l7bI2CEXrRYQpNkkHu5XexcgTkNln35CN12vddJlCjZ8ODNZA3zQw9zZx0Qc4zIntAIlDR2htZSsMFHCRY6BsTqaZ0unsDLSi0vatxFDyLzTqaQtqgybtlTjosIcbLBrB3W3I9DrQMWa3TFJRpgT9R9StvTcj3vaRvdLxZ20lKL5gS4x3fSEcVZN+ky7qDOqddanFZICjIA9v7cDf13X6t/JKRIQQHKZBdIxWR8fora2wOqlYchwtStIJlucWmUsA6HKrHvM2Rxn7jK
+ IA/AhKST
+ wayawoRZnudlY0vxrmVomti9QIkIlXS9dGNweuBCMMShvKuC3k2Wobx703ba3JcUUu0fzv6Yh59kzizfKqS1RdqxdSZhm2yk5hwQ0GC3NUlB4jd6MU+gox6xbKbS9LZ6X5zoBSkXI7s8swOVqbQxJsfauxe/2odMTOeSqrOeUDKpgU56wlzWwdoShXVTolkDzwvdi/i3qY8qVqAZc3Bl/jfrJUcARKCyTvz8isMR0kjNAAy/Yn8OfAldlk4DQoBY8fySQyBN5qRHsvKxphsZQs//jeScXJrYLf0FCvllBAyB5mxZnWYJFL/dMH9EqKEw5Kjiev6WvlQJYtdU+xNtpVUMlHIlNWW5Qmczz9CTAtY0akjAMLyxw6qG8PTY/uffXvehsGOktU5zuqhh6FZ9Z/BhMSUBHMS2b/nMv0M7EJarCYxbhVBNinEFAZgqMdqbEQsFtjWwkaZhmvBWk4yHXaL0GhSw+CAQ1oqupC22mXMjrNPqtuNMJSN1vRwrtN+7iZC3u+xSW8Ep+1FFsN6CMURTR+IIn1MjhKzc6gKCmyvee9q+7fA1jtclH2rIFXMbV6sjoy1pdauoG96PxXMTIKvw6Ht6+tD93hJgN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,707 +118,334 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The mermap provides a fast way to create ephemeral mm-local mappings of
-physical pages. The purpose of this is to access pages that have been
-removed from the direct map. Potential use cases are:
+Some simple smoke-tests for the mermap. Mainly aiming to test:
 
-1. For zeroing direct-map-nonpresent pages (added in a later patch).
+1. That there aren't any silly off-by-ones.
 
-2. For populating guest_memfd pages that are protected by the
-   GUEST_MEMFD_NO_DIRECT_MAP feature [0].
+2. That the pagetables are not completely broken.
 
-3. For efficient access of pages protected by Address Space Isolation
-   [1].
+3. That the TLB appears to get flushed basically when expected.
 
-[0] https://lore.kernel.org/all/20250924151101.2225820-1-patrick.roy@campus.lmu.de/
-[1] https://linuxasi.dev
-
-The details of this mechanism are described in the API comments. However
-the key idea is to use CPU-local virtual regions to avoid a need for
-synchronizing. On x86, this can also be used to prevent TLB shootdowns.
-
-Because the virtual region is CPU-local, allocating from the mermap
-disables migration. The caller is forbidden to use the returned value
-from any other context, and migration is re-enabled when it's freed.
-
-One might notice that mermap_get() bears a strong similarity to
-kmap_local_page(). The most important differences between mermap_get()
-and kmap_local_page() are:
-
-1. mermap_get() allows mapping variable sizes while kmap_local_page()
-   specifically maps a single order-0 page.
-2. As a consequence of 1 (combined with the need for mermap_get() to be
-   an extremely simple allocator), mermap_get() should be expected to
-   fail, while kmap_local_page() is guaranteed to work up to a certain
-   degree of nesting.
-3. While the mappings provided by kmap_local_page() are _logically_
-   local to the calling context (it's a bug for software to access them
-   from elsewhere), they are _physically_ installed into the shared
-   kernel pagetables. This means their locality doesn't provide any
-   protection from hardware attacks. In contrast, the mermap is
-   physically local to the creating mm, taking advantage of the new
-   mm-local kernel address region.
-
-So that the mermap is available even in contexts where failure is not
-tolerable there is also a _reserved() variant, which is fixed at
-allocating a single base page. This is useful, for example, for zeroing
-unmapped pages, where handling failure would be extremely inconvenient.
-The _reserved() variant is simply implemented by leaving one base-page
-space unavailable for non-_reserved allocations, and requiring an atomic
-context.
-
-Note for Sashiko: Yes, the data mapped by the mermap is exposed to
-Meltdown-style attacks by the current process. This is completely
-intentional. Data is only supposed to be mapped there that the current
-process is allowed to read anyway.
+This last point requires a bit of ifdeffery to detect when the flushing
+has been performed.
 
 Signed-off-by: Brendan Jackman <jackmanb@google.com>
 ---
- arch/x86/Kconfig                        |   1 +
- arch/x86/include/asm/mermap.h           |  23 +++
- arch/x86/include/asm/pgtable_64_types.h |   8 +-
- arch/x86/include/asm/pgtable_types.h    |   2 +
- include/linux/mermap.h                  |  63 ++++++
- include/linux/mermap_types.h            |  41 ++++
- include/linux/mm_types.h                |   4 +
- kernel/fork.c                           |   5 +
- mm/Kconfig                              |   9 +
- mm/Makefile                             |   1 +
- mm/mermap.c                             | 338 ++++++++++++++++++++++++++++++++
- 11 files changed, 494 insertions(+), 1 deletion(-)
+ include/linux/mermap_types.h |   3 +
+ mm/Kconfig                   |  11 ++
+ mm/Makefile                  |   1 +
+ mm/tests/mermap_kunit.c      | 258 +++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 273 insertions(+)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 33c1282bfbf93..6b4d81a280d3b 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -37,6 +37,7 @@ config X86_64
- 	select ZONE_DMA32
- 	select EXECMEM if DYNAMIC_FTRACE
- 	select ACPI_MRRM if ACPI
-+	select ARCH_SUPPORTS_MERMAP
- 
- config FORCE_DYNAMIC_FTRACE
- 	def_bool y
-diff --git a/arch/x86/include/asm/mermap.h b/arch/x86/include/asm/mermap.h
-new file mode 100644
-index 0000000000000..9d7614716b718
---- /dev/null
-+++ b/arch/x86/include/asm/mermap.h
-@@ -0,0 +1,23 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _ASM_X86_MERMAP_H
-+#define _ASM_X86_MERMAP_H
-+
-+#include <asm/tlbflush.h>
-+
-+static inline void arch_mermap_flush_tlb(void)
-+{
-+	/*
-+	 * No shootdown allowed, IRQs may be off. Luckily other CPUs are not
-+	 * allowed to access our region so the stale mappings are harmless, as
-+	 * long as they still point to data belonging to this process.
-+	 */
-+	__flush_tlb_all();
-+}
-+
-+static inline bool arch_mermap_pgprot_allowed(pgprot_t prot)
-+{
-+	/* Mermap is mm-local so global mappings would be a bug. */
-+	return !(pgprot_val(prot) & _PAGE_GLOBAL);
-+}
-+
-+#endif /* _ASM_X86_MERMAP_H */
-diff --git a/arch/x86/include/asm/pgtable_64_types.h b/arch/x86/include/asm/pgtable_64_types.h
-index 1181565966405..fb6c3daacfeb8 100644
---- a/arch/x86/include/asm/pgtable_64_types.h
-+++ b/arch/x86/include/asm/pgtable_64_types.h
-@@ -105,11 +105,17 @@ extern unsigned int ptrs_per_p4d;
- 
- #define MM_LOCAL_PGD_ENTRY	-240UL
- #define MM_LOCAL_BASE_ADDR	(MM_LOCAL_PGD_ENTRY << PGDIR_SHIFT)
--#define MM_LOCAL_END_ADDR	((MM_LOCAL_PGD_ENTRY + 1) << PGDIR_SHIFT)
-+#define MM_LOCAL_START_ADDR	((MM_LOCAL_PGD_ENTRY) << PGDIR_SHIFT)
-+#define MM_LOCAL_END_ADDR	(MM_LOCAL_START_ADDR + (1UL << PGDIR_SHIFT))
- 
- #define LDT_BASE_ADDR		MM_LOCAL_BASE_ADDR
- #define LDT_END_ADDR		(LDT_BASE_ADDR + PMD_SIZE)
- 
-+#define MERMAP_BASE_ADDR	LDT_END_ADDR
-+#define MERMAP_CPU_REGION_SIZE	PMD_SIZE
-+#define MERMAP_SIZE		(MERMAP_CPU_REGION_SIZE * NR_CPUS)
-+#define MERMAP_END_ADDR		(MERMAP_BASE_ADDR + (NR_CPUS * MERMAP_CPU_REGION_SIZE))
-+
- #define __VMALLOC_BASE_L4	0xffffc90000000000UL
- #define __VMALLOC_BASE_L5 	0xffa0000000000000UL
- 
-diff --git a/arch/x86/include/asm/pgtable_types.h b/arch/x86/include/asm/pgtable_types.h
-index af08d98be9309..f397e4311cf66 100644
---- a/arch/x86/include/asm/pgtable_types.h
-+++ b/arch/x86/include/asm/pgtable_types.h
-@@ -223,6 +223,7 @@ enum page_cache_mode {
- #define __PAGE_KERNEL_RO	 (__PP|   0|   0|___A|__NX|   0|   0|___G)
- #define __PAGE_KERNEL_ROX	 (__PP|   0|   0|___A|   0|   0|   0|___G)
- #define __PAGE_KERNEL		 (__PP|__RW|   0|___A|__NX|___D|   0|___G)
-+#define __PAGE_KERNEL_NOGLOBAL	 (__PP|__RW|   0|___A|__NX|___D|   0|   0)
- #define __PAGE_KERNEL_EXEC	 (__PP|__RW|   0|___A|   0|___D|   0|___G)
- #define __PAGE_KERNEL_NOCACHE	 (__PP|__RW|   0|___A|__NX|___D|   0|___G| __NC)
- #define __PAGE_KERNEL_VVAR	 (__PP|   0|_USR|___A|__NX|   0|   0|___G)
-@@ -245,6 +246,7 @@ enum page_cache_mode {
- #define __pgprot_mask(x)	__pgprot((x) & __default_kernel_pte_mask)
- 
- #define PAGE_KERNEL		__pgprot_mask(__PAGE_KERNEL            | _ENC)
-+#define PAGE_KERNEL_NOGLOBAL	__pgprot_mask(__PAGE_KERNEL_NOGLOBAL   | _ENC)
- #define PAGE_KERNEL_NOENC	__pgprot_mask(__PAGE_KERNEL            |    0)
- #define PAGE_KERNEL_RO		__pgprot_mask(__PAGE_KERNEL_RO         | _ENC)
- #define PAGE_KERNEL_EXEC	__pgprot_mask(__PAGE_KERNEL_EXEC       | _ENC)
-diff --git a/include/linux/mermap.h b/include/linux/mermap.h
-new file mode 100644
-index 0000000000000..5457dcb8c9789
---- /dev/null
-+++ b/include/linux/mermap.h
-@@ -0,0 +1,63 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _LINUX_MERMAP_H
-+#define _LINUX_MERMAP_H
-+
-+#include <linux/mermap_types.h>
-+#include <linux/mm.h>
-+
-+#ifdef CONFIG_MERMAP
-+
-+#include <asm/mermap.h>
-+
-+int mermap_mm_prepare(struct mm_struct *mm);
-+void mermap_mm_init(struct mm_struct *mm);
-+void mermap_mm_teardown(struct mm_struct *mm);
-+
-+/* Can the mermap be called from this context? */
-+static inline bool mermap_ready(void)
-+{
-+	return in_task() && current->mm && current->mm->mermap.cpu;
-+}
-+
-+struct mermap_alloc *mermap_get(struct page *page, unsigned long size, pgprot_t prot);
-+void *mermap_get_reserved(struct page *page, pgprot_t prot);
-+void mermap_put(struct mermap_alloc *alloc);
-+
-+static inline void *mermap_addr(struct mermap_alloc *alloc)
-+{
-+	return (void *)alloc->base;
-+}
-+
-+/*
-+ * arch_mermap_flush_tlb() is called before a part of the local CPU's mermap
-+ * region is remapped to a new address. No other CPU is allowed to _access_ that
-+ * region, but the region was mapped there.
-+ *
-+ * This may be called with IRQs off.
-+ *
-+ * On arm64, this will need to be a broadcast TLB flush. Although the other CPUs
-+ * are forbidden to access the region, they can leak the data that was mapped
-+ * there via CPU exploits. Violating break-before-make would mean the data
-+ * available to these CPU exploits is unpredictable.
-+ */
-+extern void arch_mermap_flush_tlb(void);
-+extern bool arch_mermap_pgprot_allowed(pgprot_t prot);
-+
-+#if IS_ENABLED(CONFIG_KUNIT)
-+struct mermap_alloc *__mermap_get(struct mm_struct *mm, struct page *page,
-+			unsigned long size, pgprot_t prot, bool use_reserve);
-+void __mermap_put(struct mm_struct *mm, struct mermap_alloc *alloc);
-+unsigned long mermap_cpu_base(int cpu);
-+unsigned long mermap_cpu_end(int cpu);
-+#endif
-+
-+#else /* CONFIG_MERMAP */
-+
-+static inline int mermap_mm_prepare(struct mm_struct *mm) { return 0; }
-+static inline void mermap_mm_init(struct mm_struct *mm) { }
-+static inline void mermap_mm_teardown(struct mm_struct *mm) { }
-+static inline bool mermap_ready(void) { return false; }
-+
-+#endif /* CONFIG_MERMAP */
-+
-+#endif /* _LINUX_MERMAP_H */
 diff --git a/include/linux/mermap_types.h b/include/linux/mermap_types.h
-new file mode 100644
-index 0000000000000..c1c83b223c28d
---- /dev/null
+index c1c83b223c28d..13110fcb4c387 100644
+--- a/include/linux/mermap_types.h
 +++ b/include/linux/mermap_types.h
-@@ -0,0 +1,41 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _LINUX_MERMAP_TYPES_H
-+#define _LINUX_MERMAP_TYPES_H
-+
-+#include <linux/mutex.h>
-+#include <linux/percpu.h>
-+#include <linux/types.h>
-+
-+#ifdef CONFIG_MERMAP
-+
-+/* Tracks an individual allocation in the mermap. */
-+struct mermap_alloc {
-+	/* Currently allocated. */
-+	bool in_use;
-+	/* Requires flush before reallocating. */
-+	bool need_flush;
-+	unsigned long base;
-+	/* Non-inclusive. */
-+	unsigned long end;
-+};
-+
-+struct mermap_cpu {
-+	/* Next address immediately available for alloc (no TLB flush needed). */
-+	unsigned long next_addr;
-+	struct mermap_alloc normal_allocs[3];
-+	struct mermap_alloc reserve_alloc;
-+};
-+
-+struct mermap {
-+	struct mutex init_lock;
-+	struct mermap_cpu __percpu *cpu;
-+};
-+
-+#else /* CONFIG_MERMAP */
-+
-+struct mermap {};
-+
-+#endif /* CONFIG_MERMAP */
-+
-+#endif /* _LINUX_MERMAP_TYPES_H */
-+
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index d39fddf57edc8..bb80d60cf3498 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -7,6 +7,7 @@
- #include <linux/auxvec.h>
- #include <linux/kref.h>
- #include <linux/list.h>
-+#include <linux/mermap_types.h>
- #include <linux/spinlock.h>
- #include <linux/rbtree.h>
- #include <linux/maple_tree.h>
-@@ -35,6 +36,7 @@
- struct address_space;
- struct futex_private_hash;
- struct mem_cgroup;
-+struct mermap;
+@@ -24,6 +24,9 @@ struct mermap_cpu {
+ 	unsigned long next_addr;
+ 	struct mermap_alloc normal_allocs[3];
+ 	struct mermap_alloc reserve_alloc;
++#if IS_ENABLED(CONFIG_MERMAP_KUNIT_TEST)
++	u64 tlb_flushes;
++#endif
+ };
  
- typedef struct {
- 	unsigned long f;
-@@ -1211,6 +1213,8 @@ struct mm_struct {
- 		atomic_t membarrier_state;
- #endif
- 
-+		struct mermap mermap;
-+
- 		/**
- 		 * @mm_users: The number of users including userspace.
- 		 *
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 4fb23ea33b7da..7c2050e76d1bc 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -13,6 +13,7 @@
-  */
- 
- #include <linux/anon_inodes.h>
-+#include <linux/mermap.h>
- #include <linux/slab.h>
- #include <linux/sched/autogroup.h>
- #include <linux/sched/mm.h>
-@@ -1143,6 +1144,9 @@ static struct mm_struct *mm_init(struct mm_struct *mm, struct task_struct *p)
- 		goto fail_pcpu;
- 
- 	lru_gen_init_mm(mm);
-+
-+	mermap_mm_init(mm);
-+
- 	return mm;
- 
- fail_pcpu:
-@@ -1186,6 +1190,7 @@ static inline void __mmput(struct mm_struct *mm)
- 	ksm_exit(mm);
- 	khugepaged_exit(mm); /* must run before exit_mmap */
- 	exit_mmap(mm);
-+	mermap_mm_teardown(mm);
- 	mm_put_huge_zero_folio(mm);
- 	set_mm_exe_file(mm, NULL);
- 	if (!list_empty(&mm->mmlist)) {
+ struct mermap {
 diff --git a/mm/Kconfig b/mm/Kconfig
-index cb531c1436f77..bf8c4c6264c73 100644
+index bf8c4c6264c73..adf71788971a2 100644
 --- a/mm/Kconfig
 +++ b/mm/Kconfig
-@@ -1507,6 +1507,15 @@ config MM_LOCAL_REGION
- 	bool
- 	depends on ARCH_SUPPORTS_MM_LOCAL_REGION
+@@ -1516,6 +1516,17 @@ config MERMAP
+ 	depends on ARCH_SUPPORTS_MERMAP
+ 	select MM_LOCAL_REGION
  
-+config ARCH_SUPPORTS_MERMAP
-+	bool
-+	select ARCH_SUPPORTS_MM_LOCAL_REGION
-+
-+config MERMAP
-+	bool
++config MERMAP_KUNIT_TEST
++	tristate "KUnit tests for the mermap" if !KUNIT_ALL_TESTS
 +	depends on ARCH_SUPPORTS_MERMAP
-+	select MM_LOCAL_REGION
++	depends on KUNIT
++	depends on MERMAP
++	default KUNIT_ALL_TESTS
++	help
++	  KUnit test for the mermap.
++
++	  If unsure, say N.
 +
  source "mm/damon/Kconfig"
  
  endmenu
 diff --git a/mm/Makefile b/mm/Makefile
-index ab37ef428d98d..9cf282c154104 100644
+index 9cf282c154104..3507cb7ed6a9a 100644
 --- a/mm/Makefile
 +++ b/mm/Makefile
-@@ -147,3 +147,4 @@ obj-$(CONFIG_EXECMEM) += execmem.o
- obj-$(CONFIG_TMPFS_QUOTA) += shmem_quota.o
+@@ -148,3 +148,4 @@ obj-$(CONFIG_TMPFS_QUOTA) += shmem_quota.o
  obj-$(CONFIG_LAZY_MMU_MODE_KUNIT_TEST) += tests/lazy_mmu_mode_kunit.o
  obj-$(CONFIG_MEM_ALLOC_PROFILING) += alloc_tag.o
-+obj-$(CONFIG_MERMAP) += mermap.o
-diff --git a/mm/mermap.c b/mm/mermap.c
+ obj-$(CONFIG_MERMAP) += mermap.o
++obj-$(CONFIG_MERMAP_KUNIT_TEST) += tests/mermap_kunit.o
+diff --git a/mm/tests/mermap_kunit.c b/mm/tests/mermap_kunit.c
 new file mode 100644
-index 0000000000000..2bead38eadfe8
+index 0000000000000..737df7d84a340
 --- /dev/null
-+++ b/mm/mermap.c
-@@ -0,0 +1,338 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include <linux/io.h>
-+#include <linux/error-injection.h>
++++ b/mm/tests/mermap_kunit.c
+@@ -0,0 +1,258 @@
++// SPDX-License-Identifier: GPL-2.0-only
++#include <linux/cacheflush.h>
++#include <linux/kthread.h>
 +#include <linux/mermap.h>
-+#include <linux/mm.h>
-+#include <linux/mmu_context.h>
-+#include <linux/mutex.h>
-+#include <linux/pagemap.h>
 +#include <linux/pgtable.h>
-+#include <linux/sched.h>
 +
-+#include <kunit/visibility.h>
++#include <kunit/test.h>
 +
-+#include "internal.h"
++#define NR_NORMAL_ALLOCS ARRAY_SIZE(((struct mm_struct *)NULL)->mermap.cpu->normal_allocs)
 +
-+static inline int set_unmapped_pte(pte_t *ptep, unsigned long addr, void *data)
++KUNIT_DEFINE_ACTION_WRAPPER(__free_page_wrapper, __free_page, struct page *);
++
++static inline struct page *alloc_page_wrapper(struct kunit *test, gfp_t gfp)
 +{
-+	set_pte(ptep, __pte(0));
-+	return 0;
++	struct page *page = alloc_page(gfp);
++
++	KUNIT_ASSERT_NOT_NULL(test, page);
++	KUNIT_ASSERT_EQ(test, kunit_add_action_or_reset(test, __free_page_wrapper, page), 0);
++	return page;
 +}
 +
-+VISIBLE_IF_KUNIT void __mermap_put(struct mm_struct *mm, struct mermap_alloc *alloc)
++KUNIT_DEFINE_ACTION_WRAPPER(mmput_wrapper, mmput, struct mm_struct *);
++
++static inline struct mm_struct *mm_alloc_wrapper(struct kunit *test)
 +{
-+	unsigned long size = PAGE_ALIGN(alloc->end - alloc->base);
++	struct mm_struct *mm = mm_alloc();
 +
-+	__apply_to_page_range(mm, alloc->base, size, set_unmapped_pte,
-+			      NULL, PGRANGE_CREATE | PGRANGE_NOLOCK);
-+
-+	WRITE_ONCE(alloc->in_use, false);
-+}
-+EXPORT_SYMBOL_IF_KUNIT(__mermap_put);
-+
-+/* Return a region allocated by mermap_get(). */
-+void mermap_put(struct mermap_alloc *alloc)
-+{
-+	cant_migrate();
-+	if (WARN_ON_ONCE(!alloc->in_use))
-+		return;
-+	__mermap_put(current->mm, alloc);
-+}
-+EXPORT_SYMBOL(mermap_put);
-+
-+VISIBLE_IF_KUNIT inline unsigned long mermap_cpu_base(int cpu)
-+{
-+	return MERMAP_BASE_ADDR + (cpu * MERMAP_CPU_REGION_SIZE);
-+
-+}
-+EXPORT_SYMBOL_IF_KUNIT(mermap_cpu_base);
-+
-+/* Non-inclusive */
-+VISIBLE_IF_KUNIT inline unsigned long mermap_cpu_end(int cpu)
-+{
-+	return MERMAP_BASE_ADDR + ((cpu + 1) * MERMAP_CPU_REGION_SIZE);
-+
-+}
-+EXPORT_SYMBOL_IF_KUNIT(mermap_cpu_end);
-+
-+static inline void mermap_flush_tlb(int cpu, struct mermap_cpu *mc)
-+{
-+#if IS_ENABLED(CONFIG_MERMAP_KUNIT_TEST)
-+	mc->tlb_flushes++;
-+#endif
-+	arch_mermap_flush_tlb();
++	KUNIT_ASSERT_NOT_NULL(test, mm);
++	KUNIT_ASSERT_EQ(test, kunit_add_action_or_reset(test, mmput_wrapper, mm), 0);
++	return mm;
 +}
 +
-+/* Call with preemption disabled if use_reserve, else with migration disabled. */
-+static inline struct mermap_alloc *mermap_alloc(struct mm_struct *mm,
-+						unsigned long size, bool use_reserve)
++static inline struct mm_struct *get_mm(struct kunit *test)
 +{
-+	int cpu = raw_smp_processor_id();
-+	struct mermap_cpu *mc = this_cpu_ptr(mm->mermap.cpu);
-+	unsigned long cpu_end = mermap_cpu_end(cpu);
-+	struct mermap_alloc *alloc = NULL;
++	struct mm_struct *mm = mm_alloc_wrapper(test);
 +
-+	/*
-+	 * This is an extremely stupid allocator, there can only ever be a small
-+	 * number of allocations so everything just works on linear search.
-+	 *
-+	 * Allocations are "in order", i.e. if the whole region is free it
-+	 * allocates from the beginning. If there are any existing allocations
-+	 * it allocates from right after the last (highest address) one. Any
-+	 * free space before that goes unused.
-+	 *
-+	 * Once an allocation has been freed, the space it occupied must be flushed
-+	 * from the TLB before it can be reused.
-+	 *
-+	 * Visual example of how this is supposed to behave (A for allocated, T for
-+	 * TLB-flush-pending):
-+	 *
-+	 *  _______________ Start with everything free.
-+	 *  AaaA___________ Allocate something.
-+	 *  TttT___________ Free it. (Region needs a TLB flush now).
-+	 *  TttTAaaaaaaaA__ Allocate something else.
-+	 *  TttTAaaaaaaaAAA Allocate the remaining space.
-+	 *  TttTTtttttttTAA Free the allocation before last.
-+	 *  ^^^^^^^^^^^^^   This could all be reused now but for simplicity it
-+	 *                  isn't. Another allocation at this point will fail.
-+	 *  TttTTtttttttTTT Free the last allocation.
-+	 *  _______________ Next time we allocate, first flush the TLB.
-+	 *  AA_____________ Now we're back at the beginning.
-+	 */
-+
-+	/* Keep one page for mermap_get_reserved(). */
-+	if (use_reserve) {
-+		if (WARN_ON_ONCE(size != PAGE_SIZE))
-+			return NULL;
-+		lockdep_assert_preemption_disabled();
-+	} else {
-+		cpu_end -= PAGE_SIZE;
-+	}
-+
-+	if (WARN_ON_ONCE(!in_task()))
-+		return NULL;
-+	guard(preempt)();
-+
-+	/* Out of already-available space? */
-+	if (mc->next_addr + size > cpu_end) {
-+		unsigned long new_next = mermap_cpu_base(cpu);
-+
-+		/* Would we have space after a TLB flush? */
-+		for (int i = 0; i < ARRAY_SIZE(mc->normal_allocs); i++) {
-+			struct mermap_alloc *alloc = &mc->normal_allocs[i];
-+
-+			/*
-+			 * The space between the uppermost allocated alloc->end
-+			 * (or the base of the CPU's region if there are no
-+			 * current allocations) and mc->next_addr has been
-+			 * unmapped in the pagetables, but not flushed from the
-+			 * TLB. Set new_next to point to the beginning of that
-+			 * space.
-+			 */
-+			if (READ_ONCE(alloc->in_use))
-+				new_next = max(new_next, alloc->end);
-+		}
-+		if (size > cpu_end - new_next)
-+			return NULL;
-+
-+		mermap_flush_tlb(cpu, mc);
-+		mc->next_addr = new_next;
-+	}
-+
-+	/*
-+	 * Find an alloc-tracking structure to use. Keep one for
-+	 * mermap_get_reserved() - that should never be contended since it can
-+	 * only be allocated with preemption off.
-+	 */
-+	if (WARN_ON_ONCE(mc->reserve_alloc.in_use))
-+		return NULL;
-+	if (use_reserve) {
-+		alloc = &mc->reserve_alloc;
-+	} else {
-+		for (int i = 0; i < ARRAY_SIZE(mc->normal_allocs); i++) {
-+			if (!READ_ONCE(mc->normal_allocs[i].in_use)) {
-+				alloc = &mc->normal_allocs[i];
-+				break;
-+			}
-+		}
-+		if (!alloc)
-+			return NULL;
-+	}
-+	alloc->in_use = true;
-+	alloc->base = mc->next_addr;
-+	alloc->end = alloc->base + size;
-+	mc->next_addr += size;
-+
-+	return alloc;
++	KUNIT_ASSERT_EQ(test, mermap_mm_prepare(mm), 0);
++	return mm;
 +}
 +
-+struct set_pte_ctx {
-+	pgprot_t prot;
-+	unsigned long next_pfn;
++struct __mermap_put_args {
++	struct mm_struct *mm;
++	struct mermap_alloc *alloc;
++	unsigned long size;
 +};
 +
-+static inline int do_set_pte(pte_t *pte, unsigned long addr, void *data)
++static inline void __mermap_put_wrapper(void *ctx)
 +{
-+	struct set_pte_ctx *ctx = data;
++	struct __mermap_put_args *args = (struct __mermap_put_args *)ctx;
 +
-+	set_pte(pte, pfn_pte(ctx->next_pfn, ctx->prot));
-+	ctx->next_pfn++;
-+
-+	return 0;
++	__mermap_put(args->mm, args->alloc);
++	mmdrop(args->mm);
 +}
 +
-+VISIBLE_IF_KUNIT struct mermap_alloc *
-+__mermap_get(struct mm_struct *mm, struct page *page,
-+	     unsigned long size, pgprot_t prot, bool use_reserve)
++/* Call __mermap_get() with use_reserve=false, deal with cleanup. */
++static inline struct __mermap_put_args *
++__mermap_get_wrapper(struct kunit *test, struct mm_struct *mm,
++		     struct page *page, unsigned long size, pgprot_t prot)
 +{
-+	struct mermap_alloc *alloc = NULL;
-+	struct set_pte_ctx ctx;
-+	int err;
++	struct __mermap_put_args *args =
++		kunit_kmalloc(test, sizeof(struct __mermap_put_args), GFP_KERNEL);
 +
-+	if (size > MERMAP_CPU_REGION_SIZE || WARN_ON_ONCE(!mm || !mm->mermap.cpu))
-+		return NULL;
-+	if (WARN_ON_ONCE(!arch_mermap_pgprot_allowed(prot)))
-+		return NULL;
++	KUNIT_ASSERT_NOT_NULL(test, args);
++	/*
++	 * Grab reference to mm_struct/PGD to allow mermap_put() from the
++	 * cleanup kthread.
++	 */
++	mmgrab(mm);
++	args->mm = mm;
++	args->alloc = __mermap_get(mm, page, size, prot, false);
++	args->size = size;
 +
-+	size = PAGE_ALIGN(size);
++	if (args->alloc) {
++		int err = kunit_add_action_or_reset(test, __mermap_put_wrapper, args);
 +
-+	alloc = mermap_alloc(mm, size, use_reserve);
-+	if (!alloc)
-+		return NULL;
-+
-+	ctx.prot = prot;
-+	ctx.next_pfn = page_to_pfn(page);
-+	err = __apply_to_page_range(mm, alloc->base, size, do_set_pte, &ctx,
-+				    PGRANGE_CREATE | PGRANGE_NOLOCK);
-+	if (err) {
-+		WRITE_ONCE(alloc->in_use, false);
-+		return NULL;
++		KUNIT_ASSERT_EQ(test, err, 0);
 +	}
 +
-+	return alloc;
++	return args;
 +}
-+EXPORT_SYMBOL_IF_KUNIT(__mermap_get);
 +
-+/*
-+ * Allocate a region of virtual memory, and map the page into it. This tries
-+ * pretty hard to be fast but doesn't try very hard at all to actually succeed.
-+ *
-+ * Must be called with migration disabled, and it must stay disabled until you
-+ * call mermap_put().
-+ *
-+ * The returned region is physically local to the current mm. It is _logically_
-+ * local to the current CPU but this is not enforced by hardware so it can be
-+ * exploited to mitigate CPU vulns. This means the caller must not map memory
-+ * here that doesn't belong to the current process. The caller must also perform
-+ * a full TLB flush of the region before freeing the pages that have been mapped
-+ * here.
-+ *
-+ * This may only be called from process context, and the caller must arrange to
-+ * first call mermap_mm_prepare(). (It would be possible to support this in IRQ,
-+ * but it seems unlikely there's a valid usecase given the TLB flushing
-+ * requirements).
-+ *
-+ * This is guaranteed not to allocate.
-+ *
-+ * Use mermap_addr() to get the actual address of the mapped region.
-+ */
-+struct mermap_alloc *mermap_get(struct page *page, unsigned long size, pgprot_t prot)
++/* Do the cleanup from __mermap_get_wrapper, now. */
++static inline void __mermap_put_early(struct kunit *test, struct __mermap_put_args *args)
 +{
++	kunit_release_action(test, __mermap_put_wrapper, args);
++}
++
++static void test_basic_alloc(struct kunit *test)
++{
++	struct page *page = alloc_page_wrapper(test, GFP_KERNEL);
++	struct mm_struct *mm = get_mm(test);
++	struct __mermap_put_args *args;
++
++	guard(migrate)();
++
++	args = __mermap_get_wrapper(test, mm, page, PAGE_SIZE, PAGE_KERNEL);
++	KUNIT_ASSERT_NOT_NULL(test, args->alloc);
++}
++
++/* Dumb check for off-by-ones. */
++static void test_size(struct kunit *test)
++{
++	struct page *page = alloc_page_wrapper(test, GFP_KERNEL);
++	struct __mermap_put_args *full, *large, *small, *fail;
++	struct mm_struct *mm = get_mm(test);
++	unsigned long region_size, large_size;
 +	struct mermap_alloc *alloc;
-+
-+	cant_migrate();
-+	alloc = __mermap_get(current->mm, page, size, prot, false);
-+	if (alloc) {
-+		/* Leaving migration disabled is intentional. */
-+		return alloc;
-+	}
-+	return NULL;
-+}
-+EXPORT_SYMBOL(mermap_get);
-+ALLOW_ERROR_INJECTION(mermap_get, NULL);
-+
-+/*
-+ * Allocate a single PAGE_SIZE page via mermap_get(), requiring preemption to be
-+ * off until it is freed. This always succeeds.
-+ */
-+void *mermap_get_reserved(struct page *page, pgprot_t prot)
-+{
-+	lockdep_assert_preemption_disabled();
-+	return __mermap_get(current->mm, page, PAGE_SIZE, prot, true);
-+}
-+EXPORT_SYMBOL(mermap_get_reserved);
-+
-+/*
-+ * Internal - do unconditional (cheap) setup that's done for every mm. This
-+ * doesn't actually prepare the mermap for use until someone calls
-+ * mermap_mm_prepare().
-+ */
-+void mermap_mm_init(struct mm_struct *mm)
-+{
-+	mutex_init(&mm->mermap.init_lock);
-+	mm->mermap.cpu = NULL;
-+}
-+
-+/*
-+ * Set up the mermap for this mm. The caller doesn't need to call
-+ * mermap_mm_teardown(), that's take care of by the normal mm teardown
-+ * mechanism. This is idempotent and thread-safe.
-+ */
-+int mermap_mm_prepare(struct mm_struct *mm)
-+{
-+	int err = 0;
 +	int cpu;
 +
-+	guard(mutex)(&mm->mermap.init_lock);
++	guard(migrate)();
++	cpu = raw_smp_processor_id();
++	region_size = mermap_cpu_end(cpu) - mermap_cpu_base(cpu) - PAGE_SIZE;
++	large_size = region_size - PAGE_SIZE;
 +
-+	/* Already done? */
-+	if (likely(mm->mermap.cpu))
-+		return 0;
++	/* Allocate whole region at once. */
++	full = __mermap_get_wrapper(test, mm, page, region_size, PAGE_KERNEL);
++	KUNIT_ASSERT_NOT_NULL(test, full->alloc);
++	__mermap_put_early(test, full);
 +
-+	mm->mermap.cpu = alloc_percpu_gfp(struct mermap_cpu,
-+					  GFP_KERNEL_ACCOUNT | __GFP_ZERO);
-+	if (!mm->mermap.cpu)
-+		return -ENOMEM;
++	/* Allocate larger than region size. */
++	fail = __mermap_get_wrapper(test, mm, page, region_size + PAGE_SIZE, PAGE_KERNEL);
++	KUNIT_ASSERT_NULL(test, fail->alloc);
 +
-+	/* So we can use this from the page allocator, preallocate pagetables. */
-+	mm_flags_set(MMF_LOCAL_REGION_USED, mm);
-+	for_each_possible_cpu(cpu) {
-+		unsigned long base = mermap_cpu_base(cpu);
++	/* Tiptoe up to the edge then past it. */
++	large = __mermap_get_wrapper(test, mm, page, large_size, PAGE_KERNEL);
++	KUNIT_ASSERT_NOT_NULL(test, large->alloc);
++	small = __mermap_get_wrapper(test, mm, page, PAGE_SIZE, PAGE_KERNEL);
++	KUNIT_ASSERT_NOT_NULL(test, small->alloc);
++	fail = __mermap_get_wrapper(test, mm, page, PAGE_SIZE, PAGE_KERNEL);
++	KUNIT_ASSERT_NULL(test, fail->alloc);
 +
-+		/* Note this pointlessly iterates over PTEs to initialise. */
-+		err = apply_to_page_range(mm, base, MERMAP_CPU_REGION_SIZE,
-+					  set_unmapped_pte, NULL);
-+		if (err) {
-+			/*
-+			 * Clear .cpu now to inform mermap_ready(). Any partial
-+			 * page tables get cleared up by mm teardown.
-+			 */
-+			free_percpu(mm->mermap.cpu);
-+			mm->mermap.cpu = NULL;
++	/* Can still allocate the reserved page. */
++	local_irq_disable();
++	alloc = __mermap_get(mm, page, PAGE_SIZE, PAGE_KERNEL, true);
++	local_irq_enable();
++	KUNIT_ASSERT_NOT_NULL(test, alloc);
++	__mermap_put(mm, alloc);
++}
++
++static void test_multiple_allocs(struct kunit *test)
++{
++	struct __mermap_put_args *argss[NR_NORMAL_ALLOCS] = { };
++	struct page *pages[NR_NORMAL_ALLOCS + 1];
++	struct mermap_alloc *reserved_alloc;
++	struct mm_struct *mm = get_mm(test);
++	int magic = 0xE4A4;
++
++	for (int i = 0; i < ARRAY_SIZE(pages); i++) {
++		pages[i] = alloc_page_wrapper(test, GFP_KERNEL);
++		WRITE_ONCE(*(int *)page_to_virt(pages[i]), magic + i);
++	}
++
++	guard(migrate)();
++
++	for (int i = 0; i < ARRAY_SIZE(argss); i++) {
++		unsigned long base = mermap_cpu_base(raw_smp_processor_id());
++		unsigned long end = mermap_cpu_end(raw_smp_processor_id());
++		unsigned long addr;
++
++		argss[i] = __mermap_get_wrapper(test, mm, pages[i], PAGE_SIZE, PAGE_KERNEL);
++		KUNIT_ASSERT_NOT_NULL_MSG(test, argss[i]->alloc, "alloc %d failed", i);
++
++		addr = (unsigned long) mermap_addr(argss[i]->alloc);
++		KUNIT_EXPECT_GE_MSG(test, addr, base, "alloc %d out of range", i);
++		KUNIT_EXPECT_LT_MSG(test, addr, end, "alloc %d out of range", i);
++	}
++
++	/*
++	 * Read through the mappings to try and detect if they point to the
++	 * pages we wrote earlier.
++	 */
++	kthread_use_mm(mm);
++	for (int i = 0; i < ARRAY_SIZE(pages) - 1; i++) {
++		int *ptr  = (int *)mermap_addr(argss[i]->alloc);
++
++		KUNIT_EXPECT_EQ(test, *ptr, magic + i);
++	}
++
++	/* Run out of alloc structures, only reserved allocs should succeed now. */
++	KUNIT_EXPECT_NULL(test, __mermap_get(mm, pages[NR_NORMAL_ALLOCS],
++					     PAGE_SIZE, PAGE_KERNEL, false));
++	preempt_disable();
++	reserved_alloc = __mermap_get(mm, pages[NR_NORMAL_ALLOCS],
++				      PAGE_SIZE, PAGE_KERNEL, true);
++	KUNIT_EXPECT_NOT_NULL(test, reserved_alloc);
++	/* Also check if this mapping seems correct*/
++	if (reserved_alloc) {
++		int *ptr  = (int *)mermap_addr(reserved_alloc);
++
++		KUNIT_EXPECT_EQ(test, *ptr, magic + NR_NORMAL_ALLOCS);
++
++		mermap_put(reserved_alloc);
++	}
++	preempt_enable();
++
++	kthread_unuse_mm(mm);
++}
++
++static void test_tlb_flushed(struct kunit *test)
++{
++	struct page *page = alloc_page_wrapper(test, GFP_KERNEL);
++	struct mm_struct *mm = get_mm(test);
++	unsigned long addr, prev_addr = 0;
++	/* Avoid running for ever in failure case. */
++	unsigned long max_iters = 1000000;
++	struct mermap_cpu *mc;
++
++	guard(migrate)();
++	mc = this_cpu_ptr(mm->mermap.cpu);
++
++	/*
++	 * Allocate until we see an address less than what we had before - assume
++	 * that means a reuse.
++	 */
++	for (int i = 0; i < max_iters; i++) {
++		struct mermap_alloc *alloc;
++
++		/*
++		 * Obviously flushing the TLB already is not wrong per se, but
++		 * it's unexpected and probably means there's some bug.
++		 * Use ASSERT to avoid spamming the log in the failure case.
++		 */
++		KUNIT_ASSERT_EQ_MSG(test, mc->tlb_flushes, 0,
++				    "unexpected flush before alloc %d", i);
++
++		alloc = __mermap_get(mm, page, PAGE_SIZE, PAGE_KERNEL, false);
++		KUNIT_ASSERT_NOT_NULL_MSG(test, alloc, "alloc %d failed", i);
++
++		addr = (unsigned long)mermap_addr(alloc);
++		__mermap_put(mm, alloc);
++		if (addr < prev_addr)
 +			break;
-+		}
-+		per_cpu_ptr(mm->mermap.cpu, cpu)->next_addr = base;
++
++		prev_addr = addr;
++		cond_resched();
 +	}
-+
-+	return err;
++	KUNIT_ASSERT_TRUE_MSG(test, addr < prev_addr, "no address reuse");
++	/* Again, more than one flush isn't wrong per se, but probably a bug. */
++	KUNIT_ASSERT_EQ(test, mc->tlb_flushes, 1);
 +}
-+EXPORT_SYMBOL_GPL(mermap_mm_prepare);
 +
-+/* Clean up mermap stuff on mm teardown. */
-+void mermap_mm_teardown(struct mm_struct *mm)
-+{
-+	int cpu;
++static struct kunit_case mermap_test_cases[] = {
++	KUNIT_CASE(test_basic_alloc),
++	KUNIT_CASE(test_size),
++	KUNIT_CASE(test_multiple_allocs),
++	KUNIT_CASE(test_tlb_flushed),
++	{}
++};
 +
-+	if (!mm->mermap.cpu)
-+		return;
++static struct kunit_suite mermap_test_suite = {
++	.name = "mermap",
++	.test_cases = mermap_test_cases,
++};
++kunit_test_suite(mermap_test_suite);
 +
-+	for_each_possible_cpu(cpu) {
-+		struct mermap_cpu *mc = per_cpu_ptr(mm->mermap.cpu, cpu);
-+
-+		for (int i = 0; i < ARRAY_SIZE(mc->normal_allocs); i++)
-+			WARN_ON_ONCE(mc->normal_allocs[i].in_use);
-+		WARN_ON_ONCE(mc->reserve_alloc.in_use);
-+	}
-+
-+	free_percpu(mm->mermap.cpu);
-+}
++MODULE_DESCRIPTION("Mermap unit tests");
++MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS("EXPORTED_FOR_KUNIT_TESTING");
 
 -- 
 2.54.0
