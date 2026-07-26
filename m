@@ -4,149 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0472CC531C9
-	for <linux-mm@archiver.kernel.org>; Sun, 26 Jul 2026 17:04:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1491DC531C9
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Jul 2026 17:39:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A15416B007B; Sun, 26 Jul 2026 13:04:36 -0400 (EDT)
+	id 9911A6B007B; Sun, 26 Jul 2026 13:39:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C6116B0088; Sun, 26 Jul 2026 13:04:36 -0400 (EDT)
+	id 91A286B0088; Sun, 26 Jul 2026 13:39:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 88F1E6B008A; Sun, 26 Jul 2026 13:04:36 -0400 (EDT)
+	id 82FF46B008A; Sun, 26 Jul 2026 13:39:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 51F366B007B
-	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 13:04:36 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C1315A054A
-	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 17:04:35 +0000 (UTC)
-X-FDA: 85031551710.30.1C10AD5
-Received: from smtpout8.mo536.mail-out.ovh.net (smtpout8.mo536.mail-out.ovh.net [51.210.91.17])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 72A1740006
-	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 17:04:33 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kaod.org header.s=ovhmo393970-selector1 header.b=X8S4U0su;
-	spf=pass (imf12.hostedemail.com: domain of clg@kaod.org designates 51.210.91.17 as permitted sender) smtp.mailfrom=clg@kaod.org;
-	dmarc=pass (policy=none) header.from=kaod.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 442616B007B
+	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 13:39:47 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A8EE64055C
+	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 17:39:46 +0000 (UTC)
+X-FDA: 85031640372.01.4DDC051
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 348571A0002
+	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 17:39:45 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jz4U7A5q;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785085473;
+	s=arc-20220608; t=1785087585;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=krixYWDv1svSaZWzY29VuHk3LCe+gkNbeFXejSkZhpM=;
-	b=4Fw0ot2I9DSS0u1LPH4Fi4zxqfwXx1U5XhIv/wAPck1KMfzuEr+79+Bjk/Ep1BBltlxI0N
-	Bz/XAA7kXqeaOp86zKLfZdhN9kSh0jss2TDCYCyU1vrgDM6VgMczTevlQptk8EEkmaYmY2
-	ZxB7TojgO+A81pS1BcYuQV2RroqyUKI=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=eZF0ss9+g9cB5Ev9NZkvD3gx7fD3lvf0xPhKSAJkt+g=;
+	b=SP0ihxPCYKZ7c3+TjwSZFjsbfJ7HCACntNKYemPD0ikRzuBzyYTWTZHk7H+dAeCZlkdP+H
+	nckmkdlUSyN+jNQLTumCwdVgnXgoKzG69hy/Gqlxxyo6Gqas5XTOIsuL+O38KtzwIAZ8Ck
+	U5DRrUZXxbo0R7v/uI+gmJ7REe2faJU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785085473;
-	b=YG2yQCcx0Zmb/2hhwR0sfGMZWetD62sczUeUX+TXr34mjlHJW7R4NPOPoiF1Q6iURSW3px
-	TlNDfCLzL0Sp3tJxcn1OBmhHKlT/fErSCBPJ+qtASA1XMmzo1tNaJ3RTr3TkO2SaPyvx91
-	YMs9MuQj3Vz/4rUPzWL3rwm/MMmwEHg=
+	t=1785087585;
+	b=vm1Ufu/QXq2Sr2wbGIbhkYPTWNmTly4/WxIuCubtrXnDEOBX+pfryDPaPNSeIgJnHFCUMh
+	CntORc2lx9hd9F1LMkj76GQAydSSVYj28CLS1KBQs2lJSIlvfLfF3kKl2+YPn7XjaR2IIb
+	WVilCa++ZmSPKVDr51TjfBQCnwmb560=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kaod.org header.s=ovhmo393970-selector1 header.b=X8S4U0su;
-	spf=pass (imf12.hostedemail.com: domain of clg@kaod.org designates 51.210.91.17 as permitted sender) smtp.mailfrom=clg@kaod.org;
-	dmarc=pass (policy=none) header.from=kaod.org
-Received: from director3.derp.mail-out.ovh.net (director3.derp.mail-out.ovh.net [152.228.215.222])
-	by mo536.mail-out.ovh.net (Postfix) with ESMTPS id 4h7Skj5WHwz882D;
-	Sun, 26 Jul 2026 17:04:29 +0000 (UTC)
-Received: from director3.derp.mail-out.ovh.net (director3.derp.mail-out.ovh.net. [127.0.0.1])
-        by director3.derp.mail-out.ovh.net (inspect_sender_mail_agent) with SMTP
-        for <gouhaojake@163.com>; Sun, 26 Jul 2026 17:04:29 +0000 (UTC)
-Received: from mta6.priv.ovhmail-u2.ea.mail.ovh.net (unknown [10.110.113.67])
-	by director3.derp.mail-out.ovh.net (Postfix) with ESMTPS id 4h7Skj3KCsz5vVC;
-	Sun, 26 Jul 2026 17:04:29 +0000 (UTC)
-Received: from kaod.org (unknown [10.1.6.5])
-	(Authenticated sender: clg@kaod.org)
-	by mta6.priv.ovhmail-u2.ea.mail.ovh.net (Postfix) with ESMTPSA id 1B6971B43E36;
-	Sun, 26 Jul 2026 17:04:26 +0000 (UTC)
-X-OVh-ClientIp:82.64.250.170
-Message-ID: <3fba3c54-ea4f-449c-8cd3-f24c516bb31d@kaod.org>
-Date: Sun, 26 Jul 2026 19:04:25 +0200
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jz4U7A5q;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6DEC960054;
+	Sun, 26 Jul 2026 17:39:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FD891F000E9;
+	Sun, 26 Jul 2026 17:39:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785087584;
+	bh=eZF0ss9+g9cB5Ev9NZkvD3gx7fD3lvf0xPhKSAJkt+g=;
+	h=From:To:Cc:Subject:Date;
+	b=jz4U7A5qxwSiAH6Wgo6OuAF4jeHzY9z7iCNmfO81tvM8PtJT6gBsXqvTJwxpSVKb2
+	 QpUkcSYpnLj/eSi8ESFJSo2s58keD6NmqhZQua38+uQ0cTlqzgi87wdmZcsPfc5Jmy
+	 yr7yNCtLuNHGulOUSBsFZRmFjWSmIGuFJuLSgKrZOOCV5WqKeY6LCiLLCXHZr7RUzM
+	 aw8hJ33z/2v4De8rOsESGd3GLI4A8IfZ/zh3qEd1KugmgQsx0z/Pnpk/SyTph8GNFb
+	 hyq/WKHn+lxeN7uZiOyGOD0GKNPAvTWjaelMjJIPVRUt9fkTd54VwpaD07hqdYRQOd
+	 nu58U2PQydO6Q==
+From: SJ Park <sj@kernel.org>
+To: 
+Cc: SJ Park <sj@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	damon@lists.linux.dev,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH v2 00/17] mm/damon: introduce data access-as-a-data attribute
+Date: Sun, 26 Jul 2026 10:39:16 -0700
+Message-ID: <20260726173935.94046-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/6] powerpc/xive: remove dead NULL check after
- GFP_NOFAIL allocation
-To: Gou Hao <gouhao@uniontech.com>, maddy@linux.ibm.com, mpe@ellerman.id.au,
- npiggin@gmail.com, chleroy@kernel.org, maarten.lankhorst@linux.intel.com,
- mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
- bharat@chelsio.com, jgg@ziepe.ca, leon@kernel.org,
- akpm@linux-foundation.org, namcao@linutronix.de, ynorov@nvidia.com,
- sshegde@linux.ibm.com, nilay@linux.ibm.com
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-rdma@vger.kernel.org,
- linux-mm@kvack.org, gouhaojake@163.com, kernel@uniontech.com
-References: <20260724022851.466017-1-gouhao@uniontech.com>
- <20260724022851.466017-2-gouhao@uniontech.com>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-Autocrypt: addr=clg@kaod.org; keydata=
- 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
-In-Reply-To: <20260724022851.466017-2-gouhao@uniontech.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-x-ovh-tracer-id: 4475733607526477032
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: dmFkZTGNUD/+lU0f0AV58YzXXMeoOgI7stSGyQnUCLQTWUGjvNOg7AleMWmlvL1AgQx1M8wgC4bgr4szg237ncgeIJDZ+21t72QULiNJxfn2ypx7ESKEsDkwNFT/KaG9Ou7F0gvqmqmBLNrdtJYzZ5qYhgWsWla08Bseg7Xpkrjl2p87WGeplH4EpGCS7dYfqmI6A4lpi95O5qDCkRRoUs+EC5jWqJtM5uXWan1v5qA9NCCgpHlrxvVPRY7Hn3DhdZQkZBaKYFg8zO5LIeckwhiTW3SMxEetii9yfr/FEhXMld9qH/YNBJX3hjNDYQS3sLkToe0EYHV/9JXljOdtYCbLlneQsR753AUr41RvRhFyKctvwNr5F/8/J+qsTGI811PHLMmU6RT/F3iIBgfpZqOi/nE1UYWqXM+csgHmgyhyNwBAMZkx985ViqOvuDuzcKc7BrzavCKYN5G7vCktO/8OtEvXjog9mo0c80sGwGWtb77aSHBWMO/6cnc0EQcHiZ09CB8m7Qr+m356rRbZ5fZ3mgsc+FoQ+OJa01Y/JAKiMNwEj1BCazbU2BlmWcn2PSy3orIRTkrRc5MrKlxCQm1N0LAm+lIESi8/BJg470MxPPNAKCuBdEU5nLIOt6TX+rW+Vq+qtAgW/9XKopwVq3TswU2qAmS4mQtnZ00WKCxyZ7e7ow
-DKIM-Signature: a=rsa-sha256; bh=krixYWDv1svSaZWzY29VuHk3LCe+gkNbeFXejSkZhpM=;
- c=relaxed/relaxed; d=kaod.org; h=From; s=ovhmo393970-selector1;
- t=1785085472; v=1;
- b=X8S4U0suPQzDD/KTpp4BPSUm520wFOWzHCIbmVCsIfU9YnZrdvOnYdVxVlsjZYrWga7m0RiF
- UXz4Wi8pMb61wLgCH6NIsLfxzBeISoZ9Eef4QFayBeUXrLRIxR53tyZgbfujWbBWqCfQQVATZ4s
- yxatMiRgJNvxPshv40aYCD2TTWCGZnGHRXiWnwosQbaFIO91NQ8X0xYRrD4e5pfUfTtapXZz3JV
- 8zZdj2lkez1xd0y1xOKj5iOWLk6jcfsbN4qcu7bdzysdRqHkqG5qTcpAg8EznPMWzgggIEW8UGo
- /OFvB/Y3d05Pku4dsMx23lBWaUzFUq+HhW/f95+OaHcHQ==
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 72A1740006
-X-Stat-Signature: jwup9wo3xpc6zabjue5x9d9dyxmye54h
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: pw1xccekh4e4qbnn1zaio8mxyu3b6b51
 X-Rspam-User: 
-X-HE-Tag: 1785085473-402186
-X-HE-Meta: U2FsdGVkX1/YmKRH3EXBGl09rqWNJ934BoOFHVs6eqd9sDVN9FnhnbSziDa246ZDe7JkDZxdlSghzHoQeVRyCAcmTqFRsjKIFf8QNiNjt5j3EeWLypWgudo/SBYAWYQzxT2w6HrYLk3oxbUcXR6zp9wyPaSMf0SODFeNj1feLuBDWFcN2qeM2vnkRptbzvVQwphltrEMtTB4sUkjZOdomHA3CycV1FZX/C/i2wCN4bB5CLsTul4kb8dCDQJMHc+IOwA9fGhPz2KAyTkffVS22MLNeSQ3xgQHcNRVNyEi98Ek+E6RwZqssOGp4XgjgVezhvnCyMT6PirSN7bQWnW8W7mHLXvvGPGIRUN3pk1SwRlgfTrRFTZ6mJ2nMFrj3rRg0LbaQ2oiP3inE3d5GK+eGmb4eclvBDPhAeRQE3B/Qei1zYY4J5/9jNY10wfcBE/9RkP3gR9I9AFdNYwpOHkfnyEgtlMwh8waFcWf0uY/y8wsmVfKfYHRRUKq+oJslX30Nk6L7MxpWNWxi6dJUrktghzeaq5W0najXP5q4+HVpi242WeCplkyik6abo+Fb2RL7y8zxoqr8WM7zCqlwwUytFCjzKmzICqbne4356vVyLLdRBrWpU4iKfPyIqZOIYDpEjGY2Zk9fq6JiYfjJruzHm95JdieMrfVzid+7r19LkaxZ/6RNXNJQ7ce71Pn6jYk1+ZDPDDTjP6ImGFjfqabg3SAEMNbye3NrUUn0Leh0UOoTaieFcLGvb0CWofTLqM2RuH8S6Ac3G+d7LhTnQOoZHPmhbcaYIRT6jQU6JBLG5jE4YUlbZdB44LWdO+pOulc1hs1ZovV7IXaK/5JS+LOU9AJqrzSmodeIEy/+X0GnmboT6P7AMZap4dCM6S9zo3Z8Jrb2fZzoH354Zog+c4PnWFj8BDIPG7kFKhNtdoy42XOdlH5/cCPugGzBvWOkIE/27gBecUhGdiBHLibjb8
- zmi4afVR
- C8uOzstwpB9rqbArMIqNcShMDBNK+IOaDpgHAyxqYNYYYxHvOiiEtJssSK4lihoW1Ij05tDkbbEW8sRp/15RDcPpXVG1oQtyyvrNjcgao0XGxI2dBUmyL+zxgoX6YLC/xVwRUL3SQWyLaX2/L7zyeL8HLnjAU+Z4yS9I0TBtZ75CrK9h9XliYBVcKAJN8wQcS0uZLf3voNt2MuXJyNhet949/EzCXyusAlMZaTe/xw1xjE1Y3zMjU5OXwlICoy026dEUv47baJIg7T6fBPTtoKDS9k9lrHmORtIm01d/+PqfnpT1LMwz2yBsvucWxckjeI6pbGalgUhpX3F/G+0tINfQk+dBu+UZ8/Yjc+gl6JdZ5d8j2SZa8ABFezZ4DrDpyuEbJMCy+a7QwHtCScrAyFHtJI8y5t1gqNKh1rt6qyGnmcXnrENKUtZEp/LJkbLGh0QaA7g7yzlC3dJpD+/7c8Gxb1fPya0rAvwAiUjWKdreZ0A6J9L20QKVCnK9TjkcbvGMzNxKhvwxZzOPN/E6i9edDYdyVmYN8J0a5tcvyV/gJEYI=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 348571A0002
+X-HE-Tag: 1785087585-814674
+X-HE-Meta: U2FsdGVkX19Dfp6A0y1KoRbcdY3xZP4o8QqI6c0hn1CL82UGg//n6Fo3jDhJZSCsDy5JQVxoKXRmpGmpVCEiU0S99iyZue9VEJHLxJwKZnm5GW0V/Zmd4DBVM7Z0ygvi3H76BQ35Z4c9MRIjsgZh3RAPCvLKiVABBeazp2gPvHsH4hrxJW5QW7ktSovUoSkKoq3MlvlP2zuqhBbOJnpm97J1g41goVtHyZqgoN0enN4GbQvdroMW4OJZvEkBM0MJzD9HWnviOYy9nbzDcauAiE3E7B+ZXGFCoQqgShxxE/4Y9KrCHArOJ4JYDLaGXS953NbcEH0abcZR/fDMeR6rnTTqS9oZ56eCd6ASyx4AQgKuLexrOuqv5n6EmGhNBxbaPX7rvIAGCAanWAxRRsKUShPNbMR60dencM+smcGudlI2tkrXGTk5gCnYK/Cnpm9Lfs8aOjD2TpUMjMyTH52PrhS19Pfy+oiVstGlYkLv+nq5I90kXEfutsBUfwyVG7yw3Fem07q6gx+cfb+hwdwxS0L9H661b3WsxrhuoOslWDb06RD2a4bBw3K+W+qn6B6+5hgCRcykEQ9hveIxIZquVsbmOi7YqrHGSWjt40MugqHofb0VU1C8fGfnKG0WloEsE77DLO8JFwYdBNCPTfT0rYK+oqr9VrkjbLJaUVo2j5og4LtOTOjB6XB5xPd4D8qCYqM6iTMB35mfCTZaebUqLmCxeuwYVN/w1kVLpEUxNA8nGNFjZ4i85CgTuEQUG6purzbkKKpebyT20g9MhPM6dTJ4vnSH7rM5mCm4v0M1Yy0MIM1AnCFZ9p/NU+NbukpUSJVR5hqmsOUaBojcrLMiaCDaeY8+Ij/nJgOPlJo6qfWbSti1+LSUAHOqoOpRR/zOm5DsRe6XNMlISmTeiNETHdzimYP5iLsemf3lsHxoj0GcJFXsRIardaOJGHjQ0w0Wy74mf2hrAxQOXyw35+R
+ TW7aaE8x
+ 54fgj5xUhwca59PKk2siaZ5ko6mJYk0J2Haf24EVf0YcH8A30OS/ThTn3pRGY3M5qRNoIX5zY7Bmc/YdMgt+uO/VY7WPuzkAZtGNKYopdec1YNapc71iYl6QhIx7BU/KxIJZCIuwmQUtxIfuHQOWIYxRLyQr7T9821aqD9zaGv6ZyAe6urymn4Ct3e9bno44LwvTguAnVFLp4BCJbrydeeaBN1TVCbnlovVSd3APZONm+zgCw9VCmmk6c7uRoiqShSpV0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,68 +103,212 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-As suggested by Andrew, let's change the approach and remove entirely
-__GFP_NOFAIL instead and make all xive_ipis access paths NULL-safe.
-   
-On 7/24/26 04:28, Gou Hao wrote:
-> kzalloc_objs with the __GFP_NOFAIL flag will never return NULL, so the
-> subsequent NULL check is unreachable dead code. Remove it.
-> 
-> Signed-off-by: Gou Hao <gouhao@uniontech.com>
-> Reviewed-by: Wentao Guan <guanwentao@uniontech.com>
-> Reviewed-by: jiazhenyuan <jiazhenyuan@uniontech.com>
-> ---
->   arch/powerpc/sysdev/xive/common.c | 5 +----
->   1 file changed, 1 insertion(+), 4 deletions(-)
-> 
-> diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive/common.c
-> index dadd1f46ec939..f2904a5c2b7bf 100644
-> --- a/arch/powerpc/sysdev/xive/common.c
-> +++ b/arch/powerpc/sysdev/xive/common.c
-> @@ -1134,9 +1134,6 @@ static int __init xive_init_ipis(void)
->   
->   	xive_ipis = kzalloc_objs(*xive_ipis, nr_node_ids,
->   				 GFP_KERNEL | __GFP_NOFAIL);
+TL;DR: extend DAMON's data attributes monitoring system to support page
+table accessed bit and PG_idle based access monitoring.
 
-So let's remove __GFP_NOFAIL here.
+DAMON was initially introduced as a data access monitor.  Users found
+data access pattern becomes more useful when it is combined with other
+data attributes such as belonging cgroups and backing page types.  For
+such cases, DAMON has extended to support such data attributes
+monitoring in addition to the original data access monitoring.  The
+DAMON probes system was introduced for this purpose.  Users set probes
+for filtering data attributes of their interest.  For use cases where
+the primary interests are the attributes but the access pattern, probe
+weights system has been introduced.  When it is used, DAMON applies its
+adaptive regions adjustment based on the monitored data attributes.
 
-> -	if (!xive_ipis)
-> -		goto out_free_domain;
-> -
+However, DAMON stops access monitoring when the probe weights are used.
+DAMON cannot optimally help users who have interests in both data
+attributes and access patterns.  Data access can also be thought of as
+another data attribute, though.  Extend the probe system to support data
+access as a data attribute.
 
-Let's keep it now that allocation can really fail.
+Introduce a new probe filter type, pgidle_unset.  It shows if the page
+is not set as idle.  Specifically, it shows the page table accessed bit
+and the PG_idle flag.  It can inform if the region is ever accessed. But
+it cannot say when it is accessed.  To answer the second question,
+introduce a new probe feature, prep actions.  Using the features, Users
+can specify what preparation actions should be made to each region for
+each probe.  DAMON executes the preparation actions for each sampling
+interval, like it is doing the preparation for access check in the
+access monitoring mode.  To help 'pgidle_unset' probe action use case,
+'set_pgidle' preparation action is introduced together.  The action does
+exactly what the access monitoring was doing: clearing the page table
+accessed bits and setting the PG_idle flags.
 
->   	for_each_node(node) {>   		struct xive_ipi_desc *xid = &xive_ipis[node];
->   		struct xive_ipi_alloc_info info = { node };
-> @@ -1158,7 +1155,7 @@ static int __init xive_init_ipis(void)
->   
->   out_free_xive_ipis:
->   	kfree(xive_ipis);
-> -out_free_domain:
+Tests
+=====
 
-and keep the out_free_domain label
+I compared the access pattern monitoring results from the classic way
+and the probe based way.  As expected, the probe based way shows the
+results similar to that of the classic way.  More detailed test methods
+and results are below.
 
-> +	xive_ipis = NULL;
+First, do the access monitoring using the DAMON user-space tool [1] in
+the classic way.  The system is idle.  It shows no access as expected.
 
-and yes we should add 'xive_ipis = NULL;'
+    $ sudo ./damo/damo start
+    $ sudo ./damo report access
+    heatmap: 00000000000000000000000000000000000000000000000029300000000000002222222100019000
+    # min/max temperatures: -440,000,000, 0, column size: 99.800 MiB
+    intervals: sample 5 ms aggr 100 ms (max access hz 200)
+    0   addr 4.000 KiB    size 4.748 GiB   access 0 hz   age 4.400 s
+    1   addr 4.748 GiB    size 167.664 MiB access 0 hz   age 0 ns
+    2   addr 4.912 GiB    size 1.325 GiB   access 0 hz   age 4.400 s
+    3   addr 6.238 GiB    size 744.301 MiB access 0 hz   age 3.200 s
+    4   addr 6.964 GiB    size 438.594 MiB access 0 hz   age 4.400 s
+    5   addr 7.393 GiB    size 115.883 MiB access 0 hz   age 0 ns
+    6   addr 7.506 GiB    size 298.000 MiB access 0 hz   age 4.400 s
+    memory bw estimate: 0 B per second
+    total size: 7.797 GiB
+    record DAMON intervals: sample 5 ms, aggr 100 ms
 
->   	irq_domain_remove(ipi_domain);
->   out_free_fwnode:
->   	irq_domain_free_fwnode(fwnode);
+Start an artificial memory access generator [2] and show the monitoring
+results.  As expected, it captures accesses.
+
+    $ ./masim/masim ./masim/configs/zigzag.cfg
+    $ sudo ./damo report access
+    heatmap: 68888888888888888888888888888886222222210017788888888888888888888888899999998777
+    # min/max temperatures: -850,000,000, 40,000,500, column size: 99.800 MiB
+    intervals: sample 5 ms aggr 100 ms (max access hz 200)
+    0   addr 4.000 KiB    size 28.137 MiB  access 0 hz   age 4.200 s
+    1   addr 28.141 MiB   size 880.000 KiB access 170 hz age 0 ns
+    2   addr 29.000 MiB   size 4.000 MiB   access 0 hz   age 3.100 s
+    3   addr 33.000 MiB   size 500.000 KiB access 160 hz age 0 ns
+    4   addr 33.488 MiB   size 12.000 KiB  access 0 hz   age 1.700 s
+    5   addr 33.500 MiB   size 40.000 KiB  access 170 hz age 0 ns
+    6   addr 33.539 MiB   size 8.000 KiB   access 0 hz   age 900 ms
+    7   addr 33.547 MiB   size 80.000 KiB  access 170 hz age 0 ns
+    8   addr 33.625 MiB   size 32.000 KiB  access 0 hz   age 2.300 s
+    9   addr 33.656 MiB   size 68.000 KiB  access 170 hz age 0 ns
+    [...]
+    528 addr 7.437 GiB    size 368.586 MiB access 0 hz   age 900 ms
+    memory bw estimate: 28.521 GiB per second
+    total size: 7.797 GiB
+    record DAMON intervals: sample 5 ms, aggr 100 ms
+
+After the artificial memory access generator is terminated, restart
+DAMON with the probe-based access monitoring.  Note that DAMON
+user-space tool [1] gained the support of probe-based access monitoring
+as an experimental feature, starting from v3.3.3.  As expected, it shows
+no access since the system is idle again.
+
+    $ sudo ./damo/damo start --probe_prep set_pgidle --probe_filter allow pgidle_unset
+    $ sudo ./damo report attrs
+    heatmap:
+    99999999999999999999899866666664000000000000000277777775333333333333333333333332
+    # min/max temperatures: -2,250,000,000, -1,690,000,000, column size:
+    99.800 MiB
+    intervals: sample 5 ms aggr 100 ms (max access hz 200)
+    #   addr         size         age           probe_hits
+    0   4.000 KiB    2.316 GiB    16.900 s      0
+    1   2.316 GiB    790.730 MiB  18.400 s      0
+    2   3.088 GiB    794.406 MiB  22.200 s      0
+    3   3.864 GiB    796.473 MiB  22.500 s      0
+    4   4.642 GiB    786.223 MiB  17.600 s      0
+    5   5.410 GiB    2.326 GiB    20.600 s      0
+    6   7.736 GiB    62.773 MiB   20.700 s      0
+    memory bw estimate: 0 B per second
+    total size: 7.797 GiB
+    record DAMON intervals: sample 5 ms, aggr 100 ms
+
+Start the artificial memory access generator [2] again and show the
+monitoring results.  As expected, it captures accesses similar to the
+classic monitoring mode.
+
+    $ ./masim/masim ./masim/configs/zigzag.cfg
+    $ sudo ./damo report attrs
+    heatmap:
+    88888888888888899999999888888888400000003888888888888888888888888888888888888888
+    # min/max temperatures: -2,100,000,000, 500, column size: 99.800 MiB
+    intervals: sample 5 ms aggr 100 ms (max access hz 200)
+    #   addr         size         age           probe_hits
+    0   4.000 KiB    23.414 MiB   3.500 s       0
+    1   23.418 MiB   35.121 MiB   3.500 s       1
+    2   58.539 MiB   264.000 KiB  1.600 s       19
+    3   58.797 MiB   16.000 KiB   0 ns          0
+    4   58.812 MiB   92.000 KiB   1.400 s       20
+    5   58.902 MiB   996.000 KiB  600 ms        0
+    6   59.875 MiB   32.000 KiB   1.600 s       20
+    7   59.906 MiB   24.000 KiB   6.900 s       0
+    8   59.930 MiB   72.000 KiB   1.600 s       20
+    9   60.000 MiB   160.000 KiB  0 ns          0
+    [...]
+    316 6.641 GiB    754.949 MiB  1.300 s       0
+    317 7.378 GiB    428.676 MiB  1.500 s       0
+    memory bw estimate: 11.633 GiB per second
+    total size: 7.797 GiB
+    record DAMON intervals: sample 5 ms, aggr 100 ms
+
+Patches Sequence
+================
+
+First four patches (patches 1-4) introduce the new probe filter type for
+knowing if a region is accessed.  Patch 1 defines the new type in the
+core.  Patch 2 implements the execution of the new filter in the
+physical address space DAMON operation set.  Patch 3 implements a user
+interface on DAMON sysfs interface.  Patch 4 updates the documentation
+for the new filter type.
+
+Following 13 patches (patches 5-17) introduce the probe preparation
+actions feature.  Patch 5 defines the data structure for specifying the
+preparation actions.  Patch 6 completes setup of the API parameter for
+the prep.  Patch 7 extends the DAMON operation set callback list to
+connect the parameter with the underlying operation set.  Patch 8
+implements the execution of the prep in the physical address space DAMON
+operation set.
+
+Following five patches (patches 9-13) extends DAMON sysfs interface for
+the new prep feature.  Patch 14 adds simple selftest for basic file
+operations of the new sysfs files.  Final three patches (patches 15-17)
+respectively update design, usage and ABI documents for the new feature
+and its interface.
+
+[1] https://github.com/damonitor/damo
+[2] https://github.com/sjp38/masim
+
+Changelog
+=========
+
+Changes from RFC v1
+- RFC v1: https://lore.kernel.org/20260725210225.129944-1-sj@kernel.org
+- Fix wrong sample_addr setup condition.
+- Fix build warnings from sysfs part.
+- Fix typos.
+- Rebase to latest mm-new.
+- Add tests section to the cover letter.
+
+SJ Park (17):
+  mm/damon/core: introduce DAMON_FILTER_TYPE_PGIDLE_UNSET
+  mm/damon/paddr: support PGIDLE_UNSET probe filter type
+  mm/damon/sysfs: support pgidle_unset probe filter type
+  Docs/mm/damon/design: document pgidle_unset probe filter type
+  mm/damon/core: introduce damon_prep struct
+  mm/damon/core: commit preps
+  mm/damon/core: introduce damon_operations->prep_probes()
+  mm/damon/paddr: support damon_prep
+  mm/damon/sysfs: implement preps directory
+  mm/damon/sysfs: create probe preps directory
+  mm/damon/sysfs: implement probe prep directory
+  mm/damon/sysfs: create probe prep files for preps/nr file write
+  mm/damon/sysfs: pass preps to DAMON core
+  selftests/damon/sysfs.sh: test probe prep sysfs files
+  Docs/mm/damon/design: document probe preps
+  Docs/admin-guide/mm/damon/usage: document probe preps sysfs files
+  Docs/ABI/damon: document probe prep sysfs files
+
+ .../ABI/testing/sysfs-kernel-mm-damon         |  13 +
+ Documentation/admin-guide/mm/damon/usage.rst  |  18 +-
+ Documentation/mm/damon/design.rst             |  15 +-
+ include/linux/damon.h                         |  42 ++-
+ mm/damon/core.c                               | 103 ++++++-
+ mm/damon/paddr.c                              |  41 +++
+ mm/damon/sysfs.c                              | 280 +++++++++++++++++-
+ tools/testing/selftests/damon/sysfs.sh        |  27 ++
+ 8 files changed, 525 insertions(+), 14 deletions(-)
 
 
-The prepare_cpu() path is broken. To fix, we need to check xive_ipis
-is not NULL in xive_setup_cpu_ipi() and xive_cleanup_cpu_ipi(). It
-should be a straight forward local change. Nothing complex.
-
-You can test with QEMU. The pSeries and the PowerNV machines are well
-supported under emulation. Ping me if you need help.
-
-Thanks,
-
-C.
-
-
-
-
+base-commit: 4737efca4039cb5fe50569ea3ffb18c389483810
+-- 
+2.47.3
 
