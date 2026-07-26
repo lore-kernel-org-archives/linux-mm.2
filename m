@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7355BC53209
-	for <linux-mm@archiver.kernel.org>; Sun, 26 Jul 2026 22:23:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F897C531C9
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Jul 2026 22:23:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 760996B0098; Sun, 26 Jul 2026 18:23:33 -0400 (EDT)
+	id B31626B0096; Sun, 26 Jul 2026 18:23:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 718766B0099; Sun, 26 Jul 2026 18:23:33 -0400 (EDT)
+	id B087D6B0099; Sun, 26 Jul 2026 18:23:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 64DAE6B0099; Sun, 26 Jul 2026 18:23:33 -0400 (EDT)
+	id A1DE36B009B; Sun, 26 Jul 2026 18:23:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2BE976B0096
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6A6936B0096
 	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 18:23:33 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 31A971405CB
-	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 22:23:31 +0000 (UTC)
-X-FDA: 85032355422.01.B7F0682
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com [209.85.128.71])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 9541920006
-	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 22:23:29 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=L0y89ksw;
-	spf=pass (imf31.hostedemail.com: domain of 34IhmaggKCOUQHJRTHUINVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--jackmanb.bounces.google.com designates 209.85.128.71 as permitted sender) smtp.mailfrom=34IhmaggKCOUQHJRTHUINVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--jackmanb.bounces.google.com;
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BA837C057A
+	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 22:23:32 +0000 (UTC)
+X-FDA: 85032355464.28.FB19ED9
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com [209.85.128.69])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 10A9740008
+	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 22:23:30 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=ARlZJU0a;
+	spf=pass (imf07.hostedemail.com: domain of 34YhmaggKCOYRIKSUIVJOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--jackmanb.bounces.google.com designates 209.85.128.69 as permitted sender) smtp.mailfrom=34YhmaggKCOYRIKSUIVJOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--jackmanb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785104609;
+	s=arc-20220608; t=1785104611;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x15ix7IWz4pwvtzNVrQxDVQH1foHe0j7v2jOQv7JDzE=;
-	b=esVHsPNrHm0bi53VyuXrZdSU1NDfMQHnZlTE8NN3QsO1pi7asm+bd+F4Z9ZyU/T4uU0zFc
-	hz60Lo3276rc6G58J4fLjvUgmHd2yIil+2en/5wrS4s/fBZ88el0UC8g8NX+/A7owuutK8
-	cgGydA78XRE0Ol8Kgg+Ieb2X0Ac0BfQ=
+	bh=cIdD2acc/jIdSlYsMupzJ9xAswr0y0V2LMVp6mKkzVY=;
+	b=RVOtja8yU5Xslk/8GriryLEhLGYU+DRu/4pWlrGkaMuFPAlGF1pZg97AkqRBSmgxlrHov+
+	/jdUR9mQiMYCtANTHOeKs5TudO0A8AsE/AEOLTTxfI/Boyw/6mCOa2eWodgwJeRHJ/39h5
+	dEsqCBHlnN3oPh3Xr58DqUHWRbbNyIU=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=L0y89ksw;
-	spf=pass (imf31.hostedemail.com: domain of 34IhmaggKCOUQHJRTHUINVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--jackmanb.bounces.google.com designates 209.85.128.71 as permitted sender) smtp.mailfrom=34IhmaggKCOUQHJRTHUINVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--jackmanb.bounces.google.com;
+	imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=ARlZJU0a;
+	spf=pass (imf07.hostedemail.com: domain of 34YhmaggKCOYRIKSUIVJOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--jackmanb.bounces.google.com designates 209.85.128.69 as permitted sender) smtp.mailfrom=34YhmaggKCOYRIKSUIVJOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--jackmanb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785104609;
-	b=Q29Rp3rJMLWn8tadPu+w7F6N37J///LD/yRmq7wd4ItOIzvW6cVq/oL6VHqRwuFPFZQa4A
-	MW+UU+1GZDTBV0m+RkRiCaKxd8xvA15ywEwushdGOe4B0MjYZXqt5Q6Rwj3UUTfBu+Tk0S
-	N63srwprSsN59qoN/NaylcqTriSe8Bo=
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4955fd77c18so13907025e9.2
-        for <linux-mm@kvack.org>; Sun, 26 Jul 2026 15:23:29 -0700 (PDT)
+	t=1785104611;
+	b=A5W32qFZC7KpVEG9DwmFIVPmrf+q8KXNokRx1LfzjzyTIUw3wEIQRNNenlV/xoHueFNwCQ
+	d+V/vMM2WKbAy9uDaDfcoaE1nvrHPPebr78uTFIX4biixCQ0d5oCXzVUwy1kpTSmu8hxPq
+	Cgeg1TTUdTN5+0qQ/jCv02YprP2gZPs=
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-496b61bd846so11863175e9.2
+        for <linux-mm@kvack.org>; Sun, 26 Jul 2026 15:23:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785104608; x=1785709408; darn=kvack.org;
+        d=google.com; s=20251104; t=1785104610; x=1785709410; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=x15ix7IWz4pwvtzNVrQxDVQH1foHe0j7v2jOQv7JDzE=;
-        b=L0y89kswGq7SB/H5TFLJqEfYIlEPEtq+CosxGiAp2d1J0fZbdNulnpiPUYbiX1jORh
-         dQdgEye2DATcJD288e2bR5g5gUrJo2EMC6mpZ/w/xmqMuL5SiBt5gF3om10bBbyD/r0b
-         2QHNnWHa2T4kAJmEZxkrKkBG5mAG+IKNWXwBCeaNx7AoVugVOFtG3Rk5RG9vChdRzMTB
-         lETBQxTkfyxmAdPSnb1XOjhWqBbE5yQ1H6KLqsFYDX86o5Kbomokrk75KzJz5XkyvskE
-         L/Vy4RqHgjjT9AvCr1d+gT+CxDN9BQuX0FNElDirhJdHlegKb361I2rKaLNiukja2S5M
-         3WxQ==
+        bh=cIdD2acc/jIdSlYsMupzJ9xAswr0y0V2LMVp6mKkzVY=;
+        b=ARlZJU0awGkq6kPldMgH72ldc8NzvTOmU7fiohkJSQrm0h79F9k6efYUmdigOO1kXB
+         EyyBcXPM9W5wsHdCYMpO4CCBuoh+nZ+CmzFsM+d5ZZQLjqGQ4iwRTDQp7xxjljdB4q3n
+         4p+VDU6CJIKhC6RL6J8bpc0fHnd2GMQROZxCdxZewealPXb4W1L8Ejfi4dQIQFcl1Vzn
+         AOL2ZPvsDV+y8BplVGBNLsi5qM1Go2IwGwYthrzZ7q0hQUYDw1BASXOHSCbG3mgbDyTB
+         ZnQB799xwABfBgAI9VZHCDaYqJyRHFf6ZWReocZ1MieWbyHDlvxDI4YN2PfJm53PoVLz
+         FhLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785104608; x=1785709408;
+        d=1e100.net; s=20251104; t=1785104610; x=1785709410;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=x15ix7IWz4pwvtzNVrQxDVQH1foHe0j7v2jOQv7JDzE=;
-        b=QAMR0wbH7P6dcu5Qi4T1vSzOKG6SpT2vEOZ05RyscXfuBosHSRsY1wiz5G5/oQsnps
-         ZPl8YG0f/nu4fLduP4kSUuR/XveksC7gIXavECvgfuI3R8OI8kPwTCXMyitoG9Umjowe
-         WTmdLTE0aNKI3qYY79ICKsTe+iuMHA/nqSzS1pw4sQ87HhCHRG5XTFDBtPFa9UzWo3rg
-         eywZm6/kt2WYAsRAA+vobdVVaNqCC4xxarrLl0CZfqRZf3CrNbGOV/pQLINO/bGt1G16
-         8nzCh5KMNhhBGCmtgu93oIP0ER7ohEndap5umEKmrakO7wT571fNF5IKfPorR8mGAc4y
-         WywQ==
-X-Gm-Message-State: AOJu0YxbTVbP9Wdpc8MZvppWDEE5QwZUPQXZYNRXGU8zDedNRshOmDXn
-	sWWgcbrJCbXAFJvcB57rqgwRR6XVLw22epAd2PYAmhzJRQ0C6NmowwZOc/BMU2At951TplUu5BC
-	N1cE9VTBApNKSMA==
-X-Received: from wmlv23.prod.google.com ([2002:a05:600c:2157:b0:495:5890:8f69])
+        bh=cIdD2acc/jIdSlYsMupzJ9xAswr0y0V2LMVp6mKkzVY=;
+        b=aB+c7ojnz0710mjs8yuo2RWhvuBx5m3arW8yE1AzRra7Tz6UgDZH/H1JfqvoTtRTE7
+         lgyTOJ7aJgkezgsny6bBWOMkdwGKmTSHCFiiqTBJKYIYspAikz81oPyWJKeCie3mOPT/
+         d2v9lIjALeiVQCRCLPCQxEwQNWfSHltmP0XMZMA5prO1r27juKM8FVbYzmB9uh4zZAHW
+         oKzSrwmt0Lx0k3NaKE/cYivJpRVMO1VN7wUMXBo4ZIv4T2pWAecYLJKCA1eJXUEaWOc/
+         Ehx3DLOTzZVAUUSdSi/vEY2cd8Inj2fehYusPrWxBgaOp7kRqgHL4ayn/Aa1CIkyxJN/
+         skcw==
+X-Gm-Message-State: AOJu0Yy/QGKUjMpyFLutqoWg3sfSg7l6TvSZIs5wwU0+zQfCrtt33Jvm
+	mIfvDu8zTRBD/0fk97dNSs9OA8k551Uy1WdgB4XDHPEpvsDeyL4VlRNB1E4eCGfCViI+sHeK4/V
+	T/elJv9xWN6AGUg==
+X-Received: from wmbe10.prod.google.com ([2002:a05:600c:590a:b0:493:ad14:710b])
  (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:6296:b0:494:282:106c with SMTP id 5b1f17b1804b1-496b56fb438mr72282275e9.16.1785104608079;
- Sun, 26 Jul 2026 15:23:28 -0700 (PDT)
-Date: Sun, 26 Jul 2026 22:22:38 +0000
+ 2002:a05:600c:820e:b0:493:e365:ace9 with SMTP id 5b1f17b1804b1-496b56e6603mr73573705e9.11.1785104609676;
+ Sun, 26 Jul 2026 15:23:29 -0700 (PDT)
+Date: Sun, 26 Jul 2026 22:22:39 +0000
 In-Reply-To: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
 Mime-Version: 1.0
 References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
 X-Mailer: b4 0.16-dev
-Message-ID: <20260726-page_alloc-unmapped-v3-5-6f5729aa9832@google.com>
-Subject: [PATCH v3 05/26] x86: move PAE PMD preallocation defines to header
+Message-ID: <20260726-page_alloc-unmapped-v3-6-6f5729aa9832@google.com>
+Subject: [PATCH v3 06/26] x86/tlb: Expose some flush function declarations to modules
 From: Brendan Jackman <jackmanb@google.com>
 To: Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
 	Peter Zijlstra <peterz@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
@@ -104,13 +104,13 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org,
 	Sean Christopherson <seanjc@google.com>, Brendan Jackman <jackmanb@google.com>
 Content-Type: text/plain; charset="utf-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 9541920006
-X-Stat-Signature: z348bj4ohz41ri5ueaanpuse8jjp9hew
-X-HE-Tag: 1785104609-562106
-X-HE-Meta: U2FsdGVkX1/ZdMfhT5X0c76NQbPtmHBcJguQZHgrjPFNkN0Pg4h1XjTrV05v989omrsuYSKAMBADZrYnkqc4VkKDjoeOiFeGNXC0nYAYNQveVUatgq60JeY3iyUTadKA3Gr5n8TDNmwaEM6vl6obQKd7JPqtlZ4KoY7nA/kkDB3GAP2anL6fBA+c981O9NCCRK0V0phZ+UzvW5kkJZNS0hUlllFjEf/yDVkkCk2X3cCaYnwjGmBVx7V8IS81hiPR09FmJW+VRDCf5OnzdAZ1VH7zlQAKzlqzw19QHXPP/0n89cL0NufodfhSqbw7b06lqGxCLL9kaveIlQw6qyS3F7zAk3N8DL5w77Q9+bao5FQJDqwQcrpBmHleqRXWjLuog2UnhFCsyYCaAfjHPWbjzPLHtyRSDYUAI4rvzXyfO2oiYDPXMxnyW2SHKfXdgJOV7Ml2o35dn258v1WyANUZLXH6PZ1I+1lqUWZ/6wDKodbOE1ZahZoIxQCoaHdfECG537DgaJw4LUdh7VUsWHIXSB2unfW+paVc0H1NdNogZv7wcZ9bQKS1OePH5qsTS5mvWOQkRKibTTqwwum4dp5ZAuwLfAQBRKzTzkCNKT5s0xRVmd893z+MOfx8z68V7pxFgjvF/Qe95DMshGTKJtpBZzS5AA+nX6u/xvaWkq+4s/Ib4zPLcSXCuc+YvPLMJBi7CnaQOQaZRwz0S2dzhush2xk4vaxY+xQuUSof5KVtgsMEdFGPYTOxuOdEuyAVUvLbduQQw7CUJ3SBzp4dqyLRkkmblQxAiFdk6HcPYIhmuAjTEb71rVHpt/+omZTSiYGd7NYiHJ5iS6NVnD3Nw2Xw0S9rlpJdkAifwSrsETR/LoceznLbfyYPo/YAusrC9p0lVzOf5Shv0gfte2BdKXegruiVRWCUjXRHCCChlILMos2VtxXp9P6PMqdOhl4Lk0Iy1xNnP6tEioxjzM5d4yB
- WKAeBFae
- CEHBiZbVoT4wd7jkvWe1m1Qq1WFiBEDNXLrO8AkL5g6CsBg5hJLUc9ulx83IwOGcoR7WvIUwHKHutMSPXx+Rcrpc7TrbgFbUWJ2JRRE8ofaxNfz/WNZp8F2bnxy/rbLA6EABYTZTw423vaIuVoxVe0vYvuDEhCw2thY5d9yTRDVQQU8HeXy3pNL7S+QtfIeawIehooWKQ6+ajezZM/RBjYjrHV13wfD6GhFhi4CVRzp7e/4fLSmE+uHB0r5AXqjS5/apLYlQqCKDCkDmsF/yFw7EXF417jpIodKr3ztI8lD3AgULty3oK46vEJ8yT4zyXX3kcwDkOxU36A3Uu0mpjaztS96tzw2VLbs29Imhw0H9VCB6FHMnm7QhI6tBf6B/CMHfXbpVBrgqy17tj3QGorkQMW91WJ/LBFMHVhLq6jT7Tx37KJTf16HJaXzL7f14NpDCMykUsAfH5VMhWngB7gTHXV4AevJyUbdZHFisKs4ZQvKv5yFSE5moKJ6nVPlK0TvQEN6sanPqM+lQaEXb+IcqyXnqj8GZsyfzcHDXn7a3SqevsopxZ5swie42JNrfQGq9UyBRL4EYOhwjxJeRiaagn8DCb5rZVDLop
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 10A9740008
+X-Stat-Signature: 8sqgss3ezhu1rwam4j6x33zoebf695gp
+X-HE-Tag: 1785104610-497308
+X-HE-Meta: U2FsdGVkX19/qfFiGOcjnDjoOUvmPX2wPZ0uE77FiZA3J0o00LpFOh2Nqq9VKGru/5CwCR6HhDLz0T6R8eRtdzvsfuXenXmTWNnXOei+2PiBXlAbMRJAbpi2rrjwKSHBPaOnBbaSCuA8PXACRnRQyisAdTpnMfI47lHnjvru1i0h2p6hA8lTUNUbiq6ldaIGZGLI3cvTlHGvbz1v3nzd51vgd0ygo6Q4JtiKBI5D0C6dZhLBN8j081s2t9fNkZpOZtvBzisUIN1x3MDAlUeePf1Vmbt1EY0OQrFyg5BZ7pbeMLmgim7Gqo9SRoGrzpVycxyaRurBVcaa8t+vRGd3tZa3AA2k84gCX8ygk7ETVc2fI5wmuo4hQBUBy4djC//yzkfvCtDBkaV6XSh+6c0j/SHcpyzkeVeJDzsYsr3ifiBbC6HJilCylZeVC2IDH/g15IbE4XVb+WlFBmnZeyg2AGtNLYtZ3+0DCqkJhwln5+jCSz9iXGd5AjlaIzo+uFaxbVfKS2uMoAHXMMfpftp4HEJJCZbrWhUtYTD8KWbiyM4hTBAE1XYU/0AQR2BKqjhGdFIKVApgn3JExYLdObVTH2TZrJNiZML1mOlREI2G/J3F1s3HbMFMd9uDBXtBdJ3elhwo8E9D6huvbYjyqhuflSGFc1VTpLr4EBNkR+LOpr5Kz0VzXTmXU+vQsgNHFK85LoKDoz+41Ve/24Yj9ixPHenKTCLyk4i6zMo/pc1yd4IOyqpqLPeTwiReqEfyWCax0W3AzeZE1/GJPbnDuy+puib3IxVUIFmKjMOZOa1P4ZtmCsSfqXJu0Nq8JW5o7d5qQ/DTzGn2ZquWzqYLRr5CVQqsCmhMVJ7y7gwfnnL8Amoskw+HR646vq4WyP51QVMm2ITwZP9Y7lm1IzmUQ+eeCbKDzzILcOwlQnqNcmkjtlGzc51YAz629WLchPl/aNXMVolmiyHyNOl+PEJn2AJ
+ CEhAXGIP
+ 4Pwmw5NenelFrdE8JtdLyB/Euf56KVYX21hdw1bI1K9od9aHDTBothl00EYA9hlvSP5ej5GWSCsYdF1mSsz+er/04m868geprTxareGR/ZaglTQq3pjaY7CTzZYkKRDqsrAamOZcmh1PVIj4gfqpOgH33nIz8jgKaI8Eo4sTL/g7KHsy5+kYZmTIZWEvsN9DJPMt3F43FqtNJN44NkCOqk32ejz1P31v+B1y7IworTZvveICJRblhYSWNMxPuG3D0TBTExqyT1BeOso52BAWR7M5eahFe9p67k+egGeZzWc8lmFF5xH9lYajRwfSMPleoRQ8ir8SiLhI8KIS/pVKe67ter0zC2pY88PYEPX0EzbvDKK389o/2mcYCxD9HIkNmGZY2VuPuevu3+ggOmwQDFnPJbtYrKgyPEIG3LT0XImT0Zxrkg2HQ/6ldTrQRPhGWc9kMbsAuWfALx84M1Oveizc9ygXHK4N1vCEBfXqp/RGIe5q/y4MXHPOO2Mo5PN1lSi688kh7s8h0alnCeTBt43lUSOVLLLc7eNae5/z+348kD+xLqpjcAluq1ciiIKWmlzUA9yUYsuxuSTRkkMCRKFQ8JUy3sQkMICWG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,110 +118,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In a subsequent patch these defines will need to be referenced from a new
-file, move them as a separate patch for easy review.
+In commit bfe3d8f6313d ("x86/tlb: Restrict access to tlbstate") some
+low-level logic (the important detail here is flush_tlb_info) was hidden
+from modules, along with functions associated with that data.
 
-The comments have style violations (personal pronouns etc), do not fix
-them as this is just code movement.
+Later, the set of functions defined here changed and there are now a
+bunch of flush_tlb_*() functions that do not depend on x86 internals
+like flush_tlb_info.
 
-No functional change intended.
+This leads to some build fragility: KVM (which can be a module) cares
+about TLB flushing and includes {linux->asm}/mmu_context.h which
+includes asm/tlb.h and asm/tlbflush.h. This x86 TLB code expects these
+helpers to be defined (e.g. tlb_flush() calls flush_tlb_mm_range()).
+
+Modules probably shouldn't call these helpers - luckily this is already
+enforced by the lack of EXPORT_SYMBOL(). Therefore keep things simple
+and just expose the declarations anyway to prevent build failures.
 
 Signed-off-by: Brendan Jackman <jackmanb@google.com>
 ---
- arch/x86/include/asm/page.h | 32 ++++++++++++++++++++++++++++++++
- arch/x86/mm/pgtable.c       | 29 -----------------------------
- 2 files changed, 32 insertions(+), 29 deletions(-)
+ arch/x86/include/asm/tlbflush.h | 43 +++++++++++++++++++++--------------------
+ 1 file changed, 22 insertions(+), 21 deletions(-)
 
-diff --git a/arch/x86/include/asm/page.h b/arch/x86/include/asm/page.h
-index 416dc88e35c15..4de4715c3b40f 100644
---- a/arch/x86/include/asm/page.h
-+++ b/arch/x86/include/asm/page.h
-@@ -78,6 +78,38 @@ static __always_inline u64 __is_canonical_address(u64 vaddr, u8 vaddr_bits)
- 	return __canonical_address(vaddr, vaddr_bits) == vaddr;
- }
+diff --git a/arch/x86/include/asm/tlbflush.h b/arch/x86/include/asm/tlbflush.h
+index 0545fe75c3fa1..56cff03b65aa2 100644
+--- a/arch/x86/include/asm/tlbflush.h
++++ b/arch/x86/include/asm/tlbflush.h
+@@ -251,7 +251,6 @@ struct flush_tlb_info {
+ 	u8			trim_cpumask;
+ };
  
-+#ifdef CONFIG_X86_PAE
-+
-+/*
-+ * In PAE mode, we need to do a cr3 reload (=tlb flush) when
-+ * updating the top-level pagetable entries to guarantee the
-+ * processor notices the update.  Since this is expensive, and
-+ * all 4 top-level entries are used almost immediately in a
-+ * new process's life, we just pre-populate them here.
-+ */
-+#define PREALLOCATED_PMDS	PTRS_PER_PGD
-+/*
-+ * "USER_PMDS" are the PMDs for the user copy of the page tables when
-+ * PTI is enabled. They do not exist when PTI is disabled.  Note that
-+ * this is distinct from the user _portion_ of the kernel page tables
-+ * which always exists.
-+ *
-+ * We allocate separate PMDs for the kernel part of the user page-table
-+ * when PTI is enabled. We need them to map the per-process LDT into the
-+ * user-space page-table.
-+ */
-+#define PREALLOCATED_USER_PMDS (boot_cpu_has(X86_FEATURE_PTI) ? KERNEL_PGD_PTRS : 0)
-+#define MAX_PREALLOCATED_USER_PMDS KERNEL_PGD_PTRS
-+
-+#else  /* !CONFIG_X86_PAE */
-+
-+/* No need to prepopulate any pagetable entries in non-PAE modes. */
-+#define PREALLOCATED_PMDS	0
-+#define PREALLOCATED_USER_PMDS	0
-+#define MAX_PREALLOCATED_USER_PMDS 0
-+
-+#endif	/* CONFIG_X86_PAE */
-+
- #endif	/* __ASSEMBLER__ */
+-void flush_tlb_local(void);
+ void flush_tlb_one_user(unsigned long addr);
+ void flush_tlb_one_kernel(unsigned long addr);
+ void flush_tlb_multi(const struct cpumask *cpumask,
+@@ -325,26 +324,6 @@ static inline void mm_clear_asid_transition(struct mm_struct *mm) { }
+ static inline bool mm_in_asid_transition(struct mm_struct *mm) { return false; }
+ #endif /* CONFIG_BROADCAST_TLB_FLUSH */
  
- #include <asm-generic/memory_model.h>
-diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
-index fdd3709509946..8f3505b1eefec 100644
---- a/arch/x86/mm/pgtable.c
-+++ b/arch/x86/mm/pgtable.c
-@@ -100,29 +100,6 @@ static void pgd_dtor(pgd_t *pgd)
- }
- 
- #ifdef CONFIG_X86_PAE
--/*
-- * In PAE mode, we need to do a cr3 reload (=tlb flush) when
-- * updating the top-level pagetable entries to guarantee the
-- * processor notices the update.  Since this is expensive, and
-- * all 4 top-level entries are used almost immediately in a
-- * new process's life, we just pre-populate them here.
-- */
--#define PREALLOCATED_PMDS	PTRS_PER_PGD
+-#define flush_tlb_mm(mm)						\
+-		flush_tlb_mm_range(mm, 0UL, TLB_FLUSH_ALL, 0UL, true)
 -
--/*
-- * "USER_PMDS" are the PMDs for the user copy of the page tables when
-- * PTI is enabled. They do not exist when PTI is disabled.  Note that
-- * this is distinct from the user _portion_ of the kernel page tables
-- * which always exists.
-- *
-- * We allocate separate PMDs for the kernel part of the user page-table
-- * when PTI is enabled. We need them to map the per-process LDT into the
-- * user-space page-table.
-- */
--#define PREALLOCATED_USER_PMDS	 (boot_cpu_has(X86_FEATURE_PTI) ? \
--					KERNEL_PGD_PTRS : 0)
--#define MAX_PREALLOCATED_USER_PMDS KERNEL_PGD_PTRS
+-#define flush_tlb_range(vma, start, end)				\
+-	flush_tlb_mm_range((vma)->vm_mm, start, end,			\
+-			   ((vma)->vm_flags & VM_HUGETLB)		\
+-				? huge_page_shift(hstate_vma(vma))	\
+-				: PAGE_SHIFT, true)
 -
- void pud_populate(struct mm_struct *mm, pud_t *pudp, pmd_t *pmd)
+-extern void flush_tlb_all(void);
+-extern void flush_tlb_mm_range(struct mm_struct *mm, unsigned long start,
+-				unsigned long end, unsigned int stride_shift,
+-				bool freed_tables);
+-extern void flush_tlb_kernel_range(unsigned long start, unsigned long end);
+-
+-static inline void flush_tlb_page(struct vm_area_struct *vma, unsigned long a)
+-{
+-	flush_tlb_mm_range(vma->vm_mm, a, a + PAGE_SIZE, PAGE_SHIFT, false);
+-}
+-
+ static inline bool arch_tlbbatch_should_defer(struct mm_struct *mm)
  {
- 	paravirt_alloc_pmd(mm, __pa(pmd) >> PAGE_SHIFT);
-@@ -139,12 +116,6 @@ void pud_populate(struct mm_struct *mm, pud_t *pudp, pmd_t *pmd)
- 	 */
- 	flush_tlb_mm(mm);
+ 	bool should_defer = false;
+@@ -513,4 +492,26 @@ static inline void __native_tlb_flush_global(unsigned long cr4)
+ 	native_write_cr4(cr4 ^ X86_CR4_PGE);
+ 	native_write_cr4(cr4);
  }
--#else  /* !CONFIG_X86_PAE */
--
--/* No need to prepopulate any pagetable entries in non-PAE modes. */
--#define PREALLOCATED_PMDS	0
--#define PREALLOCATED_USER_PMDS	 0
--#define MAX_PREALLOCATED_USER_PMDS 0
- #endif	/* CONFIG_X86_PAE */
- 
- static void free_pmds(struct mm_struct *mm, pmd_t *pmds[], int count)
++
++#define flush_tlb_mm(mm)						\
++		flush_tlb_mm_range(mm, 0UL, TLB_FLUSH_ALL, 0UL, true)
++
++#define flush_tlb_range(vma, start, end)				\
++	flush_tlb_mm_range((vma)->vm_mm, start, end,			\
++			   ((vma)->vm_flags & VM_HUGETLB)		\
++				? huge_page_shift(hstate_vma(vma))	\
++				: PAGE_SHIFT, true)
++
++void flush_tlb_local(void);
++extern void flush_tlb_all(void);
++extern void flush_tlb_mm_range(struct mm_struct *mm, unsigned long start,
++				unsigned long end, unsigned int stride_shift,
++				bool freed_tables);
++extern void flush_tlb_kernel_range(unsigned long start, unsigned long end);
++
++static inline void flush_tlb_page(struct vm_area_struct *vma, unsigned long a)
++{
++	flush_tlb_mm_range(vma->vm_mm, a, a + PAGE_SIZE, PAGE_SHIFT, false);
++}
++
+ #endif /* _ASM_X86_TLBFLUSH_H */
 
 -- 
 2.54.0
