@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD3A8C53209
-	for <linux-mm@archiver.kernel.org>; Sun, 26 Jul 2026 22:23:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7355BC53209
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Jul 2026 22:23:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5D97A6B0095; Sun, 26 Jul 2026 18:23:30 -0400 (EDT)
+	id 760996B0098; Sun, 26 Jul 2026 18:23:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 58AF16B0096; Sun, 26 Jul 2026 18:23:30 -0400 (EDT)
+	id 718766B0099; Sun, 26 Jul 2026 18:23:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C7616B0098; Sun, 26 Jul 2026 18:23:30 -0400 (EDT)
+	id 64DAE6B0099; Sun, 26 Jul 2026 18:23:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1B0C06B0095
-	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 18:23:30 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 96CF2A168C
+	by kanga.kvack.org (Postfix) with ESMTP id 2BE976B0096
+	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 18:23:33 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 31A971405CB
+	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 22:23:31 +0000 (UTC)
+X-FDA: 85032355422.01.B7F0682
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com [209.85.128.71])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 9541920006
 	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 22:23:29 +0000 (UTC)
-X-FDA: 85032355338.04.E1D408E
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com [209.85.128.70])
-	by imf18.hostedemail.com (Postfix) with ESMTP id F30E11C0010
-	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 22:23:27 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=pATHm1Q5;
-	spf=pass (imf18.hostedemail.com: domain of 33ohmaggKCOMOFHPRFSGLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--jackmanb.bounces.google.com designates 209.85.128.70 as permitted sender) smtp.mailfrom=33ohmaggKCOMOFHPRFSGLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785104608;
-	b=5iJVdbEg32t87KrkTFqTMbV5BXuGU/PsCszQgsQDA9a5XrpyS+0vpXLVBwSdPsmcjtu0m4
-	RRUTErvfwJBidHWd+7sFvKoR86emNi3vfM+nzQmlGx3IpLhDMgJd+s0OyfBiSLiXtATyLH
-	UXFGmCc6cY7FRfxtTbgWdyYXlnRxh+s=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=pATHm1Q5;
-	spf=pass (imf18.hostedemail.com: domain of 33ohmaggKCOMOFHPRFSGLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--jackmanb.bounces.google.com designates 209.85.128.70 as permitted sender) smtp.mailfrom=33ohmaggKCOMOFHPRFSGLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--jackmanb.bounces.google.com;
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=L0y89ksw;
+	spf=pass (imf31.hostedemail.com: domain of 34IhmaggKCOUQHJRTHUINVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--jackmanb.bounces.google.com designates 209.85.128.71 as permitted sender) smtp.mailfrom=34IhmaggKCOUQHJRTHUINVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--jackmanb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785104608;
+	s=arc-20220608; t=1785104609;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6BiXc+2inU2lDJU0ldFQE+FFEl2R2e3zkQ3EIvc1jU4=;
-	b=YDfjXtgMvPcac50tddd52k83M2R9SdxLoH7Zr2uUB8mg47jYubGgy3e6Ydc+D59y2V2NCR
-	RstOgJyo416jcw3yhSM36qZmyAdQXZp/8CvnlkR9A+U8CueZqDLM97e5sW11NO3mT8VuNd
-	60QWlMteUEp0K4aaXLwA5VVBNkMrY/Y=
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4954fe32d6eso10040875e9.1
-        for <linux-mm@kvack.org>; Sun, 26 Jul 2026 15:23:27 -0700 (PDT)
+	bh=x15ix7IWz4pwvtzNVrQxDVQH1foHe0j7v2jOQv7JDzE=;
+	b=esVHsPNrHm0bi53VyuXrZdSU1NDfMQHnZlTE8NN3QsO1pi7asm+bd+F4Z9ZyU/T4uU0zFc
+	hz60Lo3276rc6G58J4fLjvUgmHd2yIil+2en/5wrS4s/fBZ88el0UC8g8NX+/A7owuutK8
+	cgGydA78XRE0Ol8Kgg+Ieb2X0Ac0BfQ=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=L0y89ksw;
+	spf=pass (imf31.hostedemail.com: domain of 34IhmaggKCOUQHJRTHUINVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--jackmanb.bounces.google.com designates 209.85.128.71 as permitted sender) smtp.mailfrom=34IhmaggKCOUQHJRTHUINVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785104609;
+	b=Q29Rp3rJMLWn8tadPu+w7F6N37J///LD/yRmq7wd4ItOIzvW6cVq/oL6VHqRwuFPFZQa4A
+	MW+UU+1GZDTBV0m+RkRiCaKxd8xvA15ywEwushdGOe4B0MjYZXqt5Q6Rwj3UUTfBu+Tk0S
+	N63srwprSsN59qoN/NaylcqTriSe8Bo=
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4955fd77c18so13907025e9.2
+        for <linux-mm@kvack.org>; Sun, 26 Jul 2026 15:23:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785104607; x=1785709407; darn=kvack.org;
+        d=google.com; s=20251104; t=1785104608; x=1785709408; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=6BiXc+2inU2lDJU0ldFQE+FFEl2R2e3zkQ3EIvc1jU4=;
-        b=pATHm1Q5sU01hT70sCUTrRQSmF1FQdr8Ke5QjAEZAskjxi27jQcgQkHHP+GHtHpaga
-         oHvabbybvx9BlOWLHLwlMRsa81UqxKrnQQmhp37ZY5IcDR2RkdEiMmZ+U/HgrpAcXHKI
-         ClCJSkcVCzjir9SHkqAZEErPpUO+jMLevAnJgOBdfE76TKHayIVg97PM9pk7is29Do1E
-         1KJdNoGLvr7bSQYGvUbZqBtaAu2Twch+bR9etqByz/06uLPVbs6yrUCZLpxSk/V9BYhz
-         J90CFEHcYNvZU6lbE/BsDswZb2FvoBRxEgkjiqgP89cIcL3A9c1PM1VLnxOESBfeumX6
-         xuNw==
+        bh=x15ix7IWz4pwvtzNVrQxDVQH1foHe0j7v2jOQv7JDzE=;
+        b=L0y89kswGq7SB/H5TFLJqEfYIlEPEtq+CosxGiAp2d1J0fZbdNulnpiPUYbiX1jORh
+         dQdgEye2DATcJD288e2bR5g5gUrJo2EMC6mpZ/w/xmqMuL5SiBt5gF3om10bBbyD/r0b
+         2QHNnWHa2T4kAJmEZxkrKkBG5mAG+IKNWXwBCeaNx7AoVugVOFtG3Rk5RG9vChdRzMTB
+         lETBQxTkfyxmAdPSnb1XOjhWqBbE5yQ1H6KLqsFYDX86o5Kbomokrk75KzJz5XkyvskE
+         L/Vy4RqHgjjT9AvCr1d+gT+CxDN9BQuX0FNElDirhJdHlegKb361I2rKaLNiukja2S5M
+         3WxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785104607; x=1785709407;
+        d=1e100.net; s=20251104; t=1785104608; x=1785709408;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=6BiXc+2inU2lDJU0ldFQE+FFEl2R2e3zkQ3EIvc1jU4=;
-        b=IhFtS7MZKZKlGa/IRYJs673LPSHe8j4z5cffavF0ujNopZSkOY3Wg8r9EWWbA2trCK
-         ZfgWKFLfHIDM29qTMrGv1Df2xlc49sZ39R3FyhFrzIm7CI4y7VeB1pGGHsuUJfuCaVvB
-         6FfZPLAUGUtkqSX1eV1HoWxAw317YBCxGR8HyJzJPYYm2SQC47JnVBvTuCKYEFiG4MYz
-         y+oi4/oDZcOfkrRVLYWRD3Fr/9STOAmg8EFYt8Y4ZJmHyacsvB11j6neK02KV0quNjJt
-         earvOTzRYKS/KlmC+3nieC1Xhsym7pob6FaQPtxdBpUBjHe+eL7QR9kJXr9LiP5PDXgu
-         xjtA==
-X-Gm-Message-State: AOJu0Yy7uGUI8iqZNszrToUigyE7CHVrocg4FcilTk2MGuCGrAUDVu+e
-	qCpcW5VzPGEX8wsRu4LHM2qK4gGYxG8FD5sFGa3lApNewJ4C4rqxLceAVQ6y+b+SopT0j/JW3Q+
-	RmlUwUDWDSWP+uw==
-X-Received: from wmog3.prod.google.com ([2002:a05:600c:3103:b0:495:56f8:8afd])
+        bh=x15ix7IWz4pwvtzNVrQxDVQH1foHe0j7v2jOQv7JDzE=;
+        b=QAMR0wbH7P6dcu5Qi4T1vSzOKG6SpT2vEOZ05RyscXfuBosHSRsY1wiz5G5/oQsnps
+         ZPl8YG0f/nu4fLduP4kSUuR/XveksC7gIXavECvgfuI3R8OI8kPwTCXMyitoG9Umjowe
+         WTmdLTE0aNKI3qYY79ICKsTe+iuMHA/nqSzS1pw4sQ87HhCHRG5XTFDBtPFa9UzWo3rg
+         eywZm6/kt2WYAsRAA+vobdVVaNqCC4xxarrLl0CZfqRZf3CrNbGOV/pQLINO/bGt1G16
+         8nzCh5KMNhhBGCmtgu93oIP0ER7ohEndap5umEKmrakO7wT571fNF5IKfPorR8mGAc4y
+         WywQ==
+X-Gm-Message-State: AOJu0YxbTVbP9Wdpc8MZvppWDEE5QwZUPQXZYNRXGU8zDedNRshOmDXn
+	sWWgcbrJCbXAFJvcB57rqgwRR6XVLw22epAd2PYAmhzJRQ0C6NmowwZOc/BMU2At951TplUu5BC
+	N1cE9VTBApNKSMA==
+X-Received: from wmlv23.prod.google.com ([2002:a05:600c:2157:b0:495:5890:8f69])
  (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:35d5:b0:490:e5c1:b8bf with SMTP id 5b1f17b1804b1-496b56f385dmr81438395e9.13.1785104606288;
- Sun, 26 Jul 2026 15:23:26 -0700 (PDT)
-Date: Sun, 26 Jul 2026 22:22:37 +0000
+ 2002:a05:600c:6296:b0:494:282:106c with SMTP id 5b1f17b1804b1-496b56fb438mr72282275e9.16.1785104608079;
+ Sun, 26 Jul 2026 15:23:28 -0700 (PDT)
+Date: Sun, 26 Jul 2026 22:22:38 +0000
 In-Reply-To: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
 Mime-Version: 1.0
 References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
 X-Mailer: b4 0.16-dev
-Message-ID: <20260726-page_alloc-unmapped-v3-4-6f5729aa9832@google.com>
-Subject: [PATCH v3 04/26] x86/mm: split out preallocate_sub_pgd()
+Message-ID: <20260726-page_alloc-unmapped-v3-5-6f5729aa9832@google.com>
+Subject: [PATCH v3 05/26] x86: move PAE PMD preallocation defines to header
 From: Brendan Jackman <jackmanb@google.com>
 To: Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
 	Peter Zijlstra <peterz@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
@@ -103,14 +103,14 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org,
 	Patrick Bellasi <derkling@google.com>, Reiji Watanabe <reijiw@google.com>, 
 	Sean Christopherson <seanjc@google.com>, Brendan Jackman <jackmanb@google.com>
 Content-Type: text/plain; charset="utf-8"
-X-Stat-Signature: hosb3fsfkny8bxi7oohmtgmoqpsxrhpx
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: F30E11C0010
 X-Rspam-User: 
-X-HE-Tag: 1785104607-129883
-X-HE-Meta: U2FsdGVkX1++RYTeA1O9C1mRhUDHe3q645hHo2AoEFmBMIeUdiT2nVpmDOV34p5qUeLbyGee2X37QN5ivm6WLufmZpU7C2Z6wjaNKP98bkn5InVC1vVoGlIVN2FsVWFWeu7eu79v4Yd6LpMFyNRX8O0AdZj2rvi/1VBBvCjHy93guTX6Twn0pzOz6PDlfTtnIZzgczPqwotfU95D+EMeKGFn/qF3A3QyAceQcmuzr/mtltqzDslyfJyw6dsPUnhBo/OGNVEWEm0AexwImT3B5wM4sLbOFOWygQMl9PwKMmA9McEGxTlO6qQyvVX40duvBPdwgIl0ASgWTT9u3IfMDoPMiXG+blEaTxvXIn2Y6Smp3+y/uBUPVvcNGhbX41Eitkgj3ozz4LFphBCj/wJnhT82tS08kwtl8eTJcGuPO33dr+G7mkV/wMR4rlS4wMgrizGgKrbbJ6COLiXkRAsVFGBvAFtbqlpzHUTF1eo6Lp6brZwARbPhama+uGcPWo5wzK8Vbjn4tzjmorImwelhY9iWUnsvyM33KiMUbASTXOBM3cnDiwKMkuhf/V60FqVVOxcmo/a9rPIbM/3QKiwqoMxuOg2nWaFx2YSjO0WL6e5ejVm7kBXbu+ZnQyoZ3GWpnXRJfP5ZsQOIjjDGbgjifdOkUQVvut4hU1JX3YxbllXBSjSDtcqUHOGBofy8ginXEGqALwp//wZsCq1S6DCn8k9c4ARWt7J+eCctIQOVDdarmy1ovQuY41KRldyB/5Rf7i7r88aMv6enZO1WG6QWFRUFDFCeawUCxvbUAJNnouqPDb0dBIW99Ju7MefBHvCVHmZtlWiO0B9fqNuKPkNhialJNU60S0PDm7jbqldnhcGV14oKT6fySlmTit07GDrpiEBoq8dJ2xaYOVSm01k85qsE1fqQRo8Jg2O6HSmL9PNqTw08SLGes/hMTCC3qbMcV0+1a3V+P1PHVglKQHk
- hMUeJXPS
- BRnn0RSUrAn0X+sGwoLzfKP1At6/yW3OftXGUjQcYekjWeeKHpPbQ1NB6+HKg4iAycVladcAjymFMzrmDfYRz63Syw4gn/q80hIn2Bvb+JTRuF0GAjIVYotSVk8eumBViT2A6N4E5gvLkRGTbN++h1uNAE/oQu2YIHskff9cehgwPWVwc61jZGXvfDj8BMQjsaZocw1LN9X9kn3cojrmeuD+9J2OZiBY6p4NMbGtFTwEnWD+zX65RJ0XKpihhMpbyh5HUgzrFr7rJVYet2t07Px8RcLIABMvPB0fLhIeoW40sajDxYR417epROAnmKn0BCsfAhclpiwnmw/FtXoyfjfxEhOIXldwAABR7LSAz7RLvaErKEhaG3Bckm2WpEYGCh+R9kfUerI0yAargWm2nHJkR+9imb5eKdO/aPJDEf67Ee3LSsL3L/18NkIFmDNFAArx99z73m6HN9MdruXEd+P0aQIKCBot6AxFYMIJJOdoM4TNrIYASBSIEHP/GA20DB/RuMQcmDX6QmlgzbKBoEDtq+nMa2DSSUgtchGycVk6JqOPGwAIb4qrk8Mx2DclnB89q9Zb7kj0X78v2+FQgKhAvWJ8pFnGpaMc5edmVrTWJ9lGW+taLp92YU8rfm8lJovbmScepfMeoUNk=
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 9541920006
+X-Stat-Signature: z348bj4ohz41ri5ueaanpuse8jjp9hew
+X-HE-Tag: 1785104609-562106
+X-HE-Meta: U2FsdGVkX1/ZdMfhT5X0c76NQbPtmHBcJguQZHgrjPFNkN0Pg4h1XjTrV05v989omrsuYSKAMBADZrYnkqc4VkKDjoeOiFeGNXC0nYAYNQveVUatgq60JeY3iyUTadKA3Gr5n8TDNmwaEM6vl6obQKd7JPqtlZ4KoY7nA/kkDB3GAP2anL6fBA+c981O9NCCRK0V0phZ+UzvW5kkJZNS0hUlllFjEf/yDVkkCk2X3cCaYnwjGmBVx7V8IS81hiPR09FmJW+VRDCf5OnzdAZ1VH7zlQAKzlqzw19QHXPP/0n89cL0NufodfhSqbw7b06lqGxCLL9kaveIlQw6qyS3F7zAk3N8DL5w77Q9+bao5FQJDqwQcrpBmHleqRXWjLuog2UnhFCsyYCaAfjHPWbjzPLHtyRSDYUAI4rvzXyfO2oiYDPXMxnyW2SHKfXdgJOV7Ml2o35dn258v1WyANUZLXH6PZ1I+1lqUWZ/6wDKodbOE1ZahZoIxQCoaHdfECG537DgaJw4LUdh7VUsWHIXSB2unfW+paVc0H1NdNogZv7wcZ9bQKS1OePH5qsTS5mvWOQkRKibTTqwwum4dp5ZAuwLfAQBRKzTzkCNKT5s0xRVmd893z+MOfx8z68V7pxFgjvF/Qe95DMshGTKJtpBZzS5AA+nX6u/xvaWkq+4s/Ib4zPLcSXCuc+YvPLMJBi7CnaQOQaZRwz0S2dzhush2xk4vaxY+xQuUSof5KVtgsMEdFGPYTOxuOdEuyAVUvLbduQQw7CUJ3SBzp4dqyLRkkmblQxAiFdk6HcPYIhmuAjTEb71rVHpt/+omZTSiYGd7NYiHJ5iS6NVnD3Nw2Xw0S9rlpJdkAifwSrsETR/LoceznLbfyYPo/YAusrC9p0lVzOf5Shv0gfte2BdKXegruiVRWCUjXRHCCChlILMos2VtxXp9P6PMqdOhl4Lk0Iy1xNnP6tEioxjzM5d4yB
+ WKAeBFae
+ CEHBiZbVoT4wd7jkvWe1m1Qq1WFiBEDNXLrO8AkL5g6CsBg5hJLUc9ulx83IwOGcoR7WvIUwHKHutMSPXx+Rcrpc7TrbgFbUWJ2JRRE8ofaxNfz/WNZp8F2bnxy/rbLA6EABYTZTw423vaIuVoxVe0vYvuDEhCw2thY5d9yTRDVQQU8HeXy3pNL7S+QtfIeawIehooWKQ6+ajezZM/RBjYjrHV13wfD6GhFhi4CVRzp7e/4fLSmE+uHB0r5AXqjS5/apLYlQqCKDCkDmsF/yFw7EXF417jpIodKr3ztI8lD3AgULty3oK46vEJ8yT4zyXX3kcwDkOxU36A3Uu0mpjaztS96tzw2VLbs29Imhw0H9VCB6FHMnm7QhI6tBf6B/CMHfXbpVBrgqy17tj3QGorkQMW91WJ/LBFMHVhLq6jT7Tx37KJTf16HJaXzL7f14NpDCMykUsAfH5VMhWngB7gTHXV4AevJyUbdZHFisKs4ZQvKv5yFSE5moKJ6nVPlK0TvQEN6sanPqM+lQaEXb+IcqyXnqj8GZsyfzcHDXn7a3SqevsopxZ5swie42JNrfQGq9UyBRL4EYOhwjxJeRiaagn8DCb5rZVDLop
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,149 +118,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This code will be needed elsewhere in a following patch. Split out the
-trivial code move for easy review.
+In a subsequent patch these defines will need to be referenced from a new
+file, move them as a separate patch for easy review.
 
-As a side effect, change the logging slightly: instead of directly
-reporting the level of the failure in panic(), show a generic panic
-message, will be preceded by a separate warn that reports the level of
-the failure. This is a simple way to have this helper suit the needs of
-its new user as well as the existing one.
+The comments have style violations (personal pronouns etc), do not fix
+them as this is just code movement.
 
-Other than logging, no functional change intended.
+No functional change intended.
 
 Signed-off-by: Brendan Jackman <jackmanb@google.com>
 ---
- arch/x86/include/asm/pgalloc.h |  3 +++
- arch/x86/mm/init_64.c          | 44 +++++++-----------------------------------
- arch/x86/mm/pgtable.c          | 38 ++++++++++++++++++++++++++++++++++++
- 3 files changed, 48 insertions(+), 37 deletions(-)
+ arch/x86/include/asm/page.h | 32 ++++++++++++++++++++++++++++++++
+ arch/x86/mm/pgtable.c       | 29 -----------------------------
+ 2 files changed, 32 insertions(+), 29 deletions(-)
 
-diff --git a/arch/x86/include/asm/pgalloc.h b/arch/x86/include/asm/pgalloc.h
-index c88691b15f3c6..2aba6cfabf495 100644
---- a/arch/x86/include/asm/pgalloc.h
-+++ b/arch/x86/include/asm/pgalloc.h
-@@ -2,6 +2,7 @@
- #ifndef _ASM_X86_PGALLOC_H
- #define _ASM_X86_PGALLOC_H
- 
-+#include <linux/printk.h>
- #include <linux/threads.h>
- #include <linux/mm.h>		/* for struct page */
- #include <linux/pagemap.h>
-@@ -128,6 +129,8 @@ static inline void __pud_free_tlb(struct mmu_gather *tlb, pud_t *pud,
- 	___pud_free_tlb(tlb, pud);
+diff --git a/arch/x86/include/asm/page.h b/arch/x86/include/asm/page.h
+index 416dc88e35c15..4de4715c3b40f 100644
+--- a/arch/x86/include/asm/page.h
++++ b/arch/x86/include/asm/page.h
+@@ -78,6 +78,38 @@ static __always_inline u64 __is_canonical_address(u64 vaddr, u8 vaddr_bits)
+ 	return __canonical_address(vaddr, vaddr_bits) == vaddr;
  }
  
-+extern int preallocate_sub_pgd(struct mm_struct *mm, unsigned long addr);
++#ifdef CONFIG_X86_PAE
 +
- #if CONFIG_PGTABLE_LEVELS > 4
- static inline void pgd_populate(struct mm_struct *mm, pgd_t *pgd, p4d_t *p4d)
- {
-diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-index ab4c5a02326f7..ac6688c70872e 100644
---- a/arch/x86/mm/init_64.c
-+++ b/arch/x86/mm/init_64.c
-@@ -1293,46 +1293,16 @@ static struct kcore_list kcore_vsyscall;
- static void __init preallocate_vmalloc_pages(void)
- {
- 	unsigned long addr;
--	const char *lvl;
++/*
++ * In PAE mode, we need to do a cr3 reload (=tlb flush) when
++ * updating the top-level pagetable entries to guarantee the
++ * processor notices the update.  Since this is expensive, and
++ * all 4 top-level entries are used almost immediately in a
++ * new process's life, we just pre-populate them here.
++ */
++#define PREALLOCATED_PMDS	PTRS_PER_PGD
++/*
++ * "USER_PMDS" are the PMDs for the user copy of the page tables when
++ * PTI is enabled. They do not exist when PTI is disabled.  Note that
++ * this is distinct from the user _portion_ of the kernel page tables
++ * which always exists.
++ *
++ * We allocate separate PMDs for the kernel part of the user page-table
++ * when PTI is enabled. We need them to map the per-process LDT into the
++ * user-space page-table.
++ */
++#define PREALLOCATED_USER_PMDS (boot_cpu_has(X86_FEATURE_PTI) ? KERNEL_PGD_PTRS : 0)
++#define MAX_PREALLOCATED_USER_PMDS KERNEL_PGD_PTRS
++
++#else  /* !CONFIG_X86_PAE */
++
++/* No need to prepopulate any pagetable entries in non-PAE modes. */
++#define PREALLOCATED_PMDS	0
++#define PREALLOCATED_USER_PMDS	0
++#define MAX_PREALLOCATED_USER_PMDS 0
++
++#endif	/* CONFIG_X86_PAE */
++
+ #endif	/* __ASSEMBLER__ */
  
- 	for (addr = VMALLOC_START; addr <= VMEMORY_END; addr = ALIGN(addr + 1, PGDIR_SIZE)) {
--		pgd_t *pgd = pgd_offset_k(addr);
--		p4d_t *p4d;
--		pud_t *pud;
--
--		lvl = "p4d";
--		p4d = p4d_alloc(&init_mm, pgd, addr);
--		if (!p4d)
--			goto failed;
--
--		if (pgtable_l5_enabled())
--			continue;
--
--		/*
--		 * The goal here is to allocate all possibly required
--		 * hardware page tables pointed to by the top hardware
--		 * level.
--		 *
--		 * On 4-level systems, the P4D layer is folded away and
--		 * the above code does no preallocation.  Below, go down
--		 * to the pud _software_ level to ensure the second
--		 * hardware level is allocated on 4-level systems too.
--		 */
--		lvl = "pud";
--		pud = pud_alloc(&init_mm, p4d, addr);
--		if (!pud)
--			goto failed;
-+		if (preallocate_sub_pgd(&init_mm, addr)) {
-+			/*
-+			 * The pages have to be there now or they will be
-+			 * missing in process page-tables later.
-+			 */
-+			panic("Failed to pre-allocate pagetables for vmalloc area\n");
-+		}
- 	}
--
--	return;
--
--failed:
--
--	/*
--	 * The pages have to be there now or they will be missing in
--	 * process page-tables later.
--	 */
--	panic("Failed to pre-allocate %s pages for vmalloc area\n", lvl);
- }
- 
- void __init arch_mm_preinit(void)
+ #include <asm-generic/memory_model.h>
 diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
-index f32facdb30354..fdd3709509946 100644
+index fdd3709509946..8f3505b1eefec 100644
 --- a/arch/x86/mm/pgtable.c
 +++ b/arch/x86/mm/pgtable.c
-@@ -833,3 +833,41 @@ void arch_check_zapped_pud(struct vm_area_struct *vma, pud_t pud)
- 	/* See note in arch_check_zapped_pte() */
- 	VM_WARN_ON_ONCE(!(vma->vm_flags & VM_SHADOW_STACK) && pud_shstk(pud));
+@@ -100,29 +100,6 @@ static void pgd_dtor(pgd_t *pgd)
  }
-+
-+#if CONFIG_PGTABLE_LEVELS > 3
-+/*
-+ * Allocate all possibly required hardware page tables pointed to ths
-+ * top hardware level. In other words, allocate a p4d on 5-level or a
-+ * pud on 4-level.
-+ */
-+int preallocate_sub_pgd(struct mm_struct *mm, unsigned long addr)
-+{
-+	const char *lvl;
-+	p4d_t *p4d;
-+	pud_t *pud;
-+
-+	lvl = "p4d";
-+	p4d = p4d_alloc(mm, pgd_offset_pgd(mm->pgd, addr), addr);
-+	if (!p4d)
-+		goto failed;
-+
-+	if (pgtable_l5_enabled())
-+		return 0;
-+
-+	/*
-+	 * On 4-level systems, the P4D layer is folded away and
-+	 * the above code does no preallocation.  Below, go down
-+	 * to the pud _software_ level to ensure the second
-+	 * hardware level is allocated on 4-level systems too.
-+	 */
-+	lvl = "pud";
-+	pud = pud_alloc(mm, p4d, addr);
-+	if (!pud)
-+		goto failed;
-+	return 0;
-+
-+failed:
-+	pr_warn_ratelimited("Failed to preallocate %s\n", lvl);
-+	return -ENOMEM;
-+}
-+#endif
+ 
+ #ifdef CONFIG_X86_PAE
+-/*
+- * In PAE mode, we need to do a cr3 reload (=tlb flush) when
+- * updating the top-level pagetable entries to guarantee the
+- * processor notices the update.  Since this is expensive, and
+- * all 4 top-level entries are used almost immediately in a
+- * new process's life, we just pre-populate them here.
+- */
+-#define PREALLOCATED_PMDS	PTRS_PER_PGD
+-
+-/*
+- * "USER_PMDS" are the PMDs for the user copy of the page tables when
+- * PTI is enabled. They do not exist when PTI is disabled.  Note that
+- * this is distinct from the user _portion_ of the kernel page tables
+- * which always exists.
+- *
+- * We allocate separate PMDs for the kernel part of the user page-table
+- * when PTI is enabled. We need them to map the per-process LDT into the
+- * user-space page-table.
+- */
+-#define PREALLOCATED_USER_PMDS	 (boot_cpu_has(X86_FEATURE_PTI) ? \
+-					KERNEL_PGD_PTRS : 0)
+-#define MAX_PREALLOCATED_USER_PMDS KERNEL_PGD_PTRS
+-
+ void pud_populate(struct mm_struct *mm, pud_t *pudp, pmd_t *pmd)
+ {
+ 	paravirt_alloc_pmd(mm, __pa(pmd) >> PAGE_SHIFT);
+@@ -139,12 +116,6 @@ void pud_populate(struct mm_struct *mm, pud_t *pudp, pmd_t *pmd)
+ 	 */
+ 	flush_tlb_mm(mm);
+ }
+-#else  /* !CONFIG_X86_PAE */
+-
+-/* No need to prepopulate any pagetable entries in non-PAE modes. */
+-#define PREALLOCATED_PMDS	0
+-#define PREALLOCATED_USER_PMDS	 0
+-#define MAX_PREALLOCATED_USER_PMDS 0
+ #endif	/* CONFIG_X86_PAE */
+ 
+ static void free_pmds(struct mm_struct *mm, pmd_t *pmds[], int count)
 
 -- 
 2.54.0
