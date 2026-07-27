@@ -4,146 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E64EAC531C9
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 16:49:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AC26C531D0
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 16:50:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED5C86B00AD; Mon, 27 Jul 2026 12:49:17 -0400 (EDT)
+	id 5D72E6B00AF; Mon, 27 Jul 2026 12:50:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EACCE6B00AF; Mon, 27 Jul 2026 12:49:17 -0400 (EDT)
+	id 588EC6B00B1; Mon, 27 Jul 2026 12:50:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D9C5A6B00B0; Mon, 27 Jul 2026 12:49:17 -0400 (EDT)
+	id 4A0D56B00B2; Mon, 27 Jul 2026 12:50:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9CF196B00AD
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:49:17 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2ABA41C0026
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:49:17 +0000 (UTC)
-X-FDA: 85035141954.07.11E4E00
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 89010180007
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:49:15 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="Lb/jyoKf";
-	spf=pass (imf24.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1FEC86B00AF
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:50:23 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A9EF6140140
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:50:22 +0000 (UTC)
+X-FDA: 85035144684.27.8C995BF
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 68610A0009
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:50:20 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=HLQ5AMk2;
+	spf=pass (imf15.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.177 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785170955;
+	s=arc-20220608; t=1785171020;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bHPeorp1zdnoJdhuJBuClNoQmKVDakXwSrFrOoFYv7g=;
-	b=xQ5KfaWHpMK5nmgXfu5OvuxcwDv3kIZD6Qi89KDvbVFIjwd14dvIo8lqBSAI3EaXoaB2gW
-	D63F13rBRWojLEPVGJuQIeEqcL7Yi1meTz0TUj2Q6ynDiHVUriWp86fXVnPXfJK6bee0ev
-	h91Puwy9u+yfce/kBY97+kAwXOUSzFc=
+	bh=TyxgjtQoCDEFZf0QPk0ARVlu8b9GSZjprhFXfcluj1o=;
+	b=ZUgo2k3zZqbw4arv3ozQAabOf78bcz9pcmf2e8UVJw1Sixo4xK1IEPXUQmqU14YwCUQvh4
+	uCIsMHqFJLVBOJCA542WAETdlyQXABQSGip8GCkjT34PobWGj8BNu5SAlBUMOjuaWuk3YL
+	SDTRegCRuvNcaDWO1LXDhdKUc+gLL+s=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="Lb/jyoKf";
-	spf=pass (imf24.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf15.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=HLQ5AMk2;
+	spf=pass (imf15.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.177 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785170955;
-	b=q9e6UeAb2UQZVkHKB+/CiLSB++FSWsrHCP0Kju2URduutAL5mYuLDXjLsCtJmidZHK8MGD
-	yoopSoiPaEbgEfJy3cwtKnnpzhvFml98xWPRDSVKGNvG3EiAsNkNcXPuLGwbAsezjervbF
-	cRmsJ761Tgv9TwgeKykGauSuS8DoLDk=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AD6F119F6;
-	Mon, 27 Jul 2026 09:49:10 -0700 (PDT)
-Received: from e142334-100.cambridge.arm.com (e142334-100.cambridge.arm.com [10.2.198.93])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 24B253F86F;
-	Mon, 27 Jul 2026 09:49:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1785170954; bh=V6zt/tVCRXmaxyFDjqVyIeLB8KQS6R6ktC8ishLU3Lk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lb/jyoKfMHEtn+EGInX+1ShDiDJE4SKeMR6pxvOnK3LevEvIfEqty1XGjueSJSBAs
-	 G42AaQQj06YclcwbnNEF+ZIACcOyOe2ZtG+CAXJ1O24QpZxYlP92nB7MGKzzIYNXvf
-	 GKb3saft/JW4/CWAMTUJrteRizHdBV+a50NOn1YA=
-From: Muhammad Usama Anjum <usama.anjum@arm.com>
-To: Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Dimitri Sivanich <dimitri.sivanich@hpe.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	Helge Deller <deller@gmx.de>,
-	Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Nick Piggin <npiggin@gmail.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	t=1785171020;
+	b=UglPtnfYuRUupkp2WlrQNGP+gxAhtLW52+wC9xLMi1Y+rVr2SWoyCad2+uRjiQqtCPrC+8
+	nB1EWP3DNbYq6LeZw5iBwb08JsGPWBLuHzHVsNBjE07LGB1qcRM914+T49XSVddMIAxgJ9
+	/JjIQdVsqbTfdP+AtqDI4b1dplnAhEU=
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-92e54f8c051so161819385a.3
+        for <linux-mm@kvack.org>; Mon, 27 Jul 2026 09:50:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1785171019; x=1785775819; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=TyxgjtQoCDEFZf0QPk0ARVlu8b9GSZjprhFXfcluj1o=;
+        b=HLQ5AMk2XYkhiIaYKQuLnaY1lBSlvu5CP0RePTKB0MN0i0esn1Serv+F5IdtCpTrns
+         SF/JpVkQVKd/eI/+HYbhF7H/SWDNk0MA0uGxj5qUA7OwVnEKL2N7xXemj4bjRt0BruLh
+         QoOh72zv9yvOzTh+pvQqlxrqGbotMUdPZw7gvLjRnxg8iixnUfU8CpYpNiiyPyimh6X1
+         9+NyICeW/GuyY3EL/u8SCUVrqeyNiuoCh4/jFasGh1KO546q7g6UOBFu5fbfIBf98D+O
+         x7QMobW6yv6WOKmrigPJa2rvYuWOKWl05u3EyrWVUEhjqCrqrmbNvM8C9Z8aPC/Dnuae
+         6rkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785171019; x=1785775819;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=TyxgjtQoCDEFZf0QPk0ARVlu8b9GSZjprhFXfcluj1o=;
+        b=GcVzygluiJ9vqsW6rP8svmXprVJVxKk1+OpscLgCxUgKMZhR9a/8KckWMRvg1m0Akl
+         zt/IR/gcy3KU6uhl0yZfuNRv8pKmz5N/32FMhNbHcoaMl+reNac3b1602YS4h634iqFW
+         nTtJOPvyBR/taCTPXkMYx0XZDlVqyFBPPXH+gXJPsDA1N9UEERC5vp5pjiQn4XX/LB3s
+         K8jribIWKaG3ScukrbwHO/Dah6nkQvkfpiGDEmqr+FQFHcG2oGWOoUzeDFaRJ8VyMyH0
+         sxzIyQsaXvoJJExxYT8U6fy4EjciFlOZhmW1JPjDC1NDBNZMC7DE7m6rvCxYoIRDTnFb
+         3dSA==
+X-Forwarded-Encrypted: i=1; AHgh+RqZtb+Ma2pfqKkjyQ72hcIQrg8C2tuJ/9vvrXt4KAaqZSr7p0ywHpUF6OrDGOF+S8Cb66Y0Un5xQQ==@kvack.org
+X-Gm-Message-State: AOJu0YzAg18IpKtGxOS3ybezfj5DICw2d+iQBdE1mNwKgqv7nYPMoxQ+
+	qgibdBHdOwvkLEUu9ZQErVnMGaR1jrq2F7IG8CHteZfFe1Gom+QdiuwKdNa1UWvCeac=
+X-Gm-Gg: AR+sD12QkdF3HVFSG5r0bO832XmXlwYMiRXMTGapJgzSsLLeZo4xpIPGm0oEFyL+V35
+	DMfQP8sIBxGYEIrahnHPcSPyNXGN5bMMh5RfNhvVYkKYxUAZrQ1ucjwbWRreec39LWhAW56snpL
+	k9fke/YBxRm3+Sm96lAE387s6aFBfXwxxqvM33IW3mT1wiLGjLnRAPgzPcJbhktpzRoh21N2QIx
+	zFGbEkZp9fMBEfc5YYYXdhAVdp7nggt8bAo8x5Rk4gnuEXZcz/UI7nMf6eSXAnIDwLNtS99ZTya
+	ZEdtxzsAPLWXTG2qVlQhTuTDhpFWjk2W3oDxCNgM5msSySiKfOU4n5Vkl+iqi78d8jjQotoJgee
+	qgv3jHuAsRlcjnHlVPkG9141nSNnQlmUGAO/3SVDQGXLt/AFdA4E36Z+np5Dp2rffIrTaRByHGu
+	Mt
+X-Received: by 2002:a05:620a:2983:b0:92e:a48d:251e with SMTP id af79cd13be357-932fe2b5b4emr1445285a.24.1785171019290;
+        Mon, 27 Jul 2026 09:50:19 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-932de5150dfsm649312085a.3.2026.07.27.09.50.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Jul 2026 09:50:18 -0700 (PDT)
+Date: Mon, 27 Jul 2026 12:50:17 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Brendan Jackman <brendan.jackman@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>,
 	David Hildenbrand <david@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	SJ Park <sj@kernel.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Jan Kara <jack@suse.cz>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Leon Romanovsky <leon@kernel.org>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Dennis Zhou <dennis@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
 	Mike Rapoport <rppt@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	ziy@nvidia.com,
-	pfalcato@suse.de,
-	agordeev@linux.ibm.com,
-	ryan.roberts@arm.com
-Cc: Muhammad Usama Anjum <usama.anjum@arm.com>,
-	linux-kernel@vger.kernel.org,
-	intel-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	linux-parisc@vger.kernel.org,
-	xen-devel@lists.xenproject.org,
-	linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	kasan-dev@googlegroups.com,
-	linux-trace-kernel@vger.kernel.org,
-	bpf@vger.kernel.org,
-	linux-perf-users@vger.kernel.org,
-	damon@lists.linux.dev
-Subject: [PATCH RFC 11/11] xen: use hw_pte_t for PTE range callbacks
-Date: Mon, 27 Jul 2026 17:47:02 +0100
-Message-ID: <20260727164715.2866609-12-usama.anjum@arm.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260727164715.2866609-1-usama.anjum@arm.com>
-References: <20260727164715.2866609-1-usama.anjum@arm.com>
+	Shakeel Butt <shakeel.butt@linux.dev>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 4/4] mm: page_alloc: fix non-movable reclaim storm in
+ defrag_mode
+Message-ID: <ameMSbNO49M45Ieo@cmpxchg.org>
+References: <20260722150006.3848560-1-hannes@cmpxchg.org>
+ <20260722150006.3848560-5-hannes@cmpxchg.org>
+ <DK7NM9RPUJOD.11PNJJ5N2OBED@linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DK7NM9RPUJOD.11PNJJ5N2OBED@linux.dev>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 89010180007
-X-Rspamd-Server: rspam01
-X-Stat-Signature: dhuh5exigf5mcbz4749m17rrqtcg8xnk
-X-HE-Tag: 1785170955-252515
-X-HE-Meta: U2FsdGVkX19f7G+yudRO0ekOGOHz+rYrvbiL6JkOs2E3e8TWqGL3P4wqa8aETX3zyBKttVE5W8gzTTd77rc/hMoUIraiYGmcjpMMHF9d8vHRIyzUfEhRsTYRUwRfsisxEFh09Nx+GCQISAKX19BRtIb6cQrLfB51KJXq/nPkR6JUosVe5VTAk3AQXCScYiE4ZiaHGNiqmyPDEYcGTiEWRjpTw2h3Bi1AsbifpqZIJmswTMm73zH/TSSgXtI5R6y9UTOyis9Q2wEXQprwNMQv/94LI7BLiBRmPrmuONn/9QTxLby3dYB/gPzbPSkXY41nm8JCJ4LrE4rRFisg6CWDqFqmjQDb0H+xFFjyn+BxrMrWIC/QI+BU5NZhHRb9ZEDOaTW0WBqW/orpO3RcffOMFO6pKe06YwX663OO6+ybv6yTLwbfiRnA88lvDzidrfcqLh2RkF5UCnkv7sWQAaKgq7TVsC98n4MmwxRuHf3HtEy5LyVuqS72DfVcZA4SY1B9i54/S0kbWqTzvx4Mf2N97rTUijkJ2p0y0+2LUQdOYPYwiJKASjrGHYdJD/uPCOWVyRHnUKQixO5Mxl45GB4L3vLrrBKYO0k9u2+dvYYi8r2j7zWC+XzvQ1/MBSCvqLpNLQi8lb/1Tp+s4rLYzz9svmScZBJ96xuxhnI2HkW+M+P1uU+Fl/FanJZgJeW692CqnvLRcxxMGo1tppcuAbPXIZUoGVQgK92bFftmQrLXTxUhiyBcwFdA2Xd5faM+b8n+YX+ZLt57HyviHlGD8ZdZQ7qrY2wxxOwZruD2/bt0LoJwhifNKVUKoUufxay0mIsO8R7hk9AasE6lDdkORysQ4tSjfSQj3r+Awjq/9tOkIsR38B8UIWUuAb/SwHQsenV7vtBHwmcDVf31pN7TS0XCY6lKg6Do1emDA1tgumzII+SsjYS48SPYcivbtda+0Mx4FQO49AAWaZDpigLr/fS
- miFEMoJ1
- 2J2lms2I53EQL4yuI2CANcsSCWnvCjUBYKBh3qqpNtbzVUVrK1wecaPuET7bolfvSsgew41mMaWZ5XwgC9Gr1NmiXB1bKm4tpTvEVVkyOfWrl1igbVzT5/0eh37RpU73+whtJBj3twbGrI+fnmW0MFhOkhwuv8XphIoBbJJyNu/jxbrPrmmlzjohhkas8LUSYg72oYLED+AGCmrwkrCsRR+jfqELl4545XtHQbeyWzr9OPPBFNKR++HgpvhsLwiQNIk6K/oGmbKlxTjng+IVWfCVug7lTiTly0+50O7sAOr3EX1NTx4L99MFLHieRnl+dFzqWOmcTRXryOTp9RxOEpMHojdUjMJOe9r1hhRdrmeVJk70=
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 68610A0009
+X-Stat-Signature: q8upwzscxrnbh9qcdxisirdbjrg7pu3a
+X-HE-Tag: 1785171020-13945
+X-HE-Meta: U2FsdGVkX1/TL4brWhIMBoFa+GWpg2PgfKK/vv+teT7GexvMPHDBbLYgSdbmX3TpA5HLPHSTkg+1sN2udTXnoWbQVEh3NDjAUPiZP/okRKLLmRTmGI9ogC1H+Hj3UMfgJaBjFSaqwOYAEx4lWi/CEH8WaynczEkPEPEgEBtWpkhV0b9j6SPoofSGmepmd4ks5rBzd5BppEIcXk1JRRoU5eoQTZHqwcoPkz42QT0oYvu8rz0fQAvCaCOEdLUnPdu2HZ4WE1KJORFeIxnZM8oA6oHZruy6HleVEXcxgo+28TGyXInLZR/KjUEJbOt/mniTvH9IHfMkF7ca9gidLCUPpOBu741thLeCCym/Sb80uscUxNWqJq/5x+sqShiR0Sde2L8WAQiD8OCvwxHx0A7qK5LmAF65BW+gz125l1BdIgo27gmQGZuSd42rY9e70l2wKqQrps49LEgYrnwiEHY04xB1VFdXUz6dWF+3DtUGL+0khrJSIYtUMxl5qg2LV7rc/RULduBsD/IzQ4K+WLBh0KOqjao9X/s/8QLhmFtXNLTZMKRKROuipiUcUPBbZr1CcexP4Gl4OOlLAAX1Vm1CP6am3u5hNOxvUrFrA5RDRWPZn/T49NT8GjGc8vqmxcE1nHaD0sLoXIlAlNlwiACBJxJiY8yGNoeRXaUaGE7VkUCaQurMN8YXgDkaLnrhbL1pMZPA79W96dMGJeOWCgOiXRgKiawEnfDPtywC6FFHLZLBjLAawJYn3SUedsbPgnYkUopnk0vRmbbD5L5VxLqP49Iaa649xcDwj+D2jxugLdI50SBQIUs8qdSSEb42JukqrylZ8za9OxWyBN+IfT3q6FmgZ5kP+4JUzvpZSNu6QU32n/qFUdAsljGjxRuVOLghPjhJwnraFrPj0N4QCma/+tHHh596YnHSXV1Ymv/bNiEuhSuYMgVN+08QpCRAJkrOQnql7H+yyntTjG5WUWE
+ E39LiUtR
+ fmKrcWN69lEs3Ku9NSEX/61IUz4WzkVm+cCdWEfkLfDWmUpi/ET4C0GELirzWse1LypyvC5P3AfbIYvjllC+bEe+GUiyx1gF0ZYfjx0R4JLVgWCii50Mlu+o39JRPV6VuRm2gm2/uqA1NabHjo67nPojMAhUpS6HV8h82XiONnwi8vJusbKyuatoFZ9CM1I73ZPvryrHrxVqLcjSrEelfd+v0JIj2Y/DWJ3SlPfkIGXgpDboJd06XG6K66FOWR38Iohlxk84J0XElpdKokFDHwmwhcVxc2GFogYF6tNyMwWdkcGLU/L/imkSpMIDNVuJMnB+AZsq3HDSyIwENaA9Nd3YCEsiHu9hI4/WvzEosV3DOVTORMMk7bjd8s+CTvF8NK+I+iSR2cNjeYDRFmLPSsWrDqupCOEVedv1hHiPu7pKhTs0FHrZz2/xlFw6Y3R04tyMftOPQ/723AsI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,82 +130,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Generic PTE range and remapping helpers now pass pointers to PTE table
-storage as hw_pte_t *. Update the callbacks to match those interfaces.
+On Sat, Jul 25, 2026 at 12:34:29PM +0000, Brendan Jackman wrote:
+> On Wed Jul 22, 2026 at 2:56 PM UTC, Johannes Weiner wrote:
+> > @@ -4169,8 +4185,8 @@ __alloc_pages_direct_compact(gfp_t gfp_mask, unsigned int order,
+> >  	barrier();
+> >  	WRITE_ONCE(current->capture_control, &capc);
+> >  
+> > -	*compact_result = try_to_compact_pages(gfp_mask, order, alloc_flags, ac,
+> > -							       prio, &capc);
+> > +	*compact_result = try_to_compact_pages(gfp_mask, compact_order,
+> > +					       alloc_flags, ac, prio, &capc);
+> >  
+> 
+> Nit: the comment for try_to_compact_pages() is falsified by this,
+> we need something like:
 
-Keep logical PTE values as pte_t and continue to access them through the
-existing PTE helpers.
+Yes, good catch. Thanks.
 
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
----
- drivers/xen/gntdev.c               | 2 +-
- drivers/xen/privcmd.c              | 2 +-
- drivers/xen/xenbus/xenbus_client.c | 2 +-
- drivers/xen/xlate_mmu.c            | 4 ++--
- 4 files changed, 5 insertions(+), 5 deletions(-)
+Andrew, would you mind folding this difflet in place?
 
-diff --git a/drivers/xen/gntdev.c b/drivers/xen/gntdev.c
-index 1dcc4675580ed..b013bcad99b5b 100644
---- a/drivers/xen/gntdev.c
-+++ b/drivers/xen/gntdev.c
-@@ -301,7 +301,7 @@ void gntdev_put_map(struct gntdev_priv *priv, struct gntdev_grant_map *map)
- 
- /* ------------------------------------------------------------------ */
- 
--static int find_grant_ptes(pte_t *pte, unsigned long addr, void *data)
-+static int find_grant_ptes(hw_pte_t *pte, unsigned long addr, void *data)
- {
- 	struct gntdev_grant_map *map = data;
- 	unsigned int pgnr = (addr - map->pages_vm_start) >> PAGE_SHIFT;
-diff --git a/drivers/xen/privcmd.c b/drivers/xen/privcmd.c
-index 725a49a0eee72..b4a487dcc9ecb 100644
---- a/drivers/xen/privcmd.c
-+++ b/drivers/xen/privcmd.c
-@@ -1658,7 +1658,7 @@ static int privcmd_mmap(struct file *file, struct vm_area_struct *vma)
-  * on a per pfn/pte basis. Mapping calls that fail with ENOENT
-  * can be then retried until success.
-  */
--static int is_mapped_fn(pte_t *pte, unsigned long addr, void *data)
-+static int is_mapped_fn(hw_pte_t *pte, unsigned long addr, void *data)
- {
- 	return pte_none(ptep_get(pte)) ? 0 : -EBUSY;
- }
-diff --git a/drivers/xen/xenbus/xenbus_client.c b/drivers/xen/xenbus/xenbus_client.c
-index 27682cb5e58ab..387f97a555594 100644
---- a/drivers/xen/xenbus/xenbus_client.c
-+++ b/drivers/xen/xenbus/xenbus_client.c
-@@ -749,7 +749,7 @@ int xenbus_unmap_ring_vfree(struct xenbus_device *dev, void *vaddr)
- EXPORT_SYMBOL_GPL(xenbus_unmap_ring_vfree);
- 
- #ifdef CONFIG_XEN_PV
--static int map_ring_apply(pte_t *pte, unsigned long addr, void *data)
-+static int map_ring_apply(hw_pte_t *pte, unsigned long addr, void *data)
- {
- 	struct map_ring_valloc *info = data;
- 
-diff --git a/drivers/xen/xlate_mmu.c b/drivers/xen/xlate_mmu.c
-index 8efd7b55223fb..d7244f9f9a545 100644
---- a/drivers/xen/xlate_mmu.c
-+++ b/drivers/xen/xlate_mmu.c
-@@ -93,7 +93,7 @@ static void setup_hparams(unsigned long gfn, void *data)
- 	info->fgfn++;
- }
- 
--static int remap_pte_fn(pte_t *ptep, unsigned long addr, void *data)
-+static int remap_pte_fn(hw_pte_t *ptep, unsigned long addr, void *data)
- {
- 	struct remap_data *info = data;
- 	struct page *page = info->pages[info->index++];
-@@ -269,7 +269,7 @@ struct remap_pfn {
- 	unsigned long i;
- };
- 
--static int remap_pfn_fn(pte_t *ptep, unsigned long addr, void *data)
-+static int remap_pfn_fn(hw_pte_t *ptep, unsigned long addr, void *data)
- {
- 	struct remap_pfn *r = data;
- 	struct page *page = r->pages[r->i];
--- 
-2.47.3
-
+> diff --git i/mm/compaction.c w/mm/compaction.c
+> index 0568623d9384d..ca57403dc1522 100644
+> --- i/mm/compaction.c
+> +++ w/mm/compaction.c
+> @@ -2823,7 +2823,7 @@ static enum compact_result compact_zone_order(struct zone *zone, int order,
+>  /**
+>   * try_to_compact_pages - Direct compact to satisfy a high-order allocation
+>   * @gfp_mask: The GFP mask of the current allocation
+> - * @order: The order of the current allocation
+> + * @order: The order to try and make available
+>   * @alloc_flags: The allocation flags of the current allocation
+>   * @ac: The context of current allocation
+>   * @prio: Determines how hard direct compaction should try to succeed
 
