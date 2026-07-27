@@ -4,104 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0868AC53209
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 23:05:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3FB8C53209
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 23:07:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E34EA6B007B; Mon, 27 Jul 2026 19:05:51 -0400 (EDT)
+	id A95A56B0088; Mon, 27 Jul 2026 19:07:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE5336B0088; Mon, 27 Jul 2026 19:05:51 -0400 (EDT)
+	id A67016B008A; Mon, 27 Jul 2026 19:07:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD46B6B0093; Mon, 27 Jul 2026 19:05:51 -0400 (EDT)
+	id 97CC06B008C; Mon, 27 Jul 2026 19:07:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8B07E6B007B
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 19:05:51 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 05E5480232
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 23:05:51 +0000 (UTC)
-X-FDA: 85036090902.19.B09A316
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 549C0140007
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 23:05:49 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=FKITNiTk;
-	spf=pass (imf26.hostedemail.com: domain of 3S-RnagcKCA435o70ozu22uzs.q20zw18B-00y9oqy.25u@flex--pratmal.bounces.google.com designates 209.85.210.197 as permitted sender) smtp.mailfrom=3S-RnagcKCA435o70ozu22uzs.q20zw18B-00y9oqy.25u@flex--pratmal.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785193549;
-	b=qVnlel+BDJWsFcLZn3NlsL2vSGstlPpWrkvVAwOk7K+a/PK8RkbqWG3571zfwioIbZZYQe
-	/0biMlk/OJTQzYUov4lkIDOz3Lb7+NLac0WgAsk7PuYuuc9yIA2HGl9dA781dlY2hXH1b/
-	nxyvi/c56eZ+2NUEwcAIHw7jSXVOhMA=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=FKITNiTk;
-	spf=pass (imf26.hostedemail.com: domain of 3S-RnagcKCA435o70ozu22uzs.q20zw18B-00y9oqy.25u@flex--pratmal.bounces.google.com designates 209.85.210.197 as permitted sender) smtp.mailfrom=3S-RnagcKCA435o70ozu22uzs.q20zw18B-00y9oqy.25u@flex--pratmal.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 571106B0088
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 19:07:45 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B6D68A0233
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 23:07:44 +0000 (UTC)
+X-FDA: 85036095648.30.7B81183
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 2290220009
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 23:07:43 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Coo62tiQ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of helgaas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=helgaas@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785193549;
+	s=arc-20220608; t=1785193663;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=lCgFliqJWz+M9tZQ5Il6O3npkwRo/L4rfW7GdWN7+m0=;
-	b=dgzZ/zxtUyAZ109Lyxj4BZohxTvr27PtIUXbxGwK4v/bIRRbhkKXMD3TnZlztzaIazGmWm
-	sJLqU3PV4MJBqW49sIb7lYns/DCcTvHLKS4DpUznJ681QoKBojTUv0tGIgcJVh1YNJekww
-	NrvwwEf2d0YEtrpzi/VTfM1TqE6rU+A=
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-84885a4fcabso3727430b3a.3
-        for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:05:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785193548; x=1785798348; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=lCgFliqJWz+M9tZQ5Il6O3npkwRo/L4rfW7GdWN7+m0=;
-        b=FKITNiTk6RReG/N9tjzwb0R9hAQox/cJ/ZWRm687Dny3sewsSKvShiKatgDP+heq37
-         R4kt0XoKNvmclKZAN81ie8AC/bt8dYdZgn3t0jOQ8oUFRF8cnJpGmJD7YNgsNIJmgIg9
-         EZ5H2tqb64Z3uZoIKYBdGSZBsqmQrKvW/XvLOK+Yffo2AblWVO5rGM45EoyqpUH4nOdh
-         oNS7lACjfMOiBbrE+vmefWHqha3zrk6/Y11YWbcp4jORF0S3EyUvPZm7UpSptj+EF9LP
-         LCKOD9jw6bf0N9ThAFbDTEyPA/vr6Nx+U8TtuvbwN01OaXac63LQWO2jDoQh/TmhdWZn
-         97sQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785193548; x=1785798348;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=lCgFliqJWz+M9tZQ5Il6O3npkwRo/L4rfW7GdWN7+m0=;
-        b=HkAkfawBElLNSIeqF81P38fE59GKrcKe2OASwbfXOJyZE/SUAmsTk3pk59haAVkJWu
-         UPnkNbjYRFRO9iWlVRA3GvKNt7hv9iHsiWEw7cmn1qP91aYb5718OfAlb8EAk1bQ4dEL
-         MLjMHhZg1s7KGD5mDNNOaqloj7I8yKm3Ttwd65/GXuod0ZW0N8lw8h6LiBBv8A2H7cev
-         ccYvp6pnkvut90kuV7o5KvXA6wlX20QTf3XIvdH4eeQIqEVg1jvbM8tBWcfLQu9TDsjx
-         3efYBg8wQKPsvoEav5HCZshHZAqtyYC02IK84DZO8tn54hE7qt0ha4OoCBLnSAp1uNDy
-         9Cmg==
-X-Forwarded-Encrypted: i=1; AHgh+RpWHmNS7lXN/InRAE1BI88vuYJvZ3BrmcnfuBgBHGnCAQXInBBacqkgJfwLa68ONP1HpzR7QAlkJg==@kvack.org
-X-Gm-Message-State: AOJu0YwReIwXhnck29WV8MfYaPCQbOTwYPwFAs+NZwEH9n+5MyZcrLJd
-	igb0fW1U8PnzgX696h9nMoGTxoECEwBgrYRzMp+a/n382rUUCDAncDVp8wkFsinpg9sqEMWXMEB
-	46Z4dCmMR5g==
-X-Received: from dykm9.prod.google.com ([2002:a05:7300:1889:b0:311:4890:b1b9])
- (user=pratmal job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:b92:b0:3c3:6c90:65b3
- with SMTP id adf61e73a8af0-3c67dff9882mr9745829637.65.1785193547902; Mon, 27
- Jul 2026 16:05:47 -0700 (PDT)
-Date: Mon, 27 Jul 2026 23:05:45 +0000
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.229.g6434b31f56-goog
-Message-ID: <20260727230545.262579-1-pratmal@google.com>
-Subject: [PATCH v3] mm/page_reporting: Add page_reporting_delay_ms module parameter
-From: pratmal@google.com
-To: akpm@linux-foundation.org, vbabka@kernel.org, david@kernel.org, 
-	sj@kernel.org, corbet@lwn.net
-Cc: skhan@linuxfoundation.org, anshuman.khandual@arm.com, gthelen@google.com, 
-	surenb@google.com, mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org, 
-	ziy@nvidia.com, ljs@kernel.org, liam@infradead.org, rppt@kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	Pratyush Mallick <pratmal@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 549C0140007
-X-Stat-Signature: ysz49j91r9dawb6gene9gezmfsjizjgz
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:dkim-signature;
+	bh=cO4H7SyXSWmzmogiLuNgyZmjdPhXBVrqySf37gDJpto=;
+	b=Y+w4uOBCBez7xZd1+53/ROpUNK64pgvRjAbzBQsfpkiZuBCacYidfr0X0Fg5BCu7xoVPCz
+	OuP0ySAShcrE9dMDHWI6QTH7GZnzidppcPHRICpnomfzXDuoLPhqBhXheI8W6s7d3JTca7
+	JCVZrL0+RuSPoc0J3UPm0/qFkLuGSPA=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Coo62tiQ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of helgaas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=helgaas@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785193663;
+	b=6dq6mgg0+3Hrs1wZvxNRiWQO9Zjhf6EGbfLsASaymJkv6YaS5QtC1Y+yBKX7EywVlUa1Oe
+	0/64GEsrIFv1gah+g+q/5HwJTvzq3cy+gRcufYj7rIMWuQ++oqv59Nra3R38V88dws/GpB
+	m600qNP/Ym0/dXPExXHg9rEdJJVFZsw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0258241663;
+	Mon, 27 Jul 2026 23:07:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEFBC1F000E9;
+	Mon, 27 Jul 2026 23:07:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785193661;
+	bh=cO4H7SyXSWmzmogiLuNgyZmjdPhXBVrqySf37gDJpto=;
+	h=Date:From:To:Cc:Subject:In-Reply-To;
+	b=Coo62tiQSLxOgaR7E2ulvwDVRvU7+la4nlWtaK9yFuompvjuKQFQB69D297yCiQQP
+	 0HempbVTUtNTmH75yoMWOjNmH1+NS/8xr9RqwwN3f7sHhU1MKikde/8HV53MswvEly
+	 lYWZ+4kC4dg7uiJZPXaCTCHXNl+zggFmWhS8GKIoEFsgtHgzRafJ665TrYgp61ty9U
+	 VfY9XfPPVqptR22QibTbmAN4DP8RfYo7g5yVu7kup3xq/DoLjswMA3QOCrjPxgwqLT
+	 YUv+1/HNQGHbwmRgzadmr5ol3ZhHxukLy2P2+dJ57hW7De2u72BapdsmDPgV7j8mJR
+	 kUMNfVLw8mkNw==
+Date: Mon, 27 Jul 2026 18:07:40 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: David Matlack <dmatlack@google.com>
+Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-pci@vger.kernel.org,
+	Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Alexander Graf <graf@amazon.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
+	Josh Hilke <jrhilke@google.com>,
+	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
+	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pranjal Shrivastava <praan@google.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>,
+	Yi Liu <yi.l.liu@intel.com>
+Subject: Re: [PATCH v7 09/12] PCI: liveupdate: Inherit ARI Forwarding Enable
+ on preserved bridges
+Message-ID: <20260727230740.GA1273350@bhelgaas>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260710212616.1351130-10-dmatlack@google.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2290220009
 X-Rspam-User: 
-X-HE-Tag: 1785193549-808548
-X-HE-Meta: U2FsdGVkX19NhSWdKRMQ/QKQV9ouN7jKna1c8RDjMA+4GATTJdmB+r2kQQlmpZm3MT4lXFDcxafksUm76HOuhNiHqWjw1nwmhhmZEcRZQOS3udhnlLq493FJYrcD2cIDoxOs9ifvq1pjQR+/TIRJtQiobx/DqLC6e+y52ZWhzC4w8IRG8DrmgRZy6ozx7PU8WECQZ3z1fQKnTZbOOLv14TmyeVsAWhkwqtEwt8fVPDnpdXD6v/vilYFTySSWku4ZaUQ6dAVEHhg88XLQPapbZbo1XGqKrBP6SVpImhHnvJ4IYsEPmxYmNQgsUZJ34bqmOcX87CGgvCkcD/QfnpU2mK55EwRNipc8he8BETjIPCB665VPVkpYkzL45kCqn566M/t2v9DBIm8uY28Tqa8CJlvOVfLHZS2xAe8VwitwakZyQ4+HWPJWCakHcgDqdqCQJzyrA8FCAlARRApEo5TuvRZ3OQvWHY8QkcmMVTAroUDlWEFYcmjLEJXc/JZv4Q0caZ2MU4du/GTd4npIhouyXrQ/Rc2O5hAjS6MS4HKrBJ2bHZhe0/F74F+H5fN2SCamw9DuM+ZM6YAj2dmBjyPCaXoNs5Bxvq5csa8JvwIC1e/jKmDVLNUKuVifv2PUOSdukyUVxC8ka78VMkaARrkpYolSlkeMHw7xDFU+HBqzMx3+lnEaCW44/iDzNrzN1QZECn26UjviYAPomfb4RKnDCwz0mySsDaNQYeh/htIgmjuEKr7KCJYLsIgyXwC3L8KN0lzZpf97n72vNmy0G4BTuW29dx1IebwC+pWMBcnKs0g4uEYym4IzRB8jrNoL4ZvTxmouEG/ImCIUcEfIi6Z6olrZeT/Pz+oDBwqguokdEHzSGK2NKkPeLxd0e1HlKf1TQAnejCs/TYuWD1kY/u1sUiCZ+Cjk+hncealjiG1Yw85GBoz9Czrr3WMr+vCz1HR5cLWR+AtpPSLTKqWFz7Y
- 41FfJuR6
- h1Ki0X2n6KZpTVZPar8ZZPzrOwrWM5iadFH30oEezlRCwa7B+nRzbf4Keksb/uoxDEDEsyTghKOCuVm5GEaZZA7rmYKO4SMWjtltUktdGnPenAcbtKb0vuToV5ToPywGMRoW1i8231ph6Q+RcuqFx5X9ikaBPIVgPtUKimFT50QprQ/uebJy6z5lQkSFHpgIVcMUkq/HbmBRyL4CgzpIMI2tPqnN0luSVIO8ThaIvvtrLAneyqQQokKwkstSktyXzf66clYADuaAifDPBGzV8YsQqAxZ1QHU15RVqcYP7G+VKEjYiUz7RDJ1vDx95VXyRzfOxe7ThjT9N9axQpq+HUsiDwe5wNC5EywiQJzgzXNpIGvtxidganl1NuJT669JGWJor8EhBiSbuAKm/Xi/nqlBzFzori1ah2nkIUnRSMgcn2wLAyoBfNravt/vr2Fsvq3sujqzFU3OZmhuKslHmGEi/NZvbmgNNzsyv42/uSuHKGDZrQdYTnDZOX0Ri/9ikwwrNMZyBhmYs9PKdHEwDUk+R8KCaytAWqv3FGQiObIWjIh0GbN0cWkITwuuEVfY4YzRPJpE5os6DyUj30vJ+2LWXCu+R+uhrKNYWixPixXuvRkOfl3LV18ZhiYZyuc88G3sMVVWfQaFQEXoiXBTr9mg+Dg==
+X-Stat-Signature: c918ypqax537btedhneorp6n4whwgtob
+X-HE-Tag: 1785193663-634871
+X-HE-Meta: U2FsdGVkX1/JSo/ArfvM96Ioz8G8E0QqHfdFnzWVy8/+zgIY7+vIK8e0mFFr9zt4cYO6FRbIhIptiz00+Z7y1ifFQY2grvX5Ly0R3ZMMHN7EWSfNFy1Oyb79hP2pPSgBjdGc6sDvz0SF96JXu5zLUgFVbE3ktjoxwmuNMOTddF5g0uMnfs2fjDfv80ZK0L/IwI2nRTCzEeCeTtFv7QSTNBTXDsg+4G7bPiwadW4EDfft9yMCGKWiQ4j5wZgfwBAkdLA2k2Xf4OfYf9x3bGwpuLcfqjMovQTsY8Wca4G//WMZxmfiX7xLNhIbWd/ZxebGziMa6/KNRFOIC+YZhdiV2frxtw7BbbPzjKsUWgO8UvTKXe50bxEq7TvHppaw4QNLGCOwe4tbfch+KDCEnk6kO5zrkrOiR1ahQGOI4kGOC7T+4AEwosxaB5XsulvC3qV4bfplsxm2yginNb24RUn+Tx/eNkceb7WOIY6X0LljOy5MdAqDJDx7fAs2PgM6mwm2fQWCcY0w5sB9hrxMGNxb/3yPPS5o82WYAzNorbLYZz4Nnbc7/MTgWl4IlsoO/iLuk/9BhKLMBUzglCPD/Cc9D8jivXmw+gyB6uP9IRsgG3rsgLnr1XiedZzUgUuLEqM2EULcYsi4tY9iZ9qr9zF9RWBcPe11AfcxWFSM0WPHZhpdMfM3ItJgajVYKxzj9/d6jrStzg3uu1W7tqHosO5+axwj4uXrg49O1ZjZSHInxb5wbXiNXziwZIs2Na64EB2tMJkU4L94PU6iKX7QeqdEMZIpQ4PvnI8og0L1uPPrdY6rbNoA4HwTpXq/8KhLKnmqgLfmr32ELgxLa+SFHjRQFOBQBPKRbjqCkLkgI6FlOIOVweu1TleGoxy1idmY59BlIbHmnaUNCv0xk30tuRs3Rft6o7ox3K7TJicbRK5uNhf3wtk1lFI1UXMlOC/x9MuqIpX2sZFzLmBXKW65sJg
+ hpgYM7of
+ m1oBXCInCe0PoKDAYH00WC0cqQdDwzha0kIGkJB7hgG1pjPgr/TxlHD/czUscz6Uhfp0er5ym0zFMjyIEAkxsTQZO5wZJRQ81lCCFteOx4hGcpwhvygweGn1pqRulHuErad9l/WnPfgEMxxzmDhKI1V3I36zAsvL/EsQ1spqxYzwiAK8OIrkapb5oZ61phfeFmESqSeAW9dFW/xUgU5sgxa5MruUtLj88Ar7BmUX4G2nCex6bOzW8hR0+AO6glzduARFFquBzfSBjUlo4lSbLSoUK4A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,114 +109,124 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Pratyush Mallick <pratmal@google.com>
+On Fri, Jul 10, 2026 at 09:26:12PM +0000, David Matlack wrote:
+> Inherit the ARI Forwarding Enable on preserved bridges and update
+> pci_dev->ari_enabled accordingly during a Live Update. This ensures that
+> the preserved devices on the bridge's secondary bus can be identified
+> with the same expanded 8-bit function number after a Live Update.
+> 
+> Signed-off-by: David Matlack <dmatlack@google.com>
+> ---
+>  drivers/pci/liveupdate.c | 18 ++++++++++++++++++
+>  drivers/pci/liveupdate.h |  6 ++++++
+>  drivers/pci/pci.c        |  8 +++++++-
+>  3 files changed, 31 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
+> index a95bfe5eff77..74a11e520f0d 100644
+> --- a/drivers/pci/liveupdate.c
+> +++ b/drivers/pci/liveupdate.c
+> @@ -128,6 +128,10 @@
+>   *    way after Live Update and ensures that IOMMU groups do not change. Note
+>   *    that a device will use its inherited ACS flags for the lifetime of its
+>   *    struct pci_dev (i.e. even after pci_liveupdate_finish()).
+> + *
+> + *  * The PCI core inherits ARI Forwarding Enable on all bridges with downstream
+> + *    preserved devices to ensure that all preserved devices on the bridge's
+> + *    secondary bus are addressable after the Live Update.
+>   */
+>  
+>  #define pr_fmt(fmt) "PCI: " KBUILD_BASENAME ": " fmt
+> @@ -816,6 +820,20 @@ int pci_liveupdate_enable_acs(struct pci_dev *dev)
+>  	return 0;
+>  }
+>  
+> +int pci_liveupdate_configure_ari(struct pci_dev *dev)
+> +{
+> +	u16 val;
+> +
+> +	guard(rwsem_read)(&pci_liveupdate.rwsem);
+> +
+> +	if (!dev->liveupdate.incoming)
+> +		return -EINVAL;
+> +
+> +	pcie_capability_read_word(dev, PCI_EXP_DEVCTL2, &val);
+> +	dev->ari_enabled = !!(val & PCI_EXP_DEVCTL2_ARI);
+> +	return 0;
+> +}
 
-Currently, the free page reporting uses a hardcoded delay of
-(2 HZ) between reporting intervals. While this is a reasonable
-default, it lacks the flexibility to adapt to varying guest workloads.
+I'm guessing we're going to see a lot of this pattern, so it will
+eventually become familiar, but it's not familiar yet ;)  This doesn't
+"configure" anything (I do understand that avoiding configuration in
+the new kernel is really the main point of liveupdate).
 
-A low delay allows aggressive memory reclamation, returning unused
-pages to the host as quickly as possible. However, during spiky
-allocation/free churn, this immediate reporting can lead to a severe
-performance penalty (nested page faults) as the guest re-allocates memory
-that the host has just unmapped. In these scenarios, there is benefit
-from increasing the delay to batch free pages over a longer window,
-absorbing the churn without hypercall and re-fault overhead.
+Maybe a comment is the solution.  Or maybe a rename to
+"pci_liveupdate_ari_preserved" or something?  That would have to
+reverse the sense of return values, but I think something like this in
+the callers would read better:
 
-This patch exposes the delay as a module parameter:
-/sys/module/page_reporting/parameters/page_reporting_delay_ms, measured
-in milliseconds and defaults to 2000ms.
+  if (pci_liveupdate_ari_preserved(dev))
+    return;
 
-Signed-off-by: Pratyush Mallick <pratmal@google.com>
----
-v3:
- - Converted page_reporting_delay_ms from a sysctl to a module parameter.
- - Dropped the max value cap (PAGE_REPORTING_DELAY_MS_MAX).
- - Documented page_reporting_delay_ms in kernel-parameters.txt.
- - Updated code comments in mm/page_reporting.c.
- - v2: https://lore.kernel.org/linux-mm/3da27fde-25dc-4cb8-8e05-74cd26fc2f7c@kernel.org/T/#t
+or maybe:
 
-v2:
- - Documented page_reporting_delay_ms in Documentation/admin-guide/sysctl/vm.rst.
- - v1: https://lore.kernel.org/linux-mm/20260722192935.1646848-1-pratmal@google.com/T/#u
+  if (pci_liveupdate_preserve_ari(dev))
+    return;
 
-v1: Fixed feedback from RFC.
- - Added lower and upper cap to sysctl value.
- - Reverted the reordering on page_reporting_delay_ms.
- - Dropped the mod_delayed_work() change.
- - RFC: https://lore.kernel.org/linux-mm/20260714171456.2350037-1-pratmal@google.com/T/#u
- .../admin-guide/kernel-parameters.txt         |  6 ++++++
- mm/page_reporting.c                           | 21 ++++++++++++-------
- 2 files changed, 19 insertions(+), 8 deletions(-)
-
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index b5493a7f8f22..364c2dce8e70 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -4810,6 +4810,12 @@ Kernel parameters
- 			Adjust the minimal page reporting order. The page
- 			reporting is disabled when it exceeds MAX_PAGE_ORDER.
- 
-+	page_reporting.page_reporting_delay_ms=
-+			[KNL] Free page reporting delay in milliseconds
-+			Format: <unsigned integer>
-+			Adjust the delay in milliseconds between free page
-+			reporting intervals. Default is 2000 (2 seconds).
-+
- 	panic=		[KNL] Kernel behaviour on panic: delay <timeout>
- 			timeout > 0: seconds before rebooting
- 			timeout = 0: wait forever
-diff --git a/mm/page_reporting.c b/mm/page_reporting.c
-index 942e84b6908a..a67311468204 100644
---- a/mm/page_reporting.c
-+++ b/mm/page_reporting.c
-@@ -47,7 +47,11 @@ MODULE_PARM_DESC(page_reporting_order, "Set page reporting order");
-  */
- EXPORT_SYMBOL_GPL(page_reporting_order);
- 
--#define PAGE_REPORTING_DELAY	(2 * HZ)
-+static unsigned int page_reporting_delay_ms = 2 * MSEC_PER_SEC;
-+module_param(page_reporting_delay_ms, uint, 0644);
-+MODULE_PARM_DESC(page_reporting_delay_ms,
-+		 "Set page reporting delay in milliseconds");
-+
- static struct page_reporting_dev_info __rcu *pr_dev_info __read_mostly;
- 
- enum {
-@@ -76,11 +80,11 @@ __page_reporting_request(struct page_reporting_dev_info *prdev)
- 		return;
- 
- 	/*
--	 * Delay the start of work to allow a sizable queue to build. For
--	 * now we are limiting this to running no more than once every
--	 * couple of seconds.
-+	 * Delay the start of work to allow a sizable queue to build.
-+	 * We limit this based on page_reporting_delay_ms.
- 	 */
--	schedule_delayed_work(&prdev->work, PAGE_REPORTING_DELAY);
-+	schedule_delayed_work(&prdev->work,
-+			      msecs_to_jiffies(page_reporting_delay_ms));
- }
- 
- /* notify prdev of free page reporting request */
-@@ -335,12 +339,13 @@ static void page_reporting_process(struct work_struct *work)
- err_out:
- 	/*
- 	 * If the state has reverted back to requested then there may be
--	 * additional pages to be processed. We will defer for 2s to allow
--	 * more pages to accumulate.
-+	 * additional pages to be processed. We will defer by
-+	 * page_reporting_delay_ms to allow more pages to accumulate.
- 	 */
- 	state = atomic_cmpxchg(&prdev->state, state, PAGE_REPORTING_IDLE);
- 	if (state == PAGE_REPORTING_REQUESTED)
--		schedule_delayed_work(&prdev->work, PAGE_REPORTING_DELAY);
-+		schedule_delayed_work(&prdev->work,
-+				      msecs_to_jiffies(page_reporting_delay_ms));
- }
- 
- static DEFINE_MUTEX(page_reporting_mutex);
--- 
-2.55.0.229.g6434b31f56-goog
-
+>  /**
+>   * pci_liveupdate_is_incoming() - Check if a device is incoming-preserved
+>   * @dev: The PCI device to check
+> diff --git a/drivers/pci/liveupdate.h b/drivers/pci/liveupdate.h
+> index 4e8a01bcb4bb..6f21ec50927b 100644
+> --- a/drivers/pci/liveupdate.h
+> +++ b/drivers/pci/liveupdate.h
+> @@ -18,6 +18,7 @@ bool pci_liveupdate_scan_bridge_begin(struct pci_bus *bus, struct pci_dev *dev,
+>  void pci_liveupdate_scan_bridge_end(struct pci_dev *dev, int pass);
+>  void pci_liveupdate_init_acs(struct pci_dev *dev);
+>  int pci_liveupdate_enable_acs(struct pci_dev *dev);
+> +int pci_liveupdate_configure_ari(struct pci_dev *dev);
+>  #else
+>  static inline void pci_liveupdate_setup_device(struct pci_dev *dev)
+>  {
+> @@ -46,6 +47,11 @@ static inline int pci_liveupdate_enable_acs(struct pci_dev *dev)
+>  {
+>  	return -EINVAL;
+>  }
+> +
+> +static inline int pci_liveupdate_configure_ari(struct pci_dev *dev)
+> +{
+> +	return -EINVAL;
+> +}
+>  #endif
+>  
+>  #endif /* DRIVERS_PCI_LIVEUPDATE_H */
+> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+> index 739ecaab2e76..e0c133b66a35 100644
+> --- a/drivers/pci/pci.c
+> +++ b/drivers/pci/pci.c
+> @@ -3528,7 +3528,7 @@ void pci_configure_ari(struct pci_dev *dev)
+>  	u32 cap;
+>  	struct pci_dev *bridge;
+>  
+> -	if (pcie_ari_disabled || !pci_is_pcie(dev) || dev->devfn)
+> +	if (!pci_is_pcie(dev) || dev->devfn)
+>  		return;
+>  
+>  	bridge = dev->bus->self;
+> @@ -3539,6 +3539,12 @@ void pci_configure_ari(struct pci_dev *dev)
+>  	if (!(cap & PCI_EXP_DEVCAP2_ARI))
+>  		return;
+>  
+> +	if (!pci_liveupdate_configure_ari(bridge))
+> +		return;
+> +
+> +	if (pcie_ari_disabled)
+> +		return;
+> +
+>  	if (pci_find_ext_capability(dev, PCI_EXT_CAP_ID_ARI)) {
+>  		pcie_capability_set_word(bridge, PCI_EXP_DEVCTL2,
+>  					 PCI_EXP_DEVCTL2_ARI);
+> -- 
+> 2.55.0.795.g602f6c329a-goog
+> 
 
