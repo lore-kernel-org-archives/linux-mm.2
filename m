@@ -4,126 +4,150 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E024C531D0
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 08:19:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97FF8C53219
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 08:30:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C2C086B007B; Mon, 27 Jul 2026 04:19:58 -0400 (EDT)
+	id 317B26B007B; Mon, 27 Jul 2026 04:30:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BDD1E6B0088; Mon, 27 Jul 2026 04:19:58 -0400 (EDT)
+	id 2C8BC6B0088; Mon, 27 Jul 2026 04:30:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ACB9E6B008C; Mon, 27 Jul 2026 04:19:58 -0400 (EDT)
+	id 1BD8F6B008A; Mon, 27 Jul 2026 04:30:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 796786B007B
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 04:19:58 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E6DB6A06A5
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 08:19:57 +0000 (UTC)
-X-FDA: 85033858434.15.EFFA120
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 1355D100002
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 08:19:55 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=NqbAP8C9;
-	spf=pass (imf14.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+	by kanga.kvack.org (Postfix) with ESMTP id DADF26B007B
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 04:30:42 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 71043A06C2
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 08:30:42 +0000 (UTC)
+X-FDA: 85033885524.10.AEBDD43
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 6146140003
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 08:30:38 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=JJvitefY;
+	spf=pass (imf27.hostedemail.com: domain of jani.nikula@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=jani.nikula@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785140396;
+	s=arc-20220608; t=1785141040;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3ADtoclqK+MoHDwfgYPV0XT59G0S5UqppnClfzEaKuk=;
-	b=Sptw+SXP3IBmmQ/+2w5XHtlju/2FaD0kK6XOCCr7cpl8USIGlRyWDpX/5xN7KaNNTtvBse
-	g6C06wEKak4Hjtrsi6ephx7C+dBjLOoVf09JV6FuURHqq8EjhB6yD89vPBLGtFWVsBz35h
-	bANMLS0MljV8abDTe8WAayDSo5H2Sy0=
+	bh=Wun0I1dkmxfa8qNfn0OQhv2DA5hF2iEgMMGgkdL9fIM=;
+	b=nruNjJAS428QUPgXrB+gWXKGaaDwKzm28zcYOeF7jcJtuZrl8OCRaTcS0jGMogSzBzRtFh
+	4MBbWPy2tpXxKnShYEDKXrxBlMJwDvDSUeUddY79OZ661YQj7EMN7LjH1GMesyiYzHmL2A
+	6bf6w1tJRJCfearzhjLURPYPzA9cFEw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785140396;
-	b=J4ltE1o84xRbjnar4oM4TklI5KLMe/2U8VLrQNsickPAbkmokfotD4Lq5/nlz2BBYaZM3D
-	4ne8IjIoMMp5Jb3izWfNfREyUWCoEbWqkkgrSPvUi5dbB13h/fk+sjsM8y0IQfG60mUhye
-	a3enXANNNjG3mYSwCGSzN39dYmKgOl4=
+	t=1785141040;
+	b=F05gCaq8SRhD9UWv75N7RNsY2wq68ZIdc4hlt8CVhKV8blOOUrN6x5mVGPhPOy43cD/3at
+	DsmrCgmb2aq07uuBg0FNZYZVRcy87cZjdYCMyoYTptUJAzNYLsHrQDc3reX+ROG8NOqAvP
+	T071tY1OcStH5Di9gHCO8RpnD7SPZZo=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=NqbAP8C9;
-	spf=pass (imf14.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4957eefd361so18247145e9.1
-        for <linux-mm@kvack.org>; Mon, 27 Jul 2026 01:19:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1785140395; x=1785745195; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=3ADtoclqK+MoHDwfgYPV0XT59G0S5UqppnClfzEaKuk=;
-        b=NqbAP8C9RkXB5LoSxo7t04VSoai1sCOAgBNE4bIF9cq+8tegzUnC+2uA9MPik2ujDm
-         /BxVCCrFFc+OOtpV5Q5mEAZpY89xBDewXypTOpLgqUsUg9wPlcn+DLjKXdIgiKQhFbMw
-         SlOdsNSPe6HhO+jng7Oj6c4dmqKurOwNwA0yH/lZqET+nSFu/vPlkoM//02H3c/1pBPz
-         GUjhdXQvOEa+OHgOEIRxTxO81q8QGvlOadnmQIN8xNDeacBTYvZDqUVgT2fRPCCDDLQT
-         dYAvl0Wt+tsu6h76XMv7B5h5d+Bavb8iGX/YKWtnheBdzx6ijetzD0yFPGYAK9ZWIR2Q
-         0teQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785140395; x=1785745195;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=3ADtoclqK+MoHDwfgYPV0XT59G0S5UqppnClfzEaKuk=;
-        b=pXOYOuFWUlQX7k1v8sV5HV6XEaBhMsukt3H6xKE0tNAqG1tCx59fuD9thUaP6zyeGA
-         z9iM4o6xIeYhpwrmGAoWFPb5Kxsfy/4A/0HuENXq8TXc+q3fLw32cIbwNbCeErX/UGQt
-         vxzczvJgc2DHd+WGJmuV417uf0az8XeyMVAdj0gBYBSSKy37qWxlYKutgK1b10vmdbpd
-         bV/mRG+ed0a9kW7bIiRYa9wX9C2I08D2CkfLPzB6C6JbeVB/n+XiT4I9epExbbnNFuhQ
-         sw6ee+P32OdKtTOhNUXtg4tLsKK35vG7tVHFk4VzV0lI5ID7kTWpdzmGaeQDnRT/GnF+
-         foPg==
-X-Forwarded-Encrypted: i=1; AHgh+RoV1pPu3dwe7M93KgnZ/pkbb7T2tp/fDwB6kbc0jgYws/3VGUPRZWhh08XRMe7TkuYoNDpVWEngNA==@kvack.org
-X-Gm-Message-State: AOJu0Yw/KbgD+8mupqRid0QpyulipWCoNtj8Rtgjcq3Tj7uO6U7E7smG
-	lSZV//KKRO+LWt8rtlg08RZUNumFPGhJtDEX05FhPguwTIe3ey2q9So9sfl4IX8ZvKI=
-X-Gm-Gg: AR+sD11RfADOwhWWAOl46fcxYMj3lkODK0MGtZAN3VVfH4NKJ70BAd9wfdHlJYhUYrm
-	yznbRF3BEJGGqJOkCarn0fHv28yK0wStX9IlrMzss4AbLs84fy3cCIBhV1oswYTpWbqfjsiOyiz
-	ks7RRkQagCPVGyFglI3MEdRcmS+fSie7DVTidKNsgb1HrK90vAWdu3EIjS47PDrGw1ogE8yNPbF
-	P4bo+vqyynrUvKXNEKSKPfQvx7QIAWPM2DoQHGKfpG1HCjNuwQLLVnoj9oq/L6LwZoyYkbODlay
-	FQAFMBEv2EHFQKn1Dm+i1kwgKngyaviRUWkeK5sXgWSkNm9PSH3eT3lh/YnpXc48v/83NnsE2Mn
-	wpJI3bqdc83hWKiJGlBVkJjhI04Cwoc4dkkdSOZOR/0mTrvyQTuCn7xgKD6Ik7vY4uOTny8lZS/
-	MFCGd8Ns+wMe0+14xx/R0/fKU1r3nBXBiATGEmWKQhbMIy9TG0q/JovA1svjMiFcJvwh6P
-X-Received: by 2002:a05:600c:3113:b0:495:4811:7998 with SMTP id 5b1f17b1804b1-496b57013f0mr92292875e9.17.1785140394639;
-        Mon, 27 Jul 2026 01:19:54 -0700 (PDT)
-Received: from localhost (109-81-83-7.rct.o2.cz. [109.81.83.7])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-496b4866ddbsm237975535e9.7.2026.07.27.01.19.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jul 2026 01:19:54 -0700 (PDT)
-Date: Mon, 27 Jul 2026 10:19:53 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Ridong <ridong.chen@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	David Hildenbrand <david@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Zhongkun He <hezhongkun.hzk@bytedance.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>
-Subject: Re: [PATCH -v4 1/4] mm/vmscan: fix anon-only reclaim evicting file
- pages when swappiness=max
-Message-ID: <amcUqfpjE9lnXkn_@tiehlicka>
-References: <20260724033435.2573323-1-ridong.chen@linux.dev>
- <20260724033435.2573323-2-ridong.chen@linux.dev>
+	imf27.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=JJvitefY;
+	spf=pass (imf27.hostedemail.com: domain of jani.nikula@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=jani.nikula@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1785141038; x=1816677038;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version;
+  bh=qWnqu6VCUiwZWG189ixa/W9uGeC6PMG4tY9t7kvdnXI=;
+  b=JJvitefYLe07AMSyEpc7DGn/YG7kFCXhaQfVbbJwfTOYn6h27UZtCetQ
+   2V4D8O/xI8P5Bf14SztgwaxdyU96ZuwNhG+epzZ6fjagj8hSR30fmfFUs
+   xgnob9d5ZicLJa0BxT9MHmd3yl5YVfD7tw0X4nCY9U3xGV+9vqjt2ulOv
+   DfdWmhKKbIetZJHGX6RJQaEMg08h7iZtBp07fzN7KE9jaBq2+XebY1ClZ
+   brzHV5pVqGjHzXhGJY0j4TIiN6/PJ+3bW/7Fz0gL/ynYa8cL7sAK2GBcw
+   hwPAJpvdutYUTe2SSMATAnwMjQt+OPo7F4kjL2TSqhVuGHpS8eHsdFUQ4
+   Q==;
+X-CSE-ConnectionGUID: Qnntyq90RaGvDXSVpCscVw==
+X-CSE-MsgGUID: drhVodM6QMGoy8YMZftonQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11857"; a="85573899"
+X-IronPort-AV: E=Sophos;i="6.25,188,1779174000"; 
+   d="scan'208";a="85573899"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2026 01:30:34 -0700
+X-CSE-ConnectionGUID: zuBRshsISau4U4oJl9pq1g==
+X-CSE-MsgGUID: S6JnVra9Qs26laDkF7yO1A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,188,1779174000"; 
+   d="scan'208";a="259417611"
+Received: from rvuia-mobl.ger.corp.intel.com (HELO localhost) ([10.245.245.197])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2026 01:30:04 -0700
+From: Jani Nikula <jani.nikula@linux.intel.com>
+To: Jakub Kicinski <kuba@kernel.org>, Sang-Heon Jeon <ekffu200098@gmail.com>
+Cc: Julia.Lawall@inria.fr, Alex Deucher <alexander.deucher@amd.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>, Alexandre Belloni
+ <alexandre.belloni@bootlin.com>, Andrew Lunn <andrew@lunn.ch>, Andrew
+ Morton <akpm@linux-foundation.org>, Arkadiusz Kubalewski
+ <arkadiusz.kubalewski@intel.com>, Borislav Petkov <bp@alien8.de>,
+ Christian =?utf-8?Q?K=C3=B6nig?= <christian.koenig@amd.com>, Daniel Lezcano
+ <daniel.lezcano@kernel.org>, David Airlie <airlied@gmail.com>, "David S.
+ Miller" <davem@davemloft.net>, Dmitry Torokhov
+ <dmitry.torokhov@gmail.com>, Eric Dumazet <edumazet@google.com>, Florian
+ Westphal <fw@strlen.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Hans de Goede <hansg@kernel.org>, Hans Verkuil <hverkuil@kernel.org>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>, Herbert Xu
+ <herbert@gondor.apana.org.au>, Ilpo =?utf-8?Q?J=C3=A4rvinen?=
+ <ilpo.jarvinen@linux.intel.com>, "James E.J. Bottomley"
+ <James.Bottomley@HansenPartnership.com>, Jaroslav Kysela <perex@perex.cz>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Jiri Pirko <jiri@resnulli.us>, "Joerg
+ Roedel
+ (AMD)" <joro@8bytes.org>, Johan Hovold <johan@kernel.org>, Jonathan Cameron
+ <jic23@kernel.org>, Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Julian Anastasov <ja@ssi.bg>, Leon Romanovsky <leon@kernel.org>, Liam
+ Girdwood <lgirdwood@gmail.com>, Linus Walleij <linusw@kernel.org>, Maarten
+ Lankhorst <maarten.lankhorst@linux.intel.com>, Mark Brown
+ <broonie@kernel.org>, "Martin K. Petersen" <martin.petersen@oracle.com>,
+ Matthew Sakai <msakai@redhat.com>, Mauro Carvalho Chehab
+ <mchehab@kernel.org>, Maxime Ripard <mripard@kernel.org>, Michael
+ Turquette <mturquette@baylibre.com>, Mike Rapoport <rppt@kernel.org>, Miri
+ Korenblit <miriam.rachel.korenblit@intel.com>, Nicolas Palix
+ <nicolas.palix@imag.fr>, Pablo Neira Ayuso <pablo@netfilter.org>, Paolo
+ Abeni <pabeni@redhat.com>, Ping-Ke Shih <pkshih@realtek.com>, "Rafael J.
+ Wysocki" <rafael@kernel.org>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Sebastian Reichel <sre@kernel.org>, Shuah Khan <shuah@kernel.org>, Simona
+ Vetter <simona@ffwll.ch>, Simon Horman <horms@verge.net.au>, Stephen Boyd
+ <sboyd@kernel.org>, Steve French <sfrench@samba.org>, Takashi Iwai
+ <tiwai@suse.com>, Thomas Renninger <trenn@suse.com>, Thomas Zimmermann
+ <tzimmermann@suse.de>, Tony Luck <tony.luck@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, Vadim Fedorenko <vadim.fedorenko@linux.dev>, Vinod
+ Koul <vkoul@kernel.org>, Will
+ Deacon <will@kernel.org>, Yazen Ghannam <Yazen.Ghannam@amd.com>,
+ cocci@inria.fr, amd-gfx@lists.freedesktop.org, dmaengine@vger.kernel.org,
+ dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org,
+ intel-gfx@lists.freedesktop.org, intel-wired-lan@lists.osuosl.org,
+ iommu@lists.linux.dev, linux-cifs@vger.kernel.org,
+ linux-clk@vger.kernel.org, linux-crypto@vger.kernel.org,
+ linux-edac@vger.kernel.org, linux-gpio@vger.kernel.org,
+ linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+ linux-mm@kvack.org, linux-pm@vger.kernel.org, linux-rdma@vger.kernel.org,
+ linux-rtc@vger.kernel.org, linux-s390@vger.kernel.org,
+ linux-scsi@vger.kernel.org, linux-sound@vger.kernel.org,
+ linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
+ lvs-devel@vger.kernel.org, netdev@vger.kernel.org,
+ netfilter-devel@vger.kernel.org, nouveau@lists.freedesktop.org,
+ platform-driver-x86@vger.kernel.org
+Subject: Re: [PATCH 00/36] treewide: remove conditional returns with no effect
+In-Reply-To: <20260724144822.6af8213f@kernel.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+References: <20260723184538.3888637-1-ekffu200098@gmail.com>
+ <20260724144822.6af8213f@kernel.org>
+Date: Mon, 27 Jul 2026 11:30:01 +0300
+Message-ID: <0ee1ef4aa7daa908bf28397ccc639c89b6aabd9c@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260724033435.2573323-2-ridong.chen@linux.dev>
+Content-Type: text/plain
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 1355D100002
-X-Stat-Signature: am3s5zd36wxfu1qpw16fnj1ctiqxfuyb
+X-Rspamd-Queue-Id: 6146140003
+X-Stat-Signature: rxct66m4r96wqgqfrgxexu5rrist8j3x
 X-Rspam-User: 
-X-HE-Tag: 1785140395-770217
-X-HE-Meta: U2FsdGVkX193fR3VjSzKuiDb6/LZB+kF2/kYqtbtaDZ9F8349y/ae6ug2vyB7wCBc1dVMgmpRJ5GNYSc2vuM+lupbg+6cLt7BLXDSHzsDCDma3OXDHZ+rSzfxbS61UTTZTZTIfiAvkOpMu+OpOIbQLzs6elYy1lHTQ0Tw1iDXQJpQw4dRGt0Co76TzShYD0K58WmRvZByP16MKkz/XslADa7W433D2Ii2YbPdJSckkor1xB4R2gSo2HaP4VL+NiWkWayp4a9WxSN6/rpHvDL3/DhfAJ4QtscBz0IUx23k9yHqs/ZeKPwngxnPszJdRDDtJ/oS74fjqLYiwS1tjUXGJ7psJcV0wpybVO96So7VHqxUo3YV9Nl+LdcJl/CDQM8ls553pyUfxtnD/yNWwmbDIzodRuGkum37ejpe1OSwC3gMatbTxWHxT3SZvSJ4P3TiLG94KWX13W9XVViQnrtt38liMX99uyXNwh21WwrSMDjb0s8AiJHX6MjnLEhzuEfFhiNpIKT7WaFr2/S3vVibCXNW7NIaPS5QexrCk6Y8ViEvXJxTolstsapfJxWtY37Y1HzFTYfp9c1jy05tKa/CWsVNETj/wHGbcIGYCgt9eirlfaX7W/pWYUvF6uBeNNfjfA5BeATeQa/Aer4K+tnXGpTCvgkfY8cpwygIgUY0OWFB+ULsC0VmvFG6rnIrUdwpUeiedPIYp3ggZV4evNtHqnRvaZ4Vj0XkrCQBXz6lLpmGgY2DKZxJGQMABwzuUHbIoV5YBNAFqajNQhKRLWVszajzi1XJjx0wLESYB9LEdR+z8QPNuErFKnfZnRf6wydmS1kftSCm56t20RcQ1yVdYlxL2NKp0Pvx/j2z4O7qwFqnZ5bDBjhxeHTuQQJupe5b8E/02BQjjjcDoOUyilLbY7QozSrSZMScifFWM+AVMz2+Do23MK/TKLg31mfrhJbnQCt+0JAd1sjW47ZIqF
- njnWvgeh
- ao82YAgjVAEcEP5hFjBQWJ3Mb8MeS8uE6pknrK5X9E06c023jsfXwsejUAOkGwqMdqzCR0Q/s4EhfAaGSdHe8oSvg4JI8tQekhAlG0e+NP0L6s1I/yeWy6cr/q7S/Rr4C9VfMsiuNciYeJ3f6ZKuGa/68PHuhAE6Pi83XQUcbacSYUwtQEC4aCM/tLBwH5M2qiAVTZXHu3f38Nqks5varDbVdJDv3+lbDN/2810AMhoEsK+LB44r22RNs+f41H+BvJzA+A4u7kAz874TgrLwNsXhYXaWZwOXeBhMSm8Wn7ANhmoBVBMrX2r8ofk5iPtSFXLB5DHz1ApXbbGcvWOJ9HgVQ1DkWdGt3v41EWISH+jiQANpua0JxsJQ4NHg0ESqlMudi
+X-HE-Tag: 1785141038-485080
+X-HE-Meta: U2FsdGVkX18vPB2x7PCkZeNcpK7q0lSunxuu1XPLITHFPYSo073U2V3hbNMwy8Zc5UlVLZAm4VomfxIz9tpNJ/eyq1N5fK3xm+jPXvKXVboRfN+adj9mDUA5U58iXGYIGg3G6CQKQObjJVBc/RCjszBNPoDLbA5w03qTqnx41jXTtSMwH8RctKeB92MB0yudC3V5Xhf6iRifykO4yJ+H0ukpxzttAhknqDUw4VBhzzNFiZ+HJ5MOzeWUoUreMvbfdughCfucKR23q5Frcrc4Lz5WK+s31IY3TuBkFB4Hqmmi8uvigz5torEVHR+7DJmLaR/daLUw2nfSnConxvLCeI4d2l//H73khBT9iEGbt7GuCAyDE47Zs7WXIlwmmJ+WrN+O064GAOvy/vt86kN7G5IBANVsq7DPXXZWL7FWOey0716BLLk4KnmzsBIB5pxmPGSYHisZvDYOW+1b1wVo6iKFujUwm1pNPue++g2nVUnK0vQe5wH7zb+WHf0EZsTJWvJGfoAeXPhHjTwJoA/TIv43Lj2ZC7QJApV8HdoMJcwHv+6jcGZFYwao3CeMsS/jAAaZ2LvK42FMEQ6FVyLLnPz2Yd/IxgfbMhrsD3ExAjid+Z7SPyv3K1XV/J/RKZjmuQenG4HtEGp4BNiOCNyeP6zC6Ohv3YSlKmvKJrvSFTrUIMxnUQj4cmGbKUooYOMmuFtRYjm9WjQTzPc1SSTRHrc/C6VaDVu5Dst8hMmSeWYgFq9DbBtLBBi02iIeydt5pCZgrRGpE4VJOIVT0HJj2kSgP0R/7e/m9T2EwTgEuqxp3siG3lFrp/kiX+h3DslkfK1NQHRythJZ2LcOddNEXX4tFjGRdjCkT1HeiDuVgdWt3T2bixxgZ69wgZ/5yzL+RJtEgE8ES2yZYSFkuifZqBKZ2Sct/J15o/0F1o3WaZ6i2e5RDrY6PJrjcujPiSYZoxWvSxEA9dfhDrSsqHa
+ B2M8EdTt
+ 04IG7i412zJM8j6dQI4Ze0t9dtFTj1+Df0IoNzevt7HY/iY4yNkvRtVQiTsNLwXDSPlVNYO3dRawUa9MoQTD7sdQrysm906tTJKJe64jZQpc/OuTCVLH5N23t4YbGIOYiwqThEDAzPAMoqLtZib5rjMvFvcXO5mnyip6LvfszQ05KwZVxYW12rlv/mxumYg9Z6BYwqKiC0IfxX1wvj3/A0OD0e5RUMiX8b24fUjpCkLBxUmfEyLVDL5NGQCniVYRZ+81LyecVArMIyHV2ycSwLj3GvHZ7GSdYxEbLMO7mVAKdaoesKpnJJ4nSiWDDiGgAqJVPvsPPt6Ct6A8oMl21Ueoki/FvCCDyBejePNbKgEX7Y9TvwlVDHkGQFKXm8N7uddy3JZs92E7zV00Un8jxzPVSwpfGO1w2T/4eglyGy4+2o31MEGSFGjkazadtxzRQntQ8X7HdMQ5ZzQWq3Y1muOedHUrgzqNYKJyWQbmsewhEdsdVvdoCciePGA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,20 +155,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri 24-07-26 11:34:32, Ridong wrote:
-> From: Ridong Chen <chenridong@xiaomi.com>
-> 
-> As Qi mentioned [1], when swappiness=max (SWAPPINESS_ANON_ONLY) is set,
-> the reclaim logic is expected to reclaim anonymous pages exclusively.
-> However, due to the current ordering of checks in get_scan_count(),
-> file pages may still be evicted if can_reclaim_anon_pages() returns
-> false, which contradicts the semantics of SWAPPINESS_ANON_ONLY.
+On Fri, 24 Jul 2026, Jakub Kicinski <kuba@kernel.org> wrote:
+> On Fri, 24 Jul 2026 03:45:02 +0900 Sang-Heon Jeon wrote:
+>> Patch 1 adds a Coccinelle script that matches the pattern, including
+>> negation and constant-comparison variants. Where a local variable is
+>> assigned right before the check, the assignment and the two returns
+>> turn into a single return of the assigned expression.
+>
+> Huh, I thought we already had such script. Various script children have
+> been sending such "cleanups" in the past.
 
-But if can_reclaim_anon_pages tells us that anonymous pages are not
-reclaimable then it makes no sense to try that, no? What do you expect
-to see? An OOM killer?
+We did, and it was removed, I believe in 1a617a8475e8 ("coccinelle:
+misc: remove "complex return code" warnings"), because people just don't
+want this constant churn.
+
+It's perfectly fine to have the error case and happy day scenario
+separated.
+
+
+BR,
+Jani.
+
 
 -- 
-Michal Hocko
-SUSE Labs
+Jani Nikula, Intel
 
