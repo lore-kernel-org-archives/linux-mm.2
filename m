@@ -4,135 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35FC9C531C9
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 15:54:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 234A4C531C9
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 15:55:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 289D96B00D6; Mon, 27 Jul 2026 11:54:35 -0400 (EDT)
+	id 328C36B00D7; Mon, 27 Jul 2026 11:55:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 23BC26B00D7; Mon, 27 Jul 2026 11:54:35 -0400 (EDT)
+	id 2FFEB6B00D9; Mon, 27 Jul 2026 11:55:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 12B966B00D8; Mon, 27 Jul 2026 11:54:35 -0400 (EDT)
+	id 218776B00DA; Mon, 27 Jul 2026 11:55:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D67D76B00D6
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 11:54:34 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5A2E04063C
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 15:54:34 +0000 (UTC)
-X-FDA: 85035004068.27.FA0DDE2
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 764231A0002
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 15:54:32 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=dygq4SCI;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf19.hostedemail.com: domain of uqbarz@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=uqbarz@gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785167672;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id ED25C6B00D7
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 11:55:46 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 84619A17B4
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 15:55:46 +0000 (UTC)
+X-FDA: 85035007092.19.C1BEE83
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf15.hostedemail.com (Postfix) with ESMTP id D93A2A0009
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 15:55:43 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=gGRvTUpO;
+	spf=pass (imf15.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785167745;
+	b=DofBz195+NRo4k9G8yvGTVekD4P5RtWZt3GJlYpA21f+a1RCpQD1+q/fbi5iHdgvFfXc1B
+	F3QzFxMaWvW31pZ8bxl0bNcmIpGXbA3WYsn71l8eloohAxoPn2u+NlkR0zSPt9s4nWaHoT
+	HE5A0V4cv53RDe1mSnp0CXtQZl9oySg=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=gGRvTUpO;
+	spf=pass (imf15.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785167745;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RmKvKNorZ8eo+0x1SEqZhPBbNO5fNI3ul2oMmN5RAsg=;
-	b=yPH8Dv1FdSOXgMKzhdApfabATiHZz/XG6ElhsSJ/ZY5b5uGwS0NCQ+UTCpc+9rHMHof/CL
-	L9kCO5FHgIsjm/LLiXPbEFSxHCFarGTngRjL0CmncjbDo0v7qYWz8LAhGcxuviOirhp5fu
-	czw5dSTjM8/sfGJP87qhd7bP/gRSudA=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=dygq4SCI;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf19.hostedemail.com: domain of uqbarz@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=uqbarz@gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1785167672;
-	b=C4hRTuwof1qUiEvhQTK7Z379zPZ2A/IoUQRd2KtGC+xv7FZaBihSN9pxU7bOTk9gObeYD7
-	knAJLlYLpe6QYXtx9CGBJQqmfidLn0t8QjrAKUrP5ZGw/QzUGKVnAwj1F1sdb+OzMS3dYl
-	0HbwT3JozIEwbrWAsXWr0690j+3837w=
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-49556f97a9dso19721655e9.1
-        for <linux-mm@kvack.org>; Mon, 27 Jul 2026 08:54:32 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785167671; cv=none;
-        d=google.com; s=arc-20260327;
-        b=HixZDVDpJikWcDax/w/t+iopRvJHwMJ3F3/ICjEU4rQCg35ojwqtL17s6w3OsgcZMO
-         iONL/f35vHEbHP3FUZZPJhVHcDCtMTaSsfYEo09fK5w7UGG5VOA5Pq/VyV8hhSyI/vPV
-         wRmA/t7PcAYeEyggVC3CvZ5shKSn9Y25ktsCmNo0Q7MUyD7ysuy5E3xXk9FQdn2Auz/v
-         gNgpT/qM1rV9bRPh9YjvPb55HkHhNd8PtbE8aQgNzTXFl68M2W2SlTeMrrQdcfCKlSCz
-         gGkJ2GKhAIq+f+9jUWeO2C1KZnXQBpHVX5A1HkbmjwDr4EtOdyrc6cR5y9LNjYxPtzp9
-         d1yQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=RmKvKNorZ8eo+0x1SEqZhPBbNO5fNI3ul2oMmN5RAsg=;
-        fh=nP2+jNJS8MDIfG4WTLNxaEc9LKJPq343li2lx+V4emo=;
-        b=pliOO90uOCX1uk6/6iuZhsDFDU4SqowhSYydWVchysFHKvNm32aVkJ0BVZd7SnsSLq
-         nuRmw7a2EdnmMNfvt5FnFuPl7SlxqP3iLAno+ulJ4gYAhMq3mXN5Jcymc5XWXao5efXO
-         Avv+J1rE0eGjRcGnaw6w/+6XanZ8sPFlY6LbBK2RZ/7Ia3SbyDF6VPwXinUSbGnMFMXZ
-         vTOe/iUtlCMCyqof/pUSKwX89GjKJpY/3ukVQ4k9nl5Cd3ejr/WOz/HTXvu4/Zvolshn
-         waZrF5B/T9cUzIbor/ewgh61rifgBGdp+Gpv3yX+ZjWmLfsU3c9Z22RPpKVE6eP3Qkcn
-         KmcA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785167671; x=1785772471; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=RmKvKNorZ8eo+0x1SEqZhPBbNO5fNI3ul2oMmN5RAsg=;
-        b=dygq4SCIJXNfhJVx+x00hS00JFE503fahbw+Lja4saJ038sz+A4RUgE7XsBLILjc6e
-         AmpPM5rdCcvssbCm178TbCD1cEe96mZ8almfhZgjrYXVtEpXhbVmm7w0dGE0qUzD6Jcl
-         //uriOOoJmoFdknOnW3NYQJsYdDltLZvyxkNb3XBnyOudM4P38h00KP597194yETpmLo
-         Rd/IFSUS8Cqj7n4+z3vE2jMmyQBQXp04FByFyhG6QvFnIwGDdOaOqm+cpPOaFLYBIl8b
-         Oe4U737RHf5q/U0y4eLTP/pAIqMtwkKfupJsIOxq/w+Kg3bGiwppAXtY9VsbQHxCjXqy
-         vtxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785167671; x=1785772471;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=RmKvKNorZ8eo+0x1SEqZhPBbNO5fNI3ul2oMmN5RAsg=;
-        b=IqMI4blTWVSGsV/mKvyY11G+upA8S217SpN8+vrxqdUNYzEuTqUy0aWrWrE77nuHsS
-         xLc4V2BG0xt8SHujOo8JxkSXAfuhlLmwapyWsScTYWld9Xergh+ELyOdAJyJn6I4ZMaX
-         5NcBcyJfXAxof9NnycO//JijO/E9/UqHIPPHQT1hy6pyGXu6g14vcLIJAFqqRpBS5cYU
-         dYWVoxq8l9Rg8AFzWxLcD3MIIdDnMhyrHo3LmX+CYE9iq2Z3By1vqFYUnxb73VcG1CTi
-         VvHJ8ICDhYw47n3bWGrFDbkNWWenPBrqbout+ywuSg2cAj0C5kXVcg8jFQh5raOv4ole
-         4fAg==
-X-Forwarded-Encrypted: i=1; AHgh+Rpl14c0c7wLSkhrHuUlcBm0h/X+sL0xEOE90LD5+Mpety0/93D4gjwmE/b4nclvAGyDiCaPxC0o/Q==@kvack.org
-X-Gm-Message-State: AOJu0Yzxr0L49270q08mdO3HhGhgJq4yv71KN+wwh8qNbezTU/eTid9d
-	machXYTzEaRy0WNEyEdzLIe4CeVmWnr7d7aMsE1oZAGFhrxw4a/G6GhhVtyvUxvPt79JAfoUUJ5
-	SDyTvewhfcAFFbj0iFI+xF36Gy8co7iI=
-X-Gm-Gg: AR+sD12nVzixIV/iLQ86wIpEmSOs34q0jS5k3rEqKkmho7YFk+lcUV0G3ZHQc2ujv8o
-	OzsOgKidg6g4XSEz5BVu9mWPE25e4DlhT2npfq8rA9ItGwLitSR5mJpWmlz0+2a5Q9UdsFChFz1
-	DH87wbRpNOfyAfkIXGA4hFVvGKAGaACCIuGYyCIet9hZqchYUwZNFUEeD1X8ajzYD7r01yAMXzy
-	UYQS7cbwOPCEOam1Vkh/du3i49Hn7bVKO0hDNznu2KtaW2+oFx3Cyjp3bMlksOpzjsbkv5HTXE=
-X-Received: by 2002:a05:600c:8485:b0:495:5943:b76c with SMTP id
- 5b1f17b1804b1-496b57281a2mr118833645e9.34.1785167670709; Mon, 27 Jul 2026
- 08:54:30 -0700 (PDT)
+	bh=r1YKY8dxDVPOObAhaY7i0KmqUanNkeNYqSbIMl3UWEo=;
+	b=YJRDUxvXfC2Rgp7EGLYkFYKS8k1iLlkBS+Da/FcVd8mA364LgaA3ZVrztBltzZunJrhDlg
+	sBJOP4uSvjZ4cjm8Po0yaC63gwq2ORA6zeuRpLEUb5j/NBsrmCV+ezxDMVVWKqG1Hgghjd
+	t1OHvW6XaiY+/VrCbjADOljLLPEs//o=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=r1YKY8dxDVPOObAhaY7i0KmqUanNkeNYqSbIMl3UWEo=; b=gGRvTUpOQQT2es9H0vC5I1nKpZ
+	Fh95dMgoA6vVOVbzwRAMkDS7OJfs0dsdoCGbtglMscHw9WN9atinw840A+VcPjErxYvzcE7ghYFPE
+	yg2JaV+h0TV9D6OxoT7lp6000dEA8g+ruuYod3u0OvPs2mWOf/3mpkcrKpcShIpsQ346hZ4aK4gPJ
+	AdLA8D7lejucGBnSAYtQvuR0vWvcnVKB9AI1cJ1LIgIZ1+f2ffISGpMltDGYhCN4BLOF/tzZXYEov
+	yl3bwNaljPe7NPDPDydnB9G8w6N3V9MaXBRvv0ipspBxz7OkymphVIfA2ycMHvBJny2ILGkYmH+Jw
+	fOukjkHA==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1woNg1-0000000AzL0-3X7z;
+	Mon, 27 Jul 2026 15:55:37 +0000
+Date: Mon, 27 Jul 2026 16:55:37 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Jane Chu <jane.chu@oracle.com>, linux-mm@kvack.org
+Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Jan Kara <jack@suse.cz>,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <christian@brauner.io>,
+	Jiaqi Yan <jiaqiyan@google.com>
+Subject: Re: [PATCH v5 11/12] filemap: Add support for authoritative mappings
+Message-ID: <amd_eb908Co9JeyH@casper.infradead.org>
+References: <20260725160042.1557264-1-willy@infradead.org>
+ <20260725160042.1557264-12-willy@infradead.org>
 MIME-Version: 1.0
-References: <4146d4f5-c8fb-42cf-9dc8-a9d4c26055da@kernel.org>
- <20260727154001.4102341-1-uqbarz@gmail.com> <amd8LmZdA6SPMAtE@lucifer>
-In-Reply-To: <amd8LmZdA6SPMAtE@lucifer>
-From: Hengbin Zhang <uqbarz@gmail.com>
-Date: Mon, 27 Jul 2026 23:54:19 +0800
-X-Gm-Features: AUfX_mx4SPdCoHFxdTYlk8762rdsunOP0VsEn87w1iHDyKzzeYQ2VdFY8P-8v8s
-Message-ID: <CAMRBeLjwWJrqtFQpCoUMqOXTfi8Rk+-jS3O8WK7DDgL8QuYGbg@mail.gmail.com>
-Subject: Re: [RFC PATCH v3] mm/thp: serialize huge-zero folio state transitions
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>
-Content-Type: multipart/alternative; boundary="000000000000e090de065799bce0"
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 764231A0002
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260725160042.1557264-12-willy@infradead.org>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: D93A2A0009
+X-Stat-Signature: p6fypwdwfgcxwosweh9w6zb1i9ckyp1g
 X-Rspam-User: 
-X-Stat-Signature: aymfauunekfqxeezqihxrcga5xdmez6o
-X-HE-Tag: 1785167672-56036
-X-HE-Meta: U2FsdGVkX1+UheF3O0d4+yGQHWDNWyDr05UbGEefn2cAkz52PNOM/zlMyBJmEiWEpeNtWzWpPiq7a+nCa+q9uDk2kcxkXLOACjCQGPlyeE2QVvStuMxXl+HJ68vA7J4oxYDilSeWeIAVeNsqmK+rw+6TKt8pYRR/JC4LkHLmBE23HSsYmZWEfS6H+JV5HyUVMvOA1dufGCH6O4N4/EaepBh9Xwwb6aEkCNzEknGwheNzl51sOfO5uNKaVDjzxO+JGVjGnxw+vq2tuJHmUaVANXNFw6O+afhNIfgsFQmX+HcauuOkABSpWZOB82VtqKyGaYfxaqfnSwd0DVOIFXpnJkpTbAL7dpUdjsdZUqr9N+onf2/j5kQ1Zeoi5WPSkC6VfguQIWOXAHLUdMoQOfJvbBxYrBvtSn/Uiherw9BXKVJa95HxU9MYVXnovnIMB+TsXwcrIzpQHeDKl/LY6vFjCwDZNaRk1RKSa1vMpIsS/fc5muCeDuQfxiptKGW2QCUZ5qRxVJ1lRWZ+0GjOX4fPFEAH9+7vQ6vADpIrkKdwi8hjMSl7ixLJUVqED3rhjS7bHvY+8BZ7Yu/JQLXY4FNJHn1LCDNTENpf1rcuLCS4t/mhaIlgYZvQ7Nd/uciQnbjzgd/kdlC/8PfZEhDAeIHYMFpuRZmswv9RZJNwYFCEQ9ZwI8GhJ/jJVp/dcU5/FPMgve11kCl3Ppzx6in2uhCmDgMhCMMxRZ/NzG6d1nPLMhyGX629vQDDGKLo64GZWAt1BKHn4lsSBNBB3sGiTK83yaD4RJCorvonY9bxFNxGUtkxcwMsF7eOFd0mKYSioEOsnWCzn6gw9hnVLGeyscxw7ATYQl8nSUMHunGpeaKh/g58Vrv1Jj9gT80anTOGIk4TpCFO23pFo8zvtJdqt+UsjNcc5MtTPmjoH3Fz60RRma++BkJuCCESr8ITAkL3RBlmMNjdYQUgwWqb/oV8QUG
- p4QHF/wc
- j/6trMpf7VMdDpYD/NqpS+UsTmCBezx+M5FkLIgSXiessEMTZznFqCKqrjj5gy+jPgllf11bTriEGa2eD2Z8CZSKE5UcBF5d2wBqkO1IL84djk0BB2HKVLyd8MoGQCKBid3FwQGpvrK25WZ684IvfTL3LvNaJbScUG9rJC6y4+1709Djoxp/iAhP50BQX+uUfOpW42VHkfZRyEjkVetR0T3Og4zD4+8ny/A/hFHDQIHM79261WkQwy6+FseCO0ho0u10YCCMk1RsLrA8ZJI0ppmct2gISQIfTRRr55RhgY0fsEwFEHFq9NO3G5cvyOo180XQu6nfZxtkv4nsS/MU+vWvd7wMLkZE+4quqII4V84/jMgwmswhAs38781iJHKnCOaqDPZrN6b6Rd4p3pkE7SP3y5bf3/anfuNmzIZPwnILTXN48fmQau5xUIu4l07x8ttvdkzoLPEAnk/u9VLABwz35NbUJnVE69KO6CjjbWqK4TkEZ7KVxw3q6jYUWaFgPuX5AGG8J6RJ5rKZy/0QkgWtmSw==
+X-HE-Tag: 1785167743-54968
+X-HE-Meta: U2FsdGVkX1+R8QpKDb5ne2RDjDaySzxaycNq08sHX+24IEfrsFBsSOfbpTIKTiJSJD0HDgFXZCNt4wRGoS5RqjOI7qgkfqhZSAVHmSRZcwShkBK1bEk0QzgycEvd9dAfDuOGjd7QolnRZHg9SVBF9VdVNcWr9qSYPW7rrPCWRTbXzX8+kOuAW2FOWldHhhmc5qkwQiJuMgKs/+l1WCj5krWC+32DHE473hVhY0hN9JDaVYVYyj3HxzVnAmxsliVuZ1cRbkb/xwia1HWRPbtbHYuFDerEGZc95Zp6wDFJ7iSRJizFnhgu0Bw3xK6SfCoCf/bxWMI7ggBUh9mMmBVqc7/HD8nroq5sbcS9eIo556UTuiUCfthbyADRq5ue+bKkdXa5gLblurE5yNK79Q2GS1NdwU0YsC/RrOgUC0lE60d2t8xnUEuZEvZ6ZyFGZJpLuAzzUqJg5Uv5LXiZSO+bUcSiAkp5t4KxAM7m9bWHdDpoFkh36bAkybuaFmWag84VXEcjDqPD8z370OpRJEO43OYPykVB6ke0KNcYBYI+NZ09Uiukucdk5t11+/EpYNXJJCQzJ9d/Y/BGY4rREmaHccog4UqqYAy2OR0Ivyc0BR0DMtyymgf3PQiFd2IrtomzSXr8/YrVapKoMeG5yn9E12KRbdHr1GziguQox+ro2Rw4GWjsAXrUdkcQeVi3LUSWARk1KVHu5a5Cs61ivXLjrykdvTZyhhqvEnaB/vmVIMqTx8T1A7mBIj79PYhHEKf2S0aSJSsLnoUNmJgtVUO81ug6FM/1g03ZKw8kqK2I9HKmIY8lZtjY9Di8ifdlX1ruEk06SpwBdtNEq/KHFMJRuTFhpqf+Z1FQJxY5AGW+7cgUqCXEsH+WTJqxHb3NLURRttmgxiVJXOOK5i+ZG5xZvml0LjLaLSmDCiAdh2UrykLc6oeOvE1ANhpZkZq2wVGsbEPkDOS7k+Ta6OgXuTD
+ 5Y1hqLiT
+ vwWKXOTxswmpGOsnUN4BW0WC/YnqwDFt4lUVt/IvIaBLUImCcLvw/R8vK+3JH1vyz6OyCl31F8TC/+dtJO2yWpsy8Q2tgba3j4NXuNo89LqCr4LR6OQtl5z6KISFmD6I3+edq5g2oraVuKkRrDtkTI2Yk91XYJ6wyTDQkX0VAqonTYZ//k/YoW/eZK4OmTGPQ7jRuUfLDyY/j+AMIii3Ne2lMOmvNgfN1cSUrwgCZUp0ul+BZ6/N25D0aOnYQtV9++WRC9hFF5b27x9tteUHmIX7JGK5f9+m74no8CIyn4+4vWl/HngT4O2mfbPXFbtrJ84ttYqhBvvSjstsm/mztk+FZ3wC8PNzUB1QhaipKTbE5iIQE8waflhkdFQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,72 +95,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---000000000000e090de065799bce0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Sashiko:
+> --- Patch [11]: [PATCH v5 11/12] filemap: Add support for authoritative mappings ---
+> commit 7b270a787d853107f7a64dd3127d799a28d3142e
+> Author: Matthew Wilcox (Oracle) <willy@infradead.org>
+> 
+> filemap: Add support for authoritative mappings
+> 
+> An authoritative mapping knows about all the folios in the mapping.
+> If read() finds a missing folio, there's no reason to allocate one and
+> try to read it because we know it's a zero region of the file.  We can
+> just call iov_iter_zero() instead.
+> 
+> > diff --git a/mm/filemap.c b/mm/filemap.c
+> > index 26a5f18121f90..5a8cc20e624e4 100644
+> > --- a/mm/filemap.c
+> > +++ b/mm/filemap.c
+> > @@ -2697,6 +2697,8 @@ static int filemap_get_pages(struct kiocb *iocb, size_t count,
+> >  	if (!folio_batch_count(fbatch)) {
+> >  		DEFINE_READAHEAD(ractl, filp, &filp->f_ra, mapping, index);
+> >  
+> > +		if (mapping_is_authoritative(mapping))
+> > +			return 0;
+> 
+> Does returning 0 here cause an infinite loop in filemap_splice_read()?
 
-Hi Lorenzo,
+As before, hugetlb doesn't use splice_read() so adding support would be
+dead untestable code.  We'll add support here when we need it.
 
-Thanks for the reminder. I apologize for not following the expected
-submission workflow.
+> > @@ -2853,6 +2855,22 @@ ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
+> >  			goto put_folios;
+> >  		end_offset = min_t(loff_t, isize, iocb->ki_pos + iter->count);
+> >  
+> > +		if (!folio_batch_count(&fbatch)) {
+> > +			size_t fsize = mapping_min_folio_nrbytes(mapping);
+> > +			size_t offset = iocb->ki_pos & (fsize - 1);
+> > +			size_t bytes = min_t(loff_t, end_offset - iocb->ki_pos,
+> > +					     fsize - offset);
+> > +			size_t copied = iov_iter_zero(bytes, iter);
+> > +
+> > +			already_read += copied;
+> > +			iocb->ki_pos += copied;
+> > +			last_pos = iocb->ki_pos;
+> > +
+> > +			if (copied < bytes)
+> > +				error = -EFAULT;
+> > +			continue;
+> > +		}
+> 
+> Should filemap_fault() also be updated to handle authoritative mappings?
 
-I'm new to the community and will ensure future revisions are sent as
-separate emails after responding to reviews. I will also allow sufficient
-time between revisions so reviewers can follow up and provide feedback.
+Eventually, if hugetlbfs is ever converted to use filemap_fault().
+As above, it'd be dead code.
 
-Thanks again for your guidance and patience.
 
-Best regards,
-Hengbin
-
-On Mon, Jul 27, 2026 at 11:43=E2=80=AFPM Lorenzo Stoakes (ARM) <ljs@kernel.=
-org>
-wrote:
-
-> Please stop sending new revisions in response to review!
->
-> Respond to the review, then send the new revision as an entirely separate
-> email.
->
-> Also do not respin this quickly, leave at least a delay of a day between
-> respins
-> so people can have a chance to keep track and review, the workload is hig=
-h
-> enough already.
->
-> Thanks, Lorenzo
->
-
---000000000000e090de065799bce0
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><p class=3D"gmail-isSelectedEnd">Hi Lorenzo,</p><p class=
-=3D"gmail-isSelectedEnd">Thanks for the reminder. I apologize for not follo=
-wing the expected submission workflow.</p><p class=3D"gmail-isSelectedEnd">=
-I&#39;m new to the community and will ensure future revisions are sent as s=
-eparate emails after responding to reviews. I will also allow sufficient ti=
-me between revisions so reviewers can follow up and provide feedback.</p><p=
- class=3D"gmail-isSelectedEnd">Thanks again for your guidance and patience.=
-</p><p>Best regards,<br>Hengbin</p></div><br><div class=3D"gmail_quote gmai=
-l_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Mon, Jul 27, 20=
-26 at 11:43=E2=80=AFPM Lorenzo Stoakes (ARM) &lt;<a href=3D"mailto:ljs@kern=
-el.org">ljs@kernel.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_q=
-uote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,2=
-04);padding-left:1ex">Please stop sending new revisions in response to revi=
-ew!<br>
-<br>
-Respond to the review, then send the new revision as an entirely separate e=
-mail.<br>
-<br>
-Also do not respin this quickly, leave at least a delay of a day between re=
-spins<br>
-so people can have a chance to keep track and review, the workload is high<=
-br>
-enough already.<br>
-<br>
-Thanks, Lorenzo<br>
-</blockquote></div>
-
---000000000000e090de065799bce0--
+That's it for interesting Sashiko reviews.  I've omitted some which
+are suplicates, either within this patch series or have been reported
+against previous patch series.  Feels like we're close!
 
