@@ -4,60 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DD51C531C9
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 16:15:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2CC6C531C9
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 16:15:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4D3116B007B; Mon, 27 Jul 2026 12:15:01 -0400 (EDT)
+	id D86956B008A; Mon, 27 Jul 2026 12:15:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4AA616B0088; Mon, 27 Jul 2026 12:15:01 -0400 (EDT)
+	id D5D766B0095; Mon, 27 Jul 2026 12:15:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E8D36B008A; Mon, 27 Jul 2026 12:15:01 -0400 (EDT)
+	id C9B006B0096; Mon, 27 Jul 2026 12:15:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 180266B007B
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:15:01 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 961B6A010F
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:15:00 +0000 (UTC)
-X-FDA: 85035055560.05.9294402
-Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
-	by imf21.hostedemail.com (Postfix) with ESMTP id C63E71C0012
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:14:58 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xoEYGI25;
-	spf=pass (imf21.hostedemail.com: domain of hongfu.li@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A1B386B008A
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:15:07 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0A9FD12011F
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:15:07 +0000 (UTC)
+X-FDA: 85035055854.11.0BDD6DA
+Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
+	by imf25.hostedemail.com (Postfix) with ESMTP id E65DFA000C
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:15:04 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="FnZpP/tz";
+	spf=pass (imf25.hostedemail.com: domain of hongfu.li@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785168899;
+	s=arc-20220608; t=1785168905;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=355dbbQDuZC4L5P9i/hhchYqs7B7Z47N1yGrWyl5gBk=;
-	b=u3CUzB6ArjBH6Aktzqc4jYc7jM7tY+CpjNaCoTREQBUCDnUk67A6ViciVuwRAJGGs+X7Ks
-	Lr2a4d0pvzJkXOxogAMxgbg7tcj5mPtMPjI+4OUuPBn0r7Le7v/Rg5j/YFJPGObm6Js/AL
-	r20NLGO79ZLHNRT2H4zlNdVp6k6wWH0=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xoEYGI25;
-	spf=pass (imf21.hostedemail.com: domain of hongfu.li@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=lN+gicp6TmdEB+moqhp8rFaHd1rM6s5nX6VZv/lpYx8=;
+	b=YO52/WyM17EiqU2b1kvHHtwKGA+iWXH/JCwlQFYgYg3/FTvAMlIt2n6mcP9wbnKJnPdIky
+	pv6Z2jokH3xQFLj7SQGKJPTYrVWuzhJhzl+JDhSirKkVNiHQvAb2VeWyCAF1s9c7LOSLCN
+	vUQ8cpEfq15LYx9J/6kNbLKg74DozPE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785168899;
-	b=COfebSbNcpmiebA/ViMTN3MsRGbMA1e2aMAkv5EYbxenJa6hQBUAlki7s6863rg5kyYIHu
-	3IQl4xRgSKtYmYl7GoxCjd4C7X/Lkiz2q2Q9DCV7D6WFzgEN6xrJrYbXdJsOJyTcFTS1nh
-	vY+5pbgO11SzO5q44+/ilIM3yDeS5lQ=
+	t=1785168905;
+	b=BcyjOqVzIfnPzPMG2XJSUaNH2ChCoFWG8haeIMV1FccPnMYKNU9sxChqWV5ggEgFQ56uNV
+	6/Q+1nkW0Vii1lHP8olgOfIGTY40VcwaqTVq5hLo59QnAkFWTJWv1cPBf3yXKNLPHd0HWy
+	h43iJuzT5f9pki66c7alyQ2X4kpELWA=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="FnZpP/tz";
+	spf=pass (imf25.hostedemail.com: domain of hongfu.li@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785168897;
+	t=1785168903;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=355dbbQDuZC4L5P9i/hhchYqs7B7Z47N1yGrWyl5gBk=;
-	b=xoEYGI25zNZeAjYWq9jaMm7XTBfNUuwUCYptdSklnWVimTPRaUo0XW8TGY6pXV9omKrL15
-	zigtMYpd3o7O1e/YrzNa8JqLm5/5K+oXByhpgnHZMZ9gAm7w9GGFvFcaRmrQ5I3q0xQauw
-	ZtIF+5CsITufc8XjbcVv7F+TzkiK4rE=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lN+gicp6TmdEB+moqhp8rFaHd1rM6s5nX6VZv/lpYx8=;
+	b=FnZpP/tzy/4qmdJ6mDKchnITOft5YnUO2sgPXEL82M7YRE1MW+qCbNuidx6w4DFV2r/e6H
+	yU9w8tEe+95F9demBD/7RYkhyRFXIQgt2FgDGvA1W7zlUXtNWg3+aKtOnmetUUR1I3d2Uw
+	SXJr4XSqBdAuWnujRXxbgNv11jUBOQs=
 From: Hongfu Li <hongfu.li@linux.dev>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -71,20 +72,22 @@ Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	hongfu.li@linux.dev,
 	Hongfu Li <lihongfu@kylinos.cn>
-Subject: [PATCH v3 0/2] mm: folio conversion and refactoring in do_swap_page()
-Date: Tue, 28 Jul 2026 00:14:29 +0800
-Message-ID: <20260727161431.13455-1-hongfu.li@linux.dev>
+Subject: [PATCH v3 1/2] mm: Use a folio in the softleaf_is_device_private path
+Date: Tue, 28 Jul 2026 00:14:30 +0800
+Message-ID: <20260727161431.13455-2-hongfu.li@linux.dev>
+In-Reply-To: <20260727161431.13455-1-hongfu.li@linux.dev>
+References: <20260727161431.13455-1-hongfu.li@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: C63E71C0012
+X-Stat-Signature: mxzbyiwrfqa4i4ze1d3i1jrqmt6u8w46
 X-Rspam-User: 
-X-Stat-Signature: 8o1og5839re4ra3rbmcg4m5bo9e6z4ud
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1785168898-556653
-X-HE-Meta: U2FsdGVkX190hbuvb46Wyg+ScL1IbbPJlnl7OmrE9RSy0rp+mf/Eraqd6ig6zwTuhB5ItQsQy+yJW13KvfYAHLCK+rhFVsEXQeaYbdNz+kdSmpIoRbPA38n4jtP9oUE3aS8x60bVhst1i11x8Ay/qbxrqKAWRHJVTtSY0SDSQ2vXvHFzVj2gqYn4y3g6Dvah6E4ybGoVuFAXOKCxTrnLigQMuT36MHYg+thu0jF2DX9NPYrjWBAWnCl0Yo2rmqANMWLcIgF3B7t+fDf4gzo7epLpPmPAwKx2ry1vRGEIGYf4ryOvtPNvhwthSLS5BGmaIfI21KbAWBHjVOZR+VXs8sCFEVh05HEhNMGpJuhDesDaf4CZj7sX6HaHHUSIaP1u+L/RwpqVT78OyFfl6XOWm48sVPlTtcI/rMtSCXPjEbzhBYkwZyV5ctdYJKUO15TCKlU23fyIU63vJCdJizlArK/vE/uHa3ZvQ8Ht2FeijYV4qrxjEgnUFc1PZR3bCaHjrFbHMaaB8TggX/3kST+F4jUBMKNerMymWfZYpbrmxMxUZuex4sZqYVqlEqpU0Dnz6262BmNU/m0d1dIkEf1Go8UYfVmdLaRuOJZQSbweF8djNnBAHyDv4tzrZhiBRpoRigVSpWeKEJEGQhtbiwnvKtn4FYbEj3c7ynSN/24SHWvNMsLmDhgQnkJBCYKuehwF1qrPykU9hVfERvR5BCTAfqIN5ipVd5gjnqTp5ss8PVvxVZ5Bv6X/wbKcExDRuqUplMgrKMwHK6CJDrEMwE05qdzckTC284OchbjWlgzet3Sv6Hk0GKlwQ+D6uX6U9s9C36YsH0r61U8LBz00gxq9QcVPHXprXR+W8VhLmdzfR4KD2dY6juRQyLCqjczjy9rtwwGBl81rcW0N1wreJdeSTJ75SOVqpUm5579+iXEyZWyUIVj8jORZTMRdh+RjtUlDx6AyA2TYZR1YlQzkpU0
- t5FYTGRG
- L8xn8ILhlT7yfUTr/4raGLKTXCld2EhSMgioVX9m/J6zFAA7S96fTTquByf2sQAcMVNii+4+upkMJQa+hNDvaKc6VuX3fGiVXt05UGy8V8k2UCPYOpdtG3kU4ObES9fzAhw5Zn4ztEHguDNlqnZvzj0Mbz4HdtODvwMh9UGOsNh65Rf+T+jJfWPIFKtI/KejigeSJYT7tMkI+0HXzzYNbFwahbO/wo2iUm0RLjKUz63y4eQn4/H3zDzmqeVR3Nbf5tITpS35LHujJOII=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E65DFA000C
+X-HE-Tag: 1785168904-292834
+X-HE-Meta: U2FsdGVkX19WbW34s52HnVLDB2sVDN9zaKwdhBO3kybCnieZYntxxrAhyX/bKFY/Z2kTdW5A2mj50Fu+7rU7yOpRxQ+JfMF5tgj7K1vzJ2u5sV2OKstESbQL2eQ2KaRvvEVcN9TM/DP4zYUxudV4pGeY5WTKDrS2FWF/FALc8dPkJ4HeL7Nt/N8hMYHkOig6VaRRHwPMUbPQUD3itew5Wlpb76Ls/7YGSzH8jFJvOoUjPh+yplfpMB40EegQBEjOAnbcZ841Mlcv4gRGPq+mK9lEeqxvlAVgU6WQ6+8JoJjnuD1YoTaQyEE6mn9hvCoLk235CGEHU3PdJf9T5vFjwW7HJ+YknH02aLmP8DwdLoFTkXCquEzZPe6SE7X4Iza9ht1CUh49P5liaUp0Q4P+HRiOlvSmplJJF8vfj334UNIYMa95sSaSVcfab77z7+u+hdXGgUOqIN46r/OvjwfXBbNKDBqYzlYaLXfEvMz3eNMvLVH+zxJdOSrKhoJqNAVPaQshGBTZXUhdl+FFH+30xy+39XCrhy/7nHW0LsmTVcXVX+a2z8hmqXox20tEkYNGfu/bcVLXrmgfQt9W2FTIy9Sy/K1EAkj6bdkvnSel9ZOWJ77VlZb5lFC0ODzNAoE2dvfTsUl2Ye5ONGqREzOBDvsKeuDHHLH8OQ88zE6JZd81Pa/YpUpomb436cnT/z9D0tXmiKLnLwgLgUvhU5BamkXZEQEC+nk6/j8suE3B1gQmaBI017yuaeruA2JUrHmUPtT1syKLZtMvnFd66RESalGOn6n/XuvBWwJCVDeqOY3huUT4mgrKzS3EvE3N+Coc9imDip1swFTPinm+JIF2WseqOnxs/KuE88ZaZkzIlrOB8xAmUlGODEf/SAQoLYMkZvB4R9vj3bJ0J49/2ccikY4SGGusswPaQEerGg2LLRCsJxt642NfCyqHffb2P/EeMmDDKUpRl7DhrmDHjb7
+ 0+VUovM+
+ TNZ3cjdk+IM3ZC/REsww/7XyyN51AqNesWuR8l4C1mbbIdY1MtDwkDdFFRpN6hIghWpssT+ubQ3yvMI+HD7i5twrEXy7GF8W1LBl4krg+husPqUf8mgGRNnKI1HjV0bPD5rgM0MkUAR5GPIsGRYKseuA4ttlZQu3vDkz2Cs0ebzYRu7Bh7IHGecTatHgTs5GCUkh/0gIJU1MUMDNx/zta2V+WDN8IkBcKXbhF3WBFuS0SiQPGke2ESRokj5oWJvE+LR2g6Ie/O1RR9WU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,32 +97,44 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Hongfu Li <lihongfu@kylinos.cn>
 
-Convert the device-private migration path in do_swap_page() to use
-folio APIs, then extract all non-swap entry handling into a new
-do_non_swap_page() helper to improve readability and reduce the
-size of the main swap fault function.
+Use the folio APIs in the device_private migration path of do_swap_page(),
+replacing four calls to compound_head() with one.
 
-Hongfu Li (2):
-  mm: Use a folio in the softleaf_is_device_private path
-  mm: Extract non-swap entry handling to do_nonswap_softleaf()
-
- mm/memory.c | 118 ++++++++++++++++++++++++++++++----------------------
- 1 file changed, 68 insertions(+), 50 deletions(-)
-
+Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
-v3:
-- Rename do_non_swap_page() to do_nonswap_softleaf().
-- Update the commit subject and body of patch 2/2 accordingly.
-- Drop a blank line after the device_private condition in
-  do_nonswap_softleaf().
-v2:
-- Drop fault_folio, reuse the existing folio variable instead
-- Refresh commit messages
-- Update comment to use "folio" instead of "page" in the
-  device_private path
-- Add Acked-by: David Hildenbrand
-- Add patch 2/2 to extract do_non_swap_page() from do_swap_page()
-- Link to v1: https://lore.kernel.org/all/20260721013347.65698-1-hongfu.li@linux.dev/
+ mm/memory.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
+
+diff --git a/mm/memory.c b/mm/memory.c
+index 56b244552f13..bbb289ba09d3 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -4873,18 +4873,19 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 				goto unlock;
+ 
+ 			/*
+-			 * Get a page reference while we know the page can't be
++			 * Get a folio reference while we know the folio can't be
+ 			 * freed.
+ 			 */
+-			if (trylock_page(vmf->page)) {
++			folio = page_folio(vmf->page);
++			if (folio_trylock(folio)) {
+ 				struct dev_pagemap *pgmap;
+ 
+-				get_page(vmf->page);
++				folio_get(folio);
+ 				pte_unmap_unlock(vmf->pte, vmf->ptl);
+ 				pgmap = page_pgmap(vmf->page);
+ 				ret = pgmap->ops->migrate_to_ram(vmf);
+-				unlock_page(vmf->page);
+-				put_page(vmf->page);
++				folio_unlock(folio);
++				folio_put(folio);
+ 			} else {
+ 				pte_unmap(vmf->pte);
+ 				softleaf_entry_wait_on_locked(entry, vmf->ptl);
 -- 
 2.54.0
 
