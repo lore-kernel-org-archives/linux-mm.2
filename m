@@ -4,101 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F15AC531D0
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 15:57:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 688F0C531C9
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 16:00:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E755A6B0098; Mon, 27 Jul 2026 11:57:25 -0400 (EDT)
+	id 10F866B007B; Mon, 27 Jul 2026 12:00:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DFF376B009B; Mon, 27 Jul 2026 11:57:25 -0400 (EDT)
+	id 0BF466B0099; Mon, 27 Jul 2026 12:00:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D3C846B009E; Mon, 27 Jul 2026 11:57:25 -0400 (EDT)
+	id EC9466B009B; Mon, 27 Jul 2026 12:00:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A934E6B0098
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 11:57:25 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3413514010F
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 15:57:25 +0000 (UTC)
-X-FDA: 85035011250.04.BD1440E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 885B240009
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 15:57:23 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aS3LgLoe;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A73576B007B
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:00:28 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1EC72120124
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:00:28 +0000 (UTC)
+X-FDA: 85035018936.22.154C601
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 2B406100015
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:00:26 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=nCMJxn0c;
+	spf=pass (imf05.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785167843;
+	s=arc-20220608; t=1785168026;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TxIwg3k/QeB5YpM8mpnKKHWqe4ae+QJvkXRnO46mmqU=;
-	b=JvmidZY/h6sDzkP4Zk74rSjF/fm2l3zFfVQiVlKVtYev8ieJ5JWcIo04XO2pev5gmtJL8r
-	WTnIlymVT4av3yZZzdC0nNipwy/8dym5V3VGcjO+LFuIbjFm6gD8IgkmOcY/wcoBT7+0y1
-	7Xk/OKwBsSBeN2sI9lhU4CVT6+fnTOo=
+	bh=jB30wN8yjdXgq6NYs2kUjzKRcyWTmpmx3GjdzFD9/WE=;
+	b=KBVEfY0a9gUKLtlupnLWeKjAb91vzFe6lUDQ3QSlzp7w8T2BMN3Mi/Nl7hgSFkFLPEmSat
+	T/3cg850XHs4Ov4sJe5d7IGP98gKH8KqEprhpFtCQputOpA1zOao/OUy0eTgQUOY7E2mfF
+	W05ss7ok8CDoTJBeDef0mppJVk8zjYI=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aS3LgLoe;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf05.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=nCMJxn0c;
+	spf=pass (imf05.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785167843;
-	b=XfF7SE+D+c5GRm8VwjLenL7naYFRKCRNSKfmvqVqx0mxWz7Ela0yhVKrdiFlMxWcT0BcPR
-	JWaMecQIUNEgg2X0KpUS1fn0lesCj+ybGMMeeql9u36vALsW9sm0yc8uw6Kmn+Tn4sqe1J
-	xEVNcWqxcIXP9GeekGCYuIO5gIJmxHk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9C5D160008;
-	Mon, 27 Jul 2026 15:57:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 610571F00A3A;
-	Mon, 27 Jul 2026 15:57:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785167842;
-	bh=TxIwg3k/QeB5YpM8mpnKKHWqe4ae+QJvkXRnO46mmqU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=aS3LgLoemsT7sttTQz1bFcjtnuSJmD82qShxfwVkKEIVhwyCRQzFYrZ1BGt+oX2Ad
-	 Zf/cPw46qAZ1uENRq/ddMbAK89LecqDJ3Nd4sMeOUAJ/n9cCYEr7gF8uvY/wmGkqEi
-	 PmuSEGwiQlipw0ThXrzYwa+jDqQoj+bcbOCcTcwcmHibSGq1zid3nrfThmk2upJTjh
-	 G1Hetwq6wII0F3cwpJrvE1YwRvjRhA/4Gg8q9NTwPKYsXDBqFCTCLb2FSEAN96lqE1
-	 rq3yR6XbderfGQLXvgkBaS7Z51i7zc6vDGwxsSYeXh2GlmRQefluWQuJ1X+Kq2YG9U
-	 wmDqydDlG77aA==
-Date: Mon, 27 Jul 2026 16:57:01 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Usama Arif <usama.arif@linux.dev>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Arnd Bergmann <arnd@arndb.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org
+	t=1785168026;
+	b=clUjBNgKk+KsNn5WkuBDoa28tBpJle42oNVrkXSuTtHNIGi82JHCo/7hnTGJcbUj30VaAO
+	IbFGuGvanPakkm4sAbwF080IwX239ebiovE/i4ovFoAYzo0qC0tFm1movQb6j/+rhyONEF
+	zwjXQYwEW6QvrQSnn8QEzS6VcaOihdo=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=jB30wN8yjdXgq6NYs2kUjzKRcyWTmpmx3GjdzFD9/WE=; b=nCMJxn0cSZC7nJ47yk+Tys45BS
+	XjZkO8CDf8Pn1DcEDz3p2HE4Rm3d7OBKfKKEd8ZnDJ4MGf6OtIGkjAtJxDY7zaDOTSu3mt6eB+nD7
+	U1ifAgA5iSYkFzjtg0fpmuHkyxgdYThwBu8Q3OIXA3v0ukbFKfiBjLzrL6C71Sl1/cpvDq7ILyMtG
+	AwSTkFCwFUtuc5DYtegdIbkRU6G/ybzswTJcUbNarGqvDxTQfuiajtHYURdr6h2hJWN6SPOwGMyWR
+	u0HmsfjwnYAEOCiD/wj+VYPeuObhiX99FYbvclygFxO2rIUWAAQVo+j5z6TJZbHPr52oBFMDK167e
+	W2RI3k6g==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1woNkA-0000000AzfK-3C7g;
+	Mon, 27 Jul 2026 15:59:54 +0000
+Date: Mon, 27 Jul 2026 16:59:54 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>, Jan Kara <jack@suse.cz>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>, Kees Cook <kees@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Usama Arif <usama.arif@linux.dev>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>,
+	Xu Xin <xu.xin16@zte.com.cn>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
 Subject: Re: [PATCH v2 00/15] mm/rmap: index MAP_PRIVATE file-backed folios
  by virt pgoff
-Message-ID: <amd9QR75eLNdgNU7@lucifer>
+Message-ID: <ameAekveMOcP7ffQ@casper.infradead.org>
 References: <20260720-b4-scalable-cow-virt-pgoff-v2-0-2d549757a76f@kernel.org>
  <880981b5-ef79-4c9a-a8bd-7540002fcd15@kernel.org>
+ <amd9QR75eLNdgNU7@lucifer>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <880981b5-ef79-4c9a-a8bd-7540002fcd15@kernel.org>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 885B240009
+In-Reply-To: <amd9QR75eLNdgNU7@lucifer>
 X-Rspam-User: 
-X-Stat-Signature: c1fp36m1bp3d6sdcxt4toiu6dwbfsejt
-X-HE-Tag: 1785167843-894176
-X-HE-Meta: U2FsdGVkX1+jjkjHFE5jkccZjeeYBG05vCPVZPeBtNHcHD1xAk7HaoNpqRvPVwX4cMONla9ctvwCrrG/XKdb4WS5H8fXORwHRF6PrOXCZUuWxyJExYLT7GnIQ0Zon5EbMog6IOGc+iG89Gs7tUO4+h1eWM+UQgT3ccfaAop9Ml2QZCUs4ZSrTKtSP6++sqQkj3cODXOwfPGwMGilCzuHKKQfV7taW6BmmR0LtDh2e1g+XD10PQ4Qb2XDJlrvRFGeup2wB11wZv5wpad9SDCyMteF/chjzFxFoUiUi6r8Gf7O2netN0Y6t1Yb/PWv+4khSnYR4P+NkJvPu274xCYqV8VUVoymcnw34iGf+tsEY2fqkxJ8FOWskNC4Pw8Q4qa0R+yQJMfpx+KhZp/ltjQklz0opwzxD6u96edydx7MJyOUezM/8OLkIQdfzAbzIYMuBu9EA0JBQqQ3etZ1ZA5EoTeLbW47Jlfw2JUYa2IVFsjhMbH0AUywP7X91K9Pv+8Es3rzBNWiQPzmjTa+QuSTT62NeI2FhBrvp11TEPC7va3ujwfvFHxs5XwlfhINIjvV3dPJNjFqz4rng6Q3TvsBYZzhqxhLaBYgXQmWRApM0gYMoQeDVyqYLiXtgvwxvTm7ULdGAG8aVyohvhsrUxQ3mh+zqGNmBr4n243TTbnHg7gCK36oy+8C+0Z495QWuVaCidmpBFAVXeex3c99E2Efn1ub8l3HSVG/uHSEdwlUJewjLqJksbxCHM2R4XnLxBdABZcYUdQKuMBB1FvgMtX9l/Nmfr2v5RrNRvStRDTeD6TrvIs2UPUkWF2zW5Be2e2edTQ7NU0RjktRIIrrW8XwaOtZEdF3W4AWxIpugP9HbqdSvdbaSoStkYEmDRSlZk5U8SqfgitVV4IZa9KHdoLjDMRDXbGpAGrnIUl63T1zFiR/Bh/4UQZ0EhqnAReqk4o2rzQ7E1rwbDEPQlzOA+a
- QsB4SDaD
- UfPkEPovLjE6cBn2Iaz3w3N0eK+IVun4/hI0d4NE5LLdPKzbMGIIiQ7VO1fx9ySqlTDbVRfwV5KUUPA4Ny77zcu1EKa1pFtiyMkqx0bGmdPemcKnZBOcYyAv+7X9lXmStkS9jSq1pbvPL021NEW4aACg9LMeNb9sJIgwG4B5aPhG76Rtav8pS1NqngtDLiP+BF/Ge9fWnrZxkKrOB/EOKPDKvts88f+wNC0wZccJlzMzyemtstI1XIDjlhEnuIo81OX83HMPc4LJwewTZQNhR6iYyUnmgcFsvnMGtvWBV2FRrzqa37jvzsQiadngeEGq+De4yZK0b3Dj95inx+9WryG3P9GNupwfuiGmydMpUYa+WSYutJbstvNaj5g==
+X-Rspamd-Queue-Id: 2B406100015
+X-Rspamd-Server: rspam01
+X-Stat-Signature: wxkiz18m48fyp7zacqutk4q5njsca7ys
+X-HE-Tag: 1785168026-545034
+X-HE-Meta: U2FsdGVkX19Kh3QM6h01bjGB1/tY4gankzcYuyLDOS2w1D+CHEyDj9mulIQlxeF8KMCn666MhqpSKGlSN/WIIn+SHecl0jBSL+B4y7uRJC9OKzs8D1vPuNjJyJA2wvEobrXKidz3R3MZxYnvHWMh85Sh/kU0lLJSoZIaqbNDUgzhNLPS22ASViBI068yhfSgUiIPfjyqe9xzYzJjZlZTxbEIemnA/zm0ZHPsTqlLt+nit9ydBoOvvdAjkyeHGarIxeh3pYe1V9n84DzOX3U177a5SEpgp2pIdQmv6g9+KYCEUCeGzU6W8+O+JnbcOE+ylIcz7fIziQBGdguGTcoHHg12VA6Z3L31L4CKOWLZDFwOttadH1ikIFN4OdT4yzKRwg9sJ94nbfY7GLUN1tKssdB9vANg7vN2UyI5OaOzZl32v7Vs6+xht9rzCSQA/vBCPOUXfC4rnFSM2PfvppI/anT0hg7kYNOMi7q1gcDXgDm38PbtJTc/MlCfFJwQL+uSddjoVwVQA2P25dhk7rAlVqmVBLrz0SuvRl0al/ZYgaq5difMXnmxXu6vbCTDM7HIu7T+qxwc3POK5Ns7gsI5Rmrc/Qo2v12GUGfO/0ftnJxfepzlye8VG/XE6PUMh+7AMu1QvhBKIMRU2Jj8K7+x0Vp0p2VNgxhkW7Ane5ht4KBN6alopq2MlZa6/bx+jDSjICxc2iiPizwUckhLhpi1YM3NVlIJAbOS28oCqTKmzC188XIoc3pWuZX4J6ddaXP2NS75Lx0105cBY3ljQUhzOWUj7b/Njd6TQ3ArVpZ2cymlu+RBQ7AnHBurJ/P+G08QAhIyAcGvx3tvoaIKhuM+Bf4+dknnd0uUPzlVMwGWFISf3npXtvQkj3+t2f9jPP7llH/W34sMh7BfyanunOX8OYpfosJJfsTey/gF4kDoUJvrIf33FohDHWXNffxIF+0uEfJ8BNdiDOnAywNlHin
+ MPyqCTgN
+ 32yemGtSlT1yhERRIydMBUapQ0fjM3qq1qMH4/kAHZm5QblE3UDWTGXcM0PUfqC3tqDeBdppE2TPhQ03Rrw2ikS5TMgkHKp4GxWapIJ0whdYrQsIlpV2evNPrWIP8UpOLSdk+jL8EWtnNi4SEvRkxK+QOuGjvhDtK/LePVdnyGrQpyxb+SfX/i3g59nEWxkCce4rps3uZ/A2pIPJcGqzflqFfpBxrxnisM5ziagzPSnZq6JZjk9P6q6s7jT4MXPebQtCr2xr7EwEo8ucOEvbiYpwIIYoNjVLBFuOT+dht5w4Tmz9DVsBphoSiF2S0ir6dZfIAR9A31ZNYar30im4iRUZljzlRRNFQZA+L8dRp2sqqJlWqd1LHwSIS5A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,105 +118,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 27, 2026 at 04:44:06PM +0200, David Hildenbrand (Arm) wrote:
-> On 7/20/26 16:38, Lorenzo Stoakes (ARM) wrote:
-> > In memory management we've managed to manufacture a great deal of confusion
-> > around the concept of anonymous memory. We have:
+On Mon, Jul 27, 2026 at 04:57:01PM +0100, Lorenzo Stoakes (ARM) wrote:
+> On Mon, Jul 27, 2026 at 04:44:06PM +0200, David Hildenbrand (Arm) wrote:
+> > On 7/20/26 16:38, Lorenzo Stoakes (ARM) wrote:
+> > > In memory management we've managed to manufacture a great deal of confusion
+> > > around the concept of anonymous memory. We have:
+> > >
+> > > 1. 'Pure anon' memory - anonymous VMAs whose folios are anonymous and
+> > >    swap-backed (thus for reclaim purposes, treated as anonymous). These are
+> > >    simple enough.
+> > >
+> > > 2. shmem - file-backed VMAs, file-backed folios (from rmap perspective) so
+> > >    present in the page cache and mapped by an address_space object, but
+> > >    whose folios are also swap-backed (thus treated as anonymous for reclaim
+> > >    purposes).
+> > >
+> > > 3. MAP_PRIVATE-mapped /dev/zero - a strange beast whose VMAs have
+> > >    vma->vm_file set, but whose mmap_prepare callback clears vma->vm_ops to
+> > >    satisfy vma_is_anonymous(), which results in VMAs that were mmap()'d
+> > >    referencing a file, but are in every other sense anonymous, including the
+> > >    folios.
+> > >
+> > > 4. Other MAP_PRIVATE-file backed mappings - These possess file-backed VMAs
+> > >    and have file-backed folios until CoW'd, at which point those CoW'd
+> > >    folios are anonymous.
+> > >
+> > > This series fixes issues 3 and 4.
+> > >
+> > > In order for us to traverse VMAs using the reverse mapping, we require two
+> > > fields - folio->mapping and folio->index. The first tells the rmap code
+> > > where to look for VMAs, and the second tells it at which offset the folio
+> > > starts within the referenced object.
+> > >
+> > > For anonymous folios, folio->mapping points at an anon_vma object. For
+> > > file-backed folios, it points at an address_space. And:
+> > >
+> > > * For file-backed folios folio->index is simply the page offset of the start
+> > >   of the folio within the file.
+> > >
+> > > * For anonymous folios belonging to pure anon mappings, folio->index is
+> > >   equal to the virtual page offset of the folio.
+> > >
+> > > * For anonymous folios belonging to file-backed mappings (i.e. CoW'd folios
+> > >   of a MAP_PRIVATE file-backed mapping), folio->index is equal to the file
+> > >   page offset.
+> > >
+> > > This series establishes a new virtual page offset property of VMAs to
+> > > allow us to map anonymous folios at their virtual page offset, consistent
+> > > with pure anon.
 > >
-> > 1. 'Pure anon' memory - anonymous VMAs whose folios are anonymous and
-> >    swap-backed (thus for reclaim purposes, treated as anonymous). These are
-> >    simple enough.
+> > As raised off-list, I consider the "virtual page offset" concept hard to grasp.
 > >
-> > 2. shmem - file-backed VMAs, file-backed folios (from rmap perspective) so
-> >    present in the page cache and mapped by an address_space object, but
-> >    whose folios are also swap-backed (thus treated as anonymous for reclaim
-> >    purposes).
+> > Maybe it's just me :)
 > >
-> > 3. MAP_PRIVATE-mapped /dev/zero - a strange beast whose VMAs have
-> >    vma->vm_file set, but whose mmap_prepare callback clears vma->vm_ops to
-> >    satisfy vma_is_anonymous(), which results in VMAs that were mmap()'d
-> >    referencing a file, but are in every other sense anonymous, including the
-> >    folios.
+> > Skimming over the code, I read "vmg->anon_pgoff", which is pretty intuitive to
+> > me. Similarly vma_start_anon_pgoff() / vmg_end_anon_pgoff().
 > >
-> > 4. Other MAP_PRIVATE-file backed mappings - These possess file-backed VMAs
-> >    and have file-backed folios until CoW'd, at which point those CoW'd
-> >    folios are anonymous.
-> >
-> > This series fixes issues 3 and 4.
-> >
-> > In order for us to traverse VMAs using the reverse mapping, we require two
-> > fields - folio->mapping and folio->index. The first tells the rmap code
-> > where to look for VMAs, and the second tells it at which offset the folio
-> > starts within the referenced object.
-> >
-> > For anonymous folios, folio->mapping points at an anon_vma object. For
-> > file-backed folios, it points at an address_space. And:
-> >
-> > * For file-backed folios folio->index is simply the page offset of the start
-> >   of the folio within the file.
-> >
-> > * For anonymous folios belonging to pure anon mappings, folio->index is
-> >   equal to the virtual page offset of the folio.
-> >
-> > * For anonymous folios belonging to file-backed mappings (i.e. CoW'd folios
-> >   of a MAP_PRIVATE file-backed mapping), folio->index is equal to the file
-> >   page offset.
-> >
-> > This series establishes a new virtual page offset property of VMAs to
-> > allow us to map anonymous folios at their virtual page offset, consistent
-> > with pure anon.
->
-> As raised off-list, I consider the "virtual page offset" concept hard to grasp.
->
-> Maybe it's just me :)
->
-> Skimming over the code, I read "vmg->anon_pgoff", which is pretty intuitive to
-> me. Similarly vma_start_anon_pgoff() / vmg_end_anon_pgoff().
->
-> Could we similarly just call this "anon_pgoff" /  "(linear) anon page index"
-> even on the VMA level.
+> > Could we similarly just call this "anon_pgoff" /  "(linear) anon page index"
+> > even on the VMA level.
+> 
+> Yeah, I had originally done this.
+> 
+> I renamed it because I worried that people might be confused by references to
+> anon for file-backed VMA mappings.
+> 
+> But I think probably you're right that referring to it as virtual page offset
+> adds even more confusion vs. simply calling it anon. Will respin accordingly.
 
-Yeah, I had originally done this.
+Would the term "logical page offset" be helpful?
 
-I renamed it because I worried that people might be confused by references to
-anon for file-backed VMA mappings.
+I already use this in my description of folios:
 
-But I think probably you're right that referring to it as virtual page offset
-adds even more confusion vs. simply calling it anon. Will respin accordingly.
+ * A folio is a physically, virtually and logically contiguous set
+ * of bytes.  It is a power-of-two in size, and it is aligned to that
+ * same power-of-two.  It is at least as large as %PAGE_SIZE.  If it is
+ * in the page cache, it is at a file offset which is a multiple of that
+ * power-of-two.  It may be mapped into userspace at an address which is
+ * at an arbitrary page offset, but its kernel virtual address is aligned
+ * to its size.
 
-
->
-> IOW, in patch #9 for example:
->
-> static inline pgoff_t linear_folio_page_index(const struct folio *folio,
->  					      const struct vm_area_struct *vma,
->  					      const unsigned long address)
->  {
-> 	if (folio_test_anon(folio))
-> +		return linear_anon_page_index(vma, address);
-> +
->  	return linear_page_index(vma, address);
->  }
-
-Ack yeah.
-
->
->
-> Or is there another user for the the "virtual page offset" concept? I'd assume
-> it's only used for anon folios (including KSM), but maybe I am missing some
-> corner case.
-
-No it was just fear of adding more confusion but seems by doing so I've done the
-reverse of what I wanted :P
-
-When I rework it if I notice anything that promotes this as a better solution
-will ping otherwise will just rename on respin.
-
->
-> --
-> Cheers,
->
-> David
-
-Cheers, Lorenzo
 
