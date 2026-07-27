@@ -4,91 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 269FFC53209
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 19:30:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FD2EC531D0
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 19:40:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EEF9B6B0095; Mon, 27 Jul 2026 15:29:58 -0400 (EDT)
+	id 037586B007B; Mon, 27 Jul 2026 15:40:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA0C26B0096; Mon, 27 Jul 2026 15:29:58 -0400 (EDT)
+	id F2A446B0088; Mon, 27 Jul 2026 15:40:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D6A3B6B0098; Mon, 27 Jul 2026 15:29:58 -0400 (EDT)
+	id E3F916B008A; Mon, 27 Jul 2026 15:40:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A7BB46B0095
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 15:29:58 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 16D1016019F
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 19:29:58 +0000 (UTC)
-X-FDA: 85035546876.01.DBB4AA9
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf29.hostedemail.com (Postfix) with ESMTP id F0BB512000A
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 19:29:55 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=dECcdZ3E;
-	spf=pass (imf29.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BC5B16B007B
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 15:40:48 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5384740194
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 19:40:48 +0000 (UTC)
+X-FDA: 85035574176.28.82A6814
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id CB9874000B
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 19:40:45 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="o/mc0v5D";
+	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785180596;
+	s=arc-20220608; t=1785181246;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RXQQvCKPFegovPWBYsHPfyk2YJzL2wBgSj2tapMk4TQ=;
-	b=opCoxxlTHKA+VAT3TslM8bbqh6njGj0SKKZT90KLMB9MmlvgWTv1rrnpj4zbP4rGxFrtHD
-	XXfVXk73Qt7AH5MZwMLHpKecqmhihqLhPIAjpewssl6Unlhc+kzuJTJEQya8H51cOFxdR9
-	XGmJ3EHpJHKu1DyTrERqSOEO5OOBGaM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785180596;
-	b=xsHoHqmC9lYTOboKG0M8DuYP8Rd5ffOGFtiIVYf9wm4LQ3gc/cspel2cOQsRsWjFrr2Rvh
-	xSTOb3UoNjkh3hQfInrUns6SPpQamveZWkHQ2+lpllEUfiQAH8Y7mgohRF343jahQKW2Re
-	iTnNhzGWcNr+zl9AGnXtOCOpbb2WLSM=
+	bh=Nt6DEP0tju5SaHyQIaUeD0xCAwRQILx3XKs/g5W3uW4=;
+	b=cn8cKpBbuBOoUiVnPFH1GDz2BYBLlnb8g/ZA+kT+9rbIpVHxijOOfrCFzwOp0UXmT81lbl
+	wEqzmXa7M6dYd9AIqfttcCUyhNSNlW3MI8kEBsubLU2kX8KIK+n9VJCIHl3YPS79PJjbTH
+	CMA8wNb1LCbJxLdDVKfsA5KG25+76F4=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=dECcdZ3E;
-	spf=pass (imf29.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=RXQQvCKPFegovPWBYsHPfyk2YJzL2wBgSj2tapMk4TQ=; b=dECcdZ3EiKFQUVB+L02fve8Jau
-	IQlzRYmIde1dgB6atfX9k14pjnwP178ZV7VfKeOqJx4BitXMpKa3gsQxyh8bAI9yoes2n5AqcCW85
-	QvR8kVfSZ5awT6mWidhI+atOY0dtBHqRXmQ4HxbVrxv0cR4FKfNwfmjpkvY16Fa+s37FKIxKCfE7g
-	/vHloSPg0Xd2qL52vVYVUOwfwq/xEq/60PMXAz7+DAFyYSAoow46lmxqWka09bElkSddSzPAgZKZc
-	FI6Zun/sE7d9MOKYhc0IyAvap2xLqdxLfe/yN5mxSn5EVlAzoufOA4mBIzrD5ymEXiKzB8JQeaTFF
-	V467TZ/w==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1woR1N-0000000BJnR-1515;
-	Mon, 27 Jul 2026 19:29:53 +0000
-Date: Mon, 27 Jul 2026 20:29:53 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Jane Chu <jane.chu@oracle.com>, linux-mm@kvack.org
-Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Jan Kara <jack@suse.cz>,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <christian@brauner.io>,
-	Jiaqi Yan <jiaqiyan@google.com>
-Subject: Re: [PATCH v6 06/12] mm: Remove locking mf_mutex in
- is_raw_hwpoison_page_in_hugepage()
-Message-ID: <amexseZ43DyZjFoE@casper.infradead.org>
-References: <20260727181310.2671972-1-willy@infradead.org>
- <20260727181310.2671972-7-willy@infradead.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260727181310.2671972-7-willy@infradead.org>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: F0BB512000A
-X-Stat-Signature: pntnohfn1kb8bm3t3d9qfrcp3sycusee
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="o/mc0v5D";
+	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785181246;
+	b=KDZm9pVm0d5FaWqd0krI/W7VV/PxCgP7eolvfb9jm8EiqgjFgPs2IXiZFL175qlc18E4ic
+	rsdSpow3IAp6ke93kyOTsqipSQIrLC6GKWJbRWB1uVUU5Ij8XE5squasSCB3E+zXEb8PLA
+	N+pmc1KEJrJV6mhoabF6AHXOXtx1sPQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2219E43228;
+	Mon, 27 Jul 2026 19:40:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93E691F000E9;
+	Mon, 27 Jul 2026 19:40:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1785181244;
+	bh=Nt6DEP0tju5SaHyQIaUeD0xCAwRQILx3XKs/g5W3uW4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=o/mc0v5DzjKdaELjinsIVbJ1Sw/1+L2RHD7lgy9f5kHNZvXfw2+z8cNiUJIEVoSit
+	 xCeZqJeU/wWmytDmCtU9FN6Du3D4p7kEK14qh+Yy35jWMf2yptyrwhtKDWFgVC1BFp
+	 qbFzvg7WaWACDjTud98doO1WpWjv+/f2fmXkpFn0=
+Date: Mon, 27 Jul 2026 12:40:43 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Jane Chu <jane.chu@oracle.com>, linux-mm@kvack.org, Muchun Song
+ <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, David
+ Hildenbrand <david@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, Naoya
+ Horiguchi <nao.horiguchi@gmail.com>, Jan Kara <jack@suse.cz>,
+ linux-fsdevel@vger.kernel.org, Christian Brauner <christian@brauner.io>,
+ Jiaqi Yan <jiaqiyan@google.com>, stable@vger.kernel.org, Naoya Horiguchi
+ <naoya.horiguchi@nec.com>
+Subject: Re: [PATCH v5 01/12] memory-failure: Fix hardware poison check in
+ unpoison_memory() again
+Message-Id: <20260727124043.f7751d0259e78f15db94d4ba@linux-foundation.org>
+In-Reply-To: <amduqWdnxeYwToax@casper.infradead.org>
+References: <20260725160042.1557264-1-willy@infradead.org>
+	<20260725160042.1557264-2-willy@infradead.org>
+	<amduqWdnxeYwToax@casper.infradead.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: CB9874000B
 X-Rspam-User: 
-X-HE-Tag: 1785180595-129019
-X-HE-Meta: U2FsdGVkX1/f+KbwojBZ9M1EhYy16EHErMpYTT7GGKFNDJofYKkDSebmWkcUG7XTF36XvIFdIoCVQagNxS1G4ubhOUaqaDY1kLGT8CcOshSNojmjT8bouq8jDPXyyjVfI0wva1RMfo3XzxP64/g9Vy9fWN4CHoU0DnHxhBSY2vG9PKeElFIkzBR95T8d2Iwzvw4+Cwy/4g7vfS4D+7vTted5yVkkqGNFmgDSykGCNz/6K1WueN2x/KfxE3ie+fLy47hzPsvJPZRRVMdCzDw+UYVJ9s5DKc9tANnOd8F6tVbahDmDUztEZvhDt0ibuOSxszfWLQQaDgUBA7fdZvZtv95tUMdEWsn+qVTTaqr7Rt4rvwpoYLtwko37zBlXioDNG5Nqu8r4VDFgWpnq361S0UFMPHIcCOly3A2AkeURLhwOoRG44X5Ltsadu7+NmQ6MVIskasuCLe8s9pfgFKW0PG0KanhmD25pbKkh4cE30KT4lkeOCm8rY+WxsF98YqmJAWqkfWxbOgfuSepJWhhVXO3O7uyWEdjIEw9WyLflBdbENhsmXL/wA3U7bEJonEYYncKEAtQiOGFAPLjAI7bWRvq4yddyxDQkFy8g94gEYpC7Qydy2m3jv16eW29iK5GJaAdfKnZNI4HMilmKpZ+8NFhga1Z5da5WEZe+Og3KlC7X80Eo2o1vFZcTkVZMvKHNhbZmXblnsuemMOaFAeERGwXpNan04iDLcHcTMO+tWYWcV4uJ7WrYXUhCN0gMBnhav3CCYpIAFOlE2obER93O1dQr29iKJCwf/q7jdkzR5o4eatKdlr6IY0ZNl8vCEB+hzPKlAHBmlkLRs0dr4TnFsiVY8QdsIasouZ11PGRiTQjSmjyrY8wGZ6Y+yiR3yxAaC8665fnZvlT/lssTrH014TopuLNBLBUti5lYVWDErUmScbqHGEkOgtuDj6scclKTdeb25Sb5BVjmb6i0W9G
- 5AviIOI8
- qmak0gxP6W3h3l/Z042sFOFozeoD4ifkC1DeYand5NM567Fqu8/2CTA83IcyYwWkw+TTTuFU026qhZIxXWUgqV/phYDC7ySttqfyEmyYTKllR00FUjTwz1B7i7bU3eTxEXqXviMDNJyzCaKERiMPQG6ZL12Dpa9PP7iMge10UU5uIE51hWBhAMf73a+foIeBJmqSHiKBowTSIwdvQG593+/oAR+jT3WK+qujif7j7gpWExG+/HsoE7a9n4tfejXCppMPQhDTB3LQy456Ug0xRlNubUfGNHdoMoYLihMMgEqUVohj0MWeejnAl9KZC4lO2JMXPQhQPzQrrtD34SjndhL+IL8lUYAuTyWy+Hi7GNBzP/ZDE1HJR4RJAlJRWThA2CY2A5eGv1hI6K5EghjMBKi9JrAw8/aBo/ufKkA3CYfcazbc=
+X-Stat-Signature: nruzs985wuir9q8gdqpm7irs5qrowug4
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1785181245-908221
+X-HE-Meta: U2FsdGVkX1+vvW6oBtncD4HfkMKkJ0atj06+Z/7NvLOCjpdmajVJcVwUqWTm6qREBXzJ3Lv/4DV08VU38oV5Y6ugtl0cfqBQrJ6eIHuN8xq+vI2CWPAdY0kUDdt8qSfTtC/gyUdMwibRSVKiJWCbz08PQLLr7rwEQIouK1Ba3nIVaZSvjen9tsD2HK79L6fSUlumugLfS3PE3VDI4DYwdynrgYaqj5lwQMNfmnYFEdPnCk1f27OPGZMInN+PrCdAN9LmWCAEPLi8LdNx6CRfxpoXtO+mcZ+ggJVtnVsrWY+Bm1a93ErcmIoWZszmCG3ZlgWSDF4ZghH7kCMiPmEPZRn1hCmOV0HEwzSchW67bRn9M5uDK2AKmd3LwYDNTKPD1LwLwY4LciJfXmzbOQtjjF0dCIl78BwClFOVVdWVdXqr5b4Xx/pOygjACOsEsCHy2NMjuLqwbF4MG6cfLi0uD4w5prKuOiqPC9+FTEoBMBMPxY/b7NKLFivaU5CEteqlUwJE7EEu88xTBcxVXPOXk9rXSvPbZYeui7V91Zb7tORzHwAVjXlxsd51Auc30oFO0JZzB6Db87IHol4DFJPmX5n6LZvvh8+DRDv2BTRlgn76acSCbSDcmV494T+2ynbtNbcM3SX97LsQ17rIggBzLoLbgFGPpzkHv9Wea9VVtfHBTe8B5kpgymlUEeDGlyg5/Wad0t8l4K1p0UdoEoyk/IwyqqFp6gQeGKmTTwX1EXetlc21gQbKow9UC2u3VpRcxWX41Ayf0io++kJ/xFPaY0MqZDRkQVAEXB5EyRJ7aXVTLV2izaUxkT1f+NQaHPw4sTgEJlsvmTZHmyxYN2gWw4n0HI3+us9t9KytkARlD/MjQ8qH/DHdoM2PcTluvfXDX2GkMh/yWmbmqMyGrITg6sK5pSiGT3ZblgG4OYNqQVj/dK/U7sywo/E7Hi65ys0D0/6jldTl4uswljqtGI5
+ DqimnmNn
+ O8WwfAkTGH6cYmpVGw8+p8dQvwERL5qTGbAMZhNwQQMMGMKRio2b+ApOY5kFb7+PWSwxX3S1NVPyUwhYACe/zKERX68gauUWSq5gs0Bn5FUQ6hwAS4rk8zJHBN93+ayE7VY3zZo4sBDZsGLbnQK5g8gn+KRqbGyLmzkLf9wus7hjIsDpeLS9o/oQruIpjeKLvZsAyL7hGDqMKy4p9QrWW0Sl2X/WrFuxy5zlNHUD8j5SHbRZxpg+PAzC2FfM3igaihRUswvwQ+4MUbf4yFVWICQZfNv+OHsi1gDDd9jadkTYx0ZFqcSz2VMb/xgQMFEjAJe52OIr4momT6wPO2WKJ5kdrpHBaR0de8/NG3UuHIurlRqnH4h0hrtdzVFvNPIYwlpas2lO0Izze1FWe24BNnhxzkZZstiRmffNJKjoq3m1fkRxPuPL/ijGp8g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,76 +97,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Sashiko:
-> --- Patch [6]: [PATCH v6 06/12] mm: Remove locking mf_mutex in is_raw_hwpoison_page_in_hugepage() ---
-> commit dd77b291442dd4b4a9034d9d1b8338037122f7fd
-> Author: Matthew Wilcox (Oracle) <willy@infradead.org>
-> 
-> mm: Remove locking mf_mutex in is_raw_hwpoison_page_in_hugepage()
-> 
-> This commit replaces the sleeping mf_mutex with a new hwp_page_lock spinlock 
-> to protect the linked list of hwpoisoned pages in hugetlb folios. It also 
-> converts the list to a normal singly linked list instead of a lockless list.
-> 
-> > diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> > --- a/mm/memory-failure.c
-> > +++ b/mm/memory-failure.c
-> 
-> [ ... ]
-> 
-> > @@ -1838,16 +1838,17 @@ static unsigned long __folio_free_raw_hwp(struct folio *folio, bool move_flag)
-> >  {
-> > -	struct llist_node *head;
-> > -	struct raw_hwp_page *p, *next;
-> > +	struct hwp_page *p, *next;
-> >  	unsigned long count = 0;
-> >  
-> > -	head = llist_del_all(raw_hwp_list_head(folio));
-> > -	llist_for_each_entry_safe(p, next, head, node) {
-> > +	next = folio->hugetlb_hwpoison;
-> > +	folio->hugetlb_hwpoison = NULL;
-> > +
-> > +	while (next) {
-> > +		p = next;
-> > +		next = p->next;
-> >  		if (move_flag)
-> >  			SetPageHWPoison(p->page);
-> >  		else
-> >  			num_poisoned_pages_sub(page_to_pfn(p->page), 1);
-> >  		kfree(p);
-> >  		count++;
-> >  	}
-> >  	return count;
-> >  }
-> 
-> [ ... ]
-> 
-> > @@ -1959,7 +1966,11 @@ static unsigned long folio_free_raw_hwp(struct folio *folio, bool move_flag)
-> >  	if (folio_test_hugetlb_raw_hwp_unreliable(folio))
-> >  		return 0;
-> >  
-> > -	return __folio_free_raw_hwp(folio, move_flag);
-> > +	spin_lock_irqsave(&hwp_page_lock, flags);
-> > +	count = __folio_free_raw_hwp(folio, move_flag);
-> > +	spin_unlock_irqrestore(&hwp_page_lock, flags);
-> > +
-> > +	return count;
-> >  }
-> 
-> Could this cause IRQ latency spikes by executing a loop of kfree() calls
-> inside an IRQ-disabled spinlock?
-> 
-> Since __folio_free_raw_hwp() detaches the list at its start by setting
-> folio->hugetlb_hwpoison = NULL, would it be better to only hold hwp_page_lock
-> during the detachment, and perform the while loop that frees the elements
-> after dropping the lock?
+On Mon, 27 Jul 2026 15:43:53 +0100 Matthew Wilcox <willy@infradead.org> wrote:
 
-I think rearranging the lock & freeing would be unutterably ugly.  Since
-the lock is held by the caller (check hugetlb_update_hwpoison()), we'd
-have to eithr have a calling contract where __folio_free_raw_hwp()
-drops the lock, or __folio_free_raw_hwp() returns the list and it's
-the caller's responsibility to free the list after dropping the lock.
+> > If the THP later reaches a state with a single transient reference
+> > and no mappings, unpoison_memory() acquires a reference (ghp = 1),
+> > calls folio_put(folio) once, and then TestClearPageHWPoison(p) clears
+> > the flag and returns true. This triggers the second folio_put(folio),
+> > dropping a non-existent poison pin.
+> 
+> I don't know, and I'm losing patience with the Sashiko rabbit holes.
+> This is all getting very far afield from the problem I actually want
+> to fix.
 
-Until we actually have data that this is a problem, I will respectfully
-decline to follow Sashiko's advice here.
+That's fair enough - you aren't a memory-failure maintainer.  If you
+want to take a shot at the pre-existing things then great, but
+otherwise then let's ensure that the relevant maintainers were cc'ed
+and move on.
+
+One relatively minor issue here is that if Sashiko's pre-exiting thing
+is serious, we may decide to fix it with a cc:stable and such a fix
+should be staged ahead of your series for backportability reasons.  If
+we end up upstreaming these things in the "wrong" order then the
+backportable-fix developers will be asked to prepare a backportable
+version of their patch, which is a bit cumbersome, but not the end of the
+world.
+
 
