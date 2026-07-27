@@ -4,83 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E77FDC53209
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 13:40:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 969F4C5321C
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 13:44:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 614EF6B00E8; Mon, 27 Jul 2026 09:40:46 -0400 (EDT)
+	id 8F33A6B00E9; Mon, 27 Jul 2026 09:44:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5AE5B6B00E9; Mon, 27 Jul 2026 09:40:46 -0400 (EDT)
+	id 89C576B00EB; Mon, 27 Jul 2026 09:44:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 49DF66B00EA; Mon, 27 Jul 2026 09:40:46 -0400 (EDT)
+	id 78D6D6B00EC; Mon, 27 Jul 2026 09:44:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 086346B00E8
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 09:40:45 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 75998A188E
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 13:40:45 +0000 (UTC)
-X-FDA: 85034666850.24.D2E86E4
+	by kanga.kvack.org (Postfix) with ESMTP id DBED76B00E9
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 09:44:41 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DBCC980723
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 13:44:39 +0000 (UTC)
+X-FDA: 85034676678.04.B0DD098
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 93CB9C0006
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 13:40:43 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="NciMao/7";
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785159643;
-	b=Tm33Ld8AQikodiueyCvTDOyj5iz0hYMT8k2fBs+hJMDjqSrrhB5reVyVfcDrGCwu9TTIXt
-	+LR1yXBV8GQJZtX7ib9dtQHDwjLQDLROxJcYP7rIFX96kRhjtOgPa7W0ly5jsIDHhS0oHe
-	ajjlekCTc167vpZ1HdaWaBeewBBd9YA=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="NciMao/7";
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf07.hostedemail.com (Postfix) with ESMTP id C9D9740007
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 13:44:37 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f2z7b51q;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785159643;
+	s=arc-20220608; t=1785159877;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cm+6RO6NKrmQhCTAXomhESN+8SE1hTWFq0tnUoVm+go=;
-	b=lJaT0oRrUszllMgs1MKRlGvsCOX0tLcwE9Y8549Sy3vqFkiV7Z2SiaM3i+04ApYHsOi/Ah
-	wBBjETpfrIJwPkhFvccgXe0axRmkrYM/xB6MUb9HZTY6QXgVEUsCUrx4hVe26c9pdmshS6
-	bS7zYX66F70Md8YkgssJsH3CqkAHkjM=
+	bh=5HBSjs0YXmx8rxbE5f0/XZpbxIe03X0ZCU3v967/exQ=;
+	b=rlndq3nsqPGrDoUT0u3sz786f409jSU7nMgVulRZ96HT8p4Q/vROHGXSPM2npUx41dN6Su
+	sRwmuwhvcqMFKa9VVuwq5ewoOtsHPTZCf768NcKl39IZifYt/0f+wRq7yx1Qzdnz4LeEe/
+	v63JnVtAjA02+JWCVTepSvDeljaxkcM=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f2z7b51q;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785159877;
+	b=hzPHO1y4vzLYUreYqIzWTnFBpi1efMMo7pSJ+959aiOSsZ1cOY13XWuob+Oj2r7TfUPLLY
+	HD9W9w0fW2aWcfsDTYFbV+hUubgD4ggTk6GnPBbovSsmUnK7aovpKa39SmucCGvSj4XTOf
+	a+oG0js50nlurggaiLvFVv33nVRVEIo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 648244026A;
-	Mon, 27 Jul 2026 13:40:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 805BF1F000E9;
-	Mon, 27 Jul 2026 13:40:37 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id DEAE142A4A;
+	Mon, 27 Jul 2026 13:44:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62FB11F000E9;
+	Mon, 27 Jul 2026 13:44:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785159642;
-	bh=cm+6RO6NKrmQhCTAXomhESN+8SE1hTWFq0tnUoVm+go=;
+	s=k20260515; t=1785159876;
+	bh=5HBSjs0YXmx8rxbE5f0/XZpbxIe03X0ZCU3v967/exQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=NciMao/7Bbc7u/PPvksd4RtB7y9NUjZzNmswpiTdU9O5cxf/tThmsVnswGl5G3fP+
-	 cEF0+uzWKff/hO8HHckYSaz7Jy04adTELzgaheA02Ryc3nAvRnIOeWi9G9/j70OEYX
-	 rBKG6QZsqZ8TFSyamCNdVHWeQerRcGPlFQKc9xFYV18Qj55K0fDht3+3BLMGsbcdhD
-	 ljNeTOEtAJdm5twueyvyuoNGGHpWJoA67imPhW5CmaqtNeD3yFXjtQ/k+lDcFXQ0Hk
-	 wYXOKwgDxTZZHm8Wn8otqZzjye+vTUjgyJuFShlNZin7M+jD74dCqwUFIjjEl0W1i8
-	 WZqT7BYEGbrdA==
-Message-ID: <4146d4f5-c8fb-42cf-9dc8-a9d4c26055da@kernel.org>
-Date: Mon, 27 Jul 2026 15:40:35 +0200
+	b=f2z7b51qoUf6Sutj4dP/UQlgqzQVH/sIoduN90fsornu7wBavjeVzTibtWRxCn4rh
+	 af1p74G9L+W0ulIOv/E0zlviPmRGlrTCpAeBe6UOziqgNaO8mLutQyd2Rt9bXOavbP
+	 oxuEUCa930MO+rNmegPrETeDvk6+4qw+l7dF/K4dVeZaesqkECQ+rjiWPLI9947/nS
+	 6EgoWWmXHu+CiPztjXHtWmQasSMcMjjtDAhFB8AzK2J3qIXNAGrNm2xMBXCBIfcKKP
+	 pLmlnIiOtm1gHo56xq5M2Su4ZHAX9fPZP66WIxr77+wQ5XvR2KOVaLgM6gp5DcYv+w
+	 DI8hFDl/qc7uQ==
+Message-ID: <ac1e42b2-eee5-42cc-bf1e-dfdc5225adeb@kernel.org>
+Date: Mon, 27 Jul 2026 15:44:25 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2] mm/thp: serialize huge-zero folio state
- transitions
-To: Hengbin Zhang <uqbarz@gmail.com>,
+Subject: Re: [PATCH 1/5] mm: constify generic pte_get*()
+To: Pedro Falcato <pfalcato@suse.de>,
  Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Helge Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, "Matthew Wilcox (Oracle)"
+ <willy@infradead.org>, Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
  Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
  Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>
-References: <177a1767-c782-4210-b377-44c520c74619@kernel.org>
- <20260727131814.3983064-1-uqbarz@gmail.com>
+ Usama Arif <usama.arif@linux.dev>, Kevin Brodsky <kevin.brodsky@arm.com>,
+ Muhammad Usama Anjum <usama.anjum@arm.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
+References: <20260724102017.141532-1-pfalcato@suse.de>
+ <20260724102017.141532-2-pfalcato@suse.de>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -127,17 +135,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260727131814.3983064-1-uqbarz@gmail.com>
+In-Reply-To: <20260724102017.141532-2-pfalcato@suse.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: b9ycqtoifjq5zab8sc9guor7zyqy633e
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 93CB9C0006
 X-Rspam-User: 
-X-HE-Tag: 1785159643-320719
-X-HE-Meta: U2FsdGVkX19f8Z977V+pjY8UmuY73E8a3tzfOwuWSV4nEdMProUcAEnowVakq6vbkNqAIEKHLCIrAScVI+SLg24vrxXzJggW7h/8UUwF/GEQW/px6XXzDAoZnwX/gvMVeAJ/qMLi0nvOuMeZgX/0vlkRnFSpO2VlvPtRD/a+qb4LlLkxHGOx8vRa5/tZjpkPYvDnvXCT2Jx0FEuNFjo7rsBC3SiPhdunDzDDs2hHD1ZsRTGhPDMDb9rKkBnnusrg6vahK0D2ZkoGzHjzVC29Se9NoAr3AhD1cNssJUeCAqZoBYi7evP4uTtrF1jCF8D/OMpxP8FhxJQ+0KyAVWZAq26qOnuqqIs5XcqZsyBQKPA4XekgSoopZCGfCUY7zImu8bpdOzzHy8q5bW6a/VhK89OkCX9nqQj1eW3XWEA+jv/Tzq+Kv+1HvCFwSe8uCZTjnMYCUh+XotjAOmS/DpT0+fGWU+8MyEPWrgSVQlg2QAG6qZIgTyLUjPw80QICSjHGXU9rS2uZ5WwVnCIMuP1cV8evE9VvE/54ffOSyFHZdgrAWuhUfXwBmNtIU7fbloEHWaldojOFgJ/jOUEVK1fHE/D7yRSMTymgl40wH4wx3+d6TXAJivttxZxpjUaDxStltNERw4nM7dJ++dNTCu2JLhcA6AgxWTi51okZJ+JPF/feDICZ3gOZQgRCZPlyWb7PN+NMZ23rAn/8LG0u8CGxEpIUaGUonkgSMaGRkMdNNNvWU7x0bsg+KFZoruN3+Dc/187TKgO1G96cRuHCM5rodLPu/za8wlEOrxTZFPQmDXC2q0KLkB+H9bgYWF4Dxeo7pWybbd5jE0fz6uAL4vt1LTn7YZS+SEyUapWyyHX4RNMXpQOQ8CpiiujX+OZCa6qfeag3mncppbkKP0EJB8tc4F9jpEoBHnyhtsMOLfkUyhxwg3MmtTh2GKSvbbCaWl16ePRU/CLs0T3R3rkT2Wg
- CnfR2Vbl
- RyWPXHotx98LJiNenoGHnNu3tYA6mJIvgY/XCEgcI0J/vxBqAajk+CVFjuXCciTdEdT+HZCgyc+L9cxtk7Rblqp1nFmlxs51XXcBf7lbiSZy/WFL8S85gwhAjKWDWCtbaNQtolfthCVFPJONg9V6R+jEFr8OvSRqH+f42s2CbGzh4Qd5UNvNdyfTpugUCr9hwIyelYrKs2H/chNFF7fx/Ghj+hTQynfTPi6x13w8BstaX4nyaFAxZFZfqKmnlN7WJB1q/N2O5pCaDMvaLeA336zD4YVYfqvOMgnUVJyUuEcSXgTDEBfs50SPh/w==
+X-Rspamd-Queue-Id: C9D9740007
+X-Rspamd-Server: rspam01
+X-Stat-Signature: yzhe9iy91xps4ip1s4qbic8ysg6c1657
+X-HE-Tag: 1785159877-360508
+X-HE-Meta: U2FsdGVkX18NBdOC7pI01XdFSI/EBGeb7fTw8Ck0EXzA5ASu6l00D21T9EzsD/pPTJRLReLN6VrYFYraO4CbF4kRI3tqZRTWuGCQ0PCIKpc2VZ+xydv7a1hj4ZltVvSCLAYBm4LDLI2HQLYLZH1j9fZXZk+oGn116l+bShUIHnIRKpNVTcc8Pe83ULhcZkRulwFqTBpb69sEnkNCgu5ZOGxcPACQV4EAhvJ1DsRUCtqAFerCYj6b9SAhvNmJ4PfsJYyWE0lODTO3jCAqWHnAOIrWp35t7wkzDqH4puxqtj7vW63aM2WDd9TkPhjl8VWAOwSdsAFJ+ZQO6n8SrUYinEWTJu9qjDNKMmGuvlu+t1LVHw96yuXtvzW5711hXBQgqu10rrQJNe/CDA4GmS9YdOBb/vzVc1T/Dn3huhi4YB3WpkZtR/Qqn1Y8ZQ3mfERtIqIWHdnR/s9xJ6G3ZwDoK70nXuWPvBtWbJO7IVLvjboj8eiLE+rtTo6C8goYQvyzVuude6DcznqB6frcGdJ5MhxQpu9eD72Kc2APD3WJ4OKRyHdvyBCO+lklIrdYDuGNa5XyeRS3uKuZKBUBSys95vzTJlG35ANf4HlkCXTcyt/0PTP0HJpJ0eT6zuTzk0n4Zh1fpPdt8FasJdLbcxMuoxl5IZjYZWjYl+XsCpSONXcdOL+ww0RYONjt+pnIdU/HVggvvd+f+DkG588tko99XkImfhkopsuqVQXX1yvi3tUS/8ABq+au5rWjKCpceacHoR3Dsz7NoFV0AwBo3NSYTmg9McYAhJ75eFtOlVoLLFvApUlXAbfAEa/xiybsHjdoRhzw7hKFyR3NVe5SyIIdV/Gvuuetydep0c8csSF0DsNSRPuxyN5GQ376mSawjnKoqROL28mO/klLHO2VDcEVK9MQ3VOYh7uiAYPGloMyUo8ODftzBzs8fpn6PclsJO7ki28Qv0r1TOLPnghqtuD
+ uRZKebOx
+ iNaSw2TfQ1P9osslZjaLPmeuOUQoX3LWQpEU5nBDYXIxrS7FnGHPqCiUwbIPibFglsrlMrj0zupXHWejU0oOfKd1lMtUzkWitZlCBnZjUwj4NMFCqKMtG1QPjfuy1rVPTHAfODn8w6b2Gbz+AFTXqGH4Y4/s9rZXJV2hvNV6uRJK8QP3J19dbAy3NZKV9zsC6WQ8MDG17iw1xg7zdxma1kkBruAB5Mi4xNt+WpRuprHtqkqaz0Ex67S7rwaj6DwQ5SO2HS4GKtTSAhV58nTkC0wiFHM2H/r+4+qqAX1kBYLoGpVFmJc6eAqgL3qJJLkSvwBNYJ7RugrxPb390XhK/5/9PPdzEtLCgLVIVI+jPBol8w229JFCbY/TbP8IGwExpds5l
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,98 +153,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/27/26 15:18, Hengbin Zhang wrote:
-> The nonpersistent huge-zero shrinker clears huge_zero_folio and then
-> invalidates huge_zero_pfn. A concurrent fault can publish a replacement
-> folio and PFN between those updates, after which the old shrinker
-> invalidates the replacement generation's PFN identity.
+On 7/24/26 12:20, Pedro Falcato wrote:
+> None of the helpers need write access to the PTE. Constifying the param
+> allows for const typesafety.
 > 
-> A later partial mprotect() can then misidentify the live special PMD and
-> enter the ordinary anonymous THP split path.
-> 
-> A writer-side spinlock keeps huge_zero_folio and huge_zero_pfn updates
-> from different generations together. Lockless getters still use the
-> refcount fast path. atomic_set_release() publishes an initialized new
-> generation before a successful atomic_inc_not_zero() can admit a getter
-> on weakly ordered architectures.
-> 
-> The race was reproduced using test-only instrumentation that widens the
-> shrinker/allocation window; that instrumentation is not included here.
-> 
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Link: https://lore.kernel.org/r/20260724100509.2300200-1-uqbarz@gmail.com
-> Signed-off-by: Hengbin Zhang <uqbarz@gmail.com>
+> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
 > ---
->  mm/huge_memory.c | 36 +++++++++++++++++++++++-------------
->  1 file changed, 23 insertions(+), 13 deletions(-)
+>  include/linux/pgtable.h | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 > 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index b5d1e9d4463d..89771a9b282d 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -78,6 +78,7 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
->  static bool split_underused_thp = true;
+> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+> index 8c093c119e5a..dc418553e57a 100644
+> --- a/include/linux/pgtable.h
+> +++ b/include/linux/pgtable.h
+> @@ -490,7 +490,7 @@ static inline int pudp_set_access_flags(struct vm_area_struct *vma,
+>  #endif
 >  
->  static atomic_t huge_zero_refcount;
-> +static DEFINE_SPINLOCK(huge_zero_lock);
->  struct folio *huge_zero_folio __read_mostly;
->  unsigned long huge_zero_pfn __read_mostly = ~0UL;
->  unsigned long huge_anon_orders_always __read_mostly;
-> @@ -237,17 +238,19 @@ static bool get_huge_zero_folio(void)
->  	}
->  	/* Ensure zero folio won't have large_rmappable flag set. */
->  	folio_clear_large_rmappable(zero_folio);
-> -	preempt_disable();
-> -	if (cmpxchg(&huge_zero_folio, NULL, zero_folio)) {
-> -		preempt_enable();
-> +	spin_lock(&huge_zero_lock);
-> +	if (READ_ONCE(huge_zero_folio)) {
-> +		spin_unlock(&huge_zero_lock);
->  		folio_put(zero_folio);
->  		goto retry;
->  	}
->  	WRITE_ONCE(huge_zero_pfn, folio_pfn(zero_folio));
-> +	WRITE_ONCE(huge_zero_folio, zero_folio);
-> +
-> +	/* Publish the identity before admitting lockless getters. */
-> +	atomic_set_release(&huge_zero_refcount, 2);
-> +	spin_unlock(&huge_zero_lock);
-
-Can't we just keep the
-
-atomic_set(&huge_zero_refcount, 2);
-
-after the spin_unlock() ?
-
->  
-> -	/* We take additional reference here. It will be put back by shrinker */
-> -	atomic_set(&huge_zero_refcount, 2);
-> -	preempt_enable();
->  	count_vm_event(THP_ZERO_PAGE_ALLOC);
->  	return true;
->  }
-> @@ -297,15 +300,22 @@ static unsigned long shrink_huge_zero_folio_count(struct shrinker *shrink,
->  static unsigned long shrink_huge_zero_folio_scan(struct shrinker *shrink,
->  						 struct shrink_control *sc)
+>  #ifndef ptep_get
+> -static inline pte_t ptep_get(pte_t *ptep)
+> +static inline pte_t ptep_get(const pte_t *ptep)
 >  {
-> -	if (atomic_cmpxchg(&huge_zero_refcount, 1, 0) == 1) {
-> -		struct folio *zero_folio = xchg(&huge_zero_folio, NULL);
-> -		BUG_ON(zero_folio == NULL);
-> -		WRITE_ONCE(huge_zero_pfn, ~0UL);
-> -		folio_put(zero_folio);
-> -		return HPAGE_PMD_NR;
-> +	struct folio *zero_folio;
-> +
-> +	spin_lock(&huge_zero_lock);
-> +	if (atomic_cmpxchg(&huge_zero_refcount, 1, 0) != 1) {
-> +		spin_unlock(&huge_zero_lock);
-> +		return 0;
->  	}
+>  	return READ_ONCE(*ptep);
+>  }
+> @@ -739,7 +739,7 @@ static inline void ptep_clear(struct mm_struct *mm, unsigned long addr,
+>   * present bit set *unless* it is 'l'. Because get_user_pages_fast() only
+>   * operates on present ptes we're safe.
+>   */
+> -static inline pte_t ptep_get_lockless(pte_t *ptep)
+> +static inline pte_t ptep_get_lockless(const pte_t *ptep)
+>  {
+>  	pte_t pte;
+>  
+> @@ -777,7 +777,7 @@ static inline pmd_t pmdp_get_lockless(pmd_t *pmdp)
+>   * We require that the PTE can be read atomically.
+>   */
+>  #ifndef ptep_get_lockless
+> -static inline pte_t ptep_get_lockless(pte_t *ptep)
+> +static inline pte_t ptep_get_lockless(const pte_t *ptep)
+>  {
+>  	return ptep_get(ptep);
+>  }
 
-Do we really have to move that refcount modifications under the lock?
-
-I'd assume it's sufficient to only move setting huge_zero_pfn+huge_zero_folio
-under the spinlock.
+Yes, that's a step into the right direction.
 
 -- 
 Cheers,
