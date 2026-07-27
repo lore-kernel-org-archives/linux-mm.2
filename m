@@ -4,105 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5C60C531D0
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 05:39:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55A72C531FC
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 05:41:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6BDB76B007B; Mon, 27 Jul 2026 01:39:40 -0400 (EDT)
+	id 0F62E6B0088; Mon, 27 Jul 2026 01:41:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 66E776B0088; Mon, 27 Jul 2026 01:39:40 -0400 (EDT)
+	id 0A7B16B008A; Mon, 27 Jul 2026 01:41:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 585E66B008A; Mon, 27 Jul 2026 01:39:40 -0400 (EDT)
+	id ED8046B008C; Mon, 27 Jul 2026 01:41:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 315BE6B007B
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 01:39:40 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8C7E712059F
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 05:39:39 +0000 (UTC)
-X-FDA: 85033454478.01.A475D2B
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	by imf27.hostedemail.com (Postfix) with ESMTP id BC93240007
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 05:39:35 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Fc21pegP;
-	spf=pass (imf27.hostedemail.com: domain of arvind.yadav@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=arvind.yadav@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CA7606B0088
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 01:41:29 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5E0131A064F
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 05:41:29 +0000 (UTC)
+X-FDA: 85033459098.08.8471E8A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id A8AD720005
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 05:41:27 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CckjAe+u;
+	spf=pass (imf31.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785130777;
+	s=arc-20220608; t=1785130887;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=dljhoEgryrcl5B5MMOnkwH3F+0fLuugR6tKLdOQcC6k=;
-	b=B6Kfd+/ATeOriQbGbzQaOGNwfjr1lBXF6R2+FEAo2FMAzFxR8l80idOxv4QIMgdES4wTXs
-	H/Ra4osgPMcXJ4iFijeGZHKbswkno4GEeatYgqa5wmKXKlCZhKrdqW70e3oD9gFbjQYy6Y
-	r/+fSthlAFGCSW5KSM2wJ1tQR0/Ezow=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785130777;
-	b=Pwc6StofQhoKom0JhnBm3PeBiEoh5YO84FwGirqG+Y5z8T5fFFZ4NYPHwWhMVOonmJQB/O
-	xmGj2wFRYSKd8f4ukKKPB4YagTgqYtdCm9MiwrndezGQR0tdr16XjGp3MT4iwaY/jzg8Rt
-	ZCDrR29ZUP0pfHGtIa/6EKXDlwpAWJQ=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=KBGxVKBVcPUvP2K8Kq2m/WESxz8RXhfqZ6Mnq5IoEO4=;
+	b=in5Wyq1efvSVSfPcNVbzykQ2xVj6gvc3SxM2FQm4qlsGlEhSGXd/bivKjefKy1Sj6snTSx
+	YV5d1n5LXS/EyejLqJojdD1mphHYnSYpMDtxBrtz/O5RIXroaXYvscK6enklV0+6MTmuxH
+	9BvAa1RZQ9dfVhBFE7qku+RRksokfXM=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Fc21pegP;
-	spf=pass (imf27.hostedemail.com: domain of arvind.yadav@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=arvind.yadav@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785130776; x=1816666776;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=HDQMhBtH34OPq5lrFLacROh5yCkQVDcx1Q3l8xNuW9k=;
-  b=Fc21pegPS9GJY/ttqH3GpQ/D4QketDtSBa9EO7KxpxT5Ji3vmpdGLCOE
-   pEyJY8ZztpVED8Sl1SeY36Z3leIh8Sq986cVCJNNtCOgQcmEoHabW0/Lk
-   vPJh8GYBEGdHFGr5RVDLlSd9AQ2xwKHCtDqRpf8YMcuTQG5qtG7Z0Hkzh
-   oN/P6kHIduVnhiofiOF5Yi+ZZA96mSc935T+Xmcx45hREusUqQdsFwyxv
-   KB1NxA48apGJLW4zjGL8NT12DQo1P6cfwRHBpU+lpd9tq7RNk/CpLMurJ
-   jlBQjRenQji5pG+/Qzm4OzqewQiRO6gw01yzEFhwVv4fj8AWZKMhfx0Kk
-   g==;
-X-CSE-ConnectionGUID: h+Mqggc6SjC92tj2PNX8VA==
-X-CSE-MsgGUID: wXG3hpS8Qj6rb556c4oSzg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11857"; a="103103760"
-X-IronPort-AV: E=Sophos;i="6.25,187,1779174000"; 
-   d="scan'208";a="103103760"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jul 2026 22:39:35 -0700
-X-CSE-ConnectionGUID: 5U4I0bmySoueg33hEVzjuA==
-X-CSE-MsgGUID: R/cRy4WSQ4WRwIr8Qa+36w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,187,1779174000"; 
-   d="scan'208";a="259946469"
-Received: from varungup-desk.iind.intel.com ([10.190.238.71])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jul 2026 22:39:30 -0700
-From: Arvind Yadav <arvind.yadav@intel.com>
-To: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com,
-	ziy@nvidia.com,
-	rakie.kim@sk.com,
-	byungchul@sk.com,
-	gourry@gourry.net,
-	ying.huang@linux.alibaba.com,
-	apopple@nvidia.com,
-	balbirs@nvidia.com
-Subject: [PATCH v3] mm/migrate_device: Clear stale mapping after freeing swapcache
-Date: Mon, 27 Jul 2026 11:09:20 +0530
-Message-ID: <20260727053920.3494211-1-arvind.yadav@intel.com>
-X-Mailer: git-send-email 2.43.0
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CckjAe+u;
+	spf=pass (imf31.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785130887;
+	b=tZ8+6UCHUR8QtO0vb40dz6mjid1SYGxj95d3BVkysGhWVjF+ZzsMhhgNoczglb0hf0UMjr
+	v4uzq9MzTiqEI/857iNcyKzmdEY0GUyZzCQ2XHYMevB3YAJAZ2sb3fA5QDGMEIkiKtB5Ma
+	/IUIbE6w7itz3n9iKLb6slah12ZgQ/w=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 72CC1416CC;
+	Mon, 27 Jul 2026 05:41:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3345C1F00A3A;
+	Mon, 27 Jul 2026 05:41:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785130886;
+	bh=KBGxVKBVcPUvP2K8Kq2m/WESxz8RXhfqZ6Mnq5IoEO4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=CckjAe+u8aiFdiwdleeGwEQnEKVUjrWDcX6k3I3hMQkAvD/E6HfuB18CvzHDfuZzz
+	 idU7A9Z7y6qZNj9IWcFBzLD2rMv8kUbRNhhkgkKHcEjx1Bv52UG8RSIVwcTj3IfHPs
+	 zEe2fVv0Hv9fuoKUlUr5M8rQ8zqWioNndRBmaL/RQnqXQV06Q1g7MSka9/ljLUYB82
+	 6qHZIVFNsJwpAaoRlPiNOFv96kUqkNo9w3aP5h0VcQvwxXka0wP6C0RE57Vd+Iw8Oj
+	 Iaqn5NMjKrSxKNEMxBGwTeyOqP1ct0PWxOxwTUrutpaLFo7cFpV/f8g89eogppZ209
+	 nlbm5Wdef5Kdg==
+Message-ID: <89662cae-b3d9-4aa4-a7fa-cf5931781dbc@kernel.org>
+Date: Mon, 27 Jul 2026 14:41:20 +0900
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 09/13] mm/slab: change struct slabobj_ext to a union
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Hao Li <hao.li@linux.dev>
+Cc: Suren Baghdasaryan <surenb@google.com>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter
+ <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+References: <20260720-b4-objext_split-v2-0-2fa7c6f60dbe@kernel.org>
+ <20260720-b4-objext_split-v2-9-2fa7c6f60dbe@kernel.org>
+ <amGEY5w-cBm4_uhx@fedora> <9b2dadb7-8e3d-4b9b-a870-969be9a7a432@kernel.org>
+ <amHkbJsvOjcfUR3D@fedora> <e3f283e3-27a4-4e3e-bc4c-39fafbcfe1ee@kernel.org>
+Content-Language: en-US
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <e3f283e3-27a4-4e3e-bc4c-39fafbcfe1ee@kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------Mgwd0Ze9mOCZYycSnvRZAlba"
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: BC93240007
-X-Stat-Signature: jonud5nk7j7t5qpnwwjmoudt9atzwobn
-X-HE-Tag: 1785130775-687852
-X-HE-Meta: U2FsdGVkX1/YN4QrqtBksB6+BingdGi0Er9ZiGXQM8Ah2kyWRsUePRI7hSONjRuCaJPzvzgN3I2ttFlR6PRNTyR//v3OWEVCessl/U7M6lm8sxrLK1PAd6blLPioa38il/YmwFWzZJqlsB4+hZUAb82kDpdqCrc3ZP3LmRfdB7INjgEWyqOdGBd/hpWH44pxSdhtoy0/V78uKan5wHXyRErkdSU/4EPdFJpFBSlrg7MwnIkAr+n/PGFppYr1M1MEW/SZxBsUnPph0B7exOALv5xlw4JiU4EH+qnVQ5c//w2rzjv02nkMPFX+q3Qf4xq4ecAGt8N2spOxg0UdwCZGxYz+5beh02ojk4icPHA/z5ISoGgZt9hnFilnK50ZuA2coiix4wlAndMUq4F8Bf4nMnoZwSlp1KWBrW8h6f8c3hvxv+KBypD1lWr8tecu66lfTy400fKpdjrCI2nTuinK2Pl8W7qFS5ZRmhzLO6gOqrMuZb1ndGgfnnO7qIUVf2egkDAvaKlgW7zcKbjkmJcyt2C6+OXKo439JFPJSN3Is2vqbQaZS9KUcyiNVzu26TaCY4K6pxqE2yxV0U6bK0yvgAFZ9gyHHho+kmtldwNPY9y/dk7mfOvvPhdOTvopSeaH2I38jb7sTJuHUsvpziRQGRg4aOcNcXYFbmdSHN3cFP5IHJ/S/Xk/V3ewkaefJW6qX6FL9h4pLbZisIFf7kfVJeBoF15Sjj1F6NoC7lgvHpqUbBC1rFp4RjOAngdtfe+4ah8nL4AwgqeUJbUVh37GtMy4rAY4uEjtVOHH+z33+wWCawnnuPydZ4aYzWhWUI6es6mLAodwDpuPJeh0D7D81fTgl7prv4bBV6rIhI1xTsYKk1UkKdvebk1od12153+Gg/gLTjTv+0ImWR2zeiPgsFNmvYewIQaPqU/ZWjToEl6fmDD/aPrATM62Tt6SSN9R96myA9aQJZlgfxA4TE+
- AuvC5cxe
- hd8S6zAOIKrrKUy8GLefD4eItjM1jKyDsw1Mg8SZc0/kd2r9hX/O/KyJouYJ5unRfNPMg4Rx39x3wltsIA+sBtX06rB7JJKSba5i2oxSr6s+7HAoNo3ayobjvHFhKpzp4xyvCW68fwgJOytNLBeN5PtFP0iFE2kMVGl+ntH0OkVT2fPjGkrlFhrV9Iv/oGbY7sBfAdx0r57OKvnbA/ym1aEXV/S9YwTw/NtJYplVaULU4TaVVpVSiJcwNGkVw2SS1dcOhDl/XBKx3QJNRkHZsxu5KZwSqc5eBOOMfmll1lszFUQ4R13PfV0WmxOMAl5zMjdu/Sc3EeTZXCNlOsjrrRnTIkmEyKvk477EAmpKpHbqmy1fEg7UsE3/xRVk7w2S7FPclWyX5fmFThcOANrnmvT3g69RfRzzIWrdu5F0THveVz9U0gz2GSGY9YmLxCgO7QAZoLW46aiUQIb+J9wXTnVum/Q7Q6jHAzAq0q4dC7FchmIc6H47gAPul+mRDvpu35/VkajNDfvkb/CZks1L+6SC/diKvJgXTPzB3eUh+aWrE5ac70mLNqxKm9sVAsgRqN0v/
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A8AD720005
+X-Stat-Signature: f1rr5ma1mk7rfi517xtf7cej9633fxxe
+X-HE-Tag: 1785130887-474363
+X-HE-Meta: U2FsdGVkX1/Stsv6bfvrPsHF/FNcNLVYTMAJYXmkkGXoU6LwzyOuBS2n/mUBBC6rQ2wXfOolhMt3H8ce2rwbU7NU8LU2cxoyOVR5fQgxJL3LDYQDKW5Ods+CyEqTCBI1hRRjQWfHfqo3lgrSglCjITbKeHGJPvyNbsWhk2J0yZtDB8VrtJeiAm1RC+J4f94jvJruqy/z/IoK0l5ClTgK2kr3rMogKKRFCIa1miiDgYFa3QkCPTE0J0TKmyjvuJVekerUMgoja5UEvMRqwmUzWe8T/U6AIbB/mDpFlm3D87XtYzgoqmH1MMEJkxv4m0LwY93KGQs0QKfIDAMRb5jz+VYWqODZxImGtUoXqDdinmcWNeeqMEvmlNkofQ/mRpOMWYgpUWD0S2q0fkRTwDv4oPArYY15w2omoyCNk0GfibGAHhDydH9ODAaEMx+QT6aRWtiZjdMCoI1vTx6V78vyLI+pudCenbnh9C8vGKFITSi4wiaMCJ2KRwKXvx6WdAmS+tpzsk0t+gbCYe0E0xQv2qWjYkuO9D2m7A8nj4a5RvRjlDjvU5XqDljJ252bpd3iXdAb1LM6N81Xk/6FM79EkMuQgZgsLOeSiAE90T3oENEPGS79h/+agRdVg8xj/9CuvEIeQqLoMhZA7MO8Skk+WZFOiEUOvKys3DutCxIl+tR16e/xvQZCTOIJZYTVp5UoZtOmSQY5p0a9QTASH3FrR8tNleKhJiFyFkimvrvukn+wnz9a/whorgXehB8dx2jMgR8nn3eP9GbTubOH88G8wq92n0f0DWxxpz8xNCvc+BV4GeKw5vutzg/MphgUFfN0oNoXLXe4MqENpxPO50RyZLqofZpIgVT2llNE77TmU5xob8l9BEgdYxBx5/hBmyp9gitgwaEN0xbsKcWVthD77GbG058f2icVRbGzVAmaSyo5Ot9NksyuIJ7V3uqkB7MRg1SEiQvAUwbkMWXSQfx
+ c+vF7e1+
+ vjhI7AWFSUzyOHTzQ6t8fAhfl3myPFP0dDuel7ru2k8/94CAJbYuv1Dy05UC4GJwedNvba+4MeIMwbiTxj7pUF64t+WasJBSp+NRSOsELLd/YFz4DbHfjroq3J6vCDKVZPHoVfnMiOkxZ/v0L0t4GZbblsmLwbPg5GKu7B87e32JfGNFCKA+CNSvbRujU2hcUs6s9oh0p8UFPG0jXuefGG6jyvOwGkcITVKPndcLxVGSVby02ThcjzXyG6MCP+mpN9mzGKxlDq1pKiNjZ65DzXqQgcHnxwSgUVEF88vZZvAqA3g5a5kJaMDC7nMjuFqVb1MG4mhJNqaj+dIUVmhK/qUDK7bTYewZUbhhLlDYelWo1GjLr6KwzxDxzsrnEYAbW705AZn1jSGOyXSUJegv/GFZGNMMOVK7wUK6/pn/Meas/UMdESYsATdnrUZRCBBPg+P0N79rHWQ/HyKyj6lZnS9PuDwcNfSJsPmV38QtVQRqnCE+cVwTTDt2P5UKEyvMenT5c
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,77 +101,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-__migrate_device_pages() reads the folio mapping before calling
-folio_free_swap(). When folio_free_swap() succeeds, the folio is removed
-from the swap cache, but the saved mapping still points to swap_space.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------Mgwd0Ze9mOCZYycSnvRZAlba
+Content-Type: multipart/mixed; boundary="------------xEDZ3aIuuqtyEFJe6gHUB0km";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Hao Li <hao.li@linux.dev>
+Cc: Suren Baghdasaryan <surenb@google.com>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter
+ <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+Message-ID: <89662cae-b3d9-4aa4-a7fa-cf5931781dbc@kernel.org>
+Subject: Re: [PATCH v2 09/13] mm/slab: change struct slabobj_ext to a union
+References: <20260720-b4-objext_split-v2-0-2fa7c6f60dbe@kernel.org>
+ <20260720-b4-objext_split-v2-9-2fa7c6f60dbe@kernel.org>
+ <amGEY5w-cBm4_uhx@fedora> <9b2dadb7-8e3d-4b9b-a870-969be9a7a432@kernel.org>
+ <amHkbJsvOjcfUR3D@fedora> <e3f283e3-27a4-4e3e-bc4c-39fafbcfe1ee@kernel.org>
+In-Reply-To: <e3f283e3-27a4-4e3e-bc4c-39fafbcfe1ee@kernel.org>
 
-Passing the stale mapping to folio_migrate_mapping() makes it take the
-mapped-folio path after the swapcache reference has been dropped. This can
-cause an invalid swap_space lock access followed by a folio reference
-count BUG.
+--------------xEDZ3aIuuqtyEFJe6gHUB0km
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-After a successful split, nr still contains the number of pages in the
-original large folio, although each resulting page is now a separate
-order-0 folio. Reset nr to 1 so each split folio is processed separately,
-including its own swapcache removal and mapping lookup.
 
-Refresh the saved mapping after folio_free_swap() so the current folio
-state is used during migration.
 
-v2:
-- Refresh the mapping using folio_mapping(), as suggested by Zi Yan.
+On 7/25/26 12:42 AM, Vlastimil Babka (SUSE) wrote:
+> On 7/23/26 11:56, Hao Li wrote:
+>> On Thu, Jul 23, 2026 at 03:27:51PM +0900, Harry Yoo wrote:
+>>>
+>>> and drop OBJEXT_FLAG_UNUSED.
+>>
+>> Yes, this idea is insightful and I think it may need a standalone patc=
+h without
+>> blocking current patchset.
+>>
+>>>
+>>> ...not sure how much we care about this on 32bit though.
+>>
+>> Yeah, 32bit is a rare arch today :)
+>=20
+> Agreed with you both. Let's deal with it later.
 
-v3:
-- Reset nr to 1 after a successful split so each resulting folio is
-  processed independently, as suggested by Zi Yan.
+Sounds reasonable.
 
-Fixes: df263d9a7dff ("mm/migrate_device: try to handle swapcache pages")
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Rakie Kim <rakie.kim@sk.com>
-Cc: Byungchul Park <byungchul@sk.com>
-Cc: Gregory Price <gourry@gourry.net>
-Cc: Ying Huang <ying.huang@linux.alibaba.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Balbir Singh <balbirs@nvidia.com>
-Signed-off-by: Arvind Yadav <arvind.yadav@intel.com>
----
- mm/migrate_device.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+> Also AFAICS the memory was already wasted on 32bit prior this series wh=
+en
+> e.g. CONFIG_MEM_ALLOC_PROFILING was disabled, so there was just 4-byte =
+objcg
+> pointer in 8-byte aligned slabobj_ext, right?
 
-diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-index 554754eb26ff..74ac6651d4b3 100644
---- a/mm/migrate_device.c
-+++ b/mm/migrate_device.c
-@@ -1182,6 +1182,11 @@ static void __migrate_device_pages(unsigned long *src_pfns,
- 							 MIGRATE_PFN_COMPOUND);
- 					goto next;
- 				}
-+				/*
-+				 * reset nr so that only first after-split folio
-+				 * is processed below
-+				 */
-+				nr = 1;
- 			} else if ((src_pfns[i] & MIGRATE_PFN_MIGRATE) &&
- 				(dst_pfns[i] & MIGRATE_PFN_COMPOUND) &&
- 				!(src_pfns[i] & MIGRATE_PFN_COMPOUND)) {
-@@ -1204,6 +1209,12 @@ static void __migrate_device_pages(unsigned long *src_pfns,
- 					src_pfns[i] &= ~MIGRATE_PFN_MIGRATE;
- 					goto next;
- 				}
-+
-+				/*
-+				 * folio_free_swap() removed the folio from the swap
-+				 * cache. Refresh the saved mapping before migration.
-+				 */
-+				mapping = folio_mapping(folio);
- 			}
- 		} else if (folio_is_zone_device(newfolio)) {
- 			/*
--- 
-2.43.0
+Right.
 
+--=20
+Cheers,
+Harry / Hyeonggon
+
+
+--------------xEDZ3aIuuqtyEFJe6gHUB0km--
+
+--------------Mgwd0Ze9mOCZYycSnvRZAlba
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCambvgAAKCRCGXBN6rc5S
+1i+uAP4zMR6KAfExVASA33SIec4hOe1qPSAA+y6SvbztDbmuwwD+O9oxG/LJahjB
+u7CQFZJxg9HPyZTA9A2Q25sRF9mC3QA=
+=RYZd
+-----END PGP SIGNATURE-----
+
+--------------Mgwd0Ze9mOCZYycSnvRZAlba--
 
