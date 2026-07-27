@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A58F0C531FC
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 14:06:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C9E9C531D0
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 14:06:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8771D6B00A7; Mon, 27 Jul 2026 10:06:41 -0400 (EDT)
+	id E1D706B00AA; Mon, 27 Jul 2026 10:06:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8280B6B00AA; Mon, 27 Jul 2026 10:06:41 -0400 (EDT)
+	id DF48E6B00AC; Mon, 27 Jul 2026 10:06:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7684A6B00AB; Mon, 27 Jul 2026 10:06:41 -0400 (EDT)
+	id D0AA66B00AD; Mon, 27 Jul 2026 10:06:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 529AC6B00A7
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 10:06:41 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id A20056B00AA
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 10:06:52 -0400 (EDT)
 Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D7054A10DE
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 14:06:40 +0000 (UTC)
-X-FDA: 85034732160.13.EA728F0
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 1CB0E1C000C
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 14:06:38 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Ol4EjBnM;
-	spf=pass (imf18.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1EBB18075E
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 14:06:52 +0000 (UTC)
+X-FDA: 85034732664.13.D012B88
+Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 355651C0007
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 14:06:50 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xL1htqHG;
+	spf=pass (imf20.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785161199;
+	s=arc-20220608; t=1785161210;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-type:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4yGYb4251xen6xq86IV6E6mB7obBsI6jDmsaNtiaKQw=;
-	b=zPGGzSMjsLO4cn/cddu7vafU3SCixK7gCm4yWssDShwsHt0KmcANmn/9lVKelsTQPUwGfK
-	ceqL528fyxsaYYrJyLNSlRXyFzgtzGNbwbTFyLe8xQWA/5ogB7Er4jL51FHTyRGVSwrYm5
-	UfdZh0R3QLkdiQJuEyYEQltJTYyPS1s=
+	bh=IwPLUDcYtzirJbTxv7cVnoW3Ob/U1PfUpNFV/nBTnqo=;
+	b=wtjG3rLqt813qBR4cDE0CVzVmHjr28I9A/H8bL1Aw3gkqJdeRfkRIoKbqZq34w7csjcfpS
+	2N8f3XUrYO6CRKN6MaLQW0IVaNlY9Ehp+NXSjBHKt8vniqwJcqu9Id2pYUgzYViTNmm4Uc
+	0r+99/PMqV0iZCo/81kRnXruiQfvook=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Ol4EjBnM;
-	spf=pass (imf18.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xL1htqHG;
+	spf=pass (imf20.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785161199;
-	b=VkA1J+g/JfF+Bl7gSxH+xqK0iCpihiwqJ5fxroJqNgjCVgziu4XluIuAQImxuy48QVbIYT
-	1RpLoWRTAcLUUhCT489vrbqmG0rTDlGj4x/SvI0KuiX3UqDM1Oq0oRQ0qXRLWv3aadlcmB
-	nXkIAG726uEowHfw/DeYhEqrPrRbe+U=
+	t=1785161210;
+	b=HHDJR4HhGLsjUC3fh0mrCRQyMOxdrUnLLXQtksyCkogJmdBT1DMgQ1QI7QX0eFXsYJC2YD
+	MrK67QNoNeQrRCzKu8fq2cfRzaPYZYA++2Czuaad28XwTP6Hhr0HQYPoFhJqUjBVu5Pqey
+	YoomHtYXYy3uFwUjd0k/3+urXIaDl0w=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785161197;
+	t=1785161208;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:  content-type:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=4yGYb4251xen6xq86IV6E6mB7obBsI6jDmsaNtiaKQw=;
-	b=Ol4EjBnMG3jAVqaTNBrQNftF0n45q6z3fLWxqc8Mp8aara4iUzUCTVxMThAlxS640iHEHw
-	LP1XunNzgeje1Er9j984M+KsfbsdxP1b0NUYKLD0QOxDCzu+1dV73d5Hl3AjLjxIQvdlJ8
-	X42wigqlOFa6/7nrIdgszuh1/qKrRHw=
+	bh=IwPLUDcYtzirJbTxv7cVnoW3Ob/U1PfUpNFV/nBTnqo=;
+	b=xL1htqHG48CwyZbQnfU77hWkxzflKln+ZJeLE8qKJdsAz0dpvUhRxaEqk6Z+Omk+w4ISN8
+	j9kMjG78FSyg1JZJjxBgPVAYM7QgZYRLs3V0f7lSG+08H3+kZix6Dq7cJEXOL3qKpUuLeZ
+	No9LYhDp61B7VrF9xPvkNRh1emhNu3I=
 From: Baoquan He <baoquan.he@linux.dev>
 To: linux-mm@kvack.org
 Cc: akpm@linux-foundation.org,
@@ -75,25 +75,24 @@ Cc: akpm@linux-foundation.org,
 	chengming.zhou@linux.dev,
 	linux-kernel@vger.kernel.org,
 	Baoquan He <baoquan.he@linux.dev>
-Subject: [RFC PATCH 10/11] mm, swap: defer xswap shrink to workqueue to avoid lock recursion
-Date: Mon, 27 Jul 2026 22:05:01 +0800
-Message-ID: <20260727140503.1060918-9-baoquan.he@linux.dev>
+Subject: [RFC PATCH 11/11] mm, swap: serialize xswap map/unmap with a mutex
+Date: Mon, 27 Jul 2026 22:05:02 +0800
+Message-ID: <20260727140503.1060918-10-baoquan.he@linux.dev>
 In-Reply-To: <20260727140503.1060918-1-baoquan.he@linux.dev>
 References: <20260727135029.1059441-1-baoquan.he@linux.dev>
  <20260727140503.1060918-1-baoquan.he@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 1CB0E1C000C
-X-Stat-Signature: ymhfowccx6qt6csdssu1yju8h7osu486
-X-HE-Tag: 1785161198-797548
-X-HE-Meta: U2FsdGVkX1+A1NxGLVkhAbKPHyO3I+9u0+EzLZ1Wpk4qGX7fWWLzllrrzR7OExk1k/By2LUEpFpFRbkCiXvSpVECW2XK4e1BMH2mqf5wA6gISLUel15PpODlfKpDpnqcxcwvDv6cQ8bj2RgiZ9fj1LHSHxw+z1uSNkRBvaQlCulcvOqCPC7MimzI5fTJCN21saHe/cVQ/39PFQa2xf7UQZowDhL5hEL70q1ROD42LlKYwVxOjnkX0lltnbYLagRcDRQYelppktYuWz2CxGfHLS4OFOC01zPLeS0HFwewxczhpiDiy0ll+mYeUTMQsnu+xODBR7GSExg6qOJUCo4sVq0Imoazjx0IV+nZxogTqd2AOplHLOYzgusqb8F/qNFdo66OyHU7lSVdac8S/op6/FSAlXCzPGHqjEv2TCiXMdT9KExEKMIWDwu147SjzkjUTAUqg/eYed31hxmYZplzjLwN2gdNXtoe0vFt5HdbaMBWfB0Ux/hkj/el76892lgCJx16XpHoWyLKlJmcm6jfuP99ZI/nGPgV7h/nfw/Xn5rZ0mjNPyJZsJl67C7qzKzCj/KegKlEIgP+wgyd1uPKHTyLQ9p2jkwzk9qCiNihPhbYpRS00Nm4so7DPKq4R2qVPl5TdXdn50psrn6G9msH/UPYcnSWgTl7e36FpOQMgIn1BN8SJJY5f2U/tbWWNLekBZmmjTooPnPSSTmGnEFPoklNotHKqCzlIkF2X6EqXnJt1dnkdjtuuLmc9K/ZLY3N384DQmQcyWehWis5FyH+7qsxpibd+Ma3NrdxIlN7VgLM806OQ3G8vSkkf/BNFMYpcxuKOx9EL5fJlYeKsLqTkkvp0uG3jkkyHSZ1x+cmRMGeQ/1Ufncrl5VpYdYOjtoxznJAulEKYX+8Z0eoZWjSMIlTndXrmwJ+AsVhge6FWeLxUf4+5u6/SsOxcVNnjHi0bzzyyLZ8hcLYGyo7Vg8
- G6W6vOdT
- EHPp8DQhV+Z5E2WJxiBcqkMIQ00sABbdBtxVnrkXvQ2EDhlmbEVeQ1UsZJMriZTdQItX4k5NDA1hQLFyvVfo/7aqPVohoAd8Fh+lU6reMv8MNjikkJihwNNfIKoUTMWOJsSg7vOpmu5JXXmAW+quFGEnLxMQNf79iTE5mspL0CHUC0VDgxA6SbXgbfUHLtrIccaEUXTj45aT1zIkaiTZWU9bndyPZ1d4hcYGCbXvBVO7SVK1wYATHTYLePWgExPxdULW8sotVFLwQT/LXZjVhFySq2fbZ7N2P/uHPyNqXbD04DZk=
+X-Rspamd-Queue-Id: 355651C0007
+X-Stat-Signature: tip89dqpxcgwyjcozb4zrbb8q8n6dq9y
+X-HE-Tag: 1785161210-653803
+X-HE-Meta: U2FsdGVkX18Xajxn/UwSISs7i5GBIXbzhL9D5DouyzvAFLMY2eKkvTLgUii5M2v4/lRtWrGDr71BRuF5CYqLPOJWu1/BAq0UfQgKVCjxWh8RdrNmjDg2F+PXwam496ESzhM2QrRO4hrXNPhVCz+oIPhUlrV7uGd/GYoTgDAhluPlOq4uO2B+OvxeIDiv9ehqig5J3+68/Moxif0kwzgG4ddgxLpY5RA6ivc8+XC9Cyq4fXiN0lGbykUlkHaft64BUx79CKObHYGoE93qiWjn0id7uNz9EGVN3h6QLWSpMY/Wk/uu5Dt6A1F2gmg7EhHgC+GyiY+6/0u+B6r9Cv4xPlxmUOgDNl9Oxc6SmK6xj+ntb2WI/MWIzSyMrlbhvJmCB9CYZdpvqiwG6EQiD0xJE8DZoTBUHDY53u1VjgCv7Km0vrWUHG+/xBisndpW7RroCOeebAPKDOBKhUY3T/q2TY6KM2CdWBUw5cg4hw13zYeUCLyWjBM779g6+4mxl9mn6tZq9MqNyr6qzx3grD3oEQK1a33W6rJWX2gYH0jncAte2jLcRQOoNgGlUN1tMQgVnibxl7D0+FFj99GyRejMKkCpasmsXgTUsRalqfnLCbkS1jZeU9iLI2NoJLOpokp42moGrOEdjpQFnIBU3k56s4RbEa0dnreJsrXpX0/5B5MvemEwoNECZEE1nxgYcPZFIlJmeyHz6eZXrgnXPZO2yh1dK5fFT3zCwaqMOupteuFo01+0x7MrSbTB9miLtNXg3Wviy0bvGyCZd+97hst7G41zsGH4RKEzihUhkAok8nRrAuVunCp3dvKPP+vBkos7I4JCK6Umicpo9fuRQ9FOSa/Ht+x4GDKoY/BhPKe28BRhvKZxoqeC9S+kOqbtGeN6g8sFt0qaz3vsMJJDAk75cxyyB8RssprNt+bdHfga4cI42Jy9xd4qRFaQxuPLXLLvZ2zuKyx0YUoo13DI0jy
+ 980Pq5C2
+ ONvFiA3rhDE0pr8ZRU2bUpvtn7psp62Vu87BsY/KU9CzSGur/0+p2ydSqp+UBKew6YfemBIAGkAPF7LqS2vS98IhOy4NJQBQyiiR1sOTLRG29TpVZlVxDZRMGa99TJ9t3mOmHt/0IblHcwByUej4ARRWTv904zpjLnf8UaV2yQRky2OcsSUT3pn0IZESAAAxMZxDj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,92 +100,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-xswap_try_shrink() was called directly from __free_cluster() while
-holding ci->lock.  The shrink path calls xswap_unmap_clusters()
-which unmaps vmalloc pages backing cluster_info, and on return
-swap_cache_del_folio() tries swap_cluster_unlock(ci) on the now-
-unmapped address — crashing on a not-present page.
+Concurrent xswap grow operations race on vm_area_map_pages(),
+triggering WARN_ON(!pte_none) in the vmap page table walk when
+one thread sees a PTE already set by another.  The -EBUSY safety
+net catches it but the warning is noisy and unavoidable without
+serialization.
 
-Replace direct calls with schedule_work() so shrink runs in an
-independent workqueue context where no cluster locks are held.
-Use cancel_work_sync() during swapoff to ensure no pending shrink
-work races with the VM area teardown.
+Add a per-device mutex (xswap_lock) held across xswap_map_clusters
+and xswap_unmap_clusters so that only one thread can modify the
+VM_SPARSE page table at a time.  The shrink path is already
+deferred to a workqueue so it does not contend with itself.
 
 Signed-off-by: Baoquan He <baoquan.he@linux.dev>
 ---
  include/linux/swap.h |  1 +
- mm/swapfile.c        | 18 ++++++++++++------
- 2 files changed, 13 insertions(+), 6 deletions(-)
+ mm/swapfile.c        | 17 +++++++++++++++--
+ 2 files changed, 16 insertions(+), 2 deletions(-)
 
 diff --git a/include/linux/swap.h b/include/linux/swap.h
-index ebcd5eaa7924..ebae01fbd100 100644
+index ebae01fbd100..b0fe0475bba7 100644
 --- a/include/linux/swap.h
 +++ b/include/linux/swap.h
-@@ -255,6 +255,7 @@ struct swap_info_struct {
- 	unsigned long		nr_clusters_mapped; /* currently mapped cluster count */
+@@ -256,6 +256,7 @@ struct swap_info_struct {
  	unsigned long		nr_free_tail;	/* contiguous free clusters at tail */
  	struct dentry		*debugfs_entry;	/* debugfs: type<N>_max_clusters */
-+	struct work_struct	xswap_shrink_work; /* deferred shrink trigger */
+ 	struct work_struct	xswap_shrink_work; /* deferred shrink trigger */
++	struct mutex		xswap_lock;	/* serialize map/unmap operations */
  #endif
  	struct list_head free_clusters; /* free clusters list */
  	struct list_head full_clusters; /* full clusters list */
 diff --git a/mm/swapfile.c b/mm/swapfile.c
-index af62981506d3..b41ff2c594fc 100644
+index b41ff2c594fc..89c6a6b03a9d 100644
 --- a/mm/swapfile.c
 +++ b/mm/swapfile.c
-@@ -127,11 +127,8 @@ static ssize_t xswap_max_clusters_write(struct file *file,
- 		spin_unlock(&swap_lock);
+@@ -3773,11 +3773,14 @@ static int xswap_map_clusters(struct swap_info_struct *si,
+ 	struct page **pages;
+ 	unsigned long i;
+ 
++	mutex_lock(&si->xswap_lock);
++
+ 	if (vm_start >= vm_end) {
+ 		/* All requested clusters fall within already-mapped pages. */
+ 		for (i = start_idx; i < start_idx + nr; i++)
+ 			spin_lock_init(&si->cluster_info[i].lock);
+ 		WRITE_ONCE(si->nr_clusters_mapped, start_idx + nr);
++		mutex_unlock(&si->xswap_lock);
+ 		return 0;
  	}
  
--	/*
--	 * Lowering the ceiling may make tail clusters eligible for
--	 * shrinking.  Trigger an immediate check.
--	 */
--	xswap_try_shrink(si);
-+	/* Shrink trigger: lowering the ceiling may free tail clusters. */
-+	schedule_work(&si->xswap_shrink_work);
+@@ -3842,6 +3845,7 @@ static int xswap_map_clusters(struct swap_info_struct *si,
+ 	 * Pairs with READ_ONCE() in shrink/grow paths.
+ 	 */
+ 	WRITE_ONCE(si->nr_clusters_mapped, start_idx + nr);
++	mutex_unlock(&si->xswap_lock);
+ 	return 0;
  
- 	return count;
- }
-@@ -726,7 +723,7 @@ static void __free_cluster(struct swap_info_struct *si, struct swap_cluster_info
- 	ci->order = 0;
- #ifdef CONFIG_XSWAP
- 	xswap_update_free_tail(si, ci - si->cluster_info);
--	xswap_try_shrink(si);
-+	schedule_work(&si->xswap_shrink_work);
- #endif
- }
+ fail_nounmap:
+@@ -3862,6 +3866,7 @@ static int xswap_map_clusters(struct swap_info_struct *si,
+ 		spin_lock_init(&si->cluster_info[i].lock);
  
-@@ -3236,6 +3233,7 @@ static void free_swap_cluster_info(struct swap_info_struct *si)
- #ifdef CONFIG_XSWAP
- 	if (si->flags & SWP_XSWAP) {
- 		xswap_debugfs_del(si);
-+		cancel_work_sync(&si->xswap_shrink_work);
- 		/* Unmap all mapped clusters and free the VM_SPARSE area */
- 		if (si->nr_clusters_mapped > 0)
- 			xswap_unmap_clusters(si, 0, si->nr_clusters_mapped);
-@@ -4030,6 +4028,13 @@ static void xswap_trim_free_tail(struct swap_info_struct *si, unsigned long idx)
- 		WRITE_ONCE(si->nr_free_tail, nr_mapped - idx - 1);
+ 	WRITE_ONCE(si->nr_clusters_mapped, start_idx + nr);
++	mutex_unlock(&si->xswap_lock);
+ 	return 0;
+ 
+ fail:
+@@ -3871,6 +3876,7 @@ static int xswap_map_clusters(struct swap_info_struct *si,
+ 			__free_page(pages[i]);
+ 	}
+ 	kfree(pages);
++	mutex_unlock(&si->xswap_lock);
+ 	return -ENOMEM;
  }
  
-+static void xswap_shrink_work_fn(struct work_struct *work)
-+{
-+	struct swap_info_struct *si = container_of(work,
-+			struct swap_info_struct, xswap_shrink_work);
-+	xswap_try_shrink(si);
-+}
+@@ -3910,8 +3916,12 @@ static void xswap_unmap_clusters(struct swap_info_struct *si,
+ 	struct xswap_page_data xpd;
+ 	int i;
+ 
+-	if (vm_start >= vm_end)
++	mutex_lock(&si->xswap_lock);
 +
- /*
-  * Try to shrink the cluster_info tail.  Uses si->nr_free_tail which
-  * is maintained incrementally during alloc/free — no scanning needed.
-@@ -4137,6 +4142,7 @@ static int setup_swap_clusters_info(struct swap_info_struct *si,
++	if (vm_start >= vm_end) {
++		mutex_unlock(&si->xswap_lock);
+ 		goto out;
++	}
+ 
+ 	size = vm_end - vm_start;
+ 	npages = size >> PAGE_SHIFT;
+@@ -3937,10 +3947,12 @@ static void xswap_unmap_clusters(struct swap_info_struct *si,
+ 			__free_page(xpd.pages[i]);
+ 		kfree(xpd.pages);
+ 	}
++
++	mutex_unlock(&si->xswap_lock);
++out:
+ 	/*
+ 	 * Pairs with READ_ONCE() in shrink/grow paths.
+ 	 */
+-	out:
+ 	WRITE_ONCE(si->nr_clusters_mapped, start_idx);
+ }
+ 
+@@ -4142,6 +4154,7 @@ static int setup_swap_clusters_info(struct swap_info_struct *si,
  		/* All mapped clusters except cluster 0 are free at the tail */
  		si->nr_free_tail = si->nr_clusters_mapped - 1;
  
-+		INIT_WORK(&si->xswap_shrink_work, xswap_shrink_work_fn);
++		mutex_init(&si->xswap_lock);
+ 		INIT_WORK(&si->xswap_shrink_work, xswap_shrink_work_fn);
  		xswap_debugfs_add(si);
  		return 0;
- 
 -- 
 2.54.0
 
