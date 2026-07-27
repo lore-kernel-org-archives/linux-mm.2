@@ -4,106 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE1E3C53209
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 19:27:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 269FFC53209
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 19:30:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8330A6B0093; Mon, 27 Jul 2026 15:27:06 -0400 (EDT)
+	id EEF9B6B0095; Mon, 27 Jul 2026 15:29:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E4396B0095; Mon, 27 Jul 2026 15:27:06 -0400 (EDT)
+	id EA0C26B0096; Mon, 27 Jul 2026 15:29:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6D2F96B0096; Mon, 27 Jul 2026 15:27:06 -0400 (EDT)
+	id D6A3B6B0098; Mon, 27 Jul 2026 15:29:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4EADF6B0093
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 15:27:06 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C9936C0195
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 19:27:05 +0000 (UTC)
-X-FDA: 85035539610.12.71D8CA7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 168CD180006
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 19:27:03 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="IzYilg/M";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of helgaas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=helgaas@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A7BB46B0095
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 15:29:58 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 16D1016019F
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 19:29:58 +0000 (UTC)
+X-FDA: 85035546876.01.DBB4AA9
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf29.hostedemail.com (Postfix) with ESMTP id F0BB512000A
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 19:29:55 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=dECcdZ3E;
+	spf=pass (imf29.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785180424;
+	s=arc-20220608; t=1785180596;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=sKZJ5OViBbK3ZJT1F6pApbVMnloDUEEXkiEo8E43BZo=;
-	b=uW/XNmNqQ16NshZt9g37dAd4vSqAEd9PRPm823w4YVrZRE80L/wdN72EONIydcJyscsStw
-	jtAnB2vO9nLnWqPx8PGFPngjIH+9oDOpRBYRmVcdqC9exBwLQCbPCafcaNBe6F5K+6Q4/q
-	jrUfR2DmTc1iSS9FSCKhZkumRElIucI=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="IzYilg/M";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of helgaas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=helgaas@kernel.org
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=RXQQvCKPFegovPWBYsHPfyk2YJzL2wBgSj2tapMk4TQ=;
+	b=opCoxxlTHKA+VAT3TslM8bbqh6njGj0SKKZT90KLMB9MmlvgWTv1rrnpj4zbP4rGxFrtHD
+	XXfVXk73Qt7AH5MZwMLHpKecqmhihqLhPIAjpewssl6Unlhc+kzuJTJEQya8H51cOFxdR9
+	XGmJ3EHpJHKu1DyTrERqSOEO5OOBGaM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785180424;
-	b=Y1Lf1ED2CqwCKN87Dg9vHcfNLS4NspEKwfEFHsguvdxom6dUJIRqqGLmFrZz7EIQz15pFT
-	D3KwkjdKFSVCOQO4H4EBWodclLaEv3EM9DACEKg41y7Y1pu8uPuZcIvAZJ4dlNJDYq88HJ
-	47wDTwnLXkPTyaCvyYH34czS3eS4sXg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2B69A40164;
-	Mon, 27 Jul 2026 19:27:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D36551F000E9;
-	Mon, 27 Jul 2026 19:27:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785180423;
-	bh=sKZJ5OViBbK3ZJT1F6pApbVMnloDUEEXkiEo8E43BZo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To;
-	b=IzYilg/M8OJawVypIyI6yqeauwbZiYHFTE/2k3KHuRHUxMx0FStRiRDIYwLSXuz+j
-	 05E1VSdnB8lEC6Dizt4VUGoyC5z/mveyiibWsgRdAlvKKIkj48/ah7F6UT2aCwtI+P
-	 M7K/wl4ZU3s2ty47OdvEC9FdpqZZooqnD/YPe5dYLEcIqXgPRe9z+IRv0OGOjxpiCI
-	 Jkkv2KqNrNrHHFyKWrUSu4jKNcR9MN7OKjAKqyH6336kbZXEsU0FdJisLbzQ98yFFp
-	 BOxeFggnvJIK1ABfQTx2tpoMDd3ziP5gU/FGGW5Hjp9V/egQQBr6nc61xzYH0DhpGX
-	 yRf6bic++oydw==
-Date: Mon, 27 Jul 2026 14:27:01 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: David Matlack <dmatlack@google.com>
-Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-pci@vger.kernel.org,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Alexander Graf <graf@amazon.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
-	Josh Hilke <jrhilke@google.com>,
-	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>,
-	Yi Liu <yi.l.liu@intel.com>
-Subject: Re: [PATCH v7 01/12] PCI: liveupdate: Set up FLB handler for the PCI
- core
-Message-ID: <20260727192701.GA1250952@bhelgaas>
+	t=1785180596;
+	b=xsHoHqmC9lYTOboKG0M8DuYP8Rd5ffOGFtiIVYf9wm4LQ3gc/cspel2cOQsRsWjFrr2Rvh
+	xSTOb3UoNjkh3hQfInrUns6SPpQamveZWkHQ2+lpllEUfiQAH8Y7mgohRF343jahQKW2Re
+	iTnNhzGWcNr+zl9AGnXtOCOpbb2WLSM=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=dECcdZ3E;
+	spf=pass (imf29.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=RXQQvCKPFegovPWBYsHPfyk2YJzL2wBgSj2tapMk4TQ=; b=dECcdZ3EiKFQUVB+L02fve8Jau
+	IQlzRYmIde1dgB6atfX9k14pjnwP178ZV7VfKeOqJx4BitXMpKa3gsQxyh8bAI9yoes2n5AqcCW85
+	QvR8kVfSZ5awT6mWidhI+atOY0dtBHqRXmQ4HxbVrxv0cR4FKfNwfmjpkvY16Fa+s37FKIxKCfE7g
+	/vHloSPg0Xd2qL52vVYVUOwfwq/xEq/60PMXAz7+DAFyYSAoow46lmxqWka09bElkSddSzPAgZKZc
+	FI6Zun/sE7d9MOKYhc0IyAvap2xLqdxLfe/yN5mxSn5EVlAzoufOA4mBIzrD5ymEXiKzB8JQeaTFF
+	V467TZ/w==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1woR1N-0000000BJnR-1515;
+	Mon, 27 Jul 2026 19:29:53 +0000
+Date: Mon, 27 Jul 2026 20:29:53 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Jane Chu <jane.chu@oracle.com>, linux-mm@kvack.org
+Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Jan Kara <jack@suse.cz>,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <christian@brauner.io>,
+	Jiaqi Yan <jiaqiyan@google.com>
+Subject: Re: [PATCH v6 06/12] mm: Remove locking mf_mutex in
+ is_raw_hwpoison_page_in_hugepage()
+Message-ID: <amexseZ43DyZjFoE@casper.infradead.org>
+References: <20260727181310.2671972-1-willy@infradead.org>
+ <20260727181310.2671972-7-willy@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CALzav=cRhFW+zNX6xCnhjJXXDHgyhOxuoX26FG2Ve8+wMccypg@mail.gmail.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 168CD180006
+In-Reply-To: <20260727181310.2671972-7-willy@infradead.org>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: F0BB512000A
+X-Stat-Signature: pntnohfn1kb8bm3t3d9qfrcp3sycusee
 X-Rspam-User: 
-X-Stat-Signature: quqknmtbcf579mziupef4zb9qs3khcox
-X-HE-Tag: 1785180423-605330
-X-HE-Meta: U2FsdGVkX18hfKNLfqS8lvLT+1U446aG0ldT54T5rgTQNMdrSdNGhes3LWCS0CLfxIEJfDqcWIoeKSKZxu1L47PWooLJlie+cTTJQkMSQu1MKJ34Z3gxSSiJ+eLNEWmCxkMz6Kw0EltSI1vbyupIpvou5PeS3C9lJbGkCvRR2lj0g9JAqxBzYBYX7Ha7MEG7pSQchOIAL5llQqzK7tsohPZoAXabjf1SAFb1nKa8VGM0LLQS9E95WOXBBlSzh35YRX1cdpXsp4AXGHRSOSGPFMpp6iCQPJPpbI7KrVA+OyzjrsJMHWyMiuocD2p5UVdTsy6lSeN4ThXzoBwtbRnVxtleuv5SLbbIvJkKlu8shlve22vYRt4N1CtEVPgtd1vdTIFvAGIA5XKbeXU9NIBYZwBMsNrpZumQFmLJe4ul5XlePXBXIizxDgQxOt7xDpoHLX8o+qU3Gq1wYEBOkBauxnAKPX7iUZ0woZjmgMwQsr663Hs1TR8dzv6tS/Rw99jTLYZhezNkWpqAuuJrhcEkbH+ocEConPZ6dh26ufnXMuUAGEhEgaWJ27Ze3RRZ+3giKEsjMgi0T60GkDWzWyTQqy31qwmw+IRfpykqCaDDFmInWfj6yEox8CLibl0aJmE835Nz7aXMcTuiuDc7C6Op/zIGeDMBSnO/h073qBNav/kpGsnxsppMndbDi6aXRQS0ZgZ0ZLqMVSEV/PsFCwO7xNgMfN6veWnyIx1EyKnlwtxCUypjCgXfHvj7HqpefgwFw8J+n97JJAxbIkG8GZ8lZYEXogOgIzBGROLhKS1Iiz+YJqdotd13j7mDBkXeMvyYrGPcdaWbVff+EggsWcvSOwJCM518ffqrUTLvjkzfa2/NrSTpbWm13ppFLxd89va9xwMldT39Tvy7jAemwWyDQ10jOLpQ1y2nmkSyHNq4MQQu2/iV67Zw6WcOPGNDpERouZGq2z5DfsrL/VO4j7C
- VZMxV/bG
- 9jRVtyHl69skYdoGBz+pJ0ezenQda37FuGSmS7m7ja+pVrYfo+9MCY8Z/E8P1pGpqOFu/nHy9Q+JBtvv6FtIH8a6mGRnyomYYJ5/TGbThHehS7EmdD6UamtOkV5VsXCrZx8MYxMEZMm44xiutek/O0qqa+YkHcQPQF32htSgcO58lmcYfmyouZueuq0S3CmlWLFTs333ltIGQQpwGKOdLQxk16dHlQkhH9QMpvYELY7ARU2sLYIGRZOkuAJPHo1dVOLlkL1Gdt3iE8Bu3eoqbZ9jlJnZgShhvjRmymsvk6K48yXE=
+X-HE-Tag: 1785180595-129019
+X-HE-Meta: U2FsdGVkX1/f+KbwojBZ9M1EhYy16EHErMpYTT7GGKFNDJofYKkDSebmWkcUG7XTF36XvIFdIoCVQagNxS1G4ubhOUaqaDY1kLGT8CcOshSNojmjT8bouq8jDPXyyjVfI0wva1RMfo3XzxP64/g9Vy9fWN4CHoU0DnHxhBSY2vG9PKeElFIkzBR95T8d2Iwzvw4+Cwy/4g7vfS4D+7vTted5yVkkqGNFmgDSykGCNz/6K1WueN2x/KfxE3ie+fLy47hzPsvJPZRRVMdCzDw+UYVJ9s5DKc9tANnOd8F6tVbahDmDUztEZvhDt0ibuOSxszfWLQQaDgUBA7fdZvZtv95tUMdEWsn+qVTTaqr7Rt4rvwpoYLtwko37zBlXioDNG5Nqu8r4VDFgWpnq361S0UFMPHIcCOly3A2AkeURLhwOoRG44X5Ltsadu7+NmQ6MVIskasuCLe8s9pfgFKW0PG0KanhmD25pbKkh4cE30KT4lkeOCm8rY+WxsF98YqmJAWqkfWxbOgfuSepJWhhVXO3O7uyWEdjIEw9WyLflBdbENhsmXL/wA3U7bEJonEYYncKEAtQiOGFAPLjAI7bWRvq4yddyxDQkFy8g94gEYpC7Qydy2m3jv16eW29iK5GJaAdfKnZNI4HMilmKpZ+8NFhga1Z5da5WEZe+Og3KlC7X80Eo2o1vFZcTkVZMvKHNhbZmXblnsuemMOaFAeERGwXpNan04iDLcHcTMO+tWYWcV4uJ7WrYXUhCN0gMBnhav3CCYpIAFOlE2obER93O1dQr29iKJCwf/q7jdkzR5o4eatKdlr6IY0ZNl8vCEB+hzPKlAHBmlkLRs0dr4TnFsiVY8QdsIasouZ11PGRiTQjSmjyrY8wGZ6Y+yiR3yxAaC8665fnZvlT/lssTrH014TopuLNBLBUti5lYVWDErUmScbqHGEkOgtuDj6scclKTdeb25Sb5BVjmb6i0W9G
+ 5AviIOI8
+ qmak0gxP6W3h3l/Z042sFOFozeoD4ifkC1DeYand5NM567Fqu8/2CTA83IcyYwWkw+TTTuFU026qhZIxXWUgqV/phYDC7ySttqfyEmyYTKllR00FUjTwz1B7i7bU3eTxEXqXviMDNJyzCaKERiMPQG6ZL12Dpa9PP7iMge10UU5uIE51hWBhAMf73a+foIeBJmqSHiKBowTSIwdvQG593+/oAR+jT3WK+qujif7j7gpWExG+/HsoE7a9n4tfejXCppMPQhDTB3LQy456Ug0xRlNubUfGNHdoMoYLihMMgEqUVohj0MWeejnAl9KZC4lO2JMXPQhQPzQrrtD34SjndhL+IL8lUYAuTyWy+Hi7GNBzP/ZDE1HJR4RJAlJRWThA2CY2A5eGv1hI6K5EghjMBKi9JrAw8/aBo/ufKkA3CYfcazbc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,53 +96,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 27, 2026 at 10:40:52AM -0700, David Matlack wrote:
-> On Thu, Jul 23, 2026 at 3:21 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
-> > On Fri, Jul 10, 2026 at 09:26:04PM +0000, David Matlack wrote:
-> > > Set up a File-Lifecycle-Bound (FLB) handler for the PCI core to enable
-> > > it to participate in the preservation of PCI devices across Live Update.
-> > > Essentially, this commit enables the PCI core to allocate a struct
-> > > (struct pci_ser) and preserve it across a Live Update whenever at least
-> > > one device is preserved.
-> > > ...
-> >
-> > > +#define pr_fmt(fmt) "PCI: " KBUILD_BASENAME ": " fmt
-> >
-> > Is KBUILD_BASENAME buying us something important here?  Just from
-> > code-reading perspective, it's more work because without some digging
-> > I don't know what it will end up looking like in a dmesg log.
-> >
-> > > +static void pci_flb_unpreserve(struct liveupdate_flb_op_args *args)
-> > > +{
-> > > +     struct pci_flb_outgoing *outgoing = args->obj;
-> > > +
-> > > +     WARN_ON(outgoing->ser->nr_devices);
-> > > +     kho_block_set_destroy(&outgoing->block_set);
-> > > +     kho_unpreserve_free(outgoing->ser);
-> > > +     kfree(outgoing);
-> > > +     pr_debug("Unpreserved struct pci_ser\n");
-> >
-> > If this pr_debug() is useful, maybe it should include an address and
-> > there should be a corresponding pr_debug() on the preserve side so we
-> > could find things in a crashdump?
-> >
-> > > +int pci_liveupdate_register_flb(struct liveupdate_file_handler *fh)
-> > > +{
-> > > +     pr_debug("Registering file handler \"%s\"\n", fh->compatible);
-> >
-> > Is fh->compatible enough to identify a driver?
+Sashiko:
+> --- Patch [6]: [PATCH v6 06/12] mm: Remove locking mf_mutex in is_raw_hwpoison_page_in_hugepage() ---
+> commit dd77b291442dd4b4a9034d9d1b8338037122f7fd
+> Author: Matthew Wilcox (Oracle) <willy@infradead.org>
 > 
-> Not necessarily. VFIO could theoretically have one file handler that
-> handles all the vfio-pci variant drivers. But I suspect we'll end up
-> with 1 fh per driver in practice.
+> mm: Remove locking mf_mutex in is_raw_hwpoison_page_in_hugepage()
 > 
-> Are you thinking about how we can ensure devices are bound to
-> compatible drivers after Live Update?
+> This commit replaces the sleeping mf_mutex with a new hwp_page_lock spinlock 
+> to protect the linked list of hwpoisoned pages in hugetlb folios. It also 
+> converts the list to a normal singly linked list instead of a lockless list.
+> 
+> > diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> > --- a/mm/memory-failure.c
+> > +++ b/mm/memory-failure.c
+> 
+> [ ... ]
+> 
+> > @@ -1838,16 +1838,17 @@ static unsigned long __folio_free_raw_hwp(struct folio *folio, bool move_flag)
+> >  {
+> > -	struct llist_node *head;
+> > -	struct raw_hwp_page *p, *next;
+> > +	struct hwp_page *p, *next;
+> >  	unsigned long count = 0;
+> >  
+> > -	head = llist_del_all(raw_hwp_list_head(folio));
+> > -	llist_for_each_entry_safe(p, next, head, node) {
+> > +	next = folio->hugetlb_hwpoison;
+> > +	folio->hugetlb_hwpoison = NULL;
+> > +
+> > +	while (next) {
+> > +		p = next;
+> > +		next = p->next;
+> >  		if (move_flag)
+> >  			SetPageHWPoison(p->page);
+> >  		else
+> >  			num_poisoned_pages_sub(page_to_pfn(p->page), 1);
+> >  		kfree(p);
+> >  		count++;
+> >  	}
+> >  	return count;
+> >  }
+> 
+> [ ... ]
+> 
+> > @@ -1959,7 +1966,11 @@ static unsigned long folio_free_raw_hwp(struct folio *folio, bool move_flag)
+> >  	if (folio_test_hugetlb_raw_hwp_unreliable(folio))
+> >  		return 0;
+> >  
+> > -	return __folio_free_raw_hwp(folio, move_flag);
+> > +	spin_lock_irqsave(&hwp_page_lock, flags);
+> > +	count = __folio_free_raw_hwp(folio, move_flag);
+> > +	spin_unlock_irqrestore(&hwp_page_lock, flags);
+> > +
+> > +	return count;
+> >  }
+> 
+> Could this cause IRQ latency spikes by executing a loop of kfree() calls
+> inside an IRQ-disabled spinlock?
+> 
+> Since __folio_free_raw_hwp() detaches the list at its start by setting
+> folio->hugetlb_hwpoison = NULL, would it be better to only hold hwp_page_lock
+> during the detachment, and perform the while loop that frees the elements
+> after dropping the lock?
 
-No, I don't understand enough to worry about things like that.  I'm
-just wondering if there's enough info in the message to be useful,
-since fh->compatible is the only text that's variable.  Same reason I
-asked about the "Unpreserved struct pci_ser" message above.  E.g., if
-a user reports these messages, will we need more information to debug
-it, or is the message itself enough?
+I think rearranging the lock & freeing would be unutterably ugly.  Since
+the lock is held by the caller (check hugetlb_update_hwpoison()), we'd
+have to eithr have a calling contract where __folio_free_raw_hwp()
+drops the lock, or __folio_free_raw_hwp() returns the list and it's
+the caller's responsibility to free the list after dropping the lock.
+
+Until we actually have data that this is a problem, I will respectfully
+decline to follow Sashiko's advice here.
 
