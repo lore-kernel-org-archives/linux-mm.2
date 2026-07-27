@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B103C531D0
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 16:48:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DDB9C531D0
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 16:48:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 02F726B00A3; Mon, 27 Jul 2026 12:48:42 -0400 (EDT)
+	id 140586B00A4; Mon, 27 Jul 2026 12:48:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 006476B00A4; Mon, 27 Jul 2026 12:48:41 -0400 (EDT)
+	id 0F11E6B00A5; Mon, 27 Jul 2026 12:48:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E11826B00A5; Mon, 27 Jul 2026 12:48:41 -0400 (EDT)
+	id EFBA06B00A6; Mon, 27 Jul 2026 12:48:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B6DC46B00A3
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:48:41 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3FCF74005F
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:48:41 +0000 (UTC)
-X-FDA: 85035140442.25.B0D6F49
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C3F986B00A4
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:48:50 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 42E9B120133
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:48:50 +0000 (UTC)
+X-FDA: 85035140820.06.43A881F
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 968614000B
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:48:39 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=YyFm5Gu8;
-	spf=pass (imf01.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
+	by imf19.hostedemail.com (Postfix) with ESMTP id 9174C1A0010
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:48:48 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=TlXTwoRR;
+	spf=pass (imf19.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785170919;
+	s=arc-20220608; t=1785170928;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HahPVOr/LCy73Q+fo/wlUEFVR+AYMRfMo+YtSiWbXOs=;
-	b=eeaUxx8cE6MzNyUvhbW2P9Rwd2NpHmSybZB6/yBVkGSmIEN8bhnD6OAgaD29oZpcwYViYd
-	BYdUA7B7fhpAyGJu5NdkNgWF6rJEGIT6FMb/Ugc6EhHEkAcBza38bf9kOm8C/c7l2xd95C
-	uKn+awt19u6UutEhvXiswXT2SwH8ayE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785170919;
-	b=fX8p7sCCuKAmGNN0gBQfgic+Y+nQKN9L8EFdG/qfuh0a4QXpzJQDJbh/QSxuRaeMvM4BTC
-	BlQceTdCxFudao79v7QeXXpgfoLydrSWz8yY+AUiAyo9Sj+V2hVYo3xD1EAKrCKKQv4W+e
-	zHUeEDIQEWoEFrHcxL+Q0GxtdqpKy1E=
+	bh=9OAlfmcYEOqu8zuQ6rlVT3ECLrmN/PLlt5u5RzJgH+o=;
+	b=qaQyCg/WzWcXPilOSQ1a44A4G3++sj2B3Y4P4ReJ4m693dzkE+qEllQm/sFnvEITiqSPVl
+	uhFTPZxRKiiAVa4G49sKvJRuOuoA6uGFsvQtkqjkAU/hn25KvqK5v1ZTUjxXqic0Zij4ZP
+	gG6sskq58k1Yd4PGKFm22yX9F579PoQ=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=YyFm5Gu8;
-	spf=pass (imf01.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
+	imf19.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=TlXTwoRR;
+	spf=pass (imf19.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785170928;
+	b=mCcFeXGmMQ8qLWrqusmo/e0FuPbuMLC4DCLFEWQb/CZKLVja1RgI0q5n94VjcqR/YHWdm9
+	L9cHMO8e3OPuW/MrcPO4+gXsPianHeZOKji2tGa2/MgTLMyHymUvtIwZQ5fWZIt05qbHR7
+	O158UxOdGdKWVy1zBarDdni/clXW2AM=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A6C41175D;
-	Mon, 27 Jul 2026 09:48:34 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A6CE6176C;
+	Mon, 27 Jul 2026 09:48:43 -0700 (PDT)
 Received: from e142334-100.cambridge.arm.com (e142334-100.cambridge.arm.com [10.2.198.93])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 1CFE53F86F;
-	Mon, 27 Jul 2026 09:48:29 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 1BF0A3F86F;
+	Mon, 27 Jul 2026 09:48:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1785170918; bh=JMnQ5x98rYMBvstt3t6K+WsTOGu94NI0NQakEbtgfbo=;
+	t=1785170927; bh=CNlHVT/CmxBUOVY6CfuxFxYbSX5ewnbm7YL5RcchowM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YyFm5Gu8COeycq7I7LYuCSC/XjIt2u0SAKwUx1Aj+4oUv8YQBR7DVon5ehIZuZSOw
-	 HvpyitnYjapZXnfX92hDFIEoEvFM5a2NTAQD7BozddqkW8IZdE8y8E26ijdoSu/Zlj
-	 wnelz5qvccBri/v5vzsa2BD/s8NUyi27TheVyBvw=
+	b=TlXTwoRRK0Q+V8Za5J7DYjVsZ+if5g4kXVfJnfFmctfVLxFq2SX4GBaC2bi0e8NWA
+	 LRsIxqAUpqOoTQRWDck8+AFKBOsKSw/bVdMcjgbwsUa/PtG9bA/8DxKrDHKwh6kbPY
+	 j6c92y4Zs0E3dmXI/jy7qtPoQSWFIvG//eGdf5FY=
 From: Muhammad Usama Anjum <usama.anjum@arm.com>
 To: Jani Nikula <jani.nikula@linux.intel.com>,
 	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
@@ -128,22 +128,22 @@ Cc: Muhammad Usama Anjum <usama.anjum@arm.com>,
 	bpf@vger.kernel.org,
 	linux-perf-users@vger.kernel.org,
 	damon@lists.linux.dev
-Subject: [PATCH RFC 07/11] mm/mremap: use ptep_get() for the destination PTE
-Date: Mon, 27 Jul 2026 17:46:58 +0100
-Message-ID: <20260727164715.2866609-8-usama.anjum@arm.com>
+Subject: [PATCH RFC 08/11] drm/i915: use hw_pte_t for PTE range callbacks
+Date: Mon, 27 Jul 2026 17:46:59 +0100
+Message-ID: <20260727164715.2866609-9-usama.anjum@arm.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260727164715.2866609-1-usama.anjum@arm.com>
 References: <20260727164715.2866609-1-usama.anjum@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 968614000B
-X-Stat-Signature: nmhfuuhq1gfa69w7dzikskuuj4hu46ei
 X-Rspam-User: 
-X-HE-Tag: 1785170919-549623
-X-HE-Meta: U2FsdGVkX19GTtKel2RkPphNfYSVQzhoiQKF87EWWBqlwZDTm0tK6RjHRavtOH4Kk+tbMYd+BdknMjKPd1TFB7Su02qTMOlLqspz7TZMj3RG8+wK4J5eAgprJdGZgdQ3Ur0S55WGtiEoTrzFutnmKauFQUPF9QLKJuJIIL7xUdHWoL4qpmZrOURMMBE6Wzyp8jtGj7WOzxCCreMQpFLHQvOnw93BuT0pYcihwUkvzzx/BCiLxEADeHHX9O821p8+I6bjlygx0UqWtKJh+gStachNDx/xMx1h4qW6ElP3CQu41Ykz1FqDxk+7//malKCuDWmLLu58jqg8Oc6mjYqMLEc3IjbiWH32dEvYSK4MoTYh1Wd7j9wc2w2G6lFJDcWhJZbnHYwHhUhtz43OhxL9Dvu2qwpdqAhnr0M4xmSIukpvTP8ReiUYuJCk9qBTR8EYKA8araWDC80TlCohUB6x3osIc9IeA5kPhFB1AVatgEzMSPBF6RaQIU6gxr3CGEKeDCSA/dtgGznZrioJOafNMHVjrvdK7E3en5tgel4DV5JJwpYomorjpwblmTncNioHiv03cw+z/7vU+tvSGNKLoLBd8c8NoAQJmcr+OdFLCR/sackXbC29CXqHSxUBjbqvRhxcQjB/Ixwji2rfV2lehpaydz15pJc+xsB3qC++JNI70BlgfX/wfqdNaPEfE/LSt9hkdnDSBmLM3HNxECPfNiqA3sANpMG9M55glaPK0M+wO5sch2sfv6rMppNJy77Y8PgK9/4RxSX2y52IyKk7+Y9f+23SIAIDJmpOx4lmPF2+Qnscl0WvrZl9f2Ji7iKmwDC3KEnHI+eEsq9FDtW7nWthM+IhPXIn8i1x1pDbcuVqI1psQfdwsxXN82VNprAGlGxrCi30Mc6tr2WdJ/hl7too/+muePyxz/XZ22JqYgg6dbsEDv4LmopDQ3tVW+ctzHWog/Z1G+jUTXqjN+Z
- F4xMbkKP
- cA6UOuSt13H3RzZcsOaYewdIKeW95p3dGK+I5+RtpMrayTzYmKz9g6hSa9GC/lCNlbrFP83NML4liGtZ4a8o/jPBbELSxDp2Lz3tMd/YBjDYw1LFhSML/lRjPWo+V0MNC5j3fvmBDCmeOigZrFKrMM8RV8vsXy7aPvilZIbiDHGvxoikm5/8YInFQvSHtG3xOraWFz2hi8zZ5YW2mwxdAD8POeE3lw5IBDuWTUHVF60cFhFyGdusea9kWlG/k4cOr6JpPbRKAYBqRjKeoENmDxYYHyxsEY7uTMgX3yQ/pkrKocxcG70xa8WuaiWSXrVhsrdPWzF3xd8aqc5VANI6za85ylGNUJ94UmmCF6TUaPl1/wbgH447nR/TxUNtL7CP5++D7M7bAqQmoWl1KiYlytiLfBVz0u9uUwWf3PKCbytDQ784=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9174C1A0010
+X-Stat-Signature: 7ka19mqa1dh315ggrx567osam9smcgyr
+X-HE-Tag: 1785170928-174151
+X-HE-Meta: U2FsdGVkX19hqxMqE76ybvVZfK+Z6sV/5c7y8UkmQxcouqOYPR89COW/oPsG5bXbTuNVx02/radyqMR+7dwJ/usnBiFG74czHkkhLyUdN2Po+z9wfo/2/6tl9g3GQHx+nhWi/JuWIYAWK8WOa84FzCE1npJcWMACeLSc8S81akR7ImV+nC2SyLKNXqD9btRbi5Yee2/XHg2UKTpBOuZl8IicQr9Y4Yd1f1y+PD1uTIRjk1L6mdaJEldgh0XcqQyFvybUCICFBX8d5Q6/r69494tSkC4WJ0VjFwf1aVE5BrC7SnzNES8P0Neyx0egUh1/LODXfeL5DQY7Sih2rb6Gt//JcEq72SmEfTh9/L9mjJ8H6EaG4rjY+tj8bNevYHZzdqv/wb//O9nQFh9H7+Ktp5LvTyT2J3iE4KFS/P8TQL5NKna6Dn+FrdRUl568fxvqSIqenKGFpqh+xlYb4eyk6NhK8FElGAbggNwcrJdb1SxQ5/XnJ37ELusGvnD/zDORBifd459a2yO0LXMFZw7+S3Q+sZTL1qcHa/AQEA30u+eD2+rgimuCFTAlkdEpZBM99mx64zjwfGc9j6iEtkj7IZVi8ZW0v4BY6vdQRCkJ0V1Nl0XPoGZwywL6iSBhB+X+XSStGZK2fewGAe4bwcGIBXwRtzEQAnNps9Bi/47VyMd65DwelMhu0WIzP32OOA4iLJeTz+puvOurk+TntCWxgau7fsocvYkinIaRRWH1qYE5+QDXOEb1Dd7zD/Q3MBv8uROKQGoItsOYjO1cf3qFzkoYcKDuVaKls4tWeaAfRMc8V8A4HIijCOiARju+wVx0b5/v9yN0Ao9mdDnFHjeC6+kfWsFQAwRdfJ3+gzxFAc9xBIdrxrYGE9x9gt1GrtGbeAFDRHZ6RRiSyJIF5e6qtQtFoV7esfmiaYL+OC8L9LirBfffeYmbpd+amV0ojbSRStPTr6gwzhIfgMg8Rm7
+ jILKE2vl
+ jmJEGn0mudJt/UmB/Tx+gao/L/AK6c/m1FaCpPjJwkQK2kEWzp9i6BFj2qVfamreDRgc6vATTrYisSmjkBkxNPXNXUJPnv53myKfDqtpACNk+pwdqt5SbV2BDmZehPfDE4VJnkeerUam313AFqO+eml2NFB+YzsUCA9uyfA1Qi0SFisOXhPGwo87KIImSoTlBLZ3zBZaMpsixF4wlNeMmzI/GLHIixyHZfb1ALti0t+dVJYg3anF4O6rVBdrYir/1anFFQQHucWaAbYI1vc1hxAn1yM9VmZVlH2o+Jf+oOaX2o7D049f8V66O3XhP8OCX3G43UZtGTDa5739g6ItHqSNnd5+4/NRB8D5g2Qpkv6ZkPLA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,31 +151,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-move_ptes() directly dereferences new_ptep when checking that the
-destination slot is empty. new_ptep now points to hw_pte_t table storage,
-while pte_none() consumes a logical pte_t value.
+apply_to_page_range() now passes PTE table storage to its callback as
+hw_pte_t *. Update the i915 remap and selftest callbacks to match the new
+type.
 
-Read the destination entry through the standard ptep_get() accessor before
-passing the logical value to pte_none().
+Continue to use ptep_get() for logical values and set_pte_at() for updates.
 
 Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 ---
- mm/mremap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/i915/gem/selftests/i915_gem_mman.c | 4 ++--
+ drivers/gpu/drm/i915/i915_mm.c                     | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/mm/mremap.c b/mm/mremap.c
-index d966ee8248b6b..ecb90ccee6fdd 100644
---- a/mm/mremap.c
-+++ b/mm/mremap.c
-@@ -264,7 +264,7 @@ static int move_ptes(struct pagetable_move_control *pmc,
+diff --git a/drivers/gpu/drm/i915/gem/selftests/i915_gem_mman.c b/drivers/gpu/drm/i915/gem/selftests/i915_gem_mman.c
+index d01acfb7d93d0..056faf4a3618b 100644
+--- a/drivers/gpu/drm/i915/gem/selftests/i915_gem_mman.c
++++ b/drivers/gpu/drm/i915/gem/selftests/i915_gem_mman.c
+@@ -1690,7 +1690,7 @@ static int igt_mmap_gpu(void *arg)
+ 	return 0;
+ }
  
- 	for (; old_addr < old_end; old_ptep += nr_ptes, old_addr += nr_ptes * PAGE_SIZE,
- 		new_ptep += nr_ptes, new_addr += nr_ptes * PAGE_SIZE) {
--		VM_WARN_ON_ONCE(!pte_none(*new_ptep));
-+		VM_WARN_ON_ONCE(!pte_none(ptep_get(new_ptep)));
+-static int check_present_pte(pte_t *pte, unsigned long addr, void *data)
++static int check_present_pte(hw_pte_t *pte, unsigned long addr, void *data)
+ {
+ 	pte_t ptent = ptep_get(pte);
  
- 		nr_ptes = 1;
- 		max_nr_ptes = (old_end - old_addr) >> PAGE_SHIFT;
+@@ -1703,7 +1703,7 @@ static int check_present_pte(pte_t *pte, unsigned long addr, void *data)
+ 	return 0;
+ }
+ 
+-static int check_absent_pte(pte_t *pte, unsigned long addr, void *data)
++static int check_absent_pte(hw_pte_t *pte, unsigned long addr, void *data)
+ {
+ 	pte_t ptent = ptep_get(pte);
+ 
+diff --git a/drivers/gpu/drm/i915/i915_mm.c b/drivers/gpu/drm/i915/i915_mm.c
+index fd89e7c7d8d6f..aab88e8edf946 100644
+--- a/drivers/gpu/drm/i915/i915_mm.c
++++ b/drivers/gpu/drm/i915/i915_mm.c
+@@ -48,7 +48,7 @@ static inline unsigned long sgt_pfn(const struct remap_pfn *r)
+ 		return r->sgt.pfn + (r->sgt.curr >> PAGE_SHIFT);
+ }
+ 
+-static int remap_sg(pte_t *pte, unsigned long addr, void *data)
++static int remap_sg(hw_pte_t *pte, unsigned long addr, void *data)
+ {
+ 	struct remap_pfn *r = data;
+ 
+@@ -70,7 +70,7 @@ static int remap_sg(pte_t *pte, unsigned long addr, void *data)
+ #define EXPECTED_FLAGS (VM_PFNMAP | VM_DONTEXPAND | VM_DONTDUMP)
+ 
+ #if IS_ENABLED(CONFIG_X86)
+-static int remap_pfn(pte_t *pte, unsigned long addr, void *data)
++static int remap_pfn(hw_pte_t *pte, unsigned long addr, void *data)
+ {
+ 	struct remap_pfn *r = data;
+ 
 -- 
 2.47.3
 
