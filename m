@@ -4,99 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82F66C531FC
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 14:26:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACA75C531D0
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 14:28:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 715526B00A1; Mon, 27 Jul 2026 10:26:15 -0400 (EDT)
+	id 9D9266B009B; Mon, 27 Jul 2026 10:28:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6ECA16B00A6; Mon, 27 Jul 2026 10:26:15 -0400 (EDT)
+	id 98A3F6B00A0; Mon, 27 Jul 2026 10:28:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 62C636B00A9; Mon, 27 Jul 2026 10:26:15 -0400 (EDT)
+	id 89FEA6B00A9; Mon, 27 Jul 2026 10:28:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3CDBC6B00A1
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 10:26:15 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B8875C06E3
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 14:26:14 +0000 (UTC)
-X-FDA: 85034781468.19.BF3093D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 2817A18000D
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 14:26:12 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PCFTFoFB;
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5D8E86B009B
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 10:28:44 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id F40741A06A1
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 14:28:43 +0000 (UTC)
+X-FDA: 85034787726.20.9270E3C
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 3EE7BA000C
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 14:28:42 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=sq0VHDUf;
+	spf=pass (imf25.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785162373;
+	s=arc-20220608; t=1785162522;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SSYcZBFPuC4PDoWkR8v2euqsjdGGE1vamaXLhHYCmrY=;
-	b=Z+odwLGqcXsNF/es0pxLA/r0jI7GoMPAPIGSgQpSaTRPNhhu3V7CBNovV1Y1gRlhdN6ZeO
-	cDxudvJsVRsXsce2ESDxHzNlFP6NCb5ZHb6DEpoiv6f5EICGo93UKN5JKuSNhWi72ghfo1
-	CwAscf/7OwOUBWE1c8maQJHpqpYHicY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785162373;
-	b=aINtA2k1Mb0Fpq60J5kuUIJfOVscFUrt8KxTSosRC9PFbyW59hI2B8XDtH2It5oW0Wp9ah
-	DAIyq2RrG/Qf7H5DC0j+SIpN/PqECfLoZaezQ6mheTXJ/CjtdMA7GBEjRu/muOGgMtrUuu
-	ceUMaCqdF4f8b+eneosenxcIRGzpMXI=
+	bh=kkkRTdV74rQTeXkzTGoMJcqmPwizpsosvteuIcTbWAA=;
+	b=ZSG8F7ycA0TGL9HXNsbahVGVeE7Li/hEpLc65QXUMU4YJAdHrAqTJlcmci9YaVPbjstx+c
+	OK+prF7dGOSb3mq+SQ2RJ+NPh9+CHbpwx+KxiwqvBeFvZXGAYKNWDqYrxO1a11/WXrCXCM
+	SkM9zLSugJuDH6dlbAMfG2sHIeIHgpE=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PCFTFoFB;
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6402F600B0;
-	Mon, 27 Jul 2026 14:26:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D9081F00A3A;
-	Mon, 27 Jul 2026 14:26:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785162372;
-	bh=SSYcZBFPuC4PDoWkR8v2euqsjdGGE1vamaXLhHYCmrY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PCFTFoFBLMD9idxq2HbdTAda/SlM8MutA1Intqy1oP0WrRvrjXO3eR4WCDpv0VOb8
-	 7r1iYGpdhEstIu25vsbXS0FBiNRcpHAflnWXZAMWwbAPS75aD+eNMa9ycWuXF2drvm
-	 Rzw+SIsGelKwLS6NGckfBPV55mEf9R4LinYPOLGM1A4CwHtjGRvr1cpQMD5k/7CIyZ
-	 O2aEWUkEgGqL7nMMwvLZs/lL+Uhqan4iwYUokSOFe7in16GXHl4I5b2CItB9Y3GvoK
-	 s/r8bQgnX/UZrfxpxhrpNWkDodb4N82p9c8NEPiYKQavi7i8OPjlg2jfMvkdfDPEyK
-	 WILqzK9iMFT/g==
-From: SJ Park <sj@kernel.org>
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: SJ Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	Jiayuan Chen <jiayuan.chen@shopee.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org
-Subject: Re: [PATCH 1/2] mm/damon/core: cover discrete System RAM areas with per-range regions
-Date: Mon, 27 Jul 2026 07:26:03 -0700
-Message-ID: <20260727142604.85548-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260727095429.143527-1-jiayuan.chen@linux.dev>
-References: 
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=sq0VHDUf;
+	spf=pass (imf25.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785162522;
+	b=Ztbcs31nlv1c5m8Okwrr4wbyZ1D3FRJ3LLoojtFSxWAvsuzLxXrVc+hVeXGXiXhikyjSWZ
+	OutvKT7tRjru2JytUT0QXX5z+4BvIFAVhz7n1I8lwzib7YdAzrslaMgQp2k4SF11OAmcC2
+	PNcTWks/hIAR67J04/tMOlGhMtnE+L4=
+Date: Mon, 27 Jul 2026 07:28:25 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785162520;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kkkRTdV74rQTeXkzTGoMJcqmPwizpsosvteuIcTbWAA=;
+	b=sq0VHDUfO8mBCuDnqVS/iAsGgZNRheiKOoC7299q6YQPK9G345lofQ9RyQwQETwGq9bnPF
+	ImTJlcG9yd3KB1Tzi1h+73urjzX0vbtw/eO2aa4SYHCU6OUWiBHtglYkGkv4rKFzykdRlY
+	F0qcemM12BAMWiVXU0yHY2+OsE/4vL4=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Usama Arif <usama.arif@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, ljs@kernel.org, liam@infradead.org, 
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
+	kasong@tencent.com, qi.zheng@linux.dev, axelrasmussen@google.com, yuanchu@google.com, 
+	weixugc@google.com, chrisl@kernel.org, nphamcs@gmail.com, baoquan.he@linux.dev, 
+	youngjun.park@lge.com, roman.gushchin@linux.dev, muchun.song@linux.dev, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
+	rientjes@google.com, kernel-team@meta.com
+Subject: Re: [PATCH v4 2/2] mm/vmscan: reduce lru_lock contention via
+ vmstat-derived scan-balance cost
+Message-ID: <amdn2Kcfe9owkDWN@linux.dev>
+References: <20260720164207.450685-1-usama.arif@linux.dev>
+ <20260720164207.450685-3-usama.arif@linux.dev>
+ <amK-ApfqfwkPheC5@linux.dev>
+ <32a85420-caac-477e-b371-8628ed28c428@linux.dev>
+ <amOv0MlF1S-oFZHX@cmpxchg.org>
+ <amdjsVuNYW98Q--Z@cmpxchg.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: qzpg1wfxemej8zuar6gxyujizn5djkg6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <amdjsVuNYW98Q--Z@cmpxchg.org>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 2817A18000D
-X-HE-Tag: 1785162372-434207
-X-HE-Meta: U2FsdGVkX186n21VaAVk8t7C+K1igM3ek7Nod2Zu0ebzMCqS61Ou26wITWGI8TagRsA9PIpHeUxCyo3C2o+KLhVEgKbmV/RCat345OKFsX/SJjQEYzLnhVNZSIIwMx43ospfIsbLAgYOmy1uug8K5NNjmaWT9vDv6KwMyUwYGFklBIdvpidqw7FcrmnfgjFmD45GWnv+GtwnzFbXB3hjKL0lXTNvFLVho21jhVe8Afybx4Uokq5jjZRu161VXFUqBjGXCU8R0KcLw/jM+7Mbuy0Wcjuzw4Tjh9Fx7B77lMG1t/jTNnplHPZ9fBldCjwzGfcvpWK24INC7R3dJL9rot2i7rwEUlrZmOKb/RAS64/JQ7DJRSe6/4eZ/tvQNnh+2SkqvFFrwvnBuE7TbP/zAz9K+oq95wNCXBnqjkzjoHLTyoH92JkuRURNEZ+GI3Snv6jClG57Z/lgCQnWRK1vE0lr1a9pN52gGA+8/fnpv1VCZ7i+KUWq9cg1taB7mz2OUHZCkKBY7u/eEpH+VHNRJOSRyVtRqGGF0LaYMvTPoUbayucAxVpvmjcz84wgE1+rHSFF4p5PoWNjIjp3ckKJxySQ5L8Af+pcQRc3emSRp2VUa9SPWikefAHwnAa6OD8/wg10KfYnK8/QFUnVxbRhN5MdHWPXEPckl2GJv7PNhl0NHt1tX/zDRAu5hBt413bAWVgYQHuGKRRPwJ51Kv/TDph9wbVoYAvT5QJXWEkOE9nw3aVEyeSCqq5ThotKh0KGojUi9XAOoE/oF080AQzx+K4TKDb1VBI0S8fiYgnMgHMMkoSQ6aoE3hpGSqulEwgh/YpUA8TPO1WISkApiw8Vb/O4iwqLaUR8iCDoA87Vmzv6zowJrh1uf85LfjCR0yYcnJmoNDl9emSOLLnZkIwbPp0EZh6xI9BgzvSiLrCS/xDPJGO9tnnVJt1+PiLvrEVMf/8NEwcldpqgp5tpRck
- CrsOqjHf
- WaEt462Fq5RiI/+QwqXT1I4gBdho7R3t6Cxk+QyUx/tKm7aeCQ+dOahZ8nL7x0sibalByEkMwzB5EUcinC2YorgTj0JqEIk91hjhzGthaP5ObB3R+B51HQyWseeWtKI/KL8fZiSm4zeOjib/WHlX/+vOnNPpyXzJKRFC2bpyGKfchQF1BT7t/FglkJ8GfMw1ZABE8Tfi9kLtql8AeVGnQJpTp/xqOn32e0gJrs8QtNOcpFfTOfue+zQ4ORUQgReyuVCwCSqc95qzN8yA=
+X-Rspamd-Queue-Id: 3EE7BA000C
+X-Rspamd-Server: rspam01
+X-Stat-Signature: mw569hu6y71yyxuat1o14xsst868dqj5
+X-HE-Tag: 1785162522-956654
+X-HE-Meta: U2FsdGVkX18OIrwdmmPc4BCjAzNr+MxoG1CteL0WkZqv2EkhchKq0gA+CImt3O94T108/f6oH1fXoLCyimLvyay7OcijBeMfSu+NeB41IPMVn/5JCZoarm24YL/RrusJ+qYS/NjYGmSHTNoiYE3G7mf6y/jgiAS28Yy6vFRLgO5YdTEhDSsiERQGc0fley+jHPIfnbxDFxFawxBoVQ83numuOXUh/wXDGP54z4oQ44unnOeub5VL/RhVB58t0GQgjSpJoRKOL8Q69e60cPK6o2y0r+DG2O+BDX21KnGLFab2z6liGY3+JgE71MxOI5nohHXNS/AH0leMr3+1n8NKw+wxSXzSGdrsalRB7R8fxHjyKMHelP6Geiru81DMggAwBEDJmz73ggTFVjeJaSdNfdL2CjdC0A4ywU3gPhlMjVEOCkcC9fAz8icB+TgAJnR17a9dOmbJDhouxYF4Xmd3xNnIk1PXdbjwkQ0X0wC7OZnKoupuxJJtyGiPzI9EkynGRCduv8aVrbnXD0pAH3/hWFlasnNqiLt99uTrXPOlFMJtFEbff8rMgcGmQ+xE/rfewm8NbXVW+oomm3812AkZxx2/9Nns00W4BFzqhAzDgGY0pE7nNKLyVElYzi/cvakHRKp8IhskVIzbPDRDHtQnl/DmvH+7WFjeKQIriHkrHejoRf+7x2JETFcfb394nodY+5QcvMFCg03nZwSgIewbQfQBg6tONyBC5Wr/ZbQvcWCa3Z7BQsf58cW48Ui6mTUiX2qDX/Uza+bpSWZXQhMhvySQU1WhE0Y/x2miln8YjFVH4qxxUyuF9U0q+//URndv6wu6IT2zU99Zg9/ewsEMyR9vOlcRNvn6CrXb5fzG4WjbuFrzcSms5zzia2g4ocUUdjJfrxS95Y4QTTHUIlM45KyEmbGJh+7k/h1hW7u65ZJJgD8dtLl6TU+3Go015HsqoZnE941rg0It9GPhrVB
+ FucjXi4P
+ +e3bHicTuTV/dlHON5VyXp7NRSpc+f4Evygw7oVfRslCiXGx12t22ItbTx+eNWIimw1lwuku4yB9NDUC9zmpj18B3/feV2mw51FAgCeKIJirM39vNSmfZBIO+bWXKhqs2wVv5scQe+l1WPcK0JA2La4suTc/Dy4tlTaZGhdNbLSHo4DTIxCB2bwF4UqbVqZn9LNhZ+U3Tbadla1yW1anuOx88uyOyHaY29dxBuB0KVyZJ5ZLirzmO7vDBlkrOD52emR5f
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,84 +98,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Jiayuan,
-
-On Mon, 27 Jul 2026 17:54:22 +0800 Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
-
-> From: Jiayuan Chen <jiayuan.chen@shopee.com>
-> 
-> damon_set_region_system_rams_default(), introduced by commit 70d8797c15d6
-> ("mm/damon: introduce damon_set_region_system_rams_default()"), is used by
-> DAMON_RECLAIM, DAMON_LRU_SORT and DAMON_STAT to set the default monitoring
-> target address range covering all 'System RAM' when the user does not
-> specify a range.  It walks the 'System RAM' resources but keeps only the
-> start of the first resource and the end of the last one, and then sets a
-> single monitoring region spanning that whole [first_start, last_end] range.
-> 
-> On systems whose RAM is split into discrete areas that are far apart in the
-> physical address space, that single region also covers the holes between
-> them.  For example:
-> 
->   $ sudo cat /proc/iomem | grep RAM
->   00001000-0009ffff : System RAM
->   00100000-4848c017 : System RAM
->   4848c018-48550c57 : System RAM
->   48550c58-48551017 : System RAM
->   48551018-48615c57 : System RAM
->   48615c58-48616017 : System RAM
->   48616018-486dac57 : System RAM
->   486dac58-4e563017 : System RAM
->   4e563018-4e627c57 : System RAM
->   4e627c58-4ef39017 : System RAM
->   4ef39018-4ef3f057 : System RAM
->   4ef3f058-4efe6017 : System RAM
->   4efe6018-4efec057 : System RAM
->   4efec058-50247fff : System RAM
->   50317000-56720fff : System RAM
->   56722000-59c19fff : System RAM
->   6bbfe000-6bbfefff : System RAM
->   6bc00000-777fffff : System RAM
->   100000000-1007effffff : System RAM
->   67e80000000-77e7fffffff : System RAM
-> 
-> Here the last two areas (about 1TB starting at 4GiB, and about 1.1TB
-> starting at ~6.5TB) are separated by a ~5.5TB hole, and the single-region
-> setup makes DAMON treat that entire hole as if it were memory.
-> 
-> This is harmful in a few ways.  The monitoring target regions are limited
-> by max_nr_regions, so regions that fall into the hole waste that budget and
-> leave fewer regions for the real RAM, coarsening the adaptive regions and
-> degrading the monitoring accuracy.
-
-The hole would look like not accessed.  As a result, the whole region will be a
-few regions that very cold.  That wouldn't waste the budget that much.  Do you
-have some specific setups that this cannot help?
-
-> In addition, DAMOS actions on the paddr
-> operations set walk such a region page by page, so a region that covers the
-> hole is walked for its entire (empty) span on every application.
-
-That makes sense.
-
-> 
-> Set a separate monitoring region for each discrete System RAM area instead,
-> coalescing only truly adjacent (no gap in between) resources into one
-> range, so holes between the areas are excluded.  The reported *start and
-> *end still carry the overall first-start and last-end, so the user-visible
-> default range reported via the module parameters is unchanged.
-
-I'm concerned if this could result in having too many regions.  The gap between
-user-visible parameters and internal state is also a concern.
-
-A quick workaround would be adjusting the memory layout in BIOS, using DAMON
-sysfs interface instead, or setting the monitor_region_{start,end} to cover
-only the single area.  Have you considered such workarounds?
-
-Let's complete this high level discussion first.
-
-
-Thanks,
-SJ
+On Mon, Jul 27, 2026 at 09:57:05AM -0400, Johannes Weiner wrote:
+> On Fri, Jul 24, 2026 at 02:32:52PM -0400, Johannes Weiner wrote:
+> > On Fri, Jul 24, 2026 at 02:29:23PM +0100, Usama Arif wrote:
+> > > 
 
 [...]
+
+> > > 
+> > > > 
+> > > > The patch looks good but I have one question. We already have concept of
+> > > > pgrotated through /proc/vmstat which represents number of pages we have moved to
+> > > > the tail of inactive LRU to make them next reclaim candidates. This patch is
+> > > > exposing pgrotate_[anon|file] to userspace. Here these metrics represents either
+> > > > the number of pages we scanned but didn't reclaim plus number of pages given one
+> > > > more trip in the active LRU.
+> > > > 
+> > > > Older and newer pgrotate metrics kind of represent something different. It may
+> > > > cause confusion. Now before suggesting to change the name, let me ask do we
+> > > > really need to expose these to the userspace? How exactly users can use these
+> > > > new metrics? I think you can use them here without exposing to userspace. So,
+> > > > does it makes sense to delay userspace exposure later when we have a more solid
+> > > > usecase for that unless you have it already.
+> > > > 
+> > > 
+> > > I do think the userspace counters have diagnostic value. They can be another metric
+> > > to show how much anon/file reclaim work is spent on pages that are not immediately
+> > > reclaimed, including pages retained on actie LRU. It could help explain if there
+> > > is elevated reclaim CPU usage.
+> > 
+> > Hm, this is an interesting discussion.
+> > 
+> > The existing PGROTATED is kind of useless. When it's bumped:
+> > 
+> > - truncation fails and moves folios to the LRU tail for faster reclaim
+> > - writeback ends on folio that was tried to reclaim, moves to LRU tail for fast retry
+
+Yes PGROTATED only tells number of pages moved to LRU tail and nothing about the
+why. I can see that from user's perspective the why part is more important.
+
+> > 
+> > Ok, who needs to know this? The new counters you're adding, on the
+> > other hand, they capture the information you frequently need for
+> > understanding reclaim behavior.
+> > 
+> > That said, looking closer at this one more time, you can already
+> > (almost) derive them fully from existing counters:
+> > 
+> > drotated = (dPGSCAN_ANON - dPGSTEAL_ANON) + dPGDEACTIVATE_ANON
+> 
+> Talking with Usama offlist, there are two problems with this:
+> 
+> - PGDEACTIVATE is obviously wrong. We want the the pages we don't
+>   deactivate (hot file executables)
+> 
+> - PGSCAN includes things that didn't work out due to caller
+>   restrictions (reclaim_idx) and race conditions (tryget, !lru) that
+>   shouldn't contribute to the balance.
+> 
+> So let's go with PGROTATE as Usama proposed.
+> 
+> But I'm against hiding them from the vmstats.
+> 
+> I'd rather remove or rename the existing one if we're worried about
+> confusion. We've historically applied a much lower bar to vmstat
+> stability. It's geared towards understanding detailed MM behavior
+> behavior, which undergoes constant changes.
+
+Let's keep the deprecation part orthogonal to this series. No objection from me
+if these new metrics help in understanding the MM reclaim behavior. The only
+request I have is to introduce these metrics as a separate independent patch.
+First introduce the metrics with the detail on how they can be useful and then
+later use them for the internal balancing algorithm.
+
 
