@@ -4,91 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 822E9C531D0
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 21:50:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1A31C531D0
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 21:58:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 766BB6B008C; Mon, 27 Jul 2026 17:50:42 -0400 (EDT)
+	id B454C6B0096; Mon, 27 Jul 2026 17:58:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 73EA96B0093; Mon, 27 Jul 2026 17:50:42 -0400 (EDT)
+	id AF62F6B0098; Mon, 27 Jul 2026 17:58:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 67AE76B0095; Mon, 27 Jul 2026 17:50:42 -0400 (EDT)
+	id 9BF876B0099; Mon, 27 Jul 2026 17:58:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4AF776B008C
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 17:50:42 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B3F70C01E9
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 21:50:41 +0000 (UTC)
-X-FDA: 85035901482.03.225FF15
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id DED3A40006
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 21:50:39 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iJybgTFM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A06B6B0096
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 17:58:19 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E0C21A0180
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 21:58:18 +0000 (UTC)
+X-FDA: 85035920676.12.2CA4A31
+Received: from ewsoutbound.kpnmail.nl (ewsoutbound.kpnmail.nl [195.121.94.185])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 9EDF71C0007
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 21:58:16 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=xs4all.nl header.s=xs4all01 header.b=A7rpJQNX;
+	spf=pass (imf21.hostedemail.com: domain of jkoolstra@xs4all.nl designates 195.121.94.185 as permitted sender) smtp.mailfrom=jkoolstra@xs4all.nl;
+	dmarc=pass (policy=reject) header.from=xs4all.nl
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785189039;
+	s=arc-20220608; t=1785189497;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=IObLMwFXviAwE0MuJFpkaHWW+I+EiuAqKlIpXKq2l+c=;
-	b=sSFWWTwADbs4hCJvdRfab1kYUvc+sJyBAR5HLcNZ+QqtsY/wUVXe+6K3+IbhKbmsp48ULm
-	Hy7krSVAlWtah2PrZ1TqJajvxzITEjN89qZPiH+84690bK3xAMcpvlJc6oORbbP4jB2eTR
-	ioFI9R0zbif6sQ8hK6HvW9tNu5lMnZM=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=kbVWiCOnciwPOgW2IJVqPwmQd6+/KbTHtd51p0uPjE0=;
+	b=Gaj6VwWcddjBFdWPoy/A+0d7ArAD/i50y9L08urayUUu10vB6ITXmTi66A+ZVqKT30jrzZ
+	nsKMsyPTK9DG8hGgqJqN1nlGr3q9Nr27hKb17nmwV+/tY3lgE6aWO73uGg4runLmddXrJM
+	NDD5qSPoBkyAxfOyCQNQkuKYqi02ngM=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iJybgTFM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org
+	imf21.hostedemail.com;
+	dkim=pass header.d=xs4all.nl header.s=xs4all01 header.b=A7rpJQNX;
+	spf=pass (imf21.hostedemail.com: domain of jkoolstra@xs4all.nl designates 195.121.94.185 as permitted sender) smtp.mailfrom=jkoolstra@xs4all.nl;
+	dmarc=pass (policy=reject) header.from=xs4all.nl
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785189039;
-	b=nXmetIDlo6VR0zIp/8w/Dhn73YL+7d/V/g64PykDjXowMZ1YuKIJxbwRlKqy804ondjh4f
-	rwc9ul8pb6AIAFGP9Js8F+OqWlMcqdX3UzK2JYBxs5s4jBuojMeCYgagGsJIuGDZO6lt36
-	Fw5ooBtcgqkqpucxU2Ruq9pbhsaVVHw=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3446940740;
-	Mon, 27 Jul 2026 21:50:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17CF41F00A3A;
-	Mon, 27 Jul 2026 21:50:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785189039;
-	bh=IObLMwFXviAwE0MuJFpkaHWW+I+EiuAqKlIpXKq2l+c=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc;
-	b=iJybgTFMewLz/05qL5l/JVjQunItq7VvfwESk2oUos1duInYYuE5zCF9n4mYAz4sa
-	 vq1CvrP8VW7wV0/3aD6c3PGZ8o5VVm2n/j8ZbLKtkPIEfQE+9TkVFqftYHSIX7Sj47
-	 zRbAtMRSsMy8owbOq78oLqc0XJ7q3L3Jr4VB5E4stItwrFXNkR1z8URVX8yVgPVdBw
-	 0SPEPkUS3c/9hUDizzBQ3hPnxGQgny9fRoBq10IS6VUGkjzmFODy/RRCrauaTggCyU
-	 VGu4Hx/SBw2Y8uLeRgzuser8hiqZjUg3lLgmDpjcjHEgbGNzvnIaXjYX3mOcusNFHp
-	 Oc7Y4SGzV7KVg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93CF3380CECD;
-	Mon, 27 Jul 2026 21:50:05 +0000 (UTC)
-Subject: Re: [GIT PULL] hotfixes for 7.2-rc6
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <20260727142015.3795e489e504bf62b793bb55@linux-foundation.org>
-References: <20260727142015.3795e489e504bf62b793bb55@linux-foundation.org>
-X-PR-Tracked-List-Id: <linux-mm.kvack.org>
-X-PR-Tracked-Message-Id: <20260727142015.3795e489e504bf62b793bb55@linux-foundation.org>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-stable-2026-07-27-14-18
-X-PR-Tracked-Commit-Id: 40de8160ca7f67d14619ee0351ce5d68fc4a237a
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 62cc90241548d5570ee68e01aaba6506964e9811
-Message-Id: <178518900429.1430977.1445190236974738530.pr-tracker-bot@kernel.org>
-Date: Mon, 27 Jul 2026 21:50:04 +0000
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-mm@kvack.org, mm-commits@vger.kernel.org, linux-kernel@vger.kernel.org
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: DED3A40006
+	t=1785189497;
+	b=F0d0aFisKpPa5QXQeK0W8ZB2YW0xmTkyge7CUYx+wGyZ/IEtRd0iuwkzZ77+ny/rVbqkt0
+	vEjsZc4cAlfAS5zJMNLJmspVO1hdqX04RR4S7H8ABeWVFsSX/nu5+3KtSkV7mK7YI7GXK7
+	zY9UzxJfdDpOgYrq21oh3dZIwYuFCJE=
+X-KPN-MessageId: 43e2a7fd-8a06-11f1-9e8e-005056999439
+Received: from mta.kpnmail.nl (unknown [10.31.161.191])
+	by ewsoutbound.so.kpn.org (Halon) with ESMTPS
+	id 43e2a7fd-8a06-11f1-9e8e-005056999439;
+	Mon, 27 Jul 2026 23:58:13 +0200 (CEST)
+Received: from mtaoutbound.kpnmail.nl (unknown [10.128.135.190])
+	by mta.kpnmail.nl (Halon) with ESMTP
+	id 43e135c6-8a06-11f1-91ce-00505699891e;
+	Mon, 27 Jul 2026 23:58:13 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=xs4all.nl; s=xs4all01;
+	h=content-type:mime-version:subject:message-id:to:from:date;
+	bh=kbVWiCOnciwPOgW2IJVqPwmQd6+/KbTHtd51p0uPjE0=;
+	b=A7rpJQNX3I4W3P2GahNM4wr6Ik4+icLwhtghF8CztQFEFNCkEGoLFYFrqTiXTt6N8udVR3+4T5RR0
+	 QfPJeYvd/meHkK7s5JS0eydOfJMmUFzRB5iFA/l4E04uncxgzgxt/JHEwuuvqlIDyBeAm7Vbfgg4qA
+	 sWEDxL2LeAYkITn7uxDCags1dp2a26aP8Qm9+4RaTMidE9uspK5r5m63V3n2+7MXJTf1PVUjBiAFKZ
+	 fTCC9DMSxlaE5iRO/qUTUg+tT+19orZrJaLWnGn/E+bE5UgYRBKY22xIk8rtVRCRbgjdfcdv12Lh3B
+	 74FOQa2T2TU/QOiJdIZzgOzjwZwrN3A==
+X-KPN-MID: 33|PTEeDplm1cnWA906pLvPrZh4h4TH02u4wSAoZNiMJnaNdL/ZxEbkbc3H1W9cWmj
+ NlCfSFpIN+hzcE5wj4eCxqyVXx0sOkEWQAw/KtPEIosk=
+X-CMASSUN: 33|T4ywy3E8DjAslRqqFuSgjNDbFQ/cOjqB84OKTnQCEVM82lKDQlDEfkYLtQNBo49
+ Y3VPikqJ0CSpEW7t/cexCWw==
+X-KPN-VerifiedSender: Yes
+Received: from cpxoxapps-mh08 (cpxoxapps-mh08.personalcloud.so.kpn.org [10.128.135.214])
+	by mtaoutbound.kpnmail.nl (Halon) with ESMTPSA
+	id 43cf5023-8a06-11f1-916a-005056995d6c;
+	Mon, 27 Jul 2026 23:58:13 +0200 (CEST)
+Date: Mon, 27 Jul 2026 23:58:13 +0200 (CEST)
+From: Jori Koolstra <jkoolstra@xs4all.nl>
+To: Christian Brauner <brauner@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org, Alexander Viro <viro@zeniv.linux.org.uk>,
+	Jan Kara <jack@suse.cz>, linux-mm@kvack.org,
+	Farid Zakaria <farid.m.zakaria@gmail.com>, jannh@google.com,
+	stable@vger.kernel.org
+Message-ID: <1934849422.317115.1785189493726@kpc.webmail.kpnmail.nl>
+In-Reply-To: <20260727-lauthals-peitschen-aufopfern-1bfd12376820@brauner>
+References: <20260710-work-binfmt_misc-locking-v3-0-a162f7cb58d6@kernel.org>
+ <20260710-work-binfmt_misc-locking-v3-3-a162f7cb58d6@kernel.org>
+ <amTXwUK2FXu2sHI2@lt-jori.localdomain>
+ <20260727-lauthals-peitschen-aufopfern-1bfd12376820@brauner>
+Subject: Re: [PATCH v3 03/24] binfmt_misc: reject a flag character as the
+ field delimiter
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+Importance: Normal
+X-Originating-IP: 178.226.150.234
 X-Rspam-User: 
-X-Stat-Signature: 7qbi1w3pmopqna877ddaomw7f1jigiuw
-X-HE-Tag: 1785189039-655858
-X-HE-Meta: U2FsdGVkX1+Q0eizAEKwXAJTI6AzHwUiqi6VnfNZ2FmqbAHooXyDXXa8A3hM1oAkJxxgOCc5c7BMQYebNxjzGa+oDz/jsu8hOb8mYo/1j72wkGgQhAcxQ06QhUvQ+/5ALp0sK/hz7FBJyNG/0Wy19DNFpMOgI/4cYzjCEpYHzWXAP9yrZHXnAiy+4VQH00Keh69kla65YGqCZCS0uXAGSvVjuLCSJAcuM76n7pQWUGapz7Vm4AOs5LfAFjWUaIPOAYaQlQRiRVPqYwYq7xSoL+odVWsNpClMeJD+786HCY0LvYcC7vi/4G5RFD66dccBhHkYyqjJHNtODUn/8Qpjc+t0adtLADkOH6DIrCUtuPRE3Iu4AZqnqp8kPje5QD5GfX8rkNlT4np/QS+iJZj96bUUC5Fk4ogzInTPEBuBYKZ4TfpcV8sBwGvkODG7geERBaUkDrHxOM2oISX3wFFnfAFXicRwVLcg0Bpe4+N+PfC0Sb+zquMYFG5WwAZviSemUI2IrqIDayQLe2lXGKWVkd1bEnTt0+laIkttWvpei59D2jspMyLF2IZ/TpOoXxIDfP/ITYLkS+P/Wb786xE5K1W4ptEYJleKjUqiwYUrlg1z9vllIcUmTeYl6Wf2YJ3kTHufYopIxWh13E19sC/LyBP3Qn12yNFe2QfP6bX0X8NbZVr2FxrYc6KU461I9DmNWSpcegZbO/IWDTqzEnh09Z5NbcRy84mFgoGNDUMkFNosC0JF5OCa10sSy9scpMdTbb1iwWzFceA6nqrEDjr2WZbbXhtx4BxENzp4Dnu1jcAartRJ96/aMrJfIKnqrEQgf2bnZsMGwqoM8iTJj2Jql3992+UP2szqGIp7kfcj383/TajfLNmca6BN0oIAqcOjjLyuKp4HtGVUm/9X/flMylHxU8aW04epz1IVrNJ44efWp8f3kpmeH/+nJd1WXBaufMhWSrh5wNRQ4zz71Lx
- 3V/bjFJd
- V+4FHf6IbEtoUIhR/3KhOn/36+rlouZPYKrnss95fcxR179Uw9cHJ7vQz+ZJPRU7G5WL3f6IWwDbf4fWOguDtwQIDodilmMngKsSRMo6ydO/ioTzE2dClPFKkqJ8VkJ2CHN8+nlYhluMn6guTsRSIUEi/r07p6lYKiQU5j+DgOMkVEvh1e/wq7A6TQ9ETOUutt2843+2VBeC+A80LDEGlg3pzwholJwysjbp3YD8/YExAfj9xUcoMXpIr5SUWbOIVVeSXr5c3OKiI1aXzZZbtfH4k+UfJidb5fNRgluh1COLiGrb4v8xMgLQuH6nhLOZiqnaxzk/VUo1BzfamHjRNV5oWvdulMmnBlpoQGjPcCinILGwNbabPD6353YqFMeyx3onM9tmt2EYQNzRs/lDAdOqTn6eQlY1rVKf+jBF35wVi36JjCAgymnZAAw==
+X-Rspamd-Queue-Id: 9EDF71C0007
+X-Rspamd-Server: rspam01
+X-Stat-Signature: tywzkiftqd5cqgi8fqoddfeuwwbie9ef
+X-HE-Tag: 1785189496-191301
+X-HE-Meta: U2FsdGVkX1/9cWPj7w7qs0AzGfEztF9dR7wUanzuWlo9GU6jaCutlE+HMpV5XX5Iz+rROFAm+y1eMMbDS8X5vdJGp9vrK9DpxRzklr4ToaERoTS9SxiZDn/K/zu5oyZ/rNToT8EERpLBNlyl5y7yqFEwjVDB3j6HA8XhINf5YBI1t8HzGUJjPO33AsuglGSqcb94EHrbbMor0V+LokwB8VgqUQVippPcccrvQMbpOlz1arLuryTH5u8lqVuwix2rCXFO6u6b1WgFAUtjs9ODMwuiO5J04KFlhnOgQiGh+XROQVc1PQXiHGtRsH9kkZ+j03/Q/H/4mp4520rZAj2gTnOkzZ6o/hc0zo/zeS2HJ5apk11NIHCjH4ZkYEF2GHfDSKHQqmeK29nhS/tcxseICmnMmeoZTyyS3Fvnd+FXgkk1EHi9ckRiasEshsqZCUx5vjkM9cpsrvi20PxOzOPwpXjjM/gIXsP35sk1SA1mFP3vAPYWEQ5FvTzGF5YvUiFL2qpEX3luK6INIWy9+Apo4JNi+/X2LI5j3lOSkUhf6riwNb9Wj7IuuLmdFGaUoPDDMI4VUFkJb254WIaoHqR0yMvr2aDumMJyTnYaYQQaEn2em0FEDdUpUiieesJV5ypzsQ6WEfmVO6wBrjhEzQfnwM/MdNR6/xLz+oK1gksbGLJmUJUHj9bzu7Y6DQNLfnCtOmz6yfgDViU7SFXjCO0gQ2IyaTaZIIfu558OqHf4ht8ppE0nDgRfY62kAxZWa6a6+fQBvTvC/VGQrHg3XTJGlcdyiMvsYrAdegj5/e/i2/NfhsNvm2xNCOFslfRiN76isGQbh2Pea9CaQxBBEXIpTdpRvpyZ3yqpJTepihlB/bksZEwQKc2clTpFNnfzW7qYRbwSAkzmn3MciFcYCLhvLrjdLiIJuFgcyWwgNV0lbfrzv4wPiFGyghpLw0tF96XSP6F/Swb3l6NWrwgWA/J
+ FI82RY6J
+ SA0TyUO3YTuciYEbZuK62hDTgpT34O0JLkqmbdtbb/Sp8iCYbaYbH9JVdoxA9q6dLJtrKcMRUulefQW8L7Ss3YeOIuhgO2k0HZILCmymK9KBw1vSTRk44QQmVL5ls4tUBP8WenpaCJZjZSXHYBHiglG6Og/SrL55mgOWy30lCR4O0W8AM5M37Uz/Eq8oElyt4UkcpLPvh1YEI6SZWlI19I24xwzWqISCltZZA+OWfMOZOJWGkAG9Fvydkm35Ucm5XsJNUifJr5PnzpY3Jfo9h1srT841cb/G2Mw0zNLQs9efMqtQ/IfRrH/LA/3Q8dFGKPW+AntcItFyJqBqv8/h5Dy0gkiUncwanS9aJAOfGD1zU7lagy3ivBd6yWjPGg1OxA8r1Ty5PhtzJePhVvcdMetaNhmk32wYlSuYcGQQqUPOr90usYX3Z75SogJzZgFj/M5WNxf3/Jmxw4G/0WnCtlCVKCB1DyORJxXmBfDjBpzQMJ0c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,16 +112,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The pull request you sent on Mon, 27 Jul 2026 14:20:15 -0700:
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-stable-2026-07-27-14-18
+> Op 27-07-2026 09:35 CEST schreef Christian Brauner <brauner@kernel.org>:
+> 
+>  
+> On 2026-07-25 17:37 +0200, Jori Koolstra wrote:
+> > On Fri, Jul 10, 2026 at 11:33:04AM +0200, Christian Brauner wrote:
+> > > The registration string starts with a user chosen delimiter that
+> > > separates the individual fields. So that the field parsers terminate
+> > > even on a truncated string create_entry() pads the buffer with that
+> > > same delimiter:
+> > > 
+> > > 	memset(buf + count, del, 8);
+> > > 
+> > > Most fields are scanned for the delimiter with strchr()/scanarg() and
+> > > happily stop on the padding. The flags field is different: instead of
+> > > scanning for the delimiter check_special_flags() consumes the flag
+> > > characters 'P', 'O', 'C' and 'F' and stops at the first byte that is
+> > > none of them, relying on the trailing delimiter to end the scan.
+> > > 
+> > > If the delimiter is itself a flag character the padding no longer acts
+> > > as a terminator. The scan swallows all eight padding bytes and keeps
+> > > reading past the end of the allocation until it hits a byte that is
+> > > not a flag character. For example registering
+> > > 
+> > > 	PaPEPPxPPiP
+> > > 
+> > > with 'P' as the delimiter (name "a", type extension, magic "x",
+> > > interpreter "i", empty flags) leaves the flag scan running off the end
+> > > of the buffer. The registration is rejected in the end because the
+> > > parser does not stop exactly at buf + count, but only after the out of
+> > > bounds read has already happened. With an unlucky allocation layout the
+> > > scan can walk into an unmapped page; under KASAN it is reported as a
+> > > slab out of bounds read. binfmt_misc mounts are available to
+> > > unprivileged users in a user namespace so the read is reachable without
+> > > privileges.
+> > > 
+> > > Reject a delimiter that is one of the flag characters up front. Such a
+> > > registration was always rejected anyway, only after the out of bounds
+> > > read, so no valid registration string changes meaning.
+> > 
+> > 
+> > Looks good, I see no user visible changes.
+> > 
+> > Can't we support a less arcane and impenetrable format, like JSON
+> > or YAML?
+> 
+> Adding a json parser into the kernel is something I had played with but
+> that has a bunch of very subtle pitfalls as the spec is underspecified
+> in various ways. Also, having the kernel produce json is one thing.
+> Having it _consume_ json is a whole other discussion. Ideally it would
+> be done in Rust.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/62cc90241548d5570ee68e01aaba6506964e9811
+I might be interested in this, apart for the binfmt_misc stuff, this can
+be also used in other places inside the kernel. And I would like to get
+into Rust4Linux more. We could talk about it at Plumbers or MAINTAINER
+SUMMIT (if I get an invite, but that's not too likely... :) )
 
-Thank you!
+Btw, could you CC me (if you think about it) for any of this binfmt_misc
+stuff and the other such as failfs. I am very much interested and would
+like to review more going forward. It's just been a bit of a slow process
+as I am slowly picking up the pieces of VFS I am not familiar with yet.
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Best,
+Jori.
 
