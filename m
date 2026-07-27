@@ -4,146 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2503C531C9
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 16:24:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B8A3C531D0
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 16:26:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B5756B008A; Mon, 27 Jul 2026 12:24:55 -0400 (EDT)
+	id 29CB86B008C; Mon, 27 Jul 2026 12:26:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 866226B0093; Mon, 27 Jul 2026 12:24:55 -0400 (EDT)
+	id 275BA6B0093; Mon, 27 Jul 2026 12:26:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 730ED6B0095; Mon, 27 Jul 2026 12:24:55 -0400 (EDT)
+	id 164596B0095; Mon, 27 Jul 2026 12:26:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E8B346B008A
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:24:54 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6AC318012C
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:24:54 +0000 (UTC)
-X-FDA: 85035080508.14.A312888
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 6FA5CC0009
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:24:52 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=DmOkLUxi;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf22.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1785169492;
-	b=ABAdf2+kPs5K9Oc7kK6zcSsJ1rVI+rEKmPZwbYEZ3UtKbojRJeKNHHKiJZwNPd0CbN2Bk8
-	fTKE/7Xpc7JTQqufenWiSFhdu+aGHRNARJzga89bVFimx9BrHIqa+t0TNF2LSdRzzlZtIa
-	EBs/sNPbpX2Gd+b+qeSYAgBhr8n6bi0=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=DmOkLUxi;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf22.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785169492;
+	by kanga.kvack.org (Postfix) with ESMTP id DA6E46B008C
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:26:00 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 65C8D140134
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:26:00 +0000 (UTC)
+X-FDA: 85035083280.11.AD9DDF2
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+	by imf16.hostedemail.com (Postfix) with ESMTP id AB25A18000A
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:25:58 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=rM13sHm+;
+	spf=pass (imf16.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785169558;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zsod/qLuXRWdrxs9+mmL1NzASv99z6ZREmVzFIyc/Gg=;
-	b=eFESkn730WbUcOsKgMhPWW6r4gjkVkAYB5fyLViVRgJG3tax9QO6Mwr9ru3Dh67rYpw086
-	o02ZxvIqsc7HMO9x43UIABdxZPyyB+J8uqrS/G8aJx9I17SDDwCF1fxcGqHCAm6cxlctPt
-	Bz90NLOQL9Ry7OA/Je9W9ZeNIaoDQuM=
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-4728c12ba97so1771438f8f.0
-        for <linux-mm@kvack.org>; Mon, 27 Jul 2026 09:24:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785169491; cv=none;
-        d=google.com; s=arc-20260327;
-        b=JBf25YkzzR3S0tcgA8/8mAIxqVefE+1nuSD2wcpdoty9fUOXVt2cZ+7QqSjTDaa+GN
-         JpMJxCRl0o6KllH5MLnKqstTLEceyHDKy5a/9NjnSknnw6l2h8ifO9gI4oX5BZ/QgzSP
-         icVvzcMHi2uvh50H7XTnMJ4xedj2PwV0WVSd5rDLOJcoUdRV7F85yUfdoQgi5+GKs9Zt
-         BtB6re6pVpGV/Gqvz0MCN1DSqJt/Qxh7csefaw8Sw4HBhjWEg/qLzSk5P6h6eTAOu/mU
-         zw4Kop+9BT6KOYcv/ekfnffgocj1cXhfA+LJppL9r5dQX3BiOHvXNVn4oQlXbD/G/ubS
-         njew==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=zsod/qLuXRWdrxs9+mmL1NzASv99z6ZREmVzFIyc/Gg=;
-        fh=FQAjT4esPnCAChFDIoVMzqU+2JEp2+83Fw7XyFbS6yU=;
-        b=pNpD/idzteQ8rjmKXBAIHnGYBd/lzbNoFEWgr8nRfmYGNGJe+7IVEvd4bcOEVQMCYK
-         eB6ZFTvYp5VhJD9hhWmN6UUw6JdF9TRuOHqSMfGVd1gcMWOWoTdq6+wnuWfw18pfksEi
-         Ws/Cz/bIX6b8R2zbDN84HCp3sorrAweRe1I34hXBCkXu8+iYp1RNHTDAyX1nC95kMzRU
-         vqIx+0wVYgNRfNVvYkqHPsN+roF2Nxwuk28JzxpHhK6HMdwqXAvs4hHfl5eTf2a6692y
-         NqMtb3+ZiOH4GnYiwR7ADgdJbUcO4wAzuDJ67ymj9Ph3E/vAGHue7F8Fo4gW5kg3my7t
-         0oyg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785169491; x=1785774291; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=zsod/qLuXRWdrxs9+mmL1NzASv99z6ZREmVzFIyc/Gg=;
-        b=DmOkLUxiBXF38GN/0+p+tAiFBco1ekTr/DK/LGbDNcoC3yJSCiCJlmgfLWqFpELH7p
-         PXtZOxQv4m+bj5BkEzvzCs6BxIcR++O8p7D9QYCk+BRldXlG5PaENhI0oYH+m3Y4s1CE
-         Rz8ckY7y9XFVPcklHddvzyqZIrPIdaAJ8F3cE78k/FswvsCTm/E50PyHU640OM2tlDbu
-         cJD7lWMx2f7lbkqciOm5f8g+VZlOTLAOiOyse4TedHR+wqswrvvSmKxuMedaNOEXmvQs
-         HplH15RF3flTjvDUS1gjUr4JGL9aXmY9HSUZJZwh/54XcPMlrFY3JD68HOjUInjXJIYa
-         EsUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785169491; x=1785774291;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=zsod/qLuXRWdrxs9+mmL1NzASv99z6ZREmVzFIyc/Gg=;
-        b=Av1W0XlkIuAUNdcLUeBEKbeoiMWyq80yOjRnlcMEme+ky5W2T5gydemRhPwwAChTPU
-         zA3LX1x+GiE5nDAOBKjjOENXkV6je0HjJcUqeHUKkZrGu4rWcj8WkVJX1XUXrByK1/0w
-         E2CTygKGw5bI0vRFYblXaB6LcrDjL7ias6OMLtcH4hm+LoqGWTBTbf/k3eH/FQqzeDF3
-         hPgSxTpYqSctz8WNATtjSc5UxrSdiPOTXr6ge1lN6W3snRzsDmNrpva737x0csWi6vOD
-         bgaIoCEANtN5+8s222l0S75skvYQyH5TSgNep7t1IxTuZG6Y9EpqK7VRIrdxHujecrX+
-         K1Ew==
-X-Forwarded-Encrypted: i=1; AHgh+Rpam37J0mBDZQCHfNn+LybhuFqkCLKc4AKE6qtGrL340BKOWMIxdEY8kGz1iMUt/HNMWPnZCJ2p+A==@kvack.org
-X-Gm-Message-State: AOJu0YzTpyXmlMqXaapzzPWjnN2yusubvVRPaHdtTFfVBk9V4UT7a272
-	Y8TEJdj7eAc2izPU8fJlN7nWDpQT0G1/QXzNJ0EYipGmPK6+uKaIWU7Ygz14/7jEtfnQgDX1mmr
-	JByLShzkTw3pS92g83O8/7LGxpjjen0g=
-X-Gm-Gg: AR+sD12/ky4sl+vttPD7hqB7FrV25EwWe022cNhUpnwvksGDUhCJRSuJZfbLbebd2CK
-	0a3/hBh53iAK6Cd1E/mecW1spVqoKMX+jVmgudSMNQKrMveIde36rrYCtQKQRGMyej4Yzqz4g+8
-	Olbe5YwE9n7heQBQZkPt3djUDiBI9tPOTvani3ZEs7nwmUkB6P7IawA0chBXviQC6YsmjOJXbtq
-	aeUaFaTe+KJbjyoMItGTpRsVkCaMzNpO6FndrQs4epLZgae9qxP3/yeqs+ylO1DxJRa3eTiVQJb
-	y1MWSI0Yr5Kzu/8qrg==
-X-Received: by 2002:adf:e19d:0:b0:47f:90cb:630c with SMTP id
- ffacd0b85a97d-47f9fc9d3f5mr12546589f8f.8.1785169490768; Mon, 27 Jul 2026
- 09:24:50 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=ra9yHBirTJdVcJRt2PzI1Df5TxrhLhj87Z2KqNUXLRo=;
+	b=JRImwtz55HwhBJPPTNEQX6sQSqwCmOKjmUlhFBlCj2B+2E2S6Bo8xJu9zAmHfr7tkdYeEi
+	8rDZzBDpVnbZlaDr/LAGMGUUGe8t2HYnk0d8f2P0FXrKWj3Edoec22Grg/sUjALRZ8oTWN
+	1SpS/5fJnF4/LiO9NpAcT8S+iyGuvPY=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785169558;
+	b=S3VaSX4sqW3Row/8IVSW/G8ivFILw/NoqoP93Ur+wzJz5EPE5kZtPdPoVEYYw2o+QGXRVL
+	qkAHMklKgbQfdstT/IcTBoj5vOleEosCTWU5N1QXUeqfXY0KCW3oZX2zNSrBuF7Oc8JzQh
+	Tec1m6D6srb9jl7Zb+jznSaxuQE3wxg=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=rM13sHm+;
+	spf=pass (imf16.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785169556;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ra9yHBirTJdVcJRt2PzI1Df5TxrhLhj87Z2KqNUXLRo=;
+	b=rM13sHm+PY2VgfpS5L6v/2uLlCxByJHWVm0f6YztYVumzPyM2hrjTzbCaVO+7afeUai/2l
+	RL2CWVKOtH1rZDAg8Zn5ljDcE12wx6CPhCU65kXjtRhJhJiZP5L49IDG9UgpYIU0pqNSBp
+	wX/QYvLvGo8FX9ZxIO27BzxG23MhRP8=
+From: Usama Arif <usama.arif@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	kasong@tencent.com,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	chrisl@kernel.org,
+	nphamcs@gmail.com,
+	baoquan.he@linux.dev,
+	youngjun.park@lge.com,
+	hannes@cmpxchg.org,
+	roman.gushchin@linux.dev,
+	muchun.song@linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	rientjes@google.com,
+	kernel-team@meta.com
+Cc: Usama Arif <usama.arif@linux.dev>
+Subject: [PATCH v5 0/3] mm/vmscan: reduce lru_lock contention via vmstat-derived scan-balance cost
+Date: Mon, 27 Jul 2026 09:23:22 -0700
+Message-ID: <20260727162550.2032-1-usama.arif@linux.dev>
 MIME-Version: 1.0
-References: <20260722152043.2273289-1-usama.arif@linux.dev>
- <20260722152043.2273289-5-usama.arif@linux.dev> <amFZmtGHEZjXEw5R@google.com>
- <ee172b01-54c3-47ef-9040-1342a1566796@linux.dev> <CAO9r8zMzjCf620EHwzfosngc94fu=vAb=ukrtOi9Qf3rA3vv7w@mail.gmail.com>
- <c40f4a8b-1f60-45ea-962d-0597c413ec3d@linux.dev>
-In-Reply-To: <c40f4a8b-1f60-45ea-962d-0597c413ec3d@linux.dev>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Mon, 27 Jul 2026 09:24:39 -0700
-X-Gm-Features: AUfX_mxjjRfJV8Uv-XQAVKUtz2NYGeR15CAkgiMb0FuDakVSIrHnyNqp3Jg_2yY
-Message-ID: <CAKEwX=P=cFqojHPCp1oGqZCOVVGi9pyrgLtaSH3qrEwVppmxdQ@mail.gmail.com>
-Subject: Re: [PATCH v5 04/11] mm: zswap: add range lookup for large-folio swapin
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Yosry Ahmed <yosry@kernel.org>, Alexandre Ghiti <alex@ghiti.fr>, 
-	Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, chrisl@kernel.org, 
-	kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, linux-mm@kvack.org, 
-	ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>, willy@infradead.org, 
-	youngjun.park@lge.com, hannes@cmpxchg.org, riel@surriel.com, 
-	shakeel.butt@linux.dev, kas@kernel.org, baohua@kernel.org, dev.jain@arm.com, 
-	baolin.wang@linux.alibaba.com, Nico Pache <nico.pache@linux.dev>, 
-	"Liam R. Howlett" <liam@infradead.org>, ryan.roberts@arm.com, 
-	Vlastimil Babka <vbabka@kernel.org>, lance.yang@linux.dev, linux-kernel@vger.kernel.org, 
-	shikemeng@huaweicloud.com, kernel-team@meta.com, 
-	Alexandre Ghiti <alexghiti@fb.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 6FA5CC0009
-X-Stat-Signature: i3wbzapenw6krk7hiiuio4p715huw13e
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1785169492-522381
-X-HE-Meta: U2FsdGVkX19lSVW8sMO2AevGY7cZFfvEZmYQFH1gUjNYc/EStAozuz2VuuhV8/RESQeQf0gK6mtAA+LdGf8QJTNqweAl0nTLrgNBw1IqFVMr07jcQbT2LfC7wvqRKo07BQFf/fOn/QzpWzyvhdM8M8zWzM9+dLhgbgCZnTcLpxApaNe8SoN4Uyf6wq3fBkKMiMoIq2kxt5kQBY+5de5gKBXXOVo5Agg8LVRQayglWZ81ZN3ACzeZtQOn9wYBTrTu8n0Vsx/fTJZKE70m61hiJU6VzFI3OSkIDgiNEOgyDn5FRmPxf5Xsr0aKmSpX7eUwiVSHdkbHMMdrwIz6b72wa55xmsEblfMvAzTC3AcaU/ytWSXwKBBbRzg++fHTQ7gLd9njcXVX9DjrEnkHsNqTqyQ3BsmqEyxzjXB7pnY6WOe7BlRwwGj6CP1JJFWZyTlnWNeHB2xlTRUwZNKuzgfCZ2PxetT+8fQtZKQ9hl/6qwEJwGNvWYcOqkP6mWeissbl8FaJ3r/yZmN0TN2Mra+CQgXfrx7dbCz27uSiXdAXZPouu7YKsUmZkYDMlCz1xuIvPwJh3VwG3bPqM9ynUuP5Nh4CFCrF2XxMh+BUTi5R2g2YVlEAcBbdT/lqLuMdnpBfp4JfaYh+aCvP17gJzcPEgQEa+KxR7V6aEo23quV7AYi4kP3LEJ2o/Y7rzLfXUbihJDVLPlRJyxYnA6Tb692Wqyv3eWd6KmXaQXWRTjUp/iuv6ls3VkZ21mi5+nWhVA9z8IlYfXU05J54vjsWq7J/DymknlzklavvQom/YVg8qH1OyXQP67wbczzLD1RhYw25ucswnDOUyhkWx8jQp071zxwzkIitXpKWiEkg6pK/qWIgoEWoKODegR6VZEDm0Mq1DZskAkoNiGcszLmZz6d5DzJmzC3ViUi+ElMo0RikFBYyH1oEFsGvQ83f2qcxjhOtiewShXAvZ4jcnXNdSJm
- 6Go6Nr4o
- AmzocvLlfpylah/VHK59FccMkvurjLwVsU4UbOHzDzO2VxG1wYCelznWDmqqAzPe8AN0jQQPdXy6dB8UQeTjZkFEzy/GFyfzarpaB6126tAkrHGhuQcGhmEdCVQd5qLTtyzO7h6xA5K1awXDWSDBlOA+IF6Yg5Wu4hXkLi1uixfzt2Re3WD1DCe1OUjPPvcJhNZsShC/YskhdiysBhvRH5b9C/KRgvrO4bnQ5EAgHMAek8cbSBS97h8blpbTgCbXI5+VoZKLX+dXxnViVkk8bxvpLLFLUWaYxEh5LfumtmvrS9Lywuim669Qa+mrwEqXN4chIjeY2O/6YduY0SWmbx3IF8ORZXiLtv6vmE9nQwdlC9emTOXLig4xFsKvMgcHgF83s79GhFax6MCzyfblYxOmN6g==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: AB25A18000A
+X-Stat-Signature: 6u4hxr7ty84gurigkyp445z7ouk8ezqb
+X-HE-Tag: 1785169558-907122
+X-HE-Meta: U2FsdGVkX1+4eRf/kLeIpsZS1NqZL3ABbV6BIYF43yEtVmC0RuNMLkKUJHZsWT6i1UcKIYKCjl9LeCYRvvvP4AiFw88EwxpUKw3ljFv/6brYoDWTht/Ja0SWfcXzevnbrI7ATuMewuA8IZQuak59nTiLz8MxVWVj1N6BMOthmaQb7JA/eEseaffvP5MFUeq0X7dHM3Bd4WRPdFKJTnWSHPDxvxRbNPvcrb4B6m4GAI5emp8MxCjBjIDczM3qZEVwfdcN5YiIymDJzJpVawPaGA0MMGPV4WPUzKCxIEL8zB1DJjVy99xPEgRq3tdoQDXzNQE644MThGdDFfKjqkv7IoDmik1W/St9U6Hao5DGtXbvLDJoAOOtNWidIaYuvJ+s/aaOUBcUoIOQ7uJo+R14DQPD/ecL0ojMG7ewQZI+pvwuGlvNmYXBFS7QbM5RyNy5YV7s+k0nRrtLANC3daZCOATrJpgSYtMy+meiQGXKUtsywSf/aoh+tCOzGjcxGL76M4DwFBlu7bba/CAovnLHUes2rGolfMBGCRGCtBJOcX07IkbUPaCIxFBey8H6+yFPpJonyN0jgh7usGkI9p0JbLZsc7CNMx/QHv/LflYbdnyY8LjnIaXdvvjTeVB6W86Tp157YE7hkzEB/VSXJL3/MG3ctM6rbibTintA+/qll4OT/y0okcrNLgqnsT5kl0CcKEZwV0NUw65VZ+BNXXcZzve5WWa4ENLEFVeuMRlle2FE4Fqx2zhS8IFlDf0HYlDmO3voY+aZWIUzNZUAr5+odDFgPMEwloH/nhOWu3nN4F8N5FdWIxjKNff1adDJqxJ7jj2fPELSbYZ/xVgfHD4+FwR7HbkVZ/zQ6HE6a+hDy7l3K7Wz+ZdS9wtqZaAUYk892OcDvGBrGCUV948uO0opdfWQdfm9nI9swa24IAO0eaWHqyHE7iRsdJGgeuwOHoHaVm1uIAQOBC1Zvn9CtBW
+ IffB/lRF
+ BH315gkfiqMvEdAECDzFUdD5++zHDl+oJkFIn5AXx0z613be0myN+lRX0ewl5EUxEbjAk57SttNLDhiajylBa/IQGVNzbAtZvm2DHDWIh7GyTZiAJ0gip7HSq3HMPfJC8gA+7ZDWxIuUVGTEPUcIOH1PHsV5HCDmibfnYXV5IhpauLn/NS8/W1VV0oLSjPpR40jdUjIlHq6GbRb2Ed/6p5/axZib1bsgTipd7fTeTzsvlTVrdLBMTy18/XEdigmXpqkiUnALImK16uoxHnSz2BBC4sPnmYeDjL7/9GlUPWev0Hgw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,117 +107,195 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 24, 2026 at 2:59=E2=80=AFAM Usama Arif <usama.arif@linux.dev> w=
-rote:
->
->
->
-> On 23/07/2026 17:42, Yosry Ahmed wrote:
-> >>>> @@ -1595,13 +1611,19 @@ int zswap_load(struct folio *folio)
-> >>>>              return -ENOENT;
-> >>>>
-> >>>>      /*
-> >>>> -     * Large folios should not be swapped in while zswap is being u=
-sed, as
-> >>>> -     * they are not properly handled. Zswap does not properly load =
-large
-> >>>> -     * folios, and a large folio may only be partially in zswap.
-> >>>> +     * A large folio reaches zswap_load() only when its whole range=
- is
-> >>>> +     * expected to be on disk: PMD swap-entry consumers split befor=
-e
-> >>>> +     * calling into PMD-order swapin whenever any slot is still in =
-zswap.
-> >>>> +     * Confirm the range is entirely absent from zswap and return -=
-ENOENT
-> >>>> +     * so the caller reads it from disk; if a slot is unexpectedly =
-still in
-> >>>> +     * zswap, fail the read rather than return partially-initialize=
-d data.
-> >>>>       */
-> >>>> -    if (WARN_ON_ONCE(folio_test_large(folio))) {
-> >>>> -            folio_unlock(folio);
-> >>>> -            return -EINVAL;
-> >>>> +    if (folio_test_large(folio)) {
-> >>>> +            if (zswap_is_present(swp, folio_nr_pages(folio))) {
-> >>>
-> >>> Is dropping the warning here intentional (for the folio_test_large() =
-&&
-> >>> zswap_is_present() case)?
-> >>>
-> >>
-> >>
-> >> Yes, so we can end up in a race, which should be handled gracefully.
-> >>
-> >> For example, lets say we have zswap writeback enabled, which means we
-> >> can end up in a state where we have a PMD swap entry and 511 of the 51=
-2
-> >> slots have been written to disk, but 1 slot (slot X) is still in zswap=
-.
-> >>
-> >> We can then have the following race:
-> >>
-> >>
-> >>   CPU A: PMD swap-in                  CPU B: split-PTE swap-in
-> >>   ------------------                 ------------------------
-> >>
-> >>   Checks swap cache: empty
-> >>
-> >>                                        Faults slot X
-> >>                                        Adds order-0 folio F
-> >>                                        zswap_load(F):
-> >>                                          removes X from zswap
-> >>                                          marks F dirty
-> >>
-> >>   Checks zswap range: empty
-> >>   A is preempted
-> >>
-> >>                                        Unmaps/reclaims F
-> >>                                        zswap_store(F):
-> >>                                          puts X back in zswap
-> >>                                        Removes F from swap cache
-> >>
-> >>   A resumes
-> >>   Allocates large swap-cache folio G
-> >>   zswap_load(G) finds X in zswap
-> >
-> > Why don't we check the zswap range after allocating a folio in the
-> > swap cache? I am assuming at this point we have the folio locked and
-> > the result should be stable?
-> >
->
-> Yes that makes sense. The folio is locked and the result will be stable.
-> How about something like below?
->
-> diff --git a/mm/swap_state.c b/mm/swap_state.c
-> index 1f08fb522036..41f168377cb1 100644
-> --- a/mm/swap_state.c
-> +++ b/mm/swap_state.c
-> @@ -12,6 +12,7 @@
->  #include <linux/kernel_stat.h>
->  #include <linux/mempolicy.h>
->  #include <linux/swap.h>
-> +#include <linux/zswap.h>
->  #include <linux/leafops.h>
->  #include <linux/init.h>
->  #include <linux/pagemap.h>
-> @@ -500,6 +501,17 @@ static struct folio *__swap_cache_alloc(struct swap_=
-cluster_info *ci,
->         __folio_set_locked(folio);
->         __folio_set_swapbacked(folio);
->         __swap_cache_do_add_folio(ci, folio, entry);
-> +       /*
-> +        * Reject mixed zswap/disk backing before starting the read.
-> +        */
-> +       if (order && zswap_is_present(entry, nr_pages)) {
-> +               __swap_cache_do_del_folio(ci, folio, entry, shadow);
-> +               spin_unlock(&ci->lock);
-> +               folio_unlock(folio);
-> +               /* nr_pages refs from swap cache, 1 from allocation */
-> +               folio_put_refs(folio, nr_pages + 1);
-> +               return ERR_PTR(-EBUSY);
-> +       }
+The actual code between v4 and v5 is the same. The last patch is
+now split into 2 commits and the commit messages are shorter and
+cleaner.
 
-If you move it to __swap_cache_add_check(), you can potentially
-backoff even before the folio allocation? :)
+The anon/file scan balance heuristic in get_scan_count() is fed by two
+scalars in struct lruvec (anon_cost, file_cost) that every reclaim
+producer updates under lruvec->lru_lock. The cost-recording work
+itself is trivial, but it both contends for and contributes to
+contention on lru_lock - which is often a contention point on
+memory-pressured workloads. Specifically:
+
+- shrink_inactive_list() re-acquires lru_lock at function exit just
+  to call lru_note_cost_unlock_irq().
+- shrink_active_list() does the same after rotation accounting.
+- workingset_refault() takes folio_lruvec_lock_irq() purely to
+  record the refault cost.
+- prepare_scan_control() snapshots anon_cost/file_cost under
+  lru_lock.
+- lru_note_cost_unlock_irq() itself walks parent_lruvec() and
+  re-acquires lru_lock on every ancestor, multiplying the cost
+  of every update by memcg-hierarchy depth.
+
+This series removes those producer-side acquisitions entirely. The
+rotation inputs become per-LRU PGROTATE_{ANON,FILE} vmstat counters.
+NR_VMSCAN_WRITE already captures reclaim-driven pageout at writeout();
+charge it through lruvec_stat_mod_folio() so it is available per lruvec
+and aggregated through the memcg hierarchy. Reclaim does not submit
+filesystem folios for writeback from this path, so pageout contributes
+only to anon cost. WORKINGSET_RESTORE_* already captures the refault
+input.
+
+PGROTATE_* are also useful independently of scan balancing. They are
+cumulative base-page events, not unique-page counts. Classic inactive
+reclaim records scan work that does not produce immediate reclaim or
+demotion, while active reclaim records referenced executable file folios
+retained on the active list. MGLRU records initially isolated pages that
+remain unreclaimed after its retry passes. Read alongside pgscan_* and
+pgsteal_*, their deltas identify which LRU type is consuming reclaim CPU
+without producing immediate yield. Unlike the existing pgrotated event,
+they do not imply a move to the inactive-list tail.
+
+prepare_scan_control() reads the raw cost signals without lru_lock:
+
+  anon = PGROTATE_ANON +
+         (NR_VMSCAN_WRITE + WORKINGSET_RESTORE_ANON) * SWAP_CLUSTER_MAX
+  file = PGROTATE_FILE +
+         WORKINGSET_RESTORE_FILE * SWAP_CLUSTER_MAX
+
+It folds the deltas into a per-lruvec accumulator. A dedicated
+per-lruvec cost_lock, not touched by isolate_lru_folios(),
+move_folios_to_lru(), or folio_add_lru(), serialises the accumulator
+RMW and the lrusize/4 halving check. Hierarchy aggregation is implicit
+in rstat propagation, so the parent_lruvec() walk and the
+lru_reparent_memcg() cost-splice both disappear.
+
+Moving accumulation and decay to the reclaim side also improves the
+cost model across reclaim gaps. With producer-side decay, events that
+happen while reclaim is idle still age each other before reclaim ever
+samples the costs. If a workload refaults a large anon set and then a
+smaller file set before reclaim runs again, the later file activity can
+age the earlier anon activity out of the cost model. The new scheme
+observes the whole between-reclaim delta and decays anon and file
+proportionally, so the scan-balance history better represents what
+happened since the last reclaim pass.
+
+Trade-offs:
+  - Cost reads see rstat-aggregated values that can lag until periodic /
+    reader-triggered flushing.
+  - Per-lruvec footprint grows by 4 unsigned longs + a spinlock (a
+    struct lru_cost { count, last_rotated, last_io } per side), which
+    is a small cost.
+  - NR_VMSCAN_WRITE now also updates the folio's lruvec/memcg stat,
+    adding memcg stat accounting to the reclaim writeout path while
+    preserving the existing node-level total.
+
+== Numbers ==
+
+Tested on a 176-core, 256 GB host. The benchmark drives sustained
+swap-out/refault inside a tight memcg using vm-scalability/usemem:
+
+  usemem -n 16 --prealloc --prefault --random $((256*1024*1024))
+
+run inside a two-level memcg with memory.max=512M on the leaf
+(4 GB anon working set has to fit in 512 MB -> continuous
+shrink_inactive_list + workingset_refault). A 16 GB swap file
+is used. Measurement is a 30 s `perf lock record -a` window
+over otherwise-idle hardware.
+
+Workload rates are identical on both kernels (the bench drives the
+same memory pressure):
+
+                          baseline    patched      delta
+  pgscan_direct  / s      172,662     171,817      ~0%
+  pgsteal_direct / s       67,162      66,306      ~0%
+  workingset_refault_anon / s
+                           40,696      39,830      ~0%
+
+perf lock contention (total wait per 30 s window):
+
+  Lock Name                Before      After     % change
+  shrink_lruvec+0x770     722.84 ms    0         -100% (eliminated)
+        (= lru_note_cost_unlock_irq)
+  workingset_refault+0x167 385.26 ms   0         -100% (eliminated)
+        (= lru_note_cost_refault)
+  shrink_node+0x4ad       689.43 ms    26.95 ms  -96%
+  shrink_active_list      208.34 ms    15.97 ms  -92%
+  lru_add_drain_cpu+0x34    1.96 s    917.71 ms  -53%
+
+  Total LRU lock wait      ~4.23 s     ~1.66 s   -61%
+
+The two specific contention sites the patch removes
+(shrink_lruvec+0x770 = lru_note_cost_unlock_irq;
+workingset_refault+0x167 = lru_note_cost_refault) are completely
+absent from the patched perf-lock-contention output.
+Secondary reductions in shrink_node, shrink_active_list,
+lru_add_drain_cpu and pgrefill/pgactivate look like knock-on
+effects from removing the cost-recording overhead and the
+parent_lruvec walk.
+
+The remaining ~1.66 s of LRU lock wait on the patched kernel is
+dominated by the per-CPU pagevec drain (lru_add_drain_cpu) and the
+main reclaim path in shrink_lruvec.
+
+The numbers above can be reproduced using the script in [1].
+
+[1] https://gist.github.com/uarif1/a4eb33a86c5b2d7bbc55b42f0956e884
+
+v4 -> v5: https://lore.kernel.org/all/20260720164207.450685-1-usama.arif@linux.dev/
+- Cleaner and shorter commit message (Johannes and Shakeel)
+- Split PGROTATE_{ANON,FILE} definitions and producer accounting into
+  a standalone patch, and document their public diagnostic value (Shakeel)
+
+v3 -> v4: https://lore.kernel.org/all/20260717135807.3476029-1-usama.arif@linux.dev/
+- Fold the two per-lruvec cost arrays (prev_cost[], cost_accum[]) into
+  a struct lru_cost { count, last_rotated, last_io } cost[ANON_AND_FILE]
+  in struct lruvec. (Johannes)
+- Sample rotated and io separately in prepare_scan_control() and
+  compute the raw per-counter deltas before applying the
+  SWAP_CLUSTER_MAX weighting, rather than sampling a pre-weighted sum
+  and taking a delta from it. Easier to reason about the overflow
+  behaviour. (Johannes)
+- Drop the per-side checks in the halving loop; anon > limit implies
+  anon + file > limit for unsigned counters, so only the sum check
+  is needed. (Johannes)
+- Trim the prepare_scan_control() comment back to something close to
+  the original wording. (Johannes)
+
+v2 -> v3: https://lore.kernel.org/all/20260713163443.3562378-1-usama.arif@linux.dev/
+- Reuse NR_VMSCAN_WRITE for anon pageout cost instead of adding
+  PGRECLAIM_PAGEOUT_{ANON,FILE}. Reclaim no longer writes filesystem
+  folios from this path, so there is no file pageout cost. (Johannes)
+- Charge NR_VMSCAN_WRITE through the lruvec/memcg stats and remove the
+  now-unused reclaim_stat.nr_pageout plumbing.
+- Account PGROTATE_{ANON,FILE} in the MGLRU eviction path so the new
+  counters remain meaningful regardless of the active LRU implementation.
+  (sashiko)
+- MGLRU updates PGROTATE_{ANON,FILE} so the counters remain meaningful
+  with it. (sashiko)
+
+v1 -> v2: https://lore.kernel.org/all/20260706122954.3552990-1-usama.arif@linux.dev/
+- Sample via the newly introduced lruvec_page_state_monotonic()
+  to fix a 32-bit delta underflow when the underlying signed
+  long wraps past LONG_MAX (Johannes and sashiko)
+
+RFC -> v1: https://lore.kernel.org/all/20260626122009.75334-1-usama.arif@linux.dev/
+- Document in coverletter and commit message  how the read-side vmstat accumulator
+  improves cost-model aging across reclaim gaps (Johannes)
+- Fully decay the cost_accum below lrusize / 4 using a while loop (sashiko)
+ 
+Usama Arif (3):
+  mm/vmstat, mm/memcontrol: add _monotonic vmstat readers
+  mm/vmscan: add pgrotate_anon and pgrotate_file vmstat counters
+  mm/vmscan: reduce lru_lock contention via vmstat-derived scan-balance
+    cost
+
+ include/linux/memcontrol.h |  8 ++++
+ include/linux/mmzone.h     | 15 +++++-
+ include/linux/swap.h       |  3 --
+ include/linux/vmstat.h     | 17 ++++++-
+ mm/memcontrol-v1.c         |  4 +-
+ mm/memcontrol.c            | 39 ++++++++++++++++
+ mm/mmzone.c                |  1 +
+ mm/swap.c                  | 69 ----------------------------
+ mm/vmscan.c                | 93 ++++++++++++++++++++++++++++++++------
+ mm/vmstat.c                | 13 ++++++
+ mm/workingset.c            |  5 --
+ 11 files changed, 171 insertions(+), 96 deletions(-)
+
+-- 
+2.53.0-Meta
+
 
