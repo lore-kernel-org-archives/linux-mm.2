@@ -4,101 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41469C53209
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 17:18:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87427C531D0
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 17:24:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1EC316B009D; Mon, 27 Jul 2026 13:18:37 -0400 (EDT)
+	id 810F76B007B; Mon, 27 Jul 2026 13:24:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 19D796B009F; Mon, 27 Jul 2026 13:18:37 -0400 (EDT)
+	id 79B5E6B0088; Mon, 27 Jul 2026 13:24:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 08DF76B00A4; Mon, 27 Jul 2026 13:18:37 -0400 (EDT)
+	id 63EF66B008A; Mon, 27 Jul 2026 13:24:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CFBA06B009D
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 13:18:36 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5633616014D
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 17:18:36 +0000 (UTC)
-X-FDA: 85035215832.16.BAB8366
-Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 565F0100006
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 17:18:34 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=SrvT9X6n;
-	spf=pass (imf14.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 319FD6B007B
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 13:24:03 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C1954A0634
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 17:24:02 +0000 (UTC)
+X-FDA: 85035229524.14.2927C3E
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+	by imf24.hostedemail.com (Postfix) with ESMTP id A85E1180007
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 17:24:00 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=HNc1E0EA;
+	spf=pass (imf24.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.54 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785172714;
+	s=arc-20220608; t=1785173041;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vuWbOoJyujNfmWfTnbDRre0Xx+nHPBkZLj3gLNMEYTM=;
-	b=6vCvd35mAoRFVRovpJi10ZtOS0GNTjLsNDcUwt+/sV3RMcUogqdy6ALyn7p0f39EWGHPIt
-	rmEpkZOSYX/Qn+CaXZa32x1pgMldfxebl2v/KDWo/racM9sdIICY+VDF2F02pXNVyPY9o4
-	mHl086VAJxXeqw5HvUtVcDbT6WcKofw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785172714;
-	b=FJ5ucoywMt7kAK/sJlapWCn/WZ8Q2Dp/1w6bnrSSZ0omz7urV1EbGpEwqAHHuYKcNyqwwZ
-	ASCwzKmE5FC+7X8bqN46pKh4yv/unUr+NwOW1rWeh6JJMCP8sM1QprELHjaGDmL7e6Gq0e
-	mOtcVyXuGkEQREhz9mYBwigJHtTFwSU=
+	bh=5/ZbfBCCG0jHDBCNH9TydT1nctmDeBJrWwsqu8EzeJ4=;
+	b=fzC4ZP+saFlv7q3RSVxPSwZsFEMOI4zZX+OzcQvcscmCvx3NcHZY0ujPgerz65D49Z6mAG
+	tLVCwme+hhXf8D3CC8sDv6lfD8ESov0w6k6nJ3tw7XMTp0BTQsXAitm4D5u1zQ6pl32p1w
+	41faaaGqyn4D2gE6968toGONIewJBiA=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=SrvT9X6n;
-	spf=pass (imf14.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785172712;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vuWbOoJyujNfmWfTnbDRre0Xx+nHPBkZLj3gLNMEYTM=;
-	b=SrvT9X6neSmjeBoZuqVI8g5upFQUa3BlCUtZ36e7neOQ65nl2n5rm5LE5ogKmPN4Tavk4Z
-	5lu/hB5Ep+0rpZxAR12DEBl9RVmiLn4/CJkSj6nipM+1dr2plskjC/0MD03y2GIcLyKjwy
-	qPMR3asJHVlIlP/BnwzOQs1q4+o2Q58=
-From: Usama Arif <usama.arif@linux.dev>
-To: Muhammad Usama Anjum <usama.anjum@arm.com>
-Cc: Usama Arif <usama.arif@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 3/5] selftests/mm: skip khugepaged swap tests without swap
-Date: Mon, 27 Jul 2026 10:18:25 -0700
-Message-ID: <20260727171825.2835957-1-usama.arif@linux.dev>
-In-Reply-To: <20260727095225.372655-4-usama.anjum@arm.com>
-References: 
+	imf24.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=HNc1E0EA;
+	spf=pass (imf24.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.54 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785173041;
+	b=HmL3yANw0T0GLFaK2H3LS/AaDoiawKZ8JQ3F1BfWyc8+ug2cAhzdwHTzwjCepxiKEykMzK
+	yX5wM2Z3wiZr6aIuSl0KMo9+i3mLonlxjDQqQNXcKvrCIAaGcUwZW88oHBuPyLP2ldf/Ll
+	mXNGbZzhw4m9MACi8lltIj+qozWWzKI=
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-8ff88549786so29809216d6.3
+        for <linux-mm@kvack.org>; Mon, 27 Jul 2026 10:24:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1785173040; x=1785777840; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=5/ZbfBCCG0jHDBCNH9TydT1nctmDeBJrWwsqu8EzeJ4=;
+        b=HNc1E0EAjwPio6w/nHI3kt/xg2nMEs8bNjdTJCVhjsXk1FTq9uiPLZObtDeCuinDFl
+         USzsIpm3N51inlgP0rtqxsdEduBJS7cJq7XgMmfxw1mYC5+tNQoHue8DnGNpSCmmBXpv
+         ozXTh86RPWE0aTLXyl8jzy5WTJx6bX9fRmc2QU4uq3QPZuUcY8C6dL8ZLHbEibl1KKnw
+         gzY0AGCxNbwMo1sXC1AwScuAyA5ZV/NmJAOO7+KOPkDnXGu7+qxZ3ajOrouvbhYKY4nl
+         YUqAaAAGZ6P/m3GFD2M68hgo15xeaxTJgj/trPh0K1/uYIXnApxtIESru4zQhVxpPDHE
+         AjVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785173040; x=1785777840;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=5/ZbfBCCG0jHDBCNH9TydT1nctmDeBJrWwsqu8EzeJ4=;
+        b=JsIzu752JE7eYXEVAQIo5IbLeNxc99LHNzNJJdlootg/BBrFjE+XlXNNmr9F2akRDg
+         qhB8XcYMQ7k1MvMseuehcSsOwD569duCW7cIkth88BXkPQqZx07/iCEV32ZINqkr3z32
+         LTxOvz18Y0zpBLQXUvxhvt+cg+UBlp+pe927r4Dl8XLhEl6xBWZiZD/p31YepGnkvyOE
+         SVrSX50En8Sfd/uEn+DPiNsmOIe/TTNDJ2J+xeR0EJInXOdY4uFRjRf0KJlpYYJEi8wX
+         0/uwG0C2HHdfhl5T9st8N8YjGN5klE+3OcZlYL+BZyjH4Txx2S3ElTAnyBcokfK3646F
+         Ufpw==
+X-Forwarded-Encrypted: i=1; AHgh+RqEE8YcRSFVL89x8o81wdHUiPJTVt6pGOhmnO16ORmLrEfAhj7QvdYV34YUAVvHzgAJqQp5jnVjpg==@kvack.org
+X-Gm-Message-State: AOJu0Yw3Pyq8Br8XSsqSXt8oQg2PbNgMD1KB/XwVxPsZDtL9NAHVHOkg
+	ebs+wDIU+zgP5jMYR0tGYlWq5wnGK3T+jaT7G0KL6VkmWEPlWsujOToimUbcPCb+y24=
+X-Gm-Gg: AR+sD10xQIj2zgF2YKTVm34Nw7Zj4BBOm/wRWLnVqMjnilf+g986nz3RoYi+gG9gnK4
+	eotxGtBcEMCL3s5jMgwK/RpALTRolVnmmmudsfzGm8vV6MmgFebDXX+emyCiMOD8JlGzwX6vXNB
+	bfV0onBOmz5AoUQDSNUaZ+SZOX1Z8JrfiXsjKtrrfc6AJNySvIIueuW3DtqlWGLTiNBjPX+O/IH
+	dj0fRwASxSON+4w8yA6VSqCaUVf8TSuLjCKZL6QY9P79deaPgXPUxYOWOthX2emODsEtxmzxgMf
+	YQqqXsB0TeYhOaeeJNQ9J8/obk128plvDD2BjZcnhZuU318bxcBwvk6iGvJ2VistfaYue3nj4xD
+	saKS1izZY6H854+jzDbQMaCUv9XgMSsPb51ufQcCNVyNA5FNV6Re4LSsmqqk+BjD2jXvAhb8iFJ
+	2kUjxmqmA15y4kYHlHyy8OBmOKSr78Aws7V+UuUN05ecWzV+xxr8tEEsfdmuoj9ShaOVZNHB4=
+X-Received: by 2002:a05:6214:e6f:b0:8df:93d1:ca18 with SMTP id 6a1803df08f44-90812689696mr6173636d6.3.1785173039676;
+        Mon, 27 Jul 2026 10:23:59 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-907e858c4c1sm69737366d6.22.2026.07.27.10.23.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Jul 2026 10:23:59 -0700 (PDT)
+Date: Mon, 27 Jul 2026 13:23:55 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org,
+	ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+	kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev,
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+	chrisl@kernel.org, nphamcs@gmail.com, baoquan.he@linux.dev,
+	youngjun.park@lge.com, roman.gushchin@linux.dev,
+	muchun.song@linux.dev, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+	rientjes@google.com, kernel-team@meta.com
+Subject: Re: [PATCH v5 2/3] mm/vmscan: add pgrotate_anon and pgrotate_file
+ vmstat counters
+Message-ID: <ameUK827HSgx77kW@cmpxchg.org>
+References: <20260727162550.2032-1-usama.arif@linux.dev>
+ <20260727162550.2032-3-usama.arif@linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: jaiet6fahegc9ygigew4n419zgq8zp4r
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260727162550.2032-3-usama.arif@linux.dev>
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 565F0100006
-X-HE-Tag: 1785172714-303281
-X-HE-Meta: U2FsdGVkX1/7v/30yUvBvkSUBepJTauTPG1j0kL8k4qBr+ERZLXO5HnQfjwQuvEZucQJXv1NTaEMuFkrwV7pOZLGp2kdC2sa+UEVELiPj1CL0WbOONO/F0313naqkmbDQ9ZcDSvqs/umOtnbKipL6pQ0BFE3c2xAqHKMLaxNP5SvsERqUJmibsYyHW63uo5D5TzbgoW4+6qCtdyUELdAxfKu0Q2ldWDG0GraUxeO84tnAh+GG89RmLEHqhSSqEU2pwfuWQMnQO0XkvwFMcXPBCh1HkLlejbeOyJVIcFyFdpOUMcE3+G2XxbY4BjNujKo0o+0XEmHJJ7uQkSy/VrGlbw1991KJpyIWBka/JM2N1bsUAsUOpIp44N/3Mm3rMOfUp7/SBr/fmqNTWnJNnsZ16d1AYNTNu3EjDg87EarsCA5C8y8ICksyAXDyH6C9dYIMV52gpIgsCp8gTVwP+hyoAucxav7FWXbXiZaSAQoIsUIaxyL83j2Ilj4OUhQtbUOxbh3kHkaF2MbGmpm2855u7FlrErSv+gd0d4iboZ7Sm0XW5NaFZkP4S8aTHD6yuVOsia6x+guujExClPyAhKaim935eGnKP7Kaxif56rXnQnMlAZ+E/eoTkU9BvAL+PuAmsryVZz8xJRa5LVBDj6raPl95IzVOEF9Eu8f8IJvCNdfnPVGat/OZQQpZn4YyR1o2ez9CXyYtgPtKV+4ZB8jzXliIP2ad/+8tvO4Ahc8FrBDW6ggJGuBRVJ9ni6RBokAyzEx2kPCc12alqcxirxr07Gbtiqw1UR9KKFNv/2B+RQOJmNzyvkJl4M3YHObQ0Q/1HIzI+/l++ZPcFv5QpHU6fq94EcNwykn3fVzvUr7nnnZG2bc6vg+dP913scVwj4pOjpL23UB7oXiCTmNIHrJElaMGrkOZPUTxbH9/quXBgg5WVsXXQLmuuEPqCym2BSh66PQN5BI8tsczAw+hn5
- raK8uNqQ
- coRtlBxq7ycMV6u/i8pGiLCNz7QnZm8Ndes12rTNoQ+y/TA6ITnZot3UKzbHR5Kc9FfMsaUVQzu6IKNRfSM+EPijdlqc0WrOquTMYd1AVZpAg2NKKhMNa+QZVrY9dQmZDY9BrutV3LUvgAg2mh+uf9mT7Vma+REOrFqHDzbbCmBXHadvZNywkgMdLAnqTZvq16XrQeCAlAWNtJWmaa0MMjmKX/X6F83Sv4iHVj9o2Ky9Gdh2CqA6M+BkPfLaXSaSKNRBc3ZxcQyZtGon3e/JicWcsBAchkAbAzb9ACaBwU28W2UDq3czcs+yOmZmk8Hj3d2QrQ6XqXebwEm4=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A85E1180007
+X-Stat-Signature: y159953fxya6znu41oq8pard3kwu9kg7
+X-HE-Tag: 1785173040-371455
+X-HE-Meta: U2FsdGVkX1+Dw6oR9MNSe99xAF+kK3z0/+g+ogfBzn1JMK+qPXwS3j/qbRwHw/oMPpETSY84ThP0W1ArVZxU8PRlyiQ3TFbZrWrb9+WRqPexCtbt0UapIwbFYA5NIGz8GIRt0r+19r4aY6Yt8fwYGWJKauVu+k7/Tf22CD5ox2ZHmNBfXiXoTaCsv/EpHOyyrA4Gcm1unNwWCPBvmvGDYu/o7Wg4W+MIqglzcaCv0vtSEHl3+SNA+tJpVvG3kokT93ZQxqPl4gCUm7oUgQ9qUDL/sKnxV0jq9z583DCip+netXud3L7OcvJvRz5Qopie/zheFlAj7QetQtoeG1NRkhNkooXOxJIiCSGlvYeF3yOaf1ANyz2mO0LnEkggmEjHqLMHxLnF5pVTUS5uG3o6pzOvMDBo5vpseaC7InR6jQkXlDNLwnA7A/IAqdOnD5md3LVCoLcI9HMjAany6hP2KO5lN+j5vr0jW76+cpBCI8occMUhuVcL5iSg/Aokf3kvFIcflQQ7Qt2VA5j8IiB4zVULKn0ixX+C/Y6lo2EzI2/3A6ylw42TxZ3ruti1rWboX+PZ8x3SQKNybHfe5k9iZD9j5APFwxNwyRclwW3sCdXBLOm5VVInjP5TBunp52/VKh9pNWzlRbMVPX/8eHnIf2NyeL0RSk2z3SaiknaSCeS50D7pLnDSWyLvA316eTy2HAOe9+tyCm8Z+uJQZKnBWozWnJT+4ei8U5hg8Fg8NZ4Jdqu+qTDIstGf4S9PqfZP6QtW7RrhcyTtafINdqh/z4bHm5lEmoYa/Dngq6IDBmL0r66WXRzsEylty+i45RNEKBcb9Z2H9llREbIERf0XU9ZKGI9M701qBaB1URtiyL5mmG79cpQYd4yxxh76Cdagcq5aZ1mHp661dR8jYTZNS1kT9xBLKFows6VeiXJMvUMI9Vfu13ezHiVapu+rPMuAiTWvJBSvc6SvoY6TOdI
+ WmFakJgG
+ 7R29mpl/yGaNOznQiMRLZmH5VuUGLP4wwHZybGrkt2SbzvYXC70Okw08AFtsMaIjHerFP34+wb5auUUPGMapkuN8NnpUbc3CPSAeZ7pVzJ0AiXOrl8PiwJOvJfPqhGzNiibTtzfjfL+ySbg3XdSMGlKUhHm9qJQNch/ZFH3H2MPd5UIchpCbRQwPLIvwTYbgxPeHT5n8h8ApiH0mNy5EHnMyOFuQsrrbe+w/cZoxwMByreHhTvM/bCEgnu8HSfNs4isSTLSanicjC5L9cnXyYLe7FXRUo9oaiMU8biBEYiqBm9z8Q0W6ptF9WW+saGGiz/7bI2xIhilWlT4qKrg9+htn9pxxEkEHLumkWB+dSYhQXncXKdpYKNl+vkvdMM6jcK+tNvFJjnWsTsq8Xm7fY6DsIwijF6viGxNt35swlnIwP15ptvmSFxgL/UJi52BH8a07bPFMeP3Tlt+pwtlG0T+p5bQljj4hlAHGo
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,109 +128,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 27 Jul 2026 10:52:19 +0100 Muhammad Usama Anjum <usama.anjum@arm.com> wrote:
+On Mon, Jul 27, 2026 at 09:23:24AM -0700, Usama Arif wrote:
+> Reclaim can spend substantial work on an LRU type without immediately
+> reclaiming or demoting a corresponding amount of memory. Record this
+> work in PGROTATE_ANON and PGROTATE_FILE.
+> 
+> For classic LRU reclaim:
+> 
+>   - Inactive-list reclaim adds nr_scanned - nr_reclaimed to the
+>     corresponding anon/file counter when isolation succeeds.
+>   - Active-list reclaim adds referenced executable file folios that
+>     are retained on the active list to PGROTATE_FILE. Active anon
+>     reclaim does not contribute this component.
+> 
+> For MGLRU, add the number of initially isolated pages that remain
+> unreclaimed after both the initial and retry passes to the counter for
+> the selected anon/file type.
+> 
+> These counters are distinct from the existing pgrotated vm event.
+> pgrotated records an actual move to the inactive-list tail, primarily
+> after reclaim-marked writeback completes or failed invalidation leaves
+> a folio for accelerated reclaim. PGROTATE_ANON and PGROTATE_FILE
+> measure reclaim cost and do not imply that a folio moved to an LRU tail.
+> 
+> A subsequent patch will consume these counters for anon/file scan
+> balancing.
+> 
+> Signed-off-by: Usama Arif <usama.arif@linux.dev>
 
-> collapse_swapin_single_pte and collapse_max_ptes_swap require
-> MADV_PAGEOUT to replace anonymous pages with swap entries. On swapless
-> systems there is no backing store with which to create those entries,
-> so check_swap() reports missing setup rather than broken khugepaged
-> behavior.
-> 
-> Swapless configurations are common on Android and other constrained
-> test devices. Failing these cases obscures actionable results from the
-> rest of the khugepaged suite.
-> 
-> Check /proc/swaps before either swap-dependent case and skip when no
-> active swap area exists. With swap present, retain the existing
-> MADV_PAGEOUT and swap-entry assertions unchanged.
-> 
-> Print each existing swapout diagnostic before the prerequisite check
-> so skip() completes a KTAP diagnostic line instead of emitting an
-> unprefixed message.
-> 
-> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
-> ---
-> Changes since v1:
-> - Print swapout diagnostics before reporting no-swap skips.
-> ---
->  tools/testing/selftests/mm/khugepaged.c | 38 +++++++++++++++++++++++--
->  1 file changed, 36 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
-> index 10e8dedcb087d..54e888eb48bbc 100644
-> --- a/tools/testing/selftests/mm/khugepaged.c
-> +++ b/tools/testing/selftests/mm/khugepaged.c
-> @@ -100,6 +100,28 @@ static void skip(const char *msg)
->  	exit_status = KSFT_SKIP;
->  }
->  
-> +static bool is_swap_enabled(void)
-> +{
-> +	char buf[MAX_LINE_LENGTH];
-> +	FILE *file;
-> +	bool enabled = false;
-> +
-> +	file = fopen("/proc/swaps", "r");
-> +	if (!file)
-> +		return false;
-> +
-> +	if (!fgets(buf, sizeof(buf), file))
-> +		goto out;
-> +
-> +	/* Check for first active swap entry. */
-> +	if (fgets(buf, sizeof(buf), file))
-> +		enabled = true;
-> +
-> +out:
-> +	fclose(file);
-> +	return enabled;
-> +}
-> +
-
-Could is_swap_enabled() be moved to vm_util.c. This will definitely be reusable
-in other places.
-
->  static void save_settings(void)
->  {
->  	ksft_print_msg("Save THP and khugepaged settings...");
-> @@ -734,10 +756,16 @@ static void collapse_swapin_single_pte(struct collapse_context *c, struct mem_op
->  {
->  	void *p;
->  
-> +	ksft_print_msg("Swapout one page...");
-> +	if (!is_swap_enabled()) {
-> +		skip("No active swap");
-> +		ksft_test_result_report(exit_status, "%s\n", __func__);
-> +		return;
-> +	}
-> +
->  	p = ops->setup_area(1);
->  	ops->fault(p, 0, hpage_pmd_size);
->  
-> -	ksft_print_msg("Swapout one page...");
->  	if (madvise(p, page_size, MADV_PAGEOUT))
->  		ksft_exit_fail_perror("madvise(MADV_PAGEOUT)");
->  	if (check_swap(p, page_size)) {
-> @@ -760,10 +788,16 @@ static void collapse_max_ptes_swap(struct collapse_context *c, struct mem_ops *o
->  	int max_ptes_swap = thp_read_num("khugepaged/max_ptes_swap");
->  	void *p;
->  
-> +	ksft_print_msg("Swapout %d of %d pages...", max_ptes_swap + 1, hpage_pmd_nr);
-> +	if (!is_swap_enabled()) {
-> +		skip("No active swap");
-> +		ksft_test_result_report(exit_status, "%s\n", __func__);
-> +		return;
-> +	}
-> +
->  	p = ops->setup_area(1);
->  	ops->fault(p, 0, hpage_pmd_size);
->  
-> -	ksft_print_msg("Swapout %d of %d pages...", max_ptes_swap + 1, hpage_pmd_nr);
->  	if (madvise(p, (max_ptes_swap + 1) * page_size, MADV_PAGEOUT))
->  		ksft_exit_fail_perror("madvise(MADV_PAGEOUT)");
->  	if (check_swap(p, (max_ptes_swap + 1) * page_size)) {
-> -- 
-> 2.47.3
-> 
-> 
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 
