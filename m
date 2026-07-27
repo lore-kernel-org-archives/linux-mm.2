@@ -4,92 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC2EFC53219
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 09:55:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 516E1C531D0
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 10:08:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B096B6B00A2; Mon, 27 Jul 2026 05:55:00 -0400 (EDT)
+	id E093D6B00A6; Mon, 27 Jul 2026 06:08:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ABA576B00A4; Mon, 27 Jul 2026 05:55:00 -0400 (EDT)
+	id DB8DA6B00A9; Mon, 27 Jul 2026 06:08:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F9246B00A5; Mon, 27 Jul 2026 05:55:00 -0400 (EDT)
+	id CF9F86B00AA; Mon, 27 Jul 2026 06:08:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6AFD56B00A2
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 05:55:00 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D96451C0E46
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 09:54:59 +0000 (UTC)
-X-FDA: 85034097918.03.9B688D2
-Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 2ABD9160007
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 09:54:58 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Pu+k9Hkn;
-	spf=pass (imf08.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785146098;
-	b=BoVy/DXe89b1R4d0jIu5o3Pk+1k0+5tT+YG5V5LWBHxq/nKhXo1LvsgxXhXsMgf6MVasFl
-	MJgoIeYZrjb77mqKlkfpXJIJ58qTXIrgZA3aEk6WJOo7fH5Z8yerIvsdjoSJCn1JhgdypH
-	tsQqrH30PfwV5HMvsuVQu3mLXdma7Xk=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Pu+k9Hkn;
-	spf=pass (imf08.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AB50B6B00A6
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 06:08:29 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 44914406B5
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 10:08:29 +0000 (UTC)
+X-FDA: 85034131938.17.816F223
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 7813640006
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 10:08:27 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Cn4G1dYW;
+	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785146098;
+	s=arc-20220608; t=1785146907;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=FgYVRL1tlXQScTSC3dysRI0YQkKByHkMOxweBGBsepM=;
-	b=IAI9dFIEni8Ly+iqMSTNvwHaTPLAHoL8EoZ1V5zRKzju3BC9ToC1F2KHKKdQCb9zt9Nzr9
-	zvUUzpvKm77OvuF8rQL2+U3oQO64VNXZGlrXPtqnHsSvqHTyjy1w+OB4dVMjL9ZfPliPit
-	jlDiQK0AoeVjHXthgKgVwdHDWZvg/EU=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785146095;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=FgYVRL1tlXQScTSC3dysRI0YQkKByHkMOxweBGBsepM=;
-	b=Pu+k9HknezyVEwEXvqKoksxaMAHsADHucnYz8DJ26j7yYxOB1esAumkh/Ph9j3igBv82FQ
-	OolxG26WW9AzUc2RLVk40iWO1Oh5J2bN+cWwEyWiEMIN+qvt5LrbMa0tbKOJzOZIRW/DhW
-	I6ZjLElXBXFDMZXcpKDGm2jqAydhG4Q=
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-To: damon@lists.linux.dev
-Cc: jiayuan.chen@linux.dev,
-	Jiayuan Chen <jiayuan.chen@shopee.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=I03Tf7oe1oyPKkCeh2/uxA3siPkO86atNMUY0KznFQI=;
+	b=dzy+GfcA03A9QfZmDyAIRiQ6vjprlY3slZdlSJ56JRj5XwKD0PnDrAm6qUyJ4oPboDLXtv
+	1Ix9Hhh6wFEIsDd3E19EImkvF8iscBh4jryruig8pT0A/wMr+pwftukqzJ361ggAGqR34W
+	ZoOhWpOIkylHb3FvTzM/nUKhe8rHdps=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785146907;
+	b=EETKa3PeLjuF/lGMhTLqKdTlOIn/Y3Drs772XPsemwR+JX20APQQwwvO9HEGa4YX7mpga4
+	5JLNcDr6vlMGNALMx4P2GfljD5PdaHC+C45XpwFkdOz5En7sCvjNg0tLU6KbRVYBCNv4yh
+	9tNm3Gqq65/+lLpbD7prCYUl3zZ4GSw=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Cn4G1dYW;
+	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 59AA642DD9;
+	Mon, 27 Jul 2026 10:08:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA7771F000E9;
+	Mon, 27 Jul 2026 10:08:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785146906;
+	bh=I03Tf7oe1oyPKkCeh2/uxA3siPkO86atNMUY0KznFQI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Cn4G1dYW14+InpRXOVRcBBEQ07NLqLs6jK/EZ35lNz8Esh0P26puvKGNauqqfEeh7
+	 9osfo7sqwksjbyu4yX1mwS/iEbCZkW61Yfj+un3HoLHZemTan+2w77PFgAbeebUiiy
+	 I5BYfz3xEnC9ZSbjnpdMAN4ogt1BFORpYP8aJvfMSz/J5AHvUjYG/pZ/KLNsoFbx7y
+	 kq8ZUrlqSbfPCC5/NBrXNv0uBsFaTLR0D6yw/5i58V91kGNLmboB1/Aj8eJ085Ax8L
+	 jsU/MRpgj8oTWBsEvYTUfIynnzcYvidOgP83QTQpp1mwbsALCPZWrGozEblgb/obUH
+	 VCelFTLPuBqRA==
+Date: Mon, 27 Jul 2026 13:08:18 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Muchun Song <muchun.song@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Pratyush Yadav <pratyush@kernel.org>,
 	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	SJ Park <sj@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	linux-mm@kvack.org,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Alexander Graf <graf@amazon.com>,
+	Oscar Salvador <osalvador@suse.de>, Jason Miu <jasonmiu@google.com>,
+	Jork Loeser <jloeser@linux.microsoft.com>,
+	kexec@lists.infradead.org, linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org
-Subject: [PATCH 1/2] mm/damon/core: cover discrete System RAM areas with per-range regions
-Date: Mon, 27 Jul 2026 17:54:22 +0800
-Message-ID: <20260727095429.143527-1-jiayuan.chen@linux.dev>
+	Muchun Song <songmuchun@bytedance.com>
+Subject: Re: [PATCH v4 16/21] mm/mm_init: simplify deferred_free_pages()
+ migratetype init
+Message-ID: <amcuEiLzIunJwZVx@kernel.org>
+References: <20260725172133.4018491-1-pratyush@kernel.org>
+ <20260725172133.4018491-17-pratyush@kernel.org>
+ <amXelr2DcRRyZDY4@kernel.org>
+ <20260726202522.e55861cc87fc3e0c6d030e1f@linux-foundation.org>
+ <92E24479-07A8-4998-9607-87420A8BE04E@linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 2ABD9160007
-X-Stat-Signature: z7m84ifbz5aboo14a8c7ax88r5acmgu3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <92E24479-07A8-4998-9607-87420A8BE04E@linux.dev>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 7813640006
+X-Stat-Signature: 9ajo78d7odqqc1opyrkjyqwzj9dh6qz5
 X-Rspam-User: 
-X-HE-Tag: 1785146098-64581
-X-HE-Meta: U2FsdGVkX1+8B1Cam70aD674vz6jouWAqcMYQDeGppIX3aurqzdFUEzk12dHYhsFQDixbPoiUmZJXg/MzRd5V9XgCfhegEAKg4f2JPaT6P6I+wrTVn1pV9X207/dzWQtKIbHjy5qsU309br+YjDWaJatZ0qYW1s8u2clR2K1Sl7R+fKFyFXKyPCGdxnZOjEqO0WrabXi+y/XkkKTf9jIYdrPbbNgWTZZQXDhP8pnldkRF0U3VL2vlXq3H3DfA6R9cwDYqT+LaeL9tZXG+vGDI8luegVEfIbd9JB37pRPmEdZu7TeyopL8X+BN7MTx47Pan0MBy+H3doZHWJ7IwNNA9LsRE3CPLYeyURxrLM8MHCfozosvy4iYa6+wanwB1k1RcB82RaOR/NvMGZ5mdsMCYSSkyVDkajX3yQKwaHZcHrnSDlLI11EolZ8IlMbGnvZbsfgu1oO5YS9rMlXjD8UN699anqeNNPhE3xsLm4UJPk+ur75/V5WzZMURM8+3f71g2Ql6xwq7PPyLEQYTrGX7yuIZDIxG2KJ7C9Hhaf9g6ze8fATUXDLfokLUP0UWPyv7L71C7RFgRJOonFRoI3ghJGK45pqGnqEf0RlfaAtH4mLKa5F6v0hp2rXOfMdjgxeYHd5fDeJW79je5aHUs8vntJiEO634QDXVHkEMr68IhJI5JEorgg06Tscyp3B5Cwi5wLC2Iv9q6Bp9U267JWr+pGk9c3EMqq6febPg2b2hsSFPNCguWosHrcMC0eS2oxcwnB+m5hGPhKnBC+J3XRwUQQLyevBZW7btk7edKtjeZ/VW13oqIwRAQvelN859++iNfphJMT5PWkXRoZiWwFdIlbrOnpcMWLRkSrmUlZKYkHpwRNXPEjGT6CTatEweI5Z4PE29Kp3KEwoQtNpe2/fe9rqAlY/McfujhOGbtgKiDRQbc5mZBTNFbiQUYv8xZpc5CmW8PaeC7wS50kYOYV
- ok5CqpHl
- WDolljaEPi+G6sdDkCHrdm8WPcOvK7v8XJJLhiQAyh+5p4eahihyAH6hWjuhT/H0TLstQSftAuU87YrYUy/JMAATxlurnSTRdz6KmqunXRm5as6M/nM1xcxQ+datb7teu1AAPtPPtOt3adpyoV42lnDh1WdCiHSHmnXb9MCNPaooiGJ1xS3lGasMvU4Z+JkQeB0WXiDav8m8hG7MbKD2ZbrJanohGOAQNSUdxh8WwmjVmoCBZ16n/JLS1J7pm0RX2jzf0
+X-HE-Tag: 1785146907-242148
+X-HE-Meta: U2FsdGVkX19h599M2lmzT7GMbG7ZnEC+bwj/5kWU6QuH+jxAKq+56ZC16qbAY9SzsIxZuMaYZcti/l24/kkY0wWGeeQaXeQnamGeTi3ILWSPE1Mkw8fmCItCRJKAyA1F7I97nTaTpEdNoguL0KXmXV1dbPwj2CEpIb2CgApoB2jZge5GccbIk71Mpzalx9FQ9sfh0K2rCAZZO9m+UQ3iRKJBUjsrkhEmm0hwFtFtrxIFrls6jhI0RLf8Ya3Ao3mDoX3kAnnkq6ZzMi9oQAVigE7VpUUDN7uRpYR7BtSR5XYVs9vFDVpgD4rsqejAUIfqyioFfkap/aIfcAtEAlREw+5ztxgCgkOKuX73dwfeK2ZhIvj7CsxxCjhPjxPuvAbi9XhIBNbrVI2sJK4jE6/JrByUYiISV3iVnqxPXNjGDpAWKvKs29ctbSp7slzu9QI5YjnnBIrPI3hWxneHq2+kmh1BPEJTfjmh0YDeQv9aMSaiYzMc1nvx3TSHbhca/S27OCTK65Oiekq36KnPqKJgEsLJ3g/rPXS2/Go4VHQpzh0191PGYglClpfXadA1Ca1kQCwERCXgcBgPEbVI01sjW2sBv5fbYFBoM9+2DQepo3dbUsO8IVfHbMEAKApROQkVDGHY8/y7Z8DOz9LzvI0jHwzTd+QjEwptXmqT2ASc2SHdyVNtJFBhuQ1ccZq5odk4HSAeFAxfsAnjC7xNvgdK7aoHBN4h1Mg+a0aIe2ZahoOlubb+/Cjx76EwHoJhRSMJje0yZF7BAqO2LoNvzlQoZaQd6iuSRroD/3SZ2FQ5WUS3EXArAJ36qYtc2uX+/nixKpd5pp/4q+0U4LxM53iWIqMj7XwbZDkr3hiZHYL9AKeOjCT4Qew2JkKAff82I9M6DK+C60SEfz54dFPvdfyYt3/r74bVuAXOuUGIZj4BfKdyR172W0Vpnolyz3Vbs0cUmylDfWv0P/lGYDuaVJ3
+ /n1CYspX
+ RVL+DWARxDK3RlM6moCVpksl19/z/d9m3Sckh87qgrTcGeN5ExJl2GDuolFEaatUsFPDN9yUjdMCfv8igjHJ2tQZLqSBzcVtw+iixhNxG3KQZM28L7et7VWCYi+s23vyUzG3uiaedJXuHH65YElXoUaJ3y1lc2YC+tDhxW95U5AQyEEiB1+KVSKuhmQR370k/7A6LPvfowHv/avO2vkyWZkGdQKT9PBpzmuHyXP94fAipROOKxcUSfpOitga3LVekROi4CVpNVGHWJ2xSUlSERIdPwj95RN3FuSP4BegL+hir6yF6A6cnqdlxicmFcxUH3Ia26aeQV50zGevH3YgJFFc2En4uOdvyfOZkYJRq+JMiGVuyuuRLRX6pBMVQe/GHoAIk8QVw24MuO21jXj9L6qt/qkOWznk7WLKs
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,224 +103,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Jiayuan Chen <jiayuan.chen@shopee.com>
+On Mon, Jul 27, 2026 at 11:43:31AM +0800, Muchun Song wrote:
+> 
+> 
+> > On Jul 27, 2026, at 11:25, Andrew Morton <akpm@linux-foundation.org> wrote:
+> > 
+> > On Sun, 26 Jul 2026 13:16:54 +0300 Mike Rapoport <rppt@kernel.org> wrote:
+> > 
+> >> On Sat, Jul 25, 2026 at 07:21:16PM +0200, Pratyush Yadav wrote:
+> >>> From: Muchun Song <songmuchun@bytedance.com>
+> >>> 
+> >>> deferred_free_pages() open-codes two loops to initialize the pageblock
+> >>> migratetype for a range of pages.
+> >>> 
+> >>> Replace them with pageblock_migratetype_init_range() to remove the
+> >>> duplication and make the code clearer (Note that deferred_free_pages() may
+> >>> be called from atomic context).
+> >>> 
+> >>> Link: https://lore.kernel.org/20260612035903.2468601-6-songmuchun@bytedance.com
+> >>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> >>> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> >>> Acked-by: Oscar Salvador <osalvador@suse.de>
+> >>> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+> >>> ---
+> >>> 
+> >>> Notes:
+> >>>    This patch is taken from Muchun's series [0]. The patch as of today is
+> >>>    in mm-unstable.
+> >> 
+> >> @Andrew,
+> >> 
+> >> It looks like it'll take some time for this patch to get into mm-stable so
+> >> we can't base this work on a branch in the mm tree :(
+> > 
+> > I didn't know anyone was using mm-stable :(
 
-damon_set_region_system_rams_default(), introduced by commit 70d8797c15d6
-("mm/damon: introduce damon_set_region_system_rams_default()"), is used by
-DAMON_RECLAIM, DAMON_LRU_SORT and DAMON_STAT to set the default monitoring
-target address range covering all 'System RAM' when the user does not
-specify a range.  It walks the 'System RAM' resources but keeps only the
-start of the first resource and the end of the last one, and then sets a
-single monitoring region spanning that whole [first_start, last_end] range.
+Maybe nobody uses it because it's not really stable? ;-)
+ 
+> > Series is adequately reviewed and is near head-of-queue so I can move
+> > it into mm-stable a few days hence if that helps?
+> > 
+> >> I'd like to expose the KHO scratch extension to linux-next ASAP so I'm
+> >> inclined to take this patch as a part of this series and live for a while
+> >> with a duplicated commit in linux-next. Once this patch would be in
+> >> mm-stable we can rebase kho-scratch work on top of mm-stable and hopefully
+> >> there will be enough time for it to live in linux-next so that Linus won't
+> >> get angry at us :) 
+> >> 
+> >> How does that sound to you?
+> > 
+> > That's fine - let me know what you choose to do and I'll adapt to it.
+> > 
+> > An unknown (to me) is whether Muchun's series "mm: Refactor bootmem
+> > gigantic hugepage allocation, v4" still works with this patch removed.  Everything
+> > applies OK for what that's worth.
+> 
+> Hi Andrew,
+> 
+> I'd like to confirm that this is a completely independent cleanup patch,
+> so it can be merged on its own.
 
-On systems whose RAM is split into discrete areas that are far apart in the
-physical address space, that single region also covers the holes between
-them.  For example:
+That's great, thanks for confirming!
 
-  $ sudo cat /proc/iomem | grep RAM
-  00001000-0009ffff : System RAM
-  00100000-4848c017 : System RAM
-  4848c018-48550c57 : System RAM
-  48550c58-48551017 : System RAM
-  48551018-48615c57 : System RAM
-  48615c58-48616017 : System RAM
-  48616018-486dac57 : System RAM
-  486dac58-4e563017 : System RAM
-  4e563018-4e627c57 : System RAM
-  4e627c58-4ef39017 : System RAM
-  4ef39018-4ef3f057 : System RAM
-  4ef3f058-4efe6017 : System RAM
-  4efe6018-4efec057 : System RAM
-  4efec058-50247fff : System RAM
-  50317000-56720fff : System RAM
-  56722000-59c19fff : System RAM
-  6bbfe000-6bbfefff : System RAM
-  6bc00000-777fffff : System RAM
-  100000000-1007effffff : System RAM
-  67e80000000-77e7fffffff : System RAM
-
-Here the last two areas (about 1TB starting at 4GiB, and about 1.1TB
-starting at ~6.5TB) are separated by a ~5.5TB hole, and the single-region
-setup makes DAMON treat that entire hole as if it were memory.
-
-This is harmful in a few ways.  The monitoring target regions are limited
-by max_nr_regions, so regions that fall into the hole waste that budget and
-leave fewer regions for the real RAM, coarsening the adaptive regions and
-degrading the monitoring accuracy.  In addition, DAMOS actions on the paddr
-operations set walk such a region page by page, so a region that covers the
-hole is walked for its entire (empty) span on every application.
-
-Set a separate monitoring region for each discrete System RAM area instead,
-coalescing only truly adjacent (no gap in between) resources into one
-range, so holes between the areas are excluded.  The reported *start and
-*end still carry the overall first-start and last-end, so the user-visible
-default range reported via the module parameters is unchanged.
-
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
-Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
----
- mm/damon/core.c | 116 ++++++++++++++++++++++++++++++++++--------------
- 1 file changed, 82 insertions(+), 34 deletions(-)
-
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 760559d495b3..8dd4a0d22064 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -4394,22 +4394,14 @@ static int kdamond_fn(void *data)
- }
+Then I think the easiest would be to take "mm/mm_init: simplify
+deferred_free_pages() migratetype init" via liveupdate tree.
  
- struct damon_system_ram_range_walk_arg {
--	bool walked;
--	struct resource res;
-+	unsigned long addr_unit;
-+	/* NULL in the counting-only pass */
-+	struct damon_addr_range *ranges;
-+	unsigned int nr_ranges;
-+	unsigned long prev_end;
-+	bool has_prev;
- };
- 
--static int damon_system_ram_walk_fn(struct resource *res, void *arg)
--{
--	struct damon_system_ram_range_walk_arg *a = arg;
--
--	if (!a->walked) {
--		a->walked = true;
--		a->res.start = res->start;
--	}
--	a->res.end = res->end;
--	return 0;
--}
--
- static unsigned long damon_res_to_core_addr(resource_size_t ra,
- 		unsigned long addr_unit)
- {
-@@ -4423,23 +4415,66 @@ static unsigned long damon_res_to_core_addr(resource_size_t ra,
- 	return ra / addr_unit;
- }
- 
--static bool damon_find_system_rams_range(unsigned long *start,
--		unsigned long *end, unsigned long addr_unit)
-+static int damon_system_ram_walk_fn(struct resource *res, void *arg)
-+{
-+	struct damon_system_ram_range_walk_arg *a = arg;
-+	unsigned long start = damon_res_to_core_addr(res->start, a->addr_unit);
-+	unsigned long end = damon_res_to_core_addr(res->end + 1, a->addr_unit);
-+
-+	if (end <= start)
-+		return 0;
-+	/*
-+	 * 'System RAM' resources are visited in the ascending address order.
-+	 * Coalesce only truly adjacent (no gap in between) resources into one
-+	 * range, so that any hole between discrete System RAM areas is kept out
-+	 * of the resulting ranges.
-+	 */
-+	if (a->has_prev && a->prev_end == start) {
-+		a->prev_end = end;
-+		if (a->ranges)
-+			a->ranges[a->nr_ranges - 1].end = end;
-+		return 0;
-+	}
-+	if (a->ranges) {
-+		a->ranges[a->nr_ranges].start = start;
-+		a->ranges[a->nr_ranges].end = end;
-+	}
-+	a->nr_ranges++;
-+	a->prev_end = end;
-+	a->has_prev = true;
-+	return 0;
-+}
-+
-+/*
-+ * Find all 'System RAM' areas and return them as an array of coalesced
-+ * damon_addr_range.  On success, *ranges points to a kvmalloc'ed array that the
-+ * caller should kvfree(), and the number of ranges is returned.  Returns 0 if
-+ * no System RAM is found, or a negative error code on failure.
-+ */
-+static int damon_find_system_rams(struct damon_addr_range **ranges_out,
-+				  unsigned long addr_unit)
- {
--	struct damon_system_ram_range_walk_arg arg = {};
-+	struct damon_system_ram_range_walk_arg arg = { .addr_unit = addr_unit };
-+	struct damon_addr_range *ranges;
- 
-+	/* First pass: count the coalesced ranges. */
- 	walk_system_ram_res(0, -1, &arg, damon_system_ram_walk_fn);
--	if (!arg.walked)
--		return false;
--	*start = damon_res_to_core_addr(arg.res.start, addr_unit);
--	*end = damon_res_to_core_addr(arg.res.end + 1, addr_unit);
--	if (*end <= *start)
--		return false;
--	return true;
-+	if (!arg.nr_ranges)
-+		return 0;
-+	ranges = kvmalloc_objs(*ranges, arg.nr_ranges, GFP_KERNEL);
-+	if (!ranges)
-+		return -ENOMEM;
-+	/* Second pass: fill in the coalesced ranges. */
-+	arg.ranges = ranges;
-+	arg.nr_ranges = 0;
-+	arg.has_prev = false;
-+	walk_system_ram_res(0, -1, &arg, damon_system_ram_walk_fn);
-+	*ranges_out = ranges;
-+	return arg.nr_ranges;
- }
- 
- /**
-- * damon_set_region_system_rams_default() - Set the region of the given
-+ * damon_set_region_system_rams_default() - Set the regions of the given
-  * monitoring target as requested, or to cover all 'System RAM' resources.
-  * @t:		The monitoring target to set the region.
-  * @start:	The pointer to the start address of the region.
-@@ -4449,9 +4484,11 @@ static bool damon_find_system_rams_range(unsigned long *start,
-  *
-  * This function sets the region of @t as requested by @start and @end.  If the
-  * values of @start and @end are zero, however, this function finds 'System
-- * RAM' resources and sets the region to cover all the resource.  In the latter
-- * case, this function saves the start and the end addresseses of the first and
-- * the last resources in @start and @end, respectively.
-+ * RAM' resources and sets the monitoring target regions to cover them.  Each
-+ * discrete System RAM area becomes a separate region, so holes between them
-+ * (e.g., on multi-socket or CXL systems) are excluded from the monitoring.  In
-+ * the latter case, this function saves the start and the end addresses of the
-+ * first and the last resources in @start and @end, respectively.
-  *
-  * Return: 0 on success, negative error code otherwise.
-  */
-@@ -4460,14 +4497,25 @@ int damon_set_region_system_rams_default(struct damon_target *t,
- 			unsigned long addr_unit, unsigned long min_region_sz)
- {
- 	struct damon_addr_range addr_range;
-+	struct damon_addr_range *ranges;
-+	int nr_ranges, err;
- 
--	if (!*start && !*end &&
--		!damon_find_system_rams_range(start, end, addr_unit))
--		return -EINVAL;
-+	if (*start || *end) {
-+		addr_range.start = *start;
-+		addr_range.end = *end;
-+		return damon_set_regions(t, &addr_range, 1, min_region_sz);
-+	}
- 
--	addr_range.start = *start;
--	addr_range.end = *end;
--	return damon_set_regions(t, &addr_range, 1, min_region_sz);
-+	nr_ranges = damon_find_system_rams(&ranges, addr_unit);
-+	if (nr_ranges < 0)
-+		return nr_ranges;
-+	if (!nr_ranges)
-+		return -EINVAL;
-+	*start = ranges[0].start;
-+	*end = ranges[nr_ranges - 1].end;
-+	err = damon_set_regions(t, ranges, nr_ranges, min_region_sz);
-+	kvfree(ranges);
-+	return err;
- }
- 
- /**
 -- 
-2.43.0
-
+Sincerely yours,
+Mike.
 
