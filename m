@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E46F8C531D0
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 14:53:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DFAEC53209
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 14:53:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BB4F86B00C6; Mon, 27 Jul 2026 10:53:23 -0400 (EDT)
+	id 832E66B00D2; Mon, 27 Jul 2026 10:53:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B8BE26B00D2; Mon, 27 Jul 2026 10:53:23 -0400 (EDT)
+	id 80AC86B00D4; Mon, 27 Jul 2026 10:53:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA29B6B00D4; Mon, 27 Jul 2026 10:53:23 -0400 (EDT)
+	id 7201C6B00D5; Mon, 27 Jul 2026 10:53:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 743366B00C6
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 10:53:23 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id CEDDF80781
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 14:53:22 +0000 (UTC)
-X-FDA: 85034849844.13.CEFE54C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id E5C3E8000D
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 14:53:20 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EoFro7Fl;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 3FF696B00D2
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 10:53:40 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B53048077E
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 14:53:39 +0000 (UTC)
+X-FDA: 85034850558.23.0DF6297
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id EF761140009
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 14:53:37 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Zgu9IHyw;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785164001;
+	s=arc-20220608; t=1785164017;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KsPWWj7/VTaNMsY0Ly9AHV2InjiwaGth2AKqfNGyj+w=;
-	b=er8FAAgcJfRmH6SGyMYdrzs7E4tV1DPxh6588Lu425a6IPl/HvpdLC4Qeesye+gP3HHxUT
-	n1uCPTL+9E7EqUDCKDoUiVrxcFUPELSEAuk6B+8AwG0mOZL7oh6kDkpUOtnrfuISzgAzTB
-	ceiGOCSNPRU8fBH/pTRax18oQr0BCVc=
+	bh=O0I3AbznuXO2mE0TFpsCIg9z38N+5sXNAYMvOlNx8ss=;
+	b=BFsBjgz9tVcFKaf+ugKrd1bbUvDlQe4ZVzZ+eLWwVEt99LNxsQR3wNAgVDgVY9v8SDdsai
+	8RDJcH9Vi0cIpgGVJuXsxIUEGJtjxshNEitCE4Zm90m6SPP1UMQE2+ivEOwvVqOwfzHSh1
+	QsxPjcikveFkgLomCyuoZqh5tQ4Fubc=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EoFro7Fl;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Zgu9IHyw;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785164001;
-	b=3xnQFRCS507dn7eYwwDcRanu6HQQe3d45QBdhUCJqXGIfHdKgrfE8Q02kqvgM0J+YlwrgY
-	rQEA3gXWzCBcp+zj1kZFmU0NdZHjv6vSa/b0jArnUd/g/UOr4GnvzRweyM/r2w1cj++sGE
-	+xEspVO0udKUS0eYewvYkq3MBz7o9nA=
+	t=1785164018;
+	b=mHlPMJkoJvo+KEbJg2hgOUffSA2T/uH6+AYfFx0ef6ueCHbEOxfbykDebM7oEAZz2fAdVZ
+	hTHHa5+5qYZrRh9gbXNmdIVnE41lUlUn2nGirte++ZHV4vxjo42u35We9DGR/212IrLspe
+	DInXieEfyzoATKaHrGOhM2K8Ohd6O4o=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BCB73403AD;
-	Mon, 27 Jul 2026 14:53:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 269D91F000E9;
-	Mon, 27 Jul 2026 14:53:04 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8A4E1601ED;
+	Mon, 27 Jul 2026 14:53:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 516591F000E9;
+	Mon, 27 Jul 2026 14:53:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785163999;
-	bh=KsPWWj7/VTaNMsY0Ly9AHV2InjiwaGth2AKqfNGyj+w=;
+	s=k20260515; t=1785164017;
+	bh=O0I3AbznuXO2mE0TFpsCIg9z38N+5sXNAYMvOlNx8ss=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=EoFro7FlP6DBJWBjJtDm0DgGwR0HEdBwb92smUr4Z9Hpfdye6lxhg0B0SHEdVI818
-	 cVUfjKOS4E2qpx3ZeSRB1CduYZuC80SzEGx5sVN/LoESnxN97vo9WDlJ51up0gXQxv
-	 qAUAjSod2KJ+lyoHGa0JTGuxU+LtgsgQbLOvBSUaw5/eJ15gfxgD9dEt2I9h70Pt66
-	 7o+8oRC62Vbj1WHQWht4OnK+nDKSH7zmIit5Up0mQIccfaW0OMKmFn1higp+x2gmzj
-	 lvswWjJFmL/Pr6s+GAZpy8YUNIjBSKJefvjpR4kPBzHJW947RU6K99Tz/wE0OJFHL/
-	 Zny76WM8E3voA==
-Message-ID: <f0826f69-bc21-4a96-bb71-6a616025a2a9@kernel.org>
-Date: Mon, 27 Jul 2026 16:53:03 +0200
+	b=Zgu9IHywQkl2KWenokXQBUF+jY0uFmmy17+h8GUQ5iFgZKLbCfdUzfpwqisSTfW5e
+	 p6FG3cFXLjkkFIiqLgoasU5ILijpG8E0yBJ81Dd9IcEdsEwLGkuABt+S3DUykaoGG/
+	 nw6SG+p/C0gxJjXFaUvl+h1m1/bpIGJias8e/PLtCM9J/IkAjtv0uL/p7i4zExwNYy
+	 xZOjdtcCcqfB0p8Qxmjiu8Yw9ofWtG7PrUMdNqISlK1Y+GA7wQV7yZAOeey4pohl35
+	 5MldWmxihWYvo4mcv3xTxeBkYnM4jZoy1DlD96sPOKpO12ADxz7VHiJwruDKAw1mLb
+	 WTDJPWv9rugZg==
+Message-ID: <ff769460-e6fa-43a4-8258-33abfe91c1b5@kernel.org>
+Date: Mon, 27 Jul 2026 16:53:20 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v2 09/20] loongarch: kvm: remove stack copy address of
- pXd in pXd_offset()
+Subject: Re: [PATCH RFC v2 10/20] riscv: kvm: remove stack copy address of pXd
+ in pXd_offset()
 To: Yeoreum Yun <yeoreum.yun@arm.com>, Russell King <linux@armlinux.org.uk>,
  Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
  Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
@@ -100,7 +100,7 @@ Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
  kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
  linux-openrisc@vger.kernel.org
 References: <20260722-dummy_ptxp3-v2-0-d9e4bad31e0a@arm.com>
- <20260722-dummy_ptxp3-v2-9-d9e4bad31e0a@arm.com>
+ <20260722-dummy_ptxp3-v2-10-d9e4bad31e0a@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -147,17 +147,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260722-dummy_ptxp3-v2-9-d9e4bad31e0a@arm.com>
+In-Reply-To: <20260722-dummy_ptxp3-v2-10-d9e4bad31e0a@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: E5C3E8000D
 X-Rspam-User: 
-X-Stat-Signature: 1hzcqdep749g6fdyse8cfxwy916sfaoi
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1785164000-80451
-X-HE-Meta: U2FsdGVkX18HlV1BPfRIl/PD+pPQvrLmbTYrkaVHEQPYvBbeBDVW+K2Ac8BFer/7cX+g18DwqG6CD1T/3f+WoR6C7o4jsGATLWkbzDB24ynY7XV7PjKqM6LWiyffsYwnT+Z5o/6/HS37+kkeM7DFtNT++/gvF34huSoBU47WXeXfFnXHag35V7OG/J/hraNqTY6O7gaaU6wqe7DJOaL2qa6gBdV0ljDFIkFTxWSfa5eitVpn3H0lmxVbQnndwNeBnWN9agawVUUV4Y1Jq6yciKQAKJW3JVpb+4gDIZRbwKWvh/GnOBrELPFUnq6xjC3Xukv4JjX20M9VEtIGxYUlU939Ftfwo/sgrOcq9j6vy4FVaMfM9tSiKs6XJGORVcvPWbhBVLIkyixTYNQ6ih15TyNiZDUzXYQCw3oWWeL5Lfzaml1JysQCkCsPIJYZc0UXiTJ2IcukhST3Ltt8EiFLsJcePlMIw5YCcYDjGc1WJ8Xd+GMLUacDZV6bUgFGcf9w+rB25S9Ei/DtJnoWUYaV+GakNaM69WP6yelDIlrkIRjv1AVSEd7nsEiJVGw9LavEXOZ+qv9OpXucN0CluRZhIVa3wiI/0WVQMEykzyVdIxAn/UILQQUFxWSs8Jwy5GDKDOyclVcCkIBoQztrQ47Htqwnd2M3XrBZCqNGfVRLimZdUDmNLxm0JdRDczyfpbGdXgI37dwvdG8WdfqGzI5nGKmdEJsWDIUxiokFimtg7osl/2FzqRNor1eJRSLYciIXUmvuQ3bAHu9GIKo9oVrcGJbfVUJC57wjZmKYQZfBMeLn1bvrYa+4w8M61Mpiy7M2aUryQBBHJa/VJVpNvBgFMlOE74SUKk/MW664g9GayKeaUdOG4AdOjIv+/VP6oi4Tb9sVvjOy8AxeIdhRjyPr0hqs6NFxYAGa101g1zPuuhfWi95+1xFApfWGUGmPQJMpTZKdEi8xP7X5AY34jW6
- NP3rI0d6
- ENUA9GmLJ+qmPyEPHaalVvRZfgj9l+5CZgBiGB3B7ZiKCCNSLqnPoseOaL7GHpzIcKNRvuvpnbtzOPCuE2pu/imyXEPZkFXqLtm+vgq+GQYoq2l2gUWANA9KYDKxirrtDtdYPCzaetCHTCe6epQN9MmiP0+0PoGQK39j170dIyVKiz05QKJV0ed+4TlY9CAcWzNGshXSIo/J9vQ1iwHI2V4wiSv5OLWr2sZlq4gDjwJsl40sMXmfb04xT2XyI+VTnEofksHLlT7n+fbKEBSFhfc6oWenP6QYIsg6RrsErAz746di5Zj06cm/69HT6NB9BZlvWuBFL3ziZ7k4CK2XolwkHy0XPji2W6oM0+sX7f+gZGIfmeCouQ3ofEzFV1KZMoLJKpNldBSs40pbmTCqABE2FmFaFQANXn8It
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: EF761140009
+X-Stat-Signature: gnx83ba6behx3sc4gsbh457wku5q8wx8
+X-HE-Tag: 1785164017-892637
+X-HE-Meta: U2FsdGVkX18f6rL1BxzlQ2Iu8sXSuGtMgb8ZG5aF3s7eMjXcm+Xc95p0+F6WbuFiPaUlo1fHY/0eqnTPxoYnjuvUWhOL+RN+EJciL2Ic/IRBVdMZ4YTfmgfEwUTKDZFg9BUn87SRvXwUchD3s5ZOyDxp3689NC4d6RNjga5mgPj9sHNgw6r+zP1aH9SErpQa/uwgW5+5RkDpgf6lrs8JlDr85Q0+lW9RPlSNoNtPue2Kf9BUX1oJraeT5yMDFYsPqkt9hlWcQIbSmhZ2m9/VbVfjrHnuKFSBS7SicBh66zf/C0FECx6QBqgF34o3fBQdJsxaHYbom4HwSdF5AQcSqaZzCGq2XyReAEdoYejCnzifMkrXuV07kkTcJOR087Jnkl9uKMS4NYKuOWmniIHT/xBFPpXVycTyzZ2AMOX3QgFc9CgP51dotxDyJgamvl23BssRwTq79oGBUQzyQ+Dgj09XlablQVTaSs08lbNOwWZasQhCjfNtGEPXavHQbp923ksIdWaO21hEJhPCR5lNoV8F5atfwKV0e/Agd8qsIaMafLTF6+jEo1DqzdI/Kao6zygDOyO6AbyZXZpGAWkKUw8IupDtkBj/+79zgDK8JiQWpPxjOUqpmi7tfvYpGMVrt8X7VCsFU18bti395GdhQx08NkI1g6hERNHiAZntcuBg+1jR0e53keafNHee7aeIQxM/9+tNTQXwjQ4O/r2cCzFAP09bXVlw5RKRIY21tQIU63SK9oezBvtSc9Zo4UpLuBXOOkCMm/hdqNDXFDGXg+JWifV/GU2Nqs2clUpum9FCp3+9d0q7hVN/DNGQHumepxhmAtzAg1VtUT6NGPbnQPx7Lrb5bvF9TwhApP49ONDYFwEZij9ajEe6qDiXjHUauvef+m+LMPgBB5NJFKNDnA5pfAFxEIHIPA/9sDcen9Gj+vqNejX1LLq06SYvOJ2Pj5709jOoLYD1XVIYar+
+ +9rKXjmV
+ Ep++XwLhVDJCKVnGYpknc+jpzSOsGjrRMhUL5kVbvLGqhLb3NtHmHMdZcZv4U2++P+FpGAg42rAQEIomvo9+stL+LlNiy79dUXfwmo3k83HcwnKUBO1WuE09x0dQsuEJY6LoDWql3VCmr8wtKzCIjFRxwNQJBjI4nKmNEs3nt+rSrMWrjRE6ieSRY5c3IC5eUcD69x1PtUdhpjLYsY/7CgWmnlj+943HIGlaZBaovI1NoAUVMbBZFGU1Mj6jjE3Qm0H28t4J3dj9wfq42bzJhgMpWnjXyOA5Fcg/y3azUnz4ptg8wQUv6CcqEVYaABNqTtHjWZ/iuLwnmwSiI/wvalSVCpBHwUr+XwDqj99t3iqvdpX9SkaMpoUkqrW0jzYr9JTSH8y5Shp4ijpxcOlKdHEmoizg7O7wKaONH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -167,12 +167,12 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 7/22/26 17:30, Yeoreum Yun wrote:
 > The behaviour of pXdp_get() will change with generic compile-time folded
-> page tables. To prepare for that,  rework host_pfn_mapping_level() to avoid
+> page tables. To prepare for that, rework get_hva_mapping_size() to avoid
 > use of a stack copy of a pXd and pass it as argument to pXd_offset() so that
 > the folded entries value is ignored.
 > 
-> Replace direct uses of stack-based pXd values with pXd_offset_lockless().
-> And there should be no functional change.
+> Replace direct uses of stack-based pXd values with pXd_offset_lockless()
+> and there should be no functional change.
 > 
 > Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
 > ---
