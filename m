@@ -4,132 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90FFAC54EFC
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 17:53:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0229C531D0
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 18:06:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 69AB26B008C; Mon, 27 Jul 2026 13:53:06 -0400 (EDT)
+	id 99A746B007B; Mon, 27 Jul 2026 14:06:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 64BA76B0093; Mon, 27 Jul 2026 13:53:06 -0400 (EDT)
+	id 94A326B0088; Mon, 27 Jul 2026 14:06:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 561576B0096; Mon, 27 Jul 2026 13:53:06 -0400 (EDT)
+	id 83BAD6B008A; Mon, 27 Jul 2026 14:06:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 146C66B008C
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 13:53:06 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8FD26A0149
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 17:53:05 +0000 (UTC)
-X-FDA: 85035302730.22.6E015BC
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	by imf17.hostedemail.com (Postfix) with ESMTP id C18AF4000A
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 17:53:03 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=TKAP+hpK;
-	spf=pass (imf17.hostedemail.com: domain of dmatlack@google.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 50B026B007B
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 14:06:43 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C2FF9A0177
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 18:06:41 +0000 (UTC)
+X-FDA: 85035337002.08.ABEAC40
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf16.hostedemail.com (Postfix) with ESMTP id C5890180006
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 18:06:39 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Lu1jXBGs;
+	spf=pass (imf16.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785174783;
+	s=arc-20220608; t=1785175600;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HkPvk2eUGVnaH519Z4bYiGg7FI/KZRoqTARHHR55Fmw=;
-	b=1/tf2Z3brNV+eWbL8FmnawrO8q8hSFwxNWV0uBsjU0LwMg+EL6bb+9l6gHpElTaWDU2F56
-	neuzYiA5j5rBj4Iz+Cd3f0VAHuY1wjaGwKNPi0Lo/E+hzktCl851K2YJNU+9ViVd/yRjBU
-	rInT0B3ryevkwIj/Bv1kk+SdW1k4NJE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785174783;
-	b=r6Ol2MCwRIezpR7886SkRcOP0hnQiUxnG4FIlw3KgxZcim6Rh/ax752doEF6Od+L79/S9C
-	RJ08KwkkFpHhbiJ2E6LlHc6ZuLAll1s9I46mezp00SB0kQmoSqYUEMnzIt8N7KsKBjxjKy
-	W9mSQKOG1XzkkEFI2FViGQ/Ve9ty70o=
+	bh=ErGvZrCvQZJ3sJJPiHKyFyyy1TpjdXwvCQZ1EjAeumw=;
+	b=UOz3K1jbxfMFGi3+GPV7GbxZ+q4M9MdJDbqJYwmFMQzPPh14knJlyqjeXlGvvS2JYkFI24
+	BswHAz2l2B19LCA+PBoUXf+TSYMiMSeJQ/Y4gWCX/iZwDjdf/kcw7F2OQdm4HZZddI4ofp
+	/Cp0/Iva8NW6y3rKW3bLy9j9or+gxhA=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=TKAP+hpK;
-	spf=pass (imf17.hostedemail.com: domain of dmatlack@google.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-8486ac3f347so157744b3a.1
-        for <linux-mm@kvack.org>; Mon, 27 Jul 2026 10:53:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785174782; x=1785779582; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=HkPvk2eUGVnaH519Z4bYiGg7FI/KZRoqTARHHR55Fmw=;
-        b=TKAP+hpKItC1QIg+mFXTsHZBizd2a50Bnd6473YB3UP6sQL8q5ywx3sn6/hRSk+Etz
-         SzFXzxP55EZnZwHCghmmP8nIyjBQkjvZKt3s+26dTXZHYKx4wEFleYzABUgIf++OiuFo
-         32HAkmQMNRMSxtH0hkpa1Wj1xBPEiATcqMkkGkiRtiGCdttkJ9XwqepidcMMRxEhVewE
-         DurUhpqmSzqFlsuyi1G1NXtquPTC0IdQ6hxpHVCufNkrFyN6Ue3J0KA0IIFv5IOIfuqC
-         A3imqbNRbpDB7f415654hqPE8y9y9r6WXWalN83SuGiqsJrmeUVp9hSbHFpnkO/wcbI/
-         zk3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785174782; x=1785779582;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=HkPvk2eUGVnaH519Z4bYiGg7FI/KZRoqTARHHR55Fmw=;
-        b=BscWSBiHJzzTv04h9NFV7biREKJMgk/DZGzZ/q09PkqYKedZNeChyRhzzmSfDYJtJt
-         OWf/Xhufx3B4yWNHPnpOn7pFb2VKNynylfrC85rCPMTFXORsk8fKqLm+HWtr2N2eSV1h
-         +Sy57ve/oGZtxDVKcObxbVCUROp6xFNPzVWKya12lxkULWEfvz2s66QShbgTEfecxzx1
-         QbHoHNrO8Lv1VOOGRmFKmsYe2DLcF0i2dOpOD2JF99gPCNs4//z+kDbT0PTQ16DcQV4I
-         BnijAbw9L5WE6nkyZJDRvNYxxGpGyVZJTTPNYCdOuKA57J22RT41ZynTo7XLCFxa6nlh
-         FDyQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrKBHZqyoRQAAZYp0uSZDGKDaYurGDo5ylMtc06lRuA2xjis/i+P4Ep+biPqw4CLgmSEf7Tg6qJNQ==@kvack.org
-X-Gm-Message-State: AOJu0YwCTtUTFnwoVFul/DXhzO8KQmyaJ9WRK4KSmZwNMbxK6mP0E/jQ
-	Izi8i629IL/ExHhpWw+LTnOPwid2+rKQTIqq7dMvZ5tVopUCQePAlLYzaRBwlDWIPw==
-X-Gm-Gg: AR+sD137UvLSRBU0dVN7BHUH5izjyVIoVDtppAaN9ub0yR8eoLioCQXBmMmCc1AudUI
-	HOjbvQtINopP+RXtvpParmsYkRt9CgSMqDYavLGK4TZW3SC25fJS7Qy444HQnAir8pRHL+GwXQz
-	80rK9/20/2Av9eL3vNmTjy3JR+W9GVwbkEgyHn3TcqNitJu02uF0DZtUFWzMGVzki9RIjewqT6B
-	M0ih0xErjHDV4Vr87w9MM02D/j8rqyoE2OVZvt1/Dgem9wGTESawFWF+xiJcNRCU9fdxYOolcIn
-	rDYpEST4wTB+376upqyU2LaVelfVV7CRETjt82cskEGA22X7fjxxtI/5tjG6VGJ+cHj+/6gOSQO
-	O53SoRSi+tCODZxKRgz8jqcdMEOscOaoN7bpei5O8Sd6jyYOKi72DcaBnW+FrtSVkJ9UbF/CIE/
-	IIZJ5Em7fDJBhiZsJQuAuZI+xq9xwPtO0On7MWEdem
-X-Received: by 2002:a05:6a00:aa06:b0:84a:65fd:950a with SMTP id d2e1a72fcca58-84e8d3ab7b9mr351943b3a.29.1785174781958;
-        Mon, 27 Jul 2026 10:53:01 -0700 (PDT)
-Received: from google.com (56.149.168.34.bc.googleusercontent.com. [34.168.149.56])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e532590bdsm3400120b3a.3.2026.07.27.10.53.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jul 2026 10:53:01 -0700 (PDT)
-Date: Mon, 27 Jul 2026 17:52:57 +0000
-From: David Matlack <dmatlack@google.com>
-To: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-pci@vger.kernel.org
-Cc: Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Alexander Graf <graf@amazon.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
-	Josh Hilke <jrhilke@google.com>,
-	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>,
-	Yi Liu <yi.l.liu@intel.com>
-Subject: Re: [PATCH v7 00/12] PCI: liveupdate: PCI core support for Live
- Update
-Message-ID: <amea-VLTnrO_WxnW@google.com>
-References: <20260710212616.1351130-1-dmatlack@google.com>
+	imf16.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Lu1jXBGs;
+	spf=pass (imf16.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785175600;
+	b=2YBbSGhHB+spz1R86vbjCqTzjQ0urdjV1FRxl74JbtG2iJf4VCu2/rm8MaVO0ZTSUhk21Y
+	qBSHPwxkkxDwypVl482SSTKXV1U21r1HaIGbf9rF87700SfmnHneqEQ4n3zVL5gBDt2XQT
+	Cw2kL1xnuLVKZ7ag6RmK3cFLkJKRotE=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6879A16F8;
+	Mon, 27 Jul 2026 11:06:34 -0700 (PDT)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 380273F86F;
+	Mon, 27 Jul 2026 11:06:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1785175598; bh=17fUHUjXNeVWMgUSlC4I4UbGJCuscyMxz/0B2wiLID0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Lu1jXBGsav0iVgrGWSZsvRyAlJ5at2QxNHv1w1hXfz5ioFXzND+YJHKyFrA03qRFY
+	 Q/hx54v2Cd4KFrZuJPBBE4RftgYfvLs49KTQX5Dz6eKnnAQEbcQ/tI+05OTQ1z0zkD
+	 i2PqFVr45Lxp9zCvG4+AVFaAlSVytmKw9arVF48g=
+Date: Mon, 27 Jul 2026 19:06:29 +0100
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Dave Hansen <dave.hansen@intel.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+	Tianrui Zhao <zhaotianrui@loongson.cn>,
+	Bibo Mao <maobibo@loongson.cn>, Anup Patel <anup@brainfault.org>,
+	Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Jonas Bonn <jonas@southpole.se>,
+	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+	Stafford Horne <shorne@gmail.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org,
+	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
+	linux-openrisc@vger.kernel.org
+Subject: Re: [PATCH RFC v2 12/20] x86: mm: define pudp_set_access_flags()
+ when CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD is enabled only.
+Message-ID: <ameeJWmSQqTJ7uzU@e129823.arm.com>
+References: <20260722-dummy_ptxp3-v2-0-d9e4bad31e0a@arm.com>
+ <20260722-dummy_ptxp3-v2-12-d9e4bad31e0a@arm.com>
+ <188623a9-dba0-4229-a7ff-5feb2ef0c088@intel.com>
+ <amD9iD7rjmU__9b6@e129823.arm.com>
+ <4dbf7e54-a541-45de-b4b9-43ee5add287b@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260710212616.1351130-1-dmatlack@google.com>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: C18AF4000A
-X-Stat-Signature: o61hz8m588kwau1eenhndhyess5zkopd
+In-Reply-To: <4dbf7e54-a541-45de-b4b9-43ee5add287b@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1785174783-539548
-X-HE-Meta: U2FsdGVkX18CJ9iLQ0o/KIChCf8VHbiR18nStqCubvvAHBpIcCI/8usLtA0Yj2iqTSdnXMugi0QwExanTC1eiG5I+rSyGpB5tz+wp119vMXUd593CLc048SF4cRy0Gecx0T06ntns063LLmQFe/PI6W7btRqb4SIXyXgw4QFMDI8C/ZLbfpBfeDD61KVfch4an3plv85c7K6utC8HuxwEcM1tlVNs2PpOMHv45SUmN/8noj8LBhg+GEtBAj9fpDLe2bXPD14dOPhpHnKiYlTZnvg1aq6090Na5dtbMzthiYGyziuwGBqQC5R9ZJzJPb6h6EThLwViO9kVLNJyHVnTZJ5IwXfpHORslgbLKnEARsiBI7RAih51eHyeli2KgOOpyI7REVzD/ZOLdsM9MIsvlRfyN4r7icofjlv4BdUy5Mxu2xLgRZN7fSnzowAlIaB7Nl/0HPgtBKWlLTlYYksmfK0H3fsgXjzXfXgCdww/Fs2Zx1WtbTP9xY2tH4fp+2H+vTo93fO/GnDZmKZTJ5hsLqkvXyWV7xSWvFkt/y5PNPx8q8xMz66+zjYudeKhD40sL20TvhU8d3GZsQ7b59sH9D8y6zqTEnvetZTJKBhto3hZCFsaKHgclFbgeSWaL8eOi/PULG0lci7NS3YKIoyUvhH1Idtvc5EOLbz6Zi2jTNFK24etVJlo29U1pLPauel/oCYThCUPOwRd1uEhFWQyI6uAZBFfSUKbK/njZdlYUr9eHImBHxc0xXpIXeHbO2ec+i/dGr51Gk0BtQ2topBnFXU7lOGzZcoJ+UvaTvMzdL+BOgE6Ix0GcenctymO6cLMUIDM0Y9X/Hp4dEAQuH67lUs32kkxsQmYDTYYg23ziJinJyh3Ydj9X6mV2ltFh+JWknz2U0uDB4rbHc2WQFQtFl3o9xjj7+RPZVrwg9LCny1K/Ju0cVHtyZ1LgCP/8zo+hfKhLSYv+NyN1rB0K3
- Qlhi2QZH
- r9/YkujfHZE66pEvz6imiMWEOdf0hLbUTTxzGXIHV6Ozb4mbIYRS6b5F7ITWa29T7ZrtQMc5ETYljN8I/dS+DxOs/X2yb0HYR8ACV59/vKN6vQTxYK3Hhlme9k72rcJ16qDaObUrRb5U9tQ2+fuaf6o0rlP5Z5beO+TjafSOz5FPcqAj5/wGWFwflupIOSXkjauD6Zo/i3RZ0jIwc+vrmMQYFeAGJEYc/32FWu+AUbPyKKusQC1oUP93jOI+J7Cw3nn5iA1H2A6WhOhcD+eoza5R8amcd2t1P80gDYzrKaHX0lbo0SkvHh1a5o5xrPDH4RwRmbvCgLetorqTSW+kxC024MLfBpw8D6N28X3CXD1BejdT1NcXlxUKfDY4cabQHMCBeGB2N1iuyaLkzRMpLJ8OT8vqI90mSf2aP
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: C5890180006
+X-Stat-Signature: zg717w93ydxsogric4a8bjf9xof5t9qm
+X-HE-Tag: 1785175599-635918
+X-HE-Meta: U2FsdGVkX196nM2poFeWhLODDBKdNrOxnTrl/bTz3ebUX+Yliu4RfoLEQqimRemBavPloWWwlLqSwFBOqY+W1xGmOSYyQpjqsXryIBd8TM/7TkcH2Lt8Cgv1uVW5xS0t3vA55M1EluGy39yWRIsXfvJUULhjZzuKCuOST1oQATJbVCOUO104j5zhrL+wr/cVqZWU6520V0xKtrG2VjiFkPScAdjvg07uLb1aXG+6hYqDZkOsyapX1h6t/3kpV52N7oQpzLLyTy2pQbhjM+MtJChkcoken6dX3oQ9oSHMux3Z9tNgy0wpBaFkDnruUH7RgA2pk+gjH4Mb7HqVd0DrZXI69NLUoIOB+fm5TH32GlHcKxDBbsGc94qmSXciZh/WEQH9+VwNHxL21CSIk/Is3s9aSGdUC6XkC8t1qhwORSneyfEDGb/3Qgg8pLgBOaP4F0w+KktT1z+s37jR9OQt89lpWpxxQi2e/U4iLPxjSrWv5rgcqgeExHtooMfxgdshyfUGS0N1XEO7l0+uCifqrrmlsp2DDv2Bwjc28/ubBtCMm5oESyR7F2FnE0lbVuhKNKQabcTtXAQVFXJeEn4hYUSvyk7fBj9UJzkfEHySWzYR47Dy+P6tgw3POzU4awl1RIniKbO+m3Dh45NwfR8EYcLC7fP93VBJWnNPc9AtZ7tcFcuKFc9EiEA5g59gTdpEwkfsuK6SsJO29iU5JYS9LowhUiqZKbjzEPMamrpNJ5HP9LUyDPqpkcxNJxsbMmZTiPUKGrg/1OAD6rD8R7CJciMEwqucimeq9Ec9za2X8YSGccRDuPeEJeQa/YcTrEmEQHwYFxCzCDbKI+bd5fjVrMtsZpH9JGaPjgGUecG4w8S1jixEmh1lNAR1U/4nuCSABNimUKMyx/O1owN0ildDEx1nOZZ88EzOnCg3q4JgeDDLx4Zu7D3zgiYpBNY1l73+FUkOe7lxw1jjnXRuc6H
+ GQ7b883T
+ wPusXYsZbajcA0goKqthrjQ8UoQavcFwc9BfQL+aIjHXU5SVmIVd90dqSczVDa2RMy/uinah0K2/s7TkRFHUeyovtRAa6tCzyDBE/Pv9PGSLYzJaIXnc/7E5fK+GLbs3E92LEMpEqTGwvkuomPRuYYeGvud2aL2Kg8Qm1X6bID2E8wMbHjzMtUM58VJoWDNv0HxCsy7T9RfZyOm5+Pjqa4FQn5pGx8Du6J0qq48iSh6yyzK/gpnagoO1v9GolWGzke5Mm3iQTfCH9GxJoKye8ly7UkA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,89 +128,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-07-10 09:26 PM, David Matlack wrote:
-> This series can be found on GitHub:
+On Mon, Jul 27, 2026 at 05:02:00PM +0200, David Hildenbrand (Arm) wrote:
+> On 7/22/26 19:27, Yeoreum Yun wrote:
+> > Hi Dave,
+> > 
+> >>> diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
+> >>> index f32facdb3035..edad847a2ecd 100644
+> >>> --- a/arch/x86/mm/pgtable.c
+> >>> +++ b/arch/x86/mm/pgtable.c
+> >>> @@ -411,6 +411,7 @@ int pmdp_set_access_flags(struct vm_area_struct *vma,
+> >>>  	return changed;
+> >>>  }
+> >>>  
+> >>> +#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
+> >>>  int pudp_set_access_flags(struct vm_area_struct *vma, unsigned long address,
+> >>>  			  pud_t *pudp, pud_t entry, int dirty)
+> >>>  {
+> >>> @@ -430,6 +431,7 @@ int pudp_set_access_flags(struct vm_area_struct *vma, unsigned long address,
+> >>>  
+> >>>  	return changed;
+> >>>  }
+> >>> +#endif /* CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD */
+> >>>  #endif
+> >>>  
+> >>>  bool ptep_test_and_clear_young(struct vm_area_struct *vma,
+> >>
+> >> #ifdefs in .c files are evil.
+> >>
+> >> The changelog doesn't make a strong enough case for why this evil should
+> >> be tolerated.
+> >>
+> >> These are also _precisely_ the kind of #ifdefs that cause compilation
+> >> problems. This one is:
+> >>
+> >> #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> >> /// function here
+> >> #ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
+> >> /// another function here
+> >> #endif
+> >> #endif
+> >>
+> >> So there end up being a couple of dependent config options in play. If
+> >> there are compile problems, this makes them harder to find.
+> >>
+> >> What is the _actual_ goal here? Saving 50 bytes of kernel text?
+> > 
+> > TBH, this came from for v1's change of behavior set_pud() where
+> > triggered compiliation problem with v2 this change wouldn't require.
 > 
->   https://github.com/dmatlack/linux/tree/liveupdate/pci/base/v7
+> If the patch is not required right now, let's drop it.
 > 
-> This series introduces initial support in the PCI core for Live Update,
-> enabling drivers to preserve PCI devices across a kexec-based kernel
-> update without interrupting the device. This functionality is critical
-> for minimizing downtime in environments where PCI devices (e.g., those
-> assigned to VMs via VFIO) must continue operating or maintain state
-> across a host kernel upgrade.
-> 
-> Specifically, this series allows preserved PCI devices to perform
-> uninterrupted memory transactions (DMA) to/from system memory across a
-> Live Update. These devices can be behind a bridge but must not be VFs.
-> Support for P2P and VF preservation will be addressed in future series.
+> I agree that it's the right thing to do: just look at pudp_invalidate() in the
+> very same file, but if we can reduce the churn and leave the cleanups to x86
+> folks, that seems to be preferred.
 
-> David Matlack (12):
->   PCI: liveupdate: Set up FLB handler for the PCI core
->   PCI: liveupdate: Track outgoing preserved PCI devices
->   PCI: liveupdate: Track incoming preserved PCI devices
->   PCI: liveupdate: Document driver binding responsibilities
->   PCI: liveupdate: Keep bus numbers constant during Live Update
->   PCI: liveupdate: Auto-preserve upstream bridges across Live Update
->   PCI: Refactor matching logic for pci_dev_acs_ops
->   PCI: liveupdate: Inherit ACS flags in incoming preserved devices
->   PCI: liveupdate: Inherit ARI Forwarding Enable on preserved bridges
->   PCI: liveupdate: Freeze preservation status during shutdown
->   PCI: liveupdate: Do not disable bus mastering on preserved devices
->     during kexec
->   Documentation: PCI: Add documentation for Live Update
-> 
->  Documentation/PCI/index.rst                   |   1 +
->  Documentation/PCI/liveupdate.rst              |  29 +
->  .../admin-guide/kernel-parameters.txt         |   6 +-
->  Documentation/core-api/liveupdate.rst         |   5 +
->  MAINTAINERS                                   |  15 +
->  drivers/pci/Kconfig                           |  15 +
->  drivers/pci/Makefile                          |   1 +
->  drivers/pci/liveupdate.c                      | 910 ++++++++++++++++++
->  drivers/pci/liveupdate.h                      |  68 ++
->  drivers/pci/pci-driver.c                      |   9 +-
->  drivers/pci/pci.c                             |  14 +-
->  drivers/pci/pci.h                             |   5 +
->  drivers/pci/probe.c                           |  22 +-
->  drivers/pci/quirks.c                          |  58 +-
->  include/linux/kho/abi/pci.h                   |  59 ++
->  include/linux/pci.h                           |   4 +
->  include/linux/pci_liveupdate.h                |  77 ++
->  17 files changed, 1260 insertions(+), 38 deletions(-)
->  create mode 100644 Documentation/PCI/liveupdate.rst
->  create mode 100644 drivers/pci/liveupdate.c
->  create mode 100644 drivers/pci/liveupdate.h
->  create mode 100644 include/linux/kho/abi/pci.h
->  create mode 100644 include/linux/pci_liveupdate.h
+Yes. I'll drop in next version.
 
-Bjorn,
-
-Do you have a preference of whether to merge this series through
-liveupdate.git or pci.git once it's ready? (Mike Rapoport asked if we
-could make a decision on the merge plan.)
-
-I am leaning toward liveupdate.git:
-
- 1. There are some LUO core changes around how FLBs are refcounted in
-    the next branch of liveupdate.git that this series depends on.
-
- 2. We had previously agreed that the files covered by the PCI LIVE
-    UPDATE maintainer entry would be merged through the liveupdate.git
-    tree (which is the majority of this series), so this would be
-    following that process.
-
-    PCI LIVE UPDATE
-    ...
-    T:     git git://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git
-    F:     Documentation/PCI/liveupdate.rst
-    F:     drivers/pci/liveupdate.c
-    F:     drivers/pci/liveupdate.h
-    F:     include/linux/kho/abi/pci.h
-    F:     include/linux/pci_liveupdate.h
-
-But if you prefer landing the initial series in pci.git I think we can
-expose a stable branch in liveupdate.git to handle (1).
-
-What would be your preference?
+-- 
+Sincerely,
+Yeoreum Yun
 
