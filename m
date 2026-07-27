@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0006CC531D0
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 17:50:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69057C531D0
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 17:52:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C39CC6B0095; Mon, 27 Jul 2026 13:50:00 -0400 (EDT)
+	id 699196B007B; Mon, 27 Jul 2026 13:52:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BEAB26B0096; Mon, 27 Jul 2026 13:50:00 -0400 (EDT)
+	id 6701A6B008A; Mon, 27 Jul 2026 13:52:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB3136B0098; Mon, 27 Jul 2026 13:50:00 -0400 (EDT)
+	id 5608A6B008C; Mon, 27 Jul 2026 13:52:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B9906B0095
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 13:50:00 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 08969C014F
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 17:50:00 +0000 (UTC)
-X-FDA: 85035294960.04.90116A4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 51A8A1C0006
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 17:49:58 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gOL7oWAh;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1811B6B007B
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 13:52:00 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A71DAA0678
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 17:51:59 +0000 (UTC)
+X-FDA: 85035299958.24.523A720
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id D32594000F
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 17:51:57 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Cc2sRPHT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785174598;
+	s=arc-20220608; t=1785174717;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YUFE1QOuvD5+xSghGLkHfiIO4zTSLMkq28XoCsyQpI0=;
-	b=YHuXCyEbuyRyqkscdi60FVapcU1+eLwaldz1am0sn2/RCIvrD3FsrLCaj7bq1wkdSJDBnc
-	yEtWgiqAKdSNPnQRZTLsIC2rAIgQ6paOuwGokdCBRYxmzi1MlU+0d8TWm5Iloh14Dd4z3p
-	mjQCOY+Q7LYdD+aiYydSYZp9FmhiCr4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785174598;
-	b=rWF+DfxE5GFl/2pwWjwwla0a+acCmX93AWHorbjDKX+rkNizvVq38sXXcuKaTZnIYDhwA7
-	iBxvII+aiHZGzr2qjUGF08LKK4n578vi5weyx/MhVVFwhm1uVC2qYVzb7y4Ngy8ApKpwgD
-	yWdh1xURq7oFRcJrnb/S4F2fk908WH8=
+	bh=wecGDCQXBjfCFMVnfqOxk3k+NVRMuAsFJ4l2NNvx0O8=;
+	b=1Aodza1jaO1dBXuqDNOi34tYck4OExedPAbzSnaa3ujcuG2pg/+txbUtAz3OwWvrcLum4W
+	CoplwfAWPJfRYo5fYi/OBuZfqtRgiHD8PUVXtXiDLs2NN+TiV1uTQmaEjb7l0hK0Fc2+RL
+	kXmOPy2TdmGNL6KQVeQg3B8bVPH/BtI=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gOL7oWAh;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Cc2sRPHT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785174718;
+	b=EVASocbHwwDkRCECOMSmeN8WwYQA94WQBXW1k3dBoh5kKdqDuzAvXNGTkoRRHUQrPOxeP+
+	QgvrhPlEHIMgaq6PbMCjnBWzlrs73xUgoLPYzeQWnfJXajmxhxfDnEt5k8MLdM516nNOWI
+	AE4qiw/eiJEC/ao9CB8HGWdbwWqA5q4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CA7606013A;
-	Mon, 27 Jul 2026 17:49:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92D531F000E9;
-	Mon, 27 Jul 2026 17:49:49 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 111DE40BFD;
+	Mon, 27 Jul 2026 17:51:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C1A61F000E9;
+	Mon, 27 Jul 2026 17:51:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785174597;
-	bh=YUFE1QOuvD5+xSghGLkHfiIO4zTSLMkq28XoCsyQpI0=;
+	s=k20260515; t=1785174716;
+	bh=wecGDCQXBjfCFMVnfqOxk3k+NVRMuAsFJ4l2NNvx0O8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=gOL7oWAh1Y6fkJ88Ohv58AXd03Nh8iQjV6U/ofRkCt+4H+SSjaq4lbssWyR7JZ8N4
-	 BPUuBg6KyWuOeAy+/oqxlEyibvOo0OAbTbfSo2FvguCgz8uoFPBJlY+WpzKOs/1sXG
-	 dk9+I1vE0hHMRpkdjGvRePISoO6PkOmjWqz/e2Z5CoWdbaHzFdKfY9FBYaPHcLa+nZ
-	 dF4Md7OCoObOlXdnYbULLE8vxoRv1Z3PuTlLdAtfgrmD6PEcv9244oyo5ciK5B3Enl
-	 lvVv+BsAtYEbnUe8jkRTd4xCoyfvlnM0ZemU1ohXw36HshUzu/5931fXk3PDrsJaKk
-	 87Z2/YUzZYZCQ==
-Message-ID: <a191d359-6266-4229-892c-5746d7a0d2ad@kernel.org>
-Date: Mon, 27 Jul 2026 19:49:47 +0200
+	b=Cc2sRPHTNXRKzGfG9+3lp8wXF5VfmQAbLvCtDFgO7WpDM/Ph4ZVspG7WZSLuTW5mO
+	 oIavaX2DUBRi0sOwaqrXIxXVV2FTANcHPH5c4rvBzi/VKXxeGfVzjU9ntMocVoo55z
+	 5osiAAN5sXkqDS4BMwJhl7VoMsjMqkYi2LjG/vyDzNkH5LifcLUsLpbJVf8XUPdwPU
+	 2OYLyDfJC14kGHuyWgWoaLQIDWraUs+CEtPark3lvbUqYjgf/G1yzwuSlNlMDI1LZ4
+	 gBrVYx1l8UpUVimIH0JsbkORqRswgnN2nM4RXGeuCu9HlEJNVdNgJPCeEelfNtbHzT
+	 ZcDPebXtqS3fQ==
+Message-ID: <d68d3f5e-7983-4e91-b3a5-a5c8dd5a01e8@kernel.org>
+Date: Mon, 27 Jul 2026 19:51:47 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v5 4/5] tools/mm: add a standalone GUP microbenchmark
-To: Sarthak Sharma <sarthak.sharma@arm.com>,
+To: Dev Jain <dev.jain@arm.com>, Sarthak Sharma <sarthak.sharma@arm.com>,
  Andrew Morton <akpm@linux-foundation.org>
 Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
  <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
@@ -79,16 +79,16 @@ Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
  John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
  Leon Romanovsky <leon@kernel.org>, Zi Yan <ziy@nvidia.com>,
  Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Jonathan Corbet <corbet@lwn.net>, Mark Brown <broonie@kernel.org>,
+ Ryan Roberts <ryan.roberts@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Jonathan Corbet <corbet@lwn.net>,
+ Mark Brown <broonie@kernel.org>,
  Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
  linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kernel@vger.kernel.org
 References: <20260716123226.197736-1-sarthak.sharma@arm.com>
  <20260716123226.197736-5-sarthak.sharma@arm.com>
  <4665dd2d-99c8-492c-a4cf-b72028317d0b@kernel.org>
- <86fbde8e-c0dd-4ccb-8890-210026ac6756@arm.com>
+ <75259d8f-1cdf-43e4-9fa4-9a2954435a96@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -135,17 +135,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <86fbde8e-c0dd-4ccb-8890-210026ac6756@arm.com>
+In-Reply-To: <75259d8f-1cdf-43e4-9fa4-9a2954435a96@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 51A8A1C0006
-X-Stat-Signature: suc4epkan8b8hdmfaoreoacratsk6yk3
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D32594000F
 X-Rspam-User: 
-X-HE-Tag: 1785174598-586608
-X-HE-Meta: U2FsdGVkX18o9TYlBbIpc81+RClRiXnLaqmGzIrHC7ZDxi1t9A3C26JHCpWA2+wMYMww/ZNJgrfY53SSCdt8qjeIV4+SOXGAYoRpoJ6MOdmUJh6xzXc7fVmTvSfRLsMCGpr0O6DAddWR64nnb3M1JupHlqlP8/qCviQupfV+HOpwwAu8Z+sDDv2JjxpC7JNrqTy/5G7Vd49sPtyi8qePdiXyCydr0hcNuQYJz49cj9DFvo3Feo76la4FQ+H/0unACZEWrSeYYfPoBQkpRri21lnTkLY7Fb9OLKE3pnklsHaCkY/v62EM5p5t6UJgVXvq+lnf5SgwUZYQVyZpRPHwf2qnVAMEAnfR0Z7xggSFuyDeKLNV4O8WnBR0UvFQMQgr/4E7H1jm9HeqCyYzMT1vjJ24eYt/xg+b/vibYMfZfqUlDWhS4NtW5CHiyCXAAMGDUeP087ZgDXdn24cD85HKSqKlIE0LeNOrV62yVAcSwSsafeCV0cntW0d+WT1eC+n1HHNrbLTWAF2Z+0G9xog1WodrJ2zcp7BG//2ceQhu0S15cPXDl701BHzaCDJFxLUGvJG4Ta6ScjZPNuYm/rPVTdy1GBIMyzkBqyT3HY97IiGGlPBS5l3oYT+NpPfRa0QQt3OM0QK3aeDKUtONkwJIBCGSXHnQp1ubBhSBqnfmRd0SM7xIjOHTW/oNDfzt3x9X94ZC32K3FCe79xwWTiRAv02pZDkqeDqxRQGZ5KnhBFGYR0AQF5Q2pY25kRZlT19ZWuveast758u6B+IkeRZpPkdbxA0wjbVDzq0ZlZMkCNUBfi1hk6Og3Fa5px6UqWAa2UKi80BHt7VqNaiLTEAaKop8fyJSakH1s7sin4DzZLMZd/6UlA1lDTQEu6FEHJTTUNjD3GXp9LlPIwCkfi8o4B0dOYHpbsl4K/j1JSWZBP9ILz3MGke4Ped9vzWvWbi4af18ApZPf8nRz8zoLBA
- 3D3Vb/ix
- TiAllJXBGbGjWrD/O43d874Q0eZFKXxjIC9ZMszB/5vpqmVdYUihw/QqB0cMRyIYs/i4E5GjIC47Fqrc2or/dnscTWtr7JI1ylNMf8KI97aFeBtr1yzH7T8TdYniNpKCbyfv+APP0nv8UYNmw7+XpgJOQzCWCVyAIeAGaX3Ar8begvWgmfEKARdqtNy8+C/X1HXh/tHryTgKMFpij/n/PIFrTYIcevzKM9SQZFOymJU8HsaSO1+pPqB8t+Kmq0yzLcH6dFhtHMAL0GCAPbZGhNZlCCHgpnxB4324DqGmCh7LFpJf4U3ZZxYxaAKDhxILArI9Ac0VLm0Y+SebkkGpc/A4vgw==
+X-Stat-Signature: yazd7ushqmtopuusuzygpg6714cxrcjg
+X-HE-Tag: 1785174717-874746
+X-HE-Meta: U2FsdGVkX1/Xwwzq5IGSI/2KK4InB4NZGzAQHjCvpr8FkX3idyU7hgfj0o1nLrjijyGjkBkR2BOf2cEJ6ygAENYKF4XIZDwfKwpDhU7EdPL5FmIXFJ4FUjcG+EuELkLeBbbRLbP89NN+PRb74tRRVsXSzG2DX1rbw7PJAHC5eUQyr3FAHvBLt4/yPpE9t0vq/LI7YDvPTm3GBV4EwpyOADVNJltfnfNObOVj1SPfX1XjmhOsUJgt0efqCG71AFiPCg7FeFyKP5KZt6fOToAAeFBGFsCsXFtmXikhox965cfzQzRkrLzMnDo4V7MCkOyYEDlzeu1t5Pt+JCfEqym1Usy5XsY3V9sV/O+lWDuGjEteV7ckdLn7t6gt0/x3NLvEnpy4mu3vYQ2FurHOodn73oMofrkoXNG2DX0jltB1SOJIm2mWA5g9u0q5p9qv2AfxGeLgYyUKFG9FEbQmxGty7Dh0DTkpzZ6E7YmeldHzsPbnKARjh1knxEcC6JCUChp7ksReK8QwANNUNp0+UfP90OzcCisrGZUn7ytDhBltcf92cenevIsgRSCtJ7OHa1XmRSzYOfE9lIckhLNYSgoIyM0eiCFp3q/5Kguv3bY02uZ2yFvK7YfJC45IFrgVkyL4ASjNhyHJThMH+n8lGxjU7wohMg8Jhf5hYHBQyhwQ1U8L4jTgbfiOa/CzWU/O4csceepv/J0sxA/IRpDP9v+QrmQfSb60H0XS5/eJmAlmTlZCweODshLBq37hf37/zBJ96B+GRdc6EqdT5Q6XdAd0VbuMOsyxcLvhIspcqaaXd2K7gspgWigkUZpuxPCAnFcNnX9LTStfu3nkDkHp6FQ0ruFaJPFB5w9aU7ymkLhmzVd2OPMH2ja6QW6lgqp1S+XHy7MfR8QIUtlJLybb6OWX6Qm4i0GT+nZTG8koBqs3sertzx0PyUBs3REZc+iUrq8ftwPOnnaFrOqX9y2kxZf
+ +yrUQrCt
+ PP25+41hLRxOqiIyyAIo6TYjoIJPG/V106NMtsXA1i6KLGtQ8QouYGdozl7QuOXLoJz2XuaiK2x7DTPIGaMhdna9u3hQ3pvOswk/ILtGC8yh/LVIp37eu9Mah0Iy+L5RkmzPVXDox49sh6Tew64vyWDd7TuAOKtWJPYKoQmE8/OvOL5Rbd/NMEVMHr92dbx0Bhf+TzGriHjBEf0UrWdZVj995RdeXCu5DHbtlslPYqpact2vV2i0L3BYjXr9FQmrABIys3xpZqew8l29nFjSwx3aSiTeGhHTw6cay5vobBy1JXNcU6MtI7C6ky6oXo5yYHC6QDIo7q6yQdjJZDQod0J8g9w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,10 +153,10 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/22/26 06:38, Sarthak Sharma wrote:
-> Hi David!
+On 7/24/26 14:05, Dev Jain wrote:
 > 
-> On 7/21/26 7:22 PM, David Hildenbrand (Arm) wrote:
+> 
+> On 21/07/26 7:22 pm, David Hildenbrand (Arm) wrote:
 >> On 7/16/26 14:32, Sarthak Sharma wrote:
 >>> Add a command-line tool for benchmarking get_user_pages fast-path
 >>> (GUP_FAST), pin_user_pages fast-path (PIN_FAST), and pin_user_pages
@@ -167,9 +167,6 @@ On 7/22/26 06:38, Sarthak Sharma wrote:
 >>
 >> To we really need the matrix in there? The matrix was good for selftests, but
 >> not when using it as a benchmarking tool, no?
-> 
-> Yeah makes sense, I'll remove the matrix part.
-> 
 >>
 >>> three GUP commands across read/write, private/shared mappings, and a
 >>> range of page counts, with THP on/off for regular mappings and hugetlb
@@ -223,15 +220,6 @@ On 7/22/26 06:38, Sarthak Sharma wrote:
 >>> +thp_swap_allocator_test
 >>
 >> ^ Does that belong into this patch?
-> 
-> No it's just that when I was working on v1 of this patchset, I saw that
-> this binary hadn't been added to .gitignore so I added this, since I was
-> already modifying .gitignore to add gup_bench. It has stuck around since
-> then :). Will drop this from here and send a patch separately for this.
-
-Yes please, thanks!
-
-> 
 >>
 >>> +gup_bench
 >>
@@ -242,22 +230,16 @@ Yes please, thanks!
 >>
 >> 1) Move tools, fixing up includes and removing the gup testing logic+matrix to
 >>    make it compile
->>
->> 2) Extend tool by XYZ
->>
->> 3) Add completely new selftest
->>
->> Because looking at patch #5, there is not really any code reuse there, but I
->> suspect there should be some in this patch here when moving instead of copying.
->>
->> That would make this a lot easier to review.
->>
 > 
-> I agree that this would make it easier to review, but then there would
-> be an intermediate commit where there is no gup_test selftest. Is this
-> fine from a bisectability point of view?
+> I like your idea, it would reduce churn. But is it okay that there will be an
+> intermediate state in which gup_test is not there? Wouldn't we call this a
+> "regression"?
 
-Perfectly fine I think!
+I don't really see why that as a problem as we are effectively removing the old
+test and replacing it by a new one?
+
+In fact, while at it, we can just call the new test "gup.c", as the "_test" is
+superfluous.
 
 -- 
 Cheers,
