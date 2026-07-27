@@ -4,90 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15AC4C531D0
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 22:43:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45592C53209
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 22:51:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 02E7F6B007B; Mon, 27 Jul 2026 18:43:35 -0400 (EDT)
+	id A723D6B007B; Mon, 27 Jul 2026 18:51:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F1A216B0088; Mon, 27 Jul 2026 18:43:34 -0400 (EDT)
+	id A20A56B0088; Mon, 27 Jul 2026 18:51:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E30216B008A; Mon, 27 Jul 2026 18:43:34 -0400 (EDT)
+	id 938EF6B008A; Mon, 27 Jul 2026 18:51:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B7B206B007B
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 18:43:34 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 43799A0218
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 22:43:34 +0000 (UTC)
-X-FDA: 85036034748.09.6144461
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6BD2B6B007B
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 18:51:42 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D395114023F
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 22:51:41 +0000 (UTC)
+X-FDA: 85036055202.28.6D32455
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 83E2C40006
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 22:43:32 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=cgbeVCLT;
-	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	by imf22.hostedemail.com (Postfix) with ESMTP id DACEFC0004
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 22:51:39 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="QXjJWs/5";
+	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785192700;
+	b=VI/qChFQ0JmTJi6AMFzua9T5gthZYhNq8p6Bk+X7HxRIp2bg0jX0BRnLlwBYJPvui2BBCh
+	pGRjg7z+FTBswFfXZbHtBIA2JL3pwsxVe8Wke3RFkRN3j3pn/Y2PUKofSjKGgomMYwphg2
+	k+F46m8q8W0CeFCbPpSVHL3jVfy4ypM=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="QXjJWs/5";
+	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785192212;
+	s=arc-20220608; t=1785192700;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y3noW5ZYUlE/zDzyfrBegKr4xtPlTc1PQVGAQCuLqpQ=;
-	b=HMnJA6cCnx094H6oKot/hyE/mpTPNueMvdPK404AJSkcFekLcbZEF3kJSqrAu1Ljgmr7lS
-	w8W7Yj2FXV5PaE5CHEY04VMIvdBzdKxi40CWOcPVM8Vg8UOUCxyz55r0hjpCt19aF2HFDX
-	gvmogRWyYlAZOx38ghyFxzbU8vRBKg8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785192212;
-	b=THEQcjVPWDIj8NjlKdW9J2u1XChvv25Zgy1bAlhqPzq7D8rIygOS9rT/VoTafjHbBKaUXI
-	jFgyStkdWmFw+fe2b70oI4Es6/4y4taNEbRR5unl2ioEgq/wMFfPOx2NJivzwPOrn/IROp
-	6arAu9UYRm76rmOeMNETti7PbBgSyEI=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=cgbeVCLT;
-	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	bh=I0muGi53WJg1ysIJuxO/SQ/PBfSmsWFFN8uP1UdHBN8=;
+	b=oC9aj0G3tisLHOVkl7v5hVBRvtznQWbgGVPP4raklnkOEH8omJBJFgpRfH4/K9Szev947+
+	dYEkBwEzcvmFkxHY+bvNx82ckF/UdYgcULNqDWd+iGp/ylH7GrJyWqUxUaYyOkQeblp1S+
+	6e5SIo4s4E5Z99JX/pNg3KLkASHl+1c=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6D8A5600FC;
-	Mon, 27 Jul 2026 22:43:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD00C1F000E9;
-	Mon, 27 Jul 2026 22:43:30 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 552CB6013A;
+	Mon, 27 Jul 2026 22:51:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5BD01F000E9;
+	Mon, 27 Jul 2026 22:51:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1785192211;
-	bh=Y3noW5ZYUlE/zDzyfrBegKr4xtPlTc1PQVGAQCuLqpQ=;
+	d=linux-foundation.org; s=korg; t=1785192699;
+	bh=I0muGi53WJg1ysIJuxO/SQ/PBfSmsWFFN8uP1UdHBN8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=cgbeVCLTSq+7AMno+cyMEI4Wwt72sfI+qGJWUytMOyTKAJSGiGS6VsE8uwInfWs7K
-	 ebfFb5OZhctkcRpg3BpCU8yIW8Hmc/qxevBQT8ZPpcyCHqfLK7pNYcpohZAO2uyME4
-	 EV/YOrsSRbZqbsC1Se0YNbxhrbzPFrSRxUsckY/I=
-Date: Mon, 27 Jul 2026 15:43:30 -0700
+	b=QXjJWs/5LvCNvTh7IaBAV8v39+eAG7R3UNErClPC6Hr4LRg327WM65tYqFJa6aVPd
+	 pFRw2haxQaTLJSOf3crlYTpGHKMDpOsov6WOOGc5qLDoOnxPX/rhH48GNorp9wwhH/
+	 KbdB0fyIqD2crUpCZLE9s1gXwFSYJSR8vr+XvAXc=
+Date: Mon, 27 Jul 2026 15:51:38 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: "Yadav, Arvind" <arvind.yadav@intel.com>
-Cc: Balbir Singh <balbirs@nvidia.com>, <linux-mm@kvack.org>,
- <linux-kernel@vger.kernel.org>, <david@kernel.org>,
- <matthew.brost@intel.com>, <joshua.hahnjy@gmail.com>, <ziy@nvidia.com>,
- <rakie.kim@sk.com>, <byungchul@sk.com>, <gourry@gourry.net>,
- <ying.huang@linux.alibaba.com>, <apopple@nvidia.com>
-Subject: Re: [PATCH v3] mm/migrate_device: Clear stale mapping after freeing
- swapcache
-Message-Id: <20260727154330.cbe743a0a9518ccfe2437aac@linux-foundation.org>
-In-Reply-To: <439924d5-b51a-40f7-bd96-42fa43eef0e0@intel.com>
-References: <20260727053920.3494211-1-arvind.yadav@intel.com>
-	<0ea36640-36bc-47a9-8d57-edc886e13aeb@nvidia.com>
-	<439924d5-b51a-40f7-bd96-42fa43eef0e0@intel.com>
+To: Jianlin Shi <shijianlin11@foxmail.com>
+Cc: linux-mm@kvack.org, vbabka@kernel.org
+Subject: Re: [PATCH] mm/page_alloc: only update NUMA min ratios on sysctl
+ write
+Message-Id: <20260727155138.82e51e144237e66bff50bda9@linux-foundation.org>
+In-Reply-To: <tencent_5891052AF9A4C2D490A62F478D446F74AB09@qq.com>
+References: <tencent_5891052AF9A4C2D490A62F478D446F74AB09@qq.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 83E2C40006
-X-Stat-Signature: deogaez1w6nn3mos3ajs4cmxd57kz4gi
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: DACEFC0004
+X-Stat-Signature: ixt3a5hf83kbasss1ab8zguxoamzaozi
 X-Rspam-User: 
-X-HE-Tag: 1785192212-735697
-X-HE-Meta: U2FsdGVkX18D21HUeYT7lNGdRnKw9CKfdkwD6TAK8ANU85fRHL7DNsPPMnFYuPEPj4zWsTGYEZf+pbSyBCJm2XLeTDm/StDuZCZHGX6rG9zNRvpYFuZzQjWgrOKnQNROrL0zb0Fq0J9ekTTRyFJ6/eEwjeDBudbc5Pxi121ZoXocOyZn4vmq8UCSDrVwMtGoOJzRSFytH76ebadQeLlfX1HhdJYr+U0b69Bikxgv2SiotRFim/17Lk1DUnOPhzuJSNOClMJRYjPbETVHptRLtnkHRbixbb5/z7gOCDAOfmAgmOgOwyj+6LIZ4YNPNmhTzrESEaG2y2kDvPPWqAKeFmhmE1ZdJkH6Qz+c+ML2Y9eEwe6AmlARV00imMbmqIv44GQrrPp7a+64M4Wtc1yx64PHanOkt2zHXTPuPjzmacvRMw84qFnTHkMcGv7xJA+NWHuXEC4tMq0cjIipDM3rjimqrSfMP3JvwgEngHbduEc1y6iNLJz7LA61DwDNPXI/6LxESij4jRwleaGQp+iozWivWwCyY/UugQUXVwZ3i/YEH0T8HrDmtroFSwiF+PR2CrLmeo6qKnjN4ol+dNj1Re7b5T2OnDbJ9QsWwP5hnb1fvnzMAVLohTjTOhcGWGXqguTrGFQNBbz8AFn+WrM3rTI0Qq83QqeaSkqDUXuqdzdlJmRs9CMfWN5jYB44rjRYXK0KhQIluhsWMkxX+/Aw3sYRi22v0OdOBsV0AdCefX4zNg8HwQP6irDTcrDmLAU0YF0PW3UdE7RdlX2tUz4iUI3hO9YgdIMxvcHlvBA2lE0bOg+kG6fnHLhL6HpSfUrGSeMathiZnTkCLn3bCM/bFrSoE0qCppYKSoAJZjTpoYSove2Cy2a5zZbYXlg4QAWqv2TRLudNv1LPMuLJsYISoiK/FV4U/LAXTZjfui4ym7JFET0CQ8pNTkgna1Rr1keIt3glsmDpg17qUkzxrux
- QBNAaxdL
- n0XSoKg305sEW1ZwGb1dUyoFesSuZgNWE4T8qd25igemmCmQ9qVmGMLaWtu+bg5SETZquox1CWU1qk48nY0v289G/C+jIxx0OCy8LEyipxp/3m7fT5QZjJUb8qURf6K1F9NKUHboZ1i/1WgdvjbFCsf8YDmfw8AdO54edYzMWi5z+w8yXr0gIilj9JGg4eiYl5PDxFzt52aW5gEktdB3EFRIVRH7B8XN3R8ihP8klRn3iz2RYo+IZ5DFX2ByuQgBrR5F82a3B/yATXLCJTwkcScE+XwCfSCUARxmTAWxcSa9dBFVtOdWQCeHzF5cL3w5CLX9qRm7w8+31DTXZenY7BP6fGHEks/xLaVXkPFeiAPtcFeLx1aOnBfVCUK+CG8jgphRnenrIS1XuQI6AR1lJJwPhYD+k2Oo9Fd1PiN3QoUNmz0YwNmwwkBWg4/xv9hXKhu/XIH7rZJqTff10RG1QMrhtF5wBh78jzT2R
+X-HE-Tag: 1785192699-5044
+X-HE-Meta: U2FsdGVkX19lJouseOyhnoCStIH8ZUYRNArJbKZ8oEkZki2A0RQrNe9E8893G0U4/K7yM5u1XS+yelQ77yXDRNq8yjeBHXpkoJtIbBpBnwXg/8gdkmQ/HZ7tsDlBjjAGmRGeq8V/F2BigFJG1Iew/flyJUpyMXQbIGgVSYlmV3Tb2bf3e19+VEWFFwodQ8dva948DOlEmi3bGGzQWMRKO409Y8zoJ0R4oEHB3V9e3jNM30GI3Ba/xw405Vd4LeW/qSsx0YJOULppEG3p50H7ZLzJ9s2dJVmePk9qVzgQAcPLwEwtxokpYzfTCex3nVtD6XpvPY//dJLcmqbGWjDpvq4mEptVB/dhuxVFjgU1lju2Kl+tHQyL6fqfCbAZd0etpUvvKjKDbM5ohi67l8/aQ5dlALvAskExHsneA20UH6REtPcmiNf8wd0osjSAB71KTwd285+7KXhJmR0NBAODhhxqHfWRgLeL/oYfwQ3YDVWjhskOZm4A8+yYLX4VHg4z3UK9YoOU6dNklMdXFOOQVBX+gO8ttdkfMFl32Nax2CTkL0f10H+CtFvnErSMhq7SBiT27MJo6U3bDhCNDC12YAq5vNfSsypy6wDjv0uLkdE8Fc8M5NTTHhyiFyB/Gm8vipT/WuN9TgQLjj9Sjhg60eOdWqD4KpeA3xFJ3pyG2BSZ3sWv4nhmLjmMGfXJMWf75IE/kbSvwJDdo1mJYx4HkoGY37g3zzrfaKyS3KaX0H/YumMKon3OcvU/P4j0y4cM5Sr28/QFbE8eAT6KlBzKWDi29KM8M/SJL/g0YGAL6phyY+WN/wnNWj40YmpKRHmdjQr1U3ZkMeY+D/iexinAoJJg9JU6zTD4jUGpyrbhrkC93QZ6Ply5gUJ+peBLJdPVRzKNDtsCAjzutSxMUnA6ZsSzSeXGiNpZvfoNplDMGe4hI4ZXwYW6N8d2VaU9Jm4Ep9QcWOrD5VjN1Eq9y5R
+ kebcsd9k
+ s31R2bB5/ghWm9aHXGXz7V+0pMIFQvbxFu3poKIWt72ep+FpalH6eSOHkOgvXjkCSuhd/UWYWiQiCBwWm0WCkZAEn65PWa2N3OPVRfhzga+gZnWOjX1C7IAPEXhrGdu7k6gXZbBYyWzZKYRUObwJ8yZRtWMPl77ufmWGOBvj33UX5LBDHOaj9ecZzQCCenktVSCUP5qJsDxCi5QcnrUmLDRVmBywCLz6WWflLhuR4efEooySrPX/YNm+QKuBE9Mk9lxD+lSjrMI4cLGJGSbw39EB3Tpw7B3fqTJ8bjLFFH4E5zqH400hHXOJrfCRAP+ac50rmDrhEnqlZU+MyMMweJRVKMR3gYjt7dXY1c4sbHhvY2/n2sLbEiFaW8q35LXkIIyv9aOB2zIqyBd8dMTmvdfFO6CxloRY8PMyHm2BUvr6y7ROyedyL1JMeig==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,26 +89,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 27 Jul 2026 16:28:42 +0530 "Yadav, Arvind" <arvind.yadav@intel.com> wrote:
+On Thu,  4 Jun 2026 12:01:38 +0800 Jianlin Shi <shijianlin11@foxmail.com> wrote:
 
-> >> --- a/mm/migrate_device.c
-> >> +++ b/mm/migrate_device.c
-> >> @@ -1182,6 +1182,11 @@ static void __migrate_device_pages(unsigned long *src_pfns,
-> >>   							 MIGRATE_PFN_COMPOUND);
-> >>   					goto next;
-> >>   				}
-> >> +				/*
-> >> +				 * reset nr so that only first after-split folio
-> >> +				 * is processed below
-> >> +				 */
-> >> +				nr = 1;
-> > We should also add a VM_WARN_ON_ONCE(folio_test_swapcache(folio))
+> The sysctl handlers for min_unmapped_ratio and min_slab_ratio
+> invoke setup_min_unmapped_ratio() and setup_min_slab_ratio()
+> unconditionally after proc_dointvec_minmax(), even for read operations.
 > 
+> These setup functions first zero all per-NUMA node thresholds
+> (min_unmapped_pages and min_slab_pages) before recalculating them.
+> Reading /proc sysctl entries therefore temporarily resets node
+> reclaim thresholds to zero, which may disturb the behavior of
+> __node_reclaim() and node_reclaim() during the recomputation.
 > 
-> Agreed , but folio_test_swapcache()  is not valid immediately after the 
-> split, as the order-0 folios may still be in swapcache.
-> I’ll use just before nr = 1
+> Fix this by only calling the setup functions when the sysctl
+> is actually written (write == 1), matching the behavior of
+> existing sysctl handlers like min_free_kbytes and watermark_scale_factor.
+> 
+> This only affects systems with CONFIG_NUMA.
 
-AI review suggest there might be another bug in here:
-	https://sashiko.dev/#/patchset/20260727053920.3494211-1-arvind.yadav@intel.com
+AI review points out that lowmem_reserve_ratio_sysctl_handler() has the
+same issue:
+
+	https://sashiko.dev/#/patchset/tencent_5891052AF9A4C2D490A62F478D446F74AB09@qq.com
+
+All these changes are non-backward-compatible userspace API changes. 
+It's really lame and somewhat unlikely, but we should give
+consideration to this.  Perhaps there are systems out there which are
+dependent on the side-effects of reads from these files.  We should be
+careful about these things.
+
+So I suggest that these changes be proposed as two or three standalone
+patches (independently revertible if problems are discovered) and that
+each one contains a description of the worst-case regressions which
+such oddball userspace might encounter.
+
 
