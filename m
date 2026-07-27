@@ -4,162 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1A04C531D0
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 15:02:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C860C531FC
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 15:02:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ADB056B0098; Mon, 27 Jul 2026 11:02:21 -0400 (EDT)
+	id 44EC76B00A7; Mon, 27 Jul 2026 11:02:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A8BD06B009B; Mon, 27 Jul 2026 11:02:21 -0400 (EDT)
+	id 426FF6B00D5; Mon, 27 Jul 2026 11:02:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 92C6A6B009E; Mon, 27 Jul 2026 11:02:21 -0400 (EDT)
+	id 317026B00A7; Mon, 27 Jul 2026 11:02:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 579C26B0098
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 11:02:21 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E46064076E
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 15:02:20 +0000 (UTC)
-X-FDA: 85034872440.26.06175D6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 0477C100019
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 15:02:18 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EMEaHSte;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785164539;
-	b=EasZnHQ8nBAxngbn51yHv63aviTsWNtJBoRKBx7xiHMtKUbzykZ1KB2FpTN9Uwe4uyD5kV
-	2owC758TUBbjY6ms+cld0+Yi/4xraXAUC6zJoLF/VQ4O3EAgGAqk3T1BCtPNSU9Vn5F29g
-	EGpsZwa55mDVnoPt58iWB7kZPnUKhhI=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EMEaHSte;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0726A6B00D2
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 11:02:53 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 728FA160731
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 15:02:53 +0000 (UTC)
+X-FDA: 85034873826.18.F7DC683
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id E4062A0003
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 15:02:51 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="gmTYl/c+";
+	spf=pass (imf25.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785164539;
+	s=arc-20220608; t=1785164571;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GMsj86qUImXvesh2jycuBRWJLhN2UfJjZ0XxDz3JzMg=;
-	b=MjalETsNwJ27dtu3y74YrKvFmCkYqysD9qJK85dyUmVvboC7MIJcFAow/hu7c5INtUARtT
-	FMF4t78Gm1jSMOjMZf8z7XHfjJmtzjZOdPnonY3HVZicv3y4IX8Bjs6PA32WowZfkZeh/x
-	vptVzytWJWAbMDsxOKFvsTG4pFXGyg0=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=aFYOBMXp5dKkeO47Qf8glP6qHC1ahmcBq2ODbRBzDG0=;
+	b=6LvTdcJxdKB3au72CuB70HT+56XsZ7homcTuG2BLmAxmqOfaCVW4DXWaCsFkptSa3wiTOI
+	A3KL3QTYmYsFrHjyvC/ZTriXMurO9Lu1jxmSowlyA0YcQ2icoPmJLB+nBbC3R8b5A9z0zF
+	CJF2Nv6GGfTNXBgUJAh4HMtLdAbmNsw=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785164571;
+	b=h8w6cbFzeqlBuk3tHvPXZ8wWWhufzyvr1s0NZpicERUsBw/HVrAhMFinBBVsL/rw//fYce
+	wMCP8zEiQzfu2i9fV+4sj6PExuexNunfP9TNPQ/092gMUGtQv2zMZ3lQef4vZmKx946bW2
+	elieye+QIRosPl69p92cgHfFfWCHmTE=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="gmTYl/c+";
+	spf=pass (imf25.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E40FF4346F;
-	Mon, 27 Jul 2026 15:02:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD2AB1F000E9;
-	Mon, 27 Jul 2026 15:02:02 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6F7C1600AA;
+	Mon, 27 Jul 2026 15:02:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68E271F000E9;
+	Mon, 27 Jul 2026 15:02:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785164537;
-	bh=GMsj86qUImXvesh2jycuBRWJLhN2UfJjZ0XxDz3JzMg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=EMEaHSteJJbpefcd9Kd01LIDQkr7+ZelsCRFi8qlLdp8EguIxG3hQVRarc6ZhqX/j
-	 TRVy6z8dDQvQx9ZyKMS+5c5cIu09i0mjG5la5uOtxMUKM70WYkgXpPhi2p1HL3FUjS
-	 O0EF7xrwhN0LHiafD7HZCb/GplkMVcPUCJ4Moo0j1IzJ8t3zA1uqUDYBOicoYDwjGz
-	 7FheRA9OYUI0E8QgC3tjwsl6QVhG7Yz+yEBYmCqXY583OP4loarW5AvqBFL9NuoS92
-	 dUJcGoTl8cRskWUSlNE2n3h5/iqKYrtoK3PjmBoVCNoGrWh/TVABdE+BON+GaekUwT
-	 e6I74UNRxMVbQ==
-Message-ID: <4dbf7e54-a541-45de-b4b9-43ee5add287b@kernel.org>
-Date: Mon, 27 Jul 2026 17:02:00 +0200
+	s=k20260515; t=1785164571;
+	bh=aFYOBMXp5dKkeO47Qf8glP6qHC1ahmcBq2ODbRBzDG0=;
+	h=From:To:Cc:Subject:Date;
+	b=gmTYl/c+0ipQFd8NpHTkjpGs4Q/3jQRywWu+9wuxAhCoeM3efP0QblqxX3Af9lGHc
+	 Nz2Z0plLNymVkhgTMkuRmp4F2lcLA57ghdR9RPQTw/rI3fEcNsoA3j4Io3hADdCZGL
+	 mmUj2tD9ObqEv1R2brKr49durZgrC8VeKVi5e8kyRCt8TQ5Gjnv7Ug48Vn8CgZfewn
+	 mxXmgO0bwMZ1SBTljY0/b7avVfA7xXqkM87bkOwsT3NoJ5ZsIdhUmDveKwowaC8VX+
+	 NwpmMI6LpHZ+hk2RZgvGv+E4jiZltvM4rqpX1blqfHXzIrkJS4mWWn0H9FXPDSTwvn
+	 uInTh38P1hm6Q==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Alexander Graf <graf@amazon.com>,
+	Changyuan Lyu <changyuanl@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: kexec@lists.infradead.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] kho: fix size calculation in kho_preserved_memory_reserve()
+Date: Mon, 27 Jul 2026 17:02:39 +0200
+Message-ID: <20260727150240.889555-1-pratyush@kernel.org>
+X-Mailer: git-send-email 2.55.0.229.g6434b31f56-goog
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v2 12/20] x86: mm: define pudp_set_access_flags() when
- CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD is enabled only.
-To: Yeoreum Yun <yeoreum.yun@arm.com>, Dave Hansen <dave.hansen@intel.com>
-Cc: Russell King <linux@armlinux.org.uk>, Huacai Chen
- <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Arnd Bergmann <arnd@arndb.de>, Andrew Morton <akpm@linux-foundation.org>,
- Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
- Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>,
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
- Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski
- <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jonas Bonn <jonas@southpole.se>,
- Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
- Stafford Horne <shorne@gmail.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
- linux-mips@vger.kernel.org, linux-arch@vger.kernel.org, linux-mm@kvack.org,
- kvm@vger.kernel.org, kvm-riscv@lists.infradead.org,
- linux-riscv@lists.infradead.org, linux-openrisc@vger.kernel.org
-References: <20260722-dummy_ptxp3-v2-0-d9e4bad31e0a@arm.com>
- <20260722-dummy_ptxp3-v2-12-d9e4bad31e0a@arm.com>
- <188623a9-dba0-4229-a7ff-5feb2ef0c088@intel.com>
- <amD9iD7rjmU__9b6@e129823.arm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <amD9iD7rjmU__9b6@e129823.arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 0477C100019
-X-Stat-Signature: b1zpniezea6ihe4rd6a3nsfh13khkrzj
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: E4062A0003
+X-Stat-Signature: 411hyk5ahaibtjmtikfe1iitmqwukms1
 X-Rspam-User: 
-X-HE-Tag: 1785164538-956326
-X-HE-Meta: U2FsdGVkX1+XT3o4QzA7aJgJEHuR56VlGVlvStA5tRVPfxwMgy4TwiK8FoPQEPxWVUG8CIIJB5FKEiJc6uJA99l4CxbMIVj2cfZtQkqKrKTZDPNXlsrD6+QON3AVAnNj61eEKsrTYzlkZr/dDKQp2LjiL2FseY8SmtQx6exK4RyfXhE+bOoagjMlhmerIrFI+Nr7Z+sLQjflI94LFrDfnODm+ATXGAm09uk4kSo8ZNJj/2rwuQBYiinqHZQhl9lS8Hj4MfBBG7S5fqm7/AMBzSQCxqilhw7b0IDpOmloCN+eteCEdu1G8yB/0/NI1lZ5xUXio/OP/0nyoguUqKSJSftoV9MrKP3WKTd6Rg+v8T7iXyrcBJjjfBdasNw4kj3NNslXuCc8PHpNNuGHAAjPkDMa7QG/NlaT+45Eo6xzLSUZtM0XuBwiFfmjiEvRR3lo8T/HaPncA8t9fAuq9QNv/YAHlaav0mAiBSNq1PFGn82QLSGAJ66+ouTL3wf/NiN13DAMogPccBOYABrZuocMvBSsNArH7gxiaQ9HdhXGWzK8G1oesvgikNRNMwZ/nEaebccZoxGlkLsdtuvp7yD2nDFUkbhOx5L2cq6+gxZ+OSmkWeF/Q7zyLQBJY+HO6CrYM1ASuXtjZABBs0Qb5LOdb8XbynwzKhvEExrpMSwsOiq43f3VIzPLo9YXRDudNCRx5pn/Vk2VYkkGvJO5bJVwtiSqDPO++m1TrObNXlPz17L1mU6MduJXDCTNdkU3ymRWG4nyLfqDUd/yEualYOcms3wNb54h1EWurIU/r067re4phCN+09u8bm7lHeTHq9ZbV9Z46JRFTmEMCZS1ZQmftvyeBkAulaKZJobAgCenNTXPQJCmSO6Epi2ux7WGqyza+jbI/p/P5N11166G8eEA+R2ZZ0gDBje3ETceOBB4ToWbErsbLKiy92KSiM7riUvNGMta8T7GW2UnIrWLECd
- 6py8pAiH
- 6zUbLlooao6SRo6dO1wYC3xyc/I0Mg5OtD1pYVsJcHep8KsQ+6z0wgcwO+NxXI5FdzAeillkbgAlBJ5bAJZEju91sy9dN/gk+Fhqm8Z03TJSyR6LoVhN2Duv+bM9AkynebxEhoPwjN7ITEsYIfbx41L3WM3qUm5j57r3/z8epzGkFaJ23OzW/oH81G13MZeOMakPFIq1QIEUhNt25mOUq4Twqqtt1VFhI4vh6JVo2th+lHXLmWbAqen1G4eQF/+ZhKVGoqwkClDmcCQ+xVMoO65I7VjrUw7iqVII9b1brOXjhwoB6DKCWTpQGVg==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1785164571-438774
+X-HE-Meta: U2FsdGVkX1+ENNpATJXKT+4DONv9K+t69kc0XbPxCkeeMIKopcWbx390k3w1aMUHWzKZbIrZwUWn/a87qNYwekPOo41Dq3e7Y/gsk4vwBNkF56Z5ceI+UGTUoPLZeAOvI0psH+3jG9wpAxd+6zxXkh2TTokwA740q6R0rpVWLuqjzPlN8N2UatvYgiSHJ6uvw0HRoefezkr/Mxhj8Bsbce5pQ8xeZ6uYtv9mOaBtrAtqae/WI9+QNhUl9joa/r1UwAreaLUvXWqxBcR1kwN25uzRGNsiXBZPBtXJTuDUp+1kxOmmN8ZaceAomMzBqEMW4Elgvr88rCiJW4LsBfJAskDRUPztRzF5oPPczrFo0GfKbtw2C7NMzMBkAZBICVX3TqE4Y5LvnSOTcQlMgTd54So675F21bkW5tqBosJeYy36pHAd6qYLBVoefS0v+txVyE/MlnPFz//neGxFLFQQVII3ZnbLLsBKzQeoF3nm1VCsNmCi3ov64OXEiwvf/dPIhXy32lLy9kuSW6ItIZ4v3M3/dVU9NsYeAZ/fTCCeNr9uHaUilhKKYpKMcd8A8J4cMfifrvgi7d+oQzAupwBuHfd/sYKhEWcuFqua8dCp3OcM6V9jMRXLuJy/vi/DIpR3gg8g7AU25clhVlNqd34QR2ipBWZBl2kX1uxgGlx55pEbraN/T0QtwD7X4TIMV3zEU2FtHZ1Mha6MEp0zo90NdK2QgFJWjdcwZjZN6CrNStcnFh8VUCj9ZBX3Y2o3SCa5JPzEXjhmLmrUEUlykqnHU0/JYwMAb38eji8ScJsQSiq4JZ4F+nA7orLcy7vOVP7jgmi3UWGd8wLvncAOVJN0G2bhPMPnGF2DHzK6H/UVxOt1N02e2YoCpvyrRGuloX/RVYuwdaQPiHuUuAzKgQZ48+72kwYxpk3s0sNyCay5h2auU5nSUgakD4dXfOqZVdUTBafzVu50mMejfS7GQjD
+ Xzf2S0SH
+ YE+Tpgi6lF6qDGBY6lGKlTFA0MVrv9apnffTdCJmb85B+pCvi0tFm/KmULTUFmcBNQHOqk675GnEKk6i5vrtQ5qKOUr+/LjeeJAZLLbt9AqaOozoEvgEf5/LjRT4dRwgTFOarAZI3x7jeGPgt7GPhDxc/XBoeWioYh/sp1mILEcc+tQ0PDkAV+ZsWphzLqszrtr9CQ8jImi3A3xMUW25i6jNftvBvDQytdQe+7+hmBcGqmYTr10ivUMGcsKKPKo9kobJFXEQWCt7NB9RYYV6dLqqy+A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -167,61 +95,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/22/26 19:27, Yeoreum Yun wrote:
-> Hi Dave,
-> 
->>> diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
->>> index f32facdb3035..edad847a2ecd 100644
->>> --- a/arch/x86/mm/pgtable.c
->>> +++ b/arch/x86/mm/pgtable.c
->>> @@ -411,6 +411,7 @@ int pmdp_set_access_flags(struct vm_area_struct *vma,
->>>  	return changed;
->>>  }
->>>  
->>> +#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
->>>  int pudp_set_access_flags(struct vm_area_struct *vma, unsigned long address,
->>>  			  pud_t *pudp, pud_t entry, int dirty)
->>>  {
->>> @@ -430,6 +431,7 @@ int pudp_set_access_flags(struct vm_area_struct *vma, unsigned long address,
->>>  
->>>  	return changed;
->>>  }
->>> +#endif /* CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD */
->>>  #endif
->>>  
->>>  bool ptep_test_and_clear_young(struct vm_area_struct *vma,
->>
->> #ifdefs in .c files are evil.
->>
->> The changelog doesn't make a strong enough case for why this evil should
->> be tolerated.
->>
->> These are also _precisely_ the kind of #ifdefs that cause compilation
->> problems. This one is:
->>
->> #ifdef CONFIG_TRANSPARENT_HUGEPAGE
->> /// function here
->> #ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
->> /// another function here
->> #endif
->> #endif
->>
->> So there end up being a couple of dependent config options in play. If
->> there are compile problems, this makes them harder to find.
->>
->> What is the _actual_ goal here? Saving 50 bytes of kernel text?
-> 
-> TBH, this came from for v1's change of behavior set_pud() where
-> triggered compiliation problem with v2 this change wouldn't require.
+From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
 
-If the patch is not required right now, let's drop it.
+kho_preserved_memory_reserve() calculates the size of a preservation by
+doing 1 << (order + PAGE_SHIFT). Since the '1' is a 32-bit integer, it
+can only be shifted by 31. That is, it will only work for preservations
+up to 2 GiB. Larger preservations will trigger undefined behaviour.
 
-I agree that it's the right thing to do: just look at pudp_invalidate() in the
-very same file, but if we can reduce the churn and leave the cleanups to x86
-folks, that seems to be preferred.
+While preservations larger than 2 GiB can't be obtained via folios
+currently, they can be obtained via kho_preserve_pages().
 
+For example, memblock reserve_mem uses kho_preserve_pages().
+Reservations larger than 2 GiB are valid and will trigger this bug if
+properly aligned.
+
+Fix it by using 1UL for shifting.
+
+Fixes: fc33e4b44b27 ("kexec: enable KHO support for memory preservation")
+Cc: stable@vger.kernel.org
+Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+
+---
+Stable backport note: This patch fixes kho_preserved_memory_reserve(),
+which was added by 3f2ad90060f6 ("kho: adopt radix tree for preserved
+memory tracking") in v7.1. The bug in older kernels was in
+deserialize_bitmap(), which was added by fc33e4b44b27 ("kexec: enable
+KHO support for memory preservation") in v6.16.
+---
+ kernel/liveupdate/kexec_handover.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+index 175c08a6e41e..6fad9152387a 100644
+--- a/kernel/liveupdate/kexec_handover.c
++++ b/kernel/liveupdate/kexec_handover.c
+@@ -501,7 +501,7 @@ static int __init kho_preserved_memory_reserve(phys_addr_t phys,
+ 	struct page *page;
+ 	u64 sz;
+ 
+-	sz = 1 << (order + PAGE_SHIFT);
++	sz = 1UL << (order + PAGE_SHIFT);
+ 	page = kho_get_preserved_page(phys, order);
+ 
+ 	/* Reserve the memory preserved in KHO in memblock */
+
+base-commit: 5c4a03afcb21783987ffc64562b76ddd5a21b12b
 -- 
-Cheers,
+2.55.0.229.g6434b31f56-goog
 
-David
 
