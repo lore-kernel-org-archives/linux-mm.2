@@ -4,215 +4,153 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB9F1C53219
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 09:01:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32084C53219
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 09:15:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 91DCF6B007B; Mon, 27 Jul 2026 05:01:28 -0400 (EDT)
+	id 1213A6B007B; Mon, 27 Jul 2026 05:15:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A9396B0088; Mon, 27 Jul 2026 05:01:28 -0400 (EDT)
+	id 0D3086B0088; Mon, 27 Jul 2026 05:15:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 720FB6B008A; Mon, 27 Jul 2026 05:01:28 -0400 (EDT)
+	id EDF8B6B008A; Mon, 27 Jul 2026 05:15:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 33C236B007B
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 05:01:28 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 17B301A0699
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 09:01:27 +0000 (UTC)
-X-FDA: 85033963014.16.C6BD27A
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	by imf09.hostedemail.com (Postfix) with ESMTP id AAE6014000A
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 09:01:22 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="N5/Yy3b0";
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	spf=pass (imf09.hostedemail.com: domain of chaitanya.kumar.borah@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=chaitanya.kumar.borah@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=fail;
-	t=1785142883;
-	b=FKt9h1aBnOXzCqXyzwzJ+ia6DGphLSpWdYEnjiUAjD40ch/YLB0MdhAOnK85sNHqt9WGdq
-	8jLVkI6lZLAD7FlvHq+G0WuZlYVvSsm4EDgltfDZRARrBU74uvUcJ7i8kJ9QTrkgB43Urs
-	BWI+IhnwXloNWf4NEwj9IqLmYObDORs=
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="N5/Yy3b0";
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	spf=pass (imf09.hostedemail.com: domain of chaitanya.kumar.borah@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=chaitanya.kumar.borah@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785142883;
+	by kanga.kvack.org (Postfix) with ESMTP id C2E3A6B007B
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 05:15:10 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5863B4069C
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 09:15:10 +0000 (UTC)
+X-FDA: 85033997580.14.6D2E62C
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 0CBB24000C
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 09:15:07 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=XH4COWUi;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=bdm02+CD;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gT14ov0W;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=59Y51aLI;
+	spf=pass (imf01.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785143708;
+	b=kLXId5SycRN7+RfC2maNKVU3e78cIXtktYOcvvU95oW3gqRZmbv7sELGEca6UWHT26ZzoW
+	DrcF5Szr+uDvmemyBTcamZJksfFkop2MzU1VwM0vkK9ayel4hZgg+gxy9kf3QHNAtt+IPu
+	AXndiZJSilZTUt4R6n27GaaVnvFe6V8=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=XH4COWUi;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=bdm02+CD;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gT14ov0W;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=59Y51aLI;
+	spf=pass (imf01.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785143708;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lPsGwsBb0/w4bJJpL9T3AeQNrQAOnYDxc2eLZYUH4Yw=;
-	b=7KtwJy90GuN/iJvZMfxgnlVznigGQtvGzRmdoSVdVL+wG2a1ta6x/eP0WhsnecaIvkenh7
-	XBx3B7UbADVQR2KOYoeiSko1vabkp+IB/+0LDnWdCKVarSWPuXQKj7d8DR0xv30JLGsEvM
-	DyFoHKvwMf/qEmZb3nBMRHMgKoGtEtU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785142883; x=1816678883;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=P25JjmzCQdSGCjOzAV5uDWne4ppdod+v5bWzR5DKjCs=;
-  b=N5/Yy3b0cT+JBZ8K+1UiIGxwC2Pe4S63VdQCqGw0T6mfHa5EORGTkPkw
-   FF1SrXoF7fpWgW3+kaeVih9W2ja+dG4ZXZFCrXo3Y0cw52y5yye7DUYrE
-   HKARDG2P2ums9aDvtGlw8ZUXgG742B50qD8zYI6Ukv04ze4CU53o9evvQ
-   x15kyYp4YrCS/pyPtZvLBR8kuHnWPJTYD+oFXen3NLJRHPgzXwezcCmUZ
-   wLPc5NrC1tgLhgscg5GPj10bUqQ9uE1lqPJbCngAKBQ4qVLthOsmi365J
-   6ZC56NsgRb+AwsY6Rrs+0Xm7wH6NnPj3UbaBoYBhWfzfn4dDd4XKMY+ib
-   Q==;
-X-CSE-ConnectionGUID: gJDltdGITm6E46uwHf23pA==
-X-CSE-MsgGUID: uA/VU6wlSZu5mFcjn1HqwA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11857"; a="103247175"
-X-IronPort-AV: E=Sophos;i="6.25,188,1779174000"; 
-   d="scan'208";a="103247175"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2026 02:01:20 -0700
-X-CSE-ConnectionGUID: T7BA+8o1RKyxyRqIvHPoQg==
-X-CSE-MsgGUID: Qx5sO8VDRNW9yPdpHVUmLQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,188,1779174000"; 
-   d="scan'208";a="253025846"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2026 02:01:19 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Mon, 27 Jul 2026 02:01:19 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43 via Frontend Transport; Mon, 27 Jul 2026 02:01:19 -0700
-Received: from MW6PR02CU001.outbound.protection.outlook.com (52.101.48.37) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Mon, 27 Jul 2026 02:01:18 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uXWg1hUlFUL3h7+paBWNUKpq2gUYq4LktgmDkRpvE+CUwzB4xbR8QKyVI23OWnr6CIKGdZ09yRyqZXrAvLsaXSBQIhGspM1sbmdI9OCqyRWbvestCsi0dOIrSp/tncJX7khiv/RVhQtcQIUnRSkQs5OFGHrfDyuHscRqBf+OOqGNScXttPafvbqxEZT676TktRnTbKTbhBiYSjjj/jbIq6cFsu/Y9UY77RTobj5ZIz5wdP5+4kd7Wt1Aw6ZYJqSpZ4S2gNdtZ+iCKHPNHRlNk6+VZh1XtPe6kpMczRCPRIEZGvNRubazTMyjDaGwZjmI7LpSLPmermqU/DiML5BQtg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lPsGwsBb0/w4bJJpL9T3AeQNrQAOnYDxc2eLZYUH4Yw=;
- b=tWTbKOccOkknIh8JwgBXiUY5FrCEUJmfd+0Tj6ytYoA8vr3/xMGUENaAgGufy17fVju9nQfFobhiMD478rqKHck7KXZR9Iuaedl6ACrB1o0oIj0G36q64T0aErgoCV5P07uiKDaVNnVbZRrZsnjtFBLt5g8G1ombMyBcDJ4ZOK3uwqILfntZGTfy+f9ZpwAJGM+x1d05idCUjwxDJ5CftCKzzDXV7cvApaovJn6kSf4VAVOy7QxmTlkj/cl3z8JuqLVYIws6Dv7l5Di8QwSf/99RJNvxPcBrnDcV5/2zqTlFP5VOJInrTaC2aZ/VSNqHi8FErj5pK172kKpbFZ9Dig==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH0PR11MB7636.namprd11.prod.outlook.com (2603:10b6:510:26f::13)
- by DS0PR11MB7998.namprd11.prod.outlook.com (2603:10b6:8:126::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.13; Mon, 27 Jul
- 2026 09:01:15 +0000
-Received: from PH0PR11MB7636.namprd11.prod.outlook.com
- ([fe80::d611:6fa9:bc34:46b]) by PH0PR11MB7636.namprd11.prod.outlook.com
- ([fe80::d611:6fa9:bc34:46b%5]) with mapi id 15.21.0245.012; Mon, 27 Jul 2026
- 09:01:15 +0000
-Message-ID: <15f365d9-b5b9-4dc1-b24c-1b6f9363e9b1@intel.com>
-Date: Mon, 27 Jul 2026 14:30:57 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION]: [PATCH mm-hotfixes v5 3/5] x86/mm/pat: acquire
- init_mm read lock on attribute change to avoid UAF
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-CC: Andrew Morton <akpm@linux-foundation.org>, Suren Baghdasaryan
-	<surenb@google.com>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka
-	<vbabka@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, David Hildenbrand
-	<david@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko
-	<mhocko@suse.com>, Uladzislau Rezki <urezki@gmail.com>, Toshi Kani
-	<toshi.kani@hpe.com>, Dave Hansen <dave.hansen@linux.intel.com>, "Andy
- Lutomirski" <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, "Thomas
- Gleixner" <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
-	<bp@alien8.de>, <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, "Kiryl
- Shutsemau" <kas@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, "Will
- Deacon" <will@kernel.org>, Dev Jain <dev.jain@arm.com>, Ryan Roberts
-	<ryan.roberts@arm.com>, David Carlier <devnexen@gmail.com>,
-	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <bpf@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, "Denis V. Lunev" <den@virtuozzo.com>,
-	<stable@vger.kernel.org>, "intel-gfx@lists.freedesktop.org"
-	<intel-gfx@lists.freedesktop.org>, "intel-xe@lists.freedesktop.org"
-	<intel-xe@lists.freedesktop.org>
-References: <20260717-series-vmap-race-fix-v5-0-606a0ac6d3e5@kernel.org>
- <20260717-series-vmap-race-fix-v5-3-606a0ac6d3e5@kernel.org>
- <80993b70-352f-4069-84c7-39a04c061e98@intel.com> <amIEC1qDW3kfeuHd@lucifer>
-Content-Language: en-GB
-From: "Borah, Chaitanya Kumar" <chaitanya.kumar.borah@intel.com>
-In-Reply-To: <amIEC1qDW3kfeuHd@lucifer>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA5PR01CA0144.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:1b9::11) To PH0PR11MB7636.namprd11.prod.outlook.com
- (2603:10b6:510:26f::13)
+	bh=Nofef/k2ghi2COUtOHG8Fiu5zrxha6Onv0LZX52ftP4=;
+	b=ngPtrNAXB8QMbFRssMrugGu3Ke5g4Cd4k+PBFjg5uGEVY1X6E7PJMKv4jph+VlKUGPRbYU
+	5AAV2cTwepEIZKITqQA/3IG4wG09TYHXZdskY/zNODIXTklJOvpAsrLIB1ZnqnQlZXFfui
+	1h0w0ux3683abPHOsMiuyzWBA8zcFCA=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 214317DA77;
+	Mon, 27 Jul 2026 09:14:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1785143702; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Nofef/k2ghi2COUtOHG8Fiu5zrxha6Onv0LZX52ftP4=;
+	b=XH4COWUi/uVSTTItRb/nUmfm8hm6XLb+2ccrA+RSH9hDCrCENsMx7DdG1OWFISHT6yiJar
+	na1H2WcWdnbTJhAmma6fHG2fZdoBEv0sNydB8Z028wX4I5FNCCSh+4CvoK0zBQnxUDz5sv
+	fK0AfBjzu45udqdKvJg4xwhvU+eyHcE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1785143702;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Nofef/k2ghi2COUtOHG8Fiu5zrxha6Onv0LZX52ftP4=;
+	b=bdm02+CDJ05kV++dhJds+LNeKzhLGoPjHgz72E0kyd3TFAyzK2ZG2IlQFCaDm8PiZrpNT2
+	rCtsIQeQl1/lYUDg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1785143698; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Nofef/k2ghi2COUtOHG8Fiu5zrxha6Onv0LZX52ftP4=;
+	b=gT14ov0WCez/rIUxEy8m1tADx6vn9TvWYnVIlGDTGvvTkjqgKfNlsTpWeYmj3zns/HRrah
+	yetFtSmLwPTMVM2yAdcVmh9IB0etgC+Ko7dJ0vjckI/njniugxrFqPUNdwhmH9agXU+RvH
+	Vv24fXObUNvrvroqv5eY8mBjjk6l63M=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1785143698;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Nofef/k2ghi2COUtOHG8Fiu5zrxha6Onv0LZX52ftP4=;
+	b=59Y51aLI6YcXix+Z2oMApRzqEq+GdCAi5lSa72SMl9lcyKfcsYff4UnevNIIfGg1Xje3eG
+	/vP8AY5Z6JDlUaAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0A492779B9;
+	Mon, 27 Jul 2026 09:14:55 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id Gy7HOo8hZ2r9DwAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Mon, 27 Jul 2026 09:14:55 +0000
+Date: Mon, 27 Jul 2026 10:14:54 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Helge Deller <deller@kernel.org>
+Cc: John David Anglin <dave.anglin@bell.net>, 
+	Usama Arif <usama.arif@linux.dev>, Helge Deller <deller@gmx.de>, 
+	Matthew Wilcox <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>, 
+	Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Kevin Brodsky <kevin.brodsky@arm.com>, Muhammad Usama Anjum <usama.anjum@arm.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 3/5] mm/parisc: constify ptep_get() argument
+Message-ID: <amchbBH5zF7Rq5LT@pedro-suse>
+References: <20260724102017.141532-1-pfalcato@suse.de>
+ <20260724102017.141532-4-pfalcato@suse.de>
+ <0fd713a8-e4ab-4c07-b36e-79dd138b4a86@linux.dev>
+ <amNzLXuwflIZFKtI@casper.infradead.org>
+ <253f7ac0-205b-42f1-9fb5-d19eceb581b6@linux.dev>
+ <amOEUZlp1BxYh6_t@pedro-suse>
+ <fd239383-dcbe-4daf-b337-32facef07076@linux.dev>
+ <3e9dece8-4e86-4ce5-bd74-b3ec305f3003@gmx.de>
+ <4606e13f-6827-45d0-b3b8-6bc26358f7ae@bell.net>
+ <amT0j_bBT3CCxPcg@p100>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR11MB7636:EE_|DS0PR11MB7998:EE_
-X-MS-Office365-Filtering-Correlation-Id: 33ece4ff-9433-4aae-9244-08deebbd9d47
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|366016|376014|1800799024|23010399003|13003099007|6133799003|5023799004|56012099006|4143699003|11063799006|10067099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info: hjYbTbm0jBXI8dYJQqDbfTV3hrsgVq/4Eqk8kEG0mNtO4nfNANLahEwMRq0xDanFyCH4/L8BNLzNMEM+fhjIBa7wlr6/qSPcseY/tbUgi2JFwAzICsByleZm5dOq03iB98Im5/LkL3G6cYQtbv6Gupuxe3CF17nD4QRQ2Gi2M8RH64yNWXPfGkq2yivKQXC9cXXIYcym0BBR2DClLEZ54p8J/GM+cMyuuPnmXuOLENxaxXE95qakV/b8LpsYW+Ev5zd9SmgR/O60ofcr1WHfVHZpthpKVEOnuhvqpVYFZB4ClJhAKi6nqBm2au1XiGUUqiPtS568S/fTtzqtnqLGUvutdkrX5RGH+bUMsCVFytHSjsHMHF/GdzGkZDCFj8RIi8F+UsB7RlnScE8p/WEL8IJsUjrTSuXWa4l6Hf2TF9OIN9P2bnD5cys6NroeaFnPKWM4fNQQhKTPEg8vGO1YTrNbjVrggqHKOP5sDrjAF4hrVDGhTzubnGdtoH5s0ZuOlFwjG7bJ1oB3ffCV1SFYUhU/XzwQ5YB4QFXVbI0mfTa6RtkmXTDKcdNMRCkqGTp9tXCXxM0AbVQX0+4JvmcKovf244aDbK/6HK+Fyg5lKtrmf8Etx4zMdNZZKNE+kL+3
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB7636.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(376014)(1800799024)(23010399003)(13003099007)(6133799003)(5023799004)(56012099006)(4143699003)(11063799006)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?c2Z5NmlnR2Y4Z3dCTUIzYk5GczFHWnQyZjVqYTU0d1dVUWp4eTNCdC9kSUFD?=
- =?utf-8?B?TlZMMDZVaEhINnVBNlgxdjFpcUN6MGpZcVlHNWZpc2IrTCs4KzhCL2RUc1Rj?=
- =?utf-8?B?TGFnb2VxcVJjaVg1S2ZXZGZwbHJnLzdSaVliQURsRTYrWG84dlpmL1lsSGRU?=
- =?utf-8?B?ZU1XZFF6RGF5RzQ4ellEQ1lIcGMvdEpPMDgxRGtPUGk5L2Ewald3cWNCa1o5?=
- =?utf-8?B?QVFLU2t5NkplVXBwTlBJNVhpaEQ1c3ZOSFJlWThURnBsTzN5Q0pRanlRSHh5?=
- =?utf-8?B?Tk9aS29vdjV6ekh6YSswOFN6R29ZdldxcGsrRFZYRm5XYnBwNnBKQWtKUlIw?=
- =?utf-8?B?SUVnR2V1YjRqQWZ0b0tpNW4rQ2NRYzc2UmY0SVVUcGtUdHRyT0ZhSFkxMk9R?=
- =?utf-8?B?VmdYRlRrZ256cUtSb2w5UEFLZWN6Zks5ck9RRkIzZTZ4VlNwTlc0VkltTUNZ?=
- =?utf-8?B?MDlGYjFQZDlZQXh6S2JRMjFGdWhBSnZ0RnBWRHh5RDM3Qy81bjZpenNWTXFK?=
- =?utf-8?B?ZVJ2SEVIZytNTUU3TGJaZnZxcE1NZHpDYThXSHAyRXdsRUw5c1hpU2RIdFVY?=
- =?utf-8?B?ZTR3NzBZeWZCdEM0NFBDMlhma1U0aThzMFhQNkszUTY0aFRlbnJHWDZ3VkRD?=
- =?utf-8?B?UkU2SGk5R2J6dWs2MW1Wc3JWVHZXVXNaVVROWXVpaWF6eThyNnVLMVZmNWNs?=
- =?utf-8?B?dFBpTHNQc1BqS3ZxSlNPV3VnV0RYUThhdkxJQXlqLzFBeW1YSzIxN21FOHlH?=
- =?utf-8?B?S2h1emRTLzJQeTIvSm1Sb2VuM0p6d0FiRi9WekdROWJiNmVhMnVsVlBiMnNP?=
- =?utf-8?B?UndWVFQwaFE0UURYQVdDQllDQWRTN2phQlBrWUxubWZXWldwb0JxZDJKdXJy?=
- =?utf-8?B?ZE1qY0s0djVhVXJhNHdpd1dxMlhRR2xMT3NmK3UvTFV2ZGw4ZDYyZnFTeklX?=
- =?utf-8?B?T1RPU0d6L3Z1WWd6bFBuWDlteEV0RU9kYWVZSEZYK0pOcGVPZExZS0xxVTBD?=
- =?utf-8?B?dFRRYVlHSzVZZ3NkVkZVbVBoT244RTlhQitRRlFBaTNMa0RSYnFZY2hRMUd6?=
- =?utf-8?B?cG5RTUpDdUJpSnlFalZiZWt3TWJVSmRZSlJtdDJGbWdqd2toRjcwaTdNeEJu?=
- =?utf-8?B?bmw2UnJYZFFRZU5NQUpOREJrR3Nsd2p6ZXNGN3UyS2RERTJFOGt3Rld5Z1V6?=
- =?utf-8?B?eTZ5T0FSUng1OGRrS1dVV2ZuNHJLVFEwUmwyWDlFajNqbDVqWjMyZHZ5WXRl?=
- =?utf-8?B?OGFWVFR1ak5SUytQSDVTd2dhd204SytUZDJPV2pZQUxEaGxIUk1xUVdhTkNP?=
- =?utf-8?B?d09jRDVNc0JGcnRodjdsd1FnNXpmbzhPMno3OGEydWcyR2hkN2pqcHl0YjQr?=
- =?utf-8?B?aGZNa2ZrMzd1NmZiZUtQODgyWlhMRnNJYWF0WFo1b3plU3hyS3UyWmlIRjIz?=
- =?utf-8?B?Yk5ybTd6UjY4a2NtNnI5QjlLeUNkTTdwMVNYVWJkdWp6bldxUnlRRVM3NXF6?=
- =?utf-8?B?c3FHa2UrcDJlTnh5NHZIQkQxenBjU0xDZHpCTzFPU1FPSTJ1U2xTZEtSbjZN?=
- =?utf-8?B?RnlYa0VsbjhnZCtWRnZXSWc5NXJzTmlnN2x3QU9OVDZOMmUvb3FpZEx5Q2pG?=
- =?utf-8?B?Yk94em1hZTRxUk5sZzZQemdhTGhGc3gxNkdwaDUvc3JmMHlHYzh3SEZDNHdv?=
- =?utf-8?B?K3ZRNmNYbTJWSlVzaHk5cW9qUTJxcVNySW5VZVJXRCtqTnJVRHlUYnZkRWJD?=
- =?utf-8?B?NS96eVdsaFQxc05XRk1kV2orWDdydkVxQ2UrcmplYlpYQjl0elcyRzY3VHN1?=
- =?utf-8?B?Q0ZhKzhOdDloQ0t3Ti9lNGZjc0Y0WEtwK0hPOUpBeWhqckFJeHZCeWR4V3I2?=
- =?utf-8?B?VTYzOHB0YzE3MXhWUXI2RmFCS2pSaVVGbmlKYUJ3VmF3ZHJiNFZkdjZieGpZ?=
- =?utf-8?B?TDhmY3lYK3JDTitURXNCZllRSzJBWXBNMDNFTjlGd3k0eHVkd2tWYnU0andl?=
- =?utf-8?B?dVVDWEhJV0wyZEVYUkR1R0l5MWU4U3oyS3JiVk9PUmxhb0NYVWJyeVNMclcr?=
- =?utf-8?B?dXh1bjgxQjVTeFNmT0x0bmk5NEwyNk8vbEVHZFQzN3ZKMGNjTS82TlJNNko3?=
- =?utf-8?B?SnlzeWxGZ1lFTks1Z0NlRXJrSUZXdGJVNnhHUys3VDdjb0pNVEtGK0xOajNI?=
- =?utf-8?B?VGdZbmcrWkN2L3N3Y2p6QkdjQ1FFMGF2V3hDS0pGUWlhZFFod0VTQzBPb0c0?=
- =?utf-8?B?QnRTNDdZQVczdFQvRmtNTERIUGEzODFqV0x4RG9KYzBJRENvOEZPSmE0WlFI?=
- =?utf-8?B?c0xiQzk3a3FSdllnMzNqYnBnN3N1Y3ZVOG40em5hdFFXcEFrUmhnaWtvL3kx?=
- =?utf-8?Q?QTL4iQBB47SA8Oyg=3D?=
-X-Exchange-RoutingPolicyChecked: GQz1nmHQFJixZJFCmVXr4WB9ipkAUToRzazWymKL2ifEGFLf6GJguOgJtUezJDV9thLzy0zo0+MxfRzw/SEYQPz3BJRZX075ZYGbbm+vgVR7rrQxLHRa/RFeWycfS0RexSo9X89KyqbdSkvys30h12sudQYC8/7aBRrKxJp9HW6Qe9H09FrQAFz2IFB90mpot9sbClfx0hRzgAR8wxzSJXtsBNOngFteYzOczPIycHUvCU7VomDno6F+gPYL0JYJv2KTgQdDB1QSIEW5gtguOfC+bgF9w/m8aK+u3hJq0XO2jbJ01tfS2QEWkgp1UWG5d+QKEgi/XHqoVmnjVXkD2A==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 33ece4ff-9433-4aae-9244-08deebbd9d47
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB7636.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jul 2026 09:01:15.4259
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Yx5bK+EnzyOBHH2U3EWnB6xZMisoUCb/U5o9RREM10lhreAnDEnUEd/QwruiM/3Jdt9AqGoHlqMoMzpWR5LcBQL3ruEKetHU4576LASzlxE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB7998
-X-OriginatorOrg: intel.com
-X-Stat-Signature: c4drso3fkf3t3wnaa65da91mtmqshkzq
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: AAE6014000A
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <amT0j_bBT3CCxPcg@p100>
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 0CBB24000C
+X-Stat-Signature: 99fx4c9imbojaywa74jb7fsaq9858mwk
 X-Rspam-User: 
-X-HE-Tag: 1785142882-775105
-X-HE-Meta: U2FsdGVkX19gG19NAFDFgLWHeLGNmlfHVpCxSWrv8nGMoqDTEqS5aR54HUAN7vEQDgZvf8oL6RSKpelboSl8pCKyc7+0wzwZLyTCf77ta6i/dTv0me+EX9p7mFoJ4znMGu3MoulYVRFea/e91qkhdM40lWvR5ALgao/zFO42OwS3xoDoIcUqQ3PG1AIlnvpkM1MqL4nKGg+WBkYL1dvx3UOCGl6u4VrTqgis5cJRwyqex+cZl2ju6mxW7GEiQrndHhomZQ5CCIqgUzcacOlw2x4pJLNLAfASPbZ923ceikgZDwtYsML/m1A+BLsfL2XV76j04rrNUqdGGtLwIt6Iz03GKJ8gSFznfcHSJd6Wquo/2+4oVsOiVG8sg68kuBgCF8vfohaLaKklkx3GgIBfDf0SXz8HxBxQZDNeyMVedt02qNOHMUWyzYvN/pkWr1ozm2fw7YHc5dT1Mu7bDLGRhVPe/4VZQt6tvuT5rsYpzIwsQctqtzDne+iLod8J0v2+i/PiZB1CmiJXMjOucR28gGojUzCu5oSVzIti50lKPWyE17HVTZYQmq+qZKFfGzIeXfdm0KORXKiqtxtTeNZ3/aqQAM4udHTNhR0FE+o+BJuvxGUDa61KRtrwfhblGxdLgHJeeqFpUxI7rLjmFmUxVJCMZTtgppMj+hB9z/uP5NerofiA3Nnm0GzV79D+Xf0uPnP5VWXsXU8vaHzUCkQ97/G1JJu7XkpfRSWehLZCgEcX3e1jxgl2ksTFL7oLjS8sa4zz3sMVQbzcUJqB3Hgkgt9i1pxfaeEgA4XIaBVJ3ZfL0svicJNpt8ibA7IsUCPSgcGiSM8Nh6B/UBQfNbA3H7I3hprUnYQ9cVDxZULxlNNKnEgDcSMqhLvj5HV7erVoX20q5caOPN4ezIC42j9KQbJvpQ1EuEZJH1mKpu9k88GPgKzZD5dB5qr+f7Y2s8pLK8p/KM7K6r1xJdkaMNz
- +ty16IHs
- +rfw2qy0Cm7A3KIstCG4vQuVQ2XyILowMnJUTY8T8p/1siW+rMzfk79IVyohLcEa/OaG6N20q3Lch3tGipxG4los+OTJDwxXNXDP8D3rMcHFb17jpwfnaZ5PYg9p1En9LT7gKWMMrdfd3mKnXw/IA2ByBP4Vf2dpsFP6etCV0Q1WYOvubOaZVCJV2QeNjA1DcHd0Rh/7pUgaH8vv3bww+w2rvMnfwCYh6SwV4Qwsj2wp8/PkBpa8dnHeWU+cdBQkWdYDdE7wNwt1En56TCYtmUuxgSeAv6RwAi6UvDE7V1w1E+7pL+5ZLZOaIHM2HZeRSxSLrCxDT7bpxiMSqhK2x6qBTe0umG/FkOceZ8mkG+dHSmUsfgAvJVluGQomUDulQx0+eUVQ7anCagA25Q8JLcK4T/u8/dyZdgdxcLLsLnOjXskZf6qOSjgDF7EswNRGBDD8bEHa47MsLewJFwUHX2AKcF7mXWsGyGqV0Dbm9errcDLOcRhl7IQ9BVh87vvG6nSXSVhAAsHZDZynwc4va+ubbcKdFq+RrPgxR03hFAcqxR0osbQO8dCS0kEXDCGsnmbn3CGtEJV3yKDScmzzUXvBNMbVXYu8h5+lENCnEDym41WiyczBzVR1NL2/dct7rKxyO4E7JE7R9PCilfO4ttNDM6R/h+nWUILCYCKnqs+bfyRwl+SqQg8Ca8Q==
+X-HE-Tag: 1785143707-560269
+X-HE-Meta: U2FsdGVkX1/KqIK4Y3ptfyBKrCPVArDsexlr3MuNvGGqy2Nd0bYwzNUpN29hY5djKHF6ScVuTB1fW5Umm3YJuTnKMSMD0qzYrZCSyHBGLq6Z7UVzGj6CKBs0kCScB+kpF7W1SD3oYGonV+YBgTELjOwCIjK+5rozFmlZGSwULCXLayuTXpoAOsJm/t4ZoazOHTlZ3tqadCQPgpdIMyK8J6MKD87OUgN+6TpJSzsqgmn5xy8WTo6reYzaSBrte84VPNy5Fz9zzctINg0bpXkzZu/cfwGR4iaEmsXrNY/qp4w36TT8K4Payjb6V7EJWpoJEVN7tLAsVW1YTewzUeQuizDUfMMbHfRs4KoRrgh2YjZjgXFMpVHbKQg4FZE0g4kZXxSA+lBMI+i9j3H5Ayr9V1fiX0eb1vJxOHK5anzGR2YoUmSkv6AwtMoSDTgbssdHKvP+Nv7E685r/wfhR/VQzRRxt1i07nCK9gvuainkJKrPs+NyM4CLHHa6UsOadIaVvRZk0e9Ev4yys7nnMl08ZA3tiajoku7aah93ExCtK9Bm91B5lWQdFm4yZkw14tQQKuDnWaNOwHFZGS1smhX6DV4IimoAb/inJ5CpcloPo0BX970Vrn9bvWWDKpZ7+l8uPm1U8ahxd8J+KKPreNY6CbyAgU7m5ou58ra75vd2ZQ6RfRcQUmnIcybj+/sioWcbHwcGllRBHAsn0tVFDCXgnDHBVW3eihc6CHajeJYVwGF15M2b6rngVxE2nYFSgqj542JvxuL4qEpn8GL3kuAly8VPnoPxc/Um3RfeIdvY9UK1oMAzNhNtLMz2uO6xd0iGHKwhRPnopeWogUfzjKFvJoaJgdM+ZQgIQ5FOtjGWa1EswxFgMGXfIKW9QKM5MNtagkReS+ap9mXTx4CsVe5pmSgzNcfGUg/rF3y7xpfce7R8+xKkVfXvCMHwlBWcL19Ye/z4Ah1zetkcROvf9ZE
+ jV7WKWDG
+ 5bnZQTeU5ta1rw48cO7AekwVuZAJpz62fz7+GbsNuameJhpdy5N031wiQox6Tl/hT50rQZi2TcaAGDw36hkdhEFR1cuksYoyZMraqNDFU4BXmM+ac4JoO4wOONKKndc3wVtrtxMOiqglVEQ4H+Wv5tf8FjF+ny3L/OA69yZVp0c9WrhLRNrduULICgm4xXkBsTEtLMdNyNvCdNk/NWnL5B0VjFJ1cyquSgejWPpAIWE3qAI6iFxu5Lp5dUcAXLu6O/C1w4LzvxbEutvsIsoApmEuSbPIeokh+Q1rMKBV++3yCONSUQIbzbaOdXJmz/P7cN14uGOtinpmbd+sUtUzmVTCLQIFJGRT/2ITrqz+9RgOtc7KXeikdvegKT1+hczQBCpNHdKnJyLKWYmEUE+dE+l6BfnWjmQGHcrollR22iYCRJ143uajtSwUC59gW8pVXOMGL+kCdvxHKCRYR84WolCZnPU8HuyFgDAUETkXX1+MiRlPe9XhA8WBknG3mjaA9hfaZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -220,248 +158,149 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Sat, Jul 25, 2026 at 07:38:23PM +0200, Helge Deller wrote:
+> * John David Anglin <dave.anglin@bell.net>:
+> > On 2026-07-25 12:27 p.m., Helge Deller wrote:
+> > > On 7/24/26 17:48, Usama Arif wrote:
+> > >>
+> > >>
+> > >> On 24/07/2026 16:32, Pedro Falcato wrote:
+> > >>> On Fri, Jul 24, 2026 at 04:03:44PM +0100, Usama Arif wrote:
+> > >>>>
+> > >>>>
+> > >>>> On 24/07/2026 15:14, Matthew Wilcox wrote:
+> > >>>>> On Fri, Jul 24, 2026 at 02:36:59PM +0100, Usama Arif wrote:
+> > >>>>>>
+> > >>>>>>
+> > >>>>>> On 24/07/2026 11:20, Pedro Falcato wrote:
+> > >>>>>>> ptep_get() does not need write access to the PTE.
+> > >>>>>>>
+> > >>>>>>> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+> > >>>>>>> ---
+> > >>>>>>>   arch/parisc/include/asm/pgtable.h | 2 +-
+> > >>>>>>>   1 file changed, 1 insertion(+), 1 deletion(-)
+> > >>>>>>>
+> > >>>>>> hmm I think you might break build bisectibility if
+> > >>>>>> you separate out the patches, you should squash patch 3 and 4,
+> > >>>>>> with patch 1.
+> > >>>>>
+> > >>>>> I don't see how this breaks bisectability.  Can you elaborate on what
+> > >>>>> you think would break?
+> > >>>>
+> > >>>> Patch 1 does:
+> > >>>>
+> > >>>> -static inline pte_t ptep_get_lockless(pte_t *ptep)
+> > >>>> +static inline pte_t ptep_get_lockless(const pte_t *ptep)
+> > >>>>   {
+> > >>>>       return ptep_get(ptep);
+> > >>>>   }
+> > >>>>
+> > >>>>
+> > >>>> ptep_get() takes a non-const arg till patch 3 for example for parsic.
+> > >>>> I don't think you can pass a const variable to non const function arg?
+> > >>>>
+> > >>>> So parsic won't compile in patch 1 and 2, powerprc wont compile
+> > >>>> for patches 1, 2 and 3..
+> > >>>
+> > >>> Aha, yes, nice catch! I'll have to rethink that. Maybe squashing the patches
+> > >>> would be the cleanest way forward.
+> > >>>
+> > >>
+> > >> Yes, squashing is the simplest way forward.
+> > >>
+> > >>> FWIW, the vast majority of architectures aren't doing funny things on
+> > >>> ptep_get(). E.g PA-RISC, loongarch only define these so they can use it in
+> > >>> their own asm/pgtable.h. I'd really like to delete these but I can't tell
+> > >>> if they are *actually* required.
+> > >>>
+> > >>
+> > >> Ah maybe there is something in git history on why it was needed?
+> > >>
+> > >> If not, hopefully someone from the arch lists could clarify..
+> > > I tried to remove ptep_get() and ptep_test_and_clear_young() from
+> > > arch/parisc/include/asm/pgtable.h, but this then triggers compile errors:
+> > > 
+> > >  CC      arch/parisc/kernel/asm-offsets.s
+> > > In file included from /home/cvs/parisc/git-kernel/linus-linux-2.6/include/linux/mm.h:31,
+> > >                  from /home/cvs/parisc/git-kernel/linus-linux-2.6/include/linux/pid_namespace.h:7,
+> > >                  from /home/cvs/parisc/git-kernel/linus-linux-2.6/include/linux/ptrace.h:10,
+> > >                  from /home/cvs/parisc/git-kernel/linus-linux-2.6/arch/parisc/kernel/asm-offsets.c:21:
+> > > /home/cvs/parisc/git-kernel/linus-linux-2.6/include/linux/pgtable.h: In function ‘clear_young_dirty_ptes’:
+> > > /home/cvs/parisc/git-kernel/linus-linux-2.6/include/linux/pgtable.h:683:25: error: implicit declaration of function ‘ptep_test_and_clear_young’;
+> > > did you mean ‘pmdp_test_and_clear_young’? [-Wimplicit-function-declaration]
+> > >   683 |                         ptep_test_and_clear_young(vma, addr, ptep);
+> > >       |                         ^~~~~~~~~~~~~~~~~~~~~~~~~
+> > >       |                         pmdp_test_and_clear_young
+> > > 
+> > > So, I think the answer is, that the local copy of ptep_get() is used in the parisc implementation of
+> > > ptep_test_and_clear_young() function.
+> > > 
+> > > Switching to the default include/linux/pgtable.h seems not easy doable....
+> > 
+> > Did you remove define for __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG in parisc version of pgtable.h?
+> 
+> Indeed, I missed to remove that.
+> 
+> Usama, if you want you can add the patch below to your patch set, thus
+> simplifying your series?
 
+It's actually my series but thanks Helge I'll pick it up!
 
-On 7/23/2026 7:48 PM, Lorenzo Stoakes (ARM) wrote:
-> On Thu, Jul 23, 2026 at 12:00:42PM +0530, Borah, Chaitanya Kumar wrote:
->> Hello Lorenzo,
->>
->> On 7/17/2026 11:00 PM, Lorenzo Stoakes (ARM) wrote:
->>> A previous commit protected us against races between ptdump and CPA
->>> collapse, however one still exists between attribute changes and collapse
->>> as reported by Denis V. Lunev (linked).
->>>
->>> When an attribute change arises, a lockless page table walker obtains a PTE
->>> entry, which is later written to via set_pte_atomic():
->>>
->>> ...
->>> -> change_page_attr_set_clr()
->>> -> __change_page_attr_set_clr()
->>> -> __change_page_attr()
->>> 	-> _lookup_address_cpa()
->>> 	-> lookup_address_in_pgd_attr()
->>> 	-> [ lockless page table walker ]
->>> -> set_pte_atomic()
->>>
->>> There is nothing preventing a concurrent CPA collapse which can free the
->>> PTE that was retrieved here, resulting in a use-after-free.
->>>
->>> With the mmap write lock taken on init_mm over CPA collapse, we can now
->>> resolve this race by acquiring an mmap read lock on init_mm over
->>> __change_page_attr_set_clr().
->>>
->>> This locks across the whole operation over which the walk and the PTE entry
->>> write occurs, solving the race.
->>>
->>> It is safe to do this here, as no spinlocks are held upon entry to
->>> __change_page_attr_set_clr().
->>>
->>> The CPA_COLLAPSE flag is only set by set_memory_rox(), which exclusively
->>> operates upon vmalloc ranges, and on x86 only within the module mapping
->>> space.
->>>
->>> This is important, because some callers directly invoke
->>> __change_page_attr_set_clr(), bypassing this lock. However, none of these
->>> operate within the module mapping space.
->>>
->>> * cpa_process_alias() - a recursive helper called by
->>>     __change_page_attr_set_clr().
->>> * __set_memory_enc_pgtable() - operates on the direct mapping and (via
->>>     __vmbus_establish_gpadl()) the vmalloc mapping space.
->>> * __set_pages_[n]p() - called by set_direct_map_[invalid, default,
->>>     valid]_noflush(), __kernel_map_pages() - operates on the direct map.
->>> * kernel_[un]map_pages_in_pgd() - operates on EFI ranges.
->>>
->>> This work is based upon Denis V. Lunev's excellent analysis of the bug with
->>> gratitude.
->>>
->>
->> This seems to be causing regression in our linux-next CI [1] on some of the
->> older machines (fi-elk-e7500, fi-ilk-650, fi-pnv-d510)
 > 
-> Thanks for the report!
+> Helge
 > 
-> A small note - it'd be useful for you to clearly point
-> out the revision of next to make our life a bit easier :)
+> ------
 > 
+> From: Helge Deller <deller@gmx.de>
+> Date: Sat, 25 Jul 2026 19:19:55 +0200
+> Subject: [PATCH] parisc: Drop own implementations for ptep_get() and
+>  ptep_test_and_clear_young()
+> 
+> Switch to the generic implementations, which are identical.
+> 
+> Suggested-by: Usama Arif <usama.arif@linux.dev>
+> Suggested-by: John David Anglin <dave.anglin@bell.net>
+> Signed-off-by: Helge Deller <deller@gmx.de>
+> 
+> diff --git a/arch/parisc/include/asm/pgtable.h b/arch/parisc/include/asm/pgtable.h
+> index 467b8547ac8b..d92dee9fef3f 100644
+> --- a/arch/parisc/include/asm/pgtable.h
+> +++ b/arch/parisc/include/asm/pgtable.h
+> @@ -432,25 +432,6 @@ static inline pte_t pte_swp_clear_exclusive(pte_t pte)
+>  	return pte;
+>  }
+>  
+> -static inline pte_t ptep_get(pte_t *ptep)
+> -{
+> -	return READ_ONCE(*ptep);
+> -}
+> -#define ptep_get ptep_get
+> -
+> -static inline bool ptep_test_and_clear_young(struct vm_area_struct *vma,
+> -		unsigned long addr, pte_t *ptep)
+> -{
+> -	pte_t pte;
+> -
+> -	pte = ptep_get(ptep);
+> -	if (!pte_young(pte)) {
+> -		return false;
+> -	}
+> -	set_pte_at(vma->vm_mm, addr, ptep, pte_mkold(pte));
+> -	return true;
+> -}
+> -
+>  bool ptep_clear_flush_young(struct vm_area_struct *vma, unsigned long addr, pte_t *ptep);
+>  pte_t ptep_clear_flush(struct vm_area_struct *vma, unsigned long addr, pte_t *ptep);
+>  
+> @@ -491,7 +472,6 @@ static inline void ptep_set_wrprotect(struct mm_struct *mm, unsigned long addr,
+>  #define HAVE_ARCH_UNMAPPED_AREA
+>  #define HAVE_ARCH_UNMAPPED_AREA_TOPDOWN
+>  
+> -#define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
+>  #define __HAVE_ARCH_PTEP_CLEAR_YOUNG_FLUSH
+>  #define __HAVE_ARCH_PTEP_CLEAR_FLUSH
+>  #define __HAVE_ARCH_PTEP_SET_WRPROTECT
 
-Ack.
-
-> I can see from below in the stack and the URI it's next-20260720. There was a
-> broken merge in linux-next for a while but it's fixed by 20260720 so that's not
-> it.
-> 
->>
->> <4> [196.236867] ======================================================
->> <4> [196.236878] WARNING: possible circular locking dependency detected
->> <4> [196.236890] 7.2.0-rc4-next-20260720-next-20260720-g3fe08b9796f3+ #1
->> Tainted: G S   U       L
->> <4> [196.236906] ------------------------------------------------------
->> <4> [196.236916] core_hotunplug/5687 is trying to acquire lock:
->> <4> [196.236927] ffffffff839048b8 ((init_mm).mmap_lock){++++}-{4:4}, at:
->> change_page_attr_set_clr+0x10a/0x220
-> 
-> This is the result of my change indeed.
-> 
->> <4> [196.236958]
->> but task is already holding lock:
->> <4> [196.236969] ffff88810c852238 (&vm->mutex){+.+.}-{4:4}, at:
-> 
-> So this is a lock dependency issue as this is obviously an entirely
-> different lock.
-> 
->> i915_ggtt_driver_release+0xab/0x260 [i915]
->> <4> [196.237572]
->> which lock already depends on the new lock.
->> <4> [196.237585]
->> the existing dependency chain (in reverse order) is:
->> <4> [196.237597]
->> -> #2 (&vm->mutex){+.+.}-{4:4}:
->> <4> [196.237617]        i915_gem_shrinker_taints_mutex+0x35/0x70 [i915]
->> <4> [196.238267]        i915_address_space_init+0x226/0x2a0 [i915]
->> <4> [196.238961]        i915_ggtt_init_hw+0x2c/0x140 [i915]
->> <4> [196.239638]        i915_driver_hw_probe+0x208/0x380 [i915]
->> <4> [196.240260]        i915_driver_probe+0x113/0x5b0 [i915]
->> <4> [196.240883]        i915_pci_probe+0xe0/0x1d0 [i915]
-> 
-> (another small note - running scripts/decode_stacktrace.sh would be hugely
-> useful as these offsets aren't so useful unless I have the exact kernel
-> binary you have with debug symbols :)
-> 
-
-We have not been asked for that yet but we can surely provide it if it 
-becomes absolutely necessary for debugging.
-
->>
->> Detailed log can be seen found in [2]
->>
->> We confirmed that reverting the patch solves the issue.
->>
->> Could you please check why the patch causes this regression and provide
->> a fix if necessary?
->>
->> Regards
->> Chaitanya
->>
->> [1] https://intel-gfx-ci.01.org/tree/linux-next/combined-alt.html?
->> [2] https://intel-gfx-ci.01.org/tree/linux-next/next-20260720/fi-ilk-650/igt@core_hotunplug@unbind-rebind.html
-> 
-> <snip>
-> 
-> So looking into it we have deadlock potential here:
-> 
-> 1. fs_reclaim -> &vm->mutex
-> 
-> < device init >
-> -> i915_address_space_init()
-> -> ...
-> -> i915_gem_shrinker_taints_mutex()
-> (mark the dependency in lockdep)
-> 
-> This is presumably because the shrinker needs to lock this mutex.
-> 
-> 2. init_mm -> fs_reclaim
-> 
-> This was introduced by my patch and there we have:
-> 
-> < caller needs to set memory, e.g. BPF >
-> -> set_memory_rox()
-> -> change_page_attr_set_clr()
-> -> [acquire init_mm lock] <-- my change
-> -> __change_page_attr_set_clr()
-> -> __change_page_attr()
-> -> split_large_page()
-> -> pte_alloc_one_kernel()
-> [ allocation ]
-> < trigger direct reclaim >
-> 
-> Thus init_mm -> fs_reclaim becasue in split_large_page() there's:
-> 
-> 	if (!debug_pagealloc_enabled())
-> 		spin_unlock(&cpa_lock);
-> 	pte = pte_alloc_one_kernel(&init_mm); <-- allocate
-> 	if (!debug_pagealloc_enabled())
-> 		spin_lock(&cpa_lock);
-> 	if (!pte)
-> 		return -ENOMEM;
-> 
-> Note the CPA lock dance, will come back to that as that's how to solve this
-> issue...
-> 
-> 3. &vm->mutex -> init_mm
-> 
-> < device remove >
-> -> i915_ggtt_driver_release()
-> -> ggtt_cleanup_hw()
-> -> [acquire &vm->mutex lock]
-> -> ggtt->vm.cleanup == gmch_ggtt_remove()
-> -> intel_gmch_remove()
-> -> intel_gtt_teardown_scratch_page()
-> -> set_pages_wb()
-> -> set_memory_wb()
-> -> _set_memory_wb()
-> -> change_page_attr_clear()
-> -> change_page_attr_set_clr()
-> -> [acquire init_mm lock] <-- my change
-> 
-> This &vm->mutex -> init_mm
-> 
-> And so there is a circular dependency:
-> 
->   	&vm->mutex ---> init_mm
-> 	      ^            |
->                 \           v
->                  \--- fs_reclaim
-> 
-> (lockdep should totally do diagrams like this :)
-> 
-> In reality to hit this you'd need something to be doing direct reclaim on
-> allocating a split page table during a CPA operation with a simultaneous
-> contended init_mm lock.
-> 
-> But this issue is broader than that really - we can't be holding init_mm
-> over an allocation.
-> 
-> split_large_page() calls __split_large_page() after dropping the CPA lock,
-> which opens with a revalidation:
-> 
-> 	spin_lock(&pgd_lock);
-> 	/*
-> 	 * Check for races, another CPU might have split this page
-> 	 * up for us already:
-> 	 */
-> 	tmp = _lookup_address_cpa(cpa, address, &level, &nx, &rw);
-> 	if (tmp != kpte) {
-> 		spin_unlock(&pgd_lock);
-> 		return 1;
-> 	}
-> 
-> There's also revalidation in __change_page_attr() on every split:
-> 
-> 	err = split_large_page(cpa, kpte, address);
-> 	if (!err)
-> 		goto repeat;
-> 
-> (Where goto repeat entails a complete rewalk)
-> 
-> So dropping the init_mm lock here should not result in any problems with
-> being raced by a collapse and was something already accounted for.
-> 
-> So the broad strokes of the fix is to eliminate the init_mm -> fs_reclaim
-> dependency and thus break the dependency loop.
-> 
-> I'll send a respin with this addressed.
-> 
-
-Thank you for sending the fixes.
-
-CI looks good now.
-
-https://intel-gfx-ci.01.org/tree/linux-next/combined-alt.html?
-
-==
-Chaitanya
-
-> Cheers, Lorenzo
-
+-- 
+Pedro
 
