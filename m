@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9E9BC53209
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 13:53:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B12DC53209
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 13:54:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A82D96B00F2; Mon, 27 Jul 2026 09:53:49 -0400 (EDT)
+	id 94CE96B00A0; Mon, 27 Jul 2026 09:54:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E5946B00F4; Mon, 27 Jul 2026 09:53:49 -0400 (EDT)
+	id 8FDAB6B00A9; Mon, 27 Jul 2026 09:54:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8AD596B00F6; Mon, 27 Jul 2026 09:53:49 -0400 (EDT)
+	id 7C8596B00AA; Mon, 27 Jul 2026 09:54:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 55C936B00F2
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 09:53:49 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 499576B00A0
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 09:54:57 -0400 (EDT)
 Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D2D4440749
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 13:53:48 +0000 (UTC)
-X-FDA: 85034699736.17.E41A14A
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C74D31606ED
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 13:54:56 +0000 (UTC)
+X-FDA: 85034702592.17.51B3851
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id F2C6420008
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 13:53:46 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RMlM4b05;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf08.hostedemail.com (Postfix) with ESMTP id 04E1E160008
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 13:54:54 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NIP5nUV3;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785160427;
+	s=arc-20220608; t=1785160495;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qz4bHznQFYHtYd51Eh25zSS8E1FWwIIvc+FleuDk28o=;
-	b=bzzfNtCxCXvVTTRmAZxYnaDOWQJkhCpo7ahex5tmQ4ODBywN2yiIIchNL8cafxDNkdZSce
-	QcBcVkMLFHsHkrSPFwunjWM24b2wMJqotb3/5RkWSGcQpxyMJMR5Ok9uED2ilTvTzRMFvV
-	f42u/HqTyds3IaZ5JHWMl2mzxG1oM00=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RMlM4b05;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=RtGAuL9EFyUfYnUH+07v8KujAvAIXlWdvdSfgMEdxnc=;
+	b=wGjh8o3waPReM8tFoYoh3ER3sQizllCESSSK2gquiD1PbH+54XZiJGtr7DzdwJOg9im4Vw
+	ykBnAOdiE2AswcsOl0xroi/JWMMx7ZEqQPHBw2y3XFXlxuzIVtlJzAS5S/n93rPOa/bdTS
+	D6gkUtueLTndtP2sfj6OVKi/uVwP6TA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785160427;
-	b=nqwJv5kfqnaKrhN1TOx6M11t2/hHZn3ro09+dyJtsIy9uLH8OEK8qj0t79qusm2usKBClG
-	C9paLMuac1LK7I16XdgpdfjpzJl/7j5OWPZT42HgtEYVU9I/p+S0Z1VveNABSwmUrWIwVj
-	KUFslNIlG90CdAVAgWAcRs99zxwymwI=
+	t=1785160495;
+	b=QAAHhaVJA1BELiGznh+9ijM7dhHbUQl0pVcfRxty8JghuQKCWhmPKk2JgMfgyWTiLEWZpE
+	p+OfiOy+OZd8TpmbU+6FI6HMwiuCieYMkeVnnABNS74udPcW8kEV/ufdaxF3LjuULTyTy5
+	qStqrXg4027j6v7NHcMuHgwGxf3+rt4=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NIP5nUV3;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2B6CE40384;
-	Mon, 27 Jul 2026 13:53:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B2E31F000E9;
-	Mon, 27 Jul 2026 13:53:40 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 436DD400AE;
+	Mon, 27 Jul 2026 13:54:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEA951F000E9;
+	Mon, 27 Jul 2026 13:54:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785160426;
-	bh=qz4bHznQFYHtYd51Eh25zSS8E1FWwIIvc+FleuDk28o=;
+	s=k20260515; t=1785160494;
+	bh=RtGAuL9EFyUfYnUH+07v8KujAvAIXlWdvdSfgMEdxnc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=RMlM4b05xpO38SPzaXPcJTSoOSEcy/MZaiBNgOMb8gnKZf2zZ77tYoNZB+UHpPjrT
-	 k86bnFTtjI5HdaYkgyphrfdRHgUr0E4jV/axWcAw6gRkuSEznJAJAu2ScfShwo9AdY
-	 gJbvt/M5CIlvJRfmUKd3GXRLVgItfoQIv0gQxPmRDFlB4HypSPS2qM6rp/ZkEM+oEz
-	 GCZSLq+rZ9iyVHVglUv5+8BdcLrn4J7oiYlOWzTeQ3NQ1ImYCExNCD+Z6BkLl4ZT1X
-	 Yda7xKaza6m2UggbBV6lx5qlPLlAY8lZQo9dC4pncFWiFO55BB1Sz7SLDPg8/IHa9u
-	 BNk6+Xv8qumIA==
-Message-ID: <7349d575-a1ed-4974-9b2f-2367cd58abad@kernel.org>
-Date: Mon, 27 Jul 2026 15:53:38 +0200
+	b=NIP5nUV3nK3lrvj2WL/Fn9YryLQ0t/Bv28FP7mMK02yui4cJROgdxG4swizF9WVo7
+	 a8om1CK0lnRaW6T612onJZaAYNoUOtpHxMOivxD2AVueBDDVW3BEnqCCjmOU9htPqh
+	 CeG4j2Ur1813fe9J080QnrmR+Y3NXB5+9ixGjuDDPkHCjjyDIISqPJducWKxQVf7sq
+	 u6q+98sJzCny2XYy7kdbXLB6L6TZ7OScfn3ofvwXKIFwBFvF8tK0PkZ9m8XvCQ7PP8
+	 a/AbT0jl4//E5l+PXk4Sa11nqFyYIFTSehx1bEBHULuKbhUyej4HwUOgrbOkC1Elht
+	 rr2OURsPb/SpA==
+Message-ID: <5490f8b1-d611-4e4d-bd8b-19c0e05698a3@kernel.org>
+Date: Mon, 27 Jul 2026 15:54:46 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v4 12/12] selftests/mm: add a slow-GUP content and COW
- test for mTHP
+Subject: Re: [PATCH RFC v4 11/12] mm/gup: batch contiguous PTE-mapped large
+ folios in follow_page_mask()
 To: Rik van Riel <riel@surriel.com>, Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, kernel-team@meta.com,
  Dave Hansen <dave.hansen@linux.intel.com>,
@@ -79,10 +79,9 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, kernel-team@meta.com,
  Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>,
  Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
  Peter Xu <peterx@redhat.com>, Matthew Wilcox <willy@infradead.org>,
- Usama Arif <usamaarif642@gmail.com>, Shuah Khan <shuah@kernel.org>,
- linux-kselftest@vger.kernel.org
+ Usama Arif <usamaarif642@gmail.com>
 References: <20260724222934.1463812-1-riel@surriel.com>
- <20260724222934.1463812-13-riel@surriel.com>
+ <20260724222934.1463812-12-riel@surriel.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -129,17 +128,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260724222934.1463812-13-riel@surriel.com>
+In-Reply-To: <20260724222934.1463812-12-riel@surriel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 04E1E160008
+X-Stat-Signature: snbh5tfuw8rnedia7bch5mr66r77ngwz
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: F2C6420008
-X-Stat-Signature: x1jh6831hfeqozr85gb7rdafada5ydeg
-X-HE-Tag: 1785160426-162068
-X-HE-Meta: U2FsdGVkX1/Eo/J9nKr8d0rdiOW6P7IR6+5ztaTaWUQHAo8yKvlCfQdufAtSyTw4nHyZUke2JwOjnJrlEgvfTeOoLNrbKlxiTf/2UuTqxDVYFTfYa4cL1nJddVk+RI4W7wJEnI9J0TS/k/Fp7BjrMSvyo4MuDbqmGLD12A/r/vJUpFK7RoSIN7T78k28S2SLmVtLQk9MaNZVWnnTUxeLO1CScXazBHDEgE/xjFGVIp5ogDAq1w4dp2DEaxFbVJZwQUgHcstmz7x1Vyot1qAfgBjRp00wf5mTQoXNcowiJB0uurFumrWK8WRlTrhEtf88c4OqK8SEYzeV0ZWP8XjxxXLGzdlWtwunOmnXKAjuy2VqdwuTx6ltgwQvYdf/YuU3w+rCRW1YYIbiQKg7nbc04I33a5vpOxbA5hmjbsnudLjI1f5vBIUeXIo41Ma4U/wrKi879HYH6QNjvg5Qrh5HJvTaEOPk81cyzDgIvOC6NUk3MgV7tIbwNA34Z2gU4A2bIju52wYuFP6A+/WhUcsWQV6fzhWSmOWE8BdtjAx7aEWLnQSLp+viBQXco9WC+cBmQsHPzmYwaCzEdy6S3KvdJhn4j+YYZntZfij09m3wQkuZSiqMouju7TyOMBlBB3/L3AS9ubQI5RVm6WxAWifCLy2BUoEhRDu+lQ/vH0JLtustspoH314EH/Yz5kXLkOX/mAanC7Q2IUph3wYVrxQ4TOJL/usS9zcPaaOQ9yYyXc1fvK04W51X3JG6P069ckojWUArd8AphkkfyBexS/0CSojjU/6yfl0cYOUqjMB0jY/G7rNT9QC7P3MbjwaOV5xKlrWVnR2NBdygDPoQaVExdxsyQqGIjZAEdOzQaPdyzjSrqcyTKocevC+sVUGtoaEib6HETfxRWvRM5+OEnIZyNMeUzyItGonxcsEpfbJN1vfxGObABa4Igh+Y1j3U0oLDFqfPflA9jIfpC6PQTQ4
- kWGvn1pr
- nDX+GJQ05vEo9xjvwdlLT3HTg38D3bUrzHfFoLM9T25CcF60dHOuZUFR3N6JC/n0Kpy6kCtas1gpyyZhDs+vg/ScFkLsnLub8m00HaoHy0ht7Mhesha2YFiFrXpneWVuctOWQ0E4hIwWYIUaZj0AkMjmeeECl6hpLu4T1EWLQntHzVzXqxqi++S8EM0Fv4y/rkXAtf2Ixu7Zpc1IYsTB5OSJJP8l8f/3YVJwukqbzbx4hj1kPXq5Nr8DwTnzOob+OAdr/9+fEJm7RzYsRmgX1XeBDwvawPx8JqAVg
+X-HE-Tag: 1785160494-584600
+X-HE-Meta: U2FsdGVkX19qoGF8D1rYm6HuL5Cj6SOCFHF6IHo7EfXL2ebtMaYQHdyBatHjfEuMvs7UHoqG0d43utCJ2ReapmkY2C7uo9f+jgUI1Zo7lkJS1Hu4wa2U5BUJ/TezuiGxrNIW9kR5G6q/mCpZhA3Wi1jMO87APYeW5DbusuJgv9qnIFGtH9gPK5G5aNDiJXy0CMe7dxv5yrqze4KURgC1ivAWv3fpGjPSjf8HZ3aS79vrmZPwMGiZjlNoRVrYPDItVJGdKpwiK/78xQ/Mn4hdze7adQkQM2/6EX3ZsXeLkr6gE6DNuWueEgk7RIcsc3L66Mm3JO7qEmwJeub6Ee1WqHUiDUU6GAy+bJgxsFMrn3v80Zp+DjLFhBcDTGWjYSECLcU8fpf+2yyV88OjQzue3RIMjrZDBppZWltVRbxTJvLeuVzYljev9PydXZ0OqgD/fKSxCDxDDu711T/XrI+Y/v2L8Rn4JPJsZOZ96reKzFW4Qiss1yzHvoO9h/M33TbcDem0b8PndXZVoI05hbWMoFIvaVB1QaKwFThZGq8PL90SOcGxDMiS06FWXQPD2r6jXC8DOa2tJ8RYCqHbr2Po19hFwRr4wqy3AbVg6Xof4IBJdFgQmwuFFvAXD7Yqui0us8bUcnSwrL5J1OYmsUamcYMCHTPTQSyERwE7wCLpGXfPtr+OOzGpQBJifFrMDD+LxPuxVnbzE6M1Q4nsAez6/23WqBThhQk5CIzdV65VIxlT3ASVKrIUzzFMH79YG3wEs2EqYrkI4LWBOhyRMy3NJDBU4rZhZYW+SWWUmjKZqYScUUdaTEPlqrN7eP0/Xjmn/h9FSAqV1+WfO4JJ2Hyr/P+34A9Fz6PeMRoX/hsyTZhc17+NmFyHH2IO9HQ54lyi85eiFRg1tn8EjfazztAX5tDyVNDno+eI8VJ2hk76rGV6XZ30YU5w2Rp2ADzlL1ypgrxO12tjyzLaDqiF2EZ
+ /6KVkGLg
+ B5Iev4eOU4tNY2HmcVlsgPo6ka5FfQuKGW7rgv0yWfliXqoNh592muQL34znkVRLHl9WxYhG2K7m3hjLCZJXd+N7NbhsU/V8SD9xeIi+AebVEHm7sWY8ADIcqbJYdkdZ/qNH1WeT+nTRpwLWXBvFUcdEY6Tnsy1zgwNeXuUoeQqlFJORmUg/D9LxLyCQrKQCCwyWrG9thLx9uKdQW4evVEG9sRS3xzCjSXsli/AUU/kRZI4v9ZBtDXlGiPdepb551FuaJzGNdSxOrKdz4EDwEsApsa4Dg8YfRgmxula9o/7N7enROjaEkGoqh7CV/NAlUitSjAv4Bhn6/eQM3rxZMKLYkf4u16yepVlSPZat3IAtjLZs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,37 +147,50 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 7/25/26 00:29, Rik van Riel wrote:
-> follow_page_mask() now batches a PTE-mapped large folio (mTHP) into one
-> contiguous run for the slow get_user_pages() path. A mis-batched run would
-> hand back the wrong pages or a stale COW copy, which the existing tests do
-> not catch: gup_test checks only pin/unpin integrity, and cow exercises COW
-> mostly at PMD size.
+> follow_page_mask() returns one page per call for a PTE-mapped large folio,
+> so __get_user_pages() re-walks the page tables for every page of an mTHP
+> even though the folio maps a contiguous run. The huge PMD and PUD paths
+> already return the whole mapping in one step.
 > 
-> Add mthp_gup_cow_test. It forces 64kB-only mTHP, writes a per-page-distinct
-> pattern, then pins the region on the slow path (PIN_LONGTERM without
-> USE_FAST) and compares the bytes the kernel copies back from the pinned
-> pages against that pattern.
+> Report the contiguous run for the PTE case too. follow_pte_batch() uses
+> folio_pte_batch_flags() to count consecutive present PTEs that map
+> consecutive pages of the same folio with a uniform write bit, bounded by
+> the page table, @end, the VMA, and the folio itself.
 > 
-> The test covers a read pin, a write pin, and COW after fork(): a child
-> write-pins to force per-page unshare and checks the copied contents, then
-> rewrites its copy while the parent verifies its own contents are intact.
+> Keep the per-PTE guarantees that follow_page_pte() makes for the head page.
+> folio_pte_batch_flags() with FPB_RESPECT_WRITE stops the run at a change in
+> the write bit, so the whole run matches the head.
 > 
-> It also reports how many pages sit in contiguous large-folio runs, so a
-> kernel without mTHP shows light coverage rather than passing vacuously.
+> A writable run is safe for any access: a writable anon page is exclusive,
+> so gup_must_unshare() cannot fire, and FOLL_WRITE is satisfied.
+> 
+> A read-only run is batched only for a plain read, since FOLL_WRITE would
+> need a COW fault per page and FOLL_PIN would need a per-page
+> gup_must_unshare() check.
+> 
+> Measured with mm/gup_test.c (PIN_LONGTERM_BENCHMARK, the slow
+> pin_user_pages() path) on a 256 MB MADV_HUGEPAGE anonymous region in a
+> 4 CPU VM, median get time over 16 iterations. Each folio size was confirmed
+> through the per-size anon_fault_alloc counters (4096 folios for 64 kB, 128
+> for 2 MB):
+> 
+>   gup_test -L -m 256 -n 65536 -r 16 -t
+>                         before      after
+>   64 kB mTHP            3140 us      412 us   (7.6x)
+>   2 MB THP (control)      78 us       76 us
+>   4 kB base (control)   3010 us     3042 us
+> 
+> The PMD-mapped 2 MB THP already returns the whole mapping in one step, so
+> it stays fast and unchanged. The 4 kB baseline shows the per-page walk cost
+> that the 64 kB case paid before this change; only the PTE-mapped large
+> folio case improves.
 > 
 > Assisted-by: Claude:claude-opus-4.8
+> Signed-off-by: Rik van Riel <riel@surriel.com>
 
-I'm sorry, I cannot be convinced to review this AI slop here. You should have
-known better to no send such a ... patch ... out.
+Why is this patch part of this patch set?
 
-It completely violates to how we are supposed to write mm selftests in 2026.
-
-Also, testing some implementation details is not really what we want.
-
-Extend other tests to just naturally test mthp as well, please, if they don't
-already do that.
-
-Having a separate selftest just for this is just extremely ... odd.
+This makes perfect sense independently, no?
 
 -- 
 Cheers,
