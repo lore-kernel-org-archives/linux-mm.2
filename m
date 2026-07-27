@@ -4,68 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6873C531D0
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 18:13:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10FBFC53209
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 18:13:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5D58F6B00A3; Mon, 27 Jul 2026 14:13:35 -0400 (EDT)
+	id 759F26B00A6; Mon, 27 Jul 2026 14:13:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5601E6B00A4; Mon, 27 Jul 2026 14:13:35 -0400 (EDT)
+	id 6E6146B00A7; Mon, 27 Jul 2026 14:13:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 315E26B00A5; Mon, 27 Jul 2026 14:13:35 -0400 (EDT)
+	id 5FB996B00A9; Mon, 27 Jul 2026 14:13:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E74656B00A3
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 14:13:34 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 742CB160139
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 18:13:34 +0000 (UTC)
-X-FDA: 85035354348.18.6923213
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 389BF6B00A6
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 14:13:40 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8D62D140173
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 18:13:37 +0000 (UTC)
+X-FDA: 85035354474.09.6F79E29
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf27.hostedemail.com (Postfix) with ESMTP id E16BD40005
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 18:13:32 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=aGYXYXsf;
-	spf=pass (imf27.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	by imf29.hostedemail.com (Postfix) with ESMTP id F2CD4120007
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 18:13:35 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=dhHNFX1F;
+	spf=pass (imf29.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785176013;
+	s=arc-20220608; t=1785176016;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YiJptwzuHVJ9HDL+jrIMqP8ge/TVdk1lJOQr0HqI1/Q=;
-	b=aCWQtcxWUKoAzbiDB0YVXYCNyVZq9BqauA2OtmyWgLzQmMYK1CCbMgAPAx3IBeFpNOYT7K
-	NJRwft7/krwRdZJlKUCwE5Nf61FF6W5ywHRKfOp6ubj/ozxk0g321/qIoDhXQv+jWaRRtf
-	SVxXwoIuLpH2lmf49pji2Y4sGcOimwM=
+	bh=VHllHAYD+554jhDmr6CAyg40twiId7LXCrXkJDYooJQ=;
+	b=uQlcVGhjr/uX9kQmlt9mgi/lKbwkkapWPYRKDdajVe87fMerK3o1pV1p4n9clndkSGOmaS
+	whnVOWN4YFZ+5dW1WBIKrmtxqiRG6Ek9z7KUAzIeEqiIA6KuOOLYXluognj5VhV7jQkrQE
+	h1YyedVtE55DC6ftlekvY89Q5AMGsC0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785176013;
-	b=Bk8DcP5pE04NLDN38k37vXkzYN4m1GT+SGeD1dVPV4Z+Y0W0ZN4WuZW4scxuiAQs/wGBTK
-	pohE5SHeEKwsA3CExPr/PJOx77LfECgp/GVNHsTm+2GkBauyFF13IZhukSLy5wzOcw/ow+
-	79Td0cdjEbV+BU0TpYkgzzOvKY+k71A=
+	t=1785176016;
+	b=3iENJXy0e4GxuQtC8K1KPqhcYm6kSkZH3ipEN1IJP42t9bwWLD1qwd+LaZBmzwOjzKp5vq
+	Et19l20l6x5hECKe5GBK4Kv3A3JLGdJpZs82B1tC2jW/2GS6H3fCq7lvynTcEucSPp604h
+	0m+BQDTy/b0CEjK8l9emawJ4r7ULyLc=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=aGYXYXsf;
-	spf=pass (imf27.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=dhHNFX1F;
+	spf=pass (imf29.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=YiJptwzuHVJ9HDL+jrIMqP8ge/TVdk1lJOQr0HqI1/Q=; b=aGYXYXsfARgJbvYzf3mIsd/A3/
-	1U66Jfu2m6Bx0sw6dmtlTZygBYgyyDO+3nl7aXsKfxaFopykjnhhlcO9xGpclUWgGBTpw2kC5lVxN
-	uxSikTqaWvlodigfEVSWPVLpfOwjicgCKIkVqJgnT5riiyxYhLL0x8JXpzXRgB/ztcnyReoNCypui
-	L/PG+DgYmGNhxj5WOilAxtF7XCJFNfpZAn69cOkHmTzj4zx6Jno1RigPB8ySOSMglrktnjloqX7i0
-	OBDdyH77IyiHs7f1ghCQCvmk5dz/9JO0FUHoNpWW0Kj+HDg4gQ7YxIGyXjt+dCDbFUBRqiM4xmxbW
-	WdgBZ6QA==;
+	bh=VHllHAYD+554jhDmr6CAyg40twiId7LXCrXkJDYooJQ=; b=dhHNFX1FHnBFsaHwsJcodHjGRf
+	YhtbqSXUGYiJgDO78bOy/MC8mO5sU1yZGVlNbuPtR83P5t6qEi9kIa8Ydea7g/4/5K/1QcWKPc6Tz
+	rey9R5mBOCjVGXv8FGrSF6jjiMjbElO22NWGZtwU8fS6ML3G01d4CBmqaOo1uRiHW03am+wvHmaU9
+	x/WArFCOA8TOvT95/SpgcWc2waBMUqjfOqZe3ZD7epa9ezmGTd7WHNs11qq/QJ4ldOTy3h3O1YrYr
+	JbremtoeF7TSc4XN2ze/QluntAgjkG5D60+jMpI8BW6tkmg3DUL+bENi5BrcYObSr9dSBGC+IMJ9i
+	qgIIvmCw==;
 Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1woPpB-0000000BD7k-0ddm;
+	id 1woPpB-0000000BD7i-025w;
 	Mon, 27 Jul 2026 18:13:13 +0000
 From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Jane Chu <jane.chu@oracle.com>,
 	linux-mm@kvack.org
-Cc: Muchun Song <muchun.song@linux.dev>,
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Muchun Song <muchun.song@linux.dev>,
 	Oscar Salvador <osalvador@suse.de>,
 	David Hildenbrand <david@kernel.org>,
 	Miaohe Lin <linmiaohe@huawei.com>,
@@ -73,24 +74,23 @@ Cc: Muchun Song <muchun.song@linux.dev>,
 	Jan Kara <jack@suse.cz>,
 	linux-fsdevel@vger.kernel.org,
 	Christian Brauner <christian@brauner.io>,
-	Jiaqi Yan <jiaqiyan@google.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>
-Subject: [PATCH v6 12/12] hugetlb: replace hugetlbfs_read_iter() with generic_file_read_iter()
-Date: Mon, 27 Jul 2026 19:13:08 +0100
-Message-ID: <20260727181310.2671972-13-willy@infradead.org>
+	Jiaqi Yan <jiaqiyan@google.com>
+Subject: [PATCH v6 11/12] filemap: Add support for authoritative mappings
+Date: Mon, 27 Jul 2026 19:13:07 +0100
+Message-ID: <20260727181310.2671972-12-willy@infradead.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260727181310.2671972-1-willy@infradead.org>
 References: <20260727181310.2671972-1-willy@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: E16BD40005
-X-Stat-Signature: yaaud4riq9kdya6j65etiapwzyzbg6o1
+X-Stat-Signature: ebt5azemd8rrocjfxquhuk6wi4eonfbn
 X-Rspam-User: 
-X-HE-Tag: 1785176012-42267
-X-HE-Meta: U2FsdGVkX19upZKHpYEvHSyT06RsepYJesi0y+rvNSFxikgLXH2EhCF4wBhRtgohl1ot2WJBwMtViSC0ec3GbZ5RsS41BUv9Qd+GFiZYTG+2auISgguegnGN6hCGj/GQRDQtePEOzemI8RrlGt3IGLeN4PFVehiCowUnD9rfMTXVCup5Ew4OTmoc+fX6XsKHYa/fFOSAyaRUO3vfe1YNUF05tRGnHVWnTMhyzDqVDtEerx2k4rn8Cg2kfjaqc4FhYIIlzbdR4bh7caJvAuffo5Umw7vpTldjhrfL7RIxB6MdoEs0Sga1hXe81Xlz1rOE58Kx6zqNg6/yOiLCVNcf3NNmm75swvQXb44vPmBZOB2lS1y8YZmUefELYxMPIUeQzx22OYbe3/BWcmX38ttO78DDjkljrGxQP5FFK7y/qO+RJnXozLIOpYpwI5WXsjwMi5XO1hQaZRstrqgRt6TK8dAtFNHprM09/9JxU37qB0vXdQXeSsCudVTiGARm5C0FUBb5eddx0VlvYLkKj7B0kptDGTgm5DXkVj73CVdU7iqI1KyIWpKCCrK+pZwopU8MPP+9SvvsRLzr+v/BvEvYFMDxBiMNsYYHhrf6s2tp/XCaDeEK6VaTnWr0cv3e2cc7glgGlet/1fnrVe+Rki8Qn25ej3qXZ9aHv53KRWqUQ3HCY3Vxsf6M4Yyz0VICz7TaDgN4Ap4CC+gNvAQozPgEPN/1pNS17qi0G21uy9NC8gnnxwrVJzmf/EwwmelspBQ51OoQpcLgXPV14dEVOW7DdcVAxQYMyMGPMRjtlb4Vr8nOW2/bO5XhSFUbhZp2lGH0IBWDlR0fu8Bk6FUqDhZ+K+T2DKc48zyhejAUpQyQ8ugWmenbaXRW7uApMFCY9EBwOSGkTUiR2WGfK2VRe8oexS7wP8W1vZo3KhRLOykOL53AZbEl5n9TXFo0XadFbeSdnShmujfJhD/8eC6gNps
- 2VIAphOO
- 7vMZQJYWMRUDBEiSplVJEIilKBJKcNM1BjCmeXAnl+GvmjnIkbRX5l7BN5xlKrLHK1qhQjBS5r4JhwycfmglzxQbui0yXCi1ADrVor4EqD9TLJFSoGVO6w3T0EyoVj7oYIKs8bwTND+uwPxHwruUuDD/Owc91QAr/IwxMZP+34sMAb4Pz+j5wwHHcu4Mqs5pNTmIWUICSQPDpM7OliscC9PHQ2v3FIil4Yftuse3ttHueR831nv+wEXIVIeDg+sGsDN4YxQZw5ZNvFHisbVxMQOWmQczLvo6W5HbxbIQAe2k+KjBi0r6zFgZOGbVtCtAMZaWMv7wMdyFatlxuJMlWFnwtxNj514EJh/6Qg9Rry2+LZthFJPmDcQWGx3P4LmuILdLGZ64Nih4BKhnKNUgKKiMmeCsbK9VQ41fRIjv3yMNDln0=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: F2CD4120007
+X-HE-Tag: 1785176015-301588
+X-HE-Meta: U2FsdGVkX19pBzukSiqVxzrQKKvwfrn2Gca17bzKriCSKxbeUS0dzbnEGA//hJlr8crZ50VDEGbW+v4XoUWt1S/sNWyw81dA/vX69YVq//a4vKy63z36CEwDddxvB75bpvZ9xrBs4pMLipfQQEv4UPjrnUg+x78wI90WWMev8Pv3yKNmYQEY4qjUUe3/bvcjviZ77YApgcqNF15L1ZnEm2hbdjulICrFTSt8yjFxdarHQTLZB70p0jz644s49gpNDD4PWMe46lweuu3TU6H+0ehAQ/Cl8p4PaeJ5pRe1Nv20j0gEkOpGGhGD58qB6swp/MQNCiwv77BqbqZtjS2Pd+rR5Gd6wznHWFzjF5FOQlFkaBsv3lZdrRVS/bp9SRa3+ZMJcGS68EAtz5yPmd6n2gfed9gPgcYxTGnbLMCy0RGrkqIi9tlVSBcIkuuH2G5ivqQ4hKd55brONS76RdkYB3WYiRaG4fX9N0yer+G7+JWnZpnUD3huxP/iPkPFLYeRUy9VKP9iYR+mlXh4bR0X2ohE83kelwO2Lw1STcy0Qzw1oJMZQIgZSA8Zad6vVpdLRbH/4Qbj9bzAgG/CBpIhnB+naP8azJjRR7MrGnU1VNzFy1w1VK4tshW3i3FgsIsNyRkYEoSayzi3FXWdIkxEIAgGEZQmbupTs9iz7Y6JqFSGN5u2sklF7C4Kodf+WXIf5cRwS8vhynkS0HRUiG5fRnx/pOAL67HNNIORa2QpITTerAYPFmFWBuK0Wl4OZd/N6wfOdJhY8dzETjtaCwW1xXM5ePlh1g1gv36ga73qNZxPtOkbo4JY+lmEdv2MqPv2/AfoeSHvGN1WDYqMb3a7QQSE+0sKzo0W2ezQAbFDEK3Ua/RougxDz88yi9D7GEKxqhgLnMgeNFErRo26DzLe2E0dAZvXkYg7Bqb3iSQVFyEFLeBEPEYnMDNHQc3PAhZQU1zSiWPLDvgy3srFe+N
+ TjETUUwo
+ 9UiXg0JJU4GLpj2OJ/BlEpByJTD57Dnm915mXisziRCgkDoumhQ93d6VoImJ5VDsVvSXJaN82qp3Jwp1aKVCo6yyJUD4ZDzRAP5KkseU+i8Ymxsh0Ahdzs5Nr+mv36xfknzck7a7ThEulkBh5UThHMkwbM7Ch8ltZv1Q9K4gFOrb3njkS5vSxfOo3KD3rIxhBRGBM1YHZG/EGukifXx7x/VXJ1Hntt8JO8JK6fyBFkIzvgGz5oTVxC79T8w6a/URn8l/5f3+TYsAfBAKdVS93tLf/nzGvjH0DFa5+P74utrFp92/OH6z0I6A7PgOyGj3jgQFgJtcaCbIQnmQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,154 +98,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Jane Chu <jane.chu@oracle.com>
+An authoritative mapping knows about all the folios in the mapping.
+If read() finds a missing folio, there's no reason to allocate one and
+try to read it because we know it's a zero region of the file.  We can
+just call iov_iter_zero() instead.
 
-generic_file_read_iter() now handles hugetlb poison, hugetlb page
-size and missing folios correctly, so we no longer need a separate
-hugetlbfs_read_iter().
-
-Signed-off-by: Jane Chu <jane.chu@oracle.com>
-Co-developed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 ---
- fs/hugetlbfs/inode.c | 110 +------------------------------------------
- 1 file changed, 2 insertions(+), 108 deletions(-)
+ include/linux/pagemap.h | 11 +++++++++++
+ mm/filemap.c            | 18 ++++++++++++++++++
+ 2 files changed, 29 insertions(+)
 
-diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-index 8d15413a67ee..cef7e61b827d 100644
---- a/fs/hugetlbfs/inode.c
-+++ b/fs/hugetlbfs/inode.c
-@@ -187,113 +187,6 @@ hugetlb_get_unmapped_area(struct file *file, unsigned long addr,
- 	return mm_get_unmapped_area_vmflags(file, addr0, len, pgoff, flags, 0);
+diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+index 968b791cfd14..22d48935ffda 100644
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -210,6 +210,7 @@ enum mapping_flags {
+ 	AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM = 9,
+ 	AS_KERNEL_FILE = 10,	/* mapping for a fake kernel file that shouldn't
+ 				   account usage to user cgroups */
++	AS_AUTHORITATIVE = 11,	/* If we miss in the page cache, it's a hole */
+ 	/* Bits 16-25 are used for FOLIO_ORDER */
+ 	AS_FOLIO_ORDER_BITS = 5,
+ 	AS_FOLIO_ORDER_MIN = 16,
+@@ -345,6 +346,16 @@ static inline bool mapping_writeback_may_deadlock_on_reclaim(const struct addres
+ 	return test_bit(AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM, &mapping->flags);
  }
  
--/*
-- * Someone wants to read @bytes from a HWPOISON hugetlb @folio from @offset.
-- * Returns the maximum number of bytes one can read without touching the 1st raw
-- * HWPOISON page.
-- */
--static size_t adjust_range_hwpoison(struct folio *folio, size_t offset,
--		size_t bytes)
--{
--	struct page *page = folio_page(folio, offset / PAGE_SIZE);
--	size_t safe_bytes;
--
--	if (hugetlb_page_hwpoison(folio, page))
--		return 0;
--	/* Safe to read the remaining bytes in this page. */
--	safe_bytes = PAGE_SIZE - (offset % PAGE_SIZE);
--	page++;
--
--	/* Check each remaining page as long as we are not done yet. */
--	for (; safe_bytes < bytes; safe_bytes += PAGE_SIZE, page++)
--		if (hugetlb_page_hwpoison(folio, page))
--			break;
--
--	return min(safe_bytes, bytes);
--}
--
--/*
-- * Support for read() - Find the page attached to f_mapping and copy out the
-- * data. This provides functionality similar to filemap_read().
-- */
--static ssize_t hugetlbfs_read_iter(struct kiocb *iocb, struct iov_iter *to)
--{
--	struct file *file = iocb->ki_filp;
--	struct hstate *h = hstate_file(file);
--	struct address_space *mapping = file->f_mapping;
--	struct inode *inode = mapping->host;
--	unsigned long index = iocb->ki_pos >> huge_page_shift(h);
--	unsigned long offset = iocb->ki_pos & ~huge_page_mask(h);
--	unsigned long end_index;
--	loff_t isize;
--	ssize_t retval = 0;
--
--	while (iov_iter_count(to)) {
--		struct folio *folio;
--		size_t nr, copied, want;
--
--		/* nr is the maximum number of bytes to copy from this page */
--		nr = huge_page_size(h);
--		isize = i_size_read(inode);
--		if (!isize)
--			break;
--		end_index = (isize - 1) >> huge_page_shift(h);
--		if (index > end_index)
--			break;
--		if (index == end_index) {
--			nr = ((isize - 1) & ~huge_page_mask(h)) + 1;
--			if (nr <= offset)
--				break;
--		}
--		nr = nr - offset;
--
--		/* Find the folio */
--		folio = filemap_lock_hugetlb_folio(h, mapping, index);
--		if (IS_ERR(folio)) {
--			/*
--			 * We have a HOLE, zero out the user-buffer for the
--			 * length of the hole or request.
--			 */
--			copied = iov_iter_zero(nr, to);
--		} else {
--			folio_unlock(folio);
--
--			if (!folio_test_has_hwpoisoned(folio))
--				want = nr;
--			else {
--				/*
--				 * Adjust how many bytes safe to read without
--				 * touching the 1st raw HWPOISON page after
--				 * offset.
--				 */
--				want = adjust_range_hwpoison(folio, offset, nr);
--				if (want == 0) {
--					folio_put(folio);
--					retval = -EIO;
--					break;
--				}
--			}
--
--			/*
--			 * We have the folio, copy it to user space buffer.
--			 */
--			copied = copy_folio_to_iter(folio, offset, want, to);
--			folio_put(folio);
--		}
--		offset += copied;
--		retval += copied;
--		if (copied != nr && iov_iter_count(to)) {
--			if (!retval)
--				retval = -EFAULT;
--			break;
--		}
--		index += offset >> huge_page_shift(h);
--		offset &= ~huge_page_mask(h);
--	}
--	iocb->ki_pos = ((loff_t)index << huge_page_shift(h)) + offset;
--	return retval;
--}
--
- static int hugetlbfs_write_begin(const struct kiocb *iocb,
- 			struct address_space *mapping,
- 			loff_t pos, unsigned len,
-@@ -891,6 +784,7 @@ static void hugetlbfs_init_regular_inode(struct inode *inode)
- 	inode->i_op = &hugetlbfs_inode_operations;
- 	inode->i_fop = &hugetlbfs_file_operations;
- 	mapping_set_folio_order_range(inode->i_mapping, order, order);
-+	mapping_set_authoritative(inode->i_mapping);
- }
++static inline void mapping_set_authoritative(struct address_space *mapping)
++{
++	set_bit(AS_AUTHORITATIVE, &mapping->flags);
++}
++
++static inline bool mapping_is_authoritative(const struct address_space *mapping)
++{
++	return test_bit(AS_AUTHORITATIVE, &mapping->flags);
++}
++
+ static inline gfp_t mapping_gfp_mask(const struct address_space *mapping)
+ {
+ 	return mapping->gfp_mask;
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 26a5f18121f9..5a8cc20e624e 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -2697,6 +2697,8 @@ static int filemap_get_pages(struct kiocb *iocb, size_t count,
+ 	if (!folio_batch_count(fbatch)) {
+ 		DEFINE_READAHEAD(ractl, filp, &filp->f_ra, mapping, index);
  
- /*
-@@ -1215,7 +1109,7 @@ static void init_once(void *foo)
- }
++		if (mapping_is_authoritative(mapping))
++			return 0;
+ 		if (iocb->ki_flags & IOCB_NOIO)
+ 			return -EAGAIN;
+ 		if (iocb->ki_flags & IOCB_NOWAIT)
+@@ -2853,6 +2855,22 @@ ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
+ 			goto put_folios;
+ 		end_offset = min_t(loff_t, isize, iocb->ki_pos + iter->count);
  
- static const struct file_operations hugetlbfs_file_operations = {
--	.read_iter		= hugetlbfs_read_iter,
-+	.read_iter		= generic_file_read_iter,
- 	.mmap			= hugetlbfs_file_mmap,
- 	.fsync			= noop_fsync,
- 	.get_unmapped_area	= hugetlb_get_unmapped_area,
++		if (!folio_batch_count(&fbatch)) {
++			size_t fsize = mapping_min_folio_nrbytes(mapping);
++			size_t offset = iocb->ki_pos & (fsize - 1);
++			size_t bytes = min_t(loff_t, end_offset - iocb->ki_pos,
++					     fsize - offset);
++			size_t copied = iov_iter_zero(bytes, iter);
++
++			already_read += copied;
++			iocb->ki_pos += copied;
++			last_pos = iocb->ki_pos;
++
++			if (copied < bytes)
++				error = -EFAULT;
++			continue;
++		}
++
+ 		/*
+ 		 * Once we start copying data, we don't want to be touching any
+ 		 * cachelines that might be contended:
 -- 
 2.47.3
 
