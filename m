@@ -4,117 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50605C531D0
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 15:57:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F15AC531D0
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 15:57:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 48BAC6B0088; Mon, 27 Jul 2026 11:57:21 -0400 (EDT)
+	id E755A6B0098; Mon, 27 Jul 2026 11:57:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 43BBF6B0098; Mon, 27 Jul 2026 11:57:21 -0400 (EDT)
+	id DFF376B009B; Mon, 27 Jul 2026 11:57:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 379076B009B; Mon, 27 Jul 2026 11:57:21 -0400 (EDT)
+	id D3C846B009E; Mon, 27 Jul 2026 11:57:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 115ED6B0088
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 11:57:21 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 91B62400C8
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 15:57:20 +0000 (UTC)
-X-FDA: 85035011040.24.D0F7887
-Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
-	by imf27.hostedemail.com (Postfix) with ESMTP id BFD2A4000D
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 15:57:18 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A934E6B0098
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 11:57:25 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3413514010F
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 15:57:25 +0000 (UTC)
+X-FDA: 85035011250.04.BD1440E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 885B240009
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 15:57:23 +0000 (UTC)
 Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=t8c2gWz+;
-	spf=pass (imf27.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.178 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aS3LgLoe;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785167838;
+	s=arc-20220608; t=1785167843;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tsjdjJOss8ZPRd2OUIRraaCz1T4f5WbswiL+iOMIAm4=;
-	b=xjb5nEyWHOcFszrBVAvkzPsRtboFQdy1n2lV/0SGebrIikrort6t3E96OklJtPpPgqfrN6
-	AeuTlD3tu90Q0B7f0zKF1ZjLjxx0Kd5FYHfoldjlI4LUhDMvzgSdSPCHFaa9m++rilZJxQ
-	umVM/VHoAc03Cr2jAd5kbSjY/rU9L7c=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785167838;
-	b=FkzdXmVuyzDTIJKQLkSercghDtYX9ZKLTaVt5vHV+xIUC+2FqT/P7bjQBHZNt1Zg4tTu95
-	/ONF7gEfLfqtOa/9fKAVLRcnN3qhGqoIn7Bokqye+wVAeow6kZJ6oOIesIILYTQh2zSQ+c
-	UMgDljl1eBk9C/jtvRUl18ZBubPx+Ds=
+	bh=TxIwg3k/QeB5YpM8mpnKKHWqe4ae+QJvkXRnO46mmqU=;
+	b=JvmidZY/h6sDzkP4Zk74rSjF/fm2l3zFfVQiVlKVtYev8ieJ5JWcIo04XO2pev5gmtJL8r
+	WTnIlymVT4av3yZZzdC0nNipwy/8dym5V3VGcjO+LFuIbjFm6gD8IgkmOcY/wcoBT7+0y1
+	7Xk/OKwBsSBeN2sI9lhU4CVT6+fnTOo=
 ARC-Authentication-Results: i=1;
 	imf27.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=t8c2gWz+;
-	spf=pass (imf27.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.178 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-92e4fd65b2bso161846885a.0
-        for <linux-mm@kvack.org>; Mon, 27 Jul 2026 08:57:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1785167838; x=1785772638; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=tsjdjJOss8ZPRd2OUIRraaCz1T4f5WbswiL+iOMIAm4=;
-        b=t8c2gWz+qrNmRACUAGA/mioXXSWL387UryeskuFKqCIO7LCZVbGPWMp5cc8yyAngG7
-         YivV7zaF5URWSxthPEgbvjERWbT5i+6bHO5GXOiAVmswCrzNOsgtkj4uJ/Np3kWEKfsR
-         bg0sKWFO2UREQPT7jV2XFATNQ5q5t/cwN586We94nse439Hwijf8NdfkSX4h03zwqcGc
-         Ir0plLlIn+W6QevS9XkXjqj0SVVU/I9Jg3FzmgwlvWqBR+puF222jzxWJSsbnYhaW8j4
-         CdpiAVE08RHRsjPmO4cNZPgc1kVNQMw2G2VO/eFMfdn5Lh5PV+WVciShuxFRhbDx15S1
-         xkVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785167838; x=1785772638;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=tsjdjJOss8ZPRd2OUIRraaCz1T4f5WbswiL+iOMIAm4=;
-        b=Cf94Wk6qyZ17zPAJ+HnW1SOdArLsbbW67ahLHMKMnkh2yF+lELQHQnvy6sT2SH+XJU
-         QvZs1iSZwiqwMY0RjKRaagVoYB+r41aDdUumMk/1TrtYde3lP5OcgY1fla2xbTL5j/Md
-         B6TXJIA1D2x8nWpZmoqIy/Z+c/zzeftKPB00v80Cj8KqmEs4d/BIEcMHaRQEr6Rot51e
-         8X2Yn5pdZWpoB4lLx3f9FYOoQ7hrejlpvOeWx/eWyBA4d5g0OSeEHr65lZhAUjoBU6tA
-         NoiB6dfQBks9pVYWZfP5Jn68bCgHcn9/3mLVspwLXozAb49k5YvMa4cHdA9uKnzTc+SN
-         2HCw==
-X-Forwarded-Encrypted: i=1; AHgh+RokA1R7grWrCQ7040PRKDFgU2Ho7wdRsVsO9XEgBrF3hemuONhdrWvd/v4hsseRDm/Ef3Nmrlhp/w==@kvack.org
-X-Gm-Message-State: AOJu0YyHLLHg/b7twCRUDVn+XMIUXRvvvlAiIMt5HWTGLvhW6u7Niykw
-	IHXBQWdpKLeSPWcM0woLAHMnxOeZz72dFZWCSp7RIaFE0zNE6WyEu2KMcU7fUQ4r/jM=
-X-Gm-Gg: AR+sD11xEdZN4axwJGofSUUsAxjnDvYpRZvuXGe/wLQCVaOfOBMAyCSc04WqpDGR5Mr
-	pkc4PdAiI/93gxmRzWHHl1N/AbbEpcQaRTjEKcYpycJDoIy40iPsjtsXcMWBlzaEG8IEqv/4q/1
-	RLenEE9xn2MHJLxdb4wwUtdwik/rUs3ynGA0KW7X0/1swdzBnMNzKHO6Tb5BQzyj6BD6z1tOUqB
-	kmbvziq/aO50ECAtzclXPL9DrHLaGEU2vsF3bpxYs8gdKb3HDn6EXdjzdbYVbPijoi6JxIXI7zE
-	cFY6UTMkISOV0AJ7YbP9iMKW9uyldBu16svyiJcHxD0uUCL+12jCo94kGo5hklLwW5cWKY/P/v3
-	N1wXGYSbIuvKeMWYGmYGv1m2TWILzJmYgHeI1lI8uBNgmBNoUaCG3w3UZLuH4+lIEsyx5Jfs27A
-	2df9cA0nLMgaT11ucd3FqrS/rhRVRCX4xkyfARgNw0hSPOuWuh8lN95TzyEA==
-X-Received: by 2002:a05:620a:3910:b0:930:fbdd:c242 with SMTP id af79cd13be357-932df67421dmr1063178185a.29.1785167837883;
-        Mon, 27 Jul 2026 08:57:17 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-932de65239asm631205585a.32.2026.07.27.08.57.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jul 2026 08:57:17 -0700 (PDT)
-Date: Mon, 27 Jul 2026 11:57:11 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Breno Leitao <leitao@debian.org>
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aS3LgLoe;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785167843;
+	b=XfF7SE+D+c5GRm8VwjLenL7naYFRKCRNSKfmvqVqx0mxWz7Ela0yhVKrdiFlMxWcT0BcPR
+	JWaMecQIUNEgg2X0KpUS1fn0lesCj+ybGMMeeql9u36vALsW9sm0yc8uw6Kmn+Tn4sqe1J
+	xEVNcWqxcIXP9GeekGCYuIO5gIJmxHk=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 9C5D160008;
+	Mon, 27 Jul 2026 15:57:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 610571F00A3A;
+	Mon, 27 Jul 2026 15:57:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785167842;
+	bh=TxIwg3k/QeB5YpM8mpnKKHWqe4ae+QJvkXRnO46mmqU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=aS3LgLoemsT7sttTQz1bFcjtnuSJmD82qShxfwVkKEIVhwyCRQzFYrZ1BGt+oX2Ad
+	 Zf/cPw46qAZ1uENRq/ddMbAK89LecqDJ3Nd4sMeOUAJ/n9cCYEr7gF8uvY/wmGkqEi
+	 PmuSEGwiQlipw0ThXrzYwa+jDqQoj+bcbOCcTcwcmHibSGq1zid3nrfThmk2upJTjh
+	 G1Hetwq6wII0F3cwpJrvE1YwRvjRhA/4Gg8q9NTwPKYsXDBqFCTCLb2FSEAN96lqE1
+	 rq3yR6XbderfGQLXvgkBaS7Z51i7zc6vDGwxsSYeXh2GlmRQefluWQuJ1X+Kq2YG9U
+	 wmDqydDlG77aA==
+Date: Mon, 27 Jul 2026 16:57:01 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Usama Arif <usama.arif@linux.dev>, Matthew Brost <matthew.brost@intel.com>, 
 	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, paulmck@kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH] mm/migrate: report RCU-tasks quiescent states in
- migrate_pages_batch()
-Message-ID: <amd_roVfML1xvLEZ@gourry-fedora-PF4VCD3F>
-References: <20260727-kcompact-v1-1-bdfefddd6874@debian.org>
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Arnd Bergmann <arnd@arndb.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v2 00/15] mm/rmap: index MAP_PRIVATE file-backed folios
+ by virt pgoff
+Message-ID: <amd9QR75eLNdgNU7@lucifer>
+References: <20260720-b4-scalable-cow-virt-pgoff-v2-0-2d549757a76f@kernel.org>
+ <880981b5-ef79-4c9a-a8bd-7540002fcd15@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260727-kcompact-v1-1-bdfefddd6874@debian.org>
-X-Stat-Signature: ee5n54eh87aua71cf99zy8z53qkjbpws
+In-Reply-To: <880981b5-ef79-4c9a-a8bd-7540002fcd15@kernel.org>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 885B240009
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: BFD2A4000D
-X-HE-Tag: 1785167838-645698
-X-HE-Meta: U2FsdGVkX19f4VcE5XWLag2Zx6+raRFzxLfLpIosdq5feqcJQSULoT0SO9inqYkTtWwfUxhXDPN8LRJrEXWf1lV6Zb3tODSqc5MlJCpcm10udfXHiE/E0d/DmRAKkeEJ6/scub6XXY/iegHh6gOUv20CPU4r33DFpUmBW3GE77Jxa/jpJm04ROMtNN0lm6uAIC4wmJI80oVKcu3paxHocdP5g/JYW1kHF1zjbeB3LpdY8Uf629CHFRRfmNF4aiXcTrQIJixlYSuRWBeBTyo1yocSFUigvqd/MZpggpqPBio/7qkfRC2Clf3b4LqcU7CVEzMJ0oBp5j5bC2N54kRgi0MCdDmlG7RIzYSLhkrDX6Gnbsp/4iDUENY9odU+eEzg3AuACHfflz0I74g1ItQjRRpeOWNXo1sLicoq0t4BUMSGGPQvuTWY4RrZwnIH6IjIKBlx1nbOxxNkwmgwgPXMRMyuEMiY7dqICpBSIaHksTAkws/QWMajyL/z3B078twy9+B9RL04Bgv8yzzPyrPlSAn9aDOZ47HvMKQiBmRU/OkPneVsz5/cs1yJgN0IH7GBFCzkLpedslaRwrBlFGEG+VDtXufMHR8Mi0znnI6nmeE2g6frwyuRi1N+W9VWJ6LUj1QhXvzqlC8YWcsU1ot4hddLoNjDexBZdMtvRWJIjv2QmSuBjy8XK7AOa2TcbIJWD6Bc1pt3ZmtUnzs6iv8ZakqEI6iQhO2C5IyFwP83tQdqe0GTvcyax+JBKrikuqfr7SRfCEQew4I2oOuJ1qaCmbMk/sbtC34oTJD0IS1Q2rf+2N8+7jFCGPdt7wStWPptfNk6odxFgEbsiI9WiGCIjXr08OFxsQDReWlVnFLpxhqltGZovCoxeHc4TxyO0wPYOd9sYe+ZsHUZ8KvpIfKz/Xq0k+kAMxkUH+Meg1Gh60Z2k4cU2y0SvPMpbCYEajdMqeZJ8j7cy24SFKCblPc
- m0gcp/jf
- Oxm+4pgyS8R5s+RVABegpvsziqX/wfuRgkpsvXvgJQI6R7A7CIblnQOqhpVBeo/0juHQ5wPf00QtFCJQqtT6RU35E2V6BN3aIUvPQhpXlpew2b7j8c3EH4rp3LSWGIzA3QkOwU4gUXBGe+M5Uc/EDditmJApGGMjnzvtZW9KnFsYOUvHPqna9Zky0cHMA3lg+gohXjci5y1w75hMNBh2zXZ5Rsec0DLYDhdUISZXi5YDrgpEvz2lkuEUIE7PMtoXdD8ALC6//Ukfov5yngbNorCFZnHuBdpVVQx6TREkjj7spit75AwbaUoH2waPpl7RH4zfnMYy7cVOafXdiaRkOhgWchZfK4scHVEEDFhIRrOCClX6yRpDvUgqVbPoD6aYiLfpqimMtKEBmpNXo6MDtIBzDPcGU7n4Y9YXcmjX4Y0G6etkSZ9vauKwMPxI+SDkGKji1HUtgDeMu4gZFTI1E0zkGfVIj3GICKWHQO+N0DPEs3ntmcoUEc2ktbScCkJafAVQyChlZ7y/fVdEmFUbrZF/PFV0LadizQuhP4Cuc5+V/2SFVQyWh5RQMNupyQv4dDxDGjrsnjYLUxC0=
+X-Stat-Signature: c1fp36m1bp3d6sdcxt4toiu6dwbfsejt
+X-HE-Tag: 1785167843-894176
+X-HE-Meta: U2FsdGVkX1+jjkjHFE5jkccZjeeYBG05vCPVZPeBtNHcHD1xAk7HaoNpqRvPVwX4cMONla9ctvwCrrG/XKdb4WS5H8fXORwHRF6PrOXCZUuWxyJExYLT7GnIQ0Zon5EbMog6IOGc+iG89Gs7tUO4+h1eWM+UQgT3ccfaAop9Ml2QZCUs4ZSrTKtSP6++sqQkj3cODXOwfPGwMGilCzuHKKQfV7taW6BmmR0LtDh2e1g+XD10PQ4Qb2XDJlrvRFGeup2wB11wZv5wpad9SDCyMteF/chjzFxFoUiUi6r8Gf7O2netN0Y6t1Yb/PWv+4khSnYR4P+NkJvPu274xCYqV8VUVoymcnw34iGf+tsEY2fqkxJ8FOWskNC4Pw8Q4qa0R+yQJMfpx+KhZp/ltjQklz0opwzxD6u96edydx7MJyOUezM/8OLkIQdfzAbzIYMuBu9EA0JBQqQ3etZ1ZA5EoTeLbW47Jlfw2JUYa2IVFsjhMbH0AUywP7X91K9Pv+8Es3rzBNWiQPzmjTa+QuSTT62NeI2FhBrvp11TEPC7va3ujwfvFHxs5XwlfhINIjvV3dPJNjFqz4rng6Q3TvsBYZzhqxhLaBYgXQmWRApM0gYMoQeDVyqYLiXtgvwxvTm7ULdGAG8aVyohvhsrUxQ3mh+zqGNmBr4n243TTbnHg7gCK36oy+8C+0Z495QWuVaCidmpBFAVXeex3c99E2Efn1ub8l3HSVG/uHSEdwlUJewjLqJksbxCHM2R4XnLxBdABZcYUdQKuMBB1FvgMtX9l/Nmfr2v5RrNRvStRDTeD6TrvIs2UPUkWF2zW5Be2e2edTQ7NU0RjktRIIrrW8XwaOtZEdF3W4AWxIpugP9HbqdSvdbaSoStkYEmDRSlZk5U8SqfgitVV4IZa9KHdoLjDMRDXbGpAGrnIUl63T1zFiR/Bh/4UQZ0EhqnAReqk4o2rzQ7E1rwbDEPQlzOA+a
+ QsB4SDaD
+ UfPkEPovLjE6cBn2Iaz3w3N0eK+IVun4/hI0d4NE5LLdPKzbMGIIiQ7VO1fx9ySqlTDbVRfwV5KUUPA4Ny77zcu1EKa1pFtiyMkqx0bGmdPemcKnZBOcYyAv+7X9lXmStkS9jSq1pbvPL021NEW4aACg9LMeNb9sJIgwG4B5aPhG76Rtav8pS1NqngtDLiP+BF/Ge9fWnrZxkKrOB/EOKPDKvts88f+wNC0wZccJlzMzyemtstI1XIDjlhEnuIo81OX83HMPc4LJwewTZQNhR6iYyUnmgcFsvnMGtvWBV2FRrzqa37jvzsQiadngeEGq+De4yZK0b3Dj95inx+9WryG3P9GNupwfuiGmydMpUYa+WSYutJbstvNaj5g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,45 +106,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 27, 2026 at 06:50:19AM -0700, Breno Leitao wrote:
-> migrate_pages_batch() unmaps each folio before moving it, and every
-> unmap runs the mmu_notifier invalidate callbacks.  On KVM hosts
-> try_to_migrate() ends up in kvm_mmu_notifier_invalidate_range_start() ->
-> tdp_mmu_zap_leafs(), which is expensive, so unmapping a large batch keeps
-> the CPU busy for a long time.
-> 
-> The loop already calls cond_resched(), but on PREEMPTION kernels that is
-> a no-op, and involuntary preemption is not a Tasks-RCU quiescent state.
-> 
-> A long batch therefore never reports a quiescent state, and the
-> migrating task (e.g. kcompactd) becomes a Tasks-RCU holdout, stalling the
-> Tasks-RCU grace period for minutes, which is common at Meta fleet:
-> 
->   INFO: rcu_tasks detected stalls on tasks:
->   0000000055349ecc: .. nvcsw: 1157401/1157401 holdout: 1 idle_cpu: -1/56 task:kcompactd0      state:R  running task
->   Call Trace:
->    tdp_mmu_zap_leafs
->    tdp_mmu_next_root
->    gfn_to_pfn_cache_invalidate_start
->    kvm_mmu_notifier_invalidate_range_start
->    __mmu_notifier_invalidate_range_start
->    try_to_migrate_one
->    try_to_migrate
->    migrate_pages_batch
->    migrate_pages
->    compact_zone
->    compact_node
->    kcompactd
->    kthread
-> 
-> Use cond_resched_tasks_rcu_qs() so a quiescent state is reported even
-> when cond_resched() does nothing.
-> 
-> PS: This has also been discussed at [1]
-> 
-> Link: https://lore.kernel.org/all/amdWVTs0WKOxguxP@gmail.com/ [1]
-> Signed-off-by: Breno Leitao <leitao@debian.org>
+On Mon, Jul 27, 2026 at 04:44:06PM +0200, David Hildenbrand (Arm) wrote:
+> On 7/20/26 16:38, Lorenzo Stoakes (ARM) wrote:
+> > In memory management we've managed to manufacture a great deal of confusion
+> > around the concept of anonymous memory. We have:
+> >
+> > 1. 'Pure anon' memory - anonymous VMAs whose folios are anonymous and
+> >    swap-backed (thus for reclaim purposes, treated as anonymous). These are
+> >    simple enough.
+> >
+> > 2. shmem - file-backed VMAs, file-backed folios (from rmap perspective) so
+> >    present in the page cache and mapped by an address_space object, but
+> >    whose folios are also swap-backed (thus treated as anonymous for reclaim
+> >    purposes).
+> >
+> > 3. MAP_PRIVATE-mapped /dev/zero - a strange beast whose VMAs have
+> >    vma->vm_file set, but whose mmap_prepare callback clears vma->vm_ops to
+> >    satisfy vma_is_anonymous(), which results in VMAs that were mmap()'d
+> >    referencing a file, but are in every other sense anonymous, including the
+> >    folios.
+> >
+> > 4. Other MAP_PRIVATE-file backed mappings - These possess file-backed VMAs
+> >    and have file-backed folios until CoW'd, at which point those CoW'd
+> >    folios are anonymous.
+> >
+> > This series fixes issues 3 and 4.
+> >
+> > In order for us to traverse VMAs using the reverse mapping, we require two
+> > fields - folio->mapping and folio->index. The first tells the rmap code
+> > where to look for VMAs, and the second tells it at which offset the folio
+> > starts within the referenced object.
+> >
+> > For anonymous folios, folio->mapping points at an anon_vma object. For
+> > file-backed folios, it points at an address_space. And:
+> >
+> > * For file-backed folios folio->index is simply the page offset of the start
+> >   of the folio within the file.
+> >
+> > * For anonymous folios belonging to pure anon mappings, folio->index is
+> >   equal to the virtual page offset of the folio.
+> >
+> > * For anonymous folios belonging to file-backed mappings (i.e. CoW'd folios
+> >   of a MAP_PRIVATE file-backed mapping), folio->index is equal to the file
+> >   page offset.
+> >
+> > This series establishes a new virtual page offset property of VMAs to
+> > allow us to map anonymous folios at their virtual page offset, consistent
+> > with pure anon.
+>
+> As raised off-list, I consider the "virtual page offset" concept hard to grasp.
+>
+> Maybe it's just me :)
+>
+> Skimming over the code, I read "vmg->anon_pgoff", which is pretty intuitive to
+> me. Similarly vma_start_anon_pgoff() / vmg_end_anon_pgoff().
+>
+> Could we similarly just call this "anon_pgoff" /  "(linear) anon page index"
+> even on the VMA level.
 
-Reviewed-by: Gregory Price <gourry@gourry.net>
+Yeah, I had originally done this.
 
+I renamed it because I worried that people might be confused by references to
+anon for file-backed VMA mappings.
+
+But I think probably you're right that referring to it as virtual page offset
+adds even more confusion vs. simply calling it anon. Will respin accordingly.
+
+
+>
+> IOW, in patch #9 for example:
+>
+> static inline pgoff_t linear_folio_page_index(const struct folio *folio,
+>  					      const struct vm_area_struct *vma,
+>  					      const unsigned long address)
+>  {
+> 	if (folio_test_anon(folio))
+> +		return linear_anon_page_index(vma, address);
+> +
+>  	return linear_page_index(vma, address);
+>  }
+
+Ack yeah.
+
+>
+>
+> Or is there another user for the the "virtual page offset" concept? I'd assume
+> it's only used for anon folios (including KSM), but maybe I am missing some
+> corner case.
+
+No it was just fear of adding more confusion but seems by doing so I've done the
+reverse of what I wanted :P
+
+When I rework it if I notice anything that promotes this as a better solution
+will ping otherwise will just rename on respin.
+
+>
+> --
+> Cheers,
+>
+> David
+
+Cheers, Lorenzo
 
