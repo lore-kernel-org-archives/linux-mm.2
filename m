@@ -4,95 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C9E9C531D0
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 14:06:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A049C531FC
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 14:07:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E1D706B00AA; Mon, 27 Jul 2026 10:06:52 -0400 (EDT)
+	id 545F66B00AE; Mon, 27 Jul 2026 10:07:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DF48E6B00AC; Mon, 27 Jul 2026 10:06:52 -0400 (EDT)
+	id 51DF96B00AF; Mon, 27 Jul 2026 10:07:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D0AA66B00AD; Mon, 27 Jul 2026 10:06:52 -0400 (EDT)
+	id 40D526B00B0; Mon, 27 Jul 2026 10:07:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A20056B00AA
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 10:06:52 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1EBB18075E
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 14:06:52 +0000 (UTC)
-X-FDA: 85034732664.13.D012B88
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 355651C0007
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 14:06:50 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xL1htqHG;
-	spf=pass (imf20.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 1D0F66B00AE
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 10:07:56 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B06EFA10DE
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 14:07:55 +0000 (UTC)
+X-FDA: 85034735310.06.CCB1F4D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id D847218000F
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 14:07:53 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R3c9g3He;
+	spf=pass (imf06.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785161274;
+	b=cjvFOVWeJOqgWO7H/OmscdxnBTbhYwnGm+wy1iYxBWuS2cJKkl2MPaF676/ucS/QoH4Ip5
+	37e78f8B00YXDuVLrXrjtqXDDOAYs1kKBMu9ttf41sULaoWPGqZIdPkqD8q/31RmfG282C
+	80j6/CX8SweDzmzKENrWZIGu4m4uxO4=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R3c9g3He;
+	spf=pass (imf06.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785161210;
+	s=arc-20220608; t=1785161274;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IwPLUDcYtzirJbTxv7cVnoW3Ob/U1PfUpNFV/nBTnqo=;
-	b=wtjG3rLqt813qBR4cDE0CVzVmHjr28I9A/H8bL1Aw3gkqJdeRfkRIoKbqZq34w7csjcfpS
-	2N8f3XUrYO6CRKN6MaLQW0IVaNlY9Ehp+NXSjBHKt8vniqwJcqu9Id2pYUgzYViTNmm4Uc
-	0r+99/PMqV0iZCo/81kRnXruiQfvook=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xL1htqHG;
-	spf=pass (imf20.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785161210;
-	b=HHDJR4HhGLsjUC3fh0mrCRQyMOxdrUnLLXQtksyCkogJmdBT1DMgQ1QI7QX0eFXsYJC2YD
-	MrK67QNoNeQrRCzKu8fq2cfRzaPYZYA++2Czuaad28XwTP6Hhr0HQYPoFhJqUjBVu5Pqey
-	YoomHtYXYy3uFwUjd0k/3+urXIaDl0w=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785161208;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IwPLUDcYtzirJbTxv7cVnoW3Ob/U1PfUpNFV/nBTnqo=;
-	b=xL1htqHG48CwyZbQnfU77hWkxzflKln+ZJeLE8qKJdsAz0dpvUhRxaEqk6Z+Omk+w4ISN8
-	j9kMjG78FSyg1JZJjxBgPVAYM7QgZYRLs3V0f7lSG+08H3+kZix6Dq7cJEXOL3qKpUuLeZ
-	No9LYhDp61B7VrF9xPvkNRh1emhNu3I=
-From: Baoquan He <baoquan.he@linux.dev>
-To: linux-mm@kvack.org
-Cc: akpm@linux-foundation.org,
-	chrisl@kernel.org,
-	nphamcs@gmail.com,
-	kasong@tencent.com,
-	baohua@kernel.org,
-	youngjun.park@lge.com,
-	hannes@cmpxchg.org,
-	yosry@kernel.org,
-	david@kernel.org,
-	shikemeng@huaweicloud.com,
-	chengming.zhou@linux.dev,
-	linux-kernel@vger.kernel.org,
-	Baoquan He <baoquan.he@linux.dev>
-Subject: [RFC PATCH 11/11] mm, swap: serialize xswap map/unmap with a mutex
-Date: Mon, 27 Jul 2026 22:05:02 +0800
-Message-ID: <20260727140503.1060918-10-baoquan.he@linux.dev>
-In-Reply-To: <20260727140503.1060918-1-baoquan.he@linux.dev>
-References: <20260727135029.1059441-1-baoquan.he@linux.dev>
- <20260727140503.1060918-1-baoquan.he@linux.dev>
+	bh=bFngan34C8XC/I/ltda4v335UXHHYW7UMmFonxgLfhA=;
+	b=xAkvrTpp0EOcQrq5CJdDOfLpi+rh24SOQPnIIsBCuuRMdYmCAQB6IHr8NcL+yaS1IDcwQW
+	EY4UL+s0LPDR61MIErvcc4p8SBCB+hYIuTlHZ3v2LiXtUZ3DAK11dy9Sr4f3fhZp9Nk0jJ
+	4SenVUIm1E9/eWHQ+DBs6TLfjK2rvas=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0F0E043741;
+	Mon, 27 Jul 2026 14:07:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7571D1F000E9;
+	Mon, 27 Jul 2026 14:07:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785161272;
+	bh=bFngan34C8XC/I/ltda4v335UXHHYW7UMmFonxgLfhA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=R3c9g3He0o5WGk89tpAUxBFjudEq92ibp7Txaa8h8Dv8i2Nl5HMUKdKm+/nf9WQmO
+	 tf9qs5WmWAqRopAYu/KGFIqJ8ktlm1CMEOOyp1inAjelI5h2UMk3RaHmUxpfDVS/Qy
+	 aamQ3Uu6sMJBxb3dwXkV5q1vwda0XDgo9aZpJSj/tpaUh1idk4zsvhai5LP/8jucsB
+	 DOA+3W+y1nIsegg+jr5MfIzL/I9NLUBXq+EY31BD4pLwuCGIEY0GnS4ee5h+eBpgqx
+	 CYpQcPYOH7VK16MaWwUF4LREkQfHzHZhsvOhJ3HPb9cHDnGXJEx/TnjM4hNy03lLTU
+	 38MXYiR/3rerA==
+Message-ID: <11f5028a-3fdc-47b4-9712-559c065b87ba@kernel.org>
+Date: Mon, 27 Jul 2026 16:07:48 +0200
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 10/13] mm/slab: reduce slabobj_ext memory with
+ allocation profiling disabled
+Content-Language: en-US
+To: Harry Yoo <harry@kernel.org>, Suren Baghdasaryan <surenb@google.com>
+Cc: Hao Li <hao.li@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter
+ <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+References: <20260727-b4-objext_split-v3-0-c29ef0f1f257@kernel.org>
+ <20260727-b4-objext_split-v3-10-c29ef0f1f257@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260727-b4-objext_split-v3-10-c29ef0f1f257@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: D847218000F
+X-Stat-Signature: oqy5if3acq9bcew4bj6pdntk6khdfmm1
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 355651C0007
-X-Stat-Signature: tip89dqpxcgwyjcozb4zrbb8q8n6dq9y
-X-HE-Tag: 1785161210-653803
-X-HE-Meta: U2FsdGVkX18Xajxn/UwSISs7i5GBIXbzhL9D5DouyzvAFLMY2eKkvTLgUii5M2v4/lRtWrGDr71BRuF5CYqLPOJWu1/BAq0UfQgKVCjxWh8RdrNmjDg2F+PXwam496ESzhM2QrRO4hrXNPhVCz+oIPhUlrV7uGd/GYoTgDAhluPlOq4uO2B+OvxeIDiv9ehqig5J3+68/Moxif0kwzgG4ddgxLpY5RA6ivc8+XC9Cyq4fXiN0lGbykUlkHaft64BUx79CKObHYGoE93qiWjn0id7uNz9EGVN3h6QLWSpMY/Wk/uu5Dt6A1F2gmg7EhHgC+GyiY+6/0u+B6r9Cv4xPlxmUOgDNl9Oxc6SmK6xj+ntb2WI/MWIzSyMrlbhvJmCB9CYZdpvqiwG6EQiD0xJE8DZoTBUHDY53u1VjgCv7Km0vrWUHG+/xBisndpW7RroCOeebAPKDOBKhUY3T/q2TY6KM2CdWBUw5cg4hw13zYeUCLyWjBM779g6+4mxl9mn6tZq9MqNyr6qzx3grD3oEQK1a33W6rJWX2gYH0jncAte2jLcRQOoNgGlUN1tMQgVnibxl7D0+FFj99GyRejMKkCpasmsXgTUsRalqfnLCbkS1jZeU9iLI2NoJLOpokp42moGrOEdjpQFnIBU3k56s4RbEa0dnreJsrXpX0/5B5MvemEwoNECZEE1nxgYcPZFIlJmeyHz6eZXrgnXPZO2yh1dK5fFT3zCwaqMOupteuFo01+0x7MrSbTB9miLtNXg3Wviy0bvGyCZd+97hst7G41zsGH4RKEzihUhkAok8nRrAuVunCp3dvKPP+vBkos7I4JCK6Umicpo9fuRQ9FOSa/Ht+x4GDKoY/BhPKe28BRhvKZxoqeC9S+kOqbtGeN6g8sFt0qaz3vsMJJDAk75cxyyB8RssprNt+bdHfga4cI42Jy9xd4qRFaQxuPLXLLvZ2zuKyx0YUoo13DI0jy
- 980Pq5C2
- ONvFiA3rhDE0pr8ZRU2bUpvtn7psp62Vu87BsY/KU9CzSGur/0+p2ydSqp+UBKew6YfemBIAGkAPF7LqS2vS98IhOy4NJQBQyiiR1sOTLRG29TpVZlVxDZRMGa99TJ9t3mOmHt/0IblHcwByUej4ARRWTv904zpjLnf8UaV2yQRky2OcsSUT3pn0IZESAAAxMZxDj
+X-HE-Tag: 1785161273-927632
+X-HE-Meta: U2FsdGVkX1/W087V+mDJc9a9mT75fXC6EebfeTBV8D/MJ67XbK2F19sJ3ggnngo2b1pi1osxCuknOKcaA5fl2Hnn1alEwRz6JDtem38tuyocpAr4f8pe5t4I+J+DTG9P+XNRkDnEJBXXtxKJwObcai0zKMQ8LVTEYQeTsb+Z6SbHm2Y8hZsj0d05PmL9OAwDZuqwxucd9ajvbVQGi7LG7x1ANG6MOpWoyHXDd/PUPIBhZ47PcJEKMcsZfDAIRH8kJbtkdi1y8faZM9wVPN/es5vcMVkQUR9DGZV0BNaqfiafxR4zP8OHKfoMaZ+zLxaSfaaJtE3fjlcN+YB2YOE4KeO7qa8jeDLh1xokPENW5H+CqrjSYntVJQp2O6eSONDpGEuQeGUJMvQyNC3lu1X3enV0V31a8DTR/3BsI/XwHSrvGEYLXgSdKQNFEgu5sORdLz2mVbadvoxbQ1b5X/AGK+s+LiHZ7gnAYjxZBvZQYa5AdZHrezVFMJMPJwneXJH1rHJ41cMo7lP01PIa4C7o17as/yS8ZravoTo3IMOx24hxTGhBgM/OnKrMLTu/3uc12PlrhOX+cpc7ztzeWZJoWznbol9kuIsgvwAKJKey4ENbYKC6n5UE3OkbiavykC/6taRw6evhAitnkMTNVOqtnabOQReDIXxaIWDSYFxzV7+c/SUmE9+JgsJXe/KTyQw+3NPF55N6oOjw02qZ3SdtbW7PzqhN3yfHDmtAl2G6XVhDd11LvZdskNkgkir0wC13vFXP+wN7Lgt+URX4W+WXLj2ZwKIh9mCzY+btJVP4OdiapPmYC4iVUoN4rMJWtLWzVym4dFOVzj73q/Qoe5iTWzH6o3QuM/1FZ+/eplEPvDvss3/7nFw1TDydKANq2a3jn5w+pp0Dvvu4ss/dXuXmm46K4oEXrtCtWHm4Ni+upYrCntJX4EItqdoNUxWqlgRgEOhen4j7Lndzx9CDjFg
+ gsPVWnB9
+ FwReONpinpWrG+/aHp30MoLj8hCv6kXEowiGpvKIKp6Foz6lUKS2WLiEtWkFHx6sIlSTLszpgVlS+Xb9Btb5UxUPRWGWJJPs+mOwdNddcJNCsLCLi8VqfkvzyNxZfRyUtanxqFu/vVsgLAUY3BU/xAM18djTVx1dfz5JN3p4yLKyguXYLBn9riA72W/+Vg1QIoMY+1dsQrAKZv/oCYyzNaElB+22hLlCI4+Kxxt2+OEH0nrFFFw8DKvx3M57qWUWFIETGyN+hXmLnhQSmq2KoSkdjAYO4AlZEdQBFN1Zwrn++xtW9qwCrVCkm/W0HLy2p1iDO5q+rtS3foW+s4U8XdNAtu9RcRanysn+0WGyo3tWHSVllemAGk+uDDkHAq1GJKYFIgZX/9zZeQ8vXORNy126xj0ZCblBUk7sG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,115 +138,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Concurrent xswap grow operations race on vm_area_map_pages(),
-triggering WARN_ON(!pte_none) in the vmap page table walk when
-one thread sees a PTE already set by another.  The -EBUSY safety
-net catches it but the warning is noisy and unavoidable without
-serialization.
+Per sashiko [1], a fixed up version below. Couldn't trigger the issue
+although seems to me it's real. Perhaps can happen only with SLUB_TINY
+otherwise the sheaf can't have obj_exts allocated from objcg charge path.
 
-Add a per-device mutex (xswap_lock) held across xswap_map_clusters
-and xswap_unmap_clusters so that only one thread can modify the
-VM_SPARSE page table at a time.  The shrink path is already
-deferred to a workqueue so it does not contend with itself.
+[1] https://sashiko.dev/#/patchset/20260727-b4-objext_split-v3-0-c29ef0f1f257%40kernel.org?part=10
 
-Signed-off-by: Baoquan He <baoquan.he@linux.dev>
+----8<----
+From 905c6500e597a8ecf123ad167698f0a0c1a764bd Mon Sep 17 00:00:00 2001
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Date: Wed, 8 Jul 2026 17:04:36 +0200
+Subject: [PATCH] mm/slab: reduce slabobj_ext memory with allocation profiling
+ disabled
+
+When memory allocation profiling is compiled in but permanently disabled
+on boot with (implicit or explicit) "never" parameter, stop allocating
+(thus wasting) memory for the codetag_ref parts of slabobj_ext metadata.
+
+Do this by using the new slab_obj_ext_has_codetag() helper in
+cache_obj_ext_size().
+
+Additionally add slab_obj_ext_has_codetag() checks in
+mark_obj_codetag_empty() and handle_failed_objexts_alloc(). The
+functions might get called with memory allocation profiling disabled,
+when the obj_ext array is allocated for objcg pointers only. Setting
+codetag refs as empty is unnecessary in that case, and with them not
+allocated anymore would now result in memory corruption.
+
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 ---
- include/linux/swap.h |  1 +
- mm/swapfile.c        | 17 +++++++++++++++--
- 2 files changed, 16 insertions(+), 2 deletions(-)
+ mm/slab.h | 2 +-
+ mm/slub.c | 6 ++++++
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/swap.h b/include/linux/swap.h
-index ebae01fbd100..b0fe0475bba7 100644
---- a/include/linux/swap.h
-+++ b/include/linux/swap.h
-@@ -256,6 +256,7 @@ struct swap_info_struct {
- 	unsigned long		nr_free_tail;	/* contiguous free clusters at tail */
- 	struct dentry		*debugfs_entry;	/* debugfs: type<N>_max_clusters */
- 	struct work_struct	xswap_shrink_work; /* deferred shrink trigger */
-+	struct mutex		xswap_lock;	/* serialize map/unmap operations */
- #endif
- 	struct list_head free_clusters; /* free clusters list */
- 	struct list_head full_clusters; /* full clusters list */
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index b41ff2c594fc..89c6a6b03a9d 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -3773,11 +3773,14 @@ static int xswap_map_clusters(struct swap_info_struct *si,
- 	struct page **pages;
- 	unsigned long i;
+diff --git a/mm/slab.h b/mm/slab.h
+index 8f352d9f4d91..f86d4ed3f2be 100644
+--- a/mm/slab.h
++++ b/mm/slab.h
+@@ -591,7 +591,7 @@ static inline size_t cache_obj_ext_size(struct kmem_cache *s)
+ 	if (IS_ENABLED(CONFIG_MEMCG))
+ 		sz += 1;
  
-+	mutex_lock(&si->xswap_lock);
+-	if (IS_ENABLED(CONFIG_MEM_ALLOC_PROFILING))
++	if (slab_obj_ext_has_codetag())
+ 		sz += 1;
+ 
+ 	return sizeof(struct slabobj_ext) * sz;
+diff --git a/mm/slub.c b/mm/slub.c
+index 67958f2b3bab..ec3997582f31 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -2064,6 +2064,9 @@ static inline void mark_obj_codetag_empty(const void *obj)
+ 	struct slab *obj_slab;
+ 	unsigned long slab_exts;
+ 
++	if (!slab_obj_ext_has_codetag())
++		return;
 +
- 	if (vm_start >= vm_end) {
- 		/* All requested clusters fall within already-mapped pages. */
- 		for (i = start_idx; i < start_idx + nr; i++)
- 			spin_lock_init(&si->cluster_info[i].lock);
- 		WRITE_ONCE(si->nr_clusters_mapped, start_idx + nr);
-+		mutex_unlock(&si->xswap_lock);
- 		return 0;
- 	}
+ 	if (is_kfence_address(obj))
+ 		return;
  
-@@ -3842,6 +3845,7 @@ static int xswap_map_clusters(struct swap_info_struct *si,
- 	 * Pairs with READ_ONCE() in shrink/grow paths.
- 	 */
- 	WRITE_ONCE(si->nr_clusters_mapped, start_idx + nr);
-+	mutex_unlock(&si->xswap_lock);
- 	return 0;
+@@ -2099,6 +2102,9 @@ static inline void handle_failed_objexts_alloc(struct slab *slab,
+ {
+ 	unsigned int stride;
  
- fail_nounmap:
-@@ -3862,6 +3866,7 @@ static int xswap_map_clusters(struct swap_info_struct *si,
- 		spin_lock_init(&si->cluster_info[i].lock);
- 
- 	WRITE_ONCE(si->nr_clusters_mapped, start_idx + nr);
-+	mutex_unlock(&si->xswap_lock);
- 	return 0;
- 
- fail:
-@@ -3871,6 +3876,7 @@ static int xswap_map_clusters(struct swap_info_struct *si,
- 			__free_page(pages[i]);
- 	}
- 	kfree(pages);
-+	mutex_unlock(&si->xswap_lock);
- 	return -ENOMEM;
- }
- 
-@@ -3910,8 +3916,12 @@ static void xswap_unmap_clusters(struct swap_info_struct *si,
- 	struct xswap_page_data xpd;
- 	int i;
- 
--	if (vm_start >= vm_end)
-+	mutex_lock(&si->xswap_lock);
++	if (!slab_obj_ext_has_codetag())
++		return;
 +
-+	if (vm_start >= vm_end) {
-+		mutex_unlock(&si->xswap_lock);
- 		goto out;
-+	}
- 
- 	size = vm_end - vm_start;
- 	npages = size >> PAGE_SHIFT;
-@@ -3937,10 +3947,12 @@ static void xswap_unmap_clusters(struct swap_info_struct *si,
- 			__free_page(xpd.pages[i]);
- 		kfree(xpd.pages);
- 	}
-+
-+	mutex_unlock(&si->xswap_lock);
-+out:
  	/*
- 	 * Pairs with READ_ONCE() in shrink/grow paths.
- 	 */
--	out:
- 	WRITE_ONCE(si->nr_clusters_mapped, start_idx);
- }
- 
-@@ -4142,6 +4154,7 @@ static int setup_swap_clusters_info(struct swap_info_struct *si,
- 		/* All mapped clusters except cluster 0 are free at the tail */
- 		si->nr_free_tail = si->nr_clusters_mapped - 1;
- 
-+		mutex_init(&si->xswap_lock);
- 		INIT_WORK(&si->xswap_shrink_work, xswap_shrink_work_fn);
- 		xswap_debugfs_add(si);
- 		return 0;
+ 	 * If vector previously failed to allocate then we have live
+ 	 * objects with no tag reference. Mark all references in this
 -- 
-2.54.0
+2.55.0
 
 
