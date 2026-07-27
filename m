@@ -4,88 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA6CCC531D0
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 16:29:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED6B5C531D0
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 16:31:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B582D6B0096; Mon, 27 Jul 2026 12:29:52 -0400 (EDT)
+	id EDCB46B007B; Mon, 27 Jul 2026 12:31:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B2F346B0098; Mon, 27 Jul 2026 12:29:52 -0400 (EDT)
+	id EB3856B0088; Mon, 27 Jul 2026 12:31:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A6B406B009F; Mon, 27 Jul 2026 12:29:52 -0400 (EDT)
+	id DC9E36B008A; Mon, 27 Jul 2026 12:31:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7EE9B6B0096
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:29:52 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1111E40130
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:29:52 +0000 (UTC)
-X-FDA: 85035093024.19.CCF8B02
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 804141C000C
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:29:50 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kw1AZvYl;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id AAE916B007B
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:31:10 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2DE76C0138
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:31:10 +0000 (UTC)
+X-FDA: 85035096300.25.290CB4B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 7DA9D40003
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:31:08 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ei438QZP;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785169790;
+	s=arc-20220608; t=1785169868;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=barQc/nnGT6K9yO5qrPbNOA4nT34BHoggqlafqCfinU=;
-	b=1x98LFvqGPPldhsuBSIqYhlfq9Iyw3+1ECHVBrcdqhnkHmfjrscDG40cp3VkVmnzHYObz3
-	XIyRVFZQW0rp+44xyumITMS5g69rMTn/RvH5hZJKV9RRHNFwyX8Ym8diqZNNucZMDViZ1M
-	YwxAdrm3GtNz1kQhiNsscQv/ToadVhE=
+	bh=xD3dgh+LvUBXuj8H0JRUqv8XiAhtAquDiwD9DIx7mY8=;
+	b=kzt3s0zdB/WovgvG+sX3MqFx/HMYd23Pssc0G19YWrPJXMXRLFmi/bEC5c3PsRzz6N8g9I
+	OweLgayZoYab50V820dBxmgpgUIjnkc+ysTVTYnYJ9Wlig4fKbKnpt99pZxEAzmxTPiq/W
+	jRG+VhXDHu1u1JVsEn8MM2Zgn/Wyr/U=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kw1AZvYl;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ei438QZP;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785169790;
-	b=F0W4nd1eKlxVf+JjvG6zTQCs5TFDnoyZn3HSi2PofugFw2p+OMHscD6Fu9rsd5sKMw9/4E
-	3qhBnseqOiQz1koyUKX0F5EXSa9YaPyRe3qB6l03y7umxUWP9sXwiZbd7u/LyfwCB/Zfcr
-	lsGceCFtKVm65IYAVzhGUVEVO2w/ggc=
+	t=1785169868;
+	b=WGXEoWmaJXfxH3QNmS+EB9o8MY4V352sOnrjizv8qzlmr4zXFaJTFCbhQh2TMc3fG6G25u
+	8gLyRYpesIiPJCbkBsBKVVH5Tbb/BQP+kpXNftPk0wQ63U1FwxIXEsCwRgnJCfer2M9wsV
+	+fOolyXaS4TJT7SkedN/gWhbx4s8iHw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E773360008;
-	Mon, 27 Jul 2026 16:29:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78FBB1F000E9;
-	Mon, 27 Jul 2026 16:29:47 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id AAD84434F3;
+	Mon, 27 Jul 2026 16:31:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E6381F000E9;
+	Mon, 27 Jul 2026 16:31:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785169789;
-	bh=barQc/nnGT6K9yO5qrPbNOA4nT34BHoggqlafqCfinU=;
+	s=k20260515; t=1785169867;
+	bh=xD3dgh+LvUBXuj8H0JRUqv8XiAhtAquDiwD9DIx7mY8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=kw1AZvYl9fsLLFDrf03thMZpapgwREV573+aQgtXJh/1L6MywmzdrV1OuJ7BHGQNH
-	 8v5SgpSQfSOWTyOcwAMNseru5+3K6ksmtAzWkk8GpbPI8NNusgv492yCWXaaeuYUY8
-	 rKsB43XM+GHowHoQOSxt9fdNDbtekWruf8UMGYefBB4paSz565+bNU/RMnhv9Ldwjc
-	 brX5s+dV2Nm+yBS5y6KTZLF6U+B3dD3TNe8Bp6CBYF8J0+80Ai9LK7K3WKu95nRtr5
-	 d5yudcbvmB4UIQu6hbyjLzl7cZwBXn7TqxspmFCKLy9VpilG0EHAMDi/CpfJ/E8zBE
-	 Hft7HhitnW3gQ==
-Date: Mon, 27 Jul 2026 17:29:32 +0100
+	b=Ei438QZPhoA/j4TNX5sKSZg5DC94anuXDfwoCs3yZ2nJ1Oo93Z8QUJh0hP+z8jZfx
+	 mvDvVMgJYsQ8OLdhMamWwAEZDxoj7gyp4EdbNObTpzy9Bg8USo+npPQAQuMCrN/RRx
+	 58Vb14FKQ+pq8lMWh+GJn5EmAzsQrh7qEucJJNxVf3Rq9Q7MAf/oi7JVeOJtdxjOEV
+	 QGnVdcagw3jrjs8gqu7q4xY4E5RkSpPAS2vNOoRYOcqHrN8lM4/EMdx5XhG48/rkwa
+	 vrY1+iC3yvCIF7sDeFCS3a17J0J76nGjnXB+FGLpElE1FKSfCksjfAo8RNZq/teTMr
+	 UAgmKCVERFOAQ==
+Date: Mon, 27 Jul 2026 17:30:51 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 To: Hongfu Li <hongfu.li@linux.dev>
 Cc: akpm@linux-foundation.org, david@kernel.org, liam@infradead.org, 
 	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org, Hongfu Li <lihongfu@kylinos.cn>
-Subject: Re: [PATCH v2 1/2] mm: Use a folio in the softleaf_is_device_private
- path
-Message-ID: <amdkR-gX_ABcKyCQ@lucifer>
+Subject: Re: [PATCH v2 2/2] mm: Extract non-swap page handling to
+ do_non_swap_page()
+Message-ID: <ameHdtnC4BxjgQGL@lucifer>
 References: <20260723030752.16979-1-hongfu.li@linux.dev>
- <20260723030752.16979-2-hongfu.li@linux.dev>
+ <20260723030752.16979-3-hongfu.li@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260723030752.16979-2-hongfu.li@linux.dev>
-X-Rspamd-Queue-Id: 804141C000C
+In-Reply-To: <20260723030752.16979-3-hongfu.li@linux.dev>
 X-Rspam-User: 
-X-Stat-Signature: buc4f33xapgktj6ddykkhismefopcwsj
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1785169790-62857
-X-HE-Meta: U2FsdGVkX18vQ+kxGCwoZIjUGgrOMjiJRKBVHkQLBzgx1UlPdxOMQIEirArgXhuPwUapCBGjW5ni242UAp7Xn82FVSF/6H2rb8GYK7F3+ncgWrIqnj7SmYWRbP/jwhdyxPbeHyKGIFA1fdwqrS54d6OZ9oSJD+qdTP6fkvOmABvIeSf25SR1seKqzwPFA8nHA5oMx4NUEIZgDUphZmIZ5YubbRHZovqdjCFXrdNWgF8XucWawf8iA33HEQdkOnRxZ6BxM5riH58KNQQ5xmZUEjtGDa7kZSU0mD6nkf28jN2D16xhbCBMh76Tc0SOYbzkRfhpQIjOIO6+JC5QxiVjjmzbFhQPrXV+GdX7QaUfHyFtpzO4vUX8G5HkrxJ1qeFpDmdr0GrPh+p7BtZuM7x/h2LvlE/+wAvNdlp+xMGdAPk+ramQsHtejIIU5jyGiCw7Nc6dXp8ClsU2ep5m4r4dX5OW5qULRaKTWRdIiBHgbL0ggQm5yRds4iHFD8kQxm1lIu3+8mvsbXYd/dSbpZamDHOQdBm2cXWnV1kF9Y/TTajXOAaa5sDFvgk3XJRQMS5yK9hsR9BC/DjtiZQt+pJVttNQ66YZvFncLz/4OrzJ9HNjklBRa6Z+6wOgNAx09dyjnF2+5GgaiQbwoyrxdZ/WCldm51ZaOKy908tqa6G7zB+ggkuSp/VerXa70j1xsQZfOB3xWSPzLvIHenEW2VB+rU+5+c0tfTCptgFHtYzvHirxjmHnsMnubnh+mwSa/YJkcllCBZU7/drCUVQVrqEbm0Kx2vU2PYFnQi/r+bg/aM+t/DcuT8ouESye6LDX8/ar8MNSzbM1n26m4H4fUm5yi6MLTrYQ49UNkWYwCU52WOtth6nYPU1o6uSF7Ot3yRr/p6m9rLHNSPIIsDOBsA1qPsIx1w/bpZw4NJhCB3qvk94K8NZJDzDS0uTSTxvAGGk6WVhfzx6ppEBzSmoDjt2
- NoU6o3/f
- GgSYnJyWPMfUwSMtYkY4EYTEKpeeDZcnGrfLxGa3BrqEVN6zJfz32tdf10CxI3ffHu8F2OZVK1HmAXmdjOCRvHyMggto00lZgmHf0ERF8rM+012KZj89h/2Xn8gflFhOMHYzyldWgh2t4wWJvNz3+qSJswTr35xGsQ7r/gKqo52f0nzITPRE0mWxKdn6fDj/2Rto5rfydnlRGsdcHG1Rb6UXGFxCangwSXsPrhGpNPW/8ercKUG8Y+rwm6TC3LrljwvJV2fgEdPUzz9K1eN8nAw7ILZl8JQQqIvfyG29+6XZGwzbnJkRvVDizBHOI9m329SOqxres4lXsR992LP8/Si9buVg1P0wwuj7D
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 7DA9D40003
+X-Stat-Signature: zng4qpgoqyu6ybct86ka9e7uyt5ud9q5
+X-HE-Tag: 1785169868-282903
+X-HE-Meta: U2FsdGVkX1/rwOsfeQ7znyEe2Z2GGfqkv254l+UyXvJLXQoqBxyz5ll9W31mdltuXz2soXy5dPJKKkYsI0KbeITKEs+Tk3g+GyzTqMSjWbY4vzHhyoRbfrNdp/CGbplQFFV2eIUkRHknV2xUT73kM+f24M7yKa4kVAqgwa8Rlz6DICjHx2ZPm6ZSYBXNaLHCkgXykPQxXbWYSGcgEBX0kYOICvEkBDapJ8ym/SUaXg+iL9O+kvY96Ca7jAMB8zagZ/sfR13KTE50/XxxcF3yqttT4MrxnnvWUtyGApZe9VrRN0UDXEdXUdnV5CLRCfFPpG2UChMtl4pwBwEQOSvA0lpCkG+zhKToyTdRFOtsLljMHOM9+/gYhpuovmXrif7hCYXG3u2s42rDAhYsUrPHFSoJdP/fYlXYqfqJys0ZI9ktsHTOMnuzJxv6N21AfQX7ggGnKYKFqYAknoRczeYv4iNPv/Nnb2MKXvZUk5pX+1B7G0A+pI5u4FhZpBM75q2O0FDQjzK62vFFAHNNFVGjuiekcvkJfBYpSObpAKmroLMJEiX1cOOeS+wJYJvn/TOzMOYYFJZaRyKn+cQmQfVFZxyBJS/YwMUJ34GFcr9A5+aDBlKNN2Sx27Z3xxsANKg5CHyjNxoc9J9qu2/JUnq7Qs5d3QrWkal7WrKa+zO7Os2q3XVoXpsNixiy5lUvOsVa35DBhbpbqccdglKmUip76Nf/iuco00TsYQUBkIhPURBjGaYTN+30lK2swwhwsEjeQoX1G/StV5h+djtfmzzhOsrv0eFL+0/eXiH3XYV4P1IEVsJqb2qn5xfQKY1C1pra+H+c7+bvKCWpZG2NVUdjiw3eprMxENdHmieOQamKO21o2H+2E+IpzzMcDGiKw6W1Olgcfo7S4/Nd/1AmukX9v7fnR4Jc946AZP22T5c38GbzFBiJ8S9V/Dmmh10tno2tKYxy2l9989QYtw00iHN
+ e78SfB2R
+ B5lAOfj1dxXg5dL/iPrCref2AYriCgzfNZjqlJl3QGZ8qBopD8I0YNCC0OmTZWDQpsLizUpPNGcQdmdsIx5tV3xIFN5zErhUzdpSaNGcoVV5U8ByUMtl3yYIGp6+Tr00B70FwRGNLaioV/AiPgP5T020sMi+tJ3d6f2h8K6GZPcuYXNpXQ0geE9+9eyIKuCPr67Zct1E6uRc2ekrOU1pqB01xQbv/UenDNwQn0GiYS1kDyrN0eiD3/JiCJG0vxSRQY7tcmmFuwnX4ze/PoxUmNQmRUqKfDs9upXLg6VBnxIUkbtk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,79 +93,171 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 23, 2026 at 11:07:51AM +0800, Hongfu Li wrote:
+On Thu, Jul 23, 2026 at 11:07:52AM +0800, Hongfu Li wrote:
 > From: Hongfu Li <lihongfu@kylinos.cn>
 >
-> Use the folio APIs in the device_private migration path of do_swap_page(),
-> replacing four calls to compound_head() with one.
+> Factor non-swap entry logic out of bloated do_swap_page() to simplify
+> the main swap fault flow and improve readability.
+>
+> The new do_non_swap_page() handles migration, device private/exclusive,
+> hwpoison, marker and bad PTE entries.
 >
 > Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-With changes below applied LGTM, so:
+We've already gone over this elsewhere in the thread, we don't want a
+do_non_swap_page() (HELL no).
 
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+But in general I want to finish what I started with softleaves, which still has
+some work to do with swap entries so maybe could you just drop this patch so I
+can follow up with that later?
+
+That way you can do a respin of just the 1/2 as a v3.
+
+Thanks, Lorenzo
 
 > ---
->  mm/memory.c | 11 ++++++-----
->  1 file changed, 6 insertions(+), 5 deletions(-)
+>  mm/memory.c | 120 ++++++++++++++++++++++++++++++----------------------
+>  1 file changed, 69 insertions(+), 51 deletions(-)
 >
 > diff --git a/mm/memory.c b/mm/memory.c
-> index d5e87624f692..ae521baa8c84 100644
+> index ae521baa8c84..50d8e92aef91 100644
 > --- a/mm/memory.c
 > +++ b/mm/memory.c
-> @@ -4871,18 +4871,19 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
->  				goto unlock;
+> @@ -4815,6 +4815,74 @@ static void check_swap_exclusive(struct folio *folio, swp_entry_t entry,
+>  	} while (--nr_pages);
+>  }
 >
-
-Up here we have:
-
-			vmf->page = softleaf_to_page(entry);
-			vmf->pte = pte_offset_map_lock(vma->vm_mm, vmf->pmd,
-					vmf->address, &vmf->ptl);
-			if (unlikely(!vmf->pte ||
-				     !pte_same(ptep_get(vmf->pte),
-							vmf->orig_pte)))
-
-Since we're canonicalising to folio why not actually set folio using
-softleaf_to_folio()?
-
-So
-
-+			folio = softleaf_to_folio(entry);
--			vmf->page = softleaf_to_page(entry);
-+			vmf->page = &folio->page;
-
-This would also make more sense in your 2/2. But more on that in a sec.
-
->  			/*
-> -			 * Get a page reference while we know the page can't be
-> +			 * Get a folio reference while we know the folio can't be
-
-NIT: be -> next line for 80 chars.
-
->  			 * freed.
->  			 */
-> -			if (trylock_page(vmf->page)) {
-> +			folio = page_folio(vmf->page);
-> +			if (folio_trylock(folio)) {
->  				struct dev_pagemap *pgmap;
+> +static vm_fault_t do_non_swap_page(struct vm_fault *vmf)
+> +{
+> +	struct vm_area_struct *vma = vmf->vma;
+> +	struct folio *folio;
+> +	softleaf_t entry;
+> +	vm_fault_t ret = 0;
+> +
+> +	entry = softleaf_from_pte(vmf->orig_pte);
+> +	if (softleaf_is_migration(entry)) {
+> +		migration_entry_wait(vma->vm_mm, vmf->pmd,
+> +				     vmf->address);
+> +	} else if (softleaf_is_device_exclusive(entry)) {
+> +		vmf->page = softleaf_to_page(entry);
+> +		ret = remove_device_exclusive_entry(vmf);
+> +	} else if (softleaf_is_device_private(entry)) {
+> +
+> +		if (vmf->flags & FAULT_FLAG_VMA_LOCK) {
+> +			/*
+> +			 * migrate_to_ram is not yet ready to operate
+> +			 * under VMA lock.
+> +			 */
+> +			vma_end_read(vma);
+> +			return VM_FAULT_RETRY;
+> +		}
+> +
+> +		vmf->page = softleaf_to_page(entry);
+> +		vmf->pte = pte_offset_map_lock(vma->vm_mm, vmf->pmd,
+> +						vmf->address, &vmf->ptl);
+> +		if (unlikely(!vmf->pte ||
+> +			     !pte_same(ptep_get(vmf->pte),
+> +					vmf->orig_pte)))
+> +			goto unlock;
+> +
+> +		/*
+> +		 * Get a folio reference while we know the folio can't be
+> +		 * freed.
+> +		 */
+> +		folio = page_folio(vmf->page);
+> +		if (folio_trylock(folio)) {
+> +			struct dev_pagemap *pgmap;
+> +
+> +			folio_get(folio);
+> +			pte_unmap_unlock(vmf->pte, vmf->ptl);
+> +			pgmap = page_pgmap(vmf->page);
+> +			ret = pgmap->ops->migrate_to_ram(vmf);
+> +			folio_unlock(folio);
+> +			folio_put(folio);
+> +		} else {
+> +			pte_unmap(vmf->pte);
+> +			softleaf_entry_wait_on_locked(entry, vmf->ptl);
+> +		}
+> +	} else if (softleaf_is_hwpoison(entry)) {
+> +		ret = VM_FAULT_HWPOISON;
+> +	} else if (softleaf_is_marker(entry)) {
+> +		ret = handle_pte_marker(vmf);
+> +	} else {
+> +		print_bad_pte(vma, vmf->address, vmf->orig_pte, NULL);
+> +		ret = VM_FAULT_SIGBUS;
+> +	}
+> +
+> +	return ret;
+> +
+> +unlock:
+> +	if (vmf->pte)
+> +		pte_unmap_unlock(vmf->pte, vmf->ptl);
+> +	return ret;
+> +}
+> +
+>  /*
+>   * We enter with either the VMA lock or the mmap_lock held (see
+>   * FAULT_FLAG_VMA_LOCK), and pte mapped but not yet locked.
+> @@ -4845,57 +4913,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
 >
-> -				get_page(vmf->page);
-> +				folio_get(folio);
->  				pte_unmap_unlock(vmf->pte, vmf->ptl);
->  				pgmap = page_pgmap(vmf->page);
->  				ret = pgmap->ops->migrate_to_ram(vmf);
-> -				unlock_page(vmf->page);
-> -				put_page(vmf->page);
-> +				folio_unlock(folio);
-> +				folio_put(folio);
->  			} else {
->  				pte_unmap(vmf->pte);
->  				softleaf_entry_wait_on_locked(entry, vmf->ptl);
+>  	entry = softleaf_from_pte(vmf->orig_pte);
+>  	if (unlikely(!softleaf_is_swap(entry))) {
+> -		if (softleaf_is_migration(entry)) {
+> -			migration_entry_wait(vma->vm_mm, vmf->pmd,
+> -					     vmf->address);
+> -		} else if (softleaf_is_device_exclusive(entry)) {
+> -			vmf->page = softleaf_to_page(entry);
+> -			ret = remove_device_exclusive_entry(vmf);
+> -		} else if (softleaf_is_device_private(entry)) {
+> -			if (vmf->flags & FAULT_FLAG_VMA_LOCK) {
+> -				/*
+> -				 * migrate_to_ram is not yet ready to operate
+> -				 * under VMA lock.
+> -				 */
+> -				vma_end_read(vma);
+> -				ret = VM_FAULT_RETRY;
+> -				goto out;
+> -			}
+> -
+> -			vmf->page = softleaf_to_page(entry);
+> -			vmf->pte = pte_offset_map_lock(vma->vm_mm, vmf->pmd,
+> -					vmf->address, &vmf->ptl);
+> -			if (unlikely(!vmf->pte ||
+> -				     !pte_same(ptep_get(vmf->pte),
+> -							vmf->orig_pte)))
+> -				goto unlock;
+> -
+> -			/*
+> -			 * Get a folio reference while we know the folio can't be
+> -			 * freed.
+> -			 */
+> -			folio = page_folio(vmf->page);
+> -			if (folio_trylock(folio)) {
+> -				struct dev_pagemap *pgmap;
+> -
+> -				folio_get(folio);
+> -				pte_unmap_unlock(vmf->pte, vmf->ptl);
+> -				pgmap = page_pgmap(vmf->page);
+> -				ret = pgmap->ops->migrate_to_ram(vmf);
+> -				folio_unlock(folio);
+> -				folio_put(folio);
+> -			} else {
+> -				pte_unmap(vmf->pte);
+> -				softleaf_entry_wait_on_locked(entry, vmf->ptl);
+> -			}
+> -		} else if (softleaf_is_hwpoison(entry)) {
+> -			ret = VM_FAULT_HWPOISON;
+> -		} else if (softleaf_is_marker(entry)) {
+> -			ret = handle_pte_marker(vmf);
+> -		} else {
+> -			print_bad_pte(vma, vmf->address, vmf->orig_pte, NULL);
+> -			ret = VM_FAULT_SIGBUS;
+> -		}
+> +		ret = do_non_swap_page(vmf);
+>  		goto out;
+>  	}
+>
 > --
 > 2.54.0
 >
-
-Thanks, Lorenzo
 
