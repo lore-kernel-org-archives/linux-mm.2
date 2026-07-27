@@ -4,64 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8D1CC53219
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 09:53:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE72AC53219
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 09:54:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 11A8E6B0099; Mon, 27 Jul 2026 05:53:02 -0400 (EDT)
+	id 675636B00A1; Mon, 27 Jul 2026 05:54:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0CAF66B009B; Mon, 27 Jul 2026 05:53:02 -0400 (EDT)
+	id 64DE06B00A2; Mon, 27 Jul 2026 05:54:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 008486B009D; Mon, 27 Jul 2026 05:53:01 -0400 (EDT)
+	id 58B876B00A3; Mon, 27 Jul 2026 05:54:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CB4006B0099
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 05:53:01 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4D41D8068F
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 09:53:01 +0000 (UTC)
-X-FDA: 85034092962.26.277033E
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 25F7E6B00A1
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 05:54:33 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 89D04160621
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 09:54:32 +0000 (UTC)
+X-FDA: 85034096784.11.1BB58EE
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 8E0ED1C0009
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 09:52:59 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=iEK1gDV2;
-	spf=pass (imf21.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
+	by imf12.hostedemail.com (Postfix) with ESMTP id C665E40007
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 09:54:30 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=VkVpdYd2;
+	spf=pass (imf12.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785145979;
+	s=arc-20220608; t=1785146071;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V2rceoeRxfYHCgP3wyFnEef4w75Wsa2jQVhzWb4z8e0=;
-	b=psWs34GczR/2t3yRWEUwOh7LGSBdChpRDtdoZScHj0GAamsRtuZTX78JBz52NsYiXJ/taH
-	/t8SQkmnzgOKRUrE6rsloPVclWmPifF14fHqRauNXg4AQAopjI0M0u36IkUhjlTrcbX7b/
-	M6GUYGQT9ZEtX19rfYpGhvtDVNMauBU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785145979;
-	b=6xU1cIgffIgpFmAEs/FMDLfUES7UKZ1Ao243tEmYc/p0rTI2mp7NjcrWTk7Ny0cgTS7khE
-	gjA3aqhg0zmimAyKjyRPVps75ILhwtaxr1eYb3y5sWswviIzf1elfsl1LSbZoS2AuvVOYm
-	JXKVJmyDmN06X3Dn81OoYPQbN54rsxE=
+	 in-reply-to:references:dkim-signature;
+	bh=iqgxaXVplLnY8f+3ew5nUXRtbyiAVx+b8Zw/XSqL51s=;
+	b=HlrLa+5/XDa9HZld6R/7NV3/1MxuR0hDpVaoXivAfQwqgksGwfBnrrkyc/Hxbqhl3K7fSP
+	+4gM+F8Imka4sxocp85UA2zDfkMVuGiXene2zLI/wMicoqFmi3ikWEJo+6+LKIXEu/cAtA
+	Yi2Nuw3bUgyYuyFjMiTAU1RNzPH/Ncg=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=iEK1gDV2;
-	spf=pass (imf21.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
+	imf12.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=VkVpdYd2;
+	spf=pass (imf12.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785146071;
+	b=xoQdF1b49OJ5C0IZsAE1wDuW8cxE03EIBL2LFvVK/Uu9rdCZa6PEo++UTSRZgmqDOmF1yt
+	71Jqo2I4cXVmAxuZ9G3EhB/0V28v9S5M29/jGQW3YmyQMe4/yQO3FAwYjdU/iQ/kv/vq/H
+	fsVIxJdTWmfs+Da/QzMRvU1BC3sS2o8=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7877E1476;
-	Mon, 27 Jul 2026 02:52:54 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D28AD143D;
+	Mon, 27 Jul 2026 02:54:25 -0700 (PDT)
 Received: from e142334-100.cambridge.arm.com (e142334-100.cambridge.arm.com [10.2.198.93])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 3BBB93F66F;
-	Mon, 27 Jul 2026 02:52:55 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id A2F6A3F66F;
+	Mon, 27 Jul 2026 02:54:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1785145978; bh=dzW8Sc4XWBgaC1kpkf55Z8zewTfVHC6YVmXcerdGHUc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iEK1gDV2inNiNl3LwSunrlXFelTRomyhCE5yVMQrbyN8wA33f4Y5CVDocBPvTIGmg
-	 E4p7saWrHlR5XoQNxcaiMqADedlhoFegxKXvQjnj4vcHSVHev0I4k3mQ/eawcVq353
-	 w0nvAyRGnKcfEjBdnnit4ggwRPxgM4zgEIxhnD1A=
+	t=1785146069; bh=IwWrSDrINE++NYwqj/Bk+VRo4oGJ2eHfAb46LAiKODc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=VkVpdYd21kJu0+U4OzGUiBxP/KkjUT1DaHuHW8cdr0cIYRPVvg059nd7jIRnT0l10
+	 epzhR+iaQPlv+eKwAcvnKxZDzLfcqJOOF6zJaeB7nOXYSKmC9FbT8vqNArEIwj8Twy
+	 q6GWXNCWhWjHqC27zmzMXRr2aHzXPeUcOcl+66Rw=
 From: Muhammad Usama Anjum <usama.anjum@arm.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
+To: Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
 	Lorenzo Stoakes <ljs@kernel.org>,
 	"Liam R. Howlett" <liam@infradead.org>,
@@ -69,37 +71,25 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 	Mike Rapoport <rppt@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Michal Hocko <mhocko@suse.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Shuah Khan <shuah@kernel.org>
+Cc: Muhammad Usama Anjum <usama.anjum@arm.com>,
 	linux-mm@kvack.org,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Cc: Muhammad Usama Anjum <usama.anjum@arm.com>
-Subject: [PATCH v3 5/5] selftests/mm: retry migration failures for the full runtime
-Date: Mon, 27 Jul 2026 10:52:21 +0100
-Message-ID: <20260727095225.372655-6-usama.anjum@arm.com>
+Subject: [PATCH] selftests/mm: unpoison pages in memory-failure teardown
+Date: Mon, 27 Jul 2026 10:54:14 +0100
+Message-ID: <20260727095415.385026-1-usama.anjum@arm.com>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260727095225.372655-1-usama.anjum@arm.com>
-References: <20260727095225.372655-1-usama.anjum@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 8E0ED1C0009
-X-Stat-Signature: 3xfkatuopdmmrggxjt76zsxm9scugxap
 X-Rspam-User: 
-X-HE-Tag: 1785145979-591463
-X-HE-Meta: U2FsdGVkX19ldAobREYcdftPLK35VOTbBZyABU7uLKrqSPfiN4BIFYJMA0+EwWJ3BFbp/WMEccClvgMkwMA6PktPug7mOEyoEjRsKLKoVcYQDHrIA+B7Z0Huku5qUjsSCjqy1SeYOr/eRTpQYGt+TiEzQWkOWvaeFrJ2weBRyFhHdYy08IyonJttulwqBP+QV5j1MkVfToqh9r1UNkG8ag+3TDHCR3LLsLRlWRDodmZR8KWQ1qwJxjPmHPlNWQpsyFXL4cAf47s7KnCSngXM+frMvkpnewJHOFAzg364LZT390J+/lOapRrCtLlwOMte44rg8duaytVt1iEwKCIUxW9RwxcVjX5CtGUCa6Av/rsgkpmFHSjVqP92RhZRzu8EzAhtjCXgO31XE0zKKBkjU7Xo6rbWE7mSWEDkpCCFvnu3577dJn4w6Vv35UA2kIO7nxVVnck6euBJze9UC5RcxsLJRpnkJETAHz7iLLfMPh9eSvEHlsM6HyLdmPZefVPH6PuaU/ixkB33ohDoRb/be5PhxWAVm6Z+/CgsSBL8MwC8+0LduxBkvsP7YRGQ1/hFOdGMf4+apWZEyRggC0r4GwpiaWZe2R3z4nmtOd10aBB0TUMSxCHRWDJZGzhKmc9f402ZNcSJ3j6n9nYgDUvIAcJjemcL0GRuGCooCcIoO6D/FPU0MBa6IL5y+CyiNTM8hDgQZ9e4AjIWtSZEUNOIEdvXs64K5UImO0sESQbyPWQlcsftSFhN6sD9KgoBLUAD39p1911vwwQvI5Bz8rXtYrBIjwnY+ZmxPDyX7pUjBOFMuKLKVxj8WFgvMNkBZaqlF3TzzqwzxCmD4jmIsMILNg0I15ECRZhqnivzkuaCzl3geW2gsKF0tdqXF/7PiAry9hUTDGAVpGMsOLWCsClYN4cy35HRWdahbxaahJObc6DciF1C4HCzt1dUZYvDP4odYBqRIc69UqXSejmCiAB
- 7ox6/xCu
- dT2aeOC1oNt8zDolA4/xEvn2QPHD5t2V8FW0WW1YBd2gHVoVMJ2rUfIR/yQ3vDU1EWVW14SuGMJDHEPjliLD1uMP0iT2c/o+lG5Qj9u/SewyoDwDflQ/NoyrOfL8RKRSeO2Lb0yQSRMl719jLcmJa1yerA8UMBJpj07CDFx8L72GTb1FiMwOhUaWhrYaiQNy41NEhvG2+/dzVelHTJ/j3X03PUcXenJjaSyYQ45Oiy/kCblV/iIXluYFXGz89QmJHjK+WCSkXw2a31+4AF4M7xUBaeudV6yMpWL+wyLclNV6dNdtrQumv5CpmCiSqxU1FMbXG
+X-Rspamd-Queue-Id: C665E40007
+X-Rspamd-Server: rspam01
+X-Stat-Signature: 4nu64bwagiypoefj6wjyj4qba6rjqqxj
+X-HE-Tag: 1785146070-22546
+X-HE-Meta: U2FsdGVkX18sRcOP9VPAdJ2QLiJ+FE3rQZUh/TosfPY6u64hGxdWHfsl/Ko98fhBQFDilVHViBiRIBI9BOMqrOTC1zUvLYHa25KkNt942WE/tmWkWiCZ6huwg7ZUV9xOMwcDfuJFJclA5HuHKHpZcIowSbbaJI08H/Ux973v/k8KLA4oXUEC358AZjjl+ruyiNa6VHwjHdZB0uV/Zb6nVfUAjPzPrm6xdX5UA0RPmQc1UFZKLgNgbewHBrQ7J8SFAP4TMmPW9GoiLQHBhBhG8+QirYdHEiwAJekRfvt9rdI+FslAKqWbdDpvJ3RFkS1tthjCjtVf6R251KPugywl8I5odcnS6yek+M92LLMKw5ML/bRa4hJcIAgWYX7D4wsvY0BL+pA5E4jL3znPKSA1b5PRi8hogJZUP78QxsdaFAoJHwc+ka1cIYoZ275Rl2I0FK0s/Z1kGcBkCI3y0wIFdKE2GBEXTeA7YM/lOBKi8ba51OpTXPoy3AoTily7bCb+NumI7ZwFZm6fPrDvhyPqKatk0Q4kulmmOBvuXOPp0uJWVIl0ZwuMv2hBvMsNsb0rXnZyQ+jS2w/WeNTUy5zjdFBAL98zlL+41JCyvvtohuhNZsk7OX/OUwhCqHh+mOSHFFwFvHA7s7smqS5MOWIGV7wxjWJypPs0W9+QVOne0ET1pe6NOGrzjCFsZ7WqsY1Ydvi204PVHq2+5tXhFLVhC1sATAd0q3yH7oLjvewctbA92idQcMwPYX4N6xSMyxdFZ/uaM0mqSx+vZMUZdq0K6+sRMl8BCKKk24ttCyVJHBJq9YNSZJPs6+7aGa8NcOpyScFcCuL7HBpRcziktHhr0AH+xTI6O7Oe8hFkZYd4cAICaiYv1IsrES1zuYzSct7oODO6YVDlHQb0x2NNtk5sUVPtVuuhOJkp3s9LKc17dyEdwZRs4ChFvE6VgpYUBO1+yfPfdlBewz6euLwYXGF
+ FfdSu8NZ
+ AzKKgYFqFh/O2WS7ci9uAObHpLHINGn5A0Mm0TT5JctYv7VF7iNtXFqUO6vsKsnx6vZzrJw3gF4vHJQmF+198pWalSqy/mt7AtvKzih62RkUEeVSRB33s+A6x0U/b1DzlFv2egthxMC3iYXj9dcj6nxRCXj7t0zeA6nYF1NvRQvWx5pdsrY6Y6h+Cpe3H0XcwqoP2dbOHdOMgwVBcLXd9ZQaociIuSHvGIivdIlvqKku9fIgAoTsXgZf2aiyKqhG+1LotBhnWIBGA7S1BLrqKSjyTjjp06ClnXwm3GCMEHtaKWOFEuumSFiuFvhN0Dxcl759W
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,105 +97,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-move_pages() is best effort and can temporarily fail when concurrent
-faults race with page unmapping. A busy shared-anon workload can exhaust
-the current 100 retries long before the intended 20-second runtime and
-produce a false failure.
+The memory-failure tests call cleanup() only after all result checks.
+A failed ASSERT_* invokes fixture teardown and aborts the test, so it
+skips cleanup() and leaves the injected page hardware-poisoned.
 
-Use the full runtime as the retry window. Since the initial page location
-is unknown, require it to reach both alternating NUMA targets to confirm
-that cross-node migration made progress despite transient contention.
+Invoke cleanup() from FIXTURE_TEARDOWN() instead. Guard it with
+self->triggered so tests that exit before injection do not try to
+unpoison a page when no injection was attempted. This runs the existing
+HWPoison and HardwareCorrupted checks on both normal and assertion-failure
+paths.
 
+Fixes: ff4ef2fbd101 ("selftests/mm: add memory failure anonymous page test")
 Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 ---
-Changes since v2:
-- Return -2 when the page is not on the target node.
+ tools/testing/selftests/mm/memory-failure.c | 26 +++++++++------------
+ 1 file changed, 11 insertions(+), 15 deletions(-)
 
-Changes since v1:
-- Retry per-page failures for the full runtime
-- Verify that both alternating NUMA targets are reached
----
- tools/testing/selftests/mm/migration.c | 37 ++++++++++++++------------
- 1 file changed, 20 insertions(+), 17 deletions(-)
-
-diff --git a/tools/testing/selftests/mm/migration.c b/tools/testing/selftests/mm/migration.c
-index 29f7492453d43..f19d53c695764 100644
---- a/tools/testing/selftests/mm/migration.c
-+++ b/tools/testing/selftests/mm/migration.c
-@@ -7,7 +7,7 @@
- #include "kselftest_harness.h"
- #include "hugepage_settings.h"
- 
--#include <strings.h>
-+#include <string.h>
- #include <pthread.h>
- #include <numa.h>
- #include <numaif.h>
-@@ -20,7 +20,6 @@
- 
- #define TWOMEG		(2<<20)
- #define RUNTIME		(20)
--#define MAX_RETRIES	100
- #define ALIGN(x, a)	(((x) + (a - 1)) & (~((a) - 1)))
- 
- HUGETLB_SETUP_DEFAULT_PAGES(1)
-@@ -110,7 +109,7 @@ int migrate(uint64_t *ptr, int n1, int n2)
- 	int ret, tmp;
- 	int status = 0;
- 	struct timespec ts1, ts2;
--	int failures = 0;
-+	int success = 0;
- 
- 	if (clock_gettime(CLOCK_MONOTONIC, &ts1))
- 		return -1;
-@@ -119,29 +118,33 @@ int migrate(uint64_t *ptr, int n1, int n2)
- 		if (clock_gettime(CLOCK_MONOTONIC, &ts2))
- 			return -1;
- 
--		if (ts2.tv_sec - ts1.tv_sec >= RUNTIME)
--			return 0;
-+		if (ts2.tv_sec - ts1.tv_sec >= RUNTIME) {
-+			/* Reaching both targets verifies a cross-node move. */
-+			if (success >= 2)
-+				return 0;
-+			else
-+				return -2;
-+		}
- 
- 		ret = move_pages(0, 1, (void **) &ptr, &n2, &status,
- 				MPOL_MF_MOVE_ALL);
--		if (ret) {
--			if (ret > 0) {
--				/* Migration is best effort; try again */
--				if (++failures < MAX_RETRIES)
--					continue;
--				printf("Didn't migrate %d pages\n", ret);
--			}
--			else
--				perror("Couldn't migrate pages");
-+		if (ret < 0) {
-+			perror("Couldn't migrate pages");
-+			return ret;
-+		}
-+		/* Migration is best effort. Try again */
-+		if (ret > 0 || status < 0)
-+			continue;
-+		if (status != n2) {
-+			printf("Page is on node %d instead of target node %d\n",
-+			       status, n2);
- 			return -2;
- 		}
--		failures = 0;
-+		success++;
- 		tmp = n2;
- 		n2 = n1;
- 		n1 = tmp;
- 	}
--
--	return 0;
+diff --git a/tools/testing/selftests/mm/memory-failure.c b/tools/testing/selftests/mm/memory-failure.c
+index 5d00aab31f9b5..eaa8b9bd401a1 100644
+--- a/tools/testing/selftests/mm/memory-failure.c
++++ b/tools/testing/selftests/mm/memory-failure.c
+@@ -122,13 +122,6 @@ static void teardown_sighandler(void)
+ 	sigaction(SIGBUS, &sa, NULL);
  }
  
- void *access_mem(void *ptr)
+-FIXTURE_TEARDOWN(memory_failure)
+-{
+-	close(self->kpageflags_fd);
+-	close(self->pagemap_fd);
+-	teardown_sighandler();
+-}
+-
+ static void prepare(struct __test_metadata *_metadata, FIXTURE_DATA(memory_failure) * self,
+ 		    void *vaddr)
+ {
+@@ -200,8 +193,7 @@ static void check(struct __test_metadata *_metadata, FIXTURE_DATA(memory_failure
+ 	ASSERT_EQ(pfn_flags & KPF_HWPOISON, KPF_HWPOISON);
+ }
+ 
+-static void cleanup(struct __test_metadata *_metadata, FIXTURE_DATA(memory_failure) * self,
+-		    void *vaddr)
++static void cleanup(struct __test_metadata *_metadata, FIXTURE_DATA(memory_failure) * self)
+ {
+ 	unsigned long size;
+ 	uint64_t pfn_flags;
+@@ -217,6 +209,16 @@ static void cleanup(struct __test_metadata *_metadata, FIXTURE_DATA(memory_failu
+ 	ASSERT_EQ(size, self->corrupted_size);
+ }
+ 
++FIXTURE_TEARDOWN(memory_failure)
++{
++	if (self->triggered)
++		cleanup(_metadata, self);
++
++	close(self->kpageflags_fd);
++	close(self->pagemap_fd);
++	teardown_sighandler();
++}
++
+ TEST_F(memory_failure, anon)
+ {
+ 	char *addr;
+@@ -242,8 +244,6 @@ TEST_F(memory_failure, anon)
+ 	else
+ 		check(_metadata, self, addr, MADV_SOFT_ANON, ret);
+ 
+-	cleanup(_metadata, self, addr);
+-
+ 	ASSERT_EQ(munmap(addr, self->page_size), 0);
+ }
+ 
+@@ -309,8 +309,6 @@ TEST_F(memory_failure, clean_pagecache)
+ 	else
+ 		check(_metadata, self, addr, MADV_SOFT_CLEAN_PAGECACHE, ret);
+ 
+-	cleanup(_metadata, self, addr);
+-
+ 	ASSERT_EQ(munmap(addr, self->page_size), 0);
+ 
+ 	ASSERT_EQ(close(fd), 0);
+@@ -358,8 +356,6 @@ TEST_F(memory_failure, dirty_pagecache)
+ 	else
+ 		check(_metadata, self, addr, MADV_SOFT_DIRTY_PAGECACHE, ret);
+ 
+-	cleanup(_metadata, self, addr);
+-
+ 	ASSERT_EQ(munmap(addr, self->page_size), 0);
+ 
+ 	ASSERT_EQ(close(fd), 0);
 -- 
 2.47.3
 
