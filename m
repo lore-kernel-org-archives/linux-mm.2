@@ -4,122 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7C59C531D0
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 13:59:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1AE4C53209
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 13:59:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D4B146B00A9; Mon, 27 Jul 2026 09:58:59 -0400 (EDT)
+	id 9F0D86B0096; Mon, 27 Jul 2026 09:59:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CFB486B00AA; Mon, 27 Jul 2026 09:58:59 -0400 (EDT)
+	id 9C80B6B00A7; Mon, 27 Jul 2026 09:59:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BEB936B00AC; Mon, 27 Jul 2026 09:58:59 -0400 (EDT)
+	id 8B7E76B00AC; Mon, 27 Jul 2026 09:59:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E4A66B00A9
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 09:58:59 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 16351120730
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 13:58:59 +0000 (UTC)
-X-FDA: 85034712798.06.535CF04
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 13773A0006
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 13:58:56 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=OTUWpnQE;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf25.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=mhocko@suse.com
+	by kanga.kvack.org (Postfix) with ESMTP id 639B26B0096
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 09:59:14 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DC52F120736
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 13:59:13 +0000 (UTC)
+X-FDA: 85034713386.21.46CDA8C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 3224414000A
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 13:59:11 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M9XJbpFC;
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785160752;
+	b=Ot4XoIWNE/2pBzHJtKggtdxD4rFF3Byt9x91igBcBkqwGOJtTdXbxtoqw3EFNClsXEFU1L
+	HxVLtgJggHquNK7WJTAkt4x2+4C7gmVijoMFWNOi+irwJj7BX+dWxw/JTaD40jcOLan3z7
+	+wnBiQspgCLw7gC77yWeyTxPfY2AUPs=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M9XJbpFC;
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785160737;
+	s=arc-20220608; t=1785160752;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jeVBGviPg2kCaObeNUQhF3Ba7R7LGyRIaSNUXdzPkhk=;
-	b=WSt+qwKbzMaXRyeSLB9sqdKM5i/CnP4zer1NsJ/2x0RjXbF+EB146BFfjwTeYikM4dWFu7
-	zpYFEnGip3LKyO/T72cY6StD4WxBo++QALnOSa65+DKNU3cW7NGRa5IzQu/PWejH02Is2s
-	j5BnIpzJracWiG5eYVLKo6xRjqfWqkQ=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=OTUWpnQE;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf25.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=mhocko@suse.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785160737;
-	b=QnbkNGqLhAIJ3YmlpjufRRVIQe6I9vT3A14pz7QzHy2g2CmntT0hTCH9r9TxR7aj7NKB5P
-	2ugfos7eXU3ozcXYWMgFyMUsJD+TBO93e7FkFNhWLCzEgtLH4bH1BSjb3/SD3gPUosyNpA
-	9OGL3OuBH0SgYtEjwxMwCnHIS1p71xU=
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-49550ec592cso23663885e9.0
-        for <linux-mm@kvack.org>; Mon, 27 Jul 2026 06:58:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1785160736; x=1785765536; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=jeVBGviPg2kCaObeNUQhF3Ba7R7LGyRIaSNUXdzPkhk=;
-        b=OTUWpnQExrAX1XmRDTU5IbI6VADMh7LZvPclfKGMOR9UbgECPjAWnn25Q5jL3NfUur
-         NsLpJF1d5INlJz6c2ln4e8fmtlt2p/yIZXPzmrdFtZtIzBclALtMNj7wyoCx9VbyTkpI
-         nHydxnt25l+4fKxow2llnWN3j4D5fTLm41f92cH68w0HtbPEtFWkEpdHULmzO4WH1nLD
-         HueEXiZsGlGLJ1jNfDM94TZXkSmwZJdVefVSSwsqIAA5+6k4AEqlIdUVfgmhMFGMHIGx
-         4BLFRJYpBRIbWJ+ca8CJkJ/O5tOAx6MeK8ztQ+9pDuJ5pgI7WG4H7lS6hTRwt55Ku7PR
-         52DQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785160736; x=1785765536;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=jeVBGviPg2kCaObeNUQhF3Ba7R7LGyRIaSNUXdzPkhk=;
-        b=f7slFWs+H+8vS9bI45iZgnQWKSyfBtntvUvCLmuKdWNQlDRQNxVyOl1FGkc0tG+iD2
-         SktBH5P4KI2i5GGMVC1o4FV0vjObiTsLz/y8AaStIA8CPlbduf6L+zp4wgn7PoKvsEWg
-         RkVkTXhEtUkQPPYwRanyvwsXnAx5jGcjl8tEgUsUyRkBxdIrRGIyZC43u0b0bsmY73fo
-         fmeSgMa53TXYbdw1s3I/r8vZcoJgD2O3VTWZnHDqC6QZWoAAsK4PLBGHGSnpyR+sEO9c
-         u6FvIf8vr/hOmB0M6M4nOorlxaa1WY5QTq7g54zNAcAMFFe4Sp7J3Xkc4XC0Y/JlX3ym
-         aDPQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrxZy0vrv1/yY0337jyl13qwmFzAwvtDCUeg7mBO9DeV0g9zqqdmyA6XOKKyuIQynel8Y5LIKGnyQ==@kvack.org
-X-Gm-Message-State: AOJu0YzA+kuOYwLpKAGWqr5mbaE+R8dyOFp8GKIhsILLcl5R2l7HRhqc
-	16wHhOlXS5QVbc0G9uyw8i1FEgiBTzqfty3DQqVB4LZZ9X+jjdTPEsYXUmAdgYUhU7I=
-X-Gm-Gg: AR+sD12b9gp5/Q2FOWDSC7sa+bK/A+gRQx3u28O0QLCXjFyNDB/XIO7TI3Lt+dXDB20
-	OLwMVx9u9lB/NptuhJl94T/Ogm1PYo6IQVWNtbBL6YrsqTcxFLnekNeXiGh3GyyKGNfKPHm53zF
-	jBK5GI3yFBkBEgzU+x4S1KXB/0haVZzH50hJ/2xTL9Eet9Xc2Q7jFaj4bJlFXxNM066Gs21rED+
-	H5MvgbI0gTX97ljmPWHi1Hmj3zDpdVuvE2ZaJixdEE4toMmuAPz1k7DvUaYlC2SXY2sFbqQTipp
-	Vt+HmD69XjiOMdgBJsmtyiNKusPXRSg5f1mwWFmOOXD1irbBQnUXZztzVRfhKkC3PvkPtvohAnR
-	6XEEmhZxycdpeZ21101+nbBdrm5+GK+eXZoNykSbk57n792b3A8erCijQescwNJMV6bUtlpuaAH
-	V7ErL+t8SozA==
-X-Received: by 2002:a05:600c:5253:b0:495:7016:b875 with SMTP id 5b1f17b1804b1-496b5c7ca38mr104189715e9.13.1785160735634;
-        Mon, 27 Jul 2026 06:58:55 -0700 (PDT)
-Received: from localhost (109-81-83-7.rct.o2.cz. [109.81.83.7])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4957f9ae5c3sm325139165e9.3.2026.07.27.06.58.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jul 2026 06:58:55 -0700 (PDT)
-Date: Mon, 27 Jul 2026 15:58:54 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Guopeng Zhang <guopeng.zhang@linux.dev>
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Guopeng Zhang <zhangguopeng@kylinos.cn>
-Subject: Re: [PATCH] mm: memcg: stop reclaim when a limit update is superseded
-Message-ID: <amdkHvSMj95DUri5@tiehlicka>
-References: <20260724021805.1234583-1-guopeng.zhang@linux.dev>
- <amcT75pLmA0hRUm1@tiehlicka>
- <615d091c-bd3b-4686-817e-5b29756542ff@linux.dev>
+	bh=JlBgQOsYY3Xxvvlq49+FiktWgQqJ7DTK8k5w3thdHts=;
+	b=ATw/Hgpm2z8wQQk8pdlj/ewZb8LFnikurzVrqwPF9V9u/8GCHyOCRrZlE3Z89FFYdYvcKZ
+	NStwpkfivc7zuIpYVHwIDRxSJuB4xvLsw1nWFwRpsmHV0d7CS9la9ou8oWb8/TDhY4Hto+
+	/pXbhvC8Cnny4spIy0k4z0z00qRheXo=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 01CB042A48;
+	Mon, 27 Jul 2026 13:59:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B267B1F000E9;
+	Mon, 27 Jul 2026 13:59:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785160750;
+	bh=JlBgQOsYY3Xxvvlq49+FiktWgQqJ7DTK8k5w3thdHts=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=M9XJbpFCcrxvKse9y3y2Y1ZZfpoc+CfLvrENY7nJExy3diE04HwsOFe7YjjtERAyM
+	 LYWdJRn/NH5sE9nvB1DVLYjJvBAtc+PiZDM0agroCQM5TkSpKlrvmof4LynhSy3xb8
+	 QQKSP2QojAXo0JzkpNcGJUZTQ4KhCeKooQU+fUqRmgwGkoKCEAQmIAsIAnw/7OX++c
+	 3wubRc6iKFxuTuYr/7XjX+hVgyFPpb6wHVWjpyCp0eqdgURgUW1V3Zm1FMAbTA17hv
+	 gVt1es+9l6UtxbVFYO/9bifwKsts3nWs2lRoQhA1g4GgNSPRzmUU9ZwJn8Pk1h7CCj
+	 Dh4C/lawW9LNQ==
+Date: Mon, 27 Jul 2026 14:58:54 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Hongfu Li <hongfu.li@linux.dev>, akpm@linux-foundation.org, 
+	liam@infradead.org, lihongfu@kylinos.cn, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, mhocko@suse.com, rppt@kernel.org, surenb@google.com, 
+	vbabka@kernel.org
+Subject: Re: [PATCH v2 2/2] mm: Extract non-swap page handling to
+ do_non_swap_page()
+Message-ID: <amdi9l29BkppMIit@lucifer>
+References: <10c60511-c841-4bd8-aa5f-0d826b676533@kernel.org>
+ <20260727121047.4140-1-hongfu.li@linux.dev>
+ <cd6652a3-547a-47b9-8907-e98a582a238e@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <615d091c-bd3b-4686-817e-5b29756542ff@linux.dev>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 13773A0006
+In-Reply-To: <cd6652a3-547a-47b9-8907-e98a582a238e@kernel.org>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 3224414000A
+X-Stat-Signature: ifexdgaf7abupwecmjbu1n5i6c8tyznx
 X-Rspam-User: 
-X-Stat-Signature: rehd95bhy85tcqporarxisac1z7k8nwy
-X-HE-Tag: 1785160736-74445
-X-HE-Meta: U2FsdGVkX1/HBYYrqflblp7gQ6F6dbAJ0a118eadiz59guMrw4/Lw5n15AsMvr7/r7yvS3wZ95Gdqs8FmfuwWYLnWPVy3dWbyRKUPDh3sGjINgXHxsm+nvc79aTK6nUhZyxC+m2HxwyoOCcJNq0k1/xLcBKkuneZGvAVB7OCbxiEzBCaJkySpxCML8t9AOiIiwC7cnR+Eb/VhFKiH5i74CI4axp+hJhPDTRk1ZzO7Mo0yMhoaPHNQZ35ldSCsMPCbfnolyJBmMd4IyLdoiCaO+u3QEWWBb40cHjJR51TfZdM2WlhczGzFfmZaHBeTyMK2iqNrN7T7GXQpcLkwXmZl8Ds+Q6yNbZaSKpUhYLQZA5PqFclGcmOUvcPDMvX1bqVkVdD6mvr/SpvyzqrWbvfWgxYEI6z1tURj3zLr8evoNJMzxAspjlVjlEnxoDVnh9emHab4Ns6YlnvbIjg4SNg35vVij2fDcfblEfewWki4oILHJAip2DyYU6de7K3ml+Dr1oCBIT/g62Axwc3yp4xi+ZFJWjzw7OKSCqBXWC0GUqcqfqEq5K7wxjRnaZGs/Hrn1LtY963d8n6GBGelarbx5GPqL28JVM1XHIX2gcRqG0Oo7ojBRWBMkTuO9wOIaT2FcjxuoNVpW8/2b07TgC0sM3m8KDmMgYX6IGabtgp9rdveCIZB2iIIYmrXKC0Fro3HsAglu/WJZ2I0S8Mtf9PlC4gPcKihlQ3DghdUestwrq28+IhMgedHDX2YG87+I5yVkn/sRnoAiY8RPBtn38jHxy+GbsnWCR20I457OT85jdz+TTBUohYoFLIiF29NhvNGuamR+RlswOWVhar2zvtpMJXrG1xLuDyE+JcHXUhmNmeYQu7JDatAam6vjIUrNZkz8ULMsEI2rd2vFbJw3B1R7J9DlhBURklHT8QVh/2lNx6hJtCGIwr4IxjMcMsRMUZqAsrMimBDGZKoQKlJ7a
- ZBCgcXOO
- X6M+VVmB1Xj0MjiwH7kCY0uUHfnu2t5TuOWfy6u4uSfetxFpVfcbxDVuxhYyRjOKBjotQgV45XpASkRda8GoW8/eiF15tbFS1NZ/Q28MytHIHL8Wwt+JOnnWMwVZGoRIOM7CC4QmRxRFeuV7d+7vWp2AnD6WumH/N7xMg2X4Cq+eA/EpWv8qI80vDVoAhu+0onoh8WqUeyNIFYdjoRSOMGcULYwSHrfXGTQEUrC9kvXWEXsm4ftrVzjsaOsuCi67W8ojOVO9ncWvECy7mMMm0UQV8sfwLPQYLqLF3cQ2BSMtTypuHIKN4K4tGff99GWu3tVXq5X13I8hJSnjByqReYlZglqi2ErkFXl6sfpqEQcV0wHPJZ8f9zROBnvsKZTzbYdmM
+X-HE-Tag: 1785160751-110030
+X-HE-Meta: U2FsdGVkX18IL4/J6MzHj9UVKxu6kmSUrzchKpEgEZov7b3oV7URXgouS5/JTsXyrssrPuJ//NAnCaUV91Rqbdo3/BGdbt1ZByA8kuZlPi1S3sUw7qXUjxHy9gxD8cRWntYqh4Q9Wgd6VuQy2qZaQOygaWfeeV8YGdLXgb/sVDW9toMSiOGdcWe6jL1L8tRmUZxJ0M6HH9Kz2zWRvsa/ftqicysBL/shY29GlfH0SuKlwYL57otTNuWo08m+v4GpHTZrT3Hq2gkqGKL4YMs7kvh827wwTYhTV5VkS5T1/p9RsXScDq6Hl2VABUPqm4ogWjNB0cHcrLrUgbR+cdB2tpeByryW+UKEXmzXfm9gV1ecTfRcyc/prY4brOmcrdV/7F6Ei0wiWby5juL8R2c0myrhTbQitHAYDA0Xlx/LzHc5PULgqIAG95/A21EuaZapECXWEE9bIEk9RNg3OVOzjonaVETnrN72vEMUA7bNRaf38Zaq5ogtm/VvcOLjWIBOo2BBUJWIDdrZ3UnNhCKJSSg8KZk9q/SXRDHAWY3ui9vTx0PK7P39zPUIc3qP74WTlY8UlAaZfeVFtHLYpXfFi2frb0i1DnzI0iZIWWnH8bvcwD5XH8YbHZ1IGOkMDdA1TZNuMOEbj4g5w5tUn7EMLOeN5Kp/VCIP311HsbGZLpdCMNO67vV7mDCE44vCvGltw8wtj0MtSUuElKue1LERaTDtLwWI99YroSCx+CpBphmo+8ZVrtMCGsoyPJN3Rz7bcxHN+8iatD3D1wT1YmhnfVl+DsKymRmzvXw0LBzYkj4/7shTkaHIVrFqD6PzcamoMsuXDlgBX6ihY5J0BtNnpELP6MGaOH9Jr5Xh9JpREQFx0qoE834AFD5XHamzF2i632q4z/vxiFaXSxdkz5gxmMMdyRbVtBAmUeGKAYRhPICSI5QKM8vmuq06GZk8nxsDItQtWVQbZWx5IyRANmE
+ H5mTJpvs
+ 2teuhnbL+Cyr2HVF2K4/P7SqfFfVr4kLByzlo1h8wfhIcBrfWC+auD6EOdqB5iSUumduKnHkrqdT9AxXO0YkcjSPGe48U1i9wUaXgKx87U2pOJcWsh0oeAvSdq2+dbWGPPlrx00OBnxMaL0fARzKuQKxgATV+vgd/MRIaY3tdCreSZHNyJge2GNuvuC0lqbihc+sZ6isft9HGOi8B8aEdieReMWnGfddlHu+bHDeBebs1d2ZRVeUSeZnvFwoUHqFFI46oq9OTn48M/LSFIUPAL+eXecs+PUOtoyNjhndvi08ISts=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,69 +95,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 27-07-26 20:59:23, Guopeng Zhang wrote:
-> 
-> 
-> 在 2026/7/27 16:16, Michal Hocko 写道:
-> > On Fri 24-07-26 10:18:05, Guopeng Zhang wrote:
-> >> From: Guopeng Zhang <zhangguopeng@kylinos.cn>
+On Mon, Jul 27, 2026 at 02:16:40PM +0200, David Hildenbrand (Arm) wrote:
+> On 7/27/26 14:10, Hongfu Li wrote:
+> >>>  mm/memory.c | 120 ++++++++++++++++++++++++++++++----------------------
+> >>>  1 file changed, 69 insertions(+), 51 deletions(-)
+> >>>
+> >>> diff --git a/mm/memory.c b/mm/memory.c
+> >>> index ae521baa8c84..50d8e92aef91 100644
+> >>> --- a/mm/memory.c
+> >>> +++ b/mm/memory.c
+> >>> @@ -4815,6 +4815,74 @@ static void check_swap_exclusive(struct folio *folio, swp_entry_t entry,
+> >>>  	} while (--nr_pages);
+> >>>  }
+> >>>
+> >>> +static vm_fault_t do_non_swap_page(struct vm_fault *vmf)
 > >>
-> >> kernfs serializes file operations only per open file, so separate open
-> >> files can update the same memory.high or memory.max file concurrently.
-> >> Both handlers store the new limit before synchronous reclaim, but
-> >> continue to use the writer's local target in the reclaim loop. If another
-> >> writer raises or removes the limit, the first writer can continue
-> >> reclaiming toward a stale target.
+> >> We're handling softleaf entries that are not swap entries.
 > >>
-> >> For memory.max, this can leave the writer looping indefinitely once
-> >> reclaim retries are exhausted. The OOM path sees sufficient margin under
-> >> the current limit and returns true without killing, while the writer
-> >> still compares usage against its stale target and records another OOM
-> >> event.
-> > 
-> > The current behavior is deliberate as described in b6e6edcfa4056.
-> > What is an actual problem you are trying to fix?
-> 
-> Thanks for raising this. I agree that the behavior introduced by
-> b6e6edcfa405 is deliberate while the limit installed by the writer
-> remains current. The problem occurs when that limit is overwritten by a
-> later write through another open file.
+> >> do_nonswap_softleaf() or sth like that would be better than talking about "page"
+> >> if there is not even a page.
+> >>
+> >> But actually it should be the other way around:
+> >>
+> >> do_softleaf_entry() [currently do_swap_page]
+> >>    ... non-swap entries
+> >>    do_swap_entry()
+> >>
+> >> Or sth like that. Then, maybe in the future, we can just move do_swap_entry()
+> >> out of memory.c
+> >>
+> >> So we're factoring the wrong thing out in this patch.
+> >
+> > Thank you very much for the detailed review, your analysis makes perfect sense to me.
+> >
+> > I'm glad to send out v3 shortly for your further review, with
+> > do_non_swap_page renamed to do_nonswap_softleaf.
 >
-> Writer A stores a low memory.max and enters synchronous reclaim. Writer
-> B then restores memory.max to "max". A still compares usage against its
-> local old target, while mem_cgroup_out_of_memory() checks the current
-> memory.max. Since 1378b37d03e8, the current-margin check in
-> mem_cgroup_out_of_memory() sees sufficient margin and returns true
-> without selecting a victim. Once the reclaim retries are exhausted, A
-> therefore loops indefinitely and increments the oom counter in
-> memory.events on every iteration.
-> 
-> I reproduced this with a cgroup holding 128 MiB of anonymous memory and
-> with swapping disabled for the cgroup. Writer A lowered memory.max to
-> 32 MiB. After that value became visible, writer B restored memory.max
-> to "max" through another open file.
+> Read again, that's not what I meant.
 
-Is this trying to replicate any real workload? One would expect that
-writers to limit do some sort of coordination otherwise the exact
-behavior is not really well defined.
+Yeah please do NOT introduce 'nonswap' we already had fun with the nonswap swap
+entry before :)
 
-> On the unpatched kernel, A remained blocked after B's write, and the oom
-> counter in memory.events increased from 37333 to 13512861 during the
-> reproducer's one-second sampling interval. With the patch, the same
-> reproducer observed A return after B superseded A's limit.
-> 
-> The new check does not change the behavior introduced by b6e6edcfa405
-> while the writer's target remains the active limit.  For the indefinite
-> loop described above, 1378b37d03e8 appears to be the more precise
-> Fixes: target for the memory.max hunk. Does that match your reading of
-> the history?
+Quoting David:
 
-Well, to be really honest I am not really convinced this needs fixing.
-And if yes, your patch changes a well established behavior existing
-userspace might already depend on. While your described case doesn't
-look great it doesn't seem really harmful and the looping task is
-killable.
--- 
-Michal Hocko
-SUSE Labs
+	do_softleaf_entry() [currently do_swap_page]
+		... non-swap entries
+		do_swap_entry()
+
+Also, swap entries _are_ softleaf entries.
+
+The whole point of the softleaf change/renaming was to differentiate page
+table entries that are purely there for mapping stuff from the hardware's
+point of view (non-present because nothing is mapped there, present if
+mapping something) vs. something non-present because the entry is
+software-defined (hence SOFT-leaf).
+
+Swap entries are software-defined and thus fall into category.
+
+You can see all of the softleaf types trivially in include/linux/leafops.h
+in enum softleaf_type:
+
+enum softleaf_type {
+	/* Fundamental types. */
+	SOFTLEAF_NONE,
+	SOFTLEAF_SWAP,
+	/* Migration types. */
+	SOFTLEAF_MIGRATION_READ,
+	SOFTLEAF_MIGRATION_READ_EXCLUSIVE,
+	SOFTLEAF_MIGRATION_WRITE,
+	/* Device types. */
+	SOFTLEAF_DEVICE_PRIVATE_READ,
+	SOFTLEAF_DEVICE_PRIVATE_WRITE,
+	SOFTLEAF_DEVICE_EXCLUSIVE,
+	/* H/W posion types. */
+	SOFTLEAF_HWPOISON,
+	/* Marker types. */
+	SOFTLEAF_MARKER,
+};
+
+>
+> --
+> Cheers,
+>
+> David
+
+Cheers, Lorenzo
+
+P.S. I do remember suggesting that you _slow down_ :) we are into the quiet
+period now so let's maybe reduce the pace of series + respins, thanks.
 
