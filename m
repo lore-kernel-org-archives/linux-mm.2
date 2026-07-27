@@ -4,156 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84075C531D0
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 13:16:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3B26C531D0
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 13:19:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7A6E36B00ED; Mon, 27 Jul 2026 09:16:55 -0400 (EDT)
+	id B064E6B00A7; Mon, 27 Jul 2026 09:19:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 77D2B6B00EF; Mon, 27 Jul 2026 09:16:55 -0400 (EDT)
+	id ADDD56B00A9; Mon, 27 Jul 2026 09:19:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 66B996B00F1; Mon, 27 Jul 2026 09:16:55 -0400 (EDT)
+	id 9A69D6B00AA; Mon, 27 Jul 2026 09:19:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 316576B00ED
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 09:16:55 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A26D4A077E
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 13:16:54 +0000 (UTC)
-X-FDA: 85034606748.17.9122170
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 27C3040005
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 13:16:51 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=jx5vvqa7;
-	spf=pass (imf17.hostedemail.com: domain of borntraeger@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=borntraeger@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6932B6B00A7
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 09:19:40 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D9DE014070F
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 13:19:39 +0000 (UTC)
+X-FDA: 85034613678.02.57F9DE1
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 29D991A0006
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 13:19:38 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Cx3OUODS;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of uqbarz@gmail.com designates 209.85.215.182 as permitted sender) smtp.mailfrom=uqbarz@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785158212;
+	s=arc-20220608; t=1785158378;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b7oXRdOHpe5VOc5/RkRpb+TE2mckMDaNGkRwDlKJufE=;
-	b=cp8+GLZi46jpAKguv2pA+jodr0XGKgStn0vJZbjArAyEzWimttCnj38ixIhjy9IyFH08AD
-	qcjiOcAOnrWw2LF1GnZnUO8nxuLRG49YvxJeI/79ZuLTXHF/FWiHAmUgvqNdv1DAugKOwq
-	ehvCK7G1tuxKM5HnW77gZ+ucu0qf9pM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785158212;
-	b=si+Jzx1EBMc4JgAlChfRdvrvMA6pzdEJC6yWi28P/lmrBG5N0C1ejsvnSKD1zqHWipEGQJ
-	zfg7ySB1L/1IgAuiCVkvnES1b7cR6s74uxtSkslzOH92Tfn/R/4CjRw6/EBVs3ADbkuEQo
-	cKUmqDwrfagfKnernuNhikHpZEQEDFo=
+	bh=lEceZ6FrG9kgXwqbPymkbPYYUj1GiTAukTMmaD6Bev0=;
+	b=wU8VXsqvm0Chuus08nh0CTCopT370YqKvx20dQV72wPHLf4HZXATryE6Kabzmz96D/c9Cg
+	f3hALzciHBfW4Mfj65e5ioErACGgcFmppQtJ8qf9opnSrpqeai1mOMBfwzVSPXciOLpDo0
+	0vC4GwUiEqnyCgTQqvHSQ57xjmYLb1w=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=jx5vvqa7;
-	spf=pass (imf17.hostedemail.com: domain of borntraeger@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=borntraeger@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66RAJHo7063305;
-	Mon, 27 Jul 2026 13:16:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=b7oXRd
-	OHpe5VOc5/RkRpb+TE2mckMDaNGkRwDlKJufE=; b=jx5vvqa70E1aq0iHV+J7vi
-	DMDFI+/QwFdABKJJiKKLV0HUfjXtd7EEl2dHsUgDiQRQPnuTDE3XuEiPmMuLmD18
-	2GRPcAEleKt2jXNQPe/AbezY6kZvVoDzs4XxiK1lehC+blqZgdD3UIbxZUkEvUjJ
-	3WQfYttpVUyKTNyxopgsaYB5jPUOISIGQZIv04fqDJF4klZKkaVc7ckRXhswzHqj
-	dYTceBOjIMtXSnfdxf65LV2J+Xu2RHJx2Pswg2JEug8LXVDGkJ5hz3c0ZaeTMjGQ
-	OvYYryKTCVMo3+7DElyaSIN/8oQUjEJqCPkFhPO/XtEJQh9GuC5ASk9/aCO8tB+g
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fmuyc857u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Jul 2026 13:16:41 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66RDBGl8015749;
-	Mon, 27 Jul 2026 13:16:40 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fna5xw7pb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Jul 2026 13:16:40 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66RDGclt36372736
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 27 Jul 2026 13:16:38 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 757932012E;
-	Mon, 27 Jul 2026 12:59:23 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0CF5A2012D;
-	Mon, 27 Jul 2026 12:59:23 +0000 (GMT)
-Received: from [9.224.77.173] (unknown [9.224.77.173])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 27 Jul 2026 12:59:22 +0000 (GMT)
-Message-ID: <46a7fe72-5caa-4593-a2b1-50696a33915d@linux.ibm.com>
-Date: Mon, 27 Jul 2026 14:59:22 +0200
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Cx3OUODS;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of uqbarz@gmail.com designates 209.85.215.182 as permitted sender) smtp.mailfrom=uqbarz@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785158378;
+	b=x7QTdRdJ1GUqtVTpngfIgsvoheXP8vjIqypRy9E37nRnSMhJlKtUOFL9zyBtdtc1b1uMFk
+	5OuNa3wTiFsitveIEyygHM3JjZArA69WiB0B+3znP7RiFR0gc8gIY7Hm3ezBme5ImY+bpI
+	Tva5NxYC341jLue4sVVCijSLgK10sUM=
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-ca12086c06eso2096064a12.0
+        for <linux-mm@kvack.org>; Mon, 27 Jul 2026 06:19:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785158377; x=1785763177; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=lEceZ6FrG9kgXwqbPymkbPYYUj1GiTAukTMmaD6Bev0=;
+        b=Cx3OUODSPH1S+7mqzf2V+XI7JQGUnq6V50diobuML6a6yJx02YdDqEHM+m1yXcb2El
+         CxgGagJXKJBvy8/9EwKmUZXzhuuFhRQBgSkVAsEH+j7SMSajS/nE1vO/TAF61CPQaZfJ
+         tJ3IyjdeN62lN6fxNCRKVsyZBhanTg/TGAtcCucH+jW5OAL8gmXOGbbS/igIFstHgEWv
+         2AEooge/YN6pHSzlVhg/Rv1rjDxllpaRbNPMn0Mafcx3I2ix9NfFzSbZoU5c0dyBnVo8
+         Homnxx+K60n99bYbEiul7IQD1Vba94G5/mLTW2DivTl9LnCd4iVOId6yXV8SiX2M/8bH
+         AGIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785158377; x=1785763177;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=lEceZ6FrG9kgXwqbPymkbPYYUj1GiTAukTMmaD6Bev0=;
+        b=X2W2TpVI4slbim2WO6EGHn9rWJjCU2PvZZudcr4ayuhNDilOL+FckQMrXKmQ9dDhGf
+         cfCEYQhdPT0liJI00G+V4O0Mns0QFAxmMFgJdKNoW4pooCRGAI2ZLIp6YJAn2SYeOn5w
+         6sNoryImRQmc/W4Q++hY2tWBumtWNmYQBN2saQgmgWTTCmlFe8GFl3b0T13ALz/qwJy6
+         b0P3U1KXb2//p8+ei/R60wnuC7JbH1kj9C9pqLB80J8ApOhe6bsRVLrPMZI2FeHFDT5E
+         HtxHn7qerc6x/7WPrsW0kOZhuvmbB0roogY+E6rrzjbQpwMTazHaxfK5/NVXmzXQgN16
+         uBbw==
+X-Gm-Message-State: AOJu0YxutPBWtfCUQQuUgchVnnYdAO8i7JG+duYg9+tJS2+RnMg/Himu
+	FadNMl0XRq4JXVAMHEAcsjE6vzw8pX6NwA3ONGc94+t5zFFBWruIlNXX
+X-Gm-Gg: AR+sD1323dOwMxFxYQggCfFTEzegPCSItk611N+C4NXMNyACzEzEQD4w7MSXtSRoVli
+	wBjRD0Dok+Y/E9/GbkPpqLKhhkUMUCf6se8J6KGM+k6LNAzSeCY6ebrNbcd/X/ot2Z9XiOLsoWq
+	V4/lVS57oHWLY22LrZaz8dJn+rkN0GqWW1C1HKlSqD+OV1J70LWepXzk3IvZm4hecxR5GFqk4Hp
+	4/9J6Gn1VI6/2ZRBttvq6z9oxEsKmXInRMKd6UCU4DOTY9Y84cMKQo+TenIz1jgN9oMvbQAJvef
+	fedaUq3KiRO5nXmDqcxeihIsMew5zsbf9I+X3wsQ0A9mJ1PK2qQeazAfx4OkqweYvdiEBMeqlPJ
+	Nrf16/nkhWXB7HyXdatc0n6nmwZz2QK0qJyqspQsTwRcsIPgYOT3Rmgq65b07gc0RXyhiHQNymA
+	RIOx/ELQwi2efY7mQo8f7P
+X-Received: by 2002:a05:6a20:1602:b0:3c3:a140:9380 with SMTP id adf61e73a8af0-3c67da110cbmr7404589637.16.1785158376963;
+        Mon, 27 Jul 2026 06:19:36 -0700 (PDT)
+Received: from spr1.ipads-lab.se.sjtu.edu.cn ([202.120.40.82])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbbb662329fsm3185355a12.9.2026.07.27.06.19.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Jul 2026 06:19:36 -0700 (PDT)
+From: Hengbin Zhang <uqbarz@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Hengbin Zhang <uqbarz@gmail.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>
+Subject: [RFC PATCH v2] mm/thp: serialize huge-zero folio state transitions
+Date: Mon, 27 Jul 2026 13:18:14 +0000
+Message-Id: <20260727131814.3983064-1-uqbarz@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <177a1767-c782-4210-b377-44c520c74619@kernel.org>
+References: <177a1767-c782-4210-b377-44c520c74619@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH/RFC] btrfs: fix folio lock leak in writepage_delalloc()
- for folios dirtied behind btrfs' back
-To: Qu Wenruo <quwenruo.btrfs@gmx.com>, Boris Burkov <boris@bur.io>
-Cc: Matthew Wilcox <willy@infradead.org>, linux-btrfs@vger.kernel.org,
-        Qu Wenruo <wqu@suse.com>,
-        Linux Memory Management List <linux-mm@kvack.org>,
-        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-        David Sterba <dsterba@suse.com>, Chris Mason <clm@fb.com>,
-        Josef Bacik <josef@toxicpanda.com>, linux-kernel@vger.kernel.org,
-        kvm@vger.kernel.org, linux-s390@vger.kernel.org
-References: <20260721191152.101118-1-borntraeger@linux.ibm.com>
- <20260721191152.101118-2-borntraeger@linux.ibm.com>
- <b226a6e9-fef2-49bd-b17e-9f9b015626c1@gmx.com>
- <83290932-cb8b-4741-bff0-6a7d8df2c637@linux.ibm.com>
- <224d56d2-fcad-41bf-afe3-6f5f5108172a@gmx.com>
- <f12f70e5-d84d-4a9f-ac94-693be4c863ac@linux.ibm.com>
- <amC-J7yzwk4Z5tHW@casper.infradead.org>
- <ad6eebbd-07f8-41ce-b04c-edd50d91a6e3@gmx.com>
- <amICQYTK9Xu4KLtH@casper.infradead.org>
- <d948c88b-dec5-4e29-b30a-3ea368997ceb@gmx.com>
- <20260725062614.GA2792359@zen.localdomain>
- <4f7b99e5-62b6-48ac-a141-24f25af125c1@linux.ibm.com>
- <0b0dc988-61e5-4dd5-b2a1-52699fd4391c@gmx.com>
-Content-Language: en-US
-From: Christian Borntraeger <borntraeger@linux.ibm.com>
-In-Reply-To: <0b0dc988-61e5-4dd5-b2a1-52699fd4391c@gmx.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: NuSZWSAOhfVc2dvC0MiYRod7SzIRoyJx
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI3MDEyNSBTYWx0ZWRfXwoh640Uiz+mp
- 83rkQSVLTNKE2OpsX0YaHTOm9xzP2T4xH97+nqAzgIi4/PineDHLcjKQOaAtIaOrhkvTua2pcYW
- nhlSHydCgRolmb5WguQpHIQTPQofCMFqVTKnj4DYRy1U4qDc+OGWP9hxwtR8MR7s5AGXBnP3pJG
- FUh4AQ1pAIJ0urDW683yo0EFyAQucLWGuS3S6tqKXWh9Y187ncBX0cTbCnKUpkKpCs5hDEsu+9O
- Ynmh090bNsTih2KrtNL6zKc9ugJKrUCSl7RlA7nCs2C0MLN0cfohUQgFypGBFuqCxhxAMk68ko2
- 4eUiAgIcqX23VTbUKn2pzrhZy+c61fswJQldmQH92jDIvJXwKKBEwWXOBRgjJOwGAUmqjdoIbuN
- WkzXFDCUrONoum6nErb/bgQcgDpPaiEHeunqtxVEtWMY2iqUBWUKTXyT/Iz74Lhjj/z8vdK6YPj
- iv41CkgLEPG0p+4TGOA==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI3MDEyNSBTYWx0ZWRfX+ACalN23wlkV
- QsX/aqSUjlDt3TChnTDNxvc+HvAk5PrCTCyN+qiuaK/dld1u90JuO8Qjmm/MhyhGxRFBEOXdMMS
- NXAVT8yIqjgwGF2peYYS751TPMl0Apk=
-X-Authority-Analysis: v=2.4 cv=AZeB2XXG c=1 sm=1 tr=0 ts=6a675a39 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8
- a=NEAV23lmAAAA:8 a=9NPKaJfuwyM--1QCZjYA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: kSJjuLGpzUim82PvK6nuYdzKhqdd369W
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-27_03,2026-07-24_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 priorityscore=1501 phishscore=0 adultscore=0 impostorscore=0
- clxscore=1015 malwarescore=0 suspectscore=0 lowpriorityscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607270125
-X-Stat-Signature: fjgarnqo8p8njb3dtnnxd4u6t55aysx8
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 29D991A0006
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 27C3040005
-X-HE-Tag: 1785158211-972099
-X-HE-Meta: U2FsdGVkX18cYUbWcf5Zj8GBrmzCRu9KGlAZIqV2JieYYM7HJ5tRzsrep2JYoh+yk6hoU+i1YywSWc7KNN/IxmJXgbFPDTf7nXwJHd3T1F67PJ5SNivmxJv2A6EkN4IS6V9g4mskfOiJ7ZHZq2M3rynNTmpJ3O0XOgkcwLEqe1ReJUr9D+yShdKCjHS4Hhb4Yj1vjhB6XGY0gbnAgKhvr8SWsiD/T2Q3elnzFOidD1wSYYN4HYwrx9WutHbRObFUr4nSrFdiQwmCaNLEpo+nrBpm5nxyUGDPCmjpkdpq9q9jqzSHghLbQ6zStL/ZvvrPSMlDgVoIVsBxioKKabjLP1+ndIVb5JYcuYmc6Xkx8EIadYObRZCFwNuXD4mE5X5h/rrIwpQAPvGTajs6GZa5RcdMvOdqFXvvvkwBDTZguvu6fzXf4POm0YGs+NU3t3o5nJYlXoqyvLh1AtimppGmvnaGGC9CSp+dxTs8v9wT2qvzlElC6rxzPQyRwIT3OzLsmgMi1Nam1X6pHxweaJEguMuIwTH8lzZ4vKZ0rx8DCmHRgeLNfjEgsnSK5z1HRAsunEEYVJ+oVvBKBwFjgJLie0zk3LljO7wpviZWGRh2K4UP/NOix9KpjrtDt3NOufdeseZ0uaj1qEoMcjYrzZy/RoAnTKnY4l1jxAYrMjP6Fpg5MVGo8zETMfn2asySdO+uih1ghQwYAryfGHC3GAshtBUC/pG4mqlkDH0H1O53+I77xnr6Yau5tX9YynCyuOCFCtE6EkIeO7eBMufHvOQdMkhXamI6cciZW0fc22CzVPMysgfPGjwrBem6biRuJ+zp/oqpS554t5BGnhYGeTQVBAPxnAP+nqL3rWh9RiHlm3zqeKVl6QIs7xrt90hIGtzF2dRPRaTGYi5NtjFZu1I7gdK8jXL/6cQuI347WzXDUShqXvg5bQhVKdrUgRr9PebDiSkBqsYLowxdTDn94si
- k+t8YZ/U
- rIRZbvai6QaIl1jGL+SSqfL0sVoDKZw0VwLq8OhAqedSWBMnnJwqRsRJ3ZhdIGC6KegnyQN5A4BmxLg1ca8kVdxUm7qvsoZIFTGLkrQea0l/9Os2xJU+86Z/7KbDHtSAZI6fF9K+orUgP4AftLMIwkxpJhPW9P7OX1xDKoqormPcNJEbFAuZhNNfNgC9GQiMHSGFVxuytg3MbJkv1A/t71riiGpK2ZS+Hv9KVXhLX+rzPM0G7yQeqVsESX2oMJy5dI1QLSkrW1tU+STHwAE+mVeSkzvKKOIj2RL9O538eI18i8/lBCFraJdQPaoAXATCF+aID0RO1jFBmQoVmmfBotj2L0qAE+3xGT/PhDKsB4mfUq/XE8JR27UWrtC5F6a0qqQkn5MfFpBSCJzDZ7KdntJPRwtXZh2fL6PAvEunYQsMwdrho9snCyqX/cfSTJFWg2Je4kp5qtm0kEyrgQb1R9PpQnTo+TxIOmJQR
+X-Stat-Signature: bks1ts9azsk3foe5e6ud6e4ybry6mz6k
+X-HE-Tag: 1785158378-123846
+X-HE-Meta: U2FsdGVkX19ajzQ0s1ljp3LIxYPO8FlX7fPd5rzve4lLzWxkGkxBSZTvqPz9yNYgF05qDkQkLh3DT4a9C9t+Fk6DQ5hs4VwlaSfislA2QZSYpiFC+n0DQqCN2Ye2i1UMLif71iY6ISchDJqOIEEjj2+kI6SZSRWqVAH2KBKQuvDEy8831ZNoTxig2Y7dW+1U6jQrwNFvWyeDDM4/dtWZqZ2qmZCwkYeDG1hyC5XjcyHHBndpn3z3f4wS8m2WMLvSVAx35L9qQ8j0YqH6eDo2Ze7lyax8Cnmg+neN4RZ21d5UOC5d47Bnci1f2ePeq9c7Tz4uSBeaqElec7uoKv3up6l8E/VzVui90ID/NIeUZpzFpRgzIXK+HHBF73c4880ntxE4GXfXwdOw/lvwXxpBPAdj/HcmYAwW82WgdKFIkMwgzmuQ1FWcCPdXKdaj96r3LXTD0H5LWESGWT6oztexqox063jCcKcg/M/Ufd7s9tjxhLvkzCIysb7ka8uUi1iMyqLnkEphks6kU6u4FNNhFZ8yNGbYo308P0Ewx94nae8AoWNSvRp/SzQBdYaEOlQ5qNOO9qexYnD7em0Azum2qTWtpHhXiWmHAB73BFoJkw4LnrxPP5GOC4F1+j9SRGvnuPntGDdc1CNFtxz6gpyUSF2ITEanzLBUD4N036x9BSCirvbC1hLFIGCV6jLGo8DUK3+zbqwxXgi9KQZzKIZqJ1ftkh0TcrF87KixVGaHmCKV/8iIL0bqsmZUIfZjDGZgEP8DomBVrneXBuR7/TYhtr/FWNyy99RWuHIAyyyMraXzlBt77EqN430eHHwUhKKv8zrJCkQl29zmUT1sQxmi6WN/esmh0Ofk8DwOyJUNrcSWwyeOyFgxCg6GksU3sZKIt3LoKaYGtpyKsWA8w74Z1L0rZwFFJ0REyLPT3YB4QboI79dRQiDMwFdIboT7pu2neYe1kzAeNRRI6Qy2L7q
+ OvbVzQvs
+ /AeOpoE+71oKxG9xH5RhbkYlyKmm7jDCgiC+9n/0tZ3k+uyLc+L2xHamcrlGEJg1xM0PSJklEEI6SX63IUbezRgM4JohuNeVu2dApRSqstlt7PYBdIybf8Vte8yRpc8CaPDy06Io/J59C2t+bsm4ASXyWKwW3j7n/GKqDkOdrMrk9iXPvuTg1WWKrmtm4wQ4NxjyE3+G2aQMDBsGCTV1OaRSu4CuJ5gafD7IYm91D1EGbXZGfS2n7EQx7DimktJ/Oe7+yOvb5w29F5ICl7d3I5bD07FV2g/QCtSFUwL4LpsHZJb2yA7btTa0PyD9l5kbofHE+TjgYQ40KSqcvOwT5Lc9bfSyBQ7kc2PogGqsNTXHrJg32wGA0OS1ZhQWMCz/gDGH60mpVeS14W8ual9hgbOkuHgBNy6S/J5TXmlhkHNG8u2hiRDtRA1VEtg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,87 +129,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Am 27.07.26 um 10:41 schrieb Qu Wenruo:
-> 
-> 
-> 在 2026/7/27 17:41, Christian Borntraeger 写道:
->> Am 25.07.26 um 08:26 schrieb Boris Burkov:
->>> On Fri, Jul 24, 2026 at 08:10:36AM +0930, Qu Wenruo wrote:
->>>>
->>>>
->>>> 在 2026/7/23 21:30, Matthew Wilcox 写道:
->>>>> On Thu, Jul 23, 2026 at 10:12:27AM +0930, Qu Wenruo wrote:
->>>>>>
->>>>>>
->>>>>> 在 2026/7/22 22:27, Matthew Wilcox 写道:
->>>>>>> On Wed, Jul 22, 2026 at 11:29:36AM +0200, Christian Borntraeger wrote:
->>>>>>>>     *   4. Thread B loops sync_file_range(WRITE|WAIT) on the target file.
->>>>>>>>     *      Whenever a full clean cycle (clear_page_dirty_for_io(),
->>>>>>>>     *      writeback, bits cleared) completes inside thread A's
->>>>>>>>     *      submission->completion window, the completion-time
->>>>>>>>     *      set_page_dirty_lock() hits a *clean* folio: filemap_dirty_folio()
->>>>>>>>     *      sets only the folio flag and the xarray tag - no btrfs subpage
->>>>>>>>     *      dirty bit, no delalloc reservation.  See the 20-year- old comment
->>>>>>>>     *      above bio_set_pages_dirty() in block/bio.c describing exactly
->>>>>>>>     *      this ("other code (eg, flusher threads) could clean the pages").
->>>>>>>
->>>>>>> There's your problem.  filemap_dirty_folio() documents that btrfs is
->>>>>>> doing it wrongly:
->>>>>>>
->>>>>>>     * Filesystems which do not use buffer heads should call this function
->>>>>>>     * from their dirty_folio address space operation.  It ignores the
->>>>>>>     * contents of folio_get_private(), so if the filesystem marks individual
->>>>>>>     * blocks as dirty, the filesystem should handle that itself.
->>>>>>>
->>>>>>> fs/btrfs/inode.c:       .dirty_folio    = filemap_dirty_folio,
->>>>>>>
->>>>>>> so btrfs should have its own btrfs_dirty_folio() which does whatever
->>>>>>> metadata updates it needs to and then call filemap_dirty_folio() to
->>>>>>> take care of the page cache business.  See iomap_dirty_folio() as
->>>>>>> an example, but many other filesystems also do this.
->>>>>>
->>>>>> Thanks a lot for the advice.
->>>>>>
->>>>>> However it looks like the sub-folio dirty block tracking is a little
->>>>>> different between iomap and btrfs.
->>>>>
->>>>> My point is not that "you should do it the exact same way as iomap".
->>>>> Rather "the dirty_folio op is the entry point to tell the filesystem
->>>>> that a folio is being dirtied".
->>>> And since dirty_folio() is not allowed to sleep, we should introduce some
->>>> extra mechanism, e.g. page private 2/checked, to notify the fs that the
->>>> folio is marked dirty without proper preparation.
->>>>
->>>> Then during writeback, detect such folio and do needed preparation for it
->>>> since at writeback we're allowed to sleep.
->>>>
->>>> That sounds feasible, but I haven't seen anyone doing that (including the
->>>> older btrfs cow fixup).
->>>>
->>>> Will explore that path. Thanks a lot again for the dirty_folio() help.
->>>>
->>>> Thanks,
->>>> Qu
->>>
->>> Here is my proposal for a candidate fix. It passes the reproducer in
->>> this thread as well as several more intense reproducers (alluded to but
->>> not yet included)
->>>
->>> https://lore.kernel.org/linux- btrfs/6758d4f27be0bbdb865cee7dd5adc435c969f4a3.1784960646.git.boris@bur.io/T/#u
->> I am willing to give it a try, but that does not seem to apply on 7.2-rc4
->>
-> 
-> The latest version is out:
-> 
-> https://lore.kernel.org/linux-btrfs/9f7a81cdd022d9e3f69d347a17c0a25438ccec14.1785131713.git.boris@bur.io/
-> 
-> And you can apply it on the latest btrfs for-next branch without any conflict:
-> 
-> https://github.com/btrfs/linux.git for-next
-> 
+The nonpersistent huge-zero shrinker clears huge_zero_folio and then
+invalidates huge_zero_pfn. A concurrent fault can publish a replacement
+folio and PFN between those updates, after which the old shrinker
+invalidates the replacement generation's PFN identity.
 
-Ok that seems to work for me avoiding the lockup issues.
+A later partial mprotect() can then misidentify the live special PMD and
+enter the ordinary anonymous THP split path.
 
-I do have another issue (performance) with secure KVM memory on a large btrfs file but I think
-I will report this differently when I have something to tell/show
+A writer-side spinlock keeps huge_zero_folio and huge_zero_pfn updates
+from different generations together. Lockless getters still use the
+refcount fast path. atomic_set_release() publishes an initialized new
+generation before a successful atomic_inc_not_zero() can admit a getter
+on weakly ordered architectures.
+
+The race was reproduced using test-only instrumentation that widens the
+shrinker/allocation window; that instrumentation is not included here.
+
+Suggested-by: David Hildenbrand <david@kernel.org>
+Link: https://lore.kernel.org/r/20260724100509.2300200-1-uqbarz@gmail.com
+Signed-off-by: Hengbin Zhang <uqbarz@gmail.com>
+---
+ mm/huge_memory.c | 36 +++++++++++++++++++++++-------------
+ 1 file changed, 23 insertions(+), 13 deletions(-)
+
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index b5d1e9d4463d..89771a9b282d 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -78,6 +78,7 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
+ static bool split_underused_thp = true;
+ 
+ static atomic_t huge_zero_refcount;
++static DEFINE_SPINLOCK(huge_zero_lock);
+ struct folio *huge_zero_folio __read_mostly;
+ unsigned long huge_zero_pfn __read_mostly = ~0UL;
+ unsigned long huge_anon_orders_always __read_mostly;
+@@ -237,17 +238,19 @@ static bool get_huge_zero_folio(void)
+ 	}
+ 	/* Ensure zero folio won't have large_rmappable flag set. */
+ 	folio_clear_large_rmappable(zero_folio);
+-	preempt_disable();
+-	if (cmpxchg(&huge_zero_folio, NULL, zero_folio)) {
+-		preempt_enable();
++	spin_lock(&huge_zero_lock);
++	if (READ_ONCE(huge_zero_folio)) {
++		spin_unlock(&huge_zero_lock);
+ 		folio_put(zero_folio);
+ 		goto retry;
+ 	}
+ 	WRITE_ONCE(huge_zero_pfn, folio_pfn(zero_folio));
++	WRITE_ONCE(huge_zero_folio, zero_folio);
++
++	/* Publish the identity before admitting lockless getters. */
++	atomic_set_release(&huge_zero_refcount, 2);
++	spin_unlock(&huge_zero_lock);
+ 
+-	/* We take additional reference here. It will be put back by shrinker */
+-	atomic_set(&huge_zero_refcount, 2);
+-	preempt_enable();
+ 	count_vm_event(THP_ZERO_PAGE_ALLOC);
+ 	return true;
+ }
+@@ -297,15 +300,22 @@ static unsigned long shrink_huge_zero_folio_count(struct shrinker *shrink,
+ static unsigned long shrink_huge_zero_folio_scan(struct shrinker *shrink,
+ 						 struct shrink_control *sc)
+ {
+-	if (atomic_cmpxchg(&huge_zero_refcount, 1, 0) == 1) {
+-		struct folio *zero_folio = xchg(&huge_zero_folio, NULL);
+-		BUG_ON(zero_folio == NULL);
+-		WRITE_ONCE(huge_zero_pfn, ~0UL);
+-		folio_put(zero_folio);
+-		return HPAGE_PMD_NR;
++	struct folio *zero_folio;
++
++	spin_lock(&huge_zero_lock);
++	if (atomic_cmpxchg(&huge_zero_refcount, 1, 0) != 1) {
++		spin_unlock(&huge_zero_lock);
++		return 0;
+ 	}
+ 
+-	return 0;
++	zero_folio = READ_ONCE(huge_zero_folio);
++	BUG_ON(zero_folio == NULL);
++	WRITE_ONCE(huge_zero_pfn, ~0UL);
++	WRITE_ONCE(huge_zero_folio, NULL);
++	spin_unlock(&huge_zero_lock);
++
++	folio_put(zero_folio);
++	return HPAGE_PMD_NR;
+ }
+ 
+ static struct shrinker *huge_zero_folio_shrinker;
+-- 
+2.34.1
+
 
