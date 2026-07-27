@@ -4,94 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DAFDCC53209
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 18:11:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A48ADC53209
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 18:12:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E5D806B008A; Mon, 27 Jul 2026 14:11:02 -0400 (EDT)
+	id 8E0DD6B007B; Mon, 27 Jul 2026 14:12:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E340A6B008C; Mon, 27 Jul 2026 14:11:02 -0400 (EDT)
+	id 891936B0093; Mon, 27 Jul 2026 14:12:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D71D56B0093; Mon, 27 Jul 2026 14:11:02 -0400 (EDT)
+	id 780ED6B0095; Mon, 27 Jul 2026 14:12:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B539B6B008A
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 14:11:02 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4C9604016F
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 18:11:02 +0000 (UTC)
-X-FDA: 85035347964.02.BD7AC2C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 92CF910000D
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 18:11:00 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kgz4UnNG;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 41FE76B007B
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 14:12:44 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CE4E48017E
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 18:12:43 +0000 (UTC)
+X-FDA: 85035352206.09.9C754E1
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 39EA314000C
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 18:12:42 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=eDAKI6v3;
+	spf=pass (imf26.hostedemail.com: domain of jakovnovak30@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=jakovnovak30@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785175860;
+	s=arc-20220608; t=1785175962;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=g0FQY8S0fSEGU3Bf2IiWPQIBoC5M7eurHC+TOVfMyOw=;
-	b=aFTC3tuIv7/HuGeCX+IcMDry/2hvy9IiRGu8kiH91gr7KDBhMCjNNBoaQ8BUfBXebX6cIP
-	8EwwsPnYT3pVEP4IfZkmwvNhpPS3WxpLyzY9bAec4E00UFbT86z7SeGAl2DArQ0VYBJC0E
-	eJo+o02rO24nDr3AfX/9j35iVhPWDkI=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=3wYLZ7xaCueJ0HKXGOYqw27/ElSiF4nHj9CgFbPY+D4=;
+	b=7FZoSU0C5mJ/FMB42Gcm7ddiPFEjPb29TglaFaiM4ASHLYMw8sHqcb0pqHcJMc/e+O8u18
+	iZLd9+FMnjbwrr37xYxCmRdyG0nzrdBNi4oCgezx17FYX7EqpJKQierXFpfSU9m2jndXPv
+	TIn8r5zulofdbG18PMQ4vAkSXTNPQrw=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kgz4UnNG;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=eDAKI6v3;
+	spf=pass (imf26.hostedemail.com: domain of jakovnovak30@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=jakovnovak30@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785175860;
-	b=wn+1YPWoMAxEb8qW+bR3ffd6gCNoIm2/6mQhl6kSzCQlySC1sIf0fgNppY6fNjiTnuexvO
-	t35Ap2E3yIAZ24NXfz3ObDNmBRx7bA1XPoYF+1lYzMcs/PCH6zo7+5PH3p2Eo3QKcMyq3V
-	NLcyYQX09KjRAdmUGWrLarBPE9JWe00=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BEBEF41B09;
-	Mon, 27 Jul 2026 18:10:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D66F31F000E9;
-	Mon, 27 Jul 2026 18:10:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785175859;
-	bh=g0FQY8S0fSEGU3Bf2IiWPQIBoC5M7eurHC+TOVfMyOw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=kgz4UnNGnMDJbFr07Zh72UjZH37rBDSu3pDdHnjvST3PtVaglZ0RbYr2PHFzYrk1h
-	 SlbBhrfc+G7FubA9BTHNccBjGkZYD68jK21POgOuVbCGoLRXfzOE2sejZXtze6kgHq
-	 T3l/wrQnD/GLAcSLqu65sdTuJ+8KnwRvmR814fqzWsIj/TX/0cTU38uIRgc9Dqs7Yn
-	 UngsKRJyTYLv0iK0n/lb6V90BPCTbORtKT/UKHKdH4IW7dJByUvCbnR3+CKmIU8q8p
-	 ChpTyC/A8dDursKm7O7xufMBxn1tPVD/Ibp0kd0JYbTpYRm7qo0wCg6eFnYS8OPN/b
-	 fhkFfog7mvWkg==
-Date: Mon, 27 Jul 2026 19:10:42 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Hengbin Zhang <uqbarz@gmail.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>
-Subject: Re: [RFC PATCH v3] mm/thp: serialize huge-zero folio state
- transitions
-Message-ID: <amee2qZ5HqwoLug3@lucifer>
-References: <4146d4f5-c8fb-42cf-9dc8-a9d4c26055da@kernel.org>
- <20260727154001.4102341-1-uqbarz@gmail.com>
- <b915b058-f5b1-423a-a835-5891e7997080@kernel.org>
- <ameC4IWCOVBGlXZu@lucifer>
+	t=1785175962;
+	b=DMZhPI+UGpFt/9mx2MHU8E6ok8n1PGZmaSob3r4TS9XyhoUGvJHkVdBzsoGJOBtznnW8CS
+	mFGXDcMUDxXhOep+WDj+v4tyYaqKsB/wel/Y0T7Imk4cNJa5gmlX0cnkinQY2WFAoIfAvW
+	dUVHvSG+pWvWZMjTqst8gQk8hU0l0E0=
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-495757ccbc1so28009645e9.2
+        for <linux-mm@kvack.org>; Mon, 27 Jul 2026 11:12:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785175961; x=1785780761; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=3wYLZ7xaCueJ0HKXGOYqw27/ElSiF4nHj9CgFbPY+D4=;
+        b=eDAKI6v3IOFhEU22y5ExoFbsJjpD1ayUAWXj9etM59DoFmCIo/2SrrzrqcmTRrIIkL
+         2MdmUtMD/fwgZ/ThANrBnUhichJiGVBggxTkOp7XEjPk4ddxGgEk+99Qshu090Camm0t
+         /sqJKxSSKU1wrYEtxeGv20uD7+jUeszQQDjrVml7v0wd2kutSdXQgg5diRpSkOnWyDOm
+         sxV/JJ5+fpAug1Tp0V25sZh3tw65P/Sdgj5nv7VW99RFoWR3+kCTu6kJgg0Fpzvpnhy+
+         lQKNRm1M3+q3YLPrgcvnLpv34ymv7LT9jtgWDOTg/RV3r6s3kt9pza7DkWs7laApGEn3
+         h7nA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785175961; x=1785780761;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=3wYLZ7xaCueJ0HKXGOYqw27/ElSiF4nHj9CgFbPY+D4=;
+        b=VoMOGTGbIino/UHdOjbxiqXvPoAxcDcRgN2w5wRGsUlGAB5tbKGBkhvLm2Rv6X8H2i
+         Vuec0t7lPKbRPNRG6qxe6B1dAeh89ThydPzGDXsY8tk9VJz+kCxWTDyQD07knzoxEdh0
+         RvuZchUUMm2Rj2rgOeOQbw6d0kPGXtMUMTW4sxNap+rURZlaenWQjnIliOUildzofnYr
+         c2fLaFFSmHn4COCemAmDCWm6YyRTWSgIz0J+6QISLwUQ7kK4XNAImwAZ2qclyHuMNaqv
+         aZ6rp3KnikxOy2PY9AdLZYp3JIN8jwrFTTgPKyXhvzx5YcUuohEmkHPJbs8cYbfFFCFR
+         yJcw==
+X-Gm-Message-State: AOJu0YxlZCdKDASNA/eUP6FTF7bTAtavcdgR/b62vM3mwz3J6y7J60if
+	XuQn2xScKHt+d4Vre14r0X1kqoe8L5rwrGAqN/in4GZgI7Ow0cziffzj9qZ3x9Q=
+X-Gm-Gg: AR+sD13u8ZPX/oQm7QH+XH0VLJJWvXfNx3dbFqVEqkROt/+tdDKagj6X7NgjJwAHNw+
+	4YBSE+OpZU2B6j30mr9HNIAInB1aCuX4l02oIP/IP4fAIReIUc7T4LfuIEUlfgfs8MncOFZKyXq
+	nSPVwZTy4xo5kLcuLjZF6kTbLNc9mz7Az8zVCw1XCrm61C5upzVU7LZR/y+co6dkHqzFcnH8hUJ
+	GkrgXLenDB97TdMB9PfFbgVCi+WS/Mk3UrSlG0XXPjLpPBPjALqm5pja/0ZqIxfHEtLo6vtnHi3
+	Q5AZ3b+93Do8yE079JksCJzAeR/tfytZBxLaSPdUeR9lfG+x9wiyZRWQpAGlxo38dVITNZ6Z56n
+	lQvSGrrc7QBmc1LbQ9PEJyDU3dILEAXXc0qdgtGX4P+BIrGavuKs70Pe7cm4n+7XRXJPMxgjViU
+	sfdN0OYGSBc/Q+V/6vheVpC6iL1FD5+6VodWa1kD9jznjhtMeCB5G+6tXK+4OcE51OI00IE+3K5
+	tICe4Tf+Pb21ZJa2/KkSm3SOspe85UM
+X-Received: by 2002:a05:600c:a4f:b0:493:d741:5d72 with SMTP id 5b1f17b1804b1-496b57116e2mr151773555e9.38.1785175960626;
+        Mon, 27 Jul 2026 11:12:40 -0700 (PDT)
+Received: from archtop.localdomain (92-242-248-94.broadband.mtnet.hr. [92.242.248.94])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f85c67339sm53643668f8f.31.2026.07.27.11.12.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Jul 2026 11:12:40 -0700 (PDT)
+From: Jakov Novak <jakovnovak30@gmail.com>
+To: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>
+Cc: Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"\\  Liam R . Howlett \\ " <liam@infradead.org>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>,
+	linux-kernel-mentees@lists.linux.dev,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Jakov Novak <jakovnovak30@gmail.com>
+Subject: [PATCH] mm/khugepaged: replace mutex_lock/mutex_unlock usage with guard macro
+Date: Mon, 27 Jul 2026 20:11:36 +0200
+Message-ID: <20260727181136.2542-1-jakovnovak30@gmail.com>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ameC4IWCOVBGlXZu@lucifer>
-X-Rspamd-Queue-Id: 92CF910000D
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: fwsucpgirafmjujebwg9ym37jemxbhrc
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1785175860-387787
-X-HE-Meta: U2FsdGVkX1+uvVfHVAIt9jUNSmoX8StNvRvQFSpv+3hL8R7WLMKg79KStULuJnKNzukIpp2I/JHskj8AC2ns+KMbtND1CR/pQyGSo4fDx2VeOHNmty6CA7hJscAHm1tsXWnxkr47gwgPe0/icQ7cVszl9XYiIHMfzcH5IaJnwJdLa2zjkFmYuviG0aGoi7+bEQgYg+1doEak3OrqcW8Icgqguw5OeVt21RoiqzNGE9He4rDrTtTwGGv2ZX/PrwRQeYn7gqw5vJAl+y4xLuLjDgsBtXxWhL6n0H6rJXnB9gfwAF7YLLBVRBuwFNQ7+5mHudshmucCX5FfQDhT3N017PWCsw35fn/XFuJ0/q1huE6y/CcxY1djZ0FIClP/3MyKs8QeSHny9jUNPVHq1XXQLtHUeuJyE2yOn8zC3Jl21C+je5+PvMYEstyaPnbwdXVJmIbVHTDVwzjm+ww1doOLdvZvFHGxtg/2XH6bK6YlmWMDLmDSDadgaUd2FFwojRReuIp+vHEQXpRmUKxzrJWtevt4+aE+ggq41ERwkVzmqt0IJ2qCYfKrxTI2yAD3+IHw8mrd1fDGIfcprZleAJ3yIdmvggBCi/mnGyhoVJkb+n77Urvvr7Z5Qu78SlZoYLVKL0VSBhbK5oOhDlD4ak6O7nYQV9QrGgWiXbdgXP/Mqh2tgSxfDndd5K/GSGiN5yntzTi9FXAPHvDYPbC535d/XVNmplX/rZnFBr7cHozIJA/HFUYA9F5mW4pHe3TuCaJAmCpdsDfAYYcFC6kKJUJWpU5N2ks0ZUFFR2uMV4EZgOqmwtrNPdcRcWGhVi1Bc3Q72pJKVkAdZDDchy/7x+hMIdJTaltW/0ghexpwWPUFeI7+Pdtj2dwLiCoXY1oQxLmGX5S5BmOCbJ7nEqRXUcZUdd198V/IGqSllzeUDPwkuXX0NwgWwMFODzz2nUYPJ4jWApKlqVvR2om3kdrGw+e
- H7HpDHpO
- cmDvSKT41ZuDCIk6kFM6xRSbNTrPL3LHZ8q/vw4RcFuXKo0iN3cwzGD1GJfUcdetUC9+6167TZLoffT6Lo0KhbxXl0Kc51+uCKbo2XwGd4o5bqqBsOZkLuFyxGekFYvHWLORIUq9AdHPmEH9TzNSKj07e6Dfs0jRyLUYl86zIpPOpFZmYAWsrXr20GJbfU3nEb6sqzsEayksu7yImFgGUaCirDcQhkYc1Emo0XxMGq1cvcQZF3+8ntqHq3QTg3wEGLNsklqpZiTj01mA0cU64kmy4Ug==
+X-Rspamd-Queue-Id: 39EA314000C
+X-Rspamd-Server: rspam01
+X-Stat-Signature: 8yexfrtyruqc5tonnndx8o9ac3qs57x6
+X-HE-Tag: 1785175962-220655
+X-HE-Meta: U2FsdGVkX1/c7LWxgcVmfm2IRmK08W4K3oXXY5OVnT9PfTdJhOYwNdzQnJ0svyd6hZFJ4+SIXu+j3o6nlft11+pOOux3saUuhIeaNYxEgL9pFsosPkmbegJzgwNwsXoqrx8w6n64e476DlPrNKO1ZYfEYRQA0fcXbXzd1u5kY/zgMBkxRqxi6BdJ11hXGFnqgkfXgWGnRBEJVZbyAFtYD3uQG/lVBgL2XXisNISFzbyxmbgD7dd3ZylYMRZbSKt3uxXQo9sn23SGSMAoH92pEdL7xW1W+qCVFxiYEm/nwE0fyytvxP7PVfZzRVuHStZGW+BxpL/ha8+mV9fEN4Gqr9cbEZcnPlUg2x7Ve1aQKfuNwimAn3+XugpsJId5iyRWvom0l6wISFNifrwXawajglSnZobBYtbOFrpt59A+yoO6HLh0lZ3D/j1E9CnqjzpB9ilbUykuvZFKgnASdd2YVlezI8L726OfwveAFhru5vQxzZ1hIpwNugCWPtFBtL/sujrVelwMzGVbUB9DU+avkAtY0Iy+mDrJyGmw6cSLNfuMTEAe0wOAw6b6aDtEolF/FG5Mif+XTEbIA/Uvoxt0KRNRD+5M+5CUYMDmFRYVXP89QI1ntYAxL8hXI77VKP1io9uA/JQp88SXiKRj/J5jMuQVpR19PpuZrLUTt1Csuov0tN4Vy/wxo/S66Ide4HYX4iMijnXtaet2q1r48nvLIX8bcXv+EUETJyCu3ZUN1ZUwnnsC3Fu5JtmkVdJWVX/4JDOPBztrD5jSgK8pOCEaEX/6qIBJTmCL1/GXmOsydf7ZUQZqVzaICEWPOJdsCuMse/YK2/Ohv6ohEuh2fd26VuenK/2vay23W3KJJRD3OPWv8015xtW3eQoHDQTvt3k1iAjPEC81wc1S2XpP61Vpqm2P8ig+40NWhBrobB9W0LJizK/hlpca4St6CbzbIrqNQdEjtWxEcTT+v7m55EA
+ jx+CgERL
+ sSGWN2iI806A0MltevP8Wqc2FjbChhwfAQXRplJKUA95/2NpX+i5+Gglq+FT6e5p/KAf9bxUIBsOkRLiQQlickKUw0y56oPHVWGRxg8iwsOLRQRsSGJX9ukKCsS0Qf2jAeC6DTQUsAQN8KE1Y1CAnscLlc7GrL0wljHwIdz6TXoBobGridPqmSQqhl4ed4LhyKB8nToNq46RMobI1qL+ZFix2Nulj8+IXMLDilIH3GN0gbzMm0W8YoKzKB4a+z3ozQwN3HWCitj+vu0sjSHksJa2MZfkZnLO6p+Yc9DpPi8z/UNpHDwX/1vUi1PBr7jvbM645gQVEdlKdRnKHG5qi6Avv3ut0FRZH3jUBu60kfB36aBWFrlmGyIanuENhAurERDBv+wx78wEJZJfLI7HHFgsd43TVpqxaAtTiuUxTYNd+zVQGX38QiO6wJ+w49LnYkzhy4QXLmeFrIAw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,20 +128,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 27, 2026 at 07:09:10PM +0100, Lorenzo Stoakes (ARM) wrote:
+Currently, khugepaged locks the khugepaged_mutex in two functions:
+start_stop_khugepaged and khugepaged_min_free_kbytes_update. Remove
+mutex_lock/mutex_unlock usage in these functions and replace it with the
+guard macro. This makes the code more readable (removing a goto statement)
+and makes it harder to introduce bugs in the future.
+No functional changes introduced.
 
-> Overall I am not confident you understand this so as per above I think
+Signed-off-by: Jakov Novak <jakovnovak30@gmail.com>
+---
+ mm/khugepaged.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-Trailing sentence... tired :) delete 'so as per...'
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 617bca76db49..c583867f2e7a 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -3113,7 +3113,7 @@ int start_stop_khugepaged(void)
+ {
+ 	int err = 0;
+ 
+-	mutex_lock(&khugepaged_mutex);
++	guard(mutex)(&khugepaged_mutex);
+ 	if (hugepage_enabled()) {
+ 		if (!khugepaged_thread)
+ 			khugepaged_thread = kthread_run(khugepaged, NULL,
+@@ -3122,7 +3122,7 @@ int start_stop_khugepaged(void)
+ 			pr_err("khugepaged: kthread_run(khugepaged) failed\n");
+ 			err = PTR_ERR(khugepaged_thread);
+ 			khugepaged_thread = NULL;
+-			goto fail;
++			return err;
+ 		}
+ 
+ 		if (!list_empty(&khugepaged_scan.mm_head))
+@@ -3132,17 +3132,14 @@ int start_stop_khugepaged(void)
+ 		khugepaged_thread = NULL;
+ 	}
+ 	set_recommended_min_free_kbytes();
+-fail:
+-	mutex_unlock(&khugepaged_mutex);
+ 	return err;
+ }
+ 
+ void khugepaged_min_free_kbytes_update(void)
+ {
+-	mutex_lock(&khugepaged_mutex);
++	guard(mutex)(&khugepaged_mutex);
+ 	if (hugepage_enabled() && khugepaged_thread)
+ 		set_recommended_min_free_kbytes();
+-	mutex_unlock(&khugepaged_mutex);
+ }
+ 
+ bool current_is_khugepaged(void)
+-- 
+2.55.0
 
->
-> > >
-> > > Suggested-by: David Hildenbrand <david@kernel.org>
->
-> Should be a S-o-b and David should handle this.
-
-Oops left this in by mistake (tired, late in UK :) this was when I was hoping I
-could get David to handle it :P
-
-Cheers, Lorenzo
 
