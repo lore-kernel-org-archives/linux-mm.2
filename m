@@ -4,140 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52B19C531C9
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 16:09:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3692C531D0
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 16:09:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 58BF56B0088; Mon, 27 Jul 2026 12:09:03 -0400 (EDT)
+	id 9AB876B008C; Mon, 27 Jul 2026 12:09:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 53BD56B008A; Mon, 27 Jul 2026 12:09:03 -0400 (EDT)
+	id 9838F6B0093; Mon, 27 Jul 2026 12:09:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 42DF36B008C; Mon, 27 Jul 2026 12:09:03 -0400 (EDT)
+	id 872956B0095; Mon, 27 Jul 2026 12:09:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0F6526B0088
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:09:03 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8DDA88010E
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:09:02 +0000 (UTC)
-X-FDA: 85035040524.01.ED402A5
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 572CA6B008C
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:09:47 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C1D34400B0
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:09:46 +0000 (UTC)
+X-FDA: 85035042372.08.E4A23BA
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id AFC1C80002
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:09:00 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PW8tOqTC;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf01.hostedemail.com (Postfix) with ESMTP id D2E9340012
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:09:44 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KimNyRM4;
+	spf=pass (imf01.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785168540;
+	s=arc-20220608; t=1785168585;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z0LvAO0ah3SsYMLwJ96GBLTr20qyrgX9+ER60RqNQcE=;
-	b=iTpUWua+NrpkzgHPsqochlt+gHDMoxKnD/Z4ndtM9S024D3Hl7yYN2fgxNWY1ZfmCksDQm
-	rIoQXyIiHkbE0P/+f915dNfFh72/Ui0K34ZXHcmmSTKcW/e1H0it2CcoCguwpdMSI+YS3L
-	OUp/zdktCy7XocXh45z1uTdaE1vumxM=
+	bh=R8hZvw5BCIzYKAyqtxUyPN3SrUFKcu2k1vmkZ0mHjj4=;
+	b=Zp+kI2sBiButDGtWEBweMd7INt5QRYKfMXEGegJNUo5HDMmoEEglLA9iUuNd6MnAv1yR03
+	NrVrRq7Wxxf5GteC2y/Ymm9r0TH+xjlHso0b/4rt3mwqMR3Njm1l6eDuTMX43zHrR+ZwKa
+	PAabfhOzXPTkjRHIlf7jtKjpO7S4HlU=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PW8tOqTC;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KimNyRM4;
+	spf=pass (imf01.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785168540;
-	b=dAANrWzW4HzxXH/LmrQHNd2SmJCyG2Xjzw7Gdli5M2257AtbveinGI3mGxCC///mjnyqiB
-	fQvTaylXuJ8Bqy9beG3E7jfoR2+Fnx1yUom/o5TjJpyhW7er8cILre8SmiP3ht/ujrDMcP
-	A8S997uBiXEMggrTfK6SYOshBEU+9lc=
+	t=1785168585;
+	b=eMbUhWWJKayMrtnDfy7X7fe/13oM4NH0En0ASi/MGe6TkyCPIk0gXHJSD0TsvqlYFzc2B+
+	NUQWxQ6f3q5GVlaKZC6P4WISHUfJRTStru1tRrmhqB2uh5PdY+PSZzJ+HVUiAvoJEPvNLd
+	h0lOCtFHeX11g1lrwVvT0PCA2+NXpz0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CBC1D43AD0;
-	Mon, 27 Jul 2026 16:08:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5839B1F000E9;
-	Mon, 27 Jul 2026 16:08:55 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1FA83405B7
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:09:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00D401F00A3E
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:09:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785168539;
-	bh=Z0LvAO0ah3SsYMLwJ96GBLTr20qyrgX9+ER60RqNQcE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=PW8tOqTCRonmn5YwYODzuh7/6xiFucn+teoQBtbAYeXY5H5wOcR0RyQWihpjbgu2X
-	 VWDI4A9oLfUyWlLWgGtLSQ39uZj4pfA8u10n7xpxukiQ2te96QACxV18Mbzse7Q0CI
-	 HAttNqykj4lylZ6tBeoaTs8nr/q7jS1FtBMUO0OiAAXw2GxniwrpLFhZdI++XKXFtC
-	 25Xm1u3f+yu6KJvMQTw6S9/N4oTnO0QeWBCEA83At62zNclFHnMhzfg0nSnf5A8Mrp
-	 SVFWfeRg57CU3vYwBht9DmU2SIvS4zsuFpCMSPTpYN0dTPl+ZEhIKVseuWvEGKNeUO
-	 enSJbfZh3bObg==
-Message-ID: <b915b058-f5b1-423a-a835-5891e7997080@kernel.org>
-Date: Mon, 27 Jul 2026 18:08:53 +0200
+	s=k20260515; t=1785168584;
+	bh=R8hZvw5BCIzYKAyqtxUyPN3SrUFKcu2k1vmkZ0mHjj4=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=KimNyRM4V01hErM9GKKu8BjFrbkCyerEplyrVhwh71DAvjlsj1exGYFdnO4+aer0s
+	 BCpe5emTNdGn0/HPJ02ZxbLRMClZweJIshKBn8r/Cg+vZa/4+RpTbvCahojfvTEqN/
+	 Qm9qPr/OQOdFEFONjthDmX/xHcpFlh4z0Sq3+IjoOjpWnqToTRvm9GNngplWdtAO17
+	 s1NKLjhLGvomj6QSbMZvVUZenvF0w9LjWvz+2ctRwLVMmwkPbiuS2jfWclszCqKLWM
+	 oRmLsfviKzqHhkpG9ezr7C6c0atnfU3YmOKFRzWaNMLwrPo8XXccIb/UUWI/i/rI72
+	 VOAs3LOlQyOwA==
+Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-66893db7bccso3720917d50.1
+        for <linux-mm@kvack.org>; Mon, 27 Jul 2026 09:09:43 -0700 (PDT)
+X-Gm-Message-State: AOJu0YwIHvvPe2HSmXuZqGGDh/l3tPeDZ6iaLVUqdDbXeEExFS9n5Llq
+	7+4Gvhg3oV4GHE6R4u99k8rgdTm2VRqIk8+PkmpKzsiFiV9/TMK/YIWu+trQMHh8NhorxMFtorL
+	t9eTtsIMQHcvAPB9fLr/GAF5plK9rjGKDXVanzh0xag==
+X-Received: by 2002:a05:690e:69b:b0:668:99c7:2ba8 with SMTP id
+ 956f58d0204a3-668c7afeae4mr2150295d50.62.1785168583148; Mon, 27 Jul 2026
+ 09:09:43 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v3] mm/thp: serialize huge-zero folio state
- transitions
-To: Hengbin Zhang <uqbarz@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>
-References: <4146d4f5-c8fb-42cf-9dc8-a9d4c26055da@kernel.org>
- <20260727154001.4102341-1-uqbarz@gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260727154001.4102341-1-uqbarz@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: AFC1C80002
+References: <20260727135029.1059441-1-baoquan.he@linux.dev>
+ <20260727140503.1060918-1-baoquan.he@linux.dev> <20260727140503.1060918-2-baoquan.he@linux.dev>
+In-Reply-To: <20260727140503.1060918-2-baoquan.he@linux.dev>
+From: Chris Li <chrisl@kernel.org>
+Date: Mon, 27 Jul 2026 09:09:30 -0700
+X-Gmail-Original-Message-ID: <CACePvbXUPy+scSsGW3Peh3zMJYDyN5NrLOcT8j8vufXqMKxJbA@mail.gmail.com>
+X-Gm-Features: AUfX_mzKPpvM8hyWX1BpQ5Qne-tj_INPKAliVfzs7ZD9HUn6eE4NOmSn3IGAkWQ
+Message-ID: <CACePvbXUPy+scSsGW3Peh3zMJYDyN5NrLOcT8j8vufXqMKxJbA@mail.gmail.com>
+Subject: Re: [RFC PATCH 03/11] mm, swap: add xswap cluster grow via VM_SPARSE vmalloc
+To: Baoquan He <baoquan.he@linux.dev>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, nphamcs@gmail.com, 
+	kasong@tencent.com, baohua@kernel.org, youngjun.park@lge.com, 
+	hannes@cmpxchg.org, yosry@kernel.org, david@kernel.org, 
+	shikemeng@huaweicloud.com, chengming.zhou@linux.dev, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: gt4u5uqnmebdfikoekpuwi5yknbda3f1
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1785168540-577800
-X-HE-Meta: U2FsdGVkX1/RfLr/tcC7lkp54XpCoFB8ZBPm/Ahz9Z8VzZ7F1kFb2kj24k4qAvkM35LzA+iBDVxUs6ut287+I9CYeLBoBylJ/oHcek+t4B2qigXmOTgQOvhzyRbGvv0AMFYxCmF+i6yGDXxTMmc3CoHWBjqa7tauJ/y2d81WqjeR/2BAEG2QMqcUaw3yb4Fwqp4GsEzNjN9FjWN7NHgKB39Y9kZ3rq9cqJjfubIMEibOZTQ14cDMzEsiJZwYcNm1PkL9420jRzMndPb7f18PapEnWWxX0xWzkman4orw13okp5ZFsyh4jqEgko3u7zC6pz8hvOXtXje6IQKk9rc6rYvGQwyeQTM4haKhr4r9TxycJhsuHLsuOSsNeDYfjLgf6StuxU2IOpmN25h5nRTcDOobc77N+M9nOcHtI0+92ON6kJnAu9sorNkoQzpHYXHDBNzct77bZfkQlBEtVuBmLFqsbka5njClwrlA/oSkvseprc4TAGPRk7shJby8pm1Ewg9NQFkEbQQ2tJzvI7ak1RQzTu8rUZy2qP//vDDyqea5KcboPstiZgBUisShLp7htbzPUCV05zP+mvMokqhtBmSOK44SLjCHGXJ2eZE+dZPAnatw2EIvMJjD9El2REKfs25i6mDUmr3yjatf019UA7KvAqNxc6iSG/DaKwbvWzDzYk3IqAnmZNuTWDC9X5eMplnO9weMpxQJT1/k7erGhZvuERRD8jO0DFtvclpzeDwmHsrD1fPmuVraUgOGpub2uXMV8bowNb/6ez0JGaf9fkWrWhwDGss2QqL3DWa5R8ACkkM4HVSLqcerT4DQsorpWp54cE+JZUPUV3MJGGRqcTpAEAoO6pgRFZCnjLLxzouNv31zX/fH2l8Bh2K6vQ8ALNUFyh4rWqkEFJWqlwb1XUujPfx7arGqmhh1cwTA4RMTc+LdAxQBz+79bKkPRuIB/RTd79tZzkj00VrHBDn
- 9M+a7Vvv
- CDM6DzXo7PzykCwVAOTY1VvLCUWbtoBIu6AiNPR0j9LFBOJgCjKzPoc4RTw4xoyQ8K59RwxxgHjxujLAhSju30URU9KJ+bHABNfJfMYZsyDIFtrTegC1StGEpzp3TTJkJPLs6bVbGv/XAi6Sr2ithmAoL0AXi7Z89zGx3P/dZebduddvJILvFq7bcr6S20TU8FdHjkBhXpa3wMZgCmn+28aTtkOB31yhVsPbHYdSdYY2ODRb6Q0ntgmVy3zpdFBlLRdov8ey9BznY+I0thWDydoqRDD/wxm1racMkdrXJvj0BGBaXbiAY64Rc0w==
+X-Rspamd-Queue-Id: D2E9340012
+X-Rspamd-Server: rspam01
+X-Stat-Signature: usnzro7xc5h6ut8nrugptr56arj8nu7b
+X-HE-Tag: 1785168584-501397
+X-HE-Meta: U2FsdGVkX18LSaxKvuaIxmAnERPWPEU2uDZARn6aN8TP3FlvFDI9W/5hzWT4cWwwIP179oRa5R5MlFzH2wPjynvAJNDZZhuQXVJxkVJs579XGl19zcDKrvlW8c44CRDNrADqLo5Yh0uUzAmHY2tryeeeygT1v7EZBh5ok/D4WGEnP9cNDOafONDesQNMfeI9WYWfUdGPG44+EPx58PUtfvIGghiK/3oUFavo0EUJHNhhpx+Xf7oG5fqqTqyAx4y8JVLy+ae52o9WI8tUlAPAXGej1XCqKUlXndvuogWPVM2CK+tMr5zUqhOgFWV40kplZb8U9+A/RTjllgl+rIpJOvO06t0SzD2zVIOMz+weL/yx+VLMCCB/E4SnqsG+kTjSBAmqx9QO7HgJkGRPePcEqwytz0LfPtl6I5rQBK2yE4gI4RW+P68ME8fLdn/1U8w9QaWoEst3LpEucPVhB4NOL4iOC8FFj4wwj+6U/LfOswfwHLmjHXH8PhDKlxNXdDF5SbJvrQ3zd9YY8CQyj9vOrtLx2wTxaYlqjyKQZ0w6k3Dm93hmxoWlZtnwc0f9VzmsEDJ8CKKeacaTcIDOAY/ENIW+ohU1utiJeRZSvaHZDYimGBuF28ZWRdKuf6t+YStoWYugyTlJpFkSwlmXD40TkFnYB84rB870+DNtQ4en1Yq8txSeNHABiW/AQPBNpOS4SHdltBXBkAP4kgG/WChVLdYbMxk8aHdgfowhGJV7iPki7KexezBg8q2cL9m0K7b10fyIgovbdcJy2HPb5oa2fiI3Ed5xEI+HMLCC2ciRKh4CEQjvDbRnzYlBbeLbdRreoQ9V44l8pMaaJ/SdJPrSLnVMKyh0PuZP/hx/DjaG87m3FXDDcmLLvk5Bin/nqLi1DSALm+ppGLRpVdDFYCl2Ji7BriKXzYtj5KJDDqhQ2QgY9cAILjSaj0YAS7lJ2GtobV4vfqvRlYYmD+e+y65
+ B9TswiK1
+ /2liWKiXS+O3wGxcnDLb3XMHeUlqv4JE8s8To9Byx33SiZTN2u7G0I8uz478ZPWGLYMIJ/GB0LvCF94AujXGg78oxZ1jpMYZMhlKESgVX0pEjI8xUrfCDexhf4ni/NJfjKd8cj66pAxMzBJFF6+tw9VoKwckF45mFiyj6WOmg9iwNhmXeDghiBnse3i1WzlqCILyWq3nFPxsF4danZxsiWt1Hl2Ozx1YQW0XTCfn2TwYijj0V5OenxNrye05k/ADksM66r3bHl3Cs6GxK6JitQtZFhXrNyK6LH9+LZpd0RWY8mmOS2neepM08j3m9zFOlG/cr8H1s4rfVHDM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,102 +105,406 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/27/26 17:40, Hengbin Zhang wrote:
-> The nonpersistent huge-zero shrinker clears huge_zero_folio and then
-> invalidates huge_zero_pfn. A concurrent fault can publish a replacement
-> folio and PFN between those updates, after which the old shrinker
-> invalidates the replacement generation's PFN identity.
-> 
-> A later partial mprotect() can then misidentify the live special PMD and
-> enter the ordinary anonymous THP split path.
-> 
-> A writer-side spinlock keeps huge_zero_folio and huge_zero_pfn updates
-> from different generations together. Lockless getters still use the
-> refcount fast path. atomic_set_release() publishes an initialized new
-> generation before a successful atomic_inc_not_zero() can admit a getter
-> on weakly ordered architectures.
-> 
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Link: https://lore.kernel.org/r/20260724100509.2300200-1-uqbarz@gmail.com
+On Mon, Jul 27, 2026 at 7:05=E2=80=AFAM Baoquan He <baoquan.he@linux.dev> w=
+rote:
+>
+> Implement dynamic cluster_info array growth for xswap devices using a
+> VM_SPARSE vmalloc area:
+>
+> 1. xswap_map_clusters(): Allocate physical pages and map them into
+>    the pre-reserved VM_SPARSE KVA region via vm_area_map_pages().
+>
+> 2. xswap_unmap_clusters(): Unmap pages from the VM_SPARSE area via
+>    vm_area_unmap_pages() (used by the error/teardown paths, shrink
+>    comes later).
+>
+> 3. setup_swap_clusters_info() xswap path: Use get_vm_area(VM_SPARSE)
+>    for the cluster_info array, lazily mapping only the initial chunk.
+>
+> 4. free_swap_cluster_info(): Refactor to take swap_info_struct*.
+>    For xswap, unmap all clusters and free_vm_area().
+>
+> 5. swapoff: Remove snapshot locals; move p->max/p->cluster_info
+>    clearing after free_swap_cluster_info().
 
-We want a Fixes: tag + Cc: stable.
+I feel that we should provide more generic support for dynamically
+growing an array of element size A to size N. Cluster array is just a
+user of such an API. There might be more users. This patch hardcodes
+the map/umpa of clusters. What about other users of such a dynamic
+array?
+Another consideration is that the map/unmap logic, while more generic,
+adds quite a bit of complexity to an approach intended only for
+growth. Any reason we want map/unmap rathern than simple grow from the
+current si->max?
 
-Can you dig up the proper Fixes commit? Thanks
+I read a bit more about the patch. It seems you need the unmap for the
+error cleanup path. In that case I suspect just make cluster a
+kmem_cache allocation, cluster array just a pointer. The cluster
+pointer array should just grow, not shrink. That might be overall
+simpler.
+I'm worried someone might abuse the cluster unmap causing unwanted side eff=
+ects.
 
-> Signed-off-by: Hengbin Zhang <uqbarz@gmail.com>
+I see the other reason might be you want the cluster code to be
+exactly the same when XSWAP is off. For that I think it is acceptiale
+to turn cluster into kmem_cache allocated and cluster array as
+pointers array as seperate patch as the base even when XSWAP is not
+configed.
+
+Chris
+
+
+> Signed-off-by: Baoquan He <baoquan.he@linux.dev>
 > ---
->  mm/huge_memory.c | 22 +++++++++++++++-------
->  1 file changed, 15 insertions(+), 7 deletions(-)
-> 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index b5d1e9d4463d..79bec4495540 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -78,6 +78,7 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
->  static bool split_underused_thp = true;
->  
->  static atomic_t huge_zero_refcount;
-> +static DEFINE_SPINLOCK(huge_zero_lock);
->  struct folio *huge_zero_folio __read_mostly;
->  unsigned long huge_zero_pfn __read_mostly = ~0UL;
->  unsigned long huge_anon_orders_always __read_mostly;
-> @@ -237,17 +238,18 @@ static bool get_huge_zero_folio(void)
->  	}
->  	/* Ensure zero folio won't have large_rmappable flag set. */
->  	folio_clear_large_rmappable(zero_folio);
-> -	preempt_disable();
-> -	if (cmpxchg(&huge_zero_folio, NULL, zero_folio)) {
-> -		preempt_enable();
-> +	spin_lock(&huge_zero_lock);
-> +	if (READ_ONCE(huge_zero_folio)) {
-
-Same comment as below: who could possibly modify this value concurrently? I
-don't think we need the READ_ONCE.
-
-> +		spin_unlock(&huge_zero_lock);
->  		folio_put(zero_folio);
->  		goto retry;
->  	}
->  	WRITE_ONCE(huge_zero_pfn, folio_pfn(zero_folio));
-> +	WRITE_ONCE(huge_zero_folio, zero_folio);
-> +	spin_unlock(&huge_zero_lock);
->  
-> -	/* We take additional reference here. It will be put back by shrinker */
-> -	atomic_set(&huge_zero_refcount, 2);
-> -	preempt_enable();
-> +	/* Publish the identity before admitting lockless getters. */
-> +	atomic_set_release(&huge_zero_refcount, 2);
-
-Why do we need the _release semantics here when we just did a spin_unlock()?
-
->  	count_vm_event(THP_ZERO_PAGE_ALLOC);
->  	return true;
+>  mm/swapfile.c | 228 +++++++++++++++++++++++++++++++++++++++++++++++---
+>  1 file changed, 216 insertions(+), 12 deletions(-)
+>
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index 143088dae07d..6d9c95ed09bd 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -49,6 +49,24 @@
+>  #include "internal.h"
+>  #include "swap.h"
+>
+> +#ifdef CONFIG_XSWAP
+> +/*
+> + * xswap: dynamically grow the cluster_info array via a VM_SPARSE area.
+> + *
+> + * XSWAP_GROW_CLUSTERS is the number of clusters to map in one grow
+> + * operation.  It is set to the number of cluster_info structs that
+> + * fit in a single page (at least 16), so that the vmalloc page table
+> + * overhead is proportional to the number of clusters mapped.
+> + */
+> +#define XSWAP_GROW_CLUSTERS \
+> +       max_t(unsigned long, PAGE_SIZE / sizeof(struct swap_cluster_info)=
+, 16)
+> +
+> +static int xswap_map_clusters(struct swap_info_struct *si,
+> +                             unsigned long start_idx, unsigned long nr);
+> +static void xswap_unmap_clusters(struct swap_info_struct *si,
+> +                                unsigned long start_idx, unsigned long n=
+r);
+> +#endif
+> +
+>  static void swap_range_alloc(struct swap_info_struct *si,
+>                              unsigned int nr_entries);
+>  static bool folio_swapcache_freeable(struct folio *folio);
+> @@ -3041,20 +3059,47 @@ static void wait_for_allocation(struct swap_info_=
+struct *si)
+>
+>         BUG_ON(si->flags & SWP_WRITEOK);
+>
+> +#ifdef CONFIG_XSWAP
+> +       /*
+> +        * xswap clusters beyond nr_clusters_mapped have been unmapped
+> +        * by the shrinker and their vmalloc pages are no longer
+> +        * accessible.  Only iterate over currently mapped clusters.
+> +        */
+> +       if (si->flags & SWP_XSWAP)
+> +               end =3D min(end, READ_ONCE(si->nr_clusters_mapped) *
+> +                         SWAPFILE_CLUSTER);
+> +#endif
+> +
+>         for (offset =3D 0; offset < end; offset +=3D SWAPFILE_CLUSTER) {
+>                 ci =3D swap_cluster_lock(si, offset);
+>                 swap_cluster_unlock(ci);
+>         }
 >  }
-> @@ -298,9 +300,15 @@ static unsigned long shrink_huge_zero_folio_scan(struct shrinker *shrink,
->  						 struct shrink_control *sc)
+>
+> -static void free_swap_cluster_info(struct swap_cluster_info *cluster_inf=
+o,
+> -                                  unsigned long maxpages)
+> +static void free_swap_cluster_info(struct swap_info_struct *si)
 >  {
->  	if (atomic_cmpxchg(&huge_zero_refcount, 1, 0) == 1) {
-> -		struct folio *zero_folio = xchg(&huge_zero_folio, NULL);
-> +		struct folio *zero_folio;
+> +       struct swap_cluster_info *cluster_info =3D si->cluster_info;
+> +       unsigned long maxpages =3D si->max;
+>         struct swap_cluster_info *ci;
+> -       int i, nr_clusters =3D DIV_ROUND_UP(maxpages, SWAPFILE_CLUSTER);
+> +       int i, nr_clusters;
+>
+>         if (!cluster_info)
+>                 return;
 > +
-> +		spin_lock(&huge_zero_lock);
-> +		zero_folio = READ_ONCE(huge_zero_folio);
-
-Why do we need a READ_ONCE? Nobody should be legally be allowed to change this
-variable concurrently, no?
-
->  		BUG_ON(zero_folio == NULL);
->  		WRITE_ONCE(huge_zero_pfn, ~0UL);
-> +		WRITE_ONCE(huge_zero_folio, NULL);
-> +		spin_unlock(&huge_zero_lock);
+> +#ifdef CONFIG_XSWAP
+> +       if (si->flags & SWP_XSWAP) {
+> +               /* Unmap all mapped clusters and free the VM_SPARSE area =
+*/
+> +               if (si->nr_clusters_mapped > 0)
+> +                       xswap_unmap_clusters(si, 0, si->nr_clusters_mappe=
+d);
+> +               free_vm_area(si->cluster_vm);
+> +               si->cluster_vm =3D NULL;
+> +               si->nr_clusters =3D 0;
+> +               si->nr_clusters_mapped =3D 0;
+> +               return;
+> +       }
+> +#endif
 > +
->  		folio_put(zero_folio);
->  		return HPAGE_PMD_NR;
->  	}
-
-
--- 
-Cheers,
-
-David
+> +       nr_clusters =3D DIV_ROUND_UP(maxpages, SWAPFILE_CLUSTER);
+>         for (i =3D 0; i < nr_clusters; i++) {
+>                 ci =3D cluster_info + i;
+>                 /* Cluster with bad marks count will have a remaining tab=
+le */
+> @@ -3093,11 +3138,9 @@ static void flush_percpu_swap_cluster(struct swap_=
+info_struct *si)
+>  SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
+>  {
+>         struct swap_info_struct *p =3D NULL;
+> -       struct swap_cluster_info *cluster_info;
+>         struct file *swap_file, *victim;
+>         struct address_space *mapping;
+>         struct inode *inode;
+> -       unsigned int maxpages;
+>         int err, found =3D 0;
+>
+>         if (!capable(CAP_SYS_ADMIN))
+> @@ -3189,10 +3232,6 @@ SYSCALL_DEFINE1(swapoff, const char __user *, spec=
+ialfile)
+>
+>         swap_file =3D p->swap_file;
+>         p->swap_file =3D NULL;
+> -       maxpages =3D p->max;
+> -       cluster_info =3D p->cluster_info;
+> -       p->max =3D 0;
+> -       p->cluster_info =3D NULL;
+>         spin_unlock(&p->lock);
+>         spin_unlock(&swap_lock);
+>         arch_swap_invalidate_area(p->type);
+> @@ -3200,7 +3239,9 @@ SYSCALL_DEFINE1(swapoff, const char __user *, speci=
+alfile)
+>         mutex_unlock(&swapon_mutex);
+>         kfree(p->global_cluster);
+>         p->global_cluster =3D NULL;
+> -       free_swap_cluster_info(cluster_info, maxpages);
+> +       free_swap_cluster_info(p);
+> +       p->max =3D 0;
+> +       p->cluster_info =3D NULL;
+>
+>         inode =3D mapping->host;
+>
+> @@ -3564,6 +3605,112 @@ static unsigned long read_swap_header(struct swap=
+_info_struct *si,
+>         return maxpages;
+>  }
+>
+> +#ifdef CONFIG_XSWAP
+> +static int xswap_map_clusters(struct swap_info_struct *si,
+> +                             unsigned long start_idx, unsigned long nr)
+> +{
+> +       unsigned long start_addr =3D (unsigned long)si->cluster_info +
+> +                                  (size_t)start_idx * sizeof(struct swap=
+_cluster_info);
+> +       unsigned long end_addr =3D start_addr + (size_t)nr * sizeof(struc=
+t swap_cluster_info);
+> +       /*
+> +        * vm_area_map_pages() requires that start and end be page-aligne=
+d.
+> +        * If start_addr falls within a page that was already mapped by a
+> +        * previous batch (grow path), round it up to skip the already-ma=
+pped
+> +        * partial page.  Always round end_addr up so the vmap page table=
+ walk
+> +        * terminates correctly (the walk loop exits when addr =3D=3D end=
+, and addr
+> +        * advances by PAGE_SIZE each iteration).
+> +        */
+> +       unsigned long vm_start =3D PAGE_ALIGN(start_addr);
+> +       unsigned long vm_end =3D PAGE_ALIGN(end_addr);
+> +       unsigned long npages;
+> +       struct page **pages;
+> +       unsigned long i;
+> +
+> +       if (vm_start >=3D vm_end) {
+> +               /* All requested clusters fall within already-mapped page=
+s. */
+> +               for (i =3D start_idx; i < start_idx + nr; i++)
+> +                       spin_lock_init(&si->cluster_info[i].lock);
+> +               WRITE_ONCE(si->nr_clusters_mapped, start_idx + nr);
+> +               return 0;
+> +       }
+> +
+> +       npages =3D (vm_end - vm_start) >> PAGE_SHIFT;
+> +
+> +       pages =3D kmalloc_array(npages, sizeof(*pages), GFP_KERNEL);
+> +       if (!pages)
+> +               return -ENOMEM;
+> +
+> +       for (i =3D 0; i < npages; i++) {
+> +               /*
+> +                * __GFP_ZERO is critical: cluster_info structs contain p=
+ointer
+> +                * fields (extend_table, zero_bitmap, memcg_table, table)=
+ that
+> +                * must start as NULL.  Without zeroing, stale data from =
+a
+> +                * previous user of the page would look like valid pointe=
+rs.
+> +                */
+> +               pages[i] =3D alloc_page(GFP_KERNEL | __GFP_ZERO);
+> +               if (!pages[i])
+> +                       goto fail;
+> +       }
+> +
+> +       if (vm_area_map_pages(si->cluster_vm, vm_start, vm_end, pages)) {
+> +               i =3D npages; /* free all pages on failure */
+> +               goto fail;
+> +       }
+> +
+> +       kfree(pages);
+> +
+> +       /* Initialize spinlocks for newly mapped clusters */
+> +       for (i =3D start_idx; i < start_idx + nr; i++)
+> +               spin_lock_init(&si->cluster_info[i].lock);
+> +
+> +       /*
+> +        * Pairs with READ_ONCE() in shrink/grow paths.
+> +        */
+> +       WRITE_ONCE(si->nr_clusters_mapped, start_idx + nr);
+> +       return 0;
+> +
+> +fail:
+> +       while (i > 0) {
+> +               i--;
+> +               if (pages[i])
+> +                       __free_page(pages[i]);
+> +       }
+> +       kfree(pages);
+> +       return -ENOMEM;
+> +}
+> +
+> +static void xswap_unmap_clusters(struct swap_info_struct *si,
+> +                                unsigned long start_idx, unsigned long n=
+r)
+> +{
+> +       unsigned long start_addr =3D (unsigned long)si->cluster_info +
+> +                                  (size_t)start_idx * sizeof(struct swap=
+_cluster_info);
+> +       unsigned long end_addr =3D start_addr + (size_t)nr * sizeof(struc=
+t swap_cluster_info);
+> +       /*
+> +        * Round to page boundaries: start up (skip partial page that may
+> +        * contain clusters still in use before start_idx), end up so the
+> +        * entire range is covered.  vm_area_unmap_pages() operates on
+> +        * whole pages.
+> +        */
+> +       unsigned long vm_start =3D PAGE_ALIGN(start_addr);
+> +       unsigned long vm_end =3D PAGE_ALIGN(end_addr);
+> +
+> +       if (vm_start >=3D vm_end)
+> +               goto out;
+> +
+> +       vm_area_unmap_pages(si->cluster_vm, vm_start, vm_end);
+> +       /*
+> +        * vm_area_unmap_pages() only clears PTEs; it does not free the
+> +        * physical pages.  Walk the page table to find and free them.
+> +        */
+> +       /* TODO: free backing pages via page table walk or tracking bitma=
+p */
+> +       /*
+> +        * Pairs with READ_ONCE() in shrink/grow paths.
+> +        */
+> +       out:
+> +       WRITE_ONCE(si->nr_clusters_mapped, start_idx);
+> +}
+> +#endif /* CONFIG_XSWAP */
+> +
+>  static int setup_swap_clusters_info(struct swap_info_struct *si,
+>                                     union swap_header *swap_header,
+>                                     unsigned long maxpages)
+> @@ -3573,6 +3720,63 @@ static int setup_swap_clusters_info(struct swap_in=
+fo_struct *si,
+>         int err =3D -ENOMEM;
+>         unsigned long i;
+>
+> +#ifdef CONFIG_XSWAP
+> +       if (si->flags & SWP_XSWAP) {
+> +               unsigned long size =3D PAGE_ALIGN(nr_clusters * sizeof(*c=
+luster_info));
+> +               struct vm_struct *vm;
+> +
+> +               vm =3D get_vm_area(size, VM_SPARSE);
+> +               if (!vm)
+> +                       goto err;
+> +
+> +               cluster_info =3D vm->addr;
+> +               si->cluster_vm =3D vm;
+> +               si->nr_clusters =3D nr_clusters;
+> +               si->cluster_info =3D cluster_info;
+> +
+> +               /* Map the initial chunk (at least cluster 0) */
+> +               if (xswap_map_clusters(si, 0, min_t(unsigned long,
+> +                                       XSWAP_GROW_CLUSTERS, nr_clusters)=
+))
+> +                       goto err_free_vm;
+> +
+> +               /* xswap: only cluster 0 slot 0 is bad */
+> +               err =3D swap_cluster_setup_bad_slot(si, cluster_info, 0, =
+false);
+> +               if (err)
+> +                       goto err_unmap;
+> +
+> +               INIT_LIST_HEAD(&si->free_clusters);
+> +               INIT_LIST_HEAD(&si->full_clusters);
+> +               INIT_LIST_HEAD(&si->discard_clusters);
+> +               for (i =3D 0; i < SWAP_NR_ORDERS; i++) {
+> +                       INIT_LIST_HEAD(&si->nonfull_clusters[i]);
+> +                       INIT_LIST_HEAD(&si->frag_clusters[i]);
+> +               }
+> +
+> +               /* Mark mapped clusters: cluster 0 has 1 bad slot, rest f=
+ree */
+> +               for (i =3D 0; i < si->nr_clusters_mapped; i++) {
+> +                       struct swap_cluster_info *ci =3D &cluster_info[i]=
+;
+> +
+> +                       if (i =3D=3D 0) {
+> +                               ci->flags =3D CLUSTER_FLAG_NONFULL;
+> +                               list_add_tail(&ci->list, &si->nonfull_clu=
+sters[0]);
+> +                       } else {
+> +                               ci->flags =3D CLUSTER_FLAG_FREE;
+> +                               list_add_tail(&ci->list, &si->free_cluste=
+rs);
+> +                       }
+> +               }
+> +
+> +               return 0;
+> +
+> +err_unmap:
+> +               xswap_unmap_clusters(si, 0, si->nr_clusters_mapped);
+> +err_free_vm:
+> +               free_vm_area(si->cluster_vm);
+> +               si->cluster_vm =3D NULL;
+> +               si->cluster_info =3D NULL;
+> +               return err;
+> +       }
+> +#endif /* CONFIG_XSWAP */
+> +
+>         cluster_info =3D kvzalloc_objs(*cluster_info, nr_clusters);
+>         if (!cluster_info)
+>                 goto err;
+> @@ -3640,7 +3844,7 @@ static int setup_swap_clusters_info(struct swap_inf=
+o_struct *si,
+>         si->cluster_info =3D cluster_info;
+>         return 0;
+>  err:
+> -       free_swap_cluster_info(cluster_info, maxpages);
+> +       free_swap_cluster_info(si);
+>         return err;
+>  }
+>
+> @@ -3852,7 +4056,7 @@ SYSCALL_DEFINE2(swapon, const char __user *, specia=
+lfile, int, swap_flags)
+>         si->global_cluster =3D NULL;
+>         inode =3D NULL;
+>         destroy_swap_extents(si, swap_file);
+> -       free_swap_cluster_info(si->cluster_info, si->max);
+> +       free_swap_cluster_info(si);
+>         si->cluster_info =3D NULL;
+>         /*
+>          * Clear the SWP_USED flag after all resources are freed so
+> --
+> 2.54.0
+>
 
