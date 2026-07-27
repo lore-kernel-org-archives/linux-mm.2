@@ -4,153 +4,201 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32084C53219
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 09:15:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 250ACC531D0
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 09:21:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1213A6B007B; Mon, 27 Jul 2026 05:15:11 -0400 (EDT)
+	id D3BE66B008A; Mon, 27 Jul 2026 05:21:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D3086B0088; Mon, 27 Jul 2026 05:15:11 -0400 (EDT)
+	id CEBCE6B008C; Mon, 27 Jul 2026 05:21:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EDF8B6B008A; Mon, 27 Jul 2026 05:15:10 -0400 (EDT)
+	id B8DAF6B0093; Mon, 27 Jul 2026 05:21:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C2E3A6B007B
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 05:15:10 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5863B4069C
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 09:15:10 +0000 (UTC)
-X-FDA: 85033997580.14.6D2E62C
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 0CBB24000C
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 09:15:07 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=XH4COWUi;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=bdm02+CD;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gT14ov0W;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=59Y51aLI;
-	spf=pass (imf01.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785143708;
-	b=kLXId5SycRN7+RfC2maNKVU3e78cIXtktYOcvvU95oW3gqRZmbv7sELGEca6UWHT26ZzoW
-	DrcF5Szr+uDvmemyBTcamZJksfFkop2MzU1VwM0vkK9ayel4hZgg+gxy9kf3QHNAtt+IPu
-	AXndiZJSilZTUt4R6n27GaaVnvFe6V8=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=XH4COWUi;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=bdm02+CD;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gT14ov0W;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=59Y51aLI;
-	spf=pass (imf01.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785143708;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 841D86B008A
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 05:21:32 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0A7D5160639
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 09:21:32 +0000 (UTC)
+X-FDA: 85034013624.21.0198D8C
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013041.outbound.protection.outlook.com [52.101.72.41])
+	by imf31.hostedemail.com (Postfix) with ESMTP id DA88020005
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 09:21:27 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=Ji9+005H;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=Ji9+005H;
+	spf=pass (imf31.hostedemail.com: domain of Usama.Anjum@arm.com designates 52.101.72.41 as permitted sender) smtp.mailfrom=Usama.Anjum@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2")
+ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785144088;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Nofef/k2ghi2COUtOHG8Fiu5zrxha6Onv0LZX52ftP4=;
-	b=ngPtrNAXB8QMbFRssMrugGu3Ke5g4Cd4k+PBFjg5uGEVY1X6E7PJMKv4jph+VlKUGPRbYU
-	5AAV2cTwepEIZKITqQA/3IG4wG09TYHXZdskY/zNODIXTklJOvpAsrLIB1ZnqnQlZXFfui
-	1h0w0ux3683abPHOsMiuyzWBA8zcFCA=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 214317DA77;
-	Mon, 27 Jul 2026 09:14:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1785143702; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Nofef/k2ghi2COUtOHG8Fiu5zrxha6Onv0LZX52ftP4=;
-	b=XH4COWUi/uVSTTItRb/nUmfm8hm6XLb+2ccrA+RSH9hDCrCENsMx7DdG1OWFISHT6yiJar
-	na1H2WcWdnbTJhAmma6fHG2fZdoBEv0sNydB8Z028wX4I5FNCCSh+4CvoK0zBQnxUDz5sv
-	fK0AfBjzu45udqdKvJg4xwhvU+eyHcE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1785143702;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Nofef/k2ghi2COUtOHG8Fiu5zrxha6Onv0LZX52ftP4=;
-	b=bdm02+CDJ05kV++dhJds+LNeKzhLGoPjHgz72E0kyd3TFAyzK2ZG2IlQFCaDm8PiZrpNT2
-	rCtsIQeQl1/lYUDg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1785143698; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Nofef/k2ghi2COUtOHG8Fiu5zrxha6Onv0LZX52ftP4=;
-	b=gT14ov0WCez/rIUxEy8m1tADx6vn9TvWYnVIlGDTGvvTkjqgKfNlsTpWeYmj3zns/HRrah
-	yetFtSmLwPTMVM2yAdcVmh9IB0etgC+Ko7dJ0vjckI/njniugxrFqPUNdwhmH9agXU+RvH
-	Vv24fXObUNvrvroqv5eY8mBjjk6l63M=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1785143698;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Nofef/k2ghi2COUtOHG8Fiu5zrxha6Onv0LZX52ftP4=;
-	b=59Y51aLI6YcXix+Z2oMApRzqEq+GdCAi5lSa72SMl9lcyKfcsYff4UnevNIIfGg1Xje3eG
-	/vP8AY5Z6JDlUaAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0A492779B9;
-	Mon, 27 Jul 2026 09:14:55 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Gy7HOo8hZ2r9DwAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Mon, 27 Jul 2026 09:14:55 +0000
-Date: Mon, 27 Jul 2026 10:14:54 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Helge Deller <deller@kernel.org>
-Cc: John David Anglin <dave.anglin@bell.net>, 
-	Usama Arif <usama.arif@linux.dev>, Helge Deller <deller@gmx.de>, 
-	Matthew Wilcox <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>, 
-	Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Kevin Brodsky <kevin.brodsky@arm.com>, Muhammad Usama Anjum <usama.anjum@arm.com>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH 3/5] mm/parisc: constify ptep_get() argument
-Message-ID: <amchbBH5zF7Rq5LT@pedro-suse>
-References: <20260724102017.141532-1-pfalcato@suse.de>
- <20260724102017.141532-4-pfalcato@suse.de>
- <0fd713a8-e4ab-4c07-b36e-79dd138b4a86@linux.dev>
- <amNzLXuwflIZFKtI@casper.infradead.org>
- <253f7ac0-205b-42f1-9fb5-d19eceb581b6@linux.dev>
- <amOEUZlp1BxYh6_t@pedro-suse>
- <fd239383-dcbe-4daf-b337-32facef07076@linux.dev>
- <3e9dece8-4e86-4ce5-bd74-b3ec305f3003@gmx.de>
- <4606e13f-6827-45d0-b3b8-6bc26358f7ae@bell.net>
- <amT0j_bBT3CCxPcg@p100>
+	bh=RogA/2/jkzF61/fbnsLH7v16AFYfhoguWmOexgWw76c=;
+	b=GEylRnJFECP16ekVDFq03Kn7gDzJ9/n2m7fqsuOIaBNHM0ya4ZnO1hfCQYO/ohG7XDnH/T
+	GpyUzhO/Dmz7Qf/Q3V7Dykm8RryJ6qhj7/X7KCCcPPqKStTvB+aL/mxPdI7r3m4sjz22oY
+	4r3HH6i72Kmh1vy2sUdv0NpW4k47YPA=
+ARC-Seal: i=3; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1785144088;
+	b=30veKpXJiAqvlEfk3oCAwgpsCo1xI24a2QPTTNWzlTFQX/B0UYLmM9ZFEYXDw5w0CXheZX
+	C4udcnuDAdwPsAb+CleU9vYhKwH37FQisSj4OpOAHr9buUwJ9rolPGgvJNe0Bo26L25hba
+	CI9cp7XyPWrMV2iUJSVhvSnIfMyU+Tg=
+ARC-Authentication-Results: i=3;
+	imf31.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=Ji9+005H;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=Ji9+005H;
+	spf=pass (imf31.hostedemail.com: domain of Usama.Anjum@arm.com designates 52.101.72.41 as permitted sender) smtp.mailfrom=Usama.Anjum@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2")
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=b+w+VZy33oDYBIiugoYFyyNK8KbXshZsisXCtXdxy2URSKJgdcgDVueXcmZ4zf+ymxPiP1lqH1+ZSwmnfU+3n3CoEvGGIVN3ALD5d0D/1+OlDmUaZpNiGli5bH5PRR3MGDVgFdk/o4ky6ZtESYqV9qYjM5ElScXAUpYpXgWQfbMbWmEP14fRijnxSZ+g0eSBuxTxiScRdYP7WgNc196e57v2R5U1O1fM3cSjqQ+7g9z/rsq4nWrX+VD8hDmEakwKkR+q+NdABXD42KVnANgZemnh1AcTjDwepBgpWZa31OnZMEyW5PhCHOBIJZtOIVqcMIF2oRa6bACKm0oXhxQXYg==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RogA/2/jkzF61/fbnsLH7v16AFYfhoguWmOexgWw76c=;
+ b=tqxrM7i5mmSjUWBr6XYKWn9zRJ9nGK0CgKIDiIeDZkrZ5fLL3lssITvdEZivFSKrP6KrOvPzFqdhb9+hyPRUiqAryVPF3SwZ4GcowcF6HCETCLt5phMK6C6GljbMAT2iFAXJSISg7M9+Lo29DD+2LPXIDnNo0yNb0H0aaspaKsKq5nMyN52rEu2G1AW5DgjsT5MrF1sTyUFo8CqyF/igASmz/FhqgA5C+YgkBfdjL8HtgfUmVs0gNvtfUDNhuC1lWlFL/a9CQwbe71CKU6GUWEGmKcrfX4xF7krK8zy2vmx0/3sNKW91TDFCTzjgAtw/HsgPTRl7bczTt4q6703xKg==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 4.158.2.129) smtp.rcpttodomain=linux-foundation.org smtp.mailfrom=arm.com;
+ dmarc=pass (p=none sp=none pct=100) action=none header.from=arm.com;
+ dkim=pass (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
+ spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
+ dmarc=[1,1,header.from=arm.com])
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RogA/2/jkzF61/fbnsLH7v16AFYfhoguWmOexgWw76c=;
+ b=Ji9+005H03BH4VWzXwsLm0gU6ngy/lgQjAOzncNzR5qkiYNmdZE9TsY+IKPnBPfHC6r6DgqjNyL8sRiMUPmSdHXdEtj1fae25IIcsFsj0mEZfjctgdWpOa0FNr29NAAp+Cmrea77ekuRhlCg+eeCoO77mp/zxp9KwA5H8mJUvmU=
+Received: from AS9PR04CA0086.eurprd04.prod.outlook.com (2603:10a6:20b:50e::24)
+ by PAXPR08MB6382.eurprd08.prod.outlook.com (2603:10a6:102:15b::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.13; Mon, 27 Jul
+ 2026 09:21:21 +0000
+Received: from AM3PEPF0000A78D.eurprd04.prod.outlook.com
+ (2603:10a6:20b:50e:cafe::7b) by AS9PR04CA0086.outlook.office365.com
+ (2603:10a6:20b:50e::24) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.245.13 via Frontend Transport; Mon,
+ 27 Jul 2026 09:21:21 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
+ smtp.mailfrom=arm.com; dkim=pass (signature was verified)
+ header.d=arm.com;dmarc=pass action=none header.from=arm.com;
+Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
+ 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
+ client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
+Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
+ AM3PEPF0000A78D.mail.protection.outlook.com (10.167.16.116) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.270.5
+ via Frontend Transport; Mon, 27 Jul 2026 09:21:21 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=mlOH/MXsXddeuLf+rbONxPlpDmU7VMBJOw9HiUJjj9DZAQV4TAN1G6frMgDhBcXkM+BPO+NMN6KgSdL/kAsrtS/oVEiEKlwqOCyzDHeXFO/IA3L7mg0crjBA0madkYOE7X9J2Y1qyZc9eo7PVCPZcxkHjq5fcefIa5Tpm2kKX29CytS4VTYs2vOga2AHa7rYC6lGJqs6UKJrv6ooL+ToY7QX0EgpuR1giCTXJolg/SUY7fo1eLtLomSAjhW/u8PhC/UbQ6PDJckhMaXGvOMfnb2i/zYdZJ26S58h2H1H4sacWMO+CXU87wdnoQtPJGvWX3x5O8lR+XwjZZK6+2r4WQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RogA/2/jkzF61/fbnsLH7v16AFYfhoguWmOexgWw76c=;
+ b=cG3AJDD/3YF9hK8RntFCx8Sn3h7vXT3nLGAXWm6kbB/Vd97FVSktHCJYugj4/GcxjE35Ua8BegICIhhXvFYumxY/ACWbnAS73d50MEovO8AgkV7y6Mfpg3nHJhziVyuSIT9eHs9leMMt3Ohu1Yjl1F2N36JZL4h1MGQdZ+HSohKzjN6zRVT3h+9hp6CGuCuRpB0/oL3yhAqlgnjmlCRZoST71hpmPvcqNqcFla9MKfS6Rta4uztaqHDLelzkbdopoLx4+kz/Hk19J97bP9ysurkN0X2o88DHt4AUTjjhey0QIVyUoNeV2Mz4IQxCMM0eziDqWQjGvMnau2VpZ0O1ZA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
+ header.d=arm.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RogA/2/jkzF61/fbnsLH7v16AFYfhoguWmOexgWw76c=;
+ b=Ji9+005H03BH4VWzXwsLm0gU6ngy/lgQjAOzncNzR5qkiYNmdZE9TsY+IKPnBPfHC6r6DgqjNyL8sRiMUPmSdHXdEtj1fae25IIcsFsj0mEZfjctgdWpOa0FNr29NAAp+Cmrea77ekuRhlCg+eeCoO77mp/zxp9KwA5H8mJUvmU=
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=arm.com;
+Received: from VI1PR08MB3421.eurprd08.prod.outlook.com (2603:10a6:803:80::16)
+ by DBBPR08MB10481.eurprd08.prod.outlook.com (2603:10a6:10:539::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.13; Mon, 27 Jul
+ 2026 09:20:18 +0000
+Received: from VI1PR08MB3421.eurprd08.prod.outlook.com
+ ([fe80::e079:6bd:fbe0:89b4]) by VI1PR08MB3421.eurprd08.prod.outlook.com
+ ([fe80::e079:6bd:fbe0:89b4%3]) with mapi id 15.21.0245.012; Mon, 27 Jul 2026
+ 09:20:17 +0000
+Message-ID: <c8470ae0-fd9f-4364-bcbe-282b2423bac6@arm.com>
+Date: Mon, 27 Jul 2026 10:20:15 +0100
+User-Agent: Mozilla Thunderbird
+Cc: usama.anjum@arm.com
+Subject: Re: [PATCH v2 5/5] selftests/mm: retry migration failures for the
+ full runtime
+To: Dev Jain <dev.jain@arm.com>, Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Miaohe Lin <linmiaohe@huawei.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ sarthak.sharma@arm.com
+References: <20260724102431.1199519-1-usama.anjum@arm.com>
+ <20260724102431.1199519-6-usama.anjum@arm.com>
+ <15111e85-4143-476a-830e-9f7d47cc236e@arm.com>
+ <a3ed6793-8285-4043-a0bb-10bd3890be19@arm.com>
+ <6e2236ab-2cfd-4e61-98cc-4e4de9f76bd9@arm.com>
+ <1c5b5101-1bf5-436e-a0dd-10b6cf81ff59@arm.com>
+ <58b824e7-dafa-4a8b-a8ca-d38151c97df6@arm.com>
+From: Muhammad Usama Anjum <usama.anjum@arm.com>
+Content-Language: en-US
+In-Reply-To: <58b824e7-dafa-4a8b-a8ca-d38151c97df6@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO4P265CA0176.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:312::16) To VI1PR08MB3421.eurprd08.prod.outlook.com
+ (2603:10a6:803:80::16)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <amT0j_bBT3CCxPcg@p100>
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 0CBB24000C
-X-Stat-Signature: 99fx4c9imbojaywa74jb7fsaq9858mwk
+X-MS-TrafficTypeDiagnostic:
+	VI1PR08MB3421:EE_|DBBPR08MB10481:EE_|AM3PEPF0000A78D:EE_|PAXPR08MB6382:EE_
+X-MS-Office365-Filtering-Correlation-Id: df8461ef-70c0-499f-dd12-08deebc06c50
+x-checkrecipientrouted: true
+NoDisclaimer: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted:
+ BCL:0;ARA:13230040|7416014|376014|366016|23010399003|1800799024|921020|6133799003|18002099003|22082099003|56012099006|4143699003|11063799006|10067099003;
+X-Microsoft-Antispam-Message-Info-Original:
+ FA6M+yByzLBxHrFmHqHmSFGFh2s5B/k1MoMUflQDv0/1sUgAPLWyMGPas9L7eIMW0zzwmU+kK3tTv4n7I7WJ9YPhABgN6x3DpVBg6chE9DhILbKCHENBPE2bhQhXfqIYiWVUkHlBPvdcvCpDeMELpT36JZNoGJvRN4Q7LXBjfYrQXn9SL+snyfuSX79G5uR1bOnHY1wZwwC3CuBUGXr/Clfx3Chz4CtDImlscchfvuiFJNF3J6/3j/4e8oSAeEHyhErZMZ0RC6+IIcUvoec23JDBaSO1IC2c00p56F6mfDgkcOdEs0jOpjAJhyPu4UkvVTyCXHrEF/3Ny4pBamF7PL73zMoVn6lsUTdsdFoCjYftSZ+se/Lg/WjMsqlIHdNXFMpGEj4Tff7vJl+Ad1U8t7aZXn1eYRGVidnKUOuKmY3o4DqJDr14YRm93qKsL9nBJ5JRFvFLbrPgx2y7zt+d8aaT1VS5YOUXY6ylOWPDFPbBmvtDGy5J9qTlJ9bocsy7o0r6MTW3rUnGBlVs1fj9FR7hn+jlrTIxG9SExcB6WApq0fmR0pJG7WOx1DoGp91YXjemCzo73RZK00OWyb1lno3P3Rcnwtz/Bt92ZiegNkZnN4KCU8FSGBcyHb+GZnDfq+4akE51YuwJ56GFAjKsb92qMtFssJNM9gub6iQqUWHeRIfVDeGzHXAYzoL1zBBynSd3wku+bIXouZiM+wSePw==
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR08MB3421.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(23010399003)(1800799024)(921020)(6133799003)(18002099003)(22082099003)(56012099006)(4143699003)(11063799006)(10067099003);DIR:OUT;SFP:1101;
+X-Exchange-RoutingPolicyChecked:
+ jmgqC4OUS0SoFL6vVBSguW7/2wY+zuRZocYPGUYQZeoh7qGF4ZVnUid6bBXvvMcV2vb20jw/Y5BsS0c2BHTqgR/K9G5jrnp7rY0cBGoF8BaDHcQQGVQxRG6t5A2aiPCJxm65pDgV+isWK0gWvDB+gHqZYBVpHr0OoUFeCJMzluQ+ODBmcxB6vUM5eQMinxWVLdbZ9abymWKcxCllGCvXNUYMqLg7c687acDZ9g5DHVTX7cNZ8dqjDHcrkoJ1Est5epvzXQs3EK6plTpxv1TGZtP5W3MKYJank1fB2eQ1GNtIWGKInSx8CDd38etOuTkzCSo2RDkMp9ZWRTIAXzuxaQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR08MB10481
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ AM3PEPF0000A78D.eurprd04.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	222e5697-35c1-43f8-bd87-08deebc04610
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|82310400026|376014|1800799024|36860700016|23010399003|14060799003|35042699022|921020|6133799003|56012099006|4143699003|11063799006|10067099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	Zf19MNprqGTxtdIl3miuQLIKQUZ/MhY5EiMGC5JDaNs/H7OeEEXCFJYY94J+7pTMTMcMWbc9LLeWtKevMhi945Dno2UCJJQaTl1gVyEPPnEu/nMeNC9V137pJgExXji7lkU0LXn+HFq41yfhnipYUfgB+9voCyV9PRUERIbTH/atudkM9MLkU31fLN8Wsj5aEmKWG6CQeNnrRxGbwR5U2ax0IOq8qazFsoo2Vk03TTFl/JuzU9+8aG8TIePxDL904agUWqq3aOsBQpyxzstr0rPLcqMyL4UW9KYV3P+5IKVyzbQgVgQVCJP+r9yRirOZgxkslTgmIJ1+Eu7vEmGIXDykTL0m3uO7x4o9xdj/Hs0Ohg91LxWqhaHXCqqpD4JdnnTT3fAj99+hkOUZi+HD12uT5WZ2DNaqzuOQVDchXHrHc+YXUL9Q1u6dHvsRZiRTKsFgQapQ2SgrZJtrcqeZu3ViedX4rMoetM8rOuxqnyeCakWdWhkUxOrgqYXyw7IpLxWe3ePLRk32khZ5aPvJg90nrJWVNaYiJHToc3GQmt5APGLE8J4Cmv5cd4NWnL2vWZkr8PLNIoHbo0Z6Zc/MBWrcjh4789v1QB277XnB1rbK7EquhaOOS30+Xl+uX62zKizilqXDEzv4G0jFav/xYCYTqEvc/8ps4hUhJEJNGSM8+5c5yEmi52KL9AK6PPBb1Y2Q0rhs7914qzNCbflqvGDqb4flB8MoavAPjNv8Hi170dYc/QoZA48UITQLc0AS
+X-Forefront-Antispam-Report:
+	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(82310400026)(376014)(1800799024)(36860700016)(23010399003)(14060799003)(35042699022)(921020)(6133799003)(56012099006)(4143699003)(11063799006)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	RApM3Ifl4OevJx0C2tp7smFgzCfC6UIEryv5LMIcLfO/QCgoXkIKWbasdWNAmUCXwebenrjc6Dsx29Q1+UXlHu4Yi2VtfcuHNE56dgJaDXZX+EdKc4JHMLckFpL1MDqPW4iwK9XGdwlDKsz46+S43+RLJPaCe3IGFJl6YmzOJIQ/a7Y7W9aWCcMSAjVN8QqMrJ5FfqcZbLbG4FrCSQlv78xjaJKVMjnXAPBBe0ScTeCjr101xYhilPqleXE+xHkbqH/R89qtG6MxsPMwtMF1STusswPk6RkpHPhIjR+o7KElaKfqs8X5Jf+MRFC9WJPSDrjiB5VBD+qawFyErgiZYf+x63okqgANHK+o/fovHReJt1DVJq3T435uKymjLmVaBmo4OC7aOq+P3kS+RHXTR8rRa3v5iO0FuUJvBZ2mBNZLjFpkekiMvAjvSQPLKSf1
+X-OriginatorOrg: arm.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jul 2026 09:21:21.5696
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: df8461ef-70c0-499f-dd12-08deebc06c50
+X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AM3PEPF0000A78D.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR08MB6382
 X-Rspam-User: 
-X-HE-Tag: 1785143707-560269
-X-HE-Meta: U2FsdGVkX1/KqIK4Y3ptfyBKrCPVArDsexlr3MuNvGGqy2Nd0bYwzNUpN29hY5djKHF6ScVuTB1fW5Umm3YJuTnKMSMD0qzYrZCSyHBGLq6Z7UVzGj6CKBs0kCScB+kpF7W1SD3oYGonV+YBgTELjOwCIjK+5rozFmlZGSwULCXLayuTXpoAOsJm/t4ZoazOHTlZ3tqadCQPgpdIMyK8J6MKD87OUgN+6TpJSzsqgmn5xy8WTo6reYzaSBrte84VPNy5Fz9zzctINg0bpXkzZu/cfwGR4iaEmsXrNY/qp4w36TT8K4Payjb6V7EJWpoJEVN7tLAsVW1YTewzUeQuizDUfMMbHfRs4KoRrgh2YjZjgXFMpVHbKQg4FZE0g4kZXxSA+lBMI+i9j3H5Ayr9V1fiX0eb1vJxOHK5anzGR2YoUmSkv6AwtMoSDTgbssdHKvP+Nv7E685r/wfhR/VQzRRxt1i07nCK9gvuainkJKrPs+NyM4CLHHa6UsOadIaVvRZk0e9Ev4yys7nnMl08ZA3tiajoku7aah93ExCtK9Bm91B5lWQdFm4yZkw14tQQKuDnWaNOwHFZGS1smhX6DV4IimoAb/inJ5CpcloPo0BX970Vrn9bvWWDKpZ7+l8uPm1U8ahxd8J+KKPreNY6CbyAgU7m5ou58ra75vd2ZQ6RfRcQUmnIcybj+/sioWcbHwcGllRBHAsn0tVFDCXgnDHBVW3eihc6CHajeJYVwGF15M2b6rngVxE2nYFSgqj542JvxuL4qEpn8GL3kuAly8VPnoPxc/Um3RfeIdvY9UK1oMAzNhNtLMz2uO6xd0iGHKwhRPnopeWogUfzjKFvJoaJgdM+ZQgIQ5FOtjGWa1EswxFgMGXfIKW9QKM5MNtagkReS+ap9mXTx4CsVe5pmSgzNcfGUg/rF3y7xpfce7R8+xKkVfXvCMHwlBWcL19Ye/z4Ah1zetkcROvf9ZE
- jV7WKWDG
- 5bnZQTeU5ta1rw48cO7AekwVuZAJpz62fz7+GbsNuameJhpdy5N031wiQox6Tl/hT50rQZi2TcaAGDw36hkdhEFR1cuksYoyZMraqNDFU4BXmM+ac4JoO4wOONKKndc3wVtrtxMOiqglVEQ4H+Wv5tf8FjF+ny3L/OA69yZVp0c9WrhLRNrduULICgm4xXkBsTEtLMdNyNvCdNk/NWnL5B0VjFJ1cyquSgejWPpAIWE3qAI6iFxu5Lp5dUcAXLu6O/C1w4LzvxbEutvsIsoApmEuSbPIeokh+Q1rMKBV++3yCONSUQIbzbaOdXJmz/P7cN14uGOtinpmbd+sUtUzmVTCLQIFJGRT/2ITrqz+9RgOtc7KXeikdvegKT1+hczQBCpNHdKnJyLKWYmEUE+dE+l6BfnWjmQGHcrollR22iYCRJ143uajtSwUC59gW8pVXOMGL+kCdvxHKCRYR84WolCZnPU8HuyFgDAUETkXX1+MiRlPe9XhA8WBknG3mjaA9hfaZ
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: DA88020005
+X-Stat-Signature: kegdif3q9xdnkpqngp1s8c75thfwrscb
+X-HE-Tag: 1785144087-729873
+X-HE-Meta: U2FsdGVkX1/PbnGTPDVZ2JFaXThMbqdMrqD5sawVmoQ6upEmDbDzEFB3Bpiyretpi+bJTu7BcckhuTXR+YKX9SqmDAE3EhWKLId6fimXU+v58+KgjsGI7KUrbF6SOIJZJiy3/8j5kLMPVOZuGiuXa3jMf/clGEjSnCIlfe2SN3RlaCsabLB7N6cNtPU+koVomaVim17AqhOjzB5m0xDNJDUl+m3sMefdr81V0FFElgEPLmhlfEiPT6+hnhovAEKanooNu9vQuQqxgm1fxMdrVM8Gj7ydOqETJRvq3J/96CHxEqIprPAOU/K+jBOyCj8MCS40wLIZfykpsr1sK/p3PvtjTb69n5KfzoCA/Yslc8YWCesvWpmLtPMFokQftOWTjSm9w9Wui9MqynlDzBVHsOJXwRb9nqjGp8NtMmipBfryhRwwdkK+t9160/KeXBkZ8PWI7bviXPj3GHfDpphCWmg5HvzK93XljffszU5Lo0esBwkILK5vh01NfuP773PITpFzlwND94Bqt/+xGDG4p3SqCHAEIkNyPl5EW22dx09lRPd8Ya+hpFVEIXTE4aXrfc4YLJJZfzRxU8h9IJvhEVocrs5K/SYA6sQbAGnzEL6ay5AP4nDr0X1QavMlfgoVz1rfpLaYUCCwoOpCtUEbh1kYm9c6ea1Q9ejtY3K/fTmlThrEi113bBiFXZN4Aj5SPUUWQCd5ui7aMrHso+X1m0Vg8SchwXwhNEn1QKftvFsxiKSJxyVEqd+bwzD4o7ZTbmO6UefIFxk5BQDv+e3bAtLvLUGmykoSr4X2VNvX0ahqLX3nfMeNMt6mcxEzjY5khhD2eOPN7MUSlN0IFOL0PbcW5xzPyIQ7a/yI6g22+qLbVKJUzuwUdliwC5dehs+q3qiwNF991YTTJB7CohrHDsvOhjZKYNUYLOovg51e5Was/qy69TOx8Ur8lYV4ZeS/xgOqeVZg7Fb332TIOcy
+ /g0Ko3ad
+ EeomQilyT/YxT2911pnV9RJ9hbU0UW9HW8hpVdBCztWWKbOlY6WUWiKj2TaWNNVnLJryUFTKFcMT9etVCVJuOtqfIXr3D/wWhepzZI0I+DQrQB/OPwW4Tt477OEO5oHMK6coTaEKnE0bE2ZJW02SweecmmqlAULJguVY1INWpIGGGnGHMUdHK+xPoFiIpKUPXihnLl5K8pV1MLclDzWNZFJNwkvUIjIBBvP+QInP+qVFmVTniQn7tsACzfy2z/mbWXw98+ZHbyi9uLrsqtFz93CeFlLK/MtLoetiTI144M0WD/12zOelDx0MqaS/Jn4w2ttpkqdzRZuVaGDVgfEwVMcqLYoBISzQ6V0kliOnNqxbylKkftFTZ297izq+kPrONF2izpW1tJLru0675m0V2j+9x7pQqGK3obxBIaEFN3vEyJ3tYrTe3rpqVzogZnvLoT7HPBvtXvxduBfEYhZrREsBEdWaD8xp/3mQSdC5j97iAM3cwk6PDC6/KsDrbDZnu7+CTM84nCCVKcMG6eo3a4i8lE5RoQELFd2FHvCa4q+rslEdCz+Wb5WnJXs2rtozzIJIMwdarw3DfV19pIsNmI5p8866iCiTlDZ8bWnq7x0L1McI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,149 +206,118 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Jul 25, 2026 at 07:38:23PM +0200, Helge Deller wrote:
-> * John David Anglin <dave.anglin@bell.net>:
-> > On 2026-07-25 12:27 p.m., Helge Deller wrote:
-> > > On 7/24/26 17:48, Usama Arif wrote:
-> > >>
-> > >>
-> > >> On 24/07/2026 16:32, Pedro Falcato wrote:
-> > >>> On Fri, Jul 24, 2026 at 04:03:44PM +0100, Usama Arif wrote:
-> > >>>>
-> > >>>>
-> > >>>> On 24/07/2026 15:14, Matthew Wilcox wrote:
-> > >>>>> On Fri, Jul 24, 2026 at 02:36:59PM +0100, Usama Arif wrote:
-> > >>>>>>
-> > >>>>>>
-> > >>>>>> On 24/07/2026 11:20, Pedro Falcato wrote:
-> > >>>>>>> ptep_get() does not need write access to the PTE.
-> > >>>>>>>
-> > >>>>>>> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
-> > >>>>>>> ---
-> > >>>>>>>   arch/parisc/include/asm/pgtable.h | 2 +-
-> > >>>>>>>   1 file changed, 1 insertion(+), 1 deletion(-)
-> > >>>>>>>
-> > >>>>>> hmm I think you might break build bisectibility if
-> > >>>>>> you separate out the patches, you should squash patch 3 and 4,
-> > >>>>>> with patch 1.
-> > >>>>>
-> > >>>>> I don't see how this breaks bisectability.  Can you elaborate on what
-> > >>>>> you think would break?
-> > >>>>
-> > >>>> Patch 1 does:
-> > >>>>
-> > >>>> -static inline pte_t ptep_get_lockless(pte_t *ptep)
-> > >>>> +static inline pte_t ptep_get_lockless(const pte_t *ptep)
-> > >>>>   {
-> > >>>>       return ptep_get(ptep);
-> > >>>>   }
-> > >>>>
-> > >>>>
-> > >>>> ptep_get() takes a non-const arg till patch 3 for example for parsic.
-> > >>>> I don't think you can pass a const variable to non const function arg?
-> > >>>>
-> > >>>> So parsic won't compile in patch 1 and 2, powerprc wont compile
-> > >>>> for patches 1, 2 and 3..
-> > >>>
-> > >>> Aha, yes, nice catch! I'll have to rethink that. Maybe squashing the patches
-> > >>> would be the cleanest way forward.
-> > >>>
-> > >>
-> > >> Yes, squashing is the simplest way forward.
-> > >>
-> > >>> FWIW, the vast majority of architectures aren't doing funny things on
-> > >>> ptep_get(). E.g PA-RISC, loongarch only define these so they can use it in
-> > >>> their own asm/pgtable.h. I'd really like to delete these but I can't tell
-> > >>> if they are *actually* required.
-> > >>>
-> > >>
-> > >> Ah maybe there is something in git history on why it was needed?
-> > >>
-> > >> If not, hopefully someone from the arch lists could clarify..
-> > > I tried to remove ptep_get() and ptep_test_and_clear_young() from
-> > > arch/parisc/include/asm/pgtable.h, but this then triggers compile errors:
-> > > 
-> > >  CC      arch/parisc/kernel/asm-offsets.s
-> > > In file included from /home/cvs/parisc/git-kernel/linus-linux-2.6/include/linux/mm.h:31,
-> > >                  from /home/cvs/parisc/git-kernel/linus-linux-2.6/include/linux/pid_namespace.h:7,
-> > >                  from /home/cvs/parisc/git-kernel/linus-linux-2.6/include/linux/ptrace.h:10,
-> > >                  from /home/cvs/parisc/git-kernel/linus-linux-2.6/arch/parisc/kernel/asm-offsets.c:21:
-> > > /home/cvs/parisc/git-kernel/linus-linux-2.6/include/linux/pgtable.h: In function ‘clear_young_dirty_ptes’:
-> > > /home/cvs/parisc/git-kernel/linus-linux-2.6/include/linux/pgtable.h:683:25: error: implicit declaration of function ‘ptep_test_and_clear_young’;
-> > > did you mean ‘pmdp_test_and_clear_young’? [-Wimplicit-function-declaration]
-> > >   683 |                         ptep_test_and_clear_young(vma, addr, ptep);
-> > >       |                         ^~~~~~~~~~~~~~~~~~~~~~~~~
-> > >       |                         pmdp_test_and_clear_young
-> > > 
-> > > So, I think the answer is, that the local copy of ptep_get() is used in the parisc implementation of
-> > > ptep_test_and_clear_young() function.
-> > > 
-> > > Switching to the default include/linux/pgtable.h seems not easy doable....
-> > 
-> > Did you remove define for __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG in parisc version of pgtable.h?
+On 25/07/2026 10:25 am, Dev Jain wrote:
 > 
-> Indeed, I missed to remove that.
 > 
-> Usama, if you want you can add the patch below to your patch set, thus
-> simplifying your series?
-
-It's actually my series but thanks Helge I'll pick it up!
-
+> On 24/07/26 9:27 pm, Muhammad Usama Anjum wrote:
+>> On 24/07/2026 4:23 pm, Dev Jain wrote:
+>>>
+>>>
+>>> On 24/07/26 5:23 pm, Muhammad Usama Anjum wrote:
+>>>> On 24/07/2026 12:46 pm, Dev Jain wrote:
+>>>>>
+>>>>>
+>>>>> On 24/07/26 3:54 pm, Muhammad Usama Anjum wrote:
+>>>>>> move_pages() is best effort and can temporarily fail when concurrent
+>>>>>> faults race with page unmapping. A busy shared-anon workload can exhaust
+>>>>>> the current 100 retries long before the intended 20-second runtime and
+>>>>>> produce a false failure.
+>>>>>>
+>>>>>> Use the full runtime as the retry window. Since the initial page location
+>>>>>> is unknown, require it to reach both alternating NUMA targets to confirm
+>>>>>> that cross-node migration made progress despite transient contention.
+>>>>>>
+>>>>>> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+>>>>>> ---
+>>>>>
+>>>>> Makes sense, but see below.
+>>>>>
+>>>>>
+>>>>>> Changes since v1:
+>>>>>> - Retry per-page failures for the full runtime
+>>>>>> - Verify that both alternating NUMA targets are reached
+>>>>>> ---
+>>>>>>  tools/testing/selftests/mm/migration.c | 39 ++++++++++++++------------
+>>>>>>  1 file changed, 21 insertions(+), 18 deletions(-)
+>>>>>>
+>>>>>> diff --git a/tools/testing/selftests/mm/migration.c b/tools/testing/selftests/mm/migration.c
+>>>>>> index 29f7492453d43..4d55a424058a9 100644
+>>>>>> --- a/tools/testing/selftests/mm/migration.c
+>>>>>> +++ b/tools/testing/selftests/mm/migration.c
+>>>>>> @@ -7,7 +7,7 @@
+>>>>>>  #include "kselftest_harness.h"
+>>>>>>  #include "hugepage_settings.h"
+>>>>>>  
+>>>>>> -#include <strings.h>
+>>>>>> +#include <string.h>
+>>>>>>  #include <pthread.h>
+>>>>>>  #include <numa.h>
+>>>>>>  #include <numaif.h>
+>>>>>> @@ -20,7 +20,6 @@
+>>>>>>  
+>>>>>>  #define TWOMEG		(2<<20)
+>>>>>>  #define RUNTIME		(20)
+>>>>>> -#define MAX_RETRIES	100
+>>>>>>  #define ALIGN(x, a)	(((x) + (a - 1)) & (~((a) - 1)))
+>>>>>>  
+>>>>>>  HUGETLB_SETUP_DEFAULT_PAGES(1)
+>>>>>> @@ -110,7 +109,7 @@ int migrate(uint64_t *ptr, int n1, int n2)
+>>>>>>  	int ret, tmp;
+>>>>>>  	int status = 0;
+>>>>>>  	struct timespec ts1, ts2;
+>>>>>> -	int failures = 0;
+>>>>>> +	int success = 0;
+>>>>>>  
+>>>>>>  	if (clock_gettime(CLOCK_MONOTONIC, &ts1))
+>>>>>>  		return -1;
+>>>>>> @@ -119,29 +118,33 @@ int migrate(uint64_t *ptr, int n1, int n2)
+>>>>>>  		if (clock_gettime(CLOCK_MONOTONIC, &ts2))
+>>>>>>  			return -1;
+>>>>>>  
+>>>>>> -		if (ts2.tv_sec - ts1.tv_sec >= RUNTIME)
+>>>>>> -			return 0;
+>>>>>> +		if (ts2.tv_sec - ts1.tv_sec >= RUNTIME) {
+>>>>>> +			/* Reaching both targets verifies a cross-node move. */
+>>>>>> +			if (success >= 2)
+>>>>>> +				return 0;
+>>>>>> +			else
+>>>>>> +				return -2;
+>>>>>> +		}
+>>>>>>  
+>>>>>>  		ret = move_pages(0, 1, (void **) &ptr, &n2, &status,
+>>>>>>  				MPOL_MF_MOVE_ALL);
+>>>>>> -		if (ret) {
+>>>>>> -			if (ret > 0) {
+>>>>>> -				/* Migration is best effort; try again */
+>>>>>> -				if (++failures < MAX_RETRIES)
+>>>>>> -					continue;
+>>>>>> -				printf("Didn't migrate %d pages\n", ret);
+>>>>>> -			}
+>>>>>> -			else
+>>>>>> -				perror("Couldn't migrate pages");
+>>>>>> -			return -2;
+>>>>>> +		if (ret < 0) {
+>>>>>> +			perror("Couldn't migrate pages");
+>>>>>> +			return ret;
+>>>>>>  		}
+>>>>>> -		failures = 0;
+>>>>>> +		/* Migration is best effort. Try again */
+>>>>>> +		if (ret > 0 || status < 0)
+>>>
+>>> Also what if you migrated accidentally to node 0? In which case you
+>>> will return a false success below.
+>> What do you mean by "migrated accidentally to node 0"? Can you give an
+>> example?
 > 
-> Helge
+> I meant it can happen that ret is 0, status is 0. Then you will pass
+> "status != n2" and the function will return 0.
 > 
-> ------
-> 
-> From: Helge Deller <deller@gmx.de>
-> Date: Sat, 25 Jul 2026 19:19:55 +0200
-> Subject: [PATCH] parisc: Drop own implementations for ptep_get() and
->  ptep_test_and_clear_young()
-> 
-> Switch to the generic implementations, which are identical.
-> 
-> Suggested-by: Usama Arif <usama.arif@linux.dev>
-> Suggested-by: John David Anglin <dave.anglin@bell.net>
-> Signed-off-by: Helge Deller <deller@gmx.de>
-> 
-> diff --git a/arch/parisc/include/asm/pgtable.h b/arch/parisc/include/asm/pgtable.h
-> index 467b8547ac8b..d92dee9fef3f 100644
-> --- a/arch/parisc/include/asm/pgtable.h
-> +++ b/arch/parisc/include/asm/pgtable.h
-> @@ -432,25 +432,6 @@ static inline pte_t pte_swp_clear_exclusive(pte_t pte)
->  	return pte;
->  }
->  
-> -static inline pte_t ptep_get(pte_t *ptep)
-> -{
-> -	return READ_ONCE(*ptep);
-> -}
-> -#define ptep_get ptep_get
-> -
-> -static inline bool ptep_test_and_clear_young(struct vm_area_struct *vma,
-> -		unsigned long addr, pte_t *ptep)
-> -{
-> -	pte_t pte;
-> -
-> -	pte = ptep_get(ptep);
-> -	if (!pte_young(pte)) {
-> -		return false;
-> -	}
-> -	set_pte_at(vma->vm_mm, addr, ptep, pte_mkold(pte));
-> -	return true;
-> -}
-> -
->  bool ptep_clear_flush_young(struct vm_area_struct *vma, unsigned long addr, pte_t *ptep);
->  pte_t ptep_clear_flush(struct vm_area_struct *vma, unsigned long addr, pte_t *ptep);
->  
-> @@ -491,7 +472,6 @@ static inline void ptep_set_wrprotect(struct mm_struct *mm, unsigned long addr,
->  #define HAVE_ARCH_UNMAPPED_AREA
->  #define HAVE_ARCH_UNMAPPED_AREA_TOPDOWN
->  
-> -#define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
->  #define __HAVE_ARCH_PTEP_CLEAR_YOUNG_FLUSH
->  #define __HAVE_ARCH_PTEP_CLEAR_FLUSH
->  #define __HAVE_ARCH_PTEP_SET_WRPROTECT
+> So probably just return -2 instead of status?
+I see. Interestingly, it seems sashiko caught the same thing. I'll fix return code
+in the next version.
 
 -- 
-Pedro
+Thanks,
+Usama
+
 
