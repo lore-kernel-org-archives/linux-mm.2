@@ -4,128 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAEF5C531FC
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 14:36:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53A67C531D0
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 14:36:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F17FC6B00AB; Mon, 27 Jul 2026 10:36:28 -0400 (EDT)
+	id 5F0036B00AD; Mon, 27 Jul 2026 10:36:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA07A6B00AD; Mon, 27 Jul 2026 10:36:28 -0400 (EDT)
+	id 551B16B00AF; Mon, 27 Jul 2026 10:36:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D8FB16B00AE; Mon, 27 Jul 2026 10:36:28 -0400 (EDT)
+	id 3CBF96B00B0; Mon, 27 Jul 2026 10:36:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B02646B00AB
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 10:36:28 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4EA4C4076C
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0B5BE6B00AD
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 10:36:31 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 820B1160700
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 14:36:30 +0000 (UTC)
+X-FDA: 85034807340.25.99F91EF
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 964A7A000B
 	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 14:36:28 +0000 (UTC)
-X-FDA: 85034807256.14.F67CAB0
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 6097C10000B
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 14:36:26 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b="C9iK//vy";
-	spf=pass (imf14.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Authentication-Results: imf15.hostedemail.com;
+	spf=pass (imf15.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.201 as permitted sender) smtp.mailfrom=alex@ghiti.fr
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785162986;
+	s=arc-20220608; t=1785162988;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oSC7HgsrY0npyqxa5DFWKPswHwp4PCTPNe4kvbfpoeM=;
-	b=6J2HqytazHR1RPy3vL+cHAOD1YNpQcNRfj+OgKZ3kB4CXzwMwxgtOYxwQdNIxRQ0it21OU
-	swHQmfqS/lFC3J8LDFlw8kbkEXYqmzLG4zvccvcbRVnH7/Dq/o1wAiaqbaJYvcG+CB/ExU
-	Ez+CEeecPM6ZhwcU/QzwVvkp83MsNqs=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=37NYZUhwe+C7QdIZtTcexfi4L5isneaLVJ+y3ukO5Go=;
+	b=ZumtL7KTCzKzfu2bs1CNzuS+K/WbZr0uei6pds8ca7392VdJQCJXRkIJMtFaoZY6U8bzl+
+	23MJ/68wavD7rQo/x3BL78MEkZjwg5lfbQS5okqtTVb+gxEzDH4aaTnM6zyzbtJVB4vhP8
+	PgUWoI10vTrWx5Kz2oTJWKiUPWm/g4A=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785162986;
-	b=joOzhP9umqAdN2vh7AkrWxh0f8dM8jc+oFBjrcGA4yuEY2pm4ajo3pEWG83Jsvh8S4AS7Q
-	aVlAfhaMNvlA76XNNuXHAatrWBf7WH5Cj8daAq5bavYkdwwMx9kXXlsVw7jdIG58dZpzgr
-	IVrrlMOxTNOU7OsP6f2zmtqP1DkR4ak=
+	t=1785162988;
+	b=3uJSiup7Zuqwn4Wz6Mk+iJ0yIpabuhTdPpJJhQ5q9xLB4jLYaYJBMLOYvAqRw6F8VEOnqq
+	UdJxBoH2aX6QfewzGOmnLCBKnv0PFxYvk3YOP5s2GUkgcUvkz2cbzrn5fflLjpQRxwTmZk
+	fnJPhlKXYLBas+XLEyZAeyVgep5ndA8=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b="C9iK//vy";
-	spf=pass (imf14.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4955de8797cso17297765e9.3
-        for <linux-mm@kvack.org>; Mon, 27 Jul 2026 07:36:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1785162985; x=1785767785; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=oSC7HgsrY0npyqxa5DFWKPswHwp4PCTPNe4kvbfpoeM=;
-        b=C9iK//vyI6qS/FUguyK44nqtGWIsVtTDpY/3LsPhdNLK7HTMgy4Hy57YqxDsGlcPAy
-         eSd08w5CeThfpNECWNN37GlD6mGwFfQC0PfyRzP7z+l8Hry7QSuJJnlkEbCuCCMYeEMa
-         KjIssHzu/YUtENGfOTOd2aywAW3Vt1bavIoPx6/0obVDrz/kyrGJwMqWI6nzPY44QMdZ
-         1AOeTYpCn2TdqBembA3WuYkbJoQrlRy9NgW538zafsN/k7SjFCD6iZmOk0RRasRF5GYy
-         u0b0W97O4xRwd8Jk4Rvs0FJyu7JMPt3M68j5dM8KqeWFNbIQ61kmNw1//m6HvxmKOKau
-         mGWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785162985; x=1785767785;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=oSC7HgsrY0npyqxa5DFWKPswHwp4PCTPNe4kvbfpoeM=;
-        b=TxUqcwVz22nHKh8dr9IspAseopPsEiJD5xLJ+uoLJzHQ9xRQdzwEBlpHsJOvMt8N4e
-         +hW5oImyiTar+4sdQXy/GUdtcpv2kjCeDcbMXt3Mt3OUTjoEcLZYZJgb3L74RrRCvZ4R
-         jtOnDLc8uI+apRaT6ku3xLogNAH+Dv5lE18QgwfeKYZ4RWNPMuQiTU1TL0AwJIJFJKIV
-         5M3HI6TeW6PyBuZRArrfjIEG/8AxLD3VWtaoVq2zclaYLyNmfvPyZBMUCgfaBQ0OVcac
-         cHNGtRGAHWSiCPSSihTIrFuXBELNLRRCFCyf4OvFlzui8+1Y6Tq3BmmHkv2nDodIopVK
-         l8Fg==
-X-Forwarded-Encrypted: i=1; AHgh+Rr4DLkMZEImP4EgckWrD3jyizD83roOFafHGY7R7HCJPH66hpxMQ33jJR2PpwE2g3Cwj5ob5Fzhtg==@kvack.org
-X-Gm-Message-State: AOJu0Yz5dAfekYOa7H8OqzhEUwsIGI0uGYdTKNkOHnbv0XC16S8tHZMf
-	Gy5SoHNkNfbrWaY+U5y9BQFH0hrmXjzcfsxyqhzC8Id2e+3GkRJWUN82GRP770tuDOE=
-X-Gm-Gg: AR+sD10UcBGbR1AzRNyA1KjWyHQ7MBDFWx6CypsGY4Y3qPgCG5/nNos83eh3lK7+XkW
-	wpDYUQFkz8rZJXA0LQlMxnh21i35hD7MWoQPeokdTY76FBfGUDfP7rzbWAvlMWP3OiL5+FOhU70
-	6AuavOs8PzOH5xgak75auDJrwoPwwRgzYseHMlytGVlJP3bGOamePammTJar2uh9IZvSP27HMif
-	b1wyY8JDtnuFhhldunxL59ZZGTS7C/TEYrXriHW0PFwwC2l6AfKzu2o0IkniTJfRbHDyxBMSpnD
-	GjsrqnUGurh13d9dd7j0vw0/ZT0Pd+rJc5C93B1PWk4e/5hNtTcg9u3S6xpZK/zfqBLpZ1JLqsw
-	9DqOXoVYn7iiwCZn8nwB1pivww7C5oigXoAe/KlrXC6sNV24m+PlzCh0qPgDIpObWfXNZsBZ3VC
-	WBBW9aj3YBJg==
-X-Received: by 2002:a05:600c:a016:b0:495:63e6:5fb8 with SMTP id 5b1f17b1804b1-496b56fa3c4mr111223425e9.12.1785162984790;
-        Mon, 27 Jul 2026 07:36:24 -0700 (PDT)
-Received: from localhost (109-81-83-7.rct.o2.cz. [109.81.83.7])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-496b4858e86sm236866125e9.1.2026.07.27.07.36.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jul 2026 07:36:24 -0700 (PDT)
-Date: Mon, 27 Jul 2026 16:36:23 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Rientjes <rientjes@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Usama Arif <usama.arif@linux.dev>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Darren Hart <dvhart@infradead.org>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	=?iso-8859-1?Q?Andr=E9?= Almeida <andrealmeid@igalia.com>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Yosry Ahmed <yosry@kernel.org>, Rik van Riel <riel@surriel.com>,
+	imf15.hostedemail.com;
+	dkim=none;
+	spf=pass (imf15.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.201 as permitted sender) smtp.mailfrom=alex@ghiti.fr;
+	dmarc=none
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 07C7B3EC6A;
+	Mon, 27 Jul 2026 14:36:21 +0000 (UTC)
+From: Alexandre Ghiti <alex@ghiti.fr>
+To: Johannes Weiner <hannes@cmpxchg.org>,
+	Yosry Ahmed <yosry@kernel.org>,
 	Nhat Pham <nphamcs@gmail.com>,
-	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org,
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC] Robust futex causing memcg OOM storm on exit
-Message-ID: <amds50dIVOiQNz0k@tiehlicka>
-References: <20260723001908.4046643-1-shakeel.butt@linux.dev>
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>
+Cc: Kairui Song <ryncsn@gmail.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Jan Kara <jack@suse.cz>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Youngjun Park <youngjun.park@lge.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Wei Xu <weixugc@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	Alexandre Ghiti <alex@ghiti.fr>
+Subject: [PATCH v2 0/3] mm: zswap: free cold writeback folios promptly
+Date: Mon, 27 Jul 2026 16:36:07 +0200
+Message-ID: <20260727143618.1582318-1-alex@ghiti.fr>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260723001908.4046643-1-shakeel.butt@linux.dev>
-X-Rspamd-Queue-Id: 6097C10000B
-X-Stat-Signature: 7ccy8bconmnpoqmh883o78q3nscr75h7
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: alex@ghiti.fr
+X-GND-Score: -100
+X-GND-Cause: dmFkZTFrO0LV9SN0Fxmgf2Lm62dYOTtW8iLbRU/7IvgNTNAuyaCpaG75iLyUl49ieDOCRD4yAnzErhS+w6tdDrk9EkgQwwAx7yzMXE1cLnydHwWsF8aXbyQ30LnCZOarXGihR3Wfbs/zkIkQCfSb2Uc0l1df3XpjTMDIo3/HOnhQGIQdneB2eXQ6Z92pK3VPzVMgZMim5bD0D6XGxACGWGzmC44HMrIQk3A61rLakGi9RUjhNumhWsSaV7AgbcDpE+DzewZJh26TB1LReqOvXyDDrQBj2gDrTcnPCROmzWfCrrZ8ZDDhL7mjVGQwZ0n/7a5FylpkNilyhbZivi/NW5GMGeDMKs7n8AFVB6zBJHvzbWSbij0gukD5aFYAp7nC/Lejt9rm0X1KogUs/O9tnseksVuyzraSkseyWZyt3AZ+qiosuLnI84tZ7n3U7sqdr/huDb0bpqYHUuwa1G48MFpQ0FOCZ2V/e8gd8qrp9PSNlc96+I5/+r+Phlzka83tU8alg+giEPBwdfE8k1CuEWwS68gpmD+ICx5JQKwc9Y5bJEKiEovqqO+4XF5RKKSBXg6SdbjgOZuK+UA4QePY1gTt8JfMapFq/E5bRz9zaimLC+QN+OGLfrUjRHvDT6KN4EqfYEZ927nn7QxOm6I5QgRd8G7zbKH2lLNskD4dRn1ioVHoDA
+X-GND-State: clean
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1785162986-26958
-X-HE-Meta: U2FsdGVkX1+skwqkMc+rLsi/x2kKYlKpEaXJdnMPVgzY/M0LTg4uIqc7jYrkFr9rb10+VKJL3/Itwv42ANpFnMQxSfFgx63g9mNXcMlkeqKK5eaM0b25tUAYuvghnc3WH2txycd3fnR2JjAcwie1nWyMEXW1BEn1ctn2IU25oKXzNtEl04jxZZTTLspejys85UpD+sR0xdZuutnWz3Tjuc2HJEFOhklBqqMSmYpJ0Tue4pgrWYdVpgmJSWp2wa84w2J79mtmvn/L7uDlamO8aFgrllqGr5yZt32A+h9fRjmFCnjo2+8ia4dFoIj/2S38th21EvMHAPfBDw2ct+i38QlOXMmfdPtJPM7hfg2LD56n8JEYs4VaJ0EzBAKtlrSP8tMAK+u5xuPeD3dv+ifrn3719GmQn6e/r9vIsbPZqRX4E1O5a501yOlHTxfpO7hxPlRR6nWHh6xyqd6VRAne7pt6+Zr/5l4bIMpr0kblkJ0pLS3ROXlRYjMX2kL7TMSbTCbSfCZ7nHSTtdYJa8lBCzaXCBAghzc1O6aMY6cKgsuS959f9leiaMbZTBF9KT6ikujRLKXj5pTkuSw3vMf4J5fyML01CBPxRZEwWI2XpLsniNWVfzQqFEfZxhyW+2S7QLTIyaK6kYJEn+R0QDiyfiPqfSBr2OY0dgS1/f7VdP6+7jtfWpqJFf4zQBxCKwZyj/l+JtKKmxvC76jdSLyh7y5KXtmnFMa31cp2+cXYZr8pHTyzs/sifwxzmGdOPgBwW1rCtGnPMvU9Cfy8PlTZXZvwBgyrz21Uyd7SjU6KxGbdRHZSnntsHPUmRqFi+Ov1C7tioIbaKm0qvC//muJmphxzY1+4ePR6siEMZdRKeuYkzBEUFXJNmiKP0KHr7liDqW13ZPrI2xFj8Dgxyi7sXi8mn5RiE5ppkx6UhXZ8dfahK5yVfQFWDJjahwLcLJuZj0e7u7/AUPrufmfbaXm
- dgcvD0zV
- asX63Kqdrjj/5RBu9BMfjLrxPeQxLWAxqFroJXbIEnOILTtgzsSL4ycwLOtZ7v23Umvq9Egnx5uKdUP0p2YLqzkNgG7Ei1QKKd6S/Cf/UIWk4V8Rq6+EI7CHWC5t2CNaoc966ik5BVLdc8f8MA+ZYtysFP5LamjLuXxgme91XV/pF3ehFYsSMIttonSZiS5lWEFqMCgcUyTD7HB5XxOx7dKmAl+iTDHOTS/iddNczF4FWq5bDuKp4GwbAg+evxlumGCX5H1i1hgssmV+iX5SCEHjTR2k6oKGFJFiWLRj1GfsARmENWL0AkW6uArmlAblTBONuup1IgPu+R3uBBk63seMMnbUgpIvFSw6EibWC99XjexM=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 964A7A000B
+X-Stat-Signature: umypq3ss1iodbyguhc1poix6zjiuknbi
+X-HE-Tag: 1785162988-635143
+X-HE-Meta: U2FsdGVkX1+fupjEPOa7lozsKeGKY40sKo+VHNowMYvk3+nZVLo2/aQVz952Jtzz1tKdn5qyNMj+L3iAon3SCZrcP3gPEGzxJ1E2fRM8ig53XVygFjjIbX7bii1kkulraifaa/0BxEgFtjwZ0+cDZ0S8OClvyH4BRyO008U1pxfr1gNyOiuQKql+qLXzOLwAcnkl81X/vSU9llJfQ30KzIMzapoH31UMiGA69BfKUVRlYN+EWI7LotfupuFLFp4kBg2CHXvof9xH8AlmbKRaYVNNVu4vLFCoElwemy5yt8JKlgA4K8H0Hr5NnFRClcq6bOhCTjqQDADj5HMYBnHTTMqb0+qLMNgGFwpO5rMeDnTdJvTdVqLOjMScbDuhc36fcDMiPhziZast7ItQngFFl49N6/t/wTT9UtF/Vg76DU0kMNQ1JaqyjPbwW8ne3wXrgmWhjlDLevFvWtCjY96Fc2yrvQJdBUCVHaKim2NWrd3erVZMkRJqSPZpS2CQrnhNa76RYoSbIGvM7Aq+Q+zBTsCSIUYrSL4MC6H4P54P/Xjil0rhiBcND8Z5kl2Shd+AlA6iWtRxGEQlSL/2baSdD+lNHzV4cHq+cEBwa29Twxxjcysk6oh9/OTCF9/rDNOyh6iPpbih4uEEBKrj97qWP3vzGGttS1/tgHULZl1Ii0Z+mdOYyjB9o73hkhw/KPG7e2e7rIDHfQxb5FfW4f8yyAYoSJFJ5fYfGnM3Oi7Fdm7BcXlKPQYisqv2nLyAbfVFEBhgGanMM1hz+R93SkSeQ08p8nNzJva4NnOHKNsIc+FjjoaZ2UBBEj1UuOvP4+/3JiLHAJnCc81XpA+8miDrAp8tE/JRA535rEYEiO510DqDN9/EicT/QvwgLBqNA+5lcgkE/sfL87YWL+V3h1ojlkaswQnlMeBXg/fQKDnZXhztreJuqkduw1a7wKB540RLjSgL7G3b5RcnNimagds
+ /y1tVD37
+ xBzSvcIfraI+BTwXMajmy9iS3wh8JNrpvEt3v
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,117 +101,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed 22-07-26 17:19:07, Shakeel Butt wrote:
-> At Meta, we are seeing instances where an OOM killed job is stuck in the
-> exit path for several hours. In one particular case, the job was stuck
-> for more than 8 hours and I had to manually remove the memory.max limits
-> to allow the process to exit.
-> 
-> The job was a single process job and had ~55 GiB memory.max and zswap
-> enabled. It had almost 0 anon in memory and ~111 GiB in zswap compressed
-> to ~51 GiB zswap pool (i.e. almost all of memory.current was zswap).
-> Nothing was left on the LRUs to reclaim.
-> 
-> On further inspection, I observed ~20k threads of that process stuck
-> with the following stack:
-> 
-> [<0>] mem_cgroup_out_of_memory+0x4e/0xa0
-> [<0>] charge_memcg+0x8bf/0x990
-> [<0>] mem_cgroup_swapin_charge_folio+0x4e/0x80
-> [<0>] __read_swap_cache_async+0x10c/0x260
-> [<0>] swapin_readahead+0x116/0x3f0
-> [<0>] do_swap_page+0x13c/0x1ce0
-> [<0>] handle_mm_fault+0x61d/0x11f0
-> [<0>] do_user_addr_fault+0x3e7/0x6d0
-> [<0>] exc_page_fault+0x8f/0x110
-> [<0>] asm_exc_page_fault+0x22/0x30
-> [<0>] __get_user_8+0x14/0x20
-> [<0>] futex_cleanup+0x27/0x1c0
-> [<0>] futex_exit_release+0x47/0x60
-> [<0>] do_exit+0x107/0x940
-> [<0>] do_group_exit+0x81/0xa0
-> [<0>] get_signal+0x2b1/0x6e0
-> [<0>] arch_do_signal_or_restart+0x1a/0x1c0
-> [<0>] exit_to_user_mode_loop+0xa8/0x1c0
-> [<0>] do_syscall_64+0x152/0x250
-> [<0>] entry_SYSCALL_64_after_hwframe+0x4b/0x53
-> 
-> In addition the dmesg was filled with "Out of memory and no killable
-> processes..." messages.
-> 
-> I have no idea why oom reaper was not able to reap/unmap the process. My
-> guess is that since oom reaper tries to acquire mmap_lock in read mode
-> limited number of times and then gives up, there might a thread of that
-> process which had mmap_lock in write mode at that time.
-> 
-> My initial suspicion was the futex_cleanup and kernel page fault causing
-> infinite fault and charge retries but that was put to rest in previous
-> discussions happened on similar problem [1].
-> 
-> My current theory is that it is just a simple slow serialization behind
-> the oom_lock. Unlike page allocator, memcg charge code takes the
-> oom_lock without the "try". Though memcg oom code uses
-> mutex_lock_killable(),  note that in the call stack get_stack() consumes
-> SIGKILL (or sigdelset(SIGKILL)) before calling do_cgroup_exit(). So this
-> mutex_lock_killable() is just a mutex_lock() here. Therefore 10s of
-> thousands of threads are waiting on oom_lock and one by one they get
-> -EFAULT from get_user() in the futex cleanup code and bails out.
-> 
-> Discussion from [1] lead to the commit a75ffa26122b ("memcg, oom: do not
-> bypass oom killer for dying tasks") which routes dying tasks into the OOM
-> path precisely so the oom_reaper can reap their mm and free the memory
-> asynchronously. But the reaper is best-effort and one-shot: if it cannot
-> take mmap_lock for read (e.g. a sibling thread holds it for write) it
-> sets MMF_OOM_SKIP and never retries, leaving only the glacial
-> oom_lock-serialized synchronous drain.
-> 
-> Let's short-circuit that path: once reclaim has failed, if current is
-> dying, force the charge instead of invoking the OOM killer for it. A
-> dying task frees its memory as soon as it finishes exiting, so running
-> the (necessarily no-victim) OOM killer for it is pointless - and doing so
-> for 10s of thousands of exiting threads is exactly what serializes them
-> behind oom_lock. The dying task instead faults its page in, completes
-> exit and releases its memory, including the zswap pool, so the memcg
-> recovers on its own without the oom_lock serialization and dump_header
-> storm.
+When zswap writes an entry back, it allocates an order-0 swap cache folio,
+decompresses into it, and issues the write. The folio is cold by
+construction, yet today it is left on the LRU for page reclaim to find and
+free later. That wastes a reclaim scan and keeps cold memory resident
+longer than necessary.
 
-TBH I am not entirely happy about this approach. It effectivelly reverts
-a75ffa26122b ("memcg, oom: do not bypass oom killer for dying tasks").
-It just makes it lockless. Assumption that a dying task will do so
-quickly and with bounded resources has turned wrong on several
-occasions.
+Rather than implement this in zswap, extend the existing dropbehind
+mechanism to swap cache folios and have zswap opt into it (Yosry). A
+PG_dropbehind folio is already dropped from its cache once writeback
+completes instead of being left for reclaim; for a swap cache folio that
+"drop" is removing it from the swap cache.
 
-On the other hand I do undestand the contention issues and I can imagine
-that the existing solution doesn't really work well for huge thread
-groups that all end up lining up on the oom_lock just to learn there is
-nothing really killable anymore because they are the oom victim...
+  Patch 1 - move LRU insertion out of the swap cache allocator into its
+            callers, so a folio that will be dropped on writeback completion
+            (zswap writeback) can be allocated off the LRU without a flag.
 
-Would it be just safer to bail out only for oom victim threads. This
-would narrow down potential runaways for oom victims which should be
-more limited than any killed/exiting task. It would also give the oom
-killer/reaper chance to work. WDYT?
---- 
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 6dc4888a90f3..3e0a6b601767 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -2685,6 +2685,15 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
- 	if (gfp_mask & __GFP_RETRY_MAYFAIL)
- 		goto nomem;
- 
-+	/*
-+	 * OOM victim still needs to charge memory to exit. OOM reaper should
-+	 * help but it might fail on mmap_lock contention. If the victim is a
-+	 * large thread group then all exiting threads might compete on oom_lock
-+	 * just to learn that there is nothing really killable anymore. Bail
-+	 * out early and force the charge to expedite their exit.
-+	 */
-+	if (tsk_is_oom_victim(current))
-+		goto force
- 	/* Avoid endless loop for tasks bypassed by the oom killer */
- 	if (passed_oom && task_is_dying())
- 		goto nomem;
+  Patch 2 - drop dropbehind swap cache folios on writeback completion. The
+            drop needs the folio and swap cluster locks and may sleep, so
+            where writeback completes asynchronously (IRQ/softirq) it is
+            deferred to a worker via a per-CPU llist, which frees them in
+            batches; synchronous-IO swap completes in task context and drops
+            the folio inline.
+
+  Patch 3 - zswap allocates its writeback folio off the LRU and marks it
+            dropbehind, opting into the mechanism above.
+
+v1: https://lore.kernel.org/linux-mm/20260718093723.153324-1-alex@ghiti.fr/
+
+Changes in v2:
+- Make swap dropbehind a generic core-mm mechanism that zswap opts into,
+  rather than a zswap-specific implementation (Yosry).
+- Allocate off the LRU by moving folio_add_lru() out of the swap cache
+  allocator into its callers, instead of a skip_lru flag; rename it to
+  __swap_cache_alloc_folio() (Kairui).
+- Batch the freed folios in the deferred worker (folios_put) instead of a
+  put per folio (Nhat).
+- Skip the folio in the free path if it is still under writeback
+  (defensive) (Nhat).
+
+Results
+-------
+Paired baseline vs series on async swap (NVMe, Patch 2 deferred path). Each
+workload runs confined to a memory cgroup (memory.max) small enough to force
+zswap shrinker writeback.
+
+Kernel build (defconfig, make -j4; memory.max = 600M):
+
+  metric            baseline       series      delta
+  pgrotated           441028         2521     -99.4%
+  pgsteal_direct     3524343      2869004     -18.6%
+  pgscan_direct      8393791      7765008      -7.5%
+  zswpwb              705129       699019      -0.9%
+  build time (s)        1155         1114      -3.6%
+
+Of the 699019 folios written back, 698990 (99.996%) were freed promptly on
+writeback completion; only 28 fell back to reclaim.
+
+MySQL/OLTP (sysbench, 10 tables x 1M rows, 512M buffer pool, 8 threads, 300s;
+memory.max = 256M):
+
+  metric            baseline       series      delta
+  transactions/s      153.87       163.30      +6.1%
+  p95 latency (ms)    157.42       145.82      -7.4%
+  avg latency (ms)     52.09        49.05      -5.9%
+  pgrotated           743738        22460     -97.0%
+  pgsteal_direct     6886490      5445278     -20.9%
+  pgscan_direct     13462510     10820730     -19.6%
+
+Future work
+-----------
+Barry suggested extending this to MADV_PAGEOUT and general reclaim, since on
+asynchronous swap devices the memory is not freed until a later reclaim scan
+even after the folio has been written out. I prototyped dropbehind for all
+reclaimed swap folios (not included here) and it regressed sysbench OLTP
+throughput by ~25% on NVMe swap. This matches Kairui's point that for common
+reclaim the swap cache is worth keeping to catch fast refaults, unlike
+synchronous-IO or zswap writeback where the reclaimer already waits.
+
+So this series stays scoped to zswap cold writeback. I still need time to work
+out whether general reclaim / MADV_PAGEOUT dropbehind is worth pursuing for
+everything or only for known-cold cases, and how; I will follow up.
+
+Alexandre Ghiti (3):
+  mm: swap: move LRU insertion out of the swap cache allocator
+  mm: swap: drop dropbehind swap cache folios on writeback completion
+  mm: zswap: drop cold writeback folios via swap dropbehind
+
+ fs/splice.c          |   2 +-
+ include/linux/swap.h |   8 ++-
+ mm/filemap.c         |  19 ++++++++
+ mm/swap.h            |   6 +--
+ mm/swap_state.c      | 114 ++++++++++++++++++++++++++++++++++++++++---
+ mm/truncate.c        |   2 +-
+ mm/vmscan.c          |  13 +++--
+ mm/zswap.c           |  16 ++++--
+ 8 files changed, 159 insertions(+), 21 deletions(-)
+
+
+base-commit: 626acb37cd445144f321f1b64cac9a93760fa716
 -- 
-Michal Hocko
-SUSE Labs
+2.53.0-Meta
+
 
