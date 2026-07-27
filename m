@@ -4,124 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88419C531FC
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 15:36:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DE97C531FC
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 15:38:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 660016B00D1; Mon, 27 Jul 2026 11:36:37 -0400 (EDT)
+	id 1D10E6B00CA; Mon, 27 Jul 2026 11:38:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6108D6B00D2; Mon, 27 Jul 2026 11:36:37 -0400 (EDT)
+	id 1815F6B00CC; Mon, 27 Jul 2026 11:38:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5266E6B00D3; Mon, 27 Jul 2026 11:36:37 -0400 (EDT)
+	id 097D86B00D2; Mon, 27 Jul 2026 11:38:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2C96E6B00D1
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 11:36:37 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A29A4A07EC
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 15:36:36 +0000 (UTC)
-X-FDA: 85034958792.01.AE860AF
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf21.hostedemail.com (Postfix) with ESMTP id AB47C1C0009
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 15:36:34 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=umQaGad5;
-	spf=pass (imf21.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785166595;
-	b=VAekRzQE6JB6d2XtZdcF/9ApgZVhjeXpdng25y861An5da/ChadYKAxTYbmTHMB8kgvdrQ
-	PTKsFWSTQzGC2FTxuS8ADO1UyrIavMVdzjYOophipttHNYh3wiP1ZWFXRlpARblWztnxY6
-	mgOa9bHXDf5F2rT4XLWYxUm4dsPjN0E=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=umQaGad5;
-	spf=pass (imf21.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CACB06B00CA
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 11:38:49 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5F68C1C0F00
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 15:38:49 +0000 (UTC)
+X-FDA: 85034964378.30.E53122F
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 60AE420008
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 15:38:47 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=kDgJ6qV6;
+	spf=pass (imf13.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785166595;
+	s=arc-20220608; t=1785166727;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DtCbclGalDwMXB9x7KhGl4H9SC7q7Ix1vU3UYrj9Kno=;
-	b=gtv88xFFPwq9EzHbP4E7LmnQ2i0n+4ker2ETPDpgPgbNU9e6Vrzf1JRBmbnLmAmdCXYgkr
-	s9aoTFwsb1Mj+CirxHBHfFB0ZvtM9IedJI7PO98Oo6iWIf6uxDAgoGYCK+HYAIxYPMsV5j
-	U5a5NUwVNoyc7+2zi3OIkUyD2ez7nbk=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4556B15A1;
-	Mon, 27 Jul 2026 08:36:29 -0700 (PDT)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 545F83F763;
-	Mon, 27 Jul 2026 08:36:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1785166593; bh=VxwcTpU1zkLTiWJHJFd1+dPEfdXN9pkdJizROxnSPx8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=umQaGad50YqGP9/hpR0vblKavVaO/yfzmd6WpBrSu3X1qxzwvAqth8D98RKBUpnRl
-	 YBkPW2SI9qXrZ/dhG0U16YoQWNEaqdp7BQq231JeMnCBE+q/DgI9MewD6hJ98T6X/b
-	 l61b8+i7MvjGE4JRrEUAFuCexvu/jxEyxkuWD4XU=
-Date: Mon, 27 Jul 2026 16:36:23 +0100
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Dave Hansen <dave.hansen@intel.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-	Tianrui Zhao <zhaotianrui@loongson.cn>,
-	Bibo Mao <maobibo@loongson.cn>, Anup Patel <anup@brainfault.org>,
-	Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jonas Bonn <jonas@southpole.se>,
-	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-	Stafford Horne <shorne@gmail.com>, linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
-	linux-openrisc@vger.kernel.org
-Subject: Re: [PATCH RFC v2 13/20] x86: mm: carve out the generic compile-time
- folded pgtable case in effective_prot()
-Message-ID: <amd69-dELYw4qlKC@e129823.arm.com>
-References: <20260722-dummy_ptxp3-v2-0-d9e4bad31e0a@arm.com>
- <20260722-dummy_ptxp3-v2-13-d9e4bad31e0a@arm.com>
- <d16a8412-acee-4c21-a126-f570d6306983@intel.com>
- <amD_5r04mzMoZ0-r@e129823.arm.com>
- <33c774f6-2750-4831-8eee-e43dc471da32@intel.com>
- <amEvYRs7CjhQdQWT@e129823.arm.com>
- <a1df631b-9854-497b-b7fd-831288fca81e@kernel.org>
+	bh=a1lsZlrq00ZIeRzGocQiS21Kw0pb1EHsAJMo62alk8g=;
+	b=H3PnyT9c4M7V55jVBO5LzNQIMsdHJuZFZuhqmBip7aypTtMqv4zQWWqku1O/iJIineu+Lj
+	YqkviCkPtt/PLQkSjcZPouifx+n2RNchOfrjGLCn6vcZl3BvYG0i7XYGCi3AAjG3PrBagm
+	MtmZQr+CiJJYyFCg6dGr17qqDzTj4Ng=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=kDgJ6qV6;
+	spf=pass (imf13.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785166727;
+	b=FGwoNX2oJ07BuHPnBPH+ZwwE5Wbv0gHTYcaaFL0x1M7+f7/RmmAIueo1Aqo7Dl7WvwDh0b
+	mmuxozMPl7XfqF0YcVhdsgHrY1xcvfmPNMZNe7vkt79yP0NaVv9edvzRyNEbaW0vOW7LHd
+	O5scFK3ijXPEFIvOtqzQHwU5drqUKxg=
+Date: Mon, 27 Jul 2026 08:38:37 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785166725;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=a1lsZlrq00ZIeRzGocQiS21Kw0pb1EHsAJMo62alk8g=;
+	b=kDgJ6qV6z/P9vqTdFCOyqlojE6tx4hzyC1t5U0i+1nM+95V6/pLFg/UTd8f3V6bJvLKEE/
+	hAuqhebg7H8GzrlVOM+NeognpgaAvb2IHuEHv25Vg4mBU8Qx/+0h4l/XzGXJx4jtdPxttZ
+	HSRTsQLem2VoqBiC18+jTI/iCks1P8U=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Michal Hocko <mhocko@suse.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Rientjes <rientjes@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Usama Arif <usama.arif@linux.dev>, 
+	Peter Zijlstra <peterz@infradead.org>, Darren Hart <dvhart@infradead.org>, 
+	Davidlohr Bueso <dave@stgolabs.net>, =?utf-8?B?QW5kcsOp?= Almeida <andrealmeid@igalia.com>, 
+	"Liam R . Howlett" <liam@infradead.org>, Yosry Ahmed <yosry@kernel.org>, Rik van Riel <riel@surriel.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, 
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC] Robust futex causing memcg OOM storm on exit
+Message-ID: <amd6N4DVzZkl90cs@linux.dev>
+References: <20260723001908.4046643-1-shakeel.butt@linux.dev>
+ <amds50dIVOiQNz0k@tiehlicka>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <a1df631b-9854-497b-b7fd-831288fca81e@kernel.org>
-X-Stat-Signature: 8am9ggrgfubcec1pn8tkknm9ecijneoi
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: AB47C1C0009
+In-Reply-To: <amds50dIVOiQNz0k@tiehlicka>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1785166594-152220
-X-HE-Meta: U2FsdGVkX1/BCEk8+b97AiLj3j7iV1d12+ggkMTwQZL+oWsfWfJzrZCkPjk1ZvbMhfTlZibiWrwn8dcFMDgmtdmzEuibkn0IBFBlQ71/1H76qZYqVWbHhCFBfKpuUlciVlaaUCfF4OLeob7lfKAQeumtwgPsXK53//18bXfaUOc1A8gh5bmfttn0TuGtudwTGPmHuTMYP6h45ry+09a1lscU7PjK/k5GPGU3pAaMtcrstLcArA/7Qzs/N+trhnwEGsBQpQoSFzVOzkMPSvrzGYSlFuQBGiddEIcdZIY9lll9k5racaO4/WOa1Lvcy6CkL7V4JAoMDFOLoOI7mfEQesk53btHpAz81n8kdW5rfzuxMwAACDdDK2LtDxG/l5mYfy/d9brdrIZv8I/sw7nb0JMy9Ajp+Pmq71dHI30qTtbq+AU5pVkLbI3EXPqHTub63GEGjSXjG4LnD5GFdnBtYY6fbrhuZIj8EOX6Fm5crOtkBrYeDIWnjMIBwZ12WXRi47WsA2jzbxeknUWuGzLD36prQpHDqFTr3g0r6U+yXSQprIsM6hZUosT1VFExgab/kINmDIfFuLPl/kg/kfBuqGT9nX9YjvvTFmaiTN6YSn+1FUVf43HK5Z8J5usuDtBhe2BtbUXsVn97JOlwWYSFlgGuW7nqW2/xfZgIeB2hP9OHO1QRsqVD8yZ6AwbMsl9D/ySQnXa1ZGh481VhFIizFbAaZPYPy+veoHBbm+Rtyh4FAEiUbA3xT13xVeTcU3N+AbZdc7Eq8z83QQigRpXPHlRl8StyEZWqvtgT3vCZxTXKI9TFSJqft4SXKj/zydu26OL/D4cZl0C9w/b4g+AS0IjXV+RJDr5ZK2KFAanfieAoPz48daK7bUKWq9M1R2uokTBlUgwv1+pNP+UURTtjxfTh2gB6tZAXimB7qRliCYke0ZxzMZMPfFmbaDeJvpoKceHZ/hcm+5Rt+kCzeyZ
- SJgM+riO
- TzmSXB7uJGDtpoGZMliTOuxjoKLAlGDuA/v6eF3mbeKslBwdZK6hebg6L/i3XIL8lgY/yTPRCTZrYWImQAOJET13U8yaKqMswoyt4Lmt3wpE2Lkx/7nRx2JlmOrkre6pj7kACn6I1HszjMjwt1ZaPcOTULAiLwxrbXp3h/lq1m4fzKSnEnMeKLhXNB1l5nQKAUWttTl8rP/p7boxcqHyXx0XtfiLJRXKxlgUAEuofDvvdbsMIDmR7+5+6r8AGXl8I8QW9qNWuVAaIl785wXFN5wEFIQ==
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 60AE420008
+X-Stat-Signature: frcb1zz65rrdsijys1o34yxkfduh8m1t
+X-HE-Tag: 1785166727-903289
+X-HE-Meta: U2FsdGVkX1+eqgFe9G94Rp8Bk18bi3QffVXlwfxI6gtkfN5dx0vBGn66WwtVp8Ez5JSuUXXHbj3C1aSa/EjOMEsOBfVqq5VrpMILkO1+08sy5svg1sZ3sx4RYSW6idZmkcQmCBhObEvOgU5/V1E83940rKiWjPJgvd0eAnDiIrEYyiXjpwACHEvK4HLS4/iH6d+DyZkXmlaogEjhnjFQyDtWxM7YioZfVy2aREsbZi86fnq0sTCEOGN6P1dUOdbg5+EW8i4ivxBxu8jaMrdg4oD14lKZbm7/qu1zNLZcPdBSZPgLEgfROgkjC+PLVxSgJnllbFuN/tJFbxXLgJPRubPg1bHriWsGrQIrAEyhSAfOIC4wyyuiZepVfMziHqBaBJcBZMI2RLTZgTqM5YkNHUXyAq8O7hCiD8cQ7IBukDL8exoo+F9T2vpcHMQgQHtGCHseVrv+O0o8suabb+54kkTcVz3SJqtmRdSzc1IGXn4ummzB0HifHCYT3z7+LFQJCpv4hsWUM00gSnkSbGZiEmPIu2ScsSlNTW1KH/ci3wDKXHku8ak2d4WwxLiQyX9UsiqksxpJSY6WV7nRBC1leSd/XycIagH9XGxKsbvdyR7jlGUWM6P6LRuMnxZ9MX1cDIF1wMvVuHpyp609L7vlyGpeV9ZzMkc1VD7v4pDZFxm8asOOplZlelIcfdNlvkbDOK1q6HhyPRKWwtXa7jCiaUMDaJfHN/7RFYTdYPd8J8EA+e9ID/gIMzZkCyp/8KxU39AsBBaefqWINzgiNDolz5hQZe1/LMpgq2EMNTEa4t/Qw2PMIRn+Dkybt+G9e0HhzD3T4bTrddB0UuoeO+QNf8gg/cNk2lSdEWl8z1jnjZd8TJkAf4CSuW4CwwN+mzJwcP1ZjBEE4hSy5rV4hhSAzdcd+b1l5+yht/wwT0HsMdYZT6yRTUCvsaXapEisHuBFFmPbU/TXeCnq2jjmSxi
+ hDNYgckI
+ JY6es8pqZTHhP4KKkTzvT7YJqXkzaNPcHaTSxYC+VnO9wtViGmhIPz238823q+lNRtndPylx55N5XaxLlKqLsgQ6pdKU+VOsIbRR0zKRIr2AxyVtn9urW3heblNXPwFAiT4lIBkf1MzYcHCIlwwHLRceaWmUr3cUNld0Bgj1aYPMG4waUVMvbIciiSF2YoEmkmG3m+eClmeb+Qp68usiC+wUCKQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,129 +95,126 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> On 7/22/26 23:00, Yeoreum Yun wrote:
-> > On Wed, Jul 22, 2026 at 01:20:39PM -0700, Dave Hansen wrote:
-> >> On 7/22/26 10:37, Yeoreum Yun wrote:
-> >>> However, mm_pXd_folded() requires to mm for other architecture like
-> >>> s390. might save the mm instead of first_level and calls the
-> >>> ptdump_pt_level_first() with static inline version would make the
-> >>> constant comparison. So it requires to save *mm* structure in here.
-> >>
-> >> I'm having a really hard time parsing that.
-> >>
-> >> I think you're trying to say that the effective_prot_p*() functions need
-> >> to know the first level but they don't (today) need the mm_struct. If
-> >> they don't get the (calculated) first_level passed in, they need the
-> >> mm_struct instead.
-> >>
-> >> I think you're arguing 'pg_state' needs a ->first_level or a ->mm.
-> >> Having a pg_state->mm doesn't seem bad to me at all.
-> >>
-> >> But, it's also a little bit silly. It would not be rocket science to
-> >> pass an mm_struct down to the effective_prot_p*() functions. It makes a
-> >> whole lot of sense to me for a page table walking function to need
-> >> metadata from the mm_struct to walk correctly.
+On Mon, Jul 27, 2026 at 04:36:23PM +0200, Michal Hocko wrote:
+> On Wed 22-07-26 17:19:07, Shakeel Butt wrote:
+> > At Meta, we are seeing instances where an OOM killed job is stuck in the
+> > exit path for several hours. In one particular case, the job was stuck
+> > for more than 8 hours and I had to manually remove the memory.max limits
+> > to allow the process to exit.
 > > 
-> > Yes. I mean to add pg_state->mm like:
+> > The job was a single process job and had ~55 GiB memory.max and zswap
+> > enabled. It had almost 0 anon in memory and ~111 GiB in zswap compressed
+> > to ~51 GiB zswap pool (i.e. almost all of memory.current was zswap).
+> > Nothing was left on the LRUs to reclaim.
 > > 
-> > diff --git a/arch/x86/mm/dump_pagetables.c b/arch/x86/mm/dump_pagetables.c
-> > index 2afa7a23340e..aaf00f0c6624 100644
-> > --- a/arch/x86/mm/dump_pagetables.c
-> > +++ b/arch/x86/mm/dump_pagetables.c
-> > @@ -38,6 +38,7 @@ struct pg_state {
-> >         bool check_wx;
-> >         unsigned long wx_pages;
-> >         struct seq_file *seq;
-> > +       struct mm_struct *mm;
-> >  };
+> > On further inspection, I observed ~20k threads of that process stuck
+> > with the following stack:
 > > 
-> >  struct addr_marker {
-> > @@ -254,7 +255,7 @@ static void effective_prot(struct ptdump_state *pt_st, int level, u64 val)
-> >         pgprotval_t prot = val & PTE_FLAGS_MASK;
-> >         pgprotval_t effective;
+> > [<0>] mem_cgroup_out_of_memory+0x4e/0xa0
+> > [<0>] charge_memcg+0x8bf/0x990
+> > [<0>] mem_cgroup_swapin_charge_folio+0x4e/0x80
+> > [<0>] __read_swap_cache_async+0x10c/0x260
+> > [<0>] swapin_readahead+0x116/0x3f0
+> > [<0>] do_swap_page+0x13c/0x1ce0
+> > [<0>] handle_mm_fault+0x61d/0x11f0
+> > [<0>] do_user_addr_fault+0x3e7/0x6d0
+> > [<0>] exc_page_fault+0x8f/0x110
+> > [<0>] asm_exc_page_fault+0x22/0x30
+> > [<0>] __get_user_8+0x14/0x20
+> > [<0>] futex_cleanup+0x27/0x1c0
+> > [<0>] futex_exit_release+0x47/0x60
+> > [<0>] do_exit+0x107/0x940
+> > [<0>] do_group_exit+0x81/0xa0
+> > [<0>] get_signal+0x2b1/0x6e0
+> > [<0>] arch_do_signal_or_restart+0x1a/0x1c0
+> > [<0>] exit_to_user_mode_loop+0xa8/0x1c0
+> > [<0>] do_syscall_64+0x152/0x250
+> > [<0>] entry_SYSCALL_64_after_hwframe+0x4b/0x53
 > > 
-> > -       if (level > 0) {
-> > +       if (level > pgtable_first_level(st->mm)) {
-> >                 pgprotval_t higher_prot = st->prot_levels[level - 1];
+> > In addition the dmesg was filled with "Out of memory and no killable
+> > processes..." messages.
 > > 
-> >                 effective = (higher_prot & prot & (_PAGE_USER | _PAGE_RW)) |
-> > @@ -452,7 +453,8 @@ bool ptdump_walk_pgd_level_core(struct seq_file *m,
-> >                 .level = -1,
-> >                 .to_dmesg       = dmesg,
-> >                 .check_wx       = checkwx,
-> > -               .seq            = m
-> > +               .seq            = m,
-> > +               .mm             = mm,
-> >         };
+> > I have no idea why oom reaper was not able to reap/unmap the process. My
+> > guess is that since oom reaper tries to acquire mmap_lock in read mode
+> > limited number of times and then gives up, there might a thread of that
+> > process which had mmap_lock in write mode at that time.
 > > 
-> >         ptdump_walk_pgd(&st.ptdump, mm, pgd);
-> > diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> > index 8c093c119e5a..6e7d0580db99 100644
-> > --- a/include/linux/pgtable.h
-> > +++ b/include/linux/pgtable.h
-> > @@ -2490,4 +2490,15 @@ pgprot_t vm_get_page_prot(vm_flags_t vm_flags)                           \
-> >  }                                                                      \
-> >  EXPORT_SYMBOL(vm_get_page_prot);
+> > My initial suspicion was the futex_cleanup and kernel page fault causing
+> > infinite fault and charge retries but that was put to rest in previous
+> > discussions happened on similar problem [1].
 > > 
-> > +static inline int pgtable_first_level(struct mm_struct *mm)
-> > +{
-> > +       if (mm_pmd_folded(mm))
-> > +               return 3;
-> > +       if (mm_pud_folded(mm))
-> > +               return 2;
-> > +       if (mm_p4d_folded(mm))
-> > +               return 1;
-> > +       return 0;
-> > +}
+> > My current theory is that it is just a simple slow serialization behind
+> > the oom_lock. Unlike page allocator, memcg charge code takes the
+> > oom_lock without the "try". Though memcg oom code uses
+> > mutex_lock_killable(),  note that in the call stack get_stack() consumes
+> > SIGKILL (or sigdelset(SIGKILL)) before calling do_cgroup_exit(). So this
+> > mutex_lock_killable() is just a mutex_lock() here. Therefore 10s of
+> > thousands of threads are waiting on oom_lock and one by one they get
+> > -EFAULT from get_user() in the futex cleanup code and bails out.
+> > 
+> > Discussion from [1] lead to the commit a75ffa26122b ("memcg, oom: do not
+> > bypass oom killer for dying tasks") which routes dying tasks into the OOM
+> > path precisely so the oom_reaper can reap their mm and free the memory
+> > asynchronously. But the reaper is best-effort and one-shot: if it cannot
+> > take mmap_lock for read (e.g. a sibling thread holds it for write) it
+> > sets MMF_OOM_SKIP and never retries, leaving only the glacial
+> > oom_lock-serialized synchronous drain.
+> > 
+> > Let's short-circuit that path: once reclaim has failed, if current is
+> > dying, force the charge instead of invoking the OOM killer for it. A
+> > dying task frees its memory as soon as it finishes exiting, so running
+> > the (necessarily no-victim) OOM killer for it is pointless - and doing so
+> > for 10s of thousands of exiting threads is exactly what serializes them
+> > behind oom_lock. The dying task instead faults its page in, completes
+> > exit and releases its memory, including the zswap pool, so the memcg
+> > recovers on its own without the oom_lock serialization and dump_header
+> > storm.
 > 
-> In that case the function should probably be called
-> 
-> "mm_first_pgtable_level"
-> 
-> But now it gets confusing, because we have
-> 
-> enum pgtable_level {
-> 	PGTABLE_LEVEL_PTE = 0,
-> 	PGTABLE_LEVEL_PMD,
-> 	PGTABLE_LEVEL_PUD,
-> 	PGTABLE_LEVEL_P4D,
-> 	PGTABLE_LEVEL_PGD,
-> };
-> 
-> 
-> But maybe we can make sense of it and do
-> 
-> /*
->  * The enum values correspond to the numerical page table level,
->  * starting with the highest level being level 0.
->  */
-> enum pgtable_level {
-> 	PGTABLE_LEVEL_PGD = 0,
-> 	PGTABLE_LEVEL_P4D,
-> 	PGTABLE_LEVEL_PUD,
-> 	PGTABLE_LEVEL_PMD,
-> 	PGTABLE_LEVEL_PTE,
-> };
-> 
-> static inline enum pgtable_level mm_first_pgtable_level(struct mm_struct *mm)
-> {
-> 	if (mm_pmd_folded(mm))
-> 		return PGTABLE_LEVEL_PMD;
-> 	if (mm_pud_folded(mm))
-> 		return PGTABLE_LEVEL_PUD;
-> 	if (mm_p4d_folded(mm))
-> 		return PGTABLE_LEVEL_P4D;
-> 	return PGTABLE_LEVEL_PGD;
-> }
-> 
-> 
-> We could even teach effective_prot() and friends to consume enum pgtable_level
-> now and have it all be a bit cleaner?
+> TBH I am not entirely happy about this approach. It effectivelly reverts
+> a75ffa26122b ("memcg, oom: do not bypass oom killer for dying tasks").
+> It just makes it lockless. Assumption that a dying task will do so
+> quickly and with bounded resources has turned wrong on several
+> occasions.
 
-Yes. That would be good for me unless others comment.
+That's why I kept it as RFC :)
 
+> 
+> On the other hand I do undestand the contention issues and I can imagine
+> that the existing solution doesn't really work well for huge thread
+> groups that all end up lining up on the oom_lock just to learn there is
+> nothing really killable anymore because they are the oom victim...
+> 
+> Would it be just safer to bail out only for oom victim threads. This
+> would narrow down potential runaways for oom victims which should be
+> more limited than any killed/exiting task. It would also give the oom
+> killer/reaper chance to work. WDYT?
 
--- 
-Sincerely,
-Yeoreum Yun
+I will give the following patch a try with the reproducer I have. I am still
+improving the reproducer as I am still not able to recreate multi hour slowdown
+yet. I will report back once I have some results. 
+
+> --- 
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 6dc4888a90f3..3e0a6b601767 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -2685,6 +2685,15 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+>  	if (gfp_mask & __GFP_RETRY_MAYFAIL)
+>  		goto nomem;
+>  
+> +	/*
+> +	 * OOM victim still needs to charge memory to exit. OOM reaper should
+> +	 * help but it might fail on mmap_lock contention. If the victim is a
+> +	 * large thread group then all exiting threads might compete on oom_lock
+> +	 * just to learn that there is nothing really killable anymore. Bail
+> +	 * out early and force the charge to expedite their exit.
+> +	 */
+> +	if (tsk_is_oom_victim(current))
+> +		goto force
+>  	/* Avoid endless loop for tasks bypassed by the oom killer */
+>  	if (passed_oom && task_is_dying())
+>  		goto nomem;
+> -- 
+> Michal Hocko
+> SUSE Labs
 
