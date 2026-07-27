@@ -4,94 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A85FC53209
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 18:14:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F6D2C53209
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 18:21:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 428266B00AB; Mon, 27 Jul 2026 14:13:47 -0400 (EDT)
+	id 56F426B00A7; Mon, 27 Jul 2026 14:21:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3DB186B00AE; Mon, 27 Jul 2026 14:13:47 -0400 (EDT)
+	id 51F396B00A9; Mon, 27 Jul 2026 14:21:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 22AE76B00AB; Mon, 27 Jul 2026 14:13:47 -0400 (EDT)
+	id 40E386B00AD; Mon, 27 Jul 2026 14:21:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E3F086B00AC
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 14:13:46 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 622DF120149
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 18:13:46 +0000 (UTC)
-X-FDA: 85035354852.25.F056EC2
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 130156B00A7
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 14:21:09 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8A263A017B
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 18:21:08 +0000 (UTC)
+X-FDA: 85035373416.12.282A011
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf17.hostedemail.com (Postfix) with ESMTP id C9EE540005
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 18:13:44 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=rLuqctr0;
-	spf=pass (imf17.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	by imf16.hostedemail.com (Postfix) with ESMTP id 059B1180005
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 18:21:06 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=sFCBoWUU;
+	spf=pass (imf16.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785176024;
+	s=arc-20220608; t=1785176467;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cwsU3Mhrg9KcuFxTAl0Tes+dvmZix99ipM91bAbmnN8=;
-	b=n0mUDxm1G3LUghbFkWVEa1gPFQb+8ylffJw6sbTeES/E0KFDvYBfAN9fV6GnN/1Je7j8VI
-	z5fO5Q3IlM/pzQGV7A4joQBnaVgXlVdLYlQP74fcBKkBXyvZ2hoVMK2IrBMZFs02H46+r0
-	4bk+xKDXFaIwOdLf870hi0Eq6mYviaA=
+	bh=bQ4rvhkya2fSTiIGocjlzq+705xNxIlgjGPvKqk8WCE=;
+	b=C8dIYaB1NqZn569QXMKlTQi86psfM9jmBcfMoZTvsU6B+D4fZYMv26czTm/sIRmFTx9ly2
+	5aJWoWJd0IAFdX/DfXZ5q8SDKPwwOPWYj4lD7xNkSmQsbqgBhTZ0wcyfhDXwBjBqMqUNL/
+	59fTWnvrE96caUezPsavRQBL2JjEDw8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785176024;
-	b=21MzKc4a0J9yGVSFFtylGtT5Iy9p6bTzQmVrh/IbN2tQYydtWEPWbPWw3tcPlPIajuRsr/
-	NoIMDTEsWyUbD0YTkyDBfukJskadHVsBZlv/5WL7SJNP48vfibDUadBYnjhJ6LmyCrC2lk
-	CyUAgAFOtKGUWzS/lX5o6f8wqadE9bA=
+	t=1785176467;
+	b=OSzPwBnZ1636f1Yu+flfDjX78Qy0BxfAW7X4Dv7M5A2Ce04NBg4chCHwKo3CZ9il3Enx5I
+	G5FKp1l/0LAlkjB83fb6Oa45zpCZqbqN9wr3D9xh98WCSW46yuxHQ8yq0drHtDSwWBRcaM
+	FvrbiTwwnYaaQknwUsWggEw1ea5mgzU=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=rLuqctr0;
-	spf=pass (imf17.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	imf16.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=sFCBoWUU;
+	spf=pass (imf16.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=cwsU3Mhrg9KcuFxTAl0Tes+dvmZix99ipM91bAbmnN8=; b=rLuqctr0tNPXBH609jMeeZxb89
-	Gra9CVBS4HSjLDcqQlEmusssxYeJlnC4T9kbkRkzySY2IlNh1HhiLqTj0pYLJPxIX+/iYcnFkSWas
-	wAbPDBvY3ouZiJaUY//4ml2u9FPiGU/tt7ulNFdLWxkBoOInrJ/sFbawQLx3utcsJpNcpcAcGND5R
-	tqhFz8nze3LSWelxbXBqBVeBG+3dFfuGNhSTepL8mbejYsXB3zassPz9PB/wKxBZF9x1fSV8SGdpn
-	dX8G6v08CpykY5a/qKfPUbMIQyjl9rIxhL6/b2lTaH26LjpqrEXA7I5ioW+XcPHuMkJp5euXXasj0
-	96BT4l3w==;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=bQ4rvhkya2fSTiIGocjlzq+705xNxIlgjGPvKqk8WCE=; b=sFCBoWUUjmQrn9tNM8L/Mt9RbL
+	ErJLZbBhPPBL1oOZoxwgY8VXtJxOqD+XgRxB6FiP5wQgyo4aRZToporXWy7WDzWQ3zd+IkoW7ufiD
+	Wcz5oPsLv6jD2DecxMLS/eqwv4D/Fok2KEDa7+LBIhOkTcwzckx7rck3ZO59PrZy6I89x5Kuz2Acu
+	ExrN7adRmfscEVOu+CKiFdPZgFg62uY2sVb2zGZtHdi8s1ovWuP7HxjQBXjyKQAlPomqvdsywgY8k
+	gni1QFD40YBqOLOZzpFqvubGDtDmy3AEOwOH8cX0jdqIvtYHiedEbAlnAk4Qy16sKpyLLExY/oDj3
+	QFQl8Dlw==;
 Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1woPp9-0000000BD7Q-48jb;
-	Mon, 27 Jul 2026 18:13:12 +0000
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Jane Chu <jane.chu@oracle.com>,
-	linux-mm@kvack.org
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Jan Kara <jack@suse.cz>,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <christian@brauner.io>,
-	Jiaqi Yan <jiaqiyan@google.com>,
-	Usama Arif <usama.arif@linux.dev>
-Subject: [PATCH v6 02/12] mm: Rename folio_contain_hwpoison_page() to folio_has_hwpoison_page()
-Date: Mon, 27 Jul 2026 19:12:58 +0100
-Message-ID: <20260727181310.2671972-3-willy@infradead.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260727181310.2671972-1-willy@infradead.org>
-References: <20260727181310.2671972-1-willy@infradead.org>
+	id 1woPwY-0000000BDxl-3gF9;
+	Mon, 27 Jul 2026 18:20:50 +0000
+Date: Mon, 27 Jul 2026 19:20:50 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+	William Roche <william.roche@oracle.com>,
+	Jiaqi Yan <jiaqiyan@google.com>, linmiaohe@huawei.com,
+	ljs@kernel.org, ziy@nvidia.com, osalvador@kernel.org,
+	harry.yoo@oracle.com, osalvador@suse.de, jackmanb@google.com,
+	hannes@cmpxchg.org, nao.horiguchi@gmail.com, tony.luck@intel.com,
+	wangkefeng.wang@huawei.com, jane.chu@oracle.com,
+	akpm@linux-foundation.org, muchun.song@linux.dev,
+	liam@infradead.org, rientjes@google.com, duenwen@google.com,
+	jthoughton@google.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, rppt@kernel.org, shuah@kernel.org,
+	surenb@google.com, mhocko@suse.com, boudewijn@delta-utec.com
+Subject: Re: [PATCH v6 0/5] Only free healthy pages in high-order
+ has_hwpoisoned folio
+Message-ID: <amehgk7iUTL3Cow6@casper.infradead.org>
+References: <20260705180714.3708947-1-jiaqiyan@google.com>
+ <85cb7ea8-8116-4092-8310-69b61eb8602c@kernel.org>
+ <ee6bcc74-0846-43f2-bcca-b1bedff74351@oracle.com>
+ <1dea7b3c-7740-474d-b9d4-cd2baf47f181@kernel.org>
+ <168ad406-f6b5-4623-adac-9f894e410e48@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <168ad406-f6b5-4623-adac-9f894e410e48@kernel.org>
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: C9EE540005
-X-Stat-Signature: cyy9qjoejk79r3einxngdgzysq9pfs6u
-X-HE-Tag: 1785176024-715747
-X-HE-Meta: U2FsdGVkX18+qo2TXGFYCTDEaB92D24XJPdGgDnOj98PWec98mgpBWnHogHRkkC0Us9368uZOCUgbu8Q8wuD2rWa+5GHmC8Jpnp+hzHY7CwKWrPcrLQUZ+MqmGIHWhfrHYT+v4rz0ak2gF3iTlJamnwF+d9nAARLQNPT/lWNAnU/upXjax0SprRs9Zodw+GRy4bWXGrobUl5ORX/Prp+FQQGbgs2//iSr8UXIYeyhGOtcsU5sJDBdj7NJVVQtpi/WpjOq0jxvy3eswz/QDY7cKQsH8rhwQ//WLz9YNNTdkIv4h4EYpgUnqMHB8c491jGBRbHfAO0weocKmLElZ6Z2R38zqOdnChRPfAsT36o+L/NSACertGS5pKbWE7KgteV76WD5fHV/vby5wDKDhD3KO25ZIACD55zMy51elAmeTzgHM8HG3FOXRbUdTcPy1PXCI2Any2MWijDMj8qYOPlGN9uHEA/YDImqDkDlYt2XYyU6uguzdQsgOs4EDE8piuIPBgF7+KtSBTt3PTDAsmvQfEaR/UfLADoxXuHqBWTurSC++bxR9QQ67rjE6nMLsJRHndLDgbdm/0hxlLUlUPNwNKIaTqtAC3rRP6sHUyxfP1j8TCHIIe+0iNYEan4VErezTX485NjWRrZajgbRK95kG2j7HRgnJWHGwyP3ezxrbfbhhayxkhIo7ypOMWMTrtaA0bffFSWk5I9Y4T99UASH1Pj0c0BFNjI+RclZ0MX9hbmwl8ETCFSQoeM6049iYnemoxxW9A3dm0Mu93DJUHlcq/X/YdD3MmD5onDPRoMWFhG3+DeIgn6sAZf6atzkXTrMLUYa5/Dp5jfL2I5pYbAeRcyIa3FYFZx/cNZYx82MYDibIkocg6cECVD2qMmw7XLmxvCuyK7TRza/yaRvNoglqHn4yrpNCaDML4UdZYoGGWRgfxgQM5o+kRitoiLE5Gi3/LJoi33eNA6abgMQeH
- yPJ4T02T
- Hd3y+Tl/3QathxDY6y81bKtMZVka+FTCXAm5Ctbm81ee1O4AFC/lGvrQMgxH2GjcO8y5zY2xYSaxlnOFehSt6c4dkHI7iDYTvt5I50t11NIPYxnbPz7zxzFCaoLUUelX/GnHiiio+g+F7RLm7QwY85/Dybip4Gfzv77rNaPCrwGWvD6mtcoHsJ3G4jcU4HwgtxkjWAdshoJVij8tmLAaBmirtSaj7bNy2YGiNF/Nq1w0fa8iWHXSvBnQP9VEpC4tftDRecLv+InKSpzLDCJsAo2mmk9eMNBEacbgwT8x1ZoaQRup/cfb1Tm5YzNlQhAOU3Rclcw8ROuBcDXasiqHbSq035336f23vjHpy3wLkrbq3X/PjS05T2U6Giw==
+X-Rspamd-Queue-Id: 059B1180005
+X-Stat-Signature: irhjbio89rrb5ddmuyffn3uht9hpimhe
+X-HE-Tag: 1785176466-433256
+X-HE-Meta: U2FsdGVkX18Hb5edF33sI7MroLBP+7R95SbSnNPnTTiTGeif/vfC1/VrTVFZ6HBVsf3CtVHW5oY3Vmd7/JOnq0FcLWkkeaq+gYwuiYp6N1OxUsELct62xH1RMzlWYqzXq1jYPlYAntGR5hi8DGhtrhUrSyt1sXyg85chO5Sg4Q4bOKdNlWhoYRrmwrr3NVDjHCgp6CRR59MXqv1xdMLNi3VeKHEc67fjHrwhgqqzTHtn0x29m+E9Tn/EPpBc+xr9o1Fsl2FFcpFtMNivUteBP6BNYX7rOgw9IuZbgFeWOkstXTmtqwT6gJsyeqHo43xQyCZtF8nEo87J7lxVdYCw83jQ9xHJJoir75qtxu2/7Q1sqDPTZ+9lpyE3KarmelScepM10ssX1YZUeF3pDgMENyzAfnmncLvkvLoHfc5cOe8lHhXX0Z+/Ot7oD9i9rl0EeB89x2WpcDGgt/oEiLdG863ReYRmckRl9Ogsjdln9wwBLhB/TgYqmjG5LoReR+8XlldxDohsj8D9BwDeHxFcqnWRxmU2mNgUFI08GHIxSXqcBjJvYu0nlKndG/hIx2+4yVeYpqI8T2P5rUX9kx5r7uUk5OzaiHTeBZzjBWmCC91bsdmpewus/lz/US8f3O/TYylNd8Lc7XR8xJRNpdoM+YXmfp6Wn9TpsDwuJHtPRrLn+ppbXWXQKywZmT0D/dao5HY0x4JkjEiSuRBoMsJ1w7rgy6ASv0/kuWcGb0N8gN8fC3LIsr9tZ7IHbqHJI4XoIvlKUVyagcnEdO+cvIsCzshokwfpdDs2EwlM90HYcFp3yjqsafBWYc54VmKTaDRTm8wDgIuCtZtSOPCuXu4vcKIz6EcenJlBo83dXMsvRgE4XoWHX+K3PBQsO10hxrq+WGVO8wAI4vXZTIwdqIPaiMpNzGFfNub/rOyT79apOSM1zSlefTBZxShn4Z/hWuBVwLZD/Zn4duR1zqTJBWu
+ AfnP9H4l
+ KxNIL+krJXO1GdBhEt73CIjzNqxqM4kO2xK1nUm/+jtZMTdGyTzeG+1roJRfIYV9Mnlf1wSvMAzu3Zy+u8DoXgNSzjBQzA1H0IpFXMX0MHeJsXOCpYgXh/JPOjHbzOo1kytIMizbKIXJW6ZlrmvjAKXNlJIds/+6QHqWYOa3kwXRpdZ2XzA3mZK5PsxNsEXsPEXnwDd/vrCDW0ijH9tj8p8/GhOD5QOzUhLEv1VDUv/dIdag9WScW4Ya2Xfe0sK1tbkNkNdpJxJoFS477qcYw7sTHEGgXQBF/K9BpJTGSadyegA/UrcDnVuD24XlHkyuD88FY6YP7V3+0eYWf9MhGKuVc/yF+Hq3T8QouQP9bUXbaDoPxS12MB0agD8SWBIaJGblzLS9J/+oy2Gk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,89 +103,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is a better name for this predicate.  Also make the argument const
-to allow other callers to be made const.  No functional change.
+On Mon, Jul 27, 2026 at 04:20:54PM +0200, David Hildenbrand (Arm) wrote:
+> >> Just adding a comment about this aspect:
+> >> The check_new_pages() mechanism used by the __rmqueue functions should
+> >> filter these pages out, but this has been disabled by default in 2023
+> >> with:
+> >> [PATCH] mm, page_alloc: reduce page alloc/free sanity checks
+> >> https://lore.kernel.org/all/20230216095131.17336-1-vbabka@suse.cz
+> >>
+> >> So it would need to be enabled back, taking some of the performance hit.
+> >> (and I personally think that it has to be done)
+> > 
+> > Would it truly fix the issue, or rather there would still be a race window
+> > left where we check that there's no hwpoison flag in the re-enabled check,
+> > and only then someone sets it?
+> 
+> Why are we checking PageHWPoison at all then in check_new_page()?
+> 
+> I think we created a mess.
+> 
+> The PageHWPoison check is not just a "nice to have" sanity check for kernel bugs.
+> 
+> So it should never have been optimized out that way before reworking the bigger
+> picture.
 
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Acked-by: Usama Arif <usama.arif@linux.dev>
----
- include/linux/page-flags.h | 4 ++--
- mm/huge_memory.c           | 2 +-
- mm/memory_hotplug.c        | 2 +-
- mm/shmem.c                 | 2 +-
- mm/vmscan.c                | 2 +-
- 5 files changed, 6 insertions(+), 6 deletions(-)
+There's A Lot Going On (and I don't think I understand it all yet).
+We can soft-poison pages while they're in Buddy, for example.
+And then soft-unpoison them again.  Is it handled properly?  I doubt
+it.  Looks to me like it's full of races.
 
-diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-index 7223f6f4e2b4..4185a03a45cf 100644
---- a/include/linux/page-flags.h
-+++ b/include/linux/page-flags.h
-@@ -1083,10 +1083,10 @@ static inline bool is_page_hwpoison(const struct page *page)
- 	return folio_test_hugetlb(folio) && PageHWPoison(&folio->page);
- }
- 
--static inline bool folio_contain_hwpoisoned_page(struct folio *folio)
-+static inline bool folio_has_hwpoisoned_page(const struct folio *folio)
- {
- 	return folio_test_hwpoison(folio) ||
--	    (folio_test_large(folio) && folio_test_has_hwpoisoned(folio));
-+	       (folio_test_large(folio) && folio_test_has_hwpoisoned(folio));
- }
- 
- bool is_free_buddy_page(const struct page *page);
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 2bccb0a53a0a..353340309107 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -4413,7 +4413,7 @@ static bool thp_underused(struct folio *folio)
- 	if (khugepaged_max_ptes_none == HPAGE_PMD_NR - 1)
- 		return false;
- 
--	if (folio_contain_hwpoisoned_page(folio))
-+	if (folio_has_hwpoisoned_page(folio))
- 		return false;
- 
- 	for (i = 0; i < folio_nr_pages(folio); i++) {
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index 7ac19fab2263..33007e8e546a 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -1813,7 +1813,7 @@ static void do_migrate_range(unsigned long start_pfn, unsigned long end_pfn)
- 		if (folio_test_large(folio))
- 			pfn = folio_pfn(folio) + folio_nr_pages(folio) - 1;
- 
--		if (folio_contain_hwpoisoned_page(folio)) {
-+		if (folio_has_hwpoisoned_page(folio)) {
- 			/*
- 			 * unmap_poisoned_folio() cannot handle large folios
- 			 * in all cases yet.
-diff --git a/mm/shmem.c b/mm/shmem.c
-index b51f83c970bb..492c9bef3620 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -3240,7 +3240,7 @@ shmem_write_begin(const struct kiocb *iocb, struct address_space *mapping,
- 	if (ret)
- 		return ret;
- 
--	if (folio_contain_hwpoisoned_page(folio)) {
-+	if (folio_has_hwpoisoned_page(folio)) {
- 		folio_unlock(folio);
- 		folio_put(folio);
- 		return -EIO;
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 35c3bb15ae96..70e54ace0e74 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -1086,7 +1086,7 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
- 		if (!folio_trylock(folio))
- 			goto keep;
- 
--		if (folio_contain_hwpoisoned_page(folio)) {
-+		if (folio_has_hwpoisoned_page(folio)) {
- 			/*
- 			 * unmap_poisoned_folio() can't handle large
- 			 * folio, just skip it. memory_failure() will
--- 
-2.47.3
+> > Also, can the hardware actually detect a problem with a page that nobody
+> > accesses? I guess if yes, it's only in some corner cases.
+> 
+> Yes, quite frequently I think.
+> 
+> > 
+> > So I'm wary about penalizing the allocator paths again.
+> 
+> I get the feeling that we don't have a proper plan on how to handle HWPoisoned
+> pages. We should take a step back and discuss how we actually want to handle
+> them instead of optimizing here and there and creating more of a mess.
 
+I feel like there's a general lack of understanding of how hwpoison
+works amongst those of us who work on the core of memory handling,
+and the memory-failure code has not been kept up to date with how we
+think about page/folio/memdesc handling.  It might be good to have a
+BOF at Plumbers to share our (mis)understandings of how all of this
+works yesterday/today/tomorrow.
 
