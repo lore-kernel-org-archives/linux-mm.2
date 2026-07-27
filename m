@@ -4,100 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8E8EC531C9
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 23:18:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7403C531C9
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 23:22:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D885E6B0088; Mon, 27 Jul 2026 19:18:19 -0400 (EDT)
+	id 74E7D6B007B; Mon, 27 Jul 2026 19:22:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D38B86B008A; Mon, 27 Jul 2026 19:18:19 -0400 (EDT)
+	id 6D8C26B008A; Mon, 27 Jul 2026 19:22:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C27C96B0093; Mon, 27 Jul 2026 19:18:19 -0400 (EDT)
+	id 5799A6B008C; Mon, 27 Jul 2026 19:22:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8CE806B0088
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 19:18:19 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0CEE040233
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 23:18:19 +0000 (UTC)
-X-FDA: 85036122318.18.829871B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 0B06F100008
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 23:18:16 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ESsPbMzB;
-	spf=pass (imf14.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785194297;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 197376B007B
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 19:22:44 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8BB5A80119
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 23:22:43 +0000 (UTC)
+X-FDA: 85036133406.05.C363A2B
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 9C51180008
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 23:22:41 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=BonKkQqP;
+	spf=pass (imf02.hostedemail.com: domain of dmatlack@google.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785194561;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gLbnTx+vIhvKbP+T/O+t3USLP1ytabDaw0IfA49fM5Y=;
-	b=vFekWrwiYuwYeXDOYL2xg8Nj4oRuLVahGW9t5ZDxhIy2aKXXg4Yf8fVyF8GUjagh+DOazw
-	TbmGiJG+bQA3ydPUdPY6pDJaPjpKMP/ZZjbBvKz0cn+9qIMLabgSe/SZxs9MmiMx4L4s0r
-	VSfbJpG71hpZAJIxziXRxOOTCvA24LU=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ESsPbMzB;
-	spf=pass (imf14.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785194297;
-	b=kmO8gGLDT9tM0so0ViRSl3ZC8MDk4CrO9lVXEZKr/D58S2+S47aVPqhWcPD7Tj635FQGaV
-	NVe0Fhzjkdy3RO6VUYCwfZQZEEMlpPFu+CFEuFzNaMcDjwm2dn4hcg+F3aoxoMrn23FChC
-	teA0duoC3nojbAwIOlSggg8JUhUwjv4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3214443F52
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 23:18:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16BF91F000E9
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 23:18:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785194296;
-	bh=gLbnTx+vIhvKbP+T/O+t3USLP1ytabDaw0IfA49fM5Y=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=ESsPbMzBupbAYSCbcptttJV52Yw4Tf4/uMQcevLwBsRdYsBk1gj3VRqtTBbhgMqm8
-	 MlVoray1NI+VfaNa7G8dlK38HxnuwiiQSL1y6H1GxdvIUnmJ6/JPNqB5jyTHpidqkS
-	 A5tMo4TwnwiAa1z/vs4w/n9sS6FHCy2kbrNp2gbuqb1uTRJ5YhhZPMJK6v+DNPukSM
-	 PnrSJhmV8GmLpPszr/heSraSeuBgndC57JBj+Z/9+mSY6EcI4LNMcvJmMqO6zowcyl
-	 7rwAWvi4YXScj/4hdrD0lv5FlMtIzDgPvYpfHEsemxXWRThXFJ22LrgCvBInFKErC7
-	 oDXnTmWrGmTFw==
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-51c04bf4711so31960581cf.2
-        for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:18:16 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RoiNXKZeGuCCejfGC1ubvJzH/1cctXx2xntJ2XnT3PBWNBml7+s8VffFGIl62RTbGrHtpQ5mDm8Fw==@kvack.org
-X-Gm-Message-State: AOJu0Yyomf+pk5KPy06ROeo9wac4LanpzuqoT2+RHvsfReTiPcyfSCxY
-	JFdtkk5RYF7lk6FKTczmMyQNNINjOzO8uY4hbu8DKwZxgjh6JN7wJfra3SQqH1/5EQhqDRi4/7w
-	KdXYwgUjMUYB3g8mGZKLi0GS83chbusA=
-X-Received: by 2002:a05:622a:250e:b0:51b:ee11:e71e with SMTP id
- d75a77b69052e-529d16f266dmr17364751cf.1.1785194295508; Mon, 27 Jul 2026
- 16:18:15 -0700 (PDT)
+	bh=aH9fxD7OeNQpvbALLCFcfoa0nXkldfT8Qxn7YBj/IBU=;
+	b=kDxLC+PbC/xJV0fPHh7fx+AuXW9+/Dyvu2LoI9VRT8DAoA7n5LW/rUllq3sySsX98SwsvE
+	mCC/rJx9e5SKwd/RFFpAoCqpTK10wMoa90/TWeSzEo1NFdpRO9Q33gTesL3r2t+VKtR+QP
+	3ZNygJusTltPnwPwcbxVBJcLbAdX+lI=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1785194561;
+	b=G7zFanU1eOeRcDSCnFfqsjnqLAKfTSztoVB9hOVBzqE6O7MpnhUvOyzwQpupX5JDN+nDyr
+	9G5p1I1sxqMzbDz+aw6lRDvGzCgfjU2iWgnAhhSJqjhESlMFr587PqNs8VbWwGiCl8/8uw
+	DLpuhRYP6wNs4NcQ6ZPGdXnzh9hKpkc=
+ARC-Authentication-Results: i=2;
+	imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=BonKkQqP;
+	spf=pass (imf02.hostedemail.com: domain of dmatlack@google.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-38de840f2f0so2518225a91.0
+        for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:22:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785194560; cv=none;
+        d=google.com; s=arc-20260327;
+        b=HUKQHE0IcG+98cf2vKAWrr1gq6NMxsB7Rkf1ba7+iFUBC89sCMwKNInt4sRp+83ae4
+         sP9hykvLWC9FkP7bzLQ22vu9yvtznAZM85v1nFNvccvgut5rT+83LMv3vKp83yBWea9z
+         RCDkBfqEBrSZgv44uXXvE1f2yq7CuHa0NJSE0U8Di3SW+RFQLDkOjaKgVWMcR0vKZ8h1
+         H3Oa0f1FLbhuGC8r9BLmaptGXALebEq7Npum1ijo6KcaCd2dGmQGgYIghLjPe5dThdmj
+         S/IsSBmML9ipXa7ll4EiffUpoecCKdXkw/S3lB7d8SnOcfdbXyuhbl6EhaMMXoMjZfPX
+         5nGw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=aH9fxD7OeNQpvbALLCFcfoa0nXkldfT8Qxn7YBj/IBU=;
+        fh=VxqEWTYmkJ1wLobN+RFDoz/ZBJ6jonX62L19FoTQwzk=;
+        b=M00mra0oS+2PTnD2j3yqwbflNEUZOJWwzSXHpMxIEihJ40V3EQUBMGYXjntALg5K4y
+         vHWmB829LnCNV2mt29RlDXg6d2f7CjHmoG8JETUybPCkg09KcnUY6KiI4Sz6gBoB0JY5
+         ufy40yd0VTMH9ur5OKOe0kFAKnxfHW7v1UWwyx0Mfns3cOKjY5tk4miFr0lRg+IthX1R
+         2cMXMVabKrT7/Q7CjT69EV2Sd5goilPRhgohrkBVP/aN1+cIN7gpvsffAJoFnxasqlDg
+         ls9Xc9Xr5tHVXWwhULFbt/TPBGgC6LJsuE+NVzpGTG5hMBRYuHZp1+LtPvw1/c0mdk5r
+         3N4Q==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785194560; x=1785799360; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=aH9fxD7OeNQpvbALLCFcfoa0nXkldfT8Qxn7YBj/IBU=;
+        b=BonKkQqPWyu9QKZiqPdGmoy0yusa0Mshsop3e4peO9AKIaOjKqeEgwdqPTH5i5sUot
+         ulb3CVZUQVDdypaPNTBIcKcw/Y7C8TPd84c6s5sQjiAYp376g8HPHggghZ2o3DbmWtWr
+         VFwymmPUJmvjoASWn6Azk+QBuOwqc29jzdKusF6fCofJUPah3+tfBH5ojHzAFRGwMt1q
+         BLh7rpSU5mcc3OKooR43zDksNw+tAx/A7wMpt5xu7uPODrLGWmde507cEIOtdcdcWXYw
+         G9+ERFQCaSFsQhxSHZE+1k9z7kY7M+KU00PCdvQSeQv1BeLbqDuCMFSv3PYvoplmH4AZ
+         lDbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785194560; x=1785799360;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=aH9fxD7OeNQpvbALLCFcfoa0nXkldfT8Qxn7YBj/IBU=;
+        b=KvtzRiZFhGcwV3DD5UfLmbLlXevxfPnXj9ZaUBu75T/CxiabIEBJ1cidKbpWWfNxud
+         g8RycCdpsL/gzigvSd1XRyKCscNbx8FVqODQT81CF1uLR5K93gqZUllPTZWpj66Rqb0P
+         p8UDW0zvDhR0Jb1iTjp7lb/wNZLz+cEc1YD2BA9r5ex490U5Yx+vBIl9r9osaw1tE8a4
+         8Yx8a5DbmlZtpMER3mOQ2JmfR4EAUKmKKUiFtcdjiRAhCtWSOZDzE2F01n9Nu7qxbvyp
+         FiOn25POaKTNudDselUM54vjv3HM/mm9Ych9ucaDDRY01enV5lyPE9ysV1z491IR6m7t
+         XgKA==
+X-Forwarded-Encrypted: i=1; AHgh+Ro1Zz+qlCL6BW6HmNELafW+xOeB1qxarqxmcNtZL0J+PdeACDMGGD+0oU1+u87FP2NhcuauNDAVEw==@kvack.org
+X-Gm-Message-State: AOJu0YxQQHTszRiK0bAN3gHHHbeSq/okC7oS3eiTqs3uYbZ9EmQFxkGV
+	OYt+1DtqeAnqgg+PqOzScxLAHi16LIaZ79FtXxi7+Bf/kroYAMscxDQWR0AH3arI8xqhtXUYiSz
+	pEbbiGM/+Mb5mdqkPZbiouyw5cZHdxKf3uga4Y+5J
+X-Gm-Gg: AR+sD13tas1x0FtkCwknITtXFchOrW1x2cPjGlBx9AUV3xDsgqDO4bG+FHRA28mE44H
+	0i/d8F64eLUqGqM+C6mbzt4PFXv2AXwuReD2Mquiz/T626PGI3j1sT1qPGWqGjy/UeeZBWe9Bbc
+	YGAFK6mmhrX9Xp0Z2fZQChaN1wIzCToQidp7XqptnGpDR4vhgBiiwbTBYvspwtVAxXNN6lAufpT
+	ukDMty0iH30o2x7gCwRO5B3j5pwmL2DTlLiLLlUMYT87k7QAvlNeEgcZaaj5A==
+X-Received: by 2002:a17:90b:2487:b0:38e:5c6:4db9 with SMTP id
+ 98e67ed59e1d1-38f6a030477mr10389a91.11.1785194559678; Mon, 27 Jul 2026
+ 16:22:39 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260726122123.7614-1-baohua@kernel.org> <20260726122123.7614-2-baohua@kernel.org>
-In-Reply-To: <20260726122123.7614-2-baohua@kernel.org>
-From: Barry Song <baohua@kernel.org>
-Date: Tue, 28 Jul 2026 07:18:04 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4w=gpjgwkndm3PAmZXxRm+E8ASG=6XFpprWwr3AxnpvSg@mail.gmail.com>
-X-Gm-Features: AUfX_mxz0ltOjwcKQZsRorMlJjtuPqD3BCfvxMyavQmPfGD98smSy9H0diiNhjQ
-Message-ID: <CAGsJ_4w=gpjgwkndm3PAmZXxRm+E8ASG=6XFpprWwr3AxnpvSg@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 1/5] mm: mglru: avoid scanning empty generations in scan_folios()
-To: akpm@linux-foundation.org, linux-mm@kvack.org
-Cc: hannes@cmpxchg.org, david@kernel.org, mhocko@kernel.org, 
-	qi.zheng@linux.dev, shakeel.butt@linux.dev, ljs@kernel.org, 
-	kasong@tencent.com, axelrasmussen@google.com, yuanchu@google.com, 
-	weixugc@google.com, linux-kernel@vger.kernel.org, lyugaofei@xiaomi.com, 
-	stevensd@chromium.org
+References: <20260710212616.1351130-10-dmatlack@google.com> <20260727230740.GA1273350@bhelgaas>
+In-Reply-To: <20260727230740.GA1273350@bhelgaas>
+From: David Matlack <dmatlack@google.com>
+Date: Mon, 27 Jul 2026 16:22:12 -0700
+X-Gm-Features: AUfX_myIRjJ65ll44x1imgmZse5x82nFT62Po-YqpjuwILzl8FbHo5wgsdHMnzc
+Message-ID: <CALzav=dHdtHPKJVbtnc1BwzccKuGSPxKH9Gvpv1ZVw4z2-0txg@mail.gmail.com>
+Subject: Re: [PATCH v7 09/12] PCI: liveupdate: Inherit ARI Forwarding Enable
+ on preserved bridges
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org, 
+	Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, 
+	Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>, 
+	David Rientjes <rientjes@google.com>, Jacob Pan <jacob.pan@linux.microsoft.com>, 
+	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, 
+	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>, Mike Rapoport <rppt@kernel.org>, 
+	Parav Pandit <parav@nvidia.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Pranjal Shrivastava <praan@google.com>, Pratyush Yadav <pratyush@kernel.org>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>, 
+	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 9C51180008
+X-Stat-Signature: cni1okfujbwirf8ia1q5gfkhc5pueqcc
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0B06F100008
-X-Rspamd-Server: rspam01
-X-Stat-Signature: 7g14nw5gcnnothynqhwt5sst6kmbm8ca
-X-HE-Tag: 1785194296-216319
-X-HE-Meta: U2FsdGVkX1+TfzjZzzjmxDVFHLfO4HzrQAMl2nrZGyLKIb0B3sqTr8idQ8lBtYc9v1kRQszSD/onxiF8GC+trB7eIX/IpWPjFMnFJeO6OgbagNQn+uoXOt6RqUN4CqLGh6ED2ui1MRIsw1V+EzbDZx2Imld4KAApQOlEK0AQ/vzjKKQJxU4oLL0wker0BnN27JveyRDfLCBVU6pKiInpPj8AmW0rEqEu2MU/OOV5PAdxF7O6hhUCcUlZoimLrSEI4j6dd5Uw0mwmKTMt1XwG3UEjXp8LhEqbH33mI8u4MKq6DqTtZV7yxFPJ5Zgo+7ifa654C/YusESMbTdkiKRTVuzq+uhIc6HEkhqCcRIMjr/29v0SvihTXJmyQ9L1sPF2Y86bBVbuZnSLlRKFuHx5XTqNdKi/NwbTU4fdS0yBKBsdqrKtzQdVG9K5trw0YhE23fH2MnVvbwyDU/m0TQW+R5y5hWzv1WV5B42CBBTACS8e5Yh/3NI3vf4L7ozi6iGzXeIlK4eXGYDrXLdRJoI1GnWTI8v2o8Z6ZPkCT5XI8uLLOwIHdJHh3RNQVlj3W4Yt2adf7UGo3jiULGidAUnL28wHribTLxDFhW0Y6VJInIbK9XQ81DwyUM8mcAFjAgB/JrfEguV3yKWU836YgXgUGyZJx2pMAPrqbpvyF7GMFeaytEoi4xHh2S6MbshiCju58ghMvE7l6OjEbnfD0TX3DFb+ugkeR6sTYGmnyEnKHbioKcXV7Ty/eaGcLcXhrgdiQnDvleSNsU9XJL+t7NYXr9Y7qSg8jRHhrM8WjS/1hTpTVFP2UBboRuxm/mg/aw0jDwXvlFfoMKPtN7rdRjOU0hkQRxnXjsNaAVk7C6ZF2gEvQo/s/9whJ/JRudt5TW3ijPfZBk7S7yulmgQ3Ch+ZqtCJD0sicjXY2ncv/hA3jvsPr4Bhym9QZViC3kiu8PQdEdn+ypLEbNvboz7gCuj
- oqooL5GX
- j+LOyz2a1dEv3a4UZRrq5rSu5RfDYLaF+RwFZRou8g378LaaWYsOQf+bKzgQooABgBJNThBoGgR1GzIPZnxjItkC2jM+vbfM1HwGNak++BVi1fu2DtBbRzDpeZnSQ9QLj2SDgR0/hXaYOMULE+vSQUeJ4ZX56q/RcvwfREtIOr0J6ght52DbMeM0UyR1OzAQpUEp+lwDszZTiP5s9esrLmAnj3Md4EIYaTLO5YfOSLo7Urb8jmBFJFS85shMxvrFG9TblY872ulIA+4FVQuLRLxPGG/vP9SwVfIhbZymp1IZwQRWYyv7WOFdalVbPdRN8iYTZtByBI/D+AZqCD7JMOuZGwUqRxSWoo4vdu+2R6+wA5fnh6A4J9NAGH9iPWeu4jxeshXvHvRRiMwX9QJB77mVp8tek/jP7olBg
+X-HE-Tag: 1785194561-245263
+X-HE-Meta: U2FsdGVkX1+IAq7ody/rKaPCiOqg8rVyO/nUADbKNUiusabBfbIv9GBeUgouCYlb6wg9OvnmY4zoZ2F8purwM22AANfQj9yTklbVEqvRgCHGwgBVzbLq5iOius0AwXYwtVFNKmuBa5MpfE7MIO5DrtZlOLxvfG+vvhIjA7Orfd3167P0mszTsjjIGsxps/Ozq4DbIj1hmMQX/zxMrfjiBVwCMgcyE7AovJFJxN72VkMUIUz2+iv2Y02e5XLkqF2p+7d+6FX0CVHGRiOSBJFaNPkgvYEfyXZfuBcNM/WX6rexQf3dvc0ANExEm7MynNflJgpsVI9nOIkxuZ7p3Do5adaXZt4WUOILiimiW8RRCCQO+3mOS7/2mNfm1XQzzdhzBiYcDitJRfpqToikSIyB8b+2PLDKE0nYZvJq4SdihhhBldHVfwfO0ibiGoFY9bpu34k1Mk7GBoEyWhfvWVyx4e1e3mwJOJg0iblUPntGHibCQsHxJphLuQrE+wmQZRoUu/c4B3+PNq5/0ntegp+2iL9UYrvgug8W5o0PXXGAJphYJYwVKACr5W5PdIiUXHpwtEnaRfJzpY/zdjexHRl3xtC13IGEepndw4o/FBxZKyLTo/IqJUKhEdypUQ4i2HVoxh1p1C/e/8ffmtjoIzZNAnZVa4KUtILO02ZAj5GEYERcqMcTbWjXJl3ej1sWZdWOABL+FMSeE3VLH4ji6Hy/cvBPveR9eS+7yty7MyeXZUaPylp2UoI/qU2kj85GwjFb7LYt9wTLHjEWZ9d06AB6iZ0Sqmfg3OqU59MdwqDM+S5fVWIRdsybuoORFGhdwtT4HwUo0O2eZ9IO7Sus7ab1PQ6dp6wUMrg22daCOpcYQiafk1E49BuWtdrdm6Kdzz8KuZuB6b5z+0CtTQisAmxhnEKPfTZYtOSkvjsVe0Jp1KrCGUHE5Ko4iVpeyEbLdp15UknKujlDkQ4rbrzIvSj
+ Wv0HEXTr
+ 0AVbu00IH7ie4qFCsEtDIl/Xqa6vrmXX47Ai6mYNkjXdsMjwYJgRPe78oXINz0pI/GgFrrQYJUssWDqsX2IjZCVx7NN7CcBPC+ONZgBQ900/Y1xlDw0WsxZjaRsyEJs0uU0fc9i5tRsJRK06I3gcfzqtQmyxzs5wiSJ0IEb/+4vj9Q/0BuOgpIqPGfFa+Le3FA5v9W6+GRiHygIMqGqsgDR5jlHcsk0MVxbtqGM/CVBqAuJ/YWl6TeVW+tBQU2ea5X3hrktaAKvY3mdKLAkupAVPug3so/fXPeI6z
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,121 +149,149 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Jul 26, 2026 at 8:21=E2=80=AFPM Barry Song (Xiaomi) <baohua@kernel.=
-org> wrote:
+On Mon, Jul 27, 2026 at 4:07=E2=80=AFPM Bjorn Helgaas <helgaas@kernel.org> =
+wrote:
 >
-> Commit 16b475d2ac3c ("mm/mglru: avoid reclaim type fall back when
-> isolation makes no progress") only falls back to the other type when
-> scanned =3D=3D 0. However, I have frequently observed cases where
-> scanned > 0, but the older reclaimable generation becomes empty
-> after the first scan_folios(). As a result, the second
-> scan_folios() for the same type performs a redundant scan over an
-> empty generation.
+> On Fri, Jul 10, 2026 at 09:26:12PM +0000, David Matlack wrote:
+> > Inherit the ARI Forwarding Enable on preserved bridges and update
+> > pci_dev->ari_enabled accordingly during a Live Update. This ensures tha=
+t
+> > the preserved devices on the bridge's secondary bus can be identified
+> > with the same expanded 8-bit function number after a Live Update.
+> >
+> > Signed-off-by: David Matlack <dmatlack@google.com>
+> > ---
+> >  drivers/pci/liveupdate.c | 18 ++++++++++++++++++
+> >  drivers/pci/liveupdate.h |  6 ++++++
+> >  drivers/pci/pci.c        |  8 +++++++-
+> >  3 files changed, 31 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
+> > index a95bfe5eff77..74a11e520f0d 100644
+> > --- a/drivers/pci/liveupdate.c
+> > +++ b/drivers/pci/liveupdate.c
+> > @@ -128,6 +128,10 @@
+> >   *    way after Live Update and ensures that IOMMU groups do not chang=
+e. Note
+> >   *    that a device will use its inherited ACS flags for the lifetime =
+of its
+> >   *    struct pci_dev (i.e. even after pci_liveupdate_finish()).
+> > + *
+> > + *  * The PCI core inherits ARI Forwarding Enable on all bridges with =
+downstream
+> > + *    preserved devices to ensure that all preserved devices on the br=
+idge's
+> > + *    secondary bus are addressable after the Live Update.
+> >   */
+> >
+> >  #define pr_fmt(fmt) "PCI: " KBUILD_BASENAME ": " fmt
+> > @@ -816,6 +820,20 @@ int pci_liveupdate_enable_acs(struct pci_dev *dev)
+> >       return 0;
+> >  }
+> >
+> > +int pci_liveupdate_configure_ari(struct pci_dev *dev)
+> > +{
+> > +     u16 val;
+> > +
+> > +     guard(rwsem_read)(&pci_liveupdate.rwsem);
+> > +
+> > +     if (!dev->liveupdate.incoming)
+> > +             return -EINVAL;
+> > +
+> > +     pcie_capability_read_word(dev, PCI_EXP_DEVCTL2, &val);
+> > +     dev->ari_enabled =3D !!(val & PCI_EXP_DEVCTL2_ARI);
+> > +     return 0;
+> > +}
 >
-> We can avoid this by checking whether the reclaimable generation has
-> become empty when scanned < nr_to_scan and we still have fewer than
-> MIN_LRU_BATCH isolated folios after scan_folios().
+> I'm guessing we're going to see a lot of this pattern, so it will
+> eventually become familiar, but it's not familiar yet ;)  This doesn't
+> "configure" anything (I do understand that avoiding configuration in
+> the new kernel is really the main point of liveupdate).
 >
-> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> ---
->  mm/vmscan.c | 11 +++++++----
->  1 file changed, 7 insertions(+), 4 deletions(-)
+> Maybe a comment is the solution.  Or maybe a rename to
+> "pci_liveupdate_ari_preserved" or something?  That would have to
+> reverse the sense of return values, but I think something like this in
+> the callers would read better:
 >
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 566c4e837c7d..babbce4bbfe8 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -4852,11 +4852,14 @@ static int isolate_folios(unsigned long nr_to_sca=
-n, struct lruvec *lruvec,
->                         break;
->                 }
->                 /*
-> -                * If scanned > 0 and isolated =3D=3D 0, avoid falling ba=
-ck to the
-> -                * other type, as this type remains sufficient. Falling b=
-ack
-> -                * too readily can disrupt the positive_ctrl_err() bias.
-> +                * If scanned >=3D nr_to_scan or isolated >=3D MIN_LRU_BA=
-TCH,
-> +                * avoid falling back to the other type. The preferred
-> +                * type is still reclaimable; otherwise, it would have
-> +                * already run out of reclaimable generations. Falling
-> +                * back too readily can disrupt the positive_ctrl_err()
-> +                * bias.
->                  */
-> -               if (!scanned)
-> +               if (scanned < nr_to_scan && *isolated < MIN_LRU_BATCH)
+>   if (pci_liveupdate_ari_preserved(dev))
+>     return;
+>
+> or maybe:
+>
+>   if (pci_liveupdate_preserve_ari(dev))
+>     return;
 
-https://sashiko.dev/#/patchset/20260726122123.7614-1-baohua%40kernel.org
+I do think a better naming and return value convention is needed.
 
-"
-> - if (!scanned)
-> + if (scanned < nr_to_scan && *isolated < MIN_LRU_BATCH)
-> type =3D !type;
-> }
-Does the check for *isolated < MIN_LRU_BATCH have any effect here?
-Looking earlier in isolate_folios(), there is an if (*isolated) check that
-breaks out of the loop:
-if (*isolated)
-break;
-Since execution only reaches this point if *isolated is exactly 0, isn't
-*isolated < MIN_LRU_BATCH unconditionally true?
-Additionally, will this logic work correctly when large folios are involved=
-?
-If scan_folios() encounters an un-isolatable large folio (for example, an
-order-9 THP with 512 pages), the scanned variable is incremented by the bas=
-e
-page count (512).
-Since nr_to_scan is capped at MIN_LRU_BATCH (64) by the caller evict_folios=
-(),
-scanned < nr_to_scan (512 < 64) will evaluate to false even if the generati=
-on
-is completely empty.
-Does this prevent the fallback and inadvertently defeat the optimization on
-systems utilizing large folios?
-"
+Perhaps "adopt" or "inherit" as the verb? i.e. "adopt/inherit the
+state of the device established by the previous kernel"
 
-Right. What I actually need is a way to tell when scan_folios()
-returns after the current generation's LRU lists are empty, but I
-haven't found a good approach. Checking scanned < nr_to_scan works
-well for small folios, but not for large folios.
+if (pci_liveupdate_adopt_ari(dev))
+  return;
 
-Maybe we could add an argument to scan_folios(), like this:
+or
 
-@@ -4707,7 +4711,8 @@ static bool isolate_folio(struct lruvec *lruvec,
-struct folio *folio, struct sca
+if (pci_liveupdate_inherit_ari(dev))
+  return?
 
- static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
-                       struct scan_control *sc, int type, int tier,
--                      struct list_head *list, int *isolatedp)
-+                      struct list_head *list, int *isolatedp,
-+                      bool *exhausted)
- {
-        int i;
-        int gen;
-@@ -4776,6 +4781,11 @@ static int scan_folios(unsigned long
-nr_to_scan, struct lruvec *lruvec,
-                                scanned, skipped, isolated,
-                                type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANO=
-N);
-
-+       /*
-+        * This scan exhausted the current generation before reaching the
-+        * scan target or accumulating enough isolated folios.
-+        */
-+       *exhausted =3D remaining > 0 && isolated < MIN_LRU_BATCH;
-        *isolatedp =3D isolated;
-        return scanned;
- }
-
-Then another question comes up: suppose we have four generations, and
-scan_folios() exhausts the oldest one while the second-oldest still
-contains reclaimable folios. The current implementation doesn't move
-on to scan the second-oldest generation. Instead, it returns,
-leaving that generation with no chance to be scanned at the current
-sc->priority. That doesn't seem right. Let me investigate this as
-well.
-
-Thanks
-Barry
+>
+> >  /**
+> >   * pci_liveupdate_is_incoming() - Check if a device is incoming-preser=
+ved
+> >   * @dev: The PCI device to check
+> > diff --git a/drivers/pci/liveupdate.h b/drivers/pci/liveupdate.h
+> > index 4e8a01bcb4bb..6f21ec50927b 100644
+> > --- a/drivers/pci/liveupdate.h
+> > +++ b/drivers/pci/liveupdate.h
+> > @@ -18,6 +18,7 @@ bool pci_liveupdate_scan_bridge_begin(struct pci_bus =
+*bus, struct pci_dev *dev,
+> >  void pci_liveupdate_scan_bridge_end(struct pci_dev *dev, int pass);
+> >  void pci_liveupdate_init_acs(struct pci_dev *dev);
+> >  int pci_liveupdate_enable_acs(struct pci_dev *dev);
+> > +int pci_liveupdate_configure_ari(struct pci_dev *dev);
+> >  #else
+> >  static inline void pci_liveupdate_setup_device(struct pci_dev *dev)
+> >  {
+> > @@ -46,6 +47,11 @@ static inline int pci_liveupdate_enable_acs(struct p=
+ci_dev *dev)
+> >  {
+> >       return -EINVAL;
+> >  }
+> > +
+> > +static inline int pci_liveupdate_configure_ari(struct pci_dev *dev)
+> > +{
+> > +     return -EINVAL;
+> > +}
+> >  #endif
+> >
+> >  #endif /* DRIVERS_PCI_LIVEUPDATE_H */
+> > diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+> > index 739ecaab2e76..e0c133b66a35 100644
+> > --- a/drivers/pci/pci.c
+> > +++ b/drivers/pci/pci.c
+> > @@ -3528,7 +3528,7 @@ void pci_configure_ari(struct pci_dev *dev)
+> >       u32 cap;
+> >       struct pci_dev *bridge;
+> >
+> > -     if (pcie_ari_disabled || !pci_is_pcie(dev) || dev->devfn)
+> > +     if (!pci_is_pcie(dev) || dev->devfn)
+> >               return;
+> >
+> >       bridge =3D dev->bus->self;
+> > @@ -3539,6 +3539,12 @@ void pci_configure_ari(struct pci_dev *dev)
+> >       if (!(cap & PCI_EXP_DEVCAP2_ARI))
+> >               return;
+> >
+> > +     if (!pci_liveupdate_configure_ari(bridge))
+> > +             return;
+> > +
+> > +     if (pcie_ari_disabled)
+> > +             return;
+> > +
+> >       if (pci_find_ext_capability(dev, PCI_EXT_CAP_ID_ARI)) {
+> >               pcie_capability_set_word(bridge, PCI_EXP_DEVCTL2,
+> >                                        PCI_EXP_DEVCTL2_ARI);
+> > --
+> > 2.55.0.795.g602f6c329a-goog
+> >
 
