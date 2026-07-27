@@ -4,92 +4,154 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D155AC53209
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 14:44:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31F32C531D0
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 14:44:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D76D56B00C7; Mon, 27 Jul 2026 10:44:02 -0400 (EDT)
+	id 191FE6B00D7; Mon, 27 Jul 2026 10:44:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D279D6B00C8; Mon, 27 Jul 2026 10:44:02 -0400 (EDT)
+	id 16A626B00D8; Mon, 27 Jul 2026 10:44:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C3DA36B00D5; Mon, 27 Jul 2026 10:44:02 -0400 (EDT)
+	id 0806A6B00D9; Mon, 27 Jul 2026 10:44:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A04976B00C7
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 10:44:02 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 35E01A079D
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 14:44:02 +0000 (UTC)
-X-FDA: 85034826324.18.7D00C16
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 61D48A0009
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 14:43:59 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=FzSS4rVN;
-	spf=pass (imf15.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CDC926B00D7
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 10:44:22 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5E8291401D8
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 14:44:22 +0000 (UTC)
+X-FDA: 85034827164.04.5852185
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id A5E19180008
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 14:44:20 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PhVGoeHy;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785163460;
+	b=ud/KRNPZD4q6G13USZfxOakXqbJB5KhxwJMY4p7j21alklWMfZh1W9guZ7jNoj8sxrvqc7
+	/qRwsm6VEv1Fxr06uFRB+pvJjJ2IwrJd7Ww4Qt3YEOWK5gqg/JjqS0QxIvGDXxHyKEv3qL
+	Rc6k2P9AhDsFUhxlhrOt3udHVKP9tYE=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PhVGoeHy;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785163440;
+	s=arc-20220608; t=1785163460;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/qlnN76+tF13o25mQrF2tByNLJl9jVDI3UupoYwfeo8=;
-	b=gxgZeg3ZNwmd1NSYP4o/OoY+sld+OC9lONOdQDf7tzgK3SQLQICZM/Y5JQ7pjwMPJ95b4M
-	DcqeKe/R/KeftUyMLcIZO6spcMIvUk/3xyyATJsP61W7iM2MjSq/MoNNAZ2bgFwATTNWHX
-	QVeXXzIhx7wzIYj8YfnpHpP1lf20xyM=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=FzSS4rVN;
-	spf=pass (imf15.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785163440;
-	b=u0M1srLjBFMLI+ECyDDhdyvREGknA0GlSrn1NqZBOLHN7YAWGXmES3tb8lgG1Mfri1s4d1
-	/VWNVD8MUbkCFdiP+T1wDTHQ71Uo505i+aEsCn8rPdsx/S3A2Jv14KK+t3jprI8yI9GHHs
-	aDMsUJIveEgQArL5nXjyVr85rtylQjg=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=/qlnN76+tF13o25mQrF2tByNLJl9jVDI3UupoYwfeo8=; b=FzSS4rVNlmr2vAmNPfcByvvRVm
-	muTlKZJB75MZFWDauFFbHpKxidXffT1sKlfKz8rKlrdtgWFJWlHLVN7jKkJT5trsA9spB62OyXr+o
-	vzS1ITss3JwL7f04WZ8KhvlO1pYqxJ88MnPFnPC3n0wZQdK9tBUSAHY128m92RQ6g99YYI8UoOUbr
-	lBxtt2hfFJO4tS3O2XVllmCDs6vWz6AZ9eNXcqw8BOaIUZm6AVhwkb58EH3i8+19A/XCiJvFLpTU0
-	zpymd//i1OPXyZAp1KS6a/su4PpSdMOtrLGgcidm7Rgh/UBQu+MhuD+yTNaeQ5y6/fl2XQ+pxQxEg
-	278UE33Q==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1woMYb-0000000AsJm-1HZL;
-	Mon, 27 Jul 2026 14:43:53 +0000
-Date: Mon, 27 Jul 2026 15:43:53 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Jane Chu <jane.chu@oracle.com>, linux-mm@kvack.org
-Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Jan Kara <jack@suse.cz>,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <christian@brauner.io>,
-	Jiaqi Yan <jiaqiyan@google.com>, stable@vger.kernel.org,
-	Naoya Horiguchi <naoya.horiguchi@nec.com>
-Subject: Re: [PATCH v5 01/12] memory-failure: Fix hardware poison check in
- unpoison_memory() again
-Message-ID: <amduqWdnxeYwToax@casper.infradead.org>
-References: <20260725160042.1557264-1-willy@infradead.org>
- <20260725160042.1557264-2-willy@infradead.org>
+	bh=9dVdzXw/O9Qo+fRyZpEM/TgP7hh11wbOH6xloCAG0ak=;
+	b=Wk0HWRJDFqcp8kOJxN7mo9KVVZQzQZvYXaGaHJ16LLf08o0XdlVzIcFv9scjZLEWGb3Z1Q
+	bqIr+mTTZ/n/CVF4+tvWVYi3QsQ4UeqzVQDViwxZ9twGqtE03yK604YgIWjyUs8QnaAF/I
+	UGdodHuOXrQZ0OJxSytgZS8j4jbUNFA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id F26EC60254;
+	Mon, 27 Jul 2026 14:44:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CFF11F00A3E;
+	Mon, 27 Jul 2026 14:44:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785163459;
+	bh=9dVdzXw/O9Qo+fRyZpEM/TgP7hh11wbOH6xloCAG0ak=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=PhVGoeHy8JxQDq4dBfU7UzadtQTNbux9yx1M1nF5IWCDPKsj6+e+vVpNWfQ3LmbNE
+	 tO2Oqj2Y3nB16V5VyHdG1HtWXKtboMn3dFVzmNjfoukR3RA0HlM8qBYHKrhA2kCD6R
+	 NKWMUdkc3IKrdL3lqS+seJQmoAEIW5L3BqGnjoyYCM0ycRaCZNBVeKYt+ankm19Efw
+	 kK/ekAkBII7oXh30iRWfV2WGvHhBMZulq8v8Tgo892r5+67o2AhLWkjx/BW9eVFDgd
+	 Aa9/jGsEDb6g34eDMzUY0qkDMsaUzTTOhuFJ/VNifyyud1Oh6HIiQ1ETvBt6/3zBZl
+	 jtSwRrAVu8J7A==
+Message-ID: <880981b5-ef79-4c9a-a8bd-7540002fcd15@kernel.org>
+Date: Mon, 27 Jul 2026 16:44:06 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260725160042.1557264-2-willy@infradead.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 00/15] mm/rmap: index MAP_PRIVATE file-backed folios by
+ virt pgoff
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
+ <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>,
+ Harry Yoo <harry@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Usama Arif <usama.arif@linux.dev>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>,
+ Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org
+References: <20260720-b4-scalable-cow-virt-pgoff-v2-0-2d549757a76f@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260720-b4-scalable-cow-virt-pgoff-v2-0-2d549757a76f@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 1iskbj1syn9bcnmeyx78wzpxudi1mce3
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: A5E19180008
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 61D48A0009
-X-Stat-Signature: 7dpwez1mkdwwg53tf6ofi9mzox7pmod9
-X-HE-Tag: 1785163439-482851
-X-HE-Meta: U2FsdGVkX18MwoTB+bcefYaJTh+gHKlalezqb0uEVlMSfJ2prDHDC5f5PXjwW80QzD0HQ74wIhjG7fDKRofQ2nBId45bKUrg+Re1CtWjxemwvYFmBAnokYcJNz/pPyp7G9Vb4FAN7rcaa4h7sq7pC0HOzg1v4o11dF/pegtpZJkJcAsMtipZMNxlBLC26j1mJ/qms+yi+AyTfHoO9fVKmzofZC6kPYHK0D9oj7JRZHVOXsmvhimDqlnaOlska6EJXKQXIFWO5+X9i7uBAcARfkpK6qCVfhbppKfIWe2ZwnK5sSSp4z+JMPn/va09wYF81YwXKl/EKSCMVYX0ing6G5KdX8nvtRt/yDq82xhmHhL030yJaqbJa8v8GGz2SQXYjSZZ2F0DBwX7E6pkDwmFvxnYFW/0/z7lmytT5fj6PzZzJZDEhu8vOEVV59GwjRD0zljAYkEcRbQIzE2ZSkY3H0YIVsfdaBsE8y9qRUfrtf1+6fR4879C0jOhcx97fV6z1fs/i0WxA4MC90+xiz3X7XeEQl1DgHzm+R+ehmAxaeuVXH6xfEjVDj1fumuIjxanlgI6IgtWi5PfZL7s+e5B9Amfa1S/SZ5pPxBnR8mK1bcv8ZVfCKxT5dDEG5wJCAM4TLFgEhKsGCj5um4dVLZKSJ5dNaHJmbufWwmQYd0cBW0DhZaNQQVqfbruTqdeEJKof2H5o2DQsSQKRMvxS5ZUHddvERZFwtN97k19x4jOND1znkNaX4F16pqLdkFrF1f73bW6KRsvthWZeX36a5nbfHrojv5QsXDc3cqU8D6FnNi0LbLEZpQG5WDkZTyiYbdcLAgErsJsmTO/Gm4wP2tSXF2Pzv30Je0a+O6fvpkEeFUOYtBO2rcYRzZ8EvCIg2bc+fIcboWSKo6mwmfu1rUfjP0ho3UzOgcM+4wcSMCH0mdgbk77o70WFRmGSbWEayGpcTmge2sJ6pWdyHYwB0Q
- tcv/89ik
- xUb8gdtzruuNr8eAcHZ6MEtFDVsqE2uiqOZO/b3L5NRWj/gjnjHIpoHSW2UmbWCrzUuQCeOoB3QtfF+v2hOpXcIIolqhRrCiraRG2w1j6wv5XDldvx3vDPx3XO6cyyagjbU4OsQMKkoUMito+eAjtSDw6FOPi7yTARIJKBeIpplnNogqFy5xGI0d6y2UkGGZzUMFLHQNaA8FZUDIcz6+G+qbzOzABjY+63L8AeFPbVGPmclbPjeyDgL181tmhqYaJ0Xkram6vmjiOD/Uygucqlw3CNOzZOQANIxcD7T+Dm1EdrN7M5prPhEIu3fQsD0tMmfQQBGbXc6Umz56k64OWoAR3kaM2+GPUevI16SvCy4mIYwGrcemOiqD/JPQymO68RhuOvm5ctDbZcD6VPCPXIxW7yGfIolDlsNpe7ExxdZNPQlI=
+X-HE-Tag: 1785163460-289750
+X-HE-Meta: U2FsdGVkX19DIBhgtCFPobga2nmBx5wzH7dzIXoFT3rIkvJkhdQr0sOnRyvfqKUN0b4TtqHqBmP+e6t5STkW5MS9cNRAvjni5tBkviuERKUo5ID3QZoDnkJzI5sPE2ezV6PUTUGR5T++P8gLUpJflrfv/1XTaDcjEVMOug016cLhkmkVix7e6LGqQ1DLi7RXq+A6Zibt/Q/weNP2sULBSyB6rjHjNxIHgCkD8WDhz7L4DmQO0Rqd3dP+7RyUIYYOmXTp8DUtQmSCA8qYJsjsfzYOhZ6jZ4gau0clEiCqxzag37MXZdf+MRqa5y8Um2w5O0/IXlK4F4Ciy7gbyDZVpl/5K60rp7IhD9s62DgdMKQYwQYOO/ylA8MrXBGc8zOL5oCJz/QghGyefBxKTiJEfztmju0o7WogwbflQfsEvSnvEhFmM1fTxgkh6t6Z2lV5SeQpe1YOYIs0CjjXEG5Mrs4gkT/FViIv93hXfm8AGodrQZ9XsZx+7GYOlg4iwGC4Y7GOhOSyi7ICJoAvjA3ZeFyeR43hHQE3j/rXYjTczWP3ueXReyGXkc1qlTLsPXyQ9vyfciFq8S+DKMdldMLXYB+geqM6VI53w6bVOyCJFLqzJXcQUIskyPCC9/hpx1gNtkqj/O7np4omm4ljj7SRj8xLhtcVzQ+tmJ6alc6Jv1kY8AxfXJ0BkyN2iVPZtKuUj9M7OsIm0u9J6KV+I9zq2AAylhqAriSAWJsPd8JvOwVgf6EUazI/thwcW9lWMInRjTjV3c3QTDDG1YuPOmJA8+UxnvCHgS3P/OnUBjoglxsv952zuRnQO+XwTQXH+5b3VChWh48+NynW8zK4OKZhWeVN0sa+yaYAmYat15O2T5ACkehZmZ34VP+gR/Fe332QZodP2UtgU97Mx/s3f+lvMf/1RhPQTi2+XBh0TRDNk+1AZMVhRNxDeBO6M90z2XdCz7PBO99QabQhSRy/gbF
+ 1UC8SWTP
+ i5WXQ1X6QJXc7H1WPM5OYyXIjSzd5iOd2sySUQREce39e0w372IYkUUyJORZnfdNHDS7sFGmq4AQ0O3Yj14jPqP7wYircbVTSeoByC48h/z5M4lhgyghF9IO2VId1gkaXZERnzYR0inHvqTyrzDO2WO7tRdpDqyVqbpbGkvDIWCL6JC6hx2AUH88frbV5J/0O+DWa49koaMKsW0Nna1X4+oRUMX/AVRPK968F/NVjBqe1m2C1CZCXbBBZHOGTpP/bdm7xKh3iMYKtukvWqN3BPdSB37WMFX0XGU8HB2i16p08+7fjdzaX7vo4zJm/WfUq+2l0vhhdverK3HMCarrNwqyET5ystSciDqG4FX1FeF3mbdRxGZ6Hn5q/PXNOk6HThyPA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,103 +159,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Sashiko:
-> --- Patch [1]: [PATCH v5 01/12] memory-failure: Fix hardware poison check in unpoison_memory() again ---
-> commit 4beed8e27f2afa68261389ac2133cfe324d37d0e
-> Author: Matthew Wilcox (Oracle) <willy@infradead.org>
+On 7/20/26 16:38, Lorenzo Stoakes (ARM) wrote:
+> In memory management we've managed to manufacture a great deal of confusion
+> around the concept of anonymous memory. We have:
 > 
-> memory-failure: Fix hardware poison check in unpoison_memory() again
+> 1. 'Pure anon' memory - anonymous VMAs whose folios are anonymous and
+>    swap-backed (thus for reclaim purposes, treated as anonymous). These are
+>    simple enough.
 > 
-> This commit modifies unpoison_memory() to use is_page_hwpoison() to better
-> support hugetlb folios and ensures the HWPoison flag is cleared on the correct
-> head page.
+> 2. shmem - file-backed VMAs, file-backed folios (from rmap perspective) so
+>    present in the page cache and mapped by an address_space object, but
+>    whose folios are also swap-backed (thus treated as anonymous for reclaim
+>    purposes).
 > 
-> > diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> > index 51508a55c4055..944e6e1d49719 100644
-> > --- a/mm/memory-failure.c
-> > +++ b/mm/memory-failure.c
-> > @@ -2695,8 +2695,8 @@ int unpoison_memory(unsigned long pfn)
-> >  		goto unlock_mutex;
-> >  	}
-> >  
-> > -	if (!PageHWPoison(p)) {
-> > -		unpoison_pr_info("%#lx: page was already unpoisoned\n",
-> > +	if (!is_page_hwpoison(p)) {
-> > +		unpoison_pr_info("%#lx: page is not poisoned\n",
+> 3. MAP_PRIVATE-mapped /dev/zero - a strange beast whose VMAs have
+>    vma->vm_file set, but whose mmap_prepare callback clears vma->vm_ops to
+>    satisfy vma_is_anonymous(), which results in VMAs that were mmap()'d
+>    referencing a file, but are in every other sense anonymous, including the
+>    folios.
 > 
-> Can this speculative evaluation of is_page_hwpoison() trigger a panic?
+> 4. Other MAP_PRIVATE-file backed mappings - These possess file-backed VMAs
+>    and have file-backed folios until CoW'd, at which point those CoW'd
+>    folios are anonymous.
 > 
-> Since this is evaluated without a reference on the page, the underlying
-> page could be concurrently freed and reallocated as a tail page.
-> Looking at is_page_hwpoison() in include/linux/page-flags.h, it calls
-> folio_test_hugetlb(folio), which uses const_folio_flags(). That function
+> This series fixes issues 3 and 4.
+> 
+> In order for us to traverse VMAs using the reverse mapping, we require two
+> fields - folio->mapping and folio->index. The first tells the rmap code
+> where to look for VMAs, and the second tells it at which offset the folio
+> starts within the referenced object.
+> 
+> For anonymous folios, folio->mapping points at an anon_vma object. For
+> file-backed folios, it points at an address_space. And:
+> 
+> * For file-backed folios folio->index is simply the page offset of the start
+>   of the folio within the file.
+> 
+> * For anonymous folios belonging to pure anon mappings, folio->index is
+>   equal to the virtual page offset of the folio.
+> 
+> * For anonymous folios belonging to file-backed mappings (i.e. CoW'd folios
+>   of a MAP_PRIVATE file-backed mapping), folio->index is equal to the file
+>   page offset.
+> 
+> This series establishes a new virtual page offset property of VMAs to
+> allow us to map anonymous folios at their virtual page offset, consistent
+> with pure anon.
 
-No it doesn't.  folio_test_hugetlb() is one of th FOLIO_TYPE_OPS which is
-defined as return data_race(folio->page.page_type >> 24) == PGTY_##lname;
-and no asserts.  I mean, there probably should be!  But this is irrelevant;
-this whole function contains many such folio tests and the same problem
-applies to all of them.  This patch doesn't make it worse.
+As raised off-list, I consider the "virtual page offset" concept hard to grasp.
 
-> enforces a strict assertion:
-> 
-> VM_BUG_ON_PGFLAGS(PageTail(&folio->page))
-> 
-> If the page is concurrently reallocated as a tail page while
-> is_page_hwpoison() executes, won't this crash the kernel on debug builds?
-> 
-> >  				 pfn, &unpoison_rs);
-> >  		goto unlock_mutex;
-> >  	}
-> 
-> [ ... ]
-> 
-> > @@ -2748,6 +2748,7 @@ int unpoison_memory(unsigned long pfn)
-> >  				folio_put(folio);
-> >  				goto unlock_mutex;
-> >  			}
-> > +			p = &folio->page;
-> >  		}
-> >  
-> >  		folio_put(folio);
-> 
-> This isn't a bug introduced by this patch, but does this lead to a
-> double folio_put() and use-after-free for hugetlb folios?
-> 
-> If memory_failure() handles an in-use hugetlb folio, me_huge_page()
-> might fail to dissolve it, meaning no extra poison reference is taken
-> but the folio remains marked as hwpoisoned. If the folio is later
-> unmapped and holds a single transient reference, unpoison_memory()
-> will acquire a reference (ghp = 1) and perform the folio_put(folio)
-> seen just below this reassignment.
+Maybe it's just me :)
 
-I'm not an expert in the memory-poison field, but this also seems wrong.
-Don't all hugetlb folios have a folio_mapping()?  And thus we'll never
-take the dissolve path in me_huge_page().
+Skimming over the code, I read "vmg->anon_pgoff", which is pretty intuitive to
+me. Similarly vma_start_anon_pgoff() / vmg_end_anon_pgoff().
 
-At any rate, it says "not introduced by this patch", so I'm not going
-to take any action.
+Could we similarly just call this "anon_pgoff" /  "(linear) anon page index"
+even on the VMA level.
 
-> By reassigning p = &folio->page here, the subsequent call to
-> TestClearPageHWPoison(p) will be tested on the head page and return
-> true, triggering a second unconditional folio_put(folio). Does this
-> underflow the transient pin and cause a use-after-free?
-> 
-> 
-> This is a pre-existing issue, but does this same logic underflow the
-> refcount for THP folios that previously failed to split?
-> 
-> If memory_failure() handles a THP and try_to_split_thp_page() fails, it
-> explicitly drops the reference acquired via get_hwpoison_page(p), leaving
-> the THP with no extra poison pin. However, TestSetPageHWPoison(p) was
-> already called.
-> 
-> If the THP later reaches a state with a single transient reference
-> and no mappings, unpoison_memory() acquires a reference (ghp = 1),
-> calls folio_put(folio) once, and then TestClearPageHWPoison(p) clears
-> the flag and returns true. This triggers the second folio_put(folio),
-> dropping a non-existent poison pin.
+IOW, in patch #9 for example:
 
-I don't know, and I'm losing patience with the Sashiko rabbit holes.
-This is all getting very far afield from the problem I actually want
-to fix.
+static inline pgoff_t linear_folio_page_index(const struct folio *folio,
+ 					      const struct vm_area_struct *vma,
+ 					      const unsigned long address)
+ {
+	if (folio_test_anon(folio))
++		return linear_anon_page_index(vma, address);
++
+ 	return linear_page_index(vma, address);
+ }
+
+
+Or is there another user for the the "virtual page offset" concept? I'd assume
+it's only used for anon folios (including KSM), but maybe I am missing some
+corner case.
+
+-- 
+Cheers,
+
+David
 
