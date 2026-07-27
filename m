@@ -4,90 +4,154 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3BC3C531D0
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 12:11:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D355AC5321C
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 12:13:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F199C6B00D1; Mon, 27 Jul 2026 08:11:12 -0400 (EDT)
+	id AD7046B00D4; Mon, 27 Jul 2026 08:13:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ECAC66B00D3; Mon, 27 Jul 2026 08:11:12 -0400 (EDT)
+	id A61BE6B00D5; Mon, 27 Jul 2026 08:13:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DBC1A6B00D4; Mon, 27 Jul 2026 08:11:12 -0400 (EDT)
+	id 928A96B00D6; Mon, 27 Jul 2026 08:13:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B0B1C6B00D1
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 08:11:12 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4105E1C0DDF
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:11:12 +0000 (UTC)
-X-FDA: 85034441184.01.61565CB
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 1DC841A0011
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:11:09 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="eIN1J/zh";
-	spf=pass (imf19.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 680886B00D4
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 08:13:00 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0091B806E8
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:12:58 +0000 (UTC)
+X-FDA: 85034445636.03.9832A23
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 4A2541C000D
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:12:57 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cJUiNzz1;
+	spf=pass (imf20.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785154270;
+	s=arc-20220608; t=1785154377;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FqRDMJ385c9CEd6uthhS9gKVU+eex7894C+QhK8tFGU=;
-	b=GdbhEXQ4EcunEbB1CVi+FSO+LgFe8AuAMjjlsfRMKCTCP26MmRLkuyVo8t+jHjSGnHMqm7
-	sZMbrLoSi0rWyQNJpObymZf/LxU5pFQ5KkDylFfRDyZSKeCNa1T4YDNQTv49r0ZvLOTyQr
-	Qn9miT8YLX2eDsmjPfTgEnqVCgLNNiU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785154270;
-	b=5pZoaN9eZCL8HjKHys/1L43lhGBj2bBlkoWi1uXv+vXp9iIzWk0QSAa5UaG0zcxEQaPDFs
-	MIfLGox84IolVhHtJ7RxHbU90UJde3XRuRTyJIxSw3nEw/+hbwegG+1p0LdW1KHClFC2gy
-	43y7ugrgcQB78W0QymkOCy4vdpfA38k=
+	bh=NuMpyXi203gMNqb11rcfOKZmtmuJN0EPDdTrfGAbmqA=;
+	b=ri1/xd/hkbY4ocgjdCG/orvBKBuJLU4KSb6OttfgDUwbPOhKFgoDmbWiBK9Rmnj4n3Jj2b
+	Ey87HPW/DxrhmuLLFv1zRbicieqGIH0tV8iMsccHgSLCgYNlAXktMBGk7nsCVy7NZlXtVP
+	E96M5A6E9wP0KY7DJogy5Mf2TnRcQQE=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="eIN1J/zh";
-	spf=pass (imf19.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785154267;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FqRDMJ385c9CEd6uthhS9gKVU+eex7894C+QhK8tFGU=;
-	b=eIN1J/zh87o7cJi166fmqwLOwxGSkLpAFu7ZEoQQWmIhhdtNP54qw7VJ5bVgxhINNsw3Mb
-	oBY+cCBtQqywHbvs0sO1F99YtzmnSmd8ew6SDmY3d9IkVDWjhaGFYOoLodOmk/uJFZEwpM
-	AkeMJjHVZM8Wc2sAjl0dzWjCjcGjojQ=
-From: Hongfu Li <hongfu.li@linux.dev>
-To: david@kernel.org
-Cc: akpm@linux-foundation.org,
-	hongfu.li@linux.dev,
-	liam@infradead.org,
-	lihongfu@kylinos.cn,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	ljs@kernel.org,
-	mhocko@suse.com,
-	rppt@kernel.org,
-	surenb@google.com,
-	vbabka@kernel.org
-Subject: Re: [PATCH v2 2/2] mm: Extract non-swap page handling to do_non_swap_page()
-Date: Mon, 27 Jul 2026 20:10:47 +0800
-Message-ID: <20260727121047.4140-1-hongfu.li@linux.dev>
-In-Reply-To: <10c60511-c841-4bd8-aa5f-0d826b676533@kernel.org>
-References: <10c60511-c841-4bd8-aa5f-0d826b676533@kernel.org>
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cJUiNzz1;
+	spf=pass (imf20.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785154377;
+	b=C29Gasgb5zYleAuZD/2clIDaXfVc2mYN80UVS/TGAbL6pcPr5neoCnGB2bwymDcD7TtbK4
+	KJwu9L5hGWfI0hRhNJehsvvS3hUMcvrH1rNpzjyoApWk9YuKbClvYlso201oTqfTcrd/As
+	H8msXby4DKCpWFO4UkSMkkmheheTVGU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6DAC743950;
+	Mon, 27 Jul 2026 12:12:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0753E1F000E9;
+	Mon, 27 Jul 2026 12:12:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785154376;
+	bh=NuMpyXi203gMNqb11rcfOKZmtmuJN0EPDdTrfGAbmqA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=cJUiNzz1prDmu0GWRwCZ182TsRp83BQvTp0/rURfnkMQzP20L6fG8sazv0cYKgUtW
+	 pg9MCuVlTFHqe3x/O6EVkylNOZs7wcPPsZhmCr3XEWEcOo26weH2DM61fSqQ+OmbrP
+	 tvyWB2eboDXUxX9deZuSx028Hbg9foCFt8d+5Bw+IlFteVi3skzllTVeGL1XafPYbe
+	 08wppeqNa8S6eH5zJPQgihAdalyGQJliwPyAS5P+AP5v8yaQxZyfcN5KNznMD5HYbU
+	 HA3HDDWzzh9ixbV9ramHSWGxONVFCvMxk3yVAI+jirrpd4gfEm0DA5Mx/fNCvUjATc
+	 xHtThaOzcAK8w==
+Date: Mon, 27 Jul 2026 13:12:37 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Sang-Heon Jeon <ekffu200098@gmail.com>
+Cc: Julia.Lawall@inria.fr, Alex Deucher <alexander.deucher@amd.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	David Airlie <airlied@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Eric Dumazet <edumazet@google.com>, Florian Westphal <fw@strlen.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Hans de Goede <hansg@kernel.org>,
+	Hans Verkuil <hverkuil@kernel.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Jaroslav Kysela <perex@perex.cz>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Jiri Pirko <jiri@resnulli.us>,
+	"Joerg Roedel (AMD)" <joro@8bytes.org>,
+	Johan Hovold <johan@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Julian Anastasov <ja@ssi.bg>, Leon Romanovsky <leon@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Linus Walleij <linusw@kernel.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Matthew Sakai <msakai@redhat.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Maxime Ripard <mripard@kernel.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Nicolas Palix <nicolas.palix@imag.fr>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Paolo Abeni <pabeni@redhat.com>, Ping-Ke Shih <pkshih@realtek.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Sebastian Reichel <sre@kernel.org>, Shuah Khan <shuah@kernel.org>,
+	Simona Vetter <simona@ffwll.ch>, Simon Horman <horms@verge.net.au>,
+	Stephen Boyd <sboyd@kernel.org>, Steve French <sfrench@samba.org>,
+	Takashi Iwai <tiwai@suse.com>, Thomas Renninger <trenn@suse.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Tony Luck <tony.luck@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Vinod Koul <vkoul@kernel.org>, Will Deacon <will@kernel.org>,
+	Yazen Ghannam <Yazen.Ghannam@amd.com>, cocci@inria.fr,
+	amd-gfx@lists.freedesktop.org, dmaengine@vger.kernel.org,
+	dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org,
+	intel-gfx@lists.freedesktop.org, intel-wired-lan@lists.osuosl.org,
+	iommu@lists.linux.dev, linux-cifs@vger.kernel.org,
+	linux-clk@vger.kernel.org, linux-crypto@vger.kernel.org,
+	linux-edac@vger.kernel.org, linux-gpio@vger.kernel.org,
+	linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+	linux-mm@kvack.org, linux-pm@vger.kernel.org,
+	linux-rdma@vger.kernel.org, linux-rtc@vger.kernel.org,
+	linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org,
+	linux-sound@vger.kernel.org, linux-usb@vger.kernel.org,
+	linux-wireless@vger.kernel.org, lvs-devel@vger.kernel.org,
+	netdev@vger.kernel.org, netfilter-devel@vger.kernel.org,
+	nouveau@lists.freedesktop.org, platform-driver-x86@vger.kernel.org
+Subject: Re: [PATCH 00/36] treewide: remove conditional returns with no effect
+Message-ID: <adcfc6f2-3309-4496-8331-1ae31e85d363@sirena.org.uk>
+References: <20260723184538.3888637-1-ekffu200098@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 1DC841A0011
-X-Stat-Signature: jgk7jjx858qbhrhi9s56zg5kkzqhojep
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="2ViMWcNJN7tv3iXJ"
+Content-Disposition: inline
+In-Reply-To: <20260723184538.3888637-1-ekffu200098@gmail.com>
+X-Cookie: It's OKAY -- I'm an INTELLECTUAL, too.
 X-Rspam-User: 
-X-HE-Tag: 1785154269-907464
-X-HE-Meta: U2FsdGVkX18huYeMtRv/26rR3OwYlvEivqC5dEN0lTTJSAMJnZ1O+A+yQrSWXDId49NtAlSI0qIjdX6TRLwHTeEMnInLEliUY5kmBAjo56Kuy3fn4ScmQGooQBiB90SCew3AM8zB0RJEa5BFYMDCmGW01bLNx+yTkz/SXlTsw+8F/Hf/5avFSoCae+qJHJfDi9hM7Kwu3/yObFL3NLkuR9Pcqh81IA5QtKqtdqWWBToYQsJeZV0ZGI9mN5hya0B0hQjpBzfbzNNHIo0CVLvqmBMMyYbmBg90m3hIEf7dOhoBZ+CfgqZGBm1W7VnLdC/sWaBHPJhXDCdzp1fe9Yz79MlRUINyWE+JXu1GxVhS3BsbrsibyqaIj1vyn36QO/8zv8Tz3lG6yblgfeXyzQfz/QLhsHWVnZPVwZcNJP3f/gCLW7zWilqzPMXLl/xr6pwDrfRoik6/uFC0CwPz2BcQVNiYNMK6+DaFimuXdEAwEvF4y0vnkKb6QxRdDOZAxF53DaBYiGULblTdMgXcAIgntG7H01suqIMdNjCB6UezqUIzZirZXHCZyVMbG8YE8RGVsVEDYTKdn147GAroZU3+mKVquRFZrH+fZOb/Q/b9RUDNEMjlz5d+B0DGaoa/hk39wGBK/x6EmWBNYUbnQsNyfSeCu0F7OSo3gMaFhtPBXp7SDHTgmj0XjjruObY9ka81mydEn2+Oul0ZKQm8iJ2VIqvWfz1obfnqcI6c+rJBMwMjHT2JBJeGBGbZI9sb5mJwXU2iZ8f0ZXzWwNU/Qa64qFqf9gi/mKeJ1jeejU1GFLi9WAgP6h1IkYxRXcMakAsaWDxJF+pFI6+7uc50j6kYX7ddq+9z12IZPV8/Mw5Pi0KWi3tpdZw7p6EwQYKsz1Le84JsdTtcusgAaBnWvUCAJqHeK0OZh+GJCg/C+CqCCyJ+SN1Ao94g6hmJRR3M8WLYlH+Q7nvD7tnUBUWtSHS
- H/FVwaVj
- Zok2eK2hsA9aj6xerptmvYCq04BCYxWMooOF+PG240SYClffmARpQmRGm8zvVxYkKrSXleisVaygCJdU/hXddCptWTJSbqFrKfuevJyQ3974WWc1Q0dECNG/dvEJWFA30uJrSNiiKkC4ArOi4pNvBw9rRMoaFgIAhOhP/OkaK+v2taozQ5oKTP/Y7YtfpUi5PuwF0KXq3NUt9HMhZJA03dznIaFNpEDr4z+YQp13k99fpsxUQkhrxIpkx3Q==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 4A2541C000D
+X-Stat-Signature: p6tixq5ifc7f7sewezcr5qigmp4mcp8k
+X-HE-Tag: 1785154377-496911
+X-HE-Meta: U2FsdGVkX18sEALACDva2YEvqpvhfO8CM3M2xlrS6aU2u1PBsmFZjinqCCtR5PPfrMGspxJNYr97EM9EHUlw4Zf5kUcuCjHtsac209K14ZfVLJ4PGGlvsyjxTeCDblWfrs5F5Z9HgyUHEQ/U1ABKP80Sz4MDVX1dNRJuHddeGqJHVr6N7z4zgVLpcorBGYSpv1jmiS4RVxQwPT3xfYKmPFh/0nL2sxyUOHh++bJW0Xe+tflfFfjmyNG3iHsWCbhn2TLJ0k04JUi1iQLZsq2vZTnTyQS4Z7mFkRqhWjWMfGhDtWdfj/SN1ClQlYlLJIQDKNxryAcHNydyeJTyD69TISZnCmc7qoQs3EHM+UldB4CcKDijudBK8xUmQzvnEzrMCoYFr8Rl49t5WzJuMeFfrYj0e2SSXDWGWh+LHmFL2+IjEFV1qLAujYcpyMA2uogG6wdcvy+94emolbtZuRV9DSdLJE0uHng3s5INrZClFqFot3c/wBROSAsDMmxV0tOiodK3WfH0yWJ0HJVkyCyIjmjkG4RyWFcG7dCHiRjCNf86gSMnYM3NJTl8QbacbsrcMsCpPsjaILVqPuQAT8S7NtCPinDd/fxkjSVWdnBfQ0VS4jTly+iPwUTavrntbBQbezk5VzZ41JlkYleJjHa7Z80Ta30pZ0ReWJpnXTjL5dSjp+NlnZJ9+64f6z7X0giEtxiMlD5L2R5POMqvqoB1MJF4zXEtwkPS4Uxx6x5Q48FVhxrrrsYrZCelB4B0pwJp01J5UDwT/tmwyX8OoHjBXg0qeQHFUxBY3zLO0qjbrDodcSveZOMo989+L9/H4/YVHl4WaA7xRfUcu3obSeIkZNnF91vHMA5rTZvyyUOSuWSFri1v8N3SPeVlrkyLPEJKXjuh4LSV3nc0bccNoSdZ0DXDDd8vvaR6fYyy1ClQi9+H3vzgfkBb44k5rU6dXiOUsyEgeqMItIGjpeBgboe
+ 2sW3HCh9
+ l8oDrrWOp+2sbXs8HActa37wMGsyrM++dxP6I7wHBWRutc1pAVipwxa62FLgSgSeIvhvb2K2INlYxuRuKD5+ieJ4ZcAXQ787ffjD5Yqvz8w0GO8vtyZA+Q71FKRX6PORIWYsCFHrsJQQrrqUUcsayWVqrN6QUcRSZVn2rIS8iNJw/j/j/ktvpjSi7Wm8dfNvqCrMk+cctCqCkuQtbyv4dVphxnx/2SPdN6ZKoXoqY4zOazTKHcF5R5wHIl9KYFfzQZDgNjMPp862Am2L5nOaElUW3FXQnbs1NfXPm2pqm/HwfGBMvaLUkra2lFylMW7n60WJyFwrLl6KrWRMT+MdajxhKcX6OFjttXPT1rIooB6U6WVeF2XrAfwXj4UyEjxq56ZPG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,40 +159,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> >  mm/memory.c | 120 ++++++++++++++++++++++++++++++----------------------
-> >  1 file changed, 69 insertions(+), 51 deletions(-)
-> > 
-> > diff --git a/mm/memory.c b/mm/memory.c
-> > index ae521baa8c84..50d8e92aef91 100644
-> > --- a/mm/memory.c
-> > +++ b/mm/memory.c
-> > @@ -4815,6 +4815,74 @@ static void check_swap_exclusive(struct folio *folio, swp_entry_t entry,
-> >  	} while (--nr_pages);
-> >  }
-> >  
-> > +static vm_fault_t do_non_swap_page(struct vm_fault *vmf)
-> 
-> We're handling softleaf entries that are not swap entries.
-> 
-> do_nonswap_softleaf() or sth like that would be better than talking about "page"
-> if there is not even a page.
-> 
-> But actually it should be the other way around:
-> 
-> do_softleaf_entry() [currently do_swap_page]
->    ... non-swap entries
->    do_swap_entry()
-> 
-> Or sth like that. Then, maybe in the future, we can just move do_swap_entry()
-> out of memory.c
-> 
-> So we're factoring the wrong thing out in this patch.
 
-Thank you very much for the detailed review, your analysis makes perfect sense to me.
-                                                                                                                                                                                                                                                                                
-I'm glad to send out v3 shortly for your further review, with 
-do_non_swap_page renamed to do_nonswap_softleaf.
+--2ViMWcNJN7tv3iXJ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Best regards,
-Hongfu
+On Fri, Jul 24, 2026 at 03:45:02AM +0900, Sang-Heon Jeon wrote:
+
+> All patches are independent and can be applied separately, but for
+> everyone's convenience, it would be nice if they were merged through
+> a single tree.
+
+Please don't do this, it does not make anything more convenient - it
+results in huge CC lists and makes it more difficult to work out who
+will actually apply things.  If there's no dependencies just send to
+each subsystem independently.
+
+--2ViMWcNJN7tv3iXJ
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmpnSzQACgkQJNaLcl1U
+h9DhKwf/RoCnDee69F9hZ06/HOdC8gDpovt8IjWRgC8X3EQmHZkTxcKWoky17APD
+5D8K2eKoz+FEDKrtFChR3EfGX0AhpmXhKtwaUanH/Qm+clf4ZjOTiguGtDpB4EVm
+bTQ0cWSCcNpHm4yfpRk8XJVw/leZO0YIsDDi9rHzgeKJVY5zWBXi6azVk3svE2Ut
+E9u3jmn1vStzN8uV36mRJ2+hgzFQOVilP6XSNNxMrdu6GJXHk/T6ZUlANNAxGcbL
+/fZLJuq1gzwgfEJevdiqJ+O9U3OQl0DV9ZELQBaghYKq6Lv3nMs3PFSromeerfgv
+GqK0jSpzheWN4gsenCQKqgt3POQM+g==
+=WTGT
+-----END PGP SIGNATURE-----
+
+--2ViMWcNJN7tv3iXJ--
 
