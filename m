@@ -4,108 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 503F1C531C9
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 16:19:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2503C531C9
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 16:24:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1CD3E6B008C; Mon, 27 Jul 2026 12:19:00 -0400 (EDT)
+	id 8B5756B008A; Mon, 27 Jul 2026 12:24:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A4646B0093; Mon, 27 Jul 2026 12:19:00 -0400 (EDT)
+	id 866226B0093; Mon, 27 Jul 2026 12:24:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0E2646B0099; Mon, 27 Jul 2026 12:19:00 -0400 (EDT)
+	id 730ED6B0095; Mon, 27 Jul 2026 12:24:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DF11F6B008C
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:18:59 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 85B6CA0052
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:18:59 +0000 (UTC)
-X-FDA: 85035065598.29.EFC4AC7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 95829140002
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:18:57 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PvQuwjVR;
-	spf=pass (imf26.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785169137;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E8B346B008A
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:24:54 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6AC318012C
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:24:54 +0000 (UTC)
+X-FDA: 85035080508.14.A312888
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 6FA5CC0009
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:24:52 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=DmOkLUxi;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf22.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1785169492;
+	b=ABAdf2+kPs5K9Oc7kK6zcSsJ1rVI+rEKmPZwbYEZ3UtKbojRJeKNHHKiJZwNPd0CbN2Bk8
+	fTKE/7Xpc7JTQqufenWiSFhdu+aGHRNARJzga89bVFimx9BrHIqa+t0TNF2LSdRzzlZtIa
+	EBs/sNPbpX2Gd+b+qeSYAgBhr8n6bi0=
+ARC-Authentication-Results: i=2;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=DmOkLUxi;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf22.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785169492;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=91SGC46wteTA8UqskPXqZ2MjsKPL+bnm4sYk32isMto=;
-	b=8qiMiph4PwlA1G654CWuFeVPdf13C2AoLFn5CubYAN7xnczowqgdLUxN/zD8fIE2HaGjqK
-	MdY4vLIAdbPcyl1iJ+RUrevkCU7BdbonCllbPNVcj18aoqA9r1gQEzrLmA2Xz+Wr0rHph2
-	fgusYl8uOsxXO0Z7c/C7koO0bZLs7KA=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PvQuwjVR;
-	spf=pass (imf26.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785169137;
-	b=lLds3MGDagLzJHxjwgb/qOBF+6FoDy9FFki33Rm+vDKuwvZ31sfr/w3J5zEiehEoOki7v9
-	K7BaEHXrQV97f4nuFhJlJTwKDJ0R4fzF3HkSCgFXsFnDzeeD4wUIzPM0uOz09nCdGYZMCP
-	mykEeoossx9B1UShJrHKVLRd4JbZYB0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7E7AB409CB
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:18:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6107F1F000E9
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:18:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785169136;
-	bh=91SGC46wteTA8UqskPXqZ2MjsKPL+bnm4sYk32isMto=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=PvQuwjVRBb9rJCFkho4AEu6YakJdgcF2n653RTkhlU/Gs8Mq9+4u8oy7kgkCIwJKT
-	 oTls3DsPaskQ2YJX9EDJXL1r10fiiKUyVuLoQSPQXPrZFMc/SLObuqWteMM7TJantN
-	 3rtgirpjhcmiHA1JIww7Mblx9BPNVoAfNJyot56Xzd22AmhtwxxJ7IyBTZzjBiqi1w
-	 WAD5oYmpe/nXaZ2kKtMhWWVxTOQ8mHf1PkWMFvIztRFS38VsSA0+GB0VF8KXZa/rW0
-	 2nTL5swgX8dKNUk+ybe2Oni4JdxZakELQZEI5PjZNXDQWK800iTa8HAyPZkuo5vZHD
-	 t+1t7pGKoZINA==
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-c12614b81c9so492278866b.3
-        for <linux-mm@kvack.org>; Mon, 27 Jul 2026 09:18:56 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RraO92/8XQFKde9ad9LT6hSsraHDZNpEaO/uApEH4CpPri6Ipjpta7NROCiThGpUxnjTSJW25wykQ==@kvack.org
-X-Gm-Message-State: AOJu0YyBuoGwex5D9Nt0/0P9SUZfA4seuFoEHCZMPvfhCg5JYFcjKC+U
-	5aWC74VDrhMb5gGDm1LVEQS6NI+dZlQ5swNdbCo7nD6lEk+fEky4t5N9mXpCUkXnSYEh2EqzrL8
-	1ez7B8NbSXi3mM/VHar99mdnvcsUJvDo=
-X-Received: by 2002:a17:907:a4a:b0:c15:f395:ac31 with SMTP id
- a640c23a62f3a-c1f1f3e5ddfmr414865366b.61.1785169135321; Mon, 27 Jul 2026
- 09:18:55 -0700 (PDT)
+	bh=zsod/qLuXRWdrxs9+mmL1NzASv99z6ZREmVzFIyc/Gg=;
+	b=eFESkn730WbUcOsKgMhPWW6r4gjkVkAYB5fyLViVRgJG3tax9QO6Mwr9ru3Dh67rYpw086
+	o02ZxvIqsc7HMO9x43UIABdxZPyyB+J8uqrS/G8aJx9I17SDDwCF1fxcGqHCAm6cxlctPt
+	Bz90NLOQL9Ry7OA/Je9W9ZeNIaoDQuM=
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-4728c12ba97so1771438f8f.0
+        for <linux-mm@kvack.org>; Mon, 27 Jul 2026 09:24:52 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785169491; cv=none;
+        d=google.com; s=arc-20260327;
+        b=JBf25YkzzR3S0tcgA8/8mAIxqVefE+1nuSD2wcpdoty9fUOXVt2cZ+7QqSjTDaa+GN
+         JpMJxCRl0o6KllH5MLnKqstTLEceyHDKy5a/9NjnSknnw6l2h8ifO9gI4oX5BZ/QgzSP
+         icVvzcMHi2uvh50H7XTnMJ4xedj2PwV0WVSd5rDLOJcoUdRV7F85yUfdoQgi5+GKs9Zt
+         BtB6re6pVpGV/Gqvz0MCN1DSqJt/Qxh7csefaw8Sw4HBhjWEg/qLzSk5P6h6eTAOu/mU
+         zw4Kop+9BT6KOYcv/ekfnffgocj1cXhfA+LJppL9r5dQX3BiOHvXNVn4oQlXbD/G/ubS
+         njew==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=zsod/qLuXRWdrxs9+mmL1NzASv99z6ZREmVzFIyc/Gg=;
+        fh=FQAjT4esPnCAChFDIoVMzqU+2JEp2+83Fw7XyFbS6yU=;
+        b=pNpD/idzteQ8rjmKXBAIHnGYBd/lzbNoFEWgr8nRfmYGNGJe+7IVEvd4bcOEVQMCYK
+         eB6ZFTvYp5VhJD9hhWmN6UUw6JdF9TRuOHqSMfGVd1gcMWOWoTdq6+wnuWfw18pfksEi
+         Ws/Cz/bIX6b8R2zbDN84HCp3sorrAweRe1I34hXBCkXu8+iYp1RNHTDAyX1nC95kMzRU
+         vqIx+0wVYgNRfNVvYkqHPsN+roF2Nxwuk28JzxpHhK6HMdwqXAvs4hHfl5eTf2a6692y
+         NqMtb3+ZiOH4GnYiwR7ADgdJbUcO4wAzuDJ67ymj9Ph3E/vAGHue7F8Fo4gW5kg3my7t
+         0oyg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785169491; x=1785774291; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=zsod/qLuXRWdrxs9+mmL1NzASv99z6ZREmVzFIyc/Gg=;
+        b=DmOkLUxiBXF38GN/0+p+tAiFBco1ekTr/DK/LGbDNcoC3yJSCiCJlmgfLWqFpELH7p
+         PXtZOxQv4m+bj5BkEzvzCs6BxIcR++O8p7D9QYCk+BRldXlG5PaENhI0oYH+m3Y4s1CE
+         Rz8ckY7y9XFVPcklHddvzyqZIrPIdaAJ8F3cE78k/FswvsCTm/E50PyHU640OM2tlDbu
+         cJD7lWMx2f7lbkqciOm5f8g+VZlOTLAOiOyse4TedHR+wqswrvvSmKxuMedaNOEXmvQs
+         HplH15RF3flTjvDUS1gjUr4JGL9aXmY9HSUZJZwh/54XcPMlrFY3JD68HOjUInjXJIYa
+         EsUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785169491; x=1785774291;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=zsod/qLuXRWdrxs9+mmL1NzASv99z6ZREmVzFIyc/Gg=;
+        b=Av1W0XlkIuAUNdcLUeBEKbeoiMWyq80yOjRnlcMEme+ky5W2T5gydemRhPwwAChTPU
+         zA3LX1x+GiE5nDAOBKjjOENXkV6je0HjJcUqeHUKkZrGu4rWcj8WkVJX1XUXrByK1/0w
+         E2CTygKGw5bI0vRFYblXaB6LcrDjL7ias6OMLtcH4hm+LoqGWTBTbf/k3eH/FQqzeDF3
+         hPgSxTpYqSctz8WNATtjSc5UxrSdiPOTXr6ge1lN6W3snRzsDmNrpva737x0csWi6vOD
+         bgaIoCEANtN5+8s222l0S75skvYQyH5TSgNep7t1IxTuZG6Y9EpqK7VRIrdxHujecrX+
+         K1Ew==
+X-Forwarded-Encrypted: i=1; AHgh+Rpam37J0mBDZQCHfNn+LybhuFqkCLKc4AKE6qtGrL340BKOWMIxdEY8kGz1iMUt/HNMWPnZCJ2p+A==@kvack.org
+X-Gm-Message-State: AOJu0YzTpyXmlMqXaapzzPWjnN2yusubvVRPaHdtTFfVBk9V4UT7a272
+	Y8TEJdj7eAc2izPU8fJlN7nWDpQT0G1/QXzNJ0EYipGmPK6+uKaIWU7Ygz14/7jEtfnQgDX1mmr
+	JByLShzkTw3pS92g83O8/7LGxpjjen0g=
+X-Gm-Gg: AR+sD12/ky4sl+vttPD7hqB7FrV25EwWe022cNhUpnwvksGDUhCJRSuJZfbLbebd2CK
+	0a3/hBh53iAK6Cd1E/mecW1spVqoKMX+jVmgudSMNQKrMveIde36rrYCtQKQRGMyej4Yzqz4g+8
+	Olbe5YwE9n7heQBQZkPt3djUDiBI9tPOTvani3ZEs7nwmUkB6P7IawA0chBXviQC6YsmjOJXbtq
+	aeUaFaTe+KJbjyoMItGTpRsVkCaMzNpO6FndrQs4epLZgae9qxP3/yeqs+ylO1DxJRa3eTiVQJb
+	y1MWSI0Yr5Kzu/8qrg==
+X-Received: by 2002:adf:e19d:0:b0:47f:90cb:630c with SMTP id
+ ffacd0b85a97d-47f9fc9d3f5mr12546589f8f.8.1785169490768; Mon, 27 Jul 2026
+ 09:24:50 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260717085151.22822-1-jiahao.kernel@gmail.com>
- <20260717085151.22822-3-jiahao.kernel@gmail.com> <amF7_GB5Rl6OJmt4@cmpxchg.org>
- <CAO9r8zPaUPddYoLz8o+g+xkb-zdkfyB+LqaDOrkzqFSePEV-xA@mail.gmail.com>
- <amIdU1lFxqxTI3Gc@cmpxchg.org> <CAO9r8zPepaekOgaDaVBWyB_F05Ezvz+AJZ8M5+NGQ4BmiJNBkQ@mail.gmail.com>
- <d8de419d-0077-c47c-a5f1-37c229a853ed@gmail.com> <CAO9r8zNq3bRN+mumA5tcdizStpgoqTc++FYuGjvL8spbv4Q8YQ@mail.gmail.com>
- <CAKEwX=MG0F1+my1krUiOrHCn-Lypq2gq-g8Rv07Mz7sC=YEKaw@mail.gmail.com>
- <CAO9r8zOH93mfdjHq+Ljm7X+ykZS_rjzAvp9OBCzo+uyTbM1fDQ@mail.gmail.com>
- <amO-hwo8OGV5Goz0@cmpxchg.org> <CAO9r8zMgVmgQET+PUGexAgNqCZavA2YoTTXKSbWWoUv=A=ytSQ@mail.gmail.com>
- <f60fe501-7605-64dd-0572-77f7f3060f35@gmail.com>
-In-Reply-To: <f60fe501-7605-64dd-0572-77f7f3060f35@gmail.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Mon, 27 Jul 2026 09:18:43 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zMBWA7nxM24VXQT00CVEZwFpMFNe73FFdPSZw2y=J-0HA@mail.gmail.com>
-X-Gm-Features: AUfX_mwTEgxS4l4XImwz7KgQJvkaUx5l8XpYB7q7Jw8ztGF1XlaoG-9HK5W-0bM
-Message-ID: <CAO9r8zMBWA7nxM24VXQT00CVEZwFpMFNe73FFdPSZw2y=J-0HA@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] mm/zswap: Support batch writeback in shrink_memcg()
-To: Hao Jia <jiahao.kernel@gmail.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>, akpm@linux-foundation.org, 
-	tj@kernel.org, shakeel.butt@linux.dev, mhocko@kernel.org, mkoutny@suse.com, 
-	chengming.zhou@linux.dev, muchun.song@linux.dev, roman.gushchin@linux.dev, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	Hao Jia <jiahao1@lixiang.com>
+References: <20260722152043.2273289-1-usama.arif@linux.dev>
+ <20260722152043.2273289-5-usama.arif@linux.dev> <amFZmtGHEZjXEw5R@google.com>
+ <ee172b01-54c3-47ef-9040-1342a1566796@linux.dev> <CAO9r8zMzjCf620EHwzfosngc94fu=vAb=ukrtOi9Qf3rA3vv7w@mail.gmail.com>
+ <c40f4a8b-1f60-45ea-962d-0597c413ec3d@linux.dev>
+In-Reply-To: <c40f4a8b-1f60-45ea-962d-0597c413ec3d@linux.dev>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Mon, 27 Jul 2026 09:24:39 -0700
+X-Gm-Features: AUfX_mxjjRfJV8Uv-XQAVKUtz2NYGeR15CAkgiMb0FuDakVSIrHnyNqp3Jg_2yY
+Message-ID: <CAKEwX=P=cFqojHPCp1oGqZCOVVGi9pyrgLtaSH3qrEwVppmxdQ@mail.gmail.com>
+Subject: Re: [PATCH v5 04/11] mm: zswap: add range lookup for large-folio swapin
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Yosry Ahmed <yosry@kernel.org>, Alexandre Ghiti <alex@ghiti.fr>, 
+	Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, chrisl@kernel.org, 
+	kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, linux-mm@kvack.org, 
+	ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>, willy@infradead.org, 
+	youngjun.park@lge.com, hannes@cmpxchg.org, riel@surriel.com, 
+	shakeel.butt@linux.dev, kas@kernel.org, baohua@kernel.org, dev.jain@arm.com, 
+	baolin.wang@linux.alibaba.com, Nico Pache <nico.pache@linux.dev>, 
+	"Liam R. Howlett" <liam@infradead.org>, ryan.roberts@arm.com, 
+	Vlastimil Babka <vbabka@kernel.org>, lance.yang@linux.dev, linux-kernel@vger.kernel.org, 
+	shikemeng@huaweicloud.com, kernel-team@meta.com, 
+	Alexandre Ghiti <alexghiti@fb.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 6FA5CC0009
+X-Stat-Signature: i3wbzapenw6krk7hiiuio4p715huw13e
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 95829140002
-X-Rspamd-Server: rspam01
-X-Stat-Signature: ru84zacso7ook7tzhtftojzug1gertkg
-X-HE-Tag: 1785169137-226917
-X-HE-Meta: U2FsdGVkX19nM5R4iHnk8emDyi0EzknVCIGVZqnVIIpVbcyYahEwDCiQdSSoPGG39EpNNnYNwNyN9WGVyxwHEJnNgZEL/zX3M2QOsY4iAlt/YNZzC070Y1Vc/WAk56kfq/KlXFImV/7AOtEVaa34SL7vvB4gmRuwvxizExNW5ivJuL736J8pIOP2gauT2cQtxiIQeG5PEq7wemJXr+AoG27cTUsW0leKiNSn6P5OkG+eQ6L2iVhJ+qNWdH4fggdfHcWXqEsDVt/UOCotSgMPjhptvCy//8ocsQDXa632sYnXdK/8rFNneyluhzampykxTPefAT5y/tbZ0aXh8pzIwTuS3gtM6FBdd6QDG09sBKfO2YNVWYbP/G+xfjaWVICjaNqRql+xk991usVmbmYVOMcTNPH9KE46Mgkl013WlHTsKZuxK46BdVwOR/kYuIwBexOnzULr5CyAMtTOZSdYbJpqoQaMGrzxqV/dPT6z0fZHehA5jm4wU13LS6fRaYzB3TOHWtO5P5DtX5CZGk6qY/PqTmXov0q2ivvDBpbN4O5cLwl1yCvnjWR+MU4wEs5Zu5IAfAAUmM9CH1uT3xR0JIQ+9don+Ie3hX04Q6NUm9zQYF4ZLdBi9V51Iws7hGhSPjMXEFgiJwnl/hjXcLi+0PIdisMeUoE65hqd4i4kd7uwPOrrXFs7yBA1sDMvL1EZo0iZ6Wxud4tkDTZ7zcImpS43PJsW2Tot4H8/H0m7M+v/zcefgWFC6AtjpPO9G/G7e7F+LQnXvUwabuAMj/7x6jAY6QxBlruUHZGHb16catQiNwjxIJf/VNkZAMBSpu5eoxntddjEUemj2diPUI/njunecSQUltcdw1dl9GyfIRO0qkftg7M0IbJzKT7RXqPlpgg0RN+cI++BiYu2juM3aK21A5t28l1/qedNW5uleUzdfe/SYs5NWfTTiyxFlDHcNAjaVRhLfAYammTfYyU
- OPK+8c01
- +Q8q8agCojiUKBFsNXDYu5dNDS3pU/SSWxcnx4Yt4AnozVWheRJ2Zz/PVFLQWpeyP6bEBztYJ2tKW1HKTcLRSyBx6GKZjFROhM/y+EWogUC3rb1RZZi3uTRCUvInqYEpsPDDzqFo5yWLJiY2WCUY7hTM2E+BDl/Hgsn6bskjWAn77VFQRL0pcTI1rvV6mHGyWjQH1+xHMDLi3BulJewGCmPk4wd62arFhZM4Y6hcl626kstMh3oLHkp9FPfSpMp3Vofg74/pUY6nM3bY6GsNBWY+M96eejiM4c1mjkQtR0JUQGSRJZh4iikbEFxHk5lRu7s/p5JSm9ehGe8oxxy3FHHcmM96P7QebNL3WYpGTU7sSouOUKDUhDMSxJYVqxvK/fc2Eh8AD/HImkG4WidJLu/hFpSFc9CwpShU+b5dECBs2oMYFA6PMNCdsncoFhaXpXwBFduett1SAy8xGeRM+R8fwpTUB7cUUsuPfqhIdmojgMpiQkciXXnWVRa0Leb9QBIpaf4p35LBlcs0=
+X-HE-Tag: 1785169492-522381
+X-HE-Meta: U2FsdGVkX19lSVW8sMO2AevGY7cZFfvEZmYQFH1gUjNYc/EStAozuz2VuuhV8/RESQeQf0gK6mtAA+LdGf8QJTNqweAl0nTLrgNBw1IqFVMr07jcQbT2LfC7wvqRKo07BQFf/fOn/QzpWzyvhdM8M8zWzM9+dLhgbgCZnTcLpxApaNe8SoN4Uyf6wq3fBkKMiMoIq2kxt5kQBY+5de5gKBXXOVo5Agg8LVRQayglWZ81ZN3ACzeZtQOn9wYBTrTu8n0Vsx/fTJZKE70m61hiJU6VzFI3OSkIDgiNEOgyDn5FRmPxf5Xsr0aKmSpX7eUwiVSHdkbHMMdrwIz6b72wa55xmsEblfMvAzTC3AcaU/ytWSXwKBBbRzg++fHTQ7gLd9njcXVX9DjrEnkHsNqTqyQ3BsmqEyxzjXB7pnY6WOe7BlRwwGj6CP1JJFWZyTlnWNeHB2xlTRUwZNKuzgfCZ2PxetT+8fQtZKQ9hl/6qwEJwGNvWYcOqkP6mWeissbl8FaJ3r/yZmN0TN2Mra+CQgXfrx7dbCz27uSiXdAXZPouu7YKsUmZkYDMlCz1xuIvPwJh3VwG3bPqM9ynUuP5Nh4CFCrF2XxMh+BUTi5R2g2YVlEAcBbdT/lqLuMdnpBfp4JfaYh+aCvP17gJzcPEgQEa+KxR7V6aEo23quV7AYi4kP3LEJ2o/Y7rzLfXUbihJDVLPlRJyxYnA6Tb692Wqyv3eWd6KmXaQXWRTjUp/iuv6ls3VkZ21mi5+nWhVA9z8IlYfXU05J54vjsWq7J/DymknlzklavvQom/YVg8qH1OyXQP67wbczzLD1RhYw25ucswnDOUyhkWx8jQp071zxwzkIitXpKWiEkg6pK/qWIgoEWoKODegR6VZEDm0Mq1DZskAkoNiGcszLmZz6d5DzJmzC3ViUi+ElMo0RikFBYyH1oEFsGvQ83f2qcxjhOtiewShXAvZ4jcnXNdSJm
+ 6Go6Nr4o
+ AmzocvLlfpylah/VHK59FccMkvurjLwVsU4UbOHzDzO2VxG1wYCelznWDmqqAzPe8AN0jQQPdXy6dB8UQeTjZkFEzy/GFyfzarpaB6126tAkrHGhuQcGhmEdCVQd5qLTtyzO7h6xA5K1awXDWSDBlOA+IF6Yg5Wu4hXkLi1uixfzt2Re3WD1DCe1OUjPPvcJhNZsShC/YskhdiysBhvRH5b9C/KRgvrO4bnQ5EAgHMAek8cbSBS97h8blpbTgCbXI5+VoZKLX+dXxnViVkk8bxvpLLFLUWaYxEh5LfumtmvrS9Lywuim669Qa+mrwEqXN4chIjeY2O/6YduY0SWmbx3IF8ORZXiLtv6vmE9nQwdlC9emTOXLig4xFsKvMgcHgF83s79GhFax6MCzyfblYxOmN6g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,119 +151,117 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Jul 25, 2026 at 7:39=E2=80=AFPM Hao Jia <jiahao.kernel@gmail.com> w=
+On Fri, Jul 24, 2026 at 2:59=E2=80=AFAM Usama Arif <usama.arif@linux.dev> w=
 rote:
 >
 >
 >
-> On 2026/7/25 06:22, Yosry Ahmed wrote:
-> > On Fri, Jul 24, 2026 at 12:35=E2=80=AFPM Johannes Weiner <hannes@cmpxch=
-g.org> wrote:
-> >>
-> >> On Fri, Jul 24, 2026 at 11:39:41AM -0700, Yosry Ahmed wrote:
-> >>> On Fri, Jul 24, 2026 at 11:37=E2=80=AFAM Nhat Pham <nphamcs@gmail.com=
-> wrote:
+> On 23/07/2026 17:42, Yosry Ahmed wrote:
+> >>>> @@ -1595,13 +1611,19 @@ int zswap_load(struct folio *folio)
+> >>>>              return -ENOENT;
 > >>>>
-> >>>> On Fri, Jul 24, 2026 at 10:57=E2=80=AFAM Yosry Ahmed <yosry@kernel.o=
-rg> wrote:
-> >>>>>
-> >>>>> The numbers generally look good, the store rejection rate is
-> >>>>> decreasing and we are naturally doing more writeback which makes
-> >>>>> sense. The store rejection rate actually increases when the batch s=
-ize
-> >>>>> increases to 64, maybe aggressive writeback is more likely to fail =
-and
-> >>>>> cause a store rejection, so that also makes sense.
-> >>>>>
-> >>>>> The only part I can't immediately reason about is pswpin. How are w=
+> >>>>      /*
+> >>>> -     * Large folios should not be swapped in while zswap is being u=
+sed, as
+> >>>> -     * they are not properly handled. Zswap does not properly load =
+large
+> >>>> -     * folios, and a large folio may only be partially in zswap.
+> >>>> +     * A large folio reaches zswap_load() only when its whole range=
+ is
+> >>>> +     * expected to be on disk: PMD swap-entry consumers split befor=
 e
-> >>>>> reading from physical swap more than we ever wrote to it?
-> >>>>
-> >>>> The same page can be swapped out once, and swap in multiple times :)
-> >>>>
-> >>>> Unlike zswap, physical swap in is not necessarily exclusive. You loa=
-d
-> >>>> the page in memory, but if the swapfile is not full, etc. etc. you
-> >>>> don't invalidate the copy of the data on the swapfile. At reclaim
-> >>>> time, we notice the page is not dirty, so we just skip (z)swapout.
+> >>>> +     * calling into PMD-order swapin whenever any slot is still in =
+zswap.
+> >>>> +     * Confirm the range is entirely absent from zswap and return -=
+ENOENT
+> >>>> +     * so the caller reads it from disk; if a slot is unexpectedly =
+still in
+> >>>> +     * zswap, fail the read rather than return partially-initialize=
+d data.
+> >>>>       */
+> >>>> -    if (WARN_ON_ONCE(folio_test_large(folio))) {
+> >>>> -            folio_unlock(folio);
+> >>>> -            return -EINVAL;
+> >>>> +    if (folio_test_large(folio)) {
+> >>>> +            if (zswap_is_present(swp, folio_nr_pages(folio))) {
 > >>>
-> >>> Oh right, I forgot about that, thanks.
+> >>> Is dropping the warning here intentional (for the folio_test_large() =
+&&
+> >>> zswap_is_present() case)?
 > >>>
-> >>> I still don't fully understand why pswpin is significantly increased
-> >>> with batching here. I would hope that with less LRU inversion we end
-> >>> up with less disk swapin. Probably the test access patterns are just
-> >>> too random compared to real workloads?
 > >>
-> >> Maybe more time in zswap for those tail entries left behind with the
-> >> smaller batch?
 > >>
-> >> That's a 32 entry window that could zswpin with the smaller batch but
-> >> pswpin with the larger one.
+> >> Yes, so we can end up in a race, which should be handled gracefully.
+> >>
+> >> For example, lets say we have zswap writeback enabled, which means we
+> >> can end up in a state where we have a PMD swap entry and 511 of the 51=
+2
+> >> slots have been written to disk, but 1 slot (slot X) is still in zswap=
+.
+> >>
+> >> We can then have the following race:
+> >>
+> >>
+> >>   CPU A: PMD swap-in                  CPU B: split-PTE swap-in
+> >>   ------------------                 ------------------------
+> >>
+> >>   Checks swap cache: empty
+> >>
+> >>                                        Faults slot X
+> >>                                        Adds order-0 folio F
+> >>                                        zswap_load(F):
+> >>                                          removes X from zswap
+> >>                                          marks F dirty
+> >>
+> >>   Checks zswap range: empty
+> >>   A is preempted
+> >>
+> >>                                        Unmaps/reclaims F
+> >>                                        zswap_store(F):
+> >>                                          puts X back in zswap
+> >>                                        Removes F from swap cache
+> >>
+> >>   A resumes
+> >>   Allocates large swap-cache folio G
+> >>   zswap_load(G) finds X in zswap
 > >
-> > Oh I was talking about going from no batching to batch=3D32. pspwin
-> > increased by 387,400 (~30%). We are writing back 272,880 more pages
-> > but we also have 209,837 less store rejections. So overall ~ 63,043
-> > more pages should end up on disk, which doesn't explain the increase
-> > in pspwin.
+> > Why don't we check the zswap range after allocating a folio in the
+> > swap cache? I am assuming at this point we have the folio locked and
+> > the result should be stable?
 > >
 >
-> In my previous runs, I also collected zswpin. could the following
-> explanation help account for what we are seeing?
+> Yes that makes sense. The folio is locked and the result will be stable.
+> How about something like below?
 >
-> Assuming stress-ng maintains a roughly similar memory access rate,
-> batching flushes significantly more pages back to disk (meaning pages in
-> the zswap pool are evicted faster, keeping zswap pool residency lower).
-> As a result, when stress-ng accesses swapped memory, it is more likely
-> to fault pages in from disk (pswpin) rather than hit zswap (zswpin).
+> diff --git a/mm/swap_state.c b/mm/swap_state.c
+> index 1f08fb522036..41f168377cb1 100644
+> --- a/mm/swap_state.c
+> +++ b/mm/swap_state.c
+> @@ -12,6 +12,7 @@
+>  #include <linux/kernel_stat.h>
+>  #include <linux/mempolicy.h>
+>  #include <linux/swap.h>
+> +#include <linux/zswap.h>
+>  #include <linux/leafops.h>
+>  #include <linux/init.h>
+>  #include <linux/pagemap.h>
+> @@ -500,6 +501,17 @@ static struct folio *__swap_cache_alloc(struct swap_=
+cluster_info *ci,
+>         __folio_set_locked(folio);
+>         __folio_set_swapbacked(folio);
+>         __swap_cache_do_add_folio(ci, folio, entry);
+> +       /*
+> +        * Reject mixed zswap/disk backing before starting the read.
+> +        */
+> +       if (order && zswap_is_present(entry, nr_pages)) {
+> +               __swap_cache_do_del_folio(ci, folio, entry, shadow);
+> +               spin_unlock(&ci->lock);
+> +               folio_unlock(folio);
+> +               /* nr_pages refs from swap cache, 1 from allocation */
+> +               folio_put_refs(folio, nr_pages + 1);
+> +               return ERR_PTR(-EBUSY);
+> +       }
 
-We are not just writing back more pages to disk, we are also accepting
-more pages into zswap. The whole point of writeback here is to evict
-colder pages to disk and accept (relatively) hotter pages into zswap,
-as they are more likely to be swapped in again.
-
->
-> In fact, zswpin in batch-32 dropped by 143,425 compared to
-> baseline=E2=80=94which aligns with batching having a lower zswpin and a h=
-igher
-> pswpin.
->
-> To be frank, under the Test Case 2 workload, we cannot strictly
-> guarantee that the total volume of page reads and writes remains
-> consistent across all three runs within the same time window.
->
->                       baseline-cgroup   batch-all-32-cgroup
-> batch-all-64-cgroup
-> shrink_worker wakeups       7,238             766                 367
-> shrink_memcg calls     12,059,142       1,961,194             983,878
-> written_back               28,277         301,157             327,997
-> zswap_store calls        1,349,572       1,168,190          1,114,549
->     store succeeded           492,861       521,315           459,246
->     store rejected            856,712       646,875           655,303
->     store reject rate           ~63%           ~55%               ~58%
-> pool_limit_hit             510,130          50,096             57,715
-> pswpout                    884,989         948,032            983,300
-> pswpin                   1,251,268       1,638,668          1,878,453
-> zswpout                    492,861         521,314            459,245
-> zswpin                     309,631         166,206            84,977 <-
-
-One possible explanation is that we are shrinking too aggressively due
-to concurrent shrinkers. That's one difference between hitting the
-global limit and the memcg limit. There's a single global shrinker
-that all store failures will just wake up, while all concurrent stores
-hitting the memcg limit will start shrinking.
-
-The other explanation is that, as I mentioned earlier, the access
-pattern is just too random and we are consistently refaulting cold
-memory. I am honestly a bit concerned about these results.
-
-Hao, would you be able to try re-running the test with a single
-stressor? It would help us figure out if concurrent shrinking is a
-problem. It would also be useful to increase the global limit, to
-isolate writeback from hitting the memcg limit. I don't think both
-limits will often be used in conjunction, at least not in a way where
-both limits are hit simultaneously.
-
-It may also be useful to run an actual workload if you are able to,
-like a kernel build or something, to see if the access patterns change
-how much we end up swapping in from zswap vs. disk.
+If you move it to __swap_cache_add_check(), you can potentially
+backoff even before the folio allocation? :)
 
