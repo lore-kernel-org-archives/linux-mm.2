@@ -4,138 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 067E6C531D0
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 12:31:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F176BC53219
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 12:35:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 94B946B0098; Mon, 27 Jul 2026 08:31:20 -0400 (EDT)
+	id EAAA56B008A; Mon, 27 Jul 2026 08:35:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D5946B009F; Mon, 27 Jul 2026 08:31:20 -0400 (EDT)
+	id E5BBB6B00A3; Mon, 27 Jul 2026 08:35:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A0676B00A3; Mon, 27 Jul 2026 08:31:20 -0400 (EDT)
+	id D74196B00A5; Mon, 27 Jul 2026 08:35:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3FDD36B0098
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 08:31:20 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B6CD0C06A1
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:31:19 +0000 (UTC)
-X-FDA: 85034491878.10.2553840
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 01346C000B
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:31:17 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JoTWzgdQ;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 982DE6B008A
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 08:35:08 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 29F541C0EA8
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:35:08 +0000 (UTC)
+X-FDA: 85034501496.13.6E1CE26
+Received: from va-2-115.ptr.blmpb.com (va-2-115.ptr.blmpb.com [209.127.231.115])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 94D2216000B
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:35:05 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=mQ0lGolf;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf08.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.231.115 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785155478;
+	s=arc-20220608; t=1785155706;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1LqId8m1vq2FGslYePEEUuishiJMVsFHV0R9ARG65yI=;
-	b=JOiwAT/Ft2iEgNAHpc77iPwWk3aI7cti28bgt4O+QZaFKLz5lpF89WLy/5A73EpoE67NHM
-	+YdpmBjITCGdw/xhArJvtFMsSvtVZoW1+MccrYuUfp1vZCdISmGgb4NsXUENUm7a2mL8jP
-	c1y+m6zvglh68Or/4RNDp9C6PtUAPHY=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=9x9VDbOxUNOBcTgPJT1SeUai6ki6VgAWRhEIjunYZb0=;
+	b=juDrhr58DC46F4MzQa5F8u5xOk1JXXz1dFv/riOJkwGpWVVn5yVtYqRJAGfhxV/YYx49px
+	PzbdP6q5Nwn109xN/CNfNc7THvXbP86w5Gnknb9a3WhkUuzfvTceyQHGIK0COwvgrhOF5l
+	oaLoqa6RqHSkWbtzMm7RpjSz22yW0ZQ=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JoTWzgdQ;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf08.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=mQ0lGolf;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf08.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.231.115 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785155478;
-	b=gqVvO2GPHZaN0fQtaewTIYlJwhQlGRI9ALdT/XgQUqf6Vr2lh0H4+Jf0xdVK64HuvE4BMq
-	qTIqutlUQQpHusvFn6r8d6SNlYztbD4O8saWIz0Q8BV3+y3E2mql2nqjr1xalhpBXirCzO
-	t0DIexgNpqSXlpmJw6LBcXXcl4wkNRo=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4EFE5601DE;
-	Mon, 27 Jul 2026 12:31:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECBFE1F000E9;
-	Mon, 27 Jul 2026 12:31:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785155477;
-	bh=1LqId8m1vq2FGslYePEEUuishiJMVsFHV0R9ARG65yI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=JoTWzgdQGhtdQmvGGNiKuhMTuSefXoyFJnOl+4BRdR7ZK68BBtaYSZkKoUiR2n1Dq
-	 nZCU18j1nkp27QFu6JsHHVz4qhzYE9Fsffiibsk1YhcyAUMXoabkjCA8UlI8IJhM+3
-	 35uQJvVNzO0V/QiZn8v3nqjVmhsKIgrmrlm7EuKGWuX5KEB+LuwuCjABvJE66Qzek1
-	 B0CrFfRyG9mMKQDy32LU3tAIUIMqFrnKUvN3gbGPeI8agjBGOlR/GKK6cMZD0e5R/t
-	 4SnXCiPCrvneAX6O4FjAuFp8R6iyjQ7pnRFt8icskOMGeYud0ctHrcsoB9+4PqMvYV
-	 2ORyxsb4ecNLA==
-Message-ID: <a811c371-ef3d-4932-a9d4-2390a98e1382@kernel.org>
-Date: Mon, 27 Jul 2026 14:31:11 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mm: unpoison pages in memory-failure teardown
-To: Muhammad Usama Anjum <usama.anjum@arm.com>,
- Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
- <nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>
-Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260727095415.385026-1-usama.anjum@arm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260727095415.385026-1-usama.anjum@arm.com>
-Content-Type: text/plain; charset=UTF-8
+	t=1785155706;
+	b=E5izmzTKdkBJJ3OzmmKlQRdec7o0fFVQ8BDoys+mhOEjzNCLn++Yw9jBb6QmWMFMdxJWB3
+	bzyW1gxR+X7cZO0Kdg38Mbz7/MEaCWh8j+d7Q9TqmYTmXQv3Cn8G5YAnLPxhAbGknOQHX8
+	E3SkQgH3NSYyD+lb8+VLCU1jZFqnNVI=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1785155699; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=9x9VDbOxUNOBcTgPJT1SeUai6ki6VgAWRhEIjunYZb0=;
+ b=mQ0lGolfNPRS+8yxwe1mks78nl7+V/0Rcp+CGjd/70NEui/nBX86CFcGE3ewDiR28q18V9
+ d3j2M+CyH3Tp3s2RjzYsOskA72ya6K7Tyq3vgmYC30a4bOdaCzCRyr2LRnzNFajet9qGyO
+ RYEEC9hL6A9cnJf8Y8Xe7VgGwn1UV96/e8vN5bA5sdeWzc9WYkrsxx01Jf0fllHrAawYOc
+ Jl72KvuLcSGyf9u/9tVhQRb485471Qx6IOihYVFSNZq8O8YxUSTxMbwGaT5igGkhk2NBmh
+ GFDPJfgbYXWR41nohvFwe6V0zI/Mbnhq2M3VO4spVXBd7eA6CFKo/zZpyEnnQg==
+Date: Mon, 27 Jul 2026 20:34:20 +0800
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+X-Lms-Return-Path: <lba+26a675071+887eff+kvack.org+lizhe.67@bytedance.com>
+To: <akpm@linux-foundation.org>, <apopple@nvidia.com>, <arnd@arndb.de>, 
+	<balbirs@nvidia.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>, 
+	<david@kernel.org>, <kees@kernel.org>, <mingo@redhat.com>, 
+	<muchun.song@linux.dev>, <rppt@kernel.org>, <tglx@kernel.org>
 Content-Transfer-Encoding: 7bit
+From: "Li Zhe" <lizhe.67@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
+Cc: <linux-arch@vger.kernel.org>, <linux-hardening@vger.kernel.org>, 
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, <x86@kernel.org>, 
+	<lizhe.67@bytedance.com>
+Subject: [PATCH v8 0/9] mm: optimize zone-device memmap initialization
+Message-Id: <20260727123429.5673-1-lizhe.67@bytedance.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.45.2
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 94D2216000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 01346C000B
-X-Stat-Signature: txwskixp4q9ad1rptypkbd99zixsu3g6
-X-HE-Tag: 1785155477-281070
-X-HE-Meta: U2FsdGVkX1/nppg8WA5Aobk5Di8y82tA6YyiBxDMe+SyAPgpxMHyk3c4N1BltgDL+qmjNA0VmDv2ivBL3RCdco46qEbdmzpQomiJ46nRYjOb7oNYlML9kfmaONQhZZQFF3AxU7nCaynNjlwC0UPwQJm3NkJXIHrMMTGadd7SkoXJYA6tdzhxV3Z2AaCdDlCusRJyGPmm+PXXvy2uuGdkYC771JCI19VONhr/ACjZKaqOnbdSRDra395JaVtpmTZzIJ2+uIiCCYQJQ2SVf7KVub3R7pkmQAnfV+QBnyZHkVL94h7Si1XpsYTC1Er9KXM56CdQYmHRZ3ALN1PhDyeXPyZj05EBoW7vnPKXyAZQVlUxLlY5MvBgdrxSX6PuYPqsaAcztMDtfm29SK4eg0/BUztBLRh6U/wg3vCviH1+feDKT63r7eBLSfZxUSye9XPZFpADGvFA+nRXATyLgP1T7v5BkFDhHxs9BSczOsUsJTkaRPwvUSniiN3l8SZCgSwjnw2F9Si3C6QbuRMOgG0iSGyrAUeTqIjdivn/zOeGiIjiCHFlz4KHKN5ARn7X2XkPKn7J10PGiweS2KcizLhepdHFhK3RCoH8FKSyQsurwGTV/DTzShzX8qYeaanVUwzmHbBywkIydaCA4ag77taiGZgdrBWeyfyjLO9XQOxSqYSPSai/LMXuVN4LKUCndC2aaXcAVBZ0kNqzNAWlULK9rb9baEgennN3zY2KksB9gnTF62yVZbCXymPRSQgl4+Wx+E7CMIu1IjudKUHIXVIvmjHejrZAUSBn7P3+6DakpI4jpOtUXjrCWC9LFV2G1zPlZmRF0QtiCEmQCbFV8oPsWHxNcwcQClWfw0T6DRv3gCfd17hHV7LbDsCWohC1cHrXyE0nOP+7bIGlRgxfmQ/B/wn1CxtRBwro+fgeH5UREm7EMECWZokJOnHJCnjKVOxE5WDDyBeKON63eJjdspq
- Harv/qJL
- ieRNh9LRwCb66cSXCEGNfxrl3oEv2kc0rrSYGOMVSLJADdiYX5Q9cr/0XrjLaUPqd2qwRH2mkzXEbGgi8yA+eSv2fSxpCY+jQ1awB+cx5Gy4Qj7N/R4AMHvBqyf7OJXPxnHLaklhXRssFroHoQSNgPIMVIVL+8EUTnifP4DyJ1HAxtgH+Y9zNUt1MUOO28AleeuUPIK7cyU03k/pBZqlkCfIaBUY7rxCCZl4cJGvjgDJ5loBtFpouw+U6uEjLpYFjf5R2/TOqFO407AJaw71i7Iuv7xKMpksh6Lpc6hYMSakGYSjRVwrg5hzS86tP1i4m+HSa27NN4aMbzsdlpShg1tccmmVp/PjzcLasWKNSp8g2qsrS8Pr1rEa7aX08968dzAmUjfY3yiwiyT4=
+X-Stat-Signature: xxcpk4ad4hgwndatrs4so1c9dbipbpca
+X-HE-Tag: 1785155705-456024
+X-HE-Meta: U2FsdGVkX1+6tG5yZqQyN90joAmiOJvv79YBsIsrDfGRGcUx9fWb0ezh8wef6moTExAlLhERcELSylOdM1Zdk1n6nkeLLl8LLWRnsgwBkpGZe4e8dBihav7C7wmYySBBDzb3U6xmC65RfiXBf9/Hw4Zbbx9/DH5VVZI754nLmmxnmMIpJun1KD7zLT/mpV11N+TB7yuFwIXRJRtf9DyulO1q7evN+5KF/5tounSCQDpcSNIYxBp/FCCBG7fzDYS8Oaew6Q+tqcVPoR6lkbLwl/EoY8AJWN9/1QFGn5Mh6aV0GQGJkEL7Nn63mNMhtFHiUvI9H1rLtMsGCmip0hWRISGPCekLTVvmJcr7q+XjDUNPcvS6LiahzAehHRLxNNVR0atpXSyC5qcVepV+gq0emA03Qkw/zb/Qx+mDSclnZcIOQejHQMQEl+bcadDLUB37PQzw98QBDbY34/jwDmFpNj3yZXnNhv5vr4yO32zpjhrZSMqSZ4+BiToZzXW+s8u+6uhu7qVF2vvYuoVm0WSycJPw8BUxyu/6VJrZ+8Ba23D4LMcazrErzB+ntD1u0aKcPNr+dwHK2cJD318q3cnf20B191qvBbiAKXXgJpTio3uU0zR7gPGUQ9kJLV8EGgSpq/HITT0dRESQwLALEBZtHgR6RCGJODNlJ/jRsp3VhKF5czTAWFyoAK88vnDxdJoilXEMoRpWlID1fffElNkPcxF4LaKwRyZu62kJF4nkv0In2/7SmDqBdJnnl97+6fchS+Wo5H49ymVPABsFYXpruQFxKbEXAcBBG+9IwdsjQ0IFM7FWUPtkzKzP118Q3+WMAC44WVhIoVpbh47eEO5xP0OjO62FU4QxdqFcJtEV0rx3nXgVfxexgawzm8iQc8GLF2TFdBOxT0xm5RWe83kCCGGGUhFTV5BoKXA4JZWPOfGW/JcM6Iz3fni4CUCzZamExdrxBJo08E+v5fsQrZD
+ oTFPlLug
+ Lv4wkdt3X94fDx8+s5ej+1VoRxfopcQ27cHiFBpO8Xj2lwtM7yojYKIzVJ3rkzi0irvlxSmvCiy44m3opG9aIvxo7rlJ6iq/KtD8WXdsYNrf3QiKS+Bx6EwleXc5Junjs5ctfrlSjztYjZjN96WMjTokdoh8LM+K8v6ZV9R3NYRaKBjxTiFxLvUEvbNkdCbseihYKvE+RZGFJMh78yf67BN0EVScCAi2Sku6q600I9HldiKdBB65FEDOWTF16n4VPwGXinVwWqu5taoBWTx9Nn3zWig==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,68 +90,158 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/27/26 11:54, Muhammad Usama Anjum wrote:
-> The memory-failure tests call cleanup() only after all result checks.
-> A failed ASSERT_* invokes fixture teardown and aborts the test, so it
-> skips cleanup() and leaves the injected page hardware-poisoned.
-> 
-> Invoke cleanup() from FIXTURE_TEARDOWN() instead. Guard it with
-> self->triggered so tests that exit before injection do not try to
-> unpoison a page when no injection was attempted. This runs the existing
-> HWPoison and HardwareCorrupted checks on both normal and assertion-failure
-> paths.
-> 
-> Fixes: ff4ef2fbd101 ("selftests/mm: add memory failure anonymous page test")
-> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
-> ---
->  tools/testing/selftests/mm/memory-failure.c | 26 +++++++++------------
->  1 file changed, 11 insertions(+), 15 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/mm/memory-failure.c b/tools/testing/selftests/mm/memory-failure.c
-> index 5d00aab31f9b5..eaa8b9bd401a1 100644
-> --- a/tools/testing/selftests/mm/memory-failure.c
-> +++ b/tools/testing/selftests/mm/memory-failure.c
-> @@ -122,13 +122,6 @@ static void teardown_sighandler(void)
->  	sigaction(SIGBUS, &sa, NULL);
->  }
->  
-> -FIXTURE_TEARDOWN(memory_failure)
-> -{
-> -	close(self->kpageflags_fd);
-> -	close(self->pagemap_fd);
-> -	teardown_sighandler();
-> -}
-> -
->  static void prepare(struct __test_metadata *_metadata, FIXTURE_DATA(memory_failure) * self,
->  		    void *vaddr)
->  {
-> @@ -200,8 +193,7 @@ static void check(struct __test_metadata *_metadata, FIXTURE_DATA(memory_failure
->  	ASSERT_EQ(pfn_flags & KPF_HWPOISON, KPF_HWPOISON);
->  }
->  
-> -static void cleanup(struct __test_metadata *_metadata, FIXTURE_DATA(memory_failure) * self,
-> -		    void *vaddr)
-> +static void cleanup(struct __test_metadata *_metadata, FIXTURE_DATA(memory_failure) * self)
->  {
->  	unsigned long size;
->  	uint64_t pfn_flags;
-> @@ -217,6 +209,16 @@ static void cleanup(struct __test_metadata *_metadata, FIXTURE_DATA(memory_failu
->  	ASSERT_EQ(size, self->corrupted_size);
->  }
->  
-> +FIXTURE_TEARDOWN(memory_failure)
-> +{
-> +	if (self->triggered)
-> +		cleanup(_metadata, self);
+memmap_init_zone_device() can take a noticeable amount of time when large
+pmem namespaces are bound or rebound, because it initializes nearly
+identical struct page descriptors one PFN at a time. This series reduces
+that ZONE_DEVICE memmap initialization overhead by reusing prepared
+struct page templates and, on x86, using memcpy_nontemporal() for the
+template copy path.
 
-If the variant->inject(self, addr) fails, self->triggered would already have
-been set.
+The main target is large fsdax/devdax pmem configurations, where the
+cost of initializing the memmap shows up directly in nd_pmem/dax_pmem
+bind and rebind latency. This matters because the cost is paid in the
+synchronous probe/bind path for large DAX/PMEM ZONE_DEVICE mappings.
+Userspace workflows such as provisioning or reconfiguring
+nd_pmem/dax_pmem namespaces, bringing hot-added PMEM-backed capacity
+online, and recovering or rebinding a device after driver or device
+changes all wait for this initialization to finish. Reducing this cost
+will yield benefits as lower user-visible provisioning, hot-add,
+recovery, and rebind latency for large DAX/PMEM devices.
 
-Wouldn't it be cleaner to have a new self->poisoned that we set only after
-->inject succeeded?
+Patches 1-3 are preparatory cleanups and helper extraction. Patches 4-5
+add the template-copy path for head pages and compound tails. Patches
+6-8 introduce memcpy_nontemporal(), extend the x86 fixed-size
+memcpy_flushcache() inline cases used by that helper, and switch the
+template-copy path over to memcpy_nontemporal(). Patch 9 removes the
+remaining local opt-out predicate and always uses the template path after
+the first real page seeds the reusable template.
+
+Architectures without a specialized memcpy_nontemporal() backend fall
+back to memcpy(), so the template-copy optimization remains available
+without arch-specific support. On x86, memcpy_nontemporal() maps to the
+existing memcpy_flushcache() backend and can use the fixed-size MOVNTI
+paths added by this series for struct page sized copies.
+
+The numbers below measure the time spent in memmap_init_zone_device()
+during driver bind/rebind. They are not measurements of the full
+nd_pmem or dax_pmem bind/rebind operation.
+
+Tested in a VM with a 100 GB fsdax namespace device configured with
+map=dev and a 100 GB devdax namespace (align=2097152) on Intel Ice Lake
+server.
+
+Test procedure:
+Rebind the nd_pmem and dax_pmem driver 30 times and collect the memmap
+initialization time from the pr_debug() output of
+memmap_init_zone_device().
+
+Base(v7.2-rc1):
+  First binding for nd_pmem driver: 1456 ms
+  Average of subsequent rebinds: 244.28 ms
+
+  First binding for dax_pmem driver: 1462 ms
+  Average of subsequent rebinds: 273.31 ms
+
+With this series applied:
+  First binding for nd_pmem driver: 1272 ms
+  Average of subsequent rebinds: 96.79 ms
+
+  First binding for dax_pmem driver: 1354 ms
+  Average of subsequent rebinds: 119.04 ms
+
+This reduces the average memmap initialization time measured during
+rebind by about 60.4% for nd_pmem and 56.4% for dax_pmem.
+
+As an additional data point, I also ran a smaller set of measurements on
+the same physical x86_64 host with a 100 GB PMEM region created via the
+memmap= kernel command line, configured as fsdax and devdax namespaces
+with map=dev and 2 MiB alignment.
+
+For brevity, the individual patches keep only the VM results rather than
+including a second set of physical-host measurements throughout the
+series. The physical-host numbers below are included only as
+supplemental evidence that the same optimization also provides a similar
+benefit on a non-virtualized system.
+
+Test procedure:
+Reconfigure the namespace mode, rebind the nd_pmem or dax_pmem driver
+once, and collect the memmap initialization time from the pr_debug()
+output of memmap_init_zone_device().
+
+Base (v7.2-rc1):
+  nd_pmem / fsdax: 179 ms
+  dax_pmem / devdax: 264 ms
+
+With this series applied:
+  nd_pmem / fsdax: 82 ms
+  dax_pmem / devdax: 113 ms
+
+This reduces the measured memmap initialization time during rebind by
+about 54.2% for nd_pmem and 57.2% for dax_pmem on that setup, which is
+broadly consistent with the VM results above.
+
+As another supplemental data point, I also measured the test_hmm.ko
+module on the same physical x86_64 host, using the test_hmm.ko setup
+from the previous discussion that times ten 64 GB
+memremap_pages()/memunmap_pages() iterations during module insertion[1].
+By default, module insertion initializes two DEVICE_PRIVATE dmirror
+devices, so two avg memremap values are reported; each value is the
+average for one 64 GB chunk.
+
+This is not the primary target workload of the series, but it exercises
+the same large ZONE_DEVICE memmap initialization path and shows the same
+direction of improvement.
+
+Base (v7.2-rc1):
+  avg memremap reported during module insertion: 116689362 ns, 116539263 ns
+
+With this series applied:
+  avg memremap reported during module insertion: 54607108 ns, 54458236 ns
+
+This corresponds to about a 53.2% reduction based on the mean of the
+reported values, which is again consistent with the pmem bind/rebind
+results above.
+
+[1] https://lore.kernel.org/all/aiEoByaQdRR3xtM5@nvdebian.thelocal/
+
+Li Zhe (9):
+  mm: fix stale ZONE_DEVICE refcount comment
+  mm: factor zone-device page init helpers out of
+    __init_zone_device_page
+  mm: add a set_page_section_from_pfn() helper
+  mm: add a template-based fast path for zone-device page init
+  mm: extend the template fast path to zone-device compound tails
+  string: introduce memcpy_nontemporal()
+  x86/string: extend memcpy_flushcache() fixed-size fastpaths
+  mm: use memcpy_nontemporal() in zone-device template copies
+  mm: always use the zone-device template init path
+
+ arch/x86/include/asm/string_64.h |  68 +++++++++++++++-
+ include/linux/mm.h               |  15 +++-
+ include/linux/string.h           |  13 +++
+ mm/mm_init.c                     | 131 +++++++++++++++++++++++++------
+ 4 files changed, 199 insertions(+), 28 deletions(-)
+
+---
+v7: https://lore.kernel.org/all/20260720120259.1545-1-lizhe.67@bytedance.com/
+v6: https://lore.kernel.org/all/20260709112520.24857-1-lizhe.67@bytedance.com/
+v5: https://lore.kernel.org/all/20260701090553.62691-1-lizhe.67@bytedance.com/
+v4: https://lore.kernel.org/all/20260603080152.64728-1-lizhe.67@bytedance.com/
+v3: https://lore.kernel.org/all/20260527033636.28231-1-lizhe.67@bytedance.com/
+v2: https://lore.kernel.org/all/20260521040124.10608-1-lizhe.67@bytedance.com/
+v1: https://lore.kernel.org/all/20260515082045.63029-1-lizhe.67@bytedance.com/
+
+Changelogs:
+
+v7->v8:
+- Make the generic memcpy_nontemporal() fallback a void function-like
+  macro, so the API has a consistent void return type across
+  architectures. Reported by Sashiko via Andrew Morton.
+- Clarify the cover letter and commit messages based on Dave's question
+  and the Sashiko review comments relayed by Andrew.
+
+For changelogs of earlier revisions, please refer to the v7 cover letter.
 
 -- 
-Cheers,
-
-David
+2.20.1
 
