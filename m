@@ -4,101 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5833BC531D0
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 12:05:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3BC3C531D0
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 12:11:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 45EAE6B00D0; Mon, 27 Jul 2026 08:04:59 -0400 (EDT)
+	id F199C6B00D1; Mon, 27 Jul 2026 08:11:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 436E96B00D1; Mon, 27 Jul 2026 08:04:59 -0400 (EDT)
+	id ECAC66B00D3; Mon, 27 Jul 2026 08:11:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 34CE76B00D2; Mon, 27 Jul 2026 08:04:59 -0400 (EDT)
+	id DBC1A6B00D4; Mon, 27 Jul 2026 08:11:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0F8F26B00D0
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 08:04:59 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 892831406E7
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:04:58 +0000 (UTC)
-X-FDA: 85034425476.27.0975707
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id CEE6E40007
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:04:56 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fo4Rpc5X;
-	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B0B1C6B00D1
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 08:11:12 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4105E1C0DDF
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:11:12 +0000 (UTC)
+X-FDA: 85034441184.01.61565CB
+Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 1DC841A0011
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:11:09 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="eIN1J/zh";
+	spf=pass (imf19.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785153896;
+	s=arc-20220608; t=1785154270;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r/Y4BMKQ7cvWOkrCWMFKBxy8h6yza/pHmvLf8+MWpC0=;
-	b=hQHToaSyu3CTOYXGGRCPjzumMWPxDCagq+uJk49RbBWF9toeqKUHerABnTywGY1zdY4Fro
-	sTFC0SMB62Mil8lyjGJfA9Jo6J4XUuHIXHtm+kCr/NrswzLSfYNhb7+XJQc3F1cjgQISMu
-	eBokzPRFsmzJ5KLdu5+AJEc7KwCnNSs=
+	bh=FqRDMJ385c9CEd6uthhS9gKVU+eex7894C+QhK8tFGU=;
+	b=GdbhEXQ4EcunEbB1CVi+FSO+LgFe8AuAMjjlsfRMKCTCP26MmRLkuyVo8t+jHjSGnHMqm7
+	sZMbrLoSi0rWyQNJpObymZf/LxU5pFQ5KkDylFfRDyZSKeCNa1T4YDNQTv49r0ZvLOTyQr
+	Qn9miT8YLX2eDsmjPfTgEnqVCgLNNiU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785153896;
-	b=D74+EbHq+jsA0XI+z5sQSlqYqT9qNy+fj8e0XFJxUztz82L6oMIZaJ3aVftjBiXs8Oq63Y
-	YzJSv0NyT9ZN5p0HhPcXcimHbS0g0cV2z7A2ZkUKNzfuSYASRBxdAyc3D10Vl/HfykwrUE
-	UGOF6cqi1qjyIYf9lOLfLbxFRzdIMbs=
+	t=1785154270;
+	b=5pZoaN9eZCL8HjKHys/1L43lhGBj2bBlkoWi1uXv+vXp9iIzWk0QSAa5UaG0zcxEQaPDFs
+	MIfLGox84IolVhHtJ7RxHbU90UJde3XRuRTyJIxSw3nEw/+hbwegG+1p0LdW1KHClFC2gy
+	43y7ugrgcQB78W0QymkOCy4vdpfA38k=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fo4Rpc5X;
-	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1E4C141E93;
-	Mon, 27 Jul 2026 12:04:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C13E1F000E9;
-	Mon, 27 Jul 2026 12:04:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785153896;
-	bh=r/Y4BMKQ7cvWOkrCWMFKBxy8h6yza/pHmvLf8+MWpC0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=fo4Rpc5XZE/gO7ztNgbEH/pgiIOPr/zvBxaoQr4BSg1RSpCdgvR1BqCMiVo1vnn+p
-	 BNt2HreMH4K90PYfv2tC8FtD7a050B8K9yKCxsiLzjaRVHw0nq+lioDOLHraXJKj2L
-	 gmzEsWNAEN8i8jTiZHhn3ozfLum9UNBed8Tr4PWmgVQRPqIBGLkiVe0qa2G5geMXdT
-	 3u2lL4F+vFvb6TDUKi5dMHS7ltztpsh9E1f0rEVvmWwisGnjlpd5cPNxoSPmUql0AN
-	 JcIR/yIDKpAm1+4ZcAxz4nlNdlAhQxEW+JzN8k4CM1O58zuRkXFcKpr66D+SgJrzc5
-	 ECd0XnkJVmXow==
-Date: Mon, 27 Jul 2026 13:04:35 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Usama Arif <usama.arif@linux.dev>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Arnd Bergmann <arnd@arndb.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v2 00/15] mm/rmap: index MAP_PRIVATE file-backed folios
- by virt pgoff
-Message-ID: <amdJPSyAEnF8g8qM@lucifer>
-References: <20260720-b4-scalable-cow-virt-pgoff-v2-0-2d549757a76f@kernel.org>
- <20260720124812.30e04cc81a56dd6f0346cdf6@linux-foundation.org>
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="eIN1J/zh";
+	spf=pass (imf19.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785154267;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FqRDMJ385c9CEd6uthhS9gKVU+eex7894C+QhK8tFGU=;
+	b=eIN1J/zh87o7cJi166fmqwLOwxGSkLpAFu7ZEoQQWmIhhdtNP54qw7VJ5bVgxhINNsw3Mb
+	oBY+cCBtQqywHbvs0sO1F99YtzmnSmd8ew6SDmY3d9IkVDWjhaGFYOoLodOmk/uJFZEwpM
+	AkeMJjHVZM8Wc2sAjl0dzWjCjcGjojQ=
+From: Hongfu Li <hongfu.li@linux.dev>
+To: david@kernel.org
+Cc: akpm@linux-foundation.org,
+	hongfu.li@linux.dev,
+	liam@infradead.org,
+	lihongfu@kylinos.cn,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	ljs@kernel.org,
+	mhocko@suse.com,
+	rppt@kernel.org,
+	surenb@google.com,
+	vbabka@kernel.org
+Subject: Re: [PATCH v2 2/2] mm: Extract non-swap page handling to do_non_swap_page()
+Date: Mon, 27 Jul 2026 20:10:47 +0800
+Message-ID: <20260727121047.4140-1-hongfu.li@linux.dev>
+In-Reply-To: <10c60511-c841-4bd8-aa5f-0d826b676533@kernel.org>
+References: <10c60511-c841-4bd8-aa5f-0d826b676533@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260720124812.30e04cc81a56dd6f0346cdf6@linux-foundation.org>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: CEE6E40007
-X-Stat-Signature: aem1fs67bkm3to34w1qz4dxngk4xbjtf
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 1DC841A0011
+X-Stat-Signature: jgk7jjx858qbhrhi9s56zg5kkzqhojep
 X-Rspam-User: 
-X-HE-Tag: 1785153896-215204
-X-HE-Meta: U2FsdGVkX19Zr72xpq1gikdNu87LeYRHKhZNmXe+k1fP0bRtPqYNQdqEHpo+O+2E2GvYbL5KBOxOY+W+FX6ElkAyjkBCU4pm1+twhURcJgCUdXBZiiTvemIyxPSlgQvRNwgMG+cxe76r2a4INpFYaCv9SAlRPoU/wIkjzWB/BtMdMkoknGyFbagwhxPL9c2SqKppNYBWYJdlqUVr7eV3JFNPuyQeojSRGZz+GbvI/pPm3l+cDWsISRc05bBEOA9BjqWQUZZyK95TF+UuP6PCWp/MYaSbgUWBndWiMpFw/VTL6gBE9cyBR/h+VPhBmvG7d2tZISR9mPk3shZhV0TLxt6qPpSXyINXFELVD2wez+JpPmqi9SatNMSWfwWvfAMMCZ6asIIkaPZcHBx07ZIQWpCxo2APmqwCNg1DoThVMi3NYnORa1oDSEzSBFtEEVa7Hxot/7RMaMfO4Qik1JLxL+xKIV7uBqjsL3uh/AHcQOamlM7Yi95n2jvqHg9cd3kCdW7RwWt3IOQmq2zg/O/CYsMvmBV0aCvTvGBomJCQTI9Xzmu9jpmroFtdUCys2Y34odUgJQV0P01qfGuA2nROvbANL2UGqCU2Vi7HD5NMefxvpZcKL03/j1XmVYhdhk57wcey7wiQVZmA1ouXgmCHG2kQclJxHGaD43Cic9HHyneQYnkGvzKeuSXYY6AAyHNmhXzRsAzVIa6U/IJ7hf15wB0aSJXrMhUf8mx7CmFBRwDLSp29tF2Q98xiW79c0wqmxCJvaiiSqbyHFC5xQFD6ZLb798VZwnVxleEn9WRxQc5d5FUkHFbBGy23BMvn08wImGsY18V4C0Z3gadZ4t/AY4VDBL/8c//DjouEWqnEfvTErVodmY2BZQKJkc8xwka+NUMGmbw6pPW17oc22k/gYHJ7Rzj/Fx9hT6/xdKGGOVqeFe/tNJ1M3I5jkMTqe/R3JQDfYK+X7bH+upsETDf
- lBOm7o0J
- 6vR1iK2b/JB++Y8FW8S0br790d2o9LkdT23f/1FioG/jixvRN1RHijE+vh1eJwrWyRbXxHdl/8bc43hi9S3XyvRQwQl7CCRJJNm+kEYvSWUHD3fEGsyRLgl+dDaXGd64sfH9IDtp5vnH2xbTLGP2awIK7StUVYrvK/vWCLoke1RYpH/6shS7JmR+5Kq5tXBDhd8yLbEDzKhDvkLLIZwfITV+AAHpoJLb3mKASANdbatYTJCeLdU1XNiv1eWRId4dXt28hh5DBdZUJiAhQxMEWG+ilBxqVdIwQgJiZErCQr9K9CaqyIHXcDn/euGmIBBmEGjSYn4pw79scGBQh6z2eYYwS2IMPq37bQI94NxDAnPs48Ude/Ig2w/bg3xUEJrsVpV/RzauWHkvPgeUYZ3HgZvwoTXfNlrSiy3T/cTQrckYnaGHZaNrS6raJLvlpCjWs3YhsbGmArm61gKg=
+X-HE-Tag: 1785154269-907464
+X-HE-Meta: U2FsdGVkX18huYeMtRv/26rR3OwYlvEivqC5dEN0lTTJSAMJnZ1O+A+yQrSWXDId49NtAlSI0qIjdX6TRLwHTeEMnInLEliUY5kmBAjo56Kuy3fn4ScmQGooQBiB90SCew3AM8zB0RJEa5BFYMDCmGW01bLNx+yTkz/SXlTsw+8F/Hf/5avFSoCae+qJHJfDi9hM7Kwu3/yObFL3NLkuR9Pcqh81IA5QtKqtdqWWBToYQsJeZV0ZGI9mN5hya0B0hQjpBzfbzNNHIo0CVLvqmBMMyYbmBg90m3hIEf7dOhoBZ+CfgqZGBm1W7VnLdC/sWaBHPJhXDCdzp1fe9Yz79MlRUINyWE+JXu1GxVhS3BsbrsibyqaIj1vyn36QO/8zv8Tz3lG6yblgfeXyzQfz/QLhsHWVnZPVwZcNJP3f/gCLW7zWilqzPMXLl/xr6pwDrfRoik6/uFC0CwPz2BcQVNiYNMK6+DaFimuXdEAwEvF4y0vnkKb6QxRdDOZAxF53DaBYiGULblTdMgXcAIgntG7H01suqIMdNjCB6UezqUIzZirZXHCZyVMbG8YE8RGVsVEDYTKdn147GAroZU3+mKVquRFZrH+fZOb/Q/b9RUDNEMjlz5d+B0DGaoa/hk39wGBK/x6EmWBNYUbnQsNyfSeCu0F7OSo3gMaFhtPBXp7SDHTgmj0XjjruObY9ka81mydEn2+Oul0ZKQm8iJ2VIqvWfz1obfnqcI6c+rJBMwMjHT2JBJeGBGbZI9sb5mJwXU2iZ8f0ZXzWwNU/Qa64qFqf9gi/mKeJ1jeejU1GFLi9WAgP6h1IkYxRXcMakAsaWDxJF+pFI6+7uc50j6kYX7ddq+9z12IZPV8/Mw5Pi0KWi3tpdZw7p6EwQYKsz1Le84JsdTtcusgAaBnWvUCAJqHeK0OZh+GJCg/C+CqCCyJ+SN1Ao94g6hmJRR3M8WLYlH+Q7nvD7tnUBUWtSHS
+ H/FVwaVj
+ Zok2eK2hsA9aj6xerptmvYCq04BCYxWMooOF+PG240SYClffmARpQmRGm8zvVxYkKrSXleisVaygCJdU/hXddCptWTJSbqFrKfuevJyQ3974WWc1Q0dECNG/dvEJWFA30uJrSNiiKkC4ArOi4pNvBw9rRMoaFgIAhOhP/OkaK+v2taozQ5oKTP/Y7YtfpUi5PuwF0KXq3NUt9HMhZJA03dznIaFNpEDr4z+YQp13k99fpsxUQkhrxIpkx3Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,40 +95,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 20, 2026 at 12:48:12PM -0700, Andrew Morton wrote:
-> On Mon, 20 Jul 2026 15:38:26 +0100 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
->
-> > In memory management we've managed to manufacture a great deal of confusion
-> > around the concept of anonymous memory. We have:
-> >
-> > 1. 'Pure anon' memory - anonymous VMAs whose folios are anonymous and
-> >    swap-backed (thus for reclaim purposes, treated as anonymous). These are
-> >    simple enough.
-> >
-> > 2. shmem - file-backed VMAs, file-backed folios (from rmap perspective) so
-> >    present in the page cache and mapped by an address_space object, but
-> >    whose folios are also swap-backed (thus treated as anonymous for reclaim
-> >    purposes).
-> >
-> > 3. MAP_PRIVATE-mapped /dev/zero - a strange beast whose VMAs have
-> >    vma->vm_file set, but whose mmap_prepare callback clears vma->vm_ops to
-> >    satisfy vma_is_anonymous(), which results in VMAs that were mmap()'d
-> >    referencing a file, but are in every other sense anonymous, including the
-> >    folios.
-> >
-> > 4. Other MAP_PRIVATE-file backed mappings - These possess file-backed VMAs
-> >    and have file-backed folios until CoW'd, at which point those CoW'd
-> >    folios are anonymous.
-> >
-> > This series fixes issues 3 and 4.
->
-> Thanks, I'll add this to mm-new for review-n-test.
->
-> AI review seems overloaded at present, might have found a few things:
-> 	https://sashiko.dev/#/patchset/20260720-b4-scalable-cow-virt-pgoff-v2-0-2d549757a76f@kernel.org
->
+> >  mm/memory.c | 120 ++++++++++++++++++++++++++++++----------------------
+> >  1 file changed, 69 insertions(+), 51 deletions(-)
+> > 
+> > diff --git a/mm/memory.c b/mm/memory.c
+> > index ae521baa8c84..50d8e92aef91 100644
+> > --- a/mm/memory.c
+> > +++ b/mm/memory.c
+> > @@ -4815,6 +4815,74 @@ static void check_swap_exclusive(struct folio *folio, swp_entry_t entry,
+> >  	} while (--nr_pages);
+> >  }
+> >  
+> > +static vm_fault_t do_non_swap_page(struct vm_fault *vmf)
+> 
+> We're handling softleaf entries that are not swap entries.
+> 
+> do_nonswap_softleaf() or sth like that would be better than talking about "page"
+> if there is not even a page.
+> 
+> But actually it should be the other way around:
+> 
+> do_softleaf_entry() [currently do_swap_page]
+>    ... non-swap entries
+>    do_swap_entry()
+> 
+> Or sth like that. Then, maybe in the future, we can just move do_swap_entry()
+> out of memory.c
+> 
+> So we're factoring the wrong thing out in this patch.
 
-Thanks, will have a look through the sashiko stuff and see what's valid.
+Thank you very much for the detailed review, your analysis makes perfect sense to me.
+                                                                                                                                                                                                                                                                                
+I'm glad to send out v3 shortly for your further review, with 
+do_non_swap_page renamed to do_nonswap_softleaf.
 
-Cheers, Lorenzo
+Best regards,
+Hongfu
 
