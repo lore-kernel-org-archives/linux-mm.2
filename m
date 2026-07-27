@@ -4,126 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98388C53219
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 11:37:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECB28C53219
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 11:40:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 822D76B009E; Mon, 27 Jul 2026 07:37:41 -0400 (EDT)
+	id A4B676B00C4; Mon, 27 Jul 2026 07:40:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7FB026B009F; Mon, 27 Jul 2026 07:37:41 -0400 (EDT)
+	id 9FC386B00C5; Mon, 27 Jul 2026 07:40:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E9EE6B00A0; Mon, 27 Jul 2026 07:37:41 -0400 (EDT)
+	id 8C59B6B00C6; Mon, 27 Jul 2026 07:40:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 306E96B009E
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 07:37:41 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 849EB1C04EB
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 11:37:40 +0000 (UTC)
-X-FDA: 85034356680.23.2AD07A3
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 9AE1D10000E
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 11:37:38 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=MgksZpy5;
-	spf=pass (imf05.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5AC676B00C4
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 07:40:50 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C1C83C067F
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 11:40:49 +0000 (UTC)
+X-FDA: 85034364618.24.A035338
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 10744C0009
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 11:40:47 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=p3zvFutz;
+	spf=pass (imf10.hostedemail.com: domain of zirajs7@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=zirajs7@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785152448;
+	b=Ryz81FJoMw2VVoMvduEr8Aj4nCYXR8ynV2fiP3YrRfL6S70bruf1DsBxZbM3Vq+v0TT26R
+	IUQFrzxAVz1m1x9K0dgQ3hFgOxw/M9b9tWbqT7Ga/ddDfKw/knNaHBEU/I19l2WzW94j8U
+	g0j/9CdAllsVFtNSMzsCHJj7NOS8vIA=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=p3zvFutz;
+	spf=pass (imf10.hostedemail.com: domain of zirajs7@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=zirajs7@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785152258;
+	s=arc-20220608; t=1785152448;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ifEMtdw2Y3LJzGTrNEzkInEIHCSbSBhJKHBE4Huj/fc=;
-	b=HS55WQ5Q5aK+PG/ZzKW0VQ9/n9ONtr+OgIzcFQqUQDmzorQInmb4jnYEwAbqlGG/sknKFw
-	99xYvHAVLF/1aC6VR2LT4dFxwsgLQVuHibE77Sk6lCtzD30D4fwKtjy+nxKinYqn6yznzL
-	4ONyXvn9LGMMnTA005LMRPF0iwh3510=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=MgksZpy5;
-	spf=pass (imf05.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785152258;
-	b=pt+RrQQAgkNXqys3GiYKJHufl0sd2wmMYS7iqQkobqEqbUFkzXOFBVfe0UFgOcIUKXp19A
-	kHJ9gu4UFxvoCz0UJtbbPifFkAvNp1BMTZPjJZ5PqFS2I+x8+hz+H+3cKgAFcP9Hf7RUXG
-	0n3KVfjwKlMs5XeVKrkxIcwxBXPeGD0=
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4954a32cf1eso13131035e9.3
-        for <linux-mm@kvack.org>; Mon, 27 Jul 2026 04:37:38 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=RJ6MK0mOJGey5f1xMkBaJ3vKBwMFgEHV/k5fF9Nzb/4=;
+	b=qIke3XO4C9Msk+X1Tjphlz+Uqeppv/08Q1DIZgnQSpa4jukRTipzq5LrgeqrAqdyMZXNLB
+	YAzcGlnI2xALpUy3nrQay7e3l6FJQ+JSPSVj+Oo/Acfx+XjwEjBv7KTAT3VgHOf5ohrbRJ
+	SPhDy9BD6MXHJUCMBaI7P92za5Hv9bk=
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-38e7109321dso1339785a91.3
+        for <linux-mm@kvack.org>; Mon, 27 Jul 2026 04:40:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1785152257; x=1785757057; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ifEMtdw2Y3LJzGTrNEzkInEIHCSbSBhJKHBE4Huj/fc=;
-        b=MgksZpy51yXgdMNwhZdcSKpMZOoc8zXlF0bUCb19O3QHrG3rUDvVu6D1Q/UJmrx7jY
-         LfZSiXrTvqbjaVCnPRyICbTni1x+7JdBW+V0Vd2vAHWsjdjIRjIoRYBjvz+zJnhr3y20
-         Dacy9BIcOMSQ7QYNMBP2x6KPGGN8qNx92cx8SH9XtJpNUpGJzNorMv1Q0RvIsWvod4rc
-         ziS8woz6X5VaCN7fpO7jvQUWXJCBUTbve13wzSpevprcUi2a40hOVcg5OCXUh4/c1uud
-         uIi3NhooxZIsMJ4HztdW/dCioIoxppTf62TzhhNk9ArtzcHclVpvprfr7viZIX00yEmm
-         bMMw==
+        d=gmail.com; s=20251104; t=1785152447; x=1785757247; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=RJ6MK0mOJGey5f1xMkBaJ3vKBwMFgEHV/k5fF9Nzb/4=;
+        b=p3zvFutzb/vaPFVZ1PS3MXs1TTDtuzATadC6XcMFw6Al9onn0nqOqfDnOqNQvWU1EX
+         CnS0BOXvI4rMt+WzLvr+Z4kZ0uC3IqU54YdBskPbBgK6JKq6aiHmhesWxNpuMRfc+6Rp
+         9pxWirmVN7oKky9MV+hTXikvZ7YertthdUqLlBVCnNGJjkP7EeF6wEdwRd7LBYTpd5Sy
+         fnL4qA12425iKV/cEVPSLWpSWahoQ+i2pmiReJS5av+tjB/b7fxVqfoaT5++T6UAdniJ
+         tRrQZq5TrBlfapIQyfVFTAL/CGFw3rVWjagBr4vHp8OKWFdGM4V4ERnVGKyktmxp+6Jr
+         6k3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785152257; x=1785757057;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ifEMtdw2Y3LJzGTrNEzkInEIHCSbSBhJKHBE4Huj/fc=;
-        b=S/s5Qshtd7luu/Z9gsSiUEXxEY6d6ij6kNhUN//0YQn8DdSoSYMZF5RbNfznX6TQzB
-         5Chm/6FFOCCzmBB7WdblDkq9sFr+7EajlGWvL5NkcdEwgHN9Pg9XYSGYfNUF0Q6XqA2n
-         x8TkHyE+gYN4/sRsuF0/firH9l0lAt42GJtm6y2d5/vhMN7BbboFeKu/h9uwbFze8R3H
-         6z3qz6XIn5+ZJEVAafCZnD+uOwLl86iR3OFTxqDDBS5OL3mcRS0ZbfxqSXSO4S0rTHE1
-         QrHyme+CzEp80PEpUazrIEJg9hx0DCNmvH1soqDToQRwfE4I9rOWaHFdS9wZxIHv1pvf
-         c2Yw==
-X-Forwarded-Encrypted: i=1; AHgh+Rrh5RqcGtIc0lfh0MxrWwvxOMEXGPtPTvHU7cE9j+QrT/Zd0NREViyqF9HZYRo9U7c4zPzF3weMSA==@kvack.org
-X-Gm-Message-State: AOJu0YyMkAR7LREHZrcG2ELsLFEUmOrO13aXBlItdJelNrwsac+Ov2RI
-	4WwGv+7HiqoJx1AE3vZy+wibzStV2+vrpQC88aBAOSnjzW2G8KPv5Bj0x8fe5ehZMxw=
-X-Gm-Gg: AR+sD1081Oyi0w2ehgPeZbuIVgLHZtrD9MVQHVcvJZprjNtQJ6PZyu4b8wLbKCZLAsl
-	K4MCwGgyfB21fGUrmkmasM7676qClMyxF3gK6sMv6sypy2SNK2mZ75Jq4yj5YPAIuxaQ9b4P820
-	51KwiAa1INwnG5NXzZGq+SyWLNMBjIiihAjc+6DSb+ZX33W9G3mNHUZ4iQQTrEnowLkPFpDSbpa
-	sCuV10Q0aiSX75ppwlvgb4/FLQXUQBf3Kh/q5/3JGj/WeDOfnTmrr7oNN4+MQxkMiA6YkR9ag5Z
-	spyvJtYrKxtBAtvMaEbXRKoeQm1mYODLccLp8DmruDrtQZmtpyt2MuTkkovjuayoJcSEzBuOuFl
-	oxannijYOvkxYkPraVa+3F4e5H9E1Eq+yBC07ZS9ZVcgMhdTNsZ1FqX02ly1iy8i4EX2QeR3qtl
-	UeCeJl4cJzpYltLNyE/DGM
-X-Received: by 2002:a05:600c:4583:b0:495:7426:c392 with SMTP id 5b1f17b1804b1-496b57108dcmr105591585e9.1.1785152257042;
-        Mon, 27 Jul 2026 04:37:37 -0700 (PDT)
-Received: from localhost (109-81-83-7.rct.o2.cz. [109.81.83.7])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-496b4f30126sm217525435e9.13.2026.07.27.04.37.36
+        d=1e100.net; s=20251104; t=1785152447; x=1785757247;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=RJ6MK0mOJGey5f1xMkBaJ3vKBwMFgEHV/k5fF9Nzb/4=;
+        b=IhustwotdpTL1Oed32X36XiiwxTs1XJaJFTkIARzpn3JT4OnqVcPjZLAOIC2IArul1
+         MFxJaU4eVJTapMPqKgnmqHt5u7/zkZOaaAqq2cYusFurggLbWey5V8PL11vxfcMzGI6v
+         +SAt1nwawWZpfE8M8hRBzI+Gs7ks0JFca+d0x65VRPB/nEoxOSik261AB2vOrdEmZBMD
+         KU+RTJaVDxwy/QhO4wF6HDSUdVqLqsqP+a75JPz8LI11CMyxVZ/mnwaL8LOgsW2YLfm7
+         HP+k5z41hOY/yYHTxmWSpxBjgtrVRiSuuHQ26sJSFl/mDctba58qsaFztZFJcivBzyIT
+         LDxg==
+X-Forwarded-Encrypted: i=1; AHgh+RposHIFtJUrSxX5IFqwZm7uUtrgAsVg0VUSffSVjQT7AyBzcLVxtyaYeFsk+GtBgrYlUoGV6BrSeQ==@kvack.org
+X-Gm-Message-State: AOJu0YxvACyWm6z6qXrEALCbhI1UbQuGAn6MEYzkFnLBe2YY7dB4sXID
+	D4Z471PZEl3+3XSEazF8aH9LH2jR8SwyJKFS58i3Mkz9WDcaWlxDjNWg
+X-Gm-Gg: AR+sD101lA75qZbxAyV7MybXOQNhm6oOInEhHjStgW4RwZ+LBcNdmZgqHcJEiP7DEXn
+	KkCPXtQXRdUbbbh0WN01Fm1yVuGJo3QHePTOq7Kg5wqOVOL9C9rNl9VYrRKICUKJZtQrtqP7ZA6
+	uvXtiXyQ5Pos/Mahr+6FhPHBDo0YN9KfcwX+rfqxIW+yBJ036r0UKfsYraZ0DOdCDLbW4nT2A36
+	3OU3N4AlUdrd/JkI5ONegLUX3qMM5b/t4USSAAx6qIdOxgUs5XSRothFGtrhkSZpmBurUdxZ/z7
+	2JU+JGI3j7nRI6YoYI1lZ00BdRLNCdJQlUv9W74z+WILXbYp+8wUPq5VijC6FLQk+JaXSkTWxsW
+	19h37CNH1KQNsHRveoD0MMNbMnJlirs1kHpUJAQgO9MG1XGVgbQeGapiw//LVZ1KCVLVfy7nW
+X-Received: by 2002:a17:90b:2e0c:b0:38f:1a80:d1e7 with SMTP id 98e67ed59e1d1-38f294ea112mr7466680a91.13.1785152446686;
+        Mon, 27 Jul 2026 04:40:46 -0700 (PDT)
+Received: from omen-arch ([147.46.174.207])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f292ae889sm2995168a91.1.2026.07.27.04.40.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jul 2026 04:37:36 -0700 (PDT)
-Date: Mon, 27 Jul 2026 13:37:35 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Ridong <ridong.chen@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	David Hildenbrand <david@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Zhongkun He <hezhongkun.hzk@bytedance.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>
-Subject: Re: [PATCH -v4 1/4] mm/vmscan: fix anon-only reclaim evicting file
- pages when swappiness=max
-Message-ID: <amdC_-OvG1ZUjmot@tiehlicka>
-References: <20260724033435.2573323-1-ridong.chen@linux.dev>
- <20260724033435.2573323-2-ridong.chen@linux.dev>
+        Mon, 27 Jul 2026 04:40:45 -0700 (PDT)
+From: Junseo Lim <zirajs7@gmail.com>
+To: Yonghong Song <yonghong.song@linux.dev>
+Cc: Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	bpf@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Junseo Lim <zirajs7@gmail.com>,
+	Sechang Lim <rhkrqnwk98@gmail.com>
+Subject: BUG: possible recursive locking detected in sleepable task_vma iterator
+Date: Mon, 27 Jul 2026 20:40:23 +0900
+Message-ID: <20260727114023.947601-1-zirajs7@gmail.com>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260724033435.2573323-2-ridong.chen@linux.dev>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 10744C0009
+X-Stat-Signature: 414uke3ghmrg5u5s4ip46hcefm6pg4nj
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9AE1D10000E
-X-Rspamd-Server: rspam01
-X-Stat-Signature: ai3h7rah3bqods1nz8p8rbuc6f4opo5d
-X-HE-Tag: 1785152258-491408
-X-HE-Meta: U2FsdGVkX19KwGCpbk7wU2JYYC7QJ16+HaooP0JulKIutoMiTEtl8aM2dErs/XpNT/pjeR7WFxq6Ys5/cuo11cFkFFIRaj/4Xg/jUf0NkxIblxW/nQJ0vM0bGfc6+HUr6vdihPVf2XVXsr8FjMMbuRj+xKhHnFCJQPuJQF9lJ2DUEuiv8NSoWOXcMKtEiokPlwG13azOrh0pf4tIxx/U36MbYwTltqj9o/TXGuI0e4vseq5nm4HVaPEkemELlHeqAlvLLtzhLWRBq5V6bDMPKOB/C9O9bpoFDuJWTRju0mEEgahBQ5UyLX2fVr9w6bnqT15kh1Aft8iKzo/7if0MGuvTETiwE9GHB1ykOWu3cLOvmiY46pdwD2Bh9vN5fWlQK6YsepZQ0ZhS2hPdfbRY5UJmXO+Pr5IbmGEwVag89i3MwRG+Wu/94Mkf6I/YtSexMzdg3uEPFyciN3wvOPP1K2I5iSyGTtRDV3L15KeuMCWA8JJCvqx+5dqbJcQg1Lg9EEucT8tO7B3uvbb5OgNoxDFJxNizXgUmFHuzvbQCUx8/yl1NpfvWWbkb04gbJqCM23qnLGHijoByS590UFEP0SPloQscxFT1w3jGJqcsvg2BIgBU0I/CBRymNgu1uyjkpCjTvV0rNDdtPLe6oIYl3dK1fqfb1VnczHPl0lwsfMzhuqoqfTET5KMcNAod0+meLwmetbNGIraUaEXoiSzodicT73FyT9kVKPzmKDt9nP7wgBuLitB72onhNIvb/DrZfH0CaahEdBnA5W3xgvm91mJKpoHXGWVADd24rz8GtGNT7VslJMfPpqkat5oe95JOdg2oWsvMbkWn5W8QyYm+ngkJm9cD6Lf+qjB1ppuZca9BqqUB7bjyH2aN2egi50Df+Z6rfvUQ8nDsMPtqEFr1BZfzXoAzQtOnSrMB78BUYq6PRreIAJAktE40SlBTOQoQURupy/rr/NZX6q/fjQ5
- oJxsCxsz
- r6Q6fqSe9TW8kqmerpkImG/+GUnfYy8cQ9onCajKa8VKDS2bI1iW9NxuID4gGRCavzcCPgmsQPbbGDGNbmqCw69yEUDVTVeX5j3XOYEUNBe1Ae4fpqXJQIJRaw/cqxxdvy1/TT+EcQOz1KCRw44rX9AM3XK338ixQCenj8z687QpZLlYI80msEKp4PBcfRY3CTZV4TZYwb+fEBb4Nd6cMpusGy4F0TGHD6hwz7RC+VezQ4h/9c6FRN41zc9jc2lKkoIP7+svli/2yxZludX/qeoOzqgks5Z895cPm6zlog3UxutiZfpCJI53dEubfdChcVpnnmTn7eHGNF2BQJ5lipxMLs43lhGmv52kDsZgIUg4qKjCxY7mlwV/EPwwr4Ju4MNHl0D5dGTrF3QCoeZOi5XjtBuFkPLy7tibPmr0Qt/NqoYhzX3n4tG/gA7rv/R1zlIu3Is+SfC/zD6g1oBbnhooBkA==
+X-HE-Tag: 1785152447-312134
+X-HE-Meta: U2FsdGVkX19TLMeeef2z6N2z7nOyovL/7ixv0PhafRMWAQHMqaVvWbxWJj+4Bn6hcS9zbDwTanlRvABn5W8r/bUEm1GKX416QRRu4/f6w5kF84V6M++aEaK9OMi0w2WHVyz7x5TFja0JW7Y7o5Z62uVrHd86/jZnjkvBBLuDVsgRkdNVxCeVgvw6xyqVhFbVrt8OSIkMHyRQjsgczrgURWgfM0AJFAFv9B+dHcbg0P2LcA0AQXsJuYmgtL/rJ03H54+OEi1CTuVY99lMDP9H3Fa4XCcAVRUV5ozgwT0MNVz+XpgAMa9TNPDItmDYeGC1FY6kifULXMptAe0xmfliTzvHms57WeigdF2uTdTZuR4Kly8HwZ5JYDfPkKAbCqT8TpnHB6rexXr/3EQrdssH/7Tu7D5FiUDiEFwGe5mN4APmfQb/bh5kcv6vUFLo/HBTnJNX6F54357dgZdJZWr6VG4APkKWKdGKra31QaseyX3QiwOG5lmJUKc0NwFIkfcGOwRFj7fn+o7qNHfMjNmZ7ItPI600lTuk2hZ/RHsptkjMPChF02beuqsSADSGlUx5Gk12NR9BzWJ2YaCj2XaQ2STiWip9pbaWNiEvnHTBIsqMq7ObOGzQyVcimPHSOPMvzVFLpUKG/RwLDuFlZ+I1jKpM1Keb9d3qIkpQdpsk7atggHitSNXPNeOqyZqLDCzTL35rlhyy1iSila++dtIVTY+b+q4B/qCXz+b8zwsW2dbaHYxn1uwB9ABdRqP1gPbdeuduViTCNX6ZzpVoKY3G1+iGQ9k3WbCwr+BTcNMUug3Had11OpfTvOoxMd2aBG/j07wO9vLkG9AO5Avpl1IDEvdgNEpmtMRKNzHHOiVPbT15p3lseZ3JmCY19jlxqM+3oE3m8Mdg3vkPafFVQeSTgTBtUcQLH64hjqJfTM4oKDIkmsLLGQRErnzgADCR2eNltJUgJh1DeHfBnRHr4RA
+ IIjifJt9
+ GMo/4lK1z6gRe31NNY/IMAUghFP+rugSkENIAEe3NxXA93rGgg+HVXNwxkC4J1cKpKam7BdgkAI8cJUGexZBdhrhWCu5MsYUsvNIQHmP3eZbXRdnjz9XYhpNTKUL0HerpTYjsRE9J7EHA7vpIj4aXwLpDOK0xVvF/srv6q2pqO+OrRZK0XnTxZTgw1DeUmlwvjHKjEhu34YaZcKZm/mw1lgahxAnWIgH0YyrkWOvRRHaa+gcDBXgAdpcmxnGh/jxBxiZtn255m6C8baITxna+/SkgC/lZR1YlLRNmXsNBtppz2Jj4l4jvtEs03+tHs38QOUUlLJihsQigRzd44kKni0NW5XFftYXy98p936oo12dxhJ5VwJrMNeZ7yb1ABXw+kV4P/+OZEOv4mtUvQM8FQzELmv9GCdE+A3ZLhOHeRPwQRUZscgaXCL8L9oEUrG04mhGl811fl4VmczI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,114 +122,625 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri 24-07-26 11:34:32, Ridong wrote:
-> From: Ridong Chen <chenridong@xiaomi.com>
-> 
-> As Qi mentioned [1], when swappiness=max (SWAPPINESS_ANON_ONLY) is set,
-> the reclaim logic is expected to reclaim anonymous pages exclusively.
-> However, due to the current ordering of checks in get_scan_count(),
-> file pages may still be evicted if can_reclaim_anon_pages() returns
-> false, which contradicts the semantics of SWAPPINESS_ANON_ONLY.
-> 
-> Reproducer in a cgroup holding 64M of file cache, with no swap configured:
-> 
->   Before (file cache is wrongly evicted):
->     # cat memory.stat
->     anon 196608
->     file 67178496
->     pgscan_proactive 0
->     # echo "64M swappiness=max" > memory.reclaim
->     # cat memory.stat
->     anon 208896
->     file 4096                 <- page cache evicted
->     pgsteal_proactive 16400
->     pgscan_proactive 16400
-> 
->   After (file cache is left intact):
->     # cat memory.stat
->     anon 200704
->     file 67178496
->     pgscan_proactive 0
->     # echo "64M swappiness=max" > memory.reclaim
->     -bash: echo: write error: Resource temporarily unavailable
->     # cat memory.stat
->     anon 208896
->     file 67178496             <- page cache untouched
->     pgsteal_proactive 0
->     pgscan_proactive 0
-> 
-> Fix this by bailing out early when SWAPPINESS_ANON_ONLY is set and no
-> anonymous pages are reclaimable, before falling back to file reclaim.
-> 
-> [1] https://lore.kernel.org/cgroups/7ddf3eee-5fe2-45f7-8614-c8936a039e04@linux.dev/
-> 
-> Fixes: 68a1436bde00 ("mm: add swappiness=max arg to memory.reclaim for only anon reclaim")
-> Suggested-by: Qi Zheng <qi.zheng@linux.dev>
-> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-> Reviewed-by: Muchun Song <muchun.song@linux.dev>
-> Reviewed-by: Qi Zheng <qi.zheng@linux.dev>
-> Reviewed-by: Barry Song <baohua@kernel.org>
-> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
-> ---
->  mm/vmscan.c | 24 +++++++++++++++++-------
->  1 file changed, 17 insertions(+), 7 deletions(-)
-> 
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 35c3bb15ae96..2c689682b952 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -2501,6 +2501,23 @@ static void get_scan_count(struct lruvec *lruvec, struct scan_control *sc,
->  	enum scan_balance scan_balance;
->  	enum lru_list lru;
->  
-> +	/*
-> +	 * Proactive reclaim initiated by userspace for anonymous memory only.
-> +	 * SWAPPINESS_ANON_ONLY is set only on the proactive reclaim path, so
-> +	 * warn if it shows up elsewhere. When anon cannot be reclaimed (e.g.
-> +	 * no swap), bail out instead of falling back to evicting file pages,
-> +	 * which would violate the anon-only semantics.
-> +	 */
-> +	if (swappiness == SWAPPINESS_ANON_ONLY) {
-> +		WARN_ON_ONCE(!sc->proactive);
-> +		if (!can_reclaim_anon_pages(memcg, pgdat->node_id, sc)) {
-> +			memset(nr, 0, sizeof(*nr) * NR_LRU_LISTS);
-> +			return;
-> +		}
-> +		scan_balance = SCAN_ANON;
-> +		goto out;
+Hi,
 
-Rather than warning the code would be easier to understand
-(SWAPPINESS_ANON_ONLY implying sc->proactive is very subtle assumption
-that might change in the future) I would go with and explicit check.
+We found a lockdep warning in the BPF task_vma iterator using our
+customized fuzzer. We believe this indicates a potential deadlock.
 
-Looking at how the code is structured currently doesn't the following
-express the intention slightly better?
+A program that can cause this issue looks like this:
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 35c3bb15ae96..4fd38e3f1b05 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -2503,6 +2503,10 @@ static void get_scan_count(struct lruvec *lruvec, struct scan_control *sc,
+```
+prog_fd = bpf(BPF_PROG_LOAD, {
+        .prog_type = BPF_PROG_TYPE_TRACING,
+        .expected_attach_type = BPF_TRACE_ITER,
+        .attach_btf_id = /* task_vma iterator */,
+        .prog_flags = BPF_F_SLEEPABLE,
+        .insns = {
+                /* even a no-op sleepable program is enough */
+        },
+});
+
+link_fd = bpf(BPF_LINK_CREATE, {
+        .prog_fd = prog_fd,
+        .target_fd = 0,
+        .attach_type = BPF_TRACE_ITER,
+});
+
+iter_fd = bpf(BPF_ITER_CREATE, {
+        .link_fd = link_fd,
+});
+
+/* Running the task_vma iterator executes the BPF program. */
+read(iter_fd, buf, sizeof(buf));
+```
+
+The bpf_seq_read() uses the vma iterator task_vma_seq_get_next() which
+grabs the mmap_lock of the process. It documents that when it returns
+a non-NULL VMA, it holds a task reference, an mm_users reference,
+and the read side of vma->mm->mmap_lock. That lock is kept across
+task_vma_seq_show() so that the VMA pointer passed to the BPF iterator
+program remains valid. It is released later from task_vma_seq_stop().
+
+After task_vma_seq_get_next() returns a VMA with mmap_lock still held for
+read, task_vma_seq_show() invokes bpf_iter_run_prog() before the lock is
+released by task_vma_seq_stop(). The problematic part is that task_vma
+advertises BPF_ITER_RESCHED, and bpf_iter_link_attach() uses that bit to
+allow a sleepable iterator program to attach to task_vma. This makes it
+possible to run the sleepable bpf_iter_run_prog() path while task_vma still
+holds mmap_lock. Since the mmap_lock is being held by task_vma_seq_get_next(),
+it can possibly deadlock if the program triggers a page fault.
+
+Our current understanding of the sequence is:
+
+---
+bpf_seq_read()
+  task_vma_seq_start()
+    task_vma_seq_get_next()
+      mmap_read_lock_killable(curr_mm)
+
+  task_vma_seq_show()
+    __task_vma_seq_show()
+      bpf_iter_run_prog()
+        if (prog->sleepable)
+          might_fault()
+            might_lock_read(&current->mm->mmap_lock)
+---
+
+Below is the excerpt from the kernel log that shows the lockdep warning:
+
+ ============================================
+ WARNING: possible recursive locking detected
+ 7.2.0-rc4-00471-g0ce37745d4bf #10 Not tainted
+ --------------------------------------------
+ task_vma_sleepa/55 is trying to acquire lock:
+ ffff8881046450b0 (&mm->mmap_lock){++++}-{4:4}, at: __might_fault+0xc4/0x170
  
- 	/* If we have no swap space, do not bother scanning anon folios. */
- 	if (!sc->may_swap || !can_reclaim_anon_pages(memcg, pgdat->node_id, sc)) {
-+		if (swappiness == SWAPPINESS_ANON_ONLY && sc->proactive) {
-+			memset(nr, 0, sizeof(*nr) * NR_LRU_LISTS);
-+			return;
-+		}
- 		scan_balance = SCAN_FILE;
- 		goto out;
- 	}
-@@ -2521,7 +2525,6 @@ static void get_scan_count(struct lruvec *lruvec, struct scan_control *sc,
+ but task is already holding lock:
+ ffff88810007d0b0 (&mm->mmap_lock){++++}-{4:4}, at: task_vma_seq_get_next+0x5be/0x9a0
  
- 	/* Proactive reclaim initiated by userspace for anonymous memory only */
- 	if (swappiness == SWAPPINESS_ANON_ONLY) {
--		WARN_ON_ONCE(!sc->proactive);
- 		scan_balance = SCAN_ANON;
- 		goto out;
- 	}
--- 
-Michal Hocko
-SUSE Labs
+ other info that might help us debug this:
+  Possible unsafe locking scenario:
+ 
+        CPU0
+        ----
+   lock(&mm->mmap_lock);
+   lock(&mm->mmap_lock);
+ 
+  *** DEADLOCK ***
+ 
+  May be due to missing lock nesting notation
+ 
+ 3 locks held by task_vma_sleepa/55:
+  #0: ffff888104629c98 (&p->lock){+.+.}-{4:4}, at: bpf_seq_read+0x64/0x12c0
+  #1: ffff88810007d0b0 (&mm->mmap_lock){++++}-{4:4}, at: task_vma_seq_get_next+0x5be/0x9a0
+  #2: ffffffff841b60f8 (rcu_tasks_trace_srcu_struct){....}-{0:0}, at: bpf_iter_run_prog+0x467/0x10d0
+
+In the observed trace, the two concrete locks have different addresses
+with the same class. So this trace itself demonstrates the unsafe lockdep
+chain rather than an already-hung task. However, the same allowed execution
+model can become a real rwsem deadlock if the second acquisition targets
+the same mm and a writer is pending between the first read lock and the
+second read lock:
+
+---
+T0: holds mm->mmap_lock for read from task_vma_seq_get_next()
+T1: waits for mm->mmap_lock for write
+T0: sleepable BPF program faults or uses a user-copy helper
+T0: tries to acquire mm->mmap_lock for read again
+T0: blocks behind the pending writer
+T1: waits for T0's first read lock
+---
+
+Thanks,
+Junseo Lim
+
+Found-by: Sechang Lim <rhkrqnwk98@gmail.com>
+Analyzed-by: Junseo Lim <zirajs7@gmail.com>
+
+Below is the log and reproducer for the issue.
+====
+Kernel tested:
+  Tree: bpf/master
+  Commit: 0ce37745d4bfbc493f718169c3974898ffec8ee7
+  Version: 7.2.0-rc4-00471-g0ce37745d4bf
+  Environment: QEMU x86_64
+  Command line: console=ttyS0 net.ifnames=0 biosdevname=0 selinux=0 rdinit=/init nokaslr panic=0 printk.time=1
+
+Relevant config options:
+  CONFIG_BPF=y
+  CONFIG_BPF_SYSCALL=y
+  CONFIG_PREEMPT=y
+  CONFIG_PREEMPT_DYNAMIC=y
+  CONFIG_KASAN=y
+  CONFIG_PROVE_LOCKING=y
+  CONFIG_LOCKDEP=y
+---
+[    3.704087] ============================================
+[    3.704417] WARNING: possible recursive locking detected
+[    3.704792] 7.2.0-rc4-00471-g0ce37745d4bf #10 Not tainted
+[    3.705128] --------------------------------------------
+[    3.705470] task_vma_sleepa/55 is trying to acquire lock:
+[    3.705805] ffff8881046450b0 (&mm->mmap_lock){++++}-{4:4}, at: __might_fault+0xc4/0x170
+[    3.706328] 
+[    3.706328] but task is already holding lock:
+[    3.706947] ffff88810007d0b0 (&mm->mmap_lock){++++}-{4:4}, at: task_vma_seq_get_next+0x5be/0x9a0
+[    3.709536] 
+[    3.709536] other info that might help us debug this:
+[    3.709920]  Possible unsafe locking scenario:
+[    3.709920] 
+[    3.710284]        CPU0
+[    3.710445]        ----
+[    3.710596]   lock(&mm->mmap_lock);
+[    3.710810]   lock(&mm->mmap_lock);
+[    3.711026] 
+[    3.711026]  *** DEADLOCK ***
+[    3.711026] 
+[    3.712842]  May be due to missing lock nesting notation
+[    3.712842] 
+[    3.713254] 3 locks held by task_vma_sleepa/55:
+[    3.713540]  #0: ffff888104629c98 (&p->lock){+.+.}-{4:4}, at: bpf_seq_read+0x64/0x12c0
+[    3.714047]  #1: ffff88810007d0b0 (&mm->mmap_lock){++++}-{4:4}, at: task_vma_seq_get_next+0x5be/0x9a0
+[    3.714634]  #2: ffffffff841b60f8 (rcu_tasks_trace_srcu_struct){....}-{0:0}, at: bpf_iter_run_prog+0x467/0x10d0
+[    3.715274] 
+[    3.715274] stack backtrace:
+[    3.715547] CPU: 0 UID: 0 PID: 55 Comm: task_vma_sleepa Not tainted 7.2.0-rc4-00471-g0ce37745d4bf #10 PREEMPT(full) 
+[    3.716179] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.17.0-2-2 04/01/2014
+[    3.716774] Call Trace:
+[    3.716934]  <TASK>
+[    3.717076]  dump_stack_lvl+0x55/0xb0
+[    3.717322]  print_deadlock_bug.cold+0xc0/0xcd
+[    3.717610]  __lock_acquire+0x12c7/0x1d70
+[    3.717880]  lock_acquire+0x118/0x320
+[    3.718123]  ? __might_fault+0xc4/0x170
+[    3.718374]  ? srso_alias_return_thunk+0x5/0xfbef5
+[    3.718678]  ? srso_alias_return_thunk+0x5/0xfbef5
+[    3.718980]  __might_fault+0xe4/0x170
+[    3.719218]  ? __might_fault+0xc4/0x170
+[    3.719467]  ? __might_fault+0xc4/0x170
+[    3.719719]  bpf_iter_run_prog+0x5ce/0x10d0
+[    3.719992]  ? __pfx_bpf_iter_run_prog+0x10/0x10
+[    3.720293]  ? srso_alias_return_thunk+0x5/0xfbef5
+[    3.720600]  task_vma_seq_show+0x15b/0x1e0
+[    3.720871]  ? __pfx_task_vma_seq_show+0x10/0x10
+[    3.721171]  ? srso_alias_return_thunk+0x5/0xfbef5
+[    3.721483]  ? __pfx_bpf_seq_read+0x10/0x10
+[    3.721753]  ? __pfx_bpf_seq_read+0x10/0x10
+[    3.722021]  bpf_seq_read+0x1df/0x12c0
+[    3.722267]  ? security_file_permission+0x34/0x70
+[    3.722566]  ? srso_alias_return_thunk+0x5/0xfbef5
+[    3.722867]  ? __pfx_bpf_seq_read+0x10/0x10
+[    3.723138]  vfs_read+0x19a/0x9b0
+[    3.723371]  ? __pfx_vfs_read+0x10/0x10
+[    3.723629]  ksys_read+0x129/0x250
+[    3.723857]  ? __pfx_ksys_read+0x10/0x10
+[    3.724114]  ? srso_alias_return_thunk+0x5/0xfbef5
+[    3.724424]  ? __x64_sys_bpf+0xc9/0x1a0
+[    3.724755]  do_syscall_64+0xad/0x5c0
+[    3.725005]  ? srso_alias_return_thunk+0x5/0xfbef5
+[    3.725323]  ? exc_page_fault+0x85/0xa0
+[    3.725594]  entry_SYSCALL_64_after_hwframe+0x74/0x7c
+[    3.725920] RIP: 0033:0x42846d
+[    3.726129] Code: d5 48 8d 3c 0a eb 91 66 0f 1f 44 00 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 f0 ff ff ff f7 d8 64 89 01 48
+[    3.727351] RSP: 002b:00007fffc51eb9b8 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
+[    3.727868] RAX: ffffffffffffffda RBX: 0000000000000005 RCX: 000000000042846d
+[    3.728594] RDX: 0000000000000100 RSI: 00007fffc51ebb00 RDI: 0000000000000005
+[    3.729067] RBP: 0000000000000003 R08: 0000000000000000 R09: 0000000000000000
+[    3.729551] R10: 00007fffc51eb890 R11: 0000000000000246 R12: 000000000048ac28
+[    3.730612] R13: 00007f3cc2795078 R14: 000000000000c3da R15: 0000000000000000
+[    3.731029]  </TASK>
+---
+#define _GNU_SOURCE
+
+#include <errno.h>
+#include <fcntl.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/resource.h>
+#include <sys/syscall.h>
+#include <sys/types.h>
+#include <unistd.h>
+
+#ifndef __NR_bpf
+#define __NR_bpf 321
+#endif
+
+#define BPF_PROG_LOAD 5
+#define BPF_LINK_CREATE 28
+#define BPF_ITER_CREATE 33
+
+#define BPF_PROG_TYPE_TRACING 26
+#define BPF_TRACE_ITER 28
+#define BPF_F_SLEEPABLE (1U << 4)
+
+#define BPF_OBJ_NAME_LEN 16
+
+#define BTF_MAGIC 0xeb9f
+#define BTF_KIND_INT 1
+#define BTF_KIND_PTR 2
+#define BTF_KIND_ARRAY 3
+#define BTF_KIND_STRUCT 4
+#define BTF_KIND_UNION 5
+#define BTF_KIND_ENUM 6
+#define BTF_KIND_FWD 7
+#define BTF_KIND_TYPEDEF 8
+#define BTF_KIND_VOLATILE 9
+#define BTF_KIND_CONST 10
+#define BTF_KIND_RESTRICT 11
+#define BTF_KIND_FUNC 12
+#define BTF_KIND_FUNC_PROTO 13
+#define BTF_KIND_VAR 14
+#define BTF_KIND_DATASEC 15
+#define BTF_KIND_FLOAT 16
+#define BTF_KIND_DECL_TAG 17
+#define BTF_KIND_TYPE_TAG 18
+#define BTF_KIND_ENUM64 19
+
+struct bpf_insn {
+	uint8_t code;
+	uint8_t dst_reg:4;
+	uint8_t src_reg:4;
+	int16_t off;
+	int32_t imm;
+};
+
+union bpf_attr_local {
+	struct {
+		uint32_t prog_type;
+		uint32_t insn_cnt;
+		uint64_t insns;
+		uint64_t license;
+		uint32_t log_level;
+		uint32_t log_size;
+		uint64_t log_buf;
+		uint32_t kern_version;
+		uint32_t prog_flags;
+		char prog_name[BPF_OBJ_NAME_LEN];
+		uint32_t prog_ifindex;
+		uint32_t expected_attach_type;
+		uint32_t prog_btf_fd;
+		uint32_t func_info_rec_size;
+		uint64_t func_info;
+		uint32_t func_info_cnt;
+		uint32_t line_info_rec_size;
+		uint64_t line_info;
+		uint32_t line_info_cnt;
+		uint32_t attach_btf_id;
+	} prog_load;
+	struct {
+		uint32_t prog_fd;
+		uint32_t target_fd;
+		uint32_t attach_type;
+		uint32_t flags;
+		uint64_t iter_info;
+		uint32_t iter_info_len;
+	} link_create;
+	struct {
+		uint32_t link_fd;
+		uint32_t flags;
+	} iter_create;
+	uint8_t pad[256];
+};
+
+struct bpf_iter_link_info_task {
+	uint32_t tid;
+	uint32_t pid;
+	uint32_t pid_fd;
+};
+
+struct btf_header {
+	uint16_t magic;
+	uint8_t version;
+	uint8_t flags;
+	uint32_t hdr_len;
+	uint32_t type_off;
+	uint32_t type_len;
+	uint32_t str_off;
+	uint32_t str_len;
+};
+
+struct btf_type {
+	uint32_t name_off;
+	uint32_t info;
+	union {
+		uint32_t size;
+		uint32_t type;
+	};
+};
+
+static uint64_t ptr_to_u64(const void *ptr)
+{
+	return (uint64_t)(uintptr_t)ptr;
+}
+
+static long sys_bpf(int cmd, union bpf_attr_local *attr)
+{
+	return syscall(__NR_bpf, cmd, attr, sizeof(*attr));
+}
+
+static void bump_memlock_rlimit(void)
+{
+	struct rlimit rlim = {
+		.rlim_cur = RLIM_INFINITY,
+		.rlim_max = RLIM_INFINITY,
+	};
+
+	syscall(SYS_setrlimit, RLIMIT_MEMLOCK, &rlim);
+}
+
+static void *read_file(const char *path, size_t *size_out)
+{
+	ssize_t n;
+	size_t done = 0;
+	off_t size;
+	char *buf;
+	int fd;
+
+	fd = syscall(SYS_openat, AT_FDCWD, path, O_RDONLY);
+	if (fd < 0) {
+		perror("openat(/sys/kernel/btf/vmlinux)");
+		return NULL;
+	}
+
+	size = syscall(SYS_lseek, fd, 0, SEEK_END);
+	if (size <= 0) {
+		perror("lseek(SEEK_END)");
+		syscall(SYS_close, fd);
+		return NULL;
+	}
+	if (syscall(SYS_lseek, fd, 0, SEEK_SET) < 0) {
+		perror("lseek(SEEK_SET)");
+		syscall(SYS_close, fd);
+		return NULL;
+	}
+
+	buf = malloc(size);
+	if (!buf) {
+		perror("malloc");
+		syscall(SYS_close, fd);
+		return NULL;
+	}
+
+	while (done < (size_t)size) {
+		n = syscall(SYS_read, fd, buf + done, (size_t)size - done);
+		if (n < 0) {
+			if (errno == EINTR)
+				continue;
+			perror("read(/sys/kernel/btf/vmlinux)");
+			free(buf);
+			syscall(SYS_close, fd);
+			return NULL;
+		}
+		if (n == 0)
+			break;
+		done += (size_t)n;
+	}
+
+	syscall(SYS_close, fd);
+	*size_out = done;
+	return buf;
+}
+
+static uint32_t btf_kind(uint32_t info)
+{
+	return (info >> 24) & 0x1f;
+}
+
+static uint32_t btf_vlen(uint32_t info)
+{
+	return info & 0xffff;
+}
+
+static size_t btf_extra_size(const struct btf_type *t)
+{
+	uint32_t kind = btf_kind(t->info);
+	uint32_t vlen = btf_vlen(t->info);
+
+	switch (kind) {
+	case BTF_KIND_INT:
+	case BTF_KIND_VAR:
+	case BTF_KIND_DECL_TAG:
+		return 4;
+	case BTF_KIND_ARRAY:
+		return 12;
+	case BTF_KIND_STRUCT:
+	case BTF_KIND_UNION:
+		return (size_t)vlen * 12;
+	case BTF_KIND_ENUM:
+		return (size_t)vlen * 8;
+	case BTF_KIND_FUNC_PROTO:
+		return (size_t)vlen * 8;
+	case BTF_KIND_DATASEC:
+		return (size_t)vlen * 12;
+	case BTF_KIND_ENUM64:
+		return (size_t)vlen * 12;
+	case BTF_KIND_PTR:
+	case BTF_KIND_FWD:
+	case BTF_KIND_TYPEDEF:
+	case BTF_KIND_VOLATILE:
+	case BTF_KIND_CONST:
+	case BTF_KIND_RESTRICT:
+	case BTF_KIND_FUNC:
+	case BTF_KIND_FLOAT:
+	case BTF_KIND_TYPE_TAG:
+		return 0;
+	default:
+		fprintf(stderr, "unknown BTF kind %u\n", kind);
+		exit(1);
+	}
+}
+
+static int find_btf_func_id(const char *name)
+{
+	const struct btf_header *hdr;
+	const uint8_t *types, *types_end;
+	const char *strs;
+	size_t btf_size;
+	void *btf;
+	uint32_t id = 1;
+
+	btf = read_file("/sys/kernel/btf/vmlinux", &btf_size);
+	if (!btf)
+		return -1;
+	if (btf_size < sizeof(*hdr)) {
+		fprintf(stderr, "short BTF header\n");
+		free(btf);
+		return -1;
+	}
+
+	hdr = btf;
+	if (hdr->magic != BTF_MAGIC) {
+		fprintf(stderr, "unexpected BTF magic 0x%x\n", hdr->magic);
+		free(btf);
+		return -1;
+	}
+	if ((size_t)hdr->hdr_len + hdr->type_off + hdr->type_len > btf_size ||
+	    (size_t)hdr->hdr_len + hdr->str_off + hdr->str_len > btf_size) {
+		fprintf(stderr, "invalid BTF section bounds\n");
+		free(btf);
+		return -1;
+	}
+
+	types = (const uint8_t *)btf + hdr->hdr_len + hdr->type_off;
+	types_end = types + hdr->type_len;
+	strs = (const char *)btf + hdr->hdr_len + hdr->str_off;
+
+	while (types + sizeof(struct btf_type) <= types_end) {
+		const struct btf_type *t = (const struct btf_type *)types;
+		size_t rec_size = sizeof(*t) + btf_extra_size(t);
+
+		if (types + rec_size > types_end) {
+			fprintf(stderr, "truncated BTF type section\n");
+			free(btf);
+			return -1;
+		}
+
+		if (btf_kind(t->info) == BTF_KIND_FUNC &&
+		    t->name_off < hdr->str_len &&
+		    strcmp(strs + t->name_off, name) == 0) {
+			free(btf);
+			return (int)id;
+		}
+
+		types += rec_size;
+		id++;
+	}
+
+	fprintf(stderr, "BTF FUNC %s not found\n", name);
+	free(btf);
+	return -1;
+}
+
+static int load_prog(uint32_t attach_btf_id)
+{
+	static char log_buf[1 << 20];
+	static char license[] = "GPL";
+	struct bpf_insn insns[] = {
+		{ .code = 0xb7, .dst_reg = 0, .src_reg = 0, .off = 0, .imm = 0 },
+		{ .code = 0x95, .dst_reg = 0, .src_reg = 0, .off = 0, .imm = 0 },
+	};
+	union bpf_attr_local attr;
+	int fd;
+
+	memset(&attr, 0, sizeof(attr));
+	attr.prog_load.prog_type = BPF_PROG_TYPE_TRACING;
+	attr.prog_load.insn_cnt = sizeof(insns) / sizeof(insns[0]);
+	attr.prog_load.insns = ptr_to_u64(insns);
+	attr.prog_load.license = ptr_to_u64(license);
+	attr.prog_load.log_level = 1;
+	attr.prog_load.log_size = sizeof(log_buf);
+	attr.prog_load.log_buf = ptr_to_u64(log_buf);
+	attr.prog_load.prog_flags = BPF_F_SLEEPABLE;
+	memcpy(attr.prog_load.prog_name, "tvma_sleep", sizeof("tvma_sleep"));
+	attr.prog_load.expected_attach_type = BPF_TRACE_ITER;
+	attr.prog_load.attach_btf_id = attach_btf_id;
+
+	fd = (int)sys_bpf(BPF_PROG_LOAD, &attr);
+	if (fd < 0) {
+		perror("BPF_PROG_LOAD");
+		if (log_buf[0])
+			fprintf(stderr, "verifier log:\n%s\n", log_buf);
+		return -1;
+	}
+
+	return fd;
+}
+
+static int create_iter_fd(int prog_fd, uint32_t pid)
+{
+	struct bpf_iter_link_info_task iter_info = {
+		.tid = 0,
+		.pid = pid,
+		.pid_fd = 0,
+	};
+	union bpf_attr_local attr;
+	int link_fd, iter_fd;
+
+	memset(&attr, 0, sizeof(attr));
+	attr.link_create.prog_fd = prog_fd;
+	attr.link_create.target_fd = 0;
+	attr.link_create.attach_type = BPF_TRACE_ITER;
+	attr.link_create.flags = 0;
+	attr.link_create.iter_info = ptr_to_u64(&iter_info);
+	attr.link_create.iter_info_len = sizeof(iter_info);
+
+	link_fd = (int)sys_bpf(BPF_LINK_CREATE, &attr);
+	if (link_fd < 0) {
+		perror("BPF_LINK_CREATE");
+		return -1;
+	}
+
+	memset(&attr, 0, sizeof(attr));
+	attr.iter_create.link_fd = link_fd;
+	attr.iter_create.flags = 0;
+
+	iter_fd = (int)sys_bpf(BPF_ITER_CREATE, &attr);
+	if (iter_fd < 0) {
+		perror("BPF_ITER_CREATE");
+		return -1;
+	}
+
+	return iter_fd;
+}
+
+int main(int argc, char **argv)
+{
+	char buf[256];
+	uint32_t pid = 1;
+	int attach_btf_id;
+	int prog_fd;
+	int iter_fd;
+	ssize_t n;
+
+	if (argc > 1)
+		pid = (uint32_t)strtoul(argv[1], NULL, 0);
+
+	printf("[repro] target task_vma pid=%u\n", pid);
+	bump_memlock_rlimit();
+
+	attach_btf_id = find_btf_func_id("bpf_iter_task_vma");
+	if (attach_btf_id < 0)
+		return 1;
+	printf("[repro] bpf_iter_task_vma attach_btf_id=%d\n", attach_btf_id);
+
+	prog_fd = load_prog((uint32_t)attach_btf_id);
+	if (prog_fd < 0)
+		return 1;
+	printf("[repro] prog_fd=%d\n", prog_fd);
+
+	iter_fd = create_iter_fd(prog_fd, pid);
+	if (iter_fd < 0)
+		return 1;
+	printf("[repro] iter_fd=%d\n", iter_fd);
+
+	n = syscall(SYS_read, iter_fd, buf, sizeof(buf));
+	if (n < 0) {
+		perror("read(iter_fd)");
+		return 1;
+	}
+
+	printf("[repro] read returned %zd\n", n);
+	return 0;
+}
 
