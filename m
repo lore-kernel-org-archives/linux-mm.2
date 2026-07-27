@@ -4,135 +4,172 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC638C53219
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 12:16:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08687C53219
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 12:25:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA0E66B00CF; Mon, 27 Jul 2026 08:16:49 -0400 (EDT)
+	id DD64E6B00D3; Mon, 27 Jul 2026 08:25:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B52A16B00D3; Mon, 27 Jul 2026 08:16:49 -0400 (EDT)
+	id DAD406B00D5; Mon, 27 Jul 2026 08:25:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A1A386B00D5; Mon, 27 Jul 2026 08:16:49 -0400 (EDT)
+	id C9EAC6B00D6; Mon, 27 Jul 2026 08:25:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 803516B00CF
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 08:16:49 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1D1DC1C0E9D
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:16:49 +0000 (UTC)
-X-FDA: 85034455338.01.6702710
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 2A6C814000A
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:16:46 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q6rwu4UH;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785154607;
-	b=fWgDuFmLc2qKSGWb4Y8gIFyiqJa8oRxyrmtOumal5n663r/flqaqUSrxkbaBCgITO1pgC4
-	qf0Ofq7fU0IqzEY+RoE28+HW6ChNhv8VdI9LbRZBTxokE+rD05I6ICuJV7zG8F5RzwOr6e
-	29W8wez+yiAvqkom8cStCXZP8yXmVUQ=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q6rwu4UH;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785154607;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 990926B00D3
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 08:25:58 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 306AE1A06E5
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:25:58 +0000 (UTC)
+X-FDA: 85034478396.03.FFD2938
+Received: from TYPPR03CU001.outbound.protection.outlook.com (mail-japaneastazon11022137.outbound.protection.outlook.com [52.101.126.137])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 0662E80008
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:25:54 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=transsion.com header.s=selector1 header.b=NTVEOsUc;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf02.hostedemail.com: domain of hongyan.xia@transsion.com designates 52.101.126.137 as permitted sender) smtp.mailfrom=hongyan.xia@transsion.com;
+	dmarc=none
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785155155;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lIUEPpso+zQtbGUo/ufSKSePHycf4z7cdFiea0Gk3jE=;
-	b=i1XQhln1w5jFSdrQHuGqeXho+Ph5Iru9gielI9Yxyen2f7W7KgtNQNeJPeGZZU/nECEF2a
-	G7C9hfK3SEEQFAxS29MGxsQDRIbnb9QfzA8a0pI72TXTEEe58j648hJF0FGvCCK2/poHzO
-	TMQDZQEwS9wMa+R3EjIIwDl9c/zaSCk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4DE14437D9;
-	Mon, 27 Jul 2026 12:16:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA5911F000E9;
-	Mon, 27 Jul 2026 12:16:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785154606;
-	bh=lIUEPpso+zQtbGUo/ufSKSePHycf4z7cdFiea0Gk3jE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Q6rwu4UHC4+41OOIMAqYG6j3l5cKWu8sggn2bo+CTVF4li7ddiAGnzmiBbNBdJfK9
-	 QCMWv2rhm0eN9ws4rbTmiRHmdyWoBNHybjSmCDe67f5aS751/cNxiNhUdY6/Kvvyj+
-	 6k/21+MgMbtu183HUBHIDuVNZSwm+bOWxrs7MoRM7I3tWTQIcpd1RDJl4kr8w7Kbrp
-	 sg9WAXMGglCBlmFXilGthg27+qOVuYU8GK8nkcXhi4cpDgBe/+PO0yH4/t1RLh/jTn
-	 1hGZEK0gkTtuo08NsSMTP0sucDdqm7/N32BlZQuGpvmfUzNt/4unusN1nU0EXourGC
-	 rqIbnAfnFO0XA==
-Message-ID: <cd6652a3-547a-47b9-8907-e98a582a238e@kernel.org>
-Date: Mon, 27 Jul 2026 14:16:40 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] mm: Extract non-swap page handling to
- do_non_swap_page()
-To: Hongfu Li <hongfu.li@linux.dev>
-Cc: akpm@linux-foundation.org, liam@infradead.org, lihongfu@kylinos.cn,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org,
- mhocko@suse.com, rppt@kernel.org, surenb@google.com, vbabka@kernel.org
-References: <10c60511-c841-4bd8-aa5f-0d826b676533@kernel.org>
- <20260727121047.4140-1-hongfu.li@linux.dev>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+	bh=VkDK9YxlxfACMs2dXWNaZujqmL3nFzsNssF9dz81le0=;
+	b=OyKxsFaTNEWhW/V+HrsIsVNw21qy9d53vvGLJ52X0aE0+pl6R65MUXAChwrU3NkQM9divW
+	YjNSFKvX7izRTRRHxl1CgME515TlDTWnIBnFHPhh3+0AHONG1MXj0P9r9rfkkamnBX6YcF
+	i8cUgUrOKoTcmZ2P9M+g+MFkfXx03nQ=
+ARC-Authentication-Results: i=2;
+	imf02.hostedemail.com;
+	dkim=pass header.d=transsion.com header.s=selector1 header.b=NTVEOsUc;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf02.hostedemail.com: domain of hongyan.xia@transsion.com designates 52.101.126.137 as permitted sender) smtp.mailfrom=hongyan.xia@transsion.com;
+	dmarc=none
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1785155155;
+	b=hOk4SxsvRjknT5ZdVWQQTbcH4ojRIplt8HTN79XFZH8SJZXh5jGISKD+jTl5nvN1zS4qyX
+	9DuwhDbgu3dFBvKWqmL9kJyxWfmbs34pOUQ4Yzxi8mSKi4RvFP+Ne5Q+y2sSV3pGK0dWIW
+	hzDXFdn3T3V9CSQShZCSw7qUg/6plBo=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Ht/EHav3yf2pKMcaFJ0QGDegWfF0lw7qUj6eWJijalKaSbISqufrQW87CpI3l56B7wpD45SgBOs5Isc1lGy9kfsbMgthnvvruM8TFZDRIeKcGdu4Y7Kx5V3T9HAOHwt8gJccQ8xXOAHKdnYZglmKNkHobLy1i6qnFOxCyZQYn/2q6aisuW8GvCFMrM4h7QSS1eWCnAUJndRvD9PjlBc0BF2nmU+jkatpv6eM96Uz8VFG/wjs6bkjl3zFYxYxavOIGZYyjyUlq7uBgEjZ3TKEV1zhFCzx0Is4YPH8m4n7C+hKpslq4J7HSE4Aw3j6Z2Hkh5bBiIRBUBjuYznFyv9zgQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VkDK9YxlxfACMs2dXWNaZujqmL3nFzsNssF9dz81le0=;
+ b=feP+Juxykkd3Ysk73I9EhBGJNHSnoHBOryiub1RJoZarpMSCxEJuTDsOkvwo60Ir8e5Mf6iBb5dTpO/4wPJ6A78aRKJO/64oxMPvTv462QWsK+DamvJH0sXbuAIwE4nG/dvMLfrHvVIqo69loEWaD9ZHsrLgwPSXU6wL023U+tn7tiLusFf6y6lR6na0JbDuosw0aNW4euv9y/vUU6m0QOOIP05GTDNXezYFPVJYJxXrk+Mv6km7KA5gD+c5gpri8MfrDn2PkWZ9zC/MXJ7w20s25c4OktPk0ecN6aZ/ZQ/6K4l+l5ts2gGg8vGLglIGNeue2leJL/ft0LBM0kZYgg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=transsion.com; dmarc=pass action=none
+ header.from=transsion.com; dkim=pass header.d=transsion.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=transsion.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VkDK9YxlxfACMs2dXWNaZujqmL3nFzsNssF9dz81le0=;
+ b=NTVEOsUcnXsEM+/rMgjjbLFjsZf/I3fK/P1nXwUxyuqMEc38s2D63cAZVGkpj6clr4cLuKZyAobhCw0T/LQxW5YXCHCAdETbJAi1nogfOLkv+Ja8K1g6H8aiFL4tiQnkWZcxjxOoDRw6fzAarJzfsNTUCEe0FpA/hw/Dapfj+Eg=
+Received: from KL1PR0401MB6196.apcprd04.prod.outlook.com
+ (2603:1096:820:c7::13) by TY2PPF7B73AC350.apcprd04.prod.outlook.com
+ (2603:1096:408::add) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.8; Mon, 27 Jul
+ 2026 12:25:49 +0000
+Received: from KL1PR0401MB6196.apcprd04.prod.outlook.com
+ ([fe80::f2ee:1e28:9022:99f3]) by KL1PR0401MB6196.apcprd04.prod.outlook.com
+ ([fe80::f2ee:1e28:9022:99f3%3]) with mapi id 15.21.0270.009; Mon, 27 Jul 2026
+ 12:25:48 +0000
+From: Hongyan Xia <hongyan.xia@transsion.com>
+To: Will Deacon <will@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>, Dennis Zhou <dennis@kernel.org>,
+	Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>, Oleg Nesterov
+	<oleg@redhat.com>, Naveen N Rao <naveen@kernel.org>, "David S. Miller"
+	<davem@davemloft.net>, Nathan Chancellor <nathan@kernel.org>, Nick
+ Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>
+CC: Jiazi Li <jiazi.li@transsion.com>, Pu Hu <hupu@transsion.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-mm@kvack.org"
+	<linux-mm@kvack.org>, "linux-trace-kernel@vger.kernel.org"
+	<linux-trace-kernel@vger.kernel.org>, "llvm@lists.linux.dev"
+	<llvm@lists.linux.dev>
+Subject: [RFC PATCH 9/9] arm64/debug: Mark debug exception helpers
+ __always_inline
+Thread-Topic: [RFC PATCH 9/9] arm64/debug: Mark debug exception helpers
+ __always_inline
+Thread-Index: AQHdHcMO39AcF/TaiUWqS0RapTlJlQ==
+Date: Mon, 27 Jul 2026 12:25:48 +0000
+Message-ID:
+ <eb38b41ae1b3216ec69fb45555ef5df57efd7b8d.1785153469.git.hongyan.xia@transsion.com>
+References: <cover.1785153469.git.hongyan.xia@transsion.com>
+In-Reply-To: <cover.1785153469.git.hongyan.xia@transsion.com>
+Accept-Language: zh-CN, en-US
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260727121047.4140-1-hongfu.li@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 2A6C814000A
-X-Stat-Signature: 78bztimgf3jdtqhcgh7kxefzdqzphzb9
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: KL1PR0401MB6196:EE_|TY2PPF7B73AC350:EE_
+x-ms-office365-filtering-correlation-id: bea42550-5a6f-4c93-875d-08deebda30ed
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|7416014|376014|1800799024|23010399003|11063799006|56012099006|10067099003|6133799003|3023799007|18002099003|22082099003|921020|38070700021;
+x-microsoft-antispam-message-info:
+ 32aJLD0EhwrZZ1sgZ3eO2HQFTxW7UR6waJA7xXggEevXs2i7F4taXBWE4EP/edM+T2RxWna30f/GL91mkmBpNyga2utzeLMmWyXouarEI0k3w9gOiKp2+Z8oLTqYFIh9zcXLA4bqp6XMkpyWPQ5TQ2VD8qh55tFmp6kZ0JKxw4lBdML0miOWfXKWWSlhZncws7WbgRl0BDTuj5zAWpX9yP98Ia/NwDCLjLqzBobGcdgsTYkYG2m02nk4Dza9hmRewLzRNJS0EIUK0xDOujQ6T21cJuGqbvPKc1N+yfXxYnvckCFC7ni0Ec2z7ITBUtfQBtVXtKx3p+0o9y7PorDZqVCIPtCCuMcnSLVj5yfNfS15/KyoYQUtUr14FXHvE9oSipfyUiR6wD6oIiOIbtaU2n1dOWZSnMl6iEyWdHeUNTR6hOBOYFOiO/TQv65d5cwhnpv6+/pESmnV1GE5jyndm0o/dTfVjBiMR1qtQBBc50zRD4DnIwcHIy1WeLSfKrv86DA3Ia+DgEBjcMeZheVab9/ar4rJobqf+/1vXlQCpdVa8JlSnu2DJjvOsQtKAhgXhMUmHNvjwGAYLzvD55Rnz2gCL63HrAtK8KVBl7H3PrzhrhL9pFyYjWagtuvPMUZ0U93YdX1biuB52CoXxN8SiLGfAMzCcJ5gYCt6C/Qo8q4ltHX+N+gV/Ld9lB623jKqEBwtdTwhc7XitHKEUSeZmyrWxSLrU4KKrohrN+5qX4jw6oJh7M4esFLAIKPM9Pqe
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:KL1PR0401MB6196.apcprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(23010399003)(11063799006)(56012099006)(10067099003)(6133799003)(3023799007)(18002099003)(22082099003)(921020)(38070700021);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?9z880sOpwqxsSgPcg6EtGMw25SwxyZ3E++SZZ0iw57MGfdo74zvaJ0G+pW?=
+ =?iso-8859-1?Q?HQ11YnhfeyPXrCw88BRZ3V+9uylGKcK0ntQINgXTVgam7zYO4wq1U5Kd02?=
+ =?iso-8859-1?Q?xAmr6FpNdpJ2pslxcQJ52ZEXJmy6VTJPXvH7JJ+MfskQci1ULGHh7CTJEM?=
+ =?iso-8859-1?Q?i4gdtF30Ak+WTPWRqEYprGVUlPXDhL4Zs8JeikOdAnw9RO8mH5ji6AhPtt?=
+ =?iso-8859-1?Q?Aql7VxMzJJL5iNkE7Xagbs5ga4Vi8NJ6+kKGhBD17ajUhFt2B+QWQAlyeR?=
+ =?iso-8859-1?Q?RadXS7MhDf+RWpcqzgaGns+Dc+xovWSO/jOh9J24u3R2kKQMDitTYfrveJ?=
+ =?iso-8859-1?Q?QXaR0eNOuo6Kg5adYFdyROKFhU2/eRvvex2CqAbfLAoAD9B55S2AYqbt8j?=
+ =?iso-8859-1?Q?xbYZrnWhmXlNnDoud4T3SUrfzZYFt36D/O5pH+NmYFCpq6GVLed0wvfkcA?=
+ =?iso-8859-1?Q?UoHS1o4KWBk3vyFM/DnL2SJj+oFe7Ehu7UbYisH9An4eWDkub1FJHfhOOI?=
+ =?iso-8859-1?Q?Tq6JsCwziqroPrwGWdcKVoKY5wm014YGHcJ2zD2Oq+dxtuG1gLn/r7KRse?=
+ =?iso-8859-1?Q?YfVaZqYW4LSGg4AkFtu+Sff9YuW0UIFwS4sgOGC5tmdcHdajXtR6PBpYjb?=
+ =?iso-8859-1?Q?709D/g0rOz3MKrvIaTP2o7pQyyeyTPa357CTWvAaOGOvEAGdhBDarnpJjq?=
+ =?iso-8859-1?Q?pvFRF1apkR8hsU3KtvNLA3vYMVnjItSAp6TvnjDi4qPFOyDaHzhDGtVU55?=
+ =?iso-8859-1?Q?QDgQlskDd8p/8c+3YXbOCEsT89L8KhV+Nky0Ue+QllGAUBohQSQz8d55cM?=
+ =?iso-8859-1?Q?QsbNvFGTNUcR7GuVf5xuW0EA5Oq/95KyTGkvSw6puiG55E7miOVyUASg18?=
+ =?iso-8859-1?Q?pM8zJ1roOqudgwnkdlOCK7Ra+DUmDrwjRHR5Omp5qGriBD0oTv0bys/48B?=
+ =?iso-8859-1?Q?2yFO+eIaJ6LB9WUTJ5DkMJUqLC0uEapMS0EOQTLfQNrrzRf/oMtxaratmc?=
+ =?iso-8859-1?Q?0glCMqih/SLFpb8csb8Cb36XK65SPNZ3ObvpV/nvAYIG6CBhMfyT+mct86?=
+ =?iso-8859-1?Q?BqrR5+p1V+3ZYAELEYE948i82D9fC1kxUZEVxEvkRp7JdwskiXJRLXkP10?=
+ =?iso-8859-1?Q?1blZ8RpqwDam2jb5wczeOsZRb8JLVemw+NLJLO3SUYIJTPhOeQFieB9EMl?=
+ =?iso-8859-1?Q?x8BBvpU3rhGcN/wIBsA9enRwVX5WziW/WoTSkHpu3lmVFwGl5bCLILM8Fb?=
+ =?iso-8859-1?Q?HSJckwzNqBpep0fecpJyvv85jf2W5efEUV5+Rvl1Es12op/SGZd7S1kJ6W?=
+ =?iso-8859-1?Q?Ue+8id+5uDCzdX2WmOolthhSeDYzrfof3qNA/wbaQUcfkbslKE/bDWtGOI?=
+ =?iso-8859-1?Q?PKbW6v46dCpq6lIkUuaqL+9qnlNuA2VHD+SNl5BCAwY4OK2ZOII4SnD42Z?=
+ =?iso-8859-1?Q?54ywoXscX1apjur3nkriCKDPr2lkS7ajkzqOt/3sDG2y8elLbpaEYaopbQ?=
+ =?iso-8859-1?Q?d241XQcCvuzyyXZM95itYJGklMcYeTb5G3302MDPCUnOMPKJHEqFaJp+vK?=
+ =?iso-8859-1?Q?xpEk1YRmhd1Gb0wIZcVNmiOpAcOTVrMe3b4duLg6W2fnC32QzkVFX7bynh?=
+ =?iso-8859-1?Q?/UdzcJOJngQpnCFNW7STWD2lbxm7w+BRia4un3miqqfX+83lPFz5W6ajxP?=
+ =?iso-8859-1?Q?pab3HfUo4gkPt8IC0ft2I6f8+lWg8OCvNqdVAwJJh3Rx/B2mpzm2kVr1a8?=
+ =?iso-8859-1?Q?YbxqlNFpHr9vRzSj3JxRITGK8pnWw3Vez5m8qNpjdl8h7yTGAwFmqL/RKi?=
+ =?iso-8859-1?Q?C9fT2RUu/g=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: transsion.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: KL1PR0401MB6196.apcprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bea42550-5a6f-4c93-875d-08deebda30ed
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Jul 2026 12:25:48.9128
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 2e8503a6-2d01-4333-8e36-6ab7c8cd7ae2
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: DmJtaqrStCuOU9AZlTHaANYEljGKmiZg/teVXiplGzOf0cq5Tqtc912RozZTEBWgurdfIZxIRTXdBzH32N+Gmf1AH4dQLon2K7d60f3+ba0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY2PPF7B73AC350
 X-Rspam-User: 
-X-HE-Tag: 1785154606-966812
-X-HE-Meta: U2FsdGVkX1/vhWl1oL9Bb8zlxo/JD8iHuehffaEvAsQcKD6sQkTvWgKxxB/eXy46SBEFzBMdqbsYwhKmC/5JrZm27j90z5vM4f0RMNL8HKJiSf4DBUZruvG7Gl/W2gCaLepBrffvOLdPiuSTV8ZA/fKFvCrvYaJSKWTsNNiDiQhxHCj6WLn43gvvNWPcc8HFBryhPyGOm05tkiCRWrOUfM3tY4dC9aeY1cFkESg5AJKKz/pvlw+YQMIbfuzop6w/dx+FR6E+Bp9HJlVl63xpC/u+wtoFca3SGYs8Nfz8jYb1W06h1uGpRP3v0RTikPdoEg8xlcL//2WuMVE5yWfgT9/fCuvT5c5cOZLjBObr9UYmoOYgX55xJ1tfhS6reTUPVWbmbACDFwlgffrKfi9l/PbNe94QMFSOaNP1bDvvD8l7Gs4JGHtABPAjjcRZUqoCALQitX389jOVQ+/lhcAirp+i+jDTgnD4A2UVHvi4CxWe9gHoqGiyLczPSzEWe03Pexf4vkABMogH6hEhmgKPzT/ezc9YCU9mMwc90crwzdCflUJP5XNWfgdTo/bRhQLzQkm+NoD0c9zYsNKi39+vC7J8X5C4ldRUcu4gulJYn9fNLdVYcJN+wNQQeoCWDtFdFfhZ5QOVXkKRwzQGIvbTQyxCAZ27ocLXzzpxPqEuSDiRxg56iY6uRvHumXWoi+vRI2Of/tbCL6vQeVceGD4ldghNPiMkG5UneQQzorNli3gFRpMaRyvGmdyLyXAp89rRLahaxLLN2VRCqVndENcscLpweeOVLCN0lJbuCxzp5RQvouQxv2uWlipO3x4NRp3R2kPDC0B7zJ0QtAbFopzRs4VZET2UQoDQJIflWJX2sM/ErL/Cl4IJ9ECtI2RQw0HTp8iM2saHFfe8bT11IbwCIv5EIfLhuQB7H4tomnA5xJK5ji1HyFn1Y6uEb02FdHl1Y6l8LqF0avGiEQbrwVe
- vCmTzS6f
- +VXuM13Nb2YxCGsCH60IpwEPDE+UzUw+tC42XODRy29d4rZ/jr3sXJKaier78lSxYbAakyIqZNwV/zab3HL5Mg0ocRDqhIUvPyRGBm+DRuPJlJAf+dscS++qT2Zpq8GII+zuLPawlhiCg+p+5t6Ub82CXWDRIGy9u/qvXVyQc+FYpmcOrA9NUhH8BMKeG1oDbWjzv5owjE1OnlhDQ6h42OpvRn8b4m6FcWtm8Ip1tcTabhlrQFjUXc6kEME3t/Ps6xYptZrJbH3EeyEJ0RUktVZ8dF4mkCtX6ORzDBSVTq7leU1KN4Frt10DIgg==
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 0662E80008
+X-Stat-Signature: 7uq84cgq4t9rmmht1uti3zktp6i9hsbw
+X-HE-Tag: 1785155154-610480
+X-HE-Meta: U2FsdGVkX18Q8If5IkQLCEhn7AyJpTRqFWs4tNHqLgiCLoqZX2eHw5bBMA8WYK3fGHr0PstB6Tt2xfMkD11JLCdz7U3SjEFDEsgsyBW6mnbQGtGeLaUYV8H98WC0+Angx4+zKN6976nrG91qNYHNRrbzfi/UxTa9Bv1sYam7FbbNkJQR6PmrTV4lDhkC7VVXbCA0+CoB4wLURljTArzD6MM3BYezdf0fPOugjK0Ia36NiBTFVcPhyld9vdpOixd0fuk6vWs2gkL/RZwtkXAPd9YnrAns2EdxK+up1wzwfPPK8Ta+ET3vuyvL6IRA9W9ntc/nGcg/c7u5JUv20xkvusFUn6H9FXW6DbjM8Ab/W1ahDnS6uNgCslrnMKim4OwqI1ehPHsi1A72PxhqdSxK6lSbPofmC4uv3wrHwuz3ty9CIk+FkldC+a1LXMfvadWBlXzj9WyqkEFH9xRKb5v1N+c4dHhV0XLccxM7neDz50jwlfG6hQg/cI8qx6ntDmlYhZEdQHbnO0XpSyNDT3GPlfNW0Zjm4O+9jUOmHgvoDktQ2poF4IsocNbzZg9sf+SEUQQ+qITqb2BahDzE43Fcte3c8WnrAQ/QhnIcON3wkHSHX/MaVntAbW+Jk/68ecJmnM1Tv4X5AQL/WjGgtUuV/wePrtoN1FH5Y1a1Pj0jET7tN6eeEeG55XKVOGtRFWW2nyuXRHPqa5Zl/1K3rh94Kq7yuG5CmLz5QqKnzU4fBS33rxJ2+TUiclNDF7gbFsZ6edhV7LjaRa8ZwLvW1kZtk+SJnQdqDFrooPmUmVRzKvVI7K6t1K+pAK2XGWUig5uzhDV+HOw76VJz1Yb11G68Pj64vU5B2iLrKbHLjeMBjDG0w+Ay2xFhgXKK6T4nuDOg9ZSmElXxWR2VsviX8CZf/PNXboOUUs81z3cm34nCHhTTMgtSj4yOM2aN8QoX56DXtS2hdeahm5U2/5KZaWJ
+ JhiWEeaJ
+ 6AoQm2ZTsYqUCS5NwhPej/Vo4TkAwVGXa2hpGXG34F7kn8QbUvdJ0Or2Hgbt9W//n97Gz9uMTygXuQiA6404O3atXXq2WQvJcu4FSs9PdTDUtGJqoqcJtXFmW9NKyNfF5j3jdkkV1kjzRLb8cdnpvrwmUply8YUnLhXSRE8RMCEVSARF2F2+7DUox5gSNC7cidBbc3E24f2hh9qBNquGvttGbxhjdZ7KMxJhQHylJjodi7yh4u6/+J21lVxF7bO1hcGr1HmGkszOCjS0wqFkNrxOPfYQJXfk9yUT9RT8QIV54SlTP50KrmVZvl6Xe+J2cGXqAoQVJXkvDwbZ0u1ZShNn7JCUNSxvWYjnnK8Mubkchu4uHR2krW5/EL99qFvcLVDQp2Wb46GaQ30hOoEwYEJxnQ09M+TTKoAxZIZ3MWP7OeqZeWZJr5ea1hyZf16hwJ9O+fG/gN0/a1HBOpwaRTepF6gSdcMRmfG996Sd+Pv+z56IksDOxSzJXbQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,45 +177,147 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/27/26 14:10, Hongfu Li wrote:
->>>  mm/memory.c | 120 ++++++++++++++++++++++++++++++----------------------
->>>  1 file changed, 69 insertions(+), 51 deletions(-)
->>>
->>> diff --git a/mm/memory.c b/mm/memory.c
->>> index ae521baa8c84..50d8e92aef91 100644
->>> --- a/mm/memory.c
->>> +++ b/mm/memory.c
->>> @@ -4815,6 +4815,74 @@ static void check_swap_exclusive(struct folio *folio, swp_entry_t entry,
->>>  	} while (--nr_pages);
->>>  }
->>>  
->>> +static vm_fault_t do_non_swap_page(struct vm_fault *vmf)
->>
->> We're handling softleaf entries that are not swap entries.
->>
->> do_nonswap_softleaf() or sth like that would be better than talking about "page"
->> if there is not even a page.
->>
->> But actually it should be the other way around:
->>
->> do_softleaf_entry() [currently do_swap_page]
->>    ... non-swap entries
->>    do_swap_entry()
->>
->> Or sth like that. Then, maybe in the future, we can just move do_swap_entry()
->> out of memory.c
->>
->> So we're factoring the wrong thing out in this patch.
-> 
-> Thank you very much for the detailed review, your analysis makes perfect sense to me.
->                                                                                                                                                                                                                                                                                 
-> I'm glad to send out v3 shortly for your further review, with 
-> do_non_swap_page renamed to do_nonswap_softleaf.
-
-Read again, that's not what I meant.
-
--- 
-Cheers,
-
-David
+From: Hongyan Xia <hongyan.xia@transsion.com>=0A=
+=0A=
+Static inline should be enough to actually inline functions for most=0A=
+compilers, but my Clang-19 somehow thinks it's better to outline them.=0A=
+These tiny helpers then live in normal .text sections instead of=0A=
+.noinstr sections, violating noinstr.=0A=
+=0A=
+Mark them __always_inline so the compiler can never outline them.=0A=
+=0A=
+Signed-off-by: Hongyan Xia <hongyan.xia@transsion.com>=0A=
+---=0A=
+ arch/arm64/include/asm/esr.h       | 2 +-=0A=
+ arch/arm64/include/asm/percpu.h    | 2 +-=0A=
+ arch/arm64/include/asm/preempt.h   | 4 ++--=0A=
+ arch/arm64/include/asm/ptrace.h    | 4 ++--=0A=
+ arch/arm64/kernel/debug-monitors.c | 2 +-=0A=
+ include/linux/kprobes.h            | 8 ++++----=0A=
+ 6 files changed, 11 insertions(+), 11 deletions(-)=0A=
+=0A=
+diff --git a/arch/arm64/include/asm/esr.h b/arch/arm64/include/asm/esr.h=0A=
+index f816f5d77f1a..a75bfdb7e5fe 100644=0A=
+--- a/arch/arm64/include/asm/esr.h=0A=
++++ b/arch/arm64/include/asm/esr.h=0A=
+@@ -437,7 +437,7 @@=0A=
+ #ifndef __ASSEMBLER__=0A=
+ #include <asm/types.h>=0A=
+ =0A=
+-static inline unsigned long esr_brk_comment(unsigned long esr)=0A=
++static __always_inline unsigned long esr_brk_comment(unsigned long esr)=0A=
+ {=0A=
+ 	return esr & ESR_ELx_BRK64_ISS_COMMENT_MASK;=0A=
+ }=0A=
+diff --git a/arch/arm64/include/asm/percpu.h b/arch/arm64/include/asm/percp=
+u.h=0A=
+index b57b2bb00967..d4cae47fde8c 100644=0A=
+--- a/arch/arm64/include/asm/percpu.h=0A=
++++ b/arch/arm64/include/asm/percpu.h=0A=
+@@ -29,7 +29,7 @@ static inline unsigned long __hyp_my_cpu_offset(void)=0A=
+ 	return read_sysreg(tpidr_el2);=0A=
+ }=0A=
+ =0A=
+-static inline unsigned long __kern_my_cpu_offset(void)=0A=
++static __always_inline unsigned long __kern_my_cpu_offset(void)=0A=
+ {=0A=
+ 	unsigned long off;=0A=
+ =0A=
+diff --git a/arch/arm64/include/asm/preempt.h b/arch/arm64/include/asm/pree=
+mpt.h=0A=
+index 932ea4b62042..326f221c3f56 100644=0A=
+--- a/arch/arm64/include/asm/preempt.h=0A=
++++ b/arch/arm64/include/asm/preempt.h=0A=
+@@ -41,14 +41,14 @@ static inline bool test_preempt_need_resched(void)=0A=
+ 	return !current_thread_info()->preempt.need_resched;=0A=
+ }=0A=
+ =0A=
+-static inline void __preempt_count_add(int val)=0A=
++static __always_inline void __preempt_count_add(int val)=0A=
+ {=0A=
+ 	u32 pc =3D READ_ONCE(current_thread_info()->preempt.count);=0A=
+ 	pc +=3D val;=0A=
+ 	WRITE_ONCE(current_thread_info()->preempt.count, pc);=0A=
+ }=0A=
+ =0A=
+-static inline void __preempt_count_sub(int val)=0A=
++static __always_inline void __preempt_count_sub(int val)=0A=
+ {=0A=
+ 	u32 pc =3D READ_ONCE(current_thread_info()->preempt.count);=0A=
+ 	pc -=3D val;=0A=
+diff --git a/arch/arm64/include/asm/ptrace.h b/arch/arm64/include/asm/ptrac=
+e.h=0A=
+index 39582511ad72..460726224299 100644=0A=
+--- a/arch/arm64/include/asm/ptrace.h=0A=
++++ b/arch/arm64/include/asm/ptrace.h=0A=
+@@ -336,11 +336,11 @@ static inline unsigned long regs_get_kernel_argument(=
+struct pt_regs *regs,=0A=
+ struct task_struct;=0A=
+ int valid_user_regs(struct user_pt_regs *regs, struct task_struct *task);=
+=0A=
+ =0A=
+-static inline unsigned long instruction_pointer(struct pt_regs *regs)=0A=
++static __always_inline unsigned long instruction_pointer(struct pt_regs *r=
+egs)=0A=
+ {=0A=
+ 	return regs->pc;=0A=
+ }=0A=
+-static inline void instruction_pointer_set(struct pt_regs *regs,=0A=
++static __always_inline void instruction_pointer_set(struct pt_regs *regs,=
+=0A=
+ 		unsigned long val)=0A=
+ {=0A=
+ 	regs->pc =3D val;=0A=
+diff --git a/arch/arm64/kernel/debug-monitors.c b/arch/arm64/kernel/debug-m=
+onitors.c=0A=
+index a970ab6327cd..66cb8151f5df 100644=0A=
+--- a/arch/arm64/kernel/debug-monitors.c=0A=
++++ b/arch/arm64/kernel/debug-monitors.c=0A=
+@@ -146,7 +146,7 @@ postcore_initcall(debug_monitors_init);=0A=
+ /*=0A=
+  * Single step API and exception handling.=0A=
+  */=0A=
+-static void set_user_regs_spsr_ss(struct user_pt_regs *regs)=0A=
++static __always_inline void set_user_regs_spsr_ss(struct user_pt_regs *reg=
+s)=0A=
+ {=0A=
+ 	regs->pstate |=3D DBG_SPSR_SS;=0A=
+ }=0A=
+diff --git a/include/linux/kprobes.h b/include/linux/kprobes.h=0A=
+index 8c4f3bb24429..5880445ed0f0 100644=0A=
+--- a/include/linux/kprobes.h=0A=
++++ b/include/linux/kprobes.h=0A=
+@@ -384,17 +384,17 @@ static inline void kprobe_ftrace_kill(void) {}=0A=
+ struct kprobe *get_kprobe(void *addr);=0A=
+ =0A=
+ /* kprobe_running() will just return the current_kprobe on this CPU */=0A=
+-static inline struct kprobe *kprobe_running(void)=0A=
++static __always_inline struct kprobe *kprobe_running(void)=0A=
+ {=0A=
+ 	return __this_cpu_read(current_kprobe);=0A=
+ }=0A=
+ =0A=
+-static inline void reset_current_kprobe(void)=0A=
++static __always_inline void reset_current_kprobe(void)=0A=
+ {=0A=
+ 	__this_cpu_write(current_kprobe, NULL);=0A=
+ }=0A=
+ =0A=
+-static inline struct kprobe_ctlblk *get_kprobe_ctlblk(void)=0A=
++static __always_inline struct kprobe_ctlblk *get_kprobe_ctlblk(void)=0A=
+ {=0A=
+ 	return this_cpu_ptr(&kprobe_ctlblk);=0A=
+ }=0A=
+@@ -449,7 +449,7 @@ static inline struct kprobe *get_kprobe(void *addr)=0A=
+ {=0A=
+ 	return NULL;=0A=
+ }=0A=
+-static inline struct kprobe *kprobe_running(void)=0A=
++static __always_inline struct kprobe *kprobe_running(void)=0A=
+ {=0A=
+ 	return NULL;=0A=
+ }=0A=
+-- =0A=
+2.47.3=0A=
+=0A=
 
