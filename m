@@ -4,88 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0757C53209
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 17:31:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E60E0C53209
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 17:33:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BEF696B0095; Mon, 27 Jul 2026 13:31:11 -0400 (EDT)
+	id F00C66B0093; Mon, 27 Jul 2026 13:33:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC7706B0098; Mon, 27 Jul 2026 13:31:11 -0400 (EDT)
+	id EB1C36B0099; Mon, 27 Jul 2026 13:33:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ADF866B0099; Mon, 27 Jul 2026 13:31:11 -0400 (EDT)
+	id DA0DC6B009B; Mon, 27 Jul 2026 13:33:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7157E6B0095
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 13:31:11 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 05E02C0139
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 17:31:11 +0000 (UTC)
-X-FDA: 85035247542.07.0977363
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 31E0DC000D
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 17:31:09 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Tgcp/6d+";
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AA2216B0093
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 13:33:52 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1C28C1C0069
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 17:33:52 +0000 (UTC)
+X-FDA: 85035254304.26.A43CB1A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 66F471C0007
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 17:33:50 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B7Osxeg6;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785173469;
+	s=arc-20220608; t=1785173630;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FeuJKdYUaVLKNBfWUd4HTmd0q5nfx0zD3ldduTDAYyw=;
-	b=JRCsogVWzjtGLq4jSSYhQi0t8YtRg3dVf+pt3kWlmAvnUHO4XgKJ6dBKqeVOjJ5kZaB0vS
-	+8ld9QE3MLbHDc0OwlWfd/xAv3tTBjPwTWWyfiXiyTc50L/ryMBEjF9GQzQ5OC9NuocE3t
-	oa2r4x7U4m+mfNIKXzI0rq3PMBVTYJE=
+	bh=0LfB6KuoOFNXsiQAfPS12DYpgKOAtCt559kAcXuey7E=;
+	b=khMeq+f9a9hLN3MXlBGnvYR+LZoB0hmZ9nJ55g9T8JtqaNeVDLVD+3ly6neOBSdG1Kwk7E
+	i98/HPZCZP8RvPoJBabNjUAq0Al0IQ84A1Rgzeaj912WCpoJfuIp/RpaOPuwYGfbRPUmmL
+	xyKJXOxnKeAZF5Z3m4RlQ/sPPtADz5A=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Tgcp/6d+";
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B7Osxeg6;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785173469;
-	b=rtzoENFELaSTwwxD90nDSgfFXPgL1yCRyXG5p8CopwqGXm8sOJaL8QoPt4drZkhfrTtbVk
-	znjOrCsLbdgtqYmhuXH9K6hfIB2OdThcYudJrH4Cl0mi8PowkZv9fidOoiuzlaWLo41WUv
-	1o12V/Dq3jgCxMV6pIBb00CR8Rk7W6c=
+	t=1785173630;
+	b=ESPltgTsd0sAeyFC1lawVC8HADUBEWjAlbVsPJRJ6mUeRqs9iHr5MmPx6RvZjgiXN66JLg
+	hoMG5YxPx2YGF+lXe1bFG4+QoJunulQQdb37edVE/V+p+uICEiQ98OiIZ0JiJkuQdOY4/Y
+	APOB8Sz3Z7yeSUfBSeeP4eoqpnJF0JU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 14EEF41B4E;
-	Mon, 27 Jul 2026 17:31:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 827011F00A3A;
-	Mon, 27 Jul 2026 17:31:00 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8829E60A5E;
+	Mon, 27 Jul 2026 17:33:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACC6B1F00A3D;
+	Mon, 27 Jul 2026 17:33:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785173468;
-	bh=FeuJKdYUaVLKNBfWUd4HTmd0q5nfx0zD3ldduTDAYyw=;
+	s=k20260515; t=1785173629;
+	bh=0LfB6KuoOFNXsiQAfPS12DYpgKOAtCt559kAcXuey7E=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Tgcp/6d+oehw4jDZPMJxHA7W9qn4aC2gFYD7gy9EXODmJCAyFVQTa1rPfhqeWoew5
-	 Y8D3kgRBHTLk8wRpNYx/lh/CJbi9sGnokVUwUQcjUwKia/o3MlNovgq0U9Sh5CJHdI
-	 S8vOrgAm+++TF5TjAp5Hylm17hxvbJBCRIWLYu2WlswQBrM/V2YCFIV9w1shQ1cyNm
-	 i6Egn5y0+toxfqtOSQmy64WdvsRNkBL/4490Kow5eZLM+InHbK5a4m/fSsLu49so0U
-	 kg402vDz5qjt3yEK3UvSg4nWOo8QBL4Srr1UqNxjCR6cOBIbNGWTvr53xdyCSRuMKZ
-	 QztiFaMubtRnQ==
-Message-ID: <312caaf8-1661-4437-aaac-a93bf701ccf9@kernel.org>
-Date: Mon, 27 Jul 2026 19:30:58 +0200
+	b=B7Osxeg6cU6rWMDCBt5m4Ddp66YpGYzEEIpZ4639Tj2PNrdAKhSRq2eZiaUAlqXvE
+	 Q/EhAc8WS4ZjI5VieaC0YJ1QJ22hFGylK22IjGl3JNF+hDv3zoeDaRjnpU/di+97KG
+	 agcBP6aL6YD5aQY+BCl9O7+eWhQXODKOof9ozN+L7pVAyv1QZ5gmyhEIHzkc1pYFKt
+	 CQj8PLuYNQrRaNd8syLSSHJ8z4s2CQCTT+zDXT0+LLFCTWS7Y+nxTCnN6h5WbtxhAO
+	 rSpkJs6tjPKdc2pe2j3Ph4+O9TYC+woqtoXQC3xD+/V11M82Iqlud8Qm5XyDlt5po4
+	 j1F2beXRjfigg==
+Message-ID: <a0c06d8c-fc3a-4ede-8aba-8c7430027a35@kernel.org>
+Date: Mon, 27 Jul 2026 19:33:39 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/huge_memory: Initialise workingset state before
- folio split
-To: Matt Fleming <matt@readmodwrite.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
+Subject: Re: [PATCH 1/3] mm/huge_memory: add folio_split_driver_managed()
+To: Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
+ intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>,
+ Matthew Auld <matthew.auld@intel.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
  Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
- <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Dave Chinner <david@fromorbit.com>, Qi Zheng <qi.zheng@linux.dev>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Muchun Song <muchun.song@linux.dev>, Kairui Song <ryncsn@gmail.com>,
- Shakeel Butt <shakeel.butt@linux.dev>, Matthew Wilcox <willy@infradead.org>,
- syzbot+c5b060ce82921a2fd500@syzkaller.appspotmail.com,
- stable@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- kernel-team@cloudflare.com, Matt Fleming <mfleming@cloudflare.com>
-References: <20260725101419.3938406-1-matt@readmodwrite.com>
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Tvrtko Ursulin <tvrtko.ursulin@igalia.com>, Dave Airlie
+ <airlied@redhat.com>, Matthew Wilcox <willy@infradead.org>
+References: <20260722044220.1110278-1-matthew.brost@intel.com>
+ <DK564OOZ3JUK.292JORO9KGKEV@nvidia.com>
+ <DK57FVTRTLR2.1A906PYJ2TCE4@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -132,17 +133,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260725101419.3938406-1-matt@readmodwrite.com>
+In-Reply-To: <DK57FVTRTLR2.1A906PYJ2TCE4@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 31E0DC000D
-X-Stat-Signature: skt11rea37ndsfbgib6g63dbcrf7tigo
-X-HE-Tag: 1785173469-110668
-X-HE-Meta: U2FsdGVkX19qQzg1G9hbWuZRgwIOVfWFCuuSZ2s+qP7R7iKN0x7bLWrrkZk+IH/zh+NpZkyAhnX04g1Zloau25cEEAXzSmyN84Lu6GgFysqlNNiiJpCXgQdsJ3yZYtUmmOCx4KUunmKzbSchG9xJZtU1wm7cGAScfJKGVZPYveM4wD2syJg2jyLZ8BGZu7DhT4cikHK+VZTf4Vx724u4KqNFrRbUDJoE+BvU334rb9HP3jhEIzx2LHZiA1P8SF9Vq+3xqPllxtLoxc+0gG8WGsixUyqG4LvGi6avvoj1Y1lGpU7lTd7CJojoqjL20E+TqDwuS/kdEgr+hZYft7tylofPAUgULV21U7awKQGUwP1GyWmQdNCRLw/DjqbPeanhFsOWbrihUf+vtZiBcItoRUI91kPs1eJV1a2kVmTGAIiFgYcigAKHhfJH3WSW2X0MebTBgV1mGEyq3YYdKGW5w7x0OVQgHet5wQiYoO9mDekfzTHynPJHfpCYvGo2MQVKgIEO/nFcl9hi56EvBTQ/uSNzunKbcB3odpHRzDF7SIs/12aaLqFpKO47Jq42YHakLpMTLBT98Itk2q/GGOgbOWJubec7W2wS9aqSY5LqAooh4sctVzk7fT9YiKEZxxJuUiNAjJR9l0H/YTceOOiJqKgtstG80+ZrXCl0Fwmhqp3vp0PO4d/NpOprp6U2w0xCHsd06xuVKKizuHbVgiQmQ6+y3RevcujRb2n1qz2RKO7ajZB9SRdhO24wanX5A15nmvDM+ZqUwf8LjUxBYtXQJs0RHH8S1AuFTwmkLieIPutge5X8Ni/GL62+CSageiPFO9HNyqbx5v+ySpNkkfABpLqin5p/efy2DJSIkOkvvOoXNE3/Ou4vDi4PsxlPifmli35GCnmUoIBYktRm/qM/4dNu0dAdyRewW22cvlyythZNpG3Bw5lUWKxpl7WiJha9K4iq4f4bm1gt0RUFr7g
- hd5lp1VH
- sgIhmmA3t/xkzkx9H1/QirENnuAKu5q7rZc1CXQqhZAEvdOTLVw7wg4OkzdYX88Ml+XxUPSjeobrq/eVklquHY7Pkp0jEXbg6TtEwEdOu1LjBkoy+mrmHN3N/9ZC1PnnDH1YKX/xHtdmQsKltAmcHXhkQuMYX8yQep7s/Wrbuu9JjAu441t8YdFBIisGFa4fBXJr+JTVKoZUveiDYGhGi5F2TxE6Nuz55TCBj5gS3BNluaQZaOgjTKQK/XWkZAt+Fk4gubu5RX84M0r0v+umBeoNU+MCIoJHXxBvWNZiC8MEJS1H/M55oqVb75AzA2k9VXhs51ZGd3Ytwy7MsIs1xaxlgtbBBK5xZDEZ+lt+itc1DJZxRPabSESXkST+o0r+8AobUNTpQ0XiQvJHphLiyU3/orDBAjGEmKyAhUBikg9TZWmfVkC/lNGFhEgSNM5Wg0LEcFHTjaGvtYLj8yfqdp1Eztq6vG6QuPe3yTq7iXbd4J7brT368s8mLZxb91+R4AZxj867Rno1DKDj0T29aIcynivy3IPFmvyqiFdX316SAAeZzDT1ZUmvxvJNDTkZTcdfpF+W+McI0QGKO/OyjtoWvxEuQ6VDuNy7mfIddM9wvg17Iy9Kbgk9znClpx0pXmtDSf4A49k+VN8rc8jWvYSA+IXXbnKivOatB7LLhmbnkuwP/nHV0H6rxIg==
+X-Rspamd-Queue-Id: 66F471C0007
+X-Stat-Signature: dddrpxpintrbsrni6agcebtz5gz17rzu
+X-HE-Tag: 1785173630-31197
+X-HE-Meta: U2FsdGVkX19h5gXIMMatBmzMoMis89NeZMvR4OgmriJl0pomHpDOYdrGd8zDegnM4S67lBOHxOUteq4UOQZJwy7LEcnJ/4Kk9ILRWGpIOEsmcFKuMkUl42mkLiTFk/W8wtTcdu1xinOiTwR6b7RUINlb2arB9aHDExCuE0opKNwB2erfXYUD3WxB/ctVz0nQve1fnnu2yHGsC0VO3sqP7dfHJxZ70nMIljP9CtVS4fyAEdEQiHFLtp0GXqtHtogSssXCsEIE7y7xy4pzZ2z9U2N61rye8eIAqF6SzEF28andOhCBbAaELwDCXoOcFZDtRjzju+Z2mBi6MYAZI1F+yVvYrNHyXJbQ9QqMi2J+nT2MtlRevmrl0Kgbf0CXC+pO5Ldt5E+PhBq5ve4YlkwewLAyUHWZ7IQL2rFLmzP7hi0kLyhOoOBrn835shJdwqqpsbX36doCe7NrtnKTbjl+K8FM80HhI8dcOpmvhGDPzgqRfvG45q3olduOZr8lIF4ykMU8714KLguTZ2OaF7nMoCZCiOrj6WLJbr321+XfdCoG0AM7Dik9Uq85FKj0kO62pUsGNTbvzC2ZAr67z7Ol27pAM6y743vueQKR2tF9OyutHYYumzJTRdQGUPrEtvfmgA33IvZfjJgMfr3mmeULS0M8RgdYVYfz+SC4HLC6AZSN4a8NqYowjTbLtLOzVj6o3eK8p3FYWHQDQfLl3m2y4r4m8+PBqcAQriagQiyXu3kp9xv2971tfq9ByZxvNimxwBIM60BDpTwjaMmrotwMAOBiQf/MU5zquFxsGP8m7QdG5YLiDl8qyp4SvICsnlyijOl5p8DCVf/49KkABA2DRFVZpfu00SKt2r84dmKWy7WbuDXl6sSZKoMee2O5gNe8rra4NeUuqhCsyEtuqfXVHei/MbEVFFaAbTw5wsldU+wZAVMU01Mz+5QIGaigsVNdXd7P4HYlwzka8v5lIt4
+ hjZBxJyg
+ 4Ahxuxsd9SB9k+29hxkWalTTDQ4L0H2nYZjSYjwY3fkgYnUzfoJq8MIfU5Rk1fLj0rPtXF5FqGX0p06z9s54+7nGAaAHzVkdsN+DJFy3EICREZNdTAO98iCxBZ2ec1mNvZnQN70ejLwvza8oqD05GAZtp1kHxtOc20pEGzRsb+OA7/CIjG0c5MHzm+Hb1Fs1DN+gM+4Hp44JoJwoGkMfSg/avSiLvyBjalL5bToyH8JdcfMH8ZCpaahQaFElD6KAa5o2ZjqPbijNtys9/Owum/88ndSQBpl+m7tZx0Hf1fyZctueUwAKRd+jk0Pv6TcHatM3M4xWBUY16IygFlk5K/5FQ8XLIL2tDxmYWVt+jPK0vNw7xniU+WgFDj0hZFDrHWqWHpTUy8BmIocHBLfC+/R6iS0+ZxsxR68GZq/wf7+USHR1y7b9pYIqX94TY2Z4uDRY/trulXTHRnvz6UBwPv5OLmZidLGBjxMYTzQi4c2ZyZxJu2A7f7gsoIitXZR1whzi7iOy4cXf3WChGDS5U7OW/qTV25gHeLSY9Tk9miVh0jezxXc7cNi8r9whNw+peH5+j9uvzIc/Wr4pJ/SsoRyCLxGBeuXlGf2OpkVbTTGIduAglmn1WQ8dhg8POf8Te/inVy66rBsaReq8x2C1oHgTcFwQWEcG0GsDsTxjED3eLMP0mi1xwEQqYaR9NOf4AZh8nVEn+pweS5eacNNjJ29Q3gTUyC5ND4dZKLhMS+2tZS5HaDRV1On+iasDKZ49kJ4b2Sp1+AYWmtp678kHCs3NuoXXyswOOyaLLqMsZEuqCs8v6KmqoX94qHUlEtR/55bcT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,72 +151,146 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/25/26 12:14, Matt Fleming wrote:
-> From: Matt Fleming <mfleming@cloudflare.com>
+On 7/22/26 17:28, Zi Yan wrote:
+> On Wed Jul 22, 2026 at 10:26 AM EDT, Zi Yan wrote:
+>> On Wed Jul 22, 2026 at 12:42 AM EDT, Matthew Brost wrote:
+>>> Add a lightweight structural split primitive for large (compound) folios
+>>> that a driver allocated with __GFP_COMP and manages entirely by itself,
+>>> outside of the core mm's view.
+>>>
+>>> The existing split paths - split_folio() and folio_split_unmapped() -
+>>> are built for folios that the mm owns: they perform a refcount freeze,
+>>> walk and remap the rmap, and take the anon_vma / i_mmap locks, and
+>>> folio_split_unmapped() further assumes an anon, pagecache-style refcount
+>>> model (nr_pages + 1). None of that applies to a folio that is:
+>>>
+>>>   - singly referenced (the caller holds the only reference),
+>>>   - not mapped through the rmap (folio_mapped() == 0),
+>>>   - not in the page cache or swap cache (folio->mapping == NULL),
+>>>   - not on any LRU or the deferred-split list.
+>>>
+>>> For such a folio the split is purely structural: because nothing else in
+>>> the kernel can reach it, there is no need to freeze the refcount or touch
+>>> any mapping. folio_split_driver_managed() therefore performs only the
+>>
+>> I do not think so. PFN scanners like memory compaction should be able to
+>> see them, unless you mean something else about "a driver allocated with
+>> __GFP_COMP". You will need to freeze it to prevent the to-be-split
+>> folios being touched by others.
+>>
+>>
+>>> compound and split-accounting teardown via __split_unmapped_folio() and
+>>> then hands each resulting order-@new_order folio its own reference,
+>>> mirroring split_page() for compound folios. The caller keeps the original
+>>> reference on the first resulting folio and is responsible for freeing all
+>>> of them individually.
+>>>
+>>> The immediate user is TTM's GPU page pool, which allocates higher-order
+>>> compound pages, maps them into userspace via VM_PFNMAP (never through the
+>>> rmap), and needs to split them into order-0 folios under memory pressure
+>>> so pages can be backed up to shmem and freed one at a time.
+>>>
+>>> A CONFIG_TRANSPARENT_HUGEPAGE=n stub is provided so callers can build
+>>> without the split machinery; it warns and returns -EINVAL.
+>>>
+>>> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+>>> Cc: Maxime Ripard <mripard@kernel.org>
+>>> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+>>> Cc: David Airlie <airlied@gmail.com>
+>>> Cc: Simona Vetter <simona@ffwll.ch>
+>>> Cc: Christian Koenig <christian.koenig@amd.com>
+>>> Cc: Huang Rui <ray.huang@amd.com>
+>>> Cc: Matthew Auld <matthew.auld@intel.com>
+>>> Cc: Matthew Brost <matthew.brost@intel.com>
+>>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>>> Cc: David Hildenbrand <david@kernel.org>
+>>> Cc: Lorenzo Stoakes <ljs@kernel.org>
+>>> Cc: Zi Yan <ziy@nvidia.com>
+>>> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+>>> Cc: "Liam R. Howlett" <liam@infradead.org>
+>>> Cc: Nico Pache <npache@redhat.com>
+>>> Cc: Ryan Roberts <ryan.roberts@arm.com>
+>>> Cc: Dev Jain <dev.jain@arm.com>
+>>> Cc: Barry Song <baohua@kernel.org>
+>>> Cc: Lance Yang <lance.yang@linux.dev>
+>>> Cc: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+>>> Cc: Dave Airlie <airlied@redhat.com>
+>>> Cc: dri-devel@lists.freedesktop.org
+>>> Cc: linux-kernel@vger.kernel.org
+>>> Cc: linux-mm@kvack.org
+>>> Suggested-by: Matthew Wilcox <willy@infradead.org>
+>>> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+>>> Assisted-by: GitHub-Copilot:claude-opus-4.8
+>>>
+>>> ---
+>>>
+>>> The patch is based on drm-tip rather than the core MM branches to
+>>> facilitate Intel CI testing and initial review. It can be rebased onto
+>>> the core MM branches in a subsequent revision.
+>>> ---
+>>>  include/linux/huge_mm.h |  8 ++++++
+>>>  mm/huge_memory.c        | 63 +++++++++++++++++++++++++++++++++++++++++
+>>>  2 files changed, 71 insertions(+)
+>>>
+>>> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+>>> index ad20f7f8c179..35661d82d54a 100644
+>>> --- a/include/linux/huge_mm.h
+>>> +++ b/include/linux/huge_mm.h
+>>> @@ -402,6 +402,7 @@ enum split_type {
+>>>  int __split_huge_page_to_list_to_order(struct page *page, struct list_head *list,
+>>>  		unsigned int new_order);
+>>>  int folio_split_unmapped(struct folio *folio, unsigned int new_order);
+>>> +int folio_split_driver_managed(struct folio *folio, unsigned int new_order);
+>>>  unsigned int min_order_for_split(struct folio *folio);
+>>>  int split_folio_to_list(struct folio *folio, struct list_head *list);
+>>>  int folio_check_splittable(struct folio *folio, unsigned int new_order,
+>>> @@ -656,6 +657,13 @@ static inline int split_folio_to_list(struct folio *folio, struct list_head *lis
+>>>  	return -EINVAL;
+>>>  }
+>>>  
+>>> +static inline int folio_split_driver_managed(struct folio *folio,
+>>> +					     unsigned int new_order)
+>>> +{
+>>> +	VM_WARN_ON_ONCE_FOLIO(1, folio);
+>>> +	return -EINVAL;
+>>> +}
+>>> +
+>>>  static inline int folio_split(struct folio *folio, unsigned int new_order,
+>>>  		struct page *page, struct list_head *list)
+>>>  {
+>>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>>> index 2bccb0a53a0a..06f9a5f35df8 100644
+>>> --- a/mm/huge_memory.c
+>>> +++ b/mm/huge_memory.c
+>>> @@ -4185,6 +4185,69 @@ int folio_split_unmapped(struct folio *folio, unsigned int new_order)
+>>>  	return ret;
+>>>  }
+>>>  
+>>> +/**
+>>> + * folio_split_driver_managed() - split an exclusively-owned, off-LRU folio
+>>> + * @folio: folio to split. Must be a large (compound) folio that is owned
+>>> + *         exclusively by the caller and is invisible to the core mm.
+>>> + * @new_order: the order of the folios after the split.
+>>> + *
+>>> + * This is a lightweight structural split for folios that a driver allocated
+>>> + * and manages itself (for example TTM's GPU page pool, which allocates
+>>> + * higher-order compound pages with __GFP_COMP and maps them into userspace
+>>> + * via VM_PFNMAP rather than through the rmap). Such folios are:
 > 
-> xas_try_split() adds __GFP_ACCOUNT for page-cache xa_nodes, but
-> __folio_split() leaves the xa_state's xa_lru unset. That lets a live,
-> memcg-charged xa_node exist without being linked into the mapping's
-> shadow_nodes list_lru; when reclaim later walks the list_lru it trips
-> VM_WARN_ON(!css_is_dying()).
+> Strickly speaking, these vm_insert*() compound pages are not folios,
+> since folios are supposed to be rmappable and they are either anonymous
+> memory or file-backed memory. I am working on separating them from
+> rmappable folios by replacing PG_private with PG_folio and marking all
+> pages in a folio with PG_folio in page_rmappable_folio().
 > 
-> Use mapping_set_update() to install both the workingset update callback
-> and the shadow_nodes list_lru on the xa_state.
-> 
-> Reported-by: syzbot+c5b060ce82921a2fd500@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=c5b060ce82921a2fd500
-> Fixes: 58729c04cf10 ("mm/huge_memory: add buddy allocator like (non-uniform) folio_split()")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Signed-off-by: Matt Fleming <mfleming@cloudflare.com>
-> ---
-> Changes in v2:
-> - Move mapping_set_update() after filemap_release_folio() succeeds.
-> - Add Zi Yan's Reviewed-by.
-> 
-> Link: https://lore.kernel.org/linux-mm/20260724195244.3715130-1-matt@readmodwrite.com/
-> ---
->  mm/huge_memory.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index b5d1e9d4463d..4ddbc72e92fd 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -4033,7 +4033,7 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->  		gfp_t gfp;
->  
->  		mapping = folio->mapping;
-> -		min_order = mapping_min_folio_order(folio->mapping);
-> +		min_order = mapping_min_folio_order(mapping);
->  		if (new_order < min_order) {
->  			ret = -EINVAL;
->  			goto out;
-> @@ -4047,6 +4047,8 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->  			goto out;
->  		}
->  
-> +		mapping_set_update(&xas, mapping);
-> +
+> Hopefully, we can find a better name, like refcounted_folio, later for
+> these non-rmappable compound pages.
 
-It's entirely unclear when mapping_set_update() should/must be called. ... or
-even what it does.
+They wouldn't really be folios, I guess. They would likely be a simple
+"refcounted" memtype that allows for compound pages.
 
-Why is it called "mapping_set_*" when, in fact, we modify the xas?
-
-The more I look at it, the more angry it makes me :)
-
-Can someone please try finding a better way to handle this?
-
-E.g., can we somehow remember in the xarray that we have !dax_mapping(mapping)
-&& !shmem_mapping(mapping) early, and just do the right thing from xas code? Or
-is there some way we could have a mixture in the same xarray?
-
-
-Anyhow, for this patch here, I guess it's fine. I am convinced nobody can say
-that with confidence. Black magic.
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+But what is the conclusion here? It sounds like "folio_split_" is the entirely
+wrong interface for these compound pages.
 
 -- 
 Cheers,
