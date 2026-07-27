@@ -4,119 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A0BFC531F9
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 03:13:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18D0AC531F9
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 03:25:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 627196B007B; Sun, 26 Jul 2026 23:13:19 -0400 (EDT)
+	id CCC236B007B; Sun, 26 Jul 2026 23:25:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D81D6B0088; Sun, 26 Jul 2026 23:13:19 -0400 (EDT)
+	id C7CA46B0088; Sun, 26 Jul 2026 23:25:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A2E86B008A; Sun, 26 Jul 2026 23:13:19 -0400 (EDT)
+	id B92866B008A; Sun, 26 Jul 2026 23:25:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 184276B007B
-	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 23:13:19 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 908761A0618
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 03:13:18 +0000 (UTC)
-X-FDA: 85033085676.17.CEBABC7
-Received: from smtpbgsg2.qq.com (smtpbgsg2.qq.com [54.254.200.128])
-	by imf11.hostedemail.com (Postfix) with ESMTP id EFFC940009
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 03:13:14 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=IZHEJfIL;
-	spf=pass (imf11.hostedemail.com: domain of gouhao@uniontech.com designates 54.254.200.128 as permitted sender) smtp.mailfrom=gouhao@uniontech.com;
-	dmarc=pass (policy=none) header.from=uniontech.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8EFF06B007B
+	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 23:25:26 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0957F1605A9
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 03:25:26 +0000 (UTC)
+X-FDA: 85033116252.09.771913E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 3C468180005
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 03:25:24 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=2SMuE6+j;
+	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785122724;
+	b=22TxPJcOoQDXnJc8nd4kUhp6AQs/ED42peEP54IDk9Gl9jtQzlCDnxCdA7emzW+ReCEFGK
+	aXFXMs/wjI9jktMr5vmJ8aeWEK1xdgVat1Pq6Dx8ZJwfK8mtrQywrFPiNHCooEAF2bYycD
+	NXLWzsVT3/9haxdQs1BI9XdU3kB9Keo=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=2SMuE6+j;
+	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785121996;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1785122724;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jJpzWOd2AQ0qcTlQZVOnkgLY7Mxhg/fTu1TETcsiZ1I=;
-	b=x5vK5x/GX0hUcW+ddbcNkAZDuj17x2lnQ9kr2uy5PTxFRgmsxR/+sXoJQzjhHfZrE7UqKY
-	sxGJvxRPdtBROcRFaoyU8i3ukfkkI3ldumn1HcHHsllyG8B160aK7AMX7qsv4+DLjWV4Go
-	Mym2ucHLEeYYLpoEZERjtC4q60DBvD0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785121996;
-	b=3+qdMlZeuK+sNsb8RR/zSCdmkE0tIJPyafz6irMpTP0i0KGO+INe6ydh0utHUCrv7zcAwh
-	F6aTv/bmMuwLduigpmnhJAbS6ZuBUjp4x8rRfHL/flYxUIuUvfOl/y4JUyQhLd2rAgG+nP
-	q45CMgrAwnsvdUfD4PeKAFloA9DWm+A=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=IZHEJfIL;
-	spf=pass (imf11.hostedemail.com: domain of gouhao@uniontech.com designates 54.254.200.128 as permitted sender) smtp.mailfrom=gouhao@uniontech.com;
-	dmarc=pass (policy=none) header.from=uniontech.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1785121918;
-	bh=jJpzWOd2AQ0qcTlQZVOnkgLY7Mxhg/fTu1TETcsiZ1I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From;
-	b=IZHEJfILfjskUgMmZGNHrmCzLAlhFokY2rkrfaWvb21Z/H0n/c7pIqscwxCpzy3a6
-	 JO8GcBhH6AfbOgpd31mvxFhbAnKi3hNNKdyLmd4yUk+BZj56/n0Gan7ycmYywBZwUp
-	 dRH+d99+fNPs6vzealCHRWiLv02QWh7yKX3+tUeU=
-X-QQ-mid: zesmtpip4t1785121908t349a5306
-X-QQ-Originating-IP: eeOVjjpr6h1nN30mzWPlymvg2gXH398TA2mHByZ2jLo=
-Received: from [IPV6:240e:659:1b0:640::113:101 ( [localhost])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 27 Jul 2026 11:11:45 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 12037815108902466553
-EX-QQ-RecipientCnt: 25
-Message-ID: <AEAA5D0F00F603DD+457fbbba-bb97-42f8-afbd-3dd9c2dacd6e@uniontech.com>
-Date: Mon, 27 Jul 2026 11:11:44 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/6] powerpc/xive: remove dead NULL check after
- GFP_NOFAIL allocation
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, maddy@linux.ibm.com,
- mpe@ellerman.id.au, npiggin@gmail.com, chleroy@kernel.org,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
- airlied@gmail.com, simona@ffwll.ch, bharat@chelsio.com, jgg@ziepe.ca,
- leon@kernel.org, akpm@linux-foundation.org, namcao@linutronix.de,
- ynorov@nvidia.com, sshegde@linux.ibm.com, nilay@linux.ibm.com
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-rdma@vger.kernel.org,
- linux-mm@kvack.org, gouhaojake@163.com, kernel@uniontech.com
-References: <20260724022851.466017-1-gouhao@uniontech.com>
- <20260724022851.466017-2-gouhao@uniontech.com>
- <3fba3c54-ea4f-449c-8cd3-f24c516bb31d@kaod.org>
-Reply-To: 3fba3c54-ea4f-449c-8cd3-f24c516bb31d@kaod.org
-From: Gou Hao <gouhao@uniontech.com>
-In-Reply-To: <3fba3c54-ea4f-449c-8cd3-f24c516bb31d@kaod.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz5b-2
-X-QQ-XMAILINFO: MB7yC1M/vX6oBXSm9Gau9AYZU/uaRGPodXeItLGmw4vnDDw6grDD3wcd
-	Dic592yBssIChmRrhvhQoynbJ3YU9dClDTGhGp9HwJF19ANkUyjdXpQX/f9+eaNwqosgkZK
-	BZNmv8fn6Rh9SC5l+Trpx3KhaLpBpT8k8lE7Jl22nyd2PPXK6j/RnVFjlONZhMFy5vBK6o3
-	w9i9VFn8EYuWw/oQlpCamN7pvLXFFYzSzz6zAB22rjqUdl6R1zzMzRZ1NXAgAW53/GsUPuc
-	q4KJ/4/GPYsXbRtaC+yiysk6yGXljT01oaYKlGVY1d9AHnZ0hYRnCHKtnHt2svis972YZP4
-	ykrhD0aGr7XeatUI3Rvda2NdWglDraejqtykxQnNZjR7eAkZ4DiwF3efscdc6V7b0QRIIhT
-	yNyY09RAxWuRtxeMb5Es1W9f51sEWZnSoel2zFYXN5XgnInKxpUeuvFQRAejOxq40nP3MAE
-	tlBIdyPS7ZTf3A+gMNS0lBwiTQawNG/AIE38Fj7X9lmeGH1uR34Tg/1WK+vjpj18YrJ5HI7
-	gMi16R/gjqFeRsYRlJXrggfxYA3P2oN+DREogyk5uRguY8a93fuSAZxQsqizqW6AIS8A3YX
-	c0hMpHelJa2676kzC6kOlwtmg0fswI1S28gFFJ09J2jg4iOJ/QtfSWewuCFivl+CSXDaMZ8
-	PX4b6uEO8DAeIbmDxnGBvRcYEmAMb7NQ88L/Z/RrAcEFt6b5p5u7rnhevFoAOC+Sf8GEJLr
-	v12zPoUufaEjMM+kPa00YAqK7HDNc/fq+0Zz7lQ9YzTVqs9DKyZOZzYjbZPYV/8lPorLoL4
-	OAAt2syPmvwl9HkdHdQKNwLBRSlhFP+/rYMopE1mITfHpLjWzvnSR1kcQIV4cRJNxBsQu8l
-	RAKeJAJJLjDjYfS9+NgtR5ALIHzZW2/ckN36o2MMTCNoxtV7sPv3Y+oODItLL4zUEVaT/mb
-	TPz9RZDZpVT6/GqqHcBL/fVTPjmnO/sqJbD7289Jh16SWFP3rLRzdx75ZE/YcE0h26HyLeT
-	MQaBIKguirwsXiilu9cgx/XklKZkl6zzZ6tqLaag154FnQFxplKx37k251GRxvY/OHQY297
-	DdmJ8/AUxza
-X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
-X-QQ-RECHKSPAM: 0
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: EFFC940009
-X-Stat-Signature: jnnm8ksh7fytc7xy4uzdydqdo7gkggr8
+	bh=XsGyYiFyMYFI9L2NS0y/ZZKusZC2V7j9ria54DgCTvg=;
+	b=eIDEsRGMjAqqC+UsUJjXNfAm68yCH1XXHyqPzJgJIspD32GLghxnjlqqKQoGpr+c8kLA0P
+	7lYsCk0Q1pePTDwbZYvy2x18yJBnkE4K9Xu+Rw/uT+mXtRLxUpEtpgDG1bDRsZCeO37t04
+	WEwvBeTEMyUH7SCMTl578fpuA3TaFs0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3DC81600D8;
+	Mon, 27 Jul 2026 03:25:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86B351F000E9;
+	Mon, 27 Jul 2026 03:25:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1785122723;
+	bh=XsGyYiFyMYFI9L2NS0y/ZZKusZC2V7j9ria54DgCTvg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=2SMuE6+jtlUJGMjNlIL7V1BctnQiR7Uo9OTYyybI7QMnQbecBSJlenZWs/HudWknX
+	 nGJuIjw6r2E3LHvdtZ0HVHUPAYLGiYj3dCcIJyav42g+1NKbHv5U5bFEeiZ569iI+1
+	 LExXWNGYvAQViTisqtpUy8ZXghtC+sm1zRp6aiPU=
+Date: Sun, 26 Jul 2026 20:25:22 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Pratyush Yadav <pratyush@kernel.org>, David Hildenbrand
+ <david@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, Alexander
+ Graf <graf@amazon.com>, Muchun Song <muchun.song@linux.dev>, Oscar Salvador
+ <osalvador@suse.de>, Jason Miu <jasonmiu@google.com>, Jork Loeser
+ <jloeser@linux.microsoft.com>, kexec@lists.infradead.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, Muchun Song
+ <songmuchun@bytedance.com>
+Subject: Re: [PATCH v4 16/21] mm/mm_init: simplify deferred_free_pages()
+ migratetype init
+Message-Id: <20260726202522.e55861cc87fc3e0c6d030e1f@linux-foundation.org>
+In-Reply-To: <amXelr2DcRRyZDY4@kernel.org>
+References: <20260725172133.4018491-1-pratyush@kernel.org>
+	<20260725172133.4018491-17-pratyush@kernel.org>
+	<amXelr2DcRRyZDY4@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 3C468180005
+X-Stat-Signature: 3ebq9iwo71a1aahe469gbso5aqwx76ha
 X-Rspam-User: 
-X-HE-Tag: 1785121994-478939
-X-HE-Meta: U2FsdGVkX19B02KOuevF921aNgHYmH/QJpQOcKEGatTcABmYgl9jGlLwxnY49sPZApOoJdj19Aio4D28MX67WrD8d+fjCqRNIjHQOMxi6k2VGWHfX7lwfT7g/OChXjqci1LSrKgsEZw5uRudSKD38wdrNlE/Bu/ZNLwvehfQzm+pkfbU52UMtxkkrMsXSZaAEDVAgYgXSZiXUpP1cdvlEYpORTY62V2OhFyVPuWmGjE1yIBxMZn+K6CS7BM2tBJT46s0ZJKg/yGOgRKUgEIzSjc5zmqh70CRwnxLtl+wNl3UqDEAw3+BeokLLjLYWmdHYAVbuUKF21GPeWoBbsDB3h5GCzzJqattfrpwKjuRHrc9rmphksDtRsSoopcU/s1pk9QhVeCj3xVEN1rBdDx6DmhRXc8kcNca0zk7+8tmlBJ8HGm+9Lk0/Q5pB88z9588i83Xj/i+rujcO1LdZtBW7EeDABW4f/ok+kqkcI6V4v9mFivXvUxiXCKqW9dMqD7Toqguj30X/XoQhdDL0Kwqi3ECoXy9/YNVJBFQfkTua6WU9X+IFVuZzxQpxc/MWdgTBQXm4jJVlXObYQaOK1rPR5nyIuA99VlQw5YTnmG80poOj3Zz90WJzlt7MNfmOZ6pOVkMhfUxcYaXjTgXU2UCatDwQ/ZpMAJuOWqLb+UN/reqC2MhQM8PiBgnWexO85bJNB0palHvk1VXQAOdOfhj/HWLZ6L2W2hLsBs4bh7ba2bDvVvnWZnkJrikYUHtrMVllMNf5wrDXdFy7T7YacxZmhW+6YYGv9N20t4/0P5CK5bT9nLJ/pMnSeVMB4dAhQsu0JZVoqZlWRYA96JjHALLMpo1f5eKVMhfyEJK2GlYE0qu+UoAovyyoKqybVlufCS5J8u/IM0cLJu3ZJVSIvQIuQYk9fPIfzbbNSc1Z5Rf+HjH9X2MFIb/YFG2ca9X3AmxBEsPIcW6zNjqO/tOEKK
- RjGBee0J
- 1bZYGpFps4TqgXVWiWs5EL4hQm6WW9CBva/IEK0B6butSKH3NoUCl7rDsWT2zcLumhfI27k17eMTsSsDBt2LkwcuEHAh2im12VjypY/e3ZEzI3PbFYZjf7+uYmX2QVYyJFOwbu7Iinwq5w//WKmEnVBNl/1N0ynTV0s5lT57raQncw1P2e12wBWiWCQotGnzgsCp7eTRhCgCOUYhI1i2XKnQ8QbQfh4yOg0uGlE+qL9iWXRpM/eaUd2olxeF6w2CdhQFEFqOVSaPF5HAOqzPdbJDHUjh9rO+0wtuXQDYzFs8bomx1S6Zfi/Rk04pYS2Gw3GdIbuIq9IfZSqSfBhGj9/O4QSVQIjnI4HSidtHHFX+YW8nYaTvwuzyZ65HRawUFbrJF+S1wtarRpyN53BQ3SIHNx801frS13/+gSJPcoddo60gG2ko6/3Z0T7SCcXMhPbcpYc1cTZ40ufNbvuQvsvlxETXNWOsAFG1eqT45RxbMPbqPznG0VREwJl4rEqIqozwjCZ15sU4R5AdHybytAJiYdBa/02Ni0dGIazMebn3ruF28VYfia50uvHZaP63Jo+Lf4UoOm0sSepCh57776HwtAwXZS1JjuN7HbemLbW6fGY01kk1lf8DCkpasKNBGWvnlg+VgkD0xcE3sJ5lUUM7m7i2u6sBhy7q4eQJZbDR/FpJC9CZAQHI80RPkVQ5XX6BiVVmcZ9uAMiWNgWb9Hg//Hg==
+X-HE-Tag: 1785122724-811279
+X-HE-Meta: U2FsdGVkX1/AANqOd5tf9tgmvzZKDhWT4Nf1HjgtaGAnUFT6T6kPToOhXv5X8310MQhtGkVl4ACQ8JDB70qvF+fzQYqgP9CSaNnFNlBPR7iDVtvKSU51gqkyKD9tEw10ir+JvOX875TTbZMYbPoZKYQRReJJSCIceZjAQbyiHMpXKqk7OgFK8fDU2/1BkmsbtgTsoj9gy6KeUjir1ZDEfBjVbIlVA0q/7+BRaSaH52loAtODu3V6yVaX7E0F4ePD6Xn4PUocs2zG5y7TLyZlQ4IyNK3DAff/0tVeSCLICg2+PQC/uzuHiUKz+ap+V4Q/BqlBrdk86IbNAMVzFJqR3pamKXVEi0QFYdYZ4P9gnQMPhKANNmmxlgfjQHaCJ6yjATuVX8si/eHAW1pkirOfgwtdwFIMaabRnBKMFOi6ux0I/EwH4Un1itBldnyCkxEAkZ4G5mCVRXRr4e1wrlfiGDuomZ+0k0ZP36ySFN7Qxtzi1X6hbJu+RqKSEiXJRDNHSTN1hrHT25ZgGznnmgREHz2WmASvn6RAGoPIZttqOrvWxK05yvq0uvmJYysCyDth9x1wepTUQpBnlZsp9HT4oGnqz3zfCXzzqVp1TgJjqM25Cu3cCl1sNpbOd+5n/dv3Wydwlx6VelEHvVRS0ZlFT9OqCCxwjk4VnXw92APr4JiUrgT/Ea4ea2FRkN4WSWZF3i0FUzDoLAY3VyAjCKKnlAzCPq13O+lPM8cyU4AiQUuJlY1MrIOpHKeirRDvZoQQ7BK1FKk+oIl6qh3dBPyXL7FZTRCdPtXbCb0K4qHCGwbO9Zldg/oI9QV2MolHpi2KyMOnePOCmR2nxQKolHWOJxks3qwyv3dQTT5xZdRF7PgqnWWCW7lDIOmMrBLXy5yMNSyDXWoL5nViIor6za7oNqh6FVjKg6f2yPWpp4Nky33a1OOUSO5aAYqiW+MrtjrM4BIiVWxTefPb+CJkQGL
+ p4yl1TSS
+ TSaGvLVsAValQBHj5kaC2INxFNqEK3IyHmsj+L5wz3urgr9ymCAywBMcuiLj85lXR7s22AEmUiPh370N9GMmyCwRY0onxUA2pQMd5MRxQaQI0ud/zYuHKPRM/ATIf33vzlB4SWZlCLctgLXXvk/1kl4gV/UMmAT9J1c362bOZFYATmV4bqPbJ5qHebAIH8ABniYGNNp7Hfv5Ie6j8Tcs62Qlasmgj1hqyAEqA92cSE0UghWY/5w78fhQdF6F4rAkgelOIubfxAQHAshohQTLtS3LsRGDUuHwZw+S0oYBu/ZParehPEHavubS9wwjWigf5n3MRDU3QGrLhHDDLYN6u04JD0A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,71 +97,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/27/26 01:04, Cédric Le Goater wrote:
-> As suggested by Andrew, let's change the approach and remove entirely
-> __GFP_NOFAIL instead and make all xive_ipis access paths NULL-safe.
+On Sun, 26 Jul 2026 13:16:54 +0300 Mike Rapoport <rppt@kernel.org> wrote:
 
-Yes, that's better.
+> On Sat, Jul 25, 2026 at 07:21:16PM +0200, Pratyush Yadav wrote:
+> > From: Muchun Song <songmuchun@bytedance.com>
+> > 
+> > deferred_free_pages() open-codes two loops to initialize the pageblock
+> > migratetype for a range of pages.
+> > 
+> > Replace them with pageblock_migratetype_init_range() to remove the
+> > duplication and make the code clearer (Note that deferred_free_pages() may
+> > be called from atomic context).
+> > 
+> > Link: https://lore.kernel.org/20260612035903.2468601-6-songmuchun@bytedance.com
+> > Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> > Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> > Acked-by: Oscar Salvador <osalvador@suse.de>
+> > Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+> > ---
+> > 
+> > Notes:
+> >     This patch is taken from Muchun's series [0]. The patch as of today is
+> >     in mm-unstable.
+> 
+> @Andrew,
+> 
+> It looks like it'll take some time for this patch to get into mm-stable so
+> we can't base this work on a branch in the mm tree :(
 
-> On 7/24/26 04:28, Gou Hao wrote:
->> kzalloc_objs with the __GFP_NOFAIL flag will never return NULL, so the
->> subsequent NULL check is unreachable dead code. Remove it.
->>
->> Signed-off-by: Gou Hao <gouhao@uniontech.com>
->> Reviewed-by: Wentao Guan <guanwentao@uniontech.com>
->> Reviewed-by: jiazhenyuan <jiazhenyuan@uniontech.com>
->> ---
->>   arch/powerpc/sysdev/xive/common.c | 5 +----
->>   1 file changed, 1 insertion(+), 4 deletions(-)
->>
->> diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/ 
->> xive/common.c
->> index dadd1f46ec939..f2904a5c2b7bf 100644
->> --- a/arch/powerpc/sysdev/xive/common.c
->> +++ b/arch/powerpc/sysdev/xive/common.c
->> @@ -1134,9 +1134,6 @@ static int __init xive_init_ipis(void)
->>       xive_ipis = kzalloc_objs(*xive_ipis, nr_node_ids,
->>                    GFP_KERNEL | __GFP_NOFAIL);
-> 
-> So let's remove __GFP_NOFAIL here.
-> 
->> -    if (!xive_ipis)
->> -        goto out_free_domain;
->> -
-> 
-> Let's keep it now that allocation can really fail.
-> 
->>       for_each_node(node) {>           struct xive_ipi_desc *xid = 
->> &xive_ipis[node];
->>           struct xive_ipi_alloc_info info = { node };
->> @@ -1158,7 +1155,7 @@ static int __init xive_init_ipis(void)
->>   out_free_xive_ipis:
->>       kfree(xive_ipis);
->> -out_free_domain:
-> 
-> and keep the out_free_domain label
-> 
->> +    xive_ipis = NULL;
-> 
-> and yes we should add 'xive_ipis = NULL;'
-> 
->>       irq_domain_remove(ipi_domain);
->>   out_free_fwnode:
->>       irq_domain_free_fwnode(fwnode);
-> 
-> 
-> The prepare_cpu() path is broken. To fix, we need to check xive_ipis
-> is not NULL in xive_setup_cpu_ipi() and xive_cleanup_cpu_ipi(). It
-> should be a straight forward local change. Nothing complex.
-> 
-> You can test with QEMU. The pSeries and the PowerNV machines are well
-> supported under emulation. Ping me if you need help.
-> 
-Thank you for the review. I will fix these issues in the next version of 
-the patch, and test locally.
+I didn't know anyone was using mm-stable :(
 
--- 
-Thanks,
-Gou Hao
+Series is adequately reviewed and is near head-of-queue so I can move
+it into mm-stable a few days hence if that helps?
 
+> I'd like to expose the KHO scratch extension to linux-next ASAP so I'm
+> inclined to take this patch as a part of this series and live for a while
+> with a duplicated commit in linux-next. Once this patch would be in
+> mm-stable we can rebase kho-scratch work on top of mm-stable and hopefully
+> there will be enough time for it to live in linux-next so that Linus won't
+> get angry at us :) 
+> 
+> How does that sound to you?
+
+That's fine - let me know what you choose to do and I'll adapt to it.
+
+An unknown (to me) is whether Muchun's series "mm: Refactor bootmem
+gigantic hugepage allocation, v4" still works with this patch removed.  Everything
+applies OK for what that's worth.
 
