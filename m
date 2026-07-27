@@ -4,93 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A84BDC53209
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 12:50:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25C36C53209
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 12:54:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B21E6B009F; Mon, 27 Jul 2026 08:50:49 -0400 (EDT)
+	id 224A26B00DB; Mon, 27 Jul 2026 08:54:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 663516B00A2; Mon, 27 Jul 2026 08:50:49 -0400 (EDT)
+	id 1D5BA6B00DC; Mon, 27 Jul 2026 08:54:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 52C2F6B00A3; Mon, 27 Jul 2026 08:50:49 -0400 (EDT)
+	id 0C45F6B00DD; Mon, 27 Jul 2026 08:54:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 297706B009F
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 08:50:49 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3FE3D80704
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:50:48 +0000 (UTC)
-X-FDA: 85034540976.17.F0D02F8
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 2D09D1C000F
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:50:46 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=HRxwfKPd;
-	spf=pass (imf20.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6D34D6B00DB
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 08:54:11 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C1D651606BC
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:54:10 +0000 (UTC)
+X-FDA: 85034549460.07.E2BCEF6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 2D677C0004
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:54:09 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ls8MpmHA;
+	spf=pass (imf22.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785156646;
+	s=arc-20220608; t=1785156849;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WFTvlvdE1tur0qQLevTMeY2tgQ94L5fm1/zyYj+rle4=;
-	b=SNuFGk2DVVWtZWtVBR1bfamEIk+cHQQvWU4HY/JE2mdSseUjv/+2qfluBmK+7k2v/4gHot
-	A1ufwFQPMVMgTUVR0yVRFGc/Cds4LEWsabSK8WZF/OcGkj6gm9MVl6evcEReZ2btBvB7Xv
-	gysam2afkiYCJVZGh7AC6UScdA8vOBU=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=HRxwfKPd;
-	spf=pass (imf20.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=y9olFz4RC6C1U7zYxBQoZxiDRdf5OldBtN1enHJw5Kc=;
+	b=lvOMdwZAya8frMSTVBqUspuvP8ZlcX1y+YOfR4t9gOxtlm6vptVz6AV8EsW2zbJ6eAR3IV
+	SPwqaW96Un75ms2vTDbYvscFbfQyd6th/8blZghY+3SJxu9hHj66VwGhwnevLKQT0/OQLt
+	WPXWHZZLdWrJrd+Bv/WQNRXNDm5fdbU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785156646;
-	b=NupIhTtA6nfoM6wlcVxT9Cn00LuG0EuF7NaH+faV7iaY5gVmWcxwXnkbuiLpvS4P3roams
-	ikyJKLITytFIqRfFvcg+PgX1Tt9heYx54xeJITwnDf4+dHYgg8XRC7oSV+yxKpiY77ECSv
-	QJqrDx+Ppke0TVT9cwyrTwkWRZizcuU=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 06793143D;
-	Mon, 27 Jul 2026 05:50:41 -0700 (PDT)
-Received: from [10.163.132.91] (unknown [10.163.132.91])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1EF6F3F86F;
-	Mon, 27 Jul 2026 05:50:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1785156645; bh=8eH1R+SpVl0IPcdFmLZ7TX0yGZlPLI8BikiFdobOMJc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=HRxwfKPdLUrcpcN/Vns7B9se38vhkvpnbgaM/qVNMKNELIr8o3Vb5alAbfvV6kFm0
-	 AE3O+Np2GVMA1Uwd5U8JOeph3EwXL1yhDOcKjykSBvwkHtQrbaNJZrXQVaX7DaOEgs
-	 NMinrvsMJSWOXOkXd1WLho9F2detIAfWN3BYzUMk=
-Message-ID: <bccce409-e105-4a7a-b962-35905dc1ff38@arm.com>
-Date: Mon, 27 Jul 2026 18:20:39 +0530
+	t=1785156849;
+	b=S0QgFyIoGkJzY1WswI2Ln1bomr71+wj4zzDMVdMwuYkXipRkjvfNnkOQKp8WrZ3KfGpaf4
+	pj7qaUqaJLri8CRgsg5HA75p76OoC4Y7qvHQ2ePowJPFkyhoKF40d6nGhjf2gxEF1W4EOs
+	bf6RsM4GF6mhq7f1YMezr5WLHR0jlY0=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ls8MpmHA;
+	spf=pass (imf22.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6A262600AA;
+	Mon, 27 Jul 2026 12:54:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 548CD1F00A3A;
+	Mon, 27 Jul 2026 12:54:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785156848;
+	bh=y9olFz4RC6C1U7zYxBQoZxiDRdf5OldBtN1enHJw5Kc=;
+	h=From:Subject:Date:To:Cc;
+	b=ls8MpmHAhsKvwNvNa/Q/2fVB4LTcEBCBfbTZKm2UUX2BO7+/BUTL7sNffmT1Ve+nY
+	 aeBznRVglidHOLdmOzrmE+NWF3ZmFlV3K14BdaSDfDCGk4lKpIYtOYnK+TlI6+QcU2
+	 mB8hFL5MLoflRqpTyupnU5a/1A18lQ/pgZZKbbZQffF04SSTqxmC7KTf7wA4piH2dp
+	 9Ml+7RJN7lFQex4koS3qSgxEW/NPz8yzLUOcSFy1QqW2XszJCM8nnanHdeL3o/ROdx
+	 PKYNROUsWzXLiUVGTiZ8rFzf9RYVl6zvQwhXYwB6xUk4sOXeEDFiRYgti7leuPhbNT
+	 XaxZHjsBTBsqg==
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Subject: [PATCH v3 00/13] mm/slab, alloc_tag: reduce obj_ext memory waste
+Date: Mon, 27 Jul 2026 14:53:54 +0200
+Message-Id: <20260727-b4-objext_split-v3-0-c29ef0f1f257@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V3] mm: Standardize printing for pgtable entries
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Matthew Wilcox <willy@infradead.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, linux-mm@kvack.org,
- usama.arif@linux.dev, hughd@google.com, ryan.roberts@arm.com,
- Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org
-References: <20260709044334.1741263-1-anshuman.khandual@arm.com>
- <alHNjbiWFYXSPZtY@casper.infradead.org>
- <5ee8783e-4deb-48fc-a4c4-96b02d79a6cb@arm.com>
- <e0421ba6-82a5-4c88-b5db-23231c265142@kernel.org>
- <alTN0i6XgnI_eDoh@ashevche-desk.local>
- <alTbSRXXqNFPl59U@casper.infradead.org>
- <alUM69tP-Zayp1Jk@ashevche-desk.local>
-Content-Language: en-US
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <alUM69tP-Zayp1Jk@ashevche-desk.local>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAOJUZ2oC/2XN0QqCMBgF4FeJXbeYv1Ozq94jIub2qytxsq1hi
+ O/eNILCywPnfGciDq1GR067iVgM2mnTx5Dud0S2om+QahUzAQY5KxJOK05NdcfR39zQaU+VOAK
+ HHLJCZSSuBou1Hlfxcv1k94wD6RdmabTaeWNf62VIlt5XzzZ6SCijpeCl5FLWXKbnB9oeu4OxD
+ Vn4AD8AsC0AEYBaFDKvc6Yq/APmeX4D9bEfMgIBAAA=
+X-Change-ID: 20260714-b4-objext_split-da82426257d5
+To: Harry Yoo <harry@kernel.org>, Suren Baghdasaryan <surenb@google.com>
+Cc: Hao Li <hao.li@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+ Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+ Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
+ "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+X-Mailer: b4 0.15.2
+X-Rspamd-Queue-Id: 2D677C0004
+X-Stat-Signature: mmfqjy3juh475jg5maqg8f67uht6cpg1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2D09D1C000F
-X-Rspamd-Server: rspam01
-X-Stat-Signature: jwrgxdas7mp3uc498g3roxrzuiqha3dq
-X-HE-Tag: 1785156646-738838
-X-HE-Meta: U2FsdGVkX1+whX+dNs0aF+oPuOteBlxl1El+BoPBaWReWXkUVnrnm/6L06c0+j9S4YFVTmYikBgA781wOD8/MrV+jMfv0mZu+GWbBilTK40FMxMngqH/4JMYAxaRICNq9ksLFP7FOaxyD9CL3HGWBTjDWEB/Rsp9k7gq7Xm0QYEfLv+zTD/DaSLSG/bjjyFKn1nNB2xGAYVJ0gQu/C8Qnia088LPDu2cVRXn+/YQxpBlH2WZVdBFvsCzp9SXO3pr4nOcIzY/JYfela7Z7zbnTjh2FULePm7Y7Yn4huEXPePk6ZBtvWbYiyJBUv7NzQPcP7tdJmJjO9i+nEzlHCUzIiBdWkWHL+kRtQZZIpJdtZ4HXlotMINzwizlkCsgz5fmy2mRvyJ639B3RWSR8D+qnMlHaICjyiTxubjLz9Pj1FjQQSQjxOuNmYnRN1lWoy5h0G18FCehwpz0L2LQhh1cd7LCeIt7ds7ku45lbbKkazs1TN/Ed/UXAx+FZqHJU6zXKyW48e3Q2qkmxq8ukfPJ2nuLsRRzZnySPp5t+vcbyxc3G7fOM5Ned1r0iL9mtQ1stdsxC16K7H0OuiQvaqAPzn5xCr7taczDCo/lsGKDBSjHkgVL/cPS2A5s/Vn3UetOld974tEH86Y/6FWLjShSpiitza2FdWJqllxzR82vz/rXG4RIZ3yjqAWDwodVTKWO1g+bj0TIPZttnuBep0DEvlOw0Rh2OQrtM7qzxfrZnTA8mfoBaF93bT2kHFBQUINaauhdl51Hu7UD3xO9kwgVo7EOwNck0ZvfNDpFh3x+VAeZPqvm/NydNxzmTHOYoLciRZszaDDjdlz2UlO/iWSJe2jS3pCX886SjpbUekmb6mcN3onS55qX5AsGriK8v6D5dLYP0AoHJvnW/rXUv2EZkXOcSP808Ic/aTmgDD6HWftU7yCTFlPuGxsLIYoEMA8ZXOf4z4ioWtaVidIMA+0
- 87t+ztn1
- e3LMwBV0D0FXPEf+mSkQD+VWghG2Y4NnezGAk1Lk03hWavVMtrSpCIoXnv0AdWC2bljxtAD5wRN0XMbk39v1hOgD8j+1pAu1cNN982l9Q4yz2rj+U9Nr05Odcq3xx++7xvtPgjwlssyJfmBukmeRwhEDtTJ05aLo5J+BM3mTNu49qvJwR3swgFrPMB8tdF6p7I3BMLsM/3wZY5ZYB8ZRpbykQ4K6rXzbJprCkEfT7/AkITaV66Mbcr0PYWjMBdTQ5JHOzIia3jmm+JXOCf3VnDuctmom6tA4krJRKjGyuhWCUKsNflPaCovkGefqqoj5g0yCW
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1785156849-744759
+X-HE-Meta: U2FsdGVkX18oNFlmTNcquOSXkrULAFKQo56WulL7Vd5LNVz+06NjYedsOQHnDU7fwraCmU3aGl+WVYEsIMM28rC8d2d8vl3pxZt9ZB0yMHxAtX1QltphndG0/3Fl4JK7/h0JdI/Ahegoc91syQq2L3yAr5xjfRtX9qzJ3AFyKWmGLz16BRFJhgdUzbxYoh09nI9iwcd4dHFJ3IOmVaLyUJtpsCbTM9SW7rTWkLd5nVBtXHYiYV/RgEOcFgDq70BIwqWt5IRw/Cprwd1FQKj1g3fkZYT5S4OeNa4bNl3Ov5P0yZM7S+X4MNlgVjczBozzoqi8P6igzUCdTsdFS7NasBPYYnRfs5hzfoXExyTPsknZD8x15W6c4GKj19QvIH4ucPv/dnIwdCz/Lvt/yWu7WCfcySWlxZTdQA/38VItg2yNGiGj5njvaLaoUcIiumMp9Be4o2PNbuaTcqGgHRgmQfE5MGXD0fwLOR7LOzanCsr+gRQ42U1ntiN76QffpQYnj7CTOcA3HvIRXogZC1WkchYD7JttM16O1SOVFElDWlGzVQTMK4XtQKLCDjp7cf/AzPWDBEDr2ghhLVv22Bf9KjOYQmRSVbmQr+R2gSxu9dipEG0I525bnpvoHMfO4GpJM1kKXRjfrWUAjPzC2Kao9x+SGbQ+kEuqg82evb68C1DG8aC/i++a2itv3v5e45LabmxEokcTeQzWnWgIrdsLhtynXZCtqwOHVMJZBpQ9/bd145cS1Ju9tBrVxyLDPTmsEvLBaTlDOVcyQtlk8nJJsr3StgDpspO0fQq8tGvTm7iL398MkRWDnmp+CTkabLFYByarwwTvDzsXY334v5Y+WS4uoiy9XpazcAbIKLHi0sOHWmIeTq4qozvH1rfja6290HSnFkPDrYot1S7mCr6tusgq+sI9HLgaZK3pPuTgALwjZLyMduZcW5E8W8LYZShs3h+Ljyp1JUUkFOAsveC
+ 41tP/tF7
+ uFyAWPlJQ7L01/fJrShink9IQPWhX+nM0fkDUleyqcbqmqEjx2VDX1WcAsiXwGeD8b4Gb1LdTKSCWgid7UJkzkZu3yyM+IwpSjLdkh7QOlKPqyz7Y9Dop4ty7n/r7PuqT1ugGXoKKHYdKb8qjXpPqQ45bAxuCARuF+Df+YqLwaJ4fvNjpxJUsGykaWwamiXrs40RZlLtnuUTN/97hFYd3mo6uALg6IQbrw8Y/bYr33ziQiITqTs7m65OziPrFGvvznFd2GBS2I1ODalmKhefGT0IhBQAdp4s0yna2RRbdFSnc1yQ5uSve3PxZNfCNeQ6Ci0/zas2f2CGc16Gtu30ErpoDNUSYP1+O6NZa+wnerUJ7Bo7DON2TJB5OvA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,29 +99,122 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+The recent fixes for objext array handling inspired me to look into this
+finally. It's been bothering me that the memory usage of struct
+slabobj_ext depend only on config options and not whether the fields are
+actually used. So with both CONFIG_MEMCG=y and
+CONFIG_MEM_ALLOC_PROFILING=y there is always objcg field and codetag_ref
+field. And thus:
 
+1) Having memory allocation profiling config-enabled but not
+   boot-enabled means wasted memory on unused codetag_refs. This makes
+   it less suitable for a general distro config and the page allocator
+   side doesn't suffer from this, only slab and percpu.
 
-On 13/07/26 9:36 PM, Andy Shevchenko wrote:
-> On Mon, Jul 13, 2026 at 01:34:17PM +0100, Matthew Wilcox wrote:
->> On Mon, Jul 13, 2026 at 02:36:50PM +0300, Andy Shevchenko wrote:
->>> FWIW, we have hex_dump_to_buffer() for that already.
->>
->> ... which doesn't eliminate the problem of allocating buffers in the
->> caller.
-> 
-> Right, for this we need to integrate hex_dump_to_buffer() into %ph.
+2) Complementary, with memory allocation profiling enabled, there are
+   caches/slabs that don't need the objcg field, so memory is wasted on
+   those.
 
-Would not that create more complexity which might not really
-be required here for simple pgtable entry print solution that
-would probably have very limited number of callers anyway. Is
-not that reason - we did not go for the original printk format
-proposed earlier.
+This series should solve the point 1) fully for slab, pcpuobj_ext
+handling can be perhaps improved similarly, haven't looked into that.
 
-https://lore.kernel.org/all/20260610043545.3725735-1-anshuman.khandual@arm.com/
+For 2) it avoids allocating objcg fields for KMALLOC_NORMAL and
+KMALLOC_NO_OBJ_EXT caches where we know they are not necessary because
+kmalloc() with __GFP_ACCOUNT will pick a KMALLOC_CGROUP type (except
+with SLUB_TINY).
 
-IMHO this should be left unchanged. Later if there are more
-users for such prints, those printk formats should again be
-evaluated.
+The named kmem_caches are tricky. They can be created with SLAB_ACCOUNT
+and then we know objcg fields are always needed. But also they can be
+created without SLAB_ACCOUNT and then some allocations have
+__GFP_ACCOUNT and some not and we don't know that in advance.
 
-- Anshuman
+This series introduces a SLAB_MAY_ACCOUNT flag that's currently internal
+only and is applied to all caches (unless kmem accounting is disabled)
+except KMALLOC_NORMAL (unless that aliases KMALLOC_RECLAIM) and
+KMALLOC_NO_OBJ_EXT.
+
+As a followup we can make SLAB_MAY_ACCOUNT explicit and add it to to
+caches where we know __GFP_ACCOUNT is used. Then we could only honour
+__GFP_ACCOUNT for those, while warning for an unexpected usage
+elsewhere.
+
+Based on slab/for-next-fixes
+
+Git branch: https://git.kernel.org/pub/scm/linux/kernel/git/vbabka/linux.git/log/?h=b4/objext_split
+
+Moderately tested, nothing seems to crash.
+
+To check for regressions, I forward-ported a microbenchmark hacked into
+slub_kunit that was used to evaluate sheaves. You can find it here along
+with the series:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/vbabka/linux.git/log/?h=objext_split-v3-bench
+
+Tried 3 scenarios, MEMCG and KFENCE were always enabled:
+- CONFIG_MEM_ALLOC_PROFILING=n
+- CONFIG_MEM_ALLOC_PROFILING=y but _ENABLED_BY_DEFAULT=n
+- same but booted with sysctl.vm.mem_profiling=1
+
+The results are quite noisy, but no regression was apparent, except
+perhaps few percents for the last case. I don't expect it will be
+visible in any real workloads.
+
+Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+---
+Changes in v3:
+- Review tags from Harry, Hao, Suren - thanks!
+- Patch "skip handle_failed_objexts_alloc() with profiling disabled"
+  removed, the check is done as part of "reduce slabobj_ext memory with
+  allocation profiling disabled" using slab_obj_ext_has_codetag()
+  (Harry).
+- Move kfence checks earlier in mark_obj_codetag_empty() in Patch 1
+  (Harry).
+- Remove SLAB_MAY_ACCOUNT also for KMALLOC_NO_OBJ_EXT caches and more
+  precise description in Patch 11 (Hao)
+- Add a new cleanup patch 13 that removes also memcg accounting from
+  kfence allocations, as suggested by Harry.
+- Link to v2: https://patch.msgid.link/20260720-b4-objext_split-v2-0-2fa7c6f60dbe@kernel.org
+
+Changes in v2:
+- Apply Suren's R-b:, thanks!
+- Expanded explanation about no longer accounting KFENCE objects (Suren)
+  - Also skip them in in mark_obj_codetag_empty() (sashiko)
+- Update slab_obj_ext() comments (sashiko)
+- Separate slab_obj_ext_objcg() and slab_obj_ext_set_objcg() (Suren)
+- Add SLAB_MAY_ACCOUNT internal flag instead of relying on
+  is_kmalloc_normal(); also handle mem_cgroup_kmem_disabled()
+  - Also fix the SLUB_TINY kmalloc aliasing handling, per Harry.
+- Link to v1: https://patch.msgid.link/20260715-b4-objext_split-v1-0-9a49c4ccf4c3@kernel.org
+
+---
+Vlastimil Babka (SUSE) (13):
+      mm/slab: skip kfence objects in allocation profiling
+      mm/slab: remove objs_per_slab()
+      mm: move struct slabobj_ext to mm/slab.h
+      mm/slab: make slab_obj_ext() determine object index
+      mm/slab: abstract slabobj_ext.objcg access
+      mm/slab: abstract slabobj_ext.ref access
+      mm/slab: replace slab.stride with obj_exts_in_object
+      mm/slab: change struct slabobj_ext to a union
+      mm/slab: introduce slab_obj_ext_has_codetag()
+      mm/slab: reduce slabobj_ext memory with allocation profiling disabled
+      mm/slab: add cache_ and slab_needs_objcg() helpers
+      mm/slab: stop allocating objcg pointers when unnecessary
+      mm/slab, kfence, memcg: completely remove obj_ext for kfence objects
+
+ Documentation/mm/allocation-profiling.rst |   7 ++
+ include/linux/memcontrol.h                |  13 --
+ include/linux/slab.h                      |   3 +
+ mm/kfence/core.c                          |  12 --
+ mm/kfence/kfence.h                        |   3 -
+ mm/kfence/kfence_test.c                   |   2 +-
+ mm/memcontrol.c                           |  40 ++++---
+ mm/slab.h                                 | 189 ++++++++++++++++++++++++------
+ mm/slab_common.c                          |  26 +++-
+ mm/slub.c                                 | 184 ++++++++++++++++++-----------
+ 10 files changed, 325 insertions(+), 154 deletions(-)
+---
+base-commit: 5ff172f6c94d282d83cb88bdfec5f647ad9c6105
+change-id: 20260714-b4-objext_split-da82426257d5
+
 
