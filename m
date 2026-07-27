@@ -4,98 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 516E1C531D0
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 10:08:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 390C2C53219
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 10:16:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E093D6B00A6; Mon, 27 Jul 2026 06:08:29 -0400 (EDT)
+	id 147036B00A9; Mon, 27 Jul 2026 06:16:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB8DA6B00A9; Mon, 27 Jul 2026 06:08:29 -0400 (EDT)
+	id 0F86A6B00AB; Mon, 27 Jul 2026 06:16:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF9F86B00AA; Mon, 27 Jul 2026 06:08:29 -0400 (EDT)
+	id F28FB6B00AC; Mon, 27 Jul 2026 06:16:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AB50B6B00A6
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 06:08:29 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 44914406B5
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 10:08:29 +0000 (UTC)
-X-FDA: 85034131938.17.816F223
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 7813640006
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 10:08:27 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Cn4G1dYW;
-	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id CBDE36B00A9
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 06:16:18 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 44CF31206AC
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 10:16:18 +0000 (UTC)
+X-FDA: 85034151636.02.9DCD0C5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id A3B7D40002
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 10:16:16 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aeXLGKxn;
+	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785146907;
+	s=arc-20220608; t=1785147376;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I03Tf7oe1oyPKkCeh2/uxA3siPkO86atNMUY0KznFQI=;
-	b=dzy+GfcA03A9QfZmDyAIRiQ6vjprlY3slZdlSJ56JRj5XwKD0PnDrAm6qUyJ4oPboDLXtv
-	1Ix9Hhh6wFEIsDd3E19EImkvF8iscBh4jryruig8pT0A/wMr+pwftukqzJ361ggAGqR34W
-	ZoOhWpOIkylHb3FvTzM/nUKhe8rHdps=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785146907;
-	b=EETKa3PeLjuF/lGMhTLqKdTlOIn/Y3Drs772XPsemwR+JX20APQQwwvO9HEGa4YX7mpga4
-	5JLNcDr6vlMGNALMx4P2GfljD5PdaHC+C45XpwFkdOz5En7sCvjNg0tLU6KbRVYBCNv4yh
-	9tNm3Gqq65/+lLpbD7prCYUl3zZ4GSw=
+	bh=aPvuz+aL88c21S8YC4GLGVYZg37SgTBgz+cPgSwl5YY=;
+	b=ltSS7qnjSS03SDh/+IrImpUEK5EjKLZPn6hMbTXApAm4RdAgUDx1rc1TbtEkuS3kmA3J4N
+	Iwq+GHJgIOzs212ESJUx5HgoTfY0Y/cEEKGl78WjCb3sGsVcJl39rPlpqwYft0Hv3ouAwB
+	eI9cUSLcR8WWUlyrcWI41COWKyQF1YY=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Cn4G1dYW;
-	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aeXLGKxn;
+	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785147376;
+	b=5ZPvShrzNjj5Jw4/L0XhU4rHMmi1XCMCCJtEZYPwtONzpXcOhb0563P04nJXGGtXyye8MV
+	Lb8cUyYxv4yyWaA5lbKMKi0e+tDr1VkGjyWOeK+lnEPrQbKiOAh8vBiFkAUUBPuCd2zRKk
+	4mb4UBKksWMZSk4mudDS+JE8C30tYsE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 59AA642DD9;
-	Mon, 27 Jul 2026 10:08:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA7771F000E9;
-	Mon, 27 Jul 2026 10:08:21 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2746F601ED;
+	Mon, 27 Jul 2026 10:16:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE0021F000E9;
+	Mon, 27 Jul 2026 10:16:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785146906;
-	bh=I03Tf7oe1oyPKkCeh2/uxA3siPkO86atNMUY0KznFQI=;
+	s=k20260515; t=1785147375;
+	bh=aPvuz+aL88c21S8YC4GLGVYZg37SgTBgz+cPgSwl5YY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Cn4G1dYW14+InpRXOVRcBBEQ07NLqLs6jK/EZ35lNz8Esh0P26puvKGNauqqfEeh7
-	 9osfo7sqwksjbyu4yX1mwS/iEbCZkW61Yfj+un3HoLHZemTan+2w77PFgAbeebUiiy
-	 I5BYfz3xEnC9ZSbjnpdMAN4ogt1BFORpYP8aJvfMSz/J5AHvUjYG/pZ/KLNsoFbx7y
-	 kq8ZUrlqSbfPCC5/NBrXNv0uBsFaTLR0D6yw/5i58V91kGNLmboB1/Aj8eJ085Ax8L
-	 jsU/MRpgj8oTWBsEvYTUfIynnzcYvidOgP83QTQpp1mwbsALCPZWrGozEblgb/obUH
-	 VCelFTLPuBqRA==
-Date: Mon, 27 Jul 2026 13:08:18 +0300
+	b=aeXLGKxn+RhuEpjDFbt/ECV2BxYK5diVi7xVn6tULU7vDF7IK7Nil1nVqd/uTLs0a
+	 j54JY+fifjoQHmXB9CR+jCM4rvP6pUcAJpAIgW91yTz1VWA8cFXD1DZoURmpEUqlBo
+	 Tq8KvwKyQ4fOEXf51Jdb/5lt35sWrjNBv7X3ON5nEjg++ndjFL8fdwh7RQt7DAiufK
+	 NEu++wGQ+modaUWU4wmPBGb6eEqXBiiWFcOGq4t079CkA4z0301GVt3RVtw+hHhHy4
+	 jlT37q6tmmybvVR0a4m6cIFpSFH0potJvfTJYgzoIW0uyrUmfcVfT1diLwjHu9fMt5
+	 gbvr2kjjgFHYQ==
+Date: Mon, 27 Jul 2026 13:16:01 +0300
 From: Mike Rapoport <rppt@kernel.org>
-To: Muchun Song <muchun.song@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Pratyush Yadav <pratyush@kernel.org>,
+To: Adrian =?utf-8?Q?Barna=C5=9B?= <abarnas@google.com>
+Cc: linux-mm@kvack.org, Albert Ou <aou@eecs.berkeley.edu>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>,
+	Brendan Jackman <jackmanb@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
 	David Hildenbrand <david@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Alexander Graf <graf@amazon.com>,
-	Oscar Salvador <osalvador@suse.de>, Jason Miu <jasonmiu@google.com>,
-	Jork Loeser <jloeser@linux.microsoft.com>,
-	kexec@lists.infradead.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Muchun Song <songmuchun@bytedance.com>
-Subject: Re: [PATCH v4 16/21] mm/mm_init: simplify deferred_free_pages()
- migratetype init
-Message-ID: <amcuEiLzIunJwZVx@kernel.org>
-References: <20260725172133.4018491-1-pratyush@kernel.org>
- <20260725172133.4018491-17-pratyush@kernel.org>
- <amXelr2DcRRyZDY4@kernel.org>
- <20260726202522.e55861cc87fc3e0c6d030e1f@linux-foundation.org>
- <92E24479-07A8-4998-9607-87420A8BE04E@linux.dev>
+	Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org, loongarch@lists.linux.dev,
+	x86@kernel.org, Dave Hansen <dave.hansen@intel.com>,
+	Juergen Gross <jgross@suse.com>
+Subject: Re: [PATCH RFC 00/18] arch, mm: create a generic
+ set_memory/change_page_attr core
+Message-ID: <amcv4Q_jxriraFzU@kernel.org>
+References: <20260721-generic-set-memory-v0-1-v1-0-2c1fc62306b3@kernel.org>
+ <amDe_3KFBc9CcIbo@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <92E24479-07A8-4998-9607-87420A8BE04E@linux.dev>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 7813640006
-X-Stat-Signature: 9ajo78d7odqqc1opyrkjyqwzj9dh6qz5
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <amDe_3KFBc9CcIbo@google.com>
 X-Rspam-User: 
-X-HE-Tag: 1785146907-242148
-X-HE-Meta: U2FsdGVkX19h599M2lmzT7GMbG7ZnEC+bwj/5kWU6QuH+jxAKq+56ZC16qbAY9SzsIxZuMaYZcti/l24/kkY0wWGeeQaXeQnamGeTi3ILWSPE1Mkw8fmCItCRJKAyA1F7I97nTaTpEdNoguL0KXmXV1dbPwj2CEpIb2CgApoB2jZge5GccbIk71Mpzalx9FQ9sfh0K2rCAZZO9m+UQ3iRKJBUjsrkhEmm0hwFtFtrxIFrls6jhI0RLf8Ya3Ao3mDoX3kAnnkq6ZzMi9oQAVigE7VpUUDN7uRpYR7BtSR5XYVs9vFDVpgD4rsqejAUIfqyioFfkap/aIfcAtEAlREw+5ztxgCgkOKuX73dwfeK2ZhIvj7CsxxCjhPjxPuvAbi9XhIBNbrVI2sJK4jE6/JrByUYiISV3iVnqxPXNjGDpAWKvKs29ctbSp7slzu9QI5YjnnBIrPI3hWxneHq2+kmh1BPEJTfjmh0YDeQv9aMSaiYzMc1nvx3TSHbhca/S27OCTK65Oiekq36KnPqKJgEsLJ3g/rPXS2/Go4VHQpzh0191PGYglClpfXadA1Ca1kQCwERCXgcBgPEbVI01sjW2sBv5fbYFBoM9+2DQepo3dbUsO8IVfHbMEAKApROQkVDGHY8/y7Z8DOz9LzvI0jHwzTd+QjEwptXmqT2ASc2SHdyVNtJFBhuQ1ccZq5odk4HSAeFAxfsAnjC7xNvgdK7aoHBN4h1Mg+a0aIe2ZahoOlubb+/Cjx76EwHoJhRSMJje0yZF7BAqO2LoNvzlQoZaQd6iuSRroD/3SZ2FQ5WUS3EXArAJ36qYtc2uX+/nixKpd5pp/4q+0U4LxM53iWIqMj7XwbZDkr3hiZHYL9AKeOjCT4Qew2JkKAff82I9M6DK+C60SEfz54dFPvdfyYt3/r74bVuAXOuUGIZj4BfKdyR172W0Vpnolyz3Vbs0cUmylDfWv0P/lGYDuaVJ3
- /n1CYspX
- RVL+DWARxDK3RlM6moCVpksl19/z/d9m3Sckh87qgrTcGeN5ExJl2GDuolFEaatUsFPDN9yUjdMCfv8igjHJ2tQZLqSBzcVtw+iixhNxG3KQZM28L7et7VWCYi+s23vyUzG3uiaedJXuHH65YElXoUaJ3y1lc2YC+tDhxW95U5AQyEEiB1+KVSKuhmQR370k/7A6LPvfowHv/avO2vkyWZkGdQKT9PBpzmuHyXP94fAipROOKxcUSfpOitga3LVekROi4CVpNVGHWJ2xSUlSERIdPwj95RN3FuSP4BegL+hir6yF6A6cnqdlxicmFcxUH3Ia26aeQV50zGevH3YgJFFc2En4uOdvyfOZkYJRq+JMiGVuyuuRLRX6pBMVQe/GHoAIk8QVw24MuO21jXj9L6qt/qkOWznk7WLKs
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A3B7D40002
+X-Stat-Signature: onoyikhgdochngkhsjz9zwtkhhddbhbn
+X-HE-Tag: 1785147376-768706
+X-HE-Meta: U2FsdGVkX1/pDFswieu2LbjpzCBAaLan/xBNLu36PSzmvbge0ef9ixaA2mWDKPbzcXmSAIhjz/qaQxZ6Lb901BTiQc8v3CNMsbPHzv111P4vMNrt2/FQeoZf0cvQco4TCVg+yjcBp7pKIpuky0FvD1efha5Whb1QDZ3F2oCT0VooIjcQzUCgazg5PRZshws+0LZvBOCn2zBwN7YDEBrYMGj3SkGDeGaFgCYkK9NkljlSxgDf/XjfcMvB3o227N5xnyYgeIPS908EWq8rQoXDqvPOr++jFWyJ5b/sXkJFNKk0PRsmtdybc51Twc53EVXFf87f9u1umw97X8m38cU2IRv49CrAKODHdOnpn0jkT8Ob+dLAtIRhp0CGD13sqdOrQbzi5rit5UnIqWBjrVYgUiUOMmyHV7RdBE9xyW3dOcFJbLSC6Cp5xemrQxVDsjUlNUicZexVvKY8MJom/2UMKecDtUcMSnZLZG1lR2I65/IIzGFCKVMc+gOl+nXQI8mWeyUIJXsVNk7dj5QUqbizYGbRRNqAdfZrLsMa0zf6Grp1WnFOYeto1Fj3rKJaNm/d2hjynmK2cdW3cdQvjiT5Y1X/As9LkCpaaBgdUszGtzS41+RSWXEq0Lkajmr9kQS/ZVpqm0r0H5CWeSM77XCbfrEdx68sIckujAngrEmgF2oIuJ8usD5Pty3mf0jJTiABNaT62bO2pTmmuw25wScLwOjtqZSESlErCcstc+M+O1TqbScwIze2rn1Y1oqdEDIEb7BWMpROU2zjpHUm5lz+b/brmuYIBRVH5UeLIMDg8dUe8jd1Hdl4qOAeVq0Iw7uBMz9Msn/TdtZs8tMR4RKyMllAOLdeyL11vkTpNgM5DtTIL30J35+nYk4fPmQOkxT7wsFbIRr6hbOE33Pgvsj+B57/CFURdpdxDvoI+V8vdO1BUe/ElkJQjXmkAlPIUYhXK2OIY6B6xaNl/gN4tLm
+ KtSDFe4r
+ Y24mPnnIdLTlkflIQ8WH7x6358B1ITYVbli4V4LbTkfd+GwJPcwWcZbVOAIYmyt5NAnXlENtL+Z/qFOo6VXFO5s9yo20LTpEtT5bP7l8NrpTC5fLfymX4Lbq5xb7O0qEsjq+SbuI74BBw7SwB5A4JfeHJm7bZ7G+0wH/WLzzaRZoxShtfesmhQj7tGfLn7m6Z9UHXMb2FkTcw+Tl2ENse+ic3Om/Ln28rjy3nF98V1QoubQ7kv9iAfSBPhYMaXm8oayJx5QsN9a3eJhJkAmC/g8GlEvuN0oqFsbtZqGJI2NrKadPu56uL97QcDeNS8sTRfPP0rvjqvM8foAw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,71 +114,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 27, 2026 at 11:43:31AM +0800, Muchun Song wrote:
-> 
-> 
-> > On Jul 27, 2026, at 11:25, Andrew Morton <akpm@linux-foundation.org> wrote:
-> > 
-> > On Sun, 26 Jul 2026 13:16:54 +0300 Mike Rapoport <rppt@kernel.org> wrote:
-> > 
-> >> On Sat, Jul 25, 2026 at 07:21:16PM +0200, Pratyush Yadav wrote:
-> >>> From: Muchun Song <songmuchun@bytedance.com>
-> >>> 
-> >>> deferred_free_pages() open-codes two loops to initialize the pageblock
-> >>> migratetype for a range of pages.
-> >>> 
-> >>> Replace them with pageblock_migratetype_init_range() to remove the
-> >>> duplication and make the code clearer (Note that deferred_free_pages() may
-> >>> be called from atomic context).
-> >>> 
-> >>> Link: https://lore.kernel.org/20260612035903.2468601-6-songmuchun@bytedance.com
-> >>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> >>> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> >>> Acked-by: Oscar Salvador <osalvador@suse.de>
-> >>> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
-> >>> ---
-> >>> 
-> >>> Notes:
-> >>>    This patch is taken from Muchun's series [0]. The patch as of today is
-> >>>    in mm-unstable.
-> >> 
-> >> @Andrew,
-> >> 
-> >> It looks like it'll take some time for this patch to get into mm-stable so
-> >> we can't base this work on a branch in the mm tree :(
-> > 
-> > I didn't know anyone was using mm-stable :(
+Hi Adrian,
 
-Maybe nobody uses it because it's not really stable? ;-)
+On Wed, Jul 22, 2026 at 03:17:19PM +0000, Adrian Barnaś wrote:
+> On Tue, Jul 21, 2026 at 07:23:23PM +0300, Mike Rapoport (Microsoft) wrote:
+> 
+> Hi Mike,
+> 
+> > Once this settles, the next step I'm planning is to convert arm64. This
+> > would be much more involved than loongarch and riscv together, so I
+> > didn't even aspire to include arm64 in the first RFC. That said, I have
+> > a very ugly arm64 prototype that rewrites arch/arm64/pageattr.c to use
+> > the generic CPA infrastructure and replaces the existing implementation
+> > of page table splits for systems that support bbml2. But there's a lot
+> > of yak shaving there to get from a PoC to actual patches.
+> 
+> Could you share your PoC for ARM64. I can help you with that and align my
+> execmem rox cache for ARM64  changes to the desired shape of this API.
+
+It's too ugly and more importantly it cuts too many edges. 
+I'll try to bring it into a better shape and will share then Really Soon :)
  
-> > Series is adequately reviewed and is near head-of-queue so I can move
-> > it into mm-stable a few days hence if that helps?
-> > 
-> >> I'd like to expose the KHO scratch extension to linux-next ASAP so I'm
-> >> inclined to take this patch as a part of this series and live for a while
-> >> with a duplicated commit in linux-next. Once this patch would be in
-> >> mm-stable we can rebase kho-scratch work on top of mm-stable and hopefully
-> >> there will be enough time for it to live in linux-next so that Linus won't
-> >> get angry at us :) 
-> >> 
-> >> How does that sound to you?
-> > 
-> > That's fine - let me know what you choose to do and I'll adapt to it.
-> > 
-> > An unknown (to me) is whether Muchun's series "mm: Refactor bootmem
-> > gigantic hugepage allocation, v4" still works with this patch removed.  Everything
-> > applies OK for what that's worth.
-> 
-> Hi Andrew,
-> 
-> I'd like to confirm that this is a completely independent cleanup patch,
-> so it can be merged on its own.
+> Best regards,
+> Adrian
 
-That's great, thanks for confirming!
-
-Then I think the easiest would be to take "mm/mm_init: simplify
-deferred_free_pages() migratetype init" via liveupdate tree.
- 
 -- 
 Sincerely yours,
 Mike.
