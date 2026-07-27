@@ -4,116 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 465E8C531D0
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 09:25:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02929C531D0
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 09:26:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1AB2C6B0093; Mon, 27 Jul 2026 05:25:49 -0400 (EDT)
+	id DBA236B008A; Mon, 27 Jul 2026 05:26:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1833B6B0095; Mon, 27 Jul 2026 05:25:49 -0400 (EDT)
+	id D6C016B0096; Mon, 27 Jul 2026 05:26:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 09AC86B0096; Mon, 27 Jul 2026 05:25:49 -0400 (EDT)
+	id C5D7B6B0098; Mon, 27 Jul 2026 05:26:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D9BCB6B0093
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 05:25:48 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5A6ED160646
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 09:25:48 +0000 (UTC)
-X-FDA: 85034024376.18.7E68DE7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 695EE40004
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 09:25:46 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 875C36B008A
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 05:26:47 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id EDA3FA06BA
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 09:26:46 +0000 (UTC)
+X-FDA: 85034026812.20.C1B4FD0
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 29E694000A
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 09:26:45 +0000 (UTC)
 Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a7xMnQRN;
-	spf=pass (imf11.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=s+IA7mfp;
+	spf=pass (imf11.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.175 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785144346;
+	s=arc-20220608; t=1785144405;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZeOjwA9t/b3Je6sX4+S34MGC+EZsj/Dlu+d1YmsigK0=;
-	b=uBwzv1kDZbgU+GodRcs58YFTgULx/cK7jnQ2rfsV0tA/JsmXJCtflvNCOG//XuRvn42zS9
-	ehng9lyVh9FsxH27HuVfHODkuuB4DhhzL8OS9/I+rpm0fzKd+05pTTXTqg9/ksbRDRZ+E2
-	AnZ+PAHwnAffS0gV7j4heHARMNQMGaE=
+	bh=LY96VBCIVCWyS8BG6OUhwt1DEXbhg7+TrPUmrkQFJKM=;
+	b=XoH9X2AVWeh6CGNFLNsEvqddbBppE2nuTDzZs/x7YbDMemHZssx1ju3JFvGA+cxqMAewG6
+	L3FeeUO3YLfCTSxnTyj/i6Ai7Hy6RCOtUsgVt/YbKBDR36GoxWjr2NvJwGrxohmErr/bml
+	xu3pPVRPGeJPGnu8qY5RItPe/8hZPrk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785144346;
-	b=uOdbu8uZAWvtT/DEWuR0fAvAniHKmiWSmXg6edSlHLZ4P+xPV2zKleVbPMfa27mZ82ecZH
-	C1JYguUsINccfePjYW6pioEhNFIAXqeHmjqsNqeHIVOm0qAsunDxzj2ujJll/XWZ9E9qlv
-	vsmNnXX0v/Q4E4B3Ll7DKnJysTOlhUA=
+	t=1785144405;
+	b=W1a8O6CnnIgtvzTb48K+rl9mnd+qCiIqnjyOo6LXGpShsyIHmnCfMuvZsDPTv5HuQ4kWHN
+	3qnHUx7mOe+1rwSV1nVwN0jv3mmstUZRoF+e1DtRXiior74OQy3dpDZYE9uCIq8Mmeczbp
+	WN5DwYXuUR0KG3lS3BcYcCHBGXxgnGc=
 ARC-Authentication-Results: i=1;
 	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a7xMnQRN;
-	spf=pass (imf11.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C58F660A75;
-	Mon, 27 Jul 2026 09:25:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F37F1F000E9;
-	Mon, 27 Jul 2026 09:25:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785144345;
-	bh=ZeOjwA9t/b3Je6sX4+S34MGC+EZsj/Dlu+d1YmsigK0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=a7xMnQRNYEjbJw6KtqPchvYngvNf1Pq+80yK44ek3q6dMBlnVTUMfEAk2UlbqQqcL
-	 0LwDDPxGbxE4DXPia/2e0uQMj4tgZO8o9VtgjKYDpagu3gFKElCuP/RlvJjzDoViHb
-	 5BxDkTfxMxaQfCgc1YplUlaMG8CXW6C2nahYaQvZMOvhqjB12Ndj7lE6kiC1pEHVJT
-	 R8lW1dq94SxIUW2WRIVZSVw88qVuhleHLy2Ar1qdprqVataBG+r02CjRqq77YHy+Kj
-	 2qlKUkdHz+eOJcaFMKCgQkbAmhdSBl9+7tYrqevWpuOwi/im3xTdLzxX8dIEnUwbrd
-	 2f3DjM7x3iheQ==
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 541EFF40071;
-	Mon, 27 Jul 2026 05:25:44 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Mon, 27 Jul 2026 05:25:44 -0400
-X-ME-Sender: <xms:GCRnapGpc8G8xDRocQsk1V4NnQxQLcLPYcf2OiQ3D23_R2pKR0WB1Q>
-    <xme:GCRnakv3raqEs8kjfcEwegfIIQti1zpVtkK7VNyJwbYX_YQX-Inm1hEeaqpz0WLaA
-    2WZx-r-BB91NYRhxFded897CJ1Ex3t7Y9UV0aYHUMsshhMM7_-1Dl0>
-X-ME-Received: <xmr:GCRnanbOU3goIgvfrUSMn91hz3Tgz7IjKbfG26Jg2KjrNibIlkJZDc_rHZsamQ>
-X-ME-Proxy-Cause: dmFkZTFpz/2JwI3MEXG1r/8nVb0TskSPs5i5gwuz69w9zqKCiMODWqD60GWIWd5xHt/GZz
-    bEbmj/+Nb4XsL7rjWvsbd9bBkjopeMZJ7iCxp/cJrc+IFwkUZga/gpEn29PO0vp6MEmCwl
-    ySzOJSwLInVs3aLv0ytRjnlnSKgHSwjomHDpYveKe3nTS+vLW0t27dd2KRGUs60uBYfZ3l
-    6aJ/GBJEiQqNr/IAa8VlUbTZuY15ia5GNA1tylLuM0utfROe0pUUFNs6zhwRgRloHEAPve
-    BPEiJ2KMYZMiKNLOFf0xUrk0Jg62fbtDDFJMFsSnPJWyG/hK8ru3JrO9ek79XqD+q6SdX3
-    oDfnzh/sD/fYbG+CEVxajND+2TNiYEJVnYivTVv/I25ZTAXb8KF+9Y8X5k3FUAjQcu8D3l
-    hZjHLrxGiN1pAQc22AROxH5Kyi2Wf56D3P/cGZ0HeRN3lkG976U7RaKqk+RmCNCCM5NeLG
-    BDV3BA8RhBkRKe2mSzwRJB5v43Fie+LvJdK3ckZMz2524HnG9woiyRx8IS3VB6hgGk+BAE
-    zwqa9YEfIcckuiOQ6XsXPJnRah+AhH/FabWzaraqSMHyqphdLfc3FYckX+j2YwG+iVg9UM
-    rW3RMh4rMl16gvYCWbXS6CEf5EOQ9vIb9LWQ/i/7calq9lPxIFihCXNjqixg
-X-ME-Proxy: <xmx:GCRnas6LYpUbLUlyP6VW-DyPxZcUDih5fQYS6UtiEaK4Fh6TH4MU1Q>
-    <xmx:GCRnan-lYkMIlObNIiPFUK2JXtMlTthajeu8LjGiQTGg0qOXLiwY6A>
-    <xmx:GCRnagbdbhLPMvj-n7xHdPveFxNzSUFDjVoN3D4cta9xEvAR2ui9tg>
-    <xmx:GCRnao5iPePR4OZ8C-R-ozBenHeVqFkmJk684yuGlZSS9H3HYu46Qw>
-    <xmx:GCRnatl9XITxj_x5Ff4qP1m4b73vz80sg-nYZSI3FQgdFT6LZ9RALAuq>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 27 Jul 2026 05:25:43 -0400 (EDT)
-Date: Mon, 27 Jul 2026 10:25:42 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: kernel test robot <lkp@intel.com>, oe-kbuild-all@lists.linux.dev, 
-	David Hildenbrand <david@kernel.org>, Linux Memory Management List <linux-mm@kvack.org>, 
-	mm-commits@vger.kernel.org
-Subject: Re: [akpm-mm:mm-unstable 340/601]
- include/linux/compiler_types.h:702:38: error: call to
- '__compiletime_assert_501' declared with attribute error: BUILD_BUG failed
-Message-ID: <amcitKvUvFYr8W38@thinkstation>
-References: <202607250853.VaJWGLeA-lkp@intel.com>
- <20260725195108.3f31c2641b0689d344e55400@linux-foundation.org>
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=s+IA7mfp;
+	spf=pass (imf11.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.175 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-39ca0a30148so23997541fa.3
+        for <linux-mm@kvack.org>; Mon, 27 Jul 2026 02:26:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785144403; x=1785749203; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=LY96VBCIVCWyS8BG6OUhwt1DEXbhg7+TrPUmrkQFJKM=;
+        b=s+IA7mfpALNEdD1QnT+oIlkFX3Vd44uXXcfYaXy1nYOY4PCPxTKzERjEcFnFTlM5XT
+         73HBy8sIC/Rp0Bgci+SzwoFAtiQrPOkdo7f8jb87CkC+T4DONI2Qj2mn3uFm6OLspcER
+         RYYY+GEcGdtsRpRKvjHVGWsxMzPPmOGIymwEZ3SLt9XO8vK6vvlFssTM+I0bc1PAD2c/
+         cJ6VettX0h+8LDNYvTuJCVufyzm/jkw1i+4iwCs0PVww2ABmC9YOvq0xCnQMou4E/2+p
+         OLg60O/YMRQ2cqOg80lDYpWclbrN9qh5JAaqK0HbJHwoYWVBLl+ldmEC5Fw/JmJgQv/Q
+         zHsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785144403; x=1785749203;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=LY96VBCIVCWyS8BG6OUhwt1DEXbhg7+TrPUmrkQFJKM=;
+        b=EsMjvE5G9AO9Ajd3q2mHR7ZnLPa6imltq0W+2AIKtWBlNOlHi+YulWBsMBN48zcGni
+         /WKrviREeL4pNxPtjcuptFxSmwUoXvqxDkqNQfFfsyR+OQ/2yaXfW13m8fUDuKGGAey/
+         TaiZ3hT7pWWh8qyIaw7qRrrDc4NfXAnDJxHqYYP1WZ067iWoBfdQfv1/TUj9nRWapqwM
+         X7bFu4qFucujsXVyp/VAJN62LEX01tWN6Eb4pD21bQj9EajdrewmezNQjtu3zDtr3P4A
+         fIZJ9ZvblJSHbMhmFaS9+D/WnQWIq/5tWEfknijdJPAaj/FQkd3ARsKil6eMAbO2dMsE
+         Cxew==
+X-Forwarded-Encrypted: i=1; AHgh+Ro0/251Cm/ugbbrM2wcWMK4GHWkYA9LTJoPmAiUg+/wNOBcpKeKqoZMQCp+wdnrC/2rTFUFVwdnZQ==@kvack.org
+X-Gm-Message-State: AOJu0YwnGtAxqQyLjsm8sF99GugilbHecLt+3zFhJQqje01dKRxgMyQy
+	kD+sU/oeCMYx758b7w8AIuOyNllW9C0uWTYZZxL59SpzwP8EdaDim3FY
+X-Gm-Gg: AR+sD11QzMjST/pEmhQSe2Y2mpPenh8ZRGDsz6MJwwugQ0DM+nAl8tECdzvQfXqvlfZ
+	8+5Btk7UOyONnI/BlBjGcNn1Qjqljjqvpdkt8gRrza2esQ2EHRESgVhcgQDIOc8Qzxh/LaG6NdZ
+	1hryLv2IEL9g4fvjoVBktqv2dzl19lAd6NZPxzDiKRou7BN2hc197EB/xAKteO/lmIgDuR4R6bK
+	q0CEcG/rbMd8gm0MHlZVueBB4U8qK43RKU4ZKm+CQkCOvh8dap5CcE55SdL8hFWTBPeR0FN0oc9
+	rmun30hnxIyCiU+A0tlWx2UXpm6EPgG2B43CJoPL58O+Y0a8a8qTT4MXyGM/WJ8hbXrk1t04Swd
+	ICtvtOCaNFSQKr1GloJ7p3Ao17GSQsYbdxm1qAOxDyvkGK9Vrb4mnDg==
+X-Received: by 2002:a05:651c:b22:b0:39b:1776:6577 with SMTP id 38308e7fff4ca-39f2886d316mr12710311fa.40.1785144403210;
+        Mon, 27 Jul 2026 02:26:43 -0700 (PDT)
+Received: from milan ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-39f22173131sm12238271fa.2.2026.07.27.02.26.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Jul 2026 02:26:42 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@milan>
+Date: Mon, 27 Jul 2026 11:26:41 +0200
+To: Dev Jain <dev.jain@arm.com>
+Cc: Matthew Wilcox <willy@infradead.org>, kees@kernel.org,
+	akpm@linux-foundation.org, gustavoars@kernel.org,
+	linux-hardening@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, ryan.roberts@arm.com,
+	anshuman.khandual@arm.com, david@kernel.org, urezki@gmail.com
+Subject: Re: [PATCH] mm/usercopy: harden bounds checking for vmalloc
+ allocations
+Message-ID: <amckUdXO-7TtzhNg@milan>
+References: <20260722142936.3287702-1-dev.jain@arm.com>
+ <f3db438e-6cf7-4ccf-bd4f-379c549d1e9d@arm.com>
+ <amXldUo3LfIGs-zs@casper.infradead.org>
+ <0a312983-3d63-4d60-8ff4-d53dcfff7819@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260725195108.3f31c2641b0689d344e55400@linux-foundation.org>
-X-Stat-Signature: yh9byrit9r76g5f7r5jayuc4jppke5zt
+In-Reply-To: <0a312983-3d63-4d60-8ff4-d53dcfff7819@arm.com>
+X-Stat-Signature: t8u6t8794uysxzxqpg9mcezeosub5js8
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 695EE40004
-X-HE-Tag: 1785144346-537869
-X-HE-Meta: U2FsdGVkX19uqVWkyS/xpFNxOscrBW5iKnjrlwIEODMfx/ZEGa7MHO00QDcB5/V76WiZs3gW0LgUkLMkcWtnuE6FoU1/+UVZhFICwBl8wK6iRSGgy0A/DOjpzPGP/QSL8w7pjnN4vZwB0fdC2YqzMbdoIKuu7NfJM+aVFzyOfdtcJW5GbziZtb31I/MDAcrtvsr62OGPuRnK9y6pvFlKjJ0vWFx4/wFBD0RMWpdqZ6HLlnWLcz2sQ7+O5oC9+aeMUBkp2/BaDzxgF4PiYpCDZ2KK8KjHw6zudTnUpRSZsMltsh0zpDx7jjdLEL4iXhjbv2eiCyqP+U7iZBbLFS/s3Xzr+00NeI7qyZxT3n0NWGtfaEx7FWkYNlseusRhKccF9bqkt1AIFyEVD2qa9zkb/nVxDgPN4PBFT1yZgw7533CQBSapLwDLa6rlD/F+lBGw//SswJVoh33YNz5vTa0iCFls/1V7Yl68JIPO6/5WmEFZirazu9XBIjbpYuwRxTrXwJuerUn2uif+0edtgLxhNzTpl1f6Y+1CHqkAcucGRC34Yar3pDzM58Z6Evnd3JaE4htEX/W6YJVYNklhoD/9/rUcK4cZnJnqnfiMSlwx5CtiMOiZKuNCdwtF9MEBsiEECRqmVwgy6ihkdH4vlTU1eoxgZtZuFJjavMwsKh/Lj/OTN6Ro1c6skNLCaLUAgUTGipDguN7i619Wavm0KIJR/EjBz7RpWEcZkiZGLzFST6cPRT8MHzzzfwAR9W4/fc5yXaIOShzoh3XUp5iXFf8J/IY+rFu0VWial6wpscUS/BZYZ+MNaqPaiy6YC7NvmqUs8sDPWCk5D8xXyucuSqPtt8Rr3o+aG3hnRhIMb48E3nuy3dymqR1x0Bq/vfHE2D8TmttH66x6MxvxZHesVi4dwXp1eihleRQWdH31rrSCA4Ya8EvCQrjZam+3ZdBnxCUnXrbDBKZYrnwM4ISch8o
- panU70cT
- hYu7MqGtKodtTDgMOo5Fvds6fZPbnKm/m8vxoLBY0jztgyPtTd2mSkLX+IbubzpR/3Y1GmBd2roxfk0bPLXh1yrhuaHntIxQd8pHBnS+aEqes3YSzTMCebpv5T8m5WrEj3n/xH6jA2KM3qMVukLxX5t3Ca2yFif163FTdYhBzJntGCjGVfRW5i7ayuYLW+3vwJZMWgucBkM7t0+3WqinneuVU0ArI2BCgBeLBFS7+DedzUY6fmjzZaXrYcHw/aL55ltyHn07+3v+fSwPUiJCxvIcu8JZy3+kZBxsOFa7XleOZh8MsfsZO1e/voltgvoahnNE2pyEGGYY2e3LG5R2w3jXGhG1q/Sv0h/iTH6Lw/qfhCEhQeDaxoWaUj5NqTG+l6/ifyN3CQo5rWXl6QHRiIftFILuezoo9wM8AYLdUt9QZYnA=
+X-Rspamd-Queue-Id: 29E694000A
+X-HE-Tag: 1785144405-428974
+X-HE-Meta: U2FsdGVkX19iAWXw4fPqYc748Wfu/EILJk/XAhXQT4GKvMWPFSbQR1sJjTjiWwg5OjSqvNiKV8zh73i7KS5mQXeBWUardgG7OsVrtMqnhebh4Ws559OqcRWMbf3IZXjMelh2FHL5oy2KIDtGr7zePCf7Ex/wsILIAz4qa13GLn2D5ZQIY3iDNruC96ShYtjdc1lnVb55Ofb/gJVzrX0qoK279YBkZEbgYSLufYw9pSXhhHTZboR0aKrqgUHDreItfmefLKlW4cQ4Aiu+Vb2RnCcgXbusikA8+IlhqYb92Gd7+CIE0LLkI7II6ncF5I8a6QBGp9du8E4F7nD7TfpgJi0G3YFDaMOYpVswMdxReh3lN0NGdPv4we+u7d3VQRoz2+AlievPUwQtwmC5mtTbe8bMX43kQt+SuJhJ3pYSHOkZejYgX38GJCMUEvTMawGccDP81AqQNMXM9jUg3RKl4Or5peXUOsxpAcI3koD5X6EJUx5aSYayhu8iVx7JsZyw0usiR7pflB8r+IvPIagI55VQjjPqF+lEdVANOu2B4hF8kOyfVrs2U3JGa+1dWTJJ+e9LjbMmUlIe5JFaEFpdSWKCCU1eJFzW0X2cKfzt5DOmrJPhOpBQdS3T3FpV8AvD0v/UlH317jzx3B4oMkip7LPDuJNZwtayo4iQXSjiDDAOpjq7N3cAiaRnb/t3YGo810VrcBO4aAlfyUb8WXdaha5EDhJvWDzmgN4+pcKjF1AZ1JghQChRb+Zqf6HTHNW7uMwGTEtdm1Ywg1lzmiZKXI6ig/TajxOdlY8+ApV4t9CGrzIPOHt6ABIHD0pixOXqSTsThOqENgw/VmGCC1O10/Yo8luxM1XFU/IEHr+L9SBrdk0xkxI7HJCKOxJzWdz6fKSfSF9QI8oAwK0213XgasMpsnAviJO78OQSPCvcZAkzaUOH615QPPrX30sC+wlqr0NNpA3T+hpM8CP7my2
+ +XYzm5Bh
+ Q90ZIqN+zrT9J3s+jV/eU3d3aPjb+6j+wLNSKlrvDMKAm26ou4+as4hHqmJ/Lp4t4CpkD7tdJ0jnRzRiL8aXuwAyRhV34pcmkUKWLLyp/gtQIrHQ3fcXYzdEMocsu50dJFxwyOGz5knEky7Had2AT5zOFbkmPxSn0SQcRhTe8s3vpc9F/sg/YE20nciYoiNavPQNsuKuEDPylodubugJMNM9kiue3whoE62h+vnH2dI7veyZEGNGgDxbCSCfGkpZ2dq/hEc3lf3L5jAq8KHQ6ZXveJpoYhJl4jFNfL7tlDRY5nk6xI8MjUVMk7HEV9etDu5dzq8LAKgegZ6msiGXgJ2VyXZTQciMBn8l1nPFq1CrzWAMJWlI3AoITZI35o0+L5MjJ1gdY3elp+WgLTMtSQ8n194MRCmNAYAzXYkcY+XDpmkA8zn25LsC4M7xHlo32F59d+n8bWmnxYsu6FZ8eeSHzVmSMXzUQwU71aaMcUn6FKzCVpoIPdwQdMWSRhsCZ2IjQVw0pxfcOtBCXD4s/m+QzAVsQhtomO/wM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,97 +125,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Jul 25, 2026 at 07:51:08PM -0700, Andrew Morton wrote:
-> On Sat, 25 Jul 2026 08:56:41 +0800 kernel test robot <lkp@intel.com> wrote:
+On Mon, Jul 27, 2026 at 12:33:49PM +0530, Dev Jain wrote:
 > 
-> > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-unstable
-> > head:   c04df384b55dd9dcf72c36b661becb5aaba371a9
-> > commit: d2aed7c02fafacb9d055a2f683ac12e977ef16e0 [340/601] mm: preserve RWP marker across PTE rewrites
-> > config: sparc64-randconfig-r134-20260725 (https://download.01.org/0day-ci/archive/20260725/202607250853.VaJWGLeA-lkp@intel.com/config)
-> > compiler: sparc64-linux-gcc (GCC) 8.5.0
-> > sparse: v0.6.5-rc1
-> > reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260725/202607250853.VaJWGLeA-lkp@intel.com/reproduce)
+> 
+> On 26/07/26 4:16 pm, Matthew Wilcox wrote:
+> > On Sun, Jul 26, 2026 at 02:23:20PM +0530, Dev Jain wrote:
+> >> On 22/07/26 7:59 pm, Dev Jain wrote:
+> >>> The vmalloc allocator stores the actual allocation size inside the
+> >>> vm_struct structure. We can use this bound in usercopy instead of the
+> >>> page-aligned va_end to catch usercopy beyond the actual allocation size.
+> >>>
+> >>> For vmap, the requested_size field is always page-aligned since it maps a
+> >>> certain number of pages. Same for vm_map_ram (alongwith, not even having
+> >>> a vm_struct). So the check is only relevant for vmalloc mappings.
+> >>>
+> >>> Because there are early vm areas registered even before vmalloc_init,
+> >>> requested_size may be zero. So also check whether the requested_size
+> >>> is set.
+> >>>
+> >>> Signed-off-by: Dev Jain <dev.jain@arm.com>
+> >>> ---
+> >>
+> >> Sashiko:
+> >>
+> >> 1. "Does this locklessly access area->vm after find_vmap_area() has dropped
+> >> the busy tree lock?
+> >>
+> >> If an out-of-bounds pointer falls into an adjacent vmap_area, and that
+> >> adjacent area is concurrently freed by another thread, its vm_struct
+> >> is freed. Additionally, when the vmap_area is moved to the free tree,
+> >> area->vm (which shares a union with subtree_max_size) is overwritten
+> >> with an integer size.
+> >>
+> >> Would dereferencing vm->flags later in this function cause a use-after-free
+> >> or a wild pointer dereference?"
+> >>
+> >>
+> >> I don't get it. So usercopy is checking OOB for an object but shouldn't
+> >> assume the existence of that object while using it?
+> >>
+> >> It is a bug in the caller if someone does vfree() while usercopy is operating
+> >> on the vmalloc object. I don't think usercopy should handle it. For example
+> >> we don't handle it for slabs currently.
 > > 
-> > If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> > the same patch/commit), kindly add following tags
-> > | Reported-by: kernel test robot <lkp@intel.com>
-> > | Closes: https://lore.kernel.org/oe-kbuild-all/202607250853.VaJWGLeA-lkp@intel.com/
+> > I think the question Sashiko is getting to is how we handle:
 > > 
-> > All errors (new ones prefixed by >>):
-> > 
-> >    In file included from <command-line>:
-> >    mm/huge_memory.c: In function 'move_pages_huge_pmd':
-> > >> include/linux/compiler_types.h:702:38: error: call to '__compiletime_assert_501' declared with attribute error: BUILD_BUG failed
-> >      _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-> >                                          ^
-> >    include/linux/compiler_types.h:683:4: note: in definition of macro '__compiletime_assert'
-> >        prefix ## suffix();    \
+> > 	char *p = vmalloc();
+> > 	copy_to_user(p - 4);
 > 
-> Well dang.
+> Thanks Willy, I completely misread Sashiko's point.
 > 
-> I can't reproduce with sparc64 gcc-15.2.0. 
-> Documentation/process/changes.rst says we support 8,1, released in
-> 2018.  Your 8.5 was released in 2021 so perhaps three other people are
-> still using it :(
+> I think this is an existing problem? We are using area->va_end currently,
+> so we can access freed memory.
 > 
-> https://www.kernel.org/pub/tools/crosstool/ doesn't appear to have
-> sparc64 gcc-8.5 so I gave up.
-> 
-> So I dunno.  I'm inclined to ignore and assume that if someone else hits
-> this one day, they'll either fix it or provide us with enough details
-> to figure it out.
-
-I cannot reproduce it either. Maybe we can help compiler to derive that the
-code is dead?
-
--- >8 --
-From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Date: Mon, 27 Jul 2026 10:16:11 +0100
-Subject: [PATCH] mm: fold userfaultfd_rwp() to false without
- CONFIG_ARCH_HAS_PTE_PROTNONE
-
-RWP tracks accesses by installing PAGE_NONE (protnone) PTEs, so its code
-paths are gated on userfaultfd_rwp(). Without CONFIG_ARCH_HAS_PTE_PROTNONE
-there is no PAGE_NONE -- <linux/pgtable.h> defines it to a BUILD_BUG()
-stub, relying on callers folding such paths to dead code via
-IS_ENABLED(CONFIG_ARCH_HAS_PTE_PROTNONE).
-
-userfaultfd_rwp() was not a compile-time constant, so the compiler could
-not fold those paths. With an older compiler (gcc 8.5.0, sparc64) the
-PAGE_NONE reference in move_pages_huge_pmd() survived to codegen:
-
-  mm/huge_memory.c:2874: _dst_pmd = pmd_modify(_dst_pmd, PAGE_NONE);
-  compiler_types.h:702: error: call to '__compiletime_assert_501'
-    declared with attribute error: BUILD_BUG failed
-
-RWP cannot exist without protnone, so return a compile-time false when
-CONFIG_ARCH_HAS_PTE_PROTNONE is unset; every RWP path then folds away.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
----
- include/linux/userfaultfd_k.h | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
-index bfbd6a59909f..0ce438ec294f 100644
---- a/include/linux/userfaultfd_k.h
-+++ b/include/linux/userfaultfd_k.h
-@@ -221,6 +221,12 @@ static inline bool userfaultfd_minor(struct vm_area_struct *vma)
+It is a bit mess here since now we need also take into account a
+requested_size due to vrealloc. We have requested_size, nr_pages
+and size in the vm_struct.
  
- static inline bool userfaultfd_rwp(struct vm_area_struct *vma)
- {
-+	/*
-+	 * Callers gate PAGE_NONE usage on this; PAGE_NONE is a BUILD_BUG()
-+	 * without CONFIG_ARCH_HAS_PTE_PROTNONE, so fold to false.
-+	 */
-+	if (!IS_ENABLED(CONFIG_ARCH_HAS_PTE_PROTNONE))
-+		return false;
- 	return vma_test_single_mask(vma, VMA_UFFD_RWP);
- }
- 
-
-base-commit: 505f6bc5c6c6db7d6390ea33c4e2ab44379e6f49
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+--
+Uladzislau Rezki
 
