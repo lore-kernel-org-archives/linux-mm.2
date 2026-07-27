@@ -4,86 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A672DC53209
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 22:17:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7069C531D0
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 22:23:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4FE706B007B; Mon, 27 Jul 2026 18:17:11 -0400 (EDT)
+	id 977626B007B; Mon, 27 Jul 2026 18:23:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4AEF06B0088; Mon, 27 Jul 2026 18:17:11 -0400 (EDT)
+	id 927B76B0088; Mon, 27 Jul 2026 18:23:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C54B6B008A; Mon, 27 Jul 2026 18:17:11 -0400 (EDT)
+	id 7C8066B008A; Mon, 27 Jul 2026 18:23:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B1266B007B
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 18:17:11 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7550CC01FA
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 22:17:10 +0000 (UTC)
-X-FDA: 85035968220.06.ED81016
-Received: from gentwo.org (gentwo.org [62.72.0.81])
-	by imf17.hostedemail.com (Postfix) with ESMTP id D92CC4000A
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 22:17:08 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gentwo.org header.s=default header.b=GsmIl0hX;
-	spf=pass (imf17.hostedemail.com: domain of cl@gentwo.org designates 62.72.0.81 as permitted sender) smtp.mailfrom=cl@gentwo.org;
-	dmarc=pass (policy=reject) header.from=gentwo.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785190629;
-	b=wYffzZmYqIfuhK5kHAMcGeFH9NlGZW7xrhQa3mweOIjFpJggO7I6bBwloNK0kRd82cC6zJ
-	mB1+vdMEHKPU7IjV6EwVnoTHY97ujep6gM286uTUhGiCWoqOv3DR6gvaMV4XDpZCJULvRb
-	q5kGX22XilrL0iHIq8CPRQO+C/YRflk=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gentwo.org header.s=default header.b=GsmIl0hX;
-	spf=pass (imf17.hostedemail.com: domain of cl@gentwo.org designates 62.72.0.81 as permitted sender) smtp.mailfrom=cl@gentwo.org;
-	dmarc=pass (policy=reject) header.from=gentwo.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785190628;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 40E0C6B007B
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 18:23:12 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AF5C2140215
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 22:23:11 +0000 (UTC)
+X-FDA: 85035983382.30.60311EF
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+	by imf04.hostedemail.com (Postfix) with ESMTP id BB17940009
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 22:23:09 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=smj0Ko75;
+	spf=pass (imf04.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.41 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785190989;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0JjD6lkFG+20UmtbdWZxcSfJM0w+DF0///X2tria5TU=;
-	b=6VI9K0gOPTunPxUNw3z2k7/oSvJj4KM8evrLnfLEkJtLV7g9r5e3DSL0FsOhYu7CCTX6MJ
-	sd8Nnj7Uqan/rdM3HF/ab/yf/TvBiS8HhOSGuc6VQl7vsLvcwEfDNqLe6u880c55WeRpCG
-	3UylWfCBaMHsSNFwMn0LAfr80hTCiSw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gentwo.org;
-	s=default; t=1785189987;
-	bh=0JjD6lkFG+20UmtbdWZxcSfJM0w+DF0///X2tria5TU=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=GsmIl0hXdDi2A+F3WW3vwTaE1qAEDh8CDi57M+9dpVeT7GPRHBTxFgdMnhzxeVyXC
-	 1GmsQ5DzDRWgK4lpCB8RH3ku6XZwWRqSn7DdV96ERj/Se2GsDU7W0Q1nrhIzd4W+BB
-	 SUUi6XIXSIQpNVqEBcWKk/1mSXCEO25lBAPx+vuI=
-Received: by gentwo.org (Postfix, from userid 1003)
-	id 5D65B406C9; Mon, 27 Jul 2026 15:06:27 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-	by gentwo.org (Postfix) with ESMTP id 5A28340112;
-	Mon, 27 Jul 2026 15:06:27 -0700 (PDT)
-Date: Mon, 27 Jul 2026 15:06:27 -0700 (PDT)
-From: "Christoph Lameter (Ampere)" <cl@gentwo.org>
-To: Mark Rutland <mark.rutland@arm.com>
-cc: Yang Shi <yang@os.amperecomputing.com>, 
-    Ryan Roberts <ryan.roberts@arm.com>, dennis@kernel.org, tj@kernel.org, 
-    urezki@gmail.com, catalin.marinas@arm.com, will@kernel.org, 
-    david@kernel.org, akpm@linux-foundation.org, hca@linux.ibm.com, 
-    gor@linux.ibm.com, agordeev@linux.ibm.com, linux-mm@kvack.org, 
-    linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC v2 PATCH 0/16] Optimize this_cpu_*() ops for non-x86 (ARM64
- for this series)
-In-Reply-To: <amCPBrdltFSE_fEf@J2N7QTR9R3>
-Message-ID: <25d1e09b-53e4-7cd5-87db-b58437e4e690@gentwo.org>
-References: <20260715180455.515692-1-yang@os.amperecomputing.com> <0344c559-1959-4531-9265-d5a5180eb7cd@arm.com> <fc21c840-1584-4844-963f-80cea7f2e674@os.amperecomputing.com> <amCPBrdltFSE_fEf@J2N7QTR9R3>
+	bh=/XC5XGybgP6aQhVoIMQftnKAoc955dwi/B0eQbg7BB0=;
+	b=O312AiB1NLAuFLJKRoREzEX3V/ZDRFUaafF1jenUrWpcL8JNcabyRTFBoyYxGYS0LZlnps
+	rTd9SwzuA62fUFQSgX5q85fE/ybpcr3HV/ummCBtfr/1Se6ozvejI+7x+iEwGNK85T0vLA
+	wNhXgh+QK42hAARe41xCeZMy4e42F3g=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1785190989;
+	b=q3XNhWwgxRQT1SOjb6IbPPJp1qV2HLxk+Rf3UKK+13JIZB1Q9FE3KaNgBOm7dkvji7/mRK
+	7C3qH7hGAK2ZCfh441hhrgOrwkNng3YkN7v8RvJ/7l229NjGUG1l9F8EZiyhqyxHOAOF/R
+	yVK1QHT93UGygF4EiNHJk02N4vlpX0E=
+ARC-Authentication-Results: i=2;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=smj0Ko75;
+	spf=pass (imf04.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.41 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-8f29ec73064so24477046d6.1
+        for <linux-mm@kvack.org>; Mon, 27 Jul 2026 15:23:09 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785190989; cv=none;
+        d=google.com; s=arc-20260327;
+        b=OiDuqL2FfpFAgLfZJSwzUhEp+wpslczam9GVoWLvK3+LtQyWqMtOYz2lAIaOQYcQug
+         I9KhP2z/Kyi+FcEga/hm5fjVvc1K3M3Oq5wMylt/XR7vtS448LwLi2XlaZgUOMFdd0Pd
+         tgLt5x8XzB6KnGzlOARB74LAqU8nmUGoJzgcVGaMeEoLDmCOi1daxVPuDCwKTNLpZuv0
+         +d8/KKFhmw/e3UPYzkZ9AScix20sMHTko276NBPifBn8dfYp96zef4/MMbr8jV1EQ/tn
+         J14B7N2+BDD4raETAYpp6uh44W6lLbneI+QaXpcvBk9JQsgnFc8o+FI7+cYu1jqECVqF
+         x/ZA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=/XC5XGybgP6aQhVoIMQftnKAoc955dwi/B0eQbg7BB0=;
+        fh=67wglnrG0bNxW1Wen8RWRlV7/P99lVVyKEBv3JGQKaM=;
+        b=pykegn/sfGEnRxMDExwUO6WU1DNYJt23lWkQlMG1/4Exwm5QKaQOk+DUwrkQq1uCmL
+         F4MDzQO15F5CkC4fhal+zGcYQqfTFHXRb4vdzD4f6eDCRrOfK3ovkDDK0PavjEoNYodf
+         QxGsKQuadMNEAR/VZ47e0kHhY1tTIib3OsAtw0NBzuLue5Q+PC8vLHrFrEQ/q01NhRIE
+         2GDQLDGjLNIidQt7h6NiFPtk7LvEp9sM7ULkLb6IpqLal6tOXlgiSJ/nNzWi5gKN2hdb
+         UjMY6A1JINgQYTssedy8jZwmZYry2SGY08HqsLijAL9Tg2Ak2MuQ3YzgKOX672nb5qDE
+         2OgA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785190989; x=1785795789; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=/XC5XGybgP6aQhVoIMQftnKAoc955dwi/B0eQbg7BB0=;
+        b=smj0Ko75/iF15Q4z+l8AB2uR9Te1vmd+im1QSD4BIhbbtWA8/hlg40BX300WAVNWMw
+         rBuuuR2FWh0lp+Wos/jk42hHs5KTSoP4xxhqoiIYYca5b/JQN0ymFNeKxhxf2+l5Jv/L
+         q/R7luXHLCZNLb3pwLd9t1aOWOaqI1WTzr9G/8b3VWMUB/Lggfac6Mlo1S8/CST0OQhj
+         cKCycQPfNfUtsUH5KBLBjBegPfgQHWtBCWF2MRT+Wvzqqp1fzHCoe7S0vZcR8Fn2ewt4
+         AMktSjYPLocadqXX6/MrcP88BraHOtbl6EJGi6Z2XeRolyec0d6SbwSlJX5aLsCj8jJM
+         75TQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785190989; x=1785795789;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/XC5XGybgP6aQhVoIMQftnKAoc955dwi/B0eQbg7BB0=;
+        b=eYkNSWc67UXwyPEALRt8fnwVMcIK1LPhtPIUebklfNp/xg1EYRur5ui2z+6j97yrGW
+         eP0G2/lJLpvK/Drtn4qowdhB7DfehiMlKQYit+xIcjezaywrOudq2d96Z7eTMkGAv4yD
+         m/ikzd5kv2pJC/T6qFouDDUppf8NHZ1FCkOvg3BJg2bgLxakLwe1sxTQUGsR0IheYbbA
+         zH+of3JpqKfvyku2jFUfvbx/AtnJ0sx0+v7rP4b99AnKuVsCNXpPaNru89JM55Kui/00
+         WJPhpys8gpB/6C33fBHYmzLuW5Uxfn5VrZZrafwQTryK58CiMWL0xqZ3vjW4AZdpM2Ij
+         hbvg==
+X-Forwarded-Encrypted: i=1; AHgh+Rp+JcR1rvcbmA6nGvXMtWnZbKADBlOQG7mVMdeANIphqevyEVg+8zUs2gLNM2F/dEbPClz8vuapxQ==@kvack.org
+X-Gm-Message-State: AOJu0YzqoszadOxr9CL3+WgDp1bL1TpPpegpRZ1TBM/xBDXy3dk88CRu
+	YS6AcS2R237YjWjwZqpMhCrZgD+Yi2qovhqWdSRKd4Jl69KEkQMw6hQmWs4AJX4kFfG2YS3Ry4p
+	bkfv5N75QoHa4CGWoMLkCjBx4TkgRaNc=
+X-Gm-Gg: AR+sD12sLRnD3Vv+jVQIhAiwYk+n3M0Dghgah23sVNbYLlRdE+FIzeq5wsLhSlaEWGj
+	4eoPM+9Wzui7MiLLSrTOWL/6brMu85pEMigojqYQaHuuCTR8jDOkeQNryLxTVFQUUkYtE5Yd8Fq
+	gMZ7uwG+acei/e1VmBae5kiGRK4xLhhiR+WcIJM0xAAW3z2jTHw7Y4x4HfC32+aaMSeUWmptXTE
+	WxcPMdWKiT84Kutg+PbgUYSdMvqhfanQI8bI74P4C+G3sGhlohs328gbbyzVPbzvxqaUFR7E+6d
+	vaCiBfowX8+smotdsa8FkhDUjeDkUZSBnpvEl/tV1zg7wNlciS/qcdybxsPrlsIb6cNk+LSYlsc
+	=
+X-Received: by 2002:ad4:5944:0:b0:8ea:fb8c:2e0a with SMTP id
+ 6a1803df08f44-9081274b851mr17710856d6.28.1785190988688; Mon, 27 Jul 2026
+ 15:23:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Stat-Signature: jeyje9t6wr48kt7tmpn455imura4kgia
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D92CC4000A
+References: <20260722142936.3287702-1-dev.jain@arm.com> <f3db438e-6cf7-4ccf-bd4f-379c549d1e9d@arm.com>
+ <amXldUo3LfIGs-zs@casper.infradead.org> <0a312983-3d63-4d60-8ff4-d53dcfff7819@arm.com>
+ <amckUdXO-7TtzhNg@milan>
+In-Reply-To: <amckUdXO-7TtzhNg@milan>
+From: Barry Song <21cnbao@gmail.com>
+Date: Tue, 28 Jul 2026 06:22:57 +0800
+X-Gm-Features: AUfX_mwpfZInPOMiAbDmvtGKNJf_UoBehbwRIpXxIReBo68o9x-57uEnqdR_TZ0
+Message-ID: <CAGsJ_4wGGSf2mhwykH137aA5enhgLGj=-asKe0B09tAOVP8qvg@mail.gmail.com>
+Subject: Re: [PATCH] mm/usercopy: harden bounds checking for vmalloc allocations
+To: Uladzislau Rezki <urezki@gmail.com>
+Cc: Dev Jain <dev.jain@arm.com>, Matthew Wilcox <willy@infradead.org>, kees@kernel.org, 
+	akpm@linux-foundation.org, gustavoars@kernel.org, 
+	linux-hardening@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, ryan.roberts@arm.com, anshuman.khandual@arm.com, 
+	david@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: eg8nkai8663euf1ffzwkk9kuaexnhzao
 X-Rspam-User: 
-X-HE-Tag: 1785190628-150450
-X-HE-Meta: U2FsdGVkX1+DW0sXpuIXV5M7rwjI5XTJa9CY7pzI8K64dmWWWm0Qz6xyH+Fkum6FqrBSs2d9msxk1ODIOjqbQJDa73n37LtfhTH5NKqyfw9Kz/Z5GDJRXPF8VKFcxurgxBZHV28KI44V3sIKcHItmA7pzqoDM4a1mR7dTO6sqpsm8vo/WpUgRsgohodbkEpteGzqjH3wwFlbNVWiR5AxWrMMOtRHBAsnf2E9hCfa+xGCV8V5eQQMss+uGUBGyFocu1Cnb3kUKjRpnDyUpYE7pz1mxSGAEWZjFFBvgP+WVE6+n92MoxEfYAjhxgMi6L+0q6Xx3x8zIla0khQwkh/7q8XfvBeKcJJcfpa6CYV8P7FufpEFqrQiqxaIjTpzLNkpfdb1b3TsJ4VhD1UEGncK/mGqR+0abEE+x+V512Zc8VH2Y4jT3BHnX3yaKv4bIt5LGukIG5NPOxUVqClqJO50KRPlJm0M40Wb6MXfx/Y0lVy38Q9Y9avv3m16wWRI5i8nu9gmKnGYP5d28VswMsOui8hNvenZDAvQ7aGOSLkci1K2twA4FLSD8lSG76hmkv6k2Fe3seji/jywVh044Od4Ll8u4QDvrxGLI/cduMiuthSo9vMbxt/RI+/pb0L0j8J4c1USNm8mh4OoXXiA8xtM+zcdWMtY/WD0wPFtKfgdbllW47SU2kW2LcR/3XrMX0MJ+4NamFeNYwRHiSAIm62og0RIjOMm7ikvkDr1Td3eykP5Rz3RShw+iAp+2potOFQpkTN/AOyFp/J3y7XFXtO/9gyVSxdc0qI/GMHL8DP3Zc/hsYwYL7grYX4DCQn7L2BCyZg9tw/9UnAwO2ITBFsuPujV5MJUZesjlgCcnwf6HdbOD5Fwe+2FrGS/IJlqreEsJgfN+DfHlFsWDNNMwbl89v9rbrPem9gNJV9O14CSWh8CQLJzCOXaJC6iyXR+9li5ZI7ahdJcIehUGpq5ZEN
- djXLh5/e
- VbilCEw2IX/Q08h0VD/Oq5lboR77TYvCgkthST5QKXJRWSG2C3TAFD78xI3xNOfiS8OMTEzAiiOj/A3OXOnsVDf+8F+arUEj2jlG72oaszxbElote5ny8DMv1bY7NSgEzPx25hvx0W4ft3gZ9mmB3AUwATX/n3+rO/ktLaXonAnHVQrisp/N0R9Sis5JCBT/3j8k+YIqdV9hWd49UH7GnTcdM+Fk4yFWEytctB3HyDtgInZj3k0d4C4UWUPcNo6mjnEkArjjN5NBjuQGuHPGO0bHGxW3Qaj/9em5lF7oPBtf8zBM=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: BB17940009
+X-HE-Tag: 1785190989-326671
+X-HE-Meta: U2FsdGVkX187eWvPTWAA706XHxwrisgA490a8Ha3SRyqX9NK2N4GO67D/cILN9D8g8HUXXH9wqd0XrmF6Zn7mwPdmCVHr6HwMDzFpoLonIGVic/6zrjetjrx7v+B1kT8LCZINE2RcwdzQftSJ9eaeqQOkJI9utQ/F1TIkA39vAW7xYbIzgBNAWmiMdEIvrryQANIYXvtjlQS+Gd7JEwRjj7Apubx2JMuDtHDmHqG01earcvsmdbJU59QHB/ANsTEfbJmk9r++AAlKbhzGyX1SEJtkGFqZzTNmCJGFMCAlAmy2gS1iaBnzHnS8ZyKeWDHXZfnM0UyBAFW+4EAXWNFZOVt2BXdT4E7c2MR69C4QyLUDaEBGMEUin8Jgl/MiZY4V4SBa0+UNs6DkUczvudGi+h9n17JAA7/BDi+f0Tj+K8ZU79jV/YQxkxMyOZzy69a/ADyIZ6XLHwEoYZ5ZY5wds0k7JkpYNlt+/duCU/RiOp4Pc8vVg+i1C4FrfDExxvZTGZIWV63X9jJu7zAFCcSh5Pzs+yMPtBQvwJTc0GfnODT+EQOQtBeoDzTJ8qLeZSoS/ZAnTtQ0dRUfE9JNDdlhiX6MiPGeAdA0mP4USsc7Yo+B7nExkQh9GWVIksRPtfqySNpvy0JGGsdja3/hZREFmaEmOzTcqXd/6H1Ok0lqNc/nnlE9u6wKd/83yGrvMK/LCVRQkNBuhKkUA3u1JYdrcw+gcBG8gk2drvDglKCauUNodXDzYukbzM3CYtHlCjKCIki0qphAKYa1QLfdF6dcsYwOwY91pSvfAbRXdNqVNuyRDxErsC+c1JjM3nzBnwpmb98Rc6W6l9khJH46sid6NpLyG3ZzVk/RJaiN6ge6MO1Bk05YkEA1/H2ukzV9LQ/DWcRfMZ4zfpgztRJE0jUpb35PcUKCakv9soTGorClmW49e2NlFkUgVeSYaCDAokfOZJktiJdUHJJ5I3tWDW
+ Tf8xP7mr
+ ldvg9+F2tr7NM8RIVguN9QBMYOiT84mxdejr0swgEnugpCzdEdnHKgGcbUn9u1JhCwbrT2DTnEnPkOk6lbb7l1oAzDKz5jr1PntDg2dZ3NHWms2AxyTUtoCTF41BreowV5wX/KtO/gz+Re6dO0YHnY0r4q/J4xNOxL/tSCTitVgLPUWk6vgFm1fipBKCZbViZU3djPhc300SGBz0QgJ1WpapHtAgRKp0L3G9QBSmhU1+bVUkEmBhT/p+zKfAGOrONehbAN1HVC5Pfn90ljnOondOqvPlCHvsdpfAxvD1aPRbsW1aTKAZe838dxj0bvSs8AHclvBWlb+v1yCB9X/+YZl2S/0V45o2zyccUYokrVK+gg6628aimlFEtYR6dNKJMSYV3csei3bPxOG5qGgNQtzvwQjgUWNVzKZ5qRjGeYbcKSxmjB8Pav5jpj9TLefi6uJwmxDcS4gmQw67Xe2jLj+tBVdx0BbFg5UBtfho6++hEwjY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,58 +145,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 22 Jul 2026, Mark Rutland wrote:
-
-> I expect that should come with a reasonable benefit, but I don't have
-> benchmark figures yet as I haven't finished converting the xchg and
-> cmpxchg implementations.
+On Mon, Jul 27, 2026 at 5:32=E2=80=AFPM Uladzislau Rezki <urezki@gmail.com>=
+ wrote:
 >
-> > It sounds like it just moved the cost from one place to the other
-> > place and it also seems hacky TBH.
+> On Mon, Jul 27, 2026 at 12:33:49PM +0530, Dev Jain wrote:
+> >
+> >
+> > On 26/07/26 4:16 pm, Matthew Wilcox wrote:
+> > > On Sun, Jul 26, 2026 at 02:23:20PM +0530, Dev Jain wrote:
+> > >> On 22/07/26 7:59 pm, Dev Jain wrote:
+> > >>> The vmalloc allocator stores the actual allocation size inside the
+> > >>> vm_struct structure. We can use this bound in usercopy instead of t=
+he
+> > >>> page-aligned va_end to catch usercopy beyond the actual allocation =
+size.
+> > >>>
+> > >>> For vmap, the requested_size field is always page-aligned since it =
+maps a
+> > >>> certain number of pages. Same for vm_map_ram (alongwith, not even h=
+aving
+> > >>> a vm_struct). So the check is only relevant for vmalloc mappings.
+> > >>>
+> > >>> Because there are early vm areas registered even before vmalloc_ini=
+t,
+> > >>> requested_size may be zero. So also check whether the requested_siz=
+e
+> > >>> is set.
+> > >>>
+> > >>> Signed-off-by: Dev Jain <dev.jain@arm.com>
+> > >>> ---
+> > >>
+> > >> Sashiko:
+> > >>
+> > >> 1. "Does this locklessly access area->vm after find_vmap_area() has =
+dropped
+> > >> the busy tree lock?
+> > >>
+> > >> If an out-of-bounds pointer falls into an adjacent vmap_area, and th=
+at
+> > >> adjacent area is concurrently freed by another thread, its vm_struct
+> > >> is freed. Additionally, when the vmap_area is moved to the free tree=
+,
+> > >> area->vm (which shares a union with subtree_max_size) is overwritten
+> > >> with an integer size.
+> > >>
+> > >> Would dereferencing vm->flags later in this function cause a use-aft=
+er-free
+> > >> or a wild pointer dereference?"
+> > >>
+> > >>
+> > >> I don't get it. So usercopy is checking OOB for an object but should=
+n't
+> > >> assume the existence of that object while using it?
+> > >>
+> > >> It is a bug in the caller if someone does vfree() while usercopy is =
+operating
+> > >> on the vmalloc object. I don't think usercopy should handle it. For =
+example
+> > >> we don't handle it for slabs currently.
+> > >
+> > > I think the question Sashiko is getting to is how we handle:
+> > >
+> > >     char *p =3D vmalloc();
+> > >     copy_to_user(p - 4);
+> >
+> > Thanks Willy, I completely misread Sashiko's point.
+> >
+> > I think this is an existing problem? We are using area->va_end currentl=
+y,
+> > so we can access freed memory.
+> >
+> It is a bit mess here since now we need also take into account a
+> requested_size due to vrealloc. We have requested_size, nr_pages
+> and size in the vm_struct.
 
 
-Yang Shi's patch has *no* critical section. There is no additional code
-for the RMV instruction. The RMV instruction is executed on the correct
-per cpu area. One of the reasons for the performance win is the
-eliminattion of these critical sections. Your approach still has some form
-of prologue and posthandling like the current preempt approach and
-therefore will not be able to have the same performance gains.
+I see that vrealloc() always updates vm->requested_size to the new size.
+So we could always use requested_size? no?
 
-The code is more efficient, there is no restart necessary and the
-technique is already widely used on x86 for a long time.
+void *vrealloc_node_align_noprof(const void *p, size_t size, unsigned
+long align,
+                                 gfp_t flags, int nid)
+{
+        ...
+        if (size <=3D old_size) {
+                ...
+                vm->requested_size =3D size;
+                kasan_vrealloc(p, old_size, size);
+                return (void *)p;
+        }
 
-Having the ability in general to map mmemory differently depending on the
-cpu opens up a number of other optimization like
+        /*
+         * We already have the bytes available in the allocation; use them.
+         */
+        if (size <=3D vm->nr_pages << PAGE_SHIFT) {
+                /*
+                 * No need to zero memory here, as unused memory will have
+                 * already been zeroed at initial allocation time or during
+                 * realloc shrink time.
+                 */
+                vm->requested_size =3D size;
+                kasan_vrealloc(p, old_size, size);
+                return (void *)p;
+        }
 
-1. Per Node areas. Calculations of addresses for per node data and RMV
-operations on per node data becomes as trivial as the per cpu data
-handling. This will further reduce and eliminate critical sections
-currently necessary to handle per node data modifications for NUMA
-configurations which are increasingly becoming important for large core
-configurations on ARM64.
-
-2. Kernel text replication. Kernel text can be replicated per node or
-per whatever memory is closer to the executing code. This avoids transfers
-via the on chip memory busses and increases performance. We have seen
-20-50% on that one.
-
-3. Readonly data replication. A similar approach is possible for kernel
-read only data.
-
-3. Read-mostly replication. This is a bit more complex and the writes
-become more expensive since updates have to be made to all copies but
-a read-mostly variable is rarely written and the replication will reduce
-the latencies to reach these variables.
-
-
-4. Custom sets of cores that operate on shared data that is replicated
-per node or some custom set of cores. This is for example
-useful for network devices that have the ability to do I/O via a split
-PCI bus or other construct where I/O lanes are duplicated to sets of
-cores.
-
-
-What we are proposing here is a basic new feature that simplifies code and
-allows addititonal performance and functional features that are so far not
-possible on ARM64.
+Best Regards
+Barry
 
