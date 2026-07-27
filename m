@@ -4,136 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD5D8C53209
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 16:35:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A48DC531D0
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 16:36:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D9EF6B00A3; Mon, 27 Jul 2026 12:35:30 -0400 (EDT)
+	id EBFC66B0095; Mon, 27 Jul 2026 12:36:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 98B126B00A5; Mon, 27 Jul 2026 12:35:30 -0400 (EDT)
+	id E96706B0099; Mon, 27 Jul 2026 12:36:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 828E96B00A3; Mon, 27 Jul 2026 12:35:30 -0400 (EDT)
+	id D60656B00A6; Mon, 27 Jul 2026 12:36:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A9DF6B00A3
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:35:30 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B6784120118
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:35:29 +0000 (UTC)
-X-FDA: 85035107178.10.B9AE947
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	by imf14.hostedemail.com (Postfix) with ESMTP id D055610000E
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:35:27 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=CKXm3GfB;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf14.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785170127;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 976746B0095
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:36:31 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 254A8140108
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:36:31 +0000 (UTC)
+X-FDA: 85035109782.27.B8DDC26
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 7124E20009
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:36:29 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DHC5di3D;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785170189;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MosLzAOb0t5DpeSqUWkjuGhOC/5FMQBcdLSyObRpONE=;
-	b=TtAJfUgpEvJG9WzgkP8IQaqDo6noILCSGREPzPfqGVNEjPPLL5UM4c3Y7WGbP8PAjBrcZv
-	+WEwBs1on/QNa+rdrCPakhhD4kzbD2EfWXYDjxsQ94hwZHMeXFCNZqpyXVfNS6+yR2qHP5
-	wtayhIo2HNdxoJFCDiDVwptXM3ro2GU=
-ARC-Authentication-Results: i=2;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=CKXm3GfB;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf14.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1785170127;
-	b=xVCo84SiJ5+gZ7o+8xnqnMfjsSNpd+B5TbE3qJ1ByEc2RC5b2+leVW6xb6tybuqFCSWQxJ
-	ulXfZ9yv+n2leq5QLa8JXAeXYu6JMjar+/bDTVuc8DvVYVgmUSX5NmB1DwJjrTL6If1dGe
-	rs25dMBTNxrKCs6KDhlGDX1g9z2Ug8M=
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-4720f3bf164so42246f8f.1
-        for <linux-mm@kvack.org>; Mon, 27 Jul 2026 09:35:27 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785170126; cv=none;
-        d=google.com; s=arc-20260327;
-        b=hPI/aftSHUzmSU/lHYQjl/irv4qLsYoo0glu8JASGcmDwb8g5qQ3Eg3O7+KELkKUUz
-         pYXjOfdGrZDh01K5SnjVQkopnMC1dnUoUIkfTxmS0aFezJZRtThzzzN3EIq9qaKsIX40
-         1bT5p+29Ak0T9BcnQbchWenR0qMYfiAh87hnlKPAdfeAPgCZHHwTt+iTONCPf7bRWotI
-         WrZz3+UlU8MCbdlyR6gc5PLRC1kDWcKMT9l2BJyHVnHbmalsJAOHPn9toSC11BJXkURE
-         A7Qi83g4BWJVe3JdkjVfeWuZCL7ghkSE32edSf2wRyNvQ37ReaBQunwopimAugPhKEEz
-         MsgA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=MosLzAOb0t5DpeSqUWkjuGhOC/5FMQBcdLSyObRpONE=;
-        fh=Hlj01q9BPOGId+G+wLDoDK8UC7kffznweD75EeaWZ3g=;
-        b=WO0Tu9heQPQ6z5tBRYRsOYr1r6Wb7kgmT+Pjxbs+ZS2XgNxcJl0tH5E+zAqpENsRbn
-         8kndRestCWH7Yi28Fd0ZxQ06OrQnqdJYxW6WAIJzsTa3BHRGPl0fi/UJDlXDCr5iS7ap
-         GozgHbcrF6ECcm8TrxMY7gI1xp1Bc9LFUw3u5tg3Zp0Z/z0RfdZP7xJANml0Mm6pdQ7J
-         W/v2SW7cBhLefrax2fnz1eBzNMz6p92cA4EbuRWKXUXkMIHSkhdrpayfnkT+LnHpnBkJ
-         0CPTB4u0g3D+CqGmlnKLILtDL+AAKVoybnsotdXYBt1iLnIeNTX2/RdwUZfbyuX4Bsev
-         XdSw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785170126; x=1785774926; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=MosLzAOb0t5DpeSqUWkjuGhOC/5FMQBcdLSyObRpONE=;
-        b=CKXm3GfBXuZRoiQOgJM77M+1OnqktRvuYWiAWPL8Ah+teCVBZsCT00wucSXOBYvIqQ
-         4cc9g0kQi56UjW19NiYHT/RXfnEaa5b8pd6QFUhfnOeacJmr1/Uem+ab+u434q3LG3HC
-         V22xTUsA5wCWQQV3x2qstoqp89HnL9XycXQtIh86xLArMYO+6mRvQO5zba4ThLV9WWvX
-         mNW/D7w3IB/+mpUS1qdBeXNHrgr7RFCFv/k472Tk6JYN30DPA1HHth26lxpxqywX+Tnj
-         u4G3IHdUMfN2dNuVmgtJdLnvUlVGB1cuf1HWbwcw3St4wxscS2olw2GvuX8aoaJ4Dtji
-         ZCqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785170126; x=1785774926;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=MosLzAOb0t5DpeSqUWkjuGhOC/5FMQBcdLSyObRpONE=;
-        b=bk577TeP2iNtQVGvSVvWqP5u3J1I8lw6FkxQ48dakUhlUSLnvcNIAGSMm+JHY4K9AR
-         85fdPQ+dJIqmhr3VLNm6+bLWd4VkiT8etYof6vO2FyLtp136l/X0FdBcEwHJCKf3T1EE
-         GNbaeE40sxgzl8KdQvChOF71q7J7tYrvepulFNjOhb+suwB+8wko21Z7Pj3eHAByH9UW
-         hL8vys3Dcnauz7jczcx38zTfVFEL6oXhfpZX5VHXEc/0IHiwxzI8/2/m8hghT2dv1lqe
-         YtvitYPNVKYpP69FqneB3POPvNMsEtPG8d9eQR6yIVo+0J3Y+L7Sdbkv6v0y9ksXTD49
-         LgGQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rqbz3XgHlUaSUwWSOWcOkmtVeauwcnYva25G0fKxv6I5S42jyZAb4TDzx7AiMNdxVx0WtrADoPO7Q==@kvack.org
-X-Gm-Message-State: AOJu0YzgzMbqyiF8hv5P7DrNX2EGFacFl/LuSLOu+nigBPh3oU5eOBAt
-	w6Rc4ZiaUqFPZyFsoz7Ji1q+XBUUyr4Q/xMRVzJ6Pt0nHn/Yhfx704PGfMfWCsWlfgJ8TmRBm6b
-	8T+85c0zXZJRwAYmrxOslml4HUhlw43s=
-X-Gm-Gg: AR+sD125vVFAuzJxcxLcKnTlm6fBzfqEUgjpjuqQbkOCyBQX/VxoZwUyoPsXvNPRhBj
-	1WQ6ZU+paFgxEEfrOjCodIo9LCpREgx63L2c6uj++AmDWVGoZfgDHYnvUiDoDaqq8DPIj/2FwEd
-	iEP4Qh/0rp0tnwREagoePW/sqJg/bRZlxiOMjvyzcCuNz1OZBc4vUsNptTrqy8qYTXvXra9bQdG
-	fRcFogbA7jGGHkYvOVj8ShFPIFggMytrr11QggwbKG9KP33eWwnNOVfcnk9NwoG5b3b3cBTjsDT
-	LOMJdhe6o9JjKzjjVgkz6fWTIihJ
-X-Received: by 2002:a5d:588e:0:b0:47f:87f9:6ccc with SMTP id
- ffacd0b85a97d-47faf5b6257mr272808f8f.30.1785170126318; Mon, 27 Jul 2026
- 09:35:26 -0700 (PDT)
+	bh=NwZp8vrcS5zNu4NMBMc7+FtncQiyjKLq2JUaAvCeOIM=;
+	b=QWW1sVxP0yiKjpJhCCk7ckOIMcrG+c1CKRv8g1NgQsGWPmYMcV+CkmkITOWZP+FCcwmTqj
+	h4fFokEZOwgz4toP/07vWfIzyGyeX2n/L6Z8504mu3fSkZl2NYmDNJJDItoywlyWROl42T
+	jbclrK32l3ewTLCv9q/NDymN7m5tQZs=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DHC5di3D;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785170189;
+	b=uoksYjMHHnpyJmw8KMhCnh76YMJs0iR7jc6tMSRzvwHHpBpGRQ59+PrZU/2a9NE+php7Bx
+	vqg0GUs1VSCw9UH9O5OkgpKrn5LJvRoH/4bqSitc7f4+iotpBAvnkqG3fK2HRIwKzB8ndx
+	XQ92SHt03eTBwYkLPJGnBYfBXGFBC3E=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id D52AC60008;
+	Mon, 27 Jul 2026 16:36:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC261F00A3E;
+	Mon, 27 Jul 2026 16:36:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785170188;
+	bh=NwZp8vrcS5zNu4NMBMc7+FtncQiyjKLq2JUaAvCeOIM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=DHC5di3D1bGlMzcG7F1Nm23rfd1M/xEorCZ2zg2aJ4kfE3Ia7aVAOoCnNfdnUCb7u
+	 xvwTiIyUUZMVxSba/az3+UtCgzeobMK2K7uUXfMy+Fe5hcQ2pWc7ZdVLkHoR2yG5dr
+	 QmlOUpofMIT5FjH1AIflWD/OKts1pPW03Q58+kqfANSl6mi8WsYfNjhTk59EMDBkvD
+	 +A7BkHY1tQUPXQOU5XBIHE34ro+EVSnjYsSebzp4lUxOkDyhdHMm3ZUzOIMDbfMHw5
+	 Pox+sEHGUSM1J/dSayDMcF7wZTwhgGGS6E5ymM+SFqBfPru1/PKFg3nrka9Er++OoM
+	 dcORIFdnznoYA==
+Message-ID: <06ead85a-59ef-4c1b-8bb6-8eee5c6a00bd@kernel.org>
+Date: Mon, 27 Jul 2026 18:36:19 +0200
 MIME-Version: 1.0
-References: <20260726-shrink_zswap_entry_v1-0-0-v1-1-30957e4d0cb6@gmail.com>
-In-Reply-To: <20260726-shrink_zswap_entry_v1-0-0-v1-1-30957e4d0cb6@gmail.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Mon, 27 Jul 2026 09:35:14 -0700
-X-Gm-Features: AUfX_my1tbY4sQGH3dDFANLwnXAZgKc7WpJkE1fr0Fyb9I9VWPnfLMnwKKVxpRc
-Message-ID: <CAKEwX=NLEmRKbgf7e4mQ8ynwGLhe8d3orc_2U8n-K_W6VjOAoA@mail.gmail.com>
-Subject: Re: [PATCH RFC] mm/zswap: reference the pool by index to shrink
- struct zswap_entry
-To: Jianyue Wu <wujianyue000@gmail.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D055610000E
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/3] mm: Add unmap_mapping_file() helper
+To: =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Tejun Heo <tj@kernel.org>,
+ Bjorn Helgaas <bhelgaas@google.com>
+Cc: Bjorn Helgaas <helgaas@kernel.org>,
+ Manivannan Sadhasivam <mani@kernel.org>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ "Liam R . Howlett" <liam@infradead.org>, Baoquan He <baoquan.he@linux.dev>,
+ Pratyush Yadav <pratyush@kernel.org>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>, Jaroslav Kysela
+ <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+ Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Simona Vetter <simona.vetter@ffwll.ch>,
+ Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Dave Young <ruirui.yang@linux.dev>, linux-mm@kvack.org,
+ linux-pci@vger.kernel.org, linux-sound@vger.kernel.org,
+ kexec@lists.infradead.org, driver-core@lists.linux.dev
+References: <20260725210549.3716546-1-kwilczynski@kernel.org>
+ <20260725210549.3716546-2-kwilczynski@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260725210549.3716546-2-kwilczynski@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: rcsge8opxfo766bfhxmm1zczqeqezzui
-X-HE-Tag: 1785170127-809920
-X-HE-Meta: U2FsdGVkX1+NjLQ37NACsC9POKWGs1kEEOfjseIU8ulWXP9kZM03wg9IU5zBYUIQ4TVNH2so1T3xPj1xkEQ5dT2MlT3HBDloP2Kq8eHph4A50uZH1LOOgBKc2BNc/39P+PKtszhp7mUnEz6JOris+B5e3d3CmNYXjTC5CLj6enKyHYB7A0BFe7W8qG0DVkxGJWStpWNHGoKQE9dn0mrfuy+eo5gDAbQFi7KPezdUIw8bT5aAaSUM7RIsyy6o9KX1cFsqto2Nj94eeXCc8sCqifggj2qlvPklGM7hOnfMzRhSyJBsUjC0UCyK5HE3bvrj9bYfOamMx6wSjhloRf9YT9n0JSvmSBKASb9GX4/bxGEHn6LDob1E71wuMdgw6JOR7Usv9j3RGFcf9Xe15lsLwG0d9sBTM/sz0aSepnwChEzEoLrZiCciw1o9ABpuufXnCFtAVp09+uBGbj7MegDTc65qsepgJiNZx1K/zxP79OB7Cg+YZh2Fnh22poh16dVyQySvcUHeE0VrMVFAgCl/uKy0DAfLED8aAbqOxjuXp8kvj6ZhvDAi6IMfnJWB8KBGM7U/KACB4SIzWUX+wxR2411dISmjY6Ilr3kDBz7yJJcKVx7R43fb9zYxnWbg1jL1dB/kQTrcqpVs5xtMZIEfDS5G5WGONxO5RkKnODSYlFlQ6Km7mq/6z6VM87sTC9OhjOiDeRpF8UXZvgjDbBllaxme5JWu7xm/4M0+OGUD170ORb8sUKsD0CyU9+0lgg167bHMOIQsGW8QYGwKrcIwRLPoSrqOp17pwr2LOBpjzkJzgAk6LwpS7lu3sohBYxG88VTXvsp0rCyh3Ns1gohcf2uKqVZv6/x4Jw8Ey+8JyuSbNAX8SLQB982P2x5PY3MGIzmYL9OCbt26TTvm/7gQBJz7sItSTd6kvo1r6oIoMGbLciISb3FwW6Xb+EGXZCeJzvT5mmFUV6AWKBcFyK0
- +M5qzmdF
- uFdeEz1NL3uwnl4oJC9Oh5XiAaqmvCRja/Ad8RMVVtPs2J25SWXjmPT0MWUUUX3npYxIvm6IWA7h/yRfJqscdIW6uvxi70QCs7LKjxGjEFNzjqjurj9ovF7yNejKdGjQtK4AZa6bNiRDS/KhqbLgZb40fIy/yfwOQczoANS5wsr4J4+Zky9x8toufRBehuwFEUru6jtoqpOKAemdE9sET1otP9F8dkou5PK2SDWP+cSVoY6tPtooVkvCXoxbMEzP9LFnimO7mpdCYXy+Fwk1j48Xstjr2L09p5BqQ5L0abA09mBoGMhBwOXQU2y92GCMZoD/bLvhWm8M5rvrCh/jlFoNiiCqXnGUTg6Jc7rX6QdbmDzYTf+4vOODZx8tMZe25Hwcv+1zgqnJ7dRvdb+oCxb+vNWlpaj2UEFR2LgbVgiU9Q9HalIAA9HekH31cV4NcoAJmvm4sJ9mTevdbiYOV2JZJ2w==
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 7124E20009
+X-Stat-Signature: mkrp83xhqpzj9z3w3a6qofmoq1t9bmnq
+X-HE-Tag: 1785170189-273108
+X-HE-Meta: U2FsdGVkX1//0DZzG/+UjANk0GjD8+I2TFQxgsDwT3VPpxQoap/4DUk5n+3P6gBvnCBzn5cI2iMzN26sg5wqFjo8yX4cCpb/AXUCX/vDelf7q/GZgsCBLwWiF7J0bLxwo07GDYhxPJTsG8j/z7Ql9mfjIiJO8lqnOeKsUW4Ha42QBu4BOJvYwH62PuZhDZ/FWExdBuCpGm7CA+6yaOBy8hfbUb1JNEj7vTPI/ekiftJFc19LwV4IhD1eti7efsMz7K1FQUqW0dgwpPqPS7CAi1YCvb6n4gks3QAXalxSUAPeDu+HKfUsx8/KN+qtz4F5hUeF9JKCZv8i5WYyhY8CeUDBi83TvVMDZy0remhGn65i9y4o7evJnb+ZwhfGeenH/dao4akXk735/Ag+2bAvah2nrSiZ5ZoCmmu+gETa/Wy49ay9ZXuuveBa+uofYVy5LSAGtFl18sJPh49wTqbADvLy4+W7UH+i1UlM3RRl5wDMPhbOVktc2epdAhfvy7bYxDvDMM+HOfv9WRBHLk0GODkoj95cks4z8TFbWe/CyJoqK2gWYvHkorlcSThkK7lc/ce2tfj2fa8F6b2whQbmXqHRH5Rmvb7dtL8iBYnYD0/vbCKm/IvhtHtvNHzAhU7ZC02roe4QtJiAFsiSevNTUH5LJj+xCL5OpS349ANNBpgx+tVefQvXhTWiAlabGYKXxIexSpIr0rvXYAQKAML2Xd4PUZaflU5LOsm5xqoacbnX2Cx/FFTdZ3ZDBw7hLemqsj7UErGwSj41EHr1xv7qUmNPfeBj1IAChz+/TdKUXoENTY9YAzWvOcuH+tV0sKVNwG7vqaOWmxgtNrPFiDK06NqmQFbGBt7eyCTS0O3CWyakmDK/fMb3p9DXbnPkRParS9xtQoftFPH1iMDMdc328cEXRGUVjbcQuDHb+Lrj0aLiNYfg+Tnth3QmH1noUpy74aOfJSjuOCSZbmm+Y9m
+ MVC+ZI54
+ sOzNtxLC1hzeE90kQVWoiYd7R5lTncgXgS3OLmsupYJjo6P1Lu87QvBn1RYSYwlzNfzkW2K3Sqtz/OM/SazqMqB0SkPSWIr4mfzLg4q+yz9YkfBoJzKW8iI6NLpNmNOG/XO1z/ijvd7Bi1hpZUVUTkOuD+lX9ymIc6a5V0LwvU2Ei0+tu6Aj5Sw7I+NTDfwShT3NB8+cQm+FS6VnGw3XNuDb7Z4c4V59js8dnZ5a6WEMLdbB+565YNFzroAFvwqg7qsbziXXa1kUgT2pIZrP79cI8tn3PUfQ7CIXC4OApFsJvnVCbDUNBvp40qxy4qV7GqN92Xn2Wbs8HwQNkyMbjCvNCpxK6LPRFur+OSM4EHbrQ4H7y+W4nf1yIXlNhp2UvtNueuEOF5q+lVAM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,38 +152,118 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Jul 26, 2026 at 8:18=E2=80=AFAM Jianyue Wu <wujianyue000@gmail.com>=
- wrote:
->
-> Every stored page has a struct zswap_entry, so its size is a per-page cos=
-t
-> that scales with how many pages zswap holds.  It currently embeds an
-> 8-byte pool pointer.
->
-> Replace the pointer with a u16 index into an allocating xarray of pools.
-> The index is allocated with the pool and remains valid while entries hold
-> references to that pool.
->
-> On x86_64, the zswap_entry slab shrinks from 56 to 48 bytes per object,
-> raising objs_per_slab from 73 to 85.  This saves about 2MiB of metadata
-> per 1GiB of data held in zswap.
+On 7/25/26 23:05, Krzysztof Wilczyński wrote:
+> Currently, unmap_mapping_pages() and unmap_mapping_range() unmap a
+> page offset window of an address_space, and code that removes a file,
+> such as kernfs_drain_open_files(), relies on them to unmap the pages
+> of a file that is going away.
+> 
+> Files with f_mapping swapped to a shared address space at open time,
+> such as PCI resource files using iomem_get_mapping(), have their VMAs
+> attached to the shared mapping instead of the file's own inode mapping,
+> so unmapping the inode's address space cannot reach them, and they stay
+> live after the file is removed.  These VMAs can only be selected by the
+> struct file they were created through, which is recorded in
+> vma->vm_file.
+> 
+> Thus, add unmap_mapping_file(), which walks the VMA interval tree of the
+> file's f_mapping under i_mmap_lock_read() and unmaps the pages of the
+> VMAs selected by should_zap_file_vma(), using the same per-VMA zap as
+> unmap_mapping_pages().  When f_mapping is the file's own inode mapping,
+> every VMA is zapped, as unmap_mapping_range() does today.  When f_mapping
+> was swapped, only the VMAs with vm_file set to that file are zapped, so
+> callers do not need to tell the two apart.
+> 
+> HugeTLB VMAs are skipped with a WARN_ON_ONCE(), as zapping those takes
+> i_mmap_rwsem for write in hugetlb_zap_begin() and would deadlock against
+> the read lock held over the walk.
+> 
+> Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+> ---
+>  include/linux/mm.h |  2 ++
+>  mm/memory.c        | 48 ++++++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 50 insertions(+)
+> 
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 485df9c2dbdd..e882a03eaddd 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -3183,6 +3183,7 @@ extern int fixup_user_fault(struct mm_struct *mm,
+>  			    bool *unlocked);
+>  void unmap_mapping_pages(struct address_space *mapping,
+>  		pgoff_t start, pgoff_t nr, bool even_cows);
+> +void unmap_mapping_file(struct file *file);
+>  void unmap_mapping_range(struct address_space *mapping,
+>  		loff_t const holebegin, loff_t const holelen, int even_cows);
+>  #else
+> @@ -3203,6 +3204,7 @@ static inline int fixup_user_fault(struct mm_struct *mm, unsigned long address,
+>  }
+>  static inline void unmap_mapping_pages(struct address_space *mapping,
+>  		pgoff_t start, pgoff_t nr, bool even_cows) { }
+> +static inline void unmap_mapping_file(struct file *file) { }
+>  static inline void unmap_mapping_range(struct address_space *mapping,
+>  		loff_t const holebegin, loff_t const holelen, int even_cows) { }
+>  #endif
+> diff --git a/mm/memory.c b/mm/memory.c
+> index ff338c2abe92..4a09d7b6aa6b 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -4423,6 +4423,54 @@ void unmap_mapping_pages(struct address_space *mapping, pgoff_t start,
+>  }
+>  EXPORT_SYMBOL_GPL(unmap_mapping_pages);
+>  
+> +static inline bool should_zap_file_vma(struct file *file,
+> +				       struct vm_area_struct *vma)
+> +{
+> +	/* On the file's own inode mapping, zap every VMA */
+> +	if (file->f_mapping == file_inode(file)->i_mapping)
+> +		return true;
+> +
 
-TBH, that doesn't seem that major... It's like one huge page man.
+I assume Sashiko complain applies only when this function would be reuse in
+other context.
 
-But Yosry might disagree?
+But I wonder if that check is even required, shouldn't below check cover this
+already? I'd expect that "vma->vm_file == file" must always hold.
 
-On the design aspect:
+> +	/* A swapped mapping also holds VMAs of unrelated files, zap only ours */
+> +	return vma->vm_file == file;
+> +}
+> +
+> +/**
+> + * unmap_mapping_file() - Unmap folios from all mmaps of a file.
+> + * @file: The file to unmap.
+> + *
+> + * Unmap the folios of @file from every process that has them mapped.
+> + *
+> + * If f_mapping is the file's own inode mapping, they are unmapped
+> + * from every VMA on that mapping, as unmap_mapping_range() would do.
+> + *
+> + * However, if f_mapping was swapped to a different address space at
+> + * open time, only the VMAs with vm_file set to @file are considered,
+> + * since that address space also holds mappings of unrelated files.
+> + *
+> + * Must not be used on HugeTLB files.  HugeTLB VMAs are skipped with
+> + * a warning.
+> + */
+> +void unmap_mapping_file(struct file *file)
+> +{
+> +	struct address_space *mapping = file->f_mapping;
+> +	struct vm_area_struct *vma;
+> +
+> +	i_mmap_lock_read(mapping);
+> +	if (unlikely(mapping_mapped(mapping))) {
+> +		vma_interval_tree_foreach(vma, &mapping->i_mmap, 0, ULONG_MAX) {
 
-1. How many pools can there be? My understanding is it's bounded by
-the number of compression algos, and most of the time the system just
-use one, no? Maybe just add a fixed array and call it a day? :) Seems
-like we can probably get away with, say a fixed array 16 elements.
-That seems plenty. You can reduce the number of bits it takes to
-describe the index to 4 (saving the spare bits for future usage), and
-you can avoid the xarray overhead...? Just fail and warn when you have
-reached capacity, maybe? :)
+Can we just use mapping_rmap_tree_foreach() here, similar to
+unmap_mapping_range_tree() ?
 
-2. Note that the zswap pools are also organized into a list. If you're
-adding a new data structure, maybe remove that. Or maybe the other way
-around - can use it that linked list for your purpose?
+> +			cond_resched();
+
+Why that? unmap_mapping_range() doesn't seem to require one so far.
+
+-- 
+Cheers,
+
+David
 
