@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DF2FC531D0
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 16:49:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E64EAC531C9
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 16:49:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 030506B00AC; Mon, 27 Jul 2026 12:49:09 -0400 (EDT)
+	id ED5C86B00AD; Mon, 27 Jul 2026 12:49:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 006BF6B00AD; Mon, 27 Jul 2026 12:49:08 -0400 (EDT)
+	id EACCE6B00AF; Mon, 27 Jul 2026 12:49:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E386A6B00AE; Mon, 27 Jul 2026 12:49:08 -0400 (EDT)
+	id D9C5A6B00B0; Mon, 27 Jul 2026 12:49:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B8C6A6B00AC
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:49:08 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4995D1A012D
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:49:08 +0000 (UTC)
-X-FDA: 85035141576.21.8F84D49
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9CF196B00AD
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:49:17 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2ABA41C0026
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:49:17 +0000 (UTC)
+X-FDA: 85035141954.07.11E4E00
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 95DE720004
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:49:06 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=ecDWkEbb;
-	spf=pass (imf03.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
+	by imf24.hostedemail.com (Postfix) with ESMTP id 89010180007
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:49:15 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="Lb/jyoKf";
+	spf=pass (imf24.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785170946;
+	s=arc-20220608; t=1785170955;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3TSPhW4EoKUV5joivEvfj7hKpdd/qjzphwyDuYoRqZw=;
-	b=TsWqAQP2SnGLd4kHfptkRYkMQStBIJNZopvJBYZPtegZLoiDsrHI5iy8AclyU2Q5JMMhEJ
-	YAeItsVq/AL6/86M87nrjmdXzVRXUxzO5ANGSHSlckN+zhiYPnsrnEgVWXYsOoUb3Gwswk
-	Vwb0dZmff7jaCgSmDZ2w938ShD1ERM0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785170946;
-	b=lU6eYpPVYOgC64L8JLuSJnTsPwdkk6hb8yVcO/MnJC+m9J1BzeOMZxfUhvOtgJY8J3Mpe3
-	k0BVTqKRdpX2MNWzBqHhHlvUDCG9HzwIeHjEsF6NpGfZ4alYu/q0EcATlfichdoHE2sQP1
-	DLTCdQtu6cRZshxYesck4ag5LgkrPw8=
+	bh=bHPeorp1zdnoJdhuJBuClNoQmKVDakXwSrFrOoFYv7g=;
+	b=xQ5KfaWHpMK5nmgXfu5OvuxcwDv3kIZD6Qi89KDvbVFIjwd14dvIo8lqBSAI3EaXoaB2gW
+	D63F13rBRWojLEPVGJuQIeEqcL7Yi1meTz0TUj2Q6ynDiHVUriWp86fXVnPXfJK6bee0ev
+	h91Puwy9u+yfce/kBY97+kAwXOUSzFc=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=ecDWkEbb;
-	spf=pass (imf03.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
+	imf24.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="Lb/jyoKf";
+	spf=pass (imf24.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785170955;
+	b=q9e6UeAb2UQZVkHKB+/CiLSB++FSWsrHCP0Kju2URduutAL5mYuLDXjLsCtJmidZHK8MGD
+	yoopSoiPaEbgEfJy3cwtKnnpzhvFml98xWPRDSVKGNvG3EiAsNkNcXPuLGwbAsezjervbF
+	cRmsJ761Tgv9TwgeKykGauSuS8DoLDk=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AF6CA175A;
-	Mon, 27 Jul 2026 09:49:01 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AD6F119F6;
+	Mon, 27 Jul 2026 09:49:10 -0700 (PDT)
 Received: from e142334-100.cambridge.arm.com (e142334-100.cambridge.arm.com [10.2.198.93])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 1B7693F86F;
-	Mon, 27 Jul 2026 09:48:56 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 24B253F86F;
+	Mon, 27 Jul 2026 09:49:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1785170945; bh=0q+7yLXlDlEamYyqT8+gJuMmLMdePag4Q+fMTD4K878=;
+	t=1785170954; bh=V6zt/tVCRXmaxyFDjqVyIeLB8KQS6R6ktC8ishLU3Lk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ecDWkEbb2qtk+8ohd6Kewpw4n8VlI4E4Zyq+L1811WJFybbUDBiT4Z8cWhNiPrkBi
-	 yWBZRoq7dWSZtF4v40NFDEpiduacWSK35tbmzo9qGFoi4xbTCiexyO5JyvZMXpFccf
-	 raReWNwEs40DmEFZyWJK+vCB10Q+0nVfqhCKOuXI=
+	b=Lb/jyoKfMHEtn+EGInX+1ShDiDJE4SKeMR6pxvOnK3LevEvIfEqty1XGjueSJSBAs
+	 G42AaQQj06YclcwbnNEF+ZIACcOyOe2ZtG+CAXJ1O24QpZxYlP92nB7MGKzzIYNXvf
+	 GKb3saft/JW4/CWAMTUJrteRizHdBV+a50NOn1YA=
 From: Muhammad Usama Anjum <usama.anjum@arm.com>
 To: Jani Nikula <jani.nikula@linux.intel.com>,
 	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
@@ -128,22 +128,22 @@ Cc: Muhammad Usama Anjum <usama.anjum@arm.com>,
 	bpf@vger.kernel.org,
 	linux-perf-users@vger.kernel.org,
 	damon@lists.linux.dev
-Subject: [PATCH RFC 10/11] parisc: use hw_pte_t for the data-break callback
-Date: Mon, 27 Jul 2026 17:47:01 +0100
-Message-ID: <20260727164715.2866609-11-usama.anjum@arm.com>
+Subject: [PATCH RFC 11/11] xen: use hw_pte_t for PTE range callbacks
+Date: Mon, 27 Jul 2026 17:47:02 +0100
+Message-ID: <20260727164715.2866609-12-usama.anjum@arm.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260727164715.2866609-1-usama.anjum@arm.com>
 References: <20260727164715.2866609-1-usama.anjum@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 95DE720004
-X-Stat-Signature: yzjmdt35k61qr6o9wp1wiooxptupezzu
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1785170946-777616
-X-HE-Meta: U2FsdGVkX19xtMM2Ia3HbnkYSWX95srjJzW0e8KH3GGLqviNxAqzfDm5o2PHBfGRODWxF4I57qfXvf1m/NGFus3/xxAT6iIa0HmdTpr4/vMYBiWmFe6glHPVoNfVf5DtdxxenLsNCEpj4sssWOrq1tHZ0ytFGUnkd8JGTW+WKu4X4qpyXc/JDyWghFWDkWJZ6SdVCN2QLqD8A9GJTPkf47Uc6qYgy5lL3U+Z3BEP7emhLIyMn3TuxQBdlzRWe+gh1gQtMIHDEc317/UbcHP0Fcyf4ItRNMPaT8LjjomjUNqZ5BIJFpq4rCNRhfYgumB82Yu6BTfFngP0mr1Cpfo355sKoXQ6jFskU3DPUAt9BxJ3Tdr7ssNEM5n60Et2RPvuNfKnI/DKqe7+NFQsxMyXmCW5OScE2/csviYAW6Y2DiLePo4T9/VFmnWNk17VXouhsuoy1t0hIsJUBYpLT0fTRgiDpERsfEw33g2PkhSdHHFwXJpTAq/wSzNk9eKaxbl3n/9XxCyY3emHhdSVSwtRiOkw+RNjKHEE35U6L+eo/KvRjHNNNp5Qgk/JKiKfQ4lOGuukZwhKZSD0o+rGqTGkEgR5dSJu61GXj2ZuycibIlxeicmoMhfKhQ7Z7e6pJKM0fzB59a23K682QX3Aenik7OA9/Y5UYoaixQs4aWZP6ysHjd2PyBKgT1BvuvjKyggv1a8TMYHsLfAj+aXA9qSIJo73uNI0AHRSIRjUeIF/0hHMVnaplmrmK8GcyvdSvNhyAXVuAqLJju8UlNCNoAd4YvJCHFPuLR03GHWuSXDSjYi4qbWrIP/Ze5sW7cSJExheesqa179RtGkJxoksuToeIKRA319xSTRvPegZJijeV/7kPfsY/qHb2hmBCIIMP4oCYcQzWA9uY7z2Mxj1dGROtasXJGulH5D4H5m0mKjZramSHJenzuabZStlJgHhHVO2yNVL+R44xQk8RMe96CY
- C5YBlMVu
- 8H/6XLP/I4Ku+zA8SfDzwkydSRiaDUTq15owf6f1Itvp36E99wBUrZgk/ELOz5K5J1AqxrqPoMPRYyIMbVIS2zhYKBOxMLvOA+FpwOS5odNym/TCbmk4DMU8UyLq7kJ+V4g3TGuzE7VsVT92peAhlHxGeG6xajNBMq2DYIE7WmkOiYzcmCQwkMIj4kW5QhM74zXba0UGFkTpTLMqusT+E8NrCY9Q8f6VN8KI1w0xP7KitvIB6X7gN/Dmi0jw5zHp27a9YCEyW5pKmeaoA1F92bicnaJEBmc79a/Wawu/71qOE/c1eKGWz3UgsqvyZZbS96JbFfmKVV1PvoSm9OMf+iBzjMDQTmd+T+cm49+kVfTrOJng=
+X-Rspamd-Queue-Id: 89010180007
+X-Rspamd-Server: rspam01
+X-Stat-Signature: dhuh5exigf5mcbz4749m17rrqtcg8xnk
+X-HE-Tag: 1785170955-252515
+X-HE-Meta: U2FsdGVkX19f7G+yudRO0ekOGOHz+rYrvbiL6JkOs2E3e8TWqGL3P4wqa8aETX3zyBKttVE5W8gzTTd77rc/hMoUIraiYGmcjpMMHF9d8vHRIyzUfEhRsTYRUwRfsisxEFh09Nx+GCQISAKX19BRtIb6cQrLfB51KJXq/nPkR6JUosVe5VTAk3AQXCScYiE4ZiaHGNiqmyPDEYcGTiEWRjpTw2h3Bi1AsbifpqZIJmswTMm73zH/TSSgXtI5R6y9UTOyis9Q2wEXQprwNMQv/94LI7BLiBRmPrmuONn/9QTxLby3dYB/gPzbPSkXY41nm8JCJ4LrE4rRFisg6CWDqFqmjQDb0H+xFFjyn+BxrMrWIC/QI+BU5NZhHRb9ZEDOaTW0WBqW/orpO3RcffOMFO6pKe06YwX663OO6+ybv6yTLwbfiRnA88lvDzidrfcqLh2RkF5UCnkv7sWQAaKgq7TVsC98n4MmwxRuHf3HtEy5LyVuqS72DfVcZA4SY1B9i54/S0kbWqTzvx4Mf2N97rTUijkJ2p0y0+2LUQdOYPYwiJKASjrGHYdJD/uPCOWVyRHnUKQixO5Mxl45GB4L3vLrrBKYO0k9u2+dvYYi8r2j7zWC+XzvQ1/MBSCvqLpNLQi8lb/1Tp+s4rLYzz9svmScZBJ96xuxhnI2HkW+M+P1uU+Fl/FanJZgJeW692CqnvLRcxxMGo1tppcuAbPXIZUoGVQgK92bFftmQrLXTxUhiyBcwFdA2Xd5faM+b8n+YX+ZLt57HyviHlGD8ZdZQ7qrY2wxxOwZruD2/bt0LoJwhifNKVUKoUufxay0mIsO8R7hk9AasE6lDdkORysQ4tSjfSQj3r+Awjq/9tOkIsR38B8UIWUuAb/SwHQsenV7vtBHwmcDVf31pN7TS0XCY6lKg6Do1emDA1tgumzII+SsjYS48SPYcivbtda+0Mx4FQO49AAWaZDpigLr/fS
+ miFEMoJ1
+ 2J2lms2I53EQL4yuI2CANcsSCWnvCjUBYKBh3qqpNtbzVUVrK1wecaPuET7bolfvSsgew41mMaWZ5XwgC9Gr1NmiXB1bKm4tpTvEVVkyOfWrl1igbVzT5/0eh37RpU73+whtJBj3twbGrI+fnmW0MFhOkhwuv8XphIoBbJJyNu/jxbrPrmmlzjohhkas8LUSYg72oYLED+AGCmrwkrCsRR+jfqELl4545XtHQbeyWzr9OPPBFNKR++HgpvhsLwiQNIk6K/oGmbKlxTjng+IVWfCVug7lTiTly0+50O7sAOr3EX1NTx4L99MFLHieRnl+dFzqWOmcTRXryOTp9RxOEpMHojdUjMJOe9r1hhRdrmeVJk70=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,33 +151,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The DEBUG_DMB_TRAP path passes set_data_memory_break() to iterate_pages()
-for PTE table storage. Update the local set_data_memory_break() declaration
-to take hw_pte_t * so its argument is identified as table storage.
+Generic PTE range and remapping helpers now pass pointers to PTE table
+storage as hw_pte_t *. Update the callbacks to match those interfaces.
 
-The generic hw_pte_t alias makes this a type-only change.
+Keep logical PTE values as pte_t and continue to access them through the
+existing PTE helpers.
 
 Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 ---
- drivers/parisc/sba_iommu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/xen/gntdev.c               | 2 +-
+ drivers/xen/privcmd.c              | 2 +-
+ drivers/xen/xenbus/xenbus_client.c | 2 +-
+ drivers/xen/xlate_mmu.c            | 4 ++--
+ 4 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/parisc/sba_iommu.c b/drivers/parisc/sba_iommu.c
-index d9339dd508262..27a7efe3e0a70 100644
---- a/drivers/parisc/sba_iommu.c
-+++ b/drivers/parisc/sba_iommu.c
-@@ -1697,9 +1697,9 @@ sba_common_init(struct sba_device *sba_dev)
- 		int res_size;
- #ifdef DEBUG_DMB_TRAP
- 		extern void iterate_pages(unsigned long , unsigned long ,
--					  void (*)(pte_t * , unsigned long),
-+					  void (*)(hw_pte_t *, unsigned long),
- 					  unsigned long );
--		void set_data_memory_break(pte_t * , unsigned long);
-+		void set_data_memory_break(hw_pte_t *, unsigned long);
- #endif
- 		/* resource map size dictated by pdir_size */
- 		res_size = sba_dev->ioc[i].pdir_size/sizeof(u64); /* entries */
+diff --git a/drivers/xen/gntdev.c b/drivers/xen/gntdev.c
+index 1dcc4675580ed..b013bcad99b5b 100644
+--- a/drivers/xen/gntdev.c
++++ b/drivers/xen/gntdev.c
+@@ -301,7 +301,7 @@ void gntdev_put_map(struct gntdev_priv *priv, struct gntdev_grant_map *map)
+ 
+ /* ------------------------------------------------------------------ */
+ 
+-static int find_grant_ptes(pte_t *pte, unsigned long addr, void *data)
++static int find_grant_ptes(hw_pte_t *pte, unsigned long addr, void *data)
+ {
+ 	struct gntdev_grant_map *map = data;
+ 	unsigned int pgnr = (addr - map->pages_vm_start) >> PAGE_SHIFT;
+diff --git a/drivers/xen/privcmd.c b/drivers/xen/privcmd.c
+index 725a49a0eee72..b4a487dcc9ecb 100644
+--- a/drivers/xen/privcmd.c
++++ b/drivers/xen/privcmd.c
+@@ -1658,7 +1658,7 @@ static int privcmd_mmap(struct file *file, struct vm_area_struct *vma)
+  * on a per pfn/pte basis. Mapping calls that fail with ENOENT
+  * can be then retried until success.
+  */
+-static int is_mapped_fn(pte_t *pte, unsigned long addr, void *data)
++static int is_mapped_fn(hw_pte_t *pte, unsigned long addr, void *data)
+ {
+ 	return pte_none(ptep_get(pte)) ? 0 : -EBUSY;
+ }
+diff --git a/drivers/xen/xenbus/xenbus_client.c b/drivers/xen/xenbus/xenbus_client.c
+index 27682cb5e58ab..387f97a555594 100644
+--- a/drivers/xen/xenbus/xenbus_client.c
++++ b/drivers/xen/xenbus/xenbus_client.c
+@@ -749,7 +749,7 @@ int xenbus_unmap_ring_vfree(struct xenbus_device *dev, void *vaddr)
+ EXPORT_SYMBOL_GPL(xenbus_unmap_ring_vfree);
+ 
+ #ifdef CONFIG_XEN_PV
+-static int map_ring_apply(pte_t *pte, unsigned long addr, void *data)
++static int map_ring_apply(hw_pte_t *pte, unsigned long addr, void *data)
+ {
+ 	struct map_ring_valloc *info = data;
+ 
+diff --git a/drivers/xen/xlate_mmu.c b/drivers/xen/xlate_mmu.c
+index 8efd7b55223fb..d7244f9f9a545 100644
+--- a/drivers/xen/xlate_mmu.c
++++ b/drivers/xen/xlate_mmu.c
+@@ -93,7 +93,7 @@ static void setup_hparams(unsigned long gfn, void *data)
+ 	info->fgfn++;
+ }
+ 
+-static int remap_pte_fn(pte_t *ptep, unsigned long addr, void *data)
++static int remap_pte_fn(hw_pte_t *ptep, unsigned long addr, void *data)
+ {
+ 	struct remap_data *info = data;
+ 	struct page *page = info->pages[info->index++];
+@@ -269,7 +269,7 @@ struct remap_pfn {
+ 	unsigned long i;
+ };
+ 
+-static int remap_pfn_fn(pte_t *ptep, unsigned long addr, void *data)
++static int remap_pfn_fn(hw_pte_t *ptep, unsigned long addr, void *data)
+ {
+ 	struct remap_pfn *r = data;
+ 	struct page *page = r->pages[r->i];
 -- 
 2.47.3
 
