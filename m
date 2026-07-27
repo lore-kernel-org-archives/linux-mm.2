@@ -4,123 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0229C531D0
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 18:06:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F45AC531D0
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 18:09:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 99A746B007B; Mon, 27 Jul 2026 14:06:43 -0400 (EDT)
+	id 8DB646B0088; Mon, 27 Jul 2026 14:09:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 94A326B0088; Mon, 27 Jul 2026 14:06:43 -0400 (EDT)
+	id 865BF6B008A; Mon, 27 Jul 2026 14:09:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 83BAD6B008A; Mon, 27 Jul 2026 14:06:43 -0400 (EDT)
+	id 72CEF6B008C; Mon, 27 Jul 2026 14:09:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 50B026B007B
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 14:06:43 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C2FF9A0177
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 18:06:41 +0000 (UTC)
-X-FDA: 85035337002.08.ABEAC40
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf16.hostedemail.com (Postfix) with ESMTP id C5890180006
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 18:06:39 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=Lu1jXBGs;
-	spf=pass (imf16.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F2EE6B0088
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 14:09:26 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9975C140183
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 18:09:25 +0000 (UTC)
+X-FDA: 85035343890.22.00369CD
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id B0BEC1C0010
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 18:09:23 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nUyBVRvT;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785175600;
+	s=arc-20220608; t=1785175763;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ErGvZrCvQZJ3sJJPiHKyFyyy1TpjdXwvCQZ1EjAeumw=;
-	b=UOz3K1jbxfMFGi3+GPV7GbxZ+q4M9MdJDbqJYwmFMQzPPh14knJlyqjeXlGvvS2JYkFI24
-	BswHAz2l2B19LCA+PBoUXf+TSYMiMSeJQ/Y4gWCX/iZwDjdf/kcw7F2OQdm4HZZddI4ofp
-	/Cp0/Iva8NW6y3rKW3bLy9j9or+gxhA=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=Lu1jXBGs;
-	spf=pass (imf16.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	bh=RcjbXP8Y17nr6eEz7yURI6DNo/+/Q534212DGqxsB6A=;
+	b=pWRRG3qxYZ7NlN6oyzkZ8rciNea+1gZq2YUctuhVuz399yLLlKDRAhXW82D9YVbMTB7wbj
+	+icoLzS1pyAYMr0Qp/PL8YFlmTBaD/MllXe+m/Y5JeoMHBZTSRdKOvjlmRkUHqPDd75Cj4
+	E9jxSQ0rM1Cu67e988De7NRh7NjW6vQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785175600;
-	b=2YBbSGhHB+spz1R86vbjCqTzjQ0urdjV1FRxl74JbtG2iJf4VCu2/rm8MaVO0ZTSUhk21Y
-	qBSHPwxkkxDwypVl482SSTKXV1U21r1HaIGbf9rF87700SfmnHneqEQ4n3zVL5gBDt2XQT
-	Cw2kL1xnuLVKZ7ag6RmK3cFLkJKRotE=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6879A16F8;
-	Mon, 27 Jul 2026 11:06:34 -0700 (PDT)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 380273F86F;
-	Mon, 27 Jul 2026 11:06:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1785175598; bh=17fUHUjXNeVWMgUSlC4I4UbGJCuscyMxz/0B2wiLID0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Lu1jXBGsav0iVgrGWSZsvRyAlJ5at2QxNHv1w1hXfz5ioFXzND+YJHKyFrA03qRFY
-	 Q/hx54v2Cd4KFrZuJPBBE4RftgYfvLs49KTQX5Dz6eKnnAQEbcQ/tI+05OTQ1z0zkD
-	 i2PqFVr45Lxp9zCvG4+AVFaAlSVytmKw9arVF48g=
-Date: Mon, 27 Jul 2026 19:06:29 +0100
-From: Yeoreum Yun <yeoreum.yun@arm.com>
+	t=1785175763;
+	b=P0jb1mOqh2iR5nd5D04oAhGjm203OZuXeEAZUIRvFa48PAd1GnKBjNS/VMwkNen9R3Xq4h
+	El6tI2k6992r2eEOIaK366raJBqo/erIgCr4yHR+Iq2tR3yrfioxkRxAMSTb/vwOiHzImB
+	CytSJFaAJVkCPNWgz1juNYYgMzA/wCs=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nUyBVRvT;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id EB37C60A65;
+	Mon, 27 Jul 2026 18:09:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 056B21F000E9;
+	Mon, 27 Jul 2026 18:09:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785175762;
+	bh=RcjbXP8Y17nr6eEz7yURI6DNo/+/Q534212DGqxsB6A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=nUyBVRvTt12wzr30EzC1dj3+o2IHuFUkcbhMVzmIbjhqYCFAJ1y2Wic3eoU2A4prF
+	 OcCVzOpvEWKsSj2N2BdMUFDDTWva8VwCVgYKP0k16+jR3GNUAYB6r2jV9qKkUpWZHQ
+	 XJwNIvqfXpQEpxaEo6cYd1S5dNPYBWB3jaj1Ux5G4+GWTVrZfvHco7h1/AdZI60yRi
+	 BuUEBX1IeQ84jTUsy1WCKkDm0EwGH8kVYbCrK1pBVfjNyOrRgIK9Qre9BPbMq2WBMJ
+	 I3Jpvg1/Y4DEYR3LK08zl660CTNugggLYMmCmOhsdgFTGFTS/Gnk+5hfeoUoJQ+7TI
+	 fnOywseuI+QTw==
+Date: Mon, 27 Jul 2026 19:09:05 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Dave Hansen <dave.hansen@intel.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-	Tianrui Zhao <zhaotianrui@loongson.cn>,
-	Bibo Mao <maobibo@loongson.cn>, Anup Patel <anup@brainfault.org>,
-	Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jonas Bonn <jonas@southpole.se>,
-	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-	Stafford Horne <shorne@gmail.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
-	linux-openrisc@vger.kernel.org
-Subject: Re: [PATCH RFC v2 12/20] x86: mm: define pudp_set_access_flags()
- when CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD is enabled only.
-Message-ID: <ameeJWmSQqTJ7uzU@e129823.arm.com>
-References: <20260722-dummy_ptxp3-v2-0-d9e4bad31e0a@arm.com>
- <20260722-dummy_ptxp3-v2-12-d9e4bad31e0a@arm.com>
- <188623a9-dba0-4229-a7ff-5feb2ef0c088@intel.com>
- <amD9iD7rjmU__9b6@e129823.arm.com>
- <4dbf7e54-a541-45de-b4b9-43ee5add287b@kernel.org>
+Cc: Hengbin Zhang <uqbarz@gmail.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>
+Subject: Re: [RFC PATCH v3] mm/thp: serialize huge-zero folio state
+ transitions
+Message-ID: <ameC4IWCOVBGlXZu@lucifer>
+References: <4146d4f5-c8fb-42cf-9dc8-a9d4c26055da@kernel.org>
+ <20260727154001.4102341-1-uqbarz@gmail.com>
+ <b915b058-f5b1-423a-a835-5891e7997080@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4dbf7e54-a541-45de-b4b9-43ee5add287b@kernel.org>
+In-Reply-To: <b915b058-f5b1-423a-a835-5891e7997080@kernel.org>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B0BEC1C0010
+X-Stat-Signature: ju5gkxqhmdnmige111wsyoss7tdsh6kx
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: C5890180006
-X-Stat-Signature: zg717w93ydxsogric4a8bjf9xof5t9qm
-X-HE-Tag: 1785175599-635918
-X-HE-Meta: U2FsdGVkX196nM2poFeWhLODDBKdNrOxnTrl/bTz3ebUX+Yliu4RfoLEQqimRemBavPloWWwlLqSwFBOqY+W1xGmOSYyQpjqsXryIBd8TM/7TkcH2Lt8Cgv1uVW5xS0t3vA55M1EluGy39yWRIsXfvJUULhjZzuKCuOST1oQATJbVCOUO104j5zhrL+wr/cVqZWU6520V0xKtrG2VjiFkPScAdjvg07uLb1aXG+6hYqDZkOsyapX1h6t/3kpV52N7oQpzLLyTy2pQbhjM+MtJChkcoken6dX3oQ9oSHMux3Z9tNgy0wpBaFkDnruUH7RgA2pk+gjH4Mb7HqVd0DrZXI69NLUoIOB+fm5TH32GlHcKxDBbsGc94qmSXciZh/WEQH9+VwNHxL21CSIk/Is3s9aSGdUC6XkC8t1qhwORSneyfEDGb/3Qgg8pLgBOaP4F0w+KktT1z+s37jR9OQt89lpWpxxQi2e/U4iLPxjSrWv5rgcqgeExHtooMfxgdshyfUGS0N1XEO7l0+uCifqrrmlsp2DDv2Bwjc28/ubBtCMm5oESyR7F2FnE0lbVuhKNKQabcTtXAQVFXJeEn4hYUSvyk7fBj9UJzkfEHySWzYR47Dy+P6tgw3POzU4awl1RIniKbO+m3Dh45NwfR8EYcLC7fP93VBJWnNPc9AtZ7tcFcuKFc9EiEA5g59gTdpEwkfsuK6SsJO29iU5JYS9LowhUiqZKbjzEPMamrpNJ5HP9LUyDPqpkcxNJxsbMmZTiPUKGrg/1OAD6rD8R7CJciMEwqucimeq9Ec9za2X8YSGccRDuPeEJeQa/YcTrEmEQHwYFxCzCDbKI+bd5fjVrMtsZpH9JGaPjgGUecG4w8S1jixEmh1lNAR1U/4nuCSABNimUKMyx/O1owN0ildDEx1nOZZ88EzOnCg3q4JgeDDLx4Zu7D3zgiYpBNY1l73+FUkOe7lxw1jjnXRuc6H
- GQ7b883T
- wPusXYsZbajcA0goKqthrjQ8UoQavcFwc9BfQL+aIjHXU5SVmIVd90dqSczVDa2RMy/uinah0K2/s7TkRFHUeyovtRAa6tCzyDBE/Pv9PGSLYzJaIXnc/7E5fK+GLbs3E92LEMpEqTGwvkuomPRuYYeGvud2aL2Kg8Qm1X6bID2E8wMbHjzMtUM58VJoWDNv0HxCsy7T9RfZyOm5+Pjqa4FQn5pGx8Du6J0qq48iSh6yyzK/gpnagoO1v9GolWGzke5Mm3iQTfCH9GxJoKye8ly7UkA==
+X-HE-Tag: 1785175763-826326
+X-HE-Meta: U2FsdGVkX1/MfXQaiQbW3U4hV82g+n93upyZJ+jEjh/nrQn9jLEvd94JqUuJgt9BN4ml9Q1pFB5+F4qZcUXBrP1fWndH6WssuBu5zdo8UFTpuuRUrJobOMR8rbr1kYaBRayBcwqqtkJgBCHBX1CukDE3yxzFMNN0AEV8AREkhDvF/1r1ggph9mFwOjm9LYlit3ctUHPBUFXdte5RFjs26YRa+ukKSlc58OUMuMJ76YIbvGruGcDlttFt+xd6Ui7NfS6dFKnilED+cXgjALTu0yGJWzz4MKo0Qhz1admK0h83pd06avONRyipgxWbYUi6EuVv54BCEplpKaXn4FR0OI+oBlZ7r4CYIotqopaKyOl17ynu6RGNOJMUeJPyUyGfmX7e1K9DUcGhOIctCXed/+EOMBfuuJnRKIdoHRQirkSkCKz/sTG9w12WCLDYFewsRuXxM4C6YmuWj6tZBKhmWTf3gdSXozff6VKGAHZKX2jItkVWrkcEDe8p6AScj46DKfdXL7iM35+9FdLO7ljn7TDq7BL5VIOyES4DHOBrLquv05fjXOvwtvJB0tKLLsUKIf7VN1p5BxaolanJSSPLUFjdrq2tXyTb5kFSX1CY2Ayc6uJNIzqG6tjtZQWjiFpw3q9REuDquwkLbXos/QYZEInkUN4eB3Fqr/tFEOF+nIjJrUtESTdLEqVzMMAThUN5jwm4r4H9pCp84slUcpi2mjQidINoeNhT4fmIYBRtYqzlqn3mYmcm3rPzyANIkGVqbPXTM1b3nzbgVPBbG8Bo4tdaneOgfwoSUWv24F6TocAtdtqnWdPsB57irO0O/P5DDwYH6b5rmi8o8si8bxyEeepetVHhn4CGbNuBfWE1UhB13yD/cyjBDN0NTzAv9TYVvN2k6c9m3O6thaoEtD5d00AGCJzr1Lwv0V35Z7oeyyw4z5AJky5UkKCMnmJEwXiqPPKZLMqPyD5UCCNonLq
+ zPJ6AI4X
+ 0DNgrLPN6yvaGqDRice+VLmU8lmwFYvAEPH+CldrtfZZcpU1x17jRIJWLHaCVEHpxc0bnElCyvC9ITC78sYhj3WZ6rHnunFvAvU/aAqyEq95Wptro9DHoXhYROqzDwtr7QhJFl00DsNPwGGzRSGx4NO+rVh+NQ4esOGn4PBKScxQ9QIvTrGhq0/NQatbLjVPcfNWT+VPLg4yifBbhgSpiImEY1lvv85sG/54qLes5sPNBK6EvuAJa9OK/qeUpl1xXiJG+HFy9GyNyu6vGG5nxHjozmGNP/tiqQvYIzrpSdJX99vwTldJVLC4Tm1wXDKqJ2S4eGuhqk0IDLis=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,63 +98,282 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 27, 2026 at 05:02:00PM +0200, David Hildenbrand (Arm) wrote:
-> On 7/22/26 19:27, Yeoreum Yun wrote:
-> > Hi Dave,
-> > 
-> >>> diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
-> >>> index f32facdb3035..edad847a2ecd 100644
-> >>> --- a/arch/x86/mm/pgtable.c
-> >>> +++ b/arch/x86/mm/pgtable.c
-> >>> @@ -411,6 +411,7 @@ int pmdp_set_access_flags(struct vm_area_struct *vma,
-> >>>  	return changed;
-> >>>  }
-> >>>  
-> >>> +#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
-> >>>  int pudp_set_access_flags(struct vm_area_struct *vma, unsigned long address,
-> >>>  			  pud_t *pudp, pud_t entry, int dirty)
-> >>>  {
-> >>> @@ -430,6 +431,7 @@ int pudp_set_access_flags(struct vm_area_struct *vma, unsigned long address,
-> >>>  
-> >>>  	return changed;
-> >>>  }
-> >>> +#endif /* CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD */
-> >>>  #endif
-> >>>  
-> >>>  bool ptep_test_and_clear_young(struct vm_area_struct *vma,
-> >>
-> >> #ifdefs in .c files are evil.
-> >>
-> >> The changelog doesn't make a strong enough case for why this evil should
-> >> be tolerated.
-> >>
-> >> These are also _precisely_ the kind of #ifdefs that cause compilation
-> >> problems. This one is:
-> >>
-> >> #ifdef CONFIG_TRANSPARENT_HUGEPAGE
-> >> /// function here
-> >> #ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
-> >> /// another function here
-> >> #endif
-> >> #endif
-> >>
-> >> So there end up being a couple of dependent config options in play. If
-> >> there are compile problems, this makes them harder to find.
-> >>
-> >> What is the _actual_ goal here? Saving 50 bytes of kernel text?
-> > 
-> > TBH, this came from for v1's change of behavior set_pud() where
-> > triggered compiliation problem with v2 this change wouldn't require.
-> 
-> If the patch is not required right now, let's drop it.
-> 
-> I agree that it's the right thing to do: just look at pudp_invalidate() in the
-> very same file, but if we can reduce the churn and leave the cleanups to x86
-> folks, that seems to be preferred.
+TL;DR - after spending far too long on this - this is very subtle and I am
+not confident you understand the patch, I wonder if the fix is possibly
+AI-generated also?
 
-Yes. I'll drop in next version.
+This is really subtle stuff and requires backports, so I think it's better
+if I send a patch myself.
 
--- 
-Sincerely,
-Yeoreum Yun
+(I think this is less egregious than it might seem in that the lock
+suggestion is ultimately David's in any case.)
+
+I will acknowledge this submission in the commit message, however.
+
+It seems the race is:
+
+static unsigned long shrink_huge_zero_folio_scan(struct shrinker *shrink,
+						 struct shrink_control *sc)
+{
+	if (atomic_cmpxchg(&huge_zero_refcount, 1, 0) == 1) {   <-------------------------- 1. sets to 0
+		struct folio *zero_folio = xchg(&huge_zero_folio, NULL); < preempted for a very very long time>
+		BUG_ON(zero_folio == NULL);
+		WRITE_ONCE(huge_zero_pfn, ~0UL);                <------------------------- 6. Overwrites the valid PFN
+		folio_put(zero_folio);
+		return HPAGE_PMD_NR;
+	}
+
+	return 0;
+}
+
+static bool get_huge_zero_folio(void)
+{
+	struct folio *zero_folio;
+retry:
+	if (likely(atomic_inc_not_zero(&huge_zero_refcount))) <--------------------  2. sees the zero
+		return true;
+
+	zero_folio = folio_alloc((GFP_TRANSHUGE | __GFP_ZERO | __GFP_ZEROTAGS) & <--- 3. allocates (magically, very very quickly)
+				 ~__GFP_MOVABLE,
+			HPAGE_PMD_ORDER);
+	if (!zero_folio) {
+		count_vm_event(THP_ZERO_PAGE_ALLOC_FAILED);
+		return false;
+	}
+	/* Ensure zero folio won't have large_rmappable flag set. */
+	folio_clear_large_rmappable(zero_folio);
+	preempt_disable();
+	if (cmpxchg(&huge_zero_folio, NULL, zero_folio)) { <---------------- 4. no concurrent setter so branch not taken
+		preempt_enable();
+		folio_put(zero_folio);
+		goto retry;
+	}
+	WRITE_ONCE(huge_zero_pfn, folio_pfn(zero_folio)); <----------------- 5. Writes the PFN first despite not being able to be reordered
+
+	/* We take additional reference here. It will be put back by shrinker */
+	atomic_set(&huge_zero_refcount, 2);
+	preempt_enable();
+	count_vm_event(THP_ZERO_PAGE_ALLOC);
+	return true;
+}
+
+?
+
+In general I don't know why we're not just making
+CONFIG_PERSISTENT_HUGE_ZERO_FOLIO mandatory for CONFIG_TRANSPARENT_HUGEPAGE.
+
+If you're embedded, don't enabled THP (which will up your reserves a bunch for
+khugepaged anyway).
+
+On Mon, Jul 27, 2026 at 06:08:53PM +0200, David Hildenbrand (Arm) wrote:
+> On 7/27/26 17:40, Hengbin Zhang wrote:
+> > The nonpersistent huge-zero shrinker clears huge_zero_folio and then
+
+NIT: insert a hyphen: non-persistent.
+
+> > invalidates huge_zero_pfn. A concurrent fault can publish a replacement
+
+'Invalidates'? How do you mean?
+
+You mean setting it to NULL? Clearer to say that.
+
+> > folio and PFN between those updates, after which the old shrinker
+> > invalidates the replacement generation's PFN identity.
+
+I don't understand what you mean generation or PFN identity?
+
+
+> >
+> > A later partial mprotect() can then misidentify the live special PMD and
+> > enter the ordinary anonymous THP split path.
+
+What is a live special PMD?
+
+Please don't say special :) that term is so overloaded in mm.
+
+'...can then fail to identify the huge zero folio which then incorrectly enters
+the anonymous THP split path'.
+
+But I'd even not mention mprotect() specifically, if the huge zero folio can be
+misidentified that's already a problem.
+
+> >
+> > A writer-side spinlock keeps huge_zero_folio and huge_zero_pfn updates
+> > from different generations together. Lockless getters still use the
+
+I'm very confused by what you mean.
+
+> > refcount fast path. atomic_set_release() publishes an initialized new
+> > generation before a successful atomic_inc_not_zero() can admit a getter
+> > on weakly ordered architectures.
+
+Overall I am not confident you understand this so as per above I think
+
+> >
+> > Suggested-by: David Hildenbrand <david@kernel.org>
+
+Should be a S-o-b and David should handle this.
+
+> > Link: https://lore.kernel.org/r/20260724100509.2300200-1-uqbarz@gmail.com
+>
+> We want a Fixes: tag + Cc: stable.
+
+Yup.
+
+>
+> Can you dig up the proper Fixes commit? Thanks
+>
+> > Signed-off-by: Hengbin Zhang <uqbarz@gmail.com>
+> > ---
+> >  mm/huge_memory.c | 22 +++++++++++++++-------
+> >  1 file changed, 15 insertions(+), 7 deletions(-)
+> >
+> > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> > index b5d1e9d4463d..79bec4495540 100644
+> > --- a/mm/huge_memory.c
+> > +++ b/mm/huge_memory.c
+> > @@ -78,6 +78,7 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
+> >  static bool split_underused_thp = true;
+> >
+> >  static atomic_t huge_zero_refcount;
+> > +static DEFINE_SPINLOCK(huge_zero_lock);
+> >  struct folio *huge_zero_folio __read_mostly;
+> >  unsigned long huge_zero_pfn __read_mostly = ~0UL;
+> >  unsigned long huge_anon_orders_always __read_mostly;
+> > @@ -237,17 +238,18 @@ static bool get_huge_zero_folio(void)
+> >  	}
+> >  	/* Ensure zero folio won't have large_rmappable flag set. */
+> >  	folio_clear_large_rmappable(zero_folio);
+> > -	preempt_disable();
+> > -	if (cmpxchg(&huge_zero_folio, NULL, zero_folio)) {
+> > -		preempt_enable();
+> > +	spin_lock(&huge_zero_lock);
+> > +	if (READ_ONCE(huge_zero_folio)) {
+>
+> Same comment as below: who could possibly modify this value concurrently? I
+> don't think we need the READ_ONCE.
+
+Yeah I don't think so either.
+
+>
+> > +		spin_unlock(&huge_zero_lock);
+> >  		folio_put(zero_folio);
+> >  		goto retry;
+> >  	}
+> >  	WRITE_ONCE(huge_zero_pfn, folio_pfn(zero_folio));
+> > +	WRITE_ONCE(huge_zero_folio, zero_folio);
+
+This is still necessary however for concurrent lockless readers.
+
+> > +	spin_unlock(&huge_zero_lock);
+> >
+> > -	/* We take additional reference here. It will be put back by shrinker */
+> > -	atomic_set(&huge_zero_refcount, 2);
+> > -	preempt_enable();
+> > +	/* Publish the identity before admitting lockless getters. */
+
+You're deleting the comment about an additional reference...
+
+And this comment doesn't make any sense really.
+
+> > +	atomic_set_release(&huge_zero_refcount, 2);
+>
+> Why do we need the _release semantics here when we just did a spin_unlock()?
+
+This is really suspect, as I had AI look at this and it also suggested
+exactly what you did here, and I'm not confident you understand it.
+
+Are you generating this code using AI without disclosing it against the
+kernel policy on this?
+
+See https://kernel.org/doc/html/latest/process/coding-assistants.html
+
+Can you give a detailed, coherent response as to why you chose this, if it
+was not AI-generated? A human-sounding one? :)
+
+Anyway.
+
+AI says this actually _is_ necessary.
+
+And using my human brain to think about it:
+
+static bool get_huge_zero_folio(void)
+{
+	struct folio *zero_folio;
+retry:
+	if (likely(atomic_inc_not_zero(&huge_zero_refcount)))
+		return true;
+
+	zero_folio = folio_alloc((GFP_TRANSHUGE | __GFP_ZERO | __GFP_ZEROTAGS) &
+				 ~__GFP_MOVABLE,
+			HPAGE_PMD_ORDER);
+	if (!zero_folio) {
+		count_vm_event(THP_ZERO_PAGE_ALLOC_FAILED);
+		return false;
+       	}
+	/* Ensure zero folio won't have large_rmappable flag set. */
+	folio_clear_large_rmappable(zero_folio);
+	spin_lock(&huge_zero_lock);                          <--- acquire semantics
+	if (huge_zero_folio) {                                            |			   <|
+		spin_unlock(&huge_zero_lock);                             v			   <|
+		folio_put(zero_folio);			  All loads/stores AFTER appear AFTER	   <|
+		goto retry;									   <|
+	}                                                  All loads/stores BEFORE appear BEFORE   <|
+	WRITE_ONCE(huge_zero_pfn, folio_pfn(zero_folio));                 ^			   <| Anywhere here.
+	WRITE_ONCE(huge_zero_folio, zero_folio);                          |			   <|
+	spin_unlock(&huge_zero_lock);                         <--- release semantics               <|
+                                                                                                   <|
+	/* We take additional reference here. It will be put back by shrinker */                   <|
+	atomic_set(&huge_zero_refcount, 2); ---- relaxed ordering so could be moved ----------------|
+
+	count_vm_event(THP_ZERO_PAGE_ALLOC);
+	return true;
+}
+
+So yeah I think that should be atomic_set_release() in order to prevent
+that occurring before the critical section.
+
+The retry stuff is a bit suspect now, how could we be concurrently raced in
+order to require a retry? I don't think so.
+
+It's needed because it has to pair with atomic_inc_not_zero() to prevent a
+concurrent get_huge_zero_folio() invocation from incorrectly returning
+before the critical section is completely finished.
+
+>
+> >  	count_vm_event(THP_ZERO_PAGE_ALLOC);
+> >  	return true;
+> >  }
+> > @@ -298,9 +300,15 @@ static unsigned long shrink_huge_zero_folio_scan(struct shrinker *shrink,
+> >  						 struct shrink_control *sc)
+> >  {
+> >  	if (atomic_cmpxchg(&huge_zero_refcount, 1, 0) == 1) {
+> > -		struct folio *zero_folio = xchg(&huge_zero_folio, NULL);
+> > +		struct folio *zero_folio;
+> > +
+> > +		spin_lock(&huge_zero_lock);
+> > +		zero_folio = READ_ONCE(huge_zero_folio);
+>
+> Why do we need a READ_ONCE? Nobody should be legally be allowed to change this
+> variable concurrently, no?
+
+Yup.
+
+>
+> >  		BUG_ON(zero_folio == NULL);
+> >  		WRITE_ONCE(huge_zero_pfn, ~0UL);
+> > +		WRITE_ONCE(huge_zero_folio, NULL);
+> > +		spin_unlock(&huge_zero_lock);
+> > +
+> >  		folio_put(zero_folio);
+> >  		return HPAGE_PMD_NR;
+> >  	}
+>
+>
+> --
+> Cheers,
+>
+> David
+
+Thanks, Lorenzo
 
