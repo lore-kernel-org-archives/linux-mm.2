@@ -4,173 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBD7DC53219
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 00:38:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37652C53219
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 00:41:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A34FF6B007B; Sun, 26 Jul 2026 20:38:40 -0400 (EDT)
+	id 558676B008A; Sun, 26 Jul 2026 20:41:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E5D46B0088; Sun, 26 Jul 2026 20:38:40 -0400 (EDT)
+	id 508C66B008C; Sun, 26 Jul 2026 20:41:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8ADD76B008A; Sun, 26 Jul 2026 20:38:40 -0400 (EDT)
+	id 3F7AB6B0093; Sun, 26 Jul 2026 20:41:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D3A16B007B
-	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 20:38:40 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F405B6B008A
+	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 20:41:23 -0400 (EDT)
 Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id ACF61140336
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 00:38:39 +0000 (UTC)
-X-FDA: 85032695958.21.29FC74A
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010051.outbound.protection.outlook.com [52.101.61.51])
-	by imf09.hostedemail.com (Postfix) with ESMTP id C4523140008
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 00:38:36 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=ulCL0uKP;
-	spf=pass (imf09.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.61.51 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785112717;
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6538E160582
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 00:41:23 +0000 (UTC)
+X-FDA: 85032702846.21.C68DEC1
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 3BFA510000C
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 00:41:18 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=KRlyVlYp;
+	spf=pass (imf05.hostedemail.com: domain of yanjun.zhu@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785112881;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5CIQm41qBdC2/vjFOuEpu1Kt9/FVv1US0cky8Lv7b7A=;
-	b=EdebK7Tk16D6gr2Joyl1Co7gZWs8YDbEx8BBRl2bhocf7sWgJbL/VZ9HTJu5WzgBSfnWz/
-	KqrUvOib13OkHUqMMoVGKTJ0zIKGq5q7fISuSMRDifN4LVjQTsWkAIWtZDePwbQWAItGAk
-	076B3CFpBJqDHgToV3E8HgZOxuo46uc=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1785112717;
-	b=B2TP97ilRIX0sWDTqd5dXNLXSrNt1w2YlxLSKAqXSJmQpRDmvYtPCb27DrLHNezC9N7+cg
-	0LSkqGmWziwDw0Moi3yeZL9dSLjv+5JgSVSPjP8CjPEIXmJYIuCzDH8RIW3qwGWNiGvO4K
-	KixE1mEB0UZ55L0A0yVQouIINLAxMCY=
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=ulCL0uKP;
-	spf=pass (imf09.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.61.51 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ADNLeR6Co7ym0B8q1egTDsXtr+X6hF76DM3AKuabciJl0Wgswd7Ecq2rcX31RMOY/IZjFpXhveF+Dr+K/pvlUk63DIofpjj3NkizOhmD2GO1Sb00sTFZdiFQKdm1BgWLTyi5BPGkKUJzyUDIn64vkdNAfgAviIzG3rJxjGx/SSmZ0+DTaGFzcxODTqr/q17931OrK4TXcHHUm2C9UyF68hei5unShLoJI7PwDe64gvPC4G5YkWr2U8G1qY9IbAa2iuZzzXxZZRBHONOMLU0EyUXsCW/W6Clvdcxy+8AGl6KAcTKMMyogRvRJ8cfmjQ0K17nJQ3xYK4++5V+MMJXYaw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5CIQm41qBdC2/vjFOuEpu1Kt9/FVv1US0cky8Lv7b7A=;
- b=PZnzclF1MajIQSNx+S69IMjQmk9eEFHSH6dGmp+fm7yFpWbg1lXPqNjFWBdbeQVwSu8ysOUoibSA3wRz28FxhI1FBwZE0F34EgjfjbpCT3uIx1FoA51j7DufBFFCslFjUZNyZd7dB64HVCTMvnnX5LvFLvL9xm5y64AucOu/J9fOvZULeHcPAqmZT+b8J1tUafbG5BSUi8JWKNPBdiVwhODaBpniCrbW1C5G1B1ujydNpCOdopK+JNqLKD5Z/YtRHEjwfUHvVOAIaeKqwToCJRPZT5c5UuuFj62tIA+RsDyKvLKPD/aaJ/Gvq9zx4Z9tUce3pf5KpiNKpZRoooMgHQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5CIQm41qBdC2/vjFOuEpu1Kt9/FVv1US0cky8Lv7b7A=;
- b=ulCL0uKP6/R5u9ksHnchuEgHfGi145xshzt3Q+Up5zPZsaX45Yp3rqB2ZCjHcElfKwbHkYPnGddTpXClILhOkGlKNmO39Aomw5pRKfguj6T9DnojIWGbOYN1yUPugs7YXWODlGeXOgUN8Pp4Q4UPlLuaexk3yWk0dLkUZQVsXgKFSdIoWVlGbiC5jToFhEtPJpCuMVIHPxvob/kL2hS9d3rIVNFjujqQSjQjA0uHvuTbTJYwwq/8mx5q5+a3oZue136iuHK/9Yva7gz2WcnQ4xdrkb2UQshT8nzhH9McbHQH8jHsSbJhSQTm5/y8+VFd5Cpnh8ulesgjqebrL5t2eg==
-Received: from CH2PR12MB5001.namprd12.prod.outlook.com (2603:10b6:610:61::18)
- by DM4PR12MB6279.namprd12.prod.outlook.com (2603:10b6:8:a3::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.13; Mon, 27 Jul
- 2026 00:38:29 +0000
-Received: from CH2PR12MB5001.namprd12.prod.outlook.com
- ([fe80::89e3:6df0:de90:8dfe]) by CH2PR12MB5001.namprd12.prod.outlook.com
- ([fe80::89e3:6df0:de90:8dfe%3]) with mapi id 15.21.0245.012; Mon, 27 Jul 2026
- 00:38:29 +0000
-Message-ID: <c3532789-6b6f-4cc7-9d4e-cfb05cc88264@nvidia.com>
-Date: Mon, 27 Jul 2026 10:38:21 +1000
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/migrate_device: Clear stale mapping after freeing
- swapcache
-To: Zi Yan <ziy@nvidia.com>, "David Hildenbrand (Arm)" <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Arvind Yadav <arvind.yadav@intel.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
- byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
- apopple@nvidia.com
-References: <20260724082702.2531024-1-arvind.yadav@intel.com>
- <20260724214307.a50ed52cf78fdc73bc42f9bf@linux-foundation.org>
- <2b2fe98d-1a7b-4aef-a1ff-0fbe43339180@kernel.org>
- <DK7YH5O0FS58.3OTH04TI72U0Q@nvidia.com>
-Content-Language: en-US
-From: Balbir Singh <balbirs@nvidia.com>
-In-Reply-To: <DK7YH5O0FS58.3OTH04TI72U0Q@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MEWPR01CA0310.ausprd01.prod.outlook.com
- (2603:10c6:220:1d8::16) To CH2PR12MB5001.namprd12.prod.outlook.com
- (2603:10b6:610:61::18)
+	bh=rj5ZR/j8gEE2Zz++PWd2qbirX2cZs2l8PGm6xJNCOE4=;
+	b=RGl8dnMy0JtgzDXgM/DrNlS3vQzBlaL7JFNJ57KseNBgw9lMQLQkXb0kwImaTxBVHQz/r8
+	rtWq+pN226dJuSP2rgbLuJG6U2lslyyeFAXJsEnquMpbXIeqUnzcz0/KnoVxWqT1TygKOl
+	SJ2BYqBqfC997GVwm41ubCTxOHbrVHo=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=KRlyVlYp;
+	spf=pass (imf05.hostedemail.com: domain of yanjun.zhu@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785112881;
+	b=23YTxA9zbNbprNdnAeyzBrnOii3H5chIWlsrjM1bitcgcWVNDI8QT69Mgj8VwzZJF7dV+R
+	qjDC/lqizseJKQOKTW9G7kxbEpZrQSH784HmRzuWu6XCPoZ6JNvmLmm2zEN10AM8ZSkUy5
+	mtqslRpwXOGGzk9svquVeLVe8nx+CI8=
+Message-ID: <c3440ed3-0fc2-44e5-a05a-922344eb34d1@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785112875;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rj5ZR/j8gEE2Zz++PWd2qbirX2cZs2l8PGm6xJNCOE4=;
+	b=KRlyVlYp6pYFsYFATRhclKvDqnjexSHonIihZ6tDf/jclGw9yBI7LDiDqDB6H9CGK5Dm3B
+	seaLfFNRROnf0/I7jkQTkIWOdIsxfFIvg7/CzmzUPkMbpHzCb4UseN4LJcTYAwNLf97N3c
+	K2CXArCY6yj1KdwVOp0kqWDJzF83tw0=
+Date: Sun, 26 Jul 2026 17:40:54 -0700
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB5001:EE_|DM4PR12MB6279:EE_
-X-MS-Office365-Filtering-Correlation-Id: ec31bdd9-2af0-4cd9-172e-08deeb7760a6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|7416014|366016|1800799024|10067099003|22082099003|18002099003|4143699003|56012099006|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	wR98c1xLGyMdPja3nXG1jxeOQc68m68M85RamTviOAvE2et+uT0ZEvs7KY2a1gceaLK/kSqpfM5pVijXF7TUEHJNn5KhEz1ggobuCUPy8B0cTwuV5Ql0wL/y76NYRVSl6iDrvhSzzhdaOaPzIF6D3bE/tfkq/+xfVu1NqqS49xKQPQSLzw2c+Sju4Eoc4HaHAL6DcmiJv4eAXTI6Q0eTMkVvDEimIZkE6U5AqazYH/SVp5JHi0TUf65dvN9SEg7eLAEEoftNtSI3MjTdcBd9pl4hEu0WlL020CffSnX8PlGX6HrWpD2XqviWKMA7cIUb2g/T9oM2PMS994WrGNx+xtT9ipBAv8hfkZhvqHwiugNOpPJ+SvxsULESHL5L0P2BkSFxJJO0Mb0JtXF04hOPNtcbXlMeMNi5RF1d+Y1OyL5MwY+8BRS7XgiKhIBGXAG/db1a4p8Mx/szO3zWURhmHeT46CYW98F883mSwkPuvo+fQEnVBRAy5AXYWxfk4N1XbGrrN0BBRvZmDSID2Z2UMlh02ALAVRh5J5UijLK/imlgfzUshsKfZkYp5EGp5SxGbObYg5q7Xeze69roohxD7aopbeMQES+as012cKMBXCY1b9wLx2ZVfnkz9pKN1RjwDSyy4rH5G+k6q00PEVOVto5A4h7LWk+trw7rDntS1Ck=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB5001.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(366016)(1800799024)(10067099003)(22082099003)(18002099003)(4143699003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?OUYycVlURlNoQmh2VHlBTG5ncG5oS2VacTAyTjhtU1JvZHFCaG5od001b1Rv?=
- =?utf-8?B?d2FvaWNIZGRIeDYvV3hiUXJLZ2FSbmhlWnkrN1JBMVZVNm1TcEUwTTJvc29m?=
- =?utf-8?B?UG5YdGs0MlV6TFcrOWRSeTVpN051TWEwSk5IY2hjM2lENGVVWDkvcGp3OGtT?=
- =?utf-8?B?SFFqU0RJYTY5ZkhpQmRxYk1JSGJhWjBwb3lXU2ZGZVhVOHdpaS9KTEoybU0v?=
- =?utf-8?B?Y1lGS1lUT3Y4UHQ0ZmU2TzJ4aXpXVEs1VFc5aEZTUS8xNkI4ajF2VTFEUGg4?=
- =?utf-8?B?VC9pUkR0bmpDYWJKNFZKSjVtYlRQR2VJazhWc3R6RFhCME5Sa3ErcmJqVUc3?=
- =?utf-8?B?R1JGVU1iN2QwK1pvaXc1RW9iWWI3ZlVHUnM2cUxLdmkxeGh4TXNqMmVFam0x?=
- =?utf-8?B?c3RrZVZVY3FlOWw3ZTlFaXMySUV2ZzVLQzkzaktIazZORm9lb3lTb3dGZjEy?=
- =?utf-8?B?UWlVSi9XZ1JJYXZHN0Z4TnFKWHRvRDNMdksxNTR3OWlGZGdFaFdtQVJoN25V?=
- =?utf-8?B?MXI3cHRSRWxQUzVEdjJuRitlM0lrUzBHTlhSUmJOK1dFY0VNS3NxUjN0NUZI?=
- =?utf-8?B?Ymg4emIvRzR4bGRCbGsreEdPODFmMXRLMFJIeDN0YjJYRW9FcFF0KzRvdVAw?=
- =?utf-8?B?V2NBQlhHWU5Da0xxV0JFNlM1Z0ZxMCt6NXc4bVltZEEzNFM5WW9CYzRmYmpY?=
- =?utf-8?B?TnVvZXFNY0hQN1VWL3BuQVZvbXZLK3N2MW96VGw5ZWs5STlNdTN2TDZwUG5J?=
- =?utf-8?B?Ukl6M2xiMGxkSWdVV2NESFJwWWZVUU1XS25rUUM0dkkvN0E5eWR4MjZoNWQz?=
- =?utf-8?B?ZWZFTDdDUFYwRSt1RkhJUEgwYmJwWG1FS05KUER5WDlTVy9rV3gyM2RqbEw3?=
- =?utf-8?B?Y21Wanh0YjlQenQ5OG5zVGlGVDRGUmhJTFp6QTRZV2tJRUJ5WXlvOFlGQy9Y?=
- =?utf-8?B?alpHbWk1ZzdCQ0hRbHVXV1YzMGRnVlRxNnlOWXZUWW5saGwzbHY3N1lQOTdo?=
- =?utf-8?B?eWdRTnhoUGtLeitwNmNaaDUxK2dwcHNOQ1U4eW5VdEtNR1FtMjRVSCswdmdT?=
- =?utf-8?B?NHFnZDJPZVREUXl5K0tKS1BOU0tlSW01NFgxMGdZV3dTak8xRlh3VlpOVUx4?=
- =?utf-8?B?WVRsZ1ZOWlk0ZFJKc0JCYmVoaUdpczlVSFBKSnJNV1VSZG1QWWtqUElIZlNs?=
- =?utf-8?B?Tm01ZHR2TmtFN1NpSVV5NXVBMEorZVYrR3E0bzY0T05JYlNXRG13aHVkM1JY?=
- =?utf-8?B?SjJ0RFc4RnJtbkdQNk1TVmtXTmIwUGM1ZE4rSWdJSmk1RmYzRTA4ME4wR3lG?=
- =?utf-8?B?cFQ2RzE3Um9ubHhDM2p2dlN4VlVUbHIrT3ZjLzF5dzBySHlBRnBiZWdhNU90?=
- =?utf-8?B?azNTVDF5dTVPQ05iYm80ZUIwZ25zNEhyVmVXWWxRcFVRaS9QV3pjNlZINnVI?=
- =?utf-8?B?bjNwMnhtMUZyd0dYYm9QTW9lMERIM0JyZHFiajZpaHhqWlRQMjRGV0d2QnhY?=
- =?utf-8?B?L1o4NmFDdnBXL29XcjZXQVNlS21FRyt6RmN6Wk9aMW14blBieUVjWGlrSzZz?=
- =?utf-8?B?V1AxQzc0V3k2QVBmL3JBRmx4LzZVT3kvS1VKdzJ2TlFmNVM2KzVhbnQvWUl1?=
- =?utf-8?B?ejNtMWV2bWtUUWovd0hvc2xvc1d3aU92cjBBK29nYk4ra29Gcy9QSklEMTgr?=
- =?utf-8?B?NG5ZZTIvSy9aYk1CVld1YXlIQTF3ZUdRY0RNS0RpNE40RVErRzdXK2RmRWRG?=
- =?utf-8?B?czI4UkVQRDdKZkpVcUg2OXdVSXY3aUVkWTVZMzExZVlZSHVldmMrL0ZSZ0Ns?=
- =?utf-8?B?TVdaTjhPQno2NHppNU02WWplbmFINGp0WkdNUXh0NWl6WXZodkUvZFk4aHZy?=
- =?utf-8?B?bDY5N21MUUx3N0oyckkyY0F0NUpFeFVGVERzVkRkMmxYeng4Y1JOeWZSZVZP?=
- =?utf-8?B?TGZ4d3ZnUUErK21CVXR1ZXpBRGZQUVJaUG9HbE1WV2szbjNJLzJGdE5BLzU5?=
- =?utf-8?B?V2w2TjhYdURoaVZuSHJyTGVHOHN3RGM0WFhFREsrQ0h5bk45cHNEVHVoTUcv?=
- =?utf-8?B?dnZIejg0YjU5Yk13ZHdQdEszU0kyZXBXblJlYUNJMTFUV1RUdUJ1eGxQaUZ1?=
- =?utf-8?B?ZlgyS3NjOGJzQ3U0R3kxRFdPQ1M0dEhtTUJGZkFQYTJJSEtIbWF2ZGNtNGFR?=
- =?utf-8?B?djByZjdpMUVOQnJ4QkNFQ3kySWpGWVN6bGJGNzJmVmZxakwzNURiTmJPbGpV?=
- =?utf-8?B?RWpNck55bVh1K1N1SGhJdlBvRmNGdVJSYjRDR2NSR2xjWXkwUFZBdlF3Yk4y?=
- =?utf-8?B?UzROU05HNDZIaXhudXY5K3lSSytkVjdMa1NpN3MzWGhYbyszR3ZsZz09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ec31bdd9-2af0-4cd9-172e-08deeb7760a6
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB5001.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jul 2026 00:38:29.1924
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: h//GEZ+/Fz0vGx6yWQboBxGu6nTD0OkKZCPb7Q6/mQN6I02zHr9yP85G8zfkYf99OQKt03u3fFpMvbEA/0W83w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6279
-X-Stat-Signature: sg7ufdhm4wer31y3j4eqntguysucw38o
+Subject: Re: [PATCH v5 17/20] vfio: selftests: Add
+ vfio_pci_liveupdate_kexec_test
+To: Vipin Sharma <vipinsh@google.com>, kexec@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ kvm@vger.kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+Cc: ajayachandra@nvidia.com, alex@shazbot.org, amastro@fb.com,
+ ankita@nvidia.com, apopple@nvidia.com, bhelgaas@google.com,
+ chrisl@kernel.org, christian.koenig@amd.com, corbet@lwn.net,
+ dmatlack@google.com, graf@amazon.com, jacob.pan@linux.microsoft.com,
+ jgg@nvidia.com, jgg@ziepe.ca, jrhilke@google.com, julianr@linux.ibm.com,
+ kees@kernel.org, kevin.tian@intel.com, leon@kernel.org, leonro@nvidia.com,
+ lukas@wunner.de, mattev@meta.com, michal.winiarski@intel.com,
+ parav@nvidia.com, pasha.tatashin@soleen.com, praan@google.com,
+ pratyush@kernel.org, rananta@google.com, rientjes@google.com,
+ rodrigo.vivi@intel.com, rppt@kernel.org, saeedm@nvidia.com,
+ schnelle@linux.ibm.com, skhan@linuxfoundation.org, skhawaja@google.com,
+ vivek.kasireddy@intel.com, witu@nvidia.com, yi.l.liu@intel.com
+References: <20260714151505.3466855-1-vipinsh@google.com>
+ <20260714151505.3466855-18-vipinsh@google.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Zhu Yanjun <yanjun.zhu@linux.dev>
+In-Reply-To: <20260714151505.3466855-18-vipinsh@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: C4523140008
-X-HE-Tag: 1785112716-91708
-X-HE-Meta: U2FsdGVkX1+SURTPWbLWFjG1yCWZ6T+vPwxJGwr7kQS3oNQdm6lqM/4b/YocnSyLvPckwQVzhvKzS86JCKBRYFTAtzCwBL24xEa4Vue+hx0/C/MXeZAylohtbIsy+HqNhNO0O41xLG0WiBpUZdsI/Hjeo4RYRyAj1tDSmJ5rzaoUENInzt5V/cTQyrHhfqO6dc5qd6E9qiHpa/0MBDojDWRMLDUdr6YMtV6jZd8d+YOTPc5/7uvspOKhfvNvJcgmybzwU8Sug/I1/ZykMmKgYrdXiqOxw7k+L5sTBTCVxksOX7QGV3d4+DadSaqvK2CcR2fVHvQPTrL6i912c9FL2QJwNrfbwmo5LBV0NN3sZlMBsp+2PO+B2X22Q4pPD6oxN4unAndg00hDdcrNv1+WFdIJiX9E+aD9ESC+iX4xGQNS52QGux59MhCYPwQURxq2DHkkMrkhBMaZAYuX4ZDdsUfdqVe1Utl2YBza+FvSOLuk/BDwODhaDfU/J54/FqCqu0FxL6n/u9GqDDthtjC+0LSQo+bNY7cu2bMDhOKagAYW9K1Wn0GKxlsjb7usnD3koUIIiib5DSjglEcL7lWzF08Uk6wypOa4CBUhGg1CuGeQsM/iHuclvgnhgrVZmWVZZtzfXTT84+NEzooEpms08T8iMH6P5FYgS87ACYSHlYACBAV+pnryXpXm+W/HQ2Y0oxuDICtKZ93J3C66kWrS2v6uwwyS2xqgzsw2J1kweyhkaFze+2Bsc2p72620+DtYI80QXmzIINCRtn/Egz0DG4eb6oWsbtSnf7nt/zmIqGnLdwxOZpt02K1s5FegjcHcam/JbpiQ7AaUVLqm7vHm/kRvF5PCGRYX3XhIoEKw59p55D4mQv2qmnI5eK00rz+5VOU7LcTQnqPQIHAPGZ5nOjLlc1Ow8+8ex+IhC0dOfc2xH4RxGp0LZ3JXOQRQGcNBPJqIS0PfkdXXdCQkG5C
- kAgN977W
- FNMys9SOlxM76enUUG/S17OpRHwrILMuNIq04vAQWvL47CouyaH9Pg1+edPPddYIBZMJFChgFMclcF3H7LTR28JsMbM3VlxCrFV19UKXZlPbcf0IGUqWm0ac52Ut2yV3FyJvXQLMOX9kNHUkyNnHEhMYa0at5PA9zLxScLCySBF5gLSNuZGCNyDbqlwlRwiofiCLow9AWCqMJhE76d9jgjhPpl9AWgjXQ0byNpZhgdtaNnJz0umHVy4M+0M0r2gsXze+354L3EvBHEA2RiUZn3xMgfK/Bqxwl5vLM/3JjarFuGxOiGu/jDbwgULrPogpCmxqW2OkcyU0kV3pLp82cWgqNi2lJo3P0EM6yL/BPdkjVlAjkNGUyIcPIJfYk8ZT6H/xuk25TbNKT4N8e8sPQ5HlUyhdXXj0Ca8DhH/Qe0Vl0VArMOW55M6D8GmRpbliAii5tMSCaO6O5facXyUMJDpy033+9JvI0a4sHOSHE2PB0nCL4ZQKdE+4z/UNg5NoX8WTSWjgky7CbGS+5DFCjqvJ6rvf3nNWaVwW7TSK81AHLWPwCsx8pnTTf1WbAkhfD89buCbXMgUXienZccdhVrAwlTBqQiqfiPQEQFm55ZQkqi2E=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 3BFA510000C
+X-Stat-Signature: ipbc9ehnqb19ioo555gcdc9gh5j9crec
+X-HE-Tag: 1785112878-292923
+X-HE-Meta: U2FsdGVkX18xGtg5Yf5WGzNj/14jCUkYhGIEzWLpTNEJ2aQxuXeO4ujUT+liPoUxxtfJWc+NxKju2dVRuVCwZJi6sjHK1me9Y1eX7xgKaksFtR2FFiRgp0fosDQPngaTikPkisCf0FrdStstJjDQAX5k+M4WDNjwsaodiohmbUQkC0/fvb8xAlMCm4OO+y6KpcjJ6M/ZMwF/RrssaDgj5ZZl0Mxqxddc9yNytr6z3ZlNHpKakDntu/Qzkx/ajFT31cDpyvMBmWZXcaBuJOG/JlVsRjqG8shvtyGMMlR6hGJiag1dQzxERl8gnSXdqjYdH3G0KZSW27awo27TPnwj5RG2sidkUb432h7t0kTrL0sdIff5DZm+/hblzfwax+7kT8l4zS8zJVu+N3emxoOaRZ1ObD1etcV44Duy/fCjglR1uVGT2MCiw0f9V4XY0T+uWzPnpo09Dl0jDISEIqrJ9YFxH8cOiJjhdKprK0HdI9zlpRxs5nG/unyUOilpgbDwG0UQ7TEoQSDHNt+kcaxOBNsQwteEpQwxblBfMZWktKktEvV7d8U6eXqbUVuZrUqtc81mI+b+elsPs9HYTof3Q2Mszou4z7Zr4I3J2SFE3YgS6N43PgqMLr4GvC7LdKecn7Ir04b14ZQL7MBF3EUB84/sdXkbsX6jZzT8DIO/UxnzIE86DOJXNua70s09fKH6SLMGpIHbygiY47+nxN5Jbgza9/ZrAUqJ4Br/bJjOLe3zKrNHlqfBnPhrLC/TdvSbzNbyyRo9ZH1cosWqinFw3AuKcPHzAjrb1BP2L4UDAQ3Cl4KaX1/6UNBP/Kc0BUaWvL20XcUJilIN9+COQOtyJwY0sSsiI1OqfaDEUwaGbZRa3d1yV33kIz82AwmrFUaHhJOulyYK/TSnDIRNyiUCUEiJbGlvX++FYVjmyNKGDEWYG+oQMXD7lc+ERVQc30ERT7JCE9E9PWW4GPMqIjN
+ 8aJTmVZ6
+ sPODQEW7aeZ0XexAOkLlLgYeZOv/gJn9mh1zUWKk5J+uMvDErorXniPUl66cpNNMsZ/X9g7Yo9Mhex2LQO0rdyQG9xGb0JglVs4rjt6Mc7j9uvpGSnoo21UWOcZVFDM9fuPym8od8reBU7otT4IEs1p4zc2AW7VhBzJfHMgod7MT3Tvsf9d5YdG1Q1nCGSf3YunYDR7eiJKMkmsDG6HTPEuBbzP3d0aBboQVLS3tLqi98YwGzY1UsxaATC1qyBKkDg9891cPSOWKaSjPSs42Oi69YdOQeL12hLu+DFrghQtmXtE/2v95hNDcnC0sbQduV25KMbJZ6t3XOrts=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -178,62 +102,220 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/26/26 7:05 AM, Zi Yan wrote:
-> On Sat Jul 25, 2026 at 3:36 PM EDT, David Hildenbrand (Arm) wrote:
->> On 7/25/26 06:43, Andrew Morton wrote:
->>> On Fri, 24 Jul 2026 13:57:02 +0530 Arvind Yadav <arvind.yadav@intel.com> wrote:
->>>
->>>> __migrate_device_pages() reads the folio mapping before calling
->>>> folio_free_swap(). When folio_free_swap() succeeds, the folio is removed
->>>> from the swap cache, but the saved mapping still points to swap_space.
->>>>
->>>> Passing the stale mapping to folio_migrate_mapping() makes it take the
->>>> mapped-folio path after the swapcache reference has been dropped. This can
->>>> cause an invalid swap_space lock access followed by a folio reference
->>>> count BUG.
->>>>
->>>> Refresh the saved mapping after folio_free_swap() so the current folio
->>>> state is used during migration.
->>>>
->>>
->>> Thanks.  AI review might have found an issue with this.  And one
->>> possible pre-existing issue in the code which Alistair and Balbir
->>> worked on.
->>>
->>> 	https://sashiko.dev/#/patchset/20260724082702.2531024-1-arvind.yadav@intel.com
->>
->> Yeah, this might need another careful look.
-> 
-> It seems that the pre-existing issue can be fixed by resetting nr to 1
-> after split is successful. It should also complete this patch. Something
-> like this:
-> 
-> 
-> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-> index 18d097c388530..4a77b6c86ae4f 100644
-> --- a/mm/migrate_device.c
-> +++ b/mm/migrate_device.c
-> @@ -1193,6 +1193,11 @@ static void __migrate_device_pages(unsigned long *src_pfns,
->  							 MIGRATE_PFN_COMPOUND);
->  					goto next;
->  				}
-> +				/*
-> +				 * reset nr so that only first after-split folio
-> +				 * is processed below
-> +				 */
-> +				nr = 1;
->  			} else if ((src_pfns[i] & MIGRATE_PFN_MIGRATE) &&
->  				(dst_pfns[i] & MIGRATE_PFN_COMPOUND) &&
->  				!(src_pfns[i] & MIGRATE_PFN_COMPOUND)) {
-> 
-> 
 
-Hmm.. I don't this error condition possible, migrate_vma_split_unmapped_folio()
-will VM_WARN_ON non anonymous folios, but the design contract is for anonymous
-folios only. The enforcement comes from the callers of migrate_vma_pages() and
-migrate_device_pages(). Also __folio_freeze_and_split_unmapped() checks if the
-folio has a swapcache and mapping associated with it, prior to split. I think
-this is a false positive
+在 2026/7/14 8:15, Vipin Sharma 写道:
+> Add a selftest to exercise preserving a vfio-pci device across a Live
+> Update. For now the test is extremely simple and just verifies that the
+> device file can be preserved and retrieved. In the future this test will
+> be extended to verify more parts about device preservation as they are
+> implemented.
+>
+> This test is added to TEST_GEN_PROGS_EXTENDED since it must be run
+> manually along with a kexec.
+>
+> To run this test manually:
+>
+>   $ tools/testing/selftests/vfio/scripts/setup.sh 0000:00:04.0
+>   $ tools/testing/selftests/vfio/vfio_pci_liveupdate_kexec_test --stage 1 0000:00:04.0
+# ls /dev
+autofs           disk       iommu         mem     rtc0      tty10 tty21  
+tty32  tty43  tty54  tty8    ttyS18  ttyS29   uinput  vcs6   vcsu4      
+   virtio-ports
+block            dma_heap   kmsg          mqueue  sg0       tty11 tty22  
+tty33  tty44  tty55  tty9    ttyS19  ttyS3    urandom vcsa   vcsu5      
+   vport2p1
+bsg              dri        kvm           net     shm       tty12 tty23  
+tty34  tty45  tty56  ttyS0   ttyS2   ttyS30   usbmon0 vcsa1  vcsu6      
+   vsock
+btrfs-control    fd         liveupdate    null    snapshot  tty13 tty24  
+tty35  tty46  tty57  ttyS1   ttyS20  ttyS31   usbmon1 vcsa2  vda        
+   watchdog
+bus              full       log           nvram   snd       tty14 tty25  
+tty36  tty47  tty58  ttyS10  ttyS21  ttyS4    usbmon2 vcsa3  vda1        
+  watchdog0
+cdrom            fuse       loop-control  port    sr0       tty15 tty26  
+tty37  tty48  tty59  ttyS11  ttyS22  ttyS5    userfaultfd vcsa4  vda2    
+      zero
+char             hidraw0    lp0           ppp     stderr    tty16 tty27  
+tty38  tty49  tty6   ttyS12  ttyS23  ttyS6    vcs vcsa5  vda3         zram0
+console          hpet       lp1           ptmx    stdin     tty17 tty28  
+tty39  tty5   tty60  ttyS13  ttyS24  ttyS7    vcs1  vcsa6  vfio
+core             hugepages  lp2           pts     stdout    tty18 tty29  
+tty4   tty50  tty61  ttyS14  ttyS25  ttyS8    vcs2  vcsu   vga_arbiter
+cpu              hwrng      lp3           random  tty       tty19 tty3  
+  tty40  tty51  tty62  ttyS15  ttyS26  ttyS9    vcs3  vcsu1  vhci
+cpu_dma_latency  i2c-0      mapper        rfkill  tty0      tty2  tty30  
+tty41  tty52  tty63  ttyS16  ttyS27  udmabuf  vcs4  vcsu2  vhost-net
+cuse             input      mcelog        rtc     tty1      tty20 tty31  
+tty42  tty53  tty7   ttyS17  ttyS28  uhid     vcs5  vcsu3  vhost-vsock
 
-Balbir
+
+# tools/testing/selftests/vfio/scripts/setup.sh 0000:00:08.0
+
++ echo "vfio-pci" > /sys/bus/pci/devices/0000:00:08.0/driver_override
++ echo "0000:00:08.0" > /sys/bus/pci/drivers/vfio-pci/bind
+tools/testing/selftests/vfio/scripts/lib.sh: line 9: echo: write error: 
+Invalid argument    <--- the error is here.
+
+
+# lspci -vvv -s 0000:00:08.0
+
+00:08.0 Unclassified device [00ff]: Red Hat, Inc. QEMU PCI Test Device
+         Subsystem: Red Hat, Inc. QEMU Virtual Machine
+         Control: I/O+ Mem+ BusMaster- SpecCycle- MemWINV- VGASnoop- 
+ParErr- Stepping- SERR+ FastB2B- DisINTx-
+         Status: Cap- 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- 
+<TAbort- <MAbort- >SERR- <PERR- INTx-
+         Region 0: Memory at fea1f000 (32-bit, non-prefetchable) [size=4K]
+         Region 1: I/O ports at c000 [size=256]
+
+Hi, Vipin
+
+I worked with QEMU PCI Test Device. But the following error occur.
+
+"tools/testing/selftests/vfio/scripts/lib.sh: line 9: echo: write error: 
+Invalid argument"
+
+Is this a known problem?
+
+Thanks
+
+Yanjun.Zhu
+
+>
+>   $ kexec ...   # NOTE: Exact method will be distro-dependent
+>
+>   $ tools/testing/selftests/vfio/scripts/setup.sh 0000:00:04.0
+>   $ tools/testing/selftests/vfio/vfio_pci_liveupdate_kexec_test --stage 2 0000:00:04.0
+>
+> The second call to setup.sh is necessary because preserved devices are
+> not bound to a driver after Live Update. Such devices must be manually
+> bound by userspace after Live Update via driver_override.
+>
+> This test is considered passing if all commands exit with 0.
+>
+> Co-developed-by: David Matlack <dmatlack@google.com>
+> Signed-off-by: David Matlack <dmatlack@google.com>
+> Signed-off-by: Vipin Sharma <vipinsh@google.com>
+> ---
+>   tools/testing/selftests/vfio/Makefile         |  4 +
+>   .../vfio/vfio_pci_liveupdate_kexec_test.c     | 89 +++++++++++++++++++
+>   2 files changed, 93 insertions(+)
+>   create mode 100644 tools/testing/selftests/vfio/vfio_pci_liveupdate_kexec_test.c
+>
+> diff --git a/tools/testing/selftests/vfio/Makefile b/tools/testing/selftests/vfio/Makefile
+> index 591f1a52c310..a2f0a459e1f4 100644
+> --- a/tools/testing/selftests/vfio/Makefile
+> +++ b/tools/testing/selftests/vfio/Makefile
+> @@ -15,6 +15,10 @@ TEST_GEN_PROGS += vfio_pci_driver_test
+>   TEST_GEN_PROGS += vfio_pci_sriov_uapi_test
+>   TEST_GEN_PROGS += vfio_pci_liveupdate_uapi_test
+>   
+> +# This test must be run manually since it requires the user/automation to
+> +# perform a kexec during the test.
+> +TEST_GEN_PROGS_EXTENDED += vfio_pci_liveupdate_kexec_test
+> +
+>   TEST_FILES += scripts/cleanup.sh
+>   TEST_FILES += scripts/lib.sh
+>   TEST_FILES += scripts/run.sh
+> diff --git a/tools/testing/selftests/vfio/vfio_pci_liveupdate_kexec_test.c b/tools/testing/selftests/vfio/vfio_pci_liveupdate_kexec_test.c
+> new file mode 100644
+> index 000000000000..15b3e3af91d1
+> --- /dev/null
+> +++ b/tools/testing/selftests/vfio/vfio_pci_liveupdate_kexec_test.c
+> @@ -0,0 +1,89 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +
+> +#include <libliveupdate.h>
+> +#include <libvfio.h>
+> +
+> +static const char *device_bdf;
+> +
+> +static char state_session[LIVEUPDATE_SESSION_NAME_LENGTH];
+> +static char device_session[LIVEUPDATE_SESSION_NAME_LENGTH];
+> +
+> +enum {
+> +	STATE_TOKEN,
+> +	DEVICE_TOKEN,
+> +};
+> +
+> +static void before_kexec(int luo_fd)
+> +{
+> +	struct vfio_pci_device *device;
+> +	struct iommu *iommu;
+> +	int session_fd;
+> +	int ret;
+> +
+> +	iommu = iommu_init("iommufd");
+> +	device = vfio_pci_device_init(device_bdf, iommu);
+> +
+> +	create_state_file(luo_fd, state_session, STATE_TOKEN, /*next_stage=*/2);
+> +
+> +	session_fd = luo_create_session(luo_fd, device_session);
+> +	VFIO_ASSERT_GE(session_fd, 0);
+> +
+> +	printf("Preserving device in session\n");
+> +	ret = luo_session_preserve_fd(session_fd, device->fd, DEVICE_TOKEN);
+> +	VFIO_ASSERT_EQ(ret, 0);
+> +
+> +	close(luo_fd);
+> +	daemonize_and_wait();
+> +}
+> +
+> +static void after_kexec(int luo_fd, int state_session_fd)
+> +{
+> +	struct vfio_pci_device *device;
+> +	struct iommu *iommu;
+> +	int session_fd;
+> +	int device_fd;
+> +	int stage;
+> +
+> +	restore_and_read_stage(state_session_fd, STATE_TOKEN, &stage);
+> +	VFIO_ASSERT_EQ(stage, 2);
+> +
+> +	session_fd = luo_retrieve_session(luo_fd, device_session);
+> +	VFIO_ASSERT_GE(session_fd, 0);
+> +
+> +	printf("Finishing the session before retrieving the device (should fail)\n");
+> +	VFIO_ASSERT_NE(luo_session_finish(session_fd), 0);
+> +
+> +	printf("Retrieving the device FD from LUO\n");
+> +	device_fd = luo_session_retrieve_fd(session_fd, DEVICE_TOKEN);
+> +	VFIO_ASSERT_GE(device_fd, 0);
+> +
+> +	printf("Finishing the session before binding to iommufd (should fail)\n");
+> +	VFIO_ASSERT_NE(luo_session_finish(session_fd), 0);
+> +
+> +	printf("Binding the device to an iommufd and setting it up\n");
+> +	iommu = iommu_init("iommufd");
+> +
+> +	/*
+> +	 * This will invoke various ioctls on device_fd such as
+> +	 * VFIO_DEVICE_GET_INFO. So this is a decent sanity test
+> +	 * that LUO actually handed us back a valid VFIO device
+> +	 * file and not something else.
+> +	 */
+> +	device = __vfio_pci_device_init(device_bdf, iommu, device_fd);
+> +
+> +	printf("Finishing the session\n");
+> +	VFIO_ASSERT_EQ(luo_session_finish(session_fd), 0);
+> +
+> +	vfio_pci_device_cleanup(device);
+> +	iommu_cleanup(iommu);
+> +}
+> +
+> +int main(int argc, char *argv[])
+> +{
+> +	device_bdf = vfio_selftests_get_bdf(&argc, argv);
+> +
+> +	sprintf(device_session, "device-%s", device_bdf);
+> +	sprintf(state_session, "state-%s", device_bdf);
+> +
+> +	return luo_test(argc, argv, state_session, before_kexec, after_kexec);
+> +}
+
+-- 
+Best Regards,
+Yanjun.Zhu
+
 
