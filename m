@@ -4,145 +4,162 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BD0BC531FC
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 14:58:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1A04C531D0
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 15:02:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 508FD6B007B; Mon, 27 Jul 2026 10:58:34 -0400 (EDT)
+	id ADB056B0098; Mon, 27 Jul 2026 11:02:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4B8456B009B; Mon, 27 Jul 2026 10:58:34 -0400 (EDT)
+	id A8BD06B009B; Mon, 27 Jul 2026 11:02:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 35CA66B00A2; Mon, 27 Jul 2026 10:58:34 -0400 (EDT)
+	id 92C6A6B009E; Mon, 27 Jul 2026 11:02:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id ED45D6B007B
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 10:58:33 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6919F160725
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 14:58:33 +0000 (UTC)
-X-FDA: 85034862906.17.84DF8C9
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 87DD1100006
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 14:58:31 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=XuReXscy;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf05.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785164311;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 579C26B0098
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 11:02:21 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E46064076E
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 15:02:20 +0000 (UTC)
+X-FDA: 85034872440.26.06175D6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 0477C100019
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 15:02:18 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EMEaHSte;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785164539;
+	b=EasZnHQ8nBAxngbn51yHv63aviTsWNtJBoRKBx7xiHMtKUbzykZ1KB2FpTN9Uwe4uyD5kV
+	2owC758TUBbjY6ms+cld0+Yi/4xraXAUC6zJoLF/VQ4O3EAgGAqk3T1BCtPNSU9Vn5F29g
+	EGpsZwa55mDVnoPt58iWB7kZPnUKhhI=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EMEaHSte;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785164539;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HdV/tdQspG4IJMEgA5ul46Qg1OBakRGkf1HYdrRgQRg=;
-	b=Loc/C+FXdEGxLFMmoayLL8x801ZzK3IqB9+e7pR1HO3tybZw2W4WZ2Y9SaFOsWsd2u45bg
-	AwBPJUTfuGhNzrXOtJBcyq7YEUAuK5+S2yRVYJYcR/eF2uglS5tTHjE2I0bJwdimzkCNOj
-	ShOajuxUK0Y+P2qa/BM1N4yDWiFFP04=
-ARC-Authentication-Results: i=2;
-	imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=XuReXscy;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf05.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1785164311;
-	b=372kIqmvtnuDW/wyIwHt7vpkXJL7KI/S/wckkO7KixXeQ1uBXlVeifY11QTObGpHifxirO
-	c3zVIm/fhIZ9ZpuC3DoUMautC0ExVChZDupU+2lGxBkQ/1p+TbiYjqpMXLasVBIGpK/Mfs
-	qWd6NzVOWJxsAxbKP76mGC3ug9BwwQE=
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-51c15a5b265so474261cf.0
-        for <linux-mm@kvack.org>; Mon, 27 Jul 2026 07:58:31 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785164310; cv=none;
-        d=google.com; s=arc-20260327;
-        b=cst2476YGrG7bY+lTFrbpiHXX4aSlDvbUcni/WeQNZElD0naGQZw1d1yao6Xkqlaba
-         F4DhHtBOJLjZNdSTpQh0BVZfv3zn6eIjjbz0WyYenXdE9F+tOVCtFTRa/HGBaRV7iVRH
-         alqiOnTK+2xcIVW7JWuV6fYRLiUIM7cQ/s7mqlrHBQTdJLoiXjrUzg70u3/GOdWjm++u
-         GMjD5LM4QmI0bToby89PvTyzs50bPjN4SHG0QbrrTv+61Ba1fI/uhZ4SPn0oWtXFmZT6
-         gblYD62LxMxvc06e/C/KGIExkVnNDWGCfWJG2PRO9rF8ZIR5wuD7XCPxesjla60Wd4wR
-         ATCQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=HdV/tdQspG4IJMEgA5ul46Qg1OBakRGkf1HYdrRgQRg=;
-        fh=TkZtauTog2HOTObqxOFRxnXeGnExJID9KucP4018sLE=;
-        b=a+scAYNOWTbN4TbR0Ias3Y/zxq8Htf5vu0KPiwvQ8CUxGTjbxJizn1Jjt4u9SU3+qU
-         XqA0SDTnkuQSzCzEVG5T7dSKz6YAxKbnsMLwlQMB200RWH/o0Iu7baL64i6UIV2Ryrrp
-         1O3AlvpB4gdQRCip2rju5zewQlPdiaEZg1FQ8VrVIAJ2VYpBfebMtcTuDs4MpnXogAhS
-         PXUD5QWtbCQK2hC0CZwAfSDeW8F/3WsHkTbU93yLJ0/aBW6wbTLn+vRJTz0NV+ecVTlb
-         tTKnTs9/7gbsiwGhLsBcRCiIb4TS2wOysZ+b1uEUwF/wfThSa9Uzxl4KPSr9jXb6WjJz
-         p+Sg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785164310; x=1785769110; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=HdV/tdQspG4IJMEgA5ul46Qg1OBakRGkf1HYdrRgQRg=;
-        b=XuReXscyqv/jTVC1yutMdTRq1AxtsrOupxMC+sFKW/nskk2pJn/jox/eqq8nzt41GM
-         bMspLLfFNdAZ+UGK0GRxGTiG/Y+Au1wAhXKSly2bVjIzxmGfKbX8F0FYDC8UiqudFe/m
-         HeDB0/UMmd4d4Z6afNd1EiUtI5SJSPv/M94V7s69MhTU3wOGOfAIAvIy6xTdI77cPavV
-         EZ2e5f9di4sC1RJj0qeZg1yVsdMjdpVW1M2SV08ztZdgxvGVOClGJcvZN6KXEoC8mW1i
-         MTlEFK62pFXUl1pxn7Wyb9j1OlJK4gFKBKnpXHM5V63AmWI7X6SGdPU9Zv/lLW22h6OM
-         uMaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785164310; x=1785769110;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=HdV/tdQspG4IJMEgA5ul46Qg1OBakRGkf1HYdrRgQRg=;
-        b=SMbx2dCNzYcgg2M7A9BaFH/0yb9riWpu8IFUPvtdxchKpU48QR76Uiw82N2x/HDYfa
-         x1Vg4fYfmmaJiJmTBBtauSZZmRGDKZCGoo9LMjm4aV7eRm+06Rar0ggpqaxAJ6khN1TD
-         Qx3CoRxhs+h0Cch3VpVFrtYO961bqnNCIX1uOqncjpsvRZOg34gfPekxUy6fpvAB29KR
-         7bUqflE97rMCYuFvOC8XTi40UTrEZ/TCdw2AA7U/rUdm/Kw5im9nPdTpRB1UpYbkuMtn
-         8JZ3KcGT1wxMZOMUpSKCE5nJWA1bguvohmCYvynzdXR5HtcdheSmharJYHTdTcG3khJx
-         fsQQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rpy8+yF/wVGFJcsFt1OgsNCHHOUQsA1E1S1qHQcZce2vJaHbrCuSFl9oqPcyi0Y7k38nTuP+sOpCQ==@kvack.org
-X-Gm-Message-State: AOJu0YyMZ7SFfhw5cfjIaMWJ9vsWiBVs3Yqs4Hdh3mW4nykTTVgDQG+i
-	BsQrc6VT1e8nsZxpvTQk769txJvyEjwAAhEr3oHHce3qgjLyWr6xyVp190id9y5Wa8/A1D7tA5z
-	xlSf/UdLk4b/VFCvBlO8cAzafnwZGRKD6jLV4l35R
-X-Gm-Gg: AR+sD11+r2Avl5lwn5ZdcyOhtEY/1gxHBpGcZUW1N9UMoFjXwBoSUSNEMRua9dUz1Gt
-	dbXY8EN+kb0smEF6zLimSf02qipddFqWalZ35fkqsq8nMMiKFJ+oJ8Ak4X/SfKZ3DWe8juaizuI
-	gpOEo3wGOLUXVky3CIs66/f47w4H8y2Wga1jw82WwId5Jeyg4XuArramI5ZLUDHEp2Q5ldp2uNY
-	0DKukb2bnhmehRpJ7iltq9ry4Pz16hk+hCHywasCclUrUxtH3+ZsTTMwI4tfOJSs/qsby/mrw0s
-	SZMbYw==
-X-Received: by 2002:ac8:7dcf:0:b0:528:3186:5781 with SMTP id
- d75a77b69052e-529a5f158a7mr36339991cf.6.1785164309856; Mon, 27 Jul 2026
- 07:58:29 -0700 (PDT)
+	bh=GMsj86qUImXvesh2jycuBRWJLhN2UfJjZ0XxDz3JzMg=;
+	b=MjalETsNwJ27dtu3y74YrKvFmCkYqysD9qJK85dyUmVvboC7MIJcFAow/hu7c5INtUARtT
+	FMF4t78Gm1jSMOjMZf8z7XHfjJmtzjZOdPnonY3HVZicv3y4IX8Bjs6PA32WowZfkZeh/x
+	vptVzytWJWAbMDsxOKFvsTG4pFXGyg0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id E40FF4346F;
+	Mon, 27 Jul 2026 15:02:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD2AB1F000E9;
+	Mon, 27 Jul 2026 15:02:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785164537;
+	bh=GMsj86qUImXvesh2jycuBRWJLhN2UfJjZ0XxDz3JzMg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=EMEaHSteJJbpefcd9Kd01LIDQkr7+ZelsCRFi8qlLdp8EguIxG3hQVRarc6ZhqX/j
+	 TRVy6z8dDQvQx9ZyKMS+5c5cIu09i0mjG5la5uOtxMUKM70WYkgXpPhi2p1HL3FUjS
+	 O0EF7xrwhN0LHiafD7HZCb/GplkMVcPUCJ4Moo0j1IzJ8t3zA1uqUDYBOicoYDwjGz
+	 7FheRA9OYUI0E8QgC3tjwsl6QVhG7Yz+yEBYmCqXY583OP4loarW5AvqBFL9NuoS92
+	 dUJcGoTl8cRskWUSlNE2n3h5/iqKYrtoK3PjmBoVCNoGrWh/TVABdE+BON+GaekUwT
+	 e6I74UNRxMVbQ==
+Message-ID: <4dbf7e54-a541-45de-b4b9-43ee5add287b@kernel.org>
+Date: Mon, 27 Jul 2026 17:02:00 +0200
 MIME-Version: 1.0
-References: <20260724222934.1463812-1-riel@surriel.com> <20260724222934.1463812-4-riel@surriel.com>
-In-Reply-To: <20260724222934.1463812-4-riel@surriel.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Mon, 27 Jul 2026 07:58:18 -0700
-X-Gm-Features: AUfX_mzxNfG3avju6LxEy4p22U_xIz6TPcKe25YvyW5akGfhtZSIh5B3OYp7U2E
-Message-ID: <CAJuCfpF8S1=S7TkAuQ58OWiUhnf481YvwsamwvVfa7tfVNH3JA@mail.gmail.com>
-Subject: Re: [PATCH RFC v4 03/12] mm: rename get_user_page_vma_remote() to get_user_page_lookup_vma()
-To: Rik van Riel <riel@surriel.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, kernel-team@meta.com, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, David Hildenbrand <david@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
-	Matthew Wilcox <willy@infradead.org>, Usama Arif <usamaarif642@gmail.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>, 
-	Lance Yang <lance.yang@linux.dev>, linux-arm-kernel@lists.infradead.org, 
-	linux-trace-kernel@vger.kernel.org, Usama Arif <usama.arif@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v2 12/20] x86: mm: define pudp_set_access_flags() when
+ CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD is enabled only.
+To: Yeoreum Yun <yeoreum.yun@arm.com>, Dave Hansen <dave.hansen@intel.com>
+Cc: Russell King <linux@armlinux.org.uk>, Huacai Chen
+ <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Arnd Bergmann <arnd@arndb.de>, Andrew Morton <akpm@linux-foundation.org>,
+ Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
+ Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>,
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski
+ <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Jonas Bonn <jonas@southpole.se>,
+ Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+ Stafford Horne <shorne@gmail.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-mips@vger.kernel.org, linux-arch@vger.kernel.org, linux-mm@kvack.org,
+ kvm@vger.kernel.org, kvm-riscv@lists.infradead.org,
+ linux-riscv@lists.infradead.org, linux-openrisc@vger.kernel.org
+References: <20260722-dummy_ptxp3-v2-0-d9e4bad31e0a@arm.com>
+ <20260722-dummy_ptxp3-v2-12-d9e4bad31e0a@arm.com>
+ <188623a9-dba0-4229-a7ff-5feb2ef0c088@intel.com>
+ <amD9iD7rjmU__9b6@e129823.arm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <amD9iD7rjmU__9b6@e129823.arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 0477C100019
+X-Stat-Signature: b1zpniezea6ihe4rd6a3nsfh13khkrzj
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 87DD1100006
-X-Rspamd-Server: rspam01
-X-Stat-Signature: im5do64n5yx6j135536wta3g6mqr5qrc
-X-HE-Tag: 1785164311-144752
-X-HE-Meta: U2FsdGVkX1+uUuoa9Km5+C4vHROvdGcIMnyYTBFfL8EYsMwxHeAN/2FrxR9SKp74A3QuKOL8YLOT796T26m7i1ErxPyy/l1xME9wgDKVoBc/QuWZVclAHTzzhQwCZR5Ilb2KX8pbMh/VorY/Vpqrrt953QeppiLtu1YMb7F5/wvhDFryFv/mWuUP74MtIY95YrT6nlawme3nyJMoDnS1tbi6t+Nd9wNR1bZMSFJEINm3loa3GAeio72qzR46QQhVYIjIfdg/Sw+1Y85vmCP5fh5tbDeZ7PPaNkJoM5GmqiAvScYh87nY00gDizMYi2A6pZVu/+HeON46gS/JdqRJxyLgFPxIlJtLzJmE8nlTCyCrjXyP4PDKL9SzVUZt/LlSspfcI5x/wsuCxl1adgHITI7UXs3R/8gCN3hI8HkPrgMpX5YrEEpjuvCkQTuIFPKzmVlGwxSrN8PCHMbAPX8HLcdPr4o448uArU2FeDESsc326QzGh2JmhbkbpW9YEaM4WHVf310HVZ8MWbQfKu9Tu/jEriarERW5faloVsH92GvwLeVRWwePuQChspoLb9IYSLw6GabiK2vy5fVhHFNazBLYBOPxTlBvzLQ+lM7K/wxHfOEu2zYLABEc1lPav53Iwx9CQRKZjqssAKTbYORK7XZ1sg4MKo86kyO4Qdx0Te/vqnW9QD3ybLB8cuNOKa7abQ6I1F434zgEGXhnX/BquBQx30zpT9iQmaSlkAjpUYPJaFFsv0lb5tz7CHa7V7z88/tQxvc1JcMPZBWlW7rNLAY78LgapraDUDz/dFP1e7MJOSwUEpYB0ruQpVwcXge7AFKcXLKhz0QyNQbTHnypWCKvZ4siBRmU/4aZFwh8hYrDwZOlf9bDpd0BwSFiMUHgyE7ticqLY9MbPYAwEqbAZQyQ5WbbG7QwrpJLplQWYWJssbAwEes5QbJUzHSiMi+tq8XKS5H56D9CB1jlech
- KwwzYplW
- BtnNppJl4wMOF89ttBs2AX+RfkAPXgkv/QsR9o+NiphIjdLBOm3NNN/pV+G+L6fkheBpBeCUV1mgFXE829Cpw0wKPMldz5/BA223EXlwUZRSPnwInyRNCR4imx84r2JiC6HtiSEiuQ9nQRsqdtKJfiXhJviKlb/ieWI/fQBXvyVKRJ2zt9/MKE+Mm2awnd62F0Pi8MiPwaPHa9OU5A7q1fSwKchLda2tSIeZs9TCBFYb0Zcbg73AFiV0WW6Q/E9rLwpQ6D6qyBWiJKUwLCMDwV00H6mk56bI/wsp0aBlA0sDcOqMNHWu+poaueimj9JslwijJeWAr/SOyxGYYHseUzLV992HoHG4nMlvoxxmvkM7rwzxJEYQq0neIdg==
+X-HE-Tag: 1785164538-956326
+X-HE-Meta: U2FsdGVkX1+XT3o4QzA7aJgJEHuR56VlGVlvStA5tRVPfxwMgy4TwiK8FoPQEPxWVUG8CIIJB5FKEiJc6uJA99l4CxbMIVj2cfZtQkqKrKTZDPNXlsrD6+QON3AVAnNj61eEKsrTYzlkZr/dDKQp2LjiL2FseY8SmtQx6exK4RyfXhE+bOoagjMlhmerIrFI+Nr7Z+sLQjflI94LFrDfnODm+ATXGAm09uk4kSo8ZNJj/2rwuQBYiinqHZQhl9lS8Hj4MfBBG7S5fqm7/AMBzSQCxqilhw7b0IDpOmloCN+eteCEdu1G8yB/0/NI1lZ5xUXio/OP/0nyoguUqKSJSftoV9MrKP3WKTd6Rg+v8T7iXyrcBJjjfBdasNw4kj3NNslXuCc8PHpNNuGHAAjPkDMa7QG/NlaT+45Eo6xzLSUZtM0XuBwiFfmjiEvRR3lo8T/HaPncA8t9fAuq9QNv/YAHlaav0mAiBSNq1PFGn82QLSGAJ66+ouTL3wf/NiN13DAMogPccBOYABrZuocMvBSsNArH7gxiaQ9HdhXGWzK8G1oesvgikNRNMwZ/nEaebccZoxGlkLsdtuvp7yD2nDFUkbhOx5L2cq6+gxZ+OSmkWeF/Q7zyLQBJY+HO6CrYM1ASuXtjZABBs0Qb5LOdb8XbynwzKhvEExrpMSwsOiq43f3VIzPLo9YXRDudNCRx5pn/Vk2VYkkGvJO5bJVwtiSqDPO++m1TrObNXlPz17L1mU6MduJXDCTNdkU3ymRWG4nyLfqDUd/yEualYOcms3wNb54h1EWurIU/r067re4phCN+09u8bm7lHeTHq9ZbV9Z46JRFTmEMCZS1ZQmftvyeBkAulaKZJobAgCenNTXPQJCmSO6Epi2ux7WGqyza+jbI/p/P5N11166G8eEA+R2ZZ0gDBje3ETceOBB4ToWbErsbLKiy92KSiM7riUvNGMta8T7GW2UnIrWLECd
+ 6py8pAiH
+ 6zUbLlooao6SRo6dO1wYC3xyc/I0Mg5OtD1pYVsJcHep8KsQ+6z0wgcwO+NxXI5FdzAeillkbgAlBJ5bAJZEju91sy9dN/gk+Fhqm8Z03TJSyR6LoVhN2Duv+bM9AkynebxEhoPwjN7ITEsYIfbx41L3WM3qUm5j57r3/z8epzGkFaJ23OzW/oH81G13MZeOMakPFIq1QIEUhNt25mOUq4Twqqtt1VFhI4vh6JVo2th+lHXLmWbAqen1G4eQF/+ZhKVGoqwkClDmcCQ+xVMoO65I7VjrUw7iqVII9b1brOXjhwoB6DKCWTpQGVg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,128 +167,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 24, 2026 at 3:31=E2=80=AFPM Rik van Riel <riel@surriel.com> wro=
-te:
->
-> get_user_page_vma_remote() faults in the page at @addr in a remote mm and
-> also looks up the VMA that covers it, handing both back to the caller.
->
-> This cleans up the namespace for adding a get_user_page_vma() variant whe=
-re
-> the caller already has the vma.
+On 7/22/26 19:27, Yeoreum Yun wrote:
+> Hi Dave,
+> 
+>>> diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
+>>> index f32facdb3035..edad847a2ecd 100644
+>>> --- a/arch/x86/mm/pgtable.c
+>>> +++ b/arch/x86/mm/pgtable.c
+>>> @@ -411,6 +411,7 @@ int pmdp_set_access_flags(struct vm_area_struct *vma,
+>>>  	return changed;
+>>>  }
+>>>  
+>>> +#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
+>>>  int pudp_set_access_flags(struct vm_area_struct *vma, unsigned long address,
+>>>  			  pud_t *pudp, pud_t entry, int dirty)
+>>>  {
+>>> @@ -430,6 +431,7 @@ int pudp_set_access_flags(struct vm_area_struct *vma, unsigned long address,
+>>>  
+>>>  	return changed;
+>>>  }
+>>> +#endif /* CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD */
+>>>  #endif
+>>>  
+>>>  bool ptep_test_and_clear_young(struct vm_area_struct *vma,
+>>
+>> #ifdefs in .c files are evil.
+>>
+>> The changelog doesn't make a strong enough case for why this evil should
+>> be tolerated.
+>>
+>> These are also _precisely_ the kind of #ifdefs that cause compilation
+>> problems. This one is:
+>>
+>> #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>> /// function here
+>> #ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
+>> /// another function here
+>> #endif
+>> #endif
+>>
+>> So there end up being a couple of dependent config options in play. If
+>> there are compile problems, this makes them harder to find.
+>>
+>> What is the _actual_ goal here? Saving 50 bytes of kernel text?
+> 
+> TBH, this came from for v1's change of behavior set_pud() where
+> triggered compiliation problem with v2 this change wouldn't require.
 
-nit: Before explaining the results we usually state what this patch is
-doing. I know the title alread says "rename get_user_page_vma_remote()
-to get_user_page_lookup_vma()" but it seems appropriate to say that
-here too.
+If the patch is not required right now, let's drop it.
 
->
-> No functional change intended.
->
-> Assisted-by: Claude:claude-opus-4.8
-> Acked-by: Usama Arif <usama.arif@linux.dev>
-> Signed-off-by: Rik van Riel <riel@surriel.com>
+I agree that it's the right thing to do: just look at pudp_invalidate() in the
+very same file, but if we can reduce the churn and leave the cleanups to x86
+folks, that seems to be preferred.
 
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+-- 
+Cheers,
 
-> ---
->  arch/arm64/kernel/mte.c   | 2 +-
->  arch/x86/kernel/uprobes.c | 2 +-
->  include/linux/mm.h        | 2 +-
->  mm/memory.c               | 4 ++--
->  mm/rmap.c                 | 2 +-
->  5 files changed, 6 insertions(+), 6 deletions(-)
->
-> diff --git a/arch/arm64/kernel/mte.c b/arch/arm64/kernel/mte.c
-> index 1a9aad6ef22a..7a6ecc3d9294 100644
-> --- a/arch/arm64/kernel/mte.c
-> +++ b/arch/arm64/kernel/mte.c
-> @@ -459,7 +459,7 @@ static int __access_remote_tags(struct mm_struct *mm,=
- unsigned long addr,
->                 struct vm_area_struct *vma;
->                 unsigned long tags, offset;
->                 void *maddr;
-> -               struct page *page =3D get_user_page_vma_remote(mm, addr,
-> +               struct page *page =3D get_user_page_lookup_vma(mm, addr,
->                                                              gup_flags, &=
-vma);
->                 struct folio *folio;
->
-> diff --git a/arch/x86/kernel/uprobes.c b/arch/x86/kernel/uprobes.c
-> index 3af979fb41d3..329efac0cfb3 100644
-> --- a/arch/x86/kernel/uprobes.c
-> +++ b/arch/x86/kernel/uprobes.c
-> @@ -1036,7 +1036,7 @@ static int copy_from_vaddr(struct mm_struct *mm, un=
-signed long vaddr, void *dst,
->         struct vm_area_struct *vma;
->         struct page *page;
->
-> -       page =3D get_user_page_vma_remote(mm, vaddr, gup_flags, &vma);
-> +       page =3D get_user_page_lookup_vma(mm, vaddr, gup_flags, &vma);
->         if (IS_ERR(page))
->                 return PTR_ERR(page);
->         uprobe_copy_from_page(page, vaddr, dst, len);
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 485df9c2dbdd..24ead14b4790 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -3238,7 +3238,7 @@ long pin_user_pages_remote(struct mm_struct *mm,
->  /*
->   * Retrieves a single page alongside its VMA. Does not support FOLL_NOWA=
-IT.
->   */
-> -static inline struct page *get_user_page_vma_remote(struct mm_struct *mm=
-,
-> +static inline struct page *get_user_page_lookup_vma(struct mm_struct *mm=
-,
->                                                     unsigned long addr,
->                                                     int gup_flags,
->                                                     struct vm_area_struct=
- **vmap)
-> diff --git a/mm/memory.c b/mm/memory.c
-> index ff338c2abe92..3b86eeaf084f 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -7039,7 +7039,7 @@ static int __access_remote_vm(struct mm_struct *mm,=
- unsigned long addr,
->                 void *maddr;
->                 struct folio *folio;
->                 struct vm_area_struct *vma =3D NULL;
-> -               struct page *page =3D get_user_page_vma_remote(mm, addr,
-> +               struct page *page =3D get_user_page_lookup_vma(mm, addr,
->                                                              gup_flags, &=
-vma);
->
->                 if (IS_ERR(page)) {
-> @@ -7167,7 +7167,7 @@ static int __copy_remote_vm_str(struct mm_struct *m=
-m, unsigned long addr,
->                 struct page *page;
->                 struct vm_area_struct *vma =3D NULL;
->
-> -               page =3D get_user_page_vma_remote(mm, addr, gup_flags, &v=
-ma);
-> +               page =3D get_user_page_lookup_vma(mm, addr, gup_flags, &v=
-ma);
->                 if (IS_ERR(page)) {
->                         /*
->                          * Treat as a total failure for now until we deci=
-de how
-> diff --git a/mm/rmap.c b/mm/rmap.c
-> index 1c77d5dc06e9..b36f2e219b8f 100644
-> --- a/mm/rmap.c
-> +++ b/mm/rmap.c
-> @@ -2838,7 +2838,7 @@ struct page *make_device_exclusive(struct mm_struct=
- *mm, unsigned long addr,
->          * (non-device-exclusive) PTE and issue a MMU_NOTIFY_EXCLUSIVE.
->          */
->  retry:
-> -       page =3D get_user_page_vma_remote(mm, addr,
-> +       page =3D get_user_page_lookup_vma(mm, addr,
->                                         FOLL_GET | FOLL_WRITE | FOLL_SPLI=
-T_PMD,
->                                         &vma);
->         if (IS_ERR(page))
-> --
-> 2.53.0-Meta
->
+David
 
