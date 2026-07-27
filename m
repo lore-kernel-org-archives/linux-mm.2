@@ -4,99 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D641C531D0
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 16:33:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C7D7C531C9
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 16:35:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2AB076B009F; Mon, 27 Jul 2026 12:33:28 -0400 (EDT)
+	id 7DED36B00A2; Mon, 27 Jul 2026 12:35:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 197C66B00A0; Mon, 27 Jul 2026 12:33:28 -0400 (EDT)
+	id 78FD66B00A3; Mon, 27 Jul 2026 12:35:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F2BD66B00A1; Mon, 27 Jul 2026 12:33:27 -0400 (EDT)
+	id 6CF676B00A4; Mon, 27 Jul 2026 12:35:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C40446B009F
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:33:27 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4A2A412011D
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:33:27 +0000 (UTC)
-X-FDA: 85035102054.07.11DB5C4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 53F93160011
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:33:25 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="T9s//DML";
-	spf=pass (imf08.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785170005;
-	b=zfHOg7Axnjv4O5wmcga+CrLPYQRXkdnaIFJnJI8C2RFUYCORKskAdvx+UPeiA14wsPRTcX
-	xnvtbubi92EhV+L9j1da8fT3JMci3GUAl1pYJRkwjn7TBT1abiaCNGv+OMhMSygZhA/bdB
-	jBTJvtY7TWExXHmMmMH/A4k+A+FcVJQ=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="T9s//DML";
-	spf=pass (imf08.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 35EF36B00A2
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:35:28 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id AED3480107
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:35:27 +0000 (UTC)
+X-FDA: 85035107094.25.E034FAD
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 89DCCA0006
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:35:25 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Yval0zVP;
+	spf=pass (imf25.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785170005;
+	s=arc-20220608; t=1785170125;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZM6fxFyd8dCb6BJMoQKO+aSWu6p8LaWIuEEO6Zj0vro=;
-	b=jHlLpCZSKIMLlXwHre2wH/kQBmFBZfvMkS0ip7iIFRoYLjOrR86VjbPjwomcIPOtbxoW/2
-	0sBKFjiC5ypzFW13Fpgk6uUQ7F/+5josbEoVyMZG1wCLEHQnAUEchLs/Lbj57uHpm2MNi1
-	/fdjz2aNuvCsPALzi6Yhc7ks8hgJD5g=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CA48460A59
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:33:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 825F51F00A3E
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:33:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785170004;
-	bh=ZM6fxFyd8dCb6BJMoQKO+aSWu6p8LaWIuEEO6Zj0vro=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=T9s//DML9pfG5FX5Se3JZLoeaPVRrohMBYlGpy3wRtO1c5fe73QR6u8Y2NCl/bD3K
-	 /RYA9h+1Uwpk3w2ItuiKUG+69J0qAsJ6lXpPljAzQuvkhs+rXmtul82hNoi3y2EmRd
-	 oiOUMUHH4rfr6B0JPa8V/sgKG2tepy2hK94HNERbYdpsL+1FIIPOl2G5HLk/6V6Ma6
-	 HWHvsGRys0NSYDcSV+x3klM6f2m5f/2AZgTh1Cp/1mcf2aNCfU8obdK0ShdKM7ZeeS
-	 QuoZXj5G6UPi915UmYH891eH1pRLHzH5bfw0Da6Rf4fy4uhvX1M9iaTVIKbl3L6d26
-	 lKmloU7ky84jg==
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-c197eaaab00so456520566b.0
-        for <linux-mm@kvack.org>; Mon, 27 Jul 2026 09:33:24 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RqbNGlcf0aZyxUd/O8oMw/0M6y1Ud/5yyln9x2jEDtw5JYMAU3F7b81cNXyNSa3rochC3DfDx67/w==@kvack.org
-X-Gm-Message-State: AOJu0YwMksjHlfDQMNWkZPsxVVST2afDmk6BlfS1lYOkq73+XQxv+W1X
-	gKjL5g4eHHOk5ZcyMOeD0HSX3SkYaN5nKn4uRcPM+JhnBHg/yNYo/MqThCkwsJwIWhjRTOYLOBf
-	HY/KVnOhoAyVYo32VPoWhbOzLVddYPBI=
-X-Received: by 2002:a17:906:f5a2:b0:c16:7097:4708 with SMTP id
- a640c23a62f3a-c1f1ed4791emr422071166b.3.1785170003408; Mon, 27 Jul 2026
- 09:33:23 -0700 (PDT)
+	bh=mjxJ4Ft7V0oMbE64yyZGCpBckJXYaY+q8Ii9o6DiK/g=;
+	b=EuOCErdXjUH4rRQBBp71X4F/BlwYzIs1qSN81ALQxFJWCLFp5zwwkhY83XNS4gW1DGDw47
+	Zcu6KbmSSkCf5SH1otC/jEtgIp0cMFMYnA8Bhr5kK6RyBcfXtk8u4CjIAtAoy6KP0bRDNl
+	1fqKQlMyH5FX1zyemuQpmXd27hqV9QE=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785170125;
+	b=gzC5wBQs5brl6Ny84D7L60TYns+RTPeowYd/5ylWUjX9OKEXJeFMu0leoehLfB9xc9Ur7H
+	LrCELpcopQE5fB4ux2rA8dWwyV50Ot1WSXlMEzjYMt0Pdqp6eIPPkkcyRBPyjkwc3xtcCq
+	h1Rud/A++xZc0mzHB7tgxj+4zetqC84=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Yval0zVP;
+	spf=pass (imf25.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Mon, 27 Jul 2026 09:35:16 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785170123;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mjxJ4Ft7V0oMbE64yyZGCpBckJXYaY+q8Ii9o6DiK/g=;
+	b=Yval0zVPqmXh4i741fO04m8Ycl1EtwHSU8rOp72V/QNS0dUUSV/8wa+LYO2glX5Tip2lw0
+	XjQsrif9WzwtKdtiSe+MQ0wSIMngI4W3rUy/Tj5c0KIiBQ9F2CGpfRH2DEVAluiAqXssf6
+	2dlFOqiBZykQ9SjvkqIIkL9b5yg5KUA=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, 
+	ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, 
+	surenb@google.com, mhocko@suse.com, kasong@tencent.com, qi.zheng@linux.dev, 
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, chrisl@kernel.org, 
+	nphamcs@gmail.com, baoquan.he@linux.dev, youngjun.park@lge.com, hannes@cmpxchg.org, 
+	roman.gushchin@linux.dev, muchun.song@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, rientjes@google.com, 
+	kernel-team@meta.com
+Subject: Re: [PATCH v5 3/3] mm/vmscan: reduce lru_lock contention via
+ vmstat-derived scan-balance cost
+Message-ID: <ameIpQtXv9pC2aaT@linux.dev>
+References: <20260727162550.2032-1-usama.arif@linux.dev>
+ <20260727162550.2032-4-usama.arif@linux.dev>
 MIME-Version: 1.0
-References: <20260726-shrink_zswap_entry_v1-0-0-v1-1-30957e4d0cb6@gmail.com>
-In-Reply-To: <20260726-shrink_zswap_entry_v1-0-0-v1-1-30957e4d0cb6@gmail.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Mon, 27 Jul 2026 09:33:11 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zM=J+NkG+qJa430Nca40wEBSBJuo6E7f_-s3iHDP32BUQ@mail.gmail.com>
-X-Gm-Features: AUfX_mzFSkU2OwLOPVMWx10WUzvXFTpk7yXqeSBQp2VWHhVf9bxDHBQVL1iTwis
-Message-ID: <CAO9r8zM=J+NkG+qJa430Nca40wEBSBJuo6E7f_-s3iHDP32BUQ@mail.gmail.com>
-Subject: Re: [PATCH RFC] mm/zswap: reference the pool by index to shrink
- struct zswap_entry
-To: Jianyue Wu <wujianyue000@gmail.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: ejjn9ud7kuwo5gb9goubt5rur4i6g3y9
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 53F93160011
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260727162550.2032-4-usama.arif@linux.dev>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 89DCCA0006
+X-Stat-Signature: btdfmh9e1ncfg3jch5t4bhep5jynzrd9
 X-Rspam-User: 
-X-HE-Tag: 1785170005-280439
-X-HE-Meta: U2FsdGVkX1+qaplY7dPqCtLt0GtMmWfjCkHgxYgCjKUN/CPibpxt6vksDETLKy+xS+Ez2dI6Y+EmgxcUNXfkrbAslUr3H6zoBNvCsA1TUeeoQJiLhYCAJYiuXoVYWIsKZSU3Iv8H9lk0WOLYaUaDUDFTz61ZI+V8lXSOdiUTdwOyXwSFgvRZD81cLZNGgdyABJyVVqxvwqFt2g2udva4n3LGcKNJWnPC7htsAfAZ1DrZtRVxR8pcjQS8zYDMMIpg6MeCJMJyHq/MkMAE2g5n35MF5hmIZpFFAROBtt4E+wkfanhz/gz3iOkbhH260xiuLXH/74pRCGBhemGSjDP31CAsku6T+Ez39/mjZuA5MI1m4Aa1xwQb8kw66VbC1i+5BvLLDNEinY7bjOFXuG8JxZfYp9E1rmTJSyysawxAs5qIqM5larW0EYFJgcTfMhUyVLW3aRAeYNwCo0A7MNBt8wc7mYdR3gQBF6hgYDGph/HC6JHEdQulZ06zvQDhWDU26+IWYnaeCC7deqIeMyAgBhYaWT0PM2Kkbki7oesGQtY3rlaONVP8xXxqENBb4RzM0V6U3qgkTvypQpVLarochsqbi4oQWFS3gKZ9uauguASBJJUXyApWcUwmkjBffWDDpcDN6iQafWwBdio4TQ+oxDWi8totlKKFsj8vqNm/10yvfdD67iQlja2WluIEUZtp6SrG30DQ3VXsMEptMiQWkLgbM/pFr6YbOrKjzms4WCCvV44/u+q5DWXD8dUShRUhGmy/tMcBeNQk/Q6lwFux8pQbp3KjwTHjA1/89ZH2oNZrZ8W6HfsW9077cRbSZe7dAgHeVo7hxeauK+0uBKFXaMhMEhUhjf5doL7pegheKq8+KDdJhmD2F0Z1Mh3NXfEpPNRWXnhJaLaBMU58SYUzo0klrLIqAhGaybPw1fDvP2eHWptzY8SVM9a65rUPaRtS5BpFbqI9jZUGHEv5KV5
- S1LoDSbQ
- vEV6zFX5MbXZxAP5MIp3x60Qv+yUVcFZyZ//4WG6vIebgMn4NPsJ1v5iiZUzA9vuAmorGBX6oECQ2kpNGO14/qhD/RdrXW0cdXtuj6vmrakkq1hV1UXWtQSXY/bNYSkS2A6ib1kFeXe4Rf6k4aiU6gZ8dz96eHmM+PsSs/HvaQZ5gYqD9f6y8EYOpg13M1j+qaziaCyZ2v4qcwSZz7p+v9LgkjLel08DUppCQNbm1aeXPsByH2C0JUrT8qBAdGKUtURdqVl/iW9bo87P4vnqfZZJss/aIkW9kNCV+CyjSDfUjNg4quuGFcdPkPe6m00DBqbN+6PGIJ41rJlMDxDV2tlFPJMQzYw5IA54v
+X-HE-Tag: 1785170125-246875
+X-HE-Meta: U2FsdGVkX18XLxIKP8o83T58czHaILpA9BTQNrpZN/Zwgw19d3sq0oCW3UTLZwqGbZB5+0x3xvEb7++5iF34yOl2+DKlvSzNAjlCBLOXi6Lzhi5NJxCW8S2CArCFxSI2utBdMdoBZk8EWjZBpQKZwTLbp1wzrCWQxbTu5VELs+X98OoWF7OgKZW6WmwvDs6ayyemlvF8ph1H/U6TTJkQh0/HVf0S6GJRCk8/MMY0CXkcIO/aJvht8WvaC4sNfCFQMASz8Ij+ALoQOh1UP0IX3yPwjtAaTmlxjWjq2pjLE29eB8HiqPeUNGJCBfESPQzzDnc1PV7Z5wwrcAdVz9h3JRz21AmOdadxNPx4E8uOU4eOMRFMQg5Wh95aoJr9yE4idMcPH2HrguwxsgTJxHH0EzJ/IE7gZwpjusF5DuqsNoALovmsJ690JvdodreH3ga7EhuYydOv21RVrz1C9p7ooNnkiE1yJPlIHGNGPpfUH66H806xWrZMINcXMJnfFDrOOuJvx/ytUo40YBBC4GI7Aje+R4k2ATl8ZXCP76zRsrt7W4PVZl/k8JT5/SPwroQqndL+cPOqjm5Qxra0Db1vQg+tJTEupFsTV8OksTaPn4fkaqD//f5J13v+9u6SMtMaWNl0K8ZnIcqq7ASDeZIPLPZDElCEhG9rRlcaEsa1iaLDvs/aRPe2dHTByfK8N60e4WqLRzwb3wUZOSfdoMG4IEqzzIDM7zGRvK5pwNLW4/LqJWUOZzVzf/T3be/2UzSNg3zHeZqIrs8UnLIH5y+89l9ugp2ztDDezXd2jwnjp/hslzWb+f7dAjUK+AbyKNy/3Ny97qCAzTM5tTuMEaQbL2ePcloDyw7+0Ihs7hxyAyvdNxFVghN7Lse0AVnHzBtmPO6MW7k70QT1rCBZ9yYW0xIR0hY0oRrH5uXgX/GadFreHU2lKG4VY86tWgkLTbnWBWmC9nT1mpDX4xtUqWG
+ P7UC9wCa
+ YPEBg1W/MJ0TLgHECR1NBtx3gRhA2B4CpvZHuLKe67Nf7NCZDiJ7n0T7SrUwtZ0xv6WWc1oxybzvseTHuQfXhHEr087ODBZY6d+1zGkw+k5Bx596VDAQmrxLKS+n/mA6fCZEnI1Uz5bY4c8BlFWdI8XC+nLm3m6DlIJHFTsoWaHmj/VzIvy4NuGSGlUGfC1/lZTJXwUJ3Fuj4OhhqqXOrr95QJ2MuyErvXv3Ih7qUtaWnKUj+UTn2L90Q1Aghcbz1PzzqLU+2MdvpJeSrHfFv7mBU3ezbSuJssjY5wHVkP/GM/AKWZbu1KCYlS4ajX7TNLWeZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,232 +94,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Jul 26, 2026 at 8:18=E2=80=AFAM Jianyue Wu <wujianyue000@gmail.com>=
- wrote:
->
-> Every stored page has a struct zswap_entry, so its size is a per-page cos=
-t
-> that scales with how many pages zswap holds.  It currently embeds an
-> 8-byte pool pointer.
->
-> Replace the pointer with a u16 index into an allocating xarray of pools.
-> The index is allocated with the pool and remains valid while entries hold
-> references to that pool.
+On Mon, Jul 27, 2026 at 09:23:25AM -0700, Usama Arif wrote:
+> The anon/file scan balance in get_scan_count() is driven by two scalars
+> in struct lruvec, anon_cost and file_cost, accumulated by every reclaim
+> producer under lruvec->lru_lock. The acquisition sites for cost work
+> specifically are:
+> 
+>   - shrink_inactive_list() re-takes lru_lock at function exit purely
+>     to call lru_note_cost_unlock_irq() with (nr_pageout, nr_scanned -
+>     nr_reclaimed). One acquisition per inactive shrink.
+>   - shrink_active_list() does the same with (0, nr_rotated). One
+>     acquisition per active shrink.
+>   - workingset_refault() takes the lock via folio_lruvec_lock_irq()
+>     purely to record the refault cost. One acquisition per refault.
+>   - prepare_scan_control() takes lru_lock just to snapshot the two
+>     scalars into sc->{anon,file}_cost.
+>   - lru_note_cost_unlock_irq() itself walks parent_lruvec and
+>     re-acquires lru_lock on each ancestor to propagate the update,
+>     adding O(memcg-depth) acquisitions per producer call.
+> 
+> This hurts because lru_lock is already a heavy contention point on
+> memory-heavy workloads: every isolate_lru_folios(), move_folios_to_lru()
+> and folio_add_lru() takes it. The cost work itself is trivial (two
+> scalar bumps and one comparison), but it contends with and causes
+> contention for actual LRU manipulation. The parent_lruvec() walk also
+> multiplies cost-update overhead by memcg hierarchy depth.
+> 
+> The balance formula for anon and file, respectively, is this:
+> 
+>     cost = nr_io * SWAP_CLUSTER_MAX + nr_rotated
+> 
+> Instead of recording cost and running averaging logic directly when
+> these events occur, snapshot running vmstat counters once per reclaim
+> cycle and derive the balance from event deltas since the last run.
+> 
+> Use PGROTATE_* from the preceding patch for the rotation input.
+> WORKINGSET_RESTORE_* and NR_VMSCAN_WRITE provide the remaining event
+> counters. Charge NR_VMSCAN_WRITE through lruvec stats so all inputs can
+> be sampled per lruvec and aggregated through the memcg hierarchy. This
+> is overall cheaper and has fewer lock acquisition sites.
+> 
+> Moving accumulation and decay to the reclaim side also improves the cost
+> model across reclaim gaps. With producer-side decay, events that happen
+> while reclaim is idle still age each other before reclaim ever samples
+> the costs. If a workload refaults a large anon set and then a smaller
+> file set before reclaim runs again, the later file activity can age the
+> earlier anon activity out of the cost model. The new scheme observes the
+> whole between-reclaim delta and decays anon and file proportionally, so
+> the scan-balance history better represents what happened since the last
+> reclaim pass.
+> 
+> A dedicated per-lruvec spinlock, cost_lock, serialises the delta
+> extraction, the cost->count update and the halving loop against
+> concurrent reclaimers in the same memcg+node.
+> 
+> NR_VMSCAN_WRITE is accounted at writeout(), so reclaim_stat.nr_pageout is
+> no longer needed and is removed.
+> 
+> memcg-v1's memory.stat anon_cost/file_cost is now sourced from
+> cost[].count instead of the removed lruvec anon_cost/file_cost fields.
+> The reported values only refresh when prepare_scan_control() runs and
+> are bounded at ~lrusize/4 by the halving loop; the scan-balance signal
+> they express is unchanged.
+> 
+> Under pure MGLRU the scan-balance signal itself is not consumed (both
+> prepare_scan_control() and get_scan_count() are short-circuited on the
+> MGLRU paths, and MGLRU's own type/tier selection comes from read_ctrl_pos()
+> on lrugen->{avg_refaulted,avg_total,refaulted,evicted}, not from
+> anon_cost/file_cost). NR_VMSCAN_WRITE naturally covers writeout from
+> either reclaim implementation. The preceding patch also bumps
+> PGROTATE_{ANON,FILE} from evict_folios(), so rotation-driven reclaim
+> work is accounted consistently across both implementations.
+> 
+> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+> Signed-off-by: Usama Arif <usama.arif@linux.dev>
 
-Technically we are introducing a new limit on the number of pools, so
-let's mention that. I doubt anyone actually cares, you would need to
-switch the compressor 65K times at runtime to run into a problem.
+I see you already added my Ack here. Sounds good.
 
->
-> On x86_64, the zswap_entry slab shrinks from 56 to 48 bytes per object,
-> raising objs_per_slab from 73 to 85.  This saves about 2MiB of metadata
-> per 1GiB of data held in zswap.
-
-Nice :)
-
->
-> Signed-off-by: Jianyue Wu <wujianyue000@gmail.com>
-> ---
-> This RFC proposes replacing the per-entry zswap_pool pointer with a u16
-> index into an allocating xarray of pools, so struct zswap_entry shrinks
-> on 64-bit.
->
-> I am looking for feedback on whether the metadata saving justifies the
-> extra indirection on entry decompression and freeing.
-
-Did you try to benchmark it? I doubt the indirection would actually
-show up as most use cases should have a single pool. It would be
-interesting if some use cases actively switch the compressor at
-runtime enough for this to be a problem.
-
-> ---
->  mm/zswap.c | 49 ++++++++++++++++++++++++++++++++++++++++++-------
->  1 file changed, 42 insertions(+), 7 deletions(-)
->
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index 4e76a4a87cdc..6c29098da8d5 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -35,6 +35,7 @@
->  #include <linux/pagemap.h>
->  #include <linux/workqueue.h>
->  #include <linux/list_lru.h>
-> +#include <linux/xarray.h>
->  #include <linux/zsmalloc.h>
->
->  #include "swap.h"
-> @@ -157,9 +158,22 @@ struct zswap_pool {
->         struct list_head list;
->         struct work_struct release_work;
->         struct hlist_node node;
-> +       u16 idx;
->         char tfm_name[CRYPTO_MAX_ALG_NAME];
->  };
->
-> +/*
-> + * Entries store a u16 pool index instead of an 8-byte pool pointer.
-> + * Indices are allocated here at pool creation and released at destructi=
-on.
-> + * Live entries pin the pool, so its index is not reused under them.
-> + */
-> +static DEFINE_XARRAY_ALLOC(zswap_pools_xa);
-> +
-> +static struct zswap_pool *zswap_pool_by_index(u16 idx)
-> +{
-> +       return xa_load(&zswap_pools_xa, idx);
-> +}
-> +
->  /* Global LRU lists shared by all zswap pools. */
->  static struct list_lru zswap_list_lru;
->
-> @@ -182,7 +196,7 @@ static struct shrinker *zswap_shrinker;
->   *              writeback logic. The entry is only reclaimed by the writ=
-eback
->   *              logic if referenced is unset. See comments in the shrink=
-er
->   *              section for context.
-> - * pool - the zswap_pool the entry's data is in
-> + * pool_idx - zswap_pool index, resolved via zswap_pool_by_index().
-
-No need to document the function name here, most probably will be
-stale at some point.
-
->   * handle - zsmalloc allocation handle that stores the compressed page d=
-ata
->   * objcg - the obj_cgroup that the compressed memory is charged to
->   * lru - handle to the pool's lru used to evict pages.
-> @@ -191,12 +205,20 @@ struct zswap_entry {
->         swp_entry_t swpentry;
->         unsigned int length;
->         bool referenced;
-> -       struct zswap_pool *pool;
-> +       u16 pool_idx;
->         unsigned long handle;
->         struct obj_cgroup *objcg;
->         struct list_head lru;
->  };
->
-> +static struct zswap_pool *zswap_entry_pool(struct zswap_entry *entry)
-> +{
-> +       struct zswap_pool *pool =3D zswap_pool_by_index(entry->pool_idx);
-
-This seems like the only user of zswap_pool_by_index(), just open-code
-the xa_load() here.
-
-> +       VM_WARN_ON_ONCE(!pool);
-> +       return pool;
-> +}
-> +
->  static struct xarray *zswap_trees[MAX_SWAPFILES];
->  static unsigned int nr_zswap_trees[MAX_SWAPFILES];
->
-> @@ -275,6 +297,7 @@ static struct zswap_pool *zswap_pool_create(char *com=
-pressor)
->         struct zswap_pool *pool;
->         char name[38]; /* 'zswap' + 32 char (max) num + \0 */
->         int ret, cpu;
-> +       u32 idx;
->
->         if (!zswap_has_pool && !strcmp(compressor, ZSWAP_PARAM_UNSET))
->                 return NULL;
-> @@ -322,10 +345,18 @@ static struct zswap_pool *zswap_pool_create(char *c=
-ompressor)
->                 goto ref_fail;
->         INIT_LIST_HEAD(&pool->list);
->
-> +       ret =3D xa_alloc(&zswap_pools_xa, &idx, pool, xa_limit_16b,
-> +                      GFP_KERNEL);
-
-I would let this poke out, 80 chars is not a hard limit.
-
-> +       if (ret)
-> +               goto idx_fail;
-> +       pool->idx =3D idx;
-> +
->         zswap_pool_debug("created", pool);
->
->         return pool;
->
-> +idx_fail:
-> +       percpu_ref_exit(&pool->ref);
->  ref_fail:
->         cpuhp_state_remove_instance(CPUHP_MM_ZSWP_POOL_PREPARE, &pool->no=
-de);
->
-> @@ -366,6 +397,8 @@ static void zswap_pool_destroy(struct zswap_pool *poo=
-l)
->
->         zswap_pool_debug("destroying", pool);
->
-> +       xa_erase(&zswap_pools_xa, pool->idx);
-> +
->         cpuhp_state_remove_instance(CPUHP_MM_ZSWP_POOL_PREPARE, &pool->no=
-de);
->
->         for_each_possible_cpu(cpu)
-> @@ -764,9 +797,11 @@ static void zswap_entry_cache_free(struct zswap_entr=
-y *entry)
->   */
->  static void zswap_entry_free(struct zswap_entry *entry)
->  {
-> +       struct zswap_pool *pool =3D zswap_entry_pool(entry);
-> +
->         zswap_lru_del(&zswap_list_lru, entry);
-> -       zs_free(entry->pool->zs_pool, entry->handle);
-> -       zswap_pool_put(entry->pool);
-> +       zs_free(pool->zs_pool, entry->handle);
-> +       zswap_pool_put(pool);
-
-Let's add a NULL check here to avoid blowing up if something goes wrong.
-
->         if (entry->objcg) {
->                 obj_cgroup_uncharge_zswap(entry->objcg, entry->length);
->                 obj_cgroup_put(entry->objcg);
-> @@ -923,7 +958,7 @@ static bool zswap_compress(struct page *page, struct =
-zswap_entry *entry,
->
->  static bool zswap_decompress(struct zswap_entry *entry, struct folio *fo=
-lio)
->  {
-> -       struct zswap_pool *pool =3D entry->pool;
-> +       struct zswap_pool *pool =3D zswap_entry_pool(entry);
->         struct scatterlist input[2]; /* zsmalloc returns an SG list 1-2 e=
-ntries */
->         struct scatterlist output;
->         struct crypto_acomp_ctx *acomp_ctx;
-
-We need a NULL check here as well.
-
-> @@ -964,7 +999,7 @@ static bool zswap_decompress(struct zswap_entry *entr=
-y, struct folio *folio)
->         pr_alert_ratelimited("Decompression error from zswap (%d:%lu %s %=
-u->%d)\n",
->                                                 swp_type(entry->swpentry)=
-,
->                                                 swp_offset(entry->swpentr=
-y),
-> -                                               entry->pool->tfm_name,
-> +                                               pool->tfm_name,
->                                                 entry->length, dlen);
->         return false;
->  }
-> @@ -1457,7 +1492,7 @@ static bool zswap_store_page(struct page *page,
->          *    The publishing order matters to prevent writeback from seei=
-ng
->          *    an incoherent entry.
->          */
-> -       entry->pool =3D pool;
-> +       entry->pool_idx =3D pool->idx;
->         entry->swpentry =3D page_swpentry;
->         entry->objcg =3D objcg;
->         entry->referenced =3D true;
->
-> ---
-> base-commit: c68210527d235e59afa54bc6aba6ecc532488a82
-> change-id: 20260726-shrink_zswap_entry_v1-0-0-f21e34cc9214
->
-> Best regards,
-> --
-> Jianyue Wu <wujianyue000@gmail.com>
->
 
