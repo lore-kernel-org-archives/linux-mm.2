@@ -4,118 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2E09C531D0
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 08:16:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E024C531D0
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 08:19:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E224D6B008A; Mon, 27 Jul 2026 04:16:52 -0400 (EDT)
+	id C2C086B007B; Mon, 27 Jul 2026 04:19:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DABCE6B008C; Mon, 27 Jul 2026 04:16:52 -0400 (EDT)
+	id BDD1E6B0088; Mon, 27 Jul 2026 04:19:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C72FE6B0093; Mon, 27 Jul 2026 04:16:52 -0400 (EDT)
+	id ACB9E6B008C; Mon, 27 Jul 2026 04:19:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9D0556B008A
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 04:16:52 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3B9DB120673
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 08:16:52 +0000 (UTC)
-X-FDA: 85033850664.29.E8354AB
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 4CEFDC0007
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 08:16:50 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=V2C9TBE2;
-	spf=pass (imf28.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 796786B007B
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 04:19:58 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E6DB6A06A5
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 08:19:57 +0000 (UTC)
+X-FDA: 85033858434.15.EFFA120
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 1355D100002
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 08:19:55 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=NqbAP8C9;
+	spf=pass (imf14.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=mhocko@suse.com;
 	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785140210;
+	s=arc-20220608; t=1785140396;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xyS0tG8v2Hcb4VXfsGP6gPVBE+5XXuuxqiihsyJcIEM=;
-	b=1YHO4W19t3W0ydo067k+rT52grBX5t6nPHbyvw1/+OlZlU9J3Wm05r43781YiHPcuEWeZP
-	SuoY4G0iO1LJuMxp+azQvdz5hgmSWtBb9mdu9QGRqpO36b6zmnbCz4TVaO53eTQd80gA+r
-	djOKPvwlPIQedUU6AOVbwILs01y5apw=
+	bh=3ADtoclqK+MoHDwfgYPV0XT59G0S5UqppnClfzEaKuk=;
+	b=Sptw+SXP3IBmmQ/+2w5XHtlju/2FaD0kK6XOCCr7cpl8USIGlRyWDpX/5xN7KaNNTtvBse
+	g6C06wEKak4Hjtrsi6ephx7C+dBjLOoVf09JV6FuURHqq8EjhB6yD89vPBLGtFWVsBz35h
+	bANMLS0MljV8abDTe8WAayDSo5H2Sy0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785140210;
-	b=LbnLa9uLchp0synsqFR3YdlLttbT+puya7ARTmR8H19iWCL/bEzobinFzXTnDHPLeBmBlh
-	Mlm0hahat0GsdKXPBQYSPkhx3nVYWMw3KN8eQ63MiY6O6VRSEVYDmIHDNqYZWDGhYWU+og
-	/mScYjNSM56/0/DecU/zW3hMh2Ff7DU=
+	t=1785140396;
+	b=J4ltE1o84xRbjnar4oM4TklI5KLMe/2U8VLrQNsickPAbkmokfotD4Lq5/nlz2BBYaZM3D
+	4ne8IjIoMMp5Jb3izWfNfREyUWCoEbWqkkgrSPvUi5dbB13h/fk+sjsM8y0IQfG60mUhye
+	a3enXANNNjG3mYSwCGSzN39dYmKgOl4=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=V2C9TBE2;
-	spf=pass (imf28.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	imf14.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=NqbAP8C9;
+	spf=pass (imf14.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=mhocko@suse.com;
 	dmarc=pass (policy=quarantine) header.from=suse.com
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-47f93b2fe4cso1764517f8f.0
-        for <linux-mm@kvack.org>; Mon, 27 Jul 2026 01:16:50 -0700 (PDT)
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4957eefd361so18247145e9.1
+        for <linux-mm@kvack.org>; Mon, 27 Jul 2026 01:19:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1785140209; x=1785745009; darn=kvack.org;
+        d=suse.com; s=google; t=1785140395; x=1785745195; darn=kvack.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=xyS0tG8v2Hcb4VXfsGP6gPVBE+5XXuuxqiihsyJcIEM=;
-        b=V2C9TBE2NnwWO6HL+2SbefsvwCky/kvUWFusVfo8r6r9HId7nu/H2duUWAcKPf8RAW
-         bTJk3Y7Rx8HtawBaYjxu779ZTFrtek7F2vjBypgUvURw8aPcVxO0ZAKdWM9zda4Gqz71
-         2jz9e/yPwCV0Nv0jx/MrIz9JYW5aLVEjzxKYXan8nmhOv80S4/VOf+fMNVS5tH475eQe
-         qQCv1ykKFTWWh8ShcCjAtoHSN3eS7/EpJR22iLYkhReU008RjzxBQSSp2+GxtUcZljzY
-         itFQL/aNgu9ELKeuVNuMECzJoUzC+Nu0/uyb4ddq9kkYgOA9nS1+is+HwjA+hggqZJLk
-         vcOg==
+        bh=3ADtoclqK+MoHDwfgYPV0XT59G0S5UqppnClfzEaKuk=;
+        b=NqbAP8C9RkXB5LoSxo7t04VSoai1sCOAgBNE4bIF9cq+8tegzUnC+2uA9MPik2ujDm
+         /BxVCCrFFc+OOtpV5Q5mEAZpY89xBDewXypTOpLgqUsUg9wPlcn+DLjKXdIgiKQhFbMw
+         SlOdsNSPe6HhO+jng7Oj6c4dmqKurOwNwA0yH/lZqET+nSFu/vPlkoM//02H3c/1pBPz
+         GUjhdXQvOEa+OHgOEIRxTxO81q8QGvlOadnmQIN8xNDeacBTYvZDqUVgT2fRPCCDDLQT
+         dYAvl0Wt+tsu6h76XMv7B5h5d+Bavb8iGX/YKWtnheBdzx6ijetzD0yFPGYAK9ZWIR2Q
+         0teQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785140209; x=1785745009;
+        d=1e100.net; s=20251104; t=1785140395; x=1785745195;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=xyS0tG8v2Hcb4VXfsGP6gPVBE+5XXuuxqiihsyJcIEM=;
-        b=mwlcQcTlRevEriFhNpIoCSOUXRYs9VjzcoXJlLfL2xSj0TADjhR3I4lnlKBGWnZF8w
-         NamVt48tcp8SdeRndKtBFpLgLMaVkcKltbszpBO/8nUPRMQJBuU8iZIBnh3GmIiA/zaV
-         DR+YZvxf9MCX1qfQPPwsRT60On+NJ4uhX5/aUzTjT9qub3iPOzozyLfpEu3jHMrqZeTZ
-         O65JMk54+qK59BXWlFL1YBIU1wRHZgbuRc8hXmeSkb/xpIHS8cviJ8OxDdj+5sqRiDM8
-         eoVr18nSuiIjyBz5lS4q55ypSjqTSReAFBaLqsEeNZ7ptSdyoVVGQQWDysWqvqRm95VQ
-         ZpKA==
-X-Forwarded-Encrypted: i=1; AHgh+RopmTpCZfd4WauJXImhUS3CTt1bEg+Mf1Ut+RHZXnUom+I2T5+pLob4slEowmhZKGcbNdr4lRLUYA==@kvack.org
-X-Gm-Message-State: AOJu0Yzng0i/lZ1Fjlg+2eIQExEkT+8OH3+ex+/gITiGGeBJkp5eyZTC
-	Db9uYuAz5LXgwxCnBnEA6c1XtNm43v8Es4aD8Zr9FwVcaSCiiCeXawFlBMp7Ob3PtQM=
-X-Gm-Gg: AR+sD13BmraMCe77x8ueAF9mmxRYzW8QfyonuVUYL2QNKcJ+MdR4xtdmCxkIqPSc9YB
-	BfgBFioXLnupXd6ZZVl1iUzxOY+4HneJ5N8j7alnSODPNI16rpAgkcToVZqnM2fjtesVPaWLywB
-	kMr4yc6xYFCr+/ZAp4c4s8qL8NMa4EQafPPrxP8Y3XYE+sWUfl9YKyWi5WgAMaFtFyvuYbIHYC1
-	sF0gYZZ9NLUbwamKCK1whHBdxKJGvdNmC1/U7MfWPls2PeRiuLU/feHuo+4OoJmwPdJzUBZf6GL
-	g4O/W8LAwtqWrhae3SQHljza+aUvAHZbHS8Uildk/z3PdgonLKmfeHDZkeAFp+ArcvDztGl4wcg
-	0s5gALzoISVYIBJ21o966NM9nnVOulHa3zJyolntAeM0eLMl1tPn+V3Gw5bZtWSqzW1lxYqiM7Q
-	UdesIQBR2meA==
-X-Received: by 2002:a05:600c:1f8f:b0:493:bacb:1341 with SMTP id 5b1f17b1804b1-496b5710e30mr91785715e9.4.1785140208888;
-        Mon, 27 Jul 2026 01:16:48 -0700 (PDT)
+        bh=3ADtoclqK+MoHDwfgYPV0XT59G0S5UqppnClfzEaKuk=;
+        b=pXOYOuFWUlQX7k1v8sV5HV6XEaBhMsukt3H6xKE0tNAqG1tCx59fuD9thUaP6zyeGA
+         z9iM4o6xIeYhpwrmGAoWFPb5Kxsfy/4A/0HuENXq8TXc+q3fLw32cIbwNbCeErX/UGQt
+         vxzczvJgc2DHd+WGJmuV417uf0az8XeyMVAdj0gBYBSSKy37qWxlYKutgK1b10vmdbpd
+         bV/mRG+ed0a9kW7bIiRYa9wX9C2I08D2CkfLPzB6C6JbeVB/n+XiT4I9epExbbnNFuhQ
+         sw6ee+P32OdKtTOhNUXtg4tLsKK35vG7tVHFk4VzV0lI5ID7kTWpdzmGaeQDnRT/GnF+
+         foPg==
+X-Forwarded-Encrypted: i=1; AHgh+RoV1pPu3dwe7M93KgnZ/pkbb7T2tp/fDwB6kbc0jgYws/3VGUPRZWhh08XRMe7TkuYoNDpVWEngNA==@kvack.org
+X-Gm-Message-State: AOJu0Yw/KbgD+8mupqRid0QpyulipWCoNtj8Rtgjcq3Tj7uO6U7E7smG
+	lSZV//KKRO+LWt8rtlg08RZUNumFPGhJtDEX05FhPguwTIe3ey2q9So9sfl4IX8ZvKI=
+X-Gm-Gg: AR+sD11RfADOwhWWAOl46fcxYMj3lkODK0MGtZAN3VVfH4NKJ70BAd9wfdHlJYhUYrm
+	yznbRF3BEJGGqJOkCarn0fHv28yK0wStX9IlrMzss4AbLs84fy3cCIBhV1oswYTpWbqfjsiOyiz
+	ks7RRkQagCPVGyFglI3MEdRcmS+fSie7DVTidKNsgb1HrK90vAWdu3EIjS47PDrGw1ogE8yNPbF
+	P4bo+vqyynrUvKXNEKSKPfQvx7QIAWPM2DoQHGKfpG1HCjNuwQLLVnoj9oq/L6LwZoyYkbODlay
+	FQAFMBEv2EHFQKn1Dm+i1kwgKngyaviRUWkeK5sXgWSkNm9PSH3eT3lh/YnpXc48v/83NnsE2Mn
+	wpJI3bqdc83hWKiJGlBVkJjhI04Cwoc4dkkdSOZOR/0mTrvyQTuCn7xgKD6Ik7vY4uOTny8lZS/
+	MFCGd8Ns+wMe0+14xx/R0/fKU1r3nBXBiATGEmWKQhbMIy9TG0q/JovA1svjMiFcJvwh6P
+X-Received: by 2002:a05:600c:3113:b0:495:4811:7998 with SMTP id 5b1f17b1804b1-496b57013f0mr92292875e9.17.1785140394639;
+        Mon, 27 Jul 2026 01:19:54 -0700 (PDT)
 Received: from localhost (109-81-83-7.rct.o2.cz. [109.81.83.7])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-496b52eec24sm196028765e9.3.2026.07.27.01.16.48
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-496b4866ddbsm237975535e9.7.2026.07.27.01.19.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jul 2026 01:16:48 -0700 (PDT)
-Date: Mon, 27 Jul 2026 10:16:47 +0200
+        Mon, 27 Jul 2026 01:19:54 -0700 (PDT)
+Date: Mon, 27 Jul 2026 10:19:53 +0200
 From: Michal Hocko <mhocko@suse.com>
-To: Guopeng Zhang <guopeng.zhang@linux.dev>
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
+To: Ridong <ridong.chen@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	David Hildenbrand <david@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
 	Shakeel Butt <shakeel.butt@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Guopeng Zhang <zhangguopeng@kylinos.cn>
-Subject: Re: [PATCH] mm: memcg: stop reclaim when a limit update is superseded
-Message-ID: <amcT75pLmA0hRUm1@tiehlicka>
-References: <20260724021805.1234583-1-guopeng.zhang@linux.dev>
+	Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Zhongkun He <hezhongkun.hzk@bytedance.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>
+Subject: Re: [PATCH -v4 1/4] mm/vmscan: fix anon-only reclaim evicting file
+ pages when swappiness=max
+Message-ID: <amcUqfpjE9lnXkn_@tiehlicka>
+References: <20260724033435.2573323-1-ridong.chen@linux.dev>
+ <20260724033435.2573323-2-ridong.chen@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260724021805.1234583-1-guopeng.zhang@linux.dev>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 4CEFDC0007
-X-Stat-Signature: kf5tnye6bdy5kwqwpg1mh1kw9cpb97cy
+In-Reply-To: <20260724033435.2573323-2-ridong.chen@linux.dev>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 1355D100002
+X-Stat-Signature: am3s5zd36wxfu1qpw16fnj1ctiqxfuyb
 X-Rspam-User: 
-X-HE-Tag: 1785140210-69504
-X-HE-Meta: U2FsdGVkX19BM3VK0BYD5yr2yhkNRcaEdjZzpO12Qp90t+3lqUK3J/5IQndLFn7NCYUN3uSefoizYxFgK/3sCy9dvCdtxNjjSyk6AU+AEkdqsNczu1kkksUtjdmQxb08N/6evNFniOuB4svAjn44RF7IVQj7MjnoCkNqLyU0VPifxAYP6pCdADUfkW+X/srYe6kKXaW9/xMPgJwGLBEhCQSWNwpowHmx3eK6qM3FouIgaIoG+06nOMmLK+7YpJONb7blsLsvWjB0zgD0gKYePCi5Nm5DvnSC3JqZsxgKHvEr0KlC/Qy14Za9xdmb0qacPLyqn8DjBYGw5fu4jyUgG1Y1sKCRkvXOTBUncK6EpsqHhQ8myFyr2WOChBIQffNdt3x01wa5dEfAC1J3cQclMDz2NOwF8nWTuoC5cQi+3EkrqHZA2ps0qsgxhx+slWmABOnslueTciOEp6OjLYiQySosJVM8nv+W9QhY2ajZELRYAHMD5XCGQ/0pzRhOuqcbzViT8xGObJmVaW6e4qZNtbCTF5iQRyH56LM85sdUBDz6hJupM8a6yP8j/BohmQIi0gUIV9C1agDZGwosbFypDfiHe0ejnaIeLa4XPPN1LhTcq3bOfhKsu1Madyb+JUgCGAXPdtj2L7K7nz+eKzKJ+QgymWBJDMAqbKgzjmKzwZ4RlBMp4E9mHPmorW6KnEYyxYanqVkIWE0uDMRioT7IXWXrNKqNYQ7IKylJTORf0yyPs+OshwUH8RplizBapMLZEKFh9o7e4r9rkQwxEWBgmCXLWmEYfAbbPsjjifGZbjxqhgjICLg4rVsOmJevr+R4nmcfpwrJaNmIwYEZ45Wo2xwxq5c4NOXM8U4Cw0MF6mPeXXlFQaJhr0/NTpxzJEyxgJMMvFY7z50rGR18HQpcUaQW/Et1sf09CRzXpwkXxJgbAgL61hoCEAS9VaJIfdGvqdkpSxpVwMxgJ1Hp7tC
- KqG4su8M
- OZn0hPsP9ibT1AbIsPikTlWxQZ0E4vdKhE9a6olaYfpQrXFD+1FxkzJqH5O1L9uHNuu8eXlcbNXBYt36nZ3CR8GasoeBqMI8EUkYPUQl8KLTm0OZJrobIijlid9voImJa2V+8A3AKqTX0YAuvzcxFiNA9fBMel4/q0sdi6UE0gsQDb3AH3Suh6HS51V4bVFvxLB+oNqeaXEJk9ohF42SAoK/GdUsw9+GPJklGaFCSqQywQqDpOKDkTchNs3Qat+a6HAqQvXwRjHo/e0IqxDqnABLmxUqiAqQ0k7IM9In9XlalGr/Rs3dwaGHL2erunTrX31VJO7hRjuj5VL1JRZKu7jamkH4UKzaYkPAghUxoQ4L/rAE=
+X-HE-Tag: 1785140395-770217
+X-HE-Meta: U2FsdGVkX193fR3VjSzKuiDb6/LZB+kF2/kYqtbtaDZ9F8349y/ae6ug2vyB7wCBc1dVMgmpRJ5GNYSc2vuM+lupbg+6cLt7BLXDSHzsDCDma3OXDHZ+rSzfxbS61UTTZTZTIfiAvkOpMu+OpOIbQLzs6elYy1lHTQ0Tw1iDXQJpQw4dRGt0Co76TzShYD0K58WmRvZByP16MKkz/XslADa7W433D2Ii2YbPdJSckkor1xB4R2gSo2HaP4VL+NiWkWayp4a9WxSN6/rpHvDL3/DhfAJ4QtscBz0IUx23k9yHqs/ZeKPwngxnPszJdRDDtJ/oS74fjqLYiwS1tjUXGJ7psJcV0wpybVO96So7VHqxUo3YV9Nl+LdcJl/CDQM8ls553pyUfxtnD/yNWwmbDIzodRuGkum37ejpe1OSwC3gMatbTxWHxT3SZvSJ4P3TiLG94KWX13W9XVViQnrtt38liMX99uyXNwh21WwrSMDjb0s8AiJHX6MjnLEhzuEfFhiNpIKT7WaFr2/S3vVibCXNW7NIaPS5QexrCk6Y8ViEvXJxTolstsapfJxWtY37Y1HzFTYfp9c1jy05tKa/CWsVNETj/wHGbcIGYCgt9eirlfaX7W/pWYUvF6uBeNNfjfA5BeATeQa/Aer4K+tnXGpTCvgkfY8cpwygIgUY0OWFB+ULsC0VmvFG6rnIrUdwpUeiedPIYp3ggZV4evNtHqnRvaZ4Vj0XkrCQBXz6lLpmGgY2DKZxJGQMABwzuUHbIoV5YBNAFqajNQhKRLWVszajzi1XJjx0wLESYB9LEdR+z8QPNuErFKnfZnRf6wydmS1kftSCm56t20RcQ1yVdYlxL2NKp0Pvx/j2z4O7qwFqnZ5bDBjhxeHTuQQJupe5b8E/02BQjjjcDoOUyilLbY7QozSrSZMScifFWM+AVMz2+Do23MK/TKLg31mfrhJbnQCt+0JAd1sjW47ZIqF
+ njnWvgeh
+ ao82YAgjVAEcEP5hFjBQWJ3Mb8MeS8uE6pknrK5X9E06c023jsfXwsejUAOkGwqMdqzCR0Q/s4EhfAaGSdHe8oSvg4JI8tQekhAlG0e+NP0L6s1I/yeWy6cr/q7S/Rr4C9VfMsiuNciYeJ3f6ZKuGa/68PHuhAE6Pi83XQUcbacSYUwtQEC4aCM/tLBwH5M2qiAVTZXHu3f38Nqks5varDbVdJDv3+lbDN/2810AMhoEsK+LB44r22RNs+f41H+BvJzA+A4u7kAz874TgrLwNsXhYXaWZwOXeBhMSm8Wn7ANhmoBVBMrX2r8ofk5iPtSFXLB5DHz1ApXbbGcvWOJ9HgVQ1DkWdGt3v41EWISH+jiQANpua0JxsJQ4NHg0ESqlMudi
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,24 +131,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri 24-07-26 10:18:05, Guopeng Zhang wrote:
-> From: Guopeng Zhang <zhangguopeng@kylinos.cn>
+On Fri 24-07-26 11:34:32, Ridong wrote:
+> From: Ridong Chen <chenridong@xiaomi.com>
 > 
-> kernfs serializes file operations only per open file, so separate open
-> files can update the same memory.high or memory.max file concurrently.
-> Both handlers store the new limit before synchronous reclaim, but
-> continue to use the writer's local target in the reclaim loop. If another
-> writer raises or removes the limit, the first writer can continue
-> reclaiming toward a stale target.
-> 
-> For memory.max, this can leave the writer looping indefinitely once
-> reclaim retries are exhausted. The OOM path sees sufficient margin under
-> the current limit and returns true without killing, while the writer
-> still compares usage against its stale target and records another OOM
-> event.
+> As Qi mentioned [1], when swappiness=max (SWAPPINESS_ANON_ONLY) is set,
+> the reclaim logic is expected to reclaim anonymous pages exclusively.
+> However, due to the current ordering of checks in get_scan_count(),
+> file pages may still be evicted if can_reclaim_anon_pages() returns
+> false, which contradicts the semantics of SWAPPINESS_ANON_ONLY.
 
-The current behavior is deliberate as described in b6e6edcfa4056.
-What is an actual problem you are trying to fix?
+But if can_reclaim_anon_pages tells us that anonymous pages are not
+reclaimable then it makes no sense to try that, no? What do you expect
+to see? An OOM killer?
+
 -- 
 Michal Hocko
 SUSE Labs
