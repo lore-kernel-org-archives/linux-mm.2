@@ -4,74 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18F1BC531D0
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 12:54:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8258C531D0
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 12:54:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 161106B00DC; Mon, 27 Jul 2026 08:54:15 -0400 (EDT)
+	id 8B4EE6B00DD; Mon, 27 Jul 2026 08:54:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 115906B00DD; Mon, 27 Jul 2026 08:54:15 -0400 (EDT)
+	id 83D996B00DE; Mon, 27 Jul 2026 08:54:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 027596B00DE; Mon, 27 Jul 2026 08:54:14 -0400 (EDT)
+	id 753726B00DF; Mon, 27 Jul 2026 08:54:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D05546B00DC
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 08:54:14 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4ED858070E
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:54:14 +0000 (UTC)
-X-FDA: 85034549628.03.2448A9E
+	by kanga.kvack.org (Postfix) with ESMTP id 4C7E56B00DD
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 08:54:17 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E0D521C0D52
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:54:16 +0000 (UTC)
+X-FDA: 85034549712.16.7E27D8B
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 1E283C0009
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:54:11 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B47qnmcg;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	by imf06.hostedemail.com (Postfix) with ESMTP id 4FFBC180002
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:54:15 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Sl1IICew;
+	spf=pass (imf06.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785156852;
+	s=arc-20220608; t=1785156855;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O/vImmk4nZ0kFMnvMNBhkco3GaYwW1/WU6MdK9cUjwU=;
-	b=7PUYgrW6CfwY6dUJERILicP8kLaFiY9gtoUusY54G9X0TEbSVr+najnsPmOqKPuPLXQ+XQ
-	I2uMn2t09AgrYv7u3xuok4pE5Zzok/IvFt3s3rC/VGUNdRWsN6KZcMCsNKiDxFbaLgNMu2
-	TL/TzlqtjG7UqYURbLBRd8N5XW/dOjM=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B47qnmcg;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	bh=AkNplhM/y3R+94Fey7CDvmc5bFFT4YcdBJTslgRYoxk=;
+	b=DTC/qp+z3Wiv4fH1gd7vjzVJkobE1b67Ke3oOtBrD42Egm2CQcoKG9SWQLQYr10jBDH4uE
+	KRexRwM4oTVzLyroIIikQMVq9o2jO2eORJ9VGe4YYrUkPziIemQfz6T6DDMGsZZ+KoAq/v
+	TZXZAuocyEMlRY3SbPlhDxEf9IUQDt0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785156852;
-	b=yGwdyLq9WMgV0WeqzJpqGvNS5S7MixYb2YB430P0wuCVJRUJha0mbx3S49leDj147BXU1N
-	CAJ+WbwOhpdng8uExQa1xObPtjAV4650mQv/enWR86WURogtWXkJ2mEv4KigyJyVGJEKvQ
-	m6iVTifRABvEahoXSerMvxXOYVEZsnw=
+	t=1785156855;
+	b=pQaO4e9VDSaj4C6L4MeIr5jBzL+r01Xtvh0F5GvL9HWIxD73KeJrEQopjpvxjt4JPm5wIv
+	BQGtzUpHnUhCxXLMwwhkKUrcfhE0PZdGmpEZHiYI7HTVLPme8dW3eI0ELsAgF50nYWNsmx
+	iPKqzOlbk1fCovX8I4GE2ciGsTbBCz4=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Sl1IICew;
+	spf=pass (imf06.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A7621601E0;
+	by tor.source.kernel.org (Postfix) with ESMTP id E546060A61;
+	Mon, 27 Jul 2026 12:54:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0DA41F00A3A;
 	Mon, 27 Jul 2026 12:54:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 939171F000E9;
-	Mon, 27 Jul 2026 12:54:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785156851;
-	bh=O/vImmk4nZ0kFMnvMNBhkco3GaYwW1/WU6MdK9cUjwU=;
+	s=k20260515; t=1785156854;
+	bh=AkNplhM/y3R+94Fey7CDvmc5bFFT4YcdBJTslgRYoxk=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=B47qnmcgwRsFsMJxuSxk0f5mzdJZ+5GeKmwROVitFo0a9eMIXuTQYWq7XouWASSY5
-	 hRR5MbmSJFAj6MOsQApHxDUZJY8Cf55wzD7358Pg3C8Z2LDwSUPWa9pfMuUgoPSWGY
-	 ZK2JxlFppOqODg9RfawieUFDbfyGM9CqxK9CUuloqeioD4cFi+E50xOckjTdOXRa8b
-	 V798UEHVLhAH9eIVX1wr6/GqPRm3TifGFU4tMWI0+uIK3XJKvTg6VzkQvb02673Cg6
-	 6uwCCrDl7zT394Q8MQeKjy+JyHxCr+c7yhR/LzdnTqsZcPQnqmr/omHZl5+hGHirgx
-	 MhtojOWuoe8+w==
+	b=Sl1IICewU5fK/CFdCu+iGLgFr/fFrUa9aNFj7OSJINXRLQgNvIe2aAu1rP8r9YYQV
+	 4STcTsikq063EJKQuLl1rJyK5DrioXdkBKJV0unvCWHr8/Jq0PdhkpF/D+Eod3XUXc
+	 NLRzJHrxyttwxK8JeA1qh6Pdmdsh5TejMiQxEDIowmpecijin89SEbjwrPjuKGv/rY
+	 VcP5D78yCjxoIsEtP+VTVQKq9NhFq43iMPL36RD4BdBuaL6Cf3ld4ATp72l8/pRw4Z
+	 iYHIqiJ+AZzJ0jH/I4ocGrRMGuP2HgwuIOvAMhhkBc0918hNWZtPFsyMw4bPHQB4gw
+	 M68a92q4jC1BQ==
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Date: Mon, 27 Jul 2026 14:53:55 +0200
-Subject: [PATCH v3 01/13] mm/slab: skip kfence objects in allocation
- profiling
+Date: Mon, 27 Jul 2026 14:53:56 +0200
+Subject: [PATCH v3 02/13] mm/slab: remove objs_per_slab()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260727-b4-objext_split-v3-1-c29ef0f1f257@kernel.org>
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260727-b4-objext_split-v3-2-c29ef0f1f257@kernel.org>
 References: <20260727-b4-objext_split-v3-0-c29ef0f1f257@kernel.org>
 In-Reply-To: <20260727-b4-objext_split-v3-0-c29ef0f1f257@kernel.org>
 To: Harry Yoo <harry@kernel.org>, Suren Baghdasaryan <surenb@google.com>
@@ -83,14 +82,14 @@ Cc: Hao Li <hao.li@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
  linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
  "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 X-Mailer: b4 0.15.2
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 1E283C0009
 X-Rspam-User: 
-X-Stat-Signature: gnom85cym1twnhsyr7ocnk116p3m4rf6
-X-HE-Tag: 1785156851-253509
-X-HE-Meta: U2FsdGVkX1/5rTr+e5rGNxvnbM4zMcrLlnOQI6tzZe/3YVWHbI/7r7ioTpDX76neHr+i/BLXHnjPfaUcLUwKQGstap9XLtoVtjfP0Vzkdc/fDsH/18Qlihtt2xH5V1GoNn281ooOB0eKhF2hKHXQuHc2mzWqu3sDEIkfz+eHb+DsYUGcSAZLIzQSauKzVInGYNq4695sU1UxAFNYxdef5X9ktiHrSTwpeE4GV1o6JRf+tC7++DkpQNU+nmH8CdkYggapLk8pqymW/RGywl6C47FgLeIfR/PDWcfOWO0QVoLStz/ibRxN+dn+YSQat+OAzHPZViIwvqzYFg1Evl/n8dZ/aZdl9JGhH6IjWeqrLOaaly3C7PTHF4x9yPG5IpKF6z8GZSxrrX9w2DY2xs2NU2OcNlcIYHhRTPso7+UA8QuWvmtop1N8xMIpyO/uu7k1DuYeyvVHTe9ciqCDcAxH8OH6z3ZWX1L7J5FBh/2sGxMMgOjVOua0Dr4REkF2k06M6sS3SgtQvVL4j65qdOFJ0cc/HI98QTrpDmC0JTYSUpWo5w9vZr28PFT+KJw8cnV/pZo5xna9egtarnYSdxWoL3dE6gBLa+72KfYTxaJ67NAsEdZxeR0HIMAUkY8nRQsZDHsKp3NzvwjJwbeC5U8Vnf7AE22TwNlaF96q7Ihd4rvHdfrng7idGpA4iPsqfiLEVhpSdjfCMJTnGRduMTs9M6t9ICm04jBpX/HbeH2ogM3QujPqCc0E3JkB1owzw9WdkcqMDi5mN92knmxevv5M6Vhg5r7zxcbOxTF/dt1YiFBdI964/9G2v2xuO+pe0pjhiGRtj1y4x89ypXoaKjev5CvPipNtHTWPbZk0zPTNAbF7/vrLTPpHXaAslWXSRcrPt3sl8fT3ptWeOjYZ+7vowKwVeUtyucpoU3+EUySkHm2mSulnNXpZqDn7+6NdAy2BlTIy2Nv2NcKrQLb0Hk2
- aiqxtukf
- uhM0GEtMT4/W1vJenqN6rdi1H/DswrBq63m/ElSuorzFe2seex1LkMwlpE4MqKdQTYWRdy6Sf69TjXj1EowNYcNIP1W34c5u375ICTSj76aOwtEvs+hJN64vkS01NypfoCu9BPiPzhaBLDi2P9AsvDbpRiB6NWU5PhhBBhmlUVT6/LJLpewyS0DyzwMaNNB9FqANSESLVX0h/crES6oThsFU7i/VskwL5eJzoiII5YxJO1JjrqJQTOdb26JZ0tarKru8dTvbbViAUyugnV+Z13oX6wQ==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 4FFBC180002
+X-Stat-Signature: 79k6d8ubh1ztfi68qie76oh63crqid74
+X-HE-Tag: 1785156855-526630
+X-HE-Meta: U2FsdGVkX18CmAJ1Yg/Ye5gn1A4JueKPGJ6HbrC02BjaH9/ZmNBSQnlee1jhEqE0rSVmwBf6aZRMIB68/E+EJOYFyWiGHaPE4BINeYkUUehAzwDNnnrZqBsH+ah5L4SarqSeYS071OpjB6szywDBJJLhWS9mm5ebTR8qLbZgVIc2BC8EdTUiPzBZVDp17vu/xRgzIaiiZtAkb1SNyhthkw40mCOyaOOUZD7uglrTc+GMKUeR4aRnWILudZ758QCwafAcvvaBZkrV0HIrMkLg9mxbQQ5ohQV062Ev48FFlQL2qjm+BjCvlF7eZBRHRlUWbcpmIdv4waOjhsiIpe7R8uE5lcY41nI7McbjwkCv2KFibFzPqOZZKlGqfcXO5dw7RSHlhLxRFb0CAgtKiBfjfGsUD9Ll7qiqiDXDkEsNef5a1ajZlFZDb4UItPGtA58wzefcvaS9rMPJSZSxcPm1dleisZQfFyRTBFHBBWovBWN74XCT5YS6rx7rmPaHiSkdLyPPfa7fLtI6wv9hMWxTZ1fMOrzsLcZ9OlqrjhF4LZ9g76OiE5xDSfM5ystsGZE3qkutGvHbY0/aGOuWWqcKp/CIkRYwlcH3jZgRik7jYjTH6TpY2L35Cmz1kSX7t4/PDFl22IDDMRPUdO4LaZPAkoTG43e8x6CtMOAT3rdBTca+ZkeFsR52cClYybPlfXMAFP3Z+k/3K82vd7E/+n4ZTI5tg4RxAFUv8GB2ntTG5iFLrnPRcRp3RTnpfdsbHal1kkG/nUYL4gf5lc8Jjy+IXr64LhYJxrp0urm/F2wvh8Ji7KzW2OphswsCDo8IIW7xJIemuIznffSoCOqApODkEu+g04wjFQN0uPPpX4siQ9twO8VtL+jA4XuMVqtPMCOHf+QPeAxzIhNC9iT/VNZcQCZo3OySEkhv76pWa05OQtMATzPLp6NFvKadgQK/bQw2ScKSH3RgzaIV88qf2QJ
+ 4w3TZC0+
+ 0Ld8WOqN+ltl+ly3kqKt+YjyhmDvmJV9EMz9rxlACtTAXB0CYJbx0HRt4RYuvsu6bynFZfZfcdKeSo14hdJiABdBlLgckWxtXZU/XvDE5vfcyeJgQAM4kmBtvf6WrgF1GUptPXNcV8MT4gL4Xf2UlEGTEZMxw4VMKNr2dLR5FPLGxbLGut/gh5Ut5l5Lxfk5sC89sCD84WTlXEL0nUcQwTZpCReGQnTr+cet9ixkpkqsmd50D20TuVhnB8d2LccSBDgVaU2paHMt7hZTOR8YFSfMrN/2fmwAF3Xz+wnIu8VcXyESREYj7jr3OoPlQOXFmZBgOd1Mbb5/sDCwSA9+9HtIg9g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,85 +97,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-struct kfence_metadata only contains struct slabobj_ext with
-CONFIG_MEMCG, which is then used for the "fake" slab's obj_exts field.
-If CONFIG_MEMCG is enabled, the struct can also end up used for memory
-allocation profiling. If CONFIG_MEMCG is disabled but profiling is
-enabled, it will end up allocating its obj_exts via
-prepare_slab_obj_exts_hook() and assigning them to the fake struct slab.
-These will probably then never be freed.
+The function has an unused kmem_cache argument and almost nothing uses
+it anyway; doing slab->objects is simpler. Remove it with the last two
+users. KUNIT_EXPECT_EQ() needs a cast to avoid "error: ‘typeof’ applied
+to a bit-field" but we don't need to keep a wrapper just for that.
 
-So things sorta work, but not always in the intended and optimal way.
-The upcoming changes to slabobj_ext layout would additionally need a
-proper refactoring to keep working.
-
-However, there's little benefit in accounting KFENCE objects. KFENCE
-allocations are rare and there can be only CONFIG_KFENCE_NUM_OBJECTS
-(default to 255) outstanding ones at any time. For any callsite
-prominent enough in the memory allocation profiling stats, allocations
-served from KFENCE will be lost in the noise.
-
-Thus let's not complicate things and simply stop accounting KFENCE
-objects in allocation profiling and skip them in the related slab hooks.
-
-We also need to skip kfence objects in mark_obj_codetag_empty() in case
-a sheaf is allocated from kfence, per earlier sashiko review.
-
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
+Reviewed-by: Hao Li <hao.li@linux.dev>
+Reviewed-by: Suren Baghdasayan <surenb@google.com>
 Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 ---
- Documentation/mm/allocation-profiling.rst | 7 +++++++
- mm/slub.c                                 | 9 +++++++++
- 2 files changed, 16 insertions(+)
+ mm/kfence/kfence_test.c | 2 +-
+ mm/slab.h               | 6 ------
+ mm/slub.c               | 3 +--
+ 3 files changed, 2 insertions(+), 9 deletions(-)
 
-diff --git a/Documentation/mm/allocation-profiling.rst b/Documentation/mm/allocation-profiling.rst
-index 5389d241176a..d02eb54ee8f2 100644
---- a/Documentation/mm/allocation-profiling.rst
-+++ b/Documentation/mm/allocation-profiling.rst
-@@ -112,3 +112,10 @@ break it out by rhashtable type.
+diff --git a/mm/kfence/kfence_test.c b/mm/kfence/kfence_test.c
+index de2d0f7d62b1..9867c03ef0ae 100644
+--- a/mm/kfence/kfence_test.c
++++ b/mm/kfence/kfence_test.c
+@@ -295,7 +295,7 @@ static void *test_alloc(struct kunit *test, size_t size, gfp_t gfp, enum allocat
+ 			 * memcg accounting works correctly.
+ 			 */
+ 			KUNIT_EXPECT_EQ(test, obj_to_index(s, slab, alloc), 0U);
+-			KUNIT_EXPECT_EQ(test, objs_per_slab(s, slab), 1);
++			KUNIT_EXPECT_EQ(test, ((unsigned int)slab->objects), 1);
  
- - Then, use the following form for your allocations:
-   alloc_hooks_tag(ht->your_saved_tag, kmalloc_noprof(...))
-+
-+Notes
-+=====
-+
-+- When a slab object is allocated from KFENCE, its accounting is skipped.
-+  KFENCE allocations are rare and limited to a small number, so this omission
-+  is negligible.
+ 			if (policy == ALLOCATE_ANY)
+ 				return alloc;
+diff --git a/mm/slab.h b/mm/slab.h
+index f5e336b6b6b0..01535e1e2d3c 100644
+--- a/mm/slab.h
++++ b/mm/slab.h
+@@ -330,12 +330,6 @@ static inline unsigned int obj_to_index(const struct kmem_cache *cache,
+ 	return __obj_to_index(cache, slab_address(slab), obj);
+ }
+ 
+-static inline int objs_per_slab(const struct kmem_cache *cache,
+-				const struct slab *slab)
+-{
+-	return slab->objects;
+-}
+-
+ /*
+  * State of the slab allocator.
+  *
 diff --git a/mm/slub.c b/mm/slub.c
-index 0337e60db5ac..d702d273253c 100644
+index d702d273253c..b94482830637 100644
 --- a/mm/slub.c
 +++ b/mm/slub.c
-@@ -2067,6 +2067,9 @@ static inline void mark_obj_codetag_empty(const void *obj)
- 	struct slab *obj_slab;
- 	unsigned long slab_exts;
+@@ -2130,7 +2130,6 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
+ 			gfp_t gfp, unsigned int alloc_flags)
+ {
+ 	const bool allow_spin = alloc_flags_allow_spinning(alloc_flags);
+-	unsigned int objects = objs_per_slab(s, slab);
+ 	bool new_slab = alloc_flags & SLAB_ALLOC_NEW_SLAB;
+ 	unsigned long new_exts;
+ 	unsigned long old_exts;
+@@ -2186,7 +2185,7 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
+ #endif
+ retry:
+ 	old_exts = READ_ONCE(slab->obj_exts);
+-	handle_failed_objexts_alloc(old_exts, vec, objects);
++	handle_failed_objexts_alloc(old_exts, vec, slab->objects);
  
-+	if (is_kfence_address(obj))
-+		return;
-+
- 	obj_slab = virt_to_slab(obj);
- 	slab_exts = slab_obj_exts(obj_slab);
- 	if (slab_exts) {
-@@ -2352,6 +2355,9 @@ __alloc_tagging_slab_alloc_hook(struct kmem_cache *s, void *object, gfp_t flags,
- 	if (alloc_flags & SLAB_ALLOC_NO_RECURSE)
- 		return;
- 
-+	if (is_kfence_address(object))
-+		return;
-+
- 	slab = virt_to_slab(object);
- 	obj_exts = prepare_slab_obj_exts_hook(s, slab, flags, alloc_flags, object);
- 	/*
-@@ -2399,6 +2405,9 @@ __alloc_tagging_slab_free_hook(struct kmem_cache *s, struct slab *slab, void **p
- 	for (i = 0; i < objects; i++) {
- 		unsigned int off = obj_to_index(s, slab, p[i]);
- 
-+		if (is_kfence_address(p[i]))
-+			continue;
-+
- 		alloc_tag_sub(&slab_obj_ext(slab, obj_exts, off)->ref, s->size);
- 	}
- 	put_slab_obj_exts(obj_exts);
+ 	if (new_slab) {
+ 		/*
 
 -- 
 2.55.0
