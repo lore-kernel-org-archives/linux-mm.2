@@ -4,90 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1AE4C53209
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 13:59:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64B16C531D0
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 14:00:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9F0D86B0096; Mon, 27 Jul 2026 09:59:14 -0400 (EDT)
+	id 5D5196B008C; Mon, 27 Jul 2026 10:00:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C80B6B00A7; Mon, 27 Jul 2026 09:59:14 -0400 (EDT)
+	id 5ACF26B0095; Mon, 27 Jul 2026 10:00:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B7E76B00AC; Mon, 27 Jul 2026 09:59:14 -0400 (EDT)
+	id 4A4C56B0098; Mon, 27 Jul 2026 10:00:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 639B26B0096
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 09:59:14 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id DC52F120736
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 13:59:13 +0000 (UTC)
-X-FDA: 85034713386.21.46CDA8C
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0D7146B008C
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 10:00:58 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7A3BE1C0EFF
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 14:00:57 +0000 (UTC)
+X-FDA: 85034717754.15.14F400D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 3224414000A
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 13:59:11 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M9XJbpFC;
-	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf02.hostedemail.com (Postfix) with ESMTP id 949488000C
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 14:00:55 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dXlwlqO8;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785160752;
-	b=Ot4XoIWNE/2pBzHJtKggtdxD4rFF3Byt9x91igBcBkqwGOJtTdXbxtoqw3EFNClsXEFU1L
-	HxVLtgJggHquNK7WJTAkt4x2+4C7gmVijoMFWNOi+irwJj7BX+dWxw/JTaD40jcOLan3z7
-	+wnBiQspgCLw7gC77yWeyTxPfY2AUPs=
+	t=1785160855;
+	b=NoSe89qSloVds2lkcCgWwLOy+BLck/Jeb0RiVcmWxXBNbCdseCaiL1KlyHoH9D0eIPFjRc
+	FBiuINUgkCN49tgPymrOvNwZixT0h9KTxUVYr+87BQEPkLfHEajAXEnf6xUA4t/4h/PkbJ
+	VR8S/27SN5RgpcTnzJcZQEIKKJTM1Wk=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M9XJbpFC;
-	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dXlwlqO8;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785160752;
+	s=arc-20220608; t=1785160855;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JlBgQOsYY3Xxvvlq49+FiktWgQqJ7DTK8k5w3thdHts=;
-	b=ATw/Hgpm2z8wQQk8pdlj/ewZb8LFnikurzVrqwPF9V9u/8GCHyOCRrZlE3Z89FFYdYvcKZ
-	NStwpkfivc7zuIpYVHwIDRxSJuB4xvLsw1nWFwRpsmHV0d7CS9la9ou8oWb8/TDhY4Hto+
-	/pXbhvC8Cnny4spIy0k4z0z00qRheXo=
+	bh=lmb5Zs5dduJDrtlxe57uuXVtZpXFpGWAvCyTon6MMec=;
+	b=DWg/31iEw6qqqeqhfzYvf6MXT7YwE0h4NCWn7ffYox+wI6Bod2BzTpBi0SdAhdAPds6QkB
+	0jSkSce4jO18Qi/V7uUzdN7E40tCnkqdw8gQwiGDZQ9fUn0NshL/R5awxf1AFeUOtZCRkM
+	uWcQI+uLANJKqiRY4qn0WB8416+Fm5U=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 01CB042A48;
-	Mon, 27 Jul 2026 13:59:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B267B1F000E9;
-	Mon, 27 Jul 2026 13:59:08 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B582E42B12;
+	Mon, 27 Jul 2026 14:00:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0BF91F000E9;
+	Mon, 27 Jul 2026 14:00:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785160750;
-	bh=JlBgQOsYY3Xxvvlq49+FiktWgQqJ7DTK8k5w3thdHts=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=M9XJbpFCcrxvKse9y3y2Y1ZZfpoc+CfLvrENY7nJExy3diE04HwsOFe7YjjtERAyM
-	 LYWdJRn/NH5sE9nvB1DVLYjJvBAtc+PiZDM0agroCQM5TkSpKlrvmof4LynhSy3xb8
-	 QQKSP2QojAXo0JzkpNcGJUZTQ4KhCeKooQU+fUqRmgwGkoKCEAQmIAsIAnw/7OX++c
-	 3wubRc6iKFxuTuYr/7XjX+hVgyFPpb6wHVWjpyCp0eqdgURgUW1V3Zm1FMAbTA17hv
-	 gVt1es+9l6UtxbVFYO/9bifwKsts3nWs2lRoQhA1g4GgNSPRzmUU9ZwJn8Pk1h7CCj
-	 Dh4C/lawW9LNQ==
-Date: Mon, 27 Jul 2026 14:58:54 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Hongfu Li <hongfu.li@linux.dev>, akpm@linux-foundation.org, 
-	liam@infradead.org, lihongfu@kylinos.cn, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, mhocko@suse.com, rppt@kernel.org, surenb@google.com, 
-	vbabka@kernel.org
-Subject: Re: [PATCH v2 2/2] mm: Extract non-swap page handling to
- do_non_swap_page()
-Message-ID: <amdi9l29BkppMIit@lucifer>
-References: <10c60511-c841-4bd8-aa5f-0d826b676533@kernel.org>
- <20260727121047.4140-1-hongfu.li@linux.dev>
- <cd6652a3-547a-47b9-8907-e98a582a238e@kernel.org>
+	s=k20260515; t=1785160854;
+	bh=lmb5Zs5dduJDrtlxe57uuXVtZpXFpGWAvCyTon6MMec=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=dXlwlqO8maZ4DioC4+2PtYtSY1//2rnBFPeH7B/UR5Omz3QnHHkOlYN5aB6FQNinU
+	 poqcCIRX/psKYaBzbWExTodniHSH+3QqNhjFWGhpuxLJLayjhYgILje62evMe/yHGW
+	 G/jruQmSo/3bDB0BSlAXew05gYebHtRPBEsZV29wuvDc2swHPs0OPDTfnZ4O37ZXjZ
+	 +K1Y8uYPFOL9YPmDS+DSrbWlUlwpqseWKArePCk79173YWaE44lZ8UgPFWKwjDXwXa
+	 zohtoufz9ELBuPvzZn7iSYadpnUFu9LbtWI86s+fbwBnIEXdTc6fgcxkZeOI4sR4q3
+	 pFhD19pvnhc+w==
+Message-ID: <3da27fde-25dc-4cb8-8e05-74cd26fc2f7c@kernel.org>
+Date: Mon, 27 Jul 2026 16:00:46 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cd6652a3-547a-47b9-8907-e98a582a238e@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/page_reporting: Add page_reporting_delay_ms sysctl
+To: Pratyush Mallick <pratmal@google.com>, SJ Park <sj@kernel.org>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Greg Thelen <gthelen@google.com>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Mike Rapoport <rppt@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, linux-doc@vger.kernel.org
+References: <20260722211517.1898228-1-pratmal@google.com>
+ <20260723000609.95657-1-sj@kernel.org>
+ <CALHaPKd_Ytknjg7GFBXeQK8kXvE7DhbyX_een7k5Fti-ahxL0A@mail.gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <CALHaPKd_Ytknjg7GFBXeQK8kXvE7DhbyX_een7k5Fti-ahxL0A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 3224414000A
-X-Stat-Signature: ifexdgaf7abupwecmjbu1n5i6c8tyznx
+X-Rspamd-Queue-Id: 949488000C
+X-Stat-Signature: nq1arj3yiu7d5954xjqfdni6kixypwaa
 X-Rspam-User: 
-X-HE-Tag: 1785160751-110030
-X-HE-Meta: U2FsdGVkX18IL4/J6MzHj9UVKxu6kmSUrzchKpEgEZov7b3oV7URXgouS5/JTsXyrssrPuJ//NAnCaUV91Rqbdo3/BGdbt1ZByA8kuZlPi1S3sUw7qXUjxHy9gxD8cRWntYqh4Q9Wgd6VuQy2qZaQOygaWfeeV8YGdLXgb/sVDW9toMSiOGdcWe6jL1L8tRmUZxJ0M6HH9Kz2zWRvsa/ftqicysBL/shY29GlfH0SuKlwYL57otTNuWo08m+v4GpHTZrT3Hq2gkqGKL4YMs7kvh827wwTYhTV5VkS5T1/p9RsXScDq6Hl2VABUPqm4ogWjNB0cHcrLrUgbR+cdB2tpeByryW+UKEXmzXfm9gV1ecTfRcyc/prY4brOmcrdV/7F6Ei0wiWby5juL8R2c0myrhTbQitHAYDA0Xlx/LzHc5PULgqIAG95/A21EuaZapECXWEE9bIEk9RNg3OVOzjonaVETnrN72vEMUA7bNRaf38Zaq5ogtm/VvcOLjWIBOo2BBUJWIDdrZ3UnNhCKJSSg8KZk9q/SXRDHAWY3ui9vTx0PK7P39zPUIc3qP74WTlY8UlAaZfeVFtHLYpXfFi2frb0i1DnzI0iZIWWnH8bvcwD5XH8YbHZ1IGOkMDdA1TZNuMOEbj4g5w5tUn7EMLOeN5Kp/VCIP311HsbGZLpdCMNO67vV7mDCE44vCvGltw8wtj0MtSUuElKue1LERaTDtLwWI99YroSCx+CpBphmo+8ZVrtMCGsoyPJN3Rz7bcxHN+8iatD3D1wT1YmhnfVl+DsKymRmzvXw0LBzYkj4/7shTkaHIVrFqD6PzcamoMsuXDlgBX6ihY5J0BtNnpELP6MGaOH9Jr5Xh9JpREQFx0qoE834AFD5XHamzF2i632q4z/vxiFaXSxdkz5gxmMMdyRbVtBAmUeGKAYRhPICSI5QKM8vmuq06GZk8nxsDItQtWVQbZWx5IyRANmE
- H5mTJpvs
- 2teuhnbL+Cyr2HVF2K4/P7SqfFfVr4kLByzlo1h8wfhIcBrfWC+auD6EOdqB5iSUumduKnHkrqdT9AxXO0YkcjSPGe48U1i9wUaXgKx87U2pOJcWsh0oeAvSdq2+dbWGPPlrx00OBnxMaL0fARzKuQKxgATV+vgd/MRIaY3tdCreSZHNyJge2GNuvuC0lqbihc+sZ6isft9HGOi8B8aEdieReMWnGfddlHu+bHDeBebs1d2ZRVeUSeZnvFwoUHqFFI46oq9OTn48M/LSFIUPAL+eXecs+PUOtoyNjhndvi08ISts=
+X-HE-Tag: 1785160855-375259
+X-HE-Meta: U2FsdGVkX19eZResOl2CU0pW4WB9bD+B9P0RYB4j0AW3FcTQLNTfT318H1WrnS+sv7KmxpM4y1L4PNMRGHfauw94FATXXTv/dT5S14Sjp2veU88yyPMPOtiB3PmrXIfjvD86uWgO+lsPAjYXZyP4Dv27pvKK9r39xlQAyG1sO6lNbByR6JS5M5SU1302kLJb7vjZRNa2yl6aEtQYVxDKaCZ5eFAnkzECvWVCehrQPpe4M9WArpA7bUiXtsapztKur/OHWSONGJzehwrtcJpKrd/OivjTxLefD82z05XXMUj3jwJx0vKi8lzQde9H2qDhjX30/SDvEEEINPPattaaw21R9LYI7J8NkFz31PT5IG9K1G85sN0z9R2aFfZfYeXDSb5zv9KE9kNXGwq9JntkdDzstigfsX+HiBcdqbr/ZXFSfOZ9zcDOSvIJBB028HCY78mUJMJ1g99a/N8U3E6TaL7kRSFbKxbS+xBhs1M/umD81G6MoLrWWcd335RVMCba315ofdMRGFXDa/auTXiQ4CVDegBd79fvqOxbtR8y1vVooox6xN2a1heVZ9UTxi72noG6NeO0bQxtyR14fP/qiWnnsp5w8RvYa+R8siGWfPiqFqT5mRY/cQSusQsJN164mOcviCg4R/GJLAgqswli5YqoSAyMBbcW70zGKgUxyaVL4G24f3O0QfRwqxamw9B/8qtTnURk76ylBTevN6PJ3CDIpI6VVOs0i3zHS3NQmQewT1N8s65szMyLfVsttQGc1BJ648hIiSq7ElIAmkiF5mnuVIl5M3m0P2ZaGiahoQK0MM8wBYqojF0JiVn2STPoLKaaz7C6dP6mBI4S2gIODfYWlqV1GG4ZO4ymoj9yyGMmXTF0bbJv3KIsT8ZGiGTYXwYGgSsh3yXUkEtV3ZLRPUeNAgmZZsp2BrFyw2QNkSwSsEkyT4Kk5ILx6nJp6m/46rgOBZuWNE2EDGvV4SU
+ kAz7HIIG
+ 8yfRF5kwTWQfyeOoD5rJTqUJ3vm9mEbfpGDAgt7iF+XNYsoLwy1GkPhOOnEJYEJ0Xj/Vkl+tYsUXYhvxLrQg5IPnoxlJsmY/gq4GXZ96FMFLui4XsFClZa+zJaQ6A0fWvQZR88eEFlNT+3k+eK1cfegvth703i5C0vOUf0ZVHbPtYowY+AQWc9G/KV2Wmq0Ps47vgDa5TDwGLrrqDTCu84K3OK4mh8Ia/NmaWsPI0jDUXhkI69LNITNUo2qwQmfIWepVyK41As8NOUXpm9AiNkNJwkBOxnKdKSd393/H1T1i1vD30Ef0FI8wCnQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,92 +146,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 27, 2026 at 02:16:40PM +0200, David Hildenbrand (Arm) wrote:
-> On 7/27/26 14:10, Hongfu Li wrote:
-> >>>  mm/memory.c | 120 ++++++++++++++++++++++++++++++----------------------
-> >>>  1 file changed, 69 insertions(+), 51 deletions(-)
-> >>>
-> >>> diff --git a/mm/memory.c b/mm/memory.c
-> >>> index ae521baa8c84..50d8e92aef91 100644
-> >>> --- a/mm/memory.c
-> >>> +++ b/mm/memory.c
-> >>> @@ -4815,6 +4815,74 @@ static void check_swap_exclusive(struct folio *folio, swp_entry_t entry,
-> >>>  	} while (--nr_pages);
-> >>>  }
-> >>>
-> >>> +static vm_fault_t do_non_swap_page(struct vm_fault *vmf)
-> >>
-> >> We're handling softleaf entries that are not swap entries.
-> >>
-> >> do_nonswap_softleaf() or sth like that would be better than talking about "page"
-> >> if there is not even a page.
-> >>
-> >> But actually it should be the other way around:
-> >>
-> >> do_softleaf_entry() [currently do_swap_page]
-> >>    ... non-swap entries
-> >>    do_swap_entry()
-> >>
-> >> Or sth like that. Then, maybe in the future, we can just move do_swap_entry()
-> >> out of memory.c
-> >>
-> >> So we're factoring the wrong thing out in this patch.
-> >
-> > Thank you very much for the detailed review, your analysis makes perfect sense to me.
-> >
-> > I'm glad to send out v3 shortly for your further review, with
-> > do_non_swap_page renamed to do_nonswap_softleaf.
->
-> Read again, that's not what I meant.
+On 7/25/26 20:17, Pratyush Mallick wrote:
+>> Why don't you make the lengths of the line and the section title same?
+> Will fix the RST underline length.
+> 
+>> So it is milliseconds. Why don't you add the unit to the name, like
+>> page_reporting_delay_ms?
+> Agreed, I'll rename the sysctl to page_reporting_delay_ms.
+> Also I think it would better to make this a module param to be consistent
+> with page_reporting_order.
+> 
+>> Also, coule you elaborate why there is 10 seconds maximum limit? What's the
+>> problem of having no limit, and why 10 seconds is the reasonable one?
+> I don't have a strong justification for where the maximum limit should be set.
+> The value is unsigned int, so it's bounded at UINT_MAX ms (~49.7 days)
+> So at worst the worker just schedules that far out and reporting
+> is effectively paused for that window.
+> I'll drop this in V3.
 
-Yeah please do NOT introduce 'nonswap' we already had fun with the nonswap swap
-entry before :)
+As long as we don't trigger a report as part of the delay change in this patch
+set, I'm fine without a MAX.
 
-Quoting David:
+-- 
+Cheers,
 
-	do_softleaf_entry() [currently do_swap_page]
-		... non-swap entries
-		do_swap_entry()
-
-Also, swap entries _are_ softleaf entries.
-
-The whole point of the softleaf change/renaming was to differentiate page
-table entries that are purely there for mapping stuff from the hardware's
-point of view (non-present because nothing is mapped there, present if
-mapping something) vs. something non-present because the entry is
-software-defined (hence SOFT-leaf).
-
-Swap entries are software-defined and thus fall into category.
-
-You can see all of the softleaf types trivially in include/linux/leafops.h
-in enum softleaf_type:
-
-enum softleaf_type {
-	/* Fundamental types. */
-	SOFTLEAF_NONE,
-	SOFTLEAF_SWAP,
-	/* Migration types. */
-	SOFTLEAF_MIGRATION_READ,
-	SOFTLEAF_MIGRATION_READ_EXCLUSIVE,
-	SOFTLEAF_MIGRATION_WRITE,
-	/* Device types. */
-	SOFTLEAF_DEVICE_PRIVATE_READ,
-	SOFTLEAF_DEVICE_PRIVATE_WRITE,
-	SOFTLEAF_DEVICE_EXCLUSIVE,
-	/* H/W posion types. */
-	SOFTLEAF_HWPOISON,
-	/* Marker types. */
-	SOFTLEAF_MARKER,
-};
-
->
-> --
-> Cheers,
->
-> David
-
-Cheers, Lorenzo
-
-P.S. I do remember suggesting that you _slow down_ :) we are into the quiet
-period now so let's maybe reduce the pace of series + respins, thanks.
+David
 
