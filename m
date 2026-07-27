@@ -4,120 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7EEEC531D0
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 06:16:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A4DEC531FC
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 06:18:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 380436B007B; Mon, 27 Jul 2026 02:16:55 -0400 (EDT)
+	id 72CFD6B008A; Mon, 27 Jul 2026 02:18:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3310D6B0088; Mon, 27 Jul 2026 02:16:55 -0400 (EDT)
+	id 7046F6B008C; Mon, 27 Jul 2026 02:18:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 221A76B008A; Mon, 27 Jul 2026 02:16:55 -0400 (EDT)
+	id 61D526B0093; Mon, 27 Jul 2026 02:18:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D780A6B007B
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 02:16:54 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5A1EF1C0DED
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 06:16:54 +0000 (UTC)
-X-FDA: 85033548348.23.1CB9C7A
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 83BA5A000C
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 06:16:52 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=bmFlTvdd;
-	spf=pass (imf25.hostedemail.com: domain of mkchauras@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=mkchauras@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785133012;
-	b=xtmRAOfbT+OOOdIW+FnNKJCGAdqF/v3er8LCtocSp6w57nDuPpzOKeANzfKaRS9Rik9Gyw
-	10vVku1FmQjOGyMIOoS9ArhLbDakh+Ysunah4xSVhPkfgErJXn1F0fLUQ+i+xUG14gjXQ1
-	ijBSSNruu2Cxxm7ETSKRrAZEzlWeMPk=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=bmFlTvdd;
-	spf=pass (imf25.hostedemail.com: domain of mkchauras@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=mkchauras@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3D7666B008A
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 02:18:18 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B1255A14CB
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 06:18:17 +0000 (UTC)
+X-FDA: 85033551834.30.4C4D8F0
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 548F640007
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 06:18:15 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=GY6yWQxd;
+	spf=pass (imf12.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785133012;
+	s=arc-20220608; t=1785133096;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xkvd3GaxfP8zwg2THjBwEOUnMuoDnas1hdLWEj3iqG8=;
-	b=MkmF9hVDjyCubk6iuwWDvzVA35qZVDLAwii3cjNTSQXiP45ehr1+1Q2yQeFuL3zREx39SB
-	kP8Jl8iMUKZhNZ1vfBsOs40GroUXpVzSgFr6aeFTHCHw9r57NtTdFZW8wJMnq9debHm3Dd
-	iIxvMzqxUSjnrlGmNGxdL++2P9BA4lQ=
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-84862b0d5f8so1737744b3a.3
-        for <linux-mm@kvack.org>; Sun, 26 Jul 2026 23:16:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785133011; x=1785737811; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=xkvd3GaxfP8zwg2THjBwEOUnMuoDnas1hdLWEj3iqG8=;
-        b=bmFlTvddJmZP6cv8F7Hxjlabh9zLuQ8tsrWZ4djwEhvSH/mr+FlwUvxZArma05Ck+n
-         H0d3CeGqa09HL1obdxws2+eIjTmWGxOUQUD56W2qyiPpIU2/0KKK/Yn/s7wpPduYskDO
-         DUGZiY9+yq8BQKk1YRBSC8HUL3fosMEHDRhKGd6MGgSuPOnH4pXbATjYct0CThh/lCiM
-         k4tXFn2kPLxb1giGxpl5ZHw3LP0EWsNdEdk2gxd9w6lSoaLV2RGnZYeMywyskzGi3D5Y
-         NA0KQ0jXUaB7W13uK/kdjsbFfAFgWqCZ0SR1LJHpWDckFZgXUBejwHsSWIcjIrcOYz3b
-         F4cA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785133011; x=1785737811;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=xkvd3GaxfP8zwg2THjBwEOUnMuoDnas1hdLWEj3iqG8=;
-        b=sdGSma3TiyPQR2naISIMokQyIZHLMMwEYrTkhJ8Cw15oM8Pga5fSWDv9wpE4CGhy8P
-         c95wdb8KdugWUvhvoDWqVLcr6cskm8v1XRRKy5XIB4WetWRPOWs649cS3R4QNNaQlSCQ
-         y+TSgkgGtlK3gis/thtYgN5pvUsiCWn4oBAm8IrCj+Bstv2NUY5SnUg4+cHwdkvq+wql
-         OicPfQy13p/KP1IoTlyW5UBnrNfZCIfI2YJt36o6+cjLUrVDT/utJQ16VMveIYgMQqYF
-         Qd9PCxaTmJTlQ+KpLO7NA1p8/l9D3EB4izYkjBhPesZg+B+LcALLV9gI7B+Ai94AfOKs
-         2Nfg==
-X-Forwarded-Encrypted: i=1; AHgh+RobrREuA2WQMAEskxmzs6gbVj/P07TYSgYGMiGQi4GBfrtOK3vRO+7fPNwrPf1a/mHiNVY7xAc7mA==@kvack.org
-X-Gm-Message-State: AOJu0Yx2LUPm4pCXSKmHqEwzipPGpuHC/bDnLjEDn8Z34k2w8MHt9DND
-	XKCtD6GyxIfz3M31IjqQzqBGX86nFTHCC15+150j4csm7UjA5aF/NVxX
-X-Gm-Gg: AR+sD13xLE0PmUskulF7jGEqVc+Fpg9FqIllukzs8eIermnPvoxfhapzuEAy10BpflY
-	xl85MJabN+ChYJ6t3biDe3NvNVamFw+JLzoGBwIUbUCUx4gpVCITlm+rbXVnheZRnY7AGosZSTi
-	dDEfRxFNWDlNP6VIWA1a4eKYXpmOi0YKtgJoWDp0/fj0Qxu1qAr0iseG8h0D8m870AKSZuIYiOx
-	pL+buvIFKN6z4U7EQjK0T4TBz0VrnTGt/WHq/3Z5/qQFyhWT77nzpnDXg0dugrXGCBWfx/jJUhq
-	tIz3J+rfrXIIJyxT8fQXbvifkU4GiKwERPEEW/UPxOqcLtyPilrIffWbr4S3hknLsAbqhkP9y/c
-	Hw2uITli6ZWkpaFrOXcDpGlgpJbfEY8iY4GscvEt4sfIM2hrv2cwo4AG0l3e/SX/lZDEzeUiAD2
-	hubdhFl5YkrXLKPYDWHy7ArvhQNd5nC5AL4DQWv27ImE9qDg==
-X-Received: by 2002:a05:6a00:4ac8:b0:84e:1db7:2f86 with SMTP id d2e1a72fcca58-84e59572bddmr5479084b3a.49.1785133011409;
-        Sun, 26 Jul 2026 23:16:51 -0700 (PDT)
-Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com ([129.41.58.4])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e5343a9c6sm2607131b3a.51.2026.07.26.23.16.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 26 Jul 2026 23:16:51 -0700 (PDT)
-Date: Mon, 27 Jul 2026 11:46:42 +0530
-From: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
-To: Gou Hao <gouhao@uniontech.com>
-Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
-	chleroy@kernel.org, maarten.lankhorst@linux.intel.com, mripard@kernel.org, 
-	tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch, bharat@chelsio.com, 
-	jgg@ziepe.ca, leon@kernel.org, akpm@linux-foundation.org, namcao@linutronix.de, 
-	ynorov@nvidia.com, sshegde@linux.ibm.com, nilay@linux.ibm.com, clg@kaod.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	linux-rdma@vger.kernel.org, linux-mm@kvack.org, gouhaojake@163.com, kernel@uniontech.com
-Subject: Re: [PATCH v2 1/6] powerpc/xive: remove dead NULL check after
- GFP_NOFAIL allocation
-Message-ID: <amb3uArRk2MlHRuc@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
-References: <20260724022851.466017-1-gouhao@uniontech.com>
- <20260724022851.466017-2-gouhao@uniontech.com>
+	bh=Q1RvP5F+5cbF/LfhOCxOJZyT9O4mMLwMJsRDu/s7ZFU=;
+	b=7QX2DfL3YOlZvprLwhodT9PpN9Q17g5EKd7rzdriauLSSXl0C3TxxxJ+NNyMR6kBotEYVm
+	4ASy9YdZWBnmAlAQmp6UBnYNjDytNYNzeD4rg51MI7pkf1t4erN5ZLKQnNV75WcLALTsjj
+	xVQE3dyKEyrUEW7GS5aB7Lrglvzzwvk=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=GY6yWQxd;
+	spf=pass (imf12.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785133096;
+	b=P+54/ocO2U7Yz53v9wXOyumBGPcwvf4lxWW1AtbRvYUVerEv4vkN4VHM1JXobv4G+jG7uq
+	tpSxV5xybH3xusA55sBplk5Dk0i2l+TLXkldIOIhT94u/5Qmmnsw/MWehjSotSrCAtn95R
+	tv9/ROpFX41ptO1kHvF2MN5dohktBYI=
+Date: Mon, 27 Jul 2026 14:17:59 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785133088;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Q1RvP5F+5cbF/LfhOCxOJZyT9O4mMLwMJsRDu/s7ZFU=;
+	b=GY6yWQxdjDW5if6+h5Exj1gChFKXrWvA8vUg9yXECQsjk2QLg17DvCOCTVog17HlQdfZ9W
+	ciL3/rs0ECCTCPnDST6bgyYNsR3k7ZTsfRuF7b6rNZjdR0YXuZDMa03wOk6ZKUReMgOfqv
+	brT13tjWt4V1njx/XO1L9X0Pg80lKX4=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Li <hao.li@linux.dev>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Harry Yoo <harry@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Alexander Potapenko <glider@google.com>, 
+	Marco Elver <elver@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	cgroups@vger.kernel.org
+Subject: Re: [PATCH v2 12/13] mm/slab: add cache_ and slab_needs_objcg()
+ helpers
+Message-ID: <amb0jBAYvObMYBVv@fedora>
+References: <20260720-b4-objext_split-v2-0-2fa7c6f60dbe@kernel.org>
+ <20260720-b4-objext_split-v2-12-2fa7c6f60dbe@kernel.org>
+ <amMt7baftCrU-OJq@fedora>
+ <df871664-09ea-4e83-bff0-bbd3ff9f3ccc@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260724022851.466017-2-gouhao@uniontech.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 83BA5A000C
-X-Stat-Signature: 3jicc8udp1jo5sku771kh37eur74eq4i
+In-Reply-To: <df871664-09ea-4e83-bff0-bbd3ff9f3ccc@kernel.org>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1785133012-756209
-X-HE-Meta: U2FsdGVkX1+pJJDhmUzjlvHh9wdYfyqjEj1Qf4fLVaxj+BMRB2s2Hk8Jsp+xF7lZWTqZtvC21imNBGQcYgJ3SJ1AqGjDH5+SCl2XiI5zDeVLzRo/idN3qY7aDzDQiG7cB9+eZQiMIe6tBKsSOXJ2nZlazVmmAfsj4102DmolTQ4zrB6dtGICpkPIv+BPvr12XknWRlPHpM+yVTRmb4v9YcqBPmU1WtljG0Qq2X9Q99QCVU/OgI2DpKtFufwWQICZaYo40OKMxi+VIRkkaTmeDnT1jDY0w3eWqvEU6+zTzf9xl5AHHeEsu7Ln+CVY5Gs13wgVsisF2wNvjd9i2h+7y4lgV0rb2BzUA5L0RQR35v1dpk1wlWRYJXng5zMjYcGS9kc4WcP7rmFOzoovz/KVEVWgmWzj8wMOUgQ+6A4+l3Q5CTgPXxpA4F+Jo51yP3gfsq2AVPmX7r/n7F05aAmScvrfwszK1uVIsG/2gO1zxg7YeFAvf0nkH61YWmPeB9FhPAGcdtB5+delUZ89IMsg2WLmF072CsUsR2Aigba01xe+tMHURZ31y3FfaC/75EFEp1O4tJlebSBTwcEH/T9XKJL+MaRajUZ9LEIEo2eV3/E3ocbEZX9MnJragYbkwLTqqjiZoB7rUsAcnXzn5B6lxcotd4D4b3Cj67ogTobdaoVmn5A6fxqiJR8D5G7KteGiQKfdXu/95QXvLK++WwxgFC8PZeZ0uC1Q8Arlf/xVhabaBazcBdhXNp/Z0D6Ha3ravXzS0hlKOUzozhut96vVHHh3/IsEpHz7DEb1mMOTRWLoNHRcEfC+VapL0A0KH4R1dnZ4/j3IDcnidxybGJ/qjxb+shEWSigTxH2UCe2HeFWr37RDs0gH356NvP/hDN6QdSC+TUMWtAJ9KLdj1rxo4NUA6usduiex0+LMixilEhpVBv/ZZuKbXYPRljrv7li5M2/Lb70VxPRRo5H6WQp
- 8b2FcF0Q
- 3gED7yJBt1ZtQ2/cgfXGltFmVf7WIN+QKjVm3akyyfu5rVGGbH2ol+k2O22YzXKo51UdQ8lvHL95KGx5bI9/BgzXivdoTLgwmswTsjWPLFfPF0A8AxK23w3QVzuNWT/mqulghl58M2evc0dnjxG7lTjPozKZCwWKVwaYU4sulSxnsi6o3yFD9gnVR0I20HL0hqN0e42dJRCtPrUuj5syCGTjIUGlScfBimp5J/3Cj2bjjKrWrNsL3kfJWCv/aMe3TwIG04/ztIKaFFdRW2UX4V3U+0bthSJwty6anEyBOJlktTbHncA5kDAmFUhx4T8aQX6QYvsq2cVGVwVI9AbzpFAbjtPioRzEXSKdHBAWn1OAzu6afPYFDHHk7nXNOxEyuWFOgxO2Y1no9EAGCamAYjCaPDJnqP3lRvRxR4ctNnnkFVKI4XctpvezzGPnf6IxyO+qSl7wD5J/FS84MFZzad6DX1raA35XWvCB9gU5jgyBIAtEGZ83F5d4Nuj+yg85j8T9/9xoe9+gmC8lw78MIEnIicw==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 548F640007
+X-Stat-Signature: 6ywgoigkbynzmab1ip5q398amy6jx3zy
+X-HE-Tag: 1785133095-959158
+X-HE-Meta: U2FsdGVkX1+jt9b8x6z55Jz86w2+x2yz4bHrUHATiDotmTdAmmhtmDveW/xGw/MEfUAOJcPng2WN/AtFYsQoW/H16k1DJ70VmBsmkoQakOemjM3MUt3yr2TrS4QaiAOAJdrPJ6v4mpail6KDgHCFQBaTBctJaoRVn9LFduaQjhfn9DRxuaFhE1ry2JhgR2a4tWvIUWo5Y39QDzHhUQQbV9zpIuXYAWAL7iXje/xRkky+7grQ+Y4ReTs6f3rcZ40pYnJpSM47njCYSwFl9+0gWfIbViL1YfEMaHJpih1KkdVmwl3+F/PdJxfBwiZaA/w0Eq/ToYVp7XiZrZZxEUur1fQLsJU3j4R2VEYevWMtEaXfZrkY7W9cMFb0WpbOfyq6nM9oxWer7gVtm3Q72UaXtp4OnLAx0mKzZouq1RQj/32bqO9BSNGPjfmG4VQJa19/vTVH/mCLG4IHdS4vHB6QZRSebIhPENO5W8bKdhR0CLV7A/Ot78aRylNrnSosdj+m8/hH3l3mwqS9T7Iu5Yp1zBeDfWcHkGvqeek89AH3b9RBIoTZVy4lfNtGT2ZyfZcjsgrUVmuGhcUSQBmiIghcMhTz6vV4NosBfdVwxO/Wm/ZbvzJDvMxCvnIWSZdi81MsRDZ8YCG9w0ayX3gQQHGjLfb0e4cYNqJrP/FDyNLzyoeIv+C2NhJcgjvGCHvPjAHxo5g0FWQEHtMERTr13F1LUkseo48FkdEJ2yj7J2wDc+jDPli9oDaOkbCo3IC98lGTMwUvApY9JUyPrfu0MQ6XvfuAbB0U76zJjp4kUm5e0l57maMkdIgb9Czv1C3yRkxoKElA1Bh1kc5JXKcqgQ/G/pEOTeZo9FMrWbqVRN7H0MJTYxKN4GskpXFSBuNfaJc1RK+q4ysJgc8DNAL/WdUXVIEYVPbFi8ig1Dt07NRN6D4JHAwWaPR918yAUbMAV+z3tLZq273OTsoeq0IfRpy
+ /uN8p0f+
+ b+1SHk2kL+R23C8bTSzIWjDXTjwf91myei5SSqwHegbI0i8L7KhI9o+ezqz9StMjmXSeetjF1cCMUSIAwkYwnBFkL6bgM9rCwxlWnJUvwG+sV+OxvFI6ly8W1Spwyd+OGcEML2GDeujWmcj5ZYS4kqmCBEvn54OH5KTfHJh2+1MX1fwxzzxxtAzqj/lD/chlo7s2BpRH8aUm1AJKdT80NG2BCPRjlxAQJ08wq0si5Gu12sTRxrprtznvZPrLcT+5L79t/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,42 +94,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 24, 2026 at 10:28:46AM +0800, Gou Hao wrote:
-> kzalloc_objs with the __GFP_NOFAIL flag will never return NULL, so the
-> subsequent NULL check is unreachable dead code. Remove it.
+On Fri, Jul 24, 2026 at 06:31:51PM +0200, Vlastimil Babka (SUSE) wrote:
+> On 7/24/26 11:41, Hao Li wrote:
+> > On Mon, Jul 20, 2026 at 04:16:26PM +0200, Vlastimil Babka (SUSE) wrote:
+> >> Slabs of some caches never need the objcg part of struct slabobj_ext.
+> >> Introduce helpers to query this for a cache or a slab.
+> >> 
+> >> Introduce SLAB_MAY_ACCOUNT flag that is currently only internal and only
+> >> is_kmalloc_normal() caches don't have the flag.
+> > 
+> > it seems this could be "only type == KMALLOC_NORMAL caches don't have this
+> > flag".
 > 
-> Signed-off-by: Gou Hao <gouhao@uniontech.com>
-> Reviewed-by: Wentao Guan <guanwentao@uniontech.com>
-> Reviewed-by: jiazhenyuan <jiazhenyuan@uniontech.com>
-> ---
->  arch/powerpc/sysdev/xive/common.c | 5 +----
->  1 file changed, 1 insertion(+), 4 deletions(-)
+> I think not, because with SLUB_TINY,
+
+Ah, right, I missed the SLUB_TINY case.
+
+> a KMALLOC_NORMAL cache can have
+> SLAB_RECLAIM_ACCOUNT flag and thus is not is_kmalloc_normal()
+
+Just a minor detail though: under SLUB_TINY, SLAB_RECLAIM_ACCOUNT isn't used,
+and new_kmalloc_cache() checks KMALLOC_RECLAIM != KMALLOC_NORMAL before setting
+it. So is_kmalloc_normal() should still evaluate to true.
+
+> and may need objcgs?
+
+Agree. Under SLUB_TINY, we indeed need to set SLAB_MAY_ACCOUNT.
+
 > 
-> diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive/common.c
-> index dadd1f46ec939..f2904a5c2b7bf 100644
-> --- a/arch/powerpc/sysdev/xive/common.c
-> +++ b/arch/powerpc/sysdev/xive/common.c
-> @@ -1134,9 +1134,6 @@ static int __init xive_init_ipis(void)
->  
->  	xive_ipis = kzalloc_objs(*xive_ipis, nr_node_ids,
->  				 GFP_KERNEL | __GFP_NOFAIL);
-> -	if (!xive_ipis)
-> -		goto out_free_domain;
-> -
->  	for_each_node(node) {
->  		struct xive_ipi_desc *xid = &xive_ipis[node];
->  		struct xive_ipi_alloc_info info = { node };
-> @@ -1158,7 +1155,7 @@ static int __init xive_init_ipis(void)
->  
->  out_free_xive_ipis:
->  	kfree(xive_ipis);
-> -out_free_domain:
-> +	xive_ipis = NULL;
->  	irq_domain_remove(ipi_domain);
->  out_free_fwnode:
->  	irq_domain_free_fwnode(fwnode);
-> -- 
-> 2.20.1
+> Yep it's subtle :/
 > 
-Reviewed-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
+
+Yeah, it's pretty subtle. Since the full case matrix is tricky to summarize
+accurately in one sentence, I think it might be cleaner to simply drop "only
+is_kmalloc_normal() caches don't have the flag".
+
+-- 
+Thanks,
+Hao
 
