@@ -4,97 +4,159 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37652C53219
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 00:41:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6ED9DC531F9
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 01:41:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 558676B008A; Sun, 26 Jul 2026 20:41:24 -0400 (EDT)
+	id 0C4256B007B; Sun, 26 Jul 2026 21:41:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 508C66B008C; Sun, 26 Jul 2026 20:41:24 -0400 (EDT)
+	id 09C4E6B0088; Sun, 26 Jul 2026 21:41:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F7AB6B0093; Sun, 26 Jul 2026 20:41:24 -0400 (EDT)
+	id E81576B008A; Sun, 26 Jul 2026 21:41:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F405B6B008A
-	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 20:41:23 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6538E160582
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 00:41:23 +0000 (UTC)
-X-FDA: 85032702846.21.C68DEC1
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 3BFA510000C
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 00:41:18 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=KRlyVlYp;
-	spf=pass (imf05.hostedemail.com: domain of yanjun.zhu@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785112881;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 59A286B007B
+	for <linux-mm@kvack.org>; Sun, 26 Jul 2026 21:41:45 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C4C4112060B
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 01:41:44 +0000 (UTC)
+X-FDA: 85032854928.27.16512DF
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011025.outbound.protection.outlook.com [52.101.62.25])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 11CC380002
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 01:41:41 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=jIYNuogx;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf30.hostedemail.com: domain of apopple@nvidia.com designates 52.101.62.25 as permitted sender) smtp.mailfrom=apopple@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785116502;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rj5ZR/j8gEE2Zz++PWd2qbirX2cZs2l8PGm6xJNCOE4=;
-	b=RGl8dnMy0JtgzDXgM/DrNlS3vQzBlaL7JFNJ57KseNBgw9lMQLQkXb0kwImaTxBVHQz/r8
-	rtWq+pN226dJuSP2rgbLuJG6U2lslyyeFAXJsEnquMpbXIeqUnzcz0/KnoVxWqT1TygKOl
-	SJ2BYqBqfC997GVwm41ubCTxOHbrVHo=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=KRlyVlYp;
-	spf=pass (imf05.hostedemail.com: domain of yanjun.zhu@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785112881;
-	b=23YTxA9zbNbprNdnAeyzBrnOii3H5chIWlsrjM1bitcgcWVNDI8QT69Mgj8VwzZJF7dV+R
-	qjDC/lqizseJKQOKTW9G7kxbEpZrQSH784HmRzuWu6XCPoZ6JNvmLmm2zEN10AM8ZSkUy5
-	mtqslRpwXOGGzk9svquVeLVe8nx+CI8=
-Message-ID: <c3440ed3-0fc2-44e5-a05a-922344eb34d1@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785112875;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rj5ZR/j8gEE2Zz++PWd2qbirX2cZs2l8PGm6xJNCOE4=;
-	b=KRlyVlYp6pYFsYFATRhclKvDqnjexSHonIihZ6tDf/jclGw9yBI7LDiDqDB6H9CGK5Dm3B
-	seaLfFNRROnf0/I7jkQTkIWOdIsxfFIvg7/CzmzUPkMbpHzCb4UseN4LJcTYAwNLf97N3c
-	K2CXArCY6yj1KdwVOp0kqWDJzF83tw0=
-Date: Sun, 26 Jul 2026 17:40:54 -0700
+	bh=DPzyQrQQGWbiSn2TY7/ukuxCl1vnihWtmhQA6AXih7k=;
+	b=VcrDF/tRp89FhO8MEXlBArWb2w3ypAlwcLlEz/xvA6Tdyhtrm489p4FDUbsLgFlLdmBbEM
+	6do+g/YLzk2E33QgxzJqJWFFK1S+tLEJ3KWl3PqiXwlPmSFyOTme5RT/aOYSrG0bAvMoPB
+	9zGAaeGq/gbHS3228jMgfzdsd+ZdJPo=
+ARC-Authentication-Results: i=2;
+	imf30.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=jIYNuogx;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf30.hostedemail.com: domain of apopple@nvidia.com designates 52.101.62.25 as permitted sender) smtp.mailfrom=apopple@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1785116502;
+	b=zV7IAwRL+J3fNOrRwt/BkI8bO63DsYktqcPKQWqxcNsmvhBqk8eFcsuXkxTMYY7q8cX8RW
+	0aAq9kHIQviO/aQcR0XCp+jsK9T1s95QBYOwhDZgVdeb/yQF07bKQ7iFNBiB5HFQYwY9HS
+	yrLD2auBBVqgZS5M6KDp94gM2M/SVhg=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=VIwqt2vYqFkAG5+NZslClFI8ZvtPUQd2qCAJSfJVCtknoq+jomx3cAhn9wABxEQOI3PhKuqrg2qCAs2IoTRvCgBqKN2zIaRc4Jwkxzm2kRpEQ5qPb1L+5z5ob1KSn8dUxLtOTEGB84PBSsGS4cFdjbkwTcDPah+TP/Pv3OCDAeWo8slSM2s/G3gUXmZGesFlHnfL2qcO31NWEba6gWIyFpMiLEx6flPUblNEPPHxEJ2HpI48tZyOymNziCIPZZ0ZA7TxDRMgTJziEr/jWWd2PETEfFJ6DLxgTY7sRLgzDYEdxOhhdBP3S/RLo14Kev/XBOi1rNmOCQzQOvGIvIZ+Dg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DPzyQrQQGWbiSn2TY7/ukuxCl1vnihWtmhQA6AXih7k=;
+ b=Vdk6B5GyM9A4Ki0KwGcpF74naIK5JytESmnC7sk60DWtvrPZwtI1bLmxqifV9tKdHHZW1lM4Iuq9vD94CpOZdBgDqKoCBM329yy6rJOCK3wKHT7/lfEvuLHIZUcGj0TLrpFQYCNwexIipF/is7r0TSoE6T3kKnjgntn465rYiia2x/tox8QRWzPW+8NOd3f1s9W9hZxyRDGvoc2G/fDX58uxMWqDvJGB5xpGzKUH/r5FcXCjyZU80z5mqj7gmsFVeOE4w1l18APPUpF2czDGowMLQMygGTm6jdZOia3OxAiPpmjyyDGKHa0bH/uXpKquBsLAmogI6Q5yPUViVLkcVw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DPzyQrQQGWbiSn2TY7/ukuxCl1vnihWtmhQA6AXih7k=;
+ b=jIYNuogx2gvgbKQ1nywY6I8mMPj8IFmZI11l/YKvX3K8NSzDn5nlzKaoc2G0tw2w0tnJzQCoMGe6zZnY3zHLW6gk2Brjm9Adw0Ysc3W15i28lgLmsyjLnb71mSzAOwJ9wDvnJcGEoieAAgg+N1fN248lUSgJyUn4FVpxihqpMEMePFMbJrn2lXO/fmpTmtBjUBiZnEtCHU7ep2Rzi/rgwkxuR2uAV7GABZLsVPMIW656o3/52r+6hZv+/RzXeL27QyZyh3+zEgI6eSRnlm36tvDgmFQE5yjxNhJvpv2YY0psuAVuPTp4qahBBAk9nowmzK266EsZ+N6a4FilOikCdA==
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
+ SJ0PR12MB8137.namprd12.prod.outlook.com (2603:10b6:a03:4e5::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.13; Mon, 27 Jul
+ 2026 01:41:33 +0000
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::5807:8e24:69b0:f6c0]) by DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::5807:8e24:69b0:f6c0%4]) with mapi id 15.21.0245.012; Mon, 27 Jul 2026
+ 01:41:33 +0000
+Date: Mon, 27 Jul 2026 11:41:27 +1000
+From: Alistair Popple <apopple@nvidia.com>
+To: Gou Hao <gouhao@uniontech.com>
+Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
+	chleroy@kernel.org, maarten.lankhorst@linux.intel.com, mripard@kernel.org, 
+	tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch, bharat@chelsio.com, 
+	jgg@ziepe.ca, leon@kernel.org, akpm@linux-foundation.org, namcao@linutronix.de, 
+	ynorov@nvidia.com, sshegde@linux.ibm.com, nilay@linux.ibm.com, clg@kaod.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	linux-rdma@vger.kernel.org, linux-mm@kvack.org, gouhaojake@163.com, kernel@uniontech.com
+Subject: Re: [PATCH v2 5/6] lib/test_hmm: remove dead NULL checks after
+ GFP_NOFAIL allocations
+Message-ID: <ama3NaduNkQ16lEA@nvdebian.thelocal>
+References: <20260724022851.466017-1-gouhao@uniontech.com>
+ <20260724022851.466017-6-gouhao@uniontech.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260724022851.466017-6-gouhao@uniontech.com>
+X-ClientProxiedBy: SY5PR01CA0091.ausprd01.prod.outlook.com
+ (2603:10c6:10:207::8) To DS0PR12MB7726.namprd12.prod.outlook.com
+ (2603:10b6:8:130::6)
 MIME-Version: 1.0
-Subject: Re: [PATCH v5 17/20] vfio: selftests: Add
- vfio_pci_liveupdate_kexec_test
-To: Vipin Sharma <vipinsh@google.com>, kexec@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- kvm@vger.kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-Cc: ajayachandra@nvidia.com, alex@shazbot.org, amastro@fb.com,
- ankita@nvidia.com, apopple@nvidia.com, bhelgaas@google.com,
- chrisl@kernel.org, christian.koenig@amd.com, corbet@lwn.net,
- dmatlack@google.com, graf@amazon.com, jacob.pan@linux.microsoft.com,
- jgg@nvidia.com, jgg@ziepe.ca, jrhilke@google.com, julianr@linux.ibm.com,
- kees@kernel.org, kevin.tian@intel.com, leon@kernel.org, leonro@nvidia.com,
- lukas@wunner.de, mattev@meta.com, michal.winiarski@intel.com,
- parav@nvidia.com, pasha.tatashin@soleen.com, praan@google.com,
- pratyush@kernel.org, rananta@google.com, rientjes@google.com,
- rodrigo.vivi@intel.com, rppt@kernel.org, saeedm@nvidia.com,
- schnelle@linux.ibm.com, skhan@linuxfoundation.org, skhawaja@google.com,
- vivek.kasireddy@intel.com, witu@nvidia.com, yi.l.liu@intel.com
-References: <20260714151505.3466855-1-vipinsh@google.com>
- <20260714151505.3466855-18-vipinsh@google.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
-In-Reply-To: <20260714151505.3466855-18-vipinsh@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|SJ0PR12MB8137:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5328bfbe-0382-459e-e43d-08deeb80307d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|366016|23010399003|1800799024|22082099003|18002099003|56012099006|4143699003|11063799006|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	kqL5wzav1S0165cdl58A1VVjJCf+0PV6kjMlWyYUn0BnXucbYBlGGZX5GQSpX2KS56DZdX59S4bhEKT4Km3IteUrXKq1FHgPqPm72+xAJTaZ8B2r0Foe+K252oLz8yx1aDRHdyoZ/eBl2xWTDBSsdvhzZJu4cjU4ue8OAupBOtY0wphBPE+mglK4Z6aYSTqLXxlu5YNdSwN7bnH+BsZYfUKB+vmZ45s5GCUvaXin/T7xB2Os0znn/phFfvLP2Ob1iW2Zc+3MCP53anGlYsnyI5TvZq6nZVCUCtuZ0p+DXJxs43KBObpcQtBxBRNPMRwmSIYh4W/8ajtjddTS6D/kIoVBeJPTHE5EdxVBqmw22oaDN0bs1V7VP4tTX47nXeTjUcaL0JlKS5Ya4d/I3PbLHbXYwb4gdLxhyUn3zEpsWuDmpU5cxLghgD4n5pTg9WESitqh2iIfZ2HuYqFnZ8z+O66MdqxMJsHmO8kA3mpBq0xsRKy0lI3HoK3JWOeyyOAubHq+fLprczWNIeybCW9Iekzee0xxgBoKz86REgVvX1JNqeCgtBpAKiWJDFRuw7XaAWRRtPScCm/pm1Eei3yfSrmxt6gYmE5L0NGcRGzr8s6mhXyvzX0raJPKZfpsR5jtYoco34sno4HfqXPyuN5jA4lmmBOPnl1q5SQRxAUGbgs=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(23010399003)(1800799024)(22082099003)(18002099003)(56012099006)(4143699003)(11063799006)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?VEE/fcNWvmcfAtecmA8pIuNyd2Q9VAacMa025gdZFXFBdk1PMWxANbHKDHd5?=
+ =?us-ascii?Q?+eEeJQ5nsAkdvXmclLFX1Yj8fNW/GXNwRa8uQGTj969CcwZz86RDEypyRowU?=
+ =?us-ascii?Q?apOIlPkj6hvPf4zhmZB+4ejg1dsPkSuwDmheTgpT6BPnLD6OD81ZuU/btiK/?=
+ =?us-ascii?Q?orEYNFHvFZYjLiDKumRG47Kc61PIQqZlyUfbGI0zdBTxsTj/s5dQUteGanQ7?=
+ =?us-ascii?Q?g5uIMZh0tJMqk5enaBbUQ7OqblVyG6heZyfzHc7MT/gSqC3brr7EAHaknUhW?=
+ =?us-ascii?Q?LzO5q8VF7dOuksXwJOXTFt4V0+duuCEU1i8ddvTjZ62SmMBaPvnVshOOjH6R?=
+ =?us-ascii?Q?GywDl9rIWfjksfm7bx4gMi6C+ypEokKOjFh3U4xxxqw2dVvwuHiwb1KhhPdo?=
+ =?us-ascii?Q?GLTWd5Y9i5I1UBy+EKBebO5yQoA7SYhc055APYHs2TWpJo0BqK9HXpU4h8Wn?=
+ =?us-ascii?Q?oJOY9ORP1w2wIPVrj1Cybxe/+WtYtyP1KKJVPYoAt7z1xMsx/xouSnt7c44Y?=
+ =?us-ascii?Q?TC/rKqcUz1QkwQXZp0pO8x9PUSzcEz9YVDSFeWXqVP0fFsbeCyGIxMFtv/Kw?=
+ =?us-ascii?Q?oPgVNFwT2MY7D3zJQFpOCsgjqfHx/OxdaSm6wnUazwZ8e+yFXHJd4paA0ljp?=
+ =?us-ascii?Q?t3WfF1rQ6ALWsOduittzadZ8VMKd4sGeZGwSmAGlfbRNmXIPOb8Y0sjqGz6W?=
+ =?us-ascii?Q?f7xKL85njeYhBMouwhHoUBqtcbIK1u2nC/ZdsNf2mevtn8EFdFSIMazcijZU?=
+ =?us-ascii?Q?Ey01C8lg38C/vzPkJYLzaM6cmn6ylqsCjBpU9Sgw2TBZK9gkL+O/8pQPbUXe?=
+ =?us-ascii?Q?qX3LD2dVIES+j1D8b5bOAsk94kuGnxC0jmuZXl1jhxw3R1TMNM8vrA9tER/h?=
+ =?us-ascii?Q?U202xUBhXrNk/mDg1IGHv9TPd/9tqg0RX/5tRXQCCU3fKdLcLIwOrJkPRAnq?=
+ =?us-ascii?Q?LlPSkxAN1zfEDNK/yZpq1af7L4HjyFrBByRuVsHhYe0zxcbEcxcC5hDqPqKV?=
+ =?us-ascii?Q?jybeATCRnw+BVb2qORS3q0MYVY0oKzrI4wYK8z+OSzWGqecl5ynDo7kSnGd2?=
+ =?us-ascii?Q?LR4wdO3LUsEaf/iwFg6QVIStzyc6jFhfbDpAc+9Sw3sm+lTX62Cfp484fvdq?=
+ =?us-ascii?Q?YxpwQ/YVRaDZTwdbKcAHXJa8zp85zhMaSjogOND9tafgKT30ifWCv4sTRC5R?=
+ =?us-ascii?Q?7QcKwMkDWp+9Dk99wP1Ccsn5xrrBAVdf4p9JoeEN6oLkj13QLTTRFDYgXQmI?=
+ =?us-ascii?Q?XT/yH3KZTt5iROk7cFRmIxOL9jqpzlvNAzrtQDMOvupyaOZj63v+Ku77sT9v?=
+ =?us-ascii?Q?Xwm92D8EfuAuoR3y1au0Fc6iAyv38urktSoggv5SHIPfD+q3Qahz7GXRfU2I?=
+ =?us-ascii?Q?2dsbBnnztgWrmpikNIc/j5tL/ugonPZMB8ApEb3p8Qj5rv2GCg4q8WlxZRg3?=
+ =?us-ascii?Q?kbUxE3J6ghKu0Xm4N0GOp7MnY1CMT8RzuM9T2gj4Sju+DyTvMc9byJCZemg+?=
+ =?us-ascii?Q?teCCBlWiCdqp0YA+gayNOyUZmdS6XxRYHKk4kOCEkudvLXv3/+H/Yj7SaOpv?=
+ =?us-ascii?Q?gJv4jqxUIeUUcKnnWQKNUx5yuq88aItKvm8gsNQhvg9bKJY/YlJVEx1auiAO?=
+ =?us-ascii?Q?wbmOyCN8bBVJlTiJyup3QBg6/1/ZQrgbTbIOMpNBCexBs4z5y+wmZ3vQzByO?=
+ =?us-ascii?Q?2eAHu0LH1+Edn6Yj2qXAAL8IsO6Tq6JZ/Txm0f3xqzXGWfRY?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5328bfbe-0382-459e-e43d-08deeb80307d
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jul 2026 01:41:33.6764
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6PXFc8yY67cUglQnhUskVtF6vSBIUSHGLO7Fj59Ka0YyPBIks3PplCXc7zwk51SILAtzPQHQeRUWS5iL6e5hkg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB8137
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 3BFA510000C
-X-Stat-Signature: ipbc9ehnqb19ioo555gcdc9gh5j9crec
-X-HE-Tag: 1785112878-292923
-X-HE-Meta: U2FsdGVkX18xGtg5Yf5WGzNj/14jCUkYhGIEzWLpTNEJ2aQxuXeO4ujUT+liPoUxxtfJWc+NxKju2dVRuVCwZJi6sjHK1me9Y1eX7xgKaksFtR2FFiRgp0fosDQPngaTikPkisCf0FrdStstJjDQAX5k+M4WDNjwsaodiohmbUQkC0/fvb8xAlMCm4OO+y6KpcjJ6M/ZMwF/RrssaDgj5ZZl0Mxqxddc9yNytr6z3ZlNHpKakDntu/Qzkx/ajFT31cDpyvMBmWZXcaBuJOG/JlVsRjqG8shvtyGMMlR6hGJiag1dQzxERl8gnSXdqjYdH3G0KZSW27awo27TPnwj5RG2sidkUb432h7t0kTrL0sdIff5DZm+/hblzfwax+7kT8l4zS8zJVu+N3emxoOaRZ1ObD1etcV44Duy/fCjglR1uVGT2MCiw0f9V4XY0T+uWzPnpo09Dl0jDISEIqrJ9YFxH8cOiJjhdKprK0HdI9zlpRxs5nG/unyUOilpgbDwG0UQ7TEoQSDHNt+kcaxOBNsQwteEpQwxblBfMZWktKktEvV7d8U6eXqbUVuZrUqtc81mI+b+elsPs9HYTof3Q2Mszou4z7Zr4I3J2SFE3YgS6N43PgqMLr4GvC7LdKecn7Ir04b14ZQL7MBF3EUB84/sdXkbsX6jZzT8DIO/UxnzIE86DOJXNua70s09fKH6SLMGpIHbygiY47+nxN5Jbgza9/ZrAUqJ4Br/bJjOLe3zKrNHlqfBnPhrLC/TdvSbzNbyyRo9ZH1cosWqinFw3AuKcPHzAjrb1BP2L4UDAQ3Cl4KaX1/6UNBP/Kc0BUaWvL20XcUJilIN9+COQOtyJwY0sSsiI1OqfaDEUwaGbZRa3d1yV33kIz82AwmrFUaHhJOulyYK/TSnDIRNyiUCUEiJbGlvX++FYVjmyNKGDEWYG+oQMXD7lc+ERVQc30ERT7JCE9E9PWW4GPMqIjN
- 8aJTmVZ6
- sPODQEW7aeZ0XexAOkLlLgYeZOv/gJn9mh1zUWKk5J+uMvDErorXniPUl66cpNNMsZ/X9g7Yo9Mhex2LQO0rdyQG9xGb0JglVs4rjt6Mc7j9uvpGSnoo21UWOcZVFDM9fuPym8od8reBU7otT4IEs1p4zc2AW7VhBzJfHMgod7MT3Tvsf9d5YdG1Q1nCGSf3YunYDR7eiJKMkmsDG6HTPEuBbzP3d0aBboQVLS3tLqi98YwGzY1UsxaATC1qyBKkDg9891cPSOWKaSjPSs42Oi69YdOQeL12hLu+DFrghQtmXtE/2v95hNDcnC0sbQduV25KMbJZ6t3XOrts=
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 11CC380002
+X-Stat-Signature: bctt7hb9smddhr4eprz5ob4wicxdixzy
+X-HE-Tag: 1785116501-198084
+X-HE-Meta: U2FsdGVkX1/juz5i39X9/6vakvijbOMV45id9/l/izfN+Kp1/mgyfdPEmTYM7WDewOBEqA30K+XuT2PrGMjYn9reN7F/0Y5BR23vcbpKQXuLHfN4AnhU1IhHRR5CT7uPt0CQgjytnFaMaOVJ8Ge2fHsljzZGIOT8+d88Zkdc4/i/a8T0vsaou55WHFrdMae/BJJvAXsI8T9gAzSSjhZoot1R3oZXgdHoyNUSEk3r3BgWseOAXzbEGTlYV9oTcqI2AkfpU1zyhiyQ/3BC8K459aIYw+OV/QZMghUwiWV0labAI0Zh08p52cM+ozKs1UcRAGWb0DZ4cWNwVn6K4Y7Bus/N7Y9tOfYqpdfu9KEdJBWZCFJcILvKHS9k5pYUOVzuFSHmuiqtSoiJy0m9msfWX7TFZqnt+IuQcoFwzP7mXr9cEWLFgWC900W5gTb6WkMu/TMRvAwILcLSS8KpR9eUgDlXZBH3WQ58H8y74nrQKK/K588J7qX9NFRvGbcP4KrQeCx9Smwm1alCxMTw/gtejJipY0g91x+WyNnMm0gRpL4iw5p6Kb6S82qXJxu2j0P2Z4vBAcc31g3IAgZljS4loy7uX1vBZURctv1FXbVMjQSTwumwQVPnV9HFxa7tq5pORmQsBofnhH4UzPjzy2X2noxF4+pL6IcfCRB7fni4/658xXebM7B104Xs84a1R6R6Jh94SL+7T2G+24RcAruTKFA9wLCRMRswPOrkG3iU54+PVqOTqJ4EzqUBz1R1CYjnSUfjvnverYM8+ykhhov6uOG92+beeqJ9uM624oGEEtNEotknv+euuISNWyEHcPfr//lisYfBXba5OHvdc+/IcLKgi6scF/FkWDcLKxrpT4JrEBsm2CAudawrt19nOtoAOy0AIebDv+XINUKb1OeOs9Fy0OTBHrSiqf4VHyKwMTAJ1HTmJALX4kFAuu7M1RSOVYOg9KPiienmOG5x9k+
+ JcSSQjlF
+ vgqjabgnCuQ0b9D+CEBvsB/Ez635+b5wcYJDZH3OR6ta8dOK3tW/XlW5/32vXvG8NNirIRUc1MdH13ryJpmSZ1aQqtHq/mpwHgEviN8M3p6rE07VDKrqslVJ8ntBudrFK/uhuvc6i5HlZetqnyn32a2x8XJnDvW93kmpMZyFufDUmtFi3zVJCBJk3HOBufIMR+AP+u26OI1q4QxAIMybPjSHpGlQt2kA8PlsEqtsSuMQ3QG7uZXPCX7uLBJQv0Hb+dDRWGaD2tmy4Pi1F87T6t5RkAQ8HD9ea6htKma/Ldjl7RLyansDenxSGhy5lsu1sxGj0jQAdvbWBpWJj29TbyKrxTqhCCktP89lYA6y34ZeZaCw99uRMJVGbMGqEAn8B1Gm988cyXXejiDoOopj8F6Vv9kOTdEYRbOuySuIW/nDwZjDsvyjDmE2xHVboxXjXP2yP1hrBcbqEO1moldDxzEO8izP7TpU5SJZ0ehD2EnSbQ23j9gD2vjocMw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,220 +164,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 2026-07-24 at 12:28 +1000, Gou Hao <gouhao@uniontech.com> wrote...
+> kvcalloc with the __GFP_NOFAIL flag will never return NULL, so the
+> subsequent NULL checks are unreachable dead code. Remove them.
 
-在 2026/7/14 8:15, Vipin Sharma 写道:
-> Add a selftest to exercise preserving a vfio-pci device across a Live
-> Update. For now the test is extremely simple and just verifies that the
-> device file can be preserved and retrieved. In the future this test will
-> be extended to verify more parts about device preservation as they are
-> implemented.
->
-> This test is added to TEST_GEN_PROGS_EXTENDED since it must be run
-> manually along with a kexec.
->
-> To run this test manually:
->
->   $ tools/testing/selftests/vfio/scripts/setup.sh 0000:00:04.0
->   $ tools/testing/selftests/vfio/vfio_pci_liveupdate_kexec_test --stage 1 0000:00:04.0
-# ls /dev
-autofs           disk       iommu         mem     rtc0      tty10 tty21  
-tty32  tty43  tty54  tty8    ttyS18  ttyS29   uinput  vcs6   vcsu4      
-   virtio-ports
-block            dma_heap   kmsg          mqueue  sg0       tty11 tty22  
-tty33  tty44  tty55  tty9    ttyS19  ttyS3    urandom vcsa   vcsu5      
-   vport2p1
-bsg              dri        kvm           net     shm       tty12 tty23  
-tty34  tty45  tty56  ttyS0   ttyS2   ttyS30   usbmon0 vcsa1  vcsu6      
-   vsock
-btrfs-control    fd         liveupdate    null    snapshot  tty13 tty24  
-tty35  tty46  tty57  ttyS1   ttyS20  ttyS31   usbmon1 vcsa2  vda        
-   watchdog
-bus              full       log           nvram   snd       tty14 tty25  
-tty36  tty47  tty58  ttyS10  ttyS21  ttyS4    usbmon2 vcsa3  vda1        
-  watchdog0
-cdrom            fuse       loop-control  port    sr0       tty15 tty26  
-tty37  tty48  tty59  ttyS11  ttyS22  ttyS5    userfaultfd vcsa4  vda2    
-      zero
-char             hidraw0    lp0           ppp     stderr    tty16 tty27  
-tty38  tty49  tty6   ttyS12  ttyS23  ttyS6    vcs vcsa5  vda3         zram0
-console          hpet       lp1           ptmx    stdin     tty17 tty28  
-tty39  tty5   tty60  ttyS13  ttyS24  ttyS7    vcs1  vcsa6  vfio
-core             hugepages  lp2           pts     stdout    tty18 tty29  
-tty4   tty50  tty61  ttyS14  ttyS25  ttyS8    vcs2  vcsu   vga_arbiter
-cpu              hwrng      lp3           random  tty       tty19 tty3  
-  tty40  tty51  tty62  ttyS15  ttyS26  ttyS9    vcs3  vcsu1  vhci
-cpu_dma_latency  i2c-0      mapper        rfkill  tty0      tty2  tty30  
-tty41  tty52  tty63  ttyS16  ttyS27  udmabuf  vcs4  vcsu2  vhost-net
-cuse             input      mcelog        rtc     tty1      tty20 tty31  
-tty42  tty53  tty7   ttyS17  ttyS28  uhid     vcs5  vcsu3  vhost-vsock
+Reviewed-by: Alistair Popple <apopple@nvidia.com>
 
-
-# tools/testing/selftests/vfio/scripts/setup.sh 0000:00:08.0
-
-+ echo "vfio-pci" > /sys/bus/pci/devices/0000:00:08.0/driver_override
-+ echo "0000:00:08.0" > /sys/bus/pci/drivers/vfio-pci/bind
-tools/testing/selftests/vfio/scripts/lib.sh: line 9: echo: write error: 
-Invalid argument    <--- the error is here.
-
-
-# lspci -vvv -s 0000:00:08.0
-
-00:08.0 Unclassified device [00ff]: Red Hat, Inc. QEMU PCI Test Device
-         Subsystem: Red Hat, Inc. QEMU Virtual Machine
-         Control: I/O+ Mem+ BusMaster- SpecCycle- MemWINV- VGASnoop- 
-ParErr- Stepping- SERR+ FastB2B- DisINTx-
-         Status: Cap- 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- 
-<TAbort- <MAbort- >SERR- <PERR- INTx-
-         Region 0: Memory at fea1f000 (32-bit, non-prefetchable) [size=4K]
-         Region 1: I/O ports at c000 [size=256]
-
-Hi, Vipin
-
-I worked with QEMU PCI Test Device. But the following error occur.
-
-"tools/testing/selftests/vfio/scripts/lib.sh: line 9: echo: write error: 
-Invalid argument"
-
-Is this a known problem?
-
-Thanks
-
-Yanjun.Zhu
-
->
->   $ kexec ...   # NOTE: Exact method will be distro-dependent
->
->   $ tools/testing/selftests/vfio/scripts/setup.sh 0000:00:04.0
->   $ tools/testing/selftests/vfio/vfio_pci_liveupdate_kexec_test --stage 2 0000:00:04.0
->
-> The second call to setup.sh is necessary because preserved devices are
-> not bound to a driver after Live Update. Such devices must be manually
-> bound by userspace after Live Update via driver_override.
->
-> This test is considered passing if all commands exit with 0.
->
-> Co-developed-by: David Matlack <dmatlack@google.com>
-> Signed-off-by: David Matlack <dmatlack@google.com>
-> Signed-off-by: Vipin Sharma <vipinsh@google.com>
+> Signed-off-by: Gou Hao <gouhao@uniontech.com>
 > ---
->   tools/testing/selftests/vfio/Makefile         |  4 +
->   .../vfio/vfio_pci_liveupdate_kexec_test.c     | 89 +++++++++++++++++++
->   2 files changed, 93 insertions(+)
->   create mode 100644 tools/testing/selftests/vfio/vfio_pci_liveupdate_kexec_test.c
->
-> diff --git a/tools/testing/selftests/vfio/Makefile b/tools/testing/selftests/vfio/Makefile
-> index 591f1a52c310..a2f0a459e1f4 100644
-> --- a/tools/testing/selftests/vfio/Makefile
-> +++ b/tools/testing/selftests/vfio/Makefile
-> @@ -15,6 +15,10 @@ TEST_GEN_PROGS += vfio_pci_driver_test
->   TEST_GEN_PROGS += vfio_pci_sriov_uapi_test
->   TEST_GEN_PROGS += vfio_pci_liveupdate_uapi_test
->   
-> +# This test must be run manually since it requires the user/automation to
-> +# perform a kexec during the test.
-> +TEST_GEN_PROGS_EXTENDED += vfio_pci_liveupdate_kexec_test
-> +
->   TEST_FILES += scripts/cleanup.sh
->   TEST_FILES += scripts/lib.sh
->   TEST_FILES += scripts/run.sh
-> diff --git a/tools/testing/selftests/vfio/vfio_pci_liveupdate_kexec_test.c b/tools/testing/selftests/vfio/vfio_pci_liveupdate_kexec_test.c
-> new file mode 100644
-> index 000000000000..15b3e3af91d1
-> --- /dev/null
-> +++ b/tools/testing/selftests/vfio/vfio_pci_liveupdate_kexec_test.c
-> @@ -0,0 +1,89 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +
-> +#include <libliveupdate.h>
-> +#include <libvfio.h>
-> +
-> +static const char *device_bdf;
-> +
-> +static char state_session[LIVEUPDATE_SESSION_NAME_LENGTH];
-> +static char device_session[LIVEUPDATE_SESSION_NAME_LENGTH];
-> +
-> +enum {
-> +	STATE_TOKEN,
-> +	DEVICE_TOKEN,
-> +};
-> +
-> +static void before_kexec(int luo_fd)
-> +{
-> +	struct vfio_pci_device *device;
-> +	struct iommu *iommu;
-> +	int session_fd;
-> +	int ret;
-> +
-> +	iommu = iommu_init("iommufd");
-> +	device = vfio_pci_device_init(device_bdf, iommu);
-> +
-> +	create_state_file(luo_fd, state_session, STATE_TOKEN, /*next_stage=*/2);
-> +
-> +	session_fd = luo_create_session(luo_fd, device_session);
-> +	VFIO_ASSERT_GE(session_fd, 0);
-> +
-> +	printf("Preserving device in session\n");
-> +	ret = luo_session_preserve_fd(session_fd, device->fd, DEVICE_TOKEN);
-> +	VFIO_ASSERT_EQ(ret, 0);
-> +
-> +	close(luo_fd);
-> +	daemonize_and_wait();
-> +}
-> +
-> +static void after_kexec(int luo_fd, int state_session_fd)
-> +{
-> +	struct vfio_pci_device *device;
-> +	struct iommu *iommu;
-> +	int session_fd;
-> +	int device_fd;
-> +	int stage;
-> +
-> +	restore_and_read_stage(state_session_fd, STATE_TOKEN, &stage);
-> +	VFIO_ASSERT_EQ(stage, 2);
-> +
-> +	session_fd = luo_retrieve_session(luo_fd, device_session);
-> +	VFIO_ASSERT_GE(session_fd, 0);
-> +
-> +	printf("Finishing the session before retrieving the device (should fail)\n");
-> +	VFIO_ASSERT_NE(luo_session_finish(session_fd), 0);
-> +
-> +	printf("Retrieving the device FD from LUO\n");
-> +	device_fd = luo_session_retrieve_fd(session_fd, DEVICE_TOKEN);
-> +	VFIO_ASSERT_GE(device_fd, 0);
-> +
-> +	printf("Finishing the session before binding to iommufd (should fail)\n");
-> +	VFIO_ASSERT_NE(luo_session_finish(session_fd), 0);
-> +
-> +	printf("Binding the device to an iommufd and setting it up\n");
-> +	iommu = iommu_init("iommufd");
-> +
-> +	/*
-> +	 * This will invoke various ioctls on device_fd such as
-> +	 * VFIO_DEVICE_GET_INFO. So this is a decent sanity test
-> +	 * that LUO actually handed us back a valid VFIO device
-> +	 * file and not something else.
-> +	 */
-> +	device = __vfio_pci_device_init(device_bdf, iommu, device_fd);
-> +
-> +	printf("Finishing the session\n");
-> +	VFIO_ASSERT_EQ(luo_session_finish(session_fd), 0);
-> +
-> +	vfio_pci_device_cleanup(device);
-> +	iommu_cleanup(iommu);
-> +}
-> +
-> +int main(int argc, char *argv[])
-> +{
-> +	device_bdf = vfio_selftests_get_bdf(&argc, argv);
-> +
-> +	sprintf(device_session, "device-%s", device_bdf);
-> +	sprintf(state_session, "state-%s", device_bdf);
-> +
-> +	return luo_test(argc, argv, state_session, before_kexec, after_kexec);
-> +}
-
--- 
-Best Regards,
-Yanjun.Zhu
-
+>  lib/test_hmm.c | 6 ------
+>  1 file changed, 6 deletions(-)
+> 
+> diff --git a/lib/test_hmm.c b/lib/test_hmm.c
+> index 9c59d1ceb5b57..d615e4e5fc447 100644
+> --- a/lib/test_hmm.c
+> +++ b/lib/test_hmm.c
+> @@ -1209,16 +1209,10 @@ static int dmirror_migrate_to_device(struct dmirror *dmirror,
+>  	if (!mmget_not_zero(mm))
+>  		return -EINVAL;
+>  
+> -	ret = -ENOMEM;
+>  	src_pfns = kvcalloc(PTRS_PER_PTE, sizeof(*src_pfns),
+>  			  GFP_KERNEL | __GFP_NOFAIL);
+> -	if (!src_pfns)
+> -		goto free_mem;
+> -
+>  	dst_pfns = kvcalloc(PTRS_PER_PTE, sizeof(*dst_pfns),
+>  			  GFP_KERNEL | __GFP_NOFAIL);
+> -	if (!dst_pfns)
+> -		goto free_mem;
+>  
+>  	ret = 0;
+>  	mmap_read_lock(mm);
+> -- 
+> 2.20.1
+> 
+> 
 
