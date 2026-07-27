@@ -4,141 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B12DC53209
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 13:54:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DDF7C531D0
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 13:57:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 94CE96B00A0; Mon, 27 Jul 2026 09:54:57 -0400 (EDT)
+	id 7F0996B00F8; Mon, 27 Jul 2026 09:57:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8FDAB6B00A9; Mon, 27 Jul 2026 09:54:57 -0400 (EDT)
+	id 77AFE6B00F9; Mon, 27 Jul 2026 09:57:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C8596B00AA; Mon, 27 Jul 2026 09:54:57 -0400 (EDT)
+	id 669F96B00FA; Mon, 27 Jul 2026 09:57:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 499576B00A0
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 09:54:57 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C74D31606ED
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 13:54:56 +0000 (UTC)
-X-FDA: 85034702592.17.51B3851
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 04E1E160008
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 13:54:54 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NIP5nUV3;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3711E6B00F8
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 09:57:14 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BB92014074D
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 13:57:13 +0000 (UTC)
+X-FDA: 85034708346.15.9627614
+Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
+	by imf25.hostedemail.com (Postfix) with ESMTP id A2653A0006
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 13:57:11 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=QFA4WWY1;
+	spf=pass (imf25.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.42 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785160632;
+	b=NRx3+IVRQEhVdVh4QmlzBcBMKPSGwvBmztSVo0ec01dLaqk0WK7VoSOvWWtyYnx9ut/Ifj
+	rK7LJqU2u+HNJhHJujkzhKfT8TqF428YZFC6t/MMdl5gRdxhZ/p+a+tMfg1YecYOMBw5GM
+	H1ZyNWdc1ry/UjLOR2hUF11GWAEf0OY=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=QFA4WWY1;
+	spf=pass (imf25.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.42 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785160495;
+	s=arc-20220608; t=1785160631;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RtGAuL9EFyUfYnUH+07v8KujAvAIXlWdvdSfgMEdxnc=;
-	b=wGjh8o3waPReM8tFoYoh3ER3sQizllCESSSK2gquiD1PbH+54XZiJGtr7DzdwJOg9im4Vw
-	ykBnAOdiE2AswcsOl0xroi/JWMMx7ZEqQPHBw2y3XFXlxuzIVtlJzAS5S/n93rPOa/bdTS
-	D6gkUtueLTndtP2sfj6OVKi/uVwP6TA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785160495;
-	b=QAAHhaVJA1BELiGznh+9ijM7dhHbUQl0pVcfRxty8JghuQKCWhmPKk2JgMfgyWTiLEWZpE
-	p+OfiOy+OZd8TpmbU+6FI6HMwiuCieYMkeVnnABNS74udPcW8kEV/ufdaxF3LjuULTyTy5
-	qStqrXg4027j6v7NHcMuHgwGxf3+rt4=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NIP5nUV3;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 436DD400AE;
-	Mon, 27 Jul 2026 13:54:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEA951F000E9;
-	Mon, 27 Jul 2026 13:54:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785160494;
-	bh=RtGAuL9EFyUfYnUH+07v8KujAvAIXlWdvdSfgMEdxnc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=NIP5nUV3nK3lrvj2WL/Fn9YryLQ0t/Bv28FP7mMK02yui4cJROgdxG4swizF9WVo7
-	 a8om1CK0lnRaW6T612onJZaAYNoUOtpHxMOivxD2AVueBDDVW3BEnqCCjmOU9htPqh
-	 CeG4j2Ur1813fe9J080QnrmR+Y3NXB5+9ixGjuDDPkHCjjyDIISqPJducWKxQVf7sq
-	 u6q+98sJzCny2XYy7kdbXLB6L6TZ7OScfn3ofvwXKIFwBFvF8tK0PkZ9m8XvCQ7PP8
-	 a/AbT0jl4//E5l+PXk4Sa11nqFyYIFTSehx1bEBHULuKbhUyej4HwUOgrbOkC1Elht
-	 rr2OURsPb/SpA==
-Message-ID: <5490f8b1-d611-4e4d-bd8b-19c0e05698a3@kernel.org>
-Date: Mon, 27 Jul 2026 15:54:46 +0200
+	bh=dv5JiNRF60oQDhK8RjpXqzwpwgZnaK0KnGMf0oeIKbw=;
+	b=iaUT0XrlGgeXSX+A4ZCblgj/lNx5W4hDLFP2JVTwcGqG+xs45B7H1u5i3EfCVI0pcytczg
+	i176UYQsLPSYm6IycMuhS0u0FrsnkeSKopYfzsF0cSqkDvn1MEC+4D04c3B9qqXxpVNidr
+	cKC9UAS9btme/YTOdZpObEFy/qGNBjo=
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-8eeb4508f29so24646336d6.0
+        for <linux-mm@kvack.org>; Mon, 27 Jul 2026 06:57:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1785160631; x=1785765431; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=dv5JiNRF60oQDhK8RjpXqzwpwgZnaK0KnGMf0oeIKbw=;
+        b=QFA4WWY1f0G9eW0RzLqCxJcBmMZGSZegQ7Uko1qbaDMFQbwSwJEddg9QYHKe2nu6Ty
+         n2Fe1y1poi1ekRru9sDHufWs1iDbvMaYOwMb0Ry/oCK0ELBBAbp3h0N/LI5RM0EE9AYj
+         vVbOdfPqxq2bImaEAeG7TRMN/khIoEYJyfogn+zW3NNyoV6bMBXsozwXiKk+M+dy3LSA
+         M1deLljxg8gi95uUz297JFq5YDKOuU7Dd+ZzQ1eCRUos5hr3ridAh+Sp2Y9HXpZ3S60W
+         Wn/0vgWpqSAXxnLdaFuswpSAYgPwO9JlRtWoaMVGWK1r62F8K1sAudvrA+zdQpbDLBv8
+         /3qg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785160631; x=1785765431;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=dv5JiNRF60oQDhK8RjpXqzwpwgZnaK0KnGMf0oeIKbw=;
+        b=BkVO9v+SXiUZ5wnQBRSZw2Pyf03MohN2DmYvXZ0NQQvm9SNhMq55rFKxtjjeCLV+Ut
+         f+7PyPmGpKTUJQkQpVT56Nd1hEFv3KKLwG1zxr+uR9QifcTDNu9eNP6TRV/Mxm/Fcg2r
+         n+kaI8fOMsaxYCWAXbWto32SJWmHUr76KaYLmJAofUDEX3nYmI/KjAN46QWc3KE3r/Rs
+         tWZwLRaKSFkwy9y9xoPj0zN6/BLQwhthYPjLmgVplO4yNE6Uh/4/LXqQYXQwGe/1TxOh
+         LtkdhBy0twWtX/6KWyeb+JW1BXcGhhxizHtDmQrtkrKaIWvO8qxgJ1FVIOJl8s+/xsaa
+         kqaQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rr5X20ZPveYMdF2I8xSmunYbCFsLTo1VJXoSagM4HNRDQU+uN7Ry0fsC7sM9gjHniEQQ6E5glMwdw==@kvack.org
+X-Gm-Message-State: AOJu0Yx1iRLTHKOodD+aArkgq1YMHtamIZAzhIelAOFtEAg1b0waotsX
+	91YtkQ6Yal04yleEYhqlci0/3fQqP2St5MaaFfnhsEiV44pc5/n3j1O5qa+m9P80Ul0=
+X-Gm-Gg: AR+sD12dgOqOCHuz9qJPTAY/mQK0WiVegL0qKWQHC2KRWuEdTeKyLfGN9a+qiro5gNc
+	gIdjTQVpOwhZi5afucdLL6h5EaShywtuxXFOh1SOM2r0OCVwYFNS0ir3bZQTk1csoH8GQO4rxWM
+	vvwi/4NbYGxFkt39zdKpFq+QZEvO4d0ibVkvxabLNNi2q+l8Ox4DET4mFo0Ee76KeCUHHnH8R42
+	IJySJvu6Al3uBN0irPmtb0XqWdb5pqZ1V8vWt7bubQJ1WSTBzvYmsO3iYLFsM13flKSdorKWD/D
+	WRBTYHx7obOyJL/incfekal4b4NMv/ZPFntRETmJMBpxTKijBj+KdgL7Mc+XnamJp8xu/dkr+m4
+	hRQtkJmNWjyitnnuKutQGhz6bVdWfzs9p/fkLnTAzoMc6aub5Ty3esuzLCHCq/4ayqFT7Jok4vN
+	JI
+X-Received: by 2002:a05:6214:4108:b0:8f0:367c:eb80 with SMTP id 6a1803df08f44-907ec7898b2mr107227636d6.25.1785160630232;
+        Mon, 27 Jul 2026 06:57:10 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-907e85275a6sm65855326d6.3.2026.07.27.06.57.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Jul 2026 06:57:09 -0700 (PDT)
+Date: Mon, 27 Jul 2026 09:57:05 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>, david@kernel.org,
+	ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+	kasong@tencent.com, qi.zheng@linux.dev, axelrasmussen@google.com,
+	yuanchu@google.com, weixugc@google.com, chrisl@kernel.org,
+	nphamcs@gmail.com, baoquan.he@linux.dev, youngjun.park@lge.com,
+	roman.gushchin@linux.dev, muchun.song@linux.dev, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+	rientjes@google.com, kernel-team@meta.com
+Subject: Re: [PATCH v4 2/2] mm/vmscan: reduce lru_lock contention via
+ vmstat-derived scan-balance cost
+Message-ID: <amdjsVuNYW98Q--Z@cmpxchg.org>
+References: <20260720164207.450685-1-usama.arif@linux.dev>
+ <20260720164207.450685-3-usama.arif@linux.dev>
+ <amK-ApfqfwkPheC5@linux.dev>
+ <32a85420-caac-477e-b371-8628ed28c428@linux.dev>
+ <amOv0MlF1S-oFZHX@cmpxchg.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v4 11/12] mm/gup: batch contiguous PTE-mapped large
- folios in follow_page_mask()
-To: Rik van Riel <riel@surriel.com>, Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, kernel-team@meta.com,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Peter Zijlstra <peterz@infradead.org>, Suren Baghdasaryan
- <surenb@google.com>, Lorenzo Stoakes <ljs@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Matthew Wilcox <willy@infradead.org>,
- Usama Arif <usamaarif642@gmail.com>
-References: <20260724222934.1463812-1-riel@surriel.com>
- <20260724222934.1463812-12-riel@surriel.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260724222934.1463812-12-riel@surriel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 04E1E160008
-X-Stat-Signature: snbh5tfuw8rnedia7bch5mr66r77ngwz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <amOv0MlF1S-oFZHX@cmpxchg.org>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: A2653A0006
+X-Stat-Signature: 6ab446nytpmjhcx7qqqzg6kggtf51ynp
 X-Rspam-User: 
-X-HE-Tag: 1785160494-584600
-X-HE-Meta: U2FsdGVkX19qoGF8D1rYm6HuL5Cj6SOCFHF6IHo7EfXL2ebtMaYQHdyBatHjfEuMvs7UHoqG0d43utCJ2ReapmkY2C7uo9f+jgUI1Zo7lkJS1Hu4wa2U5BUJ/TezuiGxrNIW9kR5G6q/mCpZhA3Wi1jMO87APYeW5DbusuJgv9qnIFGtH9gPK5G5aNDiJXy0CMe7dxv5yrqze4KURgC1ivAWv3fpGjPSjf8HZ3aS79vrmZPwMGiZjlNoRVrYPDItVJGdKpwiK/78xQ/Mn4hdze7adQkQM2/6EX3ZsXeLkr6gE6DNuWueEgk7RIcsc3L66Mm3JO7qEmwJeub6Ee1WqHUiDUU6GAy+bJgxsFMrn3v80Zp+DjLFhBcDTGWjYSECLcU8fpf+2yyV88OjQzue3RIMjrZDBppZWltVRbxTJvLeuVzYljev9PydXZ0OqgD/fKSxCDxDDu711T/XrI+Y/v2L8Rn4JPJsZOZ96reKzFW4Qiss1yzHvoO9h/M33TbcDem0b8PndXZVoI05hbWMoFIvaVB1QaKwFThZGq8PL90SOcGxDMiS06FWXQPD2r6jXC8DOa2tJ8RYCqHbr2Po19hFwRr4wqy3AbVg6Xof4IBJdFgQmwuFFvAXD7Yqui0us8bUcnSwrL5J1OYmsUamcYMCHTPTQSyERwE7wCLpGXfPtr+OOzGpQBJifFrMDD+LxPuxVnbzE6M1Q4nsAez6/23WqBThhQk5CIzdV65VIxlT3ASVKrIUzzFMH79YG3wEs2EqYrkI4LWBOhyRMy3NJDBU4rZhZYW+SWWUmjKZqYScUUdaTEPlqrN7eP0/Xjmn/h9FSAqV1+WfO4JJ2Hyr/P+34A9Fz6PeMRoX/hsyTZhc17+NmFyHH2IO9HQ54lyi85eiFRg1tn8EjfazztAX5tDyVNDno+eI8VJ2hk76rGV6XZ30YU5w2Rp2ADzlL1ypgrxO12tjyzLaDqiF2EZ
- /6KVkGLg
- B5Iev4eOU4tNY2HmcVlsgPo6ka5FfQuKGW7rgv0yWfliXqoNh592muQL34znkVRLHl9WxYhG2K7m3hjLCZJXd+N7NbhsU/V8SD9xeIi+AebVEHm7sWY8ADIcqbJYdkdZ/qNH1WeT+nTRpwLWXBvFUcdEY6Tnsy1zgwNeXuUoeQqlFJORmUg/D9LxLyCQrKQCCwyWrG9thLx9uKdQW4evVEG9sRS3xzCjSXsli/AUU/kRZI4v9ZBtDXlGiPdepb551FuaJzGNdSxOrKdz4EDwEsApsa4Dg8YfRgmxula9o/7N7enROjaEkGoqh7CV/NAlUitSjAv4Bhn6/eQM3rxZMKLYkf4u16yepVlSPZat3IAtjLZs=
+X-HE-Tag: 1785160631-872688
+X-HE-Meta: U2FsdGVkX18dOZaCmwz4ru3Q7qoNq6xWtBAyJroAAcveUkEwwJ72Vi/yv+68FucRHXOEAKtTAq27r/xiDfopkV4Xps1NUEDZZ5eFzj81VW7k8r+7LRZXMqq3/Q3rxRn45kLeom2yL4ZwLuYI+p5NNxREUTsaTe3BOHNUAAiiOL8xDgCUrU5DBjHydlloRTt9vbEM+G4b5JEoUEsLRxI9HEO5tYy37bm8iFimrwfmvRktInyHlMC423exW1R4CTX1uM+ahflPnrSxJ0izpuWXoYUsRfhdkH+GPvctqK2v/hEpCi/0bdBmGEGuog4vEpb0JxZpqli0vF1FNgA77z+/0fDtvbbH/P4QHQmiCPPT3kji85j3qdFNIJvlCoJH3itHIQjTgDP9kuQpt0xOWSHnN7s15rCjYgG3GbgrIjZKrgQasTsRVf+Z3JUTY7RkcIZ7Pu6I+nBsBZMFdqfdS+XdRmA0cE/3ygB9iB4GtAiJ40EoZD9YdFuf/l/HpfXZvuS8tsEb5QqIZXI6L/0iIGAOOtq2HxbY4o4bCQh2Vf62HRJypxzrerKW0/BzO6YRSfhyhhItBaVGOVUxjtlcVO7XxHH1UKoTAomT/nB5IZesRGI82xsSzwpB8kNXGl0wbbmG48zqxD315Mrmgv+mRnPJ02DddULgrLg/wiIJkbDaqLmvKH0V9NPSvQ0cdqQIGnqmDP0Z5G0e4QWaKVKHz28PZh+iMKhDYl/Giy/4BqhT6mTSq7JhJafg61GzLpI219uIjgWPTd9I50QoLAJdadthQywSXUllXrgIN3gsOW5nvCqOg0c85CqIufzuE3Tc1wyUW8+BKnoTRSkQEhEHpL/Jy9PTATilEfYZgtaNPDDaj32RBNvgEPVdbX/5BYCTb4tpqQ0b7DyC5U4DL+fJHVWsd9onSTwfr6caNWqbGvqV50hztgMaXGVZE/XwgOEgARBLM/ZihBoJBS1p6BbWlFY
+ WMcXBdio
+ upW5CK6jweBuhnbiMTXAaJ45m+xbruSbGIdbV7fin4P4WpTEa1ZzwDlKec0gce0edoHWtx3TApYW1zlnC/VFHGn4Cb3TdRKBqbLJT1/Q9ddt2BMlPainDx1uVwP6WNJnAPyuIL9f1TchT+MNI0q8Mc8lSii7c4x1BGCCXcxnNTMhcgnm59CFetUzBwHV4E/cSv8rsA5osOb9tUuNT/f4/rt9j363IMsTy2KMoImhkwYbmbWhoVqSEu1lyWo6iaC8czHN3FfHFTdn4U6hKt3RRn2efmwLknCn/NszNxNekvVLtSSGIS+nGtRGji0ur0H6m30tkh70hq5/Bd+nWAP3TgTlosv4RHS8tfpEZWEOpkG7W0PyG+wLbe03qljdjfuhLSV9Bwr+wJSMvMbmx7p5k72cFvjHnznUP/AzgRUqrotHI42RIAON/Lq3yNKy1b3fsFWlvl78b+xCx5Qc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,54 +131,166 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/25/26 00:29, Rik van Riel wrote:
-> follow_page_mask() returns one page per call for a PTE-mapped large folio,
-> so __get_user_pages() re-walks the page tables for every page of an mTHP
-> even though the folio maps a contiguous run. The huge PMD and PUD paths
-> already return the whole mapping in one step.
+On Fri, Jul 24, 2026 at 02:32:52PM -0400, Johannes Weiner wrote:
+> On Fri, Jul 24, 2026 at 02:29:23PM +0100, Usama Arif wrote:
+> > 
+> > 
+> > On 24/07/2026 02:53, Shakeel Butt wrote:
+> > > On Mon, Jul 20, 2026 at 09:41:23AM -0700, Usama Arif wrote:
+> > >> The anon/file scan balance in get_scan_count() is driven by two scalars
+> > >> in struct lruvec, anon_cost and file_cost, accumulated by every reclaim
+> > >> producer under lruvec->lru_lock. The acquisition sites for cost work
+> > >> specifically are:
+> > >>
+> > >>   - shrink_inactive_list() re-takes lru_lock at function exit purely
+> > >>     to call lru_note_cost_unlock_irq() with (nr_pageout, nr_scanned -
+> > >>     nr_reclaimed). One acquisition per inactive shrink.
+> > >>   - shrink_active_list() does the same with (0, nr_rotated). One
+> > >>     acquisition per active shrink.
+> > >>   - workingset_refault() takes the lock via folio_lruvec_lock_irq()
+> > >>     purely to record the refault cost. One acquisition per refault.
+> > >>   - prepare_scan_control() takes lru_lock just to snapshot the two
+> > >>     scalars into sc->{anon,file}_cost.
+> > >>   - lru_note_cost_unlock_irq() itself walks parent_lruvec and
+> > >>     re-acquires lru_lock on each ancestor to propagate the update,
+> > >>     adding O(memcg-depth) acquisitions per producer call.
+> > >>
+> > >> This hurts because lru_lock is already a heavy contention point on
+> > >> memory-heavy workloads: every isolate_lru_folios(), move_folios_to_lru()
+> > >> and folio_add_lru() takes it. The cost work itself is trivial (two
+> > >> scalar bumps and one comparison), but it contends with and causes
+> > >> contention for actual LRU manipulation. The parent_lruvec() walk also
+> > >> multiplies cost-update overhead by memcg hierarchy depth.
+> > >>
+> > >> Replace the producer-side accumulators with a read-side accumulator fed
+> > >> from per-LRU vmstat counters. The old producer formula was:
+> > >>
+> > >>   cost = nr_io * SWAP_CLUSTER_MAX + nr_rotated
+> > >>
+> > >> Reuse NR_VMSCAN_WRITE for reclaim-driven anon pageout submissions. It is
+> > >> already bumped by writeout() for the same successful outcome that fed
+> > >> reclaim_stat.nr_pageout. Reclaim does not submit filesystem folios from
+> > >> this path, so there is no file pageout term. Charge NR_VMSCAN_WRITE via
+> > >> lruvec_stat_mod_folio() and include it in memcg_node_stat_items so it can
+> > >> be sampled per lruvec and aggregated through the memcg hierarchy.
+> > >>
+> > >> Add explicit PGROTATE_{ANON,FILE} node_stat counters for the remaining
+> > >> producer-local input. They are bumped from shrink_inactive_list() by
+> > >> nr_scanned - nr_reclaimed and from shrink_active_list() by nr_rotated.
+> > >> WORKINGSET_RESTORE_{ANON,FILE} already captures the refault IO that
+> > >> lru_note_cost_refault() used to bill.
+> > >>
+> > >> Add a per-side struct lru_cost { count, last_rotated, last_io } to
+> > >> struct lruvec. In prepare_scan_control() the two monotonic inputs are
+> > >> sampled separately - rotated from PGROTATE_ANON/FILE, io from
+> > >> WORKINGSET_RESTORE_BASE + f plus (for anon) NR_VMSCAN_WRITE - and the
+> > >> raw per-side deltas are computed against cost->last_rotated and
+> > >> cost->last_io before the SWAP_CLUSTER_MAX IO weighting is applied.
+> > >> Extracting the deltas from the individual counters (rather than from a
+> > >> pre-weighted sum) keeps the unsigned modular subtraction bounded by the
+> > >> true per-counter growth, so a signed-long wraparound of any underlying
+> > >> vmstat still yields the correct delta on 32-bit. The weighted delta is
+> > >> folded into cost->count. Since one vmstat delta can cover many producer
+> > >> events between reclaim passes, halve cost->count on both sides until
+> > >> their sum is back within the lrusize/4 bound instead of halving only
+> > >> once.
+> > >>
+> > >> Moving accumulation and decay to the reclaim side also improves the cost
+> > >> model across reclaim gaps. With producer-side decay, events that happen
+> > >> while reclaim is idle still age each other before reclaim ever samples
+> > >> the costs. If a workload refaults a large anon set and then a smaller
+> > >> file set before reclaim runs again, the later file activity can age the
+> > >> earlier anon activity out of the cost model. The new scheme observes the
+> > >> whole between-reclaim delta and decays anon and file proportionally, so
+> > >> the scan-balance history better represents what happened since the last
+> > >> reclaim pass.
+> > >>
+> > >> A dedicated per-lruvec spinlock, cost_lock, serialises the delta
+> > >> extraction, the cost->count update and the halving loop against
+> > >> concurrent reclaimers in the same memcg+node.
+> > >>
+> > >> Hierarchy aggregation is now implicit in the vmstat accounting. The
+> > >> producer-side parent_lruvec() walk and lru_reparent_memcg() cost splice
+> > >> existed only because anon_cost/file_cost were private lruvec fields. With
+> > >> the cost expressed as lruvec vmstats, rstat propagates the underlying
+> > >> counters through the memcg hierarchy and prepare_scan_control() consumes
+> > >> the same ratelimited rstat view as the surrounding reclaim heuristics.
+> > >>
+> > >> NR_VMSCAN_WRITE is accounted at writeout(), so reclaim_stat.nr_pageout is
+> > >> no longer needed and is removed.
+> > >>
+> > >> memcg-v1's memory.stat anon_cost/file_cost is now sourced from
+> > >> cost[].count instead of the removed lruvec anon_cost/file_cost fields.
+> > >> The reported values only refresh when prepare_scan_control() runs and
+> > >> are bounded at ~lrusize/4 by the halving loop; the scan-balance signal
+> > >> they express is unchanged.
+> > >>
+> > >> Under pure MGLRU the scan-balance signal itself is not consumed (both
+> > >> prepare_scan_control() and get_scan_count() are short-circuited on the
+> > >> MGLRU paths, and MGLRU's own type/tier selection comes from read_ctrl_pos()
+> > >> on lrugen->{avg_refaulted,avg_total,refaulted,evicted}, not from
+> > >> anon_cost/file_cost). NR_VMSCAN_WRITE naturally covers writeout from
+> > >> either reclaim implementation, and PGROTATE_{ANON,FILE} are bumped from
+> > >> evict_folios() so per-memcg observability of rotation-driven reclaim work
+> > >> stays consistent across both implementations.
+> > >>
+> > >> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+> > > 
+> > > Oh man too long commit message, please follow Johannes's suggestion.
+> > 
+> > Will do!
+> > > 
+> > > The patch looks good but I have one question. We already have concept of
+> > > pgrotated through /proc/vmstat which represents number of pages we have moved to
+> > > the tail of inactive LRU to make them next reclaim candidates. This patch is
+> > > exposing pgrotate_[anon|file] to userspace. Here these metrics represents either
+> > > the number of pages we scanned but didn't reclaim plus number of pages given one
+> > > more trip in the active LRU.
+> > > 
+> > > Older and newer pgrotate metrics kind of represent something different. It may
+> > > cause confusion. Now before suggesting to change the name, let me ask do we
+> > > really need to expose these to the userspace? How exactly users can use these
+> > > new metrics? I think you can use them here without exposing to userspace. So,
+> > > does it makes sense to delay userspace exposure later when we have a more solid
+> > > usecase for that unless you have it already.
+> > > 
+> > 
+> > I do think the userspace counters have diagnostic value. They can be another metric
+> > to show how much anon/file reclaim work is spent on pages that are not immediately
+> > reclaimed, including pages retained on actie LRU. It could help explain if there
+> > is elevated reclaim CPU usage.
 > 
-> Report the contiguous run for the PTE case too. follow_pte_batch() uses
-> folio_pte_batch_flags() to count consecutive present PTEs that map
-> consecutive pages of the same folio with a uniform write bit, bounded by
-> the page table, @end, the VMA, and the folio itself.
+> Hm, this is an interesting discussion.
 > 
-> Keep the per-PTE guarantees that follow_page_pte() makes for the head page.
-> folio_pte_batch_flags() with FPB_RESPECT_WRITE stops the run at a change in
-> the write bit, so the whole run matches the head.
+> The existing PGROTATED is kind of useless. When it's bumped:
 > 
-> A writable run is safe for any access: a writable anon page is exclusive,
-> so gup_must_unshare() cannot fire, and FOLL_WRITE is satisfied.
+> - truncation fails and moves folios to the LRU tail for faster reclaim
+> - writeback ends on folio that was tried to reclaim, moves to LRU tail for fast retry
 > 
-> A read-only run is batched only for a plain read, since FOLL_WRITE would
-> need a COW fault per page and FOLL_PIN would need a per-page
-> gup_must_unshare() check.
+> Ok, who needs to know this? The new counters you're adding, on the
+> other hand, they capture the information you frequently need for
+> understanding reclaim behavior.
 > 
-> Measured with mm/gup_test.c (PIN_LONGTERM_BENCHMARK, the slow
-> pin_user_pages() path) on a 256 MB MADV_HUGEPAGE anonymous region in a
-> 4 CPU VM, median get time over 16 iterations. Each folio size was confirmed
-> through the per-size anon_fault_alloc counters (4096 folios for 64 kB, 128
-> for 2 MB):
+> That said, looking closer at this one more time, you can already
+> (almost) derive them fully from existing counters:
 > 
->   gup_test -L -m 256 -n 65536 -r 16 -t
->                         before      after
->   64 kB mTHP            3140 us      412 us   (7.6x)
->   2 MB THP (control)      78 us       76 us
->   4 kB base (control)   3010 us     3042 us
-> 
-> The PMD-mapped 2 MB THP already returns the whole mapping in one step, so
-> it stays fast and unchanged. The 4 kB baseline shows the per-page walk cost
-> that the 64 kB case paid before this change; only the PTE-mapped large
-> folio case improves.
-> 
-> Assisted-by: Claude:claude-opus-4.8
-> Signed-off-by: Rik van Riel <riel@surriel.com>
+> drotated = (dPGSCAN_ANON - dPGSTEAL_ANON) + dPGDEACTIVATE_ANON
 
-Why is this patch part of this patch set?
+Talking with Usama offlist, there are two problems with this:
 
-This makes perfect sense independently, no?
+- PGDEACTIVATE is obviously wrong. We want the the pages we don't
+  deactivate (hot file executables)
 
--- 
-Cheers,
+- PGSCAN includes things that didn't work out due to caller
+  restrictions (reclaim_idx) and race conditions (tryget, !lru) that
+  shouldn't contribute to the balance.
 
-David
+So let's go with PGROTATE as Usama proposed.
+
+But I'm against hiding them from the vmstats.
+
+I'd rather remove or rename the existing one if we're worried about
+confusion. We've historically applied a much lower bar to vmstat
+stability. It's geared towards understanding detailed MM behavior
+behavior, which undergoes constant changes.
 
