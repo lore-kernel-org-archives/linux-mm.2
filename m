@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29975C531D0
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 16:26:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCA61C531C9
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 16:26:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 387CF6B0095; Mon, 27 Jul 2026 12:26:13 -0400 (EDT)
+	id BEC2B6B009B; Mon, 27 Jul 2026 12:26:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 339166B0099; Mon, 27 Jul 2026 12:26:13 -0400 (EDT)
+	id BC43F6B009D; Mon, 27 Jul 2026 12:26:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2034C6B009B; Mon, 27 Jul 2026 12:26:13 -0400 (EDT)
+	id ADA606B009E; Mon, 27 Jul 2026 12:26:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id ED7446B0095
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:26:12 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7C47040128
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:26:12 +0000 (UTC)
-X-FDA: 85035083784.03.C2E208B
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
-	by imf04.hostedemail.com (Postfix) with ESMTP id DD3D74000C
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:26:10 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ixQWk19v;
-	spf=pass (imf04.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 715EB6B009B
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:26:21 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0974880110
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:26:21 +0000 (UTC)
+X-FDA: 85035084162.17.B29A682
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 53980180008
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:26:19 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=kdejEm6p;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf16.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785169571;
+	s=arc-20220608; t=1785169579;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GwLRE88/T88bbZWERmNBLA5mHYgHg0FYmvx8DEB65+s=;
-	b=g6wmX5hXLGq8mvIuwohKwfzARoD7sSAQO26WPOq+4FDN/+F8foMenbA0LiPJp8plo9rpWP
-	EFgt1cox39h6uVfPkAXv/8f2TgPOZHu6KmjgYb56hwmyGg+AxqzCX49Di5o334pLgUyVZX
-	DrdbjozPknVILylbGs+QPDYBCR/vnIY=
+	bh=hE5H8fckKPN/KybXJL2X3Y1zfiFpP0Zt/q6Odg6IVKY=;
+	b=mDASiz551LYTkfQA6y1OqGbuSIl1R7wHMqj1ussNcJZsoqoo82uk80vywGxE2bq9vAYogQ
+	5cASXq5vfuNUIlo791QOuqqpKIBNfbQzodFCErN36937QhxdumwCTgSKW9cDJ5808FOb/7
+	Vnqui8BCXTAWldsBThM4uTmb1msqerE=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ixQWk19v;
-	spf=pass (imf04.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=kdejEm6p;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf16.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785169571;
-	b=xbNf0sCEfo8cSQcQ2R1Dk1wTrOJBFkBtnKV4Lgxf0SMWkV6QiMxcWmOlffighgC+0uYN6o
-	0UuLzZL+fc321lSaWm8qzKrJmHpB/E6OdJ1JPgGKp+U8X6VRpl+lyCBEZRob2WXvFDBR4o
-	H3JAbNdxaRWCu9Sfk1IxrQckknpkeoM=
+	t=1785169579;
+	b=w9iQwH+93c8hwX8F7MR0lMpwPcly2U6CfJuvcM2L+NB0xIZ+FUQ1wSIzwHjUaVjRzhO72y
+	ASgOd/AHGOOw3JCQkRtWUPUp+UC4N1aH+5OfZXxyySJOhVlvcRUQoDqhJlS85lJE4JOFl7
+	VcZL6s4YUr5LyPaxCwILAbRx3nFYws4=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785169569;
+	t=1785169577;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=GwLRE88/T88bbZWERmNBLA5mHYgHg0FYmvx8DEB65+s=;
-	b=ixQWk19vJRhPbhkajL5ZNMHVNzQTQjQ3BPzO6umHXfkwhwGDg2qk1X374bVkOpZcSS7cHX
-	frk6ANZ4tBsncXMwlK3Ar3BvzpYsLsVIPXPYqXIbGmJONsgGi6aQ57I+0LQ19zV0QmzyBM
-	gyknjNHi1n+HeCDaHl+YgCGSF01UHOY=
+	bh=hE5H8fckKPN/KybXJL2X3Y1zfiFpP0Zt/q6Odg6IVKY=;
+	b=kdejEm6pjVysh0JTY+T0jinI+6498rvPiWK2fDo94EXZ4LzXSYDWHVbBwQ1E0KnEDxhG87
+	rCOG6u+nAMj9VVffC5i37eJsvVYsYHsRgyRt23gppulNkrzHtisoY9CoP9bXZr4v3D2v7w
+	l72FsKiuD+UtEvkhiesox44uB5lRW6A=
 From: Usama Arif <usama.arif@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	david@kernel.org,
@@ -87,22 +87,22 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 	rientjes@google.com,
 	kernel-team@meta.com
 Cc: Usama Arif <usama.arif@linux.dev>
-Subject: [PATCH v5 1/3] mm/vmstat, mm/memcontrol: add _monotonic vmstat readers
-Date: Mon, 27 Jul 2026 09:23:23 -0700
-Message-ID: <20260727162550.2032-2-usama.arif@linux.dev>
+Subject: [PATCH v5 2/3] mm/vmscan: add pgrotate_anon and pgrotate_file vmstat counters
+Date: Mon, 27 Jul 2026 09:23:24 -0700
+Message-ID: <20260727162550.2032-3-usama.arif@linux.dev>
 In-Reply-To: <20260727162550.2032-1-usama.arif@linux.dev>
 References: <20260727162550.2032-1-usama.arif@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: DD3D74000C
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 53980180008
 X-Rspam-User: 
-X-Stat-Signature: zefjje1x1yszb9tf3hpxabs9c5pb64gz
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1785169570-610234
-X-HE-Meta: U2FsdGVkX18QTVbnb1ctbrpx65c6Q6Banwxdfj0dYIINUOlia3nsr66zisVUfU7c5VZJTzZZWHysnrtbZ0lSTH+TdaU0OLB3vO6u2CGGmwK3ddtSm+BBVn06BDWWw8YGpBGm6Ewxd3O7BymFiwqtG1Y/4OhPv70bKRmsmfJqhQRCx6G9mG2mqMcD4Hhmyx69UnFmKwskf/XLmQhr3a7/1JvtdRlAcpRpeeBv/DJZ4/i+t6Ccr5zrLk8mK9+OxvqVogH4NNMwXdGkBLhoy7WH5AGejeTfNtWflfjNRGXD+J/ewjdrYZnPPJ+pY/ki/LPSealdZQDJnrHs/rPYPy0gQ99GrXwvG5DZzbzGFmNkrfALohb1Dp80/OCHquv1vEHht8uggcMHkYpUVnVkaa7/DLwU3C9Pxd9UxXwybqMFFXcFaKOCmVAQwCwvLgKmx6ynB5dtAAF/bzpEgd3u2006RIohMGchWaHlwob/pP9mCu+UO6eZH6i/hv3uT2H7saxmSXc6BYtAXMTOH3zKTzIkgKeEebeeWlxWjcM0+HMRz71NJlVCAV7PQMQSZZdAOdHLRhE0hPA1dfotu41XJCnoVGbdYCJFwO8P9numwPGh12Tgs4MBoa5hYEQQkpoE7Sz8Tax+3c9pkPRHY8sXFKQtWaqPasaDmXfXJ1Mrjad7onKHP3KXkfCYyooTrQrj1NPYU3Bi9+oIyZtM+A635ETS7D9KShtyvjYJj5WMY75+BScn4IazrBlDBmvp7x3b/Y2iY4PVcmABQe48lHTKowMeZ6iFJGEx0eoW1J1ziO4uucDoh/jrnfshG9yuUS4AJHS9tN6hLVfG7Mqb7wCS4+EG8i4LPUrYgv6K24MB2IgvH14Lq6NyJ8u45PC8Qm1VF2coTW0iv+n9EMP0BKBt86H2VAjmNpA/logon4ChX3N9Vxke2ncb5agGxnvMQrvZvjBKhTrydPbG3tNmq5PCAeh
- iq1qqZbe
- mwJ2DJ2yTsRvPu22voDaqsRgwFMi0zfb+MHM+SAZ/jrjYnWpjBwZ6B0h6wYOwXePpDcrOJfkzGiG6pL2s2ZKYi91fOYnEG/Nn/nCpAj4iAxfshYrUBWjqyOjhb/XonHse+bxRlOlPdhUsU6VGIjCuPuWWBVDP3AIswNf4b9LnTNDS3uGdwO8PpZ7r8t80iFOgFlzQvH0pkHLcNosVMRX3pkPqkcxVmQ1F706qG81mZrzTG+hZys5QwWkeV+gwW9ggYF/eqooet43vvJSaWDyVZCxavLbkVaXJsTbyYOzEWHDlcM6UdzWfTIzEkA==
+X-Stat-Signature: 6a5ufzru3g7cimbx18wnxcijtsa76jfp
+X-HE-Tag: 1785169579-480200
+X-HE-Meta: U2FsdGVkX199cZaIgKoXl4/tY+bGip/hYIHpqVskGz62oLKRRfCXZHykuT04wqHRUUsRSl7S3i5QtCsvC8Zsk0si2neOx8HwOcisVN+twp05Cj6S1+wP+k4fAQDz2WLeAgbmlWY1xnFzqFKuWB6PH3HLpsVWUjQDwoQ1em5nqmHT31J5r8exN2xr8KAhZwIwIAHut7/4YfgiG/PpLVoAV7F7+Ew1G+dj4dPW74xnT5UzS3NrJDkt8xKxr2krRfJO5yntY6z1MnlG+i+P4GA3OK+fzNF3G17jB60/Z3M4H624XrG4NwJy+OPCh9giIKXfijeuKbFoX/VTceflKjE6jQHLYhDM6APjgUDgm3xLz/mXg1VRa7COwHXx0Od2afqz2766I0ohkiT7QisLJRpQf4MImSf/1R5f/dBLwQljsXfESU42uGTRHg1gWzMTQ1isFDfptoKAiSH0j11A/IlSKTFiJP+f6ZN7rvb0RsoHCb2c3y3rb9TwvXaYseiZZE4+MU6km8QiSVFb4iZSzShKwlqi3jYpHuGQVBRQu8e2JVe3JIYnZkV9ONm11n+4nZXWsZ9aG3ioEDpE3kCGfiXHjtsKXP0q6tsLFe7EOmRGatCI3KvJiifG7QfBtOawdTzUofilqwFPxiczKPxfEUpgSeNXZv8xrFKhMAlVFHk52rgWUqC48UdLWKTssru0MZd4NSQXA0DFuch+OxuB4FnrKg1kmaN3cb7OH/EurKWmv6mBD/fUjmn29YzobpVkYHTCJuYHEByKNEugJ/w64oy/lOMnFEA1cultcOXJi/dO/8r1vfXPjfIc3eMxoyMXWr9BkcUAeNzxpFMvntW/ZAI9SI6/C4nypSRw2aQsswKEgqFUz8LGFN0QugvtGR8qtfQz4T1nArr+ap9iVmFfcVBWHC5gzqBQW0jidU0VUJVpoLi9E3HSjJPRqzvQqyOEkYhspl1s36HOO6cUXbuyLGC
+ 38t74OpX
+ uxx6GZcTY/exX8aBqgmpHY04Akvsf6CYws6EjN9xLKHn1jKSftfSqpIT0TpLWluy1KK1mE5kup4i773mp+sq+FdH/kcnMyjUOFln2+tBLleDEosTMmIcJcoA/nWQclAUpdOA3J8EFEMk8gkvicO6VF659WQj/iPqwNUB5P52lqxXNm8YwNELER/WbOGpX+sUgAZa2EaMmuQz4KLXFEbODYirZhakncpHAHj0OO2ngFp65Oas5AA1zn4pTnw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,188 +110,138 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-lruvec_page_state(), node_page_state(), and global_node_page_state()
-all clamp negative reads to zero on CONFIG_SMP so that a transient
-per-CPU delta skew presents as zero pages rather than
-as a garbage unsigned value. This is the right behaviour for
-non-monotonic page-count readers.
+Reclaim can spend substantial work on an LRU type without immediately
+reclaiming or demoting a corresponding amount of memory. Record this
+work in PGROTATE_ANON and PGROTATE_FILE.
 
-It is however incorrect for callers that snapshot a monotonically-
-incremented event counter and compute a delta from two samples.
-Once the underlying signed long wraps past LONG_MAX, the clamped read
-drops to zero while the previously-recorded snapshot still holds the
-pre-wrap value; the unsigned subtraction then underflows into a
-~2^31 spurious delta for 32-bit architecture and corrupts the
-caller's accumulator.
+For classic LRU reclaim:
 
-Add non-clamping siblings that return the underlying state value
-cast to unsigned long:
+  - Inactive-list reclaim adds nr_scanned - nr_reclaimed to the
+    corresponding anon/file counter when isolation succeeds.
+  - Active-list reclaim adds referenced executable file folios that
+    are retained on the active list to PGROTATE_FILE. Active anon
+    reclaim does not contribute this component.
 
-  global_node_page_state_monotonic()
-  node_page_state_monotonic()
-  lruvec_page_state_monotonic()
+For MGLRU, add the number of initially isolated pages that remain
+unreclaimed after both the initial and retry passes to the counter for
+the selected anon/file type.
 
-With both samples read via the _monotonic variant, unsigned modular
-subtraction stays correct across a signed-long wraparound as long
-as the true growth between two samples fits in unsigned long
-(< 2^32 on 32-bit, < 2^64 on 64-bit); the 32-bit bound is the
-practically-reachable one that motivates this helper.
+These counters are distinct from the existing pgrotated vm event.
+pgrotated records an actual move to the inactive-list tail, primarily
+after reclaim-marked writeback completes or failed invalidation leaves
+a folio for accelerated reclaim. PGROTATE_ANON and PGROTATE_FILE
+measure reclaim cost and do not imply that a folio moved to an LRU tail.
 
-The variants are only safe for monotonically-incremented counters.
-Non-monotonic page-count readers must keep using the existing
-clamped helpers so transient negative reads still present as zero.
+A subsequent patch will consume these counters for anon/file scan
+balancing.
 
-This is a prerequisite for a later patch which
-replaces the producer-side anon_cost/file_cost accumulators with a
-read-side accumulator in prepare_scan_control() that samples
-monotonic per-LRU vmstat counters (PGROTATE_*, NR_VMSCAN_WRITE,
-WORKINGSET_RESTORE_*) via lruvec_page_state_monotonic() and folds
-their unsigned modular deltas into lruvec->cost[].count.
-
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 Signed-off-by: Usama Arif <usama.arif@linux.dev>
 ---
- include/linux/memcontrol.h |  8 ++++++++
- include/linux/vmstat.h     | 16 ++++++++++++++++
- mm/memcontrol.c            | 36 ++++++++++++++++++++++++++++++++++++
- mm/vmstat.c                | 11 +++++++++++
- 4 files changed, 71 insertions(+)
+ include/linux/mmzone.h |  2 ++
+ mm/memcontrol.c        |  2 ++
+ mm/vmscan.c            | 14 +++++++++++++-
+ mm/vmstat.c            |  2 ++
+ 4 files changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index e1f46a0016fc..b40bc4f6fe4a 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -931,6 +931,8 @@ unsigned long memcg_page_state_output(struct mem_cgroup *memcg, int item);
- bool memcg_stat_item_valid(int idx);
- bool memcg_vm_event_item_valid(enum vm_event_item idx);
- unsigned long lruvec_page_state(struct lruvec *lruvec, enum node_stat_item idx);
-+unsigned long lruvec_page_state_monotonic(struct lruvec *lruvec,
-+					  enum node_stat_item idx);
- unsigned long lruvec_page_state_local(struct lruvec *lruvec,
- 				      enum node_stat_item idx);
- 
-@@ -1378,6 +1380,12 @@ static inline unsigned long lruvec_page_state(struct lruvec *lruvec,
- 	return node_page_state(lruvec_pgdat(lruvec), idx);
- }
- 
-+static inline unsigned long lruvec_page_state_monotonic(struct lruvec *lruvec,
-+							enum node_stat_item idx)
-+{
-+	return node_page_state_monotonic(lruvec_pgdat(lruvec), idx);
-+}
-+
- static inline unsigned long lruvec_page_state_local(struct lruvec *lruvec,
- 						    enum node_stat_item idx)
- {
-diff --git a/include/linux/vmstat.h b/include/linux/vmstat.h
-index 3c9c266cf782..fb8c76289e02 100644
---- a/include/linux/vmstat.h
-+++ b/include/linux/vmstat.h
-@@ -194,6 +194,19 @@ unsigned long global_node_page_state_pages(enum node_stat_item item)
- 	return x;
- }
- 
-+/*
-+ * Non-clamping variant of global_node_page_state() intended for callers that
-+ * snapshot a monotonically-incremented counter and subtract two samples.
-+ * Returns the raw wrapping value so that unsigned modular subtraction stays
-+ * correct across a signed-long overflow (a real hazard on 32-bit) that the
-+ * clamp in global_node_page_state() would otherwise turn into a huge spurious
-+ * delta. Do NOT use for non-monotonic page-count reads.
-+ */
-+static inline unsigned long global_node_page_state_monotonic(enum node_stat_item item)
-+{
-+	return (unsigned long)atomic_long_read(&vm_node_stat[item]);
-+}
-+
- static inline unsigned long global_node_page_state(enum node_stat_item item)
- {
- 	VM_WARN_ON_ONCE(vmstat_item_in_bytes(item));
-@@ -259,11 +272,14 @@ extern unsigned long node_page_state(struct pglist_data *pgdat,
- 						enum node_stat_item item);
- extern unsigned long node_page_state_pages(struct pglist_data *pgdat,
- 					   enum node_stat_item item);
-+extern unsigned long node_page_state_monotonic(struct pglist_data *pgdat,
-+					       enum node_stat_item item);
- extern void fold_vm_numa_events(void);
- #else
- #define sum_zone_node_page_state(node, item) global_zone_page_state(item)
- #define node_page_state(node, item) global_node_page_state(item)
- #define node_page_state_pages(node, item) global_node_page_state_pages(item)
-+#define node_page_state_monotonic(node, item) global_node_page_state_monotonic(item)
- static inline void fold_vm_numa_events(void)
- {
- }
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index ca2712187147..aab06fb6c6d5 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -323,6 +323,8 @@ enum node_stat_item {
+ 	PGSCAN_PROACTIVE,
+ 	PGSCAN_ANON,
+ 	PGSCAN_FILE,
++	PGROTATE_ANON,
++	PGROTATE_FILE,
+ 	PGREFILL,
+ #ifdef CONFIG_HUGETLB_PAGE
+ 	NR_HUGETLB,
 diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 56cd4af08232..de84c399cea2 100644
+index de84c399cea2..23adb698dadd 100644
 --- a/mm/memcontrol.c
 +++ b/mm/memcontrol.c
-@@ -502,6 +502,42 @@ unsigned long lruvec_page_state(struct lruvec *lruvec, enum node_stat_item idx)
- 	return x;
+@@ -419,6 +419,8 @@ static const unsigned int memcg_node_stat_items[] = {
+ 	PGSCAN_PROACTIVE,
+ 	PGSCAN_ANON,
+ 	PGSCAN_FILE,
++	PGROTATE_ANON,
++	PGROTATE_FILE,
+ 	PGREFILL,
+ #ifdef CONFIG_HUGETLB_PAGE
+ 	NR_HUGETLB,
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index e8a90911bf88..053f41584989 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -2043,6 +2043,9 @@ static unsigned long shrink_inactive_list(unsigned long nr_to_scan,
+ 	item = PGSTEAL_KSWAPD + reclaimer_offset(sc);
+ 	mod_lruvec_state(lruvec, item, nr_reclaimed);
+ 	mod_lruvec_state(lruvec, PGSTEAL_ANON + file, nr_reclaimed);
++	if (nr_scanned > nr_reclaimed)
++		mod_lruvec_state(lruvec, PGROTATE_ANON + file,
++				 nr_scanned - nr_reclaimed);
+ 
+ 	lruvec_lock_irq(lruvec);
+ 	lru_note_cost_unlock_irq(lruvec, file, stat.nr_pageout,
+@@ -2152,6 +2155,8 @@ static void shrink_active_list(unsigned long nr_to_scan,
+ 	count_vm_events(PGDEACTIVATE, nr_deactivate);
+ 	count_memcg_events(lruvec_memcg(lruvec), PGDEACTIVATE, nr_deactivate);
+ 	mod_node_page_state(pgdat, NR_ISOLATED_ANON + file, -nr_taken);
++	if (nr_rotated)
++		mod_lruvec_state(lruvec, PGROTATE_ANON + file, nr_rotated);
+ 
+ 	lruvec_lock_irq(lruvec);
+ 	lru_note_cost_unlock_irq(lruvec, file, 0, nr_rotated);
+@@ -4815,7 +4820,8 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 	struct reclaim_stat stat;
+ 	struct lru_gen_mm_walk *walk;
+ 	int scanned, reclaimed;
+-	int isolated = 0, type, type_scanned;
++	int isolated = 0, nr_isolated = 0, type, type_scanned;
++	unsigned long total_reclaimed = 0;
+ 	bool skip_retry = false;
+ 	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
+ 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
+@@ -4827,6 +4833,7 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 
+ 	scanned = isolate_folios(nr_to_scan, lruvec, sc, swappiness,
+ 				 &list, &isolated, &type, &type_scanned);
++	nr_isolated = isolated;
+ 
+ 	/* Scanning may have emptied the oldest gen, flush it */
+ 	if (scanned)
+@@ -4839,6 +4846,7 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ retry:
+ 	reclaimed = shrink_folio_list(&list, pgdat, sc, &stat, false, memcg);
+ 	sc->nr_reclaimed += reclaimed;
++	total_reclaimed += reclaimed;
+ 	/* Retry pass is only meant for clean folios without new isolation */
+ 	if (isolated)
+ 		handle_reclaim_writeback(isolated, pgdat, sc, &stat);
+@@ -4892,6 +4900,10 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 		goto retry;
+ 	}
+ 
++	if (nr_isolated > total_reclaimed)
++		mod_lruvec_state(lruvec, PGROTATE_ANON + type,
++				 nr_isolated - total_reclaimed);
++
+ 	return scanned;
  }
  
-+/**
-+ * lruvec_page_state_monotonic - non-clamping lruvec stat read for delta sampling
-+ * @lruvec: the LRU vector to read from
-+ * @idx: the node_stat_item to read
-+ *
-+ * Returns the raw state[idx] value cast to unsigned long, skipping the
-+ * clamp-negative-to-zero step in lruvec_page_state(). Intended for callers
-+ * that snapshot a monotonically-incremented counter and subtract two
-+ * samples: unsigned modular arithmetic then yields the correct delta across
-+ * a signed-long wraparound (a real hazard on 32-bit) that the clamp would
-+ * otherwise turn into a huge spurious delta.
-+ *
-+ * Do NOT use for non-monotonic page-count reads where a transient negative
-+ * reading from per-CPU delta skew must present as zero.
-+ *
-+ * XXX: This helper (and its node/global peers) exists because some
-+ * monotonically-incremented event counters are stored in
-+ * enum node_stat_item.
-+ */
-+unsigned long lruvec_page_state_monotonic(struct lruvec *lruvec,
-+					  enum node_stat_item idx)
-+{
-+	struct mem_cgroup_per_node *pn;
-+	int i;
-+
-+	if (mem_cgroup_disabled())
-+		return node_page_state_monotonic(lruvec_pgdat(lruvec), idx);
-+
-+	i = memcg_stats_index(idx);
-+	if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, idx))
-+		return 0;
-+
-+	pn = container_of(lruvec, struct mem_cgroup_per_node, lruvec);
-+	return (unsigned long)READ_ONCE(pn->lruvec_stats->state[i]);
-+}
-+
- unsigned long lruvec_page_state_local(struct lruvec *lruvec,
- 				      enum node_stat_item idx)
- {
 diff --git a/mm/vmstat.c b/mm/vmstat.c
-index f534972f517d..c4364f0eb08a 100644
+index c4364f0eb08a..87d4a6781367 100644
 --- a/mm/vmstat.c
 +++ b/mm/vmstat.c
-@@ -1024,6 +1024,17 @@ unsigned long node_page_state(struct pglist_data *pgdat,
- 
- 	return node_page_state_pages(pgdat, item);
- }
-+
-+/*
-+ * Non-clamping variant of node_page_state() intended for callers that
-+ * snapshot a monotonically-incremented counter and subtract two samples.
-+ * See global_node_page_state_monotonic() for the rationale.
-+ */
-+unsigned long node_page_state_monotonic(struct pglist_data *pgdat,
-+					enum node_stat_item item)
-+{
-+	return (unsigned long)atomic_long_read(&pgdat->vm_stat[item]);
-+}
- #endif
- 
- /*
+@@ -1300,6 +1300,8 @@ const char * const vmstat_text[] = {
+ 	[I(PGSCAN_PROACTIVE)]			= "pgscan_proactive",
+ 	[I(PGSCAN_ANON)]			= "pgscan_anon",
+ 	[I(PGSCAN_FILE)]			= "pgscan_file",
++	[I(PGROTATE_ANON)]			= "pgrotate_anon",
++	[I(PGROTATE_FILE)]			= "pgrotate_file",
+ 	[I(PGREFILL)]				= "pgrefill",
+ #ifdef CONFIG_HUGETLB_PAGE
+ 	[I(NR_HUGETLB)]				= "nr_hugetlb",
 -- 
 2.53.0-Meta
 
