@@ -4,89 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C7D7C531C9
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 16:35:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD5D8C53209
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 16:35:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7DED36B00A2; Mon, 27 Jul 2026 12:35:28 -0400 (EDT)
+	id 9D9EF6B00A3; Mon, 27 Jul 2026 12:35:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 78FD66B00A3; Mon, 27 Jul 2026 12:35:28 -0400 (EDT)
+	id 98B126B00A5; Mon, 27 Jul 2026 12:35:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6CF676B00A4; Mon, 27 Jul 2026 12:35:28 -0400 (EDT)
+	id 828E96B00A3; Mon, 27 Jul 2026 12:35:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 35EF36B00A2
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:35:28 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AED3480107
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4A9DF6B00A3
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 12:35:30 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B6784120118
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:35:29 +0000 (UTC)
+X-FDA: 85035107178.10.B9AE947
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	by imf14.hostedemail.com (Postfix) with ESMTP id D055610000E
 	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:35:27 +0000 (UTC)
-X-FDA: 85035107094.25.E034FAD
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 89DCCA0006
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 16:35:25 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Yval0zVP;
-	spf=pass (imf25.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785170125;
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=CKXm3GfB;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf14.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785170127;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mjxJ4Ft7V0oMbE64yyZGCpBckJXYaY+q8Ii9o6DiK/g=;
-	b=EuOCErdXjUH4rRQBBp71X4F/BlwYzIs1qSN81ALQxFJWCLFp5zwwkhY83XNS4gW1DGDw47
-	Zcu6KbmSSkCf5SH1otC/jEtgIp0cMFMYnA8Bhr5kK6RyBcfXtk8u4CjIAtAoy6KP0bRDNl
-	1fqKQlMyH5FX1zyemuQpmXd27hqV9QE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785170125;
-	b=gzC5wBQs5brl6Ny84D7L60TYns+RTPeowYd/5ylWUjX9OKEXJeFMu0leoehLfB9xc9Ur7H
-	LrCELpcopQE5fB4ux2rA8dWwyV50Ot1WSXlMEzjYMt0Pdqp6eIPPkkcyRBPyjkwc3xtcCq
-	h1Rud/A++xZc0mzHB7tgxj+4zetqC84=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Yval0zVP;
-	spf=pass (imf25.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Date: Mon, 27 Jul 2026 09:35:16 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785170123;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mjxJ4Ft7V0oMbE64yyZGCpBckJXYaY+q8Ii9o6DiK/g=;
-	b=Yval0zVPqmXh4i741fO04m8Ycl1EtwHSU8rOp72V/QNS0dUUSV/8wa+LYO2glX5Tip2lw0
-	XjQsrif9WzwtKdtiSe+MQ0wSIMngI4W3rUy/Tj5c0KIiBQ9F2CGpfRH2DEVAluiAqXssf6
-	2dlFOqiBZykQ9SjvkqIIkL9b5yg5KUA=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, 
-	ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, 
-	surenb@google.com, mhocko@suse.com, kasong@tencent.com, qi.zheng@linux.dev, 
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, chrisl@kernel.org, 
-	nphamcs@gmail.com, baoquan.he@linux.dev, youngjun.park@lge.com, hannes@cmpxchg.org, 
-	roman.gushchin@linux.dev, muchun.song@linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, rientjes@google.com, 
-	kernel-team@meta.com
-Subject: Re: [PATCH v5 3/3] mm/vmscan: reduce lru_lock contention via
- vmstat-derived scan-balance cost
-Message-ID: <ameIpQtXv9pC2aaT@linux.dev>
-References: <20260727162550.2032-1-usama.arif@linux.dev>
- <20260727162550.2032-4-usama.arif@linux.dev>
+	bh=MosLzAOb0t5DpeSqUWkjuGhOC/5FMQBcdLSyObRpONE=;
+	b=TtAJfUgpEvJG9WzgkP8IQaqDo6noILCSGREPzPfqGVNEjPPLL5UM4c3Y7WGbP8PAjBrcZv
+	+WEwBs1on/QNa+rdrCPakhhD4kzbD2EfWXYDjxsQ94hwZHMeXFCNZqpyXVfNS6+yR2qHP5
+	wtayhIo2HNdxoJFCDiDVwptXM3ro2GU=
+ARC-Authentication-Results: i=2;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=CKXm3GfB;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf14.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1785170127;
+	b=xVCo84SiJ5+gZ7o+8xnqnMfjsSNpd+B5TbE3qJ1ByEc2RC5b2+leVW6xb6tybuqFCSWQxJ
+	ulXfZ9yv+n2leq5QLa8JXAeXYu6JMjar+/bDTVuc8DvVYVgmUSX5NmB1DwJjrTL6If1dGe
+	rs25dMBTNxrKCs6KDhlGDX1g9z2Ug8M=
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-4720f3bf164so42246f8f.1
+        for <linux-mm@kvack.org>; Mon, 27 Jul 2026 09:35:27 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785170126; cv=none;
+        d=google.com; s=arc-20260327;
+        b=hPI/aftSHUzmSU/lHYQjl/irv4qLsYoo0glu8JASGcmDwb8g5qQ3Eg3O7+KELkKUUz
+         pYXjOfdGrZDh01K5SnjVQkopnMC1dnUoUIkfTxmS0aFezJZRtThzzzN3EIq9qaKsIX40
+         1bT5p+29Ak0T9BcnQbchWenR0qMYfiAh87hnlKPAdfeAPgCZHHwTt+iTONCPf7bRWotI
+         WrZz3+UlU8MCbdlyR6gc5PLRC1kDWcKMT9l2BJyHVnHbmalsJAOHPn9toSC11BJXkURE
+         A7Qi83g4BWJVe3JdkjVfeWuZCL7ghkSE32edSf2wRyNvQ37ReaBQunwopimAugPhKEEz
+         MsgA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=MosLzAOb0t5DpeSqUWkjuGhOC/5FMQBcdLSyObRpONE=;
+        fh=Hlj01q9BPOGId+G+wLDoDK8UC7kffznweD75EeaWZ3g=;
+        b=WO0Tu9heQPQ6z5tBRYRsOYr1r6Wb7kgmT+Pjxbs+ZS2XgNxcJl0tH5E+zAqpENsRbn
+         8kndRestCWH7Yi28Fd0ZxQ06OrQnqdJYxW6WAIJzsTa3BHRGPl0fi/UJDlXDCr5iS7ap
+         GozgHbcrF6ECcm8TrxMY7gI1xp1Bc9LFUw3u5tg3Zp0Z/z0RfdZP7xJANml0Mm6pdQ7J
+         W/v2SW7cBhLefrax2fnz1eBzNMz6p92cA4EbuRWKXUXkMIHSkhdrpayfnkT+LnHpnBkJ
+         0CPTB4u0g3D+CqGmlnKLILtDL+AAKVoybnsotdXYBt1iLnIeNTX2/RdwUZfbyuX4Bsev
+         XdSw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785170126; x=1785774926; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=MosLzAOb0t5DpeSqUWkjuGhOC/5FMQBcdLSyObRpONE=;
+        b=CKXm3GfBXuZRoiQOgJM77M+1OnqktRvuYWiAWPL8Ah+teCVBZsCT00wucSXOBYvIqQ
+         4cc9g0kQi56UjW19NiYHT/RXfnEaa5b8pd6QFUhfnOeacJmr1/Uem+ab+u434q3LG3HC
+         V22xTUsA5wCWQQV3x2qstoqp89HnL9XycXQtIh86xLArMYO+6mRvQO5zba4ThLV9WWvX
+         mNW/D7w3IB/+mpUS1qdBeXNHrgr7RFCFv/k472Tk6JYN30DPA1HHth26lxpxqywX+Tnj
+         u4G3IHdUMfN2dNuVmgtJdLnvUlVGB1cuf1HWbwcw3St4wxscS2olw2GvuX8aoaJ4Dtji
+         ZCqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785170126; x=1785774926;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=MosLzAOb0t5DpeSqUWkjuGhOC/5FMQBcdLSyObRpONE=;
+        b=bk577TeP2iNtQVGvSVvWqP5u3J1I8lw6FkxQ48dakUhlUSLnvcNIAGSMm+JHY4K9AR
+         85fdPQ+dJIqmhr3VLNm6+bLWd4VkiT8etYof6vO2FyLtp136l/X0FdBcEwHJCKf3T1EE
+         GNbaeE40sxgzl8KdQvChOF71q7J7tYrvepulFNjOhb+suwB+8wko21Z7Pj3eHAByH9UW
+         hL8vys3Dcnauz7jczcx38zTfVFEL6oXhfpZX5VHXEc/0IHiwxzI8/2/m8hghT2dv1lqe
+         YtvitYPNVKYpP69FqneB3POPvNMsEtPG8d9eQR6yIVo+0J3Y+L7Sdbkv6v0y9ksXTD49
+         LgGQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rqbz3XgHlUaSUwWSOWcOkmtVeauwcnYva25G0fKxv6I5S42jyZAb4TDzx7AiMNdxVx0WtrADoPO7Q==@kvack.org
+X-Gm-Message-State: AOJu0YzgzMbqyiF8hv5P7DrNX2EGFacFl/LuSLOu+nigBPh3oU5eOBAt
+	w6Rc4ZiaUqFPZyFsoz7Ji1q+XBUUyr4Q/xMRVzJ6Pt0nHn/Yhfx704PGfMfWCsWlfgJ8TmRBm6b
+	8T+85c0zXZJRwAYmrxOslml4HUhlw43s=
+X-Gm-Gg: AR+sD125vVFAuzJxcxLcKnTlm6fBzfqEUgjpjuqQbkOCyBQX/VxoZwUyoPsXvNPRhBj
+	1WQ6ZU+paFgxEEfrOjCodIo9LCpREgx63L2c6uj++AmDWVGoZfgDHYnvUiDoDaqq8DPIj/2FwEd
+	iEP4Qh/0rp0tnwREagoePW/sqJg/bRZlxiOMjvyzcCuNz1OZBc4vUsNptTrqy8qYTXvXra9bQdG
+	fRcFogbA7jGGHkYvOVj8ShFPIFggMytrr11QggwbKG9KP33eWwnNOVfcnk9NwoG5b3b3cBTjsDT
+	LOMJdhe6o9JjKzjjVgkz6fWTIihJ
+X-Received: by 2002:a5d:588e:0:b0:47f:87f9:6ccc with SMTP id
+ ffacd0b85a97d-47faf5b6257mr272808f8f.30.1785170126318; Mon, 27 Jul 2026
+ 09:35:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260727162550.2032-4-usama.arif@linux.dev>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 89DCCA0006
-X-Stat-Signature: btdfmh9e1ncfg3jch5t4bhep5jynzrd9
+References: <20260726-shrink_zswap_entry_v1-0-0-v1-1-30957e4d0cb6@gmail.com>
+In-Reply-To: <20260726-shrink_zswap_entry_v1-0-0-v1-1-30957e4d0cb6@gmail.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Mon, 27 Jul 2026 09:35:14 -0700
+X-Gm-Features: AUfX_my1tbY4sQGH3dDFANLwnXAZgKc7WpJkE1fr0Fyb9I9VWPnfLMnwKKVxpRc
+Message-ID: <CAKEwX=NLEmRKbgf7e4mQ8ynwGLhe8d3orc_2U8n-K_W6VjOAoA@mail.gmail.com>
+Subject: Re: [PATCH RFC] mm/zswap: reference the pool by index to shrink
+ struct zswap_entry
+To: Jianyue Wu <wujianyue000@gmail.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D055610000E
 X-Rspam-User: 
-X-HE-Tag: 1785170125-246875
-X-HE-Meta: U2FsdGVkX18XLxIKP8o83T58czHaILpA9BTQNrpZN/Zwgw19d3sq0oCW3UTLZwqGbZB5+0x3xvEb7++5iF34yOl2+DKlvSzNAjlCBLOXi6Lzhi5NJxCW8S2CArCFxSI2utBdMdoBZk8EWjZBpQKZwTLbp1wzrCWQxbTu5VELs+X98OoWF7OgKZW6WmwvDs6ayyemlvF8ph1H/U6TTJkQh0/HVf0S6GJRCk8/MMY0CXkcIO/aJvht8WvaC4sNfCFQMASz8Ij+ALoQOh1UP0IX3yPwjtAaTmlxjWjq2pjLE29eB8HiqPeUNGJCBfESPQzzDnc1PV7Z5wwrcAdVz9h3JRz21AmOdadxNPx4E8uOU4eOMRFMQg5Wh95aoJr9yE4idMcPH2HrguwxsgTJxHH0EzJ/IE7gZwpjusF5DuqsNoALovmsJ690JvdodreH3ga7EhuYydOv21RVrz1C9p7ooNnkiE1yJPlIHGNGPpfUH66H806xWrZMINcXMJnfFDrOOuJvx/ytUo40YBBC4GI7Aje+R4k2ATl8ZXCP76zRsrt7W4PVZl/k8JT5/SPwroQqndL+cPOqjm5Qxra0Db1vQg+tJTEupFsTV8OksTaPn4fkaqD//f5J13v+9u6SMtMaWNl0K8ZnIcqq7ASDeZIPLPZDElCEhG9rRlcaEsa1iaLDvs/aRPe2dHTByfK8N60e4WqLRzwb3wUZOSfdoMG4IEqzzIDM7zGRvK5pwNLW4/LqJWUOZzVzf/T3be/2UzSNg3zHeZqIrs8UnLIH5y+89l9ugp2ztDDezXd2jwnjp/hslzWb+f7dAjUK+AbyKNy/3Ny97qCAzTM5tTuMEaQbL2ePcloDyw7+0Ihs7hxyAyvdNxFVghN7Lse0AVnHzBtmPO6MW7k70QT1rCBZ9yYW0xIR0hY0oRrH5uXgX/GadFreHU2lKG4VY86tWgkLTbnWBWmC9nT1mpDX4xtUqWG
- P7UC9wCa
- YPEBg1W/MJ0TLgHECR1NBtx3gRhA2B4CpvZHuLKe67Nf7NCZDiJ7n0T7SrUwtZ0xv6WWc1oxybzvseTHuQfXhHEr087ODBZY6d+1zGkw+k5Bx596VDAQmrxLKS+n/mA6fCZEnI1Uz5bY4c8BlFWdI8XC+nLm3m6DlIJHFTsoWaHmj/VzIvy4NuGSGlUGfC1/lZTJXwUJ3Fuj4OhhqqXOrr95QJ2MuyErvXv3Ih7qUtaWnKUj+UTn2L90Q1Aghcbz1PzzqLU+2MdvpJeSrHfFv7mBU3ezbSuJssjY5wHVkP/GM/AKWZbu1KCYlS4ajX7TNLWeZ
+X-Stat-Signature: rcsge8opxfo766bfhxmm1zczqeqezzui
+X-HE-Tag: 1785170127-809920
+X-HE-Meta: U2FsdGVkX1+NjLQ37NACsC9POKWGs1kEEOfjseIU8ulWXP9kZM03wg9IU5zBYUIQ4TVNH2so1T3xPj1xkEQ5dT2MlT3HBDloP2Kq8eHph4A50uZH1LOOgBKc2BNc/39P+PKtszhp7mUnEz6JOris+B5e3d3CmNYXjTC5CLj6enKyHYB7A0BFe7W8qG0DVkxGJWStpWNHGoKQE9dn0mrfuy+eo5gDAbQFi7KPezdUIw8bT5aAaSUM7RIsyy6o9KX1cFsqto2Nj94eeXCc8sCqifggj2qlvPklGM7hOnfMzRhSyJBsUjC0UCyK5HE3bvrj9bYfOamMx6wSjhloRf9YT9n0JSvmSBKASb9GX4/bxGEHn6LDob1E71wuMdgw6JOR7Usv9j3RGFcf9Xe15lsLwG0d9sBTM/sz0aSepnwChEzEoLrZiCciw1o9ABpuufXnCFtAVp09+uBGbj7MegDTc65qsepgJiNZx1K/zxP79OB7Cg+YZh2Fnh22poh16dVyQySvcUHeE0VrMVFAgCl/uKy0DAfLED8aAbqOxjuXp8kvj6ZhvDAi6IMfnJWB8KBGM7U/KACB4SIzWUX+wxR2411dISmjY6Ilr3kDBz7yJJcKVx7R43fb9zYxnWbg1jL1dB/kQTrcqpVs5xtMZIEfDS5G5WGONxO5RkKnODSYlFlQ6Km7mq/6z6VM87sTC9OhjOiDeRpF8UXZvgjDbBllaxme5JWu7xm/4M0+OGUD170ORb8sUKsD0CyU9+0lgg167bHMOIQsGW8QYGwKrcIwRLPoSrqOp17pwr2LOBpjzkJzgAk6LwpS7lu3sohBYxG88VTXvsp0rCyh3Ns1gohcf2uKqVZv6/x4Jw8Ey+8JyuSbNAX8SLQB982P2x5PY3MGIzmYL9OCbt26TTvm/7gQBJz7sItSTd6kvo1r6oIoMGbLciISb3FwW6Xb+EGXZCeJzvT5mmFUV6AWKBcFyK0
+ +M5qzmdF
+ uFdeEz1NL3uwnl4oJC9Oh5XiAaqmvCRja/Ad8RMVVtPs2J25SWXjmPT0MWUUUX3npYxIvm6IWA7h/yRfJqscdIW6uvxi70QCs7LKjxGjEFNzjqjurj9ovF7yNejKdGjQtK4AZa6bNiRDS/KhqbLgZb40fIy/yfwOQczoANS5wsr4J4+Zky9x8toufRBehuwFEUru6jtoqpOKAemdE9sET1otP9F8dkou5PK2SDWP+cSVoY6tPtooVkvCXoxbMEzP9LFnimO7mpdCYXy+Fwk1j48Xstjr2L09p5BqQ5L0abA09mBoGMhBwOXQU2y92GCMZoD/bLvhWm8M5rvrCh/jlFoNiiCqXnGUTg6Jc7rX6QdbmDzYTf+4vOODZx8tMZe25Hwcv+1zgqnJ7dRvdb+oCxb+vNWlpaj2UEFR2LgbVgiU9Q9HalIAA9HekH31cV4NcoAJmvm4sJ9mTevdbiYOV2JZJ2w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,82 +141,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 27, 2026 at 09:23:25AM -0700, Usama Arif wrote:
-> The anon/file scan balance in get_scan_count() is driven by two scalars
-> in struct lruvec, anon_cost and file_cost, accumulated by every reclaim
-> producer under lruvec->lru_lock. The acquisition sites for cost work
-> specifically are:
-> 
->   - shrink_inactive_list() re-takes lru_lock at function exit purely
->     to call lru_note_cost_unlock_irq() with (nr_pageout, nr_scanned -
->     nr_reclaimed). One acquisition per inactive shrink.
->   - shrink_active_list() does the same with (0, nr_rotated). One
->     acquisition per active shrink.
->   - workingset_refault() takes the lock via folio_lruvec_lock_irq()
->     purely to record the refault cost. One acquisition per refault.
->   - prepare_scan_control() takes lru_lock just to snapshot the two
->     scalars into sc->{anon,file}_cost.
->   - lru_note_cost_unlock_irq() itself walks parent_lruvec and
->     re-acquires lru_lock on each ancestor to propagate the update,
->     adding O(memcg-depth) acquisitions per producer call.
-> 
-> This hurts because lru_lock is already a heavy contention point on
-> memory-heavy workloads: every isolate_lru_folios(), move_folios_to_lru()
-> and folio_add_lru() takes it. The cost work itself is trivial (two
-> scalar bumps and one comparison), but it contends with and causes
-> contention for actual LRU manipulation. The parent_lruvec() walk also
-> multiplies cost-update overhead by memcg hierarchy depth.
-> 
-> The balance formula for anon and file, respectively, is this:
-> 
->     cost = nr_io * SWAP_CLUSTER_MAX + nr_rotated
-> 
-> Instead of recording cost and running averaging logic directly when
-> these events occur, snapshot running vmstat counters once per reclaim
-> cycle and derive the balance from event deltas since the last run.
-> 
-> Use PGROTATE_* from the preceding patch for the rotation input.
-> WORKINGSET_RESTORE_* and NR_VMSCAN_WRITE provide the remaining event
-> counters. Charge NR_VMSCAN_WRITE through lruvec stats so all inputs can
-> be sampled per lruvec and aggregated through the memcg hierarchy. This
-> is overall cheaper and has fewer lock acquisition sites.
-> 
-> Moving accumulation and decay to the reclaim side also improves the cost
-> model across reclaim gaps. With producer-side decay, events that happen
-> while reclaim is idle still age each other before reclaim ever samples
-> the costs. If a workload refaults a large anon set and then a smaller
-> file set before reclaim runs again, the later file activity can age the
-> earlier anon activity out of the cost model. The new scheme observes the
-> whole between-reclaim delta and decays anon and file proportionally, so
-> the scan-balance history better represents what happened since the last
-> reclaim pass.
-> 
-> A dedicated per-lruvec spinlock, cost_lock, serialises the delta
-> extraction, the cost->count update and the halving loop against
-> concurrent reclaimers in the same memcg+node.
-> 
-> NR_VMSCAN_WRITE is accounted at writeout(), so reclaim_stat.nr_pageout is
-> no longer needed and is removed.
-> 
-> memcg-v1's memory.stat anon_cost/file_cost is now sourced from
-> cost[].count instead of the removed lruvec anon_cost/file_cost fields.
-> The reported values only refresh when prepare_scan_control() runs and
-> are bounded at ~lrusize/4 by the halving loop; the scan-balance signal
-> they express is unchanged.
-> 
-> Under pure MGLRU the scan-balance signal itself is not consumed (both
-> prepare_scan_control() and get_scan_count() are short-circuited on the
-> MGLRU paths, and MGLRU's own type/tier selection comes from read_ctrl_pos()
-> on lrugen->{avg_refaulted,avg_total,refaulted,evicted}, not from
-> anon_cost/file_cost). NR_VMSCAN_WRITE naturally covers writeout from
-> either reclaim implementation. The preceding patch also bumps
-> PGROTATE_{ANON,FILE} from evict_folios(), so rotation-driven reclaim
-> work is accounted consistently across both implementations.
-> 
-> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+On Sun, Jul 26, 2026 at 8:18=E2=80=AFAM Jianyue Wu <wujianyue000@gmail.com>=
+ wrote:
+>
+> Every stored page has a struct zswap_entry, so its size is a per-page cos=
+t
+> that scales with how many pages zswap holds.  It currently embeds an
+> 8-byte pool pointer.
+>
+> Replace the pointer with a u16 index into an allocating xarray of pools.
+> The index is allocated with the pool and remains valid while entries hold
+> references to that pool.
+>
+> On x86_64, the zswap_entry slab shrinks from 56 to 48 bytes per object,
+> raising objs_per_slab from 73 to 85.  This saves about 2MiB of metadata
+> per 1GiB of data held in zswap.
 
-I see you already added my Ack here. Sounds good.
+TBH, that doesn't seem that major... It's like one huge page man.
 
+But Yosry might disagree?
+
+On the design aspect:
+
+1. How many pools can there be? My understanding is it's bounded by
+the number of compression algos, and most of the time the system just
+use one, no? Maybe just add a fixed array and call it a day? :) Seems
+like we can probably get away with, say a fixed array 16 elements.
+That seems plenty. You can reduce the number of bits it takes to
+describe the index to 4 (saving the spare bits for future usage), and
+you can avoid the xarray overhead...? Just fail and warn when you have
+reached capacity, maybe? :)
+
+2. Note that the zswap pools are also organized into a list. If you're
+adding a new data structure, maybe remove that. Or maybe the other way
+around - can use it that linked list for your purpose?
 
