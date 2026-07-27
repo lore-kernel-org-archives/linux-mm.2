@@ -4,161 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A00D1C531FC
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 15:18:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8156CC531FC
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 15:19:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B20C96B0098; Mon, 27 Jul 2026 11:18:20 -0400 (EDT)
+	id 644296B00CF; Mon, 27 Jul 2026 11:19:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AAA376B009F; Mon, 27 Jul 2026 11:18:20 -0400 (EDT)
+	id 5FAFD6B00D0; Mon, 27 Jul 2026 11:19:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 94B5E6B00A1; Mon, 27 Jul 2026 11:18:20 -0400 (EDT)
+	id 4BABF6B00D1; Mon, 27 Jul 2026 11:19:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 587DE6B0098
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 11:18:20 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D2C368077C
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 15:18:19 +0000 (UTC)
-X-FDA: 85034912718.16.C5FF886
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 0FBC01C0007
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 15:18:17 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iWZotwxC;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 18EF06B00CF
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 11:19:51 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9A61880774
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 15:19:50 +0000 (UTC)
+X-FDA: 85034916540.09.3652F3D
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 6156880006
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 15:19:48 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=DRBgB5eu;
+	spf=pass (imf30.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785165588;
+	b=PmIW807d8f2X2Z5rdVJ+K5HeGQkpLuTjJ6XehZ8UWuse2uvcV4xzUaNBxZrlAzGtU6PgeU
+	rAq2DlCaHpLt2TcsRXob75JgfG4TERebAzFU2nuQgd3ytgiQWW/R/isCIci4NiXQzc9c+v
+	XyMrAK3x31jsd9YISsaSjeo4i8OhQu4=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=DRBgB5eu;
+	spf=pass (imf30.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785165498;
+	s=arc-20220608; t=1785165588;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FlEELJyfmAm9HJ6Z+y+pFDyBCjUh75N17pJea7pFUoo=;
-	b=qQikvPnoTJHoU1tBZjxweyQDVWFoDs4sKrcmsjyDOyOPOPMtFbpBiJfHVrRNxhgdRWwczU
-	//L/EyN+exYJzBxF1TZUBtgp7xPOG7cWicW4eWQhgG1lGtYLdCqaXewkl0/m8RfPvW7LME
-	ytxgG8Swd/Kk/7RZkOYCIXomo4nUHhg=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iWZotwxC;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785165498;
-	b=DvscmJtPy0hhkoTbETOGOY8TyoDh3HGwYe1fTaXy8PZm7kuYSRPYU/Dg3raGSI5cG9LM9v
-	Fzw7uGoL3EmfA9GgNugqFBKiSKHhO6BlPFNwEOKk1RnJ8JhaI83exsonG0hcfUZ6mX2hQv
-	kedTwnfgy4i70HjLnUfZ2Y5hSL2/A0w=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A7F2340175;
-	Mon, 27 Jul 2026 15:18:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEB5E1F000E9;
-	Mon, 27 Jul 2026 15:18:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785165496;
-	bh=FlEELJyfmAm9HJ6Z+y+pFDyBCjUh75N17pJea7pFUoo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=iWZotwxCmhlHp9gZr07K13hM+s/qDC1EXkIK4ffjKetua2NjBY8mAxp3cXPiAKvtq
-	 diPbaqpdT5XZb8z5YPwv52GJehuURyYwN2ntHzf2mab2h7av6Eq9kdT0d54HLAN/nm
-	 ifAaThidyGPLJiw6HPW2F8p+JT9B7MmEs9C1ZSmgmFYqyM6HGxt/Awub/ZBkc7ONXY
-	 E+nGgQv4cGNPoZwkjtUjhsY3CTUlI9Dhmaz5pZ58v8CPHFiCvjOk7idMTMN+otO9Fa
-	 /Bhty0dWdPePyC2HLiOBRh3sKx2k02l7fqnYB0YeieY4MBjwJJQhezC/xMSoF7bv5X
-	 Pfdvwo+HQaT3Q==
-Message-ID: <2a2923e4-6166-4ed6-97ba-2e544a1a2f9d@kernel.org>
-Date: Mon, 27 Jul 2026 17:18:00 +0200
+	bh=kvFaYGmnPcUYTMTMoWdVLVVzjSaeldohJlXUNlxwbWo=;
+	b=OdM9TF9qed60IJOIsSmnVJajOGh530aONLVMGBuEBioGxR6hf3mF3lAq+484FHYqmkMlIZ
+	mr+wA9nJU8UvSz7hJWztMFz7/Iw+2BrhYhG4baX4yI4rEiWD9CMrDWsDFh4GdOXyP9BSBH
+	qXDzWV59WpSw9I2OyW4/ax65+4OhqKk=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=kvFaYGmnPcUYTMTMoWdVLVVzjSaeldohJlXUNlxwbWo=; b=DRBgB5euulFhy0xU2HuVK0AR+J
+	KyR8Ny4HEIa/BGaV3ArU4UbqXlOZheUfRnHdiZf5UnIPAy69Mnq2tlLNNmAyInO6StaHKy/fM9Sjl
+	LPEkBN9DhmOevrhmbykAi9PKcuMt9QtuKBbUX4dUd9j8oN6jnQe+TpD7NuTsWWn08bWRHdtmeR5s3
+	bJVr6Hv1AhEmxqgPScSi1cmbM8wJod0aNSeCRr49Dj1hoZG3JG5zaWmT9cKCfZvqNbfZCmAe8ZMc4
+	VlWpmshZ+uot4zz37YUO1BwOw1Vsi14A+VYqXNQGBQ/zIvrLJdhOlgCa/ogYDejHE9BDDOm9K0WGp
+	SkU57kBQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1woN7F-0000000Avqo-1yf6;
+	Mon, 27 Jul 2026 15:19:41 +0000
+Date: Mon, 27 Jul 2026 16:19:41 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Jane Chu <jane.chu@oracle.com>, linux-mm@kvack.org
+Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Jan Kara <jack@suse.cz>,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <christian@brauner.io>,
+	Jiaqi Yan <jiaqiyan@google.com>
+Subject: Re: [PATCH v5 05/12] hugetlb: Use the has_hwpoisoned flag
+Message-ID: <amd3DRf6vOQjeFEN@casper.infradead.org>
+References: <20260725160042.1557264-1-willy@infradead.org>
+ <20260725160042.1557264-6-willy@infradead.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v2 00/20] mm: optimize unnecessary loads due to
- ptep_get() and friends out
-To: Yeoreum Yun <yeoreum.yun@arm.com>, Dave Hansen <dave.hansen@intel.com>
-Cc: Russell King <linux@armlinux.org.uk>, Huacai Chen
- <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Arnd Bergmann <arnd@arndb.de>, Andrew Morton <akpm@linux-foundation.org>,
- Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
- Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>,
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
- Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski
- <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jonas Bonn <jonas@southpole.se>,
- Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
- Stafford Horne <shorne@gmail.com>, linux-kernel@vger.kernel.org,
- loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org,
- kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
- linux-openrisc@vger.kernel.org
-References: <20260722-dummy_ptxp3-v2-0-d9e4bad31e0a@arm.com>
- <0143b927-08c5-4e94-ae6e-2a0d7bfe950f@intel.com>
- <amD-TLGWGdMK2ItC@e129823.arm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <amD-TLGWGdMK2ItC@e129823.arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260725160042.1557264-6-willy@infradead.org>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 6156880006
+X-Stat-Signature: w11hecz55qxr8reas9epwko88b81nef7
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 0FBC01C0007
-X-Stat-Signature: 3srxjn4whmbzayiwumtmdrucwkun9k39
-X-HE-Tag: 1785165497-968593
-X-HE-Meta: U2FsdGVkX1/Md3Wy/EJ1/kyHR9HPv8wQaPqahZRhuyMaRcQysoJTXDuP3XJmVClSQhthQDm3T3ERs+U0MDkOytKxY93+YXcOlsggt78aZppbAGB5H4ZtNLb2OObNjZHjRAEClC3mGlXXGit0/nf+yFQM2z0P4sjPWZ/KvaBMHFvIAvsMd7cQ5jmfHLhveq22XNAiW5vj/dk1pTE+USf0vd9xqS5l5G5TAGGBQhYdi9Pi/eX+cd9tu6tIRvexfHqXScLMyWnxMHCcqqeffo5Z3SibxfBkDj6Jo8EmvZLiWfpgE2cPHnzvStYYkltgPS63LJjEYCddEZ51u5SeL26kr0GqSjKFoQLESGHCbj9m5dc7NJF+9LVJnz4ts37BZvaaRPeHDdY9+FtVKY1yT+4jk65IH0+p65dUpqK5Dawx5PV4WtjLLwinTxzZ0HzWrKjkk3UeOtJzUBUiOCTI4GyaALEnFJtfpaHY+raCVnu6kB8dOD9n8zWi1jxs09b0PAilwG/DAVD3gPsdEsICmcwnkGvWyd9WXMRz6P+GvtwIuTrIm1X0ob8I/w+lAzv503KwqXRxUZmawzcqqLdyoYXoIEb0WcRDHivU5MGKGQ2xAS1sLJnt0xvs25q1geDJbk0I9t2Df9NrpTEiTszDu6Uq9mn6Qmo/WqIwhG3sdKYULvOrnshUUi8Ry0SgfNqidIEBUmK4cxApiXQiCKo5HefAO6YRNL3fHwWhbVreK9KzYsArkLWghamq8MsBNipaKjSMklAiZPSHji8VoolrqM1xFisLcKqZoraE87jxY9KvYLL8f+Xjq+ufuC/33Z0BuuBjcT0l3iLWzUvWxJNLqD96NyQt9q0ymkdF9KhKKs7neM64P7+bMLWw3P/WC3LVL2AOToNB0qngHC/u0oJduh2T9Bjcl8SXDl34pY3zOZcL5Fnm7NmnZCBkDRvBDs+BVnMR4XRerD/LaNJB5zlovNS
- xtV8SbFi
- nUUv1wIOph5wYdAHs8md1Pun0wKYywsNI1SZkU46adDs5Z6wgbN5s3wwbsQZrgoCsFPlLLP287qsvabSUP60AV4WxHXmc/vNiGC2x2E/ZzkrJOF2KAPlEDeEgeggB9li7mUgZY8o5baT/kgWcyf56TUAGi2YBYEYoaqCfqyZocZyZkN0N4MIZTVTIDhKkkHOACYw0HZtYSzanvyFW+9lcfmlkF1ZxOgus5wPc7ZqhzbK5LH19aXvkE8dX7ioZjI8nPBpAwjnn66gTIdQxMbwVXNsgxRBt5Abo6Exl/kx85+pQwBfwOHgT2rDZFQ==
+X-HE-Tag: 1785165588-837356
+X-HE-Meta: U2FsdGVkX18KHriAvSOteNoVSrtV+MsfhWA7CdvgNcw7Sm88limt0dTUVl1O0tfQ5JLtATGQ0Cx3NRQOvTRZO+4KY6z3fa2rUB6VwsOh+1GJsearijWt1osO38NKvPZZKKSqNQGvj4rGGfxmd38mkisw5v7DiqBUGrbW1mkGiOVOTrGv11J+/rYO1QaKs1E24OEyayCW0Hb4uX7anmz0OTBA9WtjSyFE1vcUWkU45Ii98GlyTBMzrNiM0kNSASYMDIkY2/LRPj9U3+UcU4qTEHjvmZUHCV0B531o3gQe040Ir+B8wn4hOMVxRd/BdgV2AJFVq8EQaqn2IkxjwByk1SfpMVxFL7z/iyqI/STw5zsJKwdxUYuY9RWBWi/+Yt6bDOWQVMXr2HrFNLxF5pKvNIuT9jQ8wBgHmWiDhM6/UzyS1gSDKIV+eJBl9k5cyd0O5hAr7t2t2L892ONsKo5Us8LGuFBnYUrgcSBYDqajzDeGRbTz8BgwCm5qfADT9FWxW+D+0jlyVqhiH/ogv5vutGIKEnHivU2E5V06wsoDR3FlDFG+nYKYVYKL9HXzlrNxI1x5S/6w/FXATEgoZhBdkPUoyi4WBGto52q+3NsaphCVx0ShhuFwd1fyhW6j1tqBtrXaKGcC8d9WfQtT/ayun1hukZXfpJgR6Jh4KU3sbKV4nr9YESC5R6LMB0f+bXhvFCkMr5aZEq4DN9jq00WudKKZtE3nGSGgGjCEx7xtm9IjFlald89ko0QpntNlJpb4HSThGuO09Y07eWlRsn/UWIvmHWcwdtvJEvm3IREMeCsRYfiZpFxn/pKCAMk30Qm1ukv3bObZuTrNf84bnVplLcK5jJEX6FJ9/UogHTjMV73w3GXr2ntx0vHj8IsSr9yJfrxfv1226CCTohmY2GwNTzq7DbFIKtLxeP4zJCIiJY5nBzzYzSWfxLE6MO41F7oTBf7j970D++hrxqyk1hm
+ jN+wpQgI
+ d2IZdFDJKBq+GKbAjAQ/wNL+9Il/vGYqwv4bMkpd3UHExHrmFdMrp5DxNikFKRYUcGEpMwvPjVdv6Yjm1bC2dZjaYGB5eQIiBts+ubcFQIWkkS/CfBzx3ZIfxsK/R7ycPAnincXb84pPKoa2CaExCQD/Q3ydxwnGESkbktNhUaiip81Dn8wyEmgRaoMDC43sXchBerW/sZIQoKyEKkoaP3OZazDZ8D/ulwmEwiJdXz+JEoonZzC0gqQXuqAL7DEDmZW4y4WBBfwZNmyn4Xp8ju0+w7HA0ix5fIcAUrQxZ+7EZuu3C2XAXIBwiCBPqxGiFqxGOMCO85HUeTDHMgTPLfCYC3Z5KdEFJG/GDeKbYxSUyga/J+omPuV9NzBn2BmVA09cJ+WE9+m/vM90BEoqNE9tbz/CftjeDofRB7yB/XDsgZts=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -166,45 +95,174 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/22/26 19:30, Yeoreum Yun wrote:
->> One of my nits about v1 was that it didn't really frame the series
->> precisely. It talks about "optimization" instead of fundamentally
->> changing the way that the kernel deals with folded page table levels.
->>
->> The optimization that this *wants* to talk about kinda falls out of that
->> refactoring. It's not really the core of the series, IMNHO.
->>
->> This series effectively changes the rules about where and how folded
->> page table levels can be manipulated. In doing that, the door is opened
->> to optimizing out the unnecessary loads.
+Sashiko:
+> --- Patch [5]: [PATCH v5 05/12] hugetlb: Use the has_hwpoisoned flag ---
+> commit cca87d250a7a597186556cb9d897807edae0b82f
+> Author: Matthew Wilcox (Oracle) <willy@infradead.org>
 > 
-> I see. might the title and the cover letter should be reparsed.
-> Thanks to remind it again :)
+> hugetlb: Use the has_hwpoisoned flag
+> 
+> This commit converts hugetlb to use the has_hwpoisoned flag to match
+> other large folios. It introduces folio_test_huge_poison() for lockless
+> checks to close a gap where a poisoned hugetlb folio could be observed
+> without the hwpoison bit set during teardown.
+> 
+> > diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+> > --- a/include/linux/page-flags.h
+> > +++ b/include/linux/page-flags.h
+> [ ... ]
+> > @@ -1041,8 +1046,29 @@ PAGE_TYPE_OPS(Slab, slab, slab)
+> >  
+> >  #ifdef CONFIG_HUGETLB_PAGE
+> >  FOLIO_TYPE_OPS(hugetlb, hugetlb)
+> > +
+> > +#ifdef CONFIG_MEMORY_FAILURE
+> > +static inline bool folio_test_huge_poison(const struct folio *folio)
+> > +{
+> > +	return (READ_ONCE(folio->page.page_type) >> 23) ==
+> > +		((PGTY_hugetlb << 1) | 1);
+> > +}
+> 
+> This is a pre-existing issue, but does this logic fully close the race
+> window?
+> 
+> The folio_test_huge_poison() function assumes the PGTY_hugetlb bits
+> remain intact during teardown. However, __ClearPagehugetlb()
+> unconditionally sets the entire page_type to UINT_MAX.
+> 
+> When __ClearPagehugetlb() is called, folio_test_huge_poison() will evaluate
+> to false at the exact same moment folio_test_hugetlb() evaluates to false.
+> Would this allow a concurrent is_page_hwpoison() check to miss the poison
+> state?
 
-While v1 changed "where and how folded page table levels can be manipulated"
-more drastically, v2 leaves most of set_pgd/... working for now, and really only
-changes how pgd_get() operates.
+Um, no?  Here's how is_page_hwpoison() looks:
 
-With v2, there is mostly only a change for page table walkers that use
-pgd_get(): while the existing model already made all these levels be skipped in
-most places except in ptdump code, we now also have to skip them in ptdump code.
+static inline bool is_page_hwpoison(const struct page *page)
+{
+        const struct folio *folio;
 
-So yes, that should be clearly spelled out: as long as pgd_get() is not
-involved, set_pgd()/pgd_page_vaddr()... will keep working as is.
+        if (PageHWPoison(page))
+                return true;
+        folio = page_folio(page);
+        if (folio_test_huge_poison(folio))
+                return true;
+        /* In case we raced with hugetlb transferring flags */
+        return PageHWPoison(page);
+}
 
-The moment someone switches to pgd_get() with folded page tables (like riscv
-already does), set_pgd() is disallowed, and modifications on the actual level
-must be performed. As discussed, a common helper for vmalloc faults would
-already minimize the pain quite a lot in that scenario.
+We're relying on ordering; if we see a false folio_test_huge_poison(),
+we recheck that the flag hasn't already been moved to the page.  Since
+we always move the poison to the pages before clearing the page type,
+I don't see how we can miss anything.
 
-While we should make that clearer in the patch description, I am wondering
-whether we should also add some basic MM documentation for folded page tables,
-where we at least explain the current state-of-the-art (what's ignored when
-traversing, why does "no_p4d" actually mean "pgd helpers are dummies and p4d
-helpers implement the real logic").
+> > +static inline void folio_set_huge_poison(struct folio *folio)
+> > +{
+> > +	folio->page.page_type |= (1 << 23);
+> > +}
+> > +
+> > +static inline void folio_clear_huge_poison(struct folio *folio)
+> > +{
+> > +	folio->page.page_type &= ~(1 << 23);
+> > +}
+> 
+> Can this cause a data race on the page_type field?
+> 
+> In folio_clear_huge_poison(), the bitwise operation modifies the page_type
+> field non-atomically. If unpoison_memory() calls this on a free hugetlb
+> folio while a concurrent sysfs pool shrink calls __ClearPagehugetlb()
+> under the hugetlb_lock, the UINT_MAX value could be overwritten with
+> 0xFF7FFFFF.
+> 
+> Since unpoison_memory() relies on mf_mutex rather than hugetlb_lock,
+> would this corrupted page_type trigger a VM_BUG_ON_PAGE in the buddy
+> allocator when the page reaches free_pages_prepare()?
 
--- 
-Cheers,
+Hmm ... if we just move the hugetlb_clear_poison() call before the call
+to folio_put(), that'll take care of this race, right?  Oh, but there's
+two calls to folio_free_raw_hwp(), and the other one is when (ugh), we
+don't have a reference to the folio.  So I think we wrap the whole thing
+in hugetlb_lock to prevent this?
 
-David
+        ghp = get_hwpoison_page(p, MF_UNPOISON);
+        if (!ghp) {
+                spin_lock_irq(&hugetlb_lock);
+                if (folio_test_hugetlb(folio)) {
+                        huge = true;
+                        count = folio_free_raw_hwp(folio, false);
+                        if (count == 0)
+                                goto unlock_mutex;
+                        ret = hugetlb_clear_poison(folio);
+                } else {
+                        ret = TestClearPageHWPoison(p) ? 0 : -EBUSY;
+                }
+                spin_unlock_irq(&hugetlb_lock);
+
+(this also includes the fix to the problem discussed below)
+
+> > diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> > --- a/mm/hugetlb.c
+> > +++ b/mm/hugetlb.c
+> [ ... ]
+> > @@ -1498,10 +1498,10 @@ static void __update_and_free_hugetlb_folio(struct hstate *h,
+> >  	}
+> >  
+> >  	/*
+> > -	 * Move PageHWPoison flag from head page to the raw error pages,
+> > -	 * which makes any healthy subpages reusable.
+> > +	 * Move HWPoison flag to each error page
+> > +	 * which makes any healthy pages reusable.
+> >  	 */
+> > -	if (unlikely(folio_test_hwpoison(folio)))
+> > +	if (unlikely(folio_test_has_hwpoisoned(folio)))
+> >  		folio_clear_hugetlb_hwpoison(folio);
+> >  
+> >  	VM_BUG_ON_FOLIO(folio_ref_count(folio), folio);
+> 
+> This is a pre-existing issue, but is there a risk of a double free in the
+> hwpoison list teardown?
+> 
+> Both __update_and_free_hugetlb_folio() (via folio_clear_hugetlb_hwpoison())
+> and unpoison_memory() can invoke __folio_free_raw_hwp() on the same folio
+> concurrently. 
+> 
+> Looking at __folio_free_raw_hwp() in mm/memory-failure.c, it reads
+> folio->hugetlb_hwpoison and sets it to NULL without any synchronization
+> locks. If both threads read the pointer before either sets it to NULL,
+> wouldn't they concurrently iterate the linked list and call kfree() on the
+> same hwp_page elements?
+
+I think that's right, but I also think it goes away later in this series
+when hwp_page_lock serialises the calls to __folio_free_raw_hwp().
+
+> > diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> > --- a/mm/memory-failure.c
+> > +++ b/mm/memory-failure.c
+> [ ... ]
+> > @@ -2730,8 +2753,8 @@ int unpoison_memory(unsigned long pfn)
+> >  			count = folio_free_raw_hwp(folio, false);
+> >  			if (count == 0)
+> >  				goto unlock_mutex;
+> > +			ret = hugetlb_clear_poison(folio);
+> >  		}
+> > -		ret = folio_test_clear_hwpoison(folio) ? 0 : -EBUSY;
+> >  	} else if (ghp < 0) {
+> >  		if (ghp == -EHWPOISON) {
+> >  			ret = put_page_back_buddy(p) ? 0 : -EBUSY;
+> > @@ -2740,17 +2763,18 @@ int unpoison_memory(unsigned long pfn)
+> >  			unpoison_pr_info("%#lx: failed to grab page\n",
+> >  					 pfn, &unpoison_rs);
+> >  		}
+> 
+> Does this logic change drop the ability to unpoison free non-hugetlb pages?
+> 
+> The refactoring of the if (!ghp) block removed the fallback logic that
+> handled non-hugetlb pages. If get_hwpoison_page() returns 0 for a free
+> buddy page, execution enters the if (!ghp) block. 
+> 
+> Because folio_test_hugetlb(folio) is false, it does nothing, drops through
+> the entire if/else chain, and returns -EBUSY. Could this leave free buddy
+> pages permanently poisoned?
+
+Oh, I see.  I hadn't realised that case was also being handled here.
+I'll rework it.
 
