@@ -4,60 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A4DEC531FC
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 06:18:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8AE34C531D0
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 06:21:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 72CFD6B008A; Mon, 27 Jul 2026 02:18:18 -0400 (EDT)
+	id EACC26B008C; Mon, 27 Jul 2026 02:21:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7046F6B008C; Mon, 27 Jul 2026 02:18:18 -0400 (EDT)
+	id E5F2C6B0093; Mon, 27 Jul 2026 02:21:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 61D526B0093; Mon, 27 Jul 2026 02:18:18 -0400 (EDT)
+	id D4F886B0095; Mon, 27 Jul 2026 02:21:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D7666B008A
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 02:18:18 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B1255A14CB
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 06:18:17 +0000 (UTC)
-X-FDA: 85033551834.30.4C4D8F0
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 548F640007
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 06:18:15 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=GY6yWQxd;
-	spf=pass (imf12.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9890A6B008C
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 02:21:28 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1195E1A065F
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 06:21:28 +0000 (UTC)
+X-FDA: 85033559856.01.5B16A7F
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 012CBC0006
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 06:21:25 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=paWi0RpD;
+	spf=pass (imf10.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785133096;
+	s=arc-20220608; t=1785133286;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q1RvP5F+5cbF/LfhOCxOJZyT9O4mMLwMJsRDu/s7ZFU=;
-	b=7QX2DfL3YOlZvprLwhodT9PpN9Q17g5EKd7rzdriauLSSXl0C3TxxxJ+NNyMR6kBotEYVm
-	4ASy9YdZWBnmAlAQmp6UBnYNjDytNYNzeD4rg51MI7pkf1t4erN5ZLKQnNV75WcLALTsjj
-	xVQE3dyKEyrUEW7GS5aB7Lrglvzzwvk=
+	bh=/fgIomM+t2T3cQpKKoj4SNC1imJIcl8wBpZBAKlnU9I=;
+	b=GnCH6SOSl1y+m7YjDNGKgj1isReHwxOCvmhCzN4k5MHnaVA+rj7j0bXb7Ed2CvKyYB+6Nw
+	ye4rCmAgiTDsAKRvUTXA1hPgkb4u17FdqX6gIV5zh4t5JjaR4TyLchb7Y5jUvw3/WDiMfg
+	CcGf65LaKRTcVAJ6Yx0E1dofbumIJMM=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=GY6yWQxd;
-	spf=pass (imf12.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=paWi0RpD;
+	spf=pass (imf10.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785133096;
-	b=P+54/ocO2U7Yz53v9wXOyumBGPcwvf4lxWW1AtbRvYUVerEv4vkN4VHM1JXobv4G+jG7uq
-	tpSxV5xybH3xusA55sBplk5Dk0i2l+TLXkldIOIhT94u/5Qmmnsw/MWehjSotSrCAtn95R
-	tv9/ROpFX41ptO1kHvF2MN5dohktBYI=
-Date: Mon, 27 Jul 2026 14:17:59 +0800
+	t=1785133286;
+	b=v+Sx8qVUC/vp+3+e1ygeaZjlITWjWnGc4OAQu0+db5r2OqwcVcrU95yNTXhbj8wiKyUMox
+	7uwxO/X49teBbnpW4jfmG5CNd+vM6TdY4NYebUs3IGjFKpfOgz7iP6vbAg9jVk6FkDvXAK
+	7+dMPaDKjx8YNSwCzU02wyhtJzCBY/o=
+Date: Mon, 27 Jul 2026 14:21:12 +0800
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785133088;
+	t=1785133284;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Q1RvP5F+5cbF/LfhOCxOJZyT9O4mMLwMJsRDu/s7ZFU=;
-	b=GY6yWQxdjDW5if6+h5Exj1gChFKXrWvA8vUg9yXECQsjk2QLg17DvCOCTVog17HlQdfZ9W
-	ciL3/rs0ECCTCPnDST6bgyYNsR3k7ZTsfRuF7b6rNZjdR0YXuZDMa03wOk6ZKUReMgOfqv
-	brT13tjWt4V1njx/XO1L9X0Pg80lKX4=
+	bh=/fgIomM+t2T3cQpKKoj4SNC1imJIcl8wBpZBAKlnU9I=;
+	b=paWi0RpDJlvEn9JWEzhmuu1dzQj5I0SoPhXg10lFhGyhsZ6JfGv4JgmP//o//Y9g8URFoE
+	ypLyygwDMPj6xYquuYt5ZQLa/sm43KrJLofswsr+LVr4z5ZgWcbmEo1uOIGzwnXldxQbkt
+	1YeUDEMzwEnyeu74CAbGekuNrK3tDiQ=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Hao Li <hao.li@linux.dev>
 To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
@@ -67,26 +67,26 @@ Cc: Harry Yoo <harry@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
 	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
 	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
 	cgroups@vger.kernel.org
-Subject: Re: [PATCH v2 12/13] mm/slab: add cache_ and slab_needs_objcg()
- helpers
-Message-ID: <amb0jBAYvObMYBVv@fedora>
+Subject: Re: [PATCH v2 01/13] mm/slab: skip kfence objects in allocation
+ profiling
+Message-ID: <amb4KFF6nYyToYNC@fedora>
 References: <20260720-b4-objext_split-v2-0-2fa7c6f60dbe@kernel.org>
- <20260720-b4-objext_split-v2-12-2fa7c6f60dbe@kernel.org>
- <amMt7baftCrU-OJq@fedora>
- <df871664-09ea-4e83-bff0-bbd3ff9f3ccc@kernel.org>
+ <20260720-b4-objext_split-v2-1-2fa7c6f60dbe@kernel.org>
+ <amC6frE3LoWYjTMh@fedora>
+ <caddd662-a88d-4f04-8f04-01e3cd29c788@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <df871664-09ea-4e83-bff0-bbd3ff9f3ccc@kernel.org>
+In-Reply-To: <caddd662-a88d-4f04-8f04-01e3cd29c788@kernel.org>
 X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 012CBC0006
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 548F640007
-X-Stat-Signature: 6ywgoigkbynzmab1ip5q398amy6jx3zy
-X-HE-Tag: 1785133095-959158
-X-HE-Meta: U2FsdGVkX1+jt9b8x6z55Jz86w2+x2yz4bHrUHATiDotmTdAmmhtmDveW/xGw/MEfUAOJcPng2WN/AtFYsQoW/H16k1DJ70VmBsmkoQakOemjM3MUt3yr2TrS4QaiAOAJdrPJ6v4mpail6KDgHCFQBaTBctJaoRVn9LFduaQjhfn9DRxuaFhE1ry2JhgR2a4tWvIUWo5Y39QDzHhUQQbV9zpIuXYAWAL7iXje/xRkky+7grQ+Y4ReTs6f3rcZ40pYnJpSM47njCYSwFl9+0gWfIbViL1YfEMaHJpih1KkdVmwl3+F/PdJxfBwiZaA/w0Eq/ToYVp7XiZrZZxEUur1fQLsJU3j4R2VEYevWMtEaXfZrkY7W9cMFb0WpbOfyq6nM9oxWer7gVtm3Q72UaXtp4OnLAx0mKzZouq1RQj/32bqO9BSNGPjfmG4VQJa19/vTVH/mCLG4IHdS4vHB6QZRSebIhPENO5W8bKdhR0CLV7A/Ot78aRylNrnSosdj+m8/hH3l3mwqS9T7Iu5Yp1zBeDfWcHkGvqeek89AH3b9RBIoTZVy4lfNtGT2ZyfZcjsgrUVmuGhcUSQBmiIghcMhTz6vV4NosBfdVwxO/Wm/ZbvzJDvMxCvnIWSZdi81MsRDZ8YCG9w0ayX3gQQHGjLfb0e4cYNqJrP/FDyNLzyoeIv+C2NhJcgjvGCHvPjAHxo5g0FWQEHtMERTr13F1LUkseo48FkdEJ2yj7J2wDc+jDPli9oDaOkbCo3IC98lGTMwUvApY9JUyPrfu0MQ6XvfuAbB0U76zJjp4kUm5e0l57maMkdIgb9Czv1C3yRkxoKElA1Bh1kc5JXKcqgQ/G/pEOTeZo9FMrWbqVRN7H0MJTYxKN4GskpXFSBuNfaJc1RK+q4ysJgc8DNAL/WdUXVIEYVPbFi8ig1Dt07NRN6D4JHAwWaPR918yAUbMAV+z3tLZq273OTsoeq0IfRpy
- /uN8p0f+
- b+1SHk2kL+R23C8bTSzIWjDXTjwf91myei5SSqwHegbI0i8L7KhI9o+ezqz9StMjmXSeetjF1cCMUSIAwkYwnBFkL6bgM9rCwxlWnJUvwG+sV+OxvFI6ly8W1Spwyd+OGcEML2GDeujWmcj5ZYS4kqmCBEvn54OH5KTfHJh2+1MX1fwxzzxxtAzqj/lD/chlo7s2BpRH8aUm1AJKdT80NG2BCPRjlxAQJ08wq0si5Gu12sTRxrprtznvZPrLcT+5L79t/
+X-Stat-Signature: b6ed8w5oqgf75tsniffh978hoheker7j
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1785133285-764827
+X-HE-Meta: U2FsdGVkX1/2mPDN7BT6rd1m80oB52Y+94sQTb3gsMHFzMZFCF11DffapERZetTSBCZDTw2FUpCDgEuQQPQoTVGWno8a3QKMfVvFHfHqBD7D45wfltMuz/iRF9XVFCA++BjMSXch0JYSyPqxpNtZ1CTa3/DNjX7i0tiXV7i6pz0clNsLjyEQ/FCS6l8WJOr5LTVRmK1MgpEABz2fGQimZb4xoI1Hdn+qbNAUI4zVwTJVv72fVK/KXEe1g52ghmV1HvnA44Pt9qb/YJdLxfZQls8n7saxej2YvXvuPaNNh0aWvLAbfRUhj4fbvdviz6hOWbBfC1C+LY5uWMrpo0x4kFXMpMFK85YXIluF7fgX7nHCrMEDnkN3vZEktbyoQrjG2YaLo/jh0qvbEZCXSGYHISEBUIFE2xpIPzWML3VR4yNIAHwiIpVDqS2Wf+8eoF00L9Nq0W+BgQZhAmx26Drh/5bqay8TpTk77U9oESvTxd8u2r7hwqnLC45jC9/hNs8yEfizWj6QCMvhUJvKDw8cMlwMH6mhk7LpBjuVhd9Zmd9Lh7z4LYJ3ulCnW+1h0QRMJqcv2PvUzX1BlK9tHPi8SFTk1OTkWlhsA1c1h70ESXlpMrQFq3Hhqrb2PLPw1n5UwZlA+ZY6EwUo/dypK5wRuirzKE1HB/HTcBdbL0OgnqX0hJGxACPwb5PlIUu+QjVrB+ZSH10Tg595WWqKvWRpNHZH1ga9VoiTFFrs1AMhi5QQiI4OGJGqGPW+WB2gRtS3FIxFsi1CEQ+FE2NNFEf4/R1FEF0C/avzgu6RbeZfoGqEa+T9FFYHpLYf+TuD3NJZAYLUgyPj4h0yarSL0F9s6FLWbzx/fzywQCClSHwN24xj4qKm2oue5umTwSLxXhRxCKa4vysHsm2Mil35qEdFm5FGqHaQwKqXOEZgb4apV28g4P6Tc6vfNP6GR/4preY8lZ6g3RfmOO0+UbYrQdv
+ EhZ9BSTb
+ Mrsm3REiWvLwDs3F77HZFATcnhvkDZRx5i9bVb/+xG04YeHWLAR4YmnufRB+gUYWr1VGePp8YgBekP89eh7LcUc/Ll9C8n25pyI3eCrLO9YRN60BrT8XYBpeBWDEgpgVgMsKBkWJyk3lmI5H6N8ntkNOKn0thYngkxBT00xgUOFfU4pMYZzMDeWz6qtaPh0LkNTA77Y46MoXAB8C4H2cgWwJb3qzl0HKLrN0JWgGp1aeVhOg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,40 +94,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 24, 2026 at 06:31:51PM +0200, Vlastimil Babka (SUSE) wrote:
-> On 7/24/26 11:41, Hao Li wrote:
-> > On Mon, Jul 20, 2026 at 04:16:26PM +0200, Vlastimil Babka (SUSE) wrote:
-> >> Slabs of some caches never need the objcg part of struct slabobj_ext.
-> >> Introduce helpers to query this for a cache or a slab.
+On Fri, Jul 24, 2026 at 05:58:36PM +0200, Vlastimil Babka (SUSE) wrote:
+> On 7/22/26 14:47, Hao Li wrote:
+> > On Mon, Jul 20, 2026 at 04:16:15PM +0200, Vlastimil Babka (SUSE) wrote:
+> >> struct kfence_metadata only contains struct slabobj_ext with
+> >> CONFIG_MEMCG, which is then used for the "fake" slab's obj_exts field.
+> >> If CONFIG_MEMCG is enabled, the struct can also end up used for memory
+> >> allocation profiling. If CONFIG_MEMCG is disabled but profiling is
+> >> enabled, it will end up allocating its obj_exts via
+> >> prepare_slab_obj_exts_hook() and assigning them to the fake struct slab.
+> >> These will probably then never be freed.
 > >> 
-> >> Introduce SLAB_MAY_ACCOUNT flag that is currently only internal and only
-> >> is_kmalloc_normal() caches don't have the flag.
+> >> So things sorta work, but not always in the intended and optimal way.
+> >> The upcoming changes to slabobj_ext layout would additionally need a
+> >> proper refactoring to keep working.
+> >> 
+> >> However, there's little benefit in accounting KFENCE objects. KFENCE
+> >> allocations are rare and there can be only CONFIG_KFENCE_NUM_OBJECTS
+> >> (default to 255) outstanding ones at any time. For any callsite
+> >> prominent enough in the memory allocation profiling stats, allocations
+> >> served from KFENCE will be lost in the noise.
+> >> 
+> >> Thus let's not complicate things and simply stop accounting KFENCE
+> >> objects in allocation profiling and skip them in the related slab hooks.
+> >> 
+> >> We also need to skip kfence objects in mark_obj_codetag_empty() in case
+> >> a sheaf is allocated from kfence, per earlier sashiko review.
+> >> 
+> >> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> >> ---
+> >>  Documentation/mm/allocation-profiling.rst |  7 +++++++
+> >>  mm/slub.c                                 | 11 +++++++++++
+> >>  2 files changed, 18 insertions(+)
+> >> 
+> >> diff --git a/Documentation/mm/allocation-profiling.rst b/Documentation/mm/allocation-profiling.rst
+> >> index 5389d241176a..d02eb54ee8f2 100644
+> >> --- a/Documentation/mm/allocation-profiling.rst
+> >> +++ b/Documentation/mm/allocation-profiling.rst
+> >> @@ -112,3 +112,10 @@ break it out by rhashtable type.
+> >>  
+> >>  - Then, use the following form for your allocations:
+> >>    alloc_hooks_tag(ht->your_saved_tag, kmalloc_noprof(...))
+> >> +
+> >> +Notes
+> >> +=====
+> >> +
+> >> +- When a slab object is allocated from KFENCE, its accounting is skipped.
+> >> +  KFENCE allocations are rare and limited to a small number, so this omission
+> >> +  is negligible.
+> >> diff --git a/mm/slub.c b/mm/slub.c
+> >> index 0337e60db5ac..76acb78f2655 100644
+> >> --- a/mm/slub.c
+> >> +++ b/mm/slub.c
+> >> @@ -2076,6 +2076,11 @@ static inline void mark_obj_codetag_empty(const void *obj)
+> >>  		struct slabobj_ext *ext = slab_obj_ext(obj_slab,
+> >>  						       slab_exts, offs);
+> >>  
+> >> +		if (is_kfence_address(obj)) {
+> >> +			put_slab_obj_exts(slab_exts);
+> >> +			return;
+> >> +		}
+> >> +
+> >>  		if (unlikely(is_codetag_empty(&ext->ref))) {
+> >>  			put_slab_obj_exts(slab_exts);
+> >>  			return;
+> >> @@ -2352,6 +2357,9 @@ __alloc_tagging_slab_alloc_hook(struct kmem_cache *s, void *object, gfp_t flags,
+> >>  	if (alloc_flags & SLAB_ALLOC_NO_RECURSE)
+> >>  		return;
+> >>  
+> >> +	if (is_kfence_address(object))
+> >> +		return;
+> >> +
+> >>  	slab = virt_to_slab(object);
+> >>  	obj_exts = prepare_slab_obj_exts_hook(s, slab, flags, alloc_flags, object);
+> >>  	/*
+> >> @@ -2399,6 +2407,9 @@ __alloc_tagging_slab_free_hook(struct kmem_cache *s, struct slab *slab, void **p
+> >>  	for (i = 0; i < objects; i++) {
+> >>  		unsigned int off = obj_to_index(s, slab, p[i]);
 > > 
-> > it seems this could be "only type == KMALLOC_NORMAL caches don't have this
-> > flag".
+> > I noticed obj_to_index also does the `if (is_kfence_address(obj))` check, so
+> > maybe we could use:
+> > 
+> > if (is_kfence_address(p[i]))
+> > 	continue;
+> > off = __obj_to_index(cache, slab_address(slab), obj);
 > 
-> I think not, because with SLUB_TINY,
+> Hm it would work, but go away after patch 5/13 anyway, so will leave as is.
 
-Ah, right, I missed the SLUB_TINY case.
+make sense!
 
-> a KMALLOC_NORMAL cache can have
-> SLAB_RECLAIM_ACCOUNT flag and thus is not is_kmalloc_normal()
-
-Just a minor detail though: under SLUB_TINY, SLAB_RECLAIM_ACCOUNT isn't used,
-and new_kmalloc_cache() checks KMALLOC_RECLAIM != KMALLOC_NORMAL before setting
-it. So is_kmalloc_normal() should still evaluate to true.
-
-> and may need objcgs?
-
-Agree. Under SLUB_TINY, we indeed need to set SLAB_MAY_ACCOUNT.
-
+> Thanks!
 > 
-> Yep it's subtle :/
+> >>  
+> >> +		if (is_kfence_address(p[i]))
+> >> +			continue;
+> >> +
+> >>  		alloc_tag_sub(&slab_obj_ext(slab, obj_exts, off)->ref, s->size);
+> >>  	}
+> >>  	put_slab_obj_exts(obj_exts);
+> >> 
+> >> -- 
+> >> 2.55.0
+> >> 
+> > 
 > 
-
-Yeah, it's pretty subtle. Since the full case matrix is tricky to summarize
-accurately in one sentence, I think it might be cleaner to simply drop "only
-is_kmalloc_normal() caches don't have the flag".
 
 -- 
 Thanks,
