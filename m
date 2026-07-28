@@ -4,88 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEB20C54F51
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 06:19:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43468C54F4C
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 06:28:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BC89B6B0095; Tue, 28 Jul 2026 02:19:16 -0400 (EDT)
+	id C774A6B008A; Tue, 28 Jul 2026 02:28:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BA0226B0096; Tue, 28 Jul 2026 02:19:16 -0400 (EDT)
+	id C4E366B0093; Tue, 28 Jul 2026 02:28:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ADD3F6B0098; Tue, 28 Jul 2026 02:19:16 -0400 (EDT)
+	id B3F836B0095; Tue, 28 Jul 2026 02:28:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8DF456B0095
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 02:19:16 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1E6621C0069
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 06:19:16 +0000 (UTC)
-X-FDA: 85037183112.29.5D9F47A
-Received: from va-1-111.ptr.blmpb.com (va-1-111.ptr.blmpb.com [209.127.230.111])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 98E4614000E
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 06:19:13 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=lGjcRvGe;
-	spf=pass (imf23.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.111 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D6D16B008A
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 02:28:50 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9DB71120241
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 06:28:49 +0000 (UTC)
+X-FDA: 85037207178.13.D7C7B66
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 285B880006
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 06:28:46 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=golX7a7n;
+	spf=pass (imf02.hostedemail.com: domain of arvind.yadav@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=arvind.yadav@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785219554;
+	s=arc-20220608; t=1785220127;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uMSlAg4H80uRnLlzygyMggmh5xo1htbT7Gs4J7Mu4X0=;
-	b=QyGsvQH58fPc71a6Y9ukkf9uHKByH5aFsOtAQQ7L/KzSyLEjb0MSxBNuema/2QuWdrdopD
-	pJhxOQKKwoMvPeTekBvxASYr2sw5sYKjboxeLn61NN9lOD42gUOQ1tCMfNeIe9gFRI5DNL
-	BVoYJYeRit5NxRpYlP/wpZ/8dNsoiSw=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=vLschPK/X4XLrH+bMuNH/WDwOJdmzWSKYORl2Ns9okI=;
+	b=SMhkQgjr3Gpd4Lw6imhGUFrtpdZp+pk1OudSVl/8hwO57hdjBHkE26aerB9f1LkH5W/qg8
+	ffrhZ45J7CXK2KLkDJb0viaLQiRHdZmOwXmPZmqV9r6bLPmhG3sU5o2EMGhEdldJmyQVRY
+	T1sNSxQVXAb15D74H0ZvMOOJSfb8A64=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=lGjcRvGe;
-	spf=pass (imf23.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.111 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+	imf02.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=golX7a7n;
+	spf=pass (imf02.hostedemail.com: domain of arvind.yadav@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=arvind.yadav@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785219554;
-	b=scHao/AjNrV3sdZaPg76AJPGI/4J6URG0lIMraXm6E1zMchAJnTkZNtP+TM0L0jFSo0xxk
-	QGe0HyPwiJwcGFVEWjIl6mh+BFnjafIz2Na5PzHQ886tH0/3r7CH55pZE7/wl6vaZB0n5B
-	/ovsTDU6ukw/CRqfL1uDDW+sbxC+WbM=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1785219548; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=uMSlAg4H80uRnLlzygyMggmh5xo1htbT7Gs4J7Mu4X0=;
- b=lGjcRvGeA4xjfWVtvy04vgeocGnG/m+Sng3Tr5trR4aV+URFh9SFcJc7/cJZGPWdXqs2S4
- 1HTUiqPAyGB7YrdXylVieFBCk4V6mQsdgSi3Qp7dHAaMuD6+CXz53JsNBGjtBCbzEMHMNk
- 8yV+YFtH+eHn8kkGM2qeoYOBxrDjvJbnAQZHa+uTVmUm8O59yPdXPsA+lcQbuTzITyNrWW
- dmOzgZTCHAWCLWM7AJzFYBMZT1lkeQSNRqdWJg2C3Ncb2audeaDBaZui4G28eZLb5wBAVg
- y1JnzgPS7JHEEy5Oan992vh2VxYRRLT+corWIERzo0PGBw9r2dNnkM2kyckKMg==
-To: "Andrew Morton" <akpm@linux-foundation.org>
-User-Agent: Mozilla Thunderbird
-X-Lms-Return-Path: <lba+26a6849da+627855+kvack.org+lizhe.67@bytedance.com>
-Cc: <apopple@nvidia.com>, <arnd@arndb.de>, <balbirs@nvidia.com>, 
-	<bp@alien8.de>, <dave.hansen@linux.intel.com>, <david@kernel.org>, 
-	<kees@kernel.org>, <mingo@redhat.com>, <muchun.song@linux.dev>, 
-	<rppt@kernel.org>, <tglx@kernel.org>, <linux-arch@vger.kernel.org>, 
-	<linux-hardening@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
-	<linux-mm@kvack.org>, <x86@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-In-Reply-To: <20260727135725.694139f5ecad67752b0985d0@linux-foundation.org>
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
-From: "Li Zhe" <lizhe.67@bytedance.com>
-Subject: Re: [PATCH v8 0/9] mm: optimize zone-device memmap initialization
-Content-Transfer-Encoding: 7bit
-References: <20260727123429.5673-1-lizhe.67@bytedance.com> <20260727135725.694139f5ecad67752b0985d0@linux-foundation.org>
-Date: Tue, 28 Jul 2026 14:18:44 +0800
-Message-Id: <4d71dc0f-dce0-4d69-80ca-bdd8047eb9da@bytedance.com>
-Mime-Version: 1.0
+	t=1785220127;
+	b=2MPy5C5tKsS3e9cJrk9Wxb39I0PQwLHWHoGVMuMBRL7hisK7K4SH5dctNciDwg+Zb/GOJx
+	RCfOrsqZcfPCs+gPNCKR+/ollYPfHAoZRK+PY2dq5YS2JqMBiRUSEabu5VnByprGTTXup+
+	uTI9KivtN6dlCSBW9XXWJ5Sz1uH9sgI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1785220127; x=1816756127;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=kKygvtH/OzsvbEzhb1WD9p+0+rChW7yxWOwVTVF50wU=;
+  b=golX7a7nvJ2hb+KKJoESg8N48fmBbWb7zfuPcd7HtsP6MYoFukJju8/0
+   XdBlEM0ok/8zpdnwto9vegsxgwg4NBtrA2amoiDMcIjEKatLlAtllCe9b
+   0gYLsQdOjyW2k1xsQBpFID9DaLsduxLrv5oL6d2mRLKMV/nSynfyTeq/M
+   YYXEvAuqBSFRdO6DDPKlAFu+73ox7VbGVeAkRb1vLWhY8YocJCTkGdits
+   y4n7JsTihGADxOTGPIaEsW+ix1kw7ZAyvIH+uvJO97VMdSovVQ31tzfcV
+   hwapseFDctE9rbaHuteO4mVtKMFbTS3SFYkfQ4o4brb7jqbyyhy2SuOuo
+   A==;
+X-CSE-ConnectionGUID: Jp7z90ukQ3m9ApfoLJsR2w==
+X-CSE-MsgGUID: RitVQnWKR92L38ALhkm6mw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11858"; a="96383815"
+X-IronPort-AV: E=Sophos;i="6.25,189,1779174000"; 
+   d="scan'208";a="96383815"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2026 23:28:46 -0700
+X-CSE-ConnectionGUID: 8rkuG3GNR1OX+PPXZvewPA==
+X-CSE-MsgGUID: T+f44TYfSoeVUAE6EBzY1Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,189,1779174000"; 
+   d="scan'208";a="289575953"
+Received: from varungup-desk.iind.intel.com ([10.190.238.71])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2026 23:28:42 -0700
+From: Arvind Yadav <arvind.yadav@intel.com>
+To: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com,
+	ziy@nvidia.com,
+	rakie.kim@sk.com,
+	byungchul@sk.com,
+	gourry@gourry.net,
+	ying.huang@linux.alibaba.com,
+	apopple@nvidia.com,
+	balbirs@nvidia.com
+Subject: [PATCH v4] mm/migrate_device: Clear stale mapping after freeing swapcache
+Date: Tue, 28 Jul 2026 11:58:32 +0530
+Message-ID: <20260728062832.1107127-1-arvind.yadav@intel.com>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 285B880006
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 98E4614000E
-X-Rspamd-Server: rspam01
-X-Stat-Signature: nfjc7b6y73zfupxayqei4oqsesrqip8k
-X-HE-Tag: 1785219553-551417
-X-HE-Meta: U2FsdGVkX1/ovf8WSzxflMJdC42quGNF+ZPuAei0bVj3dE7L0meJTW7C64eM4TNuiLGqb8sU1j5tLwx6b82iMgx7dqhrR/zxL2DnpdxoJLaMW6swz5Kcho3NoN5fj+lZpOt/Us/MdED3zf7An13zc2g51ZySdqCsW7yJ0b39Xv/vBKK+yy49qnnQprQdo2l7qBYkLxWDOx0+GdjFoBAeN9GYLkxdvpGJx4X/3lLEbPCFk/UY4qj1eNsT4kuvuUgdAvFxMP5a3ABqXMhpkai1naDqGlVMPrWmxvz0K+jGYWWuDAPutS5LthR3JIJ9QvsYoW5Wu8JwEwtmPFUZhJFL5Ee7sTa3Mict+ZU/YXOxqfHqZpR3dwevc606MZQ+QcmE4cVeHFO5/JRdsK5y2jn/KqDEWVz7zpvo/xeQdBXmHPklpfy23L9azupOYLTKIhJMxQCFWYakcG9Shw4YnD+6NjhDTssyVo7ojZ92jorObo0xevADHLeEkZobZeLsUF3wRav/GR0q69NPwi8C6yrTfggdusKo17ey2XR8Dw3cTMkg3Bhmumn3vUdZCuO4R9uKILp2mggDjUECCrg5xHbcEJpH8kOiYtHWVpiaU9Y4+OtwlQ/GTpNjd6DCx+EpsGUhHXmOQsM8ocsiPf2u9T0vu2AjUnszwdQIHvVa0M1MlqGSj0mykh2T2+0cOuH1VX/0Plr3/WRWshvTESe/A6ltJfuNn/aJ7LUTZSij6P3uFcjhKmrplb+T71khoNx9lSKLdiedqHZi2kEeLvD2pl9j33YW9QQV7eHJnBVZxh66cIZcdIWOGsLNC/iGInGBAKwkG1+YoIgct9Df6ccUsd/jHAn2v3fKtCRkdjr8OkEFZZSsWXJXH2x/0TEAw667seEuFTvphF2x9SZyIQf5073BANud7/2AD+3C600KSMji1U+oZq7/Vm8F8xto8sujNQlRmYqytY3zZS7mBvaF9/o
- PlckbEuu
- x++QdaNY+Ps1rw/5IQymqKjml8+v+eJjiBjv+2YtYWfBiUhtc038fhDH6h6hi+gcH5ejTF1ktOsfXLskYLH+k+PBbmR37N+SC7rs1UNAeLpo7BhGKyn2squAcslj0DB42iklxMzdDNG8lMAI8xiewzVymGID82MDpSPbGEnUlP39u2ESuHfBq1qBJaG5PEhg+YVgv/DZkKgneIy30AW/cKKLZq/Pi8M8gse3hYxgLjM4R6CtHcubDv5HpM37nuUyAr7grtUncE5WvjWrEftxxnoe909p42hl6jDZbQwJSQOWBgXcZHbnHaAuHIVeK/CHiZMEYK6xb0+tNgZM9fvsbc0KKIFQg/ZbUO8PUDnVWokWcbQwuOf85Me/D2P5QkpngAHp+
+X-Stat-Signature: kjecfs6me4spu318396g6ocn7m7n3tmo
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1785220126-837390
+X-HE-Meta: U2FsdGVkX1+4NbjUdbp7w1gjqIcWHpGwExwbByi/jVZxkgK30Oxg16x5ksYHKmjwtFkZWj3eR55UgKnFTTOo7zRDEJtsu1V/fSZSIx/4B/yBSMIPaLERow4JvSuv+DBNE6hU/b9nW0OZTWlQY517M7Q9gvTBovrlhCSUI724TsY4NbGUfByhJ0hMYKn81Tsp+zB86CAA7kX+N/o5L7+nId67YRzh+OfjkLq4UCbRp/RsOQ66IgDAkRh2f/f/YFRHoWZQUleXknmNGSIA5edVwmkHuwqcCoG5Ewr1HQowPf9xxrM5GxasmANymanlL+MHVmjV74OUCUbA3Eq7DZR6sGaijwR4CfoN3R1R0CRUkQQ/IxsSrGaT5daHZkYOJ+HX6WnlFWaS2B97Sky2AbtF3I4Rt9qYCxkQGF8X6Lia0RrprJYCJ/HyuCsyDfiuRsiUJng8v2/DbuK5d6IOx8Jfi3W2s7+FR7Q2wSFKUTtonlJx75csdqlyh1MM3hA9J4QcIMAYzL3wkE5KUXrpsSzUSGIXu201mxjOoxfZwx6MQ/RJs8IHMoYFQFli3aUIvAMqaWwRxGQbFh5BH2u8GYEvKJkR6BUT4nOFHfrEJdVPDZxlkc9913ajrjKkMvn33Pyg+ZZvr3zVKtEzM/oGFO7FQZ2Wu7C5rBETzDumCZPloXzFqx4xnFQsqG2mHpfKVPOeyCLXrbLOCqvaXpnGgUkKj8DQJm42Jyl+2TbdSYK3EkgDLzasKGZBMBsa84X5wY7ONaV6ZQYfpCBLWqF5BUXOfKuNR5fDud8RiuBFU9vSGLfh+NgrLUQqcOlesLDo6jCB1JUVLJuWM2eVmZXEeFMG0IT6H/HV47faAhbQu2n+pH1Q9716YLL3pP5y3xDT5RuStcv2tx3ffw83EQQ5k24UFS3yup5HPvki+8gBbBSHQVAizl/sI2t4/ojqdpsTEUUAMSJ24rHu6IQQZUzVqp0
+ KjqkbNR0
+ Ck+tkoSB+KaKMGp9jMugTlFdAT4kO25eynv/PkVK+HnhCXRQtCQfE0K9qUHVMy1z5VKnMfijGHFKqnMxE9xRTxUn6fBEJ0Rw4zxUS1+i7hzhZ9XjqMWtb/923iU+32wv1bv/LghpRTHL2FEq8UgIcFlvyCkMUcOyMfQNzLOKI+qB2RrLOIMOAdvKkcEBCOQTfHgBY2j+1YgVUvGGCXVUsuM0NcKmC1j1itgtCgo+WoDYJJi/FT6XhkgURg6poDlrgWXub8BBlcPGPwVTMpbso0EC2Vd6j5BWzr8fmu1/a4LL9zsohtbLy5m5QuyeTl9m3MXrmgEUVTEwbLlBHs33s0ZD6l5fUlmYWNcTQ41BzschmKAC9u6rqI/bG9aUGMZTb7hC696O7NUkSWEq+xCRbYBnR9zgISxoNwvpbrQMr/WQJ/QRM+/9NopjEiR3EwfnDWcfqDskaS/oyVluVxV+U73YHLFzep4j7ukvxFFiR72Iwp9pFD97HPlr5N3P6GhNvCxKDkfI85PRWtp4+JO9Wskn7p88ZU/u5LkgpqA9+1usOnT+kqYh/4Qv1HVjDRIGjMmmk
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,39 +110,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/28/26 4:57 AM, Andrew Morton wrote:
-> On Mon, 27 Jul 2026 20:34:20 +0800 "Li Zhe" <lizhe.67@bytedance.com> wrote:
->
->> memmap_init_zone_device() can take a noticeable amount of time when large
->> pmem namespaces are bound or rebound, because it initializes nearly
->> identical struct page descriptors one PFN at a time. This series reduces
->> that ZONE_DEVICE memmap initialization overhead by reusing prepared
->> struct page templates and, on x86, using memcpy_nontemporal() for the
->> template copy path.
-> Thanks.
->
-> Human review started out strong but petered out later in the series.
-> This often happens.  I'd prefer to wait until it fills out further.
->
-> AI review had things to say, as it often does:
-> 	https://sashiko.dev/#/patchset/20260727123429.5673-1-lizhe.67@bytedance.com
-Thanks for the review.
+__migrate_device_pages() reads the folio mapping before calling
+folio_free_swap(). When folio_free_swap() succeeds, the folio is removed
+from the swap cache, but the saved mapping still points to swap_space.
 
-These comments seem to mostly cover the same memcpy_nontemporal(),
-MOVNTI alignment, helper-level drain, and sanitizer/tracepoint tradeoff
-topics that were discussed for v7.
+Passing the stale mapping to folio_migrate_mapping() makes it use the
+mapped-folio path for a folio that is no longer in swapcache. It can
+then operate on swap_space.i_pages with invalid reference accounting,
+eventually triggering a folio reference count BUG.
 
-The v8 changes keep the x86 non-temporal copy path unchanged, except for
-making the generic memcpy_nontemporal() fallback a void function-like
-macro. The remaining updates are clarifications in the cover letter and
-commit messages.
+After a successful split, nr still contains the number of pages in the
+original large folio, although each resulting page is now a separate
+order-0 folio. Reset nr to 1 so each split folio is processed separately,
+including its own swapcache removal and mapping lookup.
 
-So I do not plan further code changes for these comments at this point,
-unless someone points out a problem in the previous discussion.
+Refresh the saved mapping after folio_free_swap() so the current folio
+state is used during migration.
 
-For the previous discussion, please see:
-https://lore.kernel.org/all/20260722081800.90085-1-lizhe.67@bytedance.com/
+v2:
+- Refresh the mapping using folio_mapping(), as suggested by Zi Yan.
 
-Thanks,
-Zhe
+v3:
+- Reset nr to 1 after a successful split so each resulting folio is
+  processed independently, as suggested by Zi Yan.
+
+v4:
+- Re-read each source folio's mapping immediately before
+  folio_migrate_mapping(), as suggested by Balbir Singh.
+- Add a warning to validate the post-split order-0 invariant,
+  as suggested by Balbir Singh.
+
+Fixes: df263d9a7dff ("mm/migrate_device: try to handle swapcache pages")
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Rakie Kim <rakie.kim@sk.com>
+Cc: Byungchul Park <byungchul@sk.com>
+Cc: Gregory Price <gourry@gourry.net>
+Cc: Ying Huang <ying.huang@linux.alibaba.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Balbir Singh <balbirs@nvidia.com>
+Signed-off-by: Arvind Yadav <arvind.yadav@intel.com>
+---
+ mm/migrate_device.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+
+diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+index 554754eb26ff..0e6f00190fd8 100644
+--- a/mm/migrate_device.c
++++ b/mm/migrate_device.c
+@@ -1182,6 +1182,13 @@ static void __migrate_device_pages(unsigned long *src_pfns,
+ 							 MIGRATE_PFN_COMPOUND);
+ 					goto next;
+ 				}
++
++				/*
++				 * reset nr so that only first after-split folio
++				 * is processed below
++				 */
++				VM_WARN_ON_ONCE(folio_test_large(folio));
++				nr = 1;
+ 			} else if ((src_pfns[i] & MIGRATE_PFN_MIGRATE) &&
+ 				(dst_pfns[i] & MIGRATE_PFN_COMPOUND) &&
+ 				!(src_pfns[i] & MIGRATE_PFN_COMPOUND)) {
+@@ -1221,6 +1228,12 @@ static void __migrate_device_pages(unsigned long *src_pfns,
+ 			folio = page_folio(migrate_pfn_to_page(src_pfns[i+j]));
+ 			newfolio = page_folio(migrate_pfn_to_page(dst_pfns[i+j]));
+ 
++			/*
++			 * folio_free_swap() removed the folio from the swap
++			 * cache. Refresh the saved mapping before migration.
++			 */
++			mapping = folio_mapping(folio);
++
+ 			r = folio_migrate_mapping(mapping, newfolio, folio, extra_cnt);
+ 			if (r)
+ 				src_pfns[i+j] &= ~MIGRATE_PFN_MIGRATE;
+-- 
+2.43.0
+
 
