@@ -4,77 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33C07C53219
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 12:26:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 189ADC53219
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 12:26:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 34DA66B0096; Tue, 28 Jul 2026 08:26:45 -0400 (EDT)
+	id 040056B0099; Tue, 28 Jul 2026 08:26:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2FED26B0099; Tue, 28 Jul 2026 08:26:45 -0400 (EDT)
+	id F32C76B00A0; Tue, 28 Jul 2026 08:26:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1EDCE6B009B; Tue, 28 Jul 2026 08:26:45 -0400 (EDT)
+	id E21A06B00A3; Tue, 28 Jul 2026 08:26:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E78B76B0096
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 08:26:44 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 76A7E40368
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 12:26:44 +0000 (UTC)
-X-FDA: 85038109128.18.D2D3738
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id AC53414000C
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 12:26:42 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gVs7BNFg;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A79076B0099
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 08:26:47 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2C52FA1499
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 12:26:47 +0000 (UTC)
+X-FDA: 85038109254.30.6A72CAE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 750E48000D
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 12:26:45 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G3P1nSxh;
+	spf=pass (imf30.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785241602;
+	s=arc-20220608; t=1785241605;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=ayU/6lHRgKTCK80O1xUHS/LH2s1bomipfuf9KK8K20c=;
-	b=H4RbTXkcLesyBrQWnLD/m/jyBSbR380Gp+0dKZ2Rw535N6e9f5qr0EfcYckP8PnVefW8Hv
-	jl0Kzviwn9Nb6qLavQcOv3fGYjYqn5yL1gYb6YGf8ZDiG1QE8cqxPXYKwibNb2hCF7LDkH
-	a3nhUwd7ZpDZyRUpR8hUcIIycR8hstg=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gVs7BNFg;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=hOO/fvJ7DG1Qmdj7Yuqex/IBD7jlB9A1fJljGKz7X10=;
+	b=a/zGLTxz1+NTI7jCLTMj3zAzTyukSF4tdP9AXmbWeWHniiSRStZLcoccEDe3L0zda+rJAZ
+	pNY58N0aKk5hkKwFWC6KdmKNz9+JHQqgmSyz7ZLpHgIYTfQb98vJx/Rylf/Lk9d1H7aeYC
+	3KoqGAoNQXXMh5C3tHbH7VroAfYXyCU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785241602;
-	b=lCSCf/B6KtqIvJeahEEaiuduOuTurBaMh5w86UWGgyrb6J9NoYauIghJC8QHnvpVTY9nSa
-	+eTfguIxxbGbXTRjCksCJbMT5hvhNdvf8abD8+WgyRzXzDmR0Sg5Lt/vfhll+6uNqhea9S
-	u8L6EnCEH1bOMD1Ypk5sx1nKnO/WK+k=
+	t=1785241605;
+	b=tRgnlWJfCSuxXAt2w1YPrkMWhlRMpWTQdZMLGKh2rkfbZe2HUBFHuc6cA+veGuGMBJpOql
+	zqncyKdrTCZMJpUvel74tbk/F5dNWWJ7FcWlzLFgjPGcGtMesV8Z55iaqgAKflBbIeJSz6
+	MmS2jyPerkBOMSc4uQAJtrFPMpjesPo=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G3P1nSxh;
+	spf=pass (imf30.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8BA554171F;
+	by tor.source.kernel.org (Postfix) with ESMTP id C7C4260A9B;
+	Tue, 28 Jul 2026 12:26:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E50FA1F00A3A;
 	Tue, 28 Jul 2026 12:26:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E58541F000E9;
-	Tue, 28 Jul 2026 12:26:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785241601;
-	bh=ayU/6lHRgKTCK80O1xUHS/LH2s1bomipfuf9KK8K20c=;
-	h=From:Subject:Date:To:Cc;
-	b=gVs7BNFg1PY7V4cwmbpGOMGSnan6Vw42QKmoSZbJT30480I/kW+/T+jtrYnn8OulU
-	 o2CUtBZrNjG0hUL9HmQOgcj1b0g6HC3FGxCr5zHYzD4IVdbuZHZdG5woj1zgvrkbkX
-	 zwVHguBQ8RKvaUS8JBAfhtVqhKjaidUOFTsavBSTyK5+3vUp7HUABpbVxMcaPNPh8/
-	 GNkDCT/HsX6BdKizy/7dMEWwwGTIRp3SskMTDqkl42FYAUA4Fy4cSc/NWfgEy5k6J8
-	 28qauiv47nXKp15BNwRZals5F6aeKKZuaP4IEq0J/lMcdagWCu04NugEXajOf79bFG
-	 lnHhQQe2eWFOQ==
+	s=k20260515; t=1785241604;
+	bh=hOO/fvJ7DG1Qmdj7Yuqex/IBD7jlB9A1fJljGKz7X10=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=G3P1nSxhVPxurB0hXGcymQNIEpID62NyMfMi5ia4hR/TCslXYZT5CRps4prOl91oj
+	 4qQ1TMDOeg3iVpKehzT7KCgOaBJfYnTzQNrpg6A3yMrZhlQk5W60GS3xyPiXXYz9P+
+	 ZoVc8BsBcwuksx2Jq7eBm3G+48T/UpoDv0wBjxvmxfPzK8L5nXCpJ97zHmtAUFaGes
+	 bW3TLLazliO4JLuW6FBnBHH92mTQbcP6M9Ajo/+a3CjdpyYskDeXvDj9GH/BRsMaOt
+	 fc8fsXr6bw/l1PdRxois6hzsL6fRxDMlzToxV2X4ixW9Y5O8CC75XyxjkXI5fcfGBE
+	 cOO9ksEZjwrOw==
 From: Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 0/2] binfmt_misc: don't let an 'F' entry pin its own
+Date: Tue, 28 Jul 2026 14:26:32 +0200
+Subject: [PATCH 1/2] binfmt_misc: don't let an 'F' entry pin its own
  instance
-Date: Tue, 28 Jul 2026 14:26:31 +0200
-Message-Id: <20260728-work-binfmt_misc-selfpin-v1-0-74df5daeca5b@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAPifaGoC/yWMUQ6CMBAFr0L67ZrSiKhXIca0ZVdWpZAuognh7
- rbyOS9vZlGCkVHUpVhUxJmFh5Cg3BXKdzbcEbhNrIw2R12bE3yG+ATHgfrp1rN4EHzRyAHaqnJ
- lfT6QJlRJHyMSf//p5rqxvN0D/ZR7+eGsILhog+/yNJPsN2Ndf+Nr0RKYAAAA
-X-Change-ID: 20260728-work-binfmt_misc-selfpin-d55b1794f0fe
+Message-Id: <20260728-work-binfmt_misc-selfpin-v1-1-74df5daeca5b@kernel.org>
+References: <20260728-work-binfmt_misc-selfpin-v1-0-74df5daeca5b@kernel.org>
+In-Reply-To: <20260728-work-binfmt_misc-selfpin-v1-0-74df5daeca5b@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
  Kees Cook <kees@kernel.org>, linux-mm@kvack.org, bpf@vger.kernel.org, 
@@ -82,22 +81,22 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
  bpf@vger.kernel.org, jannh@google.com, mail@johnericson.me, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.16-dev-cca4b
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2423; i=brauner@kernel.org;
- h=from:subject:message-id; bh=ddAWSVNTGaeuz2ONnKE+rwJz9pZUjTBmmLP2VAVbfC4=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWRlzP/XwFq6a84W4VNne282vJziFcf1/AM7V/uDjHmp0
- lqLEovWdZSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEzE+g3Df+dXPjKK+z6kmrgX
- 8un4KMWmnFUomHJ65VGfD9s2HTg1lYeRodP89Rw+ltKi7oAHGi5WytO2OM32CF8ga86apz6jbes
- 1HgA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2835; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=p5zN/lX5gZshphxpWwSeheHCCXVxHIFs4aMnBTfCyPI=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWRlzP8n9UuLk8El0DM516b0iUPhgjfZNbPEZuuu/Rr59
+ fiUmA1XO0pZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACZiocXw3+fktLR3N29kXE8+
+ ve+5tOPuGA41zXAnq+XM1/8Yv02ZfoCRYUXGq0cZK3TPVwibbvrKxijkJRBUEBE5Z6PsP6fi6mU
+ zGQA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: AC53414000C
+X-Rspamd-Queue-Id: 750E48000D
+X-Stat-Signature: bfn4gdqj5s1e8jt7xtogksm4nujkah3o
 X-Rspam-User: 
-X-Stat-Signature: kiunygaiybmuixr11686ubsnrcmx8aw8
-X-HE-Tag: 1785241602-233405
-X-HE-Meta: U2FsdGVkX1/9wiekLW+7hwOen3Iahw/V/BGONllqDpVcaosxM3KGn2lH0dcFZnsrS109B5mxoEaSgLrYPiJmr7wYlPPPUfn14yuOZMURYnbpZdMWvE4KwA6GgW4t296IJ4rlsxIRKZBO2Az66scj56WGm33zKCWtabwR1+kFq+26Vk7gTgjZlErHpXQO2wtAAVHlNWi5IAJeyvmX9efox6EsAisijguxVyXiICOYzVScRmYp/r5DNmx2Br/faYSF8MjAC0L982gZkx8XD54cplLrdGh6OxHyrywKvnb8Cs6DBRmPSUF3epEd83oLJsxx/AhN3e2qbWl4uAy3bejCEKlX7dLrtApfQDTrUP/nbPwFgseo2eepUx5SR8IieIUj9QXAK38dgibW9VDtthRfD+23JgQQHVX2sQvHOGIuGhmhQuojruNDvGFp+naGnFBARsvJTyEppOMXXG4T9/JRckUvYHGWIIgQJfi452s8gBVJ9xUuOIpNjAES156pTbxJkxOtldnNdeTpj6H2I2rJHiqc7mTt7hZSOsTZ0udYIuaJTFe1UDENrV61j5hMy4d/wu+QAXBQCPAfhdWnlXV5u32BanFKVZQ/NOu5P6gxCMl3LOx611S8ER4DemIVVzlfNENLD0Ef4c4Nct4QtBDMItmg5BadLCt+RxXxfnbqPyPe37J/m6Qf+7jzJPZ7D8svn6VVWMkLFloWjLk6/c2v1hGDBqyQX5JZ0XmGR4Y0H+oHLa1PGp+nh7awCDz9wW+U3MKxFVgQuV3igVG5vOWDFWZU7sX7TXuX7aSpJQHNM/1jRk+7/haPMMOMsJ3htcPanF9gP5sGWGiBnx1tnbsMdmOVW4DcG/Omqjk0ORJvZ2mMbeRDEsxAMVSsmvSWPV00Abdh9fKAbb+XHopvbH4oLOECTikwkAoEfzl9UK+hxdxMkawjmtcxiaSRV2YeeoGeZ37jSH21CfI4chRbGL0
- 2jmvUl0G
- BZMyxkdAIrB/H53bf4LO3LZWCEH5pTBy76QuviUbp3LRcoigt+XVjgnAC9u1okGda2F4exiX+4D0XzI/svHYF85DkmTTcWEHOYpFtSLf4JdZhtW7Ex32g5B3akR3DtZkmQPWrx/qCpgAmFokK0Tkn3pLa9VbbVEZReWOgfyTHWv2hzFV3bsn0/PfV4KoqOTDJ6rERS1018mFpAXnP3KAUTEjLbQr/AqiTSlx7281DhNJc2RDpt+6UpG91c0G5HhdGIdHaaVx3hl/fZbVLTfRAmpME6mH8posPXlzhJk9WSL3kKfOLsnQQQC4y1Ol2eIxsZlmvu6UFFwV+JAHqgbQtA6zTX0Yl+qqPTVZpaJcYusa6im46YrBbrhLXsXHSULotQ6AmUodo+VDcs+Y=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1785241605-165706
+X-HE-Meta: U2FsdGVkX19jbKK/PAsWBi6GMhl/qosk+pvlEqBY0CH24dnLvzVZpR0tm6qJ+EBaANQwp6wbwd+vuwmpzgKalM70+8TaBMPP2qJzMm4lXA6BJCa2Jf6YMJ9UTrFDZks9mCCXsr0p1KzB+2ZoskaYh7FO7yccMNeIfZPvyQC8GYm+8BaNCEONETUQFqib8i83SZFOkgMj0fCBD3MHUYg+P1La52rB59Aige41hK3QYxPIAKclO/A0KdqSlsadKt2wALHNSiaHBEF9HS482TapznX6Nw0lvjqgpugls+PKV1Askyxl7dzUEzigv8KuJcnICiK0CXrRDISn31iSvmG9alde1xroDEn9zVqCZ0pDVhC8KXNzDGLPw8+h5O4Zx6EF14s4wveVwxd/1fi9L07ddlmRbFksJXSFtIpsNuYT/y6iHaNHMRRfmbnkowjo9xrV49jhRLbgorZwSdmha1kwidwoLUhwoNeuJ6MsiMXHt96hDn4jHlwrltf9JMvBrgxlgojgrBhmD18/aPmnCMeEo42Y801v7NDmfUh1Xl/dHTcNLiytHQmq/8krjAo7Ubs8rHewKMcmRaCMKSbs82Y3yCdnFZSzUp7Jhv6+2i8HSJAmEX7I6qQ/3z3jYIhIPDlSPqd9Wg0prXeQR7ZvfDNwQlk+JEtst8fuCyK1cJpFNu5u/lIwD8JD5Ul7zGdhPWpMTh2GivBhbwYrYKae8oslj4P+0E65A6s0EMvPtLSCfcwED/fYp1FnGIPpcaz4DNaF3k7if7WfAjBcNWrVgVqrjMJFmtHEqXeBQX6VdN0HllfhPqKrVq1IsWf+KHZW6HbD+ejHInYGb2mkvfBTVlc8o4aEFX4hGw5+pss5a+qHbo0hhGfKS4uBa8CwzZRxmMRVoaxHeigdF9kWABguz04C7gWBX8Jr912iPZo8lLaNitT65PjveahQXLI89mCGb1PGevwhflBtcE/ACSsWShc
+ B8ATloYa
+ L2jcz94HC+aK9b3AE3htnXOfhZuXdGhuwsX7jYjT5rxvLsl6KBmoFDpKRYwrRUaf4q9xBhaInlycku8jsnSJMv+dR0/1bPEKHnA3mjo4lb1XEsU2UlpAFRd0aVa9IqwsTtuTcVj1sqb19iQOk+GCxkzKnB7MXHCvYEU+m4oqQGFdGRXfR+QyhkKq3k/cjKh6U88OPwLLmCLVv7e5YAjI1doeAfWrD71Le1K2Oo4zKU08T5CflUeAsLBkHa0O7S2hv0n6c2E6iFOtxUPwfBI87Mkv4wOncrzpLwIrKx+oEvLJ4X8DDJW3re96fL3cgkNF8z2x1qGazl3z1tsuaz7IoOmY8COjuM30lq0otRmKEZzhr9B221tz2P793BFl6CZPLgOmB341ksf6zQjU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,19 +140,34 @@ The stable tag is narrower than the Fixes tags on purpose. Before
 sandboxed mounts this needed global root against the single instance
 everyone shares, and the change doesn't apply to those trees anyway.
 
+Note that SB_I_NODEV is implicitly raised for userns mounts but raise it
+explicitly here as well.
+
+Fixes: 948b701a607f ("binfmt_misc: add persistent opened binary handler for containers")
+Fixes: 21ca59b365c0 ("binfmt_misc: enable sandboxed mounts")
+Cc: stable@vger.kernel.org # v6.7+
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
-Christian Brauner (2):
-      binfmt_misc: don't let an 'F' entry pin its own instance
-      selftests/exec: check that a binfmt_misc instance cannot be pinned
+ fs/binfmt_misc.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
- fs/binfmt_misc.c                                   |   4 +
- tools/testing/selftests/exec/Makefile              |  10 ++
- tools/testing/selftests/exec/binfmt_misc_selfpin.c | 158 +++++++++++++++++++++
- tools/testing/selftests/exec/config                |   4 +
- 4 files changed, 176 insertions(+)
----
-base-commit: 744c5dd7c3c92dc7cac84a028934855cd9536a3c
-change-id: 20260728-work-binfmt_misc-selfpin-d55b1794f0fe
+diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
+index 5de615ca7a75..47aeb2b68d3e 100644
+--- a/fs/binfmt_misc.c
++++ b/fs/binfmt_misc.c
+@@ -937,6 +937,10 @@ static int bm_fill_super(struct super_block *sb, struct fs_context *fc)
+ 	if (WARN_ON(user_ns != current_user_ns()))
+ 		return -EINVAL;
+ 
++	/* Never exec off this instance and never let anything stack on it. */
++	sb->s_iflags |= SB_I_NOEXEC | SB_I_NODEV;
++	sb->s_stack_depth = FILESYSTEM_MAX_STACK_DEPTH;
++
+ 	/*
+ 	 * Lazily allocate a new binfmt_misc instance for this namespace, i.e.
+ 	 * do it here during the first mount of binfmt_misc. We don't need to
+
+-- 
+2.53.0
 
 
