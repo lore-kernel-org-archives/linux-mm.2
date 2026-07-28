@@ -4,133 +4,169 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5618EC54F54
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 19:23:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6F4AC54F56
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 19:26:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 52C566B009D; Tue, 28 Jul 2026 15:23:47 -0400 (EDT)
+	id D22526B0093; Tue, 28 Jul 2026 15:26:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4DDFE6B009E; Tue, 28 Jul 2026 15:23:47 -0400 (EDT)
+	id CD1586B0096; Tue, 28 Jul 2026 15:26:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3CBA06B009F; Tue, 28 Jul 2026 15:23:47 -0400 (EDT)
+	id B9AC36B009E; Tue, 28 Jul 2026 15:26:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 10B226B009D
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 15:23:47 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9EA2B1604EA
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 19:23:46 +0000 (UTC)
-X-FDA: 85039160052.27.0838460
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 9675B140004
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 19:23:44 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b="JcZxpfz/";
-	spf=pass (imf26.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7C2E86B0093
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 15:26:29 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 10A07C0453
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 19:26:29 +0000 (UTC)
+X-FDA: 85039166898.18.31035AC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 395824000D
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 19:26:27 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wk+Dy2Ld;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785266624;
+	s=arc-20220608; t=1785266787;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K8qZfjaxhGbSgiZnpnKGN1HzCLFjiwC8FeQ/0VidGnU=;
-	b=hIirzlWqJTWk0uC8H1+s7sbLRXTMyi5kbAyKBbXZy0yvX1+Xz6U2WtaXn22qAesIdUYlhP
-	pztSZDRvr0GMpSPZl08YurUZx+D4s2ZWtO/xzZilYTYMT9twTLbWGxhlLSKYR4yWHLvcNm
-	gr0Cx5tbGteJ3qtskFJRfyCJ3uIgIGI=
+	bh=B9zPErIOkKOvWU4JJG+dspgkrLmx8WSjgAIhjf1cHOk=;
+	b=U5KoHu1IScXvlTX3d/CEfdS1JyDU+QH83kWyLNo1acoZZoIPJoJEMczGYFSkR7ZNU0AVtw
+	omm4wsbwQ3u8cvL1WqHSElDeS+zcawr74Ci3LdkJcWM66FxFqqp1hA8/4C5apVGxXxLRP4
+	fvVGuPtKVf7odPWqvb2aHUqLYBQ1NFA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785266624;
-	b=UEk3Splv7Layz0xMv7oz4NYuAboudjKrVIXnQ+er28Ws97DxyZjGjI5XPMK+ej5hG/s7Wh
-	xDa8J5MXruM2Ql2WO5ryQ1mFeWKO/UoHxuE9TrT/luvonTFqI/VZfrcXce2MroCV/9Nzwa
-	G4PtL0RI9m6GjHgBuaJ+JMeiAaPb2Cc=
+	t=1785266787;
+	b=zVHosFJFh01ccAyc1gg3nReA+RWDkCH4JezBEN7Po6RPrjskZsOFOoVH56qcRbbnE5oNMN
+	DELW7Gb4HDMg3wJXrJuks+RmqZ4tlISZNvN+7UM+caFFb5CIFSJPCjjFjKdI8vjohb0DXr
+	WLpcpNqmVMzQ0Lb4aIIcP1ejC+VGjms=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b="JcZxpfz/";
-	spf=pass (imf26.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-47f633e6058so230197f8f.0
-        for <linux-mm@kvack.org>; Tue, 28 Jul 2026 12:23:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1785266623; x=1785871423; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=K8qZfjaxhGbSgiZnpnKGN1HzCLFjiwC8FeQ/0VidGnU=;
-        b=JcZxpfz/8hEm9Zgfx6WZn7X/9rBTDCErfG/mZohHM9Od85Bl10MJN5wW2gr09tbRX0
-         wuIeO2b92mgfMYTEW3ogFjtfZL/oR06nJBHFfqjbdsyW1QkjNQV5zaVJaSeXclesiWNe
-         YDP/wmHo/+MJjcWYmOQBwoc9/kg4V39QRYU+Wk9hJz0RcX92gnyrW4osm8XHC6eY4ewI
-         /HVNJbR70OLbha3KikJHPQaNYJnWY2oa4VsY5EbqXWDSLhWgZiieiXHefeBaeFQz+S66
-         nabSE8yCzSHIWJ0QZL04CZrQ/kgAQjoEGCrBav2mSvOytMCZBZA7646kYeojx2/t/d5n
-         cwAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785266623; x=1785871423;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=K8qZfjaxhGbSgiZnpnKGN1HzCLFjiwC8FeQ/0VidGnU=;
-        b=SSRU+Dr3JDgyQqaChOtNi4O38ZM8lpUi2wZQVy379O8mf890sE2LxoyiG0UsVWHK1d
-         IX4us+x/P0nXTmAtGORic6YLPIF3UzFu8rr/zUEzO/bvNPxeEI3tSvRHYe5nbR0gzza+
-         IdfidH84xJj+BNdgo3l15xJq7iU6pPDQpwi5Q4i3hczM00aqki9qwcz50nQE3w1RtAHi
-         3LTtSv+GJgmTE7Zjl+hH+KnTs+2Hmfjkqi/lzHnBVtBrXhHbQ4Z2I/2SKMEONLAdw+zY
-         GMcOscauOgjNEILPoHSft/QiqYnwF95GjK2zp5GPk4KyIdwxlX4o7Tu1PpRHq0STTI4E
-         D/lA==
-X-Forwarded-Encrypted: i=1; AHgh+RrucDO7AuNHcRufq94hpXeoKKm9MvhodUfB2enQpZ/wB7Unm295vLVpO3jHhRfPBAbmHGw+WlcfAw==@kvack.org
-X-Gm-Message-State: AOJu0YyQ0QjG8VszpL7Xg6cqfKyCP2/h7+BzUc0D/FkGEa93olGnnyah
-	WFs3BIAJQnLl7PuZ7YY1RRHtvKPx3q5c570POUjolmgHPy3bvjZTbPM/FhB21s/3x/k=
-X-Gm-Gg: AR+sD13N+SZI2GLc0ov/yfBMAb8CyivTVR0uB007MphpLhhaJYhJYXX5lH2ZB40wIM9
-	cpqfN2Vv0ATLgyecSciWflxomcy4NqQ/RNEqE2RvChlCMWeCkcEL2SK/XMWSEv5mTy562dOy1ef
-	ZtyTFNttbSKjv9SKeBqVgosQXAovu8n7PE4+BI7rfmphgmtyEp+9mh2eLlWCuhTdo2TugS351+v
-	AHkPOkFxVrwL7ohcyhbjU7CMh9t5D2hZlW65ouGFq05fmOezNPIybrCrS3zq0WWWJFTMxWDlrUX
-	Tk8dYbD7S0hCfzCbQg4vBbmRyU4O/CHDPpmKEJUhYFhemBuD1vYB+KCf6njEOFEsMa5zW0QO47u
-	D9YgNpiegrdDmTWWa7rDs637lHXAan+wQmw1/Bli4MLoD0nN8fYodbb8FqUeDAVFBEOKSVCeOh8
-	L/5QONaAmbsJ3433ONlaJMNcVSuFN3NwcfpIyPdKRAEEds/+x1RzKyOz6DHMrLhNP2IpAn
-X-Received: by 2002:a5d:5849:0:b0:47f:8f8f:e494 with SMTP id ffacd0b85a97d-47fb1ec88d4mr4116620f8f.2.1785266622998;
-        Tue, 28 Jul 2026 12:23:42 -0700 (PDT)
-Received: from localhost (109-81-83-7.rct.o2.cz. [109.81.83.7])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fb6b189fbsm1268107f8f.25.2026.07.28.12.23.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jul 2026 12:23:42 -0700 (PDT)
-Date: Tue, 28 Jul 2026 21:23:41 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Rientjes <rientjes@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Usama Arif <usama.arif@linux.dev>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Darren Hart <dvhart@infradead.org>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	=?iso-8859-1?Q?Andr=E9?= Almeida <andrealmeid@igalia.com>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Yosry Ahmed <yosry@kernel.org>, Rik van Riel <riel@surriel.com>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org,
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC] Robust futex causing memcg OOM storm on exit
-Message-ID: <amkBvRSJm5rgiV5Q@tiehlicka>
-References: <20260723001908.4046643-1-shakeel.butt@linux.dev>
- <amds50dIVOiQNz0k@tiehlicka>
- <amd6N4DVzZkl90cs@linux.dev>
- <ame7Q-0eVRrtt34j@linux.dev>
- <amhZ645Nhj856JfO@tiehlicka>
- <amjeUV3dAn7KPQgK@linux.dev>
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wk+Dy2Ld;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3F73C4404A;
+	Tue, 28 Jul 2026 19:26:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55FCD1F000E9;
+	Tue, 28 Jul 2026 19:26:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785266786;
+	bh=B9zPErIOkKOvWU4JJG+dspgkrLmx8WSjgAIhjf1cHOk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Wk+Dy2LdjSS++FUG8ogDF9T7pT+EAMTNcB05WeR4hXNaXglCVPisWY+LtMICE7Ccn
+	 wg89k4Kvgy+wj1Z+MYeBAhF/fpDBT5QBmapIlx+G9nPNFi+PtoCZcgFGdFDnLbAXt0
+	 xB9tb7u8wQORuyWEL/5BRGQ2JQ2k9CqZ2ZVyyUj8/EZCr1Qepptpcml/7TGdY1D8nm
+	 GSTIcvePc1fP69qF+FthXNV/zsYPQIg7psEdREpgXn9BbFwQhb7/ZitQjH5BdGIeL5
+	 10/HbxBCKZnA9MQ0tzrL6PXNOGh1zI0y/tMqhlx3SWm/HNYuS05o09qLSvFYiNKTIz
+	 dUsn/WiERIxzg==
+Message-ID: <2c19247e-bee6-45f4-a353-2fcc60db26e6@kernel.org>
+Date: Tue, 28 Jul 2026 21:26:06 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <amjeUV3dAn7KPQgK@linux.dev>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 9675B140004
-X-Stat-Signature: i9gztgdp8g9munftqa7br7944d1fu8p3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 00/11] mm: distinguish PTE table storage from PTE
+ values
+To: Muhammad Usama Anjum <usama.anjum@arm.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Dimitri Sivanich
+ <dimitri.sivanich@hpe.com>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Helge Deller <deller@gmx.de>, Juergen Gross <jgross@suse.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ Nick Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
+ Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Uladzislau Rezki <urezki@gmail.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
+ Eduard Zingerman <eddyz87@gmail.com>,
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>, Ingo Molnar <mingo@redhat.com>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, SJ Park <sj@kernel.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+ Miaohe Lin <linmiaohe@huawei.com>, Dennis Zhou <dennis@kernel.org>,
+ Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
+ Mike Rapoport <rppt@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
+ ziy@nvidia.com, pfalcato@suse.de, agordeev@linux.ibm.com,
+ ryan.roberts@arm.com
+Cc: linux-kernel@vger.kernel.org, intel-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, linux-parisc@vger.kernel.org,
+ xen-devel@lists.xenproject.org, linux-mm@kvack.org,
+ linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
+ kasan-dev@googlegroups.com, linux-trace-kernel@vger.kernel.org,
+ bpf@vger.kernel.org, linux-perf-users@vger.kernel.org, damon@lists.linux.dev
+References: <20260727164715.2866609-1-usama.anjum@arm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260727164715.2866609-1-usama.anjum@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1785266624-581385
-X-HE-Meta: U2FsdGVkX1/ApFTWIw65fgbJ6Monq0uR9IU7umBMOqvS1TMgXrvD4sENYVuxn6E6TbokCKVQpKLyTecinOndnr75A4vBuSeEftM52fTUh1ELZiEOzRhfRLKFSzDJYQ+FdBNu672VA8sJZj0SwAvHy7AOpXz7Z0dnsVEvAMoSPHTY5sdQ3fsVndpCNJYPiWWjkkO9Tmw/ttEpzHfGYjftVxpGypcBVkziLqxZjlKcwI/2gaq/Dq8iy64YLWDUsGRPxyfoDAbcutC6osZ+VyKoMds1MUnjKAmkD6Q+MD/dXQcCtsuGYJsJ7yaldB5yupRM0VjfbB1sskJhTg/uK2fa87HyP/wg6TzcIVjYei7I5UkY0WnjA/u+AyAOzAe1ljOI5bo85mOFnNBFY1WQQze799g+si+KNBKj4ngI8gvMM3+zvx42R7MEpnGPGyXzjwWEdogXZwDR1n6Y3Aj2kwZzzbZG291LZIt38mufUo+Sblk9yIkQ+AEtBaFd4DAljGtQ+QcAXrOAh4ECHgoMotTqslSPiEe5D5wPMCt8vgSw5JmX/pcqKKrPNglD/tJKPAAZBEUmqhNdmTQW9UYV39ukRJr1QdhN0gNJPrDQmvN6rfMGRUNAdzItv//TBJnM6ymDm2jCoHFwZN6T8MdKaFCTPcHk65W6K3wn3+4G52R+P9REjH5sM8UgPUyFZzUqJt88inJmsLovQUbYMLVvbV+2My4IATNGOhQ5+Osn59cjkBK4mc4pQ5yOQuovkTrA3KPrrxO3TssJRKDR3k1lVMV8Jp/4TKVP3SM197jajUcJ8QYK2nIelrsTYMW+QsyDPXV4tXd28sywge0cLrA0ufuI0bgKPAdcq0A0A46o5aUHyrt7mvFgfqftaTbSp8ABIlET+HfdCyEz3GfkTdjNAaCTOyWg7Cb+7a8dMxAZSv21LC5p2oOrgMxgugHSxlJyEmqay+0wMMsdMeR6zGHVd7b
- 3Po/RbXd
- 44cPdvYD0IiBr8xacFyrn17Qk4xE7YA/ZghuVekSLoO9jiIlcY6ru7e+g0MsIdcp9Yi28o6FfnIiJOxMQfY1txfOhvcuwMONvaC0lqKwrGBlyPByF0+ESL1TBYsSydyg8ga09JFkRWSEC8fk0MbtNw3r1qt6peYfxPKNP+iAGvzliAHaByo04l5MCvDT1j3n378CbYtWZkkS6c5T3IWuoRzSoUJwrnyxJgsr+iuKO6zw3THnzf/NbsQln5Y0zL905wv1nkuplXMSIsIHIt/WbUfm+Rf8UJC7Sq4XlKAoEe5+Dc7JtOk0OvimWN+qpweOI7/VGHWMgPYgXGRNRmlGjzAswenP8TAriVph7b2IylftkSWIkCvUdzvAPPESnPT4dV4ImoFuwUBzH2J3akxYrEcMNwC9AZ4ZIGfPobMRysnIpRBTNHRf+z8LXoB7Pre6xHTBb
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 395824000D
+X-Stat-Signature: 5jsgug8j4d1e4o1jifaeo5rs1768io6a
+X-HE-Tag: 1785266787-331398
+X-HE-Meta: U2FsdGVkX1+AtY6zV/W1L/98ZPHk+61pMw+WZgqqHes/0SqeiHiC28LV6PoZlFxU70uG0Y7tP36xdeNemnuPyiVEIthIoXeJaBaGm8cAc3KO6W3VZ6pE5cxYhupspsn1QJmq/Dn/Uz32+dsFn5+Fkk5yrvbKXfodO79JiRyKbnfagbJxpOZAxqcUrgBNcUHjzDd2Ebq+PLYWvKpj6atPq+tR6IyczKbWHtyHTGJHa1DPU2JZOTGe3W0T0JwAaBmHiolm1PcrSj8zmqA1bRTx1Vuas2UIVZckghCA6Po0UD4i6+sFGRZ1v4a0jbgzOCD7lmeF1rSn+Q1j9kOedEIg+jsBfQhCB/LgfiIbrmpfz6oxJlZG74F5cxmTxG34U4d1/o3HcnbwdvRf+npVbJnGCjTmKWBfBgaG49ohL7tBLw+BTNuSDtsdJoFNWqnypZh1ItlZ123wGIEuoC6MzHyw6j15v3CsHNy0eVF9nEQ3ZxcRCO1IEiidnl1pAZDdBUgM/+9uJYXdfzyfpf3DOGgadjwZjjaBpkqfvjgjf3FGFHNSjeNnGsu+YpQJ7Mvc4kH53xAdSO9ePc/o7LTg5iSgjl9fIlIPW4lDp3DIacAvcM4OjApDhL0chsuySJy0MvhfK++aLEpiuJnYJDZVHkrbSoWPvOo9Aca+w74MHZYiwtE0g9FnUcfQ0NiVIXNYJypqjPxQq4f3gZnAiY9gUw+yGe2E62ZoUbFTxNa391UobixIKJ4gcpW8C8tI550bJS71OMzTc2Dr797SaKyqYPPI0UsY5uZVCqH4xS1gx1765y7vVqck5LkCb1i3L0XVyy1n3RjuJSR0qKndKRzqQm5nndFs39lGpT/0FdBIbh9Th/MHjELYVBrBugXP3AH/ixzjPg9zEBo55GoDITyt5GsqVzsWvCrFR7d3rZfsLvZTN7rjCfKbU5O8pyOiDd6Vx5LzNPBsJkILPp1IM1IZDy0
+ s5pnzsjf
+ M6paDq3Z/HgsbOoxffhe9zsxBlmjWkJpzX6GaIbITmslycHH/Xmkb4rtLZmo++fWYkLC1U4rRE0X2nA2eZeBh1SKcAXIE2qd95dQRQYtrbldu1afVy1snHab797KuNR+4OoeuKX7o1SsvNnuyYUu8xCOl/kB7lFej+XpRxUnImIR2ZA+ZrfDX7V+UkOfmRadNBg89mzTJJQgvkZ4l3a8Gh/zTMPxfDRVNOdmg+dff5fEjns6p7qa57ybSPFAhFMOnJFHH8kwmYAquSKqoy2HJ+PJPrhWKJJJX/b0RglkNG7nRfCEquU6yYJpz5xJwHWPzvSbKVh1olEr/0fI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,105 +174,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue 28-07-26 09:55:21, Shakeel Butt wrote:
-> On Tue, Jul 28, 2026 at 09:27:39AM +0200, Michal Hocko wrote:
-> > On Mon 27-07-26 13:48:58, Shakeel Butt wrote:
-> > > On Mon, Jul 27, 2026 at 08:38:37AM -0700, Shakeel Butt wrote:
-> > > > On Mon, Jul 27, 2026 at 04:36:23PM +0200, Michal Hocko wrote:
-> > > > > On Wed 22-07-26 17:19:07, Shakeel Butt wrote:
-> > > 
-> > > [...]
-> > > 
-> > > > > 
-> > > > > TBH I am not entirely happy about this approach. It effectivelly reverts
-> > > > > a75ffa26122b ("memcg, oom: do not bypass oom killer for dying tasks").
-> > > > > It just makes it lockless. Assumption that a dying task will do so
-> > > > > quickly and with bounded resources has turned wrong on several
-> > > > > occasions.
-> > > > 
-> > > > That's why I kept it as RFC :)
-> > > > 
-> > > > > 
-> > > > > On the other hand I do undestand the contention issues and I can imagine
-> > > > > that the existing solution doesn't really work well for huge thread
-> > > > > groups that all end up lining up on the oom_lock just to learn there is
-> > > > > nothing really killable anymore because they are the oom victim...
-> > > > > 
-> > > > > Would it be just safer to bail out only for oom victim threads. This
-> > > > > would narrow down potential runaways for oom victims which should be
-> > > > > more limited than any killed/exiting task. It would also give the oom
-> > > > > killer/reaper chance to work. WDYT?
-> > > > 
-> > > > I will give the following patch a try with the reproducer I have. I am still
-> > > > improving the reproducer as I am still not able to recreate multi hour slowdown
-> > > > yet. I will report back once I have some results. 
-> > > > 
-> > > 
-> > > I have some results with the reproducer I (AI) wrote.
-> > > 
-> > > Setup: 20k threads, each with its robust_list head on its own page in a
-> > > large anon region pushed into a zswap pool (writeback off, so it's
-> > > unreclaimable and pins the memcg at the limit). On the OOM-group-kill
-> > > every thread faults that page in futex_cleanup() -> do_swap_page() ->
-> > > swapin charge -> memcg OOM. A separate thread holds mmap_lock for write
-> > > in a loop so the oom_reaper can't reap the pool -- matching the host,
-> > > where the reaper was blocked and the memcg never fell below the limit.
-> > > 
-> > > I tested on next-20260726 as baseline and then tested your suggestion over it.
-> > > For baseline ~48k no-victim OOM invocations serialized on oom_lock; ~40s to
-> > > drain the 20k threads in a VM (hours on the host, where each invocation
-> > > was a dump_header over netconsole). With the patch the dying tasks stop
-> > > entering out_of_memory and the storm is gone.
-> > > 
-> > > With the following suggestion, the threads of dying tasks stop entering
-> > > out_of_memory but the exit time doubled as each thread has to decompress the
-> > > page from zswap.
-> > > 
-> > > 	if (tsk_is_oom_victim(current))
-> > > 		goto force;
-> > > 
-> > > I also tested by replacing goto force with goto nomem and the exit time halved
-> > > i.e. ~20 seconds. Looking deeper it seems like each thread is still going
-> > > through the reclaim loops.
-> > > 
-> > > Just for testing purpose I moved this check along with goto nomem just before
-> > > the reclaim fuction i.e. try_to_free_mem_cgroup_pages() and the exit time falls
-> > > below 1 second. I think what we need is to detect early that the cgroup is
-> > > unreclaimable and the threads of exiting/reaped process should just return with
-> > > enomem.
-> > 
-> > Do you mean, something like this?
-> > --- 
-> > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> > index 6dc4888a90f3..66f1eebf8c22 100644
-> > --- a/mm/memcontrol.c
-> > +++ b/mm/memcontrol.c
-> > @@ -2648,6 +2648,18 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
-> >  	if (!gfpflags_allow_blocking(gfp_mask))
-> >  		goto nomem;
-> >  
-> > +	/*
-> > +	 * OOM victim still needs to charge memory to exit. OOM reaper should
-> > +	 * help but it might fail on mmap_lock contention. If the victim is a
-> > +	 * large thread group then all exiting threads might compete on oom_lock
-> > +	 * just to learn that there is nothing really killable anymore. Bail
-> > +	 * out early and fail the charge to expedite their exit. They are
-> > +	 * considered fully reclaimed by the oom reaper and they shouldn't contribute
-> > +	 * further charges.
-> > +	 */
-> > +	if (tsk_is_oom_victim(current) && mm_flags_test(current->signal->oom_mm))
+On 7/27/26 18:46, Muhammad Usama Anjum wrote:
+> Hi,
 > 
-> I simply had tsk_is_oom_victim(current) check here. 
+> pte_t currently describes both a logical PTE value and an element stored in
+> a PTE table. Consequently, pte_t * can point either to a standalone value,
+> often a stack copy, or to a PTE-table slot. The compiler cannot distinguish
+> these cases. A value pointer can therefore be passed to an interface that
+> expects table storage, while table storage can be read by direct
+> dereference instead of the architecture accessor.
+> 
+> This series begins a staged conversion at the PTE level. It introduces
+> hw_pte_t as the element type for PTE-table storage and converts generic MM
+> to use hw_pte_t *. Logical PTE values remain pte_t. Interfaces that
+> intentionally return a value through pte_t *, such as install_pte, remain
+> value interfaces; the relevant parameters are named ptentp to make that
+> distinction explicit.
+> 
+> The generic definition aliases hw_pte_t to pte_t, so this series preserves
+> the representation and behaviour of every architecture. ptep_get() keeps
+> its existing READ_ONCE() semantics and converts the stored element through
+> __pte_from_hw(). An architecture can later define a distinct hw_pte_t and
+> convert its PTE interfaces to make the distinction compiler-enforced.
+> Architecture PTE implementations and most architecture code are
+> deliberately left for those later opt-in conversions.
+> 
+> Here, hw_pte_t identifies PTE-table storage rather than table lifetime:
+> complete PTE tables use hw_pte_t whether or not they are currently linked
+> into a page-table hierarchy, while standalone copied values use pte_t. The
+> distinction between complete but unlinked tables and hardware-reachable
+> tables was raised during discussion and remains an important point for
+> review.
+> 
+> PMD, PUD, P4D and PGD storage are deliberately out of scope. They can be
+> converted in later series after the PTE boundary is agreed, avoiding the
+> PMD-specific cases that made an all-level conversion difficult to review.
+> 
+> Most mechanical pointer conversions were generated with the Coccinelle
+> script included below, then audited and fixed by hand.
+> 
+> This series does not add a second ptep_get_once() accessor and does not
+> remove or replace STRICT_MM_TYPECHECKS.
 
-I was hoping for a more specific treatment. 
-
-> I assume you want
-> MMF_OOM_REAP_QUEUED in the mm_flags_test() above. Do you want me to test with
-> this additional mm_flags_test() as well?
-
-Sorry I meant MMF_OOM_SKIP there.
+Do you have a pointer at the arm64 part, so people can get a feeling for how an
+actual hw_pte_t implementation can look like.
 
 -- 
-Michal Hocko
-SUSE Labs
+Cheers,
+
+David
 
