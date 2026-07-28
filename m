@@ -4,104 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20FC9C54F51
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 21:01:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C3B2C54F51
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 21:47:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 218A96B009F; Tue, 28 Jul 2026 17:01:37 -0400 (EDT)
+	id 155356B007B; Tue, 28 Jul 2026 17:47:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1C9356B00A1; Tue, 28 Jul 2026 17:01:37 -0400 (EDT)
+	id 105E36B008A; Tue, 28 Jul 2026 17:47:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0E03B6B00A2; Tue, 28 Jul 2026 17:01:37 -0400 (EDT)
+	id 01D3D6B008C; Tue, 28 Jul 2026 17:47:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D2F5A6B009F
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 17:01:36 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4A7B81203F9
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 21:01:36 +0000 (UTC)
-X-FDA: 85039406592.01.A22B480
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 16E794000C
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 21:01:33 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=QTJLddYM;
-	spf=pass (imf04.hostedemail.com: domain of sgrubb@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=sgrubb@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CB62F6B007B
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 17:47:52 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C0BBE16052F
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 21:47:50 +0000 (UTC)
+X-FDA: 85039523100.21.71EEA58
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id DCD6720004
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 21:47:48 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dC+obVVm;
+	spf=pass (imf03.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785275269;
+	b=xx7e7Six0bi3I7CkfCZZu03P6oXAZGmdtYkK7xEHOYmEFi+umTnxinLlh+4OkzUcICHYZu
+	yxpJRODl1pZuHT+NCeviuqCxlKo3xrw5pc00zYpWYBJPN1nYGo0iSsjY4tYNjqlMPjqS+I
+	Fpx+bJESaq1uyKIEVWPpWz+YNt/gRwg=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dC+obVVm;
+	spf=pass (imf03.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785272494;
+	s=arc-20220608; t=1785275269;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G6ljGpY8syJ4kMz5EMeiC1JLhIm06ethqnnefWbD4tk=;
-	b=x/m++vhOf+GzOV4mWqxNm+zlmgXFgPzGp5ef8yBwrSUTi9oJyUWBxGdyVJiZ1xwdr19ICz
-	kDXjnpoaYOMQgFv+QIkTTMM+q1/OmHEN5B/ionYrvmEKQ2aRfrZtgkB9zEa/aXMBZEZ4fb
-	XfRy8pnVZ9rpIBA96K2uDIYE5xw+gwU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785272494;
-	b=Iv5ev5a3RNkhHtU1+To2mRiZJtjMm+zhQbhwfo58vkpqXSZ6bfw2RuTahLgbyKjO3DNGT9
-	tVlEaffkPpmL5lO4SQzIs2C2wYesx26FbNzcp4KFca4ZBS2Mu5EPVBInDFeqnIdk1/kMbd
-	te12+n+JFLs136Y9Piui31U3sVFGzHo=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=QTJLddYM;
-	spf=pass (imf04.hostedemail.com: domain of sgrubb@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=sgrubb@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785272493;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=G6ljGpY8syJ4kMz5EMeiC1JLhIm06ethqnnefWbD4tk=;
-	b=QTJLddYMErHjd4B8h7UpeC9R2BVndcsokDor0g0TU0XOfcAkrSkbcla2IM4APgcBeL/iTk
-	2adCtgPF8hn/VcfB9iLcabwgEESw7cbbbH1iR/snWV63myVB2EQnogKW8ZEWlyNdnA8vYY
-	8ANiYPPYq3kX7aMv3A/mUDUMEvVKpeA=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-550-9Nvn47XYOxiAzH--_WQp1g-1; Tue,
- 28 Jul 2026 17:01:30 -0400
-X-MC-Unique: 9Nvn47XYOxiAzH--_WQp1g-1
-X-Mimecast-MFC-AGG-ID: 9Nvn47XYOxiAzH--_WQp1g_1785272488
-Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 235E0195608F;
-	Tue, 28 Jul 2026 21:01:28 +0000 (UTC)
-Received: from x2.localnet (unknown [10.22.65.142])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 28BAC414;
-	Tue, 28 Jul 2026 21:01:24 +0000 (UTC)
-From: Steve Grubb <sgrubb@redhat.com>
-To: Ricardo Robaina <rrobaina@redhat.com>, Richard Guy Briggs <rgb@redhat.com>
-Cc: audit@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- paul@paul-moore.com, eparis@redhat.com, kees@kernel.org, mingo@redhat.com,
- peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org,
- akpm@linux-foundation.org, david@kernel.org, brauner@kernel.org
-Subject: Re: [PATCH] audit: add CLONE3 auxiliary record to log process cloning
-Date: Tue, 28 Jul 2026 17:01:21 -0400
-Message-ID: <uK83gGq4RkGQKh1xACKbLw@redhat.com>
-Organization: Red Hat
-In-Reply-To: <amjZRgbKg7svHU7r@madcap2.tricolour.ca>
-References: <20260724150258.560396-2-rrobaina@redhat.com>
- <amjZRgbKg7svHU7r@madcap2.tricolour.ca>
+	bh=bqib6vtzdDc0bkShWroBmi83B9sA++5bLMZGOXyfCyE=;
+	b=g0cKm+73t/8/YyvcQuqj/Cpf0nKEZ9C5RW9a86j11XyIVZ7FJ0vkuZSxayM1rnYHj15FN9
+	L8nFqMaJxSdwmIAeB4xCo+4YS4lyIucQdILm0y1euq/PPhhadJTwX5kcp2K6FM4/52A6aO
+	KHPKwT7eJR3PBEkm9D/mHtBOUgsITV0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 8BC7860A9E
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 21:47:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41D821F000E9
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 21:47:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785275267;
+	bh=bqib6vtzdDc0bkShWroBmi83B9sA++5bLMZGOXyfCyE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=dC+obVVms5DhP6HIz3sEF+YLSHk7l9K6iiS8chnkr+kp+magf/aGaG8FrBxY8aSzu
+	 /PX/5Pdz/IPvZwqp3WasNrfIjVlIpnn0vVDakobfng614YkUgRf0ApEnTLNSjej3F7
+	 i0fAsoALQHsgVwJ/sqy0B/J4cvxYrWbsvg5S2ZJ/4I9tyfPL5GKyfbkJSQyzcPEuzX
+	 dNeS2hoV27BfGSq8Ot1gZaw7hjw3/G4/rbf8o7uTDbfeh9+nbpmfylqIXzyxB2XeSB
+	 6V6uj0wecWs1hNsZtU28y6n82lf+AblhhkF5glC0c5HjQDyyDoeM1ycrPE05ovJ0ya
+	 JQVlVGC/8gJ6Q==
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-92e7c6ec9dbso21550585a.0
+        for <linux-mm@kvack.org>; Tue, 28 Jul 2026 14:47:47 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RpgSdrWMxowKDX3gm6zL5SqLQaEwSQmvEfsDRS5oYM2Q7dAhgBRkEMnwZn8zBhWC7duFsBnZR02Gw==@kvack.org
+X-Gm-Message-State: AOJu0YzD1yaIarY0d02qhkHDo9wAqmkRZraShE4f8cVBpAQNESjf5jxN
+	pwj+jel/UMyNYyqbtuWJ5+ulmqdf5ncETNmmPp9FSzYW7hJBzeUqFt6Q0UB2G/9l3V40Vg/xLm1
+	qGuOnpfnL+i0JBQiKf+tY1SyyBWF+jAE=
+X-Received: by 2002:a05:620a:46ab:b0:92e:cac7:96fc with SMTP id
+ af79cd13be357-933026cbd7bmr433098585a.24.1785275266629; Tue, 28 Jul 2026
+ 14:47:46 -0700 (PDT)
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
-X-Mimecast-MFC-PROC-ID: 5aR4uYWQY_I07EaMHfq_YYRqWKKQNE4ziTtWuLzWglo_1785272488
-X-Mimecast-Originator: redhat.com
+References: <20260715120813.3609949-1-jiangwen6@xiaomi.com>
+ <20260715120813.3609949-2-jiangwen6@xiaomi.com> <amiabgyHSz3ZYY5k@willie-the-truck>
+In-Reply-To: <amiabgyHSz3ZYY5k@willie-the-truck>
+From: Barry Song <baohua@kernel.org>
+Date: Wed, 29 Jul 2026 05:47:34 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4zgFk1iaQWisYMOR4iFxonwDskRt3Gte0cEts1q9hxibA@mail.gmail.com>
+X-Gm-Features: AUfX_mwbnXA4EUHoDC_1ddg6W-_if7iZPphw3fCzQ7jhe0SfShXOygA86MH76jg
+Message-ID: <CAGsJ_4zgFk1iaQWisYMOR4iFxonwDskRt3Gte0cEts1q9hxibA@mail.gmail.com>
+Subject: Re: [PATCH v7 1/7] arm64/hugetlb: Extend batching of multiple
+ CONT_PTE in a single PTE setup
+To: Will Deacon <will@kernel.org>
+Cc: Wen Jiang <jiangwenxiaomi@gmail.com>, akpm@linux-foundation.org, 
+	catalin.marinas@arm.com, linux-mm@kvack.org, urezki@gmail.com, 
+	Xueyuan.chen21@gmail.com, ajd@linux.ibm.com, anshuman.khandual@arm.com, 
+	david@kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, rppt@kernel.org, ryan.roberts@arm.com, 
+	dev.jain@arm.com, Wen Jiang <jiangwen6@xiaomi.com>, Leo Yan <leo.yan@arm.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 16E794000C
-X-Stat-Signature: sa3g4s55pcyiebwhj39ip9hk43k8p6ay
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: DCD6720004
+X-Stat-Signature: hmra8wsipy6sptrspdt5ee7e8k5qg3j6
 X-Rspam-User: 
-X-HE-Tag: 1785272493-724427
-X-HE-Meta: U2FsdGVkX19K/t8z+C+nvmja+YiR2VJ26U2urn3nQO5NKbQeKmX6bw/KL3dghkMrb4qOYcFPT3bn9HFW+n00dBQhdiiXuElI3th3XTrZEi2UZpm0IPH3jHDAadmptWWydkp+mmIgXqu+ED1b0NMBcGK5UIThhEHMQgjVvAsl9LDlUWWk6HGtrdiSTnRFbP9c2agOyvT8SR0vKL5r6PE7B48AM2M9oNxsQJZ45hn/PY2oR1z1oG7GYHq6Txg+rg8bTSCdof+2wZaPr9OWFRujqHViAA+TK9hYO39q+fk6D7DDEhwj4tp2ElzXh3c2o3DAZ4zH6xO4gp37wChbEay/kWJrL+IOLQtJFKLuWefLi9Hr9m27HAiqhsXW0NyIx3PvHqghLHDvzCXCEUulrelKJjAkIVR5qh9i+h3H8JMcEVd1735TJwZCVr2hcLjX05wwb/UFrdz5DZJ5PUMvYm4uTFF9S4dhUuJfidZBAIpu0AY7vZbKK2kiBV/VlYzq3TsU+s3da6elz2Bdc/JRCQ1/GEAIRq5wjNdb1MOrQ5l3WZxJBvw1YwgKwuLclTavydkpXXT7CemKn1dhBOPKLrEato1QsEx3KhjokjLbzt9kAWMB1RePC3RRsT+JmLQH9h2w6EoT/NJywHP/hI0Cir3d6BerrAsG75zqooEjZUG0rp8ZeZlQaQxqB4RnE0Hj3iyeN28raniqoxl17yjMaPFR8C7tVOUqAsAbkLezyfgsWNERYezqANqOza6eS2r2UJEkIPlP78imcers1O6443KnvSFbK6Is65Vct20PBc///EJqTtFpFvT1iq+I6z5wneejvnY4myab4lJFh+I4OHUFjNBWvb2B4Q0zbwN6PgLm5+j/eW5w6D3G3npxm8L7ilceWmfVN05C6CdArUvWpHAsz42j9yLkxQrG8TVhTQbS3M8p+gJnVSjIPk9/4vRzo3xrHeohhK0CQ+r7jfEL9zQ
- 0E92mk7W
- ra27FzOZE9Kfe9XNKjJ4UmwoKzRuexvXhmFygi93Ano/0vUSTgGwwWKl0ITT0gsVOb1gPDgkkGtbBp0psC1XSbtfMXbWO1eGT+mVt3Q2/72XG7SyAAZNJ4EURwt9prgLzMZzNCa7uxq/nz2/R2wskhHMP2C5cw4STT2+xLpLbH1H0rvOuK3dsvb3lKRXkLaLXeEA5QRDkXbnsIc4N3UpBKQlQKCdBlIwI4qjq54850FcA31bqPAhTamgz1Hn4N1fiPVaPvvPyo0fM+l68wZ4xEhXk8A0rTKK83tirYsyVSffNBTFJREXVawg7Tf6CxOxqkMSzzR/4oZaC8dJbbHEXkH3gUv3URt9rAUxyTY3wWq8pgFs6TbxghiJri+yuTKS8YdICexBeBV0yu048ztT69chFjVJusL+7Z9Hj7T2L2LlmsgnsLy4UYWiyb9MW6sNHmeym
+X-HE-Tag: 1785275268-792672
+X-HE-Meta: U2FsdGVkX18Kz+DVbNPQU4hb8yUP79RGSw9rcBRYsVSngFRc5zFL4zWvGZQpE6akCr9Pcx6jLXSfSwsI+c37MKmek0kNKcUUit9JLyK7sj89uQyMS4HzXSitmJufJ+X6sVnNenRb8tjcT1wu/jBt6GN0NnoROBY5zSV2agpsyePrBPrkeAqhZr8E5twmTIhVA+KD6/DffPWXuIJQA2nG1GSrnFaUFbVE1KfK5roRTUf9Wrhn4mDciO4aYKFAPgJhS2OcbrhQaWSdlr9BYh7Xy2fwLpg6yJ4lFlsCIbS+uIaLsC492Nxl4GWQuSb7w0Oh/7bSejnRekVGAd/XBX9ugCO6H/FOpVnglonzSz8jNtTl7Y8pT6dlwEo4glGAJ1xhOz4uev+wyviOi9qU4W3WbgBVX6vud2Y9aHfCd9Y7iAeqkexysIGhcLax3zyqmUo0llRbWgeWmbUdZepgFikOUO8oj8BpwWxO8XnfxODYEJh0DpSW+2IIc4KMEiYkJwBbttm/6wRURy/6YIrJapDeZAcNogvVENTkq7giSyKJCAagu00ZseFs4RkuV9MCrNUOZ7LAOgQHQnKjwK0Nm01aCUmsuMR1GTaCnJ1FnVwdBRjM3dMPlI7zC6Z6GCEppsP6kLE1FUMeaf4UWN5hywjrl1mg4GBvOkSr9Z1LbVcv4G2nD4BkQGEThOVujJI2kcQ+NjW4Fbh8yHaCcKip3N+e6JLDK5zs/O2qSAGzKiiDpd6ZDNdwNFHf2s2FHEJsMtdGsc49UbYNZnJH75jqufBKFZir/n5P+VmuXvoRZp5lR7D5QHYwNrV1UIw5uF5CD8jTAjASqKh+Qvh33er8cnVnvTYYvwVNCep6niXDREx5Z0zcmQVedtccgcLymWKkdnDUl4GZmyehQ4ERDz5kj939hccPh7XjMWDK+mlWy8Pc0yjn+aFdmavgIJeZ39LePu7SrBjyBPOug6pyyzD+v9A
+ zc2jB9HT
+ 6RsFCPgdmj8YoOuyLseuc7lC7a18/7VyOpURyjn1525D/QXPxSvq3t8vl9nQWTD8ExbJquCFS4KbxXjCdzgV7l/LHYWeshVuqt1t4YGsws0GbnHFKj6UZKr1mfjmrQ4jdwdLadEHrbJvT4Pu7V8cg7S7xrXzPnPghZsfAmjQpnvVQmYV1bkWdGhK+HoA7nTlhBPKs7bLHNRcOaWH4mX6/yGv8OGrQHt812eEsjxSdQMASQwefbnaE2zgEEb/KZamGprFkBQ126YwhLP+Rw67IfVGwA5tE4oGZOu91X8RJJiWK7hobNofdXr2d0iIHEt+zwrd+N5YaQR687sO9e9aQltWSiwZIq0oLwBnE95hFadjckxVCtErbtJIpdBqoBAgzaL0Rjrkp5/wPnuhn9K964E/eFwM/b8ZxYTJMZfE5K3fbQmDjTLStO5i1TxZqgr7kKErtaAhurDO/tuO/oI2cmhcTMqLAeBPW0ibBdyHczefAw18qL7q822tcWg4pva3/Nm38JzF0xHi/DEgXIMlhvNqxtaVvqsuqzYSL2iQcUfqMHOFn2Icy816h5TYKTB+UPFeFcm486oni3wcHzSMwDgIFjQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,205 +108,132 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tuesday, July 28, 2026 12:31:02=E2=80=AFPM Eastern Daylight Time Richard=
- Guy=20
-Briggs wrote:
-> On 2026-07-24 12:02, Ricardo Robaina wrote:
-> > The clone3(2) syscall moves most parameters to struct clone_args.
-> > For this reason, the generic SYSCALL audit record does not capture
-> > the structured arguments.
-> >=20
-> > Add a CLONE3 auxiliary record that logs: flags, exit_signal, cgroup,
-> > and pidfd fields from struct clone_args. When CLONE_PIDFD is set and
-> > the syscall succeeds, the resolved pidfd is logged; otherwise
-> > pidfd=3D(null).
-> >=20
-> >  ----
-> >  type=3DSYSCALL : syscall=3Dclone3 a0=3D0x7ffe7f1ec640 a1=3D0x58 a2=3D0=
-x0 ...
-> >  type=3DCLONE3 : cl3_flags=3D0x1000 exit_signal=3D17 cgroup=3D0 pidfd=
-=3D3
-> >=20
-> > Link: https://github.com/linux-audit/audit-kernel/issues/151
-> > Signed-off-by: Ricardo Robaina <rrobaina@redhat.com>
+On Tue, Jul 28, 2026 at 8:03=E2=80=AFPM Will Deacon <will@kernel.org> wrote=
+:
+>
+> On Wed, Jul 15, 2026 at 08:08:07PM +0800, Wen Jiang wrote:
+> > From: "Barry Song (Xiaomi)" <baohua@kernel.org>
+> >
+> > For sizes aligned to CONT_PTE_SIZE and smaller than PMD_SIZE,
+> > we can handle CONT_PTE_SIZE groups together.
+> >
+> > These additional sizes are mapping spans used by non-hugetlbfs(vmalloc)
+> > mm code, not new HugeTLB hstate sizes.
+> >
+> > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> > Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
+> > Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
+> > Tested-by: Leo Yan <leo.yan@arm.com>
+> > Reviewed-by: Dev Jain <dev.jain@arm.com>
 > > ---
-> >=20
-> >  include/linux/audit.h      | 10 ++++++++++
-> >  include/uapi/linux/audit.h |  1 +
-> >  kernel/auditsc.c           | 20 ++++++++++++++++++++
-> >  kernel/fork.c              |  4 +++-
-> >  4 files changed, 34 insertions(+), 1 deletion(-)
-> >=20
-> > diff --git a/include/linux/audit.h b/include/linux/audit.h
-> > index 45abb3722d30..833f349bf415 100644
-> > --- a/include/linux/audit.h
-> > +++ b/include/linux/audit.h
-> > @@ -449,6 +449,7 @@ extern void __audit_tk_injoffset(struct timespec64
-> > offset);>=20
-> >  extern void __audit_ntp_log(const struct audit_ntp_data *ad);
-> >  extern void __audit_log_nfcfg(const char *name, u8 af, unsigned int
-> >  nentries,> =20
-> >  =09=09=09      enum audit_nfcfgop op, gfp_t gfp);
-> >=20
-> > +extern void __audit_log_clone3(struct kernel_clone_args *kargs, int
-> > ret);
-> >=20
-> >  static inline void audit_ipc_obj(struct kern_ipc_perm *ipcp)
-> >  {
-> >=20
-> > @@ -598,6 +599,12 @@ static inline void audit_log_nfcfg(const char *nam=
-e,
-> > u8 af,>=20
-> >  =09=09__audit_log_nfcfg(name, af, nentries, op, gfp);
-> > =20
+> >  arch/arm64/mm/hugetlbpage.c | 15 +++++++++++++++
+> >  1 file changed, 15 insertions(+)
+> >
+> > diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
+> > index a42c05cf56408..7ce159483a354 100644
+> > --- a/arch/arm64/mm/hugetlbpage.c
+> > +++ b/arch/arm64/mm/hugetlbpage.c
+> > @@ -94,6 +94,11 @@ static int find_num_contig(struct mm_struct *mm, uns=
+igned long addr,
+> >       return CONT_PTES;
 > >  }
-> >=20
-> > +static inline void audit_log_clone3(struct kernel_clone_args *kargs, i=
-nt
-> > ret) +{
-> > +=09if (!audit_dummy_context())
-> > +=09=09__audit_log_clone3(kargs, ret);
-> > +}
-> > +
-> >=20
-> >  extern int audit_n_rules;
-> >  extern int audit_signals;
-> >  #else /* CONFIG_AUDITSYSCALL */
-> >=20
-> > @@ -730,6 +737,9 @@ static inline void audit_log_nfcfg(const char *name=
-,
-> > u8 af,>=20
-> >  =09=09=09=09   enum audit_nfcfgop op, gfp_t gfp)
-> > =20
-> >  { }
-> >=20
-> > +static inline void audit_log_clone3(struct kernel_clone_args *kargs, i=
-nt
-> > ret) +{ }
-> > +
-> >=20
-> >  #define audit_n_rules 0
-> >  #define audit_signals 0
-> >  #endif /* CONFIG_AUDITSYSCALL */
-> >=20
-> > diff --git a/include/uapi/linux/audit.h b/include/uapi/linux/audit.h
-> > index e8f5ce677df7..37357e17adbf 100644
-> > --- a/include/uapi/linux/audit.h
-> > +++ b/include/uapi/linux/audit.h
-> > @@ -122,6 +122,7 @@
-> >=20
-> >  #define AUDIT_OPENAT2=09=091337=09/* Record showing openat2 how args=
-=20
-*/
-> >  #define AUDIT_DM_CTRL=09=091338=09/* Device Mapper target control */
-> >  #define AUDIT_DM_EVENT=09=091339=09/* Device Mapper events */
-> >=20
-> > +#define AUDIT_CLONE3=09=091343=09/* Record showing clone3 args */
-> >=20
-> >  #define AUDIT_AVC=09=091400=09/* SE Linux avc denial or grant */
-> >  #define AUDIT_SELINUX_ERR=091401=09/* Internal SE Linux Errors */
-> >=20
-> > diff --git a/kernel/auditsc.c b/kernel/auditsc.c
-> > index 6610e667c728..c0106bb71c19 100644
-> > --- a/kernel/auditsc.c
-> > +++ b/kernel/auditsc.c
-> > @@ -2882,6 +2882,26 @@ void __audit_log_nfcfg(const char *name, u8 af,
-> > unsigned int nentries,>=20
-> >  }
-> >  EXPORT_SYMBOL_GPL(__audit_log_nfcfg);
-> >=20
-> > +void __audit_log_clone3(struct kernel_clone_args *kargs, int ret)
-> > +{
-> > +=09struct audit_buffer *ab;
-> > +=09int pidfd;
-> > +
-> > +=09ab =3D audit_log_start(audit_context(), GFP_KERNEL,
-> > +=09=09=09     AUDIT_CLONE3);
-> > +=09if (!ab)
-> > +=09=09return;
-> > +
-> > +=09audit_log_format(ab, "cl3_flags=3D0x%llx exit_signal=3D%d cgroup=3D=
-%d",
-> > +=09=09=09 kargs->flags, kargs->exit_signal, kargs->cgroup);
->=20
-> Would there be any confusion if this were simply "flags=3D..." since it i=
+> >
+> > +/*
+> > + * num_contig_ptes(), set_huge_pte_at() and arch_make_huge_pte() can b=
+e
+> > + * used by non-hugetlbfs(vmalloc) mm code to set multiple huge mapping=
 s
-> already a record type AUDIT_CLONE3?
-
-flags is already used in mmap records and will require workarounds to have=
-=20
-the same field name here. Separating them by name is better.
-
-> > +=09if ((kargs->flags & CLONE_PIDFD) && ret >=3D 0 &&
-> > +=09    !get_user(pidfd, kargs->pidfd))
-> > +=09=09audit_log_format(ab, " pidfd=3D%d", pidfd);
-> > +=09else
-> > +=09=09audit_log_format(ab, " pidfd=3D(null)");
->=20
-> Is there any interest in:
-> =09child_tid (was captured by generic audit syscall arg 4)
-> =09parent_tid (was captured by generic audit syscall arg 3 or 4)
-> =09tls (was captured by generic audit syscall arg 4)
-> =09set_tid
-
-Nope. Those are more resource related and not security focused. Even if you=
-=20
-wanted it, these are pointers to the answer and not the answer. The patch h=
-as=20
-everything needed from a security PoV.
-
-Ack.
-
-> Is there a situation where a valid pid is returned without CLONE_PIDFD se=
-t?
-
-No idea. The man page makes it sound like it is only valid when CLONE_PIDFD=
-.=20
-Besides, its a pointer to an int from what the man page said.
-
--Steve
-
-> Otherwise, looks reasonable to me.
->=20
-> > +=09audit_log_end(ab);
-> > +}
-> > +
-> >=20
-> >  static void audit_log_task(struct audit_buffer *ab)
+> > + * at the PTE level.
+> > + */
+> >  static inline int num_contig_ptes(unsigned long size, size_t *pgsize)
 > >  {
-> > =20
-> >  =09kuid_t auid, uid;
-> >=20
-> > diff --git a/kernel/fork.c b/kernel/fork.c
-> > index f0e2e131a9a5..0f52e8c0e900 100644
-> > --- a/kernel/fork.c
-> > +++ b/kernel/fork.c
-> > @@ -3047,7 +3047,9 @@ SYSCALL_DEFINE2(clone3, struct clone_args __user =
-*,
-> > uargs, size_t, size)>=20
-> >  =09if (!clone3_args_valid(&kargs))
-> >  =09
-> >  =09=09return -EINVAL;
-> >=20
-> > -=09return kernel_clone(&kargs);
-> > +=09err =3D kernel_clone(&kargs);
-> > +=09audit_log_clone3(&kargs, err);
-> > +=09return err;
-> >=20
-> >  }
-> > =20
-> >  void walk_process_tree(struct task_struct *top, proc_visitor visitor,
-> >  void *data)
-> - RGB
->=20
-> --
-> Richard Guy Briggs <rgb@redhat.com>
-> Sr. S/W Engineer, Kernel Security, Base Operating Systems
-> Remote, Ottawa, Red Hat Canada
-> Upstream IRC: SunRaycer
-> Voice: +1.613.860 2354 SMS: +1.613.518.6570
+> >       int contig_ptes =3D 1;
+> > @@ -110,6 +115,12 @@ static inline int num_contig_ptes(unsigned long si=
+ze, size_t *pgsize)
+> >               contig_ptes =3D CONT_PTES;
+> >               break;
+> >       default:
+> > +             if (size > 0 && size < PMD_SIZE &&
+> > +                             IS_ALIGNED(size, CONT_PTE_SIZE)) {
+> > +                     *pgsize =3D PAGE_SIZE;
+> > +                     contig_ptes =3D size >> PAGE_SHIFT;
+> > +                     break;
+> > +             }
+>
+> Under which circumstances would you get a size of 0 here?
+>
+> Given that you're relying on arch_vmap_pte_range_map_size() to give you
+> a well-formed size, why isn't if sufficient to check only the alignment?
+
+Hi Will,
+
+Thanks very much for your review.
+
+Are you suggesting the change below? If so, I'm fine with it.
+I guess the current code is just being overly cautious for
+defensive programming.
+
+diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
+index 8429d220660b..c1af52ba572d 100644
+--- a/arch/arm64/mm/hugetlbpage.c
++++ b/arch/arm64/mm/hugetlbpage.c
+@@ -115,8 +115,7 @@ static inline int num_contig_ptes(unsigned long
+size, size_t *pgsize)
+                contig_ptes =3D CONT_PTES;
+                break;
+        default:
+-               if (size > 0 && size < PMD_SIZE &&
+-                               IS_ALIGNED(size, CONT_PTE_SIZE)) {
++               if (IS_ALIGNED(size, CONT_PTE_SIZE)) {
+                        *pgsize =3D PAGE_SIZE;
+                        contig_ptes =3D size >> PAGE_SHIFT;
+                        break;
 
 
+>
+> >               WARN_ON(!__hugetlb_valid_size(size));
+>
+> I agree with David that it's messy having hugetlb tangled up in here.
+> It means this validity check is now going to miss some genuinely bogus
+> cases for the hugetlb path (as opposed to the vmalloc path).
 
+I agree that coupling hugetlb with vmalloc is not ideal. As I
+explained to David, this has been an issue for a couple of
+years and affects multiple architectures since 2021:
 
+https://lore.kernel.org/all/fb3ccc73377832ac6708181ec419128a2f98ce36.162079=
+5204.git.christophe.leroy@csgroup.eu/
+
+where `#ifdef CONFIG_HUGETLB_PAGE` is required by `vmalloc`.
+
+So I'd prefer to address it in a separate follow-up patch
+series.
+
+For the `WARN_ON(!__hugetlb_valid_size(size))` check, I don't
+see anything broken here. Hugetlb only uses sizes registered
+by `hugetlbpage_init()`, which are validated by
+`arch_hugetlb_valid_size()` implemented in
+`arch/arm64/mm/hugetlbpage.c`:
+
+static int __init hugetlbpage_init(void)
+{
+        BUILD_BUG_ON(HUGE_MAX_HSTATE < 4);
+        if (pud_sect_supported())
+                hugetlb_add_hstate(PUD_SHIFT - PAGE_SHIFT);
+
+        hugetlb_add_hstate(CONT_PMD_SHIFT - PAGE_SHIFT);
+        hugetlb_add_hstate(PMD_SHIFT - PAGE_SHIFT);
+        hugetlb_add_hstate(CONT_PTE_SHIFT - PAGE_SHIFT);
+
+        return 0;
+}
+arch_initcall(hugetlbpage_init);
+
+bool __init arch_hugetlb_valid_size(unsigned long size)
+{
+        return __hugetlb_valid_size(size);
+}
+
+Thanks
+Barry
 
