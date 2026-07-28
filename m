@@ -4,106 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 076FEC53219
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 10:03:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 062FDC531F9
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 10:07:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C2E726B007B; Tue, 28 Jul 2026 06:03:39 -0400 (EDT)
+	id A87096B0088; Tue, 28 Jul 2026 06:07:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C05AC6B0088; Tue, 28 Jul 2026 06:03:39 -0400 (EDT)
+	id A37DA6B008A; Tue, 28 Jul 2026 06:07:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B1C706B008A; Tue, 28 Jul 2026 06:03:39 -0400 (EDT)
+	id 927826B008C; Tue, 28 Jul 2026 06:07:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D70A6B007B
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 06:03:39 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 122551A0334
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 10:03:39 +0000 (UTC)
-X-FDA: 85037748558.15.93B8EA1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 41B684000D
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 10:03:37 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SCMwd14L;
-	spf=pass (imf04.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C08E6B0088
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 06:07:09 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D21B51C0988
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 10:07:08 +0000 (UTC)
+X-FDA: 85037757336.21.08AD15D
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+	by imf11.hostedemail.com (Postfix) with ESMTP id C678E40004
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 10:07:06 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BAMGNaI5;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf11.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785233017;
+	s=arc-20220608; t=1785233227;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9Dm8NACStiqwH1pQVtU6/C+ivg0sQ7L2N6PO5I5XBOk=;
-	b=hEKX59vE0RLcwiPYR4IUYxUSTWBuHq/EUa0VYVMkC90TB5XPCWMLwCZjNTF1gxCIqwphsa
-	pCBesPj0PfQRUzWyTsBtOOB4lqSEs3TKzplR5Wh6+YO0FKLYdln7hQznm6AkTBrRP7AYo2
-	hEwJ13RpcYhXc0guM7qRWZG+wmaeKoA=
+	bh=V+4ST+5ErtH1ogsoPtnfqyhNvdoUFNUqI9109/kuVpU=;
+	b=2MVTHIM7k6gVlZ4U91Kmp7KcYm/Scw5lmtnXiZtl/d2Vg3r69yQSADIpirRWI/s1aTGQvO
+	5QlXo6QP0PbOjPVUkKJ0+vEMcf+A699pyurtSy7LL8HgnWoLf7TXdSlj4DkHh9JjbvWWwe
+	/h6Fa9AFPTUUwK6Lh5VvSMF6+uwn1eo=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SCMwd14L;
-	spf=pass (imf04.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BAMGNaI5;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf11.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785233017;
-	b=kb0eV0oXaRAGUWawh2mdc0h3HS6Kqf/SqIgTg2/LAKAtjEDJ2tiYgBM9vSmTr0P40cRZ8J
-	hPgn8h4JtFX/nD+G2//R0FFfogSVznfF6n7jjffhlkJyoNjVGB/5s+jUmmcevbMY8WS8W8
-	sm4KeL6QTnmqml/YO0SltSwKSRCQlPI=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6F50260AAA
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 10:03:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3DD01F00ADE
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 10:03:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785233016;
-	bh=9Dm8NACStiqwH1pQVtU6/C+ivg0sQ7L2N6PO5I5XBOk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=SCMwd14L1Fk9cJ3DJyfzKeXzuirkV9aptQPyrLKNNXQ1QaLbid5eP2fOM5UrHN0K8
-	 Rgvp56mych8JzcTCv7xMJmQ+Y/idyBeuUXmYcaXdwXre2N/wyKO3iYRNGavqj7JzGd
-	 KXZnuCftFAFz8FClTE7SS4SxFbYS8/nPQG22kzeV1/WX1BHmJ0pegUwXETKpNGtH9o
-	 Ek7Ph5UuyYCiG3/KxZvKJ33cc5xpyaWpr1VpeY9j6MDHGKZiKCWS6bO5EAus9f46Gy
-	 N/+wtz03ivgI82gSIOq/J8Ot9f8XI2FM/13LPEp6BH5ZlJhrkAvI6uCosqJrPs+R3o
-	 YuJ6o8D1g6s6g==
-Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-8f18d92172aso45376716d6.2
-        for <linux-mm@kvack.org>; Tue, 28 Jul 2026 03:03:35 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Rps5bDb/Iolc/Uzv9VtJ0+RJqkjrhOnBYBw0B4lPugJ13Yf6iweVj7bYW/Wd8yRB2grEED8W4RQ8g==@kvack.org
-X-Gm-Message-State: AOJu0YxSU1jNL+OXgRzxyCZVdB/YmVRTRcUnnTV0VK2FGnChMyWhN5eM
-	Ra5h0zSXGsNjcMk1w3vPY8slpRiUkzIxqxdfm+NMVcUjEHdyxMbzPU4ZepJqSoc4x0z44L3xPyf
-	SN9Cn6v/UYqtGkzKdQz+aNT/RgG5064Y=
-X-Received: by 2002:a05:6214:2428:b0:8ef:4749:b1cd with SMTP id
- 6a1803df08f44-908173959a3mr16376526d6.30.1785233015248; Tue, 28 Jul 2026
- 03:03:35 -0700 (PDT)
+	t=1785233227;
+	b=qqgfC2qvGem1RazxqPNIr2IR/IHXrXIkHdN1563bCI1q2gwL+DGLNrInDplq2DBqexb6l9
+	66awfDpqlIdThjkwRJCWyIk5Rp4sWLWnHx+9I4NmZ3A+AXVRPv1pULyZW5fmwkB6glIBKp
+	h/vyKj6Dvzui/Z5ZcYpJaxQMHlsMkFI=
+Message-ID: <c16b32ac-9480-428e-863c-5d35ae4b8eb1@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785233224;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=V+4ST+5ErtH1ogsoPtnfqyhNvdoUFNUqI9109/kuVpU=;
+	b=BAMGNaI58CLpVPu5snO0OIDpeFc16aV0jyY1YwjLGjZECP8ZM0ecIsGpLQ+WoYlaALWGvL
+	Qdlch/7mAYTk/dJA2QUyFWv6gDqz1H+P47l8wGTFdxfXkRYf2XySa5WIBAQxitQl/P1wMJ
+	H6krDarkADrNLevdPv7cqBlhBOtrYh0=
+Date: Tue, 28 Jul 2026 18:06:48 +0800
 MIME-Version: 1.0
-References: <20260724033435.2573323-1-ridong.chen@linux.dev>
- <20260724033435.2573323-2-ridong.chen@linux.dev> <amdC_-OvG1ZUjmot@tiehlicka>
- <CAGsJ_4w1AFkKOSCZYwRsZYOBxCq_7CQA43jQOiDUyLrjVUmA-w@mail.gmail.com> <amhXvAdmDxX71uxd@tiehlicka>
-In-Reply-To: <amhXvAdmDxX71uxd@tiehlicka>
-From: Barry Song <baohua@kernel.org>
-Date: Tue, 28 Jul 2026 18:03:24 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4xLPpf82CoS=ZNNP6nZoU+k=69oJFL3-YT9zibop78TnA@mail.gmail.com>
-X-Gm-Features: AUfX_myosbGdhrmjnp3dgxInzakBGfy3bPkWOPdmqjI4xEWOKQvkLKYVjveEKNU
-Message-ID: <CAGsJ_4xLPpf82CoS=ZNNP6nZoU+k=69oJFL3-YT9zibop78TnA@mail.gmail.com>
-Subject: Re: [PATCH -v4 1/4] mm/vmscan: fix anon-only reclaim evicting file
- pages when swappiness=max
-To: Michal Hocko <mhocko@suse.com>
-Cc: Ridong <ridong.chen@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Zhongkun He <hezhongkun.hzk@bytedance.com>, Muchun Song <muchun.song@linux.dev>, 
-	Davidlohr Bueso <dave@stgolabs.net>, Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 41B684000D
+Subject: Re: [PATCH 1/2] mm/damon/core: cover discrete System RAM areas with
+ per-range regions
+To: SJ Park <sj@kernel.org>
+Cc: damon@lists.linux.dev, Jiayuan Chen <jiayuan.chen@shopee.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+References: <20260727142604.85548-1-sj@kernel.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <20260727142604.85548-1-sj@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C678E40004
 X-Rspam-User: 
-X-Stat-Signature: ah4gnbeu4h5563aksnexsha7z7n7516j
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1785233017-675871
-X-HE-Meta: U2FsdGVkX1/YEOomvZD7cteayZzsg80oIxgWkUzHkIyhGzZQi/+3LU+D1vSzw8/7ntLtYifoFTUfGzya35YnnfxoT1UjJxD6Lryh4+ZjscraNPKtfOA/FMVm8MM5RQcDf6MCruaNOWViyyRJBIAnsPuhpqh5mqM/Fb1oP4oLtDCcLGCZlYfW3BhtdBWRfRmDMYMzsDnve3BjQWCZfTEKqQKb+mPPkPLQJn6lZmlMifKHO0vbeTfN3HSK7SLADZ0NUvhV1QKBbHKIuuuGGQgp1rTIwW32/EKYqrQ+ZYROjLMmFhPcldl39BFQO11XanpANSUFSsRKOYfVcLWLy5q/BMeIp+4irg8pJnOckvELsF3fESCrkFmkwAzjv2CAP5XqsbJQpM3OKDotbQKnXdMsq+7bZYPJ6dLA9El2ma0g9VVKkOBSlZHKrNQ7ta+JjBQMlGTcVuj6xaSL1UDnA5STuyzGsE/EKXXtnrqkoDrj0cav4Kgc/9tTHmeP9qGxBYuPUfft5jgXbcJWtR+q4sQsa+0Q2APnxTHLt89Reo9n8zx7hAnJTJBwwQsNlkYK1lcqBNG3BY/MA3Ueya+UGLTd3GLw+KMVb35vrC4uoZG0Us+g7pKO5Vp15MNizW96nO18P+xLrRgG2M5pVXJpC8AMqqbKI+xJGIUbj9VIRcT2cAbMVvi+uBiuix/qEXygZubDYo7LWirhPOzCbmMvPU8H6lpn9a4KIkwrEmm8AoAbB/AzzT7dwEzgv6JEPTzccS7kRBpUmALDTdoeKM/RVt6F+dfoiPfJMiNAzlU3JePvAxmgCsfm4wPq+tOpZ99UKIM1mrqkkp7xu4659u+lqNRKBDZEU5B3swtvTvJ16IUG2p9S3Zt+mv7cCB1DqurCQKp6NbkiVyqfxYwxACWt8NPj6vvz1NhSdWdJ2X1DtNzBzrtSQ80tBBQBW2v4FO6jjGHnaY341kGHq+LZl1L0dM6
- 86nbUqGX
- UcCHWAhNUi8+zt2OiD6x5s6/OoKyFCrL2f+Kmia5QeZcQcQgnngonKe2DtVBsuAPXa1lOpMsjfxksaU85WlaYz0zUaFo6p1HMsrVEmtIuZcL2ZDVlsCxCtqkulSbC1i1kVYrRongRU5nvRvqTIlRMo+nLjPlYWXmujcsQuugHXN2/3dsWHdA+6oPZmpuyCa9cniSiGuBQaskCJlqpHGu+JqIg/Q2xda0soy7lymqOXkrDBU72gPp9Z+mjV8p1zOvG/cawj9JML4czKWLYB2f1Nf8OzeepIg0kT6EjDg9/TebbAZeL+SI0m4nOXhgHIMo4jJ1LeUVDJ/xDyJjOBLinSl5wOhL6hlx+7wEuvsdqog1jRKbuILL7fGZasA==
+X-Stat-Signature: jtk1duda89wyg65jd646sa394osxnadj
+X-HE-Tag: 1785233226-867074
+X-HE-Meta: U2FsdGVkX190B9S0v2kqnpJUk6u6GxHUNAFyWwjmfA5DvNE8jel42BKGZrJpC39HJ7zT8BHpbi24pTfeGKVH6ompAa8Yjff1if/SGaBb6DE4YbH+CaxCWx6VOz7dCpYJg9ESlhDGzQyBRY8x/cXDcn6MHFS/7/9hKlZI5kWk5WW4R+bvmKW1+L7MVxMfK5ISzVVS1QpMRHipYrT9egfQAiI9NdjkaQudNJEZV80Y4b68BHfcdI8QIzWayfIKNP+qOzTADEDLVCxz9kpOCCMVtWOquEK3mT1fnynTEl05DY8ppvI5TPfWn2yy3J/8vb4ZE4n8XOfHtGXoP5cb0XmzeYOnsuAhdlwhXGo/j8PW9UgPNruqM9YgKnkEyK3FD9XJ1s5Ih1xQwNJAHTeH7KogRY0QZ6sO3zH3nglPDC+Tr4sNQMtdPOTbO7Y0HMOImO/Kqy3fo1z9kfl9mTKhMCshO3O5IWE/Go+4hjlIC1MZH623C+6xzjLvNITatv3vLyZNgkpiBmmDTKj7PHVohQMQRZ4jzV4dvamFFxtUG/c3r/dB+vl5ZW0Y+Bwf5N/dt9pK9YQ1mXlJgQY8tnbpOz3nzxDmbwQFvUGVQkWvpNHhDLKDLzCLnzAs4UtHNFtvTz0w2iFrIvqWi/PcLvNcGhZOBrmHGI/SbVPh+2ArjEo9JDTUJOHRGmpa0EFlMp4gMFD+cUCT+loeuIdAXuzsJFEsDbEKeyN7uMVD9lSW14t8VTa//gbWwSRm4f9D3Ig9gwR+17mpkhHPtmD/jfjqROvqwJl2lCEsHT7pep2Sq9i5MkcTY1KDGw8ZHH/WGcmtnFclb4uJ0lLsfeBHPdSeFN+hCH3gVxAtkc/wH93Ef7ChFNN34NbzEGWnPWsRAKf26r39RViN7hbu/VSt8iwJRXvkXHanyf23kjPwFbJofPMv4SJoPgkf+a6G6dfniA1fnfqg4GzN9qSG/tNa84XKApY
+ qSCvc1rb
+ aBe0h8E4LM01I4QpVG+dqhCdOT0bIHfEy00gtgnPmg3b7MB/kyhjhyK22SNguxTLPl82XLtx3FWmyRrXuMZefaamEAw/Thgqf9wpjWSc8MMEi176psmv/RNTxSluhv64VLQjQM1rBr3ocAUo+q0l8SE6Nrcj+mYk5Ztmyp06l5neS6rx4R9LMMH7TGXDgMwJj6bmZOduz4YrHsXHKPD6lJTLm3AOKkkKqHEl+AUWRUWLPvNVO7Gkys7YaEaYB9CNMuC2Hpl8iT9DxGAP+uFHWNiuki4lvLhNBRAAdrwkSzPe7xhI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,88 +95,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 28, 2026 at 3:18=E2=80=AFPM Michal Hocko <mhocko@suse.com> wrot=
-e:
+
+On 7/27/26 10:26 PM, SJ Park wrote:
+> Hello Jiayuan,
 >
-[...]
-> > >
-> > > Looking at how the code is structured currently doesn't the following
-> > > express the intention slightly better?
-> > >
-> > > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> > > index 35c3bb15ae96..4fd38e3f1b05 100644
-> > > --- a/mm/vmscan.c
-> > > +++ b/mm/vmscan.c
-> > > @@ -2503,6 +2503,10 @@ static void get_scan_count(struct lruvec *lruv=
-ec, struct scan_control *sc,
-> > >
-> > >         /* If we have no swap space, do not bother scanning anon foli=
-os. */
-> > >         if (!sc->may_swap || !can_reclaim_anon_pages(memcg, pgdat->no=
-de_id, sc)) {
-> > > +               if (swappiness =3D=3D SWAPPINESS_ANON_ONLY && sc->pro=
-active) {
-> > > +                       memset(nr, 0, sizeof(*nr) * NR_LRU_LISTS);
-> > > +                       return;
-> > > +               }
-> > >                 scan_balance =3D SCAN_FILE;
-> >
-> > The question is whether we should allow falling back to SCAN_FILE
-> > when swappiness =3D=3D SWAPPINESS_ANON_ONLY and !sc->proactive, if 201 =
-is
-> > ever allowed for non-proactive reclaim in the future. I guess not,
-> > since SWAPPINESS_ANON_ONLY literally means reclaiming anonymous
-> > memory only?
+> On Mon, 27 Jul 2026 17:54:22 +0800 Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
 >
-> If we follow swappiness=3D=3D0 then yes we should fallback if we are clos=
-e
-> to system OOM. Now arguably SWAPPINESS_ANON_ONLY is a wierd global
+>> From: Jiayuan Chen <jiayuan.chen@shopee.com>
+>>
+>> damon_set_region_system_rams_default(), introduced by commit 70d8797c15d6
+>> ("mm/damon: introduce damon_set_region_system_rams_default()"), is used by
+>> DAMON_RECLAIM, DAMON_LRU_SORT and DAMON_STAT to set the default monitoring
+>> target address range covering all 'System RAM' when the user does not
+>> specify a range.  It walks the 'System RAM' resources but keeps only the
+>> start of the first resource and the end of the last one, and then sets a
+>> single monitoring region spanning that whole [first_start, last_end] range.
+>>
+>> On systems whose RAM is split into discrete areas that are far apart in the
+>> physical address space, that single region also covers the holes between
+>> them.  For example:
+>>
+>>    $ sudo cat /proc/iomem | grep RAM
+>>    00001000-0009ffff : System RAM
+>>    00100000-4848c017 : System RAM
+>>    4848c018-48550c57 : System RAM
+>>    48550c58-48551017 : System RAM
+>>    48551018-48615c57 : System RAM
+>>    48615c58-48616017 : System RAM
+>>    48616018-486dac57 : System RAM
+>>    486dac58-4e563017 : System RAM
+>>    4e563018-4e627c57 : System RAM
+>>    4e627c58-4ef39017 : System RAM
+>>    4ef39018-4ef3f057 : System RAM
+>>    4ef3f058-4efe6017 : System RAM
+>>    4efe6018-4efec057 : System RAM
+>>    4efec058-50247fff : System RAM
+>>    50317000-56720fff : System RAM
+>>    56722000-59c19fff : System RAM
+>>    6bbfe000-6bbfefff : System RAM
+>>    6bc00000-777fffff : System RAM
+>>    100000000-1007effffff : System RAM
+>>    67e80000000-77e7fffffff : System RAM
+>>
+>> Here the last two areas (about 1TB starting at 4GiB, and about 1.1TB
+>> starting at ~6.5TB) are separated by a ~5.5TB hole, and the single-region
+>> setup makes DAMON treat that entire hole as if it were memory.
+>>
+>> This is harmful in a few ways.  The monitoring target regions are limited
+>> by max_nr_regions, so regions that fall into the hole waste that budget and
+>> leave fewer regions for the real RAM, coarsening the adaptive regions and
+>> degrading the monitoring accuracy.
+> The hole would look like not accessed.  As a result, the whole region will be a
+> few regions that very cold.  That wouldn't waste the budget that much.  Do you
+> have some specific setups that this cannot help?
 
-SWAPPINESS_ANON_ONLY with swappiness=3D201 is a rather odd
-interface. I suspect it was introduced as a workaround for
-MGLRU's swappiness behavior, where swappiness=3D200 can still
-result in significant file reclaim (not much different from
-swappiness=3D60 or 100), while the active/inactive LRU
-reclaims few or no file folios.
-So `201` was introduced to prevent MGLRU from reclaiming file
-folios by bypassing the file reclaim path?
+It's my mistake.
 
-Qi, please correct me if I'm wrong. :-) If it serves a purpose
-beyond this, even for the active/inactive LRU, please let me
-know.
+I first saw the kdamond CPU go up, and I assumed it was the number of
+regions. I was wrong.
 
-I'm working on addressing mglru swappiness issue:
-https://lore.kernel.org/linux-mm/20260726122123.7614-1-baohua@kernel.org/
+I re-tested and profiled it with perf. It's not the region count — it's
+the page-by-page walk of the hole.
 
-With my patchset, `swappiness=3D200` under MGLRU reclaims very
-few file folios, similar to the active/inactive LRU. If that
-works well, I suspect we may be able to drop the special
-`201` value in the future.
+On a VM with a 116GiB hole and a single [first,last] span, I enabled
+DAMON_LRU_SORT and ran perf on its kdamond:
+   30.15%  damon_get_folio
+   17.09%  pfn_to_online_page
+    2.24%  __nr_to_section
+    ...
+    0.07%  damon_split_region_at
+    0.06%  damon_merge_two_regions
 
-> policy and it is quite possible this will not be ever allowed. My
-> argument was not to prepare the existing code for that. I just meant to
-> structure the code in a way that it current assumptions are more
-> explicit.
+Almost all of it is the per-page folio lookup. Merge and split are ~0.1%.
+The cold scheme targets cold, old regions. The hole is never accessed, so
+it's always cold and old, and it matches. Then the action walks its whole
+empty span page by page, every apply. RECLAIM and LRU_SORT do this by
+default. It scales with the hole size, so on the real 5.5TiB machine the
+kdamond can't keep up.
 
-I understand your point. I just find
 
-    if (swappiness =3D=3D SWAPPINESS_ANON_ONLY && sc->proactive)
+>
+>> In addition, DAMOS actions on the paddr
+>> operations set walk such a region page by page, so a region that covers the
+>> hole is walked for its entire (empty) span on every application.
+> That makes sense.
+>
+>> Set a separate monitoring region for each discrete System RAM area instead,
+>> coalescing only truly adjacent (no gap in between) resources into one
+>> range, so holes between the areas are excluded.  The reported *start and
+>> *end still carry the overall first-start and last-end, so the user-visible
+>> default range reported via the module parameters is unchanged.
+> I'm concerned if this could result in having too many regions.  The gap between
 
-a bit odd, since `swappiness =3D=3D SWAPPINESS_ANON_ONLY`
-already implies `sc->proactive`.
+On the region count: can't we just coalesce any hole smaller than
+min_region_sz?  After that, the number of ranges is just the number of 
+discrete
+System RAM areas
 
-So maybe:
+> user-visible parameters and internal state is also a concern.
 
-        if (!sc->may_swap || !can_reclaim_anon_pages(memcg,
-pgdat->node_id, sc)) {
- +               if (swappiness =3D=3D SWAPPINESS_ANON_ONLY) {
- +                       WARN_ON_ONCE(!sc->proactive);
- +                       memset(nr, 0, sizeof(*nr) * NR_LRU_LISTS);
- +                       return;
- +               }
 
-?
+I think monitor_region_start/end is meant to expose the overall range, and
+skipping the holes inside it is an implementation detail. Even if we didn't
+skip them, the adaptive region count is never 1 anyway — DAMON already
+splits [first,last] into many regions. The holes just add a few more, so
+the param never matched the internal state exactly to begin with.
 
-Best Regards
-Barry
+
+> A quick workaround would be adjusting the memory layout in BIOS, using DAMON
+> sysfs interface instead, or setting the monitor_region_{start,end} to cover
+> only the single area.  Have you considered such workarounds?
+>
+> Let's complete this high level discussion first.
+
+
+Right, this is doable today — the DAMON sysfs interface can set multiple
+
+regions manually. This patch is only about convenience.
+
+
+>
+> Thanks,
+> SJ
+>
+> [...]
 
