@@ -4,98 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FD8EC53219
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 21:57:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAAC1C53219
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 22:07:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC0136B007B; Tue, 28 Jul 2026 17:57:56 -0400 (EDT)
+	id 451096B007B; Tue, 28 Jul 2026 18:07:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D943B6B008A; Tue, 28 Jul 2026 17:57:56 -0400 (EDT)
+	id 4018F6B008A; Tue, 28 Jul 2026 18:07:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C5E946B008C; Tue, 28 Jul 2026 17:57:56 -0400 (EDT)
+	id 2F0886B008C; Tue, 28 Jul 2026 18:07:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 98E896B007B
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 17:57:56 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0929F14050C
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 21:57:55 +0000 (UTC)
-X-FDA: 85039548510.11.D4758EB
-Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 56EC380008
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 21:57:51 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZPVRQLU4;
-	spf=pass (imf02.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 0F79A6B007B
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 18:07:49 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 918B5140528
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 22:07:48 +0000 (UTC)
+X-FDA: 85039573416.12.7523174
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 02A9C140003
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 22:07:46 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=LNPOGY2E;
+	spf=pass (imf09.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785275873;
+	s=arc-20220608; t=1785276467;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Vf3Bnkx46W9gMZvdRYmVghSOeclZTGz/xxcx9HYGmF0=;
-	b=mr0CJZFHgnKrKFE9f+8ig1NfPwuppfxDQL+R8uH4265zJK2P76amVpCUUcG/7STCE24imS
-	TZqQenIeEAEMwUeHz3jAj1GOdUQaLDgwpVDru0ym0GfZ6r0c452m3SX+vcmx1vaBCs9CMI
-	BPqw6PpFEaEmyFfNLmQgAPYZAJB8S3I=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZPVRQLU4;
-	spf=pass (imf02.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=W4Dy3XC6qV1NBDVHSm+NbhvnKY5yieX/MYpP17k22sI=;
+	b=N+GmwkyBcVjSDRcEPxqQ5Icb1hX0i6wa/djAmgf3vaPcszV6JQwVXP2EQ5KgY8K7S12h6s
+	6eTvPmLXVkAL3noL1CrmTPGb30zQXvjXmbGNLpJ3tMy4HpW6clS7r9aVOIt/Ui/XWYVz0o
+	S0Lr8nV3O4RoL8QdgDnlkBVQd5Dospo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785275873;
-	b=Y0HtGLHuhKAwJIF0m76owgzlUmOS/G6672Xc3En6uZelgkHvPGr+HW1+sH9B4ODlinwMIy
-	8fzwKbG9Egv/QFY1WkpMo7+mYDLWu1TcDomgPXFIbGX2Xtqha1ZbQdgx1EvYckOkJ/hF0E
-	tis9zMGtLsL9b8Ll3mYADQxkBQK5Bnw=
-Date: Tue, 28 Jul 2026 14:57:41 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785275867;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Vf3Bnkx46W9gMZvdRYmVghSOeclZTGz/xxcx9HYGmF0=;
-	b=ZPVRQLU46Zs8g4/juBipXjOm8G8+oEFx+Hz3pC+IdPNGyI5azPRp+fkX+PB8bq1FIN5T2n
-	a/r8idt2v53wm7MDwKmiXSP7tBvlgu9ttPHuo/WNEBsTyz+ZG1hS8rJ50q53fnkTPf3Qpc
-	LgyX2IAl/G6hm3g3QcacFD4QW9QiWfc=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Michal Hocko <mhocko@suse.com>
+	t=1785276467;
+	b=MJrflcKpZOQVqtrC6GFXrcKwbNa55XCljIlCpByy5+lZ5Q3mJ/rHqij1Blv3Lb8Mszyw/g
+	nW3Z97mPxrsLw4TgIlgJe5jyWMHeF/BBt/YR2TXf/xEfFhnPzVmyVdAL0zEemdp90xgfpP
+	beX3ZXM4IiWhLzxvppJmX5q4JMH8R/w=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=LNPOGY2E;
+	spf=pass (imf09.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=W4Dy3XC6qV1NBDVHSm+NbhvnKY5yieX/MYpP17k22sI=; b=LNPOGY2EtqaZoCfhvpiM1Z9mVM
+	R47JO4wkihzNcB0yiiZcpYy9lpohbIafNUZ3l2vHDkbSbGhdvC4gRNeckQrQswUlR5ccBYvJ/MT7T
+	30w9YM7x5pbW+UBQvlt4cR/zgunFQN2huxclA4gwk7WAA1qFsLtwB8QpCR8TaLJyBB+5ajZAhFziX
+	Em0SlWdrnF812sHKXQcLyJkjU+YE2XW9vv3Vxn5beDDTppE5uxrj+l+2aDH+ie+/J91Rt5Lx3njkl
+	9XQiyF2OD4EmnrQzcvhvdz7E5Lr5JR8fjDHfhOAvdyCipuZ/5hpEGKGTd8UDF8VSPVlnpQAyDsDGC
+	SKT30P5g==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wopxV-007zAH-0m;
+	Tue, 28 Jul 2026 22:07:33 +0000
+Date: Tue, 28 Jul 2026 15:07:26 -0700
+From: Breno Leitao <leitao@debian.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Rientjes <rientjes@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Usama Arif <usama.arif@linux.dev>, 
-	Peter Zijlstra <peterz@infradead.org>, Darren Hart <dvhart@infradead.org>, 
-	Davidlohr Bueso <dave@stgolabs.net>, =?utf-8?B?QW5kcsOp?= Almeida <andrealmeid@igalia.com>, 
-	"Liam R . Howlett" <liam@infradead.org>, Yosry Ahmed <yosry@kernel.org>, Rik van Riel <riel@surriel.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, 
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC] Robust futex causing memcg OOM storm on exit
-Message-ID: <amkjTk7Jc1q4ubxj@linux.dev>
-References: <20260723001908.4046643-1-shakeel.butt@linux.dev>
- <amds50dIVOiQNz0k@tiehlicka>
- <amd6N4DVzZkl90cs@linux.dev>
- <ame7Q-0eVRrtt34j@linux.dev>
- <amhZ645Nhj856JfO@tiehlicka>
- <amjeUV3dAn7KPQgK@linux.dev>
- <amkBvRSJm5rgiV5Q@tiehlicka>
+	Miaohe Lin <linmiaohe@huawei.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, kernel-team@meta.com, Lorenzo Stoakes <ljs@kernel.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, "Liam R. Howlett" <liam@infradead.org>, lance.yang@linux.dev, 
+	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Subject: Re: [PATCH v10 6/6] selftests/mm: add hwpoison-panic destructive test
+Message-ID: <amkn21ftNme48Vbl@gmail.com>
+References: <20260630-ecc_panic-v10-0-c6ed5b62eea2@debian.org>
+ <20260630-ecc_panic-v10-6-c6ed5b62eea2@debian.org>
+ <ee4982bf-ff45-8f0b-3b76-7ca19228f12b@huawei.com>
+ <20260727212402.09baa9381ca426273fad4719@linux-foundation.org>
+ <de29c5cc-3637-cd18-354d-55ceb3d60afd@huawei.com>
+ <amh1nZVVaaZSGD3M@gmail.com>
+ <20260728122016.30752d36c3b3c3af231efa9d@linux-foundation.org>
+ <44f81bea-d64a-4f73-8665-46652a928c83@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <amkBvRSJm5rgiV5Q@tiehlicka>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 56EC380008
+In-Reply-To: <44f81bea-d64a-4f73-8665-46652a928c83@kernel.org>
+X-Debian-User: leitao
+X-Rspamd-Queue-Id: 02A9C140003
+X-Stat-Signature: qq1xogusw8gcaqj8zr4e5cazq3osskpc
 X-Rspam-User: 
-X-Stat-Signature: rgzr3je6fai96meq6wtf1tduuaj4s7ii
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1785275871-260128
-X-HE-Meta: U2FsdGVkX1/0eXRj4cpwrWtxHv4jkp0xiySQbJlRstAlmDwcheaAC0+ms6DJLVHuI+pbPxwU4IneP7XkwUR1tWlFltYqj7FbCZL50/fk6XNUn72TfKide/x1oolgeYEnp6AUT26dAwY8k/FNyFWfW9zA71wGfkYqYYgp4WQZeT77L5a44M1MrVTVtu81rwgI8N+Q9kWhj0uz3QaJrNHuG8nOm0RxLHyiyBERDywQls0hipaycSme23Qf9xMoziGdCqhcXqJ+byf7qzoHhUmDehFHYZ7V4N7eLHZfCMcQ/uJOUAYal7g1WlFkX45BPZIvDOGamgJCG0bl4KX0fCxHQUkZUX5FPkrOXBsuWkl8k/9reEgVxlboX+P3oFiDE5KZ54n26F6VutswiSWG3xmp89nTF+Zp7/wUKp3ejhEUYi7gsp/ZtUhcTHrFk1HIndYPmcTTbWr/S+6qDjw+ef05XW/M6RHQVyFSWxbU/gZTy8CXZ0PuOO+DPR7CvxeuwvnwQh0kVfIOgglc4jSt29jsKW9TW2zR+aCe+7uyDAZ3sbsQ+2ogleSZfwVifre3padVrnTHKIZe4rMMAN5yD+V5REGeWjDeXwHocERRMs1NE6nFdQqq0LXWhwq4BexMYohuFlhjcWVYtMYC693Z7zE6LSdPtI081qyGf3R9q0SrF26OhW/sofyGQNW4ubFHv1hBmEmTtLH+8u4AGFNsP5COQS8QQpZ+RGNlqgwmQhrFb+NDTH4GxPdCzRdfkLr+JC7k/J2G81PHAzbrUtMLr0glGJdkblSptECwrvwhBXt7k9nwBshNqpvSPZuYuRL+wr8428M5lkYk9ujan8IYdfj7yoH8TDpwN2AX3cqxcbk9PHQwj45MaiuVTp+A8mO+yjNtU8s5HxQ2nBLkG0SXc6gkRyFG8gpJVHri24t66FsM7eZ+65isz/kyt279BHdx2IS+aKV1R05Aa7nNGVx2swA
- BKGm5w8E
- 1QPGC5ErUflOTQV988LaeqTZIkqY5Rz0r2bFybCbUeAKSPulgW1lJUUydNz5UEQrijq0bfjkqMktyjCupuyYkP/LOHdZrDunRvy0aCUtp1Z+aNPPcGkZupsq2lOjLxVMG/9VZbm9pG9CrlJ7l8MnTnD81l+4iX7ulrPjdxlkCrmMywDDMbVq2OizRV7VVVAJO4xDd+3B9eo7NsFDUeTqwrWYyBfUyZRsJGC3wiYlhDdYz6N0=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1785276466-845336
+X-HE-Meta: U2FsdGVkX1+tS1h1HNtXseLiePw7PJMncI7E+LnIzx00dvtOq55kQnje7X+HrZeTanhQ7eMMlGlBRwwSQWDtGQPT1Cqe9YaF0vF+RdBhwwITuMqMd4fwqbk4rx0/xcNBv78Sul/8A7J7/cKZzsZ1nqq3yuZRAzvk+1zAO0vuq/D+d/vizWbkGSWUJV4fa6jRByBeWKFkkh2DL8yOoUe1yxEs7/sDTFiK0fFpNtKppGQfp4lSxU7a9wHwJnPwJ6ZkX1cilBzQXY96Es+nmbwuSdLwk8+rHBu0fhd3w7u7Kcyek+5baU2cgBQAOEeFa3lxuSzdsYoIoc88x8ETJ2Tp7RKqnSdcfdpqO+kt8w/gbTR5cANTlDTZZqWgJ65DRl59zES917ZtLeAST91omVKAICPadkmr0b1WU9MH2n3nLPAr2kMwsrFdMfegcvu4wm1Mcbm9RRnmffYRW5ua3KrxeyPhGvYf0Bd0ndUcHXfLRqVqlMlbaTEzGx4enOzSVmGBb/MqQjV5gXn9CzJUqFNMbfmDsEwxP7eUtMB7j8A3AkWdu7IabXWOT013kDV9M/DXTzsFCaC+3ni/gAYyI6ew/KXjbmbpMWjXhnHRl5n1THUqKWEq+iXCVnfDTZ8QjhnJ9V7N9L2tDTzFJWvwCHnIyi0/STCRr9WVSSPI9MIWRZTIbIvuQEkavuJaIQ29bckYCHOwBsxA1MLZpWv9Tvk9GkurygqkPXnvpzx2mEBF3oUnEh3h8VwVCJHxVepxil7oRvKXnV3vt2qZB/H407FtX4Xu35nkAmvpgqHplecpDntMJMsdchmXL9Qlcqc2/+HY645c8sFbtoX2BCDIjSbMV6JYRDvPtEVIh6ncoZlYKrEuFlu9qoSlc4nEV21Vii5fU3MqyftJAEEM5vi0Y/hprDjuSDIguCTlqnOtgpNt/pWqUTfF13q3K8f4sXftBip/ZV24nNz0ckLDHYdLp1D
+ jxtUgdWb
+ 9KvZvulIH/DMgMv7JPiH0H3v438DcAkSvy8Qxzmo1ujoqiMj3bMu17xtisRUHMjxqaHFYdZ1/Di23XaSYjoJnV/MV9vbXL62IKeX+Oui0fZTfwU53WG3ajFYEiSE2OCU16osZagbZYSPINAKbtb9UqBeyjPB9vyfyk2sbiXM6hR2Jcw0CQCeBGrwd2fU5pqbWzbqeYhXXedSW1zbxSlQHverc8BBxQr1EdGUXKbWu/lNRt1upHTK53WeeZs4IbtH2OwQVbM2eR119JxlQWpUK9MWKaz6C7k9IKdRUgYUUWY5U/s33YypR4n+/NywAQOPmiRpuoXdiIkwrUH66kfRb4pcFKSARi8cuDFRjrrXtH1HopJngOKPYYMbnWQLcA9d2W71EE5I3XMVGJuwIAsKrOSvEQg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,117 +107,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 28, 2026 at 09:23:41PM +0200, Michal Hocko wrote:
-> On Tue 28-07-26 09:55:21, Shakeel Butt wrote:
-> > On Tue, Jul 28, 2026 at 09:27:39AM +0200, Michal Hocko wrote:
-> > > On Mon 27-07-26 13:48:58, Shakeel Butt wrote:
-> > > > On Mon, Jul 27, 2026 at 08:38:37AM -0700, Shakeel Butt wrote:
-> > > > > On Mon, Jul 27, 2026 at 04:36:23PM +0200, Michal Hocko wrote:
-> > > > > > On Wed 22-07-26 17:19:07, Shakeel Butt wrote:
-> > > > 
-> > > > [...]
-> > > > 
-> > > > > > 
-> > > > > > TBH I am not entirely happy about this approach. It effectivelly reverts
-> > > > > > a75ffa26122b ("memcg, oom: do not bypass oom killer for dying tasks").
-> > > > > > It just makes it lockless. Assumption that a dying task will do so
-> > > > > > quickly and with bounded resources has turned wrong on several
-> > > > > > occasions.
-> > > > > 
-> > > > > That's why I kept it as RFC :)
-> > > > > 
-> > > > > > 
-> > > > > > On the other hand I do undestand the contention issues and I can imagine
-> > > > > > that the existing solution doesn't really work well for huge thread
-> > > > > > groups that all end up lining up on the oom_lock just to learn there is
-> > > > > > nothing really killable anymore because they are the oom victim...
-> > > > > > 
-> > > > > > Would it be just safer to bail out only for oom victim threads. This
-> > > > > > would narrow down potential runaways for oom victims which should be
-> > > > > > more limited than any killed/exiting task. It would also give the oom
-> > > > > > killer/reaper chance to work. WDYT?
-> > > > > 
-> > > > > I will give the following patch a try with the reproducer I have. I am still
-> > > > > improving the reproducer as I am still not able to recreate multi hour slowdown
-> > > > > yet. I will report back once I have some results. 
-> > > > > 
-> > > > 
-> > > > I have some results with the reproducer I (AI) wrote.
-> > > > 
-> > > > Setup: 20k threads, each with its robust_list head on its own page in a
-> > > > large anon region pushed into a zswap pool (writeback off, so it's
-> > > > unreclaimable and pins the memcg at the limit). On the OOM-group-kill
-> > > > every thread faults that page in futex_cleanup() -> do_swap_page() ->
-> > > > swapin charge -> memcg OOM. A separate thread holds mmap_lock for write
-> > > > in a loop so the oom_reaper can't reap the pool -- matching the host,
-> > > > where the reaper was blocked and the memcg never fell below the limit.
-> > > > 
-> > > > I tested on next-20260726 as baseline and then tested your suggestion over it.
-> > > > For baseline ~48k no-victim OOM invocations serialized on oom_lock; ~40s to
-> > > > drain the 20k threads in a VM (hours on the host, where each invocation
-> > > > was a dump_header over netconsole). With the patch the dying tasks stop
-> > > > entering out_of_memory and the storm is gone.
-> > > > 
-> > > > With the following suggestion, the threads of dying tasks stop entering
-> > > > out_of_memory but the exit time doubled as each thread has to decompress the
-> > > > page from zswap.
-> > > > 
-> > > > 	if (tsk_is_oom_victim(current))
-> > > > 		goto force;
-> > > > 
-> > > > I also tested by replacing goto force with goto nomem and the exit time halved
-> > > > i.e. ~20 seconds. Looking deeper it seems like each thread is still going
-> > > > through the reclaim loops.
-> > > > 
-> > > > Just for testing purpose I moved this check along with goto nomem just before
-> > > > the reclaim fuction i.e. try_to_free_mem_cgroup_pages() and the exit time falls
-> > > > below 1 second. I think what we need is to detect early that the cgroup is
-> > > > unreclaimable and the threads of exiting/reaped process should just return with
-> > > > enomem.
-> > > 
-> > > Do you mean, something like this?
-> > > --- 
-> > > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> > > index 6dc4888a90f3..66f1eebf8c22 100644
-> > > --- a/mm/memcontrol.c
-> > > +++ b/mm/memcontrol.c
-> > > @@ -2648,6 +2648,18 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
-> > >  	if (!gfpflags_allow_blocking(gfp_mask))
-> > >  		goto nomem;
-> > >  
-> > > +	/*
-> > > +	 * OOM victim still needs to charge memory to exit. OOM reaper should
-> > > +	 * help but it might fail on mmap_lock contention. If the victim is a
-> > > +	 * large thread group then all exiting threads might compete on oom_lock
-> > > +	 * just to learn that there is nothing really killable anymore. Bail
-> > > +	 * out early and fail the charge to expedite their exit. They are
-> > > +	 * considered fully reclaimed by the oom reaper and they shouldn't contribute
-> > > +	 * further charges.
-> > > +	 */
-> > > +	if (tsk_is_oom_victim(current) && mm_flags_test(current->signal->oom_mm))
+On Tue, Jul 28, 2026 at 09:21:40PM +0200, David Hildenbrand (Arm) wrote:
+> On 7/28/26 21:20, Andrew Morton wrote:
+> > On Tue, 28 Jul 2026 02:29:39 -0700 Breno Leitao <leitao@debian.org> wrote:
 > > 
-> > I simply had tsk_is_oom_victim(current) check here. 
+> >> On Tue, Jul 28, 2026 at 04:57:13PM +0800, Miaohe Lin wrote:
+> >>>
+> >>> Sure. Should I make this change or should we wait until Breno has time to do it?
+> >>
+> >> Apologies for the delay. This is on my TODO list, and I'll prioritize it.
+> >>
+> >> Just to confirm: the feature is already in mm-next without the selftest, so I
+> >> only need to submit the C version of the test, correct?
+> > 
+> > The bash script is still there, no known issues.
+> > 
+> > We have the thing and tests are useful.  I'd say retain it until the
+> > rewrite-in-C happens?
 > 
-> I was hoping for a more specific treatment. 
-> 
-> > I assume you want
-> > MMF_OOM_REAP_QUEUED in the mm_flags_test() above. Do you want me to test with
-> > this additional mm_flags_test() as well?
-> 
-> Sorry I meant MMF_OOM_SKIP there.
+> Nacked-by: David Hildenbrand <david@kernel.org>
 
-Here are the results with the reproducer I have. Ran the test 5 times and
-showing avg and std below:
+I have a draft of the selftest in C already and I will give it more bake
+time, and I will submit it until EOW.
 
-Baseline (next-20260726)			36.47 ± 0.78 s
-early nomem (tsk_is_oom_victim + MMF_OOM_SKIP)	20.83 ± 4.19 s
-early nomem (tsk_is_oom_victim)			 0.59 ± 0.22 s
-
-Since MMF_OOM_SKIP is set after multiple retries by the oom_reaper the result in
-between baseline and simple tsk_is_oom_victim check makes sense.
-
-I think we can proceed with the early nomem (tsk_is_oom_victim + MMF_OOM_SKIP)
-change as it is more conservative unless you have concerns. Overall I want to
-deploy this in prod sooner to see if this specific issues is resolved or we
-catch something else.
+Sorry for the noise,
+--breno
 
