@@ -4,68 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29E59C53219
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 20:44:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 880FCC53219
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 20:44:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9EA516B00A0; Tue, 28 Jul 2026 16:44:20 -0400 (EDT)
+	id 4481D6B00A1; Tue, 28 Jul 2026 16:44:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C1C36B00A1; Tue, 28 Jul 2026 16:44:20 -0400 (EDT)
+	id 419446B00A3; Tue, 28 Jul 2026 16:44:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B0686B00A3; Tue, 28 Jul 2026 16:44:20 -0400 (EDT)
+	id 309FF6B00A4; Tue, 28 Jul 2026 16:44:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 68DA06B00A0
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 16:44:20 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E9038A172F
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 20:44:19 +0000 (UTC)
-X-FDA: 85039363038.18.F9E9FEA
+	by kanga.kvack.org (Postfix) with ESMTP id 0AFFB6B00A1
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 16:44:21 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9BD6D80512
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 20:44:20 +0000 (UTC)
+X-FDA: 85039363080.03.8DB15E6
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf08.hostedemail.com (Postfix) with ESMTP id C4FA6160004
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 20:44:17 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=ebFTlQJs;
-	spf=pass (imf08.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	by imf30.hostedemail.com (Postfix) with ESMTP id C6A2180008
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 20:44:18 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Ob4g1vrL;
+	spf=pass (imf30.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785271458;
+	s=arc-20220608; t=1785271459;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YiJptwzuHVJ9HDL+jrIMqP8ge/TVdk1lJOQr0HqI1/Q=;
-	b=A0AgwJ2fzdkxeDIqqYDiwHXu7xZStQdh3Qyafmt2rNkbKJf8O9mRVq25SnyiRYtpG1QS0U
-	xSK100Rd+tSeK6B67D96b8NCBo7U6zuXdpjxjpLQKD4NOVbGBC/V8CinogZ9KRwIs3jkNE
-	fSmhYszwKcQ0UBeHwqZVeaE4VFobYoo=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=ebFTlQJs;
-	spf=pass (imf08.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	bh=ouvowIcM8jLtrmPgXBz2U3nMcb3XnRPv2XSwdzDzMKk=;
+	b=vOwCPul531qu4PxtvHhKQ2rk00X/VKSBdV8eAHHNpi4EzPk/+DbNOeIk4mJqK6+pjEgZIz
+	xbvs1BXllj3L4bw3Q31CYrHDah50O6CNAqHuywpNmoROrYgXUqT2y4iaxEKbmFhT7x3NwK
+	+BlbYyrwo477pRClPp09G+u9NZGdLxw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785271458;
-	b=h5zHZjnGToEdiwSU53GPtaNYzTQelbc/XvlnjytMx+v7rLIf2ZQ72fCYkmX1b1fh7l2v5H
-	ns9yfHP+DjkK4r4ebK8MKQ0muFy/s07+OnWFRBnzzTs7uKS7LE7bzMQ+9LyFQVQaGEPHIa
-	cbtep4FqRGEzGloXqAzCsln5Z/AWZd0=
+	t=1785271459;
+	b=3CqYjPYVkp0I+TM9ykgkwal+TLQRWIERWR8iTxWhuoNlFpHUWGJ7il6WkNzVh2zqG5ZEgw
+	6cZ37h6WzuHTri3/w2S5PaTfYyM3cyVCTHQZFDeLjglaytUbSuvNikywuB61QIIPxM0TC9
+	Tjb+njKEncSoKvKr6+2hICmV63rPyno=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Ob4g1vrL;
+	spf=pass (imf30.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=YiJptwzuHVJ9HDL+jrIMqP8ge/TVdk1lJOQr0HqI1/Q=; b=ebFTlQJsaq7X5DMy6DIStSRYLi
-	A+ci2DkHXQVWC1m5F6hsGPhujLv3iYgpN5gn0RpSJ+rsc4dZENyvmJDjvP3reCfwJS8iLzBrORwrv
-	KaFi0mFouqOd7x0svNpiSFz6Gh6VSaBZ9QgW8DF81CRgM/J7j9XBrZycPZ5L1hwAe0kW8tVj4KUGq
-	dELona07MqwrfOK1nhdLgBGvtuIxrY7GuRHY/xFfwPKjLK+xqXfk0taUodmBl07wL6+Vz4Vq/RKDn
-	sMsUqYrO/Wf4SeV66zPvYr5y0WZV1hy6IrtvUvZWjR6eXyInIx3/w4RY6GH/r6m7JbSEebAJM6T1U
-	ZqTH1eaw==;
+	bh=ouvowIcM8jLtrmPgXBz2U3nMcb3XnRPv2XSwdzDzMKk=; b=Ob4g1vrLWsoi9O+qJLgBZ1nYaI
+	hXynsEFaO+DnDuT1eDOQwtdYw6tHNdoCsP3GW1h2dS0yZWoSPijgO53PoCG1r4TRnAekiQb7Fmy1m
+	nWZdfnYJUHgfBr3xXd3BWqsK71g2BrE87eobfRhCKbizq2R9ewMeVjQIXMysYNz00trpeHBODFDRM
+	xmliwdA5R0MdKVQIXldnVkkNtFc+4Xl88qes93Z0KVxQcJGA8wJCeLL1QEPjp8HCUNT3HLzleFZZR
+	Iy96iX+dSSIwrz1IOJumHaT+aFN5pRzzGOB3Tpsctxq+Z4H293VBNx6+wvAt5kgkzrLzfcui1G+rK
+	a+tSpEcQ==;
 Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wooeq-0000000EFX3-2jpP;
+	id 1wooeq-0000000EFWt-11UH;
 	Tue, 28 Jul 2026 20:44:12 +0000
 From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Jane Chu <jane.chu@oracle.com>,
 	linux-mm@kvack.org
-Cc: Muchun Song <muchun.song@linux.dev>,
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Muchun Song <muchun.song@linux.dev>,
 	Oscar Salvador <osalvador@suse.de>,
 	David Hildenbrand <david@kernel.org>,
 	Miaohe Lin <linmiaohe@huawei.com>,
@@ -73,24 +74,23 @@ Cc: Muchun Song <muchun.song@linux.dev>,
 	Jan Kara <jack@suse.cz>,
 	linux-fsdevel@vger.kernel.org,
 	Christian Brauner <christian@brauner.io>,
-	Jiaqi Yan <jiaqiyan@google.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>
-Subject: [PATCH v7 13/13] hugetlb: replace hugetlbfs_read_iter() with generic_file_read_iter()
-Date: Tue, 28 Jul 2026 21:44:05 +0100
-Message-ID: <20260728204409.3396238-14-willy@infradead.org>
+	Jiaqi Yan <jiaqiyan@google.com>
+Subject: [PATCH v7 10/13] filemap: Remove checks in mapping_set_folio_order_range()
+Date: Tue, 28 Jul 2026 21:44:02 +0100
+Message-ID: <20260728204409.3396238-11-willy@infradead.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260728204409.3396238-1-willy@infradead.org>
 References: <20260728204409.3396238-1-willy@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C6A2180008
+X-Stat-Signature: nxicaj8kddju79t7mi5hczxdob4s1rom
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: C4FA6160004
-X-Stat-Signature: 1pa56szdtsxq195isbag6chb5br8xxhc
-X-HE-Tag: 1785271457-930986
-X-HE-Meta: U2FsdGVkX1+SXdE2QioyP9kOlCxc+902oNWb0bCxajh6MT4wlqFoZfCnmUZ8LXoq33DZ8AnryQt4kSn7h3TPgTRBOosrhrPX48giX/Yfx5NU5ezzCgJuM9kCcGhUE1GxEuy/+xa6rJgqV9CDUQIF2YnOtgoc6l3pwH08XaVjyfWco63KMOoPACI3IJ0LZukwbZ2K4Fpx9BTtXuS9W5grMTKVf63U61HvfaYK6IFClDjgbHsJMi6nYNDfuBIKULD9mn2gZcU8dw24HvWPDT6XV9E5dL870AFVCR4jq+PKOxX0Ravu5ilqdRckQtluhgrUNinao4uCJxtoI4bFGnDuj0HOo0ZRKcIorT5NmQZE5g0YPO0+kIYs3xHFCCCx5RNq3K+PBtzsQbFIxSlDZRoAO4vRzlcnDPGFL2UmtifZkXvo20RHbwZ5FNt4J9Bg6z74tGQvG9aikPFSiYIybmMbUQQ5/vceOw9JLD/TTQgAaeaqurRJr+MFOnLpfotxGA54os62Aatfdjuot2paPy+AuDrD+OZlogIf+Uz26GeUIMT7owh/Afvq7AVx2xFGNl7WoNv1D24Z5WbJafrkXpCdH3DvqPqvuOaeZJsQM0SvipM9qCdtnRYaybQtJ+S2atWih/qCyAyzjCvBRE+rsTVPRKxaaI3LCtjdHMiIyWCinfUpF6f126B8tnDCJNT9O/qfJcdUjPLf9naaFJJs0Lu428OwJxTZsGbOlfQZeR45iuUV0sqrVBFRebjvT11p/Sd0/WRCBvG+0Ybz1WFcs8OSuVCwE1EPCFCL22wPgIxtuHkxLYFve3AS7yBvmeIl9yfkT2fMBFdUvBb4ITawELmM+tmZDQvsQp7txdcI8oyCgjgw160wYBMq4EHZuuhLuVGcaizZkDR0QkgmsUIGtfMBEAVYt+udHb2iu6oZ6O76BiTOpUbkxVfBXhrUXKfjsjEvbloGJH7k9OcIWF6L6H8
- ybU/ElUN
- Fvm9k9bbN3O4fDgIK1t0E6D+gafEP8u9WnEuhm4PDYMM/7Mi8YGaqzdb+SGYj93yqsUUfJDhqSzY6EiGxrL8T+3VkEdS6aMLg5ZS/AiEQXQ/F+WeUUrFly2WiNfkmZMPAh4ke/ymoe3xTSmETCI5tbjOyumbvg2tbmFMHCNO8JQvloWqUzaxqISW7Ru8tW79L/R1CZ0hYwkLbi8d0bwwq8kLM3rBePmAmWqoSHNHK6tYJzZayIAyqmdsVMj4sA6QfFQT6gbk+OI9hvZ3irpRftSXg4WV1t8+vwPdlD/hImV+GG2rKiqwjKCARHWgWiE+fyraTg6GAFMrPKT9KtxfqnkDnkRponrk7fYDU2wUt3NviBM//pSZEpMdtMcYG0E+tNlzvnrvdgNc4x3I=
+X-HE-Tag: 1785271458-313263
+X-HE-Meta: U2FsdGVkX1/LdOtZp5lfkBkRGp+qFZgPKP0jyxj6qi1bDl4Ea4vEGIak5pVbfD2c9URKyLiMQVWP9KId9IWQtIhe30HLeZ73QL7U5mOB3pq7ZMJoSMEsO7zSeMoWkDfNKOfLqokWS3ePsumUQlmGwAcYb+kGWqOf1XpRJbmsnba22Y3n1kUdgYw94/+OgIZt8VsPP5lqcDl5tj08B8u9/82OvlMRP9OPj6xXCN3/cWP9lvrRS5Hrk641l3gYE6jFfiqCRr92zCAy/GZaLYuavyeik5LDTDKlXg6RR8/lqomAOF0aTbvbZ/4/v6Wsa/+JM9kMZu234XCkhRdfUfulGuEAo7A09G33EtwQeheSTzUelOvEztYcweFHMyadr6GVb/UjTDfrqRLf55fVrb94WXL8u3A6HYIsSIctIX7kATwMFlGZVddWFgJwyTNv48pQmMHcpv2TD+nrRTVJ9tFiwbqXFyBCCoYtzwnEzqP4mGqY2jnCjHwmyKzSxZmvfHMqD3bOO12sjdvYiD0zQM0VZ3QQDHhNxa6TIvwb92pomRkbcHPhLbBFJ0OceWG8hiMti7k459KzlopRW9Bfsas2OeyZI3ozKu2vQTfxA4uYUBJzvME0LMeBy3s0NH1NIy6/dJvZV7Dd+Drn4Bx3oazskq+KmI45+n8+ggsJzs6Q0EjqqaUTYocP2rS9rzTU5x7NDMiIA2XWeU6BQTgXYt9B7zztQVKiiMqvRQT1gOjxC2hh67RxQzHwe9j7/MrzsW1TCIF8RYGzFameInM3C49J+y4TahThtU2++qA2GCBzQMNOF28EzReQB7Ib17XL+t4d5bu6tmj1dR5hM6iM9C1DQ2NBFCqpFah738MW5/VjepRif1Fr+8rXQqmf6H8wYUV5G8WGZ7Q4PWzsqDS1p6+3dTB1iKMdDNW+VLYuvyoYNXOvuHjcuTYVo1OErNd37Hxgf47NiAxtDj/fntdkuYK
+ 2DvaKPsR
+ 2b8rJBnozr8QVBtKJBBPWnPqaLPdLwiV90InBX5pBfE22hZ3l49O7qPgu2VDHPz4/TLehQOIVrJ5aCV2unjx2AdoApfTq3IlY1zm6GJqHscIenlrzIp633qw55qcLBYhOOcRRbJLCJawbwMNUVpPfHjajv2TF6Q79VL6d5FH8RrDoe3bLOasB4ydXWATXrFsFMWoNgBNogkNxCiFTUoCcGWqpgByG4zQ8sNVQewCRZ+/FuCJeQmQmWeP6lTyvgkkcgpdcgz9OaM7Nief2kP//OItN32xffuAmq7Ysw08Dty0re8CN53uvneZZKiAd+LowwYfCkpFtIKzIw7zKV2JZHWaMwAWcbakSTKLfLf6mYZDKmUq0mOHNmU6IjjCHaZ2Yf/scXk32C4naSOUV1+ECe5LL9g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,154 +98,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Jane Chu <jane.chu@oracle.com>
+These checks make it impossible to use mapping_set_folio_order_range()
+in hugetlb.  They add very little value and can simply be removed.
 
-generic_file_read_iter() now handles hugetlb poison, hugetlb page
-size and missing folios correctly, so we no longer need a separate
-hugetlbfs_read_iter().
-
-Signed-off-by: Jane Chu <jane.chu@oracle.com>
-Co-developed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 ---
- fs/hugetlbfs/inode.c | 110 +------------------------------------------
- 1 file changed, 2 insertions(+), 108 deletions(-)
+ include/linux/pagemap.h | 34 ++++++++++++++--------------------
+ 1 file changed, 14 insertions(+), 20 deletions(-)
 
-diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-index 8d15413a67ee..cef7e61b827d 100644
---- a/fs/hugetlbfs/inode.c
-+++ b/fs/hugetlbfs/inode.c
-@@ -187,113 +187,6 @@ hugetlb_get_unmapped_area(struct file *file, unsigned long addr,
- 	return mm_get_unmapped_area_vmflags(file, addr0, len, pgoff, flags, 0);
+diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+index 2c3718d592d6..968b791cfd14 100644
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -373,7 +373,7 @@ static inline void mapping_set_gfp_mask(struct address_space *m, gfp_t mask)
+  * assumptions about maximum order if THP are disabled, but 8 seems like
+  * a good order (that's 1MB if you're using 4kB pages)
+  */
+-#ifdef CONFIG_TRANSPARENT_HUGEPAGE
++#ifdef CONFIG_LARGE_FOLIO
+ #define PREFERRED_MAX_PAGECACHE_ORDER	HPAGE_PMD_ORDER
+ #else
+ #define PREFERRED_MAX_PAGECACHE_ORDER	8
+@@ -394,7 +394,7 @@ static inline void mapping_set_gfp_mask(struct address_space *m, gfp_t mask)
+  */
+ static inline size_t mapping_max_folio_size_supported(void)
+ {
+-	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
++	if (IS_ENABLED(CONFIG_LARGE_FOLIO))
+ 		return 1U << (PAGE_SHIFT + MAX_PAGECACHE_ORDER);
+ 	return PAGE_SIZE;
  }
+@@ -405,29 +405,23 @@ static inline size_t mapping_max_folio_size_supported(void)
+  * @min: Minimum folio order (between 0-MAX_PAGECACHE_ORDER inclusive).
+  * @max: Maximum folio order (between @min-MAX_PAGECACHE_ORDER inclusive).
+  *
+- * The filesystem should call this function in its inode constructor to
+- * indicate which base size (min) and maximum size (max) of folio the VFS
+- * can use to cache the contents of the file.  This should only be used
+- * if the filesystem needs special handling of folio sizes (ie there is
+- * something the core cannot know).
++ * The filesystem should call this function in its inode constructor
++ * to indicate which size folios can be used to cache the contents of
++ * the inode.  This should only be used if the filesystem needs special
++ * handling of folio sizes (ie there is something the core cannot know).
+  * Do not tune it based on, eg, i_size.
+  *
++ * hugetlb calls this with orders larger than MAX_PAGECACHE_ORDER.
++ * Normal filesystems should not do this.
++ *
+  * Context: This should not be called while the inode is active as it
+  * is non-atomic.
+  */
+ static inline void mapping_set_folio_order_range(struct address_space *mapping,
+-						 unsigned int min,
+-						 unsigned int max)
++		unsigned int min, unsigned int max)
+ {
+-	if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
++	if (!IS_ENABLED(CONFIG_LARGE_FOLIO))
+ 		return;
+-
+-	if (min > MAX_PAGECACHE_ORDER)
+-		min = MAX_PAGECACHE_ORDER;
+-
+-	if (max > MAX_PAGECACHE_ORDER)
+-		max = MAX_PAGECACHE_ORDER;
+-
+ 	if (max < min)
+ 		max = min;
  
--/*
-- * Someone wants to read @bytes from a HWPOISON hugetlb @folio from @offset.
-- * Returns the maximum number of bytes one can read without touching the 1st raw
-- * HWPOISON page.
-- */
--static size_t adjust_range_hwpoison(struct folio *folio, size_t offset,
--		size_t bytes)
--{
--	struct page *page = folio_page(folio, offset / PAGE_SIZE);
--	size_t safe_bytes;
--
--	if (hugetlb_page_hwpoison(folio, page))
--		return 0;
--	/* Safe to read the remaining bytes in this page. */
--	safe_bytes = PAGE_SIZE - (offset % PAGE_SIZE);
--	page++;
--
--	/* Check each remaining page as long as we are not done yet. */
--	for (; safe_bytes < bytes; safe_bytes += PAGE_SIZE, page++)
--		if (hugetlb_page_hwpoison(folio, page))
--			break;
--
--	return min(safe_bytes, bytes);
--}
--
--/*
-- * Support for read() - Find the page attached to f_mapping and copy out the
-- * data. This provides functionality similar to filemap_read().
-- */
--static ssize_t hugetlbfs_read_iter(struct kiocb *iocb, struct iov_iter *to)
--{
--	struct file *file = iocb->ki_filp;
--	struct hstate *h = hstate_file(file);
--	struct address_space *mapping = file->f_mapping;
--	struct inode *inode = mapping->host;
--	unsigned long index = iocb->ki_pos >> huge_page_shift(h);
--	unsigned long offset = iocb->ki_pos & ~huge_page_mask(h);
--	unsigned long end_index;
--	loff_t isize;
--	ssize_t retval = 0;
--
--	while (iov_iter_count(to)) {
--		struct folio *folio;
--		size_t nr, copied, want;
--
--		/* nr is the maximum number of bytes to copy from this page */
--		nr = huge_page_size(h);
--		isize = i_size_read(inode);
--		if (!isize)
--			break;
--		end_index = (isize - 1) >> huge_page_shift(h);
--		if (index > end_index)
--			break;
--		if (index == end_index) {
--			nr = ((isize - 1) & ~huge_page_mask(h)) + 1;
--			if (nr <= offset)
--				break;
--		}
--		nr = nr - offset;
--
--		/* Find the folio */
--		folio = filemap_lock_hugetlb_folio(h, mapping, index);
--		if (IS_ERR(folio)) {
--			/*
--			 * We have a HOLE, zero out the user-buffer for the
--			 * length of the hole or request.
--			 */
--			copied = iov_iter_zero(nr, to);
--		} else {
--			folio_unlock(folio);
--
--			if (!folio_test_has_hwpoisoned(folio))
--				want = nr;
--			else {
--				/*
--				 * Adjust how many bytes safe to read without
--				 * touching the 1st raw HWPOISON page after
--				 * offset.
--				 */
--				want = adjust_range_hwpoison(folio, offset, nr);
--				if (want == 0) {
--					folio_put(folio);
--					retval = -EIO;
--					break;
--				}
--			}
--
--			/*
--			 * We have the folio, copy it to user space buffer.
--			 */
--			copied = copy_folio_to_iter(folio, offset, want, to);
--			folio_put(folio);
--		}
--		offset += copied;
--		retval += copied;
--		if (copied != nr && iov_iter_count(to)) {
--			if (!retval)
--				retval = -EFAULT;
--			break;
--		}
--		index += offset >> huge_page_shift(h);
--		offset &= ~huge_page_mask(h);
--	}
--	iocb->ki_pos = ((loff_t)index << huge_page_shift(h)) + offset;
--	return retval;
--}
--
- static int hugetlbfs_write_begin(const struct kiocb *iocb,
- 			struct address_space *mapping,
- 			loff_t pos, unsigned len,
-@@ -891,6 +784,7 @@ static void hugetlbfs_init_regular_inode(struct inode *inode)
- 	inode->i_op = &hugetlbfs_inode_operations;
- 	inode->i_fop = &hugetlbfs_file_operations;
- 	mapping_set_folio_order_range(inode->i_mapping, order, order);
-+	mapping_set_authoritative(inode->i_mapping);
+@@ -460,7 +454,7 @@ static inline void mapping_set_large_folios(struct address_space *mapping)
+ static inline unsigned int
+ mapping_max_folio_order(const struct address_space *mapping)
+ {
+-	if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
++	if (!IS_ENABLED(CONFIG_LARGE_FOLIO))
+ 		return 0;
+ 	return (mapping->flags & AS_FOLIO_ORDER_MAX_MASK) >> AS_FOLIO_ORDER_MAX;
  }
- 
- /*
-@@ -1215,7 +1109,7 @@ static void init_once(void *foo)
+@@ -468,7 +462,7 @@ mapping_max_folio_order(const struct address_space *mapping)
+ static inline unsigned int
+ mapping_min_folio_order(const struct address_space *mapping)
+ {
+-	if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
++	if (!IS_ENABLED(CONFIG_LARGE_FOLIO))
+ 		return 0;
+ 	return (mapping->flags & AS_FOLIO_ORDER_MIN_MASK) >> AS_FOLIO_ORDER_MIN;
  }
- 
- static const struct file_operations hugetlbfs_file_operations = {
--	.read_iter		= hugetlbfs_read_iter,
-+	.read_iter		= generic_file_read_iter,
- 	.mmap			= hugetlbfs_file_mmap,
- 	.fsync			= noop_fsync,
- 	.get_unmapped_area	= hugetlb_get_unmapped_area,
+@@ -524,7 +518,7 @@ static inline bool mapping_large_folio_support(const struct address_space *mappi
+  *
+  * Return: True if PMD-sized folios are supported, otherwise false.
+  */
+-#ifdef CONFIG_TRANSPARENT_HUGEPAGE
++#ifdef CONFIG_LARGE_FOLIO
+ static inline bool mapping_pmd_folio_support(const struct address_space *mapping)
+ {
+ 	/* AS_FOLIO_ORDER is only reasonable for pagecache folios */
 -- 
 2.47.3
 
