@@ -4,115 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B322EC54F4D
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 16:28:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63A2FC531F9
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 16:31:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 959C66B008C; Tue, 28 Jul 2026 12:28:41 -0400 (EDT)
+	id 2CE5F6B007B; Tue, 28 Jul 2026 12:31:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 909876B0093; Tue, 28 Jul 2026 12:28:41 -0400 (EDT)
+	id 2A60C6B009B; Tue, 28 Jul 2026 12:31:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F8E76B009E; Tue, 28 Jul 2026 12:28:41 -0400 (EDT)
+	id 195C66B009D; Tue, 28 Jul 2026 12:31:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D68C6B008C
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 12:28:41 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BE9DA160485
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 16:28:40 +0000 (UTC)
-X-FDA: 85038718800.21.C47E601
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 05117180008
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 16:28:38 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=DKb4Qxec;
-	spf=pass (imf16.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DEDBC6B007B
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 12:31:17 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6B45DA15F6
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 16:31:17 +0000 (UTC)
+X-FDA: 85038725394.06.47FAC48
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 4B8451C000E
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 16:31:15 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VKzewIKk;
+	spf=pass (imf20.hostedemail.com: domain of rgb@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=rgb@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785256119;
+	s=arc-20220608; t=1785256275;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=YIer7IVQu6sdXDBXBO4blJvI/i45KO/+dgraC13Eku8=;
-	b=XpjEK8KFKNodgh3kkKzi+7GCA0SLAcKi7g63A9tL99Xut+HnZxbrOUYyuQgX55Tsqt9Lwy
-	/K1luXSiLABEL6v7Xej/++67Xk/bX4jELB6cwtcfH80D26q1C/hosotpo9ySvygHEtIUlp
-	pj425GapRh6EmX1HgpnrQlO6QCkaegg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785256119;
-	b=cJoTsAszPbRRO3QZr6rsLqe7heN2qZ37j5pB89/ugpyRolLTBgW/cJEUCwQuGkD8AYRn3v
-	aJM1wnk8Rt7K8Pp2T+Q5L/ITu3v2MtzwkPIET1EGV5BtCn0hxuozZ8l9KmCJ2NGkSwbG7P
-	B60dFVrPQIwB5q6Hf2gEzFKmboPQ+Fo=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=1qvz+f9qd1XslHKjpkIvG5iZUOK8HWLkYqkSa2lLHUw=;
+	b=gIlMmEDRHGi2Y3pRcd/bphVyH3Z4LaRGExhzMEmumPZOoLQtVmtddrzgITso4u9olv9Bqg
+	1t0vP8GQvh24wILs+PsNgB0LqLoKBHsNaQpiBy6ZUIZ7fxEchT/Yk9OZq8aj0RIZ5o/s/F
+	B+Bnwn4G+UQoN7xbgJmqEp6jcpmWIgc=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=DKb4Qxec;
-	spf=pass (imf16.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
-	Reply-To:Content-ID:Content-Description:In-Reply-To:References;
-	bh=YIer7IVQu6sdXDBXBO4blJvI/i45KO/+dgraC13Eku8=; b=DKb4Qxecq624/3T6timyLsyZpz
-	WxHtr5FDMHld1HLlrWfglmV1UXJ8OATH9JKGabK6ApTqv3jHjz5nfthLR2xfHcZafjDUCIfExIm9U
-	msJ6/kwBQodU0C16Qc7prlbcJTfTKKYPKV/Lv9R7c+ya8E58HxtFyGLb6JwPrC+cTuxFR4cPHQcVo
-	7RN4OqE4ym7MJntrHee9dYHO0kb9x+oKTIaenAaHwz4rcd7I7Y8IBTZ9yKywHFiwrBJHJNn5uvR0k
-	SFAmPtOmRKWqvoXsaH7gwyKPhTPk1HQvBoUkqeKAArauwwlglL+HY0dJywBzMvpvobTmgYjS8wHue
-	naNKKbKA==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wokbA-007nlF-03;
-	Tue, 28 Jul 2026 16:24:08 +0000
-From: Breno Leitao <leitao@debian.org>
-Date: Tue, 28 Jul 2026 09:22:57 -0700
-Subject: [PATCH] kexec: keep the next kernel off hardware-poisoned pages
+	imf20.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VKzewIKk;
+	spf=pass (imf20.hostedemail.com: domain of rgb@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=rgb@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785256275;
+	b=lrPNsFzvb/jxIqJr0/Mngh5153GeeGlMc9y4F2nqlZliXGmXb05tWViks37XVkK4xkLxLW
+	D1YyPKwC1mVRocwGFp+Stdzk1EJXVedYOiOD5zFW4sPX9rueKRxefxj4sy2lEFwQ4nTncF
+	FR2SchXFWzaK2nEuGWyoQNpAtdLaOBY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785256274;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1qvz+f9qd1XslHKjpkIvG5iZUOK8HWLkYqkSa2lLHUw=;
+	b=VKzewIKk9jEsZ36bh3u/9yZRbj6oiw39Q0YUVjDcu+OPkWqbh/SB6r1pSAp3RUj35bfTFh
+	C0GzTmqlolVp6tTxgGTMH8mBIRu8hcOGh47Nv6LM2iAhzjnG3Shq6u3cW36oXoOq6/in0a
+	JO7s4THCe1CmYO0jfLIaElWpa0Zhxhk=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-437-UUTgbLUtMwCTt3lPXG5hBw-1; Tue,
+ 28 Jul 2026 12:31:11 -0400
+X-MC-Unique: UUTgbLUtMwCTt3lPXG5hBw-1
+X-Mimecast-MFC-AGG-ID: UUTgbLUtMwCTt3lPXG5hBw_1785256269
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CB5EC1800562;
+	Tue, 28 Jul 2026 16:31:08 +0000 (UTC)
+Received: from madcap2.tricolour.ca (unknown [10.22.58.2])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CB657180044F;
+	Tue, 28 Jul 2026 16:31:04 +0000 (UTC)
+Date: Tue, 28 Jul 2026 12:31:02 -0400
+From: Richard Guy Briggs <rgb@redhat.com>
+To: Ricardo Robaina <rrobaina@redhat.com>
+Cc: audit@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	paul@paul-moore.com, eparis@redhat.com, sgrubb@redhat.com,
+	kees@kernel.org, mingo@redhat.com, peterz@infradead.org,
+	juri.lelli@redhat.com, vincent.guittot@linaro.org,
+	akpm@linux-foundation.org, david@kernel.org, brauner@kernel.org
+Subject: Re: [PATCH] audit: add CLONE3 auxiliary record to log process cloning
+Message-ID: <amjZRgbKg7svHU7r@madcap2.tricolour.ca>
+References: <20260724150258.560396-2-rrobaina@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260728-kexec_posioned-v1-1-160c81d180fe@debian.org>
-X-B4-Tracking: v=1; b=H4sIAGHXaGoC/x3MUQqAIBAFwKss7zvBLBK8SkRobrUEFQohRHeP+
- h/mRuYknOHoRuJLshw7HNUVYVr9vrCSCEcw2nTaGqs2LjyN5/FBjsqaELRv67bxGhXhTDxL+cN
- +eJ4XcMUxy2AAAAA=
-X-Change-ID: 20260727-kexec_posioned-72bb0a4143a0
-To: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Baoquan He <baoquan.he@linux.dev>, 
- Pasha Tatashin <pasha.tatashin@soleen.com>, 
- Pratyush Yadav <pratyush@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, 
- Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- kexec@lists.infradead.org, rmikey@meta.com, riel@surriel.com, 
- kernel-team@meta.com, Kiryl Shutsemau <kas@kernel.org>, 
- Breno Leitao <leitao@debian.org>
-X-Mailer: b4 0.16-dev-d5d98
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4769; i=leitao@debian.org;
- h=from:subject:message-id; bh=nQSm5rYV8cjazgSzvHIJfAskSEGBu9DQvzJ0xkXZLw0=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqaNeiZA/VXiwvyo00LoCIEW4X/qMZVed+YMGtk
- aEsqlLrlxSJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCamjXogAKCRA1o5Of/Hh3
- bcPXD/9Gf4bKeGFEgYJatATA6hZ6ZTE/x4xuWP/vzgqoyCSXNwea3kDhw6x/DWBA7wlC5d67jxE
- yg0NjtHC+3FRc+Ax/+mCjyWlHxzroaHESVsLUBkOviufkhgCpnvU3+alILhY8yPvGHh3r6cRrUx
- ieoLCdWTXHgBPIzvZZTn+Br1lrmyvjvxKVYChiKZZJvq3l4+7EoY49xrBHhnLpoFUPkBcFOrDaU
- LhbLVVp5v8KHZLcOlDh+qjT/Jvlb+Jry6fg4M9URFujcSZbfwl90tN9aazpIBwhmKZ0jFpaKbs1
- hlAeizxQ0/sBQ4qtWvl9QycDzn0QTftbVSUmHmKBBhyiUo2lnADS6zc+IHSiyPNeos5sdcQH0+m
- ozhX2dixp2IoXlkgR37ojd63HPoteWxNALoi4RMUomSEfrercXae88U2crhD+bQn8SegjSH4RNn
- imp6TpWNP7S41laZ2bNBHYfs7K+mE3fyN/QhHD/7nIso61xveRFSmydNjmRue1osvF10/HgsEp4
- QGGMEQhJpEgVHtOLqNGr/efZxWozOBiUODK+mevjoD4mgcL+zMKM+dJicjywpu+o55Mpfhg+j1u
- MwG6Gsgy/tX7CcgtdyzYHij65Yaq571AbD1gNi/kW1XbvRyko9FOXkUoRTrzcgweVGdh7NwICGO
- YSHKrVvala8HXjw==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 05117180008
-X-Stat-Signature: tfz67euoi15xiiny6mm7swjhx71zqumw
+In-Reply-To: <20260724150258.560396-2-rrobaina@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Mimecast-MFC-PROC-ID: Nm8nlGUVqb4eC8_6VUsP8VD_x5weuROt6X1YP0T0h-8_1785256269
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 X-Rspam-User: 
-X-HE-Tag: 1785256118-730443
-X-HE-Meta: U2FsdGVkX18FDArK2luQVqajGWdjGZVGFp6Yxyn+y6QkNhgE7Eelhfuu8DbT4AEyXjIDjUYYT0T+p4Avhg53dfx5ri5IuRxo/DiFys2199yC/JfVplDjU0OzScNHj4k2uN3ObmRD2v9Oy/SCcnZVRDCsMN70crdDZ9/plJ3YYCVp2NWRUcEnYxNq7tLtcsCjHnKlG09l6O/RjI8dSqClYLT5mKtVBxMuKKtgmDV40y+2pVzzpPsJr7c6wWkoiVec5s+1NTmRtN9RRMNnOi6o++Cow8XvNGwfpwcJ7LR8LLoqvpn/kQ2grlW7aeUYzjjtCVeqbjKfizmy/9GTLGX4xTnxFq8Wb+09lse8r13IHtsSZOE1RZ6eCn/e1ZjG5dSg1yqXHhgLB1x8YqYpWt+p3golmbNUG3YRjTWLAmuzzt4cIVJJ0Ppq+QPvYjA/NAztsz5E5aJ01K0Zi0bKZtz+KegZNEX451DkJ+nuxysjxKODc9z0PfcMcU1xwgSU5atlo7RnBHzJNihvAltqQ9KFz3+c9BQDLDAJzBwwejo12KfjG28KdLMM5eunpp80NwUJlJTTLLMuTloanz6jinN/7theUTTkGzQap7gOkvasCzRv0zj5NGJxO/4uCQ5x8kaJBgHdXV0iaseGhjT91boXzFDHBfmvLUb8AsHHuIa/r1HKIyo48u4CG/h7CKo9kwsXfNEDqKGZsFFd203suGgeQ9+5jRKl0MyCikKV1Gn97cv3vKfLjcr4pKcIfRJ9taAWZ4rDk7C66qp4HO5pdLIHr3Sbeq3VcYAijGfpAyZX9/hvnZ/1w5/3ZrbI+Z7cMS32kW3NvgwhfthAvYHaJd9ee3L4stNUyFqijwLbhW7G3T6OzWcAv/XJ63NZszjYV59yxY6xWFXzkzZ+/sL0fOBaSEpGUm5OteCk/mvYWAcqJ0jlj6/gx9kHBbZiEm/nYn1jK8sFWP/ijCmmhW0thuD
- st4zqALe
- ddJIXwTmTfmzi57rvAp/Zr624WajKAQEgjZCN3uh5WBTGGgI3zcKJzARjIZ66/7ZwsvuC//NMOS+MQOcT1Ouy+AlW5sDFFa022qbCYFvORrCsKYejItQoaaa+2B24LSLQ7OHqj/AXPuMuCUVP9wElWFmvOHko4C8xRyhaZE/jsjM0I2uXHAydB1a6UlehEJsY9Kp5hsspsHqKv/lVDngcMNURcOon3habZgj4lKHllhixgEBVl5QqMU24sy6t3UxrVw/tn01r66Hc13KzcThY5jERyoaSOoTNfrLm1jTvwFq2Lv7+RVL/6VDbLSyO99YNmt8pxFeXCsXG2m1/oMKPrUVUHggzvKAACZNzcQGnhXK55jOTmGscyX0AeysC9sOHKZqi
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 4B8451C000E
+X-Stat-Signature: 9cj5oz1yqogukk9gzkqbocqnqhx8yazu
+X-HE-Tag: 1785256275-331207
+X-HE-Meta: U2FsdGVkX1/BKiEYcap2CWox1BF8E0FMgh2LAatxFUMrRl+oYZaJ4TQZypsYtxbbytSHrpX5n0grY2dB7tchkkfKbw6Gl833xMXaKVclU8RIRBbqJUB24syLH8R6JOxC3MuR/U9GlOUKeV0Dr7BeTq+9OZ6y9XmPslQ5l3GTiumLQuZo0SoYBlrHOhaCqPwxmoWjgzjELKO9UW6wpohvIKr0QQZ5104EpLXvnEscqlLU3r11bDHmacrDDkp2iJuYyUttW9+EzjB6nYfRm6ni44HY1JZWOpBRyZI+AQz9VdGssC4Yww5TF6g8lZ1wTqfxfeHpq/e+3K8vJ29pMXboLGGpKtHrCVm94rx5p33TslgMIWaCBCig7xbr+q7WWDXOPwXIHsYGMxsqTXt6mr8eaR/gylLd6+QMzuJ7srHC2lMJwQ/IFmxFim4+cFrv1w8kgcwRATL5+Z6TacTu03Xch4+9Qc4NycT5VYmXT3bpZgGTODwnV44eW6zwQY4q/Fy0K505zK3nWRH5SkmYKai/RoZRSV/dh8v0rc28ZtZiz3a+zz+zD++KkiQec7zd1SypHkiE71DHC0X9AUeL3A82ZjGRi2viL3A7ZQt+nKGdsFN14vMnlPGD7U+6IA9l9e5miUYGx6LY/TRDSOgTvZ0XtUQcaAegSAW+vU4NMnITzu7GGlP7hhrUbotJmD4PtIE/VuCeF8CVONGofYTQOwJ4tOw3LSVyT+KOSRdIaCkv4AZF+TSLLKhvXYgN6p751BDSrJ5Rj3TQe6J9UaEgN6fjBhpHVJUfV0Y8IVCPAHjnbOFIQ0xboUuNh/zFcIRWNTSIg3+SzyMBLEShk8o5zIHwox+sUxrRdfCRFseeWZ+3U2b5SIgoU7lIA50X02cly8IanlQusEYpIgBqwHDExzfi/p9qNqXa27VNYWBh3S1OdkKQVNP+3ufiUY/8ZN7Xeqx+Z0EuyDAlLnP2ZGFgBPJ
+ +TC6ukWp
+ HkXdjR6vmTNzn0skzcQqHUorTpjvAQn9c1Pzwy8h4+o/U33pqyHjTa1+iSwUD/ZTRNW8Hu6iNp0fn1XtTcAg8VlU0UvXr1HFnToPvRiSsc3MCyxUZvuatjszX0EjhsgaItGObOO4DquVUzK++BrJwaHIhdNx6BNZP4iDLTiTpZjKLQdRIjHWmkn8B+bR8o280Q1+s/0SFM2GfQZfMxBBNRrndtE2vRvk6vbNJkzeZuULiMSMHvzk4kQBjCoGDGpzXfAMV4y/UV70Y7mADlLnR2Nc4jY6y1UqnCmbT7cBvaajYbmogx7pVmY/d/540xGENoxuwUbjzThtrj4qWGqfW46n9zwYHEIX+6/BmHZUjdSjlDdg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,145 +106,147 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Memory failures (such as unrecoverable ECCs errors) are getting more and
-more common. The kernel knows how to handle it while running, marking it
-as poisoned (and SIGBUS user tasks).
+On 2026-07-24 12:02, Ricardo Robaina wrote:
+> The clone3(2) syscall moves most parameters to struct clone_args.
+> For this reason, the generic SYSCALL audit record does not capture
+> the structured arguments.
+> 
+> Add a CLONE3 auxiliary record that logs: flags, exit_signal, cgroup,
+> and pidfd fields from struct clone_args. When CLONE_PIDFD is set and
+> the syscall succeeds, the resolved pidfd is logged; otherwise
+> pidfd=(null).
+> 
+>  ----
+>  type=SYSCALL : syscall=clone3 a0=0x7ffe7f1ec640 a1=0x58 a2=0x0 ...
+>  type=CLONE3 : cl3_flags=0x1000 exit_signal=17 cgroup=0 pidfd=3
+> 
+> Link: https://github.com/linux-audit/audit-kernel/issues/151
+> Signed-off-by: Ricardo Robaina <rrobaina@redhat.com>
+> ---
+>  include/linux/audit.h      | 10 ++++++++++
+>  include/uapi/linux/audit.h |  1 +
+>  kernel/auditsc.c           | 20 ++++++++++++++++++++
+>  kernel/fork.c              |  4 +++-
+>  4 files changed, 34 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/linux/audit.h b/include/linux/audit.h
+> index 45abb3722d30..833f349bf415 100644
+> --- a/include/linux/audit.h
+> +++ b/include/linux/audit.h
+> @@ -449,6 +449,7 @@ extern void __audit_tk_injoffset(struct timespec64 offset);
+>  extern void __audit_ntp_log(const struct audit_ntp_data *ad);
+>  extern void __audit_log_nfcfg(const char *name, u8 af, unsigned int nentries,
+>  			      enum audit_nfcfgop op, gfp_t gfp);
+> +extern void __audit_log_clone3(struct kernel_clone_args *kargs, int ret);
+>  
+>  static inline void audit_ipc_obj(struct kern_ipc_perm *ipcp)
+>  {
+> @@ -598,6 +599,12 @@ static inline void audit_log_nfcfg(const char *name, u8 af,
+>  		__audit_log_nfcfg(name, af, nentries, op, gfp);
+>  }
+>  
+> +static inline void audit_log_clone3(struct kernel_clone_args *kargs, int ret)
+> +{
+> +	if (!audit_dummy_context())
+> +		__audit_log_clone3(kargs, ret);
+> +}
+> +
+>  extern int audit_n_rules;
+>  extern int audit_signals;
+>  #else /* CONFIG_AUDITSYSCALL */
+> @@ -730,6 +737,9 @@ static inline void audit_log_nfcfg(const char *name, u8 af,
+>  				   enum audit_nfcfgop op, gfp_t gfp)
+>  { }
+>  
+> +static inline void audit_log_clone3(struct kernel_clone_args *kargs, int ret)
+> +{ }
+> +
+>  #define audit_n_rules 0
+>  #define audit_signals 0
+>  #endif /* CONFIG_AUDITSYSCALL */
+> diff --git a/include/uapi/linux/audit.h b/include/uapi/linux/audit.h
+> index e8f5ce677df7..37357e17adbf 100644
+> --- a/include/uapi/linux/audit.h
+> +++ b/include/uapi/linux/audit.h
+> @@ -122,6 +122,7 @@
+>  #define AUDIT_OPENAT2		1337	/* Record showing openat2 how args */
+>  #define AUDIT_DM_CTRL		1338	/* Device Mapper target control */
+>  #define AUDIT_DM_EVENT		1339	/* Device Mapper events */
+> +#define AUDIT_CLONE3		1343	/* Record showing clone3 args */
+>  
+>  #define AUDIT_AVC		1400	/* SE Linux avc denial or grant */
+>  #define AUDIT_SELINUX_ERR	1401	/* Internal SE Linux Errors */
+> diff --git a/kernel/auditsc.c b/kernel/auditsc.c
+> index 6610e667c728..c0106bb71c19 100644
+> --- a/kernel/auditsc.c
+> +++ b/kernel/auditsc.c
+> @@ -2882,6 +2882,26 @@ void __audit_log_nfcfg(const char *name, u8 af, unsigned int nentries,
+>  }
+>  EXPORT_SYMBOL_GPL(__audit_log_nfcfg);
+>  
+> +void __audit_log_clone3(struct kernel_clone_args *kargs, int ret)
+> +{
+> +	struct audit_buffer *ab;
+> +	int pidfd;
+> +
+> +	ab = audit_log_start(audit_context(), GFP_KERNEL,
+> +			     AUDIT_CLONE3);
+> +	if (!ab)
+> +		return;
+> +
+> +	audit_log_format(ab, "cl3_flags=0x%llx exit_signal=%d cgroup=%d",
+> +			 kargs->flags, kargs->exit_signal, kargs->cgroup);
 
-Poisoned memory is removed from the buddy allocator, but, not from
-other places. A current problem is that kexec will load new kernel
-on top of a bad/poisoned memory, which is undesirable.
+Would there be any confusion if this were simply "flags=..." since it is
+already a record type AUDIT_CLONE3?
 
-If the next kernel's image, initrd or purgatory lands on poisoned frame,
-the relocation copy writes to the bad memory and the machine checks
-during the kexec.
+> +	if ((kargs->flags & CLONE_PIDFD) && ret >= 0 &&
+> +	    !get_user(pidfd, kargs->pidfd))
+> +		audit_log_format(ab, " pidfd=%d", pidfd);
+> +	else
+> +		audit_log_format(ab, " pidfd=(null)");
 
-Skip hardware-poisoned frames when placing segments: check them in the
-kexec_file hole finder so it lays the next kernel down on good memory,
-and reject a poisoned destination in sanity_check_segment_list() for
-the kexec_load path, which cannot relocate.
+Is there any interest in:
+	child_tid (was captured by generic audit syscall arg 4)
+	parent_tid (was captured by generic audit syscall arg 3 or 4)
+	tls (was captured by generic audit syscall arg 4)
+	set_tid
 
-Suggested-by: Kiryl Shutsemau <kas@kernel.org>
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
- include/linux/mm.h  |  6 ++++++
- kernel/kexec_core.c | 10 ++++++++++
- kernel/kexec_file.c | 14 ++++++++++++++
- mm/memory-failure.c | 18 ++++++++++++++++++
- 4 files changed, 48 insertions(+)
+Is there a situation where a valid pid is returned without CLONE_PIDFD set?
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 7fabe6c66b4b7..a89108bcc3f90 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -5192,6 +5192,7 @@ extern const struct attribute_group memory_failure_attr_group;
- extern void memory_failure_queue(unsigned long pfn, int flags);
- void num_poisoned_pages_inc(unsigned long pfn);
- void num_poisoned_pages_sub(unsigned long pfn, long i);
-+bool range_contains_hwpoison(phys_addr_t start, unsigned long size);
- #else
- static inline void memory_failure_queue(unsigned long pfn, int flags)
- {
-@@ -5204,6 +5205,11 @@ static inline void num_poisoned_pages_inc(unsigned long pfn)
- static inline void num_poisoned_pages_sub(unsigned long pfn, long i)
- {
- }
-+
-+static inline bool range_contains_hwpoison(phys_addr_t start, unsigned long size)
-+{
-+	return false;
-+}
- #endif
- 
- #if defined(CONFIG_MEMORY_FAILURE) && defined(CONFIG_MEMORY_HOTPLUG)
-diff --git a/kernel/kexec_core.c b/kernel/kexec_core.c
-index dc770b9a6d053..18793f925835f 100644
---- a/kernel/kexec_core.c
-+++ b/kernel/kexec_core.c
-@@ -212,6 +212,16 @@ int sanity_check_segment_list(struct kimage *image)
- 	}
- #endif
- 
-+	/*
-+	 * Reject destinations that land on hardware-poisoned memory: the
-+	 * relocation copy would machine-check on the bad frame.
-+	 */
-+	for (i = 0; i < nr_segments; i++) {
-+		if (range_contains_hwpoison(image->segment[i].mem,
-+					    image->segment[i].memsz))
-+			return -EADDRNOTAVAIL;
-+	}
-+
- 	/*
- 	 * The destination addresses are searched from system RAM rather than
- 	 * being allocated from the buddy allocator, so they are not guaranteed
-diff --git a/kernel/kexec_file.c b/kernel/kexec_file.c
-index 59fb9d71e9d86..cd77350f12f85 100644
---- a/kernel/kexec_file.c
-+++ b/kernel/kexec_file.c
-@@ -504,6 +504,13 @@ static int locate_mem_hole_top_down(unsigned long start, unsigned long end,
- 			continue;
- 		}
- 
-+		/* Avoid placing the next kernel on hardware-poisoned memory */
-+		if (range_contains_hwpoison(temp_start,
-+					    temp_end - temp_start + 1)) {
-+			temp_start = temp_start - PAGE_SIZE;
-+			continue;
-+		}
-+
- 		/* We found a suitable memory range */
- 		break;
- 	} while (1);
-@@ -546,6 +553,13 @@ static int locate_mem_hole_bottom_up(unsigned long start, unsigned long end,
- 			continue;
- 		}
- 
-+		/* Avoid placing the next kernel on hardware-poisoned memory */
-+		if (range_contains_hwpoison(temp_start,
-+					    temp_end - temp_start + 1)) {
-+			temp_start = temp_start + PAGE_SIZE;
-+			continue;
-+		}
-+
- 		/* We found a suitable memory range */
- 		break;
- 	} while (1);
-diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index a8b03e2920ba8..032bb23db7566 100644
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -96,6 +96,24 @@ void num_poisoned_pages_sub(unsigned long pfn, long i)
- 		memblk_nr_poison_sub(pfn, i);
- }
- 
-+/*
-+ * Check if any page in [start, start + size) has hardware-poisoned segments
-+ */
-+bool range_contains_hwpoison(phys_addr_t start, unsigned long size)
-+{
-+	unsigned long pfn, end_pfn;
-+
-+	if (!size || !atomic_long_read(&num_poisoned_pages))
-+		return false;
-+
-+	end_pfn = PHYS_PFN(start + size - 1);
-+	for (pfn = PHYS_PFN(start); pfn <= end_pfn; pfn++) {
-+		if (pfn_valid(pfn) && PageHWPoison(pfn_to_page(pfn)))
-+			return true;
-+	}
-+	return false;
-+}
-+
- /**
-  * MF_ATTR_RO - Create sysfs entry for each memory failure statistics.
-  * @_name: name of the file in the per NUMA sysfs directory.
+Otherwise, looks reasonable to me.
 
----
-base-commit: c5e32e86ca02b003f86e095d379b38148999293d
-change-id: 20260727-kexec_posioned-72bb0a4143a0
+> +	audit_log_end(ab);
+> +}
+> +
+>  static void audit_log_task(struct audit_buffer *ab)
+>  {
+>  	kuid_t auid, uid;
+> diff --git a/kernel/fork.c b/kernel/fork.c
+> index f0e2e131a9a5..0f52e8c0e900 100644
+> --- a/kernel/fork.c
+> +++ b/kernel/fork.c
+> @@ -3047,7 +3047,9 @@ SYSCALL_DEFINE2(clone3, struct clone_args __user *, uargs, size_t, size)
+>  	if (!clone3_args_valid(&kargs))
+>  		return -EINVAL;
+>  
+> -	return kernel_clone(&kargs);
+> +	err = kernel_clone(&kargs);
+> +	audit_log_clone3(&kargs, err);
+> +	return err;
+>  }
+>  
+>  void walk_process_tree(struct task_struct *top, proc_visitor visitor, void *data)
+> -- 
+> 2.53.0
 
-Best regards,
---  
-Breno Leitao <leitao@debian.org>
+- RGB
+
+--
+Richard Guy Briggs <rgb@redhat.com>
+Sr. S/W Engineer, Kernel Security, Base Operating Systems
+Remote, Ottawa, Red Hat Canada
+Upstream IRC: SunRaycer
+Voice: +1.613.860 2354 SMS: +1.613.518.6570
 
 
