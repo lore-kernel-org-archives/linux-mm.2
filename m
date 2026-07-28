@@ -4,102 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03502C531C9
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Jul 2026 23:59:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88DF8C531C9
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 00:38:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 80CDE6B007B; Mon, 27 Jul 2026 19:59:33 -0400 (EDT)
+	id C769D6B007B; Mon, 27 Jul 2026 20:38:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7BD136B0088; Mon, 27 Jul 2026 19:59:33 -0400 (EDT)
+	id C4E9A6B0088; Mon, 27 Jul 2026 20:38:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6ACE56B008A; Mon, 27 Jul 2026 19:59:33 -0400 (EDT)
+	id B8B7E6B008A; Mon, 27 Jul 2026 20:38:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 471316B007B
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 19:59:33 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A5C2016025E
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 23:59:32 +0000 (UTC)
-X-FDA: 85036226184.30.59FEFB6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 0BD7B20006
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 23:59:30 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j7CVbejW;
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 812556B007B
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 20:38:56 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CC27040260
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 00:38:55 +0000 (UTC)
+X-FDA: 85036325430.23.174D0E0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 15CBB1C0007
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 00:38:53 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=bWoWwaMl;
+	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785196771;
+	s=arc-20220608; t=1785199134;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CflxV47qfVfUx0JJR1VtbTQOpBhDDaq8i8LFF5znoYg=;
-	b=tjAqy7dq9wro03mnXOIH8EQf8bFjepmKLtkSmYiVZIEg6Zg1OZ+ZQSmTIyKf/NSybKzcVD
-	aJHsYk/jwUGonaKQjyJbGfzc7MAc2TIdGUd4XCgnTohIqAprUNhRxiqrp92rftvrA2CXMy
-	RRDlKT0YBI1+/+i8culWHOrVm5hm9MQ=
+	bh=rtacWlA/oBgxpyYEK+DrFmdhi2/XxpjvkTdQoZxPIZc=;
+	b=F3zJkM/jDuAbBVPEh6RNDmTQ6GVzpUIMXS0HvaMXwKaMa6kqiidcra/Ht7OMw/WivY4V9h
+	Cl2mg9++dzFznlRt11un+GT2zgFvdQivYYY24sVGNBKBjc1/vBAMIxs4AtI7PGAMgQ38BC
+	ujYM//rxFdYb5GiCS13slFCMUsUJxFM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785196771;
-	b=bQz4ltDQRGLzfehRviKplUMspSeAw/q4fFr9anWO7N0c4d7k4c7IqICSArAYOBHVomjv4q
-	4CULfQijBJ1WuVvcM6keiFcLw1N5HAValmHDpgWb39xJzh9Mg+4U+16FW3dzEjuHH9FBNT
-	iUcVjU8/+Ypl3ElD8PjlzosQGv296L4=
+	t=1785199134;
+	b=PLTn2MVe4aA2b3lY+NG0rq7r65IID4XMW8nqegeR0mvTv25nXJ4HHJvz4ZE3g2dIdLXgmv
+	utuqpJS9El4Jxny/U/q5riTZVIAnSJVN7mJqj0BA7Iab9Z5ScYFb/XBKytF+q/LGnB+0ks
+	Gg9nZDaB6EuVU31yKXEvs8XFG/lWcsE=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j7CVbejW;
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=bWoWwaMl;
+	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D8D5E434FC;
-	Mon, 27 Jul 2026 23:59:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14F031F000E9;
-	Mon, 27 Jul 2026 23:59:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785196769;
-	bh=CflxV47qfVfUx0JJR1VtbTQOpBhDDaq8i8LFF5znoYg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=j7CVbejWrjp2jr+HvQnk4xenwKqlsl0ldDmXYG87J0qTxQu5UJuaBmrxz58dSHjJd
-	 3ybZDF1mgWEnAUl3OjButj8RpXIixKfh+jSJiYxviGVwTtLqfpLeju19VTmJUIeytv
-	 mj5Bf1yTzjYQUDX2LKHOwt0Kt3W0if5Fq8rh+ZOfceIbCRnikmZHg3G3La+aFaj2zs
-	 y2VlcPEw/mJGYZLWgP/wZTSKJBGgCT61l1LAtWmjLjqucSVMa002t9US2Ad8uxMzO3
-	 3INU7qQhv7J8ZONvMYuvFI19a9JK0eMB6Dk/gsW5WHnp0L/PUDWgHhvctVx4hUZe/V
-	 4hpxF0KTlx1Dw==
-From: SJ Park <sj@kernel.org>
-To: pratmal@google.com
-Cc: SJ Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	vbabka@kernel.org,
-	david@kernel.org,
-	corbet@lwn.net,
-	skhan@linuxfoundation.org,
-	anshuman.khandual@arm.com,
-	gthelen@google.com,
-	surenb@google.com,
-	mhocko@suse.com,
-	jackmanb@google.com,
-	hannes@cmpxchg.org,
-	ziy@nvidia.com,
-	ljs@kernel.org,
-	liam@infradead.org,
-	rppt@kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org
-Subject: Re: [PATCH v3] mm/page_reporting: Add page_reporting_delay_ms module parameter
-Date: Mon, 27 Jul 2026 16:59:25 -0700
-Message-ID: <20260727235925.93406-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260727230545.262579-1-pratmal@google.com>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	by tor.source.kernel.org (Postfix) with ESMTP id 48DD5600FC;
+	Tue, 28 Jul 2026 00:38:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1D951F000E9;
+	Tue, 28 Jul 2026 00:38:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1785199133;
+	bh=rtacWlA/oBgxpyYEK+DrFmdhi2/XxpjvkTdQoZxPIZc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=bWoWwaMlmtvDOoOPbOtrvox/+hufHrXVjI8cVECahKMobTWToMpB0X2qRWiCO3avr
+	 D5eNy4i13YAra9ilgCfRIxibCQ59rZoIxBrHeJQ9ogKKAa/eNxxBZa35cxZTQcuE9N
+	 6PeZBptUVNvV9aj7vMGx1aQasIukD3TQeGGYdO1k=
+Date: Mon, 27 Jul 2026 17:38:52 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Stanislav Kinsburskii <skinsburskii@gmail.com>
+Cc: kernel test robot <lkp@intel.com>, David Hildenbrand <david@kernel.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ mm-commits@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky
+ <leon@kernel.org>
+Subject: Re: [akpm-mm:mm-new] BUILD SUCCESS WITH UNVERIFIED WARNING
+ 34cacd0ac7c10dc9e34e1b9f28a2b78d335cb487
+Message-Id: <20260727173852.6d54ced5739a55c0ae7024c8@linux-foundation.org>
+In-Reply-To: <amZU1hH_9IOeO4G8@skinsburskii>
+References: <202607251512.KMStVfrY-lkp@intel.com>
+	<20260725193155.0e03a382d76a99485ca05cdd@linux-foundation.org>
+	<amZU1hH_9IOeO4G8@skinsburskii>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 15CBB1C0007
+X-Stat-Signature: ix454sn1czf7ibkmwkedbn7uyomqui1n
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 0BD7B20006
-X-Stat-Signature: abmkeyi7as4pghcmigx4863wezwh39wq
-X-HE-Tag: 1785196770-422894
-X-HE-Meta: U2FsdGVkX18tWzJ7WX7aE8clMtej8cqAw2DOECmK6CYBCueUa6I4l4dgDHzCPH6l+stcSyZKl7ZPNM+JFQAQcCr71VIAIMpn/u+VfihZLQiG+H0ZsMj/ytwUip7h0mSztoghwjQC7XVFkOYWZEIJdsFW+NhB6s7cG5yGnjxNszdl41Opz2V7CCabIUq8ZfX5j+4Y5qlKwWdDpsruf10UnSZISxglZ3PrcVqR+kN9Sd3j28iJancy6aFYtrbmtWszshZpt7sOY5rUSAYXZ9o8ZL4ZosZZUhncbSWMS2HKF9wtJyXGymCm+stUTtb3vTCLokOd+I3g/1AlZ+VqH1Wv6P/VM8RxsknSC34QREp3aoh8wsrghEVj6hxb0v9rzjY9nScF8/UUrP8JYrOjtmXmDEYPAztrYp3CWLzDj8dWtbCOyBv7yuv6LDVl1Vzb9TOcfMmQ+rCb/KVNqpo7WSgZTt3nMd4sfpmobApuxbkmGDxHed2kRUAUBkaINHV3YluMOrZt0UNCG6zDzZDVEOQdkggeiiXbvOBpGhy16zWlBFq3yCe0Vp1RSVbAweP3bkpnAo2l3v+mgCC0iMljZUTd3uJ054Mho0KSI3jQ9u5Bfv9CZI3IqPi6VYonfp9qaTOGg1o7Vsq1vIPDLit9ivYGcOns9A0wUpD1B20Nzjd6byvxTwau+Y+qWBcD4ghOLrT2vmnbW49+7JLPNm1WUB+bCfdrnFgVsNz6MJXpchAm8AIc+UMDwFNuch6FhPWZaHDnJimxc5CEy76MZkH9z0AhreVRBZrq+wkBnC+TKN0JjC7CyW0yddzhTJUyfpQDPtC+46pEMz4468XDrRGWggjbBblOfeFS57452x1c7PodeGoAO/9EIPNl3BRR7sq3mbBI+NOygywgmmi6D/1mgOohAEdXuDrjcJRjQX5u5AWpJk1ezznGJyHJfJqM9vITDBEE2eMJWz7rCL/0hS7WkuK
- 6WLoXh+7
- vwPVDIDdNTOlsRLfZTULK6MCMKS5msf3wyKL+eVDNzcYOb4RnFsT9o3JvN/cmkicI/niHkXVLoDXBz23leHX06tmeNy8LFFCrw4rrpzOOgkSkASWoz1GrEJPjJoOcc3fGFFCKti1H9I+pC2LeOq2iFLEchn26QDghempSKRDpQsMhmE0F6NLLpBXrt/XwZfILTYr/7DDcsBSUOR+x7+mawz7UmqRjqRKdthAMg9oOWxi/P84g48ERqLxa/6Jny2l3gtsmifPu87vjy2l+iXJ0DjilD0mBcIqNTdlg5yait0w4ybzHepHLUSHFCQ==
+X-HE-Tag: 1785199133-140475
+X-HE-Meta: U2FsdGVkX1/665mOkwYliN1R/aHzfO2NyH2nRLcqjxv0ipMzuVBNApQWPrwSFlb7bEDDOuTQlPaNoW6/fGMZ6uOTdOqcKwg6BlYGkY7Vw1CFFp1u9Aax4ixpHFz7qAWOvTzI8Yy3/x4uQKYeI+DbCo+fozhzuTFO9v23GQoQCi9Fyv7abqu41Z1VQE5EwNCWCjSRSwUMBZu3+pj+LOOafcVEdRPUkohSsz0olWsRY6EhJYw3KT1XYt1vuxawFRAObX+iqZorEEN260yAiK7FIkTkmwie5K1OgzHPWHea3cdPDO113OnUn9BahVtgrWckQFYRyrGK8rpX7169egMcJdvK/TQy91icIpDwYmMGx+6LaE9n8YkWaNmjUB2Ihbp8nBsxZaQfWP5oudPZrw9dvjiCTkWAlhhrJS0ZejthPyxqvrf54WS5Mm0kevz3lgfHSbumxPL04OvZdKR3zPQ2C1t8CNgV1jfh1GO8U5aTzBzFkung+WsgydxHr22UkWbCU4le5niLf74bZoIDbHbSZKftUFDF/Vq3fiBU1byMe54ZiYk7lp9NFdn2VKVbGgpNjmOrPRn2ASUzJ3nK3exYUMABbjT8h+/UQ9yZF5110CHXSNfAcbSAanHp1WYxkj9mCy4j1PmMCfCNLZ8XwnJZPhk01+gSgS85vn0Gd/GYfEpKAESc3NfCqxaYFVOBwmoGiwGwijFQIAo6UlOY54qimIfp0ES5Xmz0v2wxIebXvEeN+tI+QE+PIPspirHVlkFtVzzZWef+yMeRuxNShFjVTYw6z+d0Yalh0sJ7d4/zVeymCdKEPWVCcqy4t+TXpMdCLqgBXmn88SHc73LL/878f2XTPjJ6ym3i68P+lnrrTwvo4QM8v2TOF0CISwq+5Lgw8QgIcgiJk3UOCJIvsa/olo5u1yYAdPz8+q483/dQ67dYmX6fGiFkHClLQToSiG9UsX270RZekT9WfSRtCQl
+ K2PbztsI
+ bg1dWoDW4BUV0SeTrBmOTCv93LPHvlaJftq0r7q5UXc0hYQAeI7+5FCM6ji2rFG9t/foQX+8apPOagrHPYKeCw+53phEbVNDNZ5ZWC1U4B51EDZqql/tBKPNeBIMLl1gyXUZEOJBG0WjWBZB6hSQHdrdbhMjwEaB753awgEfZ4mlCeMZnFkrGGJEFqEWyp2xSkmIy+M2Q2rgoiKd593hG9330MPNKHtFmvrZ6Dg+c24f1LWJUggjHxAGSrNZcfBA9A89/4Ty9+24KtPZw4coQDrYQCTRmFBBI5vWUq8nqA+bCE09pYo8jiAiKiRKr1ARdZaL5ZxcGkPywuiTGyGyhIokxUEE6TAyFesm8CR8A/0nm46/CAQ1swnNmt7GSWMQvE/8ukCErRNXY+65Vsr3Nii5khD4q7shUm/yxYXxV5pqjTlPjeb5eznTSljQmZEmMGeYgGpgPrk+Zi201jwWsq3QCTtwh3YkKmcG/FrtTYavnXee5L9rN22cXDg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,36 +94,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 27 Jul 2026 23:05:45 +0000 pratmal@google.com wrote:
+On Sun, 26 Jul 2026 11:41:26 -0700 Stanislav Kinsburskii <skinsburskii@gmail.com> wrote:
 
-> From: Pratyush Mallick <pratmal@google.com>
+> > But I do wonder whether we should be compiling hmm at all if
+> > CONFIG_MMU_NOTIFIER=n?
+> > 
 > 
-> Currently, the free page reporting uses a hardcoded delay of
-> (2 HZ) between reporting intervals. While this is a reasonable
-> default, it lacks the flexibility to adapt to varying guest workloads.
+> Documentation/mm/hmm.rst explicitly states:
 > 
-> A low delay allows aggressive memory reclamation, returning unused
-> pages to the host as quickly as possible. However, during spiky
-> allocation/free churn, this immediate reporting can lead to a severe
-> performance penalty (nested page faults) as the guest re-allocates memory
-> that the host has just unmapped. In these scenarios, there is benefit
-> from increasing the delay to batch free pages over a longer window,
-> absorbing the churn without hypercall and re-fault overhead.
+> "Address space mirroring's main objective is to allow duplication of a range of
+> CPU page table into a device page table; HMM helps keep both synchronized. A
+> device driver that wants to mirror a process address space must start with the
+> registration of a mmu_interval_notifier"
 > 
-> This patch exposes the delay as a module parameter:
-> /sys/module/page_reporting/parameters/page_reporting_delay_ms, measured
-> in milliseconds and defaults to 2000ms.
+> I think making CONFIG_HMM_MIRROR dependent on the CONFIG_MMU_NOTIFIER is the right thing to do.
 
-Makes sense to me.
-
-> 
-> Signed-off-by: Pratyush Mallick <pratmal@google.com>
-
-Reviewed-by: SJ Park <sj@kernel.org>
+OK, thanks.  How about we use select.  select kinda sucks but we're
+doing `select MMU_NOTIFIER' all over the place already.
 
 
-Thanks,
-SJ
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: mm/hmm: make CONFIG_HMM_MIRROR select CONFIG_MMU_NOTIFIER
+Date: Mon Jul 27 05:31:14 PM PDT 2026
 
-[...]
+hmm doesn't currently build well with MMU_NOTIFIER=n:
+
+With microblaze
+https://download.01.org/0day-ci/archive/20260702/202607021433.DYT5fDqE-lkp@intel.com/config
+(CONFIG_MMU_NOTIFIER=n):
+
+mm/hmm.c: In function 'hmm_range_fault_unlocked_timeout':
+mm/hmm.c:804:25: error: implicit declaration of function 'mmu_interval_read_begin'; did you mean 'mmu_interval_check_retry'? [-Wimplicit-function-declaration]
+  804 |                         mmu_interval_read_begin(range->notifier);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~
+      |                         mmu_interval_check_retry
+
+Quoting Stanislav:
+
+:  Documentation/mm/hmm.rst explicitly states:
+: 
+:  "Address space mirroring's main objective is to allow duplication of a
+:  range of CPU page table into a device page table; HMM helps keep both
+:  synchronized.  A device driver that wants to mirror a process address
+:  space must start with the registration of a mmu_interval_notifier"
+: 
+:  I think making CONFIG_HMM_MIRROR dependent on the CONFIG_MMU_NOTIFIER
+:  is the right thing to do.
+
+So select MMU_NOTIFIER if hmm.c is to be compiled.
+
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Leon Romanovsky <leon@kernel.org>
+Cc: Stanislav Kinsburskii <skinsburskii@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
+
+--- a/mm/Kconfig~mm-hmm-make-config_hmm_mirror-select-config_mmu_notifier
++++ a/mm/Kconfig
+@@ -1250,6 +1250,7 @@ config ZONE_DEVICE
+ config HMM_MIRROR
+ 	bool
+ 	depends on MMU
++	select MMU_NOTIFIER
+ 
+ config GET_FREE_REGION
+ 	bool
+_
+
 
