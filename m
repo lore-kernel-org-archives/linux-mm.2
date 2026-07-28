@@ -4,124 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B172DC53209
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 00:39:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1D3DC531D0
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 00:57:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 809A26B0088; Mon, 27 Jul 2026 20:39:11 -0400 (EDT)
+	id 5E0F16B007B; Mon, 27 Jul 2026 20:57:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E1EA6B008A; Mon, 27 Jul 2026 20:39:11 -0400 (EDT)
+	id 5917F6B0088; Mon, 27 Jul 2026 20:57:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6D1676B008C; Mon, 27 Jul 2026 20:39:11 -0400 (EDT)
+	id 480C96B008A; Mon, 27 Jul 2026 20:57:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F0EC6B0088
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 20:39:11 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B8C641A025A
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 00:39:10 +0000 (UTC)
-X-FDA: 85036326060.04.8E92375
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 087DC40003
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 00:39:08 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=KThfH92v;
-	spf=pass (imf04.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 225C06B007B
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 20:57:09 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8CCA04027F
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 00:57:08 +0000 (UTC)
+X-FDA: 85036371336.01.3B38D8C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id C6D29C0004
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 00:57:06 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=V++APQda;
+	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785199149;
+	s=arc-20220608; t=1785200227;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9hkekweVDgigm4cPKAiKfOzXU7bCJAvocV05G6iZWjw=;
-	b=6kVwVcXg6KE2WFcm5OYUJp5PeH7L5wmWIW+sQTMu4NGD5ptttnKr0wxhzYHIhzv1kFUM5N
-	WsdMLbjk2KophPv1BYCE4A0rvZm9m6lFg353PA35VQA0fSfvPOtxERIxyphOMCNmpPRbK0
-	gfiwqwZ10lG8CB/dCksfd/9Fprj9bG0=
+	bh=9XKvUBtNz8mAqieUy7X2gVA3uFyDYAi8JFETA7NGeYQ=;
+	b=BGcVmiDvpBr3AAbwMk1wu//nuiCfiYVhXttNiSjn53STb1mmcFeWLA9O0fBPrSr3AeklUo
+	yCbgB00Nl4Of7L7uKhdUIw5olrYAGsLsDH8AUQdz8ITmyZMc8DUOPihWwHsbcWmPOFgE0u
+	n2gg+1iqdtRWSRWo5VPGrBWL4/mhFls=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785199149;
-	b=Bg1MkxlhlBHjM3TTHxpTvew9rUGoakLQHNOueiYjGEDTBXaajaj2pM+JsfZgYeEs9AUqDf
-	qXyiQXbij/QGvRtVVvbpoqGFlvTuaht/bhKeKq3mMVhguGFf+SOj6+RKHc3WDhY0p0+pvA
-	8Yu98W4vWiQjKuUaRsOGZU++uI6LNKw=
+	t=1785200227;
+	b=mkl5A7fkCnzJqZGv8tZ4QhhWVydJ6EEnFzIjfEtLA6DM1IvS1E9Aei29M/WJW6gH7KU01U
+	0dYMYHybuV16vGQ1iDDw9hNwbnyIcCv7xksjeKK2dGrGR51lTwRAIs6h3nBMYVQjCsiNXi
+	I+YkdJDiFtTI2zaiXPqKXUFDmn4UOwM=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=KThfH92v;
-	spf=pass (imf04.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=V++APQda;
+	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=9hkekweVDgigm4cPKAiKfOzXU7bCJAvocV05G6iZWjw=; b=KThfH92vzkutKeI61n25jlmzpc
-	yVeuXMICRGx406TBBKU0HhVx6n7Y/gaX79a/xpXdizggnlI3DFB9Hx1Iij+gPnDR+gVFqNCvavXDm
-	gLelQKcRX+ll6F8LKbjL0AKpWnxvbGbHZchPzmV4HXXcktUIGWbkplMOKm6sJ6GFsAX7j4pxCVZ1A
-	i4Y7AXwQ/d64Cg5egQ2PXcDCIqOWVwwHrwgLvWLKKbDuvhaKBQfCtP8Y3vTuzhYcdjbcEWyzIVBBu
-	ZGyDEe9x9Ht6L5gCHc1k2SOYhyHGwTiFsRlvbwgNq0+AkJqmolwhEH5+qCHtBKzUGrlSpW9Wd2xwM
-	uonBAsAA==;
-Received: from fangorn.home.surriel.com ([10.0.13.7])
-	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <riel@surriel.com>)
-	id 1woVot-000000002nW-41zO;
-	Mon, 27 Jul 2026 20:37:19 -0400
-Message-ID: <a086dbb3cc9ee8faa638c70bd282ca31c58d402d.camel@surriel.com>
-Subject: Re: [PATCH RFC v4 11/12] mm/gup: batch contiguous PTE-mapped large
- folios in follow_page_mask()
-From: Rik van Riel <riel@surriel.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>, Andrew Morton
-	 <akpm@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, kernel-team@meta.com, 
- Dave Hansen <dave.hansen@linux.intel.com>, Peter Zijlstra
- <peterz@infradead.org>, Suren Baghdasaryan	 <surenb@google.com>, Lorenzo
- Stoakes <ljs@kernel.org>, Vlastimil Babka	 <vbabka@kernel.org>, "Liam R.
- Howlett" <liam@infradead.org>, Mike Rapoport	 <rppt@kernel.org>, Michal
- Hocko <mhocko@suse.com>, Jason Gunthorpe <jgg@ziepe.ca>,  John Hubbard
- <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, Matthew Wilcox
- <willy@infradead.org>,  Usama Arif <usamaarif642@gmail.com>
-Date: Mon, 27 Jul 2026 20:37:19 -0400
-In-Reply-To: <5490f8b1-d611-4e4d-bd8b-19c0e05698a3@kernel.org>
-References: <20260724222934.1463812-1-riel@surriel.com>
-	 <20260724222934.1463812-12-riel@surriel.com>
-	 <5490f8b1-d611-4e4d-bd8b-19c0e05698a3@kernel.org>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
-MIME-Version: 1.0
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8BE12416E9;
+	Tue, 28 Jul 2026 00:57:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10F4C1F000E9;
+	Tue, 28 Jul 2026 00:57:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1785200225;
+	bh=9XKvUBtNz8mAqieUy7X2gVA3uFyDYAi8JFETA7NGeYQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=V++APQdav59a96D19Bw6Q+BKElEnxWZXtnDS0ZWNXgt2ft1PMcLZYLfkE85fSRbpk
+	 +tHp+5bqUDzoTZ4QBZY3lUItBQnMcwHEcu2Ii5rwe7rHBs8qZMJcu8XAjLz436egUb
+	 Qg0UbksZCPLgM8IcUqWepEXgStmbMeeh/sj5ayqY=
+Date: Mon, 27 Jul 2026 17:57:04 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Sourav Panda <souravpanda@google.com>
+Cc: muchun.song@linux.dev, osalvador@suse.de, david@kernel.org,
+ surenb@google.com, fvdl@google.com, gthelen@google.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Usama Arif <usamaarif642@gmail.com>, Shakeel
+ Butt <shakeel.butt@linux.dev>, Kefeng Wang <wangkefeng.wang@huawei.com>
+Subject: Re: [PATCH v4] mm/hugetlb_cma: Fix null nodemask dereference in
+ hugetlb_cma_alloc_frozen_folio
+Message-Id: <20260727175704.0e4ccd4a6201435a6284d260@linux-foundation.org>
+In-Reply-To: <20260726072935.3513996-1-souravpanda@google.com>
+References: <20260726072935.3513996-1-souravpanda@google.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: ekt5fhkposeax6sbaihycx5r74giijxx
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 087DC40003
-X-Stat-Signature: iopcbe53cjx6yrbnj6j84qy1eaaqfdi8
-X-HE-Tag: 1785199148-738370
-X-HE-Meta: U2FsdGVkX1+HQ7GAVpIHXnjFxDTkAw0nUWh0Um5pFC58dV2SC3Hjc8UkGJQO3T/JolN49eslTqa3ZoqEnc1DYZwe5yD4nZwVfNlgCSd+lckJG0uJM9YCsYWKmSJI3RiHIDzsTpkQpJEO8l7bcr7ZhYHpr3O+CE6dUxO7uzg0uFczyL81iaAwixB1Gjm9cZZ3iFE93DBExlUshtxXzFig2YIdU4HMVfG6tdBh6JPwv0Wezz31nmrpHGoLfWhfURP0icuxDDR9lI1neFjqDBsudKYKVBSkCkLZEDCEu3tsSf480VIwX7Jovtl2qq4Yy8Aai4vkCwl5cZLtb5rQwt2w/QKpx62qOH5M2qfFvoFtilZx7otflx754M9l+YfKAUVpb3XkLiplC6PpLKWa+dScI73rlxm/nkJ8OPpW3mpD+8TnjHOUd8ijqn6dY0hGnf8B3OTf/NaNSwF8fvAWIczpY/1W0Swq9h/0JKcFuR3hO3Y6VoJFRpyEb0mDsbXLwvt7yWb6S17NanCXE2PYoCstKyjBscPcVYX30/le2xyDcleW3YClgp2xQoj6+hP6oDQiXFUGLHjsuLMRHu1s6ny1ukX/Al0KEnYzjEGmyhoaYIrWpEO7tuk+9+LHaqMo6xtRitJPT5IBoP9wLkYPtzfXLpDobAn1b7WZZ4GwV7e2+W/HaLVaUV3agKgMq3aNRHtpavCnIOL+3CRVDkkFcLnCokfQpwNBi0paAVrMdvWax2DwA0ivKIBDluW8F+LFKO8YRJnw2mRZQ74g8bCf/11jDAjlglh/6WHz3mzbSwuUpBCWQdeTLfQTYKiMUYB9Icv0XU4lXEGhywg0ls99YaBQuoQ7+Pkr5CmjzGojGh8kfZDtM/FgQDSHeq4NLbGlqmxU/9BIEd1P9ZDfsgjz47ef2dtppeGhMxVMoKWBVQZtWiRRk9y8hgsM8a7VdIB1XH8XgSAP4pBUOlIzcPQOxIf
- Z3iynw2X
- ag2hXO+8cGh/e1tytxV0j+5s8I+sYBsc3bEn6jh0Xdco4K6H7c6VNOv7NPQcDNPYnCafUawRA6cIUMuYYUBJPS08p+gy9hyzui10aMyjTXPDP9czR3Q9XWhpVlsytJLX+mx1iqs/zF4wuR5SwvycFpC+3SAD9uNwE6s0oJiqnRGKZN4ULFjQyDjfRaCMe45gX2xir7t1aziV/dT0m/GzW4cCiRq7+5SSrjCFivDL3jiIg9W75L2P5uOo6zB+786gA9IGu6gZ+Rbwge7eImzklunLTx/qhsmmyR+Uv13DI1/tYpgaUwLe42Lx1y41j3Is3LYo7uZC6fqIEYcs=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: C6D29C0004
+X-HE-Tag: 1785200226-10116
+X-HE-Meta: U2FsdGVkX18rkh9iMSVjTJFEt6SFigEziFwXhA5wk4/CRgqkU2ZLFvSVD/k1aHm04Q4eMj2v5xr3m9d6O0+8q2wAAxw+EWIO7HyJimpJV2qcHCZ4ExtmZEm469p8b8VEy1Uybs4c5aEeN/ChwxB8Ms5v0OJFW6ut/VH9B/bH/JnHorFhX2KaJelzCZZBqqXpqk3HwZy9xL93zeDxe50P4Hj13XiCtmFzE75vZwUHrx55nS4rIHSo5UEeGpCnAdDvvQqJXsejcl5UNVKjJ8WDHCoYoxfuzeMNQAIuhaR/ArOHJi+gUXpkfwdJut/5yJwfSChGWfgeLVWuUvV+xbjyUZNN0sTptYT/IYqwncvofNCJ8aToSjsO2Lv9UhS72wN/7532o1cPJpNfq1FFqz8Kn1okJQTwSABLwRlS8X//79HR9K6dWRekKFpvECD1+MjPzRMSmQAaEbDX5E2lFloYs2sN/pqHO52mTqlIOIAIZ9iqTvih349a2i1/ZdscAI9nYXXJBckZxYdtPdwjQQek98kqU7Z1PG7JLb52VBJnNfZISj3YzSFGjW5x8Fyh1YPlFA2fbJcfSolO3aSkxmc4n/HeuRBb8010+9lt2uWKV0SEWcegsMXoYxfOhF9bQe6jf7coq5D26d+vfxleibzVF/W6KmKv6pHH3KQ0qjtcPLYxD0JhciOFDuPGcB7t2vd/Rcl6odlGQu5zV00Q8Zj3y03o/aEu4NSRQN6J3DfYxhoqPk4tIMGivc2KN8UWpTN0VEtjrQ5CQken3NRWLM6rCEAicnHP8n9tkzmWG//xJ3EM8tbgUoUHkVQ4XUqwWj8dtg+bxxcHJOcGHRPl4XZ4rtL5yYb5wjiZtI1kKxQhNKYGXA5ApXGs2bAqRozyL+Uqo41MUD9U7iFrKVx9vCqUDamj4KuSltiJcaaNSs0sPlKP7B3BRbvsOqJmWosDJl9Dw8GMLPOLIr2bSVH1Yrh
+ 78TLJTwW
+ tKz3wxpc8PXx5t2SO0qBkowQe7ZbjcortHYumtl9ZPGJVG8BYY+HDVfIlxsENzHmUQCfVlCsFFEANJZ/u14saxeyAx6B4MrYo1vYJu5iZ6DwUhXHNo+LSShMfbNf4w1syK5eORpyHSXSjbYH/2KdsTiUt5V6jVeyZ4vYp6gg+i7iAOD5ltVvOPs3NTyJSuRRXE9lY858QxlvA/bdnvyPdIpnQdOylep8mLoeZII07Yu7is46QyImqGt3CephHPozsT5jfzQ13Vsh16+rPsZuE0pBwtH+xL20Ivhny8O9AWx3XW6x2w8KBMesTyYuCq89u4Ydc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,45 +92,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 2026-07-27 at 15:54 +0200, David Hildenbrand (Arm) wrote:
-> On 7/25/26 00:29, Rik van Riel wrote:
-> >=20
-> > =C2=A0 gup_test -L -m 256 -n 65536 -r 16 -t
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 befor=
-e=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 after
-> > =C2=A0 64 kB mTHP=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 3140 us=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 412 us=C2=A0=C2=A0 (7.6x=
-)
-> > =C2=A0 2 MB THP (control)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 78 us=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0 76 us
-> > =C2=A0 4 kB base (control)=C2=A0=C2=A0 3010 us=C2=A0=C2=A0=C2=A0=C2=A0 =
-3042 us
-> >=20
-> > The PMD-mapped 2 MB THP already returns the whole mapping in one
-> > step, so
-> > it stays fast and unchanged. The 4 kB baseline shows the per-page
-> > walk cost
-> > that the 64 kB case paid before this change; only the PTE-mapped
-> > large
-> > folio case improves.
-> >=20
-> > Assisted-by: Claude:claude-opus-4.8
-> > Signed-off-by: Rik van Riel <riel@surriel.com>
->=20
-> Why is this patch part of this patch set?
->=20
-> This makes perfect sense independently, no?
+On Sun, 26 Jul 2026 07:29:34 +0000 Sourav Panda <souravpanda@google.com> wrote:
 
-I'm happy to drop this for now. I think it would
-fit in better with another optimization to only
-take one refcount per continuously mapped extent
-of pages from the same folio.
+> alloc_buddy_hugetlb_folio_with_mpol() can pass a NULL nodemask to
+> alloc_fresh_hugetlb_folio() as a fallback to allocate from all
+> nodes. If order is gigantic, alloc_fresh_hugetlb_folio() propagates
+> the NULL nodemask down to hugetlb_cma_alloc_frozen_folio() via
+> alloc_gigantic_frozen_folio().
+> 
+> hugetlb_cma_alloc_frozen_folio() blindly dereferences the nodemask in
+> node_isset(nid, *nodemask) and for_each_node_mask(node, *nodemask),
+> leading to a null pointer dereference kernel panic.
+> 
+> Fix this by checking if nodemask is NULL in
+> hugetlb_cma_alloc_frozen_folio() and defaulting it to
+> node_states[N_MEMORY]. This allows hugetlb_cma allocations to fall
+> back to any node with memory, keeping behavior consistent with
+> alloc_contig_frozen_pages() and alloc_buddy_frozen_folio().
+> 
+> >From a userspace perspective, this bug allows an unprivileged user to
+> crash the kernel (trigger a panic) by requesting a gigantic hugepage
+> allocation with MPOL_PREFERRED_MANY on a system where CMA is only
+> configured on a subset of NUMA nodes.
+> 
+> This can be reproduced by booting a VM with two NUMA nodes, restricting
+> CMA to Node 1 (e.g., hugetlb_cma=1:1G default_hugepagesz=1G
+> hugepagesz=1G hugepages=0), and running a program that allocates a
+> 1GB hugepage area without reserving, restricts allocation to Node 0
+> using mbind() with MPOL_PREFERRED_MANY, and triggers a page fault:
+> 
+>   void *ptr = mmap(NULL, 1UL << 30, PROT_READ | PROT_WRITE,
+>                    MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB |
+>                    MAP_HUGE_1GB | MAP_NORESERVE, -1, 0);
+>   unsigned long nodemask = 1; /* Node 0 */
+>   mbind(ptr, 1UL << 30, MPOL_PREFERRED_MANY, &nodemask,
+>         sizeof(nodemask) * 8, 0);
+>   memset(ptr, 0, 1UL << 30); /* Trigger fault */
+> 
+> This results in a NULL pointer dereference:
+> 
+>   BUG: kernel NULL pointer dereference, address: 0000000000000000
+>   #PF: supervisor read access in kernel mode
+>   #PF: error_code(0x0000) - not-present page
+>   Oops: Oops: 0000 [#1] SMP NOPTI
+>   RIP: 0010:hugetlb_cma_alloc_frozen_folio+0x75/0x120
+>   Call Trace:
+>    <TASK>
+>    only_alloc_fresh_hugetlb_folio.isra.0+0x2c/0x160
+>    alloc_surplus_hugetlb_folio+0x6d/0x100
+>    alloc_hugetlb_folio+0x3c5/0x660
+>    hugetlb_no_page+0x3d9/0x650
 
-I can't really untangle it because it modifies
-some of the same code as other patches in the
-series, but I'm happy to save it for a follow-up.
+Thanks.  I'll queue this as a hotfix while we await review.
 
---=20
-All Rights Reversed.
+> Fixes: eb02f14c4a2b ("mm/hugetlb: allow overcommitting gigantic hugepages")
+
+It's a good idea to cc the people who were involved in the to-be-fixed
+patch - Author and Reviewers.
+
+>
+> ...
+>
+> --- a/mm/hugetlb_cma.c
+> +++ b/mm/hugetlb_cma.c
+> @@ -34,7 +34,10 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int order, gfp_t gfp_mask,
+>  	if (!hugetlb_cma_size)
+>  		return NULL;
+>  
+> -	if (hugetlb_cma[nid])
+> +	if (!nodemask)
+> +		nodemask = &node_states[N_MEMORY];
+> +
+> +	if (hugetlb_cma[nid] && node_isset(nid, *nodemask))
+>  		page = cma_alloc_frozen_compound(hugetlb_cma[nid], order);
+>  
+>  	if (!page && !(gfp_mask & __GFP_THISNODE)) {
+> -- 
+> 2.55.0
 
