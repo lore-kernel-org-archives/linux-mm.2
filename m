@@ -4,168 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E94CC531F9
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 09:51:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 076FEC53219
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 10:03:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BF2176B007B; Tue, 28 Jul 2026 05:51:42 -0400 (EDT)
+	id C2E726B007B; Tue, 28 Jul 2026 06:03:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BA3106B0088; Tue, 28 Jul 2026 05:51:42 -0400 (EDT)
+	id C05AC6B0088; Tue, 28 Jul 2026 06:03:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A91FF6B008A; Tue, 28 Jul 2026 05:51:42 -0400 (EDT)
+	id B1C706B008A; Tue, 28 Jul 2026 06:03:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 79B4C6B007B
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 05:51:42 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E10F4A1381
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 09:51:41 +0000 (UTC)
-X-FDA: 85037718402.26.C215C17
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012000.outbound.protection.outlook.com [40.107.209.0])
-	by imf25.hostedemail.com (Postfix) with ESMTP id E03B2A0003
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 09:51:38 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=EUmyqSei;
-	spf=pass (imf25.hostedemail.com: domain of balbirs@nvidia.com designates 40.107.209.0 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785232299;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8D70A6B007B
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 06:03:39 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 122551A0334
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 10:03:39 +0000 (UTC)
+X-FDA: 85037748558.15.93B8EA1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 41B684000D
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 10:03:37 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SCMwd14L;
+	spf=pass (imf04.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785233017;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H5iPCCtO9GtrjU9qw4i5y3K0f3yNxQGGIh7qGOkUk7U=;
-	b=l975+gS5NYws7u/f7SCrFvbOhWiXQZCLr6TH43gIv+I+S/7e+HJI3vpytiqpGqYesfC3fh
-	4aGOu9Lca0zXNnGlNQnzsHMR7jE3fga5X1qncrMbcRPwefGd1YtnkMW/Uo1Bzn04CbJILU
-	lnzyWiO5D77uemuLEYSJJjEw7xO0V18=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1785232299;
-	b=tCZy/2ZVea7RoA744si4U2omXP4KOXcczIdh9WTrXAErP4b7loTPLJuCB0PBV5zg5lFg8K
-	CtmKyYkZ9OoR+DkMPJl1LxRPvQ+iEnOgbm8R4Ws3CdUqRfAKpS5+biMLjaHmW6MyT8fuVn
-	BuEahD5FSkUpT03iTqBEIYjjNi3goSE=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=EUmyqSei;
-	spf=pass (imf25.hostedemail.com: domain of balbirs@nvidia.com designates 40.107.209.0 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Z3IMS9Z/k4z+IgPM4M5WYsNneG0G8IbprBBbBe5dhDhWDj8JNHccniX06NgdBHn+yNkyN94x+t/Rz8jndL6kIBZnxv888MVL2i0UevW3U/dIX+6gol8Ey7JcFXd/4uJ+KA2l6oU4HYtb9Ic3TE8DYVaPlnbctvSpZX9b3JkMtg6GRwKWmTsfrmG01Ih4J7mnqPSy/oTawKq8hZMg0U0RnYFb2k3oZfBY5Y0cpuRmbIgWA0+5OgzzVgPcSpBrVCDUNh7X2sFwrgaNv/bUk4u1SMWSLp8IhtbRIpH7usk1MmlDYclvd0fwHIFbsn4ULHNngImloUhsrQATza/5EHyysg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=H5iPCCtO9GtrjU9qw4i5y3K0f3yNxQGGIh7qGOkUk7U=;
- b=r4YzR3LfB2e9h818nIUuaYKTnTOS2quJHRCXyJy4WgT9yG87SnJB1p2FBFe/5pbmXomJcsGwNme+WCPicQJILQlaeGCHkX27hT+yh3+g6wei4WA6Me3fGUclCz28+hJyn/3+5/TktRLKwj+//meM2JTAOeZ4AhDAwFXCTZHOhbV3CWQlGxijf2J5jkNjL1jW4h/2g1Fgt7s3Utbr0nW/nin4yOgVxeg6Dujy8/KDrZmKHbpquT9Yz63468pG9NovYVCVyNkDDjNS2D/O4gTRwjSyxHH/HwOGB17QCiHk2rVP3VwKFbhEfVzOYzURs6x1uF8vHzUtuNSNwGFmHbdpkw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=H5iPCCtO9GtrjU9qw4i5y3K0f3yNxQGGIh7qGOkUk7U=;
- b=EUmyqSei2dqVesXCm6XpEZIIMOrtkSatCJCsdj/A0iUgVcSGwPqJtSXuuNqJSDXYNnWRF+ElwISh8AZxHB9jR6sk91b+oeeXR/gAyLnNtcohfoarZfz3WKuWEQm9FQbyCtoBgiUWZca6NLQd03ENZMXlDiY4V46fnEi3I9FEvjM2Vr47lvCytMzcQpGjH188prwm4UMgAE2QSmdaza1CGX5GpIGRN6UFilMIsfYp/E2eCw7cEFgg3Hizp9E95KOFnwboJ0/sUkggLkCIl4Na/XoX2DYljU82uRadyuCSievosYDDUybBPwgE9S3dCNYYewEdcFQt3+P4HvlVeqrpOg==
-Received: from CH2PR12MB5001.namprd12.prod.outlook.com (2603:10b6:610:61::18)
- by DS0PR12MB8248.namprd12.prod.outlook.com (2603:10b6:8:f3::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.13; Tue, 28 Jul
- 2026 09:51:33 +0000
-Received: from CH2PR12MB5001.namprd12.prod.outlook.com
- ([fe80::89e3:6df0:de90:8dfe]) by CH2PR12MB5001.namprd12.prod.outlook.com
- ([fe80::89e3:6df0:de90:8dfe%3]) with mapi id 15.21.0270.009; Tue, 28 Jul 2026
- 09:51:33 +0000
-Message-ID: <c45eb5ca-2811-4896-82f3-bee34383fdec@nvidia.com>
-Date: Tue, 28 Jul 2026 19:51:25 +1000
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] mm/migrate_device: Clear stale mapping after freeing
- swapcache
-To: Arvind Yadav <arvind.yadav@intel.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Cc: akpm@linux-foundation.org, david@kernel.org, matthew.brost@intel.com,
- joshua.hahnjy@gmail.com, ziy@nvidia.com, rakie.kim@sk.com, byungchul@sk.com,
- gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com
-References: <20260728062832.1107127-1-arvind.yadav@intel.com>
-Content-Language: en-US
-From: Balbir Singh <balbirs@nvidia.com>
-In-Reply-To: <20260728062832.1107127-1-arvind.yadav@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MEWPR01CA0222.ausprd01.prod.outlook.com
- (2603:10c6:220:1eb::15) To DM6PR12MB5006.namprd12.prod.outlook.com
- (2603:10b6:5:1b8::23)
+	bh=9Dm8NACStiqwH1pQVtU6/C+ivg0sQ7L2N6PO5I5XBOk=;
+	b=hEKX59vE0RLcwiPYR4IUYxUSTWBuHq/EUa0VYVMkC90TB5XPCWMLwCZjNTF1gxCIqwphsa
+	pCBesPj0PfQRUzWyTsBtOOB4lqSEs3TKzplR5Wh6+YO0FKLYdln7hQznm6AkTBrRP7AYo2
+	hEwJ13RpcYhXc0guM7qRWZG+wmaeKoA=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SCMwd14L;
+	spf=pass (imf04.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785233017;
+	b=kb0eV0oXaRAGUWawh2mdc0h3HS6Kqf/SqIgTg2/LAKAtjEDJ2tiYgBM9vSmTr0P40cRZ8J
+	hPgn8h4JtFX/nD+G2//R0FFfogSVznfF6n7jjffhlkJyoNjVGB/5s+jUmmcevbMY8WS8W8
+	sm4KeL6QTnmqml/YO0SltSwKSRCQlPI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6F50260AAA
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 10:03:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3DD01F00ADE
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 10:03:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785233016;
+	bh=9Dm8NACStiqwH1pQVtU6/C+ivg0sQ7L2N6PO5I5XBOk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=SCMwd14L1Fk9cJ3DJyfzKeXzuirkV9aptQPyrLKNNXQ1QaLbid5eP2fOM5UrHN0K8
+	 Rgvp56mych8JzcTCv7xMJmQ+Y/idyBeuUXmYcaXdwXre2N/wyKO3iYRNGavqj7JzGd
+	 KXZnuCftFAFz8FClTE7SS4SxFbYS8/nPQG22kzeV1/WX1BHmJ0pegUwXETKpNGtH9o
+	 Ek7Ph5UuyYCiG3/KxZvKJ33cc5xpyaWpr1VpeY9j6MDHGKZiKCWS6bO5EAus9f46Gy
+	 N/+wtz03ivgI82gSIOq/J8Ot9f8XI2FM/13LPEp6BH5ZlJhrkAvI6uCosqJrPs+R3o
+	 YuJ6o8D1g6s6g==
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-8f18d92172aso45376716d6.2
+        for <linux-mm@kvack.org>; Tue, 28 Jul 2026 03:03:35 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Rps5bDb/Iolc/Uzv9VtJ0+RJqkjrhOnBYBw0B4lPugJ13Yf6iweVj7bYW/Wd8yRB2grEED8W4RQ8g==@kvack.org
+X-Gm-Message-State: AOJu0YxSU1jNL+OXgRzxyCZVdB/YmVRTRcUnnTV0VK2FGnChMyWhN5eM
+	Ra5h0zSXGsNjcMk1w3vPY8slpRiUkzIxqxdfm+NMVcUjEHdyxMbzPU4ZepJqSoc4x0z44L3xPyf
+	SN9Cn6v/UYqtGkzKdQz+aNT/RgG5064Y=
+X-Received: by 2002:a05:6214:2428:b0:8ef:4749:b1cd with SMTP id
+ 6a1803df08f44-908173959a3mr16376526d6.30.1785233015248; Tue, 28 Jul 2026
+ 03:03:35 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB5001:EE_|DS0PR12MB8248:EE_
-X-MS-Office365-Filtering-Correlation-Id: 922daf37-feac-4a8a-f142-08deec8dce36
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|23010399003|7416014|376014|11063799006|56012099006|10067099003|6133799003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	3YUn/dez3CWbgKNY7vj+oNltWYo4NTar1/mq4OpPZ7otdvJf4YOR7xKGbOjufp61QAZPd60E+HfX41sLXnv5qtb3YXplY94907DtyJUhVZe5UkqNqE/XjzIwFuxO2sd4v1dz1lf5ShTK4oSrEhLWoCxebbp+xTCcd5hz/BbxmCy4qIbBdwulJaBRDAQYrrgDUCRTmQSzYz45QR+MxpfxEwoUkvB7IRSuifsJI3SYQ4dQnsLLcKwTUV0yOiCFRDz9VNPOujYvehxNHW2x2c/ws7VPcidq9wGw9Mioozv3ToAwiDYuhYZfiYeqGwMFKMmiB/TFweo5ZKxWeB/C6MmgksSE6UT+8Ze4vmlPvA7TWq764zs1KrW85ZRYN0m7oW+GzeEeiSrprxCJfTVX77w2G+PUEHkX2nkfv8pCaOJytEPt4C6xC+bD7EECm+zbbC979z7I0Iy6llmgixbxJrny3KL6UBNmS1Htj0dOLsjrUTTKaceHPCWM9+31bt248tYuRNmXS9yk5sJZFS5dZ0vGIObmlWKTgJvH6R0bJa7TO8WwcC0Yh1RrbxcBHG0Q5opeEcSwAawqrp0AdXQAMiAWX5zEFY6cxXQSKAw44Wmm2eMS9t3WP+PFE5xN9uWGCz1IoucTOtXLGWCtmaEdLFTLkM9xTlLu0oUGboxWhxx+oeI=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB5001.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(7416014)(376014)(11063799006)(56012099006)(10067099003)(6133799003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aWlkL2E5Y1hsQi9RT3hIL2RsbVpER2gwY0M4Ti9rR0VLT0JXalpPcjlaOEdn?=
- =?utf-8?B?Ky8vTkNrbTRVOElKekRjOVlmendZVi9oM21ZaHNRZ1I4NndwTjRJNUxsTEFy?=
- =?utf-8?B?dkpDTzFpTU5RVmx4SjZIZ2pZZng0STl5cjJCT2t2ZldlNW5yeGQ0QzQva0JE?=
- =?utf-8?B?ODg2UUQvZ1VQMGtROExTWjBZM3R1QUFJeGRRQTJMUEo0OWEwdk1KNmtTeURR?=
- =?utf-8?B?N2ZHUlJDcGdkWXRLU3gwRVdPSHdsTytaWVVrMG1YWWxTNHdlckt4aEZ1Rjhz?=
- =?utf-8?B?R0d6MW9kQzZTUTIydk5VWjd3VDZkRFFEU1g0SU00dW1OQ2JTdG04VUJDVEhw?=
- =?utf-8?B?UHk0a25CZUgybmpOZHk4SlE2aU15V2p2Z0lUd0V5elByL2w4dEVRUGJvQm9x?=
- =?utf-8?B?OTM1NGE2RHBnQU5xdjZvR1lrZnBpSUNieWovZndNdXZaZCtia0NwWHZLOVpr?=
- =?utf-8?B?TGdjT2t4WC9WWlI5SGJpcm04UVlPYUJ5elJEeXVUOFRBdUplb3MxTnI5YWtL?=
- =?utf-8?B?OWtrK2RGVFhvV1pKWHVWU0hsNHNsWUVmYmIwcUs3ZzlvL1N0c0x5OEo4Rlp4?=
- =?utf-8?B?NERLUEJIK2hDb3hmTzdZazJkR1RJNm4vU1habTBXYlNhU0duY0pEOWRrL3Vl?=
- =?utf-8?B?Mzl1Rm81Y2FHaENld3dWTVkwVFBwNjJheVhHV3l5bk9sRENzZDkvMmorbnhY?=
- =?utf-8?B?czJ0NndkV2xtN2p0bE9qelNnanUwSmxOZUd4Wm5NMzRwcDhlNFZQTkY0TjlT?=
- =?utf-8?B?SUpScnlSQnN1NC9iTUlwU1RFMkJtbG1ldmJKWXgrK3dPYVFrdnlwSk9XQjNn?=
- =?utf-8?B?bnkvRFJaQ2U3RU50TTNDUkE4OXN0WTZLYkxPTlBCUVlaR25HV01pbnIxS2Ni?=
- =?utf-8?B?cWY2dEpQN3Q3dzVMcUNINTNtZE1KV1BTdlhuaWZqeEZlWkhxTXlpVkJtSnFU?=
- =?utf-8?B?eVhRbEc4YlhmZlpRdkU1czhibi96WXlqMDR2RVJGWVZsNHM4bUQ5dUhZWm4x?=
- =?utf-8?B?NzRFMGJPT0hPWmZOakIvZm1WdkhiazhUT0d0TmRPek55cVM5ckZjdGhMOEFz?=
- =?utf-8?B?Z1picUlBcXJSQm5pSlRsVmtPWVV3Z25aT3ZDazZaMjJteGdtT0lMakFXOWJy?=
- =?utf-8?B?NkNjaEM4cDh0Q1N2allBT1dEWERJRFYrZmFySW5Rd3lnZHVzM3FZb0ZRK0g4?=
- =?utf-8?B?a3hwbWQvdXV3MENvTHVCZU43VnUramVjUS96WHZ1c1BmZGxjUXJua0d6Qmtn?=
- =?utf-8?B?aW5LQ3FJaWhVSi9iKzBBMkQ2cS9pcW9TWFpuOGo1TjhnYUtUWnVnVWpaV1FV?=
- =?utf-8?B?N0NmUjZlT0QzU3JkUlUxZnRJRTZCUFFoVTgrRFlmOVUzanhzWE12eFMvcnBC?=
- =?utf-8?B?cnVENE1RcnJ1WEtjSko5Q2x3dE5NcjBkMzZJTXk1eDc5TWpKREt1SVJGcE5j?=
- =?utf-8?B?QjVQbXVYWXFHOEVYQzNjTTFlMlVTa24vUnk1R2tFNVZ3bW9tNFY2ODk4Mm1i?=
- =?utf-8?B?ZEZWUFh1dTI2ZFAyK1dRRVV4WUxBMUhXUmlmUlZwOTAwYm4zOEVGdm1kYitD?=
- =?utf-8?B?TEFpZ21hMEZkVTByZDRBenZoREtHR2RScGYybFBZaTJxS01IeFZxTHk0TjVJ?=
- =?utf-8?B?U0RMWldYekozQk55bUNzaU1yaGwzYWFZTVhSWWFqN0VUSURaWXdxbFY1ZlpY?=
- =?utf-8?B?SkFwVG1sSzRteUhoRUM0YWdzdDE2OU1NMkh2NC8xUXgzQ1pFMlZLNENlYVNK?=
- =?utf-8?B?VDFuYzhVb2tnTytZVG0vRlI2MnE0RFRKNTdsY3cwTmcxejVJaTMzTWdtZXlr?=
- =?utf-8?B?Q1g4RVVoeXNxeW5JR3RoR01neVVkaSttMTRCTGtxMFZUdnRlSTFWTHFVbnpK?=
- =?utf-8?B?UlVoSFJ0TW5TNnFDd1FIVnVzNmVoODRaWTRWenp6WWE1a1BJdUNOeEN0VHoy?=
- =?utf-8?B?WGhaUnNXb3ZvRzVKZXVMZWRzU3FwWllwcCtvcmd4cUdyMGxOc0hiUU83Tkl5?=
- =?utf-8?B?Vi9tam9LdTVTYnF1WmhsT3A5aWd0Z2hlcXRHVUJ6TktqQndYckhrQWYxTHNy?=
- =?utf-8?B?a2tqaXVJTThvd2l6bmJ5cmhIMWpQSTdtaDIvNzhhZUUzUWgzWHQ5SDZkK2x2?=
- =?utf-8?B?OUE3THB6d0tya1RDb05mUWxlNXAyc3NlZkRZc3pLb2tqU0xZbC83MFlMZ1NK?=
- =?utf-8?B?MlNuVzNZQ2RMZzNjNmN6TXFyRlJMUmxUK0JaQzZJTnVSYzF3VHliODV5aWtZ?=
- =?utf-8?B?SEw1WUlDdmppWFNkTVpwREF2N09uZlpZVElWMGhTdUZrNDgrNGlhYTJiNXg1?=
- =?utf-8?B?T1V5RDFYQTI1OElCVjNzYlBjZXNPMnNKWDJ4THpldkRqQ3d0LzhCUT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 922daf37-feac-4a8a-f142-08deec8dce36
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB5006.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jul 2026 09:51:33.4751
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Uz99fcrlWlHmXYuestrTXlJ2ulk8vWENrvh5TSiEBZjK8HPD9EiYiD38yZ90wHPjAbWbykaH2SpcFKwVejusMg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8248
+References: <20260724033435.2573323-1-ridong.chen@linux.dev>
+ <20260724033435.2573323-2-ridong.chen@linux.dev> <amdC_-OvG1ZUjmot@tiehlicka>
+ <CAGsJ_4w1AFkKOSCZYwRsZYOBxCq_7CQA43jQOiDUyLrjVUmA-w@mail.gmail.com> <amhXvAdmDxX71uxd@tiehlicka>
+In-Reply-To: <amhXvAdmDxX71uxd@tiehlicka>
+From: Barry Song <baohua@kernel.org>
+Date: Tue, 28 Jul 2026 18:03:24 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4xLPpf82CoS=ZNNP6nZoU+k=69oJFL3-YT9zibop78TnA@mail.gmail.com>
+X-Gm-Features: AUfX_myosbGdhrmjnp3dgxInzakBGfy3bPkWOPdmqjI4xEWOKQvkLKYVjveEKNU
+Message-ID: <CAGsJ_4xLPpf82CoS=ZNNP6nZoU+k=69oJFL3-YT9zibop78TnA@mail.gmail.com>
+Subject: Re: [PATCH -v4 1/4] mm/vmscan: fix anon-only reclaim evicting file
+ pages when swappiness=max
+To: Michal Hocko <mhocko@suse.com>
+Cc: Ridong <ridong.chen@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Zhongkun He <hezhongkun.hzk@bytedance.com>, Muchun Song <muchun.song@linux.dev>, 
+	Davidlohr Bueso <dave@stgolabs.net>, Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 41B684000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: E03B2A0003
-X-Stat-Signature: ekbgibemxm793o5bt7uqychk6m88n6oe
-X-HE-Tag: 1785232298-4851
-X-HE-Meta: U2FsdGVkX1/oFfcyJTfjPt2TKo1WqQOWtrwoSul6+p1+q8sLVRbiEGhY9loVL/bcgW2P5yNSk2xRhOigZNNdLccIjXol7t1k/2nqmn0Zh8ajw+QRbNPfS208rFFj1TF0gSIkMbgNWnmYA9jhGZcLBNsxX4J4dKV45+Hq37xmuvRKNy/SJ8uS4LXetIc5Y0pDhCx+vNHfe5gpiHyCBjUS1oiZ5UktAzVv27avVmrszMTh+u6+zQQpdGi1gdeVHx9dq817MG6Fgu+PRAIrtxDMNdBo74Yl106yC61nhVhPHS1GyqEfS53nwNQYSAZN432Or6Mp3uGjeEXOO1B2Exc27ou4RnH+52KrXY/cxosheQpCggLVSB/0pLtYZ6pzSXdxC9/ioBgaHAXZHcoyRJC1rJcWrgzebWl8Et1JA2roH/qG5LCp9xH0CDaFTU27Pe7lW79ARH2vYy3jHXfWk4oAEAP57ZUtU9RceN2quiz2zCn3yeH4TmZ0sjPbF+s9vqD8f7ud2YPaC/tYYhVv92YiTm8MSL9FLLqaWUhgz8GuT5LLQ68ME2iJwrfzwwoSiJfmqZEKIidQ8DOiJEFAPdwQIZeKcg9QlVAurXxr01ASm81kAtSndUf7wwFbs8glDjzuSb6BAxqI9Z21G2If23PCGxhLs0gTKhL70U0zU7NAhsa+g98loVpHoGNUk26NBwol/wpQ5Q4krJZeKblVXXbWhkoUz25f/Xf+KUaM5BQkP2Q5b/F+d2gdupaj0StGC3/IZJ5tpRDKTFzRurWUwEh+Wr0XOb6zoNIfscUHubJC1tIqIJCmwWtoFII1cgVd/pt887KF6cn1VPblcEo/WDMWXQJQ5wIadboQmKFX1i6VEpGfkj7FzV6WzeocnFzRFPHZFuJ0asS2w84W/LUBLed/dPzDqiDTAfhspoRjt9uldtQC6sdUMeOFNCH9kREHyZ99Jud/7YEg+OpSFyy4tlG
- zqmuBqBD
- 59P7976dfPO9EQKY3ybs/gTAhdefeGdMSoFgfCn+jUg7V8hAVcGKM5eFRWN+ZRtpymfAvBTWVvNBFfYkNk5Yt3U7bC+ejrqQdTZu87VrLEdPvfZnU/uZiUEnsCnI9lwY+e45LaN+QN/izWW2mvmJjZwqV83i8Lp6F/MmvnDmj87HOKj7KLowkwJEZHJccxvPF2bxU8g3yQDdmbMRj0aM0RyJ40oHN53xbM++GDfTfxi6Oxtvbxy5p82BLSsG+xjJk7sdKcvOcp7JajS+8sR9PYPOGbmncxG+pqACU4CbkvKf442rgghH4SDhBrYI1Ew3RBF7Ng6jSa5iDt5bGHdNOFED0yEdUKoBZsxLsojhDUpW1hgz3dJ9kcY6L2jvgHWJGnUxOX0cuNGRxoGudUtSv4RxV1CWOSCnvcoievrdPb1XDeUJyQwlbXAwpORIvc8srciKBYeMJVDh8P48/YNUFG0PG/mLWr02XHYK3DQFnK85AuTHrw1x1yXq92MG3snAO4p/qbViW2DlhHacI2+qfQyGLPIVaRT13P87srmLHH1YnVEAuJNRKAjw0UWu7/Eg3YDSQ38IPyWfNLatd6iGXPmSUqKFSmlsI8YYWY0BaVtmxYOFaI0bp52VhjJYx15c/smeMNBSc3TQVuDqZKVUsvxSPg7yQTBNej8o7kNyDINCRQR5Z9XqAB5KINPJrGTG7D0gmFXH5GNJzBrDEZdahFN2E4BFGHcJZc/LXWrKPI5Ad+CHRxkKlpZlzBFuhzkqnY/OyI+IVqHykj0AthVXhYWmcW4xf0fy6MPkjczplvQlcNCUTZ1EaYMYtJ5PBn6seFdjX34D5sJAzMe8=
+X-Stat-Signature: ah4gnbeu4h5563aksnexsha7z7n7516j
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1785233017-675871
+X-HE-Meta: U2FsdGVkX1/YEOomvZD7cteayZzsg80oIxgWkUzHkIyhGzZQi/+3LU+D1vSzw8/7ntLtYifoFTUfGzya35YnnfxoT1UjJxD6Lryh4+ZjscraNPKtfOA/FMVm8MM5RQcDf6MCruaNOWViyyRJBIAnsPuhpqh5mqM/Fb1oP4oLtDCcLGCZlYfW3BhtdBWRfRmDMYMzsDnve3BjQWCZfTEKqQKb+mPPkPLQJn6lZmlMifKHO0vbeTfN3HSK7SLADZ0NUvhV1QKBbHKIuuuGGQgp1rTIwW32/EKYqrQ+ZYROjLMmFhPcldl39BFQO11XanpANSUFSsRKOYfVcLWLy5q/BMeIp+4irg8pJnOckvELsF3fESCrkFmkwAzjv2CAP5XqsbJQpM3OKDotbQKnXdMsq+7bZYPJ6dLA9El2ma0g9VVKkOBSlZHKrNQ7ta+JjBQMlGTcVuj6xaSL1UDnA5STuyzGsE/EKXXtnrqkoDrj0cav4Kgc/9tTHmeP9qGxBYuPUfft5jgXbcJWtR+q4sQsa+0Q2APnxTHLt89Reo9n8zx7hAnJTJBwwQsNlkYK1lcqBNG3BY/MA3Ueya+UGLTd3GLw+KMVb35vrC4uoZG0Us+g7pKO5Vp15MNizW96nO18P+xLrRgG2M5pVXJpC8AMqqbKI+xJGIUbj9VIRcT2cAbMVvi+uBiuix/qEXygZubDYo7LWirhPOzCbmMvPU8H6lpn9a4KIkwrEmm8AoAbB/AzzT7dwEzgv6JEPTzccS7kRBpUmALDTdoeKM/RVt6F+dfoiPfJMiNAzlU3JePvAxmgCsfm4wPq+tOpZ99UKIM1mrqkkp7xu4659u+lqNRKBDZEU5B3swtvTvJ16IUG2p9S3Zt+mv7cCB1DqurCQKp6NbkiVyqfxYwxACWt8NPj6vvz1NhSdWdJ2X1DtNzBzrtSQ80tBBQBW2v4FO6jjGHnaY341kGHq+LZl1L0dM6
+ 86nbUqGX
+ UcCHWAhNUi8+zt2OiD6x5s6/OoKyFCrL2f+Kmia5QeZcQcQgnngonKe2DtVBsuAPXa1lOpMsjfxksaU85WlaYz0zUaFo6p1HMsrVEmtIuZcL2ZDVlsCxCtqkulSbC1i1kVYrRongRU5nvRvqTIlRMo+nLjPlYWXmujcsQuugHXN2/3dsWHdA+6oPZmpuyCa9cniSiGuBQaskCJlqpHGu+JqIg/Q2xda0soy7lymqOXkrDBU72gPp9Z+mjV8p1zOvG/cawj9JML4czKWLYB2f1Nf8OzeepIg0kT6EjDg9/TebbAZeL+SI0m4nOXhgHIMo4jJ1LeUVDJ/xDyJjOBLinSl5wOhL6hlx+7wEuvsdqog1jRKbuILL7fGZasA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -173,53 +111,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/28/26 4:28 PM, Arvind Yadav wrote:
-> __migrate_device_pages() reads the folio mapping before calling
-> folio_free_swap(). When folio_free_swap() succeeds, the folio is removed
-> from the swap cache, but the saved mapping still points to swap_space.
-> 
-> Passing the stale mapping to folio_migrate_mapping() makes it use the
-> mapped-folio path for a folio that is no longer in swapcache. It can
-> then operate on swap_space.i_pages with invalid reference accounting,
-> eventually triggering a folio reference count BUG.
-> 
-> After a successful split, nr still contains the number of pages in the
-> original large folio, although each resulting page is now a separate
-> order-0 folio. Reset nr to 1 so each split folio is processed separately,
-> including its own swapcache removal and mapping lookup.
-> 
-> Refresh the saved mapping after folio_free_swap() so the current folio
-> state is used during migration.
-> 
-> v2:
-> - Refresh the mapping using folio_mapping(), as suggested by Zi Yan.
-> 
-> v3:
-> - Reset nr to 1 after a successful split so each resulting folio is
->   processed independently, as suggested by Zi Yan.
-> 
-> v4:
-> - Re-read each source folio's mapping immediately before
->   folio_migrate_mapping(), as suggested by Balbir Singh.
-> - Add a warning to validate the post-split order-0 invariant,
->   as suggested by Balbir Singh.
-> 
-> Fixes: df263d9a7dff ("mm/migrate_device: try to handle swapcache pages")
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: Matthew Brost <matthew.brost@intel.com>
-> Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-> Cc: Rakie Kim <rakie.kim@sk.com>
-> Cc: Byungchul Park <byungchul@sk.com>
-> Cc: Gregory Price <gourry@gourry.net>
-> Cc: Ying Huang <ying.huang@linux.alibaba.com>
-> Cc: Alistair Popple <apopple@nvidia.com>
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Reviewed-by: Balbir Singh <balbirs@nvidia.com>
-> Signed-off-by: Arvind Yadav <arvind.yadav@intel.com>
-> ---
->  mm/migrate_device.c | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
-> 
-Reviewed-by: Balbir Singh <balbirs@nvidia.com>
+On Tue, Jul 28, 2026 at 3:18=E2=80=AFPM Michal Hocko <mhocko@suse.com> wrot=
+e:
+>
+[...]
+> > >
+> > > Looking at how the code is structured currently doesn't the following
+> > > express the intention slightly better?
+> > >
+> > > diff --git a/mm/vmscan.c b/mm/vmscan.c
+> > > index 35c3bb15ae96..4fd38e3f1b05 100644
+> > > --- a/mm/vmscan.c
+> > > +++ b/mm/vmscan.c
+> > > @@ -2503,6 +2503,10 @@ static void get_scan_count(struct lruvec *lruv=
+ec, struct scan_control *sc,
+> > >
+> > >         /* If we have no swap space, do not bother scanning anon foli=
+os. */
+> > >         if (!sc->may_swap || !can_reclaim_anon_pages(memcg, pgdat->no=
+de_id, sc)) {
+> > > +               if (swappiness =3D=3D SWAPPINESS_ANON_ONLY && sc->pro=
+active) {
+> > > +                       memset(nr, 0, sizeof(*nr) * NR_LRU_LISTS);
+> > > +                       return;
+> > > +               }
+> > >                 scan_balance =3D SCAN_FILE;
+> >
+> > The question is whether we should allow falling back to SCAN_FILE
+> > when swappiness =3D=3D SWAPPINESS_ANON_ONLY and !sc->proactive, if 201 =
+is
+> > ever allowed for non-proactive reclaim in the future. I guess not,
+> > since SWAPPINESS_ANON_ONLY literally means reclaiming anonymous
+> > memory only?
+>
+> If we follow swappiness=3D=3D0 then yes we should fallback if we are clos=
+e
+> to system OOM. Now arguably SWAPPINESS_ANON_ONLY is a wierd global
+
+SWAPPINESS_ANON_ONLY with swappiness=3D201 is a rather odd
+interface. I suspect it was introduced as a workaround for
+MGLRU's swappiness behavior, where swappiness=3D200 can still
+result in significant file reclaim (not much different from
+swappiness=3D60 or 100), while the active/inactive LRU
+reclaims few or no file folios.
+So `201` was introduced to prevent MGLRU from reclaiming file
+folios by bypassing the file reclaim path?
+
+Qi, please correct me if I'm wrong. :-) If it serves a purpose
+beyond this, even for the active/inactive LRU, please let me
+know.
+
+I'm working on addressing mglru swappiness issue:
+https://lore.kernel.org/linux-mm/20260726122123.7614-1-baohua@kernel.org/
+
+With my patchset, `swappiness=3D200` under MGLRU reclaims very
+few file folios, similar to the active/inactive LRU. If that
+works well, I suspect we may be able to drop the special
+`201` value in the future.
+
+> policy and it is quite possible this will not be ever allowed. My
+> argument was not to prepare the existing code for that. I just meant to
+> structure the code in a way that it current assumptions are more
+> explicit.
+
+I understand your point. I just find
+
+    if (swappiness =3D=3D SWAPPINESS_ANON_ONLY && sc->proactive)
+
+a bit odd, since `swappiness =3D=3D SWAPPINESS_ANON_ONLY`
+already implies `sc->proactive`.
+
+So maybe:
+
+        if (!sc->may_swap || !can_reclaim_anon_pages(memcg,
+pgdat->node_id, sc)) {
+ +               if (swappiness =3D=3D SWAPPINESS_ANON_ONLY) {
+ +                       WARN_ON_ONCE(!sc->proactive);
+ +                       memset(nr, 0, sizeof(*nr) * NR_LRU_LISTS);
+ +                       return;
+ +               }
+
+?
+
+Best Regards
+Barry
 
