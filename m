@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7B67C53219
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 13:11:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 863B7C53219
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 13:13:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A7E5C6B0088; Tue, 28 Jul 2026 09:11:39 -0400 (EDT)
+	id 2E0706B008C; Tue, 28 Jul 2026 09:13:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A576B6B008C; Tue, 28 Jul 2026 09:11:39 -0400 (EDT)
+	id 296946B0093; Tue, 28 Jul 2026 09:13:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9947F6B0096; Tue, 28 Jul 2026 09:11:39 -0400 (EDT)
+	id 1A8876B0096; Tue, 28 Jul 2026 09:13:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6BE116B0088
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 09:11:39 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D5E381A0251
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 13:11:38 +0000 (UTC)
-X-FDA: 85038222276.06.FEC8C01
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 39971A0006
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 13:11:37 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mKcEJwJI;
-	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785244297;
-	b=yzM7f1bF5gk6aekB37wYd5bAbsrGvncaYs6qhmxvkRyz0cPDFLhQWojWvreQE2OmPvEQOL
-	XtDHc+kGtyuzoCLV2G6ZjstyiT5D2Iva0+EwdOeYSe3hZfAWMp+pLcZPcRXrldy2VdO80D
-	brkpjTDTrteFrK8PBMux9KigQzZNGYc=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mKcEJwJI;
-	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D85916B008C
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 09:13:33 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6488BA037B
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 13:13:33 +0000 (UTC)
+X-FDA: 85038227106.11.92E4F32
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id C7FEF14000B
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 13:13:31 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="bzn/3sd1";
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785244297;
+	s=arc-20220608; t=1785244411;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vns0tlxk7C8bBVdnIv05S1BNPahfXX1Lxmvhci83FeQ=;
-	b=3VA1w2HBj7+z649YxrsBqgsYodRxIEhJAM4IuDKM6eVTrSY4iiKryUJ+HCMaAEs3oTTztS
-	lC5VwTqyluuOQ5IXjX6O+5CN+gGVEL1REc2Z8kq33+WZnk3VyuZtadAZMAqbSE/ZvHopRS
-	ltlZ7MNTeicuhZe4gXcrlA31VUKOFZU=
+	bh=edsvZpHOz/mK9RXEfjieBaI2uRHLdU4GTctLQewLIA0=;
+	b=LdaKSmlBPieHvH7sqX4mAmvKntLPyek8k/n3tjDP/sUJAi1dWYEC1aRR3/Hg/q3uWAFVl3
+	lA61pp4MGlWFfuHai3UbjaIZsUChvSJVBMXX1fjyLu6gpJq9DJlIS2tTL2W9a7VNHwH/sa
+	Dn/ttsuCktovqaGFty+aElZrkNdMIm0=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785244411;
+	b=mFPR8PkhNT5vIKcav4UFylSeECz6uXtkygPasK392I6LtcYyt0iJ891hznXKWguwrYW+pY
+	mNVQ26e+DYWMCC/PEDPjaMVx9lmQrcOLuRMm0KL7+DhQkeM1JCgeL05uFcvWdmQLe/sAyz
+	E49h2l20gT6Ycmwz2kUP5JQ1vOhhewQ=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="bzn/3sd1";
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5ADB143AE9;
-	Tue, 28 Jul 2026 13:11:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB2991F00A3F;
-	Tue, 28 Jul 2026 13:11:29 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 60B4860A77;
+	Tue, 28 Jul 2026 13:13:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F21791F000E9;
+	Tue, 28 Jul 2026 13:13:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785244296;
-	bh=vns0tlxk7C8bBVdnIv05S1BNPahfXX1Lxmvhci83FeQ=;
+	s=k20260515; t=1785244411;
+	bh=edsvZpHOz/mK9RXEfjieBaI2uRHLdU4GTctLQewLIA0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=mKcEJwJI+iahQ0Y/Jyo04if+r0C5BJmRYgxH9GAgcjlw2mHG3j1F1Lwqa21fOv9z8
-	 hpVMqlZfcTuTVnhORm8SJOfexjZy8oMuhagcu1JwiSmpHcyusSqzbVMvFCX8Fh9hey
-	 86gpHFhWEu0ogxPg/+aAuWb7tZrCF3oJdBpHlsulcysmyMyNBtwSGUHs2IFIvE8OeN
-	 rmMTGZFhKVYIhT0+G2qbHvB1prablSjrdCB77JF1BUpqVZPTnYV5CleQMxJn3ZkdgO
-	 YBMVxyLpMSWgHQP4WgkbVmm75Ly68OejP7V/GaOi90D4Z7blax3l7PGkqcVjKIhsHt
-	 WakxVX2BLMaBw==
-Date: Tue, 28 Jul 2026 14:11:15 +0100
+	b=bzn/3sd1lQMhcvwoLaRajVWT5kPg6XFlWUd0RKfagTCKUxU+Mnc+Tafa40Ay1tvkZ
+	 XKuTj68ArvEOTpX/Vd7ynVk5yaPX6pD+5MCnezKnwqeRfwNfXC2X61nt+eaQ+sP9W5
+	 B9TwAcvJoV6wF3Vg3Z2xb2STDWWj5i2N6U4x1Q1sNJX7Y69VD1PPcvz6lFoNAwRlxa
+	 xkPAPucRm0P7rf1Zy2hbwlYE6MT0zfNY3zXoRze6NujmbqD5j+IZu2oN+AiaLqWqpD
+	 MFetWF9YTEPwGa8lNj/rH+CRpMqS3DplerNhPLwbH8osryXKvsvwzrZyMRf/t39f/g
+	 C2EZfMIgX5GzA==
+Date: Tue, 28 Jul 2026 14:13:10 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 Cc: Dave Hansen <dave.hansen@linux.intel.com>, 
@@ -77,23 +77,23 @@ Cc: Dave Hansen <dave.hansen@linux.intel.com>,
 	Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner <tglx@kernel.org>, 
 	Toshi Kani <toshi.kani@hpe.com>, Vishal Moola <vishal.moola@gmail.com>, 
 	Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>, iommu@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org, x86@kernel.org, 
-	syzbot@syzkaller.appspotmail.com
-Subject: Re: [PATCH 0/5] x86/mm/pat: CPA fixes
-Message-ID: <amiqDkAxFx60biG1@lucifer>
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH 1/5] x86/mm/pat: introcude cpa_lock() and cpa_unlock()
+Message-ID: <amiqlL6yD5Elil-_@lucifer>
 References: <20260728-cpa-fixes-v1-0-2ed2352300b3@kernel.org>
+ <20260728-cpa-fixes-v1-1-2ed2352300b3@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260728-cpa-fixes-v1-0-2ed2352300b3@kernel.org>
-X-Stat-Signature: 8hhc4wjhwm5fwnubtu7rmmtewjwekupu
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 39971A0006
+In-Reply-To: <20260728-cpa-fixes-v1-1-2ed2352300b3@kernel.org>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: C7FEF14000B
+X-Stat-Signature: re91j4hb81mt3iikkz1483j9dd9wqamz
 X-Rspam-User: 
-X-HE-Tag: 1785244297-252871
-X-HE-Meta: U2FsdGVkX18EcHbIR43zb7TEy21iXO2kn0+9Qa3KtZF63ZoH7WTQMEyl54TtzH5+fU19aHOclgD7spFF6FjIShlRLQ0o6RcCe7mgrsyREkR5F05fgrn9H+DdvaVUTlg0ZUKt/azP+4zzzybNaxqph+W1gND7tnFsEo5O38ObIc2g0Wo+9JSqVndc9snZiiC96dgo0xciYfdSquFKdX8YDWtnfbhyE/22JoLI1k18/mbU5LCxEtkcsw8kKgHImv2+zV1pMRuB57gclXIyPGE+wKm2pfcE8T0kwLYR2x7ghnlyLSfTYslkDhfVyMYBaB3nyFcrT6lRKiYnGEog4+O5UEANSDvlgkdQ3DE03dafgMX5T+xHiuSAUkUONfoKhW6LJykoDpPTt/w8K0IffzTMTLM5a5gigfRlOrkQ3mp4s255oN2QMCahlr8Tl1FPrebFOQeTCxwEs9q1hx3zyDEBX78MIjm5fmovf8jssOg0YYu4Ixip3MfJEUtUhwgpjGT4r2V/2da/c5BMOwNm8lsZ+rGubokSgkkckVmU5sEwmjzjiTkilacczoO6ZvqPNSvwtTLxbO+xHJRtZqc5HUL5Ntk8KXqYlZUWh8dkFq5FKCnDzGMPFAvRuq1andxz0GeEZCczdNOtxoBbZxN/0OLMq13MehIMzmMvaFhIQY0s8JA2tx9uBUoWlQanGRvKB+HvJsWSj+97MUag0P3wQOCLglCazT5dDTTVlbZlfEWOrmxlOqit0UldcrlxxgzrcYZTbZH8KPDXE+XoAPtyiRFDAvRcBJVR7+x0dbkPbISY5dTxWBO42raIvk+RDYa8UCvDX4UAQRwXoUKCi2sCqkdyCZvSXJK+WlMWWQIGhPLA8jo7wzyxXda0FrX534N/e6pktN1/GuualwHYRax+aKFZKvsJWVacEvgsKxcZ4tara3Qgj1l2RtJV2vueNhRMo/9pYE6NdeIhOhmmvDnxmS0
- h0z7PmLn
- WqNRQvQ9xiPCYExx4zfhIrHie9+Vfj5wzlqG6/sTQzrNAwOlBWFTkmqQ88Oxy1Hn0Yxeft1v1ut2g/NUyH0bRYfg+ZnFBN4yyCe6gJPTvPPty0Q+P702/G0GVrSmcIMCitCEOEJv/09qw1Cy3Yu3zSN1926lqYvUcjicQbKlgjmkRhSUncWk8Yr62Z43F+MmGgrBtKADNwPwnkNz2Jp68kjY2kXQ+XG7wUJ/8odt5TfgrBhlbaFrJM6N+YdKvZBl08hVEAIpHKcPOA8B+OVO/9UJVZYC3IvC2Al57ZJDT0LSi4VTdIlUpdKo4I3n5EmDa91n3NMiFmBxvrjLUoiq7kCFSPOIODu+A+lq9ZBf7i7OPL7agN5Wqz2eBd//nY3M0oS8sjxiG/GbotcHZZjc4wTcVYvolXZgM75aE
+X-HE-Tag: 1785244411-644632
+X-HE-Meta: U2FsdGVkX18LgM/+/tS+UURCBn7iui/gOVQs6eiYTGuTlVxSKivRROdiemmOsODpoeBMnEYs/AgDRFIkAwgC/3BUm9wjNjxj0in49rzY4GbyIpliXtO/7wuKI4NU9fmhe/BzcCoIyGTvhlmIP+75W2DNtmg7JSIcNgzmozAzfb2dYpdTOw13ksmZs4sk1ZLqPN1KSznp8xcgCj5oXJw05ritFJoZHVMJDT0+FUcSfjDMBCrDmLXGGRYLDx7mkyOvBf8+40+p/nFsU5MPduQQZONkCyEe/1GiPpRl2LNifndYTGHdS5Pgk0EQ8Sof0ZIX1ZXCO4VW/hszV0ydskpilXSkuEypVddg2q4kBw+enDvD8Ao2Q+Q2VW8aSLZz8AG3jOPob/2fTttn9Dax/Av3xcWqGyX/yvtbFQ6mPOhaBgPVQxaA7n8sfInlL/IJpvByV3dr/+ufuOMuH8LvU/GDq0dRc/QUB6jp7D9qbVChdoJrwZCgCQsAHMBPJohCyfgBuLf3TtMR2kk11XMg0wT5wrDofA5Ky6pNxDbmNiesm9JmCO5KL5Cov/HVabNf6RkTbkQMi7M7JCW6XvrH8ExLplRGuTh6bRHpHdW8KXrAets3Mo7zER12XDKbzgU+aDFVZt+iG0uHyMYpT0RLCAIW+OgtsnLisK1GQpwRGoQRUszTH0ahp0rrEcAfIQApF1EUprs9f3Kg6tXxCX0TgSUwgLqYndGyB2cjDwgEYI2kIDVJhnlre0aErPTDfPtkZFel6fCEw/BuI8eaZpqRMnt3a0dV/5JSOw6nH2qh94zps+LL1C6s1/RKWChVaSlFXpQ7cP5QkkqNgM334RMuWz8p6+F/To4Wo6DbIo73+skjcpHp8IZamMVSwEBXTjUG6N7WFjVhG3LiUszlKsBRJQIihSvjcV2d8x3If0153iMPCNEsJJWdDufIMDo/kN1ZqVQqZjaGkaLgPFovxbMi01y
+ Qc3s3uxU
+ 4uwCasplRXX/Y74QN6ddhcPrlGaTJYYn2uGcrUKNlT6c3ns4yV93cbIcqGzydn7YGxDA1FsTYB7dv4vaH4wuzsDS6NyDBXn4qj4f0Vztgjwtdm5XMyjANyVCdWxEXoHUzkLV03MYO02kHFK/64vYsO5S/mC+F2WilDOwxOB5bz6894DPNw7DQSP1r5t2PR+dIVqc85Y3yA42T0DLrKkSMzdPKb19KEOVWKh2GJLCGnMBUseaZctRJB9mSc67NFRjrrEPK5hsfmH6bL62N/VGomCslwjC7WaqSBc8fqJA1dJbQmT1aLrHxIpYpsHRnOpndiIhKy6alu+mZiHPr747o6y1O0YiGa77o7ynXi6fGH6EaeNAWdqrMHPz8v3gDjAGe+OCG83MObkhYpch2zjmRmIU31A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,79 +101,145 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Ack on all my patches thanks!
+Typo in subject :) introcude -> introduce
 
-Andrew - let's take the x86 patches from my series through the x86 tree, and the
-core mm patches through the mm tree.
+Hopefully Dave can fix up easily.
 
-There's no ordering requirement in the x86 patches.
+On Tue, Jul 28, 2026 at 04:07:44PM +0300, Mike Rapoport (Microsoft) wrote:
+> The splitting and merging of kernel page table mappings between small and
+> large is protected by cpa_lock.
+>
+> Commit 5fce67641a3e ("x86/mm/pat: Don't gate cpa_lock on
+> debug_pagealloc_enabled()") disabled gatig of cpa_lock on
+> debug_pagealloc_enabled() to simplify the code presuming that skipping
+> the lock when debug_pagealloc_enabled() was an optimization.
+>
+> However Lorenzo Stoakes notes that:
+>
+>   __kernel_map_pages() can be called from irq context:
+>
+>   < GFP_ATOMIC context >
+>   kfree() or whatever
+>   -> ...
+>   -> __free_pages_prepare()
+>   -> debug_pagealloc_unmap_pages()
+>   -> __kernel_map_pages()
+>   -> __change_page_attr_set_clr()
+>   -> cpa_lock spins [irqs off]
+>
+>   So you're spin locking in irq context here, which is probably not a
+>   good idea.
+>
+> It would be possible to unconditionally use spin_lock_irqsave() and
+> spin_unlock_irqrestore() but that would complicate locking rules even
+> more.
+>
+> Restore gating of cpa_lock of debug_pagealloc_enabled(), but instead of
+> putting the open-coded condition
+>
+> 	if (debug_pagealloc_enabled())
+>
+> before every lock and unlock operation, wrap the condition and the
+> locking operation into cpa_lock() and cpa_unlock() helpers.
 
-On Tue, Jul 28, 2026 at 04:07:43PM +0300, Mike Rapoport (Microsoft) wrote:
-> There are a couple of CPA fixes floating around:
->
-> Denis Lunev fixed races between split and collapse of the large mappings:
->
-> https://lore.kernel.org/all/20260715183453.2381141-1-den@openvz.org
->
-> Lorenzo Stoakes fixed UAF caused by races between CPA and ptdump:
->
-> https://lore.kernel.org/all/20260723-series-vmap-race-fix-v6-0-8cc77dcc0018@kernel.org
->
-> and an issue with stale page tables in IOMMU:
->
-> https://lore.kernel.org/all/20260721-fix-cpa-kernel-pagetables-v2-1-2b255deed710@kernel.org
->
-> Mike Rapoport fixed a check of RW attribute in lookup_address_in_pgd_attr()
-> used for the verification of RWX:
->
-> https://lore.kernel.org/all/20260715144519.934289-1-rppt@kernel.org
->
-> Some of the fixes got merged into x86 tree, some of them got merged into mm
-> tree and some are still hanging in the air.
-
-:)))
-
->
-> Beside the fixes there was a supposed simplification of cpa_lock locking
-> that looked like removal of an optimization for DEBUG_PAGEALLOC, but it
-> turned out that it was not an optimization but rather a correctness
-> guard because with DEBUG_PAGEALLOC the locks could be taken in an atomic
-> context and couldn't use plain spin_lock()/spin_unlock().
->
-> The changes here are collected from all these fixes into a sinlge coherent
-> set on top of tip/x86/mm:
->
-> * update to cpa_lock handling with DEBUG_PAGEALLOC
-> * fix for races between CPA and ptdumpi causing UAF
-> * fix for stale page tables in IOMMU
-> * update to the fix of the race between split and collapse of large
->   mappings
-> * fix for effective RW computation in lookup_address_in_pgd_attr()
-
-Thanks for this!
+Yeah seems sensible.
 
 >
 > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+
+LGTM, so:
+
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
 > ---
-> Lorenzo Stoakes (ARM) (3):
->       x86/mm/pat: acquire init_mm write lock on collapse to avoid UAF
->       x86/mm/pat: acquire init_mm read lock on attribute change to avoid UAF
->       x86/mm/pat: allocate split page tables as kernel page tables
+>  arch/x86/mm/pat/set_memory.c | 33 +++++++++++++++++++++++++--------
+>  1 file changed, 25 insertions(+), 8 deletions(-)
 >
-> Mike Rapoport (Microsoft) (2):
->       x86/mm/pat: introcude cpa_lock() and cpa_unlock()
->       x86/mm/pat: fix effective RW computation in lookup_address_in_pgd_attr()
+> diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+> index b1e780a465b5..4c8922695fd3 100644
+> --- a/arch/x86/mm/pat/set_memory.c
+> +++ b/arch/x86/mm/pat/set_memory.c
+> @@ -65,8 +65,25 @@ static const int cpa_warn_level = CPA_PROTECT;
+>   * Serialize cpa() using cpa_lock so that we don't allow any other cpu, with
+>   * stale large tlb entries, to change the page attribute in parallel to some
+>   * other cpu splitting a large page entry along with changing the attribute.
+> + *
+> + * When debug_pagealloc_enabled(), page attributes could be changed in atomic
+> + * context that would warrant disabling IRQs. But since debug_pagealloc always
+> + * uses 4k pages in the direct map there are no races for splits and collapses
+> + * and locking can be just skipped altogether.
+>   */
+> -static DEFINE_SPINLOCK(cpa_lock);
+> +static DEFINE_SPINLOCK(_cpa_lock);
+> +
+> +static inline void cpa_lock(void)
+> +{
+> +	if (!debug_pagealloc_enabled())
+> +		spin_lock(&_cpa_lock);
+> +}
+> +
+> +static inline void cpa_unlock(void)
+> +{
+> +	if (!debug_pagealloc_enabled())
+> +		spin_unlock(&_cpa_lock);
+> +}
 >
->  arch/x86/mm/pat/set_memory.c | 95 +++++++++++++++++++++++++++++++-------------
->  include/linux/mmap_lock.h    |  2 +
->  2 files changed, 70 insertions(+), 27 deletions(-)
-> ---
-> base-commit: a5a162fe1ae130e3d2ceefef3f43afe3773c1d56
-> change-id: 20260727-cpa-fixes-d3c73c075672
+>  #define CPA_FLUSHTLB 1
+>  #define CPA_ARRAY 2
+> @@ -417,7 +434,7 @@ static void cpa_collapse_large_pages(struct cpa_data *cpa)
+>  	int collapsed = 0;
+>  	int i;
+>
+> -	spin_lock(&cpa_lock);
+> +	cpa_lock();
+>
+>  	if (cpa->flags & (CPA_PAGES_ARRAY | CPA_ARRAY)) {
+>  		for (i = 0; i < cpa->numpages; i++)
+> @@ -433,7 +450,7 @@ static void cpa_collapse_large_pages(struct cpa_data *cpa)
+>  	}
+>
+>  	if (!collapsed) {
+> -		spin_unlock(&cpa_lock);
+> +		cpa_unlock();
+>  		return;
+>  	}
+>
+> @@ -444,7 +461,7 @@ static void cpa_collapse_large_pages(struct cpa_data *cpa)
+>  		pagetable_free(ptdesc);
+>  	}
+>
+> -	spin_unlock(&cpa_lock);
+> +	cpa_unlock();
+>  }
+>
+>  static void cpa_flush(struct cpa_data *cpa, int cache)
+> @@ -1239,9 +1256,9 @@ static int split_large_page(struct cpa_data *cpa, pte_t *kpte,
+>  {
+>  	struct ptdesc *ptdesc;
+>
+> -	spin_unlock(&cpa_lock);
+> +	cpa_unlock();
+>  	ptdesc = pagetable_alloc(GFP_KERNEL, 0);
+> -	spin_lock(&cpa_lock);
+> +	cpa_lock();
+>  	if (!ptdesc)
+>  		return -ENOMEM;
+>
+> @@ -2025,9 +2042,9 @@ static int __change_page_attr_set_clr(struct cpa_data *cpa, int primary)
+>  		if (cpa->flags & (CPA_ARRAY | CPA_PAGES_ARRAY))
+>  			cpa->numpages = 1;
+>
+> -		spin_lock(&cpa_lock);
+> +		cpa_lock();
+>  		ret = __change_page_attr(cpa, primary);
+> -		spin_unlock(&cpa_lock);
+> +		cpa_unlock();
+>  		if (ret)
+>  			goto out;
+>
 >
 > --
-> Sincerely yours,
-> Mike.
+> 2.53.0
 >
 
 Cheers, Lorenzo
