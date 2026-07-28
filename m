@@ -4,92 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB125C53219
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 12:03:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9574BC54F4C
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 12:06:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B60526B0088; Tue, 28 Jul 2026 08:03:04 -0400 (EDT)
+	id 3EBD96B007B; Tue, 28 Jul 2026 08:06:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B114A6B008A; Tue, 28 Jul 2026 08:03:04 -0400 (EDT)
+	id 39D726B008A; Tue, 28 Jul 2026 08:06:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9DAEA6B008C; Tue, 28 Jul 2026 08:03:04 -0400 (EDT)
+	id 28BA96B008C; Tue, 28 Jul 2026 08:06:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 751D76B0088
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 08:03:04 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id ED356A14C6
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 12:03:03 +0000 (UTC)
-X-FDA: 85038049446.23.5DCA861
+	by kanga.kvack.org (Postfix) with ESMTP id EF4426B007B
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 08:06:14 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7D5F98035D
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 12:06:14 +0000 (UTC)
+X-FDA: 85038057468.26.4770EC1
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 4C48520007
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 12:03:02 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kJT3l3QX;
-	spf=pass (imf03.hostedemail.com: domain of will@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=will@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785240182;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ngSI3Q4vIhFKWjmDx5jZEvBPeOv5VUXzzg0prABQgHM=;
-	b=IWEPJcHUdaQfhIhLSVAPh1cqmSTMpcavpJ+8BRGNeR+xrl3+V0CSVs9LZUFqdB+5i3Konk
-	76IcXfZrbfVEcrNz7BKdhsWNOwlriKCZTWqpd46h5zjmeKrE5Lf3Cu3npCLtRagIW40s86
-	sicZLYx+So2WKB0vPG4d0bKu1yLRmKU=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kJT3l3QX;
-	spf=pass (imf03.hostedemail.com: domain of will@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=will@kernel.org;
+	by imf31.hostedemail.com (Postfix) with ESMTP id A283020012
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 12:06:12 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Oq88gclT;
+	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785240182;
-	b=kDhEZLYdijEbcuHuhJTsg5LnJuUwH9VmEkGtfvDulZnlnFHIvGFL0sbFI1DKWHEra2HGAH
-	ZdNODNrvpWtHt0Kd70Njkwf71aLemswEfBsWdceumYjlqRB4W3US12APu8LEwmZmXJqv8/
-	xn4FhKf08SYExNoRRlWnpgaSsWwPt4U=
+	t=1785240372;
+	b=7Ni7P3d7TEtvD6AvFNYjznAyD+1rUf2qJvGguRGPHCp3TZTMq0mYcV+ppp4Dcze46mI3ym
+	euo3JLkfecCeXuSTqxQ6WaW8vGvsqiQEFfahvSxLdjJCLJFRm+vSTXuXVN61SBU33RZXNq
+	yOCLE/PZ0eMWNz0sEEIiaD1O5mzUYf0=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Oq88gclT;
+	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785240372;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=utjVBhbZuqYLFro69FeNoLP7coVedkrv95kY4LIv95s=;
+	b=ZtjGml/ZFjyvwGOIKbD87bPg/jlxYCs0oXh0QDy7YaHILprXyCtRAE12AJbGNixPHe537g
+	8Af/IskY/yBTeVc+kGAhCbpp6KKzhNuZ+WSiZZpocmYRU9kSOVK8x5AuE3zEfXYWrUlrai
+	OXYSKg7xVzGv+/7jw/W72LiNIWFNO7M=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 69293438D4;
-	Tue, 28 Jul 2026 12:03:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 230131F000E9;
-	Tue, 28 Jul 2026 12:02:57 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 666DE41FC3;
+	Tue, 28 Jul 2026 12:06:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7DE91F000E9;
+	Tue, 28 Jul 2026 12:06:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785240181;
-	bh=ngSI3Q4vIhFKWjmDx5jZEvBPeOv5VUXzzg0prABQgHM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=kJT3l3QX0SOCL0bfIt294zpl70CdxnCDhs43jrRz5jlxB5zOfFptE41eAqWlCMn8B
-	 pfsuwwn1vgSr2MObaC2UlPqlj6Z8RSdDJMA42cAiRnkYhLCquk0hvu1A5SLuRkKcwW
-	 x0UAdTzr/a4HRssfbPQA0+RQV2Zgc+AShibCbTRQ4V7hBbUSCnwEjaLUKA6kkjcP4h
-	 jJz7VDcmINqhx3QHd5Z+6FXUek2qTlnb2K9dGhL/ckYlVqgJxrLWngwxP1pnNqHWok
-	 NcSA8mYorOqBkGj6uPp2dKvdujI5hjNkaFzA70ytIz0gRBiSDOwXiq5aVCYnVDZ/Jo
-	 EdM1gq39lqYmg==
-Date: Tue, 28 Jul 2026 13:02:54 +0100
-From: Will Deacon <will@kernel.org>
-To: Wen Jiang <jiangwenxiaomi@gmail.com>
-Cc: akpm@linux-foundation.org, catalin.marinas@arm.com, linux-mm@kvack.org,
-	urezki@gmail.com, Xueyuan.chen21@gmail.com, ajd@linux.ibm.com,
-	anshuman.khandual@arm.com, david@kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	rppt@kernel.org, ryan.roberts@arm.com, dev.jain@arm.com,
-	baohua@kernel.org, Wen Jiang <jiangwen6@xiaomi.com>,
-	Leo Yan <leo.yan@arm.com>
-Subject: Re: [PATCH v7 1/7] arm64/hugetlb: Extend batching of multiple
- CONT_PTE in a single PTE setup
-Message-ID: <amiabgyHSz3ZYY5k@willie-the-truck>
-References: <20260715120813.3609949-1-jiangwen6@xiaomi.com>
- <20260715120813.3609949-2-jiangwen6@xiaomi.com>
+	s=k20260515; t=1785240371;
+	bh=utjVBhbZuqYLFro69FeNoLP7coVedkrv95kY4LIv95s=;
+	h=From:Subject:Date:To:Cc;
+	b=Oq88gclT4KvJyLnpoLcLM/OQkXLQRJTwu08ZSLC1AERu8MUMHfYCOwEy0yhXqTwGr
+	 3hhunOZcngO3vhYrNPohYMXXH2TLCDMQ5JGf+jEX3rsQH+yl/MAkKg91ZTIZSreEvQ
+	 DcXOQi964ll7aS8TlZDOtjWCtjpPPV6Oksjnzyx+a/jFHqSPkg7QU4gslj+XVGn+4j
+	 pnX3IS+r2cxUwKbgC9lfq/jibv3kI81cTH16KJgHp/tp8GJAkCBdr1xhpgXApDPms5
+	 U/CK1Bo7mouAzyrvi14Un5LQ0147KATZc82A99nUYKMSgEgeA1mnBv5vbAW8R7kBSq
+	 VeG7Oi8U0CXEg==
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Subject: [PATCH mm-hotfixes 0/2] mm/huge_memory: fix huge_zero_pfn race
+Date: Tue, 28 Jul 2026 13:05:43 +0100
+Message-Id: <20260728-fix-refcounted-huge-zero-v1-0-3f261f5447b4@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260715120813.3609949-2-jiangwen6@xiaomi.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIABebaGoC/yWMywqDMBBFf0Vm3YGYllr6K9KFiRMzgonkUaTiv
+ 3dal4d77tkhU2LK8Gx2SPTmzDEItJcGrB/CRMijMGil76rTD3S8YSJnYw2FRvRVlA+liLq1RnX
+ m5oYrgdxXsXj7p3tYFvSxnPw6x1zNTLb84nAcX22LjvuJAAAA
+X-Change-ID: 20260728-fix-refcounted-huge-zero-21cb07b4fa3e
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>, 
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+ Usama Arif <usama.arif@linux.dev>, Pankaj Raghav <p.raghav@samsung.com>, 
+ Hannes Reinecke <hare@suse.de>, Hugh Dickins <hughd@google.com>, 
+ Yang Shi <shy828301@gmail.com>, Kiryl Shutsemau <kas@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ Hengbin Zhang <uqbarz@gmail.com>, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1751; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=1iRX8kwEWPFZ/gPBRMQWQ6bqUokZs9NDs71srGyCKHM=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLIyZiv5P81KUQzfX27YtHf1/kXnIp7xOkfoOL5L/9Wyz
+ 4Hn91bnjlIWBjEuBlkxRZbnX8T3B4mEzeu84O8GM4eVCWQIAxenAEzkvDUjQ0vRRakf3DnuqvVW
+ K3j0zr59z7+iyskxpIDD/kVL9empbxkZji1Z6rcjmc38r8dTD6F2zwU1y5n5TjTJ/blWY6D8uDa
+ IFwA=
+X-Developer-Key: i=ljs@kernel.org; a=openpgp;
+ fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: A283020012
+X-Stat-Signature: zzbzaqr4h9ohypk6n7cadr4hfbz831rw
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 4C48520007
-X-Stat-Signature: f41n1jemtexxhhco7ezci45f7r64yfzm
-X-HE-Tag: 1785240182-993532
-X-HE-Meta: U2FsdGVkX191EzRXKEKBgwKSCURHdkZlmMh3VDts89+9bGrHzBvNnGvWnY/uDkwp30VQ3ld/EIYf8FmP7UTj7DG755IR8HyR6uQlJrfw4C4znqzHjXzefLuLsUAA3m9K/wus7U1enMpgYdLp0cdK2BUGsjIpRVuWJvviS2200WjGeJ67neOaIuq7g7s889k3QQTxUfpCOHUGniLfh7gooMHma6HFhvGSIdCdvm/QOPidZzT18T3HIx6nPMKa85H1OqjGgpEeS5i1Sorvlknw47nt4+dlkq42aDj6iX8ZezkQAabR5YelJ6uKGriQNdSxQq5Vhcol5qRAzuk0tKfYzFufBShMYOt5YQO0TtsuB8iD5yDb8sNT3iowOuQBiwEWbkO5XlBAiLeuwJgW4YX8CFa70MmLZzFLrnlGd1LF/BR0OXzFl2rjlsM2sb9i8urAbmQSKW82xmSkd8dPqRWmKLQRVgfZ/ciVSnEBKhHP+AUrQP5QUwNVAp27oCE4bc7g/x3Mm1FoAt+flZWsymIEZrmSONhDm/Hlz0a7d3roQtxg4T+2ECXS8dOc/a1AYfYEupyCbIs2qosudK8kpgkeNWsMBO2NPvLVmQM3oxTIWO1J0OeFzJ1TrV+qomX5+P1NJWuo+o9sCvB7uys8bNTnN5Tlw9QI12SGXntnADofEJV1/wjJ5ha+D2mAF8KmVcxmmYZOb98peq/JTB7T7Vn9h2mJ2AeUU1qXWVhpsY/pTn3Oe9Mf7ZLRpDY/8FvhfzB9NBnr2pTmNtAdyWUl/UO8sJOF1SWHLEszSII1LEQakwvvgu1n/CUgB0nu+fexdnsEr8tSeFXm9N8M90VjWh/m22T+VcqKMBL+6Ej9mx8K7+WUWAb6NY2qRERP7r0i0Dcgc00OR/L6I7bSgWc0feKO3x4rM0rVMSakBneqCho8WGKAQSPGZjKhKMP9OnFIE+EMTcMliHdZztLCj/2Qv0T
- 5d935UIZ
- GD0Vnjjkk3zcPPN+dKqRSugUTu7qtQgYii7llj3Qui6oTm6Gb/xYvjGrT+LEgM3SxBBlPdVjEbsh5isONPXspuP+WmP1Z12ckJG1mrwmx+THMv8/SJfP7Tm5X7gGVf7j3ymKnYaT1YfryogO3147wGFrY9b0aQgcHRgqVog/b4dMR1qYgGMrUrAwPzfXcsNhTTVQ0wx1JPSFc6bNQN+0kIx+EE8+k6dBAtnnKzHHTTUVLn9aeGejzTEE1jdgRTnpdy4My7O4nPH6n4USFepKUdx8foxOj9pDrnqeEF1zMPGu9KZO+n6pmgG29ApX1atNV4X6FugOr5pBsx7qeBoZt4Z76bRZQtbLZjs29K4Rxta/e6V8uKXrjtJ+2rXP1PcD5Cm8e9e8qKa0wXuur5em3vsZNMc9CdqbtPQDWK/x0jFfbP3J7x+XXRHSR6jcfNCcpCTlpVvThfoOF3x5uhzCJklR2RV0SrRvbOAaumdDS1q1saLdksTSJ1Iif3Feo+y7uyuxS
+X-HE-Tag: 1785240372-816852
+X-HE-Meta: U2FsdGVkX1+Fmp9puf7yQkcVK9zYetJdEPNtEG4lC4n+ZN1gNCT0UBsG0ofAB1Jn1ld+9NTYZM//Sio+jrsjTN30x2Ex/eQMdGQcudGTm0xyYFXIJ9NCvGkcebJ/ocPfLIRalqrFWrbJe2wbGp69Dh8/XcalJo97JTormXg/u32TvIBKFu36AAWRYTYrOSH9EofXDeso0SBgrafd8wPzhyw9vueWQk0mueJ93lHrDVV5+IQj9qhkq/M5fgQ0xMLeqWbD4p0gVMG6iNjOAkAIpwO7a1+wv4YmRwyc5oQBOfOiLhdrOqS2ocRuy7Gq/oKsgMeKVeFZk1Zz+i33rWFUs8PShPepidhGhT3fYKz89qZfw/gwlFX6IWrTHFmlPEaRm1G0acu2iatugNl4Zp3xIMVDt74lEXbcMbEAdoJRfJXVQmyANJfOsZ4sQON1I25h7dFlTzLBSb+Y0ax/7v1cWQ6TsLf9E6b2SvQqc3hmNFZ3zIx9rj+u4EiNPhJFnt5Hq+ga3EaMiWfxb7hocrH9gm6/kIo0qAkvMtWIPyCqjjf5WUSih0YioslXPOJSRVt78pvs8/r08oxlchpGAzbpmevE9YmvB0P0vayVraCRO5L/w5gqxW/y4YOWVETHbcxgRcI/f4WBEz6zxeTe9W7iAnLMpd7g+MDYN0pnKrKWxssvjbze3K7Kjtt4KNWGOAhDxLH5nQYpHA9D2/vcDKjjXM779/wVuCgZPupL4ztUxTDoMec2fDZByj7NyL4lkfz+9mGg9dVeNp+yRj4tA+odfErsxC6HCKULhvoPJv/iUogjBe2v/9GbpJ4RWMtx+BjpBC2GXFNI0RhUlAcv7ib8Ui92xOfTxoeSsZmUtXB7h6oqqw3450QAWIBY/2RXvxMo87nZT2u1v4LcKofOZ14mCUB2qqTPCiHvuIR+eYIBzPC0M9CNBDtd2yV87TYWNgKFsceV/xdCvKVfmu9ACrO
+ PYhwKAYk
+ 2ic7m8bFHY1dTIJ2zpsKYy26MtemyF29gPiQso3aW0UI2RsQRrjKaPW1dEb1MSa89fNYCNcNI2OyFKHuXaSaPtOcOHFq8Ti0Z7POw0SMcdhdPiqDCPcG/H/kahGq7qLJvsEB8MLXW77Defj4OYM1QD+obC2hDjFN5r7YJ/f5DaWNlaQKzlTtuCD5wA6Kf1068/VquyDLrN3NnT1K/e3Ij+++uPbKaH1EOIKEf0GnkpvEtixUzrwZKE58BuQWM3GZH7CBe9IaUURx/Gnb9x9TJnHksaXYHe9XqnzP+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,61 +110,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 15, 2026 at 08:08:07PM +0800, Wen Jiang wrote:
-> From: "Barry Song (Xiaomi)" <baohua@kernel.org>
-> 
-> For sizes aligned to CONT_PTE_SIZE and smaller than PMD_SIZE,
-> we can handle CONT_PTE_SIZE groups together.
-> 
-> These additional sizes are mapping spans used by non-hugetlbfs(vmalloc)
-> mm code, not new HugeTLB hstate sizes.
-> 
-> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
-> Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
-> Tested-by: Leo Yan <leo.yan@arm.com>
-> Reviewed-by: Dev Jain <dev.jain@arm.com>
-> ---
->  arch/arm64/mm/hugetlbpage.c | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
-> 
-> diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
-> index a42c05cf56408..7ce159483a354 100644
-> --- a/arch/arm64/mm/hugetlbpage.c
-> +++ b/arch/arm64/mm/hugetlbpage.c
-> @@ -94,6 +94,11 @@ static int find_num_contig(struct mm_struct *mm, unsigned long addr,
->  	return CONT_PTES;
->  }
-> 
-> +/*
-> + * num_contig_ptes(), set_huge_pte_at() and arch_make_huge_pte() can be
-> + * used by non-hugetlbfs(vmalloc) mm code to set multiple huge mappings
-> + * at the PTE level.
-> + */
->  static inline int num_contig_ptes(unsigned long size, size_t *pgsize)
->  {
->  	int contig_ptes = 1;
-> @@ -110,6 +115,12 @@ static inline int num_contig_ptes(unsigned long size, size_t *pgsize)
->  		contig_ptes = CONT_PTES;
->  		break;
->  	default:
-> +		if (size > 0 && size < PMD_SIZE &&
-> +				IS_ALIGNED(size, CONT_PTE_SIZE)) {
-> +			*pgsize = PAGE_SIZE;
-> +			contig_ptes = size >> PAGE_SHIFT;
-> +			break;
-> +		}
+There is a subtle race in the reference-counted huge_zero_folio
+implementation.
 
-Under which circumstances would you get a size of 0 here?
+The fast path atomic logic fails to account for the fact that the
+shrinker (which drops the final huge_zero_refcount pin) can overwrite
+huge_zero_pfn with the ~0UL sentinel value in shrink_huge_zero_folio_scan()
+after a racing get_huge_zero_folio() installed a valid value there.
 
-Given that you're relying on arch_vmap_pte_range_map_size() to give you
-a well-formed size, why isn't if sufficient to check only the alignment?
+This results in huge_zero_folio being correctly set but huge_zero_pfn being
+set incorrectly and thus is_huge_zero_pfn() and consequently
+is_huge_zero_pmd() will misidentify the huge zero folio as being an
+ordinary THP folio.
 
->  		WARN_ON(!__hugetlb_valid_size(size));
+This can result in the huge zero folio being split and otherwise treated
+incorrectly.
 
-I agree with David that it's messy having hugetlb tangled up in here.
-It means this validity check is now going to miss some genuinely bogus
-cases for the hugetlb path (as opposed to the vmalloc path).
+The solution to this is very subtle as there is an atomic fast path, and
+thus ordering in weakly ordered architectures has to be treated very
+carefully.
 
-Will
+As a result, this series first reworks the
+CONFIG_PERSISTENT_HUGE_ZERO_FOLIO logic so it is separated from the
+refcounted code in order to make the subsequent fix reasonably
+understandable.
+
+The second commit fixes the issue by introducing a spinlock around
+huge_zero_[pfn, folio, refcount] write, with careful consideration paid to
+load/store ordering in the fast path.
+
+Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+---
+Lorenzo Stoakes (ARM) (2):
+      mm/huge_memory: separate out CONFIG_PERSISTENT_HUGE_ZERO_FOLIO logic
+      mm/huge_memory: fix huge_zero_pfn race
+
+ mm/huge_memory.c | 189 ++++++++++++++++++++++++++++++++++---------------------
+ 1 file changed, 116 insertions(+), 73 deletions(-)
+---
+base-commit: 5db85e34ec49beee590676d55f13e8e2b14c742f
+change-id: 20260728-fix-refcounted-huge-zero-21cb07b4fa3e
+
+Cheers,
+-- 
+Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
 
