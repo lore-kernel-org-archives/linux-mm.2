@@ -4,88 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96FBEC54F4C
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 13:22:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F26F2C53219
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 13:24:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7852A6B008C; Tue, 28 Jul 2026 09:22:17 -0400 (EDT)
+	id E8E5F6B008A; Tue, 28 Jul 2026 09:24:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 736546B0093; Tue, 28 Jul 2026 09:22:17 -0400 (EDT)
+	id E66A66B0095; Tue, 28 Jul 2026 09:24:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 673436B00A0; Tue, 28 Jul 2026 09:22:17 -0400 (EDT)
+	id DA36E6B009D; Tue, 28 Jul 2026 09:24:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4EACE6B008C
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 09:22:17 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 060B01603E8
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 13:22:15 +0000 (UTC)
-X-FDA: 85038249072.30.47EF36E
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 278C14000A
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 13:22:13 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=FrPIU76G;
-	spf=pass (imf07.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id BB3586B008A
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 09:24:41 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4CC9D1603C1
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 13:24:41 +0000 (UTC)
+X-FDA: 85038255162.22.8AEF273
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id B50A7120007
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 13:24:39 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eKYfLsxN;
+	spf=pass (imf29.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785244934;
+	s=arc-20220608; t=1785245079;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1sJavEPudU+OUEHx6GFAB0ZMrxFOTjDav1o4MCgxz9c=;
-	b=5NVgPEEymUPHs8ka5THlqXBtcH0hMqWX22Y3Cva4Y1OsK12Xr2838g5Z0FigwMzih4KLqM
-	Rwm6TCXUgi0VUqlvjt092WJrVylF7nyvWsgn/zPx6NS+JirPG6kYfO8XkdlqQ/qTR0AQGB
-	KUuKrFQ8MzrCm4dl8XloYGEyaUvgDNI=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=FrPIU76G;
-	spf=pass (imf07.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	bh=YJ6nTW8uRRvGa9uxb9XpHnqlyfY+CSFnQPSaLsTQkoQ=;
+	b=E0bXaYVjAd6WhtvwBQyFcuuN4Y2tjbOLwZN1G9k2+49HRj6OKpbIneVLVUm5mH5xwH1E2p
+	LFFfCcqaxS5bgxr3nAEyTfcidKyrfqCDW5cxd/2zVdjaKqyi1191CSew4KKG5B5DqQOdEu
+	mjoUqzkDh8ewcLivzvryIdt/uSAYngM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785244934;
-	b=aKBHXDp1W4Nbdfkj/Jbr+IFfsIp+TO2JypkW4sVVyEEHSipePbd2Tjkc9KMpDsp4dXtrQ0
-	O10pjreO9PqcRulFFYTdblAsJJlYzljdgOlQaSaR7iilQvoRb37NMQK0Z9kZy1b3zfY8Is
-	fIMG2aEHEGRFaI0C2MQiK9RzaYy+8hU=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=1sJavEPudU+OUEHx6GFAB0ZMrxFOTjDav1o4MCgxz9c=; b=FrPIU76GLS5DXSBE02ydrmWMJ9
-	Pgsno8a+Xt51jt/rM/d32DR8Pjs5vU+CDoRCN8xjNu3e7OYu0QkXevaITuKQU0bkX6jZXVkW+av50
-	1cZsY6xw6ytvzYFsRa13dqpgp4E19xOr92mJDmyzyhR6/84UGQ3kL39Tl+J/oqi9GwVucquawcA3+
-	Uvyk837KZQ8Gww98DQS1+txFrTxkk5td09vxtvMNfQY72dMfMwN8Jr7KQTOu1Dm58gba4UrEbwD1n
-	1uuNXpgFJjJCxZFMijEYUM0K4mIi9mZiSIakuaJajNIp4ULuv1dZtxwFY2CD+/9mDCOQpWWsOSHXj
-	LWnespRg==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wohkz-0000000DIUA-14sL;
-	Tue, 28 Jul 2026 13:22:05 +0000
-Date: Tue, 28 Jul 2026 14:22:05 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Hugh Dickins <hughd@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
-	Kairui Song <ryncsn@gmail.com>, Jan Kara <jack@suse.cz>,
-	David Hildenbrand <david@kernel.org>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Chris Arges <carges@cloudflare.com>, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH] mm/filemap: __filemap_add_folio() restore index before
- retrying
-Message-ID: <amis_VNEmkifOAoI@casper.infradead.org>
-References: <562fbfa6-dd6d-0b6a-2461-ed2ff1173bc8@google.com>
+	t=1785245079;
+	b=iOWcb9HkxI6gfv4UoNNL7djV/HxVHZMh3hVCRIV1JXn2Zm5MJYI/gJ54kUf1Xqu5vDuHpY
+	s2AfnctCOgla9rwRnKglNESaLLvs/cbigXUQ9xyMhSNAwNHLwJjCJgy7CqqnPeoxlqlJMZ
+	DmA2feFNgr8eFQxeQvHt2oHJ9QBIbBY=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eKYfLsxN;
+	spf=pass (imf29.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id CCC39407B9;
+	Tue, 28 Jul 2026 13:24:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 280441F000E9;
+	Tue, 28 Jul 2026 13:24:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785245078;
+	bh=YJ6nTW8uRRvGa9uxb9XpHnqlyfY+CSFnQPSaLsTQkoQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=eKYfLsxNclt8oE+pNYIIZIi8pjlDWK/9foqXxg9TrlmLgmTasTk/l1juxhuMe4KFh
+	 r74dVpcD0ekm6fTkX3vxpxRUSUAh3K4RXTf1L+tVK8JR0GN96XAkFaDQT25rMuh6ou
+	 5sAN0XzViUQf7i6nUy6qGwGS/gAsIqvGKW/mHAmodvzWi//0Z49sIhWrnaWyMkEmPK
+	 9BSwHL2jvVc+hlgpOKqq8X3dakUvPvwbBBuxc6WbwdDJbPZfhQ0g+wBrQ+Gv9zsaAZ
+	 mYUkDGGsOyQYJ75sD0hP3TIDNNC3DcXG2Sla0JK2MGO6huo8htG009HntZtEXW5KHi
+	 oJAC4nIm5QtLg==
+Date: Tue, 28 Jul 2026 22:24:35 +0900
+From: Harry Yoo <harry@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>, Hao Li <hao.li@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Alexander Potapenko <glider@google.com>, 
+	Marco Elver <elver@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	cgroups@vger.kernel.org
+Subject: Re: [PATCH v3 05/13] mm/slab: abstract slabobj_ext.objcg access
+Message-ID: <amitGGcHyVXBdpOI@thinkpad>
+References: <20260727-b4-objext_split-v3-0-c29ef0f1f257@kernel.org>
+ <20260727-b4-objext_split-v3-5-c29ef0f1f257@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <562fbfa6-dd6d-0b6a-2461-ed2ff1173bc8@google.com>
+In-Reply-To: <20260727-b4-objext_split-v3-5-c29ef0f1f257@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 278C14000A
-X-Stat-Signature: kob381a9ngri9euoofhdfrqcyxk1bifs
-X-HE-Tag: 1785244933-827395
-X-HE-Meta: U2FsdGVkX1/2a7UGUNQB0eHoMnffEdX5XfvXnn+jWriNjC0yXQ0QSTN2uR4jKPv8+WtTAEhUeb2opfi69m2nMJYpbcnN5pcTTRi4FepRLPkWH83qvpl6Xdb22RaI262AUAq5o1K+3+wdsnKtSyCaw+dNHFhkrhE4scIr8VU003/XrywIPLvBD2v038C4b8T7Hr2KgCMeDnURkqEnmzza/tggGD1lh0LccMlErLu2figoOJ9Ee5difpoX+iR9AvZ2WevQphheIhT2U7yKV6ngZYqdpnMqUVE5Sm/KS+UH614CTdFlfrXbUL9xArlWQgd2ya16FXiXpsRvNVUHawJ+noKPgq0zeJp+ecdYIQUKGQgi/3FnnrSrrSWU3YBZBBVPTEbo6n5mAWz7apF6SgPoaJNZc4G7x+z7U9pLQPt4+2Wuo94rvtRCfeJKvOjE1/esKnn0P2ONztwd3Hf7KUhtpksw719OMopqk8+MFWRlM9C5G3rXTKWr8XsLKCTp+M0OVhNtTaQGoiMizdPwOpxEBaiZNYMtxeiSu1kPpIcnFEVUFBVfI98NfxaRLtNP85QNn7qUB/6/S3vyMtyD+2kpF+5Y7+DmnzXUVctS7EeFb01yiIJn5rztD+j8xdFgt1eHhDq8/LJqsxvBWZx2Ks9vdNHhH6su1f+4j6o3cUwm3Tu9fXbrS3HVaP6upoYzfzUEYjy/dzp/Mu3OirN92CN1gsInwGN53yyJrTwhtASM3c4HvPdotueARa/TReNKYdWxA5qbBsQPjX4VAylh1eXpCet/27p4gFQeG02EFVb0flre2qa0tStM6faEdaONZdbwJTZXHc6HSSB5be+u5g4lq9g0P7mEM+tc6HHiiwkAYKp6fASdyUTtSJMi2PqIaheRPOZyOVMe+KqtFHAgWCV/Vnahdj73QEP0klDMt02M/xq7SRwgL27nObs6ZOu8o6zYeAZ9pjcggyVjmBkE4AD
- zqnUJOaB
- HaAw2jMphPkI5DI1BySolilz1qOt25Y2sx7eBsE0/G8aeCo16ESSs5uGEOEzjhY+sRxQvJtKdsz8lrvVgVvSjM13lxt9Yfqg0leQKvP5pOKUnOdDCorBrKd+5WrQDt8KT/nvOr+iAd+kNXquS67pfBn7T1LmXy+h7181leaYl+klNVQZDLBoT6ZvDILiJn6OJb+t2Dq0ZmlEzuyKNm7fwNWAEUUS9AbJupWhzHoVd2559wQ9Km8NgDfJrx1OuFg5KYR8NPJuY3bUqmh45fMN9TCPDmF6u1JwFeEZq8zR6X343J2A2HNh0kGzQZ8ZhtHvW7r8x9yp0tlLYFILD8b9Tf66W975FmFNpldyfaJW3xBXzU2LfEsZzUTumZsvdjuik3JPb4UE8D2iGZtU=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: B50A7120007
+X-Stat-Signature: agmdua5bmu6kuw5xnihxwz4qszpc95h3
+X-HE-Tag: 1785245079-392153
+X-HE-Meta: U2FsdGVkX18pXb/GrruRA7hr1oe304NqJvKkBcyQr6LgWtKPZv0Qazm7FfCouz88tz6cLIg4vdiJ0cc2exkb4a6+xpkHKjhnNeOv4cmXs84kf6EV44Pf1AUgJ2LYuXnGAyCNyo4PnzxUIS/Vm3zXJDZBQMEkc2dmswiZdf/rXk9zUD09cba1R86BbLY6RQwYDXuEKMzLx6DZR1i1PsMZG31JoUGx4KbW4l/2/0vFz0Zyes9wf8bGQbTb78iEZAjiYw8e3IVRuu6SkvYTFUOZyAmITRgFn2W1EWk3KNvTQBT4jSB6MP6fCK/0cGE98166sy4jfrjSPHmaz7bml/8bhounu2eLnpU82viHQCC1cI5xQDcnVVPtjdcXe18IBHxbH5zyZIcLKWYskz+F4hl5TFkJ3fhRAPOArYuY5848ltUkb1dtGwJ+uxo/mS1IvDxM1mkvwu0YERSLzsnYZi2QxtHzTsX94TIs8uxtxXh5XyUXOFl91C5+fzQUf1gaaTfkbJpQ/Xvb98oYjRTcVpi8Eu2MV2igVdq5HfDaYhmw2vaQe1rZfUcvDkedc9KsMbGeAiNIZuvJQ88Lgeom12PhLoGO8hFN1mXV++5rchJ0jQGxmZH0JdggVSdbe3J4jmpCWCO7vMbCbMakNxfcs+4dOiC8/3o9jfAvvYUZiKTklgZOjoqqlpY8U2HSmU2L1/ysr6ljYPI0oJtt29iuBQ3BF6i5twL+ecQk95/YkWmKZPf5pxyRr/212CX0AtdJksbBApWCodNUVmCKj2uiA/xU/LjUjfOiYAmcZbFnCmwhjbzOU30Js6rGLFAHLtZ/9pWDnhFDKa3XlLJaQqnQOhc0iX74T0pxhfO2guvv1I9U14DbRa4sldiUxkT2GqdPOjp4lT41oqkeEQhhm6xIr8MyySs/2jNVvs5UJ4hjDnuphjVLq3vd8KqDs2jbtLktjYS4jozlFxGRQQ4VzQz3E10
+ GJMcdi5k
+ yzkeYcgUd0YMOsd/dS7qTz8IOtn/BjYf4njp7UvG5a13Js2CxmRMLmKfp+wUkc2d7TdOItsL0emP9iaCwtFKdtwOBg3+ndlEQc4UWfQdRjwiTIAjurFpEmO/6ZaENtUzZa898f3ukPc0Mr659214NuYe0TkWnZ9guAQTYFkd50fPm9BrPDZfrYxvPWTy8D4FZaeCfLEfiqKzJucr5023QwNaHadfzwVSw+DWiC22aRlOpoinlRdF5KIWo+tSFCasrXUWtRyJPAVLlah08uaVecn3KoSfMe/AyXP0RztNT/DT4klfJT2SOTH5jgRIcOqbbcobKcD9XgiG1ca3ZpSGuV263o3NbgBuRJrriQuBhTXcV0/1UhhfmsT/ErA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,16 +95,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 27, 2026 at 10:24:14PM -0700, Hugh Dickins wrote:
-> Production was suffering from rare SIGILLs and SIGSEGVs, executable text
-> found a page away from where it belonged, !folio_contains() bug hit when
-> debug enabled: symptoms not seen since this patch went in.
+On Mon, Jul 27, 2026 at 02:53:59PM +0200, Vlastimil Babka (SUSE) wrote:
+> In preparation for changes to the structure, abstract getting and
+> setting the objcg field with slab_obj_ext_objcg() and
+> slab_obj_ext_set_objcg().
+> Rename the field to _objcg to make an unexpected direct access a compile
+> error.
+> 
+> No functional change intended.
+> 
+> Reviewed-by: Hao Li <hao.li@linux.dev>
+> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> ---
 
-That can't have been fun to find.  Thanks, Hugh!
-
-> Fixes: 200a89c159a7 ("mm/filemap: use xas_try_split() in __filemap_add_folio()")
-> Signed-off-by: Hugh Dickins <hughd@google.com>
-> Cc: stable@vger.kernel.org
-
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Looks good to me,
+Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
 
