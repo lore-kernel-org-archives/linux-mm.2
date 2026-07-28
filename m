@@ -4,92 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6954C53219
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 05:28:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BACA4C54F4C
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 05:28:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DFF9C6B009D; Tue, 28 Jul 2026 01:28:21 -0400 (EDT)
+	id 7E65F6B009E; Tue, 28 Jul 2026 01:28:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DAFE26B009E; Tue, 28 Jul 2026 01:28:21 -0400 (EDT)
+	id 76E726B00A1; Tue, 28 Jul 2026 01:28:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC5E06B009F; Tue, 28 Jul 2026 01:28:21 -0400 (EDT)
+	id 65DC66B00A0; Tue, 28 Jul 2026 01:28:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 99B3A6B009D
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 01:28:21 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1E95B1602EF
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3430A6B009E
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 01:28:22 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id AAA9F1A02A6
 	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 05:28:21 +0000 (UTC)
-X-FDA: 85037054802.22.FE35077
+X-FDA: 85037054802.03.34B5114
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 71D0540004
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 05:28:19 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ITlgc3K1;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf01.hostedemail.com (Postfix) with ESMTP id 1F97B40008
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 05:28:20 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PEBuIKDu;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785216500;
+	b=MiXQ31ld49BRfp/D8JVB7JlOfJycbXZ4f/e1WSBz/iAHS+YDjKtSKZkDSE+gj/3URD1tKh
+	R0mS1DZsUwLXLmJP3DgQGKnxM0pOjTyLtVcQKBCAKqbF3QaKqtZncdhVjIz0Dz6jh/WLRi
+	/EXmrRFQ63sDcICWzI/Qwj0AsDc52EE=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PEBuIKDu;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785216499;
+	s=arc-20220608; t=1785216500;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WANJwchnQO/oDcbFCGZSI0J0jnkXHDon5WOhOSC7mrI=;
-	b=YXB/oV8UpZ/IQHe5I2glPf2LklYIkgGOmGZrtoBavNCkg3Ue68zXTv4WFg13KTAJXraxhT
-	LqUfSfbsG3qjeASKnMW+oW6ECzy5+9LUFbmYMSqo6yXeCPdk42NgLnX07ckkw1eAOmXNJR
-	44HcXhaLNn8EZtd/J/TfglEbf2/nuoo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785216499;
-	b=vSNnZW/JixusL8LdLfYOWcq5KXDuMQXBL3fZsXWy1m5N9IxUMoxAmbOM24tN0y9LIyE7Gf
-	2XqX847kt06nueckEQIuM+CpnUy8rrBxwgjeKfF4SH/HMqKJolcVs9Wf6ptFXOTVZI35n6
-	QvUZkD+JBMARSl8tHMnvGJHEodioIe4=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ITlgc3K1;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=jEqn658128UTd1o8tS5ZjT5LQQ6f3vfRE5EdtC108ZE=;
+	b=IsfWJxC5FgNreS/0ma+qh4mNGrE4X38jK6zBBAtzyZeL/1GaRyfMxXEfWr5+GV+IkzLwiR
+	5dIzlOG5dUCYXrxS0vE1020C1ISIpUZ3OwrymHKDFtLhMaA6dhE2RWUegWTRm9e3L0LNXJ
+	LFlBLyVnH4jXoFjK16MM1ERT5MqBf7M=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BE81D43EC7;
-	Tue, 28 Jul 2026 05:28:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ED511F00A3D;
+	by sea.source.kernel.org (Postfix) with ESMTP id 1F960431CF
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 05:28:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C94F01F00A3F;
 	Tue, 28 Jul 2026 05:28:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785216498;
-	bh=WANJwchnQO/oDcbFCGZSI0J0jnkXHDon5WOhOSC7mrI=;
+	s=k20260515; t=1785216499;
+	bh=jEqn658128UTd1o8tS5ZjT5LQQ6f3vfRE5EdtC108ZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ITlgc3K1gbc4fzExooJOGRYeHLp5/stACpvKLZqGvUS1G6qW4Gx2Q8k/3sz7fzvXi
-	 uIPkuLr5J0tdHWpSqLNmcw/SjhTM8Hn2Yln/XxPmvNkaa59I4EUMuaoyG6MvM0CK4X
-	 87EbdlTkVbaeljZxrhbz6IsuQ6fWyqmc0ZLYRGDbUbdIU9OW/Cdko8QWzOqHxOk2pK
-	 KgL6ipr151mM3xUxBhKHwanPVkJT+L3IBtVgKIEEypnoeedEr7mITJSKAebkUas9yA
-	 JAZqgqZ/fT69QSNTWahmgNpD6gUoOh+VkLTDwvk4ub4N8ATLYwT9CkxHultJ1nA27C
-	 Wh/QCAESTew4A==
+	b=PEBuIKDuUaxyDyAOkobLWRBLv0M+5rVmn4p4GBzEbZ880A1uoT/nq+XdHLdzNb6XE
+	 rGETPi6MNPer0T2vnxeOoDwHcj2ClPIxicFIuUEFFTIm4aUM8oJouaedags/Kx5qdB
+	 mJGElUcNt1KAmIRo7oqCcY3vcnZAc96XWPACg8SImKRe8VYwEgrZeeEp4tFMAzDxGf
+	 0/xlrAoATCmwE4r/fkGLLj0nNCg5xWlK3EkRWWcGjeqIYMyEZE0eU3xSla6Vo7Git7
+	 BkTmIHaav3ya1TDYZhI6UAqwNxv5Nb99yddOPB0U1AmDerg/D/JpUZ58AQS6clFImL
+	 hlRh1BQDQMdTg==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@davidgow.net>,
+	Shuah Khan <shuah@kernel.org>,
 	damon@lists.linux.dev,
-	kunit-dev@googlegroups.com,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH 07/10] mm/damon/tests/core-kunit: test damon_nr_samples_per_aggr()
-Date: Mon, 27 Jul 2026 22:28:06 -0700
-Message-ID: <20260728052811.192712-8-sj@kernel.org>
+Subject: [RFC PATCH 08/10] selftests/damon/sysfs.sh: test hugepage_mem_bp quota goal
+Date: Mon, 27 Jul 2026 22:28:07 -0700
+Message-ID: <20260728052811.192712-9-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260728052811.192712-1-sj@kernel.org>
 References: <20260728052811.192712-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 8pkixwamry1i4fk31pdooqrb979k6cia
+X-Stat-Signature: mosdtiruc9czfdi4wofj7amiaxk59aoj
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 1F97B40008
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 71D0540004
-X-HE-Tag: 1785216499-132421
-X-HE-Meta: U2FsdGVkX19RSGigZ182QMom7ggbIiHYKVaXuEAbYtGARfFqQ68K0kWW7aMNZjQHNRwxc8Z+hptWoKE0EUrobvnSwmwIp7fH+/+vUmrL+a0KyZO571d7Hugp5/14OjGlqWxyv6IU5gCuwmuXIA9tYMM54z/djPvaumkD5kmOvpZSgzzvjFJaxp0HLY5fJtLocdf27Aq7VjUCSnjQLr152B5hdxxJrtdoRxYeJGjOc13MOgGWxiyahyOh33MDh/UdbrfGvG5ts4tSTRltjYf7ySQRT1VbPAmZ5YlVfIQ6sQE+WPL4UeNhJJsXRQpEZJXafG6r2QGffwGOQXgX/P/OhLNcpSeYMhZepRlklTC3PskDDisUfzACMyFzUNmYKj8c9PNmmCtr8oPO0UC6xhvro+x1zNY2RwK54ccqyxgORUPdVEz3Xr/E04c+WIXYNwe/m0wvrD44PLGBhn5CgfzXvgb+n2KH+XlPeqNc0CT/PWRvJViefWlf5+QXPgiSYQB9MOBi6t7FroF+8OKK0OSVGNsSCYciMBdBKZAIIXdmQXzsmOT7sPBscqcLEG8+jiwVXf92aQKOiuABFNAURuwEzPWV8b5TB1zMv/JrFk4B5XQ0LRa1rbJ9rxNxpo2/KIVykbChYFsLe8XX8dGmARt6OvGaRkEg/q5S0+eJIuA2aQBd/D6H9K69GNepdFpTSK54mzFuJ8E39gV+6nsM4aN0Yi+q+KHcaGYltDmkfeuXcd16NZSBuSOnh9la8Ch8cH5YYWCoOhoXo1vn3iyc7VqOnVMOwEohX8EHXs0TaS0m/mkycJLHaIgcD3uYzzjj0RGNg22Q+u1+rhZYbSXL3WGJ2EQuCFGeoWNaiMzs3b9FlZa4bZorJQ0t4B5G2Xg8mHANQANK+kTT2OsGPg+7JSxaVbgwHMdVtroslGSv7SH5pVEqJ1VTACRL+k+LsAeIgtr3d5kmZ9YRLhADKU3+hu9
- e+2PQ2Cx
- ycIAQN69Ynh1k5BX7ykMil+/VR3GED0mid18er2aAkAIxBoy9k4DqUKngpo7j4TH2gQdvTUVsqn1aKnXxpzqahM5/CaYudBJs1HComNZ7gDg6573C3PUN5nYjsgOVMRPLm4ldsmHjtse5oHA2IC05ljiANQZWEC4nBTBiUc+5DMCOQE/HMLpGjvvz7SOkE/m9DVBrAMv9tUZpwXhZipkSS3HlgrN6wCeaAcJ7+mG9WDIWJlIHzQ95zpSBYsbQP3oUtSflr4872ujOqpwE6foPvva4WQ==
+X-HE-Tag: 1785216500-454030
+X-HE-Meta: U2FsdGVkX18lau35J9juegvEntSMk4Rr8krCVQobSEK22yvB+ZaWRqZDbfehQImFNXtLaALYRyR0iNFJV/3vWr0lHU8vO/jNdTFc6KVMAR8xJVqPLrT65Sewt+HEQR5//PnBFex4UarPBJNrX+m3vef8W+puY3ms2rr1RVXBbxdsTg2g2c/1fjqpFuix9plEnt+9es3Hlr/ayerV/5KbLk29wJjuUpRzca6jN8f9bJJBauGbA9Gaa+8UhJNC8UUstXrjMqWxrMFkIh0jWcuG8Ct/tr0An9eIO8N6J66LxQihnSUnD2HtKF5Zo0MAxFe7xTOHDfDlh03I1T9vNG6rzfv4OiAO5SCqzD6Xz61JQT8pRANNUqIFMwwNNDrknnxDKYnm9FHmhT2TSoECMPTZTLxtbqPTJ082UP/kxnRfWhbvyQk094nmGqAj4kiSBjXV7LY6Vygmr3BgDkG117V4dAEi03puNzqe5mfhQYbFGf48mcBpuLp67nGtVQgrTxRxyOkjwGIHpHsAGIkmbf9wqBe/g+l0o2DEF3RWpXE2GbXBxG4sOb4oMT8npg4oJ02nZdXKanG/x0cKIZbD478uUBIo3MbOVvvVPsNQBRG8nAtHYW8KyvG/wSFprhNV7Uy9Cool4JN0NLp7fjBD2AVLUsZhgAUDOKhrVjk1t1YrpmPOtTSV/TpbM3ZLWfn/fC4DfnxdmLnRlulpx9gLjQ7feCIHg72/FL80DIKmKsI60owfcQy4iimXoPND1/Zkz8GFki7iLxXjXljjQAhtVMXYAtDVACKOZM1Qj4mUijevls66whUHxp8FzQhPU4A1xcKgoWpX+VbMqJZpyflJUiwOUPdccWOG63FWEwvJk3RzfGN3T5k/UoVkAoipkho/p53qdLOYg9gS75rFCjvGZJH4hEjXVCpTQHobfwPy8mVVCjqIG4VBENgFkieoB67NN67F59YruxC+9QjRg8ORWUu
+ N3J3NqQb
+ mwKzhtmzdNRLvbC9QVfaT+OIgQzCHuo2Wja/8NVOAIO3GfN/5g5K/pDo/ej401qtT4KwsdWmab6VeIM6Bd296fzKQuktd3pEHYXb57MyOYd4wqsYZ5XKf4o8Kldt6iz7L7gH0ivuvP1YL15eYG2ltTU7zPTvp7hlginVxAu/xAcKYoZTto411pga4xD3WPmwUJJ2Qlv2RbXuGrmLaI3+b3DMiZvdyKiVPtP00N7CJ9efRIPj/+nKdSPxbje3v40ZZW+4ivrPh5PgdXhlmg+0SJ3atj0v3JFQM/2XakzUao5Lr10hx/Rm56p/g5l7rr194Jw2QhNc7OmkfHbBA5lZWiiP/LJ1SI8HEUR68
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,53 +94,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_max_nr_accesses(), which is a previous version of
-damon_nr_samples_per_aggr() before the renaming, was wrongly returning
-zero or random overflowed values for extreme intervals setup.  Commit
-35d4a3cf70a8 ("mm/damon/ops-common: handle extreme intervals in
-damon_hot_score()") updated the function to return correct or more valid
-values.  Add a kunit test to ensure it is working as expected.
+DAMON sysfs quota goal target_metric file now accepts 'hugepage_mem_bp'
+input.  Test it is accepted in fundamental DAMON sysfs file operation
+selftest.
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/tests/core-kunit.h | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ tools/testing/selftests/damon/sysfs.sh | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index 3041b8288ec26..511f2856d343c 100644
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -619,6 +619,22 @@ static void damon_test_set_regions(struct kunit *test)
- 			(struct damon_addr_range[]){}, 0, -EINVAL);
- }
- 
-+static void damon_test_nr_samples_per_aggr(struct kunit *test)
-+{
-+	struct damon_attrs attrs = {
-+		.sample_interval = 0,
-+		.aggr_interval = 0,
-+	};
-+
-+	/* Zero aggregation interval doesn't cause division by zero */
-+	KUNIT_EXPECT_EQ(test, damon_nr_samples_per_aggr(&attrs), 1);
-+
-+	/* Too large aggregation interval doesn't cause overflow */
-+	attrs.aggr_interval = (unsigned long)UINT_MAX + 1;
-+	KUNIT_EXPECT_GE(test, damon_nr_samples_per_aggr(&attrs), 0);
-+	KUNIT_EXPECT_LE(test, damon_nr_samples_per_aggr(&attrs), UINT_MAX);
-+}
-+
- static void damon_test_update_monitoring_result(struct kunit *test)
- {
- 	struct damon_attrs old_attrs = {
-@@ -1670,6 +1686,7 @@ static struct kunit_case damon_test_cases[] = {
- 	KUNIT_CASE(damon_test_split_above_half_progresses),
- 	KUNIT_CASE(damon_test_ops_registration),
- 	KUNIT_CASE(damon_test_set_regions),
-+	KUNIT_CASE(damon_test_nr_samples_per_aggr),
- 	KUNIT_CASE(damon_test_update_monitoring_result),
- 	KUNIT_CASE(damon_test_set_attrs),
- 	KUNIT_CASE(damon_test_mvsum),
+diff --git a/tools/testing/selftests/damon/sysfs.sh b/tools/testing/selftests/damon/sysfs.sh
+index ddebde6edabe4..b66593c9ac471 100755
+--- a/tools/testing/selftests/damon/sysfs.sh
++++ b/tools/testing/selftests/damon/sysfs.sh
+@@ -210,6 +210,7 @@ test_goal()
+ 	ensure_write_succ "$fpath" "active_mem_bp" "valid input"
+ 	ensure_write_succ "$fpath" "inactive_mem_bp" "valid input"
+ 	ensure_write_succ "$fpath" "node_eligible_mem_bp" "valid input"
++	ensure_write_succ "$fpath" "hugepage_mem_bp" "valid input"
+ 	ensure_write_fail "$fpath" "foo" "invalid input"
+ 	ensure_file "$goal_dir/nid" "exist" "600"
+ 	ensure_file "$goal_dir/path" "exist" "600"
 -- 
 2.47.3
 
