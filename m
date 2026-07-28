@@ -4,136 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1331C54F52
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 19:47:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90583C54F52
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 19:49:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 50C6E6B009D; Tue, 28 Jul 2026 15:47:32 -0400 (EDT)
+	id 92EA06B00A2; Tue, 28 Jul 2026 15:49:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4BE206B009F; Tue, 28 Jul 2026 15:47:32 -0400 (EDT)
+	id 8B9696B00A3; Tue, 28 Jul 2026 15:49:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2C2766B00A0; Tue, 28 Jul 2026 15:47:32 -0400 (EDT)
+	id 7A73E6B00A4; Tue, 28 Jul 2026 15:49:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EB4E56B009D
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 15:47:31 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 75B7C1A050A
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 19:47:31 +0000 (UTC)
-X-FDA: 85039219902.08.C10BC92
-Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
-	by imf30.hostedemail.com (Postfix) with ESMTP id B989480004
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 19:47:29 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=Gi5FKf2h;
-	spf=pass (imf30.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.44 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 554696B00A2
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 15:49:24 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D98ED160466
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 19:49:23 +0000 (UTC)
+X-FDA: 85039224606.06.F8CC749
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id BA6CB1A0002
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 19:49:21 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=RNVeSnHH;
+	dmarc=none;
+	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785268049;
+	s=arc-20220608; t=1785268162;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lFasOBUZoPmfk9ObuRJF8YRYjBN1D6LiYKjqRhex4gk=;
-	b=idH2J/AK+xxlG/Q241u/paGTWU16qK+imFxdeVgm74H4F39Q34XwgCSqgERrHFaGqwq5K6
-	cMDTMjxPd7Arq/jYxZogKT2cbivy7XCFBPOo4uTNtFIFV/osaLwsTzZ/aCw4/Oo/6zsKT+
-	VV55Y3uwUet1ffkHWboNyhqWQmHEfZk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785268049;
-	b=z6XyvBujevoAhOf+PIuL1q+2VItKLr5B0Ht6IXNhd8Ph5ecj66RhytPG5m/fGkl/4Gd5O6
-	aPSb6iuXmokbI3Dlx9j/41habCGDCPW75ITZKRKPzrzwDTsoUyl4o+OeSioff/9gv9zl+7
-	RwTHYYN2PiEqexY1BNsScqYqu/3i2gI=
+	bh=peN88L+jrff3B52AQMUyFAIDeXCiNC9wXQHJpte/T4I=;
+	b=L3Rk5sBGuL7IV2xfJDt61Ul/yDQacNyCRQSai4zbCdZNuIS946JZsQM3bQtxHG+b/l+ALp
+	ESBAlQVZTk1DoHSglLrv/7QfckS21AFhx6j5ioAiSZFSOaSoFQGLCeh0kmaTzQrQr4XdVQ
+	egFH6auu7WBZt5fePCu3jnGmByNaLQ4=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=Gi5FKf2h;
-	spf=pass (imf30.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.44 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-9034b6b7674so1537536d6.0
-        for <linux-mm@kvack.org>; Tue, 28 Jul 2026 12:47:29 -0700 (PDT)
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=RNVeSnHH;
+	dmarc=none;
+	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785268162;
+	b=sInjgEkDCl+x5fekS9LJjpltZRMASTO9lFDzfBJii+UrIdRjnungzc26IuuN6bS6n6iuyK
+	wu6T2d37S8IpmgPKzHaLO1Sx8+sLvn+DG/lRKLswJicvVpiAhcRPUPW9m4diyswzKRq/Ep
+	6Q+UpUT+aZuye5IDUEB9gGctIrzafUI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 662074341E;
+	Tue, 28 Jul 2026 19:49:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 082E71F000E9;
+	Tue, 28 Jul 2026 19:49:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1785268049; x=1785872849; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=lFasOBUZoPmfk9ObuRJF8YRYjBN1D6LiYKjqRhex4gk=;
-        b=Gi5FKf2hTcFYexWECiG8aDsl9L6oMKPTD58sEeMwdHd/+5QXC26GfFSM9MW63TFdJN
-         y973nuAt+kjO5E3j8iwsaUMk6xc93/lkop92cYFtK77G4+6TYtpgJDgjjWSE4sKjKC0C
-         DqCXVOKMcL+bSie8DuN9sXnL4dtzE7hx7ccd+SUtSwP6gdIAaacWyb0SE1xiYm9cfKiQ
-         xk5aAPMd1ZVNcOQaHzFVCxW/f0EONKKfLE4ewspoUbOyV0rdfWs1gvgYiiCaAxj8VZFP
-         bTjzPd1OqSxFYKXOojTSxSDxbyccQOglRc3AACwRx9TZuT/m63h6yyvuTs/N7Cyq/htE
-         I0nQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785268049; x=1785872849;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=lFasOBUZoPmfk9ObuRJF8YRYjBN1D6LiYKjqRhex4gk=;
-        b=CuAIW3aC3tKCrK+5mlw6OVm16UXCDRgae/k/m+xk3H7qs4qzkxrSqZDUqvx2dVOTlM
-         OxyXSYFaeADBcVe1likY1l2+qheY1SZjnOa+w+SRW/orzf/MRygzAsxDGgqb1ugkVdnT
-         Xq7pLmU96KP2a5ikn3TRbZEVjpGQMwJ9WiCwhp1dNfcgnl+5ZvEBLGMdaQ5R+/X+MB8/
-         MiS2aWYE4yiMnmcPB2RMjlts1v+9bxS4yC6yvhIAXzVSa8Q7/cWHEgYy3uHFhM0mSZjT
-         vhTJOWlyohOBAW1sbOQzkm3TBZIS1VHwyVo2YjzyLtsQkYukfwraIqeFnQm/PkrdRWmj
-         DBRQ==
-X-Gm-Message-State: AOJu0YzCA+Hc67WLsLybvi9YBre6jtgoNw943WG705OwyvsOvhJKTa+a
-	b04rUVkXJlWTXf2xxXFPYzX7VFTHp/+cTHGS27aVWmvMP1MqOUvET2gNsMP6d84X3KQEJ2V+xV5
-	idX7T
-X-Gm-Gg: AR+sD115yOp+OdbVoyE6Juooh6y5ilIEe/mnM8WMs2v+tHxVKUjn1L6EMvM1WokO+aJ
-	eh9vP+CgqTJ6opsTx5uZe5d15HDY+a5x4HnIMszt8rWy41DBEYlsgSLwEXbETjSEIDAAmbDVyGH
-	r3/Jgrxbl6lQUrSIFktUirrEo251mytyxu9Q/fSsfdyEIphZG57oU5PoTJ2WmciPMI/PFSbWws1
-	CoJhIO9kJdOmrcK/eyBGa+9nulrWSgL6fqvNJf4p82SQ4aGycwyRN+b2NTsbEmcarGqgv9gqsoW
-	dhU52EDTrs0UfribV7Y3bgqbbVlvE4wAbzw+T9ZMALD7jp8dTU1rDd44ItQCi7hG1EPnb+1chJ9
-	vFWod8xKV6B4PamogWpwzF90OgypA2WgNih6aiPV8JlBJNmWDHNIvynu7C6vcJitxJ6rkkLcx7b
-	0k5ydylVDAay5cyXAyiRiB3V0IJk+frRkygzKHtcnWRtkncfdF2rjI/SAMbkvV++d02suodOC4w
-	wJuHUYoud0EDVhdyQSzdIzYX7xRYouCzHeElxzd6I9ncjS8PQ==
-X-Received: by 2002:a05:6214:4847:b0:908:1bd5:9c38 with SMTP id 6a1803df08f44-9081bd59cc7mr30163246d6.14.1785268047908;
-        Tue, 28 Jul 2026 12:47:27 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9081dd6b539sm6700176d6.41.2026.07.28.12.47.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jul 2026 12:47:27 -0700 (PDT)
-From: Gregory Price <gourry@gourry.net>
-To: linux-mm@kvack.org
-Cc: damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com,
-	sj@kernel.org,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	liam@infradead.org,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	usama.arif@linux.dev,
-	vbabka@kernel.org,
-	jannh@google.com,
-	matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com,
-	rakie.kim@sk.com,
-	byungchul@sk.com,
-	gourry@gourry.net,
-	ying.huang@linux.alibaba.com,
-	apopple@nvidia.com
-Subject: [PATCH 4/4] mm/mempolicy: skip zone device folios when queueing folios
-Date: Tue, 28 Jul 2026 15:47:14 -0400
-Message-ID: <20260728194714.3713735-5-gourry@gourry.net>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260728194714.3713735-1-gourry@gourry.net>
-References: <20260728194714.3713735-1-gourry@gourry.net>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	d=linux-foundation.org; s=korg; t=1785268160;
+	bh=peN88L+jrff3B52AQMUyFAIDeXCiNC9wXQHJpte/T4I=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=RNVeSnHHJojTv+KIuX/p8EF3Iyz3vtmgbMHduSwsht75BLzj3CUsVDXWfhJzMI4Ap
+	 L5r2B1YEKOCtJej37+j4XlLWn6ywIC0+z3ztLfwJA2Mu25eURyzcED3OVIA6IgCZwG
+	 irSjNClgZqpZiqyzI0d4Gm7SOPDIf6k5mcqdHuUw=
+Date: Tue, 28 Jul 2026 12:49:19 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Jiacheng Yu <yujiacheng3@huawei.com>
+Cc: <hughd@google.com>, <baolin.wang@linux.alibaba.com>,
+ <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+ <liuyongqiang13@huawei.com>, Christian Brauner <brauner@kernel.org>
+Subject: Re: [PATCH] mm/shmem: downgrade final i_blocks check in
+ shmem_evict_inode() to pr_warn()
+Message-Id: <20260728124919.c023a7f9b8be446bb785ec82@linux-foundation.org>
+In-Reply-To: <20260728091014.3876715-1-yujiacheng3@huawei.com>
+References: <20260728091014.3876715-1-yujiacheng3@huawei.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: BA6CB1A0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: B989480004
-X-Stat-Signature: f8ke63t3aubcikric7oywmg471kcsbfi
-X-HE-Tag: 1785268049-456847
-X-HE-Meta: U2FsdGVkX1/ZO7IS1y20f4PCZCAm8imCugg7LqOkTq25YcZBaSOax/yNL8TBZL5ECLLOempg0yX4xXfr1S6kUO27ViVuzvbXxO1hUG8Iu3vzgAWtv5BJs7WrNwMTEzVHCtygher0kd6AMbrZ8cBiJo6zpNPaVlGXPBPittygGKhzo3aZ8/N5GZHRwIQVNuJDhLsCVW19Qt4awuwbrOq3rCmGg6+FylBNKlFGCZNgJArP6PYIXatQXDr2Yb+uNa1xRvm7ZSCeqHEU9DPm2dcef8wQx2oW5kYYBHAFywoSLk4SCtalYDzGBNuQnEBbS29babUuvrS3oIBIKFRW+He4GQ3JltG+trK2Gr/r53I8qnxeM4tixoOlQOi/iwk19Fdcbm01IqWM+DSWujfHJl42RUTVKDd6kIDj8PuAsE1IkwkUddbCL9LFjzveiG12e1geXap4scaH9LlBQqCDCTXeiXMo//2iEOD9Mi3S7R9xmtlBHZM1APmQQcimQyHtWEzNTYlReT0/AFvGCKDDYllkE32NyScHZMTyvwBftE9GanJ39vFZr4Eu+NN2bnyJ4V8L51oWPHwBmhSUihEvwaa7TF5p4YYiPTyW/hadocMtNLntwXABdcqJY/nVbadhNhT3Bwz/IMZHKN//LyNikV/kFwXNvMXUYSlkQtz0L117idXCVtp6B5WV4YOJYz6wO5XjOerREKsT7+i4fXarEbjTK6SsP1yMSQHMWfaapTb0A1+tVr0z1RJek56uTLDOkdKscWSyEVJj8qJmMhsnj2WP9uBNZwm0CcYD0gvKoifBGk8NoFej1GmoqebBbU6EeCxsecom06f2ErBeJVX2N9BXOlE9xnZ+g1UytxVk8b6zZc/KjZZJB6InY9gkdMsuG2yV2TJE28YJ/ZTGxiVOCfd1lv3TXk3YoBzkq7FBh7SjI1DGIPYNm43ydgiOVEmPHJguoonyOMzPs1QkhUCwgmr
- Vjo4cm6f
- UKz8NT+Sd4GXAqRw7qPyuKhy2//EHFGQsm9fwIGbiDqrzEPppVugw6sYWRitZPD75BcSzNwHP+B0addgGPjPrhJ+4KALDqXCqxnhb4GsmUUKLhYRuksWFrc55L8tFqZxW5Oks8EoFtZrvKJaZyQ977PtuTjzvs4etBxtHVUpKO3niOO1DfBGzvpbc5+cTt3eCo57mniNCYKi9UymPoe7gYXUNdXYnrUJos7Mp2CHxzBNu6xgYtt/7WiPArJPO4cyo2ohJtJQb//VWS+pxcWe5A0/iR438i4/bTWswYAT9iOSvDes1C/mGB0v89CEDNG9CNninGd/VmaoVGSf5lsX0SbVZ8CF9ILdeMoYqVJeolEB8EeNRVrkasHTvlzxQ+KDHWOpo
+X-Stat-Signature: n1u6knay4z8m5ibrnxn47zdram7kyjbg
+X-HE-Tag: 1785268161-259353
+X-HE-Meta: U2FsdGVkX19dAqLlGMaVtKpgWoFhPXguTT7aRTQHNFPnUhx2WIn23O9rO5Y5d9l76JVk68vxzwlecX/NkNouVuGIcKHoxFumBGN/s25xK3ALXri4ZVOy+rUqNLpU+yEwfy0A+GB20A7jA6eCEsan950LAQ+gDUHdwY3/0eL6YOdl5889tFIAEcaNy4/N1728gcRlG4VDoPmrtgom6vdzGUV4YQcSnb1K8YZIgWxW8FkSTuzKUsMxNjBbEwV6r4cV+As+k3FFArpJ0cCREoAUrjoiKsD2rvKEJmlGXsuWDFO/x54rF+FwQCKcKstXOGu47bDEhgUiZ2TN1X4XOQB87LWHIUw7KGGwM4zUhgIog0whla5ZOs4vfELBeKyYlNI7VWUj56PT61EQFRqPX4EsgFrGnGkBnuiK+cycw3mSPDkbyuEI3cCg36Ik8aeHE9u5uXnGjLes9kyCMb0MQcikQ0HjukUlsYjWwwAL9dfzYdxyJFlLqnKjCQtXgp6rhqi1tlsnn9dGCCzrvXAci3mMHMWHLSLztrb9xhhzNvth9syN7oBvGe1sHO2UmXZRBHBl/eZEtGX4E/VgnoAJR81KaxRucRvkZ1YDllYb9fuz7K2QtBY2vC9j+j8pbi6viMH76fDpEl7tInOyKlb4IrD02Zw/oamr5RWQxwxyAqK+OfLXceN/bnRtAOCnQBUJ5vNZdfEIRZc0Lph60rzNejigIaSjE6N84m0/w7l0P5XbGM9HcZ3MdX5gQVx7chSydjSttz0QKoAXX0s509d4RniNOCKsqYrs11aCL9KFyNPf3lNdNQK/FoXNbmaSMPFQ7vSSUskUaTEPAFEfOO6rndxrbnkpBGpdjg4gqCVzEFqKb4Paq9T/EF0kmO7iRbgFX6GdKTzJ+MHDoiJVZJFE+uAevWC9+kplpFM1F6Owir9CS9W7Qif/ivbfwfn4FjxQED4Cl2icLSiMm9CiFORznCl
+ rARz01DK
+ 4JcQMHv13ZJT9QMaL6t/DRw8MMESNnajdKNKotwZWu8fCKKDCHvPtnYSmTPCHXyoiiIiTxw1mg0mt+HpxI2cOnYChCIBCZllSqIYe6RLONdTCTm1aJROfajzCzrnkEYcOI4HgkKERYXMNS/j0tzSJbhJQ4pBB4P3p2Nv16AKqwVhwFgNJk9Es4/Df1naqVFjMPXPfCJZP2/CEkqRlLg/DgCMWxrFOhDO1oT4pjmELdOrrfYMtfM6DeMhy+iQ4mceVIwhZPHb+RfCntJXR7moUFp3Bgrxx09CQFjndcL5AUYILH5VKyEig3SlY8MFTARuitKir
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,60 +91,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-queue_folios_pte_range() already pairs vm_normal_folio() with an
-explicit folio_is_zone_device() check before adding folios to the
-migration pagelist.
+On Tue, 28 Jul 2026 09:10:14 +0000 Jiacheng Yu <yujiacheng3@huawei.com> wrote:
 
-vm_normal_folio() alone does not reject zone device memory (a present
-device-coherent page in a normal VMA is returned as "normal").
+> shmem_evict_inode() ends with WARN_ON(inode->i_blocks) as a final
+> consistency check of shmem's block accounting.  When it fires, the
+> inode-local counters die with the inode; what may linger is a small
+> residue in accounting kept outside the inode, such as per-mount or
+> per-user charges.  No data is lost, and no corruption follows.
+> 
+> On kernels running with panic_on_warn=1, this accounting inconsistency
+> escalates to a full machine panic, which is disproportionate to the impact.
+> 
+> Downgrade the WARN_ON() to a pr_warn() that reports the inode together
+> with its accounting counters (i_blocks, alloced, swapped, nrpages),
+> keeping the inconsistency visible in the logs.
 
-Mirror the explicit check in the two other walkers.
+Fair enough.
 
-queue_folios_pmd() uses pmd_folio() directly and can encounter a present
-zone device PMD - e.g. a device-coherent THP.
+Does anyone actually use panic_on_warn=1?
 
-This is not filtered by existing checks:
-  !pmd_present()   - only rejects non-present device-private and
-                     migration entries
+> The accounting bugs this check has caught over the years -- the
+> swapout race described in commit 0f3c42f522dc ("tmpfs: change
+> final i_blocks BUG to WARNING") and the error recovery race fixed
+> in commit 267a4c76bbdb ("tmpfs: fix shmem_evict_inode() warnings
+> on i_blocks") -- are real and should still be fixed; this change
+> only removes the disproportionate escalation.
 
-  vma_migratable() - excludes DAX and VM_PFNMAP.
+Boy we have a lot of bugs :(
 
-The early return also means such a folio is no longer counted in
-qp->nr_failed under MPOL_MF_STRICT.  This is the same pattern used
-by queue_folios_pte_range() (skipping zone device without failing).
+> Fixes: 0f3c42f522dc ("tmpfs: change final i_blocks BUG to WARNING")
+> Signed-off-by: Jiacheng Yu <yujiacheng3@huawei.com>
+> ---
+> One way to hit this race: soft_offline_in_use_page()'s fast path drops
+> a clean, unmapped shmem folio via mapping_evict_folio(), where the
+> xas_store() and the nrpages decrement are not atomic against a
+> concurrent shmem_evict_inode(); the final shmem_recalc_inode() can
+> then read the pre-decrement nrpages, compute freed = 0, and leave one 
+> page charged.  Same class as the races in 0f3c42f522dc and            
+> 267a4c76bbdb, this time in the under-count direction; reproduced on   
+> 7.2-rc4 with madvise(MADV_SOFT_OFFLINE) racing MAP_FIXED replacement  
+> of a shared-anonymous VMA.
 
-queue_folios_hugetlb() cannot see zone device memory - hugetlb folios
-are never ZONE_DEVICE - so the check there is purely defensive and keeps
-all three walkers consistent.
+This paragraph is nice - I'll move it into the permanent changelog.
 
-Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
----
- mm/mempolicy.c | 4 ++++
- 1 file changed, 4 insertions(+)
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -1428,7 +1428,11 @@ static void shmem_evict_inode(struct inode *inode)
+>  	simple_xattrs_free(&sbinfo->xa_cache, &info->xattrs, sbinfo->max_inodes ? &freed : NULL);
+>  
+>  	shmem_free_inode(inode->i_sb, freed);
+> -	WARN_ON(inode->i_blocks);
+> +	if (inode->i_blocks)
+> +		pr_warn("%s: ino=%llu i_blocks=%llu alloced=%lu swapped=%lu nrpages=%lu\n",
+> +			__func__, (unsigned long long)inode->i_ino,
+> +			(unsigned long long)inode->i_blocks,
+> +			info->alloced, info->swapped, inode->i_mapping->nrpages);
 
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index 5720f7f54d94..bd79e61a40d1 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -668,6 +668,8 @@ static void queue_folios_pmd(pmd_t *pmd, struct mm_walk *walk)
- 	}
- 	if (!queue_folio_required(folio, qp))
- 		return;
-+	if (folio_is_zone_device(folio))
-+		return;
- 	if (!(qp->flags & (MPOL_MF_MOVE | MPOL_MF_MOVE_ALL)) ||
- 	    !vma_migratable(walk->vma) ||
- 	    !migrate_folio_add(folio, qp->pagelist, qp->flags))
-@@ -797,6 +799,8 @@ static int queue_folios_hugetlb(pte_t *pte, unsigned long hmask,
- 	folio = pfn_folio(pte_pfn(ptep));
- 	if (!queue_folio_required(folio, qp))
- 		goto unlock;
-+	if (folio_is_zone_device(folio))
-+		goto unlock;
- 	if (!(flags & (MPOL_MF_MOVE | MPOL_MF_MOVE_ALL)) ||
- 	    !vma_migratable(walk->vma)) {
- 		qp->nr_failed++;
--- 
-2.55.0
+I don't think the i_ino cast is needed?
 
+blkcnt_t was possibly 32-bit a long time ago but afaict it's now
+unconditionally u64.
+
+>  	clear_inode(inode);
+>  #ifdef CONFIG_TMPFS_QUOTA
+>  	dquot_free_inode(inode);
+> -- 
+> 2.34.1
 
