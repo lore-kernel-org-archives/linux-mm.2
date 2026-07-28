@@ -4,82 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44011C54F57
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 19:29:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85D44C54F52
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 19:31:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 44DAE6B00A1; Tue, 28 Jul 2026 15:29:51 -0400 (EDT)
+	id 896746B0093; Tue, 28 Jul 2026 15:31:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 389236B00A2; Tue, 28 Jul 2026 15:29:51 -0400 (EDT)
+	id 847EA6B0099; Tue, 28 Jul 2026 15:31:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2045C6B00A3; Tue, 28 Jul 2026 15:29:51 -0400 (EDT)
+	id 737316B009D; Tue, 28 Jul 2026 15:31:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E476E6B00A1
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 15:29:50 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 785DFA0480
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 19:29:50 +0000 (UTC)
-X-FDA: 85039175340.17.AD5CE00
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D1256B0093
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 15:31:48 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D68BAC0466
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 19:31:47 +0000 (UTC)
+X-FDA: 85039180254.24.E394066
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id AD49920007
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 19:29:48 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WaGYi7Rd;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf04.hostedemail.com (Postfix) with ESMTP id EC9734000B
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 19:31:45 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A0Vfw8tV;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785266988;
+	s=arc-20220608; t=1785267106;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jiRBy+bpTGJjo9NnvKPxurd/L92V0c29LWMs3hMtAj4=;
-	b=MxEAv/WufKj+c2dB2vQrfGMmrkPdRYD/ZFpR7DwTBqybOzIuIXLFtU/CrIfLMQdSzH+Lyk
-	e+NnGp1PSXI/6rZ8axfRCon7b+9IGDpbcP8S19hPbpLNHmmx3IQz3ZQUjnVzVVgfFkPzuE
-	/AipuzsEr7TGN/2tmG3EqGqZZhgM1Zk=
+	bh=4SFJdxikqdRNRa/qa+7AI0ytQwewWTG8FQ5aZTm6euk=;
+	b=0aOrqW8mcMOySKL0nHTRvcIXPxIWFeNq+fwbiF2ydZhw8YzxZQWFOifRCDCyx/J25tcFb4
+	v8E4VksCdkCHocQERX+GTvccPxvO/4tTWPiKLQqmCNU/S959DkMkdGeEu7Xc9Uj1Qz1HLC
+	Xn4y0BClB4tMS68w3bX/EjVRrsSU9ng=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785266988;
-	b=UL3Y9G8vLibR07OMRI6jK2/jqSMwHfUzhA6FYfuJcWWNPYCz4/mogkR2i/TmqidfvabLHu
-	ZZ4M61s0v0sPGS+feujT8WwS8lm9qX/QQmtF41+s7xvtDPAaFWY3N5Sri97ixeUc/qOIoz
-	hVxlLs0XAgM98a05sZZ4e/NW6wsVmwE=
+	t=1785267106;
+	b=11CNq15Re/ymiJtPv1+zeuQDeXv2uZYj36GaYi2WPhU+h2d6TC+DZ3R4trdNDUaLpBdbKt
+	z63M0bz3uDUQlVUTPzUKCi8F9sveTlrxwjkRLOEkO9WP5CKy4YWnN3v4jHx2w6D+AztvTb
+	zpAa5mGBqF4wG9JBzrKqJEWjyGGayH4=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WaGYi7Rd;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A0Vfw8tV;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D426C406DD;
-	Tue, 28 Jul 2026 19:29:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EF3C1F00A3F;
-	Tue, 28 Jul 2026 19:29:42 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1DE9843FDE;
+	Tue, 28 Jul 2026 19:31:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EEBC1F000E9;
+	Tue, 28 Jul 2026 19:31:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785266987;
-	bh=jiRBy+bpTGJjo9NnvKPxurd/L92V0c29LWMs3hMtAj4=;
+	s=k20260515; t=1785267105;
+	bh=4SFJdxikqdRNRa/qa+7AI0ytQwewWTG8FQ5aZTm6euk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=WaGYi7RditWVBgZgJj6WfEABspGKIo8MmLOihiZuXhyHDKZ+Qzz4IofmfG6mYEekT
-	 j0DAZfF2+fZEgHaM8QOGsiwCX88bJ5YPG2qQpBlkdB0xxYduzqJsYPLryy7dpZ1ORG
-	 XIHYlATknJAyBKFqjTUWuXBJxPNc50BfjWnwG0+kjbgsv67Dn1P3O4ViO8D1NiEhY3
-	 ITrqzoxYfYf06c0++ss0qi6tcFBHHnMj5GY0rORg/vaFlSj/GwVvf6ogk5RCQGWT35
-	 Q0qwRU8rvwPlzY17rElaT7B9DA580O+gLZhirPmMf3wCsYR8I5lNqyEBNUNOs+RuQI
-	 81mFyJy09+pLg==
-Message-ID: <97605949-82c5-49e0-84b6-b42e8078b55d@kernel.org>
-Date: Tue, 28 Jul 2026 21:29:41 +0200
+	b=A0Vfw8tVa40v2HKNYf8m0lH4kJCFp4ZKml4XuLziAL83lsuU3NuSm6WtLfSNK+bFv
+	 wETOvtd8y/iDbskOY6eBnYJOEvP3xyv346O99TDQFUWocu/3DkP7XQOXzYVdJP1xLB
+	 4iuCSkn8dCmydevlPZFnxS/EdKTD6m7/0sPqwhI8tDG8A4KWgEcB3ouoxtT1hWhpGM
+	 XDIDkhyLbSJM9rNeB2mdj6Oyx3lPnqQvOwdv8KsBeUAGiaoZ8Lw+xcaQkJU8WVQMFK
+	 6o0W9RAz7Ujj496o9gsZeq9waZoRWNPNpDl4RXzMGxYES7fPkGnP83pbvPY2boZKRM
+	 d+4nfiE3zYnCQ==
+Message-ID: <580fc92f-f146-4d76-85ce-6555cc3bc47c@kernel.org>
+Date: Tue, 28 Jul 2026 21:31:39 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 00/16] Page Alloc Hogger
-To: Juan Yescas <jyescas@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- open list <linux-kernel@vger.kernel.org>,
- "open list:MEMORY MANAGEMENT - CORE" <linux-mm@kvack.org>
-Cc: android-mm@google.com, fvdl@google.com, tkjos@google.com,
- minchan@google.com, dskiba@google.com
-References: <20260723074854.1013941-1-jyescas@google.com>
+Subject: Re: [PATCH v2 0/2] selftests: Add missing initalization of pointer
+ passed to getline
+To: Chris Gellermann <christian.gellermann@codasip.com>
+Cc: akpm@linux-foundation.org, brauner@kernel.org, liam@infradead.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mm@kvack.org, ljs@kernel.org, mhocko@suse.com, rppt@kernel.org,
+ shuah@kernel.org, surenb@google.com, vbabka@kernel.org
+References: <20260526113848.530105-1-christian.gellermann@codasip.com>
+ <20260722130246.2135563-1-christian.gellermann@codasip.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +123,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260723074854.1013941-1-jyescas@google.com>
+In-Reply-To: <20260722130246.2135563-1-christian.gellermann@codasip.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: AD49920007
-X-Stat-Signature: f4pnz9pf3hm9dg9nj773gyzm4ddxd4oh
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: EC9734000B
+X-Stat-Signature: dey8u34tgbif5nnt9sw73mzqxaipfmtg
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1785266988-847287
-X-HE-Meta: U2FsdGVkX19Ef4GfsSGD7y76QoatAxSCEJ18YBAXE3aHOG02sj7APa9NoawNrL64SFrJGujRrm9rGOfTqSsgXyPPf0OSK0MvO98KnFP89BvT0Xl4iAB7kCo0C1f5JA136xmzdvHzVR/qutZpy+q8Ut/LVbG6PboDcRK++LVHK+FUiH6PXdIN33EsXh2w7vuba5VZhBGtFLZRBt3C18RI5EX8uiy4vAd/QP8kq0nhGRIYebiQi+9utw83izcVxufoIysBVyjFI1kF6yEw5notk7xzyLWt0KDp/ABSqEup01sVrJlJN6utpbf2WmKZ/t3rWV6QjCEqDOESbCVCFgFn2uoDBwscLlHRIpy34GWMO/jnzantSqA+LlKR9o6MOCuXshm0wvMhHWTe5r6sVeU3WBtjFnficq6kqZ+gJnYxAx2B6EHdeqPjZdsPSDZ8kn15RItOewKEak8zr7TVyq5uMTjNARfulBOi9s5aXrls7cZaFcgJCIchFA/UZmdJK/WpLrPUO1tlNY84N7NWDNjlf+CSlfimOszvMgeQdvg4JJqYCB18TocrRjkmFUWPexLMQ7+KJb8pRmAOkRst5uIRdGrlIgZ4nx/4yzVMrz0IQcF/mNg4ucD9z+lWtr6kHigqx1I6b0brxCKjIQOoG3vkdp50XTMhYVd3w+QK9eVX6xAN42HxgbJKMCo0zscrOV14xs9cPd4qsR4AfLJEzdYA5wK81gN9b1E0oeqo/BqiqLf3sMvo/wa1wRLYhvxUiJ/cpkFuF0wvtVMe2kPZb1X7Crp/W0wk0KSyJyWQTve8fDXpgpYTfDVAd4T7X/i9wIcDMZ1GpvVrYhLSzdTLUmd0YDtijpZ6GMEOIs/a4iIUnWBPaVKar5CskemK46tHkcXHMauVPuDwQT9GkbTEb65q0T8NQlrC3GzvMT1wwtydSs3axEtmnpnek7oBPK8xebzZq6IGByjRB31EgJvldO9
- UQ/REXVt
- LFI7mxj4RmFi5SvwbajhaSAVqSYWv2RSrhG0iIeWh2UTTPqIWM8OemMQ4/5cKyOtQpbdqsIGmgF9kkkC89voFgrs5P21s0jKy0AIrIc1nOy6bW/HRssc8ulddWoJ5woydcsRbwbq64j0k4CMonGyv2Q/9gd5NjhPv1SUSlY8uqnFujaLQ/Yhn+cnEi1B1aAwzNRQIw3yC82wQ69g7/g7ZqFWoQ5gM9QLMqeFg1i1YZYnnsN03nyWnNPZYazvtfbS2WL1Syc2DPadpAI9AGAGhRRxWPUiRC9LAhlDkLKs8HN+9QB4Cx2n/FuTlhArRD0VEzVYagJsfsn+ueYd9H44VSEk77Q==
+X-HE-Tag: 1785267105-212813
+X-HE-Meta: U2FsdGVkX19Fb+OwPH7A153RTMQZALz2DeHv1l7W+Wtk+9kHgP+KdqOj7OIXtnXikTI6sV+73AUU0ZM6HVzLfE2TH62IcYiL5Vq5FKJS7OM+BFoW1KidJsr6RYAdPWecZ5k0s4c/9hrMTDkDfm+rEIQmSoDOKLkBvhQRntnSctAQMVKNh8OGuHnn/jmjkcK7VMuHRX6wHNJhoHhIDrpPjDTzFuE6x7Iz5gIYAJmevW7k7Wbhz1w3MJ4vqHgZRPG0EnCUriGH5OEahk6yKodOpO3X1UkD5SpIJHMujQtQ00O338b6fSPFx1ivRhiEMHBVnEi1FMt9u9dp9viyxhr2OScqTxP/A6sJRKPiKAoCoy6YtFmQTljAtA4xlJbGScaL30xAsFuBTCG8acUAEm1AtiwAC6UM2z0mlrfkt4qq/g3Byt0pMq8JecCJ6ov3yFoCU7mDFQqCa43tdr3iTQqNEteXY5ykpV+2lLPzabknczZlDDYgnBGlDr8VsZUzZVEod1aZPWYHZWy6H79V2816B+vkFJ3xEpafIymX1V/AchHgskDOW76obq+3hwX9rK+k6Oc88Gg8GeyLQ1JUfa12RZbcwcCdOWBPokaWxUcPtDLPU0LMP6Sxq55bS2YSUscSRWO0KmX+O8x6Z4LJVkTu4jjV42LPyol4pO5SnC6PIY7BFK3pGZRhev5B8XdG+FzjNAI7q2IS7fX6w5DJ624UmAg7yZ94hkz7F17u1t3pLzqLe4GRUmq5OBLtwtvZPSxYmNrAFCqKxqUGAqAHZU/xqHEQDIgfJq+fyHYSDHttD//nxpf8IH7m32EJRShqyZlaT7K8UeAh8aUdqzd+gvLovSrbI9C+v+yn9MYFHp58fyXpxKArLGp0daOQlj1mFG09Wkl8oP/zkbTJbhSR+V6HdvH7yaHnj6Ktq2wxDUDnSAG9TmflPs/RlZdC5Eddnpc9e5X/cxUZ/ofOsewkdJH
+ nnYbuwSM
+ DdVckDtkWUw+ccYS1XUYnfF6mFwOeQtqIdh9hH8YzcMt9fNW4r0sCiqLgPhjf/mOwOOZ95GnpBE0T8gHBkO7QzhXC529v8xcognXsvex0pBsHjshRFHo0570EywmHeBz9MUYCjdSt8Rb7gZD+vo4nskTSTa7M2IGwe82eqhWM6mXlSCCsaFg6LYaV7OTYEVhNNQhMnSULjtOYQIWXD7m8HOSX+LfGLuLhDZ84SuZwfbcpmD2qb66n3CLbeOpw6bOu15wM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,14 +141,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/23/26 09:47, Juan Yescas wrote:
-> This patch series introduces the Page Alloc Hogger. The Page Alloc Hogger
-> allows you to allocate memory pages from specific nodes, zones, migration
-> types, and orders directly via debugfs. This provides key benefits for
-> testing and debugging:
+On 7/22/26 15:02, Chris Gellermann wrote:
+> Hi there,
+> 
+> just a gentle ping on these patches. It has received an acked-by from David
+> Hildenbrand (arm) and a reviewed-by from Lorenzo Stoakes.
+> 
+> I'm resending the patches as reply to this cover letter to clean up the previous situation.
+> 
+> Let me know if it needs any further change.
 
-Would it be feasible to carry this as an OOT debugging module? Would a lot of
-symbols be missing to achieve that?
+Have these been picked up in the meantime?
+
+For future reference: don't send v2 in reply to v1, as new revisions might just
+get buried in other discussions that way.
 
 -- 
 Cheers,
