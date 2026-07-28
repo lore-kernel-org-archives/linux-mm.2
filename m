@@ -4,140 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37A65C54F4C
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 15:34:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF546C54F4C
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 15:42:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D87DD6B0098; Tue, 28 Jul 2026 11:34:56 -0400 (EDT)
+	id 8B41A6B0088; Tue, 28 Jul 2026 11:42:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D39056B009B; Tue, 28 Jul 2026 11:34:56 -0400 (EDT)
+	id 88AAB6B0095; Tue, 28 Jul 2026 11:42:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BDC976B009D; Tue, 28 Jul 2026 11:34:56 -0400 (EDT)
+	id 7A1166B009B; Tue, 28 Jul 2026 11:42:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 81ABE6B0098
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 11:34:56 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 02D92803D4
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 15:34:55 +0000 (UTC)
-X-FDA: 85038583392.15.C86B544
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 1D00AC000D
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 15:34:53 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=qXYEsXld;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf22.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785252894;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3EDE36B0088
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 11:42:18 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A7896160444
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 15:42:17 +0000 (UTC)
+X-FDA: 85038601914.11.BFC7B42
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 1FFB916000B
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 15:42:16 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Hkk5d7pN;
+	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785253336;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yj9at0AOCKB+hFHP3o4jYqBof4rkU5PEz1Cj3CzlN0o=;
-	b=iFxQYd21Ho95LC31iXkXxNStVka/QLWQuZPmOqt788p27kuXXppwI16YJsJLipaP6WZ2Qt
-	b0FDiyGPzqLbDVHxQmHsbodgJKn/+1fkQiz51qWSo6nWKvB28cK2bW9g4lcQM4Ki5BJGVs
-	SgfRb+zkXbJ7bkxxXRc4ac8INSVv8/E=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=qXYEsXld;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf22.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1785252894;
-	b=7HruE5Ouoa8KV7lhDufPZYfmduD3nnixt1ybxAeKCPgi7SFw3wefsNfTc/sjnf4R4Aeg/X
-	uAKoi78bwd+qyyCgJJQEH2cT7Lf8mVnGi4y2tSRdSSuPJzeKfta7gzcb4FzifXubTzCoj8
-	ybqgBEGPVXKRx0R21UT35ubvJpZoPhI=
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-47f752b3423so2510620f8f.3
-        for <linux-mm@kvack.org>; Tue, 28 Jul 2026 08:34:53 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785252892; cv=none;
-        d=google.com; s=arc-20260327;
-        b=VvU+2MvW5fwJ2idvVYphmzCVmWre9wncKT1E73/PCJSFNDbfPYmKRPf4i04craFDuU
-         2IXVv7SDBXw6vFrArgOTNYeM23l4vKElnb7SZ7iawuXrcfteajennRWviR4Xv6+KNNuB
-         KkF9nr5CIu/le1BvwNCaHgLprrvKj0YvCGbCeAF79zzYxfocIfnZYdsE1+fJ0GHYwjiE
-         578KPD8jXp7aEE1FcvjX4klUZsfgN99+9ARarzsK+tACgNmL008eXj6xx9OcwF+csOyg
-         iNAxIFtgVDPfBkqTtPg48l5bdiY8bbp70ucZs/dCVOKJQIlMYV9CswHxLXyiOBXCuJ3w
-         9q6w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=yj9at0AOCKB+hFHP3o4jYqBof4rkU5PEz1Cj3CzlN0o=;
-        fh=Cc9cPp9RUo29CfGM9lMQ5F/VFGRdA31Hhw2bla1LZgU=;
-        b=gBtSDQ8K+geZM7s9Hnejpivw2WEcQuC65Mlekoi27GJi/9ebtxLh3wkZFsqeOCSKSl
-         W+joQrxIrHeIJHF5B/GhJlOIZgJhDSaAedFTJjB3tpVt0+rhm92K8F4NGbqxoVjWJRta
-         Q8B7u5FjmDOb632VecG4KDlMK2Xk0mT3P2P77j6GYGw/62ekV+47zENRYt8bpRKjRzuo
-         dFUQsyEPYBexrA8yFjWqzwJNUA9EJzhZXIO/12f7d4eC/epqOY/HKI7szyRzaf7yfBZO
-         O5cCeMgvmNfROeJ0oZM9e18bjugLPX4Ff04cHN65KSi2ct1o9/TVC0SAWq3T8nzBqBYn
-         2ppg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785252892; x=1785857692; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=yj9at0AOCKB+hFHP3o4jYqBof4rkU5PEz1Cj3CzlN0o=;
-        b=qXYEsXldZoRDO1X8WNet8B2WqVWHok2OkAvGH0vQPdozsOS0bWALwhz+ahFOydXWja
-         YV97DGD0T4oh4xFlco6ck5TgaPeUFSqpdliHFnVadS465BCol/jex26crCkBYD1JkO8y
-         OQIXnkSgUcpzE6nB+2s5MNfzeeatcweOMaDJxZSTPooBmdaKHRPL5Asy2+VHWVnHdDsC
-         PeZtx2CZlso8rL6Qw79rtSVrZIQ/SnaMtKwKPEKLhL+h08uqy/DpC3EZxUxRdPrgknkq
-         7CYkDcbBa0xmuz+kO7YJuSN5ia/f5EmuDZcg2esu4NXHEuBJxtCUX4q+bjlgGxUrkqF6
-         49bA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785252892; x=1785857692;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=yj9at0AOCKB+hFHP3o4jYqBof4rkU5PEz1Cj3CzlN0o=;
-        b=Ozt6zrJGZ4H1dnp2RZEWLkxn6YC52MOsghHV+LcZCaR9fN+iQ+s/eMWq53PMgK/ODV
-         7zk9Jn/6APMpjQgMP7MCmBC+xth/Bx0e89ku5eUbOIogqfZ70G+vDNz/N/6HfdqvHhT4
-         raceqlwcxtlnftz5o8FW8uMwLjLRyCzdXdxRZuEpj7L4KolklBoaJbGVBlDXY/oEAWHn
-         RptG6lIWxt5bAtDcEXgG/SRuo0B7aCUttBIZ3L9SKw5uvagYk+04YGeu4lUF+U/tfPIW
-         r022gEwrbiBF+gP7dAl6OTrT1URqqDbRrm3d7ug3HR40nAnD0YNIeqmW3aacfCBBVL/5
-         uttQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpMbCe22clK54LyCnB1wTLR1WpE/fRq8mbr3MqvkMseTm8qB1YQSoFiZ4XYLhXJTsy6fchTltB4uQ==@kvack.org
-X-Gm-Message-State: AOJu0YyogJ7d0v29ZV+efYfT/jf9XnPobJEmNis5ZqGEAtMEgFkjCHT+
-	OQC1oFHgu0jqazAkXC0qLoBDGhpHa71kcYJMHTMb/OikwBSPWxT0trihsYWEPnxJzYO7SRlzB4R
-	gMuzZk2HCLj8QdjT/FyR9My9R7wVQ8eY=
-X-Gm-Gg: AR+sD1205D0VrVE0FgX/LNQ7bvpcGhh/tDiKztN91fOfWW89XxXrnkcOqGxMgT943b3
-	o7v5kfJCncOu+823TjvTiibzgeJkXBOhfL/edex9oRLG7qC7a85tl+HA4xtfCK8jPqH13TXl3aL
-	Yzs/PtU3UTuE4wWbcHuNwjR7rRxIPRHCJ8ZyyaFhZ9ktyd7DD81Iyg8fH0vlKr9iV7xg2JRhZfq
-	uaoHD/Ll/wdMbUo9xBNYskC2a0IXnk+GK+vc8EcSL9O/TuoWMNP5gt+W1JNJGa26sU55rnpIBFc
-	K0YmsUxeStgR4Q==
-X-Received: by 2002:a05:6000:1787:b0:47d:ec60:658e with SMTP id
- ffacd0b85a97d-47fb1ee079cmr3694666f8f.25.1785252892253; Tue, 28 Jul 2026
- 08:34:52 -0700 (PDT)
+	bh=Cn9uuCu4petLDLZf1KwAZ2CPZvy55bypKnCMo9F9MKg=;
+	b=4X1ZLau67NWBWuaCPP4AfCkaPSk9nLulZyeGerAh3B+xqqfRoL7hQgGGe3mY6H87ObQZ0B
+	KwZqlKU57a8bFzizwu7xLfsaBI2Xyw2/ciYCIi7rXYCiiEECbnRNxqHKdcuIAXcxjBbqy7
+	zOzg94qVX7bZNmA+j5Z6gtT6+RY+ZXA=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785253336;
+	b=02YlfDRSu6D3ZVToh3WzN3NfDxJyibX9Qv70NHqByV+DK5sbz/obHUxZFqlUYHbCS2PiKz
+	lXPmtdeJT04owPannTr3UXP2lu22ZFc5iuTf9cDykEzlBqVJ8G3EbKTKhbCwHMURjHKofK
+	VKrneYmPaxPSQk/FSa90gDMPxr0VpmI=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Hkk5d7pN;
+	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 9E4466001A;
+	Tue, 28 Jul 2026 15:42:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49EB01F000E9;
+	Tue, 28 Jul 2026 15:42:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785253335;
+	bh=Cn9uuCu4petLDLZf1KwAZ2CPZvy55bypKnCMo9F9MKg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Hkk5d7pN/gnfZxZufQsrgEvXOwGoimyv1SzUPkDfmdUX26sYH6/DQ/mN+5P0HlkeX
+	 tOIOPRy3Do+8x+vQm8v1HMz10TAXOPdbzB6NpS8GmnvmJqGWzBpBtZ2DZefeQGt9ge
+	 +XBuURtLarQzfpzvFMjq5ELicbcvIMIwByC9yifSTw0EYPR6Jh68eQEEJjWX6pMpsl
+	 MaqObdhhyXkv8zZoFr2B9l9ZAVpCZje0DQjVor7vkp+DLCKDP8fOv4IoBSzOIYbXAQ
+	 XXC10noKxpZyWEoHhoeflHrnDCRW0hm3YgmivKj/BOG9kfQl7kG1HAPnWO3SviqvIj
+	 HDUHaryZm53Bw==
+Date: Tue, 28 Jul 2026 16:41:56 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Pankaj Raghav <p.raghav@samsung.com>, 
+	Hannes Reinecke <hare@suse.de>, Hugh Dickins <hughd@google.com>, Yang Shi <shy828301@gmail.com>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, Hengbin Zhang <uqbarz@gmail.com>, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH mm-hotfixes 1/2] mm/huge_memory: separate out
+ CONFIG_PERSISTENT_HUGE_ZERO_FOLIO logic
+Message-ID: <amjJM1Flp7bDN0NO@lucifer>
+References: <20260728-fix-refcounted-huge-zero-v1-0-3f261f5447b4@kernel.org>
+ <20260728-fix-refcounted-huge-zero-v1-1-3f261f5447b4@kernel.org>
+ <amjD1MtOiXBRDxVi@thinkstation>
 MIME-Version: 1.0
-References: <20260726-shrink_zswap_entry_v1-0-0-v1-1-30957e4d0cb6@gmail.com>
- <CAKEwX=NLEmRKbgf7e4mQ8ynwGLhe8d3orc_2U8n-K_W6VjOAoA@mail.gmail.com>
- <CAO9r8zNbw4T4O-TtFsd9NMJh2RKRDuXTqfSKgMbe6o05MZxebg@mail.gmail.com>
- <CAKEwX=MwhU74Ak01kEa7VL_mKNY1gO_hX_aAPvMkXo-72MB52g@mail.gmail.com>
- <CAO9r8zPsQ6rzhuRopvepxmrXg6q2r+ixRvL2vdG2FVmxBcUn=A@mail.gmail.com> <CAJxJ_jhvyMukPLThpgcdCMHwbp3b3bFvc4Va1cK79_3z6ubhwQ@mail.gmail.com>
-In-Reply-To: <CAJxJ_jhvyMukPLThpgcdCMHwbp3b3bFvc4Va1cK79_3z6ubhwQ@mail.gmail.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Tue, 28 Jul 2026 08:34:39 -0700
-X-Gm-Features: AUfX_mztKPCw7WsmE43lJFHVaI3V3GgyLQxcKgudtwTxI87lWz_isp6HECCdSYo
-Message-ID: <CAKEwX=P-+=tfmohdG5+QKsrsWNyHtVahFv5+FR5nLeSH=kk-pg@mail.gmail.com>
-Subject: Re: [PATCH RFC] mm/zswap: reference the pool by index to shrink
- struct zswap_entry
-To: Jianyue Wu <wujianyue000@gmail.com>
-Cc: Yosry Ahmed <yosry@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <amjD1MtOiXBRDxVi@thinkstation>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 1FFB916000B
+X-Stat-Signature: jm4gdwdfhrygjuc4tsxnaws8je7bqfqo
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 1D00AC000D
-X-Stat-Signature: xq8adcnccmwp8b7x3uytdy48c5j7wr5s
-X-HE-Tag: 1785252893-104458
-X-HE-Meta: U2FsdGVkX18zEBcYql+x0w7pQI0yTs43YqD7YadVK0jzB405Qtp8Br0vlPAwZe0RtgGw8M878toUTqmtDIKmykmsXbfBVhRPdkV9cdX6EkRmlgd1by6aRU8iCFuq9pfT25PQWixTBGN2PgNQf1BZ7bGatmeydsGEpeSD5TBjQ2oxXVWPmSjqO94gEo2E62mFcfGHSwQzdjLNHdZirbq7M9zT3uUtccrniMstco2cRcnD//zTgM0+IkxgFn+eBzhaxnfKItnCM2W72wjy1m6eDeBXvcyvVpQ8K+K8obsYn5XrJJaOHfFLBcAn5RcP2n6ipUqKuJOBCtOsakA/5TPd9SDyjwRFNDxZhmvNTqTVmPycMfElZVojUSX+iiR3cSsrU0cJGyqtekOhIEM165hmaEcZ10fik1XSX9hDPr2ZUqzGULb/AGQHxQbYoUaRvM70GXsiLcTR4Tbgp/PDe8zkXf1nDOIgWhmJsBUwDiSoqb0K6ZXIiU1O/BY+NpE6qew5kvQeN+KRUK1X7ItVBs03XOy7FcdPz+ruI3PTVo2ObpNWQHMtRVTNEYy9tyZ9pM09Sk0e1mPrSn+bIvf3ve36x3sjCqvc3EE4limyWF+EVE9n7XxSVToDwQEqdKkpJiBvLzxLKVOAvDlrIxoOVxoXCJFq2Tcw/kHwkKWhbvbKHcu3NXxDSfydsElxDuSNGDn2bHK6a0fdC8ruSfER8uPXenn7dx72rpJ7k4ahyrWJJbKeOYrp/frR2fA32m53rxX8gbFsdlEcrWTy39OsxhIfaXQQWrfI13rMnJ/AHiZ6wK9tFa8U+IAI48H/5PT3PNvS395UBwgXq3/s6nVNso1RFWYdrrded2ZJ8+GAr0NWBLuUHhi0fe2N9sH5Mn5Kk9dtnzR+oki7PeiKZDPj5uW1kNV3hFSKuqMtfmwyu4hyC+c0s9oaakjjuK9D8JCupIhaSi19OVHjN+8m4N0WRQS
- fHmDA0i2
- XE++fCIPrMi9umKXLIne9tSKTHi12N4ILr3cE+lC+FvZvnK/SeElWq+i15F/sp+02wiQ3bJ1GQ3BTwHhDGBBnftNMbExI6j6p4uM7WvPgnaBOd3Y2xBPdKuM2W5j/dvHM0SE9iffU7MNIeGoijPD8d4sYyMtHoN7Dj1jrPjhEfVSwcsozI4Uq8K5SDqWkT9oBudLmrMS8B1FmGAyUeB/O1boPKJyzHvJhmI0cnvHdNB3Q1fh1p3vOMQy9EsBaGgsnPoMzsjX4KFCf7P84EURLW8LuJd1gi3UfC6U/H2cE7kQZyDlnDQPC22E/0V/YTsoMO6OHZWe8PvLAPAac16qGh8D0P/X6U+3GYmdu0A2VDCvr9PGp5EHpbzBb6RImv5kwMMD5u8Pq09XqPZ/EJofzbhPTQst5MZaC7QTijkqKXSNHspMShF69irrcQpLRC39N1RhxFruVUybY1YOnJ/15Q0YoNxYqqm5nudBb4HQHlH7NrOJgnVe3nBq0NGwWN56BmlbiPmrrfxpOkMQOyhK42w4RFQ==
+X-HE-Tag: 1785253336-936828
+X-HE-Meta: U2FsdGVkX19ylUJAXDYD26VJ70Up6Z50d/NkbnuiJB0wVSg6Uvs+C3hsN27jZ2lYxFqJIOP/tsMP0EMDug639YMcne4Cjh2AapcfGqG61fze6liWBfxA5X4kSdcnkAD5bTuVOxvC73OtS8pHn2MiRrXfQ76JitOMWPGQT8fBq42waj55OpZbyC+gZvDmv7tixnM6zNwUg3Vgd52IIwMP3+Ka7v4F4FwaIdSTvsI8ReEE4mnrsa4A0/j4wOZqOWWcKkSjfx92tdhy9Szfl2lf19jLQYmXpY897WRSWU/t9C8vmjgGWdzO3j8zV4zWxD0tUfmk265wjNVE6mSGDHamg3ZwCUtZGPtWdCBJiXjIId0ZcvDWDYiRGk7+sYxML4clidlFJyqBpMMRm8DaiKJviF49BVcKYay05kuzAWRH18NzNgVeBd0sokBaHEmO50I09c2UvLhlcMFBlSr1EVoWxMnbvycxsM1jfrYHUNQTaWAqqk1ilBnmz8ierFpe53LG800DebE8cCix7eBf6fXT7Q2MxiGQThy0E+g+aUcVgZzGLGniIOSKMcCaW+WOIh5R7uDp0zUrX9J9caGfOJorvfxQqOD/4qFL9i5V9kuDRsuOpSHfBq/XxDg/dwIFogXV8Y4sSkpq80DkAvwcV6i8wxUFIPvmUfR5QU32wZnt4pBE3uXMvRpCnxMf5Zwr483fuyhR043Wg5SoIfYTKsZAYP5yA2Mu3CuOXQMF325rRwz/MrK+FjBhePK8ZQRo6to25FSiDAbF1wb0KuzHDkaqT/8xhI3eJbWteCKcjoq+nZMzbXVJcffulvOf3UUMwAYGqTh4BBeV+BSN33kPGq60n6IvN0AVXdqM3NO9Iz1jbp7cpgvQSCanJyzM9xw1H+390rb/CNh8zeVYF5d8c8DgjgORxscnqiY+fdQIaHjId1bAIy5HRbwF2TwhcKbetCiGYaj7LCxOaEWpX/EWEBN
+ hv0T9WTT
+ e2DZ1XZ1GWb6pCGp92kjEJTVCeEknE0E7fQyRbLVgEHe14BpehtEigLQroQFE1DLIKfX6g4V425tJllfubBqVniLtZq5DNGUebfQamMgfLI+BkLZqv16j/FX3WwgbJbBhvvKDxOMg+IHKIkJfna6eQY2EqtvBWj6pqUeI5+O5JEXf8ZhlYLfKK6O5S0j3sjoRXkGPVUCxniyUOMR7zM3Y+usKghnL+GlAEgl7+KSAxSUMsIjpy/HL3ndBOpGJ7yqlXWF+P1lRuaVE2rtlovJa611KEnZ4Ha3SEf/gRt6Db8U+pcwkT7PfRpSIwevkiZbzef5cITz2yWhQNpu5WnCXOyr4f+FHGnJNl6z2BoTvPzV1Ud4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,80 +100,204 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 27, 2026 at 6:17=E2=80=AFPM Jianyue Wu <wujianyue000@gmail.com>=
- wrote:
->
-> On Tue, Jul 28, 2026 at 1:07=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wr=
-ote:
->
-> Thanks Yosry and Nhat for the review.
->
-> > Technically we are introducing a new limit on the number of pools, so
-> > let's mention that.
->
-> That's good, can simplify a lot, will do in v2.
->
-> > Did you try to benchmark it? I doubt the indirection would actually
-> > show up as most use cases should have a single pool.
->
-> I ran zswap e2e benchmark comparing baseline vs this RFC and did not
-> observe a measurable performance regression.
-> BTW, it seems zswap crypto-sg zstd and lzo are slower than zcomp.
-> Throughput in MB/s:
->  alg      | acomp store | zcomp store | acomp load | zcomp load
-> ----------+-------------+-------------+------------+-----------
->  lzo      |        1140 |        1710 |       1070 |       1070
->  lzo-rle  |        1490 |        1320 |       2030 |       2070
->  lz4      |        1520 |        1600 |       1710 |       1870
->  lz4hc    |         640 |         680 |       1770 |       1850
->  zstd     |         740 |        1190 |        980 |       1720
->  deflate  |         180 |         180 |        665 |        660
-> But that's another topic.
-
-What the hell. Do you know why that's the case? That's almost double
-the the throughput with zcomp???
-
->
-> > No need to document the function name here, most probably will be
-> > stale at some point.
->
-> Ack.
->
-> > This seems like the only user of zswap_pool_by_index(), just open-code
-> > the xa_load() here.
+On Tue, Jul 28, 2026 at 04:08:35PM +0100, Kiryl Shutsemau wrote:
+> On Tue, Jul 28, 2026 at 01:05:44PM +0100, Lorenzo Stoakes (ARM) wrote:
+> > Rather than mixing the refcounted and non-refcounted
+> > CONFIG_PERSISTENT_HUGE_ZERO_FOLIO logic, separate the two out cleanly
+> > so it is clear what happens when this configuration option is set and what
+> > happens when it is not.
 > >
-> > Let's add a NULL check here to avoid blowing up if something goes wrong=
-.
+> > Introduce HUGE_ZERO_UNSET_PFN to abstract the ~0UL assignment, only
+> > introduce the refcount and shrinker if !CONFIG_PERSISTENT_HUGE_ZERO_FOLIO,
+> > abstract initialisation and teardown, abstract the huge zero folio
+> > allocation from refcounting.
 > >
-> > We need a NULL check here as well.
->
-> Ack on all of these.
->
-> > Maybe just add a fixed array and call it a day? :) Seems like we can
-> > probably get away with, say a fixed array 16 elements.
+> > Also change a BUG_ON() to WARN_ON_ONCE() while we're at it.
 > >
-> > If we want to be really conservative we can use an array of 256
-> > elements indexed by a u8. That's 1KB of memory, probably mostly wasted.
+> > Without this change, the subsequent fix for a subtle race is harder to
+> > understand thus this is a dependency of it.
+> >
+> > Cc: stable@vger.kernel.org # 6.18.x: dependency of subsequent fix
+> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> > ---
+> >  mm/huge_memory.c | 159 ++++++++++++++++++++++++++++++++-----------------------
+> >  1 file changed, 94 insertions(+), 65 deletions(-)
+> >
+> > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> > index 032702a4637b..0f60bc82e87a 100644
+> > --- a/mm/huge_memory.c
+> > +++ b/mm/huge_memory.c
+> > @@ -77,9 +77,14 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
+> >  					 struct shrink_control *sc);
+> >  static bool split_underused_thp = true;
+> >
+> > -static atomic_t huge_zero_refcount;
+> > +#define HUGE_ZERO_UNSET_PFN (~0UL)
+> >  struct folio *huge_zero_folio __read_mostly;
+> > -unsigned long huge_zero_pfn __read_mostly = ~0UL;
+> > +unsigned long huge_zero_pfn __read_mostly = HUGE_ZERO_UNSET_PFN;
+> > +#ifndef CONFIG_PERSISTENT_HUGE_ZERO_FOLIO
+> > +static atomic_t huge_zero_refcount;
+> > +static struct shrinker *huge_zero_folio_shrinker;
+> > +#endif
+> > +
+> >  unsigned long huge_anon_orders_always __read_mostly;
+> >  unsigned long huge_anon_orders_madvise __read_mostly;
+> >  unsigned long huge_anon_orders_inherit __read_mostly;
+> > @@ -221,22 +226,58 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
+> >  	return orders;
+> >  }
+> >
+> > -static bool get_huge_zero_folio(void)
+> > +static struct folio *alloc_huge_zero_folio(void)
+> >  {
+> >  	struct folio *zero_folio;
+> > -retry:
+> > -	if (likely(atomic_inc_not_zero(&huge_zero_refcount)))
+> > -		return true;
+> >
+> >  	zero_folio = folio_alloc((GFP_TRANSHUGE | __GFP_ZERO | __GFP_ZEROTAGS) &
+> >  				 ~__GFP_MOVABLE,
+> >  			HPAGE_PMD_ORDER);
+> >  	if (!zero_folio) {
+> >  		count_vm_event(THP_ZERO_PAGE_ALLOC_FAILED);
+> > -		return false;
+> > +		return NULL;
+> > +	}
+> > +	folio_clear_large_rmappable(zero_folio); /* Explicitly not rmappable. */
+> > +	return zero_folio;
+> > +}
+> > +
+> > +#ifdef CONFIG_PERSISTENT_HUGE_ZERO_FOLIO
+> > +static int __init huge_zero_init(void)
+> > +{
+> > +	huge_zero_folio = alloc_huge_zero_folio();
+> > +	if (!huge_zero_folio) {
+> > +		pr_warn("Allocating persistent huge zero folio failed\n");
 >
-> I prefer dropping the xarray and go with 16 entries indexed by a u8,
-> keeping runtime compressor switching, which can increase when needed.
+> I am not sure the warn is enough. mm_get_huge_zero_folio() will produce
+> NULL pointer now without any attempts to allocate again.
 
-Let's go with that. We can be defensive and just block users when they
-try to add the 17th zswap pool.
+Well firstly this was existing behaviour :) and is to be backported also, so
+anything changing that would need to be a separate change.
 
-Look, you don't need 17 of them :) If you're switching to the 17th
-compressor there is likely a bug in your userspace config/scripts :)
+Secondly this failure really shouldn't happen in reality, it's very early in the
+boot (see my RFC...) and the config has to set CONFIG_THP too.
+
+And finally, more importantly perhaps, everywhere deals with it - anon read
+fault in do_huge_pmd_anonymous_page() for e.g.
+
+	if (!(vmf->flags & FAULT_FLAG_WRITE) &&
+			!mm_forbids_zeropage(vma->vm_mm) &&
+			transparent_hugepage_use_zero_page()) {
+		...
+		zero_folio = mm_get_huge_zero_folio(vma->vm_mm); <- returns NULL
+		if (unlikely(!zero_folio)) {
+			pte_free(vma->vm_mm, pgtable);
+			count_vm_event(THP_FAULT_FALLBACK);
+			return VM_FAULT_FALLBACK;
+		}
+		...
+	}
+
+DAX:
+
+static vm_fault_t dax_pmd_load_hole(struct xa_state *xas, struct vm_fault *vmf,
+		const struct iomap_iter *iter, void **entry)
+{
+	...
+	zero_folio = mm_get_huge_zero_folio(vmf->vma->vm_mm);
+
+	if (unlikely(!zero_folio)) {
+		trace_dax_pmd_load_hole_fallback(inode, vmf, zero_folio, *entry);
+		return VM_FAULT_FALLBACK;
+	}
+
+	...
+}
+
+etc. etc.
+
+Where:
+
+struct folio *mm_get_huge_zero_folio(struct mm_struct *mm)
+{
+	if (IS_ENABLED(CONFIG_PERSISTENT_HUGE_ZERO_FOLIO))
+		return huge_zero_folio; <-- returns NULL
+}
+
+So it's all fine.
 
 >
-> Agreed, the list looks like unneeded complexity, will have a try to drop =
-it.
-> Looks obj_cgroup pointer can also be dropped on !MEMCG, but zswap usually=
- use
-> in server with cgroup, maybe not worth pursuing.
+> Have you considered moving huge_zero_folio to BSS for
+> CONFIG_PERSISTENT_HUGE_ZERO_FOLIO=y?
 
-Yeah you can leave that for now :)
+Interesting :)
+
+That'd be huge for larger page size and why would we expect a failure at init
+like this I guess I'd say?
+
+It'd be nice to guarantee it though.
+
+IN general you have to have CONFIG_THP enabled to get this at all, and surely
+the micro embedded systems will never set that... (see my RFC to just make the
+persistent huge zero folio permanently how we do this and remove the damn
+refcounted nonsense altogether).
+
+But one for a follow up anyway!
 
 >
-> Best regards,
-> Jianyue
+> > @@ -308,7 +323,46 @@ static unsigned long shrink_huge_zero_folio_scan(struct shrinker *shrink,
+> >  	return 0;
+> >  }
+> >
+> > -static struct shrinker *huge_zero_folio_shrinker;
+> > +static int __init huge_zero_init(void)
+> > +{
+> > +	huge_zero_folio_shrinker = shrinker_alloc(0, "thp-zero");
+> > +	if (!huge_zero_folio_shrinker) {
+> > +		shrinker_free(deferred_split_shrinker);
+> > +		list_lru_destroy(&deferred_split_lru);
+>
+> Hm. What? Why does huge_zero_init() touches deferred_*?
+> That's caller business.
+
+Again existing code :)
+
+But yeah that's really broken as subsys_initcall() apparently discards the
+error...
+
+I guess the thinking was because I think because it's doing stuff after the
+deferred stuff is initialised and bailling.
+
+In practice it's probably an impossibly small allocation to fail. But should do
+something about this, if only oops-ing on failure.
+
+But that's for a follow up :) existing code, backported fix etc. etc.
+
+This patch is rearranging stuff so the code is much clearer for the race stuff
+taking into account CONFIG_PERSISTENT_HUGE_ZERO_FOLIO.
+
+>
+> >  static void __init thp_shrinker_exit(void)
+> >  {
+> > -	shrinker_free(huge_zero_folio_shrinker);
+> >  	shrinker_free(deferred_split_shrinker);
+> >  	list_lru_destroy(&deferred_split_lru);
+> > +	huge_zero_shrinker_exit();
+>
+> Any reason behind the reorder?
+
+Well 'do everything else first then call the external function' but really no
+solid reason. It makes no difference though.
+
+Can re-reorder if a respin required :)
+
+>
+> >  }
+>
+> --
+>   Kiryl Shutsemau / Kirill A. Shutemov
+
+Cheers, Lorenzo
 
