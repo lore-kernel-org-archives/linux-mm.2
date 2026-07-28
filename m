@@ -4,90 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46297C54F4C
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 15:17:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 975DFC54F4C
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 15:20:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 465EB6B007B; Tue, 28 Jul 2026 11:17:32 -0400 (EDT)
+	id 88A506B008C; Tue, 28 Jul 2026 11:20:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4177B6B0088; Tue, 28 Jul 2026 11:17:32 -0400 (EDT)
+	id 83C906B0095; Tue, 28 Jul 2026 11:20:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 32E046B008C; Tue, 28 Jul 2026 11:17:32 -0400 (EDT)
+	id 754756B0096; Tue, 28 Jul 2026 11:20:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EA7676B007B
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 11:17:31 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B375A16044C
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 15:17:30 +0000 (UTC)
-X-FDA: 85038539460.07.357244D
-Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
-	by imf30.hostedemail.com (Postfix) with ESMTP id C807D80006
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 15:17:28 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=qdxJJmMd;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf30.hostedemail.com: domain of jiayuan.chen@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 50ACB6B008C
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 11:20:34 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DCFAE1A041C
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 15:20:33 +0000 (UTC)
+X-FDA: 85038547146.29.7FBFAAD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 333101C000B
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 15:20:32 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nHXtPkLt;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785251849;
+	s=arc-20220608; t=1785252032;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JJOfNjImE/vhHrHHh6wGaW6sGg3JuvKUdiSVtRAfDKs=;
-	b=isv7oshXpF5AVziRbd0/CMDhXogLFH2q+qtZkV3f16UZage3G2zzcXKnm38VDtln/pHsqE
-	Tf6oZ5YAwiLZVPMGHD6/50XwagqA/5DxueHZQTWcKkcFof9r5sr3hAa+9dJs9c1an/wTyl
-	1i/4ZA7WGgFgACBK9Jvfz3TYm4+dtOM=
+	bh=Pcgm/0NVuLY1iQXWdMHTbgGTyBAUcx9voeT3GqTNrW4=;
+	b=0Kg7NfJcHsmfioPOEtoLk9ZKWHoG8ZzMsGgIVWppWeeU39Vnbhm4pIIitBHGdOA308WkcA
+	RNH1mxVtBtFBdsTn9PMD4X5ojkJf40q6NoxyLAalGS6cM8XAmxwa2r+KLSofZCvtEhJh6m
+	95vDgxQVQZtdFohaoPvPGquguTB93do=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=qdxJJmMd;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf30.hostedemail.com: domain of jiayuan.chen@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nHXtPkLt;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785251849;
-	b=Cec7BOXf99sFGyGnQ0vckxUBpGPIpL4q4JrX3m1lYM/RSHf4gG71CixXX/At3X7CLAJg76
-	aAKfpktF7e4bO2ULfg2RZb3j8onRzuMjuZBD/n0H+znZIMOxGPZqS8UYD9SisgIwjCstrY
-	6EFFUlktrmpXKYC6ZRuir6A+Vagj/z0=
-Message-ID: <1c815b59-915a-414c-9029-eaac11dcf804@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785251847;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JJOfNjImE/vhHrHHh6wGaW6sGg3JuvKUdiSVtRAfDKs=;
-	b=qdxJJmMdA2yv0M5hrtFZeB6eH1ubg2oqLU/AaY0cpynGN7ks7FUkH2orUeGww/ktQ97oJF
-	PSNEd1Bkin+HPizo6fvj4Fa1TocVW1gu2dqF46otndcbC3Q4jSppWgMaopKp0F0ZlYv3sC
-	cYMpYoAqObCI9iY1kuGpIKmxEX27FUg=
-Date: Tue, 28 Jul 2026 23:17:01 +0800
+	t=1785252032;
+	b=MVx+9YAWghC/bidJmly86l3uM1hvMpgWYNYr5VWCrzC5B+/umVGq+XGNoMvXvkMCoL8m93
+	1MUE/XeofAJYyCDpp2v2d1AHG+XgrKjjli9md8zXTuXA8qW85AnaFNCg5xJHFIpkAq52zF
+	/YdPZ902qb5u15FdcAmPaZXdeawW8HI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1007041E52;
+	Tue, 28 Jul 2026 15:20:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA5191F000E9;
+	Tue, 28 Jul 2026 15:20:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785252030;
+	bh=Pcgm/0NVuLY1iQXWdMHTbgGTyBAUcx9voeT3GqTNrW4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=nHXtPkLtRmjx3crBgajbkLZxNsA3m9uMCmmk+Zu1hXmHK+jqcSxKDyV8K2wEAn4ov
+	 xAp4WJNCsT0bhLjmjM2bXP7jm36ow4Eez3+MwNxAabUGON2Ufr8GJ2fTQrTn4fM+PF
+	 F2WRQZOsY7x8E5Gy4NkWKM1kXL/jUwoU3O/nmGJqaFskSIXPkooguA+E3Q6RPPrLJQ
+	 ujd9oq3RqgGlSx9+LgrKyiPEIdHFc49+JhTl3UBJVbbO5EyeHdiyEQzge9D57ztibD
+	 84Nd1+6QnDSM9g9sdyIoH5XrQdZnT8ObHMTB8lL1zvJ/aZlpBCRxbylGzEUz6Z1ubB
+	 oyLbO8Xi/+Xzw==
+Date: Tue, 28 Jul 2026 16:20:10 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Mike Rapoport <rppt@kernel.org>, Dave Hansen <dave.hansen@intel.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>, 
+	David CARLIER <devnexen@gmail.com>, David Hildenbrand <david@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>, Juergen Gross <jgross@suse.com>, 
+	Kevin Tian <kevin.tian@intel.com>, Kiryl Shutsemau <kas@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Lu Baolu <baolu.lu@linux.intel.com>, 
+	"H. Peter Anvin" <hpa@zytor.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Toshi Kani <toshi.kani@hpe.com>, Vishal Moola <vishal.moola@gmail.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>, iommu@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH 1/5] x86/mm/pat: introcude cpa_lock() and cpa_unlock()
+Message-ID: <amjHQtTRKKkxdaWC@lucifer>
+References: <20260728-cpa-fixes-v1-0-2ed2352300b3@kernel.org>
+ <20260728-cpa-fixes-v1-1-2ed2352300b3@kernel.org>
+ <20260728142108.GW751831@noisy.programming.kicks-ass.net>
+ <adfffb36-9943-4af7-a0ee-0e762e47fa11@intel.com>
+ <20260728143135.GG651302@noisy.programming.kicks-ass.net>
+ <amjAxhL-IeeJITEv@kernel.org>
+ <20260728145528.GI651302@noisy.programming.kicks-ass.net>
+ <20260728150126.GC921102@noisy.programming.kicks-ass.net>
 MIME-Version: 1.0
-Subject: Re: [PATCH 1/2] mm/damon/core: cover discrete System RAM areas with
- per-range regions
-To: SJ Park <sj@kernel.org>
-Cc: damon@lists.linux.dev, Jiayuan Chen <jiayuan.chen@shopee.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-References: <20260728143046.95229-1-sj@kernel.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-In-Reply-To: <20260728143046.95229-1-sj@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C807D80006
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260728150126.GC921102@noisy.programming.kicks-ass.net>
 X-Rspam-User: 
-X-Stat-Signature: gwdczb4hj63rt3q185n3c5sn9ky4wue3
-X-HE-Tag: 1785251848-23941
-X-HE-Meta: U2FsdGVkX1+UpmujWnvYBLSao8uydka842SkswOlIHiuCgArOBEH0mehYd321AbZe12a9hb4VEIjpaBNn8ZflHifA/eTMZKVfBG5L2aP20+nkkLRXW6IcXKXhrIHEf92dD16gBTyZ6Awy+zjuA8FjhjRJzmt0+cpf5oUtRdvuZppXgpLlhbg9WWhsVuZUXI+fNLxn/nIeOq9DKjOUklM7jqg/ZhKzlqE/YlQkYgWXmRnrJFCZaiMbNKk1zlZjt1/9nfOu9D6+Z5WCXiOhmpNHF3gBwizC/+CN8lHIvdDrHFg+hQc31X179zgM2nHqCAEcLVJeEu+4RSkKl5l7xaStpfek67TAZf0FrKU92OwBO35+2mIIzeTSRt2ydK4h4yHfWopyuWf712386PxRvD/IQH4EfVTFwm/AeuxrfofRih3E7WliouVg/uqZrvg+Ki6Rpt40rmrLMG2n87wGBZIgJOZL/AESDJSp9hKgEPoi5YwCDqnxpAHXTttQkNjukOfWVP4MpMXMqJxs5iZ5tsl1TzMztUEIwSt3gNRTeOtAWiICH2RsEIgiqwLJ/LwELtQUZLgB4NzAxWXhrCRvaJt7u//IVUnnQBoJGHKY93KaM59keelGw3yVgiGgTMRwpmypJUSEuPc5oJp2ndLbH5SH+bi/hqHYEi+wOnykrrZOSk19a4YPWE10KKHuuAjDO9Sbr5/QFtFu5lrnCDARGYEklvtWxakqW1fsNoIiWWhpcTUpMNgxUsXQ1G6qqExISKHt6gPVUhYd/W1LtMDRKS/BiiMuZQPi8GQ//hXSyVQqIK0qFLFE8p4ZtUVJmxMJfcFG+PU1+S9EuEGQC7Xh0z4U5mCbsey8GeqovFYcvy676jiBFuypIP6MPSzcUUzSfv/uzB2nevKhHUrUaku6sEo48461yLSkrlcl9BOuFIJ14aYtPctYRW/Yb37k3WAS8gVEDhyLQm8bobV3kdlaBR
- ERCL8f1W
- HJpKl10HEK6m1jhDjN7bGZbo4xYm9xasYwzE0G2X3txFv9/f1ko9hvdxNoaEwpZJ7XPNnWHErBL3QBGUSbI7awYsSQ3656t/rggZI7ALJCCOw8B/TA1ByTEHwqhZoMTICcxVwQxXARhO3mY2i8BUlTF49J3KIXBHSkvmwaL0XJmBLhSuJ7/AlA8UZDgwdgNt+QTH4S8qcqG1Z3Cn+5AVf49005w09es2Zhe5u+AogvUbHnilrXFqZsn3P8nVhLDahW5kqp//2GWDBXR1kDZa+2yEvthnoPDELvL8vQz3jSUg2Q/Y=
+X-Rspamd-Queue-Id: 333101C000B
+X-Rspamd-Server: rspam01
+X-Stat-Signature: hdpgnif61a761sotb9t3ch59jp1n5hm1
+X-HE-Tag: 1785252032-243039
+X-HE-Meta: U2FsdGVkX1+Zz+HmVhHyr37pPNwK5IWhB6EoJZeAz8rBW93v+wdWMr3Pc3tTpX4mei4i6ZUGydt2hJNxOJOvcDHYHPi3YV3Gs8qghT9CoBiqurVMkuNLCF0Km2/+4by1bXp6ZXl+mvD8xl0rdMUkUGYKFDoPQWj+bAHIvek9ivFOTHeff/iISAT8VJAqqLpIUdXPSkdG9DGsdWEeXGocTpbt6Is2+PPw8DwinA8agjY5bakXhCorTvemwlJNzf8RWe4iRNHEvk07Atd9LcLOl8LGq1Ko0RxXwYLU9wqUyf4DEBShZl69WXUB/3ZBxNAwsDkaN4AMfdCBw1tJry8FruBdjbQ/Yj4tfCjm1TMt1/i2vKtB8+049mLtjah2q33FsxJoO06hgLxaOAQvqEi5KCt0obbdE/UTSLMf4uYQF7r/UXnkt2qNfYBk+Ovtq4IavrreuEAEuh1x4zT0U29/7f3HZCDaM5ecl3wMyUNUsGJYqqwA2M2FYsVwH1S90cgrb3ZEUv4IIisls53hmSz9XeIa6Lcyip8fEOpzKV0zTFIftgi0D6IDoYm9WXDL5P7yhBCV4e4Vsjjidhzy7I55f2+aF9lqseLelgspf4sXvkA3lSkeeqWWxft4IdTncqf5RNsL0QP5Ot8j6Y/rLkILpKZQFy2jzVuzhmcF2ltS5P9g9/5PhAb5lK2TVSHfrtPG/NPCFCOMUQFP7tY8USKkXpLsAlMJKcwWiz41vSOAqjeWFdTLlYsv5jPezFEEqDMpnlhm/SLaS1uXYgUGFz0AbWle8G//FaUfHEFR4IKC4Kx5cGEn05Tjhr9biS1h6DHa0KG18jEzctKFXo++K5ca0DYH3t6xkyR6PvEW9swjQKZS9jKeY+wugqpO0dCNF601aDr7boQ6hhqHDrZFDaQSa1u5BS8qkJG5MgM+ta5/7T0PyaELFA+Och8mJPi7Pbo8VPDfxKv/jFe5alU8MwM
+ 7uwKYqbE
+ Ag+4WqiPypeAPuqgiyUjDy4HMOuG0oipuHaW0qSp1tT8pJ9rV2kzXQjEc5z6Ha0XugGnEYt5HPWC7O/8J2Xs8HozTCmrwTROHvWFwUAnDf2XicVQo2q5ixh6UqSNj2YSeiS7hdDrrScLvAlpZhh2eBxA9uMKcVxCzclxp+WPv5pI9TscziUYE5b1uvI0hg3mTyQqriCk5rEXa5mSPWeyTI1IVLSJfXeD/5etwcBcx+ah3OKHMCBPUXpLFnEsZOXNjmcVFVUi3gJ08NAS5W2KzhsT7GD9uRl+YsbFWWOmVtHg30zI6qURw62yT5PoLIM77kmgXsb3fTCKfmOkUSw/bFCMlhij96qV09quQpL5X042roE7bQRs6LO8mHg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,174 +107,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-On 7/28/26 10:30 PM, SJ Park wrote:
-> On Tue, 28 Jul 2026 18:06:48 +0800 Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
+On Tue, Jul 28, 2026 at 05:01:26PM +0200, Peter Zijlstra wrote:
+> On Tue, Jul 28, 2026 at 04:55:28PM +0200, Peter Zijlstra wrote:
+> > On Tue, Jul 28, 2026 at 05:46:30PM +0300, Mike Rapoport wrote:
+> > > On Tue, Jul 28, 2026 at 04:31:35PM +0200, Peter Zijlstra wrote:
+> > > > On Tue, Jul 28, 2026 at 07:30:27AM -0700, Dave Hansen wrote:
+> > > > > On 7/28/26 07:21, Peter Zijlstra wrote:
+> > > > > > There was already a patch merged that removed the shole debug_pagealloc
+> > > > > > exception. Is that not better?
+> > > > >
+> > > > > As I'm scanning through email this morning, there's another issue that
+> > > > > popped up with that patch. It's causing hangs on boot.
+> > > > >
+> > > > > It's looking like debug pagealloc not taking the lock is actually
+> > > > > functional, not an optimization. Although, I hesitate to say
+> > > > > "functional" and would prefer to use much less nice words to describe it.
+> > > >
+> > > > Yeah, lets figure out why that is before we retain this wart ;-)
+> > >
+> > > As Lorenzo said:
+> > >
+> > >   __kernel_map_pages() can be called from irq context:
+> > >
+> > >   < GFP_ATOMIC context >
+> > >   kfree() or whatever
+> > >   -> ...
+> > >   -> __free_pages_prepare()
+> > >   -> debug_pagealloc_unmap_pages()
+> > >   -> __kernel_map_pages()
+> > >   -> __change_page_attr_set_clr()
+> > >   -> cpa_lock
+> > >
+> >
+> > The TLBI hack in __kernel_map_pages() makes me wonder how any of this is
+> > correct to begin with. That comment isn't helping.
+> >
 >
->> On 7/27/26 10:26 PM, SJ Park wrote:
->>> Hello Jiayuan,
->>>
->>> On Mon, 27 Jul 2026 17:54:22 +0800 Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
->>>
->>>> From: Jiayuan Chen <jiayuan.chen@shopee.com>
->>>>
->>>> damon_set_region_system_rams_default(), introduced by commit 70d8797c15d6
->>>> ("mm/damon: introduce damon_set_region_system_rams_default()"), is used by
->>>> DAMON_RECLAIM, DAMON_LRU_SORT and DAMON_STAT to set the default monitoring
->>>> target address range covering all 'System RAM' when the user does not
->>>> specify a range.  It walks the 'System RAM' resources but keeps only the
->>>> start of the first resource and the end of the last one, and then sets a
->>>> single monitoring region spanning that whole [first_start, last_end] range.
->>>>
->>>> On systems whose RAM is split into discrete areas that are far apart in the
->>>> physical address space, that single region also covers the holes between
->>>> them.  For example:
->>>>
->>>>     $ sudo cat /proc/iomem | grep RAM
->>>>     00001000-0009ffff : System RAM
->>>>     00100000-4848c017 : System RAM
->>>>     4848c018-48550c57 : System RAM
->>>>     48550c58-48551017 : System RAM
->>>>     48551018-48615c57 : System RAM
->>>>     48615c58-48616017 : System RAM
->>>>     48616018-486dac57 : System RAM
->>>>     486dac58-4e563017 : System RAM
->>>>     4e563018-4e627c57 : System RAM
->>>>     4e627c58-4ef39017 : System RAM
->>>>     4ef39018-4ef3f057 : System RAM
->>>>     4ef3f058-4efe6017 : System RAM
->>>>     4efe6018-4efec057 : System RAM
->>>>     4efec058-50247fff : System RAM
->>>>     50317000-56720fff : System RAM
->>>>     56722000-59c19fff : System RAM
->>>>     6bbfe000-6bbfefff : System RAM
->>>>     6bc00000-777fffff : System RAM
->>>>     100000000-1007effffff : System RAM
->>>>     67e80000000-77e7fffffff : System RAM
->>>>
->>>> Here the last two areas (about 1TB starting at 4GiB, and about 1.1TB
->>>> starting at ~6.5TB) are separated by a ~5.5TB hole, and the single-region
->>>> setup makes DAMON treat that entire hole as if it were memory.
->>>>
->>>> This is harmful in a few ways.  The monitoring target regions are limited
->>>> by max_nr_regions, so regions that fall into the hole waste that budget and
->>>> leave fewer regions for the real RAM, coarsening the adaptive regions and
->>>> degrading the monitoring accuracy.
->>> The hole would look like not accessed.  As a result, the whole region will be a
->>> few regions that very cold.  That wouldn't waste the budget that much.  Do you
->>> have some specific setups that this cannot help?
->> It's my mistake.
->>
->> I first saw the kdamond CPU go up, and I assumed it was the number of
->> regions. I was wrong.
->>
->> I re-tested and profiled it with perf. It's not the region count — it's
->> the page-by-page walk of the hole.
->>
->> On a VM with a 116GiB hole and a single [first,last] span, I enabled
->> DAMON_LRU_SORT and ran perf on its kdamond:
->>     30.15%  damon_get_folio
->>     17.09%  pfn_to_online_page
->>      2.24%  __nr_to_section
->>      ...
->>      0.07%  damon_split_region_at
->>      0.06%  damon_merge_two_regions
->>
->> Almost all of it is the per-page folio lookup. Merge and split are ~0.1%.
->> The cold scheme targets cold, old regions. The hole is never accessed, so
->> it's always cold and old, and it matches. Then the action walks its whole
->> empty span page by page, every apply. RECLAIM and LRU_SORT do this by
->> default. It scales with the hole size, so on the real 5.5TiB machine the
->> kdamond can't keep up.
-> Makes sense, thank you for investigating and sharing this!
->
->>
->>>> In addition, DAMOS actions on the paddr
->>>> operations set walk such a region page by page, so a region that covers the
->>>> hole is walked for its entire (empty) span on every application.
->>> That makes sense.
->>>
->>>> Set a separate monitoring region for each discrete System RAM area instead,
->>>> coalescing only truly adjacent (no gap in between) resources into one
->>>> range, so holes between the areas are excluded.  The reported *start and
->>>> *end still carry the overall first-start and last-end, so the user-visible
->>>> default range reported via the module parameters is unchanged.
->>> I'm concerned if this could result in having too many regions.  The gap between
->> On the region count: can't we just coalesce any hole smaller than
->> min_region_sz?
-> I'm not fully understanding your point.  min_region_sz is only 4 KiB by
-> default, and anyway DAMON cannot create regions of size smaller than
-> min_region_sz.  I cannot get how this helps.
->
->> After that, the number of ranges is just the number of
->> discrete
->> System RAM areas
-> I'm still not convinced with this.  What if the number of discrete system ram
-> areas is larger than max_nr_regions?
->
-> Actually I was also thinking about this problem for in the past.  One of my
-> idea at that time was, handle only a few largest holes that practically being
-> problems.  That is, while reading the system ram layout, find the holes, sort
-> those by size, and do make holes in DAMON regions layout for the biggest N
-> (say, 2) holes.  This may handle most cases including your 5 TiB hole.
-> Actually vaddr is doing this, so we may be able to reuse some of the code.
->
-> If it makes sense to you, I will try to implement this.
+> Also, the 'atomic context' usage hereabout seems confused. In particular
+> the issue is with IRQ-disabled context, they are not the same thing.
 
-One worry with a fixed N is that it's a magic number. If a machine has more
-than N big holes (more sockets / NUMA nodes, or several CXL devices), the
-extra ones are silently not excluded and get walked again.
-
-And making N configurable just moves the per-machine tuning back to the
-user, which is exactly what I'm trying to avoid.
-
-vaddr over-includes the gaps into its regions too, but it can skip them
-cheaply: it walks the VMA tree (find_vma / maple tree), it's cheap.
-paddr has no such structure, so an included hole is walked in full.
-
-That's why a fixed N is safe for vaddr but risky for paddr.
-
-
->>> user-visible parameters and internal state is also a concern.
->>
->> I think monitor_region_start/end is meant to expose the overall range, and
->> skipping the holes inside it is an implementation detail. Even if we didn't
->> skip them, the adaptive region count is never 1 anyway — DAMON already
->> splits [first,last] into many regions. The holes just add a few more, so
->> the param never matched the internal state exactly to begin with.
-> It is arguable, but I believe this also makes sense in my opinion.
->
->>
->>> A quick workaround would be adjusting the memory layout in BIOS, using DAMON
->>> sysfs interface instead, or setting the monitor_region_{start,end} to cover
->>> only the single area.  Have you considered such workarounds?
->>>
->>> Let's complete this high level discussion first.
->>
->> Right, this is doable today — the DAMON sysfs interface can set multiple
->>
->> regions manually. This patch is only about convenience.
-> Are you actually running DAMON_LRU_SORT or DAMON_RECLAIM in a production system
-> having 5 TiB hole?  Or, planning to do?  If the above idea makes sense to you,
-> I could prioritize implementation of it depending on this.
-
-
-I'm not actually running DAMON_LRU_SORT or DAMON_RECLAIM on such a machine.
-I ran into this while working on per-cgroup hot/cold page tracking, where I
-was comparing performance and accuracy across setups — that's where these
-numbers came from.
-
+I mean yeah the IRQs being off is the issue with holding the lock over an IPI, a
+softirq allocating GFP_ATOMIC won't be a problem for that, but I think all the
+conclusions are still the same.
 
 >
-> Thanks,
-> SJ
->
-> [...]
-
-
-
-And to be clear, I'm not trying to land a patch here — I just noticed this
-as a possible optimization. If you have a better idea, I'm happy to go with
-it :).
-
+> This confusion is seen in the existing comments in __set_pages_{p,np}()
+> and in this patch series. It needs fixing.
 
