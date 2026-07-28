@@ -4,107 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 770FFC54F4C
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 14:31:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDE29C54F4C
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 14:37:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6CE7C6B0095; Tue, 28 Jul 2026 10:31:49 -0400 (EDT)
+	id CF4C56B007B; Tue, 28 Jul 2026 10:37:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 67FB66B0096; Tue, 28 Jul 2026 10:31:49 -0400 (EDT)
+	id CA4F16B0096; Tue, 28 Jul 2026 10:37:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 56F366B0098; Tue, 28 Jul 2026 10:31:49 -0400 (EDT)
+	id B93766B0098; Tue, 28 Jul 2026 10:37:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2EFA76B0095
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 10:31:49 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B4FF51403B4
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 14:31:48 +0000 (UTC)
-X-FDA: 85038424296.17.F4770A1
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 70C2C2000C
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 14:31:46 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=uxw4gS+V;
-	spf=pass (imf03.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 905AC6B007B
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 10:37:33 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 231BA1C0B87
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 14:37:33 +0000 (UTC)
+X-FDA: 85038438786.08.BE6E70E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 6BFDB100006
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 14:37:31 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nc26FOHP;
+	spf=pass (imf05.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785249106;
+	s=arc-20220608; t=1785249451;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ylxLw5Zvv2evU7jmmQqp6rI9pLf6NLfhr20HsnCki9w=;
-	b=iLSJKrq9LKkG3CazpC4oeieZRfuELrqhno63nuUZm4rYEMO1uKe+qQxYFlmE3iJiRpJeRt
-	ohIQBAJq3wkpuULsvE2VN7pynHi9F4nMny9GNnJnyE8G25Np2mreEaXPEAOi/3ERiakMlw
-	fEFx9WxI9v/Xa19AJV/Z+9UlVcfElbc=
+	bh=ZDkk7PDtexhsBzVT9GWHhsxn7eilb1XwsTmiTnabsNY=;
+	b=kI5bUQy9/x5cglvNg8hrqUGpyk8ppUHrWSmw/u+9BlAajQyw0PsiriXn8MIBv5CtumdWMD
+	QIP+INZUUrsMGYDwL6IdyRJpowaEAj36M0ETUuho1FFiw1Hoo4ehDMW7LGxYhlKQP4XXVA
+	bCatF5Uep45SACoEldnDXG/maIpb5ys=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=uxw4gS+V;
-	spf=pass (imf03.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nc26FOHP;
+	spf=pass (imf05.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785249106;
-	b=Um28U+zPpLmWgyebqGpKyR3h0CpbjEvuXI4BL+j1+7a3XaqlxZoDyl0LZzix2QoXSg/8ZV
-	6ZbR2Xi2ZVhR6KVAuunCxPu4nCTa8FKghfIoWduCyNMZEXx03lNbmf8OgNrmEYQOROLryP
-	2aLLtO8s/dvf8thu7fwrmiFbyxg30Vw=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=ylxLw5Zvv2evU7jmmQqp6rI9pLf6NLfhr20HsnCki9w=; b=uxw4gS+Vs58Hy3vhqrWgntua5G
-	zQEksmEBJvslx0KRQxb0RXudR1WgcRb/xnnRwBS9xGVyxrjJGeybLRCAQaNQ2dnlvPhJrwVHHbcVP
-	aIK3TfogFkt741WzhEPW1VMnaH/h6cWazMrko7O7Is8P/AAGyfKnIlMnjhiU6VY73iLk+FL2N1I/1
-	5kEFq2Ky7h7aC6sta8P2tAqPNWK8qYp7BOejIKZpNSWNWaoW43Yllxp1D45G/uS/IXIRKG2MfVbTA
-	8F2JdHUVQONJdBQ8/GetX+lhN8EW45KSVbsZma0nYiVdVzZs/zNk0okjdkVXKVz/DUC2iWV5znW7l
-	Tm3+dgqA==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1woiqG-0000000DS1h-3WHz;
-	Tue, 28 Jul 2026 14:31:36 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id AF4A0300CDE; Tue, 28 Jul 2026 16:31:35 +0200 (CEST)
-Date: Tue, 28 Jul 2026 16:31:35 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>,
-	David CARLIER <devnexen@gmail.com>,
-	David Hildenbrand <david@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Juergen Gross <jgross@suse.com>, Kevin Tian <kevin.tian@intel.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Thomas Gleixner <tglx@kernel.org>, Toshi Kani <toshi.kani@hpe.com>,
-	Vishal Moola <vishal.moola@gmail.com>,
-	Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>,
-	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, stable@vger.kernel.org, x86@kernel.org
-Subject: Re: [PATCH 1/5] x86/mm/pat: introcude cpa_lock() and cpa_unlock()
-Message-ID: <20260728143135.GG651302@noisy.programming.kicks-ass.net>
-References: <20260728-cpa-fixes-v1-0-2ed2352300b3@kernel.org>
- <20260728-cpa-fixes-v1-1-2ed2352300b3@kernel.org>
- <20260728142108.GW751831@noisy.programming.kicks-ass.net>
- <adfffb36-9943-4af7-a0ee-0e762e47fa11@intel.com>
+	t=1785249451;
+	b=zk4oUyX/q8lvtUkjzll2Xm2AQ47kPqjYweEcTY3JdeYqF+WJBw/rvkGKrUXB/F+sKQYNej
+	tCFaWFC47GwGzxX3t+o/XtRRds2RG0raUAHEzODlb78qDmxoYEtZVillbNRWRtsvtlvki2
+	MIMaS/Pwwyjhkv7RchSMvzN2FuJHzPo=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9C95E4034E;
+	Tue, 28 Jul 2026 14:37:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CAA61F000E9;
+	Tue, 28 Jul 2026 14:37:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785249450;
+	bh=ZDkk7PDtexhsBzVT9GWHhsxn7eilb1XwsTmiTnabsNY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=nc26FOHPHYa9+8isLzyk0zxQfzaTb0OA2pPhKpbyYczQVTRy6FuWreWujR95MzVdg
+	 8V5iMwIzJWE8pVxklYHkEBbw9SMYalKGI8aWBEmO/813/x/QKcOZVsf4OKFcMviYu6
+	 F7BHRI2q+YBxtJsLz7B6DfQqqYINP84nYofCR1Y4mPeRUb4MatyytBNFpT8K28Ishv
+	 OFcq8cMmk5AHLuJag0dHBnurSCJ0ACBEYb6XJACN3TB2nSwVJvVvabEMSgOPe4dU0n
+	 HZsS3IgfHeKSx4blTi7u63QzixOnTAxG9B2N2TNrRS67Fu/3ZIsLCN8hszAm3my6x4
+	 2QFGKWdOJKihQ==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  Pasha Tatashin
+ <pasha.tatashin@soleen.com>,  Alexander Graf <graf@amazon.com>,  Muchun
+ Song <muchun.song@linux.dev>,  Oscar Salvador <osalvador@suse.de>,  David
+ Hildenbrand <david@kernel.org>,  Andrew Morton
+ <akpm@linux-foundation.org>,  Jason Miu <jasonmiu@google.com>,  Jork
+ Loeser <jloeser@linux.microsoft.com>,  kexec@lists.infradead.org,
+  linux-mm@kvack.org,  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 00/21] kho: make boot time huge page allocation work
+ nicely with KHO
+In-Reply-To: <amiwLSEi8cczamP1@kernel.org> (Mike Rapoport's message of "Tue,
+	28 Jul 2026 16:35:41 +0300")
+References: <20260725172133.4018491-1-pratyush@kernel.org>
+	<amiwLSEi8cczamP1@kernel.org>
+Date: Tue, 28 Jul 2026 16:37:26 +0200
+Message-ID: <2vxzecgn89jt.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <adfffb36-9943-4af7-a0ee-0e762e47fa11@intel.com>
+Content-Type: text/plain
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 70C2C2000C
-X-Stat-Signature: fskozxx3wh1up79bxqq73wjyrszcggrn
-X-HE-Tag: 1785249106-396171
-X-HE-Meta: U2FsdGVkX1/iUDvjBzXaa+O4xCLRGhLQR5AOd2XnMiSjXQjUTOtB4KWm05OlcUQAKIDpTAAUjccF7XwZqcd6i7vfaeE8Pin1ZBSf9PRA7Vu3B2oSqXA+4E9Lrs9VRzRT20cswsI7WQTxlm4Mn6Q0gPvGOI/8v4Q+ZvTnrXY3+Qg5nuRbB7QutBzGjorwkl3rNnQt9fj8iKqJ3porqMHRpgzClwKdYduaoQXRAigAxVwL/fMrYvARmBDHekGKd3YoK+yl8aWVVnRMbksmwPCV9fvVBb58c7PU6pBlTnSHkybuk+hvTIXfJ634iYWfRt12prFtfMeGDRAz72wSWGwWtjQ5OJHOYADyUTcXpWr0rZxo5xWAX+/FQVnkjqNMiBN/YAcLpmyu5GO6cMHHNzY4t8Ao2zwxU06dbX0SfMaLKjRuuZ1XbVT/ncvoBPLVdP6LBd8lJr/9pKs5nT2A+jGACIOgeYu1UV2UKOwb/qTBGrCX4uvbZtLxN26+7T1U2gWvYw3d8w+k3o4d189k7GfgcJjNBnzrWsIuxRsK8w3hQuqa9BOdiDuE6i33GKo8S6QYI4rTmYaos2EAbqUsRWqCWz8hXz/w53Gvm8dYmOHWhKgE0lmVgQvOOwchrVETu5Mj1fAUbZSZ0wiRxN1eWrgg/rduxbhMO9akbK9Gqk4dtOwWQSBidTwnfnbfblCLW3UAlu3f4LRliYho6RLaREHUFC9xDBiBLWADJsooMAv8y82p9Ed44/ca3073aVummqAacGwXdHJiJ3B95UTHERDZRZnGzooT07rUGqfyGkwFxo9RQSnaewFxoP+Ju+/KdZOQyLJry9wqxLsPv7Uc3iTa+S8SOVUEdUN9fXgMPhP8xtPN3RGgqnZJ+aXk+hMAx2f945Q/Xqlx1eZ4Sq5sY7ZguZq1RlPg0pIHSVSDbwV4XZ86+U4GVlVyuMVNcVzq6+uu6do35ZPorLdA8TN0bJg
- r5uAvSw5
- Y3KFzWoJXtIOIhndxSamQr10bO8mGYhsZQKhV9PUESU1MD9tgkUux/ZC2Kag9BvyuszDwL/TikCpj9iToB21Oq8KMkpiSh5o9UZiCz65RASg7lYlD1TrWpikSonFzk4o3FfW114obEgjs4KIqBqkIy+ONArnCF2QpruMl1CXd6cHMJLXsUQ02eX/DHxr+xKhPfuq5h7/7gdRhiVi7idUYiKfU4xKZ5uoDq5Eafm6C6Jo19v2URCWocbLpqKXKiSj90Hh5HNJn69XMPYdRNiurmShwwa/8m+31iy9v/86et2zNfij4a9hlbfQahJGgwGlFr5BGorGI5+PaSIcU6fnR6Sz+ELnVGhY/WhMGbDUo1mobeME=
+X-Rspamd-Queue-Id: 6BFDB100006
+X-Rspamd-Server: rspam01
+X-Stat-Signature: aot5izzxfj3snbhyyb8t6dp1agrzydkz
+X-HE-Tag: 1785249451-288324
+X-HE-Meta: U2FsdGVkX1/KqmD8JlEVcreJpAToVE94rdVryMeiuvFJat/HO8/qX80RsY6NJN49jcsHOnzcXUokoWXpVhZ9WTkEhiN58LWg8mMeUxVS7ge9kIHldyVSJwOFzA4Kvo9hZpBQ6zEAvT0ouYsLDRt4emfHcAMQsHP6zqumlircL5thiGc0cuwUwtdw9TdYwZ4VuKMgleycxQgA0A6pYL9Idl2H/6FPpaZL830ea3LVt9SC6jtlZcmBSdlAtPSSQDcjNX/RNQX2pBLl+OJ0ALQRU0W3DsZF+9gcwwSevrjNQ9svk4bdP7Sn3esqh3B+c8Ntht/RS0pHa1Sr83G3ex3Vg8c08hN85ZV7hln+JXzCJ4iwrnPGC2iKKkHCmuG4TINyz5MynAggQ5BuixvAchfQNvpLtCWmMm6FftLSvXG47xOzGK374oeCeYRO4dAJFbQkyCCSnzwErWMhsTt13oQDqZJKCN3iz5VweVi/sD1XIIVGLlFbwf6CoZ8gqEZYJ1Q+co8rdt6+WgvBoMBqCQ/7gaTtLifAMCuIdoseTxkMzFOjUnNvS1+9YsEhT6ddtjVHJSZQFOMsT4r4VueY3DJgDCWQpq6WM+A3RgVETzZy6DiM9LJvY338VXQChzUd7EldUE8X5J3V97NdWXOSIcgxLzurP+t2Y9A2tuX7a845+5P0zDyjWgJt0VIb5sC/vGYx39Xsh+K9xWiJgQ9Vxe0OrHhxEAom7oogwN9lHjLstBYfLrC+2ETNVg2K64/xiZAMVKLHdZsdfVhkp6FCrUIntrVfIiZGPKQi9kuTJRaShHjrkUfcAAWOH8L38SNmLR/mqPBrTQT6L6rhhjsgjJJL2GtqpVpCOPsITZQDrzrEL5KxwhnEN868CfE4+sdHdUOInixY/PHoeOSxnCU4gZn3RMMFMs+dzdeCOTIycYVskgr+5b0A94Xy7q+Yi6PhCmb+tZ6x0tYXbQCga4ll69M
+ ZDi3WBvz
+ Kbw1HyUhGj640jpq+vofn2W4Nv2tygJ1ouyMjW6rzMySZKs1wkEOWp/pXBI7Q2i7CQl9YiG4T3unQqWsDDzVkgR0/auO0QOEZ+tuUO1oK++dfkQj/A2pFqzx2jGEsrcfBdcdK5FwXI+hxQtPm1TvGnA091Q41rorqybbJWwXlwigHNNIlwShTO49uMqLzUwP/UBWiuxIQb3Z5SaNMeWJFnTi39FSSe0Cx1AXHtETPeUoyS3c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,17 +98,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 28, 2026 at 07:30:27AM -0700, Dave Hansen wrote:
-> On 7/28/26 07:21, Peter Zijlstra wrote:
-> > There was already a patch merged that removed the shole debug_pagealloc
-> > exception. Is that not better?
-> 
-> As I'm scanning through email this morning, there's another issue that
-> popped up with that patch. It's causing hangs on boot.
-> 
-> It's looking like debug pagealloc not taking the lock is actually
-> functional, not an optimization. Although, I hesitate to say
-> "functional" and would prefer to use much less nice words to describe it.
+On Tue, Jul 28 2026, Mike Rapoport wrote:
 
-Yeah, lets figure out why that is before we retain this wart ;-)
+> On Sat, Jul 25, 2026 at 07:21:00PM +0200, Pratyush Yadav wrote:
+>> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
+>> 
+>> Hi,
+>> 
+>> Gigantic huge page allocation is somewhat broken currently with KHO.
+>> 
+>> First, they break scratch size accounting. Since they are allocated
+>> using the memblock alloc APIs, they count towards RSRV_KERN, and this
+>> scratch size when using scratch_scale. This means if huge pages take a
+>> large enough chunk of system memory scratch size will blow up and fail
+>> to allocate.
+>> 
+>> Second, scratch can not contain preserved memory, and if hugepages are
+>> allocated from scratch, they will fail to be preserved with the upcoming
+>> hugetlb preservation series [0].
+>> 
+>> Fix this by introducing the concept of extended scratch areas. They are
+>> areas that the kernel discovers on boot by walking the radix tree and
+>> finding free memory ranges. See patch 10 for more details.
+>> 
+>> Muchun Song (1):
+>>   mm/mm_init: simplify deferred_free_pages() migratetype init
+>> 
+>> Pratyush Yadav (Google) (20):
+>>   kho: generalize radix tree APIs
+>>   kho: make radix max key width more obvious
+>>   kho: disallow wide keys in radix tree
+>>   kho: return virtual address of mem_map from kho_get_mem_map()
+>>   kho: store incoming radix tree in kho_in
+>>   kho: move all memory retrieval logic to kho_mem_retrieve()
+>>   kho: add a struct for radix callbacks
+>>   kho: add callback for table pages
+>>   kho: add data argument to radix walk callback
+>>   kho: allow early-boot usage of the KHO radix tree
+>>   kho: allow destroying KHO radix tree
+>>   kho: add kho_radix_init_tree()
+>>   kho: expose kho_scratch_overlap() to kexec_handover.h
+>>   kho: initialize kho_scratch pointer earlier in boot
+>>   kho: initialize preserved memory map radix tree earlier
+>>   mm/mm_init: don't rely on memblock to get KHO scratch migratetype
+>>   kho: extend scratch
+>>   memblock: make HugeTLB bootmem allocation work with KHO
+>>   memblock: add memblock_reserved_hugetlb_size()
+>>   kho: exclude hugetlb memory from scratch size calculation
+>
+> I added it to the liveupdate tree.
+
+Thanks!
+
+>
+> Please take a look at Sashiko comments, we might need v5 if it has valid
+> (not pre-existing) points.
+
+I took a quick look and the only valid points I can see are the ones on
+patch 19/21 "memblock: make HugeTLB bootmem allocation work with KHO".
+
+All others are pre-existing problems.
+
+Is it okay if I send a single follow up patch to fix 19/21? Or would you
+prefer a full respin?
+
+Also, general thing, but I should go and fix all the pre-existing
+problems too at some point. I sent a fix for a really simple one
+already, but Sashiko has found other problems too...
+
+-- 
+Regards,
+Pratyush Yadav
 
