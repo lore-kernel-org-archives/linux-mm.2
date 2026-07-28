@@ -4,92 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BF4FC54F4C
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 07:50:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC2D7C53219
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 07:52:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 14F336B0088; Tue, 28 Jul 2026 03:50:04 -0400 (EDT)
+	id BDBC66B007B; Tue, 28 Jul 2026 03:52:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1003B6B008A; Tue, 28 Jul 2026 03:50:04 -0400 (EDT)
+	id B8C4F6B008A; Tue, 28 Jul 2026 03:52:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F0C926B008C; Tue, 28 Jul 2026 03:50:03 -0400 (EDT)
+	id A56236B008C; Tue, 28 Jul 2026 03:52:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C64616B0088
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 03:50:03 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 46C5C402E8
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 07:50:03 +0000 (UTC)
-X-FDA: 85037411886.16.B12898B
-Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 6FEAF180003
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 07:49:59 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=qQQEKvZH;
-	spf=pass (imf16.hostedemail.com: domain of yujiacheng3@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=yujiacheng3@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7C5406B007B
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 03:52:35 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 09A21A02D7
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 07:52:35 +0000 (UTC)
+X-FDA: 85037418270.24.85E807E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 4D97120003
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 07:52:33 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EKhPtadK;
+	spf=pass (imf31.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785225001;
+	s=arc-20220608; t=1785225153;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=dVbEMkAH4oQeLM+2qQKORoOzs7wAWPFGJUizPSN6T/o=;
-	b=hbDC7y/ujTruXIcF+3S84sH1HGd8E5DHgEteyTbTIZfJUoLxLhhAZj3xGZOTmO6dvabNAb
-	RjHa4NUoEWFxAxUXX6plp9qYH6sLPUppTWxMuCQ1CyEY9E4+leHNpo32OuzznwbB6Lhlbw
-	vYxDYS2t0T2taHjEiEMtvYAvwi6U3I8=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=qQQEKvZH;
-	spf=pass (imf16.hostedemail.com: domain of yujiacheng3@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=yujiacheng3@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=9I7doRQ50LJFSJkgpIw2Zo/j+BnPeznOVrz2AUXZ7h8=;
+	b=QX/IsMY7Ys40Dn+N0rqyCr/HTrs2tRYATxXsw2RwQITkx++yBoy7WJ6aRb1nFk+O19mwMP
+	HITcBo9Sw6OE4YpiA+7jlFZ6mr+f2JHErw5qKowij4DoWoX138RTGdygJiiTJujBzGD+D9
+	RRMpvGNluK/c7oxXMDW68BKkUITNp4I=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785225001;
-	b=Jo5nr66nypB3Xqc5d9LHoQKWCU7WvRf091NmqUWueXf1iQ80DGjwOreXJwMhsHbDy6eBkM
-	9LKBMEZrabsRX84NkFrDLeSUMdvXCLviJyfBvtppgnTT7tkPIRoGZqlst8/Ficodzy9LgT
-	U0dhcwjJuLFXWoAaOzg646lsTP3J/t4=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=dVbEMkAH4oQeLM+2qQKORoOzs7wAWPFGJUizPSN6T/o=;
-	b=qQQEKvZHLWWqDDOyJSQZV4u8a2fga2Y2dfFmfzcl/ChI5LAbYXn/sAqt467hI+xhhHf6oniXl
-	aiUhuQy12/ciqRrA0UcsKDQIAYZ3TxLIZn7CtI1yFg0bxU4Ld8oOLjSHbObTX+WZOSRC6wIdUbM
-	0uIHXOFVvirdQSfGacfbtNQ=
-Received: from mail.maildlp.com (unknown [172.19.162.223])
-	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4h8S6v6WFxz1T4JN;
-	Tue, 28 Jul 2026 15:40:23 +0800 (CST)
-Received: from whupemo500009.china.huawei.com (unknown [7.152.184.116])
-	by mail.maildlp.com (Postfix) with ESMTPS id DD1C740575;
-	Tue, 28 Jul 2026 15:49:52 +0800 (CST)
-Received: from localhost (10.50.87.202) by whupemo500009.china.huawei.com
- (7.152.184.116) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 28 Jul
- 2026 15:49:51 +0800
-From: Jiacheng Yu <yujiacheng3@huawei.com>
-To: <petr.pavlu@suse.com>
-CC: <samitolvanen@google.com>, <rusty@rustcorp.com.au>, <hannes@cmpxchg.org>,
-	<yosry@kernel.org>, <nphamcs@gmail.com>, <liuyongqiang13@huawei.com>,
-	<linux-modules@vger.kernel.org>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, Jiacheng Yu <yujiacheng3@huawei.com>,
-	<stable@vger.kernel.org>
-Subject: [PATCH] params: fix charp corruption on allocation failure
-Date: Tue, 28 Jul 2026 08:55:18 +0000
-Message-ID: <20260728085518.3865621-1-yujiacheng3@huawei.com>
-X-Mailer: git-send-email 2.34.1
+	t=1785225153;
+	b=y6Gd1d0RSt8UupHWpECzfGpoqlM6gPsbDtAsBbRkFWTKFpDPj4bx59Nmr0uauuxv1jwy2Z
+	FqeG4vH9KsoHTvO1GMmNRe68iOmXNfm0FgHcAKsYUle1KtJWrLKY1ACrzUvN7yc0kpYmQx
+	tiJj0xIv1RozUNf5yi0LEEmfKCtE5uw=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EKhPtadK;
+	spf=pass (imf31.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 78F9160A67;
+	Tue, 28 Jul 2026 07:52:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 458361F00A3D;
+	Tue, 28 Jul 2026 07:52:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785225152;
+	bh=9I7doRQ50LJFSJkgpIw2Zo/j+BnPeznOVrz2AUXZ7h8=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=EKhPtadKqwOEbrU+DMrvlzP78ttDtRR9ftkpQUYpFs/6cpT89x+VLGtC+BWercwBa
+	 S1lYw1nT7ezjlf38Ac47cUmSrmi9oKGcV1jmb3rD+Pl4VKONyjCaTAcZ+lmEBu0Dg6
+	 N1eBpYbNNBXlw6fpM+Azb6G3X64AZHoOrG6tH4JtU3j3VYpA7Op6GquG/HY0y404GB
+	 K/u+60+jJVzu3+Z7iuAJQ7QJWQY/GMavxtwgDd94R1Q9x+SlXNjEPgfCKx01I7g8+k
+	 9MnpoDYBbyfeRtTjOMFxA2/qmZRa5pYd47zBTj8T6xO56KQEsaXIuzsh8cV3dgwmkm
+	 4ey8PL1VyN+Ng==
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.50.87.202]
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- whupemo500009.china.huawei.com (7.152.184.116)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] mm: do file ownership checks with the proper mount
+ idmap
+From: Christian Brauner <brauner@kernel.org>
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Christian Brauner <brauner@kernel.org>, 
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, 
+ David Hildenbrand <david@kernel.org>, Jan Kara <jack@suse.cz>, 
+ Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, 
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+In-Reply-To: <20260625153853.913949-1-pfalcato@suse.de>
+References: <20260625153853.913949-1-pfalcato@suse.de>
+Date: Tue, 28 Jul 2026 09:52:26 +0200
+Message-Id: <20260728-kreieren-innehalten-anbot-d92ce2dd10bd@brauner>
+X-Mailer: b4 0.16-dev-cca4b
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1304; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=WttfTXpFo1FK6v30KTdbJN4UNpvV3D74uM9OxSIcvko=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWRlxO85a+KsaL7zn7SOm2fc9b67jGs5Jhi3NWozZ+WbV
+ 9kwzeXpKGVhEONikBVTZHFoNwmXW85TsdkoUwNmDisTyBAGLk4BmEj6J0aG1Z0+DpHFc9ccSU9d
+ /X7bFKE30/NDL6X9ThR14M0wZjX+wfA/81ppZyRTzrwVPdHZpksED5yJnWtWrrTvwY600LQdTIH
+ 8AA==
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+X-Rspamd-Queue-Id: 4D97120003
+X-Stat-Signature: owbbiq54wgg1t9ancexkmnz1zroxy18n
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 6FEAF180003
-X-Stat-Signature: wqrkrzjbpdfo7kjn186f6g8zih3ma7qm
-X-HE-Tag: 1785224999-183426
-X-HE-Meta: U2FsdGVkX19i7kqMPfOmNy1SCvm/8rpgQjBQTbRnLx3nqcI8A1uxh+TQDd0bQ6M4BOxTh4iKGQZUpA/hFuvO6Frq+AkyieA3SkGQDBBsJ1mGS8dhhgKmDBJmpLwQICkqv3Dt62T16bU5DL+G3OLnIcZGF5KGjNtEsufcxceU5I6oj5qMO56D9gVGzacmA1xoXEVEhT6r7y6UtAw/Op4V56GaEqOo5VGh3RrW0VV/UslciLtYKI2WG57bsn7lHXwepYGfl+vIlotYWqmX2XWfL8l/oMmIUCFifnpUUoJz9R+uRdNIBewCbSFrG298HGt3PrfrT03DW7q+ICa5UDa0xNq6t2TnFCLLNndUQ25Bx40nwxXLUryIiRQGVF0pnpK3MuvKDTlWbadaoZ+lFM8boUVS6NYkBAP5f2BSxxunFjqixqxWixemNMHdq5FxpmeiouRvVguDriwzG90aHGBCirvN2gJD0GobC4aaYAo1C1hwrdU8hfvlL3gwAilZ9cCsShUZDsnze5u0D+vS/Sc4zjVz7gqhJIR2ZA1KNOcMhgAxTWKbl1+1YvP40hI2/tKZFqF8bmEnUyyC1DdG4li+i6hqhW1qfTGbxPqL7B7TPp/gzrgCK+DZaVYJG6LaFa/7490OWIQrR9MIXw+evr/osrL5JWYvPesYAoU0Lx2pkgtmfYJ+vBTdZEU2WYUYYPzzsKB6gkmCwRuNM8F3s3zsGc+fMyahR0GWtt1ztSsL14hV9WbHFdmyPe3IrnbXwXE2FV91VX+4lKIxsP//0ZnbaBGNUMEQUkGO3qhpFe4ILbbaApwRXj1VIznUo8zOldyJPbjflZIlqwD6YLaGu0VQc35hpovNNjog7ipjV2idzbox0fEwSmIE/kESLhtKqxA9t06G1A9dscCAS84Km02rgi85jqupOB7lUhWF0gZVsN60lgLKKgTWh9QWvKVYWQ1L37vOMD5H7lKc2qYxcYy
- UJhkWsA/
- feKNAXUDxR+6GZ+u63rc4k+QqcaHMDenPWmBlwAlUOZD49VqoaXgtYfFkQkbg1aU/qd99USB5OZ+l0q2Ix6iMV8IDogeEWAfWIkfIW6jPpvZIDBWhwTvdkQh4l8+oz6LsMwwGerRYCIOT766NLdXJZUHpThAuKG/93cPh6k0eaxAtt/XL+k3hF0uaqVAzwAZTCy0kOFUNsF0BRGQL9hK91uvaQs6U3ZUx+ZwhsN7MRcAVFDPwvaaWF9dpK0hQybVVTKv6EJi3InsVy5THvN5Qe9E4NVB0CAuubGuTzMRLlsKKH9w8xSIDOumYqPM93DOoVgPlY/ii8nELnibvuwVLDY81EQmaLjVpiFNbIjZ/Iti68Os=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1785225153-628618
+X-HE-Meta: U2FsdGVkX1+7ibTLvFS86NPGkk5SGvkdRB3uQjDI2Icj2MmWE74ePr3/U34q0KbQEWCjaE9xfcOJEsaXodkd2+2xg1SKJHNfOQztrW1uNBQNXigjMfMSVRm6zJaq0HClTCZMmVJ8iz0/TPPBL1uRPxJ6vS8QWoseI4Wh63HJ2AtwNFzdOVM+hjHIYA3l7P7fQje90sIMJyCsLvySYObMBNHTdomRCfRNO6APqbtl7hwechaK4AAktptBwiBtVoCUKcMnR0jjI49P913CgOXT0xDxqkQjXGpuLDIAFqE2sH1mgg4kJeVdTPZy7N3jsN9CbejpaMzLyuDTS6lUIEC+WhhUFTTikqBX3x22uAw4cmGcOaHXOvu/2tY6tgcGmWiQzeWWOFkO15E38+Uj/H6dNbhNR63X+Hg+2LFDPz7nLNzzYP5jeC3vLMP0q1n4E3ET3P5AMM/1bRKVW1BX0Lv9eRkEZVA/jrdQLBWimCGIjw9GFRSF00sVbHBkFxk049T732IVGdcqDjxTAgovSl+Sye6BGTkczwgKc7S1llJqJ07mZFwXrwij/Jq9ETSaFa5EHGh9e9OMDMbAXfsaOj5m0Hz4Pau31zryd1hgn0d/6YVtmZTaehPQ1ml+9UhEfhnR9oHXWcQnKomh1j7kziAhrTMSUaRz697iyagH1Gz97kUC/fOMtcyi8EEWnxsBH8jInWT6Yh1uQXDC+KaFKvdLg/fYwdO2ak6goW5nv/eOPBMjtb9Ok0NJCJ6APShjS5SFBHgHczNTv22UpKNECfHWTeygiI2jsCMiSM9+OR4Oi3wbNhDfNHaOMACTFs5zDLlrzJ8Eyx69jamXahcySOOjUwccLTIR18MIQ3L5CR48ABz/ILCNznXozV5D4DyKiMeWy0k0SSUxOcZWGqCewkcxCTptJO8Bne1oBqYzSlfLm+Y1Lvc16MCcHgFJODur7Px3G/QZ9PYiRAxPX9q8w6y
+ GgugsxHM
+ XPqmDL6i2Slq25k9CdwggCT40wDUCb0+nPh/tFsKv9F7vslrI0/RtsRQZtvn7L9Y1XlAHO6dMF+mo/bMZrdMIyDiLqQweJZUxm/HyytJW1U1fXqlJogGKEK6U8XZNBxFW6nFlADYbSYwji8+lzej31Uf0Vy1bCLc8B6QfKKQdm9TbeEXMDF2v/NUI/LR4qgtQkRqx9tAAJwyvVvZpKH2GtRuWyX08ohV7/7ep+bsGrVhllTG5Tby95bM+eI1NJh0NKvDoKU7GgHEclYSUg18P0hrHcJf56AItBLHL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,75 +108,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-param_set_charp() stores charp parameters in allocated memory after slab is
-available, and releases the previous value when the parameter is updated.
+> Ever since idmapped mounts were introduced, inode ownership checks
+> (for side-channel protection) in mincore() and madvise(MADV_PAGEOUT) were
+> done against the nop_mnt_idmap, which completely ignores the file's mount's
+> idmap. This results in odd edgecases like:
+> 
+> 1) mount/bind-mount with an idmap userA:userB:1
+> 2) userB runs an owner_or_capable() check on file that is owned by userA
+> on-disk/in-memory, but owned by userB after idmap translation
+> 3) owner_or_capable() mysteriously fails as the correct idmap wasn't supplied
+> 
+> In the case of mincore/madvise MADV_PAGEOUT, this is usually benign, because
+> file_permission(file, MAY_WRITE) will probably succeed, as it uses the proper
+> idmap internally, but it does not need to be the case on e.g a 0444 file
+> where even the owner itself doesn't have permissions to write to it.
+> 
+> Since this is clearly not trivial to get right, introduce a
+> file_owner_or_capable() that can carry the correct semantics, and switch
+> the various users in mm to it.
+> 
+> The issue was found by manual code inspection & an off-list discussion with
+> Jan Kara.
+> 
+> Fixes: 9caccd41541a ("fs: introduce MOUNT_ATTR_IDMAP")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
 
-The previous value is released before the replacement allocation succeeds.
-If kmalloc_parameter() fails, the setter returns -ENOMEM with the parameter
-left as NULL.
+Did that go in?
 
-Failing zswap's compressor update before zswap is initialized can later
-trigger:
-
-  BUG: kernel NULL pointer dereference, address: 0000000000000000
-  RIP: 0010:strcmp+0x10/0x30
-  Call Trace:
-    zswap_setup+0x3b1/0x490
-    zswap_enabled_param_set+0x5b/0xa0
-    param_attr_store+0x93/0xe0
-    module_attr_store+0x1c/0x30
-    kernfs_fop_write_iter+0x116/0x1f0
-
-Allocate and copy the replacement first, then replace the parameter value
-only after allocation succeeds.
-
-Fixes: e180a6b7759a ("param: fix charp parameters set via sysfs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiacheng Yu <yujiacheng3@huawei.com>
----
- kernel/params.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
-
-diff --git a/kernel/params.c b/kernel/params.c
-index a668863a4bb6..e4f2b71dde1e 100644
---- a/kernel/params.c
-+++ b/kernel/params.c
-@@ -261,6 +261,7 @@ EXPORT_SYMBOL_GPL(param_set_uint_minmax);
- 
- int param_set_charp(const char *val, const struct kernel_param *kp)
- {
-+	char *tmp;
- 	size_t len, maxlen = 1024;
- 
- 	len = strnlen(val, maxlen + 1);
-@@ -269,19 +270,20 @@ int param_set_charp(const char *val, const struct kernel_param *kp)
- 		return -ENOSPC;
- 	}
- 
--	maybe_kfree_parameter(*(char **)kp->arg);
--
- 	/*
- 	 * This is a hack. We can't kmalloc() in early boot, and we
- 	 * don't need to; this mangled commandline is preserved.
- 	 */
- 	if (slab_is_available()) {
--		*(char **)kp->arg = kmalloc_parameter(len + 1);
--		if (!*(char **)kp->arg)
-+		tmp = kmalloc_parameter(len + 1);
-+		if (!tmp)
- 			return -ENOMEM;
--		strcpy(*(char **)kp->arg, val);
-+		strscpy(tmp, val, len + 1);
- 	} else
--		*(const char **)kp->arg = val;
-+		tmp = (char *)val;
-+
-+	maybe_kfree_parameter(*(char **)kp->arg);
-+	*(char **)kp->arg = tmp;
- 
- 	return 0;
- }
 -- 
-2.34.1
 
 
