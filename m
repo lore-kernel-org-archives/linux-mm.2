@@ -4,85 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E9F2C53219
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 04:57:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEC31C54F4C
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 05:24:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED86E6B007B; Tue, 28 Jul 2026 00:57:49 -0400 (EDT)
+	id 965556B007B; Tue, 28 Jul 2026 01:24:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E89F76B0088; Tue, 28 Jul 2026 00:57:49 -0400 (EDT)
+	id 916556B0088; Tue, 28 Jul 2026 01:24:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D9FB96B008A; Tue, 28 Jul 2026 00:57:49 -0400 (EDT)
+	id 7E0726B008A; Tue, 28 Jul 2026 01:24:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B4CE56B007B
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 00:57:49 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 25A12802A5
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 04:57:49 +0000 (UTC)
-X-FDA: 85036977858.11.7B1F5B7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id D23F1C0004
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 04:57:46 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=NucA1gG6;
-	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 468DA6B007B
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 01:24:32 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AF3C8C0299
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 05:24:31 +0000 (UTC)
+X-FDA: 85037045142.22.69EDE12
+Received: from mail-yx1-f41.google.com (mail-yx1-f41.google.com [74.125.224.41])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 13A61A0003
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 05:24:29 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=c3iCs7MH;
+	spf=pass (imf25.hostedemail.com: domain of hughd@google.com designates 74.125.224.41 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785216270;
+	b=Zx8CqNI5Nez9jShgxdOiEYCj/PjwoiFFWDHRyrPwsLVsyCOo8/FjzVRpmk4iybfacd+irN
+	pNEbYsWufytfQkSor/83Oz3S0fGPtGVg1oV+r7wDHuI39C0xIK7NgR7+iJyYyNts9IIMaX
+	ymkJIuyQXcxbV56lMuugjI49QUJxr+o=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=c3iCs7MH;
+	spf=pass (imf25.hostedemail.com: domain of hughd@google.com designates 74.125.224.41 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785214667;
+	s=arc-20220608; t=1785216270;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wWzC1kP1Q4s87XzupO6ZEYDwhb3dQbhX7Hsnw2TeRV0=;
-	b=aRMOP85QK0WW/aY47O3pMQWlaklEgzrbvphHiZf3Z+DMSP/F+5+Y6zLKLHuHHAe/9USAp9
-	KdxeMVsrYs+HcgYpZXPJCzhZBfIMfcS56qLcSCepqxe7LzjU+SNB7L3x4L58TOZ+G2Mrga
-	vrVH6mosZ8ZLWqQR+9rzT9O19/uz84Q=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785214667;
-	b=3EN655jEbK/7yxlIg5ysKGENC8P8wSXhK6R+ZYQ4/9Cl0x8nIcJZU6N5xiSkQlaNIdtcs9
-	Z2Q1pW8p9e2G0EB3QGRFGUetgybIWoYQebzz4VyXgWWbHf9iomrhdLU1YOzbb1AASWg80/
-	4dTo2KVrXr56W1Jq8OAQ5n4dXTdmAqw=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=NucA1gG6;
-	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C54C042E57;
-	Tue, 28 Jul 2026 04:57:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C17D1F000E9;
-	Tue, 28 Jul 2026 04:57:45 +0000 (UTC)
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=+dP2n6X89PfagInpqwKnt0atKqO22OfQKc1DqTtxeCs=;
+	b=uF+oEJEncKRwr5cJAg1oVD4GweP+sXrxNd7cmaoYjadYSjG0BxF5g0yu62LGjlX+L38e0r
+	gvg1yOikkXW9NYDOlihPtfEQUbRcLiTDYarqIvkuZV1oM82RSx62pKsXjVw/LmW6k0TTah
+	JEQ2/g26nudhrngXQ8dRyxVVqTks9kk=
+Received: by mail-yx1-f41.google.com with SMTP id 956f58d0204a3-66892c81725so3859479d50.2
+        for <linux-mm@kvack.org>; Mon, 27 Jul 2026 22:24:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1785214665;
-	bh=wWzC1kP1Q4s87XzupO6ZEYDwhb3dQbhX7Hsnw2TeRV0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=NucA1gG6z4Gdx6bBxy0rvoWXHPunbpzp8w5TnVbrFsczDXjaGx3GATlnIQ4mVDn7V
-	 UjXXxuDW/PDe/0U6SeES5csr33D1Qo4AxEB39FHxXMOA1o0UHUgGe8kQuvxnrlCSzC
-	 FkJv/ExheCk8oBKoLMwvBcGXrpKKin0EYxzrABSU=
-Date: Mon, 27 Jul 2026 21:57:45 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Ren Wei <enjou1224z@gmail.com>
-Cc: linux-mm@kvack.org, pasha.tatashin@soleen.com, vega@nebusec.ai,
- zhilinz@nebusec.ai
-Subject: Re: [PATCH v3 1/1] mm/page_table_check: skip special zero mappings
-Message-Id: <20260727215745.7fe8e9cf6a488bb29a842af8@linux-foundation.org>
-In-Reply-To: <e94478e4fb7912fb7e8ebebed5ce85d00dc9a69d.1784717203.git.zhilinz@nebusec.ai>
-References: <cover.1784717203.git.zhilinz@nebusec.ai>
-	<e94478e4fb7912fb7e8ebebed5ce85d00dc9a69d.1784717203.git.zhilinz@nebusec.ai>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
+        d=google.com; s=20251104; t=1785216269; x=1785821069; darn=kvack.org;
+        h=content-type:mime-version:message-id:subject:cc:to:from:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=+dP2n6X89PfagInpqwKnt0atKqO22OfQKc1DqTtxeCs=;
+        b=c3iCs7MHGALRUmu7unjp3HKu0hZLdtcNIHQynqQMGXJtplYSb9LoWAWqmqyS5d4NLk
+         dbcjyqW4aLtNRCGiB/e1MSI2/kUnnh2+SgiWQD77D7WC474oBBfS6CUp0lhALDR4fbzH
+         tryoH0GYBbDPEpcMDIFQScbEzRdx9eHEhlvuKjie04g+bKNK3m7fHZj8hmBB709IVG2i
+         eUsBSs+SXSXe1WL6C+SmpbopKZIEoqpmTtTE2tgCjEi/9hGKnwTHDSbAo673DinYlqLz
+         mv+5en75qJ1aYfTWKqNOB9Htvxy69I5yEUCwDZvEl8PmbmOMECxvi1mh9QF7rOk8zQEN
+         zdlg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785216269; x=1785821069;
+        h=content-type:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=+dP2n6X89PfagInpqwKnt0atKqO22OfQKc1DqTtxeCs=;
+        b=LE8WRC/otByh4EBjRBaahcSqQJgEn3bd/tYRcC1X8LAOYWldDz4DQiVeaPoxJXW8ec
+         gLFiBLTX+ITzuK5keVGRzehem8cQt1+S+njLQMWk3CO4Vtnyk5QwTbKGq9V46lgLr26Q
+         kdH2Flqko/N7cx/Rde81YCHLoR2PkS6e0OYTJ7z7FoShz8TfnHMYNTzmnDw6qF6bkxOq
+         N4HnvbKqXTMl5ii6tfFM9JSa1LtL08fmkNsduO1SIToc8BzHqS7k/npEu8eYhi/YnuU3
+         PDnl5NVKNSpekjzZ4AARtmmu8SlTmpvABO5l2i+XJTULt6d1aNfOK7DqqrCoLTquzrba
+         3OFQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpyWeFBc/JjX3Bf0N+FZxCUHAo/1c0jlNageuPi5EpBaCd9tTDK00r472OeMXBxTx8qweP2j5Wf2A==@kvack.org
+X-Gm-Message-State: AOJu0YyEb/VlLa0zKQRZOdpG0hPtg3JG1h2Ehq4aiPKU+afDoyLfPK7H
+	yTWgm2xg6QdhoGCHIlKl+CRA72S1tr6K6F7soKU3FUouOLoJig/PPrdvhSnZRCktUA==
+X-Gm-Gg: AR+sD13Fx4B4WbiJFO29IpbmWEYhSecoNVsA0OrDvRWmS90PZSUQ6KoA161SZPN7qnA
+	BwEVa1NBcymNTWIPzjfxLHCS3KZDINWR+NzHDZzZvaFIpHLD4IN5ZomqnxxT/Dpjo8+pYcDfm2B
+	ElsVqR1gRYTR92zh+q2P8jze25f74WDLcC7YR1NcJWZ8zUykHTT5C0wK3BIDpKVF8D/pL9MhM+Y
+	1GKy3gI8bs17sjRBiXqgZp5YbJHW0EWtuDWkqF9fJLrGMsnDpXeVsOnGzyn7LPQw0QahCqWolv4
+	6Q2mtqA6brtzdytuLViGed/+wKfjTyFxNQVF6RuLtNT+sPRJBlsqx4hsEt7Mujmi2tB7oFnbe0v
+	sEQYqJB9NLl6QGEiXwQ9QytDCAe8bJnKvqXycIllpTrtHVhtLEZT9KccI49gYXsIcxenRE1Tdsb
+	VRHX2VjhVpddte+Q7W/7frBA12y4N0lkZRt14ArsCSmywpgCfmRWt25ODFxRbVWA==
+X-Received: by 2002:a05:690e:4088:b0:662:f28b:7c63 with SMTP id 956f58d0204a3-669057a7895mr344755d50.63.1785216268371;
+        Mon, 27 Jul 2026 22:24:28 -0700 (PDT)
+Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-668c6d2f9e0sm4496668d50.2.2026.07.27.22.24.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Jul 2026 22:24:27 -0700 (PDT)
+Date: Mon, 27 Jul 2026 22:24:14 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+cc: Zi Yan <ziy@nvidia.com>, Kairui Song <ryncsn@gmail.com>, 
+    Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
+    David Hildenbrand <david@kernel.org>, Kiryl Shutsemau <kas@kernel.org>, 
+    Chris Arges <carges@cloudflare.com>, linux-fsdevel@vger.kernel.org, 
+    linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: [PATCH] mm/filemap: __filemap_add_folio() restore index before
+ retrying
+Message-ID: <562fbfa6-dd6d-0b6a-2461-ed2ff1173bc8@google.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: D23F1C0004
-X-Stat-Signature: 3br47yifsp1dau9darmyy4jne9w1oq9y
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 13A61A0003
+X-Stat-Signature: sofbhjrd8cup7kys35foodr48e4qzkzt
 X-Rspam-User: 
-X-HE-Tag: 1785214666-341318
-X-HE-Meta: U2FsdGVkX19iyUxLTHd2V7KQOCNOtFqtRiLWL8cuAzekX4HV0RgOfWUeii7jxoz1/GBdQCpWkGFQ7RaTZ9zCUOGETAmG92ixRcVM5NSvVYD3wwLZq/BdGx8CZvXl7ZloJAs051Go9XbsbVrGNLuwsmyIENEmns5RkkCpPIWUirbdCpc6q5zc+EJe5qS/ahD12ehJLOc0ZThHio7lsjm5xUbVNcRMtSvefKmLiuPrRdf6OtVArtC+t/Pvi/BJlwXRJbymo86tcEPtGipUPD4Lf+TfmLRV/0JvUP37QXG+f1peDA5OP3xeEZnPFjqPXO4dSh8bdSpsuwd+bUJmeJ2lTJkFfYT5GPNf3ILt6xqmmiEcfWURY3LzlBwJMKzDEdhAzCKAMkhTu1gF3NZQNy+4gJWuGyCsNBx09ZrdAIrRQ3ZUYszR+oGyKpsrSINkHPIajFdR9BSwhGCfKwr5E2JwUMFQF5qhP6r3HKelRG14A/+n3p+zY+g2wPsViCYt6Q3qW0dA6Ew793JbR0ZRY0MeRPwQDaYq1L3bVSiwJks16X7Tw5arOQE6ZZ8E+l9FQjwS9j2CxzEfa7/eSVOK8sNQD8WFu26LG4ZRf08K9YGPXpp91be0ka8wuVIdZq2rM5fSB3rsU1RTGxtlMPMYjBq36uUuN7yt10k0/tcosNcei5PtWvxAdeZOWq7OTmfRAnMPF7zTDXho3sMrbqJ9JboLaP5kSBb9kc2GNPXuNMEBSRJ3zYDbVjVU8Z6FAR2wgQ6uzyusISHzB2IYp7ml2vKcB1/d1d2bNKamDlByhaBoSGVSEZzcGMQFsQ+CYrc5qia5La7muk6Q+B3GeRX2b39EYLrd8O2bYpxjJ1Ye0dQxwCHLkbvSvvsyPG+qW8Vtc5goLlRBhrR42ZDaXVSOIpmIm3KpyP9A8g9sWmCOxjHPGI0adlgp2/qpiqO/tgmzSog11CZpbhLiws86kG2p/IS
- 8gPAX7Qt
- InUr9WaCnwSGZoT+vGyDCdDmfpV8mhq7wxDF7xrQtjFcLS8SMOz6OpUFHRax6DKbj77jBe+QP6nZ/WwNx7wUMH6EOx0375a0ltV2Hn3A7t1pgqYf72VwoI/r7MIlaH+tl2+dQCnkZ4ALS3mlMe56ZvWNvuDf1AOSXVinbNBCCp+m7Z17bIpiDlkzGv4ls3mDKsQeDPDln6X/R0GwlvkKLxyeSlWYnycTej/FjapE8yJBH/9rETxUgrnBnDXBTunmTrjzAYARvzDFUbPvDhxndg/ryr+3iD/+OaNSTo/K84BFgDYbiXicp9y0x7gckAU0yJlKntos2CKmjeFwhgbg9Fmo4yA==
+X-HE-Tag: 1785216269-153745
+X-HE-Meta: U2FsdGVkX1/+xDu4I2/yWXFT0ztplHNAc1NjQBFoWLEKDKxtPeVBsOr+qgolVn+9edrmFf3L/VS2b7j1lvHqJOdWTp2uQJW4RqXq01bShWdNjzaPX5tPvkJN/u7XMaheIiBg0+mi6/rEqdIhgW+It/ip/OtKnpE1EUTHU1uiGLt8aXaTkP8rfbN00Y+5ZMTN0MUinGA4vt/Q8w/UTvK7naxJBZZR84x3j0G1JVwOJU0FVjbDA2imc4R+3TerbwOP1qg3J08mU6VLqL060gaVbCt0ORYHzvZI1F8g7a8P69/bkrwWhfD0icoqTvrPaNDwSdNKZ6eSnfgpBM1shRJICSie63L/q/+YOlRM+ml8pmcHIwbfevzGTL/4UOmq0MlN7fPHcmhkBNNDWkNvy21+63qDX00/JQb4yTMEekK8BaRAgF4wHPlRtK6vMHOtnpVDzV19N82H4kBB1Dw0YijYaEk6teYvA3zRGdnh6QOdVmKt4T+W6ifsIAKiyebILef4Mhmvys8tqUFrmpCRZpF6AStN3iW8WhH35vcKJH1kBHpTc6X5UQ7HrYcHb3XtYwEltGxQVLMajXgXFvF2Q4BGfGp3DDVqYctX/jo3qWEH2D+AqLYKi63aoszwzy4CcHdmm/DsNmBb24Bkm/ej/pxOcMRRqFJ3MhCNOuv7hBh2OwOBcvDjmFlgk2E+EzPw1hjmQXCqJ9Dzv0ro3HzBoBhRWCn5cWP9aILdxtPAzwT85e6kpQx9dqHS2M+gjZ8RrgBPii/jyZHogfJY+2HFTYSt5zqsaWsTdEQ9OTES07QWGFDwqudWvknrYdURoZzokExYXKmETuDdeefZtCTRgiGq2gB9B4cisfK6UjDUv97AblXm67eqXJ1dIsda38aXcKCi557KIumm+wsdY7bYpnmSlBhABtaklpPdrffK7ari+y/RmBgYxcIB7p+nsfK9xIdKp2kWoRTogQ7c+A3fyiA
+ o8Stjq2i
+ QpI82+c6qIvY2RaHOhlJEORki1d4aAm8cXauAMXkWCeZHQROyqMdvnbIJZxyyc+g6C0/F55yN60nd9EJ9gsW4gq2PGoWCJnLZ6dlXX3q0QLTeBY3Uxq+K/RG1pdkNCrnIIf0mPHT3SMK4cG0YxYVLQ2S/DAwKVXbfaRJSvJl0jnXqBzlvj9t7gbNs6y75rpNCEDn3SybJr+zt5TCIpQrGkl7ZCxIMCA4QD8zRPHeCYWdAcKqOMzFQWLDGwqifhE8dZ6JQY5MzUGlkB8bvzzCktGy3SM9s2UJT+9Fn2gINoLCBnCYSDV0nTOmmN0yJiQBqiOUYYyLAQUYCSBjv42B6Ii0+OVh73LZEks87Frh1dqQtCzgmOrNMZf5G8G6UHonMI1SfoZ8Beg/qQer33ZvC/967CtyeaABC1Sgm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,87 +116,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 23 Jul 2026 00:48:13 +0800 Ren Wei <enjou1224z@gmail.com> wrote:
+In __filemap_add_folio()'s split-a-conflict loop, xas_set_order() is
+applied repeatedly: each application modifies xas.xa_index, rounding it
+down according to the split_order attempted at that stage: and if all
+goes as intended, it eventually (or immediately) converges on an
+xas_try_split() to the required folio_order, with xas.xa_index now the
+same as index: then xas_store() puts the new folio into the xarray there.
 
-> From: Zhiling Zou <zhilinz@nebusec.ai>
-> 
-> page_table_check_set() and page_table_check_clear() account mappings
-> based on PageAnon(). Shared zero-page PTEs and huge zero PMDs are
-> special mappings, but page_table_check can still account them as
-> file-backed pages.
-> 
-> An unprivileged process can populate enough zero mappings to overflow
-> file_map_count and hit the existing BUG_ON(). The PTE path can do this
-> with the shared zero page, and the PMD path can do the same with huge
-> zero mappings.
-> 
-> Skip special zero mappings in the user page-table accounting paths.
-> Keep the PTE-side pte_special() check, and identify huge zero PMDs from
-> the mapped folio instead of pmd_special(). That covers architectures
-> where pmd_special() is a no-op without adding huge_zero_pfn checks to
-> the generic counter helpers.
-> 
-> Fixes: df4e817b7108 ("mm: page table check")
-> Cc: stable@vger.kernel.org
+But if a new node was needed, and GFP_NOWAIT allocation did not get one,
+the lock is dropped, xas_nomem() used to allocate, and sequence retried.
+If (that part of) the xarray is unchanged when the lock is reacquired,
+no problem. But what if the conflict was meanwhile resolved by another
+thread (perhaps even doing the same thing, inserting a folio at that same
+index)? Isn't there a danger of now putting our folio into the xarray at
+an intermediate rounded-down index? With !folio_contains() bug to follow,
+when CONFIG_DEBUG_VM=y is checking for that.
 
-Some review of this would be helpful, please.
+Fix this with an xas_set_order() to restore the original xas.xa_index at
+the bottom of the loop, so the retry does a full re-evaluation after
+reacquiring the lock, and cannot reach xas_store() with the wrong index.
 
->
-> ...
->
-> --- a/mm/page_table_check.c
-> +++ b/mm/page_table_check.c
-> @@ -151,18 +151,29 @@ void __page_table_check_pte_clear(struct mm_struct *mm, unsigned long addr,
->  	if (&init_mm == mm)
->  		return;
->  
-> -	if (pte_user_accessible_page(mm, addr, pte))
-> +	if (pte_user_accessible_page(mm, addr, pte) && !pte_special(pte))
->  		page_table_check_clear(pte_pfn(pte), PAGE_SIZE >> PAGE_SHIFT);
->  }
->  EXPORT_SYMBOL(__page_table_check_pte_clear);
->  
-> +static inline bool page_table_check_huge_zero_pmd(pmd_t pmd)
-> +{
-> +	unsigned long pfn = pmd_pfn(pmd);
-> +
-> +	if (!pfn_valid(pfn))
-> +		return false;
-> +
-> +	return is_huge_zero_folio(page_folio(pfn_to_page(pfn)));
-> +}
-> +
->  void __page_table_check_pmd_clear(struct mm_struct *mm, unsigned long addr,
->  				  pmd_t pmd)
->  {
->  	if (&init_mm == mm)
->  		return;
->  
-> -	if (pmd_user_accessible_page(mm, addr, pmd))
-> +	if (pmd_user_accessible_page(mm, addr, pmd) &&
-> +	    !page_table_check_huge_zero_pmd(pmd))
->  		page_table_check_clear(pmd_pfn(pmd), PMD_SIZE >> PAGE_SHIFT);
->  }
->  EXPORT_SYMBOL(__page_table_check_pmd_clear);
-> @@ -208,7 +219,7 @@ void __page_table_check_ptes_set(struct mm_struct *mm, unsigned long addr,
->  
->  	for (i = 0; i < nr; i++)
->  		__page_table_check_pte_clear(mm, addr + PAGE_SIZE * i, ptep_get(ptep + i));
-> -	if (pte_user_accessible_page(mm, addr, pte))
-> +	if (pte_user_accessible_page(mm, addr, pte) && !pte_special(pte))
->  		page_table_check_set(pte_pfn(pte), nr, pte_write(pte));
->  }
->  EXPORT_SYMBOL(__page_table_check_ptes_set);
-> @@ -238,7 +249,8 @@ void __page_table_check_pmds_set(struct mm_struct *mm, unsigned long addr,
->  
->  	for (i = 0; i < nr; i++)
->  		__page_table_check_pmd_clear(mm, addr + PMD_SIZE * i, *(pmdp + i));
-> -	if (pmd_user_accessible_page(mm, addr, pmd))
-> +	if (pmd_user_accessible_page(mm, addr, pmd) &&
-> +	    !page_table_check_huge_zero_pmd(pmd))
->  		page_table_check_set(pmd_pfn(pmd), stride * nr, pmd_write(pmd));
->  }
->  EXPORT_SYMBOL(__page_table_check_pmds_set);
-> -- 
-> 2.43.0
+Production was suffering from rare SIGILLs and SIGSEGVs, executable text
+found a page away from where it belonged, !folio_contains() bug hit when
+debug enabled: symptoms not seen since this patch went in.
+
+Fixes: 200a89c159a7 ("mm/filemap: use xas_try_split() in __filemap_add_folio()")
+Signed-off-by: Hugh Dickins <hughd@google.com>
+Cc: stable@vger.kernel.org
+---
+ mm/filemap.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 58eb9d240643..d721986d5f46 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -931,6 +931,12 @@ noinline int __filemap_add_folio(struct address_space *mapping,
+ 
+ 		if (!xas_nomem(&xas, gfp))
+ 			break;
++
++		/*
++		 * Lock has been dropped: start again with the original index
++		 * and order (but now with the memory reserved by xas_nomem()).
++		 */
++		xas_set_order(&xas, index, forder);
+ 	}
+ 
+ 	if (xas_error(&xas))
 
