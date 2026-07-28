@@ -4,87 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 472C7C53219
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 20:40:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABA1DC54F51
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 20:44:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2679F6B009F; Tue, 28 Jul 2026 16:40:21 -0400 (EDT)
+	id 695316B00A2; Tue, 28 Jul 2026 16:44:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 219796B00A0; Tue, 28 Jul 2026 16:40:21 -0400 (EDT)
+	id 666AB6B00A1; Tue, 28 Jul 2026 16:44:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 12F826B00A1; Tue, 28 Jul 2026 16:40:21 -0400 (EDT)
+	id 57B116B00A2; Tue, 28 Jul 2026 16:44:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E165D6B009F
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 16:40:20 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6107C1204F1
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 20:40:20 +0000 (UTC)
-X-FDA: 85039353000.29.AC95E47
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 5365A100007
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 20:40:18 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=1s9EWD24;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A4036B00A0
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 16:44:20 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B9FA940414
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 20:44:19 +0000 (UTC)
+X-FDA: 85039363038.30.91659B8
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf25.hostedemail.com (Postfix) with ESMTP id ECAEAA0014
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 20:44:17 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=oo00+iJF;
+	spf=pass (imf25.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785271218;
+	s=arc-20220608; t=1785271458;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4iCJ5ibfxCuvMusKlg060KfaWqeHlzZj7o4SsVu/F4c=;
-	b=MPpFULyLwHXvqeMI6BPqCZbzn4CTLi6LpzR53Y7d0z3N3+l89c9kl6jWViMHPuheVTvnbX
-	fmwsmSn6wE6pQrgri1aOSrwmv7ZJ5u1SzyK/QaE/XtZ++m+IYIMXOHcjE02Tww7RnxpiUu
-	Wz/qLuMLi/iM9DYuK60BecrcLp8cJ9k=
+	bh=VHllHAYD+554jhDmr6CAyg40twiId7LXCrXkJDYooJQ=;
+	b=LyfOVVz0NQZ9m8biV4+GR2V8IIv7kECCaGAZgkZOOppLZVWijUua2gCr46Pw/i5tR28/g+
+	Z3wBNESXO3k8IV/DqzEJBlRe+dbDjb/a9wl4KWNkcOSDBDHohd1bdEwslKWP025+jJbWOT
+	Rns59usEtVOb3ZGizEwOwvhnmb+Tpgc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785271218;
-	b=IRlJ0bO+LmG+OI50omHH1OZCXM9Ui6KUmFe6OzOBYBCBVlhNY5Yyr9CGcSqMx5q7Jsw1Cl
-	8NRTmcx3SbH8fq3hdS9f02C/uIzF6Kw2IBMre9HlLmRO9fGJ7GCpTZpUq00nqyvTcRoNpj
-	rfoEPOcvfCQBty+xWMt+7/LHgy3fLwQ=
+	t=1785271458;
+	b=j5BSLK7GPihxV2AqrlblxSbC+rFI0IqAOoPlYMaM3gFXjIQZa/ccQ1OO6e+cAGPxvhkftD
+	QNbh8H0hIhaLTW9m3T2b6rGT60K5LcmRPZ/xRxWIw6m4BBryHVnqya8Tb/cl6zAETFzLCU
+	ZxH5vgEMR+zRbu9wKWNzT4fRxhjOCgM=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=1s9EWD24;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id EBE6140DD3;
-	Tue, 28 Jul 2026 20:40:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C0341F000E9;
-	Tue, 28 Jul 2026 20:40:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1785271216;
-	bh=4iCJ5ibfxCuvMusKlg060KfaWqeHlzZj7o4SsVu/F4c=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=1s9EWD24ckpU4w+D5abt8/lqV7IpJgNtvl/zlpRAut9kokLsM8eIlniHFuc48CqYd
-	 TTcgCoogEme/+zoQnk8tsFTlx7qMQnh4AXiy0nU/xx56PLy9fASrLRGeKCQfFMHQka
-	 De/dmJ0kFUxwi7p9q4NryLyTfQLb4tIENH6NIs+o=
-Date: Tue, 28 Jul 2026 13:40:16 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: ionut.nechita@windriver.com
-Cc: bugzilla-daemon@kernel.org, linux-mm@kvack.org, Mike Rapoport
- <rppt@kernel.org>, Frederic Weisbecker <frederic@kernel.org>
-Subject: Re: [Bug 221804] New: WARNING at mm/memblock.c:904
- __free_reserved_area():
- "Cannot free reserved memory because of deferred initialization of the memory map"
- during housekeeping_init() at boot
-Message-Id: <20260728134016.674388f101f141362598240f@linux-foundation.org>
-In-Reply-To: <bug-221804-27@https.bugzilla.kernel.org/>
-References: <bug-221804-27@https.bugzilla.kernel.org/>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 5365A100007
-X-Stat-Signature: wf87pwsrfb6t6cyfnyytkiqspg1mooq9
+	imf25.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=oo00+iJF;
+	spf=pass (imf25.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description;
+	bh=VHllHAYD+554jhDmr6CAyg40twiId7LXCrXkJDYooJQ=; b=oo00+iJF/oZOfT62O7jdcjXrD8
+	59ppCTLYc8F6O/VTKGNJRlkk0edQfalqMqOgwFc7garRDyOkSHRGKOMitcArgVOC1ScNQx0d4IDvY
+	P67LR2o1FW8T8k+2QGIhJdRSAOsJwxnpM8Dz7bowvimNoxuj5ghmnMewVbRU1dxvE6bvBU16xaAzB
+	OSLK0BjX8X1qIKVlG3jOh/uo/39jGacBt4bQRGQ8nXTOn47tx+ngG0q3PqrDZEkxfTUbY372pWaBj
+	Y6iknI2Te++RgnUbQGzc8pdSzdNawpPglWjiQ23OpT1K/iL9aOIJjJnY6bfEZknkiFwE/Pnng/LgA
+	HVP2LhBA==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wooeq-0000000EFX1-2MZl;
+	Tue, 28 Jul 2026 20:44:12 +0000
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Jane Chu <jane.chu@oracle.com>,
+	linux-mm@kvack.org
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Jan Kara <jack@suse.cz>,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <christian@brauner.io>,
+	Jiaqi Yan <jiaqiyan@google.com>
+Subject: [PATCH v7 12/13] filemap: Add support for authoritative mappings
+Date: Tue, 28 Jul 2026 21:44:04 +0100
+Message-ID: <20260728204409.3396238-13-willy@infradead.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260728204409.3396238-1-willy@infradead.org>
+References: <20260728204409.3396238-1-willy@infradead.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: ECAEAA0014
+X-Stat-Signature: i7kkruos6xx8zxkmehcdie3qq36qs67z
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1785271218-463994
-X-HE-Meta: U2FsdGVkX19kLJ/GKchQoNqpggD51nSsNkoqACSwzRMKwVOM0PJwNC93g0THumwzoNREht2VeEd058cW257uGbwUnToyjNclRMVdr+tGXSlm+eyWcXTC4W13Ln/U+NAEcQ/MNTAzKvHWrxRb+zFk2u3WkWKYzTrdC76myAxCSfMGxAU4/+3/trMKD2DdlckKbyuqZ5u92cBweqvTATXgjceFKHmS4XiB6ns4ytHRcgQy2818V1CdmBQzgM30CPfvTJTOPUklW+OUAAu2CZ8OPkkHRGXB29WD6+RiGaBSksM4SxSOzK8YepCadl2xOZoVkh1xwTlYPel8T8NPSVtAQsitnAUDe46uMonITln7kkUB36w6WNCZSeNjLA/P/YEFHNNiouvK1d5cu//Kx+2jVxOc0NlJwwboa7BBmhDBYwkgSttPsc8Xt26ecweTGUQGT7PnQAhGr5BqWc+gb6LjSchDgU95LLb3LI1wMid44yFXVGQJ4h9OG43+fSHN41qIRc6W2TqO+JEbJUiEEr9RX85Fwj4UZ84RXQ9KgoR97JgJC2PyU62gjYR1+C+3Zls6QRUCWrfFSOcX6Yfb9XxsWXT69h7sYWL+KJQYMT1oRNQLw2zmlesCSgtNhleitM9eF0C7sybHMYQREeXjIzKQW3GYfHEtCihCo0OVy+uXuQj65L21JDm9nwCFIxtwOgm/anPIhu1p8/Gt9ISR6efk0KFPXuNc2vQh0AIryWm+P0QyUdXw0BAKEH4vwAeDhEz74OpJfIIfCHw+q8MnvuX86baoldEhQurliXBCijqZrsxnWSqbpTQBEK19PnNQcbCLYj2FEdSRBuo5IjF1BLog/m696Rx6eouFjflDCYC9DscN6ovwYqFtpnfmGNS4joQXP7ygeoDc3L69AJkJIt7VMqiBdrcYql+g1YNNOzqs2CjG/2jqWqqBR0pwshbMaHtyu4aLqLvyPvPVDpOWJGE
- Yjz2bI7e
- 4n7v61ap45ZuKAoOg1OfRHZukNj4pV2Lw9kCBc+R5KI0zZlmV9i1wzIue68CYmI0qTYGTjjYaGb7ptt906m5JFi+ugjoVRZh3cFSpbTJPFZ8D5a653vu6KC5Cv4m6NZRQF765hEpXbYFv/s7WzQviXR1iLR5ouH6WhpzU3DuHBgA7fZj0M4UAJICZUrHD2SyTRrIdpDCNvzdx+AFAJM9aS7JCdYWPQNnZXbEngsrxVD4uf1CniqD0TQbwaceUbQyfcYVwC79ynAPEcO4xl4lvNtQE6Legr04Sp0HHFbVpYdKvGZEkc+QiBBLbfJTolWwMY/ztmavdOAWXv2fvgaUwje3xff7LDpNRDUH0SONIkhCJPmMUAca2NFhYpcEO6nE7DGmapHVDLqXf4Wd8L1m+3TIFodoR/AwnOsrwXdSdH/qtcUOrXLwMPXhqtdJuAoYeEDTrjNySUzhu4g99nPEOQ1QFlQ==
+X-HE-Tag: 1785271457-237723
+X-HE-Meta: U2FsdGVkX18d3+Narw/1fiFv8q7SxKwlQIjoAJjV7pKG3uyH908b2d1k9iqEwwL9gxOSVtA25Y9dhxXuyzTWP6klczSGHKG5ZrTe0l5fGMIHTLLJkZYioAgl8VaTAGEX7rsiaTV8oENQRw+ZpyrKEANC3ztNNcSj8J8BdIrablZXb9Xd4xeG6XwFtiq8tvFMHE9N5BUlUyAqSIMM+6TXq+L6Ruk7CxSmXRerHaV2dZEMUJIOMhJsgAmk1OQerc5U580UUfEaMP094Z97w/jLK9k+EOgE9gjqV2S9gdgAOLDiGqlm+vUdZFsizYr/gVE2jPfqc8rR5bWvgYCWQM6WgKMbnrIs7E5hvDnkplMQhEHZYuf2XhEPH5XBj205b/uz3gnNr0rTKeo4zWT1eisCutpehHRt2XaUSf6mh5rFGaffxUVVSz0zdPkILABDwBi4Uzmv9XjikkXnRfw4KnzqiEowtwkoJCSAQPE6UcusaCUvO90WvK+v1OREPZRYlQJs/27tIs+MoQHCE+2eGaatjnm3c+APrDQ+Rggx2qaKdZdoLYY7nEa3JeExA6mzOyS3C3zJ5owNHVnQjqpDDtQjdMt4Z5+abZSZoST3HFT0y8wXsdxnWnD1KiatQ1qEEGcTQo4FEplnmtN+wbhixwwX6nfHTLYJePWwx/rPxhHR5dkcdgbyFt9Bajr1gZWSQ+StwgIj/lk7pAFF8SEH9O6pW12PqR6BBH9ZzcOHH+0LIlBP0dZA6LqTLYOBtaIBRZAfR26n/+Qzm+1wYYxDnY4FiGd0Z+39y4aihOwYvqWZnQdstcTwo3+vyWbiIxrpK3kN6Wald8ja/fQyCcOajNCiOb+FYOgfxkgVYTPliabEcJurp7ZPJzip2b04qu6vcH230/U18cm0bWyFS0GRdacLootyVuSlYUmUG+B5dPNvQKyMi5MQdwl0gePRywixv50qRgMBd/BuRlQ5qH0gulA
+ VaV9XsaD
+ pEvz8GdC2GNLO65sPo6xh7sxg1EwCrFAv6K4sVIqM75q47bs5K08kjYZVbWTScg7mslhxUd/cFPj51s24B0ggNBgFagLwbtuaIrAMIsO+nCRJRmptc0ijNUtAwV+3ele3fLFpn4EiXCArQ7cDfQWpkrENFL2Ujt6Hq0EYe7c3LQgFcSswhCsHk0TlLK2prlwZPAr+pGJVWua7BvahxVjrbZCVg3pzODlI3oj/Nmpp3VU/XW9kqK+7le+2JfBLfcfW8ycjHDNFuMaYLrfNz8WBBD4RnV0ZNv5TkRC+V6/e/bvK2+1N3e1X5npHqntmrFQ3MgDIk7Xs9LCcDfQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,82 +98,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+An authoritative mapping knows about all the folios in the mapping.
+If read() finds a missing folio, there's no reason to allocate one and
+try to read it because we know it's a zero region of the file.  We can
+just call iov_iter_zero() instead.
 
-(switched to email.  Please respond via emailed reply-to-all, not via the
-bugzilla web interface).
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+---
+ include/linux/pagemap.h | 11 +++++++++++
+ mm/filemap.c            | 18 ++++++++++++++++++
+ 2 files changed, 29 insertions(+)
 
-On Tue, 28 Jul 2026 15:52:54 +0000 bugzilla-daemon@kernel.org wrote:
+diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+index 968b791cfd14..22d48935ffda 100644
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -210,6 +210,7 @@ enum mapping_flags {
+ 	AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM = 9,
+ 	AS_KERNEL_FILE = 10,	/* mapping for a fake kernel file that shouldn't
+ 				   account usage to user cgroups */
++	AS_AUTHORITATIVE = 11,	/* If we miss in the page cache, it's a hole */
+ 	/* Bits 16-25 are used for FOLIO_ORDER */
+ 	AS_FOLIO_ORDER_BITS = 5,
+ 	AS_FOLIO_ORDER_MIN = 16,
+@@ -345,6 +346,16 @@ static inline bool mapping_writeback_may_deadlock_on_reclaim(const struct addres
+ 	return test_bit(AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM, &mapping->flags);
+ }
+ 
++static inline void mapping_set_authoritative(struct address_space *mapping)
++{
++	set_bit(AS_AUTHORITATIVE, &mapping->flags);
++}
++
++static inline bool mapping_is_authoritative(const struct address_space *mapping)
++{
++	return test_bit(AS_AUTHORITATIVE, &mapping->flags);
++}
++
+ static inline gfp_t mapping_gfp_mask(const struct address_space *mapping)
+ {
+ 	return mapping->gfp_mask;
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 26a5f18121f9..5a8cc20e624e 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -2697,6 +2697,8 @@ static int filemap_get_pages(struct kiocb *iocb, size_t count,
+ 	if (!folio_batch_count(fbatch)) {
+ 		DEFINE_READAHEAD(ractl, filp, &filp->f_ra, mapping, index);
+ 
++		if (mapping_is_authoritative(mapping))
++			return 0;
+ 		if (iocb->ki_flags & IOCB_NOIO)
+ 			return -EAGAIN;
+ 		if (iocb->ki_flags & IOCB_NOWAIT)
+@@ -2853,6 +2855,22 @@ ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
+ 			goto put_folios;
+ 		end_offset = min_t(loff_t, isize, iocb->ki_pos + iter->count);
+ 
++		if (!folio_batch_count(&fbatch)) {
++			size_t fsize = mapping_min_folio_nrbytes(mapping);
++			size_t offset = iocb->ki_pos & (fsize - 1);
++			size_t bytes = min_t(loff_t, end_offset - iocb->ki_pos,
++					     fsize - offset);
++			size_t copied = iov_iter_zero(bytes, iter);
++
++			already_read += copied;
++			iocb->ki_pos += copied;
++			last_pos = iocb->ki_pos;
++
++			if (copied < bytes)
++				error = -EFAULT;
++			continue;
++		}
++
+ 		/*
+ 		 * Once we start copying data, we don't want to be touching any
+ 		 * cachelines that might be contended:
+-- 
+2.47.3
 
-> https://bugzilla.kernel.org/show_bug.cgi?id=221804
-> 
->             Bug ID: 221804
->            Summary: WARNING at mm/memblock.c:904 __free_reserved_area():
->                     "Cannot free reserved memory because of deferred
->                     initialization of the memory map" during
->                     housekeeping_init() at boot
->            Product: Memory Management
->            Version: 2.5
->           Hardware: All
->                 OS: Linux
->             Status: NEW
->           Severity: normal
->           Priority: P3
->          Component: Other
->           Assignee: akpm@linux-foundation.org
->           Reporter: ionut.nechita@windriver.com
->         Regression: No
-> 
-> Hello Kernel Team,
-> 
-> I notice this today:
-> 
-> ...
-> [    0.075447] Dynamic Preempt: lazy
-> [    0.075489] ------------[ cut here ]------------
-> [    0.075490] Cannot free reserved memory because of deferred initialization
-> of the memory map
-
-Thanks.  I asked Gemini "what happened here" and the response was
-illuminating.
-
-The bottom lines:
-
-
-The Core Issue: Initialization Order Conflict
-
-  The kernel hit an order-of-operations conflict between memory setup
-  and kernel parameter parsing:
-
-  CONFIG_DEFERRED_STRUCT_PAGE_INIT=y delays initializing struct page
-  tracking structures for large pools of RAM until secondary CPUs come
-  online (to speed up boot times on large systems).
-
-  housekeeping_init() runs very early during start_kernel().  It
-  parses CPU isolation/housekeeping flags (isolcpus=, nohz_full=,
-  rcu_nocbs=) and allocates temporary cpumask buffers in memblock. 
-  Once parsed, it tries to free those temporary buffers back to the
-  memory pool using memblock_phys_free().
-
-  The Collision: memblock_phys_free() calls __free_reserved_area(),
-  which requires valid struct page mappings.  Because page
-  initialization was deferred, __free_reserved_area() detects that the
-  target memory's struct page maps aren't ready yet (at time 0.075s,
-  whereas deferred init only finished around 0.325s).
-
-As a safeguard, __free_reserved_area() issues a WARN() and refuses to
-free the pages.
-
-Fix/Workaround:
-
-  Fix the nohz_full syntax on the command line (e.g.,
-  nohz_full=8-55,64-111).
-
-  To eliminate the warning entirely until fixed upstream, boot with
-  deferred_init=off as a kernel parameter or disable
-  CONFIG_DEFERRED_STRUCT_PAGE_INIT in the kernel build.  Upstream,
-  housekeeping_init() should either avoid early memblock freeing or use
-  allocations that don't depend on fully initialized page maps.
-
-
-I don't think this is very high priority.
 
