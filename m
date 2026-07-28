@@ -4,115 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32763C54F4C
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 10:24:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 865C5C53219
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 10:32:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A804B6B007B; Tue, 28 Jul 2026 06:24:47 -0400 (EDT)
+	id 70B086B007B; Tue, 28 Jul 2026 06:32:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A31D96B0088; Tue, 28 Jul 2026 06:24:47 -0400 (EDT)
+	id 6BCDF6B0088; Tue, 28 Jul 2026 06:32:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 922636B008A; Tue, 28 Jul 2026 06:24:47 -0400 (EDT)
+	id 5D41C6B008A; Tue, 28 Jul 2026 06:32:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 582DD6B007B
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 06:24:47 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 390CA6B007B
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 06:32:09 -0400 (EDT)
 Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CFAC14033F
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 10:24:46 +0000 (UTC)
-X-FDA: 85037801772.05.71BA3BC
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id E8E6EC000D
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 10:24:44 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jwxMssBL;
-	spf=pass (imf22.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C000BA1422
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 10:32:08 +0000 (UTC)
+X-FDA: 85037820336.05.9F9018F
+Received: from out203-205-221-221.mail.qq.com (out203-205-221-221.mail.qq.com [203.205.221.221])
+	by imf10.hostedemail.com (Postfix) with ESMTP id CE426C000D
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 10:32:05 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=foxmail.com header.s=s201512 header.b=TpKx91go;
+	spf=pass (imf10.hostedemail.com: domain of shijianlin11@foxmail.com designates 203.205.221.221 as permitted sender) smtp.mailfrom=shijianlin11@foxmail.com;
+	dmarc=pass (policy=none) header.from=foxmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785234284;
+	s=arc-20220608; t=1785234727;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s4inssPqpsD7BfQ38galVPAMa7N06dym7Nw4RodxwSQ=;
-	b=KgXBu5ZhsDs8fbv0nWrqR6GC5Kq+NAYF6meZgroDepZUs9gUGWjJ1Aqsvhyv80mYs8lMjm
-	dcfMBZ6HEKzRDzclfBrdUEWP5pPSOitkFSGi+p82J0tMgJj0fq8z7RJEPAM+sFzIyWEoKf
-	HKAkl8v45Op8ivit/TyPBoE4mqds3zk=
+	bh=ECPB4sDjE6B4MA1/TyM93bXDTe4HCIWrfh13yJ+ccuA=;
+	b=jUTW0Tb4/BPzCBXYK/vpEO52K4VH6++NWDc/k8MTLIvqDzZwOKv8bEjQ9aew3mhvpUhqrp
+	GpfXSb3AFYmtBZ2rrz9CzYnrmi0bDf1ibsY5mUx/aypds59thwQQ1Nih08iOLiPLDOGtR+
+	qPBd7W3jY1bUjX6QeP/LCOgEPUPOetc=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jwxMssBL;
-	spf=pass (imf22.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=foxmail.com header.s=s201512 header.b=TpKx91go;
+	spf=pass (imf10.hostedemail.com: domain of shijianlin11@foxmail.com designates 203.205.221.221 as permitted sender) smtp.mailfrom=shijianlin11@foxmail.com;
+	dmarc=pass (policy=none) header.from=foxmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785234284;
-	b=Oe2YKgjuI489wnwlRXISMV2rpdHqWatlxl5+8mT3crElCfYNw9T72ZNPkANz34HFVOul1N
-	yOnB7WyVE30+OZ2T2L1LdTa7uUGfnZ+PG6LO0vdFA1A4sBdTNtt5GRlAgK8H0tHtW67VhY
-	reG7OKVidFzpdGSeo5HJrSaHYIY2AQY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 64DA060A9E;
-	Tue, 28 Jul 2026 10:24:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B06421F01559;
-	Tue, 28 Jul 2026 10:24:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785234284;
-	bh=s4inssPqpsD7BfQ38galVPAMa7N06dym7Nw4RodxwSQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=jwxMssBLhOB8rIsSMd8YAnlLthfYIHaV8LSqShCqV6EsTTXlWGfBhgH7l/ZUmNVGN
-	 J915WjAr8AC1Ilkz6D2SxsE/6uiq5tJk6TqRbSAG4cwM9LwVAB82D8RbT02E/Zcdrr
-	 DUIofSQcqBnDdGB4RLS6OrvgINMvJwvz1wyfLd4uj0GWR9M8mD6Y2glaqnLczDbzvE
-	 5vBGJAFwVK+vPnDDtPp6E1tJUufKmC2LMTCXfgqiLd+ylXN83obNIgF0GOV4B6yEcV
-	 SaCQNqj/L+aGnIEl6CrmrmGLSP14oH0K/WgSX36ox0vfyheIDlDAi814j24YcGsARe
-	 W8kiYITkduYjg==
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id D486DF4006B;
-	Tue, 28 Jul 2026 06:24:42 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Tue, 28 Jul 2026 06:24:42 -0400
-X-ME-Sender: <xms:aoNoas9G7TBIfPeEHgDvlk5EhbAe7R_soy7Wyydi-8nyyo_3EtVLdw>
-    <xme:aoNoalLn5ea_pHQYwa2OqD1z_vIXOWiboFC293hVRkEWKY2T8H_lD7nsXtWJr6QRd
-    eO0-J9aqggWOxr9NbxDfUox7W7ugCqW43V5MK176b7kd8vDNJatYA>
-X-ME-Received: <xmr:aoNoandtDQ42MXn6wBoWYA1DjCla7_EpsmB_iUDMsOogJKKpumqeKLTqTUKEGg>
-X-ME-Proxy-Cause: dmFkZTEyehosGDrX7K3E/QOll5f4laseRKTHb5EXYx6g/CSljkTyK31g3IhRDiB55hhpRD
-    +rj6sLLTD0TAT7a1nJudQaenOaU0Q6jK5rqmvXufpwIYH4DKRCeskDfAKHN3gUBRky2CHN
-    UhSqI4piK7mkQO2R4Aw7x87pfhDwGI73W92J/c1tXRrQe7AffmrnpfU+uu6DJT5c1/E/dT
-    O9lrj1TcFK6FzpMaIbm7xoPsGBMduVWfYzYAgkfOyQ+P9dzAUlUuX0zFB2lZdWSSp8DRmC
-    VV7sqWMMjXGNicieXSixPSHMw2e439xTLDc2pNBjzLhPrfNfnnxK0jfyj7sC40E4PJSpJq
-    NAWSrXzPUDBSPoYFlO6XEhhyqUSe/vFImDBq2g9YLHDhYpzCT5344zpofLOa9dlJ0vDGHs
-    xx5IM/OHQngE6vqpqa3YRLSm2ex7bALcbG3/Lj4eZMr6zIOSM/RQun1RdZJxT7OYb6F9Qy
-    8SVHdcD/UstGp8BqAbbHKLD30zXcBED8u2VmrAd21BmkFSmUU1sPjunbH3qhz+Lv8HLEnM
-    Q4VggKqr99LxIWHJ79TO1s1Ss2JcDQqCNfXlkRjiUHV63UeUzK5SoorTmND/V6Ezd6kKyE
-    8aKLdmRP2gCvWF3faEMPNJ0egFJDc9C5pic5o19aFNP12sAu6e1210B5IryQ
-X-ME-Proxy: <xmx:aoNoaqbc_D1ygYkAJW7Obc9xJEIpk_hDtBxAh4jzpaefUF1nxYy4Rg>
-    <xmx:aoNoalCPpud04phSjS5k1GV_imkGQKrNIsegsS9Krl14ZbLIlGWH7w>
-    <xmx:aoNoalLsNdrmPqQNMOZHfz6akZvAOTsFUcwN-B08lljVrUrtu3tUfQ>
-    <xmx:aoNoakowoblts5ut0D0t8TjzCr_mbWriI8OdXUyccoYugpWJy3ECFw>
-    <xmx:aoNoamOyTVFj5wfP5SLV9zq_xIPM1VYmIubpFyjM45WMbyuZbRtH8-cx>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 28 Jul 2026 06:24:42 -0400 (EDT)
-Date: Tue, 28 Jul 2026 11:24:40 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Hugh Dickins <hughd@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>, 
-	Kairui Song <ryncsn@gmail.com>, Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
-	David Hildenbrand <david@kernel.org>, Chris Arges <carges@cloudflare.com>, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH] mm/filemap: __filemap_add_folio() restore index before
- retrying
-Message-ID: <amiC5t0HLWar2NCf@thinkstation>
-References: <562fbfa6-dd6d-0b6a-2461-ed2ff1173bc8@google.com>
+	t=1785234727;
+	b=KY1xbanfqcBnmH8Or94xuISf8Z1XkyeRerQV3Pi/Qug6680VvxI06J8gURFt6wRlFej9b5
+	5Mr1VGqUnpZi23yx6V10B7/nQihlaK8v0jQ2A80Z18XqHJD2JSaLD8LKWgJ2bMvyNd1r+b
+	rOFlKq+o07PJIhEceMeM3nJrAtNrl1k=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1785234722;
+	bh=ECPB4sDjE6B4MA1/TyM93bXDTe4HCIWrfh13yJ+ccuA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=TpKx91go4eSW0Je9ZZiBDAC+Bft1uWQ1IAlsrI1kKAifC13FRdtA7yVm+Y1MLI7Fb
+	 2KKZpTJ/VA7E1ihf2AyshgdMbpv5NIpnUrczM2jPDKpc/H3nUg3N9BmW37ZNpvv2mW
+	 tTugJgL4GSZ7Gi8BeceUH7xhu87Bb2IySsjZ9nvQ=
+Received: from localhost.localdomain ([180.153.160.8])
+	by newxmesmtplogicsvrsza63-0.qq.com (NewEsmtp) with SMTP
+	id 8001CE0C; Tue, 28 Jul 2026 18:32:00 +0800
+X-QQ-mid: xmsmtpt1785234720t1z8bzqq0
+Message-ID: <tencent_F6BA5AC89695D952316A6ED3BFA3CEA2B308@qq.com>
+X-QQ-XMAILINFO: MhK4DKsBP06iLY1MReuiN1ygzIQAADTrGVr6/IyVY6eWiXKMHqeykY6kd/Om0h
+	 qcH+6WLkQ02lFhU2SXzis5hBuiqdcXeq8o3NepMHKzvEkMap2kYvRq0+DvWlAd+l6COxxZrsh/t/
+	 /DepOjdik3CBMz0VJq5S+e+mEy6XrLKMsrfHYu4SuHudCel8FuYIjzGMubbqJupfaWZpq2hr2txj
+	 JHSImZit+44d99jQjx2THBe7kBB1fE4akfEBfu8gEQdooXi1O9QODaKSF1TqVAwLDcpPprI0rT85
+	 9eBx1aXKf1WVeAPl2njpObCzavTPdOOrkU+M9r+EzKhlidzex7xBzpxtRFIQcRpvhnyG3JyDFzM0
+	 tjI+U0noTA/PPsK0PAJHUkZErXwAeo5ZMVurEWH+aBtrhBOey9q8CbvSKnBziJ4meEyLKcBwPuGo
+	 LmP0addyjlJEnwyyiXlcQkJBlFFcmAe6awPjdUuobdOLMZKxhKUtS6TGp+sufvd6ua1QKFxTfRk2
+	 Y+ee+34e9XUy1onw+l68qvz+jzy3uH7grF96Ov4fgLIcLs94Fqwde91o20nDKKqjjYpISNcaH13Q
+	 qqAeVVLXxX9B14+6dKA7nJmvpbFC0YZL0jSRn7QWWjej/FxQ99Sz4hDQibwliUl1uJbEd7BHuTeP
+	 WnZj3Gbw8NY101IFY9/bFs+QExFwWidTrGJMr4mdLYkT0KLA1pkoCf4fCyKxanMvpcYV4HqevwvB
+	 C0fK/5z7AOyPTCqNWmsuQYqGyOrY0KA/zY7Hx+sWx/bFlJogVqekBQF81hL5RpKLPMhxIS5iGYBi
+	 pqzaaFEiOLJF80t1fKIz8DjmUWacfZwz7shrY5ZNu6mbbY9UagbgcwREmTyi3MIxCtqrdTHSQWvc
+	 UD5a6XTNfWsKPdNEzm8v2z+XE8CWqrI7syKfEvkP+DnlG1y2CrQX8w1dNnQikr/NxA+fexhBVNJU
+	 Z2IC6xSy4WpSwaOXX99x8l0TWjoFZda0vWo+znHiIEPf2M0ojRZ4tswFb8uUscxg/7lJGEbz2xDM
+	 AKzCEs+FSO5Exk8ZO4/Klhywc5mqg=
+X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
+From: Jianlin Shi <shijianlin11@foxmail.com>
+To: akpm@linux-foundation.org
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/page_alloc: only update NUMA min ratios on sysctl write
+Date: Tue, 28 Jul 2026 18:31:58 +0800
+X-OQ-MSGID: <20260728103158.1573059-1-shijianlin11@foxmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260727155138.82e51e144237e66bff50bda9@linux-foundation.org>
+References: <tencent_5891052AF9A4C2D490A62F478D446F74AB09@qq.com> <20260727155138.82e51e144237e66bff50bda9@linux-foundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <562fbfa6-dd6d-0b6a-2461-ed2ff1173bc8@google.com>
-X-Rspamd-Queue-Id: E8E6EC000D
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: yek14c9pgy7tzxk3zu4a7w5s8wti47z1
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1785234284-757072
-X-HE-Meta: U2FsdGVkX1/54qTEbL7zofjUGpUStqBIf/P857b4Nb9+Y1Gu9ghgbE6sl6KyT2fRsnTDwZMo/oNuQ8t4fZ/M4mIvVp0n2MWjPLA6ANBb47JzRazHU4BLhmo5x9gYCAbTTX0b7MZMwXZRGYUnVZ46ME1+A+SWeZVE6j2iGKHNiEvAwhe1+K7M4cUxS5mLEANHUlHwrhCgKXZapkdLoeDyKncURINqMcxdg+SturRuKEvFnCFEX1LrhRL0TRFb4cpEhPOqjPyDIrjZeT1Fnms0xCkSHXjo/SoPxBCSJSHftpBfSCS6Hd91yFHPMd5QNP5RU3d/gsQLg4MA/xzclrr1ZtSCt7K4PT4P/aVZRNRbh7kdnD6YevzZtMiJDaeK6fhljIN+3pGC5ZhNoptDL2+1zAhwrUmcxaUrEdJlPCub1FnS4zS+5okGjh/Edtf37I8aU4WyKRy7OiGEEj2GsQvNtZQi9HgrcNa4cXeFIe7E91hcRexsnk9QroohPN43oOzINu0mjyGDH/eDolXPYFquNr6RVPQBxsgZnmJo7fnCRyBMcI0XNVuU/xEmum/kVGzsq5QfXDWF+qjKk6vH41m9+3TJPfOU+VbOfQGfseLCil5eXPbNmBBl7HzpCVk1NB73IDyE8kEe2vrEvZSRCPimv1YFND+k/1MMu+57wPmdayL1dP+UZhyN0XqWKzXLKasktjzIrMeSXIBxP70Tpox157sQSub4Z8t8CCNf0xHEVgdI/AtzDqTUKG5US8LwTkJTNHTwgb/Car31ohQS3inGRsWu+mmapq83UJLe10vylMSTUnZJk9s/lodtMfgiPZhRkPpUpW5N3OyUB3LeH8s0ZGsx9L7C97uIotae6D1ZBB4wv0xYr1FMv1RASj3+dSr3wxt9WFQS4tDuIwz1DJIr86KBtS4g3z2IDtEV0w1r7M1CiNfMkjvTnVknkKevMLjObbkC0SSn0y45PEOdeHJ
- vkmDIB6n
- W6WyzhzGKTOkYUIaZ/SBkpAKXQt8N6cQM6kuNLvqGJ/bbSblkcRf3IncA0FpjnVVsXY8f+lJk3aGSDL6OAFK3G+4EevkPWrqHnv7gL+fa1pDFd+K+zqB5PuFdlUAFM9VqIZ9jrP62hecwmJJCeU1gbArejfTqfDauNk9y77iv8lQ6enEOry3t1H9ZfmWf5xCEcctjfz+Hd70QugdkSGufHf+QgnfEVOp3tvOE+uMLh81BZ0ng46VV/Y1Pb4jMJe3tiEBrzcTjhISi25SD2bQrjmtACrtK9358NlWo3LkczTSrhgvrEw4wjQlOIlNHp1Xk+uZjNz7pk+yzABu9x7Lcfz7ID0L1ntI/WCstpFMCJaA9cB/+nbfU8GVKlg==
+X-Rspamd-Queue-Id: CE426C000D
+X-Rspamd-Server: rspam01
+X-Stat-Signature: pm4e4xchdda5w44a7br58muz9y4xo45u
+X-HE-Tag: 1785234725-311499
+X-HE-Meta: U2FsdGVkX1+T2aQ0iVTNw+2GkDwBlQWjlEsPfCmJRSKsDx9FbNtK16f0VNKgczygQAGAj9IK9+y9F2C2ijwuNKndQp27YII8U2Ea0lrji7QXDmVkrAJgxtoQGQQOOmnBnRRKhc0SpYitlVL+VidA0IB0OVIFsNsJicTsp22XVynYEiN7B00w4YmwTny/oIMySq/tiT0f+eGbf8qZ6Dsll2Vw2NTl/UuMtQtv48GwGBWQBJHCT+opgjgNgLfN511XnoiXUlvAG9eCY1Pg9IUtps10A3bAQHwhY1AnIBm6lR4ukePtuz4lcHSR05n3iXvTsdx4OfzV0TsgSbcZmbSYL8275xDxZAXnZWNQvpGyY+dbr8adMb/caSOan/z7NV+pvZk9aKJ9o+Vi5BNaeTnH8j7d0Zox3yIP8RHO3oVnF965h2ylUtqDEIJUleXJ1Y+q7sGyYmisfrD4TuK/FvsFx4XZlW2puJKHt7m6OLMLJMfG+MDdcUId38+5+/hkPJPeOD+V1uKtWypm+pnLtgXSJOdIomgw757pEGq/E7+Yb+EE3aL4l556bOoIZZPncdsiTZ3Rulp/Yc5hm/M7Fm6bvdOVuCeuKGd4siit4dxip2FDHJ6qe0UetnpHgKtN0mrtb+c956OdzpAEbixegArjHkrFgIAw0weWZCaW1CNtKrrhAT/lTytQJoMJJm5tqp2wCbin2B5eZ3Q6uGsRKO2oxeIaytoyi/cLhmZ/o2VCmAixcOw9PIs7I5tSVT/o4aQSgF4dlQ94g2SpsJmAJJergCn+vFmGxXAvwzjfEunhHQ9HBkbhKWGWH30/HveZHWJYqII8FSqVquMEQTz1XdL8PxQOVsrN8JfR4+usx7C3V5v3dfEo56Dt8hy5iYAqaO1Dz3ZsepJdUxPJYVLUQjz5UxyupOscNWZlXhFiB8eEENyZGUcgSUk+xC79RhwOzanWeipNE+IM0TcgieQqmvn
+ I4R4IooK
+ qP/O7qH7Cl9Sfx8U/M1Ju0L40qbuDCe0pQFxSmdFdwzUoJDcyeka4So1lUA3FxOJThE//OewlPE/Vx+OxkJgyRDd85w5RMZcz9nqyT7OBXu/He7Kw3Z9glGINatTUH5BFj72b1P1YojdVNn4UqiYm8qF8YmoiN/BV/ODpddVQ8bwiwrp7/bXkmalVL3TG8ghaznu7NZIc22VjM0b5iSTw6wU90gN1UJHok0RWzfggS2i7DLUMmxj9Pw015TIQRrNeTHkfn05f/ZuEuXiPqglTXxB9ukvx987xej3bKXauos111Xo6jt3wYa9wj78ts2H1JveTKHjGab1cFDzkr1ShOzyASdwfPJNXpdL5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,39 +105,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 27, 2026 at 10:24:14PM -0700, Hugh Dickins wrote:
-> In __filemap_add_folio()'s split-a-conflict loop, xas_set_order() is
-> applied repeatedly: each application modifies xas.xa_index, rounding it
-> down according to the split_order attempted at that stage: and if all
-> goes as intended, it eventually (or immediately) converges on an
-> xas_try_split() to the required folio_order, with xas.xa_index now the
-> same as index: then xas_store() puts the new folio into the xarray there.
-> 
-> But if a new node was needed, and GFP_NOWAIT allocation did not get one,
-> the lock is dropped, xas_nomem() used to allocate, and sequence retried.
-> If (that part of) the xarray is unchanged when the lock is reacquired,
-> no problem. But what if the conflict was meanwhile resolved by another
-> thread (perhaps even doing the same thing, inserting a folio at that same
-> index)? Isn't there a danger of now putting our folio into the xarray at
-> an intermediate rounded-down index? With !folio_contains() bug to follow,
-> when CONFIG_DEBUG_VM=y is checking for that.
-> 
-> Fix this with an xas_set_order() to restore the original xas.xa_index at
-> the bottom of the loop, so the retry does a full re-evaluation after
-> reacquiring the lock, and cannot reach xas_store() with the wrong index.
-> 
-> Production was suffering from rare SIGILLs and SIGSEGVs, executable text
-> found a page away from where it belonged, !folio_contains() bug hit when
-> debug enabled: symptoms not seen since this patch went in.
-> 
-> Fixes: 200a89c159a7 ("mm/filemap: use xas_try_split() in __filemap_add_folio()")
-> Signed-off-by: Hugh Dickins <hughd@google.com>
-> Cc: stable@vger.kernel.org
+On Mon, 27 Jul 2026 15:51:38 -0700 Andrew Morton wrote:
+> AI review points out that lowmem_reserve_ratio_sysctl_handler() has the
+> same issue:
+>
+> 	https://sashiko.dev/#/patchset/tencent_5891052AF9A4C2D490A62F478D446F74AB09@qq.com
+>
+> All these changes are non-backward-compatible userspace API changes.
+> It's really lame and somewhat unlikely, but we should give
+> consideration to this.  Perhaps there are systems out there which are
+> dependent on the side-effects of reads from these files.  We should be
+> careful about these things.
+>
+> So I suggest that these changes be proposed as two or three standalone
+> patches (independently revertible if problems are discovered) and that
+> each one contains a description of the worst-case regressions which
+> such oddball userspace might encounter.
 
-Makes sense to me.
+Hi Andrew,
 
-Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Thank you for taking another look, and for the careful note about
+possible userspace relying on read side-effects.  That is a fair point;
+I had not considered it.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+I believe the NUMA min_unmapped_ratio / min_slab_ratio change may
+already be present as 874611d193f2 ("mm/page_alloc: only update NUMA
+min ratios on sysctl write").  If I have that right, I will not resend
+that part.
+
+I will send only the remaining lowmem_reserve_ratio fix as a
+standalone patch, with a worst-case userspace note as you suggested.
+Please let me know if I misunderstood the tree state.
+
+Thanks,
+Jianlin
+
 
