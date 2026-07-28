@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0C7BC54F52
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 12:11:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D794EC54F52
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 12:12:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF31E6B009E; Tue, 28 Jul 2026 08:11:48 -0400 (EDT)
+	id 10FA06B009F; Tue, 28 Jul 2026 08:11:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E7B7D6B009F; Tue, 28 Jul 2026 08:11:48 -0400 (EDT)
+	id 0C01C6B00A0; Tue, 28 Jul 2026 08:11:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D6A2D6B00A0; Tue, 28 Jul 2026 08:11:48 -0400 (EDT)
+	id EA3386B00A1; Tue, 28 Jul 2026 08:11:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 95BB46B009E
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 08:11:48 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 00663120370
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B30FF6B009F
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 08:11:49 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 25F9DA14D5
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 12:11:49 +0000 (UTC)
+X-FDA: 85038071538.17.35DF99C
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com [209.85.218.69])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 68DF8C0002
 	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 12:11:47 +0000 (UTC)
-X-FDA: 85038071496.07.1C81D97
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com [209.85.218.70])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 4D4F61C000A
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 12:11:46 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="lRsX/Tg/";
-	spf=pass (imf20.hostedemail.com: domain of 3gJxoagkKCLUoVmpinVcpbjjbgZ.Xjhgdips-hhfqVXf.jmb@flex--tarunsahu.bounces.google.com designates 209.85.218.70 as permitted sender) smtp.mailfrom=3gJxoagkKCLUoVmpinVcpbjjbgZ.Xjhgdips-hhfqVXf.jmb@flex--tarunsahu.bounces.google.com;
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=JM0mOlqH;
+	spf=pass (imf10.hostedemail.com: domain of 3gZxoagkKCLYpWnqjoWdqckkcha.Ykihejqt-iigrWYg.knc@flex--tarunsahu.bounces.google.com designates 209.85.218.69 as permitted sender) smtp.mailfrom=3gZxoagkKCLYpWnqjoWdqckkcha.Ykihejqt-iigrWYg.knc@flex--tarunsahu.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785240706;
+	s=arc-20220608; t=1785240707;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MlhSbTxVjdyQy53nJTV53rS/2kuy2sPn8hGnbbTr+U4=;
-	b=riPWAW0tV2yQQf9K9YQDlkyA1S88cU04qTl0yEXIeujrtC5rfR78TwKtP3T6E8ouDyLoOB
-	NebFOtUaTST/wTAisjQViyi7GnqDJ8UcBHihA0Xot7d6qrjCH46F6NuTgI2iiApQydvBUU
-	HIkYkL1b82dO9psVhmctsfnnVraHorM=
+	bh=9QAs69nEaOS4rmhD2Q9ekgaAb43dU/I2zqcKzZYHR6c=;
+	b=v055D71SLwpPzigICE2DMnzwJcR5FfqGP25p/yawIfzxRrhhNEmdycpjvAqtjvz6XeNBFm
+	jQO+Yse6lmdrWy1AUAH5tXaEmsnhiQsBe0VNri8mkURT7onrY3i2FvibvfxD3qTpcqwlU5
+	KaH2t6iq2v0aLTHvi6Rc7D5ZiqCE5Pc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785240706;
-	b=aDE1j1PrsZtVdp2rbOmQbqot3HSnBjHVu2gIEYrZ6CogRBsPFNeOwTndPOoKSt6yEmE70N
-	YkXdR9ObNB2WNQFn6n2wOqg97onDWLkNw/xryF5vgAqRofP9u9RWXzLgvgCjugBFK1+Adb
-	my1EyDLIkCut96cOicU0t0aeA7zTf5c=
+	t=1785240707;
+	b=E/+U6Fev43/AKSkXCNih7CoXhebk9QCP/CeA03sdk+DJKh6eYtWRbEvnjNHU5CNoGaNf9v
+	oveTQvDsst0AwqEYIUX2EmQRH4wTJMuueTTZtNq2xe5i4l41pp4eyh+HAr99JolbuSogkH
+	C28QdWxb2zoV8uqPY9F7ykH4WZgCApQ=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="lRsX/Tg/";
-	spf=pass (imf20.hostedemail.com: domain of 3gJxoagkKCLUoVmpinVcpbjjbgZ.Xjhgdips-hhfqVXf.jmb@flex--tarunsahu.bounces.google.com designates 209.85.218.70 as permitted sender) smtp.mailfrom=3gJxoagkKCLUoVmpinVcpbjjbgZ.Xjhgdips-hhfqVXf.jmb@flex--tarunsahu.bounces.google.com;
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=JM0mOlqH;
+	spf=pass (imf10.hostedemail.com: domain of 3gZxoagkKCLYpWnqjoWdqckkcha.Ykihejqt-iigrWYg.knc@flex--tarunsahu.bounces.google.com designates 209.85.218.69 as permitted sender) smtp.mailfrom=3gZxoagkKCLYpWnqjoWdqckkcha.Ykihejqt-iigrWYg.knc@flex--tarunsahu.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-c15ddb61f13so382916266b.0
-        for <linux-mm@kvack.org>; Tue, 28 Jul 2026 05:11:46 -0700 (PDT)
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c15f4732dfaso424233466b.3
+        for <linux-mm@kvack.org>; Tue, 28 Jul 2026 05:11:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785240705; x=1785845505; darn=kvack.org;
+        d=google.com; s=20251104; t=1785240706; x=1785845506; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=MlhSbTxVjdyQy53nJTV53rS/2kuy2sPn8hGnbbTr+U4=;
-        b=lRsX/Tg/HS+BuG51gtO9PqSngBLjIaVVOUYXe2bmbxDlXDtugMIf2F4fs7Jfos84A3
-         +EPyUtgHPolbcoS80fnZ4ZtKmng7aCc2S4xyxBeQn1T0hoYDrXmfLzdwuB32ydKqHo1V
-         lAB7T95CVikc6xuLiBToISyI86Hg55DAZol84qQPJqnU7YuwL44N79UBgbjAR8FgnY7k
-         J/lv6uSB9NOLlOxYEwyOpx2Wi2JuBrI/VZBRyIInHuac2mdS7ksnt6HeH6a8uGII32c4
-         i8EiRwYva7EgX/e/ty1UM64FaOkzO/G2yMrcI/B7ZSEyY8URoZDkfzLsca6JkwuZYnGi
-         l9CA==
+        bh=9QAs69nEaOS4rmhD2Q9ekgaAb43dU/I2zqcKzZYHR6c=;
+        b=JM0mOlqHKS+6HbJS10HQs5CK5V1PBJfFvQbymBniEZx1DbgUV3/Qb4O2AK/psXR9k8
+         V4hg6sW/fBRfvd9rG86T9sBzil6nBP9BywP+XE/R6WEW9JI4IZpRetUlkYkFmPiHCDsz
+         FX41UterPYcoWlIqb0z3Xtg0l4NKHd0GXDg2dxYX7dhjfrb7Y+yNN/7Xm/xdb5JXY07S
+         jVvnV19wgX2eV8hE5F6zq0zV3kRNfeUqNilhtcrXrbGLGNa8BwjisCE4/2xYzirfPcmc
+         PMVEMQBOe8lZypiAuuV0Hh04RzJiRB1lShLmW4lwNuRIpol8fO6yd+oj5p9epvqMPZSZ
+         gUTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785240705; x=1785845505;
+        d=1e100.net; s=20251104; t=1785240706; x=1785845506;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=MlhSbTxVjdyQy53nJTV53rS/2kuy2sPn8hGnbbTr+U4=;
-        b=VGFVxl2HlYR9GSAD7qpC5NHvsbgx+/6Jmqsb1uy8LLOspEiPGNIHi9hyprpTbSD/IN
-         izbz26NACxdWdiScAZu/FZdxTtsm+rScCYaYl2v/sl24k/CUNvVr6EftwL2kUnNBUanQ
-         qSHs6jnlorvD8S6CIhaYzHqQzolkJhMLxUppNRKsNZ9BwVAB7CTxXEDjhIzEsRi+IQPg
-         QhN5tOzZKZqpJasrYWBxzr4hDbE7J/r3Xf0vMccp6E5ImbbPjoMOtlIAG8irQODXKlUd
-         miVlwOkMq3E14D4xW/iFHypovDkFCTJQjZHMv3NfHLivv4GlyoQvymt0IEEe7/LMtz6h
-         flMg==
-X-Forwarded-Encrypted: i=1; AHgh+RpVcSf1XoK7B6E7Acc+ckokFE1ifDJfMrJpcBcbfeJE4UrKYaAPen8eEC2KAhpJZ26p/pl6OvkRFw==@kvack.org
-X-Gm-Message-State: AOJu0YwTBO2gO8AtLKYr25DYyqRAzXRFo5MGiiKRirCM4hAXJ3tFQJ3U
-	etBBY4hs0V/uZ+UwGfFHzHq7AX8Xj2i375LNcwhuo8s0LFXXoIw+daWrzGiXo/fY2t477oMNxZj
-	0xBVXG6m+NaVWcySS+A==
-X-Received: from ejqm4.prod.google.com ([2002:a17:906:5804:b0:c12:3a41:5220])
+        bh=9QAs69nEaOS4rmhD2Q9ekgaAb43dU/I2zqcKzZYHR6c=;
+        b=lCSaPI0+gwkIycyUIm99sNlkJJoBpylup3o0VGQiXEwHMBaRIvq3MRsTNSerFv3fRL
+         P4LxNAvDlNfJiRNm9vVjpS3Fbkaegli7dcYYNZbaXCPE25TFRZ1wBFXpTu3VFzE9Sw4l
+         AvMYIRywBtUpXpeVir71UFqpg2IVc1HfT+s5XkH4+b1+Viyn51qeZYXWTbEPDuyEwPPw
+         IIUgmxHGdKPbOAkx+CDoyeLI2COA6m1rKdainp593zhIFo4uljv60RO0bMX35EZ0c5rk
+         8M0uam4bLCD4OcCJYM1UvK9KEA8+Bn0JRM6EqlPzskpnrL4ZHEk5EynBoVDk7poubxsC
+         ds0Q==
+X-Forwarded-Encrypted: i=1; AHgh+RrJ6uUTmIGDNf0ae4fccCZV/tGuhy3tOMmXDv2JBl7XYu4wny4af5GMvODJ9DMpLbrRudprw+2Y3g==@kvack.org
+X-Gm-Message-State: AOJu0YwlB3LQwV+z7me2M71odtqzqywEdCk2ZOWMt8GBi+UI0MbPy2Sn
+	Mh/2GKMBRG0Xv6eyG0I4Wq43dulXZ0OSnJQCKGw7n/HGTgfaj2FUjsLQwqJ/LXK0Ld7v3qHGKHL
+	CAQhgfrOP9ToIlRN8Fg==
+X-Received: from ejit16.prod.google.com ([2002:a17:906:3e50:b0:c15:8b2e:2c2a])
  (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:1c0a:b0:c12:8b1c:454f with SMTP id a640c23a62f3a-c1f71cf9b88mr103366866b.2.1785240704443;
- Tue, 28 Jul 2026 05:11:44 -0700 (PDT)
-Date: Tue, 28 Jul 2026 12:11:30 +0000
+ 2002:a17:907:3f96:b0:c12:96af:acf7 with SMTP id a640c23a62f3a-c1f7215156cmr114258866b.43.1785240705336;
+ Tue, 28 Jul 2026 05:11:45 -0700 (PDT)
+Date: Tue, 28 Jul 2026 12:11:31 +0000
 In-Reply-To: <20260728121138.1103610-1-tarunsahu@google.com>
 Mime-Version: 1.0
 References: <20260728121138.1103610-1-tarunsahu@google.com>
 X-Mailer: git-send-email 2.55.0.229.g6434b31f56-goog
-Message-ID: <20260728121138.1103610-4-tarunsahu@google.com>
-Subject: [PATCH v4 03/11] KVM: Export kvm_uevent_notify_vm_create()
+Message-ID: <20260728121138.1103610-5-tarunsahu@google.com>
+Subject: [PATCH v4 04/11] KVM: Track weak reference to vm_file in struct kvm
 From: Tarun Sahu <tarunsahu@google.com>
 To: ackerleytng@google.com, fuad.tabba@linux.dev, 
 	Andrew Morton <akpm@linux-foundation.org>, seanjc@google.com, dmatlack@google.com, 
@@ -104,14 +104,14 @@ Cc: linux-kselftest@vger.kernel.org, andre.przywara@arm.com,
 	linux-doc@vger.kernel.org, David Hildenbrand <david@kernel.org>, yan.y.zhao@intel.com, 
 	kexec@lists.infradead.org, suzuki.poulose@arm.com
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 4D4F61C000A
-X-Stat-Signature: tqdzwpy9zwoxf47g8khr5bb13nu3a1wu
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 68DF8C0002
+X-Stat-Signature: xpzzzqz7j6dwwnj1795q6bawxkxiraqt
 X-Rspam-User: 
-X-HE-Tag: 1785240706-220543
-X-HE-Meta: U2FsdGVkX1+VLhQmPzWNh2wCrybE52nM54rHd4y5R4hV5pWHE1RgEfDL7JM6jEoPC5f1gFvr4wbUfSF6Uw2Pkvq9foIjEDXPotCY4JUfqZB5LgTzbvqCmNrwE4WB0utX/xzau36NsIU7RgNvWPwb7CwnTSXlJz3ysFsdlP5qBj01vXCNqNgMMjfB5kBywm5C8VZLCMGKs0vFC6odWCY449JGn6ShyZCfOGknW9d8i5pu8xvzC429+YtlzdgTF6eBLghavL3gI7IHmhbJOITLe84TxIN62wFuld7VdEeF+/G8weEHfKw2pejyQUT/zU9ove5qlEvXGdB2wSxKJ/XJGXWQs7xXOaZprjgnzKTsbppPkgkQEsMxU/jyJdkk1d5d8AHrBh4+4z/ZnaRAr3pDHqSv/Whcxpvt785e74tmITkOPZbVIYxlUIzJJozI0Ni8QpQc24RJ7syt+DvI21K07lHFsQP/AH3TZ2+nSa2WPaovLypDRr2SOFwJPluju1zGY217Bjry83lh216wFsYdQh+kEBCfwRf8WIzD7Y/PNLOBoRx8NTS+rjfD5VBCNiWFk2W1OoGuiL2gP6pb+5lyRt0npsUTkwrubw9L7UqLEQj6bNwKuS7kSs7nO6em+z6acE307kt7TLFTGYLVWB8CmVxyTjdkpBYXt/tdxoURgGJRtziFQjwIO66vBWDVrqVoObQkPir3Ca2lpsXZY5tUs/W3/TFAKKQQZeUTSa2k3SFZmOjwLNrONmh8llnm59IlA5+anTivKiPt9he6p2dMkouDws9o3MIGsGszCQ0FAbKSBTTAysdZgSSSKinW4MqkGN6qSFh2tpTKPS6EJj+8HdYBCbgCjS0D5UgBdESzBe9qjIXR8ZVb9Jv7KBqmhUClojZwpuYH9MRQQSVBOsb9Leier2GX9Lw12rFZduT369wKFmXltI41SCeWqtCwVNruhS8XLJeU5A8VkT5txx8
- PilaiFoA
- VxG4MZsSiCATS9ENVgDdgecDiNIeOgPELJzk2wLDCGQzF7d+weWRJjRhf1itZeylkTp88/htM1I335aynGOidDETxsrNrlefUEeZqFnb1IAuy/2h8qxbGo84LMzMVIrfFjSlP8M0irbAFaORQNU+zZGPwGaP+zWTV9wkSGgnOpwIbso7Fq0p5+BAqRu/uOiMHbd2zQZ8sAwoC68jKM8eZ3zK5litppxsyZaNntdCQ+kI58FTDYUJz8gWGA540VAND85P8nb7FAillwcdjxN0Wnp6I8T2fe6yRwasYoZvwnO1RJwXDMAvvtHqR2Qes25xVdXvs99Qy7N4AC9IA/hyxdmhfw7AaYsIIKhUj/CkKimsbfsL0U7tsAZRfXDR3jZsv3ZRHn0gWMt5uhEeKM6+F4obPvmnwMSSLstPStdPhddFp+b1Ew9W1imvUOFShhJJlSqI9TEHYRN7YBwT1/zSQcd+2s65ZeYqtO5JeU35n5SDsQ6YiBLVtCnUlkt/JOmJvtunzgVYn40Q3iIdtdqw18P4Z9zMI1AmWdJkaHNMuugE6TOw2+59X9Go5OlqeqeXuijuPGnTpyegZX6z9cvPdeoAK35hGDRPSXw8Fj7aTNQmtU2NW6sdzGVv2jG6PU/Iron1Ym9W/1XdltO/TTpqNynOcXq5x0kq57f0mvkeBL+f4ipQ=
+X-HE-Tag: 1785240707-411930
+X-HE-Meta: U2FsdGVkX18+khwqzU0xIRHdaEUnjBgAPP84/krRjeBHd8EZu1O432Vnl4KkkdszPVAuQkvRs4MH1MtApC30nqgsXiSjNKeZ24sbDHQ75neyjOmltyljvwDf+SoaD7oacu2iIrZauK21saBQYrCZX/Mwt+l+XfDJP8ISzjf977z9PP6znPEnqhz913ofW0rXWvzLA+8M1kY1BbwN6jdwDfODscjKo70W/nCuQgWu1WDwqS3wrxgqJNnlZCcSSytQSIFMDhKeX+49Fe2So9Fhxn30JM1ou9FAj6dhxYBjUpTPLSTbwMhthb3Ee8VBhI+fEwJDQxXf3z9Zx5lqc05CmUJuP9b5qSsdpS5QmUKpPO1IozsadBkYaGefujFizrSQHyygb3dQDkDoU2k9kvDKgc2kh9p8V0PsgfXY3i0lbq+G0M9nkhOvcYkwYTBGfWPTtd3/t+j+v4pC8x40GBkpxr7EGnABpSOgESjWkZUQbeNHzvoP1MYD3MGAtfiHYEbaFBjHgXzwHJzE2TtBdbDZl31ZAuPuLKxfE4JkipXTfafYbTQ2f1K9XVaGsUXNw2MrchsE/Xqy0oxY5aI3Npi/Swz6vFVblcwNVpTCuTBFhJGhXJNjWvgsjyzwrF6CeUjrHa17qq71Rh8BuBP+/vgCb9hXaBhqNrJ2kHgmEFtr7vNvSiKBzc4hkahfVD1f6Tg3CD1DgcNHav0HjfSVzHRFSQJmAAXmmBOdDaXLRAY3OtHuNdoQr/0FDeUlmUKA6HPBZleNF1dii7XVictAr5oKQb7V55vRf5ZDSd/bktqcv7DZD429d3GdGouhOZp7YKmSxtIqph0QTVoEaFpfyylIezC8irmgL5/8W01K+cVWiIZhviCQelX3ytzZaogPidUGNmsm1BYAsQ6Mr4EIWa7/nsvWpNMwP/HCFFdWLSnwW+5X0KCpxxI843arEE5cgE16EN4VHNCDJptA8Ze/BT5
+ FoYb9TNR
+ wvHpAnRd8Jmc6VQtkN1H587aYQHDbsDNSozfM+DkccXD2GytzQLPIEcRGz+PpBNXJ4vqwj2A30NNIO9bSx/irkDUA96soF6d3HBPUXxs6HREQ95L3E6mVW0S2kzXxECp7ZXwAvuDQBojtzbe6U8brsPUT6p1YiVASwWfFaMq7GZo2f89dBEROI7ao5GO9zHjCb7q5BvNDeK0FkYJutkV0HnUQLWz73/x0QUkVJ/j+mNzZWm9bqRtAn/nAN/RC7z/9/TkNjZsmfHYKCAw1WGwPi7K9SYEgMiCnn1KXI/7vUttGAh/1AaTiaU18QXAehm/e0/eG1qwH7piXCQsL9kLdfWcw4dtO5EpR2iooS48adfHkGEdibuaw/eN8eu3hD1xUy//G4b2sfH+GL0T8QKk4MZJIw4Gl8d9Tc6fG8R45wjtLqCTRpqoSrN3XnJ6qiyPrfAKeG2Edbal4a64dpumIesstF2cfqmARLNMVphRhdfaEu/LJQ3sGtW2XZKDnzZ969sl1iVACMOcIvD1zy0bP10v2FKewbjREdSEpfXKL2px3bptegaPWv9HfBLKucyGZ8lcFDlSLoVVeUumtJUWv9P+hCgblOMBc4mvbgT/Xx4ZEwXiXXLp9l2+k3iN9cXf9/kMrg1SjB8kufwsWouHZfMqprg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,43 +119,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-- Export kvm_uevent_notify_vm_create() to allow triggering KVM event
-  notifications during VM creation.
+- Add a weak reference 'vm_file' in struct kvm under
+  CONFIG_LIVEUPDATE_GUEST_MEMFD to enable reverse file resolution
+  without circular lifetime dependencies.
 
 Signed-off-by: Tarun Sahu <tarunsahu@google.com>
 ---
- include/linux/kvm_host.h | 1 +
- virt/kvm/kvm_main.c      | 5 +++++
- 2 files changed, 6 insertions(+)
+ include/linux/kvm_host.h | 12 ++++++++++++
+ virt/kvm/kvm_main.c      | 26 ++++++++++++++++++++++++++
+ 2 files changed, 38 insertions(+)
 
 diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 79b084887cdb..d9908c19e42f 100644
+index d9908c19e42f..8da9589425ee 100644
 --- a/include/linux/kvm_host.h
 +++ b/include/linux/kvm_host.h
-@@ -1076,6 +1076,7 @@ void kvm_put_kvm(struct kvm *kvm);
- bool file_is_kvm(struct file *file);
- struct file *kvm_create_vm_file(unsigned long type, const char *fdname);
- void kvm_put_kvm_no_destroy(struct kvm *kvm);
-+void kvm_uevent_notify_vm_create(struct kvm *kvm);
- 
- static inline struct kvm_memslots *__kvm_memslots(struct kvm *kvm, int as_id)
- {
+@@ -874,6 +874,18 @@ struct kvm {
+ #ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
+ 	/* Protected by slots_lock (for writes) and RCU (for reads) */
+ 	struct xarray mem_attr_array;
++#endif
++#ifdef CONFIG_LIVEUPDATE_GUEST_MEMFD
++	/*
++	 * Weak reference to the VFS file backing this KVM instance. Stored
++	 * without incrementing the file refcount to prevent a circular lifetime
++	 * dependency (since file->private_data already pins this struct kvm).
++	 * Used exclusively to resolve the file pointer back from struct kvm.
++	 *
++	 * Written/cleared via rcu_assign_pointer() and read locklessly under
++	 * RCU (e.g. via get_file_active() to prevent ABA races).
++	 */
++	struct file __rcu *vm_file;
+ #endif
+ 	char stats_id[KVM_STATS_NAME_SIZE];
+ };
 diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 3339b8fcd59f..701d4596a91c 100644
+index 701d4596a91c..14c32541ae34 100644
 --- a/virt/kvm/kvm_main.c
 +++ b/virt/kvm/kvm_main.c
-@@ -6348,6 +6348,11 @@ static void kvm_uevent_notify_change(unsigned int type, struct kvm *kvm)
- 	kfree(env);
- }
- 
-+void kvm_uevent_notify_vm_create(struct kvm *kvm)
-+{
-+	kvm_uevent_notify_change(KVM_EVENT_CREATE_VM, kvm);
-+}
-+
- static void kvm_init_debug(void)
+@@ -1346,6 +1346,19 @@ static int kvm_vm_release(struct inode *inode, struct file *filp)
  {
- 	const struct file_operations *fops;
+ 	struct kvm *kvm = filp->private_data;
+ 
++#ifdef CONFIG_LIVEUPDATE_GUEST_MEMFD
++	/*
++	 * Clear the weak reference of the vm file.
++	 * In case vm file is closed by userspace, but kvm still has
++	 * other users like vCPUs, clearing this pointer ensures
++	 * that we don't have a dangling pointer to a closed file.
++	 *
++	 * Cleared via rcu_assign_pointer() to ensure proper memory visibility
++	 * for concurrent lockless readers under RCU.
++	 */
++	rcu_assign_pointer(kvm->vm_file, NULL);
++#endif
++
+ 	kvm_irqfd_release(kvm);
+ 
+ 	kvm_put_kvm(kvm);
+@@ -5488,6 +5501,19 @@ struct file *kvm_create_vm_file(unsigned long type, const char *fdname)
+ 		return file;
+ 	}
+ 
++#ifdef CONFIG_LIVEUPDATE_GUEST_MEMFD
++	/*
++	 * Weak reference to the file (without get_file()) to prevent a circular
++	 * dependency. Safe because the file's release path clears this pointer
++	 * and drops its reference to the VM.
++	 *
++	 * Written via rcu_assign_pointer() because the pointer can be read
++	 * locklessly under RCU (e.g., in kvm_gmem_luo_preserve() via
++	 * get_file_active() to prevent lockless ABA races).
++	 */
++	rcu_assign_pointer(kvm->vm_file, file);
++#endif
++
+ 	/*
+ 	 * Don't call kvm_put_kvm anymore at this point; file->f_op is
+ 	 * already set, with ->release() being kvm_vm_release().  In error
 -- 
 2.55.0.229.g6434b31f56-goog
 
