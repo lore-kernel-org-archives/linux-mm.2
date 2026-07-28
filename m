@@ -4,82 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 900B0C54F54
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 19:06:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E409EC54F54
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 19:16:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 46EE16B007B; Tue, 28 Jul 2026 15:06:52 -0400 (EDT)
+	id 93D166B0093; Tue, 28 Jul 2026 15:16:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 420926B009B; Tue, 28 Jul 2026 15:06:52 -0400 (EDT)
+	id 915146B0096; Tue, 28 Jul 2026 15:16:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 318AE6B007B; Tue, 28 Jul 2026 15:06:52 -0400 (EDT)
+	id 803DD6B0098; Tue, 28 Jul 2026 15:16:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DD4E76B007B
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 15:06:51 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4919816049C
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 19:06:51 +0000 (UTC)
-X-FDA: 85039117422.23.C967D6C
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 481106B0093
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 15:16:26 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BC0EBA04A0
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 19:16:25 +0000 (UTC)
+X-FDA: 85039141530.07.1BA799D
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 75BD6C0009
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 19:06:49 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Jx3hyKmp;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf18.hostedemail.com (Postfix) with ESMTP id 9F77A1C0006
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 19:16:23 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="oshJ75d/";
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785265609;
+	s=arc-20220608; t=1785266183;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kS5Ahv5hQkigaERDueET9kXWoep0bjurNYYMquRhpgk=;
-	b=RUhOzLDKgv3K7aAsp+G4yvMhZ2WtYTcZ8cp9NnDUalEBPYA5vwoh/P44i2A2Vpc8RQ06xU
-	qvgoX4yU0XzPlsok+FltBgGhPKSgU4Iqm1AoqrEtY4hRYTlXaSpEj6douVxqBP99xDlq7z
-	lgxui69/Qgi80DmgoGk/Qi5zTTUDk4k=
+	bh=Ucma//m7I9ZjolPSJuaz8kY1G6WksJd+BgRCHn1VKVw=;
+	b=pB8Pl7lAA5JGtsZc23th69AAkX/PnemLKwldVZUdFkFtk+4YukgRoYpjXLrGkUxHsO1zgn
+	q1kF9dEPbullxWfg3uwxrNZKB8oRDmNA5/9EoA/w4f30pzrs4OVLZXEX5xZXhPzUeCxLOD
+	9EL/Ij+YlQlKZQTvrPTHfLSbFircPKY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785265609;
-	b=FPt3wGHl5ewZ1fNMWxTuhXRNsGA6eebAVOJODg+wpk3vXFJHAHQ+t5gT9spZZz69Klttgz
-	U31qJ33fyLncQsTVEOz9h3ID6tVr2SEeVMIhyi7a3ROG8/LD/Q37HF/i0THjRCu57Vl9j5
-	T9zF32z/U1WQDfkAcpnjyWlxWc47Ox8=
+	t=1785266183;
+	b=o+sYfN7MrZUMByGSwpXtQ9jNamODBFuyiVEthk0loDKcTDOhfXWLt6X14MlY+jxz9D8/10
+	ZkFWYbzfixZ6YZfaGhBcJHf+XQeNI76Bs/txdusz94Fg2edg4rGmWOOy1JgBYydzoMX7A5
+	C4BSLj7jZG43B0Ka+HlrZmQ6zmwG8Kc=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Jx3hyKmp;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="oshJ75d/";
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 94F58600FC;
-	Tue, 28 Jul 2026 19:06:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CE0C1F000E9;
-	Tue, 28 Jul 2026 19:06:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1C7F0600FC;
+	Tue, 28 Jul 2026 19:16:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82D0B1F000E9;
+	Tue, 28 Jul 2026 19:16:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785265608;
-	bh=kS5Ahv5hQkigaERDueET9kXWoep0bjurNYYMquRhpgk=;
+	s=k20260515; t=1785266182;
+	bh=Ucma//m7I9ZjolPSJuaz8kY1G6WksJd+BgRCHn1VKVw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Jx3hyKmpQyVSEPuGQT9uPq1Lhrnp5I1P7jdiGbpZ2JXtgPmWmdk7NZbALHV7ckZv4
-	 j/8c/aRCOL7zhaPU6PfmpYlv3Qzj0xlJNHnSWwCq7CzNOuQILedY3apjyT7kW0UHIF
-	 y0RGgeN1NpGcd3TUD36gKEuOo2Y7LOAONG3V1nXpnckDyon+j0tceMFi8jctAYXHia
-	 +vGqoE/pMeIPX2FP5VLUwoUfxAN0u2Mwv3OqaHpI50eZkm4pPL+fjU2XPeBEv4ZDvd
-	 VJ72GNPROgSCvNmXhVda6VBbBII48KMFsYL77IImvwjr6f7Krknr28Qiodelc77/wM
-	 Z/kZrU1iLCCBA==
-Message-ID: <744290ab-b5b3-40b4-bb70-006231fcb328@kernel.org>
-Date: Tue, 28 Jul 2026 21:06:42 +0200
+	b=oshJ75d/nhkILilXbfV+QYhEmihij01Vum5PFtjMxq73JzWFICXk86FGO5ZyFSTC3
+	 rejygIKvtGle9tNtPtQo0OeEqVo0/bUCFuwXGdnZQGNiF6hpbe3LPqM5VMCDp0uzhH
+	 OxwBtaGdrWhPaQbP9KlN2FbmQVh/RKAILqV+Tu5W9Cz1hPWssKkayMaiDehnRuOw/X
+	 8loLKNifFWSA6ty+JdDc0/m+X6nVSSk4MQwj7hW3Rvnc0ULgcrAl0XOgnmEY47/TOi
+	 Or1I4z9+/1zFVdGezFCCxMAMe1lAb+fUYM00ZX/M81MtnO6ovXRm8vUTF7WFRx0ERq
+	 VBZ1qZqI6hn4A==
+Message-ID: <04d881f4-419c-450e-b9b4-1341497fa93a@kernel.org>
+Date: Tue, 28 Jul 2026 21:16:08 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mm: unpoison pages in memory-failure teardown
-To: Muhammad Usama Anjum <usama.anjum@arm.com>
-Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, Miaohe Lin <linmiaohe@huawei.com>,
- Naoya Horiguchi <nao.horiguchi@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+Subject: Re: [PATCH RFC] mm/huge_memory: eliminate reference-counted huge zero
+ folio
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
  Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>
-References: <20260727095415.385026-1-usama.anjum@arm.com>
- <a811c371-ef3d-4932-a9d4-2390a98e1382@kernel.org>
- <9a289152-70c1-4e13-a0d5-f77bdee72d8a@arm.com>
+ Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Heiko Carstens <hca@linux.ibm.com>,
+ Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev
+ <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, Alexander Viro
+ <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>,
+ Jan Kara <jack@suse.cz>, Dan Williams <djbw@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>, Kees Cook <kees@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
+ Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
+ K Prateek Nayak <kprateek.nayak@amd.com>, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-s390@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ nvdimm@lists.linux.dev, Pankaj Raghav <pankaj.raghav@linux.dev>
+References: <20260728-persist-huge-zero-folio-v1-1-e7b604eaf416@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +143,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <9a289152-70c1-4e13-a0d5-f77bdee72d8a@arm.com>
+In-Reply-To: <20260728-persist-huge-zero-folio-v1-1-e7b604eaf416@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 5os6orbduwnjz9gwsnsrcjg1thasbedy
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 9F77A1C0006
+X-Stat-Signature: snhz5y5eyazcjqaeh1mk1sprz545jit8
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 75BD6C0009
-X-HE-Tag: 1785265609-529102
-X-HE-Meta: U2FsdGVkX1/hAo8HassdG+T8JaB5R8YXbp40EdYQA60U2NeFGY0b44qqSZx1Vp5B8ZF3DsbCx2mEKLkwkW6jl3dAg2kWz7+QzNvcG2xJqLeWgeJ5sH/JEhEAS5R+jxGiFQL+vawULzHQGeewYLATVhltY9PydbQSNLa8vqu1I0THyTT/Ip9vj9qUFyBb8qLVThUpytwWHMrPb+ZMwpPS184HDdBKFTgqOqCbDOHzR5OleesYSx1RuJiFeCKhQL5Ftv2VDiK/BUykW4yPeNoOtDpKMqvitD8KiOewq2/sWJhoNtsiy/6OXA46fp5YI4ylb0ZI3Xsj1PfgdrBk45oA1KSfoCIAVOT3vmtlqVdtH0GuuRIFawR9LCMFg1pYvfVmKhB56LobmULCPrCLSF88CFIi7quKj8Yt0sOoNVIqDLTpJaoubYS0lubwXhVyYCFseWNyUaP+8grXzHOPKy7vBVE1Q/gX1ftddsIOcH8RB0eZvikNEIIiH5JB+bD8i/XZbkCmQlzN3xnTj9qXh9/l3G7/4WZPJZJdfI0LKB+ORd7NNFoTJqbfUpM0fjrJIfh1HXgK4bNLRwgX3fUDMjhMboQh3GYv5D514Ss6EIVXtrhblSO0MpCJ5vWRGvELFSZwiXexS059nITs4mCeDe4l+g5cjTexIhwclWO8hhqPekqFNJPjIsbTPzXFDqS6keXmagvbzQ7tm4vg/mxpxFtVZ96EROoF+ob3kEZa+sq7nb9ALJb6Q8FA7MEMHLo4hRjeRH1d4zf5+RgtNcSWye6z56Z4j8E3KMQctVc/Rtbzeq6BjRyAyI8Pnm99Z0pzMttwo/ktHFRVTzAePO0T93vIMGh3pXHo1ErhgL+ib2I7NT3BcGG2bRASjs6UXJSlEpAPRcWh8bZKm6yLn1CQ5JNvvV8rsc6WXtEZuO4m/rojIJQBArehpaU3zk02lMTQ4x1fcnvSW2oc/5Om/4iiidT
- EeP1T4tS
- j9pHuYB3upbXLdIIQWVMEMeHns0GK9uPmPPoz6yXoHs3HIgbFr4aD+RTG12oeDAoZJM+R2nqxHSqaImo2pzVN0Tl76CuoHLwByKRAMftdprc7gVZJntTcFNat0YFPN5JzsK/QquE/XpFOUSf9e6fvcumaGjImE4cQ49Hg/97KBrvlkg+p6g0/LYL567fGNS4MtGTCM9nW268ChAuDQmTQmp2TePIwxPcIBri3ifx19epAlvdAHSbFWyibarPc85sal664J3i+qTzEFFNjNiCWKFJxu8N5V7LzcuWdAB0+tNFIpU34RQcAyiA6roVutBiCZclt/WHeXI42q+A2EJw2bb+CdAuaCQFIntJeGtR9f4nRnbt1qT9QHQiCEfz97CVPjyP6FYkBjR3qPZaGknY9TRIZ2MiyK8uGz7bxpkDtICpFFItBYTXM4h3qRg==
+X-HE-Tag: 1785266183-791955
+X-HE-Meta: U2FsdGVkX18E9jcQjNeN+7qk8xcFnsl4Cw63eRduhwSeOe2prKW+fNEFOlcgSSBdTbDg1xoRuRBxgDIKqvdvpR+Z1ulXKkOBU+HzslwzVZxnDT3DPytryGXii5EdnGVCNdL9jNKeL52A+Nl/iUuEklHTRqQJYK05JJN9HQKl2GnZXAbrDpvYPOSmcLcxe5xHRTuldRnT9dYzwsCOVDQtmslJhWjRrKQlMcq+BY7cQVdNZKw6qDtjxGzLv8iS/GoGsUFCZFNcjj+wRVlkZKgoetKg7kCyW1NswpHGW9VDm4hMijhBbM27rqP1cwRu/uuur+I+Rj85D8Ok0uqyfPeqK+93rQNjAkytiNmpDmiY0XY1DXTuucxGqLk1qbqyQWRK1hEvqNCWqcfHrwZsq1WcP5/sFPgnPKVQi3mJ9Do0Nao4i+Eg7u8njsS+rUttdbtNEiWQSqrM+yKu9iXgLcl7FigxrzUZiq9fqQvUZK9xpFen4pWt4owJI/ZNT8GUb3mnCPqajVAfrmC1zJmICN8N/1O3b/wYd9qNKYzL/BsRHlSqYDey1/+HbE6FVIKdjdRpnN9nB7tdRyOtv33Pgoa7V+0SIunMMXPB+2/p4BaFqF53BU5s5Wl1qVoGC4ZnQvPr4JvlRb2w8XQgxUghh1UprLqcT2MKzigpqs1DSS4jGJR6/0dwpgCkNso0IEGHkjBi3UMGZr+lyskFtHDwAAIxr1vuFB6Bjxd9j1T4OTAgg/CLxwLj25w/HjjxvdT3NkzPCpqDa58w7PZNtANu/OHGIWsqk73M5ju3purAbB/92B3uxdvZAS0KJsO/LMQEp9DEN12U2eyzk+im6L1SeDUKfVzKKvMTNbveDQlgrmOBRslefa1xsO4vdRWqfxYUWzMlWtgOVJvEMHonAn/f3qf/FaKsc0CVlPEfk1x5rpFTw7bzSrap1MDddo3JwiOSoFRGjUWdCW9yP9MzYeSuBEn
+ t702SkbL
+ zjc/0uQhhK2dIgs1Ozc4bhsz3FXfoAq+gChfNMWoXvBKnC03GKCxRK+PNxXK//Ti82TYx9h12IQ1plgQ9mwZJ05aYsQNuXlvU4ta/lDbpMVAQ8fmbq7RT1dHXXgBrl2up3juz8w9tE7iiCCk2d5VOmSAPAtkPPPUyL5zppyRTjFT5ACvZMy3kOQp9oaczQO88hZMlLkqS1b+GzRq29X2ELx87oSohrfIbgfXaJFpoY2S3MckkqTi1wItoI7P2rx1spZXKY4BlDMLCHjQaHnwTYNnZOt9W/4VMFowVvW58C42QVjhPSKU2Ef/BnQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,94 +161,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/28/26 16:22, Muhammad Usama Anjum wrote:
-> On 27/07/2026 1:31 pm, David Hildenbrand (Arm) wrote:
->> On 7/27/26 11:54, Muhammad Usama Anjum wrote:
->>> The memory-failure tests call cleanup() only after all result checks.
->>> A failed ASSERT_* invokes fixture teardown and aborts the test, so it
->>> skips cleanup() and leaves the injected page hardware-poisoned.
->>>
->>> Invoke cleanup() from FIXTURE_TEARDOWN() instead. Guard it with
->>> self->triggered so tests that exit before injection do not try to
->>> unpoison a page when no injection was attempted. This runs the existing
->>> HWPoison and HardwareCorrupted checks on both normal and assertion-failure
->>> paths.
->>>
->>> Fixes: ff4ef2fbd101 ("selftests/mm: add memory failure anonymous page test")
->>> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
->>> ---
->>>  tools/testing/selftests/mm/memory-failure.c | 26 +++++++++------------
->>>  1 file changed, 11 insertions(+), 15 deletions(-)
->>>
->>> diff --git a/tools/testing/selftests/mm/memory-failure.c b/tools/testing/selftests/mm/memory-failure.c
->>> index 5d00aab31f9b5..eaa8b9bd401a1 100644
->>> --- a/tools/testing/selftests/mm/memory-failure.c
->>> +++ b/tools/testing/selftests/mm/memory-failure.c
->>> @@ -122,13 +122,6 @@ static void teardown_sighandler(void)
->>>  	sigaction(SIGBUS, &sa, NULL);
->>>  }
->>>  
->>> -FIXTURE_TEARDOWN(memory_failure)
->>> -{
->>> -	close(self->kpageflags_fd);
->>> -	close(self->pagemap_fd);
->>> -	teardown_sighandler();
->>> -}
->>> -
->>>  static void prepare(struct __test_metadata *_metadata, FIXTURE_DATA(memory_failure) * self,
->>>  		    void *vaddr)
->>>  {
->>> @@ -200,8 +193,7 @@ static void check(struct __test_metadata *_metadata, FIXTURE_DATA(memory_failure
->>>  	ASSERT_EQ(pfn_flags & KPF_HWPOISON, KPF_HWPOISON);
->>>  }
->>>  
->>> -static void cleanup(struct __test_metadata *_metadata, FIXTURE_DATA(memory_failure) * self,
->>> -		    void *vaddr)
->>> +static void cleanup(struct __test_metadata *_metadata, FIXTURE_DATA(memory_failure) * self)
->>>  {
->>>  	unsigned long size;
->>>  	uint64_t pfn_flags;
->>> @@ -217,6 +209,16 @@ static void cleanup(struct __test_metadata *_metadata, FIXTURE_DATA(memory_failu
->>>  	ASSERT_EQ(size, self->corrupted_size);
->>>  }
->>>  
->>> +FIXTURE_TEARDOWN(memory_failure)
->>> +{
->>> +	if (self->triggered)
->>> +		cleanup(_metadata, self);
->>
->> If the variant->inject(self, addr) fails, self->triggered would already have
->> been set.
->>
->> Wouldn't it be cleaner to have a new self->poisoned that we set only after
->> ->inject succeeded?
-> Setting self->poisoned after variant->inject() returns would not cover the
-> MADV_HARD signal path.
-> 
-> The call path of madvise(MADV_HWPOISON) is:
-> 
-> madvise() -> madvise_do_behavior() -> madvise_inject_error(MF_ACTION_REQUIRED) ->
-> memory_failure() -> hwpoison_user_mappings() -> kill_procs(BUS_MCEERR_AR) ->
-> kill_proc() -> force_sig_mceerr()
-> 
-> SIGBUS is therefore queued while the madvise system call is executing and
-> delivered on return to userspace, before execution can continue after
-> variant->inject().
-> 
-> The test's sigbus_action() then calls siglongjmp(), so an assignment placed
-> after variant->inject() would be bypassed. The flag would remain false and
-> the test would attempt the injection again after returning to sigsetjmp().
-> 
-> Also, memory_failure() sets PG_hwpoison before several recovery paths that
-> can return an error, so a failed injection return does not prove that the
-> page was not poisoned.
-> 
-> Maybe renaming triggered to injection_attempted is more precise here.
+On 7/28/26 15:06, Lorenzo Stoakes (ARM) wrote:
+> The reference-counted huge zero folio is problematic - it's prone to subtle
+> races, it can introduce allocation latency and it is confusing and
+> complicated code.
 
-Yes, that would make it clearer. + adding a comment that we want to cleanup even
-when injection was attempted, but failed.
+Just a note that the subject is misleading: the huge zero folio is always
+refcounted (e.g., GUP must take references), it's just that the persistent huge
+zero folio never drops the refcount to 0 to free it.
 
-Thanks!
+What you probably mean is "mm/huge_memory: eliminate dynamically allocated huge
+zero folio".
+
+If we go down that path here, we can also teach GUP to not take a reference on
+the huge zero folio anymore on the FOLL_PIN path, similar to how we handle the
+zero folio.
+
+See the occurrences of is_zero_folio() in mm/gup.c.
+
+The reason we do it for now for FOLL_PIN is that a remote pin might outlive the
+process, meaning the huge folio could otherwise get freed by the shrinker even
+though someone still holds a reference. Bad. So that would no longer apply if
+the huge zero folio can no longer get freed.
+
+
+I recall there was a discussion (dropping dynamically allocated huge zero folio)
+on this topic while upstreaming the persistent huge zero folio.
+
+I don't have time right now to dig, but it would be worthwhile to look at that
+history if there was a good reason to keep it buried in that discussion.
 
 -- 
 Cheers,
