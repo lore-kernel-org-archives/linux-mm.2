@@ -4,85 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 142E0C53219
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 03:45:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBE08C531F9
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 03:46:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9432C6B007B; Mon, 27 Jul 2026 23:45:09 -0400 (EDT)
+	id BB8706B0088; Mon, 27 Jul 2026 23:46:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 91B916B0088; Mon, 27 Jul 2026 23:45:09 -0400 (EDT)
+	id B69446B008A; Mon, 27 Jul 2026 23:46:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8593E6B008A; Mon, 27 Jul 2026 23:45:09 -0400 (EDT)
+	id A81216B008C; Mon, 27 Jul 2026 23:46:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 544126B007B
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 23:45:09 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AE83A8027D
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 03:45:08 +0000 (UTC)
-X-FDA: 85036794696.02.0187F0A
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf12.hostedemail.com (Postfix) with ESMTP id AEC0740006
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 03:45:06 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=kZhCQWx8;
-	spf=pass (imf12.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 84A196B0088
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 23:46:57 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1597CA0255
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 03:46:57 +0000 (UTC)
+X-FDA: 85036799274.03.BCA220A
+Received: from mta20.hihonor.com (mta20.honor.com [81.70.206.69])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 9DB6A40009
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 03:46:54 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=none;
+	spf=pass (imf01.hostedemail.com: domain of wangzicheng@honor.com designates 81.70.206.69 as permitted sender) smtp.mailfrom=wangzicheng@honor.com;
+	dmarc=pass (policy=none) header.from=honor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785210307;
+	s=arc-20220608; t=1785210415;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bT3+KK4QSJMJlgpLZhEeL7jVPOW+yK701niYYAzf6Uw=;
-	b=HDQDks8rR4FQ996vSWoFhJMttrq4L43VaVjlYrY9sVIKnLPr/tyo7zNzQSzBK47bhMaGT3
-	zB4zNt5O/iugtUJSfM7V7Jh3YCltMhUWV4VOsTY1GEYodaxCK7c8HaAjk2Xv2g7U5j41MV
-	0M3UGPTv1+IJv/iQ038gK899kXYDoxc=
+	 in-reply-to:in-reply-to:references:references;
+	bh=3VL3XeZjiQCnE6bNvsXryX0VZqaptUWuAXmV7xcD1g4=;
+	b=SqselqauregIPrpOn/8OfqxJJY5hxcYsNrTp4NGbakw1bFUJ+EDt5nFSRWvFAWgfzmKwCo
+	HgS1FR/CAEwrqm8jnGJKfzTqiE7Nkd1kqQMeS14QhmMgp0Gjyczb7irCtmTUuE640rH/NR
+	aLz8qA147Tqho0OFXgqVUzWZXRKa4HQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785210307;
-	b=26FbxKZ6vqlSoQi5W8FYQsDHIgd6MNAW+m0fnn7/e0o0Mml9mOuAECzr1WiK4TwkEPVVIm
-	JIFMZn84pltoC3cNC2dpbskmjPOBoqV+4XOBOApNzcZo0hABM2YWoovqn1Q7V1VIuI2yVJ
-	a65TuqfhAzzgb5MbNMhSRf/yCkms0m4=
+	t=1785210415;
+	b=p+ekeZXyU+WgYjKRU4AbjrsIblxuZw5s3TVX6u/vVmFUBsuF4nHmz8zfxmgg5MwQEEgHAO
+	tpG0+O7uGQJVcS9q8wK5df0RnlJDLceBA82eXxGNnPrRP7MwJg0odfVR3lZyjoLo5nT87e
+	4qM2iyJZUizh9l6yQa9AoUq3RdEb9Kg=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=kZhCQWx8;
-	spf=pass (imf12.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 692C91BF7;
-	Mon, 27 Jul 2026 20:45:01 -0700 (PDT)
-Received: from [10.163.132.30] (unknown [10.163.132.30])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 526183F66F;
-	Mon, 27 Jul 2026 20:45:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1785210305; bh=lF4z6UiOu2aQ+vwsqCLXwrfNAzwvXtXonJ42w0LYqx4=;
-	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=kZhCQWx8uyjFapPdZuaxxkywMul/T7S8sVlyjyePu4LCy9wevlfcCMc7Fh3F87nf3
-	 dRBijIiOAXLXX1SaVm/fsB8A8o5LeQ5luGjAY5tQ/j0qxPz/dHNdpG9G3S7aGbStoA
-	 C6hIJ6x7PbZQCRCsn7577iwioyYi+DtMulc6+mOw=
-Message-ID: <14172dd4-75c5-405a-a802-a2b82a2d0dc9@arm.com>
-Date: Tue, 28 Jul 2026 09:15:00 +0530
+	imf01.hostedemail.com;
+	dkim=none;
+	spf=pass (imf01.hostedemail.com: domain of wangzicheng@honor.com designates 81.70.206.69 as permitted sender) smtp.mailfrom=wangzicheng@honor.com;
+	dmarc=pass (policy=none) header.from=honor.com
+Received: from TW004-1.hihonor.com (unknown [10.77.232.85])
+	by mta20.hihonor.com (SkyGuard) with ESMTPS id 4h8LxQ08q1zYl6Wq;
+	Tue, 28 Jul 2026 11:46:50 +0800 (CST)
+Received: from TA012-1.hihonor.com (10.77.199.132) by TW004-1.hihonor.com
+ (10.77.232.85) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.43; Tue, 28 Jul
+ 2026 11:46:49 +0800
+Received: from localhost.localdomain (10.144.5.36) by TA012-1.hihonor.com
+ (10.77.199.132) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Tue, 28 Jul
+ 2026 11:46:48 +0800
+From: Zicheng Wang <wangzicheng@honor.com>
+To: <baohua@kernel.org>, <akpm@linux-foundation.org>, <linux-mm@kvack.org>
+CC: Zicheng Wang <wangzicheng@honor.com>, <hannes@cmpxchg.org>,
+	<david@kernel.org>, <mhocko@kernel.org>, <qi.zheng@linux.dev>,
+	<shakeel.butt@linux.dev>, <ljs@kernel.org>, <kasong@tencent.com>,
+	<axelrasmussen@google.com>, <yuanchu@google.com>, <weixugc@google.com>,
+	<linux-kernel@vger.kernel.org>, <lyugaofei@xiaomi.com>,
+	<stevensd@chromium.org>, <linkunli@honor.com>, <tao.wangtao@honor.com>,
+	<zhangji1@honor.com>
+Subject: Re: [RFC PATCH v2 4/5] mm: mglru: run aging when pages are severely imbalanced across gens
+Date: Tue, 28 Jul 2026 11:46:33 +0800
+Message-ID: <20260728034633.3387845-1-wangzicheng@honor.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260726122123.7614-5-baohua@kernel.org>
+References:
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: mm.git review status at 7.2-rc4
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
-References: <20260721225139.fd654a3a40e755d3e621899d@linux-foundation.org>
- <73ccbdf2-7145-4dcf-bb73-44fc23fbb325@kernel.org>
-Content-Language: en-US
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <73ccbdf2-7145-4dcf-bb73-44fc23fbb325@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: AEC0740006
-X-Stat-Signature: dbqdz41n197gcqk8wqbgfp8a55hetpk7
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.144.5.36]
+X-ClientProxiedBy: TW002-1.hihonor.com (10.72.0.137) To TA012-1.hihonor.com
+ (10.77.199.132)
+X-Stat-Signature: dcj6pm6z48r1z1d8rfmtqxu9gdgekf4a
 X-Rspam-User: 
-X-HE-Tag: 1785210306-987979
-X-HE-Meta: U2FsdGVkX1/DbZG38yrp2TTvZF4ey+dmJGYOQ3/fNgChvINW07n8TzuDjogoZ+Rcbp33WoIXfEVlJUao0ylyWzneKm+TXmnqgCtQT6wrlx6s02XdwrpHVwJu45A44l5/y5iJb9GDGL9o+35wf0AWNpu2uqDejIcIduzkJIXFiBIutCnpYPSM5ecexbizJTwlw2kDs9ALUgX1afHrqKynuJ95+RbNAvE0FrbRtPGsVwgAj94JZt351ZoupLSMbWch/8RW1aYl8EeOYcOg6g9JxkEY2JVQaUFQkTDCM5f/6M73ETovorhEbOanJErMDPny2i9x4X1DJl1WM8gZzUSPY4oCJXhr4duyS3l4OF7gAAr3S/EDSlkhfrebLIf2TXF/Fo3uRBzmeh9ZPnHsUWu7So9Al9CitvTQ1h2CCIH4SHf7gu6IRJQ4O4sc+Y8M+L9qwDOcTT9jod54irdaTbFkuyESBrnpbcLnZYD9OsiuwFB1y1TPrS5x0bAbR4JVguamOkHM4tJ+nFJwg5aUDnLyk6J3Hi8ksihuPIAhaYQtvVaG34pK7QxEJ6ST90X50KYRJjCZ9bF6XMQlqze7ClocwezqRvPDiOCxMhDvDsLH9uohHz1aRuxHQNY2fuTXhWUxzCg2QUrCqsjlceY0aBQMY3TnVce2Pgt1+2i2PA0e5Uz8e/eDeBLG/joN4T4HDlCMfayreFIH+v1H5D/+lSkcZasle8MxuTXpiuFN58wC88l5o7z353MD9KIS8TrXJiViKKBPcZbksFjRos6hdgkjEUMihzME8L4Sy3LRZ/3qvM+Mz/JYJcPOBh1dSK/uFVchjYBOWDUjHb/2sM4aAP8E1LIxCdwqUkYv9tY5+YkC8ujYaI0OGHOqEkdEyZ0qoMy7FD+B6/eLoUl+soVHp8ZiMqqZroh+6CgjdCZ1XH+AHRZJcS4jG7UYV8gbzI9Ng45JtJIl4qd+Wse3froSRA4
- iipZSnG5
- Pkznd+JzyvSFuL2i2pNxDL14WRuSHa4WmaxVeT/WlTclRl9pv3GZ/11YbyjS1/cI1bzHlghx+q8Gt1cwdYySeCLYFSNC7fYdomnEm+qt0JXSA/kd0BQ+D+x1IaM578qAJzPRjlh4/Zwg48QBI1yCXZyeTtGvErP0bNcXbJPo6ZxKhr9j2rgR+uKpvY+Sa5aqCjiQC8Eb4Jr7KYP6GsNS8uQsOOMalF0ZkfLkUodMt8KJ3BUuZ9gLMs0qYzJKhFzfnpGZJj0gyVTYpc4GGBblF/JfE4uKZt3IwjH2ag+x6w9dBYYjV3RvcSNtxFGOg4+VWsuDT
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 9DB6A40009
+X-HE-Tag: 1785210414-503143
+X-HE-Meta: U2FsdGVkX19R3G1eMPwsEx+WrevMadlerfi36Z5xf4Eanq64CCOq/Ayk+8QMNX1AsYODmPlTaaXoNAn0UtYhBeP4rNlGhFqeDXt78M18Em3aBbZMDy2zOLxwCrA8wXgHDgLzUEb+tcE0FqfWdT1yO7ZwEglfSqZ58VUAeH3XmEotIM5ksmInVUwQv4oDY7PqpVHpuirm0UVCbtX+A7eck4WzcUDMv46XzCF5g1o9YRWO+r4SCJmYFPHx3X9uN59z1Z2IpYC3YuGPjEq+ISRxSDKuxeH3e/qxrIgP3or50XLaEMxgytziyW6IRzNAOXTmWWl/1Xij7lLl4VvvWse+4wGEoSJnxtTO97nn1bBk4VZoIshpmDYiyCC4Mvc1IOZhjgunsGtmlLfG2MyG+ll4NrN6naBFMndWi4yEFtNNTsdL/V6Nn+ZCO5+IFMU9P/Y5DDWZTd1PnbOqcYHNObx0MSgmUP9Tv5V/qDsWnh2veZNmsjcioYgr9n2qUJ63/RDSzKItJpDGpEzJrPrq3O8alo1QDL5+8OCw/hcOYHBuCj8PPImxeoMnclh6seeqAd1f+B5NWpSth/+jqLvS57ePDTxnrG0OwRKKn71UF9q957yy16+id33Umgeax2OP/jH56lELEAEEnRZlKvONN0JjpiectqGmxM2WjbaQvjMKicC5ehJAqn4h5IOPr7jFkTvDood+Tk+rMQgRs45AFdk8TfgT7vmlnAjnqmodMlpsaDlOt8UBg9jJftYgvr9PrC6C2Bzx7JHn+wRp6hd4kuRccS6le5QdQnmdmHpjzQZuArkJRu/igVT3ed6a65S6WS9a6LhfTnuNtA3SaEEO/aHjjcXX/vrxKMzLkLS7rmkZk76M+FhoTnaeNo7Wrsh+x3DhYfrMyrp+gTs69Ii4oBxtZH49lDih/Tz5ARjJTpfHdiGfYRJ9rWMxn+r7ZJ+mfdBhPCIne1v4Eg70aEzHBnz
+ WXTXoKVX
+ 9VEZ6fERkbMm5TCrs+XAeVShvXzBQaaHfxNEF7Oa8mPLHfXokVl15J6bwXBEFQgUf6fhO1uXvJrAPXuuFnQhANp9E4NrZkez6RTKh9iKN3j6/Y6t8cdK/hipdmtW6AC6Idv+Acxw7WVDDIqw/IWTNH2rDRJdY4bHTQ/BmKUPGmQTZTZK/QOM2Jq1iyq+u66m4TqU9L7VaJroSHQo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,17 +96,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 25/07/26 1:12 AM, David Hildenbrand (Arm) wrote:
->> avid Hildenbrand (Arm) <david@kernel.org> (1 total)
->>     "mm: standardize printing for pgtable entries"
->>         Link: https://lore.kernel.org/20260709044334.1741263-1-anshuman.khandual@arm.com
-> There are still discussions going on, Anshumann will be look into Willy's
-> suggestion?
+Hi Barry, lyugaofei,
 
-Responded on the above thread. The patch should be left unchanged
-and later if there are more callers for printing pgtable entries,
-then earlier proposed new printk format could again be evaluated.
-IMHO the current patch as is should be considered.
+The cover letter results look good.
 
-- Anshuman
+This change looks like it resolves the cross-type skew from 798c0330c2ca
+[1] (if I understand correctly).
+
+But:
+
+  removed (798c0330c2ca):  old * 4 < total
+  4/5:                     old * 4 < young
+
+Can a single type also skew, and does changing total to young have any
+downside?
+
+Nit: the old form derived the constant from (MIN_NR_GENS + 2).
+
+[1] https://lore.kernel.org/all/20241231043538.4075764-4-yuzhao@google.com/
+
+Best,
+Zicheng
 
