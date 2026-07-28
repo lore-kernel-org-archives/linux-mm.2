@@ -4,103 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC2D7C53219
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 07:52:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D4F4C54F4C
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 08:05:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BDBC66B007B; Tue, 28 Jul 2026 03:52:35 -0400 (EDT)
+	id E3E666B0088; Tue, 28 Jul 2026 04:05:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B8C4F6B008A; Tue, 28 Jul 2026 03:52:35 -0400 (EDT)
+	id DEE5B6B008C; Tue, 28 Jul 2026 04:05:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A56236B008C; Tue, 28 Jul 2026 03:52:35 -0400 (EDT)
+	id D04C06B0093; Tue, 28 Jul 2026 04:05:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C5406B007B
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 03:52:35 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 09A21A02D7
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 07:52:35 +0000 (UTC)
-X-FDA: 85037418270.24.85E807E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 4D97120003
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 07:52:33 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EKhPtadK;
-	spf=pass (imf31.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A286D6B0088
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 04:05:28 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id EE9E3802BA
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 08:05:27 +0000 (UTC)
+X-FDA: 85037450694.07.DA5457D
+Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 20C648000C
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 08:05:23 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=vANbt9qT;
+	spf=pass (imf02.hostedemail.com: domain of yujiacheng3@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=yujiacheng3@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785225153;
+	s=arc-20220608; t=1785225926;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9I7doRQ50LJFSJkgpIw2Zo/j+BnPeznOVrz2AUXZ7h8=;
-	b=QX/IsMY7Ys40Dn+N0rqyCr/HTrs2tRYATxXsw2RwQITkx++yBoy7WJ6aRb1nFk+O19mwMP
-	HITcBo9Sw6OE4YpiA+7jlFZ6mr+f2JHErw5qKowij4DoWoX138RTGdygJiiTJujBzGD+D9
-	RRMpvGNluK/c7oxXMDW68BKkUITNp4I=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=qeEHNIkKfEE/MPymA/wgyzwl3wWMgxhik29ZB4abPLY=;
+	b=XVHJ8AUwbIuyK9ARDlYdsU6rKwenIZOxQBGGgJteH0aKQFXoWx2E2eo5nEyH/Xs5mREKNc
+	2QmFGp7X7UyoJtkekMQN7ixX+nu+v8TLF7SRTXwWD0xGdPrsJDluT3LHswdcKPEftAkC6i
+	85XmfGg5Qyq1zAE4YxE0GPvdgoEzRcM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785225153;
-	b=y6Gd1d0RSt8UupHWpECzfGpoqlM6gPsbDtAsBbRkFWTKFpDPj4bx59Nmr0uauuxv1jwy2Z
-	FqeG4vH9KsoHTvO1GMmNRe68iOmXNfm0FgHcAKsYUle1KtJWrLKY1ACrzUvN7yc0kpYmQx
-	tiJj0xIv1RozUNf5yi0LEEmfKCtE5uw=
+	t=1785225926;
+	b=3GGNjidgAF9eEn8zYVDileSDq5e+/mj0ixoAWQ/KXo/d9Khox8XjuY0vtm8U+tBjGNHkJN
+	W0t5H8Dd2RCEaBwoh4XVRlhEsGWGanYT27zzbThQlJCPxNQekpW769p8dfgQ89SDoW6tEz
+	wXt1yrdgeR9lkufsYb7uUmPBJC8q6VU=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EKhPtadK;
-	spf=pass (imf31.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 78F9160A67;
-	Tue, 28 Jul 2026 07:52:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 458361F00A3D;
-	Tue, 28 Jul 2026 07:52:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785225152;
-	bh=9I7doRQ50LJFSJkgpIw2Zo/j+BnPeznOVrz2AUXZ7h8=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=EKhPtadKqwOEbrU+DMrvlzP78ttDtRR9ftkpQUYpFs/6cpT89x+VLGtC+BWercwBa
-	 S1lYw1nT7ezjlf38Ac47cUmSrmi9oKGcV1jmb3rD+Pl4VKONyjCaTAcZ+lmEBu0Dg6
-	 N1eBpYbNNBXlw6fpM+Azb6G3X64AZHoOrG6tH4JtU3j3VYpA7Op6GquG/HY0y404GB
-	 K/u+60+jJVzu3+Z7iuAJQ7QJWQY/GMavxtwgDd94R1Q9x+SlXNjEPgfCKx01I7g8+k
-	 9MnpoDYBbyfeRtTjOMFxA2/qmZRa5pYd47zBTj8T6xO56KQEsaXIuzsh8cV3dgwmkm
-	 4ey8PL1VyN+Ng==
+	imf02.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=vANbt9qT;
+	spf=pass (imf02.hostedemail.com: domain of yujiacheng3@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=yujiacheng3@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=qeEHNIkKfEE/MPymA/wgyzwl3wWMgxhik29ZB4abPLY=;
+	b=vANbt9qTV/QGqyMwh475XxbonwsxoysdOKmwwjiaJDeC+KYaDOGVKf8SDboKX4ZuT5qMOGGjR
+	8th46FCD/LwydHda1SzVwRE23Julu/mL0c7+PoLPHrjxMnikAT00oDOm1skgRiTmMZjnek4gVSK
+	h0y36SjtEkJz6d1GxS//zJg=
+Received: from mail.maildlp.com (unknown [172.19.162.140])
+	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4h8SST24Grzcb0W;
+	Tue, 28 Jul 2026 15:55:37 +0800 (CST)
+Received: from whupemo500009.china.huawei.com (unknown [7.152.184.116])
+	by mail.maildlp.com (Postfix) with ESMTPS id E581A202E6;
+	Tue, 28 Jul 2026 16:05:16 +0800 (CST)
+Received: from localhost (10.50.87.202) by whupemo500009.china.huawei.com
+ (7.152.184.116) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 28 Jul
+ 2026 16:05:15 +0800
+From: Jiacheng Yu <yujiacheng3@huawei.com>
+To: <hughd@google.com>
+CC: <baolin.wang@linux.alibaba.com>, <akpm@linux-foundation.org>,
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+	<liuyongqiang13@huawei.com>, Jiacheng Yu <yujiacheng3@huawei.com>
+Subject: [PATCH] mm/shmem: downgrade final i_blocks check in shmem_evict_inode() to pr_warn()
+Date: Tue, 28 Jul 2026 09:10:14 +0000
+Message-ID: <20260728091014.3876715-1-yujiacheng3@huawei.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] mm: do file ownership checks with the proper mount
- idmap
-From: Christian Brauner <brauner@kernel.org>
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, 
- Christian Brauner <brauner@kernel.org>, 
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- "Liam R. Howlett" <liam@infradead.org>, 
- David Hildenbrand <david@kernel.org>, Jan Kara <jack@suse.cz>, 
- Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, 
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-In-Reply-To: <20260625153853.913949-1-pfalcato@suse.de>
-References: <20260625153853.913949-1-pfalcato@suse.de>
-Date: Tue, 28 Jul 2026 09:52:26 +0200
-Message-Id: <20260728-kreieren-innehalten-anbot-d92ce2dd10bd@brauner>
-X-Mailer: b4 0.16-dev-cca4b
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1304; i=brauner@kernel.org;
- h=from:subject:message-id; bh=WttfTXpFo1FK6v30KTdbJN4UNpvV3D74uM9OxSIcvko=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWRlxO85a+KsaL7zn7SOm2fc9b67jGs5Jhi3NWozZ+WbV
- 9kwzeXpKGVhEONikBVTZHFoNwmXW85TsdkoUwNmDisTyBAGLk4BmEj6J0aG1Z0+DpHFc9ccSU9d
- /X7bFKE30/NDL6X9ThR14M0wZjX+wfA/81ppZyRTzrwVPdHZpksED5yJnWtWrrTvwY600LQdTIH
- 8AA==
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Queue-Id: 4D97120003
-X-Stat-Signature: owbbiq54wgg1t9ancexkmnz1zroxy18n
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.50.87.202]
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ whupemo500009.china.huawei.com (7.152.184.116)
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1785225153-628618
-X-HE-Meta: U2FsdGVkX1+7ibTLvFS86NPGkk5SGvkdRB3uQjDI2Icj2MmWE74ePr3/U34q0KbQEWCjaE9xfcOJEsaXodkd2+2xg1SKJHNfOQztrW1uNBQNXigjMfMSVRm6zJaq0HClTCZMmVJ8iz0/TPPBL1uRPxJ6vS8QWoseI4Wh63HJ2AtwNFzdOVM+hjHIYA3l7P7fQje90sIMJyCsLvySYObMBNHTdomRCfRNO6APqbtl7hwechaK4AAktptBwiBtVoCUKcMnR0jjI49P913CgOXT0xDxqkQjXGpuLDIAFqE2sH1mgg4kJeVdTPZy7N3jsN9CbejpaMzLyuDTS6lUIEC+WhhUFTTikqBX3x22uAw4cmGcOaHXOvu/2tY6tgcGmWiQzeWWOFkO15E38+Uj/H6dNbhNR63X+Hg+2LFDPz7nLNzzYP5jeC3vLMP0q1n4E3ET3P5AMM/1bRKVW1BX0Lv9eRkEZVA/jrdQLBWimCGIjw9GFRSF00sVbHBkFxk049T732IVGdcqDjxTAgovSl+Sye6BGTkczwgKc7S1llJqJ07mZFwXrwij/Jq9ETSaFa5EHGh9e9OMDMbAXfsaOj5m0Hz4Pau31zryd1hgn0d/6YVtmZTaehPQ1ml+9UhEfhnR9oHXWcQnKomh1j7kziAhrTMSUaRz697iyagH1Gz97kUC/fOMtcyi8EEWnxsBH8jInWT6Yh1uQXDC+KaFKvdLg/fYwdO2ak6goW5nv/eOPBMjtb9Ok0NJCJ6APShjS5SFBHgHczNTv22UpKNECfHWTeygiI2jsCMiSM9+OR4Oi3wbNhDfNHaOMACTFs5zDLlrzJ8Eyx69jamXahcySOOjUwccLTIR18MIQ3L5CR48ABz/ILCNznXozV5D4DyKiMeWy0k0SSUxOcZWGqCewkcxCTptJO8Bne1oBqYzSlfLm+Y1Lvc16MCcHgFJODur7Px3G/QZ9PYiRAxPX9q8w6y
- GgugsxHM
- XPqmDL6i2Slq25k9CdwggCT40wDUCb0+nPh/tFsKv9F7vslrI0/RtsRQZtvn7L9Y1XlAHO6dMF+mo/bMZrdMIyDiLqQweJZUxm/HyytJW1U1fXqlJogGKEK6U8XZNBxFW6nFlADYbSYwji8+lzej31Uf0Vy1bCLc8B6QfKKQdm9TbeEXMDF2v/NUI/LR4qgtQkRqx9tAAJwyvVvZpKH2GtRuWyX08ohV7/7ep+bsGrVhllTG5Tby95bM+eI1NJh0NKvDoKU7GgHEclYSUg18P0hrHcJf56AItBLHL
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 20C648000C
+X-Stat-Signature: 4nrq8difu6firwij86e73gnmuy6u6xm8
+X-HE-Tag: 1785225923-210700
+X-HE-Meta: U2FsdGVkX19gcEWN3HG8IiSpCD+jKhsLZXY/9eJFUuKiadsJcyyeWvlPNT/WqCKezhtEUqWngpjp1gxesoAcZRib+p2hnGJreJwksIan6Wm2lX3n5Oelee5uArBsgwGZ+ZnTgYF3W6ykvbBXqPTFsW2VmA1ziziVu0i42X8Rd/09rXqB4PW11D2x57TlZkCYnNXrdt5mu5djZkXgaKH/dcEnClRJstjhCm7cbcLzsB2Xau1nIuiLzAbZZapQSpzbPdD0bkLLLdAiPF+1G45CNxJ8XtJvtyqLtdkpWmARd+E99d9IS8qoZOlG6QgNbJXUNthA2N+hGIJIU4uwm4jivMS56UiUx9WYu4dKwyRpfhxm15wU1IzTgTwU15wjMIta0hiUog9z8cb8O/omKoe0UGmlxVvWP1ozXxsS6Oc4/Eumnlacpc8wpzC7pWgmPIDGFkFvYF6a14aRzlPfnnLBChCjVQwxu4tMyhChSHBAvTGVnwrfnn0pleTGWE96FvdWRA9uJLS28nyVZfMAcDcApR9cksFIJizbght2f+8M1rdz7IQQpHVh9fahO3QZkZNRUK26Si7U/DNdrM/uq977PGnYgeNtF9AZGppOKeVgcudljl1lWDesiqfnDbZUHfrGQ3sXN5uux2wBM/Kv2Pa6SE3kzfPz/2YZDGnTq4J9cYG1G+eW2hRANhWkwb6yt79oNFIt1mkdeOK69KBOf5HIQY00V+jcz7MPM/0wjcbHKvYGBLpuqv9j48a5XD6An1F4MWO/EGjnY4DBdhRo9cnCO0DCglVgc9bL19cW1YUyzGhLaycw0XTBvuu903jMINghpkIO7faZrzmBVMdC6SxTjGwgG4mUua7g3DSWGcTjSd3WlJrRy1wSSzKV05oDyKAG58kzjplpz+R2WutiYCUhzki4uiAS5MSUXLtCGX6G46OoKfio6Ofd4La4dozKQl9ZiM7xqwLdtfXUdcfjzN9
+ ZQUBbiDQ
+ rtqB8GIQjBkxxBGyYiqQDsZnLCgg7D+h2WeIE0YMtsIZLD9HbvEv6+RhR/VCgc0vAEBW4IiiaWBlpUnjJJCpzl8LgqSA5kFkjEI/RjbsvKJOh81rPcI5NfUmzs/7y74L18KoGGkhL2YoyuhagRcsjXSBuZmv/BQsLxMuoovBW6hjy234bbAKKYSOzmyFeAbdVXfY7kdD9Oiq5hzjhMRqqXWNIwHtxSyS3o/P5Kf9M0Noy/l/bPoj2qXutB/1dhtMl2+5ap/FeJnU48HaeOqgEcSpl6ls8jTCsCAnDfbpNtyNYaaI5DSu5/29MoiCJI6xgsR5jxWmXxVrIl6WMebj/aRDbtOtmMYhO785DiLwyJZBE3ZLuS9LQWUXwkn7Qb96g3now
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,34 +95,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Ever since idmapped mounts were introduced, inode ownership checks
-> (for side-channel protection) in mincore() and madvise(MADV_PAGEOUT) were
-> done against the nop_mnt_idmap, which completely ignores the file's mount's
-> idmap. This results in odd edgecases like:
-> 
-> 1) mount/bind-mount with an idmap userA:userB:1
-> 2) userB runs an owner_or_capable() check on file that is owned by userA
-> on-disk/in-memory, but owned by userB after idmap translation
-> 3) owner_or_capable() mysteriously fails as the correct idmap wasn't supplied
-> 
-> In the case of mincore/madvise MADV_PAGEOUT, this is usually benign, because
-> file_permission(file, MAY_WRITE) will probably succeed, as it uses the proper
-> idmap internally, but it does not need to be the case on e.g a 0444 file
-> where even the owner itself doesn't have permissions to write to it.
-> 
-> Since this is clearly not trivial to get right, introduce a
-> file_owner_or_capable() that can carry the correct semantics, and switch
-> the various users in mm to it.
-> 
-> The issue was found by manual code inspection & an off-list discussion with
-> Jan Kara.
-> 
-> Fixes: 9caccd41541a ("fs: introduce MOUNT_ATTR_IDMAP")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+shmem_evict_inode() ends with WARN_ON(inode->i_blocks) as a final
+consistency check of shmem's block accounting.  When it fires, the
+inode-local counters die with the inode; what may linger is a small
+residue in accounting kept outside the inode, such as per-mount or
+per-user charges.  No data is lost, and no corruption follows.
 
-Did that go in?
+On kernels running with panic_on_warn=1, this accounting inconsistency
+escalates to a full machine panic, which is disproportionate to the impact.
 
+Downgrade the WARN_ON() to a pr_warn() that reports the inode together
+with its accounting counters (i_blocks, alloced, swapped, nrpages),
+keeping the inconsistency visible in the logs.
+
+The accounting bugs this check has caught over the years -- the
+swapout race described in commit 0f3c42f522dc ("tmpfs: change
+final i_blocks BUG to WARNING") and the error recovery race fixed
+in commit 267a4c76bbdb ("tmpfs: fix shmem_evict_inode() warnings
+on i_blocks") -- are real and should still be fixed; this change
+only removes the disproportionate escalation.
+
+Fixes: 0f3c42f522dc ("tmpfs: change final i_blocks BUG to WARNING")
+Signed-off-by: Jiacheng Yu <yujiacheng3@huawei.com>
+---
+One way to hit this race: soft_offline_in_use_page()'s fast path drops
+a clean, unmapped shmem folio via mapping_evict_folio(), where the
+xas_store() and the nrpages decrement are not atomic against a
+concurrent shmem_evict_inode(); the final shmem_recalc_inode() can
+then read the pre-decrement nrpages, compute freed = 0, and leave one 
+page charged.  Same class as the races in 0f3c42f522dc and            
+267a4c76bbdb, this time in the under-count direction; reproduced on   
+7.2-rc4 with madvise(MADV_SOFT_OFFLINE) racing MAP_FIXED replacement  
+of a shared-anonymous VMA.
+
+ mm/shmem.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/mm/shmem.c b/mm/shmem.c
+index b51f83c970bb..223484cdc8f2 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -1428,7 +1428,11 @@ static void shmem_evict_inode(struct inode *inode)
+ 	simple_xattrs_free(&sbinfo->xa_cache, &info->xattrs, sbinfo->max_inodes ? &freed : NULL);
+ 
+ 	shmem_free_inode(inode->i_sb, freed);
+-	WARN_ON(inode->i_blocks);
++	if (inode->i_blocks)
++		pr_warn("%s: ino=%llu i_blocks=%llu alloced=%lu swapped=%lu nrpages=%lu\n",
++			__func__, (unsigned long long)inode->i_ino,
++			(unsigned long long)inode->i_blocks,
++			info->alloced, info->swapped, inode->i_mapping->nrpages);
+ 	clear_inode(inode);
+ #ifdef CONFIG_TMPFS_QUOTA
+ 	dquot_free_inode(inode);
 -- 
+2.34.1
 
 
