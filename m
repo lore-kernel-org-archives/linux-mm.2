@@ -4,108 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4426C53219
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 12:18:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32E31C54F4C
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 12:22:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8205A6B007B; Tue, 28 Jul 2026 08:18:39 -0400 (EDT)
+	id E696C6B0095; Tue, 28 Jul 2026 08:22:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D1DE6B008A; Tue, 28 Jul 2026 08:18:39 -0400 (EDT)
+	id DCBB36B0096; Tue, 28 Jul 2026 08:22:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E77D6B008C; Tue, 28 Jul 2026 08:18:39 -0400 (EDT)
+	id CE1436B0098; Tue, 28 Jul 2026 08:22:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BC626B007B
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 08:18:39 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B86FF1603BF
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 12:18:38 +0000 (UTC)
-X-FDA: 85038088716.28.47D52BA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id BEB3D40008
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 12:18:36 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MCEfB9go;
-	spf=pass (imf12.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 90DB36B0095
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 08:22:31 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0F6E5A149A
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 12:22:31 +0000 (UTC)
+X-FDA: 85038098502.18.2A1A113
+Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
+	by imf03.hostedemail.com (Postfix) with ESMTP id CEEB92000A
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 12:22:26 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=XmPtayir;
+	spf=pass (imf03.hostedemail.com: domain of yujiacheng3@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=yujiacheng3@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785241116;
+	s=arc-20220608; t=1785241349;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VTeUvvl4jFiVIWOQYJAGoz6KHvz/RpEPjf64mZpki1k=;
-	b=zUv7B9xuDX79CT8xn1o8tMss3dM1iq/FOUR9jKzsqI8NWefi/jCyUAl842gCXG39CNFVFw
-	Ea0TR2hQANtMYI9oe82jknwXEilXrEeBW973ZSavOt+iADC74as5b/UAPHvXqxq5qKmaFt
-	oyayN8m7BNQPVwaVCn8DDIjVr4B2DVg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785241116;
-	b=nHTp3HrWep8GOJpX6LLdjY+0nfHf3U9kUGh5vTyPSJ+CGzNdTbRKOxY44Qr6p12HCEEHXw
-	OXIpoh3nk3Q9UJg8VWFIUt6ke5geCdz9JU4I91Em9wjpIM+bkMVSVwlPxUQgSO4tQeEBR0
-	DVhw65bo3xiiaX7TL6Hbr4Pf2sQEW10=
+	bh=8ML0WC6GRaNOOkIw5COF6WGDDIeLwlOHGsn4lC5k480=;
+	b=TuVZhqXBJz4rAXoV6nDm3wey72YLzZ0GWFmz27E7H0wBU9y97A+HLiCUwKgbMa1VeTDUID
+	Lo9p2FV6Bfe6ffasF8xxEdIq5OITYeN2Fg0mqOS8FxjVJvCtxzaq+zkYVGLgoE13maJKZN
+	QnjTxA8y16dXAA7S5a5gK+7oAiyqJ6s=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MCEfB9go;
-	spf=pass (imf12.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DD44343F2F
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 12:18:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4E121F0155A
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 12:18:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785241115;
-	bh=VTeUvvl4jFiVIWOQYJAGoz6KHvz/RpEPjf64mZpki1k=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=MCEfB9gogdQ9+MJe4EVsuThg29+KtEJemIZq096OX3rb3aRapP0mU/lmmOULOGoQl
-	 km9P9ToO7YF1BDfxJGztdw6wrvavcrqytNy1cAKkgc8a25uGFgJESlkBgzYLQkHxSg
-	 6w/vb8nOolWOmAZcz9BAAz4nzL11kuGjwWMdo64ppit+63MmK4G/FFDUnlfzhSqOs+
-	 dEN2TNtHpVtX9I9oszXATAxtF227wYT7JUCgugH+U4yxi0Rgp6ymgiMb3L0XKg7Cho
-	 kuLdcc8BanT4dDTkurOlWxNVEWZBxGLBm3f6RCbUbyZ/gUGpvZQR3xPQaoAhqKNOSD
-	 vS27TRIBDYmxg==
-Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-5c2c0e261aeso873545e0c.0
-        for <linux-mm@kvack.org>; Tue, 28 Jul 2026 05:18:35 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RrBdT4xiuc1eidWUwUhrdRd5gO0kGhuI4WvkHl+Ue4x2N3Z5SRLz75+akFN5OZVkl1v39PRuRCSpQ==@kvack.org
-X-Gm-Message-State: AOJu0YzUO2rwxmeHhyM/WKnAwAiWd8GlNvkkEQqj+7PKBOdocEME4vD0
-	97YmHgoAaVj2k3uGnGWGCG7BrVa495GvquAkT9TpbFxYWx020lX2v/phtifLVsnoPFJkLJ4ZqaE
-	3pgRqyI7PLsQRr411sHG3tilhfJzZbKI=
-X-Received: by 2002:a05:6122:328f:b0:5c2:d4a4:6f3 with SMTP id
- 71dfb90a1353d-5c33fa8d4dfmr827696e0c.14.1785241115084; Tue, 28 Jul 2026
- 05:18:35 -0700 (PDT)
+	imf03.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=XmPtayir;
+	spf=pass (imf03.hostedemail.com: domain of yujiacheng3@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=yujiacheng3@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785241349;
+	b=lOtW0Ablpr4DgkP6j7JRQK6XU3HrSGkFYCwDiTEcROsiZBO5DFPBwLnnLoJ7t+hu7a8+Ox
+	0lTUrRPUBYEHkyU7I2SY/FyijMoVXyuaL0wRoimVAlxyW1XWdxQVUktBQEqlKuQJomxMQr
+	Cs+E/+kbnBtzUIo/Uo+2VP6l2Y0PSp8=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=8ML0WC6GRaNOOkIw5COF6WGDDIeLwlOHGsn4lC5k480=;
+	b=XmPtayirw6smnZsE679gJI8UEtJOhixO+xZqM1tAPuC2vynpStix/ElS0G0LIan13fetOOa51
+	pc99CnHwMJpBqo+DlWMFbRU+pDFeXZKdIvhaJsL/KX6VxeHAwBVHfZ5b41Qa4pP/bOj5mulJyA0
+	gtZVbzVwPLcJZGIaT78x78A=
+Received: from mail.maildlp.com (unknown [172.19.162.144])
+	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4h8Z9K1M1Qz1T4Fq;
+	Tue, 28 Jul 2026 20:12:53 +0800 (CST)
+Received: from whupemo500009.china.huawei.com (unknown [7.152.184.116])
+	by mail.maildlp.com (Postfix) with ESMTPS id 6CB1340538;
+	Tue, 28 Jul 2026 20:22:22 +0800 (CST)
+Received: from [100.103.109.247] (100.103.109.247) by
+ whupemo500009.china.huawei.com (7.152.184.116) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 28 Jul 2026 20:22:21 +0800
+Message-ID: <c9643f86-f196-4c99-8129-2314a33a990f@huawei.com>
+Date: Tue, 28 Jul 2026 20:22:19 +0800
 MIME-Version: 1.0
-References: <20260724033435.2573323-1-ridong.chen@linux.dev>
- <20260724033435.2573323-2-ridong.chen@linux.dev> <amdC_-OvG1ZUjmot@tiehlicka>
- <CAGsJ_4w1AFkKOSCZYwRsZYOBxCq_7CQA43jQOiDUyLrjVUmA-w@mail.gmail.com>
- <amhXvAdmDxX71uxd@tiehlicka> <CAGsJ_4xLPpf82CoS=ZNNP6nZoU+k=69oJFL3-YT9zibop78TnA@mail.gmail.com>
- <amiYRZLAMwMjb0fy@tiehlicka>
-In-Reply-To: <amiYRZLAMwMjb0fy@tiehlicka>
-From: Barry Song <baohua@kernel.org>
-Date: Tue, 28 Jul 2026 20:18:22 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4z6sc-iAYSyr9O=WQrO7CX7pXorHai1OfXrySCTeKKeWg@mail.gmail.com>
-X-Gm-Features: AUfX_mxQ1uydSiJvPl0pBtnnXS-TxTLq8ZM4Df-FQvhdi4Jf1lXANU8_NBYm7XE
-Message-ID: <CAGsJ_4z6sc-iAYSyr9O=WQrO7CX7pXorHai1OfXrySCTeKKeWg@mail.gmail.com>
-Subject: Re: [PATCH -v4 1/4] mm/vmscan: fix anon-only reclaim evicting file
- pages when swappiness=max
-To: Michal Hocko <mhocko@suse.com>
-Cc: Ridong <ridong.chen@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Zhongkun He <hezhongkun.hzk@bytedance.com>, Muchun Song <muchun.song@linux.dev>, 
-	Davidlohr Bueso <dave@stgolabs.net>, Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] params: fix charp corruption on allocation failure
+To: Petr Pavlu <petr.pavlu@suse.com>
+CC: <samitolvanen@google.com>, <rusty@rustcorp.com.au>, <hannes@cmpxchg.org>,
+	<yosry@kernel.org>, <nphamcs@gmail.com>, <liuyongqiang13@huawei.com>,
+	<linux-modules@vger.kernel.org>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+References: <20260728085518.3865621-1-yujiacheng3@huawei.com>
+ <dfe25916-0f2e-44ed-8f49-d7448a0e28fa@suse.com>
+Content-Language: en-GB
+From: Jiacheng Yu <yujiacheng3@huawei.com>
+In-Reply-To: <dfe25916-0f2e-44ed-8f49-d7448a0e28fa@suse.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: BEB3D40008
-X-Stat-Signature: ky76nw5ups8q4gs7k98srggdadx3o4p6
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [100.103.109.247]
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ whupemo500009.china.huawei.com (7.152.184.116)
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1785241116-595143
-X-HE-Meta: U2FsdGVkX19hFLkd9C7x+F9CISSAXeqKLFse4Kx27iNblkrFG304e9QjXUG6eOg3Ib88Fx4YS5BXDkclHEpDtkpJdsjnoKpOuAV3oiqJ+E7XZctlQEhpNYdrdVwEGqTYKdvSYAR84h+z+yjPWHzawvr25Wd74+c8eibTe+ZgKxjLoVZaZ7Ul4JjNSmbwnYXVzqtJc/LUq5/LyPIid2a4FlZ53kXsZUaa9EF4jq62BrQoAu7uV1bBEavfpvuLBGYtuk8rR+TtKEjEEr2ZU7Igpczhep2gdnadzoCwSLHCKbmpiZiGxpYD8qJgC9Cuj2aKbWrTsaiGI2sw9x0Lt+2zSSNjqdEXFeU+Zl84xoo01YlkOEZqaf8bML01ITEokkRlMyLFRZ/sHioXQ73fHKWHmnHFCfAf5NhgO/euEexLvYD1IUTEyeWTIgC5YuhYAz4stW+AzMjgF2F/EarJJhWErT6gOIbH4LE3/vLkWQ4XcVMNjI1xzPqwDVelkt51+LhZn7JESglZt9MR9kTuoD1WRaI1XFXUKTjMngRfJPmPFIwHvGATNq3pCyT5Z/jQS5YIZcOLQPcG/ZfqVS8qlaovvwiN9Szx0uskw5i24Q+XS7lPJcrCTRHt9hWuYKvnZaCvlbZgshpfODD7yJdzDWg2eiRlBlZvP3ZV4AwKAWAyKGpH6AVXrxk1QRlno+f15bWujsp0UMYYyPa2GtPUVe1Pr2ogjlc7MCbtaj6UTmj44ny0G81z0hKtBV+xpDr8HByeLzk/bumCNHl0QQjdWa8VBR8F/aaqaA0YUSTnZ7eF7wJviF9NwW9/aPvxmpTixyEHJA9z6DW0vknIERD/0sVp2vzMCJzm5FSRspzL18r1FDo8s5SPWrC19iM0sZi9R5oSMessaSbme2vrZESCb6PcF2MaeIkMwteaRPROrBMBMkKEtPfw7numVaZCnS2jP799lF671mbnISZYgQyZugi
- Eux+kdiJ
- MOR+suIpFAw516Icmjvhl+YoLIwGLj2R387ttzTdAY81OST5HrvscNaxU7PEnTdlmpPrzPc4wFjlzkGrmntrt00At/V+sUAufg3jQwNwnmPByx3zbSub+MsIzq6XlJRxrQivDxpPBdQDloldu77gcMayejB8AHwuiL4W9YBBsFjsNX1tgsc6DeGHa4AfqHadHyspelCMZDgI2r1MFbLRYV/WYmT8yTH0e+8osdisLx4I3+S+n4gxOk6HGsjqb23HfzQi5pMWbNX4M9RBPvf1bE2MEyZs1gAjTiHGiNolN2fFO0xDUQZGuJxF7Hu3zbyE0u8ire+GCbU3t5Ee93t+AS7R2pPe/2zBvD3KmQbcf0s0pmhJCYA5gLz5amg==
+X-Rspamd-Queue-Id: CEEB92000A
+X-Rspamd-Server: rspam01
+X-Stat-Signature: 8gt4s3bfqzmxsbft6fc44me19wpcfj3i
+X-HE-Tag: 1785241346-906771
+X-HE-Meta: U2FsdGVkX1+iSSC4b7kbhX7UCGcDcBEDFitSEk+n6P2mYxJK1Qg7iS1a2+dwJYyT7RKfxYveqCmhpbzVB5vkmXQbERz0hpZoSv/6D3bnQBOnzh0k+/Gf6WTKRDuX09Ptumtg3tWs+YQjewlPRoGsLUS072zHKYBMATclW00EEmYgqeO/goIF0QBmplhuMAfR2709ev/MvAz3bi9b1LbxpqYl7oSjvEs7ipJkO/uJR5KRv9leiWmB/SHs0AFkvCQXF59Demn7+FWiwSxol7QQ7yw9LS/yihNu27d2eOdFfxcX7FBVvgqlZYIPYjURKV2uSt133THjQOPhO8O2VvARMowQe7SQVYwyR400EFBWQYXyXHsYo7rdCUVrFPKVTpkRGKBgpq2/AA+k+AmDi2wpSYdb+lvILnFopJEoZiuJcx6ahCjx9UNrfJGTsfAS5ZC7LAhG8k3ATIX17CVE6Oc3WposTm0MZ2LSy55WnBr+uagezWOjNARPvlq//PpVM6RPUCE94r928hht+8eet/Gb9yjeUd18qkfXidEiZBmDKBRE0LR7fBUjpZSNh7Vra/pBNXj5s1Q/aeT4uRnnQqUwrEvliW6uIQjpXiWa52Eeq0q0F7U6EHRimGi4vsFtBlvBDzxqwBTAxFaNZ+rLd8VnjeSFTI5G5OZocCl37UENnXcwCB/Y1mbgl3dqEy0LP4EDZEYM8PCMgA5ehJhch3VpJsF8YBghnMaan7qZ3fKfiucfsHZr1nVlR+o+fnrcAzv1Kf5t8/llqDC8W8ubbAbI5VBxqTTLPQcVB3h4GdH97OZeNQj/d9duRiwPoW5HtIPTuhm2s2W1fQsoebShzE5OPfjyvtt12OvQz6eT7aCBQVZy+IxBCB71zF6BKI4XrfmntPLHfM5phwD7aFBBH/80wD3CLX84VwAbt4gvJLfYLVy5Tp0uhae2yr4I0jKKngTXn91mPVGVyQ5N9EbGagm
+ sxzCFTnr
+ wU8eN8aIFI0d3uCjbLemdDVyuuaFJzT3OgugJTh7eMaVDiEUnJGR6VAqK3GnG9iEu9Ob1rLkORpCrvIWtVYr6T1w+agls1FutNlyenpqEgieuFjRDWs4uorJID8EfYoPtmEz0Wn2w4SVOBDS4I2PbPsllr4jNXHhTByOqXecRXjYWztjrryz8d37VrSAoeBXgweViBdH6/4NCPgVNEtjlNYtZK8D0lSKvwt8gJ7hgaSwLXDB3cTmpggG4AP1n9mcjp29NMR9OHUkZK2Fp5iYJSerej5phcY/dp838mva19d/lGlqw0KL6BsuEYOzqfd10V51pkqT95oc89SRdFnzv8Z52rpq8N8IqOIuOTgnbhS2s9GF2awRgbxjUp0FfAVvJDQSgqZxdqHaXj939fsVIp3GVR11c3a4Wx4wR3IOkXeL2wh1BN3axSr6jLamqch1PWS62
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,36 +101,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 28, 2026 at 7:53=E2=80=AFPM Michal Hocko <mhocko@suse.com> wrot=
-e:
->
-> On Tue 28-07-26 18:03:24, Barry Song wrote:
-> [...]
-> > I understand your point. I just find
-> >
-> >     if (swappiness =3D=3D SWAPPINESS_ANON_ONLY && sc->proactive)
-> >
-> > a bit odd, since `swappiness =3D=3D SWAPPINESS_ANON_ONLY`
-> > already implies `sc->proactive`.
->
-> It does so very implicitely and you need to look around to learn about
-> that. That is my biggest concen here. WARN on is just a very poor
-> annotation to remind us about that assumption.
->
-> I would much rather have get_scan_count more self explanatory as it is
-> quite heavy already.
+On 28/07/2026 18:46, Petr Pavlu wrote:
+> On 7/28/26 10:55 AM, Jiacheng Yu wrote:
+>> param_set_charp() stores charp parameters in allocated memory after slab is
+>> available, and releases the previous value when the parameter is updated.
+>>
+>> The previous value is released before the replacement allocation succeeds.
+>> If kmalloc_parameter() fails, the setter returns -ENOMEM with the parameter
+>> left as NULL.
+>>
+>> Failing zswap's compressor update before zswap is initialized can later
+>> trigger:
+>>
+>>   BUG: kernel NULL pointer dereference, address: 0000000000000000
+>>   RIP: 0010:strcmp+0x10/0x30
+>>   Call Trace:
+>>     zswap_setup+0x3b1/0x490
+>>     zswap_enabled_param_set+0x5b/0xa0
+>>     param_attr_store+0x93/0xe0
+>>     module_attr_store+0x1c/0x30
+>>     kernfs_fop_write_iter+0x116/0x1f0
+>>
+>> Allocate and copy the replacement first, then replace the parameter value
+>> only after allocation succeeds.
+>>
+>> Fixes: e180a6b7759a ("param: fix charp parameters set via sysfs")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Jiacheng Yu <yujiacheng3@huawei.com>
+> 
+> It makes sense to me for param_set_charp() to have commit-or-rollback
+> semantics. The set callbacks of other standard parameters behave this
+> way, with the exception of array parameters.
 
-OK. The only thing that surprises me is that this seems to
-leave open the possibility that
-`swappiness =3D=3D SWAPPINESS_ANON_ONLY && !sc->proactive`
-is legal. Otherwise, I am fine with it.
+Thanks. That is the intent of this patch.
 
-If we decide to make this change, it seems we need to do the
-same thing in patch 4 as well:
+> 
+>> ---
+>>  kernel/params.c | 14 ++++++++------
+>>  1 file changed, 8 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/kernel/params.c b/kernel/params.c
+>> index a668863a4bb6..e4f2b71dde1e 100644
+>> --- a/kernel/params.c
+>> +++ b/kernel/params.c
+>> @@ -261,6 +261,7 @@ EXPORT_SYMBOL_GPL(param_set_uint_minmax);
+>>  
+>>  int param_set_charp(const char *val, const struct kernel_param *kp)
+>>  {
+>> +	char *tmp;
+>>  	size_t len, maxlen = 1024;
+>>  
+>>  	len = strnlen(val, maxlen + 1);
+>> @@ -269,19 +270,20 @@ int param_set_charp(const char *val, const struct kernel_param *kp)
+>>  		return -ENOSPC;
+>>  	}
+>>  
+>> -	maybe_kfree_parameter(*(char **)kp->arg);
+>> -
+>>  	/*
+>>  	 * This is a hack. We can't kmalloc() in early boot, and we
+>>  	 * don't need to; this mangled commandline is preserved.
+>>  	 */
+>>  	if (slab_is_available()) {
+>> -		*(char **)kp->arg = kmalloc_parameter(len + 1);
+>> -		if (!*(char **)kp->arg)
+>> +		tmp = kmalloc_parameter(len + 1);
+>> +		if (!tmp)
+>>  			return -ENOMEM;
+>> -		strcpy(*(char **)kp->arg, val);
+>> +		strscpy(tmp, val, len + 1);
+> 
+> What's wrong with the plain strcpy() here?
 
-https://lore.kernel.org/linux-mm/20260724033435.2573323-5-ridong.chen@linux=
-.dev/
+Functionally, plain strcpy() is fine here.  The preceding
+strnlen(val, maxlen + 1) either finds the NUL byte within the limit or
+rejects the string, and the new allocation is exactly len + 1 bytes.
 
-Best Regards
-Barry
+However, when this patch rewrites the line to use tmp,
+checkpatch --strict reports the following warning:
+
+    WARNING: Prefer strscpy over strcpy
+
+Since the line is being rewritten anyway, I changed strcpy() to
+strscpy() to follow that preference:
+https://github.com/KSPP/linux/issues/88
+
+> 
+>>  	} else
+>> -		*(const char **)kp->arg = val;
+>> +		tmp = (char *)val;
+>> +
+>> +	maybe_kfree_parameter(*(char **)kp->arg);
+>> +	*(char **)kp->arg = tmp;
+> 
+> Sashiko reports [1] that there is a pre-existing use-after-free window
+> between freeing the old parameter and updating kp->arg. However, this
+> issue doesn't appear to be valid because any concurrent access to
+> a writable charp parameter should be protected by kernel_param_lock().
+> This is documented include/linux/moduleparam.h [2].
+
+I agree.  Writable charp parameters are expected to be protected by
+kernel_param_lock(), and this patch does not change that locking model.
+
+> 
+>>  
+>>  	return 0;
+>>  }
+> 
+> [1] https://lore.kernel.org/linux-modules/20260728075803.AA13C1F000E9@smtp.kernel.org/
+> [2] https://github.com/torvalds/linux/blob/v7.2-rc5/include/linux/moduleparam.h#L124
+> 
+
 
