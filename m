@@ -4,87 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1D3DC531D0
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 00:57:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64A3FC531D0
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 01:03:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5E0F16B007B; Mon, 27 Jul 2026 20:57:09 -0400 (EDT)
+	id 0E39E6B008A; Mon, 27 Jul 2026 21:03:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5917F6B0088; Mon, 27 Jul 2026 20:57:09 -0400 (EDT)
+	id 094DC6B008C; Mon, 27 Jul 2026 21:03:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 480C96B008A; Mon, 27 Jul 2026 20:57:09 -0400 (EDT)
+	id EEB8E6B0093; Mon, 27 Jul 2026 21:03:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 225C06B007B
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 20:57:09 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8CCA04027F
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 00:57:08 +0000 (UTC)
-X-FDA: 85036371336.01.3B38D8C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id C6D29C0004
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 00:57:06 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=V++APQda;
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C620E6B008A
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 21:03:23 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 43B7814028C
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 01:03:23 +0000 (UTC)
+X-FDA: 85036387086.09.38CF55B
+Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 7F6D9C000A
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 01:03:19 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=NY0BAgM8;
+	spf=pass (imf10.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785200227;
+	s=arc-20220608; t=1785200601;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9XKvUBtNz8mAqieUy7X2gVA3uFyDYAi8JFETA7NGeYQ=;
-	b=BGcVmiDvpBr3AAbwMk1wu//nuiCfiYVhXttNiSjn53STb1mmcFeWLA9O0fBPrSr3AeklUo
-	yCbgB00Nl4Of7L7uKhdUIw5olrYAGsLsDH8AUQdz8ITmyZMc8DUOPihWwHsbcWmPOFgE0u
-	n2gg+1iqdtRWSRWo5VPGrBWL4/mhFls=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785200227;
-	b=mkl5A7fkCnzJqZGv8tZ4QhhWVydJ6EEnFzIjfEtLA6DM1IvS1E9Aei29M/WJW6gH7KU01U
-	0dYMYHybuV16vGQ1iDDw9hNwbnyIcCv7xksjeKK2dGrGR51lTwRAIs6h3nBMYVQjCsiNXi
-	I+YkdJDiFtTI2zaiXPqKXUFDmn4UOwM=
+	bh=wskNm12QGMqSlQDsZWZfrxXV4LbUJu7o+wO+yhTqD8o=;
+	b=qWpo76fK3CglXLHhyNH5vKmIZrbK2P7p/QouOz8wYYSqgSu57T1yZ52zLyHQRtd99K90BW
+	tJjAnGsWsYo2HefUCuqMz+pKvmOz1WdaOUxQE0Ax5rL6Tte99NyVuiTp5pZEHLG/E5DkHU
+	SFGr9hkeEx+qUS+oH+BRD/lV22nx6GQ=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=V++APQda;
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8BE12416E9;
-	Tue, 28 Jul 2026 00:57:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10F4C1F000E9;
-	Tue, 28 Jul 2026 00:57:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1785200225;
-	bh=9XKvUBtNz8mAqieUy7X2gVA3uFyDYAi8JFETA7NGeYQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=V++APQdav59a96D19Bw6Q+BKElEnxWZXtnDS0ZWNXgt2ft1PMcLZYLfkE85fSRbpk
-	 +tHp+5bqUDzoTZ4QBZY3lUItBQnMcwHEcu2Ii5rwe7rHBs8qZMJcu8XAjLz436egUb
-	 Qg0UbksZCPLgM8IcUqWepEXgStmbMeeh/sj5ayqY=
-Date: Mon, 27 Jul 2026 17:57:04 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Sourav Panda <souravpanda@google.com>
-Cc: muchun.song@linux.dev, osalvador@suse.de, david@kernel.org,
- surenb@google.com, fvdl@google.com, gthelen@google.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Usama Arif <usamaarif642@gmail.com>, Shakeel
- Butt <shakeel.butt@linux.dev>, Kefeng Wang <wangkefeng.wang@huawei.com>
-Subject: Re: [PATCH v4] mm/hugetlb_cma: Fix null nodemask dereference in
- hugetlb_cma_alloc_frozen_folio
-Message-Id: <20260727175704.0e4ccd4a6201435a6284d260@linux-foundation.org>
-In-Reply-To: <20260726072935.3513996-1-souravpanda@google.com>
-References: <20260726072935.3513996-1-souravpanda@google.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: ekt5fhkposeax6sbaihycx5r74giijxx
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=NY0BAgM8;
+	spf=pass (imf10.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785200601;
+	b=uuf+ywTm5YazNo4PbkbPQg4ubm6hcm4GyChRUwz8T93gbrDStjpf05DhjpL5f+tH2RhzjP
+	i3vLZ+VxpoYchjGNJ1sF277jIgLaxpE/3aSIXxLCI35CNbBxi8Wz6pNaVyYLbRDkOic0n7
+	6c9eHwQFPT73SHnNx2mLQSCs68lteVA=
+Message-ID: <2fd4c2f8-3166-4432-9192-17bdb2627138@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785200596;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wskNm12QGMqSlQDsZWZfrxXV4LbUJu7o+wO+yhTqD8o=;
+	b=NY0BAgM8ZYRyHEtVSJnSxYsA8oND9tMbRYWjMGqQgKKbBhOc47onOqDXLYqHhavVdTRBPJ
+	gPrmHk7FdAfxf7/+tTdUxGZoQSQ5YGGdevEyDulT5HwCQlktNJaX6tD9rlr9J2G27mNZfR
+	rP8dquj0rs/LejZ6vxumLi9h5kBPGHs=
+Date: Tue, 28 Jul 2026 09:02:58 +0800
+MIME-Version: 1.0
+Subject: Re: [PATCH -v4 1/4] mm/vmscan: fix anon-only reclaim evicting file
+ pages when swappiness=max
+To: Barry Song <baohua@kernel.org>, Michal Hocko <mhocko@suse.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Zhongkun He <hezhongkun.hzk@bytedance.com>,
+ Muchun Song <muchun.song@linux.dev>, Davidlohr Bueso <dave@stgolabs.net>,
+ Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>
+References: <20260724033435.2573323-1-ridong.chen@linux.dev>
+ <20260724033435.2573323-2-ridong.chen@linux.dev> <amcUqfpjE9lnXkn_@tiehlicka>
+ <CAGsJ_4znMXrSYEjWOP0jA11=paJWmWu9fOPAfZD6iP11viys0g@mail.gmail.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Ridong Chen <ridong.chen@linux.dev>
+In-Reply-To: <CAGsJ_4znMXrSYEjWOP0jA11=paJWmWu9fOPAfZD6iP11viys0g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: C6D29C0004
-X-HE-Tag: 1785200226-10116
-X-HE-Meta: U2FsdGVkX18rkh9iMSVjTJFEt6SFigEziFwXhA5wk4/CRgqkU2ZLFvSVD/k1aHm04Q4eMj2v5xr3m9d6O0+8q2wAAxw+EWIO7HyJimpJV2qcHCZ4ExtmZEm469p8b8VEy1Uybs4c5aEeN/ChwxB8Ms5v0OJFW6ut/VH9B/bH/JnHorFhX2KaJelzCZZBqqXpqk3HwZy9xL93zeDxe50P4Hj13XiCtmFzE75vZwUHrx55nS4rIHSo5UEeGpCnAdDvvQqJXsejcl5UNVKjJ8WDHCoYoxfuzeMNQAIuhaR/ArOHJi+gUXpkfwdJut/5yJwfSChGWfgeLVWuUvV+xbjyUZNN0sTptYT/IYqwncvofNCJ8aToSjsO2Lv9UhS72wN/7532o1cPJpNfq1FFqz8Kn1okJQTwSABLwRlS8X//79HR9K6dWRekKFpvECD1+MjPzRMSmQAaEbDX5E2lFloYs2sN/pqHO52mTqlIOIAIZ9iqTvih349a2i1/ZdscAI9nYXXJBckZxYdtPdwjQQek98kqU7Z1PG7JLb52VBJnNfZISj3YzSFGjW5x8Fyh1YPlFA2fbJcfSolO3aSkxmc4n/HeuRBb8010+9lt2uWKV0SEWcegsMXoYxfOhF9bQe6jf7coq5D26d+vfxleibzVF/W6KmKv6pHH3KQ0qjtcPLYxD0JhciOFDuPGcB7t2vd/Rcl6odlGQu5zV00Q8Zj3y03o/aEu4NSRQN6J3DfYxhoqPk4tIMGivc2KN8UWpTN0VEtjrQ5CQken3NRWLM6rCEAicnHP8n9tkzmWG//xJ3EM8tbgUoUHkVQ4XUqwWj8dtg+bxxcHJOcGHRPl4XZ4rtL5yYb5wjiZtI1kKxQhNKYGXA5ApXGs2bAqRozyL+Uqo41MUD9U7iFrKVx9vCqUDamj4KuSltiJcaaNSs0sPlKP7B3BRbvsOqJmWosDJl9Dw8GMLPOLIr2bSVH1Yrh
- 78TLJTwW
- tKz3wxpc8PXx5t2SO0qBkowQe7ZbjcortHYumtl9ZPGJVG8BYY+HDVfIlxsENzHmUQCfVlCsFFEANJZ/u14saxeyAx6B4MrYo1vYJu5iZ6DwUhXHNo+LSShMfbNf4w1syK5eORpyHSXSjbYH/2KdsTiUt5V6jVeyZ4vYp6gg+i7iAOD5ltVvOPs3NTyJSuRRXE9lY858QxlvA/bdnvyPdIpnQdOylep8mLoeZII07Yu7is46QyImqGt3CephHPozsT5jfzQ13Vsh16+rPsZuE0pBwtH+xL20Ivhny8O9AWx3XW6x2w8KBMesTyYuCq89u4Ydc
+X-Rspamd-Queue-Id: 7F6D9C000A
+X-Rspamd-Server: rspam01
+X-Stat-Signature: x1ehxss8ffntaqszk5crubw49uaamj5w
+X-HE-Tag: 1785200599-969983
+X-HE-Meta: U2FsdGVkX1+l1iTKwkBIuTM4WuzZERI8yz2OWLFpECA8CHw4Z97Y9ojun1gq2N2kklWZM0Gv/zqBnGEaOo/zwAZ/nFP7Pd5oPMWOVxgE/lOZOEnNxsRdPXSvMlE6/PZRfPxbrEk8AwQq5Y99uwYbNOgjRKaoApSPervlCnqqGXzdZ+PZabbImLSUvrH9ih05dURAe/qAl7AOZCkmFtO7dMHs8puGigiAlUVMAr8MRq9ZyOSLefQoWqqXrbPmro0r+G+o3OQLZ0ORPp4YFNPdLNfnPfuBh0tbjTqIIXeWesvfFufTJq9KW7zGpd5eno5V3gawxwSj4A3UxNFoBhp0h3SAag1LI0U+DiYLKMzP+MF0yN9VW+ib+2EI7mtAdRYEyvZwwzFQp4WJCMxYUdqcGPH4Sn9R4Zr6O4e8Xr47ooDbjDK+prsTTIuSVS4K62+Vjsz55TshyUK74t38f0j11Flf7Vo3Ti0boU2j+Azn2S4ksQfRfRFzOA1rihsTLHCal/iztnmeQgvvIkDqErqr4vdPUp5Igg5BVRiRIrONVUTVWE7hdklXo5TzBlJnJ5LrCOuYB1sENl+TrdGLPfQbO23vTx9vWkNr0FyovXrFzxwW3vO0AEQw7kpCYYWQ3WEhIHpCmjbDKUQnSdeRaDDfVJ0xWcJLdr1dUoG1pfcEAKxSo4ptUVgaZX/GdV3ihE8zMvnSMt4B2TpZyTYdSgi9EaaxUE89Gye3gzG0Q8ra+Ai8jbkSCj+xAxIoqn7GBfQB8p9FFG9HRwgS6hbqBuaaApbywEZXhrisZum34mwXE7FdXJlXuVYlhiNtfRszxJIs6hK9XA0TEcDqHMBcLF58agccHZ8rhpiibTo/ttl/sxx/5m4dSB4o5p57+0nBJZjT+aIIurZXa2Rm7KWsxhr7Y8ckl0GNRHBKnZG0kJlXD/rTHMzLJQTGd5ZiRxZ/Xf6LJAAuzYGPZ1/sY+yEuKT
+ 0mXYLE0o
+ 6JZPIvHsVRHcpKUTXEmkU2Yq3Ns59BTbs+l27NCkpVbV5/e2cnIwdQ2MCtTDzioKGVBm2uhtXucqktg+Py8eedv9Z4hzQVbyIF2nOYGrHZy5TC+JseRjVIOzhFzihUxd27b22wB6ndQeO2fa/xyvZNltMRQktueBQmlLNz5HnJIjqw3WEYcDoMU+Z/AzZm2ObQOHVR9M6TgyQf1eqagmWb0fSQVNrYqA4ffSyi9nTMqKZyIL7YkbX0UnL5NXFer9StcYYWSOD5rhSbsYW2vTKcAoXKUTRDBx3oroZMRVR8A3WPPna35oC53NJPbhVDegkUcc5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,81 +98,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 26 Jul 2026 07:29:34 +0000 Sourav Panda <souravpanda@google.com> wrote:
 
-> alloc_buddy_hugetlb_folio_with_mpol() can pass a NULL nodemask to
-> alloc_fresh_hugetlb_folio() as a fallback to allocate from all
-> nodes. If order is gigantic, alloc_fresh_hugetlb_folio() propagates
-> the NULL nodemask down to hugetlb_cma_alloc_frozen_folio() via
-> alloc_gigantic_frozen_folio().
-> 
-> hugetlb_cma_alloc_frozen_folio() blindly dereferences the nodemask in
-> node_isset(nid, *nodemask) and for_each_node_mask(node, *nodemask),
-> leading to a null pointer dereference kernel panic.
-> 
-> Fix this by checking if nodemask is NULL in
-> hugetlb_cma_alloc_frozen_folio() and defaulting it to
-> node_states[N_MEMORY]. This allows hugetlb_cma allocations to fall
-> back to any node with memory, keeping behavior consistent with
-> alloc_contig_frozen_pages() and alloc_buddy_frozen_folio().
-> 
-> >From a userspace perspective, this bug allows an unprivileged user to
-> crash the kernel (trigger a panic) by requesting a gigantic hugepage
-> allocation with MPOL_PREFERRED_MANY on a system where CMA is only
-> configured on a subset of NUMA nodes.
-> 
-> This can be reproduced by booting a VM with two NUMA nodes, restricting
-> CMA to Node 1 (e.g., hugetlb_cma=1:1G default_hugepagesz=1G
-> hugepagesz=1G hugepages=0), and running a program that allocates a
-> 1GB hugepage area without reserving, restricts allocation to Node 0
-> using mbind() with MPOL_PREFERRED_MANY, and triggers a page fault:
-> 
->   void *ptr = mmap(NULL, 1UL << 30, PROT_READ | PROT_WRITE,
->                    MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB |
->                    MAP_HUGE_1GB | MAP_NORESERVE, -1, 0);
->   unsigned long nodemask = 1; /* Node 0 */
->   mbind(ptr, 1UL << 30, MPOL_PREFERRED_MANY, &nodemask,
->         sizeof(nodemask) * 8, 0);
->   memset(ptr, 0, 1UL << 30); /* Trigger fault */
-> 
-> This results in a NULL pointer dereference:
-> 
->   BUG: kernel NULL pointer dereference, address: 0000000000000000
->   #PF: supervisor read access in kernel mode
->   #PF: error_code(0x0000) - not-present page
->   Oops: Oops: 0000 [#1] SMP NOPTI
->   RIP: 0010:hugetlb_cma_alloc_frozen_folio+0x75/0x120
->   Call Trace:
->    <TASK>
->    only_alloc_fresh_hugetlb_folio.isra.0+0x2c/0x160
->    alloc_surplus_hugetlb_folio+0x6d/0x100
->    alloc_hugetlb_folio+0x3c5/0x660
->    hugetlb_no_page+0x3d9/0x650
 
-Thanks.  I'll queue this as a hotfix while we await review.
+On 7/27/2026 6:56 PM, Barry Song wrote:
+> On Mon, Jul 27, 2026 at 4:19 PM Michal Hocko <mhocko@suse.com> wrote:
+>>
+>> On Fri 24-07-26 11:34:32, Ridong wrote:
+>>> From: Ridong Chen <chenridong@xiaomi.com>
+>>>
+>>> As Qi mentioned [1], when swappiness=max (SWAPPINESS_ANON_ONLY) is set,
+>>> the reclaim logic is expected to reclaim anonymous pages exclusively.
+>>> However, due to the current ordering of checks in get_scan_count(),
+>>> file pages may still be evicted if can_reclaim_anon_pages() returns
+>>> false, which contradicts the semantics of SWAPPINESS_ANON_ONLY.
+>>
+>> But if can_reclaim_anon_pages tells us that anonymous pages are not
+>> reclaimable then it makes no sense to try that, no? What do you expect
+>> to see? An OOM killer?
+> 
+> This is proactive reclaim rather than direct reclaim, and
+> SWAPPINESS_ANON_ONLY is only supported for proactive reclaim. It
+> therefore cannot invoke the OOM killer.
+> 
+> If I understand correctly, this is exactly the issue this patch is
+> trying to address. Instead of falling back to reclaiming file folios,
+> it returns "bash: echo: write error: Resource temporarily unavailable".
+> 
+>   After (file cache is left intact):
+>      # cat memory.stat
+>      anon 200704
+>      file 67178496
+>      pgscan_proactive 0
+>      # echo "64M swappiness=max" > memory.reclaim
+>      -bash: echo: write error: Resource temporarily unavailable
+>      # cat memory.stat
+>      anon 208896
+>      file 67178496             <- page cache untouched
+>      pgsteal_proactive 0
+>      pgscan_proactive 0
+> 
+> Ridong, please correct me if I am wrong.
 
-> Fixes: eb02f14c4a2b ("mm/hugetlb: allow overcommitting gigantic hugepages")
+Thank you, Barry, it's correct.
 
-It's a good idea to cc the people who were involved in the to-be-fixed
-patch - Author and Reviewers.
+-- 
+Best regards
+Ridong
 
->
-> ...
->
-> --- a/mm/hugetlb_cma.c
-> +++ b/mm/hugetlb_cma.c
-> @@ -34,7 +34,10 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int order, gfp_t gfp_mask,
->  	if (!hugetlb_cma_size)
->  		return NULL;
->  
-> -	if (hugetlb_cma[nid])
-> +	if (!nodemask)
-> +		nodemask = &node_states[N_MEMORY];
-> +
-> +	if (hugetlb_cma[nid] && node_isset(nid, *nodemask))
->  		page = cma_alloc_frozen_compound(hugetlb_cma[nid], order);
->  
->  	if (!page && !(gfp_mask & __GFP_THISNODE)) {
-> -- 
-> 2.55.0
 
