@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8784FC54F4C
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 13:08:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04507C54F4C
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 13:08:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 71DD96B0099; Tue, 28 Jul 2026 09:08:26 -0400 (EDT)
+	id C26786B009B; Tue, 28 Jul 2026 09:08:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D01B6B009B; Tue, 28 Jul 2026 09:08:26 -0400 (EDT)
+	id BD73B6B009D; Tue, 28 Jul 2026 09:08:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5BD176B009D; Tue, 28 Jul 2026 09:08:26 -0400 (EDT)
+	id A9F0A6B009E; Tue, 28 Jul 2026 09:08:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 203366B0099
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 09:08:26 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A2B2B14037D
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 13:08:25 +0000 (UTC)
-X-FDA: 85038214170.24.E7E894C
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 74CB46B009B
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 09:08:32 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DE3E74033F
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 13:08:31 +0000 (UTC)
+X-FDA: 85038214422.20.C54E750
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id C8AD51A000F
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 13:08:23 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lkVctXdO;
-	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf28.hostedemail.com (Postfix) with ESMTP id 45D9BC0010
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 13:08:30 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DOfKoJAH;
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785244103;
+	s=arc-20220608; t=1785244110;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z6kR497LjC7Isvr03okKrlj74MLRITXjjuRFnxSRHOw=;
-	b=cy1aKaSLWrh84GT+q2fRkyWJFzBsJ4ysWLGj1oPVA6Co5ZISlu40FTOdpHUvQrzETiBNJ/
-	oF3kuf5fjv5uRmQzG2wV28aEQJniFFlfbP4+d8yTwwj71Wp6zQtqHa7iosU9EAs5UsOc/y
-	b+dRY6f+8EnTXyj/WzNVHk1Yxf7b7v8=
+	bh=LsA8arRtHhtoIfoxT2QqMXdENn8OvCqaWSTb0wqbAxo=;
+	b=wFJjh6YyIS80oFIYxwnDSYKhq9PAdpkqGcXH9/1maeOt3IqrCehqeTCCrBTEX+m4rCxfg+
+	y3Dn98gsoRF/R3OhqwtRDKWYueJyGmVC3gDQ6Rm8kjKhaVVCwh7+MwXJECfh6jwsG3pgiZ
+	7wJABMC8aHZ9umA1wUbgY6AAsaDHBzk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785244103;
-	b=At5HupPxfR85pdnDz7c3bv7nqETJfjODY4E9JCGMO+5mHNPkPNNxH3KxVIPclYP2pSntkZ
-	r2EWXC975K8bDWyBGjpiMXvDOrs34Oz8E+GVT743wXSuZjqNrGZU4sNO9LnBVtonrSHYPJ
-	0LfFrf07UHMUVgHPc7dfjl2qEaie3qA=
+	t=1785244110;
+	b=DWXxkAMymBz80Xl34DACgy77apqRh7L7jYYHfJy39k1FrIOOOo0WiMxrxLjDaAuEXxxjOj
+	Oxf+Kt6565D83xnxBzJMSJmqp2J/hNd+fKlHVulZWCrNM405NVDh0Lirkn/wmUWyjZmDra
+	Nn7pvbv2WBKCOZTQYwmXqEM2NswC6Xk=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lkVctXdO;
-	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DOfKoJAH;
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 523A360A96;
+	by tor.source.kernel.org (Postfix) with ESMTP id CEAF7600FC;
+	Tue, 28 Jul 2026 13:08:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 825741F000E9;
 	Tue, 28 Jul 2026 13:08:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0692C1F00A3A;
-	Tue, 28 Jul 2026 13:08:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785244103;
-	bh=Z6kR497LjC7Isvr03okKrlj74MLRITXjjuRFnxSRHOw=;
+	s=k20260515; t=1785244109;
+	bh=LsA8arRtHhtoIfoxT2QqMXdENn8OvCqaWSTb0wqbAxo=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=lkVctXdO80DTaLpIRkVUNPaBSSApcMdOEjwGOtWKWkmUaJkBC2uenMket0s0+WK+J
-	 qTU2b4h1fS76z1+BcoV+nXD1jokWc4Q75GzqaJk/fzbQbRLt/zhxBM+bEY7fykoTor
-	 4WRIpmFOp61kxIYTDeLHD8DyJnWLF3jKgtl9yoh+6oG9D2fAMp4y5aWgahNyjkUet0
-	 7gH3rlRAr5V7wVuKeildwuQTH2IpBnJ1T67rSxZHP6K4raL9pwTFSFTkZn6/G1i4bv
-	 y1BSGF0PnqNg4eE/SU78DganA84psQAVYfEmnZlG5sbg36lAUorwUcutXzBn/yOMwT
-	 IpmJaUtdaoQ2g==
+	b=DOfKoJAHbylHDIbFreZC+aYFGdNBgempcgIHcCIAPazGeaMMd15230ceAAP2T5ibk
+	 cVuDWWaygEajGxSVp5omHB0PmKjECO8ejLnicPRUzBTWBz/CEg9x5u/uwUsEsvatso
+	 u8vhR/aqo9L3cj81ZomnaBgl4h1hrYGQz8/oTCMkBWtO07B+SfrgZedgQEnjoh1u4x
+	 3w8YL0dzLgCG7nOsdsqnD6trmyhUxJRVJgRS5lmZXBRtI64CIh6kJ7h2YYcm0cJzA4
+	 zK3UUpFDQ3OxxdgKIeXfiGGd8gzFl2MJDdjQ7Z8v8H1+vnVTQ/0jQ30qWO4KIBUkj2
+	 jklNSLN8qQ0vQ==
 From: Mike Rapoport <rppt@kernel.org>
-Date: Tue, 28 Jul 2026 16:07:45 +0300
-Subject: [PATCH 2/5] x86/mm/pat: acquire init_mm write lock on collapse to
- avoid UAF
+Date: Tue, 28 Jul 2026 16:07:46 +0300
+Subject: [PATCH 3/5] x86/mm/pat: acquire init_mm read lock on attribute
+ change to avoid UAF
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260728-cpa-fixes-v1-2-2ed2352300b3@kernel.org>
+Message-Id: <20260728-cpa-fixes-v1-3-2ed2352300b3@kernel.org>
 References: <20260728-cpa-fixes-v1-0-2ed2352300b3@kernel.org>
 In-Reply-To: <20260728-cpa-fixes-v1-0-2ed2352300b3@kernel.org>
 To: Dave Hansen <dave.hansen@linux.intel.com>
@@ -92,13 +92,13 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  stable@vger.kernel.org, x86@kernel.org
 X-Mailer: b4 0.16-dev
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: C8AD51A000F
-X-Stat-Signature: bmow8j8b6fw4zg58r8i1mxpmirxjydas
+X-Rspamd-Queue-Id: 45D9BC0010
+X-Stat-Signature: 1ueunzupp4juaqrs69pnfuit3yffamps
 X-Rspam-User: 
-X-HE-Tag: 1785244103-874434
-X-HE-Meta: U2FsdGVkX1/P/aladz00aausRPiETFCebKuzSZ3BJu4gIDB9Tky+nU+bFA9bNhCQPCb9Omui7TtMqJEWorPaKUlkXFj39hQqgpKOiebmheRtKxI9IISH7L2MoVMKHhMXcgtVWdB0GXcw7gV/gH1NknqAyB29w7zkgqDkz78Jv6Ih4HBVBfiQ/JmJXCsWFMd09wnsrOhLQ6Y3Ubu/ZS1KKO4mY5bhA97y13HJlrZTM1GmvhMOBm/Lw4u1QzCqpcN+L2kUKUP9O5TSajcHVfJn5P/08A124FYOaMhFKCZB+ANSBnD7UVz5HKZ8r6NKHDDJ9wu6eG2VMrOxEwpQAuvNm3+0b8BAMNiKa7W/k8xiNHKIaVcjELqzmfDI4ZjdCfGDp5yyLvWXUsTMDt0ZKyM1Mkas73mSsrWkhAHviHNeR9+NiH2cFgINDH/MANOt+SxSL13f7EkIcWAaDKiAE8Yxy5jTA/JDV5t2VQHKTsZB/QsPuw1tkIhjetMuMgKdAGsENJ8hPucDIqDRE+YeIJjwY10fz6rxCbFw688OMfBQHiv2mZYAniVeHwWTOJALR8zBy7CWWm7cLnRYOSiBNAGpuPJlvx/zdz1t7cYtZA+zhQTbzJMWIq4CO6NHI5tEzgpfm1TnDqHSM+ofK7eCnSdvVfDccGZF111+F9tSQalgRaEwTRc7sJeaITvElqxK0ABPJnb48Xeu72JvvzARO8et/4RNh9cjRN9BmKVf0WVuOT2vbOoxw1yRpdNsL5jfTfkWcZ1MwFYiSNEHlv1n1vttewjMJbCxd+Bc5PR+fz+u1nSVrfRkeW2q8cP8uHdIGfoZV57xyKwV1h7X23x8LJt2YYm5lf1vaQdlWBOCXgxDNwGb1HCQEJr0V3mPjAiQ4tH7fWWDb9k2hYLU2oWo+ev1yq0Sx21onURkpFWPNz3B6Amhlticmbv10l95NMW85DdXH4fzFbn+ojOlVDiNAGb
- B554i1bk
- oYRQl93MRf/G9Yk/wvhnrkSGoRddsGu1Jfz27qtoImBmdQYGjCrwxsngoFq8J941VxHuAYceSXG8qR9+mQwG8trlwCyOtkohVCaIEWGOH3YbxRoEfpy8bo8UYypwLYoKU64SjkUNKI5bCZgvdQREaBmRWocvXLqCdmn0ykFTVN0yvsS6iK3CPOmuOrz/zLMDRSd10q9FnfkW2TI0Gmnkrru3xylF503Aj3PG/K4CS4/pElZ5OlMZUIObd1u7HI2YKYYWCErpN9thBkx0YlRszTpUzsnYa5z7N+UV5XmIfuMu7MBUmDJ4bo1B+HhsXXLA80fRPoJd2qdu80UvDJbDXd6s1YUZl4DdLdIDGeIjftn47u08zPZ/Zmogk0mnDAI46bzekcD0PZriKsNr0djpVzNUUzexvLpA8esDp
+X-HE-Tag: 1785244110-327348
+X-HE-Meta: U2FsdGVkX1+T6fSKucQsVsA7JspiUG38Q8ndqDAKkV7KFpFV6gemokRoeThXK1eQg6AZUXZWKqKDXYEHoeo2Tfj2p7sA2XFCuqBKuvNX0wfR4kO+iU2h/eu/VyHC3pQwZusDIhwHSq82WFkl+w3Qj761H/uD7H0BojJj/w5Gaz7G6/yp2cdx00ZO7Hxm5QOBEFxOZgkZ8ExNKwijZd3hubxrfY4y4gLKwjp3GWlN8We1QycjI5QV/ZkOMzhSUF7HBcnjwLr8dWIvtm/iUmOwkP2mUSzn/hmq2qAx+WSGOQIzr4mUFQ8pH3LUYLo/QgMsvda0Kr3rh/kDcIo8q1ALbqyQ6As2EeUf/KEYCQuFqAzNeGqzN+HdfQFvciXXopBh6T+8/okLdeB6Znwj8vovp7Ih+f86FbpedHZQLI0TWUjKcHHboJD6ZHDrxwHnEyQ+fBoTuIg+z+vPq+9Q6spDdLzB44sYE9ANe2KKtzbZ8Xxa8HdcQWntHjm6c267L57exLyAPtNNn+zJGf1vSIP0+mZ9jcd2U3c9gwo3AsgiPsKR9HeBT00ma3fUu/u7INKR0G9qz0akf9ok+x0Tzgbi9GktzCumA9PXixSeefz8bfTjjgOborWcy+Cq5Qx7FZCpgL6SaxJNVFf30UoDAn640OwpE9nCW3AjYyB9odMV8o7kZhWTyVe0VM6ps39DS7Mk5VzZqTZkkdZFzifXRKFwSIUe57mGRciigjILo9SY9/p8L/4LRcwtHu4rGl1iu+v4u9GLZg8WpbkLL7OXxE6eAKK9gqHlWrFTb6q1u11TdPX3tTrLfZYxCxsXSrwd+jgn/OSvz6Na625+y0BvRzM+Zidm8QaDMZWaRlB1nR+MOVzwABb3DehQG1sR6QktGsFLxs8LwjCktytQBIDc2t6jCmjqWoxFqmhCt3KaYadDFPBi5zYO0wpRsXRhr1tpU2UHkDFQWX5K14YdQ/nYf4m
+ +/w7krU/
+ AaBUAYHCmU4Wmb3jLARaVoBuTMpQD1lvl+8/FiNM8J2DddMW757cUmzCwSOEccLfkk9C9YlBKug9EG6gXrlrjBCHlHvb+h+WlAimOdlI5O7hwEEhYtZ4+GVxWJnSt25kisX+kdqDnWTmuWAPBDL5wd+6QiTEH+8V0dWdNHPKe79ksd7uaSz7FiaZ1gwdr35PR5XmpaChLsY4Iz2wtnUQmduX3eeZLk+kITHAhuxsXuTKEGGQfc0UQzN0cCvq/47dkUVF3rn3DBbng6LtZeLZd/lUeERqhH2m7X54PizjKSjTa2C1yl6zeNYczwZA64ug8eVH8nTSkRLwwTXCrKPTe5o6nlkpCFIpfffDjodCZ0jfijHAMQilYGwBTRBZWDUKglyuSdh+015rbvG6QjI+vlhppUMUU+hfTP0EB9wWBoBzs9g4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,114 +108,160 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 
-x86 implements page attribute modification using its Change Page
-Attributes (CPA) mechanism.
+A previous commit protected us against races between ptdump and CPA
+collapse, however one still exists between attribute changes and collapse
+as reported by Denis V. Lunev (linked).
 
-This tracks properties of ranges such as cache mode through x86 page
-attributes, and as part of that logic manipulates kernel page tables.
+When an attribute change arises, a lockless page table walker obtains a PTE
+entry, which is later written to via set_pte_atomic():
 
-Since commit 41d88484c71c ("x86/mm/pat: restore large ROX pages after
-fragmentation") ranges of kernel page table entries can be collapsed into
-huge page table entries as part of this logic.
-
-As part of this collapse, it frees the page tables which the collapsed
-entries previously pointed to, and it does so without any relevant locks
-being held to preclude concurrent kernel page table walkers.
-
-The only way this code can be reached is if CPA_COLLAPSE is specified, and
-this is only set in set_memory_rox() via:
-
-set_memory_rox()
+...
 -> change_page_attr_set_clr()
--> cpa_flush()
--> cpa_collapse_large_pages()
+-> __change_page_attr_set_clr()
+-> __change_page_attr()
+	-> _lookup_address_cpa()
+	-> lookup_address_in_pgd_attr()
+	-> [ lockless page table walker ]
+-> set_pte_atomic()
 
-Notable users of this are execmem and bpf when manipulating executable
-mappings.
+There is nothing preventing a concurrent CPA collapse which can free the
+PTE that was retrieved here, resulting in a use-after-free.
 
-However, this is problematic for ptdump as it walks ranges it does not own
-and thus runs the risk of a use-after-free on page tables freed underneath
-it.
+With the mmap write lock taken on init_mm over CPA collapse, we can now
+resolve this race by acquiring an mmap read lock on init_mm over
+__change_page_attr_set_clr().
 
-In addition, concurrent CPA collapse operations are possible which can also
-cause races.
+This locks across the whole operation over which the walk and the PTE entry
+write occurs, solving the race.
 
-Resolve the issue by acquiring the mmap write lock on init_mm across the
-whole operation.
+It is safe to do this here, as no spinlocks are held upon entry to
+__change_page_attr_set_clr().
 
-It is safe to acquire a sleeping lock as all the callers invoke
-set_memory_rox() from process context and in any case,
-change_page_attr_set_clr() calls vm_unmap_alias() which ultimately takes a
-mutex, disallowing atomic context here.
+However, the lock must not be held over an allocation, as allocation can
+trigger reclaim and shrinkers may call into CPA recursively, making
+deadlocks possible (init_mm -> ... -> fs_reclaim -> init_mm).
 
+A page table is allocated when a huge page needs to be split:
+
+-> change_page_attr_set_clr()
+-> __change_page_attr_set_clr()
+-> __change_page_attr()
+-> split_large_page()
+[ pagetable_alloc() ]
+-> __split_large_page()
+
+Avoid deadlocks by dropping the mmap lock across pagetable_alloc() in
+split_large_page() and track whether this is needed by adding a new
+'init_mm_read_locked' flag to struct cpa_data.
+
+This is safe as __split_large_page() (called with locks re-established)
+revalidates that the page table entry is the same as it was prior to the
+locks being dropped and __change_page_attr() repeats the entire page table
+walk whenever a split occurs, so concurrent split and collapse are
+accounted for.
+
+Concurrent ptdump is also safe as the lock is only dropped over page table
+allocation during which time the page table has not yet been modified.
+
+The CPA_COLLAPSE flag is only set by set_memory_rox(), which exclusively
+operates upon vmalloc ranges, and on x86 only within the module mapping
+space.
+
+This is important, because some callers directly invoke
+__change_page_attr_set_clr(), bypassing this lock. However, none of these
+operate within the module mapping space.
+
+* cpa_process_alias() - a recursive helper called by
+  __change_page_attr_set_clr().
+* __set_memory_enc_pgtable() - operates on the direct mapping and (via
+  __vmbus_establish_gpadl()) the vmalloc mapping space.
+* __set_pages_[n]p() - called by set_direct_map_[invalid, default,
+  valid]_noflush(), __kernel_map_pages() - operates on the direct map.
+* kernel_[un]map_pages_in_pgd() - operates on EFI ranges.
+
+This work is based upon Denis V. Lunev's excellent analysis of the bug with
+gratitude.
+
+Link: https://lore.kernel.org/all/20260626163213.2284080-1-den@openvz.org/
 Fixes: 41d88484c71c ("x86/mm/pat: restore large ROX pages after fragmentation")
 Cc: stable@vger.kernel.org
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
-Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Will Deacon <will@kernel.org>
-Reviewed-by: David Carlier <devnexen@gmail.com>
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- arch/x86/mm/pat/set_memory.c | 15 ++++++++++++++-
- include/linux/mmap_lock.h    |  2 ++
- 2 files changed, 16 insertions(+), 1 deletion(-)
+ arch/x86/mm/pat/set_memory.c | 22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
 
 diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index 4c8922695fd3..4ba16d72a535 100644
+index 4ba16d72a535..26131ecc0e1c 100644
 --- a/arch/x86/mm/pat/set_memory.c
 +++ b/arch/x86/mm/pat/set_memory.c
-@@ -22,6 +22,7 @@
- #include <linux/cc_platform.h>
- #include <linux/set_memory.h>
- #include <linux/memregion.h>
-+#include <linux/cleanup.h>
+@@ -50,7 +50,8 @@ struct cpa_data {
+ 	unsigned int	flags;
+ 	unsigned int	force_split		: 1,
+ 			force_static_prot	: 1,
+-			force_flush_all		: 1;
++			force_flush_all		: 1,
++			init_mm_read_locked	: 1;
+ 	struct page	**pages;
+ };
  
- #include <asm/e820/api.h>
- #include <asm/processor.h>
-@@ -426,7 +427,7 @@ static void __cpa_flush_tlb(void *data)
+@@ -435,8 +436,6 @@ static void __cpa_collapse_large_pages(struct cpa_data *cpa)
+ 	int collapsed = 0;
+ 	int i;
  
- static int collapse_large_pages(unsigned long addr, struct list_head *pgtables);
+-	cpa_lock();
+-
+ 	if (cpa->flags & (CPA_PAGES_ARRAY | CPA_ARRAY)) {
+ 		for (i = 0; i < cpa->numpages; i++)
+ 			collapsed += collapse_large_pages(__cpa_addr(cpa, i),
+@@ -450,10 +449,8 @@ static void __cpa_collapse_large_pages(struct cpa_data *cpa)
+ 			collapsed += collapse_large_pages(addr, &pgtables);
+ 	}
  
--static void cpa_collapse_large_pages(struct cpa_data *cpa)
-+static void __cpa_collapse_large_pages(struct cpa_data *cpa)
- {
- 	unsigned long start, addr, end;
- 	struct ptdesc *ptdesc, *tmp;
-@@ -464,6 +465,18 @@ static void cpa_collapse_large_pages(struct cpa_data *cpa)
- 	cpa_unlock();
+-	if (!collapsed) {
+-		cpa_unlock();
++	if (!collapsed)
+ 		return;
+-	}
+ 
+ 	flush_tlb_all();
+ 
+@@ -461,8 +458,6 @@ static void __cpa_collapse_large_pages(struct cpa_data *cpa)
+ 		list_del(&ptdesc->pt_list);
+ 		pagetable_free(ptdesc);
+ 	}
+-
+-	cpa_unlock();
  }
  
-+static void cpa_collapse_large_pages(struct cpa_data *cpa)
-+{
-+	/*
-+	 * Take the mmap write lock on init_mm to:
-+	 * - Avoid a use-after-free if raced by ptdump (which takes its own
-+	 *   write lock on init_mm).
-+	 * - Serialise concurrent CPA walkers.
-+	 */
-+	scoped_guard(mmap_write_lock, &init_mm)
-+		__cpa_collapse_large_pages(cpa);
-+}
+ static void cpa_collapse_large_pages(struct cpa_data *cpa)
+@@ -1270,8 +1265,13 @@ static int split_large_page(struct cpa_data *cpa, pte_t *kpte,
+ 	struct ptdesc *ptdesc;
+ 
+ 	cpa_unlock();
++	if (cpa->init_mm_read_locked)
++		mmap_read_unlock(&init_mm);
+ 	ptdesc = pagetable_alloc(GFP_KERNEL, 0);
++	if (cpa->init_mm_read_locked)
++		mmap_read_lock(&init_mm);
+ 	cpa_lock();
 +
- static void cpa_flush(struct cpa_data *cpa, int cache)
- {
- 	unsigned int i;
-diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
-index 04b8f61ece5d..f4ceb968aeb3 100644
---- a/include/linux/mmap_lock.h
-+++ b/include/linux/mmap_lock.h
-@@ -621,6 +621,8 @@ static inline void mmap_read_unlock(struct mm_struct *mm)
+ 	if (!ptdesc)
+ 		return -ENOMEM;
  
- DEFINE_GUARD(mmap_read_lock, struct mm_struct *,
- 	     mmap_read_lock(_T), mmap_read_unlock(_T))
-+DEFINE_GUARD(mmap_write_lock, struct mm_struct *,
-+	     mmap_write_lock(_T), mmap_write_unlock(_T))
+@@ -2139,7 +2139,11 @@ static int change_page_attr_set_clr(unsigned long *addr, int numpages,
+ 	cpa.curpage = 0;
+ 	cpa.force_split = force_split;
  
- static inline void mmap_read_unlock_non_owner(struct mm_struct *mm)
- {
+-	ret = __change_page_attr_set_clr(&cpa, 1);
++	/* Avoid race with concurrent CPA collapse. */
++	cpa.init_mm_read_locked = true;
++	scoped_guard(mmap_read_lock, &init_mm)
++		ret = __change_page_attr_set_clr(&cpa, 1);
++	cpa.init_mm_read_locked = false;
+ 
+ 	/*
+ 	 * Check whether we really changed something:
 
 -- 
 2.53.0
