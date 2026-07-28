@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACA47C531F9
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 11:14:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41C6BC531F9
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 11:17:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4C3206B007B; Tue, 28 Jul 2026 07:14:10 -0400 (EDT)
+	id 083D76B0088; Tue, 28 Jul 2026 07:17:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4A0A46B0088; Tue, 28 Jul 2026 07:14:10 -0400 (EDT)
+	id 034596B008A; Tue, 28 Jul 2026 07:17:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3D90F6B008A; Tue, 28 Jul 2026 07:14:10 -0400 (EDT)
+	id E8D626B008C; Tue, 28 Jul 2026 07:17:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1403A6B007B
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 07:14:10 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7B9BF12034D
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 11:14:09 +0000 (UTC)
-X-FDA: 85037926218.27.B16C6A7
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C37A36B0088
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 07:17:49 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3A9FC80364
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 11:17:49 +0000 (UTC)
+X-FDA: 85037935458.18.D011196
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id E74D41C0007
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 11:14:07 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LPe50sZM;
-	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf19.hostedemail.com (Postfix) with ESMTP id B038C1A0002
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 11:17:47 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LEaWLwMn;
+	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785237247;
+	s=arc-20220608; t=1785237467;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/BnA39edsDXhZakbSq/F6cdj+/HFBLubHdNOwS7e3lc=;
-	b=OGOc8qBtdHLMcAzcqYQa6kAMw3gYaMad6cZUqI/b+Dmls9VGJKInpD+PnRrT/ExldtklDN
-	Lz0bcGKNwAYaTnJUG2wS83rsadw/4qmqepNFY8Zpr3YSjhrNFUuAXcSM+n0ACxYzSW8jLo
-	2lrPpGlz4aZDSltGruLqZGKfhUjZZNA=
+	bh=c3Jzxz8cTBKJ4oQjMR0dsChUMmbd1kyxivRCL+os77E=;
+	b=YTleiyYFqkC66GFo7kAXRX2zbbOFS5wKywocG5avJECMnRGaYclm61JmyBswz//2B1fol/
+	mRWIQFqDlYdd0BjpxPsCyJozUzJC15Rik4rIXw9FCDt7sAOwT1nJ66/znS604uDoMvVCQk
+	Dar03DA1vgJ5XgbXuSQhrGrXxNNszS8=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LPe50sZM;
-	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LEaWLwMn;
+	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785237247;
-	b=RI/HszbVPmPzrYUUHAxBWsEw2H5iR6CDRPBOu+h0HLXNd7KyVU5SiIUsOnbj9lwZcCdQNE
-	Jl8+GOJZSIEdQP3oqn85wrZiGIg96u8Lx8znH6IRxKh0CifAACIwcDK457BkOKrl0T4ra1
-	ZDn8hSvSXbm42Wve9LPrLN6vyKYovZo=
+	t=1785237467;
+	b=weY3gdHtmnKLFBeg14CARaMLLr8Gx+YVBz/JXc1F0Xf70BkFEk4VUHirjQHiz6Uaax5R7i
+	rNaxo0WtgmTmBEdgrK0//HRNIVK85BK7yeZwRGTAuaK3ABMSOkMm9tWpNwXala6v91yLUK
+	5bIA4mXo7JzsQcntoBVD0waMe9abe5I=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 64C3A60AA1;
-	Tue, 28 Jul 2026 11:14:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5C511F000E9;
-	Tue, 28 Jul 2026 11:14:02 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2BF8160A9B;
+	Tue, 28 Jul 2026 11:17:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A7F41F000E9;
+	Tue, 28 Jul 2026 11:17:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785237247;
-	bh=/BnA39edsDXhZakbSq/F6cdj+/HFBLubHdNOwS7e3lc=;
+	s=k20260515; t=1785237466;
+	bh=c3Jzxz8cTBKJ4oQjMR0dsChUMmbd1kyxivRCL+os77E=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=LPe50sZMCYDr5ixko7ra5gKEwb0+j0gXOXX4CM3QC+CiJqhJak1d1WcSv+sPYIEVD
-	 p8++6py3y9YXp7doinEsW4t9gBYPbK7bNtqpyoFnrJ2sJigaKT4NjX/eHUuEYh2oP1
-	 az+wML4CXB6vuSXAD/2INNsO0nbBSuDp/HWdb9UFN+Ue2ojnObeZZt7lC6EPXzSHhs
-	 FKEDMcQNIsuiMJ8PxDUQRjHDJon013BoUoyNMGC56Je43OPRz4K0j/Z/O2bQ2Hhb+G
-	 1QsVycOSnT4mVfeiITd2NizLtkcCU9sIBcPxofjqYqjkEeuR0C3HeiDnW54V64RDVH
-	 Pwl0mKsPWpAdg==
-Date: Tue, 28 Jul 2026 12:13:47 +0100
+	b=LEaWLwMn/SH7yWGkv9FDUMXJ/oT4Y5DSiJs8nA9k/fLDZCybRc6HHMqUW1swC5ZXd
+	 IW0gxe/iL0DDhZ3B4O5GdzwYhCpRIOI18lPEfvKohj2qUfF80pgk9roQGRs9Qv/u1r
+	 MrCKe+2KEGdamnHre/AfpqksnW/y/MRXJrlyiRUG/+ncbSIYEdEp7cRnneFZBeaf8q
+	 dHJtjrj8AVq1N6chHHvmcc8F13IHbG+6A1Zhhkm2yQP3W2c7ueSgMdxttY7+61pjVr
+	 YWpnU0Uj93DTKaTuNL4C44n5cTExFOdgEGdjVsrFut6WdY3hZuK0Jjd32XASGU4v9I
+	 qcMWJCTyB4+HQ==
+Date: Tue, 28 Jul 2026 12:17:27 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 To: pratmal@google.com
 Cc: akpm@linux-foundation.org, vbabka@kernel.org, david@kernel.org, 
@@ -74,20 +74,21 @@ Cc: akpm@linux-foundation.org, vbabka@kernel.org, david@kernel.org,
 	linux-doc@vger.kernel.org
 Subject: Re: [PATCH v3] mm/page_reporting: Add page_reporting_delay_ms module
  parameter
-Message-ID: <amiN82J8p5z9l_Rm@lucifer>
+Message-ID: <amiPTPKfTOEpgetH@lucifer>
 References: <20260727230545.262579-1-pratmal@google.com>
+ <amiN82J8p5z9l_Rm@lucifer>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260727230545.262579-1-pratmal@google.com>
+In-Reply-To: <amiN82J8p5z9l_Rm@lucifer>
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: E74D41C0007
-X-Stat-Signature: rqakoepujtw8qmsecf9kgtkt8mqp5iya
-X-HE-Tag: 1785237247-75946
-X-HE-Meta: U2FsdGVkX1/872fynDF9sKJO9gu+ObnoVP5LrNSE2jBeRJXq0qacU8e8IvjzIq3WkTY+I4/5v9wEmqKDgM2PxR2AlhdItYsDPIarO0drionMLuUcc8gCpCMEbICk8HXr8Ym6ewTmLAWj+z2lw/+ZYbsAAkRGxD/YFfMIS8eTAnSLGkxBFH/LrfEWZjN5J2bOAhWaacRI1KnGfnIno+TW2YCp1ZXMlxELyKnekOEEOVZA223J+Cp5fhi5iDDfQR+OZBPMMktOK/5VEq6wFBoASRt+BwJgHChoSctBo+CfQ4PxLQqG1VzqmHtF8aHd1Ujth6q0wRmG8CJKh4e88lzPax7GfjU3oeFtXdO1JifR7WYCzoym3OWssdEwonyg5nWm4J78ZCAj9ipvda7ty3A9Lfh9af4K1Yfbv50ZceSzbsJ+4G6uQeIcKiQhx1A7U6crql4U2FK2H+i2ae3v/YKOl4NMxgi1xLitm43wUDLU2Tu09pNevdqO0Ds2f5WLSXs2BvbAeUCLyYCJfQ5nuqRT7odNbXSQk5iJVR59r0JLfs6obtN3W7sfwhPISN4Ji7HCRFLtXr7TmBV5/o8qV/aSPB+WflOu3nJAWbViWW//VmLNcetoEuSg++QsimEfe4FL59EqtLd4LCoLFjv+NfJZg7og6hWd+1Q9tjGWLp6Wp6h7caZ8odRpbC329Au5rhtmdteKU04BWrgMqX63kEkCGlRGUPQuNw9HaxMosLPsAQWvZiS7uhHwaRj4QFvXR9vFt1IvJ3zvtMFhplZ/JOZyv+BuwvL44xHpZTl40f9GJf/0uGc1JhyHdpj+plkJX3xg3/Vv+elIQyhlAaFnRpF0QGT2rBrVFR6k+hweUrhHS2n3P3adCjPTm0jSC1p6PFKHtYbMqQuRnfMcBJd8M1kLMjEdsH0wmdv2AwylkK08OB9rCREY1kKc2C6lSsuhp/CSji4qZ5B5N7b15THBgiT
- 1zCoLuyt
- /7vS8iiYW/wzfDhifk56c+JApsoAR7nMllCjtUgFWUk043gciRTECg+3AEwiPUDenjGn1Q0a8nhVphPyIa9KikqvxWuvC7cjFs6lsTjutL76jEtX9Wl4tu9Ycqy7qKE195Gbtgfj3TizIMaAoKtyQgSk4GIfRGtfNSY+yCPZYFsmO8oX/n6QDtYaCz//IbCQw2SfJsdB4aAzVCh2ui923t+0A0JMGVLg0GleyUKG687HmYrFTlsq4x6CXf8wkh8j6VXTSXUFFmcgNzvWTAwVhO4Xaefagq6rLonlhoiw5hwvm9JkbcngQk4NaRKOwN8Vth2zjp85/3Cmzid8Tq4MChSiwH1r8+35pcDXH
+X-Rspamd-Queue-Id: B038C1A0002
+X-Stat-Signature: cy9esiihy6sx6qqq4xu5zng1nb9p5fom
+X-HE-Tag: 1785237467-912863
+X-HE-Meta: U2FsdGVkX1/vi0yIPFia6hL1yZMw2/dcIQLdNAawYqYejLGNpdM7PIN/JUXWFYvjJM6hknj6nMXS6TFeTBQQRogZlclFGGRdE1sGpmdShgKAkl7oe1Ktq6Up7pPdPMpIhY4wystM+r+jrSED/iVjPiCSk5NGj5XITtuA3+XaKme1J+slEP4t2dM7dG27IXsIFAsoTZS3CUo9hoQSdKF1PoPo+FjJTAsa1hP7IojhWVPC0vzSrbUkt3W3mPGH6yZ4EkO4GbHuehMsakhrxK/v3D6m0AhAMg8mZkJf7LvmsAaiGfq4vC0gdF4aoQo5xD2W8zZXBTqSrO67dObz3USMKBi672Z3V/lKRKPdq6lK4Fkn0luhhEmJg0iIXiOFTK3sEBkyPo1f8mHznYxDNaktocRv4Mh4SBDbR17TZQc9oEXgw/PC8WwZc0g7MlsE02zOhumoj9Ntlu0sVjW/AAkifC6TCDV7BlBnY4aAP4hELw8v1BZl++kM73MLOfEZgDMVZA6wWZcKjI9FyjrbExOssm2c8XNm4kinPGOYmWTxiDpr/bSxfqdRGLlEdD8EjszPA+4QuwR18AZYVXSrYdfiS0QyC9r3QYwN46hTe21wupYLRoFTSH/MXAyAfB330TU2QSX3ZW0nC0rXbOpfelu23/76y0X4Vv1CMLMZ43CPrAQuFknyAhMuNm2E4qyVGRM++7HZhkUb0vG3zQqOagN/SkINIyEi3AIhgUCxaHTef1kVBkjuFfeoi2a1bingJuN+NobC+06a085oLaO5FiULGk/yQOHlCSCgYNv1G+9u9skn+QZmBiYi3PLXAQ4j3+EVYxnx5qisSAGgiV86rLmoEvdI5ueCPW+MSH3y3wjyKMrDdBujvk08xeEV/qQbNHjEBO2TI37X4FsaQcuzQSBHte/POD5DW6xTLuxWcEsZ22dT9XYpoJcTMrWtxTC8aunoqVrAHYMKa98kx7QyboA
+ ZtkKonUW
+ dS/tgJu5Vc+wgqsgDmKVT2UG+1F7U9B3mCEU+MGYUuSQYXnplMbYF+FB++B7zebggfTfWSfsOVfjmfY37v79Cpv71DtletNZQ99yVaXb56aYgRbrQ8DqGo/YDkxbzGN8VsyEYlfcJ6hT7+kDxgjOYrl9oyZq6qfSb+Y6qIZ4Nc1DCSmS7XCsNZ3dEICStYhbh0uIhvRgRN2AwSjI1Grm3QmJuYnVFKxHaEEiSErHtLTYWR6qDfBWc/Xq60xuN+U3JRLbzUQ/ZlmvhmKlncawven7REKBBvjX3OnB9paNJCnu1E2g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,139 +96,8 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 27, 2026 at 11:05:45PM +0000, pratmal@google.com wrote:
-> From: Pratyush Mallick <pratmal@google.com>
->
-> Currently, the free page reporting uses a hardcoded delay of
-> (2 HZ) between reporting intervals. While this is a reasonable
-> default, it lacks the flexibility to adapt to varying guest workloads.
->
-> A low delay allows aggressive memory reclamation, returning unused
-> pages to the host as quickly as possible. However, during spiky
-> allocation/free churn, this immediate reporting can lead to a severe
-> performance penalty (nested page faults) as the guest re-allocates memory
-> that the host has just unmapped. In these scenarios, there is benefit
-> from increasing the delay to batch free pages over a longer window,
-> absorbing the churn without hypercall and re-fault overhead.
+(Also this patch should require a tag from Vlasta as it comes under the page
+allocator.)
 
-Since you're talking about increasing it, maybe set the floor at the current
-value of 2s?
-
->
-> This patch exposes the delay as a module parameter:
-> /sys/module/page_reporting/parameters/page_reporting_delay_ms, measured
-> in milliseconds and defaults to 2000ms.
-
-I'm not sure this is great as it means we now have a parameter we have to
-support forever and autotuning becomes harder to implement, also if later the
-implementation is changed, this might prevent a reimplementation.
-
-Have you considered actually adding logic to detect the problem you're having
-and delay in that case?
-
-It seems like this is the "easy" solution but it has a price too.
-
->
-> Signed-off-by: Pratyush Mallick <pratmal@google.com>
-> ---
-> v3:
->  - Converted page_reporting_delay_ms from a sysctl to a module parameter.
->  - Dropped the max value cap (PAGE_REPORTING_DELAY_MS_MAX).
->  - Documented page_reporting_delay_ms in kernel-parameters.txt.
->  - Updated code comments in mm/page_reporting.c.
->  - v2: https://lore.kernel.org/linux-mm/3da27fde-25dc-4cb8-8e05-74cd26fc2f7c@kernel.org/T/#t
->
-> v2:
->  - Documented page_reporting_delay_ms in Documentation/admin-guide/sysctl/vm.rst.
->  - v1: https://lore.kernel.org/linux-mm/20260722192935.1646848-1-pratmal@google.com/T/#u
->
-> v1: Fixed feedback from RFC.
->  - Added lower and upper cap to sysctl value.
->  - Reverted the reordering on page_reporting_delay_ms.
->  - Dropped the mod_delayed_work() change.
->  - RFC: https://lore.kernel.org/linux-mm/20260714171456.2350037-1-pratmal@google.com/T/#u
->  .../admin-guide/kernel-parameters.txt         |  6 ++++++
->  mm/page_reporting.c                           | 21 ++++++++++++-------
->  2 files changed, 19 insertions(+), 8 deletions(-)
->
-> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-> index b5493a7f8f22..364c2dce8e70 100644
-> --- a/Documentation/admin-guide/kernel-parameters.txt
-> +++ b/Documentation/admin-guide/kernel-parameters.txt
-> @@ -4810,6 +4810,12 @@ Kernel parameters
->  			Adjust the minimal page reporting order. The page
->  			reporting is disabled when it exceeds MAX_PAGE_ORDER.
->
-> +	page_reporting.page_reporting_delay_ms=
-> +			[KNL] Free page reporting delay in milliseconds
-> +			Format: <unsigned integer>
-> +			Adjust the delay in milliseconds between free page
-> +			reporting intervals. Default is 2000 (2 seconds).
-> +
->  	panic=		[KNL] Kernel behaviour on panic: delay <timeout>
->  			timeout > 0: seconds before rebooting
->  			timeout = 0: wait forever
-> diff --git a/mm/page_reporting.c b/mm/page_reporting.c
-> index 942e84b6908a..a67311468204 100644
-> --- a/mm/page_reporting.c
-> +++ b/mm/page_reporting.c
-> @@ -47,7 +47,11 @@ MODULE_PARM_DESC(page_reporting_order, "Set page reporting order");
->   */
->  EXPORT_SYMBOL_GPL(page_reporting_order);
->
-> -#define PAGE_REPORTING_DELAY	(2 * HZ)
-> +static unsigned int page_reporting_delay_ms = 2 * MSEC_PER_SEC;
-> +module_param(page_reporting_delay_ms, uint, 0644);
-> +MODULE_PARM_DESC(page_reporting_delay_ms,
-> +		 "Set page reporting delay in milliseconds");
-> +
->  static struct page_reporting_dev_info __rcu *pr_dev_info __read_mostly;
->
->  enum {
-> @@ -76,11 +80,11 @@ __page_reporting_request(struct page_reporting_dev_info *prdev)
->  		return;
->
->  	/*
-> -	 * Delay the start of work to allow a sizable queue to build. For
-> -	 * now we are limiting this to running no more than once every
-> -	 * couple of seconds.
-> +	 * Delay the start of work to allow a sizable queue to build.
-> +	 * We limit this based on page_reporting_delay_ms.
->  	 */
-> -	schedule_delayed_work(&prdev->work, PAGE_REPORTING_DELAY);
-> +	schedule_delayed_work(&prdev->work,
-> +			      msecs_to_jiffies(page_reporting_delay_ms));
-
-Err, do we not want to limit this to something sensible? What if the user
-specifies 0 does it just hammer the system at that stage?
-
->  }
->
->  /* notify prdev of free page reporting request */
-> @@ -335,12 +339,13 @@ static void page_reporting_process(struct work_struct *work)
->  err_out:
->  	/*
->  	 * If the state has reverted back to requested then there may be
-> -	 * additional pages to be processed. We will defer for 2s to allow
-> -	 * more pages to accumulate.
-> +	 * additional pages to be processed. We will defer by
-> +	 * page_reporting_delay_ms to allow more pages to accumulate.
->  	 */
->  	state = atomic_cmpxchg(&prdev->state, state, PAGE_REPORTING_IDLE);
->  	if (state == PAGE_REPORTING_REQUESTED)
-> -		schedule_delayed_work(&prdev->work, PAGE_REPORTING_DELAY);
-> +		schedule_delayed_work(&prdev->work,
-> +				      msecs_to_jiffies(page_reporting_delay_ms));
-
-This code is duplicated, while you've making this change maybe pull this into
-its own function?
-
->  }
->
->  static DEFINE_MUTEX(page_reporting_mutex);
-> --
-> 2.55.0.229.g6434b31f56-goog
->
-
-Thanks, Lorenzo
+Cheers, Lorenzo
 
