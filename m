@@ -4,103 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C3B2C54F51
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 21:47:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FD8EC53219
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 21:57:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 155356B007B; Tue, 28 Jul 2026 17:47:53 -0400 (EDT)
+	id DC0136B007B; Tue, 28 Jul 2026 17:57:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 105E36B008A; Tue, 28 Jul 2026 17:47:53 -0400 (EDT)
+	id D943B6B008A; Tue, 28 Jul 2026 17:57:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 01D3D6B008C; Tue, 28 Jul 2026 17:47:52 -0400 (EDT)
+	id C5E946B008C; Tue, 28 Jul 2026 17:57:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CB62F6B007B
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 17:47:52 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C0BBE16052F
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 21:47:50 +0000 (UTC)
-X-FDA: 85039523100.21.71EEA58
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id DCD6720004
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 21:47:48 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dC+obVVm;
-	spf=pass (imf03.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785275269;
-	b=xx7e7Six0bi3I7CkfCZZu03P6oXAZGmdtYkK7xEHOYmEFi+umTnxinLlh+4OkzUcICHYZu
-	yxpJRODl1pZuHT+NCeviuqCxlKo3xrw5pc00zYpWYBJPN1nYGo0iSsjY4tYNjqlMPjqS+I
-	Fpx+bJESaq1uyKIEVWPpWz+YNt/gRwg=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dC+obVVm;
-	spf=pass (imf03.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 98E896B007B
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 17:57:56 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0929F14050C
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 21:57:55 +0000 (UTC)
+X-FDA: 85039548510.11.D4758EB
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 56EC380008
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 21:57:51 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZPVRQLU4;
+	spf=pass (imf02.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785275269;
+	s=arc-20220608; t=1785275873;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bqib6vtzdDc0bkShWroBmi83B9sA++5bLMZGOXyfCyE=;
-	b=g0cKm+73t/8/YyvcQuqj/Cpf0nKEZ9C5RW9a86j11XyIVZ7FJ0vkuZSxayM1rnYHj15FN9
-	L8nFqMaJxSdwmIAeB4xCo+4YS4lyIucQdILm0y1euq/PPhhadJTwX5kcp2K6FM4/52A6aO
-	KHPKwT7eJR3PBEkm9D/mHtBOUgsITV0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8BC7860A9E
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 21:47:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41D821F000E9
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 21:47:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785275267;
-	bh=bqib6vtzdDc0bkShWroBmi83B9sA++5bLMZGOXyfCyE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=dC+obVVms5DhP6HIz3sEF+YLSHk7l9K6iiS8chnkr+kp+magf/aGaG8FrBxY8aSzu
-	 /PX/5Pdz/IPvZwqp3WasNrfIjVlIpnn0vVDakobfng614YkUgRf0ApEnTLNSjej3F7
-	 i0fAsoALQHsgVwJ/sqy0B/J4cvxYrWbsvg5S2ZJ/4I9tyfPL5GKyfbkJSQyzcPEuzX
-	 dNeS2hoV27BfGSq8Ot1gZaw7hjw3/G4/rbf8o7uTDbfeh9+nbpmfylqIXzyxB2XeSB
-	 6V6uj0wecWs1hNsZtU28y6n82lf+AblhhkF5glC0c5HjQDyyDoeM1ycrPE05ovJ0ya
-	 JQVlVGC/8gJ6Q==
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-92e7c6ec9dbso21550585a.0
-        for <linux-mm@kvack.org>; Tue, 28 Jul 2026 14:47:47 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RpgSdrWMxowKDX3gm6zL5SqLQaEwSQmvEfsDRS5oYM2Q7dAhgBRkEMnwZn8zBhWC7duFsBnZR02Gw==@kvack.org
-X-Gm-Message-State: AOJu0YzD1yaIarY0d02qhkHDo9wAqmkRZraShE4f8cVBpAQNESjf5jxN
-	pwj+jel/UMyNYyqbtuWJ5+ulmqdf5ncETNmmPp9FSzYW7hJBzeUqFt6Q0UB2G/9l3V40Vg/xLm1
-	qGuOnpfnL+i0JBQiKf+tY1SyyBWF+jAE=
-X-Received: by 2002:a05:620a:46ab:b0:92e:cac7:96fc with SMTP id
- af79cd13be357-933026cbd7bmr433098585a.24.1785275266629; Tue, 28 Jul 2026
- 14:47:46 -0700 (PDT)
+	bh=Vf3Bnkx46W9gMZvdRYmVghSOeclZTGz/xxcx9HYGmF0=;
+	b=mr0CJZFHgnKrKFE9f+8ig1NfPwuppfxDQL+R8uH4265zJK2P76amVpCUUcG/7STCE24imS
+	TZqQenIeEAEMwUeHz3jAj1GOdUQaLDgwpVDru0ym0GfZ6r0c452m3SX+vcmx1vaBCs9CMI
+	BPqw6PpFEaEmyFfNLmQgAPYZAJB8S3I=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZPVRQLU4;
+	spf=pass (imf02.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785275873;
+	b=Y0HtGLHuhKAwJIF0m76owgzlUmOS/G6672Xc3En6uZelgkHvPGr+HW1+sH9B4ODlinwMIy
+	8fzwKbG9Egv/QFY1WkpMo7+mYDLWu1TcDomgPXFIbGX2Xtqha1ZbQdgx1EvYckOkJ/hF0E
+	tis9zMGtLsL9b8Ll3mYADQxkBQK5Bnw=
+Date: Tue, 28 Jul 2026 14:57:41 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785275867;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Vf3Bnkx46W9gMZvdRYmVghSOeclZTGz/xxcx9HYGmF0=;
+	b=ZPVRQLU46Zs8g4/juBipXjOm8G8+oEFx+Hz3pC+IdPNGyI5azPRp+fkX+PB8bq1FIN5T2n
+	a/r8idt2v53wm7MDwKmiXSP7tBvlgu9ttPHuo/WNEBsTyz+ZG1hS8rJ50q53fnkTPf3Qpc
+	LgyX2IAl/G6hm3g3QcacFD4QW9QiWfc=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Michal Hocko <mhocko@suse.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Rientjes <rientjes@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Usama Arif <usama.arif@linux.dev>, 
+	Peter Zijlstra <peterz@infradead.org>, Darren Hart <dvhart@infradead.org>, 
+	Davidlohr Bueso <dave@stgolabs.net>, =?utf-8?B?QW5kcsOp?= Almeida <andrealmeid@igalia.com>, 
+	"Liam R . Howlett" <liam@infradead.org>, Yosry Ahmed <yosry@kernel.org>, Rik van Riel <riel@surriel.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, 
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC] Robust futex causing memcg OOM storm on exit
+Message-ID: <amkjTk7Jc1q4ubxj@linux.dev>
+References: <20260723001908.4046643-1-shakeel.butt@linux.dev>
+ <amds50dIVOiQNz0k@tiehlicka>
+ <amd6N4DVzZkl90cs@linux.dev>
+ <ame7Q-0eVRrtt34j@linux.dev>
+ <amhZ645Nhj856JfO@tiehlicka>
+ <amjeUV3dAn7KPQgK@linux.dev>
+ <amkBvRSJm5rgiV5Q@tiehlicka>
 MIME-Version: 1.0
-References: <20260715120813.3609949-1-jiangwen6@xiaomi.com>
- <20260715120813.3609949-2-jiangwen6@xiaomi.com> <amiabgyHSz3ZYY5k@willie-the-truck>
-In-Reply-To: <amiabgyHSz3ZYY5k@willie-the-truck>
-From: Barry Song <baohua@kernel.org>
-Date: Wed, 29 Jul 2026 05:47:34 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4zgFk1iaQWisYMOR4iFxonwDskRt3Gte0cEts1q9hxibA@mail.gmail.com>
-X-Gm-Features: AUfX_mwbnXA4EUHoDC_1ddg6W-_if7iZPphw3fCzQ7jhe0SfShXOygA86MH76jg
-Message-ID: <CAGsJ_4zgFk1iaQWisYMOR4iFxonwDskRt3Gte0cEts1q9hxibA@mail.gmail.com>
-Subject: Re: [PATCH v7 1/7] arm64/hugetlb: Extend batching of multiple
- CONT_PTE in a single PTE setup
-To: Will Deacon <will@kernel.org>
-Cc: Wen Jiang <jiangwenxiaomi@gmail.com>, akpm@linux-foundation.org, 
-	catalin.marinas@arm.com, linux-mm@kvack.org, urezki@gmail.com, 
-	Xueyuan.chen21@gmail.com, ajd@linux.ibm.com, anshuman.khandual@arm.com, 
-	david@kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, rppt@kernel.org, ryan.roberts@arm.com, 
-	dev.jain@arm.com, Wen Jiang <jiangwen6@xiaomi.com>, Leo Yan <leo.yan@arm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: DCD6720004
-X-Stat-Signature: hmra8wsipy6sptrspdt5ee7e8k5qg3j6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <amkBvRSJm5rgiV5Q@tiehlicka>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 56EC380008
 X-Rspam-User: 
-X-HE-Tag: 1785275268-792672
-X-HE-Meta: U2FsdGVkX18Kz+DVbNPQU4hb8yUP79RGSw9rcBRYsVSngFRc5zFL4zWvGZQpE6akCr9Pcx6jLXSfSwsI+c37MKmek0kNKcUUit9JLyK7sj89uQyMS4HzXSitmJufJ+X6sVnNenRb8tjcT1wu/jBt6GN0NnoROBY5zSV2agpsyePrBPrkeAqhZr8E5twmTIhVA+KD6/DffPWXuIJQA2nG1GSrnFaUFbVE1KfK5roRTUf9Wrhn4mDciO4aYKFAPgJhS2OcbrhQaWSdlr9BYh7Xy2fwLpg6yJ4lFlsCIbS+uIaLsC492Nxl4GWQuSb7w0Oh/7bSejnRekVGAd/XBX9ugCO6H/FOpVnglonzSz8jNtTl7Y8pT6dlwEo4glGAJ1xhOz4uev+wyviOi9qU4W3WbgBVX6vud2Y9aHfCd9Y7iAeqkexysIGhcLax3zyqmUo0llRbWgeWmbUdZepgFikOUO8oj8BpwWxO8XnfxODYEJh0DpSW+2IIc4KMEiYkJwBbttm/6wRURy/6YIrJapDeZAcNogvVENTkq7giSyKJCAagu00ZseFs4RkuV9MCrNUOZ7LAOgQHQnKjwK0Nm01aCUmsuMR1GTaCnJ1FnVwdBRjM3dMPlI7zC6Z6GCEppsP6kLE1FUMeaf4UWN5hywjrl1mg4GBvOkSr9Z1LbVcv4G2nD4BkQGEThOVujJI2kcQ+NjW4Fbh8yHaCcKip3N+e6JLDK5zs/O2qSAGzKiiDpd6ZDNdwNFHf2s2FHEJsMtdGsc49UbYNZnJH75jqufBKFZir/n5P+VmuXvoRZp5lR7D5QHYwNrV1UIw5uF5CD8jTAjASqKh+Qvh33er8cnVnvTYYvwVNCep6niXDREx5Z0zcmQVedtccgcLymWKkdnDUl4GZmyehQ4ERDz5kj939hccPh7XjMWDK+mlWy8Pc0yjn+aFdmavgIJeZ39LePu7SrBjyBPOug6pyyzD+v9A
- zc2jB9HT
- 6RsFCPgdmj8YoOuyLseuc7lC7a18/7VyOpURyjn1525D/QXPxSvq3t8vl9nQWTD8ExbJquCFS4KbxXjCdzgV7l/LHYWeshVuqt1t4YGsws0GbnHFKj6UZKr1mfjmrQ4jdwdLadEHrbJvT4Pu7V8cg7S7xrXzPnPghZsfAmjQpnvVQmYV1bkWdGhK+HoA7nTlhBPKs7bLHNRcOaWH4mX6/yGv8OGrQHt812eEsjxSdQMASQwefbnaE2zgEEb/KZamGprFkBQ126YwhLP+Rw67IfVGwA5tE4oGZOu91X8RJJiWK7hobNofdXr2d0iIHEt+zwrd+N5YaQR687sO9e9aQltWSiwZIq0oLwBnE95hFadjckxVCtErbtJIpdBqoBAgzaL0Rjrkp5/wPnuhn9K964E/eFwM/b8ZxYTJMZfE5K3fbQmDjTLStO5i1TxZqgr7kKErtaAhurDO/tuO/oI2cmhcTMqLAeBPW0ibBdyHczefAw18qL7q822tcWg4pva3/Nm38JzF0xHi/DEgXIMlhvNqxtaVvqsuqzYSL2iQcUfqMHOFn2Icy816h5TYKTB+UPFeFcm486oni3wcHzSMwDgIFjQ==
+X-Stat-Signature: rgzr3je6fai96meq6wtf1tduuaj4s7ii
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1785275871-260128
+X-HE-Meta: U2FsdGVkX1/0eXRj4cpwrWtxHv4jkp0xiySQbJlRstAlmDwcheaAC0+ms6DJLVHuI+pbPxwU4IneP7XkwUR1tWlFltYqj7FbCZL50/fk6XNUn72TfKide/x1oolgeYEnp6AUT26dAwY8k/FNyFWfW9zA71wGfkYqYYgp4WQZeT77L5a44M1MrVTVtu81rwgI8N+Q9kWhj0uz3QaJrNHuG8nOm0RxLHyiyBERDywQls0hipaycSme23Qf9xMoziGdCqhcXqJ+byf7qzoHhUmDehFHYZ7V4N7eLHZfCMcQ/uJOUAYal7g1WlFkX45BPZIvDOGamgJCG0bl4KX0fCxHQUkZUX5FPkrOXBsuWkl8k/9reEgVxlboX+P3oFiDE5KZ54n26F6VutswiSWG3xmp89nTF+Zp7/wUKp3ejhEUYi7gsp/ZtUhcTHrFk1HIndYPmcTTbWr/S+6qDjw+ef05XW/M6RHQVyFSWxbU/gZTy8CXZ0PuOO+DPR7CvxeuwvnwQh0kVfIOgglc4jSt29jsKW9TW2zR+aCe+7uyDAZ3sbsQ+2ogleSZfwVifre3padVrnTHKIZe4rMMAN5yD+V5REGeWjDeXwHocERRMs1NE6nFdQqq0LXWhwq4BexMYohuFlhjcWVYtMYC693Z7zE6LSdPtI081qyGf3R9q0SrF26OhW/sofyGQNW4ubFHv1hBmEmTtLH+8u4AGFNsP5COQS8QQpZ+RGNlqgwmQhrFb+NDTH4GxPdCzRdfkLr+JC7k/J2G81PHAzbrUtMLr0glGJdkblSptECwrvwhBXt7k9nwBshNqpvSPZuYuRL+wr8428M5lkYk9ujan8IYdfj7yoH8TDpwN2AX3cqxcbk9PHQwj45MaiuVTp+A8mO+yjNtU8s5HxQ2nBLkG0SXc6gkRyFG8gpJVHri24t66FsM7eZ+65isz/kyt279BHdx2IS+aKV1R05Aa7nNGVx2swA
+ BKGm5w8E
+ 1QPGC5ErUflOTQV988LaeqTZIkqY5Rz0r2bFybCbUeAKSPulgW1lJUUydNz5UEQrijq0bfjkqMktyjCupuyYkP/LOHdZrDunRvy0aCUtp1Z+aNPPcGkZupsq2lOjLxVMG/9VZbm9pG9CrlJ7l8MnTnD81l+4iX7ulrPjdxlkCrmMywDDMbVq2OizRV7VVVAJO4xDd+3B9eo7NsFDUeTqwrWYyBfUyZRsJGC3wiYlhDdYz6N0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,132 +103,117 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 28, 2026 at 8:03=E2=80=AFPM Will Deacon <will@kernel.org> wrote=
-:
->
-> On Wed, Jul 15, 2026 at 08:08:07PM +0800, Wen Jiang wrote:
-> > From: "Barry Song (Xiaomi)" <baohua@kernel.org>
-> >
-> > For sizes aligned to CONT_PTE_SIZE and smaller than PMD_SIZE,
-> > we can handle CONT_PTE_SIZE groups together.
-> >
-> > These additional sizes are mapping spans used by non-hugetlbfs(vmalloc)
-> > mm code, not new HugeTLB hstate sizes.
-> >
-> > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> > Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
-> > Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
-> > Tested-by: Leo Yan <leo.yan@arm.com>
-> > Reviewed-by: Dev Jain <dev.jain@arm.com>
-> > ---
-> >  arch/arm64/mm/hugetlbpage.c | 15 +++++++++++++++
-> >  1 file changed, 15 insertions(+)
-> >
-> > diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
-> > index a42c05cf56408..7ce159483a354 100644
-> > --- a/arch/arm64/mm/hugetlbpage.c
-> > +++ b/arch/arm64/mm/hugetlbpage.c
-> > @@ -94,6 +94,11 @@ static int find_num_contig(struct mm_struct *mm, uns=
-igned long addr,
-> >       return CONT_PTES;
-> >  }
-> >
-> > +/*
-> > + * num_contig_ptes(), set_huge_pte_at() and arch_make_huge_pte() can b=
-e
-> > + * used by non-hugetlbfs(vmalloc) mm code to set multiple huge mapping=
-s
-> > + * at the PTE level.
-> > + */
-> >  static inline int num_contig_ptes(unsigned long size, size_t *pgsize)
-> >  {
-> >       int contig_ptes =3D 1;
-> > @@ -110,6 +115,12 @@ static inline int num_contig_ptes(unsigned long si=
-ze, size_t *pgsize)
-> >               contig_ptes =3D CONT_PTES;
-> >               break;
-> >       default:
-> > +             if (size > 0 && size < PMD_SIZE &&
-> > +                             IS_ALIGNED(size, CONT_PTE_SIZE)) {
-> > +                     *pgsize =3D PAGE_SIZE;
-> > +                     contig_ptes =3D size >> PAGE_SHIFT;
-> > +                     break;
-> > +             }
->
-> Under which circumstances would you get a size of 0 here?
->
-> Given that you're relying on arch_vmap_pte_range_map_size() to give you
-> a well-formed size, why isn't if sufficient to check only the alignment?
+On Tue, Jul 28, 2026 at 09:23:41PM +0200, Michal Hocko wrote:
+> On Tue 28-07-26 09:55:21, Shakeel Butt wrote:
+> > On Tue, Jul 28, 2026 at 09:27:39AM +0200, Michal Hocko wrote:
+> > > On Mon 27-07-26 13:48:58, Shakeel Butt wrote:
+> > > > On Mon, Jul 27, 2026 at 08:38:37AM -0700, Shakeel Butt wrote:
+> > > > > On Mon, Jul 27, 2026 at 04:36:23PM +0200, Michal Hocko wrote:
+> > > > > > On Wed 22-07-26 17:19:07, Shakeel Butt wrote:
+> > > > 
+> > > > [...]
+> > > > 
+> > > > > > 
+> > > > > > TBH I am not entirely happy about this approach. It effectivelly reverts
+> > > > > > a75ffa26122b ("memcg, oom: do not bypass oom killer for dying tasks").
+> > > > > > It just makes it lockless. Assumption that a dying task will do so
+> > > > > > quickly and with bounded resources has turned wrong on several
+> > > > > > occasions.
+> > > > > 
+> > > > > That's why I kept it as RFC :)
+> > > > > 
+> > > > > > 
+> > > > > > On the other hand I do undestand the contention issues and I can imagine
+> > > > > > that the existing solution doesn't really work well for huge thread
+> > > > > > groups that all end up lining up on the oom_lock just to learn there is
+> > > > > > nothing really killable anymore because they are the oom victim...
+> > > > > > 
+> > > > > > Would it be just safer to bail out only for oom victim threads. This
+> > > > > > would narrow down potential runaways for oom victims which should be
+> > > > > > more limited than any killed/exiting task. It would also give the oom
+> > > > > > killer/reaper chance to work. WDYT?
+> > > > > 
+> > > > > I will give the following patch a try with the reproducer I have. I am still
+> > > > > improving the reproducer as I am still not able to recreate multi hour slowdown
+> > > > > yet. I will report back once I have some results. 
+> > > > > 
+> > > > 
+> > > > I have some results with the reproducer I (AI) wrote.
+> > > > 
+> > > > Setup: 20k threads, each with its robust_list head on its own page in a
+> > > > large anon region pushed into a zswap pool (writeback off, so it's
+> > > > unreclaimable and pins the memcg at the limit). On the OOM-group-kill
+> > > > every thread faults that page in futex_cleanup() -> do_swap_page() ->
+> > > > swapin charge -> memcg OOM. A separate thread holds mmap_lock for write
+> > > > in a loop so the oom_reaper can't reap the pool -- matching the host,
+> > > > where the reaper was blocked and the memcg never fell below the limit.
+> > > > 
+> > > > I tested on next-20260726 as baseline and then tested your suggestion over it.
+> > > > For baseline ~48k no-victim OOM invocations serialized on oom_lock; ~40s to
+> > > > drain the 20k threads in a VM (hours on the host, where each invocation
+> > > > was a dump_header over netconsole). With the patch the dying tasks stop
+> > > > entering out_of_memory and the storm is gone.
+> > > > 
+> > > > With the following suggestion, the threads of dying tasks stop entering
+> > > > out_of_memory but the exit time doubled as each thread has to decompress the
+> > > > page from zswap.
+> > > > 
+> > > > 	if (tsk_is_oom_victim(current))
+> > > > 		goto force;
+> > > > 
+> > > > I also tested by replacing goto force with goto nomem and the exit time halved
+> > > > i.e. ~20 seconds. Looking deeper it seems like each thread is still going
+> > > > through the reclaim loops.
+> > > > 
+> > > > Just for testing purpose I moved this check along with goto nomem just before
+> > > > the reclaim fuction i.e. try_to_free_mem_cgroup_pages() and the exit time falls
+> > > > below 1 second. I think what we need is to detect early that the cgroup is
+> > > > unreclaimable and the threads of exiting/reaped process should just return with
+> > > > enomem.
+> > > 
+> > > Do you mean, something like this?
+> > > --- 
+> > > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> > > index 6dc4888a90f3..66f1eebf8c22 100644
+> > > --- a/mm/memcontrol.c
+> > > +++ b/mm/memcontrol.c
+> > > @@ -2648,6 +2648,18 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+> > >  	if (!gfpflags_allow_blocking(gfp_mask))
+> > >  		goto nomem;
+> > >  
+> > > +	/*
+> > > +	 * OOM victim still needs to charge memory to exit. OOM reaper should
+> > > +	 * help but it might fail on mmap_lock contention. If the victim is a
+> > > +	 * large thread group then all exiting threads might compete on oom_lock
+> > > +	 * just to learn that there is nothing really killable anymore. Bail
+> > > +	 * out early and fail the charge to expedite their exit. They are
+> > > +	 * considered fully reclaimed by the oom reaper and they shouldn't contribute
+> > > +	 * further charges.
+> > > +	 */
+> > > +	if (tsk_is_oom_victim(current) && mm_flags_test(current->signal->oom_mm))
+> > 
+> > I simply had tsk_is_oom_victim(current) check here. 
+> 
+> I was hoping for a more specific treatment. 
+> 
+> > I assume you want
+> > MMF_OOM_REAP_QUEUED in the mm_flags_test() above. Do you want me to test with
+> > this additional mm_flags_test() as well?
+> 
+> Sorry I meant MMF_OOM_SKIP there.
 
-Hi Will,
+Here are the results with the reproducer I have. Ran the test 5 times and
+showing avg and std below:
 
-Thanks very much for your review.
+Baseline (next-20260726)			36.47 ± 0.78 s
+early nomem (tsk_is_oom_victim + MMF_OOM_SKIP)	20.83 ± 4.19 s
+early nomem (tsk_is_oom_victim)			 0.59 ± 0.22 s
 
-Are you suggesting the change below? If so, I'm fine with it.
-I guess the current code is just being overly cautious for
-defensive programming.
+Since MMF_OOM_SKIP is set after multiple retries by the oom_reaper the result in
+between baseline and simple tsk_is_oom_victim check makes sense.
 
-diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
-index 8429d220660b..c1af52ba572d 100644
---- a/arch/arm64/mm/hugetlbpage.c
-+++ b/arch/arm64/mm/hugetlbpage.c
-@@ -115,8 +115,7 @@ static inline int num_contig_ptes(unsigned long
-size, size_t *pgsize)
-                contig_ptes =3D CONT_PTES;
-                break;
-        default:
--               if (size > 0 && size < PMD_SIZE &&
--                               IS_ALIGNED(size, CONT_PTE_SIZE)) {
-+               if (IS_ALIGNED(size, CONT_PTE_SIZE)) {
-                        *pgsize =3D PAGE_SIZE;
-                        contig_ptes =3D size >> PAGE_SHIFT;
-                        break;
-
-
->
-> >               WARN_ON(!__hugetlb_valid_size(size));
->
-> I agree with David that it's messy having hugetlb tangled up in here.
-> It means this validity check is now going to miss some genuinely bogus
-> cases for the hugetlb path (as opposed to the vmalloc path).
-
-I agree that coupling hugetlb with vmalloc is not ideal. As I
-explained to David, this has been an issue for a couple of
-years and affects multiple architectures since 2021:
-
-https://lore.kernel.org/all/fb3ccc73377832ac6708181ec419128a2f98ce36.162079=
-5204.git.christophe.leroy@csgroup.eu/
-
-where `#ifdef CONFIG_HUGETLB_PAGE` is required by `vmalloc`.
-
-So I'd prefer to address it in a separate follow-up patch
-series.
-
-For the `WARN_ON(!__hugetlb_valid_size(size))` check, I don't
-see anything broken here. Hugetlb only uses sizes registered
-by `hugetlbpage_init()`, which are validated by
-`arch_hugetlb_valid_size()` implemented in
-`arch/arm64/mm/hugetlbpage.c`:
-
-static int __init hugetlbpage_init(void)
-{
-        BUILD_BUG_ON(HUGE_MAX_HSTATE < 4);
-        if (pud_sect_supported())
-                hugetlb_add_hstate(PUD_SHIFT - PAGE_SHIFT);
-
-        hugetlb_add_hstate(CONT_PMD_SHIFT - PAGE_SHIFT);
-        hugetlb_add_hstate(PMD_SHIFT - PAGE_SHIFT);
-        hugetlb_add_hstate(CONT_PTE_SHIFT - PAGE_SHIFT);
-
-        return 0;
-}
-arch_initcall(hugetlbpage_init);
-
-bool __init arch_hugetlb_valid_size(unsigned long size)
-{
-        return __hugetlb_valid_size(size);
-}
-
-Thanks
-Barry
+I think we can proceed with the early nomem (tsk_is_oom_victim + MMF_OOM_SKIP)
+change as it is more conservative unless you have concerns. Overall I want to
+deploy this in prod sooner to see if this specific issues is resolved or we
+catch something else.
 
