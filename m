@@ -4,95 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CE8AC53219
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 08:33:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5CC6C53219
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 08:57:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AF4C06B007B; Tue, 28 Jul 2026 04:33:53 -0400 (EDT)
+	id A0EA06B007B; Tue, 28 Jul 2026 04:57:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A7E876B0088; Tue, 28 Jul 2026 04:33:53 -0400 (EDT)
+	id 9BFA96B0088; Tue, 28 Jul 2026 04:57:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 946BE6B008A; Tue, 28 Jul 2026 04:33:53 -0400 (EDT)
+	id 88A136B008A; Tue, 28 Jul 2026 04:57:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E73D6B007B
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 04:33:53 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 838BEA13CF
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 08:33:52 +0000 (UTC)
-X-FDA: 85037522304.29.441C154
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
-	by imf10.hostedemail.com (Postfix) with ESMTP id D373BC0009
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 08:33:49 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HsT3ezX3;
-	spf=pass (imf10.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 61F166B007B
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 04:57:30 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DDE00802FE
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 08:57:29 +0000 (UTC)
+X-FDA: 85037581818.05.E3B861E
+Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
+	by imf23.hostedemail.com (Postfix) with ESMTP id A7B7C140011
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 08:57:25 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=6h9ohDYR;
+	spf=pass (imf23.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785227630;
+	s=arc-20220608; t=1785229047;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X1OAr0wARt/pkmfsKUtroNqFk1WpnC6NGf/q2G4G+OE=;
-	b=n+/MFzn4VE9y5Mo6uAZYlzj+87ECFaTbbrzyAOZ4kpQ2VTMJdxmTz47ag0uGWYxFQvZRul
-	ZnlPHzucyC+GfKI3fmkU5CawUuSAnUqYytQOCI4DbfoZbF5+skq5k2qV3LeVfQ8etA5Z+H
-	2p9+Bjc49cO3BOIdfNlca2SVeTDeqlM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785227630;
-	b=MZpU/mi5max0JCCrQ89BFdhVNMHp4pXs6yWNHo0z7TSrCFYKLUTID1qxL+BLvPHRl6xcr8
-	Lm+aSDbAWbVjJ44qs2XxuG9QyUb3npYiDrLGHpr4ig3ijyQ9l0xCYnzqndfCNyqqHfrlNs
-	T0w8PnV6dbksLONC4WFPSXQ/ccfvz+8=
+	bh=2E0wmH0tw98SLcgF2VrOb2d3npZ2qjaYNZ4aVITL8K0=;
+	b=KOLnKAQUI8lALF4NDqHmOi9KvxWmA+UhZsD5aYXQh2Coo488eFxo3tF6+R2mUQZt3d6OSI
+	Tnnq216dXBQzH25ATvSKXDeT1iymTPv8jeH3uwk3gOyDIBQsiYqcCzvznGh1ljf4dblFBQ
+	XDJ9UOtmb9+a++lMQTp4MwSCqr0P3vI=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HsT3ezX3;
-	spf=pass (imf10.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <24b9f213-96e8-4eda-a20f-8746d7c399b7@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785227627;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=X1OAr0wARt/pkmfsKUtroNqFk1WpnC6NGf/q2G4G+OE=;
-	b=HsT3ezX3XlyvCAN/4AtbXu4YWl0QPD5oKLSCL22Zygw504c16hhj4wnT4pDRT0ekqOEwhw
-	qtXjJccfgaKB+ZP7qWAm5SjWBM2ha/BpR2rzULKwxJ4wJ4EOu/PjuDI4aueK6I2QeyWSzQ
-	ySBOtRPBuap+gsK7uc9gZFWBIu9Abpg=
-Date: Tue, 28 Jul 2026 16:33:31 +0800
+	imf23.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=6h9ohDYR;
+	spf=pass (imf23.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785229047;
+	b=NdSipn5r/JzMtPD/I3/GQFsTWxil9CDOgIJDTre3dBDT4b550C+MyolN4TL8S07psCv4xd
+	/nyGhWHhD0CUHLkb13SOn+jRpVXbIANQXV8g8LhlbOe0qO7bLj3ydlNb4kAKWxrfjk65ny
+	xo0N3VR2tVn6vRpJ6nQ12giwurRAkCo=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=2E0wmH0tw98SLcgF2VrOb2d3npZ2qjaYNZ4aVITL8K0=;
+	b=6h9ohDYRMrUc1iZIqmFylHx8eQ2pzOoLgSdu5w0Q+mz9toUgzOXOB8R3e81a/J2oHXHzRmgIA
+	uEO1JwEBJzergX7yD0qLx6sqjHn+HcQfWC+gOTna8W1nsQBWpL5rzwq5mvJjAc61S1Wl4Lq2uGp
+	ZCVYWBGG5e03jA2iqyIapM8=
+Received: from mail.maildlp.com (unknown [172.19.162.140])
+	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4h8Tcf43tzz1T4Fq;
+	Tue, 28 Jul 2026 16:47:46 +0800 (CST)
+Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
+	by mail.maildlp.com (Postfix) with ESMTPS id 9E189202E6;
+	Tue, 28 Jul 2026 16:57:15 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 28 Jul 2026 16:57:15 +0800
+Received: from [10.173.124.160] (10.173.124.160) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 28 Jul 2026 16:57:14 +0800
+Subject: Re: [PATCH v10 6/6] selftests/mm: add hwpoison-panic destructive test
+To: Andrew Morton <akpm@linux-foundation.org>, Breno Leitao
+	<leitao@debian.org>
+CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+	<linux-trace-kernel@vger.kernel.org>, <kernel-team@meta.com>, "David
+ Hildenbrand" <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Vlastimil
+ Babka" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, "Suren
+ Baghdasaryan" <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan
+	<shuah@kernel.org>, Naoya Horiguchi <nao.horiguchi@gmail.com>, "Jonathan
+ Corbet" <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, "Liam R.
+ Howlett" <liam@infradead.org>, <lance.yang@linux.dev>, Steven Rostedt
+	<rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, "Mathieu
+ Desnoyers" <mathieu.desnoyers@efficios.com>
+References: <20260630-ecc_panic-v10-0-c6ed5b62eea2@debian.org>
+ <20260630-ecc_panic-v10-6-c6ed5b62eea2@debian.org>
+ <ee4982bf-ff45-8f0b-3b76-7ca19228f12b@huawei.com>
+ <20260727212402.09baa9381ca426273fad4719@linux-foundation.org>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <de29c5cc-3637-cd18-354d-55ceb3d60afd@huawei.com>
+Date: Tue, 28 Jul 2026 16:57:13 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Subject: Re: [PATCH v3 0/4] mm/vmscan: fix swappiness=max and clean up
- per-node proactive reclaim
-To: Barry Song <baohua@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>,
- Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- Kairui Song <kasong@tencent.com>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Zhongkun He <hezhongkun.hzk@bytedance.com>,
- Muchun Song <muchun.song@linux.dev>, Davidlohr Bueso <dave@stgolabs.net>,
- Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>
-References: <20260723045718.2052070-1-ridong.chen@linux.dev>
- <20260723171842.137e45eb36b21b3b45245da0@linux-foundation.org>
- <8336e48a-ab3a-4db9-a7f9-5bb6af2b22c3@linux.dev>
- <CAGsJ_4xPw24afGLZH6Qh5rxOts37SCpmBVeB3gGntk1QQuSCow@mail.gmail.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Ridong Chen <ridong.chen@linux.dev>
-In-Reply-To: <CAGsJ_4xPw24afGLZH6Qh5rxOts37SCpmBVeB3gGntk1QQuSCow@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: D373BC0009
-X-Stat-Signature: keya8gr4d3wk834uogxetjbk58nw78ee
+In-Reply-To: <20260727212402.09baa9381ca426273fad4719@linux-foundation.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.173.124.160]
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
 X-Rspam-User: 
-X-HE-Tag: 1785227629-369226
-X-HE-Meta: U2FsdGVkX1+WCl/Y0KVTJlyZQ3xKQu+ZTTufeo41OU7VscU0MijhUCNgLiJizeYgM+PruxRNYl7Ayusd8PWJh4A5xijqu/sfOuokIR4oRYi0SPTSzC4Au3Fp04Eq450vHNB1IkAf4qHNWTyRCd1Xf/oP+45oPN6zB7fjXP65LpfhC05LSZ4sKNP+3GKrCOisUUy4WJFA3KszYNwdyvD2I86BTP/O+l9ZOau2EQZ2OpYEwXMUvz54IxG0Wts102meQZDLe404eEPmPQJVJGEUnxlBtViJ/pThh/zl5yhZMXDdh2y7ljfEXN3aBq5saLB1QA7elCatL7ODkNqMF1+qzIie0VhsUsW8+BnSUdn23CATr0499xkoQofD8D68dxcNM3/WZZ2Al43PTVFtkk9fIEuuZ0Dm5Typ1TsE/tSVij5mQAoZUi962PPLxBcy/ZyskhJ6+VTIvZhmr9gqzz//s6USg3Gr0MSvxIVPB+ryG0Dbsv8f0ylhEYgZBBU3xEDlceNHkT/lBfhMOVzwwvSe8V49ARdCmtUiTT3wxh64X9uRhKve03XiFl+KOZw296VMGbiKh6zTbMTLg5J0KRavr4xfD13r9onAv8e25W5OF8ZP6u9SGn4ZCt65gE/+nY+ZZKKvrkTtNFOzQbF+PS/M7CMsAXszmfNOUVqy0iZQuT8dXXFZGfDlAy/TeWwAIKmCa5/udemOqAeKIIECGXD3sn9HSdQS4SLOx3jwmrPXghP43OPteY8571iP75+7nc2YEFUk1V9rut+7mIGjdtgQh4AciEUGDNNvxAaBR9A4cw1ONAoAhAvDAcME4Xw30jlNh04DOEu/IP6zvdDeBSBWtxS4VBEy9Aj27Y04xJwhWqRwMq99fQ8w01+hmpp5jm6L0MbAmNh4PpZhhYakTnRVaGX0T2v6I7uotvjc+4lff+r5oeJ1RbjADr5AroG/50hWxzCD4uJicZ/21P8A7Ro
- h1ZHX0k5
- LiqTDuxxjFV1aGWdMEcna4vxPlgpktgp53ZR/LejcMVJMjRCDaIDPflZTWbG0Ep6wMSvbQ1ssoDpPcROyGQxBwJzoaIoxVBitW1cnGkxV8DfQVwuOYco6TJPjDtkraUsh1q4Sy9XpambXJqeoYEIl+jc3IlRL1INTw/sipNOYn1+i/8AUMAnt9tO9pb90H7BqaPY5yZ7v/5B6wJ8kGTnetRdclCz9K670rTW8KXOWqBhA73qoL89fqPR6xn6lAyLKDOd7keMgQPry4tRrD0GsadGWkF3xNI36eXakdGCjbHoeRFQ=
+X-Rspamd-Queue-Id: A7B7C140011
+X-Rspamd-Server: rspam01
+X-Stat-Signature: uu8ad4qasgzwa9ayn9fcrnbyruidybia
+X-HE-Tag: 1785229045-902961
+X-HE-Meta: U2FsdGVkX19QdUrNZgC4AzJIEg7vL9t2oXwXjpzxWUqgiYmvU8R+lj6nLQUfNhgm3YOMHB0w1X34IPDFas5Kzolc2ZaI6RfKhZQaHGDXZqqS5Y8/vd5i4/3KGdT9weqIj1W578ZOKQhl4Ln3Wl9tUP5vS4wU0HZmeypFYgukh/K1U4H4IHKXLJbOrzrqYE6Z8/a8Ml+i+/3TkUouZjIOjJeJRPQydEWcYNlZD2M+nZ51QXeijd2ojpdApyLP9Uft8KygEIl27fwkv5vSTe1Vas52CfCqfcR/OtcIFnjUTGPgPV5HxxfTNemZvoSO6d8F3wU9x+qVeOJ9S0GvCIswpv8f+R917hMz29mJYbQ43A/nY+BMYzFMDBFckL8hP2I8Hny4L0PTRH6RLVOz2Vy8rZVeRcVDheVmI1sQHjO50QYYQ+YGAoOSXWS+BPwcey+e1pCqaCev1PFR+lO0t+7quBoLyHHk2BAc79wQA5o5JtrkdXuHg6FQLLTP5F7SSR85DfeNLyq/mK6+wU+oRAEn7zxDFJjPxdVRPfk3oYdff18ISOTXovTSyqBoGYLaXvO3WIss3SH7U+rmV5s+8umksyrhDmrcft0euJE+H4yN4AR15qE75t65jpCWgTgDtSUcDC36qtHZZynx/chrj436Ui8l6DK7jDoTsneRL29vqw72raa9RQt9cW+MyjeMkO2/Q6S00zVr/BZd8JV/FT9c2tj69MNk+9V0ckLTCM0ag0iOx/fXS56y8kOuwIC7N0QIclYGM1GbKd5vb1PmIakqqFzsB6D2OBRcKn1dlNhnJ+6+pxNtjt3GI1Xar4Hyxav/jGH6km27lttropZ+p9N38OjMoGROsXSDZRIbIF2fZMJLYUduJaTwCee3kLCqAyoFPcP90qk9L95DVkpe9X17D3UgSGSzHnoS1e+zGajdkvanSN0vCIhoMs1WHqnpqgrgMK/c3WJ2FddQYKYaRdq
+ cLP1atpT
+ JQtS8idAkRBasT1HM/c9e/YfKyvEcmlOJSReU+SFYt+/d992Oi6+y9jRFZ/hkDY0nP02xVmYmhzC2nF/uVwgiQRyRkkX+ARZg6pGoov4UlRTcvuxlXzN9S4c8dHkHOUUPn+APzI2OUKVTgTHgyUhPceGIr4RvQT+bluUxkejkSZpqlv+M8cs1be8w5/tVn4lytcJDuXvV5HP57VIv3HkEX4iNKMj5Ghn5WbZbBBAb0DYxJdT5n5Jdy7Th26gqX7RutW1KLu3yy4wa0IGHWkAOxNOAbGmZfo2aaSxjbsNhTncCtKOP8/H2vnaMAHRZyTjxwDOtZaw57KiDY62ZChEWl2KuPDfLreFbZddsZyRRMGMoOKFgOmLjuWrsbYuZGtKWB/A0TDamdl5/PENRfjw7OnloNQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,96 +116,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 7/24/2026 7:12 PM, Barry Song wrote:
-> On Fri, Jul 24, 2026 at 10:43 AM Ridong Chen <ridong.chen@linux.dev> wrote:
->>
->>
->>
->> On 7/24/2026 8:18 AM, Andrew Morton wrote:
->>> On Thu, 23 Jul 2026 12:57:14 +0800 Ridong <ridong.chen@linux.dev> wrote:
+On 2026/7/28 12:24, Andrew Morton wrote:
+> On Thu, 9 Jul 2026 11:34:05 +0800 Miaohe Lin <linmiaohe@huawei.com> wrote:
+> 
+>>> The script is intentionally NOT wired into run_vmtests.sh: every
+>>> successful run panics the kernel, which is incompatible with the
+>>> sequential "run each category in the same VM" model that
+>>> run_vmtests.sh assumes.  It is also not registered as a TEST_PROGS /
+>>> ksft_* wrapper so a default kselftest run does not opt itself into
+>>> a panic.  The script is meant to be executed manually inside a
+>>> disposable VM (e.g. virtme-ng), one variant per VM boot, and
+>>> requires RUN_DESTRUCTIVE=1 in the environment as a safety net.
 >>>
->>>> Fixes and one cleanup.
->>>>
->>>> Patch 1 fixes "swappiness=max": the anon-only test in get_scan_count()
->>>> sat after the "cannot reclaim anon" check, so when no anon was
->>>> reclaimable the request fell back to SCAN_FILE and evicted page cache
->>>> instead.
->>>>
->>>> Patch 2 fixes reclaim_store() collapsing every error into -EAGAIN, so
->>>> callers can no longer tell an invalid argument from a busy interface;
->>>> propagate the real error code, matching the memcg path.
->>>>
->>>> Patch 3 drops the now-unused gfp_mask parameter from __node_reclaim().
->>>>
->>>> Patch 4 fixes the same "swappiness=max" issue for MGLRU.
->>>
->>> Thanks.  AI review might have found several pre-existing issues which
->>> might interest the maintainers.  Also a suggestion against your [4/4]:
->>>
->>>        https://sashiko.dev/#/patchset/20260723045718.2052070-1-ridong.chen@linux.dev
+>>> Signed-off-by: Breno Leitao <leitao@debian.org>
 >>
->> Hi all, sashiko review:
+>> With Mike's comment addressed:
 >>
->>     This is a pre-existing issue, but I noticed that per-node proactive reclaim
->>     fails to reclaim memory if the node's unmapped file or slab pages are below
->>     minimum thresholds, completely ignoring anonymous memory.
->>     In mm/vmscan.c:__node_reclaim():
->>          if (node_pagecache_reclaimable(pgdat) > pgdat->min_unmapped_pages ||
->>              node_page_state_pages(pgdat, NR_SLAB_RECLAIMABLE_B) >
->> pgdat->min_slab_pages) {
->>     Does this condition incorrectly block proactive reclaim of anonymous memory
->>     by applying legacy zone-reclaim thresholds?
->>     It seems to bypass shrink_node() entirely if file/slab pages are low, even
->>     when sc->proactive is set, which could falsely return -EAGAIN to userspace
->>     for anon-heavy workloads.
->>
->> Should we add:
->>
->> if (sc->proactive ||
->>       node_pagecache_reclaimable(pgdat) > pgdat->min_unmapped_pages ||
->>       node_page_state_pages(pgdat, NR_SLAB_RECLAIMABLE_B) > pgdat->min_slab_pages) {
+>> Acked-by: Miaohe Lin <linmiaohe@huawei.com>
 > 
+> As I understand it, Breno would prefer not to rewrite the selftest in C
+> at this time.  IOW, we stick with the bash version for now and add
+> "convert this to C" to the todo list, OK?
 
-Hi Barry, sorry for the late reply.
+Sure. Should I make this change or should we wait until Breno has time to do it?
 
-> Nop.
-> I assume reclaiming file cache and slab becomes problematic when their
-> amounts are already very limited, so we should still honor these two
-> checks.
-> 
-> Maybe we could relax them only when swappiness == 201
-> (SWAPPINESS_ANON_ONLY)?
-> 
-> BTW, for global proactive reclaim, when setting swappiness to 201, does
-> it prevent slab shrinking? If not, it seems problematic when
-> node_page_state_pages(pgdat, NR_SLAB_RECLAIMABLE_B) <
-> pgdat->min_slab_pages.
-> 
-
-in __node_reclaim, we will shrink the node when 
-node_pagecache_reclaimable(pgdat) > pgdat->min_unmapped_pages, even if 
-node_page_state_pages(pgdat, NR_SLAB_RECLAIMABLE_B) <= pgdat->min_slab_pages. 
-This means slab shrinking can still occur even when below the limit (since 
-shrink_slab is called unconditionally after shrink_lruvec). This is not an issue 
-only for global proactive reclaim.
-
-
-> Your recent patchset prevents all file reclamation when swappiness is
-> set to 201, so we only need to check whether there could be a slab issue
-> before allowing shrink_node() to continue in this case.
-> 
-
-So can we add just like?
-
-if ((sc->proactive && node_page_state_pages(pgdat, NR_SLAB_RECLAIMABLE_B) > 
-pgdat->min_slab_pages) ||
-	node_pagecache_reclaimable(pgdat) > pgdat->min_unmapped_pages ||
-	node_page_state_pages(pgdat, NR_SLAB_RECLAIMABLE_B) > pgdat->min_slab_pages) {
-
--- 
-Best regards
-Ridong
-
+Thanks.
+.
 
