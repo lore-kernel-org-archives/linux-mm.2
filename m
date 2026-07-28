@@ -4,83 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5207FC54F54
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 19:03:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 840B6C54F54
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 19:05:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1A8376B0093; Tue, 28 Jul 2026 15:03:10 -0400 (EDT)
+	id 3D0EE6B0096; Tue, 28 Jul 2026 15:05:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 15A616B0096; Tue, 28 Jul 2026 15:03:10 -0400 (EDT)
+	id 3823D6B0098; Tue, 28 Jul 2026 15:05:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F3F906B0098; Tue, 28 Jul 2026 15:03:09 -0400 (EDT)
+	id 24CE66B0099; Tue, 28 Jul 2026 15:05:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BA9A76B0093
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 15:03:09 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3EBF31204B5
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 19:03:08 +0000 (UTC)
-X-FDA: 85039108056.01.5B7121D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 4F701140018
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 19:03:06 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="O/xhKUbc";
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F41A96B0096
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 15:05:51 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 979251C0C98
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 19:05:51 +0000 (UTC)
+X-FDA: 85039114902.15.561A2BA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id E2F9B80004
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 19:05:49 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n8P1eJ+Z;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785265549;
+	b=7dHUUy64rpKPBHGkb/wp2GKKHQrfGgYhEZm5QTPG/iDGcrh9asCO61qZ80ZcMRjNEMoXR3
+	QkCA1KlOFfslk5KFzjlPZKUw0PlEtwuUsvorraFPq4apxxHQDT2QbLIs92g6D0J924Dwov
+	p1TP9Tj14Qtm15SgFoYkkVIXHLJAmEw=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n8P1eJ+Z;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785265386;
+	s=arc-20220608; t=1785265549;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+pfR1z05NTPFWfdFSQ0JuF5em6RSzjw4mvOAmMCMbj4=;
-	b=Rl9ow5yKtwBS5LymYxnt7FYXjKhRsoApnb2rb7koSHML1y/Ug1ZfeRBJsZl1F6otP7fUMK
-	nMaLuFcBujZ35oCzya20BRBYVTfoQuvVNtreXDpZDmr0XtZzOqEyui92J7bcf58iuPbE80
-	v+LD+XlWRb3rmSNyNbkgdKBByYBuqDE=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="O/xhKUbc";
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785265386;
-	b=pXYSExfTCnhxxoBVs1y4DtlWm12FViMm4x1aqbBau8S27/iVWpejvfAtWPATup6NW2cUah
-	7ql7Tv2QdlKBuHtDknZXNPzBaDPIUodPymgoaf6iaIj1oZQi03+QWHwDIFSuavEMAh3grU
-	FEI8nzjEW65LKltfcR0Py+WG2heOv+c=
+	bh=u10PFj7dkgwUEG86IzmKK3+sD+i3+8K+3s/J+UMugsI=;
+	b=dmKHlb+BS1wv2UTYNIGmH4PSbtoP5/ipPvOFpoh63Clb/d2e11nAI4iZCwFk0FwkLFOvvL
+	wWAEWtUyNlkHwyhOe0zehgOfUmeDEtsnqH6s3FwRJP4xnuB12T2jtNuzEdeCLM3q62K4Wb
+	fGPul2Yx6YFLvqLwtDdNFMWd0e7SKLY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 798054334B;
-	Tue, 28 Jul 2026 19:03:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C63DC1F000E9;
-	Tue, 28 Jul 2026 19:02:59 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1AE15600FC;
+	Tue, 28 Jul 2026 19:05:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BE281F000E9;
+	Tue, 28 Jul 2026 19:05:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785265385;
-	bh=+pfR1z05NTPFWfdFSQ0JuF5em6RSzjw4mvOAmMCMbj4=;
+	s=k20260515; t=1785265548;
+	bh=u10PFj7dkgwUEG86IzmKK3+sD+i3+8K+3s/J+UMugsI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=O/xhKUbcCdVoY66tu9JDYVPT5NzoLMi7b7MxhA3oaUu7nM8TZSw0Es+p51YGYxltW
-	 AfzW+EZt1q94wokngKnBu62sqk25+9UjsbzOtPJNERBH/e3zIRcC+mjVTFwoZL4rrb
-	 Zd67QJloCcoWErMUWvVo45MUY4i+3tEFQcJD4vnDaYjd/vltErj6FgmHWokUwheUSc
-	 APmaCYGhBakjexd+ya6zmUManlzcvZlLaywL6bAd85wNk90G48X6894NPynpWN4c2M
-	 s6SsbQPUpsZfT2/GYokgs9n/wY/OGpNWnxRttBgmA5hpj6DvImHaFd94gifqkJnuyR
-	 zI4Xnr5RwhiEg==
-Message-ID: <f0e39f91-8dd1-4d9d-8d4e-da5d608a7148@kernel.org>
-Date: Tue, 28 Jul 2026 21:02:57 +0200
+	b=n8P1eJ+ZSvh1KoISAa7ptxeD9wD8kerZNsRE6m4wTJvISY6KXz64/2h7lD6TRwJNZ
+	 I7vHyQ2BgT/+d0coaXQ/4GgpGXo2oegu8KivO6gKTVfSE8dpx16/q0OEtMaE4Iz2cb
+	 rQysjKHFCpoMzEzfYKeNlSnwK7hV0xP3c9cjbe4AS0qo5Nha8YdRo4fy+DYeXa97UH
+	 7VxL+AxPpJixZNM5DfzODbpgPkvgJy3W6ssgtjVMTqIDLcwquIqrOcDplN3Mki89B8
+	 GircUyhmeRd19p1K9/C7rOCusYJCjM560yCsa6A2CPlPkc8Hf+9tCqwwxG9vzZcqbw
+	 rvc1S0EUhOZ/g==
+Message-ID: <7fbdb447-3d6c-4071-bc6d-1af4e44cbd7f@kernel.org>
+Date: Tue, 28 Jul 2026 21:05:42 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-hotfixes 0/2] mm/huge_memory: fix huge_zero_pfn race
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Pankaj Raghav <p.raghav@samsung.com>,
- Hannes Reinecke <hare@suse.de>, Hugh Dickins <hughd@google.com>,
- Yang Shi <shy828301@gmail.com>, Kiryl Shutsemau <kas@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Hengbin Zhang <uqbarz@gmail.com>, stable@vger.kernel.org
-References: <20260728-fix-refcounted-huge-zero-v1-0-3f261f5447b4@kernel.org>
+Subject: Re: [PATCH RFC v4 11/12] mm/gup: batch contiguous PTE-mapped large
+ folios in follow_page_mask()
+To: Rik van Riel <riel@surriel.com>, Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, kernel-team@meta.com,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Peter Zijlstra <peterz@infradead.org>, Suren Baghdasaryan
+ <surenb@google.com>, Lorenzo Stoakes <ljs@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Matthew Wilcox <willy@infradead.org>,
+ Usama Arif <usamaarif642@gmail.com>
+References: <20260724222934.1463812-1-riel@surriel.com>
+ <20260724222934.1463812-12-riel@surriel.com>
+ <5490f8b1-d611-4e4d-bd8b-19c0e05698a3@kernel.org>
+ <a086dbb3cc9ee8faa638c70bd282ca31c58d402d.camel@surriel.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -127,17 +130,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260728-fix-refcounted-huge-zero-v1-0-3f261f5447b4@kernel.org>
+In-Reply-To: <a086dbb3cc9ee8faa638c70bd282ca31c58d402d.camel@surriel.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 4wyx5asrjxpmc47o1scijqec6ogenkb3
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: E2F9B80004
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 4F701140018
-X-Stat-Signature: sj15g56zodc8ikju7z9bgogwqpdo81jx
-X-HE-Tag: 1785265386-290476
-X-HE-Meta: U2FsdGVkX1/NfcfUL2jODTFqyftQ0eUFdtbf6shqNMTOWQOCv+DWN5rNgRIWh98Z7x8wQi65AMcGz45Z2oyKifLpg8ZuR6QD4e+0fSWUkEVKiCNLc2lGjbdSe0Eju1JPUT8JKyTSbajNdSkJ+19Dvqa+RN9xdMbUu3/xFUehi0MVbD3DSIEYCdQarfoAdiZ5rusmkAWBtd06ELswDt6sFvt5KXjgQScKcAvdYrA8K25XrV71cY/rhq3+sT/YmrIU+xWzLfRN0e4nUbGsBXdfEvyA+AkTPUuby8TjEEkd6HaJLSUa+mTgI56/BB2gklXdYcvIc5qXj07sGQ8z/YM9Qs2C3Y68a0utr8+z6m4+ktaNCc93xwYExSy0sz0fZPdaiohJKfkVkxhLZqW+6KUqaiH8DVLoQjEk4gHcvryTTxGXpGHyUTHSNiy/lsAIwGkZw/5JLM4F6Ez05gv97sbTPYLbPAQVt6IqG/kWPK2O89O3XO1wSg3qgsz+zQ3iBuUHjPevam1iJHlcJO4j54Rpl4CN54vH8yXCnPy+RlywTrP7m4FZVK+KkFaKc90fFqUn0kUQ1gCTijxkO3U6m0pXGgwJq8JBAMKRhgscrCJqWqkSNCHz8KzkHmopuJJXRJtl3QfbH2eIlroAnskG9mANfgACuwflgyDxTtClnz4cbcNYiP5OuGmANRxkQKx1Y1zJ0H+gbXjFqwCQGBFcYYMkWqlc2EF/CqhCSP0Hi9Kq7gTbKFMgdLlIBcq1pkj6iZP1UrkoBKGZsB6sQknX+6LCFkVl3g61yjIxnABPWVsxerXm2Bop4uRF4nSeYb3T2VNf5JGEYRVXR6+ggHa/jiH0XMmN1C0cqvNh5N0Y+OjpUwBQ3R6eQohWsmskZFjEko7so4WY8PPkM06V1+ntQeR5ljod/z6JMnZA6ONUnaM+LpHQxtoTHOYSiQdvuIjOXP+ppDRBmNWxJ/C8ucz3ezU
- mf3hZk5K
- Jm+P8Z4K6it87EDVewGuo2/+lkBH6VaswmaOiwVn8NESLzqGIM2pOrWACF3VLhUSnX1A9PdLxZaPDtJEMfEb6z6S4nkZ0a+dIk2xUAUv0D3RFfIPdJMTCGihlMdlplRFdMfobwgAWGPZTlugGlcaHNfGqUb5TnFC2Y0Fz+sfzpf7HPy/zsysbEEZ1Ywy0fntXGT/Ns2EzD7fE3vonpq5711MebWnzEpRQ8uyjvzl/DZGCbIXaXeucKdE/N4mVgYc9xAcDnTbnUMFV1YWaA4blNo6IwvktyMxuIYf8a2N+Ohlb0t9BQlVrc2u1dA==
+X-HE-Tag: 1785265549-124454
+X-HE-Meta: U2FsdGVkX1/U5lfpO7x6ts7lr0tEjzZmUlr9EMUQfXoRSMZz5Q0zXDKMyqGHf+qsYDHoE2ihCsFIWGxnlWl+HN/3uqOvCKaHRXNkhqM8sXwHzJwxeSG9VzwzqRxhj9WnFT8e1brtHtPpKZs21JhgEVAk/v3aMkVf4IETGY3bOZSv+dK+85cBwpUiKRoWpWRrT8pjscpYY8OR9nw6t8c9o8IvFty+Lsgfj6hRUXnIarucZ+t+4Ne6RFTExsWjzz+WzCYmDzDcR7MxUYxzdvkN1A2w7WOewRzqjiqua9nJll0CWfC3xU9WBy65ZDJYhDpM3/F70Uku+QbkVlEK5O7FpjMrQNeHn/bBqjh2hMlEMpB+0V6Lu8GHN72/79WsZY9a7iS7mAO1N9lBEW4kSHD53l3SenXNSzrT3EfkMTq2uDswTjqc6BJwqlZUKl+UqikpPzCeeSmyKbfc/bf9mjYtOh0JrYTPULdeIvxingzdJmrjj2M2J9se73zPYPkzq0af0i+Lgb4zsbGG9lvePXE+OrqIa5Qmc7NUMu4HJF5W+ZYcjkMt5/kdl/qsKIOzvCZJ5r2c7/7FDR4fZL+gXwPCwX6WUsMMKSHXw1+c7KILq93MST/bWPcDLEC3mVJ87BZ9XUX4NqSZ/0F9vZ5NTa5hqNBRBg/R3rZsa0E7b8nD8RHMEPCaF9i+aUTdEPeerHCwQ0+KDXE6+6VDYKo/KMA2HzWnmFXUE5RWWrmOH8b21sttuK4qe9z19IY+FnpLep27M6nhd539ZIqx0aDbY+PTzClBHuhqwyr0cMl2zF3/V4ePawnLNdWc3pfw1Gpl6Z9aLDk5vm43kWAvDTsFesSHnhP6gLMsIpxxd8x/95Dzw+ivVS+k8dvZcuRbO17GzcsegAQBLjRCJgOKfA/mvGYO/aXAnfLHg3dvCtIeYuHM5ZFCXK5JMvyzNpDjXHlUtveJVqX3bwKU0ugk24f2Dp6
+ pwh4HGZa
+ EkhNKxeYFAc+73H03B/ESLMmJ61C1ZDRpVPBtQEERh/d5n2i1DsUowPRncr6FbuTTIQhUqj1nyBwxLch4JQAdzsr0pcT6oZfksNsQG/KsV0140YibGbQW+hOPqYRcvxVtX7rCbWTGVyERmADFvQ5z+gkvsN5gdpeT/PMwj0+nyH5jDhOAcHvMJCBJ8O8EwFrU3nUrhkw9yeyBSH58D3TNAqmgUwBK+qxNUDhSexw+K1wPdAbVw7p03G1SC2y0p6eb7NKWAmKxhsgkuZRpkFY79g/59pCgdFuAeRiSb6rIL4MpyG/zjkYZ41R5e5WGfkYjuO9GAvdgSSTSntRrarCcGAg8VNAxITnAsKz8cxXwTDmzUYj9kmWVPz8HgaklJPVCharl3+WHm2mW5OE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,36 +148,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/28/26 14:05, Lorenzo Stoakes (ARM) wrote:
-> There is a subtle race in the reference-counted huge_zero_folio
-> implementation.
+On 7/28/26 02:37, Rik van Riel wrote:
+> On Mon, 2026-07-27 at 15:54 +0200, David Hildenbrand (Arm) wrote:
+>> On 7/25/26 00:29, Rik van Riel wrote:
+>>>
+>>>   gup_test -L -m 256 -n 65536 -r 16 -t
+>>>                         before      after
+>>>   64 kB mTHP            3140 us      412 us   (7.6x)
+>>>   2 MB THP (control)      78 us       76 us
+>>>   4 kB base (control)   3010 us     3042 us
+>>>
+>>> The PMD-mapped 2 MB THP already returns the whole mapping in one
+>>> step, so
+>>> it stays fast and unchanged. The 4 kB baseline shows the per-page
+>>> walk cost
+>>> that the 64 kB case paid before this change; only the PTE-mapped
+>>> large
+>>> folio case improves.
+>>>
+>>> Assisted-by: Claude:claude-opus-4.8
+>>> Signed-off-by: Rik van Riel <riel@surriel.com>
+>>
+>> Why is this patch part of this patch set?
+>>
+>> This makes perfect sense independently, no?
 > 
-> The fast path atomic logic fails to account for the fact that the
-> shrinker (which drops the final huge_zero_refcount pin) can overwrite
-> huge_zero_pfn with the ~0UL sentinel value in shrink_huge_zero_folio_scan()
-> after a racing get_huge_zero_folio() installed a valid value there.
+> I'm happy to drop this for now. I think it would
+> fit in better with another optimization to only
+> take one refcount per continuously mapped extent
+> of pages from the same folio.
 > 
-> This results in huge_zero_folio being correctly set but huge_zero_pfn being
-> set incorrectly and thus is_huge_zero_pfn() and consequently
-> is_huge_zero_pmd() will misidentify the huge zero folio as being an
-> ordinary THP folio.
-> 
-> This can result in the huge zero folio being split and otherwise treated
-> incorrectly.
-> 
-> The solution to this is very subtle as there is an atomic fast path, and
-> thus ordering in weakly ordered architectures has to be treated very
-> carefully.
-> 
-> As a result, this series first reworks the
-> CONFIG_PERSISTENT_HUGE_ZERO_FOLIO logic so it is separated from the
-> refcounted code in order to make the subsequent fix reasonably
-> understandable.
+> I can't really untangle it because it modifies
+> some of the same code as other patches in the
+> series, but I'm happy to save it for a follow-up.
 
-For at least somewhat easier backports, can we reverse the order?
+Given this series here is RFC, can't we have that optimization upfront? I'd
+assume it will benefit quite some use cases that pin multiple consecutive pages.
 
-The spinlock+proper ordering should be possible without #1, or am I missing
-something important?
+IIUC, it'd be mostly patch 10+11. No need to worry about the test case right
+now, we can do that later.
 
 -- 
 Cheers,
