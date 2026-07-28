@@ -4,132 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB8FAC53219
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 15:08:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BBD4C53219
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 15:16:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C6C1F6B008C; Tue, 28 Jul 2026 11:08:54 -0400 (EDT)
+	id 43DFE6B008A; Tue, 28 Jul 2026 11:16:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C43146B0098; Tue, 28 Jul 2026 11:08:54 -0400 (EDT)
+	id 3EE346B0093; Tue, 28 Jul 2026 11:16:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B59A26B0099; Tue, 28 Jul 2026 11:08:54 -0400 (EDT)
+	id 2B9436B0095; Tue, 28 Jul 2026 11:16:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 925B26B008C
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 11:08:54 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1CB1D403BB
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 15:08:54 +0000 (UTC)
-X-FDA: 85038517788.17.AAFE09B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 67E4F140011
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 15:08:52 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="DN+/cy/j";
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F229E6B008A
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 11:16:44 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 897B31C0198
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 15:16:44 +0000 (UTC)
+X-FDA: 85038537528.11.3BECA50
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf02.hostedemail.com (Postfix) with ESMTP id BAD898000D
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 15:16:42 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=d0Z57NRV;
+	spf=pass (imf02.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785251332;
+	s=arc-20220608; t=1785251803;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bbpXCpMeqFXxWGITOUTukELoIUWtZsgWtlrXo7aWqs0=;
-	b=HgDGXqnMMEqOpdUZi4peb0C2llSu83r6xOvd4LIn5dl4TpKOgNSwswzLog62H3Gb+BIWxU
-	9pPtGrXWKmYT7CdEw0RvPVOSlcXKzg6Ynd3GftGQ3L49VW9s8QHvGBDoZ0u+RFGrHNHTdU
-	8xfPg7FuJRXbvOXaCEoLKXO0z3YLI3g=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="DN+/cy/j";
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=65vzM7nthly/ekwxzXMOlRAEVvzXqafNzBka2YxYPLQ=;
+	b=LjKKpVdYRW5itj5AJPfdTl/o9UOMNDBAzJtzEXVTd8Ph8KGQnI7QY4K1pgFJiDjSBRF5nE
+	V7X2WQKGA+BZmk2GjyENaSyvjIau3qJnR37ROCsT7EaNvfkHA2/iXO0uFywcGXng1QjBw4
+	SQMJ44VMY5D6GdPxKnTJfIE3wsT5GlU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785251332;
-	b=VVW+6IoBdNNkcvQWkCO/MmH76/Q8LNlNU6HE57qKHq8cZyIVs6Ws+u7XpAieOsEbdjPntX
-	orq8Qfv6//QkohPyjM1LXPrdtQvM8CEDiNcheDxbQw0YwcZUVQ2JZowDzL2jK0NUk7JhZ5
-	wDe7iwOE9Pf/HmNvCMt/Y4JCam3IPME=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id EDA6460A8C;
-	Tue, 28 Jul 2026 15:08:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EB871F000E9;
-	Tue, 28 Jul 2026 15:08:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785251331;
-	bh=bbpXCpMeqFXxWGITOUTukELoIUWtZsgWtlrXo7aWqs0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=DN+/cy/j+nZRUxsRp+l5QlOr58qx5PORg5WApKQUfoYWiHLMKVqTmLwWWFwN3p/yX
-	 IAYTySDUL9AKg0zu2y0KQTuA0LcnA0RkBu/2BVs4HxN6in+lvgNoHaeByxWA9WURPw
-	 g7Kz73aVqV7rmmWODJGzc39Ym0hr4Q3awvQjaX5xAP9ACNTuyq1wLAvOyLyuRNCN3T
-	 +r4FZJ1/RlpnEYo3Q131qLo4Let3HN7lphpBg3ip2aSeVqr9IZvwY2n1Uu3DF4oE0K
-	 tnCFLWx92cWwsin474c95jh++5NOb+3jIYmAT7H/XEC9U5TgCLry9TPEHK9oFl7kMu
-	 KDq1dcC5CqK8A==
-Message-ID: <17658f3e-dca8-4e8a-b57a-328a46306890@kernel.org>
-Date: Tue, 28 Jul 2026 17:08:46 +0200
+	t=1785251803;
+	b=BwKwCQuaH2soHFyYfXQF5F1EtmOnqvAKK2NeQ8NSe1etIfgHcqfhD+3/4K9zBiOAYhLZ+N
+	5l9a4jxMaNAEjFcX1DMD945+cXgoghhOMxlk/GSPxm51+krn4VLkTs3SYJ+Ay97J184+Zs
+	VqEEdyyvcp8h/P0WJySf75AZlWk2B2I=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=d0Z57NRV;
+	spf=pass (imf02.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=65vzM7nthly/ekwxzXMOlRAEVvzXqafNzBka2YxYPLQ=; b=d0Z57NRV/S+FMgNQth4ZfFg2xQ
+	xG8atFc2UxHzyT06C6Dg6iHaU5Fx20Ob5hoBehVBdWDadmAErL3oGwcbCIeli8LSvT1Qf9ADj0Ue9
+	VV0eMyluYyS1aiXMo8MpM3RICMIBLVZGyFAais6sGCML6LZ4chyFyJStnWGY5oShFDB85qNbHP/G7
+	vGRqMtPeKGEYnVu6RWfUglNMh/cnkdD4/cZnfi0ze5miR7X1eKzYMipFnw/uAcdSZ1N9vDpvSlIb9
+	+yIb4/TdyVncgIQUuUEgccxUCyZiuDmMbL1kWqeJSe+e+JjKRgVXbPJ0l/9tM6n3+9YeEmNafs3vh
+	ymUsDl5w==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wojXm-0000000DY6Y-10zP;
+	Tue, 28 Jul 2026 15:16:34 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 581C1300EA1; Tue, 28 Jul 2026 17:16:33 +0200 (CEST)
+Date: Tue, 28 Jul 2026 17:16:33 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>,
+	David CARLIER <devnexen@gmail.com>,
+	David Hildenbrand <david@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Juergen Gross <jgross@suse.com>, Kevin Tian <kevin.tian@intel.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Thomas Gleixner <tglx@kernel.org>, Toshi Kani <toshi.kani@hpe.com>,
+	Vishal Moola <vishal.moola@gmail.com>,
+	Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>,
+	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, stable@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH 1/5] x86/mm/pat: introcude cpa_lock() and cpa_unlock()
+Message-ID: <20260728151633.GX751831@noisy.programming.kicks-ass.net>
+References: <20260728-cpa-fixes-v1-0-2ed2352300b3@kernel.org>
+ <20260728-cpa-fixes-v1-1-2ed2352300b3@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hugetlb: only adjust reservation during unmapping if
- mapcount is 0
-To: Guillaume Morin <guillaume@morinfr.org>, linux-mm@kvack.org
-Cc: muchun.song@linux.dev, leitao@debian.org, Rik van Riel <riel@surriel.com>
-References: <aleRuVBaWu6eTCJb@bender.morinfr.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <aleRuVBaWu6eTCJb@bender.morinfr.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260728-cpa-fixes-v1-1-2ed2352300b3@kernel.org>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: BAD898000D
+X-Stat-Signature: 4ifqmiieuyw3crw49mf36ykmwfhyf5gp
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 67E4F140011
-X-Rspamd-Server: rspam01
-X-Stat-Signature: hnrtryf9nn847ced6yd5j6ebxdir4joq
-X-HE-Tag: 1785251332-147539
-X-HE-Meta: U2FsdGVkX182lM63wkNgLMB7HRmpcmu8ZJx1BeFkMrjnq4RKnyxBwdCgECyia3uhAB7BDC/lv3t4YCVa+2qbsllxA22V1XEbUH7t/lk+DvacuC8eMUVgqmtWqI6G1ruBhwye5Q2gzaTwKy1Kq4Mybam5Cr8eMeTBCemKV1E7O8IVdY8hExs/xMiYVKHVG0oKgb4vLBEg/R2+WUsd015UDtDhUTOvOolRcEedfrccIx1KbfBGM3NcPqrOxSob7/cJ0qtzeQAtr0ajNhU5BcbbvGCwt6w/Vl5zr78KZ2jwGQ8f4Ua1L6PBMY1zBo5v0tmxu7zrjEXvxfmbNkESh1idFbzxZh4gEWyRqoDC8IvvSGEfyqVoHRCqKRMmJpT0I0xHeaBsY7RD8D47sYXpqhAF4HQhjd9uSV1zcq/c8VTLDTkFY/ODr+8jgxWYLGs8eUDpdAxRfcsj6O/nZKJcdUFKRx8roSgoyrZO7NTxrZsY6c2xEqr4Tf1FFqWsMF5Du4fEfYhf3k2JMuBk/PUCPwP+zFKYqFEdDRaUf9xNb1FejThYDAynLBf6ip5KzWHZQ97zbIEkLZqje2usmfUyVkXPZwS0VGFFXhqnXZJryxO5rI8inSERUuCJSB+YBwThyA9/oc44rGUDXzn7hXg0vapAezu5xZQvwf4yJdI4feKEqOueNisGz8z466xYRfsb7tR2vKgpwn0PhtBMuKsCgaX8CmAKYPF/0ZJHkTM0WwWfWWgUaXNMr2t1i8iuRrYRnyZgvA7SK/S6yPdW0CLqQoolAuZv5KFT35ZcIYeQavXsSF2+VUxIXPiqns4Y9s+PuIOs71rCyPJyx+wPRqRHRblMRXfF9bdy4WOVANljKq8ja1XXJ/EAfNm27qrX7+2g0sAnFwqwrIYEmY3i3LR9UUf3LvpGbW2Mf8E96+jvQSLr/YODc1VGu9MjniZQ9CcBxVD7dQ8OYC5Tb2FiobIgByP
- QfKnoeCB
- dHs9a3nxxV6Qer9MF7ReOh22qVCxUI+sbMGXU4KYkVGlciZP3rAyFb9y5/S1XL5XiggmB0g54ZAY/S3lV4cXzyaXLgeh5QdEMz4iAq9t1dEww3BK+ARelIQ8jvwHM1vYFEsmCa4Sn9tVNTqUhX5uXDPeX23s9tvchipw3eGRCy/ri9GDSpT1XqfDrRp/JD1J0pXlJ6DiAZ2tmzoP+xxEJ9CivwZGDP342jFj6/RJcnt4CSGK/9+nhS8uek7Om5pTEMULqPdqIR7auO6w57C/NtIepS3hkHuuG1BgWLDfhl0yUqTVCB59qYA9l5k0TQMrQPC+1D3cWMy4AmWvrHqsRbPDFEXFFubNmjYGTRKx3JKQ39aL+glbONaL5Q+dGzdmWC+KiuGpKSQkBRcxO4zPisxpSUHvJQSu0HlV8
+X-HE-Tag: 1785251802-77054
+X-HE-Meta: U2FsdGVkX19tdIseNG68DGyggCM2cpI2yGFBVL559OP5HwGwzOdjo5XJAaHk8a2/C/QQOjK+2nHQoVEynmTOyOcV97Pl3w+RxfvHKL1hTAWCPSnu2gqqF8TZEk9ETfa7uYYYZMkkro1Y+H7f6f9bUoboSCxKm/7VtXSLPZe/Pt2ibybNwoDapTzUPSbbJit4mD0pxGO+D0/CFUjB9S+AM8ogabaJSEQpVHd1LNRx6cgbY1bsIHkgA81Jpa986MGRjlUb9Ih7umtztrFEQBWHW04xqQIKN2ARFM3FZA8NrNNIz8VDUpLzRUATdnLuDnKTeyxiKstgQE0sGRm/2rQm4l/k9ykQ3JdlEB7jqpY+n7OCO3DZ0+YJK41Xy7nuWd7aYudyCcZrBizwIHegXbe/4mGGFw92ZR9KflUnUMHzHTLkDJDZYnBzhtz6heSBkvyVBNNqZDm2B8fUnDp2m5xT7zWPFIE83AMPCtBQ2/TR1gc+TEz+/CR6mFJUwEl2vry+dsO7vy6WfbsBFXsc1/mEOm9+WElOZc9P8/MwnFhjUp2q9+erquwW0v/zFrTlOVf/792WCYneaETsOISL5oXTn2KJK3kLmicVt2JzHzXjaUq6lgEN2KoV15sbpUENeb4iZE+JuiXRt2B2fwDnB6p9Myhx5MqMnq3CC+rDyCPiZ6+zN96rOZj4X8PDxK6M7WeBFEEGOHr95qPsQTTmq1F9CdJ08Y4jm8tnCQgy74zx/faovzex8JQUCM8Acjee813Mzwph3YPa3x+kzVjKtQZFRG++IyQntBM/EF9HKxqGi+fpa9bTODS6zWS2ITprgEgUj9t+v38ZSTauM3lAw4LwKS5LdlCuO57bvc9FEi8Zwrcs6xRbNeAQvf1vwRnQST6n2w3oQlpjF6eRiEpjmhdiPOSVOMJWCWZnTQ4hT4fx4+/og2Y7dluks+vcc5Kzw53j3xjuMdaW/BsDyTSADqR
+ Vuk0WLPj
+ X1jG3JjgL7NBKkA+YL5QFlY/5S8ArhIk1nofjrdB7/jOPbGnxqnF3nyLAVRjcZqtR2070lAE/aUSWBmrEan7NmHNA1NaaeEi9nv3npbMGp8OioFHRE+8b0KTL/0eL4ZkXRzI62avs9Y+qYcNMrie4qbfb5x8uHEHQ1y2VdCYpMW5k8HEjXk7MC3w5eR1x1UqVWPTZ4ljoAy6+y0ne3ALbNHelpDDlKocywYPEb+4H/+bDR2i18JxhbTMzR3JYr8d36WRX5G2abtXtjY7qdmzPgRn1Ozb4hyigulf2Jqc/Vv0UZ8HQA7mqcJwpuzXxFQpiJdIT2LlGuggYtcieADE/GUBnrIS4IhFcV1wXPUsqQGm9uPk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,41 +109,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/15/26 15:57, Guillaume Morin wrote:
-> Since df7a6d1f6405, __unmap_hugepage_range can adjust reservations. In
-> the case of folio mapped in both a parent and a child, if the parent
-> unmaps the range first, the reservation adjustment will result in
-> an underflow of the reserved count. Once the child unmaps the range, the
-> count is restored.
-> This patch changes __unmap_hugepage_range() so it now checks the
-> mapcount before adjusting the reservation.
+On Tue, Jul 28, 2026 at 04:07:44PM +0300, Mike Rapoport (Microsoft) wrote:
+
+>  arch/x86/mm/pat/set_memory.c | 33 +++++++++++++++++++++++++--------
+>  1 file changed, 25 insertions(+), 8 deletions(-)
 > 
-> Link: https://lore.kernel.org/all/alEJkwn5VlTTH_ZX@bender.morinfr.org/
-> Fixes: df7a6d1f6405 ("mm/hugetlb: restore the reservation if needed")
-> Signed-off-by: Guillaume Morin <guillaume@morinfr.org>
-> Cc: Muchun Song <muchun.song@linux.dev>
-> Cc: Breno Leitao <leitao@debian.org>
-> Cc: Rik van Riel <riel@surriel.com>
-> Cc: <stable@vger.kernel.org>
-> ---
->  mm/hugetlb.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 571212b80835..c0167a09a0c4 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -5252,7 +5252,7 @@ void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
->  
->  		spin_lock_irq(&hugetlb_lock);
->  		if (!h->surplus_huge_pages && __vma_private_lock(vma) &&
-> -		    folio_test_anon(folio)) {
-> +		    folio_mapcount(folio) == 0 && folio_test_anon(folio)) {
+> diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+> index b1e780a465b5..4c8922695fd3 100644
+> --- a/arch/x86/mm/pat/set_memory.c
+> +++ b/arch/x86/mm/pat/set_memory.c
+> @@ -65,8 +65,25 @@ static const int cpa_warn_level = CPA_PROTECT;
+>   * Serialize cpa() using cpa_lock so that we don't allow any other cpu, with
+>   * stale large tlb entries, to change the page attribute in parallel to some
+>   * other cpu splitting a large page entry along with changing the attribute.
+> + *
+> + * When debug_pagealloc_enabled(), page attributes could be changed in atomic
+> + * context that would warrant disabling IRQs. But since debug_pagealloc always
+> + * uses 4k pages in the direct map there are no races for splits and collapses
+> + * and locking can be just skipped altogether.
+>   */
+> -static DEFINE_SPINLOCK(cpa_lock);
+> +static DEFINE_SPINLOCK(_cpa_lock);
+> +
+> +static inline void cpa_lock(void)
+> +{
+> +	if (!debug_pagealloc_enabled())
+> +		spin_lock(&_cpa_lock);
+> +}
+> +
+> +static inline void cpa_unlock(void)
+> +{
+> +	if (!debug_pagealloc_enabled())
+> +		spin_unlock(&_cpa_lock);
+> +}
 
-There is folio_mapped(), can that be used instead?
-
--- 
-Cheers,
-
-David
+If this lives, we should probably stick an assertion in both the split
+and alloc cases for holding _cpa_lock. That debug thing seems to rely on
+never hitting those, but having that be implicit is asking for pain.
 
