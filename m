@@ -4,94 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 399F4C54F4C
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 13:35:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26867C54F4C
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 13:37:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B6FCD6B007B; Tue, 28 Jul 2026 09:35:52 -0400 (EDT)
+	id DE3506B0096; Tue, 28 Jul 2026 09:37:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B20026B008C; Tue, 28 Jul 2026 09:35:52 -0400 (EDT)
+	id D94336B0098; Tue, 28 Jul 2026 09:37:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A115C6B0093; Tue, 28 Jul 2026 09:35:52 -0400 (EDT)
+	id CD0DD6B0099; Tue, 28 Jul 2026 09:37:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F6A26B007B
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 09:35:52 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id CCD69803AF
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 13:35:51 +0000 (UTC)
-X-FDA: 85038283302.04.3593300
+	by kanga.kvack.org (Postfix) with ESMTP id 9FCBC6B0096
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 09:37:25 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 33CA0A0882
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 13:37:25 +0000 (UTC)
+X-FDA: 85038287250.13.C52FBE1
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 2D78AA0011
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 13:35:49 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hJ6ZyGrX;
-	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785245750;
-	b=VEI2gN5AApI3UxWGtyFWUc47ElrC6xZSSDR4vUjm0W+ck/bDdEjcDWPyN9+y7qnfjqeKjA
-	BoP46LOqDhGSB5/qXon0VrTOt77nLjn5Ai6FnEamRR4MWLzCzB/qrdRdEKoH7+J/Uw4lNH
-	WVSRtL6H5nFO+TdHdYADOsjsffVbgB4=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hJ6ZyGrX;
-	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf26.hostedemail.com (Postfix) with ESMTP id 80DAA140008
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 13:37:23 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Zgig0qhU;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785245750;
+	s=arc-20220608; t=1785245843;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=F7E60EEGx3HhYQLCew9dec70QQpFr1JD3ItgZk/3IBg=;
-	b=5ewMGgzhHXTP9T41rUzjuouLe8VtRLnSncwc/UaNylcewwFeRE5J5woSHZgsGb6z7jfdgd
-	qgWiit0KTaF/IhKimkuXkeOD+ujAIm4zkBMG5//Exu9QfXNJBWOJXcJab80qvPrfaAd82q
-	eH6iIfU8xAvzJWzB3S3FZTwPRbRJ7ls=
+	bh=KB/07Tb0FpiBzqRpvRWCeOJ77m9l+yyrAJxlJVmVIDw=;
+	b=mOHQV33BNs3g3mcz7CAvVyj5n286QrVT2zWFVBqjxHC778gLLZWJkDDdX55TBSdCaaapZr
+	sFx4C8BpJCwjZILtQ03vwvzclKsJvAYd1O6/KiedP6hWOR4wY4morQoezZmKp7hs2UL0oS
+	tFTpoIMXt9LtyS4O46fbQ+Lra+fvz5E=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785245843;
+	b=28EDFR/KifdQX20J/qrZSkD1kGFqyYEW1wP6vPAt/PyxaSZE5rLL48Fmz6BuYUB3v1plPA
+	Ji8DoLy/dYJGvNXMA4PDgfC0ATV7deQM62X4D0/DNGE+aCpjLpXVPkWGBZm0SoUVKfAoiT
+	BKawHK4A5AKD/RVHHocNwoQ2uJB18pI=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Zgig0qhU;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4579540DE8;
-	Tue, 28 Jul 2026 13:35:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F6F61F000E9;
-	Tue, 28 Jul 2026 13:35:45 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 890074044D;
+	Tue, 28 Jul 2026 13:37:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1405C1F000E9;
+	Tue, 28 Jul 2026 13:37:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785245749;
-	bh=F7E60EEGx3HhYQLCew9dec70QQpFr1JD3ItgZk/3IBg=;
+	s=k20260515; t=1785245842;
+	bh=KB/07Tb0FpiBzqRpvRWCeOJ77m9l+yyrAJxlJVmVIDw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=hJ6ZyGrXFohV282rb4DcBTZtLaXEm4DG4EzBSaAk21cm4cHuYoe24V2bP2A3XjLTX
-	 7/D8dj15R5W/TNZgNi8iJNfMD6iu4ysPmFfd67MHL87sKSj/quy+1zpDftRPgID1md
-	 W1Dg46CjtdpalY9SmavmC1shWHb2XACiP+0fjTLovQV4x9EzRnu4pwlZkM0prax1iI
-	 IYZfhTDMOXUzqcjDzb79D/1mBLqK9/xMKVSgLT4zm79An4+G6SLphQoJHGp/ayHn7Y
-	 NHm/DiPdusfbad3D4k8lq9K3yZREeduP64s/aoQP0iA/h7DLaYue/b4dvGjVmFeSuv
-	 erXV/LxzbgXtA==
-Date: Tue, 28 Jul 2026 16:35:41 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Alexander Graf <graf@amazon.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jason Miu <jasonmiu@google.com>,
-	Jork Loeser <jloeser@linux.microsoft.com>,
-	kexec@lists.infradead.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 00/21] kho: make boot time huge page allocation work
- nicely with KHO
-Message-ID: <amiwLSEi8cczamP1@kernel.org>
-References: <20260725172133.4018491-1-pratyush@kernel.org>
+	b=Zgig0qhUsUbAneqzMvmFr3n5e9cqebP2jQ5ufi0nFxACxgtgrEUfy4yLO2qb0mKzW
+	 wAuMNIf0MPt42ieC9lzv80fPlfvESUFCROqoIKB4MJRHKOe9X9leYiBdJo33RzHH7M
+	 rrJJYaM5PFinHPuqYwJKJ/0vfqvgxweo+Xj/tk/6NttUiwq9ys1aPczbET/fKVz/pk
+	 DGlZkmr3s9kCJH6R0b4/twzdC1TibY+bXnnxZTIYnSMP+MxM//1g/wZ1+7mYGPVF+Y
+	 tJ6RMFwzNU274KWcliBrbYZRCgSVN5GRIICRXaEvryC9mvlt8smf6uAZDul+7qUbNp
+	 3Zo1EMhKLscuw==
+Date: Tue, 28 Jul 2026 14:36:59 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Yang Shi <shy828301@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
+	Pedro Falcato <pfalcato@suse.de>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Jan Kara <jack@suse.cz>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Usama Arif <usama.arif@linux.dev>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Arnd Bergmann <arnd@arndb.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v2 13/15] mm/vma: make MAP_PRIVATE-mapped /dev/zero
+ mappings truly anonymous
+Message-ID: <amiud-At9fd6AzTz@lucifer>
+References: <20260720-b4-scalable-cow-virt-pgoff-v2-0-2d549757a76f@kernel.org>
+ <20260720-b4-scalable-cow-virt-pgoff-v2-13-2d549757a76f@kernel.org>
+ <CAHbLzkrCjALeXSuO7dgho9=W-VZQxD-CXNS8iOva=oCCi1XV1A@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260725172133.4018491-1-pratyush@kernel.org>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 2D78AA0011
-X-Stat-Signature: t888rqmn6jstnccs6xa1oaegud64hf3s
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHbLzkrCjALeXSuO7dgho9=W-VZQxD-CXNS8iOva=oCCi1XV1A@mail.gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1785245749-290090
-X-HE-Meta: U2FsdGVkX19nV9mKXNBVQWfcOpxdRnLntSy124RYRQu2INlzHaYr7o6WeKekeJPH9hbBnhHKMSrpAGBbapvov+oGS2ZwWOhqksLFgoHIjgegFKWSFlffUQD5VuiUGKYWWL9F3wn0NCEWn1JzlDQfflU3PxRUHr/seOnhj4egHarsOKd4o5ZkePgPPT/kwAEf9tRN+gIwDRIhwUVYHvxzepSburYExWvsGs1Xxc63lV1mz7RNHmYkU649LvIVNvr05Hn7VX0a4aoVGel0K/caAt26Kici6k1OvZYOkmFhw7VivlbNjn8s40SJcVyVYPpUINLQz4bpt8F3RvwPsb+DxTEMWypD0NQtKRulZjqVhiEFCnTAD8ujehC4rcLzG/1ZvFuuV/3vf8X3HviNVgv3YOQ0LycSafQOV6L3aIU0IR0DVj/Hi/QDfykz3Sv5mFrTX/5RhtAzmXx3YEbhaa/Xteo9zNPit9wBJ+nCsWKHwYpFAJQ6qJTF10wEkvn+cDwK4nM8NHrxtqkmoOJWIG4qELyL2OD1+LcGw47DUyujP0WVMDAgYnbTTFNIea6b7cXS7hRKe/UehGK6ju/bpyh9JRaUnIGOnZBVPkmUNlpfWZL0zt8Pg+rew3nH7Dxi6ltWMs85YhffLbdKaNGqmRG5fqq1EZpd64wXXuF0JMHkH/EyV0LlR9xs91IBloyxnne5GWWwpMn4G18yKdz/v3Jwz4gIL9wsJYfkK0rwkNX878e5c8oK3H7AYgRR66yPUhq0Bn/QmLA6cUIGmQHiFl+1PksZjZRMFP9py0Csq3hsK8ujSJs+PH9+LtAd0/h9/Ou3jurtkt6CgVye7wQt7oXSB0x1dEbAyzx3gjYUOMdhroMYNOu4cOKL4O8JzyTUCdJ41w1oPyqTvzjSXgZjB5ojc6wpz55mvAoY8qGS8xMjRwNQemR4Xs8hOKZ2AdHeM+uvAzIl8b6RrmYzxvlXxtL
- uyHjPLJt
- SCiTAqbyrGcQ4zT29q+kyDvOwHnnXWlTvVkB74Yp187pLUp3XKV/tnPVZ3Ez9XUng89YZjXXCgXFLCh6Jc1noo1aqw2JavXlsKRh8y1E4nGN1CCN+G+lud2Ip+cYmmryZjnu8czD3paSkdgazS9zVKZilBlWqqn7eZa1pvX+HQO+eUKoU7G6d8+djz3TxIK0wO5sA6AAnjVhq3/XVJVls5jlXbSrpkSFcru61rQ9kwtJAxlM+AUcr1Jpbjwp7pBmWs1qSXcwMZcrXU8wELIXhkZoDdQ==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 80DAA140008
+X-Stat-Signature: fj1jxrbax3a4f7qmgjfrqd653tyofd9r
+X-HE-Tag: 1785245843-422074
+X-HE-Meta: U2FsdGVkX1+rnb3WdiwvblYK/0b0TShjzKoRxiqQfagxhQrTNQJmsdm/33ZKqM/WxCTTUEfCoWDyGPjmWfwF7wmmPKdz6rHSpdiBaz9+eOS+WRk7FDZmmdjgu8ACTIbHLB+r7upwcvfWodNzsvA0sfEVlJ47e55MZvunuwPPVJimNUk1eW40wnLpVPgjiBdWQGQe1a09PJnfEg9PoUac7sW+KIWXLThLnuxpvO0fm2WaF2fsKPvVfEUoRAV51RE57nU17lcWYVwfJ5jDAp0rNHp/F45o0ce+kQsgB4tsr73asn/wTKRCRvtlk5EsIoJ39bQp+aGV4NWfDhAIGpCSZg1qiU59sUgop6WVKqEO0R8iZn3PGzwEXiYRMp8fWmtoLDfnJVBoYsd3edCfvK5g/p/r5tBlxXjBtYgN2SEnsFwLfJrsJYP2owJjXX7bBhjqnM0uNGeFdj+2eRY2Kc0QepAky0T/Ktd+fqVep0kPW3TeMmS2+euMrwm83jxDLH60nwbxXcmBhm0bhalDObnU9pxAMHodo2D6Sm7GvZL1FDJQDNKFKdl7tHW6RTJRCxLDr0J4+TVjduKlCitPr21peSWGua2qpGoHvoCnSkSX8vjp3cr2e4RMDpiaA4jZ4LnNqQpPUGA8QGNpGIZRVgJDHP26ruZ68oqkjD3VH56OE1hHdQ7XEWIufdpa4S6698B/4pwzPCMWDTTqOgToduVf63iAI0ntOPwAAkavy0h/bRN9hizCjdu2RYRAK+AC4Yca+cab46pgXucGZ7mMLMT9ZFXNQmVxcPgLW61ru91u/mE/on8xdwfPIzQGlWgSkojRnYbekiKe6ukMsIxL27yrLfKatLfPRzIkp3n8IkLy7+rVwbVMzpDZ8kOFfzOnB2tFqTPdiEy0g1RaLHkK5xvsAPDnE+jmm4omFXKYkqAJYWwHMMlNXPrLOgYfHImwEiU5RYCEiCJsCNXNsQkGAs4
+ KLkRxCy0
+ 1Q4004ZYUIqwZPZ3gXGq3Gg2r2Wv4jvwF8vgKOmmaXpTMHEn+n7V7H5PVfATuEnuc5ccVxroIyE7Zml5bGoeoZwezCyVtpIb8L64RtfjzMKx7bI6BeZ67hG9e535FyGx3JmPDJrj9oZmdKlJJ+tdRaXEsnVMkRwgmYCxchg0ZGYWwJSSs14QRsZW8MJRSY4DDbHZL3xKRIGzFbCE+tgzkdeNWwrECQKNuIAIKAGNwSXS19HIPM3kwVQnhdn5KvqzpkJ7lu9jKL0uBYuqQeq6c0zUR7klyaKj6ydvQgWofPyCpyF8N5Gs6a7Sxv9a+JVPP1LeHbXURqO5VJ2/FHX1x58G07ufiCGZCFom633y99eJ6l8xQ2kFEbLMG/5jaTvkxufeKB0+jm9qq3d7hw1bUCn4P4hJbBfdabtTxo254qCW9g9c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,58 +110,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Jul 25, 2026 at 07:21:00PM +0200, Pratyush Yadav wrote:
-> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
-> 
-> Hi,
-> 
-> Gigantic huge page allocation is somewhat broken currently with KHO.
-> 
-> First, they break scratch size accounting. Since they are allocated
-> using the memblock alloc APIs, they count towards RSRV_KERN, and this
-> scratch size when using scratch_scale. This means if huge pages take a
-> large enough chunk of system memory scratch size will blow up and fail
-> to allocate.
-> 
-> Second, scratch can not contain preserved memory, and if hugepages are
-> allocated from scratch, they will fail to be preserved with the upcoming
-> hugetlb preservation series [0].
-> 
-> Fix this by introducing the concept of extended scratch areas. They are
-> areas that the kernel discovers on boot by walking the radix tree and
-> finding free memory ranges. See patch 10 for more details.
-> 
-> Muchun Song (1):
->   mm/mm_init: simplify deferred_free_pages() migratetype init
-> 
-> Pratyush Yadav (Google) (20):
->   kho: generalize radix tree APIs
->   kho: make radix max key width more obvious
->   kho: disallow wide keys in radix tree
->   kho: return virtual address of mem_map from kho_get_mem_map()
->   kho: store incoming radix tree in kho_in
->   kho: move all memory retrieval logic to kho_mem_retrieve()
->   kho: add a struct for radix callbacks
->   kho: add callback for table pages
->   kho: add data argument to radix walk callback
->   kho: allow early-boot usage of the KHO radix tree
->   kho: allow destroying KHO radix tree
->   kho: add kho_radix_init_tree()
->   kho: expose kho_scratch_overlap() to kexec_handover.h
->   kho: initialize kho_scratch pointer earlier in boot
->   kho: initialize preserved memory map radix tree earlier
->   mm/mm_init: don't rely on memblock to get KHO scratch migratetype
->   kho: extend scratch
->   memblock: make HugeTLB bootmem allocation work with KHO
->   memblock: add memblock_reserved_hugetlb_size()
->   kho: exclude hugetlb memory from scratch size calculation
+On Mon, Jul 27, 2026 at 02:26:32PM -0700, Yang Shi wrote:
+> On Mon, Jul 20, 2026 at 8:30 AM Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
+> >
+> > When mapping /dev/zero with MAP_PRIVATE, one ends up with strange VMAs
+> > originating from Linux's distant past.
+> >
+> > These have vma->vm_file set but NULL vma->vm_ops, meaning they satisfy
+> > vma_is_anonymous() but otherwise resemble a file-backed VMA.
+> >
+> > The introduction of virtual page offsets and their subsequent use as
+> > indexes for MAP_PRIVATE-file-backed mappings mean the rmap does the right
+> > thing with these but we are left with inconsistencies.
+> >
+> > The vma_start_pgoff(vma) == vma_start_virt_pgoff(vma) invariant is true for
+> > all other anonymous VMAs, but not these.
+> >
+> > These VMAs are also observable as files in /proc/<pid>/[s]maps but
+> > otherwise behave like anonymous mappings.
+> >
+> > Therefore let's make these VMAs actually anonymous at mapping time which
+> > will activate the anonymous code path for mappings.
+> >
+> > This means we no longer have to account for this discrepancy anywhere and
+> > no longer have to think about these at all.
+>
+> I'm glad to see this is solved finally. But /proc/<pid>/smaps will not
+> show /dev/zero anymore. It is user visible. I recalled you were
+> concerned about it before.
+> https://lore.kernel.org/linux-mm/c98f68c1-4bfd-4410-9b65-1eb5a1efe271@lucifer.local/
 
-I added it to the liveupdate tree.
+Well I mean they'll show but just as anon ranges so only disappear in that sense
+which I think is what you mean of course!
 
-Please take a look at Sashiko comments, we might need v5 if it has valid
-(not pre-existing) points.
+But yeah I guess over time I've become less concerned about this side of it and
+a lot more about the patent absurdity of this situation as-is :)
 
--- 
-Sincerely yours,
-Mike.
+(Cringing at my facehugger analogy we all learn and develop on here don't we :)
+
+>
+> Anyway I don't think it is a big deal. It should be harmless. I would
+> be surprised any real life workload would care whether the anonymous
+> mapping is backed by /dev/zero or not in 2026.
+
+Yeah exactly.
+
+I was kinda hinting at this in the commit message with:
+
+	The impact of this change should be low as likely very few are relying upon
+	this in any case, and in using them are asking for anonymous memory, so no
+	longer seeing these as file mappings in smaps should have no meaningful
+	impact.
+
+But perhaps I can be a little more explicit on respin!
+
+>
+> Thanks,
+> Yang
+
+Cheers, Lorenzo
 
