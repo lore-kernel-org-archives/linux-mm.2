@@ -4,122 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62B3FC531D0
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 03:05:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93091C53219
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 03:13:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4FE526B0095; Mon, 27 Jul 2026 23:05:33 -0400 (EDT)
+	id 02B456B007B; Mon, 27 Jul 2026 23:13:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4AFC96B0096; Mon, 27 Jul 2026 23:05:33 -0400 (EDT)
+	id F1EB26B0088; Mon, 27 Jul 2026 23:13:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 39DFF6B0098; Mon, 27 Jul 2026 23:05:33 -0400 (EDT)
+	id E0DC36B008A; Mon, 27 Jul 2026 23:13:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A7E46B0095
-	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 23:05:32 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5CB3E4029F
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 03:05:32 +0000 (UTC)
-X-FDA: 85036694904.22.DE5B022
-Received: from out162-62-57-210.mail.qq.com (out162-62-57-210.mail.qq.com [162.62.57.210])
-	by imf15.hostedemail.com (Postfix) with ESMTP id E3BB4A0009
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 03:05:27 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=CmafMry4;
-	spf=pass (imf15.hostedemail.com: domain of 1270243756@qq.com designates 162.62.57.210 as permitted sender) smtp.mailfrom=1270243756@qq.com;
-	dmarc=pass (policy=quarantine) header.from=qq.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B482C6B007B
+	for <linux-mm@kvack.org>; Mon, 27 Jul 2026 23:13:17 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2494F12028C
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 03:13:17 +0000 (UTC)
+X-FDA: 85036714434.29.A0EC263
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf23.hostedemail.com (Postfix) with ESMTP id D5A4214000D
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 03:13:13 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=QABHcAm7;
+	spf=none (imf23.hostedemail.com: domain of BATV+695790e2dd2d1c4e9532+8374+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+695790e2dd2d1c4e9532+8374+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785207930;
+	s=arc-20220608; t=1785208394;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YnRcQ7cU8pyEx4dSK7zQyOxb8Aouz8WcbrMEasQibXc=;
-	b=zH2aUMKtNd68+zuYB1Kp8Uya+NM87McgDJkmcINywoeu+rLn5h4i2ZiOJd2Gj1akg4zYIf
-	eCbqABVtMCbCdYqmrrQ4+KCeq0BW/pc9cZfypX6W5fgmKMbOT/kLM3ny8bMtwovbm6rlFj
-	KslMCkhVpBIm7ZXSl/TCCpIY7VuDewo=
+	bh=EHN+9hNginFL/FCYHigLOr7fyStAUtGKteBBOUHnsmI=;
+	b=1EHytx7572JxHj+B3D8QoGBdQv1fOWqUflizdDpgKLd29aLbznlPK2FPS0y0Laug1Ff3L6
+	MHt41X8NMOI8rhAmJMD407s60RqgOsau0dJZ+GxIWURlsGyBZLDrJPReXwrnCu2O/d1fu6
+	KgjxNjbHUdm0Rd+VcGQBbix5QMGcQ4c=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785207930;
-	b=Fb/IfZCcUrQTC6Uo3FodH9BaUtuknnLz5auPdANZJHK/t4n1Y50V+LkI38n5+QM0gsnxTm
-	D4w8UMzjaoRE1uL8it4NsKkFMEvU7nCwb+ag+Oysr35r6xdbfXC5Qu8BrPJgSmwSeDsVxQ
-	zcbJoiUbvdnc7T807jPQn+OBhgyHvuY=
+	t=1785208394;
+	b=G4SiB9LzLUov4xjGFi+heCuoQPx14VRhdmseLhbC28FBnLS/ivUA4bS8DB3XXPR+thYYoZ
+	rS96zVasSS1rR5i2bkEmLzIhzwPTk3nVLgQun+U1AIT2G7EvkLAnbxnsabKIGFGtgzajuL
+	Rn6N82krnpmBqGMQn2NWvgMpD6IpTNQ=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=CmafMry4;
-	spf=pass (imf15.hostedemail.com: domain of 1270243756@qq.com designates 162.62.57.210 as permitted sender) smtp.mailfrom=1270243756@qq.com;
-	dmarc=pass (policy=quarantine) header.from=qq.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1785207924; bh=YnRcQ7cU8pyEx4dSK7zQyOxb8Aouz8WcbrMEasQibXc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CmafMry4/quM8POgF1S8qbIgpjsStTg+sB3Ex+JNmf1Yj5ieK768LVB1ZU3OgzUUC
-	 aNN7b2jc7DDrhCFT+Ii3IvRrO9HACst/w6cR8xcWFklg4XaD1PtaBJQvXwB9dSBrSz
-	 DkeGMwUPeiyXhl9gYLKrVgwOxh3Xqr7/kEDdX5JM=
-Received: from LAPTOP-ALARVMHL.localdomain ([139.159.170.90])
-	by newxmesmtplogicsvrszb51-1.qq.com (NewEsmtp) with SMTP
-	id 153874BC; Tue, 28 Jul 2026 11:05:19 +0800
-X-QQ-mid: xmsmtpt1785207919tqwwl33xx
-Message-ID: <tencent_381E310D1F05DE327C2607824BFCDCFA1806@qq.com>
-X-QQ-XMAILINFO: Mk/FYBttBrlYNA9keDMRg3/WnxvXyxOMjRyQYpTXHGGjQFaXQUM/qqXvz/eLQ4
-	 lcATL5YY9qfmmiBa7vxq30P94tTsVbk7E5sw1yWdq63BeSE28tLss4GAV9I0o1Nb+MTLPN6qx7Ka
-	 aRTDsl9cQQfp45SJm3R6u6wAZFWNDQqyYZVOoExaatSphL+AubeMCj819nVS1fq6UTvWB6pL0Oc8
-	 q6BXygcby7jjUVGt31nclcwZxXxIj95dPrHetnnfOVQwOpkRpus4T5Bm9Ptr8IqMKThTZBbAvf/U
-	 XQYn/uHfNe2+fEyvP/78R2w0xLX82lL+ELxAqxeVx0NCBR91+OljluwaYKNLzv3ycpN1u3iyw4xx
-	 W57S/jVreNkKEiun5QXt7lfJm67e3hRJOUSCe5LHeoy9eqYZ/jJ7UcfJD+vbmH9mWcU418/LIJ17
-	 zmLtiu3PxR0DgELlXjou52XVIB/w1tuBmRDOtd5Bw2ngA+y8aKrE618soR5yGQ/5muBDgz3HwlwH
-	 KuKehJePBRYi+hZsvuf/asF2xhK6GV4w2Cb5lM4qvuaBZb4wwDZmRGFIQCA3U7cDCnkpuG4oUThC
-	 xRnCI7KvZlyiwwT9WMfMwd1qt5IItZtnOgOgYtfUgzPsCIEsS0pNQDJGm3KedQsRosmGrTFLvcyK
-	 gJISHK4l/Z5sT+Be1ChGAjlEuffulCZVWJUKjgz1d8GVyXKqziWzi3Z0zXBx23ete4mMoymGGw4x
-	 YY86bAbwhNWQm6U9lTq2HSDwka/7hnogvALdKeP1gskr97j7RZAGEi5uTxjD2ZuyvD/0qnIJHVTq
-	 OXn6qV+aaSpYqNsvdgYF7DAI9JlGVCi76awmutNROMZUNMuJo1Czc6FUn5KxrkIXZfeySDSy+THY
-	 cW41l2jaauN9E9g2676O1v3Tzicc/3WELVCwVPmrW8msodR2BxC6Gp+g4tY+s0zEBd6DAj/lI6OV
-	 nwXG6TvhE1sIvmbnM8xclQz+rUDbpfz06PJJWr9CEgfYTe/AbeAJbt4G9mEo4nzuW/D+/8IsJhot
-	 Et+n2o1bfcHSHh5gj7pHoa9ic71AOfpM94PVvVsyq/CdM28F5C7+kYUaoEhDs+a1pv+31XDiIzHe
-	 I+cX+1za+CsCrkzBc8iLe7azYs4A6v726CIh3SNmpfAanIcEQvrI8dWhvYDPZfYAnAGsIXuM+IZr
-	 6uqDA=
-X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
-From: He Jixin <1270243756@qq.com>
-To: kanchana.p.sridhar@intel.com
-Cc: 21cnbao@gmail.com,
-	akpm@linux-foundation.org,
-	ardb@kernel.org,
-	chengming.zhou@linux.dev,
-	clabbe@baylibre.com,
-	davem@davemloft.net,
-	ebiggers@google.com,
-	giovanni.cabiddu@intel.com,
-	hannes@cmpxchg.org,
-	herbert@gondor.apana.org.au,
-	kasong@tencent.com,
-	kristen.c.accardi@intel.com,
-	linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	nphamcs@gmail.com,
-	ryan.roberts@arm.com,
-	senozhatsky@chromium.org,
-	sj@kernel.org,
-	surenb@google.com,
-	usamaarif642@gmail.com,
-	vinicius.gomes@intel.com,
-	wajdi.k.feghali@intel.com,
-	ying.huang@linux.alibaba.com,
-	yosry.ahmed@linux.dev
-Subject: Re: [PATCH v14 26/26] mm: zswap: Batched zswap_compress() for compress batching of large folios.
-Date: Tue, 28 Jul 2026 11:05:19 +0800
-X-OQ-MSGID: <20260728030519.269154-1-1270243756@qq.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260125033537.334628-27-kanchana.p.sridhar@intel.com>
-References: <20260125033537.334628-27-kanchana.p.sridhar@intel.com>
+	imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=QABHcAm7;
+	spf=none (imf23.hostedemail.com: domain of BATV+695790e2dd2d1c4e9532+8374+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+695790e2dd2d1c4e9532+8374+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=EHN+9hNginFL/FCYHigLOr7fyStAUtGKteBBOUHnsmI=; b=QABHcAm7QJS9+/Zh2HsSxmpm++
+	r3saAVwtV8cMm8MHhUJ5eZdAjL3qV/xs+faG0HNaFKWQ7xaGeARsi4hKkzYAwW9PE403/X9BA6ful
+	eokhT4nB6lnh42YphqfVx7a1YiloFlJmSFp68XSd0eQ5MMAAVuBqvR6+QxFepST9y8cVPGZut3XH+
+	ncX/ciuUE94g+Z57j1LhQCnrxb/dVB3awZHgFdHg/91F95vSD8URDPKbDVTj8m/0q/I5xCLD9ET/O
+	2pZcmzFRfbn4H/MMT6cL6fpWdFCUKD1ORHtbR2qilJLIm6LfDwwFP4wOayPw0gvsD4ZLtXR9szbuS
+	/19NGtpw==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1woYFi-00000004JFR-2jMp;
+	Tue, 28 Jul 2026 03:13:10 +0000
+Date: Mon, 27 Jul 2026 20:13:10 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Hongfu Li <hongfu.li@linux.dev>, akpm@linux-foundation.org,
+	ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Hongfu Li <lihongfu@kylinos.cn>
+Subject: Re: [PATCH v2 2/2] mm: Extract non-swap page handling to
+ do_non_swap_page()
+Message-ID: <amgeRhp4GmIcqIpD@infradead.org>
+References: <20260723030752.16979-1-hongfu.li@linux.dev>
+ <20260723030752.16979-3-hongfu.li@linux.dev>
+ <10c60511-c841-4bd8-aa5f-0d826b676533@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E3BB4A0009
-X-Stat-Signature: fzcmcrass4a3et4p7whqdcat9qo6bjuq
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <10c60511-c841-4bd8-aa5f-0d826b676533@kernel.org>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: D5A4214000D
+X-Stat-Signature: s6oeqkiqhnayaabaduceowgx8yaf5hwg
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1785207927-340801
-X-HE-Meta: U2FsdGVkX19QhvL0m4ZlVojIn/TCOe/fIw/X8PhYmkX8BWZNZAxfb3bSLIgEC1GTKPxBVhICYF+WEv2nK85blUcYeN2QOkJvXgLTBBMda5Prl02x7KhTBekoCVqj7D1FcUOZ/eGfBniZc+5Chg0l9oG/BG7mX3hH+tuh+0EGVDPtHaeES8bsJaV8q9maxzeG4cgVWFoGXVefoQFaCuHjUio8DJYc5z1rMNBPcYoM0RccetdP3/Fg6tn7tITnahjrZ8rdp58kSx/0foYjWKs7yxhSX+FHHKJ0fVAm9O5DKmMxlilM9cvKNUlEvWgUht2aqO4jRJKU8tba2/djCoxD95y4CNneJoqYRYQCf3uuFueV+gWF64mauZENIW+F8GowKJ6Q1AXEHGwlIbOOJM4eAtee8MgCnN9IpCVjQyzc5zd4gAsP8MwcvNX0s1aQjaehP8gtlerdF2n1irLCGI32w2LlUFt21L9RJ68W9t2Hv3DHN60uEq9ceMaGHzfCxtoin5o6JbeCCOXkbghC+2nOFxJvTBaUBJZ+K/t4TwD8ApRe7SxsuwPBGUpCdmaSlNKa+sW8i46YMm97gjBg1BOY6MmAfARiAnjgTLkn27SSXGA1xZ066Eys0m9cYFWC8sU835/hMTfF3xR49r1OjTIyVE/LRT8BfLF+XqaBjT+dAodW0o4TQhHgpMNeBlfYwjCB4typk/HtQN4jVk7XfMigwK+SD/S4LgibYAPeRpvQIsSrIEjRoF5rT6tzfGqFUkHeURReDPAZV1JcyffyD3WhUxg5ggF+dh6D2r6KPAbl4Kb7MxMD6D3TgKG6yXGv8Q/02vBeIjILHVc26pshs6nM1apRQyxKUbjcCkzXMhmydWZCO+8GjmYdYztGmMai9Mg65ODgPmNPvhdr3JWcZMta+SYjuiRCszvlmGruzJnFW0Lu5LghekQ36ht4iTn1otKeP3DdULh1Nc+XtqFa7M9
- ZNPPS2t/
- diwaZ6s+HDA1u9KtepQZ856KEplBocfn3F7L2DC7WItO924CGI1WdNENRF66hcVjIURazFa20junXeoRo2s2oGn7sZK4KPWHolte7HsGoJ4hanBivhMiVXDhU6OjLxZPJxX0nN0DkBeo+FhPI8kgiO180cklvuy7YxJ2/tGHyhwIXwIvbgt7hKJjhppCMt+4Gw6gA8irROLXxwWmoI/cIQVP7GkGSXmJElbLf7dK83sIbDALXTeg+Q9NPovWRRthFJFMFhk/4wvpXpspPk+yLkzCrUFXVZlTkz+tM
+X-HE-Tag: 1785208393-399130
+X-HE-Meta: U2FsdGVkX1+Q1ny+w8guCJU3zdgxo81NjKeLAB1XNi3gyMgOJBmQCSjQDCPZVS5XUlmVOgSG9avJBdMMQNws5ETbtSsbFLHGpVHtgL73Afy6yPfJ0lTN6pczbR8QFcTz0y5wDU7B9Wwzh/dc3ilvcmf8/JtM0IEhqbxAK84Cd46oYeTj2kx4T8496R7XZUePWGqKSXSHwfYXTvcuApZX7508vEo0wRuO+SLJCdQCLq6jb1lZPo707QABxO4qUH+oxITgK72QL8eQtc2GXvru4VkG4jy8aMNiowno4gKCRqkzuiEeGvq41E4nXBL9WIumUJNEikuxOoK0k/NsfsweTzzFPp909fuo10fqbYqgRkEArYzs/SjsHc4Rajk672j6ObLqaMswtjQQE/xk6494KzlGARVR8ya1l78KEuEXDvsSYZZ2yVy66dX27R8RCC+zqEVutlf/OPLA5hQpbfckWw9L2TgD2RLagxRH8eaP3b3nzjc3WFqpQ6YNRxoymvbzdXIl2QCq4NFx4QeXDoG4s20vL/xWtlDENvJ5lZPk0HR4ZMI+BKD7AJYRBtV9KzofwIlgNxPq/ZKwEqKT/yYcXsr/vKk2ljFqrNFkgXGrttOz8CyuPToL+usM4eud6MPUragpxWnE3hoyAPEaDmg392CTBJCp5AyTT/IQq56LbPHvV468STneO0pEiU/qgzN6AnjHZRmFOPyEPGVDNiO25wZLnYAEIbdzI2u0lgHWxDUU4F9l2NhEFE2CAMbVcwoXfoUrw0G3jgtI/ZCckZuq1Qv3gdEoMCcbOc7Waeq52MUUD57krwIE6oet/qCPakIY1sFPOfPQuNPrAeqA0VxFNhofNcoe9H0he2YlVuedlpMGxBZGHohkjuHmUc0UG+JCT6dGy8NOKW0iGS8kT1hn5roxMNlUd+wG+hKVMaLpvAvDbBnntgmZ5PZlzhS0RVSWzbVzcNVOw7pzEJrGQLx
+ K/LlGx5W
+ rTurUlhopVWuySsJuj4TmQCst9QGlBaxcC1wt0T9xvmLHiXLwebqWpO4vYMeYJIfu8qpQNMSobIx65pYpKAq0gr0AvW1iGNkx4MJPHDnNuGq0EkaAUxSDk72VgDzF4mtHeiluyBMzCS6ndhUYZelEVc7dWWnOsNNcSOs9f3hdfAgFqNBlrSlErToP1+etUb1XD4b7IT2VNPVvSv+ibY5evYTOuwV78ntHOjXu7dUzLuQGA/2Yycn5yFq024J9Crmv85u0TsDcUpkFiFk2+k4XEl2a/eoC1oGY7ZPfMd/OqcOcl4pBl3T7q5Zc4tvT9+SKxxFIzeKaqyWU1qPJ5p/PxI/5V8Dn3GdaPitMXY2g0lmzsMswvhfdIDPXxdYgYMnaLgks8+vYURWHAFdq+huH2NAqyULpGIDTJbEEWCIUzSXMGsKg3AuUETIL0p6S7XWjqAesmhzLhFcVi4wlBKhwJliUFbmcuNLmY4jfeOdFXvZq5afBs3eP36G0Kbytlzv/poMc8lHGlKnmpp95drs7JNgqYfBgg6f2Gs7FictFL8h29uS11WiK3JmnarKQjI5dKYWdwaOt8YG4RYo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,46 +95,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 24 Jan 2026 19:35:37 -0800, Kanchana P Sridhar wrote:
-> +                        if (dlen < 0) {
-> +                                dlen = PAGE_SIZE;
-> +                                dst = kmap_local_page(folio_page(folio,
-> +                                                      folio_start + batch_iter));
-> +                        }
-> +
-> +                        handle = zs_malloc(zs_pool, dlen, gfp, nid);
-> +
-> +                        if (unlikely(IS_ERR_VALUE(handle))) {
-> +                                if (PTR_ERR((void *)handle) == -ENOSPC)
-> +                                        zswap_reject_compress_poor++;
-> +                                else
-> +                                        zswap_reject_alloc_fail++;
-> +
-> +                                goto err_unlock;
-> +                        }
-> ...
-> +err_unlock:
->          mutex_unlock(&acomp_ctx->mutex);
-> -        return comp_ret == 0 && alloc_ret == 0;
-> +        return false;
+On Fri, Jul 24, 2026 at 09:33:12PM +0200, David Hildenbrand (Arm) wrote:
+> We're handling softleaf entries that are not swap entries.
+> 
+> do_nonswap_softleaf() or sth like that would be better than talking about "page"
+> if there is not even a page.
+> 
+> But actually it should be the other way around:
+> 
+> do_softleaf_entry() [currently do_swap_page]
+>    ... non-swap entries
+>    do_swap_entry()
+> 
+> Or sth like that. Then, maybe in the future, we can just move do_swap_entry()
+> out of memory.c
+> 
+> So we're factoring the wrong thing out in this patch.
 
-I think there might be a resource leak when both conditions below happen:
-
-1. `dlen < 0` enters the first if block and does `kmap_local_page()` into `dst`
-2. Then `zs_malloc()` fails, hitting the `IS_ERR_VALUE(handle)` path and jumping to `err_unlock`
-
-In this path, `dst` points to a kmapped page that does not appear to get `kunmap_local()` before `err_unlock`.
-The old code had a `mapped` flag and a common unlock path, so kunmap_local() was called on all exits after kmap_local_page().
-After the batching rewrite, the successful path still unmaps `dst`, but the zs_malloc() failure path appears to bypass that cleanup.
-
-If my understanding is correct, the fix could be either:
-
-- Option A: Add `kunmap_local(dst)` right before `goto err_unlock` when `dlen < 0` was taken.
-- Option B: Restructure so that `kmap_local_page()` happens after `zs_malloc()` succeeds, only for the compression-failed entries.
-
-I'm new to the mm subsystem, so please let me know if I missed something that makes this safe.
-
-Thanks,
-He Jixin
+Yes.  From the code structure it also is really obvious that the
+block handling the softleaf_is_device_private() should be a separate
+helper instead of a giant code block sitting in the middle of an
+if/else chain where every other case has a well-defined helper.
 
 
