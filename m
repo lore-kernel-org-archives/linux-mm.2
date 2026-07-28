@@ -4,112 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E05A0C54F4C
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 15:54:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77A7DC53219
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 15:59:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 596466B00A3; Tue, 28 Jul 2026 11:54:57 -0400 (EDT)
+	id 1A7636B0093; Tue, 28 Jul 2026 11:59:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 546EF6B00A4; Tue, 28 Jul 2026 11:54:57 -0400 (EDT)
+	id 1573E6B0095; Tue, 28 Jul 2026 11:59:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 438866B00A5; Tue, 28 Jul 2026 11:54:57 -0400 (EDT)
+	id 0465F6B00A5; Tue, 28 Jul 2026 11:59:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E1DF56B00A3
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 11:54:56 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6780CA0399
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 15:54:56 +0000 (UTC)
-X-FDA: 85038633792.15.607F11F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id B420F140009
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 15:54:54 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S6fTps3w;
-	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BFE856B0093
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 11:59:17 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 42AB41C0312
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 15:59:17 +0000 (UTC)
+X-FDA: 85038644754.20.CF0C380
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 79A2E4000D
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 15:59:15 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=NmnEhYwZ;
+	spf=pass (imf04.hostedemail.com: domain of her0gyugyu@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=her0gyugyu@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785254094;
+	s=arc-20220608; t=1785254355;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+3L/UrHGl4azu4MImVkoZ8k0h0P1KlNAOyIZj1BowJw=;
-	b=319fhDkgo4eAVAIDta0Pd/X0nlU1FuKJRTwIdQ1zQQOAeQ4Z2C4Gb6quE6d+SXwDu4gwH5
-	X6fDajcsPnVU3Go75GireMiK4E3UyRQ1WSFcYgt01fv69KxqmfpMu1y2n7awsECZzzKg/e
-	lRZ6EcATgpAXDQDUC7YcR7CM8lyCnbM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785254094;
-	b=jgM30NmLbqxalb5/8+cFDNKDw0fsyk6S9UTcHbCl/IZzsYqXDGsr/tB06SQHTzGF8UMl8e
-	01VNxMkHI5l+zeTSUJ8QQc1U6GY2HwDZ5PQIpXNuWONDjBbEz+GmtiICU1iF8RgBgVct/g
-	FIv5nXtZa5n6XaGy1kp9d/MhEWwqmF8=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=ZyPtbojkew6N2Mpwl2cc8VXMxEGAS6GjV720XpOTZzA=;
+	b=LdNfIxOElwcM7XBiGyp9vx9vdS4jjWKbVIlM54gHdFyRDNqjgvc6r2cGcmfTJp5pGFG62R
+	aJnvOn1OWA8YyyfOIR+lP0gXc1AHJqAsV9gWTGPIqWXzTZ/Fi1bH3alR4al4aPPP+F11kz
+	mv2L5CTYcXRCCpSoI1ch9pVWIIJD+qM=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S6fTps3w;
-	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CA0B7400BF;
-	Tue, 28 Jul 2026 15:54:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 788641F000E9;
-	Tue, 28 Jul 2026 15:54:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785254093;
-	bh=+3L/UrHGl4azu4MImVkoZ8k0h0P1KlNAOyIZj1BowJw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=S6fTps3wt94rD7ifH2A+n+pqIqyZAAJaEfzqrgyvrq584ZkqODFDOCKTjjWrJIMMZ
-	 d2HlEtS6SfoPAid0E+caCpYj93asu5uOepavwFrlexsxeNyyWUhLcuFasZyXhcOMY9
-	 iEgLsWA5HEk7iCo3kqaCm0mpRvGqKivsNHtULIfFLfKtcIljFjl+Gy3n9wWpRkkKa4
-	 2hfpNRKK9SDn7W563kbmqpEi5BMBAO8/11ojjpFpRk86vfHnIzHUdYYObQjE5itROg
-	 7dVLtUMYBGrHeCmgfIkwhNphdx7vEKfIBNAU1SiFxMSsR8WWWVUIr8YcdBVx0GTpbb
-	 c8xsaGsGc8MEg==
-Date: Tue, 28 Jul 2026 18:54:42 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
-	Dave Hansen <dave.hansen@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>,
-	David CARLIER <devnexen@gmail.com>,
-	David Hildenbrand <david@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Juergen Gross <jgross@suse.com>, Kevin Tian <kevin.tian@intel.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Thomas Gleixner <tglx@kernel.org>, Toshi Kani <toshi.kani@hpe.com>,
-	Vishal Moola <vishal.moola@gmail.com>,
-	Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>,
-	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, stable@vger.kernel.org, x86@kernel.org
-Subject: Re: [PATCH 1/5] x86/mm/pat: introcude cpa_lock() and cpa_unlock()
-Message-ID: <amjQwq0o__j4Lpf_@kernel.org>
-References: <20260728-cpa-fixes-v1-0-2ed2352300b3@kernel.org>
- <20260728-cpa-fixes-v1-1-2ed2352300b3@kernel.org>
- <20260728142108.GW751831@noisy.programming.kicks-ass.net>
- <adfffb36-9943-4af7-a0ee-0e762e47fa11@intel.com>
- <20260728143135.GG651302@noisy.programming.kicks-ass.net>
- <amjAxhL-IeeJITEv@kernel.org>
- <20260728145528.GI651302@noisy.programming.kicks-ass.net>
- <20260728150126.GC921102@noisy.programming.kicks-ass.net>
- <amjHQtTRKKkxdaWC@lucifer>
- <20260728153341.GY751831@noisy.programming.kicks-ass.net>
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=NmnEhYwZ;
+	spf=pass (imf04.hostedemail.com: domain of her0gyugyu@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=her0gyugyu@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785254355;
+	b=bemigF7zAsB5QXu+cUz229i88FrW+2fsCGJslPD0Q+0VPiiD4tkk4e0p7+vloUijyO2IFc
+	eCPXskzCYsc7gAnkrh4PLvCgnww1lEthlx0RX1mlPDsG1VakYqntV97qWxOYdjvWsHI2cc
+	/UQKMZEEeWS1LNfN52GkbvFZEo2KDAg=
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-84a652535dcso2585004b3a.3
+        for <linux-mm@kvack.org>; Tue, 28 Jul 2026 08:59:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785254354; x=1785859154; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ZyPtbojkew6N2Mpwl2cc8VXMxEGAS6GjV720XpOTZzA=;
+        b=NmnEhYwZSylmLiBYZJ52l1WrYpST31076uCBxAC1z4BeGKsPOYotJY21LeUNhTzchn
+         sHIfTaIslyr4TusQVBOGZ7WslvhbQoJwidtdOTeihvNXFkt0TbtsReCvN59G+k5/VFYc
+         FZMB1ZteTKVNggz8LGdN0MqnyWYCOm+dWjlIPq7yIlCs8p7/GJPjWkZ1HOd3eUPbj0EO
+         GHT59KE+4igOQRTfAY3jwnNmLdAa8G5RyaLGDCYIrkc+8mAw6PcSfXTIdZ36eXfDhld8
+         gCskRQK9gnrJt9aojXgVWBLW+FqEcBHy4VNmV1KG6gofYh4rRYe8aYbIWIrdFK8bPAGe
+         TEuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785254354; x=1785859154;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ZyPtbojkew6N2Mpwl2cc8VXMxEGAS6GjV720XpOTZzA=;
+        b=jyQADgAcskoQU/4wytPOWnuGcPyuGCDvYei4q+lrnXW4Bz3K2OcjO3sBfm1w4yX0yF
+         +riyc/cmFCbaZfB6iz36jHRtOiB5fcJWpn4sUmSSRiArR/L3uymrNULlxgJTJnE9fzvL
+         Y44iJ1G+WuafoZjrWoi0VR+uVxITpPiOuGav3fSBib4c7Wr4wS/2iClE//OEAc9CWAHF
+         ZLzhflllHrjTTmSsU3ofx5b9aBof3/2FzX+Uc3gj8/vE6y/WegcG0gkDnxvIO18S7eRl
+         JftTRo0rakKR0eqId5tnjK8/Ug4LxLJL05Ol5b7QdtuMMZ0FZKL5us2280GxrDDpxcLQ
+         Wc2w==
+X-Forwarded-Encrypted: i=1; AHgh+RqYhKTY/R//FbCnRMsnalh438+mTP32Js/zM5PU0+GyBhG16dpv6GHKT51wAeaihQGNhszi1pfRWw==@kvack.org
+X-Gm-Message-State: AOJu0Yy9V+MRgYWxN2Ym6khz7z68a4l3/ZY85gKbKmsjKw942w1C+iSI
+	qtnc8HQFBfvsrp/qf2CmPb5xn6LD3oDip/JIR1RTEGo4ZWdpP5ZDFYBm
+X-Gm-Gg: AR+sD134cCYAy1toe8nOM2drDIdAvSTBScAar7oGMflpv/OFOaqWDGYZkEfSHoVSOIx
+	yl19Ep7Jvw3Sm6n6ySUt31oxWL+5wetVCdsKRwCkdV1ZsDiLD/8WaKdAYWqgFAj7Ytfz1STeB7V
+	j4mmedfwLaVeLewr7laKQGT+ic4W0h+Kyz8HshcLCCCrrc7pRjldTJaymICN7X5eJXfuNq4ac5r
+	08+wM/ncPQ+3NQjkHMWS8Et2lxIwzOT9q25LD6Bj9/YN6jEONVt0yOvwfMkQ5B3q/ovoBwzXFpW
+	oEJTteYkTL4+CQhLqQrErukduIk9x6ioIW3qDc5GHSZXbFdMnVEW+al1yl1ma9UqZZ3pC4ZgDfb
+	qPb7ZNzgSXU8ZNVNQ+745NjfvgFaxa6aVP7Oi9VNPb31ZWgMzMyafcaNWB54oSAD58JTkMJTa09
+	0RxWoqVHY8HgKEBI4jPwbKbPF9sq5fhD8/k497wFLkqjiSY+OHWdu3Gk+jgiR4YuI=
+X-Received: by 2002:a05:6a00:189b:b0:841:dca1:8b69 with SMTP id d2e1a72fcca58-84e93196934mr3246661b3a.5.1785254354266;
+        Tue, 28 Jul 2026 08:59:14 -0700 (PDT)
+Received: from localhost.localdomain ([220.85.166.190])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e9fe2393csm156441b3a.10.2026.07.28.08.59.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Jul 2026 08:59:13 -0700 (PDT)
+From: Youngjun Park <her0gyugyu@gmail.com>
+X-Google-Original-From: Youngjun Park <youngjun.park@lge.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Youngjun Park <youngjun.park@lge.com>,
+	her0gyugyu@gmail.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/2] mm/swap: skip empty clusters in the swapoff scan
+Date: Wed, 29 Jul 2026 00:59:05 +0900
+Message-ID: <20260728155907.391820-1-youngjun.park@lge.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260728153341.GY751831@noisy.programming.kicks-ass.net>
-X-Rspamd-Queue-Id: B420F140009
-X-Stat-Signature: bxm5rm4i96caer3x3ccch754qtfdpzfq
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1785254094-310503
-X-HE-Meta: U2FsdGVkX1+gQesJNoK3jmKDx+gevAGWtoq+vy04xeeF2BFOrQSx3Zu61T+oqiHbIzr7TUaQaRWBfPIzRsAukbYLuI6Zr55VzWdLEzjlHAxxNOM38mkpD/DyuwfmdK8fjTQhoUi+t4xhx7HlSLRIperhnK4F3wZTay6kz4dZnSK/pMrFP2RBQDxLTGDyOTiv7+Apglro5VODvkel4I9BfBhweWmIXXnv1uk03hb5v9KwX+2jJiiqM5vjiuYHn88vap12qGjS4hLjMvmaTmDGbFPf8MNHWKBjsc52T1Axye9l+cVZ09rpVNnz0TWMQ1im8T4rzgbT+dxW35mQXqj4i2StmqSBp/6lI+IcpUXDXhpf1x2vs7NLQtrAXWfCFc3oVGKFYFe/dT2KiLFaHDWyTzLPBEdLcJOq2lBtt7ClHoeRhVKsPgNUYjIxd2/1sSaSH3mu8eIeawcwIRMZX+fxBDSjxUagcJ4S76vbnw9sETloeD2KyL8yERPNTnLb/IRtKP9skccHknCReWNXZRXz1HqASWUzswJt2Z3gyWPrTWpbfkejCN5PdxaYM/kv/xuLP1LGpsk0c5h7SmciTpfIicBGJxA+gTYSNp59OW9NVc+Xt5eHOZt86E2k0wDDaDI0bcvhMNy2JTI/N9z/u/dHp3ix16BK0h2Ct1fZwY5UQS+YRDdeofCKSIaNjk837nlT8P4fDV67rDnIdAmbMNYhj0Wcwrl3aaKQfoYAVahPfQ/KsyZRZ08jlipvxRguitfA+A7wbDT98Le7P/QVdLVIR96w7ZJHouc2puVPVLdkwg+OJx2TwnQ9ka/ForYxJizAozD2o0C+vOKS4pyPYm2srNJwcQhyK62tDhOdoEdgDdLXG4WpkgeKdSPBo0g2jlC/r5Nh57IV8oqC4yI4krTK3StBCCAVXbXiV46QA7lQBHAsZodidQZ+JtBxg4CBEgq6bpa5uwuLUKH1AcvBSAz
- 9gGOOm5l
- ssjS+t/NbaslEaSk0N30Ja/FQxUYtmAOs6rTDoLS/8l9Koff7bt7Z46l4+n79KM8wlNLVyXp0xJPLqdoXHG+qXIuk0sMazCkDhTqf0HOKaQX3Vop2yd3m1xUxjo3B+AEHaN5BABraCvlza7xUY0UC0aVH4rYRV0Xm9NArRntLFFxMaCMlJGt1eBIy6JW7BIE/LiheC+WOHlfjP+fWE7HRUY+Nq7Jge1Xof8dvnh5skxortsGw8v9nZfvyH3yDDPaJ30FVbx3RbeDu1dnEK0D599AtiJjyCNq6l/+DFEVcVKTwWuEeqYXpVcz1o2Q18w4ok7fKui9+v8/7vVLoHNwhhhKcOLrp2wh+b3cb653ol1OUQ3JelAze/GohU4ju0jX+9Kbn
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 79A2E4000D
+X-Stat-Signature: 5759frdk8bf3xd5pd499nw1edg6387hh
+X-HE-Tag: 1785254355-438508
+X-HE-Meta: U2FsdGVkX1825aiYTEUbKdd5l3NQDw6ZMztvb+OHfRQPzFDHrUOXrdMPwpEzO7IDR3+HrWsRuVGlpWtxH2g1ZafcCf2si709IVXR6ipwwSFVbI/AYP19bwMNwmFjGY+5UyVbRxyHLSRLra7CBNlhbrAOq9js7zyPI925BFs+3u3FTwUyAUrgNBHvUPK49vNgPiPJwadWEm6+OyqoqH8lbUDiHKVUZcLkMKnUpr0RNyNHKW4QWQd9G1CHremyP57yy0V5xMbtLwJd8jeQB4HfZRiMTaUBXfZcYdlwJUMtQGABNMIbEdbAYawOVNA5oLPHVkvQ76nQq/gqO/eJItycTjJiqXlNoDRCcT6crQ3dnbgA/TOQvgfh5WwgwBm7kpoqzAlpmI92UpvkZ9Oxp02meQH67HiKYrC5MjvsjpNA0pC3DpDeYeLimeORhl76kgOuUrgbXT3RdtkOh4++cbocpEhDZftdZWo5S1XcBNPJbSkyWrTK01042PurKbM4sd6M9pAV4CWUnfuICHkLO5Yx46KpyZggNql2p3UnYyQj6yWBtNb0n87+slFP5jXVlHTXS83Tn0372XFchFh4+Wqe8M9AF4GtmejY2UtyAkM21/ImQILbge10kFONd0fMO0bq59EkYItC28Jf/7eYXRkW/FzHe6YoP5adFHLqYOYdeCjBa6eVjsnCTPtl4nYteqj99bolvTn6LU+PQxpzkLi6wnLvU+w49tKUDlXQ7pVvMG2hP7qGMMDOqO9E0GWubR1o4U7CWenj2VgiFSZYa2XYFBGQmoyHu5efL7UNPf3lwGOmTGVyugDT8kMDmBCAnM1yPfAS5U9Jnedlru1XgtWGF5z6wv31cQDLK8fK3qdxSWF4A2ZXM9MsGF74dfFeY/9iRKlunQwvGcN/tIW8P1I5KUyQF2Y/MJ4HyMcOVfeHVv5xmSaGjv2oCCfxiXvleYnqmp8cZWyYf6IsQKxE5Dv
+ mVm2PJuz
+ 5PI+3j99ublg2FeMpWpOw+g91d8lANlSCGJ0xwfoCacqgvDQhaX3jiSAldY2aMYI65Vo/wSPVrSBqM5Ui0wSrdsXqx8uzI/wO6WOs/ny5GRZugKjWi2ZX+BWS0EtmGegiGALZkuqqLVqFG7o8r8cMqmLubYMrMxZf9hJvXwc5syfYJ+9g0SgktAno1R0avdcINo0YiE/s7ItmyNnWiS7hl3S147JSyqVV9jgnFAOip+yLabPVobm8B0oIwvimq2dsoeZKo2b0Fg6DzaKvuX+XcQwsdMNudzkkzdHJhF3wTt2JNHA6T1DRj+xc3bUA5yGAn1wlXiFJKYCzxZpLruBTnWAujtWLeGSKzQDKJ77OI+jVDA5C5KH/ULU7EA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,70 +123,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 28, 2026 at 05:33:41PM +0200, Peter Zijlstra wrote:
-> On Tue, Jul 28, 2026 at 04:20:10PM +0100, Lorenzo Stoakes (ARM) wrote:
-> > On Tue, Jul 28, 2026 at 05:01:26PM +0200, Peter Zijlstra wrote:
-> > > On Tue, Jul 28, 2026 at 04:55:28PM +0200, Peter Zijlstra wrote:
-> > > > On Tue, Jul 28, 2026 at 05:46:30PM +0300, Mike Rapoport wrote:
-> > > > > On Tue, Jul 28, 2026 at 04:31:35PM +0200, Peter Zijlstra wrote:
-> > > > > > On Tue, Jul 28, 2026 at 07:30:27AM -0700, Dave Hansen wrote:
-> > > > > > > On 7/28/26 07:21, Peter Zijlstra wrote:
-> > > > > > > > There was already a patch merged that removed the shole debug_pagealloc
-> > > > > > > > exception. Is that not better?
-> > > > > > >
-> > > > > > > As I'm scanning through email this morning, there's another issue that
-> > > > > > > popped up with that patch. It's causing hangs on boot.
-> > > > > > >
-> > > > > > > It's looking like debug pagealloc not taking the lock is actually
-> > > > > > > functional, not an optimization. Although, I hesitate to say
-> > > > > > > "functional" and would prefer to use much less nice words to describe it.
-> > > > > >
-> > > > > > Yeah, lets figure out why that is before we retain this wart ;-)
-> > > > >
-> > > > > As Lorenzo said:
-> > > > >
-> > > > >   __kernel_map_pages() can be called from irq context:
-> > > > >
-> > > > >   < GFP_ATOMIC context >
-> > > > >   kfree() or whatever
-> > > > >   -> ...
-> > > > >   -> __free_pages_prepare()
-> > > > >   -> debug_pagealloc_unmap_pages()
-> > > > >   -> __kernel_map_pages()
-> > > > >   -> __change_page_attr_set_clr()
-> > > > >   -> cpa_lock
-> > > > >
-> > > >
-> > > > The TLBI hack in __kernel_map_pages() makes me wonder how any of this is
-> > > > correct to begin with. That comment isn't helping.
-> > > >
-> > >
-> > > Also, the 'atomic context' usage hereabout seems confused. In particular
-> > > the issue is with IRQ-disabled context, they are not the same thing.
-> > 
-> > I mean yeah the IRQs being off is the issue with holding the lock over an IPI, a
-> > softirq allocating GFP_ATOMIC won't be a problem for that, but I think all the
-> > conclusions are still the same.
-> 
-> preempt_disable() is an 'atomic context', but does not present the
-> problem.
->
-> Anyway, yes not saying the conclusions are wrong, just that the wording
-> is confusing at heck.
+From: Youngjun Park <her0gyugyu@gmail.com>
 
-How would you like to word this? 
+find_next_to_unuse() walks a swap device one offset at a time.  Slot
+state now lives in a per cluster swap table, so patch 2 dismisses an
+empty cluster with one counter read instead of SWAPFILE_CLUSTER table
+reads.
 
-Is this one better?
+Patch 1 is an unrelated one line comment fix noticed on the way.
 
-/*
- * When debug_pagealloc_enabled(), page attributes could be changed in a
- * context with IRQs disabled, so using spin_lock() with debug_pagealloc can
- * cause a deadlock. But since debug_pagealloc always uses 4k pages in the
- * direct map there are no races for splits and collapses and locking can
- * be just skipped altogether.
- */
+A counter in the skip branch confirmed it runs, and swapoff completed
+with the device under load.  No DEBUG_VM or lockdep splats.
 
+Youngjun Park (2):
+  mm/swap: fix stale comment on swap_info_struct::cluster_info
+  mm/swap: scan by cluster in find_next_to_unuse()
+
+ include/linux/swap.h |  2 +-
+ mm/swapfile.c        | 39 ++++++++++++++++++++++++++-------------
+ 2 files changed, 27 insertions(+), 14 deletions(-)
+
+
+base-commit: 2a4faffc103297c4822bb269d521249b75cc2261
 -- 
-Sincerely yours,
-Mike.
+2.48.1
+
 
