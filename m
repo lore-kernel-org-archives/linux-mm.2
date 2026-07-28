@@ -4,156 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 637A3C53219
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 14:30:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E03DC53219
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 14:31:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5BAD76B007B; Tue, 28 Jul 2026 10:30:34 -0400 (EDT)
+	id 0B3696B0088; Tue, 28 Jul 2026 10:30:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 56BA46B0088; Tue, 28 Jul 2026 10:30:34 -0400 (EDT)
+	id 064226B008A; Tue, 28 Jul 2026 10:30:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 40F5B6B008A; Tue, 28 Jul 2026 10:30:34 -0400 (EDT)
+	id E70A66B008C; Tue, 28 Jul 2026 10:30:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 17A3D6B007B
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 10:30:34 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 819091603C2
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 14:30:33 +0000 (UTC)
-X-FDA: 85038421146.16.41C10FD
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 95CEF180009
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 14:30:30 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=GNILmA4a;
-	spf=pass (imf24.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B21496B0088
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 10:30:58 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3D7EBA1575
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 14:30:58 +0000 (UTC)
+X-FDA: 85038422196.20.B5BF53A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 78EA720010
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 14:30:56 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a+S7Ce7m;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785249031;
+	s=arc-20220608; t=1785249056;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7Eu7g5oIvlAyaUuegAzG4Mg29YnsSZbpMobcMAXgcJE=;
-	b=znYQW6EkeIcoFVNpxOcHCGy06fAxDzpzlEF1ZL8xc3qrZyPb4igXNrGEdvNuRtQksoPSyd
-	i0cKMHddNKzdq1mhCokhkXYYGb4gnhLyTwgWnANoU1M3r+MpQ6ihQdE5eOSAI5/+yIhSs8
-	kKmPDudNBNg7rQReMyPdvN/+7Nj5wfM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785249031;
-	b=fW+UQccv0KLfvWiQVcPahE+TYX3KRQgKVm1mGqUE+Y2Zi7R4JV73rJwNYV8veqAbjIVHNn
-	534yiH7+EGz9N1QDOoZDEqxMW0B/BtLPgSgHRjcAnUEImQtGgSPlGI8vYiu7ZYDvVNqU9U
-	VarK9N0YWxEFQDJuCUPJ9BowGTZY1Q8=
+	bh=OmT3dxp6UH6Faag4ZsF6HLiXOyvd6MoJI1erRfqSZLw=;
+	b=JSzFioulxFak6A+ZmfSwntexKa60SQTk6LvqeCP2ziv4r5YaLfgXLxkE7Y7Ja82kIyljkX
+	A8FLZBwEJc6OiC4khU6H0LeQq5mgWyJKdX+9XWjZywMma9uJiLOXFDKB2LaC+Ibg52ZmZs
+	9PnM9W9bAB625jFKSmBCBkjpVMpNvPc=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=GNILmA4a;
-	spf=pass (imf24.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785249031; x=1816785031;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=7Eu7g5oIvlAyaUuegAzG4Mg29YnsSZbpMobcMAXgcJE=;
-  b=GNILmA4aXtfY8xHkDWvlsC+91HJlhxAbSgplJp/r92xQJUobZ8AN4jXY
-   3EJIpft5QqVjETcXwHvvl0DAb468Ls/B52cTZVNPdPTqIPBZVdBUaRr96
-   H0kjBJsJ7X9KHpEpa9UgFH/Ze8lLzrs4o7x/XSC26BLxs1lHjpO6IrJRO
-   l9o9U+/ZlUT9ff1HxsXhtG/sL+blZJtFXMpgkcsLG5jXZr29ZDGsX/NYg
-   I0tKG41L8TJ6hKIVLIAZRhRp3yemL3OqeclM4zdurwtIqOaP76Dn9ZRJb
-   vgKn6yYgJfr0H7CwqBgB5qXxnU3BWs706b2ZXqLDMXGBszrP/PZnwD05+
-   A==;
-X-CSE-ConnectionGUID: 64EFtO8mQW2DtGkhfMuHAQ==
-X-CSE-MsgGUID: AGODZFkvRSCUbOtrU0bk+Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="85916115"
-X-IronPort-AV: E=Sophos;i="6.25,190,1779174000"; 
-   d="scan'208";a="85916115"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jul 2026 07:30:29 -0700
-X-CSE-ConnectionGUID: 8Tm5Qmx+RfmTEH4MZMRbJQ==
-X-CSE-MsgGUID: 6xOWW4bDQRaJ9K08Ri1piQ==
-X-ExtLoop1: 1
-Received: from dwoodwor-mobl2.amr.corp.intel.com (HELO [10.125.111.80]) ([10.125.111.80])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jul 2026 07:30:27 -0700
-Message-ID: <adfffb36-9943-4af7-a0ee-0e762e47fa11@intel.com>
-Date: Tue, 28 Jul 2026 07:30:27 -0700
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a+S7Ce7m;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785249056;
+	b=QWleu6M65NtnUDaEiyA6l3Bcqo+PD71qJFs89KOe6wjY8sA1i8CrEaOsry5UTaYDxsgtgu
+	cVUKu6tmf5jvMe3jhZci+ums1iEIwCXdTIla71Qu+jXFWPNIKWYy29HyBz5JBb1yJp8TEk
+	jOUEWvJiww9IiPfC2+r+J9tpRQB07xg=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4B9B4405A8;
+	Tue, 28 Jul 2026 14:30:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FB261F000E9;
+	Tue, 28 Jul 2026 14:30:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785249055;
+	bh=OmT3dxp6UH6Faag4ZsF6HLiXOyvd6MoJI1erRfqSZLw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=a+S7Ce7mB7AtTX4PVcBtyjRfd1MXyr5JKqWftwH01n16zzclPSYpOaS7oIfjGf3Pi
+	 qhbk/ADzJyCFEh/UuGecc3iFtzFYWkHBxF7vHNSW6g/AyYYQOsr8vVKvH4FTfkJWDP
+	 S74nlqMQiabaa9dYrsUs3Q1ijQoxsNMrhEpnqO7doaQX8bKItue01coNsdnnxQeDvj
+	 qLQqLO31WHzWpI9sqiWh3bZXolFDzSqz/ty85SCvuG910ZklgufgKoOazaTCVjpuBw
+	 VN73kFCN1E0f3P5aYaqEdAcLzcxVohZOG+pd21ljOKjpRh19cCcBcLf7nQL2phzJcO
+	 O3LTbRU1aoXMA==
+From: SJ Park <sj@kernel.org>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: SJ Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	Jiayuan Chen <jiayuan.chen@shopee.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org
+Subject: Re: [PATCH 1/2] mm/damon/core: cover discrete System RAM areas with per-range regions
+Date: Tue, 28 Jul 2026 07:30:44 -0700
+Message-ID: <20260728143046.95229-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <c16b32ac-9480-428e-863c-5d35ae4b8eb1@linux.dev>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/5] x86/mm/pat: introcude cpa_lock() and cpa_unlock()
-To: Peter Zijlstra <peterz@infradead.org>,
- "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>,
- Andrew Morton <akpm@linux-foundation.org>, Andy Lutomirski
- <luto@kernel.org>, Borislav Petkov <bp@alien8.de>,
- David CARLIER <devnexen@gmail.com>, David Hildenbrand <david@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Juergen Gross <jgross@suse.com>, Kevin Tian <kevin.tian@intel.com>,
- Kiryl Shutsemau <kas@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Lu Baolu <baolu.lu@linux.intel.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Shakeel Butt <shakeel.butt@linux.dev>,
- Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Toshi Kani <toshi.kani@hpe.com>, Vishal Moola <vishal.moola@gmail.com>,
- Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>,
- iommu@lists.linux.dev, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- stable@vger.kernel.org, x86@kernel.org
-References: <20260728-cpa-fixes-v1-0-2ed2352300b3@kernel.org>
- <20260728-cpa-fixes-v1-1-2ed2352300b3@kernel.org>
- <20260728142108.GW751831@noisy.programming.kicks-ass.net>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20260728142108.GW751831@noisy.programming.kicks-ass.net>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 95CEF180009
-X-Stat-Signature: sh5c9tgooxwpod98otrybsxt8aoi1im5
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 78EA720010
 X-Rspam-User: 
-X-HE-Tag: 1785249030-88206
-X-HE-Meta: U2FsdGVkX18jqZNmKY+eZvdOQam3bF0vlVH0frCvB2GSB0+MVtT1oONq5mgVey8JNkn3P9WENX4tiUY7StTyiO1gug9BaXr+z+89SiGLXgxf1NN2WpGBsunvg3n78jXk8+CpRKPDfdouVqmcBXsQFCUzWu8tgaCk8iVN1mQjOnvTlBXtne8Yz2/8oT5+3X2cbwU+F9snYfGjHfInzebKJCwfoLTie1O3WwR6DD9b9seOFdKstS3DeC5TluCX0Fmosl0QOu+Kx+wBJ9t5m8UCd+Kvxmpks4VCTyos3VsiT+dci9s/ahPmNcpnDabl+5zhrdDDMtm1aeLc56opgohMq57Lxpi2j3OFO1C5GBntiEORDOaJzhseQRccuH58hkJMg/NytmY1u2McFrj4fUKNImOyvvJHPvNmKkru/XsF8P3mzB7OBh/Qvq1uexVPKVOM+ceJd+UZKDLYke8T+efIPFNFIzUMsltIy/LQAmtQBhdlUTyBpH6vc4a64vducan0WBkjidPe/um5cvn77OA+J0P5Hx/zk62zcOQq1dgh49Of02XqSD0CIa9OGJUO9htn+W7T/C/exet8Fb0+AzOo/ZzNPsbZBSc81gYNRwbrZ/CAUBbx546nXGnv/a986RqNUL/svxpuYma9EeOA6yf5RPttqbOvmKD5A4pv/edPzX83H69h3/qrfdwWT1Nc+I7QKmuCuOEnvX3PTT/NcrLGGBqyZ5Pzp8qpHgwG/Bz9hZtr5P7TaUN2oiqSFPb94I2dcW1pVCzfknfoHaD2GO8pInCPM+sun+bgPmTwR6Uh5GuN95uWkZHeX+MpBccAgkzHNauEamx1s36oh/e5TdKETBo8SbfnNWAc5bQKYW3EivZ5jCgSiV87vipV0k52ZgedUOeyyXJwEdsSrHUjNzwejxao4zpaCnfhtaa+iJkbJ7Y9YDLDMTRBgsHhSbnVVK6hm2EdITVp/Ebamqwqfnx
- Enybag0B
- +NkltaltX1ozVVbRcP2cY+TleY0TZcl0eO6hm4iMM0Qs+ShUhN/sibVv5IAKn7TnqFdubooyrFBkoXWRrP7V0fPAEML2wxFpzpb1ce9g2T98YtUTh0uTAFjA8FKO7dfr8g8rpn7e75E7CRKf94yDCDzXvZ3K8CwEUBnfLuSDSo8159PiLvZRIRLtiA3ncS33nm486fsatn/LhzId2M5gO/vClxaTUpYLMf3h5xWm18b5fZ26Uil1EJrhOlJJ+mbu8rgnHbYrd9Wonosqfx8q2F3vqzr0RfZ54qYuPRwi4+XqwtTk98yJJXTjV70lnxuBVDvwhmF7OHh0Iz/8=
+X-Stat-Signature: t9uxqhhyc35yrt7r3gxt56knu638b48s
+X-HE-Tag: 1785249056-786770
+X-HE-Meta: U2FsdGVkX18E+H//On+LCblcbFyMQzPHNa56ITk+4CfyvHtQ9bjjK49vsjvbjVXVabtXgRAYDASZB849/IuVdBN4ERpQKpEPIm5s06AlhsYz9b5EzGZjg0gPCl5Bt7nMyb3utQ19Hui66roj2IuaFKOOM3uB63IVzEIE1jHF1FJtWDd/0kqzplRFhS+p87BwkQMx5FRthf42hlUFs1MZjRxqZISxcEd76WF4EgHMnMhAEy7NRYPyKJQrQk+O2sNJa7LHRNLw49ArVMrLBOuNAyfxxYmxK/vaxhj/4h/zVs2cVsDNNnf04iBBJ8qgFWWilZA6wpygswdT/eK035AU2aJn8W8Wy3TgYMxGPqFpOLvj188MJkbUkqVGz+uiG0Ovm7TLU3gZL0yfDSlPicgkRUsTvShp2UmYQ8WuomsaTXdrihhkRNnGRdjAyWb2ENL9zakLCFfLqr8Zguufb3clGR2+FniuAiIaDud3yB8ovBv7+8CDep/OQLOs+E2+KpHSvQAnCPGDwHxS24wap5IlV7eUKqZtOL+du7OG16yFcFcPkYHK+gCbHHFAdkdixfItsgu1NfIna4AAYg1vq41UyaRg7WLOGe42UUAgTFbEl3zMPsHpImOjgs8AhFv0tgykKoDguP4WcoOmFIdcaXarAABnrDEwSHjaeHX2Aqn96cg/b46aj4XdtyFwdLENhXaD6iD7CF81rw1KgVgHLoy1YdMaq7GQlnxzw8i7BWc3r5QQFwvmUi1xOQVVbqirtgAEWytP5g+02hXUIQgE1evhN5zWeV9ebLGkXWFbxJpD1TSz1rVo/RHyN/Vx1Hv3YnlIzPgPlsMXOpeiDXTQEvK3JgGsQV2iJE5QxNos93/cgs/tKtjOjZ9zELgAIX/XophoRsCbA9u1DD6RLvPED24MUu1ZeN5X+Rn+ojv2QLx047l2nCEuEQfqfnoSgqJYZR11w5e39lUuOwNtcNciyoQ
+ qGtf69Yd
+ 9yzt37PmZHBh3fngf/PQv2Q01JOmIu/zIf7/vC7MnF8G3WSKaJAgtakSjlmRFMMdMmZO/zKvZUswyRlCY+svTiHwrhpwRDvohGmqtuVg0mW6eOym1RQRaz8jz+sASoi6gZ7kto2xbrmnLBy2S4QAsszYNZj+Wm89hUnR3TLCRkezDSx4l9QpJTEiiW9bpnhWUWRArGLpvXCLJmDdCu1FyL4DDNYYahmvOrMcI0FRBCqhIya4TssEF7EqXh4/sdlJR8ix2pCQ1AUE06TbjLC3lG+QgYG21p4MneULxUD8ibp9agi4chLHaMRlayQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,14 +106,158 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/28/26 07:21, Peter Zijlstra wrote:
-> There was already a patch merged that removed the shole debug_pagealloc
-> exception. Is that not better?
+On Tue, 28 Jul 2026 18:06:48 +0800 Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
 
-As I'm scanning through email this morning, there's another issue that
-popped up with that patch. It's causing hangs on boot.
+> 
+> On 7/27/26 10:26 PM, SJ Park wrote:
+> > Hello Jiayuan,
+> >
+> > On Mon, 27 Jul 2026 17:54:22 +0800 Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
+> >
+> >> From: Jiayuan Chen <jiayuan.chen@shopee.com>
+> >>
+> >> damon_set_region_system_rams_default(), introduced by commit 70d8797c15d6
+> >> ("mm/damon: introduce damon_set_region_system_rams_default()"), is used by
+> >> DAMON_RECLAIM, DAMON_LRU_SORT and DAMON_STAT to set the default monitoring
+> >> target address range covering all 'System RAM' when the user does not
+> >> specify a range.  It walks the 'System RAM' resources but keeps only the
+> >> start of the first resource and the end of the last one, and then sets a
+> >> single monitoring region spanning that whole [first_start, last_end] range.
+> >>
+> >> On systems whose RAM is split into discrete areas that are far apart in the
+> >> physical address space, that single region also covers the holes between
+> >> them.  For example:
+> >>
+> >>    $ sudo cat /proc/iomem | grep RAM
+> >>    00001000-0009ffff : System RAM
+> >>    00100000-4848c017 : System RAM
+> >>    4848c018-48550c57 : System RAM
+> >>    48550c58-48551017 : System RAM
+> >>    48551018-48615c57 : System RAM
+> >>    48615c58-48616017 : System RAM
+> >>    48616018-486dac57 : System RAM
+> >>    486dac58-4e563017 : System RAM
+> >>    4e563018-4e627c57 : System RAM
+> >>    4e627c58-4ef39017 : System RAM
+> >>    4ef39018-4ef3f057 : System RAM
+> >>    4ef3f058-4efe6017 : System RAM
+> >>    4efe6018-4efec057 : System RAM
+> >>    4efec058-50247fff : System RAM
+> >>    50317000-56720fff : System RAM
+> >>    56722000-59c19fff : System RAM
+> >>    6bbfe000-6bbfefff : System RAM
+> >>    6bc00000-777fffff : System RAM
+> >>    100000000-1007effffff : System RAM
+> >>    67e80000000-77e7fffffff : System RAM
+> >>
+> >> Here the last two areas (about 1TB starting at 4GiB, and about 1.1TB
+> >> starting at ~6.5TB) are separated by a ~5.5TB hole, and the single-region
+> >> setup makes DAMON treat that entire hole as if it were memory.
+> >>
+> >> This is harmful in a few ways.  The monitoring target regions are limited
+> >> by max_nr_regions, so regions that fall into the hole waste that budget and
+> >> leave fewer regions for the real RAM, coarsening the adaptive regions and
+> >> degrading the monitoring accuracy.
+> > The hole would look like not accessed.  As a result, the whole region will be a
+> > few regions that very cold.  That wouldn't waste the budget that much.  Do you
+> > have some specific setups that this cannot help?
+> 
+> It's my mistake.
+> 
+> I first saw the kdamond CPU go up, and I assumed it was the number of
+> regions. I was wrong.
+> 
+> I re-tested and profiled it with perf. It's not the region count — it's
+> the page-by-page walk of the hole.
+> 
+> On a VM with a 116GiB hole and a single [first,last] span, I enabled
+> DAMON_LRU_SORT and ran perf on its kdamond:
+>    30.15%  damon_get_folio
+>    17.09%  pfn_to_online_page
+>     2.24%  __nr_to_section
+>     ...
+>     0.07%  damon_split_region_at
+>     0.06%  damon_merge_two_regions
+> 
+> Almost all of it is the per-page folio lookup. Merge and split are ~0.1%.
+> The cold scheme targets cold, old regions. The hole is never accessed, so
+> it's always cold and old, and it matches. Then the action walks its whole
+> empty span page by page, every apply. RECLAIM and LRU_SORT do this by
+> default. It scales with the hole size, so on the real 5.5TiB machine the
+> kdamond can't keep up.
 
-It's looking like debug pagealloc not taking the lock is actually
-functional, not an optimization. Although, I hesitate to say
-"functional" and would prefer to use much less nice words to describe it.
+Makes sense, thank you for investigating and sharing this!
+
+> 
+> 
+> >
+> >> In addition, DAMOS actions on the paddr
+> >> operations set walk such a region page by page, so a region that covers the
+> >> hole is walked for its entire (empty) span on every application.
+> > That makes sense.
+> >
+> >> Set a separate monitoring region for each discrete System RAM area instead,
+> >> coalescing only truly adjacent (no gap in between) resources into one
+> >> range, so holes between the areas are excluded.  The reported *start and
+> >> *end still carry the overall first-start and last-end, so the user-visible
+> >> default range reported via the module parameters is unchanged.
+> > I'm concerned if this could result in having too many regions.  The gap between
+> 
+> On the region count: can't we just coalesce any hole smaller than
+> min_region_sz?
+
+I'm not fully understanding your point.  min_region_sz is only 4 KiB by
+default, and anyway DAMON cannot create regions of size smaller than
+min_region_sz.  I cannot get how this helps.
+
+> After that, the number of ranges is just the number of 
+> discrete
+> System RAM areas
+
+I'm still not convinced with this.  What if the number of discrete system ram
+areas is larger than max_nr_regions?
+
+Actually I was also thinking about this problem for in the past.  One of my
+idea at that time was, handle only a few largest holes that practically being
+problems.  That is, while reading the system ram layout, find the holes, sort
+those by size, and do make holes in DAMON regions layout for the biggest N
+(say, 2) holes.  This may handle most cases including your 5 TiB hole.
+Actually vaddr is doing this, so we may be able to reuse some of the code.
+
+If it makes sense to you, I will try to implement this.
+
+> 
+> > user-visible parameters and internal state is also a concern.
+> 
+> 
+> I think monitor_region_start/end is meant to expose the overall range, and
+> skipping the holes inside it is an implementation detail. Even if we didn't
+> skip them, the adaptive region count is never 1 anyway — DAMON already
+> splits [first,last] into many regions. The holes just add a few more, so
+> the param never matched the internal state exactly to begin with.
+
+It is arguable, but I believe this also makes sense in my opinion.
+
+> 
+> 
+> > A quick workaround would be adjusting the memory layout in BIOS, using DAMON
+> > sysfs interface instead, or setting the monitor_region_{start,end} to cover
+> > only the single area.  Have you considered such workarounds?
+> >
+> > Let's complete this high level discussion first.
+> 
+> 
+> Right, this is doable today — the DAMON sysfs interface can set multiple
+> 
+> regions manually. This patch is only about convenience.
+
+Are you actually running DAMON_LRU_SORT or DAMON_RECLAIM in a production system
+having 5 TiB hole?  Or, planning to do?  If the above idea makes sense to you,
+I could prioritize implementation of it depending on this.
+
+
+Thanks,
+SJ
+
+[...]
 
