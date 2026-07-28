@@ -4,112 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6F4AC54F56
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 19:26:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECC4EC53219
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 19:27:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D22526B0093; Tue, 28 Jul 2026 15:26:29 -0400 (EDT)
+	id B27456B009B; Tue, 28 Jul 2026 15:27:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD1586B0096; Tue, 28 Jul 2026 15:26:29 -0400 (EDT)
+	id AB2226B009F; Tue, 28 Jul 2026 15:27:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B9AC36B009E; Tue, 28 Jul 2026 15:26:29 -0400 (EDT)
+	id 9A71F6B00A0; Tue, 28 Jul 2026 15:27:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C2E86B0093
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 15:26:29 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 10A07C0453
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 19:26:29 +0000 (UTC)
-X-FDA: 85039166898.18.31035AC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 395824000D
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 19:26:27 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wk+Dy2Ld;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6F2C66B009B
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 15:27:31 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id F08A7804BC
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 19:27:30 +0000 (UTC)
+X-FDA: 85039169460.26.737A5D8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 3A9BD140005
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 19:27:29 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=npNpxnBn;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785266787;
+	s=arc-20220608; t=1785266849;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=B9zPErIOkKOvWU4JJG+dspgkrLmx8WSjgAIhjf1cHOk=;
-	b=U5KoHu1IScXvlTX3d/CEfdS1JyDU+QH83kWyLNo1acoZZoIPJoJEMczGYFSkR7ZNU0AVtw
-	omm4wsbwQ3u8cvL1WqHSElDeS+zcawr74Ci3LdkJcWM66FxFqqp1hA8/4C5apVGxXxLRP4
-	fvVGuPtKVf7odPWqvb2aHUqLYBQ1NFA=
+	bh=3T53nkSM0LriDO57TXrJ9tCrT/eYFbVbPL/BmAKuvLs=;
+	b=cs1UKtoA11Jwt2eN7ELCoI8RZMU1o8gdq99txaEY/QpVofSYPV6xRD322DgJ+yFpxBxwqD
+	SMFGhoxPfwqXTEvZEfdkEoD3Ce/2j6LCRiuRdH1I5w28l1XwYALh5yiiJ2tIVHu43RewYS
+	wJPrazUkw+w+niSqkgXqaFNpylb/+vU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785266787;
-	b=zVHosFJFh01ccAyc1gg3nReA+RWDkCH4JezBEN7Po6RPrjskZsOFOoVH56qcRbbnE5oNMN
-	DELW7Gb4HDMg3wJXrJuks+RmqZ4tlISZNvN+7UM+caFFb5CIFSJPCjjFjKdI8vjohb0DXr
-	WLpcpNqmVMzQ0Lb4aIIcP1ejC+VGjms=
+	t=1785266849;
+	b=L7l0i/hFnY+Y/ZVwOsECtBReDFFzoZ+qxmOAmVM2ZwsT/78KdW7GmaDf+ace2TEMVJy5zA
+	ISufFgwhyF6yG60FVeEqgdInHelajaSVO9kPc+IQ4kKuxsg25A6uHPU1RuVD+TmKufYVfP
+	6VorDefqWV78iHrtW9ZDASBtDaAukqE=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wk+Dy2Ld;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=npNpxnBn;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3F73C4404A;
-	Tue, 28 Jul 2026 19:26:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55FCD1F000E9;
-	Tue, 28 Jul 2026 19:26:08 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id AC43E60A96;
+	Tue, 28 Jul 2026 19:27:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9844F1F000E9;
+	Tue, 28 Jul 2026 19:27:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785266786;
-	bh=B9zPErIOkKOvWU4JJG+dspgkrLmx8WSjgAIhjf1cHOk=;
+	s=k20260515; t=1785266848;
+	bh=3T53nkSM0LriDO57TXrJ9tCrT/eYFbVbPL/BmAKuvLs=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Wk+Dy2LdjSS++FUG8ogDF9T7pT+EAMTNcB05WeR4hXNaXglCVPisWY+LtMICE7Ccn
-	 wg89k4Kvgy+wj1Z+MYeBAhF/fpDBT5QBmapIlx+G9nPNFi+PtoCZcgFGdFDnLbAXt0
-	 xB9tb7u8wQORuyWEL/5BRGQ2JQ2k9CqZ2ZVyyUj8/EZCr1Qepptpcml/7TGdY1D8nm
-	 GSTIcvePc1fP69qF+FthXNV/zsYPQIg7psEdREpgXn9BbFwQhb7/ZitQjH5BdGIeL5
-	 10/HbxBCKZnA9MQ0tzrL6PXNOGh1zI0y/tMqhlx3SWm/HNYuS05o09qLSvFYiNKTIz
-	 dUsn/WiERIxzg==
-Message-ID: <2c19247e-bee6-45f4-a353-2fcc60db26e6@kernel.org>
-Date: Tue, 28 Jul 2026 21:26:06 +0200
+	b=npNpxnBnptW32mr1opFXlD6md1e0BaJ4UMjzmct6fN7fPtzHGBunhG2nxgXShtGqQ
+	 g+mEculF1YMxQFVbEQQVZOH1k39h1NYUCcrGQxnasNo5MS62cA4r5arLuZRE85H+LX
+	 5pdMoWpAZBKG41SNFgC0Wu+Mn1U+EhcrQJpIndAHdSrQ8c7pnXKlpLb4EdlZmZ6Squ
+	 N/zzT3YL1zyPVNGdZmVucXM1P1cw8tqc+qlz9MPqOqXl5a5xlc5Y27/XOq3OWZJoOn
+	 pdqad/c5QjSYamfcVKzAZBDXWtEIUO9+PMf02h1RWw02KLy3IrprcR+dYj2qqHFeNo
+	 BOCSJK4tVjYSg==
+Message-ID: <aefa7657-02eb-4fcb-a5ea-42771b5a9450@kernel.org>
+Date: Tue, 28 Jul 2026 21:27:21 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 00/11] mm: distinguish PTE table storage from PTE
- values
-To: Muhammad Usama Anjum <usama.anjum@arm.com>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Dimitri Sivanich
- <dimitri.sivanich@hpe.com>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Helge Deller <deller@gmx.de>, Juergen Gross <jgross@suse.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Nick Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
- Andrey Ryabinin <ryabinin.a.a@gmail.com>,
- Pasha Tatashin <pasha.tatashin@soleen.com>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Uladzislau Rezki <urezki@gmail.com>,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
- Eduard Zingerman <eddyz87@gmail.com>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, Ingo Molnar <mingo@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, SJ Park <sj@kernel.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
- Miaohe Lin <linmiaohe@huawei.com>, Dennis Zhou <dennis@kernel.org>,
- Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
- Mike Rapoport <rppt@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
- ziy@nvidia.com, pfalcato@suse.de, agordeev@linux.ibm.com,
- ryan.roberts@arm.com
-Cc: linux-kernel@vger.kernel.org, intel-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, linux-parisc@vger.kernel.org,
- xen-devel@lists.xenproject.org, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
- kasan-dev@googlegroups.com, linux-trace-kernel@vger.kernel.org,
- bpf@vger.kernel.org, linux-perf-users@vger.kernel.org, damon@lists.linux.dev
-References: <20260727164715.2866609-1-usama.anjum@arm.com>
+Subject: Re: [PATCH v3 4/5] mm/rmap: refactor anon folio unmap in
+ try_to_unmap_one
+To: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org, ljs@kernel.org,
+ muchun.song@linux.dev, osalvador@suse.de
+Cc: riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
+ harry@kernel.org, jannh@google.com, lance.yang@linux.dev,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, ryan.roberts@arm.com,
+ anshuman.khandual@arm.com
+References: <20260713050050.1017741-1-dev.jain@arm.com>
+ <20260713050050.1017741-5-dev.jain@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -156,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260727164715.2866609-1-usama.anjum@arm.com>
+In-Reply-To: <20260713050050.1017741-5-dev.jain@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 3A9BD140005
+X-Stat-Signature: 8q3mpnmg8zh3fanc94ish81kwgepu1e6
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 395824000D
-X-Stat-Signature: 5jsgug8j4d1e4o1jifaeo5rs1768io6a
-X-HE-Tag: 1785266787-331398
-X-HE-Meta: U2FsdGVkX1+AtY6zV/W1L/98ZPHk+61pMw+WZgqqHes/0SqeiHiC28LV6PoZlFxU70uG0Y7tP36xdeNemnuPyiVEIthIoXeJaBaGm8cAc3KO6W3VZ6pE5cxYhupspsn1QJmq/Dn/Uz32+dsFn5+Fkk5yrvbKXfodO79JiRyKbnfagbJxpOZAxqcUrgBNcUHjzDd2Ebq+PLYWvKpj6atPq+tR6IyczKbWHtyHTGJHa1DPU2JZOTGe3W0T0JwAaBmHiolm1PcrSj8zmqA1bRTx1Vuas2UIVZckghCA6Po0UD4i6+sFGRZ1v4a0jbgzOCD7lmeF1rSn+Q1j9kOedEIg+jsBfQhCB/LgfiIbrmpfz6oxJlZG74F5cxmTxG34U4d1/o3HcnbwdvRf+npVbJnGCjTmKWBfBgaG49ohL7tBLw+BTNuSDtsdJoFNWqnypZh1ItlZ123wGIEuoC6MzHyw6j15v3CsHNy0eVF9nEQ3ZxcRCO1IEiidnl1pAZDdBUgM/+9uJYXdfzyfpf3DOGgadjwZjjaBpkqfvjgjf3FGFHNSjeNnGsu+YpQJ7Mvc4kH53xAdSO9ePc/o7LTg5iSgjl9fIlIPW4lDp3DIacAvcM4OjApDhL0chsuySJy0MvhfK++aLEpiuJnYJDZVHkrbSoWPvOo9Aca+w74MHZYiwtE0g9FnUcfQ0NiVIXNYJypqjPxQq4f3gZnAiY9gUw+yGe2E62ZoUbFTxNa391UobixIKJ4gcpW8C8tI550bJS71OMzTc2Dr797SaKyqYPPI0UsY5uZVCqH4xS1gx1765y7vVqck5LkCb1i3L0XVyy1n3RjuJSR0qKndKRzqQm5nndFs39lGpT/0FdBIbh9Th/MHjELYVBrBugXP3AH/ixzjPg9zEBo55GoDITyt5GsqVzsWvCrFR7d3rZfsLvZTN7rjCfKbU5O8pyOiDd6Vx5LzNPBsJkILPp1IM1IZDy0
- s5pnzsjf
- M6paDq3Z/HgsbOoxffhe9zsxBlmjWkJpzX6GaIbITmslycHH/Xmkb4rtLZmo++fWYkLC1U4rRE0X2nA2eZeBh1SKcAXIE2qd95dQRQYtrbldu1afVy1snHab797KuNR+4OoeuKX7o1SsvNnuyYUu8xCOl/kB7lFej+XpRxUnImIR2ZA+ZrfDX7V+UkOfmRadNBg89mzTJJQgvkZ4l3a8Gh/zTMPxfDRVNOdmg+dff5fEjns6p7qa57ybSPFAhFMOnJFHH8kwmYAquSKqoy2HJ+PJPrhWKJJJX/b0RglkNG7nRfCEquU6yYJpz5xJwHWPzvSbKVh1olEr/0fI=
+X-HE-Tag: 1785266849-526904
+X-HE-Meta: U2FsdGVkX18th0NnGL2Npbs7x5HKInqr57C6+ZFE3JVVIc5YYOWHZ1ux19WjluVYwsyE0VaHhRKX4aRsnS8bgt3uPAiVBq+GEi/+O+M6Bq3jN1/ku4YK8yaHVRwLwtzx2SLXyEvjnIP9v8fwMjv00akG9H9PZyo0Qaxv2DMqX2yBNUiOGcLKK2KkXICjGPlEu5wwlILtEgSMBu5zAsbLuDjl+k46JJa6F6O12C6mLCXWpuWpvr3AK/lJedKKrxQeV/eOOGrxjd4gQIeu/qZipR8ItYrZoXWSqIEyljlk/5DVi7nXnIpgwoV91dbqMLYNhFoQmBtTDAuJEIvkWiydtGDiO39GPTeNU/vOT7Xa/q9lY2ZK9rjOf6BSVLgskpP7XroqlqAL+8FE5e+9BRCtM1b/h0xfMtMXKmBqrqttJtl3zEEungZCEaibc0XGQBDN6+Kct7ejOSzcp1HIuokHQ4V+1sJJPwT9K2QjCpjcJHPqkjFZ9qFTGbbpnEdo6et4jApyxgtFX7ugz8r77wpSc278artO/KgLBgObtEppDTKHGouYx5g3X3jteWFpHXgD3qOFB7+ye/AI+kcTnfWEUzHV8CmkU+HQHmEneYpJ68CM7Imwb1n1753WL3SSGb8KxUEogIA/kvQezDi4VFaR2gzFfxo+TBGBV+BW8Ug6nzUxGPLPzDwrFtt2RYIF8gQUgPQcCNg/w34Wdiwn4inuWwxVh8zjDTdnZ1+egHPpg/iZGEupm4X2mXMaIuZGf2dle5mT1+G01RRwjijLgWrxeX8vKsldapjivWbUIWTrf6GpKlMbgO16cLW+U2yaP5A5xiaa1+Fr6AyxdxDa+9L+FoPVxNKGYVOGkCJ58PPpk4U+E7mNr7f3Vu/1zq24jjr4D8vbnAAZWrtWmSMxdKjbGVq0qX9j9TolXs0+oUgKU/Syv/bxuoSnrHZq0jQ0mHhjgTfXlWZmr3bd5/Lz60X
+ ZkJkxN3C
+ a0p6DvFqUBFRPmN+QwsX+FJ9DM3zkWSqFTGUJr/RTHVEjsXNj/5W8rexbQATuTybZgAssJnC9PWBKdOvT/B5KWMPRK3CS9kyIxZX0Yue1/SuxnJmR2icB5+yyHo65dsjc4+seM1rQ+wMfrt3tnLRx1+HBQ/ryPLrLyiDsAwniZSXkJUEskvO0LyEYAxtZr4/IYx1F82GfMYGLk3+x6n/fT5odYwJwyhI3vC8IjJpmcxuEbhmz066vLZ3xz2KbiHrWOD6gZtgvfW3tuXXThTGfE01VYTEDRPWDXet3iN5OHsYDkgbXpPa6ToH0K5jTIpcsvf5O0Y9/IAGyzVTmLDzO9qslqOvwIpt2Ab2DrTCcZfWp4gmCJmzNX0yx6WmPzf2ugyzdyNMaBZxNPr0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -174,50 +142,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/27/26 18:46, Muhammad Usama Anjum wrote:
-> Hi,
+On 7/13/26 07:00, Dev Jain wrote:
+> Refactor anonymous swapbacked folio unmap to ttu_anon_swapbacked_folio().
+> While at it, rename the remaining subpage variables to page; folios have
+> pages, not subpages.
 > 
-> pte_t currently describes both a logical PTE value and an element stored in
-> a PTE table. Consequently, pte_t * can point either to a standalone value,
-> often a stack copy, or to a PTE-table slot. The compiler cannot distinguish
-> these cases. A value pointer can therefore be passed to an interface that
-> expects table storage, while table storage can be read by direct
-> dereference instead of the architecture accessor.
+> No functional change intended.
 > 
-> This series begins a staged conversion at the PTE level. It introduces
-> hw_pte_t as the element type for PTE-table storage and converts generic MM
-> to use hw_pte_t *. Logical PTE values remain pte_t. Interfaces that
-> intentionally return a value through pte_t *, such as install_pte, remain
-> value interfaces; the relevant parameters are named ptentp to make that
-> distinction explicit.
-> 
-> The generic definition aliases hw_pte_t to pte_t, so this series preserves
-> the representation and behaviour of every architecture. ptep_get() keeps
-> its existing READ_ONCE() semantics and converts the stored element through
-> __pte_from_hw(). An architecture can later define a distinct hw_pte_t and
-> convert its PTE interfaces to make the distinction compiler-enforced.
-> Architecture PTE implementations and most architecture code are
-> deliberately left for those later opt-in conversions.
-> 
-> Here, hw_pte_t identifies PTE-table storage rather than table lifetime:
-> complete PTE tables use hw_pte_t whether or not they are currently linked
-> into a page-table hierarchy, while standalone copied values use pte_t. The
-> distinction between complete but unlinked tables and hardware-reachable
-> tables was raised during discussion and remains an important point for
-> review.
-> 
-> PMD, PUD, P4D and PGD storage are deliberately out of scope. They can be
-> converted in later series after the PTE boundary is agreed, avoiding the
-> PMD-specific cases that made an all-level conversion difficult to review.
-> 
-> Most mechanical pointer conversions were generated with the Coccinelle
-> script included below, then audited and fixed by hand.
-> 
-> This series does not add a second ptep_get_once() accessor and does not
-> remove or replace STRICT_MM_TYPECHECKS.
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
 
-Do you have a pointer at the arm64 part, so people can get a feeling for how an
-actual hw_pte_t implementation can look like.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
