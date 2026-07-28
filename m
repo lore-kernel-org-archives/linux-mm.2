@@ -4,89 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BACA4C54F4C
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 05:28:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05D09C54F51
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 05:28:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7E65F6B009E; Tue, 28 Jul 2026 01:28:22 -0400 (EDT)
+	id 1560A6B00A0; Tue, 28 Jul 2026 01:28:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 76E726B00A1; Tue, 28 Jul 2026 01:28:22 -0400 (EDT)
+	id 0E0956B00A1; Tue, 28 Jul 2026 01:28:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 65DC66B00A0; Tue, 28 Jul 2026 01:28:22 -0400 (EDT)
+	id F36B46B00A2; Tue, 28 Jul 2026 01:28:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3430A6B009E
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C3AA06B00A0
 	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 01:28:22 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AAA9F1A02A6
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 05:28:21 +0000 (UTC)
-X-FDA: 85037054802.03.34B5114
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1C81AA0282
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 05:28:22 +0000 (UTC)
+X-FDA: 85037054844.19.95CB179
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 1F97B40008
+	by imf18.hostedemail.com (Postfix) with ESMTP id 7DF381C0004
 	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 05:28:20 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PEBuIKDu;
-	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785216500;
-	b=MiXQ31ld49BRfp/D8JVB7JlOfJycbXZ4f/e1WSBz/iAHS+YDjKtSKZkDSE+gj/3URD1tKh
-	R0mS1DZsUwLXLmJP3DgQGKnxM0pOjTyLtVcQKBCAKqbF3QaKqtZncdhVjIz0Dz6jh/WLRi
-	/EXmrRFQ63sDcICWzI/Qwj0AsDc52EE=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PEBuIKDu;
-	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QVt3VbG2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1785216500;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jEqn658128UTd1o8tS5ZjT5LQQ6f3vfRE5EdtC108ZE=;
-	b=IsfWJxC5FgNreS/0ma+qh4mNGrE4X38jK6zBBAtzyZeL/1GaRyfMxXEfWr5+GV+IkzLwiR
-	5dIzlOG5dUCYXrxS0vE1020C1ISIpUZ3OwrymHKDFtLhMaA6dhE2RWUegWTRm9e3L0LNXJ
-	LFlBLyVnH4jXoFjK16MM1ERT5MqBf7M=
+	bh=+7L5cUB5gmn/G0XCH5EnzRVEYnRmQ6289QitHVcV3Es=;
+	b=o9CQszNDSapxDkGpTHtpW5vCQ/UBLSrWbRsVO9EF4yIGYz0xQRDqrPNiCurkO/aOwYTHKH
+	QctpVrLUJNMIHhXbWNuMgOlucvDv0s8DGTVYSy6SAzyYxLbbvkCFQpj7qkmQ3fRh/tcWfJ
+	615OMas1EeHfklQEbzjiJxm4g6zD4rk=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QVt3VbG2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785216500;
+	b=2d3MAOAy9whYKSZPeur8ZWcVHqW7kxdP5F1/vgztxxN8Z77NMv17QxnqyXqalr/6ygu4gI
+	WiK/fSLe9e6We9m7/evymv/pr1ySDhcO8FPzeLoqi1lOppNmOQoPS85NI5eKvUjn83HHMP
+	wewr0I1cl32zNglYD/UQEdxqRrAsgFA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1F960431CF
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 05:28:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C94F01F00A3F;
-	Tue, 28 Jul 2026 05:28:18 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BF50943F47;
+	Tue, 28 Jul 2026 05:28:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AA061F00A3E;
+	Tue, 28 Jul 2026 05:28:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1785216499;
-	bh=jEqn658128UTd1o8tS5ZjT5LQQ6f3vfRE5EdtC108ZE=;
+	bh=+7L5cUB5gmn/G0XCH5EnzRVEYnRmQ6289QitHVcV3Es=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PEBuIKDuUaxyDyAOkobLWRBLv0M+5rVmn4p4GBzEbZ880A1uoT/nq+XdHLdzNb6XE
-	 rGETPi6MNPer0T2vnxeOoDwHcj2ClPIxicFIuUEFFTIm4aUM8oJouaedags/Kx5qdB
-	 mJGElUcNt1KAmIRo7oqCcY3vcnZAc96XWPACg8SImKRe8VYwEgrZeeEp4tFMAzDxGf
-	 0/xlrAoATCmwE4r/fkGLLj0nNCg5xWlK3EkRWWcGjeqIYMyEZE0eU3xSla6Vo7Git7
-	 BkTmIHaav3ya1TDYZhI6UAqwNxv5Nb99yddOPB0U1AmDerg/D/JpUZ58AQS6clFImL
-	 hlRh1BQDQMdTg==
+	b=QVt3VbG2+UUJwhyOFGMlC4p5BB9UX9zAbrDUSY4ugI3W1kI2lxkdwDG0oAlGC0S0m
+	 7ViLVdAdd2KFukOc6mIwbE7YUG9jLqlxhooMrjKTalB3SHGjL6s1pmvg+Ru4b1ry1e
+	 XZGKX7c8B3OPzellSm3tJOmJtldea4eFv+ifNg7XSIOW5lySQKpadFokmN1ZLLx+di
+	 oCVC2HdOqPhzAHF1KfVAyvnMgusOD27Z1gcO+EuVXA/GW0qYTOsBbHpRnwf3dYknW4
+	 I4jF/VbbIJIT/AMRRV8H7V8iw+En+xxauXjO2OrmmJFw7/i2/MagjBXQxYvxlPtLw0
+	 Q5/PkpCsoNXoQ==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
 	damon@lists.linux.dev,
+	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH 08/10] selftests/damon/sysfs.sh: test hugepage_mem_bp quota goal
-Date: Mon, 27 Jul 2026 22:28:07 -0700
-Message-ID: <20260728052811.192712-9-sj@kernel.org>
+Subject: [RFC PATCH 09/10] Docs/mm/damon/maintainer-profile: update AI review for Sashiko replies
+Date: Mon, 27 Jul 2026 22:28:08 -0700
+Message-ID: <20260728052811.192712-10-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260728052811.192712-1-sj@kernel.org>
 References: <20260728052811.192712-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: mosdtiruc9czfdi4wofj7amiaxk59aoj
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 1F97B40008
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 7DF381C0004
 X-Rspam-User: 
-X-HE-Tag: 1785216500-454030
-X-HE-Meta: U2FsdGVkX18lau35J9juegvEntSMk4Rr8krCVQobSEK22yvB+ZaWRqZDbfehQImFNXtLaALYRyR0iNFJV/3vWr0lHU8vO/jNdTFc6KVMAR8xJVqPLrT65Sewt+HEQR5//PnBFex4UarPBJNrX+m3vef8W+puY3ms2rr1RVXBbxdsTg2g2c/1fjqpFuix9plEnt+9es3Hlr/ayerV/5KbLk29wJjuUpRzca6jN8f9bJJBauGbA9Gaa+8UhJNC8UUstXrjMqWxrMFkIh0jWcuG8Ct/tr0An9eIO8N6J66LxQihnSUnD2HtKF5Zo0MAxFe7xTOHDfDlh03I1T9vNG6rzfv4OiAO5SCqzD6Xz61JQT8pRANNUqIFMwwNNDrknnxDKYnm9FHmhT2TSoECMPTZTLxtbqPTJ082UP/kxnRfWhbvyQk094nmGqAj4kiSBjXV7LY6Vygmr3BgDkG117V4dAEi03puNzqe5mfhQYbFGf48mcBpuLp67nGtVQgrTxRxyOkjwGIHpHsAGIkmbf9wqBe/g+l0o2DEF3RWpXE2GbXBxG4sOb4oMT8npg4oJ02nZdXKanG/x0cKIZbD478uUBIo3MbOVvvVPsNQBRG8nAtHYW8KyvG/wSFprhNV7Uy9Cool4JN0NLp7fjBD2AVLUsZhgAUDOKhrVjk1t1YrpmPOtTSV/TpbM3ZLWfn/fC4DfnxdmLnRlulpx9gLjQ7feCIHg72/FL80DIKmKsI60owfcQy4iimXoPND1/Zkz8GFki7iLxXjXljjQAhtVMXYAtDVACKOZM1Qj4mUijevls66whUHxp8FzQhPU4A1xcKgoWpX+VbMqJZpyflJUiwOUPdccWOG63FWEwvJk3RzfGN3T5k/UoVkAoipkho/p53qdLOYg9gS75rFCjvGZJH4hEjXVCpTQHobfwPy8mVVCjqIG4VBENgFkieoB67NN67F59YruxC+9QjRg8ORWUu
- N3J3NqQb
- mwKzhtmzdNRLvbC9QVfaT+OIgQzCHuo2Wja/8NVOAIO3GfN/5g5K/pDo/ej401qtT4KwsdWmab6VeIM6Bd296fzKQuktd3pEHYXb57MyOYd4wqsYZ5XKf4o8Kldt6iz7L7gH0ivuvP1YL15eYG2ltTU7zPTvp7hlginVxAu/xAcKYoZTto411pga4xD3WPmwUJJ2Qlv2RbXuGrmLaI3+b3DMiZvdyKiVPtP00N7CJ9efRIPj/+nKdSPxbje3v40ZZW+4ivrPh5PgdXhlmg+0SJ3atj0v3JFQM/2XakzUao5Lr10hx/Rm56p/g5l7rr194Jw2QhNc7OmkfHbBA5lZWiiP/LJ1SI8HEUR68
+X-Stat-Signature: smu36qmry7ruoeyqsnyo3gkkdwfyp4un
+X-HE-Tag: 1785216500-723243
+X-HE-Meta: U2FsdGVkX1+rjwc2hCKMUKqqHZy97lrd8s1W6Zp2+KUpxT8itkj2ypIBYg+yNtzuHMbnYLxXVouDJeFlxgb6DReRYmyOeqyw/GfsNx8DyV5CBDo9LfdWJCMnMuuZ85W5Te9NbPnsibf/o1lFpIxyZD5vo5ZSIlX+C+nIIdX27JkxOrKcBifDYem4dHKW3+9TMgoibd+yjPVIrkeFOHG+YC+JmQYm6Jiu7BeynHptaqkOvLxtbeI5FeIs+o9t31B0SKeTHgbpL2Y1T9samm4e/h4+RQcNOtnSUttQNmMVth4kyUUtjlTYXdIVee1rvLltQg7t41wqcwp4yELhb/PEFDaf8S4HYDgg9Db/gIfVVp274xGSB/isNK8B9xVvVieyqp3Yt43H5GHQM7P2mGdSngHN9LAn/pWcujT2okQUuvlVFrXF7lfE/3Lelrm6oVPW32tXVnhx3r9+gdn9Xc+za5/CRs59vUSkMy1KtfdXdKGmjgiYS9NrmqBEkaiC7BJvsueJBMTJc8tMBGxz4OsdWlaFiulp7odvFzPY44lGuj7sXPX7Iuf66TDm8RyOpTYzo/XJtGfQ4XLvI9JG80+cXEHiN/PSkEi5rFJ7loP5JrjAXWROV1Oa5mOMna1oljusBHtYe4XlvJOvYvTXey0KyvgdSeAW9TomTPrpxA9ixiurIPPtpjeHNXiJFgW/GYKC++KXGgbIFigAizVPpTXIkCC4HbOeDsO7Co6fh21h9EZ0CoEcUQuFcZexAhoUR9Kc6GVwq8WYSmWxQlBEQhsFqAp+az9L/K1HhUGVZ71fUGFBnJhHpLL3q23vlV1j0JGSSUC3nTP2vhDae8zpWv0kgnS6q8UOy4buDNH6MezV31x7aTtYPZV5oTYXLs+iyht1eG9Q94y3gExVkG9jZrVGmgkwm4BnqOjS2weRpYRfu/O3ne5UCoc+33r0LgFBbh/fIh7FWGKOxtZQyx4uGM5
+ OG1T4Weu
+ 8BoA58npzShyu9hjRj9Z6fxVHNgraIJUUCRDHS9THzs98Pl45ErfzlJW3+dpjaJmY7gDHIBB8HtiqX73cl36STdSsA7Rc6Zc1898OHbWDMPt0eQ63Hdvd2mmNVJVEfArZtLKAn5EJzLA0GTkbUV8Dq4C0lSsyDh6yYN7QHNycCALrQik9iPrpSH6TqgeWs4+nfXfgzEsJc5al9VTbNT81Sl34fGdRBZc2PPjT8U/Qr8enqyr1SMnW56/9wuEI9zdKQiOyCovZ6GExm/VtBnV7WsSXSCE/W0nK9FSkZj8a3+W/yjXaFSPIsu570l7rSUZhYaj2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,27 +103,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMON sysfs quota goal target_metric file now accepts 'hugepage_mem_bp'
-input.  Test it is accepted in fundamental DAMON sysfs file operation
-selftest.
+In the past, sharing Sashiko review results was tedious.  Also it was
+suggested to minimize the recipients on the sharing mails.  Hence the AI
+review section of DAMON maintainer profile document was updated to give
+guidance about available tools for making the sharing easier, and how
+the recipients list should be managed.
+
+Now DAMON is onboarded [1] to Sashiko's automatic review replies
+feature.  Sashiko directly sends its reviews as replies to the patch
+mail thread. It also reduces the recipients list to deliver the
+reporting to only the author and the mailing list.
+
+Remove the old guidance that is no more necessary but only confusing.
+
+[1] https://github.com/sashiko-dev/sashiko/commit/b554c7b6e733
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- tools/testing/selftests/damon/sysfs.sh | 1 +
- 1 file changed, 1 insertion(+)
+ Documentation/mm/damon/maintainer-profile.rst | 19 +++++--------------
+ 1 file changed, 5 insertions(+), 14 deletions(-)
 
-diff --git a/tools/testing/selftests/damon/sysfs.sh b/tools/testing/selftests/damon/sysfs.sh
-index ddebde6edabe4..b66593c9ac471 100755
---- a/tools/testing/selftests/damon/sysfs.sh
-+++ b/tools/testing/selftests/damon/sysfs.sh
-@@ -210,6 +210,7 @@ test_goal()
- 	ensure_write_succ "$fpath" "active_mem_bp" "valid input"
- 	ensure_write_succ "$fpath" "inactive_mem_bp" "valid input"
- 	ensure_write_succ "$fpath" "node_eligible_mem_bp" "valid input"
-+	ensure_write_succ "$fpath" "hugepage_mem_bp" "valid input"
- 	ensure_write_fail "$fpath" "foo" "invalid input"
- 	ensure_file "$goal_dir/nid" "exist" "600"
- 	ensure_file "$goal_dir/path" "exist" "600"
+diff --git a/Documentation/mm/damon/maintainer-profile.rst b/Documentation/mm/damon/maintainer-profile.rst
+index fb2fa00cc9aa1..a7c1352339378 100644
+--- a/Documentation/mm/damon/maintainer-profile.rst
++++ b/Documentation/mm/damon/maintainer-profile.rst
+@@ -106,18 +106,9 @@ AI Review
+ 
+ For patches that are publicly posted to DAMON mailing list
+ (damon@lists.linux.dev), AI reviews of the patches will be available at
+-sashiko.dev.  The reviews could also be sent as mails to the author of the
+-patch.
+-
+-Patch authors are encouraged to check the AI reviews and share their opinions.
+-The sharing could be done as a reply to the mail thread.  Consider reducing the
+-recipients list for such sharing, since some people are not really interested
+-in AI reviews.  As a rule of thumb, drop stable@vger.kernel.org and individuals
+-except DAMON maintainer.
+-
+-`hkml` also provides a `feature
+-<https://github.com/sjp38/hackermail/blob/master/USAGE.md#forwarding-sashikodev-statuscomments-to-mailing-list>`_
+-for such sharing.  Please feel free to use the feature.
++sashiko.dev.  The reviews will also be sent as replies to the author of the
++patch and the mailing list.
+ 
+-It is only an optional recommendation.  DAMON maintainer could also ask any
+-question about the AI reviews, though.
++Patch authors are encouraged to check the AI reviews and share their opinions
++by replying on the mail thread.  It is only an optional recommendation.  DAMON
++maintainer could also ask any question about the AI reviews, though.
 -- 
 2.47.3
 
