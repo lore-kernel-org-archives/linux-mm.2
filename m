@@ -4,92 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74966C54F4C
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 12:12:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6E6AC54F4C
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 12:12:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2BD0A6B00A2; Tue, 28 Jul 2026 08:11:52 -0400 (EDT)
+	id F198B6B00A4; Tue, 28 Jul 2026 08:11:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 294856B00A3; Tue, 28 Jul 2026 08:11:52 -0400 (EDT)
+	id EC9CF6B00A5; Tue, 28 Jul 2026 08:11:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 135506B00A4; Tue, 28 Jul 2026 08:11:52 -0400 (EDT)
+	id DE15B6B00A6; Tue, 28 Jul 2026 08:11:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C16FD6B00A2
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 08:11:51 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 30AD61A039B
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9BF246B00A4
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 08:11:53 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E6364A032F
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 12:11:52 +0000 (UTC)
+X-FDA: 85038071664.10.61EBA2F
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com [209.85.218.69])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 412F480013
 	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 12:11:51 +0000 (UTC)
-X-FDA: 85038071622.23.6323D1E
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com [209.85.218.71])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 83A9AC0009
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 12:11:49 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ii7Oz+Ud;
-	spf=pass (imf22.hostedemail.com: domain of 3g5xoagkKCLgrYpslqYfsemmejc.amkjglsv-kkitYai.mpe@flex--tarunsahu.bounces.google.com designates 209.85.218.71 as permitted sender) smtp.mailfrom=3g5xoagkKCLgrYpslqYfsemmejc.amkjglsv-kkitYai.mpe@flex--tarunsahu.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=M5L+wxRK;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf02.hostedemail.com: domain of 3hZxoagkKCLoyfwzsxfmzlttlqj.htrqnsz2-rrp0fhp.twl@flex--tarunsahu.bounces.google.com designates 209.85.218.69 as permitted sender) smtp.mailfrom=3hZxoagkKCLoyfwzsxfmzlttlqj.htrqnsz2-rrp0fhp.twl@flex--tarunsahu.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785240709;
+	s=arc-20220608; t=1785240711;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c9jjs1g4NvcQ3GQcie84Y49TXK0CTcsSbKyhpxDCGHo=;
-	b=QAzVgynEZkQCyW7zsmHBmqV1a42n6SWEeiVCEcxybd05F+pX4K4XunqEzzVFsqenk/QAlv
-	nNaddrO60qXQhyvwkBlxU2NErmhUN5E7f9m8FzPd8zqA4HEcsKcXUaicPGtzYVqOnMzZlc
-	ecb1hHYP09k9Npf3pYMCF67FKDTHtKs=
+	bh=V9fXM6lRs795AVXt0xgZm237lDVZT/43F4+i2ayf4wM=;
+	b=E562lR1v8GysDr2Ll4JGhtlJgaKd4RCwrBC5YxJNF5c/KTG7gugWoSw28fw0cMqWgTSiMK
+	iUIsAaGH+It1yKUZ1Hpreoh+hyQGpydefiuxq05hYvel0G7SAL6hfUxVJpeEjD9Y8sbSev
+	fCR41dB9WD9POLsXEyb1r+dGH324wEI=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ii7Oz+Ud;
-	spf=pass (imf22.hostedemail.com: domain of 3g5xoagkKCLgrYpslqYfsemmejc.amkjglsv-kkitYai.mpe@flex--tarunsahu.bounces.google.com designates 209.85.218.71 as permitted sender) smtp.mailfrom=3g5xoagkKCLgrYpslqYfsemmejc.amkjglsv-kkitYai.mpe@flex--tarunsahu.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=M5L+wxRK;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf02.hostedemail.com: domain of 3hZxoagkKCLoyfwzsxfmzlttlqj.htrqnsz2-rrp0fhp.twl@flex--tarunsahu.bounces.google.com designates 209.85.218.69 as permitted sender) smtp.mailfrom=3hZxoagkKCLoyfwzsxfmzlttlqj.htrqnsz2-rrp0fhp.twl@flex--tarunsahu.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785240709;
-	b=F2iv2j5P6bM55u22Ddi+rTsEX82AkvXs9+eek6Wja0Iuz4hXZ/tN7iIFFZdJoKJwsnDGC8
-	TMfDsCZJ+TgYxESgdUqOE6gxD4MhKV0khIbQjUHZq9AH/yY4R45qJyScKYSHzzm2J3uk1Q
-	BWKKHv0r50KVl4W7JQMxrxuk1EPBhxE=
-Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-c15cec1ccb6so410269966b.1
-        for <linux-mm@kvack.org>; Tue, 28 Jul 2026 05:11:49 -0700 (PDT)
+	t=1785240711;
+	b=oMJTRIH2Ciab/6V669TI+iwrKQ1ykADht75s9CkJSZ54Abx/0Aq2rbt6VNcptcIFTpUDCC
+	llSW1ro9GP6y7UEP+3qgyhCzm0MeogE/TAznWvu9PVZbWuxRbikORTZ9tbDLLY/FYW+638
+	fezVo+ptKFwBeDSUCbYiBKj5pBml0JE=
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c1670dd0f5dso347658466b.2
+        for <linux-mm@kvack.org>; Tue, 28 Jul 2026 05:11:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785240708; x=1785845508; darn=kvack.org;
+        d=google.com; s=20251104; t=1785240710; x=1785845510; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=c9jjs1g4NvcQ3GQcie84Y49TXK0CTcsSbKyhpxDCGHo=;
-        b=ii7Oz+UdxCha9n8znaFqeRv2n6cOiz2kJajsRPG2RXvivMvS4OS6kVhDzLMSJAoVrj
-         1dTWo7BWIpR9BYoQSd2VBuaFww6cW6CHfVniFjHpxZ98DpB324ptPnao0aRCavs8yCRv
-         emvNxGjq3NdhmrU0r8LjxbhZKpTXhCMdl4v5NkVt6daQKCGQaF3raHjOk/lmOhv0HN6t
-         4g/XC2+V94tPt/7Ua8e/55cn8VvPoJn22hCfQIWozdM2gKwa49LzPivbEXUoyNFzkZ7S
-         w7rHOD5p2udKEeuMNF4kG4K6xA2g2C/LBlQgpbYXVYrrsoiwcvSPsEI8EE5Wne71uLP9
-         5M+g==
+        bh=V9fXM6lRs795AVXt0xgZm237lDVZT/43F4+i2ayf4wM=;
+        b=M5L+wxRKZ1v5Y7waCN2hhJPX/TVVhhJWhbfHanb15UFfGPoFmRVxQBmUto+AmlfZci
+         RX/S6iU+oCrXKt6fy3+71zS8pbaBVHO4PPiXrdGWUf0VPll6pd8zX0bPeVYjnQ9skcF4
+         HM5YtT6174hlozWIwowe46k1ln7/bgcLYwgl5FG5A4uutSDaYBeEN/kN2v7kPIqcwEKJ
+         bQJVU15IAhHjmUh0YFTEBsWb6/sai756qUk7i2XXhN3dOi8/EZ+6Pb2hv9mtRkiSsNsq
+         AsUk56jPPg62y89j7FaTQBD4qmVqvNLZ5+l6nXBvXwPI+J/KChf//xl2ApJqdTwPfj6K
+         R2Hw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785240708; x=1785845508;
+        d=1e100.net; s=20251104; t=1785240710; x=1785845510;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=c9jjs1g4NvcQ3GQcie84Y49TXK0CTcsSbKyhpxDCGHo=;
-        b=eVlw3YkXpVXPDyNxp7XPdtLpaaOnDtqhWaqfE+AiWDWkONAF4c5jPL3nZ6ncB1Av7D
-         EuUM4EhMwJIBi528GRsxzrRLNV19KKbOiZVJqlvSqsJIRQPZAliRzPeQHr+jJuw5tSUX
-         3IJjijnA4at/yeQTBSQYtCYqEUnL3LCW+Q1j51AME3D+YNey6HiB6/k648G+TP5HOKSI
-         1jiVm0Gz7eGJ1/sZV4U8dw60ESRb4q9J3GHi2CEyPqe5YNs6YrMcmC4ZbXLih+MyEhFy
-         Mq91lpnKo2QRnslNHW93lJOa1u7pj0JlyFLCgzFPulB5KWu8P6p6jR/WVxyCmUnoOkEd
-         BRuw==
-X-Forwarded-Encrypted: i=1; AHgh+Rp3C2sUqxr6N+y+bPeia+9NidoY1TG6hpjY+NPNACJ2gc4i2iYMLDYfz7OTctrNPBOjQhQEGX5fsQ==@kvack.org
-X-Gm-Message-State: AOJu0Yxh85lRD6Si1bR0DGI5h8ieEcX5fJz3f916ZdaW7LORsBE22qI6
-	0WQSwyayYB6C0m9DOnvB98wHBTkd0UOLu3eWXkYFUiGRWBaqkfYWjGKwrhx9IAed5fmrGTvp1C5
-	1DQZzCbwouLlET3ujnQ==
-X-Received: from ejph19.prod.google.com ([2002:a17:906:7cd3:b0:c12:8c27:d430])
+        bh=V9fXM6lRs795AVXt0xgZm237lDVZT/43F4+i2ayf4wM=;
+        b=ZuavT4hQUyVuc8OqQWnjD+m6gpCKCd5lxHKR1ecjlgNLk/ZXCKvnwERmhsc4Pe29e1
+         yKpSa/h0EtzzZ0O4eGjQ6KeqzzZa/NqLPNMFqlGdfr+lMmmiwIdnWzkVs4bfJKH8bEZ7
+         EbfeNImvEHgwo26eHv6B5SsYhf1+ZZ6quQMJrI3/PEWhsRa2zYwk/QQpsGRCso5cPsC8
+         9hp4TS1Ozw+uDiak52v2bYmjqfpDfrN5RW0vqj/u1jgZOaGAxd83oLnZUVYh82jD/rkE
+         st5uemIbw6Rpnkm1Ki6b+GaREsqA8XqiUU3ezahiUkS50sgI4obLTIY/2u261LywjMLg
+         wkjQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpGHEoZzrnNhaJXm0IBZ3CjRQcMoRNl/IyKHLu6DJfShHTqEv4G50fY/FSbCTfdkgjAj/53o7zaWQ==@kvack.org
+X-Gm-Message-State: AOJu0YxKFpzWolOq/gumJgQ9OMm7hY9frqel3x7PBDRCsyKUIGq6C6VZ
+	h2+0VTRWpliowEtCUGmPKTa8I6OhPYB0q4YwkMtaJDg1SEq8qwxGsQD9EZCW3cnXMoLHvb3UPyH
+	xR+v5aNA0FEN7s5Wv8g==
+X-Received: from ejdr26.prod.google.com ([2002:a17:906:38da:b0:c12:9b2c:ffb1])
  (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:7b82:b0:c15:d6c8:2816 with SMTP id a640c23a62f3a-c1f71e1ea91mr103051766b.27.1785240707658;
- Tue, 28 Jul 2026 05:11:47 -0700 (PDT)
-Date: Tue, 28 Jul 2026 12:11:33 +0000
+ 2002:a17:907:c1e:b0:c19:45e3:2f57 with SMTP id a640c23a62f3a-c1f71d2cc6bmr102851666b.9.1785240709110;
+ Tue, 28 Jul 2026 05:11:49 -0700 (PDT)
+Date: Tue, 28 Jul 2026 12:11:34 +0000
 In-Reply-To: <20260728121138.1103610-1-tarunsahu@google.com>
 Mime-Version: 1.0
 References: <20260728121138.1103610-1-tarunsahu@google.com>
 X-Mailer: git-send-email 2.55.0.229.g6434b31f56-goog
-Message-ID: <20260728121138.1103610-7-tarunsahu@google.com>
-Subject: [PATCH v4 06/11] KVM: guest_memfd: Move internal definitions to
- internal header
+Message-ID: <20260728121138.1103610-8-tarunsahu@google.com>
+Subject: [PATCH v4 07/11] KVM: guest_memfd: Add support for freezing mappings
 From: Tarun Sahu <tarunsahu@google.com>
 To: ackerleytng@google.com, fuad.tabba@linux.dev, 
 	Andrew Morton <akpm@linux-foundation.org>, seanjc@google.com, dmatlack@google.com, 
@@ -105,14 +104,14 @@ Cc: linux-kselftest@vger.kernel.org, andre.przywara@arm.com,
 	linux-doc@vger.kernel.org, David Hildenbrand <david@kernel.org>, yan.y.zhao@intel.com, 
 	kexec@lists.infradead.org, suzuki.poulose@arm.com
 Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 412F480013
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 83A9AC0009
-X-Rspamd-Server: rspam01
-X-Stat-Signature: nwrxytrr9czmcj18o8seqrys4qdee8ij
-X-HE-Tag: 1785240709-288120
-X-HE-Meta: U2FsdGVkX19Wynj9Svbn+SwfXw8wmpjQ5KbJnMieNKB3nG9Tma1QukFlMQuHoDiBkneeC+TaKmifRj/SB9n5q71ePNoTeNybpWcltKB/oPBOQbkBJ/71dGbD+BxVlOlyG9bfj7qgUn6ZNMPiCTZRThgyz5wWEVwG39RRrGneaPjV/7PQq4IHtHnu8DAnubAA1TOt41jeaai6GlpK9flZB5cO5OdfqjCCl8mns74MPsclT1eu+0CkUOLzhqBqAKTmZ6TlIHsqvlh9K+rr95p326puLN6VUq6MsLehYtNzt4Af/ojaQCLryoXbSf83P88ae8YFAip/Z3oDfxUpHDxzwDFKhf4I0qseMMjbJwdRpXHiAS2+caymHaZA9tb1+keyfXX7WJtpw5A4L9X716eojCMwkpTa51wFJvru8kD3ghEBLF6vxTVhRoiiyDAyvXSCMcBw0egAsR4NDvkSYb5/QhNrMqPi565mvFbQHAXD0IbF2/ai4VgRokvu/iPz2PLi1vg5NXUvdD6/ALfpKrJCv4Hox7Siiiy8dbYjGchE7f6q9zSMl5CNxBj6Qu79yQL6V21rJjtgzDN1FpAUKVlg2dwlmaOC6IiQ/0iGIvPgQodrWN0Kpl/tjlk29Jq89fM2p+DMtG5d0mlhReuGcbLzb43ww2CB8OICUwpa4byKpx1aIja7EqwkDWj72yXXmSHCa8Cyr9ifDdDXe0uvjsfzW+k6QF+wQ+8jttL+NyXDEhjZxLlr60B5rnFXYDllNUg6Uh7/7iszun6WSc1cIPaH9Q2rn+esOc/RqEQgKJSdGz/OH1rhkFSiTy0LZp3ugEL+5CMvi0fgbV+QlZYQacoCFCYQEdrLFylnFZ/d4rrZbWzoYdVc+/mKKBZobhzvjA9UA0O7HPPkO8YsKTiZJCLNxmOKQr8zvG2VvX5rnbz6sXHuqdDOFcO1UIIjXJ3eZs07Phw7By61Ocy63+pW19q
- jwiSj60N
- JtpbhC+StgKDsn0UUjAZreyzgbTsJJ2CcnsEUeOO3eLDKvLdGk8OQ3GsV0AJrOuMhxdeSoGXe77123MQtldkldrFIBu/e9wk9gL/McwsP7JwfghVpaxGmZrcpu8R5DpRXdpbjQR3YE9DXhuG8jDHXCG4Wt92hAK+Ocqha1WCLEFnhUJ3zpDQt7XrBpUO9LZnWv+hJOoWPQOhBOXOpOKwIe52ExMXgyGevy/01M+E5E9ERtqiGpyvTcbhBw7BwC4kb0dMSFyxRRuQGsvyh98HfkUmNjpd8TGgobMHVBUzgHk+h4fA9w5Kwm9ISFVF09Pr3TuqC42xbZt8UHabMQRXg8UODz5ocDijLOTlNkRHuEQ13kZYUxP9Xal1jN5OyMDBEL7PbTQS/Bxy0HymRlNbNzFR11Pzl2lLApUdZDN/4rFmCPezZ575FT4hwHzIQI3IGYb4Kn1WoKuYskbytglYmyyILpsCyzf3/h6MvQIb82cIwvzfHRV1C+LUxmRbFo99IOiMs9ws7XNb7Ej5c+iA0NX6Qc4FwWQrW6FY4lNdtJY/qpfXAxMDEP5/UMiO3G3AQrcnyNLz49uwIAYvirjZBJuDK2kPeLCSUjnOT9eZpC8OeWOB56ZSvFE25AnIiQqSNYvhvazYp4pdixGcd/X0EBdrw5w==
+X-Stat-Signature: gzm5w9iurm47o65ic6dce6d39qnabdof
+X-HE-Tag: 1785240711-772926
+X-HE-Meta: U2FsdGVkX1+KwP2lGNI1KAZ/0KyNykwyubOP6ZTyQEWz8lzPxDd4usSGvNSm4bQRKEDr3B0eYaRDrBompQwhKNvWJcfAiuTNfRFU5pVHSkWGnzFJ5pu3zHGXGmASvtwfBCkvDvmx8FnsU7aJ3NkgM1v5yWw98/qVTZ8BwwSdOL8pqvTYXU4NTlnmiATVIUNWuEFJAMxDfu/2SieYNPCUn2z5FbJuUO32NdjVgSvAM+5O9FsNQgXyhQbR88wBaxxi8HszQdwh8qi8Hp1GiXQLBZf64xZQs9PVBYl/4wL5uCAhEYI2h0bi7K8NvjTFE7fFs/r5jKBseQnXoJpvEyDhpTGQS3Z9btFv2Pb8+wv0FwoP0yUkxbUE+1A8umPHoRABPGYA0C7q80f9N6idFnCzm3/xgVyr80RL3P6fyjvVJSvWd7te8k8oCSL1mjB5bN7CAE4nutPs3mTBzvfi5Tq9oYLh5XCb3DQUcOZrpRevrXBw5uqlJLaN7f8oXVt0faqZAqXP8YQhNFLis45kQWVdTGMMoLlQbDaBH4vuEKVCX9pIg2LE2iw7Bw0D9nqzTUp8GlBZ+E1xbQUpQcChqCNYBqpze6dpCOVCcTtTO0Wn7B/6UiVSmJQq4bmZKviOzPU0tZAaur534GdReC66w1IZVhV4BDMDNQDB+PAG6EuBiPs4g5m0U5I3E6j7b6DdpKRbMC514///KXhIkjk7L9djYR/Ozei4xkOvdrEAprlPaRCnjKVhX4Hx+K0zcDt9qrwDldNQGq0M/ynAg32G3qzvF/Iwa7NUE4ueB/OyTU/qwhRJaQp5/aw1RRbrad8S5hY53HEjCxDejUb6WNq9dExMDZy72d67leK+8meex4EGBjuDXUwekkBsog8+sBX3bl0pJwMhlZMOLV9q70z3jRFyWk5lhX/DPgUSz6YpipJLQFyA+sSDNtSp+PMoNc/xHK5JwM7rYVpSOUXzeB4sAcH
+ 3zt+ROqL
+ 6YggTxmul2vh8Kr+ggvrK+E+5e6KvkbPKLIAGsuocovJZ6PRj2sm+dE60Pmz8VETLOIh/cVzUmDmUS0/fpk9E5IDSTT+2O8ac/xxVj/VkmKa+ivBewG3CBysjmqtkYspp+Uj+BQBOwf30l6wZ2b4Uk7vFTExBcucJ1kH4rU7dSLVpoWHRahGkFkX0wQkJHlH6SNLZxjM9otApp8jUnLqrvWKWb4yIckoKSxwrIx/Q4DCrgzhfydN1ZO17U4CauYuMocBy25nGXuLHMZNQbWIwGT8AXxcSVO7sPWrVL7yaZUncR+wViup4826sTf4bh5HbBdcFFDJzsTvSD/fe8mVsddpdC/LaVkdOsh8bGE9PODkGdRZhow79ebikDsDRfz5uJ1RDrFzO/nn9T3Iaell5UhasnVaav7D5SJ2FeD+Pi5/cOBXTOhT0ixtvCmGFVsDwTHy9HKtthzbf/2GlB6Y7j36ZSno16FsZ1n47wDO9m4oSkUZil7sIlvd5CZyEADhYOWI/tDDT4JiM31kqmz45lPb4fVrg2oMCkO7INcAHqr18FIb2P61xAWl3h+OeOPiwI/+OCEQFMDGorPBZt/inC8ZP3EpWDPtWdRwJsuTrFieNKl6zkkulfLdoDr0iSqecXtmSA97SauNWInTgMEmrYiWgIA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,181 +119,235 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Extract 'struct gmem_file', 'struct gmem_inode', and GMEM_I() from
-virt/kvm/guest_memfd.c into a new internal header virt/kvm/guest_memfd.h.
-Also split __kvm_gmem_create() to expose a non-static
-__kvm_gmem_create_file() helper that returns a 'struct file *' instead of
-an fd.
+Introduce kvm_gmem_freeze() to freeze a guest_memfd inode's mapping,
+which prevents fallocate() operations and new page fault allocations
+during preservation.
 
-These internal definitions and helpers allow upcoming guest_memfd Live
-Update Orchestrator (LUO) preservation code to access guest_memfd
-internals and reconstruct guest_memfd file instances from preserved state
-without installing them into a file descriptor table up front.
+Use a global SRCU (`kvm_gmem_freeze_srcu`) to synchronize freeze state
+checkers without incurring per-fault locking overhead or risking per-CPU
+memory exhaustion (as per-CPU structure not counted in cgroup) from
+per-inode SRCU structures by faulty/compromised VMM.
 
 Signed-off-by: Tarun Sahu <tarunsahu@google.com>
 ---
- virt/kvm/guest_memfd.c | 68 +++++++++++++++++-------------------------
- virt/kvm/guest_memfd.h | 39 ++++++++++++++++++++++++
- 2 files changed, 67 insertions(+), 40 deletions(-)
- create mode 100644 virt/kvm/guest_memfd.h
+ virt/kvm/guest_memfd.c | 117 +++++++++++++++++++++++++++++++++++++----
+ virt/kvm/guest_memfd.h |   5 ++
+ 2 files changed, 111 insertions(+), 11 deletions(-)
 
 diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index db57c5766ab6..dd84bba8974b 100644
+index dd84bba8974b..d522cc34f476 100644
 --- a/virt/kvm/guest_memfd.c
 +++ b/virt/kvm/guest_memfd.c
-@@ -7,38 +7,12 @@
+@@ -7,11 +7,13 @@
  #include <linux/mempolicy.h>
  #include <linux/pseudo_fs.h>
  #include <linux/pagemap.h>
-+#include "guest_memfd.h"
++#include <linux/srcu.h>
+ #include "guest_memfd.h"
  
  #include "kvm_mm.h"
  
  static struct vfsmount *kvm_gmem_mnt;
++static struct srcu_struct kvm_gmem_freeze_srcu;
  
--/*
-- * A guest_memfd instance can be associated multiple VMs, each with its own
-- * "view" of the underlying physical memory.
-- *
-- * The gmem's inode is effectively the raw underlying physical storage, and is
-- * used to track properties of the physical memory, while each gmem file is
-- * effectively a single VM's view of that storage, and is used to track assets
-- * specific to its associated VM, e.g. memslots=>gmem bindings.
-- */
--struct gmem_file {
--	struct kvm *kvm;
--	struct xarray bindings;
--	struct list_head entry;
--};
--
--struct gmem_inode {
--	struct shared_policy policy;
--	struct inode vfs_inode;
--	struct list_head gmem_file_list;
--
--	u64 flags;
--};
--
--static __always_inline struct gmem_inode *GMEM_I(struct inode *inode)
--{
--	return container_of(inode, struct gmem_inode, vfs_inode);
--}
  
  #define kvm_gmem_for_each_file(f, inode) \
- 	list_for_each_entry(f, &GMEM_I(inode)->gmem_file_list, entry)
-@@ -557,23 +531,17 @@ bool __weak kvm_arch_supports_gmem_init_shared(struct kvm *kvm)
- 	return true;
- }
+@@ -96,6 +98,7 @@ static struct folio *kvm_gmem_get_folio(struct inode *inode, pgoff_t index)
+ 	/* TODO: Support huge pages. */
+ 	struct mempolicy *policy;
+ 	struct folio *folio;
++	int idx;
  
--static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
-+struct file *__kvm_gmem_create_file(struct kvm *kvm, loff_t size, u64 flags)
- {
- 	static const char *name = "[kvm-gmem]";
- 	struct gmem_file *f;
- 	struct inode *inode;
- 	struct file *file;
--	int fd, err;
--
--	fd = get_unused_fd_flags(0);
--	if (fd < 0)
--		return fd;
-+	int err;
+ 	/*
+ 	 * Fast-path: See if folio is already present in mapping to avoid
+@@ -105,12 +108,20 @@ static struct folio *kvm_gmem_get_folio(struct inode *inode, pgoff_t index)
+ 	if (!IS_ERR(folio))
+ 		return folio;
  
- 	f = kzalloc_obj(*f);
--	if (!f) {
--		err = -ENOMEM;
--		goto err_fd;
--	}
-+	if (!f)
-+		return ERR_PTR(-ENOMEM);
- 
- 	/* __fput() will take care of fops_put(). */
- 	if (!fops_get(&kvm_gmem_fops)) {
-@@ -612,8 +580,7 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
- 	xa_init(&f->bindings);
- 	list_add(&f->entry, &GMEM_I(inode)->gmem_file_list);
- 
--	fd_install(fd, file);
--	return fd;
-+	return file;
- 
- err_inode:
- 	iput(inode);
-@@ -621,7 +588,28 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
- 	fops_put(&kvm_gmem_fops);
- err_gmem:
- 	kfree(f);
--err_fd:
-+	return ERR_PTR(err);
-+}
-+
-+static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
-+{
-+	struct file *file;
-+	int fd, err;
-+
-+	fd = get_unused_fd_flags(0);
-+	if (fd < 0)
-+		return fd;
-+
-+	file = __kvm_gmem_create_file(kvm, size, flags);
-+	if (IS_ERR(file)) {
-+		err = PTR_ERR(file);
-+		goto err_put_fd;
++	idx = srcu_read_lock(&kvm_gmem_freeze_srcu);
++	if (kvm_gmem_is_frozen(inode)) {
++		srcu_read_unlock(&kvm_gmem_freeze_srcu, idx);
++		return ERR_PTR(-EPERM);
 +	}
 +
-+	fd_install(fd, file);
-+	return fd;
+ 	policy = mpol_shared_policy_lookup(&GMEM_I(inode)->policy, index);
+ 	folio = __filemap_get_folio_mpol(inode->i_mapping, index,
+ 					 FGP_LOCK | FGP_CREAT,
+ 					 mapping_gfp_mask(inode->i_mapping), policy);
+ 	mpol_cond_put(policy);
+ 
++	srcu_read_unlock(&kvm_gmem_freeze_srcu, idx);
 +
-+err_put_fd:
- 	put_unused_fd(fd);
- 	return err;
+ 	/*
+ 	 * External interfaces like kvm_gmem_get_pfn() support dealing
+ 	 * with hugepages to a degree, but internally, guest_memfd currently
+@@ -273,16 +284,30 @@ static long kvm_gmem_allocate(struct inode *inode, loff_t offset, loff_t len)
+ static long kvm_gmem_fallocate(struct file *file, int mode, loff_t offset,
+ 			       loff_t len)
+ {
++	struct inode *inode = file_inode(file);
+ 	int ret;
++	int idx;
+ 
+-	if (!(mode & FALLOC_FL_KEEP_SIZE))
+-		return -EOPNOTSUPP;
++	idx = srcu_read_lock(&kvm_gmem_freeze_srcu);
++	if (kvm_gmem_is_frozen(inode)) {
++		srcu_read_unlock(&kvm_gmem_freeze_srcu, idx);
++		return -EPERM;
++	}
+ 
+-	if (mode & ~(FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE))
+-		return -EOPNOTSUPP;
++	if (!(mode & FALLOC_FL_KEEP_SIZE)) {
++		ret = -EOPNOTSUPP;
++		goto out;
++	}
+ 
+-	if (!PAGE_ALIGNED(offset) || !PAGE_ALIGNED(len))
+-		return -EINVAL;
++	if (mode & ~(FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE)) {
++		ret = -EOPNOTSUPP;
++		goto out;
++	}
++
++	if (!PAGE_ALIGNED(offset) || !PAGE_ALIGNED(len)) {
++		ret = -EINVAL;
++		goto out;
++	}
+ 
+ 	if (mode & FALLOC_FL_PUNCH_HOLE)
+ 		ret = kvm_gmem_punch_hole(file_inode(file), offset, len);
+@@ -291,6 +316,9 @@ static long kvm_gmem_fallocate(struct file *file, int mode, loff_t offset,
+ 
+ 	if (!ret)
+ 		file_modified(file);
++
++out:
++	srcu_read_unlock(&kvm_gmem_freeze_srcu, idx);
+ 	return ret;
  }
-diff --git a/virt/kvm/guest_memfd.h b/virt/kvm/guest_memfd.h
-new file mode 100644
-index 000000000000..c528b046dd69
---- /dev/null
-+++ b/virt/kvm/guest_memfd.h
-@@ -0,0 +1,39 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+#ifndef __KVM_GUEST_MEMFD_H__
-+#define __KVM_GUEST_MEMFD_H__ 1
+ 
+@@ -948,7 +976,9 @@ static void kvm_gmem_destroy_inode(struct inode *inode)
+ 
+ static void kvm_gmem_free_inode(struct inode *inode)
+ {
+-	kmem_cache_free(kvm_gmem_inode_cachep, GMEM_I(inode));
++	struct gmem_inode *gi = GMEM_I(inode);
 +
-+#include <linux/kvm_host.h>
-+#include <linux/fs.h>
-+#include <linux/mempolicy.h>
++	kmem_cache_free(kvm_gmem_inode_cachep, gi);
+ }
+ 
+ static const struct super_operations kvm_gmem_super_operations = {
+@@ -1003,12 +1033,21 @@ int kvm_gmem_init(struct module *module)
+ 	if (!kvm_gmem_inode_cachep)
+ 		return -ENOMEM;
+ 
++	ret = init_srcu_struct(&kvm_gmem_freeze_srcu);
++	if (ret)
++		goto err_cache;
 +
-+/*
-+ * A guest_memfd instance can be associated multiple VMs, each with its own
-+ * "view" of the underlying physical memory.
+ 	ret = kvm_gmem_init_mount();
+-	if (ret) {
+-		kmem_cache_destroy(kvm_gmem_inode_cachep);
+-		return ret;
+-	}
++	if (ret)
++		goto err_srcu;
++
+ 	return 0;
++
++err_srcu:
++	cleanup_srcu_struct(&kvm_gmem_freeze_srcu);
++err_cache:
++	kmem_cache_destroy(kvm_gmem_inode_cachep);
++	return ret;
+ }
+ 
+ void kvm_gmem_exit(void)
+@@ -1016,5 +1055,61 @@ void kvm_gmem_exit(void)
+ 	kern_unmount(kvm_gmem_mnt);
+ 	kvm_gmem_mnt = NULL;
+ 	rcu_barrier();
++	cleanup_srcu_struct(&kvm_gmem_freeze_srcu);
+ 	kmem_cache_destroy(kvm_gmem_inode_cachep);
+ }
++
++/**
++ * kvm_gmem_freeze - Freeze or unfreeze a guest_memfd inode mapping.
++ * @inode: The guest_memfd inode.
++ * @freeze: True to freeze, false to unfreeze.
 + *
-+ * The gmem's inode is effectively the raw underlying physical storage, and is
-+ * used to track properties of the physical memory, while each gmem file is
-+ * effectively a single VM's view of that storage, and is used to track assets
-+ * specific to its associated VM, e.g. memslots=>gmem bindings.
++ * This API is used strictly during the live update / preservation transition
++ * window to prevent host userspace and guest-side faults from making any
++ * mapping modifications (such as fallocate or page fault allocation)
++ * to the guest_memfd page cache.
++ *
++ * Synchronization Strategy (Sleepable RCU):
++ * To avoid high-contention VFS locks (like inode_lock or
++ * filemap_invalidate_lock) on the vCPU page fault hot paths, this subsystem
++ * implements a lightweight, system-wide Sleepable RCU (SRCU) mechanism
++ * (`kvm_gmem_freeze_srcu`):
++ *
++ * Global vs. Per-Inode SRCU
++ * ======================
++ * A single system-wide global static `srcu_struct` is used instead of a
++ * per-inode SRCU structure to completely prevent unprivileged users from
++ * exhausting the host's per-CPU memory allocator. Because
++ * `init_srcu_struct()` allocates per-CPU memory via `alloc_percpu()`, which
++ * is not accounted by memory cgroups (memcg),
++ * a per-inode SRCU structure would allow a tenant to bypass cgroup limits and
++ * trigger a system-wide Out-of-Memory (OOM) crash simply by spawning a large
++ * number of guest_memfd file descriptors (bounded only by RLIMIT_NOFILE).
++ *
++ * Flag Modification Note:
++ * Since `GUEST_MEMFD_F_MAPPING_FROZEN` is the ONLY flag in
++ * `GMEM_I(inode)->flags` that is mutated dynamically at runtime (all other
++ * flags are creation-time flags which remain strictly read-only), there is
++ * no possibility of concurrent bit-modification races. Therefore, a standard
++ * `WRITE_ONCE` is fully safe and does not require complex `cmpxchg`
++ * synchronization loops.
 + */
-+struct gmem_file {
-+	struct kvm *kvm;
-+	struct xarray bindings;
-+	struct list_head entry;
-+};
-+
-+struct gmem_inode {
-+	struct shared_policy policy;
-+	struct inode vfs_inode;
-+	struct list_head gmem_file_list;
-+
-+	u64 flags;
-+};
-+
-+static inline struct gmem_inode *GMEM_I(struct inode *inode)
++void kvm_gmem_freeze(struct inode *inode, bool freeze)
 +{
-+	return container_of(inode, struct gmem_inode, vfs_inode);
++	u64 flags = READ_ONCE(GMEM_I(inode)->flags);
++
++	if (freeze)
++		flags |= GUEST_MEMFD_F_MAPPING_FROZEN;
++	else
++		flags &= ~GUEST_MEMFD_F_MAPPING_FROZEN;
++
++	WRITE_ONCE(GMEM_I(inode)->flags, flags);
++
++	if (freeze)
++		synchronize_srcu(&kvm_gmem_freeze_srcu);
 +}
 +
-+struct file *__kvm_gmem_create_file(struct kvm *kvm, loff_t size, u64 flags);
++bool kvm_gmem_is_frozen(struct inode *inode)
++{
++	return READ_ONCE(GMEM_I(inode)->flags) & GUEST_MEMFD_F_MAPPING_FROZEN;
++}
+diff --git a/virt/kvm/guest_memfd.h b/virt/kvm/guest_memfd.h
+index c528b046dd69..028c348a1023 100644
+--- a/virt/kvm/guest_memfd.h
++++ b/virt/kvm/guest_memfd.h
+@@ -29,11 +29,16 @@ struct gmem_inode {
+ 	u64 flags;
+ };
+ 
++/* Internal kernel-only flags (must not overlap with UAPI flags) */
++#define GUEST_MEMFD_F_MAPPING_FROZEN	(1ULL << 63)
 +
-+#endif /* __KVM_GUEST_MEMFD_H__ */
+ static inline struct gmem_inode *GMEM_I(struct inode *inode)
+ {
+ 	return container_of(inode, struct gmem_inode, vfs_inode);
+ }
+ 
+ struct file *__kvm_gmem_create_file(struct kvm *kvm, loff_t size, u64 flags);
++void kvm_gmem_freeze(struct inode *inode, bool freeze);
++bool kvm_gmem_is_frozen(struct inode *inode);
+ 
+ #endif /* __KVM_GUEST_MEMFD_H__ */
 -- 
 2.55.0.229.g6434b31f56-goog
 
