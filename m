@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABA1DC54F51
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 20:44:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1F39C53219
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 20:44:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 695316B00A2; Tue, 28 Jul 2026 16:44:20 -0400 (EDT)
+	id 7C73F6B0096; Tue, 28 Jul 2026 16:44:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 666AB6B00A1; Tue, 28 Jul 2026 16:44:20 -0400 (EDT)
+	id 778346B00A0; Tue, 28 Jul 2026 16:44:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 57B116B00A2; Tue, 28 Jul 2026 16:44:20 -0400 (EDT)
+	id 692756B00A1; Tue, 28 Jul 2026 16:44:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A4036B00A0
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 16:44:20 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B9FA940414
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 20:44:19 +0000 (UTC)
-X-FDA: 85039363038.30.91659B8
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf25.hostedemail.com (Postfix) with ESMTP id ECAEAA0014
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 48CC76B0096
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 16:44:18 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D3536A147D
 	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 20:44:17 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=oo00+iJF;
-	spf=pass (imf25.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+X-FDA: 85039362954.02.92DF7DF
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 4A1EC4000F
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 20:44:15 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=K485cUMJ;
+	spf=pass (imf17.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785271458;
+	s=arc-20220608; t=1785271455;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VHllHAYD+554jhDmr6CAyg40twiId7LXCrXkJDYooJQ=;
-	b=LyfOVVz0NQZ9m8biV4+GR2V8IIv7kECCaGAZgkZOOppLZVWijUua2gCr46Pw/i5tR28/g+
-	Z3wBNESXO3k8IV/DqzEJBlRe+dbDjb/a9wl4KWNkcOSDBDHohd1bdEwslKWP025+jJbWOT
-	Rns59usEtVOb3ZGizEwOwvhnmb+Tpgc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785271458;
-	b=j5BSLK7GPihxV2AqrlblxSbC+rFI0IqAOoPlYMaM3gFXjIQZa/ccQ1OO6e+cAGPxvhkftD
-	QNbh8H0hIhaLTW9m3T2b6rGT60K5LcmRPZ/xRxWIw6m4BBryHVnqya8Tb/cl6zAETFzLCU
-	ZxH5vgEMR+zRbu9wKWNzT4fRxhjOCgM=
+	bh=iHUcX5eQpRezIMY8oJMUAXej5RLYZlD3UOUjhTOMZS0=;
+	b=yNdMG1cNncfj3PwmrpJiAZzyjY6NmKUMwgrw8ppaj9pRvBBi+ERZKtBDKac6MWOmpIa9lg
+	HBvz2L0Q0rqWpqIo1r8NeHj4ZQP9SGD0H3Zunoc4JV0Q5EwtO+MpLbZS3oMBJ2ZAkYRwiu
+	fWUTy2/xOGOPXXxa6JGbAL6+7lO6jG4=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=oo00+iJF;
-	spf=pass (imf25.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	imf17.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=K485cUMJ;
+	spf=pass (imf17.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785271455;
+	b=FBQnnqy3VW+sIQ3J/LqCVCx6lI3UWbw/tJokZh4K202NioCTKWlpqOoIn+FWckRAK4ThZN
+	U90nMFM2vVQrCKvSpalw0QG/nomVFq9BZfvxM6fAtvHF/IJridrTlmsOK4tvQKTKKI1JT3
+	/iDolANJfqlnE/ksIWnkexeQD9OlHCY=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=VHllHAYD+554jhDmr6CAyg40twiId7LXCrXkJDYooJQ=; b=oo00+iJF/oZOfT62O7jdcjXrD8
-	59ppCTLYc8F6O/VTKGNJRlkk0edQfalqMqOgwFc7garRDyOkSHRGKOMitcArgVOC1ScNQx0d4IDvY
-	P67LR2o1FW8T8k+2QGIhJdRSAOsJwxnpM8Dz7bowvimNoxuj5ghmnMewVbRU1dxvE6bvBU16xaAzB
-	OSLK0BjX8X1qIKVlG3jOh/uo/39jGacBt4bQRGQ8nXTOn47tx+ngG0q3PqrDZEkxfTUbY372pWaBj
-	Y6iknI2Te++RgnUbQGzc8pdSzdNawpPglWjiQ23OpT1K/iL9aOIJjJnY6bfEZknkiFwE/Pnng/LgA
-	HVP2LhBA==;
+	bh=iHUcX5eQpRezIMY8oJMUAXej5RLYZlD3UOUjhTOMZS0=; b=K485cUMJTYK05DM335AN7gCaty
+	e/JwtpzzGi9ROGr40RuZ34lF6YBkQqyoA44fHYlQntagxBwnQUoHF/c0Krf7qMCDicc3f3skj0cKR
+	8FFxmaxgZjYY0UPniF6RxiM/vqZrn9fc/3eEZUquMxcBHW7GHYh+KAGWeBPu5boqO3cse3rSewqPe
+	M/f8xxyg/8GQxlzGIlCbWqkUBHWswio9Oan5Op9JzqTpZgRt2oK8OGV2R0CC/YF7mKUHrBTDtfRvb
+	fXhJcuDhDV6cDExm+0AiIuxZJV9/3HBoWyzkIGgwElBsiU36UsWqrVbc/8lJs3tAQQ82ciPvHzTC3
+	GHhmluyQ==;
 Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wooeq-0000000EFX1-2MZl;
-	Tue, 28 Jul 2026 20:44:12 +0000
+	id 1wooeo-0000000EFWP-35tj;
+	Tue, 28 Jul 2026 20:44:10 +0000
 From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Jane Chu <jane.chu@oracle.com>,
@@ -74,23 +74,24 @@ Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	Jan Kara <jack@suse.cz>,
 	linux-fsdevel@vger.kernel.org,
 	Christian Brauner <christian@brauner.io>,
-	Jiaqi Yan <jiaqiyan@google.com>
-Subject: [PATCH v7 12/13] filemap: Add support for authoritative mappings
-Date: Tue, 28 Jul 2026 21:44:04 +0100
-Message-ID: <20260728204409.3396238-13-willy@infradead.org>
+	Jiaqi Yan <jiaqiyan@google.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v7 01/13] memory-failure: Fix hardware poison check in unpoison_memory() again
+Date: Tue, 28 Jul 2026 21:43:53 +0100
+Message-ID: <20260728204409.3396238-2-willy@infradead.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260728204409.3396238-1-willy@infradead.org>
 References: <20260728204409.3396238-1-willy@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: ECAEAA0014
-X-Stat-Signature: i7kkruos6xx8zxkmehcdie3qq36qs67z
+X-Rspamd-Queue-Id: 4A1EC4000F
 X-Rspam-User: 
-X-HE-Tag: 1785271457-237723
-X-HE-Meta: U2FsdGVkX18d3+Narw/1fiFv8q7SxKwlQIjoAJjV7pKG3uyH908b2d1k9iqEwwL9gxOSVtA25Y9dhxXuyzTWP6klczSGHKG5ZrTe0l5fGMIHTLLJkZYioAgl8VaTAGEX7rsiaTV8oENQRw+ZpyrKEANC3ztNNcSj8J8BdIrablZXb9Xd4xeG6XwFtiq8tvFMHE9N5BUlUyAqSIMM+6TXq+L6Ruk7CxSmXRerHaV2dZEMUJIOMhJsgAmk1OQerc5U580UUfEaMP094Z97w/jLK9k+EOgE9gjqV2S9gdgAOLDiGqlm+vUdZFsizYr/gVE2jPfqc8rR5bWvgYCWQM6WgKMbnrIs7E5hvDnkplMQhEHZYuf2XhEPH5XBj205b/uz3gnNr0rTKeo4zWT1eisCutpehHRt2XaUSf6mh5rFGaffxUVVSz0zdPkILABDwBi4Uzmv9XjikkXnRfw4KnzqiEowtwkoJCSAQPE6UcusaCUvO90WvK+v1OREPZRYlQJs/27tIs+MoQHCE+2eGaatjnm3c+APrDQ+Rggx2qaKdZdoLYY7nEa3JeExA6mzOyS3C3zJ5owNHVnQjqpDDtQjdMt4Z5+abZSZoST3HFT0y8wXsdxnWnD1KiatQ1qEEGcTQo4FEplnmtN+wbhixwwX6nfHTLYJePWwx/rPxhHR5dkcdgbyFt9Bajr1gZWSQ+StwgIj/lk7pAFF8SEH9O6pW12PqR6BBH9ZzcOHH+0LIlBP0dZA6LqTLYOBtaIBRZAfR26n/+Qzm+1wYYxDnY4FiGd0Z+39y4aihOwYvqWZnQdstcTwo3+vyWbiIxrpK3kN6Wald8ja/fQyCcOajNCiOb+FYOgfxkgVYTPliabEcJurp7ZPJzip2b04qu6vcH230/U18cm0bWyFS0GRdacLootyVuSlYUmUG+B5dPNvQKyMi5MQdwl0gePRywixv50qRgMBd/BuRlQ5qH0gulA
- VaV9XsaD
- pEvz8GdC2GNLO65sPo6xh7sxg1EwCrFAv6K4sVIqM75q47bs5K08kjYZVbWTScg7mslhxUd/cFPj51s24B0ggNBgFagLwbtuaIrAMIsO+nCRJRmptc0ijNUtAwV+3ele3fLFpn4EiXCArQ7cDfQWpkrENFL2Ujt6Hq0EYe7c3LQgFcSswhCsHk0TlLK2prlwZPAr+pGJVWua7BvahxVjrbZCVg3pzODlI3oj/Nmpp3VU/XW9kqK+7le+2JfBLfcfW8ycjHDNFuMaYLrfNz8WBBD4RnV0ZNv5TkRC+V6/e/bvK2+1N3e1X5npHqntmrFQ3MgDIk7Xs9LCcDfQ=
+X-Stat-Signature: smnazpqyidg9xbouhppsn7dhnq7sxgfn
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1785271455-445826
+X-HE-Meta: U2FsdGVkX1+KfgW/sVX3DtYX11HySjoLffhYoZkIgL8Azxca+GbDfIDqoEF44rpLteJhDnVemIreTKyZn6axIJPXAJ3BXMU4+Geo8HiYC8TdUl8PmH8umXlSHTfp4Rwkf8WFOpt/6D//J446zc3qvyvcbpasTqjYmljk3J5Nfrumpl+DHtWx6IBhJPjWqHKRYl55XcXr44um7bFimBtHqHlanOViIdsUjzpmkVoAT6DFn1qnHqKyxluUxuT47w2YsCO4dOu3ZM7Ttqn+fgC2fXEHuIke/alrtAF8CYr749tEfDpJOE7DbuRgEHGLiuN6dejh0CMRy2Jk1dOh2IW8mI+TYSLeBGyLSWpohv7NJOk4HZCuTV7eCIGCQMineIMS9jqrb4vkHoH1y5y7gyalNn6rt35x8t1dTsvmq0Ig/Se1xaJpLJqlwX86Tlj5ItlC5+s3/0m+rPvJ94esCOLif1XMsodn0AxF6Y7OzD1Ipbxk/azTwU2vKFl3tvApZEsKQdJlLPYbLW3Oi7vpojWRe+JURTefD6iha4CIBlcV8GXM/EO7NBOlNICPmhLeaIzBDlmCHRqrrhtmPpIcgyP5E7/7rz2kl0VWicdfn3xM9iQ+GcnbDi89W55ddN0arkePy4R4aBHPSW520YeZrHoVn6pNOqo3JG7UWh25NTaH0t8F2x3xDIGIFvNv9gmA8em/cu9j1bWgXS6D3HF0RJuSz9Ofskx/yGe+zcJK332jKvBn4434dIaJRq5xmVvgbtHjwYcb9SOQeBxmWXs7rBtuzazQldEYN8OR6c9xANeVic1+IUCkCwhQojrRMz/2+u78PcMvvE3o+Vv9eqxJ4+XuCGvHwul7Tdca+TE4OQ2ugYXSsF1OAiD/4owBkMvRTawOgFoWMlD+O9LiiPA0cFJ1aXcNGX29Cng/2LU1KsZMP3gkkT2VMo8DOSmOxsA4lB48sqUzHHZhdpQp25myiJa
+ kFavOBWB
+ F+gZsk5xrHMzxv1Iiy2TUKZDGFPOL5LIi4vd6QWQCbraKsh/9mJ3K3Jv1FcSvOQ18VuZGFSy7YiTdlqv0psjKF7Kfy3zpYkMHP7zmsqOMCL8YHwAQNVvzhdc7LBrMZcFMcOv8VE+SyiLE1h3iA9qmZe7xuAD/rV3WHfINJaD81dUmFoZjLc4xwve9xei3BqqXjTwDpzBxOpcrHW1JSecmVozBzavLhNn8lbVlWvZhjVjCEjiiJAeqL12qAUaALzuUKcgiYYuYYlodCQccOsJGN/seewbqhc41lUh381vKWVENDOPe9U5CKEravoOU4dTyEb8RAnET9cQ++19Gc5CkSuF7t231O/4SlIFe3/OlJG5SomOhokBI67rUHTXZWYsJaHfd9gCL5077EzqO/9RNh+PQrA9zOjuP1ezCeyIanOKV5aY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,82 +99,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-An authoritative mapping knows about all the folios in the mapping.
-If read() finds a missing folio, there's no reason to allocate one and
-try to read it because we know it's a zero region of the file.  We can
-just call iov_iter_zero() instead.
+The earlier patch (6c54312f9689) that attempted to fix unpoison_memory()
+was incorrect for hugetlb folios.  Before a6fddef49eef, we checked
+the head page for poison (which was correct for hugetlb and incorrect
+for THP).  We are currently incapable of unpoisoning pages (other than
+the first page) in a hugetlb folio.
 
+Use is_page_hwpoison() which handles hugetlb pages sufficiently well for
+this purpose.  This is racy as we don't have a reference on the folio at
+this point, but fixing that properly requires deeper surgery and this
+is a CAP_SYS_ADMIN path only so this will do for the moment and can be
+easily backported.  It's no worse than the situation before a6fddef49eef.
+
+The other bug in a6fddef49eef is that we currently clear the HWPoison
+flag on the precise page, which is wrong for hugetlb.  Fix that too.
+
+Fixes: a6fddef49eef ("mm/memory-failure: convert unpoison_memory() to folios")
+Cc: stable@vger.kernel.org
+Cc: Miaohe Lin <linmiaohe@huawei.com>
 Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 ---
- include/linux/pagemap.h | 11 +++++++++++
- mm/filemap.c            | 18 ++++++++++++++++++
- 2 files changed, 29 insertions(+)
+ mm/memory-failure.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-index 968b791cfd14..22d48935ffda 100644
---- a/include/linux/pagemap.h
-+++ b/include/linux/pagemap.h
-@@ -210,6 +210,7 @@ enum mapping_flags {
- 	AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM = 9,
- 	AS_KERNEL_FILE = 10,	/* mapping for a fake kernel file that shouldn't
- 				   account usage to user cgroups */
-+	AS_AUTHORITATIVE = 11,	/* If we miss in the page cache, it's a hole */
- 	/* Bits 16-25 are used for FOLIO_ORDER */
- 	AS_FOLIO_ORDER_BITS = 5,
- 	AS_FOLIO_ORDER_MIN = 16,
-@@ -345,6 +346,16 @@ static inline bool mapping_writeback_may_deadlock_on_reclaim(const struct addres
- 	return test_bit(AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM, &mapping->flags);
- }
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index 51508a55c405..944e6e1d4971 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -2695,8 +2695,8 @@ int unpoison_memory(unsigned long pfn)
+ 		goto unlock_mutex;
+ 	}
  
-+static inline void mapping_set_authoritative(struct address_space *mapping)
-+{
-+	set_bit(AS_AUTHORITATIVE, &mapping->flags);
-+}
-+
-+static inline bool mapping_is_authoritative(const struct address_space *mapping)
-+{
-+	return test_bit(AS_AUTHORITATIVE, &mapping->flags);
-+}
-+
- static inline gfp_t mapping_gfp_mask(const struct address_space *mapping)
- {
- 	return mapping->gfp_mask;
-diff --git a/mm/filemap.c b/mm/filemap.c
-index 26a5f18121f9..5a8cc20e624e 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -2697,6 +2697,8 @@ static int filemap_get_pages(struct kiocb *iocb, size_t count,
- 	if (!folio_batch_count(fbatch)) {
- 		DEFINE_READAHEAD(ractl, filp, &filp->f_ra, mapping, index);
+-	if (!PageHWPoison(p)) {
+-		unpoison_pr_info("%#lx: page was already unpoisoned\n",
++	if (!is_page_hwpoison(p)) {
++		unpoison_pr_info("%#lx: page is not poisoned\n",
+ 				 pfn, &unpoison_rs);
+ 		goto unlock_mutex;
+ 	}
+@@ -2748,6 +2748,7 @@ int unpoison_memory(unsigned long pfn)
+ 				folio_put(folio);
+ 				goto unlock_mutex;
+ 			}
++			p = &folio->page;
+ 		}
  
-+		if (mapping_is_authoritative(mapping))
-+			return 0;
- 		if (iocb->ki_flags & IOCB_NOIO)
- 			return -EAGAIN;
- 		if (iocb->ki_flags & IOCB_NOWAIT)
-@@ -2853,6 +2855,22 @@ ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
- 			goto put_folios;
- 		end_offset = min_t(loff_t, isize, iocb->ki_pos + iter->count);
- 
-+		if (!folio_batch_count(&fbatch)) {
-+			size_t fsize = mapping_min_folio_nrbytes(mapping);
-+			size_t offset = iocb->ki_pos & (fsize - 1);
-+			size_t bytes = min_t(loff_t, end_offset - iocb->ki_pos,
-+					     fsize - offset);
-+			size_t copied = iov_iter_zero(bytes, iter);
-+
-+			already_read += copied;
-+			iocb->ki_pos += copied;
-+			last_pos = iocb->ki_pos;
-+
-+			if (copied < bytes)
-+				error = -EFAULT;
-+			continue;
-+		}
-+
- 		/*
- 		 * Once we start copying data, we don't want to be touching any
- 		 * cachelines that might be contended:
+ 		folio_put(folio);
 -- 
 2.47.3
 
