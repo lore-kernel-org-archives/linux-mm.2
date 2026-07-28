@@ -4,112 +4,153 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C13B3C54F4C
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 13:25:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 399F4C54F4C
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 13:35:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ABF136B00A1; Tue, 28 Jul 2026 09:25:19 -0400 (EDT)
+	id B6FCD6B007B; Tue, 28 Jul 2026 09:35:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A98336B00A2; Tue, 28 Jul 2026 09:25:19 -0400 (EDT)
+	id B20026B008C; Tue, 28 Jul 2026 09:35:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9AF556B00A3; Tue, 28 Jul 2026 09:25:19 -0400 (EDT)
+	id A115C6B0093; Tue, 28 Jul 2026 09:35:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A8496B00A1
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 09:25:19 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1618D1203A6
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 13:25:19 +0000 (UTC)
-X-FDA: 85038256758.26.68E5011
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6F6A26B007B
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 09:35:52 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CCD69803AF
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 13:35:51 +0000 (UTC)
+X-FDA: 85038283302.04.3593300
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 77A68C0003
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 13:25:17 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VaJ4jUWV;
-	spf=pass (imf28.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	by imf25.hostedemail.com (Postfix) with ESMTP id 2D78AA0011
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 13:35:49 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hJ6ZyGrX;
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785245750;
+	b=VEI2gN5AApI3UxWGtyFWUc47ElrC6xZSSDR4vUjm0W+ck/bDdEjcDWPyN9+y7qnfjqeKjA
+	BoP46LOqDhGSB5/qXon0VrTOt77nLjn5Ai6FnEamRR4MWLzCzB/qrdRdEKoH7+J/Uw4lNH
+	WVSRtL6H5nFO+TdHdYADOsjsffVbgB4=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hJ6ZyGrX;
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785245117;
+	s=arc-20220608; t=1785245750;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YJ6nTW8uRRvGa9uxb9XpHnqlyfY+CSFnQPSaLsTQkoQ=;
-	b=drxc9ZO2pZVzuP5g1Ti4NfaNn854/O4Cxh2tzYevSpNbqqmgnSNcb1mwkE5TCDZoRWat7i
-	+ZIzbn5PNLJAlf9cATuD+gpfbtwqpQNJ9+sUZ/tEaxs2USIvt+umLY9Wu1XrZZwDFg7Eof
-	JF/li68f41SN05yW+bxaqi6vg7/3q5k=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785245117;
-	b=Sulxll+XAtPwtBw2zoWFxRKOGyGUYt4Mi/UFqQb+ZJRRVHvh4TsdqPTF6CTxvdxjkcx7st
-	za9Nyijo9l42jrtGqtS4XBU6c4u7iwAEhIJmP8BpzOmqgooV1nDOiZaof/Yxa+9iAOSjq4
-	rC/TXh52apQyqEAfJ77b37B2ZoJfUSM=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VaJ4jUWV;
-	spf=pass (imf28.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=F7E60EEGx3HhYQLCew9dec70QQpFr1JD3ItgZk/3IBg=;
+	b=5ewMGgzhHXTP9T41rUzjuouLe8VtRLnSncwc/UaNylcewwFeRE5J5woSHZgsGb6z7jfdgd
+	qgWiit0KTaF/IhKimkuXkeOD+ujAIm4zkBMG5//Exu9QfXNJBWOJXcJab80qvPrfaAd82q
+	eH6iIfU8xAvzJWzB3S3FZTwPRbRJ7ls=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C6C7240403;
-	Tue, 28 Jul 2026 13:25:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3936B1F000E9;
-	Tue, 28 Jul 2026 13:25:16 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4579540DE8;
+	Tue, 28 Jul 2026 13:35:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F6F61F000E9;
+	Tue, 28 Jul 2026 13:35:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785245116;
-	bh=YJ6nTW8uRRvGa9uxb9XpHnqlyfY+CSFnQPSaLsTQkoQ=;
+	s=k20260515; t=1785245749;
+	bh=F7E60EEGx3HhYQLCew9dec70QQpFr1JD3ItgZk/3IBg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=VaJ4jUWVuOmuzpDqjmybmjd+t76vdlUgJE4E5RC9QK/aLvtmgtBAF7/Jgny7U+PT8
-	 7zG16BN9At68+LTxJz+jBbFmu2bS3Fl4HHMk0ewnQeC/pVVJXVNDSoHmpAqo00iisl
-	 GuEUmHWXHt087Dza2+d6mpaTYTacALG0oTgh/k5NUYl5eo/6x9zuwPxcvr5twpx3oz
-	 o39/wu/NTJo8slYtSqJI7WQaldXhYgQV86x+LZIgCAgCsddpq+HDqd/CidxVQwzBjN
-	 JI8rnthiDC9cObvsUwgpXnj4Z7oW36vaEeQwnSuMv5SqqiCVPnl1vuJplgI3F87KZj
-	 15GjoMl7aCGgw==
-Date: Tue, 28 Jul 2026 22:25:14 +0900
-From: Harry Yoo <harry@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>, Hao Li <hao.li@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Alexander Potapenko <glider@google.com>, 
-	Marco Elver <elver@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	cgroups@vger.kernel.org
-Subject: Re: [PATCH v3 05/13] mm/slab: abstract slabobj_ext.objcg access
-Message-ID: <amitGGcHyVXBdpOI@thinkpad>
-References: <20260727-b4-objext_split-v3-0-c29ef0f1f257@kernel.org>
- <20260727-b4-objext_split-v3-5-c29ef0f1f257@kernel.org>
+	b=hJ6ZyGrXFohV282rb4DcBTZtLaXEm4DG4EzBSaAk21cm4cHuYoe24V2bP2A3XjLTX
+	 7/D8dj15R5W/TNZgNi8iJNfMD6iu4ysPmFfd67MHL87sKSj/quy+1zpDftRPgID1md
+	 W1Dg46CjtdpalY9SmavmC1shWHb2XACiP+0fjTLovQV4x9EzRnu4pwlZkM0prax1iI
+	 IYZfhTDMOXUzqcjDzb79D/1mBLqK9/xMKVSgLT4zm79An4+G6SLphQoJHGp/ayHn7Y
+	 NHm/DiPdusfbad3D4k8lq9K3yZREeduP64s/aoQP0iA/h7DLaYue/b4dvGjVmFeSuv
+	 erXV/LxzbgXtA==
+Date: Tue, 28 Jul 2026 16:35:41 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Alexander Graf <graf@amazon.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jason Miu <jasonmiu@google.com>,
+	Jork Loeser <jloeser@linux.microsoft.com>,
+	kexec@lists.infradead.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 00/21] kho: make boot time huge page allocation work
+ nicely with KHO
+Message-ID: <amiwLSEi8cczamP1@kernel.org>
+References: <20260725172133.4018491-1-pratyush@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260727-b4-objext_split-v3-5-c29ef0f1f257@kernel.org>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 77A68C0003
-X-Stat-Signature: agmdua5bmu6kuw5xnihxwz4qszpc95h3
+In-Reply-To: <20260725172133.4018491-1-pratyush@kernel.org>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 2D78AA0011
+X-Stat-Signature: t888rqmn6jstnccs6xa1oaegud64hf3s
 X-Rspam-User: 
-X-HE-Tag: 1785245117-240966
-X-HE-Meta: U2FsdGVkX18i2LpZDGDt2f+0+ekejDJMNeTupGwp+eAskq0xi99FFL9MnFBMlxDC5rGy02Xw5/uUJHFCq5D8mFlqNBKMP+cA3bHPcPraCvpc8YyDl0oxzq5KMvwm9hjFASuiYVeDVi6xquv9PDd3VBCe42bQECy1B84gzwUtP67Z9xQiTbL7tgEqU18MEskddjsscdyKQRlbcuveO31kjSqEvCAFl+9bexC34q7V8wPUBvTPQ1drDm/uSt6e50sKOSr436V6pJ/ttfAiMPQ7hB3ezgCb7atpUPBimIQf/CrTKgptklDovfDXlbECXmWh9G3+RgGtIxL5/g5O1Aalz0mFtAwN+WlBbZw3TMfAFUGVknedktDXQr/sRsOrrf0h/fyIgsvPLTPssZD0bz26MNMf8yLAlFdUaWV2d61UuM1RgvYblOSpa0Kwnb5BGT+WhyuRKe5qTlkEyDvewbzkCfrW5JF8GjjF+dTDbC0cZr+c3jSM2jDqSGG6/P+78wZqS9mNDjd0Vnr1fHLYaK2UkAokxhmYKvtJS1zMcOoYzhqW2l79veEbApuPg8AALUCq4E3wlGj95YCQJlMyqPJrfgV7U1B9njvuCGdM1q0blMyjQ9PcDhDhoQ9CiDUDFuzwYGhXRHJELDN14YzTV0+Kl086FmyIqcUA6FgBEDL/N4AECpxqJOmht8SSAQXJpTTQX+RFXvpjYAWfen1sVlcamcJQZXwOqG8EMs83byKME8RCdcevg6uT6FOXTMr9F+1A2EKXfTn8qeb8tUzMfxY1qwR4TCjA5q4s9KYTY6RpLlZULpLjqFU/xnomBcwZKobVPT+Y/vMPAMuz7gV92Dfe784SCSPKdIypjUqdqU7EHSGLvNgCc0puPTbZq+XcdNKV3gTeFHgJd8wzF0HOE5r1cRUeCia7v8lNyEIa2t+4xuX2Gc2+jkpnqyjItBoWz2uvgcKPLuGZOrYVVzMhP14
- WJ4/gVOC
- 1sK63OxBjlVkgIxCUFrKrT4BR9A1GkWYV/OKktQ8HHd6mfWbmt6n2X5LAf8UA4QQ7pJv6hjlPA89FYaTiA18g/qusKw6xsSnYscclAICBl+OUw11Ud+z/mH0vtPM/Z2RWXlAnNDSmzQK9NSZeH0wwWkU2mTJ8Xmatq8ALipRSrgYKIgrhqkcxyqqMnWkjMxLuR7GzinHuvcoYF+vNVoUOpe+aaEQ/2BBGiut71GsG6z2AUubPstR1lLSrM0hb9qPy+cCgknXuvvSxQry3yM4A4Y66tfTBmvIB9cVdfZFB2G5wmp4wDw6j8EM10YGO9tBfbLQ0LYB56DdwEVEAmTNKKPAPiUcIza2OvEG+l8hTIrxjK6Au/h4fS3N4PQ==
+X-HE-Tag: 1785245749-290090
+X-HE-Meta: U2FsdGVkX19nV9mKXNBVQWfcOpxdRnLntSy124RYRQu2INlzHaYr7o6WeKekeJPH9hbBnhHKMSrpAGBbapvov+oGS2ZwWOhqksLFgoHIjgegFKWSFlffUQD5VuiUGKYWWL9F3wn0NCEWn1JzlDQfflU3PxRUHr/seOnhj4egHarsOKd4o5ZkePgPPT/kwAEf9tRN+gIwDRIhwUVYHvxzepSburYExWvsGs1Xxc63lV1mz7RNHmYkU649LvIVNvr05Hn7VX0a4aoVGel0K/caAt26Kici6k1OvZYOkmFhw7VivlbNjn8s40SJcVyVYPpUINLQz4bpt8F3RvwPsb+DxTEMWypD0NQtKRulZjqVhiEFCnTAD8ujehC4rcLzG/1ZvFuuV/3vf8X3HviNVgv3YOQ0LycSafQOV6L3aIU0IR0DVj/Hi/QDfykz3Sv5mFrTX/5RhtAzmXx3YEbhaa/Xteo9zNPit9wBJ+nCsWKHwYpFAJQ6qJTF10wEkvn+cDwK4nM8NHrxtqkmoOJWIG4qELyL2OD1+LcGw47DUyujP0WVMDAgYnbTTFNIea6b7cXS7hRKe/UehGK6ju/bpyh9JRaUnIGOnZBVPkmUNlpfWZL0zt8Pg+rew3nH7Dxi6ltWMs85YhffLbdKaNGqmRG5fqq1EZpd64wXXuF0JMHkH/EyV0LlR9xs91IBloyxnne5GWWwpMn4G18yKdz/v3Jwz4gIL9wsJYfkK0rwkNX878e5c8oK3H7AYgRR66yPUhq0Bn/QmLA6cUIGmQHiFl+1PksZjZRMFP9py0Csq3hsK8ujSJs+PH9+LtAd0/h9/Ou3jurtkt6CgVye7wQt7oXSB0x1dEbAyzx3gjYUOMdhroMYNOu4cOKL4O8JzyTUCdJ41w1oPyqTvzjSXgZjB5ojc6wpz55mvAoY8qGS8xMjRwNQemR4Xs8hOKZ2AdHeM+uvAzIl8b6RrmYzxvlXxtL
+ uyHjPLJt
+ SCiTAqbyrGcQ4zT29q+kyDvOwHnnXWlTvVkB74Yp187pLUp3XKV/tnPVZ3Ez9XUng89YZjXXCgXFLCh6Jc1noo1aqw2JavXlsKRh8y1E4nGN1CCN+G+lud2Ip+cYmmryZjnu8czD3paSkdgazS9zVKZilBlWqqn7eZa1pvX+HQO+eUKoU7G6d8+djz3TxIK0wO5sA6AAnjVhq3/XVJVls5jlXbSrpkSFcru61rQ9kwtJAxlM+AUcr1Jpbjwp7pBmWs1qSXcwMZcrXU8wELIXhkZoDdQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
 List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
-Message-ID: <20260728132514.EQFEIa_TmuURcDcjuFzEEUVrRjWxrNyE1TUZyIWSV4A@z>
 
-On Mon, Jul 27, 2026 at 02:53:59PM +0200, Vlastimil Babka (SUSE) wrote:
-> In preparation for changes to the structure, abstract getting and
-> setting the objcg field with slab_obj_ext_objcg() and
-> slab_obj_ext_set_objcg().
-> Rename the field to _objcg to make an unexpected direct access a compile
-> error.
+On Sat, Jul 25, 2026 at 07:21:00PM +0200, Pratyush Yadav wrote:
+> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
 > 
-> No functional change intended.
+> Hi,
 > 
-> Reviewed-by: Hao Li <hao.li@linux.dev>
-> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> ---
+> Gigantic huge page allocation is somewhat broken currently with KHO.
+> 
+> First, they break scratch size accounting. Since they are allocated
+> using the memblock alloc APIs, they count towards RSRV_KERN, and this
+> scratch size when using scratch_scale. This means if huge pages take a
+> large enough chunk of system memory scratch size will blow up and fail
+> to allocate.
+> 
+> Second, scratch can not contain preserved memory, and if hugepages are
+> allocated from scratch, they will fail to be preserved with the upcoming
+> hugetlb preservation series [0].
+> 
+> Fix this by introducing the concept of extended scratch areas. They are
+> areas that the kernel discovers on boot by walking the radix tree and
+> finding free memory ranges. See patch 10 for more details.
+> 
+> Muchun Song (1):
+>   mm/mm_init: simplify deferred_free_pages() migratetype init
+> 
+> Pratyush Yadav (Google) (20):
+>   kho: generalize radix tree APIs
+>   kho: make radix max key width more obvious
+>   kho: disallow wide keys in radix tree
+>   kho: return virtual address of mem_map from kho_get_mem_map()
+>   kho: store incoming radix tree in kho_in
+>   kho: move all memory retrieval logic to kho_mem_retrieve()
+>   kho: add a struct for radix callbacks
+>   kho: add callback for table pages
+>   kho: add data argument to radix walk callback
+>   kho: allow early-boot usage of the KHO radix tree
+>   kho: allow destroying KHO radix tree
+>   kho: add kho_radix_init_tree()
+>   kho: expose kho_scratch_overlap() to kexec_handover.h
+>   kho: initialize kho_scratch pointer earlier in boot
+>   kho: initialize preserved memory map radix tree earlier
+>   mm/mm_init: don't rely on memblock to get KHO scratch migratetype
+>   kho: extend scratch
+>   memblock: make HugeTLB bootmem allocation work with KHO
+>   memblock: add memblock_reserved_hugetlb_size()
+>   kho: exclude hugetlb memory from scratch size calculation
 
-Looks good to me,
-Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
+I added it to the liveupdate tree.
+
+Please take a look at Sashiko comments, we might need v5 if it has valid
+(not pre-existing) points.
+
+-- 
+Sincerely yours,
+Mike.
 
