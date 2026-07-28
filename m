@@ -4,97 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67235C53219
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 10:32:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED367C531F9
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 10:33:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D00CC6B0088; Tue, 28 Jul 2026 06:32:23 -0400 (EDT)
+	id E61796B0093; Tue, 28 Jul 2026 06:33:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD7516B008A; Tue, 28 Jul 2026 06:32:23 -0400 (EDT)
+	id E388F6B0095; Tue, 28 Jul 2026 06:33:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C148E6B008C; Tue, 28 Jul 2026 06:32:23 -0400 (EDT)
+	id D014E6B0096; Tue, 28 Jul 2026 06:33:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E7B36B0088
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 06:32:23 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id EC1AB140341
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 10:32:22 +0000 (UTC)
-X-FDA: 85037820924.08.CFE0A27
-Received: from out203-205-221-191.mail.qq.com (out203-205-221-191.mail.qq.com [203.205.221.191])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 559924000B
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 10:32:17 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=foxmail.com header.s=s201512 header.b=cy4sGXi+;
-	spf=pass (imf01.hostedemail.com: domain of shijianlin11@foxmail.com designates 203.205.221.191 as permitted sender) smtp.mailfrom=shijianlin11@foxmail.com;
-	dmarc=pass (policy=none) header.from=foxmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A5EF26B0093
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 06:33:37 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1E1C040310
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 10:33:37 +0000 (UTC)
+X-FDA: 85037824074.18.730314A
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf10.hostedemail.com (Postfix) with ESMTP id ED4ACC0009
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 10:33:34 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=hmspDYhX;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=dfv9hSEH;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=vrM7+Kpp;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=15VO8SDD;
+	spf=pass (imf10.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785234741;
+	s=arc-20220608; t=1785234815;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=ZAuTf1+3OvFrirwii4r2yXLbQgHkDjeIyZIQFKuUdeA=;
-	b=3FbQKoV5uxR8PmrA6Wk9cuJjO544M9KUryRby5CQsJ2gLseAdfI6QiMvALVjvOo1byae2w
-	ttUY1Cocp1vGid8uXAM9hZ6c0+7ncLIm4C3FZbwsoNPH89o84+kyl+1Q9fY62fXgg5t11U
-	mJBQGzTiIRbdnp3v8OCtDcv96fRd1Cw=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=9ScQ16CMjFlPTjKS2k1tW3rCTBpjt7WhqtuW+Eef6SU=;
+	b=qirOMkbB7Vbq1x1z/3RrsIJNmGs59QRzs1uKmmhKHC1N9TiyzowEzCLFgYbzLrHD/8OEVx
+	GuJymFkHCbORP1MIEJvdNuMQ96aa4+SRDMuepF2jNoGvV0/rUy5WNef0dyENfMzUCtqaew
+	RL4b/jN6KBbVdys7FUQlFKkyhsuQhW4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785234741;
-	b=oRKxsCEpdmOoRbvBRCQSXOAb1Z+oHVzqbRcQ8jCVhShjpu/3vcvqaVl/A+Cd1fEivh3ZIQ
-	JGyDlGnTG3NP+74oCPzoTlOpebibHNmAjNkawapk/JcNFmcVMYWclOleR7W9dvzjw/6g/X
-	jOb5KN33/NPzNhlaT9NyDkJCuLIZdtI=
+	t=1785234815;
+	b=wR7BTxjY9tVFa7kcy1OiQ58PESOUfdtH6y9UAi76dFsgeulHzdeCCZz6zI6v05Uq0WpnR6
+	HUvEhN0b24D8RraliXvhu/ov5mevQXwqLzwy0NjUQybIRfVx8DWMte87v4Hm+Y1+i4uDKP
+	EvYHBpeV+uwN8IhqUHhMSfq2AW+RQtw=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=foxmail.com header.s=s201512 header.b=cy4sGXi+;
-	spf=pass (imf01.hostedemail.com: domain of shijianlin11@foxmail.com designates 203.205.221.191 as permitted sender) smtp.mailfrom=shijianlin11@foxmail.com;
-	dmarc=pass (policy=none) header.from=foxmail.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1785234733;
-	bh=ZAuTf1+3OvFrirwii4r2yXLbQgHkDjeIyZIQFKuUdeA=;
-	h=From:To:Cc:Subject:Date;
-	b=cy4sGXi+esRgvcmzZ2Zo7gexxTI3F7uUnXzfdklrlubRE4bkwWYd7HRAO/YJkWSjD
-	 rld8LbLoK5wmWPEYGZKjqndTijH0d01kbZFZy4AkNqdBrZwEZWF8MibSejxf4xqBvE
-	 BjblJnjTv2OFImynAdX5jz2UlqRbWX2AxYTISOTg=
-Received: from localhost.localdomain ([180.153.160.8])
-	by newxmesmtplogicsvrszb51-1.qq.com (NewEsmtp) with SMTP
-	id 80B82E3B; Tue, 28 Jul 2026 18:32:11 +0800
-X-QQ-mid: xmsmtpt1785234731tnemwipm7
-Message-ID: <tencent_FFD4F4D728AAE8A8AE0AF277A59854A29A06@qq.com>
-X-QQ-XMAILINFO: NibnO81X6Pb5TY7vZHZz33Aomg8YqguUR/w94fa3o6TPvUnBAejeoEqCi1EAAo
-	 dFUmWoK655rnAjfkb5HJaw+MVjkD6GWi1YjUnBINCYv6TN6NzPHcFEh49PZXcvaWU0pbHGsJNXuC
-	 QiXgKnj/ApwSGX0xDsZAtnZdrYO4dC3cf0UbHIweQiqzhqJ9VkMD2+R8V+7Ow70amHVXVRscePFU
-	 fOj8MwK+GM1xrC6ZPOO9j7TMt9J2Ihd241Ok2wJQ2LzjYhH6eO9xVOed0Hm4cWUIZRZus1ap+oxX
-	 ht3D3Up98BmfKLmjJq59NP1gZUVCEUOvoyy1iTMN5rHqyqD+pBM3mcq4k5mNd0R0rdyJjxIXeQCy
-	 14EC8GzBuagpMkbxoFWvNABF+BnDXFQskulveFoqi793jVRnwpRRr4UnQrGGxGniFQfBG/t39e1M
-	 wXrVHfzMYlV8reh/F8UdEOOvJYnSNxQT3MHyxcs3YujnJ6PVz5gY4zvVi6EMjrykKhxPi2shg0ne
-	 lQeTBTXz626EB7EqBvdNeGPjbos7mhcKTcRqn1WSgDIMg7jpFpLt0pz+OXx4J3YRTvovDL1XMhnG
-	 gpWaZEqwAKAEz9WXvD/9otl1y2r+CnPY8RG2yQ2sPeAy2vmQF4ExFURTBGg3PWFdG7ntEEA+Rl2b
-	 JNBvREACrMqw359VIoNnOtYx0Nw/QMJyl2IkBDOO8t0QlPjJnyDJxg1DQpQ0ZhUEKd6NJLtmfGHN
-	 7hTEkq8Zr480f859EJwCgGnrr+eR6/b9DtUE9Br3o4x6Tq+fqNQJAnEwaD2SlefKmYLCQKzs3EB0
-	 oLn6KnRtnkcg9/mmN55CcjCleoV31UqoRs0O7nrEZcVGCHA6DI3uhyBnLmlXgOXT4d7ZKo4XJJxq
-	 N6lYoKVIdcjiN3FUOGC/LZ26PD/UxqRF1wWIwqxwJ7xCGfAEh8OPIGflt1+ejGd+6Dkx43h0fNUH
-	 zlbZowRdj1HbLvuGxFRU01QUN7qzG4ll02SF2YBUQ2FtvnLDBBJOcjNYaMkxrkUVLiGdvcdkFMJC
-	 DjoAOctmloMXKEOD8E
-X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
-From: Jianlin Shi <shijianlin11@foxmail.com>
-To: linux-mm@kvack.org
-Cc: akpm@linux-foundation.org,
-	vbabka@kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] mm/page_alloc: only update lowmem_reserve_ratio on sysctl write
-Date: Tue, 28 Jul 2026 18:32:09 +0800
-X-OQ-MSGID: <20260728103209.1573619-1-shijianlin11@foxmail.com>
-X-Mailer: git-send-email 2.43.0
+	imf10.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=hmspDYhX;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=dfv9hSEH;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=vrM7+Kpp;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=15VO8SDD;
+	spf=pass (imf10.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 3524B3E03;
+	Tue, 28 Jul 2026 10:33:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1785234809; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9ScQ16CMjFlPTjKS2k1tW3rCTBpjt7WhqtuW+Eef6SU=;
+	b=hmspDYhXrp6nsKgIWnShKcP3m1zateD3bEY3uR3GMErFfIxMI9+7/9QdoMY1OSL1i+d9Ny
+	ss+c7CzUHS0b0s/s+ubeJoKE314FUJcdwBRgQPnYA3jZnGclfq6lclfmk1jrAfkFHmjPXD
+	ALydB6hGuiNUAt7T35xwF/Q7tGqIIw4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1785234809;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9ScQ16CMjFlPTjKS2k1tW3rCTBpjt7WhqtuW+Eef6SU=;
+	b=dfv9hSEHvWLKGMbbBNhVjCDz2vk/P4DzXoOYrI4DR42iExQvjuX+5M9j7wSOSUNUvXU0J9
+	pxBzL3eURvkQWNAQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1785234805; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9ScQ16CMjFlPTjKS2k1tW3rCTBpjt7WhqtuW+Eef6SU=;
+	b=vrM7+KpprfezwZJiC2tqWLgrwHwaue0fD8f19jQfJUlGkmYWSlvkowfoF2O9cJqSfmnc2E
+	2eRBmU3pjwhTkWXbEm98yaEC3/yIJSvaC3seVOLe1nBu+YacKViosmAP40ubcTMimr6XR/
+	8Xli5LeJ4agy1c0nCZRnAXLzkzRjoIM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1785234805;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9ScQ16CMjFlPTjKS2k1tW3rCTBpjt7WhqtuW+Eef6SU=;
+	b=15VO8SDDjXpk6nGQsh3OpyKNDkmPEvq+Y5DXMA1IPu2e8rn0UdJqkJ/eKY1HHB5Xqxfpku
+	TyjJh3Fea260PcBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 261BF779B1;
+	Tue, 28 Jul 2026 10:33:24 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id mOr2BXSFaGppLAAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Tue, 28 Jul 2026 10:33:24 +0000
+Date: Tue, 28 Jul 2026 11:33:22 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Bo Zhang <zhangbo0325@gmail.com>
+Cc: fmayle@google.com, jack@suse.cz, akpm@linux-foundation.org, 
+	david@kernel.org, kaleshsingh@google.com, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, ljs@kernel.org, lkp@intel.com, oe-lkp@lists.linux.dev, 
+	oliver.sang@intel.com, surenb@google.com, willy@infradead.org, baohua@kernel.org, 
+	Bo Zhang <zhangbo56@xiaomi.com>
+Subject: Re: [linux-next:master] [mm] 7b32f64bc5:
+ pts.svt-av1.Preset13.Bosphorus4K.frames_per_second 45.8% regression
+Message-ID: <amiCX6kcQneMZu3-@pedro-suse.lan>
+References: <CAHCxdc64d-6qNBwwSZX8mdz4-V+88No2x0wG4mex5WPXBDE9AA@mail.gmail.com>
+ <20260727014610.3479784-1-zhangbo56@xiaomi.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260727014610.3479784-1-zhangbo56@xiaomi.com>
+X-Rspamd-Queue-Id: ED4ACC0009
+X-Stat-Signature: 57k376t9begjif978ypdydnnq3jkneii
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 559924000B
-X-Stat-Signature: x4rdiomxtmganf1o93cy58qdpffboarm
-X-HE-Tag: 1785234737-293716
-X-HE-Meta: U2FsdGVkX1+TkAYFDkr0ZvZwszyuADhov6unhY4kRuE/ZHsuSACwhflgSOBxE2Qq7V9NAnk6Ih0k9gziQfVTDSctoLoOox+7geQOldrNPcAm0Spzr2sQFee+FnihoIZ7c3tMupTFjNBaVxwtapw/TELD1PdlITREHh/Bztc21zc1nHZmEL79f6/nRF/daozomirtWW+5pIPPLcYpvEEelVVUPlEmUBahjmI0Hz1RUGRpzhX6JTFSR6GxCoFktFppxGXzCKj7ptFERcUraF6cvXFDavBr8wZ7zi6aIjhCREaKH/ipwEw+yfwDHeZptxQvvXFHXxH3BaYk7rDE2OEsMorUOjhEEK+hhgGNXzt1tIPF65WAu7sSwScFI6z0zhaohCeHhP160X1VaGEFRmPVuUZw6GZ+f3+82uN2kEEtfylWHJUugkaA0A4KPPpO1sDsAElHUZT9dznFHMDdtx7Mk403hsSS8bGcccUtOKae42Jw3Ed1VcxxrTVrBWtdkMiZj7MLfPW63CCcGuXFEnhvGS4lGcFKBKf5la+qf7AXzTp/ZEJ8xZjW7bDpcGQ9pruwu2ETabrLM1P5QoeTiAuw6h00hd9FJY5W4tEbxN7/PHAJ5IXBZMPd2allbETyNLciGN1YzUS5chyB6BgNWBKV6mWeP4mXTp2zInfSmaLNHcl0UA83MAEanZQL9DJ2h2UwZvl1Ib84DEMY7fzczbf6kZELgq0cTu408FVxfBDiEcd3354seLU6prLyygbsJIygRb1SAFSo7C8l8WQRiDi04KGJ0EQHR7P4mjTsD8I14FtpaGrCBfI9bTcJIT5mnCG8/6Mu3lBckIHWHblau+fnstX8s1veJaqmfywMkHsDuBW00UbJH7RLil1oxI8/oAEODNucow2xB0QuBsQnKJEyLMltza2A4mcH7tLizKeZNAZxyPOTDUb7gBZ/7ZELYSNgXqTRjczGTe9U78ZU4Us
- beQGmShU
- 0xYttUtQeTegHw0KDftswazD6nhZC4czUVDSB/6dcjU1dgcLrHv5S64GXjQb5BIqj5eGLgyaIWVL/8Qn2/+KcQzslmkC3NdE7CpUrjzZicGpBI0krdtBTEHcqm1rBf8EFWfLYDjhrD6Y8ccIORSdLtqZwigy8NTkg5bqJNUlgOJYnZ0JNsaHhoZ0bN9pDhuO7fvyhKI8W5grd12drpRBVXmMK+f5NqGANOnIRHCsCcEHQENC7sHsqX+dR2IPmuywgZleeTgrz9fxLAPZhjCs2fiEyvuZ/Epqk37ZltihgJBTY05xHldvdu/8ITc+gCQVSRZgU
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1785234814-795054
+X-HE-Meta: U2FsdGVkX1+yXH0rcXrcoISRet4A3c7P0mZPZkMZWvk8oWt2KOx+G2zYJv7wILULWvU9lQb6FpTMIXMFU+OVPIVUsa53y0cdzBcmiRK6YUe50w2+eCuzn6LmECHJSw2huNc4szlgkU2hMuFtK0kEWIrm8decVe6la08cQv2NrOMyFInveyajIucAUSEjzqJWT8NsFwA4GG472pkAAZNQsx3Kzd7wFTMFtSNejI3Dve570D2JARqyjvVlC/B8V9mQfCGouE9SVW6SzCcIrT2y4nz1ELPHNj0mkGrIg6e5LanBG5YOyHIFV18sYC3NnyjJlK+OkJZfYgOKj+NbULu/GF/MuCf4nysXJKmP/bMez+9rESMiPsLxtgph/rp7hEGpx2ear5jj4oabHTa75x0BHwP5LMGOBQ6aaIjY1O+gOXSi81BvcgmIcvENx9yWINloT60FyFE5hYg2fam7itY/kCI5YekJvTZITP3KfWUajGej9xc2ROKVPG0XlpXvmAffZoS6SFZAOxn5VwS2eSCN+HKfRw/UURoBfUhs59YAxBwnlm5cbCjoUS6sIdhJZ2BAbN+ceC5izLH17U3vuPjHYg7NnkSBlr4rPh2afVJU2PQEE4YeYiiapcbDyux+QZZTOf5GRjZaOeEaOgGSDzR5uCbXJz6nUtQXJ8ujOj1jPIptDqMpB3QtaGGcHYfOmLjMsPX/LTtXAIU7JEZd9cwT7lLxk2e8YXiweJHgjquvlks37rjRVHzb3hwJm7p5R6Yt1/qgwGiqul+4P8c3UQz7z+HPUPqYIoK78bH34pnSB0F64rMnB5KgxMQo5VRi//Ou1dvTvD0T81/8AhnQ+WCXFHuoZUV4oqPAWTm8XFGW1gUEOA6iBXUvXbCZZpavRP/PA8W2e0fgTcFzXn8xFzvOG3LNR/BEREoCBtHrBOq3kY1PyXn4QnIVt3MRmg+vE+oFb8G3rBpMaqVpIVSYtNg
+ E1iFv29Q
+ I2DxROJkAB+pob/Di88asIhVrD/jXY8pV9ukv4tGXWRNb1zPNp2uWO/a67//G4dBwnGExqnjeE86J5YghPaXaUFvNg5G69AH4eGNvTUA/1AoCOpG7KE37agfkQuzIVuH+OBQgPHHw/vNcjz3dS+C5FPCwuGKDpeHM8TpZWyKZRrtz41s+JF9r52dV/6iMSrUFK5Uc1nq0rFRtpTKH9yTMRkt1cvJ9ovL6STpLOoG2ZVCVj2SOQnRBSTvv0l9m1JdKQuhYOClSnrYyyHUJzaq2Hz8zdFaWibAqYKVyTWa8JQc1wl7oqVqN76IISw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,75 +134,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-lowmem_reserve_ratio_sysctl_handler() ignores the return value of
-proc_dointvec_minmax() and always sanitizes sysctl_lowmem_reserve_ratio
-and calls setup_per_zone_lowmem_reserve(), even for read operations.
+On Mon, Jul 27, 2026 at 09:46:10AM +0800, Bo Zhang wrote:
+> On Thu, Jul 23, 2026 at 01:34:38PM -0700, Frederick Mayle wrote:
+> > I maybe missing something subtle, but, I think you've changed it from "don't
+> > read beyond the VMA" to "if there is a chance we could read beyond the VMA,
+> > don't read beyond the VMA", which seems like a more complex expression of the
+> > same behavior.
+> 
+> Hi Frederick,
+> 
+> The subtlety is in how async readahead interacts with _max_index. The two
+> are not equivalent because async readahead sets ra->start to the end of
+> the previous readahead window, not to vmf->pgoff. So even though the user
+> is still faulting well inside the VMA, the readahead target (ra->start)
+> has already moved past the VMA end, however _max_index blocks it.
+> 
+> Here is the concrete scenario (ra_pages=128, VMA covers pages 0-1023):
+> 
+>   1. Fault at page 0 triggers sync readahead: reads pages 0-127,
+>      places PG_readahead marker at page ~96.
+> 
+>   2. Sequential faults continue. Fault at page 96 hits PG_readahead,
+>      triggers async readahead in do_async_mmap_readahead().
+> 
+>   3. page_cache_async_ra() detects sequential pattern (index == expected)
+>      and does:
+>        ra->start += ra->size;  /* pushes start to end of previous window */
+>      So ra->start = 128 (NOT vmf->pgoff=96), ra->size = 256 which is doubled
+> 
+>   4. page_cache_ra_order() calculates:
+>        limit = min(file_end, ractl->_max_index)
+> 
+>   With the unconditional approach:
+>      _max_index = 1023 (always set)
+>      limit = 1023, ra->start(128) < limit (It works fine here)
+> 
+>   But after several ramp-ups, when the window reaches the boundary:
+> 
+>   5. Fault at page ~896 hits PG_readahead, async readahead fires.
+>      page_cache_async_ra() does ra->start += ra->size:
+>        ra->start = 1024  (previous window ended at 1023)
+>        ra->size  = 128
+> 
+>   6. page_cache_ra_order():
+>        limit = min(file_end, 1023) = 1023
+>        ra->start(1024) > limit(1023) (Which will read NOTHING)
+> 
+>   Result: page 1024 (in VMA2) is never prefetched. When the process
+>   enters VMA2, it takes a major fault and readahead ramps up from scratch.
 
-Reading /proc/sys/vm/lowmem_reserve_ratio should not recompute per-zone
-lowmem_reserve[] and totalreserve_pages.  Only do so when the sysctl is
-written, matching min_free_kbytes and watermark_scale_factor handlers.
+That's on purpose.
 
-Also propagate errors from proc_dointvec_minmax() instead of ignoring
-them.
+> 
+> With my conditional approach:
+>   At step 5, vmf->pgoff=896, vma_pages_left = 1024-896 = 128
+>   128 < 128 (the condition is false), so _max_index stays ULONG_MAX
+>   ra->start(1024) < ULONG_MAX, and it will prefetch pages 1024-1151 normally.
 
-Compatibility note:
-Previously a read also sanitized sysctl_lowmem_reserve_ratio[] and
-called setup_per_zone_lowmem_reserve(), which rewrites each zone's
-lowmem_reserve[] and recalculates pgdat->totalreserve_pages /
-totalreserve_pages (visible via /proc/zoneinfo "protection" and used
-by page allocation fallback and dirty-limit accounting).  After this
-change only a write does that.  Documentation describes the meaning of
-the ratio and the derived protection pages, but does not document any
-read side-effect.
+This is exactly what we're trying to solve.
 
-Worst case for odd userspace that treated a read as a refresh of those
-derived values: lowmem_reserve[] and totalreserve_pages remain at their
-last written/setup values until the next write of this sysctl, or until
-another existing updater runs (e.g. adjust_managed_page_count() on
-managed-page changes, or init/watermark setup paths).  Until then,
-allocation fallback into lower zones and per-node dirtyable memory
-(node_dirtyable_memory() subtracts pgdat->totalreserve_pages) may not
-reflect a refresh that such userspace expected from the read alone.
-Normal readers that only consume the ratio array are unaffected.
+>   Page 1024 is already cached when VMA2 is entered, only minor fault happens.
+> 
+> The key point: when mprotect splits a large file mapping into adjacent
+> VMAs (common for ELF segments, or read-then-write patterns), there's no
+> benefit in preventing readahead from crossing the boundary, so the data is
+> still sequential in the file. The limit only helps when we're actually
+> near the end of useful data (within ra_pages of the VMA end).
 
-Signed-off-by: Jianlin Shi <shijianlin11@foxmail.com>
----
- mm/page_alloc.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+This is completely missing the point. This change tried to back off from
+reading _anything_ past the VMA _on purpose_, due to ELF file spillage. This
+patch reintroduces spillage in a very obfuscated way.
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 0387d2afd..ce33579ca 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -6683,16 +6683,21 @@ static int sysctl_min_slab_ratio_sysctl_handler(const struct ctl_table *table, i
- static int lowmem_reserve_ratio_sysctl_handler(const struct ctl_table *table,
- 		int write, void *buffer, size_t *length, loff_t *ppos)
- {
--	int i;
-+	int i, rc;
- 
--	proc_dointvec_minmax(table, write, buffer, length, ppos);
-+	rc = proc_dointvec_minmax(table, write, buffer, length, ppos);
-+	if (rc)
-+		return rc;
- 
--	for (i = 0; i < MAX_NR_ZONES; i++) {
--		if (sysctl_lowmem_reserve_ratio[i] < 1)
--			sysctl_lowmem_reserve_ratio[i] = 0;
-+	if (write) {
-+		for (i = 0; i < MAX_NR_ZONES; i++) {
-+			if (sysctl_lowmem_reserve_ratio[i] < 1)
-+				sysctl_lowmem_reserve_ratio[i] = 0;
-+		}
-+
-+		setup_per_zone_lowmem_reserve();
- 	}
- 
--	setup_per_zone_lowmem_reserve();
- 	return 0;
- }
- 
 -- 
-2.43.0
-
+Pedro
 
