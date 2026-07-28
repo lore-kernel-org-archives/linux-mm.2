@@ -4,101 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E79B9C53219
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 15:03:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2CE6C54F4C
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 15:08:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C3A856B0093; Tue, 28 Jul 2026 11:03:17 -0400 (EDT)
+	id 9FB016B007B; Tue, 28 Jul 2026 11:08:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C13666B0095; Tue, 28 Jul 2026 11:03:17 -0400 (EDT)
+	id 9D1DE6B0088; Tue, 28 Jul 2026 11:08:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B29376B0096; Tue, 28 Jul 2026 11:03:17 -0400 (EDT)
+	id 8E91D6B008C; Tue, 28 Jul 2026 11:08:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8CB9C6B0093
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 11:03:17 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1522D1C0198
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 15:03:17 +0000 (UTC)
-X-FDA: 85038503634.23.11B1DA5
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5F6CD6B007B
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 11:08:41 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id ECF7040395
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 15:08:40 +0000 (UTC)
+X-FDA: 85038517200.29.A82D9CD
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 66A2F140012
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 15:03:15 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BsT11Mus;
-	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785250995;
-	b=SERpA8YS6azowfxKRcXRaUH/QDH5pxpsjroTZfGNpgziq5qgffrdGH8A0T4UPrkEGZx86S
-	DwTMvPkCgVMT+rjFZYPJ1HYjwp80kfVJdp2cZeq58X14b/CX/dEEjgiBRjG5JZCHpzOC9L
-	OKZU2qiTO+unhpVo+W5eJD3A6mlPTTs=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BsT11Mus;
-	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf21.hostedemail.com (Postfix) with ESMTP id 05C521C000B
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 15:08:38 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CoFCWSgF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785250995;
+	s=arc-20220608; t=1785251319;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OZYCAEb0HM9rfGd3QRD8GMQog/bF2RXcJS7UIluiZL4=;
-	b=8ikhp98a3wttJ4dImHGmDKzWoA/hN7tI93BsfJqeGJYtOqs6Sb0oCw3w+ISmpM8PbNEcGq
-	lZqnQg6TQd1kodGZZUfvXUxkIzgo6lKnSoZPDM129CKjzAASBSvkf1TvwfLdWYizXYPT6u
-	AiEzW7S3oz3AVTt2o0ruH0i7yzep7Lk=
+	bh=A01dsvmvPovSklIMIdap8aKveNfjd1QsKAFfuCGTiYs=;
+	b=Yg02Fiul8h+UgUxDq/GirotgsuGPANzB28NFdL7ZLbyKz+Ji+c2vz0gwIMGZdBi6+uK3QI
+	suDm8nmXxzyzmz2VGTo3PbQvUjBIXfnyawFvFUp19IEUI5pn7BcafPT4FrJfiKQkOtcZWR
+	mzXhL8xo1epg7qDIT6GtxNT1PZbeM18=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CoFCWSgF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785251319;
+	b=mdooM0p1PTv6/iNZcBxAAYqNNbiaaA7b7U7zKPUnQMfrt1t6faKO+LgiwMBtLa5MoBsIH/
+	YNZY4oY3mAyP8DZ3R/ZmP1SiIxufruVjXPA34vuubxRmlCVFwM70ND1q6T3mnb7SUX2Kr4
+	lL862TzTlJJfA/szFrCZaoPd2fuenr4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D118860A89;
-	Tue, 28 Jul 2026 15:03:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E3221F000E9;
-	Tue, 28 Jul 2026 15:03:08 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 89D2160A5E;
+	Tue, 28 Jul 2026 15:08:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A12201F00A3A;
+	Tue, 28 Jul 2026 15:08:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785250994;
-	bh=OZYCAEb0HM9rfGd3QRD8GMQog/bF2RXcJS7UIluiZL4=;
+	s=k20260515; t=1785251318;
+	bh=A01dsvmvPovSklIMIdap8aKveNfjd1QsKAFfuCGTiYs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=BsT11Musj5q8C0iTcuGYFJ6t+D6ns5bM8zQlELONuV/VX/yrCA018Wh0N7Gwlznfd
-	 aotiaq/I6OR8LKclH4M5+e4rAxmJyw3vUQECHwkeFMfQIQ/tFPlCTWglK3b/Tpzdww
-	 +bRNamfIQhuehUPoKSWXhm/ZLQvVUAWtUFMzGr+dfkJUvNs5Ryut3TSr4HBqIqxCdV
-	 45BanpsTI0eHKnIwuq5OGl4NbtzaGlFQdEx9DUFUydqVDv7DsG4XLVGAH0lz5LJISE
-	 muvDh8wTByYOUEi4WYqtLE9IsNM7nj4Y4uHVDKRCrIrLpKMxJrdjaTi8nK3Kwr3pXt
-	 8QQmczoQHS6GQ==
-Date: Tue, 28 Jul 2026 16:02:54 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Mike Rapoport <rppt@kernel.org>, Dave Hansen <dave.hansen@intel.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>, 
-	David CARLIER <devnexen@gmail.com>, David Hildenbrand <david@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>, Juergen Gross <jgross@suse.com>, 
-	Kevin Tian <kevin.tian@intel.com>, Kiryl Shutsemau <kas@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Lu Baolu <baolu.lu@linux.intel.com>, 
-	"H. Peter Anvin" <hpa@zytor.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Toshi Kani <toshi.kani@hpe.com>, Vishal Moola <vishal.moola@gmail.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>, iommu@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org, x86@kernel.org
-Subject: Re: [PATCH 1/5] x86/mm/pat: introcude cpa_lock() and cpa_unlock()
-Message-ID: <amjEJ8XcwOCAcxFJ@lucifer>
-References: <20260728-cpa-fixes-v1-0-2ed2352300b3@kernel.org>
- <20260728-cpa-fixes-v1-1-2ed2352300b3@kernel.org>
- <20260728142108.GW751831@noisy.programming.kicks-ass.net>
- <adfffb36-9943-4af7-a0ee-0e762e47fa11@intel.com>
- <20260728143135.GG651302@noisy.programming.kicks-ass.net>
- <amjAxhL-IeeJITEv@kernel.org>
- <20260728145528.GI651302@noisy.programming.kicks-ass.net>
+	b=CoFCWSgF/UJWb2ACHZXA1oTMsIpWIaBDrMDL55x6JlrKzIWbknzBPMRRb6dx5QP83
+	 DE4/Tr6A7wu/1JNFFrySHEeFC1BF5z01+VtDsZ6urwLclVyy+AamNDn/PWMv9/2Pga
+	 eOJFHRO4F6NQy9W/pubFLGGzXzc8lyE6otP2Z9CRbePlxvWwXBhkS8RsRSrPI4haAY
+	 7xSqpfIpdl4GuxjSUk/roknkFq7X8sx/9APKOQJ9lbLhFLY+kP2zIVe32n3mRtWx/9
+	 pmNjMJo7YZPZcJBcXw1gnraH+e5GEUiwANnwg8i20KaDjoJb+Kt+XV3X07bU9Hu6mp
+	 d/WESoZmJjvQQ==
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfauth.phl.internal (Postfix) with ESMTP id BE81DF40071;
+	Tue, 28 Jul 2026 11:08:36 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-11.internal (MEProxy); Tue, 28 Jul 2026 11:08:36 -0400
+X-ME-Sender: <xms:9MVoajoo4BBH3gOnmfRK0FFM92XU3sByOr9w1OG4jEc47WisOA6sSw>
+    <xme:9MVoagw_McjUFEZ8T37px6rLf630437EJy_kRgIkKpxYZiagh_1Gho5FVgtE2_gRJ
+    NE9-n5RTraNcFj21XyMovDV5f7ICSzTVwykfQuGof_G_q2cuwvRT-ki>
+X-ME-Received: <xmr:9MVoatox7SaRaCgUCG4USRsLnP4Z7AmT3lg91hzRYzCjPydsK90XGjG5ixWcLA>
+X-ME-Proxy-Cause: dmFkZTGnznuykIxwCjE96rgdIqIrtInVcRhsVSLqoLYVMWqLd1lwbp/cUtW0TdmzMkCMBq
+    EMa41Jzs4xu2zV6VfMrl8K2JJIWS9V7FeK+xSsLO966TEJtLBAoFITIyeGIYnCn9YkL4lJ
+    pbKQJ8J4qDpvqqcYDkqrt7+/G7tgjikyq+XhUX4Y1YkdPrTHtHFw0gtqXTIBDlTi6nZyr+
+    yroaHoGMEoNAwoceceiIS/sDNcQVOx2TXONSHiN894/1IVjiGTYjhWWdtU/AX7KmCqaHsU
+    loHlxxPat/68JghIk2kGOTx/0VE/ZyUwKyGNVGRABIH56t975hdWmaF1ZV595ak+GHhSsJ
+    vI/CrxU7XiRRjktFA4Dk05g3FGqbW6BOBXYuUk0mRDxmFrr5c/LS+ig8Ehw/lXrASiOAZ3
+    ULQvVKRO3VC082jCZR2dYCIdJkR1FBgwT1GQlPL45SXccuCHTEYlZ4WBYqanU5B+MagzUO
+    FQUDukLWU1m7bq6kMG96Se2CBlKnbumUSZDukaFlNku9basMD1bDJG6+xL0vLMS5Br2WTV
+    V2RvBwwZL9W2u0uQpFiG7KAGf2PlL5NsmQ4BmeB0f+srSBdUpf44aOhxyb+zOTCmJA9NXO
+    xAKKMFcLB0HlcJlt7jqSXUK6t9KP9bUC+wzwpu4EmDfV6ungfFy/KBDd0FLQ
+X-ME-Proxy: <xmx:9MVoareU4r3DoxnaDeBUFk1rv41cUUwdWW9liZg7hFvVxf_EKBkjjg>
+    <xmx:9MVoahjqpnCIXYgQ92a7x95HvYhek4-T660RWgkB0uKIXkZrWmYIhg>
+    <xmx:9MVoasIfDonbC770PmvAmmigdmgVMtpXjZDShVBgWHoRlGj5PzLjEQ>
+    <xmx:9MVoanmDlVivCUPG3KCGvfFKeG-9WWTN-GRZ0a6ZlvA0Zvdbwee0lw>
+    <xmx:9MVoagRG7P0c08ZPRUkGLfYjAtgEyt2h_x0owQry3GAhzv0Te36sanZb>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 28 Jul 2026 11:08:35 -0400 (EDT)
+Date: Tue, 28 Jul 2026 16:08:35 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Pankaj Raghav <p.raghav@samsung.com>, 
+	Hannes Reinecke <hare@suse.de>, Hugh Dickins <hughd@google.com>, Yang Shi <shy828301@gmail.com>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, Hengbin Zhang <uqbarz@gmail.com>, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH mm-hotfixes 1/2] mm/huge_memory: separate out
+ CONFIG_PERSISTENT_HUGE_ZERO_FOLIO logic
+Message-ID: <amjD1MtOiXBRDxVi@thinkstation>
+References: <20260728-fix-refcounted-huge-zero-v1-0-3f261f5447b4@kernel.org>
+ <20260728-fix-refcounted-huge-zero-v1-1-3f261f5447b4@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260728145528.GI651302@noisy.programming.kicks-ass.net>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 66A2F140012
-X-Stat-Signature: gtyxiamp867weezizi3oq5zbbzqt3g5n
+In-Reply-To: <20260728-fix-refcounted-huge-zero-v1-1-3f261f5447b4@kernel.org>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 05C521C000B
 X-Rspam-User: 
-X-HE-Tag: 1785250995-541548
-X-HE-Meta: U2FsdGVkX18gyurDj0mTC13ISpELTa/scAd2SdbwJOyQ+WMngnZV1MjzifCprqaUmNtRTmq6RFPHnPasaqfOAXJU0BzetvHpTYiG3SHH43go5EKksvxHx4elnWAUrmErF2YecYxVxoGsFJNVCOAx11WWh39Rz4o95ZQisBdCTL7lEqIOC2cig8tvgXPfJdjjLKsiQuXTPGBYamdwUVzmTOiQSUdxxb2k6DblJN2+q1f7HnW8D4jIja2w5qR7zWFz+pIJJMePBvu+jFf+dAN90DUtsKZ/eBvnrRlVaJzqgGsa0NnTwCBOaO7yTakCnsxHUjbEq3KTp249bbK1sXXw2cIN+N7HE0GeDjFp4Smz3YnuglU2pKp5/elCpeMUq5baRgcSzu6//3oyqjAnSMkVPBN/zumKpLx/tWr5eRxN/2tWSUAW6yJO4H+PY2VJBP2oDqT68QwLptPowaXPAr4spsbLHghnSweheye7UWlPmZH81UhmzkO3GbokkH6WbjxojlfM23m9mFCyuI2dqP/dR8OGU16bdYOmXYj47p2725K/q8HiO8uzHQ55jwrc0cIXDQQ6qNYLZ6sqDUp8GUHeQRTQjw+BeIJmW4QN17Axl7GnA07ycRHOgApRDmJgh0X7SlC9o9WxOw90HXHTjfTU3bwg49a8PXZ2/F5qC6gHmmubUk4geHyHHpQK/Z/JqsXJ4tJkSrUan6jlo4fBsN3+k2dGrM9gJ2vovZ5luj9IXgp3JxoDuBGlYWM8+XEjBuWmKKf5AVMICwnWQf076BwxVxukKzpK88zsYsZ4RSJiP4hunYpMHIcEk59/VvHWQPRfiM2InLZ39OFbjCe5V9udmCoz1Fn5Y+H2bcbgAQroO4RTTlwWDX2YSneY4z+E8D2sswzI4Izoxwlq9gz0Si7inisjMsXD5vVGBMPVbSuRDR3rAmC8bRFWJYuIEKoykLuxXS4sez1Jg1LKrtLjtfH
- VVA9OUuZ
- V6xmr/C1WbcDq0WTUH6/DLcxFizfTmYBiaO7qKVjy+XJFpx3aG28Obdkyz9rbqoh5O+IEk0C9+PoCDFO4/9Le9SuC0UzuLznoWost4eRjE+joy9SoD9XL6KqCz1/2oe6guxRdJ8h8CxogLnzv5D9Z7Y1w8Lr/uoR7cltZzT1AJiFJKauQB7TbjUWfQbXfTOHThsFVLHjJDuzwvoaw7NgX/lyZiJyqIb/Gn2ypzKKrDeJykGckOI8TfWWbtXTjr2UUVtot2iuycnwRQ6BPaQSH3WucGsrtS536BA90WgqrZIK9t8Xg3A8KEZ9rwGZ+VxpWt7upMP+N0sBur1rL3C2tQaRvV2xdSV4Xxgx6Thwi3EIeGBXgz4o07HXbLg==
+X-Stat-Signature: tj6q55muongmgg5mhmrueq3979gxzt34
+X-HE-Tag: 1785251318-840252
+X-HE-Meta: U2FsdGVkX1+ECgWtDqOFM9jnJJO8GBYya4yT6bRx+DzrispeKCnkgUWi4Pn0svZkvrXyyuJ4yLndyRnMlw3Hp+/EZR8ZKjQsztYyETomi7FhSYLUS6JvK+qDMyFMHGMIZUQUBnhIIOLWO25de1lzxTBsHhS7ONSt2dbNhaM6KLy4mRHRfKHsbWLuRDJvT7ZF/Sxpb8Z+rVn4nJ5uMXny0T/hLMcbtna2hYyrXUCloW7eRnYkcYgy6MJEaXLyH7HayyTast58GsCjwYj8+rEBXcw4bq0fvRUI65+T6gZZcnCus9cyUQhccFEYjamQIC5GISw2i/NjuxruXVLLDi0P+cIWzvMi+d6DV1gC599bo8q1zbJghHrRzQsKRwGpKurk+jATtFgBfApiZLoEpve6OMIvibh6Ahf6So+Wh3noyQLCWL33RKK28to/1WHJ8fZ070g8BRd3NdeGb+OIsl/7cMR7dAPu3ar0UfS93VmjEeu0w7q/S1wTQmIK4oVmJImWOoAJOSp4csGoo66RlVLt4l6qtcYK0kLkDAKeTfM7Eb/IgXtDQkq6JcWH5435AkmIaTiSbTFWEMR4O1D9jcwa2W8/oA2pc822IgLU7S66dRFsDJ1XjdOS4rXsVWn4erx11fQifDNitjiW+ZQQRzfqTlWka1M1Jtj9Nez/487QBtCWi+GtqOIM0tDT39N4OJdYFFTUVOqdgKGyB0gAtdUZ/JQpUJBvLs55NpsUGjSuler5ZZ6UedPbPp0tTXaSCp6mukUbarnxnYMP+DPewjnPVH7Hg5Y7QoaTgXmOP3nZgNoHVAwty8y08IjOq/ZLYC0FLVfb2Pf2vWJL63B74OQGnMJ0GQzNCvG9jMEIMU2SjQ9JmLQqxAD7Z0GWOpMTiIYZAiWfCUEE9zNCSv6fxOgK7My2KjJ/1E9/aLQqBkB0A/zkxJxyQyRFC4JgF//jy/GFXdzzzRcA1QGV3VbD99v
+ s0Tey/SZ
+ /Jgt2i9c/zmUbGXRFgi9jKEv/Y71eUkK/dXkNvlAYjm3ja8PRE1muArXpP29Iss/75rx7u8wVtpxM4Gr/s2PSxPAiWyaN7ToB6EWjKQKrIelfoMXIzxW9WetjOwIYK6I+Z2ZIsgsSk2PxNzVDjgUboNBRTkCMvUw563hp8TCqmdQZiexmknsFQcSAVaHN3v4Idb05qvtkchlw9HBtnlj+SNLhl9Xq5u1r8+Lyfdb/TBCq1ZRbvAXmoW5gfuRFu7QMS536VKJuoUR7B05z+bl4+3YvwD/sANOwwJczKM0ufPg0Y7ij56XDQpd0bcaZgfov4vuQspyuHyBCpBVd/UmkPbbxfP7ezvULU8bE
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,45 +126,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 28, 2026 at 04:55:28PM +0200, Peter Zijlstra wrote:
-> On Tue, Jul 28, 2026 at 05:46:30PM +0300, Mike Rapoport wrote:
-> > On Tue, Jul 28, 2026 at 04:31:35PM +0200, Peter Zijlstra wrote:
-> > > On Tue, Jul 28, 2026 at 07:30:27AM -0700, Dave Hansen wrote:
-> > > > On 7/28/26 07:21, Peter Zijlstra wrote:
-> > > > > There was already a patch merged that removed the shole debug_pagealloc
-> > > > > exception. Is that not better?
-> > > >
-> > > > As I'm scanning through email this morning, there's another issue that
-> > > > popped up with that patch. It's causing hangs on boot.
-> > > >
-> > > > It's looking like debug pagealloc not taking the lock is actually
-> > > > functional, not an optimization. Although, I hesitate to say
-> > > > "functional" and would prefer to use much less nice words to describe it.
-> > >
-> > > Yeah, lets figure out why that is before we retain this wart ;-)
-> >
-> > As Lorenzo said:
-> >
-> >   __kernel_map_pages() can be called from irq context:
-> >
-> >   < GFP_ATOMIC context >
-> >   kfree() or whatever
-> >   -> ...
-> >   -> __free_pages_prepare()
-> >   -> debug_pagealloc_unmap_pages()
-> >   -> __kernel_map_pages()
-> >   -> __change_page_attr_set_clr()
-> >   -> cpa_lock
-> >
->
-> The TLBI hack in __kernel_map_pages() makes me wonder how any of this is
-> correct to begin with. That comment isn't helping.
->
+On Tue, Jul 28, 2026 at 01:05:44PM +0100, Lorenzo Stoakes (ARM) wrote:
+> Rather than mixing the refcounted and non-refcounted
+> CONFIG_PERSISTENT_HUGE_ZERO_FOLIO logic, separate the two out cleanly
+> so it is clear what happens when this configuration option is set and what
+> happens when it is not.
+> 
+> Introduce HUGE_ZERO_UNSET_PFN to abstract the ~0UL assignment, only
+> introduce the refcount and shrinker if !CONFIG_PERSISTENT_HUGE_ZERO_FOLIO,
+> abstract initialisation and teardown, abstract the huge zero folio
+> allocation from refcounting.
+> 
+> Also change a BUG_ON() to WARN_ON_ONCE() while we're at it.
+> 
+> Without this change, the subsequent fix for a subtle race is harder to
+> understand thus this is a dependency of it.
+> 
+> Cc: stable@vger.kernel.org # 6.18.x: dependency of subsequent fix
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> ---
+>  mm/huge_memory.c | 159 ++++++++++++++++++++++++++++++++-----------------------
+>  1 file changed, 94 insertions(+), 65 deletions(-)
+> 
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 032702a4637b..0f60bc82e87a 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -77,9 +77,14 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
+>  					 struct shrink_control *sc);
+>  static bool split_underused_thp = true;
+>  
+> -static atomic_t huge_zero_refcount;
+> +#define HUGE_ZERO_UNSET_PFN (~0UL)
+>  struct folio *huge_zero_folio __read_mostly;
+> -unsigned long huge_zero_pfn __read_mostly = ~0UL;
+> +unsigned long huge_zero_pfn __read_mostly = HUGE_ZERO_UNSET_PFN;
+> +#ifndef CONFIG_PERSISTENT_HUGE_ZERO_FOLIO
+> +static atomic_t huge_zero_refcount;
+> +static struct shrinker *huge_zero_folio_shrinker;
+> +#endif
+> +
+>  unsigned long huge_anon_orders_always __read_mostly;
+>  unsigned long huge_anon_orders_madvise __read_mostly;
+>  unsigned long huge_anon_orders_inherit __read_mostly;
+> @@ -221,22 +226,58 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
+>  	return orders;
+>  }
+>  
+> -static bool get_huge_zero_folio(void)
+> +static struct folio *alloc_huge_zero_folio(void)
+>  {
+>  	struct folio *zero_folio;
+> -retry:
+> -	if (likely(atomic_inc_not_zero(&huge_zero_refcount)))
+> -		return true;
+>  
+>  	zero_folio = folio_alloc((GFP_TRANSHUGE | __GFP_ZERO | __GFP_ZEROTAGS) &
+>  				 ~__GFP_MOVABLE,
+>  			HPAGE_PMD_ORDER);
+>  	if (!zero_folio) {
+>  		count_vm_event(THP_ZERO_PAGE_ALLOC_FAILED);
+> -		return false;
+> +		return NULL;
+> +	}
+> +	folio_clear_large_rmappable(zero_folio); /* Explicitly not rmappable. */
+> +	return zero_folio;
+> +}
+> +
+> +#ifdef CONFIG_PERSISTENT_HUGE_ZERO_FOLIO
+> +static int __init huge_zero_init(void)
+> +{
+> +	huge_zero_folio = alloc_huge_zero_folio();
+> +	if (!huge_zero_folio) {
+> +		pr_warn("Allocating persistent huge zero folio failed\n");
 
-I think there's probably more horror shows there, it's a case of put out the
-most immediate fires, leave the probably remaining flaming trash pile for later
-;)
+I am not sure the warn is enough. mm_get_huge_zero_folio() will produce
+NULL pointer now without any attempts to allocate again.
 
-I thought x86 allowing arbitrary mm ptdump walks was crazy enough but this debug
-pagealloc stuff kinda pushes things further crazy-wise...
+Have you considered moving huge_zero_folio to BSS for
+CONFIG_PERSISTENT_HUGE_ZERO_FOLIO=y?
+
+> @@ -308,7 +323,46 @@ static unsigned long shrink_huge_zero_folio_scan(struct shrinker *shrink,
+>  	return 0;
+>  }
+>  
+> -static struct shrinker *huge_zero_folio_shrinker;
+> +static int __init huge_zero_init(void)
+> +{
+> +	huge_zero_folio_shrinker = shrinker_alloc(0, "thp-zero");
+> +	if (!huge_zero_folio_shrinker) {
+> +		shrinker_free(deferred_split_shrinker);
+> +		list_lru_destroy(&deferred_split_lru);
+
+Hm. What? Why does huge_zero_init() touches deferred_*?
+That's caller business.
+
+>  static void __init thp_shrinker_exit(void)
+>  {
+> -	shrinker_free(huge_zero_folio_shrinker);
+>  	shrinker_free(deferred_split_shrinker);
+>  	list_lru_destroy(&deferred_split_lru);
+> +	huge_zero_shrinker_exit();
+
+Any reason behind the reorder?
+
+>  }
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
