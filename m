@@ -4,121 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AFD5C54F4C
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 15:59:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46E3AC54F4C
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 16:02:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8AB1F6B00A5; Tue, 28 Jul 2026 11:59:25 -0400 (EDT)
+	id 30B8A6B00A9; Tue, 28 Jul 2026 12:02:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 882F96B00A6; Tue, 28 Jul 2026 11:59:25 -0400 (EDT)
+	id 2E33A6B00AA; Tue, 28 Jul 2026 12:02:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 74A7D6B00A7; Tue, 28 Jul 2026 11:59:25 -0400 (EDT)
+	id 1FA396B00AB; Tue, 28 Jul 2026 12:02:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 324816B00A5
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 11:59:25 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 961F1C03B9
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 15:59:24 +0000 (UTC)
-X-FDA: 85038645048.04.AF6A484
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	by imf27.hostedemail.com (Postfix) with ESMTP id B373240003
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 15:59:22 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=aqUpy0bb;
-	spf=pass (imf27.hostedemail.com: domain of her0gyugyu@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=her0gyugyu@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EC1A16B00A9
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 12:02:07 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7B9531A043F
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 16:02:07 +0000 (UTC)
+X-FDA: 85038651894.26.C57F8A9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id B265712001D
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 16:02:05 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=evolvZWz;
+	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785254362;
+	s=arc-20220608; t=1785254525;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jdc520hStMu+f+3jSqbQBLlztrWg7wz8IxJRE68s3LU=;
-	b=JjhBQNQUCq0IQIrkFR4TM+1jxsd91vCQSWzKoVz6yztHPNblCSCAt7mQfp9QyblXdWQd0Q
-	c/HJAEFS8jZS82aRqw+Pc6L0YvQNmgUGeDTqF+SzOdPvcnlIN/gzi3lrp/peif3t3wlXSp
-	8uFVW0POItyn71HGUkDTOnRb81iAy1w=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=aqUpy0bb;
-	spf=pass (imf27.hostedemail.com: domain of her0gyugyu@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=her0gyugyu@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	bh=53Tcc2FrcqM5RSe5+P9Xw7NVIdmOkwy3TvduRaDIlPk=;
+	b=Ci0B6KSPb2gM/SVF7mA/N0LhSbmWhV6DdpLa8hLyP642srLdWcqOmu8ZFEc7YU6jwqykpv
+	x3i+fiEWy9Kspl0fFM1PcY6l/wCQiZXHsafCtliXn6eJTGwXOBmTehEJayHp8DCy7fCziX
+	pCsN1GmqJ97BuU6pdnlDWcYaMfrrEHw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785254362;
-	b=FraU4msFWKm8nlVqVyjkYCf1EfpSCHd3pE/Jxw4MC5XELlmKab5u6PkCgm7s8xbKMV0Zti
-	chBMvZWoXgmf4GJk0n7hsUbrtfaNszIocKj4NuoDGAT1Gst2w0R8HNWVIa3A2dqS03GiRL
-	pIb4CWJ1Ooy8HUTH+53KUEO3wjlsRQA=
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-84874b52eabso14769b3a.0
-        for <linux-mm@kvack.org>; Tue, 28 Jul 2026 08:59:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785254362; x=1785859162; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=jdc520hStMu+f+3jSqbQBLlztrWg7wz8IxJRE68s3LU=;
-        b=aqUpy0bbL6NQx8A+VhyajGY3QJB7XI+pDl7cMcBUVKBEvp8xRsb3mj4wuqGfAih57o
-         qHlaSZUMEIQ8pi/Zcz+t9ic/S8rz3OkkhHFX8nqnOGHIi2W2Y7WgacIOBMjAv6tFOGdQ
-         i4SaRCp1NnMnUC/p4PjUuQDYwfXSSRn1oZkmXU7sOWwV/nwirPue1GoUoVEjlJ/PwjbB
-         C39/GslhXVxt/J/7IuI4/pSkobNMuKRwNvt2Y1d7AiKkEZwKA001lw9RFkEpy0hTjXrk
-         +EgWmhOmoLckEK7k7h2x8BiaLQdrVxEvtNusfkauOf8JjeqL9v1p4RKPIEDjJxxH22bs
-         ADUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785254362; x=1785859162;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=jdc520hStMu+f+3jSqbQBLlztrWg7wz8IxJRE68s3LU=;
-        b=DnwexS5VTMYWTvLjpSU9mC0sNTJI0zXQKjG1W2LluzmbbJmzODcP/rk9x1JjAyKhZ3
-         C+VxInU7TksCpkKcu3i20k26/LBKbBtWJjoGeHZrUIUi6UKUEzVDd0rZYQJOZCQ4Woz0
-         eaCCxKbk1QZ96D82vEMoTGLiszOlZGPxg16rhbDwAu+v/nL5mPDgsuWqbPtmTPM3LsL0
-         B7MuhWAF7PMU20CZoorY993YXr6clrgZTWHByRDXBM/gRS2eEwAPoEy7N6XR0pKFpwyA
-         Bfvfw7M1vfHpRj9iqEXKzo9FCmfJ/MSHssZZH2Y1Sqk//prNAipmm8VO9RDZwzO05FfI
-         5CYQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rqv8hhUqAqV2YgRFXvG75qnTqsQu1/iJReB08CsxzkdcOXjO+7VM3mZ3wQaSxwkKfSRAVwwgeKRSA==@kvack.org
-X-Gm-Message-State: AOJu0Yx+YjdRw5rcDhLmPuBRRbz0KeC1y2mp7sLTga3vWc6+8il4a0/q
-	krqp9JuhV59g/9haFGcXdO4QdttC6TmuFAB3AIJ3KBb4N4RH3CFKJkmi
-X-Gm-Gg: AR+sD10vYjl41i2KzQ74tlcJJYYJoqdsiPdwHkhy8MmbbseXl8SdqIJEaWC41rtpIsf
-	HL8nGVhZpQVV8/xxjnwqAsYIop7CEH3p3gzidWEojFvFietaqMF2Y3bDEKRVwhCJmJQzqKhzw20
-	Xi/venbOOQkFiNrLzFIW06s74UykuIJ9roYJpBF+VUVCGqZDDwkBO3kghnGwK05wi0RDoS/RSR8
-	BeWZTgwXjcEN4qKdyeJQ4OqYuCy8y4ZjQVRCwERHY4AyeDRkpsztAJXd3h9tZTdXXlRqKPEwvyB
-	Dy5zT4TUaodVYe5ObU518fOqX/7EeM8hQ8rdwnON52QQruWFIk1nkhREP8xmIAGUf0N/cNuO2s4
-	RXKCEk7gFfrlSZ9QGtPr3QZTdsR+BlT7BPIrUgUFFfZ55HSIJ05gCFO7bIGNzRASrMBh8y6EH/A
-	GJWhohTeCe/XZDFejHSqFJsJK2/X8XCRmI7VPGlvuiIHT9/+rE/X+C3rlX660NOE0=
-X-Received: by 2002:a05:6a00:1d83:b0:845:4d71:8d15 with SMTP id d2e1a72fcca58-84e9331e137mr3522058b3a.37.1785254361511;
-        Tue, 28 Jul 2026 08:59:21 -0700 (PDT)
-Received: from localhost.localdomain ([220.85.166.190])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e9fe2393csm156441b3a.10.2026.07.28.08.59.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jul 2026 08:59:20 -0700 (PDT)
-From: Youngjun Park <her0gyugyu@gmail.com>
-X-Google-Original-From: Youngjun Park <youngjun.park@lge.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>,
-	her0gyugyu@gmail.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] mm/swap: scan by cluster in find_next_to_unuse()
-Date: Wed, 29 Jul 2026 00:59:07 +0900
-Message-ID: <20260728155907.391820-3-youngjun.park@lge.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20260728155907.391820-1-youngjun.park@lge.com>
-References: <20260728155907.391820-1-youngjun.park@lge.com>
+	t=1785254525;
+	b=JtCcljAXaSbg7Z8lCGqfsZZWyU6R/7jA6b9yGLJOX+/CTiZVAxCeO1XaT6WR1MxZgwZGIq
+	vPu308TSYdgF/1sH33OVlJOF75K9uAiXsIHoY+KQQYtozUHFoGKImuG76nnZrpvwKKn7No
+	JDnhJKFPiMG+yKZeoz/kjwU7z3C7g5U=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=evolvZWz;
+	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id DD479600FC;
+	Tue, 28 Jul 2026 16:02:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B96E1F00A3A;
+	Tue, 28 Jul 2026 16:01:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785254524;
+	bh=53Tcc2FrcqM5RSe5+P9Xw7NVIdmOkwy3TvduRaDIlPk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=evolvZWzbLE9VSD/7i9PnT0FIdFupRwT0Mtfs26PCh7vXA5e8Qi5Avx6mA6hXc5gn
+	 9dzMC6/9hvhDXBBph7w84dXFeyP9431U+p8OymcD4vyXshZ9y5ZxuBh9told/YZseK
+	 ORkIAEWFaqWshK6K+c/Xl2aycQmRerOqFv5695xJAmEP0UwUfuHk9zhHDKSBtZV2c0
+	 NJaWL3gEKEjw/HDp9099I36KKPuGLcZ7uAmrvc0tcDuNZgafMyMr3kU+UcWwlE4/rW
+	 wzWFDVcyos5BMdnJOiU5I86f5OlHsoNPY4Ouw83HeukpZOW3BnzIo2C7q0nFZ7Fj6f
+	 kaROK/scBxTOw==
+Date: Tue, 28 Jul 2026 19:01:52 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>,
+	David CARLIER <devnexen@gmail.com>,
+	David Hildenbrand <david@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Juergen Gross <jgross@suse.com>, Kevin Tian <kevin.tian@intel.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Thomas Gleixner <tglx@kernel.org>, Toshi Kani <toshi.kani@hpe.com>,
+	Vishal Moola <vishal.moola@gmail.com>,
+	Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>,
+	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, stable@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH 1/5] x86/mm/pat: introcude cpa_lock() and cpa_unlock()
+Message-ID: <amjScICeRPqDzskV@kernel.org>
+References: <20260728-cpa-fixes-v1-0-2ed2352300b3@kernel.org>
+ <20260728-cpa-fixes-v1-1-2ed2352300b3@kernel.org>
+ <20260728151633.GX751831@noisy.programming.kicks-ass.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B373240003
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260728151633.GX751831@noisy.programming.kicks-ass.net>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B265712001D
+X-Stat-Signature: s9s45yuuxgafge59x74xjcdj3esfgtt9
 X-Rspam-User: 
-X-Stat-Signature: 76cmdnsstgpurdukb9hofcp34cz8tkjd
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1785254362-102225
-X-HE-Meta: U2FsdGVkX1+nyYhvr5j7+c0lQ1df0v6e8eNKNrDWuIXjw5wmW9VfYKaYq58sgKfxmgsh9G8UPwJOrKEHE1Z0GyTAlVhr5OVQNhi65q4fH1SN53GY/B90FOfk3TeD9NpEm8IZ6SGxYlXaCMRCtJo4QE6LkMq3/4nzwWHURWs69q33LRItxSPaK8sifJbwJKhOw37U1Vajk0VI+E5QMijedvCOxFDxrF8I8xKV5vFVSJdeCz8MprPG+Oa3189E/Lr5gZ/8+06AmS7/renItetJF+dSTo/hvhb7phLU0mCdgvsh1el9mke4q5dzuGENCGg4aCYU5Ge+O+9toAkNOogV4WisDdGRiaQpGJsvclMXIml+Zdn8tT0JCuZMuCsFYzU+HbM8PnGJmo5NuvU5qc0OgahuR9iuh9QX8es8aqwXv2SZb4FvMolHvOplsr+8PCR/kuvIl8ZFUQgNgObVhyQz0lSgqfBEzKv3eucKohes3+wQt0ikYART+kgc7PCiMW450uAw2+bQXJxesV5pfPAcOW+n3jwpPnLt3Hcqe+/zH1V+/P7PVVp88sdkCl4GN9ABWX6a5CySe3IhaEVUHp4CYuzalP6ifgdLPTRhCZACwyQMpxhIlowF4mLumvfOWyjv70dax9mJ5mt+BxvZqdb0PqHXihXzFAfR3CQko0DROrS/aHH5AaZ0eKlkbUduI4VIB73TINcM2Rak/z1n27DRKaruJeLAugRvraBxHdW872spkR5tkiNsO2cNXAxRx8WZ9wQy3Qf5RSlDYv7CcMDpL/w0kuqjLuQyxIL/y+4l7qp1nWJPtMxHXx1b1oEocqBUfgrPSzcZZ7hKjTO+1iJ9kNRtEh2OfCouW9UMRwOLfbSAUGKbn9gaGqJVD82Sfw5b7iM0cEGlcRetWsUBIyUuxbj39mn3E2NyAYlU3Wwz4XdzwiCCor3EwoyRguMe9BVgvpXIjo4K4yOTBQuR5r4
- KYsMycrh
- G7oY5e0E8uwQok9+q43a5UxBzumJuCSuX/tySNKeLn+larlu1FAfrcH8spBTs951SbVwicKQmbxOzi+eOAN7kg23RqnxkJ0gR8kS+2E/mE/OoCRIKCdUeAhmnGOVuj0k8gYpjCpGIaEPAjHgBwahs+YSpohot0GNmmvGbC7TYfN5Bb0dxu0k3wvZAXuHFuDR79I1E6SQVUE7XI5GIEMjnXgXZ+H76fD22aof0x9cOEN3hYP+hD8b0WuPbUewHr9g6DNGV0Y+tYo2m6SrGMJMswmdCVAgs56eIC7FcIXt82JeFqgG4M9GBMdYE1TRTTS4MDIjmaA0KagfUVlzLlxGpsc2xcwdyAhMkVrhvV/cDsQiSXxFk/B8zku2m/jX4O1tg6xuqoMYBkTBOM1r5PnL6GoLeyJWXREgrkYRZqZj/z+CHfRJSOJ40F5zuYq8F0wEIKyHE
+X-HE-Tag: 1785254525-665470
+X-HE-Meta: U2FsdGVkX184BmAmE5fx6//09h5DkOLIBdEy7vTClWPtNlipS5TkUUaqagCMbmb1WctbH2MpTffXmEDqo1KvO3/BiIwxm9HGnYi02j5W/I5L9z5YgvTjRV4A+6c/4R46T3FNwIhJ4ry3RKS3haU+HLN1vJdzdNR+0nLxG9A6eMKEGPUhIJZ/G0UmFwQZB9UmxeUWOuAigGLoKrkphx8zJkYQ1c2YQlR4MBXHvihAMEGjExGswUFEl8w7MJ8lCe9OvrxUXc9tg18grtGtUL5j7tSuNDC2urFLaReZsYBHah/26Tco/sj++7iO60NXGnSm2pv+oAmktq7TguArzZH8IhQiZ7Wrpzv00LqS4Cd+FLMzkfxPPXDyv9cccHGAv5Pc67iM4huMGIWwPGOzq4qrTTGrh0L8+9he9zA6ko2EXr8Nm6PLGyle3F4jAcAvFMuZZOp7PtGqE2Z7qbzzBglL46VliIfy95WxU27vDtd4TXmrjXLgEJA6X2LeHTscvjIGbFztRpymvWMLjJ32av3oVMpOBUJz/IluWWhi8w5pTXv0ZLFtwXj1VeslhEBjLLrE/cILHVEHA0174u9a4HO4yhzf3cslU9zQ0kRzqoA6F1+XAbSxzdNTMeJ1BWllFne/koCYY0Ypw9vdX82R4LvBAy0HaMUJqPw5CYw35BnWSri/IpJMEZHqjnf60SI23l9Zm07ccdusDv/jA6m0S5CErpeNF3pyvXhQKTMPSX+NgMkhVhgNbc5O0nBpcx4npXBcbEoySa43HpnBXM0m737NhL59HBwhMfmVl+oiJN0NsMmAaI0NdFJf3KloSyeFHmqRgvawmJnV5+hpMGe861rDwvFzuqOANu35g1G/FF2ZuiUZIStbRoAiMbRzGWwgswG5wMgywQuvyaWYB3FVxqN9B4gO9t77aSJ4JP63zrwPk8cbxL505Hd+Tnmw6SGvsDrAKs/n5Hui0tm8n7hbruo
+ Z6psFuzn
+ NXscNwMyYvzUSnf2SwIWs4d0e96d6rgdO0rZ5EVjV68dL9trc9kphxUMUL40gsnMXp9qyOQBTxOrVKsFPBoV5KAsyhOzTpyeX5y0rzwKuaS95E+6XUKFgdGdcvbS336Q1NrwrM44lTyGAfjrQxTUq9AJ+tKxx8DeFgG8+WqWv8LSx+fFRRlz9IP5kDz5Le0Zlly4KvWpIY7IZuN/qXoz/nBFokppf6NNI1viFStt+p+G97zrzlS0e9IyPF4cQ+2geyxkhLhqZDzRBgIZgzOGpHBDJhOS9mEnysF6a6FN+rQSgbLb/1wKQKvVoTTixbC3EqZ3TfuX40lLcvH9VbkKrAV0zSx8OA77XRmpHj/kwBRuEL8yH3ZTiNh5BmKwuEh6UbBGU
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,106 +109,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Youngjun Park <her0gyugyu@gmail.com>
+On Tue, Jul 28, 2026 at 05:16:33PM +0200, Peter Zijlstra wrote:
+> On Tue, Jul 28, 2026 at 04:07:44PM +0300, Mike Rapoport (Microsoft) wrote:
+> 
+> >  arch/x86/mm/pat/set_memory.c | 33 +++++++++++++++++++++++++--------
+> >  1 file changed, 25 insertions(+), 8 deletions(-)
+> > 
+> > diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+> > index b1e780a465b5..4c8922695fd3 100644
+> > --- a/arch/x86/mm/pat/set_memory.c
+> > +++ b/arch/x86/mm/pat/set_memory.c
+> > @@ -65,8 +65,25 @@ static const int cpa_warn_level = CPA_PROTECT;
+> >   * Serialize cpa() using cpa_lock so that we don't allow any other cpu, with
+> >   * stale large tlb entries, to change the page attribute in parallel to some
+> >   * other cpu splitting a large page entry along with changing the attribute.
+> > + *
+> > + * When debug_pagealloc_enabled(), page attributes could be changed in atomic
+> > + * context that would warrant disabling IRQs. But since debug_pagealloc always
+> > + * uses 4k pages in the direct map there are no races for splits and collapses
+> > + * and locking can be just skipped altogether.
+> >   */
+> > -static DEFINE_SPINLOCK(cpa_lock);
+> > +static DEFINE_SPINLOCK(_cpa_lock);
+> > +
+> > +static inline void cpa_lock(void)
+> > +{
+> > +	if (!debug_pagealloc_enabled())
+> > +		spin_lock(&_cpa_lock);
+> > +}
+> > +
+> > +static inline void cpa_unlock(void)
+> > +{
+> > +	if (!debug_pagealloc_enabled())
+> > +		spin_unlock(&_cpa_lock);
+> > +}
+> 
+> If this lives, we should probably stick an assertion in both the split
+> and alloc cases for holding _cpa_lock. That debug thing seems to rely on
+> never hitting those, but having that be implicit is asking for pain.
 
-From: Youngjun Park <youngjun.park@lge.com>
+I'd rather stick an assert for !debug_pagealloc_enabled() there.
 
-find_next_to_unuse() walks every offset from 0 to si->max, and swapoff
-restarts that walk on each retry, so the cost scales with the size of
-the device rather than with the few slots the shmem and mmlist passes
-could not free.  It has caused stalls before.
-
-The flat walk predates the swap table.  Slot state now lives in a per
-cluster table, and wait_for_allocation() stops all allocation before
-try_to_unuse() runs, so a cluster that holds no slot in use stays that
-way.  Skip such a cluster with cluster_is_empty() instead of reading all
-of its entries.
-
-Commit dc644a073769 ("mm: add three more cond_resched() in swapoff")
-answered those stalls with a cond_resched() every 256 offsets.  A walk
-bounded by one cluster no longer needs that counter.  The loop now runs
-at most SWAPFILE_CLUSTER times before it returns or reschedules, the
-same bound swap_reclaim_full_clusters() already scans between
-cond_resched() calls.
-
-cluster_is_empty() reads ci->count without ci->lock, like the rest of
-this scan.  A slot stops being counted only after its folio has left the
-swap cache, so an empty cluster holds nothing for try_to_unuse() to act
-on and skipping it loses no work.
-
-Signed-off-by: Youngjun Park <youngjun.park@lge.com>
----
- mm/swapfile.c | 39 ++++++++++++++++++++++++++-------------
- 1 file changed, 26 insertions(+), 13 deletions(-)
-
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 5d15913dcf86..230abb276ceb 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -370,8 +370,6 @@ static void discard_swap_cluster(struct swap_info_struct *si,
- 	}
- }
- 
--#define LATENCY_LIMIT		256
--
- static inline bool cluster_is_empty(struct swap_cluster_info *info)
- {
- 	return info->count == 0;
-@@ -2763,7 +2761,9 @@ static int unuse_mm(struct mm_struct *mm, unsigned int type)
- static unsigned int find_next_to_unuse(struct swap_info_struct *si,
- 					unsigned int prev)
- {
--	unsigned int i;
-+	struct swap_cluster_info *ci;
-+	unsigned long i, end;
-+	unsigned int ci_off;
- 	unsigned long swp_tb;
- 
- 	/*
-@@ -2772,19 +2772,32 @@ static unsigned int find_next_to_unuse(struct swap_info_struct *si,
- 	 * hits are okay, and sys_swapoff() has already prevented new
- 	 * allocations from this area (while holding swap_lock).
- 	 */
--	for (i = prev + 1; i < si->max; i++) {
--		swp_tb = swap_table_get(__swap_offset_to_cluster(si, i),
--					i % SWAPFILE_CLUSTER);
--		if (!swp_tb_is_null(swp_tb) && !swp_tb_is_bad(swp_tb))
--			break;
--		if ((i % LATENCY_LIMIT) == 0)
-+	i = prev + 1;
-+	while (i < si->max) {
-+		ci = __swap_offset_to_cluster(si, i);
-+		ci_off = i % SWAPFILE_CLUSTER;
-+		end = min(si->max, i - ci_off + SWAPFILE_CLUSTER);
-+
-+		/*
-+		 * An empty cluster has no slot in use, so skip it whole.
-+		 * A slot is uncounted only after its folio left the swap
-+		 * cache, so there is nothing here for try_to_unuse() to act on.
-+		 */
-+		if (cluster_is_empty(ci)) {
-+			i = end;
- 			cond_resched();
--	}
-+			continue;
-+		}
- 
--	if (i == si->max)
--		i = 0;
-+		for (; i < end; ci_off++, i++) {
-+			swp_tb = swap_table_get(ci, ci_off);
-+			if (!swp_tb_is_null(swp_tb) && !swp_tb_is_bad(swp_tb))
-+				return i;
-+		}
-+		cond_resched();
-+	}
- 
--	return i;
-+	return 0;
- }
- 
- static int try_to_unuse(unsigned int type)
 -- 
-2.48.1
-
+Sincerely yours,
+Mike.
 
