@@ -4,95 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF546C54F4C
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 15:42:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D8D9C54F4C
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 15:48:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B41A6B0088; Tue, 28 Jul 2026 11:42:18 -0400 (EDT)
+	id 0A8676B009F; Tue, 28 Jul 2026 11:48:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 88AAB6B0095; Tue, 28 Jul 2026 11:42:18 -0400 (EDT)
+	id 059096B00A0; Tue, 28 Jul 2026 11:48:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A1166B009B; Tue, 28 Jul 2026 11:42:18 -0400 (EDT)
+	id E89CC6B00A1; Tue, 28 Jul 2026 11:48:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3EDE36B0088
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 11:42:18 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A7896160444
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 15:42:17 +0000 (UTC)
-X-FDA: 85038601914.11.BFC7B42
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 1FFB916000B
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 15:42:16 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Hkk5d7pN;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785253336;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BDC096B009F
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 11:48:35 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4B882140402
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 15:48:35 +0000 (UTC)
+X-FDA: 85038617790.25.968607A
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 616DF180014
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 15:48:33 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ekikHVAG;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf06.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1785253713;
+	b=pxIthF9s4ixRX+3qujp9tCq9AdYqpcURbKACa2B3xOihPGo6X/hu+9SabEG0FWdIuDfVdJ
+	kDxn5K5qTVxBrw6jLeaVt9RNHXDj6EelaPQk7Tk4TnCWNzkRp4FZGQ816nWya07GAN0wbj
+	sxUMI3XxYTBXARLAMbpC0pHbKejrs7Q=
+ARC-Authentication-Results: i=2;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ekikHVAG;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf06.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785253713;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Cn9uuCu4petLDLZf1KwAZ2CPZvy55bypKnCMo9F9MKg=;
-	b=4X1ZLau67NWBWuaCPP4AfCkaPSk9nLulZyeGerAh3B+xqqfRoL7hQgGGe3mY6H87ObQZ0B
-	KwZqlKU57a8bFzizwu7xLfsaBI2Xyw2/ciYCIi7rXYCiiEECbnRNxqHKdcuIAXcxjBbqy7
-	zOzg94qVX7bZNmA+j5Z6gtT6+RY+ZXA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785253336;
-	b=02YlfDRSu6D3ZVToh3WzN3NfDxJyibX9Qv70NHqByV+DK5sbz/obHUxZFqlUYHbCS2PiKz
-	lXPmtdeJT04owPannTr3UXP2lu22ZFc5iuTf9cDykEzlBqVJ8G3EbKTKhbCwHMURjHKofK
-	VKrneYmPaxPSQk/FSa90gDMPxr0VpmI=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Hkk5d7pN;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9E4466001A;
-	Tue, 28 Jul 2026 15:42:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49EB01F000E9;
-	Tue, 28 Jul 2026 15:42:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785253335;
-	bh=Cn9uuCu4petLDLZf1KwAZ2CPZvy55bypKnCMo9F9MKg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Hkk5d7pN/gnfZxZufQsrgEvXOwGoimyv1SzUPkDfmdUX26sYH6/DQ/mN+5P0HlkeX
-	 tOIOPRy3Do+8x+vQm8v1HMz10TAXOPdbzB6NpS8GmnvmJqGWzBpBtZ2DZefeQGt9ge
-	 +XBuURtLarQzfpzvFMjq5ELicbcvIMIwByC9yifSTw0EYPR6Jh68eQEEJjWX6pMpsl
-	 MaqObdhhyXkv8zZoFr2B9l9ZAVpCZje0DQjVor7vkp+DLCKDP8fOv4IoBSzOIYbXAQ
-	 XXC10noKxpZyWEoHhoeflHrnDCRW0hm3YgmivKj/BOG9kfQl7kG1HAPnWO3SviqvIj
-	 HDUHaryZm53Bw==
-Date: Tue, 28 Jul 2026 16:41:56 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Pankaj Raghav <p.raghav@samsung.com>, 
-	Hannes Reinecke <hare@suse.de>, Hugh Dickins <hughd@google.com>, Yang Shi <shy828301@gmail.com>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, Hengbin Zhang <uqbarz@gmail.com>, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH mm-hotfixes 1/2] mm/huge_memory: separate out
- CONFIG_PERSISTENT_HUGE_ZERO_FOLIO logic
-Message-ID: <amjJM1Flp7bDN0NO@lucifer>
-References: <20260728-fix-refcounted-huge-zero-v1-0-3f261f5447b4@kernel.org>
- <20260728-fix-refcounted-huge-zero-v1-1-3f261f5447b4@kernel.org>
- <amjD1MtOiXBRDxVi@thinkstation>
+	bh=6ekmMqEiqA8LTebT7W3nKgWOoJTnvec9dUtjjF95pMs=;
+	b=Wmvu43TQfC9Nb9roJzMaTnqGslATc0fggTA3ZkBFilMTPkSvamDwrZothqacGY16kGQRj6
+	q5vEsLGeZm5UtSNuf7GgEs79cnz4mOdZTyCa1sZ3mjBO/8MO5vtsD/xQeyMZFJccdoFrX7
+	ubnIt+Ya+qWu/DJOlXJ/UKMd2GVF9xE=
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-47de0093c42so15230f8f.3
+        for <linux-mm@kvack.org>; Tue, 28 Jul 2026 08:48:33 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785253712; cv=none;
+        d=google.com; s=arc-20260327;
+        b=mVFvMVesp9h+4K6kQH4xoFkIl1h3bHXf2XcyYLgEiblGTjeniuN7Mf7z6CSI+3mqS6
+         O2g+1YcIVoYKQ1ZiH0zoGy9vq9M8PFsDnWkMEWX3xYzMH1nOWxPcYCfAqi80AIwxhm/M
+         HnrMwrdlZQga/Q3tOeqGAlFYnfJkqGzSNR02dGHwCIxKXedjDqrP+OXfVg8X6noPZ5Ya
+         pQcOcJIM9/hE3bUwzBTd194izEgW/WvysmmUk/vFO6dV7onSvdfXG/ri/QrBK9Qrz67P
+         G0gyA1XMzkIvqqkaebQx+iq9Jlz6EroPM7pfYUsw422ysxvvES3Lt/0Il2LiwlGph4Us
+         PMUA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=6ekmMqEiqA8LTebT7W3nKgWOoJTnvec9dUtjjF95pMs=;
+        fh=xqX1ct8N4wAPB9qVPNGt4XABlZXmTSGwq48pznVvSNg=;
+        b=Itxj2Mgl9YcJiHKV+1IAWmWVSKPQLM5zij8G2n+ZB7lBpdOGk3plXXdGUIZaL1PFd1
+         MAk4ZClnIY/Iqe/jVg1EZe4lyZlzXgTnPr7kHbN5KmpRJv+KTebf4g4M3F7WMYC/DIvR
+         CZ+tYq4u/NUobHa0EiTvJtTo8MOc95Z/zcSIPYWaTb2O4fto9b4wcFgRkAhDz6acZEl2
+         C4G3dFxlDwwW4qNkerHPI5vTpMt8ktBzviXbp8qomx+zCIOsCvStcGBmHPnG8FBgyFJP
+         TMy8qkFPz0LW1MZW0BNrNTL5X5J29dLGH/1CfQqGNXK9wg39LqPMyxu5bW17kyni8wdb
+         Pj9w==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785253712; x=1785858512; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=6ekmMqEiqA8LTebT7W3nKgWOoJTnvec9dUtjjF95pMs=;
+        b=ekikHVAGqyoNGvrJ6M6fPZLLv5BymWvQNneT+9m6yDl89SWE2N8isDlst9ZwFT3DX3
+         5nlCyV9gULj8rN7+P1hTVZbhNt8YOP7lyORI7MkwBMJDpVQZRYHaSdZGRUxsBjXGCpHL
+         NLnm0G5MX0VqimdXz45TReXogMPCYgd+ZuLXKsSHvfvG9u9YHGc1W+mp/hb/iNYySoPD
+         tU3vjZcGRL4HCx02TE5x6z558+LYvVUBjaJB7Cars+UzFCwB6mMGqOagoJuVC622tZbJ
+         R7Jixs7bWtikiWxnvV1gkyLVA8oXS0Fak/DCvdR6DT5f3DLz6kmmu+Z/nhwXqxaVXi2F
+         b3+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785253712; x=1785858512;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=6ekmMqEiqA8LTebT7W3nKgWOoJTnvec9dUtjjF95pMs=;
+        b=BTbvesq2mN1+unaMYTvlwVa3WbG5SFeauidRF8cZr8J2ZSvrB5I9ncGEWZ2s5bcstg
+         wHu0nwhJvfLmH/JiZBcJhmtUfMnyh9iU9c7mtH+SmzvWvd7oX2KIzM9pRpzgaJnJ43mE
+         srqc4f2kJ83Ho9dP/dI5zBvIbb0nCCMDudR+li9ffMkl3euDLzUbzGC1YgDoEcv8ccgU
+         UFkj0JqMK+O0DMFdDcBFHVV5+kdbyGJy71jh0OuDNQm7sfhI1zy2hv/OjILIJx5rRVRZ
+         /XhC3FbUtWLC9EQaA0vo7mm0K30+/X93XRntOPPz8Zo4X+6uz1TTuqDoyC0yBk80TVXH
+         ilAQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoOLX+xTPL+aOPzF7V7+x/SiBVvAkfWrMxL6vcNXCv9nOPoXIGx5mjjaQAUU7e5IYUvLl5lMlhuoA==@kvack.org
+X-Gm-Message-State: AOJu0Yy9nGzJJREj/xAE4j8qsqx/Qd+X4CaJ3HzmhwmSEax+78IuewfW
+	atcE+7EyqD3FHTCgh6lxfFzetNW3X5fLxdcLaK3Q/VLMSF+vzdx8B01vueny5th5WOjOrnQgs2E
+	MTAs8Lr+Uc5UO7jHJH+D/lT6WkkEQPb8=
+X-Gm-Gg: AR+sD13fGHoF5vyVWzIxgdFZVw/o1b5UWl/T4R9x5tHKHbEa/C7+EHpN9BdC9GkGLwd
+	6K9HgL4vbw3RuCPOduR6rsaPLepnY+3T9I+x+6Eittq1dQNv2ACTTV7c0dbcsXuJB0ysvy/OoB+
+	EapNAmAZfP2pNSZT0znSFWpLu+FgbQf8T1E/zyiVo43+sBtzrQPHNbpl+jRuUhsXPwHjvvQyuQJ
+	CV2Io5j0+gKbZVCTGsHTuK3BqpOsACyk9SG2WhlFo7lqPw5SBEr3ReKQdTax0n+6V/BIHBI9Eie
+	qcsPUmTN7r/qZR6xyw==
+X-Received: by 2002:a05:6000:1889:b0:475:f0d1:eb56 with SMTP id
+ ffacd0b85a97d-47fb1eabd10mr3664714f8f.49.1785253711713; Tue, 28 Jul 2026
+ 08:48:31 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <amjD1MtOiXBRDxVi@thinkstation>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 1FFB916000B
-X-Stat-Signature: jm4gdwdfhrygjuc4tsxnaws8je7bqfqo
+References: <20260727143618.1582318-1-alex@ghiti.fr> <20260727143618.1582318-4-alex@ghiti.fr>
+ <CAO9r8zNJ1cfCVgxtpqx4Db380bjZ+Z0P842eAxPXw6Mh4XBrww@mail.gmail.com> <CAEmasaXR5EmGCv3T5AzM_2908R-VjfMcObrACyVGokY2U=+i+Q@mail.gmail.com>
+In-Reply-To: <CAEmasaXR5EmGCv3T5AzM_2908R-VjfMcObrACyVGokY2U=+i+Q@mail.gmail.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Tue, 28 Jul 2026 08:48:20 -0700
+X-Gm-Features: AUfX_mzh2_blL1kmUmwix39O8J8fZHoXTWgO9ySYA2Bkw_Iy6nOxbofDDKfyqbU
+Message-ID: <CAKEwX=P5G=Ckafy6fm9ws3njWP_Zm_AHRKOFERScB9Pkd_KvGw@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] mm: zswap: drop cold writeback folios via swap dropbehind
+To: Alexandre Ghiti <alexghiti@meta.com>
+Cc: Yosry Ahmed <yosry@kernel.org>, Alexandre Ghiti <alex@ghiti.fr>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, Kairui Song <ryncsn@gmail.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Wei Xu <weixugc@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 616DF180014
+X-Stat-Signature: x5fs39az3qsqd6wbbmzu6tyukd1dw6qt
 X-Rspam-User: 
-X-HE-Tag: 1785253336-936828
-X-HE-Meta: U2FsdGVkX19ylUJAXDYD26VJ70Up6Z50d/NkbnuiJB0wVSg6Uvs+C3hsN27jZ2lYxFqJIOP/tsMP0EMDug639YMcne4Cjh2AapcfGqG61fze6liWBfxA5X4kSdcnkAD5bTuVOxvC73OtS8pHn2MiRrXfQ76JitOMWPGQT8fBq42waj55OpZbyC+gZvDmv7tixnM6zNwUg3Vgd52IIwMP3+Ka7v4F4FwaIdSTvsI8ReEE4mnrsa4A0/j4wOZqOWWcKkSjfx92tdhy9Szfl2lf19jLQYmXpY897WRSWU/t9C8vmjgGWdzO3j8zV4zWxD0tUfmk265wjNVE6mSGDHamg3ZwCUtZGPtWdCBJiXjIId0ZcvDWDYiRGk7+sYxML4clidlFJyqBpMMRm8DaiKJviF49BVcKYay05kuzAWRH18NzNgVeBd0sokBaHEmO50I09c2UvLhlcMFBlSr1EVoWxMnbvycxsM1jfrYHUNQTaWAqqk1ilBnmz8ierFpe53LG800DebE8cCix7eBf6fXT7Q2MxiGQThy0E+g+aUcVgZzGLGniIOSKMcCaW+WOIh5R7uDp0zUrX9J9caGfOJorvfxQqOD/4qFL9i5V9kuDRsuOpSHfBq/XxDg/dwIFogXV8Y4sSkpq80DkAvwcV6i8wxUFIPvmUfR5QU32wZnt4pBE3uXMvRpCnxMf5Zwr483fuyhR043Wg5SoIfYTKsZAYP5yA2Mu3CuOXQMF325rRwz/MrK+FjBhePK8ZQRo6to25FSiDAbF1wb0KuzHDkaqT/8xhI3eJbWteCKcjoq+nZMzbXVJcffulvOf3UUMwAYGqTh4BBeV+BSN33kPGq60n6IvN0AVXdqM3NO9Iz1jbp7cpgvQSCanJyzM9xw1H+390rb/CNh8zeVYF5d8c8DgjgORxscnqiY+fdQIaHjId1bAIy5HRbwF2TwhcKbetCiGYaj7LCxOaEWpX/EWEBN
- hv0T9WTT
- e2DZ1XZ1GWb6pCGp92kjEJTVCeEknE0E7fQyRbLVgEHe14BpehtEigLQroQFE1DLIKfX6g4V425tJllfubBqVniLtZq5DNGUebfQamMgfLI+BkLZqv16j/FX3WwgbJbBhvvKDxOMg+IHKIkJfna6eQY2EqtvBWj6pqUeI5+O5JEXf8ZhlYLfKK6O5S0j3sjoRXkGPVUCxniyUOMR7zM3Y+usKghnL+GlAEgl7+KSAxSUMsIjpy/HL3ndBOpGJ7yqlXWF+P1lRuaVE2rtlovJa611KEnZ4Ha3SEf/gRt6Db8U+pcwkT7PfRpSIwevkiZbzef5cITz2yWhQNpu5WnCXOyr4f+FHGnJNl6z2BoTvPzV1Ud4=
+X-HE-Tag: 1785253713-654740
+X-HE-Meta: U2FsdGVkX1893vpJFR1MxhQvandNcak0O3f9NmB/uxgVa+KZ0ItUbVM+L41jypbf2TaqYmvLibrG8C+rWfIWrpl9ZdHIPmXvxdDDjfcfEFqjLO0L+fMqT3MPEIX/XZJ+xN/cN+bz7UVzQnJbH5/CSkhsIQ7YNkM6FTnZ/jOrzAYRnTOmhl4xnm0rB/aUAeDfxSD65kgPkslVnlEKegeyvSDf/BCIZzMtNJWAqTICBJrxpg8HtOT5ZTeQClcVQVr47WNClExOdMXZ/sR8kJyV2mizbYr6wIHPBXa6vyA4ZPfRWib+Y3UOxgM7zkPChmQnmHhxLAlkFjHn/4l/v2xAAOFdYBZ8EaTlyduJfErl09QwPyNv+cwVz7Lo0DS+aUHjg/wdXmfZo8buNFtD+jSex6cnQ8TUQ3EE+6xWw23loxd9BKaMwyXre5wYviqt/uBf1Yys7VNll5KCAXkiNkisR4uTivKv2u67xTV3Lx2PyB20/ypciyqPi8EUegIq1b0Qst27IWsQ4E0z501jPMdmjvxMPhhUUgmAqu2kJHIjh78TOfDCBboSxSX6pe/ul7Va7oOnDyb3Xbec03rR2cXY02U3rRM60XjXFrHT92IJ12/23ZGuNIhCIM0tLPEJBpG7an6kV+43G425U4azWp92AN+k63Bq+2/qaHuBjZB83FaIdPHQdNxhAJlJ7hsmUf2OhbP//cEFzLyrAc69gmABlTUwmNyGCAos2SAR4alalhPoilEsrLtCoc4XJI1QNftJc8r7xCFO2HBq3unWN8I6sf9xWNl2yqaMy09j0sRMrurNPVCPqCAqUczUMPJb+WWU4Uz5CYPnurURF07dI7vQkAvVYIuEqGm2GBnc/kq9UhMuwEO59/ienRJUm+GLTjkwfANu03jQMx3lSE5yXjAl3h4Uo3rbGzgP3QSrAQEfqs2AyZ3S31Ip8dOvJ0a+84+X5STcXeEcRdjeyK4RXBp
+ oOcTmXVo
+ o7hsMlt/10ebfYcdJbsKFatg8LsSsh2ixs/aILt0Lu8q0uajZ+tBvUIUjdivxUUv6qgAp7jQuO80VUtavFAfmdXBMUOS+/e9qpsiFtIT+rb7KMHCA2Y6ijEyhwjzJwvUW45QjGd9YmK1J17iKKz0KSiwVG4sD354tQMS+5fE7CmdmFttRffmSLmm/H1j3p4APMJSydP65YB+zq9yolF6SgCj7LdOzyMghB2C4TLWZQ8Hfwv1SBZ+d86oWPCp+UjQHpwhHbNwPAxoLWhuUe7nC4ZxCnepAo+EgI7/hpioA4LQYYNesrv+vJ8BKV96p9vBm21AfrMIady/af7B6fqZQ52pc93lhFx0jwGr3C/hpK1YWBmh+p1aZq5WmFzRIfs1gUdvB7rphyC9kINna/VWHhUCR45mjdx3/2uPCSOuWjsbJHK9P38rMg+Ze/nNIlFvzo4OZ8psKbBBNR1phHvyWCql3tylz1D5napD1fBqvQOW9u+k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,204 +150,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 28, 2026 at 04:08:35PM +0100, Kiryl Shutsemau wrote:
-> On Tue, Jul 28, 2026 at 01:05:44PM +0100, Lorenzo Stoakes (ARM) wrote:
-> > Rather than mixing the refcounted and non-refcounted
-> > CONFIG_PERSISTENT_HUGE_ZERO_FOLIO logic, separate the two out cleanly
-> > so it is clear what happens when this configuration option is set and what
-> > happens when it is not.
-> >
-> > Introduce HUGE_ZERO_UNSET_PFN to abstract the ~0UL assignment, only
-> > introduce the refcount and shrinker if !CONFIG_PERSISTENT_HUGE_ZERO_FOLIO,
-> > abstract initialisation and teardown, abstract the huge zero folio
-> > allocation from refcounting.
-> >
-> > Also change a BUG_ON() to WARN_ON_ONCE() while we're at it.
-> >
-> > Without this change, the subsequent fix for a subtle race is harder to
-> > understand thus this is a dependency of it.
-> >
-> > Cc: stable@vger.kernel.org # 6.18.x: dependency of subsequent fix
-> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> > ---
-> >  mm/huge_memory.c | 159 ++++++++++++++++++++++++++++++++-----------------------
-> >  1 file changed, 94 insertions(+), 65 deletions(-)
-> >
-> > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> > index 032702a4637b..0f60bc82e87a 100644
-> > --- a/mm/huge_memory.c
-> > +++ b/mm/huge_memory.c
-> > @@ -77,9 +77,14 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
-> >  					 struct shrink_control *sc);
-> >  static bool split_underused_thp = true;
-> >
-> > -static atomic_t huge_zero_refcount;
-> > +#define HUGE_ZERO_UNSET_PFN (~0UL)
-> >  struct folio *huge_zero_folio __read_mostly;
-> > -unsigned long huge_zero_pfn __read_mostly = ~0UL;
-> > +unsigned long huge_zero_pfn __read_mostly = HUGE_ZERO_UNSET_PFN;
-> > +#ifndef CONFIG_PERSISTENT_HUGE_ZERO_FOLIO
-> > +static atomic_t huge_zero_refcount;
-> > +static struct shrinker *huge_zero_folio_shrinker;
-> > +#endif
-> > +
-> >  unsigned long huge_anon_orders_always __read_mostly;
-> >  unsigned long huge_anon_orders_madvise __read_mostly;
-> >  unsigned long huge_anon_orders_inherit __read_mostly;
-> > @@ -221,22 +226,58 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
-> >  	return orders;
-> >  }
-> >
-> > -static bool get_huge_zero_folio(void)
-> > +static struct folio *alloc_huge_zero_folio(void)
-> >  {
-> >  	struct folio *zero_folio;
-> > -retry:
-> > -	if (likely(atomic_inc_not_zero(&huge_zero_refcount)))
-> > -		return true;
-> >
-> >  	zero_folio = folio_alloc((GFP_TRANSHUGE | __GFP_ZERO | __GFP_ZEROTAGS) &
-> >  				 ~__GFP_MOVABLE,
-> >  			HPAGE_PMD_ORDER);
-> >  	if (!zero_folio) {
-> >  		count_vm_event(THP_ZERO_PAGE_ALLOC_FAILED);
-> > -		return false;
-> > +		return NULL;
-> > +	}
-> > +	folio_clear_large_rmappable(zero_folio); /* Explicitly not rmappable. */
-> > +	return zero_folio;
-> > +}
-> > +
-> > +#ifdef CONFIG_PERSISTENT_HUGE_ZERO_FOLIO
-> > +static int __init huge_zero_init(void)
-> > +{
-> > +	huge_zero_folio = alloc_huge_zero_folio();
-> > +	if (!huge_zero_folio) {
-> > +		pr_warn("Allocating persistent huge zero folio failed\n");
+On Tue, Jul 28, 2026 at 5:58=E2=80=AFAM Alexandre Ghiti <alexghiti@meta.com=
+> wrote:
 >
-> I am not sure the warn is enough. mm_get_huge_zero_folio() will produce
-> NULL pointer now without any attempts to allocate again.
-
-Well firstly this was existing behaviour :) and is to be backported also, so
-anything changing that would need to be a separate change.
-
-Secondly this failure really shouldn't happen in reality, it's very early in the
-boot (see my RFC...) and the config has to set CONFIG_THP too.
-
-And finally, more importantly perhaps, everywhere deals with it - anon read
-fault in do_huge_pmd_anonymous_page() for e.g.
-
-	if (!(vmf->flags & FAULT_FLAG_WRITE) &&
-			!mm_forbids_zeropage(vma->vm_mm) &&
-			transparent_hugepage_use_zero_page()) {
-		...
-		zero_folio = mm_get_huge_zero_folio(vma->vm_mm); <- returns NULL
-		if (unlikely(!zero_folio)) {
-			pte_free(vma->vm_mm, pgtable);
-			count_vm_event(THP_FAULT_FALLBACK);
-			return VM_FAULT_FALLBACK;
-		}
-		...
-	}
-
-DAX:
-
-static vm_fault_t dax_pmd_load_hole(struct xa_state *xas, struct vm_fault *vmf,
-		const struct iomap_iter *iter, void **entry)
-{
-	...
-	zero_folio = mm_get_huge_zero_folio(vmf->vma->vm_mm);
-
-	if (unlikely(!zero_folio)) {
-		trace_dax_pmd_load_hole_fallback(inode, vmf, zero_folio, *entry);
-		return VM_FAULT_FALLBACK;
-	}
-
-	...
-}
-
-etc. etc.
-
-Where:
-
-struct folio *mm_get_huge_zero_folio(struct mm_struct *mm)
-{
-	if (IS_ENABLED(CONFIG_PERSISTENT_HUGE_ZERO_FOLIO))
-		return huge_zero_folio; <-- returns NULL
-}
-
-So it's all fine.
-
+> Hi Yosry,
 >
-> Have you considered moving huge_zero_folio to BSS for
-> CONFIG_PERSISTENT_HUGE_ZERO_FOLIO=y?
-
-Interesting :)
-
-That'd be huge for larger page size and why would we expect a failure at init
-like this I guess I'd say?
-
-It'd be nice to guarantee it though.
-
-IN general you have to have CONFIG_THP enabled to get this at all, and surely
-the micro embedded systems will never set that... (see my RFC to just make the
-persistent huge zero folio permanently how we do this and remove the damn
-refcounted nonsense altogether).
-
-But one for a follow up anyway!
-
->
-> > @@ -308,7 +323,46 @@ static unsigned long shrink_huge_zero_folio_scan(struct shrinker *shrink,
-> >  	return 0;
-> >  }
+> On Mon, Jul 27, 2026 at 7:05=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wr=
+ote:
 > >
-> > -static struct shrinker *huge_zero_folio_shrinker;
-> > +static int __init huge_zero_init(void)
-> > +{
-> > +	huge_zero_folio_shrinker = shrinker_alloc(0, "thp-zero");
-> > +	if (!huge_zero_folio_shrinker) {
-> > +		shrinker_free(deferred_split_shrinker);
-> > +		list_lru_destroy(&deferred_split_lru);
+> > >
+> > On Mon, Jul 27, 2026 at 7:39=E2=80=AFAM Alexandre Ghiti <alex@ghiti.fr>=
+ wrote:
+> > >
+> > > zswap writeback decompresses an entry into a fresh swap cache folio a=
+nd
+> > > writes it back. The folio is cold by construction, yet it is left on =
+the
+> > > LRU for reclaim to find and free later, wasting a reclaim scan and ke=
+eping
+> > > cold memory resident longer than necessary.
+> > >
+> > > Allocate the folio off the LRU and drop it as soon as writeback compl=
+etes:
+> > > mark it PG_dropbehind so the swap dropbehind path frees it once write=
+back
+> > > ends. Synchronous-IO devices complete writeback in this context, so t=
+here
+> > > the folio is dropped inline instead.
+> >
+> > Why does this need to be handled in zswap? Doesn't writeback from sync
+> > devices still call folio_end_writeaback() and do the dropbehind
+> > handling?
 >
-> Hm. What? Why does huge_zero_init() touches deferred_*?
-> That's caller business.
+> That's an optimization rather than a real need: since we know we are
+> in a sleepable context, we can safely drop the folio from the swap
+> cache here. And since we don't mark the sync folios as dropbehind,
+> they never enter the list handled by the dropbehind workqueue.
 
-Again existing code :)
+It's a bit artificial, but you can try testing zswap writeback to
+zram? :) Likely you'll see some small tput win there?
 
-But yeah that's really broken as subsys_initcall() apparently discards the
-error...
-
-I guess the thinking was because I think because it's doing stuff after the
-deferred stuff is initialised and bailling.
-
-In practice it's probably an impossibly small allocation to fail. But should do
-something about this, if only oops-ing on failure.
-
-But that's for a follow up :) existing code, backported fix etc. etc.
-
-This patch is rearranging stuff so the code is much clearer for the race stuff
-taking into account CONFIG_PERSISTENT_HUGE_ZERO_FOLIO.
-
->
-> >  static void __init thp_shrinker_exit(void)
-> >  {
-> > -	shrinker_free(huge_zero_folio_shrinker);
-> >  	shrinker_free(deferred_split_shrinker);
-> >  	list_lru_destroy(&deferred_split_lru);
-> > +	huge_zero_shrinker_exit();
->
-> Any reason behind the reorder?
-
-Well 'do everything else first then call the external function' but really no
-solid reason. It makes no difference though.
-
-Can re-reorder if a respin required :)
-
->
-> >  }
->
-> --
->   Kiryl Shutsemau / Kirill A. Shutemov
-
-Cheers, Lorenzo
+(TBH I have not seen sync IO swap backends other than zram though so
+idk what's more realistic. We don't have pmem device available for
+testing etc.)
 
