@@ -4,104 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46E3AC54F4C
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 16:02:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54C19C54F4D
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 16:07:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 30B8A6B00A9; Tue, 28 Jul 2026 12:02:08 -0400 (EDT)
+	id 2C8A46B00B4; Tue, 28 Jul 2026 12:07:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E33A6B00AA; Tue, 28 Jul 2026 12:02:08 -0400 (EDT)
+	id 278446B00B5; Tue, 28 Jul 2026 12:07:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1FA396B00AB; Tue, 28 Jul 2026 12:02:08 -0400 (EDT)
+	id 1928A6B00B6; Tue, 28 Jul 2026 12:07:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EC1A16B00A9
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 12:02:07 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7B9531A043F
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 16:02:07 +0000 (UTC)
-X-FDA: 85038651894.26.C57F8A9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id B265712001D
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 16:02:05 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=evolvZWz;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E335E6B00B4
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 12:07:40 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6EB3F1C09D2
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 16:07:40 +0000 (UTC)
+X-FDA: 85038665880.12.00D7F05
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id CCB7A2000E
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 16:07:38 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=do9Qf31f;
+	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785254525;
+	s=arc-20220608; t=1785254858;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=53Tcc2FrcqM5RSe5+P9Xw7NVIdmOkwy3TvduRaDIlPk=;
-	b=Ci0B6KSPb2gM/SVF7mA/N0LhSbmWhV6DdpLa8hLyP642srLdWcqOmu8ZFEc7YU6jwqykpv
-	x3i+fiEWy9Kspl0fFM1PcY6l/wCQiZXHsafCtliXn6eJTGwXOBmTehEJayHp8DCy7fCziX
-	pCsN1GmqJ97BuU6pdnlDWcYaMfrrEHw=
+	bh=1d8NjVYJJn+wjjiK3UWZkRgmZ9sB7Xz8XibGwlAR4TU=;
+	b=rhmMWpsuo/3IDS6Azq7K2/q0GB0JMLYfwSzE/f5KCnF6fDvCRJRf5svDQoQOwFU6K67DD+
+	L8B7O+c4kdSLH01toluFSegs1/VU13eD9509gQXGlsh6wrHHBVUO/DOLTnuW4Yic4v60iE
+	JOyoYjghxmzweJhHnWZnGpVvWzWaKJs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785254525;
-	b=JtCcljAXaSbg7Z8lCGqfsZZWyU6R/7jA6b9yGLJOX+/CTiZVAxCeO1XaT6WR1MxZgwZGIq
-	vPu308TSYdgF/1sH33OVlJOF75K9uAiXsIHoY+KQQYtozUHFoGKImuG76nnZrpvwKKn7No
-	JDnhJKFPiMG+yKZeoz/kjwU7z3C7g5U=
+	t=1785254858;
+	b=nycUl5um9mV6vD94M9xTDJWEje24WR4YNp1Uw/LEi68p5xojWFAKmweT3UlLdzUWPQcw+u
+	QYFUyaTxK9dgahDwyVmY8XyE98G0S1va4/vZFw7crG9AJ7+HHpdrYlEuFlQz8kqnYxRgU6
+	QSJFpdKP9H5Qw3624EqT/oCGMY5PyyE=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=evolvZWz;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=do9Qf31f;
+	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DD479600FC;
-	Tue, 28 Jul 2026 16:02:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B96E1F00A3A;
-	Tue, 28 Jul 2026 16:01:55 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 07B2143C7B;
+	Tue, 28 Jul 2026 16:07:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAA8D1F000E9;
+	Tue, 28 Jul 2026 16:07:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785254524;
-	bh=53Tcc2FrcqM5RSe5+P9Xw7NVIdmOkwy3TvduRaDIlPk=;
+	s=k20260515; t=1785254857;
+	bh=1d8NjVYJJn+wjjiK3UWZkRgmZ9sB7Xz8XibGwlAR4TU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=evolvZWzbLE9VSD/7i9PnT0FIdFupRwT0Mtfs26PCh7vXA5e8Qi5Avx6mA6hXc5gn
-	 9dzMC6/9hvhDXBBph7w84dXFeyP9431U+p8OymcD4vyXshZ9y5ZxuBh9told/YZseK
-	 ORkIAEWFaqWshK6K+c/Xl2aycQmRerOqFv5695xJAmEP0UwUfuHk9zhHDKSBtZV2c0
-	 NJaWL3gEKEjw/HDp9099I36KKPuGLcZ7uAmrvc0tcDuNZgafMyMr3kU+UcWwlE4/rW
-	 wzWFDVcyos5BMdnJOiU5I86f5OlHsoNPY4Ouw83HeukpZOW3BnzIo2C7q0nFZ7Fj6f
-	 kaROK/scBxTOw==
-Date: Tue, 28 Jul 2026 19:01:52 +0300
+	b=do9Qf31f+8z39RaavaLnmBkTzfJzmuRlrk8+c6DfkV589EUCL9anWdb2KW+CMNtWO
+	 nrtuVp3Rl2+Ob8SWcEcEgDQDmBmreziaWFdrI6Yya8u6sJo92w2Sj2eF6lkknMnbx5
+	 GswKhL3Abrgsq6uXH23uuN3kfiyB2ZAqwbRqDM15Tnm2MV06pRD43C/kEUuTbiNpZ5
+	 eFujT+vDCoUOvMALJ+z87C7KGHWB/GVtPB7tOshxTpI2jwQtcUuhT1mpVkEPKrdSYm
+	 Ssw8TFKkcDDJ/UEBU1loEG+wuv0jrBPxS0Kxb0zv5waA+ONOdsvZbCu6gb2ZomxRa3
+	 OW3+Vdr61M8/w==
+Date: Tue, 28 Jul 2026 19:07:30 +0300
 From: Mike Rapoport <rppt@kernel.org>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>,
-	David CARLIER <devnexen@gmail.com>,
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Alexander Graf <graf@amazon.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
 	David Hildenbrand <david@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Juergen Gross <jgross@suse.com>, Kevin Tian <kevin.tian@intel.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Thomas Gleixner <tglx@kernel.org>, Toshi Kani <toshi.kani@hpe.com>,
-	Vishal Moola <vishal.moola@gmail.com>,
-	Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>,
-	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, stable@vger.kernel.org, x86@kernel.org
-Subject: Re: [PATCH 1/5] x86/mm/pat: introcude cpa_lock() and cpa_unlock()
-Message-ID: <amjScICeRPqDzskV@kernel.org>
-References: <20260728-cpa-fixes-v1-0-2ed2352300b3@kernel.org>
- <20260728-cpa-fixes-v1-1-2ed2352300b3@kernel.org>
- <20260728151633.GX751831@noisy.programming.kicks-ass.net>
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jason Miu <jasonmiu@google.com>,
+	Jork Loeser <jloeser@linux.microsoft.com>,
+	kexec@lists.infradead.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 00/21] kho: make boot time huge page allocation work
+ nicely with KHO
+Message-ID: <amjTwoWWQBvFvz8N@kernel.org>
+References: <20260725172133.4018491-1-pratyush@kernel.org>
+ <amiwLSEi8cczamP1@kernel.org>
+ <2vxzecgn89jt.fsf@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260728151633.GX751831@noisy.programming.kicks-ass.net>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: B265712001D
-X-Stat-Signature: s9s45yuuxgafge59x74xjcdj3esfgtt9
+In-Reply-To: <2vxzecgn89jt.fsf@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1785254525-665470
-X-HE-Meta: U2FsdGVkX184BmAmE5fx6//09h5DkOLIBdEy7vTClWPtNlipS5TkUUaqagCMbmb1WctbH2MpTffXmEDqo1KvO3/BiIwxm9HGnYi02j5W/I5L9z5YgvTjRV4A+6c/4R46T3FNwIhJ4ry3RKS3haU+HLN1vJdzdNR+0nLxG9A6eMKEGPUhIJZ/G0UmFwQZB9UmxeUWOuAigGLoKrkphx8zJkYQ1c2YQlR4MBXHvihAMEGjExGswUFEl8w7MJ8lCe9OvrxUXc9tg18grtGtUL5j7tSuNDC2urFLaReZsYBHah/26Tco/sj++7iO60NXGnSm2pv+oAmktq7TguArzZH8IhQiZ7Wrpzv00LqS4Cd+FLMzkfxPPXDyv9cccHGAv5Pc67iM4huMGIWwPGOzq4qrTTGrh0L8+9he9zA6ko2EXr8Nm6PLGyle3F4jAcAvFMuZZOp7PtGqE2Z7qbzzBglL46VliIfy95WxU27vDtd4TXmrjXLgEJA6X2LeHTscvjIGbFztRpymvWMLjJ32av3oVMpOBUJz/IluWWhi8w5pTXv0ZLFtwXj1VeslhEBjLLrE/cILHVEHA0174u9a4HO4yhzf3cslU9zQ0kRzqoA6F1+XAbSxzdNTMeJ1BWllFne/koCYY0Ypw9vdX82R4LvBAy0HaMUJqPw5CYw35BnWSri/IpJMEZHqjnf60SI23l9Zm07ccdusDv/jA6m0S5CErpeNF3pyvXhQKTMPSX+NgMkhVhgNbc5O0nBpcx4npXBcbEoySa43HpnBXM0m737NhL59HBwhMfmVl+oiJN0NsMmAaI0NdFJf3KloSyeFHmqRgvawmJnV5+hpMGe861rDwvFzuqOANu35g1G/FF2ZuiUZIStbRoAiMbRzGWwgswG5wMgywQuvyaWYB3FVxqN9B4gO9t77aSJ4JP63zrwPk8cbxL505Hd+Tnmw6SGvsDrAKs/n5Hui0tm8n7hbruo
- Z6psFuzn
- NXscNwMyYvzUSnf2SwIWs4d0e96d6rgdO0rZ5EVjV68dL9trc9kphxUMUL40gsnMXp9qyOQBTxOrVKsFPBoV5KAsyhOzTpyeX5y0rzwKuaS95E+6XUKFgdGdcvbS336Q1NrwrM44lTyGAfjrQxTUq9AJ+tKxx8DeFgG8+WqWv8LSx+fFRRlz9IP5kDz5Le0Zlly4KvWpIY7IZuN/qXoz/nBFokppf6NNI1viFStt+p+G97zrzlS0e9IyPF4cQ+2geyxkhLhqZDzRBgIZgzOGpHBDJhOS9mEnysF6a6FN+rQSgbLb/1wKQKvVoTTixbC3EqZ3TfuX40lLcvH9VbkKrAV0zSx8OA77XRmpHj/kwBRuEL8yH3ZTiNh5BmKwuEh6UbBGU
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: CCB7A2000E
+X-Stat-Signature: 1idor5ib3fgn86ri8gi5rojphh53xpbf
+X-HE-Tag: 1785254858-914662
+X-HE-Meta: U2FsdGVkX1/3b0451FDYxYHTX9k7OFe3F3EpTsxFgVwDUc2QMLydUjGNYHtTuAvltCQ4Q576co48FEIDavRYPgz20Y0KgzAN7IYHMhMjSxheeUJoOOcYIa/68H/0Iqn6y2gmfPCViFKUUdtaFjN8x+VXwpCK2aNW3ZPIKqLFqG5oeP5pYyLU9LMlG03dBtvzn18kPge447rbQIW1gG1VB7+OUB825evL9FoOqWCZATfsjbpl8xVJMkwkeT0S6zQ5zp2VdoVcHg0AOsa5lZOZTpVxpjPyeMVUKOr4LyEPwqG3FqtJgii6oLPHCJJpeEt0jBoWPBi0c7xpXgHYDg2asTZVLPqTtolJyrWctV4toRFYbwvBQ8/moGo17XkQNg46Sbki96ut2oJah86OFKHkXAVr36RZz3m8rSgrbOCAPkOL5YAkyKM65gSjmUPUkg6AGAW71C122pLmtYf94WNaKWoMrYbKnfdzYx54+29WVOwhxGzwOF/2Ck3Mr5YkDB2JUk/2v9OiYoss/gXc4hqd4v9y5UXi0Xm+9rPr9vAsiaxMaJnmXjrGtxvFwGgBH2XCmTFvAs6ycG94GMmn5O/qLdvsOWUfkb76E6HrjWL7B9Uc9Q5v9hsY71hPsJTgPNFmK3d8LGJkw7+viVSdVZamk/FTL/VrQX3ujlrcJxgRFtfWEAz2mu1NJ0h/XJ2jCH/rIVCGeHF5d/Lm9dqKqu5FEuWVg8dHkrHdMxdC8YioncFdDLdv+ajQ3MPvnc9Nmd1zZ0fiPfU1gsPG+j2jKSqyiPmHEG4yKCkgaqH02yW6MkWq6hq3zY9INiBqv7Q/52nabWlqpBCMKhxqrACdmXBzBdKR7goYVgXpooWrKgNqj+OhKJ4Lf0DVwWnDkAkWEOsm/rNZQLQfBzvBB90WRllR/rpFQ3JEF8GWcjO0zTnD9SZ0EhmUnr2Pgs/H7fGSjGyk67Cfd7MEDd9jIlK18Hz
+ P/pbuSXJ
+ xfu863bscnL0nMCyhoaEaZm9LeFF4ASQOG5nsmWLSizC1RTLb/cjYNEUgi8mmQq2fBhDjNtHEwr4YA91nILpFoV1B+Vz6dpebVDlFjdis+Vz+Wd7AHQAPuGCTHX6isUmrlKHisLGq+RtiKnjr1Uk1uwD1P3pXgYinppQDXuCPAtp1ULVYImzR6US0JMNoAEOZ28zIreD5lJKiAr5GXW0pWpK/eCidZqJL9snBdTJxZ2Kj9umZnQdN1+Sbo9tBdg1+HC2T
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,46 +101,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 28, 2026 at 05:16:33PM +0200, Peter Zijlstra wrote:
-> On Tue, Jul 28, 2026 at 04:07:44PM +0300, Mike Rapoport (Microsoft) wrote:
+On Tue, Jul 28, 2026 at 04:37:26PM +0200, Pratyush Yadav wrote:
+> On Tue, Jul 28 2026, Mike Rapoport wrote:
+> >
+> > Please take a look at Sashiko comments, we might need v5 if it has valid
+> > (not pre-existing) points.
 > 
-> >  arch/x86/mm/pat/set_memory.c | 33 +++++++++++++++++++++++++--------
-> >  1 file changed, 25 insertions(+), 8 deletions(-)
-> > 
-> > diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-> > index b1e780a465b5..4c8922695fd3 100644
-> > --- a/arch/x86/mm/pat/set_memory.c
-> > +++ b/arch/x86/mm/pat/set_memory.c
-> > @@ -65,8 +65,25 @@ static const int cpa_warn_level = CPA_PROTECT;
-> >   * Serialize cpa() using cpa_lock so that we don't allow any other cpu, with
-> >   * stale large tlb entries, to change the page attribute in parallel to some
-> >   * other cpu splitting a large page entry along with changing the attribute.
-> > + *
-> > + * When debug_pagealloc_enabled(), page attributes could be changed in atomic
-> > + * context that would warrant disabling IRQs. But since debug_pagealloc always
-> > + * uses 4k pages in the direct map there are no races for splits and collapses
-> > + * and locking can be just skipped altogether.
-> >   */
-> > -static DEFINE_SPINLOCK(cpa_lock);
-> > +static DEFINE_SPINLOCK(_cpa_lock);
-> > +
-> > +static inline void cpa_lock(void)
-> > +{
-> > +	if (!debug_pagealloc_enabled())
-> > +		spin_lock(&_cpa_lock);
-> > +}
-> > +
-> > +static inline void cpa_unlock(void)
-> > +{
-> > +	if (!debug_pagealloc_enabled())
-> > +		spin_unlock(&_cpa_lock);
-> > +}
+> I took a quick look and the only valid points I can see are the ones on
+> patch 19/21 "memblock: make HugeTLB bootmem allocation work with KHO".
 > 
-> If this lives, we should probably stick an assertion in both the split
-> and alloc cases for holding _cpa_lock. That debug thing seems to rely on
-> never hitting those, but having that be implicit is asking for pain.
+> All others are pre-existing problems.
+> 
+> Is it okay if I send a single follow up patch to fix 19/21? Or would you
+> prefer a full respin?
 
-I'd rather stick an assert for !debug_pagealloc_enabled() there.
+I prefer a full respin please :)
+ 
+> Also, general thing, but I should go and fix all the pre-existing
+> problems too at some point. I sent a fix for a really simple one
+> already, but Sashiko has found other problems too...
+
+Yeah, that's true for any subsystem nowadays.
+ 
+> -- 
+> Regards,
+> Pratyush Yadav
 
 -- 
 Sincerely yours,
