@@ -4,70 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4C6BC53219
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 16:48:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3D93C531F9
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 16:48:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 699B06B008A; Tue, 28 Jul 2026 12:48:52 -0400 (EDT)
+	id 6E68D6B008C; Tue, 28 Jul 2026 12:48:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 64AFD6B008C; Tue, 28 Jul 2026 12:48:52 -0400 (EDT)
+	id 6BE896B0093; Tue, 28 Jul 2026 12:48:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 561206B0093; Tue, 28 Jul 2026 12:48:52 -0400 (EDT)
+	id 5FC296B0095; Tue, 28 Jul 2026 12:48:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 30BAB6B008A
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 12:48:52 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B2E61120425
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 16:48:51 +0000 (UTC)
-X-FDA: 85038769662.16.DAAFCBF
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E5C46B008C
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 12:48:56 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B327FC03F8
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 16:48:55 +0000 (UTC)
+X-FDA: 85038769830.15.71D5C5D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 1A16480004
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 16:48:49 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="OU/w7xJd";
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf13.hostedemail.com (Postfix) with ESMTP id 2261A20005
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 16:48:53 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QRXc1Fsv;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785257330;
+	s=arc-20220608; t=1785257334;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pVL+sXQnyVqR4TfVrY7tpfQSsCbrXDrigHvOgIdAaTA=;
-	b=Ocs7h1CwYH2hQjvzfjyZKu/ATAYTU3SqYXlrEqNDlYFr1v+WuNVG/mLmYsIeE5Bw0VM7NG
-	TOItOfs9JjU+9d4sxnWQJpZVA7zhg6D49j1hBma/cm9hFKyeh8kZK7RuF/Wc2bcSxZBsFn
-	VKQhHTrnixFC7yFwvX0HYl8resXxkLQ=
+	bh=Mpr53o5xn048mORlTpkeftfNBVvFhPpp4N4joDXnfPw=;
+	b=vqHYw8qyfzX9xGDsVwGv1vbSYYsoP+Kp9rSg+E2qIPpeG8DJeqxGAXWVwJtS5o2aqaT9Od
+	7d5Hqlt0Iv5eC+fLJdbSjjSD70miD7XaMttg9AT1LMvroa0ccr9fafcPFlV5g9Jw/WUt9X
+	PDdfILeW977D5VaT4oMmfiFyW+/0g98=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="OU/w7xJd";
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QRXc1Fsv;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785257330;
-	b=kG8npi7Tla1N41QhPTJCeLoNRAGhZu3qqJjcE/0junl2ltH+pnRmqw9LaShFUkTFwGWPME
-	+5kD0XQs/+Yh2pdx5FH3hhpXngcYdjkJ60AJizV2FpehhEYUinIo8kK5WbFtcRdf5ncT2C
-	XnZpz9IZvTn0Uu/nqHJRXg7nw26nfwo=
+	t=1785257334;
+	b=C8EhWJoY2ZLRaYubf4oEv0Md1khaXGc3gAxjBPUfSR5u+OW/n4vXrWhttrddl96z8ijn/q
+	gAFmU0fuAyV0qNeOkeu+nX59gqAulrYR1ajxhqU+yUfks5nrcPfY8Yqpbn4duQe8Pm8qIq
+	YD/ZZ9WnmzJ5t6FXZJ2zfYexMec9QdY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DBF99413BE;
-	Tue, 28 Jul 2026 16:48:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFC8B1F000E9;
-	Tue, 28 Jul 2026 16:48:44 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7779144026;
+	Tue, 28 Jul 2026 16:48:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B42F1F00A3A;
+	Tue, 28 Jul 2026 16:48:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785257328;
-	bh=pVL+sXQnyVqR4TfVrY7tpfQSsCbrXDrigHvOgIdAaTA=;
+	s=k20260515; t=1785257333;
+	bh=Mpr53o5xn048mORlTpkeftfNBVvFhPpp4N4joDXnfPw=;
 	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=OU/w7xJdlxyJSNUc0FqMdjjkG+oNvQi42NfaA5le51Kuoey4LT3p9PflQzQwrXptd
-	 oSOlQp2nlkSn9EKnVYCPs5HkKIbKvwaLAfDQUYg2bvSlfAzJEce67gOXjLGKH3zaVj
-	 K/V2br3ZtCRI/N5UE6xkd1b1T303H492jrOJ8CW0z8Vio4AVtqp5KXC88ezubfO1hF
-	 jEkAFCI2Ni6F5Ju/UbFYJCYsmOQrhE+Xh9eulgd+SwB45UDhbiQTQInFeG+jlOx7zC
-	 ag23g8quAGKt3xHRse50kt74RjzTceTkfgvxGKJbL7oKG4bN8p9Srs+wZnCUZ/OLij
-	 ffunIVRFbZY9Q==
+	b=QRXc1Fsv1U9VteDFxkII/v/v0DebIa0cUbezprpMeQqfxtvnDeOdUFlh3JyBE1BxJ
+	 wSjsa5zp2EyGBYVsNdL7yqXNRqKzc2pVnPZymvgmVEB8IJ17PGaY02rD9KsLAuMN6p
+	 TifWgkJ/6dzAemeOS8wXamIYZ38Y6JiO44hWFqx9kjec4m+GmnuWlqq/TKIsjXTnkk
+	 NJGNBRMeUMPzLof9Z+rrw7pddoJ6gxckrJm2pvEXo6wad7iP8n73PrjzpCgHL1alMi
+	 yVHcY2oeyGQUnNEz5/QMfcHTtQ08PG63y7klrk6zrM44b6x1QwCnhp5YXuG4l+szv6
+	 XjxWjIUFgwv/A==
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v7 0/9] mm: optimize zone-device memmap initialization
+Subject: Re: [PATCH v7 9/9] mm: always use the zone-device template init
+ path
 From: Mike Rapoport <rppt@kernel.org>
 To: Li Zhe <lizhe.67@bytedance.com>
 Cc: akpm@linux-foundation.org, apopple@nvidia.com, arnd@arndb.de, 
@@ -76,20 +77,20 @@ Cc: akpm@linux-foundation.org, apopple@nvidia.com, arnd@arndb.de,
  tglx@kernel.org, muchun.song@linux.dev, linux-arch@vger.kernel.org, 
  linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-mm@kvack.org, x86@kernel.org
-In-Reply-To: <20260720120259.1545-2-lizhe.67@bytedance.com>
+In-Reply-To: <20260720120259.1545-11-lizhe.67@bytedance.com>
 References: <20260720120259.1545-1-lizhe.67@bytedance.com>
- <20260720120259.1545-2-lizhe.67@bytedance.com>
+ <20260720120259.1545-11-lizhe.67@bytedance.com>
 Date: Tue, 28 Jul 2026 19:48:40 +0300
-Message-Id: <178525732062.1556190.314794914123127147.b4-review@b4>
+Message-Id: <178525732063.1556190.16834028754418994747.b4-review@b4>
 X-Mailer: b4 0.16-dev
-X-Rspamd-Queue-Id: 1A16480004
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2261A20005
 X-Rspam-User: 
-X-Stat-Signature: z668edb583abqwatcpt3h7ned3bz5jgo
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1785257329-910925
-X-HE-Meta: U2FsdGVkX18D+QNapGSqA2i/omx7YUQ01qGpqRKPj936v1M/gXGqhl9eI/f6YCikbnRYfWZUlrX0umSHDNzZvqrag/Bb3d3VbJkwheOvSLpONWpqv+WAJ1itdMvYuo5y6jrG8YrdeZifrnAXixRf0oFT1sbbTj3mLizLZpla2LpxB5lhfcKLTaQMjydzpHaegpkn8mBRIX6rfQd8hQqF6xpb7wQr0UF4gRmE/NuLm0kbTiTfRDCQdE+RyztoT3rSTOHVKhS2ovSJzU09NrXtJvec3KwcAT172NyHfq/KISoFqEiQZd/iACMwZW0spfK7YGOGccKoVti0iNF/Da9ZLu9RkKoi+xVUxbGTogyd80VGZ0/n99nsZf2tUbEQUpIr3TTDaPHgJJFX8vBD4yzrxxKFMUctWGpnJfXT0eMkSCEYW5jL2pe4r/QZ0/IeuzJlPLTWfe9JJaUjWTDUlC5P5cdb5/O5W+RfwW30PHsomUpK4FOCzt1+m5xsAUjtfY8N+gKLZT8lg4Xx0ikr0MSf3MVj1suRoMN6UN8E02p78wFPcbexT7DxP7+f1ZphepDFzEJa+wEmSJk1zmwoZ0dAusr0Tkrfz2eDICLW122hxoNKYnPQ/dFjDf2hzK9RIla4bgIVDXWv2g7l+KXF5pzCfe35eXXaBkZN4xMImkABbrU1AmKcHm2UyOivaTDxjVJR/mI/ZV1tGWQiE0EarS9Y0/R6ydXKyapK35Vmrbnyr7jQVYF5Ghzfq+Y1F0jO3Yt8FLcYdWxbN7QgmmQyYQw28yExoxhci77bYuJCtlr6qs01VyKtgHoffjfqdtzHR8mL41R/XyjgIYxzQtzfMjAhtD08v6cJJqVHlDmHPg2Ps69UtkwY1zZEqLLLSTPJHs+ATjiCGlU6SrGzjGC27tgjGxE/y4EbU96v2nwKU8EXdRdG4XAc9o6IwDU5VhzE5+l8qbQx4UD7K/iRWcLSivC
- Zvt18cFG
- c5tKYioXIP8+ou/yGaL+IsAnLv+zp51/xCIsT54dAVKKma2g9ZcdbnL/+fDNjRXVES+d4B6I3r9+pWpdRQBJ6WYTU6LtpDlNT9d8WBinmR+z6N4ZNm+6rQuelanHhNHNbrgb2xUzKB26aXH4n9yWg2vZZVFXu4PKxU+mYC5riS3esZMl49nm6NVfX/YQUCq81lKxjxrFVloI0OmM5UVf4gviXGKQp+T7CyNqU
+X-Stat-Signature: hmjkbffqqacstb94kmcbkdkftqpo7m4j
+X-HE-Tag: 1785257333-66840
+X-HE-Meta: U2FsdGVkX18gkHLhTU9o0eOo8SvuZLmA4MZyXRadaDQgOY1bXtkVfyS9N99JuwtzbYhhoRsTu/O/hdHdQ8ayAhiKa/0iFWH0aFzu+SEqKw5q4deJj5M8jkdzrzsrnBxVqzu91lepMFw8baW++U/rqeXaqg0MEZ0a7sv49t5nRthqzK4+oQ6FLlJNEloQrwQOk4j9jLVc60tX/cG9X7pnNj8NOjBTWMGAxTZV1cwcO9XVCiTWBhDx+Pwb5/ZYsyDnrWXj1Hfb1DdOOX+CogB/krLQjedY/8ImIsGsUMgrnvZJmQrpSNZVgPGX/c2TaurkADSbitG1RtMV/+qNoQ25OhRoxEzzXZwZlIjMENPiKSCc76xzUGZcFs/BMgMtTdCVBg+nnFF8LczpXVuB2BvDXQayX8Pc7aCmTiwZwmQP0b7P0E1nH2EMEGtaiXZKQWgP0daBzc/KTl1Q5OlRSLuRxVY5ddD6QwqrpG6BPGjNN4DY8dZLXoF+sSaMDzDHn9O9n+jVuRj06F1k+eQAepkcCsQOBzJaYT8Yya0dcZ/gRj8VkOdsz2rUtQ3a2YRHmhyZf3EhoCZFJsNiUePs7FCzk9uC5KZNcSb00YTZX3e7V+lhod5Hl7lYIXDB4S2vFEiqR/fipa2VBYV1OWc0M3iLsz00IuvdQznazF0Hb6gQhYZQw8qOIGh5mzR5YaeHozv9KsqrbLToFozwf8Igtl79in8twsBy8Cxp9xLSHl2TqnKufip9dUyf58LLFICTb5OkddHmPDbbHLHe9cqjvllmdxE0X6AqLxlIbFxyMwo7G8Dxfu0HxAGaP385NGoQ8+uCJNBngSkqyzz2UGPY9RfKiB+xeeDuAbzljTvzTDhYYMvFuOQUiofyAJaj5wfOrW+nUxaMnKzVqvhV+gPIPzGdNwUQkrOBHBCggs33l/3lx/YN7XwnzDtlqmwx4bPQgu47dxjAC0mzZRPX4iOwT+D
+ hAFXro4N
+ te6RCG1pHUVP0Raqhwm6oispOOmu2ohNifcbffkInBabqePZPZ0dG7PSRBd4zygT1Z6KR4VSbrdlNTkvoxpe4sdjIP3N5/YJ/bC52ycrHj/D7AEf8Muhjvk9iBN8Tj3DhfeQUsMTqV24DW1hDO1XpSOINAOTbmdEHOGaJ64GTdpuz6pdtGZyMsYNil5+dOSkFZcOwCSHyj2K6byc943yY8/iE9bXFQIa1178N
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,18 +98,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+> The template path still has a local opt-out predicate for the
+> page_ref_set tracepoint and keeps a non-template fallback path. This
+> makes the code more complex without a strong reason to keep the
+> separate path.
 > 
-> The numbers below measure the time spent in memmap_init_zone_device()
-> during driver bind/rebind. They are not measurements of the full
-> nd_pmem or dax_pmem bind/rebind operation.
+> Use the template path unconditionally after the corresponding seed page
+> has been initialized: the first head page seeds the head template, and
+> the first tail page in each compound range seeds the tail template.
 > 
-> Tested in a VM with a 100 GB fsdax namespace device configured with
-> map=dev and a 100 GB devdax namespace (align=2097152) on Intel Ice Lake
-> server.
+> This keeps the first-page seeding logic unchanged, but removes the extra
+> non-template fallback from the main loops.
+> 
+> This also means sanitized builds no longer force this path back to the
+> per-page initialization stores, and an enabled page_ref_set tracepoint
+> will no longer observe every ZONE_DEVICE initialization-time refcount
+> assignment. That tradeoff is intentional: this code is still initializing
+> struct pages before they are handed out, and keeping those local debug
+> special cases would preserve a separate initialization-only path while
+> making the common code more complex.
 
-Since the first pathes touch the generic part of the memory map
-initialization, it would be nice to make sure they don't regress other
-architectures.
+Just fold this change into the relevant patches and don't introduce the
+opt-out at the first place.
 
 -- 
 Sincerely yours,
