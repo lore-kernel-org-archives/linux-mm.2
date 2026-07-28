@@ -4,149 +4,180 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DF12C54F54
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 12:58:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 048FFC53219
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 12:58:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 75A1E6B008C; Tue, 28 Jul 2026 08:58:53 -0400 (EDT)
+	id D9A766B0093; Tue, 28 Jul 2026 08:58:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 731386B0093; Tue, 28 Jul 2026 08:58:53 -0400 (EDT)
+	id D727A6B0095; Tue, 28 Jul 2026 08:58:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 623176B0095; Tue, 28 Jul 2026 08:58:53 -0400 (EDT)
+	id C3BCC6B0096; Tue, 28 Jul 2026 08:58:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2DBD96B008C
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 08:58:53 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C26EBA034C
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 12:58:52 +0000 (UTC)
-X-FDA: 85038190104.30.738CBDE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id ECCA4120009
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 12:58:50 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A74PjBdP;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785243531;
-	b=CzNeJbsEXkcS4aDyBHQwvuK5g88hqWR96Dh4Gn3vMcnlhPTJ3plXLdWL2yvhJkWaiobSOg
-	TchKTIFytoXBRfRYg3ocF5IDr+L/QRhh6S7LVcBjKxr2dipm9TlFtp8l1AkTEvrfiJq6FP
-	VktAsNCFyCPhqslpRfXShlCDSdCV5hI=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A74PjBdP;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785243531;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 90DB56B0093
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 08:58:56 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1B5988038D
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 12:58:56 +0000 (UTC)
+X-FDA: 85038190272.21.BBEAF77
+Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 9AF2D14000E
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 12:58:53 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b=Od6U0Lca;
+	spf=pass (imf23.hostedemail.com: domain of "prvs=66691c787b=alexghiti@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=66691c787b=alexghiti@meta.com";
+	arc=reject ("signature check failed: fail, {[1] = sig:google.com:reject}");
+	dmarc=pass (policy=reject) header.from=meta.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785243533;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q62HDP0Erg3czKft4bDyd8KVyyjoOUqBzq5NLqx4itk=;
-	b=E8s+JilqTN3sUdhBGfNYyAtrUsd+SpxE3ChUs0Y2yXJgDA8jxVgh7GV+N06Urqg180/blS
-	HfrYI/2i7Hb2pd7QUdVBGHDxUWaCxwzTk8CfpK75x89E8HBueayIWUR1UxusNQv/R6serE
-	Ab8HCusHsl9KbErbGCpxKdWI/bajglk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3CB57415C3;
-	Tue, 28 Jul 2026 12:58:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91F4E1F00A3D;
-	Tue, 28 Jul 2026 12:58:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785243530;
-	bh=Q62HDP0Erg3czKft4bDyd8KVyyjoOUqBzq5NLqx4itk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=A74PjBdPW4zj0Mph7aGGoQTiCKy7aBTkYKaPkXhU9DiPxbDItjnucxCc4wTPBAw31
-	 6WKOggkK4srMsM1op220wzimf2PiKU+bjI/+nw/wscb8ODi6EWqGhSlrSC2YJUu/gS
-	 TZVI8hIZHhJtktozqoPxcqVbsbZQ0jMwNrjTSE5TvsEDu43qhYFfNSb3zJ3HNnLQ8s
-	 GEq5dELXkQS+tWYVbpfD+YinxIfqEnQ1KTZ9aaGNCDnVk0wCZMtLU3RX7akTc2DlAS
-	 gSXpMFwgJcb2NzMDoki6Kwknqac/0q1hmigYSq63YHNhQ8RK7SivqG7+vSS4kX+0Eg
-	 ZXb7DQ2En0crA==
-Message-ID: <603ef1ec-bccc-4fe4-9523-e8b8a731be63@kernel.org>
-Date: Tue, 28 Jul 2026 14:58:39 +0200
+	bh=SXl3Dygthf2hrndTRS/55sXaTkDWj3llKR8jZYjv2Q8=;
+	b=f4m70Z7WVM2uWuexrjHOGmRVR78PkDsNLA75HX2b6DVnsJwdO13dltxkbA8HkJ3hFCihgP
+	xgUYrsMS3wAxuu4AR5xm5OhGTYeH2J3eCqZN11pOfAtpFRVxb3NDzSARPDR7iXJYCSfW5X
+	fnkVRVzHNcITpJwSMVEGcQPPPh3i7eA=
+ARC-Authentication-Results: i=2;
+	imf23.hostedemail.com;
+	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b=Od6U0Lca;
+	spf=pass (imf23.hostedemail.com: domain of "prvs=66691c787b=alexghiti@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=66691c787b=alexghiti@meta.com";
+	arc=reject ("signature check failed: fail, {[1] = sig:google.com:reject}");
+	dmarc=pass (policy=reject) header.from=meta.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=fail;
+	t=1785243533;
+	b=bKRCC8OJ1rUyFaE/QqlG5KbnzcVcBhMeu3RNiYNOpR4wKOW5QzAq0L2uv/54xlO4PkCGBk
+	iZ+tK29NSFTvIB6NQez8VLfszTYAyjm6EZExGCqpTngdHj2eH9jI+PyzNH2QF9OkrWSzPY
+	NJ7EE1ImviRJEILdDhwiR+OoJAJwVoY=
+Received: from pps.filterd (m0528006.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66SBGY3k132032
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 05:58:52 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=SXl3Dygthf2hrndTRS/55sXaTkDWj3llKR8jZYjv2Q8=; b=Od6U0Lcawfj7
+	nyAmUZX7J8TEJjSp9OoQjhRwGJuGj3EIgBEVGlv+H2SpGDF9qK/F2R/ENWb8zOGh
+	OJOsFuH5mD+fRR22GH73n1w7jqQrb9t5YhhfuCJjggGHGGERMBlaXOhPS8hwtWvO
+	4fyMfy1x+FwP1ugAC9AUqUhSQI6fYGO847UppJNhljTpSz1ijkb11IrnWn7jM4bU
+	FeJ5xHckd+LucTRbAG7FNyO4sbhIyiwyObgp7I7/IZqXlewynDRqtczCQRqfS1JX
+	bQgGQVLw00Nmydf/+yBxDP76WpV3pql47axpi/J0xEm91AyECxlxsAKWdlx1sRek
+	Cp2T33JePQ==
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com [209.85.208.70])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4fndshmwdn-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 05:58:52 -0700 (PDT)
+Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-698b899b53cso3309831a12.3
+        for <linux-mm@kvack.org>; Tue, 28 Jul 2026 05:58:52 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785243531; cv=none;
+        d=google.com; s=arc-20260327;
+        b=IytqXoLObIBNoOWAYT27e2IBBt7qqRPRrtqr9IWmnURqUtFNntPJAgL63elSVtOXqA
+         1sPU3K6g+Gzc4WW2ZuhWzi8zeQouw5/zKhrVs364lHrlBBQdMq3snRJdEoxTRgvuf/av
+         J9pfqG915KGjG+B5JbnMQC9VwE8ZsGOwt3wU3mnwEF1EswH6OgaA5LPIc5DawO/AsDB3
+         dqYIkc0pj4OUEBrn7N2yaF7Oxd/dAY7vz+6YqmSd4PajHIUG1uzPaUPGes3TUKdqQXP/
+         DUVNhiOQ/tSNBeBP1+mW9Ao9KTeU626nRVLn5ozQnzA4sDAPZuk8uG2VC6vGntC2xUrc
+         nqvg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version;
+        bh=QhugU40GjKcu4+9ufgNH7Pw5kuHqIDfQcoIE+6xGOXc=;
+        fh=HZgSAGo/f2YxT4ATD7tamIyx58RJlgeIIiUf8oo1gmM=;
+        b=FM8i3RcndQkK9D8dE9vTkOzfGd/xxj6UaYpD+2iXxxP1nHMIo4DAcxBNewqIGxaObg
+         BCUo2NgXvETYHU8Gh0w8+Q5BebUJKuYixW1DrVteXt7WUS6fP/whpEpXlO0PkrtNti/o
+         CIsqlaRgoV+oxLgpx6brp/0SbKZrR9OGcqL9ONHu5niALmFrsP5F5VyCaXGQKzCK+ARh
+         /u4FCoHgYdv3gIHtUbwRkBT/lHM+DSoe4miOZcUkt9Bv6aT1Op0xu2548Thg8fcZC1kf
+         mCYGqWpzY7RDJakRNLFgsbrcv1fwWWOCv5+87bkS79eVL+YoKuFCVO0YZPiVRftzUTsw
+         hZng==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785243531; x=1785848331;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=QhugU40GjKcu4+9ufgNH7Pw5kuHqIDfQcoIE+6xGOXc=;
+        b=fnAupSVzlufwrJ9YxJpWtUGpDa2NJ41Pvw9Dd34kyOOnMHuuYu60GJCkz11G/NXEUI
+         MrlF9d8RHBFNCXDQtjBUCsXlanvXvGxChQbEwAoSm5V79lwtECalcFCINTCS635rQXm3
+         0wth71MFlX3AFUv3R9YoDR33u3JohrkciSt8qNQ0emeLFl4GYQJSvaaJhcu0GHHNn7bR
+         in8AR5Mpxn6ZdUrj2gpiBtKqX8hBEjEmWSX03Ujw1wwcv4tCGhiI7hx6HWS8KkpY/8/e
+         hDh3ZL020J5FEQUBDzqqdImrZRHoL3GZr37G7m2GKGNNkF4jtAYytaqK+SgwP95nLaPw
+         LPWw==
+X-Forwarded-Encrypted: i=1; AHgh+RoiHtGP+tWjUnIUwNFDQ8nqtQ9BPxYyHaWkYU9SgI0uxE5rU4iYF3h+GxKH+2584l0fa6humPRqCA==@kvack.org
+X-Gm-Message-State: AOJu0YwotkUXg+PqLOtqLHf2zsG04dtC8P3IUqOAnSR8Uuf3AbixNj5/
+	3UlfrJH5GC2KaeXQ4t5gDP5zaJaJWtziwHLjuazFT5ZPRYzrbAVAgmZYDL2rH2gzNQxf0AYXw85
+	1uxvqmbWqF8CpYTibIn1i+gu/jZSYNe1RhvoDHV1cFacH/mcNb9y9e/ecpzqATCuA/09QKEHFB3
+	Ejw7UKk5wLF93TMjXnjDsh2XP2tg==
+X-Gm-Gg: AR+sD13/lUzXlwyhpGwF8ZfF9zLqO7Ddz3ABq5YN8nnEShIz39LlkHMUOBqhhalztAd
+	fcWaR6joJGKnlsw21nYH1SQnni63sLgabztp1KIs578oFyQmxfgbp75lwth8gDK40SYlWBF0ABy
+	kB+6gjWcjXrlBdgltA2HiQKjSVKiwJ9NW8pwEY/rNBPDWkrkNSc6rMtMxteZgXW7MagDXpD6hhD
+	Gkls/79xV4qmTONWg==
+X-Received: by 2002:a05:6402:2b8b:b0:69a:a9a6:61e4 with SMTP id 4fb4d7f45d1cf-6a034af6478mr1087018a12.39.1785243531247;
+        Tue, 28 Jul 2026 05:58:51 -0700 (PDT)
+X-Received: by 2002:a05:6402:2b8b:b0:69a:a9a6:61e4 with SMTP id
+ 4fb4d7f45d1cf-6a034af6478mr1086992a12.39.1785243530773; Tue, 28 Jul 2026
+ 05:58:50 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] mm/huge_memory: add folio_split_driver_managed()
-To: Zi Yan <ziy@nvidia.com>
-Cc: Matthew Brost <matthew.brost@intel.com>, intel-xe@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>,
- Matthew Auld <matthew.auld@intel.com>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Tvrtko Ursulin <tvrtko.ursulin@igalia.com>, Dave Airlie
- <airlied@redhat.com>, Matthew Wilcox <willy@infradead.org>
-References: <20260722044220.1110278-1-matthew.brost@intel.com>
- <DK564OOZ3JUK.292JORO9KGKEV@nvidia.com>
- <DK57FVTRTLR2.1A906PYJ2TCE4@nvidia.com>
- <a0c06d8c-fc3a-4ede-8aba-8c7430027a35@kernel.org>
- <2FD2B991-09B3-40EE-8230-49BE3A239EEC@nvidia.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <2FD2B991-09B3-40EE-8230-49BE3A239EEC@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ie5h94pegkfbcbbgk1heaypo1xkokk1r
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: ECCA4120009
+References: <20260727143618.1582318-1-alex@ghiti.fr> <20260727143618.1582318-4-alex@ghiti.fr>
+ <CAO9r8zNJ1cfCVgxtpqx4Db380bjZ+Z0P842eAxPXw6Mh4XBrww@mail.gmail.com>
+In-Reply-To: <CAO9r8zNJ1cfCVgxtpqx4Db380bjZ+Z0P842eAxPXw6Mh4XBrww@mail.gmail.com>
+From: Alexandre Ghiti <alexghiti@meta.com>
+Date: Tue, 28 Jul 2026 14:58:39 +0200
+X-Gm-Features: AUfX_mzjKO3uJ7rF1H8sSacugSHiH37kgZqfgEB2G31tBk8Z2Cqkag1XvoujA4Y
+Message-ID: <CAEmasaXR5EmGCv3T5AzM_2908R-VjfMcObrACyVGokY2U=+i+Q@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] mm: zswap: drop cold writeback folios via swap dropbehind
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Alexandre Ghiti <alex@ghiti.fr>, Johannes Weiner <hannes@cmpxchg.org>,
+        Nhat Pham <nphamcs@gmail.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+        Kairui Song <ryncsn@gmail.com>,
+        Chengming Zhou <chengming.zhou@linux.dev>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        Jan Kara <jack@suse.cz>, Kemeng Shi <shikemeng@huaweicloud.com>,
+        Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
+        Youngjun Park <youngjun.park@lge.com>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Christian Brauner <brauner@kernel.org>,
+        David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+        Michal Hocko <mhocko@kernel.org>,
+        Axel Rasmussen <axelrasmussen@google.com>,
+        Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+        Wei Xu <weixugc@google.com>, Yuanchu Xie <yuanchu@google.com>,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI4MDExNCBTYWx0ZWRfX1np3VTQnEBp0
+ or77zkeuR/T5FPzRd7q2drgyqvMuwpkd4pR+gx9vyCueAizSc3RTY4HPsFs1oKTEx+C5bB1LJDs
+ GTHV3+OmocDLoYtDkBcP1/VEgWhASAj1cvcmX0qWkVR+7etyGoO9I5WU/iYs9WjAeZJSYmvx7pS
+ IMGSVC3TYjF3Gj2Wx54gzLhBSgDFXHRUzfcMYv1LyKyevPZK5inzhG1qlSYamPmyOMneC213eN8
+ V3gSEFj7zs+DYMFuUMvnniLZfZ9YFh3xNl5sAHOzE6bU0ju09GmOu0OnSKWzTfeY7onfcTq0lWS
+ qdek9yCb+DdiNUW6P49KxtPAwA6rlDyx9W/n+6R9+18YJP3qx9MWSqNEkfmJ2qVJYBk4rkhuAsx
+ dVB2VWmZZZ0IIK+jkXYKUvterKl75ZwkA2mdRS0cvj9w35EUOiSYER1d8uI6W5yVFcgCdD6Fev2
+ 9knebIknxU2PnqHrggQ==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI4MDExNCBTYWx0ZWRfX6Z17tnjic5Di
+ GU7bR9WBCe0Jzd+xr7+2OqKIIwNyYgN2JcW4EHQiyFXmq5+jJIJLBEmO6jR3ag9vHwDK3gbbdjT
+ d2fd81CIdOERLOtDXCUwRxGJwEPlxdQ=
+X-Proofpoint-GUID: D-jBQWsco9CM9H0iTeZfcFQY0VinUjqV
+X-Proofpoint-ORIG-GUID: D-jBQWsco9CM9H0iTeZfcFQY0VinUjqV
+X-Authority-Analysis: v=2.4 cv=X+1i7mTe c=1 sm=1 tr=0 ts=6a68a78c cx=c_pps
+ a=CYpx6mtW7qE8U/l5VCnCPQ==:117 a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=kkcUborcUVj0H7zxAXTl:22
+ a=VwQbUJbxAAAA:8 a=ufHFDILaAAAA:8 a=pGLkceISAAAA:8 a=m9DhMxF7bdjla8aEOqQA:9
+ a=QEXdDO2ut3YA:10 a=22KAYETGZJnyhCxlFjxL:22 a=ZmIg1sZ3JBWsdXgziEIF:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-28_03,2026-07-28_01,2025-10-01_01
+X-Rspamd-Queue-Id: 9AF2D14000E
 X-Rspam-User: 
-X-HE-Tag: 1785243530-37923
-X-HE-Meta: U2FsdGVkX1/jKlLZOTF2HFhW9M4RjzaFRofH1Dfktiu3SMkNWB85ap2z6DyeQq+Azv819ErRSYHUAAXssfkF31vOsx6U+QIBBzs6OPH9lQ+F7kICUNAAsC9B+Z/cVpMk9CmvllgguXkcRkNQnjmL9OkwqbAjL4CCwwbUYj1wuLzWMynXdgcyZRNUfENXr4Y218sfmirki1WaIzQkZ5Df+CuYNTNcQnyM9CkjqRMtq34DXIREP8O4fTzhbB6EeA4GeThmrN9NJ5lF78UV5l9+8Rj6Su6SnShWIdpH3vFH/MjGG3X61Ad/5r7Rxrz0D/p42KlxpGEiPGCoReq86LJFeHUDuTbXD/7RTJUaS58JNEsKqONe/omGDie70iHn+ho4icQY3Lf1mgj1MCrlsDPNkra4StqaYvZrWMAGBS+2vjR8ZRCNTqf5rVV0glUoplmxpn3yELd+U9sdLMmLwzuKnJrXTEi3gWK5ZLSKdZZaqaVjr4FNvwD/LknM3WiME9yJWUocAGLMLPbfYWzJXsZU2Aa4A0fq0BpnOS+ZmOYqOpW2nksWaKFizOPqURriyfeom/QLGjd8kSbFWybFwc5bH26h2EZyQsYT3w+0mGsWy4Z7/rD8oUlgdqSemOhh99giYs/dC5ZBu6jFMl0U4owwbMIB+FWGp9M6j33DqMH/LTTppQ8DFwd8FZrnK9AqjdFQMKNLjx+pdHO9mEJQhUQaS+dw4YWpGfKl7wMLZalJ4qLVxCygInY3VvP9wh3vB1GxdWe9SiaglFgIY/s2WHhq2rcuij59jDd8hOyJfzeij31P4ZJ3Bqjg2cHLi+lUwF8r5c16TOjc0nXpHKXHjRg/cDc8aK8xx+e5YRUgdQdSpX24rkRFQIMBlrXmC9S2NKTtfGqRyX16qHMLKmGQ9u5ftYCK7EeS2c8oGYYnyl7mgMFqzDaIw8hi5v+39VEIkB4dnrjsybMpVnM4gmwRJIP
- hYM5ls0d
- CJNRx0YvCfGzHrO6jkboL5OX/hZvX/FyjDgpEiImZlPoieTcytWywbpIr3N0HQyS79oLVlBtEeyCgKqBkLYu1KbOc9EgUb+0zSYpEmvpA8dLbTltsbMqqrlAkMMb/6SUzsjIGKrJd2uHt57RoCU/8gzuwAPQvDzkIySp9G6O86ZCRRiU6XcX6d8RPZiz+cBXclEH6Y0/58atsT+Srt/DHVm4Bhd49SfP9DJBeomFeflqBl3um4IKe5FrGLV/L8SADbgb0ei4mRK4jvlQLv7309fF+4yjmklkxM5iMBmrLNRJZiOHzwJmPp4otbVVRXA12yJ4Eb75bi+kse1YGPgpRtMx/VtfX4r1HVOjRAXxv2Std4vTo46FukhCdVTFM+Dqu2WvYzp0vF8qWJ1E=
+X-Stat-Signature: 5ia9k9yq1cobrrfir8djgbodom7ony43
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1785243533-979009
+X-HE-Meta: U2FsdGVkX1+pKWDVeERjYkKXj/q6tggNJyLHcT/onTaKhYyld+KZOJPng8kIRolET+2XYoEwjWAJBwc7DBeDhJKKgk+1Sprq+0lxCJie6o5bJPM35ARx+gJTjUkhhHU8KDuTp8pf18nmfICXWUPy+t5usK1U3KkFun8VInqCNrrtVC/owYKmhkE5NhZ/bUiVriWZsWFebRoVhERftX4ouWzBsVLlHR1pm3ESoHaN/A5xRphYwXNHt/XuTcwrAzKAEtio2qJS/7+eRJKLj7T/XbMV2xkNIH6x9blkiUy1dVJy2OEYqtdXI3ShujkiZlzkmluiZXUailaJpChm0tHOGKnWWmPdVL2qjSiB4VGmGZVsfXFX0IRRnG34rZZVi6/RMA+awx8zoDe6gtiyYcx3PcN67yy58qdzwnPHuZm0b8c+ZAH0XZIOT+7nHaEFGGR76gB/fPIZpO4BpT2BNWNJXXcSUndeHP+vCMkOrIjBogpmMzIK1DCI7dqVtwIqB1bbjsC+WSKgZnMv/1TB02poSeR+WiNEZ3PGOs3nWW/SvyvSNeHvf65li/bW4sFOu5O+IguiaMkJRXjumr7Ab9c1xZeWCmhDH8Y8Lc/qGPL2a9d63r/zb2L/SnXaSjf9U33vrX0id+xzg63p2aUCMPpEvEloN/N0BpOOvk1Qmg9ERveeF3aaXwvcDGbevHUjkpnaxDDvboUKa+VDlQP3lsm7+/Ifkhcrp67EQfj5Zxt2bkFUZoEvK3zd0Q6Y3hl5k42lXmZXQ37ArWufkLkCSdlKDmIRqzcgE7XWDoMkcsgAj8dklVbJTcTwPlY79xbHkgy1x2Q+Mc9pQGydH3DQxr9s6iLVvE0GIg0MmLer0hZRA9FpkLuYHQGk4vcKEIC3yV5x8PwpbQGuytA+FSSJUY/bQhb6NrAuVRVoHwSnDt+E5RXkPz0OL8xvhOuFAtohEvRXWDGPVlAPbww1K+Ebm0O
+ CAS7Mnbg
+ Bolq2ed5RJ9NvI52RNMmKZaciHQ7Xa/NvhJdzKTpLCJJ64MtBUK9cWHoTWU503ouQEr8GdCHNGc+rddj5wxk386YAQstInMBbtW1Dgu6bRuVB4OAvFcaqCaX7WbwO6BuUbbOMaIjt2KTUZUilt5BhbPmuoFzh52GOULc+/Nq+GRljlQYLDrVAruWaCq19MHQzoxmUDV5we6SDr+9oAoXlJr083PYkwSyFnwc78slBHvzg7GpJMGuK63ZdhQKJQOn7bnj4iEdTSOKfGQ+F8kYsfKNCF91qfuIzAjsZNSBCgJfN2fxP4dLZ/0fCDrPUaeXNmMa20r3Kw2MrMh4Jqalq9wK//gamYZTZC/doKk+riwLTuD4CTFJUE9r6h/xQvkIj/1t5tuOoWR8fJZg8PvxJz8VMwpS18f71W0CWax6a5i7I8JGp0DHEenPs54Bj2moy0zIjyCGLc6LEH8dI/i28OBM533i5t4ADo/3IemS/QMSvSvXJamMLmQpuv4yFBp/KbuzMUaZXTEGFvrqRwQ9dz9Xvy9jjQoVL0nlaa47AEX9IfEKJNJyzjYzl76zxD8CL5tg6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,67 +185,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/27/26 20:23, Zi Yan wrote:
-> On 27 Jul 2026, at 13:33, David Hildenbrand (Arm) wrote:
-> 
->> On 7/22/26 17:28, Zi Yan wrote:
->>>
->>> Strickly speaking, these vm_insert*() compound pages are not folios,
->>> since folios are supposed to be rmappable and they are either anonymous
->>> memory or file-backed memory. I am working on separating them from
->>> rmappable folios by replacing PG_private with PG_folio and marking all
->>> pages in a folio with PG_folio in page_rmappable_folio().
->>>
->>> Hopefully, we can find a better name, like refcounted_folio, later for
->>> these non-rmappable compound pages.
->>
->> They wouldn't really be folios, I guess. They would likely be a simple
->> "refcounted" memtype that allows for compound pages.
-> 
-> Yes, they are not folios. But “folio” was started to replace “compound page”
-> and slowly becomes rmappable anon and file-backed. People outside MM still
-> thinks “folio” == “compound page”.
+Hi Yosry,
 
-Yes, it's a bit of a mess now.
+On Mon, Jul 27, 2026 at 7:05=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrot=
+e:
+>
+> >
+> On Mon, Jul 27, 2026 at 7:39=E2=80=AFAM Alexandre Ghiti <alex@ghiti.fr> w=
+rote:
+> >
+> > zswap writeback decompresses an entry into a fresh swap cache folio and
+> > writes it back. The folio is cold by construction, yet it is left on the
+> > LRU for reclaim to find and free later, wasting a reclaim scan and keep=
+ing
+> > cold memory resident longer than necessary.
+> >
+> > Allocate the folio off the LRU and drop it as soon as writeback complet=
+es:
+> > mark it PG_dropbehind so the swap dropbehind path frees it once writeba=
+ck
+> > ends. Synchronous-IO devices complete writeback in this context, so the=
+re
+> > the folio is dropped inline instead.
+>
+> Why does this need to be handled in zswap? Doesn't writeback from sync
+> devices still call folio_end_writeaback() and do the dropbehind
+> handling?
 
-> But once I manage to remove PG_private
-> and get us PG_folio, page_folio() will return NULL for non-folio compound
-> pages and we will need a new type for them, “refcounted_XXX”. We can decide
-> XXX when I get there. :)
+That's an optimization rather than a real need: since we know we are
+in a sleepable context, we can safely drop the folio from the swap
+cache here. And since we don't mark the sync folios as dropbehind,
+they never enter the list handled by the dropbehind workqueue.
 
-So far willy did not document a type that just has a refcount.
+But maybe that's not worth it? I don't even have numbers to back the
+optimization claim, so I can drop this in v3.
 
-https://kernelnewbies.org/MatthewWilcox/Memdescs
+Thanks,
 
-Maybe "Managed memory" (struct mgdesc) could be the right thing for some memory
-with a refcount.
+Alex
 
-The question is, if the use case at hand would even require a refcount, of if
-frozen pages would be good enough.
-
-> 
->>
->> But what is the conclusion here? It sounds like "folio_split_" is the entirely
->> wrong interface for these compound pages.
-> 
-> We probably would allow folio_split() to be used on compound pages now
-> until we can make a clean distinction, e.g., using PG_folio, between them.
-> 
-> Yes, folio_split() and its helper functions are meant for rmappable anon and
-> file-backed folios. But currently “folio” is de facto “compound page”, since
-> for example prep_compound_head() initializes folio fields even if it is meant
-> only for compound pages.
-
-If we can stop more abuse right from the start, that would be nice.
-
-We do have split_page() that splits a non-compound higher-order page. Maybe we
-want a split_compound_page(), or allow for split_page() to accept compound pages.
-
-Because splitting a folio is really something different than splitting just some
-compound page (no mapping/pagecache/whatever involved).
-
--- 
-Cheers,
-
-David
+>
+> >
+> > Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
+> > Suggested-by: Nhat Pham <nphamcs@gmail.com>
+> > Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
+> > ---
+> >  mm/zswap.c | 13 ++++++++++---
+> >  1 file changed, 10 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/mm/zswap.c b/mm/zswap.c
+> > index 8163e6c5f76c..e37828e02938 100644
+> > --- a/mm/zswap.c
+> > +++ b/mm/zswap.c
+> > @@ -992,6 +992,7 @@ static int zswap_writeback_entry(struct zswap_entry=
+ *entry,
+> >         struct folio *folio;
+> >         struct mempolicy *mpol;
+> >         struct swap_info_struct *si;
+> > +       bool sync;
+> >         int ret =3D 0;
+> >
+> >         /* try to allocate swap cache folio */
+> > @@ -999,6 +1000,8 @@ static int zswap_writeback_entry(struct zswap_entr=
+y *entry,
+> >         if (!si)
+> >                 return -EEXIST;
+> >
+> > +       sync =3D data_race(si->flags & SWP_SYNCHRONOUS_IO);
+> > +
+> >         mpol =3D get_task_policy(current);
+> >         folio =3D __swap_cache_alloc_folio(swpentry, GFP_KERNEL, BIT(0)=
+, NULL, mpol,
+> >                                          NO_INTERLEAVE_INDEX);
+> > @@ -1013,7 +1016,6 @@ static int zswap_writeback_entry(struct zswap_ent=
+ry *entry,
+> >          */
+> >         if (IS_ERR(folio))
+> >                 return PTR_ERR(folio);
+> > -       folio_add_lru(folio);
+> >
+> >         /*
+> >          * folio is locked, and the swapcache is now secured against
+> > @@ -1046,12 +1048,17 @@ static int zswap_writeback_entry(struct zswap_e=
+ntry *entry,
+> >         /* folio is up to date */
+> >         folio_mark_uptodate(folio);
+> >
+> > -       /* move it to the tail of the inactive list after end_writeback=
+ */
+> > -       folio_set_reclaim(folio);
+> > +       if (!sync)
+> > +               folio_set_dropbehind(folio);
+> >
+> >         /* start writeback */
+> >         __swap_writepage(folio, NULL);
+> >
+> > +       if (sync) {
+> > +               swap_dropbehind_free_one_folio(folio);
+> > +               return 0;
+> > +       }
+> > +
+> >  out:
+> >         if (ret) {
+> >                 swap_cache_del_folio(folio);
+> > --
+> > 2.53.0-Meta
+> >
+>
 
