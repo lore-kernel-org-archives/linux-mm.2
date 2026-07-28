@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 189ADC53219
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 12:26:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C1DEC53219
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 12:26:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 040056B0099; Tue, 28 Jul 2026 08:26:48 -0400 (EDT)
+	id 104096B00A0; Tue, 28 Jul 2026 08:26:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F32C76B00A0; Tue, 28 Jul 2026 08:26:47 -0400 (EDT)
+	id 0DC2E6B00A4; Tue, 28 Jul 2026 08:26:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E21A06B00A3; Tue, 28 Jul 2026 08:26:47 -0400 (EDT)
+	id F33936B00A5; Tue, 28 Jul 2026 08:26:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A79076B0099
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 08:26:47 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2C52FA1499
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 12:26:47 +0000 (UTC)
-X-FDA: 85038109254.30.6A72CAE
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B31BA6B00A0
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 08:26:50 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 359D2120377
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 12:26:50 +0000 (UTC)
+X-FDA: 85038109380.24.38CCA74
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 750E48000D
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 12:26:45 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G3P1nSxh;
-	spf=pass (imf30.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by imf03.hostedemail.com (Postfix) with ESMTP id 7C52220009
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 12:26:48 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RkwjnDmS;
+	spf=pass (imf03.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785241605;
+	s=arc-20220608; t=1785241608;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hOO/fvJ7DG1Qmdj7Yuqex/IBD7jlB9A1fJljGKz7X10=;
-	b=a/zGLTxz1+NTI7jCLTMj3zAzTyukSF4tdP9AXmbWeWHniiSRStZLcoccEDe3L0zda+rJAZ
-	pNY58N0aKk5hkKwFWC6KdmKNz9+JHQqgmSyz7ZLpHgIYTfQb98vJx/Rylf/Lk9d1H7aeYC
-	3KoqGAoNQXXMh5C3tHbH7VroAfYXyCU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785241605;
-	b=tRgnlWJfCSuxXAt2w1YPrkMWhlRMpWTQdZMLGKh2rkfbZe2HUBFHuc6cA+veGuGMBJpOql
-	zqncyKdrTCZMJpUvel74tbk/F5dNWWJ7FcWlzLFgjPGcGtMesV8Z55iaqgAKflBbIeJSz6
-	MmS2jyPerkBOMSc4uQAJtrFPMpjesPo=
+	bh=vt+CJvPgKyczXyAdtoV88qBhp4afcyiatTku0ZwlgLA=;
+	b=WcUtGBZBjx8SPYuO2iqtGDgFNt6r1XPvLtRGG6riNUx/+0BzcYUP/sALvvd92ZLpz+Ki8J
+	T1GfW6tDiU+P882OXRYFT7rGd/VEVU+EN8/yiuE1rpcmtnFViM8Dcj2IGhj7mGYAqcb3w9
+	8QbmFUkdT1hdvjEsg51haWpyv1Yeq/c=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G3P1nSxh;
-	spf=pass (imf30.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RkwjnDmS;
+	spf=pass (imf03.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785241608;
+	b=lDSmmIEkwYTSBIpvFiHqvAmnXePiU4tMgRnXiC00GY51bAbrgb+ztygNoiZxihJwmgoaAH
+	+pajuO/Pa4W23LIWiO1N2GMwbSAuhD7c53bq+X201qvHLYG14gf7cQ39+nsCmjoSgxh75z
+	Gck2BoAXdj1Qr+ZheE9Nw89UqO5RvpI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C7C4260A9B;
+	by tor.source.kernel.org (Postfix) with ESMTP id AFCF460A9E;
+	Tue, 28 Jul 2026 12:26:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3CB51F000E9;
 	Tue, 28 Jul 2026 12:26:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E50FA1F00A3A;
-	Tue, 28 Jul 2026 12:26:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785241604;
-	bh=hOO/fvJ7DG1Qmdj7Yuqex/IBD7jlB9A1fJljGKz7X10=;
+	s=k20260515; t=1785241607;
+	bh=vt+CJvPgKyczXyAdtoV88qBhp4afcyiatTku0ZwlgLA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=G3P1nSxhVPxurB0hXGcymQNIEpID62NyMfMi5ia4hR/TCslXYZT5CRps4prOl91oj
-	 4qQ1TMDOeg3iVpKehzT7KCgOaBJfYnTzQNrpg6A3yMrZhlQk5W60GS3xyPiXXYz9P+
-	 ZoVc8BsBcwuksx2Jq7eBm3G+48T/UpoDv0wBjxvmxfPzK8L5nXCpJ97zHmtAUFaGes
-	 bW3TLLazliO4JLuW6FBnBHH92mTQbcP6M9Ajo/+a3CjdpyYskDeXvDj9GH/BRsMaOt
-	 fc8fsXr6bw/l1PdRxois6hzsL6fRxDMlzToxV2X4ixW9Y5O8CC75XyxjkXI5fcfGBE
-	 cOO9ksEZjwrOw==
+	b=RkwjnDmS64pm/DmPqFCIfCwnQdHdazM/1/l2XmCdXFlJ3GXdmOTjev4t3PRrex56N
+	 zYYW2z5f3s4cK6w68uhCmpBC0TVyoWbbCmoScpcSzTe1dcJvt9QzOPKsljwx+LvT1S
+	 U9cRFXaNi3zkrrzQuojn2k+93bF18+ES/QjiPvNeN+UvhFbQLRxdWXADGb6aYZt90p
+	 j1EUWnYe3iMRWeSj8lhGWGjA2TggoeKZyTuJkIJOYCx6K+EHi4lQjORjySrTMmw8jN
+	 6jFD59IFqxu/Ti4XqDmcN0ixxxDH6+ME38K2CziAJbq3xdhmrTJZmtz38bZ6pyS+pM
+	 ngI/uOID+H7VQ==
 From: Christian Brauner <brauner@kernel.org>
-Date: Tue, 28 Jul 2026 14:26:32 +0200
-Subject: [PATCH 1/2] binfmt_misc: don't let an 'F' entry pin its own
- instance
+Date: Tue, 28 Jul 2026 14:26:33 +0200
+Subject: [PATCH 2/2] selftests/exec: check that a binfmt_misc instance
+ cannot be pinned
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260728-work-binfmt_misc-selfpin-v1-1-74df5daeca5b@kernel.org>
+Message-Id: <20260728-work-binfmt_misc-selfpin-v1-2-74df5daeca5b@kernel.org>
 References: <20260728-work-binfmt_misc-selfpin-v1-0-74df5daeca5b@kernel.org>
 In-Reply-To: <20260728-work-binfmt_misc-selfpin-v1-0-74df5daeca5b@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -79,24 +79,24 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
  Kees Cook <kees@kernel.org>, linux-mm@kvack.org, bpf@vger.kernel.org, 
  Farid Zakaria <farid.m.zakaria@gmail.com>, Jonathan Corbet <corbet@lwn.net>, 
  bpf@vger.kernel.org, jannh@google.com, mail@johnericson.me, 
- "Christian Brauner (Amutable)" <brauner@kernel.org>, stable@vger.kernel.org
+ "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.16-dev-cca4b
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2835; i=brauner@kernel.org;
- h=from:subject:message-id; bh=p5zN/lX5gZshphxpWwSeheHCCXVxHIFs4aMnBTfCyPI=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWRlzP8n9UuLk8El0DM516b0iUPhgjfZNbPEZuuu/Rr59
- fiUmA1XO0pZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACZiocXw3+fktLR3N29kXE8+
- ve+5tOPuGA41zXAnq+XM1/8Yv02ZfoCRYUXGq0cZK3TPVwibbvrKxijkJRBUEBE5Z6PsP6fi6mU
- zGQA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7434; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=CmftR+Uc2FulAhzpeWNRVyNZ624y2VtvgpyJWGwwBlM=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWRlzP8XHbF14qzo2Nuvn/toXA25t9lG7uHS9ikdxU/t9
+ tw6e1hnfkcpC4MYF4OsmCKLQ7tJuNxynorNRpkaMHNYmUCGMHBxCsBEZlxjZLh4h8Vgw62WGfJ3
+ OlqEg+aZFajXOk/YKZ9nGt+3a9mez3KMDFt6V5gYzt+9Pl/9NOO7/5vus7Cm+es9U596f0HT0kX
+ ySTwA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Queue-Id: 750E48000D
-X-Stat-Signature: bfn4gdqj5s1e8jt7xtogksm4nujkah3o
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1785241605-165706
-X-HE-Meta: U2FsdGVkX19jbKK/PAsWBi6GMhl/qosk+pvlEqBY0CH24dnLvzVZpR0tm6qJ+EBaANQwp6wbwd+vuwmpzgKalM70+8TaBMPP2qJzMm4lXA6BJCa2Jf6YMJ9UTrFDZks9mCCXsr0p1KzB+2ZoskaYh7FO7yccMNeIfZPvyQC8GYm+8BaNCEONETUQFqib8i83SZFOkgMj0fCBD3MHUYg+P1La52rB59Aige41hK3QYxPIAKclO/A0KdqSlsadKt2wALHNSiaHBEF9HS482TapznX6Nw0lvjqgpugls+PKV1Askyxl7dzUEzigv8KuJcnICiK0CXrRDISn31iSvmG9alde1xroDEn9zVqCZ0pDVhC8KXNzDGLPw8+h5O4Zx6EF14s4wveVwxd/1fi9L07ddlmRbFksJXSFtIpsNuYT/y6iHaNHMRRfmbnkowjo9xrV49jhRLbgorZwSdmha1kwidwoLUhwoNeuJ6MsiMXHt96hDn4jHlwrltf9JMvBrgxlgojgrBhmD18/aPmnCMeEo42Y801v7NDmfUh1Xl/dHTcNLiytHQmq/8krjAo7Ubs8rHewKMcmRaCMKSbs82Y3yCdnFZSzUp7Jhv6+2i8HSJAmEX7I6qQ/3z3jYIhIPDlSPqd9Wg0prXeQR7ZvfDNwQlk+JEtst8fuCyK1cJpFNu5u/lIwD8JD5Ul7zGdhPWpMTh2GivBhbwYrYKae8oslj4P+0E65A6s0EMvPtLSCfcwED/fYp1FnGIPpcaz4DNaF3k7if7WfAjBcNWrVgVqrjMJFmtHEqXeBQX6VdN0HllfhPqKrVq1IsWf+KHZW6HbD+ejHInYGb2mkvfBTVlc8o4aEFX4hGw5+pss5a+qHbo0hhGfKS4uBa8CwzZRxmMRVoaxHeigdF9kWABguz04C7gWBX8Jr912iPZo8lLaNitT65PjveahQXLI89mCGb1PGevwhflBtcE/ACSsWShc
- B8ATloYa
- L2jcz94HC+aK9b3AE3htnXOfhZuXdGhuwsX7jYjT5rxvLsl6KBmoFDpKRYwrRUaf4q9xBhaInlycku8jsnSJMv+dR0/1bPEKHnA3mjo4lb1XEsU2UlpAFRd0aVa9IqwsTtuTcVj1sqb19iQOk+GCxkzKnB7MXHCvYEU+m4oqQGFdGRXfR+QyhkKq3k/cjKh6U88OPwLLmCLVv7e5YAjI1doeAfWrD71Le1K2Oo4zKU08T5CflUeAsLBkHa0O7S2hv0n6c2E6iFOtxUPwfBI87Mkv4wOncrzpLwIrKx+oEvLJ4X8DDJW3re96fL3cgkNF8z2x1qGazl3z1tsuaz7IoOmY8COjuM30lq0otRmKEZzhr9B221tz2P793BFl6CZPLgOmB341ksf6zQjU=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 7C52220009
+X-Stat-Signature: 8cnq6dzqp6n9jfcpiwkfbwer163zcyir
+X-HE-Tag: 1785241608-240324
+X-HE-Meta: U2FsdGVkX19kO+w+LXUwIBRYwDdMtHa9YsEOOLeOOgMKDx6ndr3Gdbd0JBNNQB3aoFtc1+XAoF4Tt+JdWZ+DRQ1xRRDCPiqjzS68RlkVbkU19w+OYf1ckopynd7ZJ4G1jg9t/iyKKCj6Vv3oYSRVJuRYzeSTmegHXrtX7g1Cdj3/s6t9Y5wxLVH1r3jf9bt47X8pleYRBQlHO4gN44LtD2l8S3R1YSPm6iBpGTYiR/huVn+IMNtWL+0iAsVXUS6ZVGtNoQo4kG17bVTyRpnT4xsXyDskSEyT9QcoFVQbsVKIqESKIwCoosCr1WQ09q3ZSeOFGFsDrbhL8WrR1rqOkU5bm06/8WJriIKZdd5H6tPfc29VSmrEel+ocVV7TBTwKSE336u8wfrMOZmVzy29xywT+8GJI1CRLdNsgTq3h5PkD+P/SQU7Q4f/NRnCBIXMt9erx+Nr17wuzC1rumHUQhi+W+4/HOz5flGMo/SUddziHRn9NRM1bYnaqwwUS2dRkHVTl/mn22qxOer2Y/Uzz2hyn8heSYhxMgcwLIEFWUOK7iMBTdPymPSuzYIF6xCVatm6lrqwLJ6wSlnj0yizpnQZUGWO6iCpvu2nGJTvbUeKCdwaB4V897VWF2WKtu3qu+8MWTqArCuXF0qf0pBJnQhD4/OONMsEE68fh403ejsab7HhXT/1+MUfED4DFYoFQ4b6WBOP6nmI3URFhfNS6/PEEOIV5O9muVaKTX7eF6usl2l8HhFbaYNqHTiZuCI5v64xZHD+/zPdTNBDfnapjdYbysiZY9m9PgBwCq4Z+D7hEQE9d4dQA9W37t3kFkO1D9YfH86xW4UXtSO2p6h8OvqhSoel/+nbIV35aMqMU3ykJ1ZA0zvpoq6aWp+kTzm2rhxNzRarkrOljzSlXoJqFNWzclOgnBgDYz2NeQyvV4ke2p4weJfuvIGZQEyKGpcevdSd2j/I8uf9VHvJhkc
+ IAX+Gvys
+ Mpht+nmtYO7dhAMsCkLhE59YkHRwW446foKRimuJ435TnSLuFDMQErYNnPIP8KYo40V9hKdhur8q/RhFyHyS8b4ga5lWcexJZbFK8jAdkGUG84Q7KRzPvpA63zwF+F6AloPzmmDhn1V49yPDQLYriXSZm2tCB0jMurcYnE7vDnRvgIgrIDattsy5c2AtocBubAjCjrbtjxns8+rasrIuzCfiJPcMIHRXdrn63lPrCNB/MXdCIX5bPQgP/BG/82upJQRLMmTbJLAJNxbGfKyMcT9pI8ONByOCpBP8UaBFwa7z2u5mt9j4XXky065RQ7BKt+XOnKSLUVWzlwViLH2rhAO0QGSMrD80JTqYOfMM2wfjv0xM0K44UHcgfUQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,68 +104,224 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-An entry registered with 'F' opens its interpreter at registration time
-and holds that file until the entry is freed. Any entry nobody removes
-by hand only gets closed once the binfmt_misc superblock is shut down.
-If the interpreter lives on a mount that keeps that superblock alive the
-two pin each other:
+An 'F' entry whose interpreter keeps the binfmt_misc superblock alive
+pins the instance that owns it forever. Cover both ways to build that:
 
-    binfmt_misc sb -> inode -> entry -> interp_file -> vfsmount -> binfmt_misc sb
+- an interpreter on the instance's own files, control file and entry
+  file alike
 
-TL;DR the file is never closed. Once the mount namespace is gone there
-is nothing left to unregister through either.
+- and an instance used as an overlayfs lower layer.
 
-There are two ways to trigger this bug:
+Check that an ordinary 'F' registration still succeeds so the fix stays
+honest about not changing what 'F' promises.
 
-- Point the interpreter at the instance itself. Its files are regular
-  files owned by the mounter and both bm_get_inode() and
-  simple_fill_super() leave i_op at empty_iops. So notify_change() falls
-  back to simple_setattr() and chmod +x works. We never set SB_I_NOEXEC
-  and so open_exec() accepts it.
-
-- Use the instance as an overlayfs lower layer. The overlay superblock
-  holds a clone_private_mount() of every layer until it is destroyed and
-  that clone is in no namespace. So umount_tree() never reaches it.
-
-That's a DoS. And it isn't only the superblock that leaks. It pins the
-user namespace it was mounted in, so every iteration permanently eats
-one of the caller's user namespace charges.
-
-So let's just do the sane thing. SB_I_NOEXEC makes open_exec() fail on
-the instance's own files and s_stack_depth makes overlayfs reject the
-layer before it ever takes a clone. That also covers the ecryptfs and
-fuse passthrough variants. What 'F' promises is unchanged.
-
-The stable tag is narrower than the Fixes tags on purpose. Before
-sandboxed mounts this needed global root against the single instance
-everyone shares, and the change doesn't apply to those trees anyway.
-
-Note that SB_I_NODEV is implicitly raised for userns mounts but raise it
-explicitly here as well.
-
-Fixes: 948b701a607f ("binfmt_misc: add persistent opened binary handler for containers")
-Fixes: 21ca59b365c0 ("binfmt_misc: enable sandboxed mounts")
-Cc: stable@vger.kernel.org # v6.7+
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/binfmt_misc.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ tools/testing/selftests/exec/Makefile              |  10 ++
+ tools/testing/selftests/exec/binfmt_misc_selfpin.c | 158 +++++++++++++++++++++
+ tools/testing/selftests/exec/config                |   4 +
+ 3 files changed, 172 insertions(+)
 
-diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
-index 5de615ca7a75..47aeb2b68d3e 100644
---- a/fs/binfmt_misc.c
-+++ b/fs/binfmt_misc.c
-@@ -937,6 +937,10 @@ static int bm_fill_super(struct super_block *sb, struct fs_context *fc)
- 	if (WARN_ON(user_ns != current_user_ns()))
- 		return -EINVAL;
+diff --git a/tools/testing/selftests/exec/Makefile b/tools/testing/selftests/exec/Makefile
+index 45a3cfc435cf..b15505f5e0bc 100644
+--- a/tools/testing/selftests/exec/Makefile
++++ b/tools/testing/selftests/exec/Makefile
+@@ -21,6 +21,10 @@ TEST_GEN_PROGS += recursion-depth
+ TEST_GEN_PROGS += null-argv
+ TEST_GEN_PROGS += check-exec
  
-+	/* Never exec off this instance and never let anything stack on it. */
-+	sb->s_iflags |= SB_I_NOEXEC | SB_I_NODEV;
-+	sb->s_stack_depth = FILESYSTEM_MAX_STACK_DEPTH;
++# binfmt_misc must not be reachable as an exec source or as a stacking layer,
++# or an 'F' entry can pin the instance that owns it. Unprivileged, no bpf.
++TEST_GEN_PROGS += binfmt_misc_selfpin
 +
- 	/*
- 	 * Lazily allocate a new binfmt_misc instance for this namespace, i.e.
- 	 * do it here during the first mount of binfmt_misc. We don't need to
+ EXTRA_CLEAN := $(OUTPUT)/subdir.moved $(OUTPUT)/execveat.moved $(OUTPUT)/xxxxx*	\
+ 	       $(OUTPUT)/S_I*.test
+ 
+@@ -55,3 +59,9 @@ $(OUTPUT)/script-exec.inc: $(CHECK_EXEC_SAMPLES)/script-exec.inc
+ 	cp $< $@
+ $(OUTPUT)/script-noexec.inc: $(CHECK_EXEC_SAMPLES)/script-noexec.inc
+ 	cp $< $@
++
++# Reuses setup_userns()/write_file() from the filesystems selftests. Their
++# wrappers.h wants the uapi headers, so ask for them here rather than widening
++# CFLAGS for every program in this directory.
++$(OUTPUT)/binfmt_misc_selfpin: CFLAGS += $(TOOLS_INCLUDES)
++$(OUTPUT)/binfmt_misc_selfpin: ../filesystems/utils.c
+diff --git a/tools/testing/selftests/exec/binfmt_misc_selfpin.c b/tools/testing/selftests/exec/binfmt_misc_selfpin.c
+new file mode 100644
+index 000000000000..5286b0604eed
+--- /dev/null
++++ b/tools/testing/selftests/exec/binfmt_misc_selfpin.c
+@@ -0,0 +1,158 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * An 'F' entry keeps its interpreter open for as long as the entry exists,
++ * and the entry only goes away when the binfmt_misc superblock is destroyed.
++ * An interpreter that lives on a mount which in turn keeps that superblock
++ * alive therefore pins the instance that owns it, and nothing can break the
++ * cycle. Check the two ways userspace could arrange for that: an interpreter
++ * on the binfmt_misc instance itself, and one on a filesystem stacked on it.
++ *
++ * Runs unprivileged in a user namespace; binfmt_misc is FS_USERNS_MOUNT.
++ */
++#define _GNU_SOURCE
++#include <fcntl.h>
++#include <limits.h>
++#include <sched.h>
++#include <sys/mount.h>
++#include <sys/stat.h>
++
++#include "../filesystems/utils.h"
++#include "kselftest_harness.h"
++
++#define MNT		"/tmp/binfmt_selfpin"
++#define BACKING		"/tmp/binfmt_selfpin_back"
++#define LOWER		BACKING "/lower"
++#define MERGED		"/tmp/binfmt_selfpin_merged"
++
++#define MAGIC		"\\xde\\xad"
++#define RULE(interp)	":selfpin:M::" MAGIC "::" interp ":F"
++/* Not on the instance, and unlike /bin/true it always exists. */
++#define INTERP		"/proc/self/exe"
++
++#define OPTS_MAX	(3 * PATH_MAX + 64)
++
++static int ensure_dir(const char *path)
++{
++	if (mkdir(path, 0755) && errno != EEXIST)
++		return -1;
++	return 0;
++}
++
++/* Write @rule to this instance's register file, preserving write(2)'s errno. */
++static int register_at(struct __test_metadata *_metadata, const char *rule)
++{
++	int fd, saved;
++	ssize_t n;
++
++	fd = open(MNT "/register", O_WRONLY);
++	ASSERT_GE(fd, 0);
++	n = write(fd, rule, strlen(rule));
++	saved = errno;
++	close(fd);
++	errno = saved;
++	return n < 0 ? -1 : 0;
++}
++
++/*
++ * Mount an overlay over @lower using a private upper/work pair, so the two
++ * mounts this test performs cannot interfere with each other and neither
++ * overlaps the lower layer.
++ */
++static int mount_overlay(const char *lower, int nr)
++{
++	char opts[OPTS_MAX], upper[PATH_MAX], work[PATH_MAX];
++
++	snprintf(upper, sizeof(upper), "%s/upper%d", BACKING, nr);
++	snprintf(work, sizeof(work), "%s/work%d", BACKING, nr);
++	if (mkdir(upper, 0755) || mkdir(work, 0755))
++		return -1;
++
++	snprintf(opts, sizeof(opts), "lowerdir=%s,upperdir=%s,workdir=%s",
++		 lower, upper, work);
++	return mount("ovl", MERGED, "overlay", 0, opts);
++}
++
++FIXTURE(selfpin) {
++};
++
++FIXTURE_SETUP(selfpin)
++{
++	/* setup_userns() exits rather than returns if this is not there. */
++	if (access("/proc/self/ns/user", F_OK))
++		SKIP(return, "kernel without user namespaces");
++	ASSERT_EQ(setup_userns(), 0);
++
++	ASSERT_EQ(ensure_dir(MNT), 0);
++	if (mount("binfmt_misc", MNT, "binfmt_misc", 0, NULL)) {
++		int saved = errno;
++
++		/* Teardown doesn't run when setup skips, so clean up here. */
++		rmdir(MNT);
++		SKIP(return, "no binfmt_misc: %s", strerror(saved));
++	}
++}
++
++FIXTURE_TEARDOWN(selfpin)
++{
++	/* The namespaces go with the process; just don't litter /tmp. */
++	umount2(MERGED, MNT_DETACH);
++	umount2(BACKING, MNT_DETACH);
++	umount2(MNT, MNT_DETACH);
++	rmdir(MERGED);
++	rmdir(BACKING);
++	rmdir(MNT);
++}
++
++/*
++ * The instance's own files are regular files the mounter owns, so they can be
++ * made executable. Opening one for exec still has to fail, otherwise the entry
++ * pins the very superblock it lives in.
++ */
++TEST_F(selfpin, interpreter_on_the_instance)
++{
++	ASSERT_EQ(chmod(MNT "/status", 0755), 0);
++
++	ASSERT_NE(register_at(_metadata, RULE(MNT "/status")), 0);
++	EXPECT_EQ(errno, EACCES);
++}
++
++/* Same for an entry file rather than one of the control files. */
++TEST_F(selfpin, interpreter_on_an_entry)
++{
++	ASSERT_EQ(register_at(_metadata, ":victim:M::" MAGIC "::" INTERP ":"), 0);
++	ASSERT_EQ(chmod(MNT "/victim", 0755), 0);
++
++	ASSERT_NE(register_at(_metadata, RULE(MNT "/victim")), 0);
++	EXPECT_EQ(errno, EACCES);
++}
++
++/*
++ * A stacking filesystem holds a private clone of each layer for its whole
++ * lifetime, so an instance used as a layer can be pinned by an interpreter
++ * that does not live on it at all. Refuse to be a layer.
++ */
++TEST_F(selfpin, refuses_to_be_stacked_on)
++{
++	ASSERT_EQ(ensure_dir(BACKING), 0);
++	ASSERT_EQ(mount("tmpfs", BACKING, "tmpfs", 0, NULL), 0);
++	ASSERT_EQ(mkdir(LOWER, 0755), 0);
++	ASSERT_EQ(ensure_dir(MERGED), 0);
++
++	/* Nothing to prove unless overlayfs works here at all. */
++	if (mount_overlay(LOWER, 1)) {
++		if (errno == ENODEV || errno == EPERM)
++			SKIP(return, "no unprivileged overlayfs");
++		SKIP(return, "overlayfs unusable here: %s", strerror(errno));
++	}
++	ASSERT_EQ(umount(MERGED), 0);
++
++	EXPECT_NE(mount_overlay(MNT, 2), 0);
++}
++
++/* An ordinary interpreter still registers with 'F'. */
++TEST_F(selfpin, ordinary_interpreter_still_works)
++{
++	EXPECT_EQ(register_at(_metadata, RULE(INTERP)), 0);
++}
++
++TEST_HARNESS_MAIN
+diff --git a/tools/testing/selftests/exec/config b/tools/testing/selftests/exec/config
+index c308079867b3..c03d52d8abee 100644
+--- a/tools/testing/selftests/exec/config
++++ b/tools/testing/selftests/exec/config
+@@ -1,2 +1,6 @@
+ CONFIG_BLK_DEV=y
+ CONFIG_BLK_DEV_LOOP=y
++CONFIG_BINFMT_MISC=y
++CONFIG_OVERLAY_FS=y
++CONFIG_TMPFS=y
++CONFIG_USER_NS=y
 
 -- 
 2.53.0
