@@ -4,78 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B65B6C54F4C
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 05:45:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 146F8C53219
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 05:45:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 917286B009F; Tue, 28 Jul 2026 01:45:40 -0400 (EDT)
+	id 03D8B6B00A1; Tue, 28 Jul 2026 01:45:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C7F96B00A1; Tue, 28 Jul 2026 01:45:40 -0400 (EDT)
+	id F09296B00A2; Tue, 28 Jul 2026 01:45:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 768A86B00A2; Tue, 28 Jul 2026 01:45:40 -0400 (EDT)
+	id DAA626B00A3; Tue, 28 Jul 2026 01:45:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 302266B009F
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 01:45:40 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8CECA802CB
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 05:45:39 +0000 (UTC)
-X-FDA: 85037098398.25.21DFAC6
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011014.outbound.protection.outlook.com [52.101.57.14])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 7ACD440003
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 05:45:36 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=0NgYTjus;
-	spf=pass (imf07.hostedemail.com: domain of bharata@amd.com designates 52.101.57.14 as permitted sender) smtp.mailfrom=bharata@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 91F786B00A1
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 01:45:44 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1434F1A02C2
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 05:45:44 +0000 (UTC)
+X-FDA: 85037098608.14.F867D79
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010015.outbound.protection.outlook.com [40.93.198.15])
+	by imf04.hostedemail.com (Postfix) with ESMTP id E7B434000E
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 05:45:40 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=b+wAws7D;
+	spf=pass (imf04.hostedemail.com: domain of bharata@amd.com designates 40.93.198.15 as permitted sender) smtp.mailfrom=bharata@amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=quarantine) header.from=amd.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785217536;
+	s=arc-20220608; t=1785217541;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Yv1klQ+3wlkrorARWsJCxdhCgcws73DnFIzvRv+M71o=;
-	b=ZXaMqtvWkjtRW0bwS5ZwQT0DZmejsKJRqGiObt7ZzzfpnvkDmAhJZhoNCjZwFEpddCxLUK
-	P5SLvd+Wx3aNvQVI1Ef89FhByKkdYMu3aR8CjM2Bcsmvh8vcMIe43bBswwPX+z1nrJPZyZ
-	fJoZM6LvW3qd+puJB0U+ce11RfEyHM4=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1785217536;
-	b=SCCFTdMNfXOvpYLV7lBYV5SvJ+myAxIvyu2K83oT3Qa2sc7yo5pdP76Q/wenIP2Gt+Hhe1
-	ydyH/pf50k5C7xVe08bRwRwUgAZ7CTYqL8K3k+/uIh4G2j3pbofHjdpfk0gaaT1p+zmQfL
-	oqFRjh3ueAAAPuGoOZhqYTdeIgwEEsU=
+	bh=CtXF2tTuUm+dX8qPODQX9eak3fMr3vN7uQgjajv3Hrk=;
+	b=h3CwPe8O1zgsoE3NbQ9NH6AK8TwtApvRlo+3yYglMtoRZYTk0Ht4DoDNWcbftM3XBRW33+
+	9mNgUteotYAGXPLYg2OlOYV3wNRoiy/F7gXdfxxPNoxmlt3jScfZ17BN92Dx7jf0/Qg78P
+	bftf61j00CIr2VUscKWLV3LJKrjkwp0=
 ARC-Authentication-Results: i=2;
-	imf07.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=0NgYTjus;
-	spf=pass (imf07.hostedemail.com: domain of bharata@amd.com designates 52.101.57.14 as permitted sender) smtp.mailfrom=bharata@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+	imf04.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=b+wAws7D;
+	spf=pass (imf04.hostedemail.com: domain of bharata@amd.com designates 40.93.198.15 as permitted sender) smtp.mailfrom=bharata@amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=quarantine) header.from=amd.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1785217541;
+	b=ht7SrSKspb7T9WVQb86t8kv1UMvAKob+V0LjFX3QlXeP7bZ5HS2K0W9Ez1GAcLlwvBzxDQ
+	6nbHfRcJnuO2fZ9nH4a6YtEd1rgtx+qi+qY4/wUHIWzxh3PKAhGqS48uUR7qJEBbqznw1g
+	fa/dK+BYLLlsLVNeuh1zOFcZk/axxuc=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xGs/WHFnbZK5CgwnseZtv6dJwhwCs4Y0nckud9D0lYp5Qw37HH4JOTorywqSb/M4DJUIWqzwgOfQOReZs1of0Pgk9DtzFS4Ee9/8eu+f/As+mIrLs8J9a4bmqR/c8DeddqR6Rtfoq4t23Yy1P6qXPHn3m/rkmmNc4BL6s/tMX7i6PnPlWqNPEbl8foWgOB3MPrzjbmc+lkNW4PjLUvrtWhn/fiesEhzBdEriHn+nhjgJbOPpWpUxL1damisFE+1s+XPGtbgCEwvnW509yQAcmrUjBdHacuj+qKBhr6CFI5bKsojyHEKY6FVlux7ujwIsNlgb7+Aou5daa4dbhgFy5w==
+ b=jXcpMBP6bU1Mzm0Kwu1MSbTS4mrJ59vn5DzyKQECF1rFaiXo9WmMwoLgfdjVXD/f/mc9xfAwfI6gJUaeb9rtNwAsQ/52mowPkp6BuoYBuAD7Dh+JIzoLdBojFVxdz3mPSAxXwb9XBG2lfotb7rloGLXQhLZ6mlm9H1N/mH6V62XBdZGO+Spr+Kw8mA8H5EGuXSUiiAuBZvHRYUHv7ICnimVxbd5NbP+Pcjl36dLZEKMrDUCV16vbsr8xqy6SqcYRsnYjU6m+KVkA0jSgVZ2PNoIkyoZKqH0Ob2ZpFpDPn0JYUtt03P1iS+7rzF79nQIIqjnbsj+1lYW6qEecZXzz3A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Yv1klQ+3wlkrorARWsJCxdhCgcws73DnFIzvRv+M71o=;
- b=FRCTi0CVTlPZPxv9325BU9edZ00P+ZjcMNlHHmRd3Zy4JEtOfJ+iB5Gaj2knYVC794kBIK5xvFTsLufJUe2f+4jOZx+gwDqGmwTz8mtSBAEJXnxppqDP28hhF0Bo5zyv14v3a5brXpGsUxgZKaUg8bL4ELn7CP9fECUEMTXytKoHykidAtuMp+FMbU9Ep6cBME3YAjD8b/eXO7KX2hPKKuTRPTzuN6h9Tm1iXerRdc+pUhhBh5TmJflv2BJgEbhSrGF4J2wOWsEGqWyfuy7V+AsKeFyeLJMZX8D7QIxE1yNSKCDT75IKzmN88RE9IjAp9sP5SJ5nlqTBqMlR1IrKIw==
+ bh=CtXF2tTuUm+dX8qPODQX9eak3fMr3vN7uQgjajv3Hrk=;
+ b=vPOzTmzIVP/LY+lpJAfVD0BggBeMdjCojDRIDhkZp74JEt129wt6pbCWMRHM2071g0sr2VFg0IzbHVnKYwnHkD7MGLVh/UyUnYCd+mDffqFzCHGgcQIyIyjoHp5E+p6wbOsFZlHckLvaABs/Vr2HcgqOvjsTuOPJx+1HropOPR8R060YuJVQki1ZixhXQ2oW7lk+5pv1sFekauT8GBgUUVaCxRqyWkEa/Hkqyz1qTSHxV4zUDwWPAipV5WIp2vvYgsQyX7fEYwLKQ8f5c54ifj2EqNffLezh9L8LmEIJukcGM8ZusmxNgKIfxcu1nOk6nA0Uz6ZBZt9SQTM9Lea7zQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Yv1klQ+3wlkrorARWsJCxdhCgcws73DnFIzvRv+M71o=;
- b=0NgYTjus4SR2IC+haiVXscoNTW4Tta1+DFWoxY6wsQf2e9BIca0cCLDA8lxznmw65RA9JaOJKnwPVkSAMCumcIQ1Q0691GWvGtgmWLUn+FOAIQ/+FfNkG0J5Vq4Mi06yT4mshLZ46XHRXKb1dizBPjrJ5HAbjVbTDYZgcAlTevI=
-Received: from MW4PR04CA0378.namprd04.prod.outlook.com (2603:10b6:303:81::23)
- by SN7PR12MB6863.namprd12.prod.outlook.com (2603:10b6:806:264::19) with
+ bh=CtXF2tTuUm+dX8qPODQX9eak3fMr3vN7uQgjajv3Hrk=;
+ b=b+wAws7DXU55Kq4xT+x6x3I9qYlefzmd7a9wB9TM95kvSppKzN4Rd6ZECfwWJvBDsWBNYOvPpmqugdoJQzNfW+jVmEzHAobKvhK3APINFrwVLtPlGYaxZEVM10EFEQCXx/TM6FBLJN8GcOC5rOKmpIwte4UvinxluN086A6/JX4=
+Received: from SJ0PR13CA0143.namprd13.prod.outlook.com (2603:10b6:a03:2c6::28)
+ by DSSPR12MB999238.namprd12.prod.outlook.com (2603:10b6:8:374::23) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.13; Tue, 28 Jul
- 2026 05:45:27 +0000
-Received: from MWH0EPF000C6192.namprd02.prod.outlook.com
- (2603:10b6:303:81:cafe::a7) by MW4PR04CA0378.outlook.office365.com
- (2603:10b6:303:81::23) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.245.13 via Frontend Transport; Tue,
- 28 Jul 2026 05:45:26 +0000
+ 2026 05:45:35 +0000
+Received: from MWH0EPF000C6195.namprd02.prod.outlook.com
+ (2603:10b6:a03:2c6:cafe::8c) by SJ0PR13CA0143.outlook.office365.com
+ (2603:10b6:a03:2c6::28) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.270.12 via Frontend Transport; Tue,
+ 28 Jul 2026 05:45:34 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -83,13 +83,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- MWH0EPF000C6192.mail.protection.outlook.com (10.167.249.102) with Microsoft
+ MWH0EPF000C6195.mail.protection.outlook.com (10.167.249.105) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.270.5 via Frontend Transport; Tue, 28 Jul 2026 05:45:26 +0000
+ 15.21.270.5 via Frontend Transport; Tue, 28 Jul 2026 05:45:34 +0000
 Received: from BLR-L-BHARARAO.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Tue, 28 Jul
- 2026 00:45:18 -0500
+ 2026 00:45:26 -0500
 From: Bharata B Rao <bharata@amd.com>
 To: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
 CC: <Jonathan.Cameron@huawei.com>, <dave.hansen@intel.com>,
@@ -102,9 +102,9 @@ CC: <Jonathan.Cameron@huawei.com>, <dave.hansen@intel.com>,
 	<byungchul@sk.com>, <kinseyho@google.com>, <joshua.hahnjy@gmail.com>,
 	<yuanchu@google.com>, <balbirs@nvidia.com>, <alok.rathore@samsung.com>,
 	<shivankg@amd.com>, <donettom@linux.ibm.com>, Bharata B Rao <bharata@amd.com>
-Subject: [PATCH v8 7/8] x86/mm/ibs: In-kernel driver for AMD IBS Memory Profiler
-Date: Tue, 28 Jul 2026 11:13:55 +0530
-Message-ID: <20260728054356.291998-8-bharata@amd.com>
+Subject: [PATCH v8 8/8] x86/mm/ibs: Add runtime controls for IBS memprofiler
+Date: Tue, 28 Jul 2026 11:13:56 +0530
+Message-ID: <20260728054356.291998-9-bharata@amd.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260728054356.291998-1-bharata@amd.com>
 References: <20260728054356.291998-1-bharata@amd.com>
@@ -116,38 +116,38 @@ X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MWH0EPF000C6192:EE_|SN7PR12MB6863:EE_
-X-MS-Office365-Filtering-Correlation-Id: 461dc1e8-d282-4a59-c0d6-08deec6b6cee
+X-MS-TrafficTypeDiagnostic: MWH0EPF000C6195:EE_|DSSPR12MB999238:EE_
+X-MS-Office365-Filtering-Correlation-Id: e0a96875-65bc-470e-00df-08deec6b71b5
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|23010399003|1800799024|376014|36860700016|82310400026|18002099003|56012099006|10067099003|11063799006|22082099003|3023799007;
+	BCL:0;ARA:13230040|376014|1800799024|36860700016|82310400026|23010399003|7416014|22082099003|6133799003|21046099003|56012099006|11063799006|10067099003|18002099003|3023799007;
 X-Microsoft-Antispam-Message-Info:
-	Q1wsR6dhqxoxIj8XCK6Afj/2LCw4jv0m4wXoEmsl9Qh0BIyvdX+BZZh7W+HUwEGqVGE6IxVJOrHqF1vN7stWWZDiOKIlwpSKi4E8Ugvl/VcQnuraOEQ/2eaxT4zYEJZTQ9eez/81Wfui1e/EY6Dd/lf2O4heXfxN54iZEzLBZ4xnMlb7OQXt4AnbCL9gaZzfFNe+ElAKnEyJVWoo//uVyc3G6jEBxZBdfo+pMjInM7PjJsuBkZJN9cV47YHUmIgozyNKZs61UNFlemCi4XspoGdZc+ujeVOT6tkuPk5Iw7ADTEq8SB/OY2M1B35a2Ssn32Rvb119JjkEqLaNcTNabAiDaG7xRloOgZvKcONOB4UeQ10InOznWl+pjnPdmpRTpS4UjQDbYKkohc9vxd/zP2AmGVQ36iYjstSfaf4Rahnq/GU7vlsBW+Hy3HUlryAZzjNYAcEDagVhkwT+5/FDE3x84Q6awVBPcc2Mltxczw01mRcV7t9t5oPigTgOW/SLQAOzruYKKS2ATKKTdxtxRT4JMqW+WSCdZX/WVyCougTbHCfoNMcZx/gkJ1mRUlNetyLg9WNxEJWJmj6n3SVqg9ZFOCjYOv8KsRxVeadpzFAHw9/hR5DtRLHhTkuI9YSjhrI1CmkG1zbaUu59NhSLj2OSFgGnM3psBWfj83rk6SZHd1CzbUqSCZyjxGADCKeA5FIzWM+MMQpubjcSdxqOuQ==
+	1+t4zfF/OldKoYtgjR+z3vcYIrsNYyivy26OwLkjNdEoJa6L9H60sXPT4Eu+nFJkZlNRukgoWkQRewzq/wV8xYyypcUp9hw6W3Mrr35CgQtGnFdeYNu4j+RnHxEPXFwgn67Nyj8fdzpGcxzQTfa6+rxNOrBBSY00WErzU1YE4/dtnd0of35JGuk64vR6SQaLE6SQv+IgqRweuX0CWnaUp301WqmxJXCbAB5GI8yeMbd6qwMn5CSj7IsYHSfz4s11myPtm6v7VW3JIgr1QXIBGj4O/VdSIlOWMo74Dwfqif9vx5ARjbb62fxr0mh4ShwMeN2Qp5dBUbDaNT+E1a5a2zFWpoBtZ7arOMmfQxmvV6qAemuDZzqTVwJHy1FCSQyOPehDWmhVgy/rN1DaYLX0KgyDV+pbAl0sXp2Iga/S3+dPR4K68+BgMndFQsj/ZeRewjmuweXOco3MxvlCHCRi1iMdc9NhYSPD71YzVu/MTLLeI7SdlPxlfq4HVf5l2iLdol5EyfGFEC71dNDX4A6O2n32QSuC3fCj/Cf1GZgO0/iUPvyAM135HnZMYshHffUUvMkeBRRzELKskpYOJzMZLTCzxVKwASmxP928tO3as4leleQOjEp8xerO5WQI5r4J0YBkUL7VHbl2cAPAZTGI+Mfnd/Kfp4CcZnTlffCyg+N/duzCSoflSpTp7P29cha/KYtvoJ2tuaWwj6k/aC9lgw==
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(23010399003)(1800799024)(376014)(36860700016)(82310400026)(18002099003)(56012099006)(10067099003)(11063799006)(22082099003)(3023799007);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(1800799024)(36860700016)(82310400026)(23010399003)(7416014)(22082099003)(6133799003)(21046099003)(56012099006)(11063799006)(10067099003)(18002099003)(3023799007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	7bCb47C0jr6lbXWrw9M/azlFL+ZSzoMoKa5xtHnmKcxjBX1XMzxhXTZ3GxPjsUq6CLxrHvAz9epJ0Q1T6lncRbtubByTALmuHy2HdbFxqRU3ZBAlVl88BOf3vQrK3HDVnYMegAiH7OAE61jacJ533cqXlULmOPH8lNRwEZXojw/Fc2Rbdu9wXNziI9hESMYLAMq/Mlw4jNPMKz8S/SBlCijdAstteYbi9ep35eGQbwVOOXCUXs+9AXn+Wf3rk7hzKB+Cc3A4msFpF0Of80j5h8XGCh4YunOR7Y5FLtVz4zzWx230sUZxA7ddX5GjOtTr2cI3yT0op6kybQsl9lDEsQ38Ck/mgx6WRqNQ9/be2cUFwV0KekYzXc3glXASlKD9rHfsecWKKIo6RTJzE7f0r+iwMbxNdYqxmzjmnxFYZLkFYuvb/zei76AQK12vJoVa
+	MPuUYm4O15FWvxrBvIWpc4VLR32y91M/tliVAgKAp7UKmHFU+Bq2q9pLwyMoE6m2THWj0jSf2RjW62ehYUQeXBdUbbLU4AznEVXMvJ/RIiVnyzNiS5kLAeyQ+DZZD9dr+7cxxft4nZQZVMHusf1QkHPPP/hNaBOO+Qce7QWFtQuiH2fEk36Ttlp8LYslJIrYJZJ9IOvSH21WS57YAcwgka1MiYFJ9BQy5mUaIw4DrOrl7ItIn4Pjakl3xnQHJOfVMycKJxMtP3eKK9cy081unWgju6D97cOXwNDPorEwuZXEvOJcW1Pbcxenrp3fo6fO8ckm3sAlF0CYZy/Zg6lSCeSOCbx9LDqL7RjylBFMKWZCswK7CFP/zUf1CJ1Goaw1sjlP8/dV3SaJHIB6Qt8E2xxH2wjxdWejOQv3axZ4AiI3PM/qe9c3H7cSVRLvulSn
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jul 2026 05:45:26.5635
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jul 2026 05:45:34.5196
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 461dc1e8-d282-4a59-c0d6-08deec6b6cee
+X-MS-Exchange-CrossTenant-Network-Message-Id: e0a96875-65bc-470e-00df-08deec6b71b5
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	MWH0EPF000C6192.namprd02.prod.outlook.com
+	MWH0EPF000C6195.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB6863
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 7ACD440003
-X-Stat-Signature: i6d5mzpfwrq7xtwge61ujhxnbuz7rfa7
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DSSPR12MB999238
+X-Rspamd-Queue-Id: E7B434000E
 X-Rspam-User: 
-X-HE-Tag: 1785217536-293832
-X-HE-Meta: U2FsdGVkX1/WBc/FsfQkjMHNJlh6tzTh1Ad8mcsvPaDwAPh88Yqb/KW3GFgDk5WbpWgsCAXHnPxbxr/3ek6r1ydfPiatHvvDoLLY4MOgDnOfgeiu4EPwVp/c7NI1M1pmeZsd2w4/dTpc2aYWLp36yiq8C3ad8qU3AJiIJmSCVsmG+RzdwLZ5al7j3rOIMG1icRORWVNbl2+zNU3/t8emLkvEm9cXzgZUhp2w6DKUBzOMy+mN1g973naeRaGiFQx414+DMn8SspKCA0hQ7pqkcUWlVPYQkg2x4wm13OorRWUFXnrWnVnNGqh7Xr8AnKWNYgnciLNjoP1PseBA6lUZZZI1Dhgc5sP0TVCtUe+HGYd3wJ3y1bS77S3IQrBU641gFoXFkZiOiR4xNpmfetVVNs3W/5zoCXmGLTXsXorbjm51Z97TzvUXWmY4B8fixD80wVo/0hUqFS1q6vB0CnlQRSndjT7dUTzcoQwzm9SQtBMcgaJDzpO3dX04XyOnKplM+RGvYR/VtuX3aZquHW00+LEEsrfkxpEPu4J54kdX3QY4dWxbLZhPI6xcIhfa2z2aNSE6nrPbThrk+wILwvu5ia81gIc86phD2Kxe5EBGY1FwDaB5rbLYsrTDKNISKZdq3xOmVo26UYVM7OWDZ7HKXqcSJGXc/dYIP7KR/4zD8BIYVV7HKy14K5e91ZuNOAkM2DV4DOlS5RO59AfxOPp9t/G+lPsHBqDtRJeLKUBgaydHEAm4HvY5ke+m/zF/awWc04cHFhbhXx4WHglW5Os8dXISGVtyVwdTwIdbq6aiea6XA2svEvYldMSmXfOm2MhGswvo+ZymDHsBpsUqErb9cCeP/rG1cnUBrGbHO4Ja6z7B1sMogbb0zcmo8s+a0bunQjzBT4Q7/X1qg92i3DT6/1Q93UhKaO7HhJuxJm5JbCNN1NPdNqUXTSfuWNxjMtfwQXq4sOohPsLjxCApwgv
- /w05kEX+
- HqXDoykbqhXZxs2LLDJDXjMYnpjsrmUiBd2+Vtvi+TBI3FRdJbsBAUXvFg8UOwzb2XcM/dAsHPIfIDliBBdi5JDy6ubkhGykei1Jyokk/h8nQ38x757dPEAkomB42aGaM5sRExePmS39vL+r2bJ5keFX9qMBAb+S/N+OGmmsXBNbIOlXcUN6/cMwbP3AIf7hqJFeqVWsr9F+iY04HtsJbjIyX6ATPQTPyVgikjiWO1gDZrivZRPbpwnG3Q6ugt7FrH5Uyiif6r4GMmiSkq57zIKbuvYwGdzpiYFl+zIyytHkbrktirioRBDBEYe5N3zSCXUxu1pGek8QtjKYaQ+tTXyN/mpxMyxJUWrvFh5juPwkpsfIwzE4Pj4Mi0EUwWWUto681ZKXLeTu4l6HLYDhW5FUQlHHBpZV+k8gf2nDjMIhWFtYfUHauehSqF0+1AnH64mGc5bb/ccHGTf10ImoT3v71bbzRAuwvEGzKsuZUiIie/Mj0vFX1dIOhva4f7xvHLKxh2gkzBISXaNSBbvhcXQ8TpQ==
+X-Stat-Signature: 8aq9ishk59zhnrx9dpcu6cytybuozfri
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1785217540-971615
+X-HE-Meta: U2FsdGVkX1/x7u9J6zEoyUOj+2zAzNdt3/06Ab80g4KuZx+uk7THacrn9Xcdve1I0kkUPtvbsO+HQfA1YBlikqKYEupcVUz6Clu2MaFuRqBkne9UdeSI3ORAYWS20Wo1VdbzKrsZmD5FyapTjRVwNDuhve8N/yYf0f8hKhI3XlPVHG6qgS/ZvnhK8kv6f9/vW7h6X4MrPzhxC/VOnXUZddKZfKAFxmLHAs+gNcoGdv2Ce41cHqLJhbMpLidQMsjeTyT3qoJZvMhgIpdHBbIKzFky/oM1p9Nwr4P/Ug2Tm7aRaeri5byar1O57AbI5a3loZ/YscfWmv6CLRHZixuXT2daBcrtY5/YzNfjFUUutzz8dxW6Sgxq0KqbXHKIqi6KErYbuNFToLPOta0k5BiacbXUqHNPiiMzQ7EWOEdaLkwg6e0fkwGZLVfMz97dvC2GDQmGeKax7DWZpDL6UYvetLPD2uSf9cqyw6fJkvRldsqJXtvPtjmW3QTtJrixjRaMAkByeZ5pr3Ivj3zBgEBmOx54gM9n4HtD3AR9ag2oNj5UvEUatYlmPKnM8h8cIs0S0bb73+qqMipEiyuzQYyRGAMVZXUAI5r83o5tTnMhPrNJ0GMklU+KlCfKRV+KHzfAzbvn5Iw6PaXZ/MYehMWUGPi0SfuCHBZnyRMMHi9iGQDXbup8xtM0W91M9CZC+1yRgUoQpbOaqqREQLSxHzoNiN9UDwoVaUAndE30+I6JhAZbfWuW4ZMmlKcI9DbJHAKZ44yK1h1B73LY54fQuTGX9l4VmhTS03ppWRE4t56CnYuK431SOoPobfzhfUdo+c9XwSD1uv7gcNO5GkOy04hVzoaPZwAiAnZ9+VIAMfwHlVBBlajsQn9j3F5x4g252OiHYUy/0j6NhhottZSz1N2+9I5nvL3HdIN6XPiDUwH/t5wqUG5ROLMSTgVtmVzosY6F2gDOG5oaGRd+kn1/BL5
+ uipcoCnQ
+ vKgczFHOW99GG00ecAZ2pbl2oMjOUO1rHMbZf8x5snOmNUm8BhOc9UltPmhXvy5zfS8wdYZg4L/k3aeSMQraj1PKMALgjqeWVm5kv6mR4fJeWaao3FS+xikAkqQ1ug1RBlAqhu9/niNz8nhwqFXoLoJ4xBQ5gLNFH7aINJRq0KM/i8U8KcBU7sEXEMmZ6YcgU0sBTUbb8RFp4yXr/e176/+Ukx8nBM5Q6hu0FkMNnzl0NwMVyXIaGP73OX0CVkxhelPgP8o1CgrnB8z8TYFhg45xMwiQq5kBJN9W9ocGDLgsrXpA7kIE9uh14wLraH8gIZnBjWezqWIqfcD/RJ8PF1mMtid2dI/pOyeCQafFIs+VFr2x4OWFJ8VroT67MRI7lLvfddeocYHxboKbSGGCbO9LYN0rRIvAIAJ3/pUi1CANgE6vOGI5S+cSOyoFyHnVtNVjicMuV4BpPLz10hUqq2P6LfnkmgOvXU2hCLFNeNf7Q1U+EMWD317aGGKR1i526s1QapNBxq1eBn/mK06X0SS8C6Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,767 +155,570 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Use IBS (Instruction Based Sampling) Memory Profiler feature
-present in AMD Zen6 processors for memory access tracking. The
-access information obtained from IBS Memory Profiler is fed to
-pghot sub-system for further action using
-pghot_record_access(PGHOT_HWHINTS, ...) API.
+Expose runtime tunables for IBS Memory profiler and arm the profiler.
 
-IBS Memory Profiler as page hotness source is enabled by the
-new config option HWMEM_PROFILER and is also gated by the
-existing pghot_src_hwhints static key set via sysctl tunable
-vm.pghot_enabled_sources.
+<debugfs>/ibs-mprof/l3miss-only  - IbsMemL3MissOnly filter
+<debugfs>/ibs-mprof/period       - op sample period (IbsMemMaxCnt)
+<debugfs>/ibs-mprof/lat-filter   - IbsMemLatFltEn load-latency filter
+<debugfs>/ibs-mprof/lat-thresh   - IbsMemLatThrsh (0x0..0xf)
 
-New system vector 0xea is used for memprofiler interrupt.
+In addition, a kernel cmdline parameter (ibs-memprof) is introduced
+to enable profiling right from boot time.
 
-This adds the driver infrastructure (interrupt setup, per-CPU
-ring, workqueue, cpuhp state, pghot call site etc) but the
-profiler isn't armed yet and that is done in the next commit.
+/sys/devices/system/cpu/ibs-mprof/enabled can be used to turn the
+profiling on or off.
 
-More details about IBS Memory Profiler can be obtained from
-the AMD document titled "AMD64 Zen6 Instruction Based Sampling (IBS)
-Extensions and Features".
+Enabling the profiler will result in IBS Memory Profiler samples to
+be reported to pghot subsystem. pghot will act on these samples only
+if hwhints source is enabled explicilty using pghot/enabled_sources
+debugfs tunable.
 
 Signed-off-by: Bharata B Rao <bharata@amd.com>
 ---
- Documentation/admin-guide/mm/pghot.rst |  44 ++-
- arch/x86/Kconfig                       |  16 ++
- arch/x86/entry/entry_fred.c            |   1 +
- arch/x86/include/asm/hardirq.h         |   3 +
- arch/x86/include/asm/ibs-caps.h        |   8 +
- arch/x86/include/asm/ibs-mprof.h       |  47 ++++
- arch/x86/include/asm/idtentry.h        |   6 +
- arch/x86/include/asm/irq_vectors.h     |   4 +-
- arch/x86/include/asm/msr-index.h       |   8 +
- arch/x86/kernel/idt.c                  |   3 +
- arch/x86/kernel/irq.c                  |   3 +
- arch/x86/mm/Makefile                   |   1 +
- arch/x86/mm/ibs-mprof.c                | 363 +++++++++++++++++++++++++
- include/linux/cpuhotplug.h             |   1 +
- include/linux/vm_event_item.h          |   7 +
- mm/Kconfig                             |   9 +
- mm/vmstat.c                            |   7 +
- 17 files changed, 529 insertions(+), 2 deletions(-)
- create mode 100644 arch/x86/include/asm/ibs-mprof.h
- create mode 100644 arch/x86/mm/ibs-mprof.c
+ .../admin-guide/kernel-parameters.txt         |   5 +
+ Documentation/admin-guide/mm/pghot.rst        |  44 +++
+ arch/x86/include/asm/ibs-mprof.h              |  14 +
+ arch/x86/mm/ibs-mprof.c                       | 371 +++++++++++++++++-
+ 4 files changed, 419 insertions(+), 15 deletions(-)
 
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index b5493a7f8f22..c25bf35767eb 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -2216,6 +2216,11 @@ Kernel parameters
+ 			syscalls, essentially overriding IA32_EMULATION_DEFAULT_DISABLED at
+ 			boot time. When false, unconditionally disables IA32 emulation.
+ 
++	ibs-memprof=	[X86-64]
++			Format: <bool>
++			When true, IBS Memory Profiler will be enabled at boottime
++			for memory access profiling. It can be changed at runtime too
++			using /sys/devices/system/cpu/ibs-mprof/enabled.
+ 
+ 	idle=		[X86,EARLY]
+ 			Format: idle=poll, idle=halt, idle=nomwait
 diff --git a/Documentation/admin-guide/mm/pghot.rst b/Documentation/admin-guide/mm/pghot.rst
-index accf78d95d02..b802b80e5c24 100644
+index b802b80e5c24..69210e9f8e93 100644
 --- a/Documentation/admin-guide/mm/pghot.rst
 +++ b/Documentation/admin-guide/mm/pghot.rst
-@@ -87,7 +87,7 @@ Path: /proc/vmstat
+@@ -150,3 +150,47 @@ Path: /proc/vmstat
+ 5. **hwhint_extmem_accesses**
+    - Number of external memory (like CXL) accesses reported by hwhints source.
  
- 2. **pghot_recorded_hintfaults**
-    - Number of recorded accesses reported by NUMA Balancing based
--     hotness source.
-+     hint faults source.
- 
- 3. **pghot_recorded_hwhints**
-    - Number of recorded accesses reported by hwhints source.
-@@ -108,3 +108,45 @@ to promote hot pages. It can be disabled at runtime by clearing that bit:
- 
- # echo 0x0 > /proc/sys/vm/pghot_enabled_sources
- 
-+Hardware Hints Source
-+=====================
-+pghot can consume memory access samples reported by hardware profilers.
-+This "hardware hints" (hwhints) source feeds hardware-observed accesses
-+into pghot for hot page detection and promotion.
++AMD IBS Memory Profiler Tunables
++================================
++sysfs tunables
++--------------
++1. enabled
 +
-+Generic in-kernel support for such profilers is controlled by the
-+HWMEM_PROFILER config option. It is not enabled directly by the user;
-+an in-kernel driver that forwards hardware-observed accesses to pghot
-+selects it.
++Path: /sys/devices/system/cpu/ibs-mprof/enabled
 +
-+The AMD IBS Memory Profiler (config AMD_IBS_MEMPROF, available on Zen6
-+and later AMD CPUs) is one such driver. It uses the AMD Instruction
-+Based Sampling (IBS) Memory Profiler facility to sample user memory
-+accesses and record them with pghot.
++- Enable (1) or disable (0) memory access profiling. Enabling here
++  would only arm the memory profiler and results in generation of IBS
++  samples. pghot will act on the reported samples only if hwhints source
++  is enabled in **pghot_enabled_sources**.
++- Default: 0 (Disabled)
 +
-+This source can be activated at runtime through the hardware
-+hints bit (0x2) of **pghot_enabled_sources**.
++Debugfs tunables
++----------------
++Path: /sys/kernel/debug/ibs-mprof/
 +
-+# echo 0x2 > /proc/sys/vm/pghot_enabled_sources
++These tune the AMD IBS Memory Profiler hardware hints source and are
++present only when AMD_IBS_MEMPROF is enabled. A write takes effect on
++all CPUs immediately.
 +
-+HWHINTS Vmstat Counters
-+=======================
-+Following vmstat counters provide some stats about hardware hints source.
++1. **l3miss-only**
++   - When 1, only accesses that miss the L3 cache are sampled. It is
++     recommended to run the memory profiler with L3 miss filtering
++     enabled.
++   - Default: 1
 +
-+Path: /proc/vmstat
++2. **period**
++   - Sample period as the number of ops between samples (IbsMemMaxCnt).
++   - Range: 5000 to 134217727.
++   - Default: 10000
 +
-+1. **hwhint_total_events**
-+   - Number of total hwhint events recorded by hwhints source.
++3. **lat-filter**
++   - When 1, enable load latency filtering: only loads whose latency
++     exceeds the **lat-thresh** threshold are reported.
++   - Default: 0
 +
-+2. **hwhint_useful_events**
-+   - Number of actionable events from hwhints source.
-+
-+3. **hwhint_dropped_events**
-+   - Number of events that were dropped due to buffer overrun.
-+
-+4. **hwhint_dram_accesses**
-+   - Number of DRAM accesses reported by hwhints source.
-+
-+5. **hwhint_extmem_accesses**
-+   - Number of external memory (like CXL) accesses reported by hwhints source.
-+
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index bdad90f210e4..c6c5ed83506a 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -1501,6 +1501,22 @@ config AMD_MEM_ENCRYPT
- 	  This requires an AMD processor that supports Secure Memory
- 	  Encryption (SME).
- 
-+config AMD_IBS_MEMPROF
-+	bool "AMD IBS Memory Profiler"
-+	depends on X86_64 && CPU_SUP_AMD
-+	depends on PGHOT
-+	select HWMEM_PROFILER
-+	help
-+	  Use the AMD Instruction Based Sampling (IBS) Memory Profiler
-+	  facility (present on Zen6 and later AMD CPUs) to feed
-+	  hardware-observed memory accesses into the pghot subsystem
-+	  for hot-page detection and promotion.
-+
-+	  When disabled, no IBS Memory Profiler MSRs are programmed and
-+	  the corresponding interrupt handler is not installed.
-+
-+	  If unsure, say N.
-+
- # Common NUMA Features
- config NUMA
- 	bool "NUMA Memory Allocation and Scheduler Support"
-diff --git a/arch/x86/entry/entry_fred.c b/arch/x86/entry/entry_fred.c
-index fb3594ddf731..f52099e3fa85 100644
---- a/arch/x86/entry/entry_fred.c
-+++ b/arch/x86/entry/entry_fred.c
-@@ -120,6 +120,7 @@ static idtentry_t sysvec_table[NR_SYSTEM_VECTORS] __ro_after_init = {
- 	SYSVEC(POSTED_INTR_NESTED_VECTOR,	kvm_posted_intr_nested_ipi),
- 
- 	SYSVEC(POSTED_MSI_NOTIFICATION_VECTOR,	posted_msi_notification),
-+	SYSVEC(IBS_MEMPROF_VECTOR,		ibs_memprof),
- };
- 
- static bool fred_setup_done __initdata;
-diff --git a/arch/x86/include/asm/hardirq.h b/arch/x86/include/asm/hardirq.h
-index dea60d66d976..2da4930ea399 100644
---- a/arch/x86/include/asm/hardirq.h
-+++ b/arch/x86/include/asm/hardirq.h
-@@ -49,6 +49,9 @@ enum irq_stat_counts {
- #endif
- #ifdef CONFIG_X86_POSTED_MSI
- 	IRQ_COUNT_POSTED_MSI_NOTIFICATION,
-+#endif
-+#ifdef CONFIG_AMD_IBS_MEMPROF
-+	IRQ_COUNT_IBS_MEMPROF,
- #endif
- 	IRQ_COUNT_PIC_APIC_ERROR,
- #ifdef CONFIG_X86_IO_APIC
-diff --git a/arch/x86/include/asm/ibs-caps.h b/arch/x86/include/asm/ibs-caps.h
-index ddf6c512c8f9..1f6c4058a0e3 100644
---- a/arch/x86/include/asm/ibs-caps.h
-+++ b/arch/x86/include/asm/ibs-caps.h
-@@ -29,6 +29,7 @@
- #define IBS_CAPS_FETCHLAT		(1U<<14)
- #define IBS_CAPS_BIT63_FILTER		(1U<<15)
- #define IBS_CAPS_STRMST_RMTSOCKET	(1U<<16)
-+#define IBS_CAPS_MEM_PROFILER		(1U<<18)
- #define IBS_CAPS_OPDTLBPGSIZE		(1U<<19)
- 
- #define IBS_CAPS_DEFAULT		(IBS_CAPS_AVAIL		\
-@@ -42,6 +43,13 @@
- #define IBSCTL_LVT_OFFSET_VALID		(1ULL<<8)
- #define IBSCTL_LVT_OFFSET_MASK		0x0F
- 
-+/*
-+ * IBS Memprofiler setup
-+ */
-+#define IBSCTL_MPROF_LVT_OFFSET_VALID	(1ULL << 24)
-+#define IBSCTL_MPROF_LVT_OFFSET_SHIFT	16
-+#define IBSCTL_MPROF_LVT_OFFSET_MASK	(0xFULL << IBSCTL_MPROF_LVT_OFFSET_SHIFT)
-+
- /* IBS fetch bits/masks */
- #define IBS_FETCH_L3MISSONLY		      (1ULL << 59)
- #define IBS_FETCH_RAND_EN		      (1ULL << 57)
++4. **lat-thresh**
++   - Load latency threshold, effective only when **lat-filter** is 1. A
++     sample is reported when the load latency exceeds
++     (lat-thresh + 1) * 128 core cycles.
++   - Range: 0x0 to 0xf
++   - Default: 0
 diff --git a/arch/x86/include/asm/ibs-mprof.h b/arch/x86/include/asm/ibs-mprof.h
-new file mode 100644
-index 000000000000..3de1880c4126
---- /dev/null
+index 3de1880c4126..8b91c0ff1c33 100644
+--- a/arch/x86/include/asm/ibs-mprof.h
 +++ b/arch/x86/include/asm/ibs-mprof.h
-@@ -0,0 +1,47 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _ASM_X86_IBS_MPROF_H
-+#define _ASM_X86_IBS_MPROF_H
-+
+@@ -30,6 +30,9 @@
+ #define IBS_MPROF_DATA3_SW_PREFETCH	BIT_ULL(21)
+ 
+ /* MSR_AMD64_IBS_MPROF_CTL bits */
++#define IBS_MPROF_CTL_LATFLTEN		BIT_ULL(63)	/* IbsMemLatFltEn */
++#define IBS_MPROF_CTL_LATTHRSH_SHIFT	59
++#define IBS_MPROF_CTL_LATTHRSH_MASK	(0xFULL << IBS_MPROF_CTL_LATTHRSH_SHIFT)
+ #define IBS_MPROF_CTL_CNT_CTL		BIT_ULL(19)
+ #define IBS_MPROF_CTL_VAL		BIT_ULL(18)
+ #define IBS_MPROF_CTL_ENABLE		BIT_ULL(17)
+@@ -37,6 +40,17 @@
+ #define IBS_MPROF_CTL_MAXCNT_MASK	0x0000FFFFULL
+ #define IBS_MPROF_CTL_MAXCNT_EXT_MASK	(0x7FULL << 20)	/* separate upper 7 bits */
+ 
 +/*
-+ * All bits are documented here for clarity even if the current
-+ * driver doesn't use all of them.
++ * IbsMemMaxCnt is a 27-bit op count; the low 4 bits are always zero.
++ * The hardware minimum is 16, but such a short interval is impractical
++ * (interrupt storm), so restrict the sample period to a sensible floor.
 + */
++#define IBS_MPROF_MAXCNT_MIN		5000
++#define IBS_MPROF_MAXCNT_MAX		((1U << 27) - 1)
 +
-+/* MSR_AMD64_IBS_MPROF_DATA2 bits */
-+#define IBS_MPROF_DATA2_DATASRC_MASK		0x7
-+#define IBS_MPROF_DATA2_DATASRC_MASK_HIGH	0xC0
-+#define IBS_MPROF_DATA2_DATASRC_MASK_HIGH_SHIFT	0x3
-+#define IBS_MPROF_DATA2_DATASRC_LCL_CCX		0x1
-+#define IBS_MPROF_DATA2_DATASRC_PEER_CCX_NEAR	0x2
-+#define IBS_MPROF_DATA2_DATASRC_DRAM		0x3
-+#define IBS_MPROF_DATA2_DATASRC_CCX_FAR		0x5
-+#define IBS_MPROF_DATA2_DATASRC_DRAM_FAR	0x7
-+#define IBS_MPROF_DATA2_DATASRC_EXT_MEM		0x8
-+#define IBS_MPROF_DATA2_RMT_NODE		BIT_ULL(4)
-+#define IBS_MPROF_DATA2_RMT_SOCKET		BIT_ULL(9)
++/* IbsMemLatThrsh is a 4-bit field. */
++#define IBS_MPROF_LATTHRSH_MAX		0xF
 +
-+/* MSR_AMD64_IBS_MPROF_DATA3 bits */
-+#define IBS_MPROF_DATA3_LDOP		BIT_ULL(0)
-+#define IBS_MPROF_DATA3_STOP		BIT_ULL(1)
-+#define IBS_MPROF_DATA3_DCMISS		BIT_ULL(7)
-+#define IBS_MPROF_DATA3_LADDR_VALID	BIT_ULL(17)
-+#define IBS_MPROF_DATA3_PADDR_VALID	BIT_ULL(18)
-+#define IBS_MPROF_DATA3_L2MISS		BIT_ULL(20)
-+#define IBS_MPROF_DATA3_SW_PREFETCH	BIT_ULL(21)
-+
-+/* MSR_AMD64_IBS_MPROF_CTL bits */
-+#define IBS_MPROF_CTL_CNT_CTL		BIT_ULL(19)
-+#define IBS_MPROF_CTL_VAL		BIT_ULL(18)
-+#define IBS_MPROF_CTL_ENABLE		BIT_ULL(17)
-+#define IBS_MPROF_CTL_L3MISSONLY	BIT_ULL(16)
-+#define IBS_MPROF_CTL_MAXCNT_MASK	0x0000FFFFULL
-+#define IBS_MPROF_CTL_MAXCNT_EXT_MASK	(0x7FULL << 20)	/* separate upper 7 bits */
-+
-+/* MSR_AMD64_IBS_MPROF_CTL2 bits */
-+#define IBS_MPROF_CTL2_DISABLE		BIT_ULL(0)
-+#define IBS_MPROF_CTL2_EXCLUDE_USER	BIT_ULL(1)
-+#define IBS_MPROF_CTL2_EXCLUDE_KERNEL	BIT_ULL(2)
-+
-+#define IBS_MPROF_SAMPLE_PERIOD	10000
-+
-+#endif /* _ASM_X86_IBS_MPROF_H */
-diff --git a/arch/x86/include/asm/idtentry.h b/arch/x86/include/asm/idtentry.h
-index 20f548702404..4c82e5c6d759 100644
---- a/arch/x86/include/asm/idtentry.h
-+++ b/arch/x86/include/asm/idtentry.h
-@@ -735,6 +735,12 @@ DECLARE_IDTENTRY_SYSVEC(POSTED_MSI_NOTIFICATION_VECTOR,	sysvec_posted_msi_notifi
- # define fred_sysvec_posted_msi_notification		NULL
- # endif
- 
-+# ifdef CONFIG_AMD_IBS_MEMPROF
-+DECLARE_IDTENTRY_SYSVEC(IBS_MEMPROF_VECTOR,		sysvec_ibs_memprof);
-+#else
-+# define fred_sysvec_ibs_memprof			NULL
-+#endif
-+
- #if IS_ENABLED(CONFIG_HYPERV)
- DECLARE_IDTENTRY_SYSVEC(HYPERVISOR_CALLBACK_VECTOR,	sysvec_hyperv_callback);
- DECLARE_IDTENTRY_SYSVEC(HYPERV_REENLIGHTENMENT_VECTOR,	sysvec_hyperv_reenlightenment);
-diff --git a/arch/x86/include/asm/irq_vectors.h b/arch/x86/include/asm/irq_vectors.h
-index 85253fc8e384..575f880cb147 100644
---- a/arch/x86/include/asm/irq_vectors.h
-+++ b/arch/x86/include/asm/irq_vectors.h
-@@ -105,10 +105,12 @@
-  */
- #define POSTED_MSI_NOTIFICATION_VECTOR	0xeb
- 
-+#define IBS_MEMPROF_VECTOR		0xea
-+
- #define NR_VECTORS			 256
- 
- #ifdef CONFIG_X86_LOCAL_APIC
--#define FIRST_SYSTEM_VECTOR		POSTED_MSI_NOTIFICATION_VECTOR
-+#define FIRST_SYSTEM_VECTOR		IBS_MEMPROF_VECTOR
- #else
- #define FIRST_SYSTEM_VECTOR		NR_VECTORS
- #endif
-diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
-index 18c4be75e927..58d1bd7ebe72 100644
---- a/arch/x86/include/asm/msr-index.h
-+++ b/arch/x86/include/asm/msr-index.h
-@@ -1317,4 +1317,12 @@
- 						* a #GP
- 						*/
- 
-+/* AMD IBS Memory Profiler MSRs */
-+#define MSR_AMD64_IBS_MPROF_CTL		0xc0010380
-+#define MSR_AMD64_IBS_MPROF_CTL2	0xc0010381
-+#define MSR_AMD64_IBS_MPROF_DATA2	0xc0010382
-+#define MSR_AMD64_IBS_MPROF_DATA3	0xc0010383
-+#define MSR_AMD64_IBS_MPROF_LINADDR	0xc0010384
-+#define MSR_AMD64_IBS_MPROF_PHYADDR	0xc0010385
-+
- #endif /* _ASM_X86_MSR_INDEX_H */
-diff --git a/arch/x86/kernel/idt.c b/arch/x86/kernel/idt.c
-index 90a22e24a9eb..50ec5fc82619 100644
---- a/arch/x86/kernel/idt.c
-+++ b/arch/x86/kernel/idt.c
-@@ -169,6 +169,9 @@ static const __initconst struct idt_data apic_idts[] = {
- # ifdef CONFIG_X86_POSTED_MSI
- 	INTG(POSTED_MSI_NOTIFICATION_VECTOR,	asm_sysvec_posted_msi_notification),
- # endif
-+#ifdef CONFIG_AMD_IBS_MEMPROF
-+	INTG(IBS_MEMPROF_VECTOR,		asm_sysvec_ibs_memprof),
-+#endif
- #endif
- };
- 
-diff --git a/arch/x86/kernel/irq.c b/arch/x86/kernel/irq.c
-index 30122f0b3af9..c59a474d9202 100644
---- a/arch/x86/kernel/irq.c
-+++ b/arch/x86/kernel/irq.c
-@@ -121,6 +121,9 @@ static const struct irq_stat_info irq_stat_info[IRQ_COUNT_MAX] = {
- #endif
- #ifdef CONFIG_X86_POSTED_MSI
- 	ISS(POSTED_MSI_NOTIFICATION,	"PMN",	"  Posted MSI notification event\n"),
-+#endif
-+#ifdef CONFIG_AMD_IBS_MEMPROF
-+	ISS(IBS_MEMPROF,		"IMP",	"  IBS Memory Profiler interrupts\n"),
- #endif
- 	IDS(PIC_APIC_ERROR,		"ERR",	"  PIC/APIC error interrupts\n"),
- #ifdef CONFIG_X86_IO_APIC
-diff --git a/arch/x86/mm/Makefile b/arch/x86/mm/Makefile
-index 3a5364853eab..050a7379d9f7 100644
---- a/arch/x86/mm/Makefile
-+++ b/arch/x86/mm/Makefile
-@@ -59,3 +59,4 @@ obj-$(CONFIG_X86_MEM_ENCRYPT)	+= mem_encrypt.o
- obj-$(CONFIG_AMD_MEM_ENCRYPT)	+= mem_encrypt_amd.o
- 
- obj-$(CONFIG_AMD_MEM_ENCRYPT)	+= mem_encrypt_boot.o
-+obj-$(CONFIG_AMD_IBS_MEMPROF)	+= ibs-mprof.o
+ /* MSR_AMD64_IBS_MPROF_CTL2 bits */
+ #define IBS_MPROF_CTL2_DISABLE		BIT_ULL(0)
+ #define IBS_MPROF_CTL2_EXCLUDE_USER	BIT_ULL(1)
 diff --git a/arch/x86/mm/ibs-mprof.c b/arch/x86/mm/ibs-mprof.c
-new file mode 100644
-index 000000000000..923fb8f99552
---- /dev/null
+index 923fb8f99552..07e0516db2ee 100644
+--- a/arch/x86/mm/ibs-mprof.c
 +++ b/arch/x86/mm/ibs-mprof.c
-@@ -0,0 +1,363 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#define pr_fmt(fmt)	"amd_ibs_memprof: " fmt
-+
-+#include <linux/init.h>
-+#include <linux/pghot.h>
-+#include <linux/percpu.h>
-+#include <linux/workqueue.h>
-+#include <linux/mm.h>
-+#include <linux/vm_event_item.h>
-+#include <linux/vmstat.h>
-+#include <linux/cpuhotplug.h>
-+
-+#include <asm/ibs-mprof.h>
-+#include <asm/ibs-caps.h>
-+#include <asm/irq_vectors.h>
-+#include <asm/idtentry.h>
-+#include <asm/apic.h>
-+#include <asm/cpuid/api.h>
-+
-+#define IBS_NR_SAMPLES		150	/* Percpu sample buffer size */
-+
-+static DEFINE_PER_CPU(bool, mprof_work_pending);
-+
+@@ -10,6 +10,11 @@
+ #include <linux/vm_event_item.h>
+ #include <linux/vmstat.h>
+ #include <linux/cpuhotplug.h>
++#include <linux/debugfs.h>
++#include <linux/seq_file.h>
++#include <linux/mutex.h>
++#include <linux/smp.h>
++#include <linux/uaccess.h>
+ 
+ #include <asm/ibs-mprof.h>
+ #include <asm/ibs-caps.h>
+@@ -54,6 +59,41 @@ struct mprof_worker {
+ };
+ static DEFINE_PER_CPU(struct mprof_worker, mprof_work);
+ 
 +/*
-+ * Basic access info captured for each memory access.
++ * Runtime-configurable profiler parameters, exposed via debugfs. The
++ * interrupt handler consumes the published snapshot on every re-arm, so
++ * configuration changes need no locking on the fast path. Writers are
++ * serialized by mprof_cfg_lock and publish an immutable snapshot; the hot
++ * path only does an smp_load_acquire() of the pointer.
 + */
-+struct mprof_sample {
-+	unsigned long pfn;
-+	unsigned long time;	/* jiffies when accessed */
-+	int nid;		/* Accessing node ID, if known */
++struct mprof_config {
++	bool enabled;		/* profiling enabled (IbsMemDis inverted) */
++	bool l3miss_only;	/* IbsMemL3MissOnly */
++	bool lat_filter;	/* IbsMemLatFltEn */
++	u8   lat_thresh;	/* IbsMemLatThrsh, 0x0 .. 0xf */
++	u32  period;		/* op sample period (IbsMemMaxCnt) */
++	/* Precomputed register values for the interrupt fast path. */
++	u64  ctl;
++	u64  ctl2;
 +};
 +
-+/*
-+ * Percpu buffer of access samples. Samples are accumulated here
-+ * before pushing them to pghot sub-system for further action.
-+ */
-+struct mprof_sample_pcpu {
-+	struct mprof_sample samples[IBS_NR_SAMPLES];
-+	int head, tail;
-+};
-+
-+static struct mprof_sample_pcpu __percpu *mprof_s;
++static struct mprof_config mprof_cfg_slots[2];
++static struct mprof_config *mprof_cfg;
++static DEFINE_MUTEX(mprof_cfg_lock);
 +
 +/*
-+ * Per-CPU work for pushing the percpu access samples to pghot sub-system.
-+ *
-+ * @cpu records which CPU's sample ring this work item is responsible for
-+ * draining.
++ * ibs-memprof: kernel cmdline parameter to arm IBS Memory
++ * Profiler right from boot time.
 + */
-+struct mprof_worker {
-+	struct work_struct work;
-+	unsigned int cpu;
-+};
-+static DEFINE_PER_CPU(struct mprof_worker, mprof_work);
++bool ibs_mprof_enabled __read_mostly;
 +
-+/*
-+ * Record the IBS-reported access sample in percpu buffer.
-+ * Called from IBS interrupt handler.
-+ */
-+static bool mprof_push_sample(unsigned long pfn, int nid, unsigned long time)
++static int __init setup_ibs_mprof(char *str)
 +{
-+	struct mprof_sample_pcpu *pcpu = raw_cpu_ptr(mprof_s);
-+	int head = READ_ONCE(pcpu->head);
-+	int tail = READ_ONCE(pcpu->tail);
-+	int next = head + 1;
++	return (kstrtobool(str, &ibs_mprof_enabled) == 0);
++}
 +
-+	if (next >= IBS_NR_SAMPLES)
-+		next = 0;
++__setup("ibs-memprof=", setup_ibs_mprof);
 +
-+	if (next == tail) {
-+		count_vm_event(HWHINT_DROPPED_EVENTS);
-+		return false;
+ /*
+  * Record the IBS-reported access sample in percpu buffer.
+  * Called from IBS interrupt handler.
+@@ -159,28 +199,55 @@ static inline void mprof_drain_cpu(unsigned int cpu)
+ }
+ 
+ /*
+- * L3MissOnly + Exclude kernel RIP
++ * Translate the software config into IbsMemCtl / IbsMemCtl2 register values.
++ * Kernel RIP is always excluded: the profiler only samples user memory
++ * accesses.
+  */
+-static void mprof_enable_profiling(void)
++static void mprof_compose(struct mprof_config *cfg)
+ {
+-	u64 mprof_config = IBS_MPROF_CTL_CNT_CTL | IBS_MPROF_CTL_L3MISSONLY;
+-	unsigned int period = IBS_MPROF_SAMPLE_PERIOD;
+-	u64 ctl, ctl2;
++	u64 ctl;
++
++	if (!cfg->enabled) {
++		ctl = 0;
++		cfg->ctl = ctl;
++		cfg->ctl2 = IBS_MPROF_CTL2_DISABLE;
++		return;
++	}
+ 
+ 	/*
+-	 * Assemble bits 26:20 and 19:4 of periodic op counter in ctl.
++	 * Assemble bits 26:20 and 19:4 of the periodic op counter in ctl.
+ 	 * The lower 4 bits are always 0000b.
+ 	 */
+-	ctl = (period >> 4) & IBS_MPROF_CTL_MAXCNT_MASK;
+-	ctl |= (period & IBS_MPROF_CTL_MAXCNT_EXT_MASK);
+-	ctl |= mprof_config;
+-	wrmsrq(MSR_AMD64_IBS_MPROF_CTL, ctl);
++	ctl = (cfg->period >> 4) & IBS_MPROF_CTL_MAXCNT_MASK;
++	ctl |= cfg->period & IBS_MPROF_CTL_MAXCNT_EXT_MASK;
++	ctl |= IBS_MPROF_CTL_CNT_CTL | IBS_MPROF_CTL_ENABLE;
+ 
+-	/*
+-	 * Exclude samples that have bit 63 of their RIP set.
+-	 */
+-	ctl2 = IBS_MPROF_CTL2_EXCLUDE_KERNEL;
+-	wrmsrq(MSR_AMD64_IBS_MPROF_CTL2, ctl2);
++	if (cfg->l3miss_only)
++		ctl |= IBS_MPROF_CTL_L3MISSONLY;
++
++	if (cfg->lat_filter) {
++		ctl |= IBS_MPROF_CTL_LATFLTEN;
++		ctl |= ((u64)cfg->lat_thresh << IBS_MPROF_CTL_LATTHRSH_SHIFT) &
++			IBS_MPROF_CTL_LATTHRSH_MASK;
 +	}
 +
-+	pcpu->samples[head].pfn = pfn;
-+	pcpu->samples[head].time = time;
-+	pcpu->samples[head].nid = nid;
-+
-+	/*
-+	 * Publish the sample slot stores before advancing head; pairs
-+	 * with the smp_load_acquire() of head in mprof_pop_sample().
-+	 */
-+	smp_store_release(&pcpu->head, next);
-+	return true;
-+}
-+
-+static bool mprof_pop_sample(struct mprof_sample_pcpu *pcpu, struct mprof_sample *s)
-+{
-+	int tail = READ_ONCE(pcpu->tail);
-+	/*
-+	 * Pairs with the smp_store_release() of head in mprof_push_sample();
-+	 * ensures the sample slot stores are visible before we read the slot.
-+	 */
-+	int head = smp_load_acquire(&pcpu->head);
-+	int next = tail + 1;
-+
-+	if (head == tail)
-+		return false;
-+
-+	if (next >= IBS_NR_SAMPLES)
-+		next = 0;
-+
-+	*s = pcpu->samples[tail];
-+
-+	WRITE_ONCE(pcpu->tail, next);
-+	return true;
++	cfg->ctl = ctl;
++	/* Exclude samples that have bit 63 of their RIP set (kernel). */
++	cfg->ctl2 = IBS_MPROF_CTL2_EXCLUDE_KERNEL;
 +}
 +
 +/*
-+ * Remove access samples from percpu buffer and send them
-+ * to pghot sub-system for further action.
-+ */
-+static void mprof_work_handler(struct work_struct *work)
-+{
-+	struct mprof_worker *mw = container_of(work, struct mprof_worker, work);
-+	unsigned int cpu = mw->cpu;
-+	struct mprof_sample_pcpu *pcpu = per_cpu_ptr(mprof_s, cpu);
-+	struct mprof_sample s;
-+
-+	for (;;) {
-+		while (mprof_pop_sample(pcpu, &s))
-+			pghot_record_access(s.pfn, s.nid, PGHOT_HWHINTS,
-+					    s.time);
-+
-+		per_cpu(mprof_work_pending, cpu) = false;
-+
-+		/*
-+		 * Publish the cleared pending flag before re-checking the
-+		 * ring.
-+		 */
-+		smp_mb();
-+
-+		if (READ_ONCE(pcpu->head) == READ_ONCE(pcpu->tail))
-+			return;
-+
-+		/*
-+		 * A sample was pushed after we exited the drain loop; the
-+		 * producer may have skipped re-queuing because pending was
-+		 * still set. Keep draining until the ring is observably empty
-+		 * with pending cleared.
-+		 */
-+	}
-+}
-+
-+/*
-+ * Empty a dying CPU's sample ring.
-+ *
-+ * This is called from hotplug teardown callback and IBS Memory Profiler
-+ * has been disabled at this point. There is no concurrent producer or
-+ * consumer for this CPU's ring here, hence the plain accesses.
-+ */
-+static inline void mprof_drain_cpu(unsigned int cpu)
-+{
-+	struct mprof_sample_pcpu *pcpu = per_cpu_ptr(mprof_s, cpu);
-+
-+	pcpu->head = 0;
-+	pcpu->tail = 0;
-+}
-+
-+/*
-+ * L3MissOnly + Exclude kernel RIP
++ * Program the profiler from the currently published config snapshot. Called
++ * at CPU startup, from the interrupt handler on every re-arm, and via
++ * on_each_cpu() when the config changes.
 + */
 +static void mprof_enable_profiling(void)
 +{
-+	u64 mprof_config = IBS_MPROF_CTL_CNT_CTL | IBS_MPROF_CTL_L3MISSONLY;
-+	unsigned int period = IBS_MPROF_SAMPLE_PERIOD;
-+	u64 ctl, ctl2;
++	/* Acquire the snapshot; pairs with smp_store_release() in the writers. */
++	struct mprof_config *cfg = smp_load_acquire(&mprof_cfg);
 +
-+	/*
-+	 * Assemble bits 26:20 and 19:4 of periodic op counter in ctl.
-+	 * The lower 4 bits are always 0000b.
-+	 */
-+	ctl = (period >> 4) & IBS_MPROF_CTL_MAXCNT_MASK;
-+	ctl |= (period & IBS_MPROF_CTL_MAXCNT_EXT_MASK);
-+	ctl |= mprof_config;
-+	wrmsrq(MSR_AMD64_IBS_MPROF_CTL, ctl);
-+
-+	/*
-+	 * Exclude samples that have bit 63 of their RIP set.
-+	 */
-+	ctl2 = IBS_MPROF_CTL2_EXCLUDE_KERNEL;
-+	wrmsrq(MSR_AMD64_IBS_MPROF_CTL2, ctl2);
-+}
-+
-+static void mprof_disable_profiling(u64 mem_ctl)
++	wrmsrq(MSR_AMD64_IBS_MPROF_CTL, cfg->ctl);
++	wrmsrq(MSR_AMD64_IBS_MPROF_CTL2, cfg->ctl2);
+ }
+ 
+ static void mprof_disable_profiling(u64 mem_ctl)
+@@ -192,6 +259,52 @@ static void mprof_disable_profiling(u64 mem_ctl)
+ 	wrmsrq(MSR_AMD64_IBS_MPROF_CTL2, IBS_MPROF_CTL2_DISABLE);
+ }
+ 
++static void mprof_reprogram_this_cpu(void *info)
 +{
-+	mem_ctl &= ~IBS_MPROF_CTL_ENABLE;
-+	mem_ctl &= ~IBS_MPROF_CTL_VAL;
-+	wrmsrq(MSR_AMD64_IBS_MPROF_CTL, mem_ctl);
-+
-+	wrmsrq(MSR_AMD64_IBS_MPROF_CTL2, IBS_MPROF_CTL2_DISABLE);
++	mprof_enable_profiling();
 +}
 +
 +/*
-+ * IBS interrupt handler: Process the memory access info reported by IBS.
-+ *
-+ * Reads the MSRs to collect all the information about the reported
-+ * memory access, validates the access, stores the valid sample and
-+ * schedules the work on this CPU to further process the sample.
++ * Publish a new config snapshot and push it to every online CPU
++ * immediately. Must be called with mprof_cfg_lock held.
 + */
-+static void mprof_overflow_handler(void)
++static void mprof_publish(const struct mprof_config *newcfg)
 +{
-+	u64 mem_ctl, mem_data3, mem_data2, paddr, data_src;
-+	struct work_struct *w = &this_cpu_ptr(&mprof_work)->work;
-+	unsigned long pfn;
-+	struct page *page;
++	struct mprof_config *slot;
 +
-+	rdmsrq(MSR_AMD64_IBS_MPROF_CTL, mem_ctl);
-+	if (!(mem_ctl & IBS_MPROF_CTL_VAL))
-+		return;
++	lockdep_assert_held(&mprof_cfg_lock);
 +
-+	mprof_disable_profiling(mem_ctl);
-+	count_vm_event(HWHINT_TOTAL_EVENTS);
-+
-+	rdmsrq(MSR_AMD64_IBS_MPROF_DATA3, mem_data3);
-+	rdmsrq(MSR_AMD64_IBS_MPROF_DATA2, mem_data2);
-+
-+	data_src = mem_data2 & IBS_MPROF_DATA2_DATASRC_MASK;
-+	data_src |= ((mem_data2 & IBS_MPROF_DATA2_DATASRC_MASK_HIGH) >>
-+			IBS_MPROF_DATA2_DATASRC_MASK_HIGH_SHIFT);
-+
-+	switch (data_src) {
-+	case IBS_MPROF_DATA2_DATASRC_DRAM:
-+		count_vm_event(HWHINT_DRAM_ACCESSES);
-+		break;
-+	case IBS_MPROF_DATA2_DATASRC_EXT_MEM:
-+		count_vm_event(HWHINT_EXTMEM_ACCESSES);
-+		break;
-+	}
-+
-+	/* Is linear addr valid? */
-+	if (!(mem_data3 & IBS_MPROF_DATA3_LADDR_VALID))
-+		goto handled;
-+
-+	/* Is phys addr valid? */
-+	if (!(mem_data3 & IBS_MPROF_DATA3_PADDR_VALID))
-+		goto handled;
-+	rdmsrq(MSR_AMD64_IBS_MPROF_PHYADDR, paddr);
-+
-+	pfn = PHYS_PFN(paddr);
-+	page = pfn_to_online_page(pfn);
-+	if (!page)
-+		goto handled;
++	/* Fill the slot that is not currently published, then flip to it. */
++	slot = (mprof_cfg == &mprof_cfg_slots[0]) ?
++		&mprof_cfg_slots[1] : &mprof_cfg_slots[0];
++	*slot = *newcfg;
++	mprof_compose(slot);
++	/* Publish the fully composed slot; pairs with smp_load_acquire() in readers. */
++	smp_store_release(&mprof_cfg, slot);
 +
 +	/*
-+	 * Use the accessing CPU's node as the migration target. On
-+	 * topologies where all CPUs reside on toptier nodes (the common
-+	 * case), this is the desired behaviour. Topologies that place
-+	 * CPUs on lower-tier nodes are rejected later by
-+	 * pghot_record_access() via the src_nid == nid early return.
++	 * on_each_cpu() with wait serializes against any in-flight interrupt
++	 * handler on each CPU, so the previously published slot has no readers
++	 * once this returns and can be safely reused by the next writer.
 +	 */
-+	if (!mprof_push_sample(pfn, numa_node_id(), jiffies))
++	on_each_cpu(mprof_reprogram_this_cpu, NULL, 1);
++}
++
++static void mprof_config_init(void)
++{
++	struct mprof_config *cfg = &mprof_cfg_slots[0];
++
++	if (ibs_mprof_enabled)
++		cfg->enabled = true;
++	cfg->l3miss_only = true;
++	cfg->lat_filter = false;
++	cfg->lat_thresh = 0;
++	cfg->period = IBS_MPROF_SAMPLE_PERIOD;
++	mprof_compose(cfg);
++	/* Publish the initial snapshot; pairs with smp_load_acquire() in readers. */
++	smp_store_release(&mprof_cfg, cfg);
++}
++
+ /*
+  * IBS interrupt handler: Process the memory access info reported by IBS.
+  *
+@@ -216,6 +329,13 @@ static void mprof_overflow_handler(void)
+ 	rdmsrq(MSR_AMD64_IBS_MPROF_DATA3, mem_data3);
+ 	rdmsrq(MSR_AMD64_IBS_MPROF_DATA2, mem_data2);
+ 
++	/*
++	 * If L3 miss filtering is turned off, non load/store
++	 * samples may get reported. Ignore them.
++	 */
++	if (!(mem_data3 & (IBS_MPROF_DATA3_LDOP | IBS_MPROF_DATA3_STOP)))
 +		goto handled;
 +
-+	if (!this_cpu_read(mprof_work_pending)) {
-+		this_cpu_write(mprof_work_pending, true);
-+		schedule_work_on(smp_processor_id(), w);
+ 	data_src = mem_data2 & IBS_MPROF_DATA2_DATASRC_MASK;
+ 	data_src |= ((mem_data2 & IBS_MPROF_DATA2_DATASRC_MASK_HIGH) >>
+ 			IBS_MPROF_DATA2_DATASRC_MASK_HIGH_SHIFT);
+@@ -323,6 +443,223 @@ static int x86_amd_ibs_mprof_teardown(unsigned int cpu)
+ 	return 0;
+ }
+ 
++/*
++ * debugfs interface. Each parameter is a separate file under
++ * <debugfs>/ibs-mprof/. A write validates the value, updates the current
++ * config and actively propagates it to all CPUs via mprof_publish().
++ */
++enum mprof_field {
++	MPROF_L3MISS_ONLY,
++	MPROF_LAT_FILTER,
++	MPROF_LAT_THRESH,
++	MPROF_PERIOD,
++};
++
++static int mprof_parse_uint(const char __user *ubuf, size_t cnt, unsigned int *val)
++{
++	char buf[16];
++
++	if (cnt > sizeof(buf) - 1)
++		cnt = sizeof(buf) - 1;
++	if (copy_from_user(buf, ubuf, cnt))
++		return -EFAULT;
++	buf[cnt] = '\0';
++	if (kstrtouint(buf, 0, val))
++		return -EINVAL;
++	return 0;
++}
++
++static void mprof_store(enum mprof_field field, unsigned int val)
++{
++	struct mprof_config new;
++
++	mutex_lock(&mprof_cfg_lock);
++	new = *mprof_cfg;
++	switch (field) {
++	case MPROF_L3MISS_ONLY:
++		new.l3miss_only = val;
++		break;
++	case MPROF_LAT_FILTER:
++		new.lat_filter = val;
++		break;
++	case MPROF_LAT_THRESH:
++		new.lat_thresh = val;
++		break;
++	case MPROF_PERIOD:
++		new.period = val;
++		break;
 +	}
-+	count_vm_event(HWHINT_USEFUL_EVENTS);
-+
-+handled:
-+	mprof_enable_profiling();
++	mprof_publish(&new);
++	mutex_unlock(&mprof_cfg_lock);
 +}
 +
-+DEFINE_IDTENTRY_SYSVEC(sysvec_ibs_memprof)
-+{
-+	inc_irq_stat(IBS_MEMPROF);
-+	mprof_overflow_handler();
-+	apic_eoi();
++#define MPROF_SHOW(name, field)						\
++static int mprof_##name##_show(struct seq_file *m, void *v)		\
++{									\
++	/* Acquire the snapshot; pairs with smp_store_release() in writers. */	\
++	struct mprof_config *cfg = smp_load_acquire(&mprof_cfg);	\
++									\
++	seq_printf(m, "%u\n", cfg->field);				\
++	return 0;							\
++}									\
++static int mprof_##name##_open(struct inode *inode, struct file *filp)	\
++{									\
++	return single_open(filp, mprof_##name##_show, NULL);		\
 +}
 +
-+static int get_mprof_lvt_offset(void)
-+{
-+	u64 val;
++MPROF_SHOW(l3miss_only, l3miss_only)
++MPROF_SHOW(lat_filter, lat_filter)
++MPROF_SHOW(lat_thresh, lat_thresh)
++MPROF_SHOW(period, period)
 +
-+	rdmsrq(MSR_AMD64_IBSCTL, val);
-+	if (!(val & IBSCTL_MPROF_LVT_OFFSET_VALID))
++static ssize_t mprof_l3miss_only_write(struct file *filp, const char __user *ubuf,
++				       size_t cnt, loff_t *ppos)
++{
++	unsigned int val;
++	int ret;
++
++	ret = mprof_parse_uint(ubuf, cnt, &val);
++	if (ret)
++		return ret;
++	if (val > 1)
 +		return -EINVAL;
 +
-+	return (val & IBSCTL_MPROF_LVT_OFFSET_MASK) >>
-+		IBSCTL_MPROF_LVT_OFFSET_SHIFT;
++	mprof_store(MPROF_L3MISS_ONLY, val);
++	*ppos += cnt;
++	return cnt;
 +}
 +
-+static int x86_amd_ibs_mprof_startup(unsigned int cpu)
++static ssize_t mprof_lat_filter_write(struct file *filp, const char __user *ubuf,
++				      size_t cnt, loff_t *ppos)
 +{
-+	int offset = get_mprof_lvt_offset();
++	unsigned int val;
++	int ret;
 +
-+	if (offset < 0) {
-+		pr_warn("offset not valid on cpu #%d\n", cpu);
-+		return 0;
-+	}
++	ret = mprof_parse_uint(ubuf, cnt, &val);
++	if (ret)
++		return ret;
++	if (val > 1)
++		return -EINVAL;
 +
-+	if (setup_APIC_eilvt(offset, IBS_MEMPROF_VECTOR, APIC_DELIVERY_MODE_FIXED, 0)) {
-+		pr_warn("APIC setup failed on cpu #%d\n", cpu);
-+		return 0;
-+	}
-+
-+	mprof_enable_profiling();
-+	return 0;
++	mprof_store(MPROF_LAT_FILTER, val);
++	*ppos += cnt;
++	return cnt;
 +}
 +
-+static int x86_amd_ibs_mprof_teardown(unsigned int cpu)
++static ssize_t mprof_lat_thresh_write(struct file *filp, const char __user *ubuf,
++				      size_t cnt, loff_t *ppos)
 +{
-+	int offset = get_mprof_lvt_offset();
-+	u64 mem_ctl;
++	unsigned int val;
++	int ret;
 +
-+	if (offset >= 0)
-+		setup_APIC_eilvt(offset, IBS_MEMPROF_VECTOR, APIC_DELIVERY_MODE_FIXED, 1);
++	ret = mprof_parse_uint(ubuf, cnt, &val);
++	if (ret)
++		return ret;
++	if (val > IBS_MPROF_LATTHRSH_MAX)
++		return -EINVAL;
 +
-+	rdmsrq(MSR_AMD64_IBS_MPROF_CTL, mem_ctl);
-+	mprof_disable_profiling(mem_ctl);
-+
-+	/*
-+	 * The producer is now silenced and this CPU's worker is gone. Drop
-+	 * any unconsumed samples (see mprof_drain_cpu) and clear the pending
-+	 * flag so a subsequent re-online of this CPU starts from a clean
-+	 * state.
-+	 */
-+	mprof_drain_cpu(cpu);
-+	per_cpu(mprof_work_pending, cpu) = false;
-+
-+	return 0;
++	mprof_store(MPROF_LAT_THRESH, val);
++	*ppos += cnt;
++	return cnt;
 +}
 +
-+static int __init mprof_access_profiling_init(void)
++static ssize_t mprof_period_write(struct file *filp, const char __user *ubuf,
++				  size_t cnt, loff_t *ppos)
 +{
-+	u32 mprof_caps = cpuid_eax(IBS_CPUID_FEATURES);
-+	int cpu, ret;
++	unsigned int val;
++	int ret;
 +
-+	if (!(mprof_caps & IBS_CAPS_MEM_PROFILER)) {
-+		pr_info("capability is unavailable for access profiling\n");
-+		return 0;
-+	}
++	ret = mprof_parse_uint(ubuf, cnt, &val);
++	if (ret)
++		return ret;
++	if (val < IBS_MPROF_MAXCNT_MIN || val > IBS_MPROF_MAXCNT_MAX)
++		return -EINVAL;
 +
-+	mprof_s = alloc_percpu_gfp(struct mprof_sample_pcpu, GFP_KERNEL | __GFP_ZERO);
-+	if (!mprof_s) {
-+		pr_err("alloc_percpu_gfp failed\n");
-+		return 0;
-+	}
-+
-+	for_each_possible_cpu(cpu) {
-+		struct mprof_worker *mw = per_cpu_ptr(&mprof_work, cpu);
-+
-+		INIT_WORK(&mw->work, mprof_work_handler);
-+		mw->cpu = cpu;
-+	}
-+
-+	ret = cpuhp_setup_state(CPUHP_AP_MM_AMD_IBS_MEMPROF_STARTING,
-+				"x86/amd/ibs_mprof:starting",
-+				x86_amd_ibs_mprof_startup,
-+				x86_amd_ibs_mprof_teardown);
-+
-+	if (ret) {
-+		free_percpu(mprof_s);
-+		pr_err("cpuhp_setup_state failed: %d\n", ret);
-+	} else {
-+		pr_info("IBS Memory Profiler is available for memory access profiling\n");
-+	}
-+	return 0;
++	mprof_store(MPROF_PERIOD, val);
++	*ppos += cnt;
++	return cnt;
 +}
 +
-+device_initcall(mprof_access_profiling_init);
-diff --git a/include/linux/cpuhotplug.h b/include/linux/cpuhotplug.h
-index 0fb3a2a62eb0..2cd232b3bfcc 100644
---- a/include/linux/cpuhotplug.h
-+++ b/include/linux/cpuhotplug.h
-@@ -150,6 +150,7 @@ enum cpuhp_state {
- 	CPUHP_AP_PERF_X86_AMD_UNCORE_STARTING,
- 	CPUHP_AP_PERF_X86_STARTING,
- 	CPUHP_AP_PERF_X86_AMD_IBS_STARTING,
-+	CPUHP_AP_MM_AMD_IBS_MEMPROF_STARTING,
- 	CPUHP_AP_PERF_XTENSA_STARTING,
- 	CPUHP_AP_ARM_VFP_STARTING,
- 	CPUHP_AP_ARM64_DEBUG_MONITORS_STARTING,
-diff --git a/include/linux/vm_event_item.h b/include/linux/vm_event_item.h
-index 58d510711bd4..39409aa95482 100644
---- a/include/linux/vm_event_item.h
-+++ b/include/linux/vm_event_item.h
-@@ -179,6 +179,13 @@ enum vm_event_item { PGPGIN, PGPGOUT, PSWPIN, PSWPOUT,
- 		PGHOT_RECORDED_ACCESSES,
- 		PGHOT_RECORDED_HINTFAULTS,
- 		PGHOT_RECORDED_HWHINTS,
-+#ifdef CONFIG_HWMEM_PROFILER
-+		HWHINT_TOTAL_EVENTS,
-+		HWHINT_DRAM_ACCESSES,
-+		HWHINT_EXTMEM_ACCESSES,
-+		HWHINT_USEFUL_EVENTS,
-+		HWHINT_DROPPED_EVENTS,
-+#endif /* CONFIG_HWMEM_PROFILER */
- #endif /* CONFIG_PGHOT */
- 		NR_VM_EVENT_ITEMS
- };
-diff --git a/mm/Kconfig b/mm/Kconfig
-index 61ab18f4aebb..6a70e81b371e 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -1534,6 +1534,15 @@ config PGHOT_PRECISE
- 	  4 bytes per page against the default one byte per page. Preferable
- 	  to enable this on systems with multiple nodes in toptier.
++#define MPROF_FOPS(name)						\
++static const struct file_operations mprof_##name##_fops = {		\
++	.open		= mprof_##name##_open,				\
++	.read		= seq_read,					\
++	.write		= mprof_##name##_write,				\
++	.llseek		= seq_lseek,					\
++	.release	= single_release,				\
++}
++
++MPROF_FOPS(l3miss_only);
++MPROF_FOPS(lat_filter);
++MPROF_FOPS(lat_thresh);
++MPROF_FOPS(period);
++
++static void mprof_debugfs_init(void)
++{
++	struct dentry *dir = debugfs_create_dir("ibs-mprof", NULL);
++
++	debugfs_create_file("l3miss-only", 0644, dir, NULL, &mprof_l3miss_only_fops);
++	debugfs_create_file("lat-filter", 0644, dir, NULL, &mprof_lat_filter_fops);
++	debugfs_create_file("lat-thresh", 0644, dir, NULL, &mprof_lat_thresh_fops);
++	debugfs_create_file("period", 0644, dir, NULL, &mprof_period_fops);
++}
++
++static ssize_t enabled_show(struct device *dev,
++			    struct device_attribute *attr, char *buf)
++{
++	/* Acquire the snapshot; pairs with smp_store_release() in the writers. */
++	struct mprof_config *cfg = smp_load_acquire(&mprof_cfg);
++
++	return sysfs_emit(buf, "%s\n", str_enabled_disabled(cfg->enabled));
++}
++
++static ssize_t enabled_store(struct device *dev, struct device_attribute *attr,
++			     const char *buf, size_t count)
++{
++	struct mprof_config new;
++	bool enabled;
++	int ret;
++
++	ret = kstrtobool(buf, &enabled);
++	if (ret)
++		return ret;
++
++	guard(mutex)(&mprof_cfg_lock);
++	new = *mprof_cfg;
++	new.enabled = enabled;
++	mprof_publish(&new);
++
++	return count;
++}
++
++static DEVICE_ATTR_RW(enabled);
++
++static struct attribute *ibs_mprof_attributes[] = {
++	&dev_attr_enabled.attr,
++	NULL
++};
++
++static const struct attribute_group ibs_mprof_attr_group = {
++	.name = "ibs-mprof",
++	.attrs = ibs_mprof_attributes,
++};
++
++static void mprof_tunables_init(void)
++{
++	struct device *dev_root;
++	int ret;
++
++	dev_root = bus_get_dev_root(&cpu_subsys);
++	if (dev_root) {
++		ret = sysfs_create_group(&dev_root->kobj, &ibs_mprof_attr_group);
++		put_device(dev_root);
++		if (ret)
++			return;
++	}
++
++	mprof_debugfs_init();
++}
++
+ static int __init mprof_access_profiling_init(void)
+ {
+ 	u32 mprof_caps = cpuid_eax(IBS_CPUID_FEATURES);
+@@ -346,6 +683,9 @@ static int __init mprof_access_profiling_init(void)
+ 		mw->cpu = cpu;
+ 	}
  
-+config HWMEM_PROFILER
-+	bool
-+	depends on PGHOT
-+	help
-+	  Umbrella symbol enabled by any in-kernel driver that forwards
-+	  hardware-observed memory accesses to the pghot subsystem (for
-+	  example AMD_IBS_MEMPROF on x86_64). Drivers select this; users
-+	  do not enable it directly.
++	/* Publish the default config before the startup callback consumes it. */
++	mprof_config_init();
 +
- source "mm/damon/Kconfig"
- 
- endmenu
-diff --git a/mm/vmstat.c b/mm/vmstat.c
-index da668ff05032..0d0ea5e664e3 100644
---- a/mm/vmstat.c
-+++ b/mm/vmstat.c
-@@ -1493,6 +1493,13 @@ const char * const vmstat_text[] = {
- 	[I(PGHOT_RECORDED_ACCESSES)]		= "pghot_recorded_accesses",
- 	[I(PGHOT_RECORDED_HINTFAULTS)]		= "pghot_recorded_hintfaults",
- 	[I(PGHOT_RECORDED_HWHINTS)]		= "pghot_recorded_hwhints",
-+#ifdef CONFIG_HWMEM_PROFILER
-+	[I(HWHINT_TOTAL_EVENTS)]		= "hwhint_total_events",
-+	[I(HWHINT_DRAM_ACCESSES)]		= "hwhint_dram_accesses",
-+	[I(HWHINT_EXTMEM_ACCESSES)]		= "hwhint_extmem_accesses",
-+	[I(HWHINT_USEFUL_EVENTS)]		= "hwhint_useful_events",
-+	[I(HWHINT_DROPPED_EVENTS)]		= "hwhint_dropped_events",
-+#endif /* CONFIG_HWMEM_PROFILER */
- #endif /* CONFIG_PGHOT */
- #undef I
- #endif /* CONFIG_VM_EVENT_COUNTERS */
+ 	ret = cpuhp_setup_state(CPUHP_AP_MM_AMD_IBS_MEMPROF_STARTING,
+ 				"x86/amd/ibs_mprof:starting",
+ 				x86_amd_ibs_mprof_startup,
+@@ -356,6 +696,7 @@ static int __init mprof_access_profiling_init(void)
+ 		pr_err("cpuhp_setup_state failed: %d\n", ret);
+ 	} else {
+ 		pr_info("IBS Memory Profiler is available for memory access profiling\n");
++		mprof_tunables_init();
+ 	}
+ 	return 0;
+ }
 -- 
 2.34.1
 
