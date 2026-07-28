@@ -4,86 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90583C54F52
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 19:49:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0869C54F52
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 20:00:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 92EA06B00A2; Tue, 28 Jul 2026 15:49:24 -0400 (EDT)
+	id 720196B0093; Tue, 28 Jul 2026 16:00:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8B9696B00A3; Tue, 28 Jul 2026 15:49:24 -0400 (EDT)
+	id 6D0E96B0096; Tue, 28 Jul 2026 16:00:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A73E6B00A4; Tue, 28 Jul 2026 15:49:24 -0400 (EDT)
+	id 5E78D6B0099; Tue, 28 Jul 2026 16:00:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 554696B00A2
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 15:49:24 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D98ED160466
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 19:49:23 +0000 (UTC)
-X-FDA: 85039224606.06.F8CC749
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id BA6CB1A0002
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 19:49:21 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=RNVeSnHH;
-	dmarc=none;
-	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2ABAE6B0093
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 16:00:10 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A2FF8C046F
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 20:00:09 +0000 (UTC)
+X-FDA: 85039251738.10.6AFFF01
+Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
+	by imf20.hostedemail.com (Postfix) with ESMTP id C26021C000D
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 20:00:07 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=DM870aDi;
+	spf=pass (imf20.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.48 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785268162;
+	s=arc-20220608; t=1785268807;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=peN88L+jrff3B52AQMUyFAIDeXCiNC9wXQHJpte/T4I=;
-	b=L3Rk5sBGuL7IV2xfJDt61Ul/yDQacNyCRQSai4zbCdZNuIS946JZsQM3bQtxHG+b/l+ALp
-	ESBAlQVZTk1DoHSglLrv/7QfckS21AFhx6j5ioAiSZFSOaSoFQGLCeh0kmaTzQrQr4XdVQ
-	egFH6auu7WBZt5fePCu3jnGmByNaLQ4=
+	bh=Tgq1O6q0FRitVm44o5MXQ18tOKPEm0B6ScfxrmYXMQY=;
+	b=ptdOw+k3uVadHXjbdY8m4wTkqPmuZyrijFtHt2X4W8LugWQlv2Cp1YZq5FN6Y+BV7Ym5Kp
+	NYdI9K7Vi2RRUT60eW48jrl0yHOlN1cZzSQbUlWZp0LwoZwiS7mutDuEElSqqoqRFyQVp5
+	RoUuaN4J1yqxFyeIPby6EsP7GJND9Ug=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=RNVeSnHH;
-	dmarc=none;
-	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=DM870aDi;
+	spf=pass (imf20.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.48 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785268162;
-	b=sInjgEkDCl+x5fekS9LJjpltZRMASTO9lFDzfBJii+UrIdRjnungzc26IuuN6bS6n6iuyK
-	wu6T2d37S8IpmgPKzHaLO1Sx8+sLvn+DG/lRKLswJicvVpiAhcRPUPW9m4diyswzKRq/Ep
-	6Q+UpUT+aZuye5IDUEB9gGctIrzafUI=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 662074341E;
-	Tue, 28 Jul 2026 19:49:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 082E71F000E9;
-	Tue, 28 Jul 2026 19:49:19 +0000 (UTC)
+	t=1785268807;
+	b=CkyqQ8jwAw/cxVUFTTNhcwFgd5lsVslL2i1NYQqxLi8sl3AIjS6x1JkVJwoe8bLsaDaI99
+	N5XMkVaiiwnp2Ey/Zif9Gpy0YrK/RC293x1+ioTWOLhcrx2hs6m6TXJxNjAJrvKbVKkrRi
+	MNnj7tHNkFIxGBMTR99Hu7Wzo9r1Oqg=
+Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-8eeadbc5e21so1578476d6.3
+        for <linux-mm@kvack.org>; Tue, 28 Jul 2026 13:00:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1785268160;
-	bh=peN88L+jrff3B52AQMUyFAIDeXCiNC9wXQHJpte/T4I=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=RNVeSnHHJojTv+KIuX/p8EF3Iyz3vtmgbMHduSwsht75BLzj3CUsVDXWfhJzMI4Ap
-	 L5r2B1YEKOCtJej37+j4XlLWn6ywIC0+z3ztLfwJA2Mu25eURyzcED3OVIA6IgCZwG
-	 irSjNClgZqpZiqyzI0d4Gm7SOPDIf6k5mcqdHuUw=
-Date: Tue, 28 Jul 2026 12:49:19 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Jiacheng Yu <yujiacheng3@huawei.com>
-Cc: <hughd@google.com>, <baolin.wang@linux.alibaba.com>,
- <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
- <liuyongqiang13@huawei.com>, Christian Brauner <brauner@kernel.org>
-Subject: Re: [PATCH] mm/shmem: downgrade final i_blocks check in
- shmem_evict_inode() to pr_warn()
-Message-Id: <20260728124919.c023a7f9b8be446bb785ec82@linux-foundation.org>
-In-Reply-To: <20260728091014.3876715-1-yujiacheng3@huawei.com>
-References: <20260728091014.3876715-1-yujiacheng3@huawei.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: BA6CB1A0002
+        d=gourry.net; s=google; t=1785268807; x=1785873607; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Tgq1O6q0FRitVm44o5MXQ18tOKPEm0B6ScfxrmYXMQY=;
+        b=DM870aDiEGFvvhfL2cUe4Xs7R+lif+vfubNu34F/g/ub+TyIn2Rjlqm3jU1wZfZAlK
+         irzKoSclh59Xl1OjHKo02skKU0uBz50/ZkkV2IUbgFXit5tcHMi8S8ZnztRuB3aUGRm9
+         rjREQpa+rzDlSr3ab7f+xSgrvKHmyYj3F6tDVLXe39cVXh/5NZydk0zdlRaBmi/8Ck2Z
+         VoeXydc3JOMhytg26xXaBx1Mqh8/0uBvvLD0BDuN1odAR12et8huWdsx1Jh74qua8Dcl
+         TnssSGG01hrk0rx4xj0tGb0fTo3fGid6NJLOH8bpSpFKzLUaR6v1fy/DMNBnuA51jASf
+         tjig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785268807; x=1785873607;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Tgq1O6q0FRitVm44o5MXQ18tOKPEm0B6ScfxrmYXMQY=;
+        b=dUBB2WIQYKmSpmS80LrMfXeVg1364xS3la9dxgukqvhMzSCi9dcwsw35EYdq7XfOa8
+         smToExWyHxwiejCzl1RJl6JSGR8olHwGNTpLOmcZSQTADRoeVGEVE/MWDVb7qnn12ffT
+         C209r1258txdkn3d9xaxlTPO1kkP+0VsM8DufRcigK0TsaPQJiLuuIKBJSGMU4lNKiy1
+         hf0oet/3BbApl1BdxgLzHkwqM+dcwqjLdZewvKLzHiGe8hQKcg+pksJhOzymtGl0OwwB
+         P6OA8hMSAqaimbb/mnDwOaUw10jIZOxF7uAUPSGtA6CPCY9pK5XqHVQLVRA+9rSBlXEl
+         uofA==
+X-Forwarded-Encrypted: i=1; AHgh+Rqeu8WsR7J7ZNKl61cXM1yeiByQI8lAniuHlP+Lu7IQIekN/ZBq5LW3JFpa4/cP6xNwOKVJotJ6Fw==@kvack.org
+X-Gm-Message-State: AOJu0Yy7UoirUI8CvCagHz22Dnuz6trxtHj+8LuzG4V4yGJOim8vYkLD
+	qQKz4AKhFjHIqSwMWcas3cxtKJGKMnsg7/NTpxo8zwepbuamMsujUa2Nx+yIQdzApEk=
+X-Gm-Gg: AR+sD1109pGfKXKtNphTJf25JTmlbN6H9vC+jjYQt019c2dIPLQ9A+9D1t6mQCA9Wd5
+	9oG/O1Mb/yk7EEV5U1bu36vWU9PsDZ3U8q68T5lUIftvyyAlRp6qvsVofWKompWNwYiSkbopajb
+	O3xm2C613v9mHOvNRhvNbayqRWr+Sk9Rpffl+3P1GNJw93LZV/QzI4mlgPebvFitwzmNK3c+HQi
+	F5NQDO0ZPP0QuRaQQNk9XdUr9M3jC5o1DlSm1QRtHHh8bWu186A/XY1j0cl7yuyhs1I4cDIvNhv
+	q/yI4RI6VZX2k9+A9/L+I8NJfYAUiC5rDSxgr8TcEVaMOEJgHWWdsFH336bAle++xdQdRy4pXHe
+	dTpgG7jbeuo9s2YF6QCKWrEAku1ADVvjCCU4i8xSpdH1f/Kq02EsjDo3MHXcm/dcUm+MUoMasIv
+	SZTBMR7XnP1VZad8xV8dzfU3ZhqzCe/d77DNPuNoMndMxbwKUullBUhA7BjwZClJJXEyOS7I/HH
+	SZQBu6vnvQ0NIwkg3+wI6aCgOps2CaIw2o6oYC0TnqQ
+X-Received: by 2002:a05:6214:5892:b0:907:dc74:a2ec with SMTP id 6a1803df08f44-90816f640dfmr45313586d6.12.1785268805961;
+        Tue, 28 Jul 2026 13:00:05 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9081dd905a0sm6641656d6.44.2026.07.28.13.00.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Jul 2026 13:00:05 -0700 (PDT)
+Date: Tue, 28 Jul 2026 15:59:59 -0400
+From: Gregory Price <gourry@gourry.net>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Matthew Wilcox <willy@infradead.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Bharata B Rao <bharata@amd.com>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, Jonathan.Cameron@huawei.com, dave.hansen@intel.com, 
+	mgorman@techsingularity.net, mingo@redhat.com, peterz@infradead.org, raghavendra.kt@amd.com, 
+	riel@surriel.com, rientjes@google.com, sj@kernel.org, weixugc@google.com, 
+	ying.huang@linux.alibaba.com, ziy@nvidia.com, dave@stgolabs.net, nifan.cxl@gmail.com, 
+	xuezhengchu@huawei.com, yiannis@zptcorp.com, byungchul@sk.com, kinseyho@google.com, 
+	joshua.hahnjy@gmail.com, yuanchu@google.com, balbirs@nvidia.com, alok.rathore@samsung.com, 
+	shivankg@amd.com, donettom@linux.ibm.com
+Subject: Re: [PATCH v8 0/8] mm: Hot page tracking and promotion infrastructure
+Message-ID: <amkHhuZ8oL8L1WPf@gourry-fedora-PF4VCD3F>
+References: <20260728054356.291998-1-bharata@amd.com>
+ <20260728111401.b6d674baf8e56a27c55e0c52@linux-foundation.org>
+ <amjz7kIDuZH6gBx9@casper.infradead.org>
+ <amj3jbvruEiHIZvi@gourry-fedora-PF4VCD3F>
+ <ed9e7308-09c8-4631-a012-940cd6e11bbd@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ed9e7308-09c8-4631-a012-940cd6e11bbd@kernel.org>
 X-Rspam-User: 
-X-Stat-Signature: n1u6knay4z8m5ibrnxn47zdram7kyjbg
-X-HE-Tag: 1785268161-259353
-X-HE-Meta: U2FsdGVkX19dAqLlGMaVtKpgWoFhPXguTT7aRTQHNFPnUhx2WIn23O9rO5Y5d9l76JVk68vxzwlecX/NkNouVuGIcKHoxFumBGN/s25xK3ALXri4ZVOy+rUqNLpU+yEwfy0A+GB20A7jA6eCEsan950LAQ+gDUHdwY3/0eL6YOdl5889tFIAEcaNy4/N1728gcRlG4VDoPmrtgom6vdzGUV4YQcSnb1K8YZIgWxW8FkSTuzKUsMxNjBbEwV6r4cV+As+k3FFArpJ0cCREoAUrjoiKsD2rvKEJmlGXsuWDFO/x54rF+FwQCKcKstXOGu47bDEhgUiZ2TN1X4XOQB87LWHIUw7KGGwM4zUhgIog0whla5ZOs4vfELBeKyYlNI7VWUj56PT61EQFRqPX4EsgFrGnGkBnuiK+cycw3mSPDkbyuEI3cCg36Ik8aeHE9u5uXnGjLes9kyCMb0MQcikQ0HjukUlsYjWwwAL9dfzYdxyJFlLqnKjCQtXgp6rhqi1tlsnn9dGCCzrvXAci3mMHMWHLSLztrb9xhhzNvth9syN7oBvGe1sHO2UmXZRBHBl/eZEtGX4E/VgnoAJR81KaxRucRvkZ1YDllYb9fuz7K2QtBY2vC9j+j8pbi6viMH76fDpEl7tInOyKlb4IrD02Zw/oamr5RWQxwxyAqK+OfLXceN/bnRtAOCnQBUJ5vNZdfEIRZc0Lph60rzNejigIaSjE6N84m0/w7l0P5XbGM9HcZ3MdX5gQVx7chSydjSttz0QKoAXX0s509d4RniNOCKsqYrs11aCL9KFyNPf3lNdNQK/FoXNbmaSMPFQ7vSSUskUaTEPAFEfOO6rndxrbnkpBGpdjg4gqCVzEFqKb4Paq9T/EF0kmO7iRbgFX6GdKTzJ+MHDoiJVZJFE+uAevWC9+kplpFM1F6Owir9CS9W7Qif/ivbfwfn4FjxQED4Cl2icLSiMm9CiFORznCl
- rARz01DK
- 4JcQMHv13ZJT9QMaL6t/DRw8MMESNnajdKNKotwZWu8fCKKDCHvPtnYSmTPCHXyoiiIiTxw1mg0mt+HpxI2cOnYChCIBCZllSqIYe6RLONdTCTm1aJROfajzCzrnkEYcOI4HgkKERYXMNS/j0tzSJbhJQ4pBB4P3p2Nv16AKqwVhwFgNJk9Es4/Df1naqVFjMPXPfCJZP2/CEkqRlLg/DgCMWxrFOhDO1oT4pjmELdOrrfYMtfM6DeMhy+iQ4mceVIwhZPHb+RfCntJXR7moUFp3Bgrxx09CQFjndcL5AUYILH5VKyEig3SlY8MFTARuitKir
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C26021C000D
+X-Stat-Signature: ycsa81gnwmmmwrh5ue8srhtcsjhqnunx
+X-HE-Tag: 1785268807-612072
+X-HE-Meta: U2FsdGVkX18tSmO5okofz13bDNxo6de2owEfyllLIvFWmA5kNRz9Pz5HhnyXbh9o40FzVy8PU6Cj6z05Gg86nCt9euG8f0cGcPUPpHQncTOJODPLv1L9NAkHpKUauyy8ntVplT7KWoxWmFpnodggZ4eQAtrCHd1tnObavShzwOsiegD1Btl4Qb+mYAzFUdialt5sbLbatDJ4WNOlkBaTOq50zM/MdsvAXizYyZm1d8u8R33wN6OAOBEtswT33CMdssGdLJyzDmj0RVbIucrNNne8bG/n94hHWp0Eh9uViyb6W6ibUPAVB3n79thFaeDj88z9jsBol6/ZqcgCzpNvyfl6gTGexYnHRnzlle7gJpcH5sOG128kwF0rHa2neNhrWTEeQorauA0Cmzn5J1SCm46/RQpyNWg0GEEIdUjUW05UR7HZzSkry6hqIc1wSmobJf2yKsx6Hir7TMsg0qukvjqTMrWCoY8zzkGkxFdq8d0QUnANZeHHRjdUU11QiMPyLZl/hXjR4gs3B50aHWHJy72POIu3vNYN+946cupEi3D7oC3sPhEN6txRkn1/4kLpGS6hIP97O9q5yzMj/Nb6LECKPFeF0ngEcXM1Xe2qpuN9MhQm62q3lz0HbnGNE/WxjHw7X4dBpJeNSMU8IcSA5QarKawLpUn4EaJxEV+/OJzhm53CKmPA5ENM6Y63BefqsKLbSI/9UTKK7B4iqCc/yUADX8S3VgMWea8KZRIB5K7xTF6PXpTlb8fq2ImtCBJ8peQPI3ZEIe19i3kHzm8PftGQ38MuWF9euCcFBJXnqga9hQsZpIPS5AHNYmdoTugg8FMhQ7dtYg3aa7WRiHuA1D1ZT+k+ARAmSIVCUCxaKvNIgFfAPBpQNceATeD3hjPwt3pVT8Eh3r+60/kqdqH8oUMmCpwedlJPdvszswS67pL2yheD/clR1g66nHRciCEzzT+gDV9cQ63bxl4nCGU
+ xfh63qiX
+ W5wlUXnr8e3RJQslP0M/7EGu8yClSSMiIgNgHBv9ayysOVY8CiCPU10ugWoVWt9L+AXlXX30OWcDl+vjyJ6aJLqcdcKu73iVU8QrqJbeBUXRpiFx9o+7lXyL3SjyyRde7JztvBYlpGh94nHNXwCRInCnuGoGEqkQl/c2zMQ/+uFI+XkwAPUWkp6szSXUSgzmKcgehWa6YEIUbxbS6PhHEO1zMIVQrC9lqrfMKZJU4/fO0HDlRmRolt/M4t82G9RfwpAKv9FQyP/O0U+hVDvR3nuhKVHi87FrQUF123f89XmkIuqk56SZckf09h56Snydj9J22g969tp9QcHLmFH+vOBIm5mkzXI9kqjEa3qdu7nvRVmwO382nkRYTLjlXZcp9RA7V0IblND/ED8w8MjM8swa/rg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,70 +130,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 28 Jul 2026 09:10:14 +0000 Jiacheng Yu <yujiacheng3@huawei.com> wrote:
-
-> shmem_evict_inode() ends with WARN_ON(inode->i_blocks) as a final
-> consistency check of shmem's block accounting.  When it fires, the
-> inode-local counters die with the inode; what may linger is a small
-> residue in accounting kept outside the inode, such as per-mount or
-> per-user charges.  No data is lost, and no corruption follows.
+On Tue, Jul 28, 2026 at 09:20:32PM +0200, David Hildenbrand (Arm) wrote:
 > 
-> On kernels running with panic_on_warn=1, this accounting inconsistency
-> escalates to a full machine panic, which is disproportionate to the impact.
+> The diffstat is scary, to say the least. And the x86 stuff certainly needs x86
+> maintainer acks.
 > 
-> Downgrade the WARN_ON() to a pr_warn() that reports the inode together
-> with its accounting counters (i_blocks, alloced, swapped, nrpages),
-> keeping the inconsistency visible in the logs.
+> So far there is no real review -- we're in v8 without a single tag.
+> 
+> So this is far away from being mergeable.
+> 
+> I'm afraid this will need a lot more discussions, and likely RFC would have been
+> still appropriate at this point.
+> 
 
-Fair enough.
+No disagreement here, my lament of not being able to get fleet-scale
+data is more of a personal one, not a cry to merge. We're working on it.
 
-Does anyone actually use panic_on_warn=1?
+> It's a shame this work was going on for quite a while without feedback (blame me
+> if you want :) but there are only so many hours in a day), but the main problem
+> is that this work in particular was not perceived to be high or even medium
+> priority so far.
+> 
 
-> The accounting bugs this check has caught over the years -- the
-> swapout race described in commit 0f3c42f522dc ("tmpfs: change
-> final i_blocks BUG to WARNING") and the error recovery race fixed
-> in commit 267a4c76bbdb ("tmpfs: fix shmem_evict_inode() warnings
-> on i_blocks") -- are real and should still be fixed; this change
-> only removes the disproportionate escalation.
+Should note that we hold a bi-weekly working group on this to discuss
+the design and micro-benchmarks - so it hasn't been developed in a
+complete vacuum. We (I) owe that group some explicit on-list reviews
+and testing data - that's my fault (life has been busy).
 
-Boy we have a lot of bugs :(
-
-> Fixes: 0f3c42f522dc ("tmpfs: change final i_blocks BUG to WARNING")
-> Signed-off-by: Jiacheng Yu <yujiacheng3@huawei.com>
-> ---
-> One way to hit this race: soft_offline_in_use_page()'s fast path drops
-> a clean, unmapped shmem folio via mapping_evict_folio(), where the
-> xas_store() and the nrpages decrement are not atomic against a
-> concurrent shmem_evict_inode(); the final shmem_recalc_inode() can
-> then read the pre-decrement nrpages, compute freed = 0, and leave one 
-> page charged.  Same class as the races in 0f3c42f522dc and            
-> 267a4c76bbdb, this time in the under-count direction; reproduced on   
-> 7.2-rc4 with madvise(MADV_SOFT_OFFLINE) racing MAP_FIXED replacement  
-> of a shared-anonymous VMA.
-
-This paragraph is nice - I'll move it into the permanent changelog.
-
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -1428,7 +1428,11 @@ static void shmem_evict_inode(struct inode *inode)
->  	simple_xattrs_free(&sbinfo->xa_cache, &info->xattrs, sbinfo->max_inodes ? &freed : NULL);
->  
->  	shmem_free_inode(inode->i_sb, freed);
-> -	WARN_ON(inode->i_blocks);
-> +	if (inode->i_blocks)
-> +		pr_warn("%s: ino=%llu i_blocks=%llu alloced=%lu swapped=%lu nrpages=%lu\n",
-> +			__func__, (unsigned long long)inode->i_ino,
-> +			(unsigned long long)inode->i_blocks,
-> +			info->alloced, info->swapped, inode->i_mapping->nrpages);
-
-I don't think the i_ino cast is needed?
-
-blkcnt_t was possibly 32-bit a long time ago but afaict it's now
-unconditionally u64.
-
->  	clear_inode(inode);
->  #ifdef CONFIG_TMPFS_QUOTA
->  	dquot_free_inode(inode);
-> -- 
-> 2.34.1
+~Gregory
 
