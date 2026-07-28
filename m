@@ -4,87 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 225FCC53219
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 19:20:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF47EC53219
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 19:21:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D16256B0099; Tue, 28 Jul 2026 15:20:46 -0400 (EDT)
+	id D666D6B009B; Tue, 28 Jul 2026 15:21:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CEEAE6B009B; Tue, 28 Jul 2026 15:20:46 -0400 (EDT)
+	id D17596B009D; Tue, 28 Jul 2026 15:21:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C05E66B009D; Tue, 28 Jul 2026 15:20:46 -0400 (EDT)
+	id C305A6B009E; Tue, 28 Jul 2026 15:21:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E48A6B0099
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 15:20:46 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 28FDE804AF
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 19:20:46 +0000 (UTC)
-X-FDA: 85039152492.28.5F74614
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9D3FD6B009B
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 15:21:51 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 251AE1C0C65
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 19:21:51 +0000 (UTC)
+X-FDA: 85039155222.14.B4BFDD4
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 728FC1C000C
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 19:20:44 +0000 (UTC)
+	by imf18.hostedemail.com (Postfix) with ESMTP id 6D5B81C000B
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 19:21:49 +0000 (UTC)
 Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UoSsGgyp;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Vh8cfK/W";
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785266509;
+	b=LK0R7mexoKigxKiBjVz8513OtizUYoTDUPtTgqtCQ85fQ8pQONAG6cG+oBp+EY+jBAiDPx
+	I8ymf2UhSzxHYWuv+GxXrszuAfdqkUOpu593cXrWpqK9yxAPmIhZ/LWH8rm+Gb2JhekGtp
+	eqqVnB/nRLWT4M1hMjD90mMyF8+2SuI=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Vh8cfK/W";
 	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785266444;
+	s=arc-20220608; t=1785266509;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MF5VoMwEnUVISBu/dFwWaOtJBONrOWPjC0YQh5tRsCA=;
-	b=WYZPMnQmMoQ7snk7VxosZsAPSDf6RYhH76QS9k3hO067DrTuFs8hDISqU3ntABLEEPwT+W
-	l/w+1eHLz4b31OFhFNkiTVEBua/kaqyIr2GT9d22sXCvfI7E+2tUjlogcLnNQTKPKiFWTv
-	OwKA534BOseVHVTSK0aBoH+9MPcVWew=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785266444;
-	b=JzFpLWfx8eVvLVOoCP0JTMMLWswBi7T0Y5zm/C7ARt22Tcs6o0qBrLNMtid4FubVp2Ne5i
-	lZIZiwR61C3Dz4sZMtfpEJFiXyNCcprHAxI8WRnUA0YHwKslUQ7n8dILlrlAKrXC/q/mvW
-	DZ3gQeCjnWaPe46hX2QmPdiBBOCS6zM=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UoSsGgyp;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=VGWijSDtWk+fhGO38JmsrrEiRaeSqUZbV8BWwZgDlUQ=;
+	b=LV03hnRPP/h6sGzQdxtAUsrhYvpnvOdnCmWJ4DNI4YfrXmhAEORxol0+SXgS9IXFC/x569
+	JZD1C87lSRoX9QwDtCR+V8YjAJoItq0aetCXa5bmr079Cp7JtKcLzhzAoxWeQoSuE2EXCr
+	HsQnZPk+oMyvzxTWhu4fGp7ybLmC0Ek=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 00BAA60A5E;
-	Tue, 28 Jul 2026 19:20:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 084891F000E9;
-	Tue, 28 Jul 2026 19:20:34 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E001760A5E;
+	Tue, 28 Jul 2026 19:21:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA0C21F000E9;
+	Tue, 28 Jul 2026 19:21:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785266443;
-	bh=MF5VoMwEnUVISBu/dFwWaOtJBONrOWPjC0YQh5tRsCA=;
+	s=k20260515; t=1785266508;
+	bh=VGWijSDtWk+fhGO38JmsrrEiRaeSqUZbV8BWwZgDlUQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=UoSsGgyprqujUEoEwo3IWrczV2nXTypjWlduC39SIC5D1C4LMzurogequIdI+/YRP
-	 2bfp3ATBpM+Z/wPJUH+gBg39Dp2Xrk0OQZv/uLQlIdtB/1O72zsLfVoa8Bot5loDNN
-	 0ZBbu6ON8gtyKuSZnlk9GD83BNiMAyHsY/w6k2hoBiSxr4cfsNKuTxdtZzwRYztAuk
-	 CVpay9DMSJ72b61t8hkML59aGT4IWsU0Wd2QwiAigIy5Gnk72UgT1jKtdA85YL1oDn
-	 oi8HebVh2DBWxB3wYxi3lN+xG7sCQU3JMmQ4v433hGuBgKAwTERp8H+1YsFr4ssD9Z
-	 nbFNEtHyEDL2w==
-Message-ID: <ed9e7308-09c8-4631-a012-940cd6e11bbd@kernel.org>
-Date: Tue, 28 Jul 2026 21:20:32 +0200
+	b=Vh8cfK/WbsuEuEqm5kKXePuRsF7HldqGGeMwCc6tysdn6iqjPxeGymZA3GA++fqkX
+	 VxoyTgbqgUxRJfYY5wQqB+npy7agacFIRHmwo0XO36VlGn36Bc+3CA5jQNbpVdMjLg
+	 3L/zLdRRMs4m9vef1gt5SiqqHl8JaFk6TC+7S9q6IOJ/VqSVMV4hrl2OUdo+AtNe2W
+	 2P9vdFRucWBF0JnvvzqGRXXx43Y+FKSLq3J3wbD8whX4AGHcdtBMfUoPiRAHYi4/rz
+	 niF4sE4GFgIpLBbcmj+AWCTJ0+Yq9ZwMy+fOUa4vj050x206qdNz5lAM9rUwNwex30
+	 8/rM9T7g3NKVg==
+Message-ID: <44f81bea-d64a-4f73-8665-46652a928c83@kernel.org>
+Date: Tue, 28 Jul 2026 21:21:40 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 0/8] mm: Hot page tracking and promotion infrastructure
-To: Gregory Price <gourry@gourry.net>, Matthew Wilcox <willy@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Bharata B Rao
- <bharata@amd.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Jonathan.Cameron@huawei.com, dave.hansen@intel.com,
- mgorman@techsingularity.net, mingo@redhat.com, peterz@infradead.org,
- raghavendra.kt@amd.com, riel@surriel.com, rientjes@google.com,
- sj@kernel.org, weixugc@google.com, ying.huang@linux.alibaba.com,
- ziy@nvidia.com, dave@stgolabs.net, nifan.cxl@gmail.com,
- xuezhengchu@huawei.com, yiannis@zptcorp.com, byungchul@sk.com,
- kinseyho@google.com, joshua.hahnjy@gmail.com, yuanchu@google.com,
- balbirs@nvidia.com, alok.rathore@samsung.com, shivankg@amd.com,
- donettom@linux.ibm.com
-References: <20260728054356.291998-1-bharata@amd.com>
- <20260728111401.b6d674baf8e56a27c55e0c52@linux-foundation.org>
- <amjz7kIDuZH6gBx9@casper.infradead.org>
- <amj3jbvruEiHIZvi@gourry-fedora-PF4VCD3F>
+Subject: Re: [PATCH v10 6/6] selftests/mm: add hwpoison-panic destructive test
+To: Andrew Morton <akpm@linux-foundation.org>,
+ Breno Leitao <leitao@debian.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ kernel-team@meta.com, Lorenzo Stoakes <ljs@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>, Naoya Horiguchi <nao.horiguchi@gmail.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>, lance.yang@linux.dev,
+ Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+References: <20260630-ecc_panic-v10-0-c6ed5b62eea2@debian.org>
+ <20260630-ecc_panic-v10-6-c6ed5b62eea2@debian.org>
+ <ee4982bf-ff45-8f0b-3b76-7ca19228f12b@huawei.com>
+ <20260727212402.09baa9381ca426273fad4719@linux-foundation.org>
+ <de29c5cc-3637-cd18-354d-55ceb3d60afd@huawei.com>
+ <amh1nZVVaaZSGD3M@gmail.com>
+ <20260728122016.30752d36c3b3c3af231efa9d@linux-foundation.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -131,17 +135,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <amj3jbvruEiHIZvi@gourry-fedora-PF4VCD3F>
+In-Reply-To: <20260728122016.30752d36c3b3c3af231efa9d@linux-foundation.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 728FC1C000C
-X-Stat-Signature: 58r7j1ctmetn5tz8976641j8tbh7888q
+X-Stat-Signature: qqnir6i73e11zyxobpzmbg54amt3k5f5
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 6D5B81C000B
 X-Rspam-User: 
-X-HE-Tag: 1785266444-873330
-X-HE-Meta: U2FsdGVkX1+4ck/f8dau8mwceVoyF5lBqAoFC+v0fd08JhFuH6qQYJ/UTd5Y1mefjPMubx3Vx/SEsxRcX619ngjAdcLOmm6h1OiHObpLDgwMtJSU6cuRenMWq8M52VadDBE8+OyiNwbpe7QDobzNdTm0Rd8DZo62S6T6nbgg5i4GEcXehCVr6h8FaiPfPxH60Mj7/uANVik4PTD5f9+XWvy03YrN6jCDNUz1H7vKrKoF32dotK3TUSsc0W7z0YW4KcHBszsIro7flFSDsjKPkc8MART2axwnlwlkI4OqTbBvuq82HNiamNTrf0rfW4UYgatTYN8W17DrTDwPMaZgHmjbR2yHiJbVFUCOciRWRLZiZTBEoTUC+MnqqxQShcd0qrEYCxNP80Jbtxr+RX4yA7OjrSoi1COECZNxqfMQDDvcRer54wCLev3E092PzaZbgqOOhUOcIodGpZZs0pQV64Hc4fyvzXVdDGo72mk4Jem5GavLVsBJAolFFAmdzYjCkWcOcNBi75V1jmIi4HXOkopQhrwt8DgcnY1uhl9mRCwKeqRQsl1RcRRsovJW2n4Qseu4TrXPQjLFa3tPc/NGAGb1C+se4Y+YEFLm6lmoOQp9979Drcrsx5/d2dDk3ocUWWyFdX0Ff5chMJOglPP9kdWUoN9/j0fjOHHwkE1+fr9ygchHbnA+zhJhyswtxuLkdjOphsk/X/2kZrz1YQHOkWu9JgSqrhVzPRaiOuyRWpD7AsYVEN/T1PFUINkELXmOldrRGmGw4goi7kVMkzjgCqh97Bw2nISnaXe4ipEhswJoCKTjMSUjk7T1FqwX6GriwadyL/K29Due0+a0Va7h2Yt0CUoM2Ti7PbguEv7GmHRMjTvvoLcuf5Hy6acWt/WUptDRV7xQQcUHkb+PFS/eeI5oOIWl4VvoC91RblVlNnOmC2uYm/nr4gDBLj2pOJbTNeHIkHRpvrVnArPWmla
- dK8NsnfS
- 7Xj5dRJUlTrv/7MOTQkfTPjF4gMUni16u+UQAgU6GZxSH10psQsQZKHcZdjjiTgtHHdinIt9hdfvSfUXzNFjG92+qOSWcHUKUsA2+VP8H7JqMpDHpyP6b+mtFLU0WZwGrOQIZs+odOj1TZ2WRFt8XOB7rqZDZz1FPW2oIinK+Wg1TmeumeYKKOwY6dTJGcOLdShEWIQpaXP6GfJoCnVCQqm03gbihbg/Ti+BMvU1ZDkvB67MMYPIq4vdxH5+5yqB3bp5MAaMc+blQQGQhlOiWOzj/QEdYS5Nrh4oe5bfvhXNJXut09g7vZGPiJxBeZsU+HqiE/JIOIBITqWs=
+X-HE-Tag: 1785266509-332674
+X-HE-Meta: U2FsdGVkX18kVci9bLovGugmGTeI94rTWKKviUK0Nr7WchlAF3vmftukMPhZ8CscAVsNJTE2jhkqRgMR48Gx600YAIvNnxRpNBp+n0l2lscPPOYEC1y+QMZJ4H3lvmw/Qn87d+1Q2KbJvxzd++tNdSzjPONekqJaahmMJZligEgeKWO2K97YZEX/AKtxjdHNIhVLu9k96+59OMFb36fLTH8gx+/g0ad2OmJpgvpbGq4+AIXwHm1iaHNf45ynEvbqxaE2486edxSIOwOQ8bjEABkPiijBZw9E8SGJqkgvSJcqjfWGiEdFIcghXXTLbCNackQLrE6Fl6XKBVmn9qYke1GKngkrTGnjICp2/a66DGLfYpzVijzDHWnDiJZ1XFsUNZTmbf4YyrI0CBuy1WFOUw6WkdxLEfbofoI651GSdt3ivsWq7GCfCFBXGuByjt7MjFougJbdruYszSWHakuiIWS4sHddP4twSeB8HRyXvz951o5YRArJJJcXAtKsZ8cA/+lEahxG4fr+BThWjWMxdFO7pCCkEiVE9y7VYsXH4caApTrBwmunveYXDIw60qY+r8opDWaTbHXUfZNQuUvtB6dsborHVqvifwX7cSBRAaH94FW7i3pwuY8wVD1b6R7ALO3vnf0f4RsWkvFj4vIdmthsu1X5cCJYH8EnEhxTzl95lotxo8VmuONjbIU2n9FZ0AnyqdoaAbO2QxfGhUMAXilsnCE2stPZsVrxBCTBXBvNa4yGVEMeK2Ut4H6Rr4MC/3cnpGibZCMuortkMmdudk2JXXFFqhKh81VZZby7aVbtpNxbycA9MOVsczqt3MOhoOdc0DOv09BpKI/+nHGplbi8cI4/XYpgBQgVbBD0YUWbdu/zwCJ0RTbJ3RAENlerjdLmVRzYjd9EcqAJoPAlRV7yyivSR7U8dknAj8zGPGJJflMXhFNAm4lARLak/NJ740z/xt8aci02LzlrsxJ
+ dCtb+Si5
+ yuE+FuRxYhg5IlKgOpMrJcOCTcI3rqIM1Hjb5AQMkOC2glxgU2dt2wLsAJebv+0dpRgKeeXMcTZtaKdEKbLNl6nmpJ371vTQbiG00AhTnS3h4ljKOJhVBFnL2ANjgRlC6ZZSSw3ZoBQQYSo9DTOdiraBAro1YRFPs4IkoQejzIL7ms3L/wHWxk5f9L8Y/lspFy6DWV2bYDkMFTw/0vft0lo1DOUes+srOHGj3jhyiRgl/92yhOlfD/dbADvhiUJ571D2okMVvXqOCEUIHmr2UY0cQ2BICYjT7vuE8NsrkQbQgzCbIF7CMPabz9azv4F7b3xiQv5j4TZETZZSZFII3SGMrd83UkNXZ71jY+bpgMPwkyTCWKLNQbpcO3LsMrS3DlU3UDTWWUVja03Ehf37h+9pIMg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,49 +153,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/28/26 20:57, Gregory Price wrote:
-> On Tue, Jul 28, 2026 at 07:24:46PM +0100, Matthew Wilcox wrote:
->> On Tue, Jul 28, 2026 at 11:14:01AM -0700, Andrew Morton wrote:
+On 7/28/26 21:20, Andrew Morton wrote:
+> On Tue, 28 Jul 2026 02:29:39 -0700 Breno Leitao <leitao@debian.org> wrote:
+> 
+>> On Tue, Jul 28, 2026 at 04:57:13PM +0800, Miaohe Lin wrote:
 >>>
->>>
->>> Can DAMON be used to do this sort of thing adequately?
->>>
->>> Thanks, I'll await review input on this.
+>>> Sure. Should I make this change or should we wait until Breno has time to do it?
 >>
->> I don't think we should do this.  I don't think it's a use-case that
->> customers actually want; I think it's something CPU vendors think their
->> customers want.  I've said this repeatedly over the months this patchset
->> has been in development.  I say no.
+>> Apologies for the delay. This is on my TODO list, and I'll prioritize it.
 >>
+>> Just to confirm: the feature is already in mm-next without the selftest, so I
+>> only need to submit the C version of the test, correct?
 > 
-> I've been consistent about saying we (Meta) have been actively
-> interested in this work and helping to drive the design of it.
+> The bash script is still there, no known issues.
 > 
-> So it's not simply something born out of a CPU vendor think tank,
-> we're actively working on solving real problems with it.
-> 
-> I don't have data I can share now, but I think it's fair to wait
-> for that data before faith-merging this on the hopes it's impactful.
-> It does make it more difficult for us to do fleet-scale testing
-> without it being upstream, but we'll get something.
-> 
-> Tiered memory is being deployed aggressively [0] for considerable
-> value, and is here to stay - like it or not.
+> We have the thing and tests are useful.  I'd say retain it until the
+> rewrite-in-C happens?
 
-The diffstat is scary, to say the least. And the x86 stuff certainly needs x86
-maintainer acks.
-
-So far there is no real review -- we're in v8 without a single tag.
-
-So this is far away from being mergeable.
-
-I'm afraid this will need a lot more discussions, and likely RFC would have been
-still appropriate at this point.
-
-It's a shame this work was going on for quite a while without feedback (blame me
-if you want :) but there are only so many hours in a day), but the main problem
-is that this work in particular was not perceived to be high or even medium
-priority so far.
+Nacked-by: David Hildenbrand <david@kernel.org>
 
 -- 
 Cheers,
