@@ -4,130 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC4EEC53219
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 11:53:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB125C53219
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 12:03:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2C3CC6B007B; Tue, 28 Jul 2026 07:53:48 -0400 (EDT)
+	id B60526B0088; Tue, 28 Jul 2026 08:03:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 274706B0088; Tue, 28 Jul 2026 07:53:48 -0400 (EDT)
+	id B114A6B008A; Tue, 28 Jul 2026 08:03:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 13D116B008A; Tue, 28 Jul 2026 07:53:48 -0400 (EDT)
+	id 9DAEA6B008C; Tue, 28 Jul 2026 08:03:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D90806B007B
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 07:53:47 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4DEDBA1419
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 11:53:47 +0000 (UTC)
-X-FDA: 85038026094.30.D247523
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 5376B1C000C
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 11:53:45 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=DHaYCz3x;
-	spf=pass (imf20.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785239625;
-	b=tVYiQg9fLz4IAKG07T5oLbsec5FgdZYvRvX47/bqxcPDXObcfIx9FjZpPZGb3V+khpaCZU
-	fMlRfmL7V9MuLbh7pfTtXrysCFlrISTnQnCWrxK080G4wO87OCJ3M8SCempWNRIoWGX0J+
-	xIQsgipkQWOU/BheVZwMQuILFljc7oQ=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=DHaYCz3x;
-	spf=pass (imf20.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+	by kanga.kvack.org (Postfix) with ESMTP id 751D76B0088
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 08:03:04 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id ED356A14C6
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 12:03:03 +0000 (UTC)
+X-FDA: 85038049446.23.5DCA861
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 4C48520007
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 12:03:02 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kJT3l3QX;
+	spf=pass (imf03.hostedemail.com: domain of will@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=will@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785239625;
+	s=arc-20220608; t=1785240182;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZFp6N2zfH60/bgfMWrmPhFkOYqdLpff1TB0x3io2THk=;
-	b=3eHX5FcZtYZ4saVdAX3Pgc4EnKdthQhcybMVdR0AaSApNungvMFQTR3KGjdjeVrjGAiXat
-	EkoXVgxnLX9KAnIWXjiWex3vU9UJD6OuoJbCNDZVy33hVqDFvyetfWcH/jKGFFmVrl1gNz
-	0LyYECZ8H8m2m6IEy8sAUwAO0fnQVvY=
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4954d29264cso18868405e9.2
-        for <linux-mm@kvack.org>; Tue, 28 Jul 2026 04:53:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1785239624; x=1785844424; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ZFp6N2zfH60/bgfMWrmPhFkOYqdLpff1TB0x3io2THk=;
-        b=DHaYCz3xLyRKgBwYmLwSyiiJZbPfTdsXxL88NRJsyMhpGtFcKWsvkT5rLFhnJAx7Yg
-         R3mrDJJF6kt5imUfDV8ns6EDwCvllRdVpqg4frXB26rRzrn4bmJso6y0m9Lh2BaOyL/9
-         lnEwQfaGg+grPaNNJq4h0w4oNxtcd0s9eROvkgHbpdaz/avh+vmygZQ3CbVjZtQG+Jlg
-         3JY53mMstjVZK9I+Lx1PiY8Lrjaa6aATpOiAMUtE2pkeu2GoaOySZTcP0skBB6w7lZ/x
-         qlk7eeh85A21WPX5mjizqByV95XOgJFN6uVoZ7ulZQA6BWRqLRbBSBUIg9Z7un71mmy/
-         4/7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785239624; x=1785844424;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ZFp6N2zfH60/bgfMWrmPhFkOYqdLpff1TB0x3io2THk=;
-        b=CUemVTcgXJe5p8Jw7DQ04TTCGyyfDXFlIc/OC9VS7ZFsIc6F73aqs9xaAyGPP4reJb
-         MQ3YOWRjmU+Iy9CzPGwyioknKLEt2sUORcXQmHr+O43B9LCr3sC2LT+8CpJmcttSbYDI
-         QlVPB4av9gpoAJxW8YjJ2q3dnRefywLc/xLNr6wUVLdtv+mQbipWCXJPOVeqbXlAW8Od
-         EXHkJ35E03bDITSDrlWBwmuF3pAoBQOcJVcOhR/Ly+CiB82tpKUebdQAjAolKURrS6he
-         n/9rT601oIktw/avCUYq9PELzfIuKdEyZgDLoMigNIyBUr/JNy42Z0bDN6C+MBA7e4TP
-         /hpg==
-X-Forwarded-Encrypted: i=1; AHgh+RoThvKSVXKRRv+LDGmhPkUv0p0VeKqdmGVo7F6vYADnJou6UHP9pFDHUk5AN3qH1QrT6xLoL1IyFA==@kvack.org
-X-Gm-Message-State: AOJu0YyoPlRM6yejZc22g0g9M0lV/c+/HIIBsdKPVjTECG3loTihJ2WO
-	QmdOQoVfwGesVsaMcMifS++03fKHAGMeOX9Nw3YHjRxJyLBke+ifz4QizZRd28ZX83c=
-X-Gm-Gg: AR+sD12pLw4KcozJIT8HePoDhG1/3EUL+/STJ284uLtDj7lMxyVCcN1Df4WbCKz+tSn
-	BD92dECxRP8MYR0BrqRiW66OgUkMdsKN0ZIiUqRALTG5ikejDkrZ+bZiYglW4uzrmD3u6JOKcQH
-	q6Kq71fLAbT8rQI03Nj3RNPnCGpsugQIKsQY/XdWPpFPDslmGWY5ddA/TlIYZPEcENcloGqqaQI
-	IWnjLH4sAqqCV5rbKrSgJbCQog/P64fQ1oWE8W3vJ/oE5dVl9tYxi3NZ9gkEnarGG/I10Br2bDj
-	f+ElszqYMFpe691Sck2hh9LLyMBtTdytsvUiWf6PBG+mrDu1QJSRUu02PyJpDEmIXnKPH62Q/s4
-	5c9lTil9gZQsds1im+0kyLbtlHKVuOifvSC5XnQ/Fnzttnb7RchSeKecrIpfKFb7PYQ4YzorO5e
-	YKhrlhDTzQJ4jQGHQV1UcS
-X-Received: by 2002:a05:600c:6304:b0:493:cfe8:5b36 with SMTP id 5b1f17b1804b1-496c641069fmr26877345e9.8.1785239623866;
-        Tue, 28 Jul 2026 04:53:43 -0700 (PDT)
-Received: from localhost (109-81-83-7.rct.o2.cz. [109.81.83.7])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-496c44a873csm76207195e9.2.2026.07.28.04.53.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jul 2026 04:53:42 -0700 (PDT)
-Date: Tue, 28 Jul 2026 13:53:41 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Barry Song <baohua@kernel.org>
-Cc: Ridong <ridong.chen@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	David Hildenbrand <david@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Zhongkun He <hezhongkun.hzk@bytedance.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>
-Subject: Re: [PATCH -v4 1/4] mm/vmscan: fix anon-only reclaim evicting file
- pages when swappiness=max
-Message-ID: <amiYRZLAMwMjb0fy@tiehlicka>
-References: <20260724033435.2573323-1-ridong.chen@linux.dev>
- <20260724033435.2573323-2-ridong.chen@linux.dev>
- <amdC_-OvG1ZUjmot@tiehlicka>
- <CAGsJ_4w1AFkKOSCZYwRsZYOBxCq_7CQA43jQOiDUyLrjVUmA-w@mail.gmail.com>
- <amhXvAdmDxX71uxd@tiehlicka>
- <CAGsJ_4xLPpf82CoS=ZNNP6nZoU+k=69oJFL3-YT9zibop78TnA@mail.gmail.com>
+	bh=ngSI3Q4vIhFKWjmDx5jZEvBPeOv5VUXzzg0prABQgHM=;
+	b=IWEPJcHUdaQfhIhLSVAPh1cqmSTMpcavpJ+8BRGNeR+xrl3+V0CSVs9LZUFqdB+5i3Konk
+	76IcXfZrbfVEcrNz7BKdhsWNOwlriKCZTWqpd46h5zjmeKrE5Lf3Cu3npCLtRagIW40s86
+	sicZLYx+So2WKB0vPG4d0bKu1yLRmKU=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kJT3l3QX;
+	spf=pass (imf03.hostedemail.com: domain of will@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=will@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785240182;
+	b=kDhEZLYdijEbcuHuhJTsg5LnJuUwH9VmEkGtfvDulZnlnFHIvGFL0sbFI1DKWHEra2HGAH
+	ZdNODNrvpWtHt0Kd70Njkwf71aLemswEfBsWdceumYjlqRB4W3US12APu8LEwmZmXJqv8/
+	xn4FhKf08SYExNoRRlWnpgaSsWwPt4U=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 69293438D4;
+	Tue, 28 Jul 2026 12:03:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 230131F000E9;
+	Tue, 28 Jul 2026 12:02:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785240181;
+	bh=ngSI3Q4vIhFKWjmDx5jZEvBPeOv5VUXzzg0prABQgHM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=kJT3l3QX0SOCL0bfIt294zpl70CdxnCDhs43jrRz5jlxB5zOfFptE41eAqWlCMn8B
+	 pfsuwwn1vgSr2MObaC2UlPqlj6Z8RSdDJMA42cAiRnkYhLCquk0hvu1A5SLuRkKcwW
+	 x0UAdTzr/a4HRssfbPQA0+RQV2Zgc+AShibCbTRQ4V7hBbUSCnwEjaLUKA6kkjcP4h
+	 jJz7VDcmINqhx3QHd5Z+6FXUek2qTlnb2K9dGhL/ckYlVqgJxrLWngwxP1pnNqHWok
+	 NcSA8mYorOqBkGj6uPp2dKvdujI5hjNkaFzA70ytIz0gRBiSDOwXiq5aVCYnVDZ/Jo
+	 EdM1gq39lqYmg==
+Date: Tue, 28 Jul 2026 13:02:54 +0100
+From: Will Deacon <will@kernel.org>
+To: Wen Jiang <jiangwenxiaomi@gmail.com>
+Cc: akpm@linux-foundation.org, catalin.marinas@arm.com, linux-mm@kvack.org,
+	urezki@gmail.com, Xueyuan.chen21@gmail.com, ajd@linux.ibm.com,
+	anshuman.khandual@arm.com, david@kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	rppt@kernel.org, ryan.roberts@arm.com, dev.jain@arm.com,
+	baohua@kernel.org, Wen Jiang <jiangwen6@xiaomi.com>,
+	Leo Yan <leo.yan@arm.com>
+Subject: Re: [PATCH v7 1/7] arm64/hugetlb: Extend batching of multiple
+ CONT_PTE in a single PTE setup
+Message-ID: <amiabgyHSz3ZYY5k@willie-the-truck>
+References: <20260715120813.3609949-1-jiangwen6@xiaomi.com>
+ <20260715120813.3609949-2-jiangwen6@xiaomi.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAGsJ_4xLPpf82CoS=ZNNP6nZoU+k=69oJFL3-YT9zibop78TnA@mail.gmail.com>
-X-Stat-Signature: g4x8ho8iafm96e6a98ms1afki36ib6xa
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 5376B1C000C
+In-Reply-To: <20260715120813.3609949-2-jiangwen6@xiaomi.com>
 X-Rspam-User: 
-X-HE-Tag: 1785239625-688440
-X-HE-Meta: U2FsdGVkX1828ordE3R/pTpHhTuIYOF9FjEMvR0pDcTSw/3DQXkiyGsmNXJLwz8uSQ1QGG4MvX6rF3JLJtNTb1/XDHqGvYeAp/4XC6nscOi9JfGmQay3CWGDVeJOMOiNHBCxOKWNRF/5SYKh5TbtwrWygqQsgrSjz4k2mxqC8+34KD2tPS8b2s57H/OWbcjIk1qiHfjWt2aJdjXyx+vtwBn1nmHNYYd3glUp5Gd+7y/ZSRG1GoTZnofSacdu+NaBGagRvuma+Q9ZTJkSm2llq120Be3y3Fj3PCUM1YVqEqCypzLE1QnZa6gA+PSrIw8MMJHHIKfX7HiccJIXY51/ryhbYjfm4R8FbjXWojTVThyWWFO54/zcguVXMVxL7QJJBaPOXyK2zxIhKgyt87v+ImgJdlQCIt95THBiSdPFJ9R7vGhxGvsslYL9SjNlu2BIBbLdoZrezKh4k3VlT9X+S3nkOsuOgONnuKFqVkO3C0bE5MOhh8uJkijzAqwwHqGnSJrS7NBD4ceDlrbn/V5fB61aDwRR+kgZKLSB057AS7xmYLWgoH06Od9/YfODnzuNu/UGJ+qdEssM4Bqa0313KeEJDzA/UevEFIDyNf7AgJYZoKkoVNXWhiREZiYCN1R0ItraWqUTNL2+8hw5L4ySa74P1I1RFElecBTILOtL3BJgD+/IkABRzMQWMC/CwfMUQfmQG5n1YK8C9apjNc5eaJxE0RfOnEu2cjCPMcDdFxctTHBQF/QB/3E36tmY3mBLQvfsNkjITBIPhzV3oeNX/qM2WTgCNKA0w+QbFXi+poZnanlM20eIy33feA91JwVKmnktRQi3WW5jcgUTuS3M+cbSHD5TKX5gKRi0+bu7VIAjQix0VrfN0ZgeFr+xTyKME5zYOw+Lq8emyQKRwjyf42aJttU5p0rrTvdYi68fsDGJSosOXKsrvMx/XaP/eQY0EQJZu3U7I4BhwbljnfK
- PAXnVVID
- gsmk1eJ9DrvkxiPbFUrXx+6+qpOfopuhdyBoZiNflX6vd/+0yDK60NxUFpmmK2aF6/2che/YqyrTIH14DXYrA7Fe+LAYh4m00LbBZkptgvBWBcpSFyIfRSqb4G5yTlCyxg1SR4oDlGWvCB/3f85MK81Ve/zmZVHMKiKM/qzkNgufQZXPnd6mQJLQd2XpA5DulxwnQCKJc9DmV9s/PyHkXk8dV2R6AsmqqyZkGcLxawAm1Ayky1LozSo7/vvVSscAnf7LIukRbm+7wPH3BtPuXMrg+qQHzz+BLhpcLRR9cSZYmJy7eexBRRoPtBglfrpdqTlJ/OAkCxa9OhIeKLulcXqJJOxFuHXXm8wsSxRikuea4pxzm/l0Hn65/VJjmlxTRXzlp+FTOUWP6RYp36jSDc7Iyj6exluWbbF+uEM4ZNVbpQbI88BdHvJ35VDXTvIxRdNGj
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 4C48520007
+X-Stat-Signature: f41n1jemtexxhhco7ezci45f7r64yfzm
+X-HE-Tag: 1785240182-993532
+X-HE-Meta: U2FsdGVkX191EzRXKEKBgwKSCURHdkZlmMh3VDts89+9bGrHzBvNnGvWnY/uDkwp30VQ3ld/EIYf8FmP7UTj7DG755IR8HyR6uQlJrfw4C4znqzHjXzefLuLsUAA3m9K/wus7U1enMpgYdLp0cdK2BUGsjIpRVuWJvviS2200WjGeJ67neOaIuq7g7s889k3QQTxUfpCOHUGniLfh7gooMHma6HFhvGSIdCdvm/QOPidZzT18T3HIx6nPMKa85H1OqjGgpEeS5i1Sorvlknw47nt4+dlkq42aDj6iX8ZezkQAabR5YelJ6uKGriQNdSxQq5Vhcol5qRAzuk0tKfYzFufBShMYOt5YQO0TtsuB8iD5yDb8sNT3iowOuQBiwEWbkO5XlBAiLeuwJgW4YX8CFa70MmLZzFLrnlGd1LF/BR0OXzFl2rjlsM2sb9i8urAbmQSKW82xmSkd8dPqRWmKLQRVgfZ/ciVSnEBKhHP+AUrQP5QUwNVAp27oCE4bc7g/x3Mm1FoAt+flZWsymIEZrmSONhDm/Hlz0a7d3roQtxg4T+2ECXS8dOc/a1AYfYEupyCbIs2qosudK8kpgkeNWsMBO2NPvLVmQM3oxTIWO1J0OeFzJ1TrV+qomX5+P1NJWuo+o9sCvB7uys8bNTnN5Tlw9QI12SGXntnADofEJV1/wjJ5ha+D2mAF8KmVcxmmYZOb98peq/JTB7T7Vn9h2mJ2AeUU1qXWVhpsY/pTn3Oe9Mf7ZLRpDY/8FvhfzB9NBnr2pTmNtAdyWUl/UO8sJOF1SWHLEszSII1LEQakwvvgu1n/CUgB0nu+fexdnsEr8tSeFXm9N8M90VjWh/m22T+VcqKMBL+6Ej9mx8K7+WUWAb6NY2qRERP7r0i0Dcgc00OR/L6I7bSgWc0feKO3x4rM0rVMSakBneqCho8WGKAQSPGZjKhKMP9OnFIE+EMTcMliHdZztLCj/2Qv0T
+ 5d935UIZ
+ GD0Vnjjkk3zcPPN+dKqRSugUTu7qtQgYii7llj3Qui6oTm6Gb/xYvjGrT+LEgM3SxBBlPdVjEbsh5isONPXspuP+WmP1Z12ckJG1mrwmx+THMv8/SJfP7Tm5X7gGVf7j3ymKnYaT1YfryogO3147wGFrY9b0aQgcHRgqVog/b4dMR1qYgGMrUrAwPzfXcsNhTTVQ0wx1JPSFc6bNQN+0kIx+EE8+k6dBAtnnKzHHTTUVLn9aeGejzTEE1jdgRTnpdy4My7O4nPH6n4USFepKUdx8foxOj9pDrnqeEF1zMPGu9KZO+n6pmgG29ApX1atNV4X6FugOr5pBsx7qeBoZt4Z76bRZQtbLZjs29K4Rxta/e6V8uKXrjtJ+2rXP1PcD5Cm8e9e8qKa0wXuur5em3vsZNMc9CdqbtPQDWK/x0jFfbP3J7x+XXRHSR6jcfNCcpCTlpVvThfoOF3x5uhzCJklR2RV0SrRvbOAaumdDS1q1saLdksTSJ1Iif3Feo+y7uyuxS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,23 +97,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue 28-07-26 18:03:24, Barry Song wrote:
-[...]
-> I understand your point. I just find
+On Wed, Jul 15, 2026 at 08:08:07PM +0800, Wen Jiang wrote:
+> From: "Barry Song (Xiaomi)" <baohua@kernel.org>
 > 
->     if (swappiness == SWAPPINESS_ANON_ONLY && sc->proactive)
+> For sizes aligned to CONT_PTE_SIZE and smaller than PMD_SIZE,
+> we can handle CONT_PTE_SIZE groups together.
 > 
-> a bit odd, since `swappiness == SWAPPINESS_ANON_ONLY`
-> already implies `sc->proactive`.
+> These additional sizes are mapping spans used by non-hugetlbfs(vmalloc)
+> mm code, not new HugeTLB hstate sizes.
+> 
+> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
+> Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
+> Tested-by: Leo Yan <leo.yan@arm.com>
+> Reviewed-by: Dev Jain <dev.jain@arm.com>
+> ---
+>  arch/arm64/mm/hugetlbpage.c | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
+> 
+> diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
+> index a42c05cf56408..7ce159483a354 100644
+> --- a/arch/arm64/mm/hugetlbpage.c
+> +++ b/arch/arm64/mm/hugetlbpage.c
+> @@ -94,6 +94,11 @@ static int find_num_contig(struct mm_struct *mm, unsigned long addr,
+>  	return CONT_PTES;
+>  }
+> 
+> +/*
+> + * num_contig_ptes(), set_huge_pte_at() and arch_make_huge_pte() can be
+> + * used by non-hugetlbfs(vmalloc) mm code to set multiple huge mappings
+> + * at the PTE level.
+> + */
+>  static inline int num_contig_ptes(unsigned long size, size_t *pgsize)
+>  {
+>  	int contig_ptes = 1;
+> @@ -110,6 +115,12 @@ static inline int num_contig_ptes(unsigned long size, size_t *pgsize)
+>  		contig_ptes = CONT_PTES;
+>  		break;
+>  	default:
+> +		if (size > 0 && size < PMD_SIZE &&
+> +				IS_ALIGNED(size, CONT_PTE_SIZE)) {
+> +			*pgsize = PAGE_SIZE;
+> +			contig_ptes = size >> PAGE_SHIFT;
+> +			break;
+> +		}
 
-It does so very implicitely and you need to look around to learn about
-that. That is my biggest concen here. WARN on is just a very poor
-annotation to remind us about that assumption.
+Under which circumstances would you get a size of 0 here?
 
-I would much rather have get_scan_count more self explanatory as it is
-quite heavy already.
+Given that you're relying on arch_vmap_pte_range_map_size() to give you
+a well-formed size, why isn't if sufficient to check only the alignment?
 
--- 
-Michal Hocko
-SUSE Labs
+>  		WARN_ON(!__hugetlb_valid_size(size));
+
+I agree with David that it's messy having hugetlb tangled up in here.
+It means this validity check is now going to miss some genuinely bogus
+cases for the hugetlb path (as opposed to the vmalloc path).
+
+Will
 
