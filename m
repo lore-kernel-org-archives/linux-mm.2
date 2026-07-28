@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F26F2C53219
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 13:24:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C13B3C54F4C
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 13:25:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E8E5F6B008A; Tue, 28 Jul 2026 09:24:41 -0400 (EDT)
+	id ABF136B00A1; Tue, 28 Jul 2026 09:25:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E66A66B0095; Tue, 28 Jul 2026 09:24:41 -0400 (EDT)
+	id A98336B00A2; Tue, 28 Jul 2026 09:25:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA36E6B009D; Tue, 28 Jul 2026 09:24:41 -0400 (EDT)
+	id 9AF556B00A3; Tue, 28 Jul 2026 09:25:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BB3586B008A
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 09:24:41 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4CC9D1603C1
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 13:24:41 +0000 (UTC)
-X-FDA: 85038255162.22.8AEF273
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A8496B00A1
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 09:25:19 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1618D1203A6
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 13:25:19 +0000 (UTC)
+X-FDA: 85038256758.26.68E5011
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id B50A7120007
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 13:24:39 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eKYfLsxN;
-	spf=pass (imf29.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	by imf28.hostedemail.com (Postfix) with ESMTP id 77A68C0003
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 13:25:17 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VaJ4jUWV;
+	spf=pass (imf28.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785245079;
+	s=arc-20220608; t=1785245117;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
 	bh=YJ6nTW8uRRvGa9uxb9XpHnqlyfY+CSFnQPSaLsTQkoQ=;
-	b=E0bXaYVjAd6WhtvwBQyFcuuN4Y2tjbOLwZN1G9k2+49HRj6OKpbIneVLVUm5mH5xwH1E2p
-	LFFfCcqaxS5bgxr3nAEyTfcidKyrfqCDW5cxd/2zVdjaKqyi1191CSew4KKG5B5DqQOdEu
-	mjoUqzkDh8ewcLivzvryIdt/uSAYngM=
+	b=drxc9ZO2pZVzuP5g1Ti4NfaNn854/O4Cxh2tzYevSpNbqqmgnSNcb1mwkE5TCDZoRWat7i
+	+ZIzbn5PNLJAlf9cATuD+gpfbtwqpQNJ9+sUZ/tEaxs2USIvt+umLY9Wu1XrZZwDFg7Eof
+	JF/li68f41SN05yW+bxaqi6vg7/3q5k=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785245079;
-	b=iOWcb9HkxI6gfv4UoNNL7djV/HxVHZMh3hVCRIV1JXn2Zm5MJYI/gJ54kUf1Xqu5vDuHpY
-	s2AfnctCOgla9rwRnKglNESaLLvs/cbigXUQ9xyMhSNAwNHLwJjCJgy7CqqnPeoxlqlJMZ
-	DmA2feFNgr8eFQxeQvHt2oHJ9QBIbBY=
+	t=1785245117;
+	b=Sulxll+XAtPwtBw2zoWFxRKOGyGUYt4Mi/UFqQb+ZJRRVHvh4TsdqPTF6CTxvdxjkcx7st
+	za9Nyijo9l42jrtGqtS4XBU6c4u7iwAEhIJmP8BpzOmqgooV1nDOiZaof/Yxa+9iAOSjq4
+	rC/TXh52apQyqEAfJ77b37B2ZoJfUSM=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eKYfLsxN;
-	spf=pass (imf29.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VaJ4jUWV;
+	spf=pass (imf28.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CCC39407B9;
-	Tue, 28 Jul 2026 13:24:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 280441F000E9;
-	Tue, 28 Jul 2026 13:24:37 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C6C7240403;
+	Tue, 28 Jul 2026 13:25:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3936B1F000E9;
+	Tue, 28 Jul 2026 13:25:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785245078;
+	s=k20260515; t=1785245116;
 	bh=YJ6nTW8uRRvGa9uxb9XpHnqlyfY+CSFnQPSaLsTQkoQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=eKYfLsxNclt8oE+pNYIIZIi8pjlDWK/9foqXxg9TrlmLgmTasTk/l1juxhuMe4KFh
-	 r74dVpcD0ekm6fTkX3vxpxRUSUAh3K4RXTf1L+tVK8JR0GN96XAkFaDQT25rMuh6ou
-	 5sAN0XzViUQf7i6nUy6qGwGS/gAsIqvGKW/mHAmodvzWi//0Z49sIhWrnaWyMkEmPK
-	 9BSwHL2jvVc+hlgpOKqq8X3dakUvPvwbBBuxc6WbwdDJbPZfhQ0g+wBrQ+Gv9zsaAZ
-	 mYUkDGGsOyQYJ75sD0hP3TIDNNC3DcXG2Sla0JK2MGO6huo8htG009HntZtEXW5KHi
-	 oJAC4nIm5QtLg==
-Date: Tue, 28 Jul 2026 22:24:35 +0900
+	b=VaJ4jUWVuOmuzpDqjmybmjd+t76vdlUgJE4E5RC9QK/aLvtmgtBAF7/Jgny7U+PT8
+	 7zG16BN9At68+LTxJz+jBbFmu2bS3Fl4HHMk0ewnQeC/pVVJXVNDSoHmpAqo00iisl
+	 GuEUmHWXHt087Dza2+d6mpaTYTacALG0oTgh/k5NUYl5eo/6x9zuwPxcvr5twpx3oz
+	 o39/wu/NTJo8slYtSqJI7WQaldXhYgQV86x+LZIgCAgCsddpq+HDqd/CidxVQwzBjN
+	 JI8rnthiDC9cObvsUwgpXnj4Z7oW36vaEeQwnSuMv5SqqiCVPnl1vuJplgI3F87KZj
+	 15GjoMl7aCGgw==
+Date: Tue, 28 Jul 2026 22:25:14 +0900
 From: Harry Yoo <harry@kernel.org>
 To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Cc: Suren Baghdasaryan <surenb@google.com>, Hao Li <hao.li@linux.dev>, 
@@ -80,20 +80,21 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20260727-b4-objext_split-v3-5-c29ef0f1f257@kernel.org>
-X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: B50A7120007
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 77A68C0003
 X-Stat-Signature: agmdua5bmu6kuw5xnihxwz4qszpc95h3
-X-HE-Tag: 1785245079-392153
-X-HE-Meta: U2FsdGVkX18pXb/GrruRA7hr1oe304NqJvKkBcyQr6LgWtKPZv0Qazm7FfCouz88tz6cLIg4vdiJ0cc2exkb4a6+xpkHKjhnNeOv4cmXs84kf6EV44Pf1AUgJ2LYuXnGAyCNyo4PnzxUIS/Vm3zXJDZBQMEkc2dmswiZdf/rXk9zUD09cba1R86BbLY6RQwYDXuEKMzLx6DZR1i1PsMZG31JoUGx4KbW4l/2/0vFz0Zyes9wf8bGQbTb78iEZAjiYw8e3IVRuu6SkvYTFUOZyAmITRgFn2W1EWk3KNvTQBT4jSB6MP6fCK/0cGE98166sy4jfrjSPHmaz7bml/8bhounu2eLnpU82viHQCC1cI5xQDcnVVPtjdcXe18IBHxbH5zyZIcLKWYskz+F4hl5TFkJ3fhRAPOArYuY5848ltUkb1dtGwJ+uxo/mS1IvDxM1mkvwu0YERSLzsnYZi2QxtHzTsX94TIs8uxtxXh5XyUXOFl91C5+fzQUf1gaaTfkbJpQ/Xvb98oYjRTcVpi8Eu2MV2igVdq5HfDaYhmw2vaQe1rZfUcvDkedc9KsMbGeAiNIZuvJQ88Lgeom12PhLoGO8hFN1mXV++5rchJ0jQGxmZH0JdggVSdbe3J4jmpCWCO7vMbCbMakNxfcs+4dOiC8/3o9jfAvvYUZiKTklgZOjoqqlpY8U2HSmU2L1/ysr6ljYPI0oJtt29iuBQ3BF6i5twL+ecQk95/YkWmKZPf5pxyRr/212CX0AtdJksbBApWCodNUVmCKj2uiA/xU/LjUjfOiYAmcZbFnCmwhjbzOU30Js6rGLFAHLtZ/9pWDnhFDKa3XlLJaQqnQOhc0iX74T0pxhfO2guvv1I9U14DbRa4sldiUxkT2GqdPOjp4lT41oqkeEQhhm6xIr8MyySs/2jNVvs5UJ4hjDnuphjVLq3vd8KqDs2jbtLktjYS4jozlFxGRQQ4VzQz3E10
- GJMcdi5k
- yzkeYcgUd0YMOsd/dS7qTz8IOtn/BjYf4njp7UvG5a13Js2CxmRMLmKfp+wUkc2d7TdOItsL0emP9iaCwtFKdtwOBg3+ndlEQc4UWfQdRjwiTIAjurFpEmO/6ZaENtUzZa898f3ukPc0Mr659214NuYe0TkWnZ9guAQTYFkd50fPm9BrPDZfrYxvPWTy8D4FZaeCfLEfiqKzJucr5023QwNaHadfzwVSw+DWiC22aRlOpoinlRdF5KIWo+tSFCasrXUWtRyJPAVLlah08uaVecn3KoSfMe/AyXP0RztNT/DT4klfJT2SOTH5jgRIcOqbbcobKcD9XgiG1ca3ZpSGuV263o3NbgBuRJrriQuBhTXcV0/1UhhfmsT/ErA==
+X-Rspam-User: 
+X-HE-Tag: 1785245117-240966
+X-HE-Meta: U2FsdGVkX18i2LpZDGDt2f+0+ekejDJMNeTupGwp+eAskq0xi99FFL9MnFBMlxDC5rGy02Xw5/uUJHFCq5D8mFlqNBKMP+cA3bHPcPraCvpc8YyDl0oxzq5KMvwm9hjFASuiYVeDVi6xquv9PDd3VBCe42bQECy1B84gzwUtP67Z9xQiTbL7tgEqU18MEskddjsscdyKQRlbcuveO31kjSqEvCAFl+9bexC34q7V8wPUBvTPQ1drDm/uSt6e50sKOSr436V6pJ/ttfAiMPQ7hB3ezgCb7atpUPBimIQf/CrTKgptklDovfDXlbECXmWh9G3+RgGtIxL5/g5O1Aalz0mFtAwN+WlBbZw3TMfAFUGVknedktDXQr/sRsOrrf0h/fyIgsvPLTPssZD0bz26MNMf8yLAlFdUaWV2d61UuM1RgvYblOSpa0Kwnb5BGT+WhyuRKe5qTlkEyDvewbzkCfrW5JF8GjjF+dTDbC0cZr+c3jSM2jDqSGG6/P+78wZqS9mNDjd0Vnr1fHLYaK2UkAokxhmYKvtJS1zMcOoYzhqW2l79veEbApuPg8AALUCq4E3wlGj95YCQJlMyqPJrfgV7U1B9njvuCGdM1q0blMyjQ9PcDhDhoQ9CiDUDFuzwYGhXRHJELDN14YzTV0+Kl086FmyIqcUA6FgBEDL/N4AECpxqJOmht8SSAQXJpTTQX+RFXvpjYAWfen1sVlcamcJQZXwOqG8EMs83byKME8RCdcevg6uT6FOXTMr9F+1A2EKXfTn8qeb8tUzMfxY1qwR4TCjA5q4s9KYTY6RpLlZULpLjqFU/xnomBcwZKobVPT+Y/vMPAMuz7gV92Dfe784SCSPKdIypjUqdqU7EHSGLvNgCc0puPTbZq+XcdNKV3gTeFHgJd8wzF0HOE5r1cRUeCia7v8lNyEIa2t+4xuX2Gc2+jkpnqyjItBoWz2uvgcKPLuGZOrYVVzMhP14
+ WJ4/gVOC
+ 1sK63OxBjlVkgIxCUFrKrT4BR9A1GkWYV/OKktQ8HHd6mfWbmt6n2X5LAf8UA4QQ7pJv6hjlPA89FYaTiA18g/qusKw6xsSnYscclAICBl+OUw11Ud+z/mH0vtPM/Z2RWXlAnNDSmzQK9NSZeH0wwWkU2mTJ8Xmatq8ALipRSrgYKIgrhqkcxyqqMnWkjMxLuR7GzinHuvcoYF+vNVoUOpe+aaEQ/2BBGiut71GsG6z2AUubPstR1lLSrM0hb9qPy+cCgknXuvvSxQry3yM4A4Y66tfTBmvIB9cVdfZFB2G5wmp4wDw6j8EM10YGO9tBfbLQ0LYB56DdwEVEAmTNKKPAPiUcIza2OvEG+l8hTIrxjK6Au/h4fS3N4PQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
 List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
+Message-ID: <20260728132514.EQFEIa_TmuURcDcjuFzEEUVrRjWxrNyE1TUZyIWSV4A@z>
 
 On Mon, Jul 27, 2026 at 02:53:59PM +0200, Vlastimil Babka (SUSE) wrote:
 > In preparation for changes to the structure, abstract getting and
