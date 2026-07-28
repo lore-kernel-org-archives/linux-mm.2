@@ -4,90 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29064C54F54
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 19:29:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44011C54F57
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 19:29:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 143456B00A0; Tue, 28 Jul 2026 15:29:50 -0400 (EDT)
+	id 44DAE6B00A1; Tue, 28 Jul 2026 15:29:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F4436B00A1; Tue, 28 Jul 2026 15:29:50 -0400 (EDT)
+	id 389236B00A2; Tue, 28 Jul 2026 15:29:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 00AAC6B00A2; Tue, 28 Jul 2026 15:29:49 -0400 (EDT)
+	id 2045C6B00A3; Tue, 28 Jul 2026 15:29:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D481D6B00A0
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 15:29:49 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 69F1CC030C
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 19:29:49 +0000 (UTC)
-X-FDA: 85039175298.10.CAFA1FD
-Received: from smtp4-g21.free.fr (smtp4-g21.free.fr [212.27.42.4])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 8F642100002
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 19:29:47 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=morinfr.org header.s=20170427 header.b=0UgSYZNZ;
-	spf=pass (imf14.hostedemail.com: domain of guillaume@morinfr.org designates 212.27.42.4 as permitted sender) smtp.mailfrom=guillaume@morinfr.org;
-	dmarc=pass (policy=quarantine) header.from=morinfr.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E476E6B00A1
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 15:29:50 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 785DFA0480
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 19:29:50 +0000 (UTC)
+X-FDA: 85039175340.17.AD5CE00
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id AD49920007
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 19:29:48 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WaGYi7Rd;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785266987;
+	s=arc-20220608; t=1785266988;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y3L93q//hccP4d99K2UqkC3//9C+6Pyu5JHp7SMLhSY=;
-	b=c8GKsXMKQC2UjOGEDMsYGErSbvzhNGzD+fM+JHhkWx/vVnyr4RxsE8XEMeDLl7Gez3y094
-	WvtDChiNOzYEKBYQ65MLWu25imXAguKVhWeZoQF3JfH5QQiWGa/5YrURJsXkVtO35ijmP8
-	N3M2AFBCP7Wqd7bsn/AXSKg+RH/ddnU=
+	bh=jiRBy+bpTGJjo9NnvKPxurd/L92V0c29LWMs3hMtAj4=;
+	b=MxEAv/WufKj+c2dB2vQrfGMmrkPdRYD/ZFpR7DwTBqybOzIuIXLFtU/CrIfLMQdSzH+Lyk
+	e+NnGp1PSXI/6rZ8axfRCon7b+9IGDpbcP8S19hPbpLNHmmx3IQz3ZQUjnVzVVgfFkPzuE
+	/AipuzsEr7TGN/2tmG3EqGqZZhgM1Zk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785266987;
-	b=7rKyuZ54fX7CBTo4LHZaMcVZqmQfhAkVkfWOBqNEUhBURGhaFBkMsrcnJODiKO57gVDQee
-	4nux7Adm74yuilPmF9C7g0OCeqpJEKZQ31mbGoEQPJo2Jr/jWlKvoY5BveRS6KPw9ghyYZ
-	ws9Sp16QsFJJBJw9EDMjpl4uj3hcPkU=
+	t=1785266988;
+	b=UL3Y9G8vLibR07OMRI6jK2/jqSMwHfUzhA6FYfuJcWWNPYCz4/mogkR2i/TmqidfvabLHu
+	ZZ4M61s0v0sPGS+feujT8WwS8lm9qX/QQmtF41+s7xvtDPAaFWY3N5Sri97ixeUc/qOIoz
+	hVxlLs0XAgM98a05sZZ4e/NW6wsVmwE=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=morinfr.org header.s=20170427 header.b=0UgSYZNZ;
-	spf=pass (imf14.hostedemail.com: domain of guillaume@morinfr.org designates 212.27.42.4 as permitted sender) smtp.mailfrom=guillaume@morinfr.org;
-	dmarc=pass (policy=quarantine) header.from=morinfr.org
-Received: from bender.morinfr.org (unknown [82.66.66.112])
-	by smtp4-g21.free.fr (Postfix) with ESMTPS id 37ABC19F59C;
-	Tue, 28 Jul 2026 21:29:43 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=morinfr.org
-	; s=20170427; h=In-Reply-To:Content-Transfer-Encoding:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Y3L93q//hccP4d99K2UqkC3//9C+6Pyu5JHp7SMLhSY=; b=0UgSYZNZRgTg2rOiBOFAQcN6gh
-	0U4mGK7jUlRAxmG4DWaksFHpHM2ZpRsrnC2asLRMbb27KQTA6yY0ZuPozTtnaHY6c7YgontOVusOM
-	XxiOns0aesiOYD3cPdBewHNEE6l4JeODm8ehScvrgSaNsBQCeEypFEcRagD0XQgfulx0=;
-Received: from guillaum by bender.morinfr.org with local (Exim 4.98.2)
-	(envelope-from <guillaume@morinfr.org>)
-	id 1wonUk-00000003rDC-2isY;
-	Tue, 28 Jul 2026 21:29:42 +0200
-Date: Tue, 28 Jul 2026 21:29:42 +0200
-From: Guillaume Morin <guillaume@morinfr.org>
-To: Rik van Riel <riel@surriel.com>
-Cc: Guillaume Morin <guillaume@morinfr.org>, linux-mm@kvack.org,
-	Breno Leitao <leitao@debian.org>, muchun.song@linux.dev
-Subject: Re: [PATCH v2] hugetlb: only adjust reservation during unmapping if
- mapcount is 0
-Message-ID: <amkDJlXL9y49jYC-@bender.morinfr.org>
-References: <amH3AeO-PeAQoc34@bender.morinfr.org>
- <4439df28abd5150ac587b6a27ae51fb78bf8d340.camel@surriel.com>
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WaGYi7Rd;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id D426C406DD;
+	Tue, 28 Jul 2026 19:29:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EF3C1F00A3F;
+	Tue, 28 Jul 2026 19:29:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785266987;
+	bh=jiRBy+bpTGJjo9NnvKPxurd/L92V0c29LWMs3hMtAj4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=WaGYi7RditWVBgZgJj6WfEABspGKIo8MmLOihiZuXhyHDKZ+Qzz4IofmfG6mYEekT
+	 j0DAZfF2+fZEgHaM8QOGsiwCX88bJ5YPG2qQpBlkdB0xxYduzqJsYPLryy7dpZ1ORG
+	 XIHYlATknJAyBKFqjTUWuXBJxPNc50BfjWnwG0+kjbgsv67Dn1P3O4ViO8D1NiEhY3
+	 ITrqzoxYfYf06c0++ss0qi6tcFBHHnMj5GY0rORg/vaFlSj/GwVvf6ogk5RCQGWT35
+	 Q0qwRU8rvwPlzY17rElaT7B9DA580O+gLZhirPmMf3wCsYR8I5lNqyEBNUNOs+RuQI
+	 81mFyJy09+pLg==
+Message-ID: <97605949-82c5-49e0-84b6-b42e8078b55d@kernel.org>
+Date: Tue, 28 Jul 2026 21:29:41 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <4439df28abd5150ac587b6a27ae51fb78bf8d340.camel@surriel.com>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 8F642100002
-X-Stat-Signature: wag9kfuqxgw9uqa8skxbgwm69yg33wwe
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 00/16] Page Alloc Hogger
+To: Juan Yescas <jyescas@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ open list <linux-kernel@vger.kernel.org>,
+ "open list:MEMORY MANAGEMENT - CORE" <linux-mm@kvack.org>
+Cc: android-mm@google.com, fvdl@google.com, tkjos@google.com,
+ minchan@google.com, dskiba@google.com
+References: <20260723074854.1013941-1-jyescas@google.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260723074854.1013941-1-jyescas@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: AD49920007
+X-Stat-Signature: f4pnz9pf3hm9dg9nj773gyzm4ddxd4oh
 X-Rspam-User: 
-X-HE-Tag: 1785266987-697929
-X-HE-Meta: U2FsdGVkX19OWHvW7e/bnL0+KcZfvWBP/h8gR6iBqPvjxMDtw15M3bcqZ/Oia/ZHSZ5jruUAcWKRnUXPal+nOD+OaCDWm9wvcCvtENX6RKEp11e85H6WZ4QgGCzyjPx0hfXCgIK+7AcuGTAQTbrXqNucSvp7Aa3hNmdGKZmu8fotI7sLzJTSElCQ0pr/BZrWsz4PjLhjx+AVQzKC6l0LYKpyQCiHjJqTySwxJWMio3oLnm9Jp+7m0TO1Z26u7qj/hxalehdRguqsJY2e2tzEQusodY99F2wi0YNjvEOQThxJmLZ67+v6DvtvcCRliBiiJB43qU9bJsTuqY/V0Wql+qpVxc214q9SM29+N19N4mQRnODZ2JEvYDr365o1YsGJNhcrHAiGCWZoN6MzvvLo//pYHHKT5SLZfRvZcIEOkjVG+t8PeRm2Jyg0lPGxte4J7zmLfHNqj6OukCT+Oxv6g6A1BwQNO/EJTd5PkNu7QpCQiROC8uxqH6tWubmk0/HpPPg0MedsQlQEQY/C1Nm5nQaff+qWuG1jB9x1PUvgPLHpQhH6FayvzFUoH/cdWP3H2bUiMBr9Oc3jHHSbQrtjoUmFGQF77tUiEF8cQVIG7Ak8HVlxL3h6Ct6RKw8i4PpX96xb99QzAuOw4uwj1QI9gVhdH+TyqU04dGEF6pQTuvltsq/BbYB2cj2VkFF+5nnrsRi/S3z7rv3t3B9YuFLLCKGBKBeRPXvhWKqlTaHT0AKJTcR5JsKWWVraGuzrRIT9OrtnJaAAA6REqGPNz5/MwHO1GvEBnxXYwjdai9Fio98qJXWPthKBfHduEf9X8MhiF8ca9ANtIuuGMizSLhzvanG1Y7C2XjOlOFGGOlcT5BHUEzqwdoQKzw3U0i4DmEx+pLJ+KmDQcRUdALRt6ydrqdZjxz7xkeVePQBdtk09aD7ID3aXIICM8VeMbSwvWF3diYCmGw1jGbcehPRlHdT
- +ah7UTf7
- N/C1tzuI+5BWIiqY9TNQP+IGERyysKzlDkT/eO42H2Wu/y6AuzVVe223cU0ooNx7ZNKiIGNIjbOEPwBUOQUg7zpRJ+G9+GmoYRfAlElrU/BT2W9QjRHSy9w848tJWBmIBWKydZI3374Eb9NHV4JpStgqfES4LJ3qjq2NCQXcD2lQd/8XZHSocSpAhApx7TqqyUTeaYFA93t26GGEyweXxqu9sseFjJlcJyTgLq/eC+EyahF8wwEKvNXpNy96k5Lfg5OdPqRIaX8LI3EiHqnlecHdYnAgKGX5Um1XV4qSqGiCsn9U=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1785266988-847287
+X-HE-Meta: U2FsdGVkX19Ef4GfsSGD7y76QoatAxSCEJ18YBAXE3aHOG02sj7APa9NoawNrL64SFrJGujRrm9rGOfTqSsgXyPPf0OSK0MvO98KnFP89BvT0Xl4iAB7kCo0C1f5JA136xmzdvHzVR/qutZpy+q8Ut/LVbG6PboDcRK++LVHK+FUiH6PXdIN33EsXh2w7vuba5VZhBGtFLZRBt3C18RI5EX8uiy4vAd/QP8kq0nhGRIYebiQi+9utw83izcVxufoIysBVyjFI1kF6yEw5notk7xzyLWt0KDp/ABSqEup01sVrJlJN6utpbf2WmKZ/t3rWV6QjCEqDOESbCVCFgFn2uoDBwscLlHRIpy34GWMO/jnzantSqA+LlKR9o6MOCuXshm0wvMhHWTe5r6sVeU3WBtjFnficq6kqZ+gJnYxAx2B6EHdeqPjZdsPSDZ8kn15RItOewKEak8zr7TVyq5uMTjNARfulBOi9s5aXrls7cZaFcgJCIchFA/UZmdJK/WpLrPUO1tlNY84N7NWDNjlf+CSlfimOszvMgeQdvg4JJqYCB18TocrRjkmFUWPexLMQ7+KJb8pRmAOkRst5uIRdGrlIgZ4nx/4yzVMrz0IQcF/mNg4ucD9z+lWtr6kHigqx1I6b0brxCKjIQOoG3vkdp50XTMhYVd3w+QK9eVX6xAN42HxgbJKMCo0zscrOV14xs9cPd4qsR4AfLJEzdYA5wK81gN9b1E0oeqo/BqiqLf3sMvo/wa1wRLYhvxUiJ/cpkFuF0wvtVMe2kPZb1X7Crp/W0wk0KSyJyWQTve8fDXpgpYTfDVAd4T7X/i9wIcDMZ1GpvVrYhLSzdTLUmd0YDtijpZ6GMEOIs/a4iIUnWBPaVKar5CskemK46tHkcXHMauVPuDwQT9GkbTEb65q0T8NQlrC3GzvMT1wwtydSs3axEtmnpnek7oBPK8xebzZq6IGByjRB31EgJvldO9
+ UQ/REXVt
+ LFI7mxj4RmFi5SvwbajhaSAVqSYWv2RSrhG0iIeWh2UTTPqIWM8OemMQ4/5cKyOtQpbdqsIGmgF9kkkC89voFgrs5P21s0jKy0AIrIc1nOy6bW/HRssc8ulddWoJ5woydcsRbwbq64j0k4CMonGyv2Q/9gd5NjhPv1SUSlY8uqnFujaLQ/Yhn+cnEi1B1aAwzNRQIw3yC82wQ69g7/g7ZqFWoQ5gM9QLMqeFg1i1YZYnnsN03nyWnNPZYazvtfbS2WL1Syc2DPadpAI9AGAGhRRxWPUiRC9LAhlDkLKs8HN+9QB4Cx2n/FuTlhArRD0VEzVYagJsfsn+ueYd9H44VSEk77Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,42 +144,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 23 Jul 10:23, Rik van Riel wrote:
->
-> On Thu, 2026-07-23 at 13:12 +0200, Guillaume Morin wrote:
-> > 
-> > diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> > index 571212b80835..3feeac0f8eca 100644
-> > --- a/mm/hugetlb.c
-> > +++ b/mm/hugetlb.c
-> > 
-> > @@ -5252,7 +5254,7 @@ void __unmap_hugepage_range(struct mmu_gather
-> > *tlb, struct vm_area_struct *vma,
-> >  
-> >  		spin_lock_irq(&hugetlb_lock);
-> >  		if (!h->surplus_huge_pages &&
-> > __vma_private_lock(vma) &&
-> > -		    folio_test_anon(folio)) {
-> > +		    folio_mapcount(folio) == 0 &&
-> > folio_test_anon(folio)) {
-> >  			folio_set_hugetlb_restore_reserve(folio);
-> >  			/* Reservation to be adjusted after the spin
-> > lock */
-> >  			adjust_reservation = true;
-> 
-> The safety of this seems to depend on the caller of
-> __unmap_hugepage_range() holding i_mmap_lock_write(mapping)
-> 
-> Could you document that with a quick comment above this
-> block, and also add a lockdep_assert to the start of
-> __unmap_hugepage_range() to make sure that the mapping 
-> is indeed locked for write?
-> 
-> This seems like a fairly fragile area, and the locking
-> requirements should not be left undocumented.
+On 7/23/26 09:47, Juan Yescas wrote:
+> This patch series introduces the Page Alloc Hogger. The Page Alloc Hogger
+> allows you to allocate memory pages from specific nodes, zones, migration
+> types, and orders directly via debugfs. This provides key benefits for
+> testing and debugging:
 
-Fixed in v3
+Would it be feasible to carry this as an OOT debugging module? Would a lot of
+symbols be missing to achieve that?
 
 -- 
-Guillaume Morin <guillaume@morinfr.org>
+Cheers,
+
+David
 
