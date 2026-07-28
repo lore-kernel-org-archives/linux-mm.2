@@ -4,87 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F1C4C53219
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 12:11:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91C83C54F52
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 12:11:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DE12B6B0099; Tue, 28 Jul 2026 08:11:45 -0400 (EDT)
+	id 63F606B009B; Tue, 28 Jul 2026 08:11:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D921D6B009B; Tue, 28 Jul 2026 08:11:45 -0400 (EDT)
+	id 617336B009D; Tue, 28 Jul 2026 08:11:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C80CE6B009D; Tue, 28 Jul 2026 08:11:45 -0400 (EDT)
+	id 52CAA6B009E; Tue, 28 Jul 2026 08:11:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 824986B0099
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0FB706B009B
 	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 08:11:45 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E92D04036C
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 12:11:44 +0000 (UTC)
-X-FDA: 85038071328.30.555ADDA
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com [209.85.221.71])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 32815100006
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 83A83A14A8
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 12:11:45 +0000 (UTC)
+X-FDA: 85038071370.18.7E2C89E
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com [209.85.208.71])
+	by imf21.hostedemail.com (Postfix) with ESMTP id CE54E1C000C
 	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 12:11:43 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=SdxlT3nt;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf14.hostedemail.com: domain of 3fZxoagkKCLIlSjmfkSZmYggYdW.Ugedafmp-eecnSUc.gjY@flex--tarunsahu.bounces.google.com designates 209.85.221.71 as permitted sender) smtp.mailfrom=3fZxoagkKCLIlSjmfkSZmYggYdW.Ugedafmp-eecnSUc.gjY@flex--tarunsahu.bounces.google.com
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=tfGF4i1r;
+	spf=pass (imf21.hostedemail.com: domain of 3fZxoagkKCLIlSjmfkSZmYggYdW.Ugedafmp-eecnSUc.gjY@flex--tarunsahu.bounces.google.com designates 209.85.208.71 as permitted sender) smtp.mailfrom=3fZxoagkKCLIlSjmfkSZmYggYdW.Ugedafmp-eecnSUc.gjY@flex--tarunsahu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1785240703;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=A3x31jTyX9GVbaN5Ccntk2NfcOSeaYrewYI0sLHeraw=;
-	b=PJxZ/4o8K5oaovuMKWlDtTNgip9f2YqIRDhy3MO7aqfRmgYPyN87It4sAIXvZgLm+k2bKm
-	XoWdkkmYuDH9QYFC3mgLubHLKWEbeVYI8mdYSx7aPWjWzWUwcOEISL9tuWc3BAV8fuFBio
-	U56ZguUF9W02UyohDTM+JRsy8DZcPsU=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=gVnIMBasyGsCgYKzJa454oI7ZPXv6Y6JMFDgs68eV4E=;
+	b=fftSRn0QcvUuTNB2NiveVCtVhR7ib3L/QXmzTnIKnyCg2hJRM/wcQmp8xQUzRCemxvT9po
+	7b8bZx8Y0WRtEx1BfoJcD8GRGLekRjKf3O39EuNkklDkXGsq1ciHZvBdKplDDXcnfjKz9S
+	3ttyv/MU59Y4V0bdJCpxCnw1pvTJPjo=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=SdxlT3nt;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf14.hostedemail.com: domain of 3fZxoagkKCLIlSjmfkSZmYggYdW.Ugedafmp-eecnSUc.gjY@flex--tarunsahu.bounces.google.com designates 209.85.221.71 as permitted sender) smtp.mailfrom=3fZxoagkKCLIlSjmfkSZmYggYdW.Ugedafmp-eecnSUc.gjY@flex--tarunsahu.bounces.google.com
+	imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=tfGF4i1r;
+	spf=pass (imf21.hostedemail.com: domain of 3fZxoagkKCLIlSjmfkSZmYggYdW.Ugedafmp-eecnSUc.gjY@flex--tarunsahu.bounces.google.com designates 209.85.208.71 as permitted sender) smtp.mailfrom=3fZxoagkKCLIlSjmfkSZmYggYdW.Ugedafmp-eecnSUc.gjY@flex--tarunsahu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1785240703;
-	b=iMJF0gkW8aNrTY/TWtPHU/aozX/MutacDlyou3bjZmrcwB30xPRHfrTFF2MTYrh/7VQLp4
-	n68a8xW33kgV0GS7OHkyu3KnmPxgeEJew0Zk4/KC3EzQ4WQqnNqSkEZ3lJOvmuFk7YjnjG
-	dEaiEw5zWhadoyh9mGerwGnJSlWEfRI=
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-47f6e658363so2684270f8f.3
-        for <linux-mm@kvack.org>; Tue, 28 Jul 2026 05:11:42 -0700 (PDT)
+	b=fqapslgI3htL5UXWm7JIcaEuqNWujZrPExP/5wu178GGPu/fXo9H+2ZAt2b3bjiVeJjs6V
+	i/YsxuwfupAqLOFLDm9Nbd99cqfFUHbg/Na7l8QQgnPWK3SbrX7R2WjmpWgab6SFyKXJj/
+	OvfA3SPDNaLy/BJSYZ6KdIiQXfzEdTE=
+Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-6986557937eso3121870a12.3
+        for <linux-mm@kvack.org>; Tue, 28 Jul 2026 05:11:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785240701; x=1785845501; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=A3x31jTyX9GVbaN5Ccntk2NfcOSeaYrewYI0sLHeraw=;
-        b=SdxlT3ntYlHBPOaqCQzD6anDO0GXsNj2V5PmFqRfAdzwV9ZLe3mpB3syAc1vHlMaJn
-         fdckGd8lY22HlO87UaIhlvMgM8yqNnet0ALI2o/vgu+OPxVGweeUZ+cRQMOkPMJMjqGW
-         DLFC3l37i+tCDdv12Y18a3mZLpl6vsAJjWQLAZT8NxteAWO1XimEUdzVGKh4KD4BLhM2
-         OZSnWrUmjUB99jae+sAHDvHXwcX8pW3oeS39llTw5BO6tjL7NKWJwcqfrjnvu+JaAfKo
-         xuGnnck0LFPBs1R8Bbv4Iej8GsYbt+32dKIDd9C/LJdWt7vT+Cc/TvysYKLiJ95X1pZV
-         itWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785240701; x=1785845501;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1785240702; x=1785845502; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=A3x31jTyX9GVbaN5Ccntk2NfcOSeaYrewYI0sLHeraw=;
-        b=cHqPWY8UpryA+VlQwWTii5Q+X+ypNqh+ucDSekcfgyYj6xM9LdMvunodIwQHcHuDmR
-         I1A8d3gvWknI/ur+XPZksBSt3b/xEdJORKeQkCdFm7KEsIOCQx1HFRrYtX7obP9ciLl1
-         UOv2i+hj2BrAMkZz7xwsLzwfJufhld5hcMyxDgtCYc9IXUo1hChOEeQwLt1YUx+s7NUC
-         pZAFIcOw2Adgrp86I9Z/LA0Xo1wiQNvZLLxcPpx294CaDYiJQysrjc1zwfAa9h7Wp5tO
-         Vrp70soMG1cWbyh9Bj+owJQSDxYb8rNCsPWVy4Z3hO769eDObW1V7rpMrBavpGV/++HF
-         e21w==
-X-Forwarded-Encrypted: i=1; AHgh+RrkTtWH0Atat8qI8n30ir+RWLqC+13bELggW9nKwGZFOJzSaTTEZqO1IPh+vw2V07oHwucnyc95KA==@kvack.org
-X-Gm-Message-State: AOJu0YzlcQYH8EWPFQYxUHX4i82EqegiIBnXn9qdvzsGmXoIIvVlX1ek
-	kJw4p0IMI6ySsiRa8JnIFEuJrQEuKSYR+cmdFiUGBv6Pe2RnsH2tY9+g7xH5Ccs0hws1ZBGYrAU
-	8aHSGrEwWqUxkIfJsAQ==
-X-Received: from wmbdx8.prod.google.com ([2002:a05:600c:63c8:b0:493:f434:c988])
+        bh=gVnIMBasyGsCgYKzJa454oI7ZPXv6Y6JMFDgs68eV4E=;
+        b=tfGF4i1r6CRsROLcG6iNwtY+dDUTbe957WfwecvGxt0yvohPENuHQaC+siYtsS+ctV
+         DZBChgVAH6pUIhG4W9VbatC7N7FRlngQ3SbmRAD3Zfg08sRX0ATz87P3ZBffh+6TFMM+
+         0l2EIEbX0QZXCsIW1C/luSc1m7TZ+Y66Fln1HXieVT2UnWq7/qekfT/Zg1yQhaPBsXh7
+         8Puf/+Rz3BoltMX1/jKFUUVEO7f5NPkS0gbCs1jqeSi/emw0oKA3+NFCSy6JCqCnTdMj
+         L4+sW+oHRI/tSd3HzOF6I7ACH617IX1NydqBcvthKVijnKPDzXqfIC1MeMYPfRI2yyHq
+         maRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785240702; x=1785845502;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=gVnIMBasyGsCgYKzJa454oI7ZPXv6Y6JMFDgs68eV4E=;
+        b=F42UrrbiccUhcCUSVJCgw2tcCnaIjw608SkwFChMt+FV99UTr9rMAqlQpMruTCF+u5
+         osuBs3v9BX17IR1L1wlLM1q6WgDg3LoXdojoJNdY895GpMUzSZ4RUq/1Wm08hPyQ/utV
+         UJnrGFjlugHm6ubORrK6vOiFJuqcpOdxnYRbfokecdUz1RxAsoOkeAP2UKIbsHbEoa8F
+         Ga7xo8BtQPap3FnMf1VCM+wbUNiutSam/429sJok5f4Hn3NmVXRan7wvMFjhnpwEx+FW
+         K4D2QuG25n0PWwzfGWs8rFtam2+XoxOvzRSq8r/IGGl4slwjvL6RDg8rTsiId2ldybmw
+         dYNg==
+X-Forwarded-Encrypted: i=1; AHgh+RojJpJnnN4ZHr+4dU5xxGyye7LdxzoIMrkyhVwEFCD1Hnt8ju+N6NU25A1R9mN0IgGSWnl4OzrPyg==@kvack.org
+X-Gm-Message-State: AOJu0Yyv7DfYHsK22WhyBq433fOw79iskThHUxDDJh7to7IRP0dw9yyz
+	iyITQuDaj6UO17R/xR1E8lWwYzug7OQ0ZYS2Bb8N0JWFsFde/6dLzRmyIbmXjppDdf1A6pvlSDA
+	svvJqTnrQs9EyuT8W4A==
+X-Received: from edfy21.prod.google.com ([2002:a05:6402:a3d5:b0:698:3510:43a])
  (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3f16:b0:495:607e:5ee7 with SMTP id 5b1f17b1804b1-496c6435aeamr21806975e9.17.1785240701228;
+ 2002:a05:6402:2b93:b0:69f:d5a9:c957 with SMTP id 4fb4d7f45d1cf-6a034a765a3mr1074401a12.35.1785240701982;
  Tue, 28 Jul 2026 05:11:41 -0700 (PDT)
-Date: Tue, 28 Jul 2026 12:11:27 +0000
+Date: Tue, 28 Jul 2026 12:11:28 +0000
+In-Reply-To: <20260728121138.1103610-1-tarunsahu@google.com>
 Mime-Version: 1.0
+References: <20260728121138.1103610-1-tarunsahu@google.com>
 X-Mailer: git-send-email 2.55.0.229.g6434b31f56-goog
-Message-ID: <20260728121138.1103610-1-tarunsahu@google.com>
-Subject: [PATCH v4 00/11] liveupdate: kvm: Guest_memfd preservation
+Message-ID: <20260728121138.1103610-2-tarunsahu@google.com>
+Subject: [PATCH v4 01/11] liveupdate: Add LIVEUPDATE_GUEST_MEMFD config option
 From: Tarun Sahu <tarunsahu@google.com>
 To: ackerleytng@google.com, fuad.tabba@linux.dev, 
 	Andrew Morton <akpm@linux-foundation.org>, seanjc@google.com, dmatlack@google.com, 
@@ -100,14 +104,14 @@ Cc: linux-kselftest@vger.kernel.org, andre.przywara@arm.com,
 	linux-doc@vger.kernel.org, David Hildenbrand <david@kernel.org>, yan.y.zhao@intel.com, 
 	kexec@lists.infradead.org, suzuki.poulose@arm.com
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 32815100006
 X-Rspam-User: 
-X-Stat-Signature: m456sfsc6zygargcbzr5dck5g4bwmg9a
-X-HE-Tag: 1785240703-510333
-X-HE-Meta: U2FsdGVkX19XN+QUsap7/WM0m6PPZxKUq8hHzBgRMFStC07ZwejUfO38wFzmuk1Sp15NpQ4Oe0yxIis3i+2Y50T8BHHBvakdj9FBSqJVovERmYWoihD3TSD//LopfujU5sUj4MEIuBOWy01853bWcUp3aytZleCqkLhwVWhyodvQUdQpJGrv9gs3gVXCwnJG3BrcLxCS1NEUVLigqSZy7NUwk2EHUpWfjjfNVk8MlX0s4CrJKOScpIqNQYTAzyIbeTj300w6qwb2e/O8SP3wkAdxDQBGhpjAQTs367aYduw0q/kgw6Kcz5RdVMqWIXZU7nbPoNpRaUf9wolJeBO0ERroQdAedbH/g0bsBxPkZyxL7uWKZk52gRewVuEvzgwinEqpu1NwhVM0ShhAYpo+o9ykRUAurZZljiaEA9Qex47H0BF9uXTVaaiIpiEymda93wdRNU351ppDhZ7mzNbaOR3FWK4VYX917+GUbdVMAPe8+lFSGvwzTNscCV/s6+kQvoVxtoHY1Utj521aOJeVfF+2UWj5QcSLsa5KW7pVX7q1m348q5VjsPVAYBNblfsutNJPs/spbpO0yrp5dUmEjT54/Z0iLCuTcCYSEsew8dtBzKcwouDtrydkpLLAOts/e07n07556+jMCyUPrSVQ2LeZpwyqRyy1z0UBCxuJ2FE+wXbK+34J65U/r/CspXNgDSyxouO4lCdc2B8mInR2sLc/sK1PgXmpU/puz/I7bo3zQnOI4CRcew85KbErjELMbJ0xbBMSA7lHc/P1ubHGpT61HHJ7Aa2RBNv8z/RGMJ1oD+EHQY058/MyDByEf13CAjYsCjfWqJDe1oH6sWPa43mx5KIwi81we3refUMN3kM9YcIxYdV7x3qKWM73+8V+ebHIQ24/wO0D0CZIvfBvWOLeN363banVQEPVtmtJZ2WfKgJJfYFvZ/u+eUCrwedND/emJldEIgne4tO3lEO
- t8Qo5u4N
- PzaUiOnzhlamUBtNHRbg1zhPHING2MvjjtdmNzWG/zZpq+67ACpyjLp7F8flD7wdZQMcIerq33Mv7XULTI+e8NB/Z1WpZTdly8PdgKwq4F6ommdIIoeOynyQ1/VO/8AREEUDNs+daNO/5/j+oFDNkljzeszomzzjPO+kW5QTPDzEtak0dIEtG3kvSGk6CcFWEpnXeXmhG47/0S79MUSXSTxirIbesLZF0URQcNFH8i3GOC6q+TqmIDZyPpgCjiAnn/rr7eIoc/us245q6HxWwlaco96Qh++oqw7hQVsdupBe28HVvvL1pwmuiKcuWOPwXc1PPR09iIp93vTQd684JYAIGG/NfaQt9kcjc3RpUV8HgT6Qh6X96tKTbfyUoaa19QyCpGdNXOxUg84jh76hyfzlk017+GL5VrLmmXa+Nds9R7Y2PHIBhQyiaQ/sTUur/ucsZ+mKqRn6UmJs+ItOHcsxc6sekGNWlZKanruuYkvDzU4UxdALxFF6N3e40debHpN1uTmiYB9iU74pHwc2yMZcN2mJXJYyl37voJ0rwyB9hA/P4L1WjUvjeHMdt3tCgt4JvDK310ik7KwHJ0A76XAlpEv7UIVApWuN4MOFO0t/+xAcSKTvXjOmIJkB9uOUZ6hAFxLeahO3g4ZLaPRm6Jr1WmF1bdqGKx78lTKSIchkDDeUCcV790fHkTh1V/Ek0Co5w
+X-Rspamd-Queue-Id: CE54E1C000C
+X-Rspamd-Server: rspam01
+X-Stat-Signature: 5tsscan7b6dgneqfnmwie8bwrpwrhs87
+X-HE-Tag: 1785240703-572457
+X-HE-Meta: U2FsdGVkX18+eoVGDn+eIMdvufean2alFQ91Vj/bkylxg9BAUbToyY9/Ltam66ZdVTK7Fcc89wKJG/kFmDIp2Cj/urZQpjqC6rjwDTnpslmqM3DUHnjGew3qvrzo+w6JWkC+d5agAxc3HdiBJiIkFLuAjWJL5z4I2T0vjzmjaJI4ZpD5F6We32sVGCv7Bfv/aoKfFiZU4ZPoiPeVVcd3MInei0EQESijdoZjgGMEcPhiYqUHP6ANW4V+RCUvS4HonfaVyBkSaoR5ROKspiWidt36fhQozluLrQXQqSDdxLGHUdiZHTrRhfFSZCairsLoI5DXw82DYxD6jY4QUMY/fnTC61jA7PSpBhiXLb2F0D50mvySYt/9jXPrAw+nZ8iGJynULNFzSB60iCj/znA7KbxSqihI8Qz1AkozzGfP3Boy68iAAadmqLhRoQGb9A4h4wizA6iVroWPjiBwKHLwX2QTXLBtzjUpxRl+//if1qUDBMrLpBihmzDqq6KeLfuEzy3ngE/ODjqUNos7VMFmwnRiUon9RjTatJyPZ5Kbsi5uKXHJER9lcM+jlUy/DOdogFuiSVo7eHge5PD1Rp/WipQoNwTfF2hu/AFcXTjCKVkR3jQJs1oExhSQ8zGGRaY47L49nqIC7JrPr3Eyk0Ac8J+FJXSk0oqn0kyavFyDvc3L1zdgajzBDPcUQZ5+07SkUQk6//ch5RtpmM4NDzBCjduR2uHaDBgjKCwy8ZruwtZ/7dv5NKoi0EOtrklacERRNdgz+y11vcW8IDyW9t/zXjshahN8Pq2zJqZfvBMqY/z3gnYFt3JQQMhO4gG+sXmwd9soCzRMuA8TVzH10lg/eNv5ZutvYkXojqHhb/WXkzI9Tvj7xL/Obnkq+F3LX3NyJaJMZRojhGoiWXFsj7LdrWE8whqRKzlyurHtVasYO5XXXwmRYeJs/hhvFo1rZq9leb2lqpPFfOSo5hbMp69
+ 9T56Jxbi
+ 9dOirqmVb48r6dBCQRBkY5NiAqtCDHIScood1XxmnvaQiIVfl1sjDx26sOls4Iem1GZ1GsdfQtUaL5oA9jxDi7TbKf5by23ixBnvggpb8+Q2M1J1tbu383eAMYsA3JIqSyvoYyx4/l7nDbESyvb11Y/vxPlEacTU289JEZ9kEIliIE4aE9vqlsQWqjOEw6KgPNdoXxZq4+kpDxyRbQPkAzukoTFj4d5Ez+pSSlWMQfIjQW2F2/8m3n2+abhq5ICSshzI0i4ib3m+ATmJl7RaNON61ixeEK73DGyRGWwvU4fCb4eAcNCdGY78U4WEEX7T2q6XLVTlffWfy2DANNk8k1qUq8tn/CjI2YkdOgy5oNNUmnEGIzCrLPvStLEiUbLueYtY7bwtuF4D47X2gC1ywwkMHDC/YW7yU/UPgu58Hxsl9cyCwj3b6ecEDmtNiv4nNE1cjXnXVXkZemE9i+gmS5hzKOhyy8sndJrr3+IBKrxBEl5+r2v/i4D/UHjuUGBOP12boLKRxfNflI9q04H08SMOcd0pvFccmv0fnsyU3VDQyP2OFo1M8Ronj6N6yx4siHTI4AXTapArmg1zCeqTOUMBZP0fk68DYnSAywjz73Mvkt4M6MEGacglxk3XwYDrOG2tWA+26Qa1ZWrrn2/m49kt/tQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,204 +119,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+Introduce the LIVEUPDATE_GUEST_MEMFD Kconfig option. This option
+enables live update support for KVM guest_memfd files, enabling
+guest_memfd-backed memory preservation across kernel upgrades.
 
-This is v4 of guest_memfd preservation during liveupdate. As per
-the discussion from bi-weekly guest-memfd meeting, This series
-will be go to linux via kvm tree. And Planning to get it merged
-in upcoming merge window. (7.2-rc1 for release in 7.3)
+Currently this support only guest_memfd files that are full-shared
+(INIT_SHARED and no support for private_mem).
 
-The changes are rebased on:
-	kvm/next + liveupdate/next (merge) + [4] + [5]
-	Where,
-	[4]: luo: APIs to retrieve file internally from session
-	[5]: selftests: liveupdate sefltests library
-Here is the github repo:
-	https://github.com/tar-unix/linux/tree/gmem-pre
+Signed-off-by: Tarun Sahu <tarunsahu@google.com>
+---
+ kernel/liveupdate/Kconfig | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-Patches [4] and [5] are prequisite of this series and they are
-rebased/merged on liveupdate/next. kvm/next is behind few patches
-from liveupdate/next, hence direct cherry-pick of [4] and [5] is
-not possible. On Linux 7.2 they will be aligned. If we
-succeed in merging it before I can request liveupdate maintainer
-to provide the tag.
-
-Steps to test:
-1. Compile Kernel with CONFIG_LIVEUPDATE_GUEST_MEMFD=y
-2. boot kernel with command line: kho=on liveupdate=on
-3. run the following kselftest
-	$ .selftests/kvm/guest_memfd_preservation_test --s 1
-	$ <kexec> --reuse-cmdline
-	$ .selftests/kvm/guest_memfd_preservation_test --s 2
-
-NOTE: Assert the following:
-	$ ls /dev/liveupdate
-	$ ls /dev/kvm
-	$ dmesg | grep liveupdate # (should have kvm_vm_luo &&
-		# guest_memfd_luo handler registered)
-
-V4 <- V3
-1. Split the refactoring patch into multiple patches [2, 3, 4]
-2. Updated commits msg as per the kvm documentation and suggestions
-3. Removed KHOSER_PTR and using raw pointer, as series [3] not yet
-   decided to go in the next cycle
-4. Implemented more tests in guest_memfd_preservation_test
-   allocation during frozen gmem_inode, non-guest_memfd preservation
-5. Moved the vm_create_from_fd to kvm_util.c from the
-   guest_memfd_preservation_test.c
-5. Minor updates as per the suggestions
-
-V3 <- RFC V2 [2]
-1. Finalize the design
-2. resolve sashiko reported bugs
-3. Use of KHOSER_PTR instead of raw serialized_data as per [3]
-
-RFC V2 [2] <- RFC V1 [1]
-1. Removed mem_attr_array as it is not needed for fully-shared
-2. Removed pre-faulted condition
-3. Added vm_type preservation for ARM64.
-4. Removed liveupdate_get_file_incoming api patch as it is sent
-   separately [4] by Samiullah.
-
-
-**GUEST MEMFD PRESERVATION**
-Below is the cover letter of the series which explains the design.
-
-SCOPE:
-1. Fully Shared Guest_memfd
-2. Guest_memfd backed by PAGE_SIZE pages
-
-Any VM whose memory is backed by such guest_memfd and satisfy the
-above conditions can be preserved across liveupdate.
-
-To Add support for liveupdate of any subsystem, we need to implement
-the following calls: (e.g: subsystem: guest_memfd)
-
-guest_memfd_luo_can_preserve: used by luo subsystem to filter the
-			      guest_memfd files
-guest_memfd_luo_preserve: triggered from userspace by PRESERVE ioctl
-			  If can_preserve says the file is preservable
-			  by guest_memfd_luo_preserve
-guest_memfd_luo_retrieve: triggered from userspace by RETRIEVE ioctl,
- 			  recognised by the passed token from userspace.
-			  Used in new kernel after kexec.
-guest_memfd_luo_unpreserve: triggered from userspace when a session is
-			    closed, which inherently calls unpreserve of
-			    all preserved files.
-guest_memfd_luo_freeze: triggered just before kexec automatically in
-			kernel. no userspace involvement.
-guest_memfd_luo_finish: triggered by userspace when all files are
-			retrieved and want to finish the session
-			retrieval.
-
-*PART A: KVM VM preservation*
-Introdcued the kvm_luo.c to preserve the vm_file during liveupdate.
-Currently it only preserve vm_type. This can be expanded to preserve
-more details in future as need arises for example data related to
-cocoVM (SEPT etc.).
-
-	int kvm_fd = open("/dev/kvm", O_RDWR);
-	int vm_fd = ioctl(kvm_fd, KVM_CREATE_VM, 0);
-	preserve_arg = {
-    	.size = sizeof(preserve_arg),
-	    .fd = vm_fd,
-	    .token = VM_TOKEN,
-	};
-	ioctl(session_fd, LIVEUPDATE_SESSION_PRESERVE_FD, &preserve_arg);
-
-This VM_TOKEN is used by guest_memfd preservation. guest_memfd
-preservation save this token (fetched internally by luo apis [4]) to
-associates the guest_memfd with its vm_file. On retrieval, guest_memfd
-retrieves the vm_file using this token and use its struct kvm to
-retrieve itself.
-
-PART B: Guest_memfd preservation
-Introduce guest_memfd_luo.c to preserve the guest_memfd file during
-liveupdate. Currently it only preserve guest_memfd files that have:
-
-1. INIT_SHARED flag ensures intially all the memory is shared
-2. !kvm_arch_has_private_mem() which ensures no shared pages can be
-   converted to private after [6] lands.
-
-Preservation first freezes the gmem_inode introduced in PATCH [07/11]
-and preserve each allocated folios from guest_memfd page_cache using
-KHO.
-
-luo_freeze (not the gmem_inode freeze PATCH[07/11]) call update the
-vm_token which is preserved across kexec.
-
-Retrieval retrieves the vm_file using vm_token and create the
-guest_memfd with vm_file->kvm and populate the preserved folios
-to guest_memfd page_cache.
-
-Added the Documentation for VMM on guest_memfd preservation guidelines
-To know more about, PATCH[10/11] can be referred which has the more
-detailed documentation.
-
-Future Plan:
-	1. Make preservation immune to new allocation and fallocate
-	calls so that we can remove freeze call
-	2. In future, When IOMMU will use guest_memfd and can allocate
-	page tables for DMA in that area, Later it will be a problem if
-	other user of guest_memfd do punch hole before preservation,
-	that will make the pages to be lost after preservation. This
-	will be taken care of when IOMMU will add support for
-	guest_memfd.
-	3. guest_memfd preservation for private pages + in-place
-	conversion.
-	4. In future, when guest_memfd will have hugetlb page support,
-	add support its preservation.
-
-[1]: https://lore.kernel.org/all/cover.1779080766.git.tarunsahu@google.com/
-[2]: https://lore.kernel.org/all/cover.1780667929.git.tarunsahu@google.com/
-     https://lore.kernel.org/all/c054ba0fb2639932bbe354420d3f4f84cce84905.1780676742.git.tarunsahu@google.com/
-[3]: https://lore.kernel.org/all/20260622184851.2309827-1-tarunsahu@google.com/
-[4]: https://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git/commit/?h=next&id=f4d2e4f0d12d88155cd1128ed3294f7827bf4c5d
-[5]: https://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git/commit/?h=next&id=2f3f53a3735a7e67bbe9e580cb49372bf9261967
-     https://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git/commit/?h=next&id=df1a0d068d481b7d175c5af3970043206409a062
-[6]: https://lore.kernel.org/all/20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com/
-
-Tarun Sahu (11):
-  liveupdate: Add LIVEUPDATE_GUEST_MEMFD config option
-  KVM: Introduce kvm_create_vm_file() helper
-  KVM: Export kvm_uevent_notify_vm_create()
-  KVM: Track weak reference to vm_file in struct kvm
-  KVM: LUO: Support VM preservation across live updates
-  KVM: guest_memfd: Move internal definitions to internal header
-  KVM: guest_memfd: Add support for freezing mappings
-  KVM: guest_memfd: Add support for preservation via LUO
-  docs: liveupdate: Add documentation for VM and guest_memfd
-    preservation
-  KVM: selftests: Split ____vm_create() and add vm_create_from_fd()
-  KVM: selftests: Add guest_memfd_preservation_test
-
- Documentation/core-api/liveupdate.rst         |   1 +
- Documentation/liveupdate/vmm.rst              | 107 ++++
- MAINTAINERS                                   |  14 +
- include/linux/kho/abi/kvm.h                   | 106 ++++
- include/linux/kvm_host.h                      |  14 +
- kernel/liveupdate/Kconfig                     |  15 +
- tools/testing/selftests/kvm/Makefile.kvm      |   6 +-
- .../kvm/guest_memfd_preservation_test.c       | 357 ++++++++++++
- .../testing/selftests/kvm/include/kvm_util.h  |   3 +
- tools/testing/selftests/kvm/lib/kvm_util.c    |  49 +-
- virt/kvm/Makefile.kvm                         |   1 +
- virt/kvm/guest_memfd.c                        | 185 +++++--
- virt/kvm/guest_memfd.h                        |  44 ++
- virt/kvm/guest_memfd_luo.c                    | 515 ++++++++++++++++++
- virt/kvm/kvm_luo.c                            | 195 +++++++
- virt/kvm/kvm_main.c                           |  94 +++-
- virt/kvm/kvm_mm.h                             |  15 +
- 17 files changed, 1640 insertions(+), 81 deletions(-)
- create mode 100644 Documentation/liveupdate/vmm.rst
- create mode 100644 include/linux/kho/abi/kvm.h
- create mode 100644 tools/testing/selftests/kvm/guest_memfd_preservation_test.c
- create mode 100644 virt/kvm/guest_memfd.h
- create mode 100644 virt/kvm/guest_memfd_luo.c
- create mode 100644 virt/kvm/kvm_luo.c
-
-
-base-commit: a204badd8432f93b7e862e7dac6db0fe3d65f370
+diff --git a/kernel/liveupdate/Kconfig b/kernel/liveupdate/Kconfig
+index c13af38ba23a..2490f9a9b838 100644
+--- a/kernel/liveupdate/Kconfig
++++ b/kernel/liveupdate/Kconfig
+@@ -86,4 +86,19 @@ config LIVEUPDATE_MEMFD
+ 
+ 	  If unsure, say N.
+ 
++config LIVEUPDATE_GUEST_MEMFD
++	bool "Live update support for guest_memfd"
++	depends on LIVEUPDATE
++	depends on KVM_GUEST_MEMFD
++	default LIVEUPDATE
++	help
++	  Enable live update support for KVM guest_memfd files. This allows
++	  preserving VM Memory backed by guest_memfd file across kernel live
++	  updates.
++
++	  This can only be used for the guest_memfd that are fully-shared
++	  and pre-faulted.
++
++	  If unsure, say N.
++
+ endmenu
 -- 
 2.55.0.229.g6434b31f56-goog
 
