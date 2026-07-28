@@ -4,93 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB5E1C53219
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 16:55:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D26DC53219
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 17:19:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F0A66B007B; Tue, 28 Jul 2026 12:55:47 -0400 (EDT)
+	id E26CC6B0088; Tue, 28 Jul 2026 13:19:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C7DF6B0088; Tue, 28 Jul 2026 12:55:47 -0400 (EDT)
+	id DD8436B008C; Tue, 28 Jul 2026 13:19:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7BACD6B0096; Tue, 28 Jul 2026 12:55:47 -0400 (EDT)
+	id C9F7E6B0098; Tue, 28 Jul 2026 13:19:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4EF136B007B
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 12:55:47 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8D73F6B0088
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 13:19:01 -0400 (EDT)
 Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BFDF5A0406
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 16:55:46 +0000 (UTC)
-X-FDA: 85038787092.16.259AA0C
-Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 3849EC000A
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 16:55:42 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nzriWRMo;
-	spf=pass (imf10.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 272801C0999
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 17:19:01 +0000 (UTC)
+X-FDA: 85038845682.16.B85AF81
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 58F92180004
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 17:18:59 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jr5mlojO;
+	spf=pass (imf06.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785257745;
+	s=arc-20220608; t=1785259139;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r5JlP6ioUX+/TbxbJL0DU8jGeR7d++HxnQJa+9ff9G4=;
-	b=ERINx1GOqYeNI9JQQ7uD2ZOIq2wsuc5OIjDW5VA271c9+jp38eD7J92v0dmCtyYO/5ShHj
-	fPyCBrdIUYx3dcxArR0clAHH2GDLCB9w02xlqAKp+NtJJ/Sj1MWx3cC5LmK7Z4DJMbs1vu
-	ZAS2323oXmPgnQHI8nLBoXuax5IrcrQ=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nzriWRMo;
-	spf=pass (imf10.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=rxIJJXiRH8G6oEJFvD03xGAVBb4fzZs8q0QK44XycUw=;
+	b=u3ffHu0iyKYIXqu+xHdNvKLWY6vtTCopHYMSeA8QV6yCf7dzEINOtXxIflTsN50OYmjn0C
+	be0Q9nytHkYlXj4e/V/ecUtzl2O4+VQwIn3Pa/VaNxnpjrPtkxspspSpZHdDcyzSuz4xbq
+	UWKB8c9K0bcaonSh8ZM/mIxwU0jDBjY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785257745;
-	b=AbWTe6JjEBm37HjVQcbziE8/Xia6XOMHJE+IYHITsGl3G1Iwtf5ZDlJJ17SmcGU1e75CKP
-	eqR39MP9Ez/UVZDR7P4uiNSwd0ypQv3ZpYO3UqYjKHdjKy0HBIT3frzu1LQ13juPO3NOdC
-	Um4SGHh/uzqEUTkGhtQFP61cm2oKHkU=
-Date: Tue, 28 Jul 2026 09:55:21 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785257740;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=r5JlP6ioUX+/TbxbJL0DU8jGeR7d++HxnQJa+9ff9G4=;
-	b=nzriWRMoPg/hlP/vXaFpykit9EB3DnLvs8Agjmn21AqnYWpvMInnIAWS8vM5GTeHOWuVBA
-	GIjg2BePJN+1JkLrhCPwC3yKVQVWuo3/+KZhKYvXxcAsZnmqH6tLTUSwLSG+LlT3DPP9f5
-	EG9bfe3zO9W22+H2NrI3/c7wWCR0gro=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Michal Hocko <mhocko@suse.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Rientjes <rientjes@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Usama Arif <usama.arif@linux.dev>, 
-	Peter Zijlstra <peterz@infradead.org>, Darren Hart <dvhart@infradead.org>, 
-	Davidlohr Bueso <dave@stgolabs.net>, =?utf-8?B?QW5kcsOp?= Almeida <andrealmeid@igalia.com>, 
-	"Liam R . Howlett" <liam@infradead.org>, Yosry Ahmed <yosry@kernel.org>, Rik van Riel <riel@surriel.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, 
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC] Robust futex causing memcg OOM storm on exit
-Message-ID: <amjeUV3dAn7KPQgK@linux.dev>
-References: <20260723001908.4046643-1-shakeel.butt@linux.dev>
- <amds50dIVOiQNz0k@tiehlicka>
- <amd6N4DVzZkl90cs@linux.dev>
- <ame7Q-0eVRrtt34j@linux.dev>
- <amhZ645Nhj856JfO@tiehlicka>
+	t=1785259139;
+	b=WApWWXA8M8tiML2Lq8qYSHPwfbnLQYKhGuyqkYaitibqBGgBJQlS83SI4Sdvp2V4aIhw6S
+	c/8ckKxg9vhKZk+GSbL3TlvKMEp3C0rNeDBa+wLeypptNqd4qFXNssR/z20jDlHZqOJ+AU
+	AFgwL4OHo8+Nt4Kfs56X3P31k3wFxIM=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jr5mlojO;
+	spf=pass (imf06.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 81E2560A86;
+	Tue, 28 Jul 2026 17:18:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E4021F00A3A;
+	Tue, 28 Jul 2026 17:18:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785259138;
+	bh=rxIJJXiRH8G6oEJFvD03xGAVBb4fzZs8q0QK44XycUw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=jr5mlojOGaSfu4ISjDehd1W64iZsUQ1o8xpyez8Pa8rk/sBJU3mGbSuAxb73C23Yj
+	 aUE2dT9H6dTSBBwR/RdguOKgg7PQGOLiytrVw4aXpe9JoIJktQ1qFn5PY3kxu7WJaY
+	 g+2WTyso/SFfS6bYaWxeSmPDdRn/qO7zW1besvvl50crCZ90lG488FvFmv59GAVzMJ
+	 nVlleZgf8zQk3JZPZrhyXU/DkTfVTs1oxamJmLyupwRB+BgRz9/5ERPfWTFiYsRrhF
+	 iv5DPKaBurpyO3Ly58+FK3fh6KJ+RdI6+S/UXUU6UbbyZ6n4hwM6itQVO/+LQqZMzd
+	 /pgWZ8yipF69A==
+Message-ID: <8f787434-5326-4a8f-92d0-467e817a23b4@kernel.org>
+Date: Tue, 28 Jul 2026 19:18:49 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <amhZ645Nhj856JfO@tiehlicka>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 3849EC000A
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 0/5] Only free healthy pages in high-order
+ has_hwpoisoned folio
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ William Roche <william.roche@oracle.com>, Jiaqi Yan <jiaqiyan@google.com>,
+ linmiaohe@huawei.com, ljs@kernel.org, ziy@nvidia.com
+Cc: osalvador@kernel.org, harry.yoo@oracle.com, willy@infradead.org,
+ osalvador@suse.de, jackmanb@google.com, hannes@cmpxchg.org,
+ nao.horiguchi@gmail.com, tony.luck@intel.com, wangkefeng.wang@huawei.com,
+ jane.chu@oracle.com, akpm@linux-foundation.org, muchun.song@linux.dev,
+ liam@infradead.org, rientjes@google.com, duenwen@google.com,
+ jthoughton@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ rppt@kernel.org, shuah@kernel.org, surenb@google.com, mhocko@suse.com,
+ boudewijn@delta-utec.com
+References: <20260705180714.3708947-1-jiaqiyan@google.com>
+ <85cb7ea8-8116-4092-8310-69b61eb8602c@kernel.org>
+ <ee6bcc74-0846-43f2-bcca-b1bedff74351@oracle.com>
+ <1dea7b3c-7740-474d-b9d4-cd2baf47f181@kernel.org>
+ <168ad406-f6b5-4623-adac-9f894e410e48@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
+ KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
+ 87tMFA+u+L4Z5xAzIimfLD5EKC56kJ1CsXlM8S/LHcmdD9Ctkn3trYDNnat0eoAcfPIP2OZ+
+ 9oe9IF/R28zmh0ifLXyJQQz5ofdj4bPf8ecEW0rhcqHfTD8k4yK0xxt3xW+6Exqp9n9bydiy
+ tcSAw/TahjW6yrA+6JhSBv1v2tIm+itQc073zjSX8OFL51qQVzRFr7H2UQG33lw2QrvHRXqD
+ Ot7ViKam7v0Ho9wEWiQOOZlHItOOXFphWb2yq3nzrKe45oWoSgkxKb97MVsQ+q2SYjJRBBH4
+ 8qKhphADYxkIP6yut/eaj9ImvRUZZRi0DTc8xfnvHGTjKbJzC2xpFcY0DQbZzuwsIZ8OPJCc
+ LM4S7mT25NE5kUTG/TKQCk922vRdGVMoLA7dIQrgXnRXtyT61sg8PG4wcfOnuWf8577aXP1x
+ 6mzw3/jh3F+oSBHb/GcLC7mvWreJifUL2gEdssGfXhGWBo6zLS3qhgtwjay0Jl+kza1lo+Cv
+ BB2T79D4WGdDuVa4eOrQ02TxqGN7G0Biz5ZLRSFzQSQwLn8fbwARAQABzSNWbGFzdGltaWwg
+ QmFia2EgPHZiYWJrYUBrZXJuZWwub3JnPsLBsAQTAQoAWhYhBKlA1DSZLC6OmRA9UCJPp+fM
+ gqZkBQJqFFy6GxSAAAAAAAQADm1hbnUyLDIuNSsxLjEyLDIsMgIbAwUJGtCBUAULCQgHAwUV
+ CgkICwUWAgMBAAIeBQIXgAAKCRAiT6fnzIKmZJIUEADFx/tREzUImHrEwVHeSvDFmA7tJysI
+ UVrlvrM09E7GIuzphzv7jYmo8n3ANpCczLEVr4G0syYQdTigaZgv3+FQDIIzhKih1IHhu1Ei
+ XHlywNWKnQxxQEUNi5Mwx43wQz5XVw9F1A7gtKBKNtfogO511hAbrzagrYajyQacEJ/+sfhZ
+ 9Da8ltHIXD8pcYaHUfQgEusCgmEd9+KrUwrTbckFKmYq5chuE6yJ4J0EmWknL096jIE6CnzF
+ FRslQ3B1UKDjxVsm1ZHfir5NeWszLkTvGFsddFaWTgh8UycESG6VQzKXjjewXu2pG7YQYRpj
+ QKm1W5X2TkwWkXRBZTmfmbhxIUMh3+zf5wQ463rSmDN/8v81tdqBtAW6rH/kzg1GvkaTHXn0
+ 507yEHFzBksk2viAuIxxr7km8+/KARYLIdGtx30EG8cKzAUZOK6WqxtNCsXUJNrVE8CWrCaD
+ icoNu7Fs1c5hmPHdSTnU48ce67449DdnO4neLSNhRiGlMHJgfJUmgrxu/hcYeOZ3haWmEQ2w
+ uW1Mh01OHi8QZHCEyAbABrPs9GUgccc/4eYXX9hIgxfSkYzn8f+8NuIFPWl/0uTvjgqU29FQ
+ SbzOLxHq9439Ox40G5mS5eZXRGxITYR+6TXvRGI6P/264jvflnr/pDGUttaikU+0W+1uxgKH
+ cmYbEc7ATQRbGTU1AQgAn0H6UrFiWcovkh6EXVcl+SeqyO6JHOPm+e9Wu0Vw+VIUvXZVUVVQ
+ La1PQDUi6j00ChlcR66g9/V0sPIcSutacPKfdKYOBvzd4rlhL8rfrdEsQw5ApZxrA8kYZVMh
+ FmBRKAa6wos25moTlMKpCWzTH84+WO5+ziCTsTUZASAToz3RdunTD+vQcHj0GqNTPAHK63sf
+ bAB2I0BslZkXkY1RLb/YhuA6E7JyEd2pilZOrIuBGl/5q2qSakgnAVFWFBR/DO27JuAksYnq
+ +aH8vI0xGvwn75KqSk4UzAkDzWSmO4ZHuahKtQgZNsMYV+PGayRBX9b9zbldzopoLBdqHc4n
+ jQARAQABwsF8BBgBCgAmAhsMFiEEqUDUNJksLo6ZED1QIk+n58yCpmQFAmfIHFQFCRYU6J8A
+ CgkQIk+n58yCpmS2PA//bqN1LfcotmArgElsa+0EGZSQlYgK48pm8WAeTXTngudP9IJ4SuKY
+ HR5RNjHcBeqN+Me0zxRqYzRb8nGanHEkDyf4Im8DQM8d6vbyU+FcPmG4skud4kgS1zMHnlVd
+ SXfSIwKC/hKgdHG8aBV7545Lz9X6Iohea+94wneD0aw/hqF+QWewGZhWJriWAZtvEkzNjQOi
+ 4U9F/trLten/x7bpphDSnDMKJtITbtzATT1Dq7o7VpIUK1nCTQALMuMjKCdi8OdU/+V+R3O4
+ 0PXWvX8qrvqYapVbZ+9KqT74FsuB0Ya9uXwgBF2Q6cRuETZk5vqaqKxzqoQZCO8AOz/58j6O
+ 2RHNy/mZEN+7tJ5Tsq42zVJ4jxsT8b9YplavCMsnBgDeRWhcbYhCyttoL7nYISyWg4kQYZ/P
+ wIV3OuNv2f8iKYsxNsRuClOAF82+gvqOy1/1pprFjy8uo2pkoOrb63aOP3vO5VHnRKgra6dq
+ NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
+ OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
+ jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
+In-Reply-To: <168ad406-f6b5-4623-adac-9f894e410e48@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 58F92180004
+X-Stat-Signature: ua8cbyt13zkftjpcsfkw7a5a3qhhqgf7
 X-Rspam-User: 
-X-Stat-Signature: a5akubkimn8pqqdkmcraitcqk4caurud
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1785257742-256273
-X-HE-Meta: U2FsdGVkX1/dFjszuhzVLkT9q+v6S6YfJf7SJYBytWyr5w37z2Y+emp1GuPD0jSy6eaHzLJjUfhx475u8UmxkRyy8EsH8xrhAY4HnVdld0Ld1lwwEgYMKFLdVZRHWeuS3/IY1Qs95AaD8/Cu6ma4E3S1TmF3vB83U1uT7uhbLAZxhI2y9lJAhoGEcX3blruLFR/FSkaGKJLfv8+SLKw+dt7NtPaATXCUgmHjjBP3BTvyVjDQZpiCaqEcukFsf9ZQ+qm0OYgUJloxDVQ38666rHJTv9U9YqsACBWNl091QcpM6KlTeNbM1pUeY3Fa3ycRtT4IsxY+1VyimC2oLHkXZANrEZo4VSk+9VV9cECpvxDhdBlYaUfzTvX5XuKwbkqC1j15xCrwadDAMK/FKklEPA48k4CHpEVNWGV1aeyoaZMQfECVHN9BDxGScf7oQzCh0SSqBxO90sfFGyOJSiGk2QlcjaqEDaGnblPTjh+ofco2D0W0kelM83AfS3IzY8lt5hSQWWPC7CDJsyxhu1P4s9KQltKTBoWoIZlV0xQF57dZFB3kgNcq7a5T547f3NDhO3NlPnPQyco6ARjLGZ1Xu0ACLR44ftdW48idTwuD6ZUQYhtHsIxSmM3OsyrmjOsbteMC/XmrvVGAQjnkx4+oygvKxJtz3wiemNZvprPhpPnFY31RKMCmP+YdfydGH+NDEhY5oZ/8fgeL/CCAEt+KKpZwH/PpfU8hkGUKJe547FBcDSm8hL87DO58xdf1mIDzEh05SrUAb/tKyXOlHUAR0df2QZNqp1xKaZqk5VebTyiSaiWIixrsB8NY20jZgJJlhiQkEl9YA9EuiAXv538lhKtStf2jpWazB4D325g++Eku+2MV6+lDZcNj4MS+1PjihJNIl7X/piDrxcGe1HWV+H2Ri61n8w09F5AMTdit7hYm90T7s29YCtdO/YKPAVux3JYYOt7cCrIt3FDybiQ
- BhlVBPsc
- nDOwk5lbBT2ZToBusNKVbzjFiFmvazHfVugSOy2l4V/Dux5GRRRDfUM830SdrttG5zyg+xMqqN6t/tp5+33ZP3DaysLA/PMjlQKvSRLtXceYuplvf3nbVOOR3jafEdGpu7NrAoKgkI0Hr6HthIH1wUVWY80NThsnWaDTi4HmcAF8N/C6sReSXHzuZzpWjsHcNNTTIIfzvSslsukS7d9deaNgXtg==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1785259139-333827
+X-HE-Meta: U2FsdGVkX18UexzvamZP6lc0qN1LHCqF/iZVC6R4uYFrN8r7IlLD8suX4B+Fs5WnR3txuOUOyfMsBjP6ztir7kOnJn3dDyk2jyvPoyubzgXTQc/+4ZHW4u3bHywJv+RG56Si3B5wZAlni7GmaYKavFJuP9+KhiDvg8vKftVc5PJ4N+uAni8fwgsoUJSoe8Dkfi3eQuHmS4IUf4yLdz8uljiOcAn4dvx8motXChRe3KaE/6I/2Rt2+W3mE7Csp6/fqlop8B25a1Y/AW6WnbDAt3DZXE6S/2KZdAGu9OCBEcJpIczdNKnkD1n8f43V0MqWF6JcOR7zQCqEOgS5YQdfsNfaHnoOq8RdO9ZOlr8AwZBtvhGk+6kD0JjqB/rLRw+JvfZ10XTTh8MNfJkyqF8regAzvgxlb3PsG+glLKxkdyRFQN+9DWwb/5kczStglrLtpKxLOG9zXJXfUGkcQxr901rIb6ut1BWIwwaf0QVhBR6Ia50Iw8eSfIPMWDkYlmKtYcYgqoMEAbeOSPrhx4zf0sPpb5eJp/qKjFC6WKEliRyWCn1K3qfQipPwchSNmD7mczBTfiB2jenNYLTGYy5cFrwdqvvy9ohLk4NojURI4PDokzuG9/KVXkHNmYfIGxDj3EB7LYOJuxidqO4lX6McCelXxJJzttgKdlC/9oOPBr/HAh4ZwJ1kOv3TqYYiw3ELYET0l9t9i182pb8Y3dYSJUD7O/lUm4OnSHKETBGdmzq4zMFM/S2q0pC46fNwK36UGTMU0aJOuhtEJmsbOkHBtmHtwfdfQs0XwV88dR/VNSvocb44s92YINfqwqlgVgNS2eMjZ8ef+V3W7kaCu3uy0paO2FgdTPurdWtxkzn3cqL5oNOxD+B40Q7bP9kTauWEoe4gBIFFUHkz1M84rGtSRX75aEHNqskqfevMc7RF4pjjgLSSKshsES6TbidmwVIsZOc5ZrbSSr+S6ejqED0
+ UgmsLJOr
+ YrFa3W/A1gMfe08OsRNUpeOn1oYrRsaSLcxnNWGlg1mX3g/+T+hUvydAJVG0G4g/JwOaw1q49RTMP65Ee6HXIfHpIK0+l8xmMMdbuzhYTsmmLpQ7vWzTvIn7WeRZf1oJTF/JFnzl+JFJHLpBC5fqfRt3H+17epp72NqGhsOuH454xEj4nQ2jxgDUnU8sU4ESIV1NT/jD/5Ij5knyMMILzCHMvsiY7MAHbQnExbk5BDqpZZrKhpMSOUNUHSqs9+ZUGaHq9vDPfTg/t4yw3i2dn0mpAHkv47FMhVfN6L33IJh+pq4YYoneJN6UjzhjH2Vj9hHEQTiHkMNL1pn5tfw0v0XbcnOOz0Uwr0ODoquIfyBi4itg/ViO3bckm6QIMPwN5m1RCOd8M//+yeCWu7qJswkLjpw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,104 +145,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 28, 2026 at 09:27:39AM +0200, Michal Hocko wrote:
-> On Mon 27-07-26 13:48:58, Shakeel Butt wrote:
-> > On Mon, Jul 27, 2026 at 08:38:37AM -0700, Shakeel Butt wrote:
-> > > On Mon, Jul 27, 2026 at 04:36:23PM +0200, Michal Hocko wrote:
-> > > > On Wed 22-07-26 17:19:07, Shakeel Butt wrote:
-> > 
-> > [...]
-> > 
-> > > > 
-> > > > TBH I am not entirely happy about this approach. It effectivelly reverts
-> > > > a75ffa26122b ("memcg, oom: do not bypass oom killer for dying tasks").
-> > > > It just makes it lockless. Assumption that a dying task will do so
-> > > > quickly and with bounded resources has turned wrong on several
-> > > > occasions.
-> > > 
-> > > That's why I kept it as RFC :)
-> > > 
-> > > > 
-> > > > On the other hand I do undestand the contention issues and I can imagine
-> > > > that the existing solution doesn't really work well for huge thread
-> > > > groups that all end up lining up on the oom_lock just to learn there is
-> > > > nothing really killable anymore because they are the oom victim...
-> > > > 
-> > > > Would it be just safer to bail out only for oom victim threads. This
-> > > > would narrow down potential runaways for oom victims which should be
-> > > > more limited than any killed/exiting task. It would also give the oom
-> > > > killer/reaper chance to work. WDYT?
-> > > 
-> > > I will give the following patch a try with the reproducer I have. I am still
-> > > improving the reproducer as I am still not able to recreate multi hour slowdown
-> > > yet. I will report back once I have some results. 
-> > > 
-> > 
-> > I have some results with the reproducer I (AI) wrote.
-> > 
-> > Setup: 20k threads, each with its robust_list head on its own page in a
-> > large anon region pushed into a zswap pool (writeback off, so it's
-> > unreclaimable and pins the memcg at the limit). On the OOM-group-kill
-> > every thread faults that page in futex_cleanup() -> do_swap_page() ->
-> > swapin charge -> memcg OOM. A separate thread holds mmap_lock for write
-> > in a loop so the oom_reaper can't reap the pool -- matching the host,
-> > where the reaper was blocked and the memcg never fell below the limit.
-> > 
-> > I tested on next-20260726 as baseline and then tested your suggestion over it.
-> > For baseline ~48k no-victim OOM invocations serialized on oom_lock; ~40s to
-> > drain the 20k threads in a VM (hours on the host, where each invocation
-> > was a dump_header over netconsole). With the patch the dying tasks stop
-> > entering out_of_memory and the storm is gone.
-> > 
-> > With the following suggestion, the threads of dying tasks stop entering
-> > out_of_memory but the exit time doubled as each thread has to decompress the
-> > page from zswap.
-> > 
-> > 	if (tsk_is_oom_victim(current))
-> > 		goto force;
-> > 
-> > I also tested by replacing goto force with goto nomem and the exit time halved
-> > i.e. ~20 seconds. Looking deeper it seems like each thread is still going
-> > through the reclaim loops.
-> > 
-> > Just for testing purpose I moved this check along with goto nomem just before
-> > the reclaim fuction i.e. try_to_free_mem_cgroup_pages() and the exit time falls
-> > below 1 second. I think what we need is to detect early that the cgroup is
-> > unreclaimable and the threads of exiting/reaped process should just return with
-> > enomem.
+On 7/27/26 16:20, David Hildenbrand (Arm) wrote:
+> On 7/22/26 10:27, Vlastimil Babka (SUSE) wrote:
+>> On 7/17/26 15:06, William Roche wrote:
+>>> On 7/17/26 12:18, David Hildenbrand (Arm) wrote:
+>>>>
+>>>> I still don't like the complexity of this, in particular, as we have different
+>>>> mechanisms in the page allocator already to try handling this,
+>>>>
+>>>> We also do have cases where we set the hwpoison bit, while a page is just about
+>>>> to get allocated from the buddy. So before we take it off the buddy, we might
+>>>> just hand out the page.
+>>>>
+>>>> check_new_pages() seems to check for PageHWPoison() and make us not hand out
+>>>> such pages. It's guarded by "check_pages" but it seems to do exactly what we are
+>>>> looking for, now?
+>>>
+>>>
+>>> Just adding a comment about this aspect:
+>>> The check_new_pages() mechanism used by the __rmqueue functions should
+>>> filter these pages out, but this has been disabled by default in 2023
+>>> with:
+>>> [PATCH] mm, page_alloc: reduce page alloc/free sanity checks
+>>> https://lore.kernel.org/all/20230216095131.17336-1-vbabka@suse.cz
+>>>
+>>> So it would need to be enabled back, taking some of the performance hit.
+>>> (and I personally think that it has to be done)
+>> 
+>> Would it truly fix the issue, or rather there would still be a race window
+>> left where we check that there's no hwpoison flag in the re-enabled check,
+>> and only then someone sets it?
 > 
-> Do you mean, something like this?
-> --- 
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index 6dc4888a90f3..66f1eebf8c22 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -2648,6 +2648,18 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
->  	if (!gfpflags_allow_blocking(gfp_mask))
->  		goto nomem;
->  
-> +	/*
-> +	 * OOM victim still needs to charge memory to exit. OOM reaper should
-> +	 * help but it might fail on mmap_lock contention. If the victim is a
-> +	 * large thread group then all exiting threads might compete on oom_lock
-> +	 * just to learn that there is nothing really killable anymore. Bail
-> +	 * out early and fail the charge to expedite their exit. They are
-> +	 * considered fully reclaimed by the oom reaper and they shouldn't contribute
-> +	 * further charges.
-> +	 */
-> +	if (tsk_is_oom_victim(current) && mm_flags_test(current->signal->oom_mm))
+> Why are we checking PageHWPoison at all then in check_new_page()?
 
-I simply had tsk_is_oom_victim(current) check here. I assume you want
-MMF_OOM_REAP_QUEUED in the mm_flags_test() above. Do you want me to test with
-this additional mm_flags_test() as well?
+We check all kinds of unexpected state, when that's enable. PageHWPoison
+could have been considered unexpected too, when the checks were made more
+and more optional (first by Mel and then me).
 
-> +		goto nomem;
-> +
->  	__memcg_memory_event(mem_over_limit, MEMCG_MAX, allow_spinning);
->  	raised_max_event = true;
->  
+But indeed it seems the PageHWPoison check is supposed to be load-bearing
+(hi, Lorenzo!). It's intentionally handled before bad_page() (with a taint)
+in check_new_page_bad(). Commits 2a7684a23e9c and f4c18e6f7b5b are also a hint.
+
+> I think we created a mess.
+
+Yes, the PageHWPoison handling was made part of debugging sanity check and
+then not recognized properly as load-bearing later.
+
+> The PageHWPoison check is not just a "nice to have" sanity check for kernel bugs.
 > 
-> -- 
-> Michal Hocko
-> SUSE Labs
+> So it should never have been optimized out that way before reworking the bigger
+> picture.
+
+Sorry!
+
+>> 
+>> Also, can the hardware actually detect a problem with a page that nobody
+>> accesses? I guess if yes, it's only in some corner cases.
+> 
+> Yes, quite frequently I think.
+> 
+>> 
+>> So I'm wary about penalizing the allocator paths again.
+> 
+> I get the feeling that we don't have a proper plan on how to handle HWPoisoned
+> pages. We should take a step back and discuss how we actually want to handle
+> them instead of optimizing here and there and creating more of a mess.
+
+Fully agree on having a proper plan, because I got the feeling it's been a
+whack-a-mole approach for years. If we then decide to put the check back
+(and live with the residual race window), it should be handled completely
+separately from check_new_page().
+
 
