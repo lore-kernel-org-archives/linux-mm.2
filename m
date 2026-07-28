@@ -4,105 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43468C54F4C
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 06:28:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54BCEC53219
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Jul 2026 06:40:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C774A6B008A; Tue, 28 Jul 2026 02:28:50 -0400 (EDT)
+	id 009766B007B; Tue, 28 Jul 2026 02:40:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C4E366B0093; Tue, 28 Jul 2026 02:28:50 -0400 (EDT)
+	id EFC7C6B0088; Tue, 28 Jul 2026 02:40:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B3F836B0095; Tue, 28 Jul 2026 02:28:50 -0400 (EDT)
+	id E39B76B008A; Tue, 28 Jul 2026 02:40:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D6D16B008A
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 02:28:50 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9DB71120241
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 06:28:49 +0000 (UTC)
-X-FDA: 85037207178.13.D7C7B66
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 285B880006
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 06:28:46 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=golX7a7n;
-	spf=pass (imf02.hostedemail.com: domain of arvind.yadav@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=arvind.yadav@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BA9726B007B
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 02:40:07 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C4996A135C
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 06:40:06 +0000 (UTC)
+X-FDA: 85037235612.17.C814951
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	by imf01.hostedemail.com (Postfix) with ESMTP id DB7DF40009
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 06:40:04 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=ahajF5mh;
+	spf=pass (imf01.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.177 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785220127;
+	s=arc-20220608; t=1785220805;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=vLschPK/X4XLrH+bMuNH/WDwOJdmzWSKYORl2Ns9okI=;
-	b=SMhkQgjr3Gpd4Lw6imhGUFrtpdZp+pk1OudSVl/8hwO57hdjBHkE26aerB9f1LkH5W/qg8
-	ffrhZ45J7CXK2KLkDJb0viaLQiRHdZmOwXmPZmqV9r6bLPmhG3sU5o2EMGhEdldJmyQVRY
-	T1sNSxQVXAb15D74H0ZvMOOJSfb8A64=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=O5vL8K7elVixiyioHzvpuSpD8hwQ+IAvP7Z0RgBWZFo=;
+	b=hZQO0Q6lBuZki6gCjZd7iCEyNOrbkr6NNZwQTics1DoIb1gVdOVfQIpji/9FD/QtqDM5WJ
+	oyJm9vrKP3ShaWR0aLK59u7dZs4rZZ1edFPQd9tzjtA2DFKFgqmZ4jD54w3H4I7zpNFISh
+	0Hosy+/j9zBEHwWgCJiHLjQk/RBcb2A=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=golX7a7n;
-	spf=pass (imf02.hostedemail.com: domain of arvind.yadav@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=arvind.yadav@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	imf01.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=ahajF5mh;
+	spf=pass (imf01.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.177 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785220127;
-	b=2MPy5C5tKsS3e9cJrk9Wxb39I0PQwLHWHoGVMuMBRL7hisK7K4SH5dctNciDwg+Zb/GOJx
-	RCfOrsqZcfPCs+gPNCKR+/ollYPfHAoZRK+PY2dq5YS2JqMBiRUSEabu5VnByprGTTXup+
-	uTI9KivtN6dlCSBW9XXWJ5Sz1uH9sgI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785220127; x=1816756127;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=kKygvtH/OzsvbEzhb1WD9p+0+rChW7yxWOwVTVF50wU=;
-  b=golX7a7nvJ2hb+KKJoESg8N48fmBbWb7zfuPcd7HtsP6MYoFukJju8/0
-   XdBlEM0ok/8zpdnwto9vegsxgwg4NBtrA2amoiDMcIjEKatLlAtllCe9b
-   0gYLsQdOjyW2k1xsQBpFID9DaLsduxLrv5oL6d2mRLKMV/nSynfyTeq/M
-   YYXEvAuqBSFRdO6DDPKlAFu+73ox7VbGVeAkRb1vLWhY8YocJCTkGdits
-   y4n7JsTihGADxOTGPIaEsW+ix1kw7ZAyvIH+uvJO97VMdSovVQ31tzfcV
-   hwapseFDctE9rbaHuteO4mVtKMFbTS3SFYkfQ4o4brb7jqbyyhy2SuOuo
-   A==;
-X-CSE-ConnectionGUID: Jp7z90ukQ3m9ApfoLJsR2w==
-X-CSE-MsgGUID: RitVQnWKR92L38ALhkm6mw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11858"; a="96383815"
-X-IronPort-AV: E=Sophos;i="6.25,189,1779174000"; 
-   d="scan'208";a="96383815"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2026 23:28:46 -0700
-X-CSE-ConnectionGUID: 8rkuG3GNR1OX+PPXZvewPA==
-X-CSE-MsgGUID: T+f44TYfSoeVUAE6EBzY1Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,189,1779174000"; 
-   d="scan'208";a="289575953"
-Received: from varungup-desk.iind.intel.com ([10.190.238.71])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2026 23:28:42 -0700
-From: Arvind Yadav <arvind.yadav@intel.com>
-To: linux-mm@kvack.org,
+	t=1785220805;
+	b=FaV/C71MxL5uVrzexv5ZQUOCfE32TBV5rU8uNzeL67MykGtzoliIthJQtUAF/n+HmYhHEq
+	c7o+/XtNeWR3qtRlovSgnVFIz56w0GVd++tN/lc3c1lCnsq3E50DQ+t7kJLXVJX/K7jM2D
+	NslCmSVlpEt+g3I3b14NNAPLpPl1psk=
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-848479c9bd5so2706229b3a.3
+        for <linux-mm@kvack.org>; Mon, 27 Jul 2026 23:40:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1785220804; x=1785825604; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=O5vL8K7elVixiyioHzvpuSpD8hwQ+IAvP7Z0RgBWZFo=;
+        b=ahajF5mhFtYKJjrbDSZRkqIkrkaZ2ZZBXl2RxS3KEup3PhTE6A79L9MQQ+IeS1Jx43
+         7oyqhcqkm70Zpns2nkICXYW/zIcOF3JsdmKoRTPg+CaWnsHs6G+LdPBaK0QeuzgQStxv
+         1SEO29yUCPWOCTEemNYlGdjb0gNmGpf2q3A2Q=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785220804; x=1785825604;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=O5vL8K7elVixiyioHzvpuSpD8hwQ+IAvP7Z0RgBWZFo=;
+        b=TzVx7SS5viQO+s9avE1JDWDe7h6PPfCAAuWLBGAOzGb6dc6E8OcJvsPl8UGgoPXSYz
+         nIZk+ABNWLiYEHXUc/VFxxriSmfGgWSCux0kvKAYvA7+O3POwpapqkKIWyh3x4skiu1z
+         /c49kfAOnaXJyKhF+XGO19ameNgNfyxRvwGMhaVi9bqgz+aq3Ubv9RtyH7EiBLOix8bi
+         gIbf6Ys5bQ8+CDJ3CQogXB6MNO9rJ6Hcdw4ZtmUxDiVMr62X1rEU4hPodMfaaO7Ijfg6
+         jpc8mSSBsHUqMa7wTfjFRR12PL+K+rVlAxG9OQ7b3uO/jGBh9RhLSS+rmOljdF1iXiFc
+         3F+g==
+X-Forwarded-Encrypted: i=1; AHgh+Rpc9RIspA2sX14uKm82IZlARZyxLtdVzIf8Y5zOC1UYv4TMV0OWPM7JJQpILnibV02BcaiRdgZB3A==@kvack.org
+X-Gm-Message-State: AOJu0YwPgU290YLMq4cXoPuJzyfnbXlI72dRmmwjW8oVSMa8BoWXPlCB
+	ZWYLh1DDcJYLZaKdfhRuVc30/Qew94K3IlsBBVkewMiJctSM0Nu4zCPlq0fsYkogBA==
+X-Gm-Gg: AR+sD113dEWFiRWF1LcWJn6iwgk3STd5HTpILA2ySMItYHwH0IDUxoYgsc10mcLLwul
+	1bYYCcHSX3Uf8Hv5GzCxw9UeRH4veijcLlFRwW+dhtWiDR0f1/7Vw5iG2uefs28NNDkVZVgQGkO
+	DMEzmCpa2/BvB/erWTpSPq1bspc/lvOuT46p2V+QeAoAgVIAXYT3Z1vHKieafFFIhso5VH/Vu0B
+	+aqXhoslZ4X+Y+tpg4pQhkACst/j4pLtSMQQBCjDiQDlq6PfhUDhtjsMZB3dNVMQqz5DBiqhdMI
+	VNI5wkMXf8q7N6rZW7A5Po5Gl0XnitrUbHwnxBluipLc9+seTkCNAuAmzfiWKNR536eBvtWFJX9
+	Sr5NC1DKwKXswJ/oqjlVvPW+aBSZhtnyT8vUy6eVQHiSxGPrT2qAu3RFzI71TQRDePZg/oADU/e
+	7i6O9Gi2fK2Iss0kjbuCx4tuyios7bagGPjyKCftVV71CiH3S9tJmFRwtkNyaozUwAB25PNbqDe
+	3iOwC5782gwA85cxeQ/84HvIViE
+X-Received: by 2002:a05:6a00:3992:b0:845:e8b5:8c49 with SMTP id d2e1a72fcca58-84e932c585bmr1091894b3a.10.1785220803771;
+        Mon, 27 Jul 2026 23:40:03 -0700 (PDT)
+Received: from google.com ([2a00:79e0:2031:6:f891:e0e8:e2c3:fb20])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e532ad0f2sm3878806b3a.25.2026.07.27.23.40.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Jul 2026 23:40:03 -0700 (PDT)
+Date: Tue, 28 Jul 2026 15:39:59 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Andrew Morton <akpm@linux-foundation.org>, 
+	Richard Chang <richardycc@google.com>
+Cc: Minchan Kim <minchan@kernel.org>, 
+	Sergey Senozhatsky <senozhatsky@chromium.org>, Martin Liu <liumartin@google.com>, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com,
-	ziy@nvidia.com,
-	rakie.kim@sk.com,
-	byungchul@sk.com,
-	gourry@gourry.net,
-	ying.huang@linux.alibaba.com,
-	apopple@nvidia.com,
-	balbirs@nvidia.com
-Subject: [PATCH v4] mm/migrate_device: Clear stale mapping after freeing swapcache
-Date: Tue, 28 Jul 2026 11:58:32 +0530
-Message-ID: <20260728062832.1107127-1-arvind.yadav@intel.com>
-X-Mailer: git-send-email 2.43.0
+Subject: Re: [PATCH] mm/zsmalloc: fix release order of locks in
+ zs_page_migrate()
+Message-ID: <amhOkJPfTjkuWElp@google.com>
+References: <20260728055333.421080-1-richardycc@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 285B880006
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260728055333.421080-1-richardycc@google.com>
 X-Rspam-User: 
-X-Stat-Signature: kjecfs6me4spu318396g6ocn7m7n3tmo
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1785220126-837390
-X-HE-Meta: U2FsdGVkX1+4NbjUdbp7w1gjqIcWHpGwExwbByi/jVZxkgK30Oxg16x5ksYHKmjwtFkZWj3eR55UgKnFTTOo7zRDEJtsu1V/fSZSIx/4B/yBSMIPaLERow4JvSuv+DBNE6hU/b9nW0OZTWlQY517M7Q9gvTBovrlhCSUI724TsY4NbGUfByhJ0hMYKn81Tsp+zB86CAA7kX+N/o5L7+nId67YRzh+OfjkLq4UCbRp/RsOQ66IgDAkRh2f/f/YFRHoWZQUleXknmNGSIA5edVwmkHuwqcCoG5Ewr1HQowPf9xxrM5GxasmANymanlL+MHVmjV74OUCUbA3Eq7DZR6sGaijwR4CfoN3R1R0CRUkQQ/IxsSrGaT5daHZkYOJ+HX6WnlFWaS2B97Sky2AbtF3I4Rt9qYCxkQGF8X6Lia0RrprJYCJ/HyuCsyDfiuRsiUJng8v2/DbuK5d6IOx8Jfi3W2s7+FR7Q2wSFKUTtonlJx75csdqlyh1MM3hA9J4QcIMAYzL3wkE5KUXrpsSzUSGIXu201mxjOoxfZwx6MQ/RJs8IHMoYFQFli3aUIvAMqaWwRxGQbFh5BH2u8GYEvKJkR6BUT4nOFHfrEJdVPDZxlkc9913ajrjKkMvn33Pyg+ZZvr3zVKtEzM/oGFO7FQZ2Wu7C5rBETzDumCZPloXzFqx4xnFQsqG2mHpfKVPOeyCLXrbLOCqvaXpnGgUkKj8DQJm42Jyl+2TbdSYK3EkgDLzasKGZBMBsa84X5wY7ONaV6ZQYfpCBLWqF5BUXOfKuNR5fDud8RiuBFU9vSGLfh+NgrLUQqcOlesLDo6jCB1JUVLJuWM2eVmZXEeFMG0IT6H/HV47faAhbQu2n+pH1Q9716YLL3pP5y3xDT5RuStcv2tx3ffw83EQQ5k24UFS3yup5HPvki+8gBbBSHQVAizl/sI2t4/ojqdpsTEUUAMSJ24rHu6IQQZUzVqp0
- KjqkbNR0
- Ck+tkoSB+KaKMGp9jMugTlFdAT4kO25eynv/PkVK+HnhCXRQtCQfE0K9qUHVMy1z5VKnMfijGHFKqnMxE9xRTxUn6fBEJ0Rw4zxUS1+i7hzhZ9XjqMWtb/923iU+32wv1bv/LghpRTHL2FEq8UgIcFlvyCkMUcOyMfQNzLOKI+qB2RrLOIMOAdvKkcEBCOQTfHgBY2j+1YgVUvGGCXVUsuM0NcKmC1j1itgtCgo+WoDYJJi/FT6XhkgURg6poDlrgWXub8BBlcPGPwVTMpbso0EC2Vd6j5BWzr8fmu1/a4LL9zsohtbLy5m5QuyeTl9m3MXrmgEUVTEwbLlBHs33s0ZD6l5fUlmYWNcTQ41BzschmKAC9u6rqI/bG9aUGMZTb7hC696O7NUkSWEq+xCRbYBnR9zgISxoNwvpbrQMr/WQJ/QRM+/9NopjEiR3EwfnDWcfqDskaS/oyVluVxV+U73YHLFzep4j7ukvxFFiR72Iwp9pFD97HPlr5N3P6GhNvCxKDkfI85PRWtp4+JO9Wskn7p88ZU/u5LkgpqA9+1usOnT+kqYh/4Qv1HVjDRIGjMmmk
+X-Rspamd-Queue-Id: DB7DF40009
+X-Rspamd-Server: rspam01
+X-Stat-Signature: ax3oe9y8spgg7519uuyacgmxaszn1a39
+X-HE-Tag: 1785220804-722237
+X-HE-Meta: U2FsdGVkX18wbQ4iGnrQ9KixEDJ7ZjZ4rx6zE9fFsfa174OV6Vi06v6iC8nIPURuSa+9sTZIvloUauDBSKlSNZVw7UlTz3TL4qKu/wbXZcU2oqYuXQWNKf8K6VEQHS2qQtknkr6Xyr4SbNXtYF4htG/CN2QX/+nKTxGSYjvUJ7211ghmIT0ShdR0qZDxR9PgrrRUmabUMIyqBgyZySKV7CnIh8HcWXDjppmT70rqFWXfp3emj/ezTftDSGTcUZB2QnTZc3+kbDZMq0sY/mrFklyPMTeSgsQtY6N3KeCY8W1+cgvPBZQhpWjeXF0ZVHkwtK46aEdvozQXO9jBRJCMeLkAr7GFA4um0tVsNOZYSBZAwa0OwvRpZvtFNx6S2uqlM0SWtvayc2uj99TZx3WTAhjBUxCAaeANa/F7KHINdp+eNqKNjRsH7DpVwweqnTndOCN0XJYqAAsAhnANVsFXFuV13qsKp0GG0JnZYwgjVpZqn6MUiihvfOapfxC1AHEdQivy3ovk29JtU9xuFbS7Q37A8iJYlBJwphP+QdoLnRHFYkCT5E5akWsxItdtgh0/SiFqDSlyf4gpU1zDWGD0JRgFGYOXeuIR/6zDrOFoHYfcoVeKICbmi2Wi2+GmAUitC4L5yBmA85IsUHWEF2v5kRSHecH1+lIsYEAFvAOTe0r9Lz0/hs0klgqEflNMmqpLTUC9RT4QQO1BD8CJ+LOpGTSzIv4sOvklnWc0neab1/v+yX6VkoeDDWSVAFtnNIG71arrOyWBS+3sMsH+2/lPfFxQS8M4Ob5D/4gJynRn7WAgAFYIgg5Nf9pxa/II0pzADNln81fiQKgDs2YkF5iTm4mEn1OuMfXaPZ/dxJOcz6RznbxhYglepp6mqD7IMtXc1HWyp+SegWg8bWMcnzvVx93x+adX/c48baGk6Y9KZajpHATz1gVTfewvczi5JDyTs1O5kHetcZWmp02Ax28
+ LJY49LzC
+ 5wJhlsg4v314mMlC6xNobkPJUP2uQdI2g/bUcma/oEpLcPwcI741+4SxKZuXJ2nTK9RUE9nwM2PX+7dQC8EbnMZAkH0KMUqDDOwqZOtHVfzcc5XA9UeU3dNTl4Pprg1IxRrNRgWYnicOjuNH9skp2ZVDsFMjd0S/tUUl3Ap2nShbzT8Ha/A+NJQOPfHjDh8H8bVrRRyPmNkFgb6CGMObIgkWXgOxIPXmQlzp6mC6b+ieljT52yBv7+8ln0QfRKVFJc+wgghtZKk9H8aTGQnkGdIbH+H/s9nIT7ysf/gqc6qeFAe4iEwboHRmt4/PfhNjIg0pBiwaPJdsf36BbBQ5Xz9UZKQpf1AjqbcpdylBZruxrou0WWFU89qz5mxwNSm5VTwGj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,85 +119,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-__migrate_device_pages() reads the folio mapping before calling
-folio_free_swap(). When folio_free_swap() succeeds, the folio is removed
-from the swap cache, but the saved mapping still points to swap_space.
+On (26/07/28 05:53), Richard Chang wrote:
+> In zs_page_migrate(), locks are acquired in the following order:
+>   1. write_lock(&pool->lock)
+>   2. spin_lock(&class->lock)
+>   3. zspage_write_trylock(zspage)
+> 
+> However, upon successful page migration, they were being released in
+> forward acquisition (FIFO) order:
+>   1. write_unlock(&pool->lock)
+>   2. spin_unlock(&class->lock)
+>   3. zspage_write_unlock(zspage)
+> 
+> Fix the unlocking order to release locks in strict reverse (LIFO)
+> order of acquisition:
+>   3. zspage_write_unlock(zspage)
+>   2. spin_unlock(&class->lock)
+>   1. write_unlock(&pool->lock)
+> 
+> Releasing locks in reverse order of acquisition adheres to standard
+> kernel locking hygiene, prevents potential lock ordering and lockdep
+> inconsistencies.
+> 
+> Signed-off-by: Richard Chang <richardycc@google.com>
 
-Passing the stale mapping to folio_migrate_mapping() makes it use the
-mapped-folio path for a folio that is no longer in swapcache. It can
-then operate on swap_space.i_pages with invalid reference accounting,
-eventually triggering a folio reference count BUG.
-
-After a successful split, nr still contains the number of pages in the
-original large folio, although each resulting page is now a separate
-order-0 folio. Reset nr to 1 so each split folio is processed separately,
-including its own swapcache removal and mapping lookup.
-
-Refresh the saved mapping after folio_free_swap() so the current folio
-state is used during migration.
-
-v2:
-- Refresh the mapping using folio_mapping(), as suggested by Zi Yan.
-
-v3:
-- Reset nr to 1 after a successful split so each resulting folio is
-  processed independently, as suggested by Zi Yan.
-
-v4:
-- Re-read each source folio's mapping immediately before
-  folio_migrate_mapping(), as suggested by Balbir Singh.
-- Add a warning to validate the post-split order-0 invariant,
-  as suggested by Balbir Singh.
-
-Fixes: df263d9a7dff ("mm/migrate_device: try to handle swapcache pages")
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Rakie Kim <rakie.kim@sk.com>
-Cc: Byungchul Park <byungchul@sk.com>
-Cc: Gregory Price <gourry@gourry.net>
-Cc: Ying Huang <ying.huang@linux.alibaba.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Balbir Singh <balbirs@nvidia.com>
-Signed-off-by: Arvind Yadav <arvind.yadav@intel.com>
----
- mm/migrate_device.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
-
-diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-index 554754eb26ff..0e6f00190fd8 100644
---- a/mm/migrate_device.c
-+++ b/mm/migrate_device.c
-@@ -1182,6 +1182,13 @@ static void __migrate_device_pages(unsigned long *src_pfns,
- 							 MIGRATE_PFN_COMPOUND);
- 					goto next;
- 				}
-+
-+				/*
-+				 * reset nr so that only first after-split folio
-+				 * is processed below
-+				 */
-+				VM_WARN_ON_ONCE(folio_test_large(folio));
-+				nr = 1;
- 			} else if ((src_pfns[i] & MIGRATE_PFN_MIGRATE) &&
- 				(dst_pfns[i] & MIGRATE_PFN_COMPOUND) &&
- 				!(src_pfns[i] & MIGRATE_PFN_COMPOUND)) {
-@@ -1221,6 +1228,12 @@ static void __migrate_device_pages(unsigned long *src_pfns,
- 			folio = page_folio(migrate_pfn_to_page(src_pfns[i+j]));
- 			newfolio = page_folio(migrate_pfn_to_page(dst_pfns[i+j]));
- 
-+			/*
-+			 * folio_free_swap() removed the folio from the swap
-+			 * cache. Refresh the saved mapping before migration.
-+			 */
-+			mapping = folio_mapping(folio);
-+
- 			r = folio_migrate_mapping(mapping, newfolio, folio, extra_cnt);
- 			if (r)
- 				src_pfns[i+j] &= ~MIGRATE_PFN_MIGRATE;
--- 
-2.43.0
-
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Tested-by: Sergey Senozhatsky <senozhatsky@chromium.org>
 
