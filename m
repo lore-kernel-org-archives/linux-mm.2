@@ -4,122 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFB1CC53200
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 16:45:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AAF1C53219
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 16:48:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA2816B0088; Wed, 29 Jul 2026 12:45:37 -0400 (EDT)
+	id DAD876B008A; Wed, 29 Jul 2026 12:48:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A4CAC6B008A; Wed, 29 Jul 2026 12:45:37 -0400 (EDT)
+	id D5E786B008C; Wed, 29 Jul 2026 12:48:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 93BFD6B008C; Wed, 29 Jul 2026 12:45:37 -0400 (EDT)
+	id C4E3D6B0092; Wed, 29 Jul 2026 12:48:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E1E56B0088
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 12:45:37 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0518EC0715
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 16:45:36 +0000 (UTC)
-X-FDA: 85042390314.13.E99DFA7
-Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 2931BA000F
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 16:45:34 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=H3zmvAkT;
-	spf=pass (imf15.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.53 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 916506B008A
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 12:48:17 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 16CE5140775
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 16:48:17 +0000 (UTC)
+X-FDA: 85042397034.06.D50AAD3
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 5AAD21C0013
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 16:48:15 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=RURRz7s4;
+	spf=pass (imf21.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785343535;
+	s=arc-20220608; t=1785343695;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3ZiDYlOZHMR29bIdu7HPNBG+9FYDGI/12tsRJlqZmQI=;
-	b=aeJ5ZQBXGFndgip3WjGZRv9uZKsG3btJoA1LM9LBXNSNOW4jOaEeYGQIGbUjf81C57n1Pn
-	ShjFHSp9Urnz44C0d8+R20uYH+svdRaP/+dB2IVXlXCwC7ehZCw76fF+FoXTSN/ac1dhmr
-	NeqBOYVX6kR3v3zfVElL+cyuPUS7pWo=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=H3zmvAkT;
-	spf=pass (imf15.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.53 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	bh=5l/3IP2HFVsa8eAqLOCa4UVEPVokMRetreMKGr2fkq8=;
+	b=bqCnNcUojTlbul2LyU6xX4XSHIHqT3ExBFWJi+gsB1FSWgzkWwUTZ0GKPeVPxgNLmYrjQG
+	E6RsJADde8w+SQKaJp+eMFIjleMTRuflDAcY6boqBoao40nVK8dnFjyMGWsjtzJcYP4Nis
+	7AwhbNCLZ3DhPZYwn5PllhmGB1+srGc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785343535;
-	b=zmyWdrb6xoXVymbv82ekqx3b83cNkB5EocEAVgGec1RD1E5k4aRxcKZ1fHEkIWZhMlCHeO
-	JswLflDlgKlApnzw9lVHkrFBefMlyKSQsqEJAKazTjzQxQGeCcfn914xfCPaQF8hLa+nSE
-	NiHclVP9qlPrc80phws95GletDoRhZY=
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-8efec2c28f8so7884056d6.2
-        for <linux-mm@kvack.org>; Wed, 29 Jul 2026 09:45:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1785343534; x=1785948334; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=3ZiDYlOZHMR29bIdu7HPNBG+9FYDGI/12tsRJlqZmQI=;
-        b=H3zmvAkTr5Cb+aOlcNwzH9Gapd6T2EzGrGwdKpi2/2JMvXfXJHeLp6+nYdyMwjDeIG
-         x0d1OqsGx5TgFm2+ICmKLt1b0utZ+B2IZ0LBb6fMWr1wBEObRPhLuazMBca0e5flflkj
-         cgz2N8zOM4rQl7MjhKUGw/nPSQC2AP6273YOc8PMjqTiwkYBpK9knOZnHJNzPCTjffmm
-         6aprniQT/SeerHW/12A+Z7kO5e4qvD9cnL8RTPDP/R5jI7oXhkFfYSPi0um5j2IIuV8p
-         SsCgw8M60Nxskm/1ZpFQ3PCTlVxjZ0hC6bHV/eWfsAU+a0L6G5YkPnkg01RTLycQGHbf
-         2TTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785343534; x=1785948334;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=3ZiDYlOZHMR29bIdu7HPNBG+9FYDGI/12tsRJlqZmQI=;
-        b=P1jNpDGoKBMi7BiVVTkbt3BaLUDZquk2mJ8kmsA9HwQUwjZl1OphAWF5FaxcbcCu8W
-         RTDpFOw6Z3gZu6fm5Y1kuqDlWAhQvx5NoB+SQO1eI8Bk1OLSMjDW8TEGH06I5HcXhuOR
-         s8YzFoPrSmFjWKZKn5pyso2G89EKtdC5v2DRLFk1n5PTBZoCXv7OGkWW4WBM7OsaehU5
-         E/+coKXqp0fBlnGPv2QkZcW1+d9Di/aIuxYXRZDIGks3/WiNyxlz+5ycZQjyD74AzHBn
-         BouufDhC22/sdcFNq+X2GNzAE5OQhwpN5r7/9XnUpxlZ1/sZxwEVxjhBqqH/5A3+D0EV
-         Dg5w==
-X-Forwarded-Encrypted: i=1; AHgh+RpAeSEf2j+4I8i76a9TRyXK2HZsmkpPoKp7ZS9zj59kvyGFZXT2njh+yujwRuzSmfC+qoHF/BRDYQ==@kvack.org
-X-Gm-Message-State: AOJu0YxAxKDnJpoUBB1LlFOf5bv+QL60ZMN1ZomNdRzGujnrHTi5NkCg
-	bmDiWcbWgRp5x5elKy+JLt8KXQcb6tPz884nOpcUGYMHG+2NixJKInIzerwGFXb6leA=
-X-Gm-Gg: AR+sD110Zfnu9pgZ+ovwuwNEmBLgiH4DCOVQ5LITeOU5ZIlAQOn49GbhrbXNiGQJPBX
-	ujfzRXDgbMJNs+Y9RuSPtJzlq0FBBbU1b2TC37e8wKS1jXObIutDTi8jx5DbqtE4oSnT4IIHVeQ
-	YTGt31RDxtAps48lT23yO6bSHI4/QgpFGfk/7Bcgh/OCHUYxBInwiDp8MstH5+PkzOqz8rXT0ya
-	4OGkq0F43kz8jHkwzreYmOvGRALskHhEUliqa1lFCfRM1x+nh9qXRdMtzPjOomdkH9bbdquVJaj
-	LPNCyhWPXEi3eiRAMgOd2k9xObXx8mQmUtqXMK8RFurXRtfxLzHE8TVEhCU1ZTkvwZo354PbUyJ
-	gyzCe2ex47HaGju01xZN/7zYmFXzEPsbfcWUoJ96JnsQJ/bmAJOsTBe9ltPx+XmOYLtm0I0iOy+
-	E5DiayLmGl114/CspoVnVws1CJyh0yfriuYXAhLaAVZR8F6E3Ok2QQ5Av/PKt5mGlJzfVe6UHe9
-	WXgGb5JATYpOx4P2KBUd0qVPcc888FEJ63SrxDnHVRi
-X-Received: by 2002:a05:6214:3213:b0:904:4275:e165 with SMTP id 6a1803df08f44-90816f81939mr87398986d6.19.1785343534135;
-        Wed, 29 Jul 2026 09:45:34 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9081f77f713sm24503226d6.17.2026.07.29.09.45.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jul 2026 09:45:32 -0700 (PDT)
-Date: Wed, 29 Jul 2026 12:45:30 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Matthew Wilcox <willy@infradead.org>
+	t=1785343695;
+	b=YXz5Wfd9JYeO7tWLG0JsnOLt7UhnuELS+4ct/GLs9jq0OuN6FOZJxKjksmk3ywO4baxE6p
+	vvCD9KbUxEHVIZ6f4IZh5fnFh7mQoa+m6Izr1HGsio2uzoJutT6wGGXGEbCkfMJLKey7eE
+	2vkCGhpmCLZvETb4ZfQSP7HneLt5idE=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=RURRz7s4;
+	spf=pass (imf21.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=5l/3IP2HFVsa8eAqLOCa4UVEPVokMRetreMKGr2fkq8=; b=RURRz7s4klLVjJ1u0nsrHmmDI2
+	6huTDWCqNbHC3TPf0/VNEPWfxkndui6XU+JXSJ5DpiG9Qi+EUKSg4YlxYA6+5HjOpyF2NxbmdCB3I
+	IfR83VyRoPifX3SADc9MenUDDOtKZw0lYlmnfHMJPbb1HIJIqxoT5aXFs92TE9vl49F6zdifEni7a
+	blLi764oJSrTG//yH0piQUMUN/oQIEgokEdkEQvvL2j8jVreJm3kJfX93CpYZFqCRfPDQUmSTN50+
+	cLtQzbV2968XW4fGsJqnxrmj9Ybh5aB+R6HC3JPwKPRFxS1e0CN75gFL78YRohH6HKxwQxxhtu/96
+	5xvXvn6Q==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wp7Rj-008amb-2s;
+	Wed, 29 Jul 2026 16:47:56 +0000
+Date: Wed, 29 Jul 2026 09:47:49 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Pratyush Yadav <pratyush@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Jane Chu <jane.chu@oracle.com>, linux-mm@kvack.org, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>, 
-	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
-	Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
-	Christian Brauner <christian@brauner.io>, Jiaqi Yan <jiaqiyan@google.com>
-Subject: Re: [PATCH v7 06/13] hugetlb: Use the has_hwpoisoned flag
-Message-ID: <amot-Zo0qsspKvKK@gourry-fedora-PF4VCD3F>
-References: <20260728204409.3396238-1-willy@infradead.org>
- <20260728204409.3396238-7-willy@infradead.org>
- <amlQYkGgLmxmwX9_@gourry-fedora-PF4VCD3F>
- <amlrjtaFSEQLYbEO@casper.infradead.org>
- <amoWqtYhXm9_Bxhf@casper.infradead.org>
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	kexec@lists.infradead.org, rmikey@meta.com, riel@surriel.com, kernel-team@meta.com, 
+	Kiryl Shutsemau <kas@kernel.org>
+Subject: Re: [PATCH] kexec: keep the next kernel off hardware-poisoned pages
+Message-ID: <amogZHzDyp8lvrQG@gmail.com>
+References: <20260728-kexec_posioned-v1-1-160c81d180fe@debian.org>
+ <2vxz7bme80vm.fsf@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <amoWqtYhXm9_Bxhf@casper.infradead.org>
-X-Rspamd-Queue-Id: 2931BA000F
+In-Reply-To: <2vxz7bme80vm.fsf@kernel.org>
+X-Debian-User: leitao
+X-Stat-Signature: uk1c4iomg5cxjkmwdqeqr18qfh3km8x4
 X-Rspam-User: 
-X-Stat-Signature: mqw3rxg3f8hapqc1pjfiitb3mtsxy7xq
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1785343534-342180
-X-HE-Meta: U2FsdGVkX1+8h4Itq/8Bal4ukQ7IqIAtiU6AwAgr4Kp+dTLTkBw4vohcNE4E1gHmMuKnhg90MqQjX8njFUXGaje2bFmcDyFs7o69M+Cusyxh+lL2lnOo36S0ps6+RT7kSNxflxITW9eLo05dIufcp0PDC4YBewPI03bfnhtikTcvV45VH50oABTTdKJelsAACH1d/mPrI5mXQZts+DhanufhzsibwaEbqyrJuZP6zV3ZoJamMLXdnuvarFFcfbaz0QwId9WpG6ISpAEbwsZdssRPpkUm6OHkdj52CSC0lq0ZF/2Q5H839Xq3cupfFWCk0nseST+rcggU4XxUK8BXfXhcOGJtZQ1wXuTrr/TJqleG1DzwUCpuQqKi2dPCi+6Ut1bGwrsdKUno71C8FIc5oqRh8pEMRJw26dSrkH6F7K3seXZiqoGrhAMWkOOK/xDs4HQSLio88kX7Zb8GWTy0VYTwq1VtQ6H+kIiIjMDWjL5E2nUZtWTdRV0HJGFTEunEWlw8iTv5KGQw+yGQoTedz5y0lO0GWALNv6AMFEVyfbieTi2yvBqdZbI980FqaqqCjZd4PumoIAnfTruRH0FuhANmFPeV7efdCPYUe9yX3j5fFCrvmk7Nh4nR/bqsp34ASHV7KlklZ++dBFB7BZMiTNU32c16//yzLqFsYQpLxOqGqpjwPjYRlCLeofC3XIpMJWybdY/8Uyvm1dKcnWULfiSIB7GU9iab8lbShTnwjc4x4HtAkGTKwVeIhJdYN+VaXhYz6dcrtE1+2nAfdxm0OGJUG0H2Oh7qsNlYeG+XUK2vm1MtYuBnnmmA9+ywnRn0B34IT9T2JFP/UWJ/j5DpGWCTV1JW88TX6WiohiajuEqn2EM+JDOCqIKkc6n6BvPozft6fYhCtUGCyE50T5/gXPkv1O1hXy0GWfd+O7C20PAe6Ge5sREL6qGRpHobZ7+i0uia36ZzrhwLIaM8TXH
- fFrxJhC3
- zN8OozOxL4LSUxZ0xf11WiKRm5qjGZt0bP7yV6UmT3s3vdAqILXb90Iw0ziw4QcwwVVbJ9LTwY1nxLLlKs/Lnh7qHD9dfJdjpRU+A+BYX33UVA0oHAuyQYlcCYr4axIMQN1ngQMviz35x5HC+Nf+BZW2VN6b4qBqEoQC6KNV1cOy8d4Ehqg/4MhY9gkaIpXWAZ5HSUERvAaok+oOtuumBfGSPe7Nz1JeG7xotVpwyIH2MfzAUaXzBCK2l1J647lAGuFxzOuTRmgEowBzaV1DhjTAhQiYjXoA+FAWyKR9bqIc1KlmKu9WP78rUdX57nE2tZUfDc+m5ubLjvWcH8r51qOhxv2p7m5g848weGhP7Bww90zHtE4myqL4thTkJCFty2UtmGou14bBbo3VbiZ1O9wl1hMQ2r/1N40Wy3S5q770WVSAQVd2Qs6Nv+GaudTvv4RYBj/E1gQ/buw7kB0NE/McrLXX7ZJrbg131FSiVaeiibsmOfM+gEmRLZMg/+4VvuGvNJvKk6lTovylDXM6+/dPeUT5haTpGXmAzlJeJBRnB+KF4YBvZik++rcrzyTzhZLTe
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 5AAD21C0013
+X-HE-Tag: 1785343695-132716
+X-HE-Meta: U2FsdGVkX182FdXwkOpYJ/5Dg9lSvHsRV5BLS9Z/yFG2MzbfqY1d4EuLu9hSFUT0Nj2sTh1J3CIvwB1xvUH/b3hICHw5PmUamqdqZ35ZWTxhIHiZBGuW69xLJGyhlLH4v3kpnUeXXksZTDlOqunQ+6Vm24biXBamuuNApx/Tb0+W9lFjlBr0SdAuDArCkVZeXgDzWC3DnjBD80349aQUweFb/l7z2t1s9w+5wqBvpIuLTOgeofFvOVMrkC1BfIDBGnVbWGL599bbaVVUN+UbzU6ONyduW1jk8E+xhNeUrj8lK4S5sJ+V9r+dR0LcnhSod0ke/deZmE4e05eFgpkafbEdOt+GcuYEgB+B/IjwAIgJh2tbICPEZ1Wrqo9/nO4z7e+645V3miPvgNFd74k3YK3jMs/zNgkzm/Mvqj0X1fezfc9B3Bf2JnrjuTReO62RTl+uR69jpEyC4wVgwEVwi+6siBUuCvHcxEsR2aYjBeuWI/bXbscU1RJ22OHaQ6/U5Q7RRoU4OlQ7T/JElYZFk/Dv69sBlUM2tis7pDqGQMK20DDlWXXRWRj3ciBOgn3Z+FsZ/Om69+F6qLDDV6kBvtZMNK4oUZn5K1lGqdGQ4Rcix5jK+CEIxWwn2F6wS9lj1vCsOMc9GLYPbXXYfe0YZ3CKTAicFOt6WxnbEtAGpYhjcjdpwX30VKht1qtqgNSbNs9tvezkK+MdV8BTLSEWxHUHYqk+MELwqQ9EXwdTnlGwAmqhIbZsf56HBKY/+IzXTVg+Gj93JdfbP3DXNkWybUZECTznn7/xLgE64XIUkGAHccN7Rk65jCyttQSJzwmDwAFIK5L2x2RshlpOpOKupSJL1Relz8IvTdZu30AKUq34kl/rb67+uuiI4E6lgRwUZtFPbnW3WDebEu22t76eB48ZrQeFMzinWqmXtn+DJl5eoDVP1ZUmyo8y3wrG/9YSw3bOTKQPLrfgP37TjMX
+ dc9wserh
+ DIF/y0BH5rqQddsuu15dsLaSn2Nzp6y2H2Vge03o1+a8bvX29DaoQgvERuDB23wl8BdUhCF0RxjUQ0lFwyyKifKXndqIw3zSVlZ3rcC0P8XK+0Pcix+oPed4dQXe+VfS6xZL0BHjsUgGY2XgVWBOGbgKZvs+GDGbipGDns9bXNAFfdPLFEeRLtvwjJy7E/7adukhBy6iApGbxuIe1kXRhDf0vvg6LzRCQxvef1oJsiuz7w1OREAVCp8d6XGTeNn6W85/evkAxOE7Ieb9js9ie+3ZVeoe7M6ZxAVpsLIl6Bw+Ql+vQp8+JMv3cl5dL/0wZfFuVyzOJqD8WyD006nVaGAgzVhfOAQQFh1e9w6lG0glHoAemVyfEXSdRxd7eptgwePkYnFXR3SjPQ10i5eDSDiVghA66cgbd2Oq+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,41 +100,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 29, 2026 at 04:05:14PM +0100, Matthew Wilcox wrote:
-> On Wed, Jul 29, 2026 at 03:55:10AM +0100, Matthew Wilcox wrote:
-> > > > @@ -2725,13 +2748,19 @@ int unpoison_memory(unsigned long pfn)
-> > > >  
-> > > Adding new synchronization here without noting why - it's not
-> > > immediately clear what this synchronizes.
-> > > 
-> > > Is this just fixing an unrelated bug / should it be a separate patch?
-> > 
-> > This prevents a hugetlb folio (which in this arm we don't have a
-> > reference on) from being freed.  I think it ended up in this patch
-> > because Sashiko pointed out the race during review of this patch.
-> > It could probably go in its own patch 
+On Wed, Jul 29, 2026 at 01:57:01PM +0200, Pratyush Yadav wrote:
+> On Tue, Jul 28 2026, Breno Leitao wrote:
 > 
-> OK, split out into its own patch.  The 0day bot chewed on it a bit and
-> came up with a config that enabled MEMORY_FAILURE and disabled HUGETLB
-> which showed a missing hugetlb_lock symbol.  Here's the new patch:
+> > Memory failures (such as unrecoverable ECCs errors) are getting more and
+> > more common. The kernel knows how to handle it while running, marking it
+> > as poisoned (and SIGBUS user tasks).
+> >
+> > Poisoned memory is removed from the buddy allocator, but, not from
+> > other places. A current problem is that kexec will load new kernel
+> > on top of a bad/poisoned memory, which is undesirable.
+> >
+> > If the next kernel's image, initrd or purgatory lands on poisoned frame,
+> > the relocation copy writes to the bad memory and the machine checks
+> > during the kexec.
+> >
+> > Skip hardware-poisoned frames when placing segments: check them in the
+> > kexec_file hole finder so it lays the next kernel down on good memory,
+> > and reject a poisoned destination in sanity_check_segment_list() for
+> > the kexec_load path, which cannot relocate.
 > 
-> commit 9df49152f5de
-> Author: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Date:   Wed Jul 29 08:41:50 2026 -0400
+> kexec_locate_mem_hole() uses kexec_alloc_contig() to try to find a
+> contiguous range from CMA. If found, it uses that and skips relocation.
+> Do you know if CMA tracks poisoned pages and skips allocating them?
 > 
->     memory-failure: Prevent hugetlb freeing during unpoisoning
->     
->     If we fail to get a reference on the hugetlb folio, then it might be
->     freed as we operate on it.  Prevent the freeing and the attendant races
->     around manipulation of the raw_hwp list by holding the hugetlb_lock,
->     which is also held by the hugetlb code when freeing hugetlb folios.
->     
->     Fixes: ac5fcde0a96a ("mm, hwpoison: make unpoison aware of raw error info in hwpoisoned hugepage")
->     Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> 
+> sanity_check_segment_list() will catch these anyway and error out, but
+> would be nice if CMA can track poisoned pages in the first place.
+> Anyway, that is out of scope for this patch, but something you might
+> want to look into.
 
-nice - if/when you respin or submit this separately:
+Good point, I understand CMA already avoids them: alloc_contig_range()
+runs in PB_ISOLATE_MODE_CMA_ALLOC, where a HWPoison page counts as
+unmovable, so isolation returns -EBUSY and cma_alloc() routes around it,
+no?
 
-Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+> > --- a/kernel/kexec_file.c
+> > +++ b/kernel/kexec_file.c
+> > @@ -504,6 +504,13 @@ static int locate_mem_hole_top_down(unsigned long start, unsigned long end,
+> >  			continue;
+> >  		}
+> >  
+> > +		/* Avoid placing the next kernel on hardware-poisoned memory */
+> > +		if (range_contains_hwpoison(temp_start,
+> > +					    temp_end - temp_start + 1)) {
+> > +			temp_start = temp_start - PAGE_SIZE;
+> 
+> Sashiko complains about this
+> https://sashiko.dev/#/patchset/20260728-kexec_posioned-v1-1-160c81d180fe@debian.org:
+> 
+>     If we find a hardware-poisoned page within a large segment, does this loop in
+>     locate_mem_hole_top_down() cause a CPU soft lockup?
+> 
+>     Since temp_start is shifted by only PAGE_SIZE, the next iteration will call
+>     range_contains_hwpoison() again. As seen in mm/memory-failure.c, that
+>     function does a linear scan from the new start address:
+> 
+>     	for (pfn = PHYS_PFN(start); pfn <= end_pfn; pfn++) {
+>     		if (pfn_valid(pfn) && PageHWPoison(pfn_to_page(pfn)))
+>     			return true;
+>     	}
+> 
+>     This means we could rescan almost the entire segment over and over until it
+>     finally moves past the poisoned page. For a very large segment like a 512MB
+>     initrd, this would iterate billions of times without yielding.
+> 
+>     Could range_contains_hwpoison() return the address of the poisoned page so
+>     the hole finder can skip past it efficiently?
+> 
+> Which does seem to make sense. Same problem below.
 
+Agreed, that could be a real problem. Returning the poisoned page
+address from range_contains_hwpoison() would work but feels awkward
+for a predicate function.
+
+Let me think through a cleaner approach.
+
+Thanks for the review,
+--breno
 
