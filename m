@@ -4,96 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8102C54FCD
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 21:39:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECC8DC54FCD
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 21:45:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 20D1B6B0088; Wed, 29 Jul 2026 17:39:43 -0400 (EDT)
+	id DFE8F6B0088; Wed, 29 Jul 2026 17:45:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1BE5B6B008A; Wed, 29 Jul 2026 17:39:43 -0400 (EDT)
+	id DAFF96B008A; Wed, 29 Jul 2026 17:45:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0D6F66B008C; Wed, 29 Jul 2026 17:39:43 -0400 (EDT)
+	id C9E0B6B008C; Wed, 29 Jul 2026 17:45:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DE6776B0088
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 17:39:42 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4003AC0700
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 21:39:42 +0000 (UTC)
-X-FDA: 85043131404.20.2C3457F
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 949FD20009
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 21:39:39 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=HzJ+EPHE;
-	spf=pass (imf31.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A12C56B0088
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 17:45:33 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 020E7A0802
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 21:45:32 +0000 (UTC)
+X-FDA: 85043146146.01.EECFF4A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 275744000B
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 21:45:30 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Xq4WBuMY;
+	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785361180;
+	s=arc-20220608; t=1785361531;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=pOg0MAMj9ptcSEbmspL3dz8VUlSdQGVedtVVuIz1t4U=;
-	b=XSfb3oykgF+exacaKhC8ALtI3JQhFZ9/1TBrKm2HPT43mw8bJfh3xNYDR9nkCQbesBF0p3
-	Q61julBQ33o0dEc3CIrtC4REzMeHClKORZb/TZP1IWQrPowE9uTfeJA4e4yYbTAa03X1zG
-	6VfcnJR+/no7OEu2O6YNRMS3WLYLAMc=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=oDAZ9vi2KsO6qrLBZTAFU1nlDgmqJpzCkJDjK+DL7n4=;
+	b=rxsf87ooFqP8Q4/PVkOGXd/ap0LADgllWtiymVIo10Wmo55HNzC2AJfuL+nGdvfEplQgH8
+	5a4i52I2JMHXYt1Ai9ZWss9Q9F5BFj2x/ETvPhLT0+EGwUJyxKnwE7e6PcFvblNV6mQSbt
+	IZmV8w8VbFdI3SzLtqqEzoyCQctrqHM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785361180;
-	b=GaazQZM7n0tKfV1dEFLaoyoOJSklnBnq8QZUA8UhZLLOC7Rv/ARrUGxznHeRe/fa4Jt2zu
-	x14bH84GhKUeldy9xYzJGEIysz24ShSGV/sC+eienwClvuUkJdvwNXTRoxZZk7ZVBDMSkH
-	a8x0DA0YuDTAIwUaCfgISk2gp/8/ov4=
+	t=1785361531;
+	b=ngUU0ywB0USGz/9T6v3grY6Sw7rke9eN7mCOgPPcABodR5dwIFHgboimcvSuZYhyuzsxWT
+	qBL6LyPMZO5fj2pNp8yGPlZ53Srq+fBbn4TIIGQe/8F59NTSErTAmMZZXXJunWMbz4hjOi
+	JhkwLKLDNlSqejB9ndSHlP3aIyqkt0o=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=HzJ+EPHE;
-	spf=pass (imf31.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785361180; x=1816897180;
-  h=date:from:to:cc:subject:message-id;
-  bh=3lfQKZ7lIENqEhlnApCsfj+2fW7E7cOARBXPZKJ32vE=;
-  b=HzJ+EPHE2xZAgmupLS0tC/QGEc7tZrkghJ2jIPN6ZOdGHXNDgMtJJTnt
-   6H4Yh9mN7cTfm9RkMEJfTXCvp8lu9bKp1ipjK/0nwQacfIxL30OA7xQKI
-   BNLyjG9biPM6ip3XNCuQX9TBUrKNLNt5W7TnBHcu6KC9spsJ60W5WkoFu
-   tbr9P8y4JVs/QvgptW5rnZx+RmU5XxdgDTRz5SA4CN8BdGOcrHsWhgrsu
-   Vni4djv07pnkoBFZ9rfUhj6SbErettBzkuiLtjEXqvsYFhA3ErVOFCgrC
-   nBgLmnbdaWTh1cn2OnHg6Q0jDhudFm29/I4B4xHi9NsBlaDsO8vM2y/Ul
-   Q==;
-X-CSE-ConnectionGUID: TlswkndlS6a+ii1J+HAWCQ==
-X-CSE-MsgGUID: 0+Ypz6jRTlauPPaJK8oyrg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="97133425"
-X-IronPort-AV: E=Sophos;i="6.25,193,1779174000"; 
-   d="scan'208";a="97133425"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2026 14:39:38 -0700
-X-CSE-ConnectionGUID: f4dLZXwISxuXVnhUBAkc8g==
-X-CSE-MsgGUID: 8/KrBO/6Qp6YKV2YusBobA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,193,1779174000"; 
-   d="scan'208";a="262076200"
-Received: from lkp-server02.sh.intel.com (HELO ea128546eb3d) ([10.239.97.151])
-  by fmviesa004.fm.intel.com with ESMTP; 29 Jul 2026 14:39:33 -0700
-Received: from kbuild by ea128546eb3d with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wpBzu-00000000fh8-42Ye;
-	Wed, 29 Jul 2026 21:39:30 +0000
-Date: Thu, 30 Jul 2026 05:38:45 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linux Memory Management List <linux-mm@kvack.org>,
- Mark Brown <broonie@kernel.org>
-Subject: [linux-next:master] BUILD SUCCESS
- 78bc8af4affb9a732504eb22eeac7d1e50883853
-Message-ID: <202607300507.Mvkdse2k-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Xq4WBuMY;
+	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id E712A600AA;
+	Wed, 29 Jul 2026 21:45:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 733FC1F000E9;
+	Wed, 29 Jul 2026 21:45:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1785361529;
+	bh=oDAZ9vi2KsO6qrLBZTAFU1nlDgmqJpzCkJDjK+DL7n4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=Xq4WBuMYGkMr4QPhjIapmQ2FXmFaBhxTq6Uvu/arWojlSM2Kge4kTP5v7lG1ncA/M
+	 TNaJyESRoeFo+/uRbaFe2TBNtGfNVgiE/v24u3o7ycKwhIAGpFCkTFuRi2fjbGTGt1
+	 orij7001+mUUXCUM8Pct4S37LBatIYD9rmNGnYoo=
+Date: Wed, 29 Jul 2026 14:45:29 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Artem Lytkin <iprintercanon@gmail.com>, linux-mm@kvack.org,
+ urezki@gmail.com, shivamkalra98@zohomail.in, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/vmalloc: make vm_struct.nr_pages an unsigned long
+Message-Id: <20260729144529.e1f1e0c7525954d23ab6a051@linux-foundation.org>
+In-Reply-To: <ampGVI1MLmnLksnN@casper.infradead.org>
+References: <20260729175708.7074-1-iprintercanon@gmail.com>
+	<ampGVI1MLmnLksnN@casper.infradead.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 949FD20009
-X-Stat-Signature: d7njsj95newtctn3qr7o9bzcaekgjny3
+X-Rspamd-Queue-Id: 275744000B
+X-Stat-Signature: qcyxe347p6wqu4xrectuh7w1cfzezznk
 X-Rspam-User: 
-X-HE-Tag: 1785361179-795179
-X-HE-Meta: U2FsdGVkX19pzOhNClZhPlaV4FOBn5UDs5p42O8EugUThzZwKi6NA37uXmRz9/ustz7mitQkECukd6wdq7cSTH/Kp1TtHjasFCaUwrfTW7u+E6OJR29RSjJmD32q8Xuq9bASLZDYXuru3eoBlEOZGGMYNOLdbDxMXMG0WURfOooJnTzPcMeDfVnIzbwebSCKrcmMOpvKussP/10GuurEupXGpTWABqi8iTEO/7jkNEgrAMqSU2TezKkEAPflB10AjtoXxLvu0AHdbln85jWj7VUv3t/RAljbxeBQdvnxC9KOX38255wdN5fsUW6cxq9/XGkHKHkLK+NXhUTm7BpUqECPBHN5EhioOZrtL1Io5LOdqt5q0wA4F2IZt78OadJGIovgMWrbHdCZcGU8RfBuHXkbg7DsaozZJjRljgv/LK/TL68vBLUM0+huGnKnBCYRtJEkcet5pzC8A2CfWvn6vazbE/hzvjgqZy9iQDUHr/Wd1o7Xnwo5em7ypAZoi9siG1Z64Ae5vdUrod5Yu/B2vTP706fo4bMApcAmavsAYmlxhLNpMAbTespf+HAohUm1CRy5APdW/T75spCQIrPb0EKVsAGQ2I+btQYNVckHTacC339DsDS+7HKX6QGcN61bMD0qxet3LuHd8kvDRh8Gh5u12BBLYubTN3uC0HvxoaecKU/8bntz+pUWxjW6IXjf/oRYPyhvR0NgT7pzbJ3e+bVh9wN2/tuJ4glxb0ZHfGrNHTOwAAHIpBw0ECRp1lk/tspXntf4045HTtKjefKhd0bq1LlN5eZA76RWYn3gQW4Wjaz7jctuQ++eb9Wr7PjkZfzn/0joklGTXJrV0agHrSJJu1Q73ZTpKExo+5JYkAaMr28EyNvAqsH3EwT80X1bNGFvtKeAQcOjVnzns0sikDjHm+Q/uZODJXXa61s3f47dEPTnNZj1mutr6wNiUsUksoyxbcgOGzB/ohom6yk
- vby9Ucl0
- d+6N7XJIhUibdqMYfahh7TrkCqk40i3Bo0sgGEw6HCLkFQf+h+thGAafKtL69Fi3s21DoQI7OyZjsrw5tHcfvqzF/nb386zaGHVdFd6aK1sksspwbw37EIoZ+rpKwFvhhV60Ql/uCidYruM5rbKW1mI3fQlH53USw0IeWGJto6PaXKav8nHzfLFQNwdNLCrAjucugpBw5ClNmTSM=
+X-HE-Tag: 1785361530-964332
+X-HE-Meta: U2FsdGVkX18forcuHIkn/lFGyN7vNhlZJCzdFssNLzHRpqxVJlm+gE4SpOLvv/qSdoYM6cOs+KLr3a8umwEhEnEu3Yqf5JkPVga/bmQcZbjTZMMADIZnHR7XZ+u4BKStJDZI11vTFQTSn+Za7h/W5dneGhxKzmnl19QoRSV0IQ3iHpFzP4jdaNAgAdgLuesN/DDD2rSh+KJprwMJvCZFNEy19hf6+Kv4EWaFEE+Wmqsi2EIbKhcmz0/pYzgucHOIeK6zy64W6DCEY3C1IqEuDa0nuzU3WmdwLF3p2ovxiHSbzoX3bnaessCGgTokhuvGvxZiDesPSdQE2Q7NwpnawiAgDSHFyaK+w2ih7qul1bSVKgiwqbHCNrbKit0zzSb7S6Z2YHSbXBK5g4Ge/kyZeLFvgdr/2sGRovHp047+GUozH1zWqGwDkEyKSe76U/VHEsjrPS6CXvWI/FxzLQ7v3w24eQUlltPsJVsJ1xw217NN2QRw7OYQD4Vq9VrDDUU3zKOytGFBgqCjhV8ldqYIobKHIG8qulLZG1uiPM0op2Dxo6wEdHpo0mw1O9zrltvmUPefjJ+1WrLTe9f9SUzys/5XYHqLRXsKXAwryS31dNvUQOhT2htAe6j4kh7x6pIv5XPY0pEkwEeP3apbwKh7afprEdkQarcLmud70vAut7t4/iNx7Wo8r1/TzaJLpgxSIQf1gWcur/gCGhg3I6JHdGHV6yzKXA19DTSBa71RPcyVqMaDflXLns5ALQ8gf/6q8Id0E9hbcpbKeuspZTWRjZ2M/AcuX/HJMyPq5cKPr0QH7gDsYFGsGHTLK/uNdZS9IL+GA1SO8uDJFYfAZNbAYPz9pY9K+qWIJpvNt3zeeZilJwLdz9kTrg6ujtLXuYgzX/Zdr+6wGkbyhLcWBeoNrkTErnary2GCaAGSiUycZbwOCocn7ZKuSPf69p2sMlA2LvuvDUV10NL3i1uEmH3
+ xJANiLe2
+ SElTaKR1MTXYF+sY6lmh91mTJSQ3ze3ji9kIuaJTqt4IFsxKcR6LsjUM1GTxH06tooNIRogGcmr8pvvV6kOXH8hueAkHXlru1mdzQtcjPcf82xMZcklQWcDf4Fx2HY5OSC4an60dahBS51bdL/V+eNM/P23N7ZHlu9I0QsL9A6UknNxVX1enYnbdznNdQ0IoC25jYbJQIFijgc6Q+66cBq2TbeDDfSqweKz8AUmb/5VWdenf0LwNpRe31aZ+l8Kv2oiE6T7ebPnOSBQWXybeuue5BrAGl2UIbDwbujOfq2fkSxO4RJ/lgZ6RmHo6Jh1DOruoiYNb+rdQA6cCRHhNHNaEbToJizB46HziriM4M56gbfTfrWr+M3SK57gs7Cvyred75
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,49 +90,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-branch HEAD: 78bc8af4affb9a732504eb22eeac7d1e50883853  Add linux-next specific files for 20260729
+On Wed, 29 Jul 2026 19:28:36 +0100 Matthew Wilcox <willy@infradead.org> wrote:
 
-elapsed time: 329m
+> On Wed, Jul 29, 2026 at 08:57:08PM +0300, Artem Lytkin wrote:
+> > A vmalloc area can hold more than 2^32 pages, but the page counts
+> 
+> I had a "wait, what, really?" moment.  And it can!  2^32 pages is 16TiB,
+> and x86-64 says:
+> 
+>    ffffc90000000000 |  -55    TB | ffffe8ffffffffff |   32 TB | vmalloc/ioremap space (vmalloc_base)
+> 
+> So we can have _one_ allocation that is more than 2^32 pages.  But I'm
+> not sure where we'll get the memory to populate it from.
+> https://blogs.oracle.com/cloud-infrastructure/announcing-oci-compute-e6-acceleron-instances
+> says I can get 2.3TB of memory in a single machine, which is a factor of
+> 8 away from where we'd need to be to actually hit this.
+> 
+> Intel are adveertising a max memory of 1.5TiB on the 6990E+ (128GiB *
+> 12 channels).  So if you put 8 Xeons in a box and loaded it up, that
+> could get you to 12TiB.
+> 
+> I'm not saying we shouldn't fix this, but it's all theoretical for now,
+> right?
 
-configs tested: 29
-configs skipped: 1
+Artem said "That has produced the same truncation bug twice already,
+once in vread_iter() and once in the vrealloc() grow-in-place check". 
+This might imply that the issue has been hit in practice, unclear.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Anyway, it's a good change so let's do it.
 
-tested configs:
-alpha                            allnoconfig    gcc-16.1.0
-alpha                           allyesconfig    gcc-16.1.0
-alpha                              defconfig    gcc-16.1.0
-arc                             allmodconfig    gcc-16.1.0
-arc                             allyesconfig    gcc-16.1.0
-csky                            allmodconfig    gcc-16.1.0
-i386                            allmodconfig    gcc-14
-i386       buildonly-randconfig-001-20260730    clang-22
-i386       buildonly-randconfig-002-20260730    clang-22
-i386       buildonly-randconfig-003-20260730    gcc-14
-i386       buildonly-randconfig-004-20260730    clang-22
-i386       buildonly-randconfig-005-20260730    gcc-14
-i386       buildonly-randconfig-006-20260730    gcc-14
-loongarch                          defconfig    clang-24
-nios2                           allmodconfig    gcc-11.5.0
-nios2                            allnoconfig    gcc-11.5.0
-parisc                          allmodconfig    gcc-16.1.0
-parisc                          allyesconfig    gcc-16.1.0
-parisc                             defconfig    gcc-16.1.0
-powerpc                mpc836x_rdk_defconfig    clang-24
-sh                                 defconfig    gcc-16.1.0
-x86_64     buildonly-randconfig-001-20260730    clang-22
-x86_64     buildonly-randconfig-002-20260730    clang-22
-x86_64     buildonly-randconfig-003-20260730    clang-22
-x86_64     buildonly-randconfig-004-20260730    gcc-14
-x86_64     buildonly-randconfig-005-20260730    gcc-14
-x86_64     buildonly-randconfig-006-20260730    gcc-14
-x86_64                                 kexec    clang-22
-x86_64                          rhel-9.4-bpf    gcc-14
+Sashiko wasn't able to apply it, and the mechanical checking would be
+useful here.  I was able to get it to apply, took a bit of work.
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+So Artem, can you please update the changelog to clarify the above,
+redo against mm.git's mm-new branch (or linux-next) and send us a v2?
 
