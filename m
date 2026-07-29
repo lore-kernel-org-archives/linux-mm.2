@@ -4,101 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 105F6C54FCD
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 22:27:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27F43C53200
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 22:37:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A54AF6B0088; Wed, 29 Jul 2026 18:26:59 -0400 (EDT)
+	id 9F4A06B0088; Wed, 29 Jul 2026 18:37:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A05696B008A; Wed, 29 Jul 2026 18:26:59 -0400 (EDT)
+	id 9CA146B008A; Wed, 29 Jul 2026 18:37:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8F4676B008C; Wed, 29 Jul 2026 18:26:59 -0400 (EDT)
+	id 906F36B008C; Wed, 29 Jul 2026 18:37:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 730986B0088
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 18:26:59 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id F11A14021F
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 22:26:58 +0000 (UTC)
-X-FDA: 85043250516.15.A7188DC
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 663206B0088
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 18:37:00 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C3F08807E5
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 22:36:59 +0000 (UTC)
+X-FDA: 85043275758.01.FD58FA8
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 5195BC000B
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 22:26:57 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dzIeNJxS;
-	spf=pass (imf22.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	by imf08.hostedemail.com (Postfix) with ESMTP id E82C9160003
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 22:36:57 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n309x0qX;
+	spf=pass (imf08.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785364618;
+	b=jJrzHsyVgSRzNwstAz1b6Z+Kyh+GgMn13FQk0Vj8vlE+bSyUAos2Og+lVDOBihEwoW+OOS
+	jSPv8Tx8jDdxmUy21aC2niqsZL+gUX3dq+E2YmFzLfBW8nHm2vV/vMfHHaqEO0BJ2Npex5
+	vJ2iuUh5dEBBvViA2LknL/oncgtqvOs=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n309x0qX;
+	spf=pass (imf08.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785364017;
+	s=arc-20220608; t=1785364618;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5MIIT9QahtjXyg3K5yJSBOlaChmM2DGjfHykMVmRrdU=;
-	b=quOLDx0OZcv4zsnj4XfPPzf94MyrAsJ1gLKWyd2GrHPTZrj0e4Ol+qpgr18EmS2vXEqvBM
-	pxIWTv3fY61bj4bMfsEW96abVgPMefNerjnv5b2/RHEDXFLWT9mb5No3S4eDUBu/ICxe5o
-	8Df5fBcj295DYJL3kLRoydfCPSnmWvg=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dzIeNJxS;
-	spf=pass (imf22.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785364017;
-	b=zRCiPFwQMqwcuH8PRQkhfrhHSh0elKwui1z7YTaTVP5q8gGXVgRfV57U/Mvua+5frUuTxU
-	4K0YlpWatkkDGq7p3dQGROMnumTcNtsHAUTQ2t3qUY3Rhrc5Mt4YfMrhJ1TRpMWReWKYkP
-	DPfHbfvb5bYX9iNqQx+AZAMGqLmOLZ4=
+	bh=NQOzhzyTBRr6vM28sNhapOXnSw13bcaivRKi2ECdEW0=;
+	b=4yzXk+zzmlK8yihTBpVFyn3aL+C9ARcO5zRF4SM0vLxzRX5sF5w/96xBvWkdck6SQWKF1A
+	pAGV6pToiBg005ykfSNthYX9b6a5yCRZUgJGsu+u0GrvzQ2lhasM1EAjl8dJ2xZCwA2jUG
+	cP8aABe8qCo7907q5pBLuuO4PBYgVOA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 46B66600AB;
-	Wed, 29 Jul 2026 22:26:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14FD41F000E9;
-	Wed, 29 Jul 2026 22:26:52 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 82308600AB
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 22:36:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AC1C1F00A3D
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 22:36:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785364016;
-	bh=5MIIT9QahtjXyg3K5yJSBOlaChmM2DGjfHykMVmRrdU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dzIeNJxSiYMJZi5moMkBeoDikkPefLAKWRKIkswjs/I3BM7cwAFB6skBxN+HC/Afe
-	 ww9zIxS9LLQ4YpRutQRIbWdmRH2iCX90ic/T8EtxtRfB8wv9RYtIAlXFutZC2J1of/
-	 XAbVMf1eRe4lHa6uGBxa8bnqcvb2G5Z9AIViuU/XoJC6kIO74m/K/hMqP6WEzl+jVx
-	 fb5PLnrjUl4+NuOMPa2f+JG8U1wrnRYIlsBmixgm9pt/t7PBNMM08TjkVaUhc3K4eW
-	 XJGCwgC8+gTZXX/krkbZQZsHzFUoRFPSh1ZKY9/i5EeVSHJqexlv0teH2C809KeYSJ
-	 21AzrBDn1ONbg==
-From: "Barry Song (Xiaomi)" <baohua@kernel.org>
-To: david@kernel.org
-Cc: akpm@linux-foundation.org,
-	baohua@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	dev.jain@arm.com,
-	lance.yang@linux.dev,
-	liam@infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	ljs@kernel.org,
-	mhocko@suse.com,
-	npache@redhat.com,
-	rppt@kernel.org,
-	ryan.roberts@arm.com,
-	surenb@google.com,
-	vbabka@kernel.org,
-	ziy@nvidia.com
-Subject: Re: [RFC PATCH v2 1/2] mm: allow smaller large folios to use lru_cache
-Date: Thu, 30 Jul 2026 06:26:51 +0800
-Message-Id: <20260729222651.31321-1-baohua@kernel.org>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <229c3079-8fde-41b4-9d6c-f0e34f780555@kernel.org>
-References: <229c3079-8fde-41b4-9d6c-f0e34f780555@kernel.org>
+	s=k20260515; t=1785364617;
+	bh=NQOzhzyTBRr6vM28sNhapOXnSw13bcaivRKi2ECdEW0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=n309x0qXXvGmXtPqgyPomgSQzrQbC6F3qDyAhLBOc6rKPshzVRDgAW3Rg14qr0aa8
+	 6OPK9eXqxb2YooJexTtGOHT0CceckwsbquVyrp+GMYUx3LannyrlkLc6CwSm1V6xK6
+	 4GbyW2+C/PwPKZ1op8OJyW+35h9ek3/zZXg2BLAKW8xq7ywwV90Vf/IcHT/bxeOB/8
+	 CYDrxODpNp5zZBTnG5tBLnfPr0tLiZSMmYO320/0qrRbtzllVlGHH9K4IyG85Zfgr8
+	 g2lcM3lX8mupcZFcbj0CPjK4ehDWX7mHV85w4xah5kEzwoCqgxzzq+QBQji9LP7STZ
+	 s2EKmW8gOqU3g==
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-92e65e18969so15312985a.1
+        for <linux-mm@kvack.org>; Wed, 29 Jul 2026 15:36:57 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Rrox3B6ek3bNbKoIJ2EF2ugga4WV1cri6u656+oSSUB/ytBz0auBJ4ZKl3gm/IUJFpFowuOYY3GZQ==@kvack.org
+X-Gm-Message-State: AOJu0YwTRkxyiGj4gEtXa/fVZV1XgowW2Jz8vERvcCgGJq2Pwz9UE1Z+
+	sw6LB/vG9zYZd+TncBlZ0RUol4znINaUolBSFfEr3ZnD3XSeS+rJdKwjPf35npGrqtqo/2HdnpD
+	QBI+qdroY3YxYo9VpiebdpDNpjI501h8=
+X-Received: by 2002:a05:620a:25ce:b0:91e:df9f:7804 with SMTP id
+ af79cd13be357-93485d1207dmr22814685a.38.1785364616535; Wed, 29 Jul 2026
+ 15:36:56 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <CAGsJ_4w17+jKWJKkq9fdEyu6CtBtMpH-Sb4XPwdDUfqSkpkQyw@mail.gmail.com>
+ <20260728122719.3688430-1-wangzicheng@honor.com>
+In-Reply-To: <20260728122719.3688430-1-wangzicheng@honor.com>
+From: Barry Song <baohua@kernel.org>
+Date: Thu, 30 Jul 2026 06:36:44 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4zEWQZnq+vBSVjKn+OB_VpYt9ghj3JKcZB_x=oL=zsQtw@mail.gmail.com>
+X-Gm-Features: AUfX_mycAnF9uFus4_0bY6nSuEvlrbKRcvzBN7kfktF95aFVM2UxBa_IPz2UuB0
+Message-ID: <CAGsJ_4zEWQZnq+vBSVjKn+OB_VpYt9ghj3JKcZB_x=oL=zsQtw@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 4/5] mm: mglru: run aging when pages are severely
+ imbalanced across gens
+To: Zicheng Wang <wangzicheng@honor.com>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, hannes@cmpxchg.org, 
+	david@kernel.org, mhocko@kernel.org, qi.zheng@linux.dev, 
+	shakeel.butt@linux.dev, ljs@kernel.org, kasong@tencent.com, 
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
+	linux-kernel@vger.kernel.org, lyugaofei@xiaomi.com, stevensd@chromium.org, 
+	linkunli@honor.com, tao.wangtao@honor.com, zhangji1@honor.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: rqm9yhdp8i34cg5hamz8qdisnj9rcne8
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: E82C9160003
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5195BC000B
-X-Rspamd-Server: rspam01
-X-Stat-Signature: ned1wornjngxb5b7gqwbf3srpmwue6zh
-X-HE-Tag: 1785364017-371707
-X-HE-Meta: U2FsdGVkX19MI+oKBBl4hYcHyO7F2QkJMgINy3tyUczcYIqFXqtcn9L43jow65UFgwruZ0L33cDtNNU4xrWpzqErOEmx9Qw+Ow4ihWlCYAJSDt/r2l8pbhlIXYMFWwCaw4Uy1boeZjq94VRu9jhQQGoMqgCR+WeePtAx5VwZPfyKfHDvwEzzZS2gTmHYXDnATVegf9wqBTzQMwL8hinz2hLR6TGtJ3jVnObgiQSsZS698+0JFWtswzNkNWevrdyeeMfIcnLkoKGcV9iDm9WhLOQVhhTqgKPkrVFc7zJOn0e01zBQxxlqV8uLC0Eer6x4liWObzQlIxl+820zyFR3VEW1FkG/I/e715u3T3PD90MfkP0GBGr6zTFly8R3DHu994q2FbsXKFtRsu7+m0qbmrgm5vyKb78Ikn9UCaCFib0Ft4mpI0EMpqPemVlfKf9JIbVBpm03BQG7V1Prihnkc7jkLbEe3RBr5F2eU1OuwEAIhTBpk1fW1YZo9o8uBzDZ1KK9FjN4rJdwg5hDUjBdWyI1faKNzrgdyWSDAZVAnTxWkwTNuvR76Wg9loK70338AZMkVmXYNIYBcqDkc409B9hHJBYIpBPiclwneLHVCuATnwZkj6PHWJSrPajDWGn+LJZJvVEHs9qpHF6itZOG7l2CJtKb3I5BYZMmPTGZVDTe9plZQszWly/tAw6dzWHUjFg+SdY8PP64HmoNneJmxQoZ9XC47S2Fn9RcCl0ZusnLKqq2y0R2g+n0c8PnrNsoku6bNsAHaVQPPZKvxx4bFD6yUQTRZc05y1UzHkXJCDAStu6Ow58hJoxnoZPBMh+wX2x+H9JWB2ey6ZjkNmsKmuDdP7Cs9c3eFIVdQK10ovU7JAX9gavyqFjxlhjOeXSLyJJRKPUiVjcafK8WnkFoJBlvEUEmmrXt/Lk5gsIfvw96oI1m7kGlLyjTMhx+s+PlX9JuIiADvEPlfGpBLOg
- S3BJQtRW
- RxHDbhkJs5+tvwP0javPzoxcxyEXjM1eSdzXuqggMzscThRtxWKhN7Je3wji+OFT4JGf/7liJ2hkiP7vWUqaYkzz4ZrBO/U0gITqHCq3dv+Kbzz1L6QZPOQYTz2qbxXxt9t1WhDlEFG+ZmE8SdyEjL9+GjPRmdRlQBqM1WFRp4pN5vAWSgSL7lGhadXPLPC0MDcBqC0W1m0/oiRVL9/ZCU6efuDfyBfmfbEFcMHJItwqyn3mTf8TfbPF3FhWsbzn2lMrw5mLc4lwQTFTIkD4mqPcOuEucai2dZQS77VeP3aipbjyXLEyoK0Dqfw==
+X-HE-Tag: 1785364617-829834
+X-HE-Meta: U2FsdGVkX18hQl/ZioaW18qoL2vuZlpE/F/J+7+Ftcv7OcM/66unNsQ6eDDFnkT+9Ycxc0DWBNKBEIYKeOazNz2hQ/ZfrsBCYr15CizeFl3qz0ROGr7UrSoznc5rXmHuu3Oqwc8AcO+2Hsiaqqebj2cmbVXC2ESNftZ7lJJFROVZ7UlekoxvlCoWQBQ24NDDrEnnnMMGD0WIKKOQLAwHQQX4E/CfPwfwSg/gAP3DV1yuIMQnFM3D+c3Oqj+JplLIpTUV3VMa2QbEB22lAzxYZnZKSovrkVBuQrIO4t1/gGX7Rvoiw1s+De94Xrq69waE3q5+dmdvCzM/SGpdhRr6QvB9bKbEZu0swnl8AOk0HVGVcb+UxtSCidd/Zja4i4gq/Z9hxD+myOt/AjVYzyU783ECYPeVsK4rjf1ATQnCPnqIRd864cM6n9eXnK9PgQLV6FiLlRDyXse/tC+rA0YrIIObUPRBkjZStOvFM2cO/jW14quw2dIvaKAV6vzUkvI2LQaXWi6R5oVxBs1fp72U5EoKcsUkxm4D/ptUBVfE3z8mj7A8et2gh8jNVrB5bnFnGqv5j1t5GsLaVVb0Bx/ylw+4I1vsduKZ9ZxPig2eU+dPABQAJyODBhE7XX91xuhtwgKZNj064URZeoxWIsjvNOCsini65Qi5Kz3GHS91Wdd6q2hDeW2F8WCvMGV5giC6mUmTjlAUaIJPyPMFWPI1Lt2eaH8b7jzUanybbGUHeLvbCRDkZDoohE2JS68WQ+N3Fgo5ZxzNGtMkWJ4E4Mx882UUR/Qcmh3+uPykvHI1R5dhTlN6QVmoWl5VgXp/4Z1QxHsMpsqKOleZjOQ6jRB7sbsWYeFvbZ/kYEmF5nP/kLTGooCT7GT7G434OSJTptzQiOk4eHg4jKAMTfKIlFX+JmIfMiNFm5qAPAErX/T3kYhGjmKR05Zs4c14uNDtrJy4t+CH6wSQAC6uv3P3D3b
+ u/uAPkAy
+ 2D+jpcLouhjN3FnDXEDSB+WSAvJ2h+AWEWQBhWR5GMcz3+CrB7W2C3/BePuOnO2FxVldiw3TDDBd7hsskZvDdMfUACy8h00Q2W0x0T9ajQ7pWia2zMBBdtB72UJvEWRJvPDTVvC7WddaMmG9//NdWjOcj+A4Vyv8EVmmZoDpycEyCGQqs8vHxPVKbnyS1cpsTUy4z5Qz+iaQWHd3ETpumc8ljTmsz2d118gbpVDcQJvpK8rdwDYz0MVjztryHgHnvrTp6hkRuuQOBUWLlrokhDXhxfI02ILL0sh6p9UtfPGm5/jwPzrriUN8myC3/8FDmxcY7VUpV4yf6KtDUrGoE3+5m4w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,62 +108,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 29, 2026 at 8:13 PM David Hildenbrand (Arm) <david@kernel.org> wrote:
-[...]
-> > diff --git a/include/linux/swap.h b/include/linux/swap.h
-> > index 8d19be675baf..9c5f7a11c7b0 100644
-> > --- a/include/linux/swap.h
-> > +++ b/include/linux/swap.h
-> > @@ -316,9 +316,9 @@ static inline bool folio_may_be_lru_cached(struct folio *folio)
-> >       /*
-> >        * Holding PMD-sized folios in per-CPU LRU cache unbalances accounting.
-> >        * Holding small numbers of low-order mTHP folios in per-CPU LRU cache
-> > -      * will be sensible, but nobody has implemented and tested that yet.
-> > +      * will be sensible.
-> >        */
-> > -     return !folio_test_large(folio);
-> > +     return folio_order(folio) < PAGE_ALLOC_COSTLY_ORDER;
-> >  }
+On Tue, Jul 28, 2026 at 8:27=E2=80=AFPM Zicheng Wang <wangzicheng@honor.com=
+> wrote:
+>
+> Hi Barry,
+>
+> > The original code is a bit odd, as it compares a single young
+> > generation and a single old generation against the total, rather than
+> > comparing all young generations with all old generations.
 > >
-> >  extern atomic_t lru_disable_count;
+> > By comparing all young generations against all old generations, we no
+> > longer depend on the exact value of MIN_NR_GENS. The idea is to
+> > emulate inactive_is_low().
 >
-> Sashiko rightfully raises that split_folio() can now fail more easily.
+> Makes sense, the inactive_is_low() framing fits.
 >
-> So we might want to proactively drain (earlier?) on some more of the split paths.
+> One gap: inactive_is_low()'s ratio is dynamic calculated.
+> int_sqrt(10*1024) =3D 101 (ages only when inactive drops below ~1%),
+> while patch 4/5's fixed 4 ages once old falls under 20% of young.
+> It seems there will be considerable cost on big memcgs, or should
+> the ratio scale with size?
+>
+> Looking forward to the perf data.
 
-Yes, this is a pain. I haven't tested it, but perhaps a
-conceptual model could be something like this?
+I don't have access to a machine with 1 TB of memory=E2=80=94or even
+more than 20 GB=E2=80=94to test this. But I think your comment makes
+sense. We shouldn't let a machine with a huge amount of memory
+in a single lruvec age too aggressively.
+So maybe something like this:
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 04e8a6b55343..fcd449dec96b 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -4069,6 +4069,8 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
- 	struct folio *new_folio, *next;
- 	int nr_shmem_dropped = 0;
- 	enum ttu_flags ttu_flags = 0;
-+	bool maybe_in_lru_cache;
-+	int expected_ref_count;
- 	int ret;
- 	pgoff_t end = 0;
- 
-@@ -4154,7 +4156,15 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
- 	 * Racy check if we can split the page, before unmap_folio() will
- 	 * split PMDs
- 	 */
--	if (folio_expected_ref_count(folio) != folio_ref_count(folio) - 1) {
-+	maybe_in_lru_cache = folio_may_be_lru_cached(folio) && !folio_test_lru(folio);
-+	expected_ref_count = folio_expected_ref_count(folio);
-+	if (expected_ref_count + maybe_in_lru_cache < folio_ref_count(folio) - 1) {
-+		ret = -EAGAIN;
-+		goto out_unlock;
-+	}
-+	if (maybe_in_lru_cache)
-+		lru_add_drain_all();
-+	if (expected_ref_count != folio_ref_count(folio) - 1) {
- 		ret = -EAGAIN;
- 		goto out_unlock;
- 	}
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index ed35c502923d..a6768b9ec8d6 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -4968,6 +4968,7 @@ static bool lru_gen_imbalanced(struct lruvec
+*lruvec, int type,
+ {
+        struct lru_gen_folio *lrugen =3D &lruvec->lrugen;
+        unsigned long young =3D 0, old =3D 0, seq;
++       unsigned long old_ratio, gb;
+
+        /*
+         * reclaim is forced to a single type in those cases, so there is
+@@ -4989,7 +4990,16 @@ static bool lru_gen_imbalanced(struct lruvec
+*lruvec, int type,
+                else
+                        old +=3D size;
+        }
+-       return young > old * 4;
++
++       /*
++        * Copied from the active/inactive LRU heuristic, but uses a higher
++        * old_ratio so fewer folios remain in the old generations, avoidin=
+g
++        * overly aggressive aging.
++        */
++       gb =3D (young + old) >> (30 - PAGE_SHIFT);
++       old_ratio =3D gb ? int_sqrt(10 * gb) : 1;
++       old <<=3D 2;
++       return young > old * old_ratio;
+ }
 
 Best Regards
 Barry
