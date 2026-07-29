@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 251DFC53200
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:52:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F04B5C54F51
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:52:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 976666B0131; Wed, 29 Jul 2026 10:52:43 -0400 (EDT)
+	id 3A9EA6B0133; Wed, 29 Jul 2026 10:52:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 928D76B0133; Wed, 29 Jul 2026 10:52:43 -0400 (EDT)
+	id 333366B0135; Wed, 29 Jul 2026 10:52:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 815DA6B0134; Wed, 29 Jul 2026 10:52:43 -0400 (EDT)
+	id 222E26B0136; Wed, 29 Jul 2026 10:52:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 432796B0131
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:52:43 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id F181D1C0E5D
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 12:25:52 +0000 (UTC)
-X-FDA: 85041735744.26.23B0F6C
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E59246B0133
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:52:46 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id AED4EA0643
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 12:25:44 +0000 (UTC)
+X-FDA: 85041735408.28.C23FF3F
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 598BFC0003
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 12:25:51 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=rUpYNz0T;
-	spf=pass (imf28.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	by imf03.hostedemail.com (Postfix) with ESMTP id EB98320009
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 12:25:42 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=q69ENXoq;
+	spf=pass (imf03.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785327951;
+	s=arc-20220608; t=1785327943;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FKguTFCsnOFkdkjIncE9Q6Ef3LOicIIJB0oiH7LdGs4=;
-	b=8HTGF5SxNVuWfLDv+BFMVZvi5XlffoK5HayaScYADr2T4mCL8j098+8SBKglzQvHedJLga
-	+KINsevPU0+b5BCxgvTtBQSNbwh7UBGr6sSewnoLVmjFqRSBVyjWR/IVwjW5PEZFpHkqr6
-	KMaxmnEZzc/yrdFgUGnx+qGwt6MdxCQ=
+	bh=tXfKR0nPRowkqfwng0/JqAKBUWBP6k7mh7YMBMoDUa4=;
+	b=A8RC9BVeoKv6p10jCeBRxl9plcgWkx/8UN0t9/fDdNqTGb6wT1Xgn3NUEqc79XHT5Wkh8c
+	qRdEivoQ6iLJtyOtTuC2ZyrFPADbYxH3wzIDU/Hv77Yl9MW6N2ArWwLLfz3x8jQD9BVfTs
+	g5IJRaNAg5JhGd/hsV+TVjZOkjbpaVA=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=rUpYNz0T;
-	spf=pass (imf28.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	imf03.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=q69ENXoq;
+	spf=pass (imf03.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785327951;
-	b=pwzzebQCK7WsfYta+U76OrFN5odOOybB7LDV1QNHH7ecStqm//LnInzIweqeuiqLsZuVd1
-	sH5FpBSGUlAy9qrzwGsQQgXd2FWgbwKh/xZPat4WVMVa0oNxBYhIVHQMm2wozhe3FdFwfr
-	YEdSp6+W5qX8RwBYctX3aCarjwcOYq8=
+	t=1785327943;
+	b=F4ZBya6EWj9uihCvG0ddq9LSvrjJFL3SktsDFS5kMOI9p0HwmQf2sSKm/mBHwfviLw/KWV
+	PemtSHUoIysBlLOq2SQtE1yMuwy8oAlKqawi0w/NsUOIGssVW/v82xl4/rqEyvC9DaGAZ8
+	0+f3SVTX06uKYZo/gGniv4VVwxaQhRk=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8BCFE1688;
-	Wed, 29 Jul 2026 05:25:46 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3B0FC1688;
+	Wed, 29 Jul 2026 05:25:38 -0700 (PDT)
 Received: from a085714.blr.arm.com (a085714.arm.com [10.164.19.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 11C0C3F66F;
-	Wed, 29 Jul 2026 05:25:46 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id B7CA03F66F;
+	Wed, 29 Jul 2026 05:25:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1785327950; bh=a14FrpmvTbkDM2WM1GK+a6PKnmX488cSGRU0OuH2A+8=;
+	t=1785327942; bh=D8njUR+w2v+ndiG5KM/iOINKA++RZQNA50z7qf0KbP8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rUpYNz0TZDJalHchPWZr0GzI+IPFYH2IZ7AYb7yJq9q3hCGk1lweeXfMuebRxY9KN
-	 iNN4REnvWhAPql4rKCN/s2BojEptfQQmrNjOCFBHtHLUsYhNJVWWH2yXJ8nhjpbOBy
-	 G1KfwUu7eCP136o7y+kFgYCnTN3OWCsgfXEnzfNU=
+	b=q69ENXoqiIBHn6/l0E0y3VJVTEIxcaEzGpXLTpzhhxWEKiil8Yl0wkGY729L3ibAE
+	 sTDaFsU7xMGX3Dm+zHJOAIH7WcqYS+s+vXMCmS28R43/go9/2y2fkWdkIKAmC5s7KO
+	 Y4yezjZos5Gr+KnmpMA+33p7DaNp9fDrFTbev4xc=
 From: Anshuman Khandual <anshuman.khandual@arm.com>
 To: linux-mm@kvack.org,
 	linux-arm-kernel@lists.infradead.org
@@ -74,9 +74,9 @@ Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
 	Mike Rapoport <rppt@kernel.org>,
 	Linu Cherian <linu.cherian@arm.com>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 10/17] arm64/mm: Standardize printing for pgtable entries
-Date: Wed, 29 Jul 2026 17:54:45 +0530
-Message-ID: <20260729122452.3797443-11-anshuman.khandual@arm.com>
+Subject: [PATCH 08/17] arm64/mm: Route all pgtable atomics to central helpers
+Date: Wed, 29 Jul 2026 17:54:43 +0530
+Message-ID: <20260729122452.3797443-9-anshuman.khandual@arm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260729122452.3797443-1-anshuman.khandual@arm.com>
 References: <20260729122452.3797443-1-anshuman.khandual@arm.com>
@@ -84,12 +84,12 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 598BFC0003
-X-Stat-Signature: ugmhmq5g4pby69ejnbox3o17rfjgaq99
-X-HE-Tag: 1785327951-364996
-X-HE-Meta: U2FsdGVkX1/f92jNpZyJxZ3UP7NiBpAUWYlfFWsb8umJzvwdnqkZqYYiu83TI7rImRdCVpAywusGCO+hkeU0LLckW8b2pEShsKh1AL8vHpyNjvtNSEqWAOugQ5z9Yd5k/R22HDGGjNeiksYaJSxdjoEIRjdU4JtVbtjbw6qH135cvXdVcd01XdwfTi10a9ua+54AlQWEOHTEh7QFLS+HCwUty460Fap0DlKMxsXvLAE5kCPzia6A79lGMbHGYvhLwIvU/Ix+yiSA87SXABLM2Ba7/IpmBTatA0D61G/HXDLAQlj+Dfb+pa7rmR7LkkXgWATBUqr9iTiX7waKeujQAUtzjunQTiUv734WT0UBP5czWhxuGmP8251NIzF20cjsfx2c4tYVx/Y9lxd/2oXD5roj/o5Sl0vDcejtHVdaT4R6G/LnMNGNd6Fgb/7Iic9vKdMRKQaZOSbhkb0X8KZDoajLe+PeYuGbr5i11/BKbqUO7cS9bi2ALAPkYq77ADd9P8FGjb8Ag17m2sd8Yax71bvZrp2KtcJpzvIbkWmuiFxa+JEzi47bfdwUBu3n6DnQCYiwpl0091ugvGPyNTG7LcppMmd6+IQLS2IOobF3XkNkazoU0n2Co5K4IhTB+jVxePoQSZmiG7lqSYpbr/EQgJLcOC9/APggRArW2iK1LtmY0xjbSreuJA1Nc0CYxgS+GpFvg7wFmNdiM3cH/XfsXnVkhhQVWCWAuvkOUz5sqoNXeQ02WXuyE5Hs7ELzNbbHUca/hp/gJHeVlYF5KL80zcujISO+GKBym59ybvRik6HU0uKj3MljhjvKfeYugBa5yts/9rbbahwrusOYex3j7uzcgagirGtKjzlmttK/LXMk08YCJJ2RPmYylstxzLQ6sDD1K+bHk7QceOruBajQGk20uTK1vLCnjr15zH5HGmmG8mzroGWdZxb3MacGHamp120BaLUG83LE641+Lnh
- 8k3nCKRd
- UWtYBMAIPsmBv/32KgDI11JDuhd1fWAhhOTr4MR/nGKyr5zwowkEGhLCEhFzOgyb/7UgciUoal6ZWX6cJEq2FEVw4HphK4xqXqukia0LIb53Qqt4nvcNgXOaxeQ3c2urh8HpQ9T80R6CKWZNt1CcHuo78XTrzMIXdvojMyg3Pr1I6CLNfGSCV5+v9wk+F2hLFsdQhAzcJYtF+H4BnTMjMJzfvzXtJaSjAJwZuZVjBx+bYVRDfCe/Bp+WbzFQOyeabgVHLvJflFEUPgmDjjW9iqrhuY3ZeYVtFx7Zs707qy02Pto5avBgQqMMZ8QrVJ+WDAwIpF8tDxzVHvaaDOjx6MFa2dWm/3hL7Lz4YDu6fIy5WbWS6ckrL9QGHPRqGKmPYbgBChSNIcUpcibsyiIQvXGK/ckIoQuluyPlJlv6X4CH3zh238V70ocqsmacO0F2Tx22j
+X-Rspamd-Queue-Id: EB98320009
+X-Stat-Signature: rujjuzpo4ug4xazdqqskuk5fscodnc7k
+X-HE-Tag: 1785327942-599298
+X-HE-Meta: U2FsdGVkX1/SnBXMKEQpqgGBKbRcf4JHMMencZWS8EtrFrsJhAJmbSzJw9DCBOsa+A1B9OFyzSdwS4ecrwvT0IeJuZG1XWk0/wWYEJxSVGNbEE8LW0Zm6fjQDU0vvXGHi9MtI862LYlNJps64gJjdDhO9+XAtc2cMNTyVpGwpawL75nGFLpxqaUUFQNv5qj4wR9cg9V20XeL+PkcYxt4/Y7TWjovX5BknVxWGjqliN7oDkzsxM7oXNbiCyWAV9DxnNRuEEg8GRS395UcDT6UvbfWPvpbGGF97O3kf8kcDKhu3MS50ak5Y6qy+/cCYpDTk0zgZHgt3cY16W9aA1Llg4azclyTtHcZZlKW5cu9RkRM8L1lnWRk4vTQ6FcCOD7qV4eyVPtDgIt/l4jobUxCJwjv9EkxASW536rrT1kALLYTD5K/wJ5Wq3IcQxK2R6fpRhdp2BbHrcVYgK0LO4zHZvxB8MOfaDf7/+r7jGDZOJBi+nps6BSqXalS+w0N56yNtA7gOFqgK2neGpQzkWC8xsrNCC5w85ivBf99mNU1EG8emF2VkjzEjo5vw0HS4sJrOpURbNEqdJm2kM5BpP2AIj2sIXq2OtuZd1I3ok29U2yDrUkD31LvZHhiJhxH4+/vI7wdK91ORVG85R95f4LDFoXyys0AMbziINJgLpG/LVJiTLo22GO7QniD+WS63Gxv/nrcOivYqc11vDpojEqfRK9GQm2PyNIwel5nN7rbUg0qzQWmlN11uQ134cNp8ukn/+i87lS8SKSQ80OLdJelZrk1xTYXeu5NsaQ2WpisBAgBkCLxPgI6NFKw4oqPykHQ7SBdifZBDbieR8HEGDXAQsUn+HJwN/+ABkCgmq2Ipao40DxJLEsJ4nt7WLu9LJVDGmAkC8Ij1iOtwn8Egz2FzsQGFkqXaO8rL0gag6EUEReAcjZj/Z1xzSYTGteb6cjQB6z9JA4ensAYjhS+JGG
+ WjWkM8g+
+ y0fF2wYioRJjba2GHq56zZM1vX0jeR1mQ8OP8xhcAfhiWE0KH8NI+PbjqJr1Iey6JmHO5GfK3svx6qw5ekClEnZ/C8prmYdT3iJpI8XPQLntORU0jmYKsCIemhXDvfCNlTSb5S3vs1M8LE0GXtzhHsr0SypgEYo9cPrTjmTGeKUmd/Hgug3LX3gs4Sn2MS86eKWtHADN5ztxvxDL9OvIZuW6FqK4dRIkbHfnjPrb0rXyEDVQpeVIkJXQVSKWMEwOUCEo5Y/i8MSA5pxQDxQDqPWsT/UKNvbZEboGgDAUEiGfK9avEZoffNa73ugvPicMBf3rMQRNE7Sr2C0Le6lhle513JwYW2/tV5HRbWVXGFcjMLRYwRDABc648NA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,329 +97,118 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Standardize printing for pgtable entries using recently introduced generic
-helper ptval_bytes_to_hex_str() in core MM which automatically enables 128
-bits entries later when required. While here also drop unused pte_ERROR().
+Route all cmpxchg() operations performed on various page table entries to a
+new ptval_cmpxchg_relaxed() helper. Similarly route all xchg() operations
+performed on page table entries to a new ptval_xchg_relaxed() helper.
 
-First move all required helpers in core MM into a common header file which
-could then be used in platforms.
+Currently these helpers just forward to the same APIs that were previously
+called direct, but in future we will change the routing for D128 which is
+too long to use the standard APIs.
 
 Cc: Catalin Marinas <catalin.marinas@arm.com>
 Cc: Will Deacon <will@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
 Cc: linux-arm-kernel@lists.infradead.org
 Cc: linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org
 Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 ---
- arch/arm64/include/asm/pgtable.h | 40 ++++++++++++++------------------
- arch/arm64/mm/fault.c            | 21 +++++++++++++----
- arch/arm64/mm/mmu.c              | 16 +++++++++++++
- include/linux/mm_types.h         | 40 ++++++++++++++++++++++++++++++++
- mm/memory.c                      | 40 --------------------------------
- 5 files changed, 90 insertions(+), 67 deletions(-)
+ arch/arm64/include/asm/pgtable.h | 26 +++++++++++++++++++-------
+ arch/arm64/mm/fault.c            |  2 +-
+ 2 files changed, 20 insertions(+), 8 deletions(-)
 
 diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index 39635f9550c2..2270a3e4cc13 100644
+index 1106977e0ef0..4efcacec6f01 100644
 --- a/arch/arm64/include/asm/pgtable.h
 +++ b/arch/arm64/include/asm/pgtable.h
-@@ -157,9 +157,6 @@ static inline void pgprot_write(pgprot_t *prot, pgprot_t val)
- 	__flush_tlb_range(vma, address, address + PMD_SIZE, PMD_SIZE, 2,	\
- 			  TLBF_NOBROADCAST | TLBF_NONOTIFY | TLBF_NOWALKCACHE)
+@@ -87,6 +87,17 @@ static inline void arch_leave_lazy_mmu_mode(void)
+ #define ptval_get(x)		READ_ONCE(x)
+ #define ptval_set(x, val)	WRITE_ONCE(x, val)
  
--#define pte_ERROR(e)	\
--	pr_err("%s:%d: bad pte %016llx.\n", __FILE__, __LINE__, pte_val(e))
--
- #ifdef CONFIG_ARM64_PA_BITS_52
- static inline phys_addr_t __pte_to_phys(pte_t pte)
- {
-@@ -455,6 +452,8 @@ bool pgattr_change_is_safe(pteval_t old, pteval_t new);
- static inline void __check_safe_pte_update(struct mm_struct *mm, pte_t *ptep,
- 					   pte_t pte)
- {
-+	char pte_str_old[PTVAL_STR_MAX];
-+	char pte_str[PTVAL_STR_MAX];
- 	pte_t old_pte;
- 
- 	if (!IS_ENABLED(CONFIG_DEBUG_VM))
-@@ -472,15 +471,17 @@ static inline void __check_safe_pte_update(struct mm_struct *mm, pte_t *ptep,
- 	 * (__ptep_set_access_flags safely changes valid ptes without going
- 	 * through an invalid entry).
- 	 */
-+	ptval_to_str(pte_str, pte_val(pte));
-+	ptval_to_str(pte_str_old, pte_val(old_pte));
- 	VM_WARN_ONCE(!pte_young(pte),
--		     "%s: racy access flag clearing: 0x%016llx -> 0x%016llx",
--		     __func__, pte_val(old_pte), pte_val(pte));
-+		     "%s: racy access flag clearing: %s -> %s",
-+		     __func__, pte_str_old, pte_str);
- 	VM_WARN_ONCE(pte_write(old_pte) && !pte_dirty(pte),
--		     "%s: racy dirty state clearing: 0x%016llx -> 0x%016llx",
--		     __func__, pte_val(old_pte), pte_val(pte));
-+		     "%s: racy dirty state clearing: %s -> %s",
-+		     __func__, pte_str_old, pte_str);
- 	VM_WARN_ONCE(!pgattr_change_is_safe(pte_val(old_pte), pte_val(pte)),
--		     "%s: unsafe attribute change: 0x%016llx -> 0x%016llx",
--		     __func__, pte_val(old_pte), pte_val(pte));
-+		     "%s: unsafe attribute change: %s -> %s",
-+		     __func__, pte_str_old, pte_str);
- }
- 
- static inline void __sync_cache_and_tags(pte_t pte, unsigned int nr_pages)
-@@ -901,6 +902,10 @@ static inline unsigned long pmd_page_vaddr(pmd_t pmd)
- 	return (unsigned long)__va(pmd_page_paddr(pmd));
- }
- 
-+enum pgtable_level;
++static inline ptval_t ptval_cmpxchg_relaxed(ptval_t *ptep, ptval_t old,
++					      ptval_t new)
++{
++	return cmpxchg_relaxed(ptep, old, new);
++}
 +
-+void ptval_ERROR(const char *file, int line, enum pgtable_level level, ptval_t val);
++static inline ptval_t ptval_xchg_relaxed(ptval_t *ptep, ptval_t new)
++{
++	return xchg_relaxed(ptep, new);
++}
 +
- /* Find an entry in the third-level page table. */
- #define pte_offset_phys(dir, addr)	(pmd_page_paddr(pmdp_get(dir)) + \
- 					 pte_index(addr) * sizeof(pte_t))
-@@ -915,10 +920,7 @@ static inline unsigned long pmd_page_vaddr(pmd_t pmd)
- #define pte_offset_kimg(dir,addr)	((pte_t *)__phys_to_kimg(pte_offset_phys((dir), (addr))))
+ #define pmdp_get pmdp_get
+ static inline pmd_t pmdp_get(pmd_t *pmdp)
+ {
+@@ -1340,8 +1351,8 @@ static inline bool __ptep_test_and_clear_young(struct vm_area_struct *vma,
+ 	do {
+ 		old_pte = pte;
+ 		pte = pte_mkold(pte);
+-		pte_val(pte) = cmpxchg_relaxed(&pte_val(*ptep),
+-					       pte_val(old_pte), pte_val(pte));
++		pte_val(pte) = ptval_cmpxchg_relaxed(&pte_val(*ptep),
++						      pte_val(old_pte), pte_val(pte));
+ 	} while (pte_val(pte) != pte_val(old_pte));
  
- #if CONFIG_PGTABLE_LEVELS > 2
--
--#define pmd_ERROR(e)	\
--	pr_err("%s:%d: bad pmd %016llx.\n", __FILE__, __LINE__, pmd_val(e))
--
-+#define pmd_ERROR(e)		ptval_ERROR(__FILE__, __LINE__, PGTABLE_LEVEL_PMD, pmd_val(e))
- #define pud_none(pud)		(!pud_val(pud))
- #define pud_bad(pud)		((pud_val(pud) & PUD_TYPE_MASK) != \
- 				 PUD_TYPE_TABLE)
-@@ -1011,9 +1013,7 @@ static inline bool mm_pud_folded(const struct mm_struct *mm)
+ 	return pte_young(pte);
+@@ -1383,7 +1394,7 @@ static inline pte_t __ptep_get_and_clear_anysz(struct mm_struct *mm,
+ 					       pte_t *ptep,
+ 					       unsigned long pgsize)
+ {
+-	pte_t pte = __pte(xchg_relaxed(&pte_val(*ptep), 0));
++	pte_t pte = __pte(ptval_xchg_relaxed(&pte_val(*ptep), 0));
+ 
+ 	switch (pgsize) {
+ 	case PAGE_SIZE:
+@@ -1459,7 +1470,7 @@ static inline void ___ptep_set_wrprotect(struct mm_struct *mm,
+ 	do {
+ 		old_pte = pte;
+ 		pte = pte_wrprotect(pte);
+-		pte_val(pte) = cmpxchg_relaxed(&pte_val(*ptep),
++		pte_val(pte) = ptval_cmpxchg_relaxed(&pte_val(*ptep),
+ 					       pte_val(old_pte), pte_val(pte));
+ 	} while (pte_val(pte) != pte_val(old_pte));
  }
- #define mm_pud_folded  mm_pud_folded
+@@ -1497,7 +1508,7 @@ static inline void __clear_young_dirty_pte(struct vm_area_struct *vma,
+ 		if (flags & CYDP_CLEAR_DIRTY)
+ 			pte = pte_mkclean(pte);
  
--#define pud_ERROR(e)	\
--	pr_err("%s:%d: bad pud %016llx.\n", __FILE__, __LINE__, pud_val(e))
--
-+#define pud_ERROR(e)		ptval_ERROR(__FILE__, __LINE__, PGTABLE_LEVEL_PUD, pud_val(e))
- #define p4d_none(p4d)		(pgtable_l4_enabled() && !p4d_val(p4d))
- #define p4d_bad(p4d)		(pgtable_l4_enabled() && \
- 				((p4d_val(p4d) & P4D_TYPE_MASK) != \
-@@ -1139,9 +1139,7 @@ static inline bool mm_p4d_folded(const struct mm_struct *mm)
+-		pte_val(pte) = cmpxchg_relaxed(&pte_val(*ptep),
++		pte_val(pte) = ptval_cmpxchg_relaxed(&pte_val(*ptep),
+ 					       pte_val(old_pte), pte_val(pte));
+ 	} while (pte_val(pte) != pte_val(old_pte));
  }
- #define mm_p4d_folded  mm_p4d_folded
+@@ -1536,7 +1547,7 @@ static inline pmd_t pmdp_establish(struct vm_area_struct *vma,
+ 		unsigned long address, pmd_t *pmdp, pmd_t pmd)
+ {
+ 	page_table_check_pmd_set(vma->vm_mm, address, pmdp, pmd);
+-	return __pmd(xchg_relaxed(&pmd_val(*pmdp), pmd_val(pmd)));
++	return __pmd(ptval_xchg_relaxed(&pmd_val(*pmdp), pmd_val(pmd)));
+ }
+ #endif
  
--#define p4d_ERROR(e)	\
--	pr_err("%s:%d: bad p4d %016llx.\n", __FILE__, __LINE__, p4d_val(e))
--
-+#define p4d_ERROR(e)		ptval_ERROR(__FILE__, __LINE__, PGTABLE_LEVEL_P4D, p4d_val(e))
- #define pgd_none(pgd)		(pgtable_l5_enabled() && !pgd_val(pgd))
- #define pgd_bad(pgd)		(pgtable_l5_enabled() && \
- 				((pgd_val(pgd) & PGD_TYPE_MASK) != \
-@@ -1268,9 +1266,7 @@ p4d_t *p4d_offset_lockless_folded(pgd_t *pgdp, pgd_t pgd, unsigned long addr)
+@@ -1863,7 +1874,8 @@ static inline bool ptep_try_set(pte_t *ptep, pte_t new_pte)
+ {
+ 	pteval_t old = 0;
  
- #endif  /* CONFIG_PGTABLE_LEVELS > 4 */
+-	if (!try_cmpxchg(&pte_val(*ptep), &old, pte_val(new_pte)))
++	old = ptval_cmpxchg_relaxed(&pte_val(*ptep), old, pte_val(new_pte));
++	if (old != 0)
+ 		return false;
  
--#define pgd_ERROR(e)	\
--	pr_err("%s:%d: bad pgd %016llx.\n", __FILE__, __LINE__, pgd_val(e))
--
-+#define pgd_ERROR(e)		ptval_ERROR(__FILE__, __LINE__, PGTABLE_LEVEL_PGD, pgd_val(e))
- #define pgd_set_fixmap(addr)	((pgd_t *)set_fixmap_offset(FIX_PGD, addr))
- #define pgd_clear_fixmap()	clear_fixmap(FIX_PGD)
- 
+ 	/*
 diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
-index 7aff70c5479e..a38f4f1eacc4 100644
+index fca716ed4513..7aff70c5479e 100644
 --- a/arch/arm64/mm/fault.c
 +++ b/arch/arm64/mm/fault.c
-@@ -14,6 +14,7 @@
- #include <linux/kfence.h>
- #include <linux/signal.h>
- #include <linux/mm.h>
-+#include <linux/memory.h>
- #include <linux/hardirq.h>
- #include <linux/init.h>
- #include <linux/kasan.h>
-@@ -130,6 +131,11 @@ static inline unsigned long mm_to_pgd_phys(struct mm_struct *mm)
-  */
- static void show_pte(unsigned long addr)
- {
-+	char pgd_str[PTVAL_STR_MAX];
-+	char p4d_str[PTVAL_STR_MAX];
-+	char pud_str[PTVAL_STR_MAX];
-+	char pmd_str[PTVAL_STR_MAX];
-+	char pte_str[PTVAL_STR_MAX];
- 	struct mm_struct *mm;
- 	pgd_t *pgdp;
- 	pgd_t pgd;
-@@ -156,7 +162,8 @@ static void show_pte(unsigned long addr)
- 		 vabits_actual, mm_to_pgd_phys(mm));
- 	pgdp = pgd_offset(mm, addr);
- 	pgd = pgdp_get(pgdp);
--	pr_alert("[%016lx] pgd=%016llx", addr, pgd_val(pgd));
-+	ptval_to_str(pgd_str, pgd_val(pgd));
-+	pr_alert("[%016lx] pgd=%s", addr, pgd_str);
+@@ -234,7 +234,7 @@ int __ptep_set_access_flags_anysz(struct vm_area_struct *vma,
+ 		pteval ^= PTE_RDONLY;
+ 		pteval |= pte_val(entry);
+ 		pteval ^= PTE_RDONLY;
+-		pteval = cmpxchg_relaxed(&pte_val(*ptep), old_pteval, pteval);
++		pteval = ptval_cmpxchg_relaxed(&pte_val(*ptep), old_pteval, pteval);
+ 	} while (pteval != old_pteval);
  
- 	do {
- 		p4d_t *p4dp, p4d;
-@@ -169,19 +176,22 @@ static void show_pte(unsigned long addr)
- 
- 		p4dp = p4d_offset(pgdp, addr);
- 		p4d = p4dp_get(p4dp);
--		pr_cont(", p4d=%016llx", p4d_val(p4d));
-+		ptval_to_str(p4d_str, p4d_val(p4d));
-+		pr_cont(", p4d=%s", p4d_str);
- 		if (p4d_none(p4d) || p4d_bad(p4d))
- 			break;
- 
- 		pudp = pud_offset(p4dp, addr);
- 		pud = pudp_get(pudp);
--		pr_cont(", pud=%016llx", pud_val(pud));
-+		ptval_to_str(pud_str, pud_val(pud));
-+		pr_cont(", pud=%s", pud_str);
- 		if (pud_none(pud) || pud_bad(pud))
- 			break;
- 
- 		pmdp = pmd_offset(pudp, addr);
- 		pmd = pmdp_get(pmdp);
--		pr_cont(", pmd=%016llx", pmd_val(pmd));
-+		ptval_to_str(pmd_str, pmd_val(pmd));
-+		pr_cont(", pmd=%s", pmd_str);
- 		if (pmd_none(pmd) || pmd_bad(pmd))
- 			break;
- 
-@@ -190,7 +200,8 @@ static void show_pte(unsigned long addr)
- 			break;
- 
- 		pte = __ptep_get(ptep);
--		pr_cont(", pte=%016llx", pte_val(pte));
-+		ptval_to_str(pte_str, pte_val(pte));
-+		pr_cont(", pte=%s", pte_str);
- 		pte_unmap(ptep);
- 	} while(0);
- 
-diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index 1127917c554b..fd2db5f2e6a5 100644
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -2337,6 +2337,22 @@ void __cpu_replace_ttbr1(pgd_t *pgdp, bool cnp)
- 	cpu_uninstall_idmap();
- }
- 
-+static const char * const pgtable_level_name[] = {
-+	[PGTABLE_LEVEL_PTE] = "pte",
-+	[PGTABLE_LEVEL_PMD] = "pmd",
-+	[PGTABLE_LEVEL_PUD] = "pud",
-+	[PGTABLE_LEVEL_P4D] = "p4d",
-+	[PGTABLE_LEVEL_PGD] = "pgd",
-+};
-+
-+void ptval_ERROR(const char *file, int line, enum pgtable_level level, ptval_t val)
-+{
-+	char str[PTVAL_STR_MAX];
-+
-+	ptval_to_str(str, val);
-+	pr_err("%s:%d: bad %s %s.\n", file, line, pgtable_level_name[level], str);
-+}
-+
- #ifdef CONFIG_ARCH_HAS_PKEYS
- int arch_set_user_pkey_access(int pkey, unsigned long init_val)
- {
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index b18c2b2e7d2c..1025b9140c0b 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -2001,4 +2001,44 @@ static inline unsigned long mmf_init_legacy_flags(unsigned long flags)
- 	return flags & MMF_INIT_LEGACY_MASK;
- }
- 
-+static inline void ptval_bytes_to_hex_str(char *buf, size_t buf_size, const void *entry, size_t entry_size)
-+{
-+	if (WARN_ON_ONCE(buf_size < entry_size * 2 + 1)) {
-+		snprintf(buf, buf_size, "overflow");
-+		return;
-+	}
-+
-+	switch (entry_size) {
-+	case sizeof(u32):
-+		snprintf(buf, buf_size, "%08x", *(const u32 *)entry);
-+		break;
-+	case sizeof(u64):
-+		snprintf(buf, buf_size, "%016llx", *(const u64 *)entry);
-+		break;
-+#if defined(__SIZEOF_INT128__)
-+	case sizeof(u128):
-+		snprintf(buf, buf_size, "%016llx%016llx",
-+			 (unsigned long long)(*(const u128 *)entry >> 64),
-+			 (unsigned long long)*(const u128 *)entry);
-+		break;
-+#endif
-+	default:
-+		snprintf(buf, buf_size, "unsupported");
-+		break;
-+	}
-+}
-+
-+#define ptval_to_str(buf, val)								\
-+	do {										\
-+		auto __val = (val);							\
-+											\
-+		ptval_bytes_to_hex_str((buf), sizeof(buf), &__val, sizeof(__val));	\
-+	} while (0)
-+
-+#if defined(__SIZEOF_INT128__)
-+#define PTVAL_STR_MAX	(32 + 1) /* Max 128-bit value in hex + NUL */
-+#else
-+#define PTVAL_STR_MAX	(16 + 1) /* Max 64-bit value in hex + NUL */
-+#endif
-+
- #endif /* _LINUX_MM_TYPES_H */
-diff --git a/mm/memory.c b/mm/memory.c
-index 598d0e588e9a..253db4143f9c 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -519,46 +519,6 @@ static bool is_bad_page_map_ratelimited(void)
- 	return false;
- }
- 
--static void ptval_bytes_to_hex_str(char *buf, size_t buf_size, const void *entry, size_t entry_size)
--{
--	if (WARN_ON_ONCE(buf_size < entry_size * 2 + 1)) {
--		snprintf(buf, buf_size, "overflow");
--		return;
--	}
--
--	switch (entry_size) {
--	case sizeof(u32):
--		snprintf(buf, buf_size, "%08x", *(const u32 *)entry);
--		break;
--	case sizeof(u64):
--		snprintf(buf, buf_size, "%016llx", *(const u64 *)entry);
--		break;
--#if defined(__SIZEOF_INT128__)
--	case sizeof(u128):
--		snprintf(buf, buf_size, "%016llx%016llx",
--			 (unsigned long long)(*(const u128 *)entry >> 64),
--			 (unsigned long long)*(const u128 *)entry);
--		break;
--#endif
--	default:
--		snprintf(buf, buf_size, "unsupported");
--		break;
--	}
--}
--
--#define ptval_to_str(buf, val)								\
--	do {										\
--		auto __val = (val);							\
--											\
--		ptval_bytes_to_hex_str((buf), sizeof(buf), &__val, sizeof(__val));	\
--	} while (0)
--
--#if defined(__SIZEOF_INT128__)
--#define PTVAL_STR_MAX	(32 + 1) /* Max 128-bit value in hex + NUL */
--#else
--#define PTVAL_STR_MAX	(16 + 1) /* Max 64-bit value in hex + NUL */
--#endif
--
- static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long addr)
- {
- 	char pgd_str[PTVAL_STR_MAX];
+ 	/*
 -- 
 2.43.0
 
