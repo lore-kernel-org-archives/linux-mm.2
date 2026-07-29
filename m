@@ -4,91 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8664FC53200
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:47:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9835AC54F51
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:47:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1F40C6B0114; Wed, 29 Jul 2026 10:47:47 -0400 (EDT)
+	id 59D406B0111; Wed, 29 Jul 2026 10:47:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 182F16B010F; Wed, 29 Jul 2026 10:47:47 -0400 (EDT)
+	id 526286B010F; Wed, 29 Jul 2026 10:47:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 04BF46B010F; Wed, 29 Jul 2026 10:47:46 -0400 (EDT)
+	id 414CF6B0115; Wed, 29 Jul 2026 10:47:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C30126B010F
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 018C66B0113
 	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:47:46 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 39A2BC0677
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 76EBF1C0DD9
 	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 14:47:46 +0000 (UTC)
-X-FDA: 85042093332.16.842C4EA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 8EAAF4000F
+X-FDA: 85042093332.28.419D25D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id DB5BA180006
 	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 14:47:44 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TiqIDOQw;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mcr4TtLE;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785336464;
+	b=gjI803oxVXd2W4NiyU9ibXOtY+c2Z85717mHl+BwdKKJj4BqWGd2LNDFWCOAetWEUtsEIt
+	KFDKyDkxV7R8tcm1YGvC5vpAegTO81SzQJXe489QSk5nIJPlj4xZFIxdiFrY4e7YZ15Mmz
+	XabL0dYbkb4a78xOQRKXiKHFGRIlbdk=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mcr4TtLE;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1785336464;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=DKnDu4X+rd4KrlY4SCfiPQqPTppxa4AM+AMSVEZhOAo=;
-	b=KFXkXPbxiJ7Byfqv7d+wa3vb2IZXcEKxlNYBHqwztsRoJwFAS4I7W+P87m5W2OwjrDndom
-	vMmnhMhyfdNBnTqQPpuUC2zFVbAXgGk1RsvZpnzbSYIJzqfr6r9D/JoqPRlf61DNfrtJP+
-	VZx6BuqGn2lP8zMFBxZ9vlOJBeLStdA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785336464;
-	b=1W6NEM6H9osuYFWdiljOspVaeyi83VsHp2cXnZB/qY+EvAePtRO+sElQe2oAu3qpdraEDR
-	+glxYM4psvJ0WJQEnOjswS9j2fRwnSJFGByoj0rIC0qEiZ0MgQA0WW4xpvx+A4bePGk24e
-	0Vhh3vKim83Ziu3EQmDF5Lu/VoN5Nv8=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TiqIDOQw;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=PMEdbVHoJrZwuzmNn8i5Bad/INZcQ1/1hylklN9wYVo=;
+	b=4c/TwOquF7czFFzMP8dWJNsX8fUrTzPSPcxY6NgKeMUdBOBjsQLPwEdiMoJrD227hV+u4x
+	tXjZQN+iPHe7OufDd1EIPW26iwVB7R0vhLAzeo55EGxx+Wk4/47c7i2Up2us08CnxsMDaC
+	7396K++cuzqI32JRyQWZAMGgljLqAzw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0B14440DB7;
+	by tor.source.kernel.org (Postfix) with ESMTP id 1AB89600AF;
+	Wed, 29 Jul 2026 14:47:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EE531F000E9;
 	Wed, 29 Jul 2026 14:47:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96C561F00A3E;
-	Wed, 29 Jul 2026 14:47:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785336462;
-	bh=DKnDu4X+rd4KrlY4SCfiPQqPTppxa4AM+AMSVEZhOAo=;
-	h=From:To:Cc:Subject:Date;
-	b=TiqIDOQwPGDBSVnMJbEvoEPzZcNn+F3m5XzA85F62BYB1ZlzLADlSx0vjAchcq/tj
-	 mXRKiKsJcnrgGuhrL6l9WdmnBs8MqDA+RS272sbGKsCHhmaEaUCu/xxc5ncW3+ighg
-	 hcbHAAjkvNt2/ElFUCantFwaoxwv/TUkQ8i2Dot19CmoVnQymCCc0YR8Bj9l8KjsYu
-	 FsL8VX2sEPx2S2fgv3GtoxmoKO1cMBisiLnukS7KV1uQzMcI97ou9tnlWkJSAszFyF
-	 +OSmGzMj5PFeO1COnq4f5W6Mzuqlvfb1jUyu/5P7RmDkC7XY5a89olL+n/woqNgAI5
-	 Q1I53lU/pJ2FA==
+	s=k20260515; t=1785336463;
+	bh=PMEdbVHoJrZwuzmNn8i5Bad/INZcQ1/1hylklN9wYVo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=mcr4TtLEwYI08+sEBA7Qj3ucQ/+RqsPgHruJ9i70JRLeUkhdzwRrlVfl4g+zu5SaQ
+	 XY6qtQsbSvBXJUsy2KE3ezjV7jK/9Z3qtPVxaqVmX+pSbb9Sse3l3BwuPAxcuHOGZB
+	 o2j7RF0TTeGnBEHBk3jm/jA1sqthS+PPxDf4BHoiGavgwVcIZ/aDJrIGtJmRxsZnLN
+	 NUdJgRCt8nFB2Bk/yplzP7TjG8oO5bOvQaFc4IqaBcZu5o6kCUFB7BgkzLrHp8HNar
+	 3VgRKsnrdqPpA/LJy7I0TGMX227cEkXpdq9LdynEUHpL95TE+wENo3K4xTSOgdy9v9
+	 4G5HxGwFm2pMQ==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Brendan Higgins <brendan.higgins@linux.dev>,
 	David Gow <davidgow@davidgow.net>,
-	Shuah Khan <shuah@kernel.org>,
 	damon@lists.linux.dev,
 	kunit-dev@googlegroups.com,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH 0/6] mm/damon: add kunit and selftests for probes and probe weights
-Date: Wed, 29 Jul 2026 07:47:31 -0700
-Message-ID: <20260729144738.90895-1-sj@kernel.org>
+Subject: [RFC PATCH 2/6] mm/damon/tests/core-kunit: add damon_commit_probes() test
+Date: Wed, 29 Jul 2026 07:47:33 -0700
+Message-ID: <20260729144738.90895-3-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260729144738.90895-1-sj@kernel.org>
+References: <20260729144738.90895-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: i7mckynwh3hj1k69hibz3we7h5aeiota
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: DB5BA180006
+X-Stat-Signature: i6dx9n9gqehn3xb6cadj7t4hewcxk9o7
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 8EAAF4000F
-X-HE-Tag: 1785336464-518582
-X-HE-Meta: U2FsdGVkX19Y981B0g81KEozyAXSf5fbusj7e3XUCM3yKZ2ktJPY9yVu8vvd+7QcAUc2bG6+s3CP77tW7m0Gth+OACD7dU8Lh0LWiQ+8tUGSXoh4IB1U/sEfcIMA6JMCorbN4fs0s5M+/ax1YLDpAFlB715CSkq67ZJ01jj/qEfPQsctAvLB6wTqxvwewSacP19e8xSLo28EFA/8YxYsNnrBNtwBUVc52NOn4xqsPl/M4qpS1+evs7Tsz2M+TWBpZyS62tA6Kp9QBep/MrosQ3LO8jjF0C0gQIGoCJeaPYLJnDUMbyve3RSd5hdybzghuph05dT84rE6uMGyDnPnQWi72nDphI5a1u7oMXNRa6LrrgNQCbvCL5CcoLtcHu+xBoPj938470PJJbKo8tiTubyFe0LPS+bCVZFQvAeZMUggvwkAbK4ZiuzFTLzRqrngUfHmyOldrN1SIFp9U7yNTz/7w74n0+DWs/NiQ5qFbDpR+3P5gcMLHaVYWqEQ7nLWLafzvC1z4iegeJSxFiF51b+QEo7KXbPtanexboQt+GIB6vZ0iJmDIom22XQUUcvIX55Nr/b6hM20Idu6VXMF4dH2rp98NzTgPzM15SdtRYRGPoHCOAnR7ZbFLjr+G9yFoAatN2cgZGP5OcDDTKBXEwxIxBfbg4RTG7RmWrfvH+Ojsdm3nOC8gXN2ZEBgsZDozII7c9hg0OvAETBTrV58BgSO2OfQ4EpbGphDCqdVGHRD/zLLBWivEtPAiCveYY85GaI/TZR9o2HUg945krYs92bP9ncuHf/tvKy78+nMpGqxtB3JvzcpeMcTm91HrhaEc8Le5XKLSre6IUgME5ltUK0y7JmJRrpXUBq9WiTHgeLJvsuJMS73FVE/RtG9/UkCQLxrvgptLxfapzXiIyAOSDe7xRgm/1FMH+QvcCewAhLC8SmykN82y26ptNoHeT7pvNxbvI7Wbajg0SU2Bfk
- EA1s1FnT
- j52PYPb98rGlo9sw8JPReZCmDMuChYN2bAOAxA+EdCA3T/YVJoWq4WgB2xum8pGrL0YnK4rpKO32g5cOr5tjaHZLMlxhEvlE0zeBdCFQpW5kDD4DPHbUNIb+dkX5eObLQGgKUTd41WKJwbE/Q0gmD1i7pqI2kPgKFeaLDCcHiwOzD7GxsEDAiYXevwouAQoaR70ZA0vzRMJLhFkA=
+X-HE-Tag: 1785336464-123210
+X-HE-Meta: U2FsdGVkX18nU9ok59ZH+iiLQzcw2BeKSTnzCGpms/YgSSXqd4beOAtAWVlyZnsreotJEeJS+Tgyu8CbLA7hYHk5oLjTYEc5CPnBoxOsjRgZdiCWRcu0ilHQ5J2lytPcpZiOAcund+Rp/bfSBtk8CfBVe474XPiz/ft0OFi27hvj6yzvTc0Owq3r29zG8sunwv3CuddHN4pzzYuQShJo3+69ayRGotueHG3lUAK2+I63sw6yaLbPIm735M44E/Xhje5sMiE+8lD6cV2cZtxQy7k1q6Pa6vSU4XutQ47v1l0WECYtXoTQsHM2tP4lb3UESQIMnr1KCeoprzTHFHoTktdz44N33VRV7tEc7kURjrtY80yiSY8h864cjeoxIba/xyXfGEwTC3umS6aviZ5yDtFBuCZ6oAl3w3uDJA2aaVrA/9iR8alahlJtFyXyOrO1acgOs6PKJbHAHrqPlsbJM/jRxjOHVpf7/wvupMTiM73Ct9spfB1O402A1nMUJWGdMfL03T749+X8qGbMZjW1nm7B9XOcaVoGKa1FZsB+tqzterZg5cylNtqwVN+zPH7xE0z0DznjE/+Xhbd6UwABPQjsDeXSuDGrSbEWFP8SW23laBI6AeqyD1GoefO8cHT2uDrV8HAK9mo8bbCQT/GJXBHipc9VGMPOENhlCcyVBwHATaGU+yJzmdO3DYGlHAh3BWvWDiOJ/AnnK3ZYNcXhDApQ5QGZgXwkWUVIF8MqXGexBmdUW2RpgPTNjPLCvsvIp5lzW2UKWvEq8oRHi2mBEGDx4rJQWncdMhNxM8JChgR5zax7jqfy6NFVb6Ixpb2Azh/lmDUVBhLgKAg/X6bQqI++uGLkuUdMIALDnXSSHn071clVpcPXn+ZvtLN68jaIpg5V9v7iOA+TU0lubaoYhvkSDg0O/8E9cafUhulXmX+5l/7Tmz7iHD+mx0Ng0gnBugKLUALtSaiMyxiPMEq
+ JgvApEcr
+ nibz0CVrOffVc0HQr73+WOLjKGTYbbRBuzk89hZswveOkAEvisKB45eY/arjzh0RzIkJ6Qxh/NVka703Eouy/wHz3MAwDF3KIaTdUKNezInkLyKvY6AMwnAQtp2F6h8OKUKFj7UUZVLu0o+0QGw+KqHz/H49pvMuaACdjIrLzk737rmhlz0zG9okPkbkePZGLvtiMJoykFgRkrZjyBQlDa/A3PueAkOuyMCJsc6TV2Hqj5LSSed/O+F8FLUdlY2Su4sZcCpF3vw6U3zC+mXOXO3CFQFZOCVDx92ZOeQozlifQEpwQSYOzu+B9MQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,26 +97,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMON recently introduced probes and probe weights.  Add kunit and
-selftests for ensuring the parameters for features can be set using the
-core API and the sysfs ABI, respectively.
+Add kunit test to ensure damon_commit_probes() updates destination DAMON
+context with source probes as expected.
 
-SJ Park (6):
-  mm/damon/tests/core-kunit: test damon_commit_filter()
-  mm/damon/tests/core-kunit: add damon_commit_probes() test
-  selftests/damon/_damon_sysfs: implement DamonProbes
-  selftests/damon/drgn_dump_damon_status: dump probes
-  selftests/damon/sysfs.py: extend commit assertion function for probes
-  selftests/damon/sysfs.py: test damon probes
+Signed-off-by: SJ Park <sj@kernel.org>
+---
+ mm/damon/tests/core-kunit.h | 81 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 81 insertions(+)
 
- mm/damon/tests/core-kunit.h                   | 121 +++++++++++++++++
- tools/testing/selftests/damon/_damon_sysfs.py | 123 +++++++++++++++++-
- .../selftests/damon/drgn_dump_damon_status.py |  32 +++++
- tools/testing/selftests/damon/sysfs.py        |  35 ++++-
- 4 files changed, 309 insertions(+), 2 deletions(-)
-
-
-base-commit: 2f558ff382eed84b9ffde4dbd630a1fc4c57fab4
+diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
+index ff864402e9c75..d1e8c612fea03 100644
+--- a/mm/damon/tests/core-kunit.h
++++ b/mm/damon/tests/core-kunit.h
+@@ -1393,6 +1393,86 @@ static void damon_test_commit_filter(struct kunit *test)
+ 			});
+ }
+ 
++static struct damon_ctx *damon_test_help_setup_probes(unsigned int weights[],
++		int nr_weights)
++{
++	struct damon_ctx *ctx;
++	struct damon_probe *probe;
++	int i;
++
++	ctx = damon_new_ctx();
++	if (!ctx)
++		return NULL;
++	for (i = 0; i < nr_weights; i++) {
++		probe = damon_new_probe();
++		if (!probe) {
++			damon_destroy_ctx(ctx);
++			return NULL;
++		}
++		probe->weight = weights[i];
++		damon_add_probe(ctx, probe);
++	}
++	return ctx;
++}
++
++static void damon_test_commit_probes_for(struct kunit *test,
++		unsigned int dst_weights[], int nr_dst_probes,
++		unsigned int src_weights[], int nr_src_probes)
++{
++	struct damon_ctx *dst, *src;
++	int err;
++	struct damon_probe *dst_probe, *src_probe;
++
++	dst = damon_test_help_setup_probes(dst_weights, nr_dst_probes);
++	if (!dst)
++		kunit_skip(test, "dst alloc fail");
++	src = damon_test_help_setup_probes(src_weights, nr_src_probes);
++	if (!src) {
++		damon_destroy_ctx(dst);
++		kunit_skip(test, "src alloc fail");
++	}
++
++	err = damon_commit_probes(dst, src);
++	KUNIT_EXPECT_EQ(test, err, 0);
++	if (err)
++		return;
++	nr_dst_probes = 0;
++	damon_for_each_probe(dst_probe, dst)
++		nr_dst_probes++;
++	nr_src_probes = 0;
++	damon_for_each_probe(src_probe, src)
++		nr_src_probes++;
++	KUNIT_EXPECT_EQ(test, nr_dst_probes, nr_src_probes);
++	nr_dst_probes = 0;
++	damon_for_each_probe(dst_probe, dst) {
++		src_probe = damon_nth_probe(nr_dst_probes, src);
++		KUNIT_EXPECT_EQ(test, src_probe->weight, dst_probe->weight);
++		nr_dst_probes++;
++	}
++	damon_destroy_ctx(dst);
++	damon_destroy_ctx(src);
++}
++
++static void damon_test_commit_probes(struct kunit *test)
++{
++	damon_test_commit_probes_for(test,
++			(unsigned int[]){}, 0, (unsigned int[]){}, 0);
++	damon_test_commit_probes_for(test,
++			(unsigned int[]){}, 0, (unsigned int[]){1}, 1);
++	damon_test_commit_probes_for(test,
++			(unsigned int[]){}, 0, (unsigned int[]){1, 2}, 2);
++	damon_test_commit_probes_for(test,
++			(unsigned int[]){1}, 1, (unsigned int[]){2}, 1);
++	damon_test_commit_probes_for(test,
++			(unsigned int[]){1}, 1, (unsigned int[]){2, 3}, 2);
++	damon_test_commit_probes_for(test,
++			(unsigned int[]){2, 3}, 2, (unsigned int[]){1}, 1);
++	damon_test_commit_probes_for(test,
++			(unsigned int[]){2, 3}, 2, (unsigned int[]){}, 0);
++	damon_test_commit_probes_for(test,
++			(unsigned int[]){2}, 1, (unsigned int[]){}, 0);
++}
++
+ static void damon_test_commit_ctx(struct kunit *test)
+ {
+ 	struct damon_ctx *src, *dst;
+@@ -1745,6 +1825,7 @@ static struct kunit_case damon_test_cases[] = {
+ 	KUNIT_CASE(damos_test_commit_migrate_hot),
+ 	KUNIT_CASE(damon_test_commit_target_regions),
+ 	KUNIT_CASE(damon_test_commit_filter),
++	KUNIT_CASE(damon_test_commit_probes),
+ 	KUNIT_CASE(damon_test_commit_ctx),
+ 	KUNIT_CASE(damos_test_filter_out),
+ 	KUNIT_CASE(damon_test_feed_loop_next_input),
 -- 
 2.47.3
 
