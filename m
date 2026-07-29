@@ -4,90 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92A21C54F51
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:26:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 326CEC54F51
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:27:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 01CCC6B008C; Wed, 29 Jul 2026 10:26:47 -0400 (EDT)
+	id 0BBA66B0092; Wed, 29 Jul 2026 10:27:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE8A56B0092; Wed, 29 Jul 2026 10:26:46 -0400 (EDT)
+	id 06C6D6B009F; Wed, 29 Jul 2026 10:27:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB2EE6B009F; Wed, 29 Jul 2026 10:26:46 -0400 (EDT)
+	id E9DC46B00A3; Wed, 29 Jul 2026 10:27:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9FAE86B008C
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:26:46 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 095AC805E2
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 14:26:46 +0000 (UTC)
-X-FDA: 85042040412.11.2A034C7
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
-	by imf30.hostedemail.com (Postfix) with ESMTP id B13F580008
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 14:26:42 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZH36KbU0;
-	spf=pass (imf30.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785335202;
-	b=ZNqeLOc62UxLes6iQVOJpEaitqBcISfMSbwrmrLAmwIiaKDeiLAk4EWR7tSVbyCjz8VphT
-	/KOvwhf1j9zxfrs926waaZc7vOjMUZBsHvEpL8Gb/JQ4bq3gEu7DmOpop3S8n05nApW2W5
-	dvwOe4tu4hwMWyxAjQF8Hzjw6GuU3u0=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZH36KbU0;
-	spf=pass (imf30.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id BCB916B0092
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:27:55 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A141112069E
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 13:10:09 +0000 (UTC)
+X-FDA: 85041847338.05.73B5201
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	by imf16.hostedemail.com (Postfix) with ESMTP id C5A63180010
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 13:10:07 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=g1T5ekvL;
+	spf=pass (imf16.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785335202;
+	s=arc-20220608; t=1785330608;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lQ5sw2S8TC3g0HBtNAS/PmD4W872YaLT1+5/e811w7I=;
-	b=NR9ljn8jj3TES7K/msywpSduKwkTSHP4zendr+08Rgnw1MRpMMUWh41lgrNiZ5os3dytJS
-	kro3xwC9ySNCLBOfkzCyTYi2Qtqz7z+bamQNO0wMTGkP9fMsUwe8OB/dWoobp7CZlUXt3D
-	mjlS/Rw36heaVW9IhJaVDFUWr3BSWgw=
-Date: Wed, 29 Jul 2026 22:26:18 +0800
+	bh=zWBDvpD2lxRj16Xz0kQcWw+PNFk2I/UmPNdP3Qw4xio=;
+	b=DewRYJz+K6IyeAz1zqogR+zVmCslh+QbS6X2Osc5Cq2wevsKXnR5F4u+CyMsfaY7nRLhb7
+	CrNmUGmpXz0jXZNjDcxZIBdmqaBLnBnwNxTLi0sZ7dBtNBrbFKqX5FT3BXpCrnSoBlHpBY
+	6uGYYMcK5MFQ3678vfI6D6ZD1dJsGdA=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=g1T5ekvL;
+	spf=pass (imf16.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785330608;
+	b=CMUIP5WKcfJb65k5ig49tYJ6+jYPIJh3cq4YugXSJaDHaJSXkibfnWfGI9oOpwlXiP0uT6
+	d7YibxyBLWNQYgg8n3Sez/OEq/63in7xdjAwQoRHP+hKo7QEwXjfhSV6sQoj3towVfltVl
+	7wY0gOyGTTxpNDo4DoTbSgZNYUCXzT4=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785335197;
+	t=1785330605;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=lQ5sw2S8TC3g0HBtNAS/PmD4W872YaLT1+5/e811w7I=;
-	b=ZH36KbU0TXhYvzDJMRFthBhwpNzP6gy8d5toUvOh03i9AxaR7l5NVXBc5GIgnJEnLbou7Y
-	qEIrZMkfu3UeIGNMp08k3GNdDX3Elxne6HgumLnOffUAVrB4lqksGrvkf8d7BI4d+gAPO3
-	eDwjusN4E3c+LmeOx6KZvDy7gbsvRF0=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Baoquan He <baoquan.he@linux.dev>
-To: Chris Li <chrisl@kernel.org>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, nphamcs@gmail.com,
-	kasong@tencent.com, baohua@kernel.org, youngjun.park@lge.com,
-	hannes@cmpxchg.org, yosry@kernel.org, david@kernel.org,
-	shikemeng@huaweicloud.com, chengming.zhou@linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 02/11] mm, swap: add CONFIG_XSWAP and xswap fields to
- swap_info_struct
-Message-ID: <amoNilhbItzaEZfO@MiWiFi-R3L-srv>
-References: <20260727135029.1059441-1-baoquan.he@linux.dev>
- <20260727140503.1060918-1-baoquan.he@linux.dev>
- <CACePvbU7ih58GHW46Wr59uUdo7wnA6c6Nd98oOdwUzi3BGF0-A@mail.gmail.com>
+	bh=zWBDvpD2lxRj16Xz0kQcWw+PNFk2I/UmPNdP3Qw4xio=;
+	b=g1T5ekvL+CSLqzeTNQQxWvE4/zmkHJt0Mb5cOMd9Diyx7nToR43X1gbDbceFRU7SOZN6DD
+	/pBPtCM80ZwPuhy+9SuYkSqLCZhC6uLs3i9AEDYx/YwS5VSNJTMBE4SSiOir+4aOsU7MMX
+	7SLA5RnDMbWlS7aY1Mu+s45qlXYF5GQ=
+From: Usama Arif <usama.arif@linux.dev>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	kasong@tencent.com,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	chrisl@kernel.org,
+	nphamcs@gmail.com,
+	baoquan.he@linux.dev,
+	youngjun.park@lge.com,
+	hannes@cmpxchg.org,
+	roman.gushchin@linux.dev,
+	muchun.song@linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	rientjes@google.com,
+	kernel-team@meta.com
+Subject: Re: [PATCH v5 2/3] mm/vmscan: add pgrotate_anon and pgrotate_file vmstat counters
+Date: Wed, 29 Jul 2026 06:09:57 -0700
+Message-ID: <20260729130958.3728209-1-usama.arif@linux.dev>
+In-Reply-To: <20260727162550.2032-3-usama.arif@linux.dev>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACePvbU7ih58GHW46Wr59uUdo7wnA6c6Nd98oOdwUzi3BGF0-A@mail.gmail.com>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: B13F580008
-X-Stat-Signature: z8muxdd8ps4tkbkjxgmbwm5w3ocdzjig
+X-Rspamd-Queue-Id: C5A63180010
 X-Rspam-User: 
-X-HE-Tag: 1785335202-329118
-X-HE-Meta: U2FsdGVkX1/pPbUNWrg83rTyW3ao2XsPVwWQcKG4ROAXVkIDYi20aqGm5H234Zz6Z/zmA50pCvZLf7uOAkk70UH9tkVp7NR+v9ZDxUCguqASwazZIFkBBpqmLWmOlhb46AHzT4H0T5nCcvo4TzU+7ogb5L30IPEAZioonL7InpvOKAGUQmJia206nA8Hkczk1jQn8jTJMeIWxRZUESStlsiZMZft5etZJNGLMdvQMnhlchLferkBez0tRhDlZaorPFaZ39TIvJnacfw5c4BKSl9rE043hk+xGna4KIi4lMnY/oU9NNTtaxHbdrrSQ/gqr8MoC6zc5L+76C+f6l+0X+DbLNj+3zTB4VCdQ0+zNmDy9PAU+ApL50+gKwVq/CRWizZBmg+ToS6KGKlNM3PK3bLOayd4jYkgNgbNN0evU94hOWBlH7SeVQZTUDpOswdg52m9Cbk7eOe2IrdqYFtJe71LaYSCjG74/zwlasYXn+5U0Bh5DrpW/1BlvMXEOCCnbPv6+5B38Of5ZdbtEBipRF5Mf5bUP/WiUw3zNOHW1+m0HEgQZFc8Ft6ts7WGsfOYFE0rGvGTiJX9IKbrAckaGTpfpQQtY/L3EVk7OaegJyA9S2gE55yfhbt5ohAv7z/0XGFOWGsar44gZ7JgMPQZ0YFAbS4P3sw+ylSlRU6aJYJYTCAiPTLzPDuBm3tM/FADB8/t6JD7MA6ga564sRPo1O/U+Utq2QQ4vDrj6+ENCyBQOFkbL1GQA32KtrbT1BH54bIzM5NygTavjq3ntoJ/4Ul/AesrI+JwWbOrvumcWYV1k7hXt91aKyp6P5LxUsvhRzty3BnMff7+gJB4cRYB6TbhcK8IxPVxsmrBQ8lC6SvJKZHM6cxJ9Gnp7/r8x8pUioGaEtpB0092qL/gcI/6T7hDreNe96ukPT2EqV4Me4AoNxzOgY3FT+JjElTB/+slGyv98Wo6abH2lubZ+X/
- ERnDJsqD
- NyxNYb0vfoRG3uaNbTnMP8g+T4wyRRYDeiGYca7/s+BV9Ah0xniTsmJ+AHNl4Ko70cFhl4L2tobjqbHG0Gte6PPkxwweO5IUatN/jiJZnEVb/Nb6RH6MUW64novbPVUUs9I9SfkPk19rVzcqb/dk6EIam0TADwCNxlZNQElV8TwrbN4esDwMXqmiE+TJVh95Zl++Aav2gA/rE/d10ErcfBnyKHOGSMipkBV2IZKyEAZ3jR7SItM82rvxMCVjhkI7224Yb6KLeE44XIGZiemWh4XX9tMslLGJ5ID5aUUUekF8GbW+gtHg1yp4qWS/qTKwr+cER
+X-Stat-Signature: twtxc4fainr1c31678wthnhfizixjskc
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1785330607-768429
+X-HE-Meta: U2FsdGVkX1/cCUmAkhN476fW/n8u4y+6DS9sn+u3pA+qvW0BSbgeCcHPRVElOnU3YpU9Al1DmOrNbRkDDdgsfA/KGazGvjL10LKpbhkyNYTR11tmYddVbZ21BvvjlSmK0NCxvpBS2SVwovMRax6LrtucYQwiQMdKW/cPO60JYMxEYIvFr4baFRakGxQu0Q47eji+3mqP+TY8gslHyS7Rt6DZaGX3BGjUYG3F6or4tAgpzqX4IfiOUUcqGsUP/ZO3DkKTPecqKfZHmNN0QowXZQRkg4u9Qwc8ke8cWKHl3RAnWQelxUzmIuVR7bilruSEzNOgpQb4nIAzYRcomOwpGgj+AC27mox22TvVqgN91wfAleFuzBniwf712stOwHZBiF/6sEv08TsCjOvhtDwhiW9xAgKMD5qzqDbYW+VjKCONrogs8PdaTuR7RkdeN2QQh1RriWwnYH76XwyjwePeuj3y6uC85txDIqxG54PB7q6MBERVtP0tF1hh+1lePC8vxL2zf/mgD8M/0UX0jx47TNXBDV94MEfcCFxv23Zfk7+ZS8xNzPLQC7xfPISuUUfHbc479TLx4CvwjWgkEV+e/AArI47hdV4A5jcYvrt9ID1hamjN2xZrh4RnXGygWAppiOYcVYHDA97BT8DULv/NTIS2d7GHsqUBvOfAQbRF7rnyaoKgDnGio1rUAZOqYLUPDTQpKwyxb86O38PWpHbjJYJV5pnOdnZUNSJdqh4S5bIiYY0h1WgpgqxEZ5r5x48EFfv5XOmkTh+o9pXt/+ImtN9zjtSwvRzJtwpMrwbEjgm3mSeRoSMRpnFmUrgTyajI3MZ7VTFC2o/Gimp5p0/4OgkN9k33S7FNy9IDqYd7IlzPIjKN0ZPwbFZPs40aAolvnFyyjDyiJdV1P5lyt0PlGO3C8Xmpi/mtQyMqtFWbj09j46mxxzO2yB1xVknT2x876MFkna0VfAhxaMSvYvR
+ YJFdFXKn
+ 2Y9Cf9hXGnAAuxgca3KV1PlG8aqGENW6ZangEIYdjrX0pL4hGtWE802H9j+mlHu8pRafpWavdQIGXgztDxb6myiLJbgGoPoiHu93frAbB7uTcbAm3cciw9lazaLIyh/GNxGJQ5V1jRNKw+ZkxjqRa9ihxkZfFf0IbjZ55tamfQ/d76cWY5nmb+EEfwtmjnMosJUmtII4fifCvkbrUqwIbxxEP0hu5MNX/HYb1grbnYgEBfSL2DkAtDmXHmUBuUM5nmCs7CpkHECccqC1LWTwMqpMagRqADh4KDmtsdlN7zTmP0AXwwxt41m1+zw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,48 +110,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 07/27/26 at 08:26am, Chris Li wrote:
-> On Mon, Jul 27, 2026 at 7:05 AM Baoquan He <baoquan.he@linux.dev> wrote:
-> >
-> > Add CONFIG_XSWAP Kconfig option (depends on SWAP && 64BIT) for
-> > extendable (virtual) swap device support.
-> >
-> > Add three fields to struct swap_info_struct under CONFIG_XSWAP:
-> > - cluster_vm: the VM_SPARSE vm_struct backing the cluster_info array
-> > - nr_clusters: total number of clusters in the xswap address space
-> > - nr_clusters_mapped: number of clusters currently mapped (lazy grow)
-> >
-> > These fields enable lazy vmalloc-based dynamic cluster management
-> > where the cluster_info array is backed by a sparse vmalloc area that
-> > grows on demand and shrinks when clusters are freed.
-> >
-> > Signed-off-by: Baoquan He <baoquan.he@linux.dev>
-> > ---
-> >  include/linux/swap.h | 5 +++++
-> >  mm/Kconfig           | 9 +++++++++
-> >  2 files changed, 14 insertions(+)
-> >
-> > diff --git a/include/linux/swap.h b/include/linux/swap.h
-> > index 80c83dd8804f..5f6b14d30758 100644
-> > --- a/include/linux/swap.h
-> > +++ b/include/linux/swap.h
-> > @@ -248,6 +248,11 @@ struct swap_info_struct {
-> >         signed char     type;           /* strange name for an index */
-> >         unsigned int    max;            /* size of this swap device */
-> >         struct swap_cluster_info *cluster_info; /* cluster info. Only for SSD */
-> > +#ifdef CONFIG_XSWAP
-> > +       struct vm_struct        *cluster_vm;    /* VM_SPARSE area for xswap dynamic cluster_info */
-> > +       unsigned long           nr_clusters;    /* total cluster count for xswap */
-> > +       unsigned long           nr_clusters_mapped; /* currently mapped cluster count */
-> > +#endif
+On Mon, 27 Jul 2026 09:23:24 -0700 Usama Arif <usama.arif@linux.dev> wrote:
+
+> Reclaim can spend substantial work on an LRU type without immediately
+> reclaiming or demoting a corresponding amount of memory. Record this
+> work in PGROTATE_ANON and PGROTATE_FILE.
 > 
-> We might need more than one dynamic kvmalloc grow array. Maybe
-> abstract this into a struct so it can be reused for arrays other than
-> clusters as well. The abstraction can also include the element size so
-> it can have a generic function to calculate how many pages it needs
-> for N elements.
+> For classic LRU reclaim:
+> 
+>   - Inactive-list reclaim adds nr_scanned - nr_reclaimed to the
+>     corresponding anon/file counter when isolation succeeds.
+>   - Active-list reclaim adds referenced executable file folios that
+>     are retained on the active list to PGROTATE_FILE. Active anon
+>     reclaim does not contribute this component.
+> 
+> For MGLRU, add the number of initially isolated pages that remain
+> unreclaimed after both the initial and retry passes to the counter for
+> the selected anon/file type.
+> 
+> These counters are distinct from the existing pgrotated vm event.
+> pgrotated records an actual move to the inactive-list tail, primarily
+> after reclaim-marked writeback completes or failed invalidation leaves
+> a folio for accelerated reclaim. PGROTATE_ANON and PGROTATE_FILE
+> measure reclaim cost and do not imply that a folio moved to an LRU tail.
+> 
+> A subsequent patch will consume these counters for anon/file scan
+> balancing.
+> 
+> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+> ---
+>  include/linux/mmzone.h |  2 ++
+>  mm/memcontrol.c        |  2 ++
+>  mm/vmscan.c            | 14 +++++++++++++-
+>  mm/vmstat.c            |  2 ++
+>  4 files changed, 19 insertions(+), 1 deletion(-)
+>
 
-I agree in principle. I think we can pull that out as a follow-up when
-the second user emerges, rather than abstracting prematurely.  
+I do think the sashiko reviews in [1] about MGLRU are not correct.
 
+I am going to ignore those unless the MGLRU maintainers think its an issue.
+
+[1] https://sashiko.dev/#/patchset/20260727162550.2032-1-usama.arif%40linux.dev 
 
