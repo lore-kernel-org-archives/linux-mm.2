@@ -4,141 +4,156 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53E51C54F51
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:24:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25F46C53200
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:24:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4D3846B00BA; Wed, 29 Jul 2026 10:24:40 -0400 (EDT)
+	id F0C6E6B00BD; Wed, 29 Jul 2026 10:24:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 483F96B00BD; Wed, 29 Jul 2026 10:24:40 -0400 (EDT)
+	id EC0AD6B00C5; Wed, 29 Jul 2026 10:24:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 34BE66B00C5; Wed, 29 Jul 2026 10:24:40 -0400 (EDT)
+	id D86636B00C6; Wed, 29 Jul 2026 10:24:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id F0B6E6B00BA
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:24:39 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AE712C05EE
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 11:57:49 +0000 (UTC)
-X-FDA: 85041665058.29.25A35FA
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
-	by imf03.hostedemail.com (Postfix) with ESMTP id C46FC20009
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 11:57:47 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="B/diQPW8";
-	spf=pass (imf03.hostedemail.com: domain of jakovnovak30@gmail.com designates 209.85.208.179 as permitted sender) smtp.mailfrom=jakovnovak30@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A0A3F6B00BD
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:24:43 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4ED9380642
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 09:35:36 +0000 (UTC)
+X-FDA: 85041306672.04.CEF6EB0
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011036.outbound.protection.outlook.com [40.93.194.36])
+	by imf29.hostedemail.com (Postfix) with ESMTP id F3FE4120002
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 09:35:32 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=kJsGcWVF;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf29.hostedemail.com: domain of bharata@amd.com designates 40.93.194.36 as permitted sender) smtp.mailfrom=bharata@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1785317733;
+	b=BCAcQSO5Fi8ZdnL+uLjWarsjlDdHGo1ymlrzOxm7kQHzZ8CKJ0NLN5JN/JqwXmXELhnd5w
+	+zFGw+Jhtmj9toyVKBfn4BHuJgq7NZqZ7AkKFZ30cUV6i9E59IE6noVC0YNgYS74ZFAU9r
+	1CcR8TyZ57WOuFLhCeGB9owCoZkIc6Q=
+ARC-Authentication-Results: i=2;
+	imf29.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=kJsGcWVF;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf29.hostedemail.com: domain of bharata@amd.com designates 40.93.194.36 as permitted sender) smtp.mailfrom=bharata@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785326267;
+	s=arc-20220608; t=1785317733;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dcH4aYYuKoXJSYfGcjaRA3AXaiTJLDBIulQO5B/oLDo=;
-	b=8c+ubXcwIjesHlKc+YC78CWHlq3J58foM6Jh2LsamEK2Nb1awRpi8P1A+OgURPIa0/lQ5m
-	o9EN+wm2rmagv7IP/Ha2Ox/9jPYPytEQPUVHun0DoLrgLmXbysYjLmpB3bVsavLUZBZ6R/
-	SdNav0P+8E0C4KqQC2mr3fifQW5PPaY=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1785326267;
-	b=xiTUsrhI/c8bwONaEBrBTsjw0I8SVOJF80t8DsjO8gIEbd3vDjs+tLezOfsbos2uqwzZX3
-	q1dHrJLV9DD1ZctZ2nE2YFp3Y85zpZ3YyAoobc2qapF8x2WcZi8gVBugrehG9Y7vgQoFgt
-	iLb8REbZg+DjHPautvB9evpH2M5QPFg=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="B/diQPW8";
-	spf=pass (imf03.hostedemail.com: domain of jakovnovak30@gmail.com designates 209.85.208.179 as permitted sender) smtp.mailfrom=jakovnovak30@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-39c74c469e8so5294841fa.0
-        for <linux-mm@kvack.org>; Wed, 29 Jul 2026 04:57:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785326266; cv=none;
-        d=google.com; s=arc-20260327;
-        b=C+ySpqpQEYAxQs77migA6aygiJJRmBJNHZpu3UhIS06EeIEldWxbqNN0AJcQdcvcXI
-         CFOymzhyaj141mN+/MQh2f4cn++mYT/VjlWmFJrmmp/wzrQChe7jRqU7pRwLvvQY1Umi
-         rg1ptH7hPYKJ97lRxyxmjerYhXP/WLim413rTnQ09yIB7pch5Rutg6znYukI3kKOcGfD
-         YBOYUdmXgQsfl5rbYHHzGjpCqTvT3vFxw8+XTNFooTpN731C8FyLNyw9d1P8+MguURks
-         sBTr9CCgOVgriVVqazwuQCYv7UyDJL6vOM+8r+HW9eir191QMJRb3ZvdRlqwVRgmC/Pj
-         teNA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=dcH4aYYuKoXJSYfGcjaRA3AXaiTJLDBIulQO5B/oLDo=;
-        fh=rJt6KBUMaqdDbIXw6hY9JFdlePgtRHSM7RHnPjGA6vk=;
-        b=LjRUtIrIHynkS9nC0IPj4hq6IoL493Se+ejAfBHMPcjeBKoRG6kMoDu25NLUWvFTk6
-         ZB086QGNZ8h7VH3utGssJh2PpRh6PXgEZlQm7457UCi9ycl06gfkuDaUGcno6GVhtXx4
-         1nYKaF+Qpyut8HW25yUbRl3xN6NQyFeGk1hBOcOr+auAiV7PV5a3g9gt0yx67yjZ0ZJ4
-         /ZmQDemj0EbmMOKaSuLqDbiGzYSDYxVN4rIszdfhbJhsvH4diav+oMuEf6mG2MKav/Vt
-         7O4AEkQ7Sc320e7LxqFWwW53NnQFB5BINSO6TYljvCfUQ8LdS0IYs3XPTrHDu2bLWGbC
-         KjVQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785326266; x=1785931066; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=dcH4aYYuKoXJSYfGcjaRA3AXaiTJLDBIulQO5B/oLDo=;
-        b=B/diQPW8ZElaJUwpSurLwfx5SQmgh8csaQEPeWuybZxPjPvtGPeCIHQ9kLvA5skPzy
-         qOzC/gJCGwa9FpdrBQYoTL+McCZ5YbQqLT3Qoa4RYlSUcsUETvYUQ6x9b9FwtDFC5Lqi
-         em6d/8R53F38JQO6fDs0aMNCPdkL5Jxk6/51wVsf5oCfmWoZ0xBWyPtyz485Lti1FMeV
-         fjw2iGxXeWVTffOESNdn4wBpNwrJEW/7ufge+HjMQtQChdVG1+F3hmgiZ+Uu22qhO2dD
-         pVZ6R+WqQ4E9301q2pSYpmWgHQoNAKk17eY/OHM/NhQKYkdyJMsn5QNCre6Jzyhd4jqd
-         IpIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785326266; x=1785931066;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=dcH4aYYuKoXJSYfGcjaRA3AXaiTJLDBIulQO5B/oLDo=;
-        b=GlEl99BYGX1g84EAnU39nazHNCsr8WtfpvirCP8jmQSVgvCG6Jvq4VXCZk1mPg4llx
-         iwgv7EOsnUx81+EaUvA9i/LXtXdWwGHm2/EOqN/2CxWg773hQls4ZpOV4MJSOq3efQEe
-         YodlLeyafTnm4EQKjOXp4N1Q4nCIkYvxxOOhrrTiO7XA56LvKgxqXhj4nCE+OD9D4cbU
-         piosEQvmciYQiZiNnTvgAm/j02pmQ5RYE75IzMKus23ESo3s1S8sSot+dRBn/dsxMsel
-         83xvPRJzwXpat0h/V61Cf6MnMH9Djr6ZAQI1491+1wqcG9O6fxfc3BAWmOvB4zuX2zPl
-         NYtg==
-X-Gm-Message-State: AOJu0YxnO1fpDqOLN8VOyJ85RyV48LNjjr/oxgiXh1Vpm7kYeWJYD3pY
-	5BO8vIhOt/J2+r6RB7zWwdebw/ZdvScJ4Hg/zeqUqDlOzevl07bHPQduvoVdJTq+Gj2MA4l5WI3
-	w39421D0dTkUULuQhZ5ZM4ImeY7haoA==
-X-Gm-Gg: AR+sD13DQAiTJW0+zbGqYSEwXQfk78wYWDukzWyiQck5hwTKMwZceo8qxJqCQU1d7yM
-	AYuouso9MYaVunkH5i3PLw7yZ8ueZJB7poyaj0D1QZf8cQf8EIeq6e5fZf3zJI+OLLDItJrJwv+
-	YY10EZnyg3eDJo2MboSuyLPd/4ihCzw//gvUcHn98RsgvCBkitWDglz3pusu/E2WLMVdmCR+9Dx
-	eJvrBzP2rWh4Fc0wKteg1jwmiqAoBc4JBm5Fvz9dfv+BC+y89IudE7WOPkQJ6ocLZhnbzN8eby6
-	Elo+fooUIhK/hyjQMLMvqKQZj6IhfoCOUx5k3KMKwsIEOokleXE2gMWGVoDxCyRi8Ki0ljCBkkf
-	e3f/Ozi1DjNtInGoN9Ju4a7w=
-X-Received: by 2002:a05:651c:b0a:b0:39c:7089:8053 with SMTP id
- 38308e7fff4ca-39f51eaff35mr14776261fa.29.1785326265114; Wed, 29 Jul 2026
- 04:57:45 -0700 (PDT)
+	bh=v4hIC9IWLW5CHJdGBGbEJtpFSgG3nJwhpKMWtGiUDUQ=;
+	b=ysiGxcYCUofJbIRfCTI5rBinp/u7JkIZB+Ibtd7YP7e2T4KyU26VPf57sOUzy0cxf60WpU
+	0HoYE9wiQGz9LgyYRr8nOwgpn94HRZLh2ETZShO7q/Z6mTrEIJK462QbOQvbJ+o7yfBn4o
+	I+ZOYyprckVCxQh5lu/qpCCm3G7fk1o=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=cYMFGu0HeQh57romixaCE48Pg6GRkp1dx9E8EK/Ews4dlpVZCXjT9N7yqch5Zt9M47OJG5VfS8jLVms32WkntCzHz/dk6mD7meBA2R96Ic/Fm0qkejPCY5b0Tj1P2DZ5izJn8y8TNin82FFIhsvDPBJmH1YqdSIBwYJsRC/FMkCe/QG3owHY2Mvxz1xryv6jRUJuRxD36xJCkhnhqeI48MLXWmxa1zOVkAUh0Ht0Yp+smqgFLP7cCchcmsXzlYf7va5P5g2JNxUd269lNL8WT2spuP+2UUX4EHXsrqk0QtDRuxoPAU3IMxgSASADIPEdc0V6ALz3aU1Ls1NPA1vGxw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=v4hIC9IWLW5CHJdGBGbEJtpFSgG3nJwhpKMWtGiUDUQ=;
+ b=hYmFGVrdlHDwkjDlYmdSPVzPAT4V7VVYr5s6XG1I0l/io9kIGWrg3UVJUgMscw91igVOCydg/7vcXQZwlEuqmuB0/EsD4gUZNqQ8dE2OBB4F5KCjd0Ed1UpoXivgCleoIfrDiGzMKc7Y46TehYaS19ROawndg3rwYdF3j7V91qT24ZWtTNTXNg15xpNfKmP5HI7hgpVM6QxBXjUK/uEMMJ6lIJcXNu6B52wsqr6W2KPZWmu4v6OrGYrS+k7rLoLDpJ/Yx93OFzt1BoaB3SSl767y8/CbZ/Cf3kQCBa21Dx/kMDy9mSSnK1Llm4RtWJB5u5Nc2ZcQepEGHlQAcmcXTA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linux-foundation.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=v4hIC9IWLW5CHJdGBGbEJtpFSgG3nJwhpKMWtGiUDUQ=;
+ b=kJsGcWVFtGJE8l92V74vDDFEyjg60ectQBEmGdZcb8UFQLFOM7CvKK+oYO6TzU8eTRSkpbYa294f/wMN4KOcupnTQFRSFY9fYbCAblEmTb65dM1vDG9Oj1UgRhzH6An+76if+12GvlNsCbbpCOVfpbav6SqVeDIyozWe2VZOk5Q=
+Received: from CH5P220CA0022.NAMP220.PROD.OUTLOOK.COM (2603:10b6:610:1ef::28)
+ by CH3PR12MB9079.namprd12.prod.outlook.com (2603:10b6:610:1a1::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.12; Wed, 29 Jul
+ 2026 09:35:25 +0000
+Received: from DS3PEPF0000C381.namprd04.prod.outlook.com
+ (2603:10b6:610:1ef:cafe::84) by CH5P220CA0022.outlook.office365.com
+ (2603:10b6:610:1ef::28) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.270.13 via Frontend Transport; Wed,
+ 29 Jul 2026 09:35:25 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ DS3PEPF0000C381.mail.protection.outlook.com (10.167.23.11) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.270.5 via Frontend Transport; Wed, 29 Jul 2026 09:35:25 +0000
+Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Wed, 29 Jul
+ 2026 04:35:19 -0500
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb10.amd.com
+ (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Wed, 29 Jul
+ 2026 04:35:19 -0500
+Received: from [172.31.176.217] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
+ Transport; Wed, 29 Jul 2026 04:35:11 -0500
+Message-ID: <125de6c4-2fc7-4202-9199-347effe63112@amd.com>
+Date: Wed, 29 Jul 2026 15:05:10 +0530
 MIME-Version: 1.0
-References: <20260728204636.20998-2-jakovnovak30@gmail.com> <b78f734a-440d-4fad-bba8-df77894c5aa0@kernel.org>
-In-Reply-To: <b78f734a-440d-4fad-bba8-df77894c5aa0@kernel.org>
-From: jakov novak <jakovnovak30@gmail.com>
-Date: Wed, 29 Jul 2026 13:56:49 +0200
-X-Gm-Features: AUfX_mwf1PG6jikzexvDJHP2AFA6m_tRT9_DJ5v8FJfou5IEMZUwV0atpg6abhU
-Message-ID: <CAPUiDP1POYKJQ=Gfm-irzUmGaSNfZm+qO0xGP7Z=FO8a=R-6Kw@mail.gmail.com>
-Subject: Re: [PATCH v2] mm/khugepaged: replace mutex_lock/mutex_unlock usage
- with guard macro
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-kernel-mentees@lists.linux.dev, 
-	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"\\ Liam R . Howlett \\" <liam@infradead.org>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Shuah Khan <skhan@linuxfoundation.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 0/8] mm: Hot page tracking and promotion infrastructure
+To: Andrew Morton <akpm@linux-foundation.org>
+CC: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<Jonathan.Cameron@huawei.com>, <dave.hansen@intel.com>, <gourry@gourry.net>,
+	<mgorman@techsingularity.net>, <mingo@redhat.com>, <peterz@infradead.org>,
+	<raghavendra.kt@amd.com>, <riel@surriel.com>, <rientjes@google.com>,
+	<sj@kernel.org>, <weixugc@google.com>, <willy@infradead.org>,
+	<ying.huang@linux.alibaba.com>, <ziy@nvidia.com>, <dave@stgolabs.net>,
+	<nifan.cxl@gmail.com>, <xuezhengchu@huawei.com>, <yiannis@zptcorp.com>,
+	<david@kernel.org>, <byungchul@sk.com>, <kinseyho@google.com>,
+	<joshua.hahnjy@gmail.com>, <yuanchu@google.com>, <balbirs@nvidia.com>,
+	<alok.rathore@samsung.com>, <shivankg@amd.com>, <donettom@linux.ibm.com>
+References: <20260728054356.291998-1-bharata@amd.com>
+ <20260728111401.b6d674baf8e56a27c55e0c52@linux-foundation.org>
+Content-Language: en-US
+From: Bharata B Rao <bharata@amd.com>
+In-Reply-To: <20260728111401.b6d674baf8e56a27c55e0c52@linux-foundation.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS3PEPF0000C381:EE_|CH3PR12MB9079:EE_
+X-MS-Office365-Filtering-Correlation-Id: ec4697c9-3f82-4af8-d880-08deed54b813
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|7416014|376014|23010399003|36860700016|1800799024|56012099006|11063799006|10067099003|4143699003|22082099003|18002099003|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	Sn4OAM1azgZWCOdsVrT2VmrL26rimCAx2EckBQUN0102aToyGrnJibeF8425ERRCyWgjg6J4Dvib9Dd544m7tWDCembTIqBlnLc9epJNVk/KO7Kszj6kybjsOzIh95KQSi49v+cw78jm6Xfit4wtaX2XXaUVBC/6G5eisuqCA/vVLFGrbVuQVN/R/+B7ptcDgLrlUMFgJ5HT8kyOlWT9A3rhM23bpRYfMKUj1ei8FuNFJkKBbl+iEmdZlEFV+Cq1WUALFzEZc+IfNIijO/I635RCGXBSuyn1tLr767tKEtGUMniwGaG9xiMQRyFJopyrhT6bLx9T1rcESStZNdSMMnA/EwF9wlSD75dCu/bnsWICOUTJ/5Qq5gfplpKIDVozT2jtb20SGiKkEl+87SgKgj3Z1W2X99hwMnL0qBm9fE0/0ofuu/v+48XZO/u0PcoQ5kejd4Boh+G0H46qdSHywU5jCdw+o5rbv47LwQBH9D3k/1nEgPuBZ7ki+dVXVIXlO7NGJVrUYLbxY49wyBnVYPwtCvzL9EhVtQ/fmK1iBtsawWbkltbrMlezbpe4zlc3V3IuwiZfZjhtGtMFqb5BkUaxqpcA3UmmcclKh1ssX/n27nAefrZd03OgjvFg+nhcV74Bd45QQazMR9+4GZg6rw==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(7416014)(376014)(23010399003)(36860700016)(1800799024)(56012099006)(11063799006)(10067099003)(4143699003)(22082099003)(18002099003)(13003099007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	eL5xLFoXvyyS0QC88q7tIfPxSjysyFPj0EpFGVlnz8HaOnVuulWtL4WLxd4Kc6rpu3nhdAabxckfs0pbCDdOtHr28+LexnIIuoqo49djVBISEH5Qb9DkWGHDU8NL24hAx87gMkXuTG1BVj0SUId31BX+XqWmIMKBXXsOzD01KimaUbZnaoRLib+jwBaU9OfN1B3ZYxqX6XdlMNkTtkMm2ICo/KeJH75aMCoPwvYOaqkgroi7J1zQjHn+vRqODoULIT1d/id2iZdHbsl9xZKFOug/wAi8AtK0QflK5JZnURrP6JamoWYFiiz9gNRgT4BRchBsiKnDIqshoNRNxbirZc2eNAizGNgz2K5YDeW7F80xXB+Q9UJKlm5GtaxOKvua1vTA4arKcMJHutHaA1Xr7hAzwggUpLbtBe6/J2ICv+VVYw2UpBzmwBsy9P8aUnvo
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jul 2026 09:35:25.3747
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ec4697c9-3f82-4af8-d880-08deed54b813
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DS3PEPF0000C381.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9079
+X-Stat-Signature: 78b53d6ripgaqd3gqwukgbjf7djm7hj6
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: F3FE4120002
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: C46FC20009
-X-Stat-Signature: mxk3kpgux5ep18o7b7hh76i4yqcgpeb3
-X-HE-Tag: 1785326267-713947
-X-HE-Meta: U2FsdGVkX1+vVNpaqnNQQzAxr3BLep2CenbhDDlCEEWGRIelPzZqhTtJW6/G1CIXbdx+Ffr9b4fnwsFsI0YALA14GCFOZL4yg3g/jPFMixXPQFuXbJZqtlML0nd26UNT/ITDFCPo+8kTRHTNe+TB1URYISnr9Oq82b9TexMXzuPub9A4mdrGfZW8P1hjtrCNLDhuiB1l4xMbodgF2uKf//BhPOx5Xlf7LiF76Nw4BHcmqonH+8RKx99aLDjItpoIGIPcMfJZT+AkMDGq1YgLR50TafJj0ZS1LOcGtm/T/D5tYlK8BpbFPVYBlijH3BQok1MxyVF1R1Dr3UbRCsIX8uRIoi2vdQ+zGKbaikRDYxgUmnrcBtOlmJsVyTxKxK0BXNfWEIRvTFtyruLRlp5bTECwEgn3nrrICA9lG44z2vICHbT8Dh/KR92i8/MkoMzMcw+uaT1zKbdpR3T22Agu7zuILRRQJ6S9WuT0ZBW33ybasGNQRDM08tULr1Y+akLdKnzJuz4Sz6Z3yzCR+N+R7EvojwE7l+6BBsQubAEJdFUc0Ro51AQI7hqpRzHKOikLtBDhM0nrG5GYYRq0rmm3WuktOyVJgIa/MINmRxVfmBIZjpkQe/aCQ9zyqEFgY2ot6EBqKzZoLr5ydETu7Ni8BzXV1HfDwQ4c2vmyt9FcL7sh01yWYUVjEDfWcB/sjsH98C+kpsJ29x/T5RMRZcd9oVeYvKK3kxeGFVtX4HqCWNoc896okGH1prnPMoSa1xNIPSozKZ9l+AIvmMu+ZvRA90zYbTrYDRvFj0nIny14WP5yTs5v1aeehm2vdWenvLAZKCsFnIDxVfOKPhsMYy6rv52zn+wyFaPKYdf5sMFCOzROnOTH5p0qTZGNKVWT7Wz9eiZhNnHbK1E20I3SnKIMoShakc/f7YOccWgFxApdSObW7izRRER4h0nKFO6iDSphGdtYl1yGLkUIHxb5XUC
- iYr9vZSb
- bmdOy7MAUZ/ip7b9B/Eners4uU3F5CtqlZ+jaSkXWycFswkzn24WZt6Mr846eO4lNv+WBOUnqHIFDU1BEbIq0fom1RRTs7FS6vlWiZKG7DaP1flioGAz7VhpS24yfz3vWiqpwsTg0ldIlDCN21SINd+CY8Wk5UETLlZ6MjzayEJ7jzAURsxsF8Pp8rW0MnXQrLzIFW9qw3SYC8urVtVZ+3qKD3dXuhtBz3YEU0r81Zv2yiMCpliX/0cMYtWBcnH7SSzK8pxPFAV04gR8YtjVm0N2R1sBKMTfrnePS5kjwZ5N2q4SKmwa+AozMLELz/HUMEW/1bMxDDcwbxzg62YonqQiE6ZUPQ9RDkxE5ASZSuYfM+kTjKcCV70HVwSajrCFqwYWDNTl0p7FwhwsJj6O3XoJi/LVffEPkDbrm48dRYSwQH1jdKurO4bBzVRdDrQyLvZYdbQh0oQEExaAsrYdVv80E7Np3pHhqGq4rxwmguJRUSxN+VTiIEHpEWryaJhtEzTYYwciCbdhJloa+pds5xNPTvIFEyvV1syFtRvDo5fVDwuQ=
+X-HE-Tag: 1785317732-499542
+X-HE-Meta: U2FsdGVkX1+vpDSP9PnRul8s9fMjniZ5+b8cX+F+q7b+3jyswFevWJBy5zMEh7XObnqNyYq3jLjyJqAv5knj+XVZ+dqCUjfDx+0pIqZyfkQukfD5jbg1eVMaLYD+t6E7FO7E7gfTb+kENobS4YzrDgD/XMvO0y7mXiwCXxq/Ec1FRlDO7Tcodl6bLImSLik1UCwlQ14sLN0AdfwebPezrbKV1RwALyj9aY6AhxbzE/TFeXlQR84Vhv6yj+smNg2U+2JMU+tGNfZnW6i5cYisumtzrGckNkf9NKNnEzZdh5ekf5No/URSS6bb7xbOKy1C54ugqyUGbF0TLZV2/N9lseex7aumJdUn6LBSypaWxFUp1j9I6aI1TcoHOrIHkBjyKzZxsaCpBLHf7/EcrDZHdc4Jq1CgTK4eLkFyQGEitkO15CwMCLkiQb8UV9FFAtu4i4AWzqJGNqHPL0cDiF+00QVePfqIwKQjVOpvAJKc0mBLluRAgMXE/FkBJS+fuyeCtkFLsUhgW2b2X8iTT7yiWnTPY0KGsjfQD7kQKmvKIsJRY+FaLZEoCvKH5SLphH9N/zcw1jvCGFq3QGaegjSzUyGGau2HPayXwjTOYTn7CxSxQ0KTGsfML08enHQ9IBjfG3dzR7OwGLYfPqIMIjmEmGHAHM9nobnMbraaCScjSPjUxp2Ch0A74UNBSpkl/5kGPK5bNAwoB6TLEHWlFCy9he6Hl0JTee7ZVycbAGMfIX6ZePc5cJUqiy0fk8Z9m3LQR2x4YjqGyBu1x5mnQByyA6KCkpF4DcIk+OGdRC/IbNQ9hJdCU3l8EtCdeyLuJMnR7gWL1SdsRodfWEPitOjMFLGdkXyAmK/KaIuTNqpLwHS7nlJg7f1m1txAr5zSGtawPoImNrBMHDPIfpkoUNPyUkA6FJjopyNGAT1u6WJJI9FgtEaEm0FgFuT3QaeoDohDCRjJG2St27MOQUtakOf
+ 3zFOrAFO
+ 44hyaHaOz2+cYRsyucfKNiDlr7fVwRbBqkem4LPNKL5YcTFJP0pQJIQYt/6r9SKZE/+waVEKDKOL0gIiW9oSuMesNHieNoJt/2GkJ18pIYgv8HB9aNGZWbSHu4BsiIvf/ytRO3uYeps+TkjRiv2zi5lOb0qCQy/d3+fY5SgA0p9OXauGbR5UZicDTy5fd7+zq/j8AjKPUWysFNZDXDr3RGYgWYDFc7N1Ae3mchKWfEiGZtDQcMjaT/JFInD7gJEg7IWh7CaG+h4yKPQbQ5c67DDQ7HrgOHn90vzti9WE8GGF2UAncYdCJpxV1GasBw6Gr5RRAh55WsUWABCuT3foMLvEa9JjJfi8dyxmkC1JwMo5A3674QAwpcBcdbc+CqusD9V+S9Ojpdg/AEnOASm9bUL8eCJfCd/4Fi8mby+G8//08eB6TkM/gVsrTNvnB194RY6w12i1F30tHAzQkX4QgHzyNGyGYl2dL4gH0BBQpnTgDIJO/OzPnYa2h4FESywQ10+geS/N+BodDvpM/BjfIbt6Ey3PA1SkoTAxT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,105 +161,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-I guess the error checking could be moved inside the if
-(!khugepaged_thread) block like:
+On 28-Jul-26 11:44 PM, Andrew Morton wrote:
+> On Tue, 28 Jul 2026 11:13:48 +0530 Bharata B Rao <bharata@amd.com> wrote:
+> 
+>> This patchset introduces pghot, a subsystem for hot page tracking and
+>> promotion.
+> 
+> Can DAMON be used to do this sort of thing adequately?
 
-if (!khugepaged_thread) {
-  struct task_struct *new_thread =3D kthread_run...
+That really depends on the goal I believe, let me expand...
 
-  if (IS_ERR(new_thread)) {
-    pr_err...
-    return PTR_ERR(new_thread);
-  }
+DAMON can indeed migrate hot pages today via DAMOS_MIGRATE_HOT, and
+IIUC it can even do promotion and demotion together that auto-tunes
+to a target node utilization. So for someone who wants to write a
+per-workload, per-process tiering policy from user space, DAMON is a
+good fit and I don't think pghot competes with it there.
 
-  khugepaged_thread =3D new_thread;
-}
+But the intent behind pghot isn't really to be another migration
+policy. It is to build a common in-kernel infrastructure that can act
+as a single promotion subsystem, fed by multiple sources, with the
+promotion engine and its heuristics (rate limiting, dynamic threshold)
+living in one place rather than in the scheduler. Hint faults are just
+the first source. The IBS Memory Profiler, which gives access
+information directly from the hardware, is the other one. CXL HMU can be
+another potential source. Hence the design centers on an exact, per-PFN
+record that any of these sources can update, rather than on sampling.
 
-I can send a v3 with these changes if this looks good to everybody.
+The per-page, source-driven model is where the two differ the most.
+DAMON estimates hotness by sampling one page per region per interval,
+which is low overhead and self-contained, but it may miss a hot page
+inside a region. pghot records every reported access at PFN granularity,
+so it does not miss, but in turn it relies on a source to report the access.
 
-Best,
-Jakov
+The other practical difference is that pghot works with no user-space
+agent at all. With numa_balancing=2 the promotion just happens, and in
+fact pghot takes over the mode-2 promotion path that currently sits in
+the scheduler. DAMON, outside of its built-in modules, expects a
+controller in user space to drive it, IIUC.
 
-On Wed, Jul 29, 2026 at 9:56=E2=80=AFAM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
->
-> On 7/28/26 22:46, Jakov Novak wrote:
-> > Currently, khugepaged locks the khugepaged_mutex in two functions:
-> > start_stop_khugepaged and khugepaged_min_free_kbytes_update. Remove
-> > mutex_lock/mutex_unlock usage in these functions and replace it with th=
-e
-> > guard macro. This makes the code more readable (removing a goto stateme=
-nt)
-> > and makes it harder to introduce bugs in the future.
-> > No functional changes introduced.
-> >
-> > Signed-off-by: Jakov Novak <jakovnovak30@gmail.com>
-> > Reviewed-by: Dev Jain <dev.jain@arm.com>
-> > Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> > ---
-> > v2:
-> >   - Added #include <linux/cleanup.h> to the includes at the top of the =
-file
-> >   - Moved err declaration to the scope where it's used in
-> >     start_stop_khugepaged
-> >   - Made default case return 0 instead of err in start_stop_khugepaged
-> >
-> >  mm/khugepaged.c | 15 ++++++---------
-> >  1 file changed, 6 insertions(+), 9 deletions(-)
-> >
-> > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> > index 617bca76db49..7890bd3e2a9d 100644
-> > --- a/mm/khugepaged.c
-> > +++ b/mm/khugepaged.c
-> > @@ -23,6 +23,7 @@
-> >  #include <linux/ksm.h>
-> >  #include <linux/pgalloc.h>
-> >  #include <linux/backing-dev.h>
-> > +#include <linux/cleanup.h>
-> >
-> >  #include <asm/tlb.h>
-> >  #include "internal.h"
-> > @@ -3111,18 +3112,17 @@ void set_recommended_min_free_kbytes(void)
-> >
-> >  int start_stop_khugepaged(void)
-> >  {
-> > -     int err =3D 0;
-> > -
-> > -     mutex_lock(&khugepaged_mutex);
-> > +     guard(mutex)(&khugepaged_mutex);
-> >       if (hugepage_enabled()) {
-> >               if (!khugepaged_thread)
-> >                       khugepaged_thread =3D kthread_run(khugepaged, NUL=
-L,
-> >                                                       "khugepaged");
-> >               if (IS_ERR(khugepaged_thread)) {
-> > +                     int err;
-> >                       pr_err("khugepaged: kthread_run(khugepaged) faile=
-d\n");
-> >                       err =3D PTR_ERR(khugepaged_thread);
-> >                       khugepaged_thread =3D NULL;
-> > -                     goto fail;
-> > +                     return err;
-> >               }
->
-> While at it, can we just do
->
-> struct task_struct *new_thread =3D kthread_run...
->
-> if (IS_ERR(new_thread)) {
->         pr_err("khugepaged: kthread_run(khugepaged) failed\n");
->         return PTR_ERR(new_thread);
-> }
-> khugepaged_thread =3D new_thread;
->
-> ?
->
-> Avoid the suboptimal err variable and temporarily assigning error values =
-to the
-> global variable.
->
-> --
-> Cheers,
->
-> David
+So I would see DAMON and pghot as complementary rather than one replacing
+the other. In fact DAMON could well become one of the sources feeding
+pghot, and conversely pghot's batched, rate-limited engine could serve
+as a migration backend.
+
+> 
+> Thanks, I'll await review input on this.
+> 
+> AI review had much to say:
+> 	https://sashiko.dev/#/patchset/20260728054356.291998-1-bharata@amd.com
+
+Thanks, will address those comments.
+
+Regards,
+Bharata.
+
 
