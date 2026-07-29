@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F04B5C54F51
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:52:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E840AC54F51
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:52:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3A9EA6B0133; Wed, 29 Jul 2026 10:52:47 -0400 (EDT)
+	id 298F96B0135; Wed, 29 Jul 2026 10:52:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 333366B0135; Wed, 29 Jul 2026 10:52:47 -0400 (EDT)
+	id 24A576B0137; Wed, 29 Jul 2026 10:52:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 222E26B0136; Wed, 29 Jul 2026 10:52:47 -0400 (EDT)
+	id 139F46B0138; Wed, 29 Jul 2026 10:52:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E59246B0133
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:52:46 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id AED4EA0643
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 12:25:44 +0000 (UTC)
-X-FDA: 85041735408.28.C23FF3F
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BC6656B0135
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:52:53 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 92FF74068E
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 12:25:40 +0000 (UTC)
+X-FDA: 85041735240.30.D0FBB0B
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf03.hostedemail.com (Postfix) with ESMTP id EB98320009
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 12:25:42 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=q69ENXoq;
-	spf=pass (imf03.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	by imf22.hostedemail.com (Postfix) with ESMTP id F372BC000C
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 12:25:38 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=kJ1yqX7V;
+	spf=pass (imf22.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785327943;
+	s=arc-20220608; t=1785327939;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tXfKR0nPRowkqfwng0/JqAKBUWBP6k7mh7YMBMoDUa4=;
-	b=A8RC9BVeoKv6p10jCeBRxl9plcgWkx/8UN0t9/fDdNqTGb6wT1Xgn3NUEqc79XHT5Wkh8c
-	qRdEivoQ6iLJtyOtTuC2ZyrFPADbYxH3wzIDU/Hv77Yl9MW6N2ArWwLLfz3x8jQD9BVfTs
-	g5IJRaNAg5JhGd/hsV+TVjZOkjbpaVA=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=q69ENXoq;
-	spf=pass (imf03.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	bh=OvMqV51cBHSguh2r74rgEuq+XYeSa3cXfMffQ4C1g60=;
+	b=Kpcdz9mzZj84RQRTtvteRKjqvy6tYJwphOIhHyw5A8giBw3uVA+SJM3issZWHZU9sGfIht
+	9sx/h3O8PR+2HjRXVC3gS7ynSvQFpiUIUZP4gP3crgOl5yTzguQNeLKtUVnkLwYJiGBESB
+	q0kuoLI/AD7cHEkVVXYBNMZKOB1hFQs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785327943;
-	b=F4ZBya6EWj9uihCvG0ddq9LSvrjJFL3SktsDFS5kMOI9p0HwmQf2sSKm/mBHwfviLw/KWV
-	PemtSHUoIysBlLOq2SQtE1yMuwy8oAlKqawi0w/NsUOIGssVW/v82xl4/rqEyvC9DaGAZ8
-	0+f3SVTX06uKYZo/gGniv4VVwxaQhRk=
+	t=1785327939;
+	b=DeUGDi7QeQDs9qV/5CL7YAyQtEDb5KenAxj3LEd5yOwyMN/kWTMLmX90Xv4pOaB2o3+VI1
+	T6VctVVENiEQvUrnqfooXUPBqy1d6DvHMo6ZgjkFCufmu+3tMSD3kg84qDxjIfKAY5CoMm
+	nJAY1RVvniDdCh08H7aYdIsrPb1qUbI=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=kJ1yqX7V;
+	spf=pass (imf22.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3B0FC1688;
-	Wed, 29 Jul 2026 05:25:38 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1DC6C168F;
+	Wed, 29 Jul 2026 05:25:34 -0700 (PDT)
 Received: from a085714.blr.arm.com (a085714.arm.com [10.164.19.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id B7CA03F66F;
-	Wed, 29 Jul 2026 05:25:38 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 95A1C3F66F;
+	Wed, 29 Jul 2026 05:25:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1785327942; bh=D8njUR+w2v+ndiG5KM/iOINKA++RZQNA50z7qf0KbP8=;
+	t=1785327938; bh=hgq5q6IdHAI1vFAWZ1TN3HzUB0raxqZRsSM7ujOjO3U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q69ENXoqiIBHn6/l0E0y3VJVTEIxcaEzGpXLTpzhhxWEKiil8Yl0wkGY729L3ibAE
-	 sTDaFsU7xMGX3Dm+zHJOAIH7WcqYS+s+vXMCmS28R43/go9/2y2fkWdkIKAmC5s7KO
-	 Y4yezjZos5Gr+KnmpMA+33p7DaNp9fDrFTbev4xc=
+	b=kJ1yqX7VastS3h2ZZnSmsdTqyk49SgzRf0JFdXsKNIxEvAogdwxu0n/YzJamBUrBb
+	 Rri0fhBJMSfQ5Eo2do2/O+3BPAfykcnXOxlqzkjfTnudXdvdVni0Z09tMEBzJk4Ymv
+	 G7qmJCt3m9EzcAzF/ZtVRiEYU2zPYZ/jEUme79OI=
 From: Anshuman Khandual <anshuman.khandual@arm.com>
 To: linux-mm@kvack.org,
 	linux-arm-kernel@lists.infradead.org
@@ -74,22 +74,22 @@ Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
 	Mike Rapoport <rppt@kernel.org>,
 	Linu Cherian <linu.cherian@arm.com>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 08/17] arm64/mm: Route all pgtable atomics to central helpers
-Date: Wed, 29 Jul 2026 17:54:43 +0530
-Message-ID: <20260729122452.3797443-9-anshuman.khandual@arm.com>
+Subject: [PATCH 07/17] arm64/mm: Route all pgtable writes via ptval_set()
+Date: Wed, 29 Jul 2026 17:54:42 +0530
+Message-ID: <20260729122452.3797443-8-anshuman.khandual@arm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260729122452.3797443-1-anshuman.khandual@arm.com>
 References: <20260729122452.3797443-1-anshuman.khandual@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ikxaa8z3xyfy4tekm316wdha97fz8gm9
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: EB98320009
-X-Stat-Signature: rujjuzpo4ug4xazdqqskuk5fscodnc7k
-X-HE-Tag: 1785327942-599298
-X-HE-Meta: U2FsdGVkX1/SnBXMKEQpqgGBKbRcf4JHMMencZWS8EtrFrsJhAJmbSzJw9DCBOsa+A1B9OFyzSdwS4ecrwvT0IeJuZG1XWk0/wWYEJxSVGNbEE8LW0Zm6fjQDU0vvXGHi9MtI862LYlNJps64gJjdDhO9+XAtc2cMNTyVpGwpawL75nGFLpxqaUUFQNv5qj4wR9cg9V20XeL+PkcYxt4/Y7TWjovX5BknVxWGjqliN7oDkzsxM7oXNbiCyWAV9DxnNRuEEg8GRS395UcDT6UvbfWPvpbGGF97O3kf8kcDKhu3MS50ak5Y6qy+/cCYpDTk0zgZHgt3cY16W9aA1Llg4azclyTtHcZZlKW5cu9RkRM8L1lnWRk4vTQ6FcCOD7qV4eyVPtDgIt/l4jobUxCJwjv9EkxASW536rrT1kALLYTD5K/wJ5Wq3IcQxK2R6fpRhdp2BbHrcVYgK0LO4zHZvxB8MOfaDf7/+r7jGDZOJBi+nps6BSqXalS+w0N56yNtA7gOFqgK2neGpQzkWC8xsrNCC5w85ivBf99mNU1EG8emF2VkjzEjo5vw0HS4sJrOpURbNEqdJm2kM5BpP2AIj2sIXq2OtuZd1I3ok29U2yDrUkD31LvZHhiJhxH4+/vI7wdK91ORVG85R95f4LDFoXyys0AMbziINJgLpG/LVJiTLo22GO7QniD+WS63Gxv/nrcOivYqc11vDpojEqfRK9GQm2PyNIwel5nN7rbUg0qzQWmlN11uQ134cNp8ukn/+i87lS8SKSQ80OLdJelZrk1xTYXeu5NsaQ2WpisBAgBkCLxPgI6NFKw4oqPykHQ7SBdifZBDbieR8HEGDXAQsUn+HJwN/+ABkCgmq2Ipao40DxJLEsJ4nt7WLu9LJVDGmAkC8Ij1iOtwn8Egz2FzsQGFkqXaO8rL0gag6EUEReAcjZj/Z1xzSYTGteb6cjQB6z9JA4ensAYjhS+JGG
- WjWkM8g+
- y0fF2wYioRJjba2GHq56zZM1vX0jeR1mQ8OP8xhcAfhiWE0KH8NI+PbjqJr1Iey6JmHO5GfK3svx6qw5ekClEnZ/C8prmYdT3iJpI8XPQLntORU0jmYKsCIemhXDvfCNlTSb5S3vs1M8LE0GXtzhHsr0SypgEYo9cPrTjmTGeKUmd/Hgug3LX3gs4Sn2MS86eKWtHADN5ztxvxDL9OvIZuW6FqK4dRIkbHfnjPrb0rXyEDVQpeVIkJXQVSKWMEwOUCEo5Y/i8MSA5pxQDxQDqPWsT/UKNvbZEboGgDAUEiGfK9avEZoffNa73ugvPicMBf3rMQRNE7Sr2C0Le6lhle513JwYW2/tV5HRbWVXGFcjMLRYwRDABc648NA==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: F372BC000C
+X-HE-Tag: 1785327938-745577
+X-HE-Meta: U2FsdGVkX19cR3i0N3W5IllRvOpcXbj3OCxKx3QR3nX5XTyQgejOfn56XWM1R6jo8ANRQxzTxm5LQwbnfTAREp8KgGMF1nZuq3TPuHAboUYcrRfQIaIhjXxGgYa1O3WdVJoM+uURTjfHJMJau7Y3Kit/svlEo9TEV7hEz8UFOn88wO5sbTIvRPid4q7XXUBcef4daTRiAmm+sGqo3nkNXDg8xuDdNYygY7zqelg+gcoM+5YtUhEghsGoZZYqIkOcvfSO/o33yuD9Gu07SU997JSyV2eWklda0ld77iBa585jgUvX6VvBu6ggrPNtwjTvzE8MLNadaQbMgPuvUrnTsfdyAuVADn4Q+xh0lgscU5uiHVs4QfwxzpCuCS2KLW87AcAAusBEFhMaI95lOwTp0BMMxv+F+KYLHy3mCAXm1Yi0gNHNZSCs+VYMhsmyCUB17h30NDId8L/J0csmowxIKzNI+pEXoAhIwnDIhjas+Kbw9wmUzNDFpbIjxeE0lR0kuXIErBFWYnD34AWFZU0lNEbHyhNv94sAjFz7cJDt0Oe4NDyNdy4CC+MHOV+BMBNDAmnUYEVBzmDX5cbOzIdawAhv5mh5yJmFVyGx0H9/WAja8QWEIzOiqNtA0TjYTowxbCOJ7IV5xBaSkUO34a7T9wWSAZoP6W0I/tFFMNiCEizgfKtAFKOlrBcnBAS6SL8J0QMjfLM3FLRYqwDJv3I1V4Uh9slp4soj/+W4SMYlT4aUEq4tWqCmfunT/a2vTjJz316CL0eU7KJAygEhfIkgBS6q+gpoRa6meJXP1zxqbauFXt2JjQ1JT0xKZ9GsZvUfPNsuiwRqRjc81a7hDgOvQetvvVnUQOD5UaMCjTlOAU3ROtWKAWrSbxOXOQ3Cht9lQi1+St9nvWSU5CxVwC7ZLkGAgqYpM0x5NQuxU6YS8oKHlnYj6wrNhVlK1DBe9fME/XQTEEmh5rvYHfQsK+8
+ MAtZ9eha
+ yCapa/7mI4LUJRoXjyYYimKYKfhaP3xph+yx99E67EG7qtf2J7rq0OANvCCC6QzhiHHHaNZrB9khX1Ub8SMue0D6QjmQzI4mRyBGhRsDTBM48nz7+qEahPeyVW7fdANcqRkFq6IFa2rSDeA0gCva1ZlZIb6tgmn41Y8GhIQeScZPJznHgYmcx3jwAyOAYExn/XTc3FUjxIlgo+U0DRKnb0hE8rqVBXvFg22vFejxd2zg9xsKgnCDAtMerTiej7CzszyU1u2Cp69qvvs4enl/uGTXqSAAPMfUK9f/Rsuf3BalX5VlFa2qx+XLM10m2MAv77w64tfBpV4+Wr6haa5TLj1FWa1sLKo0tRjU8+LWsGnaeZAX6zzJfYmiTzw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,13 +97,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Route all cmpxchg() operations performed on various page table entries to a
-new ptval_cmpxchg_relaxed() helper. Similarly route all xchg() operations
-performed on page table entries to a new ptval_xchg_relaxed() helper.
+Currently ptval_set() is defined as WRITE_ONCE() but this will change for
+D128 pgtable builds, for which WRITE_ONCE() is not sufficient for single
+copy atomicity.
 
-Currently these helpers just forward to the same APIs that were previously
-called direct, but in future we will change the routing for D128 which is
-too long to use the standard APIs.
+In future this infrastructure can be used for D128 to maintain single copy
+atomicity semantics with inline asm blocks.
 
 Cc: Catalin Marinas <catalin.marinas@arm.com>
 Cc: Will Deacon <will@kernel.org>
@@ -113,102 +112,89 @@ Cc: linux-arm-kernel@lists.infradead.org
 Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 ---
- arch/arm64/include/asm/pgtable.h | 26 +++++++++++++++++++-------
- arch/arm64/mm/fault.c            |  2 +-
- 2 files changed, 20 insertions(+), 8 deletions(-)
+ arch/arm64/include/asm/pgtable.h | 11 ++++++-----
+ arch/arm64/mm/mmu.c              |  4 ++--
+ 2 files changed, 8 insertions(+), 7 deletions(-)
 
 diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index 1106977e0ef0..4efcacec6f01 100644
+index 030ec3582a0d..1106977e0ef0 100644
 --- a/arch/arm64/include/asm/pgtable.h
 +++ b/arch/arm64/include/asm/pgtable.h
-@@ -87,6 +87,17 @@ static inline void arch_leave_lazy_mmu_mode(void)
- #define ptval_get(x)		READ_ONCE(x)
- #define ptval_set(x, val)	WRITE_ONCE(x, val)
+@@ -85,6 +85,7 @@ static inline void arch_leave_lazy_mmu_mode(void)
+ }
  
-+static inline ptval_t ptval_cmpxchg_relaxed(ptval_t *ptep, ptval_t old,
-+					      ptval_t new)
-+{
-+	return cmpxchg_relaxed(ptep, old, new);
-+}
-+
-+static inline ptval_t ptval_xchg_relaxed(ptval_t *ptep, ptval_t new)
-+{
-+	return xchg_relaxed(ptep, new);
-+}
-+
+ #define ptval_get(x)		READ_ONCE(x)
++#define ptval_set(x, val)	WRITE_ONCE(x, val)
+ 
  #define pmdp_get pmdp_get
  static inline pmd_t pmdp_get(pmd_t *pmdp)
- {
-@@ -1340,8 +1351,8 @@ static inline bool __ptep_test_and_clear_young(struct vm_area_struct *vma,
- 	do {
- 		old_pte = pte;
- 		pte = pte_mkold(pte);
--		pte_val(pte) = cmpxchg_relaxed(&pte_val(*ptep),
--					       pte_val(old_pte), pte_val(pte));
-+		pte_val(pte) = ptval_cmpxchg_relaxed(&pte_val(*ptep),
-+						      pte_val(old_pte), pte_val(pte));
- 	} while (pte_val(pte) != pte_val(old_pte));
+@@ -385,7 +386,7 @@ static inline pte_t pte_clear_uffd_wp(pte_t pte)
  
- 	return pte_young(pte);
-@@ -1383,7 +1394,7 @@ static inline pte_t __ptep_get_and_clear_anysz(struct mm_struct *mm,
- 					       pte_t *ptep,
- 					       unsigned long pgsize)
+ static inline void __set_pte_nosync(pte_t *ptep, pte_t pte)
  {
--	pte_t pte = __pte(xchg_relaxed(&pte_val(*ptep), 0));
-+	pte_t pte = __pte(ptval_xchg_relaxed(&pte_val(*ptep), 0));
- 
- 	switch (pgsize) {
- 	case PAGE_SIZE:
-@@ -1459,7 +1470,7 @@ static inline void ___ptep_set_wrprotect(struct mm_struct *mm,
- 	do {
- 		old_pte = pte;
- 		pte = pte_wrprotect(pte);
--		pte_val(pte) = cmpxchg_relaxed(&pte_val(*ptep),
-+		pte_val(pte) = ptval_cmpxchg_relaxed(&pte_val(*ptep),
- 					       pte_val(old_pte), pte_val(pte));
- 	} while (pte_val(pte) != pte_val(old_pte));
+-	WRITE_ONCE(*ptep, pte);
++	ptval_set(*ptep, pte);
  }
-@@ -1497,7 +1508,7 @@ static inline void __clear_young_dirty_pte(struct vm_area_struct *vma,
- 		if (flags & CYDP_CLEAR_DIRTY)
- 			pte = pte_mkclean(pte);
  
--		pte_val(pte) = cmpxchg_relaxed(&pte_val(*ptep),
-+		pte_val(pte) = ptval_cmpxchg_relaxed(&pte_val(*ptep),
- 					       pte_val(old_pte), pte_val(pte));
- 	} while (pte_val(pte) != pte_val(old_pte));
+ static inline void __set_pte_complete(pte_t pte)
+@@ -856,7 +857,7 @@ static inline void set_pmd(pmd_t *pmdp, pmd_t pmd)
+ 	}
+ #endif /* __PAGETABLE_PMD_FOLDED */
+ 
+-	WRITE_ONCE(*pmdp, pmd);
++	ptval_set(*pmdp, pmd);
+ 
+ 	if (pmd_valid(pmd))
+ 		queue_pte_barriers();
+@@ -921,7 +922,7 @@ static inline void set_pud(pud_t *pudp, pud_t pud)
+ 		return;
+ 	}
+ 
+-	WRITE_ONCE(*pudp, pud);
++	ptval_set(*pudp, pud);
+ 
+ 	if (pud_valid(pud))
+ 		queue_pte_barriers();
+@@ -1003,7 +1004,7 @@ static inline void set_p4d(p4d_t *p4dp, p4d_t p4d)
+ 		return;
+ 	}
+ 
+-	WRITE_ONCE(*p4dp, p4d);
++	ptval_set(*p4dp, p4d);
+ 	queue_pte_barriers();
  }
-@@ -1536,7 +1547,7 @@ static inline pmd_t pmdp_establish(struct vm_area_struct *vma,
- 		unsigned long address, pmd_t *pmdp, pmd_t pmd)
- {
- 	page_table_check_pmd_set(vma->vm_mm, address, pmdp, pmd);
--	return __pmd(xchg_relaxed(&pmd_val(*pmdp), pmd_val(pmd)));
-+	return __pmd(ptval_xchg_relaxed(&pmd_val(*pmdp), pmd_val(pmd)));
+ 
+@@ -1131,7 +1132,7 @@ static inline void set_pgd(pgd_t *pgdp, pgd_t pgd)
+ 		return;
+ 	}
+ 
+-	WRITE_ONCE(*pgdp, pgd);
++	ptval_set(*pgdp, pgd);
+ 	queue_pte_barriers();
  }
- #endif
  
-@@ -1863,7 +1874,8 @@ static inline bool ptep_try_set(pte_t *ptep, pte_t new_pte)
- {
- 	pteval_t old = 0;
+diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+index d5b6eb544216..1127917c554b 100644
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -76,7 +76,7 @@ void noinstr set_swapper_pgd(pgd_t *pgdp, pgd_t pgd)
+ 	 * writable in the kernel mapping.
+ 	 */
+ 	if (rodata_is_rw) {
+-		WRITE_ONCE(*pgdp, pgd);
++		ptval_set(*pgdp, pgd);
+ 		dsb(ishst);
+ 		isb();
+ 		return;
+@@ -84,7 +84,7 @@ void noinstr set_swapper_pgd(pgd_t *pgdp, pgd_t pgd)
  
--	if (!try_cmpxchg(&pte_val(*ptep), &old, pte_val(new_pte)))
-+	old = ptval_cmpxchg_relaxed(&pte_val(*ptep), old, pte_val(new_pte));
-+	if (old != 0)
- 		return false;
- 
+ 	spin_lock(&swapper_pgdir_lock);
+ 	fixmap_pgdp = pgd_set_fixmap(__pa_symbol(pgdp));
+-	WRITE_ONCE(*fixmap_pgdp, pgd);
++	ptval_set(*fixmap_pgdp, pgd);
  	/*
-diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
-index fca716ed4513..7aff70c5479e 100644
---- a/arch/arm64/mm/fault.c
-+++ b/arch/arm64/mm/fault.c
-@@ -234,7 +234,7 @@ int __ptep_set_access_flags_anysz(struct vm_area_struct *vma,
- 		pteval ^= PTE_RDONLY;
- 		pteval |= pte_val(entry);
- 		pteval ^= PTE_RDONLY;
--		pteval = cmpxchg_relaxed(&pte_val(*ptep), old_pteval, pteval);
-+		pteval = ptval_cmpxchg_relaxed(&pte_val(*ptep), old_pteval, pteval);
- 	} while (pteval != old_pteval);
- 
- 	/*
+ 	 * We need dsb(ishst) here to ensure the page-table-walker sees
+ 	 * our new entry before set_p?d() returns. The fixmap's
 -- 
 2.43.0
 
