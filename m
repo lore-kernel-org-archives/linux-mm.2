@@ -4,106 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3964FC54F51
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:49:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D313C54F55
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:52:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A827B6B012D; Wed, 29 Jul 2026 10:49:39 -0400 (EDT)
+	id 141C36B0124; Wed, 29 Jul 2026 10:52:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A32C76B012F; Wed, 29 Jul 2026 10:49:39 -0400 (EDT)
+	id 111616B0125; Wed, 29 Jul 2026 10:52:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8AC9F6B0130; Wed, 29 Jul 2026 10:49:39 -0400 (EDT)
+	id 027336B012F; Wed, 29 Jul 2026 10:52:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C76B6B012D
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:49:39 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 97256C062A
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 11:12:42 +0000 (UTC)
-X-FDA: 85041551364.26.894CE30
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf29.hostedemail.com (Postfix) with ESMTP id E1879120008
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 11:12:40 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="Ir/iBewO";
-	spf=pass (imf29.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C24FA6B0124
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:52:39 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0BB251C0E57
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 08:53:23 +0000 (UTC)
+X-FDA: 85041200286.07.B851AB6
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 732D6180009
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 08:53:21 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=kKo2A1BQ;
+	spf=pass (imf24.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785323561;
+	s=arc-20220608; t=1785315201;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:references:dkim-signature;
-	bh=nTyZ9PRJp3TwjvvPuCfZvXx+PS2jKEDPXYVBjSEwgD8=;
-	b=mW+CFi1gKOKrPlAxTFSEsKzCfFHQTsdiG80H+WLb0F8eUa6n6e8Q/LlFcE25HPRsoIpUBr
-	6lhyPHs84HFeYB8nPn9NCRxMkvb/TGj3karsBwb8O3h9NZNG6zYL8QN7BiXJHSsr8Ket+d
-	zCmoIwoRgW8wZA3E8n9mHMWIvTKhJYc=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Ss/DaoJYNqjgpN1lAskphAlKNITya8LLU2vIUgnSPIA=;
+	b=6677AiiqHq8HbsqXEWVr2DWyAYfz5SZn/WUZUa3W8I5bED4cxLgg39Fvci69hU/8kNpedb
+	aQq5ykiy1JHS9cnjPEjWA7EuP+4UdKjmCMTtTe5sDo/kX7r8xx/Z2yoXXwiwo9M6oPty2D
+	aQxOYb8nWFHtjNeOcO9f72sD5ZxNYxE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785323561;
-	b=JBFkSc4n0n3gKInzVY1ylzX43Oz6nBd3nBIZzqDD55JsHoXUUArwGxQKLYiCpWQ1IEPkiK
-	pXF3P65/QzMq0Sk2hOTyfJGtR5YryjCB1w7gGhrdetTwhcK9x+9HKILKI+5+b6+2Z0MCWe
-	TFYvK9Hts3+2fdp8zaogri4vFQkgHl8=
+	t=1785315201;
+	b=7n0wVxug347vGiaubeFck0IJpxskRPwxO7uwMZ2w+fzqndWNqYEhv5bL9+ikY/L8Aa0Au3
+	c9Ii9apoz9EXoeBKflWmdHjQq9BXrv83K7BCvQF++JP5YPBlBoup+CxRza2OqeldiS7ARV
+	+smkys4T14KGV6EURzT3a2Hdt4vjAtU=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="Ir/iBewO";
-	spf=pass (imf29.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Type:MIME-Version:References:
-	Subject:Cc:To:From:Date:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
-	Content-ID:Content-Description:In-Reply-To;
-	bh=nTyZ9PRJp3TwjvvPuCfZvXx+PS2jKEDPXYVBjSEwgD8=; b=Ir/iBewOL5tE27E5VqmhfuOTiC
-	BkQytvIaHJzDLW2RbnI/uuYTj/DsPq5UXSpvV9l3OZ8qUnvJNAOkzphrsl+LBXp5531Fl19SOn/M3
-	KbEVhkjuY528qmdv7vKzGVvrw8mAfq93xoKkLdt9LNLvs+Iy5SCBHNJRF8oUbbYHKAPXRSZR1rtBU
-	H6qOFjZEMjIpN9FyMxxp0MqxlnqJfy2ULcvqSXmFTKVNpIE1BaupC7svMZcUONzfc8IOgs8eltzs9
-	y3jbCoQv8DT2/4mgtwOg5URfgzK7BpJMp1hiTh7xo3vydTP4G7Wd1Q2vNBlSO+PtIUh4NAtGM48ZY
-	DvcU6WNA==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wp2CU-00000001xXw-3ea2;
-	Wed, 29 Jul 2026 11:11:54 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 0)
-	id B75E930114F; Wed, 29 Jul 2026 13:11:40 +0200 (CEST)
-Message-ID: <20260729111119.488154104@infradead.org>
-User-Agent: quilt/0.68
-Date: Wed, 29 Jul 2026 13:08:09 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: linux-kernel@vger.kernel.org,
- peterz@infradead.org,
- Andy Lutomirski <luto@kernel.org>,
- Borislav Petkov <bp@alien8.de>,
- David Hildenbrand <david@kernel.org>,
- Ingo Molnar <mingo@redhat.com>,
- Jason Gunthorpe <jgg@ziepe.ca>,
- Juergen Gross <jgross@suse.com>,
- Kevin Tian <kevin.tian@intel.com>,
- Kiryl Shutsemau <kas@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>,
- Lorenzo Stoakes <ljs@kernel.org>,
- Lu Baolu <baolu.lu@linux.intel.com>,
- Mike Rapoport <rppt@kernel.org>,
- "H. Peter Anvin" <hpa@zytor.com>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Suren Baghdasaryan <surenb@google.com>,
- Thomas Gleixner <tglx@kernel.org>,
- Toshi Kani <toshi.kani@hpe.com>,
- Vlastimil Babka <vbabka@kernel.org>,
- Will Deacon <will@kernel.org>,
- linux-mm@kvack.org,
- x86@kernel.org
-Subject: [PATCH 2/3] x86/mm: Use guard() for pgd_lock
-References: <20260729110807.797920433@infradead.org>
+	imf24.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=kKo2A1BQ;
+	spf=pass (imf24.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=Ss/DaoJYNqjgpN1lAskphAlKNITya8LLU2vIUgnSPIA=; b=kKo2A1BQR3Y09foW8g7qBwUPmX
+	NYROK6U4J0bpmZKOyfm1oFEXpv3CNR7vfCuRy+FO0mbwp84eXe/JU9LFMYD1ge1BkKqbwxKSdae2K
+	4KqnPzg5sQt3KaFOUT+/Qrql0v/KSWTs/CgLao7wTcgECQR7c1SU6cLiV/gtktS9ZhLLmN4GgWr2O
+	4ki88TRZvcEBBLW+SutP4Up07yWZHIh4rfIlySxODkjQaFtKxlBp0dlXMiRmcx1UyuRLTtaUU1YqS
+	/p7TeB9eHR2ldVifgdc8dOspz1w740YC97n3B9wlxbYGxnj8yYlC1HwuqWePIDeQM51EBozdKJoZv
+	akJNbqqw==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wp02F-008KmC-2v;
+	Wed, 29 Jul 2026 08:53:08 +0000
+Date: Wed, 29 Jul 2026 01:53:01 -0700
+From: Breno Leitao <leitao@debian.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Miaohe Lin <linmiaohe@huawei.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, kernel-team@meta.com, Lorenzo Stoakes <ljs@kernel.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, "Liam R. Howlett" <liam@infradead.org>, lance.yang@linux.dev, 
+	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Subject: Re: [PATCH v10 6/6] selftests/mm: add hwpoison-panic destructive test
+Message-ID: <amm72Bu9qmWLI-9b@gmail.com>
+References: <20260630-ecc_panic-v10-0-c6ed5b62eea2@debian.org>
+ <20260630-ecc_panic-v10-6-c6ed5b62eea2@debian.org>
+ <ee4982bf-ff45-8f0b-3b76-7ca19228f12b@huawei.com>
+ <20260727212402.09baa9381ca426273fad4719@linux-foundation.org>
+ <de29c5cc-3637-cd18-354d-55ceb3d60afd@huawei.com>
+ <amh1nZVVaaZSGD3M@gmail.com>
+ <20260728122016.30752d36c3b3c3af231efa9d@linux-foundation.org>
+ <44f81bea-d64a-4f73-8665-46652a928c83@kernel.org>
+ <amkn21ftNme48Vbl@gmail.com>
+ <f83d5b26-b369-489b-a305-1eb5ec6fccfb@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f83d5b26-b369-489b-a305-1eb5ec6fccfb@kernel.org>
+X-Debian-User: leitao
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 732D6180009
+X-Stat-Signature: gsmupt4wxoyytyshuf6iix3afdfn3ein
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: E1879120008
-X-Stat-Signature: nxchc7cxtd1yeaxdjr5a13fofq76rsrb
-X-HE-Tag: 1785323560-272095
-X-HE-Meta: U2FsdGVkX1/W4g1eujePvuUhYhmXzAHNU6IddADIVUsYE1//L8xZ0EOsA6VAIRgObkrEgCe+5RZKaKILvmu9AXwQ0cO09sJE/7qLUmwhJDDjZqEBCNJtbjuJn4Pnn3FpeY8VMC5YgZEOI0uhJxbIfxg+9sugRO/PwmghxqcC1P2IKzRLtxxS0O+cu6eX2VfS3+L6RF8N4b9eHVYMY5/8MU2nDklYxCrwgbvNYsW492PxB2QxD7c4on1HOHAfPIY2Hv8rGJ3r31EWsKremnTuUmrDMZK9gwj55o6X4aXFoHbugDDl1xWDJB+4exrD9OPFJlqVl/pR5vEWDFXD8cKnwv+ue8uqW34aK4Ff6UPTOb9VSghgMg25LNYU8GIfBVFRcLzpPe3Vxm5zz7BLj/L6+ZmY1NDz9bd6i48LM1QLElOX0zRRh0kblVwpdx2BUFpAsESflDmkWImz62DvqssvDbJ1HqP0NcKJepsozj7uz3/qHpfnrNAhSBXdXVUg93ToK5XWQeJY+gxfWTDCZ8HXkYxVIwkC1VSIeKodMBDTCv2Wsf+zFXykqilYHcULw8xSQ8b8MeRIWAIp5+DYIOPskdULorWdf3vu0ZuNjz+ljkqLXVhdKrI6Dc5zyJuHtHaYvfF2cxvPj6E9vdCP91bNtoZL0W5eV9A0DPsnLwwjwXfT9MqATk6O7r3HP61ZBTjNfbGbUvjHQ2KkVWhcBui1S/7KskZN+OS+g0qEkt012tMLdGuJqo+tYDreCA9tplfxwtpqU+bMb5itd7rYnyBLhO6IdCTaM9tOrwKy+BQZBNnSJiFE0RhQL1GNbI41NhdHqBZLDIROi+p/wDbOlSZq6O589TwKCwTVleXkY973wUyNFTlYy0/PlgJLIQB6yU7qDez97Upd0Vyi5zeBP4sWQqHUYHfn9nV8Cwx+9JxSjnli1QJDrOFEvWYo0M84PYf6zmXPqD9s9fFz+KYQK4x
- zb1btpT2
- RoXWeGV+nYGgwdR+6zyA1aFlQYg6/sOM0OXQAVZFPu/OimJHFG6BlH8R8mrHflt7CmHvpBWlRWuuiuirzN4G96IXtSitwMSLQ1mD8CcTDqbyZIag5uJwo0Nkzn2ulTgG5am0X3HKM57ejyYunjk/s6mfDdrG14W/A7/6QdoE3wxKkE+tPKidCpcfJZ5u/jku7kZn2mz6QiZhQGXv5N8OxrYIkYe+tWN9xLwMkMZA1+DzZBL13G4j+MOmGoezDpaoe26B8rJoE2DWn8J0SJbbMP+d6DlNvD8AXgfNLEUEdZV6dAtRfoefivkiN/524rjftMmGOoiA16WS5S+h2xMAc2XbZXVqyoUNMkiKPoe7hPt7m6Ua3+o9ETt3m0hvOoXgdnp7+
+X-HE-Tag: 1785315201-920241
+X-HE-Meta: U2FsdGVkX1+sDCp5S3WPz7lQ7AkgGwCYEH1hQaz3E9deV7IK3mNaXzxq5IrcZ8B8u/UGOSZfyQ2HqRvsdHw/AkHjkc6qos8AF4nOYoNLJ0/BYg83CX9BuhERuvc7vfGOryLWmjlUi+ceCbmniAXOE2r7JlOEQcPUPzjbxoRRg3t7Gp5wUrQAelT1CUv+/af6lnDAQgLsITfAe+tiswTfi2qqC7y8QgvDp9rGIV/0K3lxwQEeBmE7cfDYinH1AjsHLuBzaMgreGK5JeJCN+D4QSjxEw+P2Aaq6JutBkrkhOdJBLS6BNyahx34zIduxeBCeeJvmQU65KA5zAatvlR/veb+9orGDokqrIwLxA4mpZgpG0yYi5ylauJhPSBU2YJnwkKIphBNXuxhD4Va2vOBmZ2MMBIRAr9bpLol2pLELBYmtau5KwRa91H7yofERbdVewSxAgdEUF5Vw0KCQN0N+TkJZm/E0TCA4dFCyc6DETDGTo+08WxIiNYoo3wd5O8WfJ0sJq30E5XkRHsUQl9QEsxLrFjJRrNe6usTOrE4ReVe/sNY94i8mopwMUd12RoXCBEBEMxjEuFn41i0P7qiEbYDKkLN1slxzlqQlJ1KmhMpewgHWevaqoczcQqEHQabkhc8hfhv8GzpywGejvPAyaz3X+iRPZG9aScTzctdhUToA6Sb9qPJy6bmRAOwhzc7AY/xJQtMrdxGp01lEfs07XnPeC6mpY6gL81PiRiBomRVskmd3giRHA92ybSlhThv02QkpycU7tQsjvAh1JGawz6AHO8k9TlC4I77x8iOEu2Ou6JJjqYVaQOcFOiEn+S5gHhR2CU9yOHiwdlxlFDbHp6EanuWCG5CwWvl0P8fD3Wnj4f8LLcvIT/45vnK1VWKdJVtFcwFbHgrzJO6V4z7bKSv/v+FJ7sZ/Q3C2ZPZq8rNnWPrChoiogFsrGj69fohG4qpdh8foXwfKcQc7Bh
+ VDUOlFT/
+ GLoXh/blH6q0vqJvdyvExB30s8FOKeN84z6+g2Ej64EuatJ62D4Da+27RPS7FjIC+UbCVbkbVHHmt0NvA5ZVDAkcv6/7g52CE64QEiMyfiXum8AjNSnP5CszyMeTK5wqKzbFq7inhxLdcX92qQZZnX513NN1vM0LqQbidLz1VHBuHK4e/gahgDs/RxcGBo86tHngLJxQYaMFXG7ktSLnouL/DAXzOHgyu4j/eS834TgZ//GPsVSvuCYNe6/FzG3C4V7G3i67GpLha0TUH0fRAr2lyt/t/3Gt2wLJgHhhd9F1A9AL/P1F1xxDdrCe9U1cOt5UNQ7x4LL795Smjz1R6xSN7q6AsR1pXG3QlAOqeR9yq4J+AHepayUp1kQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,120 +109,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Jul 29, 2026 at 09:25:16AM +0200, David Hildenbrand (Arm) wrote:
+> On 7/29/26 00:07, Breno Leitao wrote:
+> > I have a draft of the selftest in C already and I will give it more bake
+> > time, and I will submit it until EOW.
+>
+> IMHO there is no need to rush this test here, we could merge it after the main work.
+>
+> We neglected our selftests quite a bit in the past, and that is biting us now.
+>
+> That's why I push back hard now (sorry) against stuff that is different than the
+> rest and not easy to maintain.
+>
+> I know, hwpoison-panic is a destructive test, but I really don't think we should
+> just merge mostly unreviewed bash tests that will just bitrot.
+>
+> Which makes me wonder now: should this actually be a selftest? It's nothing one
+> would just want to run in a CI. It will crash your machine.
+>
+> Maybe this should just be a tool in tools/mm? I really think so. So having a
+> nice C-level hwpoison-panic.c in tools/mm might be the way to go.
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
----
- arch/x86/mm/pat/set_memory.c |   34 +++++++++++-----------------------
- 1 file changed, 11 insertions(+), 23 deletions(-)
+Agreed. In v6 [0] I actually removed the selftest entirely, since the value
+wasn't clear and it seemed like an ugly duckling.
 
---- a/arch/x86/mm/pat/set_memory.c
-+++ b/arch/x86/mm/pat/set_memory.c
-@@ -85,9 +85,8 @@ static unsigned long direct_pages_count[
- void update_page_count(int level, unsigned long pages)
- {
- 	/* Protect against CPA */
--	spin_lock(&pgd_lock);
-+	guard(spinlock)(&pgd_lock);
- 	direct_pages_count[level] += pages;
--	spin_unlock(&pgd_lock);
- }
- 
- static void split_page_count(int level)
-@@ -1075,16 +1074,11 @@ static int __should_split_large_page(pte
- static int should_split_large_page(pte_t *kpte, unsigned long address,
- 				   struct cpa_data *cpa)
- {
--	int do_split;
--
- 	if (cpa->force_split)
- 		return 1;
- 
--	spin_lock(&pgd_lock);
--	do_split = __should_split_large_page(kpte, address, cpa);
--	spin_unlock(&pgd_lock);
--
--	return do_split;
-+	guard(spinlock)(&pgd_lock);
-+	return __should_split_large_page(kpte, address, cpa);
- }
- 
- static void split_set_pte(struct cpa_data *cpa, pte_t *pte, unsigned long pfn,
-@@ -1135,16 +1129,14 @@ __split_large_page(struct cpa_data *cpa,
- 	bool nx, rw;
- 	pte_t *tmp;
- 
--	spin_lock(&pgd_lock);
-+	guard(spinlock)(&pgd_lock);
- 	/*
- 	 * Check for races, another CPU might have split this page
- 	 * up for us already:
- 	 */
- 	tmp = _lookup_address_cpa(cpa, address, &level, &nx, &rw);
--	if (tmp != kpte) {
--		spin_unlock(&pgd_lock);
-+	if (tmp != kpte)
- 		return 1;
--	}
- 
- 	paravirt_alloc_pte(&init_mm, page_to_pfn(base));
- 
-@@ -1177,7 +1169,6 @@ __split_large_page(struct cpa_data *cpa,
- 		break;
- 
- 	default:
--		spin_unlock(&pgd_lock);
- 		return 1;
- 	}
- 
-@@ -1225,7 +1216,6 @@ __split_large_page(struct cpa_data *cpa,
- 	 * just split large page entry.
- 	 */
- 	flush_tlb_all();
--	spin_unlock(&pgd_lock);
- 
- 	return 0;
- }
-@@ -1373,7 +1363,7 @@ static int collapse_pud_page(pud_t *pud,
-  */
- static int collapse_large_pages(unsigned long addr, struct list_head *pgtables)
- {
--	int collapsed = 0;
-+	int collapsed;
- 	pgd_t *pgd;
- 	p4d_t *p4d;
- 	pud_t *pud;
-@@ -1381,26 +1371,24 @@ static int collapse_large_pages(unsigned
- 
- 	addr &= PMD_MASK;
- 
--	spin_lock(&pgd_lock);
-+	guard(spinlock)(&pgd_lock);
- 	pgd = pgd_offset_k(addr);
- 	if (pgd_none(*pgd))
--		goto out;
-+		return 0;
- 	p4d = p4d_offset(pgd, addr);
- 	if (p4d_none(*p4d))
--		goto out;
-+		return 0;
- 	pud = pud_offset(p4d, addr);
- 	if (!pud_present(*pud) || pud_leaf(*pud))
--		goto out;
-+		return 0;
- 	pmd = pmd_offset(pud, addr);
- 	if (!pmd_present(*pmd) || pmd_leaf(*pmd))
--		goto out;
-+		return 0;
- 
- 	collapsed = collapse_pmd_page(pmd, addr, pgtables);
- 	if (collapsed)
- 		collapsed += collapse_pud_page(pud, addr, pgtables);
- 
--out:
--	spin_unlock(&pgd_lock);
- 	return collapsed;
- }
- 
+It seems tools/mm would be a good fit, and make a better home for this
+type of "test".
 
+Given more changes coming in memory failure (at least from my side
+[1][2]), I think it would be a good idea to create a subdirectory
+(tools/mm/memory-failure) and keep these semi-destructive tools in there. Is
+this the right direction?
+
+> So let's rather make this test well maintainable and have it properly reviewed
+> than rushing something suboptimal.
+
+Sounds good. I'll move this to tools/mm and resubmit. Given Andrew has
+removed the selftest from mm-unstable while keeping the rest of the
+series (which is fully reviewed and frictionless), so I'll focus on the
+test tool now and send it separately.
+
+Thanks for the discussion,
+--breno
+
+Link: https://lore.kernel.org/all/20260511-ecc_panic-v6-0-183012ba7d4b@debian.org/ [0]
+Link: https://lore.kernel.org/all/20260728-kexec_posioned-v1-1-160c81d180fe@debian.org/ [1]
+Link: https://lore.kernel.org/all/20260717-hwpoison-kho-v1-0-9c5eda551998@debian.org/ [2]
 
 
