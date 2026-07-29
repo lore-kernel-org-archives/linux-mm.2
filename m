@@ -4,74 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC2F9C54F51
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:17:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 114EBC54F51
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:18:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CD8C56B00DC; Wed, 29 Jul 2026 10:17:51 -0400 (EDT)
+	id B7C5A6B00DE; Wed, 29 Jul 2026 10:17:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C8BB86B00DD; Wed, 29 Jul 2026 10:17:51 -0400 (EDT)
+	id B54066B00DD; Wed, 29 Jul 2026 10:17:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA28E6B00DE; Wed, 29 Jul 2026 10:17:51 -0400 (EDT)
+	id 97C616B00DD; Wed, 29 Jul 2026 10:17:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 92E8B6B00DC
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:17:51 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 00D99120609
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 08:21:17 +0000 (UTC)
-X-FDA: 85041119436.19.B8F3C93
+	by kanga.kvack.org (Postfix) with ESMTP id 641646B00DD
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:17:56 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1DADD12061B
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 08:21:42 +0000 (UTC)
+X-FDA: 85041120444.10.1D0CB9F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 4816AC000D
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 08:21:16 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SuuMECmZ;
-	spf=pass (imf28.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785313276;
-	b=3+TqvVaBz58X4qjJYdZ74/u8iOGPDsdJZu7JrtwFGPlk3/ziBUN70YS9Dy3IPoopJ5Dbia
-	fkDSOWQk5YOELnzpt/BMlPkvJ/f1sWGd9rfWcEasPS9T7PPfvMSsissHwCN8AKf6mPpl09
-	uu/Rukx84TDYMrxN7CVdX9TJ+r6ODCI=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SuuMECmZ;
-	spf=pass (imf28.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	by imf18.hostedemail.com (Postfix) with ESMTP id 58D7E1C0004
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 08:21:40 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="mY7s/rhL";
+	spf=pass (imf18.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785313276;
+	s=arc-20220608; t=1785313300;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ePeO/xV71/tQ7SCmp4Ak6LnQ1NWK+HHBAZv1O4FNQqs=;
-	b=P1wZ9wX6I7pAJQusXQKXE0RDcu1KNN6x6v+hHRHIQUiavEmnIuCTaD7ZAbpQrYnB/38wXZ
-	CpLlLxI/FaY7Okwa+gRfwMHoPMgKMGt2UVkPuRNZUWq4+mU1sDWBeOD+INMmZKyW/aFEtb
-	5eimHXbqYAcSftMh+GBShTvrx/5gaWA=
+	bh=HjSBb9mVbLXIx6izzSo3Zj/I/hrxLU57UnbtahM6eqg=;
+	b=KFhZ0/8Q6lbqY/pg/Vd+Mcfo1zx2juekx/Z1uJtXsY7FGWgvOCHSmbtNs610kiaiWnahKl
+	ZNQ6uDkHxczKJ4U6uIDrUftRYPXOI1DmBUI0Iu0gW0evrSMe/deVgQLmyhY3LlfJftVpdA
+	f9ATpUFBI7GV6Cs94tZ2ovuL3fdPVC8=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785313300;
+	b=JoTfaX6mMg4pprotUADBPUrxfTZgtMwSE1KPgra6QFbfacHhfL4xM/i0I3CLaHOMN34iPK
+	qgWnOhDjKaMKN1YAAX0ePiOn0RdmY44Pu2gwS2baa7aktL1wk1F4mQx7NbS+aXKUJxCCAf
+	TR0LISTdLS7Ff6VWgN+c+98cHy6GaBc=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="mY7s/rhL";
+	spf=pass (imf18.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9A6A2400E6;
-	Wed, 29 Jul 2026 08:21:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 694DA1F000E9;
-	Wed, 29 Jul 2026 08:21:09 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A50DB416A0;
+	Wed, 29 Jul 2026 08:21:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A5421F00A3A;
+	Wed, 29 Jul 2026 08:21:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785313275;
-	bh=ePeO/xV71/tQ7SCmp4Ak6LnQ1NWK+HHBAZv1O4FNQqs=;
+	s=k20260515; t=1785313299;
+	bh=HjSBb9mVbLXIx6izzSo3Zj/I/hrxLU57UnbtahM6eqg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=SuuMECmZ5xpzrc3KetrA48u8o+/4Vz8wZ0RNzb5JNCGJx9YIoNwybXjC1ztkYZpT8
-	 58P1ug9lPsrbsZcRVa2JNWIldKHQM9IGHW6zgXJK6GUc2OXx/h3mNhboSaa0TWfX5K
-	 O02ePjEI4Emm47SQ+OcpROXnTIawTzf2hiMmjQ0TjCQK6uDVunemV8J8o9a1/nGsia
-	 poHCRzuX0LXE3O65gpRS3u4SJyceijqgc3EDHU09ItS2tjhqBdNHRwaJ0JJ+8vAjtg
-	 Ns1M9AK9++p4cUiZ2joRBWYfYbNADuEO+J73B+4gif2Lr/jeEH4sEtJLN6HU4Gg0Ge
-	 XvQEEin9+l3wg==
+	b=mY7s/rhLzCihs9hLBNtGbfu7njKF4M2YR7eW/RydfLq9zjbt0Ha+EpVpdHmuYu/eB
+	 l9eoPBzqNY/gaRpVSYjSJMwMQLEg1fXE/7E+uyhGr9LNT/U6sh5KWDdXzQxlHdXZyJ
+	 W4qR014DdqITqxtkYkF/WuRjlSt2E021fh3B7E3lKgKN5KHBMlJ7RKQ5J/aMvXDExy
+	 waKrD+a9OgT4X5fEolwM+2qfs4mJgdmQ4SlUMifKTr+LMKRj69KmtWsp7Aat0Tb8sw
+	 MBWoR31zAthzvaXzzFZgWGMtFv251Dxv3d5ZRUrvAOb7mi5r5CyJXwU7WHuIy1dzVK
+	 gglmWp7YzuMcA==
 From: "Harry Yoo (Oracle)" <harry@kernel.org>
-Date: Wed, 29 Jul 2026 17:20:11 +0900
-Subject: [PATCH v5 3/8] mm/slab: use call_rcu() in unknown context if irqs
- are enabled
+Date: Wed, 29 Jul 2026 17:20:15 +0900
+Subject: [PATCH v5 7/8] mm/slab: introduce kfree_rcu_nolock()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260729-kfree_rcu_nolock-v5-3-a28cdcda9673@kernel.org>
+Message-Id: <20260729-kfree_rcu_nolock-v5-7-a28cdcda9673@kernel.org>
 References: <20260729-kfree_rcu_nolock-v5-0-a28cdcda9673@kernel.org>
 In-Reply-To: <20260729-kfree_rcu_nolock-v5-0-a28cdcda9673@kernel.org>
 To: Vlastimil Babka <vbabka@kernel.org>, 
@@ -96,14 +95,14 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  linux-rt-devel@lists.linux.dev, rcu@vger.kernel.org, bpf@vger.kernel.org, 
  "Harry Yoo (Oracle)" <harry@kernel.org>
 X-Mailer: b4 0.14.3
-X-Stat-Signature: z3fjracoys4tdfd1kqw6sru7ufatmfqy
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 4816AC000D
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 58D7E1C0004
+X-Stat-Signature: 6n4dzgs39xhainczrpi4gztqkfg8mmxn
 X-Rspam-User: 
-X-HE-Tag: 1785313276-470553
-X-HE-Meta: U2FsdGVkX1+/K2tY9xMsoxJtcqxTQvFa3E1OdsFlUnKS3vJxyXvZQZJZqedQOTk6K4VnybrnSEPCqVwp1BPLJsTqSWE95izkU3wjciI+hKAvnkaJyUcp4GXnvp5PRcE8wJdQopLpt8MO79MbdxSaQbS2uhrflm9zbBKxB/GV8d02SFkm4RZjfiDUnXCdwnHRklu7ci14O50r9b0961gBhQlzjJNdah9JNlEPWyek1ZEmoJaLB0+YBVOYE9rlICp9pR1/Iq9YJiJlf80xIFw4rVzkSZV6i4IN61T9i9xhiMOC2NV6pKBI00XOYPO0hsLWCcB8MQ0KEqwyMHYRgkpL2qjlJXAWn/HF8h6bskDGqktcc6dtmwh8wkrCp8cl+piAjokGbAjsNE+Ykn/3XaNKJT30/LWURvTHJB7CpeU0lhV4ENyF9oJXXTc+N14b6mss1b/VpSZ6iqVE462JHH9Dl1BRLFMK1qmsrZLOLsBo16lgVOwkQ9dpO2+Sr2hOdQBKy/HlaZnEIxRl/VDnkaate4VuTEBYIzX7nzFYbKYrLf2EceXL+bP034xDxe1S6EVVMlLHS2C4+cDukKGT7zYHBr84vqWA8wvrqbvNGZGapE7OA+ztnmcIDa3Ao2LhNowMbhl34wzch0Z94X8n/uYfW2HEv0o9wi2JaWZ1qvrwfVJ8Sh+h0ZbkuZ9UasdzglKQcnnu7fHRMF6XJdtc3mezt+4/Hs5nC80dhyVEX8hm5S450M7ejeQ6rKfQ4hawJea+94Jus0OlE5c6Mue4pO2ShDfTItNRTa1BqgJO/xOew7BWzspWLOq835vQDryCBSasPTPxotmpxa39EVFUNnLGP/8tokcoHqTnl7Esw8MNcAwnvyW3bhgQ0iHc2XobsMd9lOZkDmKkz8DWlCWKWKsvQpzV8bGdyQgQEC1kFRtA2BVSL0prbF5z62ud1OHV1wFYhc2kfGgC7wYQR5j+OrY
- x/r1XCfe
- 9UKeC7sqYGVsBeSQ7Uvhi29uD6SuPGvVQTbX8zIXXf8ycewbRC9YfPIoQT3+AwO9oh1DGdLM31JgZMQ9jNYHWUvriDFEo5X9mWY7SkHsV75ZaHm94GS5ueBOMpxNwKKLSw9M8CPEltZrb2DObVt6gpMdtAWY8lj/yqaMw+6xlQgjpfmN392cvXfMZo+xSWGcm/FYEwR2xf//Jb8keDlQS6kzPTg9xElhw/k4rWve9qMfi6vz3DW7r18l5rjk8dACukdfdzd6irfI5fDq+swy+pjCw+6csOx1czFJZcMO3DFZZqsVKu3ZZXFj+fchi3DHNOjJ9
+X-HE-Tag: 1785313300-915976
+X-HE-Meta: U2FsdGVkX18ybo77AEsjU2XHdmQQSaVBsM1nZSgpHCFkc2huXdSpyH3JRiaTjY02OdIOlLnhEigWHWAEjZbZ7297U/k+Rex3gqCFKSRgjP+7DNWl4L5aNiYzaNdElqtrfGPbdIgFbSkUCc/cWT7Fy6TRwTWNqkw5BWnXflQTtcULJUEO4UpYxsvAr+gBFEsC3nT1lj/vUsj/mATGjtJtCh165WRiO1kPSQmn0ViYM/+GHFKzm3303WolxKWAeZr5dnrJXAuFGBg9hnIq6/mCLPKLbijClGifmKwKxxULD7CsxQqYCN9qa2chJqBTbLlOpTIxdP5q+3IDFTTY9A6jZHzyP8enaAGpSfrObsKbu7CIkgeR0TfE24G5qTdBgs/b+VMfEVv2/TJ/InaKaDeKkaT3SCpAdACCMKGg/E+pUEUcFcs2JH5vMFS4wh6ceTQIzW3dVkwzwwoZ3qDvs2AJIU0OVB8FhL33VNJbinyqgkMK9lAjcH4Hgo0s1/O1pA1MqMo5pX8PwyYeUI1GNY0xzOzWiDMLg4lP5ZM4h0jo198cpQsqEwkTYjF9kR3/VKlPpq5LCRP8eyt01gYTvuJyewVzaSKTPtoBprvVKvsve0zwsI3Zhhgbuy3V0LH2EwDIX8niTXAdWiVqNYywt0cDQaVC4V7M81kSVLqmGn8oMpinkYM3lgL0PbLqJhT/5uA+PNUh7SrbF9i2zdZGipxZzIE4cdBCVM5guTfKE/6tcG06YkD9oNj6z2DbUbZ2uXCvYFMgy24qO/QvHppcEBSVnOuPxdGPJ1J1cUpwddFlB8HJ/KQ6Zh6HBxIbOC7V2DpLLAjTCCb7TuDvBJ8A0UfSYPqICj97RIO5ofXUjU+mvXWtYoYGWKn9taKSGoEvUzIzHfYlDDod6AydSdKhQHZctmM8Wv4AsMUluZ6orTJ0vg4Ajogd9IJKeLaNNeMjZQWToduSCXrw4Jb89UvwleX
+ tv7s0ZVq
+ 6bC4zJYRMX9coGyiSit+VPkGt7BUKnqstAm3lLtFjuKNTAj+F+K5UhHTkc7xTEP2EpyAI5ZLDsi6k6w+4RA+MfoO68XMOXZPJ0/jW2jBXxcGyijqNzXk6aLJKjPmOz9kBEZiiYDK/q4G7DM5tJvyGsbKGngpRGwtFwRoVcOnnoOsD1O1iHWGZDu7rYXz09we5iqhe2R9OIeONSl8jqlwrA+pf5ViEbpgltx/KL3xxC5hlkEhPBRpHr+YeyY+TRHgXm7jJoZPMes1tKfKKYw4PTPdVulwmLm+suVNOARNEZexulj0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,41 +110,281 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-call_rcu() disables IRQs with local_irq_save() to protect its per-cpu
-data structures. Therefore, if IRQs are not disabled, they cannot be
-corrupted by reentrance into call_rcu(). So fall back to the deferred
-path only when !allow_spin && irqs_disabled().
+Currently, k[v]free_rcu() cannot be called in unknown context since
+it could lead to a deadlock when called in the middle of k[v]free_rcu().
 
-The RCU subsystem does not guarantee this contractually, and this
-optimization relies on RCU's implementation details. Ideally, it should
-be removed once call_rcu_nolock() is supported by the RCU subsystem.
+Make users' lives easier by introducing kfree_rcu_nolock() variant,
+now that kfree_rcu_sheaf() is available on PREEMPT_RT and
+__kfree_rcu_sheaf() handles unknown context.
 
-Link: https://lore.kernel.org/linux-mm/CAADnVQKRVD5ZSnEKbZZU7w86gHbGHUug2pvzpgZTngNS+fg4rw@mail.gmail.com
-Suggested-by: Alexei Starovoitov <ast@kernel.org>
+When sheaves path fails, kfree_rcu_nolock() falls back to
+defer_kfree_rcu() that uses an irq work to free the object via
+kvfree_call_rcu(). In most cases, the sheaves path is expected to
+succeed and therefore it's unnecessary to introduce additional
+complexity to the existing kvfree_rcu batching by teaching it
+how to handle unknown context.
+
+Since defer_kfree_rcu() can be called on caches without sheaves, move
+deferred_work_barrier() and rcu_barrier() outside the branch in
+kvfree_rcu_barrier_on_cache().
+
+Now that deferred kvfree_rcu objects are submitted to kvfree_call_rcu()
+after deferred_work_barrier() and may end up in RCU sheaves,
+deferred_work_barrier() must be invoked before
+flush_rcu_sheaves_on_cache().
+
+Since the RCU sheaf path has not been used on !KVFREE_RCU_BATCHED
+kernels, always fall back when kvfree_rcu() is not batched, for
+consistency. kvfree_rcu_barrier{,_on_cache()}() on
+!KVFREE_RCU_BATCHED are moved to mm/slab_common.c to invoke
+deferred_work_barrier() before rcu_barrier().
+
 Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
 ---
- mm/slub.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ include/linux/rcupdate.h | 22 ++++++++++++++++++++++
+ include/linux/slab.h     | 16 +++-------------
+ mm/slab_common.c         | 47 +++++++++++++++++++++++++++++++++++++++++++++--
+ mm/slub.c                | 28 ++++++++++++++++++++++++++--
+ 4 files changed, 96 insertions(+), 17 deletions(-)
 
+diff --git a/include/linux/rcupdate.h b/include/linux/rcupdate.h
+index ef5bb6981133..aede77bd0387 100644
+--- a/include/linux/rcupdate.h
++++ b/include/linux/rcupdate.h
+@@ -1099,6 +1099,7 @@ static inline void rcu_read_unlock_migrate(void)
+  * In mm/slab_common.c, no suitable header to include here.
+  */
+ void kvfree_call_rcu(struct kvfree_rcu_head *head, void *ptr);
++void kfree_call_rcu_nolock(struct kvfree_rcu_head *head, void *ptr);
+ 
+ /*
+  * The BUILD_BUG_ON() makes sure the rcu_head offset can be handled. See the
+@@ -1124,6 +1125,27 @@ do {								\
+ 		kvfree_call_rcu(NULL, (void *) (___p));		\
+ } while (0)
+ 
++/**
++ * kfree_rcu_nolock() - a version of kfree_rcu() that can be called in any context.
++ * @ptr: pointer to kfree for double-argument invocations.
++ * @kvrhf: the name of the struct kvfree_rcu_head within the type of @ptr.
++ *
++ * With KVFREE_RCU_BATCHED, kfree_rcu_nolock() tries hard to free objects
++ * without any deferred processing, but may still defer freeing.
++ * Large kmalloc and vmalloc objects are always deferred.
++ *
++ * kfree_rcu_nolock() supports 2-arg variant only.
++ */
++#define kfree_rcu_nolock(ptr, kvrhf)						\
++do {										\
++	typeof (ptr) ___p = (ptr);						\
++										\
++	if (___p) {								\
++		BUILD_BUG_ON(offsetof(typeof(*(ptr)), kvrhf) >= 4096);		\
++		kfree_call_rcu_nolock(&((___p)->kvrhf), (void *) (___p));	\
++	}									\
++} while (0)
++
+ /*
+  * Place this after a lock-acquisition primitive to guarantee that
+  * an UNLOCK+LOCK pair acts as a full barrier.  This guarantee applies
+diff --git a/include/linux/slab.h b/include/linux/slab.h
+index e1915026e030..cda126def67a 100644
+--- a/include/linux/slab.h
++++ b/include/linux/slab.h
+@@ -1430,25 +1430,15 @@ extern void kvfree_sensitive(const void *addr, size_t len);
+ unsigned int kmem_cache_size(struct kmem_cache *s);
+ 
+ #ifndef CONFIG_KVFREE_RCU_BATCHED
+-static inline void kvfree_rcu_barrier(void)
+-{
+-	rcu_barrier();
+-}
+-
+-static inline void kvfree_rcu_barrier_on_cache(struct kmem_cache *s)
+-{
+-	rcu_barrier();
+-}
+-
+ static inline void kfree_rcu_scheduler_running(void) { }
+ #else
++void kfree_rcu_scheduler_running(void);
++#endif
++
+ void kvfree_rcu_barrier(void);
+ 
+ void kvfree_rcu_barrier_on_cache(struct kmem_cache *s);
+ 
+-void kfree_rcu_scheduler_running(void);
+-#endif
+-
+ /**
+  * kmalloc_size_roundup - Report allocation bucket size for the given size
+  *
+diff --git a/mm/slab_common.c b/mm/slab_common.c
+index 691ce6db4519..b8f21eabcccc 100644
+--- a/mm/slab_common.c
++++ b/mm/slab_common.c
+@@ -1296,6 +1296,33 @@ EXPORT_TRACEPOINT_SYMBOL(kmem_cache_alloc);
+ EXPORT_TRACEPOINT_SYMBOL(kfree);
+ EXPORT_TRACEPOINT_SYMBOL(kmem_cache_free);
+ 
++void kfree_call_rcu_nolock(struct kvfree_rcu_head *head, void *ptr)
++{
++	struct slab *slab;
++
++	if (!IS_ENABLED(CONFIG_KVFREE_RCU_BATCHED))
++		goto fallback;
++
++	if (unlikely(is_vmalloc_addr(ptr)))
++		goto fallback;
++
++	slab = virt_to_slab(ptr);
++	if (unlikely(!slab))
++		goto fallback;
++
++	if (unlikely(IS_ENABLED(CONFIG_NUMA) && slab_nid(slab) != numa_mem_id()))
++		goto fallback;
++
++	if (unlikely(!__kfree_rcu_sheaf(slab->slab_cache, ptr, SLAB_FREE_NOLOCK)))
++		goto fallback;
++
++	return;
++
++fallback:
++	defer_kfree_rcu(head);
++}
++EXPORT_SYMBOL_GPL(kfree_call_rcu_nolock);
++
+ #ifndef CONFIG_KVFREE_RCU_BATCHED
+ 
+ void kvfree_call_rcu(struct rcu_head *head, void *ptr)
+@@ -1313,6 +1340,20 @@ void kvfree_call_rcu(struct rcu_head *head, void *ptr)
+ }
+ EXPORT_SYMBOL_GPL(kvfree_call_rcu);
+ 
++void kvfree_rcu_barrier(void)
++{
++	deferred_work_barrier();
++	rcu_barrier();
++}
++EXPORT_SYMBOL_GPL(kvfree_rcu_barrier);
++
++void kvfree_rcu_barrier_on_cache(struct kmem_cache *s)
++{
++	deferred_work_barrier();
++	rcu_barrier();
++}
++EXPORT_SYMBOL_GPL(kvfree_rcu_barrier_on_cache);
++
+ void __init kvfree_rcu_init(void)
+ {
+ }
+@@ -2149,14 +2190,16 @@ EXPORT_SYMBOL_GPL(kvfree_rcu_barrier);
+  */
+ void kvfree_rcu_barrier_on_cache(struct kmem_cache *s)
+ {
++	/* kfree_rcu_nolock() might have deferred frees even without sheaves */
++	deferred_work_barrier();
++
+ 	if (cache_has_sheaves(s)) {
+ 		cpus_read_lock();
+ 		flush_rcu_sheaves_on_cache(s);
+ 		cpus_read_unlock();
+-		deferred_work_barrier();
+-		rcu_barrier();
+ 	}
+ 
++	rcu_barrier();
+ 	__kvfree_rcu_barrier();
+ }
+ EXPORT_SYMBOL_GPL(kvfree_rcu_barrier_on_cache);
 diff --git a/mm/slub.c b/mm/slub.c
-index 2c5ba8c326e7..bb0f2975c95b 100644
+index 774104267f3c..6e5aa38e7569 100644
 --- a/mm/slub.c
 +++ b/mm/slub.c
-@@ -6157,8 +6157,12 @@ bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj, unsigned int free_flags)
- 	if (likely(rcu_sheaf->size < s->sheaf_capacity)) {
- 		rcu_sheaf = NULL;
- 	} else {
--		if (unlikely(!allow_spin)) {
--			/* call_rcu() cannot be called in an unknown context */
-+		/*
-+		 * With !allow_spin, we might have interrupted call_rcu()'s
-+		 * IRQ-disabled critical section. If IRQs are not disabled,
-+		 * we know that's not the case.
-+		 */
-+		if (unlikely(!allow_spin && irqs_disabled())) {
- 			rcu_sheaf->size--;
- 			local_unlock(&s->cpu_sheaves->lock);
- 			goto fail;
+@@ -4099,6 +4099,7 @@ static void flush_all(struct kmem_cache *s)
+ 
+ struct deferred_percpu_work {
+ 	struct llist_head objects;
++	struct llist_head objects_by_rcu;
+ 	struct llist_head rcu_sheaves;
+ 	struct irq_work work;
+ };
+@@ -4107,6 +4108,7 @@ static void deferred_percpu_work_fn(struct irq_work *work);
+ 
+ static DEFINE_PER_CPU(struct deferred_percpu_work, deferred_percpu_work) = {
+ 	.objects = LLIST_HEAD_INIT(objects),
++	.objects_by_rcu = LLIST_HEAD_INIT(objects_by_rcu),
+ 	.rcu_sheaves = LLIST_HEAD_INIT(rcu_sheaves),
+ 	.work = IRQ_WORK_INIT(deferred_percpu_work_fn),
+ };
+@@ -4170,6 +4172,8 @@ void flush_all_rcu_sheaves(void)
+ {
+ 	struct kmem_cache *s;
+ 
++	deferred_work_barrier();
++
+ 	cpus_read_lock();
+ 	mutex_lock(&slab_mutex);
+ 
+@@ -4182,7 +4186,6 @@ void flush_all_rcu_sheaves(void)
+ 	mutex_unlock(&slab_mutex);
+ 	cpus_read_unlock();
+ 
+-	deferred_work_barrier();
+ 	rcu_barrier();
+ }
+ 
+@@ -6407,13 +6410,14 @@ static void free_to_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
+ static void deferred_percpu_work_fn(struct irq_work *work)
+ {
+ 	struct deferred_percpu_work *dpw;
+-	struct llist_head *objs, *rcu_sheaves;
++	struct llist_head *objs, *objs_by_rcu, *rcu_sheaves;
+ 	struct llist_node *llnode, *pos, *t;
+ 	struct slab_sheaf *sheaf, *next;
+ 
+ 	dpw = container_of(work, struct deferred_percpu_work, work);
+ 	rcu_sheaves = &dpw->rcu_sheaves;
+ 	objs = &dpw->objects;
++	objs_by_rcu = &dpw->objects_by_rcu;
+ 
+ 	llnode = llist_del_all(objs);
+ 	llist_for_each_safe(pos, t, llnode) {
+@@ -6438,6 +6442,14 @@ static void deferred_percpu_work_fn(struct irq_work *work)
+ 		stat(s, FREE_SLOWPATH);
+ 	}
+ 
++	llnode = llist_del_all(objs_by_rcu);
++	llist_for_each_safe(pos, t, llnode) {
++		void *head = pos;
++		void *objp = kvmalloc_obj_start_addr(head);
++
++		kvfree_call_rcu(head, objp);
++	}
++
+ 	llnode = llist_del_all(rcu_sheaves);
+ 	llist_for_each_entry_safe(sheaf, next, llnode, llnode)
+ 		call_rcu(&sheaf->rcu_head, rcu_free_sheaf);
+@@ -6456,6 +6468,18 @@ static void defer_free(struct kmem_cache *s, void *head)
+ 		irq_work_queue(&dpw->work);
+ }
+ 
++void defer_kfree_rcu(struct kvfree_rcu_head *head)
++{
++	struct deferred_percpu_work *dpw;
++
++	guard(preempt)();
++
++	dpw = this_cpu_ptr(&deferred_percpu_work);
++	if (llist_add((struct llist_node *)head, &dpw->objects_by_rcu))
++		irq_work_queue(&dpw->work);
++}
++
++/* Must be called before flush_rcu_sheaves_on_cache() */
+ void deferred_work_barrier(void)
+ {
+ 	int cpu;
 
 -- 
 2.53.0
