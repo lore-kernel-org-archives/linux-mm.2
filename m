@@ -4,90 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2167AC54F51
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:17:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 795C1C54F51
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:17:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D62476B00D8; Wed, 29 Jul 2026 10:17:45 -0400 (EDT)
+	id 1DECE6B00D5; Wed, 29 Jul 2026 10:17:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CB3176B00DC; Wed, 29 Jul 2026 10:17:45 -0400 (EDT)
+	id 18F186B00D6; Wed, 29 Jul 2026 10:17:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BEF3D6B00DD; Wed, 29 Jul 2026 10:17:45 -0400 (EDT)
+	id 057C66B00DB; Wed, 29 Jul 2026 10:17:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 935996B00D9
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:17:45 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CDAB8A0661
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 09:32:37 +0000 (UTC)
-X-FDA: 85041299154.16.A0C68B8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 3CB35140008
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 09:32:36 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=agYaSvIW;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id D24F86B00D5
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:17:48 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id EAE91A0692
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 11:52:24 +0000 (UTC)
+X-FDA: 85041651408.25.9068A10
+Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
+	by imf17.hostedemail.com (Postfix) with ESMTP id B4B524000D
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 11:52:22 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=daSQqxUj;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf17.hostedemail.com: domain of brendan.jackman@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785317556;
+	s=arc-20220608; t=1785325943;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OZ63+ClY6OcJWX9ysYXFzf2rcrSbVsiqouN4m3wIEQQ=;
-	b=Gu3/kEZuuKE/MUiArblVTu3TLS10zIsU/lBVPN8/2IkDrNZ56Ojh5Tz7Q/v3QsZW6Gm+hp
-	inYWQIMm8V/QYH5bJ0G+z8xT2EuAUOdu5lehutB2ix489A20ywGMuNyDTktQzeECBjLsdd
-	PK+YqyDvJEg1Zj+6k9E0KJeOYIjaACk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785317556;
-	b=Gfgp6lRFgLjonTYi2UbeW5h0saA0vNvE0MHewAGGSg+iX4I311fWFHS30LZ8stvRYIqONS
-	adPnDcWeGSd8tbUir/Zh5DMHen00M21JTZVx8XWfDKBcb7mn8mawo6AIsXPVUKgRJwHnNA
-	UmO+vy6JdO0NKlgNg6T3Vs/mpLCcLiE=
+	bh=IgAN7UnWx3H6BkdgHgHpTJ4Fnou4I35eqyGgnu4T0as=;
+	b=b2itpomiaIbFkKVQyHjXGsqxZ3Op2Nfo5nyphu9kGzglRtaqAEnYxpf6ney3WQ5+KolOSo
+	6mIia56FPgU5AF4b1jpTEHhkGXmE+y/pCjj0cJAZCpsYmB9dgPo+WhQ4Yb3DkCbfSiiJZQ
+	z4qy0weInppOvRLoz9UcYpJfAPU2ado=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=agYaSvIW;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9D6C3600B1;
-	Wed, 29 Jul 2026 09:32:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBE951F000E9;
-	Wed, 29 Jul 2026 09:32:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785317555;
-	bh=OZ63+ClY6OcJWX9ysYXFzf2rcrSbVsiqouN4m3wIEQQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=agYaSvIWAVylVBpeUol1lRZvfzrti5o8WbDuWlKrrwbYdr0dwifXMsGrmIlyHePPP
-	 YyUYx7bvkZkm3NTlCUatW5WC8//OOLmb1h4P0nJAivd0tC01YefT5+jBuSmxUBbIqx
-	 lZCAaSWFrJ0fDvQkeGy2oejHCSYrIfEcv0GdeWWvoahKvvdNSjO6ZPsRa/dzfDWMOU
-	 R4sKlrkEC1w/6ufKoK+qGN9pNIfWgnXU58YOp+kjC4eKv+SyXrav4Yupo1+/PZbdeE
-	 VCMOd+o3/AAkdy7vS8nsd9eHZR4xSq5YCOvLBnDvReNoEPVVnTWTUi+ghyJAG0Ew3f
-	 0tqmc4P7eAPSA==
-Date: Wed, 29 Jul 2026 10:32:20 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Yang Shi <yang@os.amperecomputing.com>
-Cc: cl@gentwo.org, dennis@kernel.org, tj@kernel.org, urezki@gmail.com, 
-	catalin.marinas@arm.com, will@kernel.org, ryan.roberts@arm.com, david@kernel.org, 
-	akpm@linux-foundation.org, hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com, 
-	linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 04/16] vmalloc: pass in pgd pointer for
- vmap{__vunmap}_range_noflush()
-Message-ID: <amnIBsFnkt5Q2UUw@lucifer>
-References: <20260715180455.515692-1-yang@os.amperecomputing.com>
- <20260715180455.515692-5-yang@os.amperecomputing.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260715180455.515692-5-yang@os.amperecomputing.com>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 3CB35140008
-X-Stat-Signature: axhmej7omxjqf4q4pexiu3oj3p3ww6ap
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=daSQqxUj;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf17.hostedemail.com: domain of brendan.jackman@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785325943;
+	b=LRNSygXB7R1N4atW4xkyjkTf0gaBenbjlk7179TuA4+K6x9B8U3QdJrUyXR5+yuwJ5B0tW
+	CpqwRnWHU1fQTVOADu/8ANSGBXtJHSggVInkPCYsJY66HA+fJiuzjRHUokO5Ojp4qfusc7
+	cubhD0ZaG9IgfR+B0YEYVJQP8zBhoDc=
+Mime-Version: 1.0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785325939;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IgAN7UnWx3H6BkdgHgHpTJ4Fnou4I35eqyGgnu4T0as=;
+	b=daSQqxUjeLR8iF7yEXiHx8SjqwVLuNWGwqCP9X3CJcXaiYnu6rWMnkSAghF/orVdbI+afa
+	ijtbXVpWmUQLAT/u4zL4c6BKT2guXWEneGNWwEGGAbxQtDpYKcKLm365mjueRWnnrn+/LX
+	KISZJJ+3fjZiSwzLopVzw3q1tDT+Oh4=
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 29 Jul 2026 11:52:05 +0000
+Message-Id: <DKB17ZTE9OMW.3NDH8J5WFITC4@linux.dev>
+To: "Brendan Jackman" <jackmanb@google.com>, "Borislav Petkov"
+ <bp@alien8.de>, "Dave Hansen" <dave.hansen@linux.intel.com>, "Peter
+ Zijlstra" <peterz@infradead.org>, "Andrew Morton"
+ <akpm@linux-foundation.org>, "David Hildenbrand" <david@kernel.org>,
+ "Vlastimil Babka" <vbabka@kernel.org>, "Mike Rapoport" <rppt@kernel.org>,
+ "Wei Xu" <weixugc@google.com>, "Johannes Weiner" <hannes@cmpxchg.org>, "Zi
+ Yan" <ziy@nvidia.com>, "Lorenzo Stoakes" <ljs@kernel.org>
+Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <x86@kernel.org>,
+ "Sumit Garg" <sumit.garg@oss.qualcomm.com>, "Will Deacon"
+ <will@kernel.org>, <rientjes@google.com>, "Kalyazin, Nikita"
+ <kalyazin@amazon.co.uk>, <patrick.roy@linux.dev>, "Itazuri, Takahiro"
+ <itazur@amazon.co.uk>, "Andy Lutomirski" <luto@kernel.org>, "David Kaplan"
+ <david.kaplan@amd.com>, "Thomas Gleixner" <tglx@kernel.org>, "Yosry Ahmed"
+ <yosry@kernel.org>, "Patrick Bellasi" <derkling@google.com>, "Reiji
+ Watanabe" <reijiw@google.com>, "Sean Christopherson" <seanjc@google.com>,
+ "Nikita Kalyazin" <nikita.kalyazin@linux.dev>, "Ackerley Tng"
+ <ackerleytng@google.com>
+Subject: Re: [PATCH v3 00/26] mm: Add ALLOC_UNMAPPED and AS_NO_DIRECT_MAP
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Brendan Jackman" <brendan.jackman@linux.dev>
+References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
+In-Reply-To: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: B4B524000D
 X-Rspam-User: 
-X-HE-Tag: 1785317556-143696
-X-HE-Meta: U2FsdGVkX18orPe1AvJsI3bEJs08YGKSc7i5p+wkaoKDqouMyLkImymCA/bjo/bW9SPn3sfOko1a9LOpvb4Q6M0bVS6bxOfchQUv+hoVJPKw/n+rmRaVFRXW9BIbIO6Vo630zWkig7toFgpj6o3s0USEUNcbmV9/KlcDS5XTzPlgBdt+EIk1m1UrtDbN8ZezAiIEbKTkj0+HQWiMW1mNXQEpDcMAw1tSW7qwFIsJjw/tTMlCb6/hrCAVszvahMCUX6aMkQBz4ACFCAD2ixebJm44dIEy1REHdulQHPKNzLgQnOsuCAQcNcACo0sYXOG602EjcuQ/a1jqoC9m4pnBHt8JVhQf5B3tLatLR0JY3JRjtRDeIjLQ5sDDq1u877e67IzINZYr/lz5Ta2VG7SEcIbV7hk6WvK9Hszxugk7H/WkIjakYVpZ1T1FQDooAxcAa4buToWTnzsdNjSfycCknLs0Xa7pTyz84H8UmshNJEJs9AvKJ23qLt1uFZXLE9WzccEOAaxtx18yIrjniQUcSEMBncEejGIbgMk6DDIwHUGjP7CCHOzPAGjSd5fgaA2oFVeu3jarRURruatGVj+XmjHC06evwKtCnr0u4PAuO1OYdUXZi4uvQz3TO1RYIUAdXn39dG8CNXYV+JQonpbjVXOUxehFUEKgmbMD7MUeNwWmATJHuby6MG8cXSBaz6iJzqUcyCaqXaRRza+F5AcIOA6h0O7aqlrHeenhYO1RjkRfQL0zigQfsUMujiog8W8JE+erjvGJ1Wp3UkV2nwA2gaQ8i6Ur75YDDmwqkLt4Y9+wOOPTC5Os4GNty9lo2ZIZVnBohNF4ll+I894vFnoigz3FKVXtlUOF/qnVKEqis7GRk4voe0kpiCSWSzT8fskXhx3wqXTlPv4Y0T1rAYhXRC1LiqgNlmVdS5Nszv7j737+vqnawizNRLauSJ4kLfg3AHiHHo0voKCp0wPQa9J
- uramKTR2
- 3aWNTkk896Eovc7BO6g6SUbY9/Rm41J6m9n50GC4rhgxMfZTB5954kONfIaZ4oHiK8WV8QcYH/NwhZbJE38IvKmqjLk/GAa/gJO7C4s7G+FgvJw0BY1leTIJbpiqG7YUZ4GmqNsSN/fhpoqWjgPX0Cc6uLG/1LL1ao2V7OWTVk+ppU6xH3BvavwBye8F8+sZpBOsf3+Bq9BeftuWzbP1IR01GMs+ZANa4RzNNHruXwyjtGwrdgGuYuJ3DJ356wFp5O9rgssA0Kztgr3ScoijaviQeMVLSOi20Ii6o9e3nRCjEjKYrdcwBDNEDastTptfCjI1zKCdyDJa5hV99Yw+IWtWFnYxGy+ovBllFejsn641VAto=
+X-Stat-Signature: do1q43mjybmi86cpjy3je9cgo7qthsnn
+X-HE-Tag: 1785325942-494647
+X-HE-Meta: U2FsdGVkX1+BFUyqKFtVwdW9kSnpaOjP0gkIiQ12uclXaK/qSBmy08W3w7cYkAFeSIo2nc3A0NQzbyFpj0g+RgN3YjJCCb6h8AOmZ37im2hSEi5+1w4OciTOK70f0qLofzFNw3Cu60+duvKnOXA0uvPAZRgKV7PvQDLOfqn1BQaluh5GKVePm2ktX3dDDo0OCDSks4uKuCY8gL2v3kOMB95ZxLw+wtFWo9PFm6VMjl263GbGTXb5wtQUrPYnsb0xhVvAVOFihBvAr/d6TJMDJawTvCnxkBcLLN6OX3YUThFVlfU3kZTwy0tur0G7/R+PzSK9P04jdfV6GN+3oRfY512VufG/p5PK/QgsHMd4Piegw2JMoGn03Lmpq3ByjwjD0oSOeuIbXpNjmly8Baom7w/SC1Lxe5pcYgBG1Jzrwkn8t9RmMJ2mbflulKAZTGdBFRN55FashNFWddQGLZo0VCp3mLr9yrQ2f8YaXYxGpVIZkMYVwzuBLMbSn1YNDkLQVrzAinr305Ujrb3KOeg0ix4iZOsn1aTCEBRJVfk/+6BO/aTOS2zZ113AGlW39iZ9Dh1rGVN2n/GshiaporeUmyRsk9meRIjX/fGmd2CKZ6HiXci00V5rJA+YH3slhEI8lx6j/te6k7zYCe/2xmfE0zUciE0QxCw3YxhxrpL4KZE6fOvAT+DO5+b+EY3tmUhnXcGYZ4W8TejJXZZgXhQlyfhh+x3HACI6EU+jbaW22znX69GBLntAJmAfgxQDxax6ukVk2RoZsFPzvBPzZInXiIsjh4Z5nv4xhIZZ9gfFFE73GFYOPvmr7uNW5jqGZJVKI4Mk7R3sa84snMGfNjiN5bnuiW5UuDKtGX6bZY8msl/wtpg/U+ewgi3IrDS35zLeTghno3mWIhSHPNHzywaMUSvGGyGlB4fyf4APuPeO684xQ5m9cOhNGltPwN3UsxTyFcOYvEf3RhuRgatz/rw
+ 3kz3zLBD
+ 519fWeKQTNXOA7V5wYZ2DMiHdQn5q7FoXP1shzMPIs7cishDmeoomZ8Ufl+mQADtztlsiA1ukjUBC5tWxHAJrhVFGh6oxuwCxZwd64KUsIAPv25CRAH794C707clSdS6cl7hZOdb4cIozYTkIMqkAdqA5wwMfQOM4FQigXNu5uuYNa62LpAhac3K34kXkUS+KL1/seuYYYuIyJIMJdNkuz3zxVnfGclqzqxSoaff+k+J7PDFOkPx+MHqCquBpcm4DwhKL7rZjz7JH87O4dIPDfU5PgI11Do6FGcpH/pJKSIjKcIaK+sC2sEsX5kJSNc64A/iOMOaHnZM3hy5sIAKWCwMFUqgDUtul7BdKqI0SIOTML2U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,193 +102,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 15, 2026 at 11:04:06AM -0700, Yang Shi wrote:
-> vmap{__vunmap}_range_noflush() assume manipulate init_mm pgd.  The
+On Sun Jul 26, 2026 at 10:22 PM UTC, Brendan Jackman wrote:
+> Based on mm-new, plus this series:
+> https://lore.kernel.org/all/20260716-folio-alloc-cleanups-v1-0-5363b8e92d=
+33@google.com/
 
-It's not an assumption, it's a requirement.
-
-There is now (and really should have always been) strictly a locking requirement
-that the mm being manipulated is init_mm.
-
-> following patch will map percpu local mapping into percpu page table by
-> calling them, so the assumption will no longer stand.  Make them take
-> pgd pointer as an parameter.
-
-No, this isn't OK.
-
-vmalloc is expressly for manipulating kernel mappings in init_mm.
-
->
-> Also make vmap_range_noflush() non static, it will be called outside
-> vmalloc in the following patch.
-
-Hmm not loving the exposure of an internal function ehre.
-
->
-> There is no functional change.
->
-> Signed-off-by: Yang Shi <yang@os.amperecomputing.com>
-
-You're fundamentally changing something here, conceptually. I'm not sure why you
-specifically need vmalloc to do it but it doesn't strike me as worthwhile for
-what you're doing.
-
-> ---
->  mm/internal.h    |  5 ++++-
->  mm/kmsan/hooks.c | 14 +++++++-------
->  mm/vmalloc.c     | 25 +++++++++++++------------
->  3 files changed, 24 insertions(+), 20 deletions(-)
->
-> diff --git a/mm/internal.h b/mm/internal.h
-> index 181e79f1d6a2..9d9f08cb26a1 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-> @@ -1552,10 +1552,13 @@ void clear_vm_uninitialized_flag(struct vm_struct *vm);
->  int __must_check __vmap_pages_range_noflush(unsigned long addr,
->  			       unsigned long end, pgprot_t prot,
->  			       struct page **pages, unsigned int page_shift);
-> +int __must_check vmap_range_noflush(pgd_t *pgdir, unsigned long addr,
-> +			unsigned long end, phys_addr_t phys_addr,
-> +			pgprot_t prot, unsigned int max_page_shift);
->
->  void vunmap_range_noflush(unsigned long start, unsigned long end);
->
-> -void __vunmap_range_noflush(unsigned long start, unsigned long end);
-> +void __vunmap_range_noflush(pgd_t *pgdir, unsigned long start, unsigned long end);
->
->  static inline bool vma_is_single_threaded_private(struct vm_area_struct *vma)
->  {
-> diff --git a/mm/kmsan/hooks.c b/mm/kmsan/hooks.c
-> index 8f22d1f22981..e2a0faf344b9 100644
-> --- a/mm/kmsan/hooks.c
-> +++ b/mm/kmsan/hooks.c
-> @@ -135,8 +135,8 @@ static unsigned long vmalloc_origin(unsigned long addr)
->
->  void kmsan_vunmap_range_noflush(unsigned long start, unsigned long end)
->  {
-> -	__vunmap_range_noflush(vmalloc_shadow(start), vmalloc_shadow(end));
-> -	__vunmap_range_noflush(vmalloc_origin(start), vmalloc_origin(end));
-> +	__vunmap_range_noflush(init_mm.pgd, vmalloc_shadow(start), vmalloc_shadow(end));
-> +	__vunmap_range_noflush(init_mm.pgd, vmalloc_origin(start), vmalloc_origin(end));
->  	flush_cache_vmap(vmalloc_shadow(start), vmalloc_shadow(end));
->  	flush_cache_vmap(vmalloc_origin(start), vmalloc_origin(end));
->  }
-> @@ -181,7 +181,7 @@ int kmsan_ioremap_page_range(unsigned long start, unsigned long end,
->  			vmalloc_origin(start + off + PAGE_SIZE), prot, &origin,
->  			PAGE_SHIFT);
->  		if (mapped) {
-> -			__vunmap_range_noflush(
-> +			__vunmap_range_noflush(init_mm.pgd,
->  				vmalloc_shadow(start + off),
->  				vmalloc_shadow(start + off + PAGE_SIZE));
->  			err = mapped;
-> @@ -203,10 +203,10 @@ int kmsan_ioremap_page_range(unsigned long start, unsigned long end,
->  			__free_pages(shadow, 1);
->  		if (origin)
->  			__free_pages(origin, 1);
-> -		__vunmap_range_noflush(
-> +		__vunmap_range_noflush(init_mm.pgd,
->  			vmalloc_shadow(start),
->  			vmalloc_shadow(start + clean * PAGE_SIZE));
-> -		__vunmap_range_noflush(
-> +		__vunmap_range_noflush(init_mm.pgd,
->  			vmalloc_origin(start),
->  			vmalloc_origin(start + clean * PAGE_SIZE));
->  	}
-> @@ -233,8 +233,8 @@ void kmsan_iounmap_page_range(unsigned long start, unsigned long end)
->  	     i++, v_shadow += PAGE_SIZE, v_origin += PAGE_SIZE) {
->  		shadow = kmsan_vmalloc_to_page_or_null((void *)v_shadow);
->  		origin = kmsan_vmalloc_to_page_or_null((void *)v_origin);
-> -		__vunmap_range_noflush(v_shadow, vmalloc_shadow(end));
-> -		__vunmap_range_noflush(v_origin, vmalloc_origin(end));
-> +		__vunmap_range_noflush(init_mm.pgd, v_shadow, vmalloc_shadow(end));
-> +		__vunmap_range_noflush(init_mm.pgd, v_origin, vmalloc_origin(end));
->  		if (shadow)
->  			__free_pages(shadow, 1);
->  		if (origin)
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index 1afca3568b9b..17c26e9796b2 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -295,9 +295,9 @@ static int vmap_p4d_range(pgd_t *pgd, unsigned long addr, unsigned long end,
->  	return err;
->  }
->
-> -static int vmap_range_noflush(unsigned long addr, unsigned long end,
-> -			phys_addr_t phys_addr, pgprot_t prot,
-> -			unsigned int max_page_shift)
-> +int vmap_range_noflush(pgd_t *pgdir, unsigned long addr, unsigned long end,
-> +		       phys_addr_t phys_addr, pgprot_t prot,
-> +		       unsigned int max_page_shift)
->  {
->  	pgd_t *pgd;
->  	unsigned long start;
-> @@ -314,7 +314,7 @@ static int vmap_range_noflush(unsigned long addr, unsigned long end,
->  	BUG_ON(addr >= end);
->
->  	start = addr;
-> -	pgd = pgd_offset_k(addr);
-> +	pgd = pgd_offset_pgd(pgdir, addr);
->  	do {
->  		next = pgd_addr_end(addr, end);
->  		err = vmap_p4d_range(pgd, addr, next, phys_addr, prot,
-> @@ -334,8 +334,8 @@ int vmap_page_range(unsigned long addr, unsigned long end,
->  {
->  	int err;
->
-> -	err = vmap_range_noflush(addr, end, phys_addr, pgprot_nx(prot),
-> -				 ioremap_max_page_shift);
-> +	err = vmap_range_noflush(init_mm.pgd, addr, end, phys_addr,
-> +				 pgprot_nx(prot), ioremap_max_page_shift);
->  	flush_cache_vmap(addr, end);
->  	if (!err)
->  		err = kmsan_ioremap_page_range(addr, end, phys_addr, prot,
-> @@ -478,7 +478,7 @@ static void vunmap_p4d_range(pgd_t *pgd, unsigned long addr, unsigned long end,
->   *
->   * This is an internal function only. Do not use outside mm/.
->   */
-> -void __vunmap_range_noflush(unsigned long start, unsigned long end)
-> +void __vunmap_range_noflush(pgd_t *pgdir, unsigned long start, unsigned long end)
->  {
->  	unsigned long next;
->  	pgd_t *pgd;
-> @@ -486,7 +486,7 @@ void __vunmap_range_noflush(unsigned long start, unsigned long end)
->  	pgtbl_mod_mask mask = 0;
->
->  	BUG_ON(addr >= end);
-> -	pgd = pgd_offset_k(addr);
-> +	pgd = pgd_offset_pgd(pgdir, addr);
->  	do {
->  		next = pgd_addr_end(addr, end);
->  		if (pgd_bad(*pgd))
-> @@ -503,7 +503,7 @@ void __vunmap_range_noflush(unsigned long start, unsigned long end)
->  void vunmap_range_noflush(unsigned long start, unsigned long end)
->  {
->  	kmsan_vunmap_range_noflush(start, end);
-> -	__vunmap_range_noflush(start, end);
-> +	__vunmap_range_noflush(init_mm.pgd, start, end);
->  }
->
->  /**
-> @@ -670,9 +670,10 @@ int __vmap_pages_range_noflush(unsigned long addr, unsigned long end,
->  	for (i = 0; i < nr; i += 1U << (page_shift - PAGE_SHIFT)) {
->  		int err;
->
-> -		err = vmap_range_noflush(addr, addr + (1UL << page_shift),
-> -					page_to_phys(pages[i]), prot,
-> -					page_shift);
-> +		err = vmap_range_noflush(init_mm.pgd, addr,
-> +					 addr + (1UL << page_shift),
-> +					 page_to_phys(pages[i]), prot,
-> +					 page_shift);
->  		if (err)
->  			return err;
->
-> --
-> 2.47.0
->
->
->
-
-Cheers, Lorenzo
+Sorry this is slightly inaccurate. Due to the discussion on 3/3 of that
+series, this is based on mm-new plus _only the first two patches_ of the
+above.
 
