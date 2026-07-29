@@ -4,140 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F8B0C54F51
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 00:38:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1D58C54F51
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 00:39:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D1C66B00E8; Tue, 28 Jul 2026 20:36:19 -0400 (EDT)
+	id DF62C6B00E9; Tue, 28 Jul 2026 20:39:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9AB326B00E9; Tue, 28 Jul 2026 20:36:19 -0400 (EDT)
+	id DA73D6B00EB; Tue, 28 Jul 2026 20:39:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 899986B00EA; Tue, 28 Jul 2026 20:36:19 -0400 (EDT)
+	id C95B36B00EC; Tue, 28 Jul 2026 20:39:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B71C6B00E8
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 20:36:19 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id AE3816B00E9
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 20:39:36 -0400 (EDT)
 Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DC247403E7
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 00:36:18 +0000 (UTC)
-X-FDA: 85039947636.12.63C5BC4
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	by imf22.hostedemail.com (Postfix) with ESMTP id E9B45C0002
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 00:36:16 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Nw5zj6Au;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf22.hostedemail.com: domain of jyescas@google.com designates 209.85.167.49 as permitted sender) smtp.mailfrom=jyescas@google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785285376;
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 378781A043C
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 00:39:36 +0000 (UTC)
+X-FDA: 85039955952.12.493CE39
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 466B71C0009
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 00:39:34 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=FW5qd2ZD;
+	spf=pass (imf21.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.43 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785285574;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O4+ZKchlNYOyVx1ec4Z7hkgzRosN8uCqlqN3+MCAunc=;
-	b=t/+NiE6dB5Gel4FBJ+nvQMSqsGZpowBKszTQ7X9WzDXU834qpGvvwYtSldrDfQbzwcT9oA
-	1PbXTG2+rMLTVYxmtMgOM4HjBB5dMAhCuffpAfI5CqJiZTDhWRS6rQuMG58kCLITDtJzil
-	hbEQwAg/apNGuaiAwo5reHBI9wRKxXE=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Nw5zj6Au;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf22.hostedemail.com: domain of jyescas@google.com designates 209.85.167.49 as permitted sender) smtp.mailfrom=jyescas@google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1785285376;
-	b=hNSQxT0GZgIV1ojaYYpr7ELrN+bwin24e2Q4g+t+nGbNDGSnV87ZyieNxClSDUCwkzMDte
-	l0EFXVEEOYGUSMF4YbcWLRttq+cKr0+eOEYBrQkWQaxEx9JdK4ek1IgtrW9DCrFMppHgWJ
-	RxKIqb/gFv1u9yCIaozzTIHuY8cd54o=
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5aeb688ae83so1856e87.1
-        for <linux-mm@kvack.org>; Tue, 28 Jul 2026 17:36:16 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785285375; cv=none;
-        d=google.com; s=arc-20260327;
-        b=gZOE+4AXdp+aFgq3rA6g26MXGKPOxGDfG42u8A155SE6/C1FKUp5US1LbKk38DNEf5
-         q9dB5sry+msg7naPp+2/37vqs82hS1ZkHV6NHnfhKdZrcdH7/jlK6e00n5Ne5MKCIG2k
-         JwQwgyahV/wu6dnog3p54cz3/a/aHdok637HzrL/Sxh+5FBdMvIL6RaGmwf+8xxg8q3d
-         As8eJM24AGNAgoFtxtDFHlxXCymwTbixez48valMVaF9zlikxY7O8jfw7JeHAj7slLQu
-         Gxjf4Sj1cDau6/GKhKkhJp3QLltRVxRYu+Krd3Kjcg1JjuJ+Qh22//mIJobat7JzVg9/
-         kUOg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=O4+ZKchlNYOyVx1ec4Z7hkgzRosN8uCqlqN3+MCAunc=;
-        fh=U85sBaxXH+qpBBGzIjRVwnsgRN3qsEWh1RMrf/Iy3+k=;
-        b=kgHSXaO1c76BKSghDoY/1KdYxunWXh7bcpHfNemNqIhBWDVSMi86rgIGicdhQdVTL1
-         kVDaSpPEA0ut73txGi/CsViVLPyBHS2xe8AnSfq4G3iVtIEqQUqYMXhKvArxVn4OTEzw
-         nJsaQpL7h6Aiq1na633JFC3S9WIrOlVtoGpFJw3e4CEczTg/256GEJgVAUJ/x+gOFf7G
-         we0ncGWHMs3RLka4K3ChuaoIIll43fNyM7Pnxl0VPIQNJ2dsfetiUqJh4x6imH5/o8ID
-         T2S2KZvJRxTGY4KdelyEgkDAL375RoPVkvf8jWjPE4F//k2F3VetcDnSgPTb9HKVb78R
-         jo7A==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=hlDfDH8fw0HdMBSkD+M9GnJly9TjD4Ns9P6nYByTcGI=;
+	b=Mq6C7WlE73o5hejzgnaZOPMd9tWZMtyCBi0VPHknB7RlUwlZ1FVr9DH8SFq0FIfTVHY3xE
+	LVzD5Uta4+yU89pkQp4Yr3mR1o3XcrgHvfV+rf6vPds94zzeWAdnmd3+kGmTA/L23OooSU
+	Ps1q2qlkCo8Sfy2bwYRLD6ns0gxEKeo=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785285574;
+	b=iKBaLvTHwJXVY7FqcoV8tSg3+h+YM/xLxXyOXOcY+kWK9u8j5MHUAXbAbnz5J9plVRH6L6
+	YLQ+FPewaiIu3LUdFczbNNzXbLoa+aGetrUbClIa3tmkRezxxYMOfh0fsjImWY70oniYBZ
+	yjvLueXalzAjvHXf6OfZ+XBWDo/RYU0=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=FW5qd2ZD;
+	spf=pass (imf21.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.43 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-8f1a8e914a9so3403056d6.1
+        for <linux-mm@kvack.org>; Tue, 28 Jul 2026 17:39:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785285375; x=1785890175; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=gourry.net; s=google; t=1785285573; x=1785890373; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=O4+ZKchlNYOyVx1ec4Z7hkgzRosN8uCqlqN3+MCAunc=;
-        b=Nw5zj6AusSnbs/xiOsB8i6QWpCGAH4RfroC7CbphEo8dAW0cVYFRhnBWSxE4I2pRNy
-         3wswt0FOQxXrFYYxuF7zJHwurXzy8YOsgvIWsmQfpRbx5csSzyvK1/18mwjddZeLaJ2Y
-         R0WL5oGC8WUd2ZeV4XqfEt0gf/b+e7LeY3rF5ny/wkUDeQS4RZWoEy4oYtsBmmf+s89e
-         YkFtXavqIxnn9DY9IaPN2x1z/NRwulKV43vFEaCD1B4XlhSO5ee4hDVgPDZRdT1fRbo4
-         dXFMLLflI+rai0WwVR78ZentkT9ou2dQhdSGf055eCpX+LOAUY/q3c4XUmawCyatNPYc
-         5ldA==
+        bh=hlDfDH8fw0HdMBSkD+M9GnJly9TjD4Ns9P6nYByTcGI=;
+        b=FW5qd2ZDMgrtItgOYU7wVqxaDjO5lCi+FQIXac0UQ4ZHJai+tNLXP+ob7K8BmFqYrU
+         IDSMdeVPsbmdmPh9DhzwkGmtnZtC86TARWv1gWyWNiOaw0zFA3jAhjPkWSIKEKHK4Rfj
+         EKl8be5CoU4dS1eevmzVKQej31QJOcvta2+xusfj9yQnOEhFjcVvN128IQ5D3oib5rXq
+         LIX9FhxGczsbNVE3mu2b4MA4Zt2QuCxAFlnv8rG430YkxZA8RlUwhFcRW38eOJVcm+Vk
+         ETcgxCxV3h6hJYmdQtx5sMmojrar/pqayg1H0cijxooWJEJvZWhJHhhL3aFx1P/FtqAa
+         b52g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785285375; x=1785890175;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1785285573; x=1785890373;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=O4+ZKchlNYOyVx1ec4Z7hkgzRosN8uCqlqN3+MCAunc=;
-        b=Pk1vtzoWL7vJoT0PXHyBeYkr0VqiBy8HDc1OxQrNjG3t4zDhsAuuCzBK6fNXTm+pNW
-         NTfWVb+zLNrT0HgouZxD5gHlm43kMqSwvDE/JZXWERHFtg2oSyJ9YbGS7xews9cPmFwi
-         aGBNhyUd+jIphc7VIp0Zb/f5i0U9kqsx90j/MNsVFbRu3cq8+1Z0C8gEevb5yRjpokI5
-         IPyUvyNLukmLrThlgDYQITQ5e5IKtklphOalxKzu/OuaY1X92pGgzUzau8A6EgPIDpuh
-         wnz3P9O3o269Gb/xGEdp0F7FU+BzpKA01wJoP9nOoZ6fXJFCllT9s4Dz/AcMbc6ZJanS
-         y/tQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqdHzgde8q7SBzfdlQmqmnp7t1MYsl+LOx/BklrX8TEY6K/JIQmq7t/gE2EPY31w4GdnWWclaeCMQ==@kvack.org
-X-Gm-Message-State: AOJu0Yyu5ZpiBrZV9sZurJQ6lv/TZ/VIdyh14U7myuaBGkYhw61N7QwO
-	4n/RX8mtPU3aCgxDme+AQEs0KoOu0lvWjnY5huqVPqwZY1geh6ZxOD/ThjNUQVz+kY9I9zCk92n
-	D58pbfpT3R4Q9RZJlh8jn2bo5Sh8kPOxAAqvdV673
-X-Gm-Gg: AR+sD10KnZzZr69ZKHaLto+H08n4mo9pdLkGqwk8N2Oj9D+CalvrXMuLA3bD87zW6uv
-	jGJL59dkc+uvNna7RecbdD7pMTSv8rgolp7SjSyWI6FjIYUCYQMW0ePsWryup66TdcpOlEr5fhx
-	jiJtthBu9hXKDvLUBAf8FXIjGmG1vARnfJfES87qdU5vBiP68Bi6SOi/RWH6wb9DdccMzmO9aDc
-	9pXeGXpWWL7hzWw5JOjGvpPVNVaupbzRJLw9SdxnMagLrqfaGddjidWfOUJEvCsA/fRXSB5G9Ty
-	1zoawuykSV/cxFibVTT7Gzv6P4T4gLzKmYwy3hluNUfa/uTFXftl52W44t6OT7aPcosTR+exlw=
-	=
-X-Received: by 2002:a05:6512:3f0c:b0:5ae:b1b3:145a with SMTP id
- 2adb3069b0e04-5b2d82772b5mr5655e87.6.1785285374685; Tue, 28 Jul 2026 17:36:14
- -0700 (PDT)
+        bh=hlDfDH8fw0HdMBSkD+M9GnJly9TjD4Ns9P6nYByTcGI=;
+        b=NYGsqIsjk8uR8Rfbnt1ZMfPjx0ueftj+gvLnzQ+iu/fXo51p6hspCuc9YkLUZPR1mi
+         D5TRSfqakhrZk/j/qWRj5oGF7wVjfXD63v9tZ8F9+eNpEJQDFBMqoCuMPBP2b9XMtp7I
+         cTdF/9c68+/SXlfSIgH4dsn7Cn6rkNnMNvgdQqHSUQxZDSFkVFRwQND9p+ambB1vgzrI
+         Q13ST4TDF96iHLUHKnnje9UMxTzglgAxTWUSkU2wO5YbDAxNTagEz8Jw3IgGqCBZbXqn
+         JHJK+lyvgQ60AXnTAdOdHDcIAzIGoxGIvHZgoA6qJd4VRimGfodc7AxPYaJTC/yKJ8MM
+         YiBw==
+X-Forwarded-Encrypted: i=1; AHgh+RruarkL3SqRANGGkctvNJHuEunLslp9jy5OwqwwKE3N3dIKKaAL7PxsVXYnaCw516YkBynH0mkDEg==@kvack.org
+X-Gm-Message-State: AOJu0YwsE36VjLD7CxS/I0P0NaQEura8QQGkNQKY7s55T3d4iRG+5m4e
+	mpkFXGz2rsR66TQIxjHwHLmRGZWeyFIc+EB1TcMOYFzSQProf3L//1ChTRKXglarAuDjU8VOaBl
+	mNR90
+X-Gm-Gg: AR+sD12mBW9GNHGjXXQLni1o/ixI1dxCN0rLF/AtFpcl/BKfKXj7oGPK2wRtPbF4k/r
+	NDl7Ch6F4na7MX4ZlWaIPfKjTk4okAzzlTdPSbu7LOX44Z2b1Se1fTEruIL0tIMQQHMex0wBz7N
+	liv1HfYQ1p6wGL16g6vn3MP14w5b6DE7pUPGAmTTKsTWf6YuWPW1GbqR4wGCYdTBqw6bOAjEQON
+	UjhjYXGNwL8qAwChscC+ATyU6KGPjFXzCbBBgbhw9r8mczHoqauJO2514PNUcvdb919Cbf8uVCM
+	9Fm9Tl5bqYFjykX811Urmjj9H9ij3qwIIV8LCpvcjwux6cBun4NqDmHVuMakHI2bL4BCSBL+UY4
+	BO0n1ErkEyGWE1SYvh/lvycPLCFMZlfhi7XJAcfQhb9jj8dvCGgMax51NKByKrb0ER32JJAmK5x
+	dTnZdq10l7o/9B/7bQGERqjXsIlaymeQ7BP524x67vCKQJmlr2nL3SDCNUgG32ePqDl9wdGPO/a
+	mqXPNuP9amijEw+VHer5vT4i9KTAjX4Mo++HGHlCr/Pl91gKTvb5xca8n+wIEg3H+E=
+X-Received: by 2002:a05:6214:4114:b0:8fd:6df3:b379 with SMTP id 6a1803df08f44-9081743d851mr51993906d6.61.1785285573375;
+        Tue, 28 Jul 2026 17:39:33 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9081dd91080sm11772486d6.49.2026.07.28.17.39.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Jul 2026 17:39:32 -0700 (PDT)
+Date: Tue, 28 Jul 2026 20:39:29 -0400
+From: Gregory Price <gourry@gourry.net>
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Jane Chu <jane.chu@oracle.com>, linux-mm@kvack.org, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>, 
+	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
+	Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
+	Christian Brauner <christian@brauner.io>, Jiaqi Yan <jiaqiyan@google.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v7 01/13] memory-failure: Fix hardware poison check in
+ unpoison_memory() again
+Message-ID: <amlKHkemYQBxFESG@gourry-fedora-PF4VCD3F>
+References: <20260728204409.3396238-1-willy@infradead.org>
+ <20260728204409.3396238-2-willy@infradead.org>
 MIME-Version: 1.0
-References: <20260723074854.1013941-1-jyescas@google.com> <97605949-82c5-49e0-84b6-b42e8078b55d@kernel.org>
-In-Reply-To: <97605949-82c5-49e0-84b6-b42e8078b55d@kernel.org>
-From: Juan Yescas <jyescas@google.com>
-Date: Tue, 28 Jul 2026 17:36:03 -0700
-X-Gm-Features: AUfX_mxcXP550gyHsDpzZinI7XOmRkCcTIAAYZxgEXkbnfwqJOQ_c39OoLMlWM0
-Message-ID: <CAJDx_rjNhiS+J9eDkQxPF6B=jJ-Evr-M7NNeS_QcG7XWNDoEYQ@mail.gmail.com>
-Subject: Re: [RFC PATCH 00/16] Page Alloc Hogger
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	open list <linux-kernel@vger.kernel.org>, 
-	"open list:MEMORY MANAGEMENT - CORE" <linux-mm@kvack.org>, android-mm@google.com, fvdl@google.com, 
-	tkjos@google.com, minchan@google.com, dskiba@google.com, 
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E9B45C0002
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260728204409.3396238-2-willy@infradead.org>
 X-Rspam-User: 
-X-Stat-Signature: fhwa4dsne1xdkipzia16wh56m43yy18c
-X-HE-Tag: 1785285376-97193
-X-HE-Meta: U2FsdGVkX19dr4SACOxj11LaVUzqbzn7FmY66ViH7g7vu3ZhWvTxbhZ+bDVNEBlg9drHuUpN5OkTU1DVVvIzU7/WYYV1u2CH7RpdoLFTqZxMu5TYoIm6MbsS9mISEx7O4raQcxhjoy6F3yoFkUAj089RQc1jeyLRf3L5z0AxqpSt0KRlppE49khb05a82Pf5szONaxef+cA2EiE0u7TumPTLryJswhJ3i5ng6Poq7Xhd0IlOmgyRs7LOsVkyPJbXQPYWBrZQ5anRvTfHhFcP5XH/lYutleXo6s2KOHrf3TTAN8i/r9Unz6JQheudhi0/EvSBXBD6aKBdW3cVjkhm/A5AgcZzesVwQZMYj9ZVmrwCGw42oRz0bCxWvo5ovxG2aOOiZbHEWtChE55/3qDLoYK88H7gzbNVPFkm7snAgHPzdVxUiJEOJOKG1AP9AZ3wpi0SjB5m73ALq6R7gGOZ+V/7oTdQzMBrSPgMTjgNdoF94ZhDyjHHWn44vIMExu0Z1irPM/C+kbMKQxQKCFkl9/ksZBrv3JOJIbSqsW2KdcbCqifOR9DPeiKz20WbhUniXsifHyG42/IkouhPldpgjOnSPIoxvMYSRe0wNvhCrk3+1nEAp/WrmI6f0CrxQNLwsbDyIWfIoDLtY0eHAqqLe73OCZbK1JfTXWnXWpJII7PC9NsaPjDHbdrtzku72SE4KtzKd2r258Ked34K94stmpgfXKYyi0WsWYDRuLwiFxYMDnBZuZ+TSCAWPgQTC0x/iMM226x/bdGdZ3XB5vgH3jB2liV7qTWDRWadQBns+UgSv0qKyh74Ocyy178aTZByUEuFWz1zVPhWj9wCbjx03hlrFUanh26ztl1JSo9ApwqFt/otwjkIgAmymgdqJCFDz0CewwI84bYm0LZBH/Y5lR4gr3A3Z5Ypyn495tajkMKK8WginA/wTTH6JvqRM9r+gcA/4QplfGza5g6Kh7O
- 25MHtvzO
- TOQBNUMJKrFwTeJ2Hvn5mY7J+Liu3qtZG97XV/G/6ebKspY9PgUXv0I1ZrGA7bcJKzFncPgqYyLyKryKUZRxThbKd/hYI4+oUikvhWA45oUOX38vaxpLbZRF3CbaQ6KKMRMD5t8h5lRdR513SnKa1AskO8lJt5LG8OO1FGlTIwvLejMK6CI5+pzqJDcZ+/hAq7YEDEXG5shNvuxHC9+aBbLy5wjUWTgnwRqOxJZb9Q/YgBafQWvGYR66waFtoED6v2YroY02vDA37S/NdKsWEV3OWQ2a9s6N3xkKRlwuxLYMLv3oHacRdcCzKzIX8SM90TUi6msya77uCateZRChUojm23w==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 466B71C0009
+X-Stat-Signature: oksqmew8s6ksead3kg446hk98p1816ci
+X-HE-Tag: 1785285574-190557
+X-HE-Meta: U2FsdGVkX18ZikdaNBuGpXnc/EzcFwhDkGOmMN/Y6N2E93Cz2D3VWLSw9eTgQ8pGQnuJFwfRowA9J1IPiMXnJPvF54DoNSHdY9F9nG7xFSCqxzZCe63Tm8OYqJHboEAA4eRoCD9M+5MMMt9CL2OVMiH28utB9DfpYPd0tZcrohDwXA+OUPXm/A1QfSRGbQMSDkHJR0Z5sOddeiups3PeieUsUq1oG7sIkW7GbJ+JR/Y2w9gx50d/DguEVCnOW3bfBfu5IfwFMXiaAbFS39UYwBsdk2vP4qNB8v864WHO+ypBuXukEoTzEq3/wsBCHUY99dgdjWlKxeMgwShB/bkvFiiZV/TXu9TDV7dE8iNfjDHqtBw87+eJudUmtCZI7W2+2PvBJ7gAhhnBQewE58l7hBH75n22Kfl/r723BKOb4X44V5cm+DCtey9p+RwgrVuI+1EVjyPFaGIODDnDoi942luKxE7xXFKAAoSM+fSIsURWJBL9aoPETQuiWqstSVuQ4t+NUkTPSyOB1OEty4CBWlJchpGFDf1PaBuyaUrrGmyg9Ih3eiM1Bn64NRh+2r9H/S6Va2AGv9ue3XT72xBN7lHNbkFV+SmXLXPsu8dF+Vw2Dtj5OzZYOHapypLjIoNDnC/Lu9Az/HJihaoSHZNHcLcRbJzW3k2TTrHeCvHbiRSZ4KfmGPVXjhfHFTlK/PWgbNjYHgqBU5vIyxAtf4uHSNCNvLytYOvAJHTP3ILzVK+v+mVbYwqC65F8rTFLS5X9jxQoekdO2pgdbgiDTR9+VOhuLilT++z5Zxd07OXHIYc8gg0jF7D7yVblwOOQsQ8uH0b2gHhYmCpEgFZQdWXKtEyz5t5iA3AuOXZi8guj7d+yZLOWtadbDa1SkQn3wvbIKdbP0JrSNDTa5uiNKmpBQjj+GVT8M3bHvJl+ku+fD7A5sxsQZsLP5449co8ReJ2CMFCqF1RqIYFj14yohHM
+ JQzOs1vE
+ lG50NHnMElJWOjXbb4vzN28o/+YZwNAipwYDENyYmCQrLNSjGoqYjBSSaXfxhLBR1oIgGd5hyLvLFtqGM6CI7nrZaAtThkGDs79d528q37hh/rckor7PIBtnS5nk8dpEi8a4XcHz6tGWOXpzlXCYxrkb43pyjWTfazHYd/JA3b/Q7j8Z2ML0F0yKSsTQ93eylPN9hZ6kOqK+GcTgn89RC9HoTHPNg9dIg7IhvdMMvRxnfU4eLhUWlJWao9FG2k+WvBiHi2jkicuSTeyZuqCzahpF/C3lLh4+HrCbG/gnxzBBl/YBdveFDqg+B61289bB8a4q4s0VAZiTauqQc+Xd0UntyYMRPka8z7Xi0hkz4fo6yyHUNtg5b8dJIdGQ2rzVwAAjgBlWwJ5l4nJQ34hpSAZmuqUyCBaoRtkFVIq6+uhzTKAG3n4E021BF7WMDClFVgz+JEQy2epKC+AVLXnY2mcwTXf14r3e3xRWFp58mvYcgaYdCg4tUEDJIVjlBL3bv15kHE3SRnjAVTsuT3WVFMx5XTbAGiRETMhf/TQbhOpeXPW8bbfL778gAjXoIVPfagqGaNNU0RHHPATWkuLGaDY7zEEIepGL4+sNWmoQdAfELkl0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,225 +126,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 28, 2026 at 12:29=E2=80=AFPM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
->
-> On 7/23/26 09:47, Juan Yescas wrote:
-> > This patch series introduces the Page Alloc Hogger. The Page Alloc Hogg=
-er
-> > allows you to allocate memory pages from specific nodes, zones, migrati=
-on
-> > types, and orders directly via debugfs. This provides key benefits for
-> > testing and debugging:
->
-> Would it be feasible to carry this as an OOT debugging module? Would a lo=
-t of
-> symbols be missing to achieve that?
->
+On Tue, Jul 28, 2026 at 09:43:53PM +0100, Matthew Wilcox (Oracle) wrote:
+> The earlier patch (6c54312f9689) that attempted to fix unpoison_memory()
+> was incorrect for hugetlb folios.  Before a6fddef49eef, we checked
+> the head page for poison (which was correct for hugetlb and incorrect
+> for THP).  We are currently incapable of unpoisoning pages (other than
+> the first page) in a hugetlb folio.
+> 
+> Use is_page_hwpoison() which handles hugetlb pages sufficiently well for
+> this purpose.  This is racy as we don't have a reference on the folio at
+> this point, but fixing that properly requires deeper surgery and this
+> is a CAP_SYS_ADMIN path only so this will do for the moment and can be
+> easily backported.  It's no worse than the situation before a6fddef49eef.
+> 
+> The other bug in a6fddef49eef is that we currently clear the HWPoison
+> flag on the precise page, which is wrong for hugetlb.  Fix that too.
+> 
+> Fixes: a6fddef49eef ("mm/memory-failure: convert unpoison_memory() to folios")
+> Cc: stable@vger.kernel.org
+> Cc: Miaohe Lin <linmiaohe@huawei.com>
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-Thanks David for the comment.
+Just trying to wrap my head around the state before/after, assuming
+the following is correct then LGTM:
 
-The only symbol that would be needed to have this module as OOT is
-"migratetype_names".
+prior:
+   pfn_to_online_page(pfn) -> p = precise page
+   PageHWPoison(page)      -> checks precise page. Poison for hugetlb
+                              is only set only on the head, so bug.
+after:
+   is_page_hwpoison(page)  -> checks precise page AND head (if hugetlb)
+   p = folio->page         -> now TestClearPageHWPoison() explicitly
+                              clears the head page poison if hugetlb
 
-However, although this module was originally designed to debug CMA
-issues, it can be
-easily used to debug issues in kswapd, direct reclaims, OOM killer,
-etc. We could even
-use this module to add kunit test cases.
+Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
 
-Let's take for example this case. We want to allocate Unmovable memory and =
-check
-that the allocation came from Movable, as per the buddy allocator
-fallback mechanism.
-How can we do that in user space?
-
-$ cat /proc/pagetypeinfo
-Page block order: 9
-Pages per block:  512
-
-Free pages count per migrate type at order 0  1  2  3  4  5  6  7  8  9   1=
-0
-Node 0, zone    DMA, type   Unmovable      0  0  0  0  0  0  0  0  0  0    =
-0
-Node 0, zone    DMA, type     Movable      1  1  1  0  1  1  2  2  1  3  73=
-2
-Node 0, zone    DMA, type Reclaimable      0  0  0  0  0  0  0  0  0  0    =
-0
-Node 0, zone    DMA, type  HighAtomic      0  0  0  0  0  0  0  0  0  0    =
-0
-Node 0, zone    DMA, type         CMA      0  0  0  0  0  0  0  0  0  1    =
-7
-Node 0, zone    DMA, type     Isolate      0  0  0  0  0  0  0  0  0  0    =
-0
-Node 0, zone Normal, type   Unmovable     13  7  0  1  0  0  1  0  1  0    =
-0
-Node 0, zone Normal, type     Movable      1  1  1  1  1  1  1  0  1  1 122=
-1
-Node 0, zone Normal, type Reclaimable      1  0  0  0  0  0  1  0  0  1    =
-0
-Node 0, zone Normal, type  HighAtomic      0  0  0  0  0  0  0  0  0  0    =
-0
-Node 0, zone Normal, type         CMA      0  0  0  0  0  0  0  0  0  1    =
-7
-Node 0, zone Normal, type     Isolate      0  0  0  0  0  0  0  0  0  0    =
-0
-
-// Allocate Unmovable memory (note that there are NO Unmovable pages,
-so the allocation will fall back from Movable)
-$ echo 1221 > /sys/kernel/debug/mm/node-0/zone-Normal/order-10/migrate-Unmo=
-vable/nr_pages_allocs
-
-$ cat /proc/pagetypeinfo
-Page block order: 9
-Pages per block:  512
-
-Free pages count per migrate type at order       0      1      2
-3      4      5      6      7      8      9     10
-Node    0, zone      DMA, type    Unmovable      0      0      0
-0      0      0      0      0      0      0      0
-Node    0, zone      DMA, type      Movable      1      1      1
-0      1      1      2      2      1      3    701
-Node    0, zone      DMA, type  Reclaimable      0      0      0
-0      0      0      0      0      0      0      0
-Node    0, zone      DMA, type   HighAtomic      0      0      0
-0      0      0      0      0      0      0      0
-Node    0, zone      DMA, type          CMA      0      0      0
-0      0      0      0      0      0      1     31
-Node    0, zone      DMA, type      Isolate      0      0      0
-0      0      0      0      0      0      0      0
-Node    0, zone   Normal, type    Unmovable      1      0      0
-1      1      1      1      1      1      0      0
-Node    0, zone   Normal, type      Movable      1      0      1
-1      1      1      1      1      1      1      7
-Node    0, zone   Normal, type  Reclaimable      0      1      0
-0      1      0      0      0      1      0      0
-Node    0, zone   Normal, type   HighAtomic      0      0      0
-0      0      0      0      0      0      0      0
-Node    0, zone   Normal, type          CMA      0      0      0
-0      0      0      0      0      0      1      7
-Node    0, zone   Normal, type      Isolate      0      0      0
-0      0      0      0      0      0      0      0
-
-Number of blocks type     Unmovable      Movable  Reclaimable
-HighAtomic          CMA      Isolate
-Node 0, zone      DMA           14         1458            0
- 0           64            0
-Node 0, zone   Normal         2440          102            2
- 0           16            0
-
-// Now we want to test that Reclaimable memory allocations fall back
-from ZONE_DMA and Migrate Movable
-
-$ echo 600 > /sys/kernel/debug/mm/node-0/zone-Normal/order-10/migrate-Recla=
-imable/nr_pages_allocs
-# cat /proc/pagetypeinfo
-Page block order: 9
-Pages per block:  512
-
-Free pages count per migrate type at order       0      1      2
-3      4      5      6      7      8      9     10
-Node    0, zone      DMA, type    Unmovable      0      0      0
-0      0      1      1      0      0      1      0
-Node    0, zone      DMA, type      Movable      1      1      1
-0      1      1      2      2      1      3     99
-Node    0, zone      DMA, type  Reclaimable      1      0      0
-1      0      0      1      0      1      1      0
-Node    0, zone      DMA, type   HighAtomic      0      0      0
-0      0      0      0      0      0      0      0
-Node    0, zone      DMA, type          CMA      0      0      0
-0      0      0      0      0      0      1     31
-Node    0, zone      DMA, type      Isolate      0      0      0
-0      0      0      0      0      0      0      0
-Node    0, zone   Normal, type    Unmovable      1      0      0
-1      1      1      1      1      1      0      0
-Node    0, zone   Normal, type      Movable      0      0      0
-1      0      0      1      0      1      0      7
-Node    0, zone   Normal, type  Reclaimable      0      1      0
-0      1      0      0      0      1      0      0
-Node    0, zone   Normal, type   HighAtomic      0      0      0
-0      0      0      0      0      0      0      0
-Node    0, zone   Normal, type          CMA      0      0      0
-0      0      0      0      0      0      1      7
-Node    0, zone   Normal, type      Isolate      0      0      0
-0      0      0      0      0      0      0      0
-
-Number of blocks type     Unmovable      Movable  Reclaimable
-HighAtomic          CMA      Isolate
-Node 0, zone      DMA           16          254         1202
- 0           64            0
-Node 0, zone   Normal         2440          102            2
- 0           16            0
-
-// Now, we want to free all the MIGRATE_UNMOVABLE allocations and
-sleep 1 second for every
-// allocation and see how the pages return to the MIGRATE_UNMOVABLE bucket:
-
-for i in `seq 1 1221`; do echo $i > /sys/kernel/debug/mm/free; sleep 10; do=
-ne
-
-// in another console
-
-watch cat /proc/pagetypeinfo
-                            2026-07-29 00:28:49
-
-Page block order: 9
-Pages per block:  512
-
-Free pages count per migrate type at order       0      1      2
-3      4      5      6      7      8      9     10
-Node    0, zone      DMA, type    Unmovable      0      0      0
-0      0      1      1      0      0      1      0
-Node    0, zone      DMA, type      Movable      1      1      1
-0      1      1      2      2      1      3     99
-Node    0, zone      DMA, type  Reclaimable      1      0      0
-1      0      0      1      0      1      1      0
-Node    0, zone      DMA, type   HighAtomic      0      0      0
-0      0      0      0      0      0      0      0
-Node    0, zone      DMA, type          CMA      0      0      0
-0      0      0      0      0      0      1     31
-Node    0, zone      DMA, type      Isolate      0      0      0
-0      0      0      0      0      0      0      0
-Node    0, zone   Normal, type    Unmovable      1      0      0
-1      1      1      1      1      1      0    698
-Node    0, zone   Normal, type      Movable      1      0      0
-1      0      0      0      0      1      0      7
-Node    0, zone   Normal, type  Reclaimable      0      1      0
-0      1      0      0      0      1      0      0
-Node    0, zone   Normal, type   HighAtomic      0      0      0
-0      0      0      0      0      0      0      0
-Node    0, zone   Normal, type          CMA      0      0      0
-0      0      0      0      0      0      1      7
-Node    0, zone   Normal, type      Isolate      0      0      0
-0      0      0      0      0      0      0      0
-
-Number of blocks type     Unmovable      Movable  Reclaimable
-HighAtomic          CMA      Isolate
-Node 0, zone      DMA           16          254         1202
- 0           64            0
-Node 0, zone   Normal         2440          102            2
- 0           16            0
-
-Achieving the same result in a user program is not as straightforward.
-
-The Page Alloc Hogger gives us the flexibility to allocate from any
-valid memory we desire.
-
-As I mentioned before, it allows us to test/check/analyze/generate:
-
-- kwapd triggers
-- direct reclaims
-- OOM killer
-- generate page fragmentation using simple scripts instead of complex progr=
-ams
-
-Greetigns
-
-Juan
-
-
-> --
-> Cheers,
->
-> David
 
