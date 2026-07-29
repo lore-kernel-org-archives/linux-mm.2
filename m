@@ -4,85 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14E24C54F51
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:38:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE756C53200
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:39:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2079E6B0100; Wed, 29 Jul 2026 10:38:01 -0400 (EDT)
+	id B39746B0105; Wed, 29 Jul 2026 10:39:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1DEDB6B0105; Wed, 29 Jul 2026 10:38:01 -0400 (EDT)
+	id B0A5C6B0107; Wed, 29 Jul 2026 10:39:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0CE3A6B0106; Wed, 29 Jul 2026 10:38:01 -0400 (EDT)
+	id A1F976B0108; Wed, 29 Jul 2026 10:39:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D80156B0100
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:38:00 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B8DD61A064B
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 09:48:21 +0000 (UTC)
-X-FDA: 85041338802.08.8994A73
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 0F9F1180003
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 09:48:19 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g1WS81zR;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7F8916B0105
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:39:24 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 98B7E1406A0
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 12:11:33 +0000 (UTC)
+X-FDA: 85041699666.18.8B85301
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id CE6E8100012
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 12:11:31 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GhFoAAhs;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785318500;
+	s=arc-20220608; t=1785327091;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n3kavLQPrcg1Sh5FW3j2MvQSeDETGM5qCzr0BKWnYHk=;
-	b=4ZxBqCqRRakNXFqPfYRdYbWC8iOxIpovJBUjykmn3TOrE4lMHj66K/MuxPsAlvZII5i2Ke
-	ASEkADnR7j4Dz+ckrB4taw0NnTIEufLqCYhuXMlNoj1M8XUVaDESqrSctqIiRZT9ualhPe
-	4zbIkoXefPULjjRaRZsDDZ4qOWSFQkw=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g1WS81zR;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=uJwQ8kTPh1W4/a3MUlvjgjtvhqULKqgMp25Frxkklaw=;
+	b=fqSaRRgas1Ta79rBGTWAbIU6cvXIZ0GwmQ6pIkbMPPNTRXlh717nnTwmkIx8Y3ZJcfyzPO
+	5jq4y59V94HPhUfOjDaV87FaqkgqJqC4W7j3qqZTbmUPhsaTmy9+lixbFVgwQTCJbXwfON
+	kbuP0TfT+rrHRGXHtiqu5UyMslfdRx4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785318500;
-	b=uoQ+BgP9mVlqPgMDiuD+IAFpKZp4flrK/DuiFSr4xQm55uqNsnPqSUGO2d2RrpUJ59Hu/n
-	FnBqzA9yg6iQZFL0HjCm4+QX0s1RG2L1D4eTiIgitA5FpeCWnTpF2EBJeHT4o92yynBREu
-	maAFW7fbpXxyXtqJBxp5D7khDS6hhTc=
+	t=1785327091;
+	b=3pAqB/W7En3oY4nhY88bon4UeLzti/rylYjF05N6yvlOv5RAfz+mHiu+RT7ALXF9+EIo/o
+	iCh9uKffPehEzO/u0cTE5azrnMmzDl3bp1CZ20w8mXKVnc3IV+0FmrqMS861/YZLjdggfv
+	8iqRDdF966zXl9ZxJuzsirUXGxfK2RA=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GhFoAAhs;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 957EA600B1;
-	Wed, 29 Jul 2026 09:48:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A211D1F000E9;
-	Wed, 29 Jul 2026 09:48:15 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E67B342455;
+	Wed, 29 Jul 2026 12:11:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 060A41F000E9;
+	Wed, 29 Jul 2026 12:11:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785318499;
-	bh=n3kavLQPrcg1Sh5FW3j2MvQSeDETGM5qCzr0BKWnYHk=;
+	s=k20260515; t=1785327090;
+	bh=uJwQ8kTPh1W4/a3MUlvjgjtvhqULKqgMp25Frxkklaw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=g1WS81zRqxp6ntmkfWCJ/QHGDs2iluZKCkthWT8JGVuxkkNx0zByC9eXcBjtLyO4C
-	 JXAzbFFV3d0ScZ86JfUrVV4iJxm/EIYL0VZKdzfDmogr39q7yuuVACqQiacg6b7tze
-	 rdWULqvMxCS7yq0ShGwjscSE+WLzmrfdvM+KuPPVPIdpOomJOiPjyB7DlTToHfeHiH
-	 UQ8Z6r3CADQDRqRW1UjIpyrTHNXvd5O4uhR+XaxnuKNH8vnTR3J++5aPFlVNKbQ+Pq
-	 ETxdaOl9e4eqFE0aMeStkr6BRtNL5bn0l4hg9E6svg89SsACLwEQJDeG0p0US9qi/b
-	 GFEXeh5KsjfSw==
-Message-ID: <dbe85481-6260-4b17-8930-1f5d54bf6d16@kernel.org>
-Date: Wed, 29 Jul 2026 11:48:14 +0200
+	b=GhFoAAhsAmpS5+ALisTdbEtXrsM6n/XKQYlblpt+7NbLMlJPB70lrmH5CiWZtDnOx
+	 OEhHbK6fYEhgWqLzFATRKAAHQ+Sb2GNbVhAxHrqSCKBDNm+swHhINIQ+uNDdat3YYc
+	 Xce1g065zsoXDXR0wh/SU49+9KNuuiZhwe/CXphdQ+u4pbtAYaq6FnvGySvw1vtfA7
+	 Uxrs+nOSTQhTsaUjeD6D4QsvxTu11Ot4NCBUD/i0sS/cnZOx9DQhrOZkP16ERnYP/N
+	 YqF9O8AtiL7kop7S89wPciJVZY9TrqBnGO5TYX6Ad61NpnHQ/ZJKn3ik/MFawgeKxo
+	 WLUJ9m6vkVnMQ==
+Message-ID: <8f74bd51-11f2-4837-9463-d016444e45cc@kernel.org>
+Date: Wed, 29 Jul 2026 14:11:26 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 6/7] mm/khugepaged: unmap pte before releasing vma
- write lock
-To: Nico Pache <npache@redhat.com>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>
-References: <20260715025941.1571316-1-npache@redhat.com>
- <20260715025941.1571316-7-npache@redhat.com>
+Subject: Re: [RFC PATCH v2 2/2] mm: improve large folio reuse for LRU-cached
+ folios
+To: "Barry Song (Xiaomi)" <baohua@kernel.org>, akpm@linux-foundation.org,
+ linux-mm@kvack.org, ljs@kernel.org
+Cc: baolin.wang@linux.alibaba.com, dev.jain@arm.com, lance.yang@linux.dev,
+ liam@infradead.org, linux-kernel@vger.kernel.org, npache@redhat.com,
+ ryan.roberts@arm.com, ziy@nvidia.com, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com
+References: <20260709081536.82768-1-baohua@kernel.org>
+ <20260709081536.82768-3-baohua@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -129,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260715025941.1571316-7-npache@redhat.com>
+In-Reply-To: <20260709081536.82768-3-baohua@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 0F9F1180003
+X-Stat-Signature: bketkxygh9jqktq3pg16t3p6qomceuze
 X-Rspam-User: 
-X-Stat-Signature: k76x4kw9gqqgr5rx7d745hfcfn547bzq
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1785318499-854489
-X-HE-Meta: U2FsdGVkX1/Ngb2rXpigTSRgXbSWvhDxIbyYriZDqtbnUBkxHjSqf9agYkQ5rYXEoJr+yvll3KWcpdKfqtE8mNFYW/MWDDhAcbnH8LWo/hsR86sjkdo1i9FjaR8qMvVn7C98AF0smOweeHrDaPtki9uPArHjN4jGnlm7XbFjz3SKwO7cc/8L4Jp+Cag5RgrZImyDMPfWPqb3mGbq5yUbV/M8mXQaXWQwOpSfuf5Y2anlc5C8OT7eUAmKiALnvrGGCEJmY0SCaEhFD7D6a8pQDr4kXZel30wEIwDehvbImqiBe+zQU956owuAa1OOrSeS7ROp5DAVqIJfljYceDYl6LNdUn7jQhKuCvM551sgxhQs1EjHrTpyXfbn/LVYDNf51nQy+bGlqaRaGimTkJIhPNZVRMP6V6Ri/+h1R7NnangKd92d1L0e9GXPHrZ+o5S16kEH53g1DbZPI2xnYNizYPP4HkmlkuWz5J63AJ/jKQnVhDNwaFIpCJ2L1K3q7Sb7szRd55OkPYi12Dobw1YZbgO7wGWAaSURVXCWaeQPPsYyGXRxBabt0ukshjObjSaNf01qoS1J032iQ/XdgE+xui+kSaTJrOJ5Vc4W2Dlb1Cw7BMxogHeORH/snswqrN7n6Ztf4J/X5fpCU8MS4NtOlaTJqR2zO6xpjI1+ZGPtKOhXRpDQljhWBzNU0ZAJ8l4EOsbJ6P2tjEzKmqaYewoPT/83CKyPaV6errlkdAlk4609IfHQZI3Olifqv3iN8Rfn517BxYXUyzIUvBtLj76A3HVxwK9yotVFc86/4CECSA/wSxUOpA1rZkfyvaF23Ej/ovwb6QCGUj1DD3ZVOZ3PhrUHCwwnAT3JMKk2xmhT0F2fV3iIDEkkz0v7AdZv+gs3n/CmeqqxYzAy0e6S/j/GqYEmPenQgCAo8LKU+i/rPLX046qjSLaa1UakMQjmsp43k2OZjtd7J2ERQ1/flWS
- jicTOs/j
- BD2HhfibSvMs7hSRMah53q7XEYN1DRfUJgwj17c2eytdodYAG2ZDeMFGSxbYAryO2GkmbQalvATrTLleWjP8v6NN9PyOEyRgWQQfegHToX77MFYqV4804t2BuSu4juL8Bi+D+NMnU8hy+O23MRjoNKTMBG4/KDftA75cTHcj0A/0NTCS701/gLqtAiewrWRCqEDdg+ob4Epgs638+7Ha8foY69Pv7cVZGQT/z85r9sG/yCutnSqa9ab75OQaxD8qgU1brvwTSqsrQZGlJL6ipYDQPLayC0CGQJ/XRQWEviHXjngQpLhdxWenNTQ==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: CE6E8100012
+X-HE-Tag: 1785327091-816892
+X-HE-Meta: U2FsdGVkX1+dePpQOuBjGRNq8VzM8JxFFJ7XyU0/YraICgduHBGsTsISCWuvWaIlQxX6xMhA+oa3OzCljV4wq0aeJytwlkswP+mZ7edt+XchirueVCzVa4KvytC+h/8wrJ+I9yaYXEGby3OfeJD/IdVs1sjS5ZqSo/NosfitHDpGq8KW/kszeVuZ4XY7xFeUzymhK7LBzEKwbEqxD2ciBb62DZDexZ1n7AsfT4h+IEXglUJQRmQt+ElpFrtDSnwuryEfcD7lVo2KHK1xnJe0bFdRk6pP2PkYJIxCHbISoLdsPPAutHSSm+hz2xDIgstXNkkoiSKSgxf/02/KxscM3MGzED2LC0ccC2Jv3IbpAcE4EjrN3mz2dKUieEiJQbVnO7M5bnDqh2HzU8c+G6wFgW0lrJhfS3liJMp55RPR2QGlRWI8T8OFQr9Hx0xy92LF7V+6PLnZZhYAkZ5MiIoz+N4bM8Th/+ZuaE3GNtobsvFn6FO/pByOiS8HZZEVKYXyNPu88WcAYVQTS2thJVo6VokUWT9T+BqleYL28lHtM9UMWp0xBjv3qqvkYw2OO18suQZoDs9ni+QWjmkjc4a1gIN6/BngYygK1RxvSAq++fNIZTECS0vHEGp927uSlh0QNBBxNTWgZ08C1rXaO0ziIE7XnzSdgp+MQraPjdqVWwNT7U0Iw1h6m6iGHZJhWGviLw7PIiQmDgp0OhWGQJAv9YsacGCpE0HhMFEr5b9UIudJf4aMVaoM0QG2s/LpbxMRhzxdGTqYKKdlQPs3cXCAS+7GQGPlueJJf4qeaxEQgbH28m7Q2K7kkcqiwZDQ2w6kvqDqdGkrSihcegRZK6VRstGXDg3/2YvLJ+1G+oFFVSicOnw5uIAxIiEooSDKjzPIvK4tW9ECbj6qpTOh3U3EvsOVZnaGevQ6eQoA2L+BiHzhOiaNsxIwFZBRe7xBhkl4SN1MDLpPQynTV+j4S/m
+ D5A5f6pM
+ 8lPU+VSEJQg0Rze9naDBY9RX8FaIrffs793MSGlcVjpdQjXd1/vCRcG3M0fR1JjqQGtZowHTMV2lRmM61COOIrkukhqEljy3akoNuMZD/WubthakMzufhLE6f9puzwfPOnyYXQxP8NIY5/x1KM/wHe1+rOammofK0cio0IJs4F15bTGyIkaw9BuavYw65RUI0iS9KAfjkAcz9PC8/Gc2vnaglus901ZeCK0gqQ29InTLMtZj2pjsRtHG08RJAMnqf73kKQL7io+BbloMi2+G4Bqr8EZAuBI5nn+Kj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,16 +142,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/15/26 04:59, Nico Pache wrote:
-> We are currently dropping the anon_vma write lock before unmapping the
-> PTE. Although this is safe, due to us still holding the mmap_write_lock,
-> its safer and less confusing to switch the order of these two operations.
+On 7/9/26 10:15, Barry Song (Xiaomi) wrote:
+> Large folios may now reside in the per-CPU LRU cache. Before
+> attempting to reuse them, drain the local LRU cache, which
+> can still be beneficial in cases where the folios are likely
+> to remain in this CPU's LRU cache:
 > 
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Signed-off-by: Nico Pache <npache@redhat.com>
+> int main(int argc, char *argv[])
+> {
+>     int i;
+>     while (1) {
+>         volatile int *p = mmap(0, SIZE, PROT_READ | PROT_WRITE,
+>                                MAP_PRIVATE | MAP_ANONYMOUS,
+>                                -1, 0);
+>         for (int i = 0; i < SIZE / sizeof(int); i++)
+>             p[i] = i;
+>         madvise((void *)p, SIZE, MADV_PAGEOUT);
+>         if (!fork())
+>             _exit(0);
+>         for (int i = 0; i < SIZE / sizeof(int); i++)
+>             p[i] = i;
+>         munmap((void *)p, SIZE);
+>     }
+>     return 0;
+> }
+> 
+> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
 > ---
+>  mm/memory.c | 13 +++++++++++++
+>  1 file changed, 13 insertions(+)
+> 
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 5689b7cff76c..1d08ed5ba99b 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -4136,6 +4136,19 @@ static bool __wp_can_reuse_large_anon_folio(struct folio *folio,
+>  		folio_unlock(folio);
+>  	}
+>  
+> +	if (folio_may_be_lru_cached(folio) && !folio_test_lru(folio)) {
+> +		if (folio_ref_count(folio) > folio_large_mapcount(folio) + 1)
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+I assume that can just be a "!=".
+
+> +			return false;
+> +		/*
+> +		 * A global LRU drain is too expensive, but a local drain
+> +		 * can still be beneficial. For example, large folios that
+> +		 * have just been swapped in and fall back from
+> +		 * do_swap_page() to do_wp_page() are likely still in this
+> +		 * CPU's LRU cache.
+> +		 */
+
+Do we really need that comment? It's just the same as we have in
+wp_can_reuse_anon_folio(). So either drop it or use the same comment.
+
+I was wondering whether we could unify some logic with
+wp_can_reuse_anon_folio(), but the checks are just to different.
+
+
+Apart from that LGTM. I'm sure there are some micro-optimizations to be had, but
+this here should suffice.
 
 -- 
 Cheers,
