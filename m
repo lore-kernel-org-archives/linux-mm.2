@@ -4,106 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52B9EC53219
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 05:38:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A44CC53200
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 05:50:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 388C66B0088; Wed, 29 Jul 2026 01:38:37 -0400 (EDT)
+	id 1065B6B0088; Wed, 29 Jul 2026 01:50:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 312A86B008A; Wed, 29 Jul 2026 01:38:37 -0400 (EDT)
+	id 0DE7A6B008A; Wed, 29 Jul 2026 01:50:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1DA1A6B008C; Wed, 29 Jul 2026 01:38:37 -0400 (EDT)
+	id 01A586B008C; Wed, 29 Jul 2026 01:50:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E7D4F6B0088
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 01:38:36 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 68661A05D1
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 05:38:36 +0000 (UTC)
-X-FDA: 85040709432.15.A684688
-Received: from smtpbguseast3.qq.com (smtpbguseast3.qq.com [54.243.244.52])
-	by imf27.hostedemail.com (Postfix) with ESMTP id E3EE740003
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 05:38:31 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=ugreen.com header.s=pkvm2402 header.b=AT6AvoBf;
-	spf=pass (imf27.hostedemail.com: domain of warren.xiong@ugreen.com designates 54.243.244.52 as permitted sender) smtp.mailfrom=warren.xiong@ugreen.com;
-	dmarc=pass (policy=none) header.from=ugreen.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B83256B0088
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 01:50:53 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BB1591405B6
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 05:50:52 +0000 (UTC)
+X-FDA: 85040740344.17.445D5C8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 2B985C0002
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 05:50:51 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bJnbMvvW;
+	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785303514;
+	s=arc-20220608; t=1785304251;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=BBQAv/ZzACDpSHuQjeke8uzjlU3mEHl+neRNSNWMQ1g=;
-	b=usnxTKMKP8N2i60TM6EDsFx/CUAWgoL8ESXPFIOs6PpQWrwmvqcUs/JgRO6MZjSsMfpTrk
-	Ekfg9ailIcZwsKgaSmW9dJvltZ70hUiIZ00j/V7CtXvU49BjoIYOHKNWZ5hVec71p4wyM3
-	zklJgHJw6eyqDDiQJAwNBQOVI9Szews=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785303514;
-	b=cAaOYW5MY9opHyv8IdpisPBx0lo2S1r85eTj0jTqOsjAbnlUoNcEcNgbVoORWc0K0qvtSW
-	6peKZO8dpvfHMEhsKc07GILAMxuwurwAy1yd6NWHn9h9TLortDAZ8Gis0HfBT7jx5EvPd2
-	FJi61hW32Gm9usiei/ysRNaZpcUhwg0=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=oG4ZZ26hRdObDjP1zM2cKhc7pYcDICHngQ5ALTfXafE=;
+	b=zn1nd50yypSwEjebyFJTkhSzv5PVfBXwlBYSRefEoDSd7Q/AQqfBPavuAxTMnSQ4+ugi/1
+	UDldV71F7q3UjyvvBbUn98kTdjFDPa0T6KeUxjPGfc+sF4m9hsAAYxldMF5Pz/2R9/nwHD
+	JwTSIFjRbXnPvDezOga4de+/KjlLAvU=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=ugreen.com header.s=pkvm2402 header.b=AT6AvoBf;
-	spf=pass (imf27.hostedemail.com: domain of warren.xiong@ugreen.com designates 54.243.244.52 as permitted sender) smtp.mailfrom=warren.xiong@ugreen.com;
-	dmarc=pass (policy=none) header.from=ugreen.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ugreen.com;
-	s=pkvm2402; t=1785303508;
-	bh=BBQAv/ZzACDpSHuQjeke8uzjlU3mEHl+neRNSNWMQ1g=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=AT6AvoBfBRHtXuLqvDk/AaN/C5tPzFuLkJNlfhZJOsmazRRlYZsyLgIEYJMNIBO1W
-	 ZnPLSVJiY3eZfw95peKC1WVAnHsqNvvaGiUyJRE93+32oVIXI1s8GrlDHnKLnmSr2+
-	 dOb3Gdisbb3qDOMhrDCAVV0Fsp3mrGyYC0mcIjEs=
-X-QQ-mid: zesmtpsz9t1785303506t8e81de5d
-X-QQ-Originating-IP: QhtVy0fdCH9JSosScZug+MaMnL3g/GeOrGRccLdvFIQ=
-Received: from debian12.. ( [14.153.226.139])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Wed, 29 Jul 2026 13:38:20 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 7069893039906020633
-EX-QQ-RecipientCnt: 4
-From: Warren Xiong <warren.xiong@ugreen.com>
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bJnbMvvW;
+	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785304251;
+	b=bgIe9S0Y5deprK1uxPasV/V4xooF9lGJYjQ9Nvqd5vOFOGhGHy4g0PMhHOkvn3fx+QLT1f
+	5aUjcn5/yoA/vJkN1axXTJQ0qPcEN2vjIbkZj0ZkJRQ9xiP/VuQUIsmE5jvtCS2F2+fkr8
+	kQ4+khU0T15pB+UeGZd+AgLUPGQ+QIA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id DEBB260A5E;
+	Wed, 29 Jul 2026 05:50:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 836971F000E9;
+	Wed, 29 Jul 2026 05:50:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785304249;
+	bh=oG4ZZ26hRdObDjP1zM2cKhc7pYcDICHngQ5ALTfXafE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=bJnbMvvWt4cCoEuBL0cdRVzdbhYJE0bc+zqwpYQNbfPF9FR9ESEcYSaMJ4jd600PZ
+	 8ZelClfEuLldjfBb8p178ZNhmxI7K4m/DdxRV6Uc7JMNIVwbk6H5DVn9nDnLhS51Bb
+	 vFwJ4NoZ63rikqspbdDzHNk4zR5eGcWWk6dbsIWAOsMp1FAvnvSnTIxwq9L5oxcWP7
+	 ki6n5ABQqhoaCizBk2Wn6/8vCgWywqZTpr9UrvVuUHfOzvmCvRcbdFJUZvpcwa86E5
+	 K3aQhYV9iRL1DnKBcTxv+CtLvDhi3MZsWsB5cUDvwoVbU9yexR7/vZUVp9FDEc6nCa
+	 B9In4l2q2TCCA==
+Date: Wed, 29 Jul 2026 08:50:43 +0300
+From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Warren Xiong <warren.xiong@ugreen.com>
-Subject: [PATCH] tools/mm: prevent page_owner_sort from truncating input
-Date: Wed, 29 Jul 2026 13:38:12 +0800
-Message-Id: <20260729053812.882137-1-warren.xiong@ugreen.com>
-X-Mailer: git-send-email 2.39.5
+Cc: ionut.nechita@windriver.com, bugzilla-daemon@kernel.org,
+	linux-mm@kvack.org, Frederic Weisbecker <frederic@kernel.org>
+Subject: Re: [Bug 221804] New: WARNING at mm/memblock.c:904
+ __free_reserved_area(): "Cannot free reserved memory because of deferred
+ initialization of the memory map" during housekeeping_init() at boot
+Message-ID: <ammUs2IA7W9FJ0Qw@kernel.org>
+References: <bug-221804-27@https.bugzilla.kernel.org/>
+ <20260728134016.674388f101f141362598240f@linux-foundation.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpsz:ugreen.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: NjFgbzSnCN+Vl4wJMP11iyjkmBAl0knBQmnpKWDUCdiRLj+KRvB8ccg+
-	y4qeD5KaMpJ4Fv3RZyw9cxh13vhOa5J+QUNlqzExbmb9j1MWhJDMhx1CLRHnI0Ym8d43zfY
-	mvY5BjTYDaBOcYC9wyOr5xL0qkLg5IN9fhrMhGlJn1f0f6CHbiLJFcLOPYWTQv79hGUA1Ac
-	hmh8L1uIYI4umFP9zwXSFxx35CjFqWgG72YKM5TsfbQPLwr4hmSROKLz5oK9HPpetqTYWZa
-	NDUUEKHodvyzDE0LZSgxWevbjfRyKtSaBOGohQOuMJFiYyuGsc+Kt8goQab3bH9ys+6hELK
-	YO+ggduyBm+3MVyunSFcS1WyDPjDlFwR4X9ahdTjj+Z1ZNJ9b33KtaZ7jGvIcR2yaQDX7gD
-	3pBV8oLEwRx/JTeiiftiJ/hz614l1ghSZt7NqvWsYQEbP3ysakZbDk9Rs9TKCJtf0WSp91E
-	xSEOT5H3nYO9HslMOo1OI2bFh+HT715A1axdRX8agAKDD6lCXSgDLs7g7qUbBkUaWy+B2pY
-	Ncoe4iLAevavcfmXr4/7MyynADqmQ9liFh2qUYQGSzkN7ZTNFWrXSydSYDHYjWDrYDwfQVz
-	tj5DcSs01KFLXlp9F8aG/6oiJq0TjxbZfTLjNkXqlS3aax4wyqJUxx2oKdPdfhGUivBzfaq
-	MGXE7wKIJQ4YvI0SmBsJbdw0tSPos4UFrMOifLz44ct/fhS5bYt43S+VNo/VVXbXpVfmttB
-	PCqeiC3CXP97/QCcqF5uA1xlR6a1ojUtY2IUUPBGpTGeZOaxO8MQehxiH4p1vIJbOZmwdSL
-	WEeXKKPXXVrUBjBW6h8VCapTpo0IMlsGGSODf6IrxGFkZ87XkltvSaqOQ7Xs1QhoFzA9LB3
-	9HdhsYK9PEuE9c4ZvcCNZYZGPrZEbUQslz9vrCJ5ve6rPOVHSFWVwKUV5iHqty+ELvdnQ4B
-	vdnCInP1tCS4Iwbh9o+yOB1MtxBa6TQPfs5n781gDlsNySg83RkwMl2zEtYaDYeV8Y6eHgw
-	Uq7e/QJIFFpA32ZBKPmQv6SOBNz4RFU9MifuDLRX/XrdgHqiOMYQKdt2iy3tvsn/3AzLd3V
-	g==
-X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260728134016.674388f101f141362598240f@linux-foundation.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: E3EE740003
-X-Stat-Signature: 4nwnoe7wxh97ax5zfdjcf1mx3n79qzk3
-X-HE-Tag: 1785303511-285272
-X-HE-Meta: U2FsdGVkX1/O/R3mPAb3Mbw9Jew1UEU43MAd16ZHqbHnM+yI3i34h4N47j+7qtmLFPtAlZ/8og9aEkjT7Rf63YUNoyrp7qqpQZq7hg1YBRQ5OUISmcyRyEwB4zBEPEzgfZgvZVny1KIrXEk/xQEwxC0SGqtINnWCDZeZEXowrRwfhOWjMCfLwqHtv7kpDNRL9DQEiabBBhA+PtAH8VnvbjiayToFsmBotycxoVIjp9fgmJXJJ7lBeHso3VJaW1/NJidUl45u8RMmENkqnEgO3UkqPlIfg0QieLUiRFfMqbrzPHVMxCtdeaJmiBmJwAEUToBa2g/pxjM7ubKtz+NA28s5RdQuNu+0dvBlW7jcEvgqgcT0PvJ4amUU2pwJx2reMMASz5WPc+DsA5t9JXMdda06iIIagTE/QgUkVIc1rwcbAgrQJ3LFyOVr8zlq7r777uGxyGHHYh7mZZwlcvyKzyvEjEPCd4jguBKuHpgRV3o4VvWixDK3lwcoOfT/OZJC+stwNy+BI6XsL7pK1+Dc3r345GasDWqfZmZukfatmuws6eJgPg9bfIze7+aV8rNz/jmPBlcV/Wbhrvx6jWxv76I0dIutuILxnkYfI06fHe0yonYg9BXl+KZ8zCUxqfaumE1sW/sd7plOY8xaxBPYrFpcJFiZwGxP/clD8YCIevBvVUB71ljCEzLaVRxz6FJ3zQ/HkEDbYaqKWr11RJwLK/47Sd0HtQw/tqtWoTbeD3TdvRQf46gFKrsGVazD6wYnsC1oJmwsPaYs+xzghgT6zeBFNEXkSAqjJ9vbXBnaWxY6y4ojiFzPXJ8Qu9hxn4LAxTuNurul+Llb7ETBH9XCnV5c3gm21R1RgklqQdBEKieD6p06ekPMhVUMJkMXt8BOagf6zeLv0XM30/4CtPWRjA5YBdDjL+jvwEMQ1SrjDKx2/lg8RpPOQimVKYOz3f2OYBzA+zsZnCMREuoAF6V
- ElZUFbK1
- QGuxEY/HOT20cUfJaINnjaJCXS77Z2B97lK2meUb0ghX0sH7f9JjOb/8GfuIiycIRjm+5JPeLPUAxQshaN2RDexAdtaqdHG4uo1Pb9QlX+8wyWK5Wjmje3ko1FcY8gqyThnBtAlUWh+ABW6wy5fKK+YiBjNOZebz67P/MBmS97jTbHA0HYlI5xGKNxiJ2JHf+kQkwhJ4x4MhHZou3LB66RoFR8db4NOkNCffNEQUUvU/UacxyBgvsiOYoZ2q3ObKkp6uWjpqmpdBwegwBJ6zQiYJ91DqokCcB/Qp4t0/JmhiR48dRNpVm55PRaCGFB155o+VUirwo0giu23V1+kCRuFkrEzkon7F+vg/0yQrmRaKGo+G/Xl6N8DKZNftyPZBYiVSa
+X-Rspamd-Queue-Id: 2B985C0002
+X-Rspamd-Server: rspam01
+X-Stat-Signature: i6k8h8pyzijrwtjzbrzmh597j5akyxmm
+X-HE-Tag: 1785304250-157124
+X-HE-Meta: U2FsdGVkX1+bCECB5lrbgft13XPDnDm2+sS6BtOfDu2g6bkm9tzq5aW29uzoJGXXCx/xw91ErcOLUGroQFkUDQr13OFLfVXsVRVBwLT8xFDw+34aujWPlxVbn21NaLb4JKpijsAMW7cGPP+6hT1fZKYczpaKiKcvcN1mzdRi2rBpp216j7gfdkcTjBOmhvEmgZHX9OMYyufThAUaUhNdkzbVm/mUbJ8wjqUcQtWzkt3KPt29K9HFsvd8upxUGD4vZHneOujHRKaQf2+Y5vuNfypOoqvitkvaw9ItQVQqBn+vzd2r+PoDCu+Qve2PhDSapogPyV4kwGTa0f5O67Wu8BrM6wn5PgiXWsS81Kr3C1f3bTxZsWb584cIy4e9+H7iIKe0id33mKDTbjuaLGtZBDYsQZ0gCxotYU35jvvTQGkXrOHCYWeYZ2JJCl5w4Hd546TzQQL83LszP8PDl5WVTFT4tO9MRwl+8nbDg/osz439vGec7bF8zcfDURat+wVW+xe677cbj70S5D679HeLCUGeYRNWOfx0PYDH2VHc7wRdVcoA28F7x3/45iPi75TLmvZLnDimgNfCATC54/OCcDjJyk9wLZ9cviDPtM5+99q1ixUg1gA5melHksY4Tgvl/pHNDA2piTzjroxctb74n4OvKKE5DmK9seH8Qc16lbENLMFU9i8CjibNyMMB9GrMywUkLkMdQpxJswtBTqjB6KyXzXgUVyb+SaFoYN5ioGQDvpqreWeeXAaVPnUqYYpiDw+at1idzqbkry53t71plYJP4GIWXONJNdFabsp7NB70XC15tNuhMJsvzJqTCzWwfTiM4FDQe1TOlviFkhAlCOAxn0yNXd0eiH4rH5LKluEiBWGYhaHHbyQww1pl/2HndUqWH7Sq4/PvMpAR+qTXDjUmuOv6tYSCu6NJpEgjoIndO93hee9Kp4zne524upa/eow80W9c5MPBkGAfu0P
+ mSlXWIEb
+ pAsTkJW94300faTQ92ez3P999/usRINRhX5HFDwQLdUiOj9dFsa8ktz3QRTZ13mXA6LAiJVRu6C8kclNKNoOP7IGO8R2oCSkjyCFhwTWRvjaXz2d4bSlfgZvPdReHLcBONsnd43QFIUP6mjM9uTCxDcNSQPH2J0RpgZXHaKAUr+i6wQZUsp54sKwkxzrKvtyp0txpckwx1E1P7tPohlfWGiNjxRdpY36lDenaGh+S/GkMuy5JMq30Gw8TzR93baakcHWv1bFcVQke3EgnsYXaJgmW2s9ovglrGYUOnRDFO2LNOW9TEFXv2WjwlvC2SeZFWmB71h5qxfeAwgnEtLv0+dV+HPOTjPlMiKlUW8xvf+lRoVn1RYJgZEhWOIGXXOO6nJXlAo1/i/r8MgQJOq8zsQtxN0iKeIdrY1h4XXOxHYG9pxraN20oX4rgTuqL7L73QCbMZLywMOTLWxGdrovxOzEw5g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,93 +93,118 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-page_owner_sort opens the output file with "w" before reading the input.
-If both paths refer to the same file, this truncates the input and the
-tool silently processes zero records before returning success.
+On Tue, Jul 28, 2026 at 01:40:16PM -0700, Andrew Morton wrote:
+> 
+> (switched to email.  Please respond via emailed reply-to-all, not via the
+> bugzilla web interface).
+> 
+> On Tue, 28 Jul 2026 15:52:54 +0000 bugzilla-daemon@kernel.org wrote:
+> 
+> > https://bugzilla.kernel.org/show_bug.cgi?id=221804
+> > 
+> >             Bug ID: 221804
+> >            Summary: WARNING at mm/memblock.c:904 __free_reserved_area():
+> >                     "Cannot free reserved memory because of deferred
+> >                     initialization of the memory map" during
+> >                     housekeeping_init() at boot
+> >            Product: Memory Management
+> >            Version: 2.5
+> >           Hardware: All
+> >                 OS: Linux
+> >             Status: NEW
+> >           Severity: normal
+> >           Priority: P3
+> >          Component: Other
+> >           Assignee: akpm@linux-foundation.org
+> >           Reporter: ionut.nechita@windriver.com
+> >         Regression: No
+> > 
+> > Hello Kernel Team,
+> > 
+> > I notice this today:
+> > 
+> > ...
+> > [    0.075447] Dynamic Preempt: lazy
+> > [    0.075489] ------------[ cut here ]------------
+> > [    0.075490] Cannot free reserved memory because of deferred initialization
+> > of the memory map
+> 
+> Thanks.  I asked Gemini "what happened here" and the response was
+> illuminating.
+> 
+> The bottom lines:
+> 
+> 
+> The Core Issue: Initialization Order Conflict
+> 
+>   The kernel hit an order-of-operations conflict between memory setup
+>   and kernel parameter parsing:
+> 
+>   CONFIG_DEFERRED_STRUCT_PAGE_INIT=y delays initializing struct page
+>   tracking structures for large pools of RAM until secondary CPUs come
+>   online (to speed up boot times on large systems).
+> 
+>   housekeeping_init() runs very early during start_kernel().  It
+>   parses CPU isolation/housekeeping flags (isolcpus=, nohz_full=,
+>   rcu_nocbs=) and allocates temporary cpumask buffers in memblock. 
+>   Once parsed, it tries to free those temporary buffers back to the
+>   memory pool using memblock_phys_free().
+> 
+>   The Collision: memblock_phys_free() calls __free_reserved_area(),
+>   which requires valid struct page mappings.  Because page
+>   initialization was deferred, __free_reserved_area() detects that the
+>   target memory's struct page maps aren't ready yet (at time 0.075s,
+>   whereas deferred init only finished around 0.325s).
 
-Open the output without truncating it and compare the device and inode
-numbers of the opened files. Reject matching regular files, then truncate
-regular output files only after the check. This also detects hard link and
-symbolic link aliases while preserving non-regular outputs such as
-/dev/stdout.
+Just to add a bit of a human touch:
 
-Signed-off-by: Warren Xiong <warren.xiong@ugreen.com>
----
- tools/mm/page_owner_sort.c | 41 ++++++++++++++++++++++++++++++++++----
- 1 file changed, 37 insertions(+), 4 deletions(-)
+housekeeping_setup() allocates the masks from memblock when it parses the
+command line before mm_core_init().
 
-diff --git a/tools/mm/page_owner_sort.c b/tools/mm/page_owner_sort.c
-index 35d3d2549..602f541d8 100644
---- a/tools/mm/page_owner_sort.c
-+++ b/tools/mm/page_owner_sort.c
-@@ -713,7 +713,8 @@ int main(int argc, char **argv)
- 	FILE *fin, *fout;
- 	char *buf, *ext_buf;
- 	int i, count, compare_flag;
--	struct stat st;
-+	int fout_fd;
-+	struct stat st, output_st;
- 	int opt;
- 	struct option longopts[] = {
- 		{ "pid", required_argument, NULL, 1 },
-@@ -836,13 +837,46 @@ int main(int argc, char **argv)
- 	}
+housekeeping_init() reallocates them with kmalloc() to allow
+consistent kfree() afterwards and frees the memblock allocations.
+
+And since housekeeping_init() happens after page allocator + slab init and
+before deferred_memmap_init() we can't reliably memblock_free() the
+memblock allocations.
  
- 	fin = fopen(argv[optind], "r");
--	fout = fopen(argv[optind + 1], "w");
--	if (!fin || !fout) {
-+	if (!fin) {
- 		usage();
- 		perror("open: ");
- 		exit(1);
- 	}
+> As a safeguard, __free_reserved_area() issues a WARN() and refuses to
+> free the pages.
+> 
+> Fix/Workaround:
+> 
+>   Fix the nohz_full syntax on the command line (e.g.,
+>   nohz_full=8-55,64-111).
+
+I don't see how that will help.
  
-+	if (fstat(fileno(fin), &st)) {
-+		perror("fstat input");
-+		exit(1);
-+	}
-+
-+	/*
-+	 * Do not truncate the output until after checking whether it refers
-+	 * to the input file.  Comparing the opened files also catches aliases
-+	 * created with hard links or symbolic links.
-+	 */
-+	fout_fd = open(argv[optind + 1], O_WRONLY | O_CREAT, 0666);
-+	if (fout_fd < 0) {
-+		perror("open output");
-+		exit(1);
-+	}
-+	if (fstat(fout_fd, &output_st)) {
-+		perror("fstat output");
-+		exit(1);
-+	}
-+	if (S_ISREG(st.st_mode) && S_ISREG(output_st.st_mode) &&
-+	    st.st_dev == output_st.st_dev && st.st_ino == output_st.st_ino) {
-+		fprintf(stderr, "Input and output files must be different\n");
-+		exit(1);
-+	}
-+	if (S_ISREG(output_st.st_mode) && ftruncate(fout_fd, 0)) {
-+		perror("truncate output");
-+		exit(1);
-+	}
-+	fout = fdopen(fout_fd, "w");
-+	if (!fout) {
-+		perror("fdopen output");
-+		exit(1);
-+	}
-+
- 	if (!check_regcomp(&order_pattern, "order\\s*([0-9]*),"))
- 		goto out_order;
- 	if (!check_regcomp(&pid_pattern, "pid\\s*([0-9]*),"))
-@@ -854,7 +888,6 @@ int main(int argc, char **argv)
- 	if (!check_regcomp(&ts_nsec_pattern, "ts\\s*([0-9]*)\\s*ns"))
- 		goto out_ts;
+>   To eliminate the warning entirely until fixed upstream, boot with
+>   deferred_init=off as a kernel parameter
+
+Which does not exist :)
+
+>   or disable CONFIG_DEFERRED_STRUCT_PAGE_INIT in the kernel build.
+
+This would work, but would cost in boot time on a machine with 128 GiB of
+RAM.
+
+>   Upstream, housekeeping_init() should either avoid early memblock
+>   freeing
+
+Presuming that houskeeping wants to keep the reallocation with kmalloc(),
+it should defer freeing to, say, some_initcall(housekeeping_late_init).
+
+And housekeeping_setup() might want to memblock_alloc() enough memory for
+all the possible hk_type's once and than free that memory in an initcall.
+
+>   or use allocations that don't depend on fully initialized page
+>   maps.
+
+It's really not an option :)
  
--	fstat(fileno(fin), &st);
- 	max_size = st.st_size / 100; /* hack ... */
- 
- 	list = malloc(max_size * sizeof(*list));
+> I don't think this is very high priority.
+
 -- 
-2.39.5
-
+Sincerely yours,
+Mike.
 
