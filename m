@@ -4,83 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF931C53219
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 03:46:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 377CBC53200
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 03:58:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A546E6B009D; Tue, 28 Jul 2026 23:46:14 -0400 (EDT)
+	id 143FA6B008A; Tue, 28 Jul 2026 23:58:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A2F626B00AA; Tue, 28 Jul 2026 23:46:14 -0400 (EDT)
+	id 0F5AF6B008C; Tue, 28 Jul 2026 23:58:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 96BC56B00AB; Tue, 28 Jul 2026 23:46:14 -0400 (EDT)
+	id 00B4C6B0092; Tue, 28 Jul 2026 23:58:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 72A616B009D
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 23:46:14 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DFA49C0560
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 03:46:13 +0000 (UTC)
-X-FDA: 85040426226.25.A400CA3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 1D7391A0006
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 03:46:11 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dMRmYAe9;
-	spf=pass (imf19.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CBF0E6B008A
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 23:58:00 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 55E191C0C21
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 03:58:00 +0000 (UTC)
+X-FDA: 85040455920.19.E429283
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 639B6C0002
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 03:57:58 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RpUFKb++;
+	spf=pass (imf22.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785296772;
+	s=arc-20220608; t=1785297478;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9hCeIFdpiZGdMUyND76+nFTdqMQ1AhaFCYWKinOxaws=;
-	b=gxxlo4LgdRfsosmR8KT8w/h/RD5CPZE9KCNL4yIu1o6g1wlEPZ7S/cFFWfGLKCIwRFsatZ
-	VwV9wP6+O3X+aNnI07UoBCp5JWIOtMTULLMll1uQjbrOLEQjV0XASINjVmzMOkpt+RAsxF
-	6x81E/i0/tgB09FsX40QDnRnNA2QlDE=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dMRmYAe9;
-	spf=pass (imf19.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=WBvGb5qenRrsnlW7ZV/vGRFaGIHQgeYKe9QqCseZxGk=;
+	b=lndx9qEjEBo+OJJEFu5r6bGUzDwYKoi9oUBRUMyAIuQr/dRUT106g4g+lVjfOvOxQLX+Dx
+	Zij951LaQkblOU1sOJeH7jpP7O39ueW2rLiqGFvjiC70y85N1OsE3Bvyq2w52wvzWtDrwU
+	TI5E5CgE/IpicU7ZpZZ1Sbe6cnFgRV4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785296772;
-	b=bhbnlxzsI4/gq4T763INzA5qn87tqRc9CxTzNdanSF0TwT/unKwinqc9s7xcgRe6iVYGID
-	xnKmOuLbpH68NHp7Se/fD8tWwljmNexmN1PcQXIR71iFkj104I51VqLLXRMBQKkImG3Lob
-	cHUMnWJ27876WOqIoIYFR1VnrI7Yx68=
+	t=1785297478;
+	b=QdoEuLjj+MXOuY51mZAsgv6uMvaufK3AaR3srKm456NLgYLPmBwu4Wru+uDvrnEyqD2P54
+	FesLtcmOm9BP4VNYFKm3O0bcXh4yHnQDb80543ohipzqGLy++AhES07m422+NG5tQ05Wlp
+	08AX0pfAyQFvo/2CQjPm5C4D0Uovz28=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RpUFKb++;
+	spf=pass (imf22.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9148060A5E
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 03:46:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 488571F000E9
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 03:46:11 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8FD0D44FC9
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 03:57:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74F071F00ACA
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 03:57:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785296771;
-	bh=9hCeIFdpiZGdMUyND76+nFTdqMQ1AhaFCYWKinOxaws=;
+	s=k20260515; t=1785297477;
+	bh=WBvGb5qenRrsnlW7ZV/vGRFaGIHQgeYKe9QqCseZxGk=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=dMRmYAe9PSokY48x6I7M3dDK7nXQfEJnBksN/UzmcwZWenaaIMXt6FKt1fjQEDMhC
-	 hGvtY3teJTuNZ5/6ZMHptKw0VNgTtDyMlDPzUpx61rlKxRLwdwQsqwmyJLqF9vQEBN
-	 MR1jrpdP2oYbcY1SpNCQnzHC9Qtyy+q0aeRb0a/ip2GN9EHMWW91C38xv2FpEVXLtC
-	 niJ5gRr+fPJc/MM5a1DVscvZ1req/o7hpaK+4lMClIXt/FgGpvO6EhqlSxQlVkLU8b
-	 d/9wrCXkYpchrXqcyIeqMHTSENMgQ5dl03ddVBUzHcfxUfigxDcS5ujmVhIYaCpVvh
-	 SJYhY/gKChB5A==
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-930f72317a6so33680885a.3
-        for <linux-mm@kvack.org>; Tue, 28 Jul 2026 20:46:11 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RpKXysCXE7QsRX9OQAbATQKgTq99SXmF4le0iI4MHXlId3dxhFdO+yPf4swwv7X7fPpmd5tCxdWHg==@kvack.org
-X-Gm-Message-State: AOJu0YxRjLK7++xjnvvdIF5orbXGXNW8Xe13VBnNM8lDSRVlT54E+SiB
-	bQcgYbBpAaXTx/GQxo1MNuKdoSuEnKLKGdyYRmdtOfnCdd+a8yMlJdBgwWw59iHR8S2V2MshwWU
-	UI6mRPejYZNZTV7MQ25qVwBTRTuIogt4=
-X-Received: by 2002:a05:620a:258d:b0:92e:4867:95af with SMTP id
- af79cd13be357-9330264e639mr479318185a.73.1785296770680; Tue, 28 Jul 2026
- 20:46:10 -0700 (PDT)
+	b=RpUFKb++/Cu1R9QdgIAMmG4bMtpgEjj7oopRFu0mJQ7mWzEX1KVb2XBnrpffzpf5Q
+	 epwwZya6sFKpBI+/bdhekqpsqTw3erbHOD1wMabVRwdytc80V929PrpZKU4TgV8V91
+	 iE0TeY2AWFF47hbsv3Yhh5Z1ofwSlf/liGFjCGlsN1H4vY0+I9IUKxKbl8CVeTGIhq
+	 ZPZxHPf0wa1gRUbOPZODyCeuHAC+hQRPcmc6Fcmot9yk6EvNBuFAUQ42DzU9y9sgb7
+	 x5w/0FiEuB7YSCR1ywTRxSjPm9Ojx/3esTtijMlDNBgRc5+KB+lz0nxtL27fqm/yHm
+	 bOk1shrU+tHrQ==
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-92e54f8c051so30188485a.3
+        for <linux-mm@kvack.org>; Tue, 28 Jul 2026 20:57:57 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RrwBWpsy1o86QNlEJGWXRUavmSSygOjbQpMe8EWrTFGkrlKGc+q/c35uxSWkRVMIxzA5fqEvhKWDw==@kvack.org
+X-Gm-Message-State: AOJu0YwVMG+t3AQ1aip9pRzArnZaUHzWI8l5EKbANF5JbN2xcBwTREaa
+	O3b0lnPsEVBzSD0grrnYG064jlW++w4Y2EWDdBO7TBpp5T7UDYCa7ArZNo8sf1Qz2q1La46OJ0Y
+	WbUXAUnrhkpg0li2UTKdFmGPs6Dmqlnk=
+X-Received: by 2002:a05:620a:4725:b0:932:de54:130f with SMTP id
+ af79cd13be357-93302644959mr540835685a.57.1785297476778; Tue, 28 Jul 2026
+ 20:57:56 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260715120813.3609949-3-jiangwen6@xiaomi.com> <20260721181729.305137-1-devnexen@gmail.com>
-In-Reply-To: <20260721181729.305137-1-devnexen@gmail.com>
+References: <20260715120813.3609949-3-jiangwen6@xiaomi.com>
+ <20260721181729.305137-1-devnexen@gmail.com> <CAGsJ_4wWhvKA=BmPwCrGv06kq07QMP6CKES1mGUnx=HmiDPGLw@mail.gmail.com>
+In-Reply-To: <CAGsJ_4wWhvKA=BmPwCrGv06kq07QMP6CKES1mGUnx=HmiDPGLw@mail.gmail.com>
 From: Barry Song <baohua@kernel.org>
-Date: Wed, 29 Jul 2026 11:45:59 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4wWhvKA=BmPwCrGv06kq07QMP6CKES1mGUnx=HmiDPGLw@mail.gmail.com>
-X-Gm-Features: AUfX_mxEu5tKUyNHmfuUECxYL_B8CLwg9_b_6o8Uh7pr6aO8ZRt_yR9G9xuE8h8
-Message-ID: <CAGsJ_4wWhvKA=BmPwCrGv06kq07QMP6CKES1mGUnx=HmiDPGLw@mail.gmail.com>
+Date: Wed, 29 Jul 2026 11:57:45 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4wUveHA4mvkhrkdtyOeZzsNOmY-TxVN-dHpb=sN-Gr6YA@mail.gmail.com>
+X-Gm-Features: AUfX_myvKscN0E2hsqpXT_KCvHtoTt4qoIZaeHJpupKzp4Iofdn6Pn4vkmIM3xQ
+Message-ID: <CAGsJ_4wUveHA4mvkhrkdtyOeZzsNOmY-TxVN-dHpb=sN-Gr6YA@mail.gmail.com>
 Subject: Re: [PATCH v7 2/7] arm64/vmalloc: Allow arch_vmap_pte_range_map_size
  to batch multiple CONT_PTE
 To: David Carlier <devnexen@gmail.com>
@@ -89,13 +90,13 @@ Cc: jiangwenxiaomi@gmail.com, dev.jain@arm.com, david@kernel.org,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 1D7391A0006
-X-Stat-Signature: mx48cmzzznpz3maquqi1xtiwaozu3qte
-X-HE-Tag: 1785296771-946401
-X-HE-Meta: U2FsdGVkX1+dfaKJp6SJH2pUWOWsudkiP1sTC0mbWWmluFmeNC5Cu0c5RPGFa0+raTXyiZW9Tde1DA5TvjbOQVRkD2rcShAEXmCo6Htk+1DMUMQPh0nilm+ZOYQH8DKaLN4sc2kb/d43vvMf65Cz/eOUCz0ugYQcPcZ2kvQaNEY4qTe242FksAoWQa30P2L+3/0DOm9IoZvYZkLMIQwok5RAx77TRYevo6blRjgWGuN3Id5pPSEfyzHkUgJNDZdS2u3kfxL2Y2cQCyKhjKdHGBx0k1JOGtCDQSKMm79W91NeE4GQxw/URzguwaMDTiJatEdmLxyTb6bO5UEesoq2ID/OiAqDRboQN/hOrqPLTUmJpfhnNlogic+5V8NQQqjHaOg9S/8xGX+WVkGNKU9ersa53HceIVoJmz/Zu28UXFYuh0mLkn/WM8/lcGFS+BEmXzfSmPh18ch9hmOGf6IH4UkeK1UhGcFkERjizjC9emDftcxw7LgEReQiROeQ51CPyYK+U1tkL2tiiaz4UNX5jrIVSaXATIX7wRDvUHK+kSTIGCdsa/0wNmH7pprduWrXUWLhYe6gE7Nll8wpgVcg3YIB4WlDUdh7F+2mwsT04Ji7ixhdt8r7lYwGt02LH4DAdgLb/PSmtuNA74qVvnhEHe/QJqGr/GCjZLfkrlDH/0uJgXXsrd2GaRmkpzKwge8CUkvGKY/EDPHOzFhKCcvWM5PSc0H31IMtX7EyWF6jdZBwBvOSDJyQAGtpQOQmQTr/mPpaYnD6sWb3zCoGz77w8gN5RAacgCOa035FLC+7vERr4s5ESfyfQlQPx7SOyv7nItGJvC29TC4A3WrN3xDxivMgD39lR3KO4kWWhlFEUGsq4ysBMmt/jO5lakZz5vzgNMUX/7q5U1ec4vQClDxt5bv1/zB72VP+RZRHl88DgmCVNtfxPE1OGZovrTGTOKVxu6UAfgnx2I8tkLNl89Z
- 5F+AWSlI
- xwGvdargy64En5DHQbvQLt8zf03m0vOYEPxashG/7DpzfxkwoFwg22CoyxA1FcCy9jvI/KkEbmL3pTW/gPSuahhCBpkMq6XSo2TA/+IrkLMXEe6ldDJ1/Q2ktLS5jmy8AKYectIoM47ozk0IIKroPC+HbynQh+GyTDJ//rGaS63m6OnJiMC+gjLl8MaU0HiuqupN8VU6AzDIwCB1q09WcwruFbdUVcw9NSJLuhatf671YTIK30oYZWvWU1DSgFlNCPJU+MIs59vzJQRu89HXy7EAwGt1ajzpXZZOegBWBak4qrCeTvV8BDzT+qd/9g+INNKVqJ7Cwtf1BJoI72A1b88ldikwQLi9qnS4N
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 639B6C0002
+X-Stat-Signature: frag7torgrkbpr9uucan4azutc1nwn4p
+X-HE-Tag: 1785297478-918289
+X-HE-Meta: U2FsdGVkX1/D5CyDIx0iu5HJv6dUaXthUaRoLJ2wqbnwj1jsqfEZlmSIJDJRCcsR16Vinj/r+lUKxG/kRQohxN2sBT3U2Y8/xHu41QbLKUB85TzeMOox7WlS9ZNX2xZUM6u0Yg+QR0jnD1Ew0I+HdM+wGxIhH4RRjMCwJBt0lNcPHs7CmBxk5t5RBok39Qyo3HLAJRF9yIQxVLtxfBu4TMXNj20OLfmnWTh14f8ojk60Ty+DBG7R8sUbTCYpxJNUvKx0niptGX/QfO6xysbYyFsUY5PC3Ro4FckQzRr10C+e8zJOfvYjwhNJiaPRsqK78tX0tclZrMECUbOvpcOrGYHWKnA0xMcC1GNEbAFzmpvfS+9EODX4rimrsDyxpSQ1XsZ0risliXVhcOQvqYPHykWC9+A9SH4Y/EpmHFhQp1rTgACLNPCC8LEDtzEZV1QUS4zdNcXMwC12zm4JKNRv6MQeznw439on+/bA7Ql6LQZ02EohLd+HPlKCE9Mu7t4gu9UxBdPDvCQ2AFj1h3qFizXOwsTLFssCgCXkauod3g61cuoCFdSSs8lOp3ncMIB6/UM3TmlguvQJxOMN/NAcyq/iCfRxvt82mwDPZWvZQ8xP6hTt9VGjQrf0+eJv/kTgBNutEGVIcmHvosENzk/19elyQslVweyfy7zgFulWgyeeccHsPEfF1LiSGrNMhAq+mybhck5agg9AetJWCyKG5QQPy+65Awl1GzNk0b2mtiyFI2Bjm7bftzMUukAGkYIE3060YDf/SN7GnFMjlFok3Kj5NO2lpH4D184fZJy5qP0cVJGyUsZdK2h9LULD8FwdYJhkMMQXosq6J2aj8tMIs2VjLhT/kKqKdWZ2uaCEeaMTwDDUiD1mwuWWX8MJ+Klbry3Tsi26H94YvrSO85h+TXAtyP/C0FnRdHc/e+ZAhTKA1eqC5gFxDexGVBxIa4yhPneGrhomTVLlbcUJ5I0
+ CkvSF7bg
+ bv+1JowOdGHXiEJlj45OysyUPq9Qsb9LMnFvKP1im38Ywz6Z/vUGInqvbv2cwub7aIBpUFe0Jv07ejeO/nD+OShWdUI7fu3aXqYHKSlvJrt7z0yoHNUkXhiC/aQzni6Sv8SLUlRBhybiXGKfck4ksdX8u6RSFLVaXbIPxn46K5yELoWMal4E/loUzlhKWyyWDYpdHxRxFO2cGYqWjJoN056iCcNsBIcTnD4yk0lvJBmQMSWGeO1fGNLKdayj/N1znmeEVcZmvDTssTeaUn+6YpU6LxU8MIwgkOBNVDkewqTwnDFWfSIP0KAq3iIVYJLAnqklmBqTum0u2U2nBOi6JXqizpeNEfeoaTBA8wjwuN0+G4d0P1laj/uZHJA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,45 +104,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 22, 2026 at 2:17=E2=80=AFAM David Carlier <devnexen@gmail.com> =
-wrote:
+On Wed, Jul 29, 2026 at 11:45=E2=80=AFAM Barry Song <baohua@kernel.org> wro=
+te:
 >
-> Barry, Wen - the returned span is capped at PMD_SIZE >> 1 but only
-> checked for CONT_PTE_SIZE alignment. In the batched vmap() path pages
-> are only contiguous within a naturally aligned block, so when a PMD
-> boundary splits a batch the next region starts mid block and the span
-> runs past the contiguous run - set_huge_pte_at() maps the wrong pages,
-> tail of the array left unmapped, no warning.
+> On Wed, Jul 22, 2026 at 2:17=E2=80=AFAM David Carlier <devnexen@gmail.com=
+> wrote:
+> >
+> > Barry, Wen - the returned span is capped at PMD_SIZE >> 1 but only
+> > checked for CONT_PTE_SIZE alignment. In the batched vmap() path pages
+> > are only contiguous within a naturally aligned block, so when a PMD
+> > boundary splits a batch the next region starts mid block and the span
+> > runs past the contiguous run - set_huge_pte_at() maps the wrong pages,
+> > tail of the array left unmapped, no warning.
+> >
+> > What do you think of clamping the span to the pfn physical alignment,
+> > like 8xx does:
+> >
+> >         while (!IS_ALIGNED(PFN_PHYS(pfn), size))
+> >                 size >>=3D 1;
 >
-> What do you think of clamping the span to the pfn physical alignment,
-> like 8xx does:
+> Thanks, David.
 >
->         while (!IS_ALIGNED(PFN_PHYS(pfn), size))
->                 size >>=3D 1;
-
-Thanks, David.
-
-I noticed that 8xx has simplified this to a simple
-
-    if (!IS_ALIGNED(PFN_PHYS(pfn), size))
-
-Could we do the same here?
-
-diff --git a/arch/arm64/include/asm/vmalloc.h b/arch/arm64/include/asm/vmal=
-loc.h
-index d665f9d68742..a27101e24f76 100644
---- a/arch/arm64/include/asm/vmalloc.h
-+++ b/arch/arm64/include/asm/vmalloc.h
-@@ -46,6 +46,8 @@ static inline unsigned long
-arch_vmap_pte_range_map_size(unsigned long addr,
-
-        size =3D min3(end - addr, 1UL << max_page_shift, PMD_SIZE >> 1);
-        size =3D rounddown_pow_of_two(size);
-+       if (!IS_ALIGNED(PFN_PHYS(pfn), size) || size < CONT_PTE_SIZE)
-+               return PAGE_SIZE;
-        return size;
- }
-
+> I noticed that 8xx has simplified this to a simple
 >
-> Cheers.
+>     if (!IS_ALIGNED(PFN_PHYS(pfn), size))
+>
+> Could we do the same here?
+>
+> diff --git a/arch/arm64/include/asm/vmalloc.h b/arch/arm64/include/asm/vm=
+alloc.h
+> index d665f9d68742..a27101e24f76 100644
+> --- a/arch/arm64/include/asm/vmalloc.h
+> +++ b/arch/arm64/include/asm/vmalloc.h
+> @@ -46,6 +46,8 @@ static inline unsigned long
+> arch_vmap_pte_range_map_size(unsigned long addr,
+>
+>         size =3D min3(end - addr, 1UL << max_page_shift, PMD_SIZE >> 1);
+>         size =3D rounddown_pow_of_two(size);
+> +       if (!IS_ALIGNED(PFN_PHYS(pfn), size) || size < CONT_PTE_SIZE)
+> +               return PAGE_SIZE;
+>         return size;
+>  }
+
+On second thought, the caller is walking the PUD, PMD, and PTE
+page tables, so it won't pass anything that crosses a PMD
+boundary here.
+otherwise, the caller has been wrong. for example:
+
+static int vmap_pmd_range(pud_t *pud, unsigned long addr, unsigned long end=
+,
+                        phys_addr_t phys_addr, pgprot_t prot,
+                        unsigned int max_page_shift, pgtbl_mod_mask *mask)
+{
+        pmd_t *pmd;
+        unsigned long next;
+        int err =3D 0;
+
+        ...
+        do {
+                next =3D pmd_addr_end(addr, end);
+
+                if (vmap_try_huge_pmd(pmd, addr, next, phys_addr, prot,
+                                        max_page_shift)) {
+                        *mask |=3D PGTBL_PMD_MODIFIED;
+                        continue;
+                }
+
+                err =3D vmap_pte_range(pmd, addr, next, phys_addr, prot,
+max_page_shift, mask);
+                if (err)
+                        break;
+        } while (pmd++, phys_addr +=3D (next - addr), addr =3D next, addr !=
+=3D end);
+        return err;
+}
+
+I guess we don't need to do anything here, David?
+
+Barry
 
