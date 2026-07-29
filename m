@@ -4,92 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B22A6C53200
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 06:18:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB273C53200
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 06:27:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A2CB26B0093; Wed, 29 Jul 2026 02:18:50 -0400 (EDT)
+	id 915746B0088; Wed, 29 Jul 2026 02:27:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C5D06B0095; Wed, 29 Jul 2026 02:18:50 -0400 (EDT)
+	id 8EC886B008A; Wed, 29 Jul 2026 02:27:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 88D726B0096; Wed, 29 Jul 2026 02:18:50 -0400 (EDT)
+	id 809EF6B008C; Wed, 29 Jul 2026 02:27:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6BF4A6B0093
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 02:18:50 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0BBE7A05F3
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 06:18:50 +0000 (UTC)
-X-FDA: 85040810820.28.8B55FB8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 6B4F380008
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 06:18:48 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IpxI1fde;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0063F6B0088
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 02:27:41 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 83BC21405E5
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 06:27:41 +0000 (UTC)
+X-FDA: 85040833122.09.E120DF5
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf28.hostedemail.com (Postfix) with ESMTP id CCB68C0003
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 06:27:38 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=ZsZY7cG7;
+	spf=none (imf28.hostedemail.com: domain of BATV+791f8870ad8e349a4af3+8375+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+791f8870ad8e349a4af3+8375+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785305928;
+	s=arc-20220608; t=1785306459;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8aYJY9eFGdOEIgL8Dqi8cQU7ifkugqTWviGLduSbw30=;
-	b=3mUZEJiFpWQ+gJKvoUp12q8OXu4GcaDn0meKWGD6RxD7O81K0ngKDCxG/rMXVbYISa0dha
-	o+R6b0p/63IAOQ5FVpSyRE8Tlsow5WzV+VKnPA4h7mHJ1GdDtV/bdiAwy/ek69ER6MqyyB
-	WxbUXjghzB4oWkRWkOOhEAJCO4WUB/U=
+	bh=we2zBkBV1sMyyTnYWgEW4xW+qGlKxs2hSnPL75Esv90=;
+	b=h8MPgCHAVSwoaj0OLH4TxhdnDMj7x7mvi9csFmtD7DOVglcMmwdnzrUs/PFvFdTnNlAMUo
+	H8wgu8okUJM5GN9CH4PC2GcMCOgo52lsg36fT/3uM4oo7SHFjUzKwO6/WyAgKI5f5pvVkp
+	86kqwbsUj+2sSAa0lot8jO9YXed5R+g=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IpxI1fde;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=ZsZY7cG7;
+	spf=none (imf28.hostedemail.com: domain of BATV+791f8870ad8e349a4af3+8375+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+791f8870ad8e349a4af3+8375+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785305928;
-	b=cgHupJvRRrxZ6FKzVZIJQJ6z+0gJLjmm6NVcRG8F+G1rxXTaTouL8vib2XXlJ1zaFxzw6l
-	N6jZwJ74MUkry0XBHOSMPprPztrN1FvdmMu9+5JXE99lcZa4DWFcfG2+zgOaY0wCRpB+oW
-	NXk/k6k+THxRPXLtG3Jcb3tAd3m25e4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B662E4069D;
-	Wed, 29 Jul 2026 06:18:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19CF31F00A3A;
-	Wed, 29 Jul 2026 06:18:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785305926;
-	bh=8aYJY9eFGdOEIgL8Dqi8cQU7ifkugqTWviGLduSbw30=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=IpxI1fdeSQBhQ7ZGkZTOQuEPFZ1TJ0B2VthQ6AR1k2WBwOxcLW6xhTzugez/mIXl+
-	 3slTyE1QclugptWka4V4JXZEIYAtgRXs2McJ0TkrqXBa03tzwCZRqBM2RWxMytuoZ3
-	 a+vyKk1lYyz7GpETh0gE6dWYdAukTd+DAPurvHH6AKAx6O4QkmkfljI+mmeBhMmYC1
-	 c/Jb4yxlVAZnwkikwLRjPPogjtp9qq/YkV7WvCGRb+8D1sLiZPrxFiCbq0fYtGyeEg
-	 mjYzeHIBngZ1ARgMlNMrK6xl0Kqn+uqqY+e7yxC7hFkGh2Nb6agsDTpPg5rT4LyiAf
-	 lzwZL12gZ/sWg==
-Date: Wed, 29 Jul 2026 06:18:44 +0000
-From: Harry Yoo <harry@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>, Hao Li <hao.li@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Alexander Potapenko <glider@google.com>, 
-	Marco Elver <elver@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	cgroups@vger.kernel.org
-Subject: Re: [PATCH v3 06/13] mm/slab: abstract slabobj_ext.ref access
-Message-ID: <ammZpX_77SMsxvPz@dev>
-References: <20260727-b4-objext_split-v3-0-c29ef0f1f257@kernel.org>
- <20260727-b4-objext_split-v3-6-c29ef0f1f257@kernel.org>
- <amivCT7AaPux-GSK@thinkpad>
- <365d8e50-5aeb-45e9-97a3-87d0024cdc5f@kernel.org>
+	t=1785306459;
+	b=o1q1vV1uUZidHJbtgIIBtI8VyL30N51Eyzf9aZqVMYhYBJKGrBjCyeD3SCDz4rB6oCiDOc
+	KdJ4ud9yUoRg10uRaeXGSVLPXFiEUKwtA+Wt1/j3OSPOAcyLomL/jVwWoAYqh/Wt2aGdcM
+	1SQhCpTn/uUhk73ISDxFeD65v7Tj4zk=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=we2zBkBV1sMyyTnYWgEW4xW+qGlKxs2hSnPL75Esv90=; b=ZsZY7cG7TISOF00itS0tsBVn6C
+	SQ8jwg/oOzk58gKTWmUjQUCEprRhZH/PSG8CLrP8q70nJNdpgAIlHaA/Swjx0iDA4+MWCjB8GWqTX
+	NdrYTlC5pq7NTdtYOeVqKJOFb1+ui73UKxxIJ/APW0rmaoDjS6f1D9hQWArr+u5QRwVGumyHuMtMo
+	6J6u2NJn5Oy9Q0JFGQT/B87DyIEfVfMUaqy9Hto5YfD2jpQ4fzBRY8sYGN/rpep2jU2xCGO/ijQ0y
+	4krBdt4IAc1g6eVZZyV20pxoXYs317s25Hd49ZKGzs2OC/ylbXuZP91UYFkb6/36zpD7+7dAanzkS
+	g3fXKAAg==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1woxlM-000000071M0-1A4l;
+	Wed, 29 Jul 2026 06:27:32 +0000
+Date: Tue, 28 Jul 2026 23:27:32 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Tal Zussman <tz2294@columbia.edu>
+Cc: Christoph Hellwig <hch@infradead.org>, Jan Kara <jack@suse.cz>,
+	Jens Axboe <axboe@kernel.dk>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Christian Brauner <brauner@kernel.org>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Dave Chinner <dgc@kernel.org>, Bart Van Assche <bvanassche@acm.org>,
+	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org, Gao Xiang <xiang@kernel.org>
+Subject: Re: [PATCH v6 1/4] block: add task-context bio completion
+ infrastructure
+Message-ID: <ammdVAKErVaSboKA@infradead.org>
+References: <ahPbaSEoNA755Nt3@infradead.org>
+ <f1b8eeb6-2397-4f48-a21a-a023eb0c80ab@columbia.edu>
+ <rkb5oei6cx2erbyininczz6ukbnquqheexhu7tznn5rslkkdn7@b4kpdyhdwdb6>
+ <ahbq0RdUyLIPiItB@infradead.org>
+ <80cb53f3-e7e5-4f96-bacc-f9fb7661d976@columbia.edu>
+ <cuyklvhnt37xwk3jlr2iyyxxkzvt4bsf5iqv2gag4ixdicnbk2@rfqgjlclwesz>
+ <4jtsjd2sbsn2w7fzfwb7wwowz72r4kc6345ckkkcjoxjbbwjwn@rkl44x3o3sgy>
+ <cc58a101-6d09-4e42-b99d-673271934c29@columbia.edu>
+ <amgrwn0yQoFvJP4u@infradead.org>
+ <8124341f-3af2-4a16-897d-38db5ab5a9d4@columbia.edu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <365d8e50-5aeb-45e9-97a3-87d0024cdc5f@kernel.org>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 6B4F380008
+In-Reply-To: <8124341f-3af2-4a16-897d-38db5ab5a9d4@columbia.edu>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-Rspam-User: 
-X-Stat-Signature: 31hp81nx8ufputgqhxuab8qqmkby17ja
-X-HE-Tag: 1785305928-598481
-X-HE-Meta: U2FsdGVkX1/zzDFVSR8TqLPnLiSNkuxsTM9P1DuVe9qoD5Nti6q3TpIj5ZcSTx2W6Lz3iTK1QuT8SMTip4FcPnY4gSYiQV07qIRCE8QryRXWEyU/3NtmoVVL69W0gqy4xXbTyp6R5Z5qhAu45zI5MM8SLpVti9XiOckDNA1QTt+1uNTdGtBGkT4/hc0c3ZyDfroS/3Shma8cfAAeWVKjjY4w6MqsrGrPfnTBpmaHwQzs12oJMqFKOxEyow7js2m/H9ObOWCPSBsGCKnLSYXwy5qpVk1YhmHCoc1bmyHGh/nTFLwI5q1IEa0bJmhJa4e+iQFtNZbHkUM+bZ/cWOe7tnr0VkbRkgvJkprEpmpcTLC7FoMh7wXM22UJU6igfwb5UYmKcROKRhMkuiPg5cRLCfMSAvFNxZDD75UxK/wzZA+m85H1y9ihvce5bj9L9RbuIJLLvVaFKsZO+sT6TGu4QUWD0drsZ/IQ6Ymajc+KIWSUw7zEnffAia5z4jPp9gJ3RUezTDTHtG0kE18rHATI4GSFBY4izROkiBrnZjB+22NWZzIYd38DAGCD53+n4j7+HsTRfQ5kWI3R7cxeZUjdMy0Fd4zkDtTIAuI2B14qNCArgXepN/nKWE4nTmv00Ng9UODiaLX6s787OM+NcCOUOPIjgaijJaq0iTk7c7zMhV41HdjqQAWar+EffXfEnPoi4UMMFCQZn+6rHYVMs0phqTrKEllrGBDQxbiWIpUSNh1E43Wxr+znzryyTXECXd8sH5Didgg4dWGMAeyBoSiwMX+Sm55fW4ZMKo/elNGAhEFH1WRxRfstKmMrwcN/OdTuL6+zAvxOpmy+Tv4EzHwIBSX9WVmveahVIu1TmPd9HZw7k/HJ8Kh0Ko9Yzn3RiXELWTKQ3wPE0TS1BxAvEL8XTfJEUkb9TBpolBAMPXvatx1qgkDHhOVi4A3LEYVHCKCNglgFa4GMjMfGHb9O0PX
- IIPBdYQx
- 5Wxcc/PSmgYRD7NfFp+gMZe4B6vIxOeRaWa6gDetNvRsWEqpz7RCr7AJK5m2wqoJHbGilm1/YbcZKHTt+wrh+uSPYea/QNWEi6RvhBAaV/AT2z6u3CgcIFQ7koVn65A2xnVaEuYEJVigOJ0NsE6cLVoK6wRBlAccloMzzzLm9J9ipF3pCw52YBDGCwVElvRxFoqog4/NGgOrfTVr22qJEXit2iDM9v66npTWoRLkvOL/C4SMx7VZZ9hQZBfmdC1if6VkstHQhnTG2wACxFEcW2Y0d30eJniUZa/3XUwX4I5LGcbH5J69eDI9sBX/WNf5ZGsr55QES3tpZDH88Qbq29SsNIqvnhdoRxoYS
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: CCB68C0003
+X-Stat-Signature: 1n9tjsndezagtn5hadd8m1bwpprj4ucw
+X-HE-Tag: 1785306458-252016
+X-HE-Meta: U2FsdGVkX1+O2sqJD/bZrALVruitZ9tJEBdJ+SKmgq+HQo6HTCXYoF65FcozQrTFcfS+qY/hIM4eODEuyYsoC7f1Uq0f67tgTBi3Qia08aMgA+dy7S2qwd/ZVpFaoQBQKu1PvqDFHVjn2DtBP4RnBqgMiR3kKiqkskeGHeuSRN8DMWjCTE7109Z9gPXUN5ibInFoH/lt92itbntiZ6EKzJUSJSTqnH/QeltTDde+ko0tukp63gor8y+VMgVPHBOQOt6UtpKSUv+/Gis+yXe+oGcwFj/OW1ruuWVFH1z7UM7CDUfKPq9Q9pQN1kgLzQwgtG5feL9drb+HLF+07KMeYBvNvgJq8KtiP1cJEVpKT4rDcNmCuMnZKjr8CodfqsvrpPMHJPJ1r8UO5cS3AC/02YaQaYyz8K8AniBVeN3HUjHYn6dOE9b/fIg2O55yu8La0TWpLEq+MQPsJUPZBKFDZImd3qZlSc9mKZuKYpch27TZLXtM125Z+GWoM2B8e5p6uo9mjwk+yMprY2tWapyI5WeQOILBSl2sLb1iy7tkQPWAWlHlVPaymhEH1+HaywO4voAQP6Z1/CHhRJQi+nQvgIJQEhOtU+I7jFddgugNcqYysPYyiLBSrBsRKiqtKx5Z1CAcaJZdERATl704jG2v7/ixeCHoggy7dfeID2LbabKf3j7m+/L82uiebjm5JVt7exxMw3myoDE120xU1AmiQxYZmNQY5VY6VOLK/CEUCZlucMeAEowvN+ONg9nw2BT0P+hxyrYTFKrPWZiwj30ly3Vj86I1VP/QcH9evjhI9Kz6AtFdBYqo17HTyIktH1Ujdh5AM70y8dYagxYaQJSNDuPrSnoK/i3FvVH14TRp/54IIPiYsPhbzWVuz/uWMwvlCsxeemXVUhZZdPtPPzwM/CC77nlh6Y6FJLEcKa+gcJkWhYVpLVmw3CNXmWS4XmoqMscg1IeZ2x/bplVA0GE
+ cfj+fG2F
+ ZVgho0w3X3BTKrTYV+B4B15mKKp3GiXJUBefUM+IBF19CpZuvzEOzcWuDJN8JQETKcc5ZLFlqfHJnBmMxmuM1VisupVCmlJRWR529+Y/zH8ni3a4eu+OyHtoVC2UUpyCuuEq7YOYRVHzkfh9F+k1YZ+dnW1N8RvVqKyuJZcV0Myh7NSghE0yFZOOMnEudE3U5tKxuRTqYKgi8Af+3++KP0kGbkTKzNHIrJsW8o8ocImJPD82Y0vTRaLKaLVvhs4eautS4cbERPbOf45Css9EuzndpvFWSHSepwZv5x3JVj/1BFW9dfVhd+FTOemwwHI3oqcabzFJbF+0IZa06SjSFMDisOyuvPcDWLOMs8GZeXcmTHJ8wQIanUFr/yTA2ljn5JLkQP7AxFrJGUFx5HuTWGzL5wAaqatXQ9KBI2pNk2IgY5D8zUY85DYTC9jUxWToE/GEdV0lPW1Cs+zumM9vN5DvF2AOHcWofPD22Y81CVbFL5GsbyQrwxMeYsG3jwMFr0F7y/cYeptKJmoE0Z7LcQk7pqGAXiKqNxzdT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,56 +108,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 28, 2026 at 07:41:15PM +0200, Vlastimil Babka (SUSE) wrote:
-> On 7/28/26 15:41, Harry Yoo wrote:
-> > On Mon, Jul 27, 2026 at 02:54:00PM +0200, Vlastimil Babka (SUSE) wrote:
-> >> In preparation for changes to the structure, abstract access to the ref
-> >> field with a slab_obj_ext_codetag_ref() function. Rename the field to
-> >> _ctref to make an unexpected direct access a compile error.
-> >> 
-> >> No functional change intended.
-> >> 
-> >> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-> >> Reviewed-by: Hao Li <hao.li@linux.dev>
-> >> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> >> ---
-> > 
-> > Looks good to me,
-> > Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
-> > 
-> > With a suggestion: it would be nice to have debug warnings
-> > that trigger when slab_obj_ext_codetag_ref() is compiled but
-> > not supposed to be called.
-> > 
-> > e.g.) for kfence objects, or later in the series when we
-> > reduce slabobj_ext memory (!slab_obj_ext_has_codetag()) 
-> > 
-> > Similarly, it would be nice (later in the series) to have a warning
-> > in slab_obj_ext_objcg() when slab_needs_objcg() returns false.
-> 
-> OK good idea but we can't do it right now as the helpers are introduced
-> later.
-> 
-> So for 9/13 mm/slab: introduce slab_obj_ext_has_codetag():
-> 
-> diff --git a/mm/slab.h b/mm/slab.h
-> index 8f352d9f4d91..fbad99da093c 100644
-> --- a/mm/slab.h
-> +++ b/mm/slab.h
-> @@ -726,6 +726,8 @@ static inline void slab_obj_ext_set_objcg(struct slabobj_ext *obj_ext,
->  static inline union codetag_ref *
->  slab_obj_ext_codetag_ref(struct slab *slab, struct slabobj_ext *obj_ext)
->  {
-> +       VM_WARN_ON_ONCE(!slab_obj_ext_has_codetag());
-> +
->         if (IS_ENABLED(CONFIG_MEMCG))
->                 obj_ext += 1;
->  
-> ... and for objcg we would need to start passing slab pointer to
-> slab_obj_ext_objcg() and slab_obj_ext_set_objcg(). Hmm...
+On Wed, Jul 29, 2026 at 02:11:17AM -0400, Tal Zussman wrote:
+> No worries, and apologies again for the delay. I had some deadlines and
+> travel that kept me busy, but I have some additional results below:
 
-But slab_obj_ext_codetag_ref() already takes the parameter to
-calculate offset. I think it's worth as it'll be optimized away on
-non-debug kerenels and there is no way to detect type confusion
-due to subtle errors in the objext layout.
+Cool!
+
+> 
+> First, I investigated the workload C behavior further. The underlying
+> problem is that ioends routed to the XFS completion workqueue were also
+> carrying BIO_COMPLETE_IN_TASK, so unwritten completions bounced through the
+> block-layer worker (plus its delay) only to be queued on
+> m_unwritten_workqueue afterwards. The ioend workqueue already provides the
+> task context the flag asks for, so something like this avoids the bounce:
+
+Ah, cool - yes, we should not double-defer.  I suspect we might be
+able to do something cleaner than the setting and clearing, but as I
+have some work pending in that area I'm happy to look into that after
+the basic series lands.
+
+> C) 4k buffered randwrite, qd32 (~118k completions/s)
+>   bandwidth (MB/s)                 649.5       655.7       643.4
+>   write lat p50 (us)               215.4       214.7       216.1
+>   write lat p99.9 (us)             703.1       984.4       730.5
+>   context switches                20.69M      21.98M      21.44M
+>   cycles                         922.5e9     838.1e9     911.3e9
+
+This is a surprisingly larger drop.
+
+> D) 64k buffered mixed r/w, qd32 (~11k completions/s)
+>   bandwidth (MB/s)                 761.2       753.2       757.2
+
+and this a somewhat surprising improvement.
+
+How stable are the results?
+
+> Again, my main concern with this approach is that 16000 (or 1000) is a
+> somewhat arbitrary value that depends on disk performance. If the C p99.9
+> perf is an acceptable trade-off, I think we can get rid of the delay, but
+> I'd appreciate more thoughts on that and the XFS diff above.
+> 
+> I'll send v7 with the rest of the changes (Sashiko review, etc.) in a day or
+> two, pending any additional feedback.
+
+I'd be tempted to do delay=0 for now to get things going, and then
+look into fine-tuning to see if we can come up with a good threshold
+instead.
+
+I also think in the longer run avoid the current workqueue and having
+some sort of thread without the workqueue scheduling overhead would
+be beneficial, as that would entirely avoid wakeups if the thread is
+running.  But I'd rather get a nicely working API in first and then
+fine tune it later.
+
 
