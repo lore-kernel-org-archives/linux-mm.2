@@ -4,145 +4,181 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08B69C54F51
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:14:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5AD4C54F51
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:14:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1906C6B009D; Wed, 29 Jul 2026 10:14:16 -0400 (EDT)
+	id EF7D86B00A0; Wed, 29 Jul 2026 10:14:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 161BB6B009E; Wed, 29 Jul 2026 10:14:16 -0400 (EDT)
+	id EA8846B00A1; Wed, 29 Jul 2026 10:14:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0773A6B00A0; Wed, 29 Jul 2026 10:14:15 -0400 (EDT)
+	id D97496B00A2; Wed, 29 Jul 2026 10:14:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C695B6B009D
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:14:15 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 66A598067A
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 14:14:15 +0000 (UTC)
-X-FDA: 85042008870.15.B869172
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 91D2B140009
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 14:14:13 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M7N+xkVI;
-	spf=pass (imf26.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id AB4D36B00A0
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:14:39 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6519AC0641
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 11:44:53 +0000 (UTC)
+X-FDA: 85041632466.20.E87D04A
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 137C61C0009
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 11:44:50 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=szQcOSDi;
+	spf=pass (imf18.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785334453;
+	s=arc-20220608; t=1785325491;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KR+HtKGzuohI9h8IjhDmmFqiaFeXTkINifmtGZ3dgIA=;
-	b=19bq3KZEofbiU4ywsoSJZKAU2Jm2a7DQzS/vx+UlCtQc+x4Gms0sO6ap9Pnn2dzzDBZOYp
-	9GLWdnUHxOmkFKh/XBDIqU3qYcxgcA2t+iNnWjsDixVzxQI6p2R28tZ6fLn1G3AWKbkyIg
-	IOA7wzXAMiXrugwQ1QXlKT4FqmEwnAw=
+	bh=V/Gc5b6Kanb7gJZ6LuCqbHgIfbcHiLUID8lNDkmdkBk=;
+	b=PBB7YjGshEbMKSBmg3YqNlKZjvu58TY+umYURj9FIy/paTa0wL2N8eSzCcO7RR/qPqcfrk
+	cD5CAAG2/EbhjStIRJJZVnAZjs1CU8WBuXCo+H5M4MAB9oeaGFu2It27wSU1TNBE2GqPy+
+	jCngJQbxTRTiNBQTSZU5Aj/DQ4MNUZE=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M7N+xkVI;
-	spf=pass (imf26.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf18.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=szQcOSDi;
+	spf=pass (imf18.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785334453;
-	b=e6dt8Fpy5NoLjILqGIlC8GfxGvu/x7+kZL157w7raKCvxpQUsbCBB+X/D/MwuAR9OULIyU
-	xfT7MfHocoC+5BAvZ8VDAPpCr8643PlFXnO9XyYOX++2a2IhZwpmEKyYcuxmYRLk/e72dB
-	P1NJoboHgzj442fUdrSaxYO5Z0eVw4E=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E29DA40457;
-	Wed, 29 Jul 2026 14:14:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B28891F00A3A;
-	Wed, 29 Jul 2026 14:14:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785334452;
-	bh=KR+HtKGzuohI9h8IjhDmmFqiaFeXTkINifmtGZ3dgIA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=M7N+xkVIxLiKKt6LAuXsLMfV9V43y5vkIDnSQFrycZ1pEgUQCfVqi4pWqHT8MCqNl
-	 Y/4yUHdVj6AUqgh/OnchFDCb4JWXw8pp3oTMa4xj9DV289QQpEEfyrb+5yPaSuEOMz
-	 EOGQaUz/dzzzZD6Ei5iOVfjjZPbmNwwtwkD/pRNcyQTl2ClrqCJvMXrfBr9kgtifC9
-	 1AMBdOWUR7tmolauvZdTq/kvfLi3qxi/7mCwcqud0fldUL0C+pUHO4S7I3LLIUzM42
-	 gWNpIsuE6vCBjg73w+FOD3weyfA0uLPopfM10hkrUuhbohNWhaLHQ6Zb8LW8EjCYRg
-	 pR3cCCp2u3rLQ==
-Message-ID: <5342124c-4847-4e93-92a4-f3512928c4d1@kernel.org>
-Date: Wed, 29 Jul 2026 16:14:05 +0200
+	t=1785325491;
+	b=YPbwN2n7cuOCgixCJ3YsVDaExWa0Db71MspRxFZGSAryrIPTpy/dxMHM/x2Wm6NLkcautO
+	EiDEz0EGK5/RxUWQFm84YEpBifbM/CUfzqwLnG8yM96T6qnKJfJKdcq2al319bY/cBVwMG
+	OM7cPxF/isRdqJ1yhjYyFse6KFMhA3I=
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66TBI9Rp4077212;
+	Wed, 29 Jul 2026 11:44:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=V/Gc5b6Kanb7gJZ6LuCqbHgIfbcHiL
+	UID8lNDkmdkBk=; b=szQcOSDicNI1Fn0H7xW/dMFikndq57iS0AEADbTHurKpEJ
+	rd11kf+v/K4k3OaPX2DwPIScg0o+GL2hoyX8zqoHbYXdT0lSMDdG2vUgrwbDAvmS
+	GAkXnnb9JBVhPcfVoGJY1DSA/6xfq5K9WNKizak7KaKjt/Dc2/+JfX8nFAp5plmo
+	u0a4AxRt+xdBtl/2NsNsMcf1ZDG6Qjqw5xDVM5TyjGqcQsLSIksGXsQcQlaj/plp
+	JuFSfwIB5TVS6mlK0Oz0clytfcFfXgk9OoMJ2+E1DEvmvdCalj6j+Xxe5b2oQCY7
+	x4RvKe8ts/TDSPuLOoLmIyWAmZfVZWIqbDTv23XQ==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fmuwd1p2u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 29 Jul 2026 11:44:23 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66TBfHNq029357;
+	Wed, 29 Jul 2026 11:44:22 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fn9pgeadd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 29 Jul 2026 11:44:22 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66TBiKQM31916432
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 29 Jul 2026 11:44:20 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 992952004B;
+	Wed, 29 Jul 2026 11:44:20 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 288E620043;
+	Wed, 29 Jul 2026 11:44:19 +0000 (GMT)
+Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.224.92.206])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed, 29 Jul 2026 11:44:19 +0000 (GMT)
+Date: Wed, 29 Jul 2026 13:44:17 +0200
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Muhammad Usama Anjum <usama.anjum@arm.com>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Tvrtko Ursulin <tursulin@ursulin.net>,
+        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Dimitri Sivanich <dimitri.sivanich@hpe.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>, Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Muchun Song <muchun.song@linux.dev>,
+        Oscar Salvador <osalvador@suse.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "Liam R. Howlett" <liam@infradead.org>,
+        Lorenzo Stoakes <ljs@kernel.org>, Will Deacon <will@kernel.org>,
+        "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+        Nick Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
+        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+        Pasha Tatashin <pasha.tatashin@soleen.com>,
+        Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+        Uladzislau Rezki <urezki@gmail.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Eduard Zingerman <eddyz87@gmail.com>,
+        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>, SJ Park <sj@kernel.org>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        Jan Kara <jack@suse.cz>, Jason Gunthorpe <jgg@ziepe.ca>,
+        Leon Romanovsky <leon@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
+        Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+        Christoph Lameter <cl@gentwo.org>, Mike Rapoport <rppt@kernel.org>,
+        Johannes Weiner <hannes@cmpxchg.org>, ziy@nvidia.com, pfalcato@suse.de,
+        ryan.roberts@arm.com, linux-kernel@vger.kernel.org,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        linux-parisc@vger.kernel.org, xen-devel@lists.xenproject.org,
+        linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+        linux-arch@vger.kernel.org, kasan-dev@googlegroups.com,
+        linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org,
+        linux-perf-users@vger.kernel.org, damon@lists.linux.dev
+Subject: Re: [PATCH RFC 00/11] mm: distinguish PTE table storage from PTE
+ values
+Message-ID: <e3b6dd13-2cea-4dc5-9038-a3abde71ec10-agordeev@linux.ibm.com>
+References: <20260727164715.2866609-1-usama.anjum@arm.com>
+ <2c19247e-bee6-45f4-a353-2fcc60db26e6@kernel.org>
+ <7813b5fe-e767-442c-a356-afc1a5c567ad-agordeev@linux.ibm.com>
+ <6db0a8c0-b500-4364-be3d-d3a537c61258@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 0/8] mm/slab: introduce kfree_rcu_nolock() and improve
- slub_kunit coverage
-Content-Language: en-US
-To: "Harry Yoo (Oracle)" <harry@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>,
- Puranjay Mohan <puranjay@kernel.org>, Amery Hung <ameryhung@gmail.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- "Paul E. McKenney" <paulmck@kernel.org>,
- Frederic Weisbecker <frederic@kernel.org>,
- Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
- Joel Fernandes <joelagnelf@nvidia.com>, Josh Triplett
- <josh@joshtriplett.org>, Boqun Feng <boqun@kernel.org>,
- Uladzislau Rezki <urezki@gmail.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>,
- Pedro Falcato <pfalcato@suse.de>, Suren Baghdasaryan <surenb@google.com>,
- Shengming Hu <hu.shengming@zte.com.cn>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-rt-devel@lists.linux.dev, rcu@vger.kernel.org, bpf@vger.kernel.org
-References: <20260729-kfree_rcu_nolock-v5-0-a28cdcda9673@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260729-kfree_rcu_nolock-v5-0-a28cdcda9673@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6db0a8c0-b500-4364-be3d-d3a537c61258@kernel.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: Dax4K8SnTqgr3j-xLBjPIG8yJ9gcxvKF
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI5MDA5MyBTYWx0ZWRfX/ftZ3NJRCmkt
+ ZT14DTCChPW4KALpaDbSLe6kNr0LuWq5PiRiSqf5YTIEutfQ2Tac4sdllF74vXnFZSICYrQE0fL
+ ZL/O65SEZjU3i6ZYCyIL5FE+JISdSFU=
+X-Authority-Analysis: v=2.4 cv=E/z9Y6dl c=1 sm=1 tr=0 ts=6a69e797 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=kj9zAlcOel0A:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8
+ a=yGtF1kJb5LocEaEl6I8A:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI5MDA5MyBTYWx0ZWRfX/jm6YIwwiR1F
+ lZXlePH3tA598H7Fb31vSIvPJoutJ+iSssAlIclxpQnCFqgsl/QXciOAhzwZ7FFazWWtvRVdlZ9
+ TvRnRR/LIbBRyOBs37OfIHHcuSChvKVhl07RqZv9bpaqy+fPsLibBtb0+CX8Q1amoqeREdzT7LS
+ 45c/SPprx12OPqL4uwkj2S+LtICeW20WUFSc3OlbdqoEpxGRA12dmOFjaryENCnKW/xK1Jay/U1
+ kC8ReZf28BJ12s4AmwDEQcWLd+44QFBJkS+P1wHLIwJa5nPrgSvB7j/BZoiN3neZKSKOtDNSj09
+ Q6tFnfgRJpTk6CRkd5peVrkT93tDejNz3zvCXWL/dWWwVW8rI18kBZ3iQaIoQ6o8M4YCglsfenJ
+ wdrKMTl/qwP8vRTkJCoONCRiVYcB8Qwu+P574F7wJpa5ktjFD5+6hw8BDY0mBPrkdR2pGPZzU/d
+ eAJCrvqHF5YRoCZPBfw==
+X-Proofpoint-GUID: Dax4K8SnTqgr3j-xLBjPIG8yJ9gcxvKF
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-29_04,2026-07-28_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 priorityscore=1501 spamscore=0 clxscore=1015 phishscore=0
+ lowpriorityscore=0 bulkscore=0 malwarescore=0 impostorscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607290093
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 91D2B140009
-X-Stat-Signature: 13rrtc3o7f7m41dcafdxndygciq3hoi8
-X-HE-Tag: 1785334453-547797
-X-HE-Meta: U2FsdGVkX1+4/WlxtbXr8PM1GzBJKnbl6GTtL3uioMLMI7VG6D3hpPYPANoptfw5XptqvGXt/2bhvFo2pEMdnxTsTqJ5aCIDAcQnltTOxBH8imNtAAcKkJxQvShPm9889QEGQqea62D6mlzhICM+OfowbZtwGy264Y+ay79JbiS46wyE2vqF0uUH6wemgBLRZxrYFvEjMHfiVAJC4qXfOPkf/62SagFop/x834+NympicMKYBMklkNWhB/uDGBnm9fNbIhZr57EAulZRZ6aPU1PqBYgcoXUKJ7LScGT1hIuJBm4MZCVPVvohoz5XjY3Xv01G29gMgcgMkGZzb7LZSGG95fDWBjCaufsuSwQmFb7hOg3s2UH8bR2oYDF0GgqqfMZ+NmTexi5WQRjstU85qvHE5lFLO0Xr7mfIsQYLCXI/L88+351OglIzMTOWckWmeNDIJHJSojBiseaW/2vF5D3SV+dVrOzwbwKc68tER0r5a8ouZFs11PDS5p8TSYssk1PPOMoxwO9Ugekx2IYyfwxeqXUM7gm7ILqoFsNHQ7CUBqWup1sor0+MMl44mWHVjCauoySvsP2dg4tRjwQSZ/ROwkSKOIVCfAlvORctcL0FGbdKlqVNnPE6RGs5IJHPZ+KngCJ6VlirsC1f2p+BpISh2T6x/p8zuPIu6age3Zm2WP4TsGz20Lpi3hTAlvuEB2GNDOvlzUxeU1/0fqg5JNtXF/XNKZZX2P+TwFcHV77yLFaeUF3/GVNRAEPqSC72BXBZ9YmrOAmkfSdXNcuFRDGLBXbfy8ggs9rlOoL91V/6wDb8xqPhq+rgBX0vUoVZF4yP4HemYl6xHYshTknH/EHOjBeE6xZofbFpdooR7bXfptlfgh4M/hoW6SS7wUbSPplmqwN6XHqdsnvXMGCmCgt4MuBIm+BcMSQn8yZbiU7KeVLU1SXlr5mhoyYnJH3yITxGVsqD6rVy190MDUy
- JCo6ZxCL
- dsWMNvNeMykeazrLNbfpwWXUcHpMkucxUxMS3kIXrbcvD8H3Ok1biff9q+B3HqP2+CNOIPwEsGbk/mEl9bhDC1QhvHFvu4CXUsJtAoKhGpUXtgmwqjl78SWKPJUR8B0r7VDfayJmxOz7ycGeAhEh/+7IFpebfBSThwJAop/2SUfy83vPiwlKURTo5WU4gyE8t+cejIye5tGMbgwH4CyHdqyJjS0k+TNqxuvDVaCiAsQ0cgJtcLJSO6WwMYuTOyVNbWFFnxQD/AkOO7qaOFAgpnHF3zwksLLj7TymJApcK1dP4s75RRo8YlBrPSugFtNzMjStMxoMdAmduxMMUI4QoFwvwtA5iTpIv+lq/nwJ0j/A0lho=
+X-Rspamd-Queue-Id: 137C61C0009
+X-Rspamd-Server: rspam01
+X-Stat-Signature: nqyniunsnyiwbwpymhr91qo6qhatj9go
+X-HE-Tag: 1785325490-148746
+X-HE-Meta: U2FsdGVkX18fumpCvFVCWn/x4Smg3YgSEpLqCYsOniUNNYIbYyHUANkKzJF9q16vysh/BlIrSnk2iI/x/s9pSiBVCjHe5cLCKqNUss7tIs9+JfXIgaacQqOtiW15cu7cG+IRHVfi41XIqVGbeRiLT15piqN0FtVFK/9u0tghJM6E18d3DAwofQ4uSZHh3ECxDG0cGv+axD32f5JZGelttmiJYJBYD8SfOjpYHEFHRNKJACezdEclycbbtgd2rqPdD+ctG+k79xLK65Zqzj1Psu9IFHwE4y+sGtB0PXTMUGIw02MqIUN0RZFa6QBe/7SDTKHkhYfx5dIsbwimk4ZiwTEPM8iJxZ4oNhuJ/2JWGX/S7w3Ryi6qgZuXvOLSY4GF2dtAH1Bkib5z2OQHPzo27t6gMFanPaXVDLSng+4KSW+WDDP71tBi8lY6wM9ux4XxbuElf9vpuYdcrByXrOfBH2nk8kQJd+Fi7Fc0FYus6uwiYKfAlsGHx3NsF9CFeKUUOaJDI91Yq0nxz3of48OgjEtTYGuyrT3jal4T4T8JOBE1EUy7YKn+EAMDClSKKVKQZlksFXzQ1W08FpRR6OP9z0dKYjGgVz75y3c8o5Kbcsk9cd+NyDjJUSmYdz/R4cjHUU84bbEBC0KSsBkh2tyme/k3ZwTLWa8h4bBABok/8ZLenLzB/qMjAN2pj/SE9wXPPN+XNuswFXE9kkBUYO1ms/QPpnqNQngerxqYas5/4t7qANFm6ng3pWrmoB1tO4VBgb5rmd+1zRQBuV0/d1dFQTM1jb9eMHUrBhVNXFH2FXiZs3kue3rOTzhC4Owp3Gqkn4H2dn7fagKZaYeZ7+Lj39PF0MZ6BjM1HYa7Vko0dIDZmp7MttAzDcL4mkH+Wu9keL7h+LzZgvHkWkiL7b0gDYzy6sRl1Ztux3TJMEoHGC9MIU/j9RQ7lVxNbX8/zrx5M5ynU+sGptVM+hr1cLh
+ JEetXJfD
+ 8MGY3XTAfPVMIH2+CObVVGChyqA1g0PiejcHCmUfPgcnSX88aC/d8d2NWh9f00e1HC6Jd5RH5VmfR4c0etrpXObqrDCqNZJWFGh3ZieFXGQTT+47SSjOogm4Mz6XkeIb41LBQ5PJItzI5HI+K/JaxW4u4bvucNEPDLCCU1svRiQUK8EBmAgRYspogqpat/PoB3zdSP2FnC2dtIpnIQz9gaGSFDxJ4cne+TeCNxtHTRzsPkhHonutToz4tZWs8Ymvt6aAv2OYknn5TQdAqFxHhYtAdCKK983wq5SvVZ97Zba1ZuvL6opn0gTSUQKC+dfAAQUpTrlOHoPkod/J6wYsUp/EI2OQXtB2VCPhKjGtIhKTDvfdzSrh0FFiC+wtpNDo+HqF/K/OXvcKGKfQtKdGjicgGqbrljF6GrInq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,69 +186,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/29/26 10:20, Harry Yoo (Oracle) wrote:
-
-...
-
-> 8:  8e69c83a1e52 ! 8:  aeaf2ab60046 slub_kunit: extend the test for kfree_rcu_nolock()
->     @@ lib/tests/slub_kunit.c: struct test_nolock_context {
->      -			gfp_t gfp = (i % 2) ? GFP_KERNEL : GFP_KERNEL_ACCOUNT;
->      +			gfp_t gfp = (i & 1) ? GFP_KERNEL : GFP_KERNEL_ACCOUNT;
->       
->     - 			objects[j] = kmalloc_obj(*objects[j], gfp);
->     +-			objects[j] = kmalloc(64, gfp);
->     ++			objects[j] = kmalloc_obj(*objects[j], gfp);
->       			if (!objects[j]) {
->     + 				j--;
->     + 				while (j >= 0)
->      @@ lib/tests/slub_kunit.c: static void test_kmalloc_kfree(void)
->       			}
->       		}
+On Wed, Jul 29, 2026 at 01:05:35PM +0200, David Hildenbrand (Arm) wrote:
+> On 7/29/26 12:13, Alexander Gordeev wrote:
+> > On Tue, Jul 28, 2026 at 09:26:06PM +0200, David Hildenbrand (Arm) wrote:
+> >>> The generic definition aliases hw_pte_t to pte_t, so this series preserves
+> >>> the representation and behaviour of every architecture. ptep_get() keeps
+> >>> its existing READ_ONCE() semantics and converts the stored element through
+> >>> __pte_from_hw(). An architecture can later define a distinct hw_pte_t and
+> >>> convert its PTE interfaces to make the distinction compiler-enforced.
+> >>> Architecture PTE implementations and most architecture code are
+> >>> deliberately left for those later opt-in conversions.
+> > ...
+> >> Do you have a pointer at the arm64 part, so people can get a feeling for how an
+> >> actual hw_pte_t implementation can look like.
+> > 
+> > May be we need the generic hw_pte_t implementation as { pte_t pte; }
+> > right away?
 > 
-> Link: https://lore.kernel.org/linux-mm/20260427-nolock-api-fix-v2-0-a6b83a92d9a4@kernel.org [1]
-> Link: https://lore.kernel.org/linux-mm/6edebc2b-5f5a-4b9c-9a4c-564310acee1b@kernel.org  [2]
-> Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
-> Link: https://lore.kernel.org/linux-mm/872bd673-3d45-4111-8a41-31185db3ece5@kernel.org
-> Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
-> Link: https://lore.kernel.org/linux-mm/6811cc17-8ee4-48c8-8cbf-6bf4d9f98162@kernel.org [1]
-> Link: https://lore.kernel.org/linux-mm/40591888-3a87-433e-b3d2-cda1cab543be@kernel.org [2]
-> Suggested-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
-> Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
-> Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
-
-Wonder what produced this weird block of assorted trailers? "b4 prep
---compare-to vX" never did that for me?
-
-> ---
-> Harry Yoo (Oracle) (8):
->       mm/slab, slub_kunit: register kprobe to trigger _nolock APIs
->       mm/slab: handle the !allow_spin case in kfree_rcu_sheaf()
->       mm/slab: use call_rcu() in unknown context if irqs are enabled
->       mm/slab: extend deferred free mechanism to handle rcu sheaves
->       mm/slab: allow kfree_rcu_sheaf() on PREEMPT_RT
->       mm/slab: introduce struct kvfree_rcu_head for kvfree_rcu batching
->       mm/slab: introduce kfree_rcu_nolock()
->       slub_kunit: extend the test for kfree_rcu_nolock()
+> Indeed, that makes sense. We just need a way for the architecture to opt-in that
+> it did the conversion.
 > 
->  include/linux/rcupdate.h   |  32 ++++++-
->  include/linux/slab.h       |  16 +---
->  include/linux/types.h      |   8 ++
->  include/trace/events/rcu.h |   2 +-
->  lib/tests/slub_kunit.c     | 190 ++++++++++++++++++++++++++++-----------
->  mm/slab.h                  |  52 ++++++++++-
->  mm/slab_common.c           |  81 +++++++++++++----
->  mm/slub.c                  | 220 ++++++++++++++++++++++++++++-----------------
->  8 files changed, 433 insertions(+), 168 deletions(-)
-
-Applied to slab/for-7.3/kfree_rcu_nolock and merged go slab/for-next, thanks!
-Used slab/for-next-fixes as a base for a better topic branch indepdencence.
-
-> ---
-> base-commit: ffc64805cebac330b2a60b2f1f144fcc35b8ab46
-> change-id: 20260615-kfree_rcu_nolock-e5502555992f
+> > 
+> > Also, can you envision a case when sizeof(pte_t) != sizeof(hw_pte_t)?
+> > If not, the compile-time check is worth adding.
 > 
-> Best regards,
+> That wouldn't work as is. We'd have to intercept ptep++ and instead have a
+> helper to advance the ptep pointer.
 
+I think I am missing the point. That is my takeaway from your previous mail:
+https://lore.kernel.org/lkml/31d36023-d728-4eee-90f8-158c7066f565@kernel.org/
+
+<quote>
+>    {
+>       page_table_check_ptes_set(mm, addr, ptep, pte, nr);
+>       for (;;) {
+>               set_pte(ptep, pte);
+>               if (--nr == 0)
+>                       break;
+>   -           ptep++;
+>   +           ptep = hw_pte_next(ptep);
+
+We should really just let ptep++ work as before.
+
+>               pte = pte_next_pfn(pte);
+>       }
+>    }
+</quote>
+
+So are we going after hw_pte_next(ptep) or ptep++?
+
+> One idea for that would be to let the compiler catch that by marking hw_pte_t an
+> undefined struct (unknown size), such that the compiler would indicate any usage
+> of ptep++ properly.
+
+What is the purpose of that? I mean when pte_t vs hw_pte_t uses are sorted
+out what is the benefit of preventing hw_ptep++?
+
+> That can be done when it would actually required, so as a first step having a
+> generic hw_pte_t would just work.
+> 
+> -- 
+> Cheers,
+> 
+> David
+
+Thanks!
 
