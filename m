@@ -4,114 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61F29C54F52
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 13:58:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F92BC53200
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 13:59:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 38B556B00A9; Wed, 29 Jul 2026 09:57:59 -0400 (EDT)
+	id 4ED756B00AC; Wed, 29 Jul 2026 09:59:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 36AB06B00AA; Wed, 29 Jul 2026 09:57:59 -0400 (EDT)
+	id 4C4E66B00AE; Wed, 29 Jul 2026 09:59:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2045F6B00AB; Wed, 29 Jul 2026 09:57:59 -0400 (EDT)
+	id 3E1F96B00AF; Wed, 29 Jul 2026 09:59:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id ECEB36B00A9
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 09:57:58 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E18631206A7
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 12:42:44 +0000 (UTC)
-X-FDA: 85041778248.10.0F2FF89
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0E5566B00AC
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 09:59:04 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 58DD8A1756
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 07:59:11 +0000 (UTC)
+X-FDA: 85041063702.28.D44D478
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 437C680006
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 12:42:43 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OIiVNrud;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf29.hostedemail.com (Postfix) with ESMTP id AD235120002
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 07:59:09 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S29AilxB;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785328963;
+	s=arc-20220608; t=1785311949;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CCfnfjBFYExAnxJTD/rzMs4G+JVWk8LnuYF1LstcYDw=;
-	b=voRpqMs0RiVLromeLLMN1I+nVoKLcKaqcE8TRuriXmsssY4RrhYwXtWatPS7jVkK8FpHCy
-	/MFSrFojgfATIIj1CaE0Jd3BiA2gYL9ankwzoqmT18hszY+AQyxo07ZjZLftzZx3uGRLFK
-	B3ZZBrIGba7DAKSBCpNZ1XQQzDpGlt8=
+	bh=pwdqGxoAPhOYLSWy/uzYKxVIQs4IfOX5AH557+HHvqo=;
+	b=r1ont+2i+wJ0PmFxDZmSoYF1WSqK0o0OwqkAgQ4EcMS2qlMmnrNVXlzvVMLzNA68CZWgUj
+	OqgebFe7FelzaoMwlCiTLbyV2TpvPmlo/mBee90bb3WwDH/qPrKm7esx7yLrnRm25V4tHM
+	NUv1GjzBscF//NrBs4aA97NkJWCFCuE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785328963;
-	b=4G87AQx66R6LU/vuzfxJYQ3Jgubly9Iba+iRGiToQDGx6fG8zEjUcjz8nog9Kftw92ptDL
-	P6S6gX8KYe8PM6ChXfXNZ0YFQJfuc7SBcP1rn1UynGzmQ6sjECEEc0Lyc53MlCRZQjDh7Z
-	7/VqSRdZ40SfDVN/eRCAGKPszd4uyOo=
+	t=1785311949;
+	b=OS+2aSoBWTuOVVOrlcEQFRg5Yt9D1dAopRft3R830JkivksAh/H7bZCWpc3EEqt+8c/oxt
+	3kYE+/Df3zJSNYJbktn1hwjo/OKH0xd6o+memFH63MSaDAPkhpabnEaMCJREaHzK4d628q
+	G7X5giD1nziEqWcbGQPGWJL4cueQoQg=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OIiVNrud;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S29AilxB;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B98626004E;
-	Wed, 29 Jul 2026 12:42:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D1321F000E9;
-	Wed, 29 Jul 2026 12:42:31 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 40315600B1;
+	Wed, 29 Jul 2026 07:59:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8739F1F000E9;
+	Wed, 29 Jul 2026 07:59:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785328962;
-	bh=CCfnfjBFYExAnxJTD/rzMs4G+JVWk8LnuYF1LstcYDw=;
+	s=k20260515; t=1785311949;
+	bh=pwdqGxoAPhOYLSWy/uzYKxVIQs4IfOX5AH557+HHvqo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=OIiVNrudGYMgEdVIx0kkjz41K/abfMmWQCuVMoltvKL88ry5vvzeu9fzcY/9OXDWp
-	 urmM5jTj5uYEwxtowv6dnJlwSS9PTo7quWtNi7gHj3ZqfWleJMlYHWWtwoq0IDEkky
-	 8P8JnLCx+cJFeHdNFsas608FWlQT7bVkC2bwM046FAmQ7zDEHB0zW1hDtHOw8f8bql
-	 4k70NlZODBKCZTfjYFNVdqOJ/v1f/eicr7a9D82muWKPn8AlDCyXeFCuwaSWyiZ0iA
-	 7EW64naZjqP6zUdWAdVwIEaL++olcUVsOGEeMV8mWUj+uyYo7qTGP16v8aSA/cUEkI
-	 1GtsvDfHUTVwQ==
-Message-ID: <5abb6bbb-973e-41e7-820c-057e85edeb95@kernel.org>
-Date: Wed, 29 Jul 2026 14:42:30 +0200
+	b=S29AilxB7ZYEuEQEBUPp/AlNNOt2daTApKlw+99njsgIoqxOfPvs3yUUe9HcxSss2
+	 MCfxtrM/LX12LidqBsG/63ISGmIkFzxVCJKDgfr7hYTYAdiQrct7TMWa8nZTYinuT+
+	 n+AH6zV4wza3gwRgHnzByxkKHZLq6+ccP0GF/4ra7XrmWi00nOywyKHpWDbTLyswaF
+	 PxbFKR/W5kiLge/AiTuNfUDcAGYW6BXpLIYt9JZJm+Q++ZHgdDh3xOxDCTrRXkXM4y
+	 BfvbijrNWzikLVVOD4UgrH/c8F01WzRBCXUDnBQTB4ey9x2T90XTEyxz3+8HKlUiHc
+	 7GW2HTczJwx9w==
+Message-ID: <a731993e-8258-45f5-951f-b32b90671183@kernel.org>
+Date: Wed, 29 Jul 2026 09:59:05 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 09/11] misc/sgi-gru: use ptep_get() for page-table
- reads
-To: Pedro Falcato <pfalcato@suse.de>,
- Muhammad Usama Anjum <usama.anjum@arm.com>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Dimitri Sivanich
- <dimitri.sivanich@hpe.com>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Helge Deller <deller@gmx.de>, Juergen Gross <jgross@suse.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Nick Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
- Andrey Ryabinin <ryabinin.a.a@gmail.com>,
- Pasha Tatashin <pasha.tatashin@soleen.com>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Uladzislau Rezki <urezki@gmail.com>,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
- Eduard Zingerman <eddyz87@gmail.com>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, Ingo Molnar <mingo@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, SJ Park <sj@kernel.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
- Miaohe Lin <linmiaohe@huawei.com>, Dennis Zhou <dennis@kernel.org>,
- Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
- Mike Rapoport <rppt@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
- ziy@nvidia.com, agordeev@linux.ibm.com, ryan.roberts@arm.com,
- linux-kernel@vger.kernel.org, intel-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, linux-parisc@vger.kernel.org,
- xen-devel@lists.xenproject.org, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
- kasan-dev@googlegroups.com, linux-trace-kernel@vger.kernel.org,
- bpf@vger.kernel.org, linux-perf-users@vger.kernel.org, damon@lists.linux.dev
-References: <20260727164715.2866609-1-usama.anjum@arm.com>
- <20260727164715.2866609-10-usama.anjum@arm.com>
- <amnxCmFU40QQaxTx@pedro-suse.lan>
+Subject: Re: [PATCH v2 0/2] selftests: Add missing initalization of pointer
+ passed to getline
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Chris Gellermann <christian.gellermann@codasip.com>, brauner@kernel.org,
+ liam@infradead.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org,
+ mhocko@suse.com, rppt@kernel.org, shuah@kernel.org, surenb@google.com,
+ vbabka@kernel.org
+References: <20260526113848.530105-1-christian.gellermann@codasip.com>
+ <20260722130246.2135563-1-christian.gellermann@codasip.com>
+ <580fc92f-f146-4d76-85ce-6555cc3bc47c@kernel.org>
+ <20260728172712.c21b2959d36f3e2d42cb73a3@linux-foundation.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -158,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <amnxCmFU40QQaxTx@pedro-suse.lan>
+In-Reply-To: <20260728172712.c21b2959d36f3e2d42cb73a3@linux-foundation.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 437C680006
-X-Stat-Signature: 1b58sxadugpihr48qqpgfh1zoq8rcbxz
+X-Stat-Signature: 6jwxz1k3okboet3ydg6iyck5nkzrtn4i
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1785328963-98920
-X-HE-Meta: U2FsdGVkX1+5CDbcwOrsp3Aqnn1WTAJwpQCT9amp5XcXawPV63H9nVo6+WPsru8wyaZ64aztJCro3IRgDVXORYhynXH6+8gWO/i0vrHE1BTD1Yd9bnvRfWuY5Irs719ZerYyjV4M9DPdWumKOL6TQZVlAD7FtAKvqJSq+w7EUGX+imnkFbv50JsFsk1pw29K1S7nOEjW5Fzd0ejDdD0NW/zPTvxwejuMSqcJgPKX+KRLKRjEkFsnW5Dh6SGHnV3bYuR9Qh9YKzVAKtZOA16/z150Esel89BzVVOENWFHoTg9mzEBa7rQsb/0bSXEjr/R+KWersG/0XynIX5Sd2GnAfLdKm7yn5reRxpa1GmKtHfA2pr+5AX9KpRjem0//ZH90uc415M6TqfrPwhQk8mFrv9Cek5J8xB3WTn9/9cBeaabVETnIZ5IS3MgL1Yiqoiz9wWukxvAuEE9DbQm7sf6vqZQ536W1FT++0CpJSrQ70iF9C7SlvooFhO0wdd6G8H5noqU/9FAEqPI3kyl10invo6FtQARoWXmYdoYnR1UX/kEj2jUid5FHdZi6VcSM/5MaLs/OMOLk1UYgFYsk2d/SoAzDYdzZvhBcyvJMJJncQmNYoktJeYIux672XG+9EeH5hAD9KQkqcW05jUB9JwgL+ZSF8YokVouZwHZTSwkxN/kHyAUA7cIZApm4mjQWfDILIPcBl0pNcXlPCeXZW0UNdHUrhhUN7GSZDLImC+ZIIiozjesQCh6JhuyMk7orkFuxhnUttGMyMsh7TPm4aS+JvjW9oJIfDKod7pHSLlme+UwEop+zzAq20Q2g1irQWJaAVHyiLmYOYryTL0if0Q2+Au+zSCqP6Kw+QoPsArhYSLM+Zxa+1a8gH+ZZiU1u1k39IxoeKQl7/80XDJabtc2r84z/sVM4NGtObKVT1iFeZezO9h1QYVINpCE7Zx9id3tWLadFg9HxhNgbd6jhjf
- bh/Ouk7f
- DFN99o03Kb5JRRb8UiR5Q8vnOrde3BZ3X0yNJRzqmhuzigMxdugoVh9AtOwWah4GkYj6eEoEHc+p7KhUZKXswHmPco/6d9mx5ZenNk50/D9ZGWqOOQ+BjBxkfSO+I0zgquR5ONrc3nkEG5BTHlbaQh+7ienINSXzSKbcyMLd3l7PidVSS0hgQYg8DkE8OajO/XrPJ9xSq5zvMh32VnqaAQbidDFZZXbpoOX7r3JOYAezr4/w8/61fAvVUUSlnNMDpzXdlE0IuaWi7ZQT3DKsqeNGgW6PF0EidRQVqKBu1dEYn9Zpnhc78aTVfGf1sHzfUSfvpWRrom30Hv8qkq3RnroFO7oAlzUHnwCuPOqtM4SRYlIxX0sKegt2jqFRKW0hngumFlfyO0S2/gKn+uVABdpd3+QtjYvKZ0XjLsYBFtXK3BYR701eyz8J80Q==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: AD235120002
+X-HE-Tag: 1785311949-239547
+X-HE-Meta: U2FsdGVkX1+CA5Mtpqf+u2JR7J40x+5Jh8cSR+pR/YTRgzSVSbOAssV0Y+klY2FDURzI+ENSlhsRVfqjbi3FLwVaGFLoySTCPAzQvrGfveJgBBCHjPdBM0v5j9oCvKcqdoZWcSrMuDsQ3KQjtasnLqdWtulgtgdSoDvL4vmt2q3Q5g86xcTzSLpwRsE4CbRYk0Erjm9qq7qfcMlhiMVCJ9VoetKn2YwNtrffFwgNev3AkG54mzRhdExGR+bZ5YPD8+o347EdNrTdML8dLm4ngEjd01QOBgB2GGXEzI3qFsavL5bCPMG3OqLiun8vLv5kGZpxUcXaqILPWkUPodHM/wFuOx5xodCh3ZNw9Zw6h5ziypcwEuTWXIfw1AzfW9i2VXNoYUrMn++Ve7MYiz9xs6tkK8GxxDWKGaMPd0xGw/t328n+vsTwqP+k20hyhPLYFKsp8W+WXO2DuqJUMYQV+su8TgjE3nnKDbtpy4An3oUueJXJYppfg4S+F2TazTsH/G4gQTsUjFw0Y4yKcBWKYpclpyallSbOT8lc7F0+Broq4o+3QSJKlr6YJqf8T1yWi/NV55cU0I5jSOVg1OqOz7A5iu8EbGqtgq9zfphXYwcx7En2aZ8fSVmFEVPglDkmGIvbszVGy90AfQK4PTwVW4bmxQOtZvwvnJpvgbIGMnbfDcFYxmsbCI+jD4fLyQrdclAS64xygvvyfk/h79P5cnEzHHbo7HzuMdUgnLqSXrtPC4zSxVWvsjgiIVzZDta0jqRqpFsvD8ixiqhIZ2robKbH/K35boB1hho7jFmjHk/unHXpvH+T+GwgAaHn+uPhLWWdMNeTYIc8UGZnRhX/aIwod0A0CC1CexVThwpACx8sXj9QGsb+vxUBmkZf5EegS+dNdphoNS7Cc9eB8tTk2Sf+Fuhn9jDAsfhliwnO773SD89xQECwA1fyXfd4Aa+17GOkCE3a+leiYepmRcO
+ m14mmad5
+ xipgWH/x+WGyw9BX5qVX2Igo1lCpGmCDOsmkksXBowHRqoy0nudgeqYlRiVVcOh7Gusbta9aSz45O/h/bzRYiWcQtCRJnrBAr9Z4p06/dQ861X/4rEx0vC386IuA7SqxVUqpGjWwXAsfqqXcId6c8mTw8q30DIFAYxsa0L7KD0xMkVAzRfTgPxSbv8iczhrpyyD1PvnfX3ZhXGoQoleZvbn+l8MZP3jpOxqXZAwZZD3ooygVLD7QDW5bRKE5KpDrM2qw3L3Zrm95kBY99BgFXCQiAtQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -176,54 +144,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/29/26 14:36, Pedro Falcato wrote:
-> On Mon, Jul 27, 2026 at 05:47:00PM +0100, Muhammad Usama Anjum wrote:
->> A leaf PMD is being read through ptep_get() by treating the PMD address
->> as PTE-sized table storage. ptep_get() now accepts hw_pte_t *, so update
->> the cast accordingly.
->>
->> pte_offset_kernel() also returns hw_pte_t *. Get pte_t value by calling
->> ptep_get().
->>
->> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
->> ---
->>  drivers/misc/sgi-gru/grufault.c | 4 ++--
->>  1 file changed, 2 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/misc/sgi-gru/grufault.c b/drivers/misc/sgi-gru/grufault.c
->> index 3557d78ee47a2..ff89d34ad2aa4 100644
->> --- a/drivers/misc/sgi-gru/grufault.c
->> +++ b/drivers/misc/sgi-gru/grufault.c
->> @@ -228,10 +228,10 @@ static int atomic_pte_lookup(struct vm_area_struct *vma, unsigned long vaddr,
->>  		goto err;
->>  #ifdef CONFIG_X86_64
->>  	if (unlikely(pmd_leaf(*pmdp)))
->> -		pte = ptep_get((pte_t *)pmdp);
->> +		pte = ptep_get((hw_pte_t *)pmdp);
->>  	else
->>  #endif
->> -		pte = *pte_offset_kernel(pmdp, vaddr);
->> +		pte = ptep_get(pte_offset_kernel(pmdp, vaddr));
->>  
->>  	if (unlikely(!pte_present(pte) ||
->>  		     (write && (!pte_write(pte) || !pte_dirty(pte)))))
+On 7/29/26 02:27, Andrew Morton wrote:
+> On Tue, 28 Jul 2026 21:31:39 +0200 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
 > 
-> This code is super, super broken. Can we remove this ASAP? For starters,
-> we're using is_vm_hugetlb_page() to detect page shift, the code does not
-> grab refs on the pages, uses pte_offset_kernel() on user page tables,
-> does not handle PUD-level hugepages, does not handle PMD-level hugepages on !x86_64,
-> does not hold page table locks nor check for pte table retraction, etc
+>> On 7/22/26 15:02, Chris Gellermann wrote:
+>>> Hi there,
+>>>
+>>> just a gentle ping on these patches. It has received an acked-by from David
+>>> Hildenbrand (arm) and a reviewed-by from Lorenzo Stoakes.
+>>>
+>>> I'm resending the patches as reply to this cover letter to clean up the previous situation.
+>>>
+>>> Let me know if it needs any further change.
+>>
+>> Have these been picked up in the meantime?
 > 
-> I don't think I need to go on.
-> 
+> Yup, I added the v2 series to mm-hotfixes-unstable on Jul 22.
 
-Heh, when Usama first showed me an early diffstat I was like "what the hell are
-drivers doing with page tables here, they shouldn't be doing that".
-
-atomic_pte_lookup documents: "Only supports Intel large pages (2MB only) on
-x86_64. ZZZ - hugepage support is incomplete"
-
-What is this crap? :)
+Thanks!
 
 -- 
 Cheers,
