@@ -4,89 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9909EC53219
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 02:46:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43909C54F54
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 02:55:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1582B6B0088; Tue, 28 Jul 2026 22:46:24 -0400 (EDT)
+	id D289A6B0088; Tue, 28 Jul 2026 22:55:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1099F6B008A; Tue, 28 Jul 2026 22:46:24 -0400 (EDT)
+	id CFFCE6B008A; Tue, 28 Jul 2026 22:55:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F39956B008C; Tue, 28 Jul 2026 22:46:23 -0400 (EDT)
+	id C3EE06B008C; Tue, 28 Jul 2026 22:55:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CFBDB6B0088
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 22:46:23 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5597A1205AC
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 02:46:23 +0000 (UTC)
-X-FDA: 85040275446.09.3A294CA
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 5BBEA80005
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 02:46:21 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=PUh4jrLR;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf30.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8C36E6B0088
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 22:55:17 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 095951A04FD
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 02:55:17 +0000 (UTC)
+X-FDA: 85040297874.03.04E9BCD
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf29.hostedemail.com (Postfix) with ESMTP id EAC3E120008
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 02:55:14 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=IW6AfO+Q;
+	spf=pass (imf29.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785293181;
+	s=arc-20220608; t=1785293715;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=sZtuESiuIRQ4N1of0slvw0/N5xfIAJFkwfNnHgaMXeU=;
-	b=ztN31NJMPpCN2TGa/z4nQzNxfhJZAPrdeFOA2aUZFq/hpjHvdkXlGbIZJh5HVeX133e6lx
-	YYj7/8zOt/c0eetYFLVfIXE4Io7fNkKLM89tPNfqyhjrcSL6+8Z18QtE+N9kZew5VYKuHq
-	UKPJeg3HEXU56PGX6YE4ogn/8QM0//g=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=PUh4jrLR;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf30.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=4Gu5Num2xknD+iSWUiEOP3hmmUxH8WHbfsyozOqoPB4=;
+	b=IbS4v6j0Wwl3QGDeagBJ1VQI4kAqEqk9bUEQLQTYZHJkzAlcov5JOcI0vg9C8EnrTHcRaf
+	SVAadlg9d2dkyHwiMiYe6x5BSx5h9Nn3EzZQFy354v2k7291NawaepjvlyKRqkU0+kwvwr
+	thkXx8nmAYwETTNvS7CRu24esn/XacE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785293181;
-	b=WZxW84eIKyhGqav80Ifm4aw/qVOFU/BccL2dRdMBGLcF7JVsNjVRT80zmoZ8nzVFBqRR/2
-	znZJRQ9mkJKf37DChuZi8PlzUjOD1rGiY7pD0FLMxEB5ztdgDBODoexViCznMcdlPZBlb2
-	gxYtA9VlE+oEnUFiTv6SyohoMwGsgz0=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785293179;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=sZtuESiuIRQ4N1of0slvw0/N5xfIAJFkwfNnHgaMXeU=;
-	b=PUh4jrLROnXPX+AwgvxhBFx58YU7jD8d+FVTou3nxGLGiqnd0jYlEDmF0IPJdTVqkayzAN
-	r0Y+rKHNlFQp/lehNuVyav+g99DgkYMnTBQy8uj60Fokxc1HPk/8dGlCh0X0iHnjDo4fNt
-	bM7eX/+GI7YnQWLOBloryPu6SSIYxio=
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Michal Hocko <mhocko@suse.com>,
-	David Rientjes <rientjes@google.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
+	t=1785293715;
+	b=34Tf10pV5AZti84skJDHXIbLkzda9XOeCqFyRgxIrnUZgjFqVndxv2IjSTsGTpY8Jpk5fY
+	vd0V4qqfCxtpO9/l5hLIx1851lxP9KS6yQdQC8RFCBlJF3JgjFgsIMl/bUI12aAYka4tSH
+	8ZpV2ppAwQINTivmTARa5kwMsMpeZJQ=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=IW6AfO+Q;
+	spf=pass (imf29.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=4Gu5Num2xknD+iSWUiEOP3hmmUxH8WHbfsyozOqoPB4=; b=IW6AfO+Ql8jIDXXzqJcDalbSw8
+	KUcVJJ9nMB7BI93VpUXYAFGY3yjwmLmUKnX831IfMXwYgrny9DSgtEjzg1y4use9FqnyejzsaqVRq
+	2k0MYuzWXI9gWADvQklRwrbBRTsfH2f/6O8iBspMmT4KgYY4W/qS1z92UlHMUYCgCRJZxEnk4inMj
+	I2IIkhzQBxKzw00yL10G0TL0Qyh7jxYVpg7eI8lDiwUIOd8qV3Ke5hzRwwqHhHisjh0CvXsI+TfqH
+	SHQc9sf/lk9qUMdfAtfYsv2QAt4NnRx+WFgSQFNBSrBBTMcJU3O9YECmM2SDfChoGOPZQxnHNWZ8Z
+	2FyUvXAQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wouRq-0000000F0aA-1Ytc;
+	Wed, 29 Jul 2026 02:55:10 +0000
+Date: Wed, 29 Jul 2026 03:55:10 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Gregory Price <gourry@gourry.net>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Jane Chu <jane.chu@oracle.com>, linux-mm@kvack.org,
 	Muchun Song <muchun.song@linux.dev>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Usama Arif <usama.arif@linux.dev>,
-	Rik van Riel <riel@surriel.com>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Meta kernel team <kernel-team@meta.com>,
-	linux-mm@kvack.org,
-	cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] memcg: bypass the reclaim and oom killer for dying tasks once oom_reaper is done
-Date: Tue, 28 Jul 2026 19:46:12 -0700
-Message-ID: <20260729024612.3369005-1-shakeel.butt@linux.dev>
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Jan Kara <jack@suse.cz>,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <christian@brauner.io>,
+	Jiaqi Yan <jiaqiyan@google.com>
+Subject: Re: [PATCH v7 06/13] hugetlb: Use the has_hwpoisoned flag
+Message-ID: <amlrjtaFSEQLYbEO@casper.infradead.org>
+References: <20260728204409.3396238-1-willy@infradead.org>
+ <20260728204409.3396238-7-willy@infradead.org>
+ <amlQYkGgLmxmwX9_@gourry-fedora-PF4VCD3F>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 5BBEA80005
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <amlQYkGgLmxmwX9_@gourry-fedora-PF4VCD3F>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: EAC3E120008
+X-Stat-Signature: bwzyin9o64wy1fn4mjigx5z65najnqwy
 X-Rspam-User: 
-X-Stat-Signature: mdwt38z763z79xbds8roscn7xnhuoc1m
-X-HE-Tag: 1785293181-828890
-X-HE-Meta: U2FsdGVkX18eoNI+f9+0RjY/c/d8w6Mow3oGlu3iAqcJEjyBIwwFE69bbUw+v9yhdLZGqovcCy4TbwHbiTvnbtYtLFmnt8hxffNJVSgVvjslDPfzMFwED0rE2KXkePYXB3FVozj4VCz8/yDNxajHnsL7rEcxFtQEbXFU0ezRebS47jmdh4RSshO8sWFPc9Y/oab090al41DfQABhpls3iJUASA+1juGgnwYZzruE1dqkknyGXzEuPXkuGsKLf91kt/SNhQjxFKkfkeoQJwevWDylzQe51a+uJO8ktRFblAX4uC3g5ScZMMuMwTOBOe+yXWKgzKfI8bErOuez22BHJM0wFxfj1APMrZZam3r2en7zp5/c56IuyjHRJF1P5q5+abN7n9J1ip4X9mKeTOOTkM8NfXufj4GD4o9x6XnpsauyN7kiM3FGz/FqgRKbJIy7e5I/+WjChLwIr+31vmhqk7H0hyV6N2Ha64mlsvU0xcbpvPSuDjBMGrhFPumT9ZT1DE1J8rhFa2j4WRwrdmOGZ9JZOT3JT5jpBMQjvLu0PJJeJucgc2vO9wlr3vLKAY1OJlsRX8un4XgKw1Xu79oBw5Qcwuje0AUxpOBmpv5INqc0yofh3vRQuYnwPVnKR4/gsRm+3tbb2KWfIeXlZLqn6QVP1JgsgagPZ/bRQb1NlHrX5ZG3oFXomw+HPHGUbDBbtnR4FfZJ0M4vpr7yJQCuH8eS/A5e4Nh8sPW4CZ/o2YVP47l39haC2v/uTXtoRLJyIVgfRd7f0H24WABUnXafVwcDj154SEZxZrJPwLVc8NaQM7L0O7ZtyJ5sA+FTKn4h15yUU0EQL45u6T66K6+aqX8CgWGGp/ep7dOzqGp5DARgExBBzji+LLGRKRjr2ryNs8x4wzCiZw5f0bXqDr5AoUQoog5zf0v5pNXz9icRL47So2RQ7fRXHO9/7y1peWUyRRXnTgjgL3Ldpoea56P
- vtVJ2vfv
- p07EhXXjRVdn0X2MN8SztrhZrDuR79MXZDSMBxYyXDB1RD/cCUNRTqGkJgUuKMlGko2zlvb6bjmKKePlhCXlKvqcxQhzYrL3V+2YQgUIb96JXpnHauuyXJRhsHxvGzZBoDtzZVEehmLDswHgH3n0amChKl0vCLZudmw71ukqhWviDFWN2dcLijKZk4jGmcTUXWeMueWtdJTUCMRWPHbJzpZFAB63alausoicVYawzMbZS2Y3uvi/V8d0yfmMmhTL95TiZq7Jt3crs20P0YONxt2CxAgqvxU9/e/laXBpvA5BM/l6lL0pdB7WUAhNoiXBJN7IHpT5Lwj8Jv9o=
+X-HE-Tag: 1785293714-259483
+X-HE-Meta: U2FsdGVkX18uF8DAxvnO94VRZXWMjETeoTwgzYXPDDFxQFRx1L3ZKDMgHxgrJ8VR/GSLmM6KQSYp3hZbIZZRetxFGLyndqNHo9zxtchbi4kN3WRDAL/89Rze3PuzkF5VDGmChjg63UxYxHCX+/fQGd168IfyDjAOi8DSjoCe2iN9vR+d8h3JdEskCTLWgmFoz4PPgtjdD/pjxcCVs4/R2Jmf0PeV27ChGt8YPHqWOwoWGe2P5+UCzTFKv1pgDcRRtKtizJ0Sclg5hfndA8/c2IwFNFMO1zUYiSbln8l0Lql1ZtJepVpJhI91dLXA6Hm7Of2A3QG6kvKP18UP8JZvyMkM/GS9DoAzVpr/rk+W3ghhcpxxzCXfCXdSIgIVTZJfAUkEjA5NuS0QKwUskdmojqd/DcFL98v6wYI+AT40hsoHyEwtn/qci0BO0U0qZ4od3V3GDHx7C7JXwbf3IqIPlRCmw2FT0F1OA7O+GUnacHVI5d83pnO8u+Lon0PyjhEUKhp7rzFAWY4cihRfNB/ttSzYYY2NqjaEuUz8FnhvHaDEHdZZaaaCwY5Qlk6dKLgo6QWsCqzAkgT5cZ+0roUyxW006Tx6HYXE/3+fdkPAsfoD2EfjRZR6R936d5oFjN8HlaP4BobLyjOR8nE8f0jFT1ZiiT3GNSC97wdELZRECmjuPPpaI8I6lotay72Rs9hZAxVLIw5rP/VTsKeEfIzqyU2rngT+LvWS50+XYQNaNxcgmWuBcrpceTf0mhu2CNkD/sCJ01CG5eYy+2y/bmrnuZXMAn1ukuUVLCGK4Vd+nfVLBqhuK+RPEFfG0BlWURgPZ/0ulLgPbVgECiuzft3li8X3CtOlxU+F1lA9jlP1MsQh7sbHMNUrFtU81in6+laptQ+Ca/O/0V2KQMmcoHwDO1loAHqlC74Wn9h2rlokwcREnPdPvML1G5pDjBHkC6rGkMsjIEjbQEDDbGV8KFu
+ yWr6cpD/
+ pnYD3OTRT2LTTbD4ISoevQmfH+3RoiKY9vaB1G15v3lOxIGR7OlCVRlWdgCTRMTK6O8TUWFsxTcLyiA1MAIos1nQuZGxDLT1ABDfjJz3E9mIwCI7JRplL4k28ns8RHwLTwbwXPzsTvHfdVWKVpGx+196TrFuZyK+/zqXOKna/cY/few+rWj7B3rPpL+vVTzAx/1Ird48tXtuWtvfj4j6a/bsgyHCznKCrx7c9Ny1Y8p3BsKpWH2U5+SGteA5gZCSkC00MYlAoGS+V5dzimOofNoUDMsM4BpKzmnZw2rA4eC6BpoySLQGjOHcxrQEYBWH9s4w/rwB7lhArDm1X4y4CFfX4vZJtHE25418Nfssi+ovAsv5LCuL0BFg5Qg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,114 +98,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-At Meta, we are seeing instances where an OOM killed job is stuck in the
-exit path for several hours. In one particular case, the job was stuck
-for more than 8 hours and I had to manually remove the memory.max limits
-to allow the process to exit.
+On Tue, Jul 28, 2026 at 09:36:37PM -0400, Gregory Price wrote:
+> On Tue, Jul 28, 2026 at 09:43:58PM +0100, Matthew Wilcox (Oracle) wrote:
+> > +
+> > +#ifdef CONFIG_MEMORY_FAILURE
+> > +static inline bool folio_test_huge_poison(const struct folio *folio)
+> > +{
+> > +	return (READ_ONCE(folio->page.page_type) >> 23) ==
+> > +		((PGTY_hugetlb << 1) | 1);
+> > +}
+> > +
+> > +static inline void folio_set_huge_poison(struct folio *folio)
+> > +{
+> > +	folio->page.page_type |= (1 << 23);
+> > +}
+> > +
+> > +static inline void folio_clear_huge_poison(struct folio *folio)
+> > +{
+> > +	folio->page.page_type &= ~(1 << 23);
+> > +}
+> > +#else
+> 
+> Took me a second to realize why this was open-coded instead of using
+> the generator macros.  The reasoning is buried in this comment:
 
-The job was a single process job and had ~55 GiB memory.max and zswap
-enabled. It had almost 0 anon in memory and ~111 GiB in zswap compressed
-to ~51 GiB zswap pool (i.e. almost all of memory.current was zswap).
-Nothing was left on the LRUs to reclaim.
+I believe hugetlb is the first user of the low 24 bits of page_type.
+As such, there aren't any generator macros yet ... and I'd probably want
+there to be at least three before creating any.
 
-On further inspection, I observed ~20k threads of that process stuck
-with the following stack:
+> /*
+>  * Check if a page is currently marked HWPoisoned.  This check is best
+>  * effort only and inherently racy: there is no way to synchronize with
+>  * failing hardware.  The caller may not have a refcount on the folio
+>  * containing the page, so we must be careful to not trip any assertions.
+>  */
+>  static inline bool is_page_hwpoison(const struct page *page)
+>  ...
+> 
+> which i presume is referring to VM_BUG_ON_FOLIO() in the set/clear in
+> the macros.  Might be worth just note here if only so no one comes along
+> and "fixes" this or writes more of these without the same reasoning.
 
-[<0>] mem_cgroup_out_of_memory+0x4e/0xa0
-[<0>] charge_memcg+0x8bf/0x990
-[<0>] mem_cgroup_swapin_charge_folio+0x4e/0x80
-[<0>] __read_swap_cache_async+0x10c/0x260
-[<0>] swapin_readahead+0x116/0x3f0
-[<0>] do_swap_page+0x13c/0x1ce0
-[<0>] handle_mm_fault+0x61d/0x11f0
-[<0>] do_user_addr_fault+0x3e7/0x6d0
-[<0>] exc_page_fault+0x8f/0x110
-[<0>] asm_exc_page_fault+0x22/0x30
-[<0>] __get_user_8+0x14/0x20
-[<0>] futex_cleanup+0x27/0x1c0
-[<0>] futex_exit_release+0x47/0x60
-[<0>] do_exit+0x107/0x940
-[<0>] do_group_exit+0x81/0xa0
-[<0>] get_signal+0x2b1/0x6e0
-[<0>] arch_do_signal_or_restart+0x1a/0x1c0
-[<0>] exit_to_user_mode_loop+0xa8/0x1c0
-[<0>] do_syscall_64+0x152/0x250
-[<0>] entry_SYSCALL_64_after_hwframe+0x4b/0x53
+It's even in the test ...
 
-In addition the dmesg was filled with "Out of memory and no killable
-processes..." messages.
+FOLIO_FLAG(has_hwpoisoned, FOLIO_SECOND_PAGE)
+#define FOLIO_SECOND_PAGE       1
+#define FOLIO_FLAG(name, page)                                          \
+FOLIO_TEST_FLAG(name, page)                                             \
+#define FOLIO_TEST_FLAG(name, page)                                     \
+static __always_inline bool folio_test_##name(const struct folio *folio) \
+{ return test_bit(PG_##name, const_folio_flags(folio, page)); }
 
-I have no idea why oom reaper was not able to reap/unmap the process. My
-guess is that since oom reaper tries to acquire mmap_lock in read mode
-limited number of times and then gives up, there might be a thread of
-that process which had mmap_lock in write mode at that time.
+static const unsigned long *const_folio_flags(const struct folio *folio,
+                unsigned n)
+{
+        const struct page *page = &folio->page;
 
-My initial suspicion was the futex_cleanup and kernel page fault causing
-infinite fault and charge retries but that was put to rest in previous
-discussions happened on similar problem [1].
+        VM_BUG_ON_PGFLAGS(page->compound_info & 1, page);
+        VM_BUG_ON_PGFLAGS(n > 0 && !test_bit(PG_head, &page->flags.f), page);
+        return &page[n].flags.f;
+}
 
-My current theory is that it is just a simple slow serialization behind
-the oom_lock. Unlike page allocator, memcg charge code takes the
-oom_lock without the "try". Though memcg oom code uses
-mutex_lock_killable(), note that in the call stack get_signal() consumes
-SIGKILL (or sigdelset(SIGKILL)) before calling do_group_exit(). So this
-mutex_lock_killable() is just a mutex_lock() here. Therefore 10s of
-thousands of threads are waiting on oom_lock and one by one they get
--EFAULT from get_user() in the futex cleanup code and bails out.
+So there's two asserts that might trip; the first if the folio is freed
+then reallocated into a larger folio and the former folio becomes a tail
+page.  That's pretty unlikely for a hugetlb folio, but the second is
+more likely.  That'll happen just by freeing the folio.
 
-Discussion from [1] lead to the commit a75ffa26122b ("memcg, oom: do not
-bypass oom killer for dying tasks") which routes dying tasks into the OOM
-path precisely so the oom_reaper can reap their mm and free the memory
-asynchronously. But the reaper is best-effort and one-shot: if it cannot
-take mmap_lock for read (e.g. a sibling thread holds it for write) it
-sets MMF_OOM_SKIP and never retries, leaving only the glacial
-oom_lock-serialized synchronous drain.
+> > @@ -2725,13 +2748,19 @@ int unpoison_memory(unsigned long pfn)
+> >  
+> >  	ghp = get_hwpoison_page(p, MF_UNPOISON);
+> >  	if (!ghp) {
+> > +		spin_lock_irq(&hugetlb_lock);
+> >  		if (folio_test_hugetlb(folio)) {
+> >  			huge = true;
+> >  			count = folio_free_raw_hwp(folio, false);
+> > -			if (count == 0)
+> > +			if (count == 0) {
+> > +				spin_unlock_irq(&hugetlb_lock);
+> >  				goto unlock_mutex;
+> > +			}
+> > +			ret = hugetlb_clear_poison(folio);
+> > +		} else {
+> > +			ret = TestClearPageHWPoison(p) ? 0 : -EBUSY;
+> >  		}
+> > -		ret = folio_test_clear_hwpoison(folio) ? 0 : -EBUSY;
+> > +		spin_unlock_irq(&hugetlb_lock);
+> 
+> Adding new synchronization here without noting why - it's not
+> immediately clear what this synchronizes.
+> 
+> Is this just fixing an unrelated bug / should it be a separate patch?
 
-Once MMF_OOM_SKIP is set there is no more asynchronous reclaim coming for
-the mm, so a dying task charging against it has nothing left to wait for:
-it frees its memory only once it finishes exiting. Running reclaim and the
-(no-victim) OOM killer for it is then pointless, and doing it for 10s of
-thousands of exiting threads is what serializes them behind oom_lock. So
-before reclaim, if current is an OOM victim whose reaper is done, fail the
-charge.
-
-Reproduced with 20k threads, each parking a robust futex head on
-its own zswapped page, OOM-group-killed while a sibling holds mmap_lock
-for write so the reaper gives up and sets MMF_OOM_SKIP. Tested on
-next-20260728 and baseline show ~90 seconds exit time while with the
-patch the exit time reduced to ~3 seconds.
-
-Link: https://lore.kernel.org/7a4e5591f45df455e6a485fc5400989569d3d22d.camel@surriel.com/ [1]
-Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
----
- mm/memcontrol.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
-
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 8319ad8c5c23..f7a5f8a6cfee 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -2653,6 +2653,19 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
- 	if (!gfpflags_allow_blocking(gfp_mask))
- 		goto nomem;
- 
-+	/*
-+	 * OOM victim still needs to charge memory to exit. OOM reaper should
-+	 * help but it might fail on mmap_lock contention. If the victim is a
-+	 * large thread group then all exiting threads might compete on oom_lock
-+	 * just to learn that there is nothing really killable anymore. Bail
-+	 * out early and fail the charge to expedite their exit. They are
-+	 * considered fully reclaimed by the oom reaper and they shouldn't
-+	 * contribute further charges.
-+	 */
-+	if (tsk_is_oom_victim(current) &&
-+	    mm_flags_test(MMF_OOM_SKIP, current->signal->oom_mm))
-+		goto nomem;
-+
- 	__memcg_memory_event(mem_over_limit, MEMCG_MAX, allow_spinning);
- 	raised_max_event = true;
- 
--- 
-2.53.0-Meta
-
+This prevents a hugetlb folio (which in this arm we don't have a
+reference on) from being freed.  I think it ended up in this patch
+because Sashiko pointed out the race during review of this patch.
+It could probably go in its own patch 
 
