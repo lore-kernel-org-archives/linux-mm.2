@@ -4,105 +4,173 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F333C54F51
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:19:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDE34C54F51
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:19:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5164A6B00ED; Wed, 29 Jul 2026 10:19:17 -0400 (EDT)
+	id 237936B00EF; Wed, 29 Jul 2026 10:19:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4EDAE6B00EF; Wed, 29 Jul 2026 10:19:17 -0400 (EDT)
+	id 208066B00F1; Wed, 29 Jul 2026 10:19:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4039E6B00F0; Wed, 29 Jul 2026 10:19:17 -0400 (EDT)
+	id 00D136B00F2; Wed, 29 Jul 2026 10:19:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 146326B00ED
+	by kanga.kvack.org (Postfix) with ESMTP id C71F66B00EF
 	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:19:17 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 98EC3160700
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 13:03:08 +0000 (UTC)
-X-FDA: 85041829656.08.998988F
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 8EC931A000E
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 13:03:06 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xpiofwKc;
-	spf=pass (imf19.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1FA7D160695
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 11:51:34 +0000 (UTC)
+X-FDA: 85041649308.18.ADD0100
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 552D2C000B
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 11:51:32 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="j/rdTFQ5";
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785330187;
+	s=arc-20220608; t=1785325892;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AYCYMoKGlSePAhpgzn57nRJZKopSNamtJBqY3h7O8nU=;
-	b=WccZEdfUqY4X/iEeVPp6ys6HbEQRUujVKOZ/Mq6KSMnpxpmpcKcJkV4o6OYizipUKwi9iF
-	eyW2XxaAKTQ7OW88qn9yAdbbNZOqMFo/niayXTVtrCxJovSdYD6A/vIKuPQQSyOArIh5mz
-	I16AypOhLhQbh2URbuAgtXS9wmxnJYs=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785330187;
-	b=1o8rA7Xt+buWX1ZPBxWYWfsLERqiiYjx8/Y7rKA5Qzr3SOiwMPdrRByFfmGUHbtsEGLj+F
-	3nxsBowyiwkABbye+MigWZqJPv21yE5/jDay+AjDe7F6qlJRtyiKSKNf9HTCZ8JAc/bt+0
-	VdwswhasBXAv6PQdEm8xpBytxinvW5A=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xpiofwKc;
-	spf=pass (imf19.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785330168;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AYCYMoKGlSePAhpgzn57nRJZKopSNamtJBqY3h7O8nU=;
-	b=xpiofwKcDxKVkpOf+qQ0LWsVqzVc9sBHfx8RoU8+3+3Fdi7XBQa0KJ4+2BfmzOtSmE3k5M
-	E62Cr1tmcgj9p1n1uc7LXZvwVZDu2ChM0b5+ycTaqa92spdi/8vpwzq7VzY8rlhv3vHd7U
-	PMeqskvakJNsvHkf4nC3IuBxnv9N7OY=
-From: Usama Arif <usama.arif@linux.dev>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	kasong@tencent.com,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	chrisl@kernel.org,
-	nphamcs@gmail.com,
-	baoquan.he@linux.dev,
-	youngjun.park@lge.com,
-	hannes@cmpxchg.org,
-	roman.gushchin@linux.dev,
-	muchun.song@linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	cgroups@vger.kernel.org,
-	rientjes@google.com,
-	kernel-team@meta.com
-Subject: Re: [PATCH v5 3/3] mm/vmscan: reduce lru_lock contention via vmstat-derived scan-balance cost
-Date: Wed, 29 Jul 2026 06:02:39 -0700
-Message-ID: <20260729130241.3327679-1-usama.arif@linux.dev>
-In-Reply-To: <20260727162550.2032-4-usama.arif@linux.dev>
-References: 
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=UhKC2rWDc0nqivSNnMMapSrop+/S8ksf4kWUVmW36RU=;
+	b=fesqc70eG7CyuWfBETgeLEwyTarxbjqif1iQIZlaoihB1p0Y81tzkkG+QuagIjgLx6ocjb
+	/FBz6A0uAsHvCY9RMZmkx+aKbtPuPz5ifCNmBwGK2eiRMKtEaSc7ITXYVyQSRIEH6P4XqX
+	Yqc2cVQp+iIgLq3L7d42/a4j08oeCxo=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785325892;
+	b=M3pXgl01+P/VCZPUZ4ZO8hwPvAyd5gqrQf1KnCbN3NgzYV35gB6oRMi+w5H1U19J1LbDoS
+	DNww/pg4bDdZHbtKFqCabbeagDp5ejiKx95DpoWl1IuJjGjdzKdWgivTJhzsdAjQqjH0nB
+	QwcujQMvU/4EhnmMDKxbIN4kWKWBhPg=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="j/rdTFQ5";
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 514454367E;
+	Wed, 29 Jul 2026 11:51:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 231861F000E9;
+	Wed, 29 Jul 2026 11:51:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785325890;
+	bh=UhKC2rWDc0nqivSNnMMapSrop+/S8ksf4kWUVmW36RU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=j/rdTFQ5D+V9nF350bJFVbABN4LrkdsttdXl0LTG5diGS3qfpE1d+CHl9CbSex6ib
+	 zqh8hsz9l3VaQPnS5omwpQ4W93RN11H6fIAUPogAreBHTqCDzslNEnArGZn7XQd2Nh
+	 L60L5+Er4w8vr9eNKEbKvwf0I2mjYLbJRtU3mP4hA552hqDOeaUCdQ3coC6W+Yrxob
+	 0GfjMAvTYGFs0eYP7gECmOhuDEd4qb4E6ZRFuvxkWAYMyVwJ44RcFC5R45zVPN0jpd
+	 8duzo9AGfdWaObfcg4y6i3UpveG99T2I3kDQU7SMr0C91jCQDkN2f+1bryJUJIPF5z
+	 SyB3dhLtFqa2g==
+Message-ID: <26b1cb23-bb68-45c4-a28f-698b34fa3aed@kernel.org>
+Date: Wed, 29 Jul 2026 13:51:17 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 8EC931A000E
-X-Stat-Signature: snxmj4z6d6jqmq5dfgiy7gtachcziyod
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 00/11] mm: distinguish PTE table storage from PTE
+ values
+To: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Muhammad Usama Anjum <usama.anjum@arm.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Dimitri Sivanich
+ <dimitri.sivanich@hpe.com>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Helge Deller <deller@gmx.de>, Juergen Gross <jgross@suse.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ Nick Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
+ Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Uladzislau Rezki <urezki@gmail.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
+ Eduard Zingerman <eddyz87@gmail.com>,
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>, Ingo Molnar <mingo@redhat.com>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, SJ Park <sj@kernel.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+ Miaohe Lin <linmiaohe@huawei.com>, Dennis Zhou <dennis@kernel.org>,
+ Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
+ Mike Rapoport <rppt@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
+ ziy@nvidia.com, pfalcato@suse.de, ryan.roberts@arm.com,
+ linux-kernel@vger.kernel.org, intel-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, linux-parisc@vger.kernel.org,
+ xen-devel@lists.xenproject.org, linux-mm@kvack.org,
+ linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
+ kasan-dev@googlegroups.com, linux-trace-kernel@vger.kernel.org,
+ bpf@vger.kernel.org, linux-perf-users@vger.kernel.org, damon@lists.linux.dev
+References: <20260727164715.2866609-1-usama.anjum@arm.com>
+ <2c19247e-bee6-45f4-a353-2fcc60db26e6@kernel.org>
+ <7813b5fe-e767-442c-a356-afc1a5c567ad-agordeev@linux.ibm.com>
+ <6db0a8c0-b500-4364-be3d-d3a537c61258@kernel.org>
+ <e3b6dd13-2cea-4dc5-9038-a3abde71ec10-agordeev@linux.ibm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <e3b6dd13-2cea-4dc5-9038-a3abde71ec10-agordeev@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 552D2C000B
+X-Stat-Signature: rkn587uenw1ciw4pmnpow9z7efxmidbj
 X-Rspam-User: 
-X-HE-Tag: 1785330186-447898
-X-HE-Meta: U2FsdGVkX19Y0UFwsFsSLT8Z76PYO0Z3svoHL9F/r8RNfCX+acDNN+QvsAS7yCWzd+Kwobfuf0ellE0tDWOcX6QBkNttvJbw5cxt6jMmG6bZdk/To+EVKe6CJGPqmZkoOX8kzqx8SpKccBlobzvXsBOhf04gjNRAJrGTKWVryevwdY+rxr/2pq/7GdwrBWP9C/LJzzqmdj9T3E8DSUl3V/NXdHYZtBrAqVxoXUXRRbmEP2n1T0//K4I9cJJgj2sBWAA8Mt+/dWas3WxEhSmNEFdoldIMw9raS/HIh4RvADBt4AcJQPowylL5fIn2Zx/CbcWbqSsdSMYRo2WnjJtBU4cuneS0AUHfrWsc1iXCf+1+U5P6cSZQUuicxeqzTD/kFLEgUmYtLOD176FCMs6EF/JD+ZeJpstGv6K2dU+WavuU56TzT3AP32MOb8yvYXozUP/0/UUdzXVEZWmZAaYWvB/x+bTVhuLkELPMKZ5IhgQLUeoyuptVZuOLrQAl3BG35VBawOpOsO+WmkN0G5cHR5m4MaJL+0wIifddSgukm4KoalOUkYnA09oq6PZjYZCtAhduKYlo/JybXiEXpdY7hYZXmg7zJqwcqWC9tA6Y3oaoBwU+h7IjUcaRKxP8dNzTaiIDPOo1OZEI3s4CuB/o/8G7WhKTQF5xRhlfofBqVNczITmYwB9uz9NJQVweQxsdD3Yx22Kxrf+kV2QDLCuUvkNiDjfp45YfanuV3mQJvgYugPq9vIePxkEV008Psbq2WsxF9ZkOOM7KqcxqEGcBolRpMZONDw38R9RXFpcvxq2MEopmRuj23iGhdzgju28XaiUTSGrJ5M/WeHfCwky4xwyPKdL9X0oi8C+oci+z+dGdXtog1y7dJn1QB/AM0/sM1Xj8HfoS03qXEa8ZkG8nb3hbQfNMJeRMIoZdxg9oARDXOdAlvrTIe/+Gch5MvX1jwgwERvHjUB0DDlk8pQB
- YpSmLsQ+
- AV4+Hn/E6wFbIHfiXb25kapNf7jkgG/aL6xFIkRn60oGt80XMCib0OLu4dvomJBlhK3T3gxKQPzmood7KgI8fKbcBE8fOMYwpf1PUeJYzyJVEzSdnB3ThC7E+7w2GLtd19bdY7B6pbV1jsdap0rD9/rTayKXlAOUJbhkZwUiXmWradR1ZkEbCHp8UgqoaxEBOQRnsIwUQ+ItOiTLJpzc017pP5grB6RkDePaAVwrNMtige3+/gFtg58SolZZDCP0qjxMzk+t7dkkBlJiZNncDLZV3qqW+nwKPAWKbS6JJj6q1JLTjvSSE3sFbSQ==
+X-HE-Tag: 1785325892-305367
+X-HE-Meta: U2FsdGVkX1+EUM4qSoZ/44mTgRl5qwtn7Qcr7ShF3+wOeIIDpQ8m1NhbKeuNYohYecJv5TZcTLXjOLgVOd1/DrnN/xAQjbNRVtSuEEi7siCeeq75FqV4Q54MupQMxygGdMZ/1F/aOvBXouDnYxa4DYd3RZ4JUY1hsGp7K2bX52hSw3rsc3FMf33ND0iRld/YuKwwO644RGyj4jwwBVuvwOE305K9az95ySZjXA20hzuDHkX0THuPGvU21oh2mzDHYLdDzaYhZdlFdPMx+cL6JxjD1rqszocTCZYjzjD5z/sQ2XnZ8mswZPUnFPo6BwPVUzxQXL/n3Zkh6QUSDg5xvr9uj7gkMGZ182EhyoWmgdhenSJ6mjeE6ETJTvqeQupAPaswI5XaZTfyzpoEFjz1mOBzTo556Xyl4DrlQUfyTN7/W398OtPDd8aTHa7cgSSLTLp14wWrrLWDThhrCvtbJYtKdZ92+fNjyq9JA1+lT/ixP3n8L9oGJqNlFpuRnvY6+9aQ5RsfZvv0TTXQ6Ex69K+2bVgNccJRYp0WKdMeLQAkifZeMD31u0ORYQnqvkBnbiAxhGd1siTfxzGAfof1xAiqT32vgYZAqGU70+bnmpnqn8sbp4FTR8S77Qd01BOJFXFrSVr90FxohYlssOSN1JEIuVPDA1k92j4S7kIy09ZJnaCtoVMDIbdyJI+GW76hwnRpCTt8MSk0JUVPPpwvOhF0Cwj39h1ZcwRRGB8Dcpxw03ugHpnHroBQ2T81838UXa3dsBgqy0iI5vLBjPGmRGEKObbwO38vZ8MzHfKZUo/iBjH9zZK7BFLy9yCI7J9JMUlF/bJY7ZTkzwVzlV30xxW4rkpF96InLVQor0fXh/7cr04hVzwzhSbLnjE2GBC/Q8uZzPCuXAg0l2RwjIP2oi0dkzioYJceOn8Dv+CSOHX8wKPYxvPBE3XVk4Wmtz3qxUD+OICQNsGs7dUdvil
+ wBMcN16H
+ 4AlCJecsjx+eQVvUB/MX/gecygTFX5xwO4cKga/UOxtWsfMQAWcXjJkSEg3B1oqNGbqrLNylXuftMXEtMlLDus1CdwZH/Ogi43IjNj2wSMfikJUrtU4Kerl24oeYDorBFEosv/D5opB7019c8XPkw6Fr0N7I6ewxPWcHIJbezX6qEyl+SUOa9TmcQtukVCK0KBjaAKKbnjJQjU/dSj/rVI8uM9wI6FICfjjevM42g2ZjFLBd8YEGRanRe9Mxo7wyJlUjqGWE1gWxz1hCxuAwz8T5qko6oxU1U59uSaRRJTl6A74uKvSPien0Caq1tCDZpdHfo01wmjokuyQhELy2CfB5573KR5gRH+lVq6ox40aIlSt8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,464 +178,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 27 Jul 2026 09:23:25 -0700 Usama Arif <usama.arif@linux.dev> wrote:
+On 7/29/26 13:44, Alexander Gordeev wrote:
+> On Wed, Jul 29, 2026 at 01:05:35PM +0200, David Hildenbrand (Arm) wrote:
+>> On 7/29/26 12:13, Alexander Gordeev wrote:
+>>> ...
+>>>
+>>> May be we need the generic hw_pte_t implementation as { pte_t pte; }
+>>> right away?
+>>
+>> Indeed, that makes sense. We just need a way for the architecture to opt-in that
+>> it did the conversion.
+>>
+>>>
+>>> Also, can you envision a case when sizeof(pte_t) != sizeof(hw_pte_t)?
+>>> If not, the compile-time check is worth adding.
+>>
+>> That wouldn't work as is. We'd have to intercept ptep++ and instead have a
+>> helper to advance the ptep pointer.
+> 
+> I think I am missing the point. That is my takeaway from your previous mail:
+> https://lore.kernel.org/lkml/31d36023-d728-4eee-90f8-158c7066f565@kernel.org/
+> 
+> <quote>
+>>    {
+>>       page_table_check_ptes_set(mm, addr, ptep, pte, nr);
+>>       for (;;) {
+>>               set_pte(ptep, pte);
+>>               if (--nr == 0)
+>>                       break;
+>>   -           ptep++;
+>>   +           ptep = hw_pte_next(ptep);
+> 
+> We should really just let ptep++ work as before.
+> 
+>>               pte = pte_next_pfn(pte);
+>>       }
+>>    }
+> </quote>
+> 
+> So are we going after hw_pte_next(ptep) or ptep++?
 
-> The anon/file scan balance in get_scan_count() is driven by two scalars
-> in struct lruvec, anon_cost and file_cost, accumulated by every reclaim
-> producer under lruvec->lru_lock. The acquisition sites for cost work
-> specifically are:
-> 
->   - shrink_inactive_list() re-takes lru_lock at function exit purely
->     to call lru_note_cost_unlock_irq() with (nr_pageout, nr_scanned -
->     nr_reclaimed). One acquisition per inactive shrink.
->   - shrink_active_list() does the same with (0, nr_rotated). One
->     acquisition per active shrink.
->   - workingset_refault() takes the lock via folio_lruvec_lock_irq()
->     purely to record the refault cost. One acquisition per refault.
->   - prepare_scan_control() takes lru_lock just to snapshot the two
->     scalars into sc->{anon,file}_cost.
->   - lru_note_cost_unlock_irq() itself walks parent_lruvec and
->     re-acquires lru_lock on each ancestor to propagate the update,
->     adding O(memcg-depth) acquisitions per producer call.
-> 
-> This hurts because lru_lock is already a heavy contention point on
-> memory-heavy workloads: every isolate_lru_folios(), move_folios_to_lru()
-> and folio_add_lru() takes it. The cost work itself is trivial (two
-> scalar bumps and one comparison), but it contends with and causes
-> contention for actual LRU manipulation. The parent_lruvec() walk also
-> multiplies cost-update overhead by memcg hierarchy depth.
-> 
-> The balance formula for anon and file, respectively, is this:
-> 
->     cost = nr_io * SWAP_CLUSTER_MAX + nr_rotated
-> 
-> Instead of recording cost and running averaging logic directly when
-> these events occur, snapshot running vmstat counters once per reclaim
-> cycle and derive the balance from event deltas since the last run.
-> 
-> Use PGROTATE_* from the preceding patch for the rotation input.
-> WORKINGSET_RESTORE_* and NR_VMSCAN_WRITE provide the remaining event
-> counters. Charge NR_VMSCAN_WRITE through lruvec stats so all inputs can
-> be sampled per lruvec and aggregated through the memcg hierarchy. This
-> is overall cheaper and has fewer lock acquisition sites.
-> 
-> Moving accumulation and decay to the reclaim side also improves the cost
-> model across reclaim gaps. With producer-side decay, events that happen
-> while reclaim is idle still age each other before reclaim ever samples
-> the costs. If a workload refaults a large anon set and then a smaller
-> file set before reclaim runs again, the later file activity can age the
-> earlier anon activity out of the cost model. The new scheme observes the
-> whole between-reclaim delta and decays anon and file proportionally, so
-> the scan-balance history better represents what happened since the last
-> reclaim pass.
-> 
-> A dedicated per-lruvec spinlock, cost_lock, serialises the delta
-> extraction, the cost->count update and the halving loop against
-> concurrent reclaimers in the same memcg+node.
-> 
-> NR_VMSCAN_WRITE is accounted at writeout(), so reclaim_stat.nr_pageout is
-> no longer needed and is removed.
-> 
-> memcg-v1's memory.stat anon_cost/file_cost is now sourced from
-> cost[].count instead of the removed lruvec anon_cost/file_cost fields.
-> The reported values only refresh when prepare_scan_control() runs and
-> are bounded at ~lrusize/4 by the halving loop; the scan-balance signal
-> they express is unchanged.
-> 
-> Under pure MGLRU the scan-balance signal itself is not consumed (both
-> prepare_scan_control() and get_scan_count() are short-circuited on the
-> MGLRU paths, and MGLRU's own type/tier selection comes from read_ctrl_pos()
-> on lrugen->{avg_refaulted,avg_total,refaulted,evicted}, not from
-> anon_cost/file_cost). NR_VMSCAN_WRITE naturally covers writeout from
-> either reclaim implementation. The preceding patch also bumps
-> PGROTATE_{ANON,FILE} from evict_folios(), so rotation-driven reclaim
-> work is accounted consistently across both implementations.
-> 
-> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-> Signed-off-by: Usama Arif <usama.arif@linux.dev>
-> ---
->  include/linux/mmzone.h | 13 +++++--
->  include/linux/swap.h   |  3 --
->  include/linux/vmstat.h |  1 -
->  mm/memcontrol-v1.c     |  4 +--
->  mm/memcontrol.c        |  1 +
->  mm/mmzone.c            |  1 +
->  mm/swap.c              | 69 ------------------------------------
->  mm/vmscan.c            | 79 +++++++++++++++++++++++++++++++++++-------
->  mm/workingset.c        |  5 ---
->  9 files changed, 81 insertions(+), 95 deletions(-)
-> 
-> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> index aab06fb6c6d5..85303c5867c8 100644
-> --- a/include/linux/mmzone.h
-> +++ b/include/linux/mmzone.h
-> @@ -757,6 +757,12 @@ void lru_gen_reparent_memcg(struct mem_cgroup *memcg, struct mem_cgroup *parent,
->  
->  #endif /* CONFIG_LRU_GEN */
->  
-> +struct lru_cost {
-> +	unsigned long		count;
-> +	unsigned long		last_rotated;
-> +	unsigned long		last_io;
-> +};
-> +
->  struct lruvec {
->  	struct list_head		lists[NR_LRU_LISTS];
->  	/* per lruvec lru_lock for memcg */
-> @@ -765,9 +771,12 @@ struct lruvec {
->  	 * These track the cost of reclaiming one LRU - file or anon -
->  	 * over the other. As the observed cost of reclaiming one LRU
->  	 * increases, the reclaim scan balance tips toward the other.
-> +	 * Updated and decayed at prepare_scan_control() time; cost_lock
-> +	 * serialises that update.
->  	 */
-> -	unsigned long			anon_cost;
-> -	unsigned long			file_cost;
-> +	struct lru_cost			cost[ANON_AND_FILE];
-> +	/* Protects cost[]. */
-> +	spinlock_t			cost_lock;
->  	/* Non-resident age, driven by LRU movement */
->  	atomic_long_t			nonresident_age;
->  	/* Refaults at the time of last reclaim cycle */
-> diff --git a/include/linux/swap.h b/include/linux/swap.h
-> index 6d72778e6cc3..d35a4761ebd7 100644
-> --- a/include/linux/swap.h
-> +++ b/include/linux/swap.h
-> @@ -309,9 +309,6 @@ extern unsigned long totalreserve_pages;
->  
->  
->  /* linux/mm/swap.c */
-> -void lru_note_cost_unlock_irq(struct lruvec *lruvec, bool file,
-> -		unsigned int nr_io, unsigned int nr_rotated);
-> -void lru_note_cost_refault(struct folio *);
->  void folio_add_lru(struct folio *);
->  void folio_add_lru_vma(struct folio *, struct vm_area_struct *);
->  void mark_page_accessed(struct page *);
-> diff --git a/include/linux/vmstat.h b/include/linux/vmstat.h
-> index fb8c76289e02..5b31d8e7ae40 100644
-> --- a/include/linux/vmstat.h
-> +++ b/include/linux/vmstat.h
-> @@ -20,7 +20,6 @@ struct reclaim_stat {
->  	unsigned nr_congested;
->  	unsigned nr_writeback;
->  	unsigned nr_immediate;
-> -	unsigned nr_pageout;
->  	unsigned nr_activate[ANON_AND_FILE];
->  	unsigned nr_ref_keep;
->  	unsigned nr_unmap_fail;
-> diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
-> index 765069211567..091bc9ffee44 100644
-> --- a/mm/memcontrol-v1.c
-> +++ b/mm/memcontrol-v1.c
-> @@ -1988,8 +1988,8 @@ void memcg1_stat_format(struct mem_cgroup *memcg, struct seq_buf *s)
->  		for_each_online_pgdat(pgdat) {
->  			mz = memcg->nodeinfo[pgdat->node_id];
->  
-> -			anon_cost += mz->lruvec.anon_cost;
-> -			file_cost += mz->lruvec.file_cost;
-> +			anon_cost += mz->lruvec.cost[WORKINGSET_ANON].count;
-> +			file_cost += mz->lruvec.cost[WORKINGSET_FILE].count;
->  		}
->  		seq_buf_printf(s, "anon_cost %lu\n", anon_cost);
->  		seq_buf_printf(s, "file_cost %lu\n", file_cost);
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index 23adb698dadd..42f4351c69cc 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -393,6 +393,7 @@ static const unsigned int memcg_node_stat_items[] = {
->  	NR_SHMEM_THPS,
->  	NR_FILE_THPS,
->  	NR_ANON_THPS,
-> +	NR_VMSCAN_WRITE,
->  	NR_VMALLOC,
->  	NR_KERNEL_STACK_KB,
->  	NR_PAGETABLE,
-> diff --git a/mm/mmzone.c b/mm/mmzone.c
-> index 0c8f181d9d50..17139db4d291 100644
-> --- a/mm/mmzone.c
-> +++ b/mm/mmzone.c
-> @@ -78,6 +78,7 @@ void lruvec_init(struct lruvec *lruvec)
->  
->  	memset(lruvec, 0, sizeof(struct lruvec));
->  	spin_lock_init(&lruvec->lru_lock);
-> +	spin_lock_init(&lruvec->cost_lock);
->  	zswap_lruvec_state_init(lruvec);
->  
->  	for_each_lru(lru)
-> diff --git a/mm/swap.c b/mm/swap.c
-> index 588f50d8f1a8..74b281778cbc 100644
-> --- a/mm/swap.c
-> +++ b/mm/swap.c
-> @@ -272,73 +272,6 @@ void folio_rotate_reclaimable(struct folio *folio)
->  	folio_batch_add_and_move(folio, lru_move_tail);
->  }
->  
-> -void lru_note_cost_unlock_irq(struct lruvec *lruvec, bool file,
-> -		unsigned int nr_io, unsigned int nr_rotated)
-> -		__releases(lruvec->lru_lock)
-> -		__releases(rcu)
-> -{
-> -	unsigned long cost;
-> -
-> -	/*
-> -	 * Reflect the relative cost of incurring IO and spending CPU
-> -	 * time on rotations. This doesn't attempt to make a precise
-> -	 * comparison, it just says: if reloads are about comparable
-> -	 * between the LRU lists, or rotations are overwhelmingly
-> -	 * different between them, adjust scan balance for CPU work.
-> -	 */
-> -	cost = nr_io * SWAP_CLUSTER_MAX + nr_rotated;
-> -	if (!cost) {
-> -		spin_unlock_irq(&lruvec->lru_lock);
-> -		rcu_read_unlock();
-> -		return;
-> -	}
-> -
-> -	for (;;) {
-> -		unsigned long lrusize;
-> -
-> -		/* Record cost event */
-> -		if (file)
-> -			lruvec->file_cost += cost;
-> -		else
-> -			lruvec->anon_cost += cost;
-> -
-> -		/*
-> -		 * Decay previous events
-> -		 *
-> -		 * Because workloads change over time (and to avoid
-> -		 * overflow) we keep these statistics as a floating
-> -		 * average, which ends up weighing recent refaults
-> -		 * more than old ones.
-> -		 */
-> -		lrusize = lruvec_page_state(lruvec, NR_INACTIVE_ANON) +
-> -			  lruvec_page_state(lruvec, NR_ACTIVE_ANON) +
-> -			  lruvec_page_state(lruvec, NR_INACTIVE_FILE) +
-> -			  lruvec_page_state(lruvec, NR_ACTIVE_FILE);
-> -
-> -		if (lruvec->file_cost + lruvec->anon_cost > lrusize / 4) {
-> -			lruvec->file_cost /= 2;
-> -			lruvec->anon_cost /= 2;
-> -		}
-> -
-> -		spin_unlock_irq(&lruvec->lru_lock);
-> -		lruvec = parent_lruvec(lruvec);
-> -		if (!lruvec) {
-> -			rcu_read_unlock();
-> -			break;
-> -		}
-> -		spin_lock_irq(&lruvec->lru_lock);
-> -	}
-> -}
-> -
-> -void lru_note_cost_refault(struct folio *folio)
-> -{
-> -	struct lruvec *lruvec;
-> -
-> -	lruvec = folio_lruvec_lock_irq(folio);
-> -	lru_note_cost_unlock_irq(lruvec, folio_is_file_lru(folio),
-> -				folio_nr_pages(folio), 0);
-> -}
-> -
->  static void lru_activate(struct lruvec *lruvec, struct folio *folio)
->  {
->  	long nr_pages = folio_nr_pages(folio);
-> @@ -1164,8 +1097,6 @@ void lru_reparent_memcg(struct mem_cgroup *memcg, struct mem_cgroup *parent, int
->  
->  	child_lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(nid));
->  	parent_lruvec = mem_cgroup_lruvec(parent, NODE_DATA(nid));
-> -	parent_lruvec->anon_cost += child_lruvec->anon_cost;
-> -	parent_lruvec->file_cost += child_lruvec->file_cost;
->  
->  	for_each_lru(lru)
->  		lruvec_reparent_lru(child_lruvec, parent_lruvec, lru, nid);
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 053f41584989..0f6334005610 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -641,7 +641,7 @@ static pageout_t writeout(struct folio *folio, struct address_space *mapping,
->  		folio_clear_reclaim(folio);
->  
->  	trace_mm_vmscan_write_folio(folio);
-> -	node_stat_add_folio(folio, NR_VMSCAN_WRITE);
-> +	lruvec_stat_mod_folio(folio, NR_VMSCAN_WRITE, folio_nr_pages(folio));
->  	return PAGE_SUCCESS;
->  }
->  
-> @@ -1418,8 +1418,6 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
->  					sc->nr_scanned -= (nr_pages - 1);
->  					nr_pages = 1;
->  				}
-> -				stat->nr_pageout += nr_pages;
-> -
->  				if (folio_test_writeback(folio))
->  					goto keep;
->  				if (folio_test_dirty(folio))
-> @@ -2047,9 +2045,6 @@ static unsigned long shrink_inactive_list(unsigned long nr_to_scan,
->  		mod_lruvec_state(lruvec, PGROTATE_ANON + file,
->  				 nr_scanned - nr_reclaimed);
->  
-> -	lruvec_lock_irq(lruvec);
-> -	lru_note_cost_unlock_irq(lruvec, file, stat.nr_pageout,
-> -					nr_scanned - nr_reclaimed);
->  	handle_reclaim_writeback(nr_taken, pgdat, sc, &stat);
->  	trace_mm_vmscan_lru_shrink_inactive(pgdat->node_id,
->  			nr_scanned, nr_reclaimed, &stat, sc->priority, file);
-> @@ -2158,8 +2153,6 @@ static void shrink_active_list(unsigned long nr_to_scan,
->  	if (nr_rotated)
->  		mod_lruvec_state(lruvec, PGROTATE_ANON + file, nr_rotated);
->  
-> -	lruvec_lock_irq(lruvec);
-> -	lru_note_cost_unlock_irq(lruvec, file, 0, nr_rotated);
->  	trace_mm_vmscan_lru_shrink_active(pgdat->node_id, nr_taken, nr_activate,
->  			nr_deactivate, nr_rotated, sc->priority, file);
->  }
-> @@ -2292,8 +2285,10 @@ enum scan_balance {
->  
->  static void prepare_scan_control(pg_data_t *pgdat, struct scan_control *sc)
->  {
-> -	unsigned long file;
-> +	struct lru_cost *anon_cost, *file_cost;
->  	struct lruvec *target_lruvec;
-> +	unsigned long lrusize;
-> +	unsigned long file;
->  
->  	if (lru_gen_enabled() && !lru_gen_switching())
->  		return;
-> @@ -2309,11 +2304,69 @@ static void prepare_scan_control(pg_data_t *pgdat, struct scan_control *sc)
->  
->  	/*
->  	 * Determine the scan balance between anon and file LRUs.
-> +	 *
-> +	 * The cost model is based on rotations, refaults and
-> +	 * reclaim-driven writes (anon only) on each side.
-> +	 *
-> +	 * These event counters are monotonic, so each reclaim cycle
-> +	 * the delta since the last scan is extracted and incorporated
-> +	 * into a decaying average. This ensures currency, as workloads
-> +	 * change over time, and avoids overflow in the calculations.
-> +	 *
-> +	 * Use lruvec_page_state_monotonic() so unsigned subtraction
-> +	 * yields the correct delta across a signed-long wraparound of
-> +	 * the underlying counter (a real hazard on 32-bit that the
-> +	 * clamp in lruvec_page_state() would otherwise turn into a huge
-> +	 * spurious delta).
->  	 */
-> -	spin_lock_irq(&target_lruvec->lru_lock);
-> -	sc->anon_cost = target_lruvec->anon_cost;
-> -	sc->file_cost = target_lruvec->file_cost;
-> -	spin_unlock_irq(&target_lruvec->lru_lock);
-> +	spin_lock(&target_lruvec->cost_lock);
-> +
-> +	for (int f = 0; f <= 1; f++) {
-> +		struct lru_cost *cost = &target_lruvec->cost[f];
-> +		unsigned long rotated, io, nr_rotated, nr_io;
-> +
-> +		rotated = lruvec_page_state_monotonic(target_lruvec,
-> +						      PGROTATE_ANON + f);
-> +		io = lruvec_page_state_monotonic(target_lruvec,
-> +						 WORKINGSET_RESTORE_BASE + f);
-> +		if (f == WORKINGSET_ANON)
-> +			io += lruvec_page_state_monotonic(target_lruvec,
-> +							  NR_VMSCAN_WRITE);
-> +
-> +		nr_rotated = rotated - cost->last_rotated;
-> +		nr_io = io - cost->last_io;
-> +
-> +		/*
-> +		 * Reflect the relative cost of incurring IO and spending
-> +		 * CPU time on rotations. This doesn't attempt to make a
-> +		 * precise comparison, it just says: if reloads are about
-> +		 * comparable between the LRU lists, or rotations are
-> +		 * overwhelmingly different between them, adjust scan
-> +		 * balance for CPU work.
-> +		 */
-> +		cost->count += nr_io * SWAP_CLUSTER_MAX + nr_rotated;
+As I said "That wouldn't work as is. We'd have ".
 
-Sashiko review:
----
-Can this calculation overflow on 32-bit architectures?
-...
-When global reclaim finally runs, nr_io can be a massive delta. Multiplyingi
-this by SWAP_CLUSTER_MAX (32) could silently overflow the 32-bit unsigned long,
-producing a random garbage cost.
+So in this series here we are clearly going for ptep++ and sizeof(pte_t) ==
+sizeof(hw_pte_t).
 
----
+Because otherwise it wouldn't work.
 
-I dont think we need to worry about this.
-
-ULONG_MAX / SWAP_CLUSTER_MAX = 2^32 / 32 = 134,217,728
-
-nr_io is a per-lruvec, per-cycle delta of (WORKINGSET_RESTORE_{ANON,FILE} on the
-file side; those two plus NR_VMSCAN_WRITE on the anon side), in
-pages. So the multiplication wraps only when this lruvec has
-observed ~134 M new page-events since its own last
-prepare_scan_control() call.
-
-On 32-bit, addressable RAM tops out at ~4 GiB (~1 M pages), or ~64 GiB with
-PAE (~16 M pages) in the extreme. 134 M events therefore requires
-~130 full swap-and-refault turnovers of a 4 GiB LRU, or ~8
-turnovers of a full 64 GiB PAE LRU, without a single intervening
-prepare_scan_control() call on that lruvec.
-
-> +
-> +		cost->last_rotated = rotated;
-> +		cost->last_io = io;
-> +	}
-> +
-> +	anon_cost = &target_lruvec->cost[WORKINGSET_ANON];
-> +	file_cost = &target_lruvec->cost[WORKINGSET_FILE];
-> +
-> +	lrusize = lruvec_page_state(target_lruvec, NR_INACTIVE_ANON) +
-> +		  lruvec_page_state(target_lruvec, NR_ACTIVE_ANON) +
-> +		  lruvec_page_state(target_lruvec, NR_INACTIVE_FILE) +
-> +		  lruvec_page_state(target_lruvec, NR_ACTIVE_FILE);
-> +
-> +	while (anon_cost->count + file_cost->count > lrusize / 4) {
-
-Sashiko review:
-
----
-If the newly added garbage cost caused anon_cost->count + file_cost->count to
-wrap around and overflow to a small value (<= lrusize / 4), would this skip
-the decay loop entirely?
----
-
-The same 32-bit / ~134M events with no intervening scan reasoning from the
-previous finding gates when this can happen at all.
-
-Same as above, IMO safe to ignore.
-
-> +		anon_cost->count /= 2;
-> +		file_cost->count /= 2;
-> +	}
-> +
-> +	sc->anon_cost = anon_cost->count;
-> +	sc->file_cost = file_cost->count;
-> +
-> +	spin_unlock(&target_lruvec->cost_lock);
->  
->  	/*
->  	 * Target desirable inactive:active list ratios for the anon
-> diff --git a/mm/workingset.c b/mm/workingset.c
-> index f351798e723a..7ac2b88c80ae 100644
-> --- a/mm/workingset.c
-> +++ b/mm/workingset.c
-> @@ -584,11 +584,6 @@ void workingset_refault(struct folio *folio, void *shadow)
->  	/* Folio was active prior to eviction */
->  	if (workingset) {
->  		folio_set_workingset(folio);
-> -		/*
-> -		 * XXX: Move to folio_add_lru() when it supports new vs
-> -		 * putback
-> -		 */
-> -		lru_note_cost_refault(folio);
->  		mod_lruvec_state(lruvec, WORKINGSET_RESTORE_BASE + file, nr);
->  	}
->  out:
-> -- 
-> 2.53.0-Meta
 > 
+>> One idea for that would be to let the compiler catch that by marking hw_pte_t an
+>> undefined struct (unknown size), such that the compiler would indicate any usage
+>> of ptep++ properly.
 > 
+> What is the purpose of that? I mean when pte_t vs hw_pte_t uses are sorted
+> out what is the benefit of preventing hw_ptep++?
+
+One thing I could pull out of my magic hat is that you might be able to decide
+at runtime the size of your underlying page table entries.
+
+E.g., have 128bit pteval, but allow running on HW with either 64bit ptes or
+128bit ptes.
+
+I'm sure there are more challenges to that, but that's an easy thing to imagine.
+
+But again, the focus of this patch set here is ptep++ to just keep working.
+
+-- 
+Cheers,
+
+David
 
