@@ -4,89 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B879C53200
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:02:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D5D3C54F55
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:03:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6F26F6B009B; Wed, 29 Jul 2026 10:02:58 -0400 (EDT)
+	id 3203A6B00B9; Wed, 29 Jul 2026 10:03:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C88A6B00B9; Wed, 29 Jul 2026 10:02:58 -0400 (EDT)
+	id 2D1606B00BA; Wed, 29 Jul 2026 10:03:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 605786B00BA; Wed, 29 Jul 2026 10:02:58 -0400 (EDT)
+	id 14A326B00BB; Wed, 29 Jul 2026 10:03:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 407CC6B009B
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:02:58 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 26CE4406BB
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 12:46:25 +0000 (UTC)
-X-FDA: 85041787530.12.34C11FC
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 959D71A0007
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 12:46:23 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ObB1HZI2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E83FB6B00B9
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:02:59 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6C0DFC035A
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 14:02:59 +0000 (UTC)
+X-FDA: 85041980478.30.131561F
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 760E114000B
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 14:02:57 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JLh1AUcT;
+	spf=pass (imf23.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785329183;
+	s=arc-20220608; t=1785333777;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E5EyZaIGNJh9pQIiNFuF+YnjsVzpTmxcyoyvY24Qa/U=;
-	b=yDDRjH4/GAM9wLafjutaIdZxLuOj0lOusuF0cbeDhkG7h1/Ej8sQN3ILITNBkgzKwhCQS6
-	T388s2zyJJlV6XJj02bjsAzF3ktCKeG5zkUjmXU60a1hVMXNaRdCilmQRL3JZd0x8deUrd
-	DiGTlCpPEqXViZyn7QMf5lW+HP6zSic=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ObB1HZI2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	bh=LjH7kA+VtExpLGxksUgfM9iOOpmaOblODtEnyss+CH0=;
+	b=sj0gPXxIbpiOt/Q6yUYquFjvqjUdtI1CL2ZNDEb9N8MAFYRrnemGQkiLlJKcaSYZEHuLOv
+	Z5bCUeOG1bnWlVa2HlKX8wPioD92tzOe8HhBVgWCr6g8jKBscRJ6M/xVW2GBIKpVsj+XwM
+	0q163596PSvrMhneOepuYNoN2EOjH40=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785329183;
-	b=KNv4fLCUpRvOqfhwgLSUD1SGkF8zhB9IE1+bfbNbMdlRTVdqo8pFiu+xy/qEQmQk4H518s
-	0jGTO9znRNtYEj8P1zqh4Ga6eCT5dSueDTxvxttHp8JVEXIPduUsmSDGyS40by3JY8Lb9O
-	EJvVIKRWe5ZMeXMP28d2QzuChjOow10=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1ABFD600BB;
-	Wed, 29 Jul 2026 12:46:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4A261F000E9;
-	Wed, 29 Jul 2026 12:46:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785329182;
-	bh=E5EyZaIGNJh9pQIiNFuF+YnjsVzpTmxcyoyvY24Qa/U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ObB1HZI2xUReSJDP2xfClsEKHhqyIa8spfc7Y37Q5iZ+RK2x1JTvs1SHFsLJgOoH/
-	 6cN8lbX2SrGbWwrvXDUk+iLhq2XBWTJ2ePH2u7RxNQXHJSfcVaQPhduWy9QD7Gc3X/
-	 TKF8TAwIQoLrC6ac/QqWSVoSpHttRfP354lmrOEkE7vqsugiVeeP6sClKSoDXOZsVl
-	 CRJOVqLAuFguFbehrxgosKmu1z646x5qBPw4v6PQYkNE/BjLxYbDQ8qw+I926z7r3r
-	 tFzuvaL0aiSFXpQhBS7LqGWdJ9Yxu0Na7bbBqKEN0EOWCfdz54SnmmccTKhOsnofaj
-	 WoJP5rWipU+Ig==
-Date: Wed, 29 Jul 2026 13:46:05 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Brendan Jackman <jackmanb@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
-	Brendan Jackman <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MAINTAINERS: update address for Brendan Jackman
-Message-ID: <amn17f8tb0od0Voa@lucifer>
-References: <20260729-email-change-v1-1-666ae7c2b7fc@google.com>
+	t=1785333777;
+	b=S/xAPqQZurvRwOCmHmJHx1zTInT+nZRulAM6LeM2UXF//38urHvOle9utE41UeCuqFrLJj
+	kSm8aX/3NWjHnio1B8NyWhX5cFuGNT0HIf0DnvQc6oxzTquPd2ZtwlpwKFYlfBdX5xFo0x
+	OFeimlBJrFcRiFjT0w41DZjYunn2qRM=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JLh1AUcT;
+	spf=pass (imf23.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <8863eb5b-df3d-47e9-8e15-140a1d0269bf@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785333775;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LjH7kA+VtExpLGxksUgfM9iOOpmaOblODtEnyss+CH0=;
+	b=JLh1AUcTbIviy+qK6OCfahGE8G2o1cT/rauKPILFDyvKCEu55f4hdirm31E3x4Qv5eM8r7
+	wHEarv2EGWyksXMDIz7n73vQfgPdPvYS6Qo/GnwXug0PqZ3oEhmcrD5Y2s+NGU2pQUqyUB
+	VNqu+ND4Sjhs2L3wtIXwFJ3EGF+bVV8=
+Date: Wed, 29 Jul 2026 15:02:37 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260729-email-change-v1-1-666ae7c2b7fc@google.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 959D71A0007
+Subject: Re: [PATCH v1 2/2] mm/memory: add anonymous mTHP folios to deferred
+ split list
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Usama Arif <usama.arif@linux.dev>
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Joanne Koong <joannelkoong@gmail.com>, akpm@linux-foundation.org,
+ ljs@kernel.org, Johannes Weiner <hannes@cmpxchg.org>
+Cc: alex@ghiti.fr, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+ liam@infradead.org, npache@redhat.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
+ vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ willy@infradead.org, linux-mm@kvack.org
+References: <20260707201735.4113107-1-joannelkoong@gmail.com>
+ <20260707201735.4113107-3-joannelkoong@gmail.com>
+ <584098de-dd48-4004-8e7e-3d826e60c860@kernel.org>
+ <77b3b74d-c1bb-461b-8076-8729cdcf91f5@linux.dev>
+ <7d841b27-f60a-496f-81db-84158a0a8f8f@kernel.org>
+ <0bdb81db-5e2f-47c9-998d-bca450644ba6@linux.dev>
+Content-Language: en-US
+In-Reply-To: <0bdb81db-5e2f-47c9-998d-bca450644ba6@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 760E114000B
+X-Stat-Signature: rrk7du8p1sh1s67owxkunwyrfrpjnftg
 X-Rspam-User: 
-X-Stat-Signature: x117sburq1s9yjc8zwar548m43rch7w7
-X-HE-Tag: 1785329183-925641
-X-HE-Meta: U2FsdGVkX1/dNhYDE8IDqGUJeBu4GqJ3fRYdEoKrJn3ZC4yhcEOz3XFm8GAA5Sl4oopu/dDxCCnbpu0J0KSXPLz+VQW1CJIVsgivDMpEVzO26+XqIxf7r4P2gVgoNWcgPbWg504tb71vmybqygLMroZ0NgFWnqoe8ulhPOICy3kE1ShoBc6Zrlp1sW3k2+A5zrphUS0hedkHlEA+q6IRaizW9/4hAD4gl/EmwI46aN7MFS6lL2Lo6VAcfH6t9lUJ824CFQ7u7+5yzC0o07iKb9nOrhbwsvH51+nCngUpqqNbVJ1RjwiJB5BwgGeEBl3vIJfzk/rvFbCpJ4CVZK4orPcmL9rhtaY6iSWCgEWu/yeQBo20Kyp9KGdGyVayc/igNj5SiwwdP/H+TeCsGglRLo/aSdyrVmBxj15uR/W6wwKmu53mO+J4neBAIh/CA111w8StevxaKHyZpQTAhVxQFbkqvjLAiHqaVMf14z08ThRMdAMsX/TF2NyACm3kY5jjKvUXdfLOIPqvDKC9INWBavWZlmrwKK9dJKPUKcRi3MWjKKMbbM4c5uoDqJ50EEJa6xknMLNNOv94yjFBrUhEXHNq6Vn6PpSbfAYye6fmr2hEMyl9G2oTDuXD80r5VXk6eh1xp0Pouj1I+ST5hw4Mxzu2fbufuaivnqGF7eYEeG7dRwkLhgUiCOs1uGO7WWkTfF/rh2eX1QlmfP7xlLg1TdTyb5X91G4XP5o5Mrizqk4N8YNOGgLcNYaE5GGiZJ3IlcVp+9ITIp3sqjgHfk/l/sqMx8D/fvpE9jtQJ81CTZj2OgLQ8VlNw2LvkxucSuqC2g6YYyYs1ttALwZ+e3Hki3FofrqnsJlc33QM/ENPIhYx/GX+Ra4ePuSS4Xzc7cd0EZZXWx0o7TKJUtQMg2I1+0olTHVryG5LOqnBwOm03yfz9bn6EOv2WuAVRXbbNeFTg4QlgcARJMDLIvW87Qx
- CZniSEIt
- F7MFeTlRUBTEDDKehS3qWilFLSswmmEbjrxrSMaUhBbQpBBM/hTv6M6HyFs+fQyNg8PCuFPEtdaUayanVuPyRRx7DFsBtNgkkvipRmsS+gN2wu0lGhx1SwWpSEvNMfJrpC3XriHB7PsjYEQpXq4B2y4E5Aw1SuXSBMrk4HMxe+y5/wzS4QzFNygsHuZKiA+bQwmQv8y94+9Ulg3ECOpoOiv3Ia8IZQ7mcnKf6ysON92Ti3F8rnQfVTc2ybnyfmNSqq8IdZfvOdTfrKX094YWu2SSVVNeVqC5/d9bryUZe9j7HtACrnzxIuDTvpp7BaU46W/C5d+3LO/z7MHMz2z2Y7SlPLNt02JyxRnDAG8NWxY+rDDUeQpR5LyhA4eCfOVy2LKxZDqeIE84NSJpNbrbMyCskQOScKLCMsYpFSCr4tZT97UAoDndS0RfQJkT9o469F2MNXLP0GclYtp1Y+tdzmuC6IiGL8KJHxb12jG4OF5kyN+Uq3wWEL0mx5k3HVu9LY9E7cADl+xY58s52R14vnRJctC3pCw97StlJwA4rUQFEMdWEMMcZ7TMQWmhqqEBAgTQ+L4j1Id2Egu3w5DL/FP2hZOq44ScAEbIEcmza6UCsGjIEPOME9V5FPh7jynkvhTuOEFa3XVPGlzFtKjAFH3mezxapTN5n4Gy0qb4T04QKf9GIgcNQh8tMAxThCmpt/2NFyjbN/ESufu9cAkhO0gldpu7OrLxsrvNY+Pod8hjz6TKF+/jhdq/o09RlKwWGz9D2nww1xW+M4FhDhxcUUf1+eGOUZCKfAwYqyR/8ICGBGyHmXiyqVddXUiV601u55GGIgdGYUN5WO2qORzoJ1spYrg==
+X-HE-Tag: 1785333777-774536
+X-HE-Meta: U2FsdGVkX191405FFv8yqNVFhqYkdovyWbhINvjL9sgeOxilPHcHljuQvfP+fSzprwE/Dn2vTARDCut8RXiOV+lfmL5vYUF9uysxY1yWuureuDZj9QEnTlLlnrydKyMunAcvVv7mz2NY5MdlMfac174c194TGtJkqMbnfaVMYxIEP4Czn7GzP17ChtBjWUk7JwDAG76MaV+SWECpSBXgfX6a+DlOylyfv51ZDoOt2RVn/1hbFiOxEyC/JlEsOkxmxUjgxtbSGzK1b80h4vBnTyaX2M1wp6/OHO4I9mh2mh3ig+EbNFvH/9vvWn7ac5We53RvF3L/yQudATnoSHpnMYW8Uci7Nz5h3FFccGCd+Tm8FDjIyvliQF8NviR3y+7od555gtbrH5JQvfrq/qN13FZvIfeqDCiuLypDsVtKWtInlCDucruzqpzbBBqArJGPUn8Mb5y6SG18hf+xUOtwcAgx7fdjtYjfsb48UzDFdp+aLKiS66X93IGRJcOFta/1B9bcF3kyhKocdUQBANteB0bJ9p5W7HGdQVQJkAy13fnFotlbH5cPqnXXjl/fQJmwalnmiIkeORTj3J+8Kl7rGwpYsQV5+uutr9XZ/OFpvvcEzJqCfWJg91csvK7fsqA5mqC2UHwAnlNPhTLVCxvAvsfm4ENjs3cax8UHRCE4ZHUqC8y5hsq9h6PUuFjPv4n9XrBVpPnCg7Y9cL1XvAFbvLywljSywi9YRm4ABfhXFp1E1GA35I3+UNtS8nM2i+N5fGh9kmc6Km8NvaPPMMoXJzMYJOud4hFHwbKuTRzm1XHA+8hViYcjF/jlzNTQNu8YMRFxMImXsup8BnVaFeoTkCxl16H+aDGiBkpCvXbt8Jhb63CqSIL4ZRtz33Vy305i04mthpY2afpahXRT7quDaRseKErv4xkoVh03SmhQTY3B0Z22a7bjPj2ddeRPtyWPz6QQGwS9P0apk8loiYi
+ SqP3X9a1
+ 9Hndm/25nJDgy9PFIYVuaBzH9FRBMh5+pt/l4pstec5ZmUDgBEtJn+oWAdN5nKZj4af/SbvCbQvh0BQO818hqKbl5iDtlpt3TBfOcBxeeBWkhj5lnlw8P+tZR5J/npvfFiM1tBsRfPmuYZ6gWWIIhhg13b1YkXdK38hIMZa+JAfKWLDJ/+4ykeAbPJBjC3MVJmI9wGmXwiSViOblaqQoKLBOWzOf7DKDKr6NmCnsfTKDmWWGn2bhbWVDLAo2d4y6tbrmP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,62 +100,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 29, 2026 at 12:01:48PM +0000, Brendan Jackman wrote:
-> From: Brendan Jackman <brendan.jackman@linux.dev>
->
-> Switch my entry in MAINTAINERS and .mailmap to my @linux.dev email address
->
-> Signed-off-by: Brendan Jackman <jackmanb@google.com>
-> Signed-off-by: Brendan Jackman <brendan.jackman@linux.dev>
 
-Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-> ---
-> I am leaving Google. Luckily I've mostly de-Googled most of my Linux
-> workflow already, thank you Migadu <3
+On 29/07/2026 14:43, Usama Arif wrote:
+> 
+> 
+> On 29/07/2026 13:36, David Hildenbrand (Arm) wrote:
+>> On 7/8/26 11:58, Usama Arif wrote:
+>>>
+>>>
+>>> On 08/07/2026 08:56, David Hildenbrand (Arm) wrote:
+>>>> On 7/7/26 22:17, Joanne Koong wrote:
+>>>>> Unlike for PMD-sized folios, an anonymous mTHP folio doesn't get added
+>>>>> to the deferred split list at fault or collapse time. As a result, a
+>>>>> fully mapped mTHP folio that is mostly zero-filled doesn't get split by
+>>>>> the deferred split shrinker when the system is under memory pressure.
+>>>>>
+>>>>> Add anonymous mTHP folios to the deferred split list so that if there's
+>>>>> memory pressure, a zero-filled mTHP can be split with its zero pages
+>>>>> remapped to the shared zero page and then reclaimed.
+>>>>>
+>>>>> To minimize overhead on the common order-0 fault path, the
+>>>>> deferred_split_folio() call is guarded by an inline folio_test_large()
+>>>>> check.
+>>>>>
+>>>>> Suggested-by: Usama Arif <usama.arif@linux.dev>
+>>>>> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+>>>>> ---
+>>>>>  mm/memory.c | 2 ++
+>>>>>  1 file changed, 2 insertions(+)
+>>>>>
+>>>>> diff --git a/mm/memory.c b/mm/memory.c
+>>>>> index 6637c5b13c9b..441d918e3dc0 100644
+>>>>> --- a/mm/memory.c
+>>>>> +++ b/mm/memory.c
+>>>>> @@ -5259,6 +5259,8 @@ void map_anon_folio_pte_nopf(struct folio *folio, pte_t *pte,
+>>>>>  	folio_add_lru_vma(folio, vma);
+>>>>>  	set_ptes(vma->vm_mm, addr, pte, entry, nr_pages);
+>>>>>  	update_mmu_cache_range(NULL, vma, addr, pte, nr_pages);
+>>>>> +	if (folio_test_large(folio))
+>>>>> +		deferred_split_folio(folio, false);
+>>>>>  }
+>>>>>  
+>>>>>  static void map_anon_folio_pte_pf(struct folio *folio, pte_t *pte,
+>>>>
+>>>> I had a session [1] at LSF/MM about having essentially all large anon folios
+>>>> part of the the deferred split queue.
+>>>>
+>>>> (1) I don't think this scales.
+>>>>
+>>>
+>>> What if we only add the mTHPs for which the policy is set to always.
+>>
+>> That doesn't really help lock contention. And the lock contention is indeed a
+>> thing, as we now also want to enable the LRU cache for smaller large folios,
+>> which improves performance:
+>>
+>> https://lore.kernel.org/r/20260709081536.82768-1-baohua@kernel.org
+>>
+>>>
+>>> I think it doesn't scale if someone sets all orders to always, but if you only
+>>> set the 2M mTHP sysfs to always, it should be the same as what we have today
+>>> for PMD order?
+>>
+>> I don't see a problem with large large folios, only with small large folios :)
+>>
+>>>
+>>> The main motivation for this series is to try and bring the performance for
+>>> ARM on par with x86. One of the differences is TLB misses. I imagine the lower
+>>> churn in kernel by using larger page sizes will help as well. But we will
+>>> run into OOMs without the shrinker.
+>>
+>> Can you elaborate how this change helps here? I assume you want to enable mTHP
+>> in production. Which sizes? large large ones? :)
+>>
+> 
+> One of the differences in our production between x86 and ARM hosts which we think
+> should perform at a similar level (but currently aren't) is TLB misses.
+> 
+> On x86, we have 2M THP set to always.
+> On ARM, we have base page size of 64K. 2M mTHPs should help bridge the gap due to
+> TLB coalescing. We can't really set 2M mTHP to always as without the mTHP shrinker
+> we will end up with severe memory pressure and a significant increase in OOMs.
+> 
+> We don't plan to enable other mTHP sizes on ARM, only 2M.
+> 
+> The series by Barry is for folios above costly order, so won't impact this.
 
-Wish you well for your future endeavours hope to continue to see you on the
-mailing lists and at conferences! :)
+s/above/below/
+> 
+> David, Joanne, Johannes: what do you think about only adding folios that are larger
+> than COSTLY_ORDER to deferred split list?
 
-> ---
->  .mailmap    | 1 +
->  MAINTAINERS | 2 +-
->  2 files changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/.mailmap b/.mailmap
-> index ca6dc25758026..7324e1af59c2f 100644
-> --- a/.mailmap
-> +++ b/.mailmap
-> @@ -170,6 +170,7 @@ Boris Brezillon <bbrezillon@kernel.org> <b.brezillon@overkiz.com>
->  Boris Brezillon <bbrezillon@kernel.org> <boris.brezillon@bootlin.com>
->  Boris Brezillon <bbrezillon@kernel.org> <boris.brezillon@free-electrons.com>
->  Brendan Higgins <brendan.higgins@linux.dev> <brendanhiggins@google.com>
-> +Brendan Jackman <brendan.jackman@linux.dev> <jackmanb@google.com>
->  Brian Avery <b.avery@hp.com>
->  Brian Cain <bcain@kernel.org> <brian.cain@oss.qualcomm.com>
->  Brian Cain <bcain@kernel.org> <bcain@quicinc.com>
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index a22b942616cb8..2657cbf6df903 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -17162,7 +17162,7 @@ M:	Andrew Morton <akpm@linux-foundation.org>
->  M:	Vlastimil Babka <vbabka@kernel.org>
->  R:	Suren Baghdasaryan <surenb@google.com>
->  R:	Michal Hocko <mhocko@suse.com>
-> -R:	Brendan Jackman <jackmanb@google.com>
-> +R:	Brendan Jackman <brendan.jackman@linux.dev>
->  R:	Johannes Weiner <hannes@cmpxchg.org>
->  R:	Zi Yan <ziy@nvidia.com>
->  L:	linux-mm@kvack.org
->
-> ---
-> base-commit: c73b725a57f276a3702ca213bde78fca029bc619
-> change-id: 20260729-email-change-8924aa90b1f4
->
-> Best regards,
-> --
-> Brendan Jackman <jackmanb@google.com>
->
-
-Cheers, Lorenzo
 
