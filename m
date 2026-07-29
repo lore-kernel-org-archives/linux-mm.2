@@ -4,130 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FA0EC54F51
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 00:37:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F8B0C54F51
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 00:38:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1B9786B00C1; Tue, 28 Jul 2026 20:35:29 -0400 (EDT)
+	id 9D1C66B00E8; Tue, 28 Jul 2026 20:36:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 172876B00C2; Tue, 28 Jul 2026 20:35:29 -0400 (EDT)
+	id 9AB326B00E9; Tue, 28 Jul 2026 20:36:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 07F6D6B00C3; Tue, 28 Jul 2026 20:35:28 -0400 (EDT)
+	id 899986B00EA; Tue, 28 Jul 2026 20:36:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CD1436B00C1
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 20:35:28 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6E3221C0DDD
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 00:35:28 +0000 (UTC)
-X-FDA: 85039945536.01.0D15273
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 873241C000B
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 00:35:26 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QwINtLt2;
-	spf=pass (imf18.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785285326;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5B71C6B00E8
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 20:36:19 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DC247403E7
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 00:36:18 +0000 (UTC)
+X-FDA: 85039947636.12.63C5BC4
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	by imf22.hostedemail.com (Postfix) with ESMTP id E9B45C0002
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 00:36:16 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Nw5zj6Au;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf22.hostedemail.com: domain of jyescas@google.com designates 209.85.167.49 as permitted sender) smtp.mailfrom=jyescas@google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785285376;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fZEbQlEydtGYZDY5K/y4loY/HOvIRDrlSipJU6mlXHQ=;
-	b=7qBw40DPFUupuJ3Tje3COs5lKEW7tkuWwfrisaMCzIafTk/0kuRDEcR6mhkl7Ufj9lr7KQ
-	CDlnShISATmU7sv+t7N7OKS1HFWSM13hOYj/t5JTrTaYM+eStY5rCkQxrHLPxCuFF7DLde
-	trCW52Uo1QOqNg+5llv/OXBgsLIx5mc=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QwINtLt2;
-	spf=pass (imf18.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785285326;
-	b=i/kR4e3sWGd719X/bwJF/3ZlwahrIjiSJqGMEbQYbF414W6aZO8TWT7lYQuLGlmiYwr722
-	fRi3IpoHrGdmiPR78gDfFSKjXaV8WFjUaxv1/xUv28IVT4++h5dsdyzOrOACNehgXpa2nn
-	MEuSmVv8dDvwnAjZCFdndSUgiRCkbtE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7A3004516B;
-	Wed, 29 Jul 2026 00:35:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 4A904C2BD05;
-	Wed, 29 Jul 2026 00:35:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1785285311;
-	bh=C5eRUocXw/GNePSjynQl43Hme2TTs/8p6qo//nMsiik=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=QwINtLt2IIPsFVO5GFtY8QDDskGKycJ/6P5DMyq+nEo2CdheZyXl9FJuAJNFC0sig
-	 dTcJxW3Q7MKTt51fgijIBqnDIx4pV5bG74nTgDkVBGh01MreuTVCT011Zo0Q7uVsjS
-	 jeh/wfyFstIaS7VGRGtsRqc2+lca7ZXeAeHbTgq2ftAqzLc83F8vQv7Cq82zAlZT/W
-	 eZ2w4IlK35SFGvCGy6R3xyydJtMgJBHu03VzJD4nZ02xQD58koJ+hgt7OAaTa8WEIC
-	 Ovs+BrXmi90GjWlpQ9CFuIkbvP2aa0TFM7wNzp3h7cvSZjjofoX/4RWF8qwEFrk1v4
-	 GycR7DQT+6BDQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2F7B9C53219;
-	Wed, 29 Jul 2026 00:35:11 +0000 (UTC)
-From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Tue, 28 Jul 2026 17:35:40 -0700
-Subject: [PATCH v9 41/41] KVM: selftests: Update private memory exits test
- to work with per-gmem attributes
+	bh=O4+ZKchlNYOyVx1ec4Z7hkgzRosN8uCqlqN3+MCAunc=;
+	b=t/+NiE6dB5Gel4FBJ+nvQMSqsGZpowBKszTQ7X9WzDXU834qpGvvwYtSldrDfQbzwcT9oA
+	1PbXTG2+rMLTVYxmtMgOM4HjBB5dMAhCuffpAfI5CqJiZTDhWRS6rQuMG58kCLITDtJzil
+	hbEQwAg/apNGuaiAwo5reHBI9wRKxXE=
+ARC-Authentication-Results: i=2;
+	imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Nw5zj6Au;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf22.hostedemail.com: domain of jyescas@google.com designates 209.85.167.49 as permitted sender) smtp.mailfrom=jyescas@google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1785285376;
+	b=hNSQxT0GZgIV1ojaYYpr7ELrN+bwin24e2Q4g+t+nGbNDGSnV87ZyieNxClSDUCwkzMDte
+	l0EFXVEEOYGUSMF4YbcWLRttq+cKr0+eOEYBrQkWQaxEx9JdK4ek1IgtrW9DCrFMppHgWJ
+	RxKIqb/gFv1u9yCIaozzTIHuY8cd54o=
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5aeb688ae83so1856e87.1
+        for <linux-mm@kvack.org>; Tue, 28 Jul 2026 17:36:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785285375; cv=none;
+        d=google.com; s=arc-20260327;
+        b=gZOE+4AXdp+aFgq3rA6g26MXGKPOxGDfG42u8A155SE6/C1FKUp5US1LbKk38DNEf5
+         q9dB5sry+msg7naPp+2/37vqs82hS1ZkHV6NHnfhKdZrcdH7/jlK6e00n5Ne5MKCIG2k
+         JwQwgyahV/wu6dnog3p54cz3/a/aHdok637HzrL/Sxh+5FBdMvIL6RaGmwf+8xxg8q3d
+         As8eJM24AGNAgoFtxtDFHlxXCymwTbixez48valMVaF9zlikxY7O8jfw7JeHAj7slLQu
+         Gxjf4Sj1cDau6/GKhKkhJp3QLltRVxRYu+Krd3Kjcg1JjuJ+Qh22//mIJobat7JzVg9/
+         kUOg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=O4+ZKchlNYOyVx1ec4Z7hkgzRosN8uCqlqN3+MCAunc=;
+        fh=U85sBaxXH+qpBBGzIjRVwnsgRN3qsEWh1RMrf/Iy3+k=;
+        b=kgHSXaO1c76BKSghDoY/1KdYxunWXh7bcpHfNemNqIhBWDVSMi86rgIGicdhQdVTL1
+         kVDaSpPEA0ut73txGi/CsViVLPyBHS2xe8AnSfq4G3iVtIEqQUqYMXhKvArxVn4OTEzw
+         nJsaQpL7h6Aiq1na633JFC3S9WIrOlVtoGpFJw3e4CEczTg/256GEJgVAUJ/x+gOFf7G
+         we0ncGWHMs3RLka4K3ChuaoIIll43fNyM7Pnxl0VPIQNJ2dsfetiUqJh4x6imH5/o8ID
+         T2S2KZvJRxTGY4KdelyEgkDAL375RoPVkvf8jWjPE4F//k2F3VetcDnSgPTb9HKVb78R
+         jo7A==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785285375; x=1785890175; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=O4+ZKchlNYOyVx1ec4Z7hkgzRosN8uCqlqN3+MCAunc=;
+        b=Nw5zj6AusSnbs/xiOsB8i6QWpCGAH4RfroC7CbphEo8dAW0cVYFRhnBWSxE4I2pRNy
+         3wswt0FOQxXrFYYxuF7zJHwurXzy8YOsgvIWsmQfpRbx5csSzyvK1/18mwjddZeLaJ2Y
+         R0WL5oGC8WUd2ZeV4XqfEt0gf/b+e7LeY3rF5ny/wkUDeQS4RZWoEy4oYtsBmmf+s89e
+         YkFtXavqIxnn9DY9IaPN2x1z/NRwulKV43vFEaCD1B4XlhSO5ee4hDVgPDZRdT1fRbo4
+         dXFMLLflI+rai0WwVR78ZentkT9ou2dQhdSGf055eCpX+LOAUY/q3c4XUmawCyatNPYc
+         5ldA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785285375; x=1785890175;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=O4+ZKchlNYOyVx1ec4Z7hkgzRosN8uCqlqN3+MCAunc=;
+        b=Pk1vtzoWL7vJoT0PXHyBeYkr0VqiBy8HDc1OxQrNjG3t4zDhsAuuCzBK6fNXTm+pNW
+         NTfWVb+zLNrT0HgouZxD5gHlm43kMqSwvDE/JZXWERHFtg2oSyJ9YbGS7xews9cPmFwi
+         aGBNhyUd+jIphc7VIp0Zb/f5i0U9kqsx90j/MNsVFbRu3cq8+1Z0C8gEevb5yRjpokI5
+         IPyUvyNLukmLrThlgDYQITQ5e5IKtklphOalxKzu/OuaY1X92pGgzUzau8A6EgPIDpuh
+         wnz3P9O3o269Gb/xGEdp0F7FU+BzpKA01wJoP9nOoZ6fXJFCllT9s4Dz/AcMbc6ZJanS
+         y/tQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqdHzgde8q7SBzfdlQmqmnp7t1MYsl+LOx/BklrX8TEY6K/JIQmq7t/gE2EPY31w4GdnWWclaeCMQ==@kvack.org
+X-Gm-Message-State: AOJu0Yyu5ZpiBrZV9sZurJQ6lv/TZ/VIdyh14U7myuaBGkYhw61N7QwO
+	4n/RX8mtPU3aCgxDme+AQEs0KoOu0lvWjnY5huqVPqwZY1geh6ZxOD/ThjNUQVz+kY9I9zCk92n
+	D58pbfpT3R4Q9RZJlh8jn2bo5Sh8kPOxAAqvdV673
+X-Gm-Gg: AR+sD10KnZzZr69ZKHaLto+H08n4mo9pdLkGqwk8N2Oj9D+CalvrXMuLA3bD87zW6uv
+	jGJL59dkc+uvNna7RecbdD7pMTSv8rgolp7SjSyWI6FjIYUCYQMW0ePsWryup66TdcpOlEr5fhx
+	jiJtthBu9hXKDvLUBAf8FXIjGmG1vARnfJfES87qdU5vBiP68Bi6SOi/RWH6wb9DdccMzmO9aDc
+	9pXeGXpWWL7hzWw5JOjGvpPVNVaupbzRJLw9SdxnMagLrqfaGddjidWfOUJEvCsA/fRXSB5G9Ty
+	1zoawuykSV/cxFibVTT7Gzv6P4T4gLzKmYwy3hluNUfa/uTFXftl52W44t6OT7aPcosTR+exlw=
+	=
+X-Received: by 2002:a05:6512:3f0c:b0:5ae:b1b3:145a with SMTP id
+ 2adb3069b0e04-5b2d82772b5mr5655e87.6.1785285374685; Tue, 28 Jul 2026 17:36:14
+ -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260728-gmem-inplace-conversion-v9-41-35f9aec2aed2@google.com>
-References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
-In-Reply-To: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
-To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
- brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
- jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
- oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
- rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
- steven.price@arm.com, tabba@google.com, willy@infradead.org, 
- wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
- pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
- liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, 
- Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, 
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
- Masami Hiramatsu <mhiramat@kernel.org>, 
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, 
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, 
- Peter Xu <peterx@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
- Vlastimil Babka <vbabka@kernel.org>, Baoquan He <baoquan.he@linux.dev>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
- linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785285305; l=3860;
- i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=OXbxJklB527/baH7YroleLhSK6jGYFBASgJI72afKmQ=;
- b=1EaVGZNxPXcWvFQRM0UerprMYCydw3MFwdosN66H2gElr9s7pSEokltDzvvyRtDiOn6seSpSL
- qw4SjyTOQilBMNqMJhrbpwgjEZ1s8XTs+XJ3E5zC4njCXnoq7W3vK91
-X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
- pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
-X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
- auth_id=649
-X-Original-From: Ackerley Tng <ackerleytng@google.com>
-Reply-To: ackerleytng@google.com
+References: <20260723074854.1013941-1-jyescas@google.com> <97605949-82c5-49e0-84b6-b42e8078b55d@kernel.org>
+In-Reply-To: <97605949-82c5-49e0-84b6-b42e8078b55d@kernel.org>
+From: Juan Yescas <jyescas@google.com>
+Date: Tue, 28 Jul 2026 17:36:03 -0700
+X-Gm-Features: AUfX_mxcXP550gyHsDpzZinI7XOmRkCcTIAAYZxgEXkbnfwqJOQ_c39OoLMlWM0
+Message-ID: <CAJDx_rjNhiS+J9eDkQxPF6B=jJ-Evr-M7NNeS_QcG7XWNDoEYQ@mail.gmail.com>
+Subject: Re: [RFC PATCH 00/16] Page Alloc Hogger
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	open list <linux-kernel@vger.kernel.org>, 
+	"open list:MEMORY MANAGEMENT - CORE" <linux-mm@kvack.org>, android-mm@google.com, fvdl@google.com, 
+	tkjos@google.com, minchan@google.com, dskiba@google.com, 
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: E9B45C0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 873241C000B
-X-Stat-Signature: 363ouf7kgaa4zzw5y44eob8c3thn8ojp
-X-HE-Tag: 1785285326-892187
-X-HE-Meta: U2FsdGVkX18/POujlD2PvWWzMeHF5HTw0RASe/6qEVbXNqG8PJtk8ZOYcLoS8vYA1dg8jBOCP8vyY4P10PH1D4DPUgAuoGZwNH1IjRcJWavr8zXCUWdVwVJiASoCHToSqrcdvv9Bh7M53Zs7GNu1W3p9ckZaHcJbLXjaZlnuEDsSVmVleUT0qZocIFc8MohO9yK+dbGl7nCybq3PpLhuF6Gli+x6F/BNbHbFH6CbOgxndLSXTG62HZKUHTD1nuWHTpylv9YVs1+TPxDQ9QK8bg+rOyNU8bZH5BGI1UiwNBYSNYTbSzejC6LiLCti8ZJ08Zu5cGLPFrTMUR6JJjbtxTX3S4GPbmcP6U9h0OXWW46XAh8gUOFwiEFCsE6w8iFcN0vjBqVwvaGm4mwwDyVU1+6UkIVGZ/F65f32bPkrKkTPzRH9pctaS8GFKVwVtQpbTdRC35WqO3wDUmiNWeS7tNqXTWyinCtFAgNUtusVO79wl2yOzd3Fb1ZZU3kjUyfSy8aPSKnV30ztp0wghxqFDmJcpRcTLxyL7HvsHBkaeRwsO5jXuC7M+9bKYVamAKF/b1hkMJGK8OtF16RtKyTObjJtbCTRf4pxPpz6jpEi/fV4S2INoPKZodisVEjdkKq3TRlMsJr4HWmcSHsdrW+lcBJVeS2DXTHm3/M40CDRcFl1ZJrghUn9EwBxAsq8bYfWTOGmDAU+NT3Rw9Tz19JWvvlfaXf+qheHzPiNZLtxQmdIz+Qb8fR/ZWG10F6rt9rmX/eZb8KeEjFq8hNeBRyujD/XLWcdeRN75WLkxbQX0/NLEgTWk0BBdZ/F9rvWqKqZ3l8vrr7+rhwZ6cDDzoFuzihbu0BSNPRw2ZVypyKt+iWGmAZMPTIMVoxyI/ax4sEaRjZau5fIDjrrlisZmrKvYDAyVQbMeShPHzNtW4/58QdMvUeHBg3kvAfDpQNZgri+YvCI3861hcFdprjc+tf
- RSTYZGk3
- z5aEpeJBsunmNLeO6+lRqzr0i4Vzo4BWvcfbYC+1SSp3ppUD9whUKhStRHFBR7E5bAKsnFe+qk1M8HZoXwCsz9/hhgZXVguf5NGtZ2J6Jlus23V+7JTsPEt+bZmjo1xSaQOQlGB2MopXZpEuv0IL+jvvpO5ysVOR1+AiqLMKR5DpROYYjuqb2M8Zk1avzH7HfdrKC8Q4/YJycH7h9FDrQXlYSj5b3cPu+8To+ETMcL19RoM6mNoE/GjKGsgVLD3ailDWllxf8Rclm3CF0sxpf28684109jG6gly5hDGZ/LdXdq7VgYyEFbHXVU/oOiOVHGv/Caj4hqc9KB6hpOXKKeDO6ZN0SJLOvgy8hr68UL5VZKDNtV1HHakGodz1jBFO0LSM6bdMZWQ5CLAAvn0QRBOnXy37Trtqp3Q93o+cg9vZ0dgwxq9ToMi8BIEBVgrRaFCxVJwkKAghLt4IruPL3nbysG23bixylOk+kQhHkLPR8EIikTuIA36tUzxNu9CowNHKBKUib6MsWefw=
+X-Stat-Signature: fhwa4dsne1xdkipzia16wh56m43yy18c
+X-HE-Tag: 1785285376-97193
+X-HE-Meta: U2FsdGVkX19dr4SACOxj11LaVUzqbzn7FmY66ViH7g7vu3ZhWvTxbhZ+bDVNEBlg9drHuUpN5OkTU1DVVvIzU7/WYYV1u2CH7RpdoLFTqZxMu5TYoIm6MbsS9mISEx7O4raQcxhjoy6F3yoFkUAj089RQc1jeyLRf3L5z0AxqpSt0KRlppE49khb05a82Pf5szONaxef+cA2EiE0u7TumPTLryJswhJ3i5ng6Poq7Xhd0IlOmgyRs7LOsVkyPJbXQPYWBrZQ5anRvTfHhFcP5XH/lYutleXo6s2KOHrf3TTAN8i/r9Unz6JQheudhi0/EvSBXBD6aKBdW3cVjkhm/A5AgcZzesVwQZMYj9ZVmrwCGw42oRz0bCxWvo5ovxG2aOOiZbHEWtChE55/3qDLoYK88H7gzbNVPFkm7snAgHPzdVxUiJEOJOKG1AP9AZ3wpi0SjB5m73ALq6R7gGOZ+V/7oTdQzMBrSPgMTjgNdoF94ZhDyjHHWn44vIMExu0Z1irPM/C+kbMKQxQKCFkl9/ksZBrv3JOJIbSqsW2KdcbCqifOR9DPeiKz20WbhUniXsifHyG42/IkouhPldpgjOnSPIoxvMYSRe0wNvhCrk3+1nEAp/WrmI6f0CrxQNLwsbDyIWfIoDLtY0eHAqqLe73OCZbK1JfTXWnXWpJII7PC9NsaPjDHbdrtzku72SE4KtzKd2r258Ked34K94stmpgfXKYyi0WsWYDRuLwiFxYMDnBZuZ+TSCAWPgQTC0x/iMM226x/bdGdZ3XB5vgH3jB2liV7qTWDRWadQBns+UgSv0qKyh74Ocyy178aTZByUEuFWz1zVPhWj9wCbjx03hlrFUanh26ztl1JSo9ApwqFt/otwjkIgAmymgdqJCFDz0CewwI84bYm0LZBH/Y5lR4gr3A3Z5Ypyn495tajkMKK8WginA/wTTH6JvqRM9r+gcA/4QplfGza5g6Kh7O
+ 25MHtvzO
+ TOQBNUMJKrFwTeJ2Hvn5mY7J+Liu3qtZG97XV/G/6ebKspY9PgUXv0I1ZrGA7bcJKzFncPgqYyLyKryKUZRxThbKd/hYI4+oUikvhWA45oUOX38vaxpLbZRF3CbaQ6KKMRMD5t8h5lRdR513SnKa1AskO8lJt5LG8OO1FGlTIwvLejMK6CI5+pzqJDcZ+/hAq7YEDEXG5shNvuxHC9+aBbLy5wjUWTgnwRqOxJZb9Q/YgBafQWvGYR66waFtoED6v2YroY02vDA37S/NdKsWEV3OWQ2a9s6N3xkKRlwuxLYMLv3oHacRdcCzKzIX8SM90TUi6msya77uCateZRChUojm23w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,95 +145,225 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Sean Christopherson <seanjc@google.com>
+On Tue, Jul 28, 2026 at 12:29=E2=80=AFPM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
+>
+> On 7/23/26 09:47, Juan Yescas wrote:
+> > This patch series introduces the Page Alloc Hogger. The Page Alloc Hogg=
+er
+> > allows you to allocate memory pages from specific nodes, zones, migrati=
+on
+> > types, and orders directly via debugfs. This provides key benefits for
+> > testing and debugging:
+>
+> Would it be feasible to carry this as an OOT debugging module? Would a lo=
+t of
+> symbols be missing to achieve that?
+>
 
-Skip setting memory to private in the private memory exits test when using
-per-gmem memory attributes, as memory is initialized to private by default
-for guest_memfd, and using vm_mem_set_private() on a guest_memfd instance
-requires creating guest_memfd with GUEST_MEMFD_FLAG_MMAP (which is totally
-doable, but would need to be conditional and is ultimately unnecessary).
+Thanks David for the comment.
 
-Expect an emulated MMIO instead of a memory fault exit when attributes are
-per-gmem, as deleting the memslot effectively drops the private status,
-i.e. the GPA becomes shared and thus supports emulated MMIO.
+The only symbol that would be needed to have this module as OOT is
+"migratetype_names".
 
-Skip the "memslot not private" test entirely, as private vs. shared state
-for x86 software-protected VMs comes from the memory attributes themselves,
-and so when doing in-place conversions there can never be a disconnect
-between the expected and actual states.
+However, although this module was originally designed to debug CMA
+issues, it can be
+easily used to debug issues in kswapd, direct reclaims, OOM killer,
+etc. We could even
+use this module to add kunit test cases.
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Reviewed-by: Fuad Tabba <tabba@google.com>
-Tested-by: Shivank Garg <shivankg@amd.com>
-Signed-off-by: Ackerley Tng <ackerleytng@google.com>
----
- .../selftests/kvm/x86/private_mem_kvm_exits_test.c | 36 ++++++++++++++++++----
- 1 file changed, 30 insertions(+), 6 deletions(-)
+Let's take for example this case. We want to allocate Unmovable memory and =
+check
+that the allocation came from Movable, as per the buddy allocator
+fallback mechanism.
+How can we do that in user space?
 
-diff --git a/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c b/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
-index 10db9fe6d9063..70ed16066c63e 100644
---- a/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
-+++ b/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
-@@ -62,8 +62,9 @@ static void test_private_access_memslot_deleted(void)
- 
- 	virt_map(vm, EXITS_TEST_GVA, EXITS_TEST_GPA, EXITS_TEST_NPAGES);
- 
--	/* Request to access page privately */
--	vm_mem_set_private(vm, EXITS_TEST_GPA, EXITS_TEST_SIZE);
-+	/* Request to access page privately. */
-+	if (!kvm_has_gmem_attributes)
-+		vm_mem_set_private(vm, EXITS_TEST_GPA, EXITS_TEST_SIZE);
- 
- 	pthread_create(&vm_thread, NULL,
- 		       (void *(*)(void *))run_vcpu_get_exit_reason,
-@@ -74,10 +75,26 @@ static void test_private_access_memslot_deleted(void)
- 	pthread_join(vm_thread, &thread_return);
- 	exit_reason = (u32)(u64)thread_return;
- 
--	TEST_ASSERT_EQ(exit_reason, KVM_EXIT_MEMORY_FAULT);
--	TEST_ASSERT_EQ(vcpu->run->memory_fault.flags, KVM_MEMORY_EXIT_FLAG_PRIVATE);
--	TEST_ASSERT_EQ(vcpu->run->memory_fault.gpa, EXITS_TEST_GPA);
--	TEST_ASSERT_EQ(vcpu->run->memory_fault.size, EXITS_TEST_SIZE);
-+	/*
-+	 * If attributes are tracked per-gmem, deleting the memslot that points
-+	 * at the gmem instance effectively makes the memory shared, and so the
-+	 * read should trigger emulated MMIO.
-+	 *
-+	 * If attributes are tracked per-VM, deleting the memslot shouldn't
-+	 * affect the private attribute, and so KVM should generate a memory
-+	 * fault exit (emulated MMIO on private GPAs is disallowed).
-+	 */
-+	if (kvm_has_gmem_attributes) {
-+		TEST_ASSERT_EQ(exit_reason, KVM_EXIT_MMIO);
-+		TEST_ASSERT_EQ(vcpu->run->mmio.phys_addr, EXITS_TEST_GPA);
-+		TEST_ASSERT_EQ(vcpu->run->mmio.len, sizeof(u64));
-+		TEST_ASSERT_EQ(vcpu->run->mmio.is_write, false);
-+	} else {
-+		TEST_ASSERT_EQ(exit_reason, KVM_EXIT_MEMORY_FAULT);
-+		TEST_ASSERT_EQ(vcpu->run->memory_fault.flags, KVM_MEMORY_EXIT_FLAG_PRIVATE);
-+		TEST_ASSERT_EQ(vcpu->run->memory_fault.gpa, EXITS_TEST_GPA);
-+		TEST_ASSERT_EQ(vcpu->run->memory_fault.size, EXITS_TEST_SIZE);
-+	}
- 
- 	kvm_vm_free(vm);
- }
-@@ -88,6 +105,13 @@ static void test_private_access_memslot_not_private(void)
- 	struct kvm_vcpu *vcpu;
- 	u32 exit_reason;
- 
-+	/*
-+	 * Accessing non-private memory as private with a software-protected VM
-+	 * isn't possible when doing in-place conversions.
-+	 */
-+	if (kvm_has_gmem_attributes)
-+		return;
-+
- 	vm = vm_create_shape_with_one_vcpu(protected_vm_shape, &vcpu,
- 					   guest_repeatedly_read);
- 
+$ cat /proc/pagetypeinfo
+Page block order: 9
+Pages per block:  512
 
--- 
-2.55.0.508.g3f0d502094-goog
+Free pages count per migrate type at order 0  1  2  3  4  5  6  7  8  9   1=
+0
+Node 0, zone    DMA, type   Unmovable      0  0  0  0  0  0  0  0  0  0    =
+0
+Node 0, zone    DMA, type     Movable      1  1  1  0  1  1  2  2  1  3  73=
+2
+Node 0, zone    DMA, type Reclaimable      0  0  0  0  0  0  0  0  0  0    =
+0
+Node 0, zone    DMA, type  HighAtomic      0  0  0  0  0  0  0  0  0  0    =
+0
+Node 0, zone    DMA, type         CMA      0  0  0  0  0  0  0  0  0  1    =
+7
+Node 0, zone    DMA, type     Isolate      0  0  0  0  0  0  0  0  0  0    =
+0
+Node 0, zone Normal, type   Unmovable     13  7  0  1  0  0  1  0  1  0    =
+0
+Node 0, zone Normal, type     Movable      1  1  1  1  1  1  1  0  1  1 122=
+1
+Node 0, zone Normal, type Reclaimable      1  0  0  0  0  0  1  0  0  1    =
+0
+Node 0, zone Normal, type  HighAtomic      0  0  0  0  0  0  0  0  0  0    =
+0
+Node 0, zone Normal, type         CMA      0  0  0  0  0  0  0  0  0  1    =
+7
+Node 0, zone Normal, type     Isolate      0  0  0  0  0  0  0  0  0  0    =
+0
+
+// Allocate Unmovable memory (note that there are NO Unmovable pages,
+so the allocation will fall back from Movable)
+$ echo 1221 > /sys/kernel/debug/mm/node-0/zone-Normal/order-10/migrate-Unmo=
+vable/nr_pages_allocs
+
+$ cat /proc/pagetypeinfo
+Page block order: 9
+Pages per block:  512
+
+Free pages count per migrate type at order       0      1      2
+3      4      5      6      7      8      9     10
+Node    0, zone      DMA, type    Unmovable      0      0      0
+0      0      0      0      0      0      0      0
+Node    0, zone      DMA, type      Movable      1      1      1
+0      1      1      2      2      1      3    701
+Node    0, zone      DMA, type  Reclaimable      0      0      0
+0      0      0      0      0      0      0      0
+Node    0, zone      DMA, type   HighAtomic      0      0      0
+0      0      0      0      0      0      0      0
+Node    0, zone      DMA, type          CMA      0      0      0
+0      0      0      0      0      0      1     31
+Node    0, zone      DMA, type      Isolate      0      0      0
+0      0      0      0      0      0      0      0
+Node    0, zone   Normal, type    Unmovable      1      0      0
+1      1      1      1      1      1      0      0
+Node    0, zone   Normal, type      Movable      1      0      1
+1      1      1      1      1      1      1      7
+Node    0, zone   Normal, type  Reclaimable      0      1      0
+0      1      0      0      0      1      0      0
+Node    0, zone   Normal, type   HighAtomic      0      0      0
+0      0      0      0      0      0      0      0
+Node    0, zone   Normal, type          CMA      0      0      0
+0      0      0      0      0      0      1      7
+Node    0, zone   Normal, type      Isolate      0      0      0
+0      0      0      0      0      0      0      0
+
+Number of blocks type     Unmovable      Movable  Reclaimable
+HighAtomic          CMA      Isolate
+Node 0, zone      DMA           14         1458            0
+ 0           64            0
+Node 0, zone   Normal         2440          102            2
+ 0           16            0
+
+// Now we want to test that Reclaimable memory allocations fall back
+from ZONE_DMA and Migrate Movable
+
+$ echo 600 > /sys/kernel/debug/mm/node-0/zone-Normal/order-10/migrate-Recla=
+imable/nr_pages_allocs
+# cat /proc/pagetypeinfo
+Page block order: 9
+Pages per block:  512
+
+Free pages count per migrate type at order       0      1      2
+3      4      5      6      7      8      9     10
+Node    0, zone      DMA, type    Unmovable      0      0      0
+0      0      1      1      0      0      1      0
+Node    0, zone      DMA, type      Movable      1      1      1
+0      1      1      2      2      1      3     99
+Node    0, zone      DMA, type  Reclaimable      1      0      0
+1      0      0      1      0      1      1      0
+Node    0, zone      DMA, type   HighAtomic      0      0      0
+0      0      0      0      0      0      0      0
+Node    0, zone      DMA, type          CMA      0      0      0
+0      0      0      0      0      0      1     31
+Node    0, zone      DMA, type      Isolate      0      0      0
+0      0      0      0      0      0      0      0
+Node    0, zone   Normal, type    Unmovable      1      0      0
+1      1      1      1      1      1      0      0
+Node    0, zone   Normal, type      Movable      0      0      0
+1      0      0      1      0      1      0      7
+Node    0, zone   Normal, type  Reclaimable      0      1      0
+0      1      0      0      0      1      0      0
+Node    0, zone   Normal, type   HighAtomic      0      0      0
+0      0      0      0      0      0      0      0
+Node    0, zone   Normal, type          CMA      0      0      0
+0      0      0      0      0      0      1      7
+Node    0, zone   Normal, type      Isolate      0      0      0
+0      0      0      0      0      0      0      0
+
+Number of blocks type     Unmovable      Movable  Reclaimable
+HighAtomic          CMA      Isolate
+Node 0, zone      DMA           16          254         1202
+ 0           64            0
+Node 0, zone   Normal         2440          102            2
+ 0           16            0
+
+// Now, we want to free all the MIGRATE_UNMOVABLE allocations and
+sleep 1 second for every
+// allocation and see how the pages return to the MIGRATE_UNMOVABLE bucket:
+
+for i in `seq 1 1221`; do echo $i > /sys/kernel/debug/mm/free; sleep 10; do=
+ne
+
+// in another console
+
+watch cat /proc/pagetypeinfo
+                            2026-07-29 00:28:49
+
+Page block order: 9
+Pages per block:  512
+
+Free pages count per migrate type at order       0      1      2
+3      4      5      6      7      8      9     10
+Node    0, zone      DMA, type    Unmovable      0      0      0
+0      0      1      1      0      0      1      0
+Node    0, zone      DMA, type      Movable      1      1      1
+0      1      1      2      2      1      3     99
+Node    0, zone      DMA, type  Reclaimable      1      0      0
+1      0      0      1      0      1      1      0
+Node    0, zone      DMA, type   HighAtomic      0      0      0
+0      0      0      0      0      0      0      0
+Node    0, zone      DMA, type          CMA      0      0      0
+0      0      0      0      0      0      1     31
+Node    0, zone      DMA, type      Isolate      0      0      0
+0      0      0      0      0      0      0      0
+Node    0, zone   Normal, type    Unmovable      1      0      0
+1      1      1      1      1      1      0    698
+Node    0, zone   Normal, type      Movable      1      0      0
+1      0      0      0      0      1      0      7
+Node    0, zone   Normal, type  Reclaimable      0      1      0
+0      1      0      0      0      1      0      0
+Node    0, zone   Normal, type   HighAtomic      0      0      0
+0      0      0      0      0      0      0      0
+Node    0, zone   Normal, type          CMA      0      0      0
+0      0      0      0      0      0      1      7
+Node    0, zone   Normal, type      Isolate      0      0      0
+0      0      0      0      0      0      0      0
+
+Number of blocks type     Unmovable      Movable  Reclaimable
+HighAtomic          CMA      Isolate
+Node 0, zone      DMA           16          254         1202
+ 0           64            0
+Node 0, zone   Normal         2440          102            2
+ 0           16            0
+
+Achieving the same result in a user program is not as straightforward.
+
+The Page Alloc Hogger gives us the flexibility to allocate from any
+valid memory we desire.
+
+As I mentioned before, it allows us to test/check/analyze/generate:
+
+- kwapd triggers
+- direct reclaims
+- OOM killer
+- generate page fragmentation using simple scripts instead of complex progr=
+ams
+
+Greetigns
+
+Juan
 
 
+> --
+> Cheers,
+>
+> David
 
