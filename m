@@ -4,92 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DEF3C53200
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:14:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9AD48C54F51
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:14:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 46EE86B0093; Wed, 29 Jul 2026 10:14:06 -0400 (EDT)
+	id AFF196B0099; Wed, 29 Jul 2026 10:14:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 447E36B0096; Wed, 29 Jul 2026 10:14:06 -0400 (EDT)
+	id AAFA86B009D; Wed, 29 Jul 2026 10:14:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3848F6B0099; Wed, 29 Jul 2026 10:14:06 -0400 (EDT)
+	id 9EC976B009E; Wed, 29 Jul 2026 10:14:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 19DEF6B0093
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:14:06 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0EF89A1776
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 08:15:29 +0000 (UTC)
-X-FDA: 85041104778.24.CD43280
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 749A9140005
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 08:15:27 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SfvD3uwx;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 6DDA76B0099
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:14:09 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E8CA31C0FE5
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 14:14:08 +0000 (UTC)
+X-FDA: 85042008576.23.7E9A342
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 37A114000D
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 14:14:07 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TFN9Qiak;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785312927;
+	s=arc-20220608; t=1785334447;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3XIP2yu70drfefACMoCE5CbO7PlTPuDv9WLOEtpk9bY=;
-	b=lG+1irlFnanBXO8ezJI4ClagcYba+NHHUNjrEMU1rP0AqNSFUjBK1cvBDUlzigd4Jt9S7P
-	U9o5TsvSKkkKSpqqzQRxCQaXVdltt4pzN8LHo+x9mumqZcnfmG/a4UktNoHJVGqvazja9C
-	8CIX3mD6nQdgt3bZ+zw5p2GKMzQmmSs=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785312927;
-	b=EeBAnybcguy9kZZ/t5cY4AFuU7UCiZOy1spERNOkgGyMBwjMWuAT3qWOwVoOVnhwNkq64w
-	nisc1j89Ur8OeDcl8IXrhjPx34NgsIsL8bfwkqeUsJd88PXOL6sa4bq8iBzJlqNiv19vlp
-	2ZFCw5yAvb3w8HFX8ht1YCx+1kOu/so=
+	bh=1S6/CzOMnNlnmutzVvvJHpOovw2TlW70jeCaiYJeN3w=;
+	b=2KlVonLf7dnL4CCRFWbbWXokL0t9NOEGpnlr0KkyYhmlukjcDMQ0IuUyXuRsTvo1sjcJ+7
+	vdxcLDqmKSyaitbC2CYGU/zP858gRk6h62ITgaR6+1ecP8tRZAtysJykPf6h4bwa+QtlKV
+	1dUiXYoGOOKy39NN9/A3gjD0aoD6uuM=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SfvD3uwx;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TFN9Qiak;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785334447;
+	b=W92LpdOPZdM2KjAP7ZOktXcIo4Ot8JwDLIUukCtDuwDrDYpecqsu6hv+tjb8dONKL8SEXz
+	88O7REqkherYCE6tVVsTfDZTg84w2lNzva2i0QcvzhXhprgTNTrWxk+Wx3s7DbFc54r9UR
+	ZfhBedkxJSiw3hjaePWQW7Vzj1TIFvw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 03CA660A65;
-	Wed, 29 Jul 2026 08:15:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 715E31F000E9;
-	Wed, 29 Jul 2026 08:15:23 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 57B3D4010F;
+	Wed, 29 Jul 2026 14:14:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDB011F000E9;
+	Wed, 29 Jul 2026 14:13:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785312926;
-	bh=3XIP2yu70drfefACMoCE5CbO7PlTPuDv9WLOEtpk9bY=;
+	s=k20260515; t=1785334446;
+	bh=1S6/CzOMnNlnmutzVvvJHpOovw2TlW70jeCaiYJeN3w=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=SfvD3uwxSqDewmJgHYlh9uh4Q6cetVYI0ulIbG+Bh81LWKPxJdqA1cDVhiuzPZRQk
-	 aCMUvsGtw3wg8cAIcYTcOU4oUrLFRlSlBNgzoMOzqN6hDYxLB6JQoanDJySNc/8XMb
-	 k0m3USzDhQIh0vG9W3asTyq0UKrH5J6kja3dMZguzhhmc1rrkDunNEj0ZfPA5itbjs
-	 NtUHqFacqVkWRR1EayQqwHboYx2ERqLzRa1MOHkjMZZqLg+dL0h5Utr5/KpW6OGck7
-	 tBzH6Y6ZclXubhFHI298wrrn7o0ea+aChF1dONHJiMyrI0pb5ju/hO+3MDSdDChE3r
-	 tZiXm7dc5Ixcw==
-Date: Wed, 29 Jul 2026 09:15:08 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Pankaj Raghav <p.raghav@samsung.com>, 
-	Hannes Reinecke <hare@suse.de>, Hugh Dickins <hughd@google.com>, Yang Shi <shy828301@gmail.com>, 
-	Kiryl Shutsemau <kas@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Hengbin Zhang <uqbarz@gmail.com>, stable@vger.kernel.org
-Subject: Re: [PATCH mm-hotfixes 0/2] mm/huge_memory: fix huge_zero_pfn race
-Message-ID: <amm2GOFablLbBC4H@lucifer>
-References: <20260728-fix-refcounted-huge-zero-v1-0-3f261f5447b4@kernel.org>
- <f0e39f91-8dd1-4d9d-8d4e-da5d608a7148@kernel.org>
+	b=TFN9QiakNYMFhzGLwDJxsm/HLxZnGEl7qMcgqyKLaRbgD05yigUzTEmydkRB8Y7/a
+	 ExO6Eq7ijak8TXrN1eSFdHlyPsmOuKcXkpcJm9vj64UY9Lkxp1k62npkUOcw5xGTI+
+	 q8bHkZwSEpxppi2ooWuWB0ucfjuvUNDtSAtxPDD6XvqQUCn2GfOo97/CY+/C5WEMwY
+	 aHulRIisdd2uJ5wStNzj2J/SZ2WbBvEPq3mYFSjiXl3dXUv5d1ANKuQC0M8NeVfoMm
+	 Zi+MT7NgiUsX31HPK0V19Vd/IcTYaDBIb1GGrIGp/getp2jGtgSQ13ny0TFY7vA2GY
+	 N+Z/x+46hJISw==
+Date: Wed, 29 Jul 2026 17:13:55 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org,
+	Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>,
+	David Hildenbrand <david@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Juergen Gross <jgross@suse.com>, Kevin Tian <kevin.tian@intel.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Thomas Gleixner <tglx@kernel.org>, Toshi Kani <toshi.kani@hpe.com>,
+	Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>,
+	linux-mm@kvack.org, x86@kernel.org
+Subject: Re: [PATCH 3/3] x86/mm: Fix and document DEBUG_PAGEALLOC
+Message-ID: <amoKo2LoJvfndqHn@kernel.org>
+References: <20260729110807.797920433@infradead.org>
+ <20260729111119.604452135@infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <f0e39f91-8dd1-4d9d-8d4e-da5d608a7148@kernel.org>
+In-Reply-To: <20260729111119.604452135@infradead.org>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 37A114000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 749A9140005
-X-Stat-Signature: nssxwumxarq6rcksnbwdsqz5sidyrdyt
-X-HE-Tag: 1785312927-308164
-X-HE-Meta: U2FsdGVkX18ZZIPCoUp2oA+3mNNe4N1NccsRsXv8L3Le9XUMuwXFPa/NERttyTdc8bUnq4jvvO6DAqIuyGycssfBda5+qAeXHvxrLzSQJ93wsTAg1mH4e5Rcd+etDg8UAPwLcv1Y/yfbf3EW7RiYhKVR7BgbwAt6BYTYECh9x+lLu/dFxvd0SwKiOTPqv6AaakZULygmybWjQuuAcdVZdEf6MoAps/5YjMOdr8sKFN0eYdMPtv6MPvBQtdDzINKfr/mvPDoPXYwBgqD84Jl+faWgW9fwX66ixuV3cxM0OSkn16+xpLHLAzzQxV+NbtY97DJNcRn/bNbabaHpek1Fj9OF3HQqk0gvV97mIp/pCNvPJTRC251PB87ucvjvUk9Xx2QpYsfCO76H5lqekiWdIwGhHb6j2K06X0GTPizWJyDYaY1AK9EhEcIzCqzTVep6m/Mga1FXtKol5g/VdbqF1SVs97qpPA980UJkC1Uqpb2UINhwyR47CYwM+bZU19fEftZPqktfm6IyHj4KmK73lKkJyAZ9Yqp0X0QsszzN09M4WDbQ+JECePiXc26KCwkb8o20x4xwoWru54FADPXzUgF0YwaSYVR/VRYnDPlNXQeqx2BZGfajSR3REPsLcBfAUng61rhFDRlI0ZpbhCWbr90/+PfbIu/MAyqB8bwV0UWSjnuhd9FxQjnFq4IAmKHTnU8egrneLE4RzrCmpy8elaEW+mEnExDPq7c5qcivJ8eBBVnsN/DlKxeXPxzSKqkaYnL9U5QToHMfRibN3+LWe2seTXO1o94HaElmYi18pPfC5j4y8nKp6bTZ8//wIfTawvi7Mk88tf+TgP03V3b11yAZH0dGnrQM2oGNTQTnpmlWpz+tqsUgWmliCn+n5/O7SYqasVRgnXQwoD47in1cVh6/sh01atx+Kov+sL2Wov3N+z+94QqIMJZtyzYlvpL3tHdwGQhdaBn6Y5OpD3S
- SKWpBcyN
- 1SayyULtiwjWSiNJQGoqGTAZMpQWhOo9ygKK9F4M0M0GIknkKghuw/gT5lDrbCZGhhyhcV1vgLE2FVnAu7obcrnGi4VTBM2ri+D5X7aDrxDEXZ9oPYm1L6wlSVDk3OrGxtz/96JN8h1UKm/aFbwvrvX7QVrWJEGdJWwPxLxO+sp55PTPBqap8g0MXoPsAkE+exx3H6yz12IwI/dVXBMGeI1BKiCE+FJy7wfynLX/dMVFlOl8GNx57MzGP1SPWzybAz37R3C1gjI0s5o5l/M30ccQJKzqy3aB5oE4nZg8ONKnuQw8=
+X-Stat-Signature: knefcrha8nhjenzy7mjyea5m8ax75m46
+X-HE-Tag: 1785334447-592242
+X-HE-Meta: U2FsdGVkX19gBn0pqZr56NTcBgSgzuWFT4WZUvYiq31ut5DB/1PGqxixgi+ZgaNsHIKn/7d0jwvQMt8LPgdee6NUaIqCbvwXtlXlEtMywIKghM4hZ1wE9QFG+8J5okf64St/Wz76BRisXZbsO/9TXJNNQT5T4K4LTSyjpnuQAwIzaAuQ/p0HhNf3AGgEEbdMB/wxdxmIW1MFxnU2l0MZAlovg3M8AyQb6vPZB1U36CtiQ2z6hnBRejnjlyzgrEYL5tCam7+unfUnhax+DxI+HkOxLxwBg7gU7oQMn/DG4eskxxPD+rEXyh7dz+x02FPu5pQ03re+dAipveWzyDJpO2LTeWSIgGQSo2czf8J+bWsMcucGuR/XSEe/qAW8i6cCLgsNjbK1hNIrx/J/FPh6MJHX+AsaeeembXKRoB4c9lGqMaqQl6tGkK7yNZdNb8WMewJ29PbUpuJsjhzmjsI+CcFF0Ag5yLGU4miVGeDWH+p1M2EnoGvjvyMS8EIDC31Yi50GseTF+Duj/cN2W0YOw16uLpbj19Ev8o7VddYdbkF2+K8tFCnctL8eMzlAjUHXcF11Z6VCJS128yFp1eJVcfHkwGwNebduNmy86o4UQsSWUYZep4J6s/W2Mji5h8+Vj0NAeI5OoATI7dnsoN3bzw2l8kWlDzfMBEbVoHZvsvj9Pj2jO9gNsYtZLBBwWepotGcrh3JjyRN32cijIorVg3wI9t02rE4pKGmlC53+3345f8luXJGKP8kMFuiVhbusW5+UHRFuFlhb2Lbqsd326R3CzQ9EhH/54bt6V/gNGjJWmYXlHCdQgRPMN+XLvM8zkLIKaTu+xz5lWgis4onMpxekcg0UeAj/BR86/HiwJ3i1YIFaYqVIugB/lLmjggLQ4sTUSx3PFxTXlLtRKU51+YnZSODjOIzXuk11q2CC0Ap1T4E5y8bcZJfpcb7iLrT0hhq8abbv9FHyjhnwPrt
+ UPabjc5I
+ XBJYmXtbOjNrOBGTdwy+12xorG3W9tdPVm/2DwRUmzpvorEFRF3+9mvPxtSIFsJ/leGFRMWGsqLvR3RVi+ROFH4xe/wrxafISzmlAMxCQZPhTl66a1MlwWdCahJAGO9EQaurVywOW5Tf6qvbI+c9nB8t2EwFQfJ5pp4LuujIq2gedz4Qr6OwDW1ARtFBIF5szJ4fCplm09WrLyHC9wAw7vu/IzROCu1CujV1N7V6l52CR2a7ube/qmbgAeElUhI1mjb9BMhUmzJ5udmhR4JEZYSgh23BFe9xq076fw0qjzbrZ9JkeOeUBDMlS6JjA0C2mFul5sibhdZ7cUk30+MYHU5UG4L8rRAWvYuBXI3Dokr2Esro=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,54 +104,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 28, 2026 at 09:02:57PM +0200, David Hildenbrand (Arm) wrote:
-> On 7/28/26 14:05, Lorenzo Stoakes (ARM) wrote:
-> > There is a subtle race in the reference-counted huge_zero_folio
-> > implementation.
-> >
-> > The fast path atomic logic fails to account for the fact that the
-> > shrinker (which drops the final huge_zero_refcount pin) can overwrite
-> > huge_zero_pfn with the ~0UL sentinel value in shrink_huge_zero_folio_scan()
-> > after a racing get_huge_zero_folio() installed a valid value there.
-> >
-> > This results in huge_zero_folio being correctly set but huge_zero_pfn being
-> > set incorrectly and thus is_huge_zero_pfn() and consequently
-> > is_huge_zero_pmd() will misidentify the huge zero folio as being an
-> > ordinary THP folio.
-> >
-> > This can result in the huge zero folio being split and otherwise treated
-> > incorrectly.
-> >
-> > The solution to this is very subtle as there is an atomic fast path, and
-> > thus ordering in weakly ordered architectures has to be treated very
-> > carefully.
-> >
-> > As a result, this series first reworks the
-> > CONFIG_PERSISTENT_HUGE_ZERO_FOLIO logic so it is separated from the
-> > refcounted code in order to make the subsequent fix reasonably
-> > understandable.
+On Wed, Jul 29, 2026 at 01:08:10PM +0200, Peter Zijlstra wrote:
+> It turns out that commit 5fce67641a3e ("x86/mm/pat: Don't gate
+> cpa_lock on debug_pagealloc_enabled()") was a little too quick to
+> remove the debug_pagealloc exception for cpa_lock.
+> 
+> Notably __kernel_map_pages() is used by the page-allocator from any
+> context the page-allocator itself is used, which violates the cpa_lock
+> rules.
+> 
+> Re-instate the exception, except make it specific to the
+> __kernel_map_pages() such that any other cpa() usage is still fully
+> serialized by cpa_lock. Also note that since cpa() should not be used
+> on memory that isn't allocated, the page-allocator locking and cpa are
+> infact mutually exclusive and all cpa usage in fully serialized.
+> 
+> Add a comment explaining this and other 'funnies' surrounding
+> DEBUG_PAGEALLOC, including how pgd_lock is not affected and the TLB
+> trickery.
+> 
+> Fixes: 5fce67641a3e ("x86/mm/pat: Don't gate cpa_lock on debug_pagealloc_enabled()")
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 >
-> For at least somewhat easier backports, can we reverse the order?
+> +	/*
+> +	 * DEBUG_PAGEALLOC is special; it is called from any context the
+> +	 * page-allocator is, which violates the normal cpa_lock locking
+> +	 * rules.
+> +	 *
+> +	 * However, since it is part of the page-allocator, things are still
+> +	 * properly serialized by the page-allocator locking and the fact that
+> +	 * when a page is owned by the page-allocator, it isn't owned by
+> +	 * anybody else. That is, you *SHOULD* not be calling cpa() on memory
 
-Since I'm going to be doing the backports can we keep it the same? :)
+                                     *SHOULD NOT* ?
 
->
-> The spinlock+proper ordering should be possible without #1, or am I missing
-> something important?
+> +	 * that isn't allocated.
+> +	 *
+> +	 * Additionally, DEBUG_PAGEALLOC ensures (per probe_page_size_mask())
+> +	 * that the kernel mapping is 4k pages, therefore there are no large
+> +	 * pages to split/collapse.
+> +	 *
+> +	 * Furthermore, the page-allocator strictly manages pages that
+> +	 * *exist*, avoiding pgd_lock.
+> +	 *
+> +	 * Therefore, it is safe to not take cpa_lock.
+> +	 */
+> +	if (debug_pagealloc_enabled() && (cpa->flags & CPA_DEBUG_PAGEALLOC))
+> +		lock = false;
+> +
+>  	while (rempages) {
+>  		/*
+>  		 * Store the remaining nr of pages for the large page
+> @@ -2008,9 +2033,12 @@ static int __change_page_attr_set_clr(st
+>  		if (cpa->flags & (CPA_ARRAY | CPA_PAGES_ARRAY))
+>  			cpa->numpages = 1;
+>  
+> -		spin_lock(&cpa_lock);
+> -		ret = __change_page_attr(cpa, primary);
+> -		spin_unlock(&cpa_lock);
+> +		if (lock) {
+> +			guard(spinlock)(&cpa_lock);
+> +			ret = __change_page_attr(cpa, primary);
+> +		} else {
+> +			ret = __change_page_attr(cpa, primary);
+> +		}
 
-It's possible but this way it's a lot easier to deal with and I'd rather keep
-things consistent for stable kernels.
+This does make DEBUG_PAGEALLOC exception more explicit *here*, but OTOH the
+spin_(un)lock(&cpa_lock) in split_large_page() becomes confusing.
 
-I can figure things out for < persistent huge stable kernels. It'll be manual
-work either way.
+I like my version with your comments added there more as it localizes the
+DEBUG_PAGEALLOC exception in the lock wrappers.
 
-(It'd be good to get some review on the actual changes also :)
+>  		if (ret)
+>  			goto out;
+>  
+> @@ -2661,15 +2689,23 @@ void __kernel_map_pages(struct page *pag
+>  	 * and hence no memory allocations during large page split.
+>  	 */
 
->
-> --
-> Cheers,
->
-> David
+I'd also return early and maybe even WARN if !debug_pagealloc_enabled(). 
 
-Thanks, Lorenzo
+>  	if (enable)
+> -		__set_pages_p(page, numpages);
+> +		__set_pages_p(page, numpages, CPA_DEBUG_PAGEALLOC);
+>  	else
+> -		__set_pages_np(page, numpages);
+> +		__set_pages_np(page, numpages, CPA_DEBUG_PAGEALLOC);
+
+-- 
+Sincerely yours,
+Mike.
 
