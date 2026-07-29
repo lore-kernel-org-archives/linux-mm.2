@@ -4,123 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28AB3C54F51
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 19:36:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08168C54FD4
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 20:27:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED8A86B0088; Wed, 29 Jul 2026 15:36:35 -0400 (EDT)
+	id 4DE4C6B0088; Wed, 29 Jul 2026 16:27:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E89C86B008A; Wed, 29 Jul 2026 15:36:35 -0400 (EDT)
+	id 48F306B008A; Wed, 29 Jul 2026 16:27:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D9F2C6B008C; Wed, 29 Jul 2026 15:36:35 -0400 (EDT)
+	id 37DE26B008C; Wed, 29 Jul 2026 16:27:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A5E7B6B0088
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 15:36:35 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9DD341405DF
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 19:36:33 +0000 (UTC)
-X-FDA: 85042821066.15.71D8383
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 850921A000B
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 19:36:31 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=GfoDLQG7;
-	spf=pass (imf19.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.172 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0B3856B0088
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 16:27:51 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 801A5160617
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 20:27:50 +0000 (UTC)
+X-FDA: 85042950300.29.75896CD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 59602100006
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 20:27:48 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=pmxruMJ1;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785356868;
+	b=Iv4fNVDc5AKYXTi/AujDe+lD2jNS6RfOB/AIuN1syvAdwQl9nnZOaQ7vEGWeomC5wxrjzY
+	VG1bq5G7t88mGxFwT5vGmXGfV7nsDhCzMg7N4G/VTfYKGjKE45l4POwxLJaJfw1P8+QRue
+	+DmSPw0jmEX7P7/3Hh+aHSg8Z59gueI=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=pmxruMJ1;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785353791;
+	s=arc-20220608; t=1785356868;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YFlfsyL868lT/j3agJwNORpNx5tokno15i4G5m1Hupc=;
-	b=QLB4RVEkhM+ufjNON8NdVNMcjVCqt/lmZlz4z7ghynk1lIVMk2OJS5+oSuUIiFHLXQYBd3
-	TwC/219Uw3R5KFPDzaLrR3o98lZDSkHJzRAq63vE1qP//FmnuYwTLl4vnA4EvJlx4RsJp5
-	2qP0HNUquV7lDmFVDFsjJYgr9md74/k=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785353791;
-	b=Sh3XvojGtkt6wzyRSISXt7TBkImkn+w2URvcqPbo6pWc9rBWkU9PprdvZ999bUFHim8TV4
-	vXvRqgf34NaS4kN+5QRZhFewoBrcnbC7PjTKxYFhO0BZ1zbXAhlzVn1CuT7Hl8qY93wOfA
-	coW+poXmfHfZGxsLziwI4sLmxQsMe4Q=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=GfoDLQG7;
-	spf=pass (imf19.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.172 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-51c928bf172so9512741cf.3
-        for <linux-mm@kvack.org>; Wed, 29 Jul 2026 12:36:31 -0700 (PDT)
+	bh=ppvXWw17La6VOhnrUygWlQUgfnpDHFiES+LHiGhQI9o=;
+	b=Fn8MvCZZoCNel8ZX1V+64mnDgvMmNh9ZslffmO6m8U8O5kSNs1hcYZriruRgzFudL9dp4z
+	xbfaD4NBMpoBk5nZ0hg8J6g8WmUtyl5vgOWsvJ8WC1tdAaAYQ8JduO5yF7nuDrQW9lhiHF
+	/kOGb4PcDfoT5VDNynTDwv9Ix5NGDMQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9D2A240A83;
+	Wed, 29 Jul 2026 20:27:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66E271F000E9;
+	Wed, 29 Jul 2026 20:27:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1785353790; x=1785958590; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=YFlfsyL868lT/j3agJwNORpNx5tokno15i4G5m1Hupc=;
-        b=GfoDLQG7HoCWR11Az7jDfqHTw/71IiEy932nWLz3CNHrYJAUWWHnM+cJrt5zxxzFmn
-         1UL9SnDsVp0D5LM2UvIsfNOpj/zofICgO5E9Bi/LGZNgrtW5Vyl5dQT/Hlobj8eRQ2Mo
-         6SD9UehJE7sOhPRLbLN5unRfUmpPQeT+MpRE+yTn5/2i3BV0DrShhC96Dy4m6Glw3cva
-         XtwsowhyG3nEGflbNW1sb/CmpbiRW9RN3JS0MiRpijUwv7+e7XYIi9qNIrTESNQaOL01
-         s9tQynQ2zRfwwn4PKj36YyQK+7imYyVZffQhdOh1+LlzOVtgVBDn3MHDodG1f9Q073Qa
-         Qw5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785353790; x=1785958590;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=YFlfsyL868lT/j3agJwNORpNx5tokno15i4G5m1Hupc=;
-        b=YWpOAm5d3jdft2PNoixhpdW6FI5vPvs/ioSbNVfbDUZedpmxd0EVSWAPTtRrs1fDgW
-         iAi2aG6yw82j0ZGKOcSTURkjNm+Gp5dxtzaIJz7aT5CrUV7kvMpbFmOHv2GXXuhAf6C3
-         8nxOrhsanNMZCKCMawRcBeguzuGyyPB0jnMJf6rki9NfBzY1ccICLkLdynjiJIMQuLA6
-         a27iet0B4HrTFrG3HBw5DhGPu5EcO5qYNs5TRSsMDX29VegNMPDTgsdCZC+N413rEkgv
-         HJRn0XRYlNnsqyqnq5xjk+e9QVbEGoHWRTylgw53upKhCtUg7HV21OI9I+3dWSsOhdnQ
-         00MA==
-X-Forwarded-Encrypted: i=1; AHgh+RrGqXnML4Y8m+sa8MyVx6Spx4irgjJit+qiXxfVozAn7Hlygs5rQ85Bzi9YTMgHMQ0mZbsI1PMdYA==@kvack.org
-X-Gm-Message-State: AOJu0YyljsQx0XKyHk1I9tr1n9Z/jvJW8PTW44OYcmCo9Oh7B8bLB3qt
-	YNPD8MZYoX8e7l2iRWky3+fOuA1tZ2BAFuCQAyM4PsVuYhCVei9BLsIXZMwiXQP8r0I=
-X-Gm-Gg: AR+sD113w4UhhifhFWXvcWoZJYkgzIBk87AkjDRPZoWkvH6Kgi5ry5aGUgzHmtslne4
-	48ssrgmoyz4KoTa2xKrRVit7aZIdZ5s7GAyr5LSS1ToguupOOsRqr8gKYed5r7se3hsRGdzEeiP
-	RSrp+9qIhOAEjIqrh0z/ltwzyMphD9K5oW+sMvu47IR2vhYSVg6hk9a6MSFI+2NMY3XPzb4Y/EI
-	zVVb5Vs1+VttPXV64IRNPQ5eGtN7rvwGgoEbhrqeh3FAfmwPmnskCQ7Y4aiKV4NcKMsJ0OV4GsN
-	jYd7ojrCCvKPZhZvMKIMNoJYxF1kNVZ+hSWf7W4XtVOMxzxjFHuPDqadogK0niV6szXzx+/IF6O
-	4+Lxcj5/UY75IIgUYcipaZ9rqq7SLAI6i16iewMyKt8LkvSutKzx99vOfpcxFC83ak1K5izeLwF
-	aYOEQwNbm/3DTI7ZpChTUKveQEgMXK6uhlDahWDGTqc08St/0qPgPLGx9h1Hs=
-X-Received: by 2002:a05:622a:1ba2:b0:528:15e:d1d4 with SMTP id d75a77b69052e-529d709c7bdmr77022001cf.4.1785353790549;
-        Wed, 29 Jul 2026 12:36:30 -0700 (PDT)
-Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-529e2b1a1ddsm25903541cf.5.2026.07.29.12.36.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jul 2026 12:36:29 -0700 (PDT)
-Date: Wed, 29 Jul 2026 15:36:28 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Michal Hocko <mhocko@suse.com>, Guopeng Zhang <guopeng.zhang@linux.dev>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Guopeng Zhang <zhangguopeng@kylinos.cn>
-Subject: Re: [PATCH] mm: memcg: stop reclaim when a limit update is superseded
-Message-ID: <ampWPFfbz5zvmFys@cmpxchg.org>
-References: <20260724021805.1234583-1-guopeng.zhang@linux.dev>
- <amcT75pLmA0hRUm1@tiehlicka>
- <615d091c-bd3b-4686-817e-5b29756542ff@linux.dev>
- <amdkHvSMj95DUri5@tiehlicka>
- <f706d139-53a7-436d-adc5-c691577ce53b@linux.dev>
- <ammzjkUIADCxO2mP@tiehlicka>
- <20260729121137.7b451d2d00ca5a389ebeb848@linux-foundation.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260729121137.7b451d2d00ca5a389ebeb848@linux-foundation.org>
+	d=linux-foundation.org; s=korg; t=1785356866;
+	bh=ppvXWw17La6VOhnrUygWlQUgfnpDHFiES+LHiGhQI9o=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=pmxruMJ1yZLHx156OsbBp5gSVtDIshq8dIJXFa0BYpRSUQMI0R9ZN9xgqRInVpm+M
+	 blUfS8rXikZOjCy7G6aFkQwC8FOE4J6NolSJaMupWS+16a0l/XZNdel0ZvkErIJ22V
+	 H3EHiCuOk7dtzRJDq9pAccwcW/qReTxBpkmPW3VE=
+Date: Wed, 29 Jul 2026 13:27:45 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Sang-Heon Jeon <ekffu200098@gmail.com>
+Cc: Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org
+Subject: Re: [PATCH] mm/mm_init: remove unnecessary initialization of
+ pgdat->per_cpu_nodestats
+Message-Id: <20260729132745.9d42a13e614be2e18c5988ba@linux-foundation.org>
+In-Reply-To: <20260729155143.177790-1-ekffu200098@gmail.com>
+References: <20260729155143.177790-1-ekffu200098@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 59602100006
+X-Stat-Signature: eq4dt8wzkkqad9e5em1k6ckgat57abm8
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 850921A000B
-X-Stat-Signature: ibm9wdb5cdq9medeiui7y33jrzz8q5no
-X-HE-Tag: 1785353791-628421
-X-HE-Meta: U2FsdGVkX19YjBtweZoHMNj4sz5z991yAooLjmNqgrFycvgm+trtBD/04IChKK4Bj8LtwQ0ryTR1BtzYe036RoprtXpdYDEdO4iv3hiafFVFxJ6JKEb0cJZdXrPLuWLYHoXJjgFgVaVR4G9BN2rLWZ9sAPY69rWZpp0H3akgioJKc4YRpiY78PP8VxOGGs9Au6cgumFQ+uknSTlmF2u1wNwc50OCE+QLwUS86HiAyHF80+FkCDrNMAziP81e7s184lfP07yXaMU+cyz1ER6HsmFyY8dR6RMUR6moAgnFoTbOp6xB7CGG4u7vBbQME4SB3HiMnjp2qLGC1PTUUbabzi69DWRyKCkOLueEfSkN0Py98TW4smhMhqFqACtCzRIO/fZyUYOuTHNihpHr6EeT2tRbxGe4mftFlQ+3Ml2kOY1y/W17uRiN+Tu/eB6RapYbClsO8WZnUCZwi6WPhejFmo75HKgEfReawy45j4M0K4l6fPpH9Fh13e4nZ+c7gqmIGnRjU/mHwEaZJZU4rQUzoYcSnEMKQ2z5ptwIUAOo2qY0fRw5L7XqU0iiBrJaT7dJmp2pptV7LXqgUM7O1l3qjVjumbOpX7jSFoQWuFlx5M8ghwJ954UZuRPZhsipKK2xT5orc+/HheOQS96Mb9ZwBYpTWjdq3ezg2ZmJ9QVfhIqOG7rD3ErUOaMSZAjb82B50rtds/h4nEBkuPLP+jJFB+924Uqsg6tGM/76CNhaFVkfOMLN2CsJVLvrxEROOAhVE8F9Xm6cjYWQdaY7N/A3FDq39sne5V5stDFmf/3dV8DP1HPSTnwQP8GxhqZSvNfdAvTqiaZcKZV8Qn7LEightCHIlZt+3lWfgTd/oVpdQrVrqgglPVQqjwAWSekPE84lm3Vtmn76aNrZrct5kW8kmuK6BCZnU1jWnuDkBW5oHqZirFXsMcs8wcMy/bagNjdR76urMU7/eyAYilkC3FH
- 0IZRFG5Y
- S22eryE2OxfR8gCIhBdQGwIl//OcZzFtuMahGYZGdvQOCbg7KIwH91oHDM4nIEq4Nv43CI/iRmW8MhI4s1Y+TMuINvCuxNZNrQ/niexZC8Xf0n6qHB1042dRhVA1mAF7rpCi7eWl3AakO3nqWTvO4ZVdtIbqjShFdWy2dYPXSG9nOENsqM7OyahR66C5iqgiDt0m07MkSZNRM8IZLM6r+EO5Tmb7CCRgAr82MTwOfEYaTnot/B1C8S+bTXu36M5pm9/W5xYkGsQXiBQdR7j6i0qR3JwwrvgKQ5FsJtr9G0aTHjnossNQz0mO/Er1/2aH4TZaS4YZjzkP03P9n6J3cPqX/3LV+NFaUbL6WJEWypVHuOdm4AajxoVejc4GoLxWZW1M2XtMpiCHxnZYBFVaiwrJv+XHAlyZs8iUV5QESC5eJU1vKXGFk7f8YkIuyRs6rs9L9D150hVKRMz8b5vLfPnCEyxf1Cf7Rulq+xj7nF4Q0O5n9JrP/E1mEGsZvWKq0LlxiOMG0k0WeAzQi4v+zQN/IiUZgsvCSInxmu+QmfRBxwiLGvkl7p1ketKOs1uk7KY2G
+X-HE-Tag: 1785356868-430274
+X-HE-Meta: U2FsdGVkX1+H5wTtLEeXJD1eDQl54SF7RWzH5C50c4oDZYggI+iIFM733JSpKoFB1+9u04HCfOqf4hCDgdti2WyOyHT64L/kt3M6EP0UOTzJ5VrsdF4wKmVN30yR0Hyx5zgKQgd47XNuKliii7Hq4GzEK8tJ82z4oQZ90TZXL77t8FLXgNwvntKAR0JPNtb/N2I9Z2P1866Ht0l3YlnGr7vDScKZg9ewIt/KLSZJdVCTUeQLi3JtnpSA4Vp1BBINdTZrJ0N8edT72V4hrNMB/C5YJRLLEknvE2DGVzv3KFLTxGbrv3NbSLgQfB4035vG6HWfB3arQWq5GiPCkOPJILvCqYxNhu/6QOPpL+SBzecwGF3yoLlSTIK9nkctJKdJotvs0ZD7mkYvA99YdI2E0GuB3bBcJwpLwxXob583t3pyV7GH4YDK7dfUvJK17yH1oVVOJJOrI2AUWP9NLnjF+16JamLHOfIO0HWVJDvoABX6Mk0KYVNQEZac4CLVDwXgOX1Om/fmwPvP5DZhH9D65c7gmopELbMXXUmvBvynWpNOKjxgAobWS96BFH/upDedDS6ig2c4fv1EXB0yDgSNYpFmBFkfjq3rwjNXDb+aEyirfYjhTnPYJqia7Nz4YXh7hwu4fSZE9ARcJqAIZ81glIhKZ2N55OWrVvdahA6QrJkj5y+2jCznaiyMJuaSDDZ+zwWTiyzCFNCh7oBdrxPTZnmmvFvLzQQB6JOFTKAi4LS/cDHsVuhGTFPxjR+9x02rbhSw/p+d6+0iNA5r8zA3Ei8q2HV2xwTR0hK4+PNUIy3vZF7SfpAN50qNjEnYLvP+4e9TVqfX2BgN+bhWQYky/wyWNrMhg2Bpzgw67G3fvndleL+6sKP9x1Tdi+VYfA5f4yp5WVZQB2/He6mhJfl4Pa15pajHdcd25CXeT5MixA/Du7VydmB4xIq6kZrzxrwB3C67DDP87XpMSOrdl/V
+ MRep2x4t
+ xSHW62n9ZGtbU+/5XMVUjX1YOCJgiwS8P9jnVL4+DvZiNrQJ71YSkEjHhIebz5zD7xAGCONX0RAQRn1P3bXWyboeRgGOOyYomv5pAFykvEWFSslzbPFF6w+P/TUM/IIB2Rs6w6X/WRZLTi8/zr5T1SFRxp2plGR85qPJE8CaxSffM9ranYbTnHswDk8sPOT5PLM/eY+aeyVUtdvie2QwjW9bRzk9cFPZJJJrxZrQmA6tMzb4Yey0ppQDCc96OpQ43Cv6ZNYk7ehDkfzusHRddvhj/BVnT4SK8Rwfqel1/oNJclgG2ibeA/cxDVjijQHXECq+V
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,78 +89,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 29, 2026 at 12:11:37PM -0700, Andrew Morton wrote:
-> On Wed, 29 Jul 2026 10:02:22 +0200 Michal Hocko <mhocko@suse.com> wrote:
-> 
-> > > > Is this trying to replicate any real workload? One would expect that
-> > > > writers to limit do some sort of coordination otherwise the exact
-> > > > behavior is not really well defined.
-> > > > 
-> > > 
-> > > No, this was not motivated by a reported production workload. We found
-> > > it through automated randomized testing for our cgroup observability
-> > > work and reduced it to the reproducer above.
-> > 
-> > This is an important detail to be mentioned in the changelog. Describing
-> > motivation for a change is really important, especially if it has direct
-> > impact in user interface behavior.
-> 
-> I've been adding details to the changelog as they are revealed to us. 
-> Below is the state of play.
-> 
-> I await maintainer guidance on how to proceed with this!
-> 
-> The worst-case effects look pretty bad actually.  Should I add cc:stable?
-> 
-> 
-> From: Guopeng Zhang <zhangguopeng@kylinos.cn>
-> Subject: mm: memcg: stop reclaim when a limit update is superseded
-> Date: Fri, 24 Jul 2026 10:18:05 +0800
-> 
-> kernfs serializes file operations only per open file, so separate open
-> files can update the same memory.high or memory.max file concurrently. 
-> Both handlers store the new limit before synchronous reclaim, but continue
-> to use the writer's local target in the reclaim loop.  If another writer
-> raises or removes the limit, the first writer can continue reclaiming
-> toward a stale target.
-> 
-> For memory.max, this can leave the writer looping indefinitely once
-> reclaim retries are exhausted.  The OOM path sees sufficient margin under
-> the current limit and returns true without killing, while the writer still
-> compares usage against its stale target and records another OOM event.
-> 
-> Check the current limit at the start of each reclaim iteration and stop if
-> it no longer matches the writer's target.
-> 
-> Reproducer:
-> 
-> Populate a cgroup with anonymous memory and disable swapping.  Lower
-> memory.max from one open file, then restore it to "max" through another
-> open file after the new limit becomes visible.
-> 
-> Without the patch, the first writer remains blocked and repeatedly
-> increments the OOM event counter.  With the patch, it returns normally.
-> 
-> This was not motivated by a reported production workload.  We found it
-> through automated randomized testing for our cgroup observability work
-> and reduced it to the reproducer above.
-> 
-> Link: https://lore.kernel.org/20260724021805.1234583-1-guopeng.zhang@linux.dev
-> Fixes: 8c8c383c04f6 ("mm: memcontrol: try harder to set a new memory.high")
-> Fixes: b6e6edcfa405 ("mm: memcontrol: reclaim and OOM kill when shrinking memory.max below usage")
-> Signed-off-by: Guopeng Zhang <zhangguopeng@kylinos.cn>
-> Acked-by: Tao Cui <cuitao@kylinos.cn>
-> Cc: Johannes Weiner <hannes@cmpxchg.org>
-> Cc: Michal Hocko <mhocko@kernel.org>
-> Cc: Muchun Song <muchun.song@linux.dev>
-> Cc: Roman Gushchin <roman.gushchin@linux.dev>
-> Cc: Shakeel Butt <shakeel.butt@linux.dev>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+On Thu, 30 Jul 2026 00:51:15 +0900 Sang-Heon Jeon <ekffu200098@gmail.com> wrote:
 
-This looks good to me. If the culprits had been more recent, it might
-have made sense to split this in two, one for each Fixes. But it's 4.6
-and 5.5, so I'd assume any still alive backport target would want them
-both at this point anyway.
+> free_area_init_node() sets pgdat->per_cpu_nodestats to NULL and later
+> calls free_area_init_core(), which unconditionally overwrites it with
+> &boot_nodestats. Nothing reads the field in between, so the store has
+> no effect.
+> 
+> Remove unnecessary initialization. No functional change.
+> 
+> ...
+>
+> --- a/mm/mm_init.c
+> +++ b/mm/mm_init.c
+> @@ -1722,7 +1722,6 @@ static void __init free_area_init_node(int nid)
+>  
+>  	pgdat->node_id = nid;
+>  	pgdat->node_start_pfn = start_pfn;
+> -	pgdat->per_cpu_nodestats = NULL;
+>  
+>  	if (start_pfn != end_pfn) {
+>  		pr_info("Initmem setup node %d [mem %#018Lx-%#018Lx]\n", nid,
 
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Looks OK, thanks.  Although this statement is "free" in __init code and
+its removal does make the code that bit harder to follow.
+
+Possibly *pgdat was zeroed out anyway, I got bored figuring that out. 
+The memblock_alloc_range_nid() kerneldoc is silent on the state of the
+returned memory but I spy a kzalloc_node() in there.
 
