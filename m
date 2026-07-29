@@ -4,106 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B16DC54F51
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:18:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FC25C54F51
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:18:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C98966B00DD; Wed, 29 Jul 2026 10:17:56 -0400 (EDT)
+	id BA44B6B00E0; Wed, 29 Jul 2026 10:17:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C65FD6B00E0; Wed, 29 Jul 2026 10:17:56 -0400 (EDT)
+	id B53AD6B00E1; Wed, 29 Jul 2026 10:17:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B0D196B00E1; Wed, 29 Jul 2026 10:17:56 -0400 (EDT)
+	id A6AAD6B00E2; Wed, 29 Jul 2026 10:17:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F61B6B00DE
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:17:56 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1155512061C
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 08:21:36 +0000 (UTC)
-X-FDA: 85041120192.04.4BA7C12
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 55BD014000B
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 08:21:34 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oS+hQaMG;
-	spf=pass (imf09.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7E9CE6B00E0
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:17:58 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D239540658
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 09:28:09 +0000 (UTC)
+X-FDA: 85041287898.18.9DEB7EC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 237EF40005
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 09:28:07 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X3tXrVQw;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785317288;
+	b=0QmmlVig27hVgtyHtL30u0qyv3MLw+5QE7M9GcSaEwS2ZuU4SOlvTqerXIa0Hpo4trqqbx
+	YUVTpd7rY5WHjPgRU8lzxfXOiZ2MOesdMT2F/UJCZVdLqouY6Nho28GsvMyjDiPxZ5S2M0
+	POqYSp9ax8kh2ZhYvkks6QqZp6YIjFo=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X3tXrVQw;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785313294;
+	s=arc-20220608; t=1785317288;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Yh8xxI8IwkcJ1dgmcaV/tWyT7/NE7RNTeAYVA+pLPVw=;
-	b=PCa7JXuZWjq3JaO6HCfHpzTXNrMEIE2+dwtqXmjbPZIuCKZgOG7kZp8Kh0PR1IoLiJf/qL
-	hLeKEXUDTj3hLuSb0HX+YGcV5f5punk1QDGeWc1Qi06U8VGaVSuqMYfa99gysSet+/cZ9y
-	zMiRLU3A8RISBbboN+QbvLSnG0yWte8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785313294;
-	b=cAxQ3rixk3/Vw8Ap/3z1SnuIYHF+6j4Wa8m5OhhGkbs0Z2bZdXPiNEM19upOj8euqzKGph
-	8PNx46nvhQMS6eFPEReCEb7Ld6HKxg6dLeEOT/RtDKBLQlD5cCdcI0b8gbAoGTz4aoegUO
-	2s6bq2xosuUejspYS7UfMTI+1yTxiPo=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oS+hQaMG;
-	spf=pass (imf09.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=salgQx0zg68IGEBw4oYDljPNqxYepuzSJBxYIsFQ7as=;
+	b=rBxFBzZeiL3ED7bReWEPsprOXaVmamO1Tlwdfcl374ziFpjDzzoEwhR+fMLK73o7oVq9xh
+	f22A9N5Q1ueIhOGJjxqGIl3pyb36GyHmlTQk472EIBt0h7oy/mpq8QxNb2FwmtpIdacGt6
+	KGm9BQz66xB0XeO6H8xOKVQUNDNPgyE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AF19D43CF0;
-	Wed, 29 Jul 2026 08:21:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D6381F000E9;
-	Wed, 29 Jul 2026 08:21:27 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id DB51D60A66;
+	Wed, 29 Jul 2026 09:28:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A65881F000E9;
+	Wed, 29 Jul 2026 09:28:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785313293;
-	bh=Yh8xxI8IwkcJ1dgmcaV/tWyT7/NE7RNTeAYVA+pLPVw=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=oS+hQaMG3f6p6s7y/83Mm3dEGgnbZoVpbILKW5IQqB2FRaoafWmSSfqKJ1GbMEdZw
-	 uxBQl02M/lJTnRFU+bZMBp2iulIr8apVlUhWl1X6FVTL2ieZDFRlUNMck5LjkF45CS
-	 L7ilohbFxfs1L3NkG04/b1MFVGjsjYR5WITomXWwlB30UlvK9yJMJ3gaS3pEcROlZ+
-	 gUGD3pdPjcaoZFilBzsCLlZOW1ERpsSjMTjMk0Uh4Mq3sGRH/NMLQ02fGpMqHpGxPP
-	 5ACWQqvBYRgFInQOb3z+G9Ni4GTTl9MqR5Ri4xnNilCBYEfOjWu1C9ZNX7cI/NLRjk
-	 6h66VScPdLprQ==
-From: "Harry Yoo (Oracle)" <harry@kernel.org>
-Date: Wed, 29 Jul 2026 17:20:14 +0900
-Subject: [PATCH v5 6/8] mm/slab: introduce struct kvfree_rcu_head for
- kvfree_rcu batching
+	s=k20260515; t=1785317286;
+	bh=salgQx0zg68IGEBw4oYDljPNqxYepuzSJBxYIsFQ7as=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=X3tXrVQwuuxI3PfEgO8BALfQdgGKLhyvvicqZgQVGYlA2y6wCjR6m3JrM2mYPYW0b
+	 6O+5/VzLaIMg56oDPvd0YtZ6hZTtV8+CoIMjOei5Xur1IrWfg6FMSQLsqWflDXPwlU
+	 aAlFjOTy1+y/JzMBibjA0eHPHGYZLy2a+ujtSdVeOqU2cWpo08+fNGcFWehaJk43I9
+	 ODb/WRJWjMiwNA1q/2rUa0z45XSkHlZzZLcO/YZOi+xyeji+m3Rn/WQWHVGEN1kEWm
+	 lT8GjTw6ybgCRjqKYA5eF2hqwmtMqot3mq1ymA20whFGpZrAVqvOLyQbRZcX3aJhl2
+	 n2F/MpYxPeidg==
+Message-ID: <4887267b-dc26-4c33-96ca-8dff054a0d1f@kernel.org>
+Date: Wed, 29 Jul 2026 11:28:02 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC v2 PATCH 0/16] Optimize this_cpu_*() ops for non-x86 (ARM64
+ for this series)
+To: "Christoph Lameter (Ampere)" <cl@gentwo.org>,
+ Mark Rutland <mark.rutland@arm.com>
+Cc: Yang Shi <yang@os.amperecomputing.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, dennis@kernel.org, tj@kernel.org,
+ urezki@gmail.com, catalin.marinas@arm.com, will@kernel.org,
+ akpm@linux-foundation.org, hca@linux.ibm.com, gor@linux.ibm.com,
+ agordeev@linux.ibm.com, linux-mm@kvack.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20260715180455.515692-1-yang@os.amperecomputing.com>
+ <0344c559-1959-4531-9265-d5a5180eb7cd@arm.com>
+ <fc21c840-1584-4844-963f-80cea7f2e674@os.amperecomputing.com>
+ <amCPBrdltFSE_fEf@J2N7QTR9R3>
+ <25d1e09b-53e4-7cd5-87db-b58437e4e690@gentwo.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <25d1e09b-53e4-7cd5-87db-b58437e4e690@gentwo.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260729-kfree_rcu_nolock-v5-6-a28cdcda9673@kernel.org>
-References: <20260729-kfree_rcu_nolock-v5-0-a28cdcda9673@kernel.org>
-In-Reply-To: <20260729-kfree_rcu_nolock-v5-0-a28cdcda9673@kernel.org>
-To: Vlastimil Babka <vbabka@kernel.org>, 
- Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, 
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
- Roman Gushchin <roman.gushchin@linux.dev>, 
- Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, 
- Puranjay Mohan <puranjay@kernel.org>, Amery Hung <ameryhung@gmail.com>, 
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
- "Paul E. McKenney" <paulmck@kernel.org>, 
- Frederic Weisbecker <frederic@kernel.org>, 
- Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, 
- Joel Fernandes <joelagnelf@nvidia.com>, 
- Josh Triplett <josh@joshtriplett.org>, Boqun Feng <boqun@kernel.org>, 
- Uladzislau Rezki <urezki@gmail.com>, 
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
- Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>, 
- Pedro Falcato <pfalcato@suse.de>, Suren Baghdasaryan <surenb@google.com>, 
- Shengming Hu <hu.shengming@zte.com.cn>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- linux-rt-devel@lists.linux.dev, rcu@vger.kernel.org, bpf@vger.kernel.org, 
- "Harry Yoo (Oracle)" <harry@kernel.org>
-X-Mailer: b4 0.14.3
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 55BD014000B
-X-Stat-Signature: qpdccbppkj4ghxkta7wj67qdaiyxbm3q
+X-Stat-Signature: qdgqdc6w9cff8eiw9wshqu1sybj6sz8d
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 237EF40005
 X-Rspam-User: 
-X-HE-Tag: 1785313294-307469
-X-HE-Meta: U2FsdGVkX1+KFUFryNtyqRZaKh7rpo3QyuGy4M1WUJ9R5FMSVyaqpXHGnFBm6W0qdY2Xkv42fiGrx4HWitqxsWTsepT/wOgE3BHCku12j5eGg2FAJwz+FLrmQcDJlhSXLkgopEExdOltT1y1avG+xfW/FTgihzIpUfs5XMsDpvQJzsnVyj39MQkcV9mDgel9irXU5b2/+gEH4bF70FYNvflBsn+dfSOU4BxEYFcm862J98her2aZM0XLrPT6tzEzxv5yDzH1zmVtLRRWOx+WO9q137mTswCuMjHF4FJHnDZTq1vVJ82KkdM3MO69+SvD13rF1o45yVDaTuJuRUah/TUKCwpozGP1uAt8tE9zs9aqV8+HP5Q2Veze79SNoOQNLX6GX+GhoceuDDvMTMD5WYxddm44aSNsvljb55BAsYvIyP5uNV4opwJla8Qvs7ogtNJxvc9gjhv/ZxKo19YzIYAowcDEH3fUYTuv61WtBCvyD35kX/AsN3RV4C8C5WoYl7n6Z59czdi666uNXsgNa02wctdF7FTe+Hva1uNHLRX7JMIc1uagP9q3eIOGQ2tsTRjreTqaao3aNXXAk8E5CZ6ZIZPunmzMdQKAJcPsPrvWC3PVGh31kTK/me51FW+jtpiqRqOB0RgACY0uGX6MZcjK1uiaQVVREafspHH2lYckmrEZYh+CpjV69lsCosiaojfhghN0xlAxgzIJN+Diw9eeCaWWY9efR7pu7tsFSzcG8BPYpYoEBkTe12jXYlUMwjlYYtfOV0vzRVaV23QbBbWYyy3gKv+7B6/6eMx4cnUBoOyzQ+O4uejqqWF1xZ3LaTAYG3BKT1lSrbL2fQPAh2DlXbQrnOQYixh1il7+Y2DoZZu2J8tEE1OZq4kC0kFJPnn7OwcOV9EwqOa4fj1MPvwKYx4+8SGCyNapbxWdmgDXBde/rgsrh5wUYKNUrr8mIM1HviUA0vEtfkpoEbq
- wmvxvfIz
- b5L6lCuTe8DTyS6JZHSSJRsgRT5rJlssdwTV+fl397fHiSFC/og0jXR76BqqGP0mxpZBbJa1YayEr21608Esg9jv8jP6pTmN71jWpsUjLzjLX1kGJlLKsqiYazmt9E/HLy9hUYKRfUUPqhcc+I//HRBshNNZaoOgVISZSMqitnO9Dt1wnNH0vZk2BCWjnyH3RhuOz30YOSu2ln+suFrmd24grImwa6n4cVKvUTYpHJ22M1/CrsbqkAESGBLHKBtLefoZYQqsN3VU15YPMTwTgI+amehgd8U+oCya21rODBMY8n/E=
+X-HE-Tag: 1785317287-915975
+X-HE-Meta: U2FsdGVkX19aBLGpIvj8fa1Oogur6SkeSpvsC1DLLwBbQm1KZE1cDoP19s7k5c4b4UHU13XhUBTVeoSy5fEzkykdnKz5hBnrNDOmWQqyEEaifp91fa3mJgM5scERBC4Np9x+1j8jCriy5j77SOZm3FyTthGgja2tieLG9TFOoXrUHcfXiXeRkGMEMStFjeurmM55IRf45rf5/E+eZI424/NQZWVYwVxTtkQC7frM6B3VCxCorJDm6okrEBqV3GFKcsONcYgC9Cssn6+4aV5XhNAzkRZmW7VwvhBtZPc2KXHRFayKIiKLZlbYyWFpCfa8H4nbOLYCDZ42g9GVuRQN1rWYFTF4pkbyBiz1M8NN6TPNRaW+0Uf/uCr6Jo0ehU0wu3TDWkG5EeMlxaRUqkkpzMflEzDv5MOHO2juipWeOPWa0RVDLHyZpBURdUidpPYTdlf7gWQuEYlUV+32qFn3HUXDXfEBWYF9K7iOJeMPSb/6+rcuetOiChtvJRpBBqTpfvgdxVaQkwWpy6BalGmLhrZcgUQ61T2dACCbb3UiMCth6eE+HGuDf04SJjEGb6HMaJ9KPcLYvwvHbD5aV/1a9xHegwctH2L800QCGUwdskmjUHR5I/tbQ7hQ/wbnmAHVWVCctTeUEOgMIN0PCMfMAn4sJ94sgwn5BJzM6ox2JmMdH0T/32hBgad4RGG36RBVH6PEsAtQB8iukIdW7ef0ljzZ304nqG2VLvJhg6TBjINDH5fdM5Wz+znpzegs6J+77uI5VFHJ3G06aXDInah7cBwC8smhGvDA5zz5wEsbF71aCZW8T9nDgD1m/C0IiCEWpzvAH80lZTpbEj29FnUFTzW+ko0wgDVmoUzLdEai87CmHE3rMehOS2s44myzBCIKctdXFijcOp7x7pAitNLVHsMNMKVPqzXMpaHJlG25NNVUb2nPh4lGgvmAu538EJn8e8shATBUSRTuDKFucW3
+ 8vYB+kNZ
+ kcXEnai+FMGly2ks8aigWleiEjXhN6CAOog6nqb7+tLpD87D7PCUj685yp9Q1hlW9DEDeMEQW8qrqNvLpeTTy0L0WQ2kraxPyhm0O9EL7kF/HMSm3D7Fmt+hAvzqilonpsoqIKPAmmhKESBRUz88TTsF3epVHvGhMv2NEdZtxlXZCvwoKLFhciO5LxhZntRF309wKU4OlnJCOlFgLMK6tOd6WHFGa32GTQvBimSpXNIz1FDw63qQGI4E21tJqTQKXab4SohUYMo6vvVs2BmZ1lqcKZPm4KH+U7L6ndgiDJRPZeTq8hD47eBhm7g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,292 +147,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-rcu_head is overkill for kvfree_rcu() because the callback
-function is always either kfree(), vfree(), or free_large_kmalloc(),
-and thus there is no need for a function pointer.
+On 7/28/26 00:06, Christoph Lameter (Ampere) wrote:
+> On Wed, 22 Jul 2026, Mark Rutland wrote:
+> 
+>> I expect that should come with a reasonable benefit, but I don't have
+>> benchmark figures yet as I haven't finished converting the xchg and
+>> cmpxchg implementations.
+>>
+>>> It sounds like it just moved the cost from one place to the other
+>>> place and it also seems hacky TBH.
+> 
+> 
+> Yang Shi's patch has *no* critical section. There is no additional code
+> for the RMV instruction. The RMV instruction is executed on the correct
+> per cpu area. One of the reasons for the performance win is the
+> eliminattion of these critical sections. Your approach still has some form
+> of prologue and posthandling like the current preempt approach and
+> therefore will not be able to have the same performance gains.
+> 
+> The code is more efficient, there is no restart necessary and the
+> technique is already widely used on x86 for a long time.
+> 
+> Having the ability in general to map mmemory differently depending on the
+> cpu opens up a number of other optimization like
+> 
+> 1. Per Node areas. Calculations of addresses for per node data and RMV
+> operations on per node data becomes as trivial as the per cpu data
+> handling. This will further reduce and eliminate critical sections
+> currently necessary to handle per node data modifications for NUMA
+> configurations which are increasingly becoming important for large core
+> configurations on ARM64.
+> 
+> 2. Kernel text replication. Kernel text can be replicated per node or
+> per whatever memory is closer to the executing code. This avoids transfers
+> via the on chip memory busses and increases performance. We have seen
+> 20-50% on that one.
+> 
+> 3. Readonly data replication. A similar approach is possible for kernel
+> read only data.
+> 
+> 3. Read-mostly replication. This is a bit more complex and the writes
+> become more expensive since updates have to be made to all copies but
+> a read-mostly variable is rarely written and the replication will reduce
+> the latencies to reach these variables.
+> 
+> 
+> 4. Custom sets of cores that operate on shared data that is replicated
+> per node or some custom set of cores. This is for example
+> useful for network devices that have the ability to do I/O via a split
+> PCI bus or other construct where I/O lanes are duplicated to sets of
+> cores.
+> 
+> 
+> What we are proposing here is a basic new feature that simplifies code and
+> allows addititonal performance and functional features that are so far not
+> possible on ARM64.
 
-kvfree_rcu batching reuses the field to store the start address
-of an object, however, this is not strictly needed because we can
-calculate the start address in the slowpath. For the purpose of
-kvfree_rcu batching, it is sufficient to implement a linked list using
-a single pointer.
-
-Introduce a new struct called kvfree_rcu_head (the name was suggested
-by Vlastimil Babka), which is similar to rcu_head but is only a single
-pointer to build a linked list, without a function pointer, when
-CONFIG_KVFREE_RCU_BATCHED=y.
-
-When kvfree_rcu is not batched, kvfree_rcu_head is the same size
-as rcu_head. Note that shrinking struct kvfree_rcu_head on
-CONFIG_KVFREE_RCU_BATCHED=n kernels would inevitably require additional
-complexity and also some sort of batching (which defeats the purpose of
-the config option) because it cannot fall back to call_rcu().
-
-For now there are no user-visible changes to the API. k[v]free_rcu()
-simply casts rcu_head to kvfree_rcu_head. While this does not affect
-the API, it allows kfree_rcu_nolock() to reuse kvfree_rcu batching
-as a fallback when trylock or sheaf allocation fails.
-
-Stop storing the object pointer in rcu_head.func and instead calculate
-the object's start address in kvfree_rcu_list(). Factor out the existing
-logic to calculate the start address from kvfree_rcu_cb() to
-kvmalloc_obj_start_addr(). To avoid losing the KASAN tag, calculate
-the offset and subtract it from the address of the kvfree_rcu_head.
-
-Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
----
- include/linux/rcupdate.h   | 10 ++++++----
- include/linux/types.h      |  8 ++++++++
- include/trace/events/rcu.h |  2 +-
- mm/slab.h                  | 32 ++++++++++++++++++++++++++++++++
- mm/slab_common.c           | 17 ++++++++---------
- mm/slub.c                  | 40 +++++++++-------------------------------
- 6 files changed, 64 insertions(+), 45 deletions(-)
-
-diff --git a/include/linux/rcupdate.h b/include/linux/rcupdate.h
-index 5e95acc33989..ef5bb6981133 100644
---- a/include/linux/rcupdate.h
-+++ b/include/linux/rcupdate.h
-@@ -1098,19 +1098,21 @@ static inline void rcu_read_unlock_migrate(void)
- /*
-  * In mm/slab_common.c, no suitable header to include here.
-  */
--void kvfree_call_rcu(struct rcu_head *head, void *ptr);
-+void kvfree_call_rcu(struct kvfree_rcu_head *head, void *ptr);
- 
- /*
-  * The BUILD_BUG_ON() makes sure the rcu_head offset can be handled. See the
-  * comment of kfree_rcu() for details.
-  */
--#define kvfree_rcu_arg_2(ptr, rhf)					\
-+#define kvfree_rcu_arg_2(ptr, kvrhf)					\
- do {									\
- 	typeof (ptr) ___p = (ptr);					\
-+	struct kvfree_rcu_head *___head;				\
- 									\
- 	if (___p) {							\
--		BUILD_BUG_ON(offsetof(typeof(*(ptr)), rhf) >= 4096);	\
--		kvfree_call_rcu(&((___p)->rhf), (void *) (___p));	\
-+		BUILD_BUG_ON(offsetof(typeof(*(ptr)), kvrhf) >= 4096);	\
-+		___head = (struct kvfree_rcu_head *) &(___p)->kvrhf;	\
-+		kvfree_call_rcu(___head, (void *) (___p));		\
- 	}								\
- } while (0)
- 
-diff --git a/include/linux/types.h b/include/linux/types.h
-index 93166b0b0617..8b0976669d66 100644
---- a/include/linux/types.h
-+++ b/include/linux/types.h
-@@ -255,6 +255,14 @@ struct callback_head {
- } __attribute__((aligned(sizeof(void *))));
- #define rcu_head callback_head
- 
-+#ifdef CONFIG_KVFREE_RCU_BATCHED
-+struct kvfree_rcu_head {
-+	struct kvfree_rcu_head *next;
-+};
-+#else
-+#define kvfree_rcu_head rcu_head
-+#endif
-+
- typedef void (*rcu_callback_t)(struct rcu_head *head);
- typedef void (*call_rcu_func_t)(struct rcu_head *head, rcu_callback_t func);
- 
-diff --git a/include/trace/events/rcu.h b/include/trace/events/rcu.h
-index 5fbdabe3faea..a74027126a2f 100644
---- a/include/trace/events/rcu.h
-+++ b/include/trace/events/rcu.h
-@@ -625,7 +625,7 @@ TRACE_EVENT_RCU(rcu_invoke_callback,
-  */
- TRACE_EVENT_RCU(rcu_invoke_kvfree_callback,
- 
--	TP_PROTO(const char *rcuname, struct rcu_head *rhp, unsigned long offset),
-+	TP_PROTO(const char *rcuname, struct kvfree_rcu_head *rhp, unsigned long offset),
- 
- 	TP_ARGS(rcuname, rhp, offset),
- 
-diff --git a/mm/slab.h b/mm/slab.h
-index d13a0f6b7a1b..ec72ed95c21b 100644
---- a/mm/slab.h
-+++ b/mm/slab.h
-@@ -347,6 +347,37 @@ static inline unsigned int obj_to_index(const struct kmem_cache *cache,
- 	return __obj_to_index(cache, slab_address(slab), obj);
- }
- 
-+/*
-+ * kvfree_rcu_head offset can be only less than page size.
-+ * Calculate the start address while preserving the KASAN tag.
-+ */
-+static inline void *kvmalloc_obj_start_addr(void *head)
-+{
-+	unsigned long offset;
-+
-+	if (unlikely(is_vmalloc_addr(head))) {
-+		offset = offset_in_page(head);
-+	} else {
-+		struct slab *slab = virt_to_slab(head);
-+
-+		if (!slab) {
-+			offset = offset_in_page(head);
-+		} else if (is_kfence_address(head)) {
-+			offset = head - kfence_object_start(head);
-+		} else {
-+			struct kmem_cache *s = slab->slab_cache;
-+			unsigned int idx = __obj_to_index(s, slab_address(slab), head);
-+			void *obj = slab_address(slab) + s->size * idx;
-+
-+			obj = fixup_red_left(s, obj);
-+			obj = kasan_reset_tag(obj);
-+			offset = kasan_reset_tag(head) - obj;
-+		}
-+	}
-+
-+	return head - offset;
-+}
-+
- /*
-  * State of the slab allocator.
-  *
-@@ -910,6 +941,7 @@ void __check_heap_object(const void *ptr, unsigned long n,
- 			 const struct slab *slab, bool to_user);
- 
- void deferred_work_barrier(void);
-+void defer_kfree_rcu(struct kvfree_rcu_head *head);
- 
- static inline bool slub_debug_orig_size(struct kmem_cache *s)
- {
-diff --git a/mm/slab_common.c b/mm/slab_common.c
-index 9c2cca9add89..691ce6db4519 100644
---- a/mm/slab_common.c
-+++ b/mm/slab_common.c
-@@ -1379,7 +1379,7 @@ struct kvfree_rcu_bulk_data {
- 
- struct kfree_rcu_cpu_work {
- 	struct rcu_work rcu_work;
--	struct rcu_head *head_free;
-+	struct kvfree_rcu_head *head_free;
- 	struct rcu_gp_oldstate head_free_gp_snap;
- 	struct list_head bulk_head_free[FREE_N_CHANNELS];
- 	struct kfree_rcu_cpu *krcp;
-@@ -1415,7 +1415,7 @@ struct kfree_rcu_cpu_work {
- struct kfree_rcu_cpu {
- 	// Objects queued on a linked list
- 	// through their rcu_head structures.
--	struct rcu_head *head;
-+	struct kvfree_rcu_head *head;
- 	unsigned long head_gp_snap;
- 	atomic_t head_count;
- 
-@@ -1556,12 +1556,12 @@ kvfree_rcu_bulk(struct kfree_rcu_cpu *krcp,
- }
- 
- static void
--kvfree_rcu_list(struct rcu_head *head)
-+kvfree_rcu_list(struct kvfree_rcu_head *head)
- {
--	struct rcu_head *next;
-+	struct kvfree_rcu_head *next;
- 
- 	for (; head; head = next) {
--		void *ptr = (void *) head->func;
-+		void *ptr = kvmalloc_obj_start_addr(head);
- 		unsigned long offset = (void *) head - ptr;
- 
- 		next = head->next;
-@@ -1585,7 +1585,7 @@ static void kfree_rcu_work(struct work_struct *work)
- 	unsigned long flags;
- 	struct kvfree_rcu_bulk_data *bnode, *n;
- 	struct list_head bulk_head[FREE_N_CHANNELS];
--	struct rcu_head *head;
-+	struct kvfree_rcu_head *head;
- 	struct kfree_rcu_cpu *krcp;
- 	struct kfree_rcu_cpu_work *krwp;
- 	struct rcu_gp_oldstate head_gp_snap;
-@@ -1716,7 +1716,7 @@ kvfree_rcu_drain_ready(struct kfree_rcu_cpu *krcp)
- {
- 	struct list_head bulk_ready[FREE_N_CHANNELS];
- 	struct kvfree_rcu_bulk_data *bnode, *n;
--	struct rcu_head *head_ready = NULL;
-+	struct kvfree_rcu_head *head_ready = NULL;
- 	unsigned long flags;
- 	int i;
- 
-@@ -1979,7 +1979,7 @@ void __init kfree_rcu_scheduler_running(void)
-  * be free'd in workqueue context. This allows us to: batch requests together to
-  * reduce the number of grace periods during heavy kfree_rcu()/kvfree_rcu() load.
-  */
--void kvfree_call_rcu(struct rcu_head *head, void *ptr)
-+void kvfree_call_rcu(struct kvfree_rcu_head *head, void *ptr)
- {
- 	unsigned long flags;
- 	struct kfree_rcu_cpu *krcp;
-@@ -2017,7 +2017,6 @@ void kvfree_call_rcu(struct rcu_head *head, void *ptr)
- 			// Inline if kvfree_rcu(one_arg) call.
- 			goto unlock_return;
- 
--		head->func = ptr;
- 		head->next = krcp->head;
- 		WRITE_ONCE(krcp->head, head);
- 		atomic_inc(&krcp->head_count);
-diff --git a/mm/slub.c b/mm/slub.c
-index 6c81722afb18..774104267f3c 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -6720,43 +6720,21 @@ static void free_large_kmalloc(struct page *page, void *object)
-  */
- void kvfree_rcu_cb(struct rcu_head *head)
- {
--	void *obj = head;
--	struct page *page;
--	struct slab *slab;
--	struct kmem_cache *s;
--	void *slab_addr;
-+	void *obj;
-+
-+	obj = kvmalloc_obj_start_addr(head);
- 
- 	if (is_vmalloc_addr(obj)) {
--		obj = (void *) PAGE_ALIGN_DOWN((unsigned long)obj);
- 		vfree(obj);
--		return;
--	}
--
--	page = virt_to_page(obj);
--	slab = page_slab(page);
--	if (!slab) {
--		/*
--		 * rcu_head offset can be only less than page size so no need to
--		 * consider allocation order
--		 */
--		obj = (void *) PAGE_ALIGN_DOWN((unsigned long)obj);
--		free_large_kmalloc(page, obj);
--		return;
--	}
--
--	s = slab->slab_cache;
--	slab_addr = slab_address(slab);
--
--	if (is_kfence_address(obj)) {
--		obj = kfence_object_start(obj);
- 	} else {
--		unsigned int idx = __obj_to_index(s, slab_addr, obj);
-+		struct page *page = virt_to_page(obj);
-+		struct slab *slab = page_slab(page);
- 
--		obj = slab_addr + s->size * idx;
--		obj = fixup_red_left(s, obj);
-+		if (slab)
-+			slab_free(slab->slab_cache, slab, obj, _RET_IP_);
-+		else
-+			free_large_kmalloc(page, obj);
- 	}
--
--	slab_free(s, slab, obj, _RET_IP_);
- }
- 
- /**
+Most of the features you mentioned above are not supposed to be
+architecture-specific things. IIUC, Linus strongly objected per-cpu page tables
+in the past, which suggests to me that such an arm64-only thing is not the way
+to go?
 
 -- 
-2.53.0
+Cheers,
 
+David
 
