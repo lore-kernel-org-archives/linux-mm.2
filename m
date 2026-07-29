@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF8D0C54F51
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:56:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88782C54F51
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:56:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F71B6B0158; Wed, 29 Jul 2026 10:56:33 -0400 (EDT)
+	id 586A06B015A; Wed, 29 Jul 2026 10:56:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A7BD6B015A; Wed, 29 Jul 2026 10:56:33 -0400 (EDT)
+	id 55DE46B015C; Wed, 29 Jul 2026 10:56:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E46E6B015B; Wed, 29 Jul 2026 10:56:33 -0400 (EDT)
+	id 44F626B015D; Wed, 29 Jul 2026 10:56:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3DF226B0158
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:56:33 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B53E4140670
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 14:56:32 +0000 (UTC)
-X-FDA: 85042115424.11.18B1669
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 28BD080006
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 14:56:31 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DUvShgph;
-	spf=pass (imf30.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E9E76B015A
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:56:36 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 994941206CE
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 14:56:35 +0000 (UTC)
+X-FDA: 85042115550.13.301C1C6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id E1DB8140002
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 14:56:33 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="VDX7Guv/";
+	spf=pass (imf09.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785336991;
+	s=arc-20220608; t=1785336994;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mmQtxiJQKd7IWjs9bi2BB93ctJ9Pw3cwj1Whq5yGN/M=;
-	b=gDpOEjDk1sqF+zFeoQVasi76wsgZxftLtBRx9hmsu6IMeMhODpBuUufCS/XGkLBEoN6+TL
-	kvKQLlU4hMMd+x2MXd+y9dEqcSxWMLP3pFa/xTcfsBhuCaRKr4yQwQtGfUhPRyConfKfia
-	3/BiD2XsXYgiA47kEtKzK9k58TqzwgY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785336991;
-	b=ibX5ntDkszDRGvQxUX8KMf1nwMRGYMZ8JbbINeWxMwRhIPSQ7xcpRO7KXmhkQ98KSTwlMN
-	zAcVo7nMM7NKVFFwhaLBDIOqBDVc4sZ375xXprBgF22QQt2XpYPkflXjeG0eFI07u9zlX0
-	PEKP3qtk6QDM17EviAvwnl2KH16oQ2A=
+	bh=URUZhhyk9GJSCPvpDkxOhTJZJrRdQj3QnZX2BRofioY=;
+	b=5YzkjJwhxhdOOQ/ACC5+6hc91U3evnH9NZtbY3yeLG/hme2o4s8znNBmrwwPYh2z29hw7D
+	XsScbgXVuKYghGlcgL7XLnXCu1B3CtdQ1PuOZyYnF/bbN+d6e5OlEp0EeehldP/sUShIZ6
+	EH2CPjp+pMciwAzags18kb3FkxkJRW8=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DUvShgph;
-	spf=pass (imf30.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="VDX7Guv/";
+	spf=pass (imf09.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785336994;
+	b=bJ7sXCvnXxvo0v65gULdYrZdP4E5AuDVWxKNKaVShNgaEPqQPLr3n78PpLeIyVotNn7vrR
+	gLT/6bpLKsguRcQNKYxujlPQcl3OwI+XS28wmLyV8/PT3x8GCH2RlOkIDC4l5KSj6su7z2
+	9jHf81az1kU8BbUf3Bv8uku9ygT5xIs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B14E0600C3;
+	by sea.source.kernel.org (Postfix) with ESMTP id 175B243FAD;
+	Wed, 29 Jul 2026 14:56:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5E821F00A3A;
 	Wed, 29 Jul 2026 14:56:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AF521F00A3D;
-	Wed, 29 Jul 2026 14:56:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785336990;
-	bh=mmQtxiJQKd7IWjs9bi2BB93ctJ9Pw3cwj1Whq5yGN/M=;
+	s=k20260515; t=1785336993;
+	bh=URUZhhyk9GJSCPvpDkxOhTJZJrRdQj3QnZX2BRofioY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DUvShgphV0HpF8KYUua/9LLKbfqc0fbegRrwSjbUVn8A+OnM+potPJQzEPd0AYvZE
-	 MNFpBkNbD+DI6mtpj7p1nPmcXc5CID91D0KNIUGpZfxZF3bMpr50ncdpBsSu5QcyE8
-	 xpDyqp+/2twCyV2kWaafcU9i108LC9rfGMSswE+Cq4YQ7eMGE9Si1+X9HQ7/96M1sG
-	 KpNpLeG/bLIP8LvGFJDg3tQY4UOM/2Tg5AKwlSWxumQ6m1OzUSa9EWN65ImCPHhE3r
-	 vy4TFapDE2nVXoLvxD5YGsLEK+5mpfUZl3wi4XsYdwKBtIy9rPYzP27yjbh+xqGkua
-	 6xmdlIDXwNy1g==
+	b=VDX7Guv/RSc9zTFHdXr/EBRF1MFHptXJSjdg5B0zd/T2N/+vIibUpoOWl+1LCiPBg
+	 i3NOrFuyCkDBCnuZuSuaNeNdVpqTUs+cMCf40jway8yW/VNXrfeXKSKRklHLnWwETN
+	 n01K906XSS2hQ9o4B5mkr6yeA51LtH/FEOUo/RDH93Crasm0pjeVCdybz9+lMWv+3Q
+	 IhQioV/AgZWNI6aza5IDxxMDTXcdag0+jiIYIlWiuN7Wj0lzYuvrmtqkszK3+m05Pz
+	 kBhqTMXrzZdCL26S64rFf5R5rOFkBCejRvIrddhGTwHMuzvImr2Acsgv2u3Hc3Kq0A
+	 fxg6H6umLDy2w==
 From: Pratyush Yadav <pratyush@kernel.org>
 To: Mike Rapoport <rppt@kernel.org>,
 	Pasha Tatashin <pasha.tatashin@soleen.com>,
@@ -77,22 +77,22 @@ To: Mike Rapoport <rppt@kernel.org>,
 Cc: kexec@lists.infradead.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v5 03/22] kho: disallow wide keys in radix tree
-Date: Wed, 29 Jul 2026 16:55:48 +0200
-Message-ID: <20260729145610.2827231-4-pratyush@kernel.org>
+Subject: [PATCH v5 04/22] kho: return virtual address of mem_map from kho_get_mem_map()
+Date: Wed, 29 Jul 2026 16:55:49 +0200
+Message-ID: <20260729145610.2827231-5-pratyush@kernel.org>
 X-Mailer: git-send-email 2.55.0.508.g3f0d502094-goog
 In-Reply-To: <20260729145610.2827231-1-pratyush@kernel.org>
 References: <20260729145610.2827231-1-pratyush@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 28BD080006
-X-Stat-Signature: zd6rrwzpat3ins3ccxnib6qbufs8act9
 X-Rspam-User: 
-X-HE-Tag: 1785336990-200453
-X-HE-Meta: U2FsdGVkX186vqkZhN71dnvcXRawqRNAxy8nq9NfkC/+Gy8HP9DXjzIHnZ2ymi3Z3PxgBPBvvIG8WysTqheJgaFRaQ/xPJdqwSvNT5EnhYNPcNkVLw5pbAv35OORWw6UAKnCrUPHOUOs3zI0IENUlzTNObOsi70svaoQLDHgO0dRzfj2sZzQzRF4r/e1ut4yKfHOC1GT4gtvuHk9nsZjVuQAh5Qz5zlUTgx18JXxZNParq9d66LZIZwojhnAEd34pF8ZOf6QhEGWtKEfL6C+Jnh7El599AfN36EvarU4hjXTITk+/MinphRDPVrjEuGabhIfUUJE92kv0H/+yW23hWNdGGtIMg05gEts5QIbacIfhxBP3XxUUHmsPSTvmGLWABkE4zQyHo7g63EPmf7cfeHPlHSSdmC05SyYiDlTE0RMa3Tum6rav4hO0GwSxIpzI5beCmmi8cy+UNdwG2EJzvOfB0TRQJNiQq1E4yzCjdqLMBy5IX+f1ipluEYT+142qq4YfBx6kFE0pzyaicz8NKKufF6h263Wro/B+0/Ee1u18poKNiXzyc4b56OXb3ndrVyguLaLic3W/tjRKqnx3W9ooDFZrqOcw9XFuMzv/N1ez0P8SlKYjhFLBopAEfDsuyEgwlcOqxvCKxj2X4BHTQiykJF7fzcCzN0wYRaItH41yJqRze9KOWQY3vzZKCFiYVlBDgYkpPB6aDW++UIlQskZzAl3yEqZ8z20ffQ8qFa2JbdSovAoS103c7xmkAoC1bji51VvWVwXNMIDfFgP8J8xGL/c0gWnLUQa2RhvcyLTODinWBO9GWgNFMFB4ubdWGY0Yey1JXGn72dRjVWYJY/dCWwBJrghEy83kV7X5ymqSdtEWgu9C07njAw1sSgBIu97kbTbTWpXBhRS4hcujzmhZww1yBLHt9KSfHDR80gfLXee+cYqD14KS2LfbBH983rkdjyCkRyuCA4hTDm
- ReMwg85p
- wwDWLKmnHlpNLZKmmw0G0HCFgIZ4z2Wev06Nx4dQNlZIRicAepDMer5IW0l5j7rpGHgCBmN9UvoZF3YG3k9CD+k+r/kW/nZJ1t69dTyLsvYfhP1qbO9g6H4dpIyJHdoH6B91lPwnLxcTXjI526Kb1Bb+nYNvwD6eaHySdanm4Gtlu/qGSHsKhTSthkUWP/rmy+jX6OByocM7oMkTa4PCrMUGgqCn9ejFId3uh+sLqvKV8Rgg=
+X-Rspamd-Queue-Id: E1DB8140002
+X-Rspamd-Server: rspam01
+X-Stat-Signature: bq7tx34bgdssqm8d3gq1665gfhn5jmjw
+X-HE-Tag: 1785336993-445750
+X-HE-Meta: U2FsdGVkX1+/Py1zP4PO2nJZwzAwxwAzK8DNjL36PI59IVHnK9u+Y6NAEvkwpctZrtzONRbKxMIWTA71OhNMCNbFfgrYWW2I5l3BloD6RC2wpVBezFI7m8Clm9iAHC+wZelJRiz0X8pQjfdsS1KXY1Xjsp/Omqa6U9uW0QZ6HgxYBkeNqXbFZhW0sX66u4g7VIxQn3x9v+9LwHBuzIBXxd8IoVrBap8Gn8zCv88U+ugwtuMzMIxRsxi+6Nq1zoZY3BbE83TTJU9dl1ujcjQrcR5kBUBDMj8DmSvBzugl5wW9qc4R4VG3rJf4xXsK+MB3pfFY9xJUx9bLM07LTpmPIrHEnaVNMcMq9vz3ylyR8j2lhqjOCEjrD5190q7sC/guNyi/3wNTx3x1HU6GnmwzHqcasTnd/rhXKFMkvaWnn7XQrQWEIEv7Cfc/1nx1Jla4s6pvUMd2rPyDF0hDVtebvt5910EFsP7WpLwNEAzeAZlQXFMkqQF8glnlLZpID++7EyKa7XL3VRDA8MnHr3OalAh3oTVhfO68BBS9ddaasr5dRz1faIJUxMp/rSqTtsT++Lg7Ux3UCmEu359S793JYB2pAaNheJEHp8h4X2SsWkCWNrpTcz1D0NKkzHfa0dM2igjpSHvQJpQaOV4mLB5rPd36MTZ7FcabVwuVn6D1Z6JhjTk2e1/J1sT2o+KeG/WmjosE56HhmukDTyDQDacf6gdRcWPA4xTpX1HwQN4/RalWlnQ+xt7CGq2aw/zj7loj24va6GRGmwwkJ66Ah20nQ5c72YDgrZsUnwIPBhEn7tYcqQq+f//RqsOIxQX2oAUvL11Do902JCUiQlKn/ZfMgVGra1Gal6lsmVVG6hjHFIocX4a/5TMFdmc/LtJaqHTEHAcqFdtOrlZD57vXBa8KTf4+pnAAfUysc8r80c99G1Ck9C1eGGQhSqKFXqLCb7gkqD7s+fAjLBtD3Af+lPm
+ EZ/DC3Rs
+ 2WKzdohjz/YCYhXCSNLs7EVMp6LrRTLFznYBPfrE+5Bj+gcDs5DRYVkEjkCJut/9mWy4v7jYbGQuBjwFTtCgj0kyncyzfb3AAA+7ZqJvt1/cQeEe1MqEb8ZuUiM334bc3EGeph6fw+ebtIUmTDyltROOpsAMb9+fgNdNsiRuVaLq8Hf5xus0JXfCy3JgX3w/loiwBwkCieYA+B9PtJYAx1D2/cP66Mnohx/q13/j6pNHgGrrrMdbJwlq7Aqo0Sv9Nfi6qTRNjPqL5l7FiRsfuTlQgG1+/JHfMwcn6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,62 +102,85 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
 
-The KHO radix tree was designed to track preserved pages. So it does not
-provide the capability to track any 64-bit key. Instead, it limits the
-key width to how much it needs for tracking PFNs and their orders.
-Limiting the width reduces the number of levels in the tree.
+Currently the preserved memory map address is returned by
+kho_get_mem_map_phys(). It is only used by kho_populate().
+kho_populate() doesn't use the actual value. It only cares that the
+address exists and is valid.
 
-KHO is not expected to be the only user of the radix tree. With the API
-generalized to allow other users, now it is possible to add any key to
-the tree.
+In coming patches, more callers will be added, all of which will need
+the virtual address of the preserved memory map. Since kho_populate()
+doesn't care about the actual value and only cares about validity, it
+can also use the virtual address returned by kho_get_mem_map(). It only
+needs to make sure the returned value is not NULL.
 
-Check the key width at kho_radix_add_key(), and error out if it exceeds
-what the tree can handle. Do this instead of increasing the tree depth
-since right now there are no users that need to use wider keys, so this
-avoids memory overhead and ABI breakage.
+Rename kho_get_mem_map_phys() to kho_get_mem_map() and return the
+virtual address of the preserved memory map.
 
 Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
 ---
- kernel/liveupdate/kexec_handover.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ kernel/liveupdate/kexec_handover.c | 25 +++++++++++++++++--------
+ 1 file changed, 17 insertions(+), 8 deletions(-)
 
 diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index ea24f23ce292..e7451743b87e 100644
+index e7451743b87e..5c35c11c273b 100644
 --- a/kernel/liveupdate/kexec_handover.c
 +++ b/kernel/liveupdate/kexec_handover.c
-@@ -156,6 +156,11 @@ static unsigned long kho_radix_get_table_index(unsigned long key,
-  * intermediate nodes do not exist along the path, they are allocated and added
-  * to the tree.
-  *
-+ * NOTE: Currently only keys of width up to %KHO_RADIX_KEY_WIDTH are supported.
-+ * This limit only exists because current users of the radix tree don't use more
-+ * than that. Changing the maximum width requires changing the tree depth, which
-+ * needs bumping the ABI version.
-+ *
-  * Return: 0 on success, or a negative error code on failure.
-  */
- int kho_radix_add_key(struct kho_radix_tree *tree, unsigned long key)
-@@ -172,6 +177,9 @@ int kho_radix_add_key(struct kho_radix_tree *tree, unsigned long key)
- 	if (WARN_ON_ONCE(!tree->root))
- 		return -EINVAL;
+@@ -512,19 +512,24 @@ static int __init kho_preserved_memory_reserve(unsigned long key)
+ 	return 0;
+ }
  
-+	if (unlikely(fls64(key) > KHO_RADIX_KEY_WIDTH))
-+		return -ERANGE;
+-/* Returns physical address of the preserved memory map from FDT */
+-static phys_addr_t __init kho_get_mem_map_phys(const void *fdt)
++/* Returns virtual address of the preserved memory map from FDT */
++static __init void *kho_get_mem_map(const void *fdt)
+ {
+ 	const void *mem_ptr;
++	phys_addr_t mem_map_phys;
+ 	int len;
+ 
+ 	mem_ptr = fdt_getprop(fdt, 0, KHO_FDT_MEMORY_MAP_PROP_NAME, &len);
+ 	if (!mem_ptr || len != sizeof(u64)) {
+ 		pr_err("failed to get preserved memory map\n");
+-		return 0;
++		return NULL;
+ 	}
+ 
+-	return get_unaligned((const u64 *)mem_ptr);
++	mem_map_phys = get_unaligned((const u64 *)mem_ptr);
++	if (!mem_map_phys)
++		return NULL;
 +
- 	might_sleep();
++	return phys_to_virt(mem_map_phys);
+ }
  
- 	guard(mutex)(&tree->lock);
-@@ -244,6 +252,10 @@ void kho_radix_del_key(struct kho_radix_tree *tree, unsigned long key)
- 	if (WARN_ON_ONCE(!tree->root))
- 		return;
+ /*
+@@ -1647,9 +1652,8 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
+ {
+ 	unsigned int scratch_cnt = scratch_len / sizeof(*kho_scratch);
+ 	struct kho_scratch *scratch = NULL;
+-	phys_addr_t mem_map_phys;
+-	void *fdt = NULL;
+ 	bool populated = false;
++	void *fdt = NULL;
+ 	int err;
  
-+	/* Keys wider than KHO_RADIX_KEY_WIDTH are not allowed to be added. */
-+	if (unlikely(fls64(key) > KHO_RADIX_KEY_WIDTH))
-+		return;
-+
- 	might_sleep();
+ 	/* Validate the input FDT */
+@@ -1671,8 +1675,13 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
+ 		goto unmap_fdt;
+ 	}
  
- 	guard(mutex)(&tree->lock);
+-	mem_map_phys = kho_get_mem_map_phys(fdt);
+-	if (!mem_map_phys)
++	/*
++	 * At this point phys_to_virt() doesn't work properly and so
++	 * kho_get_mem_map() can return a pre-KASLR virtual address. But here we
++	 * only want to make sure the mem_map is valid so the actual value
++	 * doesn't matter as long as it isn't NULL.
++	 */
++	if (!kho_get_mem_map(fdt))
+ 		goto unmap_fdt;
+ 
+ 	scratch = early_memremap(scratch_phys, scratch_len);
 -- 
 2.55.0.508.g3f0d502094-goog
 
