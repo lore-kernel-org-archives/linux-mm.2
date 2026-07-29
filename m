@@ -4,83 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 762DFC53219
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 18:28:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 250E3C53200
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 18:51:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 664C26B0088; Wed, 29 Jul 2026 14:28:43 -0400 (EDT)
+	id D46286B0088; Wed, 29 Jul 2026 14:51:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 615FF6B008A; Wed, 29 Jul 2026 14:28:43 -0400 (EDT)
+	id CF7916B008A; Wed, 29 Jul 2026 14:51:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 52BD06B008C; Wed, 29 Jul 2026 14:28:43 -0400 (EDT)
+	id BC0AD6B008C; Wed, 29 Jul 2026 14:51:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 30D246B0088
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 14:28:43 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C5021A1C7E
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 18:28:42 +0000 (UTC)
-X-FDA: 85042650084.11.289AC94
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf01.hostedemail.com (Postfix) with ESMTP id BCBD640012
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 18:28:40 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=OYDUqxSF;
-	spf=pass (imf01.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 82CEB6B0088
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 14:51:17 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6460B1A07B4
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 18:51:16 +0000 (UTC)
+X-FDA: 85042706952.03.18B82A1
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 28F691A000B
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 18:51:14 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=keoBenwZ;
+	spf=pass (imf19.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.171 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785351074;
+	b=anIbzBuvUJNYjeQmoNCMDUbZ0WXl1E2y5BhYm/6xq1+9cD3OqwLCwYBcfCRXVrJ/iwWXG+
+	uyXM/Wq9kfRkedmsBRD7SMb2gMNQSkUSxyWiShGsCLWCLvw3AwunYllYtq+OvY6+XnOiYX
+	NBMfPKoqrE+sOpCyb/X5IZXXLqG8lfk=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=keoBenwZ;
+	spf=pass (imf19.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.171 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785349721;
+	s=arc-20220608; t=1785351074;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oRnzRJMDZ8iuZ3LQn8T44elp+xM+94WMNYL4egIn6js=;
-	b=211qLF6Lwip2H1p72pKsLfAMWjc5xsMxM+lORsHT1cN2IOobwBrrvyxjKJhDC2AD5fefRK
-	Dz4mGd5oL4AlHP9IGzjA4Swz8FOySskAekBjaPjBxHjfSETn+0HsJXQA4TUrZcxxPqx8s5
-	SIoMC+pb/CdWZeGVJjKlzopSk2oXr/8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785349721;
-	b=bhJcrek2hhoMHd677kdCzXo33/gqDj8PCYyX/9xRWyM2/Tx5lK0p0xOBrDQDnAcq0vPvld
-	BI/fLBe2/oeQpicXcs+pdF+wJn/XHs+GTEqIU6ikr4uO8D3SeUbftDBXQfMlU3Hwy8cfqJ
-	oZfJWfC6ksRf/dZy6yEsluX0INZ9mjs=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=OYDUqxSF;
-	spf=pass (imf01.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=oRnzRJMDZ8iuZ3LQn8T44elp+xM+94WMNYL4egIn6js=; b=OYDUqxSFh7l5uF3hrR+GNzddO4
-	IFnHCZtBQfpOpowmx1ZA4Twp9S8VJyLoFvJSgAq2/CIs5HvGc3fORKqRYBKscvjuE1pKaTN5HUjr+
-	YcGpcJNHV2dD7h11tSd85LRzO5OMKFOL6SV5XvJMe02JDXrEcQqeaHJ1/1TVlh4s8o3ziye5120jd
-	JgO285Vd8Cp9lB5V5N2CIObEICB7rPPUDQY25ooiTtOXwuFBoET0CHS+wHsf/Cs3Th+24fOH/2MZ3
-	nAlaMJppv6WXN312cZ2yMSEOnlSnTwj02dbWyQ/Fv3A7v2LdO3aC0idqkbUs+oE0Ll0IWg7H7FZZ3
-	E7nnsd/Q==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wp91A-0000000Avaq-3Olf;
-	Wed, 29 Jul 2026 18:28:36 +0000
-Date: Wed, 29 Jul 2026 19:28:36 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Artem Lytkin <iprintercanon@gmail.com>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, urezki@gmail.com,
-	shivamkalra98@zohomail.in, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/vmalloc: make vm_struct.nr_pages an unsigned long
-Message-ID: <ampGVI1MLmnLksnN@casper.infradead.org>
-References: <20260729175708.7074-1-iprintercanon@gmail.com>
+	bh=WT5HxsFSsFe8e43NEMOLV2lbYxngwkQWFWlRMgNk5So=;
+	b=VbVbIR5LK/B7bIaDlXbAOF6vaELE0CDv1wlg8GAGZKOArUqNcNZ69PNL15KcURPfH9qwSL
+	UcmewABBR7B/4s9T91FSA5YRZ9Vv8/RNo/lEq21jUFSMX+r9gdwuJz4CEGLLT+4JZADc6t
+	/T5wrRQfFg4MPHpk8oqye10ZFMOXWKc=
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-92e85499ffbso112274085a.0
+        for <linux-mm@kvack.org>; Wed, 29 Jul 2026 11:51:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1785351073; x=1785955873; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=WT5HxsFSsFe8e43NEMOLV2lbYxngwkQWFWlRMgNk5So=;
+        b=keoBenwZJzH5J7+bdYllmAR7rFVuXdfiAlZKDWI04Cpn8RlrEbXw+Oovl4xHjwuy8D
+         Mssk79ValMuI6CHxJ5pkjlLaBx8lC7TPqsPhSPjcrv61na3wOaJAEnfQxLjv0aOIf11p
+         yF+B0ubkFxWeCd7lZ/HnekfQh8q1HtETGj00J0fH55OpX+JIic3hncH8wniN4pAKQdD8
+         SbzsQp/h9vEz/jUFBOo2pfLTDlDf+8MSQEg0WkbtJenAn562qTL61qsnKehmSUhSMHTi
+         gOuevDF+yo1T1Uc/nGEe6j9SPEhUzP0/N5lLja+Nf7EYexePmJbdeekRsnaAgIkt9sU7
+         +gag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785351073; x=1785955873;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=WT5HxsFSsFe8e43NEMOLV2lbYxngwkQWFWlRMgNk5So=;
+        b=ZMcsATYWPQM56oct/56GJNHAiSPgJtqwMbQ4F8gNJc+xt/KSPTYtS61U0Rf8Wp1RLm
+         KmJZ4d6JFXqrweSX+zCFDqHTy+wygxHnkNxJ53Qe6LiLOcWeolwZHh3H3/sa4EXrZe5Q
+         m2uVjd7tT+/YgsNucwNk7Tz0/uVSjNWQU04FeJ+0hiQHuR+STN9Uu0iQ9uVZnBApVPqn
+         aW8ltQxlfU0m86wwQUiO6Mlw8rDMy5o9CkeA/F0G1Ccr1oyj1BdeVWEQtpq3sJZnN6VO
+         V9dh51iqKwCOaSbzExxFe+koKXKcTIuUUMFPXkU8v7xCAnb97QhBG8W6D88FFfilolhY
+         9orw==
+X-Forwarded-Encrypted: i=1; AHgh+Rrc+hkZz2hB1O9u+g7MYs+R1Vw5oAGpJIdaT8C0NhTgTrYpOq37GaJ0YZ4Ctf5fk8iAPmGrEOkV/Q==@kvack.org
+X-Gm-Message-State: AOJu0YwE1QsSoD7MBe+7Ip7MOIgM7GExfDlC2bAl/n3BCovUeoQrFx0l
+	PptbxBHMuFvLf9EfV0nBltnQ/QzfYbMK6nKXfEP1eyMIkVm4PAEQxxXjfWr3zxDF4qo=
+X-Gm-Gg: AR+sD13p4Ow6GzIAkjjgAoc0fnu64OrpdejvIYB+mAH2OciivNFgBBGSsJgoZTgFEqQ
+	ruIIt1sznVEHN1aTP90mBvycw8EZ237Vf95wH0daxrnyFHU5ZMVypupjA7szv/P1bbCmzD2LMBa
+	tkm8kF/PNFLIgY32jzVHfx0+LYHHzIuiTc65XJrG/pfJHYq98hdCEefyVDYkQsgMY54FlHqg1fy
+	tFcEVtCGuVQnn8ysncUXE6kk3FHAmxaI4ukeC4pDs+VqDAiqoGJUD/uuu8P1C8lA7LWD3dBs3+/
+	WfyPgqRvDatG/4RmSwLZlP4JbSv5o1TYI0RLCpZgcayj1CKBpzkoG4fmqK7R96TyQ6mfrfjmWFw
+	9TCa/U4B8xsxVHWuvCresOvIaPXWW/vG+IqwdaTNzID1xFw87QNEphOjoTH6InIc+JpZXSAslov
+	3rPhqzHJb8l+8nfVCjGKnQMfN/khnVbWgR3sYsg2VKY+3uWS3XH5doD6i+TEmB
+X-Received: by 2002:a05:620a:25ce:b0:91c:ac0a:690b with SMTP id af79cd13be357-93483dd5620mr11089285a.17.1785351073008;
+        Wed, 29 Jul 2026 11:51:13 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-933d3227707sm233230485a.6.2026.07.29.11.51.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Jul 2026 11:51:12 -0700 (PDT)
+Date: Wed, 29 Jul 2026 14:51:11 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Michal Hocko <mhocko@suse.com>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Usama Arif <usama.arif@linux.dev>, Rik van Riel <riel@surriel.com>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org,
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] memcg: bypass the reclaim and oom killer for dying tasks
+ once oom_reaper is done
+Message-ID: <ampLn-xkHnBVNHJ9@cmpxchg.org>
+References: <20260729024612.3369005-1-shakeel.butt@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260729175708.7074-1-iprintercanon@gmail.com>
+In-Reply-To: <20260729024612.3369005-1-shakeel.butt@linux.dev>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 28F691A000B
+X-Stat-Signature: 4hm8yek39pgp3h16i34idtoze4qzpgy1
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: BCBD640012
-X-Stat-Signature: jbr915mtttp3nnz4wggjxgxegq6dqbr6
-X-HE-Tag: 1785349720-592913
-X-HE-Meta: U2FsdGVkX1/Ql5ardENFZczPhDIrdvRj2P5hmMYo2Xj2/g+BdaSfl+bGfE77YPD2BKQYuHKIGzMMn/JIk+uMHLK9wke2uiWIHV4o9aoAMCE1vf2p3FSjsiNbDLPaiW90fhy/1UBgw1xbaxFR/g/yk60150zzO4IehJyfg/i01uXV3F095h83sYB/Ql7UyjF7Ysj6qOLemxCGb4/TzbvknOrTHvNr4kusG3tPYWhKw+L+S3HSXumfdrMEuSh8PEuFTrWdPYLFByWmMElK5WSq/B56CoyG4WqZXXSG46/NmPPlHP0VcdGOSGEL1fetyCea4jcfj/nuh1LtFgAWG2jFBG65kkTbtCEZt4mde1W4law3I79Z4ELGb3DisrpBFgeo4vmudz+zaXpflnbn5Mgp1d4F8/GD+3bYoapMi7Q5Qkko0FPo2ii5JLkaKAwAuFpPZvFcL9VZbTyoqxkCM9YO2pmL6IwxVe96wyoBbjMdammP4LmoFu2vWUQyGx3eLm3KutdSgJR4vQpQ00UJJk5VDbGuoTgyF2YOlnmWrEbXve0GAGQGoq2eINkj5USXGnAPsE3KrN4+877RXUYN8+j3/7XCJ9lZNmTEjf7/9ZvcMV2IGLwM1XJ46FYwnqd+q9K+uPTLg9ilPv4xxb+6M4P7p79T2zhJW9TWQssc8bTLAOAEKOuhvpIJau01xEcrsnqGWycSHeNWlJbUHb5GiMVLv57pxuXB5+HkPTWaK/+7FqTxdHwLPQ5oIjUJTRAIebfPaJRx8XsGUsLvR4TTvO5LbDJiEWqmr8wZKc/iYvUTz3btRWnoOnG7nbKR5YIgkwwpfNJPW9uozZCRQf06TqhYSmQdKcW9CJGSljRhuGdQSpqCE25okD2/fIbx8WXVhAilINefk51AzVzX2McT6+oEhEqkN5IrkpfDWtMTq1kKR0/p90UBj3aQ9IyNdn1eQ9TD+Pt64OwI715vFpqi6pT
- OWie46qS
- 9KRHs4DqcksIP6FpAB5e30ufNrrh0ZavawF25L539wxDFuGuiwNYBG6MEUzXerGzRfMLXqA4zt26G+TahndIZdQ9fODFgn7GTjiEdazFl9Kwd2YYi1xdCHK/IVbQyRtDQc7rKfaW0ZRH2QK5co1iC/c7HWK0Pqy18hUffplM+n5Z+55fVVNrq7YvezWCLq2fDNNV5KFIb0IerK61eVFbkh6N0EZqPfctj3S4ts7haeg7lRABsECQodYgz56gJw1vSN/H5Q2H9FV8DGLgdsz39OtUFlm1go+blnsB9ML8AHnQw1xVRi7YBL/mnMbq9Pel9/J/j2Jjn+Q5V4dc=
+X-HE-Tag: 1785351073-643056
+X-HE-Meta: U2FsdGVkX18vjzEdoHtBoYcFveo0hhDcNTp+soqy3C/CkyPNitHdXzxfYXdWeZ7kkPOM1X2oWZvrX+GBteIO7I2ZcL6vUtFuuOKCEf3pIAGuIzS9Uj9p7X4AZfbWTpETDp34z2ti3C2e+I40izv4eSh20wwOeQAlivsRVJ2Ne0WVmJL3nj7hXzfkcYAlTJjApFMQvtL1rty9sY9/YACgudc2HlgVN3BXW8zPmIllOVtloOJIPkNJNw5XMQkbBOMvW2+/+bEMUNlmJdtPY0S5q3dcHcilgqmg/8lTiywT+tMa0CH1mKBysnJYR/exgA3B5IIBX2sHMOD65CN7diW3j38tigEOoltePU1ejQHMc2KiAAt3oqVINb85W4GmNiOXPe1KACPaS8qCsx5QoypVhpLX05zBsD/OI7D5UFVc/lZle8PwJ/5UkUIC3gfoo9DU7E6cX2OkScPltPYYWNXFXEdYGQaagbDU5c0qZMLGkD03kAcS35KtU6zZr7av8RkS4I1x6JMKRfTwXjJuB1rs65lGi9moAUGgXcnxwfCYJ9wBAkrVT04/z8FhAtC9n8VJEap8r+1qd1l18/GIcFRKnfGZms6X2Ite6kNsM68gnygh/0IWZRFK+MgnSNleSuGSSBU1ZeMQRM3AsxkroiSDLfJ3lYUTFC2v1D26RFf73a9WIoTS7yOdqXxOAXh0VwOkzih0fzs0LUjNFeVgQvKalQGhd3ZCxunr3r0Vd12d7ri0iPKbhOemOncHr329+qQDPoMNOFcHkAY5vr61/migIe6clbrDWFxvpFr8AF0X3XP1tbeSW5795bD+IvBiTvu7Q7YSBprjwXdNsLjYmbLjIURU0iOQzhdiQQ2NMbuhgxQ858R3Xxmp/CzJGv+BhI5Uus6vvFojARWoJWUBqa98DnerAoe092Xq8paMCW+nzTvQW4J91jnMqvG475+GiIhcowjCZFIKXsSUNQ0GrAZ
+ +b8qQUbc
+ 3aGUv4vQK1zMBIBisWMBVH1aFbuIKx2MR25YRCBenDeXdTJpUd8UhErAx41uqiheKu9TVbEF0uhX6GZZ/W4uU62IGGd+4komacxrwkO4GkBoxZHa/YjRLR4ZPSp6kWQgej7wygWdPa6Xzql7OyZ9Xq0k+ejwfAEohRenoyRYLd0qlMaLDTebH2ZJOSD4ocFjHZxE6YGnROR73FV8WkHnIuzD7bvFhh+c0etI5rmgzsff7h9wbLw2RTAuxkCwKHzUM2tAsiP0M3+iU3gFuonWEB+iPt6Rrbx2zVOcgAVkOSpGhev6kTGPKok5D8M7zqWwjUZ0+m23BF+r0iR4HgPAwWuoAUr0nqOsHBXFEBx50MvifjQht72hmfZU5M4OoU+LbospNRs9iwhOHIYoCN/UU0mD0/5UhS22QpggueyhbNwcNqE8ALRz5ACZxoxab0czoQMrQCXEjZnJ4+i3wY92AhWtw9uB5HYB69JtwiTFAgvPCKPM4Z7HJaYtuYC5o9U2LXJt3V4T0bHh5Gyn/4kyGgopd+FuhI/IeQFqv284fiXUYFUYbt6FlRB7QWQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,24 +127,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 29, 2026 at 08:57:08PM +0300, Artem Lytkin wrote:
-> A vmalloc area can hold more than 2^32 pages, but the page counts
+On Tue, Jul 28, 2026 at 07:46:12PM -0700, Shakeel Butt wrote:
+> At Meta, we are seeing instances where an OOM killed job is stuck in the
+> exit path for several hours. In one particular case, the job was stuck
+> for more than 8 hours and I had to manually remove the memory.max limits
+> to allow the process to exit.
+> 
+> The job was a single process job and had ~55 GiB memory.max and zswap
+> enabled. It had almost 0 anon in memory and ~111 GiB in zswap compressed
+> to ~51 GiB zswap pool (i.e. almost all of memory.current was zswap).
+> Nothing was left on the LRUs to reclaim.
+> 
+> On further inspection, I observed ~20k threads of that process stuck
+> with the following stack:
+> 
+> [<0>] mem_cgroup_out_of_memory+0x4e/0xa0
+> [<0>] charge_memcg+0x8bf/0x990
+> [<0>] mem_cgroup_swapin_charge_folio+0x4e/0x80
+> [<0>] __read_swap_cache_async+0x10c/0x260
+> [<0>] swapin_readahead+0x116/0x3f0
+> [<0>] do_swap_page+0x13c/0x1ce0
+> [<0>] handle_mm_fault+0x61d/0x11f0
+> [<0>] do_user_addr_fault+0x3e7/0x6d0
+> [<0>] exc_page_fault+0x8f/0x110
+> [<0>] asm_exc_page_fault+0x22/0x30
+> [<0>] __get_user_8+0x14/0x20
+> [<0>] futex_cleanup+0x27/0x1c0
+> [<0>] futex_exit_release+0x47/0x60
+> [<0>] do_exit+0x107/0x940
+> [<0>] do_group_exit+0x81/0xa0
+> [<0>] get_signal+0x2b1/0x6e0
+> [<0>] arch_do_signal_or_restart+0x1a/0x1c0
+> [<0>] exit_to_user_mode_loop+0xa8/0x1c0
+> [<0>] do_syscall_64+0x152/0x250
+> [<0>] entry_SYSCALL_64_after_hwframe+0x4b/0x53
+> 
+> In addition the dmesg was filled with "Out of memory and no killable
+> processes..." messages.
+> 
+> I have no idea why oom reaper was not able to reap/unmap the process. My
+> guess is that since oom reaper tries to acquire mmap_lock in read mode
+> limited number of times and then gives up, there might be a thread of
+> that process which had mmap_lock in write mode at that time.
+> 
+> My initial suspicion was the futex_cleanup and kernel page fault causing
+> infinite fault and charge retries but that was put to rest in previous
+> discussions happened on similar problem [1].
+> 
+> My current theory is that it is just a simple slow serialization behind
+> the oom_lock. Unlike page allocator, memcg charge code takes the
+> oom_lock without the "try". Though memcg oom code uses
+> mutex_lock_killable(), note that in the call stack get_signal() consumes
+> SIGKILL (or sigdelset(SIGKILL)) before calling do_group_exit(). So this
+> mutex_lock_killable() is just a mutex_lock() here. Therefore 10s of
+> thousands of threads are waiting on oom_lock and one by one they get
+> -EFAULT from get_user() in the futex cleanup code and bails out.
+> 
+> Discussion from [1] lead to the commit a75ffa26122b ("memcg, oom: do not
+> bypass oom killer for dying tasks") which routes dying tasks into the OOM
+> path precisely so the oom_reaper can reap their mm and free the memory
+> asynchronously. But the reaper is best-effort and one-shot: if it cannot
+> take mmap_lock for read (e.g. a sibling thread holds it for write) it
+> sets MMF_OOM_SKIP and never retries, leaving only the glacial
+> oom_lock-serialized synchronous drain.
+> 
+> Once MMF_OOM_SKIP is set there is no more asynchronous reclaim coming for
+> the mm, so a dying task charging against it has nothing left to wait for:
+> it frees its memory only once it finishes exiting. Running reclaim and the
+> (no-victim) OOM killer for it is then pointless, and doing it for 10s of
+> thousands of exiting threads is what serializes them behind oom_lock. So
+> before reclaim, if current is an OOM victim whose reaper is done, fail the
+> charge.
+> 
+> Reproduced with 20k threads, each parking a robust futex head on
+> its own zswapped page, OOM-group-killed while a sibling holds mmap_lock
+> for write so the reaper gives up and sets MMF_OOM_SKIP. Tested on
+> next-20260728 and baseline show ~90 seconds exit time while with the
+> patch the exit time reduced to ~3 seconds.
+> 
+> Link: https://lore.kernel.org/7a4e5591f45df455e6a485fc5400989569d3d22d.camel@surriel.com/ [1]
+> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
 
-I had a "wait, what, really?" moment.  And it can!  2^32 pages is 16TiB,
-and x86-64 says:
-
-   ffffc90000000000 |  -55    TB | ffffe8ffffffffff |   32 TB | vmalloc/ioremap space (vmalloc_base)
-
-So we can have _one_ allocation that is more than 2^32 pages.  But I'm
-not sure where we'll get the memory to populate it from.
-https://blogs.oracle.com/cloud-infrastructure/announcing-oci-compute-e6-acceleron-instances
-says I can get 2.3TB of memory in a single machine, which is a factor of
-8 away from where we'd need to be to actually hit this.
-
-Intel are adveertising a max memory of 1.5TiB on the 6990E+ (128GiB *
-12 channels).  So if you put 8 Xeons in a box and loaded it up, that
-could get you to 12TiB.
-
-I'm not saying we shouldn't fix this, but it's all theoretical for now,
-right?
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 
