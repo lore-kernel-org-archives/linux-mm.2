@@ -4,82 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26506C53219
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 03:05:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 463C0C53219
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 03:14:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 17C0F6B0095; Tue, 28 Jul 2026 23:05:36 -0400 (EDT)
+	id 116DC6B0088; Tue, 28 Jul 2026 23:14:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 153546B0096; Tue, 28 Jul 2026 23:05:36 -0400 (EDT)
+	id 0C8DC6B008A; Tue, 28 Jul 2026 23:14:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 091B46B0098; Tue, 28 Jul 2026 23:05:36 -0400 (EDT)
+	id F20D06B0092; Tue, 28 Jul 2026 23:14:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E190C6B0095
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 23:05:35 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 76136160549
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 03:05:35 +0000 (UTC)
-X-FDA: 85040323830.20.3AD96BF
-Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 43A3240005
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 03:05:31 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="sM/2I38Y";
-	spf=pass (imf12.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C44BD6B0088
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 23:14:30 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 56930A059A
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 03:14:30 +0000 (UTC)
+X-FDA: 85040346300.09.F0E3CA1
+Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 0D9714000C
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 03:14:26 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=lEWXCNq5;
+	spf=pass (imf01.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785294333;
+	s=arc-20220608; t=1785294868;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zvEjGtV5JAYedJWzyS4m7ytK4cwj4L+MmOrJsuhLQCY=;
-	b=PG9NCWvga03eeuPkN26CWBrR6ZlfFYAyTihVIvjyJrdD+QQcngm4hB8ZEkLht5ID2gqtZu
-	0VUArpMJxHbDD3xcUT0mFgqoqusIETosFapGkGOwgSqzrYTzyTG1X8jZNwdIsTqVl7UimD
-	6MDFx1NVujq+4/5jUGJsToMjLFrvwQw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785294333;
-	b=r67ktKIE2SOZPJcP60b1K3OohmJjacrcQ9lMyyc5PavqizLxq6Dq3Rb8r/m1jY6QMe4DdJ
-	qQxC/ii+S/Fj6JUITx69gvCBNIDZ7nbRFLvsWgj3w49EEZY30NRRji1ug/5/wJ4g+dyiG3
-	FZDBrAq/Ee6YEotO4mXfK/uz2/93OQs=
+	bh=6Js29cMIe6dBfjgvYRjFeMp8XtWwBRJ6PJfzpQUpjy4=;
+	b=oatrpd5LTJKNe8zQlAOXCi9O58CZSNIEu3o/0zlzZm/Tzh16wMwnwpSbL7OIcnm60mAzkE
+	UB5FHTn0DXOXwVPOih+6ODDXg0WoLt3F86TY1At6aqaZ4NbBBMs/mHGaQddChpbm3xoDX9
+	1WfE7btT70hZzPw8A7OR4iYyvJ7vA0M=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="sM/2I38Y";
-	spf=pass (imf12.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=lEWXCNq5;
+	spf=pass (imf01.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785294868;
+	b=HLYT+Jo5agEFR5wnmrlUI7o/h32zYyz9SynXKrxCQLrsDL+4jphdre+DP+kw2scdDfav4i
+	JqqdUVpFSHdS4lT5f9Ibst/hBRNXQ7UL6rxo7M8M1yTDzbX76Gc86I5fX8wlfslTVKamcC
+	H/xMWk5jIjzrBA6uao5/R1SBUZJsIpk=
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1785294329; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=zvEjGtV5JAYedJWzyS4m7ytK4cwj4L+MmOrJsuhLQCY=;
-	b=sM/2I38YPZB4exGip/gi/uf1Rjhe9QUaBnJgLJScYPZ3vVDRwqck0+G+LDuxfvqxzgXpe1rBL4UnzIIRPNocaPONRubMpU4e55uvdVJc6PRZH6YcOCP5BXdEweWvkVFhay3LglNzorUtaexybBg2jktfNLZ6Keo3Xg+WjOiRnbs=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=6;SR=0;TI=SMTPD_---0X80itf1_1785294327;
-Received: from 30.74.144.130(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X80itf1_1785294327 cluster:ay36)
+	t=1785294864; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=6Js29cMIe6dBfjgvYRjFeMp8XtWwBRJ6PJfzpQUpjy4=;
+	b=lEWXCNq5ErLtDpDuwhKLQqSrVAvkLCi05hoblEDjfrmKFfBMbYAit8o5ZzFGjyyDvfOWPDmASnf4WJE4nc98G/ydtT+9bZrC/0di0hkiwJl+nuxOILYGRXTQTAYYNConbjcKJZ+piP/1vLV2Bx9UIjnCO2TWUhIHhxj2O+tE4oE=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=6;SR=0;TI=SMTPD_---0X80kkiM_1785294860;
+Received: from 30.74.144.130(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X80kkiM_1785294860 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Wed, 29 Jul 2026 11:05:27 +0800
-Message-ID: <200530fc-dd16-45ac-93d4-c64b11de14c6@linux.alibaba.com>
-Date: Wed, 29 Jul 2026 11:05:26 +0800
+          Wed, 29 Jul 2026 11:14:21 +0800
+Message-ID: <fecfc5b3-86af-4c3d-af0a-d1084fb3650d@linux.alibaba.com>
+Date: Wed, 29 Jul 2026 11:14:20 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] mm: shmem: reject impossible fallocate ranges
-To: Ren Wei <enjou1224z@gmail.com>, linux-mm@kvack.org
-Cc: hughd@google.com, akpm@linux-foundation.org, vega@nebusec.ai,
- zhilinz@nebusec.ai
-References: <cover.1784947149.git.zhilinz@nebusec.ai>
- <adcf644e780706c220809b7a41e6e496d2181806.1784947149.git.zhilinz@nebusec.ai>
+Subject: Re: [PATCH] mm/shmem: downgrade final i_blocks check in
+ shmem_evict_inode() to pr_warn()
+To: Jiacheng Yu <yujiacheng3@huawei.com>, hughd@google.com
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, liuyongqiang13@huawei.com
+References: <20260728091014.3876715-1-yujiacheng3@huawei.com>
 From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <adcf644e780706c220809b7a41e6e496d2181806.1784947149.git.zhilinz@nebusec.ai>
+In-Reply-To: <20260728091014.3876715-1-yujiacheng3@huawei.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 43A3240005
-X-Stat-Signature: 89sf7rk5dz5arpzetrxmyhggtdzoxrx5
-X-HE-Tag: 1785294331-138078
-X-HE-Meta: U2FsdGVkX19yD2Yt7O+i+cMXv5n1Ba0i+0nrgTWbmsOIJRqvzp1PxakJYHuMB2KrsYO8M1TxZPMmdjYjbTU/+QHv6hSn1J71cs7hI7rYKb7ybuYXHo1TnABLZWeBehgc6pT4GmlTSBqBhTUVI4SBdKX0X+mp/ipw3n0hiEadfqSRXxp1Z1f9aRoBBQAC+wJl4zqRkzwHy2RUJebMgxpprMnjqacVTRY+uB71b3zRujsECsVhtkmvi3A3unEZi+MhOuc3ElJ4cQCpTErXofJlRSz6Cv1rBCmiKgtQAmengULLpSzOOuWv2jEEMpW3zXKH1c1sDX4N1zuB7hPJrmKabCGIIsvHC81b6JQX0RA24m3RZ8FxPzMTPHoFCjIjL69h4RSvZJJ4bDarGLM9nL38cwKzxU7Gwp5r1cbMMsMm1GJ/Bf4MLuT+P8uGAUaDJjse2xMVTBxPXIIV4GCOSXQSe8Apd7Rbn1LE7pdJGH9rUMajgUlD81e6d/GgLY+5aWc8HzzdlaCsxbIx+rOr4fdkN606yxi7MKQVRN9zchqX/rOvd0wB6CVT9xXkvt/T1L1jw9kHsm7merH0dbtnBOqT/Okiol1S6LReNBulm6lUiFaPUQjv6TCWAhw1jlBrkaadyRD/Ssq1DY1jn5FWlUutxkZOtG9hgKWSHNaDRz3dVBs/YMDIXgRICMfxfSHUtMmMB3Y6kW8cDBV7ODwobMhOzrxN4+X4ybLIM1siuPCfDr4Ijq9Y9w1OJ2+Ed+ddx2vUfbQP4NbvpKpnVW55F3sjsZwDtt8nsrznzDD2GEJj5VQ/UNi62GnBuFN8DbFOlmMSnn+nwVp+bqnlFU517vklYu0tBrtYmlTuWse6ouohmMoo/k+Sy/zcGoLn3VMrCGEiguQxn1goJc+zx9LOprPxn4Nkm+KNSR46zM1rgURSRzKobEPopTo0LUpocKw3s9svFfcZDiGZaonLeGFNxk7
- rqMbSwGN
- Hq4K5CXTNsypsi4yn5yXTJbRIy22sq4chxyAQNyyJeQgtwIrOSg+Rq6jJ1e3UyLnCkxRCKXaZr+teKj5avGagDxZU6Qo+RvLgtDvMjEug9MqJdyIA+Y9/OdePoLzzFikqgj2N/9mSTxpIKgHkynm/XC8MKxuYDcAky54JS0G5uPpttqOkYvTtr1AZhHamwS3DMLKx2+xSW+Yl3RRjU8Rr1BxoEyb2YTB1Q138F//nm/lrkeGINa26kU7/85qImLpvgf6ClLy7ZgYQim74dBJYCPh3zPrTiX8IWYIDgIxWzr3HTab3EefI5tPwDCllLRjzGpSOkoDgoV7/tSq+sZR/Sbn1XHWQgGb003iii2skHLBdA48=
+X-Rspamd-Queue-Id: 0D9714000C
+X-Rspamd-Server: rspam01
+X-Stat-Signature: 6s1ftbmdjyb5z4b3w43arbxg94tf55ru
+X-HE-Tag: 1785294866-651421
+X-HE-Meta: U2FsdGVkX1+eK9sffnZenTvvMa9++fbpj8ZqNAEIKR592oQa4nVVq0jh7bhTebThxqzDcyPPI5N+HMFOopFR+0qq3SHjO4gRFwgeqO3wv+W9wNmq4oU6YvdIX9MXIZdviaxfoSNk6JFUsZZPuqcSTy6EN3hyufTAzRpzIgsmZBnAY6RAsb/M6vJBQuGpzuQ45a7QOlUGkCVnPf35u7WcFqM2S4ptHKq8ocH5DcwYxYoLvHk3AOJebL7CsLHlJWwveNiDalNV+HxDYSIBxpOu/dtLxSfl9Vex+J3MdzCvinQZ3CntUIeV1DOors9z1WIclMgubx39IzHEC5iR14b7zGCepDTDiMR1atBZLwcPoF5Qan4JeF8mc9L0NvK+cxdGmkkoOQ7phIFEWIZnYhQUYeftgezKv0wVncJjfs8A9MukxqDJ2TOGNeOk0etlHhN7AFYZvn0urWZHg++nxO64MfPbShwkBVqEbqnV8PJ0oZBP/lTumN8jY8lZBeFmZoU6YmayDY/JkZlc0vz95NTEfngciSu1fSiDIp//u8l3Nkk/fn7Bn/oVOtnWZVIm9wjegO3dgLW3U0Lna5OE7o/+gOJ7bWP+mo97DMav0gsTjfHencAlAnkkzdiPw+BBTZxoVM0dgAo6KuUWiAwsutAftWMgnXmBhIP42A7owdMXW9d3cVShTtFLop3fxEFyx7p/sEEk639P+lSFTA++WlcM0EE0WK6jT7ViFcQeiaZQZqU6dJMbLfA96FH2QuxjxP98YmwrLgVLKSBRxpND+jUJ8YKsJgcLMfsc+1UxSS5T3Cja5U5KVJHFygZP6aDRLVJnAasAFYsl5Wxuez+ckarh0GQ81mxXpe6OY8zqYnayh7PmQitfKcdX4qgCbFVPurahWF/jpr37K9OIaihvljBAl88RszSBQjIHs7+bJp882lE6ltPj62vmZp8OpEKDJF5lz+qt9N0woBH1QG9Hrc4
+ /tKtYJYc
+ P3x3MrtiPGuqpLKvhyR4OPh52dpZGi5kMVajwxGHB1VCFXU5pu3IJWfFxvff4JjrWHLofH4fV/xEVgPtBdbS+cRYgcDTQIVlah/0i0EerNSN89ympBTuRNUnN0nxbGmZ+4t71LDGv4a0EZkmCDc0ElCZcXlJXXgxWQx5m+8h9UVo1jsUipeauw5frn+SCZhlJ26UfxH0B7NuwFpdsEx3IlKamtvKG8YvZhVjn6J+qR+BhARER/hWFG9zyLVGp9e2/yLd6E6+g+lACKwM9PNrG0NjiZLAABUG/n5O0P71bzibPfRD+ClwcXbu0xQiOVBiWRKLVR69iU1KwqS5VG4BliXcp9OLvsNMS9vU++ch/p9gumVjYWUOKBkEt8rnVgcwLG3To
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,84 +89,61 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 7/28/26 1:38 AM, Ren Wei wrote:
-> From: Zhiling Zou <zhilinz@nebusec.ai>
+On 7/28/26 5:10 PM, Jiacheng Yu wrote:
+> shmem_evict_inode() ends with WARN_ON(inode->i_blocks) as a final
+> consistency check of shmem's block accounting.  When it fires, the
+> inode-local counters die with the inode; what may linger is a small
+> residue in accounting kept outside the inode, such as per-mount or
+> per-user charges.  No data is lost, and no corruption follows.
 > 
-> shmem_fallocate() validates offset + len with inode_newsize_ok(), but
-> then rounds the end offset up to a page boundary by adding PAGE_SIZE - 1.
-> For a valid request ending at MAX_LFS_FILESIZE, the extra addition can
-> overflow loff_t before the value is shifted into a page index.
+> On kernels running with panic_on_warn=1, this accounting inconsistency
+> escalates to a full machine panic, which is disproportionate to the impact.
 > 
-> On the internal tmpfs mount used by memfd_create(), sbinfo->max_blocks is
-> zero, so the later max_blocks guard is skipped. An unprivileged memfd
-> user can therefore pass a length near MAX_LFS_FILESIZE and make
-> shmem_fallocate() iterate over a huge wrapped page range, consuming CPU
-> and memory until OOM.
+> Downgrade the WARN_ON() to a pr_warn() that reports the inode together
+> with its accounting counters (i_blocks, alloced, swapped, nrpages),
+> keeping the inconsistency visible in the logs.
 > 
-> Cache the validated end position and cast it to u64 before rounding it
-> up to a page index. Then reject ranges that are larger than the tmpfs
-> instance limit, LONG_MAX, or the system's RAM plus swap before the
-> allocation loop.
+> The accounting bugs this check has caught over the years -- the
+> swapout race described in commit 0f3c42f522dc ("tmpfs: change
+> final i_blocks BUG to WARNING") and the error recovery race fixed
+> in commit 267a4c76bbdb ("tmpfs: fix shmem_evict_inode() warnings
+> on i_blocks") -- are real and should still be fixed; this change
+> only removes the disproportionate escalation.
 > 
-> This preserves the existing file size and seal checks while preventing
-> the memfd path from entering the allocation loop for impossible ranges.
-> 
-> Fixes: e2d12e22c59c ("tmpfs: support fallocate preallocation")
-> Cc: stable@vger.kernel.org
-> Reported-by: Vega <vega@nebusec.ai>
-> Assisted-by: Codex:gpt-5.4
-> Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
-> Signed-off-by: Ren Wei <enjou1224z@gmail.com>
+> Fixes: 0f3c42f522dc ("tmpfs: change final i_blocks BUG to WARNING")
+> Signed-off-by: Jiacheng Yu <yujiacheng3@huawei.com>
 > ---
->   mm/shmem.c | 25 ++++++++++++++++---------
->   1 file changed, 16 insertions(+), 9 deletions(-)
+> One way to hit this race: soft_offline_in_use_page()'s fast path drops
+> a clean, unmapped shmem folio via mapping_evict_folio(), where the
+> xas_store() and the nrpages decrement are not atomic against a
+> concurrent shmem_evict_inode(); the final shmem_recalc_inode() can
+> then read the pre-decrement nrpages, compute freed = 0, and leave one
+> page charged.  Same class as the races in 0f3c42f522dc and
+> 267a4c76bbdb, this time in the under-count direction; reproduced on
+> 7.2-rc4 with madvise(MADV_SOFT_OFFLINE) racing MAP_FIXED replacement
+> of a shared-anonymous VMA.
+
+Shouldn't we fix the race first instead of adding more warning information?
+
+>   mm/shmem.c | 6 +++++-
+>   1 file changed, 5 insertions(+), 1 deletion(-)
 > 
 > diff --git a/mm/shmem.c b/mm/shmem.c
-> index b51f83c970bb3..d626561d46db7 100644
+> index b51f83c970bb..223484cdc8f2 100644
 > --- a/mm/shmem.c
 > +++ b/mm/shmem.c
-> @@ -3601,7 +3601,8 @@ static long shmem_fallocate(struct file *file, int mode, loff_t offset,
->   	struct shmem_sb_info *sbinfo = SHMEM_SB(inode->i_sb);
->   	struct shmem_inode_info *info = SHMEM_I(inode);
->   	struct shmem_falloc shmem_falloc;
-> -	pgoff_t start, index, end, undo_fallocend;
-> +	pgoff_t start, index, end, nr_pages, undo_fallocend;
-> +	loff_t end_pos;
->   	int error;
+> @@ -1428,7 +1428,11 @@ static void shmem_evict_inode(struct inode *inode)
+>   	simple_xattrs_free(&sbinfo->xa_cache, &info->xattrs, sbinfo->max_inodes ? &freed : NULL);
 >   
->   	if (mode & ~(FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE))
-> @@ -3649,23 +3650,29 @@ static long shmem_fallocate(struct file *file, int mode, loff_t offset,
->   	}
->   
->   	/* We need to check rlimit even when FALLOC_FL_KEEP_SIZE */
-> -	error = inode_newsize_ok(inode, offset + len);
-> +	end_pos = offset + len;
-> +	error = inode_newsize_ok(inode, end_pos);
->   	if (error)
->   		goto out;
->   
-> -	if ((info->seals & F_SEAL_GROW) && offset + len > inode->i_size) {
-> +	if ((info->seals & F_SEAL_GROW) && end_pos > inode->i_size) {
->   		error = -EPERM;
->   		goto out;
->   	}
->   
->   	start = offset >> PAGE_SHIFT;
-> -	end = (offset + len + PAGE_SIZE - 1) >> PAGE_SHIFT;
-> +	end = ((u64)end_pos + PAGE_SIZE - 1) >> PAGE_SHIFT;
+>   	shmem_free_inode(inode->i_sb, freed);
+> -	WARN_ON(inode->i_blocks);
+> +	if (inode->i_blocks)
+> +		pr_warn("%s: ino=%llu i_blocks=%llu alloced=%lu swapped=%lu nrpages=%lu\n",
+> +			__func__, (unsigned long long)inode->i_ino,
+> +			(unsigned long long)inode->i_blocks,
+> +			info->alloced, info->swapped, inode->i_mapping->nrpages);
+>   	clear_inode(inode);
+>   #ifdef CONFIG_TMPFS_QUOTA
+>   	dquot_free_inode(inode);
 
-I don't think this is a common case. Can we just use 
-check_add_overflow() to avoid it?
-
-> +	nr_pages = end - start;
->   	/* Try to avoid a swapstorm if len is impossible to satisfy */
-> -	if (sbinfo->max_blocks && end - start > sbinfo->max_blocks) {
-> +	if (sbinfo->max_blocks && nr_pages > sbinfo->max_blocks) {
-> +		error = -ENOSPC;
-> +		goto out;
-> +	}
-> +	if (nr_pages > LONG_MAX ||
-> +	    nr_pages > totalram_pages() + total_swap_pages) {
-
-No, this is wrong. fallocate() has nothing to do with the swap size.
 
