@@ -4,88 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 705A8C53200
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:03:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E16BFC54F51
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:03:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 31C9D6B00C0; Wed, 29 Jul 2026 10:03:08 -0400 (EDT)
+	id 0680C6B00C2; Wed, 29 Jul 2026 10:03:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 25C376B00C1; Wed, 29 Jul 2026 10:03:08 -0400 (EDT)
+	id 012386B00C4; Wed, 29 Jul 2026 10:03:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0AF1B6B00C2; Wed, 29 Jul 2026 10:03:07 -0400 (EDT)
+	id DA7B06B00C3; Wed, 29 Jul 2026 10:03:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CF5F86B00C0
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:03:07 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6B9E1806EE
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 14:03:07 +0000 (UTC)
-X-FDA: 85041980814.08.E222FCD
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A85566B00C1
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:03:08 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3E8BD1206C0
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 14:03:08 +0000 (UTC)
+X-FDA: 85041980856.17.5A050F8
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id A93D1100005
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 14:03:05 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HpIvLMu0;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf21.hostedemail.com (Postfix) with ESMTP id 4D5981C0003
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 14:03:06 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FGotwCuT;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785333785;
+	s=arc-20220608; t=1785333786;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5RGW5tJfMQBefLVNsm8C6YsUWIxBGgWh+NafBLNk5T0=;
-	b=VixZPYAgSZ3an36mbPjaQbqENkmRwv6QXC+9kLWs4EJ7BfsnSgQKxWd8kwZ5Bd8LuJgqB8
-	EsZriTaiM1+eKa+2z1Lk6GUrCxA5x0XXungx8f1rQmBxIeVYGyDWlNDFfDxYGGRkY0Uxal
-	Tyxj3VFRkAGhASavzESM3VglCbPnkxg=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HpIvLMu0;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=Q+iR0WBRty/9e25KNHH96FJIzOaYrwS/QZZkMmGIIoI=;
+	b=H/bJyxPKxpBfCxcIqHWsuTkFeIbx5SWHIzQ9LAhjDuMyCaptzIkZp9REpupYE1mKe85Ydw
+	HOPqMtNYpjAdzaF4ihHRsiZM7nWd70MA8Pu7fr/kaSQntkHkpTaCGb0HOx3/8ChtUUWXoV
+	VftPXfKhVLS0Hhg0mlMzipIxllnF0D0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785333785;
-	b=YgN+VaBbycZUmQOVCLJVWvpTSV2v+I883KTr9YaWdN5g9n2hKI5/hsNpc0mhXSfDUhm18O
-	rg9bD2dKZ1q7W/6nibwdztD70Z3xnPYWXEW+wyeykWKxv9OfmIiFZJTqD9LI6bawfF++fu
-	W0OUu8Dt7IOoCPRu//CU9lVbMGKEmlA=
+	t=1785333786;
+	b=eGRqs61bE6eKO0qAxO7Afw+7CZv4cHtC+h18biyh4SxYP1EirlhdDmr/Luy0/OeaYDgGXq
+	lIbvNyQexcxHwHPAhI2Ph5UjTmUNbqotRHwmuDgL/v5uxwY2YmEPSDGFVAI8Gui1Dns0+J
+	eFif7SsBqbvEKXebvuYTpAc6UTRKpP0=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FGotwCuT;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 098D2440AC;
+	by sea.source.kernel.org (Postfix) with ESMTP id 76A0C44415;
 	Wed, 29 Jul 2026 14:03:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B70501F00ADB;
-	Wed, 29 Jul 2026 14:03:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 133121F00A3F;
+	Wed, 29 Jul 2026 14:03:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785333784;
-	bh=5RGW5tJfMQBefLVNsm8C6YsUWIxBGgWh+NafBLNk5T0=;
+	s=k20260515; t=1785333785;
+	bh=Q+iR0WBRty/9e25KNHH96FJIzOaYrwS/QZZkMmGIIoI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HpIvLMu06HaC3elJiA6elITNOECKamcFBJpfVoSh08FOPfmpxN8xc21ZD6A3Ahxu9
-	 s7LS221fZuYRTuU+Q23Wr+SqKtC75632WqH/0WeHS+kLgzlxNBoTyKv+hM3g0CGqOk
-	 f6Z0e0ubybTkVIV5NPIdVEDvhHrxXt41nuL5yA/OmzqOWYhPWUW4xfV0G4CyzXVk0U
-	 OU+LYVwOGgm99t/yxvA4xNMnm7vcyK2kF8M8TAt5eObBZDzmKN7NODoVvIRl1vJ6rn
-	 6wQkQJvqnBbyS4W6/YXDZqjOg4upSRFgCxRRdfiqUkieelrmRja9MOdjIw0GH3y7Ur
-	 MTy7MpyEGP0Dw==
+	b=FGotwCuTMr/A9gzQZQk424gPaV+hmbCOQp3w+Ut6BV4Gr0HPc5yvfsvtxqxAGV0rC
+	 wRsvkdLzWnUa+uvnTw1OV7JsPI8wFi+uecx8qRT1e5PAPdZSyYq/9nhXq7txaeUNcM
+	 2sosNv8QX/ammNh/f02KhOkH54INLtB7qCSeC7dyDZmydlkwIBrKS7UTv/aQbFIwZ7
+	 7u9sZ2wHbVHjdGEPgs+KKk5+h29XNzcUmzEzfnWdUiuJlN/Dw6DwQXp865lGas5kEd
+	 Xup4bnMauPSvWrAKHo/yWQ7n9iD9snPjLHcl7eylIQQEyE9pySM7rcFbJm7JK4144f
+	 KAJgf0xu+NamA==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@davidgow.net>,
 	damon@lists.linux.dev,
+	kunit-dev@googlegroups.com,
 	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v1.2 05/12] mm/damon/sysfs: remove probes number validation
-Date: Wed, 29 Jul 2026 07:02:45 -0700
-Message-ID: <20260729140253.87753-6-sj@kernel.org>
+Subject: [RFC PATCH v1.2 06/12] mm/damon/tests/core-kunit: extend set_regions() test for error case
+Date: Wed, 29 Jul 2026 07:02:46 -0700
+Message-ID: <20260729140253.87753-7-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260729140253.87753-1-sj@kernel.org>
 References: <20260729140253.87753-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: A93D1100005
-X-Stat-Signature: a8wt1wkqwj1spdkjooo747zwuyzuxd85
-X-HE-Tag: 1785333785-694956
-X-HE-Meta: U2FsdGVkX18Pk8iOAYyaYZRQqHFWe38ZoBuj3W4PvnyDQECvpTkDE8/ebZH/op34j6C4X8RjHlsqtjI/aNkT0jITfkVs61tD2AmjYPEyzxvb4obprZwJkN1hUbw9ZNfmvCJ2idGTHQIu7i2SmIq0J/U9iXaU3M8SWaw47HCz7cDPFw7JzHRLku6lYiw5u7tYJmyINeqEqRshaYdp/gr+XxEeW70YsdpDb4XjH0K3FXSUfqg9SG4VVcC+pjnTVEEwMCX5puIWXTQvpHWjJ5Ci7iKdKyQteI3vAbKJyBF0WhdfB8YBn2wdHJFviW9HvG9GNOgxmJoWyc/7xgvf7gn0JyNYH5GADV+VqmUzOo2gH8839GmxBAU1Jbe2VoRG40xXtt4+dVmuyKv6gxulMWLw+2VD98D9WizRwJyu3qTHy/9wqW0Mfe12Acrlyx8qX5CjQBOzUXJbz/MvW9jY15nuX1uQr3jHo2BUpTDpZZy31q3+H+m9QszBQ6vj3oqRYnxGWGxvnwElAH5o6Ad9NAleBvAQ+MpXWNo9uLu5aA7Puddylw3lCc2UmnTFI6XpBJll65II4MWm/Hkn4JOBf7VxCHQwJLkOTbV6iqd6iQacFYYBv0Ewm+Qw45DyR60Gu6Y8n05zafQ+MWmxncNRaW8/LS52MK30oYQ6V6Dg19oVtUgERcq0wFilJSt443s1oDqM8ZubeY0YR1pZGlU3WosGh/bEvf1e9G0Le09SU7hK7oQ+9ObGBPfuRdHAHhbN4/c4zUUmgdGO9MF9vZPOfQinSDym3o3NhvjpZY0S6zkteaPgt3FdeiivjrldA+nEirobxVlyyfejMz4VK+83pVUGG/zFIXd3QzoeTQkB/Atxb5ifi2l2vWwY3RI9a5WaVd52R2BbkncZmEyEM3Zt8ndfu5Nq7ITw++7t/UuHu0YyLLvB7hOON24Cfh2kK0WCXcP57Y+bCqZtTKTnA3rfA6W
- XA40mY+f
- W8hREWqWw2Q04xZLKveLrXjkcU5cOrhxSIOlnwitsza8coJAT/TUqiARDtpPHeOHNXQOtZY5XyfTvS4zwsiL0WNDTbEKI5lpHbbsvyJxH+ACWgCg+MBx7/l7DrUVvVTcYQOTCWKtjg29/izZjDgSpM5J+DrsLrvSu0xVKStLEErPozO4Rp8h4yWB6C2yWlaQzEn7VABPEOb2gb0DV/x8x6MKsWXjWQEZrKn6i9k1C/ZpgLqE=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 4D5981C0003
+X-Stat-Signature: 19ss6trhnfoc73ik6qhgj7tybzfg6zn6
+X-HE-Tag: 1785333786-905112
+X-HE-Meta: U2FsdGVkX1/fLLMNfh83ERqr8ytGFbMJka5Bri071Q4U9jR8OQg6Pe4urboV6Fk0VLj3TM7JtXD0aUEOkuxgU8yZn2jg5Gjth3IFxAv5KTysEi4m4ui2V9cM/1hdcG1Nk73aiq3rPs7RQSS0BlzWRROpRx2vbjbAybacJYnyCYp/uy0ELWAuJE7wWv+Mtu/RhP03h9zVOJvUeSOf5RrWBybzOtSlhSQS41birSNHecS6PFxLCxg3GWXraybSlDovozhm7c0K/mgXbRLPMF0Pbt3lEA7h3m5QrD0ycCiJo5mt9iChElbbK5iVIxn3bhTLXIkv0U//UkZ66jJETRokqwovOfiZMBk/BsVGuSzfdMQdTz798NOrNiAvr4rMB7XTBFCF61YgW9iYAK207Tj77pMIP9gwR1TKsO5ntQrXiIXXF3OfOCFYC3+cGBZ6B2Q0kx+5hshBUSg6Gzna7wHzdT/mZy//W0A0WMLEuBzLNtV0EPknoaMlxwIEiiqit5+aPHVnFviw9DkgKg7ft5NEz6dNejvSjBYuuu7T2r+wYCttQeZozj8olZQWGoqRDlZKseE6mlEkPYL33mxZeSX7HQ0JiYPFPkL46Fvd1EW/QN+CiKf+XFJg063p3K09+PaNKTK4wXu0oWukb2BkvnbWoWHPwf4Kn4WNlubZgp2iQxwq6odrG/sQNxsOY7zXgrZoNWboyLVSGraQdgoSa1/9Y65deBsT+CsAuFIY2roK68oyt3etmoQYcyejdkD6FYx1hzd6us+v4gbywJqUfhtxvx7vCviovJLffg/r7hcFIin46NfwTyQKUrSF1DEpn1e8D+hE52AuIlMqHVbyCwcSwPMVCACSUTYIBsaN+Zpvkqr/cEv+nTxWnGQJN/yiUWE++Ynq9GPHymLJmsfrOfmf5hSpE3zoJsQ+rpry4nOXAeZxn7rO5F1ACVulucJPiYMl4g6TmtSDUUHE5xP2RZJ
+ koys58sS
+ GeHT1I/M1JYKR4u3XW3aaW+dKsvHXF2sfjffG/1a04XdkwH/Z/K5VIrVViRYnd3HGrYc7xDG0NxihAmmAYA3ZNl0pe1ULbItYuIg8oPBqGgo4WSIvb4Vkx/qq4+xsvWYfZqqBKdslTxsM2JYktkWGj0K9L0nRuk9qBXTq4gl+DnafCxuzJbHhP1LJEL0bOAOHndyZvOVjHVus9t1M/DiBLfUJ5HnPPtVwyaOejIVbN6EoQpdYm+VGjkiPbxhb8u2or4yzILlvj1jxq/tP+p48P3yi7Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,31 +97,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMON sysfs interface is disallowing >DAMON_MAX_PROBES nr_probes input,
-since DAMON_MAX_PROBES is the upper limit of probes per DAMON context.
-The core layer is validating the upper limit again, though.  It is
-preferred to let DAMON API callers such as sysfs interface to set
-parameters in flexible ways, and do parameters validation in the core
-layer.  Drop the duplicated validation in the sysfs interface.
+damon_test_set_regions_for() is designed to test only success-expected
+damon_set_regions() calls.  Extend it to cover error-expected calls,
+too.
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/sysfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/damon/tests/core-kunit.h | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index d02f5f8ceae5b..8abda69c98dd1 100644
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -1477,7 +1477,7 @@ static ssize_t nr_probes_store(struct kobject *kobj,
+diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
+index 4a536d41cdb2d..befc1196d6d60 100644
+--- a/mm/damon/tests/core-kunit.h
++++ b/mm/damon/tests/core-kunit.h
+@@ -463,11 +463,12 @@ static void damon_test_set_regions_for(struct kunit *test,
+ 		struct damon_addr_range *old_ranges, int sz_old_ranges,
+ 		struct damon_addr_range *new_ranges, int sz_new_ranges,
+ 		unsigned long min_region_sz,
+-		struct damon_addr_range *expect_ranges, int sz_expect_ranges)
++		struct damon_addr_range *expect_ranges, int sz_expect_ranges,
++		int expect_err)
+ {
+ 	struct damon_target *t;
+ 	struct damon_region *r;
+-	int i;
++	int i, err;
  
- 	if (err)
- 		return err;
--	if (nr < 0 || nr > DAMON_MAX_PROBES)
-+	if (nr < 0)
- 		return -EINVAL;
+ 	t = damon_new_target();
+ 	if (!t)
+@@ -481,7 +482,8 @@ static void damon_test_set_regions_for(struct kunit *test,
+ 		damon_add_region(r, t);
+ 	}
  
- 	probes = container_of(kobj, struct damon_sysfs_probes, kobj);
+-	damon_set_regions(t, new_ranges, sz_new_ranges, min_region_sz);
++	err = damon_set_regions(t, new_ranges, sz_new_ranges, min_region_sz);
++	KUNIT_EXPECT_EQ(test, err, expect_err);
+ 
+ 	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), sz_expect_ranges);
+ 	if (damon_nr_regions(t) != sz_expect_ranges) {
+@@ -510,7 +512,7 @@ static void damon_test_set_regions(struct kunit *test)
+ 			(struct damon_addr_range[]){
+ 			{.start = 5, .end = 15},
+ 			{.start = 15, .end = 25},
+-			}, 2);
++			}, 2, 0);
+ 	/* Un-intersecting regions should be removed. */
+ 	damon_test_set_regions_for(test,
+ 			(struct damon_addr_range[]){
+@@ -523,7 +525,7 @@ static void damon_test_set_regions(struct kunit *test)
+ 			1,
+ 			(struct damon_addr_range[]){
+ 			{.start = 18, .end = 23},
+-			}, 1);
++			}, 1, 0);
+ 	/*
+ 	 * Holes should be filled up with new regions.
+ 	 *
+@@ -544,7 +546,7 @@ static void damon_test_set_regions(struct kunit *test)
+ 			{.start = 8, .end = 16},
+ 			{.start = 16, .end = 24},
+ 			{.start = 24, .end = 28},
+-			}, 3);
++			}, 3, 0);
+ 	/*
+ 	 * New regions should be able to be appended.
+ 	 *
+@@ -566,7 +568,7 @@ static void damon_test_set_regions(struct kunit *test)
+ 			{.start = 0, .end = 4},
+ 			{.start = 4, .end = 15},
+ 			{.start = 25, .end = 40},
+-			}, 3);
++			}, 3, 0);
+ 	/*
+ 	 * New regions should be able to be inserted.
+ 	 *
+@@ -589,7 +591,7 @@ static void damon_test_set_regions(struct kunit *test)
+ 			{.start = 0, .end = 15},
+ 			{.start = 25, .end = 40},
+ 			{.start = 44, .end = 50},
+-			}, 3);
++			}, 3, 0);
+ }
+ 
+ static void damon_test_update_monitoring_result(struct kunit *test)
 -- 
 2.47.3
 
