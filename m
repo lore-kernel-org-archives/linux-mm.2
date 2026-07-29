@@ -4,120 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00B5BC54F51
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 00:41:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 721FEC53219
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 00:50:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F0CF16B00EB; Tue, 28 Jul 2026 20:41:56 -0400 (EDT)
+	id 5CF7D6B00E2; Tue, 28 Jul 2026 20:50:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E97986B00EC; Tue, 28 Jul 2026 20:41:56 -0400 (EDT)
+	id 5AE366B00E3; Tue, 28 Jul 2026 20:50:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D688C6B00ED; Tue, 28 Jul 2026 20:41:56 -0400 (EDT)
+	id 4BEEA6B00E4; Tue, 28 Jul 2026 20:50:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A39136B00EB
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 20:41:56 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 29002804F0
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 00:41:56 +0000 (UTC)
-X-FDA: 85039961832.29.0B782FE
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 469671C000B
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 00:41:54 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=GARkdxsL;
-	dmarc=none;
-	spf=pass (imf18.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.47 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	by kanga.kvack.org (Postfix) with ESMTP id 29BD26B00E2
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 20:50:54 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B6B9814058D
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 00:50:53 +0000 (UTC)
+X-FDA: 85039984386.24.3AD3141
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 30EF840004
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 00:50:52 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Xr9h2++r;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785286252;
+	b=c35IeFsmoSVUA/uZaaa7nuebPyfgdrLE6PdaWDoG0aZueltVbFqp5VHqUU5JZqMDQLmu7W
+	WbGMDkneU3vUwt+QnwH4iISZCvaHc+EoVBOx8mB2ekUjImPrENCE2Vkubj1IA7DsTnx2uv
+	DNPMm4lF82R6o/RtLHGuVR6GIjeDx28=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Xr9h2++r;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785285714;
+	s=arc-20220608; t=1785286252;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=j9nli9m4Bc7pFK4IHJyjckwpxfCqeOd7xuoXeRuq6Jk=;
-	b=LHbbWMd2HPb+o1BDgyrd3xrMRR4M1nshQNE6PCv/d41Dzqd+HkEwWK8KYW60svvnjddMGe
-	Hl9qBcVaXtRZQj1Jg6iP10y1lzQm8A4l6XahDPEZOpTOg8vgBvtL7yRdhAijNloVFK3EoL
-	lyazAPYdk0YsRuU/TLrgZh+pVBkuNPA=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=GARkdxsL;
-	dmarc=none;
-	spf=pass (imf18.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.47 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785285714;
-	b=fyTkQWlaH/E7aHbdyUW0OnWmJtSidqnjFm1YIMHhUuwMEnHJbz3jF4qUnCsjoZHiPcbqUe
-	54LJTP0GU0Yz4KqHkypZQ48kz7I4cvbygek1u3nM73CJI9+w8a0y2g+TVaQlY5IKjDWpMM
-	wEjmDezCN2nexZn+yyo030DNDvhKc7k=
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-8f23e851626so2748886d6.3
-        for <linux-mm@kvack.org>; Tue, 28 Jul 2026 17:41:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1785285713; x=1785890513; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=j9nli9m4Bc7pFK4IHJyjckwpxfCqeOd7xuoXeRuq6Jk=;
-        b=GARkdxsLoovZvhmfNTxSknnAFMQ2SQ2Qa/VfIFgvQoNfvb2p1AIxONqBYTiamAHDeI
-         KOthYnANnEFN4H7T61y137c2lqr2M8tcXoLcCX6Kx3ZRIWWxtdcbXPX3Qmew+BoNlNms
-         YMkIVVHBOsTatSHpVD3NPoXR4hb+vt7T2Xlfzjy/4gwKo7fj98ibvRg/M3OtjmqObw1Y
-         yKbjI5G4QCKiAijs+PTQkuSSZHhptUAOWj6xXfK20y/dZe9pFUoT8nMn1Jshe3z7aNFM
-         js30FCldUDq7CD4fsnb5orfBRyL7p00WGJxAVV9KbMqVgPT3nMihsvst86ZKAEG7s7hj
-         f3nA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785285713; x=1785890513;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=j9nli9m4Bc7pFK4IHJyjckwpxfCqeOd7xuoXeRuq6Jk=;
-        b=H/LsMez6DNWrH/NwbZKYJrw2rgeCw2iSmL3fIdGPKqSgC+AAQANEY4ryDbKxVgSfgu
-         +wdJGQ0KkDJ6R0or9PbsgUNx9D9gwmkAYAAZQ+12epY0WFQfyiY//LEh0fFzCLHAdem4
-         /gskhYr1Kf0x8hUTuM/oBQI+rSp/W+F4kdsABv0OXaLfWR4r5/TVfXxMck4QRlDCvsi3
-         CWRAYKkZD6W4q2l6gDnHaYBnEGRLjw/FrqDWJkQ+RXXfTKxq3BUxyRqruIUOTF580Jv6
-         6T2UA15VNAJ7Vt9RlavjRfHUauhdwc7tqdMl1CNmqiQNGpmSFPp+ox0hsH3cWaMADlkD
-         essQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrrAGW5q6Wu+hW8EsDawweyCjEcphABPp/mljuOBkIuBbzZtgrYxEEY6k/UERZA5DlordfMdYtYtw==@kvack.org
-X-Gm-Message-State: AOJu0YxOiX4vktQTN+L4Tv1uhaolNcEhFsnDrdKCtRpXnWW15BEzzgRX
-	YUq1psgmZqg3F7glfnxEiV+deffi2qah8HQltHdXm4cvret4biaYcAd54zwbVYxDHCg=
-X-Gm-Gg: AR+sD13renVAUrDRfWEYyWozaFaAb6uHyAiw6d2zYGwxYGbwQ5BZebF4fjGoLfx+1zX
-	RcJ4kVkpajAfe0vOUVUxQCFKEkbQAbadL13fNGeFBYTn7OtRJTasIFCiTZ42X5O+uSwDl9o6pfE
-	IgwJkRv4QKZZxFI4fQJU3Unq4VuGOFm5/gQVJl6gPAX02BWz7uyRbmyWsfTDpTURnRkbZ6dS0BT
-	72x0oQRmrGGKPFMgmYouRZrF1hcfYZyG1qLqNqx7oku8BKVIWkgmzk4AOTieFufhm/oAQ3cDF9n
-	NhN6prF/sTfeGAh6TfM21Y093Rc3T/ANynGTr4wLrytbq1qAfEP4MuLkT7YKLjjIjD7ECp1aNTc
-	ULj1Ogf/J5AiJe9CET8xu3/jsMLO46B8uRVe3WCaJQAXxpnKTLl97y5mipcY/ltgop/yxqy1Zk2
-	rG6dPkQ5I9G5dFmV1xvl/yi0EOL46g3gN/goVh9djgJRgFyMXMTWWp5kHhXO25fqkzaTS/3DpNy
-	mLYAOGtT74byzEZ5V3OzO3XJXf0CwWZe6A8ne8h0l3/
-X-Received: by 2002:a05:6214:428e:b0:8dc:40bc:b593 with SMTP id 6a1803df08f44-90816fa80edmr57286176d6.10.1785285713351;
-        Tue, 28 Jul 2026 17:41:53 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9081dd6c599sm11500206d6.34.2026.07.28.17.41.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jul 2026 17:41:53 -0700 (PDT)
-Date: Tue, 28 Jul 2026 20:41:50 -0400
-From: Gregory Price <gourry@gourry.net>
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Jane Chu <jane.chu@oracle.com>, linux-mm@kvack.org, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>, 
-	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
-	Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
-	Christian Brauner <christian@brauner.io>, Jiaqi Yan <jiaqiyan@google.com>
-Subject: Re: [PATCH v7 05/13] hugetlb: Move poison to pages before clearing
- hugetlb page type
-Message-ID: <amlMOd_eTbqgtS22@gourry-fedora-PF4VCD3F>
-References: <20260728204409.3396238-1-willy@infradead.org>
- <20260728204409.3396238-6-willy@infradead.org>
+	bh=ic9L3BJoSROKa6Eya4cGtNIhuOcX34TSYVnxCMS4B9o=;
+	b=Q1Sny7cDwNH46dzHPNHZqCtkApQFEmJCTPc/9RK5fK2yaNUqG9qtSmZD1YMjM+55BEQf2o
+	NGrR43F27w1v1YFuxyBSDsQxBpc7RwK5qEmDjeKTpvTXA/IutuMjaavIIUrHuawcIGUE3S
+	UN942tsDhQfeizWACbYXD81xLxJaxA0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 8FC2460A61;
+	Wed, 29 Jul 2026 00:50:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 671541F000E9;
+	Wed, 29 Jul 2026 00:50:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785286251;
+	bh=ic9L3BJoSROKa6Eya4cGtNIhuOcX34TSYVnxCMS4B9o=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Xr9h2++raMozjYdGXpFqN2gCSk96HdB3ot+KlijzrEGE42ZRLqDPiC+Pz1uTR8aka
+	 +DTFtoD1Hj0Oo3slfFTxuJzgkIb7voJ/yvJ88Bku6Yy9jMxdoSSIt1cmwKUAkTZ9IT
+	 z9niXhL88bcEoTgvlXWvrrm5ww7iGF+VauPtECwfKTcjdGn6dBwbIZvpBhjXTFKf23
+	 1QCY77D4xbkGX305jAD//bJuZ+957FEQMXXHnCHfdJkhQPCNVAl5G8p4iJWGv0TQou
+	 GsBmGGPCIi8tQhlDHb9Vv0QN5hqJS/xL6xodafApcD5J95vcYXjtLwWNYcftKh4KVM
+	 2lGi2pj8YVrvw==
+From: SJ Park <sj@kernel.org>
+To: Gregory Price <gourry@gourry.net>
+Cc: SJ Park <sj@kernel.org>,
+	linux-mm@kvack.org,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	liam@infradead.org,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	usama.arif@linux.dev,
+	vbabka@kernel.org,
+	jannh@google.com,
+	matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com,
+	rakie.kim@sk.com,
+	byungchul@sk.com,
+	ying.huang@linux.alibaba.com,
+	apopple@nvidia.com
+Subject: Re: [PATCH 1/4] mm/damon: defensively skip zone device folios in damon_get_folio()
+Date: Tue, 28 Jul 2026 17:50:36 -0700
+Message-ID: <20260729005036.98063-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260728194714.3713735-2-gourry@gourry.net>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260728204409.3396238-6-willy@infradead.org>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 469671C000B
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 30EF840004
+X-Stat-Signature: wzir8ggd6c9nmteku5m76rnzij4a3e7a
 X-Rspam-User: 
-X-Stat-Signature: 4dky3ded4hgqbxb7f5mkzu64wma5yqt8
-X-HE-Tag: 1785285714-497763
-X-HE-Meta: U2FsdGVkX1/LNhbu/Y9C6OmxwWN9jTezxaGEQ1L9NERgG/X3np2h66CyqnuZf2qO5dYsYQlTzdDpALJgZVlfDy4PU1MEqGS5nIBXPNpxhAhk9bMWyN2+6liGX9weHqPXGJWLJoAUkHYAzI/5un9QfuGP9ntGVHa9F+wTl6g0mKfj7rATK12dUdSuWpPftAwEHUK/0+xaxxzQXW/74cIcxboL/27M9hWjcsBoo18EBTTzG1UIYSBW0ZY5N0SN+vx4JndneS+xVSPMfzuUZE5C+87l8gR7KGFd5a+rXmkikBhnKuVS8KqDD2QvT/z/iW1CQzNv5VkwXL6qfJwH6Ls/6adW4D8JJnL9BHkHwV+5VSJAm04lUfEisNH80akXIHTFi8XzS5FCQWNxYgCJhjgA5uDcErbXsI/95BMSFPqaTqJpsVhzbCqp/Bcj5VYh8oSej/DjZZ2Yw9Q2TCjsnM/oke1vTBR9zI51dZNQ4LBfomCtqSKMEgYkIAQK8CSPgNQWV9luktlt6mzf6oeI9eW3Qc5YIk0P0aWXtmyFJYrUtc8CMAos9xfyuKf8FAaHusKNBio1lOD64yj2w6iUNnptpH6VE+BvWHUzDBnxbOswsNBtfN09IAPaaZvPmEz/D9YN56cKht+SdCkIFx6Z98KMMV/XZrVGv1Yt7saPWZyXs8mlOekNFdpTiGEIX3/VRKDjELoHh22CCZeDKReey89NzfSgAU7bWPpYLaKpMRCsW2viqG6x5N1TIZrjsMUIrWmfym1oGUHVzCb8RU5hCa4ILg+outq9BgPtbRE5e3f56ziemdcIko/8GZlBaxAIkQ9zp9JPLxoUSfWeBbn8Nes4LXZEDVNEMYnyO5tp6XX6esbE/xlryj938xsrMunNJJpEiLZ5Pg07M2sHgG6k7aPntmdfqc8QD/+5+K3f+ddob6kKh1jx/6THRKHIlGj6KrIdsc2aeCk2s3WyLSUVRFD
- vJG1lW1c
- XPPTppMqGItY1q/df8KXnBILVhpLb3B/CDzG0FpwsWtXnycv4OkhYNLKjWfVV2+H3hFIHdj1yWom/UaGuULu33Jf4vjfFzhz2BRqaWaRK5dUsoyEaGkGIZh2AUBxO6VI98Vhj1doUXtYu62FrO14FAxWWVdZn2pnJo33DCH+W6brDyT8zSXe/pad+XF/AWJLk6j0tjaMXddS/cW/oyLJwEaJfNYFaZgzKCg8895yQKXfyeamvPCFmNLx2D/1/YtD4Uvd9miUmRW3wq75eCSwa4opAEDZA1cL86+ZwAEZSZiq2TG2oXo5FFhpo6uS1uU/PRNY2bOHdBENs58U1CFNSNukr0nHOHnsYMVvYYZAaq8kDloSnGMZVsNHtochlVz8YPzdY4Qtf3q5HtUm3PmyVJ91xOIWYvUxZcc8QfnvqM0G6GOFPGRVJxkrlCdIGFYIt8owSMtKvvsy5dHZ54e77IPOBnCFn6VQ9h9nRz7zRqIU2Grtcbnld7SPIKJR10OfQxW+F9FuNjPP7GwE=
+X-HE-Tag: 1785286251-663784
+X-HE-Meta: U2FsdGVkX18EhpwSHGxyNdQ2+1gY6Gu45mhNOfdKPK31l0yXMKe6+YdSZ6xjQk2/rE+ld7+LCdY4MOS55ue2CBFrb9l6zTRSMnzGNQKs2YGsFSUsDVWYZkRPpoe/bWpmjNddehReYR9ybAidAUy+KrJ09Okbrup1OM0bMju/m5Okme43WOT75EQ0t7mevJgH0LTSG73nQ8/Eoi/mNbWrBN+7tK4sKdFLTKvL5c2RitPZlX/LwR4fieMPuN4cmnyRdbX+1qG6BDasHVtXXIEt2WK4/QnK22eNz8TfL68hAJbFBQvv6dME9ePeNS0Zf0gcZYSER4ZVO8xNpZpxIBerBi9MSBhMcLgccWAxargv9Ri+UbaXwQzwtN/mMEE/TJJ3Fq85BD2D/UpVJEpnu5EGcLnIYPRcjW0WhaIegv45qe3qdfsnWgo0wANCDe/lQLmyghRfdMh4r87xfcx1AFyxaLT/Cld37XvzQdXJqJOFMCtH/Q6OIItR9+grnUGvBE7HLvv4Imz6tb0J8n04DzC3Od4Aol1ulNPxaDRyM7kErfDaKjlvHr9CSkQjglH/PFGMx4QjSx4he750+Hvvuvgnb98feXIOvFl8LeS1+epiP9y4PJYfVgi+lDhl1rJJBScBNUqquK48iWFb/OgZMFtCRQM9ihuLhLmqkT3AOCL+XrUjFCAMkKcZi/78ZuVwTAhpQZX8RCmVv9V0qP3FKqSO/9tzHQ4b3YFJMJarlIhxFvtyBvAUX1KhPj+Tbcx2bCSgrRrCNpXI0i8rW1YtAu02d5EOWc9ztPdCRBZ6bFWZw/dxNbPsSLrQn+SeszIbnqlnOm8akdnCceoKgsaylRnTsEjmpGne9RQXVLCPv4ijatnS4rkVmPOqioIpbzEdGE/ikzQl6Z5/0frJW9oo3v9G1j6WkGrbOt64+gKSg0NMiifuZt1oXGTbeuzYmnYsE2HVhUvHD7u6+zezsXu7uLX
+ ZeGY0M4r
+ v6H1lt/2P6KSAUaWfQj4+FnwEyxluJwhRMZBthJMwA62H5IR/xd2GFTIasnIL4EM7Sv2XxJX1BLACbReiEhRvBNYWoLHW48KCgy5RoixRTbIWfhlWLv1482QunQCtpTFVOgww+0C4HATbMy81PF6gm8IMueC9osxl7w84uSei5cANzxy28eVXhuWfc9qsNG9FORRngFMgm9AaDt6ZwpNsgeJ2WRT5oytKHTF9fpeaGC4tm7FR0mZMrxHK3haQ6sWjrHDx/0vfR7Pf4qOKnd9hYKQptZ46zwsEGJ+yv6OJ3N0Dnh51weDMiYEbuIoDjncDuEmOAzYM5s1i0ZW+sqtu45O2JFmtqGcNFdjG7QjCaSH17oEGB6+rEkBt5rIxgPR90pY3cQvTUxtQzMc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,13 +113,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 28, 2026 at 09:43:57PM +0100, Matthew Wilcox (Oracle) wrote:
-> For is_page_hwpoison() to be reliable, we need to set the hwpoison
-> flag on each page before clearing the hugetlb flag.  Introduce
-> folio_clear_hugetlb() to make this easier.
+Hi Gregory,
+
+
+On Tue, 28 Jul 2026 15:47:11 -0400 Gregory Price <gourry@gourry.net> wrote:
+
+> All DAMON physical- and virtual-address operations obtain their folios
+> through damon_get_folio(). That helper already excludes ZONE_DEVICE
+> memory implicitly via pfn_to_online_page() and folio_test_lru(), but
+> this is inconsistent with other callers in mm/ which test explicitly.
 > 
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Add an explicit folio_is_zone_device() rejection in damon_get_folio()
+> so the guarantee lives in one place and covers every caller uniformly,
+> consistent with other mm walkers that reject zone device folios.
 
-Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+Thank you for checking this and sharing this nice patch!
 
+However, I'm not very sure adding a call that not really required for only
+making it looks consistent with others is the right choice.  I'm especially
+concerned if this will confuse future readers including myself.
+
+If this is a hardening purpose, we have CONFIG_DAMON_DEBUG_SANITY for the
+purpose.  What about using it with a good comment explaining why we doing that?
+
+
+Thanks,
+SJ
+
+[...]
 
