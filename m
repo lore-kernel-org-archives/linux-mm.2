@@ -4,173 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D30E4C53200
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:22:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89CEDC53200
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:22:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D35216B0095; Wed, 29 Jul 2026 10:22:47 -0400 (EDT)
+	id 370C36B0098; Wed, 29 Jul 2026 10:22:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D0B196B0098; Wed, 29 Jul 2026 10:22:47 -0400 (EDT)
+	id 31F7C6B00A7; Wed, 29 Jul 2026 10:22:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C20966B00A7; Wed, 29 Jul 2026 10:22:47 -0400 (EDT)
+	id 25CDF6B00B8; Wed, 29 Jul 2026 10:22:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 945616B0095
+	by kanga.kvack.org (Postfix) with ESMTP id EA9BF6B0098
 	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:22:47 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 18C2EA0687
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 11:52:55 +0000 (UTC)
-X-FDA: 85041652710.25.E3C04A8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 612F010000C
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 11:52:53 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RAKfZ2hl;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785325973;
-	b=lIJ58RlTzOPax4RvM6PZninGocFBVIYobqBvRP54SR8/2LPiaba/QJGKjw5DXOwQ5cm4Mz
-	KuCekcPmMU0ZEnZ6e/Kd/VOLTrztgL1mzoPf/PuiXmHTQJ0PhQODPkDVkyWo4ply6Ib8wh
-	IUcwAaR3JgZZp4Or8KcyBo0RZ28ETOw=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RAKfZ2hl;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 25EADA066A
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 11:57:09 +0000 (UTC)
+X-FDA: 85041663378.19.399352A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 5F89C40009
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 11:57:07 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Xmqcde07;
+	spf=pass (imf01.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785325973;
+	s=arc-20220608; t=1785326227;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8F6WAbJF8b0+/lVo//yrlr1XJ8a9Kbyft0CZ3XPUVYk=;
-	b=Wm0mzf9fS0/YAPZyeADGgxRyp4Ue21nIWUSuks87MnHeXDMzxnbx8Gw2OTW4nYRR0EEVBy
-	HLXNukVQfxSloEppVFN++138rUeWSmPEDKlCWaAJeUtZbx0CYRugbfM8PI8dzk4ZrrLnfv
-	/NXtSYZYo3AYuVnPLcffDdmmWHMfFys=
+	bh=3MHqEoaGOKzk9Iff8e6HT/j15eXEiVkvdlAAoZTG4f4=;
+	b=8dIzE5vGU30UYu1hbJxXe6iZU+msQQpNHES0r/VunJ6Dex5ODBJvBZ2IDNGGAFBg5xa7Ex
+	7h8d75TjLJiKHT2olBdjRPAJYhmJAbn76+XjMhk2idy1tMdUrBu1c8uIJCqQ+c1Z+41Bb2
+	MsAfibfnc3cdzfq+dleXWZ3GuMMRD4M=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785326227;
+	b=FanUT4vE5hQcGug1mPEN127QrmV7Iijs1R1kZjWQ2lz4/2NCl9htPIIBiZLjjaCPPDLzPZ
+	IW5Wh86Dv4rP+Y7Evm4K3Gq6kHOdk05lW3x8kj1h7F4X/mEOSoeLzoH2PE3GZBT0Ned8yc
+	K0EXTaOjVG2J0Eg4kOArUgyerB8ClUE=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Xmqcde07;
+	spf=pass (imf01.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 95C6C60A5E;
-	Wed, 29 Jul 2026 11:52:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B8671F000E9;
-	Wed, 29 Jul 2026 11:52:40 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 840CC4372C;
+	Wed, 29 Jul 2026 11:57:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DC831F00A3A;
+	Wed, 29 Jul 2026 11:57:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785325972;
-	bh=8F6WAbJF8b0+/lVo//yrlr1XJ8a9Kbyft0CZ3XPUVYk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=RAKfZ2hlnqur+lPLRDZhd6ll5wLFkTHMz4LI8eJaulXjieYAenmJmk4PMTQBKFZ/U
-	 pyK0RNiqn70Ad+1GSsmrI6B8F0wYm30sXDWHDNst0Az9PbGi+TL/KORuZnT9sqQo9u
-	 Rzh1V/+oM6ZDs940TjFOqs5yohNNslJjyJ8iJeoA7WeF7cquNvL+t9q9S4Ic9dWWSq
-	 4Iq5kwkGBW1Jk7vbZTiYIDehoEYYdr2IUaB8x6zsF7dvrh9VnNBcSXaGSuIBDNZs7f
-	 4jIUxCejHJULeLyIkGbqfPXxbWzy7/VjVvik+QZrAxtb829aluzCnGwByuZkktgqQX
-	 wmpaiiZ29+lbg==
-Message-ID: <78a0402d-5436-4aab-a704-90fab56eec50@kernel.org>
-Date: Wed, 29 Jul 2026 13:52:39 +0200
+	s=k20260515; t=1785326226;
+	bh=3MHqEoaGOKzk9Iff8e6HT/j15eXEiVkvdlAAoZTG4f4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=Xmqcde07rhKigYnfqfFgM+V+S+G84iFflTUPnnW/QqFBYoRduAW8DmMEfmXZSQykI
+	 WnH65KFGJIkuFfiuyYkqXsvQ/hhyodbbvwwu52Ac0ZbYbHT+3ezeuvbHLaplBiVrKv
+	 xbPSWI1/IZbgNO0XJVyxyzlsqlAu6a2rBiZCgk2vCIIZssY+eMW2ig08WE5YhIl1A3
+	 4VLNqjmQ6Y5LnpCbVSo835Hq7YR9p777fGwgCWi0N1D9w3k2Bumh0cK7VdlN0R/bNj
+	 /i7Jqyo0wzTGVFNQdPcjLBIPlsSga7RWsUJf8DyuivF6DX13R9Rr7xUuOZfP1cChW5
+	 0MQzYsPyFAIzQ==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,  David Hildenbrand
+ <david@kernel.org>,  Lorenzo Stoakes <ljs@kernel.org>,  "Liam R. Howlett"
+ <liam@infradead.org>,  Vlastimil Babka <vbabka@kernel.org>,  Mike Rapoport
+ <rppt@kernel.org>,  Suren Baghdasaryan <surenb@google.com>,  Michal Hocko
+ <mhocko@suse.com>,  Baoquan He <baoquan.he@linux.dev>,  Pasha Tatashin
+ <pasha.tatashin@soleen.com>,  Pratyush Yadav <pratyush@kernel.org>,
+  Miaohe Lin <linmiaohe@huawei.com>,  Naoya Horiguchi
+ <nao.horiguchi@gmail.com>,  linux-mm@kvack.org,
+  linux-kernel@vger.kernel.org,  kexec@lists.infradead.org,
+  rmikey@meta.com,  riel@surriel.com,  kernel-team@meta.com,  Kiryl
+ Shutsemau <kas@kernel.org>
+Subject: Re: [PATCH] kexec: keep the next kernel off hardware-poisoned pages
+In-Reply-To: <20260728-kexec_posioned-v1-1-160c81d180fe@debian.org> (Breno
+	Leitao's message of "Tue, 28 Jul 2026 09:22:57 -0700")
+References: <20260728-kexec_posioned-v1-1-160c81d180fe@debian.org>
+Date: Wed, 29 Jul 2026 13:57:01 +0200
+Message-ID: <2vxz7bme80vm.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 00/11] mm: distinguish PTE table storage from PTE
- values
-To: Muhammad Usama Anjum <usama.anjum@arm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Dimitri Sivanich
- <dimitri.sivanich@hpe.com>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Helge Deller <deller@gmx.de>, Juergen Gross <jgross@suse.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Nick Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
- Andrey Ryabinin <ryabinin.a.a@gmail.com>,
- Pasha Tatashin <pasha.tatashin@soleen.com>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Uladzislau Rezki <urezki@gmail.com>,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
- Eduard Zingerman <eddyz87@gmail.com>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, Ingo Molnar <mingo@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, SJ Park <sj@kernel.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
- Miaohe Lin <linmiaohe@huawei.com>, Dennis Zhou <dennis@kernel.org>,
- Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
- Mike Rapoport <rppt@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
- ziy@nvidia.com, pfalcato@suse.de, ryan.roberts@arm.com,
- linux-kernel@vger.kernel.org, intel-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, linux-parisc@vger.kernel.org,
- xen-devel@lists.xenproject.org, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
- kasan-dev@googlegroups.com, linux-trace-kernel@vger.kernel.org,
- bpf@vger.kernel.org, linux-perf-users@vger.kernel.org, damon@lists.linux.dev
-References: <20260727164715.2866609-1-usama.anjum@arm.com>
- <2c19247e-bee6-45f4-a353-2fcc60db26e6@kernel.org>
- <7813b5fe-e767-442c-a356-afc1a5c567ad-agordeev@linux.ibm.com>
- <6db0a8c0-b500-4364-be3d-d3a537c61258@kernel.org>
- <46319967-0338-4532-b953-dbea77084fe3@arm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
- ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
- AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
- 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
- g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
- ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
- 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
- /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
- jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
- DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
- HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
- 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
- LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <46319967-0338-4532-b953-dbea77084fe3@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 612F010000C
-X-Stat-Signature: emqqhonzt1h1557pwcdu6h49ic4xzgna
+Content-Type: text/plain
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 5F89C40009
+X-Stat-Signature: 49gf9hmycw4pf16dywie4y8ny9j1hysr
 X-Rspam-User: 
-X-HE-Tag: 1785325973-765773
-X-HE-Meta: U2FsdGVkX18TXUaGi8Hbnwi1QrdYudmkpMoK2fz2TsyNlOZqm83BZbOL7+T9GEzTW+PIGNFm2gCNdIB5uBWS6pJR40zroQXzin8I6RmY3j66uh5W+VOyFgobZeM6/kmrRC33N983ccdehc2J88qgURr07WQcbiUanuNX0ToPTMGzK+KbtJ2Pb0xEFixAYjFaovIlbclVLRT7V+LsT4b9wmS6NH1oFLB73s+3899V5vfayki2xJgCVzlw/u3kkLvF7EX0uUSzQj5ovXhsyRaW3w+JgQD2C7bxhXGn8f1jV0Z2L0Bg00Sx5344K+1+k0ls1yVfAYqtSvv1HOUnR5Nwppz5dW3ZPl5ULq4I1tZs6EnqKIOgXVHgjvrBcq901khtqVFptACM9YXT7DQWhAcZ6vT8OMw6aIKwLpoDS1GKSHxLiTUvnrLpH8ZPJNnT1ipqmtDVSD7/he5cH8wubx7yfixpplYUfNfU3XeEY8BG3Y0Vs1QMQ32DOza+OOzXD2NcCAMC6tSPrs8RocW3jEhCM4CnRJzh0WaqJyxl3CdKjsjpSRsrniw7Aca63nHHiLwyfD+bXLu5UIaY4VKdejCKr1jGWvpDeN7ckLYUhnoEVA2NZAoSfvyd3ZpMterJem7AAS1Jmxtf1tVEgPxdTN7pulLRgqBOgcHq6+/3mzXd2v784J3nYktwIcTqXA7504fG+aNHoQDzi8jasp+WuyvYlgywYoxmWt/htNMqLPwgr/vsKCv8cI9s58JYX1MEjqbTu65vhwgtAaxK9VqXW3h7KNaspu1APEvjKwXu8OA7MEumzcCbbdWvysI8bOmCZFRTHoDGAzwhGcqdsWgDRijx5q8Si6BMggfrd8plh01viadf7fhvIseGqXEzi72TO0eIx0sZTCc7Gw3J1vJH5R/rZUU4kH2R42quvjx2J2lrGPbyU+3v6Yy6GPn/O9Ub1+MdzkmM7VRcmI7c+g+YykG
- /38/Qly/
- 6Cp7jUJXtv1caCkoO7nOc0LkSvYxg9W9qJSPDgnn6c/cIOTz/RbnXWzYWair1ZiFESb2Ll8zl8MnX3lpbUi6oXh24N7AV1KfBQCpEQ26AeOUtqGZcD/z28Vkc088fG/CDPguKFsPAmVbx4GOh9EQCBL//AHNFvZJxWPCJH4lYJ76NyQT9mYmcPIQJqSOWyPtfXic9BUBOtymyT1AuOjHjQWPtGLSgUq81nrIk+GOVVa42BJyw1uv3a3WRZjpsvz9O6xNvU8eBiwuusW1BVvHCl+wouTAhmbqCp5zIRKpX31aD7pyBZv9xYclkQ+V1XHrP4LXVfumeULLE3NU=
+X-HE-Tag: 1785326227-324752
+X-HE-Meta: U2FsdGVkX19q/jIkdCYqCzXrv0yg0h1NNKBCZnOvAqNwcjHd44+q1+soL006Eyhpnm7QpUQkx5B8f/sJqCp+aI5P0wvlPzp6reKYMk/r3EEtMq+mniAxKPVxlpzt29PIhT18vrQD+I8WOpgg7V3ndixFL9sT6r5VcJwEoiUMc9H/Wj+6ppQKExdNt+fh5i5yGQKj9DeBILX6VNPw0aQMDgCrZFtSR1oL61F6WvxChqIyVtOi/o2UJjKx8FP6qGTt9an9IU7mPrjWRsO8H1TXata9RII9+sUm2f6lDuDeGPh8D+vGYAEwjsJ56KKpWgsapCPOjtEqwEtQpHRBZKLRJDWUhz7Olq3NQ66t9SoeTL4cZjI2dU8JFsdu6eEijY/mleNjW+MZWjV05dmKO6vzXz9n10Sbb8gb6XNSSiJ6CvCIXM1obbxpirE8WWW9kzSUamCgz6SJcQjTCZKq0g6c9DfSmJcloFe9WjTJ6iVCwF4hYnI7yqcdN0EKA4NMNczyqk7+BeVnQi9DOeC/QfZBnZdBbpSSOVQJ+C29HPWYtXPXCQH5Wbsr1a9eqKTK/XPSCGNhPhLw3jkrO4QG2gxihPjjm7B2HpF6+OyjP+A1gNiqUQWCyc2AJyRQlip/qp8GKgdlqqxP6bIo9NTP1x4AAyx8eCEJlNQm0UCnXLSBxjmZTLJXHT/05iv7FJKWxFPF4dVwbCnT24bx3Sk1yzSMz3l3CKUnZiw8rLJ1K/X0GD6VA8v6Bec0POc/BSnx/dgPQOlLTYwj+eGBZnMSJ682jrnrH6aP67Ko7Ja90wHvC31R3ImLZKcvnJukSIHfHFmiCR8cPmr/SiGAnrbQaxcyDJLl7vBpMZAICGDGb85ODm89f6nIbofLMco66NOZIljH4ILNbx4it8iIu/uRLSlvYKuu66DEGszgcOatUKy9ijma5pDg09USt53OBIwxtxPRu/T1uqFRFfByDnp/jKA
+ o6Em7Z7E
+ SrFTZ9q4L+DoWWqWuNaBSBeCs59fRPNbPP50vDDKR7Gxy8Wgw8wYuglnaPMtdLEtDV/eqsdcGWKja/Yodm6d3kLVFkC3xTu1Pns7oWDYxs37c5fzbmpGNYy0Pp2K/Z8ztVRI5UCeojz20WBwJg5Xe+RyFiAMNXTs81k+TLBhwgPT66qqSlL6Rla3EhKh0HW0PFXBabUMVar3VD5HgMDSuQ8MhlmHxdPE/m2UNpGg6G/6EhmsfeLZJ2RgddMXqWjfxLZQWQa4QIWfwxGaZUXWy3NnAaaRO/eN1oVSzfkGXXtZKmozPRWfF7eTQXYNi7Dk1UC0PhKomSomBVcTl50Ox+WRYCH28NbAOFLwHkOoSWiMUw+/JCBzxCz3JYby5AYAqSnf8a6qFMxBudv0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -178,26 +100,187 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/29/26 13:33, Muhammad Usama Anjum wrote:
-> On 29/07/2026 12:05 pm, David Hildenbrand (Arm) wrote:
->> On 7/29/26 12:13, Alexander Gordeev wrote:
->>> ...
->>>
->>> May be we need the generic hw_pte_t implementation as { pte_t pte; }
->>> right away?
->>
->> Indeed, that makes sense. We just need a way for the architecture to opt-in that
->> it did the conversion.
-> Yeah and architecture cannot opt-in until its converted. So we should leave
-> it to architecture to define hw_pte_t.
+On Tue, Jul 28 2026, Breno Leitao wrote:
 
-In the context of this series, we should have something like an
-CONFIG_ARCH_HAS_XXX and select the definition based on that.
+> Memory failures (such as unrecoverable ECCs errors) are getting more and
+> more common. The kernel knows how to handle it while running, marking it
+> as poisoned (and SIGBUS user tasks).
+>
+> Poisoned memory is removed from the buddy allocator, but, not from
+> other places. A current problem is that kexec will load new kernel
+> on top of a bad/poisoned memory, which is undesirable.
+>
+> If the next kernel's image, initrd or purgatory lands on poisoned frame,
+> the relocation copy writes to the bad memory and the machine checks
+> during the kexec.
+>
+> Skip hardware-poisoned frames when placing segments: check them in the
+> kexec_file hole finder so it lays the next kernel down on good memory,
+> and reject a poisoned destination in sanity_check_segment_list() for
+> the kexec_load path, which cannot relocate.
 
-So we'd have a generic variant.
+kexec_locate_mem_hole() uses kexec_alloc_contig() to try to find a
+contiguous range from CMA. If found, it uses that and skips relocation.
+Do you know if CMA tracks poisoned pages and skips allocating them?
+
+sanity_check_segment_list() will catch these anyway and error out, but
+would be nice if CMA can track poisoned pages in the first place.
+Anyway, that is out of scope for this patch, but something you might
+want to look into.
+
+>
+> Suggested-by: Kiryl Shutsemau <kas@kernel.org>
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+> ---
+>  include/linux/mm.h  |  6 ++++++
+>  kernel/kexec_core.c | 10 ++++++++++
+>  kernel/kexec_file.c | 14 ++++++++++++++
+>  mm/memory-failure.c | 18 ++++++++++++++++++
+>  4 files changed, 48 insertions(+)
+>
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 7fabe6c66b4b7..a89108bcc3f90 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -5192,6 +5192,7 @@ extern const struct attribute_group memory_failure_attr_group;
+>  extern void memory_failure_queue(unsigned long pfn, int flags);
+>  void num_poisoned_pages_inc(unsigned long pfn);
+>  void num_poisoned_pages_sub(unsigned long pfn, long i);
+> +bool range_contains_hwpoison(phys_addr_t start, unsigned long size);
+>  #else
+>  static inline void memory_failure_queue(unsigned long pfn, int flags)
+>  {
+> @@ -5204,6 +5205,11 @@ static inline void num_poisoned_pages_inc(unsigned long pfn)
+>  static inline void num_poisoned_pages_sub(unsigned long pfn, long i)
+>  {
+>  }
+> +
+> +static inline bool range_contains_hwpoison(phys_addr_t start, unsigned long size)
+> +{
+> +	return false;
+> +}
+>  #endif
+>  
+>  #if defined(CONFIG_MEMORY_FAILURE) && defined(CONFIG_MEMORY_HOTPLUG)
+> diff --git a/kernel/kexec_core.c b/kernel/kexec_core.c
+> index dc770b9a6d053..18793f925835f 100644
+> --- a/kernel/kexec_core.c
+> +++ b/kernel/kexec_core.c
+> @@ -212,6 +212,16 @@ int sanity_check_segment_list(struct kimage *image)
+>  	}
+>  #endif
+>  
+> +	/*
+> +	 * Reject destinations that land on hardware-poisoned memory: the
+> +	 * relocation copy would machine-check on the bad frame.
+> +	 */
+> +	for (i = 0; i < nr_segments; i++) {
+> +		if (range_contains_hwpoison(image->segment[i].mem,
+> +					    image->segment[i].memsz))
+> +			return -EADDRNOTAVAIL;
+> +	}
+> +
+>  	/*
+>  	 * The destination addresses are searched from system RAM rather than
+>  	 * being allocated from the buddy allocator, so they are not guaranteed
+> diff --git a/kernel/kexec_file.c b/kernel/kexec_file.c
+> index 59fb9d71e9d86..cd77350f12f85 100644
+> --- a/kernel/kexec_file.c
+> +++ b/kernel/kexec_file.c
+> @@ -504,6 +504,13 @@ static int locate_mem_hole_top_down(unsigned long start, unsigned long end,
+>  			continue;
+>  		}
+>  
+> +		/* Avoid placing the next kernel on hardware-poisoned memory */
+> +		if (range_contains_hwpoison(temp_start,
+> +					    temp_end - temp_start + 1)) {
+> +			temp_start = temp_start - PAGE_SIZE;
+
+Sashiko complains about this
+https://sashiko.dev/#/patchset/20260728-kexec_posioned-v1-1-160c81d180fe@debian.org:
+
+    If we find a hardware-poisoned page within a large segment, does this loop in
+    locate_mem_hole_top_down() cause a CPU soft lockup?
+
+    Since temp_start is shifted by only PAGE_SIZE, the next iteration will call
+    range_contains_hwpoison() again. As seen in mm/memory-failure.c, that
+    function does a linear scan from the new start address:
+
+    	for (pfn = PHYS_PFN(start); pfn <= end_pfn; pfn++) {
+    		if (pfn_valid(pfn) && PageHWPoison(pfn_to_page(pfn)))
+    			return true;
+    	}
+
+    This means we could rescan almost the entire segment over and over until it
+    finally moves past the poisoned page. For a very large segment like a 512MB
+    initrd, this would iterate billions of times without yielding.
+
+    Could range_contains_hwpoison() return the address of the poisoned page so
+    the hole finder can skip past it efficiently?
+
+Which does seem to make sense. Same problem below.
+
+> +			continue;
+> +		}
+> +
+>  		/* We found a suitable memory range */
+>  		break;
+>  	} while (1);
+> @@ -546,6 +553,13 @@ static int locate_mem_hole_bottom_up(unsigned long start, unsigned long end,
+>  			continue;
+>  		}
+>  
+> +		/* Avoid placing the next kernel on hardware-poisoned memory */
+> +		if (range_contains_hwpoison(temp_start,
+> +					    temp_end - temp_start + 1)) {
+> +			temp_start = temp_start + PAGE_SIZE;
+> +			continue;
+> +		}
+> +
+>  		/* We found a suitable memory range */
+>  		break;
+>  	} while (1);
+> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> index a8b03e2920ba8..032bb23db7566 100644
+> --- a/mm/memory-failure.c
+> +++ b/mm/memory-failure.c
+> @@ -96,6 +96,24 @@ void num_poisoned_pages_sub(unsigned long pfn, long i)
+>  		memblk_nr_poison_sub(pfn, i);
+>  }
+>  
+> +/*
+> + * Check if any page in [start, start + size) has hardware-poisoned segments
+> + */
+> +bool range_contains_hwpoison(phys_addr_t start, unsigned long size)
+> +{
+> +	unsigned long pfn, end_pfn;
+> +
+> +	if (!size || !atomic_long_read(&num_poisoned_pages))
+> +		return false;
+> +
+> +	end_pfn = PHYS_PFN(start + size - 1);
+> +	for (pfn = PHYS_PFN(start); pfn <= end_pfn; pfn++) {
+> +		if (pfn_valid(pfn) && PageHWPoison(pfn_to_page(pfn)))
+> +			return true;
+> +	}
+> +	return false;
+> +}
+> +
+>  /**
+>   * MF_ATTR_RO - Create sysfs entry for each memory failure statistics.
+>   * @_name: name of the file in the per NUMA sysfs directory.
+>
+> ---
+> base-commit: c5e32e86ca02b003f86e095d379b38148999293d
+> change-id: 20260727-kexec_posioned-72bb0a4143a0
+>
+> Best regards,
+> --  
+>
+> Breno Leitao <leitao@debian.org>
+>
 
 -- 
-Cheers,
-
-David
+Regards,
+Pratyush Yadav
 
