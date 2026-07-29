@@ -4,82 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F92BC53200
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 13:59:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AB59C54F51
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 13:59:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4ED756B00AC; Wed, 29 Jul 2026 09:59:04 -0400 (EDT)
+	id 7ABAA6B00AD; Wed, 29 Jul 2026 09:59:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C4E66B00AE; Wed, 29 Jul 2026 09:59:04 -0400 (EDT)
+	id 789DE6B00AE; Wed, 29 Jul 2026 09:59:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E1F96B00AF; Wed, 29 Jul 2026 09:59:04 -0400 (EDT)
+	id 69A696B00AF; Wed, 29 Jul 2026 09:59:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0E5566B00AC
+	by kanga.kvack.org (Postfix) with ESMTP id 3A0CB6B00AD
 	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 09:59:04 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 58DD8A1756
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 07:59:11 +0000 (UTC)
-X-FDA: 85041063702.28.D44D478
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id AD235120002
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 07:59:09 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S29AilxB;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E6C12A1817
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 09:09:19 +0000 (UTC)
+X-FDA: 85041240438.11.5F76989
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 170FE100005
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 09:09:17 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kHm4g95i;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785311949;
+	s=arc-20220608; t=1785316158;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pwdqGxoAPhOYLSWy/uzYKxVIQs4IfOX5AH557+HHvqo=;
-	b=r1ont+2i+wJ0PmFxDZmSoYF1WSqK0o0OwqkAgQ4EcMS2qlMmnrNVXlzvVMLzNA68CZWgUj
-	OqgebFe7FelzaoMwlCiTLbyV2TpvPmlo/mBee90bb3WwDH/qPrKm7esx7yLrnRm25V4tHM
-	NUv1GjzBscF//NrBs4aA97NkJWCFCuE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785311949;
-	b=OS+2aSoBWTuOVVOrlcEQFRg5Yt9D1dAopRft3R830JkivksAh/H7bZCWpc3EEqt+8c/oxt
-	3kYE+/Df3zJSNYJbktn1hwjo/OKH0xd6o+memFH63MSaDAPkhpabnEaMCJREaHzK4d628q
-	G7X5giD1nziEqWcbGQPGWJL4cueQoQg=
+	bh=8Uy0pOrdkhzK0M9CY3hsMn6y+kM1Fs/laTbpwbDQnRs=;
+	b=GYsfpoWEcCpwetfplLVcaNqCL4pMldgq3qluw1aHgalW5YzRnvl1XJHNgi543MMz9S98SN
+	dX5IZEtXq19HezrUJ/mG87ZZ0woY79iLG7DMnGaja/l3CIUzVXMp4CLucI+CTskEUkMxqU
+	ppsviUQo5oTJEyhzqG2u8J/S2aLvaLs=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S29AilxB;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kHm4g95i;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785316158;
+	b=xLPplNLDJgnByf5we1b2TO2rOCEofFoZbkz1yE2tthYhIJ6EBfnMkyqRvYCEKkB9iEfly2
+	2g9cvqDnJVZGT2J9+7wIdUyZ66Pl9EQpFx3KzKMKcT7SZk9tRdUKa/SUn1VbrOlJXSq1H0
+	cO3ezsNaFXgp5uDPxLzUmMgPSfZBhYg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 40315600B1;
-	Wed, 29 Jul 2026 07:59:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8739F1F000E9;
-	Wed, 29 Jul 2026 07:59:06 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 43EDC41608;
+	Wed, 29 Jul 2026 09:09:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 342751F00A3A;
+	Wed, 29 Jul 2026 09:09:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785311949;
-	bh=pwdqGxoAPhOYLSWy/uzYKxVIQs4IfOX5AH557+HHvqo=;
+	s=k20260515; t=1785316157;
+	bh=8Uy0pOrdkhzK0M9CY3hsMn6y+kM1Fs/laTbpwbDQnRs=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=S29AilxB7ZYEuEQEBUPp/AlNNOt2daTApKlw+99njsgIoqxOfPvs3yUUe9HcxSss2
-	 MCfxtrM/LX12LidqBsG/63ISGmIkFzxVCJKDgfr7hYTYAdiQrct7TMWa8nZTYinuT+
-	 n+AH6zV4wza3gwRgHnzByxkKHZLq6+ccP0GF/4ra7XrmWi00nOywyKHpWDbTLyswaF
-	 PxbFKR/W5kiLge/AiTuNfUDcAGYW6BXpLIYt9JZJm+Q++ZHgdDh3xOxDCTrRXkXM4y
-	 BfvbijrNWzikLVVOD4UgrH/c8F01WzRBCXUDnBQTB4ey9x2T90XTEyxz3+8HKlUiHc
-	 7GW2HTczJwx9w==
-Message-ID: <a731993e-8258-45f5-951f-b32b90671183@kernel.org>
-Date: Wed, 29 Jul 2026 09:59:05 +0200
+	b=kHm4g95iXPj0+7CcbEndKo5Cmwr0OJ4j8dH9O+xkrjEsshiEjbEF9lfFNlqTqTLK8
+	 ZPukWNmo5L/titQ44aNFLsDHdugoMbfyiWwVQvbm7L3AXaehg6CzKR45l6O5kvMHNj
+	 QdycLwkgJYCYjUH68UpYstuIw79gKZx6fuUyOPlEnzjHXD5jjccy1ySk2+tQ+FV8fr
+	 XXrRmwLIMWDRZcoGzN9/nSG799gjR5YQzgzcNOc8qcDp/eNNsW2n3RMvNi/kRgIOwZ
+	 XLGCpa/eAupHceEzz78l0vOxYomQnRlA33wCJWjjFEtXNp8zBfxXwckUq+rjsrxHzE
+	 gKP+5boihabJA==
+Message-ID: <d0d62d7d-8701-4692-89b9-84dff71a7cf0@kernel.org>
+Date: Wed, 29 Jul 2026 11:09:11 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/2] selftests: Add missing initalization of pointer
- passed to getline
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Chris Gellermann <christian.gellermann@codasip.com>, brauner@kernel.org,
- liam@infradead.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org,
- mhocko@suse.com, rppt@kernel.org, shuah@kernel.org, surenb@google.com,
- vbabka@kernel.org
-References: <20260526113848.530105-1-christian.gellermann@codasip.com>
- <20260722130246.2135563-1-christian.gellermann@codasip.com>
- <580fc92f-f146-4d76-85ce-6555cc3bc47c@kernel.org>
- <20260728172712.c21b2959d36f3e2d42cb73a3@linux-foundation.org>
+Subject: Re: [PATCH v10 6/6] selftests/mm: add hwpoison-panic destructive test
+To: Breno Leitao <leitao@debian.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Miaohe Lin <linmiaohe@huawei.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ kernel-team@meta.com, Lorenzo Stoakes <ljs@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>, Naoya Horiguchi <nao.horiguchi@gmail.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>, lance.yang@linux.dev,
+ Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+References: <20260630-ecc_panic-v10-0-c6ed5b62eea2@debian.org>
+ <20260630-ecc_panic-v10-6-c6ed5b62eea2@debian.org>
+ <ee4982bf-ff45-8f0b-3b76-7ca19228f12b@huawei.com>
+ <20260727212402.09baa9381ca426273fad4719@linux-foundation.org>
+ <de29c5cc-3637-cd18-354d-55ceb3d60afd@huawei.com>
+ <amh1nZVVaaZSGD3M@gmail.com>
+ <20260728122016.30752d36c3b3c3af231efa9d@linux-foundation.org>
+ <44f81bea-d64a-4f73-8665-46652a928c83@kernel.org>
+ <amkn21ftNme48Vbl@gmail.com>
+ <f83d5b26-b369-489b-a305-1eb5ec6fccfb@kernel.org>
+ <amm72Bu9qmWLI-9b@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +139,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260728172712.c21b2959d36f3e2d42cb73a3@linux-foundation.org>
+In-Reply-To: <amm72Bu9qmWLI-9b@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 6jwxz1k3okboet3ydg6iyck5nkzrtn4i
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: AD235120002
-X-HE-Tag: 1785311949-239547
-X-HE-Meta: U2FsdGVkX1+CA5Mtpqf+u2JR7J40x+5Jh8cSR+pR/YTRgzSVSbOAssV0Y+klY2FDURzI+ENSlhsRVfqjbi3FLwVaGFLoySTCPAzQvrGfveJgBBCHjPdBM0v5j9oCvKcqdoZWcSrMuDsQ3KQjtasnLqdWtulgtgdSoDvL4vmt2q3Q5g86xcTzSLpwRsE4CbRYk0Erjm9qq7qfcMlhiMVCJ9VoetKn2YwNtrffFwgNev3AkG54mzRhdExGR+bZ5YPD8+o347EdNrTdML8dLm4ngEjd01QOBgB2GGXEzI3qFsavL5bCPMG3OqLiun8vLv5kGZpxUcXaqILPWkUPodHM/wFuOx5xodCh3ZNw9Zw6h5ziypcwEuTWXIfw1AzfW9i2VXNoYUrMn++Ve7MYiz9xs6tkK8GxxDWKGaMPd0xGw/t328n+vsTwqP+k20hyhPLYFKsp8W+WXO2DuqJUMYQV+su8TgjE3nnKDbtpy4An3oUueJXJYppfg4S+F2TazTsH/G4gQTsUjFw0Y4yKcBWKYpclpyallSbOT8lc7F0+Broq4o+3QSJKlr6YJqf8T1yWi/NV55cU0I5jSOVg1OqOz7A5iu8EbGqtgq9zfphXYwcx7En2aZ8fSVmFEVPglDkmGIvbszVGy90AfQK4PTwVW4bmxQOtZvwvnJpvgbIGMnbfDcFYxmsbCI+jD4fLyQrdclAS64xygvvyfk/h79P5cnEzHHbo7HzuMdUgnLqSXrtPC4zSxVWvsjgiIVzZDta0jqRqpFsvD8ixiqhIZ2robKbH/K35boB1hho7jFmjHk/unHXpvH+T+GwgAaHn+uPhLWWdMNeTYIc8UGZnRhX/aIwod0A0CC1CexVThwpACx8sXj9QGsb+vxUBmkZf5EegS+dNdphoNS7Cc9eB8tTk2Sf+Fuhn9jDAsfhliwnO773SD89xQECwA1fyXfd4Aa+17GOkCE3a+leiYepmRcO
- m14mmad5
- xipgWH/x+WGyw9BX5qVX2Igo1lCpGmCDOsmkksXBowHRqoy0nudgeqYlRiVVcOh7Gusbta9aSz45O/h/bzRYiWcQtCRJnrBAr9Z4p06/dQ861X/4rEx0vC386IuA7SqxVUqpGjWwXAsfqqXcId6c8mTw8q30DIFAYxsa0L7KD0xMkVAzRfTgPxSbv8iczhrpyyD1PvnfX3ZhXGoQoleZvbn+l8MZP3jpOxqXZAwZZD3ooygVLD7QDW5bRKE5KpDrM2qw3L3Zrm95kBY99BgFXCQiAtQ==
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 170FE100005
+X-Stat-Signature: abkihnhjqg4f6arp99hup7xanequp73p
+X-HE-Tag: 1785316157-680779
+X-HE-Meta: U2FsdGVkX1/on4pdYWgUSDrioxLbjPiljv55CoFIA0hJco2x3x5mtk3rlQ4TtxQ2yuZlmK5LqS6y7CbVkKpTquT0w+M2FFqfBRASxkDyAiO938HIlcQPUU/rDwJFQpFiKCycKCz8jPDQNyUHcN+YkBd0zo9NIb8MuPnLo2yGqp2mJ5/LbwO0TIFKrHCI3IA/8Ah6vou5GmfXsRhZHx5tnstpu/vrVGWhb7DFkH74LUcXDfzVf9ABuUPKI5DG6l6KARPMj6ehAKFUdXM9liikKbl0MMNilCw3YOrCq6KztZ9Q9f5HmUuACNjeduvWjwdEMijVslncEQrpAPTETotdcbEs9+vtvIPWrPri81oXpKY9+u3fWaDUhz1g4f+HV1edJg3WcQcQydmW7bMU/gQ9lbfgVgtvoMc7i1EHQYi3SnuYN7F6ENOKftWJulW+Lx5GU+qPs1ZilNoD5zz6VyOjbzGnEAxT6ujjQxTTiZPi0KpukWnknS8b/C9SChl+qwzMrON3Jv8u1zUXwoxn+Kadr60NVTMwdtihJPv5TSXYe4dGPJOd1ZEUl0v1qDKFMlrbEXSO8KEQ/J83qvPQeRIeytFV3rH0bS2Gm6ub+dE6OvFWeg4nCZyZtZ/caiEQlEEbWz1SxgpZ2c3pPxfuspPftKjXZ6+OQvIMkQNddXssJ3pafhlMCTyc/p0wUmZxd/Vem+uDX2I3izAI844XA8tlhqd5kduTRUnKy7HNnF2u4kSnB8NugBAjr3Q9OhpTCpCY5WUUnwCCePP81nr0pS/TxGNTkzMiFYgyPM3mIBESlSJi5lYrTBY0WFbF2ITpah84XWO95SnAGS2RrDVfIlfxYH298e4kc7QLeuIuDpDUITkXkpHAzcD1GN3DcEm+NTzR7QGuAEp8LhRim/tjDMYSxPlh4QyT/QGM/wCSe/96QcV31MPKk3znslm948EWQ5/8EI98nzfX35g1LMBcnJz
+ x7+fxmDP
+ qxtscpvTeXIr2SHA45riw1QJ7MxTkTWk8wYtLETw3G4Hf1Xmu2i94lF5feADX4I6/kJlVqU7jULgGs2NFSC/uyXCPKvqm8nwGUFfP8m2cP1i4XRB6BMOmNFUypy/HWJKqQpERit+TAJ/uDDQ53h73gNBmAvS+YbrNZYU4g0RnK9L9WBpKptvXieoqppPuR9inVHI+YPfqqn955aVwY1rZ+6q5eYzbLam2V2zriRDRGyI82KPnqkExPSg50ZkT79kyqWr71S5cGQDOm1XWQNLotvkdGG5Du5jfdlHrhfVFQOAPkmUuoYCLkyNqdzgi0V96zja0pwEjArfeiJ8kCw04TFPCYg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,24 +157,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/29/26 02:27, Andrew Morton wrote:
-> On Tue, 28 Jul 2026 21:31:39 +0200 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
-> 
->> On 7/22/26 15:02, Chris Gellermann wrote:
->>> Hi there,
->>>
->>> just a gentle ping on these patches. It has received an acked-by from David
->>> Hildenbrand (arm) and a reviewed-by from Lorenzo Stoakes.
->>>
->>> I'm resending the patches as reply to this cover letter to clean up the previous situation.
->>>
->>> Let me know if it needs any further change.
+On 7/29/26 10:53, Breno Leitao wrote:
+> On Wed, Jul 29, 2026 at 09:25:16AM +0200, David Hildenbrand (Arm) wrote:
+>> On 7/29/26 00:07, Breno Leitao wrote:
+>>> I have a draft of the selftest in C already and I will give it more bake
+>>> time, and I will submit it until EOW.
 >>
->> Have these been picked up in the meantime?
+>> IMHO there is no need to rush this test here, we could merge it after the main work.
+>>
+>> We neglected our selftests quite a bit in the past, and that is biting us now.
+>>
+>> That's why I push back hard now (sorry) against stuff that is different than the
+>> rest and not easy to maintain.
+>>
+>> I know, hwpoison-panic is a destructive test, but I really don't think we should
+>> just merge mostly unreviewed bash tests that will just bitrot.
+>>
+>> Which makes me wonder now: should this actually be a selftest? It's nothing one
+>> would just want to run in a CI. It will crash your machine.
+>>
+>> Maybe this should just be a tool in tools/mm? I really think so. So having a
+>> nice C-level hwpoison-panic.c in tools/mm might be the way to go.
 > 
-> Yup, I added the v2 series to mm-hotfixes-unstable on Jul 22.
+> Agreed. In v6 [0] I actually removed the selftest entirely, since the value
+> wasn't clear and it seemed like an ugly duckling.
+> 
+> It seems tools/mm would be a good fit, and make a better home for this
+> type of "test".
+> 
+> Given more changes coming in memory failure (at least from my side
+> [1][2]), I think it would be a good idea to create a subdirectory
+> (tools/mm/memory-failure) and keep these semi-destructive tools in there. Is
+> this the right direction?
 
-Thanks!
+Makes sense to me.
+
+> 
+>> So let's rather make this test well maintainable and have it properly reviewed
+>> than rushing something suboptimal.
+> 
+> Sounds good. I'll move this to tools/mm and resubmit. Given Andrew has
+> removed the selftest from mm-unstable while keeping the rest of the
+> series (which is fully reviewed and frictionless), so I'll focus on the
+> test tool now and send it separately.
+
+Avoid bash scripts, please :)
 
 -- 
 Cheers,
