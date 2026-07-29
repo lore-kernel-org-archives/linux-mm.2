@@ -4,85 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECC8DC54FCD
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 21:45:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5552AC53200
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 21:58:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DFE8F6B0088; Wed, 29 Jul 2026 17:45:33 -0400 (EDT)
+	id C91036B0088; Wed, 29 Jul 2026 17:58:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DAFF96B008A; Wed, 29 Jul 2026 17:45:33 -0400 (EDT)
+	id C41F26B008A; Wed, 29 Jul 2026 17:58:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C9E0B6B008C; Wed, 29 Jul 2026 17:45:33 -0400 (EDT)
+	id B0C7B6B008C; Wed, 29 Jul 2026 17:58:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A12C56B0088
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 17:45:33 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 020E7A0802
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 21:45:32 +0000 (UTC)
-X-FDA: 85043146146.01.EECFF4A
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8BE6C6B0088
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 17:58:23 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 013021C0E1A
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 21:58:22 +0000 (UTC)
+X-FDA: 85043178486.14.E86D3FA
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 275744000B
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 21:45:30 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Xq4WBuMY;
-	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	by imf30.hostedemail.com (Postfix) with ESMTP id F177E80004
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 21:58:20 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=SCqlr3f1;
+	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785361531;
+	s=arc-20220608; t=1785362301;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oDAZ9vi2KsO6qrLBZTAFU1nlDgmqJpzCkJDjK+DL7n4=;
-	b=rxsf87ooFqP8Q4/PVkOGXd/ap0LADgllWtiymVIo10Wmo55HNzC2AJfuL+nGdvfEplQgH8
-	5a4i52I2JMHXYt1Ai9ZWss9Q9F5BFj2x/ETvPhLT0+EGwUJyxKnwE7e6PcFvblNV6mQSbt
-	IZmV8w8VbFdI3SzLtqqEzoyCQctrqHM=
+	bh=udGod0mFQ+zEVrBybqMffBztaEdiXoDsF3QX+rBfc5k=;
+	b=c6NccBD1dkLslullGsCYnbAICbo+oD4IC0TzE7RZVW9EqiOp3nNdoqbk9nZrLNWoNQO8+1
+	alQYK16h9gZJor8zOuk7bQkXhi2K6J/WbqHi4axfaz1f3A/MhdM+AAUMiJ4eRTlPBOtA4m
+	aCvpbHHS/54IRk3pR2CCXRj6FpwqChA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785361531;
-	b=ngUU0ywB0USGz/9T6v3grY6Sw7rke9eN7mCOgPPcABodR5dwIFHgboimcvSuZYhyuzsxWT
-	qBL6LyPMZO5fj2pNp8yGPlZ53Srq+fBbn4TIIGQe/8F59NTSErTAmMZZXXJunWMbz4hjOi
-	JhkwLKLDNlSqejB9ndSHlP3aIyqkt0o=
+	t=1785362301;
+	b=MCBWaq6vbB5IrDBymUGJsaAJEvyfBBYnIGEPTVFR+/9V6KddElyhqYvm20qdGTo7th5gUz
+	xSBSY0U6r5D+cb7VWZB0U9OQ6LMmSBLN5N6wOU73Tebu5p8gfaopBpRMl5tMh01aySjbnN
+	ciynsITA0CjB0oiOEbMMRvuTbNxH0RA=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Xq4WBuMY;
-	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=SCqlr3f1;
+	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E712A600AA;
-	Wed, 29 Jul 2026 21:45:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 733FC1F000E9;
-	Wed, 29 Jul 2026 21:45:29 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 013BB600AA;
+	Wed, 29 Jul 2026 21:58:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84A391F000E9;
+	Wed, 29 Jul 2026 21:58:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1785361529;
-	bh=oDAZ9vi2KsO6qrLBZTAFU1nlDgmqJpzCkJDjK+DL7n4=;
+	d=linux-foundation.org; s=korg; t=1785362299;
+	bh=udGod0mFQ+zEVrBybqMffBztaEdiXoDsF3QX+rBfc5k=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Xq4WBuMYGkMr4QPhjIapmQ2FXmFaBhxTq6Uvu/arWojlSM2Kge4kTP5v7lG1ncA/M
-	 TNaJyESRoeFo+/uRbaFe2TBNtGfNVgiE/v24u3o7ycKwhIAGpFCkTFuRi2fjbGTGt1
-	 orij7001+mUUXCUM8Pct4S37LBatIYD9rmNGnYoo=
-Date: Wed, 29 Jul 2026 14:45:29 -0700
+	b=SCqlr3f1wNRHkLOuv1HecQ44XtVEO+6X15YRRebwA+dQvJ18Sfkfj7nP5OdXOGaVm
+	 GXRrN7Nctei5FVzt3ch5aI12VVOU7E10SLw6T2CTYFSL/eScySAxP79fiarmqFXYbf
+	 hKAh524nOYtHndkZ2r8Qen6oeVEfXJ7p0UZ/l+6M=
+Date: Wed, 29 Jul 2026 14:58:19 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Artem Lytkin <iprintercanon@gmail.com>, linux-mm@kvack.org,
- urezki@gmail.com, shivamkalra98@zohomail.in, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/vmalloc: make vm_struct.nr_pages an unsigned long
-Message-Id: <20260729144529.e1f1e0c7525954d23ab6a051@linux-foundation.org>
-In-Reply-To: <ampGVI1MLmnLksnN@casper.infradead.org>
-References: <20260729175708.7074-1-iprintercanon@gmail.com>
-	<ampGVI1MLmnLksnN@casper.infradead.org>
+To: Zhiling Zou <zhilinz@nebusec.ai>
+Cc: linux-mm@kvack.org, baolin.wang@linux.alibaba.com, hughd@google.com,
+ vega@nebusec.ai
+Subject: Re: [PATCH v2 1/1] mm: shmem: reject page-aligned fallocate end
+ overflow
+Message-Id: <20260729145819.dfa35a91cd3d04b8f401d43a@linux-foundation.org>
+In-Reply-To: <87a63846fe9873b1e26e8a7dcafcb21aa8d709fa.1785309651.git.zhilinz@nebusec.ai>
+References: <87a63846fe9873b1e26e8a7dcafcb21aa8d709fa.1785309651.git.zhilinz@nebusec.ai>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 275744000B
-X-Stat-Signature: qcyxe347p6wqu4xrectuh7w1cfzezznk
+X-Stat-Signature: tc9kg8o5b63xdps7h1gqta91799suuwa
 X-Rspam-User: 
-X-HE-Tag: 1785361530-964332
-X-HE-Meta: U2FsdGVkX18forcuHIkn/lFGyN7vNhlZJCzdFssNLzHRpqxVJlm+gE4SpOLvv/qSdoYM6cOs+KLr3a8umwEhEnEu3Yqf5JkPVga/bmQcZbjTZMMADIZnHR7XZ+u4BKStJDZI11vTFQTSn+Za7h/W5dneGhxKzmnl19QoRSV0IQ3iHpFzP4jdaNAgAdgLuesN/DDD2rSh+KJprwMJvCZFNEy19hf6+Kv4EWaFEE+Wmqsi2EIbKhcmz0/pYzgucHOIeK6zy64W6DCEY3C1IqEuDa0nuzU3WmdwLF3p2ovxiHSbzoX3bnaessCGgTokhuvGvxZiDesPSdQE2Q7NwpnawiAgDSHFyaK+w2ih7qul1bSVKgiwqbHCNrbKit0zzSb7S6Z2YHSbXBK5g4Ge/kyZeLFvgdr/2sGRovHp047+GUozH1zWqGwDkEyKSe76U/VHEsjrPS6CXvWI/FxzLQ7v3w24eQUlltPsJVsJ1xw217NN2QRw7OYQD4Vq9VrDDUU3zKOytGFBgqCjhV8ldqYIobKHIG8qulLZG1uiPM0op2Dxo6wEdHpo0mw1O9zrltvmUPefjJ+1WrLTe9f9SUzys/5XYHqLRXsKXAwryS31dNvUQOhT2htAe6j4kh7x6pIv5XPY0pEkwEeP3apbwKh7afprEdkQarcLmud70vAut7t4/iNx7Wo8r1/TzaJLpgxSIQf1gWcur/gCGhg3I6JHdGHV6yzKXA19DTSBa71RPcyVqMaDflXLns5ALQ8gf/6q8Id0E9hbcpbKeuspZTWRjZ2M/AcuX/HJMyPq5cKPr0QH7gDsYFGsGHTLK/uNdZS9IL+GA1SO8uDJFYfAZNbAYPz9pY9K+qWIJpvNt3zeeZilJwLdz9kTrg6ujtLXuYgzX/Zdr+6wGkbyhLcWBeoNrkTErnary2GCaAGSiUycZbwOCocn7ZKuSPf69p2sMlA2LvuvDUV10NL3i1uEmH3
- xJANiLe2
- SElTaKR1MTXYF+sY6lmh91mTJSQ3ze3ji9kIuaJTqt4IFsxKcR6LsjUM1GTxH06tooNIRogGcmr8pvvV6kOXH8hueAkHXlru1mdzQtcjPcf82xMZcklQWcDf4Fx2HY5OSC4an60dahBS51bdL/V+eNM/P23N7ZHlu9I0QsL9A6UknNxVX1enYnbdznNdQ0IoC25jYbJQIFijgc6Q+66cBq2TbeDDfSqweKz8AUmb/5VWdenf0LwNpRe31aZ+l8Kv2oiE6T7ebPnOSBQWXybeuue5BrAGl2UIbDwbujOfq2fkSxO4RJ/lgZ6RmHo6Jh1DOruoiYNb+rdQA6cCRHhNHNaEbToJizB46HziriM4M56gbfTfrWr+M3SK57gs7Cvyred75
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: F177E80004
+X-HE-Tag: 1785362300-210213
+X-HE-Meta: U2FsdGVkX18ZODSFdbGRxUleo15LvlNd2hffv8Ft48vI08+nMNfGyPtJSuk4pMPkhqb4Ea3f496Zlb8/sYzdQHm9Nau2Pw2D8xR535wQRMJOwHqZAcF41oGJxMPHevwnrL2AqOUf5gHjANqn1ewFSkc/JmltCAQceOpFL/buQN271w7asYXPALBfFfV4HQTKSZNVepFQbVM1WENPorFBFSlKxgaNQPPiQu6bRIJCogIiBR/taGE0GdXhBn49M4UU8TwazA/rNlwwx5maqUfG0PWB+kqygNYH7Bh81Z+orRwTbL4bxL7UgZShTlxEEphNp3jvOondvutl0VIsUJKH1/EwNAACXK4mROvduIClxeSLOhAsTmRq368rgN5FHyInUKvXUbjujyMfoZgccxDncVLRSJYs9lsFYy7UYIvKD0mF5Oe5OWdxn3nAQMVdyYTobEoCCleiV/UM6lVff4O1Uo3/RBAmU6ykJNSoqDk7L8pCE18iUFsK7JpF7zL4erx0Wgk12dajpaTqWM/6cxxRFoNlL9kG4Xe6KOXy9xFJP62iBsgiVWB7TraXGaIQwowoGBYzINpAgeO2WpmiwSJRKmCRP2gxwLDbUP8shPIF/CsJDUGg2O4IPj8DaiaNluYycQWO8JRGh90khLPIBxEGiaz399AQCai9nOjQ+DbdNtEqOBhyJ3TTxv2f0AQ7JehtipeuTRGk4SBso8mWJGyFxYAxTbsMnU3gMaPhSMiE5EEh6xnKp0NisL4F5okFvFhcbzznjz41ab/Puh4KZBzQQTLqXcf4g0qgESMCvX78PEmu+GWpkp9aR40o2ItW87uiC3YfQi15E5jIU1eHAvUUlZYTZpZBLFm45noHu3xYPjeW4uOIXTF6QaS3MfxN0uo9aC2ITjhWJsbHk69WsgkAl8p4aN6n5T8DrjS5X8p91ylMnJFamhffbyH8IjYe7UVSLesEop4+lPp8ugz32X6
+ NQmamYpW
+ ypMIsUn3aabLty8hVQ3NIad9pGeWFr/k0w0fh7Ox1u1JzoNZXTGcvQYmXCjHTiPMZ5DjwBjSky0JB/opiIaQH6Po8ufPXiowZkjDWj78EEHSijgRW7C1n3/W1FV6mMAaNZQ39ysxSj1EluTpMuFzH4OpOmfMqBIOOywKBZnaK7mUaU7jUpHHHkhusYVExY6bzrOqL6uE/D3hs7+7WiQhswHF16v/yT1K4ze1Anq45bVLUo6nW8KM2pDlqzDCtndezjSJoj2paNcGhM3FtlCPWBZ9LBKz7lHuvuTG1VZU83yBN7pdKi40euuQx1Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,38 +90,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 29 Jul 2026 19:28:36 +0100 Matthew Wilcox <willy@infradead.org> wrote:
+On Wed, 29 Jul 2026 22:07:30 +0800 Zhiling Zou <zhilinz@nebusec.ai> wrote:
 
-> On Wed, Jul 29, 2026 at 08:57:08PM +0300, Artem Lytkin wrote:
-> > A vmalloc area can hold more than 2^32 pages, but the page counts
+> shmem_fallocate() validates offset + len with inode_newsize_ok(), but
+> then rounds that end offset up to a page boundary before entering the
+> preallocation loop.
 > 
-> I had a "wait, what, really?" moment.  And it can!  2^32 pages is 16TiB,
-> and x86-64 says:
+> For a valid request ending at MAX_LFS_FILESIZE, such as offset = 0 and
+> len = LLONG_MAX, adding PAGE_SIZE - 1 to the validated end can overflow
+> the signed loff_t used for the rounded end calculation. If that wrapped
+> value is then converted into a page index, shmem_fallocate() can enter
+> the folio allocation loop with an invalid range.
 > 
->    ffffc90000000000 |  -55    TB | ffffe8ffffffffff |   32 TB | vmalloc/ioremap space (vmalloc_base)
-> 
-> So we can have _one_ allocation that is more than 2^32 pages.  But I'm
-> not sure where we'll get the memory to populate it from.
-> https://blogs.oracle.com/cloud-infrastructure/announcing-oci-compute-e6-acceleron-instances
-> says I can get 2.3TB of memory in a single machine, which is a factor of
-> 8 away from where we'd need to be to actually hit this.
-> 
-> Intel are adveertising a max memory of 1.5TiB on the 6990E+ (128GiB *
-> 12 channels).  So if you put 8 Xeons in a box and loaded it up, that
-> could get you to 12TiB.
-> 
-> I'm not saying we shouldn't fix this, but it's all theoretical for now,
-> right?
+> Cache the already validated end position, use check_add_overflow() when
+> rounding it up to a page-aligned byte offset, and reuse the cached end
+> for the later seal, shmem_get_folio(), and i_size checks.
 
-Artem said "That has produced the same truncation bug twice already,
-once in vread_iter() and once in the vrealloc() grow-in-place check". 
-This might imply that the issue has been hit in practice, unclear.
+Thanks.
 
-Anyway, it's a good change so let's do it.
+AI review:
+	https://sashiko.dev/#/patchset/87a63846fe9873b1e26e8a7dcafcb21aa8d709fa.1785309651.git.zhilinz@nebusec.ai
 
-Sashiko wasn't able to apply it, and the mechanical checking would be
-useful here.  I was able to get it to apply, took a bit of work.
+Suggests there's a flaw in your change.  And it does appear to have
+found a significant pre-existing bug in there.  Can you please take a
+look?
 
-So Artem, can you please update the changelog to clarify the above,
-redo against mm.git's mm-new branch (or linux-next) and send us a v2?
 
