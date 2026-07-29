@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C90BDC54F51
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 00:36:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EADE0C53219
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 00:36:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 27C4C6B00A5; Tue, 28 Jul 2026 20:35:16 -0400 (EDT)
+	id 0A97C6B00AA; Tue, 28 Jul 2026 20:35:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 254476B00A7; Tue, 28 Jul 2026 20:35:16 -0400 (EDT)
+	id 00C826B00AB; Tue, 28 Jul 2026 20:35:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 16B326B00AA; Tue, 28 Jul 2026 20:35:16 -0400 (EDT)
+	id E62446B00AC; Tue, 28 Jul 2026 20:35:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D3DFF6B00A5
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 20:35:15 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6D9A01403BD
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 00:35:15 +0000 (UTC)
-X-FDA: 85039944990.29.ACAEC61
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 8C0CB4000A
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 00:35:13 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BB4366B00A7
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 20:35:16 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 47ED5C051A
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 00:35:16 +0000 (UTC)
+X-FDA: 85039945032.18.B6E96A1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 4906A40005
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 00:35:14 +0000 (UTC)
 Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rI+2UPNt;
-	spf=pass (imf17.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PRfq0ivv;
+	spf=pass (imf17.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785285313;
+	s=arc-20220608; t=1785285314;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kn5IubLz5QWSP5Op3v8E7vtXIUL0APSGITp5nzZL/9s=;
-	b=Rdg9+l78XAoTkNVecSI5TiORfZmmaw9CnbPKrwI1oNpDzlShZZXiV17713rSkt7wnBfUsS
-	FlaoKbyVKy5OJGFpvL0BajwAMiNYnyxak8Qp7aeT71PJV4Bub+1vy1LWb/N19n9rLu3evA
-	G+h9iXGzKfK3qmTtDoMjxqU9YJUyNjE=
+	bh=6GxuRLbNxUSHl0VOamaPCWlQtt0n1TXP+EmSF1K0hYs=;
+	b=tOSSv1e9iBYRprQVK2G9b+kIwzWn/6OFmfQFe7G5Y9VXbssVzZ+Ac8EjpDI9hB/op5yqEM
+	mK4pajSv8n8RzhZY6m1pjRQzxqT8DeRF332jC0q+O3E5AmiAHQevyUCIEA36pHWvjxNPgq
+	90ZNRoGIu67p69PbGxv8SFGWMkVEt+I=
 ARC-Authentication-Results: i=1;
 	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rI+2UPNt;
-	spf=pass (imf17.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PRfq0ivv;
+	spf=pass (imf17.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785285313;
-	b=oE66DgiouzCdEVpNzF8Lz3/H6VH5Qs6UTHlTBZM3T3Bf5xZhf6SjxUDVHaz7HOmFCw7a45
-	ONXt2tGwebiscuTBVUfhM4CLA06ATa1Rg6G92A8JLI09YOmToeKe3iVnHMxOUZ9JjaawIf
-	2PEyB+VfMEBxyHxCklhxK8aYlXY2IWM=
+	t=1785285314;
+	b=0zHFHtjkhn5QrpefdQ8k78eX5fKMExnwyhoeU/TpVgNbmA5toFcu3tUcoQ4UYILyeLdKVY
+	7/TVPIr8A+ll2uXSKUG9w6OAsuc/jXhDtQUYptDN2NFrO58MWUlJ8lcmoquysciXdsxfOd
+	HYK79GyijJjyXMwFkHRAeOrybGYPIto=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6CD3660DF9;
-	Wed, 29 Jul 2026 00:35:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 1D6AEC4AF48;
-	Wed, 29 Jul 2026 00:35:11 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3F1EE451B8;
+	Wed, 29 Jul 2026 00:35:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A1AD3C4AF62;
+	Wed, 29 Jul 2026 00:35:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1785285311;
-	bh=CKrM+Wcm8lEWhCfDXJfOmgnUsmX0Lst7f7ovGq31Zk8=;
+	s=k20201202; t=1785285308;
+	bh=kQ4EoX0ON9jHg3kbnyIen9NL0bXRhiNTJ5ixMhqvHwo=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=rI+2UPNt3LW0nNA8yZt4qkus5HPofnLtJ+HMlxqoCKdnGp4NJws/86Myhu6711CqX
-	 7qhExmkr4PwTtI19vJasjN0s62DH/1ADzYjq/XgDpHmIOtn+ZJVTYFIesyvZ23+reH
-	 q4AZISATCQS5c6xST+UELbWzvd/6fC7F7cGHbUYfoCLeQVVE0x2INtynczGB8AXIqX
-	 Ba0WF2+8gY10e9ADUatVdr9i+cscZDQ0FeErYszae32yMqh6uIPVSKE2fxsRqj8rmo
-	 1VkcG7kCIeiJzrzm/GiVE5hQ0ySxEeBggCzOyZQMQYl6TElpDSc8tBrHBoUoWc2+uL
-	 6T0qz+kKqQv4A==
+	b=PRfq0ivvT8eU4rGXYcbw/Yfpb6yuAQfRG5jqIhyHgB4jk2etY8jw4XXINpogwd1Aw
+	 quPKPcL4Xzh2YVro5fVP6NH8lJj/JE8s9IDscxoy8tVFqhCmcIUKZBz3RFdO/GC4U5
+	 zKTbfvEGZvNGx+6XCChJte1mvdEdOTo53/+leyJdMmH89/YAZY9gbLveThvOOEOyv/
+	 Bw78UUWNBZh7qJIvrUOCgxFvI+ohcOH3UT/DK+/SLxPInrSfjaU8pr+elm0xErxKXm
+	 1EqIkELNVjtHoipIkc3HlbufBYu5Vh2sfKh/nOqgVHjX/e2KUlHwuNLhZciy8ovXIq
+	 CqdZQWw6/uavQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 079F2C54F52;
-	Wed, 29 Jul 2026 00:35:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8483EC54F51;
+	Wed, 29 Jul 2026 00:35:08 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Tue, 28 Jul 2026 17:35:38 -0700
-Subject: [PATCH v9 39/41] KVM: selftests: Make TEST_EXPECT_SIGBUS
- thread-safe
+Date: Tue, 28 Jul 2026 17:35:09 -0700
+Subject: [PATCH v9 10/41] KVM: guest_memfd: Add base support for
+ KVM_SET_MEMORY_ATTRIBUTES2
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260728-gmem-inplace-conversion-v9-39-35f9aec2aed2@google.com>
+Message-Id: <20260728-gmem-inplace-conversion-v9-10-35f9aec2aed2@google.com>
 References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
 In-Reply-To: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
@@ -109,25 +109,25 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785285305; l=5401;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785285305; l=12547;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=VaYMc1TVcKA81tDmCa/7EVGlZnQxqJzfqmSuNBz8KJY=;
- b=AXb+20EzOMuJESc9zmB4AV2ue8MSVdFchkc9xewn+F+5uozzqzhZheBrYc5aBGGSTPmKf+HK1
- YlWL6a6K7VRAGOS3XWwcneWP5AH/VEC/LixD03tDJSOeNX9Hhyfx0Vs
+ bh=5AHLZsTJDgVeAhrdat+eCh6xqYAVzHd/MVwr/kfHjt8=;
+ b=maGOqqxaybkV9D7h6Vrk7X5BnzAB5/3TAmenpQxbPY7kU1coX/aPGCL00xIDUmTW596Rewi++
+ p+JS2LxNM06BCKcfdeoM4teqMvlTLiaIkah3DczR+zqaSDdRtUiOz2r
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
  auth_id=649
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
-X-Rspamd-Queue-Id: 8C0CB4000A
 X-Rspam-User: 
-X-Stat-Signature: r41ccpshr9rb3fdw5uo7jfd667cgzdke
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1785285313-704153
-X-HE-Meta: U2FsdGVkX185hR/kaHmXCAjHweNE+n/tcFw17e3bNe5DWKl704k3HqqrW0YfUrBW90CS5XmHtsLkDrgOHD+R4XPZBxRswa/BLeHxZ1yJzX0gSfGzidvyz6fZZgDEitaw6zDJdIQMHN+nRxgCuSCXUFbLBn1WCPlpvyDXRleDVebUaQNfAjow/UTAfvzLaNOXE3DIJDutEXP631tDwu9lx7Fb+O04kWBtIfRxSVvb1OY46b7bIwp4d0yuOd4hdrL2CD8s84nr4q50Za3uk0GM2M3ep2C7kgIh7qDkWqlC6Deu2YEoBEIU9HBA219XynHwT7bTMfInm4WMLJes84X8Qc9447H0e0t+DFAIAbyM5FLS07QTJdnYoVkMJp4Xs+sUIaDjF3tfmLzuTy//m1K9XNPYQ1gM4v83ew0an0Eq3Tm1CCP6cR5oeMJ5KndbTRgpEhM5Bxa9mtc1QOz3er6ae7vt/A/xNVmRYxJrAESuIERnfQQOG44MAMUOI+ezuYqTrV3HtAqCH4wbvuio88CsKOhSRmB404xXnkSHjLnuMs7JufOEMA7m/HbuyQSSvpbmoQKZfase2Hd4z4Q2FmFXRxnFCtDJMKcnqsexTU9ZQ9/QQ3p8pPsdZYjCQC6f34sNAm6jhhORfhNoF01/xSBUx+q/MqaCK9usQUAAwl5fCqQB5XLNn9TdggRtFziKi3xEMQNjFqGxz8y10RV8cklXIVJ9LEO3kALY1mx/nTmZ014Ic8PI2HitLftnPMyrlohF1iSko0jq0gA8rddyobU21HzGFHev+wq+X/+ZQ+6QodgRGd3ylkDprl7R6KRLg2XX3SaBaKyyquaky57RKMUv2JhCWqRa5Sfcm00oXFIxmJ56/D6ML9rHBmehf1adHL78Wv6hFyVrvhQJghuV/MUMs75vviQc81mSoqqTQbWlTDh352XXU2nkNnhi2hE4vlStmuQHMNc/yFz1jdM9x88
- QLXQQqvI
- pAS+erXRJ8c05bk8j81rlKXWNkplA2We9+nDdgDVAXIyIMaZnAvAXJT6RoNMoVzCS15k/91v5bKzZedi8E7ki92lg43JmKtJ66KPKaCskfNZb4rjogJYzIr+D6JoeZDbldwFtrcstPzBdKG6HEl8uTnngv35E3zqlgFCPOjwBSmg/rAzesmHArTtcjFd4RtuXDANR06gKvgjOE+Eriu4S9skrUcyUhR2YWqNXwvr45q6p3Jupv4BtPUBoRSKq9M4nuCvkvnF46toaz3l5AJ1BWRc2MSGIaSKSZUA8JKDqXyfDwluAvO4o9+2MIhQ7U6uK4k9+0oWonV4WL1FBA1N9TDKahUlGK4WXWyqE6fYFAx78HQWG8mncOVHSSY1MU0lnr7R1TDpz0Z9T1an5bOicaF11etYlUOXiKJGQP6xJ6s2/v5SOuxf1X64Mx0qW7hLsfXl7y7mtnAV1Vp9TUiw0v5jIGu4tyj2Uz9WonUH/94a+jCufTpXZPqv6beKZPwqsoNHcjac3D1je65Z7ZdXpoDnGrnhX08AHHSa1OnaeA6o2Awki99D9N4NNJg==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 4906A40005
+X-Stat-Signature: uruixrqkshjk4eos4rrqhdy7pmdhyxd7
+X-HE-Tag: 1785285314-881350
+X-HE-Meta: U2FsdGVkX1+CsfMODwJJ3Ywqt2xkC3Rtihw9y/Z58zDguWLzm+nZKMxXekDGQzhh4imLfmRWzJW6hxzP037Sf1KyuBMdfGBPB255P9VWFPGIwVNaB0GwvoWJxDFuIztCHT4Dd1UgTtJAm04xqiNgKIWFvG2r88M+ozuVt9x1SyHEVWkXMTAJ+57plnCdNEWnc5NXFxuMYkoMxB4R9ubnQpZL8X+TBzDYyVNOcsuNns4uXKAbd9E30KWjNifQiwhSIAtzm6DlfFXRbvIztFdd7FxCvjtjd/tN83/3DaUqVlJJN0a9Xe/3wU9fS8v/ulunOKL93u5hu99WJOqxjsahTklwKeV/CqKVfcXG2UnWnAH87YorMNchqi043M/IW0P5aH8+ewPMQF/H0hRu0QQUcuKrDxv6DhAMizzFqbJmhWu6jFDztvHRxqNzgalNvAAS1Y+ba4ddR1xu0Shn2wQwOSFlmE0aggsF6Hy9i4vEfggjHDt2zW7k7his0SStjRlbH8dNu95JKp90/y6gZDe3GHVDk3ge60RS0UxwQu5AGqC6HwHdDJFUD7L/1nkWP1ifuZszMv4xLgeBEeOecKNtfYCCbbSMF/6L0lZOwyNPcjKePEGW0hcj/ZmQauJTIzga9s4jlvAhtplN5ltswy+C74JZcHhttcYrpDop5SWGpO7Loe+9WhEtZdcoEkqrb0DiTe0bTXBkD9mak8jekPg5IHVwNVPsrcm3y1PXQ/99bjW1PxjSKibdwbNm+r1SOBCfctXvtjSraVNGz++zwI8syWwQsBXmwDweR3NiUgckxOu59Qq/Q6UfBQQj5sApF12CJ/Z7laWFtsgSSW5ZiQrvP9h2qB7XadXqnlOWcq0jOa8g1SDLBDRN3N49fRldjy/zKvkpeYcQK56Ziyb7fRMumX8OcfZGgU1Rf+CRLIQupB8SmcS12HrRVhcYLbBKBhHICgrsfL9+MOp8nRPVzMD
+ 8tOYhKZw
+ 8sZ4JPPEX2gk8M7kksoMbjevaLczSXCtWhgtMz2Zct7Sfk4L7DjhMvC/5p+wVfyOGkb1gfegyMKblt4Fo4s1akgI3okZyuI13sMjFTvmJFHvcmLyvzPCJPYAruO71BBTmpTCBRlF/qsnf0w7hGRJB2pF1/8DMrhis5u+PYGwKjpeBuEhkAy9E1Gu65SQtEsUdpsV+8Mfbuij/DM4aSm4et6cpIevv40AZ/dOWs/bs2cQznjWH/qQxb8IyCM8k/eTR4b10C3Y5Ir1F4vU86P5lSXyx4acJ1KUvI/ZKQ33YTjXYdNJAilCWgu+2g5DTBxsDdi5lNDn0CrfGr26JZAG1XBj8bzdCiibe8AhVF3Uzj6ukCxxgKEMssAqNpC/dcg+sAd2A9XDoEXE8tfQut63A0CQOxKR+79BoVXRu/KcJyV5WFoT4xrLdEa8WleRJTDQ2eP4PlkvMDKBoZY2SlVGnBjLUi8JucCRZ0PI1pckk/n5Yn91Aj7L4u50RnLGZFRtHh2tbmwAaWD3n9aQ0QfZHaZNkgvMZ2MLHUnV3vGaZpoAUHXeJPhRiUnWJtxCR6HdADtikAqYroTamSB/XYTmR/4Vnkg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,152 +137,365 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-The TEST_EXPECT_SIGBUS macro is not thread-safe as it uses a global
-sigjmp_buf and installs a global SIGBUS signal handler. If multiple threads
-execute the macro concurrently, they will race on installing the signal
-handler and stomp on other threads' jump buffers, leading to incorrect test
-behavior.
+Add a new ioctl (and matching struct), KVM_SET_MEMORY_ATTRIBUTES2, using
+the same base ioctl number (0xd2), but with R/W semantics for the kernel
+instead of just read semantics.  "Officially" documenting that KVM writes
+to the payload will allow KVM to support partial/incremental conversions,
+instead of all-or-nothing updates (which requires complex unwinding), by
+recording the failing offset if an error occurs.
 
-Make TEST_EXPECT_SIGBUS thread-safe with the following changes:
+Opportunistically add a new struct as well, even though KVM could squeeze
+the error offset into "struct kvm_memory_attributes", as there's no cost to
+doing so in practice.  Pad the struct with a pile of extra space to try and
+avoid ending up with "struct kvm_memory_attributes3" in the future.  Use
+the same layout for the fields that common to version 1 of the struct,
+e.g. to ease upgrading userspace, and to provide flexibility if KVM ever
+adds support for KVM_SET_MEMORY_ATTRIBUTES2 at VM scope.
 
-Share the KVM tests' global signal handler. sigaction() applies to all
-threads; without sharing a global signal handler, one thread may have
-removed the signal handler that another thread added, hence leading to
-unexpected signals.
+Introduce KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES to advertise the
+availability of the KVM_SET_MEMORY_ATTRIBUTES2 ioctl.
 
-The alternative of layering signal handlers was considered, but calling
-sigaction() within TEST_EXPECT_SIGBUS() necessarily creates a race. To
-avoid adding new setup and teardown routines to do sigaction() and keep
-usage of TEST_EXPECT_SIGBUS() simple, share the KVM tests' global signal
-handler.
+Update the KVM API documentation to define the new ioctl and its behavior,
+and add the necessary UAPI definitions and capability checks.
 
-Opportunistically rename report_unexpected_signal to
-catchall_signal_handler.
+The process of setting memory attributes has a clear point of no return
+because, for CoCo VMs, zapping stage 2 page tables is a destructive
+operation. Unlike regular VMs, where re-faulting pages into the stage 2
+page tables merely incurs a performance penalty, CoCo guests must
+(re-):accept pages after every fault. To preserve CoCo security guarantees,
+guests will not accept pages they did not explicitly request faults
+for. Consequently, during memory conversions, any operation that could
+cause the process to abort must be completed before the stage 2 page tables
+are zapped.
 
-To continue to only expect SIGBUS within specific regions of code, use a
-thread-specific variable, expecting_sigbus, to replace installing and
-removing signal handlers.
+Zap only the ranges that are not already in the requested state to avoid
+inadvertently destroying (CoCo) data. ARM CCA guests will try to mark the
+entire DRAM as private at boot. If there are no shared pages at all, the
+to-private conversion can be skipped, but the existence of a single shared
+page would require the conversion process to proceed, and if it proceeds,
+zapping both shared and private pages would destroy data and break the
+guest.
 
-Make the execution environment for the thread, sigjmp_buf, a
-thread-specific variable.
-
-As part of TEST_EXPECT_SIGBUS(), assert the prerequisite for this setup,
-that the current signal handler is the catchall_signal_handler.
-
+Co-developed-by: Vishal Annapurve <vannapurve@google.com>
+Signed-off-by: Vishal Annapurve <vannapurve@google.com>
+Co-developed-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Reviewed-by: Fuad Tabba <tabba@google.com>
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+Suggested-by: Michael Roth <michael.roth@amd.com>
 Tested-by: Shivank Garg <shivankg@amd.com>
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
----
- tools/testing/selftests/kvm/include/test_util.h | 32 +++++++++++++------------
- tools/testing/selftests/kvm/lib/kvm_util.c      | 18 ++++++++++----
- tools/testing/selftests/kvm/lib/test_util.c     |  7 ------
- 3 files changed, 30 insertions(+), 27 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/include/test_util.h b/tools/testing/selftests/kvm/include/test_util.h
-index c6492a29ee901..825fad48ab452 100644
---- a/tools/testing/selftests/kvm/include/test_util.h
-+++ b/tools/testing/selftests/kvm/include/test_util.h
-@@ -82,21 +82,23 @@ do {									\
- 	__builtin_unreachable(); \
- } while (0)
+tmpo
+---
+ Documentation/virt/kvm/api.rst |  63 +++++++++++++++++++++-
+ include/uapi/linux/kvm.h       |  15 ++++++
+ virt/kvm/guest_memfd.c         | 119 +++++++++++++++++++++++++++++++++++++++++
+ virt/kvm/kvm_main.c            |  23 +++++---
+ 4 files changed, 212 insertions(+), 8 deletions(-)
+
+diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+index a5f9ee92f43e8..de8ab3db8796a 100644
+--- a/Documentation/virt/kvm/api.rst
++++ b/Documentation/virt/kvm/api.rst
+@@ -117,7 +117,7 @@ description:
+       x86 includes both i386 and x86_64.
  
--extern sigjmp_buf expect_sigbus_jmpbuf;
--void expect_sigbus_handler(int signum);
--
--#define TEST_EXPECT_SIGBUS(action)						\
--do {										\
--	struct sigaction sa_old, sa_new = {					\
--		.sa_handler = expect_sigbus_handler,				\
--	};									\
--										\
--	sigaction(SIGBUS, &sa_new, &sa_old);					\
--	if (sigsetjmp(expect_sigbus_jmpbuf, 1) == 0) {				\
--		action;								\
--		TEST_FAIL("'%s' should have triggered SIGBUS", #action);	\
--	}									\
--	sigaction(SIGBUS, &sa_old, NULL);					\
-+extern __thread sigjmp_buf expect_sigbus_jmpbuf;
-+extern __thread volatile sig_atomic_t expecting_sigbus;
-+extern void catchall_signal_handler(int signum);
+   Type:
+-      system, vm, or vcpu.
++      system, vm, vcpu or guest_memfd.
+ 
+   Parameters:
+       what parameters are accepted by the ioctl.
+@@ -6373,6 +6373,8 @@ S390:
+ Returns -EINVAL if the VM has the KVM_VM_S390_UCONTROL flag set.
+ Returns -EINVAL if called on a protected VM.
+ 
++.. _KVM_SET_MEMORY_ATTRIBUTES:
 +
-+#define TEST_EXPECT_SIGBUS(action)					\
-+do {									\
-+	struct sigaction __sa = {};					\
-+									\
-+	TEST_ASSERT_EQ(sigaction(SIGBUS, NULL, &__sa), 0);		\
-+	TEST_ASSERT_EQ(__sa.sa_handler, &catchall_signal_handler);	\
-+									\
-+	expecting_sigbus = true;					\
-+	if (sigsetjmp(expect_sigbus_jmpbuf, 1) == 0) {			\
-+		action;							\
-+		TEST_FAIL("'%s' should have triggered SIGBUS", #action);\
-+	}								\
-+	expecting_sigbus = false;					\
- } while (0)
+ 4.141 KVM_SET_MEMORY_ATTRIBUTES
+ -------------------------------
  
- size_t parse_size(const char *size);
-diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
-index 083717a11ff2d..ff70b4225f82e 100644
---- a/tools/testing/selftests/kvm/lib/kvm_util.c
-+++ b/tools/testing/selftests/kvm/lib/kvm_util.c
-@@ -2318,13 +2318,20 @@ __weak void kvm_selftest_arch_init(void)
+@@ -6566,6 +6568,65 @@ KVM_S390_KEYOP_SSKE
+   Sets the storage key for the guest address ``guest_addr`` to the key
+   specified in ``key``, returning the previous value in ``key``.
+ 
++4.145 KVM_SET_MEMORY_ATTRIBUTES2
++---------------------------------
++
++:Capability: KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES
++:Architectures: all
++:Type: guest_memfd ioctl
++:Parameters: struct kvm_memory_attributes2 (in)
++:Returns: 0 on success, <0 on error
++
++Errors:
++
++  ========== ===============================================================
++  EINVAL     The specified `offset` or `size` was invalid (e.g. not
++             page aligned, causes an overflow, or size is zero).
++  EFAULT     The parameter address was invalid.
++  ENOMEM     Ran out of memory trying to track private/shared state
++  ========== ===============================================================
++
++KVM_SET_MEMORY_ATTRIBUTES2 is an extension to
++KVM_SET_MEMORY_ATTRIBUTES that supports returning (writing) values to
++userspace.  The original (pre-extension) fields are shared with
++KVM_SET_MEMORY_ATTRIBUTES identically.
++
++Attribute values are shared with KVM_SET_MEMORY_ATTRIBUTES.
++
++::
++
++  struct kvm_memory_attributes2 {
++	union {
++		__u64 address;
++		__u64 offset;
++	};
++	__u64 size;
++	__u64 attributes;
++	__u64 flags;
++	__u64 reserved[12];
++  };
++
++  #define KVM_MEMORY_ATTRIBUTE_PRIVATE           (1ULL << 3)
++
++Set attributes for a range of offsets within a guest_memfd to
++KVM_MEMORY_ATTRIBUTE_PRIVATE to limit the specified guest_memfd backed
++memory range for guest use. Even if KVM_CAP_GUEST_MEMFD_MMAP is
++supported, after a successful call to set
++KVM_MEMORY_ATTRIBUTE_PRIVATE, the requested range will not be mappable
++into host userspace and will only be mappable by the guest.
++
++To allow the range to be mappable into host userspace again, call
++KVM_SET_MEMORY_ATTRIBUTES2 on the guest_memfd again with
++KVM_MEMORY_ATTRIBUTE_PRIVATE unset.
++
++KVM does not directly manipulate the memory contents of pages during
++attribute updates. However, the process of setting these attributes,
++which includes operations such as unmapping pages from the host or
++stage-2 page tables, may result in side effects on memory contents
++that vary across different trusted firmware implementations.
++
++See also: :ref: `KVM_SET_MEMORY_ATTRIBUTES`.
++
+ .. _kvm_run:
+ 
+ 5. The kvm_run structure
+diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+index 419011097fa8e..80985e28e3b21 100644
+--- a/include/uapi/linux/kvm.h
++++ b/include/uapi/linux/kvm.h
+@@ -997,6 +997,7 @@ struct kvm_enable_cap {
+ #define KVM_CAP_S390_KEYOP 247
+ #define KVM_CAP_S390_VSIE_ESAMODE 248
+ #define KVM_CAP_S390_HPAGE_2G 249
++#define KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES 250
+ 
+ struct kvm_irq_routing_irqchip {
+ 	__u32 irqchip;
+@@ -1649,6 +1650,20 @@ struct kvm_memory_attributes {
+ 	__u64 flags;
+ };
+ 
++/* Available with KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES */
++#define KVM_SET_MEMORY_ATTRIBUTES2              _IOWR(KVMIO,  0xd2, struct kvm_memory_attributes2)
++
++struct kvm_memory_attributes2 {
++	union {
++		__u64 address;
++		__u64 offset;
++	};
++	__u64 size;
++	__u64 attributes;
++	__u64 flags;
++	__u64 reserved[12];
++};
++
+ #define KVM_MEMORY_ATTRIBUTE_PRIVATE           (1ULL << 3)
+ 
+ #define KVM_CREATE_GUEST_MEMFD	_IOWR(KVMIO,  0xd4, struct kvm_create_guest_memfd)
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index 6cbd96e2a99d3..c9b5151f010e9 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -497,11 +497,130 @@ bool kvm_gmem_is_private(struct kvm *kvm, gfn_t gfn)
+ }
+ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_is_private);
+ 
++/*
++ * Preallocate memory for attributes to be stored on a maple tree, pointed to
++ * by mas.  Adjacent ranges with attributes identical to the new attributes
++ * will be merged.  Also sets mas's bounds up for storing attributes.
++ *
++ * This maintains the invariant that ranges with the same attributes will
++ * always be merged.
++ */
++static int kvm_gmem_mas_preallocate(struct ma_state *mas, u64 attributes,
++				    pgoff_t start, size_t nr_pages)
++{
++	pgoff_t end = start + nr_pages;
++	pgoff_t last = end - 1;
++	void *entry;
++
++	/* Try extending range. entry is NULL on overflow/wrap-around. */
++	mas_set(mas, end);
++	entry = mas_find(mas, end);
++	if (entry && xa_to_value(entry) == attributes)
++		last = mas->last;
++
++	if (start > 0) {
++		mas_set(mas, start - 1);
++		entry = mas_find(mas, start - 1);
++		if (entry && xa_to_value(entry) == attributes)
++			start = mas->index;
++	}
++
++	mas_set_range(mas, start, last);
++	return mas_preallocate(mas, xa_mk_value(attributes), GFP_KERNEL);
++}
++
++static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
++				     size_t nr_pages, uint64_t attrs)
++{
++	bool to_private = attrs & KVM_MEMORY_ATTRIBUTE_PRIVATE;
++	struct address_space *mapping = inode->i_mapping;
++	struct gmem_inode *gi = GMEM_I(inode);
++	enum kvm_gfn_range_filter filter;
++	pgoff_t end = start + nr_pages;
++	struct maple_tree *mt;
++	struct ma_state mas;
++	int r;
++
++	mt = &gi->attributes;
++
++	filemap_invalidate_lock(mapping);
++
++	mas_init(&mas, mt, start);
++	r = kvm_gmem_mas_preallocate(&mas, attrs, start, nr_pages);
++	if (r)
++		goto out;
++
++	/*
++	 * From this point on guest_memfd has performed necessary
++	 * checks and can proceed to do guest-breaking changes.
++	 */
++
++	filter = to_private ? KVM_FILTER_SHARED : KVM_FILTER_PRIVATE;
++	kvm_gmem_invalidate_start(inode, start, end, filter);
++	mas_store_prealloc(&mas, xa_mk_value(attrs));
++	kvm_gmem_invalidate_end(inode, start, end);
++out:
++	filemap_invalidate_unlock(mapping);
++	return r;
++}
++
++static long kvm_gmem_set_attributes(struct file *file, void __user *argp)
++{
++	struct gmem_file *f = file->private_data;
++	struct inode *inode = file_inode(file);
++	struct kvm_memory_attributes2 attrs;
++	size_t nr_pages;
++	pgoff_t index;
++	int i;
++
++	if (copy_from_user(&attrs, argp, sizeof(attrs)))
++		return -EFAULT;
++
++	if (attrs.flags)
++		return -EINVAL;
++	for (i = 0; i < ARRAY_SIZE(attrs.reserved); i++) {
++		if (attrs.reserved[i])
++			return -EINVAL;
++	}
++	if (!kvm_arch_has_private_mem(f->kvm))
++		return -EINVAL;
++	if (attrs.attributes & ~KVM_MEMORY_ATTRIBUTE_PRIVATE)
++		return -EINVAL;
++	if (attrs.size == 0 || attrs.offset + attrs.size < attrs.offset)
++		return -EINVAL;
++	if (!PAGE_ALIGNED(attrs.offset) || !PAGE_ALIGNED(attrs.size))
++		return -EINVAL;
++
++	if (attrs.offset >= i_size_read(inode) ||
++	    attrs.offset + attrs.size > i_size_read(inode))
++		return -EINVAL;
++
++	nr_pages = attrs.size >> PAGE_SHIFT;
++	index = attrs.offset >> PAGE_SHIFT;
++	return __kvm_gmem_set_attributes(inode, index, nr_pages,
++					 attrs.attributes);
++}
++
++static long kvm_gmem_ioctl(struct file *file, unsigned int ioctl,
++			   unsigned long arg)
++{
++	switch (ioctl) {
++	case KVM_SET_MEMORY_ATTRIBUTES2:
++		if (!gmem_in_place_conversion)
++			return -ENOTTY;
++
++		return kvm_gmem_set_attributes(file, (void __user *)arg);
++	default:
++		return -ENOTTY;
++	}
++}
++
+ static struct file_operations kvm_gmem_fops = {
+ 	.mmap		= kvm_gmem_mmap,
+ 	.open		= generic_file_open,
+ 	.release	= kvm_gmem_release,
+ 	.fallocate	= kvm_gmem_fallocate,
++	.unlocked_ioctl	= kvm_gmem_ioctl,
+ };
+ 
+ static int kvm_gmem_migrate_folio(struct address_space *mapping,
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 0dfc91b9478ce..f0f802eaca16b 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -2422,18 +2422,22 @@ static int kvm_vm_ioctl_clear_dirty_log(struct kvm *kvm,
+ }
+ #endif /* CONFIG_KVM_GENERIC_DIRTYLOG_READ_PROTECT */
+ 
++#ifdef kvm_arch_has_private_mem
++static u64 kvm_supports_private_mem(struct kvm *kvm)
++{
++	return !kvm || kvm_arch_has_private_mem(kvm);
++}
++#else
++#define kvm_supports_private_mem(kvm) false
++#endif
++
+ #ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+ static u64 kvm_supported_vm_mem_attributes(struct kvm *kvm)
  {
+-#ifdef kvm_arch_has_private_mem
+-	if (gmem_in_place_conversion)
++	if (gmem_in_place_conversion || !kvm_supports_private_mem(kvm))
+ 		return 0;
+ 
+-	if (!kvm || kvm_arch_has_private_mem(kvm))
+-		return KVM_MEMORY_ATTRIBUTE_PRIVATE;
+-#endif
+-
+-	return 0;
++	return KVM_MEMORY_ATTRIBUTE_PRIVATE;
  }
  
--static void report_unexpected_signal(int signum)
-+__thread sigjmp_buf expect_sigbus_jmpbuf;
-+__thread volatile sig_atomic_t expecting_sigbus;
-+
-+void catchall_signal_handler(int signum)
- {
-+	switch (signum) {
-+	case SIGBUS: {
-+		if (expecting_sigbus)
-+			siglongjmp(expect_sigbus_jmpbuf, 1);
-+
-+		TEST_FAIL("Unexpected SIGBUS (%d)\n", signum);
-+	}
- #define KVM_CASE_SIGNUM(sig)					\
- 	case sig: TEST_FAIL("Unexpected " #sig " (%d)\n", signum)
--
--	switch (signum) {
--	KVM_CASE_SIGNUM(SIGBUS);
- 	KVM_CASE_SIGNUM(SIGSEGV);
- 	KVM_CASE_SIGNUM(SIGILL);
- 	KVM_CASE_SIGNUM(SIGFPE);
-@@ -2336,12 +2343,13 @@ static void report_unexpected_signal(int signum)
- void __attribute((constructor)) kvm_selftest_init(void)
- {
- 	struct sigaction sig_sa = {
--		.sa_handler = report_unexpected_signal,
-+		.sa_handler = catchall_signal_handler,
- 	};
- 
- 	/* Tell stdout not to buffer its content. */
- 	setbuf(stdout, NULL);
- 
-+	expecting_sigbus = false;
- 	sigaction(SIGBUS, &sig_sa, NULL);
- 	sigaction(SIGSEGV, &sig_sa, NULL);
- 	sigaction(SIGILL, &sig_sa, NULL);
-diff --git a/tools/testing/selftests/kvm/lib/test_util.c b/tools/testing/selftests/kvm/lib/test_util.c
-index 6b00ab11f3c02..36e08d815758f 100644
---- a/tools/testing/selftests/kvm/lib/test_util.c
-+++ b/tools/testing/selftests/kvm/lib/test_util.c
-@@ -19,13 +19,6 @@
- #include "test_util.h"
- #include "kvm_syscalls.h"
- 
--sigjmp_buf expect_sigbus_jmpbuf;
--
--void __attribute__((used)) expect_sigbus_handler(int signum)
--{
--	siglongjmp(expect_sigbus_jmpbuf, 1);
--}
--
  /*
-  * Random number generator that is usable from guest code. This is the
-  * Park-Miller LCG using standard constants.
+@@ -4968,6 +4972,11 @@ static int kvm_vm_ioctl_check_extension_generic(struct kvm *kvm, long arg)
+ 		return 1;
+ 	case KVM_CAP_GUEST_MEMFD_FLAGS:
+ 		return kvm_gmem_get_supported_flags(kvm);
++	case KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES:
++		if (!gmem_in_place_conversion || !kvm_supports_private_mem(kvm))
++			return 0;
++
++		return KVM_MEMORY_ATTRIBUTE_PRIVATE;
+ #endif
+ 	default:
+ 		break;
 
 -- 
 2.55.0.508.g3f0d502094-goog
