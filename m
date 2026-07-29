@@ -4,83 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E927AC53219
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 06:46:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4812C53219
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 06:49:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E0A1E6B0096; Wed, 29 Jul 2026 02:46:03 -0400 (EDT)
+	id B63176B0088; Wed, 29 Jul 2026 02:49:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DCB656B0098; Wed, 29 Jul 2026 02:46:03 -0400 (EDT)
+	id B12C06B008A; Wed, 29 Jul 2026 02:49:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE30B6B0099; Wed, 29 Jul 2026 02:46:03 -0400 (EDT)
+	id A01C46B0099; Wed, 29 Jul 2026 02:49:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A44366B0096
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 02:46:03 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 37685A1A60
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 06:46:03 +0000 (UTC)
-X-FDA: 85040879406.08.59DCDAE
+	by kanga.kvack.org (Postfix) with ESMTP id 7F5A96B0088
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 02:49:54 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0BB50A1A61
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 06:49:54 +0000 (UTC)
+X-FDA: 85040889108.03.EBF2D7F
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 7A85C10000A
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 06:46:01 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mB9UKfCz;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf08.hostedemail.com (Postfix) with ESMTP id 552C0160003
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 06:49:52 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fTMcg6S2;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785307561;
+	s=arc-20220608; t=1785307792;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P8Kw7aVzPLoPggnKEv/68/lF371wfx6eYjZvw68mU7g=;
-	b=A11tKMYD0tvI5n7d9wDI09jQlXS5A0vxmWDs3XdKrq8yN6OpA/fupXS/X9dMJZxQ0p8PFL
-	HvVmYc3p/fDVKrPazu37ZcI1qn2yY8YZ6CT+V4HgPvm0TBeZD3BAuToT21LARVoLmsMZst
-	kM4VCtpwS7f6bq3yAQapJcQZlHGMTbs=
+	bh=mYGlCN19ALETyMe32ZAVF+Jp3rkvcN1+KQ/ovIRty4U=;
+	b=uLkVtjn8lO9ResS7v8Wp8Y1izGTdlaKlYb/nBR2+NxVt5D+drHzchPfiSuyJK6343EEOCF
+	NQ5hu6946dSd0wIlWnXiP1SMZe8/+qrPduguPhPRYVUetvi62jXBRRqPG8bU8CpasdLdzD
+	itlTR7wYSvYdWG0fb15M5GSJJYtQfoM=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mB9UKfCz;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fTMcg6S2;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785307561;
-	b=CShXuK8x1xT9ojaPdxSv1oeAMPy38lAkwWPwlW8EKb4zVyFRWsKAQuKxxz0hZ4/bi6SKb6
-	DB0YWwpe6RJlqjk1VS7LeZDJQt2S9e9NgOuWuRaZyOd1mCWnlfGMneSw0CdF9LQ32J46Tk
-	QnMjH8FV3ADVWF9g8yARil9DQNYkpzY=
+	t=1785307792;
+	b=r6I6zG+2v76HRjrnxaYBWzoBh05YTfkWpS1rlFELU7V38g/36P+rBAq6xDPxv3BylfDbOK
+	eBQKk9eCDBUNFgn5L9dJE72BD48uqj6fb3JthVYKyWaLISTBXuF7ai8nCMswlBa4m0LUHL
+	felbC1HAySigtR+MT1islbcM7pfYuHo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B06FA60A66;
-	Wed, 29 Jul 2026 06:46:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F1981F000E9;
-	Wed, 29 Jul 2026 06:45:57 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E793660A5E;
+	Wed, 29 Jul 2026 06:49:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7522F1F00A3A;
+	Wed, 29 Jul 2026 06:49:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785307560;
-	bh=P8Kw7aVzPLoPggnKEv/68/lF371wfx6eYjZvw68mU7g=;
+	s=k20260515; t=1785307791;
+	bh=mYGlCN19ALETyMe32ZAVF+Jp3rkvcN1+KQ/ovIRty4U=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=mB9UKfCzsvmvtQhCCozJduWmsCms6keFrM7+N06Ld4Nb2rIOHgkAoLF5eCywxuOwc
-	 DFuqjjF2mqaOKr901tyuR0cOjcpAidMhG278MrOhVYNnQpWTzzZctHE8FCBDUJ+AqQ
-	 u/Bz1Uu7O/YrRPKVAH7UT0HQPcZvWIvXYS402ImRzs27NMS7pR8NVFBae2oUICi3U9
-	 4tLN9S8hnkkgmYdfhkIyB0CJGmTIdD8/1yJHIJK6I3dVptaoBEx2elUK4VOPLnSzMg
-	 h0f18CzNSMQg5FypqxmOD8BXvHizg3hl4cIzUHRC8U/IzVN4ef9cY9k7arEgcthiKq
-	 q3Hj50qbMJy0Q==
-Message-ID: <3e5d7992-2f5c-4adb-a027-f8d266da40d1@kernel.org>
-Date: Wed, 29 Jul 2026 08:45:56 +0200
+	b=fTMcg6S2k+xFY0IPGdBpRUUWy6lGlnsxTSCt5Hhs3YrSswNuLC/wC6qkDO8tc8TVu
+	 jkQDzHKSstUrx+3lTq008Drqv9Lr+Bm91W/ypYbMtvKty4BDDadHGsDK3qC13yuORr
+	 fCsBXi13WuAhR1I8agdqt/+WU5A4dD3sleTt5579WWtLrRXau8Bec0KwrHs9fcq19E
+	 57Ahl6xG6GCLropAk9E/SuChuCNHdTN0d2reUJ/V0RXHh3VNzCwT2sLkWQblGU7jd2
+	 jkc1DcU06yY6jAahs/k5Q9rIt58sFNbuIWiWOny5Ntf/iG0l9A07ah7myfDuSwvsux
+	 oyNDBcv8o1USQ==
+Message-ID: <8b1cefc4-93b5-4138-9ab5-2dd1cdc7ec78@kernel.org>
+Date: Wed, 29 Jul 2026 08:49:49 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 1/7] arm64/hugetlb: Extend batching of multiple
- CONT_PTE in a single PTE setup
-To: Barry Song <baohua@kernel.org>, Will Deacon <will@kernel.org>
-Cc: Wen Jiang <jiangwenxiaomi@gmail.com>, akpm@linux-foundation.org,
- catalin.marinas@arm.com, linux-mm@kvack.org, urezki@gmail.com,
- Xueyuan.chen21@gmail.com, ajd@linux.ibm.com, anshuman.khandual@arm.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- rppt@kernel.org, ryan.roberts@arm.com, dev.jain@arm.com,
- Wen Jiang <jiangwen6@xiaomi.com>, Leo Yan <leo.yan@arm.com>
-References: <20260715120813.3609949-1-jiangwen6@xiaomi.com>
- <20260715120813.3609949-2-jiangwen6@xiaomi.com>
- <amiabgyHSz3ZYY5k@willie-the-truck>
- <CAGsJ_4zgFk1iaQWisYMOR4iFxonwDskRt3Gte0cEts1q9hxibA@mail.gmail.com>
+Subject: Re: [PATCH 0/2] mm: gup: cleanup gup_fast call chain
+To: Aristeu Rozanski <aris@ruivo.org>, linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe
+ <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>
+References: <20260219050250.061598056@ruivo.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -127,17 +120,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CAGsJ_4zgFk1iaQWisYMOR4iFxonwDskRt3Gte0cEts1q9hxibA@mail.gmail.com>
+In-Reply-To: <20260219050250.061598056@ruivo.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 7A85C10000A
-X-Stat-Signature: pyryhrsf4orpyzts59zxtum59tn9jbud
-X-HE-Tag: 1785307561-555919
-X-HE-Meta: U2FsdGVkX19jCBFAkursDaTgrqsnfQ6nhNw7QbcLWSo9c6QI4SEZNbOC/XR+2KIXwxA0lQDs/a4/OtfCMpASSl3tN/ztKaPQ5GSXHr8qYVUDrCqiT84feSn7mmSNS4e0uLo1zu5CmSr8Z+wk5tSotbEMobrgk9RvtxiR5ONpy6pmiHljgCBUBW1JDrENJ0ScxqFpR6Yr+Kza6l2gl101QQXGUkB+ZQFnYbjf9CU7xBu9o6AhJl/91e349WXBLH/kMLRwXoNO5CSYMWmeqdkUfF+UUswOMpWij2H5OPct47sI9EwIJ5IaoWmRbVSGOVe0p+kFV+2tmmv28i6bwnZkrD8khE7kq4+D9vnFMaZCI7JHY034d8XnOLojEavDlS5mHcfhrHMK9NdNFGEv1YJNtEg2gXVHEejyKGID23XoppH/eOeJFDf9qTNby7DdqxpqCnlFBGZpyUge08imrxXPtgZ8T8zxDQdrx93jzENBg/r0zlNwJxgLar9tL0eRgQ7fmI8bQV5qRaH02LeQeaqCB+ctg/fgjDGlSNVNe5bL15nIXpOtah6SCjAKgxOtnpF3OSPsDolWi8IL/Og4p36Hz0Go8Vk0iiF2wu7LbqmckxVJtOnLn+atau35kADMW4yzzuXH+9FuHAhDLTL1iitNcGJkW6dW01jxwncnUs1eGTcuhjFCnvHM5Kju9MH/lYZhzQHYPc7UO54+81/1lkfssuvEg29M7IpvqfCjU6WRqIMEsqzSrOTpiN2vafcZB0I8en6xcVcK/K9GDeb1abQBFIXVm2B9tg8LIfkvyTE4lO5mdjaZmGyAGF51oIgZetw64nZdsr8eS8ZvhxoDyWi5ZPbtiMkwI4QWu4ZQrGcNKPcMkHKrD+mW6hozp3ueeVd/INuNGQhVXutBFk3OhLlI41cfdMqgyCMu4B+bc6HcQ2vR+2BtIZ+02t9H8AlzFDQRJR0yW98rlxuK4dADxtq
- LyMuEfna
- 5gGsM5hpYEI52tl1RLIYJIDpMaAXYHUn+YhncloCxCujHL9VnY4g+YwDP+48Tt11dGGNb9+YkvxnyD7r2M0d8YYTB27C17BE+MkfluWv6G4etUTnq0RoAUlntDU5ijnBZxC6xBIGOSZL905iamGLWtKAr+kEh5LohU7tUaX3mcQvgGrYRmn1lD68Ah4ZpGkQzy+WYb0wqok/7r/5H7IzDFCcEhGWFkCjIR1/pXloA6O68hn2i0s24JwJWndguNd/CFXOTyplT8Su5fF3UtPiUmkWnetuYcTaiytg2Amo7K4litVYlBNbJwZtSkcEZjcLaTqRmhgcLIS7XkWLSghCEZ7kicks5umDK1jpvREA09ZYA3ztn/1mNWrRaTmY0REqgsGzU4NPUzOtXfIB5H9KMyrXlXP1F25Tonn/XVBUZFsPwLf5eM5gF+Ksr9jCXpTB8J4GU04NHkkpJSXpn5mzANOxmUw==
+X-Rspamd-Queue-Id: 552C0160003
+X-Stat-Signature: m8z9x6y9afbwg7fjc9pto8m96t5amf9h
+X-HE-Tag: 1785307792-31135
+X-HE-Meta: U2FsdGVkX1/VgCIfeSAys4ViY965cyGnrU7EF/zpsBZqDqBs+wB1AIgX0EG5W1u+gMCsDE2opwJHXdXXNyc77TY3AEmxTULkaL9Yq5RbGpWk2CxCAd27A1AR9cSV7xVBHKLXIxFBn4EoYxBf0vfMDygFh5UyGaAYKxflypN6rab+034I1KbbIV32zK3OVTxiIQ8PT5p4pxQHT5VSqS9LZkT8DbjuwOBNulQwfD+cztUBvoNGQqHJSqrglLJmMtQxXlfToDjHu68E1tPtttDPP/THu5FRtMVLQ0QZKK5fkW51tNftl7Yg6uNp2MyYWBTyWkfU9ioQi17pe0gE1E+2X9nsOXSQQ2TZgUayEmE6siqnDh0anQeARxHfaqOOrbZEk8jKqN/KlE6xJ1TgmqAG7KAYVSs9x523UV+stjfVaYpg5tfwo84oYRIf1r+yMwAUtjR4jI23RinYccFspl7OYxBZnff72TGfJt+je655C/n0HHubk7fd7xMt2nb+bhqHCRlQKmerN1EvG88l5am1znMmFTBi2daNU1Q5iwGX7MgpNMc0NVl/h7Qq7Vf5nxTOuvmVNE4/YyK4nIFs9yW33qcLffJOQbIiS4I9GKqHipyzZJGg981iUxCCr18jP13kLlDA4OLq3m4dJf0Mf90JlKJQV9EnLM9m5jqNs09zI7BHh8V9RV1LOAD2aRhqXmr47SKq0RmFTuyUxVOS4ZA7RtgbVHh9cRvdHEu3qRG2tUOz222GiOXK0rLF8Ikccg0zSb6DsZ7J7exwBTMqSDgR9zrt9lt8Z7sRUQteeU9YNSriCzX6LR/ZhiWx7/5ZK7g+cvIEjkkp21zGYinrj93ojskUHsOV+JjZRlPROR9ca1U0RdEIiyzXiJ1A0wtDs+mMRaTABfBwCYjYHGJDQKsWnQYoVJW5ZRVi3GAvtES9C28jdDv+VourAZR5dJEfv38t0Hn9LUoVIuNg/A4gKQC
+ sQsJ2kqL
+ mQD066UOiEcF2iHufKagA12BjjS9Peyk97TfiSc8CSMV14VTEBZfuiwq8UAcmw5eP2Pj89EG2MszYbFm4vhZQbxDBmnwVqtyv1p3tclU6fOuEdSyrmCM9y3askl8cdn25fDohxRWxufz3uGQX+Esy/hnZZV8AGZfQBKgcxlxKkljm4dgRVwgmodNIcyejQpf99B3hnma+d3c2fFTAz+oOCZe08rgIimcU2jtf32S2YzlVB7qXEFD62Ezw9UxWEKXQdPw04voTtbmtDNbDl6KOfUSbWI9YqvmwThxDdSHt4/BBXsU174L21oTGpw5Dt9+QbY43femb8q5tv+ldLoUy9miS/Q0/PK2MmzturhGJlJg7fUDh/EhsUGGgWNB8SwtMjJtX6Ghvhec7waYrWMJdVrNkc0QfVOS5/pOy+JnxcEyllMA0t4M4NT7c5JjeLgw0RLREc0mg5A0qCikQoo8KMMIsoRHwNF0tcAhxGVk0DxeaeWg/tKD+oP/jo/3I6xXiOZZZbkhQO2tqtno5bO91p6PkaQJpMXnAgSowverPtdnUL70=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,19 +138,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 2/19/26 06:02, Aristeu Rozanski wrote:
+> These two patches implement the refactor in gup_fast call chain David
+> Hildenbrand mentioned in
+> 
+> 	https://lore.kernel.org/all/85e760cf-b994-40db-8d13-221feee55c60@redhat.com/T/#u
+> 
+> Suggested-by: David Hildenbrand <david@kernel.org>
+> Link: https://lore.kernel.org/all/85e760cf-b994-40db-8d13-221feee55c60@redhat.com/T/#u
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: David Hildenbrand <david@kernel.org>
+> Cc: Jason Gunthorpe <jgg@ziepe.ca>
+> Cc: John Hubbard <jhubbard@nvidia.com>
+> Cc: Peter Xu <peterx@redhat.com>
+> Signed-off-by: Aristeu Rozanski <aris@ruivo.org>
+> 
 
-> I agree that coupling hugetlb with vmalloc is not ideal. As I
-> explained to David, this has been an issue for a couple of
-> years and affects multiple architectures since 2021:
-> 
-> https://lore.kernel.org/all/fb3ccc73377832ac6708181ec419128a2f98ce36.1620795204.git.christophe.leroy@csgroup.eu/
-> 
-> where `#ifdef CONFIG_HUGETLB_PAGE` is required by `vmalloc`.
-> 
-> So I'd prefer to address it in a separate follow-up patch
-> series.
+Aristeu, I think there were only minor things on the second patch. Can you fix
+these up and respin?
 
-It's the perfect time to sort that out now :)
+We might only queue this after the next merge window, but I don't expect a lot
+of conflicts.
 
 -- 
 Cheers,
