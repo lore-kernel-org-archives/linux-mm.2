@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9255AC54F51
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:57:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68E6BC53219
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:57:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2C7E86B016C; Wed, 29 Jul 2026 10:56:59 -0400 (EDT)
+	id B2C816B016E; Wed, 29 Jul 2026 10:57:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 278BD6B016E; Wed, 29 Jul 2026 10:56:59 -0400 (EDT)
+	id AB6976B0170; Wed, 29 Jul 2026 10:57:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 18EA66B016F; Wed, 29 Jul 2026 10:56:59 -0400 (EDT)
+	id 9CD146B0171; Wed, 29 Jul 2026 10:57:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D1F126B016C
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:56:58 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 627B0A1B1F
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 14:56:58 +0000 (UTC)
-X-FDA: 85042116516.10.1A28C5C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id C656D40013
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 14:56:56 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FMjy1Xq3;
-	spf=pass (imf17.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 73FB16B016E
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:57:01 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0AE10406C7
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 14:57:01 +0000 (UTC)
+X-FDA: 85042116642.29.5767214
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 68EA81C0003
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 14:56:59 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XRHSPdEW;
+	spf=pass (imf21.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785337016;
+	s=arc-20220608; t=1785337019;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HqM0rNbMk1BcoQ/S0xf/ryjBOK9Jcmu6nULmW4L2RMk=;
-	b=Kvz0VBFkZIs2GD9uZHpL73NiQjpaAY6sYQjEbwXEnxH7IaCfdLz1XqPrZrIpMXwLDvFU+m
-	rmORTVR7HJYFZTPVp+b9HB7We+jAy7/CoQfJX3wB8KqjMIdT7j2wpC8QqxLpe2AKKD+DXB
-	MFWXRO/XWXMnHME/NrjVYyu1LzTYmys=
+	bh=bBpg99Yp1sn7eiU80nxvGo9wGcsTad4UkrJU3swiclg=;
+	b=rJdhGs127jSwA+dMLTJLrX2+Bxijy22WI0F3xdXycBNcLKLHyZPv/mXn3VRo7m2/jNyPP5
+	6MNoNhf6gsS9JxolCV/+e2zw+dFXsSyjJ30cr2GdMSfQUqzapLDtql3avS4KD2lr/4NXK8
+	/dCCat5rvo3jtiib1lV0r67PTd3s0vU=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FMjy1Xq3;
-	spf=pass (imf17.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XRHSPdEW;
+	spf=pass (imf21.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785337016;
-	b=keYOLqFFnXXaIZwCExqAvJzofewfsy6rVtoVX8ncwOg2rI1nk+tZvNU7MvpIrQKQ3xg9q0
-	1/onFtP49ueZJXp0mPXcFUPwhYjIRkZ+qo7Ru10ZZfNQWx3c0vM/tHohdfpAB5liFwSXFf
-	Nwh2VoyEckO/uhuuwknmYf54h19gUlk=
+	t=1785337019;
+	b=GQ8z2Pvvs6oAEMJyXoamED8ZROaa5BsemiAF2RyGG1faC7yXDT082MINU74jacp2jRtwP6
+	f1zSZp5NATjsEI8KnvauQkciIl4rXe7bSMAMO9APeodC1OTqYAzzL6Ch42oTA3JGMXns9Y
+	AI4DT+utlCm2V9bU6wqR+DpW9WsoEX4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 55FEC60A84;
+	by sea.source.kernel.org (Postfix) with ESMTP id B18FD43A48;
+	Wed, 29 Jul 2026 14:56:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B4BF1F00A3D;
 	Wed, 29 Jul 2026 14:56:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D62111F000E9;
-	Wed, 29 Jul 2026 14:56:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785337016;
-	bh=HqM0rNbMk1BcoQ/S0xf/ryjBOK9Jcmu6nULmW4L2RMk=;
+	s=k20260515; t=1785337018;
+	bh=bBpg99Yp1sn7eiU80nxvGo9wGcsTad4UkrJU3swiclg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FMjy1Xq3+FUtzp1THEp6WVIndq/H0whS9Axz5tO6h3w1F3H9gkPs0oWmyw1hAiQ25
-	 mFz9o9Dpv7ZwWGHpdi6NbbXT7T+uXhbYYBzEiAYC+qkYOqFmEQjDEdrXlRlzjb7GfC
-	 5jhq9djHdUO6nw3MKrGrfVCHqWub+P6I1qWdD0QoTY4L4fxgeEoNtHG7ly7nqmb06k
-	 Ly+fV699hgOZsfectezWf5XYc1DlgEYHu+NSU8PIoHIFNNKvlBnHYX8TGTud5t510O
-	 QDSGPkS9A/Tuvm5hfc13VeF4VkpQpqB+LH8im/+zfF9BHnL4nHBh1Zu0bB7cHFuhd4
-	 ymoyD5oDXRc5w==
+	b=XRHSPdEWnGheoGb7gFN/sfjJOwW877OwuAVMsPZl98nS29xWj+bw/LjXiuTkpTSQH
+	 Ey5c1NwoDAH8/vLP04/H05PG7ktEe8GzKXPzQttyyoSBM6NB92BU630jq8RtIkcnjR
+	 AqBi8XGVEi7clxNja6suADuEXc7ph8u3ofRx8a8hXc2N/A1NJzLBbcVzzuLwdUXnaw
+	 i1G7VydxYiZp+eLrx1Stll0+1MfPu1oZu4YWLAgUuXGnhsEnZ6n22Q4IVvfVaJmqhE
+	 UglvXDltNgoe19PZ/JaQzW0hdZn8AWWtnAjIUosrE9uTJYm425nsHlv48MMlxz7MS8
+	 LrwHk7msmVRuw==
 From: Pratyush Yadav <pratyush@kernel.org>
 To: Mike Rapoport <rppt@kernel.org>,
 	Pasha Tatashin <pasha.tatashin@soleen.com>,
@@ -77,22 +77,22 @@ To: Mike Rapoport <rppt@kernel.org>,
 Cc: kexec@lists.infradead.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v5 13/22] kho: expose kho_scratch_overlap() to kexec_handover.h
-Date: Wed, 29 Jul 2026 16:55:58 +0200
-Message-ID: <20260729145610.2827231-14-pratyush@kernel.org>
+Subject: [PATCH v5 14/22] kho: initialize kho_scratch pointer earlier in boot
+Date: Wed, 29 Jul 2026 16:55:59 +0200
+Message-ID: <20260729145610.2827231-15-pratyush@kernel.org>
 X-Mailer: git-send-email 2.55.0.508.g3f0d502094-goog
 In-Reply-To: <20260729145610.2827231-1-pratyush@kernel.org>
 References: <20260729145610.2827231-1-pratyush@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 68EA81C0003
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: C656D40013
-X-Stat-Signature: ewdiduh57a3km3ttficpkju5pj9yx49j
-X-HE-Tag: 1785337016-461662
-X-HE-Meta: U2FsdGVkX1/CObWvp4yrJdkpzWBXQrq18KJn8FSaOK1ekt8ZL+QAAhN8G3nVag4+NC/oGq5fcaY+CzdeV/+YWFPh0dzMtexbZot0Z/MDiU7/WQzmywptLmNfBc1YqyqTYPst8m6osI/DD1GBc0Z0bgpvqsFWcMpTZ9WcwI+qctPfOXNthl2dwxIO5evEFro66IaJRdovik4QvTxGpaHTf6j+Em6yU5O21x0jUecwbAR+Dzo58hUnMMU42xbv5O1U/odH+TcQjrdmGw5Y0aLaWuqCuG/OR1Wp7b1771NuoHMmjvcU3GMBUKfnm2pYXSWHhXa9ifUoI2BxenhWsqVuNSzg8ikCXwc6SN9gB411myhCzMtaADuKvuD5WXTwhadtACxR6ofw1CIJAYW+shMsRa4JykHERozaGmY8XYxV7U0vvm282W2seaAcHxPT0Intxbdyot/tlLbdvB1CQZG2A8S6zHa0EU9OZ5BfKwUgCbXN6oVmggfZLM+PMymY39BfbHl/MDaZDAoIu0uOXc433J2YmRHl+7wJ0ObszqUBTA7kotKqX/RmfZZdUI+U06kj68yPDlPZE47Do73OZm5RsbMRZ8asshbQWAT8L7Hys3awIP0x0XgrGPbkIPPV/7JrUgeIUhs8nDbvobSiz0MlNWfIiV9/GmVNQBWmPmI9d6DG4pfV3q9TTWnsK4zbR6aC8udIOlJ+wn8KksD/mVkUL0VTzwc8+95R6ujrlmbQIrVqBe/QVPN0SycPStIp2H10YZwve/WVnN+xGXr5vD8NlZDsULwF948mwug5SVEZbGNjDkwf3+GdGGjUU2/gOnHakh6Zece1RdI/2iV+6Myb9D0lhjEcD6uoVbuGYjtjLkuIj8L/pmjE/IMOcuWy+aGQsmZVvBlSInjR+K2bRT5LP83Wm1OaJ09558p6gp+VEf2ZoY/Pq4I3mxb/RvuPmjV6yTTcJu6AyQE8P7QvrA9
- dpfG6mvg
- kMac0uEyT9pO/7vxkshS3ELcE9oP4B2xxOIKvB4JcUo1+Uak5BjB9n2Y6POamvWr1nRLR5VGkeSvRcdguRwd+YfaISpJ8IZsiwMEg7rs8MwOUHD1QCNGDwpnlN/XLQ8rI3EstrzYFYCs1gkxSrPoYJw7pEG5BUadp2NCCUBgGuh3ep06PgL6jx26Boi35zWyoca0EUYp4ntYmZk0k/upmJ0pDACsXMs09dw80KgzNxv9186E09cEiwClz+aDQryWHCE+SufdHlozFa/P57PPBayVFXCLeDILmcHoLrEStYYivV4ZrMBc2TKFTuwkiUqmbri6kzDMifrxOnZ27UM8xwYY/Ig==
+X-Stat-Signature: yf8rs4jdekkenef9bybap7how1i1kf81
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1785337019-934414
+X-HE-Meta: U2FsdGVkX18QsMyi3PH4tCGcOFOXoo/10zrkFJKeNfqK5qPiSG9+/INr09xMlX+IcIrvCPM9UJ+sw8eSWXTONLEy5VD2zvVmXIGItNMBkD4/0jbF60WChAvaRnFfQQA6beSPgFfkD8Ivd31glC8f7iQrYszCq7VQU/FH0GFNSIc0ng+QIuLg3igMVbP9+UpOt+Werf1HXIUYGS7LK0vD0tg1X0t2PYv8nYlAcFJQBYAg0IaZ28obPT3iED2eQtGECmlqPK2AWIxJyZde62eho399PPS0HVhkY/ujcgeTVyJEsCbkl63ksEJy08UNg3VyEs8vYEtxxGfvWDNAqTfbvS+co6jAssXuIPgdJtbfbuBw15h08hRx5Tmrqek+NNDPn2hOtor0al/6wW0eYk1AVcF/UglSAQhnsT5uh0zYqAEsyKlSrU316TTm4eHsoBjTiXGw0yWJGcytY82VHtqQmD2NJtzpks6EMzE/C/4pq2gpRkei/DSHFwSi4IAg0JS62h96cszTRiXnZk9udAoz0K00IdWTntRqDryBJ8lfr8FXYKkOTMRnRXtwOKk06BzoNJKVsX10ef3dtKeZK1eT9bKZn4exKW86UhUn1BI80OP29/WYiGgxagNBngWg4xchcTNth9l1kMqIAM9RMHSZW2SLLMu9yAo0Zt+U5yiVrldCCoZJZwQTdyiL58KYz2Zv5fjIUCkZE9Nr0y8qAVprGF425thXfXA2uKr+xXRTu9PE6Mcb23B/+qFsOYRT+W0vMm7Sfylno2n7NdvHcHiCkx8yG1sEFVSzFdgj34mH119610YXpSY8E4DeQW8D4qALVpuM5RG1skuweB9nLOJhVQu3XWov+MgbiE0BtOn0THM4TWKt4qQDZhzpX0QdjD6eftceYSVpeMTJ0PW2zAqQZ5zxsWPXhpT8nuoEhxfRyG10C4k5Sn9L07ZnL/Q/4BEBTJ+gP3VjDVWsH9JxEGd
+ UNX/ulWL
+ Pi4v8y30Wymi5QlPpC64rO7xDwNAIAvoj2qWqnja5sRTTw0OY6AzXmReaDCBwltHb2GX4h48CmGIJ9//ls4sEEReBckyNs3SLbJLUdQ67d9+js9NUNaUcPUvnPpuBbDkLCWtHjjOXvjZ/uEN7jVbETAJQTFzgZPHsRRuMbpFOxrdWaGcaziQgVMr97ppfIOBRaKxSLggMclhHavu0Pg+uCyzc5vYT3hz1TuY3PNiK3xxTwkHgiywYY2DKQ3T4SVRKoY7/jvq0TyyXuvUXj0nQTj++3wuKGK6SO0nW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,181 +102,89 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
 
-Support for discovering memory blocks with no preserved memory will be
-added in coming patches. These areas will also be marked as scratch to
-allow allocations from them. Memblock will switch to looking through the
-scratch array to decide the right migratetype.
+In a future patch, mm init will use kho_scratch_overlap() for deciding
+the migrate type of pageblocks it initializes. The earliest user
+currently is free_area_init(). kho_scratch_overlap()
+relies on kho_scratch pointer being initialized. Introduce
+kho_memory_init_early() to do this.
 
-Expose kho_scratch_overlap() to KHO users. Since it is now used by
-non-debug code, move it out of kexec_handover_debug.c and into
-kexec_handover.c. Gate the overlap checks in kho_preserve_folio() and
-kho_preserve_pages() by IS_ENABLED(CONFIG_KEXEC_HANDOVER_DEBUG) instead.
-
-Since kexec_handover_debug.c is now empty, delete it.
-
-Add a stub for kho_scratch_overlap() to memblock tests to make sure it
-compiles. It will be used in memblock by a coming commit.
-
-No functional changes.
+kho_populate() would normally be a good place to do this, but
+unfortunately, phys_to_virt() does not work at that point on ARM64. So
+we need yet another initialization function.
 
 Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
 ---
- include/linux/kexec_handover.h              |  7 ++++++
- kernel/liveupdate/Makefile                  |  1 -
- kernel/liveupdate/kexec_handover.c          | 22 ++++++++++++++++--
- kernel/liveupdate/kexec_handover_debug.c    | 25 ---------------------
- kernel/liveupdate/kexec_handover_internal.h |  9 --------
- tools/testing/memblock/internal.h           |  5 +++++
- 6 files changed, 32 insertions(+), 37 deletions(-)
- delete mode 100644 kernel/liveupdate/kexec_handover_debug.c
+ include/linux/kexec_handover.h     |  3 +++
+ kernel/liveupdate/kexec_handover.c | 15 +++++++++++++--
+ mm/mm_init.c                       |  1 +
+ 3 files changed, 17 insertions(+), 2 deletions(-)
 
 diff --git a/include/linux/kexec_handover.h b/include/linux/kexec_handover.h
-index 48a9793c2b76..40cb95a80981 100644
+index 40cb95a80981..18ba417f1ada 100644
 --- a/include/linux/kexec_handover.h
 +++ b/include/linux/kexec_handover.h
-@@ -36,6 +36,8 @@ void kho_memory_init(void);
+@@ -33,6 +33,7 @@ void kho_remove_subtree(void *blob);
+ int kho_retrieve_subtree(const char *name, phys_addr_t *phys, size_t *size);
+ 
+ void kho_memory_init(void);
++void kho_memory_init_early(void);
  
  void kho_populate(phys_addr_t fdt_phys, u64 fdt_len, phys_addr_t scratch_phys,
  		  u64 scratch_len);
+@@ -110,6 +111,8 @@ static inline int kho_retrieve_subtree(const char *name, phys_addr_t *phys,
+ 
+ static inline void kho_memory_init(void) { }
+ 
++static inline void kho_memory_init_early(void) { }
 +
-+bool kho_scratch_overlap(phys_addr_t phys, size_t size);
- #else
- static inline bool kho_is_enabled(void)
- {
-@@ -112,6 +114,11 @@ static inline void kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
+ static inline void kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
  				phys_addr_t scratch_phys, u64 scratch_len)
  {
- }
-+
-+static inline bool kho_scratch_overlap(phys_addr_t phys, size_t size)
-+{
-+	return false;
-+}
- #endif /* CONFIG_KEXEC_HANDOVER */
- 
- #endif /* LINUX_KEXEC_HANDOVER_H */
-diff --git a/kernel/liveupdate/Makefile b/kernel/liveupdate/Makefile
-index eec9d3ae07eb..d9f469462556 100644
---- a/kernel/liveupdate/Makefile
-+++ b/kernel/liveupdate/Makefile
-@@ -8,7 +8,6 @@ luo-y :=								\
- 		luo_session.o
- 
- obj-$(CONFIG_KEXEC_HANDOVER)		+= kexec_handover.o
--obj-$(CONFIG_KEXEC_HANDOVER_DEBUG)	+= kexec_handover_debug.o
- obj-$(CONFIG_KEXEC_HANDOVER_DEBUGFS)	+= kexec_handover_debugfs.o
- 
- obj-$(CONFIG_LIVEUPDATE)		+= luo.o
 diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index 04bfcbf9cc55..b3b97a6ff9c8 100644
+index b3b97a6ff9c8..2ddfc804cdf7 100644
 --- a/kernel/liveupdate/kexec_handover.c
 +++ b/kernel/liveupdate/kexec_handover.c
-@@ -765,6 +765,22 @@ static phys_addr_t __init scratch_size_node(int nid)
- 	return round_up(size, CMA_MIN_ALIGNMENT_BYTES);
+@@ -1534,8 +1534,6 @@ static void __init kho_mem_retrieve(void)
+ 	const void *fdt = kho_get_fdt();
+ 	int err;
+ 
+-	kho_scratch = phys_to_virt(kho_in.scratch_phys);
+-
+ 	/*
+ 	 * kho_get_mem_map() should always succeed. If it fails, kho_populate()
+ 	 * catches that and never sets kho_in.scratch_phys, which stops memory
+@@ -1756,6 +1754,19 @@ static __init int kho_init(void)
  }
+ fs_initcall(kho_init);
  
-+bool kho_scratch_overlap(phys_addr_t phys, size_t size)
++void __init kho_memory_init_early(void)
 +{
-+	phys_addr_t scratch_start, scratch_end;
-+	unsigned int i;
++	if (!is_kho_boot())
++		return;
 +
-+	for (i = 0; i < kho_scratch_cnt; i++) {
-+		scratch_start = kho_scratch[i].addr;
-+		scratch_end = kho_scratch[i].addr + kho_scratch[i].size;
-+
-+		if (phys < scratch_end && (phys + size) > scratch_start)
-+			return true;
-+	}
-+
-+	return false;
++	/*
++	 * kho_scratch_overlap() needs kho_scratch to be initialized. It
++	 * is used by free_area_init() on KHO boots, so initialize it
++	 * early.
++	 */
++	kho_scratch = phys_to_virt(kho_in.scratch_phys);
 +}
 +
- /**
-  * kho_reserve_scratch - Reserve a contiguous chunk of memory for kexec
-  *
-@@ -962,7 +978,8 @@ int kho_preserve_folio(struct folio *folio)
- 	const unsigned long pfn = folio_pfn(folio);
- 	const unsigned int order = folio_order(folio);
+ void __init kho_memory_init(void)
+ {
+ 	if (kho_in.scratch_phys)
+diff --git a/mm/mm_init.c b/mm/mm_init.c
+index 0f64909e8d20..84d4b1c997bc 100644
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -2687,6 +2687,7 @@ void __init __weak mem_init(void)
  
--	if (WARN_ON(kho_scratch_overlap(pfn << PAGE_SHIFT, PAGE_SIZE << order)))
-+	if (IS_ENABLED(CONFIG_KEXEC_HANDOVER_DEBUG) &&
-+	    WARN_ON(kho_scratch_overlap(pfn << PAGE_SHIFT, PAGE_SIZE << order)))
- 		return -EINVAL;
+ void __init mm_core_init_early(void)
+ {
++	kho_memory_init_early();
+ 	hugetlb_cma_reserve();
+ 	hugetlb_bootmem_alloc();
  
- 	return kho_radix_add_key(tree, kho_encode_radix_key(PFN_PHYS(pfn),
-@@ -1039,7 +1056,8 @@ int kho_preserve_pages(struct page *page, unsigned long nr_pages)
- 	unsigned long failed_pfn = 0;
- 	int err = 0;
- 
--	if (WARN_ON(kho_scratch_overlap(start_pfn << PAGE_SHIFT,
-+	if (IS_ENABLED(CONFIG_KEXEC_HANDOVER_DEBUG) &&
-+	    WARN_ON(kho_scratch_overlap(start_pfn << PAGE_SHIFT,
- 					nr_pages << PAGE_SHIFT))) {
- 		return -EINVAL;
- 	}
-diff --git a/kernel/liveupdate/kexec_handover_debug.c b/kernel/liveupdate/kexec_handover_debug.c
-deleted file mode 100644
-index 6efb696f5426..000000000000
---- a/kernel/liveupdate/kexec_handover_debug.c
-+++ /dev/null
-@@ -1,25 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-only
--/*
-- * kexec_handover_debug.c - kexec handover optional debug functionality
-- * Copyright (C) 2025 Google LLC, Pasha Tatashin <pasha.tatashin@soleen.com>
-- */
--
--#define pr_fmt(fmt) "KHO: " fmt
--
--#include "kexec_handover_internal.h"
--
--bool kho_scratch_overlap(phys_addr_t phys, size_t size)
--{
--	phys_addr_t scratch_start, scratch_end;
--	unsigned int i;
--
--	for (i = 0; i < kho_scratch_cnt; i++) {
--		scratch_start = kho_scratch[i].addr;
--		scratch_end = kho_scratch[i].addr + kho_scratch[i].size;
--
--		if (phys < scratch_end && (phys + size) > scratch_start)
--			return true;
--	}
--
--	return false;
--}
-diff --git a/kernel/liveupdate/kexec_handover_internal.h b/kernel/liveupdate/kexec_handover_internal.h
-index 0399ff107775..805d2a76c388 100644
---- a/kernel/liveupdate/kexec_handover_internal.h
-+++ b/kernel/liveupdate/kexec_handover_internal.h
-@@ -41,13 +41,4 @@ static inline void kho_debugfs_blob_remove(struct kho_debugfs *dbg,
- 					   void *blob) { }
- #endif /* CONFIG_KEXEC_HANDOVER_DEBUGFS */
- 
--#ifdef CONFIG_KEXEC_HANDOVER_DEBUG
--bool kho_scratch_overlap(phys_addr_t phys, size_t size);
--#else
--static inline bool kho_scratch_overlap(phys_addr_t phys, size_t size)
--{
--	return false;
--}
--#endif /* CONFIG_KEXEC_HANDOVER_DEBUG */
--
- #endif /* LINUX_KEXEC_HANDOVER_INTERNAL_H */
-diff --git a/tools/testing/memblock/internal.h b/tools/testing/memblock/internal.h
-index b6b1d147fd75..e86bb9000b22 100644
---- a/tools/testing/memblock/internal.h
-+++ b/tools/testing/memblock/internal.h
-@@ -66,4 +66,9 @@ static inline void init_deferred_page(unsigned long pfn, int nid)
- 
- #define __SetPageReserved(p)	((void)(p))
- 
-+static inline bool kho_scratch_overlap(phys_addr_t phys, size_t size)
-+{
-+	return false;
-+}
-+
- #endif
 -- 
 2.55.0.508.g3f0d502094-goog
 
