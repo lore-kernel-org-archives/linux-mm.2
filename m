@@ -4,95 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CD23C53219
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 03:37:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34FD7C53200
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 03:38:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 711A86B0088; Tue, 28 Jul 2026 23:37:55 -0400 (EDT)
+	id 3DC356B008C; Tue, 28 Jul 2026 23:38:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C0B66B008A; Tue, 28 Jul 2026 23:37:55 -0400 (EDT)
+	id 3B43D6B0092; Tue, 28 Jul 2026 23:38:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D9A66B008C; Tue, 28 Jul 2026 23:37:55 -0400 (EDT)
+	id 2F1316B0093; Tue, 28 Jul 2026 23:38:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3366B6B0088
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 23:37:55 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BB2FC1A05E1
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 03:37:54 +0000 (UTC)
-X-FDA: 85040405268.20.7FF0E3A
-Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
-	by imf11.hostedemail.com (Postfix) with ESMTP id AC7474000E
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 03:37:50 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=cdQJD1tx;
-	spf=pass (imf11.hostedemail.com: domain of yujiacheng3@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=yujiacheng3@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	by kanga.kvack.org (Postfix) with ESMTP id 09D5D6B008C
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 23:38:03 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9D9CC1A04EB
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 03:38:02 +0000 (UTC)
+X-FDA: 85040405604.18.352C247
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 216E04000D
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 03:38:00 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SO6J+KXG;
+	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785296273;
+	s=arc-20220608; t=1785296281;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=j6sG71vk0UOw32qt1L40plvuAIirX2vWQN+w9Z12geA=;
-	b=ky/D7A5A26v5fhfXC4aqevLH3h2YVJQk5a48MAmlNiL4scrtBFJ/4uiWHqq9JQjmmLRoPR
-	WYkz9nquBa8qILmfplt98zIb3000G4DkLoyyAFzZFAIS8ml7IXxUsoX7XObMXavaGYu8uK
-	0ecsY7GgnsYpuT43dP2cSQY58jEdjXc=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=cdQJD1tx;
-	spf=pass (imf11.hostedemail.com: domain of yujiacheng3@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=yujiacheng3@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=PHXHv/8aRUsKBfW2c2nIcEHw5jx7iOabXJGxsw9CVD4=;
+	b=3sALhrLq7qY2XU7HTKD+5SzTxl2TazvG+OI4UMi2BiPh7971ZdtTUDn8QXXcXkgo902wEY
+	KmfGqIUMOiRKejQpGFb6+L2g5j3HM5/K/Vy1Vo83CKqY8kuRlvxFjZTh6ZELUJ6Phn0I/6
+	0gwR+YLK1hG2RMYkFwJlc/077w6hrhw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785296273;
-	b=WwjGbPHJzCCGJK4+XobDr/Aj+oU7P9ZKD3LVttre12+gjoePPbRxTAMYBv18AvfyIbOy2Q
-	TelWosJf4ve28JHAAGNnEzn1BhFeTv8bUxsAOuGZM9VH5BjDrbneJulWg1ZaIa8tAkxkSN
-	OWnTmulAF9yF+C4DHdD8RvPNOOepqEc=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=j6sG71vk0UOw32qt1L40plvuAIirX2vWQN+w9Z12geA=;
-	b=cdQJD1txNNKR2aB8cEiLs7bXbkbf49HyUoAL3sF8g8gCBlFDatAjuu2IR3JFkVam7BCVAfkM4
-	Tv/nnrmui2w9xctmaSWW9CwyPTbABmTwWBWYwJHQM8r61yG0yZalNQ3W68kyGGJ7DHAF+IlrxF/
-	ARvEAEyXObf1rDiV8etl7OA=
-Received: from mail.maildlp.com (unknown [172.19.162.144])
-	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4h8yTG5sxGzcb0T;
-	Wed, 29 Jul 2026 11:28:02 +0800 (CST)
-Received: from whupemo500009.china.huawei.com (unknown [7.152.184.116])
-	by mail.maildlp.com (Postfix) with ESMTPS id ECA1F40538;
-	Wed, 29 Jul 2026 11:37:43 +0800 (CST)
-Received: from [100.103.109.247] (100.103.109.247) by
- whupemo500009.china.huawei.com (7.152.184.116) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 29 Jul 2026 11:37:42 +0800
-Message-ID: <b144c707-7d74-42b7-9d88-47283f487678@huawei.com>
-Date: Wed, 29 Jul 2026 11:37:41 +0800
+	t=1785296281;
+	b=aprc34m9qHD2Gqtpi0Y5ahshphHJCSAEwRyAV9uUa45bYtFT8ziA2SrJywEbJTEutgN9cI
+	GLsaq/ALF1wn8QY9StpvAajg/t5conext7PGa4aEa+76xkqj32s/aN2+XqYi5YybEvw6DH
+	B4z3IBR8mUc/eSsXHGq8b4OpWy0i2EI=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SO6J+KXG;
+	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0409940100;
+	Wed, 29 Jul 2026 03:38:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3471B1F000E9;
+	Wed, 29 Jul 2026 03:37:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785296279;
+	bh=PHXHv/8aRUsKBfW2c2nIcEHw5jx7iOabXJGxsw9CVD4=;
+	h=From:To:Cc:Subject:Date;
+	b=SO6J+KXGJ+KUH/INHpG2J3XmOghTN32xj2I3aUF8jHBFcCQJan0Ay60/+mVNh53ly
+	 rsSr61U/6oVD8O58hiJfnh1WaihBVkSZFmaPg11HpYc0Jy5zUsUxjbFFTiXjlMYI4C
+	 Wx+H3XRV2eZv4dybzFbdRGiT2PZDQmCm/zF8CRBTzlGNc2G9yv41YcvOFT6iiRcpxz
+	 EOsyF1O2GzQe9qOqYYQN9biolkpM1et/UFUpXIxtA0n8SE5/zg9L/iJ2CQqtJyGB7K
+	 mmSOoPnHRmX0bBNzkwmVZwodSHQ6hixPZeYjHBoPv3RtfnrqrouCGXsHG6um/LZtcg
+	 LoXhDcN2Hf3aw==
+From: SJ Park <sj@kernel.org>
+To: 
+Cc: SJ Park <sj@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@davidgow.net>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	damon@lists.linux.dev,
+	kunit-dev@googlegroups.com,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH v1.1 00/10] mm/damon: cleanup code, add test cases, and update guidances in docs
+Date: Tue, 28 Jul 2026 20:37:40 -0700
+Message-ID: <20260729033751.131213-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/shmem: downgrade final i_blocks check in
- shmem_evict_inode() to pr_warn()
-To: Baolin Wang <baolin.wang@linux.alibaba.com>, <hughd@google.com>
-CC: <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <liuyongqiang13@huawei.com>
-References: <20260728091014.3876715-1-yujiacheng3@huawei.com>
- <fecfc5b3-86af-4c3d-af0a-d1084fb3650d@linux.alibaba.com>
-Content-Language: en-GB
-From: Jiacheng Yu <yujiacheng3@huawei.com>
-In-Reply-To: <fecfc5b3-86af-4c3d-af0a-d1084fb3650d@linux.alibaba.com>
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [100.103.109.247]
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- whupemo500009.china.huawei.com (7.152.184.116)
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 216E04000D
+X-Stat-Signature: uajjam53soq8zqex3iebz6ipkkrub6fz
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AC7474000E
-X-Rspamd-Server: rspam01
-X-Stat-Signature: khu1ndxoge9ticweatos5s8f86xswjt6
-X-HE-Tag: 1785296270-929867
-X-HE-Meta: U2FsdGVkX1+rKADo9ZmcS8N+Nm77y3se5vfJGjRoO/goI1kZkDeHplZv91KwWYjIFix8fy1fPbgPXmNoWfjoQ8D0tvBss9bmkzDaNLASqY9mchvoIl1TOHE2ATTbRPcbdDAzAD5EwXcZoSZBLM1vZtBFASsZ/kdp2IPvZn+xMeSA8emcGe9Ol3M7/tH9Rl/0rhqk9fircURKbXFjBE62ZxO3xp1TKkoBrjv8Z/UZ5Ysu3sWmw2S17+Z4psC7bFTumiBUPqqqKJDBNUwMd67E98ALuOoM0akLFbqNGQu3LBes0oTQf9rM/ikaIfs7z5dYRd5p4Z7ZOYK5Mke+3Sabd1K0V1MRvmPljcJf/g9TtzQIku3fMRCiYoOy3C93EQilgG5Q5z7Iztu64VS48ZxkWGfrTvztwZWcYZUv+0RBUK412ocWAzkYhdHOXPl3vmUKfGGtyICAJRI1+AqMMAauo2jN1fMX5uknikmIAWfGSvuKkmRGQzZGGOE5AZTPW96vNeVOvcItzwngLqXTULzbn1mP9YaaPNVEDRf4waoETmBzroltaSZV3c13HOZG8udaTUH/+HHnwxtHqnXGy1Cdh4vkwkgvsYM/IIPxpou4NFg9BmuvXX+HGemtDYMWofjkfqwFVBdOOvga5jeOEZseQjmIwNaVXsnyfZJKnTMGcN4ExtMxoEcQksmxOZa8HwqYUBHiQSaZkr0hjmGdHMaBqPcXXHqqR3ALTSYtnQXfCClEa/Alq0AUHGaadN+1ERojON/BG5v+JH3VIMN87r0b8jcvo43lQYTCnczVNE8Cj+6Bc68uFS8UGV1hPP+l66R5McwU6m+KGWn28cnJss4ck38swjyY7nomBNEqjVXDtayNQZ41xSJmR2GC+SeSRfQU5Bwpew2Qyf2rVNlAIdv0pFBuLhp9/7nsBYz9YdDyeYw/s/Zgnx8Q7u3mqBStf49uKvN22Y12cChHMtCZPSN
- OBylCk3E
- D998hif0oVhUFZHu51HZa/nZZxOm9VFKx8C0H0HmXNFC27KQ5yvx8207skEZN8CeGFZzVQyXGxvrP/aCkXao1S2ftGgdnvULhb1Xco50J+wLgJVWlm7pwZZJyfEfbHw9bF6yowR5Odt70ux02Ufg9PtBryftpq0zIUAVoZDR2xB000Phg9DiVjcj9LEpokMrCbuCkSnRijwHevkxGRDyEk2wxVwh/h62pwvLXY0V5zfvdGyK0kbCIeq6K4TUaQ3FrTWB7vxjFmncc2bW4IZaVKyrZpfeqOPhzvd+tTxVNW/tZ2LobJYhQ6BQKC7MyqNzbPFuHhhfkJ8ixqn5WD+KyDIcayWkJ+4Sz81mHdSAIHSbn18rAvqKYHxHD31sNG4yRCuLxtLZ2ipNG1uSAxpfRnOSo4958COsYQ1km
+X-HE-Tag: 1785296280-256629
+X-HE-Meta: U2FsdGVkX19rQ+wuUS4V8rcLtCsHW63bsYgEhNQz+6ncLMETnKnsDLkSGVuDlO56DkY/BInKAJj4zeS+Fs/O/UcIN65hkbr7fnb+O+zsYR0Z5UCNTi74aPh0okyA0WkiRd2hQrJ/0f/wiJVnOes5TtxC6dlHMkxZaxbTUImyVJttMEtk3PgbfEJ5HT0ZeHIvPI3XBEnJ5RuxDkC7AsORwZk7RMU2YsBgK8Ve2pTi7T9RY5AYqotXUYRxP6ogPE0+1MSEmLYus7xpoN9Z4P/KnnxWFKtVytGxTbttjR7bT5hVTHXINubAdHruRFYGdVkZ0R/FVwiWcDwXxTOPpzKkm03pt5FYV5eBzPUhBAM1EObmSxehv4pQSGO8+JMDVboFt6+4i9Zf0H2XdAkY8ECTk3eWaTTDbqaTh4pB6xqJL9QyLfYPmox3WY1Y24xlY5mUL6cU+fiHcqyL4lJ1GUddFDdxJoAlPRUQYIRodM+xFBmxf+be7Jp4763ansGl11t5BmNZavakihul31ZLIoT3QmhYa3+TFBR+DRskubjLgwtgsuf7yz5X9yY4b+mI6J58XWUiy7Tp8usR2105k2BDwXLKznkILw8vUT3cVKafdnf/HHBTNhzwaKs/gb3Jp+3tdkz+ZOFpGaFRx0y5UVWNjjyaa1abPyVmFvqN4qkMX+bJiWBpR0o0x0+nsT1KpVirkHwT37LrW9iGrjVFla2OohZqaDwBPHLC2PWZnjy2pZk6YK+r4RcxdGarcJva6F0QEbOYOMD0/ACzkfia4CqzAy68IKQWRfDZeXo5pwiZRjl3tQqFjOgpMHQNzowpqL9lJfKTweU633nF0UotvwQRsrsifCmEYvZRHxmkGfqxLAXPTex91cf+dK6xfdlSBKVyg4UnSh6+Cw065mtYcjH7skHWobx1zlSFeqHKbjxDc6OnkhVKFiynPgI7TvJyqW7NWOSHIj0wq+SjrfGV6NY
+ t+n67Tnr
+ tzNAwzKfe6fNDgYOWZTFXChZ0UBWhzPMH+XGGV1H8VXyqM+m73CKiVaGIBZOn76xFI/3fWU+tg5Qok+jZaADgcetiYRqS3oagKfbEhsbhp8PlR0QrFaz6UktR5wQyvBWcHxGkkUVMuW1qzFBtedKZbXOSsHytvzDBFAx8Ex0sZZja0XEkLRlpTukNTQq8UtDrZAvmaPfL3tEuxDaq5sElwrhPJisUSftCVaYyWAk15sVcF2s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,72 +106,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 29/07/2026 11:14, Baolin Wang wrote:
-> 
-> 
-> On 7/28/26 5:10 PM, Jiacheng Yu wrote:
->> shmem_evict_inode() ends with WARN_ON(inode->i_blocks) as a final
->> consistency check of shmem's block accounting.  When it fires, the
->> inode-local counters die with the inode; what may linger is a small
->> residue in accounting kept outside the inode, such as per-mount or
->> per-user charges.  No data is lost, and no corruption follows.
->>
->> On kernels running with panic_on_warn=1, this accounting inconsistency
->> escalates to a full machine panic, which is disproportionate to the impact.
->>
->> Downgrade the WARN_ON() to a pr_warn() that reports the inode together
->> with its accounting counters (i_blocks, alloced, swapped, nrpages),
->> keeping the inconsistency visible in the logs.
->>
->> The accounting bugs this check has caught over the years -- the
->> swapout race described in commit 0f3c42f522dc ("tmpfs: change
->> final i_blocks BUG to WARNING") and the error recovery race fixed
->> in commit 267a4c76bbdb ("tmpfs: fix shmem_evict_inode() warnings
->> on i_blocks") -- are real and should still be fixed; this change
->> only removes the disproportionate escalation.
->>
->> Fixes: 0f3c42f522dc ("tmpfs: change final i_blocks BUG to WARNING")
->> Signed-off-by: Jiacheng Yu <yujiacheng3@huawei.com>
->> ---
->> One way to hit this race: soft_offline_in_use_page()'s fast path drops
->> a clean, unmapped shmem folio via mapping_evict_folio(), where the
->> xas_store() and the nrpages decrement are not atomic against a
->> concurrent shmem_evict_inode(); the final shmem_recalc_inode() can
->> then read the pre-decrement nrpages, compute freed = 0, and leave one
->> page charged.  Same class as the races in 0f3c42f522dc and
->> 267a4c76bbdb, this time in the under-count direction; reproduced on
->> 7.2-rc4 with madvise(MADV_SOFT_OFFLINE) racing MAP_FIXED replacement
->> of a shared-anonymous VMA.
-> 
-> Shouldn't we fix the race first instead of adding more warning information?
+Misc cleanup, improvements and updates of code, test, and documents.
 
-Yes, the race should be fixed, ant that needs more time and discussion.
-Back in 0f3c42f522dc Hugh already outlined the two candidate          
-directions -- coherent locking between nrpages and the shmem counters,
-or eliminating shmem_recalc_inode() altogether.
+Patches 1-3 cleanup DAMON code.  Patches 4-8 adds kunit and selftest
+test cases for recently fixed bugs and a new feature.  Patches 9 and 10
+update guidelines for AI review and what document to read, on DAMON
+documents.
 
-I plan to follow up with a fix attempt along those directions;
+Changes from RFC
+- RFC: https://lore.kernel.org/20260728052811.192712-1-sj@kernel.org
+- Remove ctx parameter of __damon_va_init_regions().
+- Fix damon_nr_samples_per_aggr() overflow kunit test.
+- Rebase to the latest mm-new.
 
-> 
->>   mm/shmem.c | 6 +++++-
->>   1 file changed, 5 insertions(+), 1 deletion(-)
->>
->> diff --git a/mm/shmem.c b/mm/shmem.c
->> index b51f83c970bb..223484cdc8f2 100644
->> --- a/mm/shmem.c
->> +++ b/mm/shmem.c
->> @@ -1428,7 +1428,11 @@ static void shmem_evict_inode(struct inode *inode)
->>       simple_xattrs_free(&sbinfo->xa_cache, &info->xattrs, sbinfo->max_inodes ? &freed : NULL);
->>         shmem_free_inode(inode->i_sb, freed);
->> -    WARN_ON(inode->i_blocks);
->> +    if (inode->i_blocks)
->> +        pr_warn("%s: ino=%llu i_blocks=%llu alloced=%lu swapped=%lu nrpages=%lu\n",
->> +            __func__, (unsigned long long)inode->i_ino,
->> +            (unsigned long long)inode->i_blocks,
->> +            info->alloced, info->swapped, inode->i_mapping->nrpages);
->>       clear_inode(inode);
->>   #ifdef CONFIG_TMPFS_QUOTA
->>       dquot_free_inode(inode);
-> 
+SJ Park (10):
+  mm/damon/core: use damon_nr_samples_per_aggr() for max merge threshold
+  mm/damon/core: remove debug messages
+  mm/damon/vaddr: remove a debug message
+  mm/damon/tests/core-kunit: extend set_regions() test for error case
+  mm/damon/tests/core-kunit: test <=0 size damon_set_regions() inputs
+  mm/damon/tests/core-kunit: test overlapping ranges for set_regions()
+  mm/damon/tests/core-kunit: test damon_nr_samples_per_aggr()
+  selftests/damon/sysfs.sh: test hugepage_mem_bp quota goal
+  Docs/mm/damon/maintainer-profile: update AI review for Sashiko replies
+  Docs/ABI/damon: recommend subsystem doc instead of admin-guide
 
+ .../ABI/testing/sysfs-kernel-mm-damon         |  2 +-
+ Documentation/mm/damon/maintainer-profile.rst | 19 ++----
+ mm/damon/core.c                               | 12 +---
+ mm/damon/tests/core-kunit.h                   | 65 ++++++++++++++++---
+ mm/damon/vaddr.c                              | 16 +----
+ tools/testing/selftests/damon/sysfs.sh        |  1 +
+ 6 files changed, 68 insertions(+), 47 deletions(-)
+
+
+base-commit: bc87db7fa4d8d45745620150a9487efcb6ebbd51
+-- 
+2.47.3
 
