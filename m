@@ -4,101 +4,171 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D41E4C54F51
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 01:22:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B82FCC54F52
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 01:35:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7E1676B0088; Tue, 28 Jul 2026 21:22:13 -0400 (EDT)
+	id 4A0606B0088; Tue, 28 Jul 2026 21:35:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 790F86B008A; Tue, 28 Jul 2026 21:22:13 -0400 (EDT)
+	id 4525A6B008A; Tue, 28 Jul 2026 21:35:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A6B76B008C; Tue, 28 Jul 2026 21:22:13 -0400 (EDT)
+	id 2F56D6B008C; Tue, 28 Jul 2026 21:35:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3BF326B0088
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 21:22:13 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1E2D81605B7
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 01:22:11 +0000 (UTC)
-X-FDA: 85040063262.29.089E57F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 5C69280008
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 01:22:09 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id F2FED6B0088
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 21:35:57 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 802D8160552
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 01:35:57 +0000 (UTC)
+X-FDA: 85040097954.28.7B503FC
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010019.outbound.protection.outlook.com [52.101.61.19])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 9460680002
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 01:35:53 +0000 (UTC)
 Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ilMzXKMF;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785288129;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Mp0nFaNJ;
+	spf=pass (imf02.hostedemail.com: domain of ziy@nvidia.com designates 52.101.61.19 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785288953;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0t+IAasOBTAZXdXVEKb9SrgtdAFOWGHpWG5YeS1gqYA=;
-	b=pbT+cTFXIZCfOGJpBMRuezZVZjzemv0j/2RgUiEDpURC9yW+szyW6NfENEyD8BZ/AcYMSZ
-	d5Mxx22CXay9o0si+F8qtnh9BP0k+44ddftC7//N6cvo/CA0tinot4C4avdXPHG6FuXS4R
-	OnVX7CR7B3fy23/VZ8aveVBolNDQEQI=
-ARC-Authentication-Results: i=1;
+	bh=ZtXCLFo4pE46hvuhYj9H7G/TlWXfVuPDTvP4kbTnOXo=;
+	b=5/L/CMtqKubl97+D+7eikZonkBx48+6VPV8SE2ALCJOJr+LdeeOgGjY86MTXZwxo87h5t6
+	D4VYRYm50lhxsrUm5gbkyzE0wmbG0M5xV54UvsNPLzIvZkt80eJtOSCwXD//XionaupDcl
+	MgnlJahUQ03WmvuC4IGFQBZjOCTZfAs=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1785288953;
+	b=bsLaDX8+6AFMn1wQ4H5UOcd3htGh8L5u9Aakf84hiF6vyuPtjoCQx/BrYTnsjQdQPIXZqG
+	IrhTgmCtXRL9fVJWnWMYLeJUcnbS5uUkC7KeQbp1lKpjQQBOgdWM0NaxrPt95MdpiOhimM
+	J/uo+WWv9HfFaufdqHp4QHxv9HnE6Cs=
+ARC-Authentication-Results: i=2;
 	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ilMzXKMF;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785288129;
-	b=2fJ52TFeTv3/XY7OB0sauVlZyUnvmN9+7jypcIifIeREPCZU3ASsX5UMMU1FYBHPTglKwG
-	I2B9MTZ/OZTqtPYiD06LL2VUY1ImZrhCuOKuzdUUbc5yelwohnjNoSPlX25Tt2nrrfd8lc
-	m85Zt2LvJjC2C8NCSw4P6hrGYKOHk1k=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 578DD43EB8;
-	Wed, 29 Jul 2026 01:22:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3CFA1F00A3D;
-	Wed, 29 Jul 2026 01:22:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785288128;
-	bh=0t+IAasOBTAZXdXVEKb9SrgtdAFOWGHpWG5YeS1gqYA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ilMzXKMFyYAdxLu8llGrYeS8DZhGN0EyufAWHOK8i2Xq3AKDxcZk8W3osWsNYwHoN
-	 k/SYFoyuT0z8x+dZ/nCJ01WD/90pwIxoAbZHpnFsrQrIqQWf8lpUENXC5vtfYoCOaB
-	 6IImUXw2GWfLEpMU0jXHnGrx9MzSTZZp61qPjf8Xw5VebWu2LuaxRO88kosPZV7zXK
-	 S9O80Ao9P4zMGDpmUJp9SJbMLhfOpO6kgl3Qz/WbDP2knVHqZDq4cXC9QZHzTtz94C
-	 aXY0LY9zS+bhVh8QvLmwwjPMhbGVEL9YVrLgrSObnrMMsh2eqYtL6qD9MRsW0mK3dV
-	 0g0kqrz5Vg7HQ==
-From: SJ Park <sj@kernel.org>
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: SJ Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	Jiayuan Chen <jiayuan.chen@shopee.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org
-Subject: Re: [PATCH 1/2] mm/damon/core: cover discrete System RAM areas with per-range regions
-Date: Tue, 28 Jul 2026 18:21:59 -0700
-Message-ID: <20260729012200.98442-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <1c815b59-915a-414c-9029-eaac11dcf804@linux.dev>
-References: 
-MIME-Version: 1.0
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Mp0nFaNJ;
+	spf=pass (imf02.hostedemail.com: domain of ziy@nvidia.com designates 52.101.61.19 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=k6HCZzwbUgg0smj8TSGnSOxHYrFnnGabspItYV5Hu83wbBEV4NYBdkoO07i7ZdmKYVus8cjz6CAFNfB6IS5QI8+dZgvAFIMfFtz7lTUSbpwbVv5SVITcuGuZtaQzrrWRUG0EjZnBK/JVXtIJ+g4sPgTZeOIsDOJwdsUf6KTKDtYCZG/ArBOPEr2QrnFiPNUalKf27Jw+0e6OKZG4nI4cnbedLDyjFJ2acBIY4+H0E961/PQHOVarjfzQ+ha6lSFZCea3NySp0eQmdY6ewfk6hT9CIxj7O/3LjKShR2MYIEy8MQL6goFXYYwxmODs5UrlnDtp4BTKucRJyYKyvWDTzA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ZtXCLFo4pE46hvuhYj9H7G/TlWXfVuPDTvP4kbTnOXo=;
+ b=bgo+y/K3wwauj7y4hwt26jOuBNedEo96LxptUok/qTXfmHrRWY3ls0U4xYrEPkR65ooNRoXtYFqMe2mzwVG2A76hYoONczkWmMGshLQ5PkcfNe1PxlYZv0g6tECmW1//1+D7xz9ZB+HhaoBCs3f4aQa0HBwj/D+g4vR7UELcGQiPKih8vEzZZHDZfmdhIqvi3HRimf7Hz/7ZLMoZq/dbfA0d3U/w3sN1yHrQr6CBR4SNLEJyjNyN6eVqNLpCvcpEsh//1/MPAywavQXCPc0qy4Y15fPl52kLFqR+MNfkd4qPdtkNfE6lYgbpSC6uhgUeN0l+xvZigarvKeHK4FEKZw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZtXCLFo4pE46hvuhYj9H7G/TlWXfVuPDTvP4kbTnOXo=;
+ b=Mp0nFaNJqT95e+mnFN0H/oagswfiQinN6CPw5F8LcVF7zeIFZ7ec26do7OuJzKddh5C/0KiYy+oMlb5Fm2MMtJxVaZPf5UUIvVHEu27oDUfqlejlsqCHx4PIT3vl28W/9+dxwjWQkd4FEt6hPdTnhmK/u713LOPaZl1B0k8wRXTx5Y3D07h2XNPEtInHIMfNCp48aW9HqAWutBaRns40BYLkKsRnu67urdthwg3SFPbtu6sUjjjF52Nqmq2NMsW1XVfC2NYyhil0fQjjHrnSKeGri8Hb9lXOmt2/1odAEx9AniQ4XE8701NXWSPniJJhpPXcaRtEDtzmBOxuCs22LA==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by PH7PR12MB6858.namprd12.prod.outlook.com (2603:10b6:510:1b4::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.12; Wed, 29 Jul
+ 2026 01:35:49 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0245.012; Wed, 29 Jul 2026
+ 01:35:48 +0000
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5C69280008
+Date: Tue, 28 Jul 2026 21:35:47 -0400
+Message-Id: <DKAO44AM2YD0.M3P8OW4H5EHG@nvidia.com>
+Cc: "Baolin Wang" <baolin.wang@linux.alibaba.com>, "  Liam R . Howlett  "
+ <liam@infradead.org>, "Nico Pache" <npache@redhat.com>, "Ryan Roberts"
+ <ryan.roberts@arm.com>, "Dev Jain" <dev.jain@arm.com>, "Barry Song"
+ <baohua@kernel.org>, "Lance Yang" <lance.yang@linux.dev>, "Usama Arif"
+ <usama.arif@linux.dev>, "Shuah Khan" <skhan@linuxfoundation.org>
+To: "Jakov Novak" <jakovnovak30@gmail.com>, <linux-mm@kvack.org>,
+ <linux-kernel@vger.kernel.org>, <linux-kernel-mentees@lists.linux.dev>,
+ "Andrew Morton" <akpm@linux-foundation.org>, "David Hildenbrand"
+ <david@kernel.org>, "Lorenzo Stoakes" <ljs@kernel.org>
+From: "Zi Yan" <ziy@nvidia.com>
+Subject: Re: [PATCH v2] mm/khugepaged: replace mutex_lock/mutex_unlock usage
+ with guard macro
+X-Mailer: aerc 0.21.0
+References: <20260728204636.20998-2-jakovnovak30@gmail.com>
+In-Reply-To: <20260728204636.20998-2-jakovnovak30@gmail.com>
+X-ClientProxiedBy: BL1PR13CA0082.namprd13.prod.outlook.com
+ (2603:10b6:208:2b8::27) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|PH7PR12MB6858:EE_
+X-MS-Office365-Filtering-Correlation-Id: c83884d5-91a1-4ce4-f830-08deed11b792
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|366016|23010399003|1800799024|6133799003|56012099006|11063799006|10067099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	SJNaC1/U7tgG4S75Bk+K5qZmeQVMlJ3uKjNqlQtjQ5Y4o9zg9tm2gL2PDwg0+iWOD+iX97a8JYgdX6ArOkoamF+eKXtmNelYeUXosH8L0kolvgZG/OnFYmJm6qVqR1g5MEqbsKQjfjWic52cWIxABjhorJDNSyqAzXYZUIoZf7PPpiypRTRGKqXmnI++ycTfrHr0PpHbAfFe1iNdpOwpWZjg3jE/3Mvcta0sIxP7/8CMyaX+Qae1iXWPy3Dv0eyO+9p71aSe2X1JJOsCsRQkIGX7Z9rSjlKOSbEj8a860l3uA1L3sPnSPxUbwVDhN0QvRxP3wyn2rYVLLVHp8WAYVlx8T/3e8i6Dt5l0NK38moqywHelGxmFYsUwS+qQzRyv/q8/JhgU5S5GBKmbPPG3ju9tb/j0/+Wo/m+qE1zK6oOQuqZrZhDhYBkDU5cL3DaeI6mvxq6zBQ4M1gHflISWI3WVNB8CX9IBy2Tyj2Jz0dnKpW0ueRicQxKJPDwRH5nGfa25v4aBZSsOovLdQDImD2SqzyEktD3KTgH5SI3ufD6CCJIALoOJ3PX6GlcHnjCfxhMAntZnk9xDwJI1YCs70elkEZLNz7vVzuIyLG4Je30s6k0mx0DuNoEnRwvEREhpaI4nAcfUB0JLIixdFAGkzP+2JSl+8tAhdxk62uK/TOU=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(23010399003)(1800799024)(6133799003)(56012099006)(11063799006)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?OUVwRER4VVI1UWtELy90b1NNWHh0aklJMkc5Y21ZY2M0Mm1QK1JMVHV2Skc2?=
+ =?utf-8?B?QjQ4M3lxQjVVSFp6aU9IbURmWXMvT2hVMW80MzlEWDY4USt6Nk1CVGNCYUc5?=
+ =?utf-8?B?ZTZmNGcxZU1TeUc0a2wvM01MQ0FjeXZBUkZvNXpsajRoWVhoZkFOV0ZQeUlW?=
+ =?utf-8?B?TWZQT2g2NlNpTVZ0bCt5YXhEcU4yODdsSHU1bCtQOEVVSkYrNG9waDdIQ2VW?=
+ =?utf-8?B?K3ZSK01lSnBPbmV6TWpjQVU1ZDB4Z1B2QmJCTFo4R0NjTU43cThIQ3NGbGNZ?=
+ =?utf-8?B?Wmtyd0pzNkxyYWV3QnB6NXVpUjhNSzRNK05FeURWTHBncmoreEtScnA1dkwz?=
+ =?utf-8?B?UFB4aE9tN29rSnZESUs4bmgxcWg3TFBkRVd1eHdWUEsxQVAzS2tDK2UxcEFR?=
+ =?utf-8?B?ZFJiaGxBcGdBTk1RVDJ0UjVUbEo5clJiSDAvOEx4SDlJTjhPSVpiZU52WEhJ?=
+ =?utf-8?B?d1ZOTkVZSlFYRUtuVHRaKy8rd0VuNFZIRVJPeGdRMGxnR29wdTcxVWt4YXNX?=
+ =?utf-8?B?OHRZOVpIMG1MVzRDSkcvN04ycHdGWjBtRmN1K0pqaXdkeFBIL1ZSOXcrQ2lw?=
+ =?utf-8?B?VG9jdGNLaVM2VmJPck9xMXhYRDF1ZGhQS3NRMTg4TFpydmxaUzFta29MV2NX?=
+ =?utf-8?B?eDdWcXlWYnFYTmdGcG9JVWJpSi9aOHloWWdOM0VNT2VDNE5YZjAzSWNDOUlX?=
+ =?utf-8?B?elpCdTVuUm42VWJNdjRzcklyM2Jka3hBTW81QVg0VTByV1lPTStQemQ5cEtm?=
+ =?utf-8?B?RnZsRHI0WFcvejBQc09qdC9oRGwwWFRCWmQ0cnk1WVVBWmhNVS9rYUNFdFlV?=
+ =?utf-8?B?STR0dXpTSGJWTFZPc0FOakk2QzlDL08zdUs2aHVQVUlUTXhxYUlTUGRrSTBz?=
+ =?utf-8?B?ZXFBVjltNGJmSEN6TDJCdWlXUEFmNmJjS0tTMFAwUVdUR1c2RlIvcG9HMlRi?=
+ =?utf-8?B?Um84TUlzM2Q5V3ZLZ3BYKzZDZlNlTjFLUXR2Q1dqM2oxU0s5SnBQcmc3bGgy?=
+ =?utf-8?B?Tm5LSlk2dm1RdlI0c09jYTROZVgwRnlFV0ZiaUpGTUZJL2ZyalZOQjFjbkhy?=
+ =?utf-8?B?b0ZpR0ExeXUxbEIzTFR3cmt0WFJDekZBT1Q5R09xaTlseWgvbU0za2x1enZO?=
+ =?utf-8?B?MGxGaThrdHpMUUtxVitUUFdwR3ZmaHF4aDlKaVU2ZWtYeW9kVDMrRWdOMFJL?=
+ =?utf-8?B?VHVCK0h5U1d1VDRtdFBlUGJxWUYxbWFLOE4yYysrWWxxMGxrVlJPMHBlaXNI?=
+ =?utf-8?B?bmVSWTNRL1R1cHZ6UFRheFFxaWRNdXRWL1NqS3oyZ0o5QXA0NnBVUlJQQkIy?=
+ =?utf-8?B?ZzJXMG5pM3ZzZnVpMVB2UHVXeUV2SkRHSTJod1djZlB0VXZpWUwxdG9EaENV?=
+ =?utf-8?B?Ym4xeVBhSi9KZHl5R1p2eTNJMVd5bHFFMkFDdGtWeE1yZzN1ZjFwbGlFQTg1?=
+ =?utf-8?B?NXV6ODJaeU1UVDJoakk2bEtyTnZNejNTam1QTjAwdUZQUC9BV3BBL2RrM0RQ?=
+ =?utf-8?B?YmdHN1A3cnEySmZGR25jZFI2aWJWMEhYNFVSMVR3dllxTzRydnZaNWZLdy90?=
+ =?utf-8?B?cmVLbFlTRDhBeXZpYzd1M3hRYXdKQTV1QWI0NklaVUlsQmVnbEVwcThRanQw?=
+ =?utf-8?B?RDVCR0cxaVZpZk0yQjNMNmdBK1ZTaVN3bzNOMkhIbmdtaHN0a1ZTK3NtSHV4?=
+ =?utf-8?B?aENQa1dKaGJPc1Q5VW9uOFF5SDcyUWhmNzdsZXZIdlZkakF4TVJUZGNqY3ho?=
+ =?utf-8?B?eG9jcWdpVDNiSzJma0k0cUxmcytXLzFxTVo4aGJ0L1kzYWtYZTNIRFBJbDdK?=
+ =?utf-8?B?N3ROWEljbkZzMTdDQnd3WlhTbGNXd3h2cGZONlU2M2ZSRzZkQVFyRnB1MkNv?=
+ =?utf-8?B?SG9XNHlsK0pyenRCcGhPek01elhCRTNJeWtDeU5YRXhkV29DTm9Oa2hEU0d3?=
+ =?utf-8?B?aDJKLzh4alEzYXRTdXB5dFJQN0hOOFpUYW9raXBHeDVRenFodVBNeTBFRkdr?=
+ =?utf-8?B?MVVCM1ZzeXJMdHV5TjVhbGY1MzZpSG5DY2hYZHRPOW9ZN1RDdGRiRUFtSFJu?=
+ =?utf-8?B?R0RoTmlLVk9zbHlSMjJkSmJocXZ5d0JnSE10TEtpNFp4MDhlQ1hoMFpqN09X?=
+ =?utf-8?B?V1ZDNlh3dnc5bHdJR2RlTVd6ZktiUTdCekpzcEZNMUxTWlVXeFAxVkw1RU9N?=
+ =?utf-8?B?M0Z1T2FOVkZ5aHllTUhWSUJWSWpVZFFPaGwxcDNoMWNzelFtZjI1OXUwNUw5?=
+ =?utf-8?B?bzV5K0trbHpYZXFoYjc0YUgrQStQUVB5Z1Y4WnN4S0tpMkppeUN5OWpHY2lr?=
+ =?utf-8?Q?Id4q+/4PD+RNxsep77?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c83884d5-91a1-4ce4-f830-08deed11b792
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jul 2026 01:35:48.4930
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: JadipSZ5yzKTgQ9M8SeLMcINyUj6mFK6LJ8kjyxlQMO2nksDhWIiUTSMQTLJi6d9
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6858
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 9460680002
+X-Stat-Signature: ifa3gmx5dwbmt5geb7ape53z78n5ezsm
 X-Rspam-User: 
-X-Stat-Signature: hzin3wsm1g4a8myfpijicy1hxrh3ao84
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1785288129-192597
-X-HE-Meta: U2FsdGVkX1+nUsUsfbyenPPHXdckv+0h2J2RgQhJHQX1BoXcq+VaER0gm5Y6uQT4fHkpa1mBa3OgVICIuwZ5jDZ+Cu/Y+vSDZsWdEY5xlkQQdBibo37S+AxLu/tMmx77aN8Bt7dJ3m1ZawlBxae2kdGLBabzqBrpHdCnw2t7+ge/2AQidcJDg6ZH9pHQzIX8Ydj4KCGZsUZLOvED8b/ZCt7aho2P6GMJBkjoLq0Ot4F6cZEwmrtyUmoVXtyut93on+hgOPkkzrWhFW51XpOQaSE+G9P3Ijtw/h0eTPaSgpaloY2rHvoUfPogmGR66pl1Og6eTiDd7o9PcXZdVa/IIRHjTdHJNZbkmuG3WvN67925AP4PR6Ul9fYL1t0crJhcQyFvdYEw2SGcWQ/cyIIu+VdaL+i1kz9+UrMKDNuWmqYwunx2J0bEydX8BDmP3+mdwwI+fGpZuZQjguRxApKlG1eb4T86aKJCd4cvns4QUOjanfl8UakHNs03Im6fbA2SIop8x21sHcFm5cvTzqsFfCsyVdpQNHvSqwUx+81QoyJV5ig5nEBH+ZkphSQxRW2WI4AmSThZn7CAoMO0G8DrTA2qHOcvIgjslSsC+l/kM2SBlDLRQijmKxSpFfIj6sFXuOOycyl/+StWP0quF4Rt8tz/mIC7J2i0JFmG6bf5ONBU8s2UlnmBor/FcZ07MWlTrkNI9y9wkUaaOHfuJK94/q63VzRW43mlvUwkBJXIfFwUqniDIzzNhJ+epxrUpu3RLzWlwoEZaNGTdj/PZ5vwy1e4plbvO9Z3dBGuOKIuTg+0v5fIUQ6tyT/FS4fVh287jNVTaLJsfBa8VUWaSVR48WQ5s1gEw7a8iMEqEonVzub4HvwXwJwR088aA567sPXyiBiffu83Pjm2iiOhUbYzMISTM0gLBKw0+uJzX7b3C1AW9K/aedLbQiQQVpDb1EGWRqf/KZLsX0/H2v8xrDI
- w1ZmQqya
- D0LkJrtwFQWQtNJ9Dgipc+D1rBemp2c+jw5KMlbkcN50vU72jsFg7djm2hn/aer9Q+jkpHkM6cJmQ0HXSLmboEfgqolGMV9Rt0yZ4k6qkEiD0y3mNwiarYKLqzXbdzP0qdfc07EyFPaOIKMoZqEes0B347M/5Yafj+iyzYtdB7GRWAWiq9p4XTSvKYMmeTAOz7M8TWuzMpHOhX9l2xp2tG2pSY2Jhixzl7KJ2v0hPasdECeS+skKMI7QWrLEeIFGHX4Je+j5czC0ZVF4pnxdodbKVBKVxP4K3fDipeypXc5DikNieGrc0KUCNrruscRYG3JNOjIaKkdKbPd8=
+X-HE-Tag: 1785288953-941198
+X-HE-Meta: U2FsdGVkX1/UhJST5zxj+PQ4hTyMcp2JP4TMf6ZHCK3pTGpDHZfuNN7/9UO+2xnQ06miWx1j4nUawcfQGq+L7UmMjTeqH3Pv7tc5lROIRh62SR+iLcyhk5o/5endnwi6YuBtYxeCvb5OQdFQCST648VOk88FAGX7kQs5nt7wEciZMQCUMB1HRaS971Fv8M7aRBW8oIKtwLY2jY4dM0eIrn6pRZKPq2K11PSUHIHWkf/hfjruKY/R6swCFCPV6VPXdO5ijHkS8IMusHYf9AEzvDsgO9MEL8RKmwP6b/rxnlOWnfN8JdM3Ln8dxBBYJxrPBlFnkmZkifIHL8PotjEvenyZanClIgZ+TpreMQkSvembdNTt1fdxagFx/Gt4i8+u/9x7sNO1pNlfCofGec3o5Bc5hoPSYELFqumxWdhPukkuEU/pWSYaos1r+8nDdx6Z5gqLbppN82a7bw2rn3eteXFEcq0xk2meoR7oAruC0qx8NQDkYnkwyIGDZoI95K929f7K0z3fi0RHbQtaXinkV7dHkp4RI3HNFT3RQP6VI1o61xxctD+UNpSOcAVTjdjwWu9I3+N/M+pmPpiN2demSH8GImRZzoacg3IWAqWN0C3Z7cGU5qV96Zt7JPnd+Y/j/Vcau07G4ZEYN/zOUvksZqvaBSkNZcpltRj4a6AC0dOpcKYyT6dYpe4mGipGlVJDRenLNvPgiEOIJ31+TsP8kHJrJM0DlbuYyGXl9WSF8IkISJDYbD0Yl15rvVQga05hAfgHrcsxU1c02n4fj7iwkKewXUUU1R+wfNcgyG62yiW5pP6928OsD6+O3p7KJQJ7fQLamqzGR79DYyXV4MIKh5jZJJAZEMgAlnFHQD/R71t9LoeeY/ONyHLXfHEmcgqOv5LcroIfIBw6pcd2CfJmPpLGGFzXmfwEG0dd/HsjFov9rQ6uZvGxVF5Lo15Owwm2NZE/FcOKFumr1uPue4I
+ 4BSaZcuh
+ ABi41WczvgR2KheMilEULkpkyZYK9IaYmUJRtKqgpALJLq+MS1IDgkDQGyPIBVXmPDBWHREz+FqVvjP5g2CYHGbmxdq0oHiJxe/w5urGtkatyP0r7CAz6Mf6yAxYuQLYhj6XmpPalT6KSdiVxDoqMJ1sfYkcnIIO94g4+DkFa6HRzJDOrEou/p961u9jUWrXrMIcyu5EAWo3+DlmGl3ma7iEIV0qLbuNNUrt9f31TuXS98cjfqnJK/J/Imhv4Mkuc3u2Qfns39brAmI+76lUdZovK4E6ABWT0S4CZzAFh3fE7bqeCk0NHKDwiCzrtftndNJUbQlv3eA95RCG04oVruV1nQPVDhQcDnP3EztR9DTWMqgUaBANOr4yC2tiJeiNR7TmLoQrCnsmoZbXXUc9Mo4auaeOwqU+Ftg09JWxKpFV9hBAtaa3pRy06M1YazDCg8Gs1ONGcKPOgqT1eK0MDa2PgC4vmw25FMitLToIb3sd/IWXszXQMyYogMMs6/PlQC4KQ4VOpHjh6zubJjaiVkf1YrBQdt+fIR6wL4Cbvwmp43Ho=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,112 +176,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 28 Jul 2026 23:17:01 +0800 Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
+On Tue Jul 28, 2026 at 4:46 PM EDT, Jakov Novak wrote:
+> Currently, khugepaged locks the khugepaged_mutex in two functions:
+> start_stop_khugepaged and khugepaged_min_free_kbytes_update. Remove
+> mutex_lock/mutex_unlock usage in these functions and replace it with the
+> guard macro. This makes the code more readable (removing a goto statement=
+)
+> and makes it harder to introduce bugs in the future.
+> No functional changes introduced.
+>
+> Signed-off-by: Jakov Novak <jakovnovak30@gmail.com>
+> Reviewed-by: Dev Jain <dev.jain@arm.com>
+> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> ---
+> v2:
+>   - Added #include <linux/cleanup.h> to the includes at the top of the fi=
+le
+>   - Moved err declaration to the scope where it's used in
+>     start_stop_khugepaged
+>   - Made default case return 0 instead of err in start_stop_khugepaged
+>
+>  mm/khugepaged.c | 15 ++++++---------
+>  1 file changed, 6 insertions(+), 9 deletions(-)
+>
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 617bca76db49..7890bd3e2a9d 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -23,6 +23,7 @@
+>  #include <linux/ksm.h>
+>  #include <linux/pgalloc.h>
+>  #include <linux/backing-dev.h>
+> +#include <linux/cleanup.h>
+> =20
+>  #include <asm/tlb.h>
+>  #include "internal.h"
+> @@ -3111,18 +3112,17 @@ void set_recommended_min_free_kbytes(void)
+> =20
+>  int start_stop_khugepaged(void)
+>  {
+> -	int err =3D 0;
+> -
+> -	mutex_lock(&khugepaged_mutex);
+> +	guard(mutex)(&khugepaged_mutex);
+>  	if (hugepage_enabled()) {
+>  		if (!khugepaged_thread)
+>  			khugepaged_thread =3D kthread_run(khugepaged, NULL,
+>  							"khugepaged");
+>  		if (IS_ERR(khugepaged_thread)) {
+> +			int err;
 
-> 
-> On 7/28/26 10:30 PM, SJ Park wrote:
-> > On Tue, 28 Jul 2026 18:06:48 +0800 Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
-> >
-> >> On 7/27/26 10:26 PM, SJ Park wrote:
-> >>> Hello Jiayuan,
-> >>>
-> >>> On Mon, 27 Jul 2026 17:54:22 +0800 Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
-> >>>
-> >>>> From: Jiayuan Chen <jiayuan.chen@shopee.com>
-[...]
-> > Actually I was also thinking about this problem for in the past.  One of my
-> > idea at that time was, handle only a few largest holes that practically being
-> > problems.  That is, while reading the system ram layout, find the holes, sort
-> > those by size, and do make holes in DAMON regions layout for the biggest N
-> > (say, 2) holes.  This may handle most cases including your 5 TiB hole.
-> > Actually vaddr is doing this, so we may be able to reuse some of the code.
-> >
-> > If it makes sense to you, I will try to implement this.
-> 
-> One worry with a fixed N is that it's a magic number. If a machine has more
-> than N big holes (more sockets / NUMA nodes, or several CXL devices), the
-> extra ones are silently not excluded and get walked again.
-> 
-> And making N configurable just moves the per-machine tuning back to the
-> user, which is exactly what I'm trying to avoid.
-> 
-> vaddr over-includes the gaps into its regions too, but it can skip them
-> cheaply: it walks the VMA tree (find_vma / maple tree), it's cheap.
-> paddr has no such structure, so an included hole is walked in full.
-> 
-> That's why a fixed N is safe for vaddr but risky for paddr.
+A new line here?
 
-I agree it has the problem of magic number.  That said, I expect common systems
-wouldn't have that many problematic large holes.  If it is not clearly wrong,
-I'd consider starting with magic number 2.  I feel magic number 2 is appealing
-probably because we could reuse vaddr's code in the case.  But it would already
-be much better than nothing in the problematic setups.  At least it will cover
-your 5 TiB hole.
+>  			pr_err("khugepaged: kthread_run(khugepaged) failed\n");
+>  			err =3D PTR_ERR(khugepaged_thread);
+>  			khugepaged_thread =3D NULL;
+> -			goto fail;
+> +			return err;
+>  		}
+> =20
+>  		if (!list_empty(&khugepaged_scan.mm_head))
 
-Depending on what we learn from the fields, we could change the magic number or
-add more optimizations in future.  Setting N as a fraction of max_nr_regions
-and/or handling holes based on their size (relative to real System RAMs?) are a
-few ideas off the top of my head.
+Otherwise, LGTM.
 
-> 
-> 
-> >>> user-visible parameters and internal state is also a concern.
-> >>
-> >> I think monitor_region_start/end is meant to expose the overall range, and
-> >> skipping the holes inside it is an implementation detail. Even if we didn't
-> >> skip them, the adaptive region count is never 1 anyway — DAMON already
-> >> splits [first,last] into many regions. The holes just add a few more, so
-> >> the param never matched the internal state exactly to begin with.
-> > It is arguable, but I believe this also makes sense in my opinion.
-> >
-> >>
-> >>> A quick workaround would be adjusting the memory layout in BIOS, using DAMON
-> >>> sysfs interface instead, or setting the monitor_region_{start,end} to cover
-> >>> only the single area.  Have you considered such workarounds?
-> >>>
-> >>> Let's complete this high level discussion first.
-> >>
-> >> Right, this is doable today — the DAMON sysfs interface can set multiple
-> >>
-> >> regions manually. This patch is only about convenience.
-> > Are you actually running DAMON_LRU_SORT or DAMON_RECLAIM in a production system
-> > having 5 TiB hole?  Or, planning to do?  If the above idea makes sense to you,
-> > I could prioritize implementation of it depending on this.
-> 
-> 
-> I'm not actually running DAMON_LRU_SORT or DAMON_RECLAIM on such a machine.
-
-Thank you for clarifying!  Let's keep this brainstorm level discussion, then.
-
-> I ran into this while working on per-cgroup hot/cold page tracking, where I
-> was comparing performance and accuracy across setups — that's where these
-> numbers came from.
-
-Sounds interesting.  Btw, there are multiple ways to do per-cgroup monitoring.
-Using DAMOS_STAT with memcg DAMOS filter is one of the ways.  Data
-access-as-a-data-attribute patch series [1] will allow doing that in a much
-more lightweight and flexible way.
-
-> 
-> 
-> >
-> > Thanks,
-> > SJ
-> >
-> > [...]
-> 
-> 
-> 
-> And to be clear, I'm not trying to land a patch here — I just noticed this
-> as a possible optimization. If you have a better idea, I'm happy to go with
-> it :).
-
-No worry!  FYI, using subject tag 'RFC' could be a good way to make the
-intention more explicit, if you want.
-
-[1] https://lore.kernel.org/20260728041242.187380-1-sj@kernel.org
+Reviewed-by: Zi Yan <ziy@nvidia.com>
 
 
-Thanks,
-SJ
+
+--=20
+Best Regards,
+Yan, Zi
+
 
