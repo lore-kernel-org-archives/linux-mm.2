@@ -4,95 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AAF1C53219
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 16:48:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B10A9C53219
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 16:49:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DAD876B008A; Wed, 29 Jul 2026 12:48:17 -0400 (EDT)
+	id AEF636B0092; Wed, 29 Jul 2026 12:49:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D5E786B008C; Wed, 29 Jul 2026 12:48:17 -0400 (EDT)
+	id AA0A66B0093; Wed, 29 Jul 2026 12:49:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C4E3D6B0092; Wed, 29 Jul 2026 12:48:17 -0400 (EDT)
+	id 967D56B0095; Wed, 29 Jul 2026 12:49:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 916506B008A
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 12:48:17 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 616706B0092
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 12:49:20 -0400 (EDT)
 Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 16CE5140775
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 16:48:17 +0000 (UTC)
-X-FDA: 85042397034.06.D50AAD3
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 5AAD21C0013
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 16:48:15 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=RURRz7s4;
-	spf=pass (imf21.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C6AD2C0716
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 16:49:19 +0000 (UTC)
+X-FDA: 85042399638.06.61E8D38
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 09586180002
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 16:49:17 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dfcXsYDo;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785343695;
+	s=arc-20220608; t=1785343758;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5l/3IP2HFVsa8eAqLOCa4UVEPVokMRetreMKGr2fkq8=;
-	b=bqCnNcUojTlbul2LyU6xX4XSHIHqT3ExBFWJi+gsB1FSWgzkWwUTZ0GKPeVPxgNLmYrjQG
-	E6RsJADde8w+SQKaJp+eMFIjleMTRuflDAcY6boqBoao40nVK8dnFjyMGWsjtzJcYP4Nis
-	7AwhbNCLZ3DhPZYwn5PllhmGB1+srGc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785343695;
-	b=YXz5Wfd9JYeO7tWLG0JsnOLt7UhnuELS+4ct/GLs9jq0OuN6FOZJxKjksmk3ywO4baxE6p
-	vvCD9KbUxEHVIZ6f4IZh5fnFh7mQoa+m6Izr1HGsio2uzoJutT6wGGXGEbCkfMJLKey7eE
-	2vkCGhpmCLZvETb4ZfQSP7HneLt5idE=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=P6sqMYW+3fWf7BQRd1/m+O03fjN9PWXMCvN1kiwSpK0=;
+	b=YgXRVNt6HXBFeGHFIim2kliizVSv8Hds/H2Wq+32Gaa7/bW26Qq6URkcd+zcM3F/23RUJL
+	mCUFSv61B+AluECUKFqK10fjLR7Ipd1hwwms6G92il5FFvRW0qitYmROwvtgLO5bwkp6Nl
+	h70e98zuQUh3rlvR88FrDq6I9BZ+XCA=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=RURRz7s4;
-	spf=pass (imf21.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=5l/3IP2HFVsa8eAqLOCa4UVEPVokMRetreMKGr2fkq8=; b=RURRz7s4klLVjJ1u0nsrHmmDI2
-	6huTDWCqNbHC3TPf0/VNEPWfxkndui6XU+JXSJ5DpiG9Qi+EUKSg4YlxYA6+5HjOpyF2NxbmdCB3I
-	IfR83VyRoPifX3SADc9MenUDDOtKZw0lYlmnfHMJPbb1HIJIqxoT5aXFs92TE9vl49F6zdifEni7a
-	blLi764oJSrTG//yH0piQUMUN/oQIEgokEdkEQvvL2j8jVreJm3kJfX93CpYZFqCRfPDQUmSTN50+
-	cLtQzbV2968XW4fGsJqnxrmj9Ybh5aB+R6HC3JPwKPRFxS1e0CN75gFL78YRohH6HKxwQxxhtu/96
-	5xvXvn6Q==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wp7Rj-008amb-2s;
-	Wed, 29 Jul 2026 16:47:56 +0000
-Date: Wed, 29 Jul 2026 09:47:49 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	kexec@lists.infradead.org, rmikey@meta.com, riel@surriel.com, kernel-team@meta.com, 
-	Kiryl Shutsemau <kas@kernel.org>
-Subject: Re: [PATCH] kexec: keep the next kernel off hardware-poisoned pages
-Message-ID: <amogZHzDyp8lvrQG@gmail.com>
-References: <20260728-kexec_posioned-v1-1-160c81d180fe@debian.org>
- <2vxz7bme80vm.fsf@kernel.org>
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dfcXsYDo;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785343758;
+	b=mPca2mqsZrX+41oehdaXuuz/Ge7EJXGt4CoKgl7mrj4bscjg+bXa93BsjQu8TrGgpMVX0f
+	PVTMARQiR93RY7Mfzd1BNG2ghgGZ0tJdD2FWQW7kHG+e5Hh4qygIBIV0bBkdPdOAj5+asZ
+	gmvg9emDi+xBC4Z5pluGkpFp2dOJ4c8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 36305600AF;
+	Wed, 29 Jul 2026 16:49:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FE861F000E9;
+	Wed, 29 Jul 2026 16:49:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785343756;
+	bh=P6sqMYW+3fWf7BQRd1/m+O03fjN9PWXMCvN1kiwSpK0=;
+	h=From:Subject:Date:To:Cc;
+	b=dfcXsYDoKgj97x9XBla0BXLUUZlhyMWattOrpHNe5Ux5LpQT+osoYvpTG7cAyOndv
+	 IdhDgt1BkKGHKjywoIBnLLN7Qtqw1NFpXUL8u1ibKmBSbNLEtXCT/Fa85WmokAxLaY
+	 WgbPvtVgBsYcIfScaLMcMdqLW22wiAh4Gc4QN8FsgWGe9DNhUX4M8GMUdUEOna4ELX
+	 b3OkVARsZMV0gwPdO6emLi8Lz4DSczQFuEd1biOnFrqrK6iQQb4exWB18dqlv15DHr
+	 1oF/x3RIJzGuH3dMcMB0NNc1q6BNDoSXW1EeiRS7bbNjqC3pNGlmShuZVTreaLirz9
+	 fOuqjyFzhcLLA==
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Subject: [PATCH v3 00/15] mm/rmap: index MAP_PRIVATE file-backed folios by
+ anonymous pgoff
+Date: Wed, 29 Jul 2026 17:48:35 +0100
+Message-Id: <20260729-b4-scalable-cow-virt-pgoff-v3-0-e8ecfefea812@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2vxz7bme80vm.fsf@kernel.org>
-X-Debian-User: leitao
-X-Stat-Signature: uk1c4iomg5cxjkmwdqeqr18qfh3km8x4
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAOMuamoC/33OQW7DIBAF0KtErDsWEGzqrHqPKgsYDw6pZSJwS
+ CrLd69xskg3WX5p5v0/s0TRU2KH3cwiZZ98GNew/9gxPJmxJ/DdmpnksuFaCLAKEprB2IEAww2
+ yjxNc+uAcGI7IyQplsWErcInk/H3Dv4+PnK72TDgVsVycfJpC/N3asyh3DEOmWAn9KbWqRb2ve
+ j9Vwzl9/VAcaahC7Mvnc49+tycL4IBOqlZwcrxVr0YZlOVW+bAkf2vJ1ZJdrVpda6Mb989aluU
+ PIyNv4EoBAAA=
+X-Change-ID: 20260711-b4-scalable-cow-virt-pgoff-a0cc0eb14bc6
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
+ Pedro Falcato <pfalcato@suse.de>, 
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
+ Miaohe Lin <linmiaohe@huawei.com>, 
+ Naoya Horiguchi <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, 
+ Harry Yoo <harry@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+ Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+ Barry Song <baohua@kernel.org>, Usama Arif <usama.arif@linux.dev>, 
+ Matthew Brost <matthew.brost@intel.com>, 
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
+ Ying Huang <ying.huang@linux.alibaba.com>, 
+ Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+ Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>, 
+ Arnd Bergmann <arnd@arndb.de>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=13682; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=/c9brJc25kcAr0UasPn2b+SHLhF9Tnk4HFPuEeK4sFc=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLKy9L6kcJgaTbhXPv3S82/JjgduF7Z/7LJbEvDQ/AjXQ
+ /GtK2Y2dpSyMIhxMciKKbI8/yK+P0gkbF7nBX83mDmsTCBDGLg4BWAiGYIMf/hurXXq9DrCsedv
+ pvxqoWWzXu0oPfbb3m5R15MHXVNE268xMmy47iO/RHK+6nnPiKW2fA5z/7+L65v17cb+ojCZ4pI
+ AL1YA
+X-Developer-Key: i=ljs@kernel.org; a=openpgp;
+ fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 5AAD21C0013
-X-HE-Tag: 1785343695-132716
-X-HE-Meta: U2FsdGVkX182FdXwkOpYJ/5Dg9lSvHsRV5BLS9Z/yFG2MzbfqY1d4EuLu9hSFUT0Nj2sTh1J3CIvwB1xvUH/b3hICHw5PmUamqdqZ35ZWTxhIHiZBGuW69xLJGyhlLH4v3kpnUeXXksZTDlOqunQ+6Vm24biXBamuuNApx/Tb0+W9lFjlBr0SdAuDArCkVZeXgDzWC3DnjBD80349aQUweFb/l7z2t1s9w+5wqBvpIuLTOgeofFvOVMrkC1BfIDBGnVbWGL599bbaVVUN+UbzU6ONyduW1jk8E+xhNeUrj8lK4S5sJ+V9r+dR0LcnhSod0ke/deZmE4e05eFgpkafbEdOt+GcuYEgB+B/IjwAIgJh2tbICPEZ1Wrqo9/nO4z7e+645V3miPvgNFd74k3YK3jMs/zNgkzm/Mvqj0X1fezfc9B3Bf2JnrjuTReO62RTl+uR69jpEyC4wVgwEVwi+6siBUuCvHcxEsR2aYjBeuWI/bXbscU1RJ22OHaQ6/U5Q7RRoU4OlQ7T/JElYZFk/Dv69sBlUM2tis7pDqGQMK20DDlWXXRWRj3ciBOgn3Z+FsZ/Om69+F6qLDDV6kBvtZMNK4oUZn5K1lGqdGQ4Rcix5jK+CEIxWwn2F6wS9lj1vCsOMc9GLYPbXXYfe0YZ3CKTAicFOt6WxnbEtAGpYhjcjdpwX30VKht1qtqgNSbNs9tvezkK+MdV8BTLSEWxHUHYqk+MELwqQ9EXwdTnlGwAmqhIbZsf56HBKY/+IzXTVg+Gj93JdfbP3DXNkWybUZECTznn7/xLgE64XIUkGAHccN7Rk65jCyttQSJzwmDwAFIK5L2x2RshlpOpOKupSJL1Relz8IvTdZu30AKUq34kl/rb67+uuiI4E6lgRwUZtFPbnW3WDebEu22t76eB48ZrQeFMzinWqmXtn+DJl5eoDVP1ZUmyo8y3wrG/9YSw3bOTKQPLrfgP37TjMX
- dc9wserh
- DIF/y0BH5rqQddsuu15dsLaSn2Nzp6y2H2Vge03o1+a8bvX29DaoQgvERuDB23wl8BdUhCF0RxjUQ0lFwyyKifKXndqIw3zSVlZ3rcC0P8XK+0Pcix+oPed4dQXe+VfS6xZL0BHjsUgGY2XgVWBOGbgKZvs+GDGbipGDns9bXNAFfdPLFEeRLtvwjJy7E/7adukhBy6iApGbxuIe1kXRhDf0vvg6LzRCQxvef1oJsiuz7w1OREAVCp8d6XGTeNn6W85/evkAxOE7Ieb9js9ie+3ZVeoe7M6ZxAVpsLIl6Bw+Ql+vQp8+JMv3cl5dL/0wZfFuVyzOJqD8WyD006nVaGAgzVhfOAQQFh1e9w6lG0glHoAemVyfEXSdRxd7eptgwePkYnFXR3SjPQ10i5eDSDiVghA66cgbd2Oq+
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 09586180002
+X-Stat-Signature: cxw6ymeig693yyzu9jdyabt74ofmwzc3
+X-HE-Tag: 1785343757-440668
+X-HE-Meta: U2FsdGVkX18+dGK39WBLl6cLDHdgCYU904LDBiDMKfP9OsHAlgZ44Wqm2p1v4P7is3LPog2zog3fegZRIU8HBFo5JvWUUvkv6scg6EUCQATzk7sX97IIM6ZS7H1rCPryIunhqA3INMUKrYDPWGLU9pNYqmKFBm/se3m2d9vFbnHI9kagrELRFiKWl5Wp7jmnFL1j23J57ZOfctNAFn7iAgPKte+vE1MdviZZ/SF3uCm0uzRrqBZPCSa0seB3Atk+yQldLayfLZ2jtouzkKFinOwXiVgGx7Z/TEXdqYZp2HRd21ajVmEnKPwdrDqJmXpfOhCQnxCqlfykfQkXMOnRpjR0KHvUitjTTD8pYOCX2joJzGsYoza/fgDzkWhjzv/k41VW9hi/wfNsNbHki1nfo7yPHKhE9O7wO4YBDgdIJQ7qWokRpye+78h3Blw9ebS/y9viWt03g+2bFQMPQmxxFmGTMH6dwdbogJ6fCwOrCvNVvk4iCg0mUNwj/qU7xrQFU3/rrwLKQtY05z5KH91744JDd1hatB4blgQ9bg70bGo39nrFo1tG5lV6976UpzSL3YxQMSSXtoQ++JODM7l5jGeR1yjsZZG2xopjwpsUTvA6E5U72o1RuuPDKKw26NlVlFiSdXx0D7al2+LERpMYiKDF/8m7lSyDWuYDkEnnXrdJl16s3yjoyxVfZeK2eMhM01okxr5kKArlvuIZLlW4Wl8pp2KwAmItPdebV1QPtZSLDy5L9Kyjd0wdP8JJQh8ZctMNSBFANdkeLigq0ut+NqPLmFkQXB2AVFUc3GtNEdjgOA/WBaV4K1O4wgKjdTyhmx0Eh2zC4TEAi+da/8Pbg2ZCB8dCGBTVd6/kOvGGipV3kjqxjKytGsXZDsaknsOrMhljSAkVyHXd9YSjZo7YEo08bPPf6uXyfsdtXGJ6umTBukNoB03h7yCLfaBFm/tE1lxS7gUbmSbktKSq8bK
+ 1FoFEWg3
+ VdbqBaPx84JEnXQy/+KINCNNVNgPhKALW/ukFp/3mXKB8jPZh/FH/SG/t6bZAf9qWRgr4qdJ5PlPvKjJh/sziNO7X4tETBuXJDZK3f8UutnJKWVrDcUjCDwr94+35PIPq/g+lid6IvwireCF7up8zmfykV8QGcVlCWgXh8VwYBW5y/JLIF7hKhRsOt1gJ0jbh38HcnOheJlpF2YA0mBjqVa2p0s0p3vwXilez/qo1ds37PuvlA7jdCgK/Wjn8LrTYSXh7SP5BdYx1TjGFr07SDoa9eK/PTHFYyqE1VpFzByFjyaWv9u/4Dvh1cCJeCFAxUspd2atChGCjVKR2o9e3VgRWJ6jJeE7YPB/AsP9EFhaUmA80K0jy3dRryBvrL2kCG8axKYEipbUvAXpHC8h7lD21+t+XoXJOpEpTIANBhCo49Jj8C62G7uDHCfqZNrzIUdk5lOL4ihXBrlUnTpJxw5mQ2VVtiBqicMDXpWCiinW7LljoIAGXJpSj1QcdPNc9n/CxvFibTGQFcJ8aLR0gPO//X70ZBsONLRT4A7eBZzC1aF0Nu0+TyT33TZv06o/1byAw8gDDVYU+ZfKAeM0/004t7vXSOBe2KJZb7eoSCn400PRHzfoViXZFZCxoOusnD+0GzqHiv8jmURi3goHNIN3jT8dYl8PoXdahxEr2Nxtycvi7SuZXOXhvmpbK40wnRGdcHqzTDjsSVFbvIr/f0+65KwRJ7LZaEF1vwSWQll/bQuTKNoGXCzZ+1SfiKo/zC5XScYAU1IcSif/6THyEmqg3B4R5jHryOSXhsSflTBpDDWdYubMkckdif7EC028CjuLG6Uaz++RphQYd925QPEuE7Xx0E80CMSMobmGp3GgVAK23dZAsdjrcNcJcltyGNC+2W6FiS3vBtQyRD3wIPmCluXu0in6QqclrbgHXmBjx4fQcL6fzzZOWPqyA+twQyWxYJ8zwnn3uDm+a/TNzD1NvuB4Q
+ kAq5okQS
+ aHEJEzb2+TedP/UShduRN7gOB0tBAjeR1Tmv277Ee+/O6N1YnP+yG1wpV33efXjIZPFK1cVnz5ZiaKoH/JT0s5v9+MzkM+Kn2iG4UkpzRk8clZBfCYqJg3LM1Z3pJn/eZ0251SQQYxvw1hNr9StndSxB77sLRiQwTHc3PAhvecZ1VZ9qetdryKnonEpF/bLsDYNhNr2SK71CVOaXJW6OFb657Al71dqaef//J/knIpI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,81 +128,277 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 29, 2026 at 01:57:01PM +0200, Pratyush Yadav wrote:
-> On Tue, Jul 28 2026, Breno Leitao wrote:
-> 
-> > Memory failures (such as unrecoverable ECCs errors) are getting more and
-> > more common. The kernel knows how to handle it while running, marking it
-> > as poisoned (and SIGBUS user tasks).
-> >
-> > Poisoned memory is removed from the buddy allocator, but, not from
-> > other places. A current problem is that kexec will load new kernel
-> > on top of a bad/poisoned memory, which is undesirable.
-> >
-> > If the next kernel's image, initrd or purgatory lands on poisoned frame,
-> > the relocation copy writes to the bad memory and the machine checks
-> > during the kexec.
-> >
-> > Skip hardware-poisoned frames when placing segments: check them in the
-> > kexec_file hole finder so it lays the next kernel down on good memory,
-> > and reject a poisoned destination in sanity_check_segment_list() for
-> > the kexec_load path, which cannot relocate.
-> 
-> kexec_locate_mem_hole() uses kexec_alloc_contig() to try to find a
-> contiguous range from CMA. If found, it uses that and skips relocation.
-> Do you know if CMA tracks poisoned pages and skips allocating them?
-> 
-> sanity_check_segment_list() will catch these anyway and error out, but
-> would be nice if CMA can track poisoned pages in the first place.
-> Anyway, that is out of scope for this patch, but something you might
-> want to look into.
+In memory management we've managed to manufacture a great deal of confusion
+around the concept of anonymous memory. We have:
 
-Good point, I understand CMA already avoids them: alloc_contig_range()
-runs in PB_ISOLATE_MODE_CMA_ALLOC, where a HWPoison page counts as
-unmovable, so isolation returns -EBUSY and cma_alloc() routes around it,
-no?
+1. 'Pure anon' memory - anonymous VMAs whose folios are anonymous and
+   swap-backed (thus for reclaim purposes, treated as anonymous). These are
+   simple enough.
 
-> > --- a/kernel/kexec_file.c
-> > +++ b/kernel/kexec_file.c
-> > @@ -504,6 +504,13 @@ static int locate_mem_hole_top_down(unsigned long start, unsigned long end,
-> >  			continue;
-> >  		}
-> >  
-> > +		/* Avoid placing the next kernel on hardware-poisoned memory */
-> > +		if (range_contains_hwpoison(temp_start,
-> > +					    temp_end - temp_start + 1)) {
-> > +			temp_start = temp_start - PAGE_SIZE;
-> 
-> Sashiko complains about this
-> https://sashiko.dev/#/patchset/20260728-kexec_posioned-v1-1-160c81d180fe@debian.org:
-> 
->     If we find a hardware-poisoned page within a large segment, does this loop in
->     locate_mem_hole_top_down() cause a CPU soft lockup?
-> 
->     Since temp_start is shifted by only PAGE_SIZE, the next iteration will call
->     range_contains_hwpoison() again. As seen in mm/memory-failure.c, that
->     function does a linear scan from the new start address:
-> 
->     	for (pfn = PHYS_PFN(start); pfn <= end_pfn; pfn++) {
->     		if (pfn_valid(pfn) && PageHWPoison(pfn_to_page(pfn)))
->     			return true;
->     	}
-> 
->     This means we could rescan almost the entire segment over and over until it
->     finally moves past the poisoned page. For a very large segment like a 512MB
->     initrd, this would iterate billions of times without yielding.
-> 
->     Could range_contains_hwpoison() return the address of the poisoned page so
->     the hole finder can skip past it efficiently?
-> 
-> Which does seem to make sense. Same problem below.
+2. shmem - file-backed VMAs, file-backed folios (from rmap perspective) so
+   present in the page cache and mapped by an address_space object, but
+   whose folios are also swap-backed (thus treated as anonymous for reclaim
+   purposes).
 
-Agreed, that could be a real problem. Returning the poisoned page
-address from range_contains_hwpoison() would work but feels awkward
-for a predicate function.
+3. MAP_PRIVATE-mapped /dev/zero - a strange beast whose VMAs have
+   vma->vm_file set, but which clears vma->vm_ops to satisfy
+   vma_is_anonymous(), resulting in VMAs that were mmap()'d referencing a
+   file, but are in every other sense anonymous, including the folios.
 
-Let me think through a cleaner approach.
+4. Other MAP_PRIVATE-file backed mappings - These possess file-backed VMAs
+   and have file-backed folios until CoW'd, at which point those CoW'd
+   folios are anonymous.
 
-Thanks for the review,
---breno
+This series fixes issues 3 and 4.
+
+In order for us to traverse VMAs using the reverse mapping, we require two
+fields - folio->mapping and folio->index. The first tells the rmap code
+where to look for VMAs, and the second tells it at which offset the folio
+starts within the referenced object.
+
+For anonymous folios, folio->mapping points at an anon_vma object. For
+file-backed folios, it points at an address_space. And:
+
+* For file-backed folios folio->index is simply the page offset of the start
+  of the folio within the file.
+
+* For anonymous folios belonging to pure anon mappings, folio->index is
+  equal to the anonymous page offset of the folio.
+
+* For anonymous folios belonging to file-backed mappings (i.e. CoW'd folios
+  of a MAP_PRIVATE file-backed mapping), folio->index is equal to the file
+  page offset.
+
+This series establishes a new anonymous page offset property of VMAs to
+allow us to map anonymous folios at their anonymous page offset, consistent
+with pure anon.
+
+The purpose of doing so is to lay the foundations for the scalable CoW
+work. This is necessary because scalable CoW looks in the maple tree for
+the VMA located at folio->index << PAGE_SHIFT, before falling back to
+looking up tracked remaps if necessary.
+
+The MAP_PRIVATE file-backed case means that folio indices will very often
+conflict with one another and this remap tracking becomes substantially
+more contended, and of course the fast path can never be used.
+
+This also makes it possible, in future, to unshare anonymously mapped
+folios with deep fork hierarchies on remap, eliminating the need for remap
+tracking in the vast majority of cases.
+
+Similar to page offset of pure anonymous VMAs, we update the anonymous page
+offset of unfaulted file-backed VMAs on remap, but do not once
+CoW'd (i.e. vma->anon_vma is non-NULL).
+
+Overall, there is little impact on mergeability, which remains exactly the same
+for pure anonymous and shared file-backed mappings, with the only impact being
+on MAP_PRIVATE-mapped file-backed mappings, which must now match on anonymous
+page offset as well as file page offset to be merged.
+
+To fail to merge like this would require CoW'ing the mapping, then finding
+another VMA with identical file and compatible page offset to remap next
+to.
+
+This is therefore very much an edge case that should have very little
+impact (and which scalable CoW may very well address in any case).
+
+We also address the outlier case of MAP_PRIVATE-/dev/zero mappings which
+have file page offset but satisfy vma_is_anonymous() by making them truly
+anonymous.
+
+This is low-risk as for anything meaningful these mappings behave
+anonymously, but it is very beneficial to do so as we eliminate an odd
+corner case, and those are notorious for attracting subtle bugs.
+
+Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+---
+v3:
+- Renamed virtual page offset to anonymous page offset across the series as
+  per David and adjusted prose to reflect it.
+- As part of the rename, eliminated  vma_anon_pgoff_addr() and the
+  conflicting vma_[start, end]_anon_pgoff() functions by passing anon pgoff
+  to the merge logic and having that figure out which page offset to use,
+  significantly simplifying things.
+- Introduced needs_adjacent_anon_pgoff() to be really clear about what the
+  merge logic is doing.
+- Passing through the anon pgoff fixes the issue Sashiko raised with shared
+  file-backed mappings having incorrect anon pgoff (inconsequential but a
+  wrinkle nonetheless).
+- Dropped unnecessary needs_rmap_locks change in 9/15 - this checks to see
+  if rmap locks need to be taken due to the range being moved
+  backwards. Since both file-backed and anon page offset are updated on
+  such a move, it suffices to check only the former. Updated commit message
+  to reflect it.
+- Sashiko complained about a couple missing .is_anon_walk entries in
+  pvmw's - page_mapped_in_vma() and migrate_vma_collect_huge_pmd() -
+  however neither impact anything - the field is only meaningful for
+  vma_address_end() if nr_pages > 1 and neither site is impacted. Moreover,
+  neither site sets pgoff either. Update the commit message to explain
+  this.
+- Renamed is_anon_walk to pgoff_is_anon and document that pvmw->pgoff is
+  only meaningful if pvmw->nr_pages > 1.
+- Highlighted the user-visible changes to /dev/zero being true-anon in the
+  relevant commit message as per Yang.
+- Fixed a bug in the proc-self-map-files-00[1,2].c procfs selftests - the
+  code was trying to MAP_PRIVATE 'an arbitrary file' then asserts that
+  file-backed procfs entries exist, but happened to choose
+  /dev/zero. Updated to the guaranteed-available /proc/self/exe, as
+  reported by Mark.
+- Fixed an issue with drivers that intentionally mark vma->vm_ops as NULL
+  (using the legacy ->mmap callback). If they do this set dummy ops, which
+  is what they meant. The mmap_prepare case is fine as nobody does this
+  there and this will be fixed when all drivers are finally converted to
+  mmap_prepare. As reported by Sashiko.
+- Added some missed VMA selftest vma_start_[anon]_pgoff() conversions in
+  the merge test commit as per Sashiko.
+- Various small prose/comment fixups.
+
+v2:
+- Removed incorrect assert on always-NULL folio from 7/15, as per syzbot.
+- Updated 2/15 so linear_virt_page_index() checks for vma_is_anonymous() as
+  well to be cautious about 'special' (VDSO, VVAR, etc.) VMAs accidentally
+  being asserted when CONFIG_DEBUG_VM is set, as per Sashiko.
+- Updated commit message of 9/15 to mention the subtle change in NUMA
+  interleaving behaviour, as per Sashiko.
+- Updated 10/15 to assert virtual page offset for adjacent VMAs for various
+  VMA userland tests, as per Sashiko.
+- Updated 13/15 to remove the !vma->vm_file check altogether after
+  MAP_PRIVATE-/dev/zero is made pure anon in vma_start_virt_pgoff().
+- Updated 12/15 to check that the /dev/zero device is a character device
+  since it turns out that block and character devices have their own
+  separate major/minor device number namespaces... :) as per Sashiko.
+- Updated 12/15 to fix a bisection hazard where vma->vm_ops would be
+  overwritten by vma_dummy_vm_ops for MAP_PRIVATE-/dev/zero, as per
+  Sashiko.
+- Updated 12/15 to fix another bisection hazard (...!) due to
+  ordering of vma_set_anonymous(). Removed in 13/15.
+- Added comments to __vm_virt_pgoff[lo, hi] fields referencing
+  vma_start_virt_pgoff()'s comment to be clearer what these are as per
+  Xu Xin in 1/15.
+- Various typo fixes + cleanups in prose.
+- Updated the cover letter to point out that the MAP_PRIVATE-/dev/zero
+  issue is addressed in this series too.
+https://patch.msgid.link/20260720-b4-scalable-cow-virt-pgoff-v2-0-2d549757a76f@kernel.org
+
+v1:
+- Rebased onto mm-new.
+- Dependent series heavily reviewed and looks highly likely to land, so
+  un-RFC.
+- Added explicit check for /dev/zero and removed ability for arbitrary
+  mmap/mmap_prepare hooks to make themselves anonymous.
+- Made MAP_PRIVATE-/dev/zero mappings truly anonymous.
+- Added MAP_PRIVATE file-backed mapping merge test to selftests.
+- Added a MAP_PRIVATE-/dev/zero VMA userland test to assert that the VMA
+  really is made anonymous.
+- Added MAP_PRIVATE-/dev/zero merge tests to selftests.
+- Fixed missed virtual page index site in try_to_merge_with_ksm_page().
+- Updated folio_within_range() to use virtual page offset for anon
+  folio. This had no impact as it is only called for large folios at the
+  moment (and MAP_PRIVATE-file backed mappings can't currently be backed by
+  a large folio) but making the change now protects us for the future.
+- Fixed typos etc.
+https://patch.msgid.link/20260717-b4-scalable-cow-virt-pgoff-v1-0-cf24910ef094@kernel.org
+
+RFC:
+https://patch.msgid.link/cover.1782745153.git.ljs@kernel.org
+
+To: Andrew Morton <akpm@linux-foundation.org>
+To: David Hildenbrand <david@kernel.org>
+To: "Liam R. Howlett" <liam@infradead.org>
+To: Vlastimil Babka <vbabka@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+To: Suren Baghdasaryan <surenb@google.com>
+To: Michal Hocko <mhocko@suse.com>
+To: Jann Horn <jannh@google.com>
+To: Pedro Falcato <pfalcato@suse.de>
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+To: Jan Kara <jack@suse.cz>
+To: Miaohe Lin <linmiaohe@huawei.com>
+To: Naoya Horiguchi <nao.horiguchi@gmail.com>
+To: Rik van Riel <riel@surriel.com>
+To: Harry Yoo <harry@kernel.org>
+To: Lance Yang <lance.yang@linux.dev>
+To: Kees Cook <kees@kernel.org>
+To: Zi Yan <ziy@nvidia.com>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+To: Nico Pache <npache@redhat.com>
+To: Ryan Roberts <ryan.roberts@arm.com>
+To: Dev Jain <dev.jain@arm.com>
+To: Barry Song <baohua@kernel.org>
+To: Usama Arif <usama.arif@linux.dev>
+To: Matthew Brost <matthew.brost@intel.com>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Rakie Kim <rakie.kim@sk.com>
+To: Byungchul Park <byungchul@sk.com>
+To: Gregory Price <gourry@gourry.net>
+To: Ying Huang <ying.huang@linux.alibaba.com>
+To: Alistair Popple <apopple@nvidia.com>
+To: Peter Xu <peterx@redhat.com>
+To: Xu Xin <xu.xin16@zte.com.cn>
+To: Chengming Zhou <chengming.zhou@linux.dev>
+To: Arnd Bergmann <arnd@arndb.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: ljs@kernel.org
+Cc: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-fsdevel@vger.kernel.org
+Cc: linux-kselftest@vger.kernel.org
+
+---
+Lorenzo Stoakes (ARM) (15):
+      mm/vma: introduce VMA anon page offset field and add helpers
+      mm: introduce linear_anon_page_index()
+      mm: abstract vma_address() and introduce vma_anon_address()
+      mm: update print_bad_page_map() to show anonymous page index
+      mm: introduce and use vma_filebacked_address()
+      mm: propagate VMA anonymous page offset on map, remap, split + merge
+      mm/rmap: track whether the page VMA mapped pgoff is anonymous
+      mm: introduce and use linear_folio_page_index()
+      mm/rmap: use anon pgoff to track MAP_PRIVATE file-backed anon folios
+      tools/testing/vma: expand VMA merge tests to assert anon pgoff
+      tools/testing/selftests/mm: test anonymous page offset merge behaviour
+      mm/vma: only permit MAP_PRIVATE /dev/zero to be mapped anonymous
+      mm/vma: make MAP_PRIVATE-mapped /dev/zero mappings truly anonymous
+      tools/testing/vma: add test to assert MAP_PRIVATE-/dev/zero is anon
+      tools/testing/selftests/mm: add MAP_PRIVATE-/dev/zero merge tests
+
+ drivers/char/mem.c                                 |   8 +-
+ include/linux/mm.h                                 |  74 ++++++++--
+ include/linux/mm_types.h                           |  12 ++
+ include/linux/pagemap.h                            |  66 +++++++++
+ include/linux/rmap.h                               |   4 +-
+ mm/huge_memory.c                                   |   3 +-
+ mm/internal.h                                      |  89 ++++++++----
+ mm/interval_tree.c                                 |   4 +-
+ mm/ksm.c                                           |   7 +-
+ mm/memory-failure.c                                |   4 +-
+ mm/memory.c                                        |   8 +-
+ mm/migrate.c                                       |   6 +-
+ mm/mremap.c                                        |   6 +-
+ mm/page_vma_mapped.c                               |   6 +-
+ mm/rmap.c                                          |  22 +--
+ mm/userfaultfd.c                                   |   6 +-
+ mm/vma.c                                           | 127 +++++++++++++---
+ mm/vma.h                                           |  92 +++++++-----
+ mm/vma_exec.c                                      |   2 +-
+ mm/vma_init.c                                      |   1 +
+ mm/vma_internal.h                                  |   1 +
+ tools/testing/selftests/mm/merge.c                 | 161 +++++++++++++++++++++
+ .../selftests/proc/proc-self-map-files-001.c       |   2 +-
+ .../selftests/proc/proc-self-map-files-002.c       |   2 +-
+ tools/testing/vma/include/dup.h                    |  87 ++++++++++-
+ tools/testing/vma/shared.c                         |   3 +-
+ tools/testing/vma/tests/merge.c                    |  49 +++++--
+ tools/testing/vma/tests/mmap.c                     |  50 +++++++
+ tools/testing/vma/tests/vma.c                      |   4 +-
+ tools/testing/vma/vma_internal.h                   |   1 +
+ 30 files changed, 766 insertions(+), 141 deletions(-)
+---
+base-commit: 5093dba1014c1d7f7e247fd118f0fa8f22136046
+change-id: 20260711-b4-scalable-cow-virt-pgoff-a0cc0eb14bc6
+
+Cheers,
+-- 
+Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
 
