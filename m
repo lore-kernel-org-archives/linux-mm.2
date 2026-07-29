@@ -4,104 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D313C54F55
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:52:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85EADC53200
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:52:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 141C36B0124; Wed, 29 Jul 2026 10:52:40 -0400 (EDT)
+	id BE78F6B0125; Wed, 29 Jul 2026 10:52:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 111616B0125; Wed, 29 Jul 2026 10:52:40 -0400 (EDT)
+	id B99596B0131; Wed, 29 Jul 2026 10:52:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 027336B012F; Wed, 29 Jul 2026 10:52:39 -0400 (EDT)
+	id AAF0F6B0132; Wed, 29 Jul 2026 10:52:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C24FA6B0124
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:52:39 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0BB251C0E57
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 08:53:23 +0000 (UTC)
-X-FDA: 85041200286.07.B851AB6
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 732D6180009
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 08:53:21 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=kKo2A1BQ;
-	spf=pass (imf24.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+	by kanga.kvack.org (Postfix) with ESMTP id EB4D56B0125
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:52:41 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6ACA61C0F77
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 12:25:16 +0000 (UTC)
+X-FDA: 85041734232.08.51835FD
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf05.hostedemail.com (Postfix) with ESMTP id B5F74100010
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 12:25:14 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=G2izd5OG;
+	spf=pass (imf05.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785315201;
+	s=arc-20220608; t=1785327914;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ss/DaoJYNqjgpN1lAskphAlKNITya8LLU2vIUgnSPIA=;
-	b=6677AiiqHq8HbsqXEWVr2DWyAYfz5SZn/WUZUa3W8I5bED4cxLgg39Fvci69hU/8kNpedb
-	aQq5ykiy1JHS9cnjPEjWA7EuP+4UdKjmCMTtTe5sDo/kX7r8xx/Z2yoXXwiwo9M6oPty2D
-	aQxOYb8nWFHtjNeOcO9f72sD5ZxNYxE=
+	bh=FR7iSCvnkzVCTj63vl/6ShqY/5yTsmSU375XxxhVyn4=;
+	b=BLhObiYvVbQmi/f5lt8QovrfVEb4tBEjMOA8IVxjy6+1e6iOLOmfuAD+6c6Ufx/odluEf0
+	hhBwWRrgbl9o3rXxV8Kqv37MV1tCq9m3LJElFzKpX395hnRQgU08cAfhLsaLHSZFR56eNw
+	Fs7/2MgU47FYjDY5LUyR1rzWJjI2qfI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785315201;
-	b=7n0wVxug347vGiaubeFck0IJpxskRPwxO7uwMZ2w+fzqndWNqYEhv5bL9+ikY/L8Aa0Au3
-	c9Ii9apoz9EXoeBKflWmdHjQq9BXrv83K7BCvQF++JP5YPBlBoup+CxRza2OqeldiS7ARV
-	+smkys4T14KGV6EURzT3a2Hdt4vjAtU=
+	t=1785327914;
+	b=XkT+awaA2ytpz/vaOMxNqahH/CzAUz4GORxO7IVViqpaVADp+4B/ykVU9MZ/kse2Zag7Kh
+	Jiy3qUgXC2Bi8HbUflROjEG71wQUzbCIgxtqX8Eqa6MrmAd9HH8lWxprMhKyFT5CFLmv9U
+	dTdPYy6GfFEWIavhJFj10iYEZTaYZHc=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=kKo2A1BQ;
-	spf=pass (imf24.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Ss/DaoJYNqjgpN1lAskphAlKNITya8LLU2vIUgnSPIA=; b=kKo2A1BQR3Y09foW8g7qBwUPmX
-	NYROK6U4J0bpmZKOyfm1oFEXpv3CNR7vfCuRy+FO0mbwp84eXe/JU9LFMYD1ge1BkKqbwxKSdae2K
-	4KqnPzg5sQt3KaFOUT+/Qrql0v/KSWTs/CgLao7wTcgECQR7c1SU6cLiV/gtktS9ZhLLmN4GgWr2O
-	4ki88TRZvcEBBLW+SutP4Up07yWZHIh4rfIlySxODkjQaFtKxlBp0dlXMiRmcx1UyuRLTtaUU1YqS
-	/p7TeB9eHR2ldVifgdc8dOspz1w740YC97n3B9wlxbYGxnj8yYlC1HwuqWePIDeQM51EBozdKJoZv
-	akJNbqqw==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wp02F-008KmC-2v;
-	Wed, 29 Jul 2026 08:53:08 +0000
-Date: Wed, 29 Jul 2026 01:53:01 -0700
-From: Breno Leitao <leitao@debian.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Miaohe Lin <linmiaohe@huawei.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, kernel-team@meta.com, Lorenzo Stoakes <ljs@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, "Liam R. Howlett" <liam@infradead.org>, lance.yang@linux.dev, 
-	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Subject: Re: [PATCH v10 6/6] selftests/mm: add hwpoison-panic destructive test
-Message-ID: <amm72Bu9qmWLI-9b@gmail.com>
-References: <20260630-ecc_panic-v10-0-c6ed5b62eea2@debian.org>
- <20260630-ecc_panic-v10-6-c6ed5b62eea2@debian.org>
- <ee4982bf-ff45-8f0b-3b76-7ca19228f12b@huawei.com>
- <20260727212402.09baa9381ca426273fad4719@linux-foundation.org>
- <de29c5cc-3637-cd18-354d-55ceb3d60afd@huawei.com>
- <amh1nZVVaaZSGD3M@gmail.com>
- <20260728122016.30752d36c3b3c3af231efa9d@linux-foundation.org>
- <44f81bea-d64a-4f73-8665-46652a928c83@kernel.org>
- <amkn21ftNme48Vbl@gmail.com>
- <f83d5b26-b369-489b-a305-1eb5ec6fccfb@kernel.org>
+	imf05.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=G2izd5OG;
+	spf=pass (imf05.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 91B25168F;
+	Wed, 29 Jul 2026 05:25:07 -0700 (PDT)
+Received: from a085714.blr.arm.com (a085714.arm.com [10.164.19.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id CEB173F66F;
+	Wed, 29 Jul 2026 05:25:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1785327911; bh=2ivscI4jufFIfQzWpvv8SWV0GOCXrTpCwRUQnSpO4Mk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=G2izd5OGCyPuuBjnWPWL5Qb7rru99JByJ9ZBW6qH+9xLHu0NSpILZMNz/v1++WKRs
+	 F6pFvnVvHSyd17Cv32sWT3t+34iiSUYikecw5a8Z3bqhWa0pJQ3ZWl0WmcgCY4AGfT
+	 23NB7LTCPsQDRgPxcEz6RILwcppO6xjmCLy0ZfkM=
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: linux-mm@kvack.org,
+	linux-arm-kernel@lists.infradead.org
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Linu Cherian <linu.cherian@arm.com>,
+	linux-kernel@vger.kernel.org,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Subject: [PATCH 01/17] mm: Add read-write accessors for vm_page_prot
+Date: Wed, 29 Jul 2026 17:54:36 +0530
+Message-ID: <20260729122452.3797443-2-anshuman.khandual@arm.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260729122452.3797443-1-anshuman.khandual@arm.com>
+References: <20260729122452.3797443-1-anshuman.khandual@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f83d5b26-b369-489b-a305-1eb5ec6fccfb@kernel.org>
-X-Debian-User: leitao
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 732D6180009
-X-Stat-Signature: gsmupt4wxoyytyshuf6iix3afdfn3ein
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: B5F74100010
+X-Stat-Signature: uwc4pmqf5y9h4rkdtqcbayr3bbwijsgb
 X-Rspam-User: 
-X-HE-Tag: 1785315201-920241
-X-HE-Meta: U2FsdGVkX1+sDCp5S3WPz7lQ7AkgGwCYEH1hQaz3E9deV7IK3mNaXzxq5IrcZ8B8u/UGOSZfyQ2HqRvsdHw/AkHjkc6qos8AF4nOYoNLJ0/BYg83CX9BuhERuvc7vfGOryLWmjlUi+ceCbmniAXOE2r7JlOEQcPUPzjbxoRRg3t7Gp5wUrQAelT1CUv+/af6lnDAQgLsITfAe+tiswTfi2qqC7y8QgvDp9rGIV/0K3lxwQEeBmE7cfDYinH1AjsHLuBzaMgreGK5JeJCN+D4QSjxEw+P2Aaq6JutBkrkhOdJBLS6BNyahx34zIduxeBCeeJvmQU65KA5zAatvlR/veb+9orGDokqrIwLxA4mpZgpG0yYi5ylauJhPSBU2YJnwkKIphBNXuxhD4Va2vOBmZ2MMBIRAr9bpLol2pLELBYmtau5KwRa91H7yofERbdVewSxAgdEUF5Vw0KCQN0N+TkJZm/E0TCA4dFCyc6DETDGTo+08WxIiNYoo3wd5O8WfJ0sJq30E5XkRHsUQl9QEsxLrFjJRrNe6usTOrE4ReVe/sNY94i8mopwMUd12RoXCBEBEMxjEuFn41i0P7qiEbYDKkLN1slxzlqQlJ1KmhMpewgHWevaqoczcQqEHQabkhc8hfhv8GzpywGejvPAyaz3X+iRPZG9aScTzctdhUToA6Sb9qPJy6bmRAOwhzc7AY/xJQtMrdxGp01lEfs07XnPeC6mpY6gL81PiRiBomRVskmd3giRHA92ybSlhThv02QkpycU7tQsjvAh1JGawz6AHO8k9TlC4I77x8iOEu2Ou6JJjqYVaQOcFOiEn+S5gHhR2CU9yOHiwdlxlFDbHp6EanuWCG5CwWvl0P8fD3Wnj4f8LLcvIT/45vnK1VWKdJVtFcwFbHgrzJO6V4z7bKSv/v+FJ7sZ/Q3C2ZPZq8rNnWPrChoiogFsrGj69fohG4qpdh8foXwfKcQc7Bh
- VDUOlFT/
- GLoXh/blH6q0vqJvdyvExB30s8FOKeN84z6+g2Ej64EuatJ62D4Da+27RPS7FjIC+UbCVbkbVHHmt0NvA5ZVDAkcv6/7g52CE64QEiMyfiXum8AjNSnP5CszyMeTK5wqKzbFq7inhxLdcX92qQZZnX513NN1vM0LqQbidLz1VHBuHK4e/gahgDs/RxcGBo86tHngLJxQYaMFXG7ktSLnouL/DAXzOHgyu4j/eS834TgZ//GPsVSvuCYNe6/FzG3C4V7G3i67GpLha0TUH0fRAr2lyt/t/3Gt2wLJgHhhd9F1A9AL/P1F1xxDdrCe9U1cOt5UNQ7x4LL795Smjz1R6xSN7q6AsR1pXG3QlAOqeR9yq4J+AHepayUp1kQ==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1785327914-33580
+X-HE-Meta: U2FsdGVkX1/sVMlNZOMixZQo72n1Fi5jt2y54F1Cf2dEHeshjuSXRC2ms6Ag3nAdq6j/xTtCXlG9gULMQyKYCDfRgwe4c0Nc+AW9mM9hSJh27ePv4dsnMJVb2m2+g9VQ7l+Jor3w/VZFSEgOSv71BuLvitoczxBIVmoNoR8ByG1wlxHGGs6UJpeqxzO4wHK2mNfn+L27BnhBprEdBIPCCU0hwB7X4QxKjm8MD9UAtjl++TsFGCxmTxJzDixj+fw+p3zLdw7PWezoJkk94G7mgbAfehO4GaQhRfXU0wAEqegGxfXrqw8pjOaWOpa0VZRUsxPuhryc9ZItsD4nMq8yCa55r8tnD68y2p7mMmV7wf/aZBhCvSSPY9pbXY+QySpUa+P3cWs/9crHuEPiYKd++ecNL7kgIkEfY5ij/q7+EuZiD/UZGp1I/AwBAt0dayrni0GPo8fFtlX3RpwZxeAILT9z8eFasdj238SwRbJtQXnpW4+4QYFKOkROnIzoFoQx9PiG58g1f77l/DLMIHyuRYedzH5hVS+GQa+3/rMcB/CSHxquapEiMAKREcTe3J22xV3H+JkaeNq9XV5K92dl+kWj03DqIC1K7dK6gzme8cF6GCjRJ23c35GmFVMbGLJoNeHn9e7xmCN9etxuXe9u/cz9zQUDJzJO8V/E8PkUyoGhUF6t/B1Oo4h02A5tI24oqPEz+NDOMk0DXiWt1foZvaqzC28lrdfbcuV7v8z3m44xUosEQb2ghxLOk6h9eAp5LKIxmdQZ2ouOSPVnmQwd3O0GkCYMYVAvn/GwjaDdKoCMEFAiPkTXbkrWTylZHDMIqxOHVo+TGLV88mDhFF8bh4idrZvXb0Ylmh9CYPymFkudofYP4QLCF3N45vLLvqR6N4dK3+mm8M6qeVme+CaUrqt32rPqwLlyZga7gMWiWDLPecHfYas/PqFAd66qikoTUimsLWObKRTKgAGbutF
+ Q/gtxHJ8
+ Gb4MQUDDIYc0nMn4E+TgKxxSvPVQzrl4lMqBVmfDe99M27DAxisDPYPv+ZtApBRu9WQlG9asVbQlbRWUWiS7tOXfimcvrL7DOYu698/88esCq9CJsyCh41CktvrpCSO+cQuHjCxDDkaiRRqNSUk6cThnUQY41Dd9/gB7dBR/kHJud3BnnAVZVNXNJconVHT993FNR0Eqb+8+jDt5XMiKz3rZ4tEGpmvNI0EpBWQPLKdqn78zJPIS8UBEgku972XZGMeNwLoFcWC4YIZgtvfNKqayWUhOpy2J3RAl4zEWBuumTqBG1uCaJ6k2WqaCnNmsWcfIkeBnDGiwRdpw5b0zRvD+CI+Tm+4no3MVkiTXhsLHoAiJPgX207bQVaD6BBL19nLdmLn1Zsv6YSS3svNTXamo78D4L2crkKDYrjJnqMrnsBjb5OERaC8tZkI31cdaYlalTiRPjBtdgZgM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,51 +98,118 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 29, 2026 at 09:25:16AM +0200, David Hildenbrand (Arm) wrote:
-> On 7/29/26 00:07, Breno Leitao wrote:
-> > I have a draft of the selftest in C already and I will give it more bake
-> > time, and I will submit it until EOW.
->
-> IMHO there is no need to rush this test here, we could merge it after the main work.
->
-> We neglected our selftests quite a bit in the past, and that is biting us now.
->
-> That's why I push back hard now (sorry) against stuff that is different than the
-> rest and not easy to maintain.
->
-> I know, hwpoison-panic is a destructive test, but I really don't think we should
-> just merge mostly unreviewed bash tests that will just bitrot.
->
-> Which makes me wonder now: should this actually be a selftest? It's nothing one
-> would just want to run in a CI. It will crash your machine.
->
-> Maybe this should just be a tool in tools/mm? I really think so. So having a
-> nice C-level hwpoison-panic.c in tools/mm might be the way to go.
+Currently vma->vm_page_prot is safely read from and written to, without any
+locks with READ_ONCE() and WRITE_ONCE(). But with introduction of D128 page
+tables on arm64 platform, vm_page_prot grows to 128 bits which can't safely
+be handled with READ_ONCE() and WRITE_ONCE().
 
-Agreed. In v6 [0] I actually removed the selftest entirely, since the value
-wasn't clear and it seemed like an ugly duckling.
+Add read and write accessors for vm_page_prot like pgprot_[read|write]()
+which any platform can override when required, although still defaulting as
+READ_ONCE() and WRITE_ONCE(), thus preserving the functionality for others.
 
-It seems tools/mm would be a good fit, and make a better home for this
-type of "test".
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+---
+ include/linux/pgtable.h | 14 ++++++++++++++
+ mm/huge_memory.c        |  4 ++--
+ mm/memory.c             |  2 +-
+ mm/migrate.c            |  2 +-
+ mm/mmap.c               |  2 +-
+ 5 files changed, 19 insertions(+), 5 deletions(-)
 
-Given more changes coming in memory failure (at least from my side
-[1][2]), I think it would be a good idea to create a subdirectory
-(tools/mm/memory-failure) and keep these semi-destructive tools in there. Is
-this the right direction?
-
-> So let's rather make this test well maintainable and have it properly reviewed
-> than rushing something suboptimal.
-
-Sounds good. I'll move this to tools/mm and resubmit. Given Andrew has
-removed the selftest from mm-unstable while keeping the rest of the
-series (which is fully reviewed and frictionless), so I'll focus on the
-test tool now and send it separately.
-
-Thanks for the discussion,
---breno
-
-Link: https://lore.kernel.org/all/20260511-ecc_panic-v6-0-183012ba7d4b@debian.org/ [0]
-Link: https://lore.kernel.org/all/20260728-kexec_posioned-v1-1-160c81d180fe@debian.org/ [1]
-Link: https://lore.kernel.org/all/20260717-hwpoison-kho-v1-0-9c5eda551998@debian.org/ [2]
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index 2981e386da7b..3ecbeec6b463 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -524,6 +524,20 @@ static inline pgd_t pgdp_get(pgd_t *pgdp)
+ }
+ #endif
+ 
++#ifndef pgprot_read
++static inline pgprot_t pgprot_read(pgprot_t *prot)
++{
++	return READ_ONCE(*prot);
++}
++#endif
++
++#ifndef pgprot_write
++static inline void pgprot_write(pgprot_t *prot, pgprot_t val)
++{
++	WRITE_ONCE(*prot, val);
++}
++#endif
++
+ #ifndef __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
+ static inline bool ptep_test_and_clear_young(struct vm_area_struct *vma,
+ 		unsigned long address, pte_t *ptep)
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index b5d1e9d4463d..2915e7c628ef 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -3281,7 +3281,7 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+ 	} else {
+ 		pte_t entry;
+ 
+-		entry = mk_pte(page, READ_ONCE(vma->vm_page_prot));
++		entry = mk_pte(page, pgprot_read(&vma->vm_page_prot));
+ 		if (write)
+ 			entry = pte_mkwrite(entry, vma);
+ 		if (!young)
+@@ -4957,7 +4957,7 @@ void remove_migration_pmd(struct page_vma_mapped_walk *pvmw, struct page *new)
+ 
+ 	entry = softleaf_from_pmd(*pvmw->pmd);
+ 	folio_get(folio);
+-	pmde = folio_mk_pmd(folio, READ_ONCE(vma->vm_page_prot));
++	pmde = folio_mk_pmd(folio, pgprot_read(&vma->vm_page_prot));
+ 
+ 	if (pmd_swp_soft_dirty(*pvmw->pmd))
+ 		pmde = pmd_mksoft_dirty(pmde);
+diff --git a/mm/memory.c b/mm/memory.c
+index c8fe2f373fd2..598d0e588e9a 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -945,7 +945,7 @@ static void restore_exclusive_pte(struct vm_area_struct *vma,
+ 
+ 	VM_WARN_ON_FOLIO(!folio_test_locked(folio), folio);
+ 
+-	pte = pte_mkold(mk_pte(page, READ_ONCE(vma->vm_page_prot)));
++	pte = pte_mkold(mk_pte(page, pgprot_read(&vma->vm_page_prot)));
+ 	if (pte_swp_soft_dirty(orig_pte))
+ 		pte = pte_mksoft_dirty(pte);
+ 
+diff --git a/mm/migrate.c b/mm/migrate.c
+index d9b23909d716..4f3492cf3fba 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -377,7 +377,7 @@ static bool remove_migration_pte(struct folio *folio,
+ 			continue;
+ 
+ 		folio_get(folio);
+-		pte = mk_pte(new, READ_ONCE(vma->vm_page_prot));
++		pte = mk_pte(new, pgprot_read(&vma->vm_page_prot));
+ 
+ 		entry = softleaf_from_pte(old_pte);
+ 		if (!softleaf_is_migration_young(entry))
+diff --git a/mm/mmap.c b/mm/mmap.c
+index 2311ae7c2ff4..750ba48cdf14 100644
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -89,7 +89,7 @@ void vma_set_page_prot(struct vm_area_struct *vma)
+ 		vm_page_prot = vm_pgprot_modify(vm_page_prot, vm_flags);
+ 	}
+ 	/* remove_protection_ptes reads vma->vm_page_prot without mmap_lock */
+-	WRITE_ONCE(vma->vm_page_prot, vm_page_prot);
++	pgprot_write(&vma->vm_page_prot, vm_page_prot);
+ }
+ 
+ /*
+-- 
+2.43.0
 
 
