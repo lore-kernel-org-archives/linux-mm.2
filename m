@@ -4,139 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0440C53200
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 13:52:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF80DC54F51
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 13:53:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E2EBE6B008C; Wed, 29 Jul 2026 09:52:52 -0400 (EDT)
+	id CF6BD6B0092; Wed, 29 Jul 2026 09:52:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DDD336B0092; Wed, 29 Jul 2026 09:52:52 -0400 (EDT)
+	id C80416B0093; Wed, 29 Jul 2026 09:52:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C80546B0093; Wed, 29 Jul 2026 09:52:52 -0400 (EDT)
+	id B6EF06B0095; Wed, 29 Jul 2026 09:52:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F4556B008C
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 09:52:52 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 33DFF1205DE
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 07:56:59 +0000 (UTC)
-X-FDA: 85041058158.04.28ED286
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 7D445100006
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 07:56:57 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LzsMr9YP;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 905166B0092
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 09:52:53 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 23B201404B3
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 13:52:53 +0000 (UTC)
+X-FDA: 85041955026.22.4BEEB65
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 3FD2EC000B
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 13:52:51 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VXmy9sA0;
+	spf=pass (imf22.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785311817;
-	b=T7B5o0Huzwnq1OwTi9uZ4ud3NvTY/bfvhg7WLCJ/5OavSAl/XQwIoTupJVqcFb1m/uBqKp
-	Wy7eNV3encuux/rFTpTN1d+Ac2Y3aaBR7rgKDmSNiDObKD+tQ2IYxd8HM0+U1bD9SgB8K8
-	b6MgVqDQpkoABoA72329S4y858a5HU8=
+	t=1785333171;
+	b=q+JPt90LLKE/rnrHZrov84KPn5C9mU28vJabzpZFTPWx4pFXYZD8pRFZqbNbSDU8PiukPY
+	3oEv2oVIYWVUJ3WjhmPVruVzCqMTa3oDvjgGTCc/T+mYBzBzMI0+d4loZbSkCuOgF6bIV8
+	xxK35hzHX1So0LoIf87tQ9nK+wt98JQ=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LzsMr9YP;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VXmy9sA0;
+	spf=pass (imf22.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785311817;
+	s=arc-20220608; t=1785333171;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3gBMWCYK0NhtjdWG8m3a5e395PjwoFJBRWNEidKi0zM=;
-	b=UAtN9LXMk1tG0NA6TIuGGxzzqcDM/hPWhrxmQyYNwm1xgyn+T7C0eGeqUY2Y7dEaeBI6Zj
-	OlpuYBEnSC6AuDepghYFftV01cAI6UlsqMFlDtYRW/M6FNnF5jYlIyShgrCqProIiqjsAo
-	XWA2wv/i1cRd84ocFVhK8JwEbD+ANjE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5D93C60A66;
-	Wed, 29 Jul 2026 07:56:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 157E51F000E9;
-	Wed, 29 Jul 2026 07:56:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785311816;
-	bh=3gBMWCYK0NhtjdWG8m3a5e395PjwoFJBRWNEidKi0zM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=LzsMr9YPpzfwRfoKTi7aoYG/YaZG6uUp2WIs0+EFHwgyofbET0ZxvnH1nudpOOv//
-	 4yEI0H22nNWddc7Hvxr/Eqh6JWAV1pwUoAkYtugpiR2fLiJ0HemSCTbbF8dSuTvyso
-	 xxX5qn7Ud1bvVsmymXigESsuPW77MFhjGOPjs3S3Br5rDYW8fd7IY+CjCZjM7QTu0T
-	 g5oJPnu2HAtgNu1mUt9GOSE6w6nlqnmhF5x+NaOPE9RctP5QVyEsHOinZYf5ByY17O
-	 fGWLni5/E7Gn2tJHDSorn520Yf2RVZitwg33+e9WWarxKekVDz3UkqOOWvhwULfRPR
-	 zD092P97B7XCA==
-Message-ID: <b78f734a-440d-4fad-bba8-df77894c5aa0@kernel.org>
-Date: Wed, 29 Jul 2026 09:56:51 +0200
+	bh=ysgBHq5s5Hm/YI8tEORg2R1/XNH+Q68qloOBkdqdGRk=;
+	b=EULGd5kBtDv/8YQ32xzT3uuMBkAOnIqxP3S7NCtuLUZqWSrwHBrHHLaxtUqloh1aGuE4nM
+	eL2lVhbdE3tb96sXXSgphhIcxeTIVQNUJYWzSarATQ6hdGyncl1Kki4702QLJ1QBolkBUM
+	39Rsfix1U1GTGNK7vN61Fc1rTKS8v+Y=
+Message-ID: <b226ad94-1464-4c42-a080-686533ccfbcf@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785333167;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ysgBHq5s5Hm/YI8tEORg2R1/XNH+Q68qloOBkdqdGRk=;
+	b=VXmy9sA0jy4gxbhbmal08rZHjBw98uF//VsEcCLNmFVasgABbKxuixXLaWtCFY/fcYZ7y5
+	168iF14uvrsvzSj69TSV1qpCrIxYB9Qu9z5O2HADLheq9E1uKifq5w5lDUShq9BYsevfq1
+	iC3vJk4Qd3S4bB6gkI4sGMP7XQBHcks=
+Date: Wed, 29 Jul 2026 14:52:34 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/khugepaged: replace mutex_lock/mutex_unlock usage
- with guard macro
-To: Jakov Novak <jakovnovak30@gmail.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-kernel-mentees@lists.linux.dev,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>
-Cc: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "\\ Liam R . Howlett \\" <liam@infradead.org>, Nico Pache
- <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Shuah Khan <skhan@linuxfoundation.org>
-References: <20260728204636.20998-2-jakovnovak30@gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH v5 04/11] mm: zswap: add range lookup for large-folio
+ swapin
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: Yosry Ahmed <yosry@kernel.org>, Alexandre Ghiti <alex@ghiti.fr>,
+ Andrew Morton <akpm@linux-foundation.org>, david@kernel.org,
+ chrisl@kernel.org, kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com,
+ linux-mm@kvack.org, ying.huang@linux.alibaba.com,
+ Baoquan He <baoquan.he@linux.dev>, willy@infradead.org,
+ youngjun.park@lge.com, hannes@cmpxchg.org, riel@surriel.com,
+ shakeel.butt@linux.dev, kas@kernel.org, baohua@kernel.org, dev.jain@arm.com,
+ baolin.wang@linux.alibaba.com, Nico Pache <nico.pache@linux.dev>,
+ "Liam R. Howlett" <liam@infradead.org>, ryan.roberts@arm.com,
+ Vlastimil Babka <vbabka@kernel.org>, lance.yang@linux.dev,
+ linux-kernel@vger.kernel.org, shikemeng@huaweicloud.com,
+ kernel-team@meta.com, Alexandre Ghiti <alexghiti@fb.com>
+References: <20260722152043.2273289-1-usama.arif@linux.dev>
+ <20260722152043.2273289-5-usama.arif@linux.dev> <amFZmtGHEZjXEw5R@google.com>
+ <ee172b01-54c3-47ef-9040-1342a1566796@linux.dev>
+ <CAO9r8zMzjCf620EHwzfosngc94fu=vAb=ukrtOi9Qf3rA3vv7w@mail.gmail.com>
+ <c40f4a8b-1f60-45ea-962d-0597c413ec3d@linux.dev>
+ <CAKEwX=P=cFqojHPCp1oGqZCOVVGi9pyrgLtaSH3qrEwVppmxdQ@mail.gmail.com>
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260728204636.20998-2-jakovnovak30@gmail.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <CAKEwX=P=cFqojHPCp1oGqZCOVVGi9pyrgLtaSH3qrEwVppmxdQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 7D445100006
-X-Stat-Signature: tnf57g1jdohmbwwit3tgw6fdpnzkurf3
+X-Rspamd-Queue-Id: 3FD2EC000B
+X-Stat-Signature: gw6fax4bu7ow6ewxomuft7jybygapn19
 X-Rspam-User: 
-X-HE-Tag: 1785311817-715605
-X-HE-Meta: U2FsdGVkX18MZ1g/MqIr6fDl5Ctk12w3pW8qqz8lzu0xtrTK39g/sw/Qvo1xmFapHZEGqRCjk9Mi2/fLL8QDDHVRaeEBvbzHgpiObkftp0p+729DcpNr5UawHbp/UgVoVXvl1WUHTCbDLOmEbOh8QFzHPzkJg8uoXo9d5pwtjfzSC30TAeojcxgbLsAsFItiHjsCsGrXLdtIhviJxIGKkSFqYfx2lDMgcnvr+5O6vqKoRikPnrtIjldWnVjgf/NoL4etwexvesasuKY4QYOlwL9hV2iOM214A0YGXhCpTCrV6S6DQjB6dLFKP2Owtnjrf1w8HK2cyucOqxkmhw9yiMVDrhwZ3Fy7q2nfDvCVXGOXVeqCJ9rWDCx/MF9KBmgptLvcz+FjXgdCwKintPCUCM+NIdw5f0lKka0ICHp48GxgbE8Q3PdUabYtX/SVzC0az6POSujuC08i1w5cuEHUVfdQ5E8vOIE5lNkw6CzkgVYL0nwno7dR4htrAugnA433Pigf3VTQhXQgfsPsFDBweDQS9u4pX45ZjnDXUPj5abjRFDNjYFXJn2lI0DL8y4Vr5njZ/gAaOifI73B+yt7XHsWhGuLTYfKV54sqF1/J2riJA17AV287iBOazWq9IKW56w1eKoG0GlvITf3R4k6fiMsV+1DWSRtNe/90Duidrgd60e33bZOoqCrQny1CzDlrznAYuCwdpHxbOQLmnN0B+NFekxD07mg7ain8aqqV08Iyc/JvTRCSe0Y2CykBubsJ+m2LcifxZx4jLP377dnc3O2PZLXMxJwHXlZ/omqGN7EYV+I7suoUtpeax58qnV3BJLZ8Ig4pvwLv7XoVuiTfNb7vRCr0TIMRZg2lJqLvKPEbW9tMoqRN9qlPkiH4oUgPjhSdUVj9LfMxm0i746ytAFQ0CYRhaRgprI7YlpKQ1ApWYSC0YWv2nd83apSPhmmrasEkI+4kosQ2HgaLiWc
- eNIhxpHA
- Yi88day4C5R3rfaqffzVkvcf1N0EvS+1UtcstOvdwgz5CwE+eLe0izzhk6z0k7/Trez4cRIghDMVrR1V4KLqZvqB3OybbrlWGTbXPySz6Ds65oo2+JRUn7VAGAS6IkHwipnUxsfe+5H5fh911o+P8y14TH8sMgCkVE0GQL4i/21RcE2Eqc8wlm+7DCCtlP79scfE7pv0eHZdUEFBR4hNHQ6WFGRSpflWj/GGjwVDABflWKXtk+yGa7qSjlxV4l5r0OMQg71fv69nBpIe7DF/dhuFD4SvmAsBLSjUcC0ekh1xXhJemLAbyWt0c0VrAXbsjPJBVTg67n3mSN2fEWaRF1TQcm+XuZt5w3ay2YwARXQsOn67mrM7c6jng6uaQ5Bt1izQkwPhISxqwHqCLVSiSgp552oEdFHhiSf1n
+X-HE-Tag: 1785333171-414376
+X-HE-Meta: U2FsdGVkX18ckARtMKUnWkbLeBrJvzSM2xFOLHbBk27XCANWPfBoYh2yoBjOIt/H2wzO5mfFgRh2HBo+Z5J5mvdZlfj71zijW0YbX8EIkO27HCq9s5RmSsjRepboUtYoydOL2eQzm8qUzoWUehEYPjQ9cFg3xCO3ieVovFVWUCaxzCbiuSdLTZjKNWmv5peJ7aWznUEyW9akraoVfCXU9DUzskgGKQoD+5pAqaDGRfDKWq4EUzACkoZ+nlcMOWm08HMIyqLZBbXhSlVPTJ+MktIm+uM0l9rxuiHSoVJ8rNvI9jiaeTT8lpj5BrsNzU5w/qWmC1wakdSY8hkdLS0nZNErG2B9wT9f8/54KiKzuHeNCfNpopxGRANJr0SIiv6KNvKVHaO1MZF7HUPktowH0Tp23YhxZZJXFSEqhfvdkSoXpjdsxXvxES5K6xpnG5gqndzhC20yQgDZvGKP1e9tmaHfsQU5wYM0yx5bXuxNMd6bDkN0DLrQrRPVxc02Ca6Y4HMYDjPL560FvAHRidT7KKHY639K31FjRjhB52Ps7mdhThM6DVOwHL+3yhZhHUXUYcv0H0iFaAdWYGOphmpHiVgfDhgwn97j+2yk1uMyqGfAGGgYa4hyWzGla9BSsmGClhmnOT8tq9PD50iALVRPYX2z7TsbSjktqVyYfaJThu+cWZHLNEmxRne3yM//SED49LZVERE5eGHZ60/ZbxFEE5o4Xb4bjowp1qYNDXbr+XhBfe1TQ3MmFBgrovwah8upN1rXt8T/P7H7CJej6oVpS0gz52qgGdfWp26GuwRNUd0+G/uOa6LUke685uGn74WR3BLDjnw2vzwrQAvVj6lXzsTQDbhBQKieFpGyRfMWZDGgZHMoDU+RsbBNAp2NzlU0JX7Vjh/HY9R9LlgI18MV739y8EeHMOfadQB28TBZRb2fWoXl5gVRm7fBErEXA/Z9oCG3y0JBN7TCVlEuOjv
+ phaAbxcx
+ VHawYmDzBX9sV8O5ydPCW4b1ID/vJkiPG2jF7vEvAWdQ7ddrKnELVBVMP41GdxccIrFKdFbo2RYpILhKUhXuefdcxiC+lmI3LmtnYIwdAp0DSsniiJ1vjTyR+hm18ZUgj/kTlkpft9Ji6EOXzUdoZ3HkmV7wkFylh1aZcTraKH+2Bw0tx/mkL61CxfpsHpdutO92aOh1R8Frnt08tNdYzuZ24RvJtbzuWAdmDaWj+GzdKgSE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,77 +105,124 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/28/26 22:46, Jakov Novak wrote:
-> Currently, khugepaged locks the khugepaged_mutex in two functions:
-> start_stop_khugepaged and khugepaged_min_free_kbytes_update. Remove
-> mutex_lock/mutex_unlock usage in these functions and replace it with the
-> guard macro. This makes the code more readable (removing a goto statement)
-> and makes it harder to introduce bugs in the future.
-> No functional changes introduced.
+
+
+On 27/07/2026 17:24, Nhat Pham wrote:
+> On Fri, Jul 24, 2026 at 2:59 AM Usama Arif <usama.arif@linux.dev> wrote:
+>>
+>>
+>>
+>> On 23/07/2026 17:42, Yosry Ahmed wrote:
+>>>>>> @@ -1595,13 +1611,19 @@ int zswap_load(struct folio *folio)
+>>>>>>              return -ENOENT;
+>>>>>>
+>>>>>>      /*
+>>>>>> -     * Large folios should not be swapped in while zswap is being used, as
+>>>>>> -     * they are not properly handled. Zswap does not properly load large
+>>>>>> -     * folios, and a large folio may only be partially in zswap.
+>>>>>> +     * A large folio reaches zswap_load() only when its whole range is
+>>>>>> +     * expected to be on disk: PMD swap-entry consumers split before
+>>>>>> +     * calling into PMD-order swapin whenever any slot is still in zswap.
+>>>>>> +     * Confirm the range is entirely absent from zswap and return -ENOENT
+>>>>>> +     * so the caller reads it from disk; if a slot is unexpectedly still in
+>>>>>> +     * zswap, fail the read rather than return partially-initialized data.
+>>>>>>       */
+>>>>>> -    if (WARN_ON_ONCE(folio_test_large(folio))) {
+>>>>>> -            folio_unlock(folio);
+>>>>>> -            return -EINVAL;
+>>>>>> +    if (folio_test_large(folio)) {
+>>>>>> +            if (zswap_is_present(swp, folio_nr_pages(folio))) {
+>>>>>
+>>>>> Is dropping the warning here intentional (for the folio_test_large() &&
+>>>>> zswap_is_present() case)?
+>>>>>
+>>>>
+>>>>
+>>>> Yes, so we can end up in a race, which should be handled gracefully.
+>>>>
+>>>> For example, lets say we have zswap writeback enabled, which means we
+>>>> can end up in a state where we have a PMD swap entry and 511 of the 512
+>>>> slots have been written to disk, but 1 slot (slot X) is still in zswap.
+>>>>
+>>>> We can then have the following race:
+>>>>
+>>>>
+>>>>   CPU A: PMD swap-in                  CPU B: split-PTE swap-in
+>>>>   ------------------                 ------------------------
+>>>>
+>>>>   Checks swap cache: empty
+>>>>
+>>>>                                        Faults slot X
+>>>>                                        Adds order-0 folio F
+>>>>                                        zswap_load(F):
+>>>>                                          removes X from zswap
+>>>>                                          marks F dirty
+>>>>
+>>>>   Checks zswap range: empty
+>>>>   A is preempted
+>>>>
+>>>>                                        Unmaps/reclaims F
+>>>>                                        zswap_store(F):
+>>>>                                          puts X back in zswap
+>>>>                                        Removes F from swap cache
+>>>>
+>>>>   A resumes
+>>>>   Allocates large swap-cache folio G
+>>>>   zswap_load(G) finds X in zswap
+>>>
+>>> Why don't we check the zswap range after allocating a folio in the
+>>> swap cache? I am assuming at this point we have the folio locked and
+>>> the result should be stable?
+>>>
+>>
+>> Yes that makes sense. The folio is locked and the result will be stable.
+>> How about something like below?
+>>
+>> diff --git a/mm/swap_state.c b/mm/swap_state.c
+>> index 1f08fb522036..41f168377cb1 100644
+>> --- a/mm/swap_state.c
+>> +++ b/mm/swap_state.c
+>> @@ -12,6 +12,7 @@
+>>  #include <linux/kernel_stat.h>
+>>  #include <linux/mempolicy.h>
+>>  #include <linux/swap.h>
+>> +#include <linux/zswap.h>
+>>  #include <linux/leafops.h>
+>>  #include <linux/init.h>
+>>  #include <linux/pagemap.h>
+>> @@ -500,6 +501,17 @@ static struct folio *__swap_cache_alloc(struct swap_cluster_info *ci,
+>>         __folio_set_locked(folio);
+>>         __folio_set_swapbacked(folio);
+>>         __swap_cache_do_add_folio(ci, folio, entry);
+>> +       /*
+>> +        * Reject mixed zswap/disk backing before starting the read.
+>> +        */
+>> +       if (order && zswap_is_present(entry, nr_pages)) {
+>> +               __swap_cache_do_del_folio(ci, folio, entry, shadow);
+>> +               spin_unlock(&ci->lock);
+>> +               folio_unlock(folio);
+>> +               /* nr_pages refs from swap cache, 1 from allocation */
+>> +               folio_put_refs(folio, nr_pages + 1);
+>> +               return ERR_PTR(-EBUSY);
+>> +       }
 > 
-> Signed-off-by: Jakov Novak <jakovnovak30@gmail.com>
-> Reviewed-by: Dev Jain <dev.jain@arm.com>
-> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> ---
-> v2:
->   - Added #include <linux/cleanup.h> to the includes at the top of the file
->   - Moved err declaration to the scope where it's used in
->     start_stop_khugepaged
->   - Made default case return 0 instead of err in start_stop_khugepaged
-> 
->  mm/khugepaged.c | 15 ++++++---------
->  1 file changed, 6 insertions(+), 9 deletions(-)
-> 
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 617bca76db49..7890bd3e2a9d 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -23,6 +23,7 @@
->  #include <linux/ksm.h>
->  #include <linux/pgalloc.h>
->  #include <linux/backing-dev.h>
-> +#include <linux/cleanup.h>
->  
->  #include <asm/tlb.h>
->  #include "internal.h"
-> @@ -3111,18 +3112,17 @@ void set_recommended_min_free_kbytes(void)
->  
->  int start_stop_khugepaged(void)
->  {
-> -	int err = 0;
-> -
-> -	mutex_lock(&khugepaged_mutex);
-> +	guard(mutex)(&khugepaged_mutex);
->  	if (hugepage_enabled()) {
->  		if (!khugepaged_thread)
->  			khugepaged_thread = kthread_run(khugepaged, NULL,
->  							"khugepaged");
->  		if (IS_ERR(khugepaged_thread)) {
-> +			int err;
->  			pr_err("khugepaged: kthread_run(khugepaged) failed\n");
->  			err = PTR_ERR(khugepaged_thread);
->  			khugepaged_thread = NULL;
-> -			goto fail;
-> +			return err;
->  		}
+> If you move it to __swap_cache_add_check(), you can potentially
+> backoff even before the folio allocation? :)
 
-While at it, can we just do
 
-struct task_struct *new_thread = kthread_run...
+Thanks Nhat! Yes, this looks much much better as well:
 
-if (IS_ERR(new_thread)) {
-	pr_err("khugepaged: kthread_run(khugepaged) failed\n");
-	return PTR_ERR(new_thread);
-}
-khugepaged_thread = new_thread;
+@@ -190,6 +191,15 @@ static int __swap_cache_add_check(struct swap_cluster_info *ci,
+        if (nr == 1)
+                return 0;
+ 
++       /*
++        * The cluster lock serializes swap-cache insertion with zswap
++        * writeback. Reject mixed zswap/disk backing before allocating a
++        * large folio and recheck it before adding the folio to swap cache.
++        */
++       if (zswap_is_present(swp_entry(swp_type(targ_entry),
++                                      round_down(swp_offset(targ_entry), nr)), nr))
++               return -EBUSY;
 
-?
-
-Avoid the suboptimal err variable and temporarily assigning error values to the
-global variable.
-
--- 
-Cheers,
-
-David
 
