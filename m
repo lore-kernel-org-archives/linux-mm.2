@@ -4,105 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25D17C53200
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:19:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3404C53200
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:20:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3691F6B00F7; Wed, 29 Jul 2026 10:19:45 -0400 (EDT)
+	id E670D6B00F9; Wed, 29 Jul 2026 10:20:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 340AC6B00F9; Wed, 29 Jul 2026 10:19:45 -0400 (EDT)
+	id E17016B00FB; Wed, 29 Jul 2026 10:20:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 27EB36B00FA; Wed, 29 Jul 2026 10:19:45 -0400 (EDT)
+	id D2CE76B00FC; Wed, 29 Jul 2026 10:20:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F1D9C6B00F7
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:19:44 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 38999805E3
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 08:21:30 +0000 (UTC)
-X-FDA: 85041119940.04.16E5598
+	by kanga.kvack.org (Postfix) with ESMTP id B530E6B00F9
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:20:07 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4B76E806D4
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 14:20:07 +0000 (UTC)
+X-FDA: 85042023654.08.BAD0BC3
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 7A7792000B
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 08:21:28 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YQALvU7M;
-	spf=pass (imf03.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	by imf09.hostedemail.com (Postfix) with ESMTP id A1719140002
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 14:20:05 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qbnf2thC;
+	spf=pass (imf09.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785313288;
+	s=arc-20220608; t=1785334805;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P1d0ZrPSWSgL++PjfVv8vMUfwjJ5v7z9zclam76ZWUk=;
-	b=yxrpxx23+S5/o1EZ5QrjwlhaiMgADpBDykemfAYaAaAPTRxu+EU4Uz9KROAB0YXzKQqAiK
-	J3C8ssJ5R5Q56pcJGVXAviLA213RdfVgumKVmXtENeFyXtlqPyBLLnNWg3QJhMQGcIy8O+
-	tRFDiEWVllskK28r+iwcy40dG7CA6Jg=
+	bh=ToiJoF4NcsxRlbsxS2U0VQ57R0XjAeQgD4aiE3GQTgU=;
+	b=zoPDeuYWM+wXllbRuUWQ3SUdRT/wkq72irtAW85Av6x9QUE+Zt6HMaROx5upH2xQu3XDPH
+	IdLYddUenBeOZNQF/mqPBRxWRgbmeUOXFCmppexy3M0yJW6feg2EyA4S9XcADP4SSnM1/H
+	rT+yb3C0QqaRlvVXWGdoLupf5d+58jw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785313288;
-	b=OD8JiBnDpnLVb8t8A9G4pY8nFmXNVgd46Ts2MU8Is/Ro3FtFI6JrKrCkxXVWVXkOf8BN7I
-	/OqSZe6RqYqcf/D0QNq+KsNi4IwXdq9F6/bJ18ADmSqw5GEIcKvYua01T2q3frvlbVyo4V
-	Ck9b7simAhb8vU+p85MwJDF57jr/kRQ=
+	t=1785334805;
+	b=O9bDyOUE51RbdBg9uKhmsCt1WHjk9OVEDFprmzktkQTb3kJp77/R/dnFktyadO3ph+1kCb
+	Q2eb0TMXcXY/bup4I8Z5bsFXoRi65SQWRfqpNj+ieZ+4YauEPra5ViOzwddOVbNoLEtdxw
+	K1neTjCYJCXloiY2Sidv0TaNTdG45FA=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YQALvU7M;
-	spf=pass (imf03.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qbnf2thC;
+	spf=pass (imf09.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C506243FC1;
-	Wed, 29 Jul 2026 08:21:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B19FB1F00A3D;
-	Wed, 29 Jul 2026 08:21:21 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BD51E4357B;
+	Wed, 29 Jul 2026 14:20:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7484E1F000E9;
+	Wed, 29 Jul 2026 14:20:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785313287;
-	bh=P1d0ZrPSWSgL++PjfVv8vMUfwjJ5v7z9zclam76ZWUk=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=YQALvU7Mf+/wrx7QNvIxWBiRtcDpQNcVu02yMb9SFOq+jZZ1K6RyzBFlSB+QuvRIV
-	 QhlKOTvfpfiVp7SMTencBUjwycP9IPRL0ctU+b9TX1tJ3yjQFl8kBQPGCTXgOHBhBe
-	 d85OSsfSB2akNKuKdY/RO8uM7zIblYwjF8wZjOMxGG6LJO7IEEqWQg9czxk6ddYBEO
-	 /yb6A0ZHge+Coj+C8PC2nEZcv0/sXoJWCmVpeyjGxD70yIJCF9y/Ze7ZI0kI61K6Hu
-	 50BQWwOkMPRkdL/fL/aan5exTbDtzpgCrnzPTqv+9Ede933XDQlnHGKal8o0pOnMPR
-	 Od4jTJxe0/0VQ==
-From: "Harry Yoo (Oracle)" <harry@kernel.org>
-Date: Wed, 29 Jul 2026 17:20:13 +0900
-Subject: [PATCH v5 5/8] mm/slab: allow kfree_rcu_sheaf() on PREEMPT_RT
+	s=k20260515; t=1785334804;
+	bh=ToiJoF4NcsxRlbsxS2U0VQ57R0XjAeQgD4aiE3GQTgU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=Qbnf2thCmDftHpU293Cjw8f+lvQqn3HXrlqAxa+6XB7oBenqHteYwSX88ZeqJZJ3x
+	 xcOYql4hyNOsX7Go1UZO9BQIFfeyGo9BOyt0M5W8+BiTH2aSK6V5QA41+g1q8SWpLS
+	 IOnJJzNYleeMxT5+if5EdiAX38V+rB7wFMtDMZlUcP/aLjrIFqorv/heZaOrbndoif
+	 gxtdY6a/n4/fRt2tcEsuf2XuLXQQMyxJnMQgv2O12AUkbzP2mZlhhpJlfQd/8y3xXV
+	 t2KDAoIQMcPKqkZi28muGaVdiRqw/V+EF7w406MnK/VV+0a05+iLaTGDX6LWPetjG0
+	 iOPMTmp00QMgQ==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  Pasha Tatashin
+ <pasha.tatashin@soleen.com>,  Alexander Graf <graf@amazon.com>,  Muchun
+ Song <muchun.song@linux.dev>,  Oscar Salvador <osalvador@suse.de>,  David
+ Hildenbrand <david@kernel.org>,  Andrew Morton
+ <akpm@linux-foundation.org>,  Jason Miu <jasonmiu@google.com>,  Jork
+ Loeser <jloeser@linux.microsoft.com>,  kexec@lists.infradead.org,
+  linux-mm@kvack.org,  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 19/21] memblock: make HugeTLB bootmem allocation work
+ with KHO
+In-Reply-To: <amjqwKoF0XrvYw9N@kernel.org> (Mike Rapoport's message of "Tue,
+	28 Jul 2026 20:45:36 +0300")
+References: <20260725172133.4018491-1-pratyush@kernel.org>
+	<20260725172133.4018491-20-pratyush@kernel.org>
+	<amjqwKoF0XrvYw9N@kernel.org>
+Date: Wed, 29 Jul 2026 16:20:01 +0200
+Message-ID: <2vxz33x198tq.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260729-kfree_rcu_nolock-v5-5-a28cdcda9673@kernel.org>
-References: <20260729-kfree_rcu_nolock-v5-0-a28cdcda9673@kernel.org>
-In-Reply-To: <20260729-kfree_rcu_nolock-v5-0-a28cdcda9673@kernel.org>
-To: Vlastimil Babka <vbabka@kernel.org>, 
- Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, 
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
- Roman Gushchin <roman.gushchin@linux.dev>, 
- Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, 
- Puranjay Mohan <puranjay@kernel.org>, Amery Hung <ameryhung@gmail.com>, 
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
- "Paul E. McKenney" <paulmck@kernel.org>, 
- Frederic Weisbecker <frederic@kernel.org>, 
- Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, 
- Joel Fernandes <joelagnelf@nvidia.com>, 
- Josh Triplett <josh@joshtriplett.org>, Boqun Feng <boqun@kernel.org>, 
- Uladzislau Rezki <urezki@gmail.com>, 
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
- Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>, 
- Pedro Falcato <pfalcato@suse.de>, Suren Baghdasaryan <surenb@google.com>, 
- Shengming Hu <hu.shengming@zte.com.cn>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- linux-rt-devel@lists.linux.dev, rcu@vger.kernel.org, bpf@vger.kernel.org, 
- "Harry Yoo (Oracle)" <harry@kernel.org>
-X-Mailer: b4 0.14.3
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 7A7792000B
-X-Stat-Signature: eqnmc3g596w7i8e8p587zgrn84hkpi3o
+Content-Type: text/plain
 X-Rspam-User: 
-X-HE-Tag: 1785313288-887159
-X-HE-Meta: U2FsdGVkX19qUvsNAgIDHegd2emP9Al7eQdzLqhsKot0KbvdBrr43wrt44d1NtX8vhcOgSK37vOdzqSgKD1lHx1bF9tABnRPG5cPEG6LYIkmmhoBQiftyXs2kM/yzxUnvPPDSFcIP6EfkUMZ3624E8YQRi+8ApOISsb82BQR4qsSCF9vOU6qpKsvmidDRI725DROQjVjqiVqjI9qG59TtWq6iaeEeOEvDzlk8l7b1M6ii3/F2u5ZlBf4spa+9bcGtRk++ui7fvM588OtY82R6YUUNMxCAHaUkgeMDE8tvVuzkCy7DtldOulaisiDSazifyO/nzj7yYWTY47HkeZebY9A1a7FpoT6WPmXAV33i1Hb3Oe4636Pxv/QiuW3rQ/DiRvdHsOeKdB1Gx++PGoTosQ6qvPcixZm8WICiV7tIibdRI6zLSodXUoixjfryyWkATRVYpICQaOhtq1uBU/v3oAKvfBbd/Ab5copYN8sgSlfF109Gb4W2i2VNGf4++9p6dFUhPncLCFHIeJih5l0CsEe9Iz3IGbWvHwN8B3PQncSZya1C/WBwdarxYe+P3CE+EkA5UFPuqL+YdfJSwX0XGXD0kxeZEbyDX8Re0BROHpjzQ7jrDJ32o+6nzki6hu/p9yqK9nTTg9y4qb6oQQ4lH2/AjPrMw1wSeRQjNftyy6MOzIn06HF3Lwwy00ckpI0m1ULQxDhFriHLUsy/EFnU+4I+L7Qd6co972yEC/6Rkv+B0oU2rTcrgIEXSSJYN3newG/+urWBZIdnMp8SaBpJRsH9D/zVseoqkMyWgZoQWbIA9/B4qEHgmkGdf7X5vOZTwTFFmS/PZTSKnQucXDV9HWATqDSHgI/OaNDkWqboyo4nqR58kiPSaACYYXtLxet9YNJ0ShdgrjWS0GYQpqDi3cZ2QJ3GtP4xpqb84G3dL43hANhGWGZIpBOkyjsanu5xLbf87mtbvkDs2rlm7G
- yAE/cCi1
- 6jDe2Y4YQONKDnxPCdl0gRxzpJpm/nFpzB+h3A9WpZKrokTFj5rlQlA9so5rAQfmpinoXuGXM7t1vf0c+jvI9H0O44I6JB6d4fNDfzC0wWgmz45UW64SvJDPyGDmwiy3UoCqm9cWIL0uCt1HQVvD1vC9HdJwc4kxtD/ZVGkQb14gqQCo6XVtrldZZxJvzANpsJMjEGxds7gexwl2S5xIK1VJDvS2QlpeoWed5qahLcY+W2UwEJetL/ndQMyGgnwhpoxIQXPw+FnME75X3j/9Pn1VXQTpZH8xEc9ole0ldPe4wCBE=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: A1719140002
+X-Stat-Signature: gue4p49m5ifrxwpfdb7ccqde4m71eikg
+X-HE-Tag: 1785334805-272812
+X-HE-Meta: U2FsdGVkX19hgP/Nw9PexrkTuh7iASSMF9RSGvu0BMycxohKoAO//TTNUEmAEs60YUylcvMCmK6z9tb7vwaYC0mYTvkJCxFxY7UllZpYcFSotODerG7NMGgoVsor/A98JlOuB75IjbbRKRZhxIDs2d67NSVcLdqne8XEHfbaXzMTTTqP2ky2fzJC396KyrmCK/LdyiUzrYXlp5ezyGPjTYoHKjE9OGqCxQw2LfDAHAA8pEu9pGw0sR/m02TmR5GUIiAJyNIpfCQcHEMpC1vUephr5qYY6D7IS0KD6c4K0qw/1OIW82CbI0Zp0MbfTwTF+sEVCXoLKXGnbpjJ1K+fKHDbUkg2lnqmxSSNAhiNjgf8S9X6xaqYGDpyo6uGkTWkPszs7NikVRGzNv5DCzFe63HyWEn66U6BlUDOeDZmkc+/Q6VnzaB4H8Bf+mOQYXVOpuWb+8T41ThwLjBVtLTbmyC3FKOuGnq6JjYY0Z3kwdQmSuUquklOQ5ffw/YPAEj2cJkqFqaWLKll76r1s/JdH17rW0ECE43l6Q7FUqSX1jnqA+WiuZUSuHvvTMj9mXq2P0n0ttE4cS/+iCeqVgdDBy1ENe7aiG3ebNuSMWEGUNODl7oLPBEAWKMZfAUFoZ3KIKTXDHMdvU5uP8PSeLf24NLVQfW7y/YQLMLRkPSjPc3Q/i3luWEMknM0+mfI09a9SVqmoQO40tIma0PycZXpHOKnV1mNqxn8jX7aOHo5j83U0SGp33hKoUyhwFAPlvevYga+Im8fjNULJwx4sBGesZBQbAPMHqcY9SNCveFTQiYW/4I8iIhaLN8To9s5ChBum1RLTSQOdKWi5uAa4ROsKSKKMTFlbIqSXCqeTSMSX7wxjnTLCKY4W45vWF1w859SeBzZfaIVY6nbEBoCK4FRiZrksxfanfnZjFeuV1Et7WlSWoReOu5q+ueJfr4EQHrMR576mIqzf7X/WtNl2Qi
+ 3uXIMXad
+ S5ftNUERRHgQS40gLz/8mkMW6s/vYUUO9H8SK1NJymlX6myYUnDKWUQA0kOcTV7IwNTjn268AOwfO/WcCN121v0QVUj19YxdG2/wpPQcr95Tf7zf5qYi8ShhrYvLPuojbufd1rMM/4xJldRoMWS9sESvFS3t8pp+hiZG7EkFwsVn7e826ocsQp2BKMrf12h/g+kxhqUKpZhdXUPueyX2JQgjJOw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,124 +99,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-As suggested by Vlastimil Babka [1], kfree_rcu_sheaf() can be used
-on PREEMPT_RT if we always assume spinning is not allowed on PREEMPT_RT.
-This is because local_trylock and spinlock_t are safe to use with
-trylock and unlock as long as the kernel does not spin and the context
-is not NMI and not hardirq.
+On Tue, Jul 28 2026, Mike Rapoport wrote:
 
-Now that __kfree_rcu_sheaf() knows how to handle SLAB_FREE_NOLOCK,
-relax the limitation and try the sheaves path on PREEMPT_RT as well.
+> On Sat, Jul 25, 2026 at 07:21:19PM +0200, Pratyush Yadav wrote:
+>>
+>> diff --git a/mm/memblock.c b/mm/memblock.c
+>> index 8b2e551435ae..ff470fd0fd10 100644
+>> --- a/mm/memblock.c
+>> +++ b/mm/memblock.c
+>> @@ -19,11 +19,9 @@
+>>  #include <linux/mutex.h>
+>>  #include <linux/string_helpers.h>
+>>  
+>> -#ifdef CONFIG_KEXEC_HANDOVER
+>>  #include <linux/libfdt.h>
+>>  #include <linux/kexec_handover.h>
+>>  #include <linux/kho/abi/memblock.h>
+>> -#endif /* CONFIG_KEXEC_HANDOVER */
+>
+> This breaks memblock tests, can you please add stubs for these in
+> tools/testing/memblock?
 
-Keep the lockdep map on non RT kernels. However, do not use the lockdep
-map on PREEMPT_RT to avoid suppressing valid lockdep warnings.
+I swear I tried building memblock tests but somehow still missed this :-(.
 
-As pointed by Vlastimil Babka [2], on PREEMPT_RT it is unnecessary to
-defer call_rcu() under IRQ-disabled section or raw spinlock. However,
-let us avoid adding more complexity as the scenario is not supposed
-to be common on PREEMPT_RT, with a hope that call_rcu_nolock() will be
-soon supported in RCU.
+I think it is because the very last thing I tested was a boot with KHO
+disabled, and that's when I discovered this.
 
-Link: https://lore.kernel.org/linux-mm/6811cc17-8ee4-48c8-8cbf-6bf4d9f98162@kernel.org [1]
-Link: https://lore.kernel.org/linux-mm/40591888-3a87-433e-b3d2-cda1cab543be@kernel.org [2]
-Suggested-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
----
- mm/slab_common.c | 12 ++++++++++--
- mm/slub.c        | 17 ++++++++++-------
- 2 files changed, 20 insertions(+), 9 deletions(-)
-
-diff --git a/mm/slab_common.c b/mm/slab_common.c
-index d81cc2136c68..9c2cca9add89 100644
---- a/mm/slab_common.c
-+++ b/mm/slab_common.c
-@@ -1628,6 +1628,14 @@ static bool kfree_rcu_sheaf(void *obj)
- {
- 	struct kmem_cache *s;
- 	struct slab *slab;
-+	unsigned int free_flags = SLAB_FREE_DEFAULT;
-+
-+	/*
-+	 * It is not safe to spin on PREEMPT_RT because the kernel might be
-+	 * holding a raw spinlock and slab acquires sleeping locks.
-+	 */
-+	if (IS_ENABLED(CONFIG_PREEMPT_RT))
-+		free_flags = SLAB_FREE_NOLOCK;
- 
- 	if (is_vmalloc_addr(obj))
- 		return false;
-@@ -1638,7 +1646,7 @@ static bool kfree_rcu_sheaf(void *obj)
- 
- 	s = slab->slab_cache;
- 	if (likely(!IS_ENABLED(CONFIG_NUMA) || slab_nid(slab) == numa_mem_id()))
--		return __kfree_rcu_sheaf(s, obj, SLAB_FREE_DEFAULT);
-+		return __kfree_rcu_sheaf(s, obj, free_flags);
- 
- 	return false;
- }
-@@ -1987,7 +1995,7 @@ void kvfree_call_rcu(struct rcu_head *head, void *ptr)
- 	if (!head)
- 		might_sleep();
- 
--	if (!IS_ENABLED(CONFIG_PREEMPT_RT) && kfree_rcu_sheaf(ptr))
-+	if (kfree_rcu_sheaf(ptr))
- 		return;
- 
- 	// Queue the object but don't yet schedule the batch.
-diff --git a/mm/slub.c b/mm/slub.c
-index 92c99ff34a2c..6c81722afb18 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -6085,12 +6085,13 @@ static void rcu_free_sheaf(struct rcu_head *head)
-  * kvfree_call_rcu() can be called while holding a raw_spinlock_t. Since
-  * __kfree_rcu_sheaf() may acquire a spinlock_t (sleeping lock on PREEMPT_RT),
-  * this would violate lock nesting rules. Therefore, kvfree_call_rcu() avoids
-- * this problem by bypassing the sheaves layer entirely on PREEMPT_RT.
-+ * this problem by passing SLAB_FREE_NOLOCK on PREEMPT_RT.
-  *
-  * However, lockdep still complains that it is invalid to acquire spinlock_t
-  * while holding raw_spinlock_t, even on !PREEMPT_RT where spinlock_t is a
-  * spinning lock. Tell lockdep that acquiring spinlock_t is valid here
-- * by temporarily raising the wait-type to LD_WAIT_CONFIG.
-+ * by temporarily raising the wait-type to LD_WAIT_CONFIG. Skip the lockdep map
-+ * on PREEMPT_RT to avoid suppressing valid lockdep warnings.
-  */
- static DEFINE_WAIT_OVERRIDE_MAP(kfree_rcu_sheaf_map, LD_WAIT_CONFIG);
- 
-@@ -6100,10 +6101,10 @@ bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj, unsigned int free_flags)
- 	struct slab_sheaf *rcu_sheaf;
- 	bool allow_spin = free_flags_allow_spinning(free_flags);
- 
--	if (WARN_ON_ONCE(IS_ENABLED(CONFIG_PREEMPT_RT)))
--		return false;
-+	VM_WARN_ON_ONCE(IS_ENABLED(CONFIG_PREEMPT_RT) && allow_spin);
- 
--	lock_map_acquire_try(&kfree_rcu_sheaf_map);
-+	if (!IS_ENABLED(CONFIG_PREEMPT_RT))
-+		lock_map_acquire_try(&kfree_rcu_sheaf_map);
- 
- 	if (!local_trylock(&s->cpu_sheaves->lock))
- 		goto fail;
-@@ -6202,12 +6203,14 @@ bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj, unsigned int free_flags)
- 	local_unlock(&s->cpu_sheaves->lock);
- 
- 	stat(s, FREE_RCU_SHEAF);
--	lock_map_release(&kfree_rcu_sheaf_map);
-+	if (!IS_ENABLED(CONFIG_PREEMPT_RT))
-+		lock_map_release(&kfree_rcu_sheaf_map);
- 	return true;
- 
- fail:
- 	stat(s, FREE_RCU_SHEAF_FAIL);
--	lock_map_release(&kfree_rcu_sheaf_map);
-+	if (!IS_ENABLED(CONFIG_PREEMPT_RT))
-+		lock_map_release(&kfree_rcu_sheaf_map);
- 	return false;
- }
- 
+Anyway, will fix in next version.
 
 -- 
-2.53.0
-
+Regards,
+Pratyush Yadav
 
