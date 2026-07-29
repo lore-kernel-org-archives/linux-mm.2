@@ -4,72 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7B5BC54F51
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:33:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AEC31C54F51
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:33:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8DAFE6B00E7; Wed, 29 Jul 2026 10:32:55 -0400 (EDT)
+	id 57F886B00FB; Wed, 29 Jul 2026 10:32:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8B43D6B00FB; Wed, 29 Jul 2026 10:32:55 -0400 (EDT)
+	id 556D56B00FD; Wed, 29 Jul 2026 10:32:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 77B276B00FD; Wed, 29 Jul 2026 10:32:55 -0400 (EDT)
+	id 3F8276B00FE; Wed, 29 Jul 2026 10:32:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 552106B00E7
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:32:55 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1A9DF40644
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 09:47:09 +0000 (UTC)
-X-FDA: 85041335778.24.5F17636
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 5E39B40002
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 09:47:07 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 1CEA26B00FB
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:32:58 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 781351A065E
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 09:45:00 +0000 (UTC)
+X-FDA: 85041330360.22.B453FA6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 9ED374000E
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 09:44:58 +0000 (UTC)
 Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kkmwOjSZ;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KecLasxf;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785318298;
+	b=MV7yxMDWK3b1Ei88/wBCTxxZrbjm6PmMtjX468u/Hm3L0pLXAXgSbv0RbCIRaDBUyfolSX
+	ueWhsYpcq31i77+klJ8qKWMcyBFTLwTM+oSzPG9UfWMTZdDCrjKJqj/hvoHRsoulTzPhJA
+	9UxG/F1oeXyUvyAleYEMAj69Uc4Q9Rc=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KecLasxf;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785318427;
+	s=arc-20220608; t=1785318298;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Rua1RKrJjiJNOIidWLTZk95Yzmjh2kX7wHbfY4bO+oo=;
-	b=Xl26OW9LllXxBJhPosdDFC25cgLJ82+YHGv3IgXp5PFQ2Ixyz+tvcKW0ri/W/6aiFVU2O9
-	Kmh7T2RixalJIrbI0X3SKI9ZkwHNeJmSavsgf4zQFQBjRMCh74rcmqe673cFoDtopsrbvZ
-	8w38YhCsfIPlaJj2PUyOZ5SRzKHuyJg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785318427;
-	b=QWp2eeR6q9TmR7Z6EPsrj5BVfw6QNRfhFoRCXs67iIYftQtNVMzPYMovfvr1TvC0o34RM1
-	kDl5/R//NqNoasHOSi7GHplp0QNedbfHPv3TU0LMdYJoCiN0cOesZgtSeuDwXFF4Uudi8I
-	jedIFOvAIhNesQ23uDp1Tes0pfo4xzE=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kkmwOjSZ;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=o2Jbn0t4bTPOCnmw0BAUoprtr6tk/QSrIN1zfNVRZUg=;
+	b=KPxXFRXyZBuZdFnHmVqKsmx2Ur+XLk7YvmuKrCzhqwYPtsLyDca9xawRXP6Q6vz3T6r/5i
+	YE5GQCUxp5ef24vr5btPphm48l3rE09hfpCKKRjsxhs1PUYW8wxJNViaFYg67+aCFWlA6k
+	hPhBMkZAz3EMJ85QP5QELbFai8/+cyU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A8ACD60A9D;
-	Wed, 29 Jul 2026 09:47:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A346D1F00A3E;
-	Wed, 29 Jul 2026 09:47:01 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id CCAEA417EF;
+	Wed, 29 Jul 2026 09:44:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47D7D1F000E9;
+	Wed, 29 Jul 2026 09:44:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785318425;
-	bh=Rua1RKrJjiJNOIidWLTZk95Yzmjh2kX7wHbfY4bO+oo=;
+	s=k20260515; t=1785318297;
+	bh=o2Jbn0t4bTPOCnmw0BAUoprtr6tk/QSrIN1zfNVRZUg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=kkmwOjSZv+QNGaxoleaGShT4fXXQ27JMIKH+oFVuBrL+OWLtWoWiqpyvM/uGsZRnJ
-	 ckow47+/MsLwKh3tOGv92MSGOxD4TYx1NCvlu9r3+C14cI48LfqAzOjlZgQ+lks4od
-	 MLWuFX8F2+Z4f4oUWiruUCOsMw7932uA9KQ76EL2VXsUDKQQcjYBmyuV1p4Pdy6tdv
-	 BvFWLS9s+fL9OrtIWIstduANmC34ffFS2XM7cGEK+p/FGopTY+c2V8FZWUUBE40U5j
-	 D8B4Kf3GJE+6fKTo622F/5Rd11gd6FnWTm+xl3RqwYYdNeIDeDf6CPste0na7UxyOJ
-	 JkDKFH3vvdy6g==
-Message-ID: <ffb091ee-affe-41b2-939c-6437dd9cc13e@kernel.org>
-Date: Wed, 29 Jul 2026 11:47:00 +0200
+	b=KecLasxf4+A9rNhq2lWbIxcCV4zw+pYetw7ylrWYXWwR0afC/RJ1Ls+gwFq6ZddgU
+	 T2DYYWpwdN3Upj396izMTeiO0u82iHiSOxo9t5v/mz8bm0sjI5TMfQlO34u9GXD8UA
+	 tmTIIVsh1iBY8r3gLIWnABrTehlGhtBupHS3a9mgEWHYkFe+J+Z92eCHh22tmL+56T
+	 H3jj6R5TPRKn6Yg57aX2KOQFw5EXqiR1v+0RPH2IZgl3AbR2KmjOxf1g19kej+aGwZ
+	 dEhgOO/Ps6NgS0J/dpUImWY5gYVwCUy5r0V39MSWtbw0Y5yfaniCRxL3VhVnrxaKF3
+	 9eysW8D6FEEKA==
+Message-ID: <1e2e464b-07db-4fa2-8e38-2d73a9eaea07@kernel.org>
+Date: Wed, 29 Jul 2026 11:44:52 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/7] mm/khugepaged: extract young page check into
- collapse_is_referenced() helper
+Subject: Re: [PATCH v2 4/7] mm/khugepaged: fix outdated comments
 To: Nico Pache <npache@redhat.com>, linux-doc@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org
 Cc: Usama Arif <usama.arif@linux.dev>,
@@ -82,7 +81,7 @@ Cc: Usama Arif <usama.arif@linux.dev>,
  Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
  Shuah Khan <skhan@linuxfoundation.org>
 References: <20260715025941.1571316-1-npache@redhat.com>
- <20260715025941.1571316-3-npache@redhat.com>
+ <20260715025941.1571316-5-npache@redhat.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -129,17 +128,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260715025941.1571316-3-npache@redhat.com>
+In-Reply-To: <20260715025941.1571316-5-npache@redhat.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 9ED374000E
+X-Stat-Signature: bygettdy7td7y3txxe78zkp4mtc3k68i
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 5E39B40002
-X-Stat-Signature: 58eey7epiqzndboaiggz8knat1nr4umg
-X-HE-Tag: 1785318427-441386
-X-HE-Meta: U2FsdGVkX1/mfnoYRvNDMeXPPvsn0b6UqVtMwH/cI2F/HjMQsG6Cg3qcZ2I2zueJ5YvhqSrBlixdu9e8tFwifUUqmaWzQi/UbsRq+ix4OJFz1ZdLE7IYhMvMbz+V4UyxGYf3ROb2nXnsSpwBe9shuny6RQ1CfY75b/Ha+FHJ5uaZkg4Jm/oifoP4I+EG3UjUWG/nLh0NKiYOu/SM4FNbkBmOAJ1EbzdW6Brgj4FSU+36NguF7Dybo6kehb8/1oDzCFeATF7oSJACMs2zr4hqg3jluk2V5hG0q4IY/VBVGUWwXEtX2QBpfc8NkXGC3UtbBWLvl4UnHpUpLh0j3/y0pn/Coulacmeq2vBF87uiaDfYBUXknWgHdxaGLQ2X0J65EHHfqob51BEGm2leZFlfku+iLKxhQ+3ESO4aign43lfqKTmh3lRPXb3E5IIYGs9dzEH9X7pFyu83J0WguS3wL2ofAokjlilKCdjX7+YHihSHH1C1mETS9/g+0CDUbtkGvuZu4ZY59dI1w76vK884W9ZGlm/xrky7/VINbRuITmfVchQ3WYBJCm4TfMOof5s2icAQfK31jXyHZ3jTbp/3twG8LwhacRbD773P57fNfPNSv5NYWThaG7yTgziYkchY0HsKaW374SdDUASVY7qJIBvho6ZQ1rdKdrwo3ebO0vAqR4RnVy66GYwhGCeaePB9QVOWvV3NfJr6sEak1MKMvu2AHxZ/QiAA4+WoEWtkRSEUlx/IJmDLYlFrARD2q/58Z/spki+6Fsrhh/gDsVjv4+xh9wIYDeaIr3rqIhFXnRUXxVdN79KJzRsrsNtWN+LB6Dz4TFg04fliCA0dK+F6ojzVrlvqCpN0OnqQyLDAwR4GpWxfQ2v9j+FkJLA52M91Tn8qa/EWnuBSJ87gOlVseoyRP6MxY/bvCPfG6pnRyGnXB6fG2BiyZMyTEMR9qRGG1VSPHjKnXLabwzbY86g
- eqMknjTU
- q1kqQLvo+81xcLkxMLoQpEW7ihZfSrTDXer7S1sOwh2BfT4OyS4ha2I5woVFtjwsubfDWjlOGUVjIvRmXtH7VpNTZaH0Jp+VE6Fq7czgSUS8X36q/ZVm/UssBAGLypBMPSBfmBnIhNbsSIXe9rykb5NiiyzwYr+R1s00ynl7QM4HHcnM7ixnlJBS+0j9qUnzyIS6fuh7Iq8EmJnxPGkb5Ik1YqarmyV+voH8LMhyli1uLMdkPzOzIc+1PR5YeEDc4mgIUXBM1iblRlxekRAuVfIJ36Zae98DQCmGEn9MWtqqFq2thC2yKo4SHqfTybXAN6qhqDuY1jts8Q/E=
+X-HE-Tag: 1785318298-434675
+X-HE-Meta: U2FsdGVkX18bnGrPcHLiyIFbnpnfxiLs1E84b+fspV0KzzlUGruWe39eW1aeZD+3LWkTdhhsXDx6B8SGPfAen31F1FCVqmeE+bPAL7BQbX0Cl8pKHQ8TzSUtrIHfNKRgJH6kGZDF+r9W2dn/MI58oX17WxgOdVY0RJ1ihbuWINMGbXGoSdDo/wgTXTL4NJvHwneAm1ntP0qmxZ5L456HqgpBNl1IEckEbAJKa1wydJJuJYyd10z8wDkzAVUPemofX3s5HQl9dTU5K0UnVd3KNZS+kPZvw55noDXHbeWmCzEe3dHvlSzsWdTOdC3MX6xcYyGVrTjOstaDjFMjWrrque0Nz1rgIdG8SsfBKw9G/ZgdD02fs5XZexpnwXb5qgs4+XZkiN/FjzGlxNxejdemXfpytw2E36yPs/AyP9rX12km5v1u5lC+HUNrGXCSmuE5/sVgNvU6xMvLQw6k9mmH3Rv/FfG3XSgnWcV9qs9VKIk6x8jGKOFyzEiI6/U1k3vmJJnJODEy+swy9l9hnhzNnDIFemM/iOOZxeUC9ak12K+Fnh814XuX1nylaf1iffDtK/JixBQoyv9Nn5VOjGjKxZBvj2zWjOnUUgopPCTigxNxSl1LD1Buy3+o+5k6Ne/RVhYjGZHk/Mk5FR5nC7Nzvb1ng6P0bO/KNGLKSpIxbLLHs95xagP2T2GZ4UBpKpXmi81PIB0/rd9gK+d7lEkHgeq4ng8vBRuh1PrcvklHontpJOcyblwVaS1JqeC90PJT6iPFqgORkY1oD+0I2/zD4/qP4m5YxVyfHA2scjkhQkyeIHebxW9EO/IEE9zWocCtja6OTp0M3ijBIYMG96ksO01IVMxMpIqwjaeV9BzTSFo+dV6RO8dJVBSwxzxou/Z5+Jx0ySfI+8/o+04acDpcn1y4KDt3cTZ5R/KLy3OPqllU4PJWGTTZJQ57YD9dYrXhPP1AuI2fxv/y6OGUMCY
+ /aqSGzxu
+ aQFwxCUZVTFVb+FklaGLPVf04qE5VpSTWsx82AXGLbezYpvrn9NkKUb1+gHgYfKH6PjJSSA9ieaKEInXq82ds+vMKBxYIxfAoJOoeTStCs4uB6UoeobfwZqA2j8/15hHNHQwdBc0vY4lRSwgPl8Q5B8qA8Ul5KilQPRJL+JrGjF35o+H5o0MkuIuAyBwa0J4vVvhp26DMMNUEUDRnZsKsj3IS8CQrevN1AD6moQZMG9WRd4zk+OusWbGJBzMsIO/Txc+G
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,22 +146,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/15/26 04:59, Nico Pache wrote:
-> This change deduplicates the "is this PTE/folio referenced enough to be
-> considered for a collapse" condition that was repeated in both
-> __collapse_huge_page_isolate() and collapse_scan_pmd(), extracting it into
-> a single inline helper function.
-> 
-> Also move the comment and use it as the function header. While we are at
-> it, updated the comment to clarify that a young pte is a recently accessed
-> one.
-> 
-> Acked-by: Usama Arif <usama.arif@linux.dev>
-> Signed-off-by: Nico Pache <npache@redhat.com>
-> ---
 
-Also, do we really need this (badly named :) ) helper given that there will only
-be a single invocation after #5?
+>  	 * UFFDIO_MOVE is prevented to race as well thanks to the
+>  	 * mmap_lock.
+> @@ -1643,7 +1643,8 @@ static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
+>  
+>  	/*
+>  	 * If PMD is the only enabled order, enforce max_ptes_none, otherwise
+> -	 * scan all pages to populate the bitmap for mTHP collapse.
+> +	 * scan all pages to populate the bitmap for mTHP collapse. The bitmap
+> +	 * is then checked again in mthp_collapse() for each attempted order.
+
+Why use () here but not in the other cases above? (e.g., collapse_scan_pmd)
 
 -- 
 Cheers,
