@@ -4,84 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08168C54FD4
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 20:27:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8102C54FCD
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 21:39:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4DE4C6B0088; Wed, 29 Jul 2026 16:27:51 -0400 (EDT)
+	id 20D1B6B0088; Wed, 29 Jul 2026 17:39:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 48F306B008A; Wed, 29 Jul 2026 16:27:51 -0400 (EDT)
+	id 1BE5B6B008A; Wed, 29 Jul 2026 17:39:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 37DE26B008C; Wed, 29 Jul 2026 16:27:51 -0400 (EDT)
+	id 0D6F66B008C; Wed, 29 Jul 2026 17:39:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B3856B0088
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 16:27:51 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 801A5160617
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 20:27:50 +0000 (UTC)
-X-FDA: 85042950300.29.75896CD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 59602100006
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 20:27:48 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=pmxruMJ1;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785356868;
-	b=Iv4fNVDc5AKYXTi/AujDe+lD2jNS6RfOB/AIuN1syvAdwQl9nnZOaQ7vEGWeomC5wxrjzY
-	VG1bq5G7t88mGxFwT5vGmXGfV7nsDhCzMg7N4G/VTfYKGjKE45l4POwxLJaJfw1P8+QRue
-	+DmSPw0jmEX7P7/3Hh+aHSg8Z59gueI=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=pmxruMJ1;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id DE6776B0088
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 17:39:42 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4003AC0700
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 21:39:42 +0000 (UTC)
+X-FDA: 85043131404.20.2C3457F
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 949FD20009
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 21:39:39 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=HzJ+EPHE;
+	spf=pass (imf31.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785356868;
+	s=arc-20220608; t=1785361180;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ppvXWw17La6VOhnrUygWlQUgfnpDHFiES+LHiGhQI9o=;
-	b=Fn8MvCZZoCNel8ZX1V+64mnDgvMmNh9ZslffmO6m8U8O5kSNs1hcYZriruRgzFudL9dp4z
-	xbfaD4NBMpoBk5nZ0hg8J6g8WmUtyl5vgOWsvJ8WC1tdAaAYQ8JduO5yF7nuDrQW9lhiHF
-	/kOGb4PcDfoT5VDNynTDwv9Ix5NGDMQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9D2A240A83;
-	Wed, 29 Jul 2026 20:27:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66E271F000E9;
-	Wed, 29 Jul 2026 20:27:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1785356866;
-	bh=ppvXWw17La6VOhnrUygWlQUgfnpDHFiES+LHiGhQI9o=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=pmxruMJ1yZLHx156OsbBp5gSVtDIshq8dIJXFa0BYpRSUQMI0R9ZN9xgqRInVpm+M
-	 blUfS8rXikZOjCy7G6aFkQwC8FOE4J6NolSJaMupWS+16a0l/XZNdel0ZvkErIJ22V
-	 H3EHiCuOk7dtzRJDq9pAccwcW/qReTxBpkmPW3VE=
-Date: Wed, 29 Jul 2026 13:27:45 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Sang-Heon Jeon <ekffu200098@gmail.com>
-Cc: Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org
-Subject: Re: [PATCH] mm/mm_init: remove unnecessary initialization of
- pgdat->per_cpu_nodestats
-Message-Id: <20260729132745.9d42a13e614be2e18c5988ba@linux-foundation.org>
-In-Reply-To: <20260729155143.177790-1-ekffu200098@gmail.com>
-References: <20260729155143.177790-1-ekffu200098@gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 59602100006
-X-Stat-Signature: eq4dt8wzkkqad9e5em1k6ckgat57abm8
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=pOg0MAMj9ptcSEbmspL3dz8VUlSdQGVedtVVuIz1t4U=;
+	b=XSfb3oykgF+exacaKhC8ALtI3JQhFZ9/1TBrKm2HPT43mw8bJfh3xNYDR9nkCQbesBF0p3
+	Q61julBQ33o0dEc3CIrtC4REzMeHClKORZb/TZP1IWQrPowE9uTfeJA4e4yYbTAa03X1zG
+	6VfcnJR+/no7OEu2O6YNRMS3WLYLAMc=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785361180;
+	b=GaazQZM7n0tKfV1dEFLaoyoOJSklnBnq8QZUA8UhZLLOC7Rv/ARrUGxznHeRe/fa4Jt2zu
+	x14bH84GhKUeldy9xYzJGEIysz24ShSGV/sC+eienwClvuUkJdvwNXTRoxZZk7ZVBDMSkH
+	a8x0DA0YuDTAIwUaCfgISk2gp/8/ov4=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=HzJ+EPHE;
+	spf=pass (imf31.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1785361180; x=1816897180;
+  h=date:from:to:cc:subject:message-id;
+  bh=3lfQKZ7lIENqEhlnApCsfj+2fW7E7cOARBXPZKJ32vE=;
+  b=HzJ+EPHE2xZAgmupLS0tC/QGEc7tZrkghJ2jIPN6ZOdGHXNDgMtJJTnt
+   6H4Yh9mN7cTfm9RkMEJfTXCvp8lu9bKp1ipjK/0nwQacfIxL30OA7xQKI
+   BNLyjG9biPM6ip3XNCuQX9TBUrKNLNt5W7TnBHcu6KC9spsJ60W5WkoFu
+   tbr9P8y4JVs/QvgptW5rnZx+RmU5XxdgDTRz5SA4CN8BdGOcrHsWhgrsu
+   Vni4djv07pnkoBFZ9rfUhj6SbErettBzkuiLtjEXqvsYFhA3ErVOFCgrC
+   nBgLmnbdaWTh1cn2OnHg6Q0jDhudFm29/I4B4xHi9NsBlaDsO8vM2y/Ul
+   Q==;
+X-CSE-ConnectionGUID: TlswkndlS6a+ii1J+HAWCQ==
+X-CSE-MsgGUID: 0+Ypz6jRTlauPPaJK8oyrg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="97133425"
+X-IronPort-AV: E=Sophos;i="6.25,193,1779174000"; 
+   d="scan'208";a="97133425"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2026 14:39:38 -0700
+X-CSE-ConnectionGUID: f4dLZXwISxuXVnhUBAkc8g==
+X-CSE-MsgGUID: 8/KrBO/6Qp6YKV2YusBobA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,193,1779174000"; 
+   d="scan'208";a="262076200"
+Received: from lkp-server02.sh.intel.com (HELO ea128546eb3d) ([10.239.97.151])
+  by fmviesa004.fm.intel.com with ESMTP; 29 Jul 2026 14:39:33 -0700
+Received: from kbuild by ea128546eb3d with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wpBzu-00000000fh8-42Ye;
+	Wed, 29 Jul 2026 21:39:30 +0000
+Date: Thu, 30 Jul 2026 05:38:45 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linux Memory Management List <linux-mm@kvack.org>,
+ Mark Brown <broonie@kernel.org>
+Subject: [linux-next:master] BUILD SUCCESS
+ 78bc8af4affb9a732504eb22eeac7d1e50883853
+Message-ID: <202607300507.Mvkdse2k-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 949FD20009
+X-Stat-Signature: d7njsj95newtctn3qr7o9bzcaekgjny3
 X-Rspam-User: 
-X-HE-Tag: 1785356868-430274
-X-HE-Meta: U2FsdGVkX1+H5wTtLEeXJD1eDQl54SF7RWzH5C50c4oDZYggI+iIFM733JSpKoFB1+9u04HCfOqf4hCDgdti2WyOyHT64L/kt3M6EP0UOTzJ5VrsdF4wKmVN30yR0Hyx5zgKQgd47XNuKliii7Hq4GzEK8tJ82z4oQZ90TZXL77t8FLXgNwvntKAR0JPNtb/N2I9Z2P1866Ht0l3YlnGr7vDScKZg9ewIt/KLSZJdVCTUeQLi3JtnpSA4Vp1BBINdTZrJ0N8edT72V4hrNMB/C5YJRLLEknvE2DGVzv3KFLTxGbrv3NbSLgQfB4035vG6HWfB3arQWq5GiPCkOPJILvCqYxNhu/6QOPpL+SBzecwGF3yoLlSTIK9nkctJKdJotvs0ZD7mkYvA99YdI2E0GuB3bBcJwpLwxXob583t3pyV7GH4YDK7dfUvJK17yH1oVVOJJOrI2AUWP9NLnjF+16JamLHOfIO0HWVJDvoABX6Mk0KYVNQEZac4CLVDwXgOX1Om/fmwPvP5DZhH9D65c7gmopELbMXXUmvBvynWpNOKjxgAobWS96BFH/upDedDS6ig2c4fv1EXB0yDgSNYpFmBFkfjq3rwjNXDb+aEyirfYjhTnPYJqia7Nz4YXh7hwu4fSZE9ARcJqAIZ81glIhKZ2N55OWrVvdahA6QrJkj5y+2jCznaiyMJuaSDDZ+zwWTiyzCFNCh7oBdrxPTZnmmvFvLzQQB6JOFTKAi4LS/cDHsVuhGTFPxjR+9x02rbhSw/p+d6+0iNA5r8zA3Ei8q2HV2xwTR0hK4+PNUIy3vZF7SfpAN50qNjEnYLvP+4e9TVqfX2BgN+bhWQYky/wyWNrMhg2Bpzgw67G3fvndleL+6sKP9x1Tdi+VYfA5f4yp5WVZQB2/He6mhJfl4Pa15pajHdcd25CXeT5MixA/Du7VydmB4xIq6kZrzxrwB3C67DDP87XpMSOrdl/V
- MRep2x4t
- xSHW62n9ZGtbU+/5XMVUjX1YOCJgiwS8P9jnVL4+DvZiNrQJ71YSkEjHhIebz5zD7xAGCONX0RAQRn1P3bXWyboeRgGOOyYomv5pAFykvEWFSslzbPFF6w+P/TUM/IIB2Rs6w6X/WRZLTi8/zr5T1SFRxp2plGR85qPJE8CaxSffM9ranYbTnHswDk8sPOT5PLM/eY+aeyVUtdvie2QwjW9bRzk9cFPZJJJrxZrQmA6tMzb4Yey0ppQDCc96OpQ43Cv6ZNYk7ehDkfzusHRddvhj/BVnT4SK8Rwfqel1/oNJclgG2ibeA/cxDVjijQHXECq+V
+X-HE-Tag: 1785361179-795179
+X-HE-Meta: U2FsdGVkX19pzOhNClZhPlaV4FOBn5UDs5p42O8EugUThzZwKi6NA37uXmRz9/ustz7mitQkECukd6wdq7cSTH/Kp1TtHjasFCaUwrfTW7u+E6OJR29RSjJmD32q8Xuq9bASLZDYXuru3eoBlEOZGGMYNOLdbDxMXMG0WURfOooJnTzPcMeDfVnIzbwebSCKrcmMOpvKussP/10GuurEupXGpTWABqi8iTEO/7jkNEgrAMqSU2TezKkEAPflB10AjtoXxLvu0AHdbln85jWj7VUv3t/RAljbxeBQdvnxC9KOX38255wdN5fsUW6cxq9/XGkHKHkLK+NXhUTm7BpUqECPBHN5EhioOZrtL1Io5LOdqt5q0wA4F2IZt78OadJGIovgMWrbHdCZcGU8RfBuHXkbg7DsaozZJjRljgv/LK/TL68vBLUM0+huGnKnBCYRtJEkcet5pzC8A2CfWvn6vazbE/hzvjgqZy9iQDUHr/Wd1o7Xnwo5em7ypAZoi9siG1Z64Ae5vdUrod5Yu/B2vTP706fo4bMApcAmavsAYmlxhLNpMAbTespf+HAohUm1CRy5APdW/T75spCQIrPb0EKVsAGQ2I+btQYNVckHTacC339DsDS+7HKX6QGcN61bMD0qxet3LuHd8kvDRh8Gh5u12BBLYubTN3uC0HvxoaecKU/8bntz+pUWxjW6IXjf/oRYPyhvR0NgT7pzbJ3e+bVh9wN2/tuJ4glxb0ZHfGrNHTOwAAHIpBw0ECRp1lk/tspXntf4045HTtKjefKhd0bq1LlN5eZA76RWYn3gQW4Wjaz7jctuQ++eb9Wr7PjkZfzn/0joklGTXJrV0agHrSJJu1Q73ZTpKExo+5JYkAaMr28EyNvAqsH3EwT80X1bNGFvtKeAQcOjVnzns0sikDjHm+Q/uZODJXXa61s3f47dEPTnNZj1mutr6wNiUsUksoyxbcgOGzB/ohom6yk
+ vby9Ucl0
+ d+6N7XJIhUibdqMYfahh7TrkCqk40i3Bo0sgGEw6HCLkFQf+h+thGAafKtL69Fi3s21DoQI7OyZjsrw5tHcfvqzF/nb386zaGHVdFd6aK1sksspwbw37EIoZ+rpKwFvhhV60Ql/uCidYruM5rbKW1mI3fQlH53USw0IeWGJto6PaXKav8nHzfLFQNwdNLCrAjucugpBw5ClNmTSM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,32 +101,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 30 Jul 2026 00:51:15 +0900 Sang-Heon Jeon <ekffu200098@gmail.com> wrote:
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: 78bc8af4affb9a732504eb22eeac7d1e50883853  Add linux-next specific files for 20260729
 
-> free_area_init_node() sets pgdat->per_cpu_nodestats to NULL and later
-> calls free_area_init_core(), which unconditionally overwrites it with
-> &boot_nodestats. Nothing reads the field in between, so the store has
-> no effect.
-> 
-> Remove unnecessary initialization. No functional change.
-> 
-> ...
->
-> --- a/mm/mm_init.c
-> +++ b/mm/mm_init.c
-> @@ -1722,7 +1722,6 @@ static void __init free_area_init_node(int nid)
->  
->  	pgdat->node_id = nid;
->  	pgdat->node_start_pfn = start_pfn;
-> -	pgdat->per_cpu_nodestats = NULL;
->  
->  	if (start_pfn != end_pfn) {
->  		pr_info("Initmem setup node %d [mem %#018Lx-%#018Lx]\n", nid,
+elapsed time: 329m
 
-Looks OK, thanks.  Although this statement is "free" in __init code and
-its removal does make the code that bit harder to follow.
+configs tested: 29
+configs skipped: 1
 
-Possibly *pgdat was zeroed out anyway, I got bored figuring that out. 
-The memblock_alloc_range_nid() kerneldoc is silent on the state of the
-returned memory but I spy a kzalloc_node() in there.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+alpha                            allnoconfig    gcc-16.1.0
+alpha                           allyesconfig    gcc-16.1.0
+alpha                              defconfig    gcc-16.1.0
+arc                             allmodconfig    gcc-16.1.0
+arc                             allyesconfig    gcc-16.1.0
+csky                            allmodconfig    gcc-16.1.0
+i386                            allmodconfig    gcc-14
+i386       buildonly-randconfig-001-20260730    clang-22
+i386       buildonly-randconfig-002-20260730    clang-22
+i386       buildonly-randconfig-003-20260730    gcc-14
+i386       buildonly-randconfig-004-20260730    clang-22
+i386       buildonly-randconfig-005-20260730    gcc-14
+i386       buildonly-randconfig-006-20260730    gcc-14
+loongarch                          defconfig    clang-24
+nios2                           allmodconfig    gcc-11.5.0
+nios2                            allnoconfig    gcc-11.5.0
+parisc                          allmodconfig    gcc-16.1.0
+parisc                          allyesconfig    gcc-16.1.0
+parisc                             defconfig    gcc-16.1.0
+powerpc                mpc836x_rdk_defconfig    clang-24
+sh                                 defconfig    gcc-16.1.0
+x86_64     buildonly-randconfig-001-20260730    clang-22
+x86_64     buildonly-randconfig-002-20260730    clang-22
+x86_64     buildonly-randconfig-003-20260730    clang-22
+x86_64     buildonly-randconfig-004-20260730    gcc-14
+x86_64     buildonly-randconfig-005-20260730    gcc-14
+x86_64     buildonly-randconfig-006-20260730    gcc-14
+x86_64                                 kexec    clang-22
+x86_64                          rhel-9.4-bpf    gcc-14
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
