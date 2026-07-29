@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE756C53200
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:39:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BA20C54F55
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:39:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B39746B0105; Wed, 29 Jul 2026 10:39:24 -0400 (EDT)
+	id 1EA386B0107; Wed, 29 Jul 2026 10:39:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B0A5C6B0107; Wed, 29 Jul 2026 10:39:24 -0400 (EDT)
+	id 1BA856B0109; Wed, 29 Jul 2026 10:39:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A1F976B0108; Wed, 29 Jul 2026 10:39:24 -0400 (EDT)
+	id 0A95E6B010A; Wed, 29 Jul 2026 10:39:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F8916B0105
+	by kanga.kvack.org (Postfix) with ESMTP id D272C6B0107
 	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:39:24 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 98B7E1406A0
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 12:11:33 +0000 (UTC)
-X-FDA: 85041699666.18.8B85301
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id CE6E8100012
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 12:11:31 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GhFoAAhs;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0F1981406B4
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 12:13:15 +0000 (UTC)
+X-FDA: 85041703950.06.C965834
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 492054000D
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 12:13:13 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F0ixN0N5;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785327091;
+	s=arc-20220608; t=1785327193;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uJwQ8kTPh1W4/a3MUlvjgjtvhqULKqgMp25Frxkklaw=;
-	b=fqSaRRgas1Ta79rBGTWAbIU6cvXIZ0GwmQ6pIkbMPPNTRXlh717nnTwmkIx8Y3ZJcfyzPO
-	5jq4y59V94HPhUfOjDaV87FaqkgqJqC4W7j3qqZTbmUPhsaTmy9+lixbFVgwQTCJbXwfON
-	kbuP0TfT+rrHRGXHtiqu5UyMslfdRx4=
+	bh=KZR21/LWo3BbtQVJieDL33KfOBPCn88cKz4sy64n1Ak=;
+	b=4ZhTg+Kde6ys2AdvTyNecVg7ht2uQdVDGatxvbg6HDAbb3VxL5wVNGkNZXbFyhH0OiBAhu
+	34hzc567cbI6WAQ1DuwKObuFFfPrz9Fx3h24cXi6KgeeHnBKVLI1xuoLqQJ10/5UyDDA23
+	TZp1kKpdd+Jb5gZJwEhhRJhv/hBD97s=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785327091;
-	b=3pAqB/W7En3oY4nhY88bon4UeLzti/rylYjF05N6yvlOv5RAfz+mHiu+RT7ALXF9+EIo/o
-	iCh9uKffPehEzO/u0cTE5azrnMmzDl3bp1CZ20w8mXKVnc3IV+0FmrqMS861/YZLjdggfv
-	8iqRDdF966zXl9ZxJuzsirUXGxfK2RA=
+	t=1785327193;
+	b=p8y6P35tQdNhA4nLyYs4hfoeCkdEz71GIoJa3ItgZU6910tt69TAF6ghuiXrPTFkIV9PMT
+	vucxJLDFkGKLSMMqVBe6rhOSIdj/p6OMaxaJlUXofO+336imavZ8cqEwqh+9U7gSIfxMnJ
+	qGDumFr1xGv/03dYLIQem4OAMUcxItQ=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GhFoAAhs;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F0ixN0N5;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E67B342455;
-	Wed, 29 Jul 2026 12:11:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 060A41F000E9;
-	Wed, 29 Jul 2026 12:11:27 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7F689600B1;
+	Wed, 29 Jul 2026 12:13:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4ADC1F000E9;
+	Wed, 29 Jul 2026 12:13:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785327090;
-	bh=uJwQ8kTPh1W4/a3MUlvjgjtvhqULKqgMp25Frxkklaw=;
+	s=k20260515; t=1785327192;
+	bh=KZR21/LWo3BbtQVJieDL33KfOBPCn88cKz4sy64n1Ak=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=GhFoAAhsAmpS5+ALisTdbEtXrsM6n/XKQYlblpt+7NbLMlJPB70lrmH5CiWZtDnOx
-	 OEhHbK6fYEhgWqLzFATRKAAHQ+Sb2GNbVhAxHrqSCKBDNm+swHhINIQ+uNDdat3YYc
-	 Xce1g065zsoXDXR0wh/SU49+9KNuuiZhwe/CXphdQ+u4pbtAYaq6FnvGySvw1vtfA7
-	 Uxrs+nOSTQhTsaUjeD6D4QsvxTu11Ot4NCBUD/i0sS/cnZOx9DQhrOZkP16ERnYP/N
-	 YqF9O8AtiL7kop7S89wPciJVZY9TrqBnGO5TYX6Ad61NpnHQ/ZJKn3ik/MFawgeKxo
-	 WLUJ9m6vkVnMQ==
-Message-ID: <8f74bd51-11f2-4837-9463-d016444e45cc@kernel.org>
-Date: Wed, 29 Jul 2026 14:11:26 +0200
+	b=F0ixN0N5y6bgzuowllPKQswouLSamyCsNDGFf9VK6mms/P/girlt6ZKJ6ChiSjEtx
+	 sGRXLDvzYNPeajPzxxIp9yEmIiXaG8hLs2hWXiY8DKpKlTpffwQlKWiR+0J1v3D0Lh
+	 js0tF735ZdJDu3DL46YeDgATXtJdmS7dRUS/iF42b4oVFs+HrkSKzhbaC/FJqstyKI
+	 9vmCml3aBLa0JL2sQeoO99o6pBWyi+59K26sSwTwpGD5c3Xr4HQLL9ae4saIcsIz37
+	 uILZKrOIJ6iBsRh/AGGGhYjQ54dXDU94YjzJlUPwCZhmU8//5ELYneQGvxus/JC8nu
+	 5hWXQNfZuGygw==
+Message-ID: <229c3079-8fde-41b4-9d6c-f0e34f780555@kernel.org>
+Date: Wed, 29 Jul 2026 14:13:07 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 2/2] mm: improve large folio reuse for LRU-cached
- folios
+Subject: Re: [RFC PATCH v2 1/2] mm: allow smaller large folios to use
+ lru_cache
 To: "Barry Song (Xiaomi)" <baohua@kernel.org>, akpm@linux-foundation.org,
  linux-mm@kvack.org, ljs@kernel.org
 Cc: baolin.wang@linux.alibaba.com, dev.jain@arm.com, lance.yang@linux.dev,
@@ -77,7 +77,7 @@ Cc: baolin.wang@linux.alibaba.com, dev.jain@arm.com, lance.yang@linux.dev,
  ryan.roberts@arm.com, ziy@nvidia.com, vbabka@kernel.org, rppt@kernel.org,
  surenb@google.com, mhocko@suse.com
 References: <20260709081536.82768-1-baohua@kernel.org>
- <20260709081536.82768-3-baohua@kernel.org>
+ <20260709081536.82768-2-baohua@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260709081536.82768-3-baohua@kernel.org>
+In-Reply-To: <20260709081536.82768-2-baohua@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: bketkxygh9jqktq3pg16t3p6qomceuze
+X-Rspamd-Queue-Id: 492054000D
+X-Stat-Signature: gaudgge8oztzdz8sogck79tmsq6kamwo
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: CE6E8100012
-X-HE-Tag: 1785327091-816892
-X-HE-Meta: U2FsdGVkX1+dePpQOuBjGRNq8VzM8JxFFJ7XyU0/YraICgduHBGsTsISCWuvWaIlQxX6xMhA+oa3OzCljV4wq0aeJytwlkswP+mZ7edt+XchirueVCzVa4KvytC+h/8wrJ+I9yaYXEGby3OfeJD/IdVs1sjS5ZqSo/NosfitHDpGq8KW/kszeVuZ4XY7xFeUzymhK7LBzEKwbEqxD2ciBb62DZDexZ1n7AsfT4h+IEXglUJQRmQt+ElpFrtDSnwuryEfcD7lVo2KHK1xnJe0bFdRk6pP2PkYJIxCHbISoLdsPPAutHSSm+hz2xDIgstXNkkoiSKSgxf/02/KxscM3MGzED2LC0ccC2Jv3IbpAcE4EjrN3mz2dKUieEiJQbVnO7M5bnDqh2HzU8c+G6wFgW0lrJhfS3liJMp55RPR2QGlRWI8T8OFQr9Hx0xy92LF7V+6PLnZZhYAkZ5MiIoz+N4bM8Th/+ZuaE3GNtobsvFn6FO/pByOiS8HZZEVKYXyNPu88WcAYVQTS2thJVo6VokUWT9T+BqleYL28lHtM9UMWp0xBjv3qqvkYw2OO18suQZoDs9ni+QWjmkjc4a1gIN6/BngYygK1RxvSAq++fNIZTECS0vHEGp927uSlh0QNBBxNTWgZ08C1rXaO0ziIE7XnzSdgp+MQraPjdqVWwNT7U0Iw1h6m6iGHZJhWGviLw7PIiQmDgp0OhWGQJAv9YsacGCpE0HhMFEr5b9UIudJf4aMVaoM0QG2s/LpbxMRhzxdGTqYKKdlQPs3cXCAS+7GQGPlueJJf4qeaxEQgbH28m7Q2K7kkcqiwZDQ2w6kvqDqdGkrSihcegRZK6VRstGXDg3/2YvLJ+1G+oFFVSicOnw5uIAxIiEooSDKjzPIvK4tW9ECbj6qpTOh3U3EvsOVZnaGevQ6eQoA2L+BiHzhOiaNsxIwFZBRe7xBhkl4SN1MDLpPQynTV+j4S/m
- D5A5f6pM
- 8lPU+VSEJQg0Rze9naDBY9RX8FaIrffs793MSGlcVjpdQjXd1/vCRcG3M0fR1JjqQGtZowHTMV2lRmM61COOIrkukhqEljy3akoNuMZD/WubthakMzufhLE6f9puzwfPOnyYXQxP8NIY5/x1KM/wHe1+rOammofK0cio0IJs4F15bTGyIkaw9BuavYw65RUI0iS9KAfjkAcz9PC8/Gc2vnaglus901ZeCK0gqQ29InTLMtZj2pjsRtHG08RJAMnqf73kKQL7io+BbloMi2+G4Bqr8EZAuBI5nn+Kj
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1785327193-13233
+X-HE-Meta: U2FsdGVkX196muWcdRliawunF2T6BArwsQ4j1N9G3zBH4Mwqr/fU27DerwdHdGnqGafr27RM4aEvTYjzryTaTp4JKU8ttX+2hGXUvbvOoJVtpZLcrbfPEAyqhSgvrFhDiIeXlH6p3wwmROuJ2uoWnyaB+beFjzOO6Kjf4516qwDytxY0ifTPFulyaPHVe8JXJg25lYE1WqTU2NMIgyMuensIyr3207+zIBm1dEoiHUv1+pqHzVITwGL4fHSOKNYHckhTy0l0bAxWs1Rg7L7T7u/itVKayTZykGvNsJkEB03POX7kWCK/UzJ1wCBHhgTRO7WKEtW79BzdCyVjPhM3t6phGIelKTihkesJDV6zCUvapX+fPPr3q5b1hmilFAdksuS+XBIPQ+Bm6SxnoBe63YVvhmnzJrwmhJRCU9BPgHPa1D4Wri2bQfUnbdv9f75gdfQzsx1kFjHb2VxMyMLXzgQE+0ZPyLpcr6vcvNw1zCQROIb+8lyVFIx2KZYgebWNJwDEYmf3SRFYmBaZ6BIGol2C3Gwuu5Xw0nn0Ex2CBxUzvDtE0NDR5k/7HJnOUjobCN2fY6wXfRvtH5tVoqtKdMf6AoRZYPggJWjuW20qAbsQRztojv2k1gco0eGAXseeu3sAn8Lo2ZzXwZZGsCyRhN8PfN90dfMbmvAuUOJwKwFAPEtBeXDnPmOJ4MsIwUn6WWCLRlI4l2GZeP2LGSLrXtKEYvjGh/YiooXDQCa6exr2UfzUjrl8SsXPtSClcDuVxLvUv9tp/19ZxbPp2ApOyKpDmM8u46HvDyqxT8mW1AIO5tnCOPKC0oE7mm1O1PONI8P69DPXRU19ddwVvP7NggQHUNU1rObeLd9ayuR9eIrtbFWAhXXTC57e1acTn0TFgcukd39z9FDWU0eEYgBlv2RdB8hKUtQ3sWlbof9QCGeO5cwlUfKj0V+ildLITF6KiHX6KMRiquY22XmXRuv
+ 9Nfj476m
+ IAUrv83P12BEL7OxWw/pGKYKotnzzCcCCiJQz/a+/qXWo0RzosDeN8cHmVFGhJcZ3J1LXFodJzX0GvdNqFFatSaJII+39lVHYm3ZH840DiJourwx00IKXOVgf81z3RtOni/qUr0NCcuoVlwiXXI2KWax4H+0zFHu3JTIC12Yq68TCJEXGZOaXCxwqsegxLFM5KK8klMgp5Ryi4klser7CsqAUO84/RnujbpmX4G6uUvchWxk9bNtUzADHXHQXwaY8DNlYiTAWFGlGTwzoMhDwM3X3yKowV5H/3gp0Rdy2rf4J1XdatT+KZSYVOnIebRb+I9LWQpBstFxJrbpjz8TIWfwQLDztJWbT62M1TgtAIp/D7i8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,66 +143,119 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 7/9/26 10:15, Barry Song (Xiaomi) wrote:
-> Large folios may now reside in the per-CPU LRU cache. Before
-> attempting to reuse them, drain the local LRU cache, which
-> can still be beneficial in cases where the folios are likely
-> to remain in this CPU's LRU cache:
+> For a system which primarily uses smaller orders for large folios,
+> it could be beneficial to enable lru_cache to avoid lock contention.
 > 
-> int main(int argc, char *argv[])
-> {
->     int i;
->     while (1) {
->         volatile int *p = mmap(0, SIZE, PROT_READ | PROT_WRITE,
->                                MAP_PRIVATE | MAP_ANONYMOUS,
->                                -1, 0);
->         for (int i = 0; i < SIZE / sizeof(int); i++)
->             p[i] = i;
->         madvise((void *)p, SIZE, MADV_PAGEOUT);
->         if (!fork())
->             _exit(0);
->         for (int i = 0; i < SIZE / sizeof(int); i++)
->             p[i] = i;
->         munmap((void *)p, SIZE);
->     }
->     return 0;
-> }
+> For large folios with higher orders, the number of folios involved
+> would be small, so the contention is less significant.
+> 
+> The following small program runs on a system with 16 KiB
+> mTHP enabled.
+> 
+>  #include <pthread.h>
+>  #include <sys/mman.h>
+>  #include <string.h>
+> 
+>  #define NUM_THREADS     20
+>  #define MEM_SIZE        (16 * 1024 * 1024)
+>  #define LOOP_COUNT      1000
+> 
+>  void* thread_worker(void* arg) {
+>      void *addr = mmap(NULL, MEM_SIZE, PROT_READ | PROT_WRITE,
+>                        MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+> 
+>      for (int i = 0; i < LOOP_COUNT; i++) {
+>          memset(addr, 0x55, MEM_SIZE);
+>          madvise(addr, MEM_SIZE, MADV_DONTNEED);
+>      }
+> 
+>      munmap(addr, MEM_SIZE);
+>      pthread_exit(NULL);
+>  }
+> 
+>  int main() {
+>      pthread_t threads[NUM_THREADS];
+> 
+>      for (long t = 0; t < NUM_THREADS; t++) {
+>          pthread_create(&threads[t], NULL, thread_worker, (void*)t);
+>      }
+> 
+>      for (int t = 0; t < NUM_THREADS; t++) {
+>          pthread_join(threads[t], NULL);
+>      }
+> 
+>      return 0;
+>  }
+> 
+> Before patch:
+> root@barry-desktop:/home/barry# time ./a.out
+> 
+> real	0m20.233s
+> user	0m21.739s
+> sys	6m21.143s
+> 
+> Perf lock report:
+>       Name   acquired  contended     avg wait   total wait     max wait     min wait
+> 
+>              21158662   21158662     29.20 us     10.30 m      67.83 us       884 ns
+>                 13547      13547     14.68 us    198.93 ms    135.39 us       982 ns
+>  rcu_state         41         41      1.83 us     75.21 us      3.46 us      1.27 us
+>  rcu_state         34         34      1.83 us     62.09 us      2.60 us      1.16 us
+>                     5          5     21.31 us    106.57 us     25.77 us     18.17 us
+>                     5          5      3.01 us     15.07 us      5.19 us      1.53 us
+>                     3          3      6.42 us     19.26 us      9.63 us      4.22 us
+>                     3          3      4.20 us     12.61 us      7.45 us      2.10 us
+>                     2          2      5.03 us     10.06 us      7.88 us      2.18 us
+>                     2          2      2.79 us      5.59 us      3.34 us      2.25 us
+>                     1          1      4.70 us      4.70 us      4.70 us      4.70 us
+>                     1          1      9.77 us      9.77 us      9.77 us      9.77 us
+> 
+> After patch:
+> root@barry-desktop:/home/barry# time ./a.out
+> 
+> real	0m17.796s
+> user	0m24.962s
+> sys	5m28.774s
+> 
+> Perf lock report:
+>       Name   acquired  contended     avg wait   total wait     max wait     min wait
+> 
+>               1407013    1407013     25.44 us     35.80 s     127.83 us       972 ns
+>                845113     845113     47.96 us     40.54 s     152.86 us      1.21 us
+>  rcu_state       1920       1920      5.87 us     11.27 ms     25.02 us      1.76 us
+>  rcu_state       1889       1889      5.80 us     10.96 ms     30.35 us      1.61 us
+>                   140        140      3.97 us    555.52 us     12.51 us      1.20 us
+>                    10         10     61.34 us    613.42 us     96.90 us     44.48 us
+>                     8          8     24.03 us    192.26 us     37.64 us      6.95 us
+>                     8          8     12.32 us     98.56 us     25.55 us      4.16 us
+> 
+> Both system time and lock contention are noticeably reduced.
 > 
 > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
 > ---
->  mm/memory.c | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
+>  include/linux/swap.h | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 5689b7cff76c..1d08ed5ba99b 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -4136,6 +4136,19 @@ static bool __wp_can_reuse_large_anon_folio(struct folio *folio,
->  		folio_unlock(folio);
->  	}
+> diff --git a/include/linux/swap.h b/include/linux/swap.h
+> index 8d19be675baf..9c5f7a11c7b0 100644
+> --- a/include/linux/swap.h
+> +++ b/include/linux/swap.h
+> @@ -316,9 +316,9 @@ static inline bool folio_may_be_lru_cached(struct folio *folio)
+>  	/*
+>  	 * Holding PMD-sized folios in per-CPU LRU cache unbalances accounting.
+>  	 * Holding small numbers of low-order mTHP folios in per-CPU LRU cache
+> -	 * will be sensible, but nobody has implemented and tested that yet.
+> +	 * will be sensible.
+>  	 */
+> -	return !folio_test_large(folio);
+> +	return folio_order(folio) < PAGE_ALLOC_COSTLY_ORDER;
+>  }
 >  
-> +	if (folio_may_be_lru_cached(folio) && !folio_test_lru(folio)) {
-> +		if (folio_ref_count(folio) > folio_large_mapcount(folio) + 1)
+>  extern atomic_t lru_disable_count;
 
-I assume that can just be a "!=".
+Sashiko rightfully raises that split_folio() can now fail more easily.
 
-> +			return false;
-> +		/*
-> +		 * A global LRU drain is too expensive, but a local drain
-> +		 * can still be beneficial. For example, large folios that
-> +		 * have just been swapped in and fall back from
-> +		 * do_swap_page() to do_wp_page() are likely still in this
-> +		 * CPU's LRU cache.
-> +		 */
-
-Do we really need that comment? It's just the same as we have in
-wp_can_reuse_anon_folio(). So either drop it or use the same comment.
-
-I was wondering whether we could unify some logic with
-wp_can_reuse_anon_folio(), but the checks are just to different.
-
-
-Apart from that LGTM. I'm sure there are some micro-optimizations to be had, but
-this here should suffice.
+So we might want to proactively drain (earlier?) on some more of the split paths.
 
 -- 
 Cheers,
