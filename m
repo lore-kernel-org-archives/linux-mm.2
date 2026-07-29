@@ -4,103 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECCB0C53200
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 04:39:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66C63C53200
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 04:47:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 64E836B0088; Wed, 29 Jul 2026 00:39:09 -0400 (EDT)
+	id 489426B008C; Wed, 29 Jul 2026 00:47:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6265B6B008A; Wed, 29 Jul 2026 00:39:09 -0400 (EDT)
+	id 43A486B0092; Wed, 29 Jul 2026 00:47:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 52D656B008C; Wed, 29 Jul 2026 00:39:09 -0400 (EDT)
+	id 328B66B0093; Wed, 29 Jul 2026 00:47:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 319486B0088
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 00:39:09 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B790B1405BC
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 04:39:08 +0000 (UTC)
-X-FDA: 85040559576.11.8C415F8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id D291820009
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 04:39:06 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fTGpAqT8;
-	spf=pass (imf13.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785299946;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EF9026B008C
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 00:47:13 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6913940514
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 04:47:13 +0000 (UTC)
+X-FDA: 85040579946.13.EB77E04
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 7C7CEC0009
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 04:47:11 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Yy22nrhB;
+	spf=pass (imf28.hostedemail.com: domain of richardycc@google.com designates 209.85.167.54 as permitted sender) smtp.mailfrom=richardycc@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785300431;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nmixZEfyJshPgnbSdLOJ6mmAwvFWMoeYmvzBr3qbCRs=;
-	b=bfraLqMK/JIamDEkRSnp8eLi8mfGJz4QSjSnTlwFEfR8nw/oES6f41UrzQLiOXa+/gvEWj
-	xGFe+htqBQRdHNWiT3DD5/lYtFnn6vWcInp8L8Ss5J8ADi+OseuXNq3uEfFMoT9HqSdvfx
-	RW76OifQZdMZ2oJdPhXNeZDs+WOFxXk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785299946;
-	b=ft0pRPPCcwTfEwZFfvRX6FS064xXQL1sp5XW3f7OK94AabdSg8KM9w8tTowht0LH4pNWft
-	glC7CmGiJMOaajLzutC1cTaI834PHW8EhV4E6ekrJOrvR/LC2b9zyeQWSae+2T8CYw/eGD
-	3OCz2kbdVJ5g1I4G1wq0M89e4inmjbA=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fTGpAqT8;
-	spf=pass (imf13.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 33EFA60A9D
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 04:39:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADF601F00ADB
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 04:39:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785299945;
-	bh=nmixZEfyJshPgnbSdLOJ6mmAwvFWMoeYmvzBr3qbCRs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=fTGpAqT894sz7e6Fd7jtewE7MzSr4V0SC3/lU+F0oI206vIx3Qp0xMHoVM/AKefEh
-	 N9gr5Yer27N2YVlNrW3QMIq5l0OSRydMDIhMCQNymwHWhoOgeskMC2Ouud8f1JssSW
-	 jRB812CzlQ1wlIfuzMX7soE+J1SgY/VH/xK2Gl4QaUXWq/Pex/52M5vAtyc9/s/F+y
-	 yncIOaOKZEwZrG+wcYOc4qFo26gtQyp59az9HMR8gJZzXYwoWewZYjEpppWviSQB5t
-	 cr4iDuEaI+nw9rlt7YGsa7zqhj6UV++i1NnLsf2iZJGD2N8Gsq7LsI6Aq6ASgLZKSN
-	 uYEz/yQ6mlGfg==
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-92e50979c71so54748685a.3
-        for <linux-mm@kvack.org>; Tue, 28 Jul 2026 21:39:05 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RpQfSmG13Ct0FYLOTK/WB2+lS/4DhCgEvBPA7Ol2n0ICP6YacFRF2d4NeGDIfPerOvl+HeomUaCHQ==@kvack.org
-X-Gm-Message-State: AOJu0YyKN7LorMBV62DI2dkpLTHUGacrpwue73Sdnn+4jQomdBivHhfl
-	vI/mfY/u5yJcHNfPlxWam4bURQhQaSI7Xd/3F6jdIL1cps57SjndwFnv/+Z16zXXqC7V8JUBhwi
-	idhGKV4IC0QDJ78iJvaPV/7iJAHkFr8E=
-X-Received: by 2002:a05:620a:839a:b0:92e:694a:77b1 with SMTP id
- af79cd13be357-9330267b394mr478027485a.4.1785299944999; Tue, 28 Jul 2026
- 21:39:04 -0700 (PDT)
+	bh=SsOxAaICddqQ3S+W5WfBVhtklSa2LJ8zsYhmkMgFfn4=;
+	b=4X4umX8pyDcsfDYb58aVxbbK2I3m5e66zyYJys0QmEQrdA56AR5wacs462+lBT8kVLnCYi
+	Z4ly9xPqJvHqQ49ROUkhbpinRUQboXEDlapYd2558kjFdJudtCrg1Pa+qc1XHuJUtTBcxH
+	6J3S2Q24FZV4uqkBRA+0DM6W2FQKHxY=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1785300431;
+	b=Bz1Rf8JaF+6qS/Wm/llopfL/X2MOvpXQMR59DAtE4qBlxOwARRYSeBO42z50s1kdSe/Zc2
+	/bsJ+DJJV+DTOD4ax67iDYRPMl3Cyap16mdvz4NRRArLib1ZmewMuOdcdHnQcbJe+UZjb3
+	To1oYYPcp3osLrj/3IMGLEAfv04nA8k=
+ARC-Authentication-Results: i=2;
+	imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Yy22nrhB;
+	spf=pass (imf28.hostedemail.com: domain of richardycc@google.com designates 209.85.167.54 as permitted sender) smtp.mailfrom=richardycc@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5b2a8173142so2862e87.1
+        for <linux-mm@kvack.org>; Tue, 28 Jul 2026 21:47:11 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785300430; cv=none;
+        d=google.com; s=arc-20260327;
+        b=M/AtdcED7YhlNhEEWnUN7cwxFoJQW9Tf8zNc2xYXu+X8qZLp9sCNaD2EJnS5e7SE4u
+         peX7tihhCFmDro/3uMuKhgaXNs+//bs+ZCzzj+IGjvRlilkrub/0LlyDgajeLEPLf6Qv
+         WhT2z0SO7CDnxmR20CC7T4qbZYGgUPW5TsFV7s84aDxJnYtDIzufLGSO+rZksMxeSJgM
+         wBWVJKkjmY9YVIJ+aCNHopsFAcbNWg2FL56XBWCJJ1BvvCDz8bfS4fqJ+nJR3Rhpu/XC
+         iApptfD+ZiRoPrGmzpcQ4XiTTtr9WQcGJwXFxo4baCKrpjnyZj6U1n46ddpkKaDoESun
+         5CCw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=SsOxAaICddqQ3S+W5WfBVhtklSa2LJ8zsYhmkMgFfn4=;
+        fh=ANKMllm/n0u5flgZgITAZuzu+DiL1rmrJDDzI43k+5Y=;
+        b=eB4ZbQQJ+2oxrqoDdd3sQXNyRFdlWif1Shh4KTK4B0LuU9yLQFV/pM9v9b9nZ2db7y
+         Wkw0XMXVyantA23NTP1EKWyrc+mtG7sFpmpaUESFmQXqIjFV7TdnxPf8ZgeU9Zd9DyoU
+         tsRgfjB95vErsSLYHiTpNBox2DVN5Ak0oJtWTt60PL6N69ohSeDt0f93zytHsR9II0BO
+         0cY27eZlB0rqE9ldqBvvReLv6fzrkVUFsHVu7kIMF6iFqcIqrB+o4vMU2GQRXkQzoKRw
+         ViQqXL5ARgKTjD+Qy6HWzx2ITeUxA3Fhy+RTr+PC/ztTB2ZMb7vH4eryRQ0//Qrydl6z
+         V5DA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785300430; x=1785905230; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=SsOxAaICddqQ3S+W5WfBVhtklSa2LJ8zsYhmkMgFfn4=;
+        b=Yy22nrhBejJ3PPVWMDxsnmOY6IyXOVdeVlU3ecXzAqH8b/5kd90lxRLf7iOnDDiFzh
+         asg2DJcHJUWIvNdghNPMM0d4wuTv+ErPfImN3SbTu8F2bkQ5suhUEzsMxdw/vBx4vLmP
+         gLuxvJJU+2D8Q0iNNCM2xeWp5DoJDWbl1Pnd9wqcVE+DTfo/jfJQEeeXDiGpieZpb7X2
+         2SVYFJZMsHjDePNm2kUvkFwV1JmeFGOOSHecWntUXgZDIlYIQ/1xjMWyypFGrxvMaKmr
+         vAAoalk3edEPku2PXHvsq2tPkDXncKUMd4Z2lHwlRmSePvvrVnfnN6RzB8130QExHFtO
+         WxWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785300430; x=1785905230;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=SsOxAaICddqQ3S+W5WfBVhtklSa2LJ8zsYhmkMgFfn4=;
+        b=pnrFr0rzEUlxWGkNgxqwdrQTUdAGx2HWbfR/HpskoPdnDCytzD5r17hgF//fvQuqIB
+         dKbtMJKhnU6zD3F7uggjSoeYCz2CGxS0I7EB9mjQeKnHzzwpzRQ2d+SMP1WV/wGm962T
+         Tk2YjcyTtClGlSIB7zKe5UdUhezPL4cFzs/nesKgmuiA6I9ZbpbrFtUUF6yNr8jbQWNq
+         Cx9T/IFlY+VfadebfpDRmqm/dMZpypgH0ZJqAnWMWiSIjSzIF09Ykb6770lLFPRwcLMv
+         kt7b6T05c5+P2ab2LYO6W64JGlX3PoUdNfkgGeOKEQD+PANHfbtIDUVqPUpvD1bbbWso
+         gLZw==
+X-Forwarded-Encrypted: i=1; AHgh+Rrf0Qm5wzl886rJD2YxexWqMVk/G/gzXEGvc8imJ8pGxca5uUuzXINrJxGlcHOfwBgjy3pGntX05A==@kvack.org
+X-Gm-Message-State: AOJu0YyN1VJn7TS0vKPr0MyDHKI5VPInaF1Fc7guTj/KWHqsWc6GGO8T
+	A2aHRbBu3XF1TUIHZ9I8IHxI/Z31jyoxXzGn9I/Ns0YPQSevUX+K1dFjDGsGGquDqc7Q92M/Ra+
+	OrwcXKVXB5GVbQOM591U3WUnzfYki6VwusRarj40=
+X-Gm-Gg: AR+sD11VZ4Xs9Cet0gueVQ79GEdY1WuotUHvcVZ2hbaAG/P1bzzM+hwBQDucWC1YnM2
+	a6M9Jngh9oox+dOQR9wpj2HQKgCV1J9H8kA1d/rpNVnaLfaJ+n7BcfeDjszn0AqK7i+3XSXyBpI
+	EeXb88iz614aD9q4VrmXkuHt8aQ/7cGdY0hHXw1D1GB0ljXZnjR05SrDO0H8Oe9QCZzbBjG3Xp+
+	WL7DE/fw+MQKG9ejjX1kSVATo+32MehRBxP+zKwMLt6kjnsrCq4NFw8sfaOFEseulK+UnlYrwCS
+	Nhf27veK95QimBMioOIJs3wGOyp6verbRnqdg9aEFTdS7XB1UgBG8AW5XHfoCz4EbxQsAhD9+mr
+	trw==
+X-Received: by 2002:a05:6512:b9e:b0:5ae:b9c5:f29f with SMTP id
+ 2adb3069b0e04-5b2d823eb5dmr36261e87.2.1785300429328; Tue, 28 Jul 2026
+ 21:47:09 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260715120813.3609949-1-jiangwen6@xiaomi.com>
- <20260715120813.3609949-3-jiangwen6@xiaomi.com> <amib2d8um2ZwsMDU@willie-the-truck>
-In-Reply-To: <amib2d8um2ZwsMDU@willie-the-truck>
-From: Barry Song <baohua@kernel.org>
-Date: Wed, 29 Jul 2026 12:38:52 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4wCPLZQbrgDnujxGDSyDQ8YeaPhuNP89yK-o1exe6kZfw@mail.gmail.com>
-X-Gm-Features: AUfX_mxSl7FmCTPLbPin_HsGwEEMq7LdYhi94gKpfCRIekDy_TsQI9q2ZPSHUT4
-Message-ID: <CAGsJ_4wCPLZQbrgDnujxGDSyDQ8YeaPhuNP89yK-o1exe6kZfw@mail.gmail.com>
-Subject: Re: [PATCH v7 2/7] arm64/vmalloc: Allow arch_vmap_pte_range_map_size
- to batch multiple CONT_PTE
-To: Will Deacon <will@kernel.org>
-Cc: Wen Jiang <jiangwenxiaomi@gmail.com>, akpm@linux-foundation.org, 
-	catalin.marinas@arm.com, linux-mm@kvack.org, urezki@gmail.com, 
-	Xueyuan.chen21@gmail.com, ajd@linux.ibm.com, anshuman.khandual@arm.com, 
-	david@kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, rppt@kernel.org, ryan.roberts@arm.com, 
-	dev.jain@arm.com, Wen Jiang <jiangwen6@xiaomi.com>, Leo Yan <leo.yan@arm.com>
+References: <20260728055333.421080-1-richardycc@google.com> <20260728111509.7662e385aea0b055d2066e1f@linux-foundation.org>
+In-Reply-To: <20260728111509.7662e385aea0b055d2066e1f@linux-foundation.org>
+From: Richard Chang <richardycc@google.com>
+Date: Wed, 29 Jul 2026 12:46:57 +0800
+X-Gm-Features: AUfX_mzbNhZgHf7zB7CGs2fIBvT_PpZvadEE6_PKFpMwkIabl23wyjgy3d5Cl8E
+Message-ID: <CALC_0q-RwrfxiMypoKRQWUkUzRwkt2KoXN_GbWLxXX+4xx0WPA@mail.gmail.com>
+Subject: Re: [PATCH] mm/zsmalloc: fix release order of locks in zs_page_migrate()
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Minchan Kim <minchan@kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Martin Liu <liumartin@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 7C7CEC0009
+X-Stat-Signature: prdtykihgxfdi5c575wjsxanfc7z5nhj
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: D291820009
-X-Stat-Signature: 8d3qxh8nxy3wja3g7jqs6r6qkcp51zi4
-X-HE-Tag: 1785299946-568863
-X-HE-Meta: U2FsdGVkX1+IqQuq5j3+7jRP4ybwLt/MUpCe+0Eo5w7l7aIbRp7CwjY7MPBGGdcVRA/ZqT8CTRCUPxr358b/zEcuSKH13u9BU8ZXYdGRu8g3zJhwhNarFdbRw+R9l7eU94LSm+qxSWOiFANsTEmkxSO4yeKL8MzXTvNcRp5FGR/gBZU5ig5E00rzP+0hxUPeL6CE64EC37OJlklNiPpc2k3Yciie5osPlllQnnqvPngXXXFCDbAj7L2y7MlGfVxeObcmeiiq5TR5xgYzaWB2QxlJLS7UnZiy7S1OFfTEYbM7BtYPBeiW5I52ywIiC1l/ytlX4Mb1Xku/GqB8XhjlHcJpJt3exNRNzUHveLiDlBOWrQe4eiV38oiL5JtaQFflRU+BNgVcPO4QeDpyH+1Tnewfl/z/B/jXD0FFnu/Xm6EDWyIyiRbb3p9Iqdd48Wuc4lh7HdIxtj3MEIgSLSHoOkpb1PzolJHB2r2QUOSo3jH2YxkskK/V8l8c/dUm3oW0aQgzylo7OBe0fmZdIzFgW0Cc243oKeh7AgmmWOXjYMHtm+8c3pNvq899Mocs0cOu63lIImGIH5hV7YUhgez2Wpahxuu+BMyCQCPF7s/6FBTHUu+bxIjZOPtf9RvkNX+O13T3eCoYx9P2PCNrxgqHj/2LOazSCZ/D7vVwYulEOtBrnPo4H+gGvCkur8AJb+XeZfmWxjeUrQWVvi2kOFdyTsHcnXLUZdhEBuyEe5Um1fe8qh8WMlZYpv+P2QbwIs24psiK44fkrxA6emwkPe1ma0/9p29E5byrapvkxhbvEiOqSN015iLqTtboQlLdXt4bIl2u1lQBVZ540z8+V+ToVaw79yuW8TvGny8pY9/lcEbFSd3VLRfPEXsb5/35LXOlnz+UwhbKxobO4mNp66gZnXFzpo7c/vbhIdM750utMCPSyM/v79svcXMRJTzIu7fxepV7EWpidVjUTSR9ltd
- wPagB09N
- je5C/5zzQUj+XnjKO+hwRqA9UQjhIASzrb8oANfTTdyCGUynlJkhALG5p1ZmkKUVZCUEUuKQiKdDjAtSQjUhmeXfKwnwXovco4TWajZK72IQHg0X3lvT12X7bQntel+yvbcKUib/AEzyW3Xa2DShgzDjgIB/Pz5e7qY7co4OtaNLwlAAupi9PMVsde0ldDDaDO5GwFYKGOzBREuQtcr2UkXqZBCdfSXcvT2O6fZPrl9cTDnPeBCB/ATBaKUBkLjjx3K3VOVS2/UKSxrZjZZChO1us53etGSgRDXTxzC1COFYyIxiI0DM8vzrPbXKHB6mJdZQ/3PfluwsEiyCU12GCquIHZTNL/om30Xjx5zUK2g3RItdjFQmX3fQ8yvUaeDODf6WAiIgH4t7pxLhS/SPWqwoCkZqv2TJEpf5z15v7xu3D/CE=
+X-HE-Tag: 1785300431-660824
+X-HE-Meta: U2FsdGVkX1985ALYfTeBusNWdivEmqDF9F3SG0/SJVGdc06HjWTmJJ+k9CcRHtfP7Ji+cOy95tcv2Ion703yPCkuyNtxol81CJ/SzFW7P2o2/Zak9y8eg8YhUrWaHRxTRn611aFeu7bk2WtFMpYzRKuImkUyqz5oNRX4QGoU6B6FuDrXOLV03NEZNHg/f9P3Tte67v+RypYxIjIsDlFFTjeIGfGb2MuZqAd3kTxlCaJpuBWLYdP0AH2hnc/1hD9JLheyrnbfOfdqjtvI3pvOKEjg8i4X4yl0fA1b0m6LGvL5xlDI1ulWeswic84AF//fTsdxvhwHrlTc4hTtq/OukUIKt8QW07cyr5jSLxf4yEbpjSgrRup5Mc01IqgwBVWXR24hoMqwSbE7jFgXYDYkj+KQ9gPR+qdL13f9OsnfWcJcr+RKgxetYFUaEQc++AsOhkvHG3geCKtawJ12TSCnFNy60AlEZua5COP2wt0twIJjMhor/QXBynAwKEWFy91rdEY+SiXqYGLqE3iMzp7WMUsg737FXaNjLRzjfhDOzADG6o4Wc7IH4BEa/Mv4wbBsJMafTXId9fcXKBSR6aKiwOumsXmghjWXQMRYEfkdhMnurYftfYT6TcAnzUmw7auynWCp6PQsGHfUiwvuUIg/Grlo5yQyGnGJG5BEoXA1IlM26M3KTfENet/qn1z6bUHXGx+swCKdSLVXcUIK/KxLaWTn3l+0fWqDNw8CBVZ/lKQwCar8iKrOY2o5RzKLe1bLI2RWB3qQOzZLaXwsZcpGu6+XWyWI0ysLfR4R1RXVdIzZ2tE2TaY/g1WJ0J+zphICSYZ8/qYKH16GlAeJ/6uF1pUFEQRLIATGfTECUqA8uhFtj9/CfE1MQY37hbicAJO8FfoNkK6tweiq6KPgka7adpUvUtrk4WP/Mj04JEUpPFNCYqQgZl4zzKTOklpOMat4SayBFdR/Pwa1PKkNbPZ
+ CknJe7Hb
+ B4pkXFcl9cTatJWY1YBxwqWahWDYdEPZL0A1tYVsJS321B9477m5fmOr0Gcpp3mRutEHfW+olKtfL0bR75j+Pu6USWo0rQ46vYQ+gid+24Ot2p0zZp8uGAKUbnQFa/5R3fdJ/slfdIVHmSYVrGoh9bKPVmlkRfIlqxooT7z1qqIuMo/92PhVA/HaOg5xwv/ZPFU9P3G0G8FBjKJdbCAhVI7Z3mahxPcO3L3fctf5FfvsZilp7oupebqC21Y7YrHFn2bY3j0/N/kmFmmT2fk1B5T+rgck+CrDAzkFe1apXD/k+Ywl4FSUtUbL7whEtszAZFhg6wKSmbKaVtOPRxwq4IRSr6A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,39 +140,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 28, 2026 at 8:09=E2=80=AFPM Will Deacon <will@kernel.org> wrote=
-:
+Hi Andrew,
+
+On Wed, Jul 29, 2026 at 2:15=E2=80=AFAM Andrew Morton <akpm@linux-foundatio=
+n.org> wrote:
 >
-[...]
-> > @@ -40,7 +44,9 @@ static inline unsigned long arch_vmap_pte_range_map_s=
-ize(unsigned long addr,
-> >       if (!IS_ALIGNED(PFN_PHYS(pfn), CONT_PTE_SIZE))
-> >               return PAGE_SIZE;
-> >
-> > -     return CONT_PTE_SIZE;
-> > +     size =3D min3(end - addr, 1UL << max_page_shift, PMD_SIZE >> 1);
-> > +     size =3D rounddown_pow_of_two(size);
-> > +     return size;
+> Thanks.
 >
-> Why does this have to be a power of two? We should be able to work with
-> regions where the start and end are suitably aligned. Is it because the
-> hugetlb code works in terms of shifts?
+> Does this actually fix a lockdep splat?  If so, is a link available?
+>
 
-Yep. For `vmap`, `vmalloc`, and `hugetlb`, this is all about
-the page size shift, since their memory is typically backed by
-the buddy allocator. However, after taking another look, I
-think `ioremap()` could benefit. For example, if someone calls
-`ioremap()` on a 576 KB region (64 KB * 9), we currently have
-to map it as 512 KB + 64 KB. Without our patch, it would
-require nine 64 KB mappings. If we allowed non-power-of-two
-sizes, it could be mapped with single time.
-
-So supporting non-power-of-two sizes might provide a small
-performance benefit for `ioremap()`, although I suspect the
-gain would be limited. I can investigate this as a follow-up
-task, and if it turns out to provide a measurable improvement,
-I can send an incremental patch.
-
-Thanks
-Barry
+No, this does not fix an active lockdep splat or a reported runtime deadloc=
+k.
+It is just a code hygiene to release locks in LIFO order.
 
