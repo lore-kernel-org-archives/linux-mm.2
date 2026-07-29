@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0243C54F51
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:03:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7840BC54F51
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:03:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4CFA26B00BF; Wed, 29 Jul 2026 10:03:07 -0400 (EDT)
+	id 6A3706B00BC; Wed, 29 Jul 2026 10:03:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4A5AF6B00BC; Wed, 29 Jul 2026 10:03:07 -0400 (EDT)
+	id 605BC6B00C1; Wed, 29 Jul 2026 10:03:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 36F186B00C1; Wed, 29 Jul 2026 10:03:07 -0400 (EDT)
+	id 457596B00BE; Wed, 29 Jul 2026 10:03:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id F14206B00BC
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:03:06 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 845FBC068B
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1615A6B00BF
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:03:07 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9FFC9406C2
 	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 14:03:06 +0000 (UTC)
-X-FDA: 85041980772.30.A28FE0E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id A5DA980011
+X-FDA: 85041980772.16.F96E345
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 08EBB140012
 	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 14:03:04 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dN3ktU5l;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UDou7hQm;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785333784;
+	s=arc-20220608; t=1785333785;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RY+XUIrZiXuiiU/vLhDSc4ARUS4lqpakXQtTFBEewHU=;
-	b=qOSEaWdDXwKz75CUV+jWl2pk/OAUd6gCS3SnJCMtLEgN8+m1HZ1Mu2lgWsXzesG10bMRYI
-	QTbtOhw2AFkghJE/fXAal5v0Qn1lNE5mzhFA3qc+BUU9BUEqBPGJZ9aj0Qx+7Wwed4lXvJ
-	pjYaj5GwLVvSkTYjUovNdtQekPXWKl8=
+	bh=OrmqzezRZHpLkQbXvsx8kdT8w9xKKaZj6lZcjNbOnP4=;
+	b=j+aO6S4L8K8YoFSQwmccgCnxMrHGOjRDvuPbOm/tj6KPaTxl+f76z+wURf1rRrpm07grh4
+	4nxSTJ30sFoE7x0J+DKVT18HoMG9T2gmt5qkWpKrQIw3G0sSWfHd3z9vzca/87PRNW8OjJ
+	D/4pdzHto4FGub4VsiODRHtXxOvHohI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785333784;
-	b=NjSb5Di4JDS0IqCXhq2bmp4jLu1vEMp+ctx0Bz+Z9fKSlBWpZFl2H3OjWyspTZVRVZvGm9
-	voj6078TkhR2OnuqEsPgMBmX7hF5cOuY0sAGtoZGhsvBmgD5uB32Rv1nMjhIovxLUUjpIP
-	2Gza6YVdDmlm5OGdC4xg4DovKMrpD4U=
+	t=1785333785;
+	b=gmKClQFdWY7FUFFGR5Hp4s0I6WAFdTjTk4ARwli08I9g7zyQd9DNLZa0xLvBWeWuKcwhwF
+	+we3+d0AB9x5mqGHfoEHtFDZTV1xtjzsXg0Ykz/v1M8hQeMYpf1FDHZh+WGpsb0bYuwZxP
+	UfmkVQ4xBydfllH7kHA3gTDVoEqPFcc=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dN3ktU5l;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UDou7hQm;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A7C9444084;
-	Wed, 29 Jul 2026 14:03:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 695221F00A3E;
-	Wed, 29 Jul 2026 14:03:03 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 85D06600B1;
+	Wed, 29 Jul 2026 14:03:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11DF91F00AC4;
+	Wed, 29 Jul 2026 14:03:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785333783;
-	bh=RY+XUIrZiXuiiU/vLhDSc4ARUS4lqpakXQtTFBEewHU=;
+	s=k20260515; t=1785333784;
+	bh=OrmqzezRZHpLkQbXvsx8kdT8w9xKKaZj6lZcjNbOnP4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dN3ktU5lDjytpxloJrC/aEGv6gmCuCBuPEWJTFSQg/CwHZ5ppoglbsRHGyArQv0t/
-	 EDyE+RO+eTv9Ky5DluaWf14vgsb6WF0Y7cTosv8GWxxb+v+Zxo9p+Ye0N9E4MOCW5Y
-	 XFCyaO083qWJg3ks1Nw7216x7AxKOq6f2QWDIQcgUBqSNd4Jb1LYW26q6alYcgQAhx
-	 2aWW7q0w2N+6qVFxJCKFigi07qg8sGtj1ZPsVNxg0dwiRChppiQlDkde7q3CyNkIut
-	 0nXo2Cs2QiWb20Au8NrUlYqQmWRjBUyd8jgA4AgCHxBcT+LmqwR7vwMYshRlCwfvkA
-	 EG0sRdx+CwPvg==
+	b=UDou7hQm8vW0dPRY6gFTdF1SgjemoxQagg77mAPX+a4NY9m3P7Kw6WrAOG/8aqN0x
+	 jEYqHYi1MsuHDf1rgYgQ44SrTRCq/hJmUp/UK01jxnlqA6q+jg4yCSlJgSMS8gkNh0
+	 doi0Rxcagff5hG8uv63lsr6URjmvU+G7Dbldvg62YBWpjTD/2vKYHrutZw0EfuO3/J
+	 UNx+rfb6wcfHU1XDgeFcBowbcQvSpB4srourGDDwihw9lpg5I3pjlHS8Ul5YpIlxQh
+	 Bxliw8lw5wzuH6gYPTMB/abkUguG4ejKOLHvQCGVxnU+6AZf8XR3qfgY+22VstepU8
+	 INsw7p4ffNUVQ==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
@@ -70,22 +70,22 @@ Cc: SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v1.2 01/12] mm/damon/core: use damon_nr_samples_per_aggr() for max merge threshold
-Date: Wed, 29 Jul 2026 07:02:41 -0700
-Message-ID: <20260729140253.87753-2-sj@kernel.org>
+Subject: [RFC PATCH v1.2 03/12] mm/damon/vaddr: remove a debug message
+Date: Wed, 29 Jul 2026 07:02:43 -0700
+Message-ID: <20260729140253.87753-4-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260729140253.87753-1-sj@kernel.org>
 References: <20260729140253.87753-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A5DA980011
-X-Stat-Signature: nz8hkun5gt93p3pzm3jrjgecuaq1e7xk
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 08EBB140012
+X-Stat-Signature: 3pqizpwe3rtqojkfaperzt6w75pyzyj3
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1785333784-455454
-X-HE-Meta: U2FsdGVkX1/u/aiNLZDMzAtrj8AZC6lGdO+IsWx5rkBbnshikIPUKDFpNJ4X10GB17eTf+si+GEG865FZQ4KuANJrFZo/Oq/F4yKfGFa2SY2AbZVS1WVNf3/xwHjg4MafY9EzhWK2Rw47BmKzZ852DwDgKXW77qiktgkRZPPC/m2Zx+J6lOHvAVAik3ns5B7naO10R4dOL1iS1BV+xpIctV0I7B6DxKkeeVpFq3/YqbHtG5WRPpoAP3CFiNNmETzerk4ERTBA85HQAjiMi+S65+jZa3BwCFZHq+BWQsBBaBx9RjO0cM9W1icltpeQNMS8LaJYo2ydgO5RPHlP78YLaaUhe0U/WFkz3BaBg2uX/mtzcLVWMOeSHcZtxf6E7dhMdve2e95VpOJtWeV1kgZvZpk7cALAnCMyrNVG74oVWfxHcTs2oqzRDDk1lUpRYtPPBBp2bUh5YfufrVBnJF2PbqEQtRhJ/VwUKoOJd7lzJ//KXs/23xtXyLnHT1fQPEnOtKRK/dcfSqfjaxjJ/gm6zvzUFTJQBjyxXrhCCAVOuY3VNUun7K2HNlPDs72/XIB8AvQwdEgNRfK41lktB+RhrdhuC6ZIJ5KywJe3jPsRjtNzGxLQLiinxHf/fsyxZgVJHeOQOfx3c7sc6/spsmC57FWvMExzCAIywvD9vX9Usg18IDJXQa8MNwymGqr6Fk4NDaedUEf+lu2LfjJoBldqlbsymIJWvpJroA0WaTtJ/eNdXC+OgwDW/7k7kbESESz720Z+DSaU3sjhQ9xtaX6sb/dB4zWGFZ8tV0gntCt8HU1tMGhowuvVMAW99trSQSBvT/U8B8ZwdBv4XpyjpnRddBsDAH+jZf6IPuFlNvDtWjywC+xro6+GKP+DA7RRpO5O6ys6KG/wKiuIpPag5O7anmrX/Y169ardqVkFVc8AfKd/SNZ03VHXDHtZc75j0wXcLzEEpp6Ofd4gUGGbyS
- MMcG5veM
- 22DeqXyQLn7kI9dLEJp8SfF6gd9uT6aVHc+dmQzmff7jkPQPdvp5OPMXFWHYIwTdqCWiaitc1PqluX6l/nLuDQrSFpIvRiBNVY/v2WJdYP4QfH0e7YJML8iy9GqU7EOWGaECMtIhnNKls8iORr9JcZBrpfW+Ei+oCulDXjC3R0I7bPP6k7VaR5741PZ2NFHMLWkeqcvRJ+OLhi5YtVRiOnwmBTZMW+lvK2gPRLEf1E2zDdzqpqyfPDOGZrPufsw1GxCLBuG8lLdab9dHDdazQnu/R4g==
+X-HE-Tag: 1785333784-379896
+X-HE-Meta: U2FsdGVkX1+FznaKnfyy4Rt7AQNTeVykpFdnOFWAiHrFY5s/uJW10LaTotvpEJt7qUwUzDOxaX9bFE4nc+3iisUhzGpOak5WsYawzCeWlWj99krtjHXwyjpHoyT8v5ts4EqEtYLOFCwDywL7sg2WjtgpIMEeeBFmuGKT2OtTeuLe5g1jovqkW9a01NNk0Hsyos5EQJuZOdY59pHIGY0nGSVFQwBC6Ok+iZATjNMqEmQus9O1wF8m7EyDvb4zK93yrFHyDEsi76aqdMin+7auhgJIit4uzR50bLjavnp9+jzu/lpt6LjgeM/GVn+iduVGcV5lgh0I7xVVFvxw6jtKGdCXvAauSmIZZpldvTbvo4vy0cbWWC0Kzw1xASMOMjGGXywJxB+Fg5s1PRjGPt1ViWTcD9Tnv31EU2W5lpS1jBFdl3RGdxxbdbOb3SfiWcQv7LCCmGg3Lrwpbd9xUlAWnt0JkOAwT7cwjSaMUySpled98zJR+/7+Qj+hA2miuBr/GsSxEE1F6aL6jxoqoV4OpvWpjlz4Y5+cxbSu4/iq9TJFrWAn+QVsk1+rc/WsFzy7+8vOE7YIYKctZLuVjMfJRzxV5mox9usTNrpUF68Xochf1YikavRAj6y+0Z73aCm7sLdL3LxbysRF1UN2fBB3dwDog6aq+t1lCk3TDubFH0Odsx8eLQLMZG70+JNnjaYcK+wakOH3v1jIQR9Q/S2/hbf8Tpc5eBm8o8DFTQiicfXKvNWbh+bxlWpVEAVsA+UN6AmGSTyvW7ywLffbPVdJbHMNTSOQFFeo9qSoFvlkMMIZMajNCLyVAX1w9qr7N4kWWsTgWUhtcXWM6Xt59M1YjqCwUetWTP5/DB5Rn/b6Vpw6in0cWkcMgGawn0dwZaS4+kb+Ml3nOE6/sqdTmTrjVkXmWb4PGH09z5FyUQliwZmXOKx+FBSSJ1Xx0T9W439ZY4xnxVPogBwWNP7Srtw
+ sPWXmYfy
+ vWl52/Qv4kLyhfoZO11v3BqvvV2X8RSDpG5lehMRqbJmACKEouQzBd+2SUaUtr8gfqb3ISpwSvuZzL9vI3t0tiJ1fRQHX3ya3gsUaiyk+9umUEsfllBKSw0J9g51qRjGT2pAa6unrOofjW/m7MKCcELVrjZD/df1+2rMq10DzsvH7p96AqjE21C2sMG2sasRSoISee+jqm55Go/BSWq0/+AJa9woyyVPeH4BZ6zZkT12ScN8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,32 +93,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-kdamond_merge_regions() open-codes max region merge threshold
-calculation.  What it does is fundamentally the same as
-damon_nr_samples_per_aggr() but missing a few corner cases.  The
-unhandled corner cases should be rare and make only a negligible level
-of monitoring results degradation.  But having the inconsistency could
-increase future maintenance burden.  Use the dedicated function.
+There is a debug message in the DAMON virtual address space operation
+set.  It has not really been used in a meaningful way for the last few
+years, though.  Remove it.
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/core.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ mm/damon/vaddr.c | 16 +++-------------
+ 1 file changed, 3 insertions(+), 13 deletions(-)
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index f7c9b94b6436b..4169268d94416 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -3470,8 +3470,7 @@ static void kdamond_merge_regions(struct damon_ctx *c, unsigned int threshold,
- 	unsigned int max_thres;
- 	bool count_age = true;
+diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
+index 0648400b2d65b..1b220f6f2632b 100644
+--- a/mm/damon/vaddr.c
++++ b/mm/damon/vaddr.c
+@@ -189,22 +189,12 @@ static int damon_va_three_regions(struct damon_target *t,
+  *   <BIG UNMAPPED REGION 2>
+  *   <stack>
+  */
+-static void __damon_va_init_regions(struct damon_ctx *ctx,
+-				     struct damon_target *t)
++static void __damon_va_init_regions(struct damon_target *t)
+ {
+-	struct damon_target *ti;
+ 	struct damon_addr_range regions[3];
+-	int tidx = 0;
  
--	max_thres = c->attrs.aggr_interval /
--		(c->attrs.sample_interval ?  c->attrs.sample_interval : 1);
-+	max_thres = damon_nr_samples_per_aggr(&c->attrs);
- 	while (true) {
- 		nr_regions = 0;
- 		damon_for_each_target(t, c) {
+-	if (damon_va_three_regions(t, regions)) {
+-		damon_for_each_target(ti, ctx) {
+-			if (ti == t)
+-				break;
+-			tidx++;
+-		}
+-		pr_debug("Failed to get three regions of %dth target\n", tidx);
++	if (damon_va_three_regions(t, regions))
+ 		return;
+-	}
+ 
+ 	damon_set_regions(t, regions, 3, DAMON_MIN_REGION_SZ);
+ }
+@@ -217,7 +207,7 @@ static void damon_va_init(struct damon_ctx *ctx)
+ 	damon_for_each_target(t, ctx) {
+ 		/* the user may set the target regions as they want */
+ 		if (!damon_nr_regions(t))
+-			__damon_va_init_regions(ctx, t);
++			__damon_va_init_regions(t);
+ 	}
+ }
+ 
 -- 
 2.47.3
 
