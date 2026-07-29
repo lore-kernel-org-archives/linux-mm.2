@@ -4,95 +4,153 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AFC7C53200
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 13:54:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 666BFC53200
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 13:54:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8BE256B00A2; Wed, 29 Jul 2026 09:54:43 -0400 (EDT)
+	id 692246B00A4; Wed, 29 Jul 2026 09:54:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 88C926B00A4; Wed, 29 Jul 2026 09:54:43 -0400 (EDT)
+	id 622366B00A6; Wed, 29 Jul 2026 09:54:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C9DD6B00A5; Wed, 29 Jul 2026 09:54:43 -0400 (EDT)
+	id 50A826B00A7; Wed, 29 Jul 2026 09:54:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5A9A26B00A2
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 09:54:43 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1D71D80452
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 11:26:37 +0000 (UTC)
-X-FDA: 85041586434.19.17A0A28
-Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 90E7840009
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 11:26:34 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=c0CyrNhC;
-	spf=pass (imf07.hostedemail.com: domain of yujiacheng3@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=yujiacheng3@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	by kanga.kvack.org (Postfix) with ESMTP id 1E1506B00A4
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 09:54:46 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0CDA68069F
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 12:37:16 +0000 (UTC)
+X-FDA: 85041764472.08.0F0F7BC
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf11.hostedemail.com (Postfix) with ESMTP id E42F940013
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 12:37:13 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="HsBO/9wN";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=vhLdNBgT;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=nBonCs6a;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=BT3fFBrc;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf11.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785324395;
+	s=arc-20220608; t=1785328634;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o/ioV+0lKVSCMKWDxyofqVQddDfBDoxkVm+507Wo/bY=;
-	b=knm90aMaGU9K0TxGJNRgzt9VJm9sglwX8xIE85Laz1Od9NnnYG7hx0eQDzW9aIvonf5s+7
-	JT7xhuAzEiK65bV025lbSXo6XG4rJL7+bRceHtS7Yyy/Bw4bMkGHaoZNVZotsTbT/0oMG6
-	spVIOXeiLbO+QOGQ2JX3sv1ut6gT6RM=
+	bh=aCPopA3duELZWRFQ7PC+zcU7UIlf1ZyVyMzN0xmYHFs=;
+	b=pRAnkV/KJWFBDy//7MqdcopvT8fV6aoKvQer8ecQ/BgdlkOSmctJUNqDgW8D2Ft63NEPE3
+	pvXZ2XBB89w1tvqZmfZUx9OylyIO8Lh6AIYdt6zAFu3RZ/7AzrSYvsLWHLiqhocBLNzLYO
+	lZGS+o7SoKgsbOn/Hov/mjk2sbW5IUQ=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=c0CyrNhC;
-	spf=pass (imf07.hostedemail.com: domain of yujiacheng3@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=yujiacheng3@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	imf11.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="HsBO/9wN";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=vhLdNBgT;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=nBonCs6a;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=BT3fFBrc;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf11.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785324395;
-	b=UHPWcs2c+lu/th8GVpdUKdoKz4LKIjkFZRHQYl7xycd6LrG4He63bLJXP3w1VVC+72ktjt
-	Uc3lFwsQ+8VoQlodQsnWtvYJO9F3DZJ4z931UUTDccY2hA+HUu5E3gCytjDWqpqG4VSgZQ
-	83O9T/gKN7tW96JvVsiyvNbIhflcPOM=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=o/ioV+0lKVSCMKWDxyofqVQddDfBDoxkVm+507Wo/bY=;
-	b=c0CyrNhCnH+glw29g8WHcTRlHy5BaYXsl5JWDLdEYDXK/5Z19UzSW94hBI5cpJO91Gh5e4KNs
-	oleiGi6k5Nl+VZ6SIlJwUnP/KFBOtQRBdgBxp2SlLl6pGOGjAQS9C/4FDo6RGga2/MaAEsV7lhQ
-	Ue8a+MQ5z3o6FsNeEFyN/tM=
-Received: from mail.maildlp.com (unknown [172.19.162.197])
-	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4h98tP20hhzRhVP;
-	Wed, 29 Jul 2026 19:17:01 +0800 (CST)
-Received: from whupemo500009.china.huawei.com (unknown [7.152.184.116])
-	by mail.maildlp.com (Postfix) with ESMTPS id 1AA234057D;
-	Wed, 29 Jul 2026 19:26:27 +0800 (CST)
-Received: from localhost (10.50.87.202) by whupemo500009.china.huawei.com
- (7.152.184.116) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 29 Jul
- 2026 19:26:25 +0800
-From: Jiacheng Yu <yujiacheng3@huawei.com>
-To: <petr.pavlu@suse.com>
-CC: <samitolvanen@google.com>, <rusty@rustcorp.com.au>, <hannes@cmpxchg.org>,
-	<yosry@kernel.org>, <nphamcs@gmail.com>, <liuyongqiang13@huawei.com>,
-	<linux-modules@vger.kernel.org>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>, Jiacheng Yu
-	<yujiacheng3@huawei.com>
-Subject: [PATCH v2] params: fix charp corruption on allocation failure
-Date: Wed, 29 Jul 2026 12:32:43 +0000
-Message-ID: <20260729123243.790023-1-yujiacheng3@huawei.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <ff0b7cdd-8fa7-4cb8-9e21-6a7204809766@suse.com>
-References: <ff0b7cdd-8fa7-4cb8-9e21-6a7204809766@suse.com>
+	t=1785328634;
+	b=VtXlsDlX+OxGpg9mNvg7KVdI2vef7+XttiUQW1dMSkh00XwNoVFn1xStjHkw21NaLVtP+2
+	HAwnazS8t3CY8aiSuUIRzeGOtMGU3/VIRNTnb6nsEM4maEbJxiWGyNlbEmr1DSEYtnAMx9
+	TEdapHTutuvO6/zNfG+CJLBvJuizPOE=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 0AE6C7CAFF;
+	Wed, 29 Jul 2026 12:37:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1785328628; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aCPopA3duELZWRFQ7PC+zcU7UIlf1ZyVyMzN0xmYHFs=;
+	b=HsBO/9wNGNK0BBi/KZnybjT4wfzH1RbauNRa3BkCq1Gz1ZFYfyulio9BMMz/Qhlayjht8v
+	gD7JzPlP/j/lbzamJYZIEmtCD/24X5mlh9Cm7ueizVVj2a3/38UgR1iUgozDxsYGd00nVJ
+	81gftDjjAsCoQcZd/g/wQgIFNVzYSPo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1785328628;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aCPopA3duELZWRFQ7PC+zcU7UIlf1ZyVyMzN0xmYHFs=;
+	b=vhLdNBgT3LES3Nfy+reOhuZbF+sRDMgTm8/+rp44QydsQ0PgJmekRb7kN8gf1KeP/gQfF2
+	vhVMad65mEjeOWBw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1785328624; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aCPopA3duELZWRFQ7PC+zcU7UIlf1ZyVyMzN0xmYHFs=;
+	b=nBonCs6auu91fwhTCPSwwqM/BnHZLlIGXt/TmMHVYSy429b64ZCJOljFWGBAHwpGwsp+VY
+	26DPb6Xoz2zlvJd7icT3XVFcHRopeHCqPAv9U3TcLO99ha0MheRXkinzHltD+E4YU5GueL
+	hsbqCAyQMiJN0MmV5BgL9eX8TbAHxvo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1785328624;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aCPopA3duELZWRFQ7PC+zcU7UIlf1ZyVyMzN0xmYHFs=;
+	b=BT3fFBrcAWB//UVTCQRGI3kpRDayFQs1zsoB1XrNCj60pSuBHTbHXO+sVcJVpP7eK4LEaV
+	7UMRX0P/16CpuzAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 11699779A1;
+	Wed, 29 Jul 2026 12:37:00 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id +/ToAOzzaWpxRgAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Wed, 29 Jul 2026 12:37:00 +0000
+Date: Wed, 29 Jul 2026 13:36:58 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Muhammad Usama Anjum <usama.anjum@arm.com>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>, 
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Dimitri Sivanich <dimitri.sivanich@hpe.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, Juergen Gross <jgross@suse.com>, 
+	Stefano Stabellini <sstabellini@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, Will Deacon <will@kernel.org>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
+	David Hildenbrand <david@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Uladzislau Rezki <urezki@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
+	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
+	Ingo Molnar <mingo@redhat.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, 
+	Namhyung Kim <namhyung@kernel.org>, SJ Park <sj@kernel.org>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Leon Romanovsky <leon@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>, 
+	Mike Rapoport <rppt@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, ziy@nvidia.com, 
+	agordeev@linux.ibm.com, ryan.roberts@arm.com, linux-kernel@vger.kernel.org, 
+	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-parisc@vger.kernel.org, 
+	xen-devel@lists.xenproject.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
+	linux-arch@vger.kernel.org, kasan-dev@googlegroups.com, linux-trace-kernel@vger.kernel.org, 
+	bpf@vger.kernel.org, linux-perf-users@vger.kernel.org, damon@lists.linux.dev
+Subject: Re: [PATCH RFC 09/11] misc/sgi-gru: use ptep_get() for page-table
+ reads
+Message-ID: <amnxCmFU40QQaxTx@pedro-suse.lan>
+References: <20260727164715.2866609-1-usama.anjum@arm.com>
+ <20260727164715.2866609-10-usama.anjum@arm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.50.87.202]
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- whupemo500009.china.huawei.com (7.152.184.116)
-X-Rspamd-Queue-Id: 90E7840009
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260727164715.2866609-10-usama.anjum@arm.com>
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: E42F940013
 X-Rspam-User: 
-X-Stat-Signature: c8gukoqqekdxixxqpcia4rzmsugxiscj
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1785324394-504641
-X-HE-Meta: U2FsdGVkX1/P+1cruMsLcSSVcIObZgOPEB6NX2HrUcxIV48urMvQrfmdt8u/79UdldbIImkwV7tjWwt8yBGkESVgH6N8X2+e/sT/MjyV51mE44bFs83zkZfR3qibQrEfCwxfMkbsxwrVpjS3uSQmoWAAFlZ2y/BC4itypui5fF3hi3yv9Z7lCv7ex6bqZ7yoi7Qn0hyTTiwyeCUXFFdq6q7ho5qr+X7mWxvblUhyEuEFhD1jKxFrqQED5evVCb4qn66fw+khgtldTB4wFFjgSFJshF8xwiVYvYuGWUL0J+dugjsWyBJ4Jhp7KJHZwo6MSSc5Z3xDyem/wtoTiZdfKN5EKL7Yz5KC6F2mHy4m64+USROuJWTv/I0kWzbb47m9RenzFA8LSVXFXEx3x+1EuLoH18H9I0M0aY555mebpEGuGtWBMykXzO8PSkNlyVmF5BOf+bdGlOP0zPGIVNOIYDMS8lY+rcuE1bFrn01AN/JxApSt6SX0T8YBM8uKqfXQAltJFuaSSLWbkpvAhPmGTXoD1tpfm6F18cf82FR+9RvTe/P7LGQle3yX7eytFHlfr20GwZ8EKzkyBbNbkLgmfqss0qmaKAl3qqSeng7McBMn7pxPLyRjG7y5S4VUsgMBFW6O8LC7v2XHr0EqMXWISmr70XkW4luuNsPpaP+arsIgbq0T1xlGBeHBi7U0wOJYwV+CT/xn+emgcjIKkp8nuzPyjTzIXqkHvaOQON6H1TTc9qElsc+OQrE8IvzYqTY8d/pbbO96rzsYXZLThFMsI2mWX7KrrWYfAF71JEQxgWLDfC1xYkAC7pfFf9zm07dKfgWJ71VZ740UJqeiaJwBNp4zrVONKTnaXxDrTTOVJV8akv/NveOq5DGZmy7mh2viSP1TUL6hvpQDi5NPWRlgOzjvjWcB4rwLKn20a4Z2i0ttbgxC3Fpads6JBv/9axZH100UZL6yQ4MCZyq9f0J
- TfKuVidB
- xRkIWo7L04MaJ/jG17hhYWRv2bcKWStW6HVwdxqdloqP5eMweLHZNhGLZH9kKLQ6t7uravrU0lHADqqLeeCEs6vBAczc8UzQfwAxr52sd0L0hBUDx8SGbvwhX51d65ycJG/x4yy1gNwzGQfzzjPWfgfDrAzYeF3UmQWYSfUOZNCmiL2kMwkoMujKi8pWsRAjD2XUuiAUK9oM3uuSIcgP7b5AmYbMhw3TYQIBgh5OJeIGa1RxoX3yRvH+NuSUz5D3jQsCl91E5QxPw+aefeWavmvTDhlGpME1GLFYqQ6HplCHZzsMpxr3ObkOkdIh5j7CcnqFud8wRl15KtdVTQI9n5W9yBwuR28jmrTHO8DXBgHCk9Xs=
+X-Stat-Signature: 6mmei1f9oh3pu8xe7cqszfmpbmf5wx4h
+X-HE-Tag: 1785328633-95994
+X-HE-Meta: U2FsdGVkX186tX4CWqCzrrXexW9PGzpPNSv1/FAK/OZJbknOPBaxJfeHTcsD1JlKcnxLcHSGq3SxP3nL3qqLrPCbM8cH9qBoSHKt4Y29LHfZbG8cHM7KOj4Dxqfp/fm9/uTB9hz+Kcp47w1KG1CSmH6BDhVHN+86UJEiZk/QtCE3UzpcHdwIvDkFDs1HSkZWZPt4Vhvywuo88SGPkd+b6yUwS1aViFh0yCZXcX/M5cV/WocWpLJhSIti1QD5Nh7M2tctSM9qAhgnALQo0XRJg+TuRSk3hvxPh4m2nO2w/XM7dPxWlzbhF+otO3EZyLmd63cKwFO9c22bUvY/C7D8+qxxutE3NyZYCs8aCqxJLjYqC81cBgSgSuGLxPXpQI9nHwKrlB1rSpncbVIiWRpXZaaKJFT11n52QALNMrg5Bty77IRuGU8M4twewpjrE7W/bthTLrhgjhsF8fONCmQyLliQFwsDkZeUEORve8LuST9EjU6ZiS8GYCUCZxZhnqUamTGuFT/99AU2OBCCkjkc/HZAxaQUbmW3ZoZbHLeOaU86ELFcBEo+L8dYZR8Zmauxi/7nk83jwutE3tSYHUn3MNOc0hPvohPCwa2gt1iVC7Gr+dLVXWp0AybjnmrLQ6Rd30eqX2pjq+Srk20hVRD9ERHyMk3sfQrUz4gEkTLje3FZZIh6L2qCjytNJX7aMQsk1rMs3eJRN5WWTkoCPKNUkQ9G6BV2jb+tlUN0KtOzkw1XVnjXlBS2HBWqpQZYLUBJqxLDri2ovQFuO6WtD1BGrlEbxGEfGllw4rK0XCbmqIAyn6KL1CINcsuEj3vBDp/qBHoXv2iGyeel1MzHov53sI6dbPzn8iH3ccO/g0kOkJ7nESeO/LlO3Rgsx7JiKufY1hlcJ8ikT5dWS75Wke7wfPSFWGh2sWZfnwtFCVzH+lVBROjOoj5Q72yoM0h0V8KZQjWt2bEXjMNXOJJzNel
+ lR79T1su
+ 9hjLMxXyEK+MU/g6ZNPtbNqxAikGq6mwkd02jmk+NBTTZ9mLWTmXSfhXaGOX5xGj5S3OUBQ/BZxCraQWEXpdBgXIEm4hHxhSxQ2h6PGXMy6gNdckbzit5c4tfLMewr1ZelOtxIoBwWFgP2aHGPfU/OxR4wCO/gvuc0K0qei54UWl+lwc1Lh4Db0KOWR7/WTknnqREdGNUc2W7M7VglMTTKVKOI5ih3pY+/DM9INz/jU+Q1o3xmA1jxMPnpxMwfpLyMf9hbRNrLzgwu4P8WCcMMGEaTFQYqdyCi8IHebynxoCy3A4lUSmdc+Z+F7UAidDu7/VRKNdUHrVwfrZsNhIfLRlzEoF1NaFppLQnQtgPbLP0ZmSgJ36u6JOU5MYQhNuY23BGf622tk+Hsaj8IdBUCqhkRBe/G1HTae9FwJi4rS7INYzIqolxFv3S2aBglvh8hH1y
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,79 +158,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-param_set_charp() stores charp parameters in allocated memory after slab is
-available, and releases the previous value when the parameter is updated.
+On Mon, Jul 27, 2026 at 05:47:00PM +0100, Muhammad Usama Anjum wrote:
+> A leaf PMD is being read through ptep_get() by treating the PMD address
+> as PTE-sized table storage. ptep_get() now accepts hw_pte_t *, so update
+> the cast accordingly.
+> 
+> pte_offset_kernel() also returns hw_pte_t *. Get pte_t value by calling
+> ptep_get().
+> 
+> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+> ---
+>  drivers/misc/sgi-gru/grufault.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/misc/sgi-gru/grufault.c b/drivers/misc/sgi-gru/grufault.c
+> index 3557d78ee47a2..ff89d34ad2aa4 100644
+> --- a/drivers/misc/sgi-gru/grufault.c
+> +++ b/drivers/misc/sgi-gru/grufault.c
+> @@ -228,10 +228,10 @@ static int atomic_pte_lookup(struct vm_area_struct *vma, unsigned long vaddr,
+>  		goto err;
+>  #ifdef CONFIG_X86_64
+>  	if (unlikely(pmd_leaf(*pmdp)))
+> -		pte = ptep_get((pte_t *)pmdp);
+> +		pte = ptep_get((hw_pte_t *)pmdp);
+>  	else
+>  #endif
+> -		pte = *pte_offset_kernel(pmdp, vaddr);
+> +		pte = ptep_get(pte_offset_kernel(pmdp, vaddr));
+>  
+>  	if (unlikely(!pte_present(pte) ||
+>  		     (write && (!pte_write(pte) || !pte_dirty(pte)))))
 
-The previous value is released before the replacement allocation succeeds.
-If kmalloc_parameter() fails, the setter returns -ENOMEM with the parameter
-left as NULL.
+This code is super, super broken. Can we remove this ASAP? For starters,
+we're using is_vm_hugetlb_page() to detect page shift, the code does not
+grab refs on the pages, uses pte_offset_kernel() on user page tables,
+does not handle PUD-level hugepages, does not handle PMD-level hugepages on !x86_64,
+does not hold page table locks nor check for pte table retraction, etc
 
-Failing zswap's compressor update before zswap is initialized can later
-trigger:
+I don't think I need to go on.
 
-  BUG: kernel NULL pointer dereference, address: 0000000000000000
-  RIP: 0010:strcmp+0x10/0x30
-  Call Trace:
-    zswap_setup+0x3b1/0x490
-    zswap_enabled_param_set+0x5b/0xa0
-    param_attr_store+0x93/0xe0
-    module_attr_store+0x1c/0x30
-    kernfs_fop_write_iter+0x116/0x1f0
-
-Allocate and copy the replacement first, then replace the parameter value
-only after allocation succeeds.
-
-Fixes: e180a6b7759a ("param: fix charp parameters set via sysfs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiacheng Yu <yujiacheng3@huawei.com>
----
-
-v1 -> v2:
-- Use memcpy() instead of strscpy() as the length is already known.
-
- kernel/params.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
-
-diff --git a/kernel/params.c b/kernel/params.c
-index a668863a4bb6..939ef84a46ff 100644
---- a/kernel/params.c
-+++ b/kernel/params.c
-@@ -261,6 +261,7 @@ EXPORT_SYMBOL_GPL(param_set_uint_minmax);
- 
- int param_set_charp(const char *val, const struct kernel_param *kp)
- {
-+	char *tmp;
- 	size_t len, maxlen = 1024;
- 
- 	len = strnlen(val, maxlen + 1);
-@@ -269,19 +270,20 @@ int param_set_charp(const char *val, const struct kernel_param *kp)
- 		return -ENOSPC;
- 	}
- 
--	maybe_kfree_parameter(*(char **)kp->arg);
--
- 	/*
- 	 * This is a hack. We can't kmalloc() in early boot, and we
- 	 * don't need to; this mangled commandline is preserved.
- 	 */
- 	if (slab_is_available()) {
--		*(char **)kp->arg = kmalloc_parameter(len + 1);
--		if (!*(char **)kp->arg)
-+		tmp = kmalloc_parameter(len + 1);
-+		if (!tmp)
- 			return -ENOMEM;
--		strcpy(*(char **)kp->arg, val);
-+		memcpy(tmp, val, len + 1);
- 	} else
--		*(const char **)kp->arg = val;
-+		tmp = (char *)val;
-+
-+	maybe_kfree_parameter(*(char **)kp->arg);
-+	*(char **)kp->arg = tmp;
- 
- 	return 0;
- }
 -- 
-2.34.1
-
+Pedro
 
