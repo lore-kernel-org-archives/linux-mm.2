@@ -4,121 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00B2FC54F51
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 15:15:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 933D7C53219
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 15:17:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EA59A6B00B8; Wed, 29 Jul 2026 11:15:00 -0400 (EDT)
+	id 83F416B017E; Wed, 29 Jul 2026 11:17:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E6C3F6B00B9; Wed, 29 Jul 2026 11:15:00 -0400 (EDT)
+	id 7F0396B0181; Wed, 29 Jul 2026 11:17:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D43A56B00C5; Wed, 29 Jul 2026 11:15:00 -0400 (EDT)
+	id 706546B0184; Wed, 29 Jul 2026 11:17:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B19156B00B8
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 11:15:00 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 49247140634
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 15:15:00 +0000 (UTC)
-X-FDA: 85042161960.15.7E6350B
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 9F0931A0002
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 15:14:56 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=skm0ONFV;
-	spf=pass (imf19.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.182 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 4D0FD6B017E
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 11:17:37 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EA4B5A1513
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 15:17:36 +0000 (UTC)
+X-FDA: 85042168512.05.BAC02B3
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf15.hostedemail.com (Postfix) with ESMTP id AD813A0006
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 15:17:34 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="Hrj/dKBS";
+	spf=pass (imf15.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785338096;
+	s=arc-20220608; t=1785338255;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2v6EYAF/prndNnQMY9/VeGyA6EcrPV2/qkncXAHToaM=;
-	b=D+82C673AAkdAk/8Lux1X4hzN0EWo64rFHUnLHy5EMvSBnjULgq7XYQqBKU833p3cvthu0
-	AbffVyicvbHLcks3r4jZ0faZnU6WUtXdIDglP4QYd/Jik6JVKJ5u5gasufd7AONQy4x2q6
-	gHbso1fdQEhfm0q5of+Wo9rm6luyBOU=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=skm0ONFV;
-	spf=pass (imf19.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.182 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	bh=3DuE2acrJKm1lx3lAybhbSRrGqjpBrUfPbaGHYn3cHA=;
+	b=Cx5JXuuz6VduHWjjv6KX6hlkWYROjaw1yInmVBOxqyDywLzYw8YRWZqLBhEftlFTAWrlDA
+	TPXTTigish8hOLTjzzwWiMr4tcWdbCY+jjXwXadvRwHObYMqIAv9jpyghY1Q2YdhAUDvnD
+	JODdN56V/4BhGUwhvWubHKrzCBrE6QM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785338096;
-	b=wew9laIfyGw4ad/4LdmREqqTa8kfdTw5ixWdGXRFyZgKA3CjBbT8y84NHPjwd7zY04/bZ+
-	+ZZPlGwcsqoZO2ppSLDr1WJeKPtnXQ42zGqUSeCY8EBjlG4jUk0U0bOjGP0hA2hjHIBrTW
-	HKTUAiRJpdlXdJ6EglUYchgE+ezNowc=
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-92e55b62640so63676985a.0
-        for <linux-mm@kvack.org>; Wed, 29 Jul 2026 08:14:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1785338096; x=1785942896; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=2v6EYAF/prndNnQMY9/VeGyA6EcrPV2/qkncXAHToaM=;
-        b=skm0ONFVOQ3E614Gn0Ra0eg9k1dEAzAEeAL1IdTyKUpiIu6RgPRl3hkb0czysG02bC
-         cmEK+pP1/sRh1RhVz1Bkwl5P+rJ4VwipF6DYFpk5B055VXoabmau+6+CeSX3wydboJrT
-         jVpKQZKEjIIuIMnpDaba6x3vhEkWkmR7Dtaa+Bm/Ts9v4wQxlufMfq+OY8mfpVGbSsKP
-         WwbFnYt3VhwSMZOYzo2Pkfx/vHODlVK+migzz5SYoKi3wkCFPtjnR8vQAiQoh3P+B5W5
-         +qo6xf3qehd3/mPmJbcplK1fmjQe0snm/kzyLuOJ3aCi8v/fhTMsa5s++4q+GrTtBIIA
-         t46g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785338096; x=1785942896;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=2v6EYAF/prndNnQMY9/VeGyA6EcrPV2/qkncXAHToaM=;
-        b=N8Dj0BvRL+cK0ek2pogT6DW2JN4T/cqN0fdxj/BLcBFQZyg516o0vqS06xG9bNfUPD
-         +IUDVWpFQPa2eBGoS1OcP0FHxoBSi3+hzRTtDET2vOUr2S7T7DDemN+tcxYVd7r+yB8b
-         xstfGpl4X0GQrK4qHcyYpYsz8NawCjBt9yQmCEvhEuIJ/uyNFhqIJWjTpANBn9iS+BVQ
-         28MYslF1Q7/qZCfUSZiu9UZhgAAJ0xAWQH+qY6RyP7bVhXb4hqnV2PqubyXClf6hd931
-         LKZxeohwE4IdRUnn0Uh5HGjW6JUAbN4eX9EESopOQ58/7xqUjlAyikGRAAJ7OtgCiY3x
-         o6dg==
-X-Gm-Message-State: AOJu0YxvgU0d/afcPUz230mY9zA2zjTmf9hC89a0tUJx3WOySsV8NJVA
-	9z8yI7qMx9GtOJXaEgnifsa/x4qjY9dvxvY/WeTj/8sAxcm1XOlR1u+319tVy9M9+f0=
-X-Gm-Gg: AR+sD13xMt4MFKwcJb83JSwulbTLr0FDBWnJB5kAbrv/Wj8Y4Eszkv4M0sX/aDsk7BL
-	mw5zMMJKjJXrh2+qXYf8pJJtDS6Rqm+n6LspQPEeIvYpHjn+xOQ/bgpbDXL2NlQWPNGtWoIHO+r
-	XRtA160CdGZ3PCksEPr1jfdacCGh62WgirHSedkXgx4tckSs8qhj3rm5eYCqQBoLUZiypj0+eVP
-	2dfvqBFlFIXCThPfFPTyThdpd/cwYTq/Wzcy98dB21celSGaah7Zkm1spu9Q52t2O/w78AblDk0
-	IuQHBs1YrKJi4YMgCa5dHlmS/COFrDpgwyius0SNk03HSVJB+Y4DcrwiIO+btFBCoh8WQh91AhE
-	qDmG9DMyzYyr88QWfkurqbYnBxRGho4/wZS1s55BoAOfDk9kE0WFZEjfhEbalEpRLyZIr4cenDP
-	8gjk7ZjcwspQGGWLRRiTIHt2szQ2tsLnEzCCyccLlTbrwuJExRD+1I+9e6xEkv4u/xiCN1+XT9/
-	4d2k2gOsEd2vGP6TcfZSfAZy+/bt0sdjiOQeYoPWTo5
-X-Received: by 2002:a05:620a:6885:b0:92e:612d:87cc with SMTP id af79cd13be357-933027745b6mr659175085a.46.1785338095672;
-        Wed, 29 Jul 2026 08:14:55 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-933d3263c35sm187961685a.16.2026.07.29.08.14.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jul 2026 08:14:55 -0700 (PDT)
-Date: Wed, 29 Jul 2026 11:14:53 -0400
-From: Gregory Price <gourry@gourry.net>
-To: SJ Park <sj@kernel.org>
-Cc: linux-mm@kvack.org, damon@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com, akpm@linux-foundation.org, 
-	david@kernel.org, ljs@kernel.org, ziy@nvidia.com, baolin.wang@linux.alibaba.com, 
-	liam@infradead.org, npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
-	baohua@kernel.org, lance.yang@linux.dev, usama.arif@linux.dev, vbabka@kernel.org, 
-	jannh@google.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
-	rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com, 
-	apopple@nvidia.com
-Subject: Re: [PATCH 1/4] mm/damon: defensively skip zone device folios in
- damon_get_folio()
-Message-ID: <amoXZr2vB_q5q5Wu@gourry-fedora-PF4VCD3F>
-References: <amlZ_6pnt2AC-Ppl@gourry-fedora-PF4VCD3F>
- <20260729142228.88390-1-sj@kernel.org>
+	t=1785338255;
+	b=KeYH7V2Hb83KrRrP+UhB8Pu4mvrRGzS9iN0mUswbJdliDgLwISyB+sXOmASv28ZVSBU7bB
+	rXGd38aQsrZgZ2RwYWcuuFKd0BMGbq7bcrt/Tj+TvRGFudAIgT68MD3PYuoyg2RfhcsEwz
+	4j7Wi/qzuYvFXGp59tkv8S2JXaBj62Y=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="Hrj/dKBS";
+	spf=pass (imf15.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=3DuE2acrJKm1lx3lAybhbSRrGqjpBrUfPbaGHYn3cHA=; b=Hrj/dKBS24t9/BeX1YTwpnj0yG
+	OmkWXsZg8EYbhPa/hxzzYeiqk0XF24jXbZatgnCW5R5OLlvDFFm6nYwUN0TOlY5h1gpArsu7AMEsd
+	yL4EMfI6vJ26ql+drtmC0esoasRtYY3gNK4/LyxRXd1UsC5G7mtPzk0ZiMJS0OXuDNUuEL8t8ezy4
+	N3iWKifETgUH8HVMa3tX13ncXvQnj7ZfZk/pDVm+FM0anHt4j+2t2qCoFvXz+Nw+e75ym0IDKkc6D
+	kFuaVpjloVO2htqPYugmDRjlsWfSyY6s/OU3+wl7v8gsyU8lFTjtR9C48/qOkVyIX/Oy77WJ+ZWZZ
+	FyygVEDg==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wp62C-00000008bM1-2SI0;
+	Wed, 29 Jul 2026 15:17:28 +0000
+Date: Wed, 29 Jul 2026 16:17:28 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Jane Chu <jane.chu@oracle.com>, linux-mm@kvack.org
+Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Jan Kara <jack@suse.cz>,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <christian@brauner.io>,
+	Jiaqi Yan <jiaqiyan@google.com>
+Subject: Re: [PATCH v7 00/13] Use generic_file_read_iter() in hugetlbfs
+Message-ID: <amoZiGwATl_1Kv0v@casper.infradead.org>
+References: <20260728204409.3396238-1-willy@infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260729142228.88390-1-sj@kernel.org>
-X-Rspamd-Queue-Id: 9F0931A0002
+In-Reply-To: <20260728204409.3396238-1-willy@infradead.org>
 X-Rspam-User: 
-X-Stat-Signature: cd19wexwfigrneb6zfqm7asnq4eu7k6w
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1785338096-210310
-X-HE-Meta: U2FsdGVkX1/QIIJ52Kbeed3hywyaVkU7HVGlwG0/lF5e9PjDVmzXCZfMauObJjA2OzTijdi6JaWVXRVooCoKpsXgJzMEtfeye0t0TSStaicxu1UBXGJGn13JshvQMJBqu3X93v8YzM7tpMwKMNJocvMZRVGAaEGR0SIKHsjK+ublUsFgVKtmIrdJe7SpYYV3kTO+i4KbTxEayZQUu+ofB7OBYcNPQFnizIR2YrDqWKLriYHJ2mRcOZFP1my8NkiBuug4/IgZn/1FVdoc8LlxBcdl879928o5aBWmlfjF4o/7YKxji0H6jOGF6I3fhX546MCyTLy0u9dy2Ab33vIN5EFmz7pjrp4VfugQs8GW1R3n8bI5/FbPyNwzR3Qu8olIniaC/luLgs8rrYydcYH0CvhzecRPFZW7CbNij36B4GMQWXmUHy+Az8/sDA7/ys2tNwAXQB+WM8OOgTeGeSrDy3N0/K5h5L/KIWlOopHQo5JbwYo4BARQ+eAQD8zdMYb4yjTJh3//8FmnildbNy9ANKY+3ciYh7XZHLsKCjWbX2uFZqqJTA3mcsI7MKi2Vqb7LfSTXmqStTWP1ug0OYZ0EzEi9Y49xxF9FeqIMXO3K8z2KoKo3qQ0NTR5MgrkKk8tWKO2fs1/qjmxfAQCVRoQe25wKw+VBeJv1FzXFXkhgmGDRizU2GeWqT9Vyctj12s/VruZ1Ozuqe9KNysM6jy+w+OcwrbsyeGyp66U1//6+lO43CsDwDl9en1epqnSgG/Rl6uAUVca3m+XuscjrhwB/k6D92jSs2J7QuCubfKP6Iv/hEC/9hHXs5RO3SEhyILykv4UNFcFqfdl63OZVuq+ronT2ip3RGwC41SDTsD3AKT+4ZK6MRAfH4dU+aRLFvsiZj32XA1XxDDfK/wpJqlw61AS5hw4dsIt+hPspcMeAZM2dVlPWOg2gGjFnflHXx7FZ3+glxggNwr1c2ckO8E
- Squ0n7T/
- dhBbYF57iVtVuHRAkrDkpJQBt8E1tsIuRfaRRYRGi70h4GMPugGyUgrFiKYfj86kUWfy/8BOSmNGq3HBr0dWHNYRGxdwoOOLdSTEcAYxjEysTQVgGRbJwLMqNr6AupGZh6NV+IGRnYq3SQDmhEIPmwL3X4Egs9bXe/PSiuujnhXgWaTQuDwfGuYEVXg8ZOW2wiB/DkePkiD+bTdtWLqnelB5xfw09285axOiaOvsLh4DQkN9Iu4RynDQ1fRwTJCW6hoMlIqG/0K4hygLE2eVmJMU7zYEUw1WRumqh/2OGRPfTM/DJPfq2ffKILbuAosMSXHjGjMDaTi9QNRQRdsjZwof6/82I4K/hgUHNFAPdywqWHz+P4bfAvLjlVTiGeiVpt5zN/cnU/I8xIAgjnlOPYeVW8AzE6RYOQ7LXq66kNniqbs+hOeJb2sijkBPRoElUcDromdEWeHUzUIKYtgHzKKmipoFAPxDrVpCgqALOqsSnCg1219OHMLuhe2CUnXECskjS
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: AD813A0006
+X-Stat-Signature: k18geuwpea4z9apacynkboiwn1xziwzk
+X-HE-Tag: 1785338254-6484
+X-HE-Meta: U2FsdGVkX18PnI9gNH+mNuzd0dG8QJBy649ksJlB5fBcnNRHCo6KiUt9/QqLKi4x3tpC/WvKybun9DGhk4R8Pr4tEhPx4ymOWNyyf65chYe0K5A5D0Ih79JNWGN1y+rM4FSdwQwiWIuw4G4yI5kBJGPZrXnqgFiPSD/oND38S/iWYoxIUH83EQKOU1MscGMKbhjz1jpe5bYOQKHjNeCL+vbYJLbFNJnUSSUaQpdcOkhT5i11GCcLQHhHtu86754bWvmACEaHcwAhsjsbvPUvp7+3d7BAdQrZj7L4TnOY+if2PXhEywj7woaaTMcGjPly1LcFrKXgwmR35xKRaq1OP6VqAoHHcFoKLdwCQOn0ys5h626WGhrB50eydOauajclcWwJqr8FAeiJFVXd5BAEPJ+3+Jegii31JuLAN3GxhS+Bxa7KMFEX6iJb7R7FAfVSZfJtilgT+Uu8j5J7Kt21kGG7k6+5dwlbhFDscPHVclBRJyAMWXl4zj+qZbE4AISaB4im3rCp7NxP7wE3qB1SBSJ9GpF1BHBbT9YgSTJsdfzFwMuptg2ww7+n8HBpjyjIH4bGNcJKeAAKxgq4EvfNH4cYlvAl6xlkXjF/e47RcADiuY8XXRsFuBd8uzcCREgsG7lAMZEqhd+8ztLcCPSocEm6dkL2IANrtwWGKE7olRekp631H+jIwnWScnUwOeUNjZxsBlU24m/YuFRvAnfFz2wMSd7ke94HcYbW+Ha5FISk/Tn3Z0O7puvqKDx2LpS0/ZcAFQ+DuZZxqmb1PZq15c1KVcbDYCQJBiO/Wrv3RFohoptH/Hp+6heAjBKG/vK5QiQTDJOBppQRgjD9xfzTnMR+07HtR/7Agy7Y8ThJHebe2Ic84Ron8ll586VSEUuqhFTyVRZ3durPpLeZD2C9Kq3wQFVlI35rp64EAlH3o1zH5oWQHiqAn7e2OsH3VJ9KkXbaeF2nKqNeLLd0J01
+ fNoGqPU6
+ GvrF8GCUU55HUQXnHwunMXnYIENliWWg1E8ROEiRvgAM2n9y2FyRCO+smoy8zLo7WkLNzQFP5m5S270jDQbmixiTvQdCR/W2L+bofsyEI4rQOF2ydQQd6rTcC5HuWwDKF4wsopSayEPmrHS9GRyePrHbkNr1BaduUBcYT6+CZN82vZIDPg7UzYc1cuv73d95CohKk0uGjjKhOAmOTP6MFuCeJmnw/WcTA7hwWQAfcfqYAjBP7dG93gvKBU5JLZkFU9WADkoGWfmdLB/4xRcJqFoGr7QasNKjeD7pFTsK4T28kJrtgFi7dSAYHU+9waqB3zyty8HSGqSu4k8Jnv/VQhcyfIVhtC8gWmk3pPGaPc4oujS0BT8+Mv2Avb3mj8ZeGaAMM+aDBum1kj367+hyTzVqD3dX3uECHkXEfFqwpSfvGukGaFgYiKY6IttdllL+QJKFgSUDj128YIVqo2b+RjbOUVEYY58ztMLT4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,17 +94,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 29, 2026 at 07:22:28AM -0700, SJ Park wrote:
-> On Tue, 28 Jul 2026 22:01:01 -0400 Gregory Price <gourry@gourry.net> wrote:
-> 
-> So, what do you think about adding the check under CONFIG_DAMON_DEBUG_SANITY
-> with good comments at the moment, and later converting to folio_allows_mm_ops()
-> together?
-> 
+On Tue, Jul 28, 2026 at 09:43:52PM +0100, Matthew Wilcox (Oracle) wrote:
+> This set of patches are separated out from Jane's earlier series.
+> https://lore.kernel.org/linux-mm/20260617172534.1740152-1-jane.chu@oracle.com/
 
-I think probably we can drop the commit since it'll be a little odd to
-add ifdef's and then take them out later (the latter check will be
-functional, not just a sanity check).
+Sashiko pointed out that I hadn't touched kpageflags, and it's right.
+I'll add this standalone patch for v8:
 
-~Gregory
+commit c392dd16cf5f
+Author: Matthew Wilcox (Oracle) <willy@infradead.org>
+Date:   Wed Jul 29 11:12:01 2026 -0400
+
+    kpageflags: Use is_page_hwpoison() to set KPF_HWPOISON
+    
+    Instead of knowing how hugetlb handles hwpoison, just ask
+    is_page_hwpoison().  This gives us the flexibility to change how hwpoison
+    is handled without updating this function in the future.
+    
+    Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+
+diff --git a/fs/proc/page.c b/fs/proc/page.c
+index 7d9387143435..28c9a7b724f3 100644
+--- a/fs/proc/page.c
++++ b/fs/proc/page.c
+@@ -233,12 +233,8 @@ u64 stable_page_flags(const struct page *page)
+ 	u |= kpf_copy_bit(k, KPF_UNEVICTABLE,	PG_unevictable);
+ 	u |= kpf_copy_bit(k, KPF_MLOCKED,	PG_mlocked);
+ 
+-#ifdef CONFIG_MEMORY_FAILURE
+-	if (u & (1 << KPF_HUGE))
+-		u |= kpf_copy_bit(k, KPF_HWPOISON,	PG_hwpoison);
+-	else
+-		u |= kpf_copy_bit(ps.page_snapshot.flags.f, KPF_HWPOISON, PG_hwpoison);
+-#endif
++	if (is_page_hwpoison(page))
++		u |= KPF_HWPOISON;
+ 
+ 	u |= kpf_copy_bit(k, KPF_RESERVED,	PG_reserved);
+ 	u |= kpf_copy_bit(k, KPF_OWNER_2,	PG_owner_2);
 
