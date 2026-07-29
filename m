@@ -4,121 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6380C53200
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:39:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E21EAC53200
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:42:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 342B66B0109; Wed, 29 Jul 2026 10:39:29 -0400 (EDT)
+	id 014FE6B00C5; Wed, 29 Jul 2026 10:42:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 321046B010B; Wed, 29 Jul 2026 10:39:29 -0400 (EDT)
+	id F2ED26B00DB; Wed, 29 Jul 2026 10:42:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 22FF46B010C; Wed, 29 Jul 2026 10:39:29 -0400 (EDT)
+	id E441D6B00F6; Wed, 29 Jul 2026 10:42:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EB0536B0109
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:39:28 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 861111405DD
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 08:42:24 +0000 (UTC)
-X-FDA: 85041172608.21.E02B5DD
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	by imf10.hostedemail.com (Postfix) with ESMTP id CEC40C0004
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 08:42:22 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="dy95/G7r";
-	spf=pass (imf10.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C0EC06B00C5
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:42:43 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 35F221C0B64
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 08:47:30 +0000 (UTC)
+X-FDA: 85041185460.09.9126594
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf17.hostedemail.com (Postfix) with ESMTP id A91274000D
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 08:47:27 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="jOjOdPd/";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zAIkPIfX;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=nNsY6KEG;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=EKMN+rQV;
+	dmarc=none;
+	spf=pass (imf17.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785314542;
+	s=arc-20220608; t=1785314848;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=qWC4cJlWYFKlCjFYJ8Sm1JeDbDYVJfA5kqL88tKZQqg=;
-	b=pllZnUueV8WHjaawyxaKoTT3wzB8AlSf96WF8fMC55TQR+jssgntKURrq9okngyzlitCjd
-	Ig2qCCwE83gmZIF/WpxopiuZt2tGHXDrLtQI5mhNAV+iMqF9ezfdpNx42Qh/cdMETKNx/j
-	ZbGFzjlBv5O0TTrO+X0f2FqA9VZG+2c=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785314542;
-	b=XqqMNPYOapzzsYvkwFyGNGnNQ4I+j6KJR19uIGrkXUtCR/ZOyyi1x3Ww+EnGL933KRDEer
-	FBlSPui/DZyQsb8VPC6jPtrcwqEdcL/og5n/XULx0RHKeaCjtmqbMTlPF/xB7q7sJuVY1z
-	Yh75xGyttN1qsRSnOdavigLpbw+n12g=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=7zJdrmDngk5wPjq89GH4/vM0y5+ghziNEUxgt0U0SR8=;
+	b=j9kctECnPHx2s3r80tDPc5iWB0X08uT1uW386jgX2BZaxZPAjKvSqwMdKrGDzHEOnU4NAj
+	0seRdnjsSO264iWRdEsl2o2qE1RCHOosa272uR2DtOS0IQL8bMHVBZsEUrF3NpyYBLkmsy
+	PAKrS31cY7kfbHuawDATasp11elkWxU=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="dy95/G7r";
-	spf=pass (imf10.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-38d489b6b71so671685a91.0
-        for <linux-mm@kvack.org>; Wed, 29 Jul 2026 01:42:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785314542; x=1785919342; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=qWC4cJlWYFKlCjFYJ8Sm1JeDbDYVJfA5kqL88tKZQqg=;
-        b=dy95/G7rv68w9vV0oLwYZJkH4eJUg4R3+vWmuzTm5+/TKBqHvWj9RwLV/ufvz8zmxG
-         B68b12kl50CHOZJ8pDwoNUVjy83fc0BbT+hgw7kyDB3kq0WYRExbojbFQaROdgL941UX
-         XuaMlcIg8i6GpDNLkECkQMxRV3T7PfzwFA4KEQmfp0hLtpprmVu1LkzEqHV2RlY8O841
-         Gbve2l1Pce1I73ylEfpZ6dCj4C0IvqsdUSP1fLLuCVU+7wFFb33f6UmG/2+bMyOQ5ggz
-         Z3yvTQGNvERScuoz+KW9+ON+DE2II5FC+iocmA6Wnpq1C9uhJSyGBxyDBaIBraOPFd9n
-         noXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785314542; x=1785919342;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=qWC4cJlWYFKlCjFYJ8Sm1JeDbDYVJfA5kqL88tKZQqg=;
-        b=awpdV+WjoaPyzsYt09X2Zv7CJ2VhGNwyG5W2YfT32s0sEfZc24ixezJHHU5t5NSE4I
-         wA4N4J5slGGPuGv+sHiY+1UJ5BoK8G1HjP4CsOwDe5feBIX+c/f32cWAEfkhv5Ajm2fe
-         g/hQbm0JF11bkp34ta+liQXgr/yOrS3+qKVxL2eRDwWwzBfRqrkSCk2JH/VdN6AGAnrU
-         aJwisOZqTzRnVL5aqCGB6xNw1cHYgBkNg4tLsoePXVzc2fPX1d+YilC6yEixSuAUFWbN
-         uNCzrQy0EKignYaPUeKqxgIFJg5jR8HmnHpNlvwg2FVCjAH6OK1LxMr+PIJdXias326M
-         y1/A==
-X-Gm-Message-State: AOJu0YyToXja8ZzfGNkdIyMY0Trduw6pDsXSg9UznrWoBmUzCkWb67Mp
-	e/U6NOiY/UTOBED8by0sDaT4cKcSI7Twf907LnX5Ct1hnOy7EzJQ5Adg
-X-Gm-Gg: AR+sD1205aRrk1HxiJExIT4BPivvt9QDjzJ49pNaE1SAyuNLjNsF+tFt83c5VXoLcKK
-	+oIntlTOQAEDp+dYWF4A4tsXxgKm+f9vnzrElCem0vQtFeendWFMz8aZByBLMHH6MViscmkH/tA
-	V2shvbvy7gdcm5K5QZM9WGXPeSPeSbe3Mpv85Ojzq8flXfkRfLYKP7zL1BY9mRtr96iB6hgvMH0
-	azTzcpkelhb61BrqOWSCa9y8bCJh4gJrqextFo15YK5i9/n1YYnPBlqfbmW0l7695OKWd4PNljQ
-	xzT1e4co8BE+ShhUfaS6qLdAzt4+Z85Ya0VPf1BkLAlGvrJa2Uo3AfrJgZ9ObYN9E6iXPxpBL05
-	oyxwhAzLreqAvSPNgvs6xuzw3/c8WYArepPVWDK9nQLKDynKu5XcVFKRcPC1YTKo4EzGP6IfOrB
-	l1toaUAo2rmqQYZN/yrUVz6kTgMpNd6pjFxJZES7XJrgUsdRa6Yl+Z1ZZ2wHV3myZBR8DPKpx7Z
-	iPDtubPFYwuDlKC
-X-Received: by 2002:a17:90b:51c5:b0:380:71eb:4014 with SMTP id 98e67ed59e1d1-38f6a37e87fmr6475462a91.15.1785314541543;
-        Wed, 29 Jul 2026 01:42:21 -0700 (PDT)
-Received: from localhost.localdomain ([210.184.73.204])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f642fbf74sm2447744a91.17.2026.07.29.01.42.15
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 29 Jul 2026 01:42:21 -0700 (PDT)
-From: Hao Jia <jiahao.kernel@gmail.com>
-To: akpm@linux-foundation.org,
-	tj@kernel.org,
-	hannes@cmpxchg.org,
-	shakeel.butt@linux.dev,
-	mhocko@kernel.org,
-	yosry@kernel.org,
-	mkoutny@suse.com,
-	nphamcs@gmail.com,
-	chengming.zhou@linux.dev,
-	muchun.song@linux.dev,
-	roman.gushchin@linux.dev
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	Hao Jia <jiahao1@lixiang.com>
-Subject: [PATCH v3 0/2] mm/zswap: Fixes and improves the zswap shrink
-Date: Wed, 29 Jul 2026 16:42:04 +0800
-Message-Id: <20260729084206.77793-1-jiahao.kernel@gmail.com>
-X-Mailer: git-send-email 2.39.2 (Apple Git-143)
+	imf17.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="jOjOdPd/";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zAIkPIfX;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=nNsY6KEG;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=EKMN+rQV;
+	dmarc=none;
+	spf=pass (imf17.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785314848;
+	b=3emOTbDLOWQNP9LJANfAEzEcbf6HygcIBI5s05Ma3RdkLu15CwEqZmMjpz8XUuQaykaaI3
+	b/3eQ7otD8Ia+f3TBsBoiCEIKQSfJ9DPEezd7uIsTujtsudsuZkae/YR14E7TZTh0vdIVo
+	/kuT+dF+61V+W39jL7oli57L5LPcGYM=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id E49673E05;
+	Wed, 29 Jul 2026 08:41:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1785314505; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7zJdrmDngk5wPjq89GH4/vM0y5+ghziNEUxgt0U0SR8=;
+	b=jOjOdPd/ne7HHiYPJXh9ID22f2T7p8udr8k2GNJDBaFmSdgXPCxc1gFM3eKu/bcecWKtyX
+	qwDPFdGpJBCeMUJ3IBTaBs4tIgD+dqkqPjzmo1Ja5LeDbpo+G2sAT5ZZL0NNu/rqWd/fma
+	mX7bQCKAbnfnGv+4kGRCExfCwy3Pn+w=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1785314505;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7zJdrmDngk5wPjq89GH4/vM0y5+ghziNEUxgt0U0SR8=;
+	b=zAIkPIfXoZsvokrMupfpCcRAbOHCVsbtonc0cvXx/AbWcmmV5l0ELH92Zu8M64StRRak9T
+	GgiAv2peqNd8NTAg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1785314500; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7zJdrmDngk5wPjq89GH4/vM0y5+ghziNEUxgt0U0SR8=;
+	b=nNsY6KEGbcvVsPnrtB1XYL7QPVy2EvQl0lZE6DcpAzFswfp0k1UFkAf9pIkg1anPWU8B0S
+	St5ESsraTztxL20R/XcJeFEieysFmxBpgRA60sz34jeXZJ2E1OkzJpdqv0ycSrI9qqSOo8
+	1z0HjFP57RzhNUFlhGtY/DrAR7i1yFI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1785314500;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7zJdrmDngk5wPjq89GH4/vM0y5+ghziNEUxgt0U0SR8=;
+	b=EKMN+rQVYE5NGLhgjevO4S6lgArcbHkDpZbyWCTX20ULcVK5NpsjZvneQ3GKs46tB1ZgQ7
+	1t+Pw8vukKneVrDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D216C779A1;
+	Wed, 29 Jul 2026 08:41:40 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 2uHBMsS8aWrXWgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Wed, 29 Jul 2026 08:41:40 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 6CE72A131F; Wed, 29 Jul 2026 10:41:40 +0200 (CEST)
+Date: Wed, 29 Jul 2026 10:41:40 +0200
+From: Jan Kara <jack@suse.cz>
+To: Tal Zussman <tz2294@columbia.edu>
+Cc: Christoph Hellwig <hch@infradead.org>, Jan Kara <jack@suse.cz>, 
+	Jens Axboe <axboe@kernel.dk>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Christian Brauner <brauner@kernel.org>, "Darrick J. Wong" <djwong@kernel.org>, 
+	Carlos Maiolino <cem@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Dave Chinner <dgc@kernel.org>, Bart Van Assche <bvanassche@acm.org>, 
+	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, Gao Xiang <xiang@kernel.org>
+Subject: Re: [PATCH v6 1/4] block: add task-context bio completion
+ infrastructure
+Message-ID: <4ahxusvs255ibn5unrayfeioqijbbidtn3l7joczxphwo2faee@3wtnw4nzu6wi>
+References: <ahPbaSEoNA755Nt3@infradead.org>
+ <f1b8eeb6-2397-4f48-a21a-a023eb0c80ab@columbia.edu>
+ <rkb5oei6cx2erbyininczz6ukbnquqheexhu7tznn5rslkkdn7@b4kpdyhdwdb6>
+ <ahbq0RdUyLIPiItB@infradead.org>
+ <80cb53f3-e7e5-4f96-bacc-f9fb7661d976@columbia.edu>
+ <cuyklvhnt37xwk3jlr2iyyxxkzvt4bsf5iqv2gag4ixdicnbk2@rfqgjlclwesz>
+ <4jtsjd2sbsn2w7fzfwb7wwowz72r4kc6345ckkkcjoxjbbwjwn@rkl44x3o3sgy>
+ <cc58a101-6d09-4e42-b99d-673271934c29@columbia.edu>
+ <amgrwn0yQoFvJP4u@infradead.org>
+ <8124341f-3af2-4a16-897d-38db5ab5a9d4@columbia.edu>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 89fgfhutdmzkjter8jaqb3i37dtxz7d1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8124341f-3af2-4a16-897d-38db5ab5a9d4@columbia.edu>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: A91274000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: CEC40C0004
-X-HE-Tag: 1785314542-676303
-X-HE-Meta: U2FsdGVkX1/x4CNJ4L6DypI4+BbDQYJ1eQHrbWnlNvfdBe7K+CGeF4UWcbWw9c2nL4S0P3UqlMLeNY0I4NXVhiTUEWXOQFuntLGOwfn0swknlc+Z86pXUFV/8k19tgelLgaeWt/54OHhfzby/5jjrbIj0FX7BNiWhFDfFSzlOM1aaXj7l5+bUtAuUYdvX9F3Jh7laf8Ck13t/v31oICT3IIJx23lBqrjE8AS0tTWbPqvAlzckKbOfd0D4ruUctaqMReCGuFkillaMlGHUlk+gJoYoLfjgH+ZZRW2uGI1HF7EdwhYeVX/T8zz0+lX5+NGEQP/VVHhhuIKPOeZcbIdOV9FI/dmTh06GxWkC56bUBDsY9FjK1Din/E5PDUVDRiaBJSKC4WQ/ti/ETznOWdFOL9h+gAH5EdMZGyxgb9HWjyIQCFP5SkopJoFdO5O+HFIMJY4p2TCSSJWy9+gHe+UIRPa0qia7wJyiBJ1INsrvRYyRZWRGGe001C9nmwyc6mbCqBOobRP5giQ+29/AdV5Y/lh/fJDZMQVsdBOlJ1h/xhgIeQ7PU5Gry3j4j0hhUQookIDcGEUZTi4PIDCLk6HRciHVqP0RfkRmupVlrLxXfBmcXFPqcPxtWl8RvHi1WCZqJiCD6MEvkchs07Tc/JyfIJPOIkbEm4w2GqBGuU82WhivfBDQEnfYNxnKp5L9uQCofr9uTzfjGsLKDSjRgPGMc96xwNbyGR9hzLDGGRuN3yj+HVjAt0FIVgMMwXj6q6ZLFz8NYKBkOc1eQMKJHIxF6w9+GYiR1Tz3OtvQrKWY+uek5yqJ7plXd+GXwKd0CcATzzlS1EorZcvV36A8S+A5fHLhKN9Tx3vMvPYTadS/9qab+XlRgmLzERp7u6YPND4eCXTU8Rwp1m+9xqoi1XUxP0ESOoplct6lPj1OFzZaFOfpkWbX/5xw1Jcg9j5mR7QZffgpGqJnjVnzC0MV1R
- xm2c+C3x
- 9j4a+tWOcZ/665B4WynPCURQX1zp8D4adkswsUR7H+CKvg+Hv5TAu8NgkpBVCVrh1ntTsfd7wYbrdrcggljGIemSA2ozR2VgLJ5DLQM/g5GDr18DBTxmJoBdcOXJ4sI05qO1XGYdOC3zAM8o1OsmpDmbU34ew/88EPgRDDvKdhXEtfNwN5BKzUn512ZTSKOQM7G0KJGdCkEoGAGXvHUypf8RIi8dQkVhO+q9k49zk7CESIjQeXj68qPxBcWN48ttqCflTA60rDGIXoghGsvRhBszGUsTgsbEb/9pE9FEAhI2YUIBRHcw0DRZ8WNja+viodB74YufiviPzzVZVtsgEONRYtbw42Ez2r8DlQgKJ+8ZP0W8KPg439XaH4oDP3osxnUrmlUeOzgaDCPXxk46vJYCMiHNqW+dLQfcCYeMuEYPAFmSWCWIRJI5l64KPfIuYY6T5xc962zWm+/SFHnx0vHDuwBGUwbPzk5ZzjysehrA5jZ/G9xTarW2fpXZ2if7vvlixdqekznKDy03XL/kh9fXHZw==
+X-Stat-Signature: psw1axurmhw79hnzxd4a7x8sbgn13eyg
+X-HE-Tag: 1785314847-161949
+X-HE-Meta: U2FsdGVkX18FFifrpujK+lrVGP9xXXudDwms5CXI8hoBTIVK66sYmiR2VL4gbNSNgzhwVWfvs6gKpJMpb2+lATL1RnmMHF1mr3BsnZcgcoMzXzSQ/Vflvqrc9BlWwjmJDlvpvW4iWirQQgqVagjbelHfav8Uuwt4/W6XmOJrUM6h4+XAx4CIS6l68FdoK9EEQuoNnL/TJesurX17SCmoMFdswdLhPSrpF1Trt8nguODDllQH7MVtJc/F7zBp+LJFXnbGcDvXmV+lLUD9r1EA57n5TEsE0j7M0ZjyVlioVloa5tJ1fKn6xK2rCMJt2V2a/Ms3oFuPCXOuTXX0VfQaTVpm9BI8TasiyhVuiRkevLICgYZ1gxIGbZRBGq8F0U2U5K3n7dZnVPoFVLQagtUIdaF1qMjZTXVigCbakF5RKM97dlPKlUO03maWTMsu02om1oZiCU8QmgO5tSIasOrPk/vNKScbW0z4MWbBahGqx4HtqyCjamNURrLACST1afzFAI5OwBAlhnpUoE51xvXHUrz4d26DTOG/CzcGAEv+qQkqMH6Xi1KgRNk1AQ23DqAqAxKoB8j6yNoK77t3+jAo7wM0O6C+gxuYVS7/ctS+QOdvG0aVOgNL2Xw/rAQrcQBBwP49+m/AC112yp2hdWRqirzmMTFYkOTa3xSF/tQTU6cS8eCnYoI9Qqw4lELQ5wf1Or8iSNE/eDftWTbmRpXsANKK0ZQ6jXH3hPGjIBUIp7VDfQfBzHhEdy9FACBLEZLw3yKORn5gtWxYXSS+qO6p6IlU7neyZjrXXtm3FbqQZQlHqjbXimvPowsC+qpLjnXVISY4ZPoNzOCs4Orm4glhPeCEC0taFTmGTeK6DhD67Ttv8ZEaTSzqNehMa01dF10lUa/uHNgGPjanm2qNgDnT4kOCPycmG75C8tiZHYUODrd53fZwbFmfDqQ4lR0D9yTODTkOqs2qqZkpbS12cGO
+ EBeIRdkJ
+ TKmzKktPFF74xvUBBDHIRKHVAx0Gx9aKAxvgpzrGwGt8xUMljRdLMpbXadqRblViDki1aalXgdnAsUz5/6yypXD6/XFfv+gtK0M616YPbyIU3bNfNS52lNJpn3NrjA30fXhNEwE2lxbdJHdpfBFxAXMv7ptq0EjfKl5kYmJHnQw69/0EORHMIIyOWRaAJ6IJ/Jn2tM7+U0QiJhchGrehdrLST3brzTTRxCR5r+DB31SZ8Qa0//ge24CB4wg2KqkV0LGKzswkDJ88I/Ko99fEHkl2KAAe78WAqWV3icNoT+94hclil5lrV5GkcSX9DWXCrkNda0OIq6XZv1yc/8CthekMiFg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,36 +146,213 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Hao Jia <jiahao1@lixiang.com>
+On Wed 29-07-26 02:11:17, Tal Zussman wrote:
+> On 7/28/26 12:10 AM, Christoph Hellwig wrote:
+> > On Mon, Jun 22, 2026 at 12:45:25PM -0400, Tal Zussman wrote:
+> >> > 
+> >> > Any progress here? The patchset looks really promising so I'd love to have
+> >> > it completed :)
+> >> > 
+> >> Sorry for the delay - got caught up with some other work and had to set this
+> >> aside for a couple weeks, but haven't forgotten about this. Planning to pick
+> >> it back up some time this week.
+> > 
+> > Sorry for another ping, but we have a lot of code waiting on this
+> > kind of infrastructure now, it would be great to get a version in.
+> > 
+> 
+> No worries, and apologies again for the delay. I had some deadlines and
+> travel that kept me busy, but I have some additional results below:
+> 
+> First, I investigated the workload C behavior further. The underlying
+> problem is that ioends routed to the XFS completion workqueue were also
+> carrying BIO_COMPLETE_IN_TASK, so unwritten completions bounced through the
+> block-layer worker (plus its delay) only to be queued on
+> m_unwritten_workqueue afterwards.
 
-This series fixes and improves the zswap global shrinker (shrink_worker()):
-Patch 1: Fix missing global shrinker when memory cgroup is disabled.
-Patch 2: Extend shrink_memcg() to support batch writeback and thereby improving
-         the writeback efficiency in the shrink_worker() and zswap_store() paths.
+Good spotting!
 
-v2->v3:
-    - Added user impact to the commit 1 message.
-    - Updated writeback batch size to SWAP_CLUSTER_MAX to avoid introducing new
-      magic macros. And enabled batched shrinking in the zswap_store() path as well.
-    - Re-benchmarked performance data with the updated patch.
-v1->v2:
-    - Add a reschedule check to the -ENOENT return path in shrink_memcg() to
-      handle the theoretical issue of prolonged heavy concurrent zswap stores.
-    - Remove the shrink_memcg() return value changes part, and include a more
-       detailed test report in the commit message.
+> The ioend workqueue already provides the
+> task context the flag asks for, so something like this avoids the bounce:
+> 
+> diff --git a/fs/xfs/xfs_aops.c b/fs/xfs/xfs_aops.c
+> --- a/fs/xfs/xfs_aops.c
+> +++ b/fs/xfs/xfs_aops.c
+> @@ -552,8 +552,10 @@ xfs_writeback_submit(
+>         /*
+>          * Send ioends that might require a transaction to the completion wq.
+>          */
+> -       if (xfs_ioend_needs_wq_completion(ioend))
+> +       if (xfs_ioend_needs_wq_completion(ioend)) {
+>                 ioend->io_bio.bi_end_io = xfs_end_bio;
+> +               bio_clear_flag(&ioend->io_bio, BIO_COMPLETE_IN_TASK);
+> +       }
+> 
+>         return iomap_ioend_writeback_submit(wpc, error);
+>  }
+> @@ -664,6 +666,7 @@ xfs_zoned_writeback_submit(
+>         struct iomap_ioend              *ioend = wpc->wb_ctx;
+> 
+>         ioend->io_bio.bi_end_io = xfs_end_bio;
+> +       bio_clear_flag(&ioend->io_bio, BIO_COMPLETE_IN_TASK);
+>         if (error) {
+>                 ioend->io_bio.bi_status = errno_to_blk_status(error);
+>                 bio_endio(&ioend->io_bio);
+> 
+> (Diffs may be whitespace-damaged, for illustrative purpose only)
 
+This looks a bit hacky and at least deserves a comment. Ideally we'd get
+rid of the xfs workqueue and rely on the generic offloading mechanism. But
+as Christoph wrote maybe let's just get something good enough in and we can
+work on improving that later. In particular if Christoph has a plan how to
+clean this up :).
 
-[v2] https://lore.kernel.org/all/20260717085151.22822-1-jiahao.kernel@gmail.com
-[v1] https://lore.kernel.org/all/20260714081510.16895-1-jiahao.kernel@gmail.com
+> On a fresh-file run of workload C (every completion doing an unwritten
+> conversion) this stops conversion-heavy writeback from entering the
+> block-layer deferral entirely and cuts write p50/p99 by 7-8% (3381 -> 3151us
+> / 6761 -> 6193us) at equal bandwidth. I tested a sync waiter workload on a
+> fresh file too, and it also hit this even harder: a 4k write+fdatasync loop
+> goes from 2.0 to 17.0 MB/s with this change on top of v6.
+> 
+> I don't love this patch, as it feels a little hacky as currently
+> constructed, but the perf impact on this worst case is substantial.
+> 
+> I also implemented (a version) of Jan's suggestion of only delaying the
+> completion work when the offload rate hits a threshold, and tested it
+> against both delay=1 and delay=0.
+> 
+> We keep a per-CPU count of completions offloaded during the current jiffie
+> and dispatch the worker immediately unless that count crosses
+> BIO_COMPLETE_BATCH_RATE (16000/s per CPU, i.e. 16 per jiffie at HZ=1000):
+> 
+> diff --git a/block/bio.c b/block/bio.c
+> --- a/block/bio.c
+> +++ b/block/bio.c
+> @@ -1749,10 +1749,15 @@ void bio_check_pages_dirty(struct bio *bio)
+>   */
+> +#define BIO_COMPLETE_BATCH_RATE                16000   /* per second, per CPU */
+> +#define BIO_COMPLETE_BATCH_THRESH      (BIO_COMPLETE_BATCH_RATE / HZ)
+> 
+>  struct bio_complete_batch {
+>         struct bio_list list;
+>         struct delayed_work work;
+>         int cpu;
+> +       unsigned long window;   /* jiffie that count refers to */
+> +       unsigned int count;     /* completions offloaded during window */
+>  };
+> 
+> @@ -1784,16 +1789,27 @@ void __bio_complete_in_task(struct bio *bio)
+>  {
+>         struct bio_complete_batch *batch;
+> +       unsigned long now = jiffies;
+> +       unsigned long delay = 0;
+>         unsigned long flags;
+>         bool was_empty;
+> 
+>         local_irq_save(flags);
+>         batch = this_cpu_ptr(&bio_complete_batch);
+> +
+> +       if (batch->window != now) {
+> +               batch->count = 0;
+> +               batch->window = now;
+> +       }
+> +       batch->count++;
+> +       if (batch->count > BIO_COMPLETE_BATCH_THRESH)
+> +               delay = 1;
 
-Hao Jia (2):
-  mm/zswap: Fix global shrinker when memory cgroup is disabled
-  mm/zswap: Support batch writeback in shrink_memcg()
+So this logic will end up completing bios without delay once jiffies jumps
+to a new value and if we do enough IO in this jiffie, it will start
+delaying. So the behavior will be a bit erratic. I was actually imagining
+something like maintaining exponential moving average and decide based on
+that. But regardless of this you have a good observation that the optimal
+value of BIO_COMPLETE_BATCH_THRESH is dependent on the speed of storage
+(and queue depth of the workload) so any constant value is unlikely to make
+everybody happy.
 
- mm/zswap.c | 58 ++++++++++++++++++++++++++++++++++++++++++------------
- 1 file changed, 45 insertions(+), 13 deletions(-)
+To determine whether to delay completion or not we'd need something more
+sophisticated like measuring queue depth of the workload or bio completion
+time and deciding based on that. But that would need much more
+experimentation and complexity which I don't think is justified at this
+point.
 
+> +
+>         was_empty = bio_list_empty(&batch->list);
+>         bio_list_add(&batch->list, bio);
+>         local_irq_restore(flags);
+> 
+>         if (was_empty)
+>                 mod_delayed_work_on(batch->cpu, bio_complete_wq,
+> -                                   &batch->work, 1);
+> +                                   &batch->work, delay);
+>  }
+>  EXPORT_SYMBOL_GPL(__bio_complete_in_task);
+> 
+> 
+> I used 16000/s (at HZ=1000) as the threshold rather than the 1000/s
+> suggested. For async completions the 1-jiffie delay would at most double the
+> latency, but a sync waiter that can reach the threshold instead gets stuck
+> at it. Each deferral adds a jiffie, which drops its rate back below the
+> threshold, which re-arms a few ms later. This has a significant impact on
+> the qd1 fdatasync workload below (W1). My main concern is that this turns
+> out to be device-specific and 16000 is too low for faster drives.
+> 
+> Results are below.
+> fdatasync latencies are fio's sync percentiles. All three kernels
+> include the xfs patch above: delay=1 is the current unconditional
+> delay, delay=0 unconditional immediate dispatch, and gated is the diff above.
+> C and D are the same workloads as in the previous results.
+> 
+>                                  delay=1     delay=0       gated
+> W1) 4k write+fdatasync, qd1 (~14k completions/s)
+>   bandwidth (MB/s)                   2.0        52.6        52.5
+>   fdatasync p50 (us)              1990.7        69.8        70.1
+>   fdatasync p99.9 (us)            2965.5       118.3       119.6
+>   context switches                  212k       4.17M       4.18M
+>   cycles                          13.8e9     119.3e9     122.2e9
+> 
+> W2) 64k write+fdatasync, qd1 (~10k completions/s)
+>   bandwidth (MB/s)                  32.7       657.5       655.4
+>   fdatasync p50 (us)              1974.3        82.8        83.1
+>   fdatasync p99.9 (us)            2987.3       137.6       136.9
+>   context switches                  403k       3.30M       3.30M
+>   cycles                          22.8e9     144.9e9     144.5e9
+> 
+> C) 4k buffered randwrite, qd32 (~118k completions/s)
+>   bandwidth (MB/s)                 649.5       655.7       643.4
+>   write lat p50 (us)               215.4       214.7       216.1
+>   write lat p99.9 (us)             703.1       984.4       730.5
+>   context switches                20.69M      21.98M      21.44M
+>   cycles                         922.5e9     838.1e9     911.3e9
+> 
+> D) 64k buffered mixed r/w, qd32 (~11k completions/s)
+>   bandwidth (MB/s)                 761.2       753.2       757.2
+>   write lat p50 (us)              2605.1      2637.8      2605.1
+>   write lat p99.9 (us)            4358.1      4358.1      4358.1
+>   context switches                 5.99M       6.92M       6.92M
+>   cycles                         399.0e9     414.3e9     414.4e9
+> 
+> On W1/W2 the delay=1 caps a sync waiter at ~500 syncs/s, since every
+> fdatasync takes a full jiffie. The gated version never fires on either
+> workload, so it matches delay=0.
+> 
+> For C, delay=0 regresses write p99.9 by 40%, while the gated version stays
+> within 4% of delay=1's tail.
+> 
+> D is similar across configurations, but adds +3.9% cycles and +15% context
+> switches vs. delay=1.
+> 
+> Again, my main concern with this approach is that 16000 (or 1000) is a
+> somewhat arbitrary value that depends on disk performance. If the C p99.9
+> perf is an acceptable trade-off, I think we can get rid of the delay, but
+> I'd appreciate more thoughts on that and the XFS diff above.
+
+Thanks for the measurements! Yes, I agree with you and Christoph. Let's
+keep things simple for now and remove the delaying completely. Once things
+settle down and we'll see how things work in practice, we can work on
+re-adding and fine tuning the delaying logic.
+
+								Honza
 -- 
-2.34.1
-
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
