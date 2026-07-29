@@ -4,133 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76AD7C53219
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 16:21:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 938C9C53219
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 16:25:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E6DD26B008A; Wed, 29 Jul 2026 12:21:26 -0400 (EDT)
+	id 721C66B0088; Wed, 29 Jul 2026 12:25:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E1E6A6B008C; Wed, 29 Jul 2026 12:21:26 -0400 (EDT)
+	id 6F9206B0092; Wed, 29 Jul 2026 12:25:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE7406B0092; Wed, 29 Jul 2026 12:21:26 -0400 (EDT)
+	id 60E346B0093; Wed, 29 Jul 2026 12:25:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E8BA6B008A
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 12:21:26 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2DFEF1A0737
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 16:21:26 +0000 (UTC)
-X-FDA: 85042329372.20.8294DBA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 5BEE14000F
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 16:21:24 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="MOh/4662";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 35A996B0088
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 12:25:44 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BDEDA1A072A
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 16:25:43 +0000 (UTC)
+X-FDA: 85042340166.29.D8F0F9D
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+	by imf29.hostedemail.com (Postfix) with ESMTP id BFE3C12000E
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 16:25:41 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="Jg/ruSG9";
+	spf=pass (imf29.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785342084;
+	s=arc-20220608; t=1785342342;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JM4FiXN/GSZDdrwaTNMY9uV5gz3Vu4GPflJilJ5fnjA=;
-	b=1cI1G8J3KN1ZD5bl6wdHd9D4b+N9aocpJ/oqNYbdFTM+RRQr3THNnfyS4hR9N60EprcFWX
-	nwH3wau/Nqcaqvtm2napYSsmjCadESZqwQbqgdh+1cglP9adM7Veh17Q6P6ravfKSd43Wx
-	yBFBuEOdu+dpXkwCNs7BIrDGQEt/Y0M=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="MOh/4662";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	bh=D3757SJdmqZVERewPVHqeMVYgjkUIDr+1uHBBRmZIMQ=;
+	b=qlzdX8c1kF0JAHn/M1SG1ne52YHIrTUH1Y4p9cbhEPdb3/82mBwvg/ACWl7sDUIHy4YbpF
+	E+29Q/3PFb6Nerk1L9fwtMW1haTdAut1hCsU12blToCDoYaVDMOtS6YQiWlNkv3B6ANbWd
+	lTD6/FI1xNgTDWHan4IkBw02QeUgORk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785342084;
-	b=4yIXEAmAh0w5EM5kF9485uTYAX6klwHijgWaAKL04AwRlYz0zR0nMgG7JjUytO/yj+CxkX
-	+BZ8Ugkkh/2BGI+WkuRBq2QKs5SCCjeMkDJnxGl5Vj1E1z8FHLvSIiEsljDUN45HIwweDj
-	iFGwxj7HXJwX3E2mrMNw5M1689F5iGM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3C24543961;
-	Wed, 29 Jul 2026 16:21:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68D131F000E9;
-	Wed, 29 Jul 2026 16:21:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785342083;
-	bh=JM4FiXN/GSZDdrwaTNMY9uV5gz3Vu4GPflJilJ5fnjA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=MOh/46620tT8hSHj6p/BSKgS94jECE/HC4cUhJ+8nmae+Iz9xMIvr1U+hrnfKv8ek
-	 hO4IbTNLytAwdbfb6QS7Gqf4KepMbYFy/+ZW7ORJMm3eJPd2tPTfwSHuPSlpBc8CVu
-	 k5c32H2Sq2AHvh4Hiyn4erLAtAPrYvj3ScgDWY+etN6t34d1Cgr9WviBAFIRpkc7+Z
-	 Vm8LMGuZbLY8p+ymN8vNqn0LQhz5BHcbBBJBacAvmqfVPUYf/6gevXxuxhfE7sKKYj
-	 4Onfq6euYjNuPG/n9PLMUIWddt3boORc71rGTZNVj2kyB9fNhAXu32PdY0Y/4K3fHP
-	 RxYYHotVl2i6w==
-Message-ID: <e5d6417f-5313-4fbb-a245-4f4c3a9d91e9@kernel.org>
-Date: Wed, 29 Jul 2026 18:21:19 +0200
+	t=1785342342;
+	b=VwGopv/L6WZB7S8vMrnb7IWI+HQHNEk3lraEy1BuvPjsJmoiC1BjyCr9EUFEHszHXjNuhh
+	DAdDhinkewPFFVxhTLYQMot00dLnQcSy0tjiyWf+/IyETXil94eWOmiQLdKuilPdDOEU+J
+	+YCvtXoLvAM+dcrKcr6yFTQToNV6JF4=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="Jg/ruSG9";
+	spf=pass (imf29.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Thu, 30 Jul 2026 00:25:27 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785342339;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=D3757SJdmqZVERewPVHqeMVYgjkUIDr+1uHBBRmZIMQ=;
+	b=Jg/ruSG9Q19yLyn2YpylYetRoq5tibhBI8BE85ok2sKXB5DAqvloeml1mJlNo4dXbiqkAU
+	xXGdTKTsRBUXJZ2Fss066KONse6v6hVUzLL0qqZcCKtmFwCTQDUox/va1uOxRT6R8znmNu
+	vuQfCzvaBulJE/aDRiP3wdLt0N1uvX4=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Baoquan He <baoquan.he@linux.dev>
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org,
+	kasong@tencent.com, baohua@kernel.org, youngjun.park@lge.com,
+	hannes@cmpxchg.org, yosry@kernel.org, david@kernel.org,
+	shikemeng@huaweicloud.com, chengming.zhou@linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 00/11] mm, swap: dynamic cluster management for xswap
+ devices
+Message-ID: <amopdxwZErs_1TNP@MiWiFi-R3L-srv>
+References: <20260727135029.1059441-1-baoquan.he@linux.dev>
+ <CAKEwX=MNhfDr5WbkNAy7kO7z5JFcJT0DE+_hgMoz5Xi7vZ5_yg@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/slub: fix missing debugfs entries for caches
- created before sysfs init
-Content-Language: en-US
-To: Li Xiasong <lixiasong1@huawei.com>, Harry Yoo <harry@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: stable@vger.kernel.org, Hao Li <hao.li@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, yuehaibing@huawei.com,
- zhangchangzhong@huawei.com, weiyongjun1@huawei.com
-References: <20260729101849.3734287-1-lixiasong1@huawei.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
- KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
- 87tMFA+u+L4Z5xAzIimfLD5EKC56kJ1CsXlM8S/LHcmdD9Ctkn3trYDNnat0eoAcfPIP2OZ+
- 9oe9IF/R28zmh0ifLXyJQQz5ofdj4bPf8ecEW0rhcqHfTD8k4yK0xxt3xW+6Exqp9n9bydiy
- tcSAw/TahjW6yrA+6JhSBv1v2tIm+itQc073zjSX8OFL51qQVzRFr7H2UQG33lw2QrvHRXqD
- Ot7ViKam7v0Ho9wEWiQOOZlHItOOXFphWb2yq3nzrKe45oWoSgkxKb97MVsQ+q2SYjJRBBH4
- 8qKhphADYxkIP6yut/eaj9ImvRUZZRi0DTc8xfnvHGTjKbJzC2xpFcY0DQbZzuwsIZ8OPJCc
- LM4S7mT25NE5kUTG/TKQCk922vRdGVMoLA7dIQrgXnRXtyT61sg8PG4wcfOnuWf8577aXP1x
- 6mzw3/jh3F+oSBHb/GcLC7mvWreJifUL2gEdssGfXhGWBo6zLS3qhgtwjay0Jl+kza1lo+Cv
- BB2T79D4WGdDuVa4eOrQ02TxqGN7G0Biz5ZLRSFzQSQwLn8fbwARAQABzSNWbGFzdGltaWwg
- QmFia2EgPHZiYWJrYUBrZXJuZWwub3JnPsLBsAQTAQoAWhYhBKlA1DSZLC6OmRA9UCJPp+fM
- gqZkBQJqFFy6GxSAAAAAAAQADm1hbnUyLDIuNSsxLjEyLDIsMgIbAwUJGtCBUAULCQgHAwUV
- CgkICwUWAgMBAAIeBQIXgAAKCRAiT6fnzIKmZJIUEADFx/tREzUImHrEwVHeSvDFmA7tJysI
- UVrlvrM09E7GIuzphzv7jYmo8n3ANpCczLEVr4G0syYQdTigaZgv3+FQDIIzhKih1IHhu1Ei
- XHlywNWKnQxxQEUNi5Mwx43wQz5XVw9F1A7gtKBKNtfogO511hAbrzagrYajyQacEJ/+sfhZ
- 9Da8ltHIXD8pcYaHUfQgEusCgmEd9+KrUwrTbckFKmYq5chuE6yJ4J0EmWknL096jIE6CnzF
- FRslQ3B1UKDjxVsm1ZHfir5NeWszLkTvGFsddFaWTgh8UycESG6VQzKXjjewXu2pG7YQYRpj
- QKm1W5X2TkwWkXRBZTmfmbhxIUMh3+zf5wQ463rSmDN/8v81tdqBtAW6rH/kzg1GvkaTHXn0
- 507yEHFzBksk2viAuIxxr7km8+/KARYLIdGtx30EG8cKzAUZOK6WqxtNCsXUJNrVE8CWrCaD
- icoNu7Fs1c5hmPHdSTnU48ce67449DdnO4neLSNhRiGlMHJgfJUmgrxu/hcYeOZ3haWmEQ2w
- uW1Mh01OHi8QZHCEyAbABrPs9GUgccc/4eYXX9hIgxfSkYzn8f+8NuIFPWl/0uTvjgqU29FQ
- SbzOLxHq9439Ox40G5mS5eZXRGxITYR+6TXvRGI6P/264jvflnr/pDGUttaikU+0W+1uxgKH
- cmYbEc7ATQRbGTU1AQgAn0H6UrFiWcovkh6EXVcl+SeqyO6JHOPm+e9Wu0Vw+VIUvXZVUVVQ
- La1PQDUi6j00ChlcR66g9/V0sPIcSutacPKfdKYOBvzd4rlhL8rfrdEsQw5ApZxrA8kYZVMh
- FmBRKAa6wos25moTlMKpCWzTH84+WO5+ziCTsTUZASAToz3RdunTD+vQcHj0GqNTPAHK63sf
- bAB2I0BslZkXkY1RLb/YhuA6E7JyEd2pilZOrIuBGl/5q2qSakgnAVFWFBR/DO27JuAksYnq
- +aH8vI0xGvwn75KqSk4UzAkDzWSmO4ZHuahKtQgZNsMYV+PGayRBX9b9zbldzopoLBdqHc4n
- jQARAQABwsF8BBgBCgAmAhsMFiEEqUDUNJksLo6ZED1QIk+n58yCpmQFAmfIHFQFCRYU6J8A
- CgkQIk+n58yCpmS2PA//bqN1LfcotmArgElsa+0EGZSQlYgK48pm8WAeTXTngudP9IJ4SuKY
- HR5RNjHcBeqN+Me0zxRqYzRb8nGanHEkDyf4Im8DQM8d6vbyU+FcPmG4skud4kgS1zMHnlVd
- SXfSIwKC/hKgdHG8aBV7545Lz9X6Iohea+94wneD0aw/hqF+QWewGZhWJriWAZtvEkzNjQOi
- 4U9F/trLten/x7bpphDSnDMKJtITbtzATT1Dq7o7VpIUK1nCTQALMuMjKCdi8OdU/+V+R3O4
- 0PXWvX8qrvqYapVbZ+9KqT74FsuB0Ya9uXwgBF2Q6cRuETZk5vqaqKxzqoQZCO8AOz/58j6O
- 2RHNy/mZEN+7tJ5Tsq42zVJ4jxsT8b9YplavCMsnBgDeRWhcbYhCyttoL7nYISyWg4kQYZ/P
- wIV3OuNv2f8iKYsxNsRuClOAF82+gvqOy1/1pprFjy8uo2pkoOrb63aOP3vO5VHnRKgra6dq
- NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
- OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
- jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <20260729101849.3734287-1-lixiasong1@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 5BEE14000F
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAKEwX=MNhfDr5WbkNAy7kO7z5JFcJT0DE+_hgMoz5Xi7vZ5_yg@mail.gmail.com>
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: 5hub4877jgw9ui876tw47tzku98pdcs9
 X-Rspam-User: 
-X-Stat-Signature: ficodaxbz4icyc68ux39g58bdfk33waq
-X-HE-Tag: 1785342084-411390
-X-HE-Meta: U2FsdGVkX1+H7le/a3GBbQGTPcYYfNBkei5P7QYTsfJ24koVJxwtjDhVignsKF68oIyiDhKlBV917hN9C/YmJ4scKY7PU8626FM8Mlo5/3BOqk+pIUr9+whAihw09346rXL2i9ZCfSHAuoMOtBOzu8zzcDaB9nA09OdlQwt8T/xPcyH7TP8WsOR3TEEb3AMKDtF6z7H9+RSfo21GHgJo1m/lX85aZQ0pev7HcI56PuoiEmHjao7JXYE390ZNqf/hDfX+x2/HXjWT9MdvAe0ZCxoZQ1u5nZW+yS0J0i8LRm7nRO3Uwut0y6MymJ5FiEIs3m4t4fnUY1VPJuVfQqYqaN512tQAQUm/LZqvZmt+8bBE+e9r8Liww8h5YuRHKy72gDQJP0a4ZaPN4tlqlMAqHgOZ7eK9tgFI9juuNecBD3zZOa4Tfq/+BP/KSS7cBFsVg/zgz98aJMgJeRM/5eUobCVEF+8rtkfQmfdFZGPuW9dQUhULDJjB66w9AIV0/9IKSiFqQeu56pOWhoRJl2q2/yDijEgpqCM41v0Hnl8ZtiiRBXro9Q7ir0Kz7uUNhiQ3K0k6mtCZRYLFBAwHeTIAgRZJAyBmpOSws+V0h2P7+ZMMXioJYPUBu4P+IGGMSiWu23yRBXZY8qsiL89YxHrrX68GzvYL0V7TUHpNtQJjjASDfDfaD29+gtCaTahi3tJ8mzFfYPEu4DvQIBay5NPUfM+4Uf3V/d1AZP7RuCSVeOY1iqYIak02JHITvRMSkCjERviTZZWXwKMWgSXBCDU4Bk8x5icirOYLPhVq0Qknfgzi8p7W3X9R9YsYQ/E7+i9sKDPF/Fz1vNyCsFojA8DhcFfMIZiz70k7Y/QgXNnVGgsagE5/0DMsc3kD4lg+bM/BevNu188eTBTZqkxafIpszRswS/2gUe+8oupOTt8444O3jfhYXx5YsGF9gSb9AA5uQcQQshvkzL1hWJ5CZuI
- zDAgm9ki
- uMVbaNUxFCbdb/SkcKcqnOzPRvx4n78wakbie/KhDLtoG27jBn8D4/0JClJu/xcSdFQnoTqX2e7WxsBx3nLdxIZbaFBzXXeauGRmCRORyCZpzf77iBOGWR4kVyxxFNKO0h9hWQHLYTG/6OXaZK+QpcL6dbdebUYy4Cn6NYzNCDYNWQP6kdKB4IJRolvnYjY45+TqkZJJ6IPLm0e3q6UUKB/5Zb5II/aMsFbFmSBi3pHUOyE+fvK0ee/rvoG/QeX90WCJ0ovLhqeEOSRig43m7bb5eDyCApvCTq7AQPi1UDJ3h2K7AXqZtJ2olsg==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: BFE3C12000E
+X-HE-Tag: 1785342341-637945
+X-HE-Meta: U2FsdGVkX1/4BF/TWleV0KBiEXsmbwentXe46kcKt0EOiTL8Ug6yxZNKOONT03GECOf6QoSFph9l+cFlKWuqZYToKdwoZGJK2u27CJ51TY/6H4YCvkncorNns9Eg382w0xMPgg3jXu+3JTr9bj8zOJfKQ2qw1aJtj0YrsRWgp3O3MpPsKIwBxhJljYiy8YzgG0FmFWlp5gDcUU6nrGg1280xMCHYBkTfF7AjesXNFySsD7hqCUxII6QpYBSnWQy7WPxJI1fjGgzrCDxbAInDsCHiYQFS9tXlnNor4w/gI1M6vojspCZuIXuuT0LfTt2Q4KkMcMBfoyd8Lzp8UUG7+1Avv1DEMeQEjDgbYRNR893Q0frKYoiI1tegSUUki0nB4H0LLlDR//jyJxpBXCV73pPTGI6dVEo9ys2MFsU88IUYOZyP/5RZpc05IoLJgM8wfam8y3LleTGuVdVf0m/YBP50rQ3OzFwMaxvu9mFvZIDXMDJDgPiRkTJz/alcuzJTX5us7inuGeWc0/x8a/udzvy2eL3MePXSSJgsn1OrZSrzYxmQUWBvedc/U0JMlJqvecFxkdLS5CbIXgjRz/uza9K/PzRb+h5VuEP8gqprYLBqS7i411JTVpogX14Ar6SgC4r4mMmMBChgwV828mgiZuGSVXscTizUDJwPVpurigtcvhI7evl25mN0+xtVN/Q2W4oIF2BG7/ouweuLfU5O6rsZKVSM0v3V/Wh0oYjBhokIqs5A3UvZ8tLcp5Cei6mLAIWwaPDmOt23Yk6O84RaiJKjs2ApUB1PGHY0RpUnkisP6JqpDQgBajKfbtLRtxrGRwhy2s/sZB0LJfSLAnGnBvZ7Dg6aLFOcq2yrafqKrmUDThZ6UNFEfrOe1EauW8JX8ffmuERjzL0QtzrnMwj1wlOobGrx9wRrcAnzUFIUYXZthkSm+q4b2qr8ZyZA5k6lecsTlJygiQmVhzJfL8o
+ 1L9cI5SS
+ kdei/2IAv+jn5oUoiXE7vSm65IjPLIXlLXEPtKj34h9FIFZDBItwFMScnODQXAOGJdN2dfDVbqajoAx9F+DiWSqhgD/vnwfCq2Ft6bnmInIxnmk3cIS4WDbXLqv0tsPKx4Yfn00oi8hFLQkOJJjQucAlNPw/2uKbhmID/1oiL6ey1ZP+RJctHGhWG3+9wavTffAx+MVAko0MrqTm7IGcVPJSE7iS0b+13DhjaSokOvCiQA+k5lAi9enOlWG8LtvqYHe7zKiB0bx56HkYoH853tV0ATA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,51 +94,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/29/26 12:18, Li Xiasong wrote:
-> slab_debugfs_init() creates the slab debugfs root at device initcall
-> time, while slab_sysfs_init() moves slab_state to FULL at late initcall
-> time. SLAB_STORE_USER caches created in this window miss their debugfs
-> entries because do_kmem_cache_create() skips debugfs_slab_add() when
-> slab_state <= UP. This was observed with MPTCP's request_sock_subflow_v6
-> cache, whose slab debugfs directory was missing.
+On 07/27/26 at 08:48am, Nhat Pham wrote:
+> On Mon, Jul 27, 2026 at 6:50 AM Baoquan He <baoquan.he@linux.dev> wrote:
+> >
+> > This series implements step 3 of the incremental path proposed in [1]:
+> > a virtual swap device with dynamic cluster growth and shrink, backed
+> > only by zswap, no writeback yet.
+> >
+> > During the discussion in [2], Chris and Nhat debated xarray-based vs
+> > array-based cluster lookup for virtual swap.  Chris argued for keeping
+> > the swap table and cluster_info in the same place with O(1) array
+> > indexing, and suggested that the kvmalloc grow approach here should
+> > provide the cluster management VS needs.  He further proposed using
+> > the same grow technique for the future per-slot backend pointer array
+> > (vs_table), keeping a single coherent array layout throughout.
+> >
+> > This series therefore serves as the foundation: once the dynamic
+> > cluster management lands, Nhat's VS series can build the per-slot
+> > backend pointer, writeback, and rmap on top of it — without an extra
+> > xarray lookup in the cluster access path.
 > 
-> The affected window is:
+> Thanks Baoquan. I've given it some more thoughts over the past week or
+> so, to figure out a way to so that everyone would be happy with the
+> final results.
 > 
->   slab_debugfs_init()
->     slab_debugfs_root = debugfs_create_dir(...)
->     list_for_each_entry(s, &slab_caches, list)
->       debugfs_slab_add(s)
+> To be perfectly clear, I'm not married with the xarray data structure.
+> I only care about use case aspect (as you have seen, I switch over to
+> swap table the moment I figure out a way to realize Kairui's design
+> proposal - it's way cleaner) - and I've seen that you have addressed a
+> lot of the design concerns I had that would hindered the use cases I
+> presented. If the vmalloc data structure outperforms the xarray, it
+> should *definitely* be the data structure we use when everything
+> settles.
 > 
->   kmem_cache_create(..., SLAB_STORE_USER, ...)
->     do_kmem_cache_create()
->       if (slab_state <= UP)
->         return without debugfs entries
+> That just leaves the sequencing of our efforts :)
 > 
->   slab_sysfs_init()
->     slab_state = FULL
-> 
-> Initialize the debugfs root and add debugfs entries while holding
-> slab_mutex, walking slab_caches exactly once and handling both sysfs
-> and debugfs entries in the same pass. This gives the sysfs and debugfs
-> initialization an explicit order and prevents caches from being
-> created between the debugfs scan and slab_state reaching FULL.
-> 
-> Gate the new slab_late_init() on either sysfs or debugfs being enabled,
-> with the slab_kset creation and alias_list processing factored into
-> helpers that have empty no-sysfs variants, as suggested by Vlastimil
-> Babka. On slab_kset_init() failure, slab_state stays below FULL so
-> kmem_cache_create() keeps taking the early-boot path, matching prior
-> behavior.
-> 
-> Guard debugfs_slab_release() against an uninitialized debugfs root,
-> since the root is now created later and a cache may be released before
-> it exists.
-> 
-> Fixes: 1a5ad30b89b4 ("mm: slub: make slab_sysfs_init() a late_initcall")
-> Cc: stable@vger.kernel.org
-> Suggested-by: Vlastimil Babka <vbabka@kernel.org>
-> Signed-off-by: Li Xiasong <lixiasong1@huawei.com>
+> My only fear with landing one piece at a time is that that we land
+> something that ended up not working for the entire big series in some
+> unforeseen cases, and we have to rip it out or rewrite a huge chunks
+> of it. Besides, without an actual use case, we can't really test its
+> correctness, and purported performance improvement benefits.
 
-Added to slab/for-next, thanks!
+Thanks for the thoughtful and honest reply, Nhat.  I really appreciate
+the clarity — and the fact that this is a sequencing discussion, not a
+technical objection.
 
+Personally, I still lean toward the incremental approach.  The cluster
+management layer feels like a well-defined, self-contained foundation
+that can be reviewed and tested independently, and landing it first
+would let the later change built on it with less effort.
+
+I think the overall direction is converging nicely.  We've reached rough
+consensus on the big-picture architecture — decoupling backends, writeback,
+dynamic cluster grow/shrink, and per-device xswap/vswap — that's a solid
+foundation.  Once we settle on the cluster_info implementation, everything
+else should fall into place quickly. From there we can move on to actual
+swap-tier usage of xswap/vswap and other extensions on top.
+
+However, if the consensus leans toward merging your xarray-based vswap
+series first and then switching the data structure as a follow-up
+optimization, I have no problem with that either. One concern: if we
+land the xarray-based approach first and then switch to a pointer array
+later, the cluster_info type change (e.g to struct swap_cluster_info *
+flat array or struct swap_cluster_info ** pointer array) will cause us
+touching those codes twice. Just something to weigh against the
+"land early" argument.
+
+I'm quite optimistic about how things are shaping up.  It's been a long
+discussion but I think we're very close to something that everyone can
+get behind.
+
+Thanks
+Baoquan
+
+> 
+> That's why so far I have bitten the bullet and sent out the whole
+> series (even if it's really large) with the core use cases
+> implemented. I understand that it is big, and is burdensome for
+> reviewers - but at least you know that the core use cases works - and
+> if you don't take my work for it, you can test with it and benchmark
+> it, etc. And with Kairui's proposal, we still maintain the old
+> machinery, which allows us to even merge with something a bit
+> suboptimal, then optimize later. FWIW, so far in my testing, the
+> numbers have been quite close, at least for zswap backend, and the
+> core concern (memory overhead) has been resolved. So it might actually
+> already be usable out of the box? :)
+> 
+> This patch series has reached 700 LoCs, and I still have some
+> correctness concerns - I have commented one in another patch. It has
+> gotten more complicated now, which is no fault of you - we just need
+> more logic to handle the things xarray provided us out of the box,
+> with the hope that it would be more optimal. And that's fine. I just
+> think it would be better to land the xarray version first to unblock
+> users, then just slot your patch series on top as a follow-up
+> optimization. It would show the actual win of your data structure over
+> xarray data structure with concrete numbers :) Win-win?
+> 
+> But thanks again for taking a stab at it. Seriously, you're awesome. I
+> want to re-iterate again - this is NOT a Nacked-by Nhat. Not with this
+> patch series, nor with the direction. I'm just trying to figure out
+> the sequencing of our efforts that would make everything work. I'll
+> spend sometimes on my own trying to synthesize this data structure
+> with vswap design too, to see if I can fish out more gaps, and to see
+> if I can clean things up in a way that would make the switch from
+> xarray to this new data structure as painless as possible. As well as
+> the other design points we have touched on in our last conversation -
+> it makes sense to me at the time, but I need to code some prototype
+> out and stare at it a bit more.
 
