@@ -4,100 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF80DC54F51
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 13:53:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 339CCC53200
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 13:53:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CF6BD6B0092; Wed, 29 Jul 2026 09:52:53 -0400 (EDT)
+	id 3329A6B0093; Wed, 29 Jul 2026 09:52:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C80416B0093; Wed, 29 Jul 2026 09:52:53 -0400 (EDT)
+	id 310946B0095; Wed, 29 Jul 2026 09:52:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B6EF06B0095; Wed, 29 Jul 2026 09:52:53 -0400 (EDT)
+	id 2212E6B0096; Wed, 29 Jul 2026 09:52:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 905166B0092
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 09:52:53 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 23B201404B3
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 13:52:53 +0000 (UTC)
-X-FDA: 85041955026.22.4BEEB65
-Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 3FD2EC000B
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 13:52:51 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VXmy9sA0;
-	spf=pass (imf22.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785333171;
-	b=q+JPt90LLKE/rnrHZrov84KPn5C9mU28vJabzpZFTPWx4pFXYZD8pRFZqbNbSDU8PiukPY
-	3oEv2oVIYWVUJ3WjhmPVruVzCqMTa3oDvjgGTCc/T+mYBzBzMI0+d4loZbSkCuOgF6bIV8
-	xxK35hzHX1So0LoIf87tQ9nK+wt98JQ=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VXmy9sA0;
-	spf=pass (imf22.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E6A286B0093
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 09:52:54 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7EFE6406C4
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 12:36:33 +0000 (UTC)
+X-FDA: 85041762666.21.DA637C4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id D0369C000C
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 12:36:31 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RkQgQ1gi;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785333171;
+	s=arc-20220608; t=1785328591;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ysgBHq5s5Hm/YI8tEORg2R1/XNH+Q68qloOBkdqdGRk=;
-	b=EULGd5kBtDv/8YQ32xzT3uuMBkAOnIqxP3S7NCtuLUZqWSrwHBrHHLaxtUqloh1aGuE4nM
-	eL2lVhbdE3tb96sXXSgphhIcxeTIVQNUJYWzSarATQ6hdGyncl1Kki4702QLJ1QBolkBUM
-	39Rsfix1U1GTGNK7vN61Fc1rTKS8v+Y=
-Message-ID: <b226ad94-1464-4c42-a080-686533ccfbcf@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785333167;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ysgBHq5s5Hm/YI8tEORg2R1/XNH+Q68qloOBkdqdGRk=;
-	b=VXmy9sA0jy4gxbhbmal08rZHjBw98uF//VsEcCLNmFVasgABbKxuixXLaWtCFY/fcYZ7y5
-	168iF14uvrsvzSj69TSV1qpCrIxYB9Qu9z5O2HADLheq9E1uKifq5w5lDUShq9BYsevfq1
-	iC3vJk4Qd3S4bB6gkI4sGMP7XQBHcks=
-Date: Wed, 29 Jul 2026 14:52:34 +0100
+	bh=gHamDsFTAhL0OIEw2bN/hCgDVSj/oK4JbR47GpwZVmA=;
+	b=51rLmAIYxnNB2XX/EL6cCKk1gnwoSDYh8wphgQJgOXXr7ENmSO1Lk4YAmdT4zVPMpFylZQ
+	BR9N44ajMbdo/xjW9gkDH31zW8j8VGyHU6rCe6SPPaYVUBFn0W4iAafWbHyWxLlNU4ZJFz
+	7d3tWCGyj2sXz8qZtlMOZ78h1fBxNoo=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785328591;
+	b=as+0UFd03P6Gsq+TxFzW35VHhZw3YbayXWNsKA0Ms6aPp4Vv1bJb+96ysUBFzDPrrSA5b3
+	A9XHb2rS38GWg/EKcoH3C0jZ9mLwp6oANazPw/5jDFkM2O/aplCFWJntAfX1RQsKHdh75N
+	AMn1LTXT0oWTYucrXNkXdQqNKIr7bVw=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RkQgQ1gi;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 64C3860A66;
+	Wed, 29 Jul 2026 12:36:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4E5C1F000E9;
+	Wed, 29 Jul 2026 12:36:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785328591;
+	bh=gHamDsFTAhL0OIEw2bN/hCgDVSj/oK4JbR47GpwZVmA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=RkQgQ1giBgyrV+H0vHQxup/Zdx8wGbeHptMqJL3FLtfkKZLx6nUpvlcinkEJdvJny
+	 Xh2UXIwhDPt5dSpjPnaVNTyk9qmLb+HFMnoYWrNBqcWZXFXdFBI/CChCRwzTV+zvQn
+	 5M9DVqkCkdDD5I8op4BbZjoZ06+0a2rsbynOITiPyT8hzfZK5iK+JKWZtJF97x10dV
+	 Bvzj1VfpZfgiEF+AFa9BhhLELz74om9jwUm0UaP7YFYOwEEiGvcucVIU8RBJQ2Y6zj
+	 +mD+VILrbd6DnY1SbeYjqTFcfyjVOZk6kfHEQ6wLJH5olBEdMILIPIo+SOvps7fD4D
+	 WHeMUB9cmcP2w==
+Message-ID: <7d841b27-f60a-496f-81db-84158a0a8f8f@kernel.org>
+Date: Wed, 29 Jul 2026 14:36:26 +0200
 MIME-Version: 1.0
-Subject: Re: [PATCH v5 04/11] mm: zswap: add range lookup for large-folio
- swapin
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: Yosry Ahmed <yosry@kernel.org>, Alexandre Ghiti <alex@ghiti.fr>,
- Andrew Morton <akpm@linux-foundation.org>, david@kernel.org,
- chrisl@kernel.org, kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com,
- linux-mm@kvack.org, ying.huang@linux.alibaba.com,
- Baoquan He <baoquan.he@linux.dev>, willy@infradead.org,
- youngjun.park@lge.com, hannes@cmpxchg.org, riel@surriel.com,
- shakeel.butt@linux.dev, kas@kernel.org, baohua@kernel.org, dev.jain@arm.com,
- baolin.wang@linux.alibaba.com, Nico Pache <nico.pache@linux.dev>,
- "Liam R. Howlett" <liam@infradead.org>, ryan.roberts@arm.com,
- Vlastimil Babka <vbabka@kernel.org>, lance.yang@linux.dev,
- linux-kernel@vger.kernel.org, shikemeng@huaweicloud.com,
- kernel-team@meta.com, Alexandre Ghiti <alexghiti@fb.com>
-References: <20260722152043.2273289-1-usama.arif@linux.dev>
- <20260722152043.2273289-5-usama.arif@linux.dev> <amFZmtGHEZjXEw5R@google.com>
- <ee172b01-54c3-47ef-9040-1342a1566796@linux.dev>
- <CAO9r8zMzjCf620EHwzfosngc94fu=vAb=ukrtOi9Qf3rA3vv7w@mail.gmail.com>
- <c40f4a8b-1f60-45ea-962d-0597c413ec3d@linux.dev>
- <CAKEwX=P=cFqojHPCp1oGqZCOVVGi9pyrgLtaSH3qrEwVppmxdQ@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 2/2] mm/memory: add anonymous mTHP folios to deferred
+ split list
+To: Usama Arif <usama.arif@linux.dev>, Joanne Koong <joannelkoong@gmail.com>,
+ akpm@linux-foundation.org, ljs@kernel.org
+Cc: alex@ghiti.fr, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+ liam@infradead.org, npache@redhat.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
+ vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ willy@infradead.org, linux-mm@kvack.org
+References: <20260707201735.4113107-1-joannelkoong@gmail.com>
+ <20260707201735.4113107-3-joannelkoong@gmail.com>
+ <584098de-dd48-4004-8e7e-3d826e60c860@kernel.org>
+ <77b3b74d-c1bb-461b-8076-8729cdcf91f5@linux.dev>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <CAKEwX=P=cFqojHPCp1oGqZCOVVGi9pyrgLtaSH3qrEwVppmxdQ@mail.gmail.com>
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <77b3b74d-c1bb-461b-8076-8729cdcf91f5@linux.dev>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 3FD2EC000B
-X-Stat-Signature: gw6fax4bu7ow6ewxomuft7jybygapn19
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: D0369C000C
+X-Stat-Signature: 87j5m3kyjj5gz4f7xsfw5bnsapts8uma
 X-Rspam-User: 
-X-HE-Tag: 1785333171-414376
-X-HE-Meta: U2FsdGVkX18ckARtMKUnWkbLeBrJvzSM2xFOLHbBk27XCANWPfBoYh2yoBjOIt/H2wzO5mfFgRh2HBo+Z5J5mvdZlfj71zijW0YbX8EIkO27HCq9s5RmSsjRepboUtYoydOL2eQzm8qUzoWUehEYPjQ9cFg3xCO3ieVovFVWUCaxzCbiuSdLTZjKNWmv5peJ7aWznUEyW9akraoVfCXU9DUzskgGKQoD+5pAqaDGRfDKWq4EUzACkoZ+nlcMOWm08HMIyqLZBbXhSlVPTJ+MktIm+uM0l9rxuiHSoVJ8rNvI9jiaeTT8lpj5BrsNzU5w/qWmC1wakdSY8hkdLS0nZNErG2B9wT9f8/54KiKzuHeNCfNpopxGRANJr0SIiv6KNvKVHaO1MZF7HUPktowH0Tp23YhxZZJXFSEqhfvdkSoXpjdsxXvxES5K6xpnG5gqndzhC20yQgDZvGKP1e9tmaHfsQU5wYM0yx5bXuxNMd6bDkN0DLrQrRPVxc02Ca6Y4HMYDjPL560FvAHRidT7KKHY639K31FjRjhB52Ps7mdhThM6DVOwHL+3yhZhHUXUYcv0H0iFaAdWYGOphmpHiVgfDhgwn97j+2yk1uMyqGfAGGgYa4hyWzGla9BSsmGClhmnOT8tq9PD50iALVRPYX2z7TsbSjktqVyYfaJThu+cWZHLNEmxRne3yM//SED49LZVERE5eGHZ60/ZbxFEE5o4Xb4bjowp1qYNDXbr+XhBfe1TQ3MmFBgrovwah8upN1rXt8T/P7H7CJej6oVpS0gz52qgGdfWp26GuwRNUd0+G/uOa6LUke685uGn74WR3BLDjnw2vzwrQAvVj6lXzsTQDbhBQKieFpGyRfMWZDGgZHMoDU+RsbBNAp2NzlU0JX7Vjh/HY9R9LlgI18MV739y8EeHMOfadQB28TBZRb2fWoXl5gVRm7fBErEXA/Z9oCG3y0JBN7TCVlEuOjv
- phaAbxcx
- VHawYmDzBX9sV8O5ydPCW4b1ID/vJkiPG2jF7vEvAWdQ7ddrKnELVBVMP41GdxccIrFKdFbo2RYpILhKUhXuefdcxiC+lmI3LmtnYIwdAp0DSsniiJ1vjTyR+hm18ZUgj/kTlkpft9Ji6EOXzUdoZ3HkmV7wkFylh1aZcTraKH+2Bw0tx/mkL61CxfpsHpdutO92aOh1R8Frnt08tNdYzuZ24RvJtbzuWAdmDaWj+GzdKgSE=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1785328591-776691
+X-HE-Meta: U2FsdGVkX18oSUbunzFPDkMr7of2NV5b4IKqJ+bH7A5iRLagQ+hdqtixjDo1MgixVywPOt49u1gATksAEC7bdZ1bN49/iudXb8ai6ulpl3TQaNzmoQdocpTu7CxJoqYX4uLyeeXYXr1rp43FBEJm85yBntYZwQeK9UWv1QsyEklEK8JhZ/annZsvxeAalWSHaSlfnYmoQTG8JlU8uMH40p3rneqM4DjzZRxQpAabd9heZrr7YqeDR4DzZUhDw1dsRQe4HnzbZuuJKmPNp6RoYCzEaMmYPK+MKPPgEwvawGSn0Wb6Q7JFIxkkDXEYxYADj2XBQ32qqT2B88ec+d6rM+hKulL/+lyjD7J1p0tQd2gzqDwbT058MP5zewLooXMVJ2LTV9XAcXWwTPyor8m+CRT3J4Cy6HyEZTKnwaNNXKf1bJ+OK4D3rPkdLUSGwazzplnH7PLNkKHkmvUr3uKSCIdDIUmeiQ1QK0H76CDKdbv2Y7mmqokVGM1VHowPgXRfPF8NAWWCCsZiDOFwglmjjMf3hs7nT832XuX3dovq7FPnr+16EqEx7HFvMx9b5/wYED0NMAw1pkHZQkeTPf5d4gwy+lmP1Ysre6AY2dGSiRlCf6DSLg8cl8wrQvhPywbX9ce66lTljiXVX+uOODXICzeXljo5MNRCc7aNmsR+q29gSAHFcyyl4D7DGorvJntntSJ5OmUV1lE8kOBmQqb4A3wnmeyvM+GK1MupmEt8BzCLRw6VzpyARRQTi/nu9FOyUdLQkUrkl/MHTGu4bcPTeuQkoInaz0RoBp5PFpIyXE4dLe/hEic/7OvMDvo5+wQsAynB92YLGqIqTFnketZ3DWhGP7obiAYqi1tyqxpY2jDfM5InuDldu0ZE94sOL8y0AhA5S3+nn/Trx3PvYWldniNwwSRoNxc8CvRcbwmZDbmc+fy4DYNmlwKqcqjuau/gvGGuQekBqiB9UV05F34
+ iUgztmZ8
+ eXncvgi2aIfAUxXn9bEOTL8j58aez33kk27OUzKrivhBiXVFjA4rhHxaqykXl5H40RnFnxYkREge90Tzd92da51ie/DKOCmV5xZHTHQ8pY2oVLft/qGrVHjzXBYmRkfAvFXTGF9G5bq0UceeqaC2bbqbOo414cjMP/rm7KeLio6AX0Ljv2JdItPwDb2onqm2ZnPLS8hiQVnZmvQP11tZYqdHynnGctEl9f3Ofn5v0imPuWeXYbfdEenvSN7fFjNhLRlO3hI5GirUhHk+jdrrLw0UZ66ImDtFhvYJ3DIfK+mxHoxyDFNfEoKnkdQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,124 +145,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 27/07/2026 17:24, Nhat Pham wrote:
-> On Fri, Jul 24, 2026 at 2:59 AM Usama Arif <usama.arif@linux.dev> wrote:
->>
->>
->>
->> On 23/07/2026 17:42, Yosry Ahmed wrote:
->>>>>> @@ -1595,13 +1611,19 @@ int zswap_load(struct folio *folio)
->>>>>>              return -ENOENT;
->>>>>>
->>>>>>      /*
->>>>>> -     * Large folios should not be swapped in while zswap is being used, as
->>>>>> -     * they are not properly handled. Zswap does not properly load large
->>>>>> -     * folios, and a large folio may only be partially in zswap.
->>>>>> +     * A large folio reaches zswap_load() only when its whole range is
->>>>>> +     * expected to be on disk: PMD swap-entry consumers split before
->>>>>> +     * calling into PMD-order swapin whenever any slot is still in zswap.
->>>>>> +     * Confirm the range is entirely absent from zswap and return -ENOENT
->>>>>> +     * so the caller reads it from disk; if a slot is unexpectedly still in
->>>>>> +     * zswap, fail the read rather than return partially-initialized data.
->>>>>>       */
->>>>>> -    if (WARN_ON_ONCE(folio_test_large(folio))) {
->>>>>> -            folio_unlock(folio);
->>>>>> -            return -EINVAL;
->>>>>> +    if (folio_test_large(folio)) {
->>>>>> +            if (zswap_is_present(swp, folio_nr_pages(folio))) {
->>>>>
->>>>> Is dropping the warning here intentional (for the folio_test_large() &&
->>>>> zswap_is_present() case)?
->>>>>
->>>>
->>>>
->>>> Yes, so we can end up in a race, which should be handled gracefully.
->>>>
->>>> For example, lets say we have zswap writeback enabled, which means we
->>>> can end up in a state where we have a PMD swap entry and 511 of the 512
->>>> slots have been written to disk, but 1 slot (slot X) is still in zswap.
->>>>
->>>> We can then have the following race:
->>>>
->>>>
->>>>   CPU A: PMD swap-in                  CPU B: split-PTE swap-in
->>>>   ------------------                 ------------------------
->>>>
->>>>   Checks swap cache: empty
->>>>
->>>>                                        Faults slot X
->>>>                                        Adds order-0 folio F
->>>>                                        zswap_load(F):
->>>>                                          removes X from zswap
->>>>                                          marks F dirty
->>>>
->>>>   Checks zswap range: empty
->>>>   A is preempted
->>>>
->>>>                                        Unmaps/reclaims F
->>>>                                        zswap_store(F):
->>>>                                          puts X back in zswap
->>>>                                        Removes F from swap cache
->>>>
->>>>   A resumes
->>>>   Allocates large swap-cache folio G
->>>>   zswap_load(G) finds X in zswap
->>>
->>> Why don't we check the zswap range after allocating a folio in the
->>> swap cache? I am assuming at this point we have the folio locked and
->>> the result should be stable?
->>>
->>
->> Yes that makes sense. The folio is locked and the result will be stable.
->> How about something like below?
->>
->> diff --git a/mm/swap_state.c b/mm/swap_state.c
->> index 1f08fb522036..41f168377cb1 100644
->> --- a/mm/swap_state.c
->> +++ b/mm/swap_state.c
->> @@ -12,6 +12,7 @@
->>  #include <linux/kernel_stat.h>
->>  #include <linux/mempolicy.h>
->>  #include <linux/swap.h>
->> +#include <linux/zswap.h>
->>  #include <linux/leafops.h>
->>  #include <linux/init.h>
->>  #include <linux/pagemap.h>
->> @@ -500,6 +501,17 @@ static struct folio *__swap_cache_alloc(struct swap_cluster_info *ci,
->>         __folio_set_locked(folio);
->>         __folio_set_swapbacked(folio);
->>         __swap_cache_do_add_folio(ci, folio, entry);
->> +       /*
->> +        * Reject mixed zswap/disk backing before starting the read.
->> +        */
->> +       if (order && zswap_is_present(entry, nr_pages)) {
->> +               __swap_cache_do_del_folio(ci, folio, entry, shadow);
->> +               spin_unlock(&ci->lock);
->> +               folio_unlock(folio);
->> +               /* nr_pages refs from swap cache, 1 from allocation */
->> +               folio_put_refs(folio, nr_pages + 1);
->> +               return ERR_PTR(-EBUSY);
->> +       }
+On 7/8/26 11:58, Usama Arif wrote:
 > 
-> If you move it to __swap_cache_add_check(), you can potentially
-> backoff even before the folio allocation? :)
+> 
+> On 08/07/2026 08:56, David Hildenbrand (Arm) wrote:
+>> On 7/7/26 22:17, Joanne Koong wrote:
+>>> Unlike for PMD-sized folios, an anonymous mTHP folio doesn't get added
+>>> to the deferred split list at fault or collapse time. As a result, a
+>>> fully mapped mTHP folio that is mostly zero-filled doesn't get split by
+>>> the deferred split shrinker when the system is under memory pressure.
+>>>
+>>> Add anonymous mTHP folios to the deferred split list so that if there's
+>>> memory pressure, a zero-filled mTHP can be split with its zero pages
+>>> remapped to the shared zero page and then reclaimed.
+>>>
+>>> To minimize overhead on the common order-0 fault path, the
+>>> deferred_split_folio() call is guarded by an inline folio_test_large()
+>>> check.
+>>>
+>>> Suggested-by: Usama Arif <usama.arif@linux.dev>
+>>> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+>>> ---
+>>>  mm/memory.c | 2 ++
+>>>  1 file changed, 2 insertions(+)
+>>>
+>>> diff --git a/mm/memory.c b/mm/memory.c
+>>> index 6637c5b13c9b..441d918e3dc0 100644
+>>> --- a/mm/memory.c
+>>> +++ b/mm/memory.c
+>>> @@ -5259,6 +5259,8 @@ void map_anon_folio_pte_nopf(struct folio *folio, pte_t *pte,
+>>>  	folio_add_lru_vma(folio, vma);
+>>>  	set_ptes(vma->vm_mm, addr, pte, entry, nr_pages);
+>>>  	update_mmu_cache_range(NULL, vma, addr, pte, nr_pages);
+>>> +	if (folio_test_large(folio))
+>>> +		deferred_split_folio(folio, false);
+>>>  }
+>>>  
+>>>  static void map_anon_folio_pte_pf(struct folio *folio, pte_t *pte,
+>>
+>> I had a session [1] at LSF/MM about having essentially all large anon folios
+>> part of the the deferred split queue.
+>>
+>> (1) I don't think this scales.
+>>
+> 
+> What if we only add the mTHPs for which the policy is set to always.
+
+That doesn't really help lock contention. And the lock contention is indeed a
+thing, as we now also want to enable the LRU cache for smaller large folios,
+which improves performance:
+
+https://lore.kernel.org/r/20260709081536.82768-1-baohua@kernel.org
+
+> 
+> I think it doesn't scale if someone sets all orders to always, but if you only
+> set the 2M mTHP sysfs to always, it should be the same as what we have today
+> for PMD order?
+
+I don't see a problem with large large folios, only with small large folios :)
+
+> 
+> The main motivation for this series is to try and bring the performance for
+> ARM on par with x86. One of the differences is TLB misses. I imagine the lower
+> churn in kernel by using larger page sizes will help as well. But we will
+> run into OOMs without the shrinker.
+
+Can you elaborate how this change helps here? I assume you want to enable mTHP
+in production. Which sizes? large large ones? :)
 
 
-Thanks Nhat! Yes, this looks much much better as well:
+-- 
+Cheers,
 
-@@ -190,6 +191,15 @@ static int __swap_cache_add_check(struct swap_cluster_info *ci,
-        if (nr == 1)
-                return 0;
- 
-+       /*
-+        * The cluster lock serializes swap-cache insertion with zswap
-+        * writeback. Reject mixed zswap/disk backing before allocating a
-+        * large folio and recheck it before adding the folio to swap cache.
-+        */
-+       if (zswap_is_present(swp_entry(swp_type(targ_entry),
-+                                      round_down(swp_offset(targ_entry), nr)), nr))
-+               return -EBUSY;
-
+David
 
