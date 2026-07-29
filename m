@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB4B1C54F55
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:56:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF8D0C54F51
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:56:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EAD8D6B0156; Wed, 29 Jul 2026 10:56:30 -0400 (EDT)
+	id 7F71B6B0158; Wed, 29 Jul 2026 10:56:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E85746B0158; Wed, 29 Jul 2026 10:56:30 -0400 (EDT)
+	id 7A7BD6B015A; Wed, 29 Jul 2026 10:56:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D9B576B0159; Wed, 29 Jul 2026 10:56:30 -0400 (EDT)
+	id 6E46E6B015B; Wed, 29 Jul 2026 10:56:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AF7156B0156
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:56:30 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2CF861C0DBA
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 14:56:30 +0000 (UTC)
-X-FDA: 85042115340.16.0FECDA3
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3DF226B0158
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:56:33 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B53E4140670
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 14:56:32 +0000 (UTC)
+X-FDA: 85042115424.11.18B1669
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 8B30620004
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 14:56:28 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Jij6GyNU;
-	spf=pass (imf03.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	by imf30.hostedemail.com (Postfix) with ESMTP id 28BD080006
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 14:56:31 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DUvShgph;
+	spf=pass (imf30.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785336988;
+	s=arc-20220608; t=1785336991;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=j9FCJr3mhqy7Y7W9bUA1VftkSAFbZe4TwxjPNvtu3TI=;
-	b=iUPA3op1cb+mkA80Dim1ZWRNCYRVlCFNjVT6NwRE41AHZGaCbuqVEFWHBVddqbDDX/BL95
-	opjo4/8OSpe1/j/kkyikEhAwoWkhv28DyNW8dfJm65dvYW4UzF4rQVA1UlzlZdnJbO9f4d
-	LOJBIcqlyFySLrkFUqyG9kdk2s7Yock=
+	bh=mmQtxiJQKd7IWjs9bi2BB93ctJ9Pw3cwj1Whq5yGN/M=;
+	b=gDpOEjDk1sqF+zFeoQVasi76wsgZxftLtBRx9hmsu6IMeMhODpBuUufCS/XGkLBEoN6+TL
+	kvKQLlU4hMMd+x2MXd+y9dEqcSxWMLP3pFa/xTcfsBhuCaRKr4yQwQtGfUhPRyConfKfia
+	3/BiD2XsXYgiA47kEtKzK9k58TqzwgY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785336988;
-	b=rcHqyv++lKWobTmIBY+VG6ci+pBSBsU5yce55XGcRnNyriLllKD1poA32/MrxmQytJXkTh
-	tXH6X/WuPCvcmL94soA0O1jc7qPy6oC/gWOrW31/Gm7fMUN28DKq6ZRTfZrJcCfnghL+0c
-	X7wgv9dArP1apG39GHLboKFIiChAlEI=
+	t=1785336991;
+	b=ibX5ntDkszDRGvQxUX8KMf1nwMRGYMZ8JbbINeWxMwRhIPSQ7xcpRO7KXmhkQ98KSTwlMN
+	zAcVo7nMM7NKVFFwhaLBDIOqBDVc4sZ375xXprBgF22QQt2XpYPkflXjeG0eFI07u9zlX0
+	PEKP3qtk6QDM17EviAvwnl2KH16oQ2A=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Jij6GyNU;
-	spf=pass (imf03.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DUvShgph;
+	spf=pass (imf30.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 288316011F;
+	by tor.source.kernel.org (Postfix) with ESMTP id B14E0600C3;
+	Wed, 29 Jul 2026 14:56:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AF521F00A3D;
 	Wed, 29 Jul 2026 14:56:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3F841F00A3E;
-	Wed, 29 Jul 2026 14:56:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785336987;
-	bh=j9FCJr3mhqy7Y7W9bUA1VftkSAFbZe4TwxjPNvtu3TI=;
+	s=k20260515; t=1785336990;
+	bh=mmQtxiJQKd7IWjs9bi2BB93ctJ9Pw3cwj1Whq5yGN/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Jij6GyNUgIBoePjK7TyXRoecmHjNEYU8lCjAbIoboz5oGa0Zph2QNL/SrKOekfXu4
-	 +FER5VqJf1YShzxZLFiPiCQfm2JukZ5X1elnPZzC6P24k4G4NF4QqK/1ktJm+/nYwz
-	 6e6UgGIEi74cCfX/4Zn6TkQIo9y+yz8pejf51chbgpXPtFIf6KYLY/H5um5cKhDfm7
-	 qcSPqSRgCjgMml1C05+8OrUaqWrCOwM5y8+CnBkrR4LmoYvgPUW7u+Pvz14MIR5dl1
-	 HuWpo2pL9UuJoU+a8Iy076T7UAowH0hYRCCslGOgItVDhbvRZj4ceWE0bg2v+fLVbB
-	 IyvTrYiL64+6A==
+	b=DUvShgphV0HpF8KYUua/9LLKbfqc0fbegRrwSjbUVn8A+OnM+potPJQzEPd0AYvZE
+	 MNFpBkNbD+DI6mtpj7p1nPmcXc5CID91D0KNIUGpZfxZF3bMpr50ncdpBsSu5QcyE8
+	 xpDyqp+/2twCyV2kWaafcU9i108LC9rfGMSswE+Cq4YQ7eMGE9Si1+X9HQ7/96M1sG
+	 KpNpLeG/bLIP8LvGFJDg3tQY4UOM/2Tg5AKwlSWxumQ6m1OzUSa9EWN65ImCPHhE3r
+	 vy4TFapDE2nVXoLvxD5YGsLEK+5mpfUZl3wi4XsYdwKBtIy9rPYzP27yjbh+xqGkua
+	 6xmdlIDXwNy1g==
 From: Pratyush Yadav <pratyush@kernel.org>
 To: Mike Rapoport <rppt@kernel.org>,
 	Pasha Tatashin <pasha.tatashin@soleen.com>,
@@ -77,22 +77,22 @@ To: Mike Rapoport <rppt@kernel.org>,
 Cc: kexec@lists.infradead.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v5 02/22] kho: make radix max key width more obvious
-Date: Wed, 29 Jul 2026 16:55:47 +0200
-Message-ID: <20260729145610.2827231-3-pratyush@kernel.org>
+Subject: [PATCH v5 03/22] kho: disallow wide keys in radix tree
+Date: Wed, 29 Jul 2026 16:55:48 +0200
+Message-ID: <20260729145610.2827231-4-pratyush@kernel.org>
 X-Mailer: git-send-email 2.55.0.508.g3f0d502094-goog
 In-Reply-To: <20260729145610.2827231-1-pratyush@kernel.org>
 References: <20260729145610.2827231-1-pratyush@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8B30620004
-X-Stat-Signature: zgf55tctxyxhj6s95sx83r5i6er859f3
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 28BD080006
+X-Stat-Signature: zd6rrwzpat3ins3ccxnib6qbufs8act9
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1785336988-988911
-X-HE-Meta: U2FsdGVkX18LinQDlFIE+etdG6GCNwyRjcKQt3V89TUdaA+e1PS9XgSQvY6bnrvv0mlqjjndx2PFsjNH8UijEAfBmGbquSAzyERxymNRRZt8fonGszeRNyKuW8Tr7haYLHc5/87AjuaEEvEF4OLycPkREf46dPExjh2CrJs9OHNfDQY7ZGvWXrQn+a6NDEjNZ0B82vn3vUcjiyUAOfGL97HaFxt9p3jxRqlzZWe/1oDHvqhEPuy20hgy8K8f/KJB3KyjJ155xYnsUJe7d+pChSQA2nM1EJb3uTTbMFrJtsdxM20TEVQSerYj1DPK8agBa9beaLGRM3gS8xmkN8B8qu1R87kX37haDOwG9TuaUGzKdt9v6LwqGVSBAh4Gak7mdbAkj3+oz6+QwVJtE4oY2AQIi6LLKX0GDic+jsXbkdwRNqUvkRXMw927WamQYetU59UORFU7+bRjDe2VSzueUpfTaB3y5Mim+8QElUtzpP4ANDy4Zn7vXKV9oTu3YLnjaCPoeRF59KZazHbUythFhFwrrKwi4ufAhE9RFAiHDYqqYISn11hq/5ynQV3yBQzrCPGUxVjqGHOC7iinYx+WvVjukAL15nDhZ9Pg0M2XH6DTmtjRnnv0NLmLZbIsu0zgCgJPWJBp2qvc6Etr7JbXSPylTuQLdW8fSzix+tB2/F2Sf61NEhd4lIcCuTGOGzHcAbSDzCYET8FSV9fHQRW6OJjsdif63StumVKl1d/fedsXbqNdqThNyZl7OoD6SEvvjthOcVhzB4QO3QUKVwo/Wh57U7VTMurPJK0/YnrA3KwacEVnRNti/KaNkF/2qjhb3+FrNi4Hc067UMhofBvogcAeW3TtwGjVDEtHPGn64aKNjG/740L4u895P6nz42+CO4bAm6BPjGma8ES1hN0Oo3Z0ntWpfyyA/X6LCfE/uVMCGbOhvlb5LTdPG0ZfVojlEK03zmJziga5L98gY7/
- IogI7ZJ5
- T+JXXiS66QHPbyt9gDjWglbAfE8LmCY6JwJORzsJzCcE47gmMxchgwJ0z4dRw4RdGFGZ70mU///lRFF8Z1VYrzSUzMBZyPjjhxLiW3wBEyuQBXvGRpXpb6nrOdYwLjWhVRDI5VfcJNmU4Y8S/8AXjH0KGpPKKD40rlZKBGJE/EwB32hpzsTZOI7H5sFabYV50aTPpnosWszcLZlr9Y5bvtZz7LczwxepHeLI3Ny3wcpebI0g=
+X-HE-Tag: 1785336990-200453
+X-HE-Meta: U2FsdGVkX186vqkZhN71dnvcXRawqRNAxy8nq9NfkC/+Gy8HP9DXjzIHnZ2ymi3Z3PxgBPBvvIG8WysTqheJgaFRaQ/xPJdqwSvNT5EnhYNPcNkVLw5pbAv35OORWw6UAKnCrUPHOUOs3zI0IENUlzTNObOsi70svaoQLDHgO0dRzfj2sZzQzRF4r/e1ut4yKfHOC1GT4gtvuHk9nsZjVuQAh5Qz5zlUTgx18JXxZNParq9d66LZIZwojhnAEd34pF8ZOf6QhEGWtKEfL6C+Jnh7El599AfN36EvarU4hjXTITk+/MinphRDPVrjEuGabhIfUUJE92kv0H/+yW23hWNdGGtIMg05gEts5QIbacIfhxBP3XxUUHmsPSTvmGLWABkE4zQyHo7g63EPmf7cfeHPlHSSdmC05SyYiDlTE0RMa3Tum6rav4hO0GwSxIpzI5beCmmi8cy+UNdwG2EJzvOfB0TRQJNiQq1E4yzCjdqLMBy5IX+f1ipluEYT+142qq4YfBx6kFE0pzyaicz8NKKufF6h263Wro/B+0/Ee1u18poKNiXzyc4b56OXb3ndrVyguLaLic3W/tjRKqnx3W9ooDFZrqOcw9XFuMzv/N1ez0P8SlKYjhFLBopAEfDsuyEgwlcOqxvCKxj2X4BHTQiykJF7fzcCzN0wYRaItH41yJqRze9KOWQY3vzZKCFiYVlBDgYkpPB6aDW++UIlQskZzAl3yEqZ8z20ffQ8qFa2JbdSovAoS103c7xmkAoC1bji51VvWVwXNMIDfFgP8J8xGL/c0gWnLUQa2RhvcyLTODinWBO9GWgNFMFB4ubdWGY0Yey1JXGn72dRjVWYJY/dCWwBJrghEy83kV7X5ymqSdtEWgu9C07njAw1sSgBIu97kbTbTWpXBhRS4hcujzmhZww1yBLHt9KSfHDR80gfLXee+cYqD14KS2LfbBH983rkdjyCkRyuCA4hTDm
+ ReMwg85p
+ wwDWLKmnHlpNLZKmmw0G0HCFgIZ4z2Wev06Nx4dQNlZIRicAepDMer5IW0l5j7rpGHgCBmN9UvoZF3YG3k9CD+k+r/kW/nZJ1t69dTyLsvYfhP1qbO9g6H4dpIyJHdoH6B91lPwnLxcTXjI526Kb1Bb+nYNvwD6eaHySdanm4Gtlu/qGSHsKhTSthkUWP/rmy+jX6OByocM7oMkTa4PCrMUGgqCn9ejFId3uh+sLqvKV8Rgg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,104 +102,62 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
 
-The KHO radix tree constants are somewhat hard to understand. The tree
-depth essentially comes from the max key width. The max key width comes
-from the need to store a 52-bit PFN plus one more bit for the order.
+The KHO radix tree was designed to track preserved pages. So it does not
+provide the capability to track any 64-bit key. Instead, it limits the
+key width to how much it needs for tracking PFNs and their orders.
+Limiting the width reduces the number of levels in the tree.
 
-All this is very obscure with the corrent code. The PFN width is defined
-as KHO_ORDER_0_LOG2, which makes very little sense to a new reader not
-already familiar with what the value means. Then the fact that an extra
-bit is needed is hidden in the KHO_TREE_MAX_DEPTH calculation.
+KHO is not expected to be the only user of the radix tree. With the API
+generalized to allow other users, now it is possible to add any key to
+the tree.
 
-Simplify this by removing KHO_ORDER_0_LOG2 and replace it with
-KHO_RADIX_KEY_WIDTH. Update the comment to explain why this value is
-used. This moves the +1 from KHO_TREE_MAX_DEPTH to KHO_RADIX_KEY_WIDTH,
-making things clearer.
-
-Update kho_{encode,decode}_radix_key() to not use KHO_ORDER_0_LOG2.
-Instead, refactor the code and comments to make it clearer how the
-encoding and decoding is done.
-
-In kho_encode_radix_key(), add a new variable for the shift for physical
-address. Use that in calculating where the order bit goes and in
-calculating the shifted PFN. Update comments to make this clearer.
-
-In kho_radix_decode_key(), turn order_bit to 0-indexed to simplify the
-eventual calculation for order. Touch up comments to make the
-computation clearer.
+Check the key width at kho_radix_add_key(), and error out if it exceeds
+what the tree can handle. Do this instead of increasing the tree depth
+since right now there are no users that need to use wider keys, so this
+avoids memory overhead and ABI breakage.
 
 Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
 ---
- include/linux/kho/abi/kexec_handover.h |  9 +++------
- kernel/liveupdate/kexec_handover.c     | 19 +++++++++++--------
- 2 files changed, 14 insertions(+), 14 deletions(-)
+ kernel/liveupdate/kexec_handover.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/include/linux/kho/abi/kexec_handover.h b/include/linux/kho/abi/kexec_handover.h
-index 5e2eb8519bda..2f4fb9c63942 100644
---- a/include/linux/kho/abi/kexec_handover.h
-+++ b/include/linux/kho/abi/kexec_handover.h
-@@ -257,11 +257,8 @@ struct kho_vmalloc {
-  * memory. These constants govern the indexing, sizing, and depth of the tree.
-  */
- enum kho_radix_consts {
--	/*
--	 * The bit position of the order bit (and also the length of the
--	 * shifted physical address) for an order-0 page.
--	 */
--	KHO_ORDER_0_LOG2 = 64 - PAGE_SHIFT,
-+	/* Need to store the PFN, plus one bit for order. */
-+	KHO_RADIX_KEY_WIDTH = 64 - PAGE_SHIFT + 1,
- 
- 	/* Size of the table in kho_radix_node, in log2 */
- 	KHO_TABLE_SIZE_LOG2 = const_ilog2(PAGE_SIZE / sizeof(phys_addr_t)),
-@@ -274,7 +271,7 @@ enum kho_radix_consts {
- 	 * and 1 bitmap level.
- 	 */
- 	KHO_TREE_MAX_DEPTH =
--		DIV_ROUND_UP(KHO_ORDER_0_LOG2 - KHO_BITMAP_SIZE_LOG2 + 1,
-+		DIV_ROUND_UP(KHO_RADIX_KEY_WIDTH - KHO_BITMAP_SIZE_LOG2,
- 			     KHO_TABLE_SIZE_LOG2) + 1,
- };
- 
 diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index 7349cc82f6dc..ea24f23ce292 100644
+index ea24f23ce292..e7451743b87e 100644
 --- a/kernel/liveupdate/kexec_handover.c
 +++ b/kernel/liveupdate/kexec_handover.c
-@@ -97,10 +97,12 @@ static struct kho_out kho_out = {
+@@ -156,6 +156,11 @@ static unsigned long kho_radix_get_table_index(unsigned long key,
+  * intermediate nodes do not exist along the path, they are allocated and added
+  * to the tree.
+  *
++ * NOTE: Currently only keys of width up to %KHO_RADIX_KEY_WIDTH are supported.
++ * This limit only exists because current users of the radix tree don't use more
++ * than that. Changing the maximum width requires changing the tree depth, which
++ * needs bumping the ABI version.
++ *
+  * Return: 0 on success, or a negative error code on failure.
   */
- static unsigned long kho_encode_radix_key(phys_addr_t phys, unsigned int order)
- {
--	/* Order bits part */
--	unsigned long h = 1UL << (KHO_ORDER_0_LOG2 - order);
--	/* Shifted physical address part */
--	unsigned long l = phys >> (PAGE_SHIFT + order);
-+	/* The physical address is encoded by shifting the PFN by its order. */
-+	unsigned long shift = PAGE_SHIFT + order;
-+	/* Order bit goes right before the shifted PFN. */
-+	unsigned long h = 1UL << (64 - shift);
-+	/* Shifted PFN. */
-+	unsigned long l = phys >> shift;
+ int kho_radix_add_key(struct kho_radix_tree *tree, unsigned long key)
+@@ -172,6 +177,9 @@ int kho_radix_add_key(struct kho_radix_tree *tree, unsigned long key)
+ 	if (WARN_ON_ONCE(!tree->root))
+ 		return -EINVAL;
  
- 	return h | l;
- }
-@@ -118,12 +120,13 @@ static unsigned long kho_encode_radix_key(phys_addr_t phys, unsigned int order)
-  */
- static phys_addr_t kho_decode_radix_key(unsigned long key, unsigned int *order)
- {
--	unsigned int order_bit = fls64(key);
-+	/* fls64() indexes starting from 1. */
-+	unsigned int order_bit = fls64(key) - 1;
- 	phys_addr_t phys;
++	if (unlikely(fls64(key) > KHO_RADIX_KEY_WIDTH))
++		return -ERANGE;
++
+ 	might_sleep();
  
--	/* order_bit is numbered starting at 1 from fls64 */
--	*order = KHO_ORDER_0_LOG2 - order_bit + 1;
--	/* The order is discarded by the shift */
-+	/* order bit goes right before the shifted PFN. */
-+	*order = 64 - (PAGE_SHIFT + order_bit);
-+	/* The order bit is discarded by the shift */
- 	phys = key << (PAGE_SHIFT + *order);
+ 	guard(mutex)(&tree->lock);
+@@ -244,6 +252,10 @@ void kho_radix_del_key(struct kho_radix_tree *tree, unsigned long key)
+ 	if (WARN_ON_ONCE(!tree->root))
+ 		return;
  
- 	return phys;
++	/* Keys wider than KHO_RADIX_KEY_WIDTH are not allowed to be added. */
++	if (unlikely(fls64(key) > KHO_RADIX_KEY_WIDTH))
++		return;
++
+ 	might_sleep();
+ 
+ 	guard(mutex)(&tree->lock);
 -- 
 2.55.0.508.g3f0d502094-goog
 
