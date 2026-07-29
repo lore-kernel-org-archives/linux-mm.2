@@ -4,95 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E11D8C54F51
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 13:54:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0790AC54F51
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 13:54:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B9A436B009F; Wed, 29 Jul 2026 09:54:16 -0400 (EDT)
+	id BE8F26B00A0; Wed, 29 Jul 2026 09:54:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B72BE6B00A0; Wed, 29 Jul 2026 09:54:16 -0400 (EDT)
+	id BC1956B00A2; Wed, 29 Jul 2026 09:54:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB26B6B00A1; Wed, 29 Jul 2026 09:54:16 -0400 (EDT)
+	id AAFEB6B00A3; Wed, 29 Jul 2026 09:54:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 880EA6B009F
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 09:54:16 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BC132160682
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:17:50 +0000 (UTC)
-X-FDA: 85041413100.08.18BA2C8
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 19B8140008
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:17:48 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=Z6ePZNkp;
-	spf=pass (imf01.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 873846B00A0
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 09:54:25 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2D2571A0592
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 13:54:25 +0000 (UTC)
+X-FDA: 85041958890.19.2BF62B4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 97063C0007
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 13:54:23 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FD0JedG9;
+	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785320269;
+	s=arc-20220608; t=1785333263;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4zFAPc+21MITv4dd8ElNkkULP/O/tRrJgt9WcudjgGI=;
-	b=A2NVqzDnunTIz40/GXrG5KnFvt8gkzxdE7w1lQqo/lpaORBH07OR5JzNcG3hrH50WvXJFU
-	N8h2ACFV9SxvV8LQUT8UXBl5x/4X+2WVZxbz6DhIYf6Pm4K5Ob0eyZLIBkCmm5D2i8Gm6t
-	FiIAD/lWH7d7tTrfcyMbDUFXBEwnoyA=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=Z6ePZNkp;
-	spf=pass (imf01.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+	bh=V7bhTggPy1yNLnQ4gXjtK4joscfsFAiI9ZCSDdA1JTY=;
+	b=eHdAROqaxjohG3fwN0oWfcNVZnZ2NiEssSMSiQoQGYIN/84Cu/VtWqI3lxneTcGdT8jChf
+	tU9AsZn94JKMOW2HKr0ZX517HW0HPjLaL8xYYpUMpGqmIb0awIT2GKXH0NrbcE4/wTpPcT
+	eyfH3/kalNEeeHOM+5hzqEcNxSdWss4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785320269;
-	b=kT57zZVNFYzatDEUSYsVMPFEvO3Iuqhf1DuMfPPcM+Zmtg9F5iTx6igEW2KXVP7lrtQ1EL
-	qnJCDhgg/kTtuRnukuFmG542yRcKRUPb+aStKRQsvp29eBmXdwAY/u7weKUGgtzxolg7av
-	S4YvGlMybrry6d1pSc8BIHeKvV7kwAo=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=4zFAPc+21MITv4dd8ElNkkULP/O/tRrJgt9WcudjgGI=; b=Z6ePZNkpTROPEHa8pGFfMtqFxK
-	eSOION+l8gFyYqMBw9nHA1xm4vq0Cz7xUpPyRa9afGxlLDBnvcsW0GQjTqeYVDHCQkDAjg2xGG6QI
-	yfsxRYTyO/DuD9whEFTxX8FgN4ScH4mpD++Y/jcF04k2aiaFLruOO12wCbR1LTBGhcbz+rr8EVO4M
-	nt98u9Jlq+cNZlpXqEnOH/I1pK+uutwvoX2VMKyrZ/SbiIEcJiCEaLPkM5k1hINZzIeh6/fw8Fhfz
-	7KXask+L9LjalX+pBDnUzV/fg9XX0jG03MsKHPDNu5p9YFCd3yRd7UOlgzEjL2c/cgRB8rtVUjlqp
-	ncqY0D0Q==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wp1M1-008NdZ-0X;
-	Wed, 29 Jul 2026 10:17:37 +0000
-Date: Wed, 29 Jul 2026 03:17:31 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Miaohe Lin <linmiaohe@huawei.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	kexec@lists.infradead.org, rmikey@meta.com, riel@surriel.com, kernel-team@meta.com, 
-	Kiryl Shutsemau <kas@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>
-Subject: Re: [PATCH] kexec: keep the next kernel off hardware-poisoned pages
-Message-ID: <amnSy6PFh57T0buv@gmail.com>
-References: <20260728-kexec_posioned-v1-1-160c81d180fe@debian.org>
- <16c18549-c9a1-ba55-91b8-52d9368ebbc0@huawei.com>
+	t=1785333263;
+	b=xJ2SBOm4v5KaemaW7gSmxlewC0lfVl5+kUt03dv/dnQxJcwQFECzP3H6uHIJNrmAd9Hckm
+	de3U0LjGMBU10OiJYdSAxfy02wdvTyjqlUNphdsCVdROVIDR/LtpEyYTN3zJIBW+UeiK1s
+	UDcRTlUInfow15z4/9HSUkVC1bWCWlc=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FD0JedG9;
+	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id CD9AA600AA;
+	Wed, 29 Jul 2026 13:54:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 709991F000E9;
+	Wed, 29 Jul 2026 13:54:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785333262;
+	bh=V7bhTggPy1yNLnQ4gXjtK4joscfsFAiI9ZCSDdA1JTY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=FD0JedG9h2X/yjPsQoeyUbAPJnmI9XcssRBAAZlmpVvEiokkGlwFs7ckacNGUQWkQ
+	 d8lhMunpzVbFyRcOWMDKnIBbzgp2cqGXhY4+BpQhQ9I3diccsmyj+2Av2rF3WjhBN9
+	 EflLb+3JvwQ6usS4AA8O5pqWvDGtQtMSt7AN7iemM3+vHQby3jqO2MPUP1kvQJUxB4
+	 MaGaEk/oXd83f7toy2Gi+fC43/gu05DOqsovCrXPf1CAYaw5ifKbe2ItJ1Gb1Uj6Jc
+	 kALpBJIcCS0EO+2iZxpahH9DLcuV/d3XyxjflN3Pg8Lh5YXVkp80bt/dOEaDwYCkTU
+	 GlrVr9j+etzbQ==
+From: SJ Park <sj@kernel.org>
+To: Bharata B Rao <bharata@amd.com>
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Jonathan.Cameron@huawei.com,
+	dave.hansen@intel.com,
+	gourry@gourry.net,
+	mgorman@techsingularity.net,
+	mingo@redhat.com,
+	peterz@infradead.org,
+	raghavendra.kt@amd.com,
+	riel@surriel.com,
+	rientjes@google.com,
+	weixugc@google.com,
+	willy@infradead.org,
+	ying.huang@linux.alibaba.com,
+	ziy@nvidia.com,
+	dave@stgolabs.net,
+	nifan.cxl@gmail.com,
+	xuezhengchu@huawei.com,
+	yiannis@zptcorp.com,
+	david@kernel.org,
+	byungchul@sk.com,
+	kinseyho@google.com,
+	joshua.hahnjy@gmail.com,
+	yuanchu@google.com,
+	balbirs@nvidia.com,
+	alok.rathore@samsung.com,
+	shivankg@amd.com,
+	donettom@linux.ibm.com
+Subject: Re: [PATCH v8 0/8] mm: Hot page tracking and promotion infrastructure
+Date: Wed, 29 Jul 2026 06:54:18 -0700
+Message-ID: <20260729135419.87239-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <125de6c4-2fc7-4202-9199-347effe63112@amd.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <16c18549-c9a1-ba55-91b8-52d9368ebbc0@huawei.com>
-X-Debian-User: leitao
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 97063C0007
+X-Stat-Signature: 6keo56bjdkufp89p1r7c6wm1qxzykmwj
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 19B8140008
-X-Rspamd-Server: rspam01
-X-Stat-Signature: rjxhudbo7fm7neq3zz8pmkbrz4yasijp
-X-HE-Tag: 1785320268-951465
-X-HE-Meta: U2FsdGVkX1+CtW2I8fM7769nC1tJWsVGtK5roVFSrqMLSkkYKKScSPCNVP9TsS4t0SCfZWyRdjzVWt59ecvdMO1rS7abYtGpVX8B6CP1Sofl0w+zgzYpIZHmgXZnsZnn3Dy5zwwPSnDtC9TaynIBB9IkB6F67Wrn9g+4UMC/XntwkJco1RdXY2vgZbxjCotTWpI3QHn8hor4MCZiUeGLEGe1o4/c3yUfJpP/iiTteI0Sf0hTtKFKieFHCGFTGWJ13Ahl0Quzs9X4NR0vSJ7vwBpZAF9B8zt2Z5oE2CpymplEJV17kJGCeKLviivFpMw1ZtjqIvcSTBDhEs0UfbhZJo2iiXC8+PiSL4yk0CeVwaMxa8NldD9AF1bMKH8Yi07L0e/LPc3DBYVXQIQBwGEooWVyhvUsfIVwNGFpPeSdPOIPZK/KF/9OFr+obP5nHmlHzVu6RfY1frvTLc/S02M6rWCfEIcwZdcOXb8WSmGxcGq6ogTacmJnbBM0d8dWqFTgzRzQXIrzjAi62e5lbkq1dxmwfOaBdu631QJeLFjdwHj4WN3mc9S4ITqfj675QEJ8qo++3WQSinaVjCrT1Wva8hGQmobduzLNa0v/O8QsHhheFA3XFLvb7oP6YsIs7rN490W96X1S3n8TC1UxfffuzzA/vD/rQUzXfPvYNxUQynnwMNvXKwPItjr0QSbyWgidQrmAAB60aH4lfFFpQOVhrRJSh5HfJaBztKXEDlYFTVjD3rFCAiCHsiQUYTbXZlprg/WkiuGXEU/36Go6ARbGLRUZMUGJc3SNtZPJYA6XZu4lMRinU8LaErpgjYTArO48YNzRrr9y0xgqLdUfKZiMD1xm67t3U1RVCIlwDLN6iCqXLsSFl8/vwhA6d50COvmOXbODjEM4QY4SdxbsCsFO0Gno9O3pb3fkLLA4WKrLXyvfFuwkotUAQnp2sKpYb20IM+gez0LH0/ONO7ZGGoF
- S4cq/yi9
- sNdrxxcPjJQYobLVYXukocnyFbZOHYRSLNEcV3q9KFb5Pba4vwJHodcS3g5LwMf1JPi7a7BQV+6CqKIj0Ccfb+KZPZYCh7WRIw2iStlt/+JVNlE4CN4tFfI9bmVE2xb6h/dndasJx8mzqCGoQPVHx/q/3PSGV90QpYvLNU0z4wCi/rYTEakcnJZI22yZd3pJy6ak2efL4ib6l0DFDk+v4qQnQ/KIMvZCXJLs09utrjdI9MDHrJTb5oN9cl820eW45BgmN7ulMdVJv2B5hCt64Gn+rkRxLf0tCs56LGzNhgQBozqhww2NGKlw2gF62OzeMt6AKeLDgY07u91w=
+X-HE-Tag: 1785333263-205411
+X-HE-Meta: U2FsdGVkX19Uh1BRPBr3VQVMF03GDwws1+pKt5EleH0B1uM8UrObNAaOsVLay3tVIawAL1Ptxv0uoP6Xe/Q8dKARPq06oUQLjkgZnTJNQzYi3guwN8UhKqfPqapF+0+gfOYcOk2giisC5qqADjAcl66YD4WeJa1Fb5181ayHRbwp8eIId69A6jtRIpO5A0fdB7cKx+3BX8E6v88mxsNFghiZKo4dqWSR/BFYiROQqy2VJff1hmSTBm1r6D47DNc1STGeP6EFidusGLcfiACntWixZ6dSnNKSdAZDCxAr2lmb1Ey8SW/CNjtTvglDS7V/kbgvwLkcI8VtZ1M9OLUwmFpZONu0B//QjpouA4RW5UiyQCcFiGR19Sxcmscf9WzRilv0p4BTcLY3xfTiu2KLkNUI7EDcSj9fojZpnaI/KQZanY/9ZlEi5/ts8YhCmbyEeVNmLnobakqtY5z4cQYZo/WWzq3oublcySucb0nfWA5Qw1XthuFdR97aW41s1Uhiqzr1P0az413FtVGZK5PXeqepY2KCbT4FIu33XBny3/f+jfVv2vcGCzCUxC1L/mJ/LJH7cbQ4yKdAuNwwwde511PR/ha8NXmA7/mWCRd3rIa1nWmcn5D2ZTPVIBhApSVFPDRXm5uQ/8D3L/GU8Afw7bjk0XK3rVdWY1Iae16NvN8iZDpk3yExmnPCF+j/xdiQ0AcCXcG8vldzJFCt8wpzMDZpcwXHTHop8p6T8QwmtcG3CzGtPJ0wJW2o5Nx349/h+eYfnFPA2TFJsaz12YY2jNObqlgeJLvOzYAlSR06ayxKhNU66kl3Kk0z28KkJ5/ROMLB+2QnczeKGXdPFdxV7igxMCF8c1JKyPLYraFDGPW2gIHK6b6jYDK0MQ8dxo7EKZWpzZueRBm+lSet9+4CAyt7b6U75SUKkMQil7Hp6pk0q0YPCmkfYqVYlJvrawsgxo9zKHw91V0cBgIo1jI
+ T8oQbK3G
+ y3rPAnwTIo5reuXKdB0+iW50QVT1a2mkUC1Yj7Tu+1fwzFBA6PUd/DTJnD+8pTTkGasg2VEdsRfE+L4vKtNOVvvQr+VatK1Qn3bEAe7moQ9Jo2gSzhdcy6S95x0qAx4ODovELlUEJu/l2MhmCatWNWLgnmiA1Xnfgojc0ebCO1/5zbCYbvl704iymfNmMf7/q8TmmcGXNhdnbWwPL7pLsiCArfKat7jUWwEmoh3ucQAgTbniTaoWqAgJbgdzRZ6lqC97YCkwAsICrGjURW/M7+UujtAr9FfRO/4mZwk8xoY9paFzgUPafp+2a5hG8YaQZgEOet9v4t4+kGXq7Yz17Zht7pjJvClL11zsMF0PYArGZvvU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,28 +118,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 29, 2026 at 05:33:17PM +0800, Miaohe Lin wrote:
+On Wed, 29 Jul 2026 15:05:10 +0530 Bharata B Rao <bharata@amd.com> wrote:
 
-> > +		if (pfn_valid(pfn) && PageHWPoison(pfn_to_page(pfn)))
+> On 28-Jul-26 11:44 PM, Andrew Morton wrote:
+> > On Tue, 28 Jul 2026 11:13:48 +0530 Bharata B Rao <bharata@amd.com> wrote:
+> > 
+> >> This patchset introduces pghot, a subsystem for hot page tracking and
+> >> promotion.
+> > 
+> > Can DAMON be used to do this sort of thing adequately?
 > 
-> Should we use pfn_to_online_page here? I doubt we might meet the same problem
-> in [1] if pfn_to_page is used here.
+> That really depends on the goal I believe, let me expand...
 
-Good catch, thanks -- yes.  An offlined but not removed block is still
-pfn_valid() while its struct page is uninitialized, so PageHWPoison()
-on it hits VM_BUG_ON_PAGE(PagePoisoned(page)), the same failure as
-commit d613f53c83ec ("mm/memory-failure: fix
-VM_BUG_ON_PAGE(PagePoisoned(page)) when unpoison memory") fixes.
+Thank you Bharata, this clearly explains me your view.  I find a few little
+gaps between yours and mine, though.  Let me clarify below.
 
-I'll switch to pfn_to_online_page() in v2:
+> 
+> DAMON can indeed migrate hot pages today via DAMOS_MIGRATE_HOT, and
+> IIUC it can even do promotion and demotion together that auto-tunes
+> to a target node utilization. So for someone who wants to write a
+> per-workload, per-process tiering policy from user space, DAMON is a
+> good fit and I don't think pghot competes with it there.
+> 
+> But the intent behind pghot isn't really to be another migration
+> policy. It is to build a common in-kernel infrastructure that can act
+> as a single promotion subsystem, fed by multiple sources, with the
+> promotion engine and its heuristics (rate limiting, dynamic threshold)
+> living in one place rather than in the scheduler. Hint faults are just
+> the first source. The IBS Memory Profiler, which gives access
+> information directly from the hardware, is the other one. CXL HMU can be
+> another potential source. Hence the design centers on an exact, per-PFN
+> record that any of these sources can update, rather than on sampling.
+> 
+> The per-page, source-driven model is where the two differ the most.
+> DAMON estimates hotness by sampling one page per region per interval,
+> which is low overhead and self-contained, but it may miss a hot page
+> inside a region.
 
-      for (pfn = PHYS_PFN(start); pfn <= end_pfn; pfn++) {
-              struct page *page = pfn_to_online_page(pfn);
+DAMON can do [1] fixed granularity monitoring, down to page size.  Of course it
+increases overhead.  A few people are using DAMON in this way, though, and we
+are working together to optimize it.
 
-              if (page && PageHWPoison(page))
-                      return true;
-      }
+> pghot records every reported access at PFN granularity,
+> so it does not miss, but in turn it relies on a source to report the access.
 
-Thanks for the review.
---breno
+DAMON is not designed to use only the single source.  We started working [2] on
+extending DAMON for multiple sources including AMD IBS.  A few working
+prototpyes are shared.  We plan to share the first version at next LSFMMBPF.
+
+> 
+> The other practical difference is that pghot works with no user-space
+> agent at all. With numa_balancing=2 the promotion just happens, and in
+> fact pghot takes over the mode-2 promotion path that currently sits in
+> the scheduler. DAMON, outside of its built-in modules, expects a
+> controller in user space to drive it, IIUC.
+
+For a level of auto-tuned hot/cold pages promotion/demotion, DAMON-based memory
+tiering doesn't require user-space agent, either.  Only a number of simple
+sysfs file writes are needed at the beginning.
+
+> 
+> So I would see DAMON and pghot as complementary rather than one replacing
+> the other.
+
+I have no strong opinion.
+
+> In fact DAMON could well become one of the sources feeding
+> pghot, and conversely pghot's batched, rate-limited engine could serve
+> as a migration backend.
+
+Makes sense to me.  If there are needs, we are open to add new DAMON APIs.
+
+[1] https://origin.kernel.org/doc/html/latest/mm/damon/faq.html#can-i-simply-monitor-page-granularity
+[2] https://lore.kernel.org/all/20260525225208.1179-1-sj@kernel.org/
+
+
+Thanks,
+SJ
+
+[...]
 
