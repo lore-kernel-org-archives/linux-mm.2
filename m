@@ -4,103 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27F43C53200
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 22:37:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 333EFC53200
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 22:50:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9F4A06B0088; Wed, 29 Jul 2026 18:37:00 -0400 (EDT)
+	id E51CC6B0088; Wed, 29 Jul 2026 18:49:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9CA146B008A; Wed, 29 Jul 2026 18:37:00 -0400 (EDT)
+	id E01B06B008A; Wed, 29 Jul 2026 18:49:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 906F36B008C; Wed, 29 Jul 2026 18:37:00 -0400 (EDT)
+	id CF23E6B008C; Wed, 29 Jul 2026 18:49:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 663206B0088
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 18:37:00 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C3F08807E5
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 22:36:59 +0000 (UTC)
-X-FDA: 85043275758.01.FD58FA8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id E82C9160003
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 22:36:57 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n309x0qX;
-	spf=pass (imf08.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 9BDAC6B0088
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 18:49:58 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 11512807F7
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 22:49:58 +0000 (UTC)
+X-FDA: 85043308476.02.356FCF8
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 6AC481C0007
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 22:49:56 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=PBUCLa2u;
+	spf=pass (imf21.hostedemail.com: domain of 3k4Nqag0KCJ489FGQFCI98N8REMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--abhishekbapat.bounces.google.com designates 209.85.216.69 as permitted sender) smtp.mailfrom=3k4Nqag0KCJ489FGQFCI98N8REMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--abhishekbapat.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785364618;
-	b=jJrzHsyVgSRzNwstAz1b6Z+Kyh+GgMn13FQk0Vj8vlE+bSyUAos2Og+lVDOBihEwoW+OOS
-	jSPv8Tx8jDdxmUy21aC2niqsZL+gUX3dq+E2YmFzLfBW8nHm2vV/vMfHHaqEO0BJ2Npex5
-	vJ2iuUh5dEBBvViA2LknL/oncgtqvOs=
+	t=1785365396;
+	b=AJR2A/qEn4t6YX8c15CviLrodggQlxTl0IRVJYE32t00FfPK7cgCgmwSo8JF2ASzd4pRwg
+	BRQFCQZU8hvdgxqVD4uHJE50tkVv3K83y7vFJybP4RcnX4+TsPYqcoct4N7dxVSmkUHbgA
+	KUic4cundI9Z9Dg8Ruib8KyXaKQzlbQ=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n309x0qX;
-	spf=pass (imf08.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=PBUCLa2u;
+	spf=pass (imf21.hostedemail.com: domain of 3k4Nqag0KCJ489FGQFCI98N8REMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--abhishekbapat.bounces.google.com designates 209.85.216.69 as permitted sender) smtp.mailfrom=3k4Nqag0KCJ489FGQFCI98N8REMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--abhishekbapat.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785364618;
+	s=arc-20220608; t=1785365396;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NQOzhzyTBRr6vM28sNhapOXnSw13bcaivRKi2ECdEW0=;
-	b=4yzXk+zzmlK8yihTBpVFyn3aL+C9ARcO5zRF4SM0vLxzRX5sF5w/96xBvWkdck6SQWKF1A
-	pAGV6pToiBg005ykfSNthYX9b6a5yCRZUgJGsu+u0GrvzQ2lhasM1EAjl8dJ2xZCwA2jUG
-	cP8aABe8qCo7907q5pBLuuO4PBYgVOA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 82308600AB
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 22:36:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AC1C1F00A3D
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 22:36:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785364617;
-	bh=NQOzhzyTBRr6vM28sNhapOXnSw13bcaivRKi2ECdEW0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=n309x0qXXvGmXtPqgyPomgSQzrQbC6F3qDyAhLBOc6rKPshzVRDgAW3Rg14qr0aa8
-	 6OPK9eXqxb2YooJexTtGOHT0CceckwsbquVyrp+GMYUx3LannyrlkLc6CwSm1V6xK6
-	 4GbyW2+C/PwPKZ1op8OJyW+35h9ek3/zZXg2BLAKW8xq7ywwV90Vf/IcHT/bxeOB/8
-	 CYDrxODpNp5zZBTnG5tBLnfPr0tLiZSMmYO320/0qrRbtzllVlGHH9K4IyG85Zfgr8
-	 g2lcM3lX8mupcZFcbj0CPjK4ehDWX7mHV85w4xah5kEzwoCqgxzzq+QBQji9LP7STZ
-	 s2EKmW8gOqU3g==
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-92e65e18969so15312985a.1
-        for <linux-mm@kvack.org>; Wed, 29 Jul 2026 15:36:57 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Rrox3B6ek3bNbKoIJ2EF2ugga4WV1cri6u656+oSSUB/ytBz0auBJ4ZKl3gm/IUJFpFowuOYY3GZQ==@kvack.org
-X-Gm-Message-State: AOJu0YwTRkxyiGj4gEtXa/fVZV1XgowW2Jz8vERvcCgGJq2Pwz9UE1Z+
-	sw6LB/vG9zYZd+TncBlZ0RUol4znINaUolBSFfEr3ZnD3XSeS+rJdKwjPf35npGrqtqo/2HdnpD
-	QBI+qdroY3YxYo9VpiebdpDNpjI501h8=
-X-Received: by 2002:a05:620a:25ce:b0:91e:df9f:7804 with SMTP id
- af79cd13be357-93485d1207dmr22814685a.38.1785364616535; Wed, 29 Jul 2026
- 15:36:56 -0700 (PDT)
-MIME-Version: 1.0
-References: <CAGsJ_4w17+jKWJKkq9fdEyu6CtBtMpH-Sb4XPwdDUfqSkpkQyw@mail.gmail.com>
- <20260728122719.3688430-1-wangzicheng@honor.com>
-In-Reply-To: <20260728122719.3688430-1-wangzicheng@honor.com>
-From: Barry Song <baohua@kernel.org>
-Date: Thu, 30 Jul 2026 06:36:44 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4zEWQZnq+vBSVjKn+OB_VpYt9ghj3JKcZB_x=oL=zsQtw@mail.gmail.com>
-X-Gm-Features: AUfX_mycAnF9uFus4_0bY6nSuEvlrbKRcvzBN7kfktF95aFVM2UxBa_IPz2UuB0
-Message-ID: <CAGsJ_4zEWQZnq+vBSVjKn+OB_VpYt9ghj3JKcZB_x=oL=zsQtw@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 4/5] mm: mglru: run aging when pages are severely
- imbalanced across gens
-To: Zicheng Wang <wangzicheng@honor.com>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, hannes@cmpxchg.org, 
-	david@kernel.org, mhocko@kernel.org, qi.zheng@linux.dev, 
-	shakeel.butt@linux.dev, ljs@kernel.org, kasong@tencent.com, 
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
-	linux-kernel@vger.kernel.org, lyugaofei@xiaomi.com, stevensd@chromium.org, 
-	linkunli@honor.com, tao.wangtao@honor.com, zhangji1@honor.com
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=XA4rwawrli+94tpkczW+40qb86Gz6+GTpUDA09FX8N0=;
+	b=2V52ra0oUigsOyAluvQGj32CkVNw4er0oU8FTy4gad4npupWPky02zuJK7ykQX0wDqzbhd
+	kUmqWtSm8ILqqI1XI/TQTHZkA0mD79+M3p3Z+2+KBoGCtEl5RgIa2Z34a7P7PMYWQwqdoU
+	YKOTu09I4GENyCXwmpKqyNMOMjah8Rk=
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-38f97b3f853so357587a91.3
+        for <linux-mm@kvack.org>; Wed, 29 Jul 2026 15:49:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785365395; x=1785970195; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=XA4rwawrli+94tpkczW+40qb86Gz6+GTpUDA09FX8N0=;
+        b=PBUCLa2uNHEY118pYD10R1VfrB75OWfWD8FYSIb+rv3x/lpgq9PfT8HeiLTan6+tjF
+         0X4iS1W8YpNAvt/zRClSqq2qMLWbavnCoEFuWfdIkQZDYuTO+xlyZMPlSMz8OpxHoEfS
+         5x1dqebgkSWA0kwhxM3QyrcWR34r/3wFa0huUKMxA7lIDpdePlK1QmmmzA/7l68VIo/8
+         kJ+i/0OqOyUMKh70riCA3ZDnOLogT4KOQmWtuestF/Ygopl/Eva29lbdDCEwpiE1GU/Q
+         X/56NhDO37Grpz0ORfwi43HKUy/g0dvqrgqRTcBfPULcPozrmvi26y/EQ3mLq5gc50Nh
+         9wIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785365395; x=1785970195;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=XA4rwawrli+94tpkczW+40qb86Gz6+GTpUDA09FX8N0=;
+        b=Fl+QPzL6Q1xDGgIKbYnJWx67zpp8CHySKpTRWpa0oG1j8npVhgO5UwZPPzlsnskrYy
+         BQLcMVicbHDwZjF2m+T0M7mqHMWW8lVhJMUdyRCvykXy3E3Z4ae25M+T0I9QDFzJdf+L
+         yO7zYcGM93sG5v8H+OGbvP1Enq7XcA9upBlikebuvKikGe8lJqq3Ub0LEafh+Qxb0Dre
+         MZDD5pkwmPE5luta7VzAzGLoHucHUfIDvQpynjHv02Lktvr4wL2oZOHZsBi+oE/JBRbT
+         b46wpiY7VO3lnndbW51cfDdIn06pu6aDSGu0ytJQw75J3TclAkkmO8ckkO46dCRb7S8J
+         7lVw==
+X-Forwarded-Encrypted: i=1; AHgh+Rr06b4Whn4f3VZ6jn60SZ+iYaordZYX2zwASjVEoTSflrGt1DwkSu0iG8joRczwf4iNCSsDJ9CzCw==@kvack.org
+X-Gm-Message-State: AOJu0YyiefPYPbJdcdg4gAjjJOr09bv7UlZKUF4VA3uarIwfSFShH+wx
+	VHAhWmSVFiZsM0vG+md/7ziZfVrCdSFdDt3g41cm0jIhIlQL3y0VyldtbhieBejo2tZNCjWnb93
+	2geXL2ODjIxJ233lKtJI60lfPULV2nlyD2A==
+X-Received: from dybkb41.prod.google.com ([2002:a05:7301:38a9:b0:314:f46f:997e])
+ (user=abhishekbapat job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90a:e18d:b0:38e:4482:ab15 with SMTP id 98e67ed59e1d1-38f9bece336mr158826a91.22.1785365395013;
+ Wed, 29 Jul 2026 15:49:55 -0700 (PDT)
+Date: Wed, 29 Jul 2026 22:49:52 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.508.g3f0d502094-goog
+Message-ID: <2614a3a2f5cb11b63e3cacdcc8ab20a0fe7ae972.1785365110.git.abhishekbapat@google.com>
+Subject: [PATCH] alloc_tag: expose profiling and compression states in /proc/allocinfo
+From: Abhishek Bapat <abhishekbapat@google.com>
+To: Suren Baghdasaryan <surenb@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Hao Ge <hao.ge@linux.dev>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	Abhishek Bapat <abhishekbapat@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: rqm9yhdp8i34cg5hamz8qdisnj9rcne8
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: E82C9160003
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 6AC481C0007
+X-Stat-Signature: bxazknbkd5a6guez1g8ii8rdoq748mrs
 X-Rspam-User: 
-X-HE-Tag: 1785364617-829834
-X-HE-Meta: U2FsdGVkX18hQl/ZioaW18qoL2vuZlpE/F/J+7+Ftcv7OcM/66unNsQ6eDDFnkT+9Ycxc0DWBNKBEIYKeOazNz2hQ/ZfrsBCYr15CizeFl3qz0ROGr7UrSoznc5rXmHuu3Oqwc8AcO+2Hsiaqqebj2cmbVXC2ESNftZ7lJJFROVZ7UlekoxvlCoWQBQ24NDDrEnnnMMGD0WIKKOQLAwHQQX4E/CfPwfwSg/gAP3DV1yuIMQnFM3D+c3Oqj+JplLIpTUV3VMa2QbEB22lAzxYZnZKSovrkVBuQrIO4t1/gGX7Rvoiw1s+De94Xrq69waE3q5+dmdvCzM/SGpdhRr6QvB9bKbEZu0swnl8AOk0HVGVcb+UxtSCidd/Zja4i4gq/Z9hxD+myOt/AjVYzyU783ECYPeVsK4rjf1ATQnCPnqIRd864cM6n9eXnK9PgQLV6FiLlRDyXse/tC+rA0YrIIObUPRBkjZStOvFM2cO/jW14quw2dIvaKAV6vzUkvI2LQaXWi6R5oVxBs1fp72U5EoKcsUkxm4D/ptUBVfE3z8mj7A8et2gh8jNVrB5bnFnGqv5j1t5GsLaVVb0Bx/ylw+4I1vsduKZ9ZxPig2eU+dPABQAJyODBhE7XX91xuhtwgKZNj064URZeoxWIsjvNOCsini65Qi5Kz3GHS91Wdd6q2hDeW2F8WCvMGV5giC6mUmTjlAUaIJPyPMFWPI1Lt2eaH8b7jzUanybbGUHeLvbCRDkZDoohE2JS68WQ+N3Fgo5ZxzNGtMkWJ4E4Mx882UUR/Qcmh3+uPykvHI1R5dhTlN6QVmoWl5VgXp/4Z1QxHsMpsqKOleZjOQ6jRB7sbsWYeFvbZ/kYEmF5nP/kLTGooCT7GT7G434OSJTptzQiOk4eHg4jKAMTfKIlFX+JmIfMiNFm5qAPAErX/T3kYhGjmKR05Zs4c14uNDtrJy4t+CH6wSQAC6uv3P3D3b
- u/uAPkAy
- 2D+jpcLouhjN3FnDXEDSB+WSAvJ2h+AWEWQBhWR5GMcz3+CrB7W2C3/BePuOnO2FxVldiw3TDDBd7hsskZvDdMfUACy8h00Q2W0x0T9ajQ7pWia2zMBBdtB72UJvEWRJvPDTVvC7WddaMmG9//NdWjOcj+A4Vyv8EVmmZoDpycEyCGQqs8vHxPVKbnyS1cpsTUy4z5Qz+iaQWHd3ETpumc8ljTmsz2d118gbpVDcQJvpK8rdwDYz0MVjztryHgHnvrTp6hkRuuQOBUWLlrokhDXhxfI02ILL0sh6p9UtfPGm5/jwPzrriUN8myC3/8FDmxcY7VUpV4yf6KtDUrGoE3+5m4w==
+X-HE-Tag: 1785365396-90968
+X-HE-Meta: U2FsdGVkX1/vM2p11XoRSk/TcVQRZMiVR6LrVZdbf+RZPowz91VWQUDZo1CKW3ADpulEyfv1kg7yWbUcQJWsKb8GZG3h7Fpxy1gYZJTz0anpHN98Sy3e0qKAtEfl5tZSMF1NsLwQJT1HqjBh5YEXScpT601iTrNLCBXBbOmAkGpbWQLz/gJpjv3sJ946w8uPuyegUvkCNP2+IOSjl5UI/veIXfULQN2AUTRkj2+KuphR5NU3xsS+Bf/aqLibKzir1LbLmzl886bCESALkluc9BjRY7ZkMsk1S9eo2usDwIbOTgtosCYwgTbnLVikHJoMV6LhRF033Pm17KI/NoRQGEciRMrVEFVfVO5yyUL/7mOKPyodEUCxtcBgMMZvsDAozMZrCyhfnv1nGHGuUliKLejJttOIO0Co9StugepPIg4cpHi1y0BxeEm/REo0ghI6h73khBejocG8k3wockdGmV2Bxr5It+xnhZHCgtTwmY5OwWWSVkvaBbOZVXmEmYH1AJo4HFh0LBWMP7ya//FIHuXPmnM6i0q1k1OYoKFyfANVRj74d4Z6N6K6b67K3kaUS1gq8B6ktI/N2elw+bWojGfNKyaihfGEJbEWlrv2WUCoYvboOh5uVl+RAsV+j+ybCaKaLBS22npRSoHvybH9kiDC14n4Fa81RY+Zx6D4O5UVn5X56aZGRn359/GVB7DuXQDYocQsBJXLtxePG3wy27JTpul2zvvKYlsCF61bQv6NVvjSRns1hIFvHZe/WSUqRUcolWu1boowfsOhIufTNJwHKvUDFtp2v+DwqXMmOK/zflT0XUXWjp9OIBIbhNf1N6KEGRAWsnlbKZChLsS99vMLt2wmNLsLfNh4nZXpSkfoyK4/Vn6YAq+8I8MyiWyC+uQ6NivxxT6DGsUl+YDumVqzUPquUYW/NZ9rnm1blZEyboe0WqMtzUpVu3rSSLoEV1XxQt4HMy872KlS+bL
+ cu8DcNqe
+ EmHJ+uBDyDHJN+8wpu6Kxkvy+Z2mbbU1piykQfzfLmA18cYUzUsm5v4R5AU7tEujL3DcDDZfAj7jMF/Ali9z5sq2+z7xrZ5VVCs61aMfkpiyIRujKSp+uVIo/ZBsHCx7jVLi28Ofp0LF8uxtCcO686rzJq07iwe2Sj8p9h3HmbLkpcqqolChPD2rxHvejJFq16Yumi5f4N/LI29rlC+6WoIpmyTH98kZNKMijRApuwPpaCqC/RizfA3biGEXX1x+oNQ/pm5b/wspHKzrw6u7RlAzvk9xw1C1WQw85nYkJISCsGKLfNlztLiRur9LOfg/JE1gbG2XqSaWMVDTqywbZS3nJfr4HegzASOXT/rNUu/5bo/0OfgI1Pl1rhRNOLm3E1zWsarl1HJe9TtgbxI0x1cizy4ADm340CbzU6396J4cnXlO+H9gL5SMHkoCEvCpLM0e7E0Y1Ev9xjPWHG2TLNapqMabYk4LVMQ/WkHoPxmAQGZHhvwKAhM/JZ/LUs7MOTfd3+DyRdoucUBfu8UxAojjxRqCso1RwtzX0i2VFWa7ebtvXiTPRKq0kb7BqLQheXYU6ULfZkfJgOgpiixwLfq157kT/evo+qfwXEdXAkND7Q/rskZ9Th9w+c0L2vippWGZ2tmaODyM91rUoQ6OygDbJBWcDTIG74GMEPUztEXSmUuY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,67 +106,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 28, 2026 at 8:27=E2=80=AFPM Zicheng Wang <wangzicheng@honor.com=
-> wrote:
->
-> Hi Barry,
->
-> > The original code is a bit odd, as it compares a single young
-> > generation and a single old generation against the total, rather than
-> > comparing all young generations with all old generations.
-> >
-> > By comparing all young generations against all old generations, we no
-> > longer depend on the exact value of MIN_NR_GENS. The idea is to
-> > emulate inactive_is_low().
->
-> Makes sense, the inactive_is_low() framing fits.
->
-> One gap: inactive_is_low()'s ratio is dynamic calculated.
-> int_sqrt(10*1024) =3D 101 (ages only when inactive drops below ~1%),
-> while patch 4/5's fixed 4 ages once old falls under 20% of young.
-> It seems there will be considerable cost on big memcgs, or should
-> the ratio scale with size?
->
-> Looking forward to the perf data.
+Currently, userspace has limited visibility into the exact active
+runtime state of memory allocation profiling and its page extension
+compression ('sysctl.vm.mem_profiling={0|1|never}[,compressed]').
 
-I don't have access to a machine with 1 TB of memory=E2=80=94or even
-more than 20 GB=E2=80=94to test this. But I think your comment makes
-sense. We shouldn't let a machine with a huge amount of memory
-in a single lruvec age too aggressively.
-So maybe something like this:
+While reading the sysctl provides basic on/off status, it is currently
+impossible for userspace to natively determine whether page-tag
+compression was successfully enabled without scraping dmesg boot logs.
+Furthermore, since /proc/allocinfo remains in the procfs filesystem even
+after profiling is dynamically disabled at runtime, simply checking for
+the file's presence does not reliably indicate if the allocation
+tracking hooks are actively running.
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index ed35c502923d..a6768b9ec8d6 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -4968,6 +4968,7 @@ static bool lru_gen_imbalanced(struct lruvec
-*lruvec, int type,
+Resolve this ambiguity by appending the active state directly into the
+header of /proc/allocinfo.
+
+Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
+---
+ mm/alloc_tag.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
+index 52aece27b00e..89ec2c6ce57a 100644
+--- a/mm/alloc_tag.c
++++ b/mm/alloc_tag.c
+@@ -108,7 +108,11 @@ static void allocinfo_stop(struct seq_file *m, void *arg)
+ static void print_allocinfo_header(struct seq_buf *buf)
  {
-        struct lru_gen_folio *lrugen =3D &lruvec->lrugen;
-        unsigned long young =3D 0, old =3D 0, seq;
-+       unsigned long old_ratio, gb;
-
-        /*
-         * reclaim is forced to a single type in those cases, so there is
-@@ -4989,7 +4990,16 @@ static bool lru_gen_imbalanced(struct lruvec
-*lruvec, int type,
-                else
-                        old +=3D size;
-        }
--       return young > old * 4;
-+
-+       /*
-+        * Copied from the active/inactive LRU heuristic, but uses a higher
-+        * old_ratio so fewer folios remain in the old generations, avoidin=
-g
-+        * overly aggressive aging.
-+        */
-+       gb =3D (young + old) >> (30 - PAGE_SHIFT);
-+       old_ratio =3D gb ? int_sqrt(10 * gb) : 1;
-+       old <<=3D 2;
-+       return young > old * old_ratio;
+ 	/* Output format version, so we can change it. */
+-	seq_buf_printf(buf, "allocinfo - version: 2.0\n");
++	seq_buf_printf(buf, "allocinfo - version: 2.1\n");
++	seq_buf_printf(buf, "# Profiling: %s\n",
++		       mem_alloc_profiling_enabled() ? "Enabled" : "Disabled");
++	seq_buf_printf(buf, "# Compression: %s\n",
++		       static_key_enabled(&mem_profiling_compressed) ? "Enabled" : "Disabled");
+ 	seq_buf_printf(buf, "#     <size>  <calls> <tag info>\n");
  }
+ 
 
-Best Regards
-Barry
+base-commit: c73b725a57f276a3702ca213bde78fca029bc619
+-- 
+2.55.0.508.g3f0d502094-goog
+
 
