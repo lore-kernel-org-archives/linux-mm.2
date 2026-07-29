@@ -4,114 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AC53C53200
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 03:58:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECCB0C53200
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 04:39:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D4C86B0093; Tue, 28 Jul 2026 23:58:35 -0400 (EDT)
+	id 64E836B0088; Wed, 29 Jul 2026 00:39:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 75E256B0095; Tue, 28 Jul 2026 23:58:35 -0400 (EDT)
+	id 6265B6B008A; Wed, 29 Jul 2026 00:39:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 626986B0096; Tue, 28 Jul 2026 23:58:35 -0400 (EDT)
+	id 52D656B008C; Wed, 29 Jul 2026 00:39:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E4256B0093
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 23:58:35 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9D0464040B
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 03:58:34 +0000 (UTC)
-X-FDA: 85040457348.13.D42F70D
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	by imf19.hostedemail.com (Postfix) with ESMTP id D179F1A0007
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 03:58:32 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=Zm226M2x;
-	spf=pass (imf19.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.46 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 319486B0088
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 00:39:09 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B790B1405BC
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 04:39:08 +0000 (UTC)
+X-FDA: 85040559576.11.8C415F8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id D291820009
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 04:39:06 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fTGpAqT8;
+	spf=pass (imf13.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785297512;
+	s=arc-20220608; t=1785299946;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AheFru43gQWGPPuujNoti5N0XT3IQznbkDZJX2JAMsM=;
-	b=dCKBLFMe3mQmvbp5ruuvr2WWNDqrZR++ZVdFrns1zQuVjmb6+VIq0T2n9nb48gRjtUlyr2
-	29TUPNrL3pn8+HCG/iXChO9pdmgRUexKF4XcjQSZfIvRY/SxSOARg7dNmGC8xfydTH7uxA
-	JTV141PH110fI79XUSe7i6SVzH8QXYw=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=Zm226M2x;
-	spf=pass (imf19.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.46 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+	bh=nmixZEfyJshPgnbSdLOJ6mmAwvFWMoeYmvzBr3qbCRs=;
+	b=bfraLqMK/JIamDEkRSnp8eLi8mfGJz4QSjSnTlwFEfR8nw/oES6f41UrzQLiOXa+/gvEWj
+	xGFe+htqBQRdHNWiT3DD5/lYtFnn6vWcInp8L8Ss5J8ADi+OseuXNq3uEfFMoT9HqSdvfx
+	RW76OifQZdMZ2oJdPhXNeZDs+WOFxXk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785297512;
-	b=DKCiA+84sJT8LN6uMlzGbjWf8xnjcP2EFny5P56YxtK7qwky6kV/O4XRDGM+tVPBhXxlZX
-	BOdQC1EuQfX7EDBc8F9wMft8qBzhJZrONKkUYT9wEY+NUpJ6DNdo8dQYkTc69Mi/CC50vA
-	nqTQOiOVxd7H0hQ35DP9ogTOyZe9d/M=
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-38dfe7eb825so403772a91.0
-        for <linux-mm@kvack.org>; Tue, 28 Jul 2026 20:58:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1785297512; x=1785902312; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=AheFru43gQWGPPuujNoti5N0XT3IQznbkDZJX2JAMsM=;
-        b=Zm226M2xDOAopYo5K7FndgJtc9nyR4uFKSW0zaMCFsRfUQUyX9nqNJc5K3noJ71owg
-         XwUjGKUaZe1N6mYe2YtM3G6Fe/fP/jZzimfVkWKj3N0dqKoE7r+i+F5XsHAewFcBIuem
-         UWB18y2o5fNvCPW1y8wo4z4gyB5IqppezvXdY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785297512; x=1785902312;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=AheFru43gQWGPPuujNoti5N0XT3IQznbkDZJX2JAMsM=;
-        b=QLKBU+CEI8oqfihKtPGnctC84HeolyldtWcmaCxCKqov0SCkHN57Q/SB6P1cNDoCxO
-         TVrZPvU/zZ+xPVg33tNZuWlMrS7clsOVzYHolcMyHgC9NXT29jjvsKC2Y+m+5PD5YO/X
-         VwI9U7tYAZ0/H+zvSHgJUZrTrY1nSDkW/QKf/rVdkwyR0+8mGRt8RbtKuXwiuORPsV1J
-         F6xcd5hF6mxCbFvZGGo7+3DUNNwGwKOR01/QYkKc6L8nf/K0JHHu3pmxCfN6Iql5Qkt2
-         6cHh8lpUeVa/2Kd2fMLIElcYWACJDdNYzg4QpPfa65hFsCEipMR21K3DxTeYOpi+8E9C
-         EqZw==
-X-Forwarded-Encrypted: i=1; AHgh+RrG7dosd5zZxxTDysuXk6LrdMBr4ZK43/bzkUKkJbP/XWvjCwPYjZ/3mIipiKZSj+zm7hpxSqCI/Q==@kvack.org
-X-Gm-Message-State: AOJu0YxRmFFQylokErd6nV5rdbNUIZ6llVMxiahMlzXOOL8KsiUzBy3a
-	RnVV5JYg0voG/PNxce+LaEQCWTdgidllxCTriyBuGAbuMLme4Oe/+rr1W0ya4O+GtQ==
-X-Gm-Gg: AR+sD10pk8FZGhkCPkOeU0mp2lAkIqJa7RJ6nUyXBsq7LsdRH6QdfwObZtBOHYYLPWp
-	nFJEKU2Cvnpd2u2fp3oP4uxvuEyhNBREH3BilnwQRGPnHsW6Jt7zoNjGxFWIxCAFfHIy85dKLKf
-	z6Wz8v4Ynrr6NBuKUvs+TWzDKSHVen1vCWSSvzVCo6d92OULgjrqYqXi0gmPk7csbAZtwKbHrYe
-	fkOxpump3Og41D2lzqEJ3r8mvsCPiBOxYMa1GqauRm8j2/w7/SRI/KhYz+J+Lfy7j7NURI+fltw
-	47UPd65sZPz3DXeox2twjShkv8YoXjWUoQApp4I/JFl+KlhzWG8p4svPZUQNLPhf6c0ZVOqMZuz
-	+jJZNbfb3LLqsKVqjdvTrqZmhzsmjtIKFtcT8LkkqBh5IrZvKQKDZ2UVZu4JuiFgFxiuzJLHFr8
-	ha/aSb7Rg/DIXQZTdKGbhgCSAod4q+7t+ORq5v6AnCYihanIi0G4gyXWTvcZDeggx3PPYf4vtub
-	0164jkgohu+/7qqb+Ijd/P3jPdEIay+Ighqiw0/EkPRfs76U/4=
-X-Received: by 2002:a17:90b:270c:b0:38e:5e2:6dce with SMTP id 98e67ed59e1d1-38f6a5aa922mr5609043a91.39.1785297511770;
-        Tue, 28 Jul 2026 20:58:31 -0700 (PDT)
-Received: from tigerii.tok.corp.google.com ([2a00:79e0:2031:6:65c1:52a3:f6d3:37dc])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f7eef9c5asm722087a91.0.2026.07.28.20.58.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jul 2026 20:58:31 -0700 (PDT)
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Minchan Kim <minchan@kernel.org>,
-	Haoqin Huang <haoqinhuang7@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] zram: validate deflate params
-Date: Wed, 29 Jul 2026 12:50:33 +0900
-Message-ID: <20260729035820.751990-3-senozhatsky@chromium.org>
-X-Mailer: git-send-email 2.55.0.508.g3f0d502094-goog
-In-Reply-To: <20260729035820.751990-1-senozhatsky@chromium.org>
-References: <20260729035820.751990-1-senozhatsky@chromium.org>
+	t=1785299946;
+	b=ft0pRPPCcwTfEwZFfvRX6FS064xXQL1sp5XW3f7OK94AabdSg8KM9w8tTowht0LH4pNWft
+	glC7CmGiJMOaajLzutC1cTaI834PHW8EhV4E6ekrJOrvR/LC2b9zyeQWSae+2T8CYw/eGD
+	3OCz2kbdVJ5g1I4G1wq0M89e4inmjbA=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fTGpAqT8;
+	spf=pass (imf13.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 33EFA60A9D
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 04:39:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADF601F00ADB
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 04:39:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785299945;
+	bh=nmixZEfyJshPgnbSdLOJ6mmAwvFWMoeYmvzBr3qbCRs=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=fTGpAqT894sz7e6Fd7jtewE7MzSr4V0SC3/lU+F0oI206vIx3Qp0xMHoVM/AKefEh
+	 N9gr5Yer27N2YVlNrW3QMIq5l0OSRydMDIhMCQNymwHWhoOgeskMC2Ouud8f1JssSW
+	 jRB812CzlQ1wlIfuzMX7soE+J1SgY/VH/xK2Gl4QaUXWq/Pex/52M5vAtyc9/s/F+y
+	 yncIOaOKZEwZrG+wcYOc4qFo26gtQyp59az9HMR8gJZzXYwoWewZYjEpppWviSQB5t
+	 cr4iDuEaI+nw9rlt7YGsa7zqhj6UV++i1NnLsf2iZJGD2N8Gsq7LsI6Aq6ASgLZKSN
+	 uYEz/yQ6mlGfg==
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-92e50979c71so54748685a.3
+        for <linux-mm@kvack.org>; Tue, 28 Jul 2026 21:39:05 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RpQfSmG13Ct0FYLOTK/WB2+lS/4DhCgEvBPA7Ol2n0ICP6YacFRF2d4NeGDIfPerOvl+HeomUaCHQ==@kvack.org
+X-Gm-Message-State: AOJu0YyKN7LorMBV62DI2dkpLTHUGacrpwue73Sdnn+4jQomdBivHhfl
+	vI/mfY/u5yJcHNfPlxWam4bURQhQaSI7Xd/3F6jdIL1cps57SjndwFnv/+Z16zXXqC7V8JUBhwi
+	idhGKV4IC0QDJ78iJvaPV/7iJAHkFr8E=
+X-Received: by 2002:a05:620a:839a:b0:92e:694a:77b1 with SMTP id
+ af79cd13be357-9330267b394mr478027485a.4.1785299944999; Tue, 28 Jul 2026
+ 21:39:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260715120813.3609949-1-jiangwen6@xiaomi.com>
+ <20260715120813.3609949-3-jiangwen6@xiaomi.com> <amib2d8um2ZwsMDU@willie-the-truck>
+In-Reply-To: <amib2d8um2ZwsMDU@willie-the-truck>
+From: Barry Song <baohua@kernel.org>
+Date: Wed, 29 Jul 2026 12:38:52 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4wCPLZQbrgDnujxGDSyDQ8YeaPhuNP89yK-o1exe6kZfw@mail.gmail.com>
+X-Gm-Features: AUfX_mxSl7FmCTPLbPin_HsGwEEMq7LdYhi94gKpfCRIekDy_TsQI9q2ZPSHUT4
+Message-ID: <CAGsJ_4wCPLZQbrgDnujxGDSyDQ8YeaPhuNP89yK-o1exe6kZfw@mail.gmail.com>
+Subject: Re: [PATCH v7 2/7] arm64/vmalloc: Allow arch_vmap_pte_range_map_size
+ to batch multiple CONT_PTE
+To: Will Deacon <will@kernel.org>
+Cc: Wen Jiang <jiangwenxiaomi@gmail.com>, akpm@linux-foundation.org, 
+	catalin.marinas@arm.com, linux-mm@kvack.org, urezki@gmail.com, 
+	Xueyuan.chen21@gmail.com, ajd@linux.ibm.com, anshuman.khandual@arm.com, 
+	david@kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, rppt@kernel.org, ryan.roberts@arm.com, 
+	dev.jain@arm.com, Wen Jiang <jiangwen6@xiaomi.com>, Leo Yan <leo.yan@arm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: D179F1A0007
-X-Stat-Signature: c9ho3wy7rkwbni84s3rr4a1p6k3jo19t
-X-HE-Tag: 1785297512-713858
-X-HE-Meta: U2FsdGVkX1+aOF77mriec+xJP8r0UeeCiIOHhLqgl8jZQgi4kg+8I1pLxFM68y2YbMu+XwEXJImJiJV/bqR3o5i8CsTVVBXk2CLhZZyrd4AKhp8JVv0mkDycvBiQeRgzG0Uhp9M/0VtE/5wVXFEoNiSrsWYYT/9U22DtVx+s3KFZL/2EMSPvmoXbpksyVKneNQOP2AxQuoJycA1e7ixfigzNfvzhKJxe+hMK8Zkylz4YkRfeFbyEltF5wxXHuEQl5PIFHeyOVns9E2/rBA506uFDZezYde7q25slxwv7xeh3OLxcUHqjdUJTKRL7eQlUnB1ApV8e2IMR1O3/ILhh4Frt5xZvGYtLxmlvg+Z+LNQU+Ci1v/vSX7xIxkyMwyJdIuPAwzg0rlD3uHGerf9hEDUa6nKCnV1UFuJndSiTUBrD5a7j/UIZiH4/E7+DudB4gdlcjquyKzHlzU1Yd9NPrAiT5ZEAYTIagH0ADt4PABn0kVLXbNUe7kanitWVF/hlc5oNwWt2p04WgmJ1hX5B62setgp0eQNygks1fZdCO+S6s+xbAArwKFSDnTvfnu9kFVC027cw7dPJoOI4wNx6pTEX4hQZt+2ygu71QJjGkhtVfjsD4pYPuEuHCoFwBsA4NVPrkWEy5POHxtFmJTnBdbYNPAJflHFhk9QTOLbegbD3Wc0wEv72xC4GEfDl49B/gKmqJaO5a6FmrYpP+IQmqqedZRflrJ9RkW1iE6FZrEST0i+fWqlW8XaK3w+7Oon9J0cR+10/AGe3AUn9eXKOSq0f5/5jWwISak6nSrY3/l8rTTANbPhUWQu8FZF3HaNr04ovLx3HryZBvfTU41FsgGZFqXsRKhNvbKTBaDFubYSdLE2+0oSDoBxLkiRIsgi9lVkKcK9fkSqyz+NQ/jF7myBqf1RFO3Ksy8hr8fwgsqpjQVaU4ETTvE03mq1sFTqjcZrYkC/qzYLnFnSEY9E
- Hvjst7yf
- bU4H8VyLG4Vcav88P6tOghnzSGpqPWFWR78duzMhLMeWBRXIah8ZG6GeOa/BQkf7SML3lqj83QJ/DSMpZIPAryv7C54Bl9uXVyeaXOGr4qJwPL4+G1L7OW0SFzrbzSDMHXusrLi5t5MyrjWgXyYEidgBCum5pjfeOXKF8oJkHBfhTU4QlV12bXtJGKrCdjDkIUEFlMHiee33pamahqcwPpCbViHmkxnI9T+rPxksX1VAoSzGeLH1dF6J7WqAiEKgPVEmUvx69BepuLk2yEz72XhuF+oYD5nsQvjSf2wlcj1gy2NUpaejsCbHkvLdIg7eLH3R597iqkSHxfmdUtEYkYsNLE+/WkswFyEIyE3eb9V+CxLgRPrwC9EBwLeB6Oj8elQSibu0Wsqnk5MHb8mCJcp7kuszbNn7bEJ1z
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: D291820009
+X-Stat-Signature: 8d3qxh8nxy3wja3g7jqs6r6qkcp51zi4
+X-HE-Tag: 1785299946-568863
+X-HE-Meta: U2FsdGVkX1+IqQuq5j3+7jRP4ybwLt/MUpCe+0Eo5w7l7aIbRp7CwjY7MPBGGdcVRA/ZqT8CTRCUPxr358b/zEcuSKH13u9BU8ZXYdGRu8g3zJhwhNarFdbRw+R9l7eU94LSm+qxSWOiFANsTEmkxSO4yeKL8MzXTvNcRp5FGR/gBZU5ig5E00rzP+0hxUPeL6CE64EC37OJlklNiPpc2k3Yciie5osPlllQnnqvPngXXXFCDbAj7L2y7MlGfVxeObcmeiiq5TR5xgYzaWB2QxlJLS7UnZiy7S1OFfTEYbM7BtYPBeiW5I52ywIiC1l/ytlX4Mb1Xku/GqB8XhjlHcJpJt3exNRNzUHveLiDlBOWrQe4eiV38oiL5JtaQFflRU+BNgVcPO4QeDpyH+1Tnewfl/z/B/jXD0FFnu/Xm6EDWyIyiRbb3p9Iqdd48Wuc4lh7HdIxtj3MEIgSLSHoOkpb1PzolJHB2r2QUOSo3jH2YxkskK/V8l8c/dUm3oW0aQgzylo7OBe0fmZdIzFgW0Cc243oKeh7AgmmWOXjYMHtm+8c3pNvq899Mocs0cOu63lIImGIH5hV7YUhgez2Wpahxuu+BMyCQCPF7s/6FBTHUu+bxIjZOPtf9RvkNX+O13T3eCoYx9P2PCNrxgqHj/2LOazSCZ/D7vVwYulEOtBrnPo4H+gGvCkur8AJb+XeZfmWxjeUrQWVvi2kOFdyTsHcnXLUZdhEBuyEe5Um1fe8qh8WMlZYpv+P2QbwIs24psiK44fkrxA6emwkPe1ma0/9p29E5byrapvkxhbvEiOqSN015iLqTtboQlLdXt4bIl2u1lQBVZ540z8+V+ToVaw79yuW8TvGny8pY9/lcEbFSd3VLRfPEXsb5/35LXOlnz+UwhbKxobO4mNp66gZnXFzpo7c/vbhIdM750utMCPSyM/v79svcXMRJTzIu7fxepV7EWpidVjUTSR9ltd
+ wPagB09N
+ je5C/5zzQUj+XnjKO+hwRqA9UQjhIASzrb8oANfTTdyCGUynlJkhALG5p1ZmkKUVZCUEUuKQiKdDjAtSQjUhmeXfKwnwXovco4TWajZK72IQHg0X3lvT12X7bQntel+yvbcKUib/AEzyW3Xa2DShgzDjgIB/Pz5e7qY7co4OtaNLwlAAupi9PMVsde0ldDDaDO5GwFYKGOzBREuQtcr2UkXqZBCdfSXcvT2O6fZPrl9cTDnPeBCB/ATBaKUBkLjjx3K3VOVS2/UKSxrZjZZChO1us53etGSgRDXTxzC1COFYyIxiI0DM8vzrPbXKHB6mJdZQ/3PfluwsEiyCU12GCquIHZTNL/om30Xjx5zUK2g3RItdjFQmX3fQ8yvUaeDODf6WAiIgH4t7pxLhS/SPWqwoCkZqv2TJEpf5z15v7xu3D/CE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,39 +108,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-We must validate user-supplied deflate winbits before we
-pass it to zlib_deflate_workspacesize(), which triggers
-BUG_ON() if winbits value is outside of valid ranges.
+On Tue, Jul 28, 2026 at 8:09=E2=80=AFPM Will Deacon <will@kernel.org> wrote=
+:
+>
+[...]
+> > @@ -40,7 +44,9 @@ static inline unsigned long arch_vmap_pte_range_map_s=
+ize(unsigned long addr,
+> >       if (!IS_ALIGNED(PFN_PHYS(pfn), CONT_PTE_SIZE))
+> >               return PAGE_SIZE;
+> >
+> > -     return CONT_PTE_SIZE;
+> > +     size =3D min3(end - addr, 1UL << max_page_shift, PMD_SIZE >> 1);
+> > +     size =3D rounddown_pow_of_two(size);
+> > +     return size;
+>
+> Why does this have to be a power of two? We should be able to work with
+> regions where the start and end are suitably aligned. Is it because the
+> hugetlb code works in terms of shifts?
 
-Fixes: dc75a0d93bd5 ("zram: support deflate-specific params")
-Link: https://sashiko.dev/#/patchset/20260728092935.31139-1-haoqinhuang7@gmail.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
----
- drivers/block/zram/backend_deflate.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+Yep. For `vmap`, `vmalloc`, and `hugetlb`, this is all about
+the page size shift, since their memory is typically backed by
+the buddy allocator. However, after taking another look, I
+think `ioremap()` could benefit. For example, if someone calls
+`ioremap()` on a 576 KB region (64 KB * 9), we currently have
+to map it as 512 KB + 64 KB. Without our patch, it would
+require nine 64 KB mappings. If we allowed non-power-of-two
+sizes, it could be mapped with single time.
 
-diff --git a/drivers/block/zram/backend_deflate.c b/drivers/block/zram/backend_deflate.c
-index f92a52a720d1..729ac734dd6c 100644
---- a/drivers/block/zram/backend_deflate.c
-+++ b/drivers/block/zram/backend_deflate.c
-@@ -24,8 +24,14 @@ static int deflate_setup_params(struct zcomp_params *params)
- {
- 	if (params->level == ZCOMP_PARAM_NOT_SET)
- 		params->level = Z_DEFAULT_COMPRESSION;
--	if (params->deflate.winbits == ZCOMP_PARAM_NOT_SET)
-+	if (params->deflate.winbits == ZCOMP_PARAM_NOT_SET) {
- 		params->deflate.winbits = DEFLATE_DEF_WINBITS;
-+	} else {
-+		s32 wb = params->deflate.winbits;
-+
-+		if ((wb < -15 || wb > -9) && (wb < 9 || wb > 15))
-+			return -EINVAL;
-+	}
- 
- 	return 0;
- }
--- 
-2.55.0.508.g3f0d502094-goog
+So supporting non-power-of-two sizes might provide a small
+performance benefit for `ioremap()`, although I suspect the
+gain would be limited. I can investigate this as a follow-up
+task, and if it turns out to provide a measurable improvement,
+I can send an incremental patch.
 
+Thanks
+Barry
 
