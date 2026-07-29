@@ -4,102 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13810C53219
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 03:04:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26506C53219
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 03:05:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4D5A56B008C; Tue, 28 Jul 2026 23:04:25 -0400 (EDT)
+	id 17C0F6B0095; Tue, 28 Jul 2026 23:05:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4860A6B0092; Tue, 28 Jul 2026 23:04:25 -0400 (EDT)
+	id 153546B0096; Tue, 28 Jul 2026 23:05:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3755C6B0093; Tue, 28 Jul 2026 23:04:25 -0400 (EDT)
+	id 091B46B0098; Tue, 28 Jul 2026 23:05:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E496E6B008C
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 23:04:24 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3848CC054B
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 03:04:24 +0000 (UTC)
-X-FDA: 85040320848.10.B4035C6
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf26.hostedemail.com (Postfix) with ESMTP id C25AE140005
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 03:04:22 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=Mt6wKT3u;
-	spf=pass (imf26.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E190C6B0095
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 23:05:35 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 76136160549
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 03:05:35 +0000 (UTC)
+X-FDA: 85040323830.20.3AD96BF
+Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 43A3240005
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 03:05:31 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="sM/2I38Y";
+	spf=pass (imf12.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785294262;
+	s=arc-20220608; t=1785294333;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=uAp8TPXhJPKqj3Jc2wCbwH1PXdxv3Tg+ZGuEgVhC6ZI=;
-	b=dAqeFBwX2kw/FnsHUwgq0wQ8hOlETZackzH/Iu1egZfQmJqlvGCE0QvxhTF4hhLpbTX0Ex
-	OANmwbCWfKBCatYY16bnvhCXlGOhdtsgDKTrfN0c3wxXeqri9dmxMeuu7pNog6h+mKJhBR
-	2YZL0+nJhrgNNDe8ZuR1+k4ex+nJVGg=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=Mt6wKT3u;
-	spf=pass (imf26.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=zvEjGtV5JAYedJWzyS4m7ytK4cwj4L+MmOrJsuhLQCY=;
+	b=PG9NCWvga03eeuPkN26CWBrR6ZlfFYAyTihVIvjyJrdD+QQcngm4hB8ZEkLht5ID2gqtZu
+	0VUArpMJxHbDD3xcUT0mFgqoqusIETosFapGkGOwgSqzrYTzyTG1X8jZNwdIsTqVl7UimD
+	6MDFx1NVujq+4/5jUGJsToMjLFrvwQw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785294262;
-	b=efNqtz9D76kcxJlkc/YRf1oZ5s6XF9m76G/DU84BJS0eVuGAFVlBuB825KJZbB+a3hD0xy
-	K+QZZkrkKDXd98Ksh/6VVXi5AQO8h2Q260ntbDZUYSuzJnlZ2AM4iUSWC9XepAJC7MQgHF
-	fncyJ/u+AfE68yCUKJNnHj51usqXGWw=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:Cc
-	:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=uAp8TPXhJPKqj3Jc2wCbwH1PXdxv3Tg+ZGuEgVhC6ZI=; b=Mt6wKT3uBOGbWaiKfaex8a8E6d
-	vsRF8RqiFxnDs4fOoYTeQGJOPye5nr2FrImDER/mv9O2wXbYgqkcUSzq5+Nlp/9e3THhzGXofPWqj
-	LxqfBLTMaOQ4LAtKJyu4uF6uABwjgV6fgYrdRIFg74rzmgxvBY9vZqs8g31N+os8q/qORqW6f+WO5
-	lzNLq+64FPa+nivY4TtY0SHc39hBKlAxniNXO7lBZEtZokeyZPjKdqCpdFJx40URw9fZYZXKbP9/m
-	vcjJscHKCWFYQdtdJzyaAXtrfSu9X1a+OVg3iQIum9XMx2gzu3G9HNvtfYUDTPsD5ho9Gw+Tg8zP0
-	IZiKPXNg==;
-Received: from fangorn.home.surriel.com ([10.0.13.7])
-	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <riel@surriel.com>)
-	id 1wouZ2-000000004ml-0DCg;
-	Tue, 28 Jul 2026 23:02:36 -0400
-From: Rik van Riel <riel@surriel.com>
-To: linux-kernel@vger.kernel.org
-Cc: Rik van Riel <riel@surriel.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Peter Xu <peterx@redhat.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Usama Arif <usamaarif642@gmail.com>,
-	kernel-team@meta.com
-Subject: [PATCH 0/2] mm/gup: batch PTE-mapped large folios in follow_page_mask()
-Date: Tue, 28 Jul 2026 23:02:32 -0400
-Message-ID: <20260729030234.2063885-1-riel@surriel.com>
-X-Mailer: git-send-email 2.54.0
+	t=1785294333;
+	b=r67ktKIE2SOZPJcP60b1K3OohmJjacrcQ9lMyyc5PavqizLxq6Dq3Rb8r/m1jY6QMe4DdJ
+	qQxC/ii+S/Fj6JUITx69gvCBNIDZ7nbRFLvsWgj3w49EEZY30NRRji1ug/5/wJ4g+dyiG3
+	FZDBrAq/Ee6YEotO4mXfK/uz2/93OQs=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="sM/2I38Y";
+	spf=pass (imf12.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1785294329; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=zvEjGtV5JAYedJWzyS4m7ytK4cwj4L+MmOrJsuhLQCY=;
+	b=sM/2I38YPZB4exGip/gi/uf1Rjhe9QUaBnJgLJScYPZ3vVDRwqck0+G+LDuxfvqxzgXpe1rBL4UnzIIRPNocaPONRubMpU4e55uvdVJc6PRZH6YcOCP5BXdEweWvkVFhay3LglNzorUtaexybBg2jktfNLZ6Keo3Xg+WjOiRnbs=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=6;SR=0;TI=SMTPD_---0X80itf1_1785294327;
+Received: from 30.74.144.130(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X80itf1_1785294327 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 29 Jul 2026 11:05:27 +0800
+Message-ID: <200530fc-dd16-45ac-93d4-c64b11de14c6@linux.alibaba.com>
+Date: Wed, 29 Jul 2026 11:05:26 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] mm: shmem: reject impossible fallocate ranges
+To: Ren Wei <enjou1224z@gmail.com>, linux-mm@kvack.org
+Cc: hughd@google.com, akpm@linux-foundation.org, vega@nebusec.ai,
+ zhilinz@nebusec.ai
+References: <cover.1784947149.git.zhilinz@nebusec.ai>
+ <adcf644e780706c220809b7a41e6e496d2181806.1784947149.git.zhilinz@nebusec.ai>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <adcf644e780706c220809b7a41e6e496d2181806.1784947149.git.zhilinz@nebusec.ai>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: C25AE140005
-X-Stat-Signature: m93z4ehkxk43b6577g4r7mezfgdr7nqn
-X-HE-Tag: 1785294262-461374
-X-HE-Meta: U2FsdGVkX18ZShruRPSU0NFNo7Zd5ObG62kp6C17pc7q41UZpCRTBfTNnuuCyUF70LLnAt7N72mt3Ej0UOgW6lknz+APR7LJC241aaFwBEEoBD6KoSTpnkVgboehGLR2QWhn8/rfU4o5+gyW5jM74KOucGEnjYBUogk7RkceWVR03lHTtrRPxpOZs4RtYbMKPy9qvvjwOfjAa7D1DF9M2QZaRnHuDQGCcD7VAl69K7f0vnJvjHTTkTxeFKvy/Z/LbLmmq0jh/Dzorc0kVIfUYwn222KgV69fLlF24vSiUgmBVQkZyl5TOlPlWzIwxUkqjaRDg3KTT3QXHk2FHjE0InJXeLjVajwdVGfM/FXS/H7lqNapnoVLtEd2+2h1mDdJ7WSYPwSq0hZPFx5qnfx1yQFvFfvTEWW8Q2PFo/p8flLGB7uyqEqirFLIa1q6JVj4HBJDns5bxzhjjPDULp32n47V0863agu2N/dIGOWYbF2zQcz7TT28t+1u0N/z6aVqlTxuYDT0nUWCM39pJWPcnJEHNWhr7PJKZBTfSQHB4TPrmovQ0ssiSFa/6j7eA9xeThpAltutbjCVIPEwc/gsevzbeWQgwjbkw7wO/jvJBJVbnac3zz9c5rLT/o/n9hQClRKbFjlSyYlYv2TC1LQl8YYXsPh4/VV/nFNk3Yqya6LPGL3oYHDs6WCek040CwjfrBatLAfMQST3oUpUec+AC7MIEoaFuoumxgSiyWGzJOk92JZE7DQEnJzP49YfiXavK1F0tMQRaXn1doscgkP+JjhZGnFo5Yk47YHBN1wqq0UHgkqEEPkSpYHGY+wB6EvQe1EJwMoR7uMPjb1HN8Ia5sulj0K3tWWuVxysspwYmX54a/vVT1sza1SSLTLTq6dX2O81LaAz+olNBw5j5Cnz1JcV7GHegjD+T57wu5hpWucbBj/I4p3WRsCirtdc097Lo0KGPK3OxK2l92xNC9g
- aP6D/1JF
- w0IeCfqi1gXSo78YgBE6LVJqujoAVTh2psFPoR+TvaPViewawLxhAL2j0VkpJSHvVY7QR/YsTpcciquFlgYjBTRaAeCHzuIjtzqXolgP/X+JK2bEc3TN0+SXfcsKtb5hOmID6eubMlk1Fs7aQ//+yTAXTuCDPyMBG65jf6AnpIswgdXjYuzjawvWl40EGKulm7zcM1lNIowSVePObPZCkdKy+Jx9ogbrNxucbi99U1Kzgz0nyUFB4R4YGlOdPmxzLq+ruYFO9onKNjsvXCjNHQr3T1LO/d1/ZUwr2oNtETL/r1/5knNgL2h6K6haxkMVEgFUSDhOaZDrq52giZuXnTlw+Z3nBXYTlKwhu/dg8or7HfJfTtL766rr2JqwG98/ZXrjSp0K6hR2JzF3wzg20FxDnRPlyqrD0DGu0BVV4HpoTbw2ZK8WWpCHXwacugY9i+mjz9uRatJQRGhPzvX/rPZ6VU8yTXQ+yByUsvTlyoajwd+DZTGayw/PKEJ9zI6zUPwFV2Y58W9MNQQhwRab90PPVcNy1/6HFju/ArOjETNxjnkSYpCS9+ONrMFQATgZuD6Xb193j+sdohc7QhETAf4G6hfDFCXwZt6CSEheB/iEkl0NnooTYTMuAPKr+GcxdA85wLE/BIIpUuScELHNMpobgeRl4viZRMNCfq6cPMEUsZzP0BKc0EoWkc7olAQjwmYBK8KVgK3aRppQeXDdL7f4QXd6Xb2790FBD1+3dkg9nr/OXx02onUrcH1sVpnfakKWJsxl1mp9tRhlbqVs+eaOhna62+ljEWkNmbVxFrmb+scZLUSXlpVoSFg==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 43A3240005
+X-Stat-Signature: 89sf7rk5dz5arpzetrxmyhggtdzoxrx5
+X-HE-Tag: 1785294331-138078
+X-HE-Meta: U2FsdGVkX19yD2Yt7O+i+cMXv5n1Ba0i+0nrgTWbmsOIJRqvzp1PxakJYHuMB2KrsYO8M1TxZPMmdjYjbTU/+QHv6hSn1J71cs7hI7rYKb7ybuYXHo1TnABLZWeBehgc6pT4GmlTSBqBhTUVI4SBdKX0X+mp/ipw3n0hiEadfqSRXxp1Z1f9aRoBBQAC+wJl4zqRkzwHy2RUJebMgxpprMnjqacVTRY+uB71b3zRujsECsVhtkmvi3A3unEZi+MhOuc3ElJ4cQCpTErXofJlRSz6Cv1rBCmiKgtQAmengULLpSzOOuWv2jEEMpW3zXKH1c1sDX4N1zuB7hPJrmKabCGIIsvHC81b6JQX0RA24m3RZ8FxPzMTPHoFCjIjL69h4RSvZJJ4bDarGLM9nL38cwKzxU7Gwp5r1cbMMsMm1GJ/Bf4MLuT+P8uGAUaDJjse2xMVTBxPXIIV4GCOSXQSe8Apd7Rbn1LE7pdJGH9rUMajgUlD81e6d/GgLY+5aWc8HzzdlaCsxbIx+rOr4fdkN606yxi7MKQVRN9zchqX/rOvd0wB6CVT9xXkvt/T1L1jw9kHsm7merH0dbtnBOqT/Okiol1S6LReNBulm6lUiFaPUQjv6TCWAhw1jlBrkaadyRD/Ssq1DY1jn5FWlUutxkZOtG9hgKWSHNaDRz3dVBs/YMDIXgRICMfxfSHUtMmMB3Y6kW8cDBV7ODwobMhOzrxN4+X4ybLIM1siuPCfDr4Ijq9Y9w1OJ2+Ed+ddx2vUfbQP4NbvpKpnVW55F3sjsZwDtt8nsrznzDD2GEJj5VQ/UNi62GnBuFN8DbFOlmMSnn+nwVp+bqnlFU517vklYu0tBrtYmlTuWse6ouohmMoo/k+Sy/zcGoLn3VMrCGEiguQxn1goJc+zx9LOprPxn4Nkm+KNSR46zM1rgURSRzKobEPopTo0LUpocKw3s9svFfcZDiGZaonLeGFNxk7
+ rqMbSwGN
+ Hq4K5CXTNsypsi4yn5yXTJbRIy22sq4chxyAQNyyJeQgtwIrOSg+Rq6jJ1e3UyLnCkxRCKXaZr+teKj5avGagDxZU6Qo+RvLgtDvMjEug9MqJdyIA+Y9/OdePoLzzFikqgj2N/9mSTxpIKgHkynm/XC8MKxuYDcAky54JS0G5uPpttqOkYvTtr1AZhHamwS3DMLKx2+xSW+Yl3RRjU8Rr1BxoEyb2YTB1Q138F//nm/lrkeGINa26kU7/85qImLpvgf6ClLy7ZgYQim74dBJYCPh3zPrTiX8IWYIDgIxWzr3HTab3EefI5tPwDCllLRjzGpSOkoDgoV7/tSq+sZR/Sbn1XHWQgGb003iii2skHLBdA48=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,72 +87,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-follow_page_mask() reports the size of the page it found with a page_mask:
-a bitmask of the enclosing naturally-aligned huge page. That form can only
-describe a power-of-two block aligned to its own size, so a PTE-mapped
-large folio (mTHP) is walked one page at a time even though it maps a
-contiguous run, while the PMD/PUD-mapped cases already return their whole
-mapping in one step.
 
-Patch 1 replaces the page_mask output with nr_pages (a plain count) and
-adds an @end argument bounding the walk, with no functional change: the
-huge PMD/PUD paths report the same stride as before, just as a count.
 
-Patch 2 uses the new interface to batch the PTE case: follow_pte_batch()
-counts consecutive present PTEs that map consecutive pages of the same
-folio with a uniform write bit, bounded by the page table, @end, the VMA,
-and the folio itself, then follow_page_pte() hands the whole run back in
-one call.
+On 7/28/26 1:38 AM, Ren Wei wrote:
+> From: Zhiling Zou <zhilinz@nebusec.ai>
+> 
+> shmem_fallocate() validates offset + len with inode_newsize_ok(), but
+> then rounds the end offset up to a page boundary by adding PAGE_SIZE - 1.
+> For a valid request ending at MAX_LFS_FILESIZE, the extra addition can
+> overflow loff_t before the value is shifted into a page index.
+> 
+> On the internal tmpfs mount used by memfd_create(), sbinfo->max_blocks is
+> zero, so the later max_blocks guard is skipped. An unprivileged memfd
+> user can therefore pass a length near MAX_LFS_FILESIZE and make
+> shmem_fallocate() iterate over a huge wrapped page range, consuming CPU
+> and memory until OOM.
+> 
+> Cache the validated end position and cast it to u64 before rounding it
+> up to a page index. Then reject ranges that are larger than the tmpfs
+> instance limit, LONG_MAX, or the system's RAM plus swap before the
+> allocation loop.
+> 
+> This preserves the existing file size and seal checks while preventing
+> the memfd path from entering the allocation loop for impossible ranges.
+> 
+> Fixes: e2d12e22c59c ("tmpfs: support fallocate preallocation")
+> Cc: stable@vger.kernel.org
+> Reported-by: Vega <vega@nebusec.ai>
+> Assisted-by: Codex:gpt-5.4
+> Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
+> Signed-off-by: Ren Wei <enjou1224z@gmail.com>
+> ---
+>   mm/shmem.c | 25 ++++++++++++++++---------
+>   1 file changed, 16 insertions(+), 9 deletions(-)
+> 
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index b51f83c970bb3..d626561d46db7 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -3601,7 +3601,8 @@ static long shmem_fallocate(struct file *file, int mode, loff_t offset,
+>   	struct shmem_sb_info *sbinfo = SHMEM_SB(inode->i_sb);
+>   	struct shmem_inode_info *info = SHMEM_I(inode);
+>   	struct shmem_falloc shmem_falloc;
+> -	pgoff_t start, index, end, undo_fallocend;
+> +	pgoff_t start, index, end, nr_pages, undo_fallocend;
+> +	loff_t end_pos;
+>   	int error;
+>   
+>   	if (mode & ~(FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE))
+> @@ -3649,23 +3650,29 @@ static long shmem_fallocate(struct file *file, int mode, loff_t offset,
+>   	}
+>   
+>   	/* We need to check rlimit even when FALLOC_FL_KEEP_SIZE */
+> -	error = inode_newsize_ok(inode, offset + len);
+> +	end_pos = offset + len;
+> +	error = inode_newsize_ok(inode, end_pos);
+>   	if (error)
+>   		goto out;
+>   
+> -	if ((info->seals & F_SEAL_GROW) && offset + len > inode->i_size) {
+> +	if ((info->seals & F_SEAL_GROW) && end_pos > inode->i_size) {
+>   		error = -EPERM;
+>   		goto out;
+>   	}
+>   
+>   	start = offset >> PAGE_SHIFT;
+> -	end = (offset + len + PAGE_SIZE - 1) >> PAGE_SHIFT;
+> +	end = ((u64)end_pos + PAGE_SIZE - 1) >> PAGE_SHIFT;
 
-Measured with mm/gup_test.c (PIN_LONGTERM_BENCHMARK, the slow
-pin_user_pages() path) on a 256 MB MADV_HUGEPAGE anonymous region in a
-4 CPU VM, median get time over 16 iterations. Each folio size was confirmed
-through the per-size anon_fault_alloc counters (4096 folios for 64 kB, 128
-for 2 MB):
+I don't think this is a common case. Can we just use 
+check_add_overflow() to avoid it?
 
-  gup_test -L -m 256 -n 65536 -r 16 -t
-                        before      after
-  64 kB mTHP            3140 us      412 us   (7.6x)
-  2 MB THP (control)      78 us       76 us
-  4 kB base (control)   3010 us     3042 us
+> +	nr_pages = end - start;
+>   	/* Try to avoid a swapstorm if len is impossible to satisfy */
+> -	if (sbinfo->max_blocks && end - start > sbinfo->max_blocks) {
+> +	if (sbinfo->max_blocks && nr_pages > sbinfo->max_blocks) {
+> +		error = -ENOSPC;
+> +		goto out;
+> +	}
+> +	if (nr_pages > LONG_MAX ||
+> +	    nr_pages > totalram_pages() + total_swap_pages) {
 
-The PMD-mapped 2 MB THP already returns the whole mapping in one step, so
-it stays fast and unchanged. The 4 kB baseline shows the per-page walk cost
-that the 64 kB case paid before this change; only the PTE-mapped large
-folio case improves.
-
-Both patches apply standalone against mm-unstable; no other series is
-required.
-
-Rik van Riel (2):
-  mm/gup: pass an end address to follow_page_mask() and return a page
-    count
-  mm/gup: batch contiguous PTE-mapped large folios in follow_page_mask()
-
- mm/gup.c | 139 ++++++++++++++++++++++++++++++++++++++-----------------
- 1 file changed, 97 insertions(+), 42 deletions(-)
-
-base-commit: 7368ccdeff50c27809d3a8276c85bae7e402c96c
----
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org
-To: linux-kernel@vger.kernel.org
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: "Liam R. Howlett" <liam@infradead.org>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Usama Arif <usamaarif642@gmail.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: kernel-team@meta.com
--- 
-2.53.0-Meta
+No, this is wrong. fallocate() has nothing to do with the swap size.
 
