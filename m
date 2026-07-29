@@ -4,97 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 795C1C54F51
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:17:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC2F9C54F51
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:17:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1DECE6B00D5; Wed, 29 Jul 2026 10:17:49 -0400 (EDT)
+	id CD8C56B00DC; Wed, 29 Jul 2026 10:17:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 18F186B00D6; Wed, 29 Jul 2026 10:17:49 -0400 (EDT)
+	id C8BB86B00DD; Wed, 29 Jul 2026 10:17:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 057C66B00DB; Wed, 29 Jul 2026 10:17:49 -0400 (EDT)
+	id BA28E6B00DE; Wed, 29 Jul 2026 10:17:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D24F86B00D5
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:17:48 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id EAE91A0692
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 11:52:24 +0000 (UTC)
-X-FDA: 85041651408.25.9068A10
-Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
-	by imf17.hostedemail.com (Postfix) with ESMTP id B4B524000D
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 11:52:22 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=daSQqxUj;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf17.hostedemail.com: domain of brendan.jackman@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 92E8B6B00DC
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:17:51 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 00D99120609
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 08:21:17 +0000 (UTC)
+X-FDA: 85041119436.19.B8F3C93
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 4816AC000D
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 08:21:16 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SuuMECmZ;
+	spf=pass (imf28.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785313276;
+	b=3+TqvVaBz58X4qjJYdZ74/u8iOGPDsdJZu7JrtwFGPlk3/ziBUN70YS9Dy3IPoopJ5Dbia
+	fkDSOWQk5YOELnzpt/BMlPkvJ/f1sWGd9rfWcEasPS9T7PPfvMSsissHwCN8AKf6mPpl09
+	uu/Rukx84TDYMrxN7CVdX9TJ+r6ODCI=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SuuMECmZ;
+	spf=pass (imf28.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785325943;
+	s=arc-20220608; t=1785313276;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IgAN7UnWx3H6BkdgHgHpTJ4Fnou4I35eqyGgnu4T0as=;
-	b=b2itpomiaIbFkKVQyHjXGsqxZ3Op2Nfo5nyphu9kGzglRtaqAEnYxpf6ney3WQ5+KolOSo
-	6mIia56FPgU5AF4b1jpTEHhkGXmE+y/pCjj0cJAZCpsYmB9dgPo+WhQ4Yb3DkCbfSiiJZQ
-	z4qy0weInppOvRLoz9UcYpJfAPU2ado=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=daSQqxUj;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf17.hostedemail.com: domain of brendan.jackman@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785325943;
-	b=LRNSygXB7R1N4atW4xkyjkTf0gaBenbjlk7179TuA4+K6x9B8U3QdJrUyXR5+yuwJ5B0tW
-	CpqwRnWHU1fQTVOADu/8ANSGBXtJHSggVInkPCYsJY66HA+fJiuzjRHUokO5Ojp4qfusc7
-	cubhD0ZaG9IgfR+B0YEYVJQP8zBhoDc=
-Mime-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785325939;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IgAN7UnWx3H6BkdgHgHpTJ4Fnou4I35eqyGgnu4T0as=;
-	b=daSQqxUjeLR8iF7yEXiHx8SjqwVLuNWGwqCP9X3CJcXaiYnu6rWMnkSAghF/orVdbI+afa
-	ijtbXVpWmUQLAT/u4zL4c6BKT2guXWEneGNWwEGGAbxQtDpYKcKLm365mjueRWnnrn+/LX
-	KISZJJ+3fjZiSwzLopVzw3q1tDT+Oh4=
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 29 Jul 2026 11:52:05 +0000
-Message-Id: <DKB17ZTE9OMW.3NDH8J5WFITC4@linux.dev>
-To: "Brendan Jackman" <jackmanb@google.com>, "Borislav Petkov"
- <bp@alien8.de>, "Dave Hansen" <dave.hansen@linux.intel.com>, "Peter
- Zijlstra" <peterz@infradead.org>, "Andrew Morton"
- <akpm@linux-foundation.org>, "David Hildenbrand" <david@kernel.org>,
- "Vlastimil Babka" <vbabka@kernel.org>, "Mike Rapoport" <rppt@kernel.org>,
- "Wei Xu" <weixugc@google.com>, "Johannes Weiner" <hannes@cmpxchg.org>, "Zi
- Yan" <ziy@nvidia.com>, "Lorenzo Stoakes" <ljs@kernel.org>
-Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <x86@kernel.org>,
- "Sumit Garg" <sumit.garg@oss.qualcomm.com>, "Will Deacon"
- <will@kernel.org>, <rientjes@google.com>, "Kalyazin, Nikita"
- <kalyazin@amazon.co.uk>, <patrick.roy@linux.dev>, "Itazuri, Takahiro"
- <itazur@amazon.co.uk>, "Andy Lutomirski" <luto@kernel.org>, "David Kaplan"
- <david.kaplan@amd.com>, "Thomas Gleixner" <tglx@kernel.org>, "Yosry Ahmed"
- <yosry@kernel.org>, "Patrick Bellasi" <derkling@google.com>, "Reiji
- Watanabe" <reijiw@google.com>, "Sean Christopherson" <seanjc@google.com>,
- "Nikita Kalyazin" <nikita.kalyazin@linux.dev>, "Ackerley Tng"
- <ackerleytng@google.com>
-Subject: Re: [PATCH v3 00/26] mm: Add ALLOC_UNMAPPED and AS_NO_DIRECT_MAP
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Brendan Jackman" <brendan.jackman@linux.dev>
-References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
-In-Reply-To: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: B4B524000D
+	bh=ePeO/xV71/tQ7SCmp4Ak6LnQ1NWK+HHBAZv1O4FNQqs=;
+	b=P1wZ9wX6I7pAJQusXQKXE0RDcu1KNN6x6v+hHRHIQUiavEmnIuCTaD7ZAbpQrYnB/38wXZ
+	CpLlLxI/FaY7Okwa+gRfwMHoPMgKMGt2UVkPuRNZUWq4+mU1sDWBeOD+INMmZKyW/aFEtb
+	5eimHXbqYAcSftMh+GBShTvrx/5gaWA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9A6A2400E6;
+	Wed, 29 Jul 2026 08:21:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 694DA1F000E9;
+	Wed, 29 Jul 2026 08:21:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785313275;
+	bh=ePeO/xV71/tQ7SCmp4Ak6LnQ1NWK+HHBAZv1O4FNQqs=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=SuuMECmZ5xpzrc3KetrA48u8o+/4Vz8wZ0RNzb5JNCGJx9YIoNwybXjC1ztkYZpT8
+	 58P1ug9lPsrbsZcRVa2JNWIldKHQM9IGHW6zgXJK6GUc2OXx/h3mNhboSaa0TWfX5K
+	 O02ePjEI4Emm47SQ+OcpROXnTIawTzf2hiMmjQ0TjCQK6uDVunemV8J8o9a1/nGsia
+	 poHCRzuX0LXE3O65gpRS3u4SJyceijqgc3EDHU09ItS2tjhqBdNHRwaJ0JJ+8vAjtg
+	 Ns1M9AK9++p4cUiZ2joRBWYfYbNADuEO+J73B+4gif2Lr/jeEH4sEtJLN6HU4Gg0Ge
+	 XvQEEin9+l3wg==
+From: "Harry Yoo (Oracle)" <harry@kernel.org>
+Date: Wed, 29 Jul 2026 17:20:11 +0900
+Subject: [PATCH v5 3/8] mm/slab: use call_rcu() in unknown context if irqs
+ are enabled
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260729-kfree_rcu_nolock-v5-3-a28cdcda9673@kernel.org>
+References: <20260729-kfree_rcu_nolock-v5-0-a28cdcda9673@kernel.org>
+In-Reply-To: <20260729-kfree_rcu_nolock-v5-0-a28cdcda9673@kernel.org>
+To: Vlastimil Babka <vbabka@kernel.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, 
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+ Roman Gushchin <roman.gushchin@linux.dev>, 
+ Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, 
+ Puranjay Mohan <puranjay@kernel.org>, Amery Hung <ameryhung@gmail.com>, 
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
+ "Paul E. McKenney" <paulmck@kernel.org>, 
+ Frederic Weisbecker <frederic@kernel.org>, 
+ Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, 
+ Joel Fernandes <joelagnelf@nvidia.com>, 
+ Josh Triplett <josh@joshtriplett.org>, Boqun Feng <boqun@kernel.org>, 
+ Uladzislau Rezki <urezki@gmail.com>, 
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+ Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>, 
+ Pedro Falcato <pfalcato@suse.de>, Suren Baghdasaryan <surenb@google.com>, 
+ Shengming Hu <hu.shengming@zte.com.cn>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ linux-rt-devel@lists.linux.dev, rcu@vger.kernel.org, bpf@vger.kernel.org, 
+ "Harry Yoo (Oracle)" <harry@kernel.org>
+X-Mailer: b4 0.14.3
+X-Stat-Signature: z3fjracoys4tdfd1kqw6sru7ufatmfqy
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 4816AC000D
 X-Rspam-User: 
-X-Stat-Signature: do1q43mjybmi86cpjy3je9cgo7qthsnn
-X-HE-Tag: 1785325942-494647
-X-HE-Meta: U2FsdGVkX1+BFUyqKFtVwdW9kSnpaOjP0gkIiQ12uclXaK/qSBmy08W3w7cYkAFeSIo2nc3A0NQzbyFpj0g+RgN3YjJCCb6h8AOmZ37im2hSEi5+1w4OciTOK70f0qLofzFNw3Cu60+duvKnOXA0uvPAZRgKV7PvQDLOfqn1BQaluh5GKVePm2ktX3dDDo0OCDSks4uKuCY8gL2v3kOMB95ZxLw+wtFWo9PFm6VMjl263GbGTXb5wtQUrPYnsb0xhVvAVOFihBvAr/d6TJMDJawTvCnxkBcLLN6OX3YUThFVlfU3kZTwy0tur0G7/R+PzSK9P04jdfV6GN+3oRfY512VufG/p5PK/QgsHMd4Piegw2JMoGn03Lmpq3ByjwjD0oSOeuIbXpNjmly8Baom7w/SC1Lxe5pcYgBG1Jzrwkn8t9RmMJ2mbflulKAZTGdBFRN55FashNFWddQGLZo0VCp3mLr9yrQ2f8YaXYxGpVIZkMYVwzuBLMbSn1YNDkLQVrzAinr305Ujrb3KOeg0ix4iZOsn1aTCEBRJVfk/+6BO/aTOS2zZ113AGlW39iZ9Dh1rGVN2n/GshiaporeUmyRsk9meRIjX/fGmd2CKZ6HiXci00V5rJA+YH3slhEI8lx6j/te6k7zYCe/2xmfE0zUciE0QxCw3YxhxrpL4KZE6fOvAT+DO5+b+EY3tmUhnXcGYZ4W8TejJXZZgXhQlyfhh+x3HACI6EU+jbaW22znX69GBLntAJmAfgxQDxax6ukVk2RoZsFPzvBPzZInXiIsjh4Z5nv4xhIZZ9gfFFE73GFYOPvmr7uNW5jqGZJVKI4Mk7R3sa84snMGfNjiN5bnuiW5UuDKtGX6bZY8msl/wtpg/U+ewgi3IrDS35zLeTghno3mWIhSHPNHzywaMUSvGGyGlB4fyf4APuPeO684xQ5m9cOhNGltPwN3UsxTyFcOYvEf3RhuRgatz/rw
- 3kz3zLBD
- 519fWeKQTNXOA7V5wYZ2DMiHdQn5q7FoXP1shzMPIs7cishDmeoomZ8Ufl+mQADtztlsiA1ukjUBC5tWxHAJrhVFGh6oxuwCxZwd64KUsIAPv25CRAH794C707clSdS6cl7hZOdb4cIozYTkIMqkAdqA5wwMfQOM4FQigXNu5uuYNa62LpAhac3K34kXkUS+KL1/seuYYYuIyJIMJdNkuz3zxVnfGclqzqxSoaff+k+J7PDFOkPx+MHqCquBpcm4DwhKL7rZjz7JH87O4dIPDfU5PgI11Do6FGcpH/pJKSIjKcIaK+sC2sEsX5kJSNc64A/iOMOaHnZM3hy5sIAKWCwMFUqgDUtul7BdKqI0SIOTML2U=
+X-HE-Tag: 1785313276-470553
+X-HE-Meta: U2FsdGVkX1+/K2tY9xMsoxJtcqxTQvFa3E1OdsFlUnKS3vJxyXvZQZJZqedQOTk6K4VnybrnSEPCqVwp1BPLJsTqSWE95izkU3wjciI+hKAvnkaJyUcp4GXnvp5PRcE8wJdQopLpt8MO79MbdxSaQbS2uhrflm9zbBKxB/GV8d02SFkm4RZjfiDUnXCdwnHRklu7ci14O50r9b0961gBhQlzjJNdah9JNlEPWyek1ZEmoJaLB0+YBVOYE9rlICp9pR1/Iq9YJiJlf80xIFw4rVzkSZV6i4IN61T9i9xhiMOC2NV6pKBI00XOYPO0hsLWCcB8MQ0KEqwyMHYRgkpL2qjlJXAWn/HF8h6bskDGqktcc6dtmwh8wkrCp8cl+piAjokGbAjsNE+Ykn/3XaNKJT30/LWURvTHJB7CpeU0lhV4ENyF9oJXXTc+N14b6mss1b/VpSZ6iqVE462JHH9Dl1BRLFMK1qmsrZLOLsBo16lgVOwkQ9dpO2+Sr2hOdQBKy/HlaZnEIxRl/VDnkaate4VuTEBYIzX7nzFYbKYrLf2EceXL+bP034xDxe1S6EVVMlLHS2C4+cDukKGT7zYHBr84vqWA8wvrqbvNGZGapE7OA+ztnmcIDa3Ao2LhNowMbhl34wzch0Z94X8n/uYfW2HEv0o9wi2JaWZ1qvrwfVJ8Sh+h0ZbkuZ9UasdzglKQcnnu7fHRMF6XJdtc3mezt+4/Hs5nC80dhyVEX8hm5S450M7ejeQ6rKfQ4hawJea+94Jus0OlE5c6Mue4pO2ShDfTItNRTa1BqgJO/xOew7BWzspWLOq835vQDryCBSasPTPxotmpxa39EVFUNnLGP/8tokcoHqTnl7Esw8MNcAwnvyW3bhgQ0iHc2XobsMd9lOZkDmKkz8DWlCWKWKsvQpzV8bGdyQgQEC1kFRtA2BVSL0prbF5z62ud1OHV1wFYhc2kfGgC7wYQR5j+OrY
+ x/r1XCfe
+ 9UKeC7sqYGVsBeSQ7Uvhi29uD6SuPGvVQTbX8zIXXf8ycewbRC9YfPIoQT3+AwO9oh1DGdLM31JgZMQ9jNYHWUvriDFEo5X9mWY7SkHsV75ZaHm94GS5ueBOMpxNwKKLSw9M8CPEltZrb2DObVt6gpMdtAWY8lj/yqaMw+6xlQgjpfmN392cvXfMZo+xSWGcm/FYEwR2xf//Jb8keDlQS6kzPTg9xElhw/k4rWve9qMfi6vz3DW7r18l5rjk8dACukdfdzd6irfI5fDq+swy+pjCw+6csOx1czFJZcMO3DFZZqsVKu3ZZXFj+fchi3DHNOjJ9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,12 +111,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun Jul 26, 2026 at 10:22 PM UTC, Brendan Jackman wrote:
-> Based on mm-new, plus this series:
-> https://lore.kernel.org/all/20260716-folio-alloc-cleanups-v1-0-5363b8e92d=
-33@google.com/
+call_rcu() disables IRQs with local_irq_save() to protect its per-cpu
+data structures. Therefore, if IRQs are not disabled, they cannot be
+corrupted by reentrance into call_rcu(). So fall back to the deferred
+path only when !allow_spin && irqs_disabled().
 
-Sorry this is slightly inaccurate. Due to the discussion on 3/3 of that
-series, this is based on mm-new plus _only the first two patches_ of the
-above.
+The RCU subsystem does not guarantee this contractually, and this
+optimization relies on RCU's implementation details. Ideally, it should
+be removed once call_rcu_nolock() is supported by the RCU subsystem.
+
+Link: https://lore.kernel.org/linux-mm/CAADnVQKRVD5ZSnEKbZZU7w86gHbGHUug2pvzpgZTngNS+fg4rw@mail.gmail.com
+Suggested-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
+---
+ mm/slub.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/mm/slub.c b/mm/slub.c
+index 2c5ba8c326e7..bb0f2975c95b 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -6157,8 +6157,12 @@ bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj, unsigned int free_flags)
+ 	if (likely(rcu_sheaf->size < s->sheaf_capacity)) {
+ 		rcu_sheaf = NULL;
+ 	} else {
+-		if (unlikely(!allow_spin)) {
+-			/* call_rcu() cannot be called in an unknown context */
++		/*
++		 * With !allow_spin, we might have interrupted call_rcu()'s
++		 * IRQ-disabled critical section. If IRQs are not disabled,
++		 * we know that's not the case.
++		 */
++		if (unlikely(!allow_spin && irqs_disabled())) {
+ 			rcu_sheaf->size--;
+ 			local_unlock(&s->cpu_sheaves->lock);
+ 			goto fail;
+
+-- 
+2.53.0
+
 
