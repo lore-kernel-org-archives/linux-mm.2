@@ -4,106 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4023FC53219
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 03:38:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF931C53219
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 03:46:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5D7D76B00A2; Tue, 28 Jul 2026 23:38:11 -0400 (EDT)
+	id A546E6B009D; Tue, 28 Jul 2026 23:46:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 588916B00A3; Tue, 28 Jul 2026 23:38:11 -0400 (EDT)
+	id A2F626B00AA; Tue, 28 Jul 2026 23:46:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 478A26B00A4; Tue, 28 Jul 2026 23:38:11 -0400 (EDT)
+	id 96BC56B00AB; Tue, 28 Jul 2026 23:46:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E8876B00A2
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 23:38:11 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B1DF74056D
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 03:38:10 +0000 (UTC)
-X-FDA: 85040405940.29.5A96234
-Received: from canpmsgout10.his.huawei.com (canpmsgout10.his.huawei.com [113.46.200.225])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 1AE7840005
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 03:38:07 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=kMRhhoag;
-	spf=pass (imf12.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.225 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785296288;
-	b=F4tmpzRFFwcVxuq+XJs+wz+gSivcV8z81fyYOKDAaw/dzq1ckY9SlnfhHp0HRG2YsQk8r0
-	35IHiR6V277nke4ggCx8nT7AJ7VpKxyywywK9USmkSDioiiY+6U+HQSDW5mS7FSW0FVdYj
-	P+7VG3quwUhBl5aw1ncaVxTI++pzXvE=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=kMRhhoag;
-	spf=pass (imf12.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.225 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 72A616B009D
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 23:46:14 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DFA49C0560
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 03:46:13 +0000 (UTC)
+X-FDA: 85040426226.25.A400CA3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 1D7391A0006
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 03:46:11 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dMRmYAe9;
+	spf=pass (imf19.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785296288;
+	s=arc-20220608; t=1785296772;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5dJy2BwEn0kVulvVpmXjZDrR67cWI0QsFRXsAfEbQCQ=;
-	b=shDrwK+nXDaemyJPSxDpBQsFETEzYVvFLdOIegUrwAaTq6Amsu6ndQGY72YV1YPMM4VFet
-	/tVL+gz6cMDBDcAeRw02PrNUOfhmhFnOZUmZZs+vV9APkeUxzDVfOxpY/qunF7ifjd76qS
-	ZbM0vS/pSmb0R7mKi0iscpuQUoPEqyo=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=5dJy2BwEn0kVulvVpmXjZDrR67cWI0QsFRXsAfEbQCQ=;
-	b=kMRhhoagZ3otRMIf6kVu72AEYqW6j4kJExP2OKvQ8LVdfaByHgDZGXGqB6DUQ128C+hjZNlp9
-	6i5HrzB+QDsfE0WMkbZgn1BB7hrtsh36w85076AfThZTCJ4/UVw//h88kVKw4wZpMfr3imTopFN
-	azTxVo7N6hB572NKfDT3l28=
-Received: from mail.maildlp.com (unknown [172.19.163.200])
-	by canpmsgout10.his.huawei.com (SkyGuard) with ESMTPS id 4h8yTw28Ffz1K98V;
-	Wed, 29 Jul 2026 11:28:36 +0800 (CST)
-Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id E799640563;
-	Wed, 29 Jul 2026 11:38:01 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 29 Jul 2026 11:38:01 +0800
-Received: from [10.173.124.160] (10.173.124.160) by
- kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 29 Jul 2026 11:38:00 +0800
-Subject: Re: [PATCH] selftests/mm: unpoison pages in memory-failure teardown
-To: "David Hildenbrand (Arm)" <david@kernel.org>, Muhammad Usama Anjum
-	<usama.anjum@arm.com>
-CC: <linux-mm@kvack.org>, <linux-kselftest@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>
-References: <20260727095415.385026-1-usama.anjum@arm.com>
- <a811c371-ef3d-4932-a9d4-2390a98e1382@kernel.org>
- <9a289152-70c1-4e13-a0d5-f77bdee72d8a@arm.com>
- <744290ab-b5b3-40b4-bb70-006231fcb328@kernel.org>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <067fdf0f-7322-c011-0f2a-882dc63f0964@huawei.com>
-Date: Wed, 29 Jul 2026 11:38:00 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	bh=9hCeIFdpiZGdMUyND76+nFTdqMQ1AhaFCYWKinOxaws=;
+	b=gxxlo4LgdRfsosmR8KT8w/h/RD5CPZE9KCNL4yIu1o6g1wlEPZ7S/cFFWfGLKCIwRFsatZ
+	VwV9wP6+O3X+aNnI07UoBCp5JWIOtMTULLMll1uQjbrOLEQjV0XASINjVmzMOkpt+RAsxF
+	6x81E/i0/tgB09FsX40QDnRnNA2QlDE=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dMRmYAe9;
+	spf=pass (imf19.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785296772;
+	b=bhbnlxzsI4/gq4T763INzA5qn87tqRc9CxTzNdanSF0TwT/unKwinqc9s7xcgRe6iVYGID
+	xnKmOuLbpH68NHp7Se/fD8tWwljmNexmN1PcQXIR71iFkj104I51VqLLXRMBQKkImG3Lob
+	cHUMnWJ27876WOqIoIYFR1VnrI7Yx68=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 9148060A5E
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 03:46:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 488571F000E9
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 03:46:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785296771;
+	bh=9hCeIFdpiZGdMUyND76+nFTdqMQ1AhaFCYWKinOxaws=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=dMRmYAe9PSokY48x6I7M3dDK7nXQfEJnBksN/UzmcwZWenaaIMXt6FKt1fjQEDMhC
+	 hGvtY3teJTuNZ5/6ZMHptKw0VNgTtDyMlDPzUpx61rlKxRLwdwQsqwmyJLqF9vQEBN
+	 MR1jrpdP2oYbcY1SpNCQnzHC9Qtyy+q0aeRb0a/ip2GN9EHMWW91C38xv2FpEVXLtC
+	 niJ5gRr+fPJc/MM5a1DVscvZ1req/o7hpaK+4lMClIXt/FgGpvO6EhqlSxQlVkLU8b
+	 d/9wrCXkYpchrXqcyIeqMHTSENMgQ5dl03ddVBUzHcfxUfigxDcS5ujmVhIYaCpVvh
+	 SJYhY/gKChB5A==
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-930f72317a6so33680885a.3
+        for <linux-mm@kvack.org>; Tue, 28 Jul 2026 20:46:11 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RpKXysCXE7QsRX9OQAbATQKgTq99SXmF4le0iI4MHXlId3dxhFdO+yPf4swwv7X7fPpmd5tCxdWHg==@kvack.org
+X-Gm-Message-State: AOJu0YxRjLK7++xjnvvdIF5orbXGXNW8Xe13VBnNM8lDSRVlT54E+SiB
+	bQcgYbBpAaXTx/GQxo1MNuKdoSuEnKLKGdyYRmdtOfnCdd+a8yMlJdBgwWw59iHR8S2V2MshwWU
+	UI6mRPejYZNZTV7MQ25qVwBTRTuIogt4=
+X-Received: by 2002:a05:620a:258d:b0:92e:4867:95af with SMTP id
+ af79cd13be357-9330264e639mr479318185a.73.1785296770680; Tue, 28 Jul 2026
+ 20:46:10 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <744290ab-b5b3-40b4-bb70-006231fcb328@kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.173.124.160]
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemq500010.china.huawei.com (7.202.194.235)
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 1AE7840005
-X-Stat-Signature: juwmyqbd4coi79icw3pa6f8r4jdsj861
+References: <20260715120813.3609949-3-jiangwen6@xiaomi.com> <20260721181729.305137-1-devnexen@gmail.com>
+In-Reply-To: <20260721181729.305137-1-devnexen@gmail.com>
+From: Barry Song <baohua@kernel.org>
+Date: Wed, 29 Jul 2026 11:45:59 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4wWhvKA=BmPwCrGv06kq07QMP6CKES1mGUnx=HmiDPGLw@mail.gmail.com>
+X-Gm-Features: AUfX_mxEu5tKUyNHmfuUECxYL_B8CLwg9_b_6o8Uh7pr6aO8ZRt_yR9G9xuE8h8
+Message-ID: <CAGsJ_4wWhvKA=BmPwCrGv06kq07QMP6CKES1mGUnx=HmiDPGLw@mail.gmail.com>
+Subject: Re: [PATCH v7 2/7] arm64/vmalloc: Allow arch_vmap_pte_range_map_size
+ to batch multiple CONT_PTE
+To: David Carlier <devnexen@gmail.com>
+Cc: jiangwenxiaomi@gmail.com, dev.jain@arm.com, david@kernel.org, 
+	urezki@gmail.com, linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1785296287-255865
-X-HE-Meta: U2FsdGVkX19axnGKceotOfrlowD7cpcySosSWAqfVQZfjGo/LSYMv+CCr48cFiWzuRfdUjLjcm1xAO6mwzIXbvJWzbyJkTOO7tTBj5G51nTGUAO/zs6HbUaCLFrBjxjPaEZeJfHM5dtlWfDXBb2VY3CP4Ov/+dGg/rH1wbrgKfayr7kLug2ipmNikKtxDZF0Vx/waVozyMrhTi5qg9Rcc2gtXN7fykBwbfgQWfaxHYpy1VvDvieI8zZ04igYW3SLCk85SBcpjCQQ3Y+ORjjsA1400vaGC/sBLNZnsS80TuB2zyOP8VgjmRW1wsDAmaLqDpCXuKAqiX6oIbcIEoPDUaQIhzX0wybRnWP76rts4u5Gp9VtKlY4W7f/E+/+4cw6r3ESYOJoNXHexDOo184PKAqcl2pshkoKO9gyxJzsfipAIBk5igTqxVf9ktnoH31geMSay0usFAT5F+5zVCIWe9wCSQrZ2OKOdlO/ttXJAMopflCX19JUhA6G15PSZu+Srd/ihEik6BfvV1wfEgbWmwE7b+yBEuJ/F+1sMaYz0c6s4nnMJYrhvBaQzvOZkhC0SrAca1+xgsrLkApayLfMttRk9F3OvvvTEWUKSzsZOL3YtBo+fPWqtm188nHwyJW9zymA5VqR7rMIdyloNOt4Lx3k4/Q+uGoyUTh/GHBSnN47xL0Z6Nsn48Bx/Fg/wLi9WcV/uzkOiLorLpGy9z41nzfU5zVOpCM9UdFm1CFCxx1RvJWQvJu13PkBOSSrQ9kn4FBj4H0EVwmGpf9iXisw9zNagjqPPLtX34nnan+Q4xGbQ/EJ/w3xCJz/kguOswEmPLRk5+11SgO51lWeZNkOZEoeSDJa2ZEk4sdc0AT1agdhT8Wc9oEHO35VcM1o7aWZZxUF9x5iyPWI4duIafJIncYQLmIL31X9qRGXH6MYSz+xqcT3jtQMbNweTsBjJvvTSdPsg0tXRlaMxZ2Rg/F
- PUkatuDw
- HSgppc72FG6LgIuTi9My/MAxEch/TDxmpnsUdTC6eWOC36hoBk17f7JawnWkTq4FhmChv6g9DLxphUaL3AbnsoTk6LB1LxgLEDe3DAeoAPVW4f70mI/8c0iFayZHupMDnsoc7rk0s3jOuNzyobyPZJ5wsKXpgb5vMF2RyLYMTRn4qQu8/65kTgYu3RjOrT7MjnsNztTuhIxkrO21As87V46V50I5nM1v2UB+v4cn+75w3uRQKtNvD6qUNTb5X9PI4gcwuXTVRPNCRrQzkkT7yKDyFKYbDC+oI6HasxBIZPGnzoJwJUjKdXgIf2sarnJX6QwHLssPs6wK2+YupyN8e8KArUzh9Nf+MM6QIXcUCbmFL4rSitFGTlwF3I0R0EzPH3ga4zzfk39FdBgBQF1g6hHx57Hru9hlNvLem
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 1D7391A0006
+X-Stat-Signature: mx48cmzzznpz3maquqi1xtiwaozu3qte
+X-HE-Tag: 1785296771-946401
+X-HE-Meta: U2FsdGVkX1+dfaKJp6SJH2pUWOWsudkiP1sTC0mbWWmluFmeNC5Cu0c5RPGFa0+raTXyiZW9Tde1DA5TvjbOQVRkD2rcShAEXmCo6Htk+1DMUMQPh0nilm+ZOYQH8DKaLN4sc2kb/d43vvMf65Cz/eOUCz0ugYQcPcZ2kvQaNEY4qTe242FksAoWQa30P2L+3/0DOm9IoZvYZkLMIQwok5RAx77TRYevo6blRjgWGuN3Id5pPSEfyzHkUgJNDZdS2u3kfxL2Y2cQCyKhjKdHGBx0k1JOGtCDQSKMm79W91NeE4GQxw/URzguwaMDTiJatEdmLxyTb6bO5UEesoq2ID/OiAqDRboQN/hOrqPLTUmJpfhnNlogic+5V8NQQqjHaOg9S/8xGX+WVkGNKU9ersa53HceIVoJmz/Zu28UXFYuh0mLkn/WM8/lcGFS+BEmXzfSmPh18ch9hmOGf6IH4UkeK1UhGcFkERjizjC9emDftcxw7LgEReQiROeQ51CPyYK+U1tkL2tiiaz4UNX5jrIVSaXATIX7wRDvUHK+kSTIGCdsa/0wNmH7pprduWrXUWLhYe6gE7Nll8wpgVcg3YIB4WlDUdh7F+2mwsT04Ji7ixhdt8r7lYwGt02LH4DAdgLb/PSmtuNA74qVvnhEHe/QJqGr/GCjZLfkrlDH/0uJgXXsrd2GaRmkpzKwge8CUkvGKY/EDPHOzFhKCcvWM5PSc0H31IMtX7EyWF6jdZBwBvOSDJyQAGtpQOQmQTr/mPpaYnD6sWb3zCoGz77w8gN5RAacgCOa035FLC+7vERr4s5ESfyfQlQPx7SOyv7nItGJvC29TC4A3WrN3xDxivMgD39lR3KO4kWWhlFEUGsq4ysBMmt/jO5lakZz5vzgNMUX/7q5U1ec4vQClDxt5bv1/zB72VP+RZRHl88DgmCVNtfxPE1OGZovrTGTOKVxu6UAfgnx2I8tkLNl89Z
+ 5F+AWSlI
+ xwGvdargy64En5DHQbvQLt8zf03m0vOYEPxashG/7DpzfxkwoFwg22CoyxA1FcCy9jvI/KkEbmL3pTW/gPSuahhCBpkMq6XSo2TA/+IrkLMXEe6ldDJ1/Q2ktLS5jmy8AKYectIoM47ozk0IIKroPC+HbynQh+GyTDJ//rGaS63m6OnJiMC+gjLl8MaU0HiuqupN8VU6AzDIwCB1q09WcwruFbdUVcw9NSJLuhatf671YTIK30oYZWvWU1DSgFlNCPJU+MIs59vzJQRu89HXy7EAwGt1ajzpXZZOegBWBak4qrCeTvV8BDzT+qd/9g+INNKVqJ7Cwtf1BJoI72A1b88ldikwQLi9qnS4N
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,100 +103,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/7/29 3:06, David Hildenbrand (Arm) wrote:
-> On 7/28/26 16:22, Muhammad Usama Anjum wrote:
->> On 27/07/2026 1:31 pm, David Hildenbrand (Arm) wrote:
->>> On 7/27/26 11:54, Muhammad Usama Anjum wrote:
->>>> The memory-failure tests call cleanup() only after all result checks.
->>>> A failed ASSERT_* invokes fixture teardown and aborts the test, so it
->>>> skips cleanup() and leaves the injected page hardware-poisoned.
->>>>
->>>> Invoke cleanup() from FIXTURE_TEARDOWN() instead. Guard it with
->>>> self->triggered so tests that exit before injection do not try to
->>>> unpoison a page when no injection was attempted. This runs the existing
->>>> HWPoison and HardwareCorrupted checks on both normal and assertion-failure
->>>> paths.
->>>>
->>>> Fixes: ff4ef2fbd101 ("selftests/mm: add memory failure anonymous page test")
->>>> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
->>>> ---
->>>>  tools/testing/selftests/mm/memory-failure.c | 26 +++++++++------------
->>>>  1 file changed, 11 insertions(+), 15 deletions(-)
->>>>
->>>> diff --git a/tools/testing/selftests/mm/memory-failure.c b/tools/testing/selftests/mm/memory-failure.c
->>>> index 5d00aab31f9b5..eaa8b9bd401a1 100644
->>>> --- a/tools/testing/selftests/mm/memory-failure.c
->>>> +++ b/tools/testing/selftests/mm/memory-failure.c
->>>> @@ -122,13 +122,6 @@ static void teardown_sighandler(void)
->>>>  	sigaction(SIGBUS, &sa, NULL);
->>>>  }
->>>>  
->>>> -FIXTURE_TEARDOWN(memory_failure)
->>>> -{
->>>> -	close(self->kpageflags_fd);
->>>> -	close(self->pagemap_fd);
->>>> -	teardown_sighandler();
->>>> -}
->>>> -
->>>>  static void prepare(struct __test_metadata *_metadata, FIXTURE_DATA(memory_failure) * self,
->>>>  		    void *vaddr)
->>>>  {
->>>> @@ -200,8 +193,7 @@ static void check(struct __test_metadata *_metadata, FIXTURE_DATA(memory_failure
->>>>  	ASSERT_EQ(pfn_flags & KPF_HWPOISON, KPF_HWPOISON);
->>>>  }
->>>>  
->>>> -static void cleanup(struct __test_metadata *_metadata, FIXTURE_DATA(memory_failure) * self,
->>>> -		    void *vaddr)
->>>> +static void cleanup(struct __test_metadata *_metadata, FIXTURE_DATA(memory_failure) * self)
->>>>  {
->>>>  	unsigned long size;
->>>>  	uint64_t pfn_flags;
->>>> @@ -217,6 +209,16 @@ static void cleanup(struct __test_metadata *_metadata, FIXTURE_DATA(memory_failu
->>>>  	ASSERT_EQ(size, self->corrupted_size);
->>>>  }
->>>>  
->>>> +FIXTURE_TEARDOWN(memory_failure)
->>>> +{
->>>> +	if (self->triggered)
->>>> +		cleanup(_metadata, self);
->>>
->>> If the variant->inject(self, addr) fails, self->triggered would already have
->>> been set.
->>>
->>> Wouldn't it be cleaner to have a new self->poisoned that we set only after
->>> ->inject succeeded?
->> Setting self->poisoned after variant->inject() returns would not cover the
->> MADV_HARD signal path.
->>
->> The call path of madvise(MADV_HWPOISON) is:
->>
->> madvise() -> madvise_do_behavior() -> madvise_inject_error(MF_ACTION_REQUIRED) ->
->> memory_failure() -> hwpoison_user_mappings() -> kill_procs(BUS_MCEERR_AR) ->
->> kill_proc() -> force_sig_mceerr()
->>
->> SIGBUS is therefore queued while the madvise system call is executing and
->> delivered on return to userspace, before execution can continue after
->> variant->inject().
->>
->> The test's sigbus_action() then calls siglongjmp(), so an assignment placed
->> after variant->inject() would be bypassed. The flag would remain false and
->> the test would attempt the injection again after returning to sigsetjmp().
->>
->> Also, memory_failure() sets PG_hwpoison before several recovery paths that
->> can return an error, so a failed injection return does not prove that the
->> page was not poisoned.
->>
->> Maybe renaming triggered to injection_attempted is more precise here.
-> 
-> Yes, that would make it clearer. + adding a comment that we want to cleanup even
-> when injection was attempted, but failed.
+On Wed, Jul 22, 2026 at 2:17=E2=80=AFAM David Carlier <devnexen@gmail.com> =
+wrote:
+>
+> Barry, Wen - the returned span is capped at PMD_SIZE >> 1 but only
+> checked for CONT_PTE_SIZE alignment. In the batched vmap() path pages
+> are only contiguous within a naturally aligned block, so when a PMD
+> boundary splits a batch the next region starts mid block and the span
+> runs past the contiguous run - set_huge_pte_at() maps the wrong pages,
+> tail of the array left unmapped, no warning.
+>
+> What do you think of clamping the span to the pfn physical alignment,
+> like 8xx does:
+>
+>         while (!IS_ALIGNED(PFN_PHYS(pfn), size))
+>                 size >>=3D 1;
 
-self->triggered indicates whether the memory failure injection has been performed,
-and it has the same meaning as injection_attempted. However, injection_attempted is
-indeed clearer. So this change makes sense to me.
+Thanks, David.
 
-Thanks both.
-.
+I noticed that 8xx has simplified this to a simple
 
+    if (!IS_ALIGNED(PFN_PHYS(pfn), size))
 
+Could we do the same here?
+
+diff --git a/arch/arm64/include/asm/vmalloc.h b/arch/arm64/include/asm/vmal=
+loc.h
+index d665f9d68742..a27101e24f76 100644
+--- a/arch/arm64/include/asm/vmalloc.h
++++ b/arch/arm64/include/asm/vmalloc.h
+@@ -46,6 +46,8 @@ static inline unsigned long
+arch_vmap_pte_range_map_size(unsigned long addr,
+
+        size =3D min3(end - addr, 1UL << max_page_shift, PMD_SIZE >> 1);
+        size =3D rounddown_pow_of_two(size);
++       if (!IS_ALIGNED(PFN_PHYS(pfn), size) || size < CONT_PTE_SIZE)
++               return PAGE_SIZE;
+        return size;
+ }
+
+>
+> Cheers.
 
