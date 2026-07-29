@@ -4,95 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D5D3C54F55
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:03:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B6EDC53200
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:03:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3203A6B00B9; Wed, 29 Jul 2026 10:03:00 -0400 (EDT)
+	id 5E0AE6B00BB; Wed, 29 Jul 2026 10:03:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D1606B00BA; Wed, 29 Jul 2026 10:03:00 -0400 (EDT)
+	id 590526B00BC; Wed, 29 Jul 2026 10:03:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 14A326B00BB; Wed, 29 Jul 2026 10:03:00 -0400 (EDT)
+	id 4802E6B00BD; Wed, 29 Jul 2026 10:03:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E83FB6B00B9
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:02:59 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6C0DFC035A
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 14:02:59 +0000 (UTC)
-X-FDA: 85041980478.30.131561F
-Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 760E114000B
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 14:02:57 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JLh1AUcT;
-	spf=pass (imf23.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2F2806B00BB
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:03:06 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BA9E31C0F4E
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 14:03:05 +0000 (UTC)
+X-FDA: 85041980730.28.F92BDF4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 1F94DC0021
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 14:03:03 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K1EQ8Y4A;
+	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785333777;
+	s=arc-20220608; t=1785333784;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LjH7kA+VtExpLGxksUgfM9iOOpmaOblODtEnyss+CH0=;
-	b=sj0gPXxIbpiOt/Q6yUYquFjvqjUdtI1CL2ZNDEb9N8MAFYRrnemGQkiLlJKcaSYZEHuLOv
-	Z5bCUeOG1bnWlVa2HlKX8wPioD92tzOe8HhBVgWCr6g8jKBscRJ6M/xVW2GBIKpVsj+XwM
-	0q163596PSvrMhneOepuYNoN2EOjH40=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785333777;
-	b=S/xAPqQZurvRwOCmHmJHx1zTInT+nZRulAM6LeM2UXF//38urHvOle9utE41UeCuqFrLJj
-	kSm8aX/3NWjHnio1B8NyWhX5cFuGNT0HIf0DnvQc6oxzTquPd2ZtwlpwKFYlfBdX5xFo0x
-	OFeimlBJrFcRiFjT0w41DZjYunn2qRM=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=m8Jn+I9aOAcyBtSiJa/m93YpxBXIBEC49bNd46v3ohM=;
+	b=b4W9DxsHjLLh8fizWPRpG+ZhcqAT1cP5HJUgdLoSWwcGmHBNXCrd+l1xiOoNpehVjP1zn/
+	3ngfWPhBp489XzbLee31Sz1QJYV5LAVccgCN3u2MnNscCuyEUnzJvmFVyGeEKkcKU/UAdS
+	yF9hK5hYBM+IlNDLCLp1yThbO6CQMwA=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JLh1AUcT;
-	spf=pass (imf23.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <8863eb5b-df3d-47e9-8e15-140a1d0269bf@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785333775;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LjH7kA+VtExpLGxksUgfM9iOOpmaOblODtEnyss+CH0=;
-	b=JLh1AUcTbIviy+qK6OCfahGE8G2o1cT/rauKPILFDyvKCEu55f4hdirm31E3x4Qv5eM8r7
-	wHEarv2EGWyksXMDIz7n73vQfgPdPvYS6Qo/GnwXug0PqZ3oEhmcrD5Y2s+NGU2pQUqyUB
-	VNqu+ND4Sjhs2L3wtIXwFJ3EGF+bVV8=
-Date: Wed, 29 Jul 2026 15:02:37 +0100
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K1EQ8Y4A;
+	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785333784;
+	b=Bm+H1RMDd04XOVOfmiRiKUX8ADGLLfqNEUe8WidzgHgWQIwSeoVG4nf9toBdCEydB7KHKD
+	F6beqKKnkTyY85GMMd1TbwnO6xC1sCOoye/lLVKojP/HlNI1M9aHLY1V6/6ABdPgrUXqDJ
+	K277G4thyoxWJnz7X03td+6BeFoFPrw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 8CD026001D;
+	Wed, 29 Jul 2026 14:03:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93EF81F00A3A;
+	Wed, 29 Jul 2026 14:03:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785333783;
+	bh=m8Jn+I9aOAcyBtSiJa/m93YpxBXIBEC49bNd46v3ohM=;
+	h=From:To:Cc:Subject:Date;
+	b=K1EQ8Y4ACyg4nu/bytNozyrCTHzJ610qB2Un6xKxTzUUK1DcDQ46YZfR+Rhy11SCC
+	 T8SyPdXIYW+XQwGNNMg3oVWZ/QSZuSO0YkSsUc0gmm93fR7FX4YUBnen3MHp839Rq/
+	 fe1CYE+Jd9iIMFP6Qg89sbjqK/v4uZuy0mKyBtLhCzHXjEyWuW0HT+dCDFLbPNLVTg
+	 X7/PdCTXW+OZKaV4fG4vge7VdZGPQRbCtgHnUXS8ZdmrJjiH3uTEyZPpFjM4IESk4Q
+	 SHvBz2ZruhnrXanjrHWE3Fy7aPUH0wYJ8WhBvgnLhnHqZk9o3TpsZwxUR8cFqFA5ue
+	 xHl1XlXj2YcHw==
+From: SJ Park <sj@kernel.org>
+To: 
+Cc: SJ Park <sj@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@davidgow.net>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	damon@lists.linux.dev,
+	kunit-dev@googlegroups.com,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH v1.2 00/12] mm/damon: cleanup code, add test cases, and update guidances in docs
+Date: Wed, 29 Jul 2026 07:02:40 -0700
+Message-ID: <20260729140253.87753-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Subject: Re: [PATCH v1 2/2] mm/memory: add anonymous mTHP folios to deferred
- split list
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Usama Arif <usama.arif@linux.dev>
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Joanne Koong <joannelkoong@gmail.com>, akpm@linux-foundation.org,
- ljs@kernel.org, Johannes Weiner <hannes@cmpxchg.org>
-Cc: alex@ghiti.fr, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
- liam@infradead.org, npache@redhat.com, ryan.roberts@arm.com,
- dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
- vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- willy@infradead.org, linux-mm@kvack.org
-References: <20260707201735.4113107-1-joannelkoong@gmail.com>
- <20260707201735.4113107-3-joannelkoong@gmail.com>
- <584098de-dd48-4004-8e7e-3d826e60c860@kernel.org>
- <77b3b74d-c1bb-461b-8076-8729cdcf91f5@linux.dev>
- <7d841b27-f60a-496f-81db-84158a0a8f8f@kernel.org>
- <0bdb81db-5e2f-47c9-998d-bca450644ba6@linux.dev>
-Content-Language: en-US
-In-Reply-To: <0bdb81db-5e2f-47c9-998d-bca450644ba6@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 760E114000B
-X-Stat-Signature: rrk7du8p1sh1s67owxkunwyrfrpjnftg
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 1F94DC0021
 X-Rspam-User: 
-X-HE-Tag: 1785333777-774536
-X-HE-Meta: U2FsdGVkX191405FFv8yqNVFhqYkdovyWbhINvjL9sgeOxilPHcHljuQvfP+fSzprwE/Dn2vTARDCut8RXiOV+lfmL5vYUF9uysxY1yWuureuDZj9QEnTlLlnrydKyMunAcvVv7mz2NY5MdlMfac174c194TGtJkqMbnfaVMYxIEP4Czn7GzP17ChtBjWUk7JwDAG76MaV+SWECpSBXgfX6a+DlOylyfv51ZDoOt2RVn/1hbFiOxEyC/JlEsOkxmxUjgxtbSGzK1b80h4vBnTyaX2M1wp6/OHO4I9mh2mh3ig+EbNFvH/9vvWn7ac5We53RvF3L/yQudATnoSHpnMYW8Uci7Nz5h3FFccGCd+Tm8FDjIyvliQF8NviR3y+7od555gtbrH5JQvfrq/qN13FZvIfeqDCiuLypDsVtKWtInlCDucruzqpzbBBqArJGPUn8Mb5y6SG18hf+xUOtwcAgx7fdjtYjfsb48UzDFdp+aLKiS66X93IGRJcOFta/1B9bcF3kyhKocdUQBANteB0bJ9p5W7HGdQVQJkAy13fnFotlbH5cPqnXXjl/fQJmwalnmiIkeORTj3J+8Kl7rGwpYsQV5+uutr9XZ/OFpvvcEzJqCfWJg91csvK7fsqA5mqC2UHwAnlNPhTLVCxvAvsfm4ENjs3cax8UHRCE4ZHUqC8y5hsq9h6PUuFjPv4n9XrBVpPnCg7Y9cL1XvAFbvLywljSywi9YRm4ABfhXFp1E1GA35I3+UNtS8nM2i+N5fGh9kmc6Km8NvaPPMMoXJzMYJOud4hFHwbKuTRzm1XHA+8hViYcjF/jlzNTQNu8YMRFxMImXsup8BnVaFeoTkCxl16H+aDGiBkpCvXbt8Jhb63CqSIL4ZRtz33Vy305i04mthpY2afpahXRT7quDaRseKErv4xkoVh03SmhQTY3B0Z22a7bjPj2ddeRPtyWPz6QQGwS9P0apk8loiYi
- SqP3X9a1
- 9Hndm/25nJDgy9PFIYVuaBzH9FRBMh5+pt/l4pstec5ZmUDgBEtJn+oWAdN5nKZj4af/SbvCbQvh0BQO818hqKbl5iDtlpt3TBfOcBxeeBWkhj5lnlw8P+tZR5J/npvfFiM1tBsRfPmuYZ6gWWIIhhg13b1YkXdK38hIMZa+JAfKWLDJ/+4ykeAbPJBjC3MVJmI9wGmXwiSViOblaqQoKLBOWzOf7DKDKr6NmCnsfTKDmWWGn2bhbWVDLAo2d4y6tbrmP
+X-Stat-Signature: oudw4z9p74nwpm8dipxhhea4ahcdedqf
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1785333783-640136
+X-HE-Meta: U2FsdGVkX1+nA7YCPPoNeMFD3Hy7DbQT//UkW6PPXwHEqC00ZLdol0QJDGi+MA0BJ7zNdbHZltI/+tcuW4tEEvjgf+SYITd1j7Gd5mZ0rcxjc/6pw268REHEi9KB5DBQiPEj9C0ATgod3zZaym0jd4BrWB2ml6C+fuvpE6whiEZD9HcRpAtD0rJwd3/v+aanxPOGfD9uOefD6vdaA6uuKV6m7op235qPGujHYixGqgZy+6TbAq/OqqBIGP/O0U9TwBq5o6OEZ58VaILZDLq2TAj/OOPXsnXW+ltI/R7ynnVa1jZc5TUGBOiqe9xZ1yox2DJLmWMboL0Q0ZCWN/W8dc2uIXRQQikLy2kYm/7NzTGoEswaOWPQI6Lt3YYzLzaQz0I0vWzgrjzlL2fmuAKHKrmigsWMnfZcLfXH2p3FTEmav5WXFq2H+pAm9G6hL7ekWUkE+h5PTShtq6zwk66XOnsoYEipxnZQAHA4mL3AvvwccTwwuezTPqOHjZDBo2YO/GXobdNvrxXQx1oY2RwlcZSBjwQyobICRYpx4yd/iNYYfD4NQyv2lOsu4YZz3/D+EvqNyhlKyq1G3EnkvutmMx90/2g235dClnUF0y8yxO4lzevDU6WJIkeXl8KccIxck00MCaCjDc5ycP2VgD1O7lgxIDHNS9mukn47ZcgZmR/MS6ykPbaWlEbRvPK6u1lBaANMq2Wqu0Ndq0Zlp8Bw7zT574BzoEQ3GnpQOCMmD40AMgTJWzm8R45nzolEFmCQuzz5jX4v8yKlmM3GGjtFqb3E3vifQdOidoijl76pi+D7EoZDqq1OKjrmNB8IGt3SAIwdlK4kGUmyL19gZIBDpAWJ4P345R8VCQ4HRxDbOoozriipu975vBmCuzE5gmlVOf5+4quyza2pzBAXOSNJpm/kowd3h3w6FgjMMV1i/TjVMf9qS5jQvA3Gew1l+tGGwWH1Vc1rwsgeXR7LIgC
+ SmwtY0BX
+ YatIMBK+gwi31s2tRHkHvVfwEy4Yqc5KkFXqAkaJGBBEvpSk1zENyuzahZqiQ7zdSoiBNZqUYQrRh+XbKJN10CABm8LqPAVlynyzA+EqJ18XJ9BIWRc91rc8xKPejuCuafrdezPv1pmTg+0ZKLPiN6GBLBt9wjzC/oLxWk9vaCyut4TGoSedQIhH76xn7uNzgd0psjjKBuPTHyinzJ01FKxZco85u+49N6mCibgXz55MzIw0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,96 +106,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Misc cleanup, improvements and updates of code, test, and documents.
+
+Patches 1-5 cleanup DAMON code.  Patches 6-10 adds kunit and selftest
+test cases for recently fixed bugs and a new feature.  Patches 11 and 12
+update guidelines for AI review and what document to read, on DAMON
+documents.
+
+Changes from RFC v1.1
+- RFC v1.1: https://lore.kernel.org/20260729033751.131213-1-sj@kernel.org
+- Fix a typo: s/alingment/alignment/.
+- Add damon probes parameter validation cleanup (patches 4 and 5).
+Changes from RFC
+- RFC: https://lore.kernel.org/20260728052811.192712-1-sj@kernel.org
+- Remove ctx parameter of __damon_va_init_regions().
+- Fix damon_nr_samples_per_aggr() overflow kunit test.
+- Rebase to the latest mm-new.
+
+SJ Park (12):
+  mm/damon/core: use damon_nr_samples_per_aggr() for max merge threshold
+  mm/damon/core: remove debug messages
+  mm/damon/vaddr: remove a debug message
+  mm/damon/core: validate number of probes in valid_probe_params()
+  mm/damon/sysfs: remove probes number validation
+  mm/damon/tests/core-kunit: extend set_regions() test for error case
+  mm/damon/tests/core-kunit: test <=0 size damon_set_regions() inputs
+  mm/damon/tests/core-kunit: test overlapping ranges for set_regions()
+  mm/damon/tests/core-kunit: test damon_nr_samples_per_aggr()
+  selftests/damon/sysfs.sh: test hugepage_mem_bp quota goal
+  Docs/mm/damon/maintainer-profile: update AI review for Sashiko replies
+  Docs/ABI/damon: recommend subsystem doc instead of admin-guide
+
+ .../ABI/testing/sysfs-kernel-mm-damon         |  2 +-
+ Documentation/mm/damon/maintainer-profile.rst | 19 ++----
+ mm/damon/core.c                               | 19 +++---
+ mm/damon/sysfs.c                              |  2 +-
+ mm/damon/tests/core-kunit.h                   | 65 ++++++++++++++++---
+ mm/damon/vaddr.c                              | 16 +----
+ tools/testing/selftests/damon/sysfs.sh        |  1 +
+ 7 files changed, 76 insertions(+), 48 deletions(-)
 
 
-On 29/07/2026 14:43, Usama Arif wrote:
-> 
-> 
-> On 29/07/2026 13:36, David Hildenbrand (Arm) wrote:
->> On 7/8/26 11:58, Usama Arif wrote:
->>>
->>>
->>> On 08/07/2026 08:56, David Hildenbrand (Arm) wrote:
->>>> On 7/7/26 22:17, Joanne Koong wrote:
->>>>> Unlike for PMD-sized folios, an anonymous mTHP folio doesn't get added
->>>>> to the deferred split list at fault or collapse time. As a result, a
->>>>> fully mapped mTHP folio that is mostly zero-filled doesn't get split by
->>>>> the deferred split shrinker when the system is under memory pressure.
->>>>>
->>>>> Add anonymous mTHP folios to the deferred split list so that if there's
->>>>> memory pressure, a zero-filled mTHP can be split with its zero pages
->>>>> remapped to the shared zero page and then reclaimed.
->>>>>
->>>>> To minimize overhead on the common order-0 fault path, the
->>>>> deferred_split_folio() call is guarded by an inline folio_test_large()
->>>>> check.
->>>>>
->>>>> Suggested-by: Usama Arif <usama.arif@linux.dev>
->>>>> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
->>>>> ---
->>>>>  mm/memory.c | 2 ++
->>>>>  1 file changed, 2 insertions(+)
->>>>>
->>>>> diff --git a/mm/memory.c b/mm/memory.c
->>>>> index 6637c5b13c9b..441d918e3dc0 100644
->>>>> --- a/mm/memory.c
->>>>> +++ b/mm/memory.c
->>>>> @@ -5259,6 +5259,8 @@ void map_anon_folio_pte_nopf(struct folio *folio, pte_t *pte,
->>>>>  	folio_add_lru_vma(folio, vma);
->>>>>  	set_ptes(vma->vm_mm, addr, pte, entry, nr_pages);
->>>>>  	update_mmu_cache_range(NULL, vma, addr, pte, nr_pages);
->>>>> +	if (folio_test_large(folio))
->>>>> +		deferred_split_folio(folio, false);
->>>>>  }
->>>>>  
->>>>>  static void map_anon_folio_pte_pf(struct folio *folio, pte_t *pte,
->>>>
->>>> I had a session [1] at LSF/MM about having essentially all large anon folios
->>>> part of the the deferred split queue.
->>>>
->>>> (1) I don't think this scales.
->>>>
->>>
->>> What if we only add the mTHPs for which the policy is set to always.
->>
->> That doesn't really help lock contention. And the lock contention is indeed a
->> thing, as we now also want to enable the LRU cache for smaller large folios,
->> which improves performance:
->>
->> https://lore.kernel.org/r/20260709081536.82768-1-baohua@kernel.org
->>
->>>
->>> I think it doesn't scale if someone sets all orders to always, but if you only
->>> set the 2M mTHP sysfs to always, it should be the same as what we have today
->>> for PMD order?
->>
->> I don't see a problem with large large folios, only with small large folios :)
->>
->>>
->>> The main motivation for this series is to try and bring the performance for
->>> ARM on par with x86. One of the differences is TLB misses. I imagine the lower
->>> churn in kernel by using larger page sizes will help as well. But we will
->>> run into OOMs without the shrinker.
->>
->> Can you elaborate how this change helps here? I assume you want to enable mTHP
->> in production. Which sizes? large large ones? :)
->>
-> 
-> One of the differences in our production between x86 and ARM hosts which we think
-> should perform at a similar level (but currently aren't) is TLB misses.
-> 
-> On x86, we have 2M THP set to always.
-> On ARM, we have base page size of 64K. 2M mTHPs should help bridge the gap due to
-> TLB coalescing. We can't really set 2M mTHP to always as without the mTHP shrinker
-> we will end up with severe memory pressure and a significant increase in OOMs.
-> 
-> We don't plan to enable other mTHP sizes on ARM, only 2M.
-> 
-> The series by Barry is for folios above costly order, so won't impact this.
-
-s/above/below/
-> 
-> David, Joanne, Johannes: what do you think about only adding folios that are larger
-> than COSTLY_ORDER to deferred split list?
-
+base-commit: a8aa6f3b608c8c9119a7978f5f4eb083c53ea56b
+-- 
+2.47.3
 
