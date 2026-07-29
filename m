@@ -4,141 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E21EAC53200
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:42:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 731F2C53200
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:42:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 014FE6B00C5; Wed, 29 Jul 2026 10:42:44 -0400 (EDT)
+	id 6F3106B00DB; Wed, 29 Jul 2026 10:42:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F2ED26B00DB; Wed, 29 Jul 2026 10:42:43 -0400 (EDT)
+	id 6A3A56B00F8; Wed, 29 Jul 2026 10:42:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E441D6B00F6; Wed, 29 Jul 2026 10:42:43 -0400 (EDT)
+	id 5B9A96B00FA; Wed, 29 Jul 2026 10:42:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C0EC06B00C5
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:42:43 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 387D06B00DB
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:42:56 -0400 (EDT)
 Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 35F221C0B64
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 08:47:30 +0000 (UTC)
-X-FDA: 85041185460.09.9126594
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf17.hostedemail.com (Postfix) with ESMTP id A91274000D
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 08:47:27 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="jOjOdPd/";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zAIkPIfX;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=nNsY6KEG;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=EKMN+rQV;
-	dmarc=none;
-	spf=pass (imf17.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8011E40661
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 09:57:18 +0000 (UTC)
+X-FDA: 85041361356.09.3C59F93
+Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
+	by imf03.hostedemail.com (Postfix) with ESMTP id E6DFE20006
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 09:57:14 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=I2AU6TlI;
+	spf=pass (imf03.hostedemail.com: domain of lixiasong1@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=lixiasong1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785314848;
+	s=arc-20220608; t=1785319036;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7zJdrmDngk5wPjq89GH4/vM0y5+ghziNEUxgt0U0SR8=;
-	b=j9kctECnPHx2s3r80tDPc5iWB0X08uT1uW386jgX2BZaxZPAjKvSqwMdKrGDzHEOnU4NAj
-	0seRdnjsSO264iWRdEsl2o2qE1RCHOosa272uR2DtOS0IQL8bMHVBZsEUrF3NpyYBLkmsy
-	PAKrS31cY7kfbHuawDATasp11elkWxU=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="jOjOdPd/";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zAIkPIfX;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=nNsY6KEG;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=EKMN+rQV;
-	dmarc=none;
-	spf=pass (imf17.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Wjfz7u8Jjtoo9lneWaMiq4ptplMXYpCDbTPTzsZbqGY=;
+	b=ihUw/1EwD5QROKSYumnuQgwMgN/tTOIWu6bV8PnDus8T9A0ytvmsjGtRw6j6USK6lBPyyU
+	uLiW2/0FZOjntZ5YosTznn0bY7f3GBK2G2sdtvt/kQ1ctACoU/+YslgVL8x9xGOUdo6Vdx
+	emJXNVok8uiNFOmr5e5bbu9Ip+9jojg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785314848;
-	b=3emOTbDLOWQNP9LJANfAEzEcbf6HygcIBI5s05Ma3RdkLu15CwEqZmMjpz8XUuQaykaaI3
-	b/3eQ7otD8Ia+f3TBsBoiCEIKQSfJ9DPEezd7uIsTujtsudsuZkae/YR14E7TZTh0vdIVo
-	/kuT+dF+61V+W39jL7oli57L5LPcGYM=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id E49673E05;
-	Wed, 29 Jul 2026 08:41:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1785314505; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7zJdrmDngk5wPjq89GH4/vM0y5+ghziNEUxgt0U0SR8=;
-	b=jOjOdPd/ne7HHiYPJXh9ID22f2T7p8udr8k2GNJDBaFmSdgXPCxc1gFM3eKu/bcecWKtyX
-	qwDPFdGpJBCeMUJ3IBTaBs4tIgD+dqkqPjzmo1Ja5LeDbpo+G2sAT5ZZL0NNu/rqWd/fma
-	mX7bQCKAbnfnGv+4kGRCExfCwy3Pn+w=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1785314505;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7zJdrmDngk5wPjq89GH4/vM0y5+ghziNEUxgt0U0SR8=;
-	b=zAIkPIfXoZsvokrMupfpCcRAbOHCVsbtonc0cvXx/AbWcmmV5l0ELH92Zu8M64StRRak9T
-	GgiAv2peqNd8NTAg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1785314500; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7zJdrmDngk5wPjq89GH4/vM0y5+ghziNEUxgt0U0SR8=;
-	b=nNsY6KEGbcvVsPnrtB1XYL7QPVy2EvQl0lZE6DcpAzFswfp0k1UFkAf9pIkg1anPWU8B0S
-	St5ESsraTztxL20R/XcJeFEieysFmxBpgRA60sz34jeXZJ2E1OkzJpdqv0ycSrI9qqSOo8
-	1z0HjFP57RzhNUFlhGtY/DrAR7i1yFI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1785314500;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7zJdrmDngk5wPjq89GH4/vM0y5+ghziNEUxgt0U0SR8=;
-	b=EKMN+rQVYE5NGLhgjevO4S6lgArcbHkDpZbyWCTX20ULcVK5NpsjZvneQ3GKs46tB1ZgQ7
-	1t+Pw8vukKneVrDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D216C779A1;
-	Wed, 29 Jul 2026 08:41:40 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 2uHBMsS8aWrXWgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Wed, 29 Jul 2026 08:41:40 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 6CE72A131F; Wed, 29 Jul 2026 10:41:40 +0200 (CEST)
-Date: Wed, 29 Jul 2026 10:41:40 +0200
-From: Jan Kara <jack@suse.cz>
-To: Tal Zussman <tz2294@columbia.edu>
-Cc: Christoph Hellwig <hch@infradead.org>, Jan Kara <jack@suse.cz>, 
-	Jens Axboe <axboe@kernel.dk>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Christian Brauner <brauner@kernel.org>, "Darrick J. Wong" <djwong@kernel.org>, 
-	Carlos Maiolino <cem@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Dave Chinner <dgc@kernel.org>, Bart Van Assche <bvanassche@acm.org>, 
-	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, Gao Xiang <xiang@kernel.org>
-Subject: Re: [PATCH v6 1/4] block: add task-context bio completion
- infrastructure
-Message-ID: <4ahxusvs255ibn5unrayfeioqijbbidtn3l7joczxphwo2faee@3wtnw4nzu6wi>
-References: <ahPbaSEoNA755Nt3@infradead.org>
- <f1b8eeb6-2397-4f48-a21a-a023eb0c80ab@columbia.edu>
- <rkb5oei6cx2erbyininczz6ukbnquqheexhu7tznn5rslkkdn7@b4kpdyhdwdb6>
- <ahbq0RdUyLIPiItB@infradead.org>
- <80cb53f3-e7e5-4f96-bacc-f9fb7661d976@columbia.edu>
- <cuyklvhnt37xwk3jlr2iyyxxkzvt4bsf5iqv2gag4ixdicnbk2@rfqgjlclwesz>
- <4jtsjd2sbsn2w7fzfwb7wwowz72r4kc6345ckkkcjoxjbbwjwn@rkl44x3o3sgy>
- <cc58a101-6d09-4e42-b99d-673271934c29@columbia.edu>
- <amgrwn0yQoFvJP4u@infradead.org>
- <8124341f-3af2-4a16-897d-38db5ab5a9d4@columbia.edu>
+	t=1785319036;
+	b=nfRQq6hKH5ndusQ6j5h8h7ddkSIaZ+lU49bC1+qj6jZf+UCbKp3Y/COooZUYYT9jDAYXi3
+	vzlqfzoO91Qg+uDkRHE5NNFaW4vobT6gsAy2ZBDRj6YXvkyZD+B97c8ZX7m7sATGQ2vIdv
+	5ha+Kaq3MMBQmnnvG/qvQjZJs6pxhuc=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=I2AU6TlI;
+	spf=pass (imf03.hostedemail.com: domain of lixiasong1@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=lixiasong1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=Wjfz7u8Jjtoo9lneWaMiq4ptplMXYpCDbTPTzsZbqGY=;
+	b=I2AU6TlIkp48Hpytaiu6thA046L8hywVvahEPl/bM0sDfoILItxbSuGKeSeM0qIGiC/pW47+1
+	TKrcq9mIeaK3z7P9Zy3A+1dNeqPmE0fgpilAue+avNo7wsJ2LihZfDP9/u9aIIIDK5E+4KQ2+dk
+	x9C75brrzOEPm8EmCRvP1ko=
+Received: from mail.maildlp.com (unknown [172.19.163.163])
+	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4h96vJ40q0zKm6V;
+	Wed, 29 Jul 2026 17:47:40 +0800 (CST)
+Received: from kwepemj500018.china.huawei.com (unknown [7.202.194.48])
+	by mail.maildlp.com (Postfix) with ESMTPS id 15A794057A;
+	Wed, 29 Jul 2026 17:57:10 +0800 (CST)
+Received: from huawei.com (10.50.85.128) by kwepemj500018.china.huawei.com
+ (7.202.194.48) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 29 Jul
+ 2026 17:57:09 +0800
+From: Li Xiasong <lixiasong1@huawei.com>
+To: Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, Andrew
+ Morton <akpm@linux-foundation.org>
+CC: <stable@vger.kernel.org>, Hao Li <hao.li@linux.dev>, Christoph Lameter
+	<cl@gentwo.org>, David Rientjes <rientjes@google.com>, Roman Gushchin
+	<roman.gushchin@linux.dev>, Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+	<yuehaibing@huawei.com>, <zhangchangzhong@huawei.com>,
+	<weiyongjun1@huawei.com>
+Subject: [PATCH v3] mm/slub: fix missing debugfs entries for caches created before sysfs init
+Date: Wed, 29 Jul 2026 18:18:49 +0800
+Message-ID: <20260729101849.3734287-1-lixiasong1@huawei.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8124341f-3af2-4a16-897d-38db5ab5a9d4@columbia.edu>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A91274000D
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.50.85.128]
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ kwepemj500018.china.huawei.com (7.202.194.48)
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: E6DFE20006
+X-Stat-Signature: 71ncjqsfunxuyzf6j4c4nfnyuz9pdm4h
 X-Rspam-User: 
-X-Stat-Signature: psw1axurmhw79hnzxd4a7x8sbgn13eyg
-X-HE-Tag: 1785314847-161949
-X-HE-Meta: U2FsdGVkX18FFifrpujK+lrVGP9xXXudDwms5CXI8hoBTIVK66sYmiR2VL4gbNSNgzhwVWfvs6gKpJMpb2+lATL1RnmMHF1mr3BsnZcgcoMzXzSQ/Vflvqrc9BlWwjmJDlvpvW4iWirQQgqVagjbelHfav8Uuwt4/W6XmOJrUM6h4+XAx4CIS6l68FdoK9EEQuoNnL/TJesurX17SCmoMFdswdLhPSrpF1Trt8nguODDllQH7MVtJc/F7zBp+LJFXnbGcDvXmV+lLUD9r1EA57n5TEsE0j7M0ZjyVlioVloa5tJ1fKn6xK2rCMJt2V2a/Ms3oFuPCXOuTXX0VfQaTVpm9BI8TasiyhVuiRkevLICgYZ1gxIGbZRBGq8F0U2U5K3n7dZnVPoFVLQagtUIdaF1qMjZTXVigCbakF5RKM97dlPKlUO03maWTMsu02om1oZiCU8QmgO5tSIasOrPk/vNKScbW0z4MWbBahGqx4HtqyCjamNURrLACST1afzFAI5OwBAlhnpUoE51xvXHUrz4d26DTOG/CzcGAEv+qQkqMH6Xi1KgRNk1AQ23DqAqAxKoB8j6yNoK77t3+jAo7wM0O6C+gxuYVS7/ctS+QOdvG0aVOgNL2Xw/rAQrcQBBwP49+m/AC112yp2hdWRqirzmMTFYkOTa3xSF/tQTU6cS8eCnYoI9Qqw4lELQ5wf1Or8iSNE/eDftWTbmRpXsANKK0ZQ6jXH3hPGjIBUIp7VDfQfBzHhEdy9FACBLEZLw3yKORn5gtWxYXSS+qO6p6IlU7neyZjrXXtm3FbqQZQlHqjbXimvPowsC+qpLjnXVISY4ZPoNzOCs4Orm4glhPeCEC0taFTmGTeK6DhD67Ttv8ZEaTSzqNehMa01dF10lUa/uHNgGPjanm2qNgDnT4kOCPycmG75C8tiZHYUODrd53fZwbFmfDqQ4lR0D9yTODTkOqs2qqZkpbS12cGO
- EBeIRdkJ
- TKmzKktPFF74xvUBBDHIRKHVAx0Gx9aKAxvgpzrGwGt8xUMljRdLMpbXadqRblViDki1aalXgdnAsUz5/6yypXD6/XFfv+gtK0M616YPbyIU3bNfNS52lNJpn3NrjA30fXhNEwE2lxbdJHdpfBFxAXMv7ptq0EjfKl5kYmJHnQw69/0EORHMIIyOWRaAJ6IJ/Jn2tM7+U0QiJhchGrehdrLST3brzTTRxCR5r+DB31SZ8Qa0//ge24CB4wg2KqkV0LGKzswkDJ88I/Ko99fEHkl2KAAe78WAqWV3icNoT+94hclil5lrV5GkcSX9DWXCrkNda0OIq6XZv1yc/8CthekMiFg==
+X-HE-Tag: 1785319034-419990
+X-HE-Meta: U2FsdGVkX1/p4DphISqWlY8iTXkW74rBvOvFp254fzMpwWoJdYA5GXWwobu94bCYTCaKk1MCALWyD7kv9Jm/5Fub3PPZ6BAfSd5YJoV+cOx85hBrXTOsA4Hq2w/rPcImOc1H6pwME57ySDkh8A0gwA9ZaD7IWxQ2JlS0RviPZsIiedtbebGv/FaPoXSB0kD8Lv18eAVYfmnhcjS07FPZKtpOLfKIcS37LQwZGVzGcQ9kByl++KVmINejJ3IoU/1gpjA5w69FmrAe9qFhU0LweJkjI+jzVyRJFLSY6ju5pBvSbMUq5MnbcREinFtAH/DLMhacrwCfnzb0Itgu1uWBehyHra2nrF1m+B/c0rP2zJV02XmqtkX/cXjDOQt9lWHGFiFyeZ5OmYhdO7t28y3H/AUPGQkmEYIFm+JGtY8PUViaS1wSyHqt8CxJmcnyGm7flTw6yRfWU/j9SpRnPFL5lSnolQfvvliurTir1lFXv5uiSc3Qr/zJxn1Lbi3g70Q5wlUFwVhJ+PZBRmBcf2ZGxIw4uRgxwqeGtkV9kiFt/u/mbMY7Ni0jhEbYyjt20j50gWv8EilBlWdVwDF4u4zdnZX5Uvvu2pemhuxHEjZxA5ZhfSMbTmH7DWex2ceC8cBGtdNz/f4E+eLQiHJ71PRkPeZnC4emrFms82NPVqirNkK/RtkJdPAVcH+zHYC18aiauJYXfHcLQ9xVU4tmqXDlsYQJ5c9NJyqbtMf1o5tySrUir8gp4MfPw3q9ijsVzjDJFsQ2O53MxZWkCYkPNVzTA55cwKu0z6u/IFNLS6W2qe0XvhcmZ7g2Vmnpv7Ats5Nv+k+1DsXFPYrY1m0WTMWx4eSaYr7bx7POTJ0GOJGrnyG5vsL/RlhrCOGwWClKPg7IdLa45FXwoQQKaeuxYZ0hhzzzn5+Y9mJOx3paDwwJlS1O2wg/HBgKmbIG6A5RBPZPkK6hlmZIE1PeqPR2vdV
+ ZlgjNZCI
+ nmNGscRGPblA6234mgIUQ5gqIKp1Qqrs4I9q4qeQRtF373Wn8AzGjeW28oLODMYZkNAKl84iPagIbkE6LkKGR/nG+3gfMALMpwQ0Dv1ViA8/tUa5i2i0emGPp9R2rbzkmD40p7fqkeWFfoGsk8fPN+lw+/ZiATN0MytHLweoPyAsCqlHmTWLAQ931pyOQOWu26qG57q/u5qM78pUpFownek2Gb0xPYS95IIC/C95/OyzvhzVJo2hM7Sv6Kj0wtyYtcuGOxcH2urmk7Ahc/OXk2Aoyahg5uEmB+J7+MnLzKcT6DHnCpXREry4/GajIEdhTeJMv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,213 +99,204 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed 29-07-26 02:11:17, Tal Zussman wrote:
-> On 7/28/26 12:10 AM, Christoph Hellwig wrote:
-> > On Mon, Jun 22, 2026 at 12:45:25PM -0400, Tal Zussman wrote:
-> >> > 
-> >> > Any progress here? The patchset looks really promising so I'd love to have
-> >> > it completed :)
-> >> > 
-> >> Sorry for the delay - got caught up with some other work and had to set this
-> >> aside for a couple weeks, but haven't forgotten about this. Planning to pick
-> >> it back up some time this week.
-> > 
-> > Sorry for another ping, but we have a lot of code waiting on this
-> > kind of infrastructure now, it would be great to get a version in.
-> > 
-> 
-> No worries, and apologies again for the delay. I had some deadlines and
-> travel that kept me busy, but I have some additional results below:
-> 
-> First, I investigated the workload C behavior further. The underlying
-> problem is that ioends routed to the XFS completion workqueue were also
-> carrying BIO_COMPLETE_IN_TASK, so unwritten completions bounced through the
-> block-layer worker (plus its delay) only to be queued on
-> m_unwritten_workqueue afterwards.
+slab_debugfs_init() creates the slab debugfs root at device initcall
+time, while slab_sysfs_init() moves slab_state to FULL at late initcall
+time. SLAB_STORE_USER caches created in this window miss their debugfs
+entries because do_kmem_cache_create() skips debugfs_slab_add() when
+slab_state <= UP. This was observed with MPTCP's request_sock_subflow_v6
+cache, whose slab debugfs directory was missing.
 
-Good spotting!
+The affected window is:
 
-> The ioend workqueue already provides the
-> task context the flag asks for, so something like this avoids the bounce:
-> 
-> diff --git a/fs/xfs/xfs_aops.c b/fs/xfs/xfs_aops.c
-> --- a/fs/xfs/xfs_aops.c
-> +++ b/fs/xfs/xfs_aops.c
-> @@ -552,8 +552,10 @@ xfs_writeback_submit(
->         /*
->          * Send ioends that might require a transaction to the completion wq.
->          */
-> -       if (xfs_ioend_needs_wq_completion(ioend))
-> +       if (xfs_ioend_needs_wq_completion(ioend)) {
->                 ioend->io_bio.bi_end_io = xfs_end_bio;
-> +               bio_clear_flag(&ioend->io_bio, BIO_COMPLETE_IN_TASK);
-> +       }
-> 
->         return iomap_ioend_writeback_submit(wpc, error);
->  }
-> @@ -664,6 +666,7 @@ xfs_zoned_writeback_submit(
->         struct iomap_ioend              *ioend = wpc->wb_ctx;
-> 
->         ioend->io_bio.bi_end_io = xfs_end_bio;
-> +       bio_clear_flag(&ioend->io_bio, BIO_COMPLETE_IN_TASK);
->         if (error) {
->                 ioend->io_bio.bi_status = errno_to_blk_status(error);
->                 bio_endio(&ioend->io_bio);
-> 
-> (Diffs may be whitespace-damaged, for illustrative purpose only)
+  slab_debugfs_init()
+    slab_debugfs_root = debugfs_create_dir(...)
+    list_for_each_entry(s, &slab_caches, list)
+      debugfs_slab_add(s)
 
-This looks a bit hacky and at least deserves a comment. Ideally we'd get
-rid of the xfs workqueue and rely on the generic offloading mechanism. But
-as Christoph wrote maybe let's just get something good enough in and we can
-work on improving that later. In particular if Christoph has a plan how to
-clean this up :).
+  kmem_cache_create(..., SLAB_STORE_USER, ...)
+    do_kmem_cache_create()
+      if (slab_state <= UP)
+        return without debugfs entries
 
-> On a fresh-file run of workload C (every completion doing an unwritten
-> conversion) this stops conversion-heavy writeback from entering the
-> block-layer deferral entirely and cuts write p50/p99 by 7-8% (3381 -> 3151us
-> / 6761 -> 6193us) at equal bandwidth. I tested a sync waiter workload on a
-> fresh file too, and it also hit this even harder: a 4k write+fdatasync loop
-> goes from 2.0 to 17.0 MB/s with this change on top of v6.
-> 
-> I don't love this patch, as it feels a little hacky as currently
-> constructed, but the perf impact on this worst case is substantial.
-> 
-> I also implemented (a version) of Jan's suggestion of only delaying the
-> completion work when the offload rate hits a threshold, and tested it
-> against both delay=1 and delay=0.
-> 
-> We keep a per-CPU count of completions offloaded during the current jiffie
-> and dispatch the worker immediately unless that count crosses
-> BIO_COMPLETE_BATCH_RATE (16000/s per CPU, i.e. 16 per jiffie at HZ=1000):
-> 
-> diff --git a/block/bio.c b/block/bio.c
-> --- a/block/bio.c
-> +++ b/block/bio.c
-> @@ -1749,10 +1749,15 @@ void bio_check_pages_dirty(struct bio *bio)
->   */
-> +#define BIO_COMPLETE_BATCH_RATE                16000   /* per second, per CPU */
-> +#define BIO_COMPLETE_BATCH_THRESH      (BIO_COMPLETE_BATCH_RATE / HZ)
-> 
->  struct bio_complete_batch {
->         struct bio_list list;
->         struct delayed_work work;
->         int cpu;
-> +       unsigned long window;   /* jiffie that count refers to */
-> +       unsigned int count;     /* completions offloaded during window */
->  };
-> 
-> @@ -1784,16 +1789,27 @@ void __bio_complete_in_task(struct bio *bio)
->  {
->         struct bio_complete_batch *batch;
-> +       unsigned long now = jiffies;
-> +       unsigned long delay = 0;
->         unsigned long flags;
->         bool was_empty;
-> 
->         local_irq_save(flags);
->         batch = this_cpu_ptr(&bio_complete_batch);
-> +
-> +       if (batch->window != now) {
-> +               batch->count = 0;
-> +               batch->window = now;
-> +       }
-> +       batch->count++;
-> +       if (batch->count > BIO_COMPLETE_BATCH_THRESH)
-> +               delay = 1;
+  slab_sysfs_init()
+    slab_state = FULL
 
-So this logic will end up completing bios without delay once jiffies jumps
-to a new value and if we do enough IO in this jiffie, it will start
-delaying. So the behavior will be a bit erratic. I was actually imagining
-something like maintaining exponential moving average and decide based on
-that. But regardless of this you have a good observation that the optimal
-value of BIO_COMPLETE_BATCH_THRESH is dependent on the speed of storage
-(and queue depth of the workload) so any constant value is unlikely to make
-everybody happy.
+Initialize the debugfs root and add debugfs entries while holding
+slab_mutex, walking slab_caches exactly once and handling both sysfs
+and debugfs entries in the same pass. This gives the sysfs and debugfs
+initialization an explicit order and prevents caches from being
+created between the debugfs scan and slab_state reaching FULL.
 
-To determine whether to delay completion or not we'd need something more
-sophisticated like measuring queue depth of the workload or bio completion
-time and deciding based on that. But that would need much more
-experimentation and complexity which I don't think is justified at this
-point.
+Gate the new slab_late_init() on either sysfs or debugfs being enabled,
+with the slab_kset creation and alias_list processing factored into
+helpers that have empty no-sysfs variants, as suggested by Vlastimil
+Babka. On slab_kset_init() failure, slab_state stays below FULL so
+kmem_cache_create() keeps taking the early-boot path, matching prior
+behavior.
 
-> +
->         was_empty = bio_list_empty(&batch->list);
->         bio_list_add(&batch->list, bio);
->         local_irq_restore(flags);
-> 
->         if (was_empty)
->                 mod_delayed_work_on(batch->cpu, bio_complete_wq,
-> -                                   &batch->work, 1);
-> +                                   &batch->work, delay);
->  }
->  EXPORT_SYMBOL_GPL(__bio_complete_in_task);
-> 
-> 
-> I used 16000/s (at HZ=1000) as the threshold rather than the 1000/s
-> suggested. For async completions the 1-jiffie delay would at most double the
-> latency, but a sync waiter that can reach the threshold instead gets stuck
-> at it. Each deferral adds a jiffie, which drops its rate back below the
-> threshold, which re-arms a few ms later. This has a significant impact on
-> the qd1 fdatasync workload below (W1). My main concern is that this turns
-> out to be device-specific and 16000 is too low for faster drives.
-> 
-> Results are below.
-> fdatasync latencies are fio's sync percentiles. All three kernels
-> include the xfs patch above: delay=1 is the current unconditional
-> delay, delay=0 unconditional immediate dispatch, and gated is the diff above.
-> C and D are the same workloads as in the previous results.
-> 
->                                  delay=1     delay=0       gated
-> W1) 4k write+fdatasync, qd1 (~14k completions/s)
->   bandwidth (MB/s)                   2.0        52.6        52.5
->   fdatasync p50 (us)              1990.7        69.8        70.1
->   fdatasync p99.9 (us)            2965.5       118.3       119.6
->   context switches                  212k       4.17M       4.18M
->   cycles                          13.8e9     119.3e9     122.2e9
-> 
-> W2) 64k write+fdatasync, qd1 (~10k completions/s)
->   bandwidth (MB/s)                  32.7       657.5       655.4
->   fdatasync p50 (us)              1974.3        82.8        83.1
->   fdatasync p99.9 (us)            2987.3       137.6       136.9
->   context switches                  403k       3.30M       3.30M
->   cycles                          22.8e9     144.9e9     144.5e9
-> 
-> C) 4k buffered randwrite, qd32 (~118k completions/s)
->   bandwidth (MB/s)                 649.5       655.7       643.4
->   write lat p50 (us)               215.4       214.7       216.1
->   write lat p99.9 (us)             703.1       984.4       730.5
->   context switches                20.69M      21.98M      21.44M
->   cycles                         922.5e9     838.1e9     911.3e9
-> 
-> D) 64k buffered mixed r/w, qd32 (~11k completions/s)
->   bandwidth (MB/s)                 761.2       753.2       757.2
->   write lat p50 (us)              2605.1      2637.8      2605.1
->   write lat p99.9 (us)            4358.1      4358.1      4358.1
->   context switches                 5.99M       6.92M       6.92M
->   cycles                         399.0e9     414.3e9     414.4e9
-> 
-> On W1/W2 the delay=1 caps a sync waiter at ~500 syncs/s, since every
-> fdatasync takes a full jiffie. The gated version never fires on either
-> workload, so it matches delay=0.
-> 
-> For C, delay=0 regresses write p99.9 by 40%, while the gated version stays
-> within 4% of delay=1's tail.
-> 
-> D is similar across configurations, but adds +3.9% cycles and +15% context
-> switches vs. delay=1.
-> 
-> Again, my main concern with this approach is that 16000 (or 1000) is a
-> somewhat arbitrary value that depends on disk performance. If the C p99.9
-> perf is an acceptable trade-off, I think we can get rid of the delay, but
-> I'd appreciate more thoughts on that and the XFS diff above.
+Guard debugfs_slab_release() against an uninitialized debugfs root,
+since the root is now created later and a cache may be released before
+it exists.
 
-Thanks for the measurements! Yes, I agree with you and Christoph. Let's
-keep things simple for now and remove the delaying completely. Once things
-settle down and we'll see how things work in practice, we can work on
-re-adding and fine tuning the delaying logic.
+Fixes: 1a5ad30b89b4 ("mm: slub: make slab_sysfs_init() a late_initcall")
+Cc: stable@vger.kernel.org
+Suggested-by: Vlastimil Babka <vbabka@kernel.org>
+Signed-off-by: Li Xiasong <lixiasong1@huawei.com>
+---
 
-								Honza
+Changes in v3:
+- Introduce a generic slab_late_init() that runs when either sysfs or
+  SLUB debugfs support is enabled.
+- Factor slab_kset initialization and saved alias processing into
+  sysfs-specific helpers with empty no-sysfs variants.
+
+Changes in v2:
+- Move debugfs root and cache entry initialization into
+  slab_sysfs_init() so both use the same mutex-protected cache walk.
+- Guard debugfs_slab_release() against an uninitialized debugfs root.
+- Update the commit message accordingly.
+
+v2: https://lore.kernel.org/linux-mm/20260723115532.761920-1-lixiasong1@huawei.com/
+v1: https://lore.kernel.org/linux-mm/20260720145124.3684976-1-lixiasong1@huawei.com/
+
+---
+ mm/slub.c | 76 +++++++++++++++++++++++++++++++++++--------------------
+ 1 file changed, 48 insertions(+), 28 deletions(-)
+
+diff --git a/mm/slub.c b/mm/slub.c
+index 0337e60db5ac..4ef84de4f3d7 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -333,14 +333,20 @@ enum track_item { TRACK_ALLOC, TRACK_FREE };
+ 
+ #ifdef SLAB_SUPPORTS_SYSFS
+ static int sysfs_slab_add(struct kmem_cache *);
++static int __init slab_kset_init(void);
++static void __init slab_sysfs_process_aliases(void);
+ #else
+ static inline int sysfs_slab_add(struct kmem_cache *s) { return 0; }
++static inline int slab_kset_init(void) { return 0; }
++static inline void slab_sysfs_process_aliases(void) { }
+ #endif
+ 
+ #if defined(CONFIG_DEBUG_FS) && defined(CONFIG_SLUB_DEBUG)
+ static void debugfs_slab_add(struct kmem_cache *);
++static void __init slab_debugfs_root_init(void);
+ #else
+ static inline void debugfs_slab_add(struct kmem_cache *s) { }
++static inline void slab_debugfs_root_init(void) { }
+ #endif
+ 
+ enum add_mode {
+@@ -9734,28 +9740,20 @@ int sysfs_slab_alias(struct kmem_cache *s, const char *name)
+ 	return 0;
+ }
+ 
+-static int __init slab_sysfs_init(void)
++static int __init slab_kset_init(void)
+ {
+-	struct kmem_cache *s;
+-	int err;
+-
+-	mutex_lock(&slab_mutex);
+-
+ 	slab_kset = kset_create_and_add("slab", NULL, kernel_kobj);
+ 	if (!slab_kset) {
+-		mutex_unlock(&slab_mutex);
+ 		pr_err("Cannot register slab subsystem.\n");
+ 		return -ENOMEM;
+ 	}
+ 
+-	slab_state = FULL;
++	return 0;
++}
+ 
+-	list_for_each_entry(s, &slab_caches, list) {
+-		err = sysfs_slab_add(s);
+-		if (err)
+-			pr_err("SLUB: Unable to add boot slab %s to sysfs\n",
+-			       s->name);
+-	}
++static void __init slab_sysfs_process_aliases(void)
++{
++	int err;
+ 
+ 	while (alias_list) {
+ 		struct saved_alias *al = alias_list;
+@@ -9767,12 +9765,41 @@ static int __init slab_sysfs_init(void)
+ 			       al->name);
+ 		kfree(al);
+ 	}
++}
++#endif /* SLAB_SUPPORTS_SYSFS */
++
++#if defined(SLAB_SUPPORTS_SYSFS) || \
++	(defined(CONFIG_SLUB_DEBUG) && defined(CONFIG_DEBUG_FS))
++static int __init slab_late_init(void)
++{
++	struct kmem_cache *s;
++	int err;
+ 
++	mutex_lock(&slab_mutex);
++
++	err = slab_kset_init();
++	if (err)
++		goto out;
++
++	slab_debugfs_root_init();
++	slab_state = FULL;
++
++	list_for_each_entry(s, &slab_caches, list) {
++		if (sysfs_slab_add(s))
++			pr_err("SLUB: Unable to add boot slab %s to sysfs\n",
++			       s->name);
++
++		if (s->flags & SLAB_STORE_USER)
++			debugfs_slab_add(s);
++	}
++
++	slab_sysfs_process_aliases();
++out:
+ 	mutex_unlock(&slab_mutex);
+-	return 0;
++	return err;
+ }
+-late_initcall(slab_sysfs_init);
+-#endif /* SLAB_SUPPORTS_SYSFS */
++late_initcall(slab_late_init);
++#endif
+ 
+ #if defined(CONFIG_SLUB_DEBUG) && defined(CONFIG_DEBUG_FS)
+ static int slab_debugfs_show(struct seq_file *seq, void *v)
+@@ -9964,23 +9991,16 @@ static void debugfs_slab_add(struct kmem_cache *s)
+ 
+ void debugfs_slab_release(struct kmem_cache *s)
+ {
++	if (unlikely(!slab_debugfs_root))
++		return;
++
+ 	debugfs_lookup_and_remove(s->name, slab_debugfs_root);
+ }
+ 
+-static int __init slab_debugfs_init(void)
++static void __init slab_debugfs_root_init(void)
+ {
+-	struct kmem_cache *s;
+-
+ 	slab_debugfs_root = debugfs_create_dir("slab", NULL);
+-
+-	list_for_each_entry(s, &slab_caches, list)
+-		if (s->flags & SLAB_STORE_USER)
+-			debugfs_slab_add(s);
+-
+-	return 0;
+-
+ }
+-__initcall(slab_debugfs_init);
+ #endif
+ /*
+  * The /proc/slabinfo ABI
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+2.34.1
+
 
