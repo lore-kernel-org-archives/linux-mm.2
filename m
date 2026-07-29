@@ -4,153 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 666BFC53200
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 13:54:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32972C54F51
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 13:57:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 692246B00A4; Wed, 29 Jul 2026 09:54:46 -0400 (EDT)
+	id 427846B00A6; Wed, 29 Jul 2026 09:57:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 622366B00A6; Wed, 29 Jul 2026 09:54:46 -0400 (EDT)
+	id 400286B00A9; Wed, 29 Jul 2026 09:57:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 50A826B00A7; Wed, 29 Jul 2026 09:54:46 -0400 (EDT)
+	id 315676B00AA; Wed, 29 Jul 2026 09:57:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E1506B00A4
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 09:54:46 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0CDA68069F
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 12:37:16 +0000 (UTC)
-X-FDA: 85041764472.08.0F0F7BC
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf11.hostedemail.com (Postfix) with ESMTP id E42F940013
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 12:37:13 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="HsBO/9wN";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=vhLdNBgT;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=nBonCs6a;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=BT3fFBrc;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf11.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1100C6B00A6
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 09:57:58 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 21067406BC
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 12:39:01 +0000 (UTC)
+X-FDA: 85041768882.19.184479C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 687F54000A
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 12:38:59 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W3fDs+lK;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785328634;
+	s=arc-20220608; t=1785328739;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aCPopA3duELZWRFQ7PC+zcU7UIlf1ZyVyMzN0xmYHFs=;
-	b=pRAnkV/KJWFBDy//7MqdcopvT8fV6aoKvQer8ecQ/BgdlkOSmctJUNqDgW8D2Ft63NEPE3
-	pvXZ2XBB89w1tvqZmfZUx9OylyIO8Lh6AIYdt6zAFu3RZ/7AzrSYvsLWHLiqhocBLNzLYO
-	lZGS+o7SoKgsbOn/Hov/mjk2sbW5IUQ=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="HsBO/9wN";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=vhLdNBgT;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=nBonCs6a;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=BT3fFBrc;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf11.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+	bh=GNT8IlfcupNjYzcLhZRaW5yCCnoEWSPoABJ1/0dyLlc=;
+	b=G1xF1mjXAG+IJG/yS7mB7d9kBXpCK1hnZIko3+P8Ttv7efcr9f01IBXrmt9gAeFR7VGEbE
+	c2Gn+mpny7DUr4MMMy8XwFiAL/q00jM4A1+4cJ/Oy2JKm4KeFrrsCXZfwO699RPLJwfirL
+	ia09JknGhS9Rd3U/Xz5o7qGumwmifho=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785328634;
-	b=VtXlsDlX+OxGpg9mNvg7KVdI2vef7+XttiUQW1dMSkh00XwNoVFn1xStjHkw21NaLVtP+2
-	HAwnazS8t3CY8aiSuUIRzeGOtMGU3/VIRNTnb6nsEM4maEbJxiWGyNlbEmr1DSEYtnAMx9
-	TEdapHTutuvO6/zNfG+CJLBvJuizPOE=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 0AE6C7CAFF;
-	Wed, 29 Jul 2026 12:37:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1785328628; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aCPopA3duELZWRFQ7PC+zcU7UIlf1ZyVyMzN0xmYHFs=;
-	b=HsBO/9wNGNK0BBi/KZnybjT4wfzH1RbauNRa3BkCq1Gz1ZFYfyulio9BMMz/Qhlayjht8v
-	gD7JzPlP/j/lbzamJYZIEmtCD/24X5mlh9Cm7ueizVVj2a3/38UgR1iUgozDxsYGd00nVJ
-	81gftDjjAsCoQcZd/g/wQgIFNVzYSPo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1785328628;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aCPopA3duELZWRFQ7PC+zcU7UIlf1ZyVyMzN0xmYHFs=;
-	b=vhLdNBgT3LES3Nfy+reOhuZbF+sRDMgTm8/+rp44QydsQ0PgJmekRb7kN8gf1KeP/gQfF2
-	vhVMad65mEjeOWBw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1785328624; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aCPopA3duELZWRFQ7PC+zcU7UIlf1ZyVyMzN0xmYHFs=;
-	b=nBonCs6auu91fwhTCPSwwqM/BnHZLlIGXt/TmMHVYSy429b64ZCJOljFWGBAHwpGwsp+VY
-	26DPb6Xoz2zlvJd7icT3XVFcHRopeHCqPAv9U3TcLO99ha0MheRXkinzHltD+E4YU5GueL
-	hsbqCAyQMiJN0MmV5BgL9eX8TbAHxvo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1785328624;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aCPopA3duELZWRFQ7PC+zcU7UIlf1ZyVyMzN0xmYHFs=;
-	b=BT3fFBrcAWB//UVTCQRGI3kpRDayFQs1zsoB1XrNCj60pSuBHTbHXO+sVcJVpP7eK4LEaV
-	7UMRX0P/16CpuzAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 11699779A1;
-	Wed, 29 Jul 2026 12:37:00 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id +/ToAOzzaWpxRgAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Wed, 29 Jul 2026 12:37:00 +0000
-Date: Wed, 29 Jul 2026 13:36:58 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Muhammad Usama Anjum <usama.anjum@arm.com>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>, 
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Dimitri Sivanich <dimitri.sivanich@hpe.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, Juergen Gross <jgross@suse.com>, 
-	Stefano Stabellini <sstabellini@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, Will Deacon <will@kernel.org>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
-	David Hildenbrand <david@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Uladzislau Rezki <urezki@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
-	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
-	Ingo Molnar <mingo@redhat.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, 
-	Namhyung Kim <namhyung@kernel.org>, SJ Park <sj@kernel.org>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Leon Romanovsky <leon@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>, 
-	Mike Rapoport <rppt@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, ziy@nvidia.com, 
-	agordeev@linux.ibm.com, ryan.roberts@arm.com, linux-kernel@vger.kernel.org, 
-	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-parisc@vger.kernel.org, 
-	xen-devel@lists.xenproject.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
-	linux-arch@vger.kernel.org, kasan-dev@googlegroups.com, linux-trace-kernel@vger.kernel.org, 
-	bpf@vger.kernel.org, linux-perf-users@vger.kernel.org, damon@lists.linux.dev
-Subject: Re: [PATCH RFC 09/11] misc/sgi-gru: use ptep_get() for page-table
- reads
-Message-ID: <amnxCmFU40QQaxTx@pedro-suse.lan>
-References: <20260727164715.2866609-1-usama.anjum@arm.com>
- <20260727164715.2866609-10-usama.anjum@arm.com>
+	t=1785328739;
+	b=YutcOIYcokAxy678F57dcA3duDBuOk0ax4JCcpMC9I62qZHhXC0XsyN2FMUMaIwejlanaC
+	avgRgQbfR5wAyM73Lfp1cBwRfLI60GtRDlmKsFWh0TcB3/QssK1lBX/acF8bgchBIs4pq+
+	FIkimEKP+DF9tPrww7JgHfCAU6qJVJc=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W3fDs+lK;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id E5BFF6001D;
+	Wed, 29 Jul 2026 12:38:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED5071F000E9;
+	Wed, 29 Jul 2026 12:38:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785328738;
+	bh=GNT8IlfcupNjYzcLhZRaW5yCCnoEWSPoABJ1/0dyLlc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=W3fDs+lKqS7yAg/3WlFioP8nceJExVZFLStdzWpTtm1Qk8QF+GCMSuTFn1LwizMmu
+	 UU/zLWW3e85YX+tm/vvx8ISoylPuEB/yNq0unwJ1ycup2N9ol1FFSzJhlluI8nJXl/
+	 fP7qzvuBCSy8Sn//vFeHPM4g3yM5fNSmVzzo9n0ZfypKYhMaA0CAGDmtr9ibjChefC
+	 FlsKd+SaFnalzmwBdSdKkbSAITA51F6rWXiTMFu2NDkywsGKOMg9OB5yBH+hvFiamR
+	 M4i5tsrLAtq3sRTfowyDjGi6oPFZ7OG6Y9bR98HfO4hFH2YXpFsgCh2A5nUozOPUuy
+	 bRAx5CvppbGmg==
+Message-ID: <7da62e60-6ce2-411b-acaf-f9f77ef34752@kernel.org>
+Date: Wed, 29 Jul 2026 14:38:53 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260727164715.2866609-10-usama.anjum@arm.com>
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E42F940013
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 2/2] mm/memory: add anonymous mTHP folios to deferred
+ split list
+To: Joanne Koong <joannelkoong@gmail.com>
+Cc: akpm@linux-foundation.org, ljs@kernel.org, usama.arif@linux.dev,
+ alex@ghiti.fr, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+ liam@infradead.org, npache@redhat.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
+ vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ willy@infradead.org, linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>
+References: <20260707201735.4113107-1-joannelkoong@gmail.com>
+ <20260707201735.4113107-3-joannelkoong@gmail.com>
+ <584098de-dd48-4004-8e7e-3d826e60c860@kernel.org>
+ <CAJnrk1Zc1cZa5edmb6Z18nO3xfLBww-7wobxkOe2OJmWE9qzpA@mail.gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <CAJnrk1Zc1cZa5edmb6Z18nO3xfLBww-7wobxkOe2OJmWE9qzpA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 687F54000A
+X-Stat-Signature: rorpjhba9bzwbogk1rr9u5dgpoergzyn
 X-Rspam-User: 
-X-Stat-Signature: 6mmei1f9oh3pu8xe7cqszfmpbmf5wx4h
-X-HE-Tag: 1785328633-95994
-X-HE-Meta: U2FsdGVkX186tX4CWqCzrrXexW9PGzpPNSv1/FAK/OZJbknOPBaxJfeHTcsD1JlKcnxLcHSGq3SxP3nL3qqLrPCbM8cH9qBoSHKt4Y29LHfZbG8cHM7KOj4Dxqfp/fm9/uTB9hz+Kcp47w1KG1CSmH6BDhVHN+86UJEiZk/QtCE3UzpcHdwIvDkFDs1HSkZWZPt4Vhvywuo88SGPkd+b6yUwS1aViFh0yCZXcX/M5cV/WocWpLJhSIti1QD5Nh7M2tctSM9qAhgnALQo0XRJg+TuRSk3hvxPh4m2nO2w/XM7dPxWlzbhF+otO3EZyLmd63cKwFO9c22bUvY/C7D8+qxxutE3NyZYCs8aCqxJLjYqC81cBgSgSuGLxPXpQI9nHwKrlB1rSpncbVIiWRpXZaaKJFT11n52QALNMrg5Bty77IRuGU8M4twewpjrE7W/bthTLrhgjhsF8fONCmQyLliQFwsDkZeUEORve8LuST9EjU6ZiS8GYCUCZxZhnqUamTGuFT/99AU2OBCCkjkc/HZAxaQUbmW3ZoZbHLeOaU86ELFcBEo+L8dYZR8Zmauxi/7nk83jwutE3tSYHUn3MNOc0hPvohPCwa2gt1iVC7Gr+dLVXWp0AybjnmrLQ6Rd30eqX2pjq+Srk20hVRD9ERHyMk3sfQrUz4gEkTLje3FZZIh6L2qCjytNJX7aMQsk1rMs3eJRN5WWTkoCPKNUkQ9G6BV2jb+tlUN0KtOzkw1XVnjXlBS2HBWqpQZYLUBJqxLDri2ovQFuO6WtD1BGrlEbxGEfGllw4rK0XCbmqIAyn6KL1CINcsuEj3vBDp/qBHoXv2iGyeel1MzHov53sI6dbPzn8iH3ccO/g0kOkJ7nESeO/LlO3Rgsx7JiKufY1hlcJ8ikT5dWS75Wke7wfPSFWGh2sWZfnwtFCVzH+lVBROjOoj5Q72yoM0h0V8KZQjWt2bEXjMNXOJJzNel
- lR79T1su
- 9hjLMxXyEK+MU/g6ZNPtbNqxAikGq6mwkd02jmk+NBTTZ9mLWTmXSfhXaGOX5xGj5S3OUBQ/BZxCraQWEXpdBgXIEm4hHxhSxQ2h6PGXMy6gNdckbzit5c4tfLMewr1ZelOtxIoBwWFgP2aHGPfU/OxR4wCO/gvuc0K0qei54UWl+lwc1Lh4Db0KOWR7/WTknnqREdGNUc2W7M7VglMTTKVKOI5ih3pY+/DM9INz/jU+Q1o3xmA1jxMPnpxMwfpLyMf9hbRNrLzgwu4P8WCcMMGEaTFQYqdyCi8IHebynxoCy3A4lUSmdc+Z+F7UAidDu7/VRKNdUHrVwfrZsNhIfLRlzEoF1NaFppLQnQtgPbLP0ZmSgJ36u6JOU5MYQhNuY23BGf622tk+Hsaj8IdBUCqhkRBe/G1HTae9FwJi4rS7INYzIqolxFv3S2aBglvh8hH1y
+X-HE-Tag: 1785328739-447630
+X-HE-Meta: U2FsdGVkX18PrF7golpEQDh6X6EwHULk7NK5Iwoq+gO4gcv4if4Hc4HD9hdINw1JTdEtaD4YuSUAoVC0+lANieK/jnXls3PyvqjVxemZkLRveF9LypoVn2NY0ZPQdd2EI7qguW0AwE8hW4ML3OrKrQaQo1ZUw+km3xFKQafJQDmBT1NRClKnCuci2W8/c7B9efE6+5U194Be166wbz1fk6+t5YELv0Bp4mmwW7Pwr9PYkZi3xg+dnT/gclF3wwaP1+E9rYL/jiqaorGFWDv+M1Sqb0u1gO1ia3Gxq9IXxiY56r87sJgNWefLm5sSXv1gPZlNkwbEUcU54OFe8Y6YgCTG8PR+iMAkO5Jx6fZRMGsYhd9aks5adiDsBuv1dsXWNqhaROekW9L5hugdzc3ypj6CmHyTD2XR0CseNyy3iAAGcYMM0ngM/oibI80mgztMEs5ECfNTJsKfploknYOcClLQfwOGsx8GsDvCvTaKyPQ8Zs5Aqyf5aNBdzf87LrZjZtpkXjNHIyEcy7xc3q30JsjLZOpsepTfgJOEo919fxV53phMjFse+uyE9VQ4Q3ic7fTR/HpqCWk5k0er53AvA4FzbMucWGn4CVI6LCbaV6Da4aHJhUg3mJQ9nFHU8yA1bqOTMNwQDooDK9brBBXuoOabOWfBCNNLUpWZtw4GYjXV1xHDP/IkKJv3VWcmPvsQZ/qDhGSe7Cw0kIvDqDvjr51IcQqNNafAPKUFd64PMVQASaPT7Iy8iuWdqAWtitE5gC4RNETEyOxw+MQidGNsvRh7no7jOD+tNs2v1iZgaBQxJoSDWanI6Os9f5Qn1Fe3ZsWnU6zksgk2ciDDN+oXIF97VKGLusp/rxqohrqKX3L2ZLPtH18T30hYUYTP4VeEvmUykuL+HsEUPd6FATL+nA3S/G5dsyto9Lgf3VUi949FrI16ea9ekOLXjl2DdKuq47eHlU7W4bnAvyVHvGT
+ VJsrRgyA
+ QEv2BMZ63SVGEeCZxGZU2dOCfjls6m/FvHpsIcz0IXPzjuk8+YUkLoOzQm95MKQLRaKABxdPamADksOt17ynNhBWOf/qY4Gcx4Of5oLpz8Tz0oF9etnMZaM2axNIMu9GkVBwltaloH7vxxc72PyEBzjpMbYDDAsDeC94eHY/IsrsqyZ40hYM4VdgK5Y8COLuyuq2TEgcPcsQ8nEmifurRox2vWvz8NmJSOgoR2Sn86tD4shS+9wL9zEt7b5HSPF4zklWLDY7ERgcYYiA0AOJfkkmCpDS8Rp4WfKEjBPzPqCvqlreI3Z53g845ekab0uLPEs2qk8BzcpBRonMoHCEAF7ynl3dHiog5huSV9SG+JBgd1nU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,45 +145,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 27, 2026 at 05:47:00PM +0100, Muhammad Usama Anjum wrote:
-> A leaf PMD is being read through ptep_get() by treating the PMD address
-> as PTE-sized table storage. ptep_get() now accepts hw_pte_t *, so update
-> the cast accordingly.
+On 7/8/26 19:52, Joanne Koong wrote:
+> On Wed, Jul 8, 2026 at 12:56 AM David Hildenbrand (Arm)
+> <david@kernel.org> wrote:
+>>
+>> On 7/7/26 22:17, Joanne Koong wrote:
+>>> Unlike for PMD-sized folios, an anonymous mTHP folio doesn't get added
+>>> to the deferred split list at fault or collapse time. As a result, a
+>>> fully mapped mTHP folio that is mostly zero-filled doesn't get split by
+>>> the deferred split shrinker when the system is under memory pressure.
+>>>
+>>> Add anonymous mTHP folios to the deferred split list so that if there's
+>>> memory pressure, a zero-filled mTHP can be split with its zero pages
+>>> remapped to the shared zero page and then reclaimed.
+>>>
+>>> To minimize overhead on the common order-0 fault path, the
+>>> deferred_split_folio() call is guarded by an inline folio_test_large()
+>>> check.
+>>>
+>>> Suggested-by: Usama Arif <usama.arif@linux.dev>
+>>> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+>>> ---
+>>>  mm/memory.c | 2 ++
+>>>  1 file changed, 2 insertions(+)
+>>>
+>>> diff --git a/mm/memory.c b/mm/memory.c
+>>> index 6637c5b13c9b..441d918e3dc0 100644
+>>> --- a/mm/memory.c
+>>> +++ b/mm/memory.c
+>>> @@ -5259,6 +5259,8 @@ void map_anon_folio_pte_nopf(struct folio *folio, pte_t *pte,
+>>>       folio_add_lru_vma(folio, vma);
+>>>       set_ptes(vma->vm_mm, addr, pte, entry, nr_pages);
+>>>       update_mmu_cache_range(NULL, vma, addr, pte, nr_pages);
+>>> +     if (folio_test_large(folio))
+>>> +             deferred_split_folio(folio, false);
+>>>  }
+>>>
+>>>  static void map_anon_folio_pte_pf(struct folio *folio, pte_t *pte,
+>>
+>> I had a session [1] at LSF/MM about having essentially all large anon folios
+>> part of the the deferred split queue.
+>>
+>> (1) I don't think this scales.
+>>
+>> (2) I suspect the shrinker should make smarter decisions of what to scan/reclaim
+>> first.
+>>
+>> I think this needs more proper thought.
+>>
+>> [1]
+>> https://docs.google.com/presentation/d/1RfKWCY1AMVns-WLn-QdAWbI2a-rA7fbFyh7XD1Wn5BY/edit?usp=sharing
 > 
-> pte_offset_kernel() also returns hw_pte_t *. Get pte_t value by calling
-> ptep_get().
-> 
-> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
-> ---
->  drivers/misc/sgi-gru/grufault.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/misc/sgi-gru/grufault.c b/drivers/misc/sgi-gru/grufault.c
-> index 3557d78ee47a2..ff89d34ad2aa4 100644
-> --- a/drivers/misc/sgi-gru/grufault.c
-> +++ b/drivers/misc/sgi-gru/grufault.c
-> @@ -228,10 +228,10 @@ static int atomic_pte_lookup(struct vm_area_struct *vma, unsigned long vaddr,
->  		goto err;
->  #ifdef CONFIG_X86_64
->  	if (unlikely(pmd_leaf(*pmdp)))
-> -		pte = ptep_get((pte_t *)pmdp);
-> +		pte = ptep_get((hw_pte_t *)pmdp);
->  	else
->  #endif
-> -		pte = *pte_offset_kernel(pmdp, vaddr);
-> +		pte = ptep_get(pte_offset_kernel(pmdp, vaddr));
->  
->  	if (unlikely(!pte_present(pte) ||
->  		     (write && (!pte_write(pte) || !pte_dirty(pte)))))
+> Thanks for the link to the slides! Was there a conclusion from the
+> LSF/MM discussion about the future path forward for deferred splitting
+> or is that still being determined?
 
-This code is super, super broken. Can we remove this ASAP? For starters,
-we're using is_vm_hugetlb_page() to detect page shift, the code does not
-grab refs on the pages, uses pte_offset_kernel() on user page tables,
-does not handle PUD-level hugepages, does not handle PMD-level hugepages on !x86_64,
-does not hold page table locks nor check for pte table retraction, etc
+Sorry for the late reply. Unfortunately, it wasn't clear yet if we could
+reporpuse the LRU, whereby we would just naturally benefit from the LRU cache
+(soon) and only manage pages on a single list.
 
-I don't think I need to go on.
+The concern was that we might end up scanning many items on the LRU to detect
+splitting candidates.
+
+I am not 100% sure if that is a real problem.
+
+As raised during the last THP cabal, my gut feeling is that Johannes might have
+an idea on how to improve things here.
 
 -- 
-Pedro
+Cheers,
+
+David
 
