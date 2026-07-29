@@ -4,134 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 862DBC53200
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:49:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFD7BC53200
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:49:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B6AC6B0128; Wed, 29 Jul 2026 10:49:26 -0400 (EDT)
+	id 970C66B012B; Wed, 29 Jul 2026 10:49:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 48D886B012B; Wed, 29 Jul 2026 10:49:26 -0400 (EDT)
+	id 948C76B012D; Wed, 29 Jul 2026 10:49:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A3D76B012C; Wed, 29 Jul 2026 10:49:26 -0400 (EDT)
+	id 812226B012E; Wed, 29 Jul 2026 10:49:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 12A886B0128
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:49:26 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D37AB140634
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 08:52:15 +0000 (UTC)
-X-FDA: 85041197430.21.ADDEF65
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 0A4428000D
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 08:52:13 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SMBofCzT;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 362E66B012B
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:49:37 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E3051C063D
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 11:12:42 +0000 (UTC)
+X-FDA: 85041551364.30.188D306
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf18.hostedemail.com (Postfix) with ESMTP id DCEA21C0009
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 11:12:40 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=WBSvK0LQ;
+	spf=pass (imf18.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785315134;
+	s=arc-20220608; t=1785323561;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lYCRDETS5dI5i7sQBYk0JlztdxKG736m3ZWnBU7yY08=;
-	b=GGyzXeUF2hap4c9UKoXeERVWjD7JYMAk2oYX09W28WC0t952IBQZVW/lGBvtmfcxqOssjl
-	QEMzewM///LgM8e26UlfgfV2d0uavrp1kafp+APA6Cjmk1EVW5c8SS55aJEfnPJFWQqxb1
-	9cGxnuA02SITx05eyURyHooEPRda0UE=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SMBofCzT;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:references:dkim-signature;
+	bh=CU2s/2Ix5XgOBgId84uXukZLT3PuCIP33pHN4f3NJGM=;
+	b=sa0ZSMtXa4rgj37MIKxqkEBKxYfOyMtTCYkk7P5ohenVyuRiStXQaM/2GDDkcvH7Y56ogG
+	Sm644I4ILl5khy6zj6kPme5ryuAINwXzFqg0mzN4oK58cPyGPzkMGa98nX5B+/HWwhXAM1
+	MWJSpvNbUzyeOACN1TqMfoogxVboySM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785315134;
-	b=b8zw9I1TOREbmjBRw8t1iMzctLAz94gCmVbKDG6KvHLPc9HJ2MFUMH+rlAXZNN5i3KV85Y
-	hOo2j1mQ7NmRRJPLSLVs5UBul4IFzURwOZY1qPc9nNr6owr3DTqMTyklIbwdqOk5CrpeSA
-	Kpisd8lu0HGXrxxuN1yl1H2GB/jOxeY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 30BC340694;
-	Wed, 29 Jul 2026 08:52:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19DF91F000E9;
-	Wed, 29 Jul 2026 08:52:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785315133;
-	bh=lYCRDETS5dI5i7sQBYk0JlztdxKG736m3ZWnBU7yY08=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=SMBofCzTBEg/3tHBjKYQzFrRPZgXFQ4Vi6xJLpf5IJf0vlWxsnprH1FKf5OYoVFlK
-	 1hRCzkpNh+Lvt/LkZyjPPYNWFQ5DigcPjoW17VyqS8ZKP0io1czw9RgqXURhYlVFKV
-	 7KL5++EJruR6tHPa5B5dBnAJrFQQCuV4iK5aKdHCWxaf4uEDNvNPa/tSfAL1ZUkrH+
-	 MrfWXvF8q9vIhBGmndVyDm3DjcFSLGghszFtk5yPfI93FOJaV4Xs0tcs/QCY0E7d4O
-	 q03KOOwiPe7D59XDUHXJL8uI5n5VlE9yENkX7IP3nYTAcL9VJZkXQOyRseK6clRd0m
-	 RhKI2n0Eo//iw==
-Message-ID: <de52f27f-7248-4f29-b37c-922fcd6e31fa@kernel.org>
-Date: Wed, 29 Jul 2026 10:52:09 +0200
+	t=1785323561;
+	b=0aZRzMrMYeretp70y+6LjFLRSsbAvlRLoocV0RWe4xRxm9mhw2klCelC39LlbXn4iJYqAR
+	CVEwYrUrXKZRS1qqa2JboViYw5g+/spXKoZnrzGe52ORstOZSqTIxaFWUBsoRh96/1FFjK
+	5su/Y6ICt+GoyYJvbr8FeRNwHbJJ9WM=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=WBSvK0LQ;
+	spf=pass (imf18.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Type:MIME-Version:References:
+	Subject:Cc:To:From:Date:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:In-Reply-To;
+	bh=CU2s/2Ix5XgOBgId84uXukZLT3PuCIP33pHN4f3NJGM=; b=WBSvK0LQO1hnt81jRxC3jzx3xF
+	fTdR9xymko5IryEGyyLIuhMA09o7hjGGbMh9Ggu2AUwPjqZT1E6wmKfzWq1Ukn2QfvN04Qi5onNYr
+	t+pliVh8tVmi4Lcl6XOIzdZWAp/KQX0ZIu3ErdViLjdX/2ZlKO1o50OznKIb46VIAJf9RV/4QS6Pq
+	CbZNxAFZTWOqFZlnnuW5hhWUm7mi4KHWO3aoMcgi4PmJCgL3py1tBOVOk8j0QpZaPsxvNM3yfW4/K
+	dwbYInszSpVLn/QPx/hr94z92fkSXp3diFPGN8GzWgLv09D6Dn2oJYVodp5gB7arDH4uA19wOwSTE
+	Up++3atw==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wp2CU-00000001xXv-3kmm;
+	Wed, 29 Jul 2026 11:11:54 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 0)
+	id BD9733011E4; Wed, 29 Jul 2026 13:11:40 +0200 (CEST)
+Message-ID: <20260729111119.604452135@infradead.org>
+User-Agent: quilt/0.68
+Date: Wed, 29 Jul 2026 13:08:10 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: linux-kernel@vger.kernel.org,
+ peterz@infradead.org,
+ Andy Lutomirski <luto@kernel.org>,
+ Borislav Petkov <bp@alien8.de>,
+ David Hildenbrand <david@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>,
+ Juergen Gross <jgross@suse.com>,
+ Kevin Tian <kevin.tian@intel.com>,
+ Kiryl Shutsemau <kas@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ Lu Baolu <baolu.lu@linux.intel.com>,
+ Mike Rapoport <rppt@kernel.org>,
+ "H. Peter Anvin" <hpa@zytor.com>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Thomas Gleixner <tglx@kernel.org>,
+ Toshi Kani <toshi.kani@hpe.com>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Will Deacon <will@kernel.org>,
+ linux-mm@kvack.org,
+ x86@kernel.org
+Subject: [PATCH 3/3] x86/mm: Fix and document DEBUG_PAGEALLOC
+References: <20260729110807.797920433@infradead.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/hugetlb_cma: support percentage-based hugetlb_cma
- reservation
-To: Sourav Panda <souravpanda@google.com>, muchun.song@linux.dev,
- osalvador@suse.de, akpm@linux-foundation.org
-Cc: surenb@google.com, fvdl@google.com, gthelen@google.com,
- rientjes@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260628190155.3655895-1-souravpanda@google.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260628190155.3655895-1-souravpanda@google.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 0A4428000D
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: DCEA21C0009
+X-Stat-Signature: ccr7dosyt7oixip6uckux73xxrkto8au
 X-Rspam-User: 
-X-Stat-Signature: mfkfs6aebxeneirfjb51e311wc7pa34s
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1785315133-27184
-X-HE-Meta: U2FsdGVkX186SHRmBlOo66zsRUp0AorotLmjbJ6pj13q5A0gYCawNHJ8WaXc+tsRiW4YlSbOCDZ1zisOeb8PxRLiXjD49U3KNthhor3so18ksHmPgc39dg2I/TFx1bGW/sipnB3AP4XLtrR7hTFKKIJkfi015ct/U+z3J99JBHuV5ztHdg1u8+UvinHOeuN+zCmDGyRQJvq9ZBnPGh5qxYAXHH/Up/1ktAhtozXmBgyfmHjWMmiMEZbB9wcyTWJuo2ZmmmQUfbTmABkggk8F1bh8MGZ2TfPBvqnLenIm6H3UAJYZMlV3pyqgsNmxKM06O23MGw6VYtLITYynbL+8pCzSZoQ0jMBYeA4YOvWHP894y/JN6GECCohp6yTN7aR7ZLTFyjX/H8LUCLv32GFA9fuI+opMSeD9+YegpOVBYdi81Pr/rDZwwSNe98VmtL7vUvtj0+lQyrqkRyl/ZaI23Ro6w4gwEXCLJnE4kZSaIMjW0gmoJpxRGthDPLHyimw+amYOZTzn5YUesffr9olbvZOtKEDlOTchseh21BVbKOAFeT7GxMeRCvEnMa3qcCRx0uq7UvXKTbuMIr1sjmb6DDmAkLB0j12M0YORftTUH4+X67JaLdUlAzyXGCEbyKxrY+LG+Yv85LvLs2MrkJRM0cQlZO1TXDmSQL1iKOlLHTnWZDKXprhTer9yxm87FA10SVvoQ+jJggZacatdL/pb8jYwe+UYqbfSw2x4wkh9g5t6F0XiNPE5/0FGEU9MQRHXSxvta0+2m/MUqkuuWKSCypmxmGjjeE1eIAGBQUefwzeTrgD8o5tHsVpns1eDd9ru5GApIxUi+cyNoRtyH2/xODP55Lj4pdChoW3LX5aIZFD5ihHMY47LyX/b45YVl0rglTmFlvrJsJN5gPpAhD/mTIHRMV5pzX+68EbfAQRsjTgYra7EU085drGyarB8nkdxEVKfVG0h+XSjU7qG8LG
- jB+8U80t
- xUEJoyTZ6rYYIEZ7ULQcLT0g9FBSyXJDEa1ChEdvmqNQFzNKNUudAqOlA7jjO4dlzkEYZbmFdlLiGDMl8b0bf7QJ1842g3R2hKBPQHteAygXJRTgEGaC3v8A4kbwzBwJ/epWi9vvXzQPMlJP7CzsAgSamiyF5ZTluhpygojzZVj7h8hLXWXI0r8ATUs3Mygkny91WkVmfgrlt5rxiVkJWQt+1MsOjuGCOIxhfpJteArQ1Udvh0fse0A2R2In2xNPfCf+BtAvbWEO+Tq2SW6FWyWSo5ofG3B+zWJYCngaTHGbkH7J8IgdyF1i5E4LYn4YsQpebnL3YsR8inTcP+FeqcNT2sNfs5HB3RObYgvfgae7+p8/MSWJy854oiOejPZ+BiGmC
+X-HE-Tag: 1785323560-976846
+X-HE-Meta: U2FsdGVkX18Zo9GeqWOoCpIC2LS4VYVQyJ/2olF28G7so4bCSXFEMNSEOkBd8Cb4JhrnJ8M27opJ8BhNf4wYYC3IGkJcQ4OGmworTATYo1qSW61Q4PPsGqjZYiecRDppW82dcxoLcYhWNkYR6yyEqUJ8sQk/knls75dEpAW2EQeQhUMiZs83KDrfNpf2oDQX+hl2qBLTD+NAPYDIZH+k8Fz22kua6bXXlWIXztb8zR/QP4C1itG85AiRZzYfwOhHHV6EclFv3tKS/x4tg0dXsUdM+cYSsGgFjzxT8UQIHULyrU0nwK2mxw1q4QVoiyhmkWoHfcjj8ztAOiRgTbGzkhcphYHf29zf5RMGORybQXq0Va1iEJ1FhqXGduhL5En3auxqwo1G6r4eVzFr4pYZKIoywYE/QnPmVAZgeCkI5DvuhfUWuSoZRNz+tw1KFPlmIsl/qJ+6VGttiDQQWjDp40qcv4gsZ1gaW+BfrSNd4qUTrTSc9ntPXBrrl2IJIYuchG9rQx+xr4x/dnmH98q+8VjK7BpCMc9W2peZVwXo091qUz7j23Rg8oHpMtxCQ091YRNC/5+RJ00uaapTpSHfHm+yiMyjZDdilVaOReH1nh2q3ArNZZDIlDIMTjAJFaU4/DY1vkm0jZ/omXVtjDzRdEsoAiQ7ni0Yj+kjZVpuHkgJ/sVwdFiT6dg6/+emR9Ln3XlABYJj+DULp/DJ03+2vqjj6jDW4NbUPZJhXw5LI5C/9wzb8r0JtgEiXYwSiTM5ye5mXg4geb0lcoueIcLsTYr8bmf1fhDaAe3/5igwB6bHQCp/8ACTc9PCjQtayTjgQUApp6qvbETGvjYKxPXCslGzzxYp/flLxK0qqkPPCNDnWM4rjs35eeHyyrltn4AFyINp5tkxXdyuuHSfmUEap98Uy6AyfujOcoWEa9j+qVg2CDNE15U809pWe60DI9P1Ev/VtmGJQ6eVerHptZ/
+ zQIL8TWr
+ qI1E8O+HEfKF9xO/4X2ABxIYyeruFkd3mHPSvL94/MM5SmrfW7oKUzU9h8a/DlnRewMc1Rh2fGibMPnDQTVahq6dJtWij152jhBR05Oo0s3z8atyh7usMZN7D48ipHANqReEKpCYM2WBZStCHE7HywWQHj2kIfMG9/XBSVJEy0BAzc2JhS9W9I48IkYpZgl3gZ3BIEzkBvFZkMvLNVKLvoeXYfRuWo9U1MEN57KEYhbjycS4R/JYPxT+FZb6+xdob1OU8rJ98b9WFcfgdo07XHw615Jxm/9282mkzH9Zq7Ri13jOYnbbxikM5TbthQ6goxqb983/NZRBkosBNMpqOObXt6D44bRDHLf7HhGsiTVuagMgz4uqPRiHN0LWQ8iWHmjr+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,37 +111,195 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/28/26 21:01, Sourav Panda wrote:
-> Currently, hugetlb_cma reservation only supports absolute sizes (e.g.,
-> hugetlb_cma=2G or hugetlb_cma=0:1G,1:1G). This can be restrictive in
-> heterogeneous environments or when deploying common kernel command lines
-> across machines with different memory capacities.
-> 
-> Add support for percentage-based hugetlb_cma reservation (e.g.,
-> hugetlb_cma=20% or hugetlb_cma=0:20%,1:10%).
-> 
-> The percentage is calculated against the total memory (for global
-> settings) or against the node-specific memory (for node-specific
-> settings) using memblock APIs during early boot.
-> 
-> Signed-off-by: Sourav Panda <souravpanda@google.com>
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202606262023.IKUrn01I-lkp@intel.com/
-> ---
-> Link: https://lore.kernel.org/linux-mm/20260625215900.2151690-1-souravpanda@google.com/ [v1]
-> 
-> v2:
-> - Use mul_u64_u32_div() instead of mult_frac() to avoid 64-bit division on 32-bit architectures (Reported by kernel test robot).
-> - Fix physical memory size truncation on 32-bit PAE by using phys_addr_t in memblock_node_memory_size() (Sashiko).
-> - Fix boot parameter override logic to respect standard last-one-wins precedence by clearing opposite values during parsing and clearing node-specific values when global values are parsed.
->  .../admin-guide/kernel-parameters.txt         |  7 +-
->  mm/hugetlb_cma.c                              | 96 ++++++++++++++++++-
->  2 files changed, 97 insertions(+), 6 deletions(-)
+It turns out that commit 5fce67641a3e ("x86/mm/pat: Don't gate
+cpa_lock on debug_pagealloc_enabled()") was a little too quick to
+remove the debug_pagealloc exception for cpa_lock.
 
-What's the status of this? Reading the comments I assume a v3?
+Notably __kernel_map_pages() is used by the page-allocator from any
+context the page-allocator itself is used, which violates the cpa_lock
+rules.
 
--- 
-Cheers,
+Re-instate the exception, except make it specific to the
+__kernel_map_pages() such that any other cpa() usage is still fully
+serialized by cpa_lock. Also note that since cpa() should not be used
+on memory that isn't allocated, the page-allocator locking and cpa are
+infact mutually exclusive and all cpa usage in fully serialized.
 
-David
+Add a comment explaining this and other 'funnies' surrounding
+DEBUG_PAGEALLOC, including how pgd_lock is not affected and the TLB
+trickery.
+
+Fixes: 5fce67641a3e ("x86/mm/pat: Don't gate cpa_lock on debug_pagealloc_enabled()")
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+---
+ arch/x86/mm/pat/set_memory.c |   80 +++++++++++++++++++++++++++++++------------
+ 1 file changed, 58 insertions(+), 22 deletions(-)
+
+--- a/arch/x86/mm/pat/set_memory.c
++++ b/arch/x86/mm/pat/set_memory.c
+@@ -68,11 +68,12 @@ static const int cpa_warn_level = CPA_PR
+  */
+ static DEFINE_SPINLOCK(cpa_lock);
+ 
+-#define CPA_FLUSHTLB 1
+-#define CPA_ARRAY 2
+-#define CPA_PAGES_ARRAY 4
+-#define CPA_NO_CHECK_ALIAS 8 /* Do not search for aliases */
+-#define CPA_COLLAPSE 16 /* try to collapse large pages */
++#define CPA_FLUSHTLB		0x01
++#define CPA_ARRAY		0x02
++#define CPA_PAGES_ARRAY		0x04
++#define CPA_NO_CHECK_ALIAS	0x08 /* Do not search for aliases */
++#define CPA_COLLAPSE		0x10 /* try to collapse large pages */
++#define CPA_DEBUG_PAGEALLOC	0x20
+ 
+ static inline pgprot_t cachemode2pgprot(enum page_cache_mode pcm)
+ {
+@@ -1989,6 +1990,7 @@ static int __change_page_attr_set_clr(st
+ {
+ 	unsigned long numpages = cpa->numpages;
+ 	unsigned long rempages = numpages;
++	bool lock = true;
+ 	int ret = 0;
+ 
+ 	/*
+@@ -1998,6 +2000,29 @@ static int __change_page_attr_set_clr(st
+ 	    !cpa->force_split)
+ 		return ret;
+ 
++	/*
++	 * DEBUG_PAGEALLOC is special; it is called from any context the
++	 * page-allocator is, which violates the normal cpa_lock locking
++	 * rules.
++	 *
++	 * However, since it is part of the page-allocator, things are still
++	 * properly serialized by the page-allocator locking and the fact that
++	 * when a page is owned by the page-allocator, it isn't owned by
++	 * anybody else. That is, you *SHOULD* not be calling cpa() on memory
++	 * that isn't allocated.
++	 *
++	 * Additionally, DEBUG_PAGEALLOC ensures (per probe_page_size_mask())
++	 * that the kernel mapping is 4k pages, therefore there are no large
++	 * pages to split/collapse.
++	 *
++	 * Furthermore, the page-allocator strictly manages pages that
++	 * *exist*, avoiding pgd_lock.
++	 *
++	 * Therefore, it is safe to not take cpa_lock.
++	 */
++	if (debug_pagealloc_enabled() && (cpa->flags & CPA_DEBUG_PAGEALLOC))
++		lock = false;
++
+ 	while (rempages) {
+ 		/*
+ 		 * Store the remaining nr of pages for the large page
+@@ -2008,9 +2033,12 @@ static int __change_page_attr_set_clr(st
+ 		if (cpa->flags & (CPA_ARRAY | CPA_PAGES_ARRAY))
+ 			cpa->numpages = 1;
+ 
+-		spin_lock(&cpa_lock);
+-		ret = __change_page_attr(cpa, primary);
+-		spin_unlock(&cpa_lock);
++		if (lock) {
++			guard(spinlock)(&cpa_lock);
++			ret = __change_page_attr(cpa, primary);
++		} else {
++			ret = __change_page_attr(cpa, primary);
++		}
+ 		if (ret)
+ 			goto out;
+ 
+@@ -2589,7 +2617,7 @@ int set_pages_rw(struct page *page, int
+ 	return set_memory_rw(addr, numpages);
+ }
+ 
+-static int __set_pages_p(struct page *page, int numpages)
++static int __set_pages_p(struct page *page, int numpages, unsigned int cpa_flags)
+ {
+ 	unsigned long tempaddr = (unsigned long) page_address(page);
+ 	struct cpa_data cpa = { .vaddr = &tempaddr,
+@@ -2597,7 +2625,7 @@ static int __set_pages_p(struct page *pa
+ 				.numpages = numpages,
+ 				.mask_set = __pgprot(_PAGE_PRESENT | _PAGE_RW),
+ 				.mask_clr = __pgprot(0),
+-				.flags = CPA_NO_CHECK_ALIAS };
++				.flags = CPA_NO_CHECK_ALIAS | cpa_flags };
+ 
+ 	/*
+ 	 * No alias checking needed for setting present flag. otherwise,
+@@ -2608,7 +2636,7 @@ static int __set_pages_p(struct page *pa
+ 	return __change_page_attr_set_clr(&cpa, 1);
+ }
+ 
+-static int __set_pages_np(struct page *page, int numpages)
++static int __set_pages_np(struct page *page, int numpages, unsigned int cpa_flags)
+ {
+ 	unsigned long tempaddr = (unsigned long) page_address(page);
+ 	struct cpa_data cpa = { .vaddr = &tempaddr,
+@@ -2616,7 +2644,7 @@ static int __set_pages_np(struct page *p
+ 				.numpages = numpages,
+ 				.mask_set = __pgprot(0),
+ 				.mask_clr = __pgprot(_PAGE_PRESENT | _PAGE_RW | _PAGE_DIRTY),
+-				.flags = CPA_NO_CHECK_ALIAS };
++				.flags = CPA_NO_CHECK_ALIAS | cpa_flags };
+ 
+ 	/*
+ 	 * No alias checking needed for setting not present flag. otherwise,
+@@ -2629,20 +2657,20 @@ static int __set_pages_np(struct page *p
+ 
+ int set_direct_map_invalid_noflush(struct page *page)
+ {
+-	return __set_pages_np(page, 1);
++	return __set_pages_np(page, 1, 0);
+ }
+ 
+ int set_direct_map_default_noflush(struct page *page)
+ {
+-	return __set_pages_p(page, 1);
++	return __set_pages_p(page, 1, 0);
+ }
+ 
+ int set_direct_map_valid_noflush(struct page *page, unsigned nr, bool valid)
+ {
+ 	if (valid)
+-		return __set_pages_p(page, nr);
++		return __set_pages_p(page, nr, 0);
+ 
+-	return __set_pages_np(page, nr);
++	return __set_pages_np(page, nr, 0);
+ }
+ 
+ #ifdef CONFIG_DEBUG_PAGEALLOC
+@@ -2661,15 +2689,23 @@ void __kernel_map_pages(struct page *pag
+ 	 * and hence no memory allocations during large page split.
+ 	 */
+ 	if (enable)
+-		__set_pages_p(page, numpages);
++		__set_pages_p(page, numpages, CPA_DEBUG_PAGEALLOC);
+ 	else
+-		__set_pages_np(page, numpages);
++		__set_pages_np(page, numpages, CPA_DEBUG_PAGEALLOC);
+ 
+ 	/*
+-	 * We should perform an IPI and flush all tlbs,
+-	 * but that can deadlock->flush only current cpu.
+-	 * Preemption needs to be disabled around __flush_tlb_all() due to
+-	 * CR3 reload in __native_flush_tlb().
++	 * We should perform an IPI and flush all tlbs, but that can
++	 * deadlock->flush only current cpu.
++	 *
++	 * Not doing a global TLB flush means that remote CPUs will retain
++	 * stale TLB entries. In case of P->NP (on free) this means the remote
++	 * CPUs will not take the faults, making the debug scheme less
++	 * reliable. On the NP->P (on alloc) this means the remote CPUs can
++	 * take a spurious fault. However spurious_kernel_fault() will observe
++	 * *_present() and fix it up.
++	 *
++	 * Preemption needs to be disabled around __flush_tlb_all() due to CR3
++	 * reload in __native_flush_tlb().
+ 	 */
+ 	preempt_disable();
+ 	__flush_tlb_all();
+
+
 
