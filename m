@@ -4,93 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43909C54F54
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 02:55:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2690C54F54
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 03:04:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D289A6B0088; Tue, 28 Jul 2026 22:55:17 -0400 (EDT)
+	id 0DDDF6B0088; Tue, 28 Jul 2026 23:04:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CFFCE6B008A; Tue, 28 Jul 2026 22:55:17 -0400 (EDT)
+	id 08E926B008A; Tue, 28 Jul 2026 23:04:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C3EE06B008C; Tue, 28 Jul 2026 22:55:17 -0400 (EDT)
+	id EE71A6B008C; Tue, 28 Jul 2026 23:04:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C36E6B0088
-	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 22:55:17 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 095951A04FD
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 02:55:17 +0000 (UTC)
-X-FDA: 85040297874.03.04E9BCD
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf29.hostedemail.com (Postfix) with ESMTP id EAC3E120008
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 02:55:14 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=IW6AfO+Q;
-	spf=pass (imf29.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B87276B0088
+	for <linux-mm@kvack.org>; Tue, 28 Jul 2026 23:04:22 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 24B40805B8
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 03:04:22 +0000 (UTC)
+X-FDA: 85040320764.05.D0F891E
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 7E42540006
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 03:04:20 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=RFU3thUo;
+	spf=pass (imf07.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785294260;
+	b=uyw+5tpdsXXhiJwPKnPB/do/H+maHYH5Wopthx8aKI5ogFhRNP7mp9cLqpQpImSy5GeQwa
+	Jtcgx4ZJo0Qmz0Ra3Weh/zFWQQSxlI6djTEc9AvNQWzpgL6TFIxy9ZWeScScO1EujBjUJt
+	92uJGpUIb+IXuGFf/LbSwBo/bacQWPU=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=RFU3thUo;
+	spf=pass (imf07.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785293715;
+	s=arc-20220608; t=1785294260;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4Gu5Num2xknD+iSWUiEOP3hmmUxH8WHbfsyozOqoPB4=;
-	b=IbS4v6j0Wwl3QGDeagBJ1VQI4kAqEqk9bUEQLQTYZHJkzAlcov5JOcI0vg9C8EnrTHcRaf
-	SVAadlg9d2dkyHwiMiYe6x5BSx5h9Nn3EzZQFy354v2k7291NawaepjvlyKRqkU0+kwvwr
-	thkXx8nmAYwETTNvS7CRu24esn/XacE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785293715;
-	b=34Tf10pV5AZti84skJDHXIbLkzda9XOeCqFyRgxIrnUZgjFqVndxv2IjSTsGTpY8Jpk5fY
-	vd0V4qqfCxtpO9/l5hLIx1851lxP9KS6yQdQC8RFCBlJF3JgjFgsIMl/bUI12aAYka4tSH
-	8ZpV2ppAwQINTivmTARa5kwMsMpeZJQ=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=IW6AfO+Q;
-	spf=pass (imf29.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=4Gu5Num2xknD+iSWUiEOP3hmmUxH8WHbfsyozOqoPB4=; b=IW6AfO+Ql8jIDXXzqJcDalbSw8
-	KUcVJJ9nMB7BI93VpUXYAFGY3yjwmLmUKnX831IfMXwYgrny9DSgtEjzg1y4use9FqnyejzsaqVRq
-	2k0MYuzWXI9gWADvQklRwrbBRTsfH2f/6O8iBspMmT4KgYY4W/qS1z92UlHMUYCgCRJZxEnk4inMj
-	I2IIkhzQBxKzw00yL10G0TL0Qyh7jxYVpg7eI8lDiwUIOd8qV3Ke5hzRwwqHhHisjh0CvXsI+TfqH
-	SHQc9sf/lk9qUMdfAtfYsv2QAt4NnRx+WFgSQFNBSrBBTMcJU3O9YECmM2SDfChoGOPZQxnHNWZ8Z
-	2FyUvXAQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wouRq-0000000F0aA-1Ytc;
-	Wed, 29 Jul 2026 02:55:10 +0000
-Date: Wed, 29 Jul 2026 03:55:10 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Gregory Price <gourry@gourry.net>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Jane Chu <jane.chu@oracle.com>, linux-mm@kvack.org,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
+	bh=KnyZ3/KMScOYQcPa4OKDfGbFIWpXwbci2L/UQ0Ba9X4=;
+	b=aBoOgwNBBY5QpUgJKQN4LSJb1L8fZYTjn3cPIzUf08TvSXfBr2HsGblnYuyga5ly407l+R
+	a7FVZTmINKv00kaEhGM1xBTB+vfSSNAw5utZMOTcJ0QLXqeDPtMHMutgFUDU6wMNqEuNHD
+	fhU45SR7PyJ6t7xjUL3Eont/LDTKQXQ=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
+	; s=mail; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=KnyZ3/KMScOYQcPa4OKDfGbFIWpXwbci2L/UQ0Ba9X4=; b=RFU3thUox8OPxfRaw4rafE+geG
+	r4IbINqK20PV/x0Yb/7+bLu2sQ5qAQkD7wspOO8ujPCLJ85Xnd+uVhurusWPhTKHwjvXyTif5ZOS9
+	z9ghiwJJBYYraehOLNsnEkxrU8RK7SJKlHVHjcU4RpI29W/CuS+jqYXx6XnXhnVWUrmrr42MO1k9K
+	NEHW3+V8ALMQOTgGF3IdRrcaTo3ROQqqG4tG1P5Ap2VNUT6Eg7h/nbpxMUNx3v8DgAhCmUx/RXI9r
+	rvaMhk/tq1ZkIO7obMb4ihiYvgLbBhD0iUhwjN1lGLuG3d/y1pg4rKM0m7rDd7iPpPEhpVvLFBEID
+	YcAbsbxg==;
+Received: from fangorn.home.surriel.com ([10.0.13.7])
+	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <riel@surriel.com>)
+	id 1wouZ2-000000004ml-0TuW;
+	Tue, 28 Jul 2026 23:02:36 -0400
+From: Rik van Riel <riel@surriel.com>
+To: linux-kernel@vger.kernel.org
+Cc: Rik van Riel <riel@surriel.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-mm@kvack.org,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
 	David Hildenbrand <david@kernel.org>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Jan Kara <jack@suse.cz>,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <christian@brauner.io>,
-	Jiaqi Yan <jiaqiyan@google.com>
-Subject: Re: [PATCH v7 06/13] hugetlb: Use the has_hwpoisoned flag
-Message-ID: <amlrjtaFSEQLYbEO@casper.infradead.org>
-References: <20260728204409.3396238-1-willy@infradead.org>
- <20260728204409.3396238-7-willy@infradead.org>
- <amlQYkGgLmxmwX9_@gourry-fedora-PF4VCD3F>
+	"Liam R. Howlett" <liam@infradead.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Peter Xu <peterx@redhat.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Usama Arif <usamaarif642@gmail.com>,
+	kernel-team@meta.com
+Subject: [PATCH 2/2] mm/gup: batch contiguous PTE-mapped large folios in follow_page_mask()
+Date: Tue, 28 Jul 2026 23:02:34 -0400
+Message-ID: <20260729030234.2063885-3-riel@surriel.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260729030234.2063885-1-riel@surriel.com>
+References: <20260729030234.2063885-1-riel@surriel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <amlQYkGgLmxmwX9_@gourry-fedora-PF4VCD3F>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: EAC3E120008
-X-Stat-Signature: bwzyin9o64wy1fn4mjigx5z65najnqwy
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: oy5561box7okqhm6xikz3qj7q37z4tqp
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 7E42540006
 X-Rspam-User: 
-X-HE-Tag: 1785293714-259483
-X-HE-Meta: U2FsdGVkX18uF8DAxvnO94VRZXWMjETeoTwgzYXPDDFxQFRx1L3ZKDMgHxgrJ8VR/GSLmM6KQSYp3hZbIZZRetxFGLyndqNHo9zxtchbi4kN3WRDAL/89Rze3PuzkF5VDGmChjg63UxYxHCX+/fQGd168IfyDjAOi8DSjoCe2iN9vR+d8h3JdEskCTLWgmFoz4PPgtjdD/pjxcCVs4/R2Jmf0PeV27ChGt8YPHqWOwoWGe2P5+UCzTFKv1pgDcRRtKtizJ0Sclg5hfndA8/c2IwFNFMO1zUYiSbln8l0Lql1ZtJepVpJhI91dLXA6Hm7Of2A3QG6kvKP18UP8JZvyMkM/GS9DoAzVpr/rk+W3ghhcpxxzCXfCXdSIgIVTZJfAUkEjA5NuS0QKwUskdmojqd/DcFL98v6wYI+AT40hsoHyEwtn/qci0BO0U0qZ4od3V3GDHx7C7JXwbf3IqIPlRCmw2FT0F1OA7O+GUnacHVI5d83pnO8u+Lon0PyjhEUKhp7rzFAWY4cihRfNB/ttSzYYY2NqjaEuUz8FnhvHaDEHdZZaaaCwY5Qlk6dKLgo6QWsCqzAkgT5cZ+0roUyxW006Tx6HYXE/3+fdkPAsfoD2EfjRZR6R936d5oFjN8HlaP4BobLyjOR8nE8f0jFT1ZiiT3GNSC97wdELZRECmjuPPpaI8I6lotay72Rs9hZAxVLIw5rP/VTsKeEfIzqyU2rngT+LvWS50+XYQNaNxcgmWuBcrpceTf0mhu2CNkD/sCJ01CG5eYy+2y/bmrnuZXMAn1ukuUVLCGK4Vd+nfVLBqhuK+RPEFfG0BlWURgPZ/0ulLgPbVgECiuzft3li8X3CtOlxU+F1lA9jlP1MsQh7sbHMNUrFtU81in6+laptQ+Ca/O/0V2KQMmcoHwDO1loAHqlC74Wn9h2rlokwcREnPdPvML1G5pDjBHkC6rGkMsjIEjbQEDDbGV8KFu
- yWr6cpD/
- pnYD3OTRT2LTTbD4ISoevQmfH+3RoiKY9vaB1G15v3lOxIGR7OlCVRlWdgCTRMTK6O8TUWFsxTcLyiA1MAIos1nQuZGxDLT1ABDfjJz3E9mIwCI7JRplL4k28ns8RHwLTwbwXPzsTvHfdVWKVpGx+196TrFuZyK+/zqXOKna/cY/few+rWj7B3rPpL+vVTzAx/1Ird48tXtuWtvfj4j6a/bsgyHCznKCrx7c9Ny1Y8p3BsKpWH2U5+SGteA5gZCSkC00MYlAoGS+V5dzimOofNoUDMsM4BpKzmnZw2rA4eC6BpoySLQGjOHcxrQEYBWH9s4w/rwB7lhArDm1X4y4CFfX4vZJtHE25418Nfssi+ovAsv5LCuL0BFg5Qg==
+X-HE-Tag: 1785294260-336003
+X-HE-Meta: U2FsdGVkX199LweDyTahEtAry90GTPM6dTsiNN9F6dRX7xu3IO/V7HPQYKzE1s69bDMWFKEpOnlC1UVwNZGynCggJxR17ltZToSuUxzIjtmhH+My50ivZ6lT44GjKq9wfN+AjwbjBP7ctinsD0sF3G/6S8sD0Hkb8e+2wDy+bZLIStbyyUQXxmbwpglEzlA+XvA1REeWobGJEL8OXR2nNPKyvz+WgY7wvs3J+aJXDjjIECHdhuIFz1cEupBcjs4BuW0U+wlfGITTO9FqprNE4VDUhVQiMErQQcs59TJUaq9au4QqB7t2JMO+Sv1e2hkIWAV5C4bZGoR3O28Ror3wSdcGf5gYg2aT6D98+fmYDXoTpQpjEk/t1r7II6R2hylgQD/olrgxzhANaKRkNyohrFqllzuDMYbMWSJtfuDG1NvtUnawrBVk5EpXzXRseP7eXVa3+AGsYrao6yKzFp7KPZIFhoW82mes5cUdit/UaD7IJHyVEt6+eT6vW7PReKVf6L4AP5Zj+aV29KBFpyBUZKKBRamVUtvKA1rhJpXCgIfYK4pAHUMJtHxx7K9Hc7ghEynbu7ZlkvMGd0w0QEAjSOHRbxPP+DwZ1wDL0AO04p8KhFwS7gY38/0p6v6dgnTQb2b1DgQY5WqPRJQ2cSW9wc1Q8Z2aKF2VaX9on7tyiW6MlILG1s+7uWnO8x2lWFE40UWm+2AS7OjWUpItDhFXevt6k7yndT63+NxDcbZnFz0yhjzpwt7VNpONu/4j61PMnBmnw64KcdxPAA9r5ezhV4v8kQm0Cnr87IblViyGbwgqAw6tofceNA0M9lAb+ZxKjG3OMxZPUKUgCCCxJJsnSi3r4Y4D7clqba9ygpDHfZ8doRgEuT5euGuvPaQomEgJ/CqgwKm8O8gePYj5rfvhLhJBrcvDcSSiTzA9VPTp9oVhZmBXGWsofUH9USbZDVfc3s2gLJupmc4rha12/yK
+ QkSqRrLh
+ sK25rp8SuwkjpNTqnW2OXXUCPubi37Qa/XuAVUxg1JdrIm9zNRlaR8uasQdjyU+dicRPf/u2Xfy8JMVLbDr1z16s+ZRpXJt06eVJFtgmWO2X+o/LyLcjfCREBL7/Onl7HcTagb+ASD5V8wdYaPzoR0anQcsjO5TDVCqZsbSJPCdIR7eZfxzeoyfUF86iXPN8kujc5rVEf1oOxyTjkEcqADFABCm/17w1sWwzQvj4ynAHHcCTiKimAb7bt61zt4tSJhgLogUC6Ir6GUhXI56+MUfMA1/WUSX+Y2X4IK6mGg9t3daDV2d34LVzEUNOH32oDQ+fh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,99 +109,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 28, 2026 at 09:36:37PM -0400, Gregory Price wrote:
-> On Tue, Jul 28, 2026 at 09:43:58PM +0100, Matthew Wilcox (Oracle) wrote:
-> > +
-> > +#ifdef CONFIG_MEMORY_FAILURE
-> > +static inline bool folio_test_huge_poison(const struct folio *folio)
-> > +{
-> > +	return (READ_ONCE(folio->page.page_type) >> 23) ==
-> > +		((PGTY_hugetlb << 1) | 1);
-> > +}
-> > +
-> > +static inline void folio_set_huge_poison(struct folio *folio)
-> > +{
-> > +	folio->page.page_type |= (1 << 23);
-> > +}
-> > +
-> > +static inline void folio_clear_huge_poison(struct folio *folio)
-> > +{
-> > +	folio->page.page_type &= ~(1 << 23);
-> > +}
-> > +#else
-> 
-> Took me a second to realize why this was open-coded instead of using
-> the generator macros.  The reasoning is buried in this comment:
+follow_page_mask() returns one page per call for a PTE-mapped large folio,
+so __get_user_pages() re-walks the page tables for every page of an mTHP
+even though the folio maps a contiguous run. The huge PMD and PUD paths
+already return the whole mapping in one step.
 
-I believe hugetlb is the first user of the low 24 bits of page_type.
-As such, there aren't any generator macros yet ... and I'd probably want
-there to be at least three before creating any.
+Report the contiguous run for the PTE case too. follow_pte_batch() uses
+folio_pte_batch_flags() to count consecutive present PTEs that map
+consecutive pages of the same folio with a uniform write bit, bounded by
+the page table, @end, the VMA, and the folio itself.
 
-> /*
->  * Check if a page is currently marked HWPoisoned.  This check is best
->  * effort only and inherently racy: there is no way to synchronize with
->  * failing hardware.  The caller may not have a refcount on the folio
->  * containing the page, so we must be careful to not trip any assertions.
->  */
->  static inline bool is_page_hwpoison(const struct page *page)
->  ...
-> 
-> which i presume is referring to VM_BUG_ON_FOLIO() in the set/clear in
-> the macros.  Might be worth just note here if only so no one comes along
-> and "fixes" this or writes more of these without the same reasoning.
+Keep the per-PTE guarantees that follow_page_pte() makes for the head page.
+folio_pte_batch_flags() with FPB_RESPECT_WRITE stops the run at a change in
+the write bit, so the whole run matches the head.
 
-It's even in the test ...
+A writable run is safe for any access: a writable anon page is exclusive,
+so gup_must_unshare() cannot fire, and FOLL_WRITE is satisfied.
 
-FOLIO_FLAG(has_hwpoisoned, FOLIO_SECOND_PAGE)
-#define FOLIO_SECOND_PAGE       1
-#define FOLIO_FLAG(name, page)                                          \
-FOLIO_TEST_FLAG(name, page)                                             \
-#define FOLIO_TEST_FLAG(name, page)                                     \
-static __always_inline bool folio_test_##name(const struct folio *folio) \
-{ return test_bit(PG_##name, const_folio_flags(folio, page)); }
+A read-only run is batched only for a plain read, since FOLL_WRITE would
+need a COW fault per page and FOLL_PIN would need a per-page
+gup_must_unshare() check.
 
-static const unsigned long *const_folio_flags(const struct folio *folio,
-                unsigned n)
-{
-        const struct page *page = &folio->page;
+Measured with mm/gup_test.c (PIN_LONGTERM_BENCHMARK, the slow
+pin_user_pages() path) on a 256 MB MADV_HUGEPAGE anonymous region in a
+4 CPU VM, median get time over 16 iterations. Each folio size was confirmed
+through the per-size anon_fault_alloc counters (4096 folios for 64 kB, 128
+for 2 MB):
 
-        VM_BUG_ON_PGFLAGS(page->compound_info & 1, page);
-        VM_BUG_ON_PGFLAGS(n > 0 && !test_bit(PG_head, &page->flags.f), page);
-        return &page[n].flags.f;
-}
+  gup_test -L -m 256 -n 65536 -r 16 -t
+                        before      after
+  64 kB mTHP            3140 us      412 us   (7.6x)
+  2 MB THP (control)      78 us       76 us
+  4 kB base (control)   3010 us     3042 us
 
-So there's two asserts that might trip; the first if the folio is freed
-then reallocated into a larger folio and the former folio becomes a tail
-page.  That's pretty unlikely for a hugetlb folio, but the second is
-more likely.  That'll happen just by freeing the folio.
+The PMD-mapped 2 MB THP already returns the whole mapping in one step, so
+it stays fast and unchanged. The 4 kB baseline shows the per-page walk cost
+that the 64 kB case paid before this change; only the PTE-mapped large
+folio case improves.
 
-> > @@ -2725,13 +2748,19 @@ int unpoison_memory(unsigned long pfn)
-> >  
-> >  	ghp = get_hwpoison_page(p, MF_UNPOISON);
-> >  	if (!ghp) {
-> > +		spin_lock_irq(&hugetlb_lock);
-> >  		if (folio_test_hugetlb(folio)) {
-> >  			huge = true;
-> >  			count = folio_free_raw_hwp(folio, false);
-> > -			if (count == 0)
-> > +			if (count == 0) {
-> > +				spin_unlock_irq(&hugetlb_lock);
-> >  				goto unlock_mutex;
-> > +			}
-> > +			ret = hugetlb_clear_poison(folio);
-> > +		} else {
-> > +			ret = TestClearPageHWPoison(p) ? 0 : -EBUSY;
-> >  		}
-> > -		ret = folio_test_clear_hwpoison(folio) ? 0 : -EBUSY;
-> > +		spin_unlock_irq(&hugetlb_lock);
-> 
-> Adding new synchronization here without noting why - it's not
-> immediately clear what this synchronizes.
-> 
-> Is this just fixing an unrelated bug / should it be a separate patch?
+Assisted-by: Claude:claude-opus-4.8
+Signed-off-by: Rik van Riel <riel@surriel.com>
+---
+ mm/gup.c | 45 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 45 insertions(+)
 
-This prevents a hugetlb folio (which in this arm we don't have a
-reference on) from being freed.  I think it ended up in this patch
-because Sashiko pointed out the race during review of this patch.
-It could probably go in its own patch 
+diff --git a/mm/gup.c b/mm/gup.c
+index 3437cd3407d5..8c6ad1ee7ccc 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -805,6 +805,43 @@ static inline bool can_follow_write_pte(pte_t pte, struct page *page,
+ 	return !userfaultfd_pte_wp(vma, pte);
+ }
+ 
++/*
++ * Count the pages, starting at @address and bounded by @end, that a PTE-mapped
++ * large @folio maps contiguously and that can be returned together with the
++ * page at @address: consecutive present PTEs mapping consecutive pages of
++ * @folio with a uniform write bit, within this VMA and a single page table.
++ * Returns at least 1.
++ *
++ * gup_must_unshare() and the write-fault check are per PTE. A writable run is
++ * always safe: a writable anon page is exclusive, and FOLL_WRITE is satisfied.
++ * A read-only run is only safe for a plain read; FOLL_WRITE would need a COW
++ * fault per page and FOLL_PIN would need a per-page gup_must_unshare() check,
++ * so those fall back to a single page.
++ */
++static unsigned long follow_pte_batch(struct vm_area_struct *vma,
++		unsigned long address, unsigned long end, struct folio *folio,
++		struct page *page, pte_t *ptep, pte_t pte, unsigned int flags)
++{
++	pte_t batch_pte = pte;
++	unsigned long max;
++
++	if (!pte_write(pte) && (flags & (FOLL_WRITE | FOLL_PIN)))
++		return 1;
++
++	/*
++	 * folio_pte_batch_flags() scans forward from @ptep, so the run must
++	 * stay within this page table: bound it by the PMD as well as @end and
++	 * the VMA, since a large folio can be PTE-mapped across a PMD boundary.
++	 */
++	max = min((pmd_addr_end(address, end) - address) >> PAGE_SHIFT,
++		  (vma->vm_end - address) >> PAGE_SHIFT);
++	if (max <= 1)
++		return 1;
++
++	return folio_pte_batch_flags(folio, vma, ptep, &batch_pte, max,
++				     FPB_RESPECT_WRITE);
++}
++
+ static struct page *follow_page_pte(struct vm_area_struct *vma,
+ 		unsigned long address, unsigned long end, pmd_t *pmd,
+ 		unsigned int flags, unsigned long *nr_pages)
+@@ -893,6 +930,14 @@ static struct page *follow_page_pte(struct vm_area_struct *vma,
+ 		folio_mark_accessed(folio);
+ 	}
+ 
++	/*
++	 * A PTE-mapped large folio can be handed back as a contiguous batch,
++	 * so the caller advances over the whole run in one step instead of
++	 * walking the page tables for every page.
++	 */
++	if (folio_test_large(folio))
++		*nr_pages = follow_pte_batch(vma, address, end, folio, page,
++					     ptep, pte, flags);
+ out:
+ 	pte_unmap_unlock(ptep, ptl);
+ 	return page;
+-- 
+2.53.0-Meta
+
 
