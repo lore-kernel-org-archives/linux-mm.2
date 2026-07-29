@@ -4,105 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCBD3C53200
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:19:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31DB9C54F51
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:19:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C424C6B00E9; Wed, 29 Jul 2026 10:19:06 -0400 (EDT)
+	id 53CF56B00EB; Wed, 29 Jul 2026 10:19:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF1746B00EB; Wed, 29 Jul 2026 10:19:06 -0400 (EDT)
+	id 514456B00ED; Wed, 29 Jul 2026 10:19:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ABA726B00EC; Wed, 29 Jul 2026 10:19:06 -0400 (EDT)
+	id 452EF6B00EE; Wed, 29 Jul 2026 10:19:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 81C7E6B00E9
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:19:06 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id ADA8EA1A76
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 09:33:29 +0000 (UTC)
-X-FDA: 85041301338.14.1C644E6
-Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 22D4F14000B
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 09:33:25 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=0cbv10gE;
-	spf=pass (imf23.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	by kanga.kvack.org (Postfix) with ESMTP id 0FB306B00EB
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:19:07 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 83554A1A7E
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 08:21:48 +0000 (UTC)
+X-FDA: 85041120696.12.03D0606
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id E3CB7100005
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 08:21:46 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XG3Ggfgb;
+	spf=pass (imf14.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785313306;
+	b=VV+L7+GjJ9MxiATuOdcaVXGGiMrbVdUhLFamhHWlv5pwgUQUWPSx2D1WD/j0zd5HYzluWv
+	Vn23KqogmGbXx9EUePjRP78/h06kX/4AKEeJFWzYpQ0cRBvg1qxjxj1Si/keX3BQaMMnqh
+	FCca2GlsqSa7Cs/1JYzNIekbmUErzok=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XG3Ggfgb;
+	spf=pass (imf14.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785317607;
+	s=arc-20220608; t=1785313306;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l28RUUIO0sTYXTUgslp8RhU5Xau1YXhJe+DpH+cC4Js=;
-	b=1YrQZKlfNClFbK+glO5MAV49/cv+r73Fme7tybuF783WRIq0VaYxUXhM72Y39C9vfyoCVK
-	PBBL8it8+rBlaLKVJMwMkl5l9gDCRj/mFhYjCcpCajFuLPRI3/KfKESQ2hxPMwsitmtIUh
-	+ZhxOX4y7HL7ArVkk4USkDvrEK3Oen0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785317607;
-	b=RHSMDHMwdakNtpX5l3Rt0PeMlZ+LRFk6FrDc5MysSxgNPJ8OLEFPzDHpTlohyaoBQcKuq/
-	8+dTip48Ea4bT8CrOXiIUSdZgTCgghLylv78hs8MDq3hf8nVX1w59gFKMTjBGgFsJPH3Pv
-	bQcPmn8WWa3//5v0PFv79+m79Y54YNI=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=0cbv10gE;
-	spf=pass (imf23.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=l28RUUIO0sTYXTUgslp8RhU5Xau1YXhJe+DpH+cC4Js=;
-	b=0cbv10gEwX5uu9GIcx/ZyCSFDsAMaWqXcnMDdrzJ6IyLWtJojWvfk8o1RVjTRNKzAwe3xAGcb
-	HchCKLYBh9BmJo2N85ZSseW5l5z3Y/n/vzf3322ZrFh4b+N/3rS65VcHVJTLTWLty1vMUH84yjK
-	1I7foOTOqYlmbZv6hROzRnE=
-Received: from mail.maildlp.com (unknown [172.19.163.127])
-	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4h96Mr4BNtzLlXX;
-	Wed, 29 Jul 2026 17:23:52 +0800 (CST)
-Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id 9365B40572;
-	Wed, 29 Jul 2026 17:33:19 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 29 Jul 2026 17:33:19 +0800
-Received: from [10.173.124.160] (10.173.124.160) by
- kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 29 Jul 2026 17:33:18 +0800
-Subject: Re: [PATCH] kexec: keep the next kernel off hardware-poisoned pages
-To: Breno Leitao <leitao@debian.org>
-CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-	<kexec@lists.infradead.org>, <rmikey@meta.com>, <riel@surriel.com>,
-	<kernel-team@meta.com>, Kiryl Shutsemau <kas@kernel.org>, Andrew Morton
-	<akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, "Lorenzo
- Stoakes" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, "Vlastimil
- Babka" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, "Suren
- Baghdasaryan" <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Baoquan He
-	<baoquan.he@linux.dev>, Pasha Tatashin <pasha.tatashin@soleen.com>, "Pratyush
- Yadav" <pratyush@kernel.org>, Naoya Horiguchi <nao.horiguchi@gmail.com>
-References: <20260728-kexec_posioned-v1-1-160c81d180fe@debian.org>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <16c18549-c9a1-ba55-91b8-52d9368ebbc0@huawei.com>
-Date: Wed, 29 Jul 2026 17:33:17 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	bh=bQgXQ3LLqCfSQ6+KzSoXpszX0uTxmBCepjeRS5yTims=;
+	b=0hpwyi6YVKUC2d0jjU/UUbMBUCihVpX+9p8n3lF8HsqgCzyrgN2Mxxp6mg2Zbk/cKDtGh6
+	2hltfGBAEskX8NubMmocs5OZj7tYhHzEGlgYdukxm27sx0yIrZXSwYHuh7fSCYzcxlME9s
+	QLESneMUVKOATm88m4urz/MwOLwzTUs=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 71D5F60A99;
+	Wed, 29 Jul 2026 08:21:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 057B01F00A3D;
+	Wed, 29 Jul 2026 08:21:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785313306;
+	bh=bQgXQ3LLqCfSQ6+KzSoXpszX0uTxmBCepjeRS5yTims=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=XG3GgfgbwN5JSIG+Ed5Pb4FlPiIFQ826L07JPsO6aBK/Sg+x/F3TWY9hbXHJ41/ru
+	 Pbk6jkGViyZpKlf7aZ4NQMKjfkK3l3++D2P9BIyUN6xgIFIIigs1iZz76vS5/lHsnt
+	 5knwB9IeIWZHAldZlXGazvhy9furSjIxQDxQ+fYw41UtVnnEJBCsEaL1KvLSEi64p6
+	 Znj/ZhHdpncq0IViJyq9wv5j9xCk7vJlI32tcu8ofOVsw5ID4ATjidUs09loM9ERLW
+	 u00VSO0zQe+1R+qBjYbF0rDQylGtYItM/nNBwYUPcICmSX0/Js0ErTLOTU6L4D39Lh
+	 rhpNnEkcmfIXA==
+From: "Harry Yoo (Oracle)" <harry@kernel.org>
+Date: Wed, 29 Jul 2026 17:20:16 +0900
+Subject: [PATCH v5 8/8] slub_kunit: extend the test for kfree_rcu_nolock()
 MIME-Version: 1.0
-In-Reply-To: <20260728-kexec_posioned-v1-1-160c81d180fe@debian.org>
 Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.173.124.160]
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- kwepemq500010.china.huawei.com (7.202.194.235)
+Message-Id: <20260729-kfree_rcu_nolock-v5-8-a28cdcda9673@kernel.org>
+References: <20260729-kfree_rcu_nolock-v5-0-a28cdcda9673@kernel.org>
+In-Reply-To: <20260729-kfree_rcu_nolock-v5-0-a28cdcda9673@kernel.org>
+To: Vlastimil Babka <vbabka@kernel.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, 
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+ Roman Gushchin <roman.gushchin@linux.dev>, 
+ Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, 
+ Puranjay Mohan <puranjay@kernel.org>, Amery Hung <ameryhung@gmail.com>, 
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
+ "Paul E. McKenney" <paulmck@kernel.org>, 
+ Frederic Weisbecker <frederic@kernel.org>, 
+ Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, 
+ Joel Fernandes <joelagnelf@nvidia.com>, 
+ Josh Triplett <josh@joshtriplett.org>, Boqun Feng <boqun@kernel.org>, 
+ Uladzislau Rezki <urezki@gmail.com>, 
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+ Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>, 
+ Pedro Falcato <pfalcato@suse.de>, Suren Baghdasaryan <surenb@google.com>, 
+ Shengming Hu <hu.shengming@zte.com.cn>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ linux-rt-devel@lists.linux.dev, rcu@vger.kernel.org, bpf@vger.kernel.org, 
+ "Harry Yoo (Oracle)" <harry@kernel.org>
+X-Mailer: b4 0.14.3
+X-Stat-Signature: 4szu1f4o6ytyjc7kx9foiqzznhraht6u
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: E3CB7100005
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 22D4F14000B
-X-Stat-Signature: 1jrqeokhf8xiajebiqhkuizpz4z3c7wg
-X-HE-Tag: 1785317605-13682
-X-HE-Meta: U2FsdGVkX18H4eE3r52cSnPL+MbqSmfBMTJ/iFE2ExEojKJw1lNee5LFpA96pmWthO/s5ecyJBoiU+qzyTm3PsLxY5g/9NijlKCb338DAydOmCFOZU1MciUUEEPj2tvRT1oCl/SykHFdj2Q8jmeP6wpqhGFOk4Rd4OxwUb5u3SqXPnaqbAB0/24MA5eHtxw/DkxM56Ij0yXFBRIfpKQkI6Gvuo1cWvMWkMhVlWufgflYUc6CchJFylVHn6XgKqF/dQJ27aJDejzK8e8V9fb2zfW7/vOaJEmyL049QKS1Z3GpRRKDoPnp0iIBQxsXgBxBO8bn94c0w1GKspDRAHOPpPszpZhCJArVPeNsTRKkJpzMQqLLf04LeAJh9o8z2oM6Yd4++Axg/xg+mZEZxPCikDsPgSpAmY5LaPHoaPd+H7vWADb3sdC95WnsPwW0OrF9vr492wef3VmodAlsTzGUIJmFggrLvAfx2iH2Q162dd3VBiwgTIKjCU5Bg9pjT4ecoAu5Bbs3Ll64AyZdfA81TvppFnTYTkC5BZPxTn2UBFV7YIKBmf7diBtkWKhngToSeFehxMLlh5H3H2/NLf3P53Hc7Dmll+RCKDJuy+RGDv+pz4rXNGftwgyXP66a1gjOvByhPGlu9cma57myoyDt7ut5ilK/2K/8JB6T9iIh3pq/F4raKuSgizJa+wZkKb+ZXkcAOU/4xnQg7ICaESb3ciSZtzZZAvbSUH2wKHbY+85RSpABaF6jFOSIkyyupWHRpGl1bdkqbEZC3eRIsEzXVIwbdjQoRhLNJpGAR0Z8gkvT5FPTlfBNCmBmKtZlTVJHUei13Lio6zF8IqTXTWqto7GjL7ehuz1mlNEDLGgk/jMKU99qiyvYdaQR7KlBE7PqpO5kbgnYn1G81rJin0Xb50vNvuUK0W57JCf90bVEj96h3cdtEG+3HAS3+GfjXZ5mFgphfMkvno8Z9JAfZSN
- DgoKUdrM
- ntH5/S9y+rutQsruqxKM8qAQBpRmMBCPfaJw0by2tWaplqzBaYJ6+IhtTOFmBy8GPI/MbhQt2eSftaXIwX/rmisv/FsFqSLHhrdFmSKvNyeO4k9BjvRR9t4HH2VyxJIRsgSi/VnTAfms+OfKaxjA+soonNeFzeEbyODRs014k7+VOi8PWy8APHuL8aPsWr2WYDnxA49qdd7cfVeoXwpPvPcI4IQcJ0X2Sj9kgIRxBmVrbrn7zc660Atkdgy4bHef78EarMTA30+I2Rq3532tJeTrGiPefT+OfkoWgPI3i2AaC5001MaTPaMPzD3cHlYqyJahuckC+oQBB/dHj3J5R1wNfHAGJlYByrW/aMB5yIdaWa6F6lRV36fepfv9Pj7SqjtA1g7i4wE74gg4X5IYYKDcb1g==
+X-HE-Tag: 1785313306-323975
+X-HE-Meta: U2FsdGVkX1/vpBbcscQUJWc7SpUZDwfKzUjU6HMiklL+UvrDuo6StIJ1dUvdHyiSui2TAetX563PUMa1pifLfO6t5PUswNIfyriG/P+ks3MpPIcFjJdzFQ/IJm0m7br56n/lL4rxgWN5wNvCoVfLMrChdbCYuiKnamjUvcGTQCREqUL5kO9IsyzLm3BGPwiqFIUq4t2SB1byu3UBBJoDs9JIv8YmrDcZ63/0xvE6KTqORg9KbEmjt7uObgOEKce0mbi3soECu7CzX6f6DnDy5iS9xqr2hSv8PJ5WQApHh/eovvWM24371G7+X521+cP77PYmnq2p//hahoZ4aobJoolC4gm+t1R5dCaYWiXY+xpwYUDW7p6UChzYxRol9+0ty00GOEKaWz5s1k5IWD0XWdL7WJFFIu/r0LOnPCPEQPmru8yF9YgCDvkho+Vjxi5zrArsidCDWU/VMQP5sGX06kv8Q1yf6t8wtSSHsiknrofo1gWyctwqgE+9kPTyqwbyAQ1WTFvqw+R3p6PVlG5cZGeUPdCiTTtnwiVVg5ky3Noog9epyh15HnyZZgRKz6jdCWq+MnVSOsvRUnDz6giqIK2M4OyzLxqLaNNeyPOYHE6P/rcL0REfdnsFGJQ7Kgbz3CTa0W188ZFBDHyNUvvOqbEZMax7fz3aDK+CqXrhoT8UQ8Blil7nHSpWgZ+Okv7LTE/TpSdO2Usge3YzfvdGQBQX7IL5OK8hDhA05UsRg25ssc+qUPUedTr8mpXNl1kAnGVic6NfsqqK/5nM6c+lpp6d/EM4+6u5YnNfH1vbj60hnSZI9ekZvuUj+GsXwUpNV27q0bMw9NmbBNUfc1El/6MwgEIgEPzdLxBpEbcfBf4cGYFCkZPGPYBlin0STyY4B3anMoGWu4UDeUjT5Y6qvujSNHe55RyDQ5Uw2zJDY8Jb6y/ecG6cFbMc6BsF+OMFjr1iF8OmcCi0ppCoXmI
+ rs9bkr9u
+ ahiPYVxyvYRCSKKw7l7+CgVur2Yf2r8Z6uVUflV/chZkkwaYuZroZkwTtp/ze6hQRX0oIAqPo/ESERJze3Ttd5+gv92jJNln9lOUwZlmsYgQx5VlXWjMJYjSYlxZp095Bd9QSFABohnZ+4fiH6o8M6XhKMLSHyndDgVkYpCUkATAT1TusADUB155qWw+CW0/t5Rh0JsZuX4eHkUeMD6GsY8uSwDFKcbbpSvzWh7V9Yh6fmw91QHVyZC4+nkgFm/YhfzHs/EMcjGq+SwEoiFNRVZ1DAl2CbEl7gbl3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,139 +110,153 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/7/29 0:22, Breno Leitao wrote:
-> Memory failures (such as unrecoverable ECCs errors) are getting more and
-> more common. The kernel knows how to handle it while running, marking it
-> as poisoned (and SIGBUS user tasks).
-> 
-> Poisoned memory is removed from the buddy allocator, but, not from
-> other places. A current problem is that kexec will load new kernel
-> on top of a bad/poisoned memory, which is undesirable.
-> 
-> If the next kernel's image, initrd or purgatory lands on poisoned frame,
-> the relocation copy writes to the bad memory and the machine checks
-> during the kexec.
-> 
-> Skip hardware-poisoned frames when placing segments: check them in the
-> kexec_file hole finder so it lays the next kernel down on good memory,
-> and reject a poisoned destination in sanity_check_segment_list() for
-> the kexec_load path, which cannot relocate.
-> 
-> Suggested-by: Kiryl Shutsemau <kas@kernel.org>
-> Signed-off-by: Breno Leitao <leitao@debian.org>
-> ---
->  include/linux/mm.h  |  6 ++++++
->  kernel/kexec_core.c | 10 ++++++++++
->  kernel/kexec_file.c | 14 ++++++++++++++
->  mm/memory-failure.c | 18 ++++++++++++++++++
->  4 files changed, 48 insertions(+)
-> 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 7fabe6c66b4b7..a89108bcc3f90 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -5192,6 +5192,7 @@ extern const struct attribute_group memory_failure_attr_group;
->  extern void memory_failure_queue(unsigned long pfn, int flags);
->  void num_poisoned_pages_inc(unsigned long pfn);
->  void num_poisoned_pages_sub(unsigned long pfn, long i);
-> +bool range_contains_hwpoison(phys_addr_t start, unsigned long size);
->  #else
->  static inline void memory_failure_queue(unsigned long pfn, int flags)
->  {
-> @@ -5204,6 +5205,11 @@ static inline void num_poisoned_pages_inc(unsigned long pfn)
->  static inline void num_poisoned_pages_sub(unsigned long pfn, long i)
->  {
->  }
-> +
-> +static inline bool range_contains_hwpoison(phys_addr_t start, unsigned long size)
-> +{
-> +	return false;
-> +}
->  #endif
->  
->  #if defined(CONFIG_MEMORY_FAILURE) && defined(CONFIG_MEMORY_HOTPLUG)
-> diff --git a/kernel/kexec_core.c b/kernel/kexec_core.c
-> index dc770b9a6d053..18793f925835f 100644
-> --- a/kernel/kexec_core.c
-> +++ b/kernel/kexec_core.c
-> @@ -212,6 +212,16 @@ int sanity_check_segment_list(struct kimage *image)
->  	}
->  #endif
->  
-> +	/*
-> +	 * Reject destinations that land on hardware-poisoned memory: the
-> +	 * relocation copy would machine-check on the bad frame.
-> +	 */
-> +	for (i = 0; i < nr_segments; i++) {
-> +		if (range_contains_hwpoison(image->segment[i].mem,
-> +					    image->segment[i].memsz))
-> +			return -EADDRNOTAVAIL;
-> +	}
-> +
->  	/*
->  	 * The destination addresses are searched from system RAM rather than
->  	 * being allocated from the buddy allocator, so they are not guaranteed
-> diff --git a/kernel/kexec_file.c b/kernel/kexec_file.c
-> index 59fb9d71e9d86..cd77350f12f85 100644
-> --- a/kernel/kexec_file.c
-> +++ b/kernel/kexec_file.c
-> @@ -504,6 +504,13 @@ static int locate_mem_hole_top_down(unsigned long start, unsigned long end,
->  			continue;
->  		}
->  
-> +		/* Avoid placing the next kernel on hardware-poisoned memory */
-> +		if (range_contains_hwpoison(temp_start,
-> +					    temp_end - temp_start + 1)) {
-> +			temp_start = temp_start - PAGE_SIZE;
-> +			continue;
-> +		}
-> +
->  		/* We found a suitable memory range */
->  		break;
->  	} while (1);
-> @@ -546,6 +553,13 @@ static int locate_mem_hole_bottom_up(unsigned long start, unsigned long end,
->  			continue;
->  		}
->  
-> +		/* Avoid placing the next kernel on hardware-poisoned memory */
-> +		if (range_contains_hwpoison(temp_start,
-> +					    temp_end - temp_start + 1)) {
-> +			temp_start = temp_start + PAGE_SIZE;
-> +			continue;
-> +		}
-> +
->  		/* We found a suitable memory range */
->  		break;
->  	} while (1);
-> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> index a8b03e2920ba8..032bb23db7566 100644
-> --- a/mm/memory-failure.c
-> +++ b/mm/memory-failure.c
-> @@ -96,6 +96,24 @@ void num_poisoned_pages_sub(unsigned long pfn, long i)
->  		memblk_nr_poison_sub(pfn, i);
->  }
->  
-> +/*
-> + * Check if any page in [start, start + size) has hardware-poisoned segments
-> + */
-> +bool range_contains_hwpoison(phys_addr_t start, unsigned long size)
-> +{
-> +	unsigned long pfn, end_pfn;
-> +
-> +	if (!size || !atomic_long_read(&num_poisoned_pages))
-> +		return false;
-> +
-> +	end_pfn = PHYS_PFN(start + size - 1);
-> +	for (pfn = PHYS_PFN(start); pfn <= end_pfn; pfn++) {
-> +		if (pfn_valid(pfn) && PageHWPoison(pfn_to_page(pfn)))
+When slub_kunit is not built-in, call kfree_rcu() and kfree_rcu_nolock()
+to test kfree_rcu_nolock() in slub_kunit.
 
-Should we use pfn_to_online_page here? I doubt we might meet the same problem
-in [1] if pfn_to_page is used here.
+Rename the test case as the test covers more _nolock() APIs.
 
-[1]: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/?id=d613f53c83ec47089c4e25859d5e8e0359f6f8da
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
+---
+ lib/tests/slub_kunit.c | 47 ++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 30 insertions(+), 17 deletions(-)
 
-Thanks.
-.
+diff --git a/lib/tests/slub_kunit.c b/lib/tests/slub_kunit.c
+index 8c2b9911471e..e3b63f0338d5 100644
+--- a/lib/tests/slub_kunit.c
++++ b/lib/tests/slub_kunit.c
+@@ -162,7 +162,10 @@ static void test_kmalloc_redzone_access(struct kunit *test)
+ }
+ 
+ struct test_kfree_rcu_struct {
+-	struct rcu_head rcu;
++	union {
++		struct rcu_head rcu;
++		struct kvfree_rcu_head kvrcu;
++	};
+ };
+ 
+ static void test_kfree_rcu(struct kunit *test)
+@@ -296,7 +299,7 @@ static void test_krealloc_redzone_zeroing(struct kunit *test)
+ #if defined(CONFIG_PERF_EVENTS) || (defined(CONFIG_KPROBES) && defined(CONFIG_SMP))
+ #define NR_ITERATIONS 1000
+ #define NR_OBJECTS 1000
+-static void *objects[NR_OBJECTS];
++static struct test_kfree_rcu_struct *objects[NR_OBJECTS];
+ 
+ struct test_nolock_context {
+ 	struct kunit *test;
+@@ -311,15 +314,16 @@ struct test_nolock_context {
+ #endif
+ };
+ 
+-static void test_kmalloc_kfree(void)
++static void test_kmalloc_and_friends(void)
+ {
+ 	int i, j;
++	bool can_use_kfree_rcu = !IS_BUILTIN(CONFIG_SLUB_KUNIT_TEST);
+ 
+ 	for (i = 0; i < NR_ITERATIONS; i++) {
+ 		for (j = 0; j < NR_OBJECTS; j++) {
+-			gfp_t gfp = (i % 2) ? GFP_KERNEL : GFP_KERNEL_ACCOUNT;
++			gfp_t gfp = (i & 1) ? GFP_KERNEL : GFP_KERNEL_ACCOUNT;
+ 
+-			objects[j] = kmalloc(64, gfp);
++			objects[j] = kmalloc_obj(*objects[j], gfp);
+ 			if (!objects[j]) {
+ 				j--;
+ 				while (j >= 0)
+@@ -328,26 +332,35 @@ static void test_kmalloc_kfree(void)
+ 			}
+ 		}
+ 
+-		for (j = 0; j < NR_OBJECTS; j++)
+-			kfree(objects[j]);
++		for (j = 0; j < NR_OBJECTS; j++) {
++			if (can_use_kfree_rcu && (i & 2))
++				kfree_rcu(objects[j], rcu);
++			else
++				kfree(objects[j]);
++		}
+ 	}
+ }
+ 
+ static void test_nolock(struct test_nolock_context *ctx)
+ {
+-	void *objp;
++	struct test_kfree_rcu_struct *objp;
+ 	gfp_t gfp;
++	bool can_use_kfree_rcu = !IS_BUILTIN(CONFIG_SLUB_KUNIT_TEST);
+ 
+ 	/* __GFP_ACCOUNT to test kmalloc_nolock() in alloc_slab_obj_exts() */
+-	gfp = (ctx->callback_count % 2) ? 0 : __GFP_ACCOUNT;
+-	objp = kmalloc_nolock(64, gfp, NUMA_NO_NODE);
++	gfp = (ctx->callback_count & 1) ? 0 : __GFP_ACCOUNT;
++	objp = kmalloc_nolock(sizeof(*objp), gfp, NUMA_NO_NODE);
+ 
+ 	if (objp)
+ 		ctx->alloc_ok++;
+ 	else
+ 		ctx->alloc_fail++;
+ 
+-	kfree_nolock(objp);
++	if (can_use_kfree_rcu && (ctx->callback_count & 2))
++		kfree_rcu_nolock(objp, kvrcu);
++	else
++		kfree_nolock(objp);
++
+ 	ctx->callback_count++;
+ }
+ #endif
+@@ -397,14 +410,14 @@ static void disable_perf_events(struct test_nolock_context *ctx)
+ 	perf_event_release_kernel(ctx->event);
+ }
+ 
+-static void test_kmalloc_kfree_nolock_perf(struct kunit *test)
++static void test_kmalloc_nolock_and_friends_perf(struct kunit *test)
+ {
+ 	struct test_nolock_context ctx = { .test = test };
+ 
+ 	if (!enable_perf_events(&ctx))
+ 		kunit_skip(test, "Failed to enable perf event, skipping");
+ 
+-	test_kmalloc_kfree();
++	test_kmalloc_and_friends();
+ 
+ 	disable_perf_events(&ctx);
+ 	KUNIT_EXPECT_EQ(test, 0, slab_errors);
+@@ -438,14 +451,14 @@ static void unregister_slab_kprobes(struct test_nolock_context *ctx)
+ 	unregister_kprobe(&ctx->kprobe);
+ }
+ 
+-static void test_kmalloc_kfree_nolock_kprobe(struct kunit *test)
++static void test_kmalloc_nolock_and_friends_kprobe(struct kunit *test)
+ {
+ 	struct test_nolock_context ctx = { .test = test };
+ 
+ 	if (!register_slab_kprobes(&ctx))
+ 		kunit_skip(test, "Failed to register kprobe, skipping");
+ 
+-	test_kmalloc_kfree();
++	test_kmalloc_and_friends();
+ 
+ 	unregister_slab_kprobes(&ctx);
+ 	KUNIT_EXPECT_EQ(test, 0, slab_errors);
+@@ -477,10 +490,10 @@ static struct kunit_case test_cases[] = {
+ 	KUNIT_CASE(test_leak_destroy),
+ 	KUNIT_CASE(test_krealloc_redzone_zeroing),
+ #ifdef CONFIG_PERF_EVENTS
+-	KUNIT_CASE_SLOW(test_kmalloc_kfree_nolock_perf),
++	KUNIT_CASE_SLOW(test_kmalloc_nolock_and_friends_perf),
+ #endif
+ #if defined(CONFIG_KPROBES) && defined(CONFIG_SMP)
+-	KUNIT_CASE_SLOW(test_kmalloc_kfree_nolock_kprobe),
++	KUNIT_CASE_SLOW(test_kmalloc_nolock_and_friends_kprobe),
+ #endif
+ 	{}
+ };
 
+-- 
+2.53.0
 
 
