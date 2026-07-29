@@ -4,141 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AEC31C54F51
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:33:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20E7CC54F51
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Jul 2026 14:33:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 57F886B00FB; Wed, 29 Jul 2026 10:32:58 -0400 (EDT)
+	id 66B4F6B00FE; Wed, 29 Jul 2026 10:32:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 556D56B00FD; Wed, 29 Jul 2026 10:32:58 -0400 (EDT)
+	id 5CDDD6B00FF; Wed, 29 Jul 2026 10:32:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F8276B00FE; Wed, 29 Jul 2026 10:32:58 -0400 (EDT)
+	id 4BB506B0100; Wed, 29 Jul 2026 10:32:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1CEA26B00FB
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:32:58 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 781351A065E
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 09:45:00 +0000 (UTC)
-X-FDA: 85041330360.22.B453FA6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 9ED374000E
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 09:44:58 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KecLasxf;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785318298;
-	b=MV7yxMDWK3b1Ei88/wBCTxxZrbjm6PmMtjX468u/Hm3L0pLXAXgSbv0RbCIRaDBUyfolSX
-	ueWhsYpcq31i77+klJ8qKWMcyBFTLwTM+oSzPG9UfWMTZdDCrjKJqj/hvoHRsoulTzPhJA
-	9UxG/F1oeXyUvyAleYEMAj69Uc4Q9Rc=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KecLasxf;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 2556F6B00FE
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 10:32:59 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E9CE41A055D
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 09:46:17 +0000 (UTC)
+X-FDA: 85041333594.07.6A05E36
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 3B03580011
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 09:46:16 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V19wazKL;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785318298;
+	s=arc-20220608; t=1785318376;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o2Jbn0t4bTPOCnmw0BAUoprtr6tk/QSrIN1zfNVRZUg=;
-	b=KPxXFRXyZBuZdFnHmVqKsmx2Ur+XLk7YvmuKrCzhqwYPtsLyDca9xawRXP6Q6vz3T6r/5i
-	YE5GQCUxp5ef24vr5btPphm48l3rE09hfpCKKRjsxhs1PUYW8wxJNViaFYg67+aCFWlA6k
-	hPhBMkZAz3EMJ85QP5QELbFai8/+cyU=
+	bh=E7rPxALTKK7Txz1MCTwebeGpX5bzL/i/vLYui1u0ffY=;
+	b=6xTr3BerlahdimnJnFJlI7PMQLHIxNqrhooQuRO/UX3FnoESTfbVKEXC2ZaW0spVWSbWBb
+	vuWx0hlkjHtbSYkWI5RiXJAxPLQ1dlyrDDF2crH++tMs/p9D9U8gMIf6qRioWS8dyMlFeQ
+	WYLBrK3m61nGFxCXcMdL2+nRCQ+kwvc=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V19wazKL;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785318376;
+	b=aLocqLN3KocEpDWTyUYIiLLqMA+46RTTRF37xOv17emfhQZPv3KRvSlwpdgo5D8y15xOSx
+	aGz9Jt9+WmKnttLA2WWSeSOiEMHAcGkgS3r+Q1pus+zx9LlnhVPIPXaaAK8hGzr0wTIs+B
+	65xnFU7MFZH6/9k4NiCqN8cBGc3rwjU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CCAEA417EF;
-	Wed, 29 Jul 2026 09:44:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47D7D1F000E9;
-	Wed, 29 Jul 2026 09:44:54 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B285F600B1;
+	Wed, 29 Jul 2026 09:46:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC43A1F000E9;
+	Wed, 29 Jul 2026 09:46:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785318297;
-	bh=o2Jbn0t4bTPOCnmw0BAUoprtr6tk/QSrIN1zfNVRZUg=;
+	s=k20260515; t=1785318375;
+	bh=E7rPxALTKK7Txz1MCTwebeGpX5bzL/i/vLYui1u0ffY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=KecLasxf4+A9rNhq2lWbIxcCV4zw+pYetw7ylrWYXWwR0afC/RJ1Ls+gwFq6ZddgU
-	 T2DYYWpwdN3Upj396izMTeiO0u82iHiSOxo9t5v/mz8bm0sjI5TMfQlO34u9GXD8UA
-	 tmTIIVsh1iBY8r3gLIWnABrTehlGhtBupHS3a9mgEWHYkFe+J+Z92eCHh22tmL+56T
-	 H3jj6R5TPRKn6Yg57aX2KOQFw5EXqiR1v+0RPH2IZgl3AbR2KmjOxf1g19kej+aGwZ
-	 dEhgOO/Ps6NgS0J/dpUImWY5gYVwCUy5r0V39MSWtbw0Y5yfaniCRxL3VhVnrxaKF3
-	 9eysW8D6FEEKA==
-Message-ID: <1e2e464b-07db-4fa2-8e38-2d73a9eaea07@kernel.org>
-Date: Wed, 29 Jul 2026 11:44:52 +0200
+	b=V19wazKLOp6RZkUtSjNDmzHzKEfwQSNjcp6NByfAVngPZ0F6yzYVlqqkdelSC2hhG
+	 3QTantQ+D9kN69D1kwsFw1Wv6WID3xWN0+FMRT47gVBUUxqcpjBKhkbDotL7CWGf4z
+	 X+hgMNOwVcULaAja0DyLZI2q/w1HT/Ch6ZePWc1QO3SVlCCj1qCJKtXJuAquvmTFjA
+	 bD46Ggr+9OlrrRCk9dPF/JGcdBtsK8mvUES3FnHa+6u2Pj/Y2TXtuT9TK2pQAP67Pj
+	 bhoQrJAC9ebDHtFNz2dAN3FkGZzbRdAP8YwbLU2Q8mKMvFhcZZVZ2PwgUmpmvvl/nO
+	 kkQeyh+iGv7qw==
+Message-ID: <aa23851a-5f64-4f01-8804-07b735fc8afe@kernel.org>
+Date: Wed, 29 Jul 2026 11:46:11 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/7] mm/khugepaged: fix outdated comments
-To: Nico Pache <npache@redhat.com>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Cc: Usama Arif <usama.arif@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>
-References: <20260715025941.1571316-1-npache@redhat.com>
- <20260715025941.1571316-5-npache@redhat.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH v3 06/13] mm/slab: abstract slabobj_ext.ref access
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260715025941.1571316-5-npache@redhat.com>
+To: Harry Yoo <harry@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>, Hao Li <hao.li@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter
+ <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+References: <20260727-b4-objext_split-v3-0-c29ef0f1f257@kernel.org>
+ <20260727-b4-objext_split-v3-6-c29ef0f1f257@kernel.org>
+ <amivCT7AaPux-GSK@thinkpad> <365d8e50-5aeb-45e9-97a3-87d0024cdc5f@kernel.org>
+ <ammZpX_77SMsxvPz@dev>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <ammZpX_77SMsxvPz@dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 9ED374000E
-X-Stat-Signature: bygettdy7td7y3txxe78zkp4mtc3k68i
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 3B03580011
 X-Rspam-User: 
-X-HE-Tag: 1785318298-434675
-X-HE-Meta: U2FsdGVkX18bnGrPcHLiyIFbnpnfxiLs1E84b+fspV0KzzlUGruWe39eW1aeZD+3LWkTdhhsXDx6B8SGPfAen31F1FCVqmeE+bPAL7BQbX0Cl8pKHQ8TzSUtrIHfNKRgJH6kGZDF+r9W2dn/MI58oX17WxgOdVY0RJ1ihbuWINMGbXGoSdDo/wgTXTL4NJvHwneAm1ntP0qmxZ5L456HqgpBNl1IEckEbAJKa1wydJJuJYyd10z8wDkzAVUPemofX3s5HQl9dTU5K0UnVd3KNZS+kPZvw55noDXHbeWmCzEe3dHvlSzsWdTOdC3MX6xcYyGVrTjOstaDjFMjWrrque0Nz1rgIdG8SsfBKw9G/ZgdD02fs5XZexpnwXb5qgs4+XZkiN/FjzGlxNxejdemXfpytw2E36yPs/AyP9rX12km5v1u5lC+HUNrGXCSmuE5/sVgNvU6xMvLQw6k9mmH3Rv/FfG3XSgnWcV9qs9VKIk6x8jGKOFyzEiI6/U1k3vmJJnJODEy+swy9l9hnhzNnDIFemM/iOOZxeUC9ak12K+Fnh814XuX1nylaf1iffDtK/JixBQoyv9Nn5VOjGjKxZBvj2zWjOnUUgopPCTigxNxSl1LD1Buy3+o+5k6Ne/RVhYjGZHk/Mk5FR5nC7Nzvb1ng6P0bO/KNGLKSpIxbLLHs95xagP2T2GZ4UBpKpXmi81PIB0/rd9gK+d7lEkHgeq4ng8vBRuh1PrcvklHontpJOcyblwVaS1JqeC90PJT6iPFqgORkY1oD+0I2/zD4/qP4m5YxVyfHA2scjkhQkyeIHebxW9EO/IEE9zWocCtja6OTp0M3ijBIYMG96ksO01IVMxMpIqwjaeV9BzTSFo+dV6RO8dJVBSwxzxou/Z5+Jx0ySfI+8/o+04acDpcn1y4KDt3cTZ5R/KLy3OPqllU4PJWGTTZJQ57YD9dYrXhPP1AuI2fxv/y6OGUMCY
- /aqSGzxu
- aQFwxCUZVTFVb+FklaGLPVf04qE5VpSTWsx82AXGLbezYpvrn9NkKUb1+gHgYfKH6PjJSSA9ieaKEInXq82ds+vMKBxYIxfAoJOoeTStCs4uB6UoeobfwZqA2j8/15hHNHQwdBc0vY4lRSwgPl8Q5B8qA8Ul5KilQPRJL+JrGjF35o+H5o0MkuIuAyBwa0J4vVvhp26DMMNUEUDRnZsKsj3IS8CQrevN1AD6moQZMG9WRd4zk+OusWbGJBzMsIO/Txc+G
+X-Stat-Signature: s9kcaw6wx9ipug4wykwqxoe6d9hq6yb9
+X-HE-Tag: 1785318376-478226
+X-HE-Meta: U2FsdGVkX1//1nYS6A5kkd/QDGpHxcMU4uokgYJADB/jncJVlO/nTQElfK7behfzNp+hJ3vSMMY+RUv9tg2IYLowDdqCHDQWigBQVaKiQWTXdlCXjLwqwdmLlfrhIZDFszVurWfKkPaxdewQb/+5x3R/DJTS3wAEbxVSPtSj4QmFpNVQc3ttEw8IEs/uY29WdKEHK8udqHvw6CCjEYSK44QO2HfhY1RGRPRBp0yOpEiPtGMNgtU2pBQz/McOdIgS1w7qnUJod03m1oZvmz59fcP7J5FFLV//YiAG/8p3n2P4ls62nOfzWkTIsLG+VwNjK29OvSrdWeWrBjGdaBZxOW6pa6TzuO2ePRQRCjpJOS7wlSmcmswxwGwqJFSGcmawk3Y+49E4bXXenJlOx0EhPqm1BSxeKRlUdQ1JPkwDiYe16mbtGNO99zQTBnivrHWf+dgH9Z1mpQXpYe+f4b0Hfq6jyULhBBopPASf4Og0w5mid5u1OrjWsdj4VKekfovTawvcjHcGqJE/9MA7+NOfv4j5WhtMlsGyu2GGKJHzjcU4dGuQukdk0Sy/s1Gz1sHeUwqs0S5VgDYjtFiErNtTq6Kl85Rk1jb9iRQdlbTyNJzgwvRcsyWiQokOdC84f4yeSnmZhcM22np15COrNT6inxd3frs+tTabcsZJJKsNe74aYYectzgDQDHLoPbeL0lb0IovquQ8R9vg4ANXbnh5FC4LslU0pLKE4tGxBG12j24dYov2zSlXLAcn4L4Z+S+SYiiq5tyMrmKgAwAMKM6WY81OlOlEMZod9MJDT5NLPJs+yAIdB2FCJZLpI7hp2wwf7PE5/VxCy8a1Tk5OHK+3gNE3QOp1xJUsHOVAsk6pOuvlN/BpLySnoE2WmiNJVfL46LrD0Msqg+fAlMEkIAGUubnoPNoqreWTj7ano5vmIpfcRA1nnXBCbPapsh8XVDbT8PDcE4m6wEC414GxPNi
+ dRxjiMDo
+ 8pGvY+z9W3rTUgUVCXvDkKt/ULSAG96vFvhkjilghzKZoIwYayztb0UJbp/utll3zHHYG0RVeC8UVRapv8rtMKe+A06c7nPNejT7FCoTifp2F2DpiTxobBjguRzU7nlmgTl2E6OUeX16CJ7NW7TaM9YqgVsk8dIXxcs/FRR0Xm7czNvNbguUUUtxpAodJ4nacwbJSaBsD56QZ59o+B01LbOCSa8nukzGnCbMRq8iTxUOyPr0lW1s3iKtVeuzYSbakWAc/hrxSxspFm6I95Ej5Dja1oGcEVexj3/kDYP0W12uPnvbzftIiSILZPCTvHKML8YkP68UlGM3KpcAKgUwxQSseDuHq6Wt1BeWbSyOsSNX2DOSrtHbzTnWzD1sN/l56eJTtTjxkIE8SKKZR2mdYi+3O/S3b+Jg02YzZUQnBKf3pGVlOHP/S2oVEhw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,21 +140,175 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 7/29/26 08:18, Harry Yoo wrote:
+>> diff --git a/mm/slab.h b/mm/slab.h
+>> index 8f352d9f4d91..fbad99da093c 100644
+>> --- a/mm/slab.h
+>> +++ b/mm/slab.h
+>> @@ -726,6 +726,8 @@ static inline void slab_obj_ext_set_objcg(struct slabobj_ext *obj_ext,
+>>  static inline union codetag_ref *
+>>  slab_obj_ext_codetag_ref(struct slab *slab, struct slabobj_ext *obj_ext)
+>>  {
+>> +       VM_WARN_ON_ONCE(!slab_obj_ext_has_codetag());
+>> +
+>>         if (IS_ENABLED(CONFIG_MEMCG))
+>>                 obj_ext += 1;
+>>  
+>> ... and for objcg we would need to start passing slab pointer to
+>> slab_obj_ext_objcg() and slab_obj_ext_set_objcg(). Hmm...
+> 
+> But slab_obj_ext_codetag_ref() already takes the parameter to
+> calculate offset. I think it's worth as it'll be optimized away on
+> non-debug kerenels and there is no way to detect type confusion
+> due to subtle errors in the objext layout.
 
->  	 * UFFDIO_MOVE is prevented to race as well thanks to the
->  	 * mmap_lock.
-> @@ -1643,7 +1643,8 @@ static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
->  
->  	/*
->  	 * If PMD is the only enabled order, enforce max_ptes_none, otherwise
-> -	 * scan all pages to populate the bitmap for mTHP collapse.
-> +	 * scan all pages to populate the bitmap for mTHP collapse. The bitmap
-> +	 * is then checked again in mthp_collapse() for each attempted order.
+OK, so updated to this. VM_WARN_ON_ONCE() added later.
 
-Why use () here but not in the other cases above? (e.g., collapse_scan_pmd)
+From db9c3501c0f9747fda8fa92d4f640b6fac8050e0 Mon Sep 17 00:00:00 2001
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Date: Mon, 27 Jul 2026 14:53:59 +0200
+Subject: [PATCH] mm/slab: abstract slabobj_ext.objcg access
 
+In preparation for changes to the structure, abstract getting and
+setting the objcg field with slab_obj_ext_objcg() and
+slab_obj_ext_set_objcg().
+Rename the field to _objcg to make an unexpected direct access a compile
+error.
+
+The helpers take a slab pointer, which is currently unused, but will be
+used by a debug check later.
+Since there is no slab pointer easily available in __kfence_free(), just
+drop the debug check there. The whole memcg_kmem accounting in kfence is
+to be removed later anyway.
+
+Otherwise, no functional change intended.
+
+Reviewed-by: Hao Li <hao.li@linux.dev>
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
+Link: https://patch.msgid.link/20260727-b4-objext_split-v3-5-c29ef0f1f257@kernel.org
+Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+---
+ mm/kfence/core.c |  3 ---
+ mm/memcontrol.c  | 14 ++++++++------
+ mm/slab.h        | 17 ++++++++++++++++-
+ mm/slub.c        |  2 +-
+ 4 files changed, 25 insertions(+), 11 deletions(-)
+
+diff --git a/mm/kfence/core.c b/mm/kfence/core.c
+index 6577bd76954e..5608a37f2b4d 100644
+--- a/mm/kfence/core.c
++++ b/mm/kfence/core.c
+@@ -1248,9 +1248,6 @@ void __kfence_free(void *addr)
+ {
+ 	struct kfence_metadata *meta = addr_to_metadata((unsigned long)addr);
+ 
+-#ifdef CONFIG_MEMCG
+-	KFENCE_WARN_ON(meta->obj_exts.objcg);
+-#endif
+ 	/*
+ 	 * If the objects of the cache are SLAB_TYPESAFE_BY_RCU, defer freeing
+ 	 * the object, as the object page may be recycled for other-typed
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 4e427286a88a..68e98fb3350e 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -2865,6 +2865,7 @@ struct mem_cgroup *mem_cgroup_from_obj_slab(struct slab *slab, void *p)
+ 	 */
+ 	unsigned long obj_exts;
+ 	struct slabobj_ext *obj_ext;
++	struct obj_cgroup *objcg;
+ 
+ 	obj_exts = slab_obj_exts(slab);
+ 	if (!obj_exts)
+@@ -2872,9 +2873,8 @@ struct mem_cgroup *mem_cgroup_from_obj_slab(struct slab *slab, void *p)
+ 
+ 	get_slab_obj_exts(obj_exts);
+ 	obj_ext = slab_obj_ext(slab->slab_cache, slab, obj_exts, p);
+-	if (obj_ext->objcg) {
+-		struct obj_cgroup *objcg = obj_ext->objcg;
+-
++	objcg = slab_obj_ext_objcg(slab, obj_ext);
++	if (objcg) {
+ 		put_slab_obj_exts(obj_exts);
+ 		return obj_cgroup_memcg(objcg);
+ 	}
+@@ -3614,8 +3614,10 @@ bool __memcg_slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
+ 		obj_exts = slab_obj_exts(slab);
+ 		get_slab_obj_exts(obj_exts);
+ 		obj_ext = slab_obj_ext(s, slab, obj_exts, p[i]);
++
+ 		obj_cgroup_get(objcg);
+-		obj_ext->objcg = objcg;
++		slab_obj_ext_set_objcg(slab, obj_ext, objcg);
++
+ 		put_slab_obj_exts(obj_exts);
+ 	}
+ 
+@@ -3633,11 +3635,11 @@ void __memcg_slab_free_hook(struct kmem_cache *s, struct slab *slab,
+ 		struct obj_stock_pcp *stock;
+ 
+ 		obj_ext = slab_obj_ext(s, slab, obj_exts, p[i]);
+-		objcg = obj_ext->objcg;
++		objcg = slab_obj_ext_objcg(slab, obj_ext);
+ 		if (!objcg)
+ 			continue;
+ 
+-		obj_ext->objcg = NULL;
++		slab_obj_ext_set_objcg(slab, obj_ext, NULL);
+ 
+ 		stock = trylock_stock();
+ 		__refill_obj_stock(objcg, stock, obj_size, true);
+diff --git a/mm/slab.h b/mm/slab.h
+index 451b50b7f237..ea014311e29f 100644
+--- a/mm/slab.h
++++ b/mm/slab.h
+@@ -555,7 +555,7 @@ static inline bool need_kmalloc_no_objext(void)
+  */
+ struct slabobj_ext {
+ #ifdef CONFIG_MEMCG
+-	struct obj_cgroup *objcg;
++	struct obj_cgroup *_objcg;
+ #endif
+ #ifdef CONFIG_MEM_ALLOC_PROFILING
+ 	union codetag_ref ref;
+@@ -662,6 +662,21 @@ slab_obj_ext(struct kmem_cache *s, struct slab *slab, unsigned long obj_exts,
+ 	return kasan_reset_tag(obj_ext);
+ }
+ 
++#ifdef CONFIG_MEMCG
++static inline struct obj_cgroup *
++slab_obj_ext_objcg(struct slab *slab, struct slabobj_ext *obj_ext)
++{
++	return obj_ext->_objcg;
++}
++
++static inline void
++slab_obj_ext_set_objcg(struct slab *slab, struct slabobj_ext *obj_ext,
++		       struct obj_cgroup *objcg)
++{
++	obj_ext->_objcg = objcg;
++}
++#endif
++
+ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
+ 			gfp_t gfp, unsigned int alloc_flags);
+ 
+diff --git a/mm/slub.c b/mm/slub.c
+index a74f1866c958..ed18860fa0fd 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -2526,7 +2526,7 @@ bool memcg_slab_post_charge(void *p, gfp_t flags)
+ 	if (obj_exts) {
+ 		get_slab_obj_exts(obj_exts);
+ 		obj_ext = slab_obj_ext(s, slab, obj_exts, p);
+-		if (unlikely(obj_ext->objcg)) {
++		if (unlikely(slab_obj_ext_objcg(slab, obj_ext))) {
+ 			put_slab_obj_exts(obj_exts);
+ 			return true;
+ 		}
 -- 
-Cheers,
+2.55.0
 
-David
+
 
