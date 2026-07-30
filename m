@@ -4,86 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4588C5516D
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 20:09:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85FA7C5516D
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 20:30:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 70A4A6B008A; Thu, 30 Jul 2026 16:09:28 -0400 (EDT)
+	id 730266B007B; Thu, 30 Jul 2026 16:30:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E0F46B008C; Thu, 30 Jul 2026 16:09:28 -0400 (EDT)
+	id 6E0EF6B008A; Thu, 30 Jul 2026 16:30:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F76D6B0092; Thu, 30 Jul 2026 16:09:28 -0400 (EDT)
+	id 5F63C6B008C; Thu, 30 Jul 2026 16:30:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3DFD56B008A
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 16:09:28 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CE1EC40267
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 20:09:27 +0000 (UTC)
-X-FDA: 85046532774.27.3F23136
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id D43D7A000B
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 20:09:25 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=TgUNY2iQ;
-	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785442166;
-	b=eLaBeELOBNf78t5FU7XNzPghekqK2MBgiFn4FhN8relyiVwO1fmqTbt7q/8+styu8u1Y3/
-	NhWoNWh0eY4NxN3ilJAjf3HVtjOOWvznmViJdBH0Y8uEegSINgbxG3fmDYXWLIFZPsKTlo
-	x2hATNGdtZZh9r5fzeLZxgtYvib+Kmw=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=TgUNY2iQ;
-	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3DFF16B007B
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 16:30:09 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B07CA80277
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 20:30:08 +0000 (UTC)
+X-FDA: 85046584896.14.3F1F030
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 1B8D320006
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 20:30:06 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hFcsGnLo;
+	spf=pass (imf13.hostedemail.com: domain of ebiggers@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ebiggers@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785442166;
+	s=arc-20220608; t=1785443407;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ppIl39HqOgOmvBcM1jT+W3KYEtutlYLvJ6BsOLLLIbI=;
-	b=tHdMDI7AldPpX0gvJV/vsvQ+BzVOWp1n9wvtfaJYPs5AY+SisLsdaXDHN52QtQALYewGF7
-	9xeYARqNPSsUNZ4XMY1+/RdiNwNPMhKuwnWv/sPopDW3Nucpor3EzFjoEvwJq38oi8Gwo5
-	55RGoTDJRdXbULqn0aCkRhIAPvUfEUg=
+	bh=0u6gw/MrFBT1/QNrPa7nLjvLVHSDimbPCCINT1jLXiU=;
+	b=yQaKaFzao19yAB7atMc3BFYyvjc8pug3xkRCERoueYjlAdzodUKdclbsWx3319QDixFaDU
+	M94/zEfsNRmir3SO4mctUPEWXfAZw5xWn2Tk6zA4KGjw58KPZbTcdVxrj66Hgk7tt6XIs6
+	q4+HUUwCNWnazu1EzuoEEEZykDWHBQg=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785443407;
+	b=s8rmFPjxJdQH5n0CqjVot2LweoDZmzMTJAsbTP9LE+Kr60uIscZJkwqSHpLcNYb1lR2qOP
+	3b+00pYB303/OW4yx8d2kFqWo6ivOmA1W+wBfoXcJ9lQMcb77hJyDY+v24FP14LVgGKfZz
+	Rw0Amkxe40ci+KE9tJXkkosL5WeowyQ=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hFcsGnLo;
+	spf=pass (imf13.hostedemail.com: domain of ebiggers@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ebiggers@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0DF2E438CC;
-	Thu, 30 Jul 2026 20:09:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9F8B1F000E9;
-	Thu, 30 Jul 2026 20:09:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1785442163;
-	bh=ppIl39HqOgOmvBcM1jT+W3KYEtutlYLvJ6BsOLLLIbI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=TgUNY2iQp/Uwz3gfVwJIdYH3sVFJKwqq/OjJAwmaL/PbUhPDocI606UhUV5mIDBYW
-	 d3g1uXit5HFJHdGKvlWXrzdx5CQo6ZYfPZC0vMt6j3c8FSUfZVA/Err709gj9716bY
-	 LkA2UzVzzpXJ2cNrGML+fNmmVuZ4i1nk9rMWArYc=
-Date: Thu, 30 Jul 2026 13:09:23 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Artem Lytkin <iprintercanon@gmail.com>
-Cc: linux-mm@kvack.org, urezki@gmail.com, willy@infradead.org,
- shivamkalra98@zohomail.in, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/3] mm/vmalloc: stop truncating byte counts derived
- from nr_pages
-Message-Id: <20260730130923.9e71be5f477ee3db333cf0f8@linux-foundation.org>
-In-Reply-To: <20260730090628.65814-1-iprintercanon@gmail.com>
-References: <20260729175708.7074-1-iprintercanon@gmail.com>
-	<20260730090628.65814-1-iprintercanon@gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: D43D7A000B
-X-Stat-Signature: bzxr6wwh9edz9icfbazybtmezke5rq86
+	by tor.source.kernel.org (Postfix) with ESMTP id A1AA66004E;
+	Thu, 30 Jul 2026 20:30:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B57C31F000E9;
+	Thu, 30 Jul 2026 20:30:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785443405;
+	bh=0u6gw/MrFBT1/QNrPa7nLjvLVHSDimbPCCINT1jLXiU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=hFcsGnLovWPcFi+YkFwXfujpvSBlB3iFd7TIwz6cMigymfDKsbs8+aVqBQftTS/Qu
+	 1hZlGC2QGQAmc9tlfq8EeyI0yzWmfdfg/4SRB9JmulIAJRqlKp78KxAeBd6CpjMWjA
+	 ZzLb6YKmWZwiQ0PQdUG+NckRDmJwdf3ZYIyLPX5wEfHj7EwJohV7fQqRzAzfk6fcaW
+	 46rrLmUDHXq1kFeu4lRdAs5HrO2gkrT95BMqbHyLUhf9uMEqaMGfA4hg8gN/vKCD8I
+	 JVu6aVSWUfm/WQnFqobITKGHVuPzXNwIhKdA74nXROb9GzBc6/rvfSbhgsEEnUNA6N
+	 Rmn+CdkioS94w==
+Date: Thu, 30 Jul 2026 20:30:03 +0000
+From: Eric Biggers <ebiggers@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>, linux-ext4@vger.kernel.org,
+	linux-f2fs-devel@lists.sourceforge.net,
+	linux-fscrypt@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Youngjun Park <youngjun.park@lge.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/swap: reject swapon() on filesystem-level encrypted
+ files
+Message-ID: <20260730203003.GA2459987@google.com>
+References: <20260730184853.48347-1-ebiggers@kernel.org>
+ <20260730125327.11fc9227d04f659a59136cdd@linux-foundation.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260730125327.11fc9227d04f659a59136cdd@linux-foundation.org>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 1B8D320006
+X-Stat-Signature: 9mfhtkmnuktaxj3rjfaxceo4cgbkeb9b
 X-Rspam-User: 
-X-HE-Tag: 1785442165-102985
-X-HE-Meta: U2FsdGVkX1/yEUzZpdketQDl0epGJVIdqzCGxO3cGXFg0kam5bDBABT3QmbGX+JUpmdPeGEfUkQDGk9UvlH0CQejMZt8IYPia0N7yXAqHi/Cg3ZBrCwyKb+NS3W3g+busnvTtC3xj3XSnIDLwAW5qt6Y2jiGLU9mQ3yLnHS8+gAhEwxpCiF1lnlJ9cMtT62XKGUAdp4Hvy+PPO2fLstPbvJ818eS9soakZnOEC2AJoIlHsn2gum/8Qg5LroQ6J2P1ZN5EavJdggMlxGMajCnx82Y6EVEnqlHUHNpmXsogLBYA1niJOv4fbnnzk6FxSGRdCAXhrUFgEEG49BXHMfQDd2fftWXqcNVD6BuwQMR1j0PjTZdnwFnyi+GoU4by0cxCSAyPgvKpYCSKEZT/2AZBZI0URscK2MXBhqKOMa7rtuZERDcVIy6MwKdMka9s0k7mk4CygaM2I6T8ejGMvg3Eq8SiBB0oYbE6nEiu62Pnqfcwm0OXBtkodYq2csxQwRhZE0KzoL2q0FWTtvc/+tKSmOvmm5DPmX+orv+B7GC6wVu+kwnQfdnPh2YwYBcG5M/EGMdX/d5t8LS2WMBRy05ubf45YG7Lu9UrvBwV2uvXxUJdAPXHvqxExzKh+xeZHevI9qlteWTKZ4nT0AiW08CN0dEPPBwQ89Ac8+PtvVuAHFJns4YAOKwQt84oL1rvNfyYo0L1+3QTfdEMqC4+aQ7EpHIrGEYLkP51bbYJ5LkBQtH3/ISKrE0XqhIDASv9x7IX0gwFPDy8g8SQ0+jHRo4CX1ye6f01bLebq5J6JZyXELUmC/wUhdKR9n26xVcfRd1s2q2VMwhvadU2kVjvmatSF8yURc47LX2UefRywDllzx4xynVGnfan+ZONV4/QzcIBnsHQZMcDNcGcHqpdRKY2bCSJeXtkZc7NFGt+brycvHTxUmKmqWbWcT0BZxC/MXZ9vAjDv3DGeIczxMXC7a
- JH05O3HA
- TfZ0pPHeEixXmB98DH/DYxKwEseJNiTHQuXUiP6ZWCADIpUsS7PokW8cKSPDXkO+sPAtf7OXy9DLZYt3bLd6atRa4srXgbK1qL6ksZwI/pRZDGH+899GFTFoaqUczcPrYRXGKtW8xlGaEz0WfGboRM5WLmsVA5CRa+08CCMIyPVCtC0gWSWuJzHUxA68cmngLxPofU7oVgGlhQhWMOJjezzJmGf0+0ckCU9GiJp6AvQHkMluRqrDtewfhFdlPHXYb5D+GwH6OHr3Z1EC04XtJF2zkcD8V65uSiJM2XSTLxyhFbNR1NNkQeUotKpf933jgrAdP
+X-HE-Tag: 1785443406-927704
+X-HE-Meta: U2FsdGVkX19TQTNdQmPeoOOHsh3aYrhYdjriZW1hMGNlcwPaY8gHp6t6aI6TygiazTUnmWQ1n7bjz8aJ5cG9HFoJZ3QYdLHPONzWOs4AOSWOCw8YL8AtV7TiQ3qcHwrXNwnPmBngfYI0k7p83bGLtNqGqT0U6YqRqwA0TMZfB6PmPiMPQvQBrLkQTJZIix5kU6wuqX7UiuAVCoQWxCwLO9qSgJ/ZZKALlSr5FYUC2/hTt5EbwjGa9T5+1thtCAmFvh02n6r7a5G/uHrsrYPmrCloHKZFc8WwdujNaP6WvVCgvNA8kzxhrkn0Hh2znp/kOULdIUxezv7NTh9WzVv5xH/qQdev9/27EO0BiaCXuNH8P7SLJBgvd+K1ZFCpOyRtKwTDHfIGbk+HRgfPYe+vv8dtyw3QJbYqAa3WWy3lATngj18iA0JJDoyuAAdYHgxkITPSAxbEEsXGIgCjtBYUg+nIAy2R5W/VFZb+c6B07NrMrrW1Wm2VlQC68WZ8dp4ouPJLwNcJPy+fp458bQHiodccab86rKxNvw8mcYI6RP8+Q1lwG7MzH49aENZYdkuJY68tmfwbUpj24A8uIk+t5dJljRnpDiqL6ay3NFTcMI5u1EUPQ0zO5RPpNSx9VC2D9pzSflzLbx6FdNNIRaRwBobuxqHixX3ayXzZFE3sUL5ix7LC4HpGWvI73y7mjdf7Hka4g+mGKvNSTDcOjPabW/ptdYtpyHIZuKZZjyRevnnuniPpckZUBWsGjxi+OgUujAOdkxUNHyOtmkMpZ20NT3EDGjWcODGQMogWK7aHiYRnU4YajqU1VYCYol0CiiCHdq7SuA7sEPZM75fO4Jd208nqaGhH1BHWhcNp70fxIzVDqn/I04Fp3MxeA9Vd9YY4CpOZmBXYf6qbqligMqR36BMb/J4iW9UkIOTI9VgzzNilWxixslE9O+3/w+rEy021IXx1f0IKFRDhi/bd+DZ
+ uui1U8QX
+ 6up9zaFASnGUdkKX08+YlpcCBHeUrVUyJ+Enr0Os+U7CQwSLD3D4/E9mlH3uOrE0je6Js4DiQOT+r8r3QW6a3AC15XyeUTDLDThdfYEPdE3QO7k3md0cow0csdU4IBvIFVSOqVAytA8YCk5FHyhsJSpGl9aapdUeNdw41AxWUGFtVOUqwkbXYk98iNxJyCrTS14IyGQiUL+/xQDTj6A45z9fRn+UI720yiRC/9CtgBogzFXmr/CQgFahJaxnURrXPg1d3sHEGFJ3b4Ig=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,22 +98,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 30 Jul 2026 12:06:25 +0300 Artem Lytkin <iprintercanon@gmail.com> wrote:
-
-> Andrew asked for a v2 of the nr_pages widening, rebased on mm-new, with
-> the changelog clarified on what has actually been observed.
+On Thu, Jul 30, 2026 at 12:53:27PM -0700, Andrew Morton wrote:
+> On Thu, 30 Jul 2026 11:48:53 -0700 Eric Biggers <ebiggers@kernel.org> wrote:
 > 
-> The widening reverts the two casts added by the patches I sent on 25
-> July, so it needs those in the tree first, and they are not in mm-new,
-> mm-unstable or mm-hotfixes-unstable today. They are here as 1/3 and 2/3 so
-> that the series applies and Sashiko can chew on it. 2/3 is byte for byte
-> what I sent; 1/3 has one corrected sentence in its changelog and the same
-> one-line diff.
+> > ext4 and f2fs don't prevent filesystem-level encrypted files from being
+> > set up directly as swap files.  In this case, encryption is bypassed.
+> > 
+> > No one should be doing this, vs. the methods of encrypted swap that
+> > actually do work (such as swapping to a dm-crypt device, or swapping to
+> > a loopback device on top of a filesystem-level encrypted file).
+> > 
+> > Nevertheless, to prevent user error, make swapon() explicitly reject
+> > this case.  Document this behavior in fscrypt.rst as well.
+> > 
+> > Fixes: 9bd8212f981e ("ext4 crypto: add encryption policy and password salt support")
+> > Fixes: f424f664f0e8 ("f2fs crypto: add encryption policy and password salt support")
+> 
+> Ouch.  We are going to break ten year old setups?  I don't think we can
+> do this!
 
-Sashiko couldn't apply it for some reason.
+That assumes anyone is actually depending on this bug, which they
+probably aren't.  Encrypted swap is done in other ways.
 
-This all seems far too complex for such an obscure issue.
+> I think the best we can do is to emit loud warnings which point the
+> operator to some Documentation/ which tells operator that this
+> deprecated configuration will be disallowed in, umm, 2029.
 
-How about we queue just a single switch-to-ulong patch, add that to 7.3
-and give it a Fixes:0bca23804632/cc:stable so 7.2.x gets fixed later?
+... and if they are, they'll want to fix it right away anyway, not in
+2029.
+
+Other fixes to explicitly disallow swapfile activation in various cases
+have been merged without a deprecation period, e.g. 36e4d95891ed,
+377eeaa8e11f, 51cc3a6620a6, d15cab975459.
+
+I think we should try just doing this instead of dragging it out over
+several years.
+
+- Eric
 
