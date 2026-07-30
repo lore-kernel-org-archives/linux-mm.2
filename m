@@ -4,102 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8311C54FD2
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 09:07:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 519A3C54FD2
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 09:07:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A4DFD6B009D; Thu, 30 Jul 2026 05:06:58 -0400 (EDT)
+	id 0D8556B009E; Thu, 30 Jul 2026 05:07:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A25BA6B009E; Thu, 30 Jul 2026 05:06:58 -0400 (EDT)
+	id 0B14D6B009F; Thu, 30 Jul 2026 05:07:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A0456B009F; Thu, 30 Jul 2026 05:06:58 -0400 (EDT)
+	id F08976B00A0; Thu, 30 Jul 2026 05:07:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5DFA26B009D
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 05:06:58 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id EA4C9808EE
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:06:57 +0000 (UTC)
-X-FDA: 85044863274.16.F84A694
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 0828240004
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:06:55 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GLjP2cjA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BCA916B009E
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 05:07:01 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 262804095A
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:07:01 +0000 (UTC)
+X-FDA: 85044863442.17.0F11777
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 5FC0E20008
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:06:59 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=LF3o8w+K;
+	spf=pass (imf03.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785402419;
+	b=ZDz+SV0nZAVRH0hd3RVLlHcEEZ3lmat3XSe3qvtm1GetyxnJlOnpxeMwdkiFE2RejZ8X1Y
+	h8QW8V9Wo6hmaA72UY6ayL2e9sAMjzuedoTTJ1fCApOXjolAiqQv+nP9lg8inwUuc2dbbF
+	vHOZDDoPdgowkod5kIItecGQnvpPu18=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=LF3o8w+K;
+	spf=pass (imf03.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785402416;
+	s=arc-20220608; t=1785402419;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gZ3c+8CwwUe2+0lzilzz3UoIxzFxRhD7Qz/ubZN5PMs=;
-	b=5WRv7qHJFjvB6DSaozP9Fp5xMGlJykW4YWl5XnFfL7cbWR4/Ua1/3i35mS3zUviFx6CRA2
-	ToAh+5FF0mN3i3VosPJN/QYU2a8zOT14Emw6RPNp7bqlDpQ4OeZ6kU8Ge/9QrwhqWR4kkc
-	4rzL8us0YchPJMkiRk/NXDpp7hJhWkA=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GLjP2cjA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785402416;
-	b=4uMunBZSbSCsKQwNiFHIaCCJY9Y01Wl4Oxt0TgkFlhj/9Qk833TaABn/V505ouW2StZan2
-	i8Sh9Illq03SPNNGOjEcjzYcq/enW9NGCSMy7a2Mp1hMCs1s4RQBjzqtieZ5FyeOmy6Wig
-	PrUL04uAhoM69tZ2x63O9l8bC2HpVSg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3C33043F74
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:06:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 242CC1F0155A
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:06:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785402415;
-	bh=gZ3c+8CwwUe2+0lzilzz3UoIxzFxRhD7Qz/ubZN5PMs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=GLjP2cjAsZqdZv5QzIkrlytzISOxmCid9sQybYEv67fOnyE+xreGwdOIl3MOWOos0
-	 XqXh3QDgsj/fTFJXHQsRdT4buGG/2RWyKG8Pxj7L8SW/j+H5mjjruNYBzzhuhUxT2J
-	 JhTZxpkEwceuR5Dra3TXnw1ILKxgUMrjGcSeFVVCoKqYsQt+hnETacdG3gMFedCtQh
-	 1wYOJ34NqUbZ2z5yQEpY3uVV96WUyhOzutR5bTcfv2J6Gijigy1mfiCcdxJ8cQg8MH
-	 iXeTjTOXkeSnK9Je9PxuVmCBzRBmAHVLMDK1d7f7Q2yf7GhuNbB3SYZ+GWYc48Nlh9
-	 kGJ8dXL70MvHA==
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-8eeadbc5e21so12558686d6.3
-        for <linux-mm@kvack.org>; Thu, 30 Jul 2026 02:06:55 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Rp1ZoY7tZ7lPX0lk1I/v/TE12cdkS8yLUZTyS2QSDbDdW6CkBXxARUVO9o3Drdk9UjNiLmYIE3YdQ==@kvack.org
-X-Gm-Message-State: AOJu0YwU9NP1rDfYDd6w5WUSFPtBIdEdgqA0F4Gq/75obj8NGrIBKac8
-	Q/IlhEDchuLoNyD1Epw5iGZAYlF1/RmJ+01rSC9SQAFWiDEbgT9I1RVaDzgqSMzvFgDrntdp74+
-	cgg3n5TwYAAHGedp8OEWWfBoYcZ7ag+M=
-X-Received: by 2002:a05:6214:4a88:b0:8e9:f62b:8fa0 with SMTP id
- 6a1803df08f44-908347de65cmr15709296d6.53.1785402414395; Thu, 30 Jul 2026
- 02:06:54 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=JyUPYL2OrXSKt8rHjiCQrmfpBKq5z8MLwljG9M1Hes8=;
+	b=Io3usm0eSq23gxuuf1WRJi4oPu2uDCTua/NXhxxgJOGRB8arltO9fvwBsndkk70Oobjf9o
+	mIgAFGVWcI81CwQKNBvQgMEeHdeUac4nFDIvCTFItnQJ0zVU4Zg6O7kHtMX+5NXP0V64ya
+	Sm8UHEAGHr5LxjUwEtpJKDZ4NFMJkHE=
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-84e252fbb7bso158453b3a.2
+        for <linux-mm@kvack.org>; Thu, 30 Jul 2026 02:06:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785402418; x=1786007218; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=JyUPYL2OrXSKt8rHjiCQrmfpBKq5z8MLwljG9M1Hes8=;
+        b=LF3o8w+KxHIvHy11iCRb3p6F0KkJO1F/e6B9/Oi2UVBiACf1Tm6XH2/epOCGRTvIgr
+         iHo9ALMJ15TyJPg9y0ciGgCn2e6YIaaCWqKb6Aj8S+eqrjBW7dTxUAvJTkOYOTLFmhQC
+         mWk9XgUjinn2lAZ6+dd21qXccWqkZjFZabAfcPiugFXkiPea1uXBLZw8VNp3fmWg0ir/
+         RnRgoFIT1GDRiSzbLJNcTPXeS+0eSongURZHFxn8x/fcK0GJql5ddXxo4gvF2i4gPpeb
+         ozjkIkp7+mRpS9sd2/irB98b6VsVBFT1pAeIxtixZY/vdxqFtVwiHjPkfKhdRppqhEDg
+         xGpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785402418; x=1786007218;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=JyUPYL2OrXSKt8rHjiCQrmfpBKq5z8MLwljG9M1Hes8=;
+        b=hgAWO7IMivZ8jzi7rpG0c/Qjl3ACUHvl/OTNwfh+WIGLlFHXYOYhT1/dET7355NrbS
+         VoNzKMsohHXDjAmX6Alls6I/DBvV5BHSezS+8LqjUEHfWgbR81bFTuAkqbMyL/nUqtn5
+         zf+4sFW2aJ+naVjT6yklZTcuFMzyyAPI6Aw3QM92wu5SD+1bGNmBgJ4L5GATIfq9fXkr
+         OTfy3dERNVWWVcABA23MYBen5TuD4hMWRKjsD6NjWMzjynJJ7nwAgThfR7LlSfM2/bCx
+         /EkVQ1yWx0s1NRI7L7+nXEBY6XaKKchmENcO6ZgbVjSasYeI/KFwtfkQnbqUH+gJREz7
+         yq6g==
+X-Forwarded-Encrypted: i=1; AHgh+Rr88rxW0/zAfQ7FH0vHPz4sjb9XEF8HnTMiJ+88kWyMVj+j2ZAfO/Ye18LXsMHxp8DI2sj32KJ9TA==@kvack.org
+X-Gm-Message-State: AOJu0YxsOlqIafTnOhN0UnnFYGSU0a6CoobaJqqZ0VPMdn4n3JgtI+Fn
+	X3Lu0kXLgEbdq04ABWKVmn2xkPu8lKG24Xqg66r2kMBc4/1VzNksRuMA
+X-Gm-Gg: AR+sD12cEDBqqqVT2mZirus59PyYW6H6hJ5kPNClgQufoaB6hwmqPi7RHOrcVonOndS
+	YZYR2S7leOQ6cEe694kul/U82r9kZ/lVWtNoRaG8K3c0bapn/LAAYoC2XtJAv1fCUDgIxx1wgjg
+	vS54qChS8O6oGuRAuNqPQ2QwSwb7bVGsUFcxWqCNYJY+I+4T6jdVsZDv5Hk1PVsIEgulcik94Bk
+	O3ldXl6BXIh6QYu+vojUum08p91uFUzyQhDHb9av5K5iazsXYpF8eZgrNqwV/7G79rs+KihnXOY
+	rr+u6WtxPEN41lRCMpBDzQIkHYVczH6UEwK56Px+1/L15ix5oVihFDqo7lBj77IWG8RF7aV5W56
+	aMU2lXChZeR9H+d2rtXEwyUfwLApBcWa1d9La2z5Kf4shdHpYwBkuQFVPyuZqOo9CRvd2a6kOkz
+	JzucgTobbhnFK/4daNUonrghW5OK7UbpWH/z2PJ10wZNA9oKSId+J0MDGeoaKvZlTIcagycC4X/
+	uxVD57wSz7RFIfMeGF7tjDY8aCbKCpjTnhOHHZZ9V6kM0nK8hY1
+X-Received: by 2002:a05:6a21:3997:b0:3c6:7648:5ab0 with SMTP id adf61e73a8af0-3c9003cc78cmr2258784637.0.1785402417981;
+        Thu, 30 Jul 2026 02:06:57 -0700 (PDT)
+Received: from debian.lan ([155.117.85.23])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbdba447107sm1902510a12.21.2026.07.30.02.06.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Jul 2026 02:06:57 -0700 (PDT)
+From: Xueyuan Chen <xueyuan.chen21@gmail.com>
+To: akpm@linux-foundation.org
+Cc: david@kernel.org,
+	ljs@kernel.org,
+	usama.arif@linux.dev,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	tglx@kernel.org,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	hpa@zytor.com,
+	rppt@kernel.org,
+	ryan.roberts@arm.com,
+	ziy@nvidia.com,
+	baohua@kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Xueyuan Chen <xueyuan.chen21@gmail.com>
+Subject: [PATCH v6 0/3] mm: make persistent huge zero folio read-only
+Date: Thu, 30 Jul 2026 17:06:44 +0800
+Message-ID: <20260730090647.2401252-1-xueyuan.chen21@gmail.com>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-References: <20260730072349.1360449-1-zhaoyang.huang@unisoc.com>
-In-Reply-To: <20260730072349.1360449-1-zhaoyang.huang@unisoc.com>
-From: Barry Song <baohua@kernel.org>
-Date: Thu, 30 Jul 2026 17:06:42 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4xW8WujWvgFrrR2NHoQZd4nLPi8QBtXwGsrQXj72CL=NA@mail.gmail.com>
-X-Gm-Features: AUfX_mzT5lKF4XLU96cwSBZRTI0Rv50EO-e3K_NeFWAEZDexxMV83B-tarYorng
-Message-ID: <CAGsJ_4xW8WujWvgFrrR2NHoQZd4nLPi8QBtXwGsrQXj72CL=NA@mail.gmail.com>
-Subject: Re: [PATCH] mm/mglru: force aging the lruvec when min_seq pinned
-To: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Zhaoyang Huang <huangzhaoyang@gmail.com>, 
-	steve.kang@unisoc.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 0828240004
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: a15um9gc53y7ane5grxx9bk7zhmckzhr
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 5FC0E20008
 X-Rspam-User: 
-X-Stat-Signature: jseihmkez3kkwdkqebhkb57m1de5hre9
-X-HE-Tag: 1785402415-733954
-X-HE-Meta: U2FsdGVkX18NJS6q9aUC2Uy6/9ZqizO4Nj4cpKTzexXGIfoP24+DkvxSF2pp8jz/v0HcIBPDAC7B+ZMhx2g34d/QplGWy27vdfc8knWiN5IaPzmYKCRIxaNjL2hgteOsyu9x5PgTttpNZ0gNH1TZw93y9acdeVSPLUohCl0rVJznxtqD4gVXGBVK0DdjSRqancBsu5bLG5Z/B7r4dgZ2PkJ7MOGWxPJYJj6+SRC3ViabSpckVV7Y598p5vNkSBJS+p2vTfnyXaG2DSpxXzoyO1l+sp/D9udzf53oJD9PFkOWh/rAnutELGNbecX/BnpIXBABchlExFzjx3OUUVqXAVf6RPh6/hjQM8mvrRubyaY+3F73CbJmwU3WXy7L3ocdZA08FKx/z+LjKmt3ZQYUHGyeXQQuZfmqAZeG7F/vgOpT3uAEYWnAlneQDT4+9qtO3NwL8e+uF0UTE044gGbLqHkFOPs2ZOZwvalrQL3z/MJ4ePK759sGQwNR1CcLOja6/O5L7ydOYLWCX3GfDhPWxXsMJD7dUjWuEb71IL5m79wk1+UhyR/9wlkjVwo/af6k8ujKdC+bwuw/z5Uwc/Fb17ybq/wHnVAdTawgkIYfr3QV5jPwM0S5yNEUXpqLey2Nymw1owkJCD62rwnKaKaIb8pkrzkQnvZFkTx78WhAFOGe2ATM24c8IHu06lExnJW4zPLDVxNhvySiLobPsrFhpxlgpsFnkif7iMIg3FMJO5pAvNY9+QeTbYA3bBd4ud1W4HcpjcD9GAMK4EgM3UDvxY56in1/IjpQgeYpq6Ejbu7js1LU8SQuKz6SJb2tUveJAbIWRitVdGW4Nov01dEG7iRBmHYLEljc24Y1GAssS+3V47i6F+HyiVgJLI9BFum7nJJVGtpen4HZ2ABIwUcV2AnYz/UMGdyn4GTuw1yF0b8Z7n2o+xPXff0msrHHODyUM84PVpgw/tDTMTiJDUQ
- yuFbaeW6
- q8wdPGzS/gXbZY5nYTVO03mvt7XgphiTs/QV+njVEkz5k80C9RuuWK6G5vnQs44iQizpE8pWPNS2YXq9cN6x1NtMfFP3ZlBWWZg7gPX1y3+P154qGpgnYMoZFVS3ZegTmJ9xlsWNbQp8bIVTrCf10U06eRnE1KYy5bhEPmUUdm5EtEWHRlY8Cdrzckig9+iUbyF+Na/tBThCeEMq2iz38cU91Jgc8PR/5rxS8aeceKw61x54dRvh50wi36/x4y4XuDqTPmBoeceAse1xO3MsdC41/rienMdlDMD6vLVTFgWH7iP2cT4b48taGrsRr18ZkiTJ6kch+vwX4Mpybyf3F78g0jpbIs0hKfCnUCsMSLHbnu1FhCPzcSHdav++OvEWIe2hLyff5iPWvm549s37fZVjOn4cb3TxM2a3RJYbnhD4NjLk=
+X-HE-Tag: 1785402419-746286
+X-HE-Meta: U2FsdGVkX19cXK/5RnD0rGEg6E5RmNLqgCOBlX3J4SxGhthtp1wM6RlF1+Dqf2xSxA/uaYddoOyRxR6lkLRjuuIiNe2Ov5z2lRjxSJw7Ep8Wk5mkFrPbVMWYLPUYFK2tj/YAiECk/IQD48gleRmrZ2DH7fwzc21F8WrOoz5Wm3IYpOOC4A57evl8PTHIldB4sOk8Gk271HS5VByEW//7eN5lj2niNP2rlGYbYDr+zFAlRTIUF4/EC1h8hVcA3tfRho+0fuFFlWXunAhcYblkktaYwAzbUmwumdna4ZklPiScBZ7o2l5XxmikYvCc3xJLIRFvlTMdwlCbAZhMb1PyikodHKbVg9k99nlWWST8Qy13jceKHdayH0ACTg++QBx3VOje048qO+JYAJ/tbHGTkCHUfQV/6m9hdqwQZC0o2wwO2BEFYMowYjB1HQUTfIg9jNyHoXPyigHLrVp3+0Bvgj9oDZmvOPs2vk86uDbVpLf24+j2iR00MJ583zfbaJQjNZmrAuSCtteDLCos/kkgFOu88ygRm7Yoy14RnVsXII723ZCxGnFyT/V5i+MtwsHjHh8+8O4p0hRrH9880Drt7Mu3Pu3CqHDSf6/SXNB371dKAYeUjGzEG0lHGrOW09n4KTrPwQ9eyHJPybnvsiQZkdm+0FF6DCF2veHmo/iL9bp30PkyWMV/0TlGv/RahkTjbKOYfSxejXmjWmocngnon8c14ohmjdcpLmFdw6xVT22QTc+tUoE+xF4Gd36Gu2QSdz4+AQCJtoZ7GvMwNH1SOG9jsVaJni+p7Z6TtuC+c6RQp2/xjGzIR0QmpJQVAdthSxlt9j6xMAU0ny00MSsJo6qtuljdsWquGnE8OeGnzaMTIev6CquJDjAS8sskC9KKp9VUNE/yY+udq/O39WPxomfV8WErknp7uN3pEEDkRz/ZmCz/7WtojNJKrauZWReTMgkkeeFoJBQlitGS34Y
+ ZENdMOUd
+ Tblc1bN8Tsfoimw6c5sW0wtHeBiHstC0EyE6UHEiwZoXdiK7u95lKqTn2cMMr9G/suU5hNLH5Y8CdriqM/n0CvRe22+pxa6FZKvohS0wQ/zi8CWpTmPw5RZkmth2tW4Uu0PEEHDuRSlcfNNgLZ6Rw9nHVKgZ/WQsc9FgswL5P+0Bd+thgtnbXhPkZMWlV8VhhucCkouNX5Nk5JB3rAHTAiOxhV+/dbvTI7dnMmG9kvkZ6dD1dRBICX6Zk1dIMgwBwYsZjA+WXzgv4Gv5rqAfKc1y9jOOWsXqNeEy9EkLoKCpSYv5HFMGtss4Zr9lGZr4ZGXXtsddwUwiONbdLlGG1PSd7ZWcjnRSOjyJ3hCcraywZYijP4WaAMgfxEx3yf7F34Jvw1gI8p5ptJ8HUQFJuD/IrkNTdyp2IS8cZF90QW2UCuE1TqTGPbRedsEilYbm99lbqvQG71Vco9o75QNQlWrzCpk9kKKBS0D6EW9+WoJGJ7mOQI0210BKD6g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,174 +132,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 30, 2026 at 3:24=E2=80=AFPM zhaoyang.huang
-<zhaoyang.huang@unisoc.com> wrote:
->
-> From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
->
-> This submission addresses an issue where the memcg MGLRU's min_seq is
-> pinned by an orphan page=E2=80=94a page that resides in the page cache bu=
-t
-> lacks a corresponding reference count, while the number of GENs has not
-> yet met the criteria of aging. I believe such pages should be detected
-> and handled elsewhere rather than affecting the LRU in this way(legacy
-> LRU could move forward by bringing this kind of folio along with).
-> Therefore, I propose moving these folios to the next generation when
-> isolation makes no progress at all.
->
-> Signed-off-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
-> ---
->  include/linux/mmzone.h |  6 ++++++
->  mm/vmscan.c            | 45 +++++++++++++++++++++++++++++++++++++++++-
->  2 files changed, 50 insertions(+), 1 deletion(-)
->
-> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> index 9adb2ad21da5..b063c56ea30c 100644
-> --- a/include/linux/mmzone.h
-> +++ b/include/linux/mmzone.h
-> @@ -434,6 +434,12 @@ enum lruvec_flags {
->          */
->         LRUVEC_CGROUP_CONGESTED,
->         LRUVEC_NODE_CONGESTED,
-> +       /*
-> +        * MGLRU: eviction failed to isolate from the oldest generation o=
-nce
-> +        * while the window was at MAX_NR_GENS. A second consecutive fail=
-ure
-> +        * forces aging so residual folios cannot pin min_seq indefinitel=
-y.
-> +        */
-> +       LRUVEC_MGLRU_ISOLATE_FAILED,
->  };
->
->  #endif /* !__GENERATING_BOUNDS_H */
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index bd1b1aa12581..c18db08c5e10 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -175,6 +175,8 @@ struct scan_control {
->                 unsigned int immediate;
->                 unsigned int file_taken;
->                 unsigned int taken;
-> +               /* folios isolated by MGLRU eviction in the current lruve=
-c pass */
-> +               unsigned int isolated;
->         } nr;
->
->         /* for recording the reclaimed slab by now */
-> @@ -4748,6 +4750,7 @@ static int scan_folios(unsigned long nr_to_scan, st=
-ruct lruvec *lruvec,
->         trace_mm_vmscan_lru_isolate(sc->reclaim_idx, sc->order, scan_batc=
-h,
->                                 scanned, skipped, isolated,
->                                 type ? LRU_INACTIVE_FILE : LRU_INACTIVE_A=
-NON);
-> +       sc->nr.isolated +=3D isolated;
->         if (type =3D=3D LRU_GEN_FILE)
->                 sc->nr.file_taken +=3D isolated;
->         /*
-> @@ -4998,6 +5001,11 @@ static bool try_to_shrink_lruvec(struct lruvec *lr=
-uvec, struct scan_control *sc)
->         long nr_to_scan;
->         unsigned long scanned =3D 0;
->         int swappiness =3D get_swappiness(lruvec, sc);
-> +       bool attempted =3D false;
-> +       bool rotated =3D false;
-> +
-> +       /* per-lruvec pass; sc is shared across lruvecs during reclaim */
-> +       sc->nr.isolated =3D 0;
->
->         while (true) {
->                 int delta;
-> @@ -5006,6 +5014,7 @@ static bool try_to_shrink_lruvec(struct lruvec *lru=
-vec, struct scan_control *sc)
->                 if (nr_to_scan <=3D 0)
->                         break;
->
-> +               attempted =3D true;
->                 delta =3D evict_folios(nr_to_scan, lruvec, sc, swappiness=
-);
->                 if (!delta)
->                         break;
-> @@ -5020,6 +5029,40 @@ static bool try_to_shrink_lruvec(struct lruvec *lr=
-uvec, struct scan_control *sc)
->                 cond_resched();
->         }
->
-> +       /*
-> +        * Eviction isolated nothing while the sliding window is already =
-at
-> +        * MAX_NR_GENS. In that state should_run_aging() is false, so
-> +        * get_nr_to_scan() never calls try_to_inc_max_seq(). Residual fo=
-lios
-> +        * that fail isolate_folio() can pin min_seq and hide reclaimable
-> +        * folios in younger generations.
-> +        *
-> +        * Require two consecutive isolate failures on this lruvec before
-> +        * forcing aging, so a single no-progress batch does not rotate t=
-he
-> +        * window. Successful isolation clears the sticky bit.
-> +        *
-> +        * Key off sc->nr.isolated, not nr_reclaimed: folios isolated but
-> +        * rejected by shrink_folio_list() are put back with PG_active an=
-d do
-> +        * not pin the oldest generation.
-> +        */
-> +       if (attempted && !sc->nr.isolated) {
-> +               DEFINE_MAX_SEQ(lruvec);
-> +               DEFINE_MIN_SEQ(lruvec);
-> +
-> +               if (evictable_min_seq(min_seq, swappiness) + MIN_NR_GENS =
-< max_seq) {
-> +                       if (test_and_set_bit(LRUVEC_MGLRU_ISOLATE_FAILED,
-> +                                            &lruvec->flags)) {
-> +                               rotated =3D try_to_inc_max_seq(lruvec, ma=
-x_seq,
-> +                                                            swappiness, =
-false);
-> +                               clear_bit(LRUVEC_MGLRU_ISOLATE_FAILED,
-> +                                         &lruvec->flags);
-> +                       }
-> +               } else {
-> +                       clear_bit(LRUVEC_MGLRU_ISOLATE_FAILED, &lruvec->f=
-lags);
-> +               }
-> +       } else if (sc->nr.isolated) {
-> +               clear_bit(LRUVEC_MGLRU_ISOLATE_FAILED, &lruvec->flags);
-> +       }
+The persistent huge zero folio is shared globally and should stay zero
+after initialization. As Jann Horn pointed out[1], kernel bugs have ended
+up writing to pages that were meant to be read-only, including in
+security-sensitive cases. Making the folio read-only in the direct map
+turns such writes into faults instead of silent zero-page corruption.
 
-This is very weird. This seems like using a sledgehammer to kill a fly :-)
+This series adds set_direct_map_ro_noflush() so mm code can make a
+direct-map range read-only, then uses it for the persistent huge zero
+folio. The helper is direct-map specific, takes an address-based range as
+discussed for set_direct_map* helpers[2], and leaves TLB invalidation to
+the caller.
 
-Do you mean that isolate_folio() fails, the folio is put back
-into the oldest generation, and the next time it is scanned, it
-still fails to be isolated? As a result, scan_folios() makes
-no progress at all?
-And is it because the oldest generation contains only this
-folio, leaving no other folios for scan_folios() to scan?
+The folio is allocated and zeroed through the writable direct map before
+thp_shrinker_init() changes its permissions. thp_shrinker_init() is called
+from hugepage_init(), which is registered as a subsys_initcall and runs
+after SMP initialization. Writable TLB entries may therefore already be
+cached when the page-table permissions change. Patch 1 flushes the exact
+direct-map range immediately after the noflush page-table update. Keeping
+the flush at the call site preserves the helper's explicit noflush contract
+and follows existing direct-map helper users such as secretmem and
+hibernation.
 
-Why can't you simply promote the folio?
-Do you know why isolate_folio() keeps failing? I suspect it's
-because folio_try_get(folio) fails repeatedly?
+GFP_TRANSHUGE can allocate from high memory on 32-bit systems. Since a
+highmem folio has no permanent direct-map mapping, patch 1 skips both the
+permission change and TLB flush in that case.
 
-static bool isolate_folio(struct lruvec *lruvec, struct folio *folio,
-struct scan_control *sc)
-{
-        bool success;
+Patches 2 and 3 add arm64 and x86 implementations.
 
-        /* raced with release_pages() */
-        if (!folio_try_get(folio))
-                return false;
+Link: https://lore.kernel.org/linux-mm/20260508-ro-zeropage-v1-1-9808abc20b49@google.com/ [1]
+Link: https://lore.kernel.org/linux-mm/0e5b23a6-4895-454a-9dfa-6dc21adc2991@kernel.org/ [2]
+Link: https://lore.kernel.org/linux-mm/CAHbLzkrXXe7r3n3jXgDKtwZhRqj=jDx9E6dLOULohnhBguvi9A@mail.gmail.com/ [3]
 
-        /* raced with another isolation */
-        if (!folio_test_clear_lru(folio)) {
-                folio_put(folio);
-                return false;
-        }
+v5 -> v6:
+- Patch #01: Skip the direct-map permission change and TLB flush for
+  highmem folios, which have no permanent direct-map mapping.
+Link: https://lore.kernel.org/all/20260727143426.1077133-1-xueyuan.chen21@gmail.com/
 
-        ...
-        return true;
-}
+RFC v4 -> v5:
+- Drop the RFC tag.
+- No code changes.
+Link: https://lore.kernel.org/all/20260718095647.182592-1-xueyuan.chen21@gmail.com/
 
-Best Regards
-Barry
+RFC v3 -> RFC v4:
+- Patch #01: Flush the direct-map range after changing it read-only, since
+  the folio was cleared through writable mappings after SMP initialization
+  (per Usama, thanks!).
+- Patch #01: Keep the flush in the caller to preserve the
+  set_direct_map_ro_noflush() contract and make the flushed range explicit.
+- Patch #01: Clarify the noflush API contract and the reason stale writable
+  translations must be invalidated.
+Link: https://lore.kernel.org/linux-mm/20260706130440.9295-1-xueyuan.chen21@gmail.com/
+
+RFC v2 -> RFC v3:
+- Patch #01: Replace arch_make_pages_readonly() with
+  set_direct_map_ro_noflush() in the existing set_direct_map* family
+  (per Mike and David, thanks!).
+- Patch #01: Use a direct-map address and number of pages, and document the
+  direct-map-only and no-TLB-flush semantics (per David, thanks!).
+- Patch #02 and #03: Update the arm64 and x86 implementations for
+  set_direct_map_ro_noflush().
+Link: https://lore.kernel.org/linux-mm/20260609143801.7917-1-xueyuan.chen21@gmail.com/
+
+RFC v1 -> RFC v2:
+- Patch #01: Drop the READONLY_HUGE_ZERO_FOLIO Kconfig option
+  (per Dave, thanks!).
+- Patch #01: Replace the huge-zero-folio-specific hook with a generic
+  page-range hook (per David, thanks!).
+- Patch #02 and #03: Update the arm64 and x86 implementations for the new
+  hook.
+Link: https://lore.kernel.org/linux-mm/20260527035607.14919-1-xueyuan.chen21@gmail.com/
+
+Xueyuan Chen (3):
+  mm: make persistent huge zero folio read-only
+  arm64/mm: add set_direct_map_ro_noflush()
+  x86/mm: add set_direct_map_ro_noflush()
+
+ arch/arm64/include/asm/set_memory.h |  2 ++
+ arch/arm64/mm/pageattr.c            | 10 ++++++++++
+ arch/x86/include/asm/set_memory.h   |  2 ++
+ arch/x86/mm/pat/set_memory.c        | 15 +++++++++++++++
+ include/linux/set_memory.h          | 29 +++++++++++++++++++++++++++++
+ mm/huge_memory.c                    | 20 +++++++++++++++++++-
+ 6 files changed, 77 insertions(+), 1 deletion(-)
+
+-- 
+2.47.3
 
