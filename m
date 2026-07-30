@@ -4,81 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94C56C55165
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 13:53:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28B00C55162
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 13:57:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 707E46B00A1; Thu, 30 Jul 2026 09:53:06 -0400 (EDT)
+	id EB0206B009F; Thu, 30 Jul 2026 09:57:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B79B6B00A2; Thu, 30 Jul 2026 09:53:06 -0400 (EDT)
+	id E60FA6B00A0; Thu, 30 Jul 2026 09:57:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A5D86B00A3; Thu, 30 Jul 2026 09:53:06 -0400 (EDT)
+	id D9D7B6B00A2; Thu, 30 Jul 2026 09:57:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 31C3E6B00A1
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:53:06 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id BFD7C40168
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 13:53:05 +0000 (UTC)
-X-FDA: 85045584330.24.C1490D3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id F3148100006
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 13:53:03 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ANqaDDhT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B06406B009F
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:57:29 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 46A13120177
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 13:57:29 +0000 (UTC)
+X-FDA: 85045595418.19.647DC42
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 6FBABC0012
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 13:57:27 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XxA18yci;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785419584;
+	s=arc-20220608; t=1785419847;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sn/68y3lNlYo5E39E/akPn0wUZSlktIU6u2iFnuacCI=;
-	b=Ef3TtgBMen4w3LoBaKKPNMWNQnvB7//jttVSsJDcLwBnb+U4ts0ykQTqhQMSJV0FZTyFqI
-	qhr6Ka3aYj9JgYPVOpIU5n+5t9TTCxheG5lakVz+rIBvfh1WVefejQnmL7IBMQaWuJeYsl
-	8l7v1j5uObNzKfC36qo0VX/7DjXB8ns=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ANqaDDhT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=w8ceSBqux0H7VIJwsDpuwa3ukdal2lQ5X0wxbf29WX8=;
+	b=LeEWGq7A2v6efx0uHp6j+qcnbUI6xSXc9boNbbgS9TtNeAfzZKIzZ9VYlMyoyj1vkqqULp
+	defHELXV+Ldhudr5wGKW1pbGpwlvEK/LsmiSls9oRz6N0wvaXbboDhJxcYifkRBugwE+47
+	rpzYmiove74fTXpn/+siqfS8bBLMWjA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785419584;
-	b=fSQLdIOLa8Q2AbAs3lnKVEfBxsMgJPQa0kywLMcrF1kDVRAcGmvz4BMkSboFf6107ksFo6
-	L5koqktCAyjGtudERR1E5ZARPzdKb6Yd+m/LBLMPMy65Vhe+WpAFz4fIclTDTJ6EIo5ch0
-	UslfBTa+8FXLmgRAXMyLOzmbU+nmmic=
+	t=1785419847;
+	b=Pl2MxF8LO8Kc7yWCXrZ4J496cewShFOPHyw76r/ZIjvPkYhshuW4Ex0i/eP2gpZKsGZWWv
+	NqcOiZ1qfl3ux0DXBHQUEQ1ZmwHMMKAkC7YIJm7lNYPJ6Ewg4XndCIXzQYYSQbwKQW1CSF
+	Ovi43A5qDPSVbPerW/NBT1pyM6RkIiA=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XxA18yci;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8DAE3600C8;
-	Thu, 30 Jul 2026 13:53:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 995D01F000E9;
-	Thu, 30 Jul 2026 13:52:57 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 98F0E40582;
+	Thu, 30 Jul 2026 13:57:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 351851F00A3A;
+	Thu, 30 Jul 2026 13:57:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785419582;
-	bh=sn/68y3lNlYo5E39E/akPn0wUZSlktIU6u2iFnuacCI=;
+	s=k20260515; t=1785419846;
+	bh=w8ceSBqux0H7VIJwsDpuwa3ukdal2lQ5X0wxbf29WX8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ANqaDDhTxt5eWSOobGKcDjDuf4s785H2G6Kppo14Vbj6bJo9LneBkYdIHB4x1Bszz
-	 3GoIkEox+T21GdAnzCyqTc8Cdn2mHAWLN227GRdLMJ52D5j1EoZxstdkPeNmiGQRVj
-	 SFnCp1BfldoAVhgDtHzFyntXotL/RKuM6VGI5mPQVtqgB1o8bZ566lzo+7rxAX01Na
-	 mpnGX91L/iGO3UhRZuJnVdXj4Ha+/z/1LFxyTVbSKdg4O7cBfmmV2SSGvSsRkx3xgL
-	 rksn+3k6hpkCFKSeRak7UC0yiHOd8lDVoOOTttRb91mRG1iRU9At4aoOyzT8ko/3B9
-	 h3kLyS+LiqM5A==
-Message-ID: <411318eb-3156-4e5d-9e11-4c319bb9e755@kernel.org>
-Date: Thu, 30 Jul 2026 15:52:55 +0200
+	b=XxA18yciqUYS1WA6zjNMhFTANc8TD7U2p5JCl8KmQh6/EIsr4P7X54DPuoQ5XpO4M
+	 KMfq5fUvoRwuWLQvplt/9mBCE4qbtKHpNDxXKEWEZACTRvasuo3FrfEqDxMpB305pg
+	 tOyPokjkH9oejHw1SCe3bhp/rJfy+n0SDR/ZR35pda/EStaLoSsxUdwR6lQ7YAVR45
+	 ixSyZR7Jz+juvrKGmL3If5t7wPdjd9BlrL6QjBIx0RCA5wcEepdNQP/QGQibX6dR+M
+	 3v50eCjP4YM3J59av9blCRlrNm5z5gN0FQFI4Df9Sh2FijbydewCAq8fBsfkn3ViDJ
+	 4dVmSCox7U4QQ==
+Message-ID: <d4f87684-7727-4c74-95e9-159196fbb16c@kernel.org>
+Date: Thu, 30 Jul 2026 15:57:23 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 0/2] mm: split underused anonymous mTHP folios
-To: Joanne Koong <joannelkoong@gmail.com>
-Cc: akpm@linux-foundation.org, ljs@kernel.org, usama.arif@linux.dev,
- alex@ghiti.fr, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
- liam@infradead.org, npache@redhat.com, ryan.roberts@arm.com,
- dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
- vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- willy@infradead.org, linux-mm@kvack.org
-References: <20260707201735.4113107-1-joannelkoong@gmail.com>
- <ad31d36d-ac84-4053-a5d9-e18c346f3908@kernel.org>
- <CAJnrk1Y-4-_0udtGKeva=f5=xYRCWcyCnBA_1aVQ8oUZRKGkAg@mail.gmail.com>
+Subject: Re: [PATCH] hugetlb: Use invalidate_lock instead of fault_mutex
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>
+Cc: Jane Chu <jane.chu@oracle.com>, linux-mm@kvack.org
+References: <20260730131431.3613545-1-willy@infradead.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +119,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CAJnrk1Y-4-_0udtGKeva=f5=xYRCWcyCnBA_1aVQ8oUZRKGkAg@mail.gmail.com>
+In-Reply-To: <20260730131431.3613545-1-willy@infradead.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: F3148100006
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: t9h7bng5dzsz33ijjqpzk5o4gqmpptgx
-X-HE-Tag: 1785419583-802505
-X-HE-Meta: U2FsdGVkX1+DCUwCq6QR4qGeRoctjneqfwxzfvoPRlftV7ZnSRk2RTEnRvR9g5LzG3xiarMvVfvGp1ESV2t+bGFeK4xaD2aB8tZYgpWAtK/qx3vLC98O7iNqRSGvJJTqRB4steJvrejbqhjp1L682n7llhs/xCTPQJ8Tpno5mfFekDX5/S2dHTEDppSdfqUFUjHm6yMEtIWKQ3DE4dJ3RnKkUs9/l85WLKt3jww36AXgVBp6XUPeMZb6W5rT2+3+s2kc0QhkQoJtvSPA+Z5lO6F1D330a+PhIzVGbAxa/mQNRsETetoEovaT4+2h5p+1pGfzCZ2ITRZm86xmKJaXehz0aDb1CU1FeMAy07DzaWZvuRBiXcB2K7PeFlLkH6/rTFjmxnVTih7HUDakRHGpisL1/lH8bO+gcXnkqAuQussLID1Q2nIre9W7vpdEy+N2Ax5VjdtoNmGvNc9rRbXkKt+1etllDApn9TWY9mfKQm7cle+U+Z2D3MOQ63nq+fvhmj64Mg6/6lK7kdhrjCwIA5SWQXauOwq4hN1iCXL/GQCw1Lh1USmCDvFDuTMxXDYyG2x2bJU/TW/Mj/ZkY8SfnKltmtmpms+xRzJ68zm9MUVPVmeu2eyl6ZvJ3KVP2aaY5jkvuwuPbVO3h7e1l7PZGX+RTblb5iTrWT23Z8QgueiZjo8edTBHHUsi0wEOGoDWv6Vh/yFaBuB370d1Tmyu2789hmmFL0MEJNB+oPSCZbCazUV6GclP/o7Gb2G5Btld2jvRCJqr4Sqxm9L3t3yJkZsqous8xn8qy6lZJsCt89GpE0BZ+ZLgAekvbKtTVAUawgrJDmrjDXWomLBGXDwqQAo6fettJE46VH0jnTc9YF2bYmn3sJXGiyNhznx4or1AIhPoOISXl7mLFHxF6xngbGW80vG4mwmqihZWY6lYol1hDjSqbjZjtr5swezShS2FfrJy5wPT+ZPoH4xerki
- uCI3rUPK
- Z6uUCXjyviGtoTksFElJTuOHWeEfuF6uAOhRafHx5xckwxYWcAYon0zAJ7FoPaORYXyCM/RV6GIHJ9JPD1772UtXQ8dQ0sNgMcmcX8gKbRUqMfgRo4KnqDwKE3LHXsyBSmdnVLFWFLesUSVzz3mYQPXgpQEeYRIV7GjDlVqMsPPeFUGys/pKWfohCDpBH3fpAV88L8BR97dPuQCf170eGE5787OhFhIVliuOvo01gDGMT7NhgL7YYbWQxXN4dc8kbAhQfxENZD/s/kLvaQkik42NPP4u8+pGWYJRztoDUAWVAV3UV5FwYU3nutA==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 6FBABC0012
+X-Stat-Signature: j1ibszgig7t4uibex4j1xzmas3qagzxi
+X-HE-Tag: 1785419847-839341
+X-HE-Meta: U2FsdGVkX1/S2C2e7CbElWxY0DcImkYvlY5xDli8tSpUTEiu5KTo1zaFpjQjNs4Wk0AwtALNVUa9iKsQmMu7RiQ9s0n9LMQa67ffxc0F7ny4MW+36gn5b6VfVB/BJ6lnFuug5SGbmljz8+D7OalRcBS9wpY13Y6Qi7HoGytHXPbd9UjifhbxVlxjs5kskHsutB5LQYk//PtCTCPzj5di0CLwGGrjzMwsAL+ICkHU9KxzmqZHa9Dts58zFXFCipKwvwll/fM1hBzaogzwDEF6rR4C4H8yDBRsdin4odMt9d+i41/QHbzD7C3ouQHaUD2Ga/4570yHZhk25+YN7D8KLTRG7CiBWN7garQ5DHKsRE5fFYFI8XYrt9QkarXGfnKibeqlJexsrUaqSRExc23Y/ohcsileTl2gHoyu0KhdbimtvpglsDPTV/cWP1Z79xWlRrLU2GQGfe/lMAemUsklbug7+LOvaRjnGD37XqseIfj4KyEHu9pFBMy9WOLmRM6V/FJ0eAXiCSNfpCL8DA/TCSd3WqyGBAgpI2SZq2ZzwNWVovDeV25pQYi/9nYQqNjne+YUo8EOJm02BTIu7aol9pDcpvuErwSBsVj3ys2HVeyn38XmAsxWSzZBSNvHJfnzHnynNolJkSSncUL2UxaKKx1qXJpTEpC6kizass5JnkGoWfAiladY0tk+HMh2xBBKH9xsXBLAlNDfcsYz+VPsfxlDny82n8AGtMazF4UckQ3BPYPsmKiLObaAx/QIWNIhi4hZ9RAoio5y1uZ9qNpDMgQfBIz4x58Lk7T64RIroNy139D01bJO0ExNcUvAPQ9P12jWNHqTCiAbzQYY+i1Go+RgZJrgEJuv/xK0DF6blQLdYq00unyB8lMFz03snXpOXo3GsIlgzlgzlC47/+cMR/qBhlscstLhZ0L2vEfsNhdEIQXGX4zt0eEkG6ztpKir7Zl1JDTP4+fH1NlmrJW
+ PPlEgkcd
+ hUpA0hk0IRKPZd+mcM2ZupU1p37eh/xmrZqXlvXh1NyJxS87rkQUJrVNHz470pXgBJJix8UhRPOGz3FnucXiL0zv8JhZiCQFS82t90g1G5Qh5DBfhh1jCt6tSIzfqFjD1r/EDFrZLQxmOg80Bzv41OXDd6Mjd7lKNStQLg+B6CzgwkNB1cOgidsrUOi+rNSNWVvwv2FKWv1LwfmaqQeX1fdfJnpTCwWfO0/UtrWt3JLdaY9GMV3EcNVaNNGjMW35bpkwl7WYACQvye+mgIWIBeOmTqJSwVIiLo5PmnXDxQtsOAAORRr38Mvw8ykfqlGQdYVloTnk94PFz4vozWTUbPUVOdyoodPHXWuWQIcl9MSaHSlA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,50 +137,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/8/26 20:19, Joanne Koong wrote:
-> On Wed, Jul 8, 2026 at 12:47 AM David Hildenbrand (Arm)
-> <david@kernel.org> wrote:
->>
->> On 7/7/26 22:17, Joanne Koong wrote:
->>> PMD-sized THPs that are mostly zero-filled are reclaimed under memory pressure
->>> by the deferred split shrinker, but this is not done for mTHP folios. At Meta,
->>> we would like to deploy 2M THP=always on ARM (with 64k base pages), as 2M
->>> provides contpte benefits and 512M is too big. However, 2M THP=always will
->>> result in a memory regression unless the extra unused portions of THPs can be
->>> broken down and reclaimed.
->>>
->>> This series has two patches:
->>> Patch 1 - makes thp_underused() work for non-PMD-sized folios by scaling
->>> khugepaged_max_ptes_none proportionally to the folio size and using that
->>> as the threshold for how many zero-filled pages a folio can contain before
->>> it's considered underused.
->> Did you look at the khugepaged side, and how we handle it there?
+On 7/30/26 15:14, Matthew Wilcox (Oracle) wrote:
+> Since commit 730633f0b7f9 in 2021, we've had a per-mapping
+
+checkpatch. pl likely wants this to be written as
+
+commit 730633f0b7f9 ("mm: Protect operations adding pages to page cache with
+invalidate_lock")
+
+> invalidate_lock which is used in much the same way as the hugetlb
+> fault_mutex.  This is a fairly naive conversion; all acquisitions
+> are in exclusive mode.  It may be possible to relax some of these
+> uses to shared mode, but I shall leave that for a future patch.
 > 
-> I'm not sure if I'm interpreting your suggestion correctly - is your
-> suggestion about using the khugepaged mTHP collapse threshold in
-> collapse_max_ptes_none()? I had looked at Nico's patchset in [1] and
-> my understanding of it was that the mTHP collapse threshold currently
-> only supports values of 0 and HPAGE_PMD_NR - 1. The patch 1 changes
-> use khugepaged_max_ptes_none's value as a proportional per-order
-> threshold for mTHP because 0 and HPAGE_PMD_NR - 1 are too extreme for
-> our use case where we're trying to find a middle ground that keeps
-> mostly-populated 2M folios whole but splits mostly zero-filled ones.
-> 
-> Is that what you had in mind or were you pointing at something else on
-> the khugepaged side?
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> ---
+> I've run the libhugetlb test suite against this, and it includes
+> a test called fallocate_stress.sh, so I hope this works correctly.
 
-Yes, essentially that khugepaged does not apply the scaling because we discussed
-it back and forth and it either results slowly consuming more memory than
-intended (creep), or ends up being completely confusing for users.
+Do we know why we ended up using this hashed locking instead of just allocating
+one for the mapping?
 
-So khugepaged will currently only collapse mTHP if it can either not waste any
-memory, or is told to waste as much memory as it wants.
-
-Adding scaling here when we explicitly rejected it in the collapse path looked
-odd at first.
-
-I assume your point would be that just mTHP over-allocation (not due to
-khugepaged) could make scaling here a good choice, correct?
+Almost seems to easy that I wonder if we are missing something important :)
 
 -- 
 Cheers,
