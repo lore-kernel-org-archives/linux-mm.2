@@ -4,140 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04A9DC54FCD
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 02:17:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF580C54FD2
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 02:23:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D43396B0096; Wed, 29 Jul 2026 22:17:42 -0400 (EDT)
+	id 86A506B009B; Wed, 29 Jul 2026 22:23:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D1A716B0098; Wed, 29 Jul 2026 22:17:42 -0400 (EDT)
+	id 7F46A6B009D; Wed, 29 Jul 2026 22:23:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C09D66B0099; Wed, 29 Jul 2026 22:17:42 -0400 (EDT)
+	id 6BC256B009E; Wed, 29 Jul 2026 22:23:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 949D06B0096
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 22:17:42 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2CAEA408B4
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 02:17:42 +0000 (UTC)
-X-FDA: 85043831964.28.36DF657
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 61367180003
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 02:17:40 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=VNnNhzaU;
-	spf=pass (imf06.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F8E46B009B
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 22:23:09 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B0190A080B
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 02:23:08 +0000 (UTC)
+X-FDA: 85043845656.01.72DEE57
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+	by imf02.hostedemail.com (Postfix) with ESMTP id EE7A980002
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 02:23:04 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=aqUhF1r8;
+	spf=pass (imf02.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785377860;
+	s=arc-20220608; t=1785378187;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PmK9e5hF10OqnDZaWNEoqEbUdk/xAOPMzMn2ymShT8o=;
-	b=V50M0YCbLnI22FshQp3KZLgLwWDg7TUoL8FvtXCjVhucR++Di+6krax/GVysvX7wKcy9I0
-	EdoQzx44d9ltVI54tT2tXbcZxc6aTi0lSraeUk9+vMNvArLTJyp9eazqePofNNP+aXXRfl
-	kNnp8Gtje96E5rm4E87fFEn+dErJT8w=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785377860;
-	b=D0aaF0BYBDBKme2pm4wvP27KDQ6l1dizssiYePyRXUl/BFN2E+ar2fjffVYIHP1ZbdSq+G
-	kd/rgM5xZO+sDOxLcp/+UWz/8pjIpzDsbiKPmt1168dZgbWvbXc20mzuzF5cmYFGdJNcUO
-	gQaKJlexvJ/SWSE3V+sVrxfqIoqXD60=
+	bh=0OzJvIZWBkrlBUTwSYt4KpI5s4IiGKcT+hyE09Mh85Q=;
+	b=j3DEhYgkZXSDA+Bw++T/FJqJ6Op8HJCTqHY9hXpiUcJiIojTrFDqb4CsUZXH1M9q2eHdIf
+	VPrisD5zjCTWIo604fZDGL7+GFhlcExgqoKJ7gETDPsOuGY5hwvc4fsd/Nb3FCkvj7XMJO
+	Z8GN9PxGs5P+z2whZGpbXw8yCI+hTv0=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=VNnNhzaU;
-	spf=pass (imf06.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-84e4e98d2cfso149733b3a.0
-        for <linux-mm@kvack.org>; Wed, 29 Jul 2026 19:17:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785377859; x=1785982659; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=PmK9e5hF10OqnDZaWNEoqEbUdk/xAOPMzMn2ymShT8o=;
-        b=VNnNhzaUyEQTSCnxTC+WWICtKNoAi+go+10UhxSH6JnxfPl9/clDZDuT4fsr9u8E0v
-         ENrFaeVwPIo2jh5tWi5EyGzVIX+ch5CSGl0w9NaAV9gWLNNQv5i8srKFhPNEtL0Yx9r+
-         D3t4v2k/qWzfaHU2+IOCtdlJ6jEWOgMCwdI1Pc4GsCiQ3lGwjW1TJpNDtawo15VwssDS
-         yOfO76UIXXbRkmWlhSWNchQJhHiTYVBnebGlvazUCQeg/H27hRg1oxUgDezgsVbo0K8q
-         9kXfomRicrjl6M4g8yiEjpQBiVUVPxDdcl8tbwXaIIQhjLu1DIODBAdlvwmyYLPJlSN8
-         ZtLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785377859; x=1785982659;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=PmK9e5hF10OqnDZaWNEoqEbUdk/xAOPMzMn2ymShT8o=;
-        b=Ep0ABH7ZMruc22YumKCI3AqkMbsfl74NOGnDkEl4LIU1hLFwhOMpKOy9FsHACvxtKY
-         vmziVl/GRDQ+MOmUfA0np1W8fTAcXE21AVaDdotS23l1K0FvmWsbS7aFhas847+DHz+q
-         A5MZ4pIiaeitcXSdQnz/O5cOXPPuqkHIP5Gn6417uT+gchr8refHHgRoRocn/jxJgRWb
-         03i0RnbXuZ4iuSFBWlrPPXGz5yiFQa63ZFIho4QvqUBP04N/ly8qxtnroDZ758GS6Ypk
-         Y3eXwdiXKVubHw7VgCakDsQ+ZPMqHz7W77jJDblKyUr9oL8V/LiqnACebLpQCQX49xfa
-         Lkkg==
-X-Forwarded-Encrypted: i=1; AHgh+RpDfAkTGD43Wvtxvcng+NJUXxkBpaY4hqRBgpWl7qRDM0NRfkZJc9ttVyftOBnJ6VyrHl9aF5il2Q==@kvack.org
-X-Gm-Message-State: AOJu0Yx93AuVUOTtglUCXGDZB2w3sdjToTKfDzwpVq+7VAzR9o7hj3PX
-	j+oxE2WDGEAsedbWxALzcjSj8HjfNsTJEyhcis6cfs2/vA95//vqJI2B
-X-Gm-Gg: AR+sD12K78cXIoRGymNTsELxLkHqP5iDkj6oz30BFKK5MmSYkf+iQAG4rQtURxUeYf/
-	Zm4jJP4X1pc7n6k+mUZJqcMLGt8pWQmJcJ+el8+jLbbr2a+xy5vxxwWvEFvuWJ3fVG8hT6k35E/
-	4HAFlj04M484HFu2ANqUe5NoMaeWUROCtmxh/wwJpo0X3oazY0CHzL+0CHJWAvtCLFx+kQhec6X
-	0TDrNi/AgWxfsH+qeW+LTAnKy57YlxqtVbdJikEY1iwzmNwQeJoMGAcsZlJ36EbdXB/605bkvNP
-	/IV06V0RlxxT90rCQsaSZO9BT8x1xuOSc4G0Jgt/66NJw09JDPgprllDKH3/iXs5cm+cJncQu1D
-	7s03wniakV3AOfxKMSoii9aNFnxc5Ftmzk82w3Wi5sMQ4XhqUbnqFCqjKnpkNsAb8v8dh65s0yL
-	DvRfOZzx6MY7ygMe/h/4wlu1JFWl35KyYO75jiUZ5OpjCbdfNgVL4wRzBouFozeVblysL8INNUK
-	xEoe2yScbqom3DLJ39W2y0WpbPEcqRb4TAx0rfO4t36YCXSLyRe
-X-Received: by 2002:a05:6a20:9e48:b0:3bf:b228:10b4 with SMTP id adf61e73a8af0-3c9007652c6mr1025922637.2.1785377859190;
-        Wed, 29 Jul 2026 19:17:39 -0700 (PDT)
-Received: from debian.lan ([155.117.85.23])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e9fe23143sm2159628b3a.2.2026.07.29.19.17.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jul 2026 19:17:38 -0700 (PDT)
-From: Xueyuan Chen <xueyuan.chen21@gmail.com>
-To: akpm@linux-foundation.org,
-	linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org,
-	cgroups@vger.kernel.org,
-	zhaonanzhe@xiaomi.com,
-	baohua@kernel.org,
-	hannes@cmpxchg.org,
-	youngjun.park@lge.com,
-	baolin.wang@linux.alibaba.com,
-	hughd@google.com,
-	chrisl@kernel.org,
-	kasong@tencent.com,
-	shikemeng@huaweicloud.com,
-	nphamcs@gmail.com,
-	baoquan.he@linux.dev,
-	mhocko@kernel.org,
-	roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev,
-	muchun.song@linux.dev,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	qi.zheng@linux.dev,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	Xueyuan Chen <xueyuan.chen21@gmail.com>
-Subject: [RFC PATCH v4 4/4] mm/shmem: split large folios only on -E2BIG
-Date: Thu, 30 Jul 2026 10:16:30 +0800
-Message-ID: <20260730021630.2235914-5-xueyuan.chen21@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260730021630.2235914-1-xueyuan.chen21@gmail.com>
-References: <20260730021630.2235914-1-xueyuan.chen21@gmail.com>
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=aqUhF1r8;
+	spf=pass (imf02.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785378187;
+	b=bbA6IqYwI72yEOlJOqV8MvzujHVKeScSqR/x/y3xEwxzbRAg8mTRKN4qqG/Kub7GG7ZmO6
+	MI0vE5oyuFL+Y+sjl3Gb4HdhombPfEuvE9YX7msc2wlhWiITZU1hePDTuK7uOCN5pCc9gv
+	6NhzfFrY5NWyfksRaB99Gg//AG8jRwg=
+Message-ID: <729c578c-e5a3-4351-b07b-469f79c26b0d@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785378182;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0OzJvIZWBkrlBUTwSYt4KpI5s4IiGKcT+hyE09Mh85Q=;
+	b=aqUhF1r8sA+y1aEGzL5mQ/o0SlE42ZUyiYPmyX4DvA2xKhPbDojKhJ7qCHB3LPxZ0AGR+b
+	hfVUsumPeyusmh6hxUHvoZZkj7WQqUFGaJXDJ1r6tRggQ6/fvvc0g/Xt84Tncsxne+3rJ2
+	O4kxF1JHqFvaVVkwFcAx47k4br5ZBlI=
+Date: Thu, 30 Jul 2026 10:22:32 +0800
 MIME-Version: 1.0
+Subject: Re: [PATCH] alloc_tag: expose profiling and compression states in
+ /proc/allocinfo
+To: Abhishek Bapat <abhishekbapat@google.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Suren Baghdasaryan <surenb@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+References: <2614a3a2f5cb11b63e3cacdcc8ab20a0fe7ae972.1785365110.git.abhishekbapat@google.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Ge <hao.ge@linux.dev>
+In-Reply-To: <2614a3a2f5cb11b63e3cacdcc8ab20a0fe7ae972.1785365110.git.abhishekbapat@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: z4ozgi54aj87jdrye7hr4pjzmatkptza
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 61367180003
-X-HE-Tag: 1785377860-471163
-X-HE-Meta: U2FsdGVkX19XwwkCuYyOuqcOI3TGfQUph4vM4NfqCLhcvoM0NLGVqgdmIb77hRy3sIXxuHjA3n6D+sedCEvViiFsQ/sANsGizyJrxkU+9IoxGiodzMJFBeVb4cmWfa0AKgUHz9+8A7niVE/f6lznn0Z9Y0SlGaoQYDXX1zfTrsZqAuk6zYiJeIN+ashxy33wHRo76hIex5Jj1IJMkV5nB1Ap2jklsikcU5nfsY/UaaIoBIM+lvG2L5K0X971Uj3zX3UVHr+CNPONK9K5/qPckbJZVr8EZXbLAvBVzScimos2Ejyf7fMfabIXTlh0DZ2s65LkhjX4/kplfzkdUiWk0d6KQ+w/rMwhT0iw7vQUOaHMIVCOviGe3KPp1pahO+hhdAjUxNk/K3D6uohYbQrOx9yatU3HiZvpVtLp8A74w9EQv9Qv3Pd8hgzu5PmulDFweKHHCpBP10G4B6vcNkovvorpRQy7QCVNx94wEYA8ABemrVK0YVNDWuTNaM6Soc2+h7vSPW+bJ/NUslqN+Zayth4fUH9FlIE0we22jOBhUMHBwAhJ7yx0R/Z6LjJGy674bpFquI0yH//jId82y9FetK6gY34XCESwuT6wTuGcukGqYcFCvngObgz6j9EL0yclUCu7+MtA7iXbwL9WZNkpe/0qsuNrJsp7JPTfMJKlx4yPaOENfYlMkYouj97RcUJEhStSCZVvlwJW9r8WSWEhccTcn9n+Pa8L5NSj+Qk1QF+NCfcBoDh02nC2svsDEVVHv9wxPHrQhRkL3YDTA5dqtmS/7gHnltCLJlYJRz2NnAs2QVy+7RgovSQcVt10z9VkifVyoMzinT/LICfLJGxfNJEBe+ONbZUVTrsXEVw6uUj9mP/uqyNSMENe7KcwaoIi8QMzD1vI7fwQQHv3UPU+bvNjP4hFEon+ZfCv3fgoRwVj4HWZvt8mgBUO5/PGA84evt40IAK93xO7Nt5BWix
- 3P/u7ye8
- dOI9CTdtEYFhLYNg1MOa2QgOTgWPE8rUt/oo5VwTv1JGX7/AY/Z/QtHOEOiE63Orhj4vKHrt2MM6zMv/DErwOrOTaI+XRMiSbwLoU7o28Iq+G5IsOKba7IoI3vXTLS8J26NjycO0/6ixPd4ASuHCGpjnZL5UpMHgpDK9iDwG0fRXgMoQdcFVxMfgQwH76pRfgQZAc8609mfqKiWSOQ5QP8sfljn536s/1dXrlZVAMl/uJ+Ram/ovKvfZoyBrtxF1pvTLdAVAd7wMJ97tTtgo3gC4EoQ+uoGnvqP3hevC0oMkxIGWo63YsO6328aN1olqui9QyNl1NLvYmmM1GplGNUG8Z9qv5thRNZrIs9Khnj7cZ09CffzFAhjPm4DoOGMWbhfC0oPFeMjpWPPOlWfnCtoYNn4k1dxXVoDYSSAJx9JbhzqD1zRJ/0pQZ6UcKFZnirzYTV/Oh8xCF5UYxLkc8oDfARDtE4LxaJkxKko+jcgw15eJ1OB469rsfCOgYFVfipvXIjuezlvdJfBc=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: EE7A980002
+X-Stat-Signature: x7zgco9hqhmw3s7dk6o7en4mzj9n3m6m
+X-HE-Tag: 1785378184-395624
+X-HE-Meta: U2FsdGVkX19APvabixY0ZgBBR7WCtsPtspjurDR4njtnCnKnv+4obaDfTduXj5xkNQ6mzUwFmeqPj3GTj/1JOt1QsNOnMVdceLU8UElWIRRn4uHeEXcn1691fHJ7ot0O2WNmTZ+6t1RnLsIw9iQ5RVEg4Jk+TOsYFQCg1g2r800NTDDWaNIrcE3cDrmcgQlQkbhtT3BXHHuR//55jjFAa9PNjjPHh6ULZ66ZaFud5UaCwTyg93m7POhXiNABJR8SxHbB9tderz0T/KH2e4Qatszq+twBbZ3gQxIBYC8hjdn+3MJcdKEvnFDx7dGOjpTaBRmkcQLvOHxYGXBP15QCLJhTvNUwp3Oghwv/gehiOOYQumVuxE5YbsxE8f/Jg6l/UDFWW+id1YDEAAijU5o8MQatUERgYnNIOvg0gwVzk63p9uklqJVJ1idNoZRbgMOIlP8Y+ETUbmpJ/U3buGvo9Igw8YmJYRgNjcvGmELc5EFKMihzs5qKUL2VujZU397O26kNSYGXvm+TK4NgSqFBBR0jTOuYXez7Hqz6ZjSP51kUnHXmvF/rz28kfCHXYSHjXirV3Mn7c9d+G1tDbcQaOAV90txdQWCSZ9XyNUFx58k6yRMS86ZhCqGlNlwyKO1vmumxqDogMYgvw2CPudquMtSFLW/6ctWmPXBJXA00htN5rAzbsmZ9hiROGG/92vNv5nbwFTYJwWp2RM2f1oOZ90/su3joScSQKD31cQlGnq4F4SDK8f9taKpLG2u2ZTHCbvrTR1Hdn2IVs75l4c3gcBqsqbiflqb8WN+a6xcosNCgecPCM2Td75lGzGnc1MYczvfCGXhAJRmq303LQ8JzqEzCn239LGvnAEMK1dyo2TEAApgLN09eXa9vUN+rLclhLCBKorzG+UucuUdB8DFYreVeAr5V3FbZSvEtSCwc6QDEHNEn6Ewe+WnfGt3x+ehPGikKPaQB+1J3ijZzPXc
+ 2gewB8sy
+ Iy0yllYXWNRK44WdTUqFKCVYk7SjloVq3bxOJXR0vf78T7rO2sTy4NhMg3FxNIK+d6QtO/Vs4RdPEZ0lFw2a+5RWU4mI8SkFLoBOkO7vrxwl3U0iy8RbHlpZNSb73T8OpN/xHUhUKMfwiAmcMAJ9k9dXo83vNphKcThxhpYb/u8G4/JmiQEptWGpnkfeJzyoHTfLeAc0Ah1Cugnis59apC/x/GH8xNTHevZkMi4boUP0LxqYY16DRe/wDO0egAJTFgth3w0Z4P7mVQHw12amflV/qsx3GT5t6nr5u8V3REzpwJOi855gN4mRFhg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,52 +91,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-shmem_writeout() currently splits a large folio on every
-folio_alloc_swap() failure. With the refined return-value contract, only
--E2BIG indicates that splitting might allow smaller folios to be swapped
-out.
+Hi Abhishek
 
-Enter the split fallback only for -E2BIG. For -ENOSPC and -ENOMEM,
-redirty and reactivate the folio as before.
 
-Suggested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Signed-off-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
----
- mm/shmem.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Thanks for your patch.
 
-diff --git a/mm/shmem.c b/mm/shmem.c
-index 6641823bed16..6f959191ef70 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -1609,6 +1609,7 @@ int shmem_writeout(struct swap_io_ctx *ctx, struct folio *folio,
- 	struct shmem_sb_info *sbinfo = SHMEM_SB(inode->i_sb);
- 	pgoff_t index;
- 	int nr_pages;
-+	int ret;
- 	bool split = false;
- 
- 	if ((info->flags & SHMEM_F_LOCKED) || sbinfo->noswap)
-@@ -1689,7 +1690,8 @@ int shmem_writeout(struct swap_io_ctx *ctx, struct folio *folio,
- 		folio_mark_uptodate(folio);
- 	}
- 
--	if (!folio_alloc_swap(folio)) {
-+	ret = folio_alloc_swap(folio);
-+	if (!ret) {
- 		bool first_swapped = shmem_recalc_inode(inode, 0, nr_pages);
- 		int error;
- 
-@@ -1742,7 +1744,7 @@ int shmem_writeout(struct swap_io_ctx *ctx, struct folio *folio,
- 		swap_cache_del_folio(folio);
- 		goto redirty;
- 	}
--	if (nr_pages > 1)
-+	if (nr_pages > 1 && ret == -E2BIG)
- 		goto try_split;
- redirty:
- 	folio_mark_dirty(folio);
--- 
-2.47.3
 
+On 2026/7/30 06:49, Abhishek Bapat wrote:
+> Currently, userspace has limited visibility into the exact active
+> runtime state of memory allocation profiling and its page extension
+> compression ('sysctl.vm.mem_profiling={0|1|never}[,compressed]').
+>
+> While reading the sysctl provides basic on/off status, it is currently
+> impossible for userspace to natively determine whether page-tag
+> compression was successfully enabled without scraping dmesg boot logs.
+> Furthermore, since /proc/allocinfo remains in the procfs filesystem even
+> after profiling is dynamically disabled at runtime, simply checking for
+> the file's presence does not reliably indicate if the allocation
+> tracking hooks are actively running.
+>
+> Resolve this ambiguity by appending the active state directly into the
+> header of /proc/allocinfo.
+
+
+It's not obvious to me why userspace would need this state.
+
+
+Suppose userspace reads mem_alloc_profiling_enabled as disabled, then 
+the profiling
+
+gets enabled later. All allocations generated during that intermediate 
+window are lost.
+
+When users later cat /proc/allocinfo and see the enabled state, will 
+they mistakenly take
+
+the output as a complete, accurate record?
+
+
+I'm also unclear what userspace would do with the compression state;
+
+this is just an internal implementation detail of memory profiling.
+
+Put another way, personally I'd prefer /proc/allocinfo to stay lean and
+
+avoid exposing too many internal implementation details to userspace.
+
+Unless users intend to dig deep into how memory profiling works, these 
+extra details
+
+will likely only confuse them — most don't care about internals at all.
+
+It's similar to how we use APIs: we only care about what an API achieves,
+
+not its underlying implementation.
+
+
+Could you share the concrete use cases for exposing these states to 
+userspace?
+
+
+Thanks
+
+Best Regards
+
+Hao
+
+
+> Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
+> ---
+>   mm/alloc_tag.c | 6 +++++-
+>   1 file changed, 5 insertions(+), 1 deletion(-)
+>
+> diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
+> index 52aece27b00e..89ec2c6ce57a 100644
+> --- a/mm/alloc_tag.c
+> +++ b/mm/alloc_tag.c
+> @@ -108,7 +108,11 @@ static void allocinfo_stop(struct seq_file *m, void *arg)
+>   static void print_allocinfo_header(struct seq_buf *buf)
+>   {
+>   	/* Output format version, so we can change it. */
+> -	seq_buf_printf(buf, "allocinfo - version: 2.0\n");
+> +	seq_buf_printf(buf, "allocinfo - version: 2.1\n");
+> +	seq_buf_printf(buf, "# Profiling: %s\n",
+> +		       mem_alloc_profiling_enabled() ? "Enabled" : "Disabled");
+> +	seq_buf_printf(buf, "# Compression: %s\n",
+> +		       static_key_enabled(&mem_profiling_compressed) ? "Enabled" : "Disabled");
+>   	seq_buf_printf(buf, "#     <size>  <calls> <tag info>\n");
+>   }
+>   
+>
+> base-commit: c73b725a57f276a3702ca213bde78fca029bc619
 
