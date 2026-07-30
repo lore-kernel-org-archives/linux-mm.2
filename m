@@ -4,89 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B189C531D0
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 04:40:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEDB8C531D0
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 04:58:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 097006B0099; Thu, 30 Jul 2026 00:40:01 -0400 (EDT)
+	id C2B416B008C; Thu, 30 Jul 2026 00:58:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F3B406B009B; Thu, 30 Jul 2026 00:40:00 -0400 (EDT)
+	id BDC4F6B0092; Thu, 30 Jul 2026 00:58:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DDC3B6B009D; Thu, 30 Jul 2026 00:40:00 -0400 (EDT)
+	id ACAC76B0096; Thu, 30 Jul 2026 00:58:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BC8056B0099
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 00:40:00 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 3255F6B008C
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 00:58:31 -0400 (EDT)
 Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 49C7340435
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 04:40:00 +0000 (UTC)
-X-FDA: 85044190560.10.ED712E4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id A3BE6A0006
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 04:39:58 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MX7CteAl;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C006C4021F
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 04:58:30 +0000 (UTC)
+X-FDA: 85044237180.10.3C3C355
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	by imf05.hostedemail.com (Postfix) with ESMTP id EEDAD100007
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 04:58:28 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=ly1i9sSO;
+	spf=pass (imf05.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.170 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785386398;
+	s=arc-20220608; t=1785387509;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PRRcJRQPR3buBmMaDcVwulWeVM6qSbo735r2+CfQnW4=;
-	b=A4GLNA92hZWfhCTnNaJkAxHIO+GZAbPmfVH4ixARV5DVKpouMmx4EVziIGRhB78cbPMBjs
-	6oPiVIDIUgN5/5QzmbBl2XQpeyhpJuFsThbFbsr3509TBbZJtoiwoN2A92m1LHqu0e/qDq
-	4I8+jsCIIe1TtXR+ims0R05c8GKybYg=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MX7CteAl;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	bh=xIFNfpu9gmD/EDvYhBb6eSwchsbOBYYW3f9ffk0DLHE=;
+	b=Doaq5cgaHhO3RHOstObkmXjkYALW22MY3KmoQyG/AwcfsJstBENAAaun5nvmaio7krLyn7
+	hzx/prSAgvzgAJV7/c1MW5JXVJJ1+ry1XgR4roYnPVfY3U3S/H/0UaXfgmpNglIdPdHxTK
+	jxn2/Yzj7Dx+ttVdeL/Mdmx6+ovyzlk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785386398;
-	b=ABfaSrAnxVufMbhu/oZ2l4OW1h7fwOdHM011aFmMmIt+vweazyyUQxjsg1VjOjY/d+YBAg
-	eNgfPan6Zq3sEJfwv9j1giplNoBfC1FNhM+EXUlR9HpFRV1uUatO5+Zr23/leCb00S9fDK
-	gHUFpdcFGzJNrMRSRgd4L2xshrEzbZw=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id F14084362F
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 04:39:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F5891F00AC4;
-	Thu, 30 Jul 2026 04:39:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785386397;
-	bh=PRRcJRQPR3buBmMaDcVwulWeVM6qSbo735r2+CfQnW4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MX7CteAlQAT5vgl3TbIhGQK+ASQYMO9ml8Sfx4iTLr+6fRM4u22WYD5qTDS7ctPam
-	 libpPlwZnJmgtYgP/rPAd7EPf2B6LC0LvxEh1eeZkRr+RFSgr04XGqrY0GxZTDd74u
-	 UMNnKri81St0IyLHiplr5f/Wt0YqHwh6J21BigfSGtOKVDGtkLzdoYSsF3UBzfOwOX
-	 RYile5ciWowCFc82keiNlQ799IURoZieEh12fOlAES5vaU+Rl1AcG2lxZq1xF2We7D
-	 417nz5OrPTwUgiVwL6LP5OR/euG6cMCRM6sE+d44SO8xee3XZBstuAaajakV+w0eLU
-	 COTHHkoM7Youg==
-From: SJ Park <sj@kernel.org>
-To: 
-Cc: SJ Park <sj@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH v1.1 6/6] selftests/damon/sysfs.py: test damon probes
-Date: Wed, 29 Jul 2026 21:39:43 -0700
-Message-ID: <20260730043944.146030-7-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260730043944.146030-1-sj@kernel.org>
-References: <20260730043944.146030-1-sj@kernel.org>
+	t=1785387509;
+	b=eyvgPbicE1Y1tpd0zFEt+JRO565d5zVs1OFVYm5Zga58hv/Rr8sssdlrrLWL060NW8/qG+
+	LGzf9Mt/x4YZSgTDM/gIQSWpCqcwoF1FXyW995gSY6Ex3cASpOfeNE0igYF0r5XH3qy/oX
+	jbrTCTblp8oXkHlKb8oFp22wfQGL3g4=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=ly1i9sSO;
+	spf=pass (imf05.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.170 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-51c16ac21acso11002341cf.0
+        for <linux-mm@kvack.org>; Wed, 29 Jul 2026 21:58:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1785387508; x=1785992308; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=xIFNfpu9gmD/EDvYhBb6eSwchsbOBYYW3f9ffk0DLHE=;
+        b=ly1i9sSOyUATyEjD1VTuL1KnqBcDudVfhsNmrLf2hETJYWD3mSufu/A3hADiIuapoe
+         m9Poc7TIoO8dqvoE+w4Fr0Dh5MqQjSzOdRLdxPKzLdVEIc0gHN8pegLm+novcLjyfRfh
+         hZNSFS5vWcpWtkLNww5MrKp6XvTYQ2BpaOswJL4ZOGYP6BSeJAPO1pqc9KFF7B3nHCsz
+         CWV3qTo5LCRPgD4D7szuHZTOf68QOsGObakESKS7vmtPU0h21n34hxxzDITxI08vxYLN
+         kAOr39fjcZiHz5oQs/ZJGRefTNGZGYDcZb324ozKj+TWmeOMsXLrA5go3ePoOBx0EgIO
+         pZCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785387508; x=1785992308;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=xIFNfpu9gmD/EDvYhBb6eSwchsbOBYYW3f9ffk0DLHE=;
+        b=aUj0kv5SN8/o5O6DyU4/wyLpYLSpxrQzMT/09zw/l7QwC04AIBR2V0z172KRUPjZQ+
+         dS1DZHB2bFlYm71OLjVObQl22qWzFflAy9KQTtGRil2oi1VT53iHUWEMIZmvAQFH20lr
+         x+S/oiZBPUzdjlofi8P8OwC/C6smocw9+PZOev2a11Qq6JZ/zi50jUrk9FwHgPjel5qM
+         508zcZGizMKImChIzNY4u+QF0Pgv9fdXRdOYvktqg7W6FHwA7aCP0OdHHzkICYqbOkkY
+         6mCJk2YFMf9hxmh0KaRzEgUIyXbiFS+DHohon3rRYBjoksNxCjbxemgZYsBt4IOf5XpX
+         uwWw==
+X-Forwarded-Encrypted: i=1; AHgh+RrRTQ7fGSL4dMgrfRo8PHP7UqZS2HkU9DrTgX7rDs7ycLbdb0j2C5gtT/w9EIvD7GOSPimrpqLv4g==@kvack.org
+X-Gm-Message-State: AOJu0YyVUwUw+HwTBz/5W1Vf/2s2q07ICTAZ1HOi3CbwCFYxYORY79Ha
+	TNPN5ARDS0l9zjMY6gQHrNwxmhMjENkQMcI1XKtXaIfR7ha+JfSr0FdTQXJHBIVbR78=
+X-Gm-Gg: AR+sD12uSUIb0LTpC47fsWd3WCuHm6vb3ZLmWyagNfdcuZ54MLRvNCVhmXNqaEYmP+m
+	mMMchEv+jid2n+JQ1b6BFGpVnL5f633SX5Nuh+L4XDKXmbEhNhA14ZGN1CcGJDxMbvpwGfFNX/t
+	fzpAX/obznc+aDDlGfkU1PZ+9HSSzmRqyWhpdzYq0fAzhlteAdsJhaa99BlwYTBJf4R3Hv9kBZy
+	/MFSv076+nPljvdc0orOXm83cfnO4T9L24ik2Ypvr4DpVkZu2ZMeROMvRDPboikht9DN7A/f50h
+	nEkBI4Oz2n9kBmHlkRhe2/GbpLe7yR6SNg+F7XTtfkHn69ArDp79yIoXYOu7GRycsJeXQ9+KsV0
+	C3piliaaParDB7/QUA75aN1CvFvARp0p8k9vvriUVbRxBZyEI3o9MTETXRZakY2IaQaauVJaGNh
+	f06XkXT2mDzLR4LPDbylf1maXNv36lBP5v1kIBvCMV10aCXfKV6r7L2P9i8KofgeawKzlm87zHS
+	9aJbrwXpES2E9Vt6yrviKxB5PC6i6sOpiq/6mOt1yV8
+X-Received: by 2002:ac8:59cf:0:b0:519:51b1:e764 with SMTP id d75a77b69052e-52b38662c5bmr13461711cf.47.1785387507988;
+        Wed, 29 Jul 2026 21:58:27 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-933e733a27esm338204685a.34.2026.07.29.21.58.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Jul 2026 21:58:26 -0700 (PDT)
+Date: Thu, 30 Jul 2026 00:58:22 -0400
+From: Gregory Price <gourry@gourry.net>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
+	Pedro Falcato <pfalcato@suse.de>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Jan Kara <jack@suse.cz>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Usama Arif <usama.arif@linux.dev>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Peter Xu <peterx@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Arnd Bergmann <arnd@arndb.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v3 03/15] mm: abstract vma_address() and introduce
+ vma_anon_address()
+Message-ID: <amrV0Y7ZUtihiB2B@gourry-fedora-PF4VCD3F>
+References: <20260729-b4-scalable-cow-virt-pgoff-v3-0-e8ecfefea812@kernel.org>
+ <20260729-b4-scalable-cow-virt-pgoff-v3-3-e8ecfefea812@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A3BE6A0006
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260729-b4-scalable-cow-virt-pgoff-v3-3-e8ecfefea812@kernel.org>
+X-Rspamd-Queue-Id: EEDAD100007
+X-Stat-Signature: xnksopmmqnu59r5o6s51dptpu5ser1xs
 X-Rspam-User: 
-X-Stat-Signature: 1fb7auwfa8zcuehzo6atupd3uh74r7ax
-X-HE-Tag: 1785386398-87824
-X-HE-Meta: U2FsdGVkX19YQhxC3eroZfUCIhFeUAn/c/BgRdpOE0pC8/2KqbO7KSGCpCR0c07U3VkubGo6HMR+QX++XU1vNuW9vUYodbQY4DeAbfR5l6nH8cUk8AbtekxKOsbsDnnut5Hce1PFvOM/WU5e/ZilLH9Gwd7sxayGeGUeYByItmVA8nkwOiH3xXrTpABBGBIOOU8TfBnnOJWrT5z9FQvqmM1cq70p8mwhTPZztSWDL7XQbeFQyz3N7mYFQlrKX4zWih5BN2FNDlfhENJVGYhFnQiq+a/86PjkeeMaUCYU5Gd5qpXlfqBJCBOsdeB2a4loG8ceEwTftrx2aOn7lJlDEE913c7SoPxQe2P8NtRjlpqjj7nUBTsjjvze5Y5gBZXihzC9Y88hzBrw4oWqYf98qsRNGoGgxKtCs7n7FMPZ/yILZhcGCF5yJKFT/iubuhkB+ZuBsMQZKkwcaH+EvxBZaaoaldu87y8Qr6jpEd8e2K5HRy4xEzx5viKweGcO3uhtJ4CniY2ev2Fu5HEx5S/TVwzJY6m48PXS+TxcQKyGZBlO/VhPXl6/7AjruEHDb4+SjMEbf/uMdnc007TVGGuD/zA0bgFCbmECvgakj+pdOC+hWHsdILdnqSNCnO5GHaiGcPRuz0SBpOzhBKXvQlbJXyFIrWxMmIkJGlzlTH/NvFmHCLZ2eaLVfGoww0gPfCgkEZlIpYZRJTJYVgbWnkQC6pnTy1KfSHglb2uIIy6P2Z13bKbwDEJCjIaAFWjaQNB6GfGY+2BTKUUaeM/SvmWDJh3kNRv5Zln8EzONr+KVY6M3OiJj6BdkfFhmq6jzVKQNuriVc9WGcm+Ub9ESoIS26xWcAnXg0QTP7cFyGoNc/b/dOVHa/aKl4vMxk7StosJiCSKzqmRxD3YDz7YwIzXTwtMoM4ejrGHdrw520YXDmwi6eSBUxcmmzY9vaE69fANj3AgyjPpfcHIH9nliMFI
- OD8W1D4D
- zSs29fBHJWX8jeZjL9qdp1DcpY6tBtUAmLsUz+GHag/Zam3+FFQxj7ktg73G+9yL1mvkX3JTancR8T42oy06l9ZggehKjSEvufkE1WHqW62ju13myFjDdBFca2UJvfCKPJRYpK1B46z8R/z4JLF7vY9xJu1s943NqjMU+ai6lMwLK71UoJ0aNr80M0kOb4om1gfuCoNIDgxU09t1PnV8CzwGARER2pMHbm34lBo1Aiq0x40TcR3RY9UPLMITY8BLFfwuLSbtCvBjd2+1ppNJX03+XWu4y5fJxqBdTmJHGjV3ddF8=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1785387508-882684
+X-HE-Meta: U2FsdGVkX18O1m8NOckGR6NErCE4NWIj/kmunoLtF51EfvhvuafAKYBkH32RFLHxjHohfs46xv/a8eBWCqA3EZBw5wvFx1nBgtYUNYX0fe7jEpPfrFND0I2l1tK9spGr3Rp2yzoC5ycQm2uoIl+7B0fBYLgmy8x3nYoe0e6WshSXtnPYO1s8SyxGSai037yKq4qYxTvI7yOos6IqFotWL6RZIhMQ9zhyY/k4Rd1vihRQvVgefearYuhlcO+5x7rbgwPn7bsbtRma0M1Owem93AYeV9vBIDLM0XW62F+ISNItlhSvhtsIydQJhs5v25nE7GIHUXPhSBDMM9HgGReRR708m5s279BPUphOaxgdadz1POXxT0Iz+MEX931E2ltQLPGpc5ZT4cMGHAyOInM8azlEVIbiCu5hA10JsAkrbB8eZ3zGf/aM7GTEjTrU8GHxmOXoW9duEFFJgYS1/A5WOo1RUvm/LFZ3eGPBCRM9nKpPiTM/NbVOu/FjN3G3X2Ahd33sVQWAYihi/8SPUe+mxXRlTt1/J67r78zzzIP0/Ed/5/1VQ/vH1HCXn0mZ9Db2cLfdGJDKIILZTVNRAJkzl0qnMmVEu+I/fRJRERPrDHEWWhQqD+huUps8l7O3ku0RPHeKJe3/fHmXKhYxzpIU9u9PdNDMuOqoZ676mzaLvulNG0kzY+1A6b20yAVe82YE49E0MQGeCIEhSq8bKDzKT90ZUPQIfe5dl7T2JPlOOUJv5Ulg4d+T2FXVZMNPisR3HsezBmwyk9KxEBeb1jNI0FzPyj5bMEol3bx/j1+5teTN9or0Rc9MwwEv0rKUmVNius0psRVu9o7nYSC4vRy+OqN+nmQWwzPzTx5z/jjQO3Jr8OGwXSK3u3AojGonQAhvp+gwMoqZzE92qNcV263caiYHGZINQIUGWucb4P0zr7OT4yvn/l/IgeFWZ3nWzz5L7jNHAcB/lUQwjSmN2zp
+ WR7Rx1XC
+ LrPDSZ2Nl/bjLjah5+TpZ4FmnqBEiid52PN84qxNCtJOjsMFGIoEyJrp0ebrk9dbIPHTJpdBCE9GIEDJEts6lfF208QYjbaxAtJ6RdVhY3zp+Zny1oNvIhCUMUIK4es6i7dY1o7ENHrBdPfJZd3JJ5+jSddG+UTnp7Fqll++3Y0IP+KgvI9VZD2JrjC0KZQ3sNwclAVy+oAV0dZWm8W3zLVU0M5Yh1BD05rjtWlsrUs4OY9P25nBw31Jw12RRIIG/l8L98dNeamRv7S4CBOxkoEl1RfkZnqvea2vqufiSGOh7WbT3eJClLWavE4mRB4W3c7mRLOZkN+Gj8P00rATnetbo8YnSV1DG+30IJVCWCKAV4fcR32yiAHCsXz+4LyIsxxArUpj9h4GIP9tW4tFpHf+WbxqND07dcNW+d5xSkLr0VW+IsSuSwsiU6reTQZruNVCafBU55XtzmN8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,41 +136,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Extend sysfs.py to commit DAMON probes via sysfs, and see if it changed
-in-kernel DAMON status as expected using drgn.
+On Wed, Jul 29, 2026 at 05:48:38PM +0100, Lorenzo Stoakes (ARM) wrote:
+> 
+> This will be necessary for determining the address of a folio's index
+> within a VMA when the folio belongs to a MAP_PRIVATE file-backed VMA but
+> has been CoW'd, and thus is anonymous, once the anonymous VMA page offset
+> field is used for the reverse mapping.
+> 
 
-Signed-off-by: SJ Park <sj@kernel.org>
----
- tools/testing/selftests/damon/sysfs.py | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+This is a doozy of a sentence... 
 
-diff --git a/tools/testing/selftests/damon/sysfs.py b/tools/testing/selftests/damon/sysfs.py
-index 159cbeac067f8..66c826189320d 100755
---- a/tools/testing/selftests/damon/sysfs.py
-+++ b/tools/testing/selftests/damon/sysfs.py
-@@ -319,7 +319,21 @@ def main():
-                 intervals_goal=_damon_sysfs.IntervalsGoal(
-                     access_bp=400, aggrs=3, min_sample_us=5000,
-                     max_sample_us=10000000),
--                update_us=2000000),
-+                update_us=2000000,
-+                probes=_damon_sysfs.DamonProbes(
-+                    probes=[_damon_sysfs.DamonProbe(
-+                        weight=42,
-+                        filters=_damon_sysfs.DamonFilters(
-+                            filters=[
-+                                _damon_sysfs.DamonFilter(
-+                                    type_='anon',
-+                                    matching=True,
-+                                    allow=True,
-+                                    ),
-+                                ]),
-+                            ),
-+                            ]),
-+                    ),
-             schemes=[_damon_sysfs.Damos(
-                 action='pageout',
-                 access_pattern=_damon_sysfs.DamosAccessPattern(
--- 
-2.47.3
+... determines the address of a folio's index within a VMA when
+  - the folio belongs to a MAP_PRIVATE file-backed VMA, but
+  - <The VMA> has been cow'd
+  - thus <The CoW'd VMA> is anonymous (as well)
+  - The original VMA may or may not also be marked anonymous?
+    (just clarifying, could be original mapper or a COW that COWs)
+
+Ow, my brain.  One question below
+
+> +static inline unsigned long vma_address(const struct vm_area_struct *vma,
+> +		pgoff_t pgoff, unsigned long nr_pages)
+> +{
+> +	return __vma_address(vma, pgoff, vma_start_pgoff(vma), nr_pages);
+> +}
+> +
+... snip ...
+> +static inline unsigned long vma_anon_address(const struct vm_area_struct *vma,
+> +		pgoff_t pgoff_anon, unsigned long nr_pages)
+> +{
+> +	VM_WARN_ON_ONCE(!vma_is_anonymous(vma) && vma_test(vma, VMA_SHARED_BIT));
+> +
+> +	return __vma_address(vma, pgoff_anon, vma_start_anon_pgoff(vma), nr_pages);
+> +}
+> +
+
+Why make the caller have to know anon vs not-anon if you can determine
+from the vma bits which vma_start_pgoff variant to use?
+
+(I suppose this is probably the entire point of the series, just trying
+to get some clarity on the increased API surface).
+
+~Gregory
 
