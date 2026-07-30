@@ -4,130 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 768D0C54FD2
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 09:58:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3726C54FDF
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 10:07:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 85EC46B00A1; Thu, 30 Jul 2026 05:58:22 -0400 (EDT)
+	id 589DE6B0088; Thu, 30 Jul 2026 06:07:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 810076B00A2; Thu, 30 Jul 2026 05:58:22 -0400 (EDT)
+	id 513006B008A; Thu, 30 Jul 2026 06:07:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 702196B00A3; Thu, 30 Jul 2026 05:58:22 -0400 (EDT)
+	id 3DBA76B008C; Thu, 30 Jul 2026 06:07:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 420466B00A1
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 05:58:22 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CA72EA092A
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:58:21 +0000 (UTC)
-X-FDA: 85044992802.27.F2D234C
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 0F39D140003
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:58:18 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=P7rvLzGR;
-	spf=pass (imf09.hostedemail.com: domain of xiaoyao.li@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=xiaoyao.li@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0C2E46B0088
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 06:07:01 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 832C5160902
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 10:07:00 +0000 (UTC)
+X-FDA: 85045014600.26.8E29FDA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id D6F8B1C0009
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 10:06:58 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="i/APtpjF";
+	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785405499;
+	s=arc-20220608; t=1785406018;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qfmN1bQzqO+Rk0ffML22cDwczVuBArkQZFN9qfd1zMQ=;
-	b=U2n+a5OU8TL27XBPVCuG3yiwXdkO1XJ6Hu6V18GXhFkRnOPhxZUgkE7Vcm0c+DaumIGw5z
-	Y+Dwgi+47rDRy9JW2XF4H24RgQjVL7/IifWVotojNfMWNlchcwuMtDq5iCZGydPGk/NEdB
-	GhC0EjiniWaPUogY4L7qYU2BXe/s7BE=
+	bh=UUei0lD/EDb7h2v7ToPNN5nuFxLeREbeKm0rMZyUnpk=;
+	b=dJvL+zuaNKtt2DD6xdw3KJIpXXDWi+HMlu6LWreUV2AD3ZMLH32D+aLDZUlE8BFksDKt9n
+	emkFtdgjqI98nJqDpzpXD7H3UKQsoHsd73kCe0JwkENAZ1axpcZkKKPk8Tbr+jp5UveBdu
+	trKihyrQYvlQ2cFurXcrYsF4dl8dqkw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785405499;
-	b=EroMSqsjhvacSuSkH6XM4hokKp2lIZNTCyWplefE07jrTEjVrNLiDpnixSeyghi0NtpAD1
-	9ymWU0gjfW++bv3k4Oe+eCBE+vspCujxvTone88La4H4OuzeWAbwtavChnPVdvi80F02oW
-	S+82POnlNYs5yV+4ORswE03HJximzQM=
+	t=1785406019;
+	b=ZSsPKsXtOg3DpqgoflJvO4tJym8ZKe6ZcNDHGXJHlj7FGHIrXxJFXi7IyTDDwAHpqNKvlw
+	FYAP15/gKB8GFSiDlisBnPH2Tu6qXQOjHFQQqcWHNgbNdQICxDodjRdTWbONBerQ9Qik6r
+	wlAcIqV0zHL2ud3UTCIJ4k1MWMVovmc=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=P7rvLzGR;
-	spf=pass (imf09.hostedemail.com: domain of xiaoyao.li@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=xiaoyao.li@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785405499; x=1816941499;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=jfFI1NumX8PLykOdxR0JzkYx01P6yXcIgS+lSqQphOE=;
-  b=P7rvLzGRmngOjAIdiej0Sxo9vNx2sZzJSqEQrIrbtFeLD9Jou7wlrdJf
-   gd85nBjviBhOPV6QJ/SY0xLECawOGGG/ZiEJIfcoMPJZHD1JTXG9B4eGd
-   pSS+ZLXxUKVUpphSdB4LMyX0eXxnhpVZS7PGc771/5XCVcgUXAx2sxMme
-   nSkjGx9927qoaQb9FBTzI6j/Ni+WTS+vrSnSeW6XSHDiHzNoZ7BOuNIjo
-   kOyXIs3rvXN8vxVgFGTg0VVPxJrh8CoxXz19AbqhzKSuLa78EqwCNnTKX
-   KNuWgB7Hyb+0Myg3NH8QXLpAsVe7xaLJjtwT94vu+Hhu1SLlPMjh8LDe/
-   g==;
-X-CSE-ConnectionGUID: +3r2zgbPSDmgkRvJ3QwDcw==
-X-CSE-MsgGUID: 0y0hFsUQS9CcmD0XGhp5VA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="86211553"
-X-IronPort-AV: E=Sophos;i="6.25,194,1779174000"; 
-   d="scan'208";a="86211553"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2026 02:58:17 -0700
-X-CSE-ConnectionGUID: oS52XiaARmuPWXkloKb0ig==
-X-CSE-MsgGUID: U5RpQ7eVQcaEsE41l48cdw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,194,1779174000"; 
-   d="scan'208";a="257576394"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.238.208.132]) ([10.238.208.132])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2026 02:58:00 -0700
-Message-ID: <7dafaa90-f3d4-4be4-a5cc-472163f18040@intel.com>
-Date: Thu, 30 Jul 2026 17:57:57 +0800
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="i/APtpjF";
+	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id DD6C1439DA;
+	Thu, 30 Jul 2026 10:06:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83E0B1F000E9;
+	Thu, 30 Jul 2026 10:06:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785406017;
+	bh=UUei0lD/EDb7h2v7ToPNN5nuFxLeREbeKm0rMZyUnpk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=i/APtpjFfiUT/jwTB0X6v6oJZclMp055NF0CkBCD3J2nPkV89Jb8UtbLPeNNCRNRl
+	 EknI0ZySGCU3e0qUKusebo8eOUMFTKtX+9U/WCYY0kfVzvZCWuya2JnoHmaA6lgTRH
+	 GtHApMybmJNIXjWCNYHA2YsFvfZGjCl5LlOUTjG1zQ4OIqSvBikIjQI73QVhLPSxUY
+	 z2z9rn2N8Qm4gOJ2y0ksh0jhvcniBL8ZLeel0Tq+tmBN2C/n8R6tSbilYsv6dUAnXr
+	 IxmkYDU6XBKfun/Ho6JEv71ZRQLzPCUJhtEvxpwmnWOkQaBLN6a5aBhLGDxTu4pdDX
+	 cmaCsWWVW9zqw==
+Date: Thu, 30 Jul 2026 11:06:33 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Dan Williams <djbw@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
+	Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
+	Valentin Schneider <vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, linux-mm@kvack.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, Pankaj Raghav <pankaj.raghav@linux.dev>
+Subject: Re: [PATCH RFC] mm/huge_memory: eliminate reference-counted huge
+ zero folio
+Message-ID: <amsf4_v4EDcU6ePJ@lucifer>
+References: <20260728-persist-huge-zero-folio-v1-1-e7b604eaf416@kernel.org>
+ <04d881f4-419c-450e-b9b4-1341497fa93a@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 03/41] KVM: Enumerate support for PRIVATE memory iff
- kvm_arch_has_private_mem is defined
-To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
- binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
- david@kernel.org, jmattson@google.com, jthoughton@google.com,
- michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
- qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
- shivankg@amd.com, steven.price@arm.com, tabba@google.com,
- willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
- forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
- aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Vlastimil Babka <vbabka@kernel.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
- <20260728-gmem-inplace-conversion-v9-3-35f9aec2aed2@google.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260728-gmem-inplace-conversion-v9-3-35f9aec2aed2@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 0F39D140003
-X-Stat-Signature: g4akp4ct7xy5bqkyuz8ksetz3wp1ftgz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <04d881f4-419c-450e-b9b4-1341497fa93a@kernel.org>
+X-Rspamd-Queue-Id: D6F8B1C0009
+X-Stat-Signature: gmbn6h4i5f39qkk6133dz8tra83tj4gg
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-HE-Tag: 1785405498-859116
-X-HE-Meta: U2FsdGVkX1/ZwyuNYe6sYt1+C0SpFr53i99VNuc59Bn+p6lQtILETRk+ZHZ73WdPftvTAcYcQttiFvI5IiCtMT66T63iV9S+PFPdNlOLHCSWYicyPKXqZGj28lzsaMtlHHL3hiDDL66MAJWHK8GvrJeHU7RshB0j7JV7jzkW0+OoQMmnpsJZtUcG7tCl7wcRPXaJPWUT7jZYX0d/76nRQ+GYf9Tay38RYHsrDcnfr4E/vBMIa5IhBXCmV2szWbzxFU1Qx6qEESjFoypbHzyNb0k1ARvSdk12Dt2VCGDI/QMoF0v7RakR1ga6n0hZ0JQvzJAj+pv0V/HfhTeyaiES1IuKtz68jnxzhKvF3f7qUzoTRRNUlFJrLUwOcoPIQhHFrn5PngrEnq29n9Lq792WIoznaG9YWudvidAx0AK4CVSCwfsPyKsWGaaQUfYsS7+Of22tvbfSpwSZSxZF6bqfyaYzqHZGQkCBWXm5VNQU+NCU0ucBcbNu7pRpfQ3tdCypBbk33iUlwzPZOA6PhcjX4JACOBaNTUjRMsxm5mZ59j2tKvK9xXVGQolCk4Xgf8ZIfZAJRvoDGOtbceLFtXAj+Si9H+axec3OwcgJlmK6FJC0RoiFN1ubtBVKP9LbBjGoyaIVnlTz5Fpak1wbh/1FCnBdhSXTOMjqP+14OgsuBpmgzZ97eDgQhKXssJmRlmwHysCMIQFdlhqjZaf0zYNn9+DaGajp4GebfalAaEHr64Ne+lT8V2EcTml7fsLonD1kSijNj/jSOMU2lpC93A2I/jYZTfeTmBAo9FVsVGhNmWonJUz0HuxRKTVsgkiMYfmopBb3qIbtC1eXqItZ30PVRqI23If0+8WopKx8fON1wHL3zX+WKGO56A5+OjEUoXIsNC3G8oms66kmGCHS1M3cdSvD7ZEAXnRQRtlAc39YE1fx9MxbeP0SdkyEguufi9mEnM0tMmizCp6u+rwdzBJ
- 27Uol47k
- j2S3YToHpZgI5lMRbpf+vNTbSAQ8ccMZOUbc/Ke2p0W541Qp30OpF0D84hFUHsFOZwR4dUkQZ9q2uY1utABvOkg3u+Tgrf1zJBWEqGeYakIB2PEQkzFXf34VPLeQWkZ4SBBUcRK4+Y0GWUuOEiSfMpRJPgwipRtlN2UyCL41vLHgnW/n0o4NK49iSH9o8fBU2jbRBpjo+8yc3XAs6ak/PeWfSskdxVSthD1W3m9cr4b69kue7/oo9gxhmuuuniniQHsfvIpsHy6DpMCJq1d9LoweWNpCoGYhu3R+hVeCbgQBVYWhPeWkVVhbagnZ4dDt0nlCwyXMAW6nM9PY2fkNvmcwWag==
+X-HE-Tag: 1785406018-182791
+X-HE-Meta: U2FsdGVkX1+LjVe22s2OF50beV8rTgLooRsmo/L5nhkE59BHj4ASMZSnf+rtqJRd3jIgN6N0PeR8s842RlbD7dy2qL/nF0D5y8U2KqkTVl1k2jOUeJP6fhXdrpbceDB58l9VQbS8oF4n38uqL/5I26Rrq9zbSCXN8P06tJ2xteg0fOn3KW9IzYwNdaUaOiAL5nJakeuer+d9uSFnnncWZcX9PkJj7kLdiBQ1VfDvA0qvlG9hZsVC7JgZaBOsh/JHXmRu2pvTEzLSJ/vWk0B98nYjC+Vz29RlrPqqmlopX7glc2F1ghqgRdtqUJdxLxXHedya1F0goiGkSTRv6IiqWBHbDGI+UEQhjk6sOiJoL9WgpSRPqJUUq2KdBm4AFj/IuHK/IVPm/5QF7cAOLzVHo9lMiE7d0jD8B5hZWX9i4rSndkMz+GRaD4c+RhQMztYItqcQognWsq+0AKmDoQSq+iDGkmKX/yCoK2HrqENAhmP+85urBySxP4HoUyaZJsmzpDoLsvBbfliOd/UVyuUNsE+6Q+i7ulB6YSZAz3/2JZCQB/Ajek6v+27eFX4Lg9uc2DYeRH2vlqOOXseyMxY7hv/BxcWMslh7OqDa2Sr+k7jArsslbTr5wWkzjqbnhX30uA/VbgnzKIw7l8TjxfBfrsrgG9iERX0UM21XLTdOPKD4r5zTs6INpOpwUntf24FfYXTPM2K9Nw5BK+gYgscnnkjPhXRnT6k7oRRqEy+/GAzFQxPLBdckeH2+5BRtgtb4VPb+F4nNYhNbNNay1Xk7yRzJAzIXBXJ7825Rjoul/QRHPLKEJ0UlDQwzfiq9Pjm0YsvqKFA7xtGw/ZR2eSTiYQVC9cZY9jhy5TXljolb8oFuqve5djUGayYuzTqdoOIcWnW8hIT9w398f+dZ6zmvRuq3dNwy5iIGN8A3RqsSrSPjsTbkFep4AKY2k0r9xKWLfu3Huh6i555n9xdzROX
+ Ne6fSW0c
+ KONId2enYzBsxOQ59ORmt74SKn0iQZsS3VQLiqi8oHFh5bNOyEcbhnwNOpCw1UYfZdfJ60JVM3Zl/o/lmxKjxfBsNDsFO3kLpVZw1O2grNbdjxTMXY0gvzLf6k8SC5rkD0Ok4LqAndIrLvGYKnEkdsLjtWhUJfbbMSxG9grwiE+dkm0XG/AMnD2n08W8QXRcs1a3eZw2igJ45sPNDQ9dJUinC6jGyLUG175NYCfcXu1YZx3vvEJvXjWa44YrklGYHE4qtnJpimCqyXiMrZg1iNoC+aH6T6N0zSmj62Nc8gvjBD4J5YhTkQADnY9q0MbMr7kDeM/A4fm0Kec13ADa5QYQFEQezsPxP4ipK+E5DiEgpru+gnTPosTltH/T13hBFNXmc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,72 +109,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/29/2026 8:35 AM, Ackerley Tng via B4 Relay wrote:
-> From: Sean Christopherson <seanjc@google.com>
+On Tue, Jul 28, 2026 at 09:16:08PM +0200, David Hildenbrand (Arm) wrote:
+> On 7/28/26 15:06, Lorenzo Stoakes (ARM) wrote:
+> > The reference-counted huge zero folio is problematic - it's prone to subtle
+> > races, it can introduce allocation latency and it is confusing and
+> > complicated code.
+>
+> Just a note that the subject is misleading: the huge zero folio is always
+> refcounted (e.g., GUP must take references), it's just that the persistent huge
+> zero folio never drops the refcount to 0 to free it.
 
-Though the patch order and diff of this patch is adjusted to what looks 
-in v7, per Sean's request [1], the changelog still looks somewhat 
-confusing and part incorrect to me.
+I meant huge_zero_refcount not folio refcount :) but maybe could have been
+clearer.
 
-[1] https://lore.kernel.org/all/akVGZOeR1ytfkamK@google.com/
+>
+> What you probably mean is "mm/huge_memory: eliminate dynamically allocated huge
+> zero folio".
 
-> Explicitly guard reporting support for KVM_MEMORY_ATTRIBUTE_PRIVATE based
-> on kvm_arch_has_private_mem being #defined in anticipation of decoupling
-> kvm_supported_mem_attributes() from CONFIG_KVM_VM_MEMORY_ATTRIBUTES.
+Well that's not really getting to the core of it, the problem is the
+huge_zero_refcount meaning it can come and go and you have races.
 
-As I commented in v8, the "in anticipation of" thing is not correct.
+But agreed refcount is imprecise + clearly confusing vs. folio refcount given
+you immediately assuemd that.
 
-> guest_memfd support for memory attributes will be unconditional to avoid
-> yet more macros (all architectures that support guest_memfd are expected to
-> use per-gmem attributes at some point), at which point enumerating support
-> KVM_MEMORY_ATTRIBUTE_PRIVATE based solely on memory attributes being
-> supported _somewhere_ would result in KVM over-reporting support on arm64.
+So 'mm/huge_memory: eliminiate dynmaically alloc'd/freed huge zero folio' maybe?
 
-1. I'm not sure what "memory attributes being supported somewhere" means.
+>
+> If we go down that path here, we can also teach GUP to not take a reference on
+> the huge zero folio anymore on the FOLL_PIN path, similar to how we handle the
+> zero folio.
+>
+> See the occurrences of is_zero_folio() in mm/gup.c.
 
-2. the kvm_supported_mem_attributes() will be renamed to 
-kvm_supported_vm_mem_attributes() and it's still under the guard of
-CONFIG_KVM_VM_MEMORY_ATTRIBUTES, what's relationship with "guest_memfd 
-support for memory attributes"?
+Ah yeah. Can do that on a respin, thanks.
 
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Reviewed-by: Fuad Tabba <tabba@google.com>
-> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-> Tested-by: Shivank Garg <shivankg@amd.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> ---
->   include/linux/kvm_host.h | 2 +-
->   virt/kvm/kvm_main.c      | 2 ++
->   2 files changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> index 9f78a466c6f3e..c125d2e8155a7 100644
-> --- a/include/linux/kvm_host.h
-> +++ b/include/linux/kvm_host.h
-> @@ -722,7 +722,7 @@ static inline int kvm_arch_vcpu_memslots_id(struct kvm_vcpu *vcpu)
->   }
->   #endif
->   
-> -#ifndef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
-> +#ifndef kvm_arch_has_private_mem
->   static inline bool kvm_arch_has_private_mem(struct kvm *kvm)
->   {
->   	return false;
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index 902aa166c9c0c..9501dd8d015d1 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-> @@ -2421,8 +2421,10 @@ static int kvm_vm_ioctl_clear_dirty_log(struct kvm *kvm,
->   #ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
->   static u64 kvm_supported_mem_attributes(struct kvm *kvm)
->   {
-> +#ifdef kvm_arch_has_private_mem
->   	if (!kvm || kvm_arch_has_private_mem(kvm))
->   		return KVM_MEMORY_ATTRIBUTE_PRIVATE;
-> +#endif
->   
->   	return 0;
->   }
-> 
+>
+> The reason we do it for now for FOLL_PIN is that a remote pin might outlive the
+> process, meaning the huge folio could otherwise get freed by the shrinker even
+> though someone still holds a reference. Bad. So that would no longer apply if
+> the huge zero folio can no longer get freed.
 
+Incredible that we have to think about this...
+
+>
+>
+> I recall there was a discussion (dropping dynamically allocated huge zero folio)
+> on this topic while upstreaming the persistent huge zero folio.
+>
+> I don't have time right now to dig, but it would be worthwhile to look at that
+> history if there was a good reason to keep it buried in that discussion.
+
+Maybe this:
+
+https://lore.kernel.org/all/20250811084113.647267-4-kernel@pankajraghav.com/T/#m4100481232bae8a7b661e8f6e86ecc74532c69a4
+
+Generally seems 'smaller systems blah blah'. But smaller systems that set
+CONFIG_THP get bigger reserves etc. so the argument doesn't really work.
+
+I suppose they might default CONFIG_THP on but not enable THP but at that point
+are you really so tiny a system that 2 MiB matters?
+
+Obviously it's more problematic for 64 KiB page size, but then if you have THP
+at all your reserves will already be problematic, and any read fault on a THP
+page gets you the exact same issue.
+
+>
+> --
+> Cheers,
+>
+> David
+
+Cheers, Lorenzo
 
