@@ -4,104 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4E48C55162
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 11:40:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DEAAC55160
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 11:42:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DB4296B0095; Thu, 30 Jul 2026 07:40:44 -0400 (EDT)
+	id 838786B0098; Thu, 30 Jul 2026 07:42:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D649D6B0096; Thu, 30 Jul 2026 07:40:44 -0400 (EDT)
+	id 7E9266B0099; Thu, 30 Jul 2026 07:42:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA2526B0098; Thu, 30 Jul 2026 07:40:44 -0400 (EDT)
+	id 7268A6B009B; Thu, 30 Jul 2026 07:42:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A93916B0095
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 07:40:44 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 570F91C0014
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 11:40:44 +0000 (UTC)
-X-FDA: 85045250808.05.DA76D31
-Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 6D1E616000C
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 11:40:41 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=AwO3qBz2;
-	spf=pass (imf08.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 539596B0098
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 07:42:05 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E80E91A00E0
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 11:42:04 +0000 (UTC)
+X-FDA: 85045254168.20.D61D8F8
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf16.hostedemail.com (Postfix) with ESMTP id B4D0C18000B
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 11:42:02 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=H1Gbg5PE;
+	spf=pass (imf16.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785411642;
+	s=arc-20220608; t=1785411723;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MR/BR2k1/LO34RHmGOvBqb2jzfFxevkLWrRtbLLGJa0=;
-	b=tK3n2hqUDZoVLX+T0aPaCIxFxauxbpdvdhTdd7A1B8bTFdHdlgFLaaI1WLzHWjK83MU8km
-	NMxpNxo9KRfFwM9EZfaETq6TNnhvyn3PkTV0WgneizFp7GlN4NdDcwXE1ov1q5kJ6a1urM
-	uZZjCCgu9UsfFh4OaOUf69XN0yjAXcI=
+	bh=CwHF51oOsSu2w/ZbQy/Inj70L8Y1TvOv/J97Y4M77nw=;
+	b=TQeErFE+ctdxkNQSFpPy4wENS/WjV89gc3hN6IXXMhVMYcK9HumdE+2qbWP4M7pS17Xa4C
+	fBcN3j8d7HCbdBrKCwO43QVgzMKnSCOhY0Tjnh6VriG2Kp7z1npck+kRbpQDQoFOXvOGyl
+	RYBbwXKFhQ1pGKw8ZEsM5HxZpr8AzsI=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=AwO3qBz2;
-	spf=pass (imf08.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	imf16.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=H1Gbg5PE;
+	spf=pass (imf16.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785411642;
-	b=sbGbOdVufGFVTSEwlakvlFoc6CuhEJ01qA/VNtQfk7Sjs5b69BvBAjrj5fbPZLHxNp62Zp
-	45MOdlOLHqPl1KElIpgJ3J3D5ADKnT+m4pucwAvF9GU/1U1to/ZGXjWE4oBg8aROjn+bk/
-	LL4aEYI1OpGomT+SaEOtA4Xn8dZYD6M=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=MR/BR2k1/LO34RHmGOvBqb2jzfFxevkLWrRtbLLGJa0=;
-	b=AwO3qBz2tS38UtUlQJmB4nDKxPeo9EYut46MUmvJ0ihEAQ20O286IgZRMp9gzdCuj16jGr7wp
-	afQV2kAbrv0YfdnMNpEQIyq2Xr6OhDdPHXh50Ky5HhwjbGcQ8sYfLfcJfiT4A9TU7cJBGRe8UVU
-	z4dG4dpLbfirNVYHXB3jIs0=
-Received: from mail.maildlp.com (unknown [172.19.163.15])
-	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4h9n8G0n8PzLlX5;
-	Thu, 30 Jul 2026 19:31:10 +0800 (CST)
-Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id C913740586;
-	Thu, 30 Jul 2026 19:40:37 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 30 Jul 2026 19:40:37 +0800
-Received: from [10.173.124.160] (10.173.124.160) by
- kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 30 Jul 2026 19:40:36 +0800
-Subject: Re: [PATCH v7 05/13] hugetlb: Move poison to pages before clearing
- hugetlb page type
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-CC: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>, Naoya Horiguchi
-	<nao.horiguchi@gmail.com>, Jan Kara <jack@suse.cz>,
-	<linux-fsdevel@vger.kernel.org>, Christian Brauner <christian@brauner.io>,
-	Jiaqi Yan <jiaqiyan@google.com>, Andrew Morton <akpm@linux-foundation.org>,
-	Jane Chu <jane.chu@oracle.com>, <linux-mm@kvack.org>
-References: <20260728204409.3396238-1-willy@infradead.org>
- <20260728204409.3396238-6-willy@infradead.org>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <ff9f5060-347c-c18d-0bdb-ad1b90e704e7@huawei.com>
-Date: Thu, 30 Jul 2026 19:40:36 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	t=1785411723;
+	b=gd+utvtPExfaNKvs9Med/+StuV58mH6kovOXTTu9fQxP690IRcbepDaKbyBSxZ27NDoqGF
+	td10YZjRa8VStdYhcV9XsV05vrLxKul1iEAaF5vcS+fvd2NOFlNOkpxwZECANBIDNJACv1
+	u9eKWaQUnv4wEutyptNLUz3oPldeFaA=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7B9791684;
+	Thu, 30 Jul 2026 04:41:57 -0700 (PDT)
+Received: from [10.2.198.93] (e142334-100.cambridge.arm.com [10.2.198.93])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E9EC83F763;
+	Thu, 30 Jul 2026 04:42:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1785411721; bh=GWKxVBmk/3OJM7zFLMXgOeSR5EPxu/L2awcWvhPKBNc=;
+	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
+	b=H1Gbg5PEEA8RfVYqh+JrU7GcC0XeT11ZBcXomHbtz9Xevp7Jp19CVznkQliO5hu4Z
+	 U3mTfHjiUdlQ940dq7P9VBP9dStAXd0tFYEZDGE4BS4qLaIvslODSeTET8TrsRMjlw
+	 eUfL/89J/usdRkF4ddRgTj7fnb5o4l2XdCSr5SBo=
+Message-ID: <e098031b-23bd-47ff-95d0-3c0ce9487439@arm.com>
+Date: Thu, 30 Jul 2026 12:41:59 +0100
 MIME-Version: 1.0
-In-Reply-To: <20260728204409.3396238-6-willy@infradead.org>
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Cc: usama.anjum@arm.com, Pu Lehui <pulehui@huawei.com>
+Subject: Re: [PATCH] mm: use proper PTE accessor in move_ptes()
+To: Alexander Gordeev <agordeev@linux.ibm.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260720141633.501799-1-agordeev@linux.ibm.com>
 Content-Language: en-US
+From: Usama Anjum <usama.anjum@arm.com>
+In-Reply-To: <20260720141633.501799-1-agordeev@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.173.124.160]
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemq500010.china.huawei.com (7.202.194.235)
-X-Rspamd-Queue-Id: 6D1E616000C
 X-Rspam-User: 
-X-Stat-Signature: mjubih7yy56wf34pufn8j4quk9phn6hc
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1785411641-58227
-X-HE-Meta: U2FsdGVkX19mMZgjtoCTtIkyPM0gZy0pXIqsqWgPdSYHFJcI9A9XLLimi+6LJd84wrufwkCZhlUZlEP7WFzTZf1RZOHwnvKXyRrn4LWt5jTzEZH9vIDHd+76qYbTJ3IRXyY1ZlEoqnZeouIx38jDKXQBJwPzAu3PZjSsM69Rx5n9Q/38jG8cZc4Lw/bwjqFT5zFRg/ybaVIQ+snnjVkn1TWzyAKMGvjUZo0KEOd+IW0+LUNzdICw1VE24N1GL4V6tD8DnKxxroOtFeghyl2/p6g7RgwEIYamKeGHpWgcJL2GV0HnqdICEb8wNFTT6jjn1aZSb0xtxxtY20lbEA/MU5nrIbJiB4sgzI8K4BYKitzKYEMSxZ8tUaDorXZim213ccPgQJ9AQZVL4ADJvBT9WcE9g6iY2OuSeuRyGQBTpo2Idnd8icEH/ffQBzxwjRWxdoirD7VbS/Af1NamXTq3FOODEkKe83e1xw+gwLz1Hib82JtdL8B3Pj+ZQRKbhA+8PF4xGK7Cn0kRr8T/4/2zC8eKpsYA97d6gfhSQdBU5JLX0wspgHokWvISGoOt5gu5n68/vvxu/z7EYTB+Jz/M2pRzMhPC9v+D04pluXWhg17n5vxFVo6WrBuoSEILof10mMEshDPhxEMZi/pVWCrxioVQtax5+vtFT5Qe1oQPCc3Ji4IRxWUu77q1gWPzm4Gn4ZhIpLlMnGny7MvpAz8/08Iu1P5YMNg1ehjbGKWYqmfHuXgvTCdkFo5wfshK3zOi1y1meYXsBcEC+j1cMNf9fI+cPc5CZMktIttgkWSEIJvy5kX66ZQjnoSy4YETiBdbM9ewP+ut5/vY3kudANeZHMPjuO7IefmyioPzbCjNiwuTMe7tvSsuZJjmJR6xbim8VhDu8nw2Ia3YiZ4ovS3kN/oRMoy1l02XkCv1fz4V3oUIMBKap/CZf+Lrs/B+Cj6CLbzvUKHOkXncvjno3uI
- 13Nk6DvO
- VzqA88VbbdIzKHjZ8r+ZRPBopd0L6WvGLLlHHnSevwDoARIWCOv3GS6lttL3q4wGE5q3/eQQU7LNTJhvQ6hX/LqHdh/XRthkf+Vh5U1FOBDpyLhFmcCLJKJZMCjK4ZYV7y5bDIAOjvxnbiCvS7NPdkBPUwzC6MYcPgoNuGgnFUMUiztZ6Pa1eO8aFUM7Qrjh0KF17WI9ymk+NsYGJZpdonkVI/tqx+925JsbiXa6IxdBwg4ko1pYhg2nOeDXeZRa5hmDUrhyKIOeScZAnz5V8USdDJsCEvO9/Rf2bZ95B69KwxIPNuJUhAtL7jJuFW91bRaPIQRAPpnLAOBmPCvUkWpEipqpPFiapq3+x8hF/KKgZPttNGD1DZ9NsOQzr4ALgKDa0qzARiR3CepVj7bGouFfU8GubpLydmqj4wva4AzfBmjnYwMaJZXmtsg==
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: B4D0C18000B
+X-Stat-Signature: 4nnunn9gyedtngw83e8chma9jmqiwzmg
+X-HE-Tag: 1785411722-533612
+X-HE-Meta: U2FsdGVkX1+LJ3CA/nuOQ6uaclV6iEK/8e19lPWPp3ysns2ZGhETh8PkJD2bPZZZMVEBoCaZsBPzD3taCc8zQCN8nrAGdtfLsqwVZ02SrG7kVpO1zbg1T9P0gjr82FB/j76UnYGCpVTjkQsV54xdp1imSr10NI6NaJNd3d4FUgrud06WkYEJKkiKp+hS4RfO1dQQatWw063zpNoPJV6nK6xkssDwAh+Knl402AJ+nWyQKnc01XQ8q3nnh2CPSQjfuaVbzDq/Fbp6DPJ4N7LCNbr/iHkHzR/xivAhvRKJ1H3mqr+0WSvlJdt3fO+0dEtYsenxbA39Ot0kVqOIOK6JupM9PA0LgmY7B3k8dQT+sHm18Gxs+Uq+tU43kHGsgwhQVmnGdPApPM7j4S4wTlsa/3/13ZRmfFncFJkBDebuWot/gRqG2AJmetSEkIQXbbprf+8A4JtnYEb8ltGI1gQ4WHBuxPlBNyJ8wuKKSfFqyWO7TquSBIGpMMQmqGo4xhOpuAYVagIVBqTpnArOBklxAMPKsWPO9pyUvjO5EiLuRzifrcQia2IEMpqOIHbDyIqeigm0tfOqBCs/EyOjX2OQg19Ab+gg7sZEi7TWiTw+3w7swWytoPVW6E8ICLP7PjVBDMAVuWRE1Op7V2lcyVnExFlMhATbcS2qqAXk+AnkDafhjetzdix9ikGtNcjZL/IfzHYYkxrMvgGzPqjF16OQxht+CE1hPJiBp7SE7oy6QQJqGRvEw086258Qc3KQxJue95ZiXCvJZgUx7ZTLUoa9HygY+iiSGD2O57SV/nCSApDcM1ZwCQraynMwxEHiivGyU4FZ+35ylHdh132yzxvCdUQ42xZ5K4Pz72LrBH8H3hz+9nL+cDTYIv33zVAqiuv7yNbeUJeycJqDTy/erpwQCF5C5Z+/OrFd12mol/fBO3fKfP4gAE5AC7XNRR70nZtC9jH7b9Bz97bkTsN6RPq
+ wvxjZCnI
+ APfWC5K/oMYL5Iy9Ijwn+zqTZZNAv7W/lEF+KwzJwWRBFNDZF8LezHT8H2x70/nnhjTKWi98GGY772i8Pu2dYrjXUCV+wS98GaLitlrGiqLoQJP3w8E6SfMODLBVjIjm9ivvCx9SWjfMpuZoMO3B/aiaaKGzXnkIGkJWrhKXztPccgz+eikEFSkpJOF1nK0EvjBsfTPE72unSBmVar/59r4DJDgnP1iH+9CKAq1BZdpuD/ovyAwyZjlfD8CSipmOiXeBwrFF27dHotuZV+uAjt5T1FQDz1vY1S+MeuX0sL70o0OHrv7cDb7wGW9ZP5H0SMb18doSTDWVBR1hbDNk2qIYRkksqf4ON5W8BQvFTaRQNkCw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,16 +90,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/7/29 4:43, Matthew Wilcox (Oracle) wrote:
-> For is_page_hwpoison() to be reliable, we need to set the hwpoison
-> flag on each page before clearing the hugetlb flag.  Introduce
-> folio_clear_hugetlb() to make this easier.
+On 20/07/2026 3:16 pm, Alexander Gordeev wrote:
+> Follow the pattern established by commit c33c794828f2
+> ("mm: ptep_get() conversion") and use the proper PTE
+> accessor instead of a direct pointer dereference.
 > 
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Fixes: b36b701bbcd9 ("mm: expose abnormal new_pte during move_ptes")
+> Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+> ---
+>  mm/mremap.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/mm/mremap.c b/mm/mremap.c
+> index 0dfe3de39ccc..e99b19a9850b 100644
+> --- a/mm/mremap.c
+> +++ b/mm/mremap.c
+> @@ -264,7 +264,7 @@ static int move_ptes(struct pagetable_move_control *pmc,
+>  
+>  	for (; old_addr < old_end; old_ptep += nr_ptes, old_addr += nr_ptes * PAGE_SIZE,
+>  		new_ptep += nr_ptes, new_addr += nr_ptes * PAGE_SIZE) {
+> -		VM_WARN_ON_ONCE(!pte_none(*new_ptep));
+> +		VM_WARN_ON_ONCE(!pte_none(ptep_get(new_ptep)));
+I'd the same patch in my RFC branch. Hence:
 
-Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 
-Thanks.
-.
+>  
+>  		nr_ptes = 1;
+>  		max_nr_ptes = (old_end - old_addr) >> PAGE_SHIFT;
 
 
