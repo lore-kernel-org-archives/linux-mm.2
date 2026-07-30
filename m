@@ -4,130 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BDBCC54FDF
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 08:19:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19ED7C55165
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 08:23:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 38FE36B008C; Thu, 30 Jul 2026 04:19:50 -0400 (EDT)
+	id 211186B0092; Thu, 30 Jul 2026 04:23:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2F2A36B0092; Thu, 30 Jul 2026 04:19:50 -0400 (EDT)
+	id 1C1AB6B0093; Thu, 30 Jul 2026 04:23:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1BB6A6B0096; Thu, 30 Jul 2026 04:19:50 -0400 (EDT)
+	id 0B13F6B0095; Thu, 30 Jul 2026 04:23:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 007486B008C
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 04:19:49 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7D9E040944
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 08:19:49 +0000 (UTC)
-X-FDA: 85044744498.04.0325367
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 98605140008
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 08:19:46 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=lhI0OFT+;
-	spf=pass (imf26.hostedemail.com: domain of xiaoyao.li@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=xiaoyao.li@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C9B196B0092
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 04:23:30 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 636E8A0903
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 08:23:30 +0000 (UTC)
+X-FDA: 85044753780.08.21BB85C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 77E43120004
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 08:23:28 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Dha0F2uH;
+	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785399587;
+	s=arc-20220608; t=1785399808;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P6WLUKJFUKQUW5N7f7h5hkTBhzM6TSLYf6QFGG/XuvA=;
-	b=Az0aRma8smS1puigbfKFIfwg8u0one7KVU24bxh0p7qG68XNGMxTeEgHm5Qu4IHa0dMyn/
-	7aV9StkdxkFncD5UC2rx/G12f6YvMW1puHQiv6A/PbSIX88aee/6MGT4DSH4dFaLBxkXED
-	rqRHaEKKOAYXGHvkNP5CauYe+JfBnc8=
+	bh=yNnkodnVzSlZXSO/UwXnKiX/1FHyOcbnvHyWtcjIaHs=;
+	b=u5ERE/VovLlLlXlaKeRkGv5pFB2zBnkf5phtzIYbvlYoCRJyltIVVeUMFKHPYX7FF40R6i
+	AynsQfJjRr7vOcx7dHNQP/zgeA1TmMkwocfBrIz9cmkUAjM4E805AHayzlEqod3s4RD0tJ
+	eVb5UGJVCxhFxxW4hQVxakBJt96uV6w=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785399587;
-	b=wf5tags6N22h6DZuPgqIuIEuqr81DwyYQ8lS73rSVg/GtQ209XbzDWR2xL/hDCEkBstygV
-	PjHkGkmQNMPX7i8CujIpdkuiFdjzB5XylcMTYa3hw592YdghDt1Jgvilz3BZtn2oUUetNZ
-	AN3BivnQU5CCsw6GrGxkNPLScRCC6EU=
+	t=1785399808;
+	b=8P2rK1TtNhG/+surV0/La2xnrN75LiC9UTKGbusLFcnJ9xLVJLqRgxpkNZ6T+4lWTrVdTj
+	EZGklMC2WX5ZA359FLiauYvB1QX4+/IJoFk14xFWzJq54/jX5MFQT1HXDll2f9edqK8SsI
+	ocaZCrcsTmZSJ5HGLBIliElkIb2ypLs=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=lhI0OFT+;
-	spf=pass (imf26.hostedemail.com: domain of xiaoyao.li@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=xiaoyao.li@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785399586; x=1816935586;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=wpfIrMcHN8QikkXCKITCLw0AA407+GAAoFiif3VfJc0=;
-  b=lhI0OFT+knjAwV7Uw1Ev9wPsZd1PBkNotSczLBmQFCJCm+KFzerFVyTb
-   PJIpvaRF0zCTnyJRg4jdLf/gJrpmmft7nVRvsEq2ekGDCM2ZI0LcW5BKt
-   EmFNwvVqhc7wMCM5oetwG+6evOm245Yo9+Mu3Ks6ifjISKIQcT+GFfyzv
-   AOf61BSbAgL+NVIDeYb1ZT2wsJ50wZ9iAw8L4qkQZJORb/ZXvQnyMv/Wd
-   fhMgz0rYC6ZFd1+HhCNfnB2s9Kw3EinseWvgUVRL1qazG5wHf//EBJOKx
-   LAHk+c580WMbix3KDO419RCWyRPHiZFRE1QRwEimMOhnvYeZe04nZUNkf
-   A==;
-X-CSE-ConnectionGUID: Lv6fDg+JRhmsR9OCSrM12g==
-X-CSE-MsgGUID: U2+XGjtFRl2q4WcjyahRdQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="86091149"
-X-IronPort-AV: E=Sophos;i="6.25,194,1779174000"; 
-   d="scan'208";a="86091149"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2026 01:19:45 -0700
-X-CSE-ConnectionGUID: 0mKvQIstRByDOckKXDh64w==
-X-CSE-MsgGUID: iicRvDLaTO+wZke7z8GHMg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,194,1779174000"; 
-   d="scan'208";a="259664017"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.238.208.132]) ([10.238.208.132])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2026 01:19:34 -0700
-Message-ID: <df06e0ec-9462-4072-a0c7-054f1978bf89@intel.com>
-Date: Thu, 30 Jul 2026 16:19:30 +0800
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Dha0F2uH;
+	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 83C33600B0;
+	Thu, 30 Jul 2026 08:23:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A0061F000E9;
+	Thu, 30 Jul 2026 08:23:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785399807;
+	bh=yNnkodnVzSlZXSO/UwXnKiX/1FHyOcbnvHyWtcjIaHs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Dha0F2uHJjBI8ozpAttF6VGOnFKi5ONE6v7CaGZ8oayuwX3B/M3sAvCtsddp7CMjD
+	 pZDi6tsF5sZ+jvCTS5sW/fiCUnc8GqsmvlgUj459039yOuVWfaIkanXg42vBJe6Ds7
+	 bgodgbA0uMZ4Hvo2Z0toh3LsAHSU2aIKCNOznO43PXcPEQRVEObERVf33nP8HHoh86
+	 4Wylo/lHHshCbj24VdQIoP3cNpF2e9QgkZmRIcZZMDNEMYc6GwMlDbmcD9EKaFotC6
+	 U9e2AtiYKNAWdiRMtPQb5LWKFaWgsVSNpmAGv3jNEArs7wcP487KOLavSQdZ59M1mm
+	 Dx/sLB4en+kOQ==
+Date: Thu, 30 Jul 2026 09:23:06 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Tejun Heo <tj@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Bjorn Helgaas <helgaas@kernel.org>, Manivannan Sadhasivam <mani@kernel.org>, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, "Liam R . Howlett" <liam@infradead.org>, 
+	Baoquan He <baoquan.he@linux.dev>, Pratyush Yadav <pratyush@kernel.org>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+	Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, 
+	Simona Vetter <simona.vetter@ffwll.ch>, Suren Baghdasaryan <surenb@google.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Dave Young <ruirui.yang@linux.dev>, linux-mm@kvack.org, 
+	linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, kexec@lists.infradead.org, 
+	driver-core@lists.linux.dev
+Subject: Re: [PATCH v2 1/3] mm: Add unmap_mapping_file() helper
+Message-ID: <amsDgehckDyv9BPg@lucifer>
+References: <20260725210549.3716546-1-kwilczynski@kernel.org>
+ <20260725210549.3716546-2-kwilczynski@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 04/41] KVM: Rename memory attribute APIs to prepare for
- in-place gmem conversion
-To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
- binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
- david@kernel.org, jmattson@google.com, jthoughton@google.com,
- michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
- qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
- shivankg@amd.com, steven.price@arm.com, tabba@google.com,
- willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
- forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
- aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Vlastimil Babka <vbabka@kernel.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
- <20260728-gmem-inplace-conversion-v9-4-35f9aec2aed2@google.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260728-gmem-inplace-conversion-v9-4-35f9aec2aed2@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260725210549.3716546-2-kwilczynski@kernel.org>
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 98605140008
-X-Stat-Signature: rje7z6zxhu4a8c6xft3szc3fyqtrwwt9
+X-Rspamd-Queue-Id: 77E43120004
+X-Stat-Signature: qm814st63qfdgyr9goiw5j7s34ujqif6
 X-Rspam-User: 
-X-HE-Tag: 1785399586-655931
-X-HE-Meta: U2FsdGVkX18Gfxcsaxo4nL5fR05+RqgHZjnnMialxrwWJowisoF/v6X4hpEDLJsaOoa9zPyjXwbkW0EefROzIEy8Md9bkf41nMhKO8vc94mTTsY/7+8AMEYo/YT/s6qSoBzg6FlJ729ad2VPMnTNL6hAcDSDiRNKG0fwvKILLt5OshRI846r/u6YHbWCNmRCz6Ez67zTGsUXQuaJsl7/9PfeXnEYpZLWpPBD8ecwDlaKVBrgrW9URQjQ5bJHZiEVH9fTVjnZGA4wi3vEcmjFahyKtbVTJauEPrulPlA8aF8zuv7bmVvDnMcds96Oo/pzTZJWKIZ/xovn4CTdmrNd0+ioyQVW4WTUC9weQJNQam/Z/05WGkigcfUrs2uennntUx6PiQuP6+PAckGaDaAAmYbwpzBgDcBgaOlap+EzpBD+jj0bIn1Z6r2TW1/V6vGZa4AajEvV5OkrE2tR3W+qUe1b50Me/Qc1bUwG+oMDoFCw+DOuYZlIV/lieHqruN0+BPeK334xVVp6LnpsbitPDkYAQbtxeK4XiDdXRepye7sKvPTrBwasLOZWAHDSWUFuOKNS4/BS3wl4Udp7QHT5iU6hgfI+VMKv2Z6g+uiOp9QxPW3ajU35z8WM3IwRM4s4pt1q07hvQD6cbJUOsCOmgdEIH1EAF+jyeJSa0GnJ9fFlCXQOlyk/A6QWBZnSM6LutCz2ebGhXNWcHLpatHOvYmRKiGYrkUXhazVb2pdNNIwGoj0mnes4FqCVRYzQzI1RsWuSzvBHa8d40bo2rYYvtCAifgV0rFLDeVkj/qhQf2qWtNwfjp50oAa9E2O06iG2KxI+Or72I9OMU9MV4q/rmqF616f+UXUl/5MtHjPrpCDDncwFtBqP7Y9lhDq98Z6RRGoSR4QyKyFZ77irlQouiAWadN5eW1Vre/9vElFt8X3zcfhS3wDYJdZjxd3LVK5i4EP2p014IZGQnSpxSb9
- jnszSRYx
- mpkfZeWGDu5zJ96VoD4XQc250ufp/zWfvy7OyVOFBfAt0oRRo0vtMqksl3daRf5GA5DvWc93r5IGv+j+3oYOqJwxcaqrpMTTjZ0eW/kaICBGnIrCRzhoWIE2yzU0xshEZOS4vn0hA1zUsJwcNEeB8d3tXPzs9hIKPOz9ArP1Zf3z+oF9S7i2ABbyd8ccb4izG++1YF4gJmQbym1RWpO5pBAycxgz+rVA4ZGHT0RpRioMzNOTuOUNgQ2Xk69/kEwP0DsRrmZFIylxQA6h4xeA2mmQ+fQ==
+X-HE-Tag: 1785399808-766287
+X-HE-Meta: U2FsdGVkX1+yqavTH/mC2C0J6YiFN0JhA897FY1zta9dUmMH9CnFtEz609ND5vr3RIA/Ey1hkQw8bGWMxDJWc4brngXHQa/rmtTyV+OW84bQEBd6fYBgfqAgL1ryWiKSjT68zRUdowXDDEz4isM4CoA+aqssGsJf1r7febf6V85EDvMBBV1RRtHnjjPpdWOUR2602efJjLkCNX83ZigtSn8mxJR5rAt3VYRCMpQjC9M8KkACruRvPHv3Ru2wnjYVilSffpIFVT4sst/q36cNpW7zV+53XPRMs8wZafey1mCr0gfqxDqSBa7xo26frmz14TWhp2Q749MrfQGydEIKIadheqM7Q1WbgYf0mEMaNfJbTBFzzyOXWaHUdhB4Eq+usRkhds9SZdNroCkEgLbaVBWodPQGLLT9MJbd5iMa0XnfzubcaeQxZ2R3eBd6Uf+KCRj/RHK5dkoyLZqnDklQS2qmizNbj/xXJTg3486mOeTn5P2qyv919pgw1fvPhyMneUVhvAY/0N+Rms5SotWhiWfGxhM8ciOMfmi3XttHpU5PfJXJG23Nda90c53sIyQqrohs0IJrzv/st1ZCdswfCp+WQQ6UKpjaOWI8/XGAgP6EkoHyuz3c4gYbiLJr49lUGw2av5CM23nAqXp58Jj6eSY9HUN7Gi4EqPmkJ61hU/jRdrLfRiC7Vf8dUKm6TuC8oYyT1rbThuuFmP9FupHp5eNYnRsrJlsk07ohmNfOWjdd9HoHX5/NzsKRyFsQVdTaPU0bsToqSPwf2YSElV06oK291TZtKygp7jlDfSyUCQPOkPpKFhhRVrx1/qGvWFu9PUV7Xxcw47hCmOO9syhKnuPiJ0wmT59e3L49R8vlAtxzOOfVPXulgPhjZtfr01d0J5Hfer3rnZqRUiA2qfEzS6obg6USjz4pfqJOgMeGVSeo5mjP1K4FHIap2eoXec0N796BFIMugBzQYI8WmtY
+ leBmli+8
+ ObwsyzK0doaulBgCWKQ4YATNICWiEXFdtIcBF/th2Wp7uaqIPMtK2op9HclIGF1PfS+vVkqWnFessGV0xbz6lYDncWmSM1ZnUJFowPRlkcDgn+kicvruN6UUF2kq+GcP1S2TYerJUyP+9KGKkE2yrfM9N+STjI0q4vd4KMF101zS92aMC/X551e2S0nP+xG6mnW27WsT1ZkB1qcGPJM0y7JekoSKzOsQb5sn73FWLv4qgylPJeKz5a79csI7yMN7FxXZrbxtg6J9v9E0GpGfqNpBB47L8UbPpYxfaRvbyG7awgwML8PPMZzMrjtOtsww9n0GcfQD/AwZ6avy4inITJfzoVf8hFYu4bbeI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,26 +103,196 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/29/2026 8:35 AM, Ackerley Tng via B4 Relay wrote:
-> From: Sean Christopherson<seanjc@google.com>
-> 
-> Rename memory attribute APIs to add a "vm_" in the name in anticipation of
-> moving PRIVATE tracking into guest_memfd, to allow in-place conversion
-> between SHARED and PRIVATE.  At that point, there will effectively be two
-> (potential) sources of memory attributes: the VM and guest_memfd.
-> 
-> kvm_vm_set_mem_attributes() already has "vm" in the name to indicate that
-> it is a VM ioctl. Rename it to kvm_set_vm_mem_attributes() to show that it
-> is setting the VM's memory attributes. (Drop the VM-ioctl scoping since it
-> is a helper local to the file.) Update the accompanying trace function to
-> match.
-> 
-> No functional change intended.
-> 
-> Signed-off-by: Sean Christopherson<seanjc@google.com>
-> Reviewed-by: Fuad Tabba<tabba@google.com>
-> Tested-by: Shivank Garg<shivankg@amd.com>
-> Signed-off-by: Ackerley Tng<ackerleytng@google.com>
+On Sat, Jul 25, 2026 at 09:05:47PM +0000, Krzysztof Wilczyński wrote:
+> Currently, unmap_mapping_pages() and unmap_mapping_range() unmap a
+> page offset window of an address_space, and code that removes a file,
+> such as kernfs_drain_open_files(), relies on them to unmap the pages
+> of a file that is going away.
+>
+> Files with f_mapping swapped to a shared address space at open time,
+> such as PCI resource files using iomem_get_mapping(), have their VMAs
+> attached to the shared mapping instead of the file's own inode mapping,
+> so unmapping the inode's address space cannot reach them, and they stay
+> live after the file is removed.  These VMAs can only be selected by the
+> struct file they were created through, which is recorded in
+> vma->vm_file.
 
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+I'm confused about what the issue is here.
+
+- file->f_mapping is swapped out at f_ops->open time -> shared mapping
+- Mapping here gets you folios that have folio->mapping == iomem_inode's
+  mapping
+- /dev/port goes away and...?
+
+Is it that /dev/port going away then potentially zaps stuff it shouldn't or
+doesn't zap what it should?
+
+Be good to clarify all this and add a specific example also.
+
+>
+> Thus, add unmap_mapping_file(), which walks the VMA interval tree of the
+
+Now mapping interval tree, been renamed as per David.
+
+> file's f_mapping under i_mmap_lock_read() and unmaps the pages of the
+> VMAs selected by should_zap_file_vma(), using the same per-VMA zap as
+> unmap_mapping_pages().  When f_mapping is the file's own inode mapping,
+> every VMA is zapped, as unmap_mapping_range() does today.  When f_mapping
+> was swapped, only the VMAs with vm_file set to that file are zapped, so
+> callers do not need to tell the two apart.
+
+This is really confusing, so I think serious levels of clarity are needed
+here.
+
+Also is this intended to replace kernfs
+
+>
+> HugeTLB VMAs are skipped with a WARN_ON_ONCE(), as zapping those takes
+> i_mmap_rwsem for write in hugetlb_zap_begin() and would deadlock against
+> the read lock held over the walk.
+
+This kind of insane 'swapping' would never happen on such mappings anyway
+right?
+
+>
+> Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+> ---
+>  include/linux/mm.h |  2 ++
+>  mm/memory.c        | 48 ++++++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 50 insertions(+)
+>
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 485df9c2dbdd..e882a03eaddd 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -3183,6 +3183,7 @@ extern int fixup_user_fault(struct mm_struct *mm,
+>  			    bool *unlocked);
+>  void unmap_mapping_pages(struct address_space *mapping,
+>  		pgoff_t start, pgoff_t nr, bool even_cows);
+> +void unmap_mapping_file(struct file *file);
+>  void unmap_mapping_range(struct address_space *mapping,
+>  		loff_t const holebegin, loff_t const holelen, int even_cows);
+>  #else
+> @@ -3203,6 +3204,7 @@ static inline int fixup_user_fault(struct mm_struct *mm, unsigned long address,
+>  }
+>  static inline void unmap_mapping_pages(struct address_space *mapping,
+>  		pgoff_t start, pgoff_t nr, bool even_cows) { }
+> +static inline void unmap_mapping_file(struct file *file) { }
+>  static inline void unmap_mapping_range(struct address_space *mapping,
+>  		loff_t const holebegin, loff_t const holelen, int even_cows) { }
+>  #endif
+> diff --git a/mm/memory.c b/mm/memory.c
+> index ff338c2abe92..4a09d7b6aa6b 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -4423,6 +4423,54 @@ void unmap_mapping_pages(struct address_space *mapping, pgoff_t start,
+>  }
+>  EXPORT_SYMBOL_GPL(unmap_mapping_pages);
+>
+> +static inline bool should_zap_file_vma(struct file *file,
+
+s/inline//
+
+> +				       struct vm_area_struct *vma)
+> +{
+> +	/* On the file's own inode mapping, zap every VMA */
+> +	if (file->f_mapping == file_inode(file)->i_mapping)
+> +		return true;
+> +
+> +	/* A swapped mapping also holds VMAs of unrelated files, zap only ours */
+
+I'd be careful about saying 'swapped' here :) for obvious confusion in mm
+reasons.
+
+But I'd actually explain clearly that file->f_mapping can be changed at
+f_ops->open time and thus
+
+> +	return vma->vm_file == file;
+> +}
+> +
+> +/**
+> + * unmap_mapping_file() - Unmap folios from all mmaps of a file.
+> + * @file: The file to unmap.
+> + *
+> + * Unmap the folios of @file from every process that has them mapped.
+> + *
+> + * If f_mapping is the file's own inode mapping, they are unmapped
+> + * from every VMA on that mapping, as unmap_mapping_range() would do.
+> + *
+> + * However, if f_mapping was swapped to a different address space at
+
+Same comment on swapped...
+
+> + * open time, only the VMAs with vm_file set to @file are considered,
+> + * since that address space also holds mappings of unrelated files.
+> + *
+> + * Must not be used on HugeTLB files.  HugeTLB VMAs are skipped with
+> + * a warning.
+
+Couldn't you just catch this at the top with the gloriously named
+is_file_hugepages()?
+
+	if (WARN_ON_ONCE(is_file_hugepages(file)))
+		return;
+
+I'm not sure who's supposed to call this though, if it's literally anybody
+including core mm that might want to unmap a hugetlbfs file maybe you'd
+just take the write lock in this cae?
+
+But probably better to be conservative first I guess.
+
+> + */
+> +void unmap_mapping_file(struct file *file)
+> +{
+> +	struct address_space *mapping = file->f_mapping;
+> +	struct vm_area_struct *vma;
+> +
+> +	i_mmap_lock_read(mapping);
+> +	if (unlikely(mapping_mapped(mapping))) {
+
+(nitty)
+
+I kinda hate mapping_mapped(mapping) as a thing, should have commented
+about that on that patch, but then again what could it be :) naming is hard.
+
+Anyway be nicer as a guard clause I think e.g.:
+
+	i_mmap_lock_read(mapping);
+	if (likely(!mapping_mapped(mapping)))
+		goto out;
+
+	...
+
+out:
+	i_mmap_unlock_read(mapping);
+
+> +		vma_interval_tree_foreach(vma, &mapping->i_mmap, 0, ULONG_MAX) {
+
+As David mentions this is now renamed to mapping_rmap_tree_foreach().
+
+> +			cond_resched();
+> +
+> +			if (!should_zap_file_vma(file, vma))
+> +				continue;
+> +			/* Zapping HugeTLB VMAs needs i_mmap_rwsem held for write */
+
+See above about file check.
+
+> +			if (WARN_ON_ONCE(is_vm_hugetlb_page(vma)))
+
+> +				continue;
+> +			zap_vma(vma);
+> +		}
+> +	}
+> +	i_mmap_unlock_read(mapping);
+> +}
+> +
+>  /**
+>   * unmap_mapping_range - unmap the portion of all mmaps in the specified
+>   * address_space corresponding to the specified byte range in the underlying
+> --
+> 2.55.0
+>
+
+Thanks, Lorenzo
 
