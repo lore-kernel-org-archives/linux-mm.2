@@ -4,92 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6275C531D0
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 07:28:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CA96C531D0
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 07:43:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C5D7E6B0092; Thu, 30 Jul 2026 03:28:21 -0400 (EDT)
+	id C9B236B0088; Thu, 30 Jul 2026 03:43:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C0CD46B0096; Thu, 30 Jul 2026 03:28:21 -0400 (EDT)
+	id C734C6B008A; Thu, 30 Jul 2026 03:43:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B4B226B0098; Thu, 30 Jul 2026 03:28:21 -0400 (EDT)
+	id B88FF6B008C; Thu, 30 Jul 2026 03:43:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 980546B0092
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 03:28:21 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2CE57408DF
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 07:28:21 +0000 (UTC)
-X-FDA: 85044614802.02.427A3BC
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9B1EE6B0088
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 03:43:10 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 44B8FA1E6A
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 07:43:10 +0000 (UTC)
+X-FDA: 85044652140.07.ADC163E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 8547610000D
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 07:28:19 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JfpZcsTI;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf23.hostedemail.com (Postfix) with ESMTP id 9C109140004
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 07:43:08 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S7kdUwet;
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785396499;
+	s=arc-20220608; t=1785397388;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=U+Tn6v+fwIrJojcp6KTc+RNYg06A/2SJBiLKpI3895M=;
-	b=rcGjwXhr/1fleS5BEzXrf1K1c4JgMGkBiZ+rK5gUQV2P7ixJrb1MAvc9A369SzzwOpRIcu
-	otFTKNua7J+DZeWeApJKEjI8AYHjg6JTyI2XUrxc0hEFzUOiAimxEOoS29/k4Lh2NbC9F5
-	5BYggiruX6BhWqGAqKgKoxDbW18Pmz0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785396499;
-	b=53fFYNhNqDRT2JnY+cj2pV48IE3g9+zYlvF/n03jGghGa+PwN4HEqzCXW0+Y+0mVWbII4U
-	1QpzeqSWART4xur2nn+hWtcOdG4heI/O5BhPAlGFS62TSNIryUG1pPkNTBdp+RLxlzk90F
-	QtTOyG+DtkQAqbNAxT6E1hFA2HsH298=
+	bh=pDaJ/+nIgmvu6q0pTtI9cFKoi+A+/DB+ehPxk3gGQPo=;
+	b=vgc6H1T6xME6wa8HDEAKkOS28uG2Z4C180WwfiMZvHxKhjdOLR8mSpmkNj+NLbaOnlQmg1
+	wqsRf1Vik4INs9vuOoyWTN5DEGKdan6mwbOtd2QKHD3xKL27cPL/ucoWmB506Y6PoO6hwy
+	LYEPe3w+N/tSAzKLo9kJGyJl82jtRos=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JfpZcsTI;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S7kdUwet;
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785397388;
+	b=XGXG0h9aYebP3IWB9vOmC8r2g2tiIwJjmtGnpwMdZgQ3QJc2m/SiBdZrcKrDtJoqahHwbc
+	6ZGJiR9oLOr228E870f1SldgiHuwBHKrhF3iY0r1LFzmnKj8c8sNFPNPVyMB52wEJK5pK+
+	OdYJPNpt9Ay/naXHAT1FjVIS9yOzWkk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id ABA4D408E1;
-	Thu, 30 Jul 2026 07:28:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 184871F000E9;
-	Thu, 30 Jul 2026 07:28:14 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B515240B7A;
+	Thu, 30 Jul 2026 07:43:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B641D1F000E9;
+	Thu, 30 Jul 2026 07:43:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785396498;
-	bh=U+Tn6v+fwIrJojcp6KTc+RNYg06A/2SJBiLKpI3895M=;
+	s=k20260515; t=1785397387;
+	bh=pDaJ/+nIgmvu6q0pTtI9cFKoi+A+/DB+ehPxk3gGQPo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=JfpZcsTIi4Hst6B2IIzM18A8fKqpm49BKKL9gLMgWdsPlDnjn7wbKb1muCUmGrGiv
-	 mMyoSW9FQkCXNid8xKZQqGzFZORSD/nN+VeXAR1Rpm5ritRgWobY86FqWrvJgasIPi
-	 XszO0IBd0BWXSk1RjnXzQMwp5esqTrWO1aEDeUO0KtPtQFcCQ+P5E7LtaTz2T+Vhb9
-	 5WWSBDEx/F6nGQZhYXvDcUo1bj04TESx1O2/Xs2sKq7tTJmDJTjdzEQI0/qsGYMuqH
-	 60Dl10CCNSD1uxJrJyXgpZNFLeFzJZfMnooq+37x5XJJgGXwrD5UH7UfbH9K6V1q0d
-	 sVvpTRO0rQM4g==
-Date: Thu, 30 Jul 2026 08:27:59 +0100
+	b=S7kdUwetvww4fJ0G3Bdg5GUTedAKkvPoQaJewy0YPJGJOVFkEvvV2daTtrz53T4AW
+	 zwvZgYrYcX/R1TlstajiEiNBWIB4D5mRK9LDjQFBtw6WryYG0JemrTKfGZ9WLyqEID
+	 Q93JjVAm39Y5DVbBOmHOO+Pn9JcG88/aIeT0A8Z10B3Src+vfsCNHQbXL2lmH9FP9t
+	 Cg+73GjuYaswY1fN8JtyuqzzCCb78gWn4RPkfMBjWrtfdre2PYXYPzZ6y41aJLnVSq
+	 dDnmvsn/8K5GDJ+eR2HkB4ZpTkCXGaJq3FrSxCJkg21umtCsrGGKtiInJph2SGD9Ac
+	 a+kP0sF0xrX4Q==
+Date: Thu, 30 Jul 2026 08:42:49 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, xueyuan.chen@vivo.com, 
-	linux-mm@kvack.org, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Bob Liu <lliubbo@gmail.com>, 
-	linux-kernel@vger.kernel.org, Xueyuan Chen <xueyuan.chen21@gmail.com>
-Subject: Re: [PATCH] mm/huge_memory: fix huge zero folio publication race
-Message-ID: <amr1tqBj9ec57xwa@lucifer>
-References: <4ee89c27873fb4d9e598f8a5cfe71d700ecf894e.1785300563.git.xueyuan.chen@vivo.com>
- <37c40d62-51e2-45b4-9837-a4b96d1640b3@kernel.org>
- <20260729180241.2b8bcb2379b975b22c48d251@linux-foundation.org>
+To: Avi Weiss <thnkslprpt@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Soheil Hassas Yeganeh <soheil@google.com>, Arjun Roy <arjunroy@google.com>, 
+	Eric Dumazet <edumazet@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: return -ENOMEM for page-table allocation failure in
+ insert_pages()
+Message-ID: <amr9zoSncZguF_uu@lucifer>
+References: <20260730071323.964321-1-thnkslprpt@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260729180241.2b8bcb2379b975b22c48d251@linux-foundation.org>
-X-Stat-Signature: byhbu9hhw1pqmj6z4e331nxqx8p7b3yt
+In-Reply-To: <20260730071323.964321-1-thnkslprpt@gmail.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 8547610000D
-X-HE-Tag: 1785396499-410580
-X-HE-Meta: U2FsdGVkX1+mEMNdzsykc27666hg35dmT72t1L0I52ikQRxWJT0kdJCsfn1dVZ3ifKpkfJRE7rfxiwZDIkkp3h4Ii+ALW2R/4Gi7cUREfM5GFqbfstJYPqMBY4eEJqC/C7JnjfqavzvNOGRlsOT+JzyASRrbNyGkNaej1/erxHEhnj++TbdYfcPw/DXVexZxZjRiKdmCUG4oDWeHwYnC6IQzQHlJcYNB/w0uEKZEX650em/bUOcH7WqxBcB688FFPdgVhd+Gs05Q6SVC0r47S+buEziUllVEDnsYb5RLEB49lYpjoGMvzab0i0y9vQHa7YO3OC+NgbPsDuvw6Q+6hcrlzCcAOMK8i7k54H1Y73N/mOGlFQ4E/Mg0Zbnvlz+Nf0k03Pu0OA5aaS5/lrgYCMo0HfTcWeWwVrt5iQJM1T4Uq2ZD+10IaHHswfv9cjUg4Z3Pi2z1qYIqjrGo89/FrqOwJF7veTlMVpwdJ8hyMm8mq3iOS9ON/Tc0mI/ZrHYS76KLAUL/ePuh3ADBCcCSgsLN8KQJsqnRV3EzZOjObuGcZM7j4rbAuH8bd932Ote3DkDiCbc4D8BF0T17oV9H/UE7peLtOsg9TXCLnI74Dlny5oe7eI/Hg8oQRxlpV1cXVUjM4C/N00YYp2UTqvPmLaeArjnYicBjzfORtbTKtBJ+yysuKH36acKFHwhNvpj2Pl86qA7E69ooTTBwrjBKBLOiUseewRImyViLbpVw8S1ZtGGfIrft7JPsVFxpaG9/Q1mdNKxvCPWvStge29LpKEIZ5lFcVBa2qfB2ZXlAFPeUZPDcApfr/oseFTemkUkEmTnLY6+byL5xIRqTE1EKK2CUMYFz80+734c086y+B5jrOqyuZN0t8cFWoT+Sd6PQ3w+adSEU8mA9iHp5M16yTe5OBDVUyahmNMWX8Z7DERv8zKeH3E5LmRL3QwExoQC/KgffQBaXTsSnMLs4Z0X
- v1cVH33v
- YIIN08AtZ0IJ7ZCUMEDnjcr3aDx8tv9AO0I8DqlHBMZxNEHR5diwvXgqXnBP/VWyfAUbvpPaFbOMzG1GoO72cAgI944vdshkS/xn2OpT76CCdz2dEPcmSDVLyAzaEMOSjMRELm0267UKfjvGtXvGBqCX24Om2wQMUDA5QjJyazs3OaSM4EARo2xwh2S/GjfQibq1rnwqduzpItS1BogJcfhmaFRCiH/3li+tFjpheFqGZjJ2XxoJ9+2zenjflO4i6hpjfLyfEo2e7zS0+RhJAXQeMRCzlCcDyDZAfII7TxRQd57VVKZMWfiIu77JAAreDKwZCD03wCukM88fm1Cf6WShlu498P4TXa6C2wA2dSWBBapzIkrtYRgiVJAbWNKMqB9TxYF7WeEuEfoQw8BFmk4v84g==
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 9C109140004
+X-Stat-Signature: z73py68r8xbzutbdxc5s5t3mk9fwe94i
+X-HE-Tag: 1785397388-178369
+X-HE-Meta: U2FsdGVkX18GO7ajVfImV5XxhJGteQKvoTC2wiQilfbOGPV7b6bJpw1mdSbxaz39zA56ZBvCWF9RaCvytoeMm1ekKigDKqwtSljhHQLeZJg3kmEmlSrb6Ev/gLCOVMA+UKzXlljjcGhq3j8t5IUGc7Dq43+ICZCt335eZX84uaFHRTs7Q/zs2Irr3LJZDmltT3eNgb+b6DP7RHxLTcjn2bFubE/5+m3nL6yrutCAq1mWiKCFozlMejqKXXA0wHXuAB257fVQ3Mh+V7O5LbGmlnkAt016wB61n0DSkTOg5nCdvRuTqK/Ibn1BOI92L+iy2UKsCkbyuRj81MZxjdZQMuVQuXBU8O2IsmRnTCzL5M0UTbMepWbyS2SCvNrIBjnf5BYl5YX6jUeQHK0i73JXsCvZlx9c1O7FoX4VTgYwwNiJbxer2FPZ/a8bItyRV6d9hiYzRKMllKegYDx5srOKYHxdoHH2EIG3T7eoSBKhQAkT3sI4nDOYfRSXuKtjXV++G3/9+noogBhWYO8Js4zZSt0Sa2lIEyZCrCHHD5xeFeLtIPrdkkZc4yEQtDvy9zTOCcN/azTWeSEuasHVqIhgijJUzNn0/8n0Au+NBerEWWbLJZ5JGrl56TrKgvm1QbWi3bLD/1uX8aHFK3BfFgkRaWjnu6QYerSXE6nKMvtsFhV3DgyQpMruD0Pt+46PuD5bUvmeSjU3rv40lYtj+AnE2Pv2nj/aGMFztcVdF36al+2k/OepO51j8bEhhklXsuns7dHKpJPOHYwLgo8MXeLkub2BCUV+o98IZr1KdTOCsvm1mGgGrIwxw58mlBP+bzXKRM8c0/9NyN+Pfkg8REqRYITGZtbMRqJyncFhxz/tV5EXJ/Ffcv9ACBkMeADQ8VS/Vx1EZGxHVaf5EKyXiGm2dbjNrPE+OxtBX1+hs0c8uopeCExyFqlEYVrTvl1nNDFPtEGtiyyfWX+yOClCF3k
+ M1arX9ip
+ 6QWTqNQcBFyfJgSOGhftGpe6lT5PnsjnCo+VSzEPhp5nDHcVLsP55H36tk6q9OJaNQqJ5f/LZShX0wwjPh5AiJOeiOn/zE2HOItQKypXWznr3m8dTZ5T17FShZVMljuZrKG0NGOMVEzUIRHArxLEfAsJGEnywGhT2enwmSaFwjObCDGaPMfIwCAzeJ3kuTK0k4EZrDslasNckGvO8HAs/VMD8C1pa1alK9wWEiCMpcQ0OgdYDgkEBv6N38MhCzR3d0Gri42KIG9l2eQWJnuAbgEcl0qC/E5QNkA94QKCtKBzLGrkletmBidfkUClhphUy92jy
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,66 +95,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 29, 2026 at 06:02:41PM -0700, Andrew Morton wrote:
-> On Wed, 29 Jul 2026 08:44:12 +0200 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
+On Thu, Jul 30, 2026 at 10:13:23AM +0300, Avi Weiss wrote:
+> walk_to_pmd() returns NULL only when p4d_alloc(), pud_alloc(), or
+> pmd_alloc() fails. These are page-table allocation failures, but
+> insert_pages() currently reports them as -EFAULT.
 >
-> > > --- a/mm/huge_memory.c
-> > > +++ b/mm/huge_memory.c
-> > > @@ -245,8 +245,11 @@ static bool get_huge_zero_folio(void)
-> > >  	}
-> > >  	WRITE_ONCE(huge_zero_pfn, folio_pfn(zero_folio));
-> > >
-> > > -	/* We take additional reference here. It will be put back by shrinker */
-> > > -	atomic_set(&huge_zero_refcount, 2);
-> > > +	/*
-> > > +	 * Publish the folio and PFN before making them available to lockless
-> > > +	 * users. Pairs with a successful atomic_inc_not_zero() above.
-> > > +	 */
-> > > +	atomic_set_release(&huge_zero_refcount, 2);
-> > >  	preempt_enable();
-> > >  	count_vm_event(THP_ZERO_PAGE_ALLOC);
-> > >  	return true;
-> >
-> > https://lore.kernel.org/r/20260728-fix-refcounted-huge-zero-v1-0-3f261f5447b4@kernel.org
+> Return -ENOMEM instead, consistent with the subsequent pte_alloc()
+> failure and with the single-page insert_page() path, which reports
+> failure of the same page-table allocation chain as -ENOMEM.
 >
-> Does that actually fix the same thing?
-
-???
-
-This patch was sent after mine and tries to change code that doesn't exist?
-
-If you look at [0] you will see:
-
-+	/* Paired with atomic_inc_not_zero(). +1 for shrinker pin. */
-+	atomic_set_release(&huge_zero_refcount, 2);
-
-Which is... doing what this does anyway?
-
-(I don't actually think this patch is correct anyway since the cmpxchg() is
-fully-ordered with a try loop and the issue with PFN vs folio publication still
-exists.)
-
-BUT it doesn't matter anyway.
-
-The race is fixed and I went into great detail in [0] and [1] explaining why and
-how. If somebody can poke holes in that then go ahead, otherwise I'm not sure
-why David's response didn't suffice here.
-
+> Address and range validation failures in vm_insert_pages() continue to
+> return -EFAULT. Keep the later -EFAULT return for
+> pte_offset_map_lock(), which is not an allocation failure.
 >
-> Is so, Xueyuan's Fixes: is 97ae17497e99 ("thp: implement refcounting
-> for huge zero page").  Which to believe?
+> Fixes: 8cd3984d81d5 ("mm/memory.c: add vm_insert_pages()")
+
+Hmm :)
+
+This isn't really a fix. Anybody relying on this returning -ENOMEM
+vs. -EFAULT here is in a state of sin anyway (unless you can point to
+specific users who are broken).
+
+Drop the tag.
+
+> Signed-off-by: Avi Weiss <thnkslprpt@gmail.com>
+
+This is correct, walk
+
+> ---
+>  mm/memory.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
+> diff --git a/mm/memory.c b/mm/memory.c
+> index ff338c2abe92..d8eddca8e251 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -2436,7 +2436,7 @@ static int insert_pages(struct vm_area_struct *vma, unsigned long addr,
+>  	unsigned long pages_to_write_in_pmd;
+>  	int ret;
+>  more:
+> -	ret = -EFAULT;
+> +	ret = -ENOMEM;
+>  	pmd = walk_to_pmd(mm, addr);
 
-Again ???
+walk_to_pmd() is horribly named, it's allocating... populate_to_pmd() would
+be better can you rename it?
 
-3b77e8c8cde5 is where the PFN actually started to matter, before that the huge
-zero page was compared directly.
+>  	if (!pmd)
+>  		goto out;
 
-The patch proposed here says the PFN is the issue so it already had an incorrect
-fixes tag.
+Looking down:
+
+	pages_to_write_in_pmd = min_t(unsigned long,
+		remaining_pages_total, PTRS_PER_PTE - pte_index(addr));
+
+	/* Allocate the PTE if necessary; takes PMD lock once only. */
+	ret = -ENOMEM; <------------------------------ set it again?
+	if (pte_alloc(mm, pmd))
+		goto out;
+
+The way this function is written is horrible in general, I hate 'preset default
+return value' as a pattern.
+
+So could you instead change it so the ret is set at the point of error, and
+while you're at it rename ret to err, e.g.:
+
+	int err = 0;
+
+	...
+
+	pmd = populate_to_pmd(mm, addr);
+	if (!pmd) {
+		err = -ENOMEM;
+		goto out;
+	}
+
+etc.
+
+Also ignoring pte_alloc()'s error code (which will be -ENOMEM anyway) and
+setting manually is stupid further down so:
+
+-	ret = -ENOMEM;
+-	if (pte_alloc(mm, pmd))
+-		goto out;
++	err = pte_alloc(mm, pmd);
++	if (err)
++		goto out;
+
+Obviously:
+
+		for (pte = start_pte; pte_idx < batch_size; ++pte, ++pte_idx) {
+			int err = insert_page_in_batch_locked(vma, pte,
+				addr, pages[curr_page_idx], prot);
+
+->
+
+		for (pte = start_pte; pte_idx < batch_size; ++pte, ++pte_idx) {
+			err = ...
+
+Remove horrible ret = err and ret = 0 assignment later.
+
+All this would improve it a lot thanks! :)
+
+> --
+> 2.43.0
+>
 
 Cheers, Lorenzo
-
-[0]:https://lore.kernel.org/all/20260728-fix-refcounted-huge-zero-v1-2-3f261f5447b4@kernel.org/
-[1]:https://lore.kernel.org/all/ameC4IWCOVBGlXZu@lucifer/
 
