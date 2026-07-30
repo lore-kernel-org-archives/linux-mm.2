@@ -4,115 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CFE7C54FDF
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 09:07:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8311C54FD2
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 09:07:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 01BE96B0099; Thu, 30 Jul 2026 05:06:57 -0400 (EDT)
+	id A4DFD6B009D; Thu, 30 Jul 2026 05:06:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE0A36B009D; Thu, 30 Jul 2026 05:06:56 -0400 (EDT)
+	id A25BA6B009E; Thu, 30 Jul 2026 05:06:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D5E2A6B009E; Thu, 30 Jul 2026 05:06:56 -0400 (EDT)
+	id 8A0456B009F; Thu, 30 Jul 2026 05:06:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 90F7D6B0099
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 05:06:56 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7AE858088B
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:06:54 +0000 (UTC)
-X-FDA: 85044863148.19.36333FC
-Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
-	by imf02.hostedemail.com (Postfix) with ESMTP id BAD3F8000C
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:06:52 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=NxmN25Dy;
-	spf=pass (imf02.hostedemail.com: domain of iprintercanon@gmail.com designates 209.85.208.175 as permitted sender) smtp.mailfrom=iprintercanon@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785402412;
-	b=8n5/gIMDum7iUp7JP6wcr0TZBgnHdrLLoWwgI1z4c14hM/zFWbunSsi4sGjJh/xV6bcg3h
-	WUO+tcXA6N1arnSI4hCPNaywLn5G9BbeJGBVsEuQsiliU5oeoJmh5QEEx+TSLhox3XlA9A
-	2PRH7NZaYjrKgGsV0E4r9T2YDLmzel8=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=NxmN25Dy;
-	spf=pass (imf02.hostedemail.com: domain of iprintercanon@gmail.com designates 209.85.208.175 as permitted sender) smtp.mailfrom=iprintercanon@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 5DFA26B009D
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 05:06:58 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id EA4C9808EE
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:06:57 +0000 (UTC)
+X-FDA: 85044863274.16.F84A694
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 0828240004
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:06:55 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GLjP2cjA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785402412;
+	s=arc-20220608; t=1785402416;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AxWmC90sRXwr8zyhQC/Nw/p1hseuCo/SkMIrvBLGNgc=;
-	b=ebwcXACDRc0LdjYhEWufT/ExF6cqZtQX7t7iLwEHtjb2GFqLc/Qf/353RXEBe5B1ucgwn6
-	3mq2k5IeK69pI1rrIKYwMw9xIF4u7a/DR2CMmgXN7htMHIE1VugwCqAyECzAXg/9LDHDDg
-	eskVNLSQ07LypDbt4ThFR2y605fZU9M=
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-39c95395230so15648251fa.2
-        for <linux-mm@kvack.org>; Thu, 30 Jul 2026 02:06:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785402411; x=1786007211; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=AxWmC90sRXwr8zyhQC/Nw/p1hseuCo/SkMIrvBLGNgc=;
-        b=NxmN25DymuKs6AYe/yFfUEgOOy4vqozbWz8u6EEADL2ZBwg6GHay+1/22oVlXHAxho
-         NX2r8lnT5fgwh8WFLnaoEF6cUvJRwUKZ46kDEFC7yvPUWP5jTo/C/NRFYGhbuxE8DBNf
-         aubRvOvdqDOSCc5dqCXQHke0GN4/qZz/hlkhfPwjsOIHnMvcFcPC0TUuDIoceLB1b2/q
-         7lEzurg/q9WlSV25zD5Q1E1IiSqEPwyRmbPXw2LDk8KadBvP1ZLUpGsKHc4RTPmyC7nd
-         17sw+L2OFchkZdhW5anps5btJvKAc40cW1wuookGa6xwQxFVTvTaveTCSFn5pTepM+Km
-         DHAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785402411; x=1786007211;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=AxWmC90sRXwr8zyhQC/Nw/p1hseuCo/SkMIrvBLGNgc=;
-        b=h5Y/HrYUKdFCOrztMUfpF6dRAADlcrhefg5aMxXRpo10sR4NiSDLOhOkiztWcxsvFO
-         dJuTOcC4yfWTAkKfiiRo1wm2sPljCuMPjZFFfZS38LJuwXSs6U/B+EbuDFnq17mvV/Jn
-         7bjQrAGfxvbYWhJzUlztVCuMvBdya6x5+JL7atrWVrRE5atD48l18HP2+G7mlfieU/ZA
-         1EfXm+jN9NJtIjgC7mKSev3mbkPP2WMOjHS736UyVczRbM1wFJqW2aS3WqOgMZ/5gPVa
-         HrvDV/DaaImelIs/gWmwUsXUJhLja7NKfG6QyAUdcRh5NVKoNdZDNJfpOnMTQ+OVQuaV
-         E6jQ==
-X-Gm-Message-State: AOJu0Yz1JfOzfZQBb1tqVEr4pWKS0pqcvcggnFOGlVAembSFmfve1pxb
-	qcB9fXEgAmuss36jVjjpvOcnXaEo0Jwj4rPeQcnWjOoh2iPHCFUAGh7NO63Wzw==
-X-Gm-Gg: AR+sD12gafgM1VjwWo5H16pr1dfps4xSa+mVyip+Vpbwg8O4zClnqv5yqTk+AOmNz/4
-	sPPaQqy+EODJSKgGSUBeI5fR+Z9oqPumG3wUg2HHspuMmYmEsTxIHfFOjoYhLQI6zDy2hqVKyG9
-	Nww1SjgAfih5WtRman4bwuc6h5aqIOdfd6TDdpTMAwMiqpUh5SHp7rGMLfFFT/pRf5lgr2OjtyA
-	fDdIqJwwhycft91q3SbC6WRErVlH2VJ/pyyb8ujfOgyTfShcKMBJso0hKeQL9Hh5MM724OTh11M
-	/koAow5XnFLlJARES1ffb37sWEe5pgRb/7wxKkykAMQFFaEbV5SHEchdc/B5QqIh/kx3TkoIHBv
-	E3LdXdQYd5R4cNslTPQnPYvvYwJcdFV/cooyVQJhq5OIrdnl7esB5oSI5e8MLvszPrXcJTERsXb
-	apMROlfVbqtBCU8JELA3WjOdSd8/eNluwkn4ExoC9hHtJfR6AYKosDH7Qh6bfQNW9iQejLn2Pax
-	PLUSskMXXChePm494cH4yiXDbffu5dk8dgatNXfCzk14eFVIe7PkQ17lg==
-X-Received: by 2002:a05:651c:1504:b0:39b:224f:93a1 with SMTP id 38308e7fff4ca-39f6d0c5d95mr3342871fa.38.1785402410327;
-        Thu, 30 Jul 2026 02:06:50 -0700 (PDT)
-Received: from localhost.localdomain (46-138-176-102.dynamic.spd-mgts.ru. [46.138.176.102])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-39f6ac80d6bsm1928641fa.29.2026.07.30.02.06.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Jul 2026 02:06:49 -0700 (PDT)
-From: Artem Lytkin <iprintercanon@gmail.com>
-To: linux-mm@kvack.org
-Cc: akpm@linux-foundation.org,
-	urezki@gmail.com,
-	willy@infradead.org,
-	shivamkalra98@zohomail.in,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 0/3] mm/vmalloc: stop truncating byte counts derived from nr_pages
-Date: Thu, 30 Jul 2026 12:06:25 +0300
-Message-ID: <20260730090628.65814-1-iprintercanon@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260729175708.7074-1-iprintercanon@gmail.com>
-References: <20260729175708.7074-1-iprintercanon@gmail.com>
+	bh=gZ3c+8CwwUe2+0lzilzz3UoIxzFxRhD7Qz/ubZN5PMs=;
+	b=5WRv7qHJFjvB6DSaozP9Fp5xMGlJykW4YWl5XnFfL7cbWR4/Ua1/3i35mS3zUviFx6CRA2
+	ToAh+5FF0mN3i3VosPJN/QYU2a8zOT14Emw6RPNp7bqlDpQ4OeZ6kU8Ge/9QrwhqWR4kkc
+	4rzL8us0YchPJMkiRk/NXDpp7hJhWkA=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GLjP2cjA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785402416;
+	b=4uMunBZSbSCsKQwNiFHIaCCJY9Y01Wl4Oxt0TgkFlhj/9Qk833TaABn/V505ouW2StZan2
+	i8Sh9Illq03SPNNGOjEcjzYcq/enW9NGCSMy7a2Mp1hMCs1s4RQBjzqtieZ5FyeOmy6Wig
+	PrUL04uAhoM69tZ2x63O9l8bC2HpVSg=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3C33043F74
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:06:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 242CC1F0155A
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:06:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785402415;
+	bh=gZ3c+8CwwUe2+0lzilzz3UoIxzFxRhD7Qz/ubZN5PMs=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=GLjP2cjAsZqdZv5QzIkrlytzISOxmCid9sQybYEv67fOnyE+xreGwdOIl3MOWOos0
+	 XqXh3QDgsj/fTFJXHQsRdT4buGG/2RWyKG8Pxj7L8SW/j+H5mjjruNYBzzhuhUxT2J
+	 JhTZxpkEwceuR5Dra3TXnw1ILKxgUMrjGcSeFVVCoKqYsQt+hnETacdG3gMFedCtQh
+	 1wYOJ34NqUbZ2z5yQEpY3uVV96WUyhOzutR5bTcfv2J6Gijigy1mfiCcdxJ8cQg8MH
+	 iXeTjTOXkeSnK9Je9PxuVmCBzRBmAHVLMDK1d7f7Q2yf7GhuNbB3SYZ+GWYc48Nlh9
+	 kGJ8dXL70MvHA==
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-8eeadbc5e21so12558686d6.3
+        for <linux-mm@kvack.org>; Thu, 30 Jul 2026 02:06:55 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Rp1ZoY7tZ7lPX0lk1I/v/TE12cdkS8yLUZTyS2QSDbDdW6CkBXxARUVO9o3Drdk9UjNiLmYIE3YdQ==@kvack.org
+X-Gm-Message-State: AOJu0YwU9NP1rDfYDd6w5WUSFPtBIdEdgqA0F4Gq/75obj8NGrIBKac8
+	Q/IlhEDchuLoNyD1Epw5iGZAYlF1/RmJ+01rSC9SQAFWiDEbgT9I1RVaDzgqSMzvFgDrntdp74+
+	cgg3n5TwYAAHGedp8OEWWfBoYcZ7ag+M=
+X-Received: by 2002:a05:6214:4a88:b0:8e9:f62b:8fa0 with SMTP id
+ 6a1803df08f44-908347de65cmr15709296d6.53.1785402414395; Thu, 30 Jul 2026
+ 02:06:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: BAD3F8000C
-X-Stat-Signature: 4pjotjtpp15iuukb9m73sywna5t6yb15
+References: <20260730072349.1360449-1-zhaoyang.huang@unisoc.com>
+In-Reply-To: <20260730072349.1360449-1-zhaoyang.huang@unisoc.com>
+From: Barry Song <baohua@kernel.org>
+Date: Thu, 30 Jul 2026 17:06:42 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4xW8WujWvgFrrR2NHoQZd4nLPi8QBtXwGsrQXj72CL=NA@mail.gmail.com>
+X-Gm-Features: AUfX_mzT5lKF4XLU96cwSBZRTI0Rv50EO-e3K_NeFWAEZDexxMV83B-tarYorng
+Message-ID: <CAGsJ_4xW8WujWvgFrrR2NHoQZd4nLPi8QBtXwGsrQXj72CL=NA@mail.gmail.com>
+Subject: Re: [PATCH] mm/mglru: force aging the lruvec when min_seq pinned
+To: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Zhaoyang Huang <huangzhaoyang@gmail.com>, 
+	steve.kang@unisoc.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 0828240004
 X-Rspam-User: 
-X-HE-Tag: 1785402412-453542
-X-HE-Meta: U2FsdGVkX19QTezwzHSlXloMsoAtNiMvu3sv/80QvIpi2ebAAkvdOubm+uEhD+MB0X93FdCIyx2MPi/kesdaZQBzX2ADPoxZphrq14RR9vApCJSVqLEVVTkjP88WdCOQNPC3sQXF9UUbyL9ATMzaKRy2FU/0RWR3i1IgzW/rfHYiy6DwwAbdjmxfgSPTg5e68suTD70GcbsNQnegGbrl2bgQbYLFslNabsbkyGZEGuWxApGkBT5ffHuSAoeQUKu5N1fMREgYk9MFB3MTQqoe46spQ2qfcAsfxRtILylNjrUIxPrHmXFMOvWtrkAqaz1MV8IaTHyaWgk7yFdKQeMv4W2wMJnLsXpLVJa4sMAV3AajK0liUiwr5U9uEVh0RUR9cDe9l20GCf63vpXaIMp/GP3K1nw1Esk4B/akbdB0QTweqvHdqWTz84uuwaVbn5fVCm+Ms+mb8iwxefk26ur/xzRWrzZgZ+MgLKT/ftYkgXJWtdUYx3EVVclnMK4wTCcnvx0fsxzINlC9MvlP/6ifnuCdIHknPwzgx4jCUPsmf/Iv4Ifluzvj1pnQp/ZpaFp+EZzr7PYtplPo+aOQdQhRxo2M404LkBc/Zr37PPAvc4bpSbhtVeh4Dqj5HU0cj5YVpuCbwo/TPAUIikSJsCWUdBxjI6c+6swf0dFNpIvxyqIVbw5GLXg44HjgeuGF21Lrqu+fuAJvNSV+UpB7EM7A9FxjHTAuLFkCVUayAFmaN+1vxhRwK3MG0rjzl4PlwMkSmYy01zNBz1vUO3lp+69LFyGcoxVUJN++9hQkYpE92Nedf+zShVr9TxuM7jPnr5rQgAIYavQeAjiKgR1BxP3u4bh0Sq75wvcTkxT3IqKfOdGa10idNlbwFggIJsf8AaeOaqXQKvWOKiiV4ILi/UeFSx1jna1QSovB5Dn0+n5T6ClLsgBXPkzEDslMpDkbngd802H4s4Lo+nFx6dcLiJS
- EHE4ZQGN
- O9s5PoBh22SjGN/lfKglmlrzbdv65g4er8M1znIGsClAaeQ7eNhE7o4nloZENKTE/UFeU0dK2okiXOD+Ji2jmnlZO2zIKIQGNXCF6b3UHEhCLh9M0jlVXEcUjpGkmlT9D0dQwxc9xypWplRzciqIwF/Tsnj/U4KVKO+KsuUX8KybzP0C5IdYeZewEX403Ujjf8kYa1dil72RGhwsvMop2HiWNNCvmkmv3wGbAntJI48Lt7998Hd4J5aHd2wpC5RU5zZjcrv50ErLM9SokI0ckGYS1pqjkBClWkQZInWTO/5cOxC12adUqL9HyfJR1eF1JCxYin/is6CrJcaR/QvDKP9SjgKw58MIaON73TNX3Plgbjfyb+iH9gZtxeIRoIqs2Bt8MbF4rwwFA3GUKWHlGp9L/fRmPUKvNQHRF10HY5UIFHtk7dIPxXBXFdSEe0FnRMlIIiVr59E10EJHHiMfe5wXj3ifMsFlPORI26Ep1Yz5Z/lo34PDgkA4PfxgoQeGse5r0MRHUa98JHlAFg2FMuYI3qqQCnPA1BOwrQwQq39ECkpfjJfR6lZ0dVIqBOYX/TRrq
+X-Stat-Signature: jseihmkez3kkwdkqebhkb57m1de5hre9
+X-HE-Tag: 1785402415-733954
+X-HE-Meta: U2FsdGVkX18NJS6q9aUC2Uy6/9ZqizO4Nj4cpKTzexXGIfoP24+DkvxSF2pp8jz/v0HcIBPDAC7B+ZMhx2g34d/QplGWy27vdfc8knWiN5IaPzmYKCRIxaNjL2hgteOsyu9x5PgTttpNZ0gNH1TZw93y9acdeVSPLUohCl0rVJznxtqD4gVXGBVK0DdjSRqancBsu5bLG5Z/B7r4dgZ2PkJ7MOGWxPJYJj6+SRC3ViabSpckVV7Y598p5vNkSBJS+p2vTfnyXaG2DSpxXzoyO1l+sp/D9udzf53oJD9PFkOWh/rAnutELGNbecX/BnpIXBABchlExFzjx3OUUVqXAVf6RPh6/hjQM8mvrRubyaY+3F73CbJmwU3WXy7L3ocdZA08FKx/z+LjKmt3ZQYUHGyeXQQuZfmqAZeG7F/vgOpT3uAEYWnAlneQDT4+9qtO3NwL8e+uF0UTE044gGbLqHkFOPs2ZOZwvalrQL3z/MJ4ePK759sGQwNR1CcLOja6/O5L7ydOYLWCX3GfDhPWxXsMJD7dUjWuEb71IL5m79wk1+UhyR/9wlkjVwo/af6k8ujKdC+bwuw/z5Uwc/Fb17ybq/wHnVAdTawgkIYfr3QV5jPwM0S5yNEUXpqLey2Nymw1owkJCD62rwnKaKaIb8pkrzkQnvZFkTx78WhAFOGe2ATM24c8IHu06lExnJW4zPLDVxNhvySiLobPsrFhpxlgpsFnkif7iMIg3FMJO5pAvNY9+QeTbYA3bBd4ud1W4HcpjcD9GAMK4EgM3UDvxY56in1/IjpQgeYpq6Ejbu7js1LU8SQuKz6SJb2tUveJAbIWRitVdGW4Nov01dEG7iRBmHYLEljc24Y1GAssS+3V47i6F+HyiVgJLI9BFum7nJJVGtpen4HZ2ABIwUcV2AnYz/UMGdyn4GTuw1yF0b8Z7n2o+xPXff0msrHHODyUM84PVpgw/tDTMTiJDUQ
+ yuFbaeW6
+ q8wdPGzS/gXbZY5nYTVO03mvt7XgphiTs/QV+njVEkz5k80C9RuuWK6G5vnQs44iQizpE8pWPNS2YXq9cN6x1NtMfFP3ZlBWWZg7gPX1y3+P154qGpgnYMoZFVS3ZegTmJ9xlsWNbQp8bIVTrCf10U06eRnE1KYy5bhEPmUUdm5EtEWHRlY8Cdrzckig9+iUbyF+Na/tBThCeEMq2iz38cU91Jgc8PR/5rxS8aeceKw61x54dRvh50wi36/x4y4XuDqTPmBoeceAse1xO3MsdC41/rienMdlDMD6vLVTFgWH7iP2cT4b48taGrsRr18ZkiTJ6kch+vwX4Mpybyf3F78g0jpbIs0hKfCnUCsMSLHbnu1FhCPzcSHdav++OvEWIe2hLyff5iPWvm549s37fZVjOn4cb3TxM2a3RJYbnhD4NjLk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,71 +107,174 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Andrew asked for a v2 of the nr_pages widening, rebased on mm-new, with
-the changelog clarified on what has actually been observed.
+On Thu, Jul 30, 2026 at 3:24=E2=80=AFPM zhaoyang.huang
+<zhaoyang.huang@unisoc.com> wrote:
+>
+> From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+>
+> This submission addresses an issue where the memcg MGLRU's min_seq is
+> pinned by an orphan page=E2=80=94a page that resides in the page cache bu=
+t
+> lacks a corresponding reference count, while the number of GENs has not
+> yet met the criteria of aging. I believe such pages should be detected
+> and handled elsewhere rather than affecting the LRU in this way(legacy
+> LRU could move forward by bringing this kind of folio along with).
+> Therefore, I propose moving these folios to the next generation when
+> isolation makes no progress at all.
+>
+> Signed-off-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+> ---
+>  include/linux/mmzone.h |  6 ++++++
+>  mm/vmscan.c            | 45 +++++++++++++++++++++++++++++++++++++++++-
+>  2 files changed, 50 insertions(+), 1 deletion(-)
+>
+> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+> index 9adb2ad21da5..b063c56ea30c 100644
+> --- a/include/linux/mmzone.h
+> +++ b/include/linux/mmzone.h
+> @@ -434,6 +434,12 @@ enum lruvec_flags {
+>          */
+>         LRUVEC_CGROUP_CONGESTED,
+>         LRUVEC_NODE_CONGESTED,
+> +       /*
+> +        * MGLRU: eviction failed to isolate from the oldest generation o=
+nce
+> +        * while the window was at MAX_NR_GENS. A second consecutive fail=
+ure
+> +        * forces aging so residual folios cannot pin min_seq indefinitel=
+y.
+> +        */
+> +       LRUVEC_MGLRU_ISOLATE_FAILED,
+>  };
+>
+>  #endif /* !__GENERATING_BOUNDS_H */
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index bd1b1aa12581..c18db08c5e10 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -175,6 +175,8 @@ struct scan_control {
+>                 unsigned int immediate;
+>                 unsigned int file_taken;
+>                 unsigned int taken;
+> +               /* folios isolated by MGLRU eviction in the current lruve=
+c pass */
+> +               unsigned int isolated;
+>         } nr;
+>
+>         /* for recording the reclaimed slab by now */
+> @@ -4748,6 +4750,7 @@ static int scan_folios(unsigned long nr_to_scan, st=
+ruct lruvec *lruvec,
+>         trace_mm_vmscan_lru_isolate(sc->reclaim_idx, sc->order, scan_batc=
+h,
+>                                 scanned, skipped, isolated,
+>                                 type ? LRU_INACTIVE_FILE : LRU_INACTIVE_A=
+NON);
+> +       sc->nr.isolated +=3D isolated;
+>         if (type =3D=3D LRU_GEN_FILE)
+>                 sc->nr.file_taken +=3D isolated;
+>         /*
+> @@ -4998,6 +5001,11 @@ static bool try_to_shrink_lruvec(struct lruvec *lr=
+uvec, struct scan_control *sc)
+>         long nr_to_scan;
+>         unsigned long scanned =3D 0;
+>         int swappiness =3D get_swappiness(lruvec, sc);
+> +       bool attempted =3D false;
+> +       bool rotated =3D false;
+> +
+> +       /* per-lruvec pass; sc is shared across lruvecs during reclaim */
+> +       sc->nr.isolated =3D 0;
+>
+>         while (true) {
+>                 int delta;
+> @@ -5006,6 +5014,7 @@ static bool try_to_shrink_lruvec(struct lruvec *lru=
+vec, struct scan_control *sc)
+>                 if (nr_to_scan <=3D 0)
+>                         break;
+>
+> +               attempted =3D true;
+>                 delta =3D evict_folios(nr_to_scan, lruvec, sc, swappiness=
+);
+>                 if (!delta)
+>                         break;
+> @@ -5020,6 +5029,40 @@ static bool try_to_shrink_lruvec(struct lruvec *lr=
+uvec, struct scan_control *sc)
+>                 cond_resched();
+>         }
+>
+> +       /*
+> +        * Eviction isolated nothing while the sliding window is already =
+at
+> +        * MAX_NR_GENS. In that state should_run_aging() is false, so
+> +        * get_nr_to_scan() never calls try_to_inc_max_seq(). Residual fo=
+lios
+> +        * that fail isolate_folio() can pin min_seq and hide reclaimable
+> +        * folios in younger generations.
+> +        *
+> +        * Require two consecutive isolate failures on this lruvec before
+> +        * forcing aging, so a single no-progress batch does not rotate t=
+he
+> +        * window. Successful isolation clears the sticky bit.
+> +        *
+> +        * Key off sc->nr.isolated, not nr_reclaimed: folios isolated but
+> +        * rejected by shrink_folio_list() are put back with PG_active an=
+d do
+> +        * not pin the oldest generation.
+> +        */
+> +       if (attempted && !sc->nr.isolated) {
+> +               DEFINE_MAX_SEQ(lruvec);
+> +               DEFINE_MIN_SEQ(lruvec);
+> +
+> +               if (evictable_min_seq(min_seq, swappiness) + MIN_NR_GENS =
+< max_seq) {
+> +                       if (test_and_set_bit(LRUVEC_MGLRU_ISOLATE_FAILED,
+> +                                            &lruvec->flags)) {
+> +                               rotated =3D try_to_inc_max_seq(lruvec, ma=
+x_seq,
+> +                                                            swappiness, =
+false);
+> +                               clear_bit(LRUVEC_MGLRU_ISOLATE_FAILED,
+> +                                         &lruvec->flags);
+> +                       }
+> +               } else {
+> +                       clear_bit(LRUVEC_MGLRU_ISOLATE_FAILED, &lruvec->f=
+lags);
+> +               }
+> +       } else if (sc->nr.isolated) {
+> +               clear_bit(LRUVEC_MGLRU_ISOLATE_FAILED, &lruvec->flags);
+> +       }
 
-The widening reverts the two casts added by the patches I sent on 25
-July, so it needs those in the tree first, and they are not in mm-new,
-mm-unstable or mm-hotfixes-unstable today. They are here as 1/3 and 2/3 so
-that the series applies and Sashiko can chew on it. 2/3 is byte for byte
-what I sent; 1/3 has one corrected sentence in its changelog and the same
-one-line diff.
+This is very weird. This seems like using a sledgehammer to kill a fly :-)
 
-Keeping the three separate is deliberate. 1/3 is a one-line fix for a
-v7.2 regression and carries a Fixes: tag, so it is the part that wants to
-go in on its own. 3/3 is a type change across the file.
+Do you mean that isolate_folio() fails, the folio is put back
+into the oldest generation, and the next time it is scanned, it
+still fails to be isolated? As a result, scan_folios() makes
+no progress at all?
+And is it because the oldest generation contains only this
+folio, leaving no other folios for scan_folios() to scan?
 
-On what has been seen in practice, since v1 of 3/3 read as though the bug
-had been hit: it has not. There is no report behind any of this, I found
-it reading the code. What is reachable is the 4 GiB truncation in
-vread_iter(), which needs a machine with more than 4 GiB of memory and
-nothing else, and makes /proc/kcore return zeros for such an area while
-reporting a successful read. The vrealloc() case has the same cause but
-stays latent, no in-tree caller grows an allocation that far. The rest is
-unexercised, and 3/3 now separates the two thresholds instead of lumping
-them together: 2^32 pages, where the field truncates, is 16 TiB and out
-of reach of any hardware, while 2^31, where the plain int page indexes
-break, is 8 TiB and only out of reach because nothing asks for an area
-that large.
+Why can't you simply promote the folio?
+Do you know why isolate_folio() keeps failing? I suspect it's
+because folio_try_get(folio) fails repeatedly?
 
-Changes in v2:
- - rebased on mm-new
- - 3/3: the changelog separates what is reachable, what is latent and what
-   is merely unexercised, and answers the 16 TiB question directly
- - 3/3: the note on the mapping path no longer calls the int *nr cursor a
-   cap, since it is an overflow and not a bound, and no longer claims that
-   every user outside mm/vmalloc.c only indexes or shifts the count. Three
-   of them pass it to a narrower parameter, which is now named
- - 1/3: dropped the claim that alloc_large_system_hash() cannot reach a
-   4 GiB area. Its cap is a sixteenth of memory, so it can on a 64 GiB
-   machine, just not without an explicit table size on the command line
+static bool isolate_folio(struct lruvec *lruvec, struct folio *folio,
+struct scan_control *sc)
+{
+        bool success;
 
-v1 of 3/3:
-https://lore.kernel.org/linux-mm/20260729175708.7074-1-iprintercanon@gmail.com/
-1/3 and 2/3 as first posted:
-https://lore.kernel.org/linux-mm/20260725132201.88279-1-iprintercanon@gmail.com/
+        /* raced with release_pages() */
+        if (!folio_try_get(folio))
+                return false;
 
-Checked on x86-64: vmlinux and modules build clean, and mm/vmalloc.c plus
-every file that touches vm_struct::nr_pages are clean at W=1, with
-HAVE_ARCH_HUGE_VMALLOC, NUMA, KEXEC_HANDOVER, DEBUG_KMEMLEAK,
-DMA_API_DEBUG and PROC_KCORE enabled. sizeof(struct vm_struct) measured
-against the real headers: 72 bytes before and after with
-HAVE_ARCH_HUGE_VMALLOC=n, 72 to 80 with it enabled, both sizes inside the
-kmalloc-96 bucket that __get_vm_area_node() already allocates from.
+        /* raced with another isolation */
+        if (!folio_test_clear_lru(folio)) {
+                folio_put(folio);
+                return false;
+        }
 
-Artem Lytkin (3):
-  mm/vmalloc: fix 32-bit truncation of the area size in vread_iter()
-  mm/vmalloc: fix 32-bit truncation in the vrealloc() grow-in-place
-    check
-  mm/vmalloc: make vm_struct.nr_pages an unsigned long
+        ...
+        return true;
+}
 
- include/linux/vmalloc.h |  2 +-
- mm/vmalloc.c            | 58 ++++++++++++++++++++---------------------
- 2 files changed, 29 insertions(+), 31 deletions(-)
-
-
-base-commit: eee677bbc48890b2bcaa42ea7942478302937a09
--- 
-2.43.0
-
+Best Regards
+Barry
 
