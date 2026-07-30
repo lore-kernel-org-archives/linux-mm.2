@@ -4,105 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66CFDC54FD2
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 09:41:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C99BC54FDF
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 09:46:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6BA1E6B00A2; Thu, 30 Jul 2026 05:41:54 -0400 (EDT)
+	id 0F9626B009D; Thu, 30 Jul 2026 05:46:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 691CC6B00A6; Thu, 30 Jul 2026 05:41:54 -0400 (EDT)
+	id 080126B009E; Thu, 30 Jul 2026 05:46:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A8766B00A7; Thu, 30 Jul 2026 05:41:54 -0400 (EDT)
+	id E89516B00A1; Thu, 30 Jul 2026 05:46:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D3696B00A2
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 05:41:54 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D4170A08EA
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:41:53 +0000 (UTC)
-X-FDA: 85044951306.04.365B491
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id E7C8C40002
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:41:51 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AGAFEkP2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id BC5B16B009D
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 05:46:20 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 13A8F120916
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:46:20 +0000 (UTC)
+X-FDA: 85044962520.11.4AC4255
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 1702540009
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:46:17 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=acdJATU9;
+	spf=pass (imf01.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785404511;
+	s=arc-20220608; t=1785404778;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8XGN7LY7NQLvXC+r+ZudwXwnlP8u8gr79l7lLScD7Ek=;
-	b=NgPvGrhL3plfXTFbdWPoMsTqAcB7oIFmjwuPkXBhuwEsmNEfSJpMrLUOhga5yePgPMVGGn
-	4gVCyrwr+QyL4TVty4Nlh0EdrUdGYH3VKE4r1fAawxPIOK3/D92uiAaKOeGXqzPdIITQIz
-	pidQsMXcEZJ5gZ2zV6XeDX/P0LP7wF0=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=ZnorYLlWMyM5UFID8mK/Zd0i6qF/MIMCjqAAjeELmUY=;
+	b=5E0OSzQB7K6IWG6A7SmmCZjWS4c5GeH2fc0D3gKAGhhltnQ2Sn4UW7mi/jlKDWnvrkxXE0
+	mT1VjXm/dVawQ9U7mnZUL9FQLNrcGbpbHlvKwdxNZ0oLgREXromrbwcJiVEqjgUK7Mn0kT
+	mL2a+qQn7VufvH3Ci3nggxDuxTZrfDY=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AGAFEkP2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=acdJATU9;
+	spf=pass (imf01.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785404511;
-	b=VFVo05q7fZRtto7sT0HGUnLUMLbxcjRKyEJ77lvBN+s1D/Bym1YdGKc3IMlhESyRIue6Fd
-	573iKKGaqqwgzVtkCp4GnOsHkqIq4OMaOuDeq0kglQE9hMhyCAsrMaBq/dCKHkYXYHBWNQ
-	ROswfVB5OUn6xx1giLvB5Tp+KoyROpM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 77320600B1
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:41:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 311D01F00ACF
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:41:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785404511;
-	bh=8XGN7LY7NQLvXC+r+ZudwXwnlP8u8gr79l7lLScD7Ek=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=AGAFEkP2LX/I8y25ujAs3D3HAPT83onc1iifd1xk4ev2vLc3wWkO3teRE9bECFOdE
-	 xl8Zs3OEJVmNsQHNqYWErZLXylWIHSzg9vLTaQ6FC/O5KVqSRIbYJ9Qv2MUbCAdJSA
-	 y0jfOfAm4GMIk9BqYP71LAcwAFMgA6uc6gN01THMRr/xmMZY0Rgh41mOSqU49D6jr8
-	 YKFjN53lbPbdMpN4tGgj02g/jOfWouWPJ6LbWBXcuasSBif1AQ4HEpqk9G9ZSWbBDF
-	 F+MKvG+VyCVJEOyiKvS+2Zanrcn0Tf5glieauV1W+pwU2sAfr/gC9kCgB0cvEXYUuH
-	 rcr0L1va81IUg==
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-902e4af2d9dso4567366d6.0
-        for <linux-mm@kvack.org>; Thu, 30 Jul 2026 02:41:51 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RoKHYQ7f4ldl+cAUfoO0FFWNyTq30S+ZC/Dbb9iV6cpjY+qM8yxLdSljCNABOYX0x1YfPWWR/RR+A==@kvack.org
-X-Gm-Message-State: AOJu0YwkIyA+nCK3gscYtAT+8WE6aWzi+IfOET8mnWVPVyuVXGJ9Q2Lj
-	KguDfKMZqSz2D0O63uWWmechRJfw44Q8iDV26HL8hO0GQ34yuphwP47LHnabKGKPr9044NuGYLf
-	OYZ1f3oDTlT7s9EGFEDx84oDOy3/dvGw=
-X-Received: by 2002:a05:6214:4992:b0:8f1:fba2:d4aa with SMTP id
- 6a1803df08f44-908350270f0mr15477476d6.16.1785404510543; Thu, 30 Jul 2026
- 02:41:50 -0700 (PDT)
+	t=1785404778;
+	b=6BsKR41Q+K9iC7D7NqhPRdhRUPp1TvYqJZJaGplOJH1/PBhW1DAF4iQ0RM5bZR1hp7aYHt
+	Y2sHsLs2N7XdkFk/H3ZBGoOjaXSAg4FUiwkti8qkOf77SJIhjNcfIAuf2YqD179AEmUT8F
+	I+xTgaQ1SuiXnf+FuUkJgS4MKgWvTQU=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A82071684;
+	Thu, 30 Jul 2026 02:46:12 -0700 (PDT)
+Received: from cesw-amp-gbt-1s-m12830-01.blr.arm.com (cesw-amp-gbt-1s-m12830-01.blr.arm.com [10.164.195.33])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 775233F763;
+	Thu, 30 Jul 2026 02:46:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1785404776; bh=mS7cuEvlNnDOfcNrpI4hgJf5yyKkfr7S7sj+PeCdL8E=;
+	h=From:To:Cc:Subject:Date:From;
+	b=acdJATU9k4ZO0FvIY+fx5KSgvSkq2wgbCdjbKzc9+a+WaU9uOpGE1wOQuChZU4v6d
+	 LnxVbO0B5mjmPtKIekX2mi0Fr77TUZZZjEcDPhwJiqfiFF3NYUMJstf5XgaIp0r6fP
+	 PsA5+O4SkNIIEiSYdVAR8QZ2yQGLUUtwbF7R8cpk=
+From: Dev Jain <dev.jain@arm.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	muchun.song@linux.dev,
+	osalvador@suse.de
+Cc: Dev Jain <dev.jain@arm.com>,
+	riel@surriel.com,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	harry@kernel.org,
+	jannh@google.com,
+	lance.yang@linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	ryan.roberts@arm.com,
+	anshuman.khandual@arm.com
+Subject: [PATCH v4 0/5] mm/rmap: Refactor try_to_unmap_one
+Date: Thu, 30 Jul 2026 09:45:51 +0000
+Message-ID: <20260730094559.418003-1-dev.jain@arm.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20260730072349.1360449-1-zhaoyang.huang@unisoc.com>
- <CAGsJ_4xW8WujWvgFrrR2NHoQZd4nLPi8QBtXwGsrQXj72CL=NA@mail.gmail.com>
- <CAGWkznEuXnYMyFkkQM6fx1MVE8p=oGjg_VTZK7SJsCBDrcap+A@mail.gmail.com>
- <CAGsJ_4xnc6HzvoNeMmcN1yOEnXC+adVO+AT+pOsxyWhhUcbXbw@mail.gmail.com> <CAGWkznFCzz=ow2eDyzQR6UsAkLvuamEYpyc4PXJXXd6rF4HHcg@mail.gmail.com>
-In-Reply-To: <CAGWkznFCzz=ow2eDyzQR6UsAkLvuamEYpyc4PXJXXd6rF4HHcg@mail.gmail.com>
-From: Barry Song <baohua@kernel.org>
-Date: Thu, 30 Jul 2026 17:41:39 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4znO0fPzNBH-CMakf5hcTFyh6exBTEhMZ1TRmn6283rOA@mail.gmail.com>
-X-Gm-Features: AUfX_myKFAGiv1-gK5tY4_jSO7CZ9okPlYrgDUvzIIETvUqfukLbTQ6RDtqniws
-Message-ID: <CAGsJ_4znO0fPzNBH-CMakf5hcTFyh6exBTEhMZ1TRmn6283rOA@mail.gmail.com>
-Subject: Re: [PATCH] mm/mglru: force aging the lruvec when min_seq pinned
-To: Zhaoyang Huang <huangzhaoyang@gmail.com>
-Cc: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	steve.kang@unisoc.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E7C8C40002
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: ms4cj9n5ndogaed55hspjaza43bitemw
-X-HE-Tag: 1785404511-43606
-X-HE-Meta: U2FsdGVkX1/pyWRCmBMhSE7y4FmkL6OlKl1Hig421cp8ruWkUHiu2LNOxriDJzNVzL+r9jEgY2s0wIJqJkmDFKAKzy1adHhgekiAjGTXf7LFpnhpeuePF2qHHpXa8/r+XrhEzK920vLta8+LSXAjJ1boWydCWOqMnbKkoyYsNYCj7dtnlGGJtaJ24JyRp5ugP6Cf3JQgEgnpuXMbgO3ZI+v11zVjPJTbj4S3Vs5xK1OPDNbdSyD2wpNLBdQutAyGQVmkJ61NOuXMrYlTkeCmcvY2DVHq2ynmpHdOhV1D8B0tp0zPWxBZVd1OQI/hXtHX7+mRcPgsjLjGi9nO4UhRSjB8//g+v4pRh15VdtRQJ7HIWVDIPOxoCNSxpyPvDliURmBVlG35i9Qgr5Jf3ISp2srKOreyXHj9dSjouOu2zu9ejCc+qaN3EAljMyqDCr9iw6sXeUuALY2837oNfysoZRhOVeoyfe3Sm8UrjNvjEhJhAWxw+VnKKHlWVQ219PafBNfBkjpB1gcnOU+pqAcyMXbvoh9Djh7wgCooP9JOfYzeGPXrdkAtCt7cS1RRvNMDTuwjcbh0K+VknGD+rMdRDkCTSCQayhcsQbdCnI4be39o8mpyFVhjwgCBudbC0lUaRi10IRxOusf9dPeO/DqTuDYj6Owfmaely3WWHXr0BkgihSKZFSc47pha1HVlsRHKTW2af04Kdf04uTqNG5uQFqZf+5btSfhYwp8wvtX5D7pOvq7b59kCRyJzmJGV++2H9jBdFCRS0mT+WNMgqg+MzN6ulhe3LqlFOyySnsIm7ucC5av2P/seF+QxOTuPQ/5PpXzUQOikJvYVcLWFeG/N8/OwGV54oCGvteopmcoJiScvqBcvkXtMjJuQQ/kWtJ/9fAdFOFCi4SznLvZ7Ueb99DeY6Pi2w0cxJC/5hfkf7wip3c/czISVEX5V5+eQaF/if7+Kpqa3Sfj3giaRFr3
- t9aMlAPt
- CnMB940lUruBLy8MbNmjXxMXtKw6MiPpuPWsYL826lZf5h6EkXaT/n8c3BsysyqecWM5HkL5FSlhDzw1kVbnyiUhbZgSkX8ulVKorPf6Ia3QlmpB3q5wAy3wIIzC4Mj5ep4frS2F8ASooIZdKIe1EcjMdEt+BrN0NgLn4tH/aNV5tQydSiTuJ6Vi+2Zn69IEmmiSGODW4+umDuWZPXAfiamR2YTrkGC6KkX+cvMUdCy7sFkqVfvupB5FNl+vJnFgGL8PIA3kt7GmAbNsQVR5mByyB6zu+HAyrPo8UpH9hTJVW0P2I9+My9ZB2UfqI7jFuq36jGY/d2FbJ8yFuPmQBct9h5w0MEQ26oESZ8vx5BHsykGjJIl5a3F3Z6g==
+X-Rspamd-Queue-Id: 1702540009
+X-Rspamd-Server: rspam01
+X-Stat-Signature: pn1sjnbr413andgkjohqwtwnjxcizzto
+X-HE-Tag: 1785404777-786778
+X-HE-Meta: U2FsdGVkX1/sWHZN91BWQP5B97lKhW1EdSTSncMG+SYKGDd9znee2CSU43x5+CwAqsc+iPDa/SKNOuWP18Epe75eFbHz/jWfB3KUnQQ1CI1tzpo1YYQL3nsaepPFvKjmYoesSBXrtbKcU1gyizYci35nfg2xMklIN1S1FSQxZTWHnhMn0r6lA6CY9WWZH3DkQNw2kAAdhspWfUl9KXdykg7Gd/H415aIEWO/cOgTZ4W5p/9kNwUvoof6JFr5X7uRnoR6M5GmZ1YVNQHPR8k5jG9EPI359A88uJQZpeJxdqDfW4y2Tp/Xr6b/PPXceatHwl3/9doyxoLu5O+peCPXRmW5xnQ4neKjcVbaNLz5AyoiHGO6TX8MCHrlZX0rh2lm3L8Ou+99aRHFu15AGYWV98OxIRGCpcxYE/ZvqqqQ9ouliaS/kr6+q4TQbs/5E19sipbYYEDR128Wo0jpYeGjShW/24r5U/aVkp8/7ZxMNfMacvJ8+6Y578cHA6KtR0ciw1EeAXQAz22qQAYzcEm6lAYSopAgWlQ9AuVgemmlhEOSnqpAqvY7gBK7c+IWa/FBVp7Xh60tizQyv6aZhBSYu17zB6cjZuDNFIk5TZ7ihfeSMXoLael4/4qGt22F58RQN5mwJlFCyGT/Ixaiahj8q768fkhhvW1mkNTaWd0ZxWCIAN2Zv7fLDeNbCNyEUO4U7c3+IPCy3Vd26VQivkewymDISRkkjcFrkhdyNsTOMP48OFr5xh0ryLvsPIUn7EVlHKhTqAFUKsh0SmLW4ApNqBZS2NQjoB+tDAy2Rx4bJ0K/wdZsoARHqH+2IzlNSpHpP7rqJ6RKJRZxZ1zpyLexLbxi0LVSV+51ybQ2wL/EasoGU80cYjaVHl47GkRnX+HQ7ELnaZT92TfjhB/3beoJCwYbrHtMLqiT6WXPSK9y7xoGHjJ/KvY2b7dBFHCilOKOx0z/9wVpZX4MyHsDWwd
+ 1NGIHjFV
+ n7l/pXkh65Nz/wUMEFsif22C3lBvpMxPgM2TQ5PAuPAWJfkqu3meuklaDPYAs5RE05dR4qmo9qJEGWSTw7vWsUFSrzA3kEBSY3X0g20I64/UOOX97NFQJkG/cB0iyhHFhnieciut8jTv6Axf7KtSwmYhZbPgDjVPgEza5BDqJhJzvTbAGjSD+GvrLkKqcXpp+b/YLu3e0NvNIzIyxkO1W1eqfKxjJDnUWGS+4PaTYKpsFUEOoIokLYlk8ZnnnyHdqaHZhgXYhc4SXqN4ZPv9LLUEsq89FNrss9AFJIGIZKtvxx+njbzcBUoWQ+GcBWM+vcBeR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,49 +98,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 30, 2026 at 5:35=E2=80=AFPM Zhaoyang Huang <huangzhaoyang@gmail=
-.com> wrote:
->
-> On Thu, Jul 30, 2026 at 5:31=E2=80=AFPM Barry Song <baohua@kernel.org> wr=
-ote:
-> >
-> > On Thu, Jul 30, 2026 at 5:20=E2=80=AFPM Zhaoyang Huang <huangzhaoyang@g=
-mail.com> wrote:
-> > [...]
-> > > >
-> > > > This is very weird. This seems like using a sledgehammer to kill a =
-fly :-)
-> > > >
-> > > > Do you mean that isolate_folio() fails, the folio is put back
-> > > > into the oldest generation, and the next time it is scanned, it
-> > > > still fails to be isolated? As a result, scan_folios() makes
-> > > > no progress at all?
-> > > > And is it because the oldest generation contains only this
-> > > > folio, leaving no other folios for scan_folios() to scan?
-> > > >
-> > > > Why can't you simply promote the folio?
-> > > > Do you know why isolate_folio() keeps failing? I suspect it's
-> > > > because folio_try_get(folio) fails repeatedly?
-> > > Yes. As described in commit message, the orphan folio is an abnormal
-> > > one as it is on page cache but has folio->refcount=3D0 which makes it
-> > > isolated and putback to lru forever and finally be the only one in
-> > > min_seq. IMO, MGLRU should keep make progress with bringing this
-> > > orphan folio together with.
-> > > >
-> >
-> > Why is a folio with folio->refcount =3D=3D 0 still in the page
-> > cache? Can this be fixed at the source instead?
-> Yes, it is a bug and should be fixed. But I think it should not affect
-> LRU in this way while the legacy LRU could move forward in the same
-> scenario.
+In preparation for batching anonymous large folio unmapping to optimize it,
+refactor try_to_unmap_one. This series refactors hugetlb, anon-lazyfree
+and anon-swapbacked logic into their own functions, significantly
+reducing the length of the huge try_to_unmap_one.
 
-Yes. But, if there is a real problem, a folio could always fail in
-isolate_folio(), or keep failing for a long time before it can
-finally be isolated successfully.
+---
+Based on mm-unstable (d8c677ce1220b0db119ada6c6f9762c07c4d8aca).
 
-I agree that we could apply a similar approach, for example,
-promoting the folio to the second-oldest generation instead.
+Split out from
+https://lore.kernel.org/all/20260526063635.61721-1-dev.jain@arm.com/
 
-However, if this problem doesn't actually exist, it seems we're
-trying to fix something that isn't a real issue.
+mm-selftests pass on arm64, built on arm64 and x86.
+
+v3->v4:
+ - Tighten comment around TTU_HWPOISON
+ - try_to_unmap_hugetlb_one -> try_to_unmap_poisoned_hugetlb_one
+ - VM_WARN_ON -> VM_WARN_ON_ONCE
+
+v2->v3:
+ - Patch 2: fix comment to say that TTU_HWPOISON can be true for small
+   folios only in try_to_unmap_one, since hugetlb bits are now refactored
+   away
+ - Patch 5: Directly do if (WARN_ON_ONCE())
+ - Rebase on latest mm-unstable to resolve conflicts with 30c83145c5b3
+   ("mm: rename uffd-wp PTE accessors to uffd")
+
+v1->v2:
+ - constify ttu flags in try_to_unmap_hugetlb_one, move const variables up
+ - Assert address passed to try_to_unmap_hugetlb_one equals pvmw.address
+ - Patch 3: code and comment polishing, do the stat update in the function
+ - Remove unnecessary inline hints, remove set_swp_pte_at, instead have
+   swp_pte_prepare + set_ptes. Rename subpage -> page. constify
+   anon_exclusive.
+ - Do pte restoration in caller
+
+Dev Jain (5):
+  mm/rmap: convert page -> folio for hwpoison checks
+  mm/rmap: Add try_to_unmap_poisoned_hugetlb_one
+  mm/rmap: refactor some code around lazyfree folio unmapping
+  mm/rmap: refactor anon folio unmap in try_to_unmap_one
+  mm/rmap: add anon folio unmap dispatcher
+
+ include/linux/hugetlb.h |   1 +
+ mm/rmap.c               | 415 ++++++++++++++++++++++------------------
+ 2 files changed, 232 insertions(+), 184 deletions(-)
+
+-- 
+2.43.0
+
 
