@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 477E9C54FD2
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 04:40:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B189C531D0
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 04:40:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C3896B0098; Thu, 30 Jul 2026 00:40:00 -0400 (EDT)
+	id 097006B0099; Thu, 30 Jul 2026 00:40:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 79AA06B0099; Thu, 30 Jul 2026 00:40:00 -0400 (EDT)
+	id F3B406B009B; Thu, 30 Jul 2026 00:40:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B0BD6B009B; Thu, 30 Jul 2026 00:40:00 -0400 (EDT)
+	id DDC3B6B009D; Thu, 30 Jul 2026 00:40:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2CF916B0098
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BC8056B0099
 	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 00:40:00 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BB0031408B9
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 04:39:59 +0000 (UTC)
-X-FDA: 85044190518.29.BC881E1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 2FAA2100006
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 49C7340435
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 04:40:00 +0000 (UTC)
+X-FDA: 85044190560.10.ED712E4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id A3BE6A0006
 	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 04:39:58 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WjyJPEFd;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MX7CteAl;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1785386398;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nGhv1+JUPjQ740yCFrpuYKel7DV1kBFhSIfzEnBWQIg=;
-	b=dcPUdG+qGVEKQbToCON/Ucei/Ovc9yTh9oaHEJpLaHzxv98Df4UDZ9VCrjecC25S3mDlJ7
-	AjRF0QLb7rqTqqq9nqZ+33me56JstjarYh44jI3+RlVRBQuW8PZCKCydIhEikxiTi0KFt2
-	d/HE/llAxES482wziV12cqETEKA0IsU=
+	bh=PRRcJRQPR3buBmMaDcVwulWeVM6qSbo735r2+CfQnW4=;
+	b=A4GLNA92hZWfhCTnNaJkAxHIO+GZAbPmfVH4ixARV5DVKpouMmx4EVziIGRhB78cbPMBjs
+	6oPiVIDIUgN5/5QzmbBl2XQpeyhpJuFsThbFbsr3509TBbZJtoiwoN2A92m1LHqu0e/qDq
+	4I8+jsCIIe1TtXR+ims0R05c8GKybYg=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MX7CteAl;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1785386398;
-	b=gVirMMtvQA1cc+7XMaC3+thYmAZwJGxbQkqjy+I1gTOMgb8IvWi36D5ftH9A+whmkSPpMU
-	R2WrJDDWgVANZX+qH6OjLkqOVmwSZD5h/OMDetOhkKmeOJFj2/Khm21ToJ8Ia9pcjpOBEj
-	pG+p6m3PYfUpzJ4xQosQx+RzLiJeB88=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WjyJPEFd;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	b=ABfaSrAnxVufMbhu/oZ2l4OW1h7fwOdHM011aFmMmIt+vweazyyUQxjsg1VjOjY/d+YBAg
+	eNgfPan6Zq3sEJfwv9j1giplNoBfC1FNhM+EXUlR9HpFRV1uUatO5+Zr23/leCb00S9fDK
+	gHUFpdcFGzJNrMRSRgd4L2xshrEzbZw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id BF0EB600AB
+	by sea.source.kernel.org (Postfix) with ESMTP id F14084362F
 	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 04:39:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A1541F00A3D;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F5891F00AC4;
 	Thu, 30 Jul 2026 04:39:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1785386397;
-	bh=nGhv1+JUPjQ740yCFrpuYKel7DV1kBFhSIfzEnBWQIg=;
+	bh=PRRcJRQPR3buBmMaDcVwulWeVM6qSbo735r2+CfQnW4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WjyJPEFd/o9hBdMuLnGy15VcNiR8AzeUgr+UnNXvRmFjT0rw2Xc5e/AJkzD0LVbVa
-	 1t2s/YRQi+2njnmQNXnp4VzdQm5pNVZIyVUtLwg76y3uK9qLOg0fze5IFTzX8YB5B4
-	 YjpokReYdY6kZk/wWNZnv3RfTsbor4MpOSw7/w2rN30f8qxpSurH/lKdNTV8AcwwdG
-	 1L9kmE8HdHYAFDAt1uw/XICPDgghst03R0likIzJuoiRzMaNT6UAIc3OElIphlDSyT
-	 If39ZmbEtNvW0ShVFBVSq17TYgTMG09A29EJojepJB54HVCvV5+MJAx8q2ifeCRLiG
-	 UHrdM/G2SFlBQ==
+	b=MX7CteAlQAT5vgl3TbIhGQK+ASQYMO9ml8Sfx4iTLr+6fRM4u22WYD5qTDS7ctPam
+	 libpPlwZnJmgtYgP/rPAd7EPf2B6LC0LvxEh1eeZkRr+RFSgr04XGqrY0GxZTDd74u
+	 UMNnKri81St0IyLHiplr5f/Wt0YqHwh6J21BigfSGtOKVDGtkLzdoYSsF3UBzfOwOX
+	 RYile5ciWowCFc82keiNlQ799IURoZieEh12fOlAES5vaU+Rl1AcG2lxZq1xF2We7D
+	 417nz5OrPTwUgiVwL6LP5OR/euG6cMCRM6sE+d44SO8xee3XZBstuAaajakV+w0eLU
+	 COTHHkoM7Youg==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
@@ -71,22 +71,22 @@ Cc: SJ Park <sj@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v1.1 5/6] selftests/damon/sysfs.py: extend commit assertion function for probes
-Date: Wed, 29 Jul 2026 21:39:42 -0700
-Message-ID: <20260730043944.146030-6-sj@kernel.org>
+Subject: [RFC PATCH v1.1 6/6] selftests/damon/sysfs.py: test damon probes
+Date: Wed, 29 Jul 2026 21:39:43 -0700
+Message-ID: <20260730043944.146030-7-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260730043944.146030-1-sj@kernel.org>
 References: <20260730043944.146030-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: eikww5rc35np8688aw78ds9wpa43ys8f
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: A3BE6A0006
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 2FAA2100006
-X-HE-Tag: 1785386398-571272
-X-HE-Meta: U2FsdGVkX18lN6tpWZwU9qeAG2cxN1ZoCjaGdXoI8079PphGV5m+vPRFlZTdWoLZK+vl5doldunrlEY/wcF/PSV7/DptbbFgeIfcNdWn1EocZZOPWuhoD+NLOlSB7VBUkwVEbum/ggiGfGpdIUBv57/7+tHkq9U6ftwelZS7aMF1ztzQWnGl6CGTxhpkVBVd+vkfXRfEVECDen+E/QK0ZtHHLFxLk0R+3vSqsJe/2q69cz1+GjpeHQbMLmxGKneYaLSTY8nWgTUrc4SZNsWy2skbwCrOkS1rsZQBrFTUVsgVQt89BLNuVHOEbQqnpgKH1xles5mWSzIJNKv8BeYbQJs6etPGXjCe+nwU20kHeZUvMjno2ilJK3Ri5Rrx3tAafbfXU/IWaL9SnUBi9HLvHdAN4vfKLwF2zLYhsD5tJ7+G7GNSJQmuoOh9WueRc7487N2X8lu10vOCZoUS/O300z6Op35KAIcKsIO4HwNlASdijgrfOLdp0HkJbi7/hRa8YkpaOmu1yTBQ5URFaVQkN9xgJZXz705m/6W+Es81E5IbT+dm1Dbhfuhc7JAyVqjxzSEmeprN9aBNT5J3C8e9mJy4l3QwirGoUdkqBZHQzLGHboEyC2T7j5b87ygA7oUuuXN/oTG2ZQNWw30MlvXELWf+xF0aGtGws0WqpEAnG7mlyhgoQYIjxSUJ5OVe+1jZVWR+YIismlooYWcY3sOek7FUxUi8vEKNZ5U3Fj9O7f+AF/NCJZoXuBNQ+dhCQv/R+Mea0CxX+ALESQ66TNTuCEd5dlOhj6q2j7u+fmhidrY8D9sAnA724JjraJkP5X1WUG+W3CVebvU4QB584E1j2DMnyJKKPCQvBbq0MRiAblZzz+u7Lodw+3/sollsw9d4qtVWRs76iRr7mkkBky3eR8LxvGQyF1WBWuhOcWijU/eUs6jAM2qEnfEmjLvHuiw64kbJyB1cYu3S1qqfyWa
- l0/yEfLs
- MlVFFgedFG0NDjdo07YGonCDDTjzk+QXxcWoSbV8F+RpZhp80WHvZs2YfGHjItd5jWNbO957gQIOj8Ne4cQ+jFW+mfFQRtsErTB1jtmcDAWjR4mutXw7u0rxmxKLy7/z42ZreTcUqitmJrt+8VXr5uSoDk+Ovhk4Ha7WCzmFWDsqEJ5nTOgpglaJV/G9kaeFz8ZmyN3cxkXZlia2DqdnT7f+OlLkr5D5oIIV4R4bQa9qmoYmPmaz1Kp3ICImQpkiJDLaL5HdSgHqVBbn3bBWCUHG297XuQhyx8JcNG7lRilVJpTo=
+X-Stat-Signature: 1fb7auwfa8zcuehzo6atupd3uh74r7ax
+X-HE-Tag: 1785386398-87824
+X-HE-Meta: U2FsdGVkX19YQhxC3eroZfUCIhFeUAn/c/BgRdpOE0pC8/2KqbO7KSGCpCR0c07U3VkubGo6HMR+QX++XU1vNuW9vUYodbQY4DeAbfR5l6nH8cUk8AbtekxKOsbsDnnut5Hce1PFvOM/WU5e/ZilLH9Gwd7sxayGeGUeYByItmVA8nkwOiH3xXrTpABBGBIOOU8TfBnnOJWrT5z9FQvqmM1cq70p8mwhTPZztSWDL7XQbeFQyz3N7mYFQlrKX4zWih5BN2FNDlfhENJVGYhFnQiq+a/86PjkeeMaUCYU5Gd5qpXlfqBJCBOsdeB2a4loG8ceEwTftrx2aOn7lJlDEE913c7SoPxQe2P8NtRjlpqjj7nUBTsjjvze5Y5gBZXihzC9Y88hzBrw4oWqYf98qsRNGoGgxKtCs7n7FMPZ/yILZhcGCF5yJKFT/iubuhkB+ZuBsMQZKkwcaH+EvxBZaaoaldu87y8Qr6jpEd8e2K5HRy4xEzx5viKweGcO3uhtJ4CniY2ev2Fu5HEx5S/TVwzJY6m48PXS+TxcQKyGZBlO/VhPXl6/7AjruEHDb4+SjMEbf/uMdnc007TVGGuD/zA0bgFCbmECvgakj+pdOC+hWHsdILdnqSNCnO5GHaiGcPRuz0SBpOzhBKXvQlbJXyFIrWxMmIkJGlzlTH/NvFmHCLZ2eaLVfGoww0gPfCgkEZlIpYZRJTJYVgbWnkQC6pnTy1KfSHglb2uIIy6P2Z13bKbwDEJCjIaAFWjaQNB6GfGY+2BTKUUaeM/SvmWDJh3kNRv5Zln8EzONr+KVY6M3OiJj6BdkfFhmq6jzVKQNuriVc9WGcm+Ub9ESoIS26xWcAnXg0QTP7cFyGoNc/b/dOVHa/aKl4vMxk7StosJiCSKzqmRxD3YDz7YwIzXTwtMoM4ejrGHdrw520YXDmwi6eSBUxcmmzY9vaE69fANj3AgyjPpfcHIH9nliMFI
+ OD8W1D4D
+ zSs29fBHJWX8jeZjL9qdp1DcpY6tBtUAmLsUz+GHag/Zam3+FFQxj7ktg73G+9yL1mvkX3JTancR8T42oy06l9ZggehKjSEvufkE1WHqW62ju13myFjDdBFca2UJvfCKPJRYpK1B46z8R/z4JLF7vY9xJu1s943NqjMU+ai6lMwLK71UoJ0aNr80M0kOb4om1gfuCoNIDgxU09t1PnV8CzwGARER2pMHbm34lBo1Aiq0x40TcR3RY9UPLMITY8BLFfwuLSbtCvBjd2+1ppNJX03+XWu4y5fJxqBdTmJHGjV3ddF8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,51 +94,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Extend DAMON sysfs testing commit assertion helper function to check
-probes too.
+Extend sysfs.py to commit DAMON probes via sysfs, and see if it changed
+in-kernel DAMON status as expected using drgn.
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- tools/testing/selftests/damon/sysfs.py | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ tools/testing/selftests/damon/sysfs.py | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
 diff --git a/tools/testing/selftests/damon/sysfs.py b/tools/testing/selftests/damon/sysfs.py
-index 88a26422ff44c..159cbeac067f8 100755
+index 159cbeac067f8..66c826189320d 100755
 --- a/tools/testing/selftests/damon/sysfs.py
 +++ b/tools/testing/selftests/damon/sysfs.py
-@@ -178,6 +178,24 @@ def assert_monitoring_attrs_committed(attrs, dump):
-     assert_true(dump['max_nr_regions'] == attrs.max_nr_regions,
-                 'max_nr_regions', dump)
- 
-+def assert_damon_filters_committed(filters, dump):
-+    assert_true(len(dump) == len(filters.filters), 'probe filters', dump)
-+    for idx, damon_filter in enumerate(filters.filters):
-+        filter_dump = dump[idx]
-+        assert_true(filter_dump['type'] == damon_filter.type_, 'type',
-+                    filter_dump)
-+        assert_true(filter_dump['matching'] == damon_filter.matching,
-+                    'matching', filter_dump)
-+        assert_true(filter_dump['allow'] == damon_filter.allow, 'allow',
-+                    filter_dump)
-+
-+def assert_probes_committed(probes, dump):
-+    assert_true(len(dump) == len(probes.probes), 'probes length', dump)
-+    for idx, probe in enumerate(probes.probes):
-+        probe_dump = dump[idx]
-+        assert_true(probe.weight == probe_dump['weight'], 'weight', probe_dump)
-+        assert_damon_filters_committed(probe.filters, probe_dump['filters'])
-+
- def assert_monitoring_target_committed(target, dump):
-     # target.pid is the pid "number", while dump['pid'] is 'struct pid'
-     # pointer, and hence cannot be compared.
-@@ -196,6 +214,7 @@ def assert_ctx_committed(ctx, dump):
-             }
-     assert_true(dump['ops']['id'] == ops_val[ctx.ops], 'ops_id', dump)
-     assert_monitoring_attrs_committed(ctx.monitoring_attrs, dump['attrs'])
-+    assert_probes_committed(ctx.monitoring_attrs.probes, dump['probes'])
-     assert_monitoring_targets_committed(ctx.targets, dump['adaptive_targets'])
-     assert_schemes_committed(ctx.schemes, dump['schemes'])
-     assert_true(dump['pause'] == ctx.pause, 'pause', dump)
+@@ -319,7 +319,21 @@ def main():
+                 intervals_goal=_damon_sysfs.IntervalsGoal(
+                     access_bp=400, aggrs=3, min_sample_us=5000,
+                     max_sample_us=10000000),
+-                update_us=2000000),
++                update_us=2000000,
++                probes=_damon_sysfs.DamonProbes(
++                    probes=[_damon_sysfs.DamonProbe(
++                        weight=42,
++                        filters=_damon_sysfs.DamonFilters(
++                            filters=[
++                                _damon_sysfs.DamonFilter(
++                                    type_='anon',
++                                    matching=True,
++                                    allow=True,
++                                    ),
++                                ]),
++                            ),
++                            ]),
++                    ),
+             schemes=[_damon_sysfs.Damos(
+                 action='pageout',
+                 access_pattern=_damon_sysfs.DamosAccessPattern(
 -- 
 2.47.3
 
