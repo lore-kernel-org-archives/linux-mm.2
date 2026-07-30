@@ -4,130 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94211C531D0
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 06:28:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9454DC54FD2
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 06:31:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 363226B0088; Thu, 30 Jul 2026 02:28:43 -0400 (EDT)
+	id 27DD36B008C; Thu, 30 Jul 2026 02:31:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 313F56B008A; Thu, 30 Jul 2026 02:28:43 -0400 (EDT)
+	id 22E8E6B0092; Thu, 30 Jul 2026 02:31:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 202E16B008C; Thu, 30 Jul 2026 02:28:43 -0400 (EDT)
+	id 11E066B0093; Thu, 30 Jul 2026 02:31:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EDFC86B0088
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 02:28:42 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8A12B408FB
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 06:28:42 +0000 (UTC)
-X-FDA: 85044464484.27.491F374
-Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
-	by imf08.hostedemail.com (Postfix) with ESMTP id B0BEF160008
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 06:28:40 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=A6wnZ8UD;
-	spf=pass (imf08.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.178 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id DB6266B008C
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 02:31:42 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 625CB40901
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 06:31:42 +0000 (UTC)
+X-FDA: 85044472044.25.4CBB913
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 86F52100006
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 06:31:40 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=NKgFqWzq;
+	spf=pass (imf05.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785392920;
+	s=arc-20220608; t=1785393100;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BYuSkRMlAL8RFmXTAhfpgmHH3OtvbWBlkpFHBuC4V6M=;
-	b=Cr/qb0kx44Dy/V5QDBysdqq2iXiErudKfZUoQuXdXI6wrP5vKWljqj0ewFfhEmv4GyKpXt
-	9qdRA97boJ7UToxCM6eNJTemXOFZxiEf8wKvzpCTuU3Ujp+vCGUBv85GZ0OCCkUS/0o3oF
-	aMa327cY/Wmn1cJCJzUAeKK03AqtRXU=
+	bh=hOvMF22l5yq9rb3H7AnJyb7Yc8S/1iRInoiHq1DCJyQ=;
+	b=0aB5Hfl2foxGIhb3dIWtpdU1xDnBz9fROn5pjEudO162piKqQRc+3Dwry/Y7pxkmz28o0R
+	7+RNkMSH/iTVT0jhkMkwqsqQHPD7RRR/XrmbmsLzTWZOt1XBxkUVrkHIvnJ4wUTn213yFi
+	uQiNid/aQ3YBuLiQDN48a0cZzS8UKIo=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=A6wnZ8UD;
-	spf=pass (imf08.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.178 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=NKgFqWzq;
+	spf=pass (imf05.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785392920;
-	b=GekSOmiWkTm66OjdKqeoOEaHYVnE5YDXM56z+Gyu5VOzW3iMtVLNGUaIgs7kgrvC3MpcYs
-	/6lJ99zCTbHsEO+m1aGqStJnp6nPdFX5CqupOfkSfwqgAbzLyuF9g/IfSJxdZx7Va7A5W9
-	HvUBYi85Mg92/tIFhlfReUig4Z2AdgA=
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-92e54f8c051so96606685a.3
-        for <linux-mm@kvack.org>; Wed, 29 Jul 2026 23:28:40 -0700 (PDT)
+	t=1785393100;
+	b=ghmzkKP/UJmPYisTrCIuvW+7HluY1iTzX2C3j/qUPle2EX1enaCv/UFgcQmSsWV5nMJsYD
+	0KbatU1OZXz8MZQNxahU7RsOwIU4Piefkk92rSq6Z5vTKyeLXuKxXCEifryTUNwaRjy/+d
+	RTbAYhQfF7elB5HpzpAvvvPOwdOhhm8=
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-84e04df8c46so2032003b3a.2
+        for <linux-mm@kvack.org>; Wed, 29 Jul 2026 23:31:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1785392920; x=1785997720; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=BYuSkRMlAL8RFmXTAhfpgmHH3OtvbWBlkpFHBuC4V6M=;
-        b=A6wnZ8UDCdTjrCyi/cZfTvnMem7hRQq+wY1rQnSDopsdnrGhUFhy8G2OnDh4r/cCj8
-         9RZrPmrMjwlcEXIi3UspvgAd4aqu28eD6yqTqaQdFSJPq9LVQc5HfSE4RiZid6TqKhRv
-         OdsiHzwdnpupRootAirqSX3wShiHKF5IX+YaF1OomSyANqCYTC5We9OPKlmjESMmOR42
-         axKsa5QBp7Wg8zBVa7sGYx5jRQrJ64lHxGxUFiZ5teK0OlxFY/etrATJ6KgpUowIzwwC
-         c+fQ6yYmT/tdBZSEcpAFA8LteK1/OXfxC9vZRSnqNwj8CsFn9oEyVBeeNcTp1eRJR+5h
-         CgsA==
+        d=gmail.com; s=20251104; t=1785393099; x=1785997899; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=hOvMF22l5yq9rb3H7AnJyb7Yc8S/1iRInoiHq1DCJyQ=;
+        b=NKgFqWzq+5wjf1CJz6LP8ecs01MqeI3eqk8rPYq3cDiTsAICwuYrMB7pgVGKs71SYG
+         BrXr/YenFt3ygr4N/GDt2QqxOl6Mnul6NgS93WxnkMQb9MYoXD070QEI5USf9jRKoI65
+         TjtAHlxDEJw2MQs6Cr7k3QHsF9qV0tffRmTCcgl01K0FtkM94xHjm6MT9Rz5IxoYjZnp
+         Fh/zrI/3p2/Bf6KZXkNVsuPkn1AbajSwLHmC3HqlpWBMyOsIVmllmbQLFdA398SPXjK7
+         qfxJRKVn95WpU13/D9c8FkFvx4XRRZOdtgXoUjX1BYgZma3kUcWjQ1L6h/0rBRuyEaG1
+         nUqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785392920; x=1785997720;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20251104; t=1785393099; x=1785997899;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=BYuSkRMlAL8RFmXTAhfpgmHH3OtvbWBlkpFHBuC4V6M=;
-        b=drVMjuYMiNQ7WQ1ijlNs5K3SVUQxSbW9hp8PDrTyHzTeM1Rc/xCAs05SRa8Qmeo2MU
-         iK6OFJdaxhAkLicSOJokxm90AJWOJTpefIJA6D3f4SixnVbkKG+WwZ1aGP4A4Ua1mLWE
-         OZ3jQHXMiiaiTI5m0avW7hbgnwcFg5sJVmssXqsc5Uz3sRy6dvaLUKSsgrnuxhI9XO3Q
-         M+B1XOuGFCMR5Wc9f9RNDzLI9OL5+KuY8+8+Y4vWEe+kp4C/mrcNi6PNfi8WDzcJ3kls
-         4p+5ekJEBssrOznr/j/Vqdd2qPQC2xMhFSNvungxmo190ND4mWI3XnIRgNv5maXRyK+T
-         +mSQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rp2JBeHoa7AiXtekI4/yM8owO4+17cwwKsoKwNTx86a483vAr/tZaTemGa+aJYK4Ehy4xPIm67GHQ==@kvack.org
-X-Gm-Message-State: AOJu0Yxs8EAbOVT2GWJNzVkW0RpiHurrcpeEmT+Pxwll0dvnkHUQZSXT
-	+SyCLM6b7GJp/wM8OT+6Up9FAToKWjjlvjS9jzdJJWMTs75eYMC526Qh6hqKS6L2et4=
-X-Gm-Gg: AR+sD118owMr1hxFgGREc13kuD+OR9PsGf5MGG2zq4dPuGTf50JChokOxE5COCAbHDZ
-	NlvP3SjRnZ8ttRaENtJ88CI1lnpDILDUzFy9P06Fwgi80nB94oBB35irAQ9TU7D+tW18R+Uvb1Z
-	HciYuQS0ZxjctrFy9Y4OL+ClwRGs6iTLSEUZENygZRSx7nI6JdRfysqGC/5kT5x+UXnjaj+Hxg7
-	JqY+JBL1keJcjvnMdmDZk41mzLaK0zF93zsg/3l+y7zbKQ+3O3cYxDx2UZvMhBcV2LbHOeSST9Q
-	lRarG5EV659beBh3t/Q2Rj3Rd0rHRp4Saa99hIEzXm82vzhVWVjd93d4ooE4/1G8IX/ujFwQepD
-	kMlfqXzCXf/pLCdNHWkaut8CkKBLRYQUWkz6jdscq+KxVsH9NvTDVM2KxjgNBz9s0am4KqbHO+3
-	sHLyvUFoVpFOZmi38KXWO2y21nzSdqg050Om5bLrwjtTWlTvWOzs6FLEnDsQqgbray0njyh7TEr
-	Gz2ujW7DjSK2z2Dz1NQctvsBxdZq0TsjtH+ZtQhJRaDbboTE9VHLDQ=
-X-Received: by 2002:a05:620a:252:b0:92e:fe10:3f02 with SMTP id af79cd13be357-9348613d64dmr94585385a.51.1785392919868;
-        Wed, 29 Jul 2026 23:28:39 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-933e7318180sm346275085a.28.2026.07.29.23.28.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jul 2026 23:28:37 -0700 (PDT)
-Date: Thu, 30 Jul 2026 02:28:35 -0400
-From: Gregory Price <gourry@gourry.net>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
-	Pedro Falcato <pfalcato@suse.de>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Jan Kara <jack@suse.cz>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Usama Arif <usama.arif@linux.dev>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
-	Peter Xu <peterx@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Arnd Bergmann <arnd@arndb.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v3 02/15] mm: introduce linear_anon_page_index()
-Message-ID: <amru_6sVmelONPh8@gourry-fedora-PF4VCD3F>
-References: <20260729-b4-scalable-cow-virt-pgoff-v3-0-e8ecfefea812@kernel.org>
- <20260729-b4-scalable-cow-virt-pgoff-v3-2-e8ecfefea812@kernel.org>
+        bh=hOvMF22l5yq9rb3H7AnJyb7Yc8S/1iRInoiHq1DCJyQ=;
+        b=DKrxtJt2Xs63RDSJFpnS5xPqERb0jCR+lrtqO6glko+xcSiTEpA1k0HuZw33+k/Qk6
+         zxLRaYan6MTCAu0WAD0Ks8mqiUMFUFSfdl/UkVjYiayY3KG6he7r8zQCc0MfpRf6HRce
+         A+/jrrWhqXgeaqGvl59foS3u/PR2GNv8Wh+WlYnMohj/GxYYiRBb6vffW2KJvK0GYZVS
+         Lnk27nFRkvHCOUAHvrLl/UHtkdWxZ9jkBLEWlwzQ++xR6gGFXOMBYj6oZXgydj6h7OWa
+         Ui9Wo/xdOQUyR6Dv+hml5wH7tN0KjpqnSCxKL2Vme7Cvljzv9jEdwnocqHJJA5bSrE3A
+         3CPw==
+X-Forwarded-Encrypted: i=1; AHgh+Rplbnvq2tN5RE44lF4r5lC0Zi6Utpg+T634HmayeGuRRTJyefk7IiNQ1Jiy8f4ZclsnyRkW7eUBYw==@kvack.org
+X-Gm-Message-State: AOJu0YyR/dVBfUUW1uv1s5adRyzQdiD0KTXs/dNnHGlV3eX5b6Lh6+9S
+	wZCN+Y5a8+uYxPqZ6XauvhQkOgEBXnsLDtio6+LWKwD9o9wjyzfJzON4
+X-Gm-Gg: AR+sD13bzhZf68y5kXfHF56za9V5jSL4NI6lbD0POHf3mazGwD0m86fqfucnGlu4coG
+	x1pYYOCAu1SpdAVHcl77BhkMAGSiwVLyfHhxZa/CWHc7mONr5xnos4OC0TG7xSxblFH3i8n8Ng9
+	72IretEdJmp+00P+l80/jelPZpql7uMfO74T82Fyg9C5y9J10LlBwfQDyRirqSohr9SzITfaKSH
+	Liec1vwNaGXntbxMIiQA2Qu25EuvAOZ7d+Fz9rs62o8mfj5PEpsEBlQzfLNo6WQqFnVaESYi3kE
+	AH700c45aIvKPgXQL0qkaOpV1zu+EfNFRk/U3ECdqh2cV5YZhhw/LXFGEf0xdKOK18LaNFOJkCz
+	sehtRrpNfbnSYUY+choqNyXCtXnP/YwyFUoaqhG3uMj2r/rYCJOygM7+K1jEWaz8K1jJ+p1dvhc
+	0gWKbNVYQJNT55l/L1jMj9Ix+RQE/9dt2vCO/DfGS//mkuJuk9W/UOG0hGVQ0X9PE/1ABTphAmC
+	N5psYuRgoD4nQpZUeC+
+X-Received: by 2002:a05:6a00:2e95:b0:845:d284:9e14 with SMTP id d2e1a72fcca58-84ebc468c9cmr1404273b3a.59.1785393099312;
+        Wed, 29 Jul 2026 23:31:39 -0700 (PDT)
+Received: from [10.125.192.117] ([210.184.73.204])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84ea0052e04sm2418453b3a.22.2026.07.29.23.31.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 29 Jul 2026 23:31:38 -0700 (PDT)
+Message-ID: <c4c95102-72e2-a44f-f16e-4134ba6bb060@gmail.com>
+Date: Thu, 30 Jul 2026 14:31:26 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260729-b4-scalable-cow-virt-pgoff-v3-2-e8ecfefea812@kernel.org>
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [PATCH v3 1/2] mm/zswap: Fix global shrinker when memory cgroup
+ is disabled
+To: Yosry Ahmed <yosry@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: tj@kernel.org, hannes@cmpxchg.org, shakeel.butt@linux.dev,
+ mhocko@kernel.org, mkoutny@suse.com, nphamcs@gmail.com,
+ chengming.zhou@linux.dev, muchun.song@linux.dev, roman.gushchin@linux.dev,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ Hao Jia <jiahao1@lixiang.com>, stable@vger.kernel.org
+References: <20260729084206.77793-1-jiahao.kernel@gmail.com>
+ <20260729084206.77793-2-jiahao.kernel@gmail.com>
+ <20260729155858.c7aabff48166a9bca4d68ac3@linux-foundation.org>
+ <CAO9r8zNhBCghP8T_98z2p==Cfs_=kamcRN_3ROxaj3R8PN2Qvw@mail.gmail.com>
+From: Hao Jia <jiahao.kernel@gmail.com>
+In-Reply-To: <CAO9r8zNhBCghP8T_98z2p==Cfs_=kamcRN_3ROxaj3R8PN2Qvw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: B0BEF160008
-X-Stat-Signature: fik9bz7qd6w5d1ckn6nt4uizyqxtmspi
-X-HE-Tag: 1785392920-144576
-X-HE-Meta: U2FsdGVkX19datRVVwsuf/mrrTk30Qt3jeHWxq8gOouPxc+Bbbn40gdPkl8OP2+0yjXTyD6hTrZEVUbejZmW1XPCoD5Cy1gbVSrO93kcDuqUW4JOCd6KPnhLX6zY/1hiiPPlvHdm+LJvG/wZzo37KIk5v4h+r4dYSUEAE+x0NKih8vGVOPOrWVwAGPFZewcBe9RhvaypeuOMqiHTG8Yfpo5S07DF19xtl9afbES6g+xZJqQZ1x8k6sFd8cDbcbL2rxBJ1oKQu1WsM0XmIsodDa7cZzFyQVOfaAtlMtTrdn+2ZRHYbcS/GyW62jJrqZEiu/hgm1pQzOiC2iwMK57wXlzYkMNyv2c2A5wNaHixzwNPjuEjPZkNJFmKy1n1jOUg629ryFktRGmUE7ODhgyf9dwlmIGvCPpg3h1rnhBEtZkouJJibb8HBzwriOSAFSiqn6FWM4Cijh1ByscklahqdFaGDpSydtjeHgf5NryQR8KohKNNdFj2lu7JEEFHHowsDDEM5GA0A2fw/Ig/qstjmR3mRp2u6uS68l1DzlreBY2143JvL3gVnr1F2o+dL1XLMJYPUtmOBRxd0I30RrxpldeHhfIeq5ER6cy3SHyeOHDLodUi1wTvDC964xeTBtsqXk9pTbeod79/BPvurv1ktcl+8JpLNuM3MBgaOFQmzzn9vGCnOPFGeeTJdSDA1vsjrCNBtzey0HSn5ot0jLfW38kroyAVHqMvwgSOfkEMkBWJ/SYmzye+Bka5l56X2luhJ44kEWgi2PZsrMB+B241SoKppj8O7zYeXaqoA6ecVKbJQGHqN6ycsOncQltq8hlL0mpJZz0FHQwklrX8QnjKzJKRIxMT4RPUmiQieWmvEV/oDPRHaRKpqEYrrNmuWNN8/haEz56YMiusvWRzxAjpU/ZWi6L++yUqWRAW24A6RVYWDsuuqgUh15M/jrAVkcT7ogi/YZmmAESBw05YmFu
- Bk/R8cp1
- j8An5TrYTivnV0ompkU5Zqp+77fnjiv4xBzvoX8IcC+U1Q09tfdBfhjl7cEfToZNv/XBtjC9GOR3+3RnEsZoUNFnLigxyiACWphMHS4hICf+ugKHScoD1N3vesxwO6rVK1UlSFdy/HGksKuzJymwaUdso/Jq1x+P8qMhTvzS2AJubUCshBjiyOZvjDrwdCtNK+Jg+U1XW8hkg6V4ct7ZdhO/pKnwD8/gGPUoTYinPiIix+UYppw1/SwrxDF99QF7b7Ou83vttxr/m5QU5lbFAOh10vuwCg62IxJ8Hxg4cevBJ6hJ3sWqnXFj9+v4XSGgFpdsKoagpdNuykevgoni0fsXRM5yi/UXd35HCGX/CmBDbNZON24KaYYaaU5VFSMjaTs3Y8rkopFvLQbG2Huti9kmnr8XcTeBtaAil6aZxJ0jNXEjXBA5x1ZeezCftqoQvN9f78UAEewNHS9aDN0XZ46MSPiYCwFfKiHJUFM9ymB+vTJKEtm3Kx3WnXNbmjhzdn3DJFxMIo7jX/ToRKpe4WCCiNM269TCqVWSR
+X-Rspamd-Queue-Id: 86F52100006
+X-Rspamd-Server: rspam01
+X-Stat-Signature: oc1mxyaag9z6wjeewhdyb9u9q8miygps
+X-HE-Tag: 1785393100-872512
+X-HE-Meta: U2FsdGVkX19okOY/Yd2uC+zRtUz/5EEEv9X9nmMS2Ek9mH8baYHgpvGhobNGI6fW/E+7XgCwEaY3JNb19Tb2QvqjtENJ6bHIYGwbRx9GW3QQ4fgtj3Vb5Vw1vVPJgdYXpLwuszFUQMaG52RgLwdBcG5SGOnRywjKNgELL3u3zJepsaG/AUAlcmxUH3vuZWPHvIJZSPhLfL4VdPoFRHyqvG/+7AvNybyHad2/bK7KgJYW6O0i12AhRtisDAO5R6bdjka+jh6TuW8a75D66JsMYeT0JQw4Iy1PMGZSVWRS+TBFVOFNRwtfqh8hGDfvrhI3OyDVePiAVh5YIVNN2mCzDQENuQ9FE01fQh9+HOrO4sAPxrgZqv2i37Mhuua84cRcoTIOGoVW5bbMCtQutQSFYinhDaQ8IVbSrUkaMgrc78aUnwmop0jxJGb7PLXyCcL7QwAUHtTufj6qBBInse4bS7DWowSsN6QPk1rJsehYgqI2GMWciFp1dBayYY7pkN1JWbuEnVoLcamt97Ro2+TQ8dGnpFd2XUftRxe7q3Olf3teZU2ys65Gmse4zRP1CsdNcPPe4I4DQ4Fgn+9iymbKNuEw588ULhZG37vcE+V+xkt3pTdnP6KbavsKGqnHX+6IPmxjQ9RSLrsiquHWwcCgQjQWd78nhHxhHa1tqt+WgJiBl1B4ffIbbu1ERmrGOitxMJyiCTa98eWPhR7VWiPjPtgjlgxBhfWfLJG8xwTUAdf74iU3lAlYX5y5Zg59n+cFwPnDfErNMgcaKSYOboDiCVsNubiqyoTQgU2i+Z997mxytrVq1jyFPWAvySGWI8dV+Lay9E3nVhWID9Z71Fz0yDokrBShRXFW0Cl1kizTsOwy7CwT3fHv01CW3oLgm08B8Hvm8eSZeZSov6+Wl2wYG2xuMhm0aEj4zP1q6xopwEhhtYthU8mdhP6iNkIydrbBzcwxhDnUoHyKTrdLNVY
+ doQQZ+/Y
+ +xDXB/l2d5/26H/qazwFzUmwN8W463tRkC1oxdB/czc4PUPW9BzeqOngvIA7Lun/nuO2jGqTYeQ9PzwGJVdn4z3DUJ7NcH/jqv5B5dbkAQ/7f/cb2H8pfqogWFnRSXrM5g7yhK8FlMvqHsl03CQlNEdDTydgysqBPB27zi9aTkVxjXyrn79hBgzr2/EG/PAbNxxdmYMnQQyW/26whljIqY9RTYcgwbErIHM2YItIt8ai5q+7LcafXRP/2j41U0MhvJIQJhw/uc4Ex6BjXUqgZ3sd8mCj3ItQKBECl/Pdvjz5Ud09TZvruVNTZfickWa6G+BItbjkm7zMhFJmDGzQKK3fnbI1f0tuoKcfaMS+W5/IqtUM878xnEK16OABQO1lsVJ+b+Fz2e7dmPK5/OjNNIzKziTy314QEiw8yAW/2U5ItSCtVUHx0tyxTlaAtZw6AicbEnaRESHPT3eEPn28NcAJW+G/p+wU0BNqQPB083aq0x1HCz6A1m1AoKfzXhCMcTS69O97meRNn60Vz1JA7Suvx2gocESYpbaiL1FzZ8ZqvdcEZZTWB1QN6U3Cm5ha626wFCSMyjCvUKBf9ABROiNyvOA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,30 +129,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 29, 2026 at 05:48:37PM +0100, Lorenzo Stoakes (ARM) wrote:
-> This function provides the anonymous equivalent of linear_page_index(),
-> instead offsetting based on the anonymous page offset of the VMA.
-> 
-> It is valid only for anonymous or MAP_PRIVATE file-backed mappings. It must
-> not be called for shared file-backed mappings.
-> 
-> For pure anon VMAs, this will be equal to linear_page_index().
-> 
-> Assert that both of these invariants are true In linear_anon_page_index()
-> and implement the algorithm in __linear_anon_page_index().
-> 
-> Note that MAP_PRIVATE-/dev/zero mappings will satisfy vma_is_anonymous()
-> but not fulfill this invariant, so when asserting this we check
-> vma->vm_file to account for this.
-> 
-> We do not update callsites yet, so no functional change intended.
-> 
-> Also const-ify vma_is_anonymous() to make it compatible with the
-> const-ified linear_anon_page_index().
-> 
-> VMA userland tests are also updated accordingly.
-> 
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+
+On 2026/7/30 08:30, Yosry Ahmed wrote:
+> On Wed, Jul 29, 2026 at 3:58 PM Andrew Morton <akpm@linux-foundation.org> wrote:
+>>
+>> On Wed, 29 Jul 2026 16:42:05 +0800 Hao Jia <jiahao.kernel@gmail.com> wrote:
+>>
+>>> Zswap writeback when the global pool limit is hit fails when memory
+>>> cgroup is disabled. The pool remains full until it is organically
+>>> drained by swapins or memory freeing, leading to zswap store failures
+>>> and pages bypassing getting written directly to the backing swap device,
+>>> causing LRU inversion (hotter pages with higher fault latency).
+>>>
+>>> This happens because mem_cgroup_iter() always returns NULL when
+>>> memory cgroups are disabled. As a result, the global shrinker
+>>> shrink_worker() repeatedly takes empty walks. After MAX_RECLAIM_RETRIES
+>>> failed attempts, the worker gives up without writing back any pages.
+>>>
+>>> Therefore, when memory cgroup is disabled, fall through with the !memcg
+>>> branch and shrink the root memcg directly.
+>>>
+>>> With memcg disabled, shrink_memcg() only returns -ENOENT when the root
+>>> LRU is empty, which means the total pages are already below thr. In the
+>>> absence of heavy concurrent zswap stores, the loop then safely bails out
+>>> via the zswap_total_pages() <= thr check; otherwise, it will resume
+>>> shrinking the memcg after processing the reschedule check. For any other
+>>> return value from shrink_memcg(), the loop is guaranteed to terminate,
+>>> either after MAX_RECLAIM_RETRIES failures or once the threshold is met.
+>>>
+>>> Fixes: a65b0e7607cc ("zswap: make shrinking memcg-aware")
+>>> Cc: stable@vger.kernel.org
+>>
+>> How does this affect users?  What behavior do they observe when it
+>> occurs?
+> 
+> I think the first paragraph sums it up pretty well, especially the
+> last sentence "hotter pages with higher fault latency".
+> 
+>>
+>>> Closes: https://lore.kernel.org/all/CAO9r8zPVzMKFbCixxD-qgtRrkFxWVrHiZZeLc=eyTPKPVQgX4g@mail.gmail.com
+>>
+>> hm, that isn't really a bug report and doesn't answer the above
+>> question.
+> 
+> Yeah, it isn't. Probably we should drop "Closes". I assume Hao added
+> it because checkpatch annoyingly complains if you add "Reported-by"
+> without "Closes", so Hao just linked to the thread where I pointed out
+> the bug.
+
+Yeah, checkpatch will complain if it's missing.
+
+> 
+>>
+>> AI review asked a couple of questions:
+>>          https://sashiko.dev/#/patchset/20260729084206.77793-1-jiahao.kernel@gmail.com
+> 
+> The review on patch #1 is something theoretical, we discussed it at
+> length in previous versions.
+> 
+> For patch #2:
+> 
+>> Does this batching logic break NUMA fairness?
+>>
+>> Because for_each_node_state() always starts from the lowest node
+>> ID and breaks when the scan budget is exhausted, subsequent
+>> calls to shrink_memcg() will restart at the lowest node ID again.
+>>
+>> If the lowest node (typically Node 0) consistently has enough
+>> items to exhaust the scan budget, wouldn't we exclusively evict
+>> pages from it while ignoring older pages on other nodes? Could
+>> this cause LRU inversion across nodes, keeping older pages in
+>> memory on Node 1 while hot pages on Node 0 are evicted?
+> 
+> Yes, unfairness is possible.
+> 
+> For global shrinking, it's probably not an issue. We reclaim until we
+> hit the acceptance threshold and it's very unlikely this will happen
+> before iterating all nodes (given that the batch size is 32 pages).
+> However, with the shrink_memcg() path, we only reclaim one batch, so
+> there's a chance we'll always reclaim it from node 0.
+> 
+> Maybe we should just drop the early bailout and accept potentially
+> doing more writeback than needed. Hao, WDYT?
+> 
+If we scan and attempt to write back SWAP_CLUSTER_MAX zswap entries per 
+node, it might lead to excessive writeback on machines with many NUMA 
+nodes. Furthermore, I'm concerned about introducing higher latency in 
+synchronous shrink paths like zswap_store()—especially on systems with a 
+large number of NUMA nodes, where it could end up writing back hundreds 
+of pages in a single call.
+
+Maybe we could do something like this instead? That way, in the 
+worst-case scenario, it falls back to the baseline behavior without 
+introducing any extra latency risks.
+
+  static int shrink_memcg(struct mem_cgroup *memcg)
+  {
+-       int nid, shrunk = 0, scanned = 0;
++       unsigned long node_batch, scanned = 0;
++       int nid, shrunk = 0;
+
+         if (!mem_cgroup_zswap_writeback_enabled(memcg))
+                 return -ENOENT;
+@@ -1289,14 +1313,26 @@ static int shrink_memcg(struct mem_cgroup *memcg)
+         if (memcg && !mem_cgroup_online(memcg))
+                 return -ENOENT;
+
++       node_batch = max(1UL, SWAP_CLUSTER_MAX / 
+num_node_state(N_NORMAL_MEMORY));
+         for_each_node_state(nid, N_NORMAL_MEMORY) {
+-               unsigned long nr_to_walk = 1;
++               unsigned long nr_to_walk, budget;
++
++               /*
++                * Cap the scan at the per-node LRU length so each entry is
++                * scanned at most once per call.
++                */
++               budget = min(node_batch,
++                            list_lru_count_one(&zswap_list_lru, nid, 
+memcg));
++               if (!budget)
++                       continue;
+
++               nr_to_walk = budget;
+                 shrunk += list_lru_walk_one(&zswap_list_lru, nid, memcg,
+                                             &shrink_memcg_cb, NULL, 
+&nr_to_walk);
+-               scanned += 1 - nr_to_walk;
++               scanned += budget - nr_to_walk;
+         }
+
++       /* Nothing was scanned: every LRU under @memcg was empty. */
+         if (!scanned)
+                 return -ENOENT;
+
+Thanks,
+Hao
+> If you respin, please also drop the batch size argument to
+> shrink_memcg() as it's now always SWAP_CLUSTER_MAX.
 
