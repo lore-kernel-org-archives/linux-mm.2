@@ -4,147 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D021C55167
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 22:46:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C483C55167
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 22:49:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 34A896B007B; Thu, 30 Jul 2026 18:46:28 -0400 (EDT)
+	id 265106B008C; Thu, 30 Jul 2026 18:49:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2ACC66B008A; Thu, 30 Jul 2026 18:46:28 -0400 (EDT)
+	id 215156B0092; Thu, 30 Jul 2026 18:49:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 14E506B008C; Thu, 30 Jul 2026 18:46:28 -0400 (EDT)
+	id 106546B0093; Thu, 30 Jul 2026 18:49:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D7C556B007B
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 18:46:27 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 78895A1439
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 22:46:27 +0000 (UTC)
-X-FDA: 85046928414.10.9861270
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 842E720004
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 22:46:25 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="S/85cotQ";
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf13.hostedemail.com: domain of ackerleytng@google.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785451585;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DDB176B008C
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 18:49:16 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5DC25402C7
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 22:49:16 +0000 (UTC)
+X-FDA: 85046935512.30.0BD87EE
+Received: from rev.ng (rev.ng [94.130.142.21])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 785FBA000A
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 22:49:14 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=rev.ng header.s=dkim header.b=W59GTqzz;
+	spf=pass (imf15.hostedemail.com: domain of ale@rev.ng designates 94.130.142.21 as permitted sender) smtp.mailfrom=ale@rev.ng;
+	dmarc=pass (policy=reject) header.from=rev.ng
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785451754;
+	b=yBouZ6iz5mOXQQM0hlsNVnmYv1GhIlBFGSrLD40T0PHTilMqMR2j+PvJc5WnhxC/8jwN2o
+	q0litPp9J6/JJ5fkc4VB4ub2eoAMYlyMsBH7e3wM+59jSYkBlcBFWalwhVTcxnvePr5OpQ
+	0+Pgik6rA2E6Hs29OvtVwInQt7jWL6M=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=rev.ng header.s=dkim header.b=W59GTqzz;
+	spf=pass (imf15.hostedemail.com: domain of ale@rev.ng designates 94.130.142.21 as permitted sender) smtp.mailfrom=ale@rev.ng;
+	dmarc=pass (policy=reject) header.from=rev.ng
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785451754;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=W7DZ+f0MeQTnq04NgpGqANM3Cz0BYewhjBpaHxc9ELk=;
-	b=RM3asBD1ry79ldX6Fi2neUCfchJcPRHNswCzdb64j5a1r3dfkAMHXAxcSYyfFhZuxLA4KG
-	V7Dzgn7sHfEVp9K57H51ELJtqfmEhQdeu3u7Hpah5/5zoGd03Ea5aamvX8HC/nOHM5Gwub
-	w8E1y6iEfCnK9Dl8LLaZtTxfEiBRYho=
-ARC-Authentication-Results: i=2;
-	imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="S/85cotQ";
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf13.hostedemail.com: domain of ackerleytng@google.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1785451585;
-	b=HxRVhcL4vBKzCL+6B2SGuKa7y1J3qSIXlgdeR2DuyRvY2Lhv7wrLi+hvnDlSRmho3mvWRF
-	613vA6FVz2ki7luEdI3MzPEe/iPwq/lyEZni3VXK5iCqgQm3RsYBuQuSShlw1KlERlFfmH
-	4c7XO4IcMnfhPtyQTJ+HpnQIDRYzoG0=
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-38101f85591so1065644a91.1
-        for <linux-mm@kvack.org>; Thu, 30 Jul 2026 15:46:25 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785451584; cv=none;
-        d=google.com; s=arc-20260327;
-        b=altKpedqEppCjacIXgKpLu/Mim2P2Pe4nu+MvudLspcIlxrGsa0ZTPbTTzPaCMpTMH
-         8l2ExaPzlMdjjtzTqH8do8149CyFThlSgkHIfJaJZNAfaPb9aoZxGOJMkdcSnEpfouBZ
-         o7gronCgkAVRjAVOmrHW9Xh63dfKJJNU+KJD5IuDxXxOy9fFI8Ri28NBsG/gQw4LP4cA
-         5gSnxyRFgkkVklyGNJDjt52TW9wAVYxM3AhCmdr+9QGMaV6ShN9FBwi6JxqgxiLv96m1
-         T80oFAybnc5PegkDOXqMKgXicceeK3lGzQLmXFucAruRFt7gUOflVdjsoMuSovz8pMk1
-         8W6A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=W7DZ+f0MeQTnq04NgpGqANM3Cz0BYewhjBpaHxc9ELk=;
-        fh=lgo5cpKap9gUOby4HpM0ZG37CbJOWh8XLIEgZnVyuIY=;
-        b=jxQlMf/tJLrXq9OhXX+ffSEoPsOqhYMljs3q9JULk5GnhQtBLH0DMtTE+RxfQJYGyH
-         pi4svhG77u2MPK0/6W0Zdr5WhxGf9RBnrgNxwr3zbd8Z1ur7ESPj43pEsmFDq3nbnEtU
-         M3v6/Qgc31Q7yIbCFhTZWUPZ+qKaYliGhDrNFUFf6Sa7SzYhFHtudT5cRf6q56AL4GDU
-         VbqPn9qqEhviqnm98sesdoDCw3zGoBxCk9cm5lMdknmAZWfY+mOUUXbI+ssZduorgjTd
-         ZpCdTWX69Uod79Z4MyHLJQkiQT7W/l2GNn/3YtJ4NcYIOGWTCMfuyfUT8LAN45Tkicp2
-         Az+Q==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785451584; x=1786056384; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=W7DZ+f0MeQTnq04NgpGqANM3Cz0BYewhjBpaHxc9ELk=;
-        b=S/85cotQc8szGmr3uVdhVJY281U49dWl47McuIUDNkLNboQLIzSWB019fNXrUCYS52
-         EORpNG+39HHYZar11sCblXwOXM1bqWJdzARStQanbyH+hfFkCRbmQwS+GbOjVAtfytx+
-         uR9iUQr/LsgpDnEN/NC8MJBhw1A96mjDxCshGkJB3Y9eiFXrKTeczEuAJRfraCWBmFjd
-         /bIRNClt/pybiiKcHPmlUCFptv93UFsf/3XbOFdWWS/xIhLHLiT9l4ewHoT9a/kUMRQZ
-         pw+/M4iyQ36D0DqPOlDaUhL+QkfwG4fIeY/8KkvN7xIF9imVzmlLGA0njzuLI3GfnGx3
-         YMgA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785451584; x=1786056384;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=W7DZ+f0MeQTnq04NgpGqANM3Cz0BYewhjBpaHxc9ELk=;
-        b=LGV3vDvTY21L6dQDkG9TIy5QdV+ZQUHgITIL49F8cYHfE5gabu7GugPfltHi73iwUJ
-         FAmQr7cSGUhWMKiL7YTiHhb7OsAPwDVXSvoqVgRhI8U58kQX0TdtS17+WW8nc87HFwbR
-         7+lwCqoaBcSpOMTZ3wRFcw44MiBqMGxJfUWJm41OVBHTPJox22t5+xTq8dgcBaP+hYhI
-         ZFyOeAWbe/MlFpSV+ftmNviAv7lmeN33t8C0tUQRAVnrHqdtgkFgSvXDEAI2eS6vdT6d
-         X40fKa5o09r6MGYvhYjUYpTGMfvlozP/yoJdSC75D+yNOWEVvnm4vLiHhX9A0pR9Vbb2
-         7hzA==
-X-Forwarded-Encrypted: i=1; AHgh+Rpt45UbqkNfq9T5xj0UyvgDK+tO+fV7QRHk/HHC4BVpS4zT6daLHp75T+tB09Cw3WP6CAMTwXiFsQ==@kvack.org
-X-Gm-Message-State: AOJu0YyHQr/agk3OwjcWk9Sas4eX0vciwxIMgqWzTcZgpoI69u1g4nss
-	/StTg7iJGQBnox4fV2in1GVroe5xfJj0BCEepC+qlvj3WLTYiovP6IX/t6ROo/DXpMcPGB60uXd
-	cm5dPC8HRAK9kiHP0Rkd+e6qqAsOy2uv30EYKZmAG
-X-Gm-Gg: AR+sD12IhMaiHW22SUabdb9Q7RA+474qw9VFD3ep8ar0rIfwsXIjUYR2lxFaj1fbI67
-	P43Zt3yoDBJJReX4avnNAliuHz7k5gurf/gqi7aB7gkLcpWaCr6p2WPFC/sVTS+qFEsJcRb9l+L
-	f2Bw4osfnQMJsAaCx6n+R9LWAZeTjyTq6NumP/ZyElA87STM994RvGK5QTeJeLjnCKz4dJQRLW5
-	Z0JMmFEQbTXN/QAmkLLZTfPW+VMF/nHyycyOvxUsT4UAFTmG3G2EAc2SMsksMAHHjz5tWIR0EBA
-	z2PsKgijGPLEUlJuRYxYx5NnE3U38xfn0XGYO1mUtLSjl4PToh62TiEvTE03wBjQnw2xCRHNZtk
-	O/LLZ9KFK5RyMGLrsXh1diq4UHFc+bNRaBDAYBYroSe0OIA==
-X-Received: by 2002:a17:90b:2f06:b0:36b:b903:994 with SMTP id
- 98e67ed59e1d1-38fa68500b7mr1838360a91.4.1785451583701; Thu, 30 Jul 2026
- 15:46:23 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 30 Jul 2026 15:46:22 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 30 Jul 2026 15:46:22 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <afEwWZksU0Fw61oT@plex>
-References: <afEwWZksU0Fw61oT@plex>
+	bh=L54GOWdjqRndf1N0Bl3JKPypFdhuh4dOD9kZrETKjt0=;
+	b=e1KyHSwtQBd6Niroua46CzGGOG8E4flqqW6AFd43C6CEQwA2zylbuIXjcXmOeeI4G4nkg6
+	DBzDlL0vFk2A72iKEgIkHrHzl15SZXjg0q8BzW008TP+rLXR1DfAcYvb4OPFecF6fl6qwH
+	0OXL4ViOP1SekJ++Wd6v8fRvY1unmnc=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
+	s=dkim; h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
+	In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
+	List-Help; bh=L54GOWdjqRndf1N0Bl3JKPypFdhuh4dOD9kZrETKjt0=; b=W59GTqzz28XGIfy
+	MgWx2m5J08iQh2gCyOqieNW/0EwHDytQKkSAAl/wKbD1Y3PD8KMO8aVJd04cLL531CRhIouIUz2cQ
+	vf3sQspzC7+QNsYSFQ9VPoZVxfFd4tf4ltvruZ0zH8MQTZC/pMjcfRSvwLDW7ZrWkQHJnUhMeaDo0
+	ks=;
+Date: Fri, 31 Jul 2026 00:46:04 +0200
+From: Alessandro Di Federico <ale@rev.ng>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Farid Zakaria <farid.m.zakaria@gmail.com>, david.laight.linux@gmail.com,
+ jack@suse.cz, jannh@google.com, kees@kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org, mail@johnericson.me,
+ shuah@kernel.org, viro@zeniv.linux.org.uk, Gemini <assistant@google.com>
+Subject: Re: [RFC PATCH] fs: binfmt_misc: introduce eBPF-based matching and
+ interpreter selection
+Message-ID: <20260731004604.53c66732@spawn>
+In-Reply-To: <20260722-raser-leselust-konsolidieren-05f8e36a0782@brauner>
+References: <20260704-kochkunst-hauswand-blass-7226e9443a9f@brauner>
+ <20260704211409.1978485-1-farid.m.zakaria@gmail.com>
+ <20260706-uhren-raubbau-sinnkrise-e40a8337414b@brauner>
+ <CACCo2jm5=xrQNfak=TdO=2oh0DC5pe+atj=UfuTa8Y9s8GVkqg@mail.gmail.com>
+ <20260707-campieren-fingen-himbeeren-e4b682bd8e63@brauner>
+ <20260722011217.45e79a08@spawn>
+ <20260722-raser-leselust-konsolidieren-05f8e36a0782@brauner>
 MIME-Version: 1.0
-Date: Thu, 30 Jul 2026 15:46:22 -0700
-X-Gm-Features: AUfX_mztKVf-vmsid_VHO9yf9OChzZkQAo084zzlpI1FA8C_xfqYz8r7z-LEAo8
-Message-ID: <CAEvNRgE8YHXVZLTQQYZJrJvnrW+WUfpGUn2XpxpkDRj1Zwi4Cw@mail.gmail.com>
-Subject: Re: [RFC] proposal: KVM: Orphaned VMs: The Caretaker approach for
- Live Update
-To: Pasha Tatashin <pasha.tatashin@soleen.com>, linux-kernel@vger.kernel.org, 
-	kexec@lists.infradead.org, kvm@vger.kernel.org, linux-mm@kvack.org, 
-	kvmarm@lists.linux.dev
-Cc: rppt@kernel.org, graf@amazon.com, pratyush@kernel.org, pbonzini@redhat.com, 
-	seanjc@google.com, maz@kernel.org, oupton@kernel.org, dwmw2@infradead.org, 
-	alex.williamson@redhat.com, kevin.tian@intel.com, rientjes@google.com, 
-	Tycho.Andersen@amd.com, anthony.yznaga@oracle.com, baolu.lu@linux.intel.com, 
-	david@kernel.org, dmatlack@google.com, mheyne@amazon.de, jgowans@amazon.com, 
-	jgg@nvidia.com, pankaj.gupta.linux@gmail.com, kpraveen.lkml@gmail.com, 
-	vipinsh@google.com, vannapurve@google.com, corbet@lwn.net, 
-	loeser@linux.microsoft.com, tglx@kernel.org, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
-	roman.gushchin@linux.dev, akpm@linux-foundation.org, pjt@google.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: y5ghxtrrfzrzzwgaqs9ksg4oe1qfuixz
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 785FBA000A
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 842E720004
-X-Rspamd-Server: rspam01
-X-Stat-Signature: o78e6r35fsuiuroxnf3fdinifbca4wau
-X-HE-Tag: 1785451585-316616
-X-HE-Meta: U2FsdGVkX18krfhmTZv6NsfAcNekJk5IK9PEhUT91xnH9rJL/eXkPcU5P3CKaUidus+IRO0Fb9Y5svEmd8aNtGXX5tQMRWq+5kE9VShRZawTEqf+ZyE1m3pWcSZhpVCl6Te96RRZJKTPMpYDlHWSHllcD2hZq2Xz1Lhvlgmk7YNy8jugvSxE7MtsByCumir5iUO4Q4yjUJULtgNCf+Qn6Un/dJDc3zJXzzlQ222Na1qCHpz8akRcRPC84ZK1jxgDJGpPGXOpAu/jl1jliFOkE3OjOfq0w6g9+RNqr/F2i4IN8NI2lFUTu9G5tz28xNFFX/70FgBfhjMs966irppZ7ZR9ieZS0+c2YSgqJetgdesi4wIRRRKcfu4ScBIvudTxRVy4eQrWqUoMqS3VFGFKivVEP5NFXERVnb9EF4KUn2tmytDlp9Pqq7IBLi/nIMOfX8oGUKMkYmXKlrMlCOm/m/2Y03zADKEkL2x3TbfQKqxHSPfdsgWcsr/9PxuHB7EJ3UVZPDp6XD6iXjtP8LPgFAU1hkktGb157uQoY6mmydOMKL7RrwLiye/xoJkBZa1pOqklJaYMmRCCBwyLf4S94LBcD8hJuXJM1cU5MOuf1FbVpbWiJ4VYCCgFiR8+T+JezSmh2TgV3MjAOohZNg7uUeqlPzUX3OrtE0kpHACaSE/gQFy6HRjAFi5zxWE9iC270p2cV8+ptQ4b7adqgSS25XzB2WpnS3zcQYgn27zAZx7kgqRaiAJ2NihzX3zSg9XdDzZ+7dal8bvrF5T+vWX1c9fj/oda++R9owiJI0VZb5D/b7Z8wI1DGFuqeTpqHLDT5gSobMC2+pze+Bw6KtEL0xbQLByLY/HzxJeCojv5FC6IBPLs8YaF1Vhnb2HYSe25UCzOt772ru5NYJPUsHBmfYALhra6YbJzLdOV31vSWFACWFjW0BdT1kC4O1P1ASsScfl1+OISMwcPnWoYSLy
- 9zygiH9Y
- QzHdms7reYnVPuuQhvFPrCg6sTpzWxFT2bGdkiOv2FDSj0iLnAQuBhLP9Fq1bxwhhs14FPiQBQ43YcPrblj7f3UjLGB6yOjOQPETKczulJXPGXKpCRhTPVmYdteFU4WXqk9sLT49B0vlbkij3mSZwOFSgzpD7H9PCbWBXzb/LUgt5dBlF/ATbHS4kdyMLFjMCtCAdYcOwsrx+z/LmyGZ6t2/jO2Ceok8zRLCFSCR+zgTSixyqQdUCQsaJ2IZxxbLEjx4Y8jdZNaF3wWUwixMfrlBY2oD//YUEGxAVOx80FNUgv9QYSaoyIHGgi9uuv0ys0A58uTFNDH0+rkat9XnuwfWIeP9ftteBw8IagzdwJ3w92uBW0dfHEy4O2+pbRhiafPXUOXU0rLYHFgA21uRNwZAQ643Qdum277FPywS7z8sBV8I3CnLPfiqoU3CpqTbkt3dPwsOqWDlxW9WWX8uzM+KmTg==
+X-HE-Tag: 1785451754-949903
+X-HE-Meta: U2FsdGVkX1/m/x/Ps7U7wAskXeNwhjVm0y9d5ljKnOMWQ3Tm8NaM2ybUlNFyJwS+A+OMrcqIm4X7iU/n2rFcrA6JuWXvNy5vH+9p+bIc6AZjYNCZYcNgghsilB4Sb03i92rzno6NnG+DIN1e6V+oIA0ACxIneBqdkJUjVWnpe2gt9QFx1ySZ6QJYa6miWrhSXaN+eoartiaO5ThyaoaQIy8VioU8Z5hFIPabkNqEuVavLY9KU5c8N5zjPyiA+WYWFwwN0ocg3F53cKW9lEMLm1Bh+DQEQThPWXhKZUSN0jmv6OI/1t5QNr1by8QjP0tEPqt8dXV8iLyYKyHE6bOQ1YS/u57lrAX1VdaHSk9UD6wNBcH2ocrBawBnzqJxpMJk07xEqeTmd2rneQjBQXcsmB43Uia69Gza9HPHB2cUY1f6+Jpou78na8rLy0ZgdDN5CuRlN17FVST7dD+FSXOJSJxISVG1VedL0PWWs86iChRuJkAnF3vwbRhsIH2hS0WPAw64KVnysau4ZVRA9haZQEG6Cy5/no+Is37w9wn9kHy2f3aPDLX1KL0DWkV4LDW5jU/qlYtSL0pfIzozEwseRQsSngi5XyIJeE4Al7AjXAPr1uZ9R40DR+iQEMDlPklhSlZwxtZ6zeAW51ro8Ck7EZ56g2i7QPf5tIObFDKgALNL7XpLQwpshF9fRccCWvprrkOa5g6J1S+MkUXhWZJd+VENRzXj5tdIH3XjlCVedS1yUo4vPCJQNNOLYovLXkOUEqC5mYK0zLcqn2rOkfC6LUlwGpmkVmuk9rk1vZJobKHQBaEJ/MYrpjz3ZbrrVrgtdbdHUw6g/w8yODMzb/Vwxe3vE+THLgxGv8mM+6rbahstvoW+eXT2rjGypPr9TXwxB3pOEvrYlunU+v8RGVcdJ/g3U5NeLgVWOvIVnUMj4B1NsZi0cLr2ll8R0meEhUkUbVzr2gdh4YxA5ToGK17
+ 2B58+Rh9
+ AyPMAHxtONr11Cu1VwrAoliR+8dk8cJyckV+OqV4+Cg58Wruc+eEmVXNk9FU85kmDURO2aDraun65w4e82pJ51hby3WKQo/dvtYCakZk1qes+KiCmAnGDR110Hnv5hFlLzIMu1Tq9AWHdllDogo+YYm8qBoMQhLwquC56xErTaQYIfIn98pOQB3rEQYNdCZsTBwrvtWq8KkyyasYHHa3N1Jvmby54owSMOSfkI5RGL+soXa2sKTkCF7rzeAysqCi3vEXZ03SFstPz+xONp10ruHhfQLCGtwcb6IViQR3cpTSAHnz8qKi3sURCdg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,57 +96,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Pasha Tatashin <pasha.tatashin@soleen.com> writes:
+On Wed, 22 Jul 2026 15:33:40 +0200
+Christian Brauner <brauner@kernel.org> wrote:
 
->
-> [...snip...]
->
-> The Caretaker
-> =============
->
-> The Caretaker is a specialized, identity-mapped bare-metal executable
-> attached to each vCPU. While it is installed during the initial VM setup
-> and remains permanently enabled as an interpose layer between the Guest
-> and KVM, it is the key architectural feature required for a VM to be
-> orphaned. By providing an execution environment independent of the host
-> OS, the Caretaker enables the guest workload to safely survive the host
-> lifecycle transition.
->
-> During normal VM operation, the Caretaker acts as a fast-path shim: it
-> forwards standard VM Exits down to the backing KVM kernel module and
-> handles certain exits autonomously. However, during the "Management Gap"
-> (when no host OS is active and standard KVM handlers are offline), the
-> Caretaker enters a standalone mode to ensure continuous guest execution
-> without host intervention.
->
+> I think this could even just be part of systemd. You ship the distro
+> with a file for that in /etc/binfmt.d/ and systemd loads that bpf
+> program for PT_INTERP_WITH_ORIGIN.
 
-I think this might already be explained in different ways by the other
-commenters.
+One could delegate the feature to user space, but that makes it much
+harder to get adopted in a uniform way.
 
-I guess the main question I have is, if the Caretaker could indeed take
-over caretaking during a "Management Gap", then we're adding code to
-tell KVM what to do to handle some VM exits.
+Will systemd, Android [1] and OpenWrt implement this? In the same way?
+If so, at that point it could have just been a feature of the Linux ELF
+extension. 
 
-In that case, it would be awesome to have that functionality provided by
-KVM in the first place, to avoid some number of kernel exits to the
-userspace VMM.
+Of course the Android people could disable the feature even if it's
+in the kernel, but if the convention is established by the kernel,
+there's really no reason to deviate from it in the way it's implemented.
 
-> While this proposal focuses on its critical role in minimally disruptive
-> Live Update, the Caretaker is fundamentally designed as an extensible
-> primitive.
+The whole point of the portability thing is to reduce the assumptions
+you make about the target system. Ideally, you just want to use
+features widely available in kernels in the wild.
 
-If the Caretaker can/needs to be extended, then on the other extreme,
-the entirety of the userspace VMM's functionality could go into the
-caretaker, and perhaps that's another direction to go, where maybe LUO
-could keep some slice of userspace alive? (then the VM is no longer
-orphaned)
+But from what I understand from another thread, your intention is to
+use userspace as testbench, correct?
 
-> Its architecture allows it to be leveraged for a variety of
-> other advanced virtualization use cases, such as running custom
-> lightweight hypervisors or completely offloading virtualization duties
-> to an accelerator card.
->
->
-> [...snip...]
->
+> This is policy that the admin should decide
+
+Agreed, but the admin is probably satisfied with enabling/disabling,
+not deciding whether the program header type is `PT_INTERP_WITH_ORIGIN`
+or `PT_ORIGIN_ENABLED_INTERP`. Same for the distro maintainers.
+
+> not an arbitrary extension into elf core.
+
+I think that, in order for this to be useful, it needs to be a ELF
+feature, not something the admin/distro maintainer puts together in
+eBPF.
+
+Then, from a security perspective, AFAIU, implementing this in
+eBPF does not solve the problems that have been discussed.
+
+For instance, `selftests/exec: add binfmt_misc bpf-backed handler test`
+does string manipulation (no `openat`).
+
+I understand that's just an example and it's not the same as committing
+to a new ABI feature, but still.
+
+Overall, I feel like the current proposal pushes back on having a new
+ELF feature for security reasons, but then delegates to distro
+maintainers who want to use the feature to take those risks. But also,
+distro maintainers don't really need this feature because they can just
+write /nix.
+
+I love binfmt_misc enabling you to do ./foreign-architecture-binary or
+./notepad.exe and spawn qemu/wine (usually with your friendly sysadmin
+approval) and extra flexibility in that area with eBPF is super cool.
+However if we are thinking about portability, this make sense only if
+it's a default-enabled ELF feature (implemented in eBPF or not).
+
+I'd be happy to try to work on the example eBPF program using openat,
+address the various security concerns that have been mentioned until it
+looks right and then it could be loaded by default, but with an option
+to disable it. But I'm not sure whether there's such a thing as "default
+loaded eBPF program".
+
+Alternatively, I could extend the ELF core as a parallel feature of
+the eBPF-based mechanism, reviving some patches from previous
+iterations.
+
+What do you think?
+
+-- 
+Alessandro Di Federico
+rev.ng Labs
+
+[1] There's a flavor of nix for Android (using proot) which would
+benefit from this:
+
+    https://github.com/nix-community/nix-on-droid-app
 
