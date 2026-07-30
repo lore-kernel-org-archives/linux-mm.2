@@ -4,88 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 339A8C55165
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 12:00:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58FDBC55165
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 12:05:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3ECA16B0099; Thu, 30 Jul 2026 08:00:00 -0400 (EDT)
+	id 3F69D6B0088; Thu, 30 Jul 2026 08:05:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 39D506B009B; Thu, 30 Jul 2026 08:00:00 -0400 (EDT)
+	id 3CEFF6B008A; Thu, 30 Jul 2026 08:05:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2DA6E6B009E; Thu, 30 Jul 2026 08:00:00 -0400 (EDT)
+	id 2E4BF6B008C; Thu, 30 Jul 2026 08:05:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0BAB36B0099
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 08:00:00 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 99C7A80116
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 11:59:59 +0000 (UTC)
-X-FDA: 85045299318.07.DB79377
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 6A0F4180003
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 11:59:56 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=H6fcX+V+;
-	spf=pass (imf16.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 04F196B0088
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 08:05:28 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 98CF114012D
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 12:05:28 +0000 (UTC)
+X-FDA: 85045313136.11.950E84A
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	by imf07.hostedemail.com (Postfix) with ESMTP id C7C274000E
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 12:05:26 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Vpq10jQR;
+	spf=pass (imf07.hostedemail.com: domain of praan@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=praan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785413126;
+	b=I1qhWcamA0CAguI0xQwbnrmTLG4J0re2sXNLpXfRWv/aK2oNeCSkPIZiS8TyH07feKLhhx
+	8pD5lL4Ufpu4+g5Zqfz1JL9XFosjIqhvudqGCR1MkE+ZLyt+pUkNnouNQwWZwv0jhZJfeR
+	K43Q/FKhIZa3BxJ1OMrXP3+0H0jHiFA=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Vpq10jQR;
+	spf=pass (imf07.hostedemail.com: domain of praan@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=praan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785412798;
+	s=arc-20220608; t=1785413126;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tFyNfAcYv9RPgYotYZ60HIainFhyC9UXc9B2zptyL6E=;
-	b=D8kBYfoXg8kYjmKbBYthxFP7uolcRY7fXnWoOpGr81C93hSozNv/QjnPVvLaqGhsnCQqhN
-	7DaRNKyVdGdigV5w+s7PxTrDsJAkSiiN6qcZnuzpBeWNXrBvqb3CDGDrqZP+98r2DRpQ17
-	3PyeQ9i5BX4nkIOP+GN88zSjj26BBzo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785412798;
-	b=FJ+rw/fBj7G5FgvOESU0jWQpL8IoqZEoIp9uE9dDTftYekt05c2h9q4whOGs0iWpFqutaU
-	KZ/jg6xC9Wk4XJP2ELlDz4LQWQOkJXzB8fr5E+DDZmDx7iNXZT6wNVy+NV0S1ocZxhgm4K
-	lV19H+925xrhjkHa9bRKw/urhyFjc1k=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=H6fcX+V+;
-	spf=pass (imf16.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Date: Thu, 30 Jul 2026 19:59:43 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785412793;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tFyNfAcYv9RPgYotYZ60HIainFhyC9UXc9B2zptyL6E=;
-	b=H6fcX+V+Zq+Tdlen2oRt4iHMVx1NYD6p/BkA43u0HK8EKE7Z5RJ24pck1jTyqQmsGiDTZI
-	pnXhXGMBImTQby8sdSZsu5+k3ql23ZYX2dlrF12SkWghfKiw5KmzHH+KilqDA8L0lMpjoE
-	85mDM69mmQUC564eY2GQuZ6dAHa2Yuw=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Harry Yoo <harry@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Alexander Potapenko <glider@google.com>, 
-	Marco Elver <elver@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	cgroups@vger.kernel.org
-Subject: Re: [PATCH v3 10/13] mm/slab: reduce slabobj_ext memory with
- allocation profiling disabled
-Message-ID: <ams8mMMzBmu1AoLz@fedora>
-References: <20260727-b4-objext_split-v3-0-c29ef0f1f257@kernel.org>
- <20260727-b4-objext_split-v3-10-c29ef0f1f257@kernel.org>
- <11f5028a-3fdc-47b4-9712-559c065b87ba@kernel.org>
+	bh=jtRpHwnpz9cpARPetnCI9M1YK2PZpdz9An3dyVypqLg=;
+	b=RuFkQbc9Pjr2PgKJYGhFSe5g6Uuf522KHrsShaFCVP/es9sUeNy+80DfaBu98q0/VF6EIP
+	Pt28oZiWbz2XMy9NaCRBE/tpM8t5mZQDzivk1D3qcsUCk2fCHA/pdXTuHb3cQqdY0oCjU3
+	7vtQhoQqFriODI1QbCKSohU+WxR8y8U=
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2cab97c86bdso90015ad.1
+        for <linux-mm@kvack.org>; Thu, 30 Jul 2026 05:05:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785413126; x=1786017926; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=jtRpHwnpz9cpARPetnCI9M1YK2PZpdz9An3dyVypqLg=;
+        b=Vpq10jQR/S0TUIHiRsvtk66lEtvBcGBf3RdsGxShF9pa6oSOa2UTj4uS7BJctOVlOA
+         liqxIKGC4EVxgQkPFYsFg7z4Tk7trzmedndicqGE3I8OM9Ls/IBCNlmac2TsIZFFPJjg
+         STfH07BW2e/I8+PQJPXiKZqHS/LDHLIMy8hIBPy6lsZ57mVe2QE2/aJ5Vc58Vra+xI19
+         LpYp3fIOEHL+CP/0s7+/lJc01SoskiX4g9I+QP0gD1a0/VgkclKBtuXar11slsfadRVT
+         AH7ZGiC4uma0FQogBRAzaFk5iQGglPRVmQ6DW9xFKCsBVMnrf7W8fSoXJ4gOH4BTKUyO
+         hvug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785413126; x=1786017926;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=jtRpHwnpz9cpARPetnCI9M1YK2PZpdz9An3dyVypqLg=;
+        b=M0L2HpdQv6BS7LPqzczom3KiIdxMXOJZcGHimSeNzR+unnahXTChxRM+4JjLENPjPZ
+         c4O9s18ilS6CG98nbvXDvCgjexVR1TJJ4tVj3maJ0owlBsEjmrTzaJZsa+7w6SEISAtP
+         2pU6fgNnIf1QFSclBG4/mynv8NnqBvHZYsvUgDTC61gpzAFaDqFlQRgrbNh0ZNz9k4yT
+         DMoX+otHdeg7TvpYCvEKKOpEJwTOUy6tpMaX7YvyupcwaEKe7Lo4ykRWVOwiY+2P6ioH
+         6elk81B7puAZNb3T7+Bjtp6gKp0+di8hgV+yqsGsll88MeYrJ9QlE9tm6ylSrGnChkRB
+         zxvA==
+X-Forwarded-Encrypted: i=1; AHgh+RrXNJFrEel761ChQ+zyZPb3Gz9hyKpYvRxl0xNFXdSlGo2AX63LtWROZGkFxgwVrI+hzGTH3fse6A==@kvack.org
+X-Gm-Message-State: AOJu0YxWFUjDiZ8aR1xu6wuSOYJOCTK7SdSKaXlj5toYZC344ZR5xRrq
+	f0R2BC+ykIHTYBaS8WSeEFHcXXLpL2TxvpH0VebRoFyPWhnPVzRPbmn+GCFL+tNq6A==
+X-Gm-Gg: AR+sD11PQ5Tk0SYGzAgP66xlPRufcDKBuBTbYVo/MsDgyDVPV6UuoQfBKdoIk8+hLPT
+	d6/gznPW5+8LAUOUbSMdsb92vwHVAlogjxdjs9tOSJIqoYmxaIbytwKX17LtkTQL7N8+eooZfBp
+	G4LKvIHgG5YYdk2wHyOj1Y8w0HUbBJH2SYYghGmtJKAbzHy9i2qiNVeNpXa/H1YbHKB0K8/ayc1
+	bwbuAVmSOiKktgFOCJV+rw1GZ5Yn86dUifOmkOlze7ktkH2M/UhORlKlLuq8GN+Ez83wd27kl5+
+	7JbCtsbDDOYLB7gPusZ8+LuDm0qFbbv+0oPNL2SkSShY0xotXpW71cRZF2a8L1doyYVfXMM2ufx
+	kPu0tE9ZTdS/zSlH/npHjNuEL0p0VF1QLrclvAsspmGEmjXzaJnx5fumuqHGgmz3jkvlV3eYDjz
+	ecQAwhw8ALH8bOW89FMSqdpjvcaxJIfGYfZLC2XSfjyZY1bR9mT6Nz4pFL19EUsvOYfHkKJnvhz
+	eksBt9uhU48JqE4UboTFN0=
+X-Received: by 2002:a17:902:f2d1:b0:2bd:3bfd:74f1 with SMTP id d9443c01a7336-2d03e47005bmr23875ad.2.1785413125046;
+        Thu, 30 Jul 2026 05:05:25 -0700 (PDT)
+Received: from google.com (21.168.124.34.bc.googleusercontent.com. [34.124.168.21])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d022bc6d70sm26178725ad.39.2026.07.30.05.05.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Jul 2026 05:05:24 -0700 (PDT)
+Date: Thu, 30 Jul 2026 12:05:18 +0000
+From: Pranjal Shrivastava <praan@google.com>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Alexander Graf <graf@amazon.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	David Matlack <dmatlack@google.com>, kexec@lists.infradead.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] kho: Introduce preserve/restore APIs for
+ high-order pages
+Message-ID: <ams9_pf-URoEYdWg@google.com>
+References: <20260723204203.2997395-1-praan@google.com>
+ <20260723204203.2997395-3-praan@google.com>
+ <178539640188.2151126.10266644348178621151.b4-review@b4>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <11f5028a-3fdc-47b4-9712-559c065b87ba@kernel.org>
-X-Migadu-Flow: FLOW_OUT
+In-Reply-To: <178539640188.2151126.10266644348178621151.b4-review@b4>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: C7C274000E
+X-Stat-Signature: f17noyzarx66dzdmtzax65a5xti9hrpy
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 6A0F4180003
-X-Stat-Signature: 63dokem5km1hk5dek1hig4bwh1hqph7n
-X-HE-Tag: 1785412796-880062
-X-HE-Meta: U2FsdGVkX18DBwv/N5RZwwQTVhQE9kpRMnQygOq/BOHy9BeWqGYl2u7+TBInC+F7LQqqI1/fPEVbIA4GN1MTaB70FbLx31dADues4Qql7Ucz2jcV/tUSy0r0tMxzastEVyroviAIqfmRQzta7I+ixrRVcMj2W1QamnA8gUsQCUlcWxP9jBIw6H/13gXXof+OnV7nSgzY1XizGO1zFwHmv7L9yFlZ9AtKDgr5gK+HMPNtxycefJ/ZkErKqqY/FPY+TqpTOV1mQAxp486A0vC3/sDB2X85Bs9vV0Ui1DvMU766YAhUlb+doR4D2z4Vts0iouOU3aLTDA/Cq0gSp8s5HZpVKldUgkHorPAWI0SZguPri9HnUeF0yrvuKd6kKA2DEySd6OUnvgeyhtM2NZBP3yaazxltbvA1pahQn0dw50eB3FIU4mAtThANnIsHYh70VDHzlvCi/NmWBzd7fNVdtoVuzyRkB4ZRokGRzzAZEKVYIkGijiA9UE778dj+07Z9fCd2RnVuxsU6m7UEm5WPSImKaHu0GqW/M+uZC4AmB48lBLExHTk5/7WoxzjkhYfaWzROwSDv6MoDfOqFMIItrpyRoiZK2dPsm0+cmbBd+Hd6IWKwbbU/KVqBpgejd3pdOrTySeBTIvf7r/2gjj2udDx03HZcLESz63y+kgyj6xQeSGFoEfcYeLFl++Vh67Czf7NnPsJdd6NUjJCPh0km8zA7MxoM4X24t7WaVpz2HlUlhRQUiU8J8R6qoecdOtIiuzavFogao8rldjng0/nlu7+WYVmnPAQ8v2jBTwNt1cMAn8uVUYOxamGCeANDTR2ZoIyuFBQwN4FAMvusThNHyYAHl2hNQPUPRFcSnjqU6Ipoa9U9YzKxl4DNB5xJeNbF/+tBNOHUEoh/kCR/r0MwAQ4/y+LTb5Kgr+mzS9T2JmFU1a4UTMs3o14jF97V46mYRi+4ZjC085nozRgTq6T
- uA4YOOgY
- Vt1mgxfNlSNQU6xqpRjJdv/aqXlKj9E6kKU951GuyiPy1VCcOe+VdO0aqrS/nTzl0wcuqtWE9F9S9C4bi5Bm1poKWVQOwOxjdqQNcKe8rKfkW+6B/SH2g/akFky63sZgFnLqH4ARkmEip1lQAQa872on7tT2iHf6AqAa5fgHCLubp+IHwcWg48btRV06fhFht6SgEFXNtS7BuROi4WNABIxmUavzv54QZkJWqEHgqeU/nO6HSBm7pfD+Ldhbw26JUkezk6IdsZcjHbQpWIh6zcc4liXC5QVaeOB33hWv5wyvWOfwzZpjdhNnGphcyihi7y2KPI6QJXsJxO/YlNIanPUhhv7Q5T7p/Szg8l93mp2Az7JY=
+X-HE-Tag: 1785413126-792567
+X-HE-Meta: U2FsdGVkX19sJ8Kdg06wXOBunfmdg5EdCCzK18lJFixFs3zZ0cJ8YBVgG5fVJeWkkQAt9Towr5afLM25UJCYB4cJyjUaoZbeZ/ygSCBn2jeqgJjtSpWSgI5Us1b24PlnCDnwUFHX8Xpf/wHtgeUBpTWUN22BlbWpKgxrpVyrdNbX2Yza/VG7s4d0glWyevOTfeSqFfRnB2PgJePyxLWxvXdWIuUAUx/OXo1eqY8R4Im/w3bF7GY3pnq8jJMpaSYj1Q6OjHAJ1r9QCOd5b5IiLzrbTYHGv4Al+9irAhniF+W8St+Duk3dBJ6c7g836/ZEQz+PhB/IupJLgr3jxXKtJJ1fxnWg1PHTN35PqpnHO/M0i2/reCK5+YJ8HSFlkicpOHb2qfZtIHYN2+J45x9uHjlhPVE+66EYbtKyN13mV7Zx2hAqplQLX1uco+DVU/pVFU8dyPir57V+RpqDyP9TeTSyXbqButoNYiZesFH7zCrsi+5Ftd7hPNaRkM59iSvMv6uheXGQUamIFL3ydSfASD7pLDV3ebWMpu5k6ZcUovAReaMwh+S2loV786rD3BvoNX/HudKDNkiw4mrbuhjJaUqeVfUgQwUa5DaqbiaZzOBKcmaVGsSTUTmUwsDow8PsyXoburq+ZHhPEXYM4fIUpngUdedbKMjnv50mQ2m5RQmGDLupfbTbw2bHvJ8bsLAhuFiJwJrIrlmXq3JbtcD/u7ltvlcbIVWP9M9SEy0V9wsCuucgvcja+uzVpSpTxgW2xv+jaH/U43QbHjS8CuWK3UCXNeJhHbVBv0+96YyyhHbuNf3av/pNy+m8xwL6AnEKadAezpfpObj+EOtepOwjZmtjOmoMpefyxKo1Kf9bJLPoMvv6j7jFaA1EDCVUGojTJcHKeP7H1YNKqa9YnzL/i6wSJzwGVR51zfV1hOBJehAO55vENyAQ0amvq80SIWnleQEy3Y1vXdZVvZYhtwd
+ UrIfiy7P
+ lCwRVyhamKNTwYqi7H6oeZFIM2jBr6oG40vAtLxW8Uvcc2BFtPpufpkbQ8+bJBvUysfPhqtyfzSctdOXGfhHG481e5pqHxjMJVzdGI1OTslwg5cScRbuOki6ATJg9czp9N55SQdQagTWEqHJyeCHd90H1UQb/jJzZaGxupFSjmoF4Ce/dYvQfnGaLDXS/qLsepNTdy8LlsEvIzmDFfobzAzCkWr8ZtSRaoxb2Ik4aqtvv7V2cwvEYRZxhV5cuOe9OVgo6EPdfd+Hc0bgU5JItZDSRY22As1q8yXse5BMGhZpL3lEldu0lnaurS7/QYzKW7Er3Ia8FwvaOWFgcP1JYUWjtcNjPsgn3EhCb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,41 +126,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 27, 2026 at 04:07:48PM +0200, Vlastimil Babka (SUSE) wrote:
-> Per sashiko [1], a fixed up version below. Couldn't trigger the issue
-> although seems to me it's real. Perhaps can happen only with SLUB_TINY
-> otherwise the sheaf can't have obj_exts allocated from objcg charge path.
+On Thu, Jul 30, 2026 at 10:26:41AM +0300, Mike Rapoport wrote:
+> Hi Pranjal,
 > 
-> [1] https://sashiko.dev/#/patchset/20260727-b4-objext_split-v3-0-c29ef0f1f257%40kernel.org?part=10
+> > The current KHO page preservation APIs (e.g. kho_preserve_pages) assume
+> > that multi-page blocks are split into independent 4KB pages during
+> > restoration. This is incompatible with high-order non-compound pages,
+> > such as DMA buffers, which must be restored with tail pages having a
+> > zero reference count.
+> > 
+> > Introduce explicit preserve and restore APIs for high-order pages,
+> > which preserve and restore a high-order page block as a single unit,
+> > applying a refcount of 1 to the head page while leaving tail pages at 0.
+> > Rename the existing internal helper to __kho_restore_page() and
+> > consolidate the common restoration code into it.
+> > 
+> > Signed-off-by: Pranjal Shrivastava <praan@google.com>
+> >
+> > @@ -457,10 +482,14 @@ struct page *kho_restore_pages(phys_addr_t phys, unsigned long nr_pages)
+> >  	while (pfn < end_pfn) {
+> >  		const unsigned int order =
+> >  			min(count_trailing_zeros(pfn), ilog2(end_pfn - pfn));
+> > -		struct page *page = kho_restore_page(PFN_PHYS(pfn), false);
+> > +		unsigned int info_order;
+> > +		struct page *page = __kho_restore_page(PFN_PHYS(pfn), &info_order);
+> >  
+> >  		if (!page)
+> >  			return NULL;
+> > +
+> > +		kho_init_pages(page, 1UL << info_order);
+> > +		adjust_managed_page_count(page, 1UL << info_order);
 > 
-> ----8<----
-> From 905c6500e597a8ecf123ad167698f0a0c1a764bd Mon Sep 17 00:00:00 2001
-> From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-> Date: Wed, 8 Jul 2026 17:04:36 +0200
-> Subject: [PATCH] mm/slab: reduce slabobj_ext memory with allocation profiling
->  disabled
+> Seeing 
 > 
-> When memory allocation profiling is compiled in but permanently disabled
-> on boot with (implicit or explicit) "never" parameter, stop allocating
-> (thus wasting) memory for the codetag_ref parts of slabobj_ext metadata.
+> +		adjust_managed_page_count(page, 1UL << info_order);
 > 
-> Do this by using the new slab_obj_ext_has_codetag() helper in
-> cache_obj_ext_size().
+> for the third time hinted that something is off ;-)
 > 
-> Additionally add slab_obj_ext_has_codetag() checks in
-> mark_obj_codetag_empty() and handle_failed_objexts_alloc(). The
-> functions might get called with memory allocation profiling disabled,
-> when the obj_ext array is allocated for objcg pointers only. Setting
-> codetag refs as empty is unnecessary in that case, and with them not
-> allocated anymore would now result in memory corruption.
-> 
-> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-LGTM.
-Reviewed-by: Hao Li <hao.li@linux.dev>
+Ack. I'll fold it into the __kho_restore_page() helper 
 
--- 
 Thanks,
-Hao
+Praan
 
