@@ -4,76 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8111BC55160
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 13:34:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50EA2C55165
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 13:34:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 620546B0088; Thu, 30 Jul 2026 09:34:45 -0400 (EDT)
+	id 1B3FB6B008C; Thu, 30 Jul 2026 09:34:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D1646B008A; Thu, 30 Jul 2026 09:34:45 -0400 (EDT)
+	id 18B636B0092; Thu, 30 Jul 2026 09:34:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4BFB76B008C; Thu, 30 Jul 2026 09:34:45 -0400 (EDT)
+	id 0A0D36B0093; Thu, 30 Jul 2026 09:34:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 261EE6B0088
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:34:45 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id AB9A2160165
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 13:34:44 +0000 (UTC)
-X-FDA: 85045538088.12.4F0E4EC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id DBA39100010
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 13:34:42 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oeZmocRT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D09646B008C
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:34:47 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6D4C9A0161
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 13:34:47 +0000 (UTC)
+X-FDA: 85045538214.24.1E22580
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id B4B174000B
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 13:34:45 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="QbqEvvt/";
+	spf=pass (imf04.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785418483;
+	s=arc-20220608; t=1785418485;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=cTKth7UNQeBwmsZO2B2Pp13WvIQsQKMZ6nrWV73pGKM=;
-	b=D4w7QdKKTA9eqJfB4Emz4Le/FsxhMAqSmMJX2OYgHjmb1ngYHk9ozumPIP4oNS9BZxRpkl
-	6muT5UNcIx+D6aYRMFwNHu0NVSR6uKHHzSOWZXD7ur5RmMEn0/JdrH6czDTPiySdkznirG
-	fUL9Oh0PLxKhlEOksRUwi6Y+vveaCIU=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oeZmocRT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ZOVAZcleFesftTESMiI+I5WLr6SsWO6dEuEGcLcphYk=;
+	b=fWC3P4sKLmRtRZfKD2uRQjdttolb5C/egH55Zo94MZ6pGZT3mifSQAaoxOmCe+ahcZmLr9
+	BDW+nltpZrxoX6WhZLfRHwMH/3zHaVhED1AqVLm1Op9PwEqF/gqvgWKa5CV1+UE+Mx+GVx
+	glug2iBnt5Wob13q3qON0FBy8Vpf1pM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785418483;
-	b=F8Pmg8hImVT3DZLrY9c5sNJ+qoDjf4Rk4wrsUs1RKIKbrzoRe4F5kWeexUqUQPEKtRznkm
-	AIPYxBn2IFU7VH8RELXmx4DerS7rSCZAL+m0pRgUTmK1x45CaEODuoJMsW9o4YPICBHRmK
-	DT9tpI4U/VMKipdkADlPoAB4AHrXfHQ=
+	t=1785418485;
+	b=gqIwxbsBoucNGiBC7Xi8s8VQPWj8Ifu5MnnWJT6OJyFy11nrnQ7UmmltbHbPPHt9qBzJ4U
+	nFV/aaLMvPDoROv0MtmAmaWFOOWz4jtLbHw5eYEOeYN82D5AVyu2jvUE6L/Ts4KA4IUdLR
+	SZNg4hr1rZSYFzQDqXEk2Xt37f2pzho=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="QbqEvvt/";
+	spf=pass (imf04.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 10FFC4071D;
+	by tor.source.kernel.org (Postfix) with ESMTP id 4508F600B1;
+	Thu, 30 Jul 2026 13:34:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65EFE1F00A3D;
 	Thu, 30 Jul 2026 13:34:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CE221F000E9;
-	Thu, 30 Jul 2026 13:34:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785418481;
-	bh=cTKth7UNQeBwmsZO2B2Pp13WvIQsQKMZ6nrWV73pGKM=;
-	h=From:Subject:Date:To:Cc;
-	b=oeZmocRTJDKm7/UH/6M2EoYytUvah2fMlxFriOxG1INcFHLoBFl+ggFV5uJK30tEQ
-	 NQtHGLQ8xlDiwVIfFdoSN+WwbIaAROECahisvdnxdYm4ELvwtBk4bm0AyK4Ga95lOK
-	 VRIIfaiOMgFTHC+uGMcc5ahTxyT87qsPdMGyvdMk2pyoT/RRIwZ3fGdFUraLnjYVlY
-	 43u6SmbFPDntakSdhbZe0BnnRes+93D8j3e9LBb8kuyBGMdwQZEc7clypNfAgQcp1S
-	 M68f0sWObqvXuhw/WrrtRO79N07GJalU462KMbshwv8xCCYcqqLZRO+ahPiynaFDo+
-	 /PJivJEAGNU+Q==
+	s=k20260515; t=1785418485;
+	bh=ZOVAZcleFesftTESMiI+I5WLr6SsWO6dEuEGcLcphYk=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=QbqEvvt/WhuGlPOLcAdtMUTIWMeAnmAYVMgmkeZyg8u4r2tV2ydaYiNn10ZY9KWDY
+	 wQlitPO//HGvF+M7Wjn1PNxqVpo9fJy9+x4Er6UeffOTS2mXpXFGq05HWWiA41Oa8S
+	 8W4mg2bPb1NXlS8fPNs5JO5WnNwmWH2uapmGVIBstN/DEOEI5cPf3kcqflsaaTgxn4
+	 4HLTW8DJ4ENRJhkByIb9LEiRL0w1EPdnAiwEHkn2iTDTbUnII6PyXbCXbyNIPozVrr
+	 A/ANWbP56en6CLXikUEecNwosnprZw2ifyXHo+szFM5EGR5qFeCZFb3EeCB50P6+M4
+	 pxaulqPTcSKLQ==
 From: Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 0/9] binfmt_misc: bind interpreters to a bpf-backed entry
-Date: Thu, 30 Jul 2026 15:34:02 +0200
-Message-Id: <20260730-work-binfmt_misc-preopen-v1-0-4a0b0da71f16@kernel.org>
+Date: Thu, 30 Jul 2026 15:34:03 +0200
+Subject: [PATCH 1/9] binfmt_misc: let a register string create an entry
+ disabled
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAMpSa2oC/yWMUQ6CMBAFr0L22yUFFIJXIcbQdiuroSVdRBPC3
- S3yOZP3ZgWhyCRwzVaItLBw8AmKUwZm6P2DkG1iKFVZq6Zs8RPiCzV7N873kcXgFClM5LGtL5X
- TrS2sOkO6J+/4+093t4PlrZ9k5r23L3QvhDr23gy7Wpxgk1f5EYdt+wFB2SGQnQAAAA==
-X-Change-ID: 20260729-work-binfmt_misc-preopen-9653fb9d1d04
+Message-Id: <20260730-work-binfmt_misc-preopen-v1-1-4a0b0da71f16@kernel.org>
+References: <20260730-work-binfmt_misc-preopen-v1-0-4a0b0da71f16@kernel.org>
+In-Reply-To: <20260730-work-binfmt_misc-preopen-v1-0-4a0b0da71f16@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
  Kees Cook <kees@kernel.org>, linux-mm@kvack.org, bpf@vger.kernel.org, 
@@ -82,22 +82,22 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
  jannh@google.com, mail@johnericson.me, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.16-dev-3e0c3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3493; i=brauner@kernel.org;
- h=from:subject:message-id; bh=io4rvUC7+JoPMBsCH5pmm5CbseXDfdm4tqym72NwEk4=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWRlB71bM6l2ccmN36uk9y1vqdhqbFj+XT5qzgXTDQqai
- 7ao/VD92FHKwiDGxSArpsji0G4SLrecp2KzUaYGzBxWJpAhDFycAjAR9QpGhokyak8Kd06PN9Dw
- nii75EnMjCe3YqrbHladb974muFH+2yG/24yM2O3qC356rI9+0q6vJXrlvDjXwIc/m8NsHmz4uV
- pP3YA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8977; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=ffubVVduLLMfNxpTpX0sw0fYfFiETwOhHJHux38zrPw=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWRlB727fj3D7OUNp6ZJjoueLZPc+nGNm4r39++3ytIbj
+ v5XXX1fpKOUhUGMi0FWTJHFod0kXG45T8Vmo0wNmDmsTCBDGLg4BWAiDjUM/4v4N7dOuzHpZkls
+ k+Ueq60LldQbGOV0taWXOpsZXxI7/57hf/3lCuGmtIont9p01JPt0s1Dn/y2++5WuMeWaefbTdI
+ y3AA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: DBA39100010
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B4B174000B
+X-Stat-Signature: ismx1aapfrhp3r7o1z8dzehpbirojcjx
 X-Rspam-User: 
-X-Stat-Signature: w7pmcu1yjxs5zsqht8rghqtczu1u4ur1
-X-HE-Tag: 1785418482-219140
-X-HE-Meta: U2FsdGVkX1+KsNjRYs8iRXKh4R780pCYXkYgmbMdy9RwUpodL3n2gRwIyXOKGnP/tC+7EWvP/rPF/egeiMVdY3kOtpH4Rbd8galTBVlP9dcL4Mf3hC/kA6iZhqQt+QP8s+gT+jUpGHAlyluMi6tS+yugB9YoDLEW66u/jAIbaGH+MhtIRJs9waZ3r+aHe0TDZcgyXMC7IMY9PCfQcRiJBhRmcK7uNOgG8nVHybzQGAnixQPCSCLSe7pyCp5eKy2VwlMrDq7xnfEzuLGRyqO3E6n23PgWFVoFTNA2BQIx768fkY4v8rs3kRO5UW0+gIj5dKOmF+BrW+5J1Ew9c+Ic5psWnRo2JtjgFyWO1lBhNNJT2e2aq3S08FiOIjs0txkPWzCn/0xST9KSgZyclDhYNrLkvvfizpls/TXqrHffZKWTf2fBAiUz3StpOwxeFV39ZYnaTyHVo/5kimbh8wtpriaJ8cBrSNsu+1qJuTqBuwh37FV0SX42PyLxEQEyPKDm13eM5iB1LnrI5QIxU3joGpyZiktzmcnhlijpswIBw5eFquip8VawMSi9faC7pz3YGvVos2wv3lzGONHpqjjuVSIlZ8+bq7yWsmrYh2jEd721lDHckoCjyGTbeyqd+SiB9DCbXTH3MeKDjGlcEvKslDiRFMl4cNrHzaPuuBBkYP2eTwje82Y9yzxBxDLBhVIYNvDa0kg1BgdIwTpa5T+224GkzSLT7Jnlq1e3FJdyh2LaEwQOGhuAWZ2zvmKY13rketkmV4XJSDYovSPJli0tI7bN4YCcIwHIs8MtZeRqEnj+XIlNbfWrJgu9VcsTcUoSYLhmrQF/KR/ZlvPP9EO1ZTPdLsbf94mUS1/NdtPorNlf5E8kaCT7ZoJaGtLHaRaIjerxpuMDtSSkUwd7Xx3Po4kyRq4hJe5vMzYucw91FV/xtm3FDB+1OwKpXTelcQL2rku1bNCrqdTzAG9EI/4
- ATWRErtP
- im4LaMq9/Ms70sdoE+zB2jTP1rIE9RCUZuNczqDdIyoDJiwe0e0F+7a/yaJhWJM34EHixu4jvg1fhZidVGkSYSdC/6FPwYqtd7+SDtBzitYnUrV3cDF38zEafI+pj0LEthjC8H+sdzGLT/1yfxL6+MC2MUbGsw45ewjg+XV7Rvi7DtjoiEt3hJ4rxxdl/Rjsf8OGuKeG0DVyF1VQhCETwgvcMgtejcNWblhJd95SoFR5L2OhCJ9+raVC5U9fpXTNIyaqUh/bgcV5NPRq9EPjt5fgeoe0hyGcD0rxtdF6tmdgXd6ovnBgj+MouYBvbDpe4R8XKh+vLoepaGY84gshP9wVYkwH6YObXScUDhnAR8BLklw8GwlTKSsEcLHgIGq+A2d99PG/BbR8kvoc=
+X-HE-Tag: 1785418485-506520
+X-HE-Meta: U2FsdGVkX18HQqVWLPSA4Us4fr3vo4CBefFmONIcmuA9+RhXfG6cE6cH/6hLHzZKrzQGRFIWaKyL9W/DOviZPZB7cBeINEhT7b60a7IicJFd2B7I0VEZ3PrPlf/B/xU8lSwH6u9ua44HzLwxExq2arPcLgUp49Wrp/pmZDu19EDNRJcdt/5JPX/WPee1wk2oFqsSFXR9mTTMz5u+opzpESr5eyZhWimp4Jfgfml4up+smCybtwhHMAnLWVs5N1/fiW8QMdYSTiluERG1//WPcqkRJCKJ8DWnOcYFLHVJxOlmrJ0NC8BRJ0x0m0nd4fot6voYEXbcMv8kLjQksI0cnEK0TQHFDDrZ5AqT7jwe9KPaj5AeOizmFTu3ttTvIG7FV5ovybqHELNxQ9L3cweu3Z/eKyCR0cHNcOFcXRCkDPBwr/zEgKAA/ItQt0CAacAsWvN6aVoOvDxBr8fY3e11lWXHWno+6MP7nu9vdbiD9wSqDx9QvIkPzRvfI7P7KDpb8FbqmAuU+NV/BkMSZL+wBO/d8R1XnvH93vnBuHpcnf0l6ud//gf8UOdFYqMDThZy6mHFBbvR/r2s5fGR5GV6T3/gigdlQAfzM/6YTzVhmXe1nDJz8JQWhqSstyGJnPzK44n/6Igdwnbxo3l/zrif7BNODxJkhaeEGWgToxwX6xeYpmnkFz/3d0lSGQxZiwBvc2M6YDdTiBIB6x2lSQgBP5aQxvwrhntGS10bJ8/31hevDvkzGMrwG/MnFxH5u7hS7xQHZAz7Lw7u7gLFuwjfsecCn3bLM6PUtQlkglZaRO6bBvoeM6N4em8I99LD8miMwg4hL8nDasaDWb5jcunBZIUt0EeKIxX36vILDaOJeJjBrmE8IX5bXgsSuRJBTt4miQtYxZeLxGLb3mMw1q42NNgNcgwiZsItMwObYOQt1dhnofkCpRLou661hg0fuRaOAQlljK1ByYFZXjkMDFw
+ g/GItX8P
+ gudasnYCOEC2j8ljh4yGsQJPIgtwN/0ZKfk21L2KmZml3a5jLCS5i8T7nDJAI1c2+yFme5q8iVTtdfwv2fSO3V3m+G3VSeNa7LHqD4VYH4BMB8RtNxKs4vvt7fh1bi2gWwKzJinGCkAutDDXJ8Uhb7zx51khccxdYwOPUU//DweXeu/azqaesUJ2TfbqQcvWN/jDaUjIPY9U/x43GJ5pWzdO9eR3J/EFeye+SH1tl4GXoqAovb3hihzxj414ut+e0BFfgE2HOqswJmHTMWT39g6NoGBC1Bz0Jhq7rnoiZRW4gCjU+1rCRpd32ByqRrP8aXFwxYuqQMpB6Lik24ntwT8hnrWtYqS7w/q80ppLtU4e9amDeld8cBDlSvg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,69 +105,242 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A 'B' entry's load program hands the kernel an absolute path and
-open_exec() resolves it at exec time in the mount namespace of whoever
-runs the binary. So the handler names an interpreter but never gets to
-say which file that is. Whoever controls the filesystem view of the exec
-does.
+An entry is matchable as soon as it is registered. create_entry() sets
+the enabled bit for every type and add_entry() links it straight into the
+instance, so everything an entry needs has to fit in the write that
+creates it.
 
-Static entries have had the answer for a while. 'F' opens the file at
-registration and every exec runs a clone of it. I can't just reuse it as
-it stands. It pre-opens the one interpreter named in the register string
-and a 'B' entry has no fixed interpreter. The program picks per exec,
-and a qemu-user shaped handler wants one per guest architecture. So it
-may want a whole set of them and that doesn't fit in a register string.
+Add a 'D' flag. The entry is created disabled and has to be enabled by
+writing '1' to its entry file before it can match anything. That splits a
+registration into create and activate, which a later patch uses to
+configure an entry beyond what one register string can carry. It is
+useful on its own too. Entries can be staged without dispatching the
+moment they are written.
 
-An entry is matchable the moment it is registered, so everything it
-needs has to fit in that one write. Patch 1 adds a 'D' flag that creates
-the entry disabled and splits a registration into create and activate:
+A staged entry stays out of the search list entirely. add_entry() only
+hashes an entry that is born matchable, and the first '1' written to
+the entry file hashes a staged one, which takes its place in the search
+order at that point. The rcu insertion publishes the fully configured
+entry, so the exec side keeps the plain enabled test it always had.
 
-    echo ':qemu:B::::qemu_user:D' > register
-    echo '+aarch64 /usr/bin/qemu-aarch64' > qemu
-    echo '+arm /usr/bin/qemu-arm' > qemu
-    echo 1 > qemu
+Removal cannot rely on the search list anymore. Whether an entry was
+already removed is now decided by its dentry, '-1' to the status file
+walks the directory instead of the list so staged entries do not
+survive it, and a '1' through a file handle held across a removal
+publishes nothing.
 
-Each path is opened by its write, with the credentials the entry file was
-opened with. Same open_exec() call, same place as 'F'. The program picks
-one per exec with bpf_binprm_select_interp() and gets a clone of the
-file. Nothing is resolved again, in any namespace.
+'D' is consumed at registration and not recorded. What matters afterwards
+is whether the entry is enabled, and the entry file already reports that.
 
-A 'D' entry simply isn't hashed until that first '1', so the rcu
-insertion that publishes the entry also publishes its interpreters and
-the exec side needs no barriers. Reading the entry file doesn't take any
-locks either. Bindings are rcu-published and the open file already pins
-everything the read looks at. We use paths, not fds which makes the
-config remain nice and static and can be shipped via /etc/binfmt.d.
+A 'B' entry's flags field had to be empty so far because every flag it
+could name shaped the invocation, which a bpf handler picks per exec with
+bpf_binprm_set_flags(). 'D' shapes the registration instead. So the rule
+becomes what it always meant: a 'B' entry carries no invocation flags,
+and 'D' composes.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
-Christian Brauner (9):
-      binfmt_misc: let a register string create an entry disabled
-      selftests/exec: let binfmt_flag_supported() return a bool
-      selftests/exec: test registering an entry disabled
-      binfmt_misc: document registering an entry disabled
-      selftests/exec: share the bpf handler preconditions
-      binfmt_misc: carry pre-opened interpreters in struct binfmt_misc_interp
-      binfmt_misc: let a 'B' entry bind its interpreters
-      selftests/exec: test interpreters bound to a 'B' entry
-      binfmt_misc: document interpreters bound by a 'B' entry
+ fs/binfmt_misc.c | 98 ++++++++++++++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 81 insertions(+), 17 deletions(-)
 
- Documentation/admin-guide/binfmt-misc.rst          |  75 +++-
- fs/binfmt_misc.c                                   | 459 +++++++++++++++++----
- fs/binfmt_misc_bpf.c                               |  75 +++-
- fs/exec.c                                          |   2 +
- include/linux/binfmt_misc.h                        |  39 +-
- include/linux/binfmts.h                            |   3 +
- tools/testing/selftests/exec/Makefile              |  11 +-
- tools/testing/selftests/exec/binfmt_bind_interp.c  |  14 +
- tools/testing/selftests/exec/binfmt_misc_bpf.c     | 306 ++++++++++++--
- tools/testing/selftests/exec/binfmt_misc_common.h  |  45 +-
- .../testing/selftests/exec/binfmt_misc_disabled.c  | 172 ++++++++
- .../selftests/exec/binfmt_misc_transparent.c       |   2 +-
- tools/testing/selftests/exec/interp_bind.bpf.c     |  76 ++++
- 13 files changed, 1164 insertions(+), 115 deletions(-)
----
-base-commit: 4bdcf682a476e8d9f52b2c5c01e998d70e45656c
-change-id: 20260729-work-binfmt_misc-preopen-9653fb9d1d04
+diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
+index 707f8a14f8a6..ca7840b01a2b 100644
+--- a/fs/binfmt_misc.c
++++ b/fs/binfmt_misc.c
+@@ -37,6 +37,8 @@
+ #include <linux/uaccess.h>
+ #include <linux/user_namespace.h>
+ 
++#include "internal.h"
++
+ /* Entry status and match type bit numbers. */
+ enum binfmt_misc_entry_bits {
+ 	MISC_FMT_ENABLED_BIT	= 0,
+@@ -52,8 +54,17 @@ enum binfmt_misc_entry_flags {
+ 	MISC_FMT_OPEN_FILE	= (1U << 28),
+ 	MISC_FMT_TRANSPARENT	= (1U << 27),
+ 	MISC_FMT_LOADER		= (1U << 26),
++	MISC_FMT_DISABLED	= (1U << 25),
+ };
+ 
++/* The flags that shape the invocation; a 'B' handler picks those per exec. */
++#define MISC_FMT_INVOCATION_FLAGS (MISC_FMT_PRESERVE_ARGV0 |	\
++				   MISC_FMT_OPEN_BINARY |	\
++				   MISC_FMT_CREDENTIALS |	\
++				   MISC_FMT_OPEN_FILE |		\
++				   MISC_FMT_TRANSPARENT |	\
++				   MISC_FMT_LOADER)
++
+ /**
+  * struct binfmt_misc_flag - a flag character of the register string
+  * @c: the character userspace writes and reads back
+@@ -75,6 +86,7 @@ static const struct binfmt_misc_flag misc_flags[] = {
+ 	{ 'F', MISC_FMT_OPEN_FILE,	0,			"open interpreter file now"	},
+ 	{ 'T', MISC_FMT_TRANSPARENT,	MISC_FMT_OPEN_BINARY,	"transparent"			},
+ 	{ 'L', MISC_FMT_LOADER,		0,			"loader substitution"		},
++	{ 'D', MISC_FMT_DISABLED,	0,			"register disabled"		},
+ };
+ 
+ /* Look up a flag character, NULL if @c is not one. */
+@@ -175,7 +187,12 @@ search_binfmt_handler(struct binfmt_misc *misc, struct linux_binprm *bprm)
+ 	/* Walk all the registered handlers. */
+ 	hlist_for_each_entry_rcu(e, &misc->entries, node,
+ 				 srcu_read_lock_held(&bm_entries_srcu)) {
+-		/* Make sure this one is currently enabled. */
++		/*
++		 * Make sure this one is currently enabled. An entry enters
++		 * the list at most once and only whole: its configuration is
++		 * ordered before the rcu insertion that makes it visible
++		 * here.
++		 */
+ 		if (!test_bit(MISC_FMT_ENABLED_BIT, &e->flags))
+ 			continue;
+ 
+@@ -684,7 +701,7 @@ static struct binfmt_misc_entry *create_entry(const char __user *buffer,
+ 					      size_t count)
+ {
+ 	struct binfmt_misc_entry *e __free(kfree) = NULL;
+-	char *buf, *p, *flags;
++	char *buf, *p;
+ 	char del;
+ 
+ 	pr_debug("register: received %zu bytes\n", count);
+@@ -780,18 +797,29 @@ static struct binfmt_misc_entry *create_entry(const char __user *buffer,
+ 	}
+ 
+ 	/* Parse the 'flags' field. */
+-	flags = p;
+ 	p = check_special_flags(p, e);
+ 
+ 	/*
+ 	 * A bpf handler decides the invocation flags per exec with
+ 	 * bpf_binprm_set_flags() rather than fixing them at registration, and
+ 	 * 'F' (pre-open a fixed interpreter) is meaningless for it, so a 'B'
+-	 * entry's flags field has to be empty.
++	 * entry carries no invocation flags.
+ 	 */
+-	if (test_bit(MISC_FMT_BPF_BIT, &e->flags) && p != flags)
++	if (test_bit(MISC_FMT_BPF_BIT, &e->flags) &&
++	    (e->flags & MISC_FMT_INVOCATION_FLAGS))
+ 		return ERR_PTR(-EINVAL);
+ 
++	/*
++	 * 'D' is a directive for this registration rather than a lasting
++	 * property, so consume it: the entry is created disabled and stays
++	 * out of the search list until '1' is written to its entry file.
++	 * The first enable publishes it, for good.
++	 */
++	if (e->flags & MISC_FMT_DISABLED) {
++		e->flags &= ~MISC_FMT_DISABLED;
++		clear_bit(MISC_FMT_ENABLED_BIT, &e->flags);
++	}
++
+ 	/* Transparency preserves the whole argv, argv[0] included. */
+ 	if ((e->flags & MISC_FMT_TRANSPARENT) &&
+ 	    (e->flags & MISC_FMT_PRESERVE_ARGV0))
+@@ -852,6 +880,12 @@ static int parse_command(const char __user *buffer, size_t count)
+ 
+ /* generic stuff */
+ 
++/* The root directory's inode; its lock serializes configuring an instance. */
++static struct inode *bm_root_inode(struct super_block *sb)
++{
++	return d_inode(sb->s_root);
++}
++
+ static void bm_seq_hex(struct seq_file *m, const u8 *data, int size)
+ {
+ 	for (int i = 0; i < size; i++)
+@@ -992,10 +1026,11 @@ static void remove_binfmt_handler(struct binfmt_misc *misc,
+ /* Remove @e unless it was already removed. */
+ static void bm_remove_entry(struct binfmt_misc_entry *e, struct super_block *sb)
+ {
+-	struct inode *root = d_inode(sb->s_root);
++	struct inode *root = bm_root_inode(sb);
+ 
+ 	inode_lock_nested(root, I_MUTEX_PARENT);
+-	if (!hlist_unhashed(&e->node))
++	/* A staged entry is not hashed; the dentry says if it was removed. */
++	if (!d_unhashed(e->dentry))
+ 		remove_binfmt_handler(i_binfmt_misc(root), e);
+ 	inode_unlock(root);
+ }
+@@ -1004,13 +1039,21 @@ static void bm_remove_entry(struct binfmt_misc_entry *e, struct super_block *sb)
+ static void bm_remove_all_entries(struct binfmt_misc *misc,
+ 				  struct super_block *sb)
+ {
+-	struct inode *root = d_inode(sb->s_root);
+-	struct binfmt_misc_entry *e;
+-	struct hlist_node *next;
++	struct inode *root = bm_root_inode(sb);
++	struct dentry *child = NULL;
+ 
+ 	inode_lock_nested(root, I_MUTEX_PARENT);
+-	hlist_for_each_entry_safe(e, next, &misc->entries, node)
+-		remove_binfmt_handler(misc, e);
++	/*
++	 * Walk the directory rather than the search list: a staged entry
++	 * is in the former but not yet in the latter. The control files
++	 * carry no entry and stay.
++	 */
++	while ((child = find_next_child(sb->s_root, child))) {
++		struct binfmt_misc_entry *e = d_inode(child)->i_private;
++
++		if (e)
++			remove_binfmt_handler(misc, e);
++	}
+ 	inode_unlock(root);
+ }
+ 
+@@ -1067,9 +1110,27 @@ static ssize_t bm_entry_write(struct file *file, const char __user *buffer,
+ 	case BM_CMD_DISABLE:
+ 		clear_bit(MISC_FMT_ENABLED_BIT, &e->flags);
+ 		break;
+-	case BM_CMD_ENABLE:
++	case BM_CMD_ENABLE: {
++		struct inode *root = bm_root_inode(inode->i_sb);
++
++		/*
++		 * The first enable publishes a 'D' entry into the search
++		 * list, whole. The lock keeps that ordered against a second
++		 * enable and against removal; a removed entry has nothing
++		 * left to publish.
++		 */
++		inode_lock(root);
+ 		set_bit(MISC_FMT_ENABLED_BIT, &e->flags);
++		if (hlist_unhashed(&e->node) && !d_unhashed(e->dentry)) {
++			struct binfmt_misc *misc = i_binfmt_misc(inode);
++
++			spin_lock(&misc->entries_lock);
++			hlist_add_head_rcu(&e->node, &misc->entries);
++			spin_unlock(&misc->entries_lock);
++		}
++		inode_unlock(root);
+ 		break;
++	}
+ 	case BM_CMD_REMOVE:
+ 		bm_remove_entry(e, inode->i_sb);
+ 		break;
+@@ -1112,10 +1173,13 @@ static int add_entry(struct binfmt_misc_entry *e, struct super_block *sb)
+ 	inode->i_fop = &bm_entry_operations;
+ 
+ 	d_make_persistent(dentry, inode);
+-	misc = i_binfmt_misc(inode);
+-	spin_lock(&misc->entries_lock);
+-	hlist_add_head_rcu(&e->node, &misc->entries);
+-	spin_unlock(&misc->entries_lock);
++	/* A 'D' entry stays out of the search list until its first enable. */
++	if (test_bit(MISC_FMT_ENABLED_BIT, &e->flags)) {
++		misc = i_binfmt_misc(inode);
++		spin_lock(&misc->entries_lock);
++		hlist_add_head_rcu(&e->node, &misc->entries);
++		spin_unlock(&misc->entries_lock);
++	}
+ 	simple_done_creating(dentry);
+ 	return 0;
+ }
+
+-- 
+2.53.0
 
 
