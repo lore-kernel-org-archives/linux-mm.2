@@ -4,84 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B16CC54FDF
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 09:22:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36484C54FD2
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 09:29:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6BE426B00A3; Thu, 30 Jul 2026 05:22:20 -0400 (EDT)
+	id 03AC86B0099; Thu, 30 Jul 2026 05:29:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 66F466B00A6; Thu, 30 Jul 2026 05:22:20 -0400 (EDT)
+	id 012BC6B009D; Thu, 30 Jul 2026 05:29:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 537316B00A7; Thu, 30 Jul 2026 05:22:20 -0400 (EDT)
+	id E6B136B00A0; Thu, 30 Jul 2026 05:29:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2BCAA6B00A3
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 05:22:20 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8FDC01408E5
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:22:19 +0000 (UTC)
-X-FDA: 85044901998.13.B9E8A6F
+	by kanga.kvack.org (Postfix) with ESMTP id BEC3F6B0099
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 05:29:08 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 55BA080337
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:29:08 +0000 (UTC)
+X-FDA: 85044919176.16.1E73563
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id B75171C0003
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:22:17 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GX8vXUoM;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf24.hostedemail.com (Postfix) with ESMTP id 89141180002
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:29:06 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mRnkjc8P;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785403337;
+	s=arc-20220608; t=1785403746;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tG6cmXvm95wjXcqB8dvCOqPznntDpzBFT2+tmIJffq4=;
-	b=iNleAe+dCUupPMI2EFt4SE+7fA7Nu7CQD0GWKi0es/qIOeruopRhJ1oDWFeMUMEIzzTNeB
-	bwIxPc6gLjgVvSfFEmEKzDgsqw1aRhlNw+aNnOGKlrNQMNxtv9LPfZMex6SUNf9S0Vz/5H
-	wMLbafn4VgLJSsJkn7j1k/9DD5Cdnao=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GX8vXUoM;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=qF85TGZj/niZ/mEGZlYzqc0cbtZ0CgIxmW9zrjZkIk8=;
+	b=UsuT49L1HgcNkzJ7RmJT5io+lQ7Bzaz/FMblMw1mj5g+YSuV5KZ1QsfZKbc6SWxYvd1y7f
+	FY2dBcZOSribsPvf7aNhe+YyqOyj6tok+SpzDk9X4hiAFUZaw/m9CAj/m+P3AumBIXKjBW
+	qTuAi05Vu6HZwD8U+yuQLoraVgBeWFA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785403337;
-	b=PqfbffQmwD7b2T2rcRqN2yR4UZnGA82l6QV7Suvydy3trNIe6r/n7Wm21LCdpJCDrZ1ZeQ
-	j8u85IWbMjcyej4r4799SXJ/OVFayMjNGGaOeJsA2UtddYQoocCtqN3serX/LKEM+BwANp
-	AKaIvHgr270xBJNYgIcDfRBbnzKQ6Ms=
+	t=1785403746;
+	b=PSZOEY3nrY4yJnDqC1VgDRwcstU3heFASUX89LNHFoxpYVYedxXKhHgDoCKs+Drw5A6lu/
+	bf3eqPmkzyna6sRv6Y2qOMRFKQGMb5c3tBGt7ajSKl0orTUc5gSDKmKnZkhaDeV3vTmi+H
+	ndl35wHcP89Pz0KTCTa+h1KT6xeIebw=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mRnkjc8P;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id F3820400C3;
-	Thu, 30 Jul 2026 09:22:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C4731F000E9;
-	Thu, 30 Jul 2026 09:22:11 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C11FD41FA5;
+	Thu, 30 Jul 2026 09:29:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FF251F000E9;
+	Thu, 30 Jul 2026 09:29:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785403336;
-	bh=tG6cmXvm95wjXcqB8dvCOqPznntDpzBFT2+tmIJffq4=;
+	s=k20260515; t=1785403745;
+	bh=qF85TGZj/niZ/mEGZlYzqc0cbtZ0CgIxmW9zrjZkIk8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=GX8vXUoMPS74Qq8B+Tq0b69jgz1uhRRrIyHKabEiUKKHoZ3ViacaCkpqYYKZxIznj
-	 qKZujjl4n7lvWZvgjgYibkx1/Q6L1sJivWDRu9PqF3gpRocIh3EfbVSQiv42bW3l8Z
-	 H6cQ6UXiyy3c+DwXRrc21ng5ngJkQm7p2lN89KowbtQNAUA3kxIGG5At/zQx1P4Y5p
-	 hMSTe1AjsBHgikiEWt5QFdZjCvbmTZNg3IwjkZia+m9H40VM8RNB10KIzgPRPTcAMh
-	 WIoAmUZQen4gm8AKrSCNKIMRyxdx374WRlzA7z6xPR9p120jYLbXl20S/OZPoVTImi
-	 LC6oeUUSdNBiA==
-Message-ID: <25d560df-6d7e-462a-a987-60a8695793ba@kernel.org>
-Date: Thu, 30 Jul 2026 11:22:09 +0200
+	b=mRnkjc8PEzcdgLosKuDo9W5Ok4pnCQFFHZKl7jIH1MyWc5UZ6Z/M9+dpM8y0Loil5
+	 Lf4IJRMSwIWFjqzPwylw3L5+M7v4ZbOBWytqAS+1Bz+vDriy2Q6fzncCPE1jIM03bz
+	 efxJk4g2FEqWtJMOCVNbvH8zHvjQqozYIQk6q0Z1jpuvxSjADF2gT1XmrBUKutHJSO
+	 cdPIwwKFEVz5UfiWVcaWSZL7N98QUM/BbGVlWIvZe8hA3/PJ++4PnJEK+fkDZtWk+A
+	 DyjrbAh5GLzSIpBbMsm0beKvzr3yfHjXJ2njrCoYddtASaeLL0cfkwt4rWBvYUcssC
+	 jUkZEpG13Phng==
+Message-ID: <6a3bfdb9-7839-4f39-ba5c-5a0c55055aee@kernel.org>
+Date: Thu, 30 Jul 2026 11:28:59 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-hotfixes 2/2] mm/huge_memory: fix huge_zero_pfn race
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Pankaj Raghav <p.raghav@samsung.com>,
- Hannes Reinecke <hare@suse.de>, Hugh Dickins <hughd@google.com>,
- Yang Shi <shy828301@gmail.com>, Kiryl Shutsemau <kas@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Hengbin Zhang <uqbarz@gmail.com>, stable@vger.kernel.org
-References: <20260728-fix-refcounted-huge-zero-v1-0-3f261f5447b4@kernel.org>
- <20260728-fix-refcounted-huge-zero-v1-2-3f261f5447b4@kernel.org>
+Subject: Re: [RFC PATCH v2 1/2] mm: allow smaller large folios to use
+ lru_cache
+To: "Barry Song (Xiaomi)" <baohua@kernel.org>
+Cc: akpm@linux-foundation.org, baolin.wang@linux.alibaba.com,
+ dev.jain@arm.com, lance.yang@linux.dev, liam@infradead.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org,
+ mhocko@suse.com, npache@redhat.com, rppt@kernel.org, ryan.roberts@arm.com,
+ surenb@google.com, vbabka@kernel.org, ziy@nvidia.com
+References: <229c3079-8fde-41b4-9d6c-f0e34f780555@kernel.org>
+ <20260729222651.31321-1-baohua@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -128,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260728-fix-refcounted-huge-zero-v1-2-3f261f5447b4@kernel.org>
+In-Reply-To: <20260729222651.31321-1-baohua@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 89141180002
+X-Stat-Signature: 7ywf1pzk4sf7opajiujr3h9dsychjhda
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B75171C0003
-X-Rspamd-Server: rspam01
-X-Stat-Signature: hokebsxuk7mceymw7h75h3riuaz3o38p
-X-HE-Tag: 1785403337-664618
-X-HE-Meta: U2FsdGVkX19cPsP9Pcg/hZ7rPgodyBpFIVP3KaxkD/6FkOH5qNscAFVxixUc3RMMVaE/jLAzZ8h1/zxt+I+hDa0NmMlp21/Jq2py9bARRV/e72GlyTvF34SviU2x7X+V1z82Dz6HQ5blSLf0o0E/Mh95ICIgiDFVX0fZhO3E/Hqh4EifB1LH1exVJw6ewWDk4wRg7RqhAebVrZ+cae2eizMU8FzYMmDaO/RnK0Jra8cqzMOXRQvL0aPqPGX89tc77ng785pRLv7DLeRX+KHgMx711My/iZUX4TH+bM6zVVyRsRlObYF/VKe+411affBWyhBF+Y9z1AnALO4Da49f0kDvscez8uKGhtcJ7b4t1GROow5dD7ZGOymFsgxyiop8Ol7C565xtS6PU0PSKNFiAiO7Cz2QEUnASC1Fwhd0TJlrSUFaRZ5Rz8HVDaX12em9jVWpnfehf7X3NCHSnMFZo7IKpYhvh2i6hKXAfnGo0mjVZ7wMtD0leVQEACD3P+bC1W4qmlZMtSRQAdmQPgz59/ubBPNUilElWs2Oa9dUK1o3MAW8dPp/fcy4KiYBJ8eHiiCJmUXKe+XDVDWl7JzUJQGMTjlcxeUZzdteKwSB6Oq7RDbgcKchgmU85Ir23l1zg5fUHo5Vbilk1E2eatqo6TqPppOXekRzyv8jWVqZX95HeOHavVXqKvkl7a4pikmeTMhjtXmVu1fszq3EW1fLgW9Xv0jmUW2snKMRBMhMmQsWrBNwPxFt4F0uDz1WuOJBnVLxDBb8pxJjYolPVYt22TEVNMGjGCdn1Y3SRmgXkyRe7YSgOaFltuR/nuOI14A3EXqoEBDVWWF0LfJsSblWOc9g0QMLvuulmHJ8hGhDF1frph4kZ9FSykid4/oaf+CZgoTwU6GKQ6CWd8HiXk+Mm4kSAHZVHP99+Fyy3wCQqdmSJX4CdUunLgb958yqnwcBF8NZjUaeq++8kV7YZqh
- qIH7GycA
- VK2EXTLjxCzCovWZ9P9fZdM9hfkb4w+Tg62lj2F/9NLVLPnnV8UqVQc8GC0LoyBC3bqdfzgk9ZqZrYhAABP7VP2z9KSbF7zE2izKM+Ud6YM14eq/kegHMxm+tgRJYAsEv8G+zFC/lW8dSG8at1BYPK/hY6NsU0l2slR5gg3CYDFi9ujTatqqZ4mnaD/ggFUtsNkuSa7Yv5ghinAq4WKwuUJ+Ay6n/EvJjvPic4s96fZoHcqM4AEvLMF8S8RQhBZD8tD9tTG8CrsYX/ewXdTLtE58vieAt0ScTys0cbwswpIyVX6aCslBT8lxdlQ==
+X-HE-Tag: 1785403746-29618
+X-HE-Meta: U2FsdGVkX181l/GiSuYwMzu5QFACZAlrJEQhgj2oRSKvzgcaGq9adNbI0qM8FY3fUH4DZI1m45pFsodGfMXUMzgRmqAQYxI0oP46uvG6sAelwwlhXLu+1kclBPxNj+tpyOoRKgJOfVYdJ84RgZZtOZJWJsGweUnk1gjJy1XW83/sLxt48KOSzpdsN91xun/3AQOsWaN/d/ajcUMoHEoIeklrjTEIyaC3+Gjxj1Xe5sFZsA3cA3jwsNw6MXg53TtstfQK7IfBzvlSPjYHEK7n6UsVpo3KyqwmlLmSM+O5OtxEv1czCHg3tGQuk2j+jVNYhdCSf/yQH8xQqZoXf2Nf0gwiskxdZiFgI9kJ/GNhQkQnhyp7DMoDskeGKXw23XBiH8O7haeJEhIRVuoZpXqhMPIL/W3D2mOXJeVLDo5DYu6nLbDOV50ZRy19Gl6ljaVavLZWYfTDvSCVRW+qkEF3+tcz7Sqw4/dttO8MxAcPoC0qWhEOpaQkIUCPxNhpGxjwvelJotPx1OazzEXFLEP3FGySEb/VLUl/BUnSpgLwD0sUrpti00cpl2NOkGjthk+LTFlDZ8oa6AJ1AkAm4ClszGkKjC6cW0i6UcTxCaNjI1mbe4CKNYA7AQFxxCnY3Xrasc/JRyCn/C+VA0Hu9ii9gB5VsmSOUtVO5Mo+lz8QCgYE0ie9+ImBmYH7nIpG2WHxrDId4gzqtXqMUj1FDV+tkXiI/7IBYuCMUbH1RArUk3BKcrrjAZG4LqdX/zoE+cehWpLo5Pitsjl99Q+VtEyTJaFeLBV473x0kHEzCuCg2TdJj65ZNeO2ikgf1vT6CPqry9UPIK94Xldef/ZvBala/86y/n5XZmAO8h85r1R1WAoRa6ZghIp0P5lMf2W7wtJGL/AeiyatuvPUDTXLgAumzzS8blXTMrf/zegEaVZf3XwpfsiewhCUKyZMBOV/5w0KHEym1q19M0EPd6Tdjb3
+ qxSjzB/m
+ KGEYyAA7zvzPLylda5phcDFVYnaXMYmxSic6O7x6pzXZXLJK6h/6lWyOfdYX8dhAMcd1p0NZFdQNPMxe6gPAv1eabOTu12RNr9acRsQIpYUuWF2j+qtbH6qBrAdyXjHq8mtm7hwLRhbtqn2wuWPNJvramw/SK89s+dxMgTS23HOMrZQ1B9tsydn1l6dqXeJoprGbgFHrovXCqRLUqGLrtf35ylO3YKxjJQBl74NV09Pgzxk7wDWaRRs6TEeNF7W0RCA33lfvdf7SBbjghsd6u4keOkQGwH4rg4KpciK8LQP1xxsH0vBhxU10Ni+1sRcu1zJE94dKMgWdi9Yarl3ZwpelUiIVe959kxV2st8ziXEjP6FGwFB/e3jC9d0zQuk7iik/J
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,135 +142,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-[...]
-
-> So invariants are required - huge_zero_refcount MUST:
+On 7/30/26 00:26, Barry Song (Xiaomi) wrote:
+> On Wed, Jul 29, 2026 at 8:13 PM David Hildenbrand (Arm) <david@kernel.org> wrote:
+> [...]
+>>> diff --git a/include/linux/swap.h b/include/linux/swap.h
+>>> index 8d19be675baf..9c5f7a11c7b0 100644
+>>> --- a/include/linux/swap.h
+>>> +++ b/include/linux/swap.h
+>>> @@ -316,9 +316,9 @@ static inline bool folio_may_be_lru_cached(struct folio *folio)
+>>>       /*
+>>>        * Holding PMD-sized folios in per-CPU LRU cache unbalances accounting.
+>>>        * Holding small numbers of low-order mTHP folios in per-CPU LRU cache
+>>> -      * will be sensible, but nobody has implemented and tested that yet.
+>>> +      * will be sensible.
+>>>        */
+>>> -     return !folio_test_large(folio);
+>>> +     return folio_order(folio) < PAGE_ALLOC_COSTLY_ORDER;
+>>>  }
+>>>
+>>>  extern atomic_t lru_disable_count;
+>>
+>> Sashiko rightfully raises that split_folio() can now fail more easily.
+>>
+>> So we might want to proactively drain (earlier?) on some more of the split paths.
 > 
-> * Only be set in the huge_zero_lock critical section to ensure
->   serialisation of huge_zero_pfn, huge_zero_folio and huge_zero_refcount
->   writes.
+> Yes, this is a pain. I haven't tested it, but perhaps a
+> conceptual model could be something like this?
 > 
-> * Be set non-zero only AFTER huge_zero_[pfn, folio] are set to valid values
->   so installation of the huge zero folio on read page fault ensures
->   concurrent is_huge_zero_*() calls correctly identify the huge zero folio.
-> 
-> * Be set zero only BEFORE huge_zero_[pfn, folio] are set to NULL and ~0UL
->   respectively, and atomically.
-> 
-> Establish these by:
-> 
-> * Only updating huge_zero_refcount in the huge_zero_lock critical section
->   in get_huge_zero_folio() and shrink_huge_zero_folio_scan().
-
-That is imprecise. huge_zero_refcount is updated (incremented) outside of
-huge_zero_lock in get_huge_zero_folio().
-
-> 
-> * Using atomic_set_release(&huge_zero_refcount) in get_huge_zero_folio()
->   after huge_zero_[pfn, folio] are set. This is paired with
->   atomic_inc_not_zero() to ensure atomic_inc_not_zero() only observes a
->   non-zero value if huge_zero_[pfn, folio] are set.
-
-That makes sense, yes.
-
-> 
-> * Using atomic_cmpxchg() in shrink_huge_zero_folio_scan() to ensure that it
->   is set zero only when equal to 1 and set atomically.
-
-What we already do, yes.
-
-> 
-> * atomic_cmpxchg() being fully ordered ensures this is done prior to
->   huge_zero_[folio, pfn] being set to NULL and ~0UL respectively.
-
-Which is always the case for atomic_cmpxchg() I think, yes.
-
-[...]
-
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 04e8a6b55343..fcd449dec96b 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -4069,6 +4069,8 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
+>  	struct folio *new_folio, *next;
+>  	int nr_shmem_dropped = 0;
+>  	enum ttu_flags ttu_flags = 0;
+> +	bool maybe_in_lru_cache;
+> +	int expected_ref_count;
+>  	int ret;
+>  	pgoff_t end = 0;
 >  
-> @@ -270,7 +272,8 @@ void mm_put_huge_zero_folio(struct mm_struct *mm)
->  static bool get_huge_zero_folio(void)
->  {
->  	struct folio *zero_folio;
-> -retry:
-> +
-> +	/* Paired with atomic_set_release(). */
->  	if (likely(atomic_inc_not_zero(&huge_zero_refcount)))
->  		return true;
->  
-> @@ -278,17 +281,21 @@ static bool get_huge_zero_folio(void)
->  	if (unlikely(!zero_folio))
->  		return false;
->  
-> -	preempt_disable();
-> -	if (cmpxchg(&huge_zero_folio, NULL, zero_folio)) {
-> -		preempt_enable();
-> +	/* Paired with critical section in shrink_huge_zero_folio_scan(). */
-> +	spin_lock(&huge_zero_lock);
-> +	if (huge_zero_folio) {
-> +		/* Somebody else already installed it. */
-> +		atomic_inc(&huge_zero_refcount);
+> @@ -4154,7 +4156,15 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
+>  	 * Racy check if we can split the page, before unmap_folio() will
+>  	 * split PMDs
+>  	 */
+> -	if (folio_expected_ref_count(folio) != folio_ref_count(folio) - 1) {
+> +	maybe_in_lru_cache = folio_may_be_lru_cached(folio) && !folio_test_lru(folio);
+> +	expected_ref_count = folio_expected_ref_count(folio);
+> +	if (expected_ref_count + maybe_in_lru_cache < folio_ref_count(folio) - 1) {
+> +		ret = -EAGAIN;
+> +		goto out_unlock;
+> +	}
+> +	if (maybe_in_lru_cache)
+> +		lru_add_drain_all();
 
-You replace the retry loop by an atomic_inc() here.
+The drain-all is nasty. In  collect_longterm_unpinnable_folios() we escalate the
+drainining.
 
-That works now by moving the atomic_cmpxchg() in shrink_huge_zero_folio_scan()
-under the lock as well, so it cannot go away concurrently.
+I think we recently stumbled into a similar problem in guest_memfd.
 
-Worth spelling that out in the patch description (unless I missed it).
+Ah, yes, there it is:
 
-> +		spin_unlock(&huge_zero_lock);
->  		folio_put(zero_folio);
-> -		goto retry;
-> +		return true;
->  	}
-> +	WRITE_ONCE(huge_zero_folio, zero_folio);
->  	WRITE_ONCE(huge_zero_pfn, folio_pfn(zero_folio));
-> +	/* Paired with atomic_inc_not_zero(). +1 for shrinker pin. */
-> +	atomic_set_release(&huge_zero_refcount, 2);
+https://lore.kernel.org/r/20260728-gmem-inplace-conversion-v9-14-35f9aec2aed2@google.com
 
-Ah, that must now go into the lock as well, otherwise the concurrent
-atomic_inc() would be problematic as well.
-
-> +	spin_unlock(&huge_zero_lock);
->  
-> -	/* We take additional reference here. It will be put back by shrinker */
-> -	atomic_set(&huge_zero_refcount, 2);
-> -	preempt_enable();
->  	count_vm_event(THP_ZERO_PAGE_ALLOC);
->  	return true;
->  }
-> @@ -312,15 +319,22 @@ static unsigned long shrink_huge_zero_folio_count(struct shrinker *shrink,
->  static unsigned long shrink_huge_zero_folio_scan(struct shrinker *shrink,
->  						 struct shrink_control *sc)
->  {
-> -	if (atomic_cmpxchg(&huge_zero_refcount, 1, 0) == 1) {
-> -		struct folio *zero_folio = xchg(&huge_zero_folio, NULL);
-> -		BUG_ON(zero_folio == NULL);
-> +	struct folio *zero_folio;
-> +
-> +	/* Paired with critical section in get_huge_zero_folio(). */
-> +	scoped_guard(spinlock, &huge_zero_lock) {
-> +		/* Paired with atomic_inc_not_zero() in get_huge_zero_folio(). */
-> +		if (atomic_cmpxchg(&huge_zero_refcount, 1, 0) != 1)
-> +			return 0;
-> +
-> +		zero_folio = huge_zero_folio;
-> +		VM_WARN_ON_ONCE(!huge_zero_folio);
-> +		WRITE_ONCE(huge_zero_folio, NULL);
->  		WRITE_ONCE(huge_zero_pfn, HUGE_ZERO_UNSET_PFN);
-> -		folio_put(zero_folio);
-> -		return HPAGE_PMD_NR;
->  	}
-
-One important point: The folio can't get freed and reallocated before we updated
-huge_zero_folio/huge_zero_pfn I think.
-
-The folio_put() should involve a full memory barrier (atomic RMW) and not get
-reordered.
-
-So we cannot misclassify the folio in new context as still being the zero folio.
-
-LGTM, thanks!
 
 -- 
 Cheers,
