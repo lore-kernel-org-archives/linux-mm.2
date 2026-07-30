@@ -4,131 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E61D3C54FD2
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 03:32:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2154C531D0
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 03:55:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 93C5A6B0088; Wed, 29 Jul 2026 23:32:13 -0400 (EDT)
+	id 637106B0088; Wed, 29 Jul 2026 23:55:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8EDB26B008A; Wed, 29 Jul 2026 23:32:13 -0400 (EDT)
+	id 5E86E6B008A; Wed, 29 Jul 2026 23:55:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7DC8A6B008C; Wed, 29 Jul 2026 23:32:13 -0400 (EDT)
+	id 4FDE76B008C; Wed, 29 Jul 2026 23:55:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4EA2A6B0088
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 23:32:13 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BCAC3C0839
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 03:32:12 +0000 (UTC)
-X-FDA: 85044019704.26.A1144CB
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
-	by imf16.hostedemail.com (Postfix) with ESMTP id D290B180003
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 03:32:10 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=ARQGLKKe;
-	spf=pass (imf16.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.47 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 25E3F6B0088
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 23:55:57 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8A4DA1608D7
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 03:55:54 +0000 (UTC)
+X-FDA: 85044079428.28.2400951
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id F0A6040006
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 03:55:52 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bwYmmaMu;
+	spf=pass (imf27.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785383753;
+	b=Wt+A+bEj+gooGUi1qqKWQF6VMKp9TcQqbxN+GJVz/dJVagX13ftKVFWwqS5m6wHxWqCMMv
+	rsYRf6k1tHxSWR7ZqBp+kjfeU2ZU6aKG7Yans0QEQiiAhtiLwlD5OUDTE6JNDTN3oWJuWK
+	viikYEmXZtoAgj7gjN7EhbO9lU++aqY=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bwYmmaMu;
+	spf=pass (imf27.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785382331;
+	s=arc-20220608; t=1785383753;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HJ2tPnxbrcFKcFZzwn864hCbrfOqlBJ/Hk+311dwGeA=;
-	b=uNos783yLtJzm0pojN7JT/luDjZ0ubNnW4q9ZurWPwVW57uwHKzLMc642Cuj56VaS2lrsp
-	9H75dD4P2qkdumIc8IyKTX5GANCQRKAA7+iQ2pqvQz/ehC6/WRYbFmb59TD9/35GsyB+qe
-	WLigzksurn3So006kw8A7qxbki9BZsE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785382331;
-	b=jwCjQTgQVSu7WewZ77fQzPSoGft0nSsZAx4zxxv9nWMj0zWloB/qvl04/AakaYoxQx+Erw
-	KDIpzPIXBdXoeN1/TKxgR4bJFXDe6HhESG56TuNBcizoaqT5yT6AKmSuVpAcyDF0DfJaZC
-	QaRkQWErgQ58Q8NAYNQ+/C6MJraBlDw=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=ARQGLKKe;
-	spf=pass (imf16.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.47 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-8f29ec73064so11183166d6.1
-        for <linux-mm@kvack.org>; Wed, 29 Jul 2026 20:32:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1785382330; x=1785987130; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=HJ2tPnxbrcFKcFZzwn864hCbrfOqlBJ/Hk+311dwGeA=;
-        b=ARQGLKKe8qjF9JKO+qBpI6TxTuK2EXUdnEmID9veCmNWUWHTNw4DTcTXDZ0uREu5qG
-         sKUsb2D6Nais5by2xc3BmVTMxZOHdvhdgV//GGVIcYy5zhN/dH61H2rFWMTqvOVOaxgM
-         WYah0Bo/ONzyIj2E9/H9vbWRM4CpBE/yOOodTXL+WQGCY1dvlcT+ZFKWIOemgX63wbGe
-         9M6v75jhQyJM7Y6IZh1rs7LBoAqLpuPsh6Nb+D87GSQa39IKBTnHGIZfnPuNh6twKau4
-         BtEn4L/orKZBRXHjz0w8eUPqQMl2k/lAwCstdRrrzX6nXO+7C0Li4K3g1XXlGkzoqj8E
-         KTlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785382330; x=1785987130;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=HJ2tPnxbrcFKcFZzwn864hCbrfOqlBJ/Hk+311dwGeA=;
-        b=cmzN4rTC4rWKKoWv8jZvViF+hOyjDJr/QZIxwj8FkE7TzZia6hbDfMFfWubcF3I09g
-         sShr6/IVWSu4YcFwJ9k2rm973epa3eK8k6kRmmXAaC+l/T80chSgV++XMGf9fwM1Dr8P
-         vj28Tpr4n3G7Apk8bNt4RhNKgAVc/EH7ZwFcsjqPXd1noQdUXJkwrrf1YXy/R8SadkTp
-         ckYATprnJmVX6X77ewqLloa5C7konrKd7ieOF+ezb30I2Lf/Ne0VxL7e0++Ep+x0jB2a
-         X+jiT/k31lDTOUqq+YcKMNVLE2Vz11/DoFdQqkGxA24gO+spVTGr4cucsOYgOpF7tfz6
-         7pcQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpNOskRzeMURDXsByY6VRaIU7bBX1ASiyv84QYmgM5YDzN5pjmluXeDWF8iyQuvBIUJABkgsXEo6A==@kvack.org
-X-Gm-Message-State: AOJu0Yx2/sk+UAVrvstFd53kbOqWw95RhGXljIAGAWJuVzfm/+AnaqI/
-	L1FtLzhCOVAjDGxPuJ94uGBIfIghgXBCdyQ6knTTzmLFuv9LiYH98VThgWrk8hdOAKw=
-X-Gm-Gg: AR+sD13eG0ZQxLPUt0cvtoBcwbwKPhkqOTa78pDPaWPGAiCsEdBHbJRXNtW6a7dbbaC
-	nNEOGvHpqaJdi1Utrokuic/CO4AE4QpqI4fIQ5YEZEa0EkTWyyo6+Aakh56erhan+GqOVKwWe0H
-	5RHQTDCtzV25fjzzdZjsyIE0UraoIcQOl/bzWyaT7eruNH/50x9V80T1UKiBcm7/loggPxWnOeA
-	fuuRhOKXlVMHbyzCWTmK2zElszTHRBw8yuOBoXFNG8KKOxmxqyT1BYwuhzIcSTRadPado7OT4nh
-	ikzfzy1TNAkvhdjtRid0+vDCIXnjvQfgcrUdkGbDuzw5pkzXwgEC3Zoguu5y3fD6ND4DMRczNqC
-	T7auNF7V5XW5G2UDPwTw/nX/4i4ddjoeLVCwEeDrdBJHCQ2/BL8gN96xstCgSI1YigTMw7CcNd4
-	1LFSlPvLKjx8nrh3cL51S5CPNxZ3bBSqGDCHdPqbofo4yXErYP2rbAqg7fix1YpkxBYFWInL8pE
-	IDM5S9BPnGEYjQ+0MtiEbGiULK8WzuEiwuTPPezRqWv
-X-Received: by 2002:a05:6214:3b88:b0:8ea:7785:f3e6 with SMTP id 6a1803df08f44-908347b2701mr8202616d6.42.1785382329952;
-        Wed, 29 Jul 2026 20:32:09 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-908323eb01esm6949626d6.30.2026.07.29.20.32.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jul 2026 20:32:07 -0700 (PDT)
-Date: Wed, 29 Jul 2026 23:32:04 -0400
-From: Gregory Price <gourry@gourry.net>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
-	Pedro Falcato <pfalcato@suse.de>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Jan Kara <jack@suse.cz>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Usama Arif <usama.arif@linux.dev>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
-	Peter Xu <peterx@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Arnd Bergmann <arnd@arndb.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v3 01/15] mm/vma: introduce VMA anon page offset field
- and add helpers
-Message-ID: <amrFcza2MxHb2cTX@gourry-fedora-PF4VCD3F>
-References: <20260729-b4-scalable-cow-virt-pgoff-v3-0-e8ecfefea812@kernel.org>
- <20260729-b4-scalable-cow-virt-pgoff-v3-1-e8ecfefea812@kernel.org>
+	bh=jL29vjJ77VLrRPv/DZmmHHNOBf84TNgv+nTdSJjkQvo=;
+	b=HvCwSpJiIh06gJNx3HVwZqRga4T8sxCxXD5xY4IMkgrTfFVdDe3GeBYj7vcfuSkK8EZ3d3
+	gISWuW80IjS76DO/ouYrasaPYTGjgLo39bE6WH+iCMKH+TKZFTSazF9boFZOLam5AGVqiC
+	0AzxjHcug21ZIMvv/+ZvOciuSr9q6QA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 9489D600AB;
+	Thu, 30 Jul 2026 03:55:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCD9B1F000E9;
+	Thu, 30 Jul 2026 03:55:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785383751;
+	bh=jL29vjJ77VLrRPv/DZmmHHNOBf84TNgv+nTdSJjkQvo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=bwYmmaMutasiKGCW3lMAx/RWsUKidEdyk7bHcb+ezqybzVcbC1EZaV2wEqfA5w8E5
+	 K5OEmEZ/FALpeYixasyUzvcH87KSuiNV/gvrvOkfqpKVazo6pxmu2GaFPLVBVBNG4w
+	 gJpkY54hNabxZoY7LJaT96ImlO6le+E8q+gQcmhJLf07x8JQVA4J29Pg8/sDxCHF1Y
+	 gft58FE7Sagc1oyYNrkhLHI1lsuwzkmkL5u7Ijii22xkZSswUqqgyzGo3td2mF70aX
+	 2FJ6NU4b+Om+kA/oIJx/gEXyGiepkRKJ64qYzABV6LEWbeQBAr+t9LiKDRz1f3lmvU
+	 eEb7x2s07bgGw==
+Message-ID: <dd0b5122-896a-4513-9a93-e3fe04bc3f73@kernel.org>
+Date: Thu, 30 Jul 2026 12:55:41 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260729-b4-scalable-cow-virt-pgoff-v3-1-e8ecfefea812@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mm/slub: fix missing debugfs entries for caches
+ created before sysfs init
+To: Li Xiasong <lixiasong1@huawei.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, yuehaibing@huawei.com,
+ zhangchangzhong@huawei.com, weiyongjun1@huawei.com
+References: <20260729101849.3734287-1-lixiasong1@huawei.com>
+Content-Language: en-US
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <20260729101849.3734287-1-lixiasong1@huawei.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------U4bzCzUcpYSrc5aXCF3vg0O0"
+X-Stat-Signature: 8u3j4u5g7xs5j7qnjtwai887xxrdtqhp
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: F0A6040006
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: D290B180003
-X-Stat-Signature: 9yejoxe1kxuuthyfeo4kbuontz9m74y9
-X-HE-Tag: 1785382330-417765
-X-HE-Meta: U2FsdGVkX1/GZpxjaxR7dNdJdTN3w7g6bPPJ1yv33s2GpOYDcvvU9nkvBXDWh+qZP2wiWhNsh7H1XWkQ0MeaDIEw5Wd1j17+5yIIfrgaJhhT84CfIy0/FDaLzfI/zaZ96PNXZuCzw6fs68F98WIJOEgwV8arjr9l5elMY116WFNrIlvSoLkqbvVlEwvsXYoRUESayaBTuTxaF0q9E8szk5EmzIClo9W+sW6WAmNMMC5T5qQ+Q2nUTVwvFERziYyusiNVwSiDOH4WwayCWvwtGXXz0usfmTUM10Qv5ZlKNQMAbtYMusaTZJgXa17+pZDCoszQ4eyRNiMOCNDix/faQreWIyV6L+eCXp65SC325CajxIvEraCRuOFDFZtYrnKUpQxCNTtJ76Wrj2nTP7nQfKvLG9OIWbri7elZ4QJ6i6CO2yq6TgVIZGG0Qf28rjD1r4e+scZkCPZwKEUj4V8tP5HsE1TBwm5T7eL4vT594xjhc5knieiLHVhJM/CS7hkX1QtuTi+pj33S/aEcLqDtCo3DB1nLUD8ZuMQCYlkw0+dsdwBNbgFzDvIi95nZ4omZ2UjQutKjlFV+VDlnttiL0KyVNAZTwEkzvzmvaI8DRD8NJYSDzFygB91JViLQKijPdfuxwH8+E81CmwcLY3eCjoJUqfPDgYdehb856U3ztThBiwPcZyusnPhtGYdRV8gK4sRqyGdAHNjrcVEPkbzzIEk0O/28iWrw9QsN3VZEzr1UajRsHKYYnhMHjZnqpoju28BpGw4UClK6XwPVTF2ODGtWeD0Yu67+RMn7tWOfyWhKKS9aKyrOLCe6+oyVVbxeCx8KeRN9b6TKbAT6jtEBVrCGleWzlF9/VA8dKMPdBd1WqBkHUXIK764rLDQ8B8OSHSZ1j9Hvk51fqrRoIWBj1dP4+K+Wha1PUUPKJXdwbPpHcSl3x2PAMJ6zKX1r6Eb2iGH8QOoh0G3NTWuXfdi
- wflKlN3x
- 81WBOfa6zvBKQCBcutlsfINvqRpAODuLeEEH4ERUa9K3CTpchTstA8VfY/k/F5FLNzYVFTHQN/qQ6swuEn/OHVQAtWa0lJYhngQO0/VvQQkoVvTxzI6QqH4qivATZXkYppHk9qbX4rbdGvxBMVI3HX+46yikktatriANQFf+823Z65OKm+9jqRiG6GmZ0qHZvCa9qkWZoWVZhwxk6gNMntC/skD7QrlxK2zs/IwD9pzBZTHopUcNG14G/1kWhCprG79MHJHvZbvnSx/Ls4LuNdlQrpBu1S0FcRdj703OXmXQPt7qubShJbqNpo8Zvbv1Y3h/jTBcETZQcPm2o1YgR7Gsx0ItFwYHyUb6nVj8zdb1+tm/cnRUJuP1uDrcC498hf/sB08AygPno/J2wWfwrhte06pjBKj9G4h5Mk6KAzMV8BPIV2p70nj1WAWPyxMJ3amTvx0R0BLlkRFmvWDJYZ78KzZkvepzoCadQjCB/j2JpGJ4=
+X-HE-Tag: 1785383752-113958
+X-HE-Meta: U2FsdGVkX18wlQDP+EPwUm/fG4ZnFELWSurmVcc6xf1SWtzOGqU0wVRtr/cB4IwO3mVFk6/LQh7fQEY4zURPsa1XGIJXghztUXOZzGLzDWQrKu4y37wBMQAXtd5uaK5XmP5GnB8QjkmP+bO0xq9OSZmJVm6f405yT9h4SUzzYAqh+0zOtuJq7dH1/lroCzl8BOk69yPDMoUwE/thDutIXfbq67698CNT0Gcckr5Qb+DdlV28NkrRKld0pyIjNBQf/VSKYJDhm6uPjRwcHg5q4TmOjmDOnLQ7GNedrAtp54574ar0yPIaoiw0G6JvN4L2Zh63nf215J88J98CnGYoiUKOjPijESh/zH1qEdAhf++IE9eoxjt+kkWZtv9MKKj08rVJcdWz2QamSXuQCHMNegXlf/f76q3T1hvOH+p24s7FPbDBGl2HsbMymz6h+J3/Mp0x/Xox1pQI5+oKWSs4UM8X+z446U1wZoqqpSj53J652hCeHyayVL20fkdb3B+q3a4s0gcw+hKtrV1GVU5RBE4fORR02WDv9lsLFP5PGOGXKNMiAJU0Sn4tTNCygKAFodgNZD/ITnxFucjxGklcIPMoIpXMUA48V/HAgf7aXPwGAo7JwuNxfHZ2uA6AAh/kBtXKRjLNqnK15QUDp4OG+hNaRYqfeRI+CdFmJWGzZkY+0zv9I+NBrLDFFXvpJChSa7QLLp+xeQbOd8ZcIjtioKNKJ0GwhAawJ4mrYQnAWB+jkYoIxxQNOlhrW84ijWEPU+4UDBgLZSNwcOeFWHUIarzOci7STnltUByVTF4GE92yOTGAtLfp/+bU2nRpAstf8txWXcV2ua0KG2X8ycc/qjUMlN2aIJ+isKDzmE3LxCVCI/30tuH0VhE3Jhuq3W8Cg2tlr3NeHVdAuSzgg886ayLpo/2E3SUY9ex8JuX89ksKY32AS2rpN/FSu7z1mYjXDUHTTfgGgAVCIgWsH0F
+ Uz/c1r87
+ 4HyA7dKTC4y93hJSmyR9HDFVIpxfvlxmEqByImGIYQbxUbGjQaPN4pyRywVzE8m4E5FvnEe8Z55hVcrFBpP7xumY/yAjL+YiBECq/AUZBSvkfM3ASEbRSdEoJoNzguNdOGwPe/+MlvkZZHM6/l3z7Y8QbOStCwi2gWrAALNSQ3OFy67n+BKWu3ijsIrONFzBeOobZUrFcbssWyOrV5N9OlAV9Rxazv+jutjmDlUoYVBgZAiIYICVVbN/TnF8vyS+DDfhz4gaET/0y6y/fld+zU/NSvgbRomeIjgu70HpDFdu9npNgcACohxUK8gVw48MXcw9+0eyiPDACiDVTPQP1WHbea2rNv83qWWrvxfSunMWvCjsqmGfO1ba7URWt838/fFfXeMo6qvwDkxrplNfHaIpj49uFe7/IWQQFgOFgFSRS+8Piqmmx1cczCk1t7XMF47D9aXhBuUciB14PpdIOpgKnWOeOD1ARceqcI7rM2EFekvJ1ZO37Vujoog==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,45 +99,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 29, 2026 at 05:48:36PM +0100, Lorenzo Stoakes (ARM) wrote:
-> This patch establishes fields within the vm_area_struct type to store the
-> anonymous page offset of VMAs.
-> 
-> The anonymous page offset of a VMA is equal to vma->vm_start >> PAGE_SHIFT
-> if they are unfaulted or were not remapped, otherwise it is equal to this
-> value at the point of first fault.
-> 
-> Currently, anonymous folios belonging to CoW'd MAP_PRIVATE-mapped
-> file-backed VMAs are tracked by their file offset. By adding anonymous
-> offset as a property of VMAs, we can now track them by their anonymous page
-> offset instead.
-> 
-> By tracking this, we provide the means by which to eliminate this
-> inconsistency, and more importantly lay the foundations for future work for
-> the scalable CoW anonymous rmap rework.
-> 
-> This patch simply adds the fields and some simple helpers. Subsequent
-> patches will update mm code to make use of these fields correctly.
-> 
-> The fields chosen are packed in the VMA such that, for 64-bit kernel
-> builds, no additional space is taken up.
-> 
-> The first field is present on cacheline 0 containing key VMA fields, and
-> the second on cacheline 3, which contains file-backed reverse mapping
-> fields.
-> 
-> Given the relative time spent accessing reverse mapping fields as well as
-> updating them, there shouldn't be any performance impact here from false
-> sharing.
-> 
-> Update the VMA userland tests to account for this change.
-> 
-> No callsites are updated yet, so no functional change intended.
-> 
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------U4bzCzUcpYSrc5aXCF3vg0O0
+Content-Type: multipart/mixed; boundary="------------9udFvOgVqgbui5kv0H8J1YIY";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: Li Xiasong <lixiasong1@huawei.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, yuehaibing@huawei.com,
+ zhangchangzhong@huawei.com, weiyongjun1@huawei.com
+Message-ID: <dd0b5122-896a-4513-9a93-e3fe04bc3f73@kernel.org>
+Subject: Re: [PATCH v3] mm/slub: fix missing debugfs entries for caches
+ created before sysfs init
+References: <20260729101849.3734287-1-lixiasong1@huawei.com>
+In-Reply-To: <20260729101849.3734287-1-lixiasong1@huawei.com>
 
-Much clearer :], appreciate the rewording.
+--------------9udFvOgVqgbui5kv0H8J1YIY
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
 
+
+On 7/29/26 7:18 PM, Li Xiasong wrote:
+> slab_debugfs_init() creates the slab debugfs root at device initcall
+> time, while slab_sysfs_init() moves slab_state to FULL at late initcall=
+
+> time. SLAB_STORE_USER caches created in this window miss their debugfs
+> entries because do_kmem_cache_create() skips debugfs_slab_add() when
+> slab_state <=3D UP. This was observed with MPTCP's request_sock_subflow=
+_v6
+> cache, whose slab debugfs directory was missing.
+
+Ouch, good catch!
+
+> The affected window is:
+>=20
+>   slab_debugfs_init()
+>     slab_debugfs_root =3D debugfs_create_dir(...)
+>     list_for_each_entry(s, &slab_caches, list)
+>       debugfs_slab_add(s)
+>=20
+>   kmem_cache_create(..., SLAB_STORE_USER, ...)
+>     do_kmem_cache_create()
+>       if (slab_state <=3D UP)
+>         return without debugfs entries
+>=20
+>   slab_sysfs_init()
+>     slab_state =3D FULL
+>=20
+> Initialize the debugfs root and add debugfs entries while holding
+> slab_mutex, walking slab_caches exactly once and handling both sysfs
+> and debugfs entries in the same pass. This gives the sysfs and debugfs
+> initialization an explicit order and prevents caches from being
+> created between the debugfs scan and slab_state reaching FULL.
+>=20
+> Gate the new slab_late_init() on either sysfs or debugfs being enabled,=
+
+> with the slab_kset creation and alias_list processing factored into
+> helpers that have empty no-sysfs variants, as suggested by Vlastimil
+> Babka. On slab_kset_init() failure, slab_state stays below FULL so
+> kmem_cache_create() keeps taking the early-boot path, matching prior
+> behavior.
+>=20
+> Guard debugfs_slab_release() against an uninitialized debugfs root,
+> since the root is now created later and a cache may be released before
+> it exists.
+>=20
+> Fixes: 1a5ad30b89b4 ("mm: slub: make slab_sysfs_init() a late_initcall"=
+)
+> Cc: stable@vger.kernel.org
+> Suggested-by: Vlastimil Babka <vbabka@kernel.org>
+> Signed-off-by: Li Xiasong <lixiasong1@huawei.com>
+> ---
+
+Looks good to me,
+Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
+
+--=20
+Cheers,
+Harry / Hyeonggon
+
+--------------9udFvOgVqgbui5kv0H8J1YIY--
+
+--------------U4bzCzUcpYSrc5aXCF3vg0O0
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCamrLPQAKCRCGXBN6rc5S
+1v+LAQCGTC8YVdB3hRg3AfCDHJVmxbhhis44MtfJ8l9+dz/lGgEAp/UqMuKJOrY9
+bw+qmoUwrTnDKzuWN9moPkZ9nVc1aA0=
+=DIZv
+-----END PGP SIGNATURE-----
+
+--------------U4bzCzUcpYSrc5aXCF3vg0O0--
 
