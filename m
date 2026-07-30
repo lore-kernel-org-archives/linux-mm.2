@@ -4,86 +4,170 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 460CEC54FDF
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 06:58:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1863C531D0
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 06:59:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 548226B0092; Thu, 30 Jul 2026 02:58:09 -0400 (EDT)
+	id EE6BB6B0095; Thu, 30 Jul 2026 02:59:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F7956B0093; Thu, 30 Jul 2026 02:58:09 -0400 (EDT)
+	id E96226B0096; Thu, 30 Jul 2026 02:59:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E92E6B0095; Thu, 30 Jul 2026 02:58:09 -0400 (EDT)
+	id D5EB56B0098; Thu, 30 Jul 2026 02:59:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 200A16B0092
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 02:58:09 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B09AB4091A
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 06:58:08 +0000 (UTC)
-X-FDA: 85044538656.23.AFA2277
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 1EFD7180002
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 06:58:06 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VtQ6Hw6Q;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A92AC6B0095
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 02:59:05 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 30F37A163D
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 06:59:05 +0000 (UTC)
+X-FDA: 85044541050.10.CD69397
+Received: from mx0a-00364e01.pphosted.com (mx0a-00364e01.pphosted.com [148.163.135.74])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 7E41C1C0007
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 06:59:01 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=hv0PcEo8;
+	spf=pass (imf20.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
+	dmarc=pass (policy=none) header.from=columbia.edu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785394687;
+	s=arc-20220608; t=1785394742;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=juZaVOk2mgLybaaPcDSKiX2NuHl9H7CZd5lReePxyQk=;
-	b=OxUXgTyvd/+be1FLQ6i9flgRkWVD2Ta6Cwy7iDn/JxShaFHpfviyuf86rdG+nZhTFcBsgy
-	NVmUQA5KZ1zzWUf+6HGPLpwuD9zSlkHPDXK9AXK0P1VDkv9KU9Hp0cs7vBAkNV8dXa8+dA
-	xPiHLreOijzMaxL7uuGu83QNE5HmHTI=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VtQ6Hw6Q;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=Aj3+ozneKRFxvyRKEW1x+foEkavllzfM2NqbtLKj8IA=;
+	b=4E2W99g0DajTyGFagYuznw9t2MlZtMBUd9IODVHFlotYEDXUchD6Yix452t1O208hqHFz7
+	aL9o70buU3b4pVwOByq+lr8PCOfZwKGaWAweMbYD8GbkKRkldEggPVY0dzPLVW4dy7//iE
+	oGZsY7o5OmQE4dCFOBRVALTvDZjjIkM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785394687;
-	b=a/fKdcgdnS+mlNcShofv9bMZublB8RBUyCwt+WO65jhpcDjFWe3n+83y8RLkr7QvHgIiO3
-	1aJWItjYCSQRSIgNHAb78m0SLYnKzNUkOXgsWYdsA3RLsLkBURatLFUBZRAdIMwRuBVqYK
-	qmp2IyEyGiGvxYhQ0i0isH6MG7WDH5Q=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4DD45600B1;
-	Thu, 30 Jul 2026 06:58:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 014B41F000E9;
-	Thu, 30 Jul 2026 06:58:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785394686;
-	bh=juZaVOk2mgLybaaPcDSKiX2NuHl9H7CZd5lReePxyQk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=VtQ6Hw6QjRd5uPS7YgtsbzrPNJlC5dJ3ukdGd7UZNSPTXE7XJbgLIdr9XRhiBlxuX
-	 yh91BKP4A9zDk7sM+WN4RIrZuZ7GL7FWf1ai5fN6BYkKvOZxAXXUqnnQmppqJHtL9/
-	 3HAil7y1GX+McNb6PdHpVYlKSoDtfs3MQ4yYzdlfMOc1IAz0VA7mhjQGphnzakT3yE
-	 AxPc0QD87Ksdrljtets3vrOxy80YbJ3SEWr9w/IMulVXxQ0jY9tnXrOhzEaXP4F8zu
-	 cyYNS6TIQ7LHfme0J4GZR7PdAQTkZ2FOdApzQioRLbnQ2iK7rHW5lJurFmBcT9GolA
-	 V9nlXZvPRcZ4w==
-Date: Thu, 30 Jul 2026 09:58:01 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Sang-Heon Jeon <ekffu200098@gmail.com>, linux-mm@kvack.org
-Subject: Re: [PATCH] mm/mm_init: remove unnecessary initialization of
- pgdat->per_cpu_nodestats
-Message-ID: <amr1-eQ8twFONiew@kernel.org>
-References: <20260729155143.177790-1-ekffu200098@gmail.com>
- <20260729132745.9d42a13e614be2e18c5988ba@linux-foundation.org>
+	t=1785394742;
+	b=MFLeZ6tIAetb6aScxonuf8MGXJkMRY8RHggvNHtqll6/ATp1EPIdfMPmvOrSnrkU6xdGyr
+	hyqCQEzk1Ck+ljtqe+WW8ZzQUPe/pHgcVIwFz/s3Q/tk19YysMGyIHjKCUd3leqQFTO/M7
+	fxNvZ6oUcoqexL/mYEIkTMbUVpkMAN8=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=hv0PcEo8;
+	spf=pass (imf20.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
+	dmarc=pass (policy=none) header.from=columbia.edu
+Received: from pps.filterd (m0167070.ppops.net [127.0.0.1])
+	by mx0a-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66U6we5v1894443
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 02:59:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pps01; bh=Aj3+
+	ozneKRFxvyRKEW1x+foEkavllzfM2NqbtLKj8IA=; b=hv0PcEo8AAPDJ3qmRsyH
+	3+KWRKhUuio5bu6v7AnsbOIMwgD7rZbWuZCbxPJ8NOtDT/6jnTzUMipJ0mF7QfZu
+	3vHsZW0WXTeqgG2leuJy+YHuFK/7Aze+PS0kNPRJ77w6BASuAor/BNbvhZ+06gWE
+	lwCff028FYqKbvLsbLBzqyFKUem7txf57ogPxPRAOr5qdW2T8loIUHnw0K1cQz09
+	7P9wendgVQQF2uUVmf24BxrK1lwd44WBWwC/SjBvLCM7Ae8WAwMxAh2mgghG2Jea
+	q0yZqxPC9eTBItVbYtNcMTqXiTV+yoGFDSs/zzZjapWZTUnHFT7gf1vSP1LKyFZq
+	dA==
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
+	by mx0a-00364e01.pphosted.com (PPS) with ESMTPS id 4fqv948yb3-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 02:59:00 -0400 (EDT)
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-92e4f946461so214619685a.2
+        for <linux-mm@kvack.org>; Wed, 29 Jul 2026 23:58:59 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785394739; x=1785999539;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Aj3+ozneKRFxvyRKEW1x+foEkavllzfM2NqbtLKj8IA=;
+        b=mvzajG6SUK/i8445ork408AFXIC+07e+R8QHVmINfXoFO+OMBDQJ26XjUqrJ0sXk/W
+         SLZWAEuEVtRf7XlHAq2sybQqWuOCuocRyTA8HaZxCy5btBdIpYBpzOVd/siAHL5vecA1
+         fEuyWBNEcvqMLFfvQB1qNht+lqrqUd3hljrpT9vTfzj0caqwKFx0Plb/os4j79DgYjxt
+         PDhGXO6/YbOTcnCUrZByLMaqSe+XKtIPShEqNzTR0tb5Rl0YV5ttIvHrK8ssai+7JmdY
+         MFW+013VKshUVanQXmQP4LijjiAHnR3YrwqSM+FCbHBJ9VE+TME5eWsaxwHyCXr7jf4P
+         XwIg==
+X-Forwarded-Encrypted: i=1; AHgh+RrJebVlA4QPG3icGTIIE+8YqvHS7ro1iGhf9uKvd/CYmwarD7SiwRgN6ow6RRZeiPOf4ssronEACg==@kvack.org
+X-Gm-Message-State: AOJu0YwYNbDlOG/z2e62jXd6s/rIVybWVyNWo9IstNHsfRsRbvvn90T6
+	3fuuLMy1lprRuXeAwbaZX4R+/ej5stUCujEhr8pOm9y889ORiuk7ImkbLZFAV7BN6vHEoOCyMY2
+	fVEd60cfS0zhgj6Cf16HUn2DCWUASyA8a2CyQk+trdOb+cz5P
+X-Gm-Gg: AR+sD12TYV95oLK5HUbJIsJZ+Y45lZE+YlA5xFfcq1tW7TSl/wWF6Ot7jf7jR/Q0bTs
+	ewAx63fjJvcQWrEqG5Cz8AWhd5PVNQum9uihI39Iz6ua8UDTdE998zPj8ANBSB73RHi26p2RFy8
+	s0goX/kfqMfGEhvYoSGGqUwDywDx/S4YuiVQmNifqveqs2FdAszn8tVafKJ7k3hkWotivBAHjor
+	uzY1GlZF0riLG4dobfWlZwFBwqdKkfPrgbq1ddUcDxLUm0RJs8i51eAkOKA9mPyb0jSfJWrAU1h
+	B/W96xzzz49BCfsgQ/LFR0OmHg02wXH1H0YGo6neqUdSe4rRwNEjf8OhUdfUUFGGEmSbOdqf8qb
+	UM0en7JqqDujogDWb6Zgy3ccJzMh+auJbcssDbNfUoKAljQ==
+X-Received: by 2002:a05:620a:3709:b0:930:f852:6daf with SMTP id af79cd13be357-93487207b6emr145583085a.87.1785394739077;
+        Wed, 29 Jul 2026 23:58:59 -0700 (PDT)
+X-Received: by 2002:a05:620a:3709:b0:930:f852:6daf with SMTP id af79cd13be357-93487207b6emr145579585a.87.1785394738610;
+        Wed, 29 Jul 2026 23:58:58 -0700 (PDT)
+Received: from [127.0.1.1] (dyn-160-39-33-242.dyn.columbia.edu. [160.39.33.242])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-933d3221bc7sm349752485a.7.2026.07.29.23.58.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Jul 2026 23:58:57 -0700 (PDT)
+From: Tal Zussman <tz2294@columbia.edu>
+Date: Thu, 30 Jul 2026 02:57:51 -0400
+Subject: [PATCH v7 1/5] block: introduce bio_in_atomic()
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260729132745.9d42a13e614be2e18c5988ba@linux-foundation.org>
-X-Rspamd-Queue-Id: 1EFD7180002
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260730-blk-dontcache-v7-1-3e8e6850068d@columbia.edu>
+References: <20260730-blk-dontcache-v7-0-3e8e6850068d@columbia.edu>
+In-Reply-To: <20260730-blk-dontcache-v7-0-3e8e6850068d@columbia.edu>
+To: Jens Axboe <axboe@kernel.dk>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        Christian Brauner <brauner@kernel.org>,
+        "Darrick J. Wong" <djwong@kernel.org>,
+        Carlos Maiolino <cem@kernel.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
+        Christoph Hellwig <hch@infradead.org>, Gao Xiang <xiang@kernel.org>,
+        Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>,
+        Jeffle Xu <jefflexu@linux.alibaba.com>,
+        Sandeep Dhavale <dhavale@google.com>,
+        Hongbo Li <lihongbo22@huawei.com>, Chunhai Guo <guochunhai@vivo.com>
+Cc: Dave Chinner <dgc@kernel.org>, Bart Van Assche <bvanassche@acm.org>,
+        Hillf Danton <hdanton@sina.com>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-mm@kvack.org, linux-erofs@lists.ozlabs.org,
+        Tal Zussman <tz2294@columbia.edu>
+X-Mailer: b4 0.14.3-dev-d7477
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785394735; l=2716;
+ i=tz2294@columbia.edu; s=20250528; h=from:subject:message-id;
+ bh=hHCEZENfCfsEpOmC0wBfWJMFm3C20nG7DjOTxirSTUU=;
+ b=0SI7Xl8K46e0uZlTQGRMH9PF2VforZ2ADnod5gEhiUnACnwVjnxh4x+kTnl1qD5D6oyl3rPbF
+ pLBs0BjnLHtCNXNT9pp0MnVsyv5sMsoS/rOivi/TnyaG9EJUxZTJlIh
+X-Developer-Key: i=tz2294@columbia.edu; a=ed25519;
+ pk=BIj5KdACscEOyAC0oIkeZqLB3L94fzBnDccEooxeM5Y=
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzMwMDA0OCBTYWx0ZWRfX4zERItyYLpnR
+ FqGkOi69kmLjhMlZ9VI30sG814/ZD5bUPAU2DCQxKCB0kfDW+JDHcfZVIHYDEyfQAFW/89Dz0Tz
+ 9DigReGDe9ADEpBaKM0NahYcpCJrxk8qwKOxTHO+5Jq3fdOAR5T3
+X-Authority-Analysis: v=2.4 cv=d+HFDxjE c=1 sm=1 tr=0 ts=6a6af634 cx=c_pps
+ a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=GaPK54s0Se3oFqK5NkZy0g==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=x7bEGLp0ZPQA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=svvvyxlR1OQQkelhaPoB:22
+ a=JfrnYn6hAAAA:8 a=i_Ns0s3d_2HFdJHkmwAA:9 a=QEXdDO2ut3YA:10
+ a=PEH46H7Ffwr30OY-TuGO:22 a=1CNFftbPRP8L7MoqJWF3:22
+X-Proofpoint-GUID: t9lM_xzbvTddYvtLzD0qQX06QzLRmLBp
+X-Proofpoint-ORIG-GUID: t9lM_xzbvTddYvtLzD0qQX06QzLRmLBp
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzMwMDA0OCBTYWx0ZWRfX6MBs7g0orUO2
+ JPtNEe18sAViwU4uLQPssKPsHFr5YsF+Grtwpm1EmcIYKCl4fcKfmvahpN5OKjQigjsVbg9qBvn
+ 4FqCT2gUjjCBF2xj70qbEx3fATu6VqZKTbs3zuRPe6Apw1AmSeZQ9hGFLILOgl2IYseWLaesAOE
+ cRnIXUfI+EkVeAv7J/a6lwM6inF6v4IDiQqKIL85nDToGwGfGQhAUTjSQxoTMJuO7KGofKj4rWu
+ 9oQ4VYaTwLErhFZrddH7WfQT7V2VSeBF92asRikGuo9C4LBLHYNmYKbgBvMBQ06fUdP09QZSxR4
+ zPyc5ZHEDowKfHL7xyEOD9Wc3YcR/xeSJD7LXxVdyZoh6vSPKwB4kdqcWeqY+kjVhgnP7u82tc6
+ WnrAU3MZavyzf82TP/3D1c5pvaVziUDxem5lV6NptvKnvikT3W0W3L7+l/ZJH82YQfbgt57GrFD
+ VpVOygMCspk64C6/Z7g==
+X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11859
+ signatures=596817
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 suspectscore=0 adultscore=0 phishscore=0 lowpriorityscore=10
+ clxscore=1015 bulkscore=10 priorityscore=1501 malwarescore=0 impostorscore=10
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607300048
 X-Rspam-User: 
-X-Stat-Signature: izqi4gd3catsxgf9jrohjdmf4zxje7xq
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1785394686-892087
-X-HE-Meta: U2FsdGVkX1/aAE24lc2AlzkZmQvmUOT5wLuQbefvF0GFrM1lWqv4+iJ/cMw+HNgVBhjLK309VwVadhhpqkC9N1Az5RBqlkEXZxrxK6ZetThLiKLiS+niiEIGIcg1J174TZWXf0MXHpAloBO2Lm7w1V2kyr3X77W308+m89rNCUNOu3Dh7jqHEuWJnfN81rtAcZqXEXNetKbx3CSQdCTIq0njan8+VXJN0XoxWKPNZBIDlLOTiZxqFPw49vc8KpJXaqH7r0bCQwLlj2nEHcqZahCmTaHYj8ujUugXEDc+hABXpdnBiidY+zusP+GGgKMlvk8JGOQMOcgGcm/jUO46Vv2xnTMkXfJLPzxTSkPwIRoEEHiIjKc1FF49X8nazRrkmcr9BRZvtCP9aQQ20Qd4ZaoM8qot8cZBD+8A7LGfCgBRKt0JJTmhxyoIX0fYD5zu3oWKNI4Gf2t/wB8wK5Xnv1BF9Y2xTa0CfredhPtySSH5IxHFIxR/32SEBDdV3WoQwgp6tJFbL6F3xvPS06V+sLpKMR/NBynWgA22LgHreQON+QD9zcRtZADNIYXP40TkQMZRIounQWNEnh/vf6ZHyBFybhLLOWYyTF3YVoCtrPO/CK4g5G834+FzX6kq6q4KnjX5Uaou60IrvR34SrW7DZjZVsovclQMdQXbhKNG7ij6gRV4gwYQGNrkOTv1XfKoN6U/kQ5W1fmhbaMkQJn0c+/v8Lbo5x6qJaQkYPb15f3/TvdyaVQLE3r2i3KhJSASE/dX5dVCuowaAXacpLeEPGJFyAKXwXVBnqIXYm7torc1l7zm66eYUdF8Y7hvyHCxBRslQmJalkkURbzihFwCaSubYc5xqq9m4Q/LMm59T//+bfGVQUDN4u5Ui/VM2JY6NmsUVgYrkfczi//s1jW7KQLIQBozy3AVbieLT/waOcIl/kChQM6n8S3hRXzsy8Ve2EgIurooeQeXNmy/1FI
- n38ygRMv
- TLvJGNEw76/z5L+7sXiTdwhKl4xspW68QGGRc/kO+lTyHWcaARR4/AITdnYGCcWjgElnRmpug1kxrqWT3iFXN/S+JLeV4RNUWkqxsCgB609Nt4xjHUcKBbP3f8kFoAPOMQxPn8HjbU81J7hvRRfopaR/E3FSIkQhnnMJyRz6FiE9lvogpu2Ed9S2RmJNdn3RFHB6svdflcx1JuQ1dmcY43fnlDk0XL47TpQ4mBjWbnJOZauHigN7VNq2MkvxW0a80nP+ZWXmhExHwSCblSFzFvWwBU40E/dM9J3uoUD/nAlii8uZKC6kRDrj3Atjh+pmizik6
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 7E41C1C0007
+X-Stat-Signature: cj8f5hhbg9mrxtitn1jd4dpi66arrhp6
+X-HE-Tag: 1785394741-922649
+X-HE-Meta: U2FsdGVkX1+IDp9ajVX/kfADXhuPRfYHkE3zJDNyJ3oWkXxSStLYF8uv8tNoIjTozBcxuHUjjyXk5NcQdsMzlPUXxet+A0IrMNlHZU5P2nvIwzhyeDT4grlRoxnSjd7WigcT18xYv2xk+gKI+KMnymKDDYu8Zii29dKA6IFgQQ9f8XVki0hoX9mqsa/UuLM0KqjkAH0VIal8GPWt2tyn4C/XvIE7HvnAknYTGgRfKV6Xk0xA3jv5SSRefi5A+wzv9XUf/3AL0+iLuhiGByCqGZQD1oIMOWQNcG85yIPxZU86Jd3SCKm+N3Oe83OeGRrMNZOcKq1h6IcypLxFG2zWicFzsaEB5JQN9YSFm/Lvuo4EpCJ2CKXiMlCJ6r0+UbsSbGp0ViiHtHX+YJ1pnU4mxEfJxpDshc2y3Jc3MHvTkNCHsJVjvMnKbCTWHIKDd5CdffVZfPTUv7iL3diXuLQrMVlbeBRFVkMgrBwesd92QJ6FMHVMa5SGATx115Q5DoYXcehaxI7UUHqn+snpBsJu2BEIT/BNv/1c2hnJtFb62hAOHw4L77U69WFh91Xgx3QkyYFBf9PFvzxr45uNGXnKECRsED3YbuAXxmgFYE4BVtWNOOYIgyNAWmnDE7qD+THOxVNR99rfdOzE9kw4hrj3605jw5PgrDGBrHQ9kf1de+KfkqiFqEghmVakeCsF5d4tA1Ziz6ro+ac5Bomduy4WYRl7662eSOm1N7j8a0oyJoKQ/gyE/sXt8p9F3Gyiw0m1RGCsE6q+vmvp6omy+O/WKwoap2ZqgZkmvhSIavRnF0c1G+P4NnbEfVfwBGuSf1bwPIY9k0djwoTpd9gvFa4pU9b8ROmxo55The4EN3gKTHaNtCEX8JaMOG2QsK/GfhFX/zim+8LtMleG3/WK0sYDcJrStaHIy5JHWrWko93oBSpsI5w95CTc4/dNlU9qO6JgD++e5hPmUt3AZkLGoEZ
+ FWskp8xz
+ W20R9K/geSYbYqWC4MsJUu2nVXv2h0ykHd6Yc3FdNaOifnuMTvjDSk6cpmDExTNC8S+yA3eVZAWlTLtOOTVA/EubKOZNHusE4Gczqk7dwQmdqGKfm/vVyaC9uNDQ0qM8OIYMVVWloDolAEwwCnFTZWprpnqlQWpD6P2qj7im8aqHnZ/6Bx7SdynG/wiELHkcI6i1nSPSvZCvcKxjc+CJBcxcSKSbQI4MWxqBCrVP+VI4BmU16WxCWiNZ0dXmgNonC/6K3kVnOL4yYyvhity+Yod2+81NEo6DLwHgii3q7dELzNPWSss8xZFKc+aXQQZPD6nreOKKi6bXswLlk4kdmhcG1+lWqeng4If0/tyNzJPzqfoZSu04mmJOL+5/ar914znXOGd00DIB8qZFHP6EMElrSZ/Nq6xoBW4jEEb80YJEq6X+ngqw5ZbFSSVw/25vjZi+cr/GGPwgmcPc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,49 +175,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 29, 2026 at 01:27:45PM -0700, Andrew Morton wrote:
-> On Thu, 30 Jul 2026 00:51:15 +0900 Sang-Heon Jeon <ekffu200098@gmail.com> wrote:
-> 
-> > free_area_init_node() sets pgdat->per_cpu_nodestats to NULL and later
-> > calls free_area_init_core(), which unconditionally overwrites it with
-> > &boot_nodestats. Nothing reads the field in between, so the store has
-> > no effect.
-> > 
-> > Remove unnecessary initialization. No functional change.
-> > 
-> > ...
-> >
-> > --- a/mm/mm_init.c
-> > +++ b/mm/mm_init.c
-> > @@ -1722,7 +1722,6 @@ static void __init free_area_init_node(int nid)
-> >  
-> >  	pgdat->node_id = nid;
-> >  	pgdat->node_start_pfn = start_pfn;
-> > -	pgdat->per_cpu_nodestats = NULL;
-> >  
-> >  	if (start_pfn != end_pfn) {
-> >  		pr_info("Initmem setup node %d [mem %#018Lx-%#018Lx]\n", nid,
-> 
-> Looks OK, thanks.  Although this statement is "free" in __init code and
-> its removal does make the code that bit harder to follow.
+Move the atomic context detection logic from erofs's z_erofs_in_atomic()
+into the block layer as bio_in_atomic(). This helper returns true when
+the current context is unsafe for sleeping bio completion handlers (e.g.,
+hard/soft IRQ, preempt-disabled).
 
-Heh, it's already not that easy to follow :)
+The logic was originally added to erofs in commit c99fab6e80b7 ("erofs:
+fix atomic context detection when !CONFIG_DEBUG_LOCK_ALLOC"). A
+subsequent patch will use it in the block layer's bio completion
+infrastructure, so move it to include/linux/bio.h where both subsystems
+can share it.
 
-We initialize a few fields in pgdat, then setup node and its zone sizes,
-then return to initialization of the rest of pgdat internals.
+Convert erofs to call the new bio_in_atomic() directly.
 
-It feels like we need a larger cleanup there, and this patch wouldn't
-really move a needle.
+Suggested-by: Christoph Hellwig <hch@infradead.org>
+Signed-off-by: Tal Zussman <tz2294@columbia.edu>
+---
+ fs/erofs/zdata.c    | 11 +----------
+ include/linux/bio.h | 15 +++++++++++++++
+ 2 files changed, 16 insertions(+), 10 deletions(-)
+
+diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
+index 74520e910259..f796bb3ef53b 100644
+--- a/fs/erofs/zdata.c
++++ b/fs/erofs/zdata.c
+@@ -1427,15 +1427,6 @@ static void z_erofs_decompressqueue_kthread_work(struct kthread_work *work)
+ }
+ #endif
  
-> Possibly *pgdat was zeroed out anyway, I got bored figuring that out. 
-> The memblock_alloc_range_nid() kerneldoc is silent on the state of the
-> returned memory but I spy a kzalloc_node() in there.
-
-memblock_alloc_range_nid() does not zero the memory, unless inappropriately
-called after slab_is_available(). But alloc_node_data() that allocates
-pgdat's does :)
+-/* Use (kthread_)work in atomic contexts to minimize scheduling overhead */
+-static inline bool z_erofs_in_atomic(void)
+-{
+-	if (IS_ENABLED(CONFIG_PREEMPTION) && rcu_preempt_depth())
+-		return true;
+-	if (!IS_ENABLED(CONFIG_PREEMPT_COUNT))
+-		return true;
+-	return !preemptible();
+-}
+ 
+ static void z_erofs_decompress_kickoff(struct z_erofs_decompressqueue *io,
+ 				       int bios)
+@@ -1452,7 +1443,7 @@ static void z_erofs_decompress_kickoff(struct z_erofs_decompressqueue *io,
+ 
+ 	if (atomic_add_return(bios, &io->pending_bios))
+ 		return;
+-	if (z_erofs_in_atomic()) {
++	if (bio_in_atomic()) {
+ 		/* See `sync_decompress` in sysfs-fs-erofs for more details */
+ 		if (sbi->sync_decompress == EROFS_SYNC_DECOMPRESS_AUTO)
+ 			sbi->sync_decompress = EROFS_SYNC_DECOMPRESS_FORCE_ON;
+diff --git a/include/linux/bio.h b/include/linux/bio.h
+index 8f33f717b14f..62a983758e09 100644
+--- a/include/linux/bio.h
++++ b/include/linux/bio.h
+@@ -368,6 +368,21 @@ static inline struct bio *bio_alloc(struct block_device *bdev,
+ 
+ void submit_bio(struct bio *bio);
+ 
++/**
++ * bio_in_atomic - check if the current context is unsafe for bio completion
++ *
++ * Return: %true in atomic contexts (e.g. hard/soft IRQ, preempt-disabled);
++ * %false when a bio can be safely completed in the current context.
++ */
++static inline bool bio_in_atomic(void)
++{
++	if (IS_ENABLED(CONFIG_PREEMPTION) && rcu_preempt_depth())
++		return true;
++	if (!IS_ENABLED(CONFIG_PREEMPT_COUNT))
++		return true;
++	return !preemptible();
++}
++
+ extern void bio_endio(struct bio *);
+ 
+ /**
 
 -- 
-Sincerely yours,
-Mike.
+2.39.5
+
 
