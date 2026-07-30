@@ -4,144 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFB80C54FD2
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 09:29:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E44BEC54FDF
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 09:31:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BADF26B009D; Thu, 30 Jul 2026 05:29:54 -0400 (EDT)
+	id E95B16B00A2; Thu, 30 Jul 2026 05:31:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B856D6B00A2; Thu, 30 Jul 2026 05:29:54 -0400 (EDT)
+	id E46026B00A3; Thu, 30 Jul 2026 05:31:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A74566B00A6; Thu, 30 Jul 2026 05:29:54 -0400 (EDT)
+	id D35686B00A7; Thu, 30 Jul 2026 05:31:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C4076B009D
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 05:29:54 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 17C021C123A
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:29:54 +0000 (UTC)
-X-FDA: 85044921108.18.73E94D6
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 60BF840005
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:29:51 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=quoNc9N+;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vNeyHlcg;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=teqsqB2y;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Jsr0tjOA;
-	spf=pass (imf27.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id B19966B00A2
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 05:31:05 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 42B5A160867
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:31:05 +0000 (UTC)
+X-FDA: 85044924090.07.96BC815
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 637AF100002
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:31:03 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V3Pv2QV2;
+	spf=pass (imf14.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785403863;
+	b=VvIF9B95xCvLZO6VYk/bEg1rj3Ija2sOCOtDxcpruZ2HyU3EKY5o7B7rtL6dX/sdP8YGY+
+	NWPTAdWkuIMt9kiWsi287i4uO2w2fVGHZMlWmB8nHpRU94pzuGkIofzGTVPl/cOEmawRue
+	gwMwiYXD+pthuAsTsR3Xv0MuTPidtWI=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V3Pv2QV2;
+	spf=pass (imf14.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785403792;
+	s=arc-20220608; t=1785403863;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=enV34PhtzVgKGVfi6OO6Bhrs4AayeYPibuMx/wjb0X0=;
-	b=CUseRP8GZ6Gi0xy1ojr3GMwVlJbgCipq8hxVdnmZm32mglFzgvfBJOpd1RcpYsu/hYOGi5
-	5DeLik7S61SxYKgtFpOmX0nqVb6YhZca7wOL1CWDUNmbeBe4QYGK3fDMZhTgixEYj2ZUle
-	0dFdTFsc3JaKOdsR35JZSMx6zN/jz8w=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785403792;
-	b=utPemRbqEFxlurjkhH1puOIu8sdPMhDBU3GFEOaTzG91mrqaEXpbZid23py8fgys6jHjkV
-	pNyHYKZSIa7Y3ZemrRljM+9A1+8YJSDrHTax0C33MB29hWBaKQy8rlIBLbTk52cjgufjJ0
-	Uzf/cFaxnSlQU9SQqBpg3JxNXSZcyoc=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=quoNc9N+;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vNeyHlcg;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=teqsqB2y;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Jsr0tjOA;
-	spf=pass (imf27.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id A184E3E8F;
-	Thu, 30 Jul 2026 09:29:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1785403785; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=enV34PhtzVgKGVfi6OO6Bhrs4AayeYPibuMx/wjb0X0=;
-	b=quoNc9N+9kkAYgWrmvy1o7qFh6Xv8DH5wdqRMvcrDbE6pdCgjqiu8Ys9lreEzPSdyGbksx
-	LtpCbus6Npaa7nkzikkGL81g2GjQpmV4NziHrlYcd+/wyDEmdwNE+deqMaq6WxnuRavvXW
-	FurSvkdkl6HVlWYgaYvD5MGGHRkP/iY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1785403785;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=enV34PhtzVgKGVfi6OO6Bhrs4AayeYPibuMx/wjb0X0=;
-	b=vNeyHlcgHah8IRGIpsjwuskJEWswsRbbKJA30ggSN5b6BvlLa+wE2p90pyyu842PwJDZkL
-	03rFPS+FO7mh48Cw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1785403781; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=enV34PhtzVgKGVfi6OO6Bhrs4AayeYPibuMx/wjb0X0=;
-	b=teqsqB2y0TqJYxmBFz4VrFsZR/TWitcoseD4sRRgUFoaDmkc3uQTlqd6H0Y7nTP6O64Fc+
-	d8bPeGruttewhfwkNoNmdfiWb3bKmWTipn2UvHHlrHxXpPgkF8DTXRbvqZFS1urpDrPT1T
-	WNy8o/wXqujDZ7Nq5B3IfNTmZS4A2A4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1785403781;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=enV34PhtzVgKGVfi6OO6Bhrs4AayeYPibuMx/wjb0X0=;
-	b=Jsr0tjOA3H8XUvMu+it4g/9k/cwpjky8ibGhMgj9lpLsVIxM1wIQ0yl5dpKQ2b6DH8Mo6q
-	mGRCwiYgit8QIjBQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8EBBA779CC;
-	Thu, 30 Jul 2026 09:29:41 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id uJ7SIoUZa2r8dAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 30 Jul 2026 09:29:41 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 34AABA0AAA; Thu, 30 Jul 2026 11:29:41 +0200 (CEST)
-Date: Thu, 30 Jul 2026 11:29:41 +0200
-From: Jan Kara <jack@suse.cz>
-To: Tal Zussman <tz2294@columbia.edu>
-Cc: Jens Axboe <axboe@kernel.dk>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Christian Brauner <brauner@kernel.org>, 
-	"Darrick J. Wong" <djwong@kernel.org>, Carlos Maiolino <cem@kernel.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Christoph Hellwig <hch@infradead.org>, 
-	Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>, 
-	Jeffle Xu <jefflexu@linux.alibaba.com>, Sandeep Dhavale <dhavale@google.com>, 
-	Hongbo Li <lihongbo22@huawei.com>, Chunhai Guo <guochunhai@vivo.com>, Dave Chinner <dgc@kernel.org>, 
-	Bart Van Assche <bvanassche@acm.org>, Hillf Danton <hdanton@sina.com>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-erofs@lists.ozlabs.org
-Subject: Re: [PATCH v7 2/5] block: add task-context bio completion
- infrastructure
-Message-ID: <roo3rxpocrjzz66mko3cf4p4thur2w2sgf24cahbpjk3462ext@3jep6oc2raqs>
-References: <20260730-blk-dontcache-v7-0-3e8e6850068d@columbia.edu>
- <20260730-blk-dontcache-v7-2-3e8e6850068d@columbia.edu>
+	bh=/n1rMM6UcEp7lUcJboLj/tsE78CgiiG/wYd46p4oCM0=;
+	b=HX78QdYpBx78IqkNKRaXwLEhAohwCChET+W6xnyY+kxXMRE+15+0GAvFHEDd40pt2qUJSK
+	OSryAttkp5PXYbqtfjFspa3q982evOmgdoD/I9W7I3NM86gJy6qPy3WCFGfM21tSFIBX07
+	SVmt8SCLuEdemy47Dx3F03AQm5SDJZ0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8978F43D58
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:31:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64DB71F0155A
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:31:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785403862;
+	bh=/n1rMM6UcEp7lUcJboLj/tsE78CgiiG/wYd46p4oCM0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=V3Pv2QV2+O6/iq11SVVAxHHV2/WzjKKS58T/8G6RQdUWFolvP0ss4G9J0/PmQP0R7
+	 N9pS1B5KUn+6Jx43+ayvn2tFJrLkdZuu+CM0D8JblvuPXSGba43eH6F3kf6CbzspU/
+	 M7mZwX+S2QmqOGl67aV6pDKQbyBzeTthEkS9sgBzdWOS8HHRX4smQAjfcMSa2zw97g
+	 KiTzolRTkmBHnl04IvGzDDmq9gN8+3caGeXiHJZ3evAzc5tDs9BIrC0ms2UNoM2bme
+	 /+yclclCpeCudaYk5CFcRs0On8jT74Qw0vowYeYQHkhxMrCz7xAb/gjHRNGD5Y6Kb2
+	 lTy9GJTr4ROEQ==
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-51c149c5722so4576581cf.0
+        for <linux-mm@kvack.org>; Thu, 30 Jul 2026 02:31:02 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RoWXfRkNOzW2KtPL/AhiH9/qvrDnjK7PcJpy0rj9rB0QRrV4ozSKJ2riJ/JhBBrPgD0OJyUWDiCjw==@kvack.org
+X-Gm-Message-State: AOJu0YxO5a7Qo+H7N5fP8traNqaHXG7igpPaA853E7wfWOozGgGvZ6Yl
+	uFzMRJWNTOCSMQZKAzPg7S/IBHyCoaUnvM2YrqytV+LYDFeicVT06iK+38wXNPd59ooMLe4XAYk
+	LBzc8d4KoGTvdIiOHiozPQ6ZLS3qfVp0=
+X-Received: by 2002:ac8:7f92:0:b0:51c:86b:3487 with SMTP id
+ d75a77b69052e-52b3a786c86mr11916551cf.33.1785403861647; Thu, 30 Jul 2026
+ 02:31:01 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260730-blk-dontcache-v7-2-3e8e6850068d@columbia.edu>
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 60BF840005
-X-Stat-Signature: uji73owspkhwndzw7qm53oumxkmpkwes
+References: <20260730072349.1360449-1-zhaoyang.huang@unisoc.com>
+ <CAGsJ_4xW8WujWvgFrrR2NHoQZd4nLPi8QBtXwGsrQXj72CL=NA@mail.gmail.com> <CAGWkznEuXnYMyFkkQM6fx1MVE8p=oGjg_VTZK7SJsCBDrcap+A@mail.gmail.com>
+In-Reply-To: <CAGWkznEuXnYMyFkkQM6fx1MVE8p=oGjg_VTZK7SJsCBDrcap+A@mail.gmail.com>
+From: Barry Song <baohua@kernel.org>
+Date: Thu, 30 Jul 2026 17:30:49 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4xnc6HzvoNeMmcN1yOEnXC+adVO+AT+pOsxyWhhUcbXbw@mail.gmail.com>
+X-Gm-Features: AUfX_mwq7H0AxlP3E-5oDWbYVsZ0q6R9dFk7_C7xkp5tSzno4OBCXR2nO3NBKaw
+Message-ID: <CAGsJ_4xnc6HzvoNeMmcN1yOEnXC+adVO+AT+pOsxyWhhUcbXbw@mail.gmail.com>
+Subject: Re: [PATCH] mm/mglru: force aging the lruvec when min_seq pinned
+To: Zhaoyang Huang <huangzhaoyang@gmail.com>
+Cc: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	steve.kang@unisoc.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 637AF100002
+X-Stat-Signature: c1k46qf1f89nq5pccrof9cd6gaymcnhg
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1785403791-447922
-X-HE-Meta: U2FsdGVkX1+PWulnUEzwBnUqxuX4qhl4bImdYNgTEyQcEautfT3cKXFJE3KQVnuf0BB77fGr1oeHNgWbJsgl2nT8nQ/EFTHAR+fA2xa8mxAkFqgXtMTids2ZSlAGYZbFQVg1+aKqMfzB4B9k6mjjx+HJaujY9Je7GUMHo88yFDNeh4v8WK4y3x/ctA3BLLozcRs5DYWi53Ag4K/4rbHv2C7TPqqt0uQU6muKMH1J3fGG49LJb0Ggepi7zQ7Lyy3xv2dificc1aLPjJUVLTnmGxAqTOZKZDNtSsL5G/w7vt3FqytkkSn7iwfZEOAgn9ZL2ItlTUpX/2fa7v9Lr1mSKFOwpmsuquLKuCblSMa4CgxDseacrHrZk+KP3YC0+ZSDeX2B08tvfh/7k/m2r62Tr2zX+cvCGjeDipJSosSL0bWT94M33uNsbOLDH6WATtF12bKcrI5jG57OYSSy3LJU7tnPrZQSdlNN4b3IYCW9S4tr+g6MoirocgWkXue4jfEkaSowp1GbmrX6IJn6L8tprYEWyX77nyVu45yJBdldXAhayTLchIHuHZrh1DI1FB+r40Nw3F0YOCnrUdtIFjfgyD0SnoI4lfb2ODGdG1cL/CeEQJXvtvBI0+F5coikJ3bIrXV1Aft563Bb8T6PbeSYy7FB1XK23S9TTAC7zNerLeUZyMtNXvn8rs5z2GyGqqeT1Ri42fjLBV1BlsUavmSHUZSpuZaXlftSQa3CYNsOF5WokMRkbMTNjruRekbNl/LrwERTIUQmufnr5qErcptVqy1bQTAuypYUhbTk0SS2dqT9Bxvt+nugVfuyU5lskx46+NoZPR9kqRkl/FSj8vA2aumD/K48gV4bTZtHuMvqZAmMItZP9Jpl2Yf2Es8pnwkbXTu/BYMGBGNBYTNqfOH62/0sqN1W7EGatQzPgsRN83wzjVspoL22BzVamUYyoZJmlDScLFtOLIWEwxbpEKP
- cdAbEyeZ
- RrjLpVjcYI6bDAhGZ2YOkM16cIYzaByXB1if4zn67W6JRZ7Wztzm82MjlgndybRxwRVb39Jt8KFGZiGjW9QCnEjEfMv1JvY8e9OkapEvinPcfM0DRjYxTDUOCoBj62kVzjarpqIc5u/OS73u6/Z/6uLfbbYfguB4yJ2uvYsKeWKon/rWFEjCy5DAKtWACj66WtTXTi3+Fji6Uzx4Y0eZzQ9SXrvxz2IpkEn8d+MvTOEIqovc3lPdDE8am4MV+H+akfzVDrYc07Ev16nSGEmw/79wxXx1FDgigAfKq52BbaeRlN/LjzEzD1xwQe9SUAcGfxdcHJ9mda1MxMHUYbWpS//smx/VqcW+xCqEvCc0hfrKAGUXIukpJz2Hd2VltD7Q1wyxUe/8aql53s4uV7nfy8vSj8936A6XYnnKC/d3pzmrLVztaFLURAWzUlSTUah283mVs
+X-HE-Tag: 1785403863-936446
+X-HE-Meta: U2FsdGVkX1/MSNRevjvTp/epqviKKcIRGviqgVGkobiVzx5Fg/n8GEi4dhDrfVFV48gZF0VkuyVhBEhcpbNO9KQDffXrIWvKpvDQ+CIug7MAin3N6D21P4rZ+a/ljgbMVfBnk/KP33/J7gzeKcE4EIpSO5XS40Oxigghk+3jcSMc5CH2hQ7jIkdBs+t5VYlHCMxIORORpqE+xSy9bX7ZHRJKxWUlAcMqqyVkpehc3h2+TClYWBS+Kk7K8PE13I7byhNOa1eMfEVfLGEK2vyL+IDv0R6Gqed2Knc/MdzRM55S1+cp7Lwx2m1FGP336vYBh2I+QY2AvhYoruSdjrN0le5zad7UJiz0eN/p+jFSwfhA1+Gg916O6s7lzcWUQhtCrSUWP4LdVTrHmbSV1QS7vI0ycYH3HNzR+If5UcTL8e/4PlsLJM4WMKecnotLVih8cJs9YJ9XkFOnVF2NrQqXBFrJ2qoVCN+dum9/kSH7K/utlE/3O0zrsGv3062/liEGNOATbdC1Dnxv9pGypVzr9iIQtN7R3Kx2v490fTGmQVXfllQmWMx0kL/r1w7xFLDrzPXvtQnhAM5vN2Y/6zvYSgCDwjkO4QdxrzG6AIbYlxPg18wdGtoIuQhse5u0HID5lAN3rqPcBgLJV0kHBk3yZ29KMiR1pNS+az6h0ZhFClbIaIq3oGJifsYNmGcfaRCAa30qixDr0vfqEJJvkkrxdUG5r+s+hcr6vsm7KZ5umNv1zeOiduQwFqLGRzWIesg28BUwrG6nyhOG94nltmeaFNv7SW2RVg81pnhRgB7LFgZ4zJoaEqILyic6QePshEOjaDDM4inUSQqcqWB6QKwrM5dc47DuO9Gzr89fg3gwUiVM/M6GAhVxml+wvfnhGRM4xIXCnnGHy4Slzr88gBPvybYhXpXNMie4/CvxDGwykH06LezM3bQf/TS1Da8+VmofF3tepnORGTpaoVkmppQ
+ NT1uHK48
+ F5CKy5hBk1KQAjv5k7nrAgSOsuT3LQzK5aDP7oBRI5tj2EhALuGc3dsvJZjS8WBA38TTJUoHTwcMaOuMoj6VpnUtmBq62Y5dy5aV6TTFNnawtSjmNBI8mIQHix2lVyJR8ZpfJHqcXKqDkY5EGCxsMCa3N3ovcUeWnx7tCKD995DUHNSgUGz6qURidkcU5LfBTv/dLQzSWd+TAlnQ1svbA+W1XiaLqKoPtY9DKehsJjKS5iBGGN+ag5LTk+oYXXo2aEsUVzM7aImVCNhZEFeyTvE5HGVjS7xwpQ/FNj5V12yapndmigF6DL8cc0GG56cj5Pt3z3KBBqzjJQDZVZgKxP2R9XORPBdrKP1n8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,270 +108,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu 30-07-26 02:57:52, Tal Zussman wrote:
-> Some bio completion handlers need to run from preemptible task context,
-> but bio_endio() may be called from IRQ context (e.g., buffer_head
-> writeback). Callers need a way to ensure their callback eventually runs
-> from a sleepable context. Add infrastructure for that, in two forms:
-> 
->   1. BIO_COMPLETE_IN_TASK, a bio flag the submitter sets when it knows
->      in advance that its callback needs task context (e.g., dropbehind
->      writeback). bio_endio() sees the flag and offloads completion to a
->      worker automatically.
-> 
->   2. bio_complete_in_task(), a helper that completion callbacks can
->      invoke from within bi_end_io() when the deferral decision is
->      dynamic (e.g., fserror reporting).
-> 
-> Both share a per-CPU list drained by a work item on a WQ_PERCPU
-> workqueue. Producers push the bio onto the local CPU's list and schedule
-> the work item, which then dispatches each bio's bi_end_io() from task
-> context.
-> 
-> Both methods are gated on bio_in_atomic(), which returns true in any
-> context where a sleeping bi_end_io() is unsafe, including
-> non-preemptible task context.
-> 
-> Two CPU hotplug callbacks are used to drain remaining bios from the
-> departing CPU's batch, while maintaining the per-CPU behavior. The
-> CPUHP_AP_ONLINE_DYN callback disables the per-CPU work item while the
-> CPU is still online, preventing it from running on an unbound worker
-> later. CPUHP_BP_PREPARE_DYN then drains any bios added between disabling
-> the work item and CPU offline.
-> 
-> Link: https://lore.kernel.org/all/20260409160243.1008358-1-hch@lst.de/
-> Suggested-by: Matthew Wilcox <willy@infradead.org>
-> Suggested-by: Christoph Hellwig <hch@infradead.org>
-> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
+On Thu, Jul 30, 2026 at 5:20=E2=80=AFPM Zhaoyang Huang <huangzhaoyang@gmail=
+.com> wrote:
+[...]
+> >
+> > This is very weird. This seems like using a sledgehammer to kill a fly =
+:-)
+> >
+> > Do you mean that isolate_folio() fails, the folio is put back
+> > into the oldest generation, and the next time it is scanned, it
+> > still fails to be isolated? As a result, scan_folios() makes
+> > no progress at all?
+> > And is it because the oldest generation contains only this
+> > folio, leaving no other folios for scan_folios() to scan?
+> >
+> > Why can't you simply promote the folio?
+> > Do you know why isolate_folio() keeps failing? I suspect it's
+> > because folio_try_get(folio) fails repeatedly?
+> Yes. As described in commit message, the orphan folio is an abnormal
+> one as it is on page cache but has folio->refcount=3D0 which makes it
+> isolated and putback to lru forever and finally be the only one in
+> min_seq. IMO, MGLRU should keep make progress with bringing this
+> orphan folio together with.
+> >
 
-Looks good! Feel free to add:
-
-Reviewed-by: Jan Kara <jack@suse.cz>
-
-								Honza
-
-> ---
->  block/bio.c               | 132 +++++++++++++++++++++++++++++++++++++++++++++-
->  include/linux/bio.h       |  24 +++++++++
->  include/linux/blk_types.h |   1 +
->  3 files changed, 156 insertions(+), 1 deletion(-)
-> 
-> diff --git a/block/bio.c b/block/bio.c
-> index 6a2f6fc3413e..a9610950325b 100644
-> --- a/block/bio.c
-> +++ b/block/bio.c
-> @@ -1741,6 +1741,61 @@ void bio_check_pages_dirty(struct bio *bio)
->  	schedule_work(&bio_dirty_work);
->  }
->  
-> +/*
-> + * Infrastructure for deferring bio completions to task-context via a per-CPU
-> + * workqueue. Triggered either by the BIO_COMPLETE_IN_TASK bio flag (static
-> + * decision at submit time) or by calling bio_complete_in_task() from
-> + * bi_end_io() (dynamic decision at completion time).
-> + */
-> +
-> +struct bio_complete_batch {
-> +	struct bio_list list;
-> +	struct work_struct work;
-> +	int cpu;
-> +};
-> +
-> +static DEFINE_PER_CPU(struct bio_complete_batch, bio_complete_batch);
-> +static struct workqueue_struct *bio_complete_wq;
-> +
-> +static void bio_complete_work_fn(struct work_struct *w)
-> +{
-> +	struct bio_complete_batch *batch =
-> +		container_of(w, struct bio_complete_batch, work);
-> +
-> +	while (1) {
-> +		struct bio_list list;
-> +		struct bio *bio;
-> +
-> +		local_irq_disable();
-> +		list = batch->list;
-> +		bio_list_init(&batch->list);
-> +		local_irq_enable();
-> +
-> +		if (bio_list_empty(&list))
-> +			break;
-> +
-> +		while ((bio = bio_list_pop(&list)))
-> +			bio->bi_end_io(bio);
-> +	}
-> +}
-> +
-> +void __bio_complete_in_task(struct bio *bio)
-> +{
-> +	struct bio_complete_batch *batch;
-> +	unsigned long flags;
-> +	bool was_empty;
-> +
-> +	local_irq_save(flags);
-> +	batch = this_cpu_ptr(&bio_complete_batch);
-> +	was_empty = bio_list_empty(&batch->list);
-> +	bio_list_add(&batch->list, bio);
-> +	local_irq_restore(flags);
-> +
-> +	if (was_empty)
-> +		queue_work_on(batch->cpu, bio_complete_wq, &batch->work);
-> +}
-> +EXPORT_SYMBOL_GPL(__bio_complete_in_task);
-> +
->  static inline bool bio_remaining_done(struct bio *bio)
->  {
->  	/*
-> @@ -1815,7 +1870,9 @@ void bio_endio(struct bio *bio)
->  	}
->  #endif
->  
-> -	if (bio->bi_end_io)
-> +	if (bio_flagged(bio, BIO_COMPLETE_IN_TASK) && bio_in_atomic())
-> +		__bio_complete_in_task(bio);
-> +	else if (bio->bi_end_io)
->  		bio->bi_end_io(bio);
->  }
->  EXPORT_SYMBOL(bio_endio);
-> @@ -2001,6 +2058,55 @@ int bioset_init(struct bio_set *bs,
->  }
->  EXPORT_SYMBOL(bioset_init);
->  
-> +static int bio_complete_batch_cpu_online(unsigned int cpu)
-> +{
-> +	struct bio_complete_batch *batch = &per_cpu(bio_complete_batch, cpu);
-> +
-> +	enable_work(&batch->work);
-> +	if (!bio_list_empty(&batch->list))
-> +		queue_work_on(cpu, bio_complete_wq, &batch->work);
-> +	return 0;
-> +}
-> +
-> +/*
-> + * Disable this CPU's work item so that it cannot run on an unbound worker
-> + * after the CPU is offlined.
-> + */
-> +static int bio_complete_batch_cpu_down_prep(unsigned int cpu)
-> +{
-> +	disable_work_sync(&per_cpu(bio_complete_batch, cpu).work);
-> +	return 0;
-> +}
-> +
-> +/*
-> + * Drain a dead CPU's deferred bio completions. The CPU is dead and the worker
-> + * is canceled so no locking is needed.
-> + */
-> +static int bio_complete_batch_cpu_dead(unsigned int cpu)
-> +{
-> +	struct bio_complete_batch *batch =
-> +		per_cpu_ptr(&bio_complete_batch, cpu);
-> +	struct bio *bio;
-> +
-> +	while ((bio = bio_list_pop(&batch->list)))
-> +		bio->bi_end_io(bio);
-> +
-> +	return 0;
-> +}
-> +
-> +static void __init bio_complete_batch_init(int cpu)
-> +{
-> +	struct bio_complete_batch *batch =
-> +		per_cpu_ptr(&bio_complete_batch, cpu);
-> +
-> +	bio_list_init(&batch->list);
-> +	INIT_WORK(&batch->work, bio_complete_work_fn);
-> +	batch->cpu = cpu;
-> +
-> +	if (!cpu_online(cpu))
-> +		disable_work_sync(&batch->work);
-> +}
-> +
->  static int __init init_bio(void)
->  {
->  	int i;
-> @@ -2015,6 +2121,30 @@ static int __init init_bio(void)
->  				SLAB_HWCACHE_ALIGN | SLAB_PANIC, NULL);
->  	}
->  
-> +	for_each_possible_cpu(i)
-> +		bio_complete_batch_init(i);
-> +
-> +	bio_complete_wq = alloc_workqueue("bio_complete",
-> +					   WQ_MEM_RECLAIM | WQ_PERCPU, 0);
-> +	if (!bio_complete_wq)
-> +		panic("bio: can't allocate bio_complete workqueue\n");
-> +
-> +	/*
-> +	 * bio task-context completion draining on hot-unplugged CPUs:
-> +	 *
-> +	 *   1. Stop the per-CPU work item while the CPU is still online, so
-> +	 *      that it cannot run on an unbound worker later.
-> +	 *   2. Drain leftover bios added between worker disabling and CPU
-> +	 *      offlining.
-> +	 */
-> +	cpuhp_setup_state_nocalls(CPUHP_AP_ONLINE_DYN,
-> +				  "block/bio:complete:online",
-> +				  bio_complete_batch_cpu_online,
-> +				  bio_complete_batch_cpu_down_prep);
-> +	cpuhp_setup_state_nocalls(CPUHP_BP_PREPARE_DYN,
-> +				  "block/bio:complete:dead",
-> +				  NULL, bio_complete_batch_cpu_dead);
-> +
->  	cpuhp_setup_state_multi(CPUHP_BIO_DEAD, "block/bio:dead", NULL,
->  					bio_cpu_dead);
->  
-> diff --git a/include/linux/bio.h b/include/linux/bio.h
-> index 62a983758e09..a8091a3e9d87 100644
-> --- a/include/linux/bio.h
-> +++ b/include/linux/bio.h
-> @@ -383,6 +383,30 @@ static inline bool bio_in_atomic(void)
->  	return !preemptible();
->  }
->  
-> +void __bio_complete_in_task(struct bio *bio);
-> +
-> +/**
-> + * bio_complete_in_task - ensure a bio is completed in preemptible task context
-> + * @bio: bio to complete
-> + *
-> + * If called from non-task context, offload the bio completion to a worker
-> + * thread and return %true. Else return %false and do nothing.
-> + *
-> + * Uses BIO_COMPLETE_IN_TASK as a sentinel: if set, the bio was already
-> + * deferred and we are running in the worker — return %false so the
-> + * callback proceeds instead of re-deferring.
-> + */
-> +static inline bool bio_complete_in_task(struct bio *bio)
-> +{
-> +	if (bio_flagged(bio, BIO_COMPLETE_IN_TASK))
-> +		return false;
-> +	if (!bio_in_atomic())
-> +		return false;
-> +	bio_set_flag(bio, BIO_COMPLETE_IN_TASK);
-> +	__bio_complete_in_task(bio);
-> +	return true;
-> +}
-> +
->  extern void bio_endio(struct bio *);
->  
->  /**
-> diff --git a/include/linux/blk_types.h b/include/linux/blk_types.h
-> index 8808ee76e73c..d49d97a050d0 100644
-> --- a/include/linux/blk_types.h
-> +++ b/include/linux/blk_types.h
-> @@ -322,6 +322,7 @@ enum {
->  	BIO_REMAPPED,
->  	BIO_ZONE_WRITE_PLUGGING, /* bio handled through zone write plugging */
->  	BIO_EMULATES_ZONE_APPEND, /* bio emulates a zone append operation */
-> +	BIO_COMPLETE_IN_TASK, /* complete bi_end_io() in task context */
->  	BIO_FLAG_LAST
->  };
->  
-> 
-> -- 
-> 2.39.5
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Why is a folio with folio->refcount =3D=3D 0 still in the page
+cache? Can this be fixed at the source instead?
 
