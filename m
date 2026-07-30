@@ -4,107 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CE86C54FCD
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 01:58:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E4A9C54FCD
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 02:02:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0C2886B0088; Wed, 29 Jul 2026 21:58:26 -0400 (EDT)
+	id 29F726B008C; Wed, 29 Jul 2026 22:02:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0733F6B008A; Wed, 29 Jul 2026 21:58:26 -0400 (EDT)
+	id 229466B0092; Wed, 29 Jul 2026 22:02:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF1E06B008C; Wed, 29 Jul 2026 21:58:25 -0400 (EDT)
+	id 118966B0093; Wed, 29 Jul 2026 22:02:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CAC776B0088
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 21:58:25 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4FDB2140894
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 01:58:25 +0000 (UTC)
-X-FDA: 85043783370.27.65F0994
-Received: from smtpbguseast2.qq.com (smtpbguseast2.qq.com [54.204.34.130])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 7460540004
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 01:58:22 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=ugreen.com header.s=pkvm2402 header.b=I3WAuBgp;
-	spf=pass (imf07.hostedemail.com: domain of warren.xiong@ugreen.com designates 54.204.34.130 as permitted sender) smtp.mailfrom=warren.xiong@ugreen.com;
-	dmarc=pass (policy=none) header.from=ugreen.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id CEA126B008C
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 22:02:50 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2F3C0120859
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 02:02:50 +0000 (UTC)
+X-FDA: 85043794500.05.CCE3463
+Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
+	by imf23.hostedemail.com (Postfix) with ESMTP id BA0D314000B
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 02:02:46 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=DktpZOYk;
+	spf=pass (imf23.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785376703;
+	s=arc-20220608; t=1785376968;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mz/vF1+MIOcbgrfsM9T1ETaqVlnKJAEoM6Ierr9UBVg=;
-	b=x2LUTZfdFe6sJIpsmxYWtL8z5Ah6VuO09RkydPznJFwKj1eo4KbPtMRZH2TZW5WmQbZ9c4
-	PXxuRRqJz+UxFK+7LWuc3zmhABhLROz0Fldq5AMfh9vjh2lrsYa0P0EuXcgXQYBFsUvAV2
-	E9mIwD05EDQo+ONWqlcYWkgKkorfziY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785376703;
-	b=F9t0dlfurZmMQhMS7jJvuSv4HI1n7qPWEBCk9+O4nrQFM2OVzsGXcYLvBQKEUCmIwyyHj5
-	k3Mzg+dMoX8EqIuba3AFh3MovsyjGFpV/EDjOfEQ+CGi8u5gl4V8+27Yi7Jh5p5JJB3xwM
-	ohNwCFv17lvj9vrFswTLg18ngLaEzjY=
+	bh=/IZvBfcFjPVhZmo5POZlSlll5l1dfa6LjVvoLhlsFcQ=;
+	b=YhWunQk2N/nstG1vgLaWLXt8goLCZCYspitslsZRSxlFfNTMeOfznvGmgCDQNUc0hUw1hU
+	wNtfTDDbcDIXnrNSzPMIk2iMD2suZ5ZuyWi6ok+NPxkmNHpVXdDixRmOxhu7T0v0JbHDIg
+	rm81fY/g6xVfkL9QgXrsCXIfz2AGjbY=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=ugreen.com header.s=pkvm2402 header.b=I3WAuBgp;
-	spf=pass (imf07.hostedemail.com: domain of warren.xiong@ugreen.com designates 54.204.34.130 as permitted sender) smtp.mailfrom=warren.xiong@ugreen.com;
-	dmarc=pass (policy=none) header.from=ugreen.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ugreen.com;
-	s=pkvm2402; t=1785376699;
-	bh=mz/vF1+MIOcbgrfsM9T1ETaqVlnKJAEoM6Ierr9UBVg=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=I3WAuBgphak9hUgaeKMyhtkbytDBA1vCsfg5JIPDtvqilGi+sa/TJhXVnUJdhldbU
-	 jiBAvSOrgri02LEwJV1TMKnxOVb7ymsrBoq8JYLO96ErUneYDsbLunZAz1b2DYx/b3
-	 Hd9SOtxY14oxcc5Agjb3OaHi1ruxSNCgvKaJh7bo=
-X-QQ-mid: zesmtpgz9t1785376698t57f6e66a
-X-QQ-Originating-IP: TuP62bFv3KNDgy434RwiwTPgF3ZWAnB+uhMr4+4GS4M=
-Received: from debian12.. ( [14.153.244.156])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 30 Jul 2026 09:58:11 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 8791580703209932218
-EX-QQ-RecipientCnt: 4
-From: Warren Xiong <warren.xiong@ugreen.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Warren Xiong <warren.xiong@ugreen.com>
-Subject: [PATCH v2] tools/mm: prevent page_owner_sort from truncating input
-Date: Thu, 30 Jul 2026 09:58:09 +0800
-Message-Id: <20260730015809.3819606-1-warren.xiong@ugreen.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20260729053812.882137-1-warren.xiong@ugreen.com>
-References: <20260729053812.882137-1-warren.xiong@ugreen.com>
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=DktpZOYk;
+	spf=pass (imf23.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785376968;
+	b=KqpQejiRxeh+ONaAaZjD+JEeNHAWGAPN3djCLeYNUFsqQgNTkHu6uzsl4L/OcTA2XpV1Gs
+	5lkw5gYiR4Gm1gaqcV6nmt2TJYSoARO09PGqFTrcApzYs8O8Xw4eY9XxeTr/UNMfFF/Sty
+	s/Ea+tGU3CadVtk54h4EPAUHyU3G9xE=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1785376964; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=/IZvBfcFjPVhZmo5POZlSlll5l1dfa6LjVvoLhlsFcQ=;
+	b=DktpZOYko/8Ut2JTgiJMCCa2YT3NXbXn1fAuIl1Or9IURA+KwIBPZI5uBHLGrx9zrRezvIPJzAwQyZHnDJqT8ad7Bxf5cFQ1SlUR7uA1BTbQ3nlNiJR1NalcgHsKPTgwAqzUG5XlQXt2hMDxr1ZJjN5U+rPstLrDluQ1k7yBFy0=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R601e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=5;SR=0;TI=SMTPD_---0X83S3tb_1785376962;
+Received: from 30.74.144.124(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X83S3tb_1785376962 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 30 Jul 2026 10:02:42 +0800
+Message-ID: <21cc294a-9bff-4ae1-8f7a-f51b91579dcd@linux.alibaba.com>
+Date: Thu, 30 Jul 2026 10:02:41 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpgz:ugreen.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: OO2wLqYBHUeBqYBJX+FmDYsGhQm5jdjufCNlyEe9+ASipmMkSPabawEk
-	KAqwFwnZZtja2/J75CS3YVEOgz+A2L/msdH+CBqPBT/Qn14hewICz4LcgxmFdx9VVHeEjoT
-	nyjxkt/+hmiEwTCS5k1xSBOzh1k2rcwaU3nKss7QyMi+l4pfpwh7kGegOhDDOCfz/TdZ1TF
-	M5LBJ5gLNULH16VrypA4LdCNwqOyHXVVCMlLnH7u3D10CFIjfnKDcur6nkLgMY4wnVCQzcC
-	QrmP2wx2dFWcYZRM3XleFMD5u7l03+twhGdj5BKF43ym2/4wt/OyC6KVgsP5FtRae+JykO7
-	ahhsuuDs2shyMcwBcHBT9qs2M8h0oaXQImACsp/PZPpBJ2rFh+6Erioha0ZHwhlxy+RLMsD
-	IuJCAJDjWj4cM9qRtOEP57/QdD0VuTkxBDT2knRn9RM2OmHr47mft+Uvsyzwz3tTNZJQKeF
-	k5bdGIX1cT0AcidI6b2JY5Amk1ylbTR88Dr5oFNfhwJnygPOjUEYnUECoZsRteU6LFqsItY
-	SWuN0Iy0FBtbVzPdlOt9yF029p4Clf8irlqqENnzs48vvBCSxQf+5NwJe+3tyN/vQ/6QSi2
-	WID+vkaJ4zG9qMvj2gayYj/Tb1g8OGuXrrRpQ7+AuI6ZgvVR0Cq1Qki3P/NkMlq5XaeTU0K
-	XxgdiC6/6LMKRgIh2xOa3Rk+/ywvqwWhl9JWngs4tEOgRxC4LxH4dfTfzYtc68GDiFt0DgL
-	4631fQFv9fYC53/3MI/ZGXkRuEtmngIO4d1Uno4CvTb0rY9l4B5z5GmJFpltV+pHBUUHxkU
-	yKHFe/tUWXU9f/VHpWL4r/OGYr0BCLvpi0UyW/IkElfgJmDaQplznNOvjNN+fPVGcGRHljz
-	2EMKjyRWLMT+CO3M78rbIrLI+0iFR2pgE2TKXYAv9Ra4JhNkDwfYweYFSBfq9P0tuom5U9G
-	hAZ52fyh5Gtcw0h85DRVnWnhcZsgUvdRWm76zgFFS6DIl34Ia3YyTqqqefqOlM2CYX6K5BC
-	Z+GCDsanB01oeGf21FdtapzsxLP7nTxHgLe0lE6duJvqxDYSRB
-X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
-X-QQ-RECHKSPAM: 0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/1] mm: shmem: reject page-aligned fallocate end
+ overflow
+To: Zhiling Zou <zhilinz@nebusec.ai>, linux-mm@kvack.org
+Cc: hughd@google.com, akpm@linux-foundation.org, vega@nebusec.ai
+References: <87a63846fe9873b1e26e8a7dcafcb21aa8d709fa.1785309651.git.zhilinz@nebusec.ai>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <87a63846fe9873b1e26e8a7dcafcb21aa8d709fa.1785309651.git.zhilinz@nebusec.ai>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 7460540004
-X-Stat-Signature: y1owcbsw4jck45gijesiihkrwumsco69
-X-HE-Tag: 1785376702-571307
-X-HE-Meta: U2FsdGVkX19ANhtSy+XNFxyzrbZ/KtUmEuXZZJPFtoeAC+jiGktnCqwI6RjDGwV0NRz5Wu4K7DzR3UmJND6FZm58Viwisc2Wu491COhooB8OllZZCnUVT1Q87wpF/ILIDXEI0ACnzKenL+/++1wn9Ft59NQoYfPX4ms+CmGe0Rurp1/inx+qUbSYcmuGBInSAi9ix2L5Gc2ojHhPMW7Bxc6TX85tZcLlKCkNhJYB5hu9FcvVJpuBXRDmoBw35Iqy+0nA6FX6pyUN9g+zoWKOKgIhGJIMs63Y7X7r1Ora31o4g6Po4nlFcepjMB4TZ+jcCJ/bh5ORkUr9DFyLGx2UiBp6lS7gsgGuQ/cIs65udUWA2mmxloV+Xr48we6r7eWFzB7DQZHyHLXHBoMrxwnxiGYWnmlmyT2OKr/5/sieSCpqBtDudGfFmqwrGCZBz6xrQwt4qJz86WMR2OpOEAcdOlhWQR+W96rhmtVaOdMw3E43sTEAxeJtV4QwM820macsP2SBh4vZUQ8UHCIMgmPymIuR//xC5dkRMbq0klFSqxFHXGjQOMVlC86/jZL6FtNW4Su30Cg3khIw9DY97mvmahpraDWFNpF2PUcwGulMU6MaS1le8wL04kM1XJutuazMe1S6HLUDRoaxHIHOBCEQEneWrcbma232sDLhKAg62dURqucZvEWMqw+eT/plvbult50B7fDWmt41aDwORCP7OI4j7O31LWz/DY+ZZhiAU3pnFXRaJSn1MZzGG27d0nGFwJciNb7Oq3Gupc2POxm2JcwfrAihBoyW4o0H29FyavTpfNuE9zxS7I0XqSrAkxurMLh0ThFd99RyT8mmn3MO8f+kGBqphZHCwynMTlRh/7GeRBCDVxrkFK1919kssmHMgA38KVDpQnmLQNsMSUTSYeux/YU7qtvyc2v4yy8NPZ7YgvexCqd/4yyCO8a7DQ3cXssx83yuObWhv/MIm+N
- NE5hY3ri
- 6qdFsP2QbVkihIVSGkOYUB12XBvKrr+4Y84uLb2e2rIBcZnJ6uzm8l8f93wOAhe5ecikpfaubVyGa6cm9dzBSwVgKxbtcoDMlMvW2A3SVk2nK6Dwoe/EqDYUbs9kaZ6tUF9BCfa88r6CutRm1d8Pq+62aNUJheFhF+HhWlvJWew4pErV08KVVh1k3TiFuURsvzwcE4YZqe0EG1Dzyk3jq/SgSUWHVeEIEUmKwxF0I2e5E7rWzUu4i4gZB3T/OOzk7sdkH5dDEysYG8dNcWaeHYNoqo2fW0CTUhvkzxH2o7D0Tf9Ijl2p4o4Xd+0lr4kxXZEU5IbuTNm8moelNKylxkw0hQL0dRSMoFNZYjYLwPQFpfre9BJk2adn93KqAQvQpBNrYlaxjHwgF/62xDMU4gjWXeg==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: BA0D314000B
+X-Stat-Signature: a9rhwbiqh84eknqfc96w6e7xo45o6ud6
+X-HE-Tag: 1785376966-124163
+X-HE-Meta: U2FsdGVkX18sMg3n0sbUiG8MiZCMSvPszOnrWy601rFDNJNPAjIgcWNCtZWVk6gQoP27K1wC+xUQrKBgGxjFpHsEczkF+OQg3qwgu/IvQu1M+APq5Oow7nhAD4uurdx1zQrkniW9nWgok9Wii3xwXKyqSHicFQOkoXUxfKYf0qjK8/HXKQUQzQnEjdTjp5L3rhx1/gC3KeWqNeyMwGtoKSPm67ZxuuoIYVV6fX+mPwOfZoZDH8TEgfI9YRKIWVH9dxc3YEE1LrOjbBXJKg4cN87SIU813Hhm+7X8xEhVQ9IPE9051S2emMPtvlHsCbHPuxtsej546tgqWGusfrVtef618Y9t7n81YYmPkBBbelmo3GJ+gwl23bOpz6exsY/MPzIfsK05MxgCHc2q+F9ho/CyIRilPHw6wfOPcOsQCuMlrvBIm6MseKcQ9mkHCbHpgo1w13BmjYBs+DFRT+m1k6vxgL4Q8yuuf2lc5DtRATMcZf3TRfIW1Xa5Wt/gBRJ3A+9FMtk2U0i0BGMhheebq/CVJYicaTQlnQXJqJscdiHnm9IZ6n7iXNySpDG1+RxMNgKUNIz/As2l8hnc4O9pLdM758RTA6yrp9AEQlpkSXGfqXzNx+hF0KtbSSUK3ERBCiI4ossbX054y3nudLcOOvQ8Ir8Vn0jA2rvRsGAbFKbCl7UV3kn/CCCEdczTb2QnFCbB9nMxt7FoVqdlC6eZ0CQe4bifRadjnlFFE36AaGh6SZOSHGS6EOCcNusFvAiF6+V96kPCZit0ui2YusRfIyrJ/10dpxwIV26qYe4EVk6n3/IJ1Pu2YPciQ/NABMcPAJIxFa318Ke3hGpHp4ODGmdluAvPZ25a9CJrjzZJK3WYFAFzc12o+5LdBof7dvCks/+KXkGd0T0mrVaWeddgcD743A8QouUr6GrHdUvORKdKgSNLx7xO4hYManfgpnpeSJq7YuarsrQh4APf/OM
+ vHI154PF
+ zCyOlpmXRaxO4QhiwXGpAGh19vb35UroU5v+ibzmSi2c3z6JDb4QUlHb4HyHcnju+tXqoIwXnQd6BNHd6ZUiGbEJs8mgXJl8YQYS/R822/TTLY5ZWNT/2UKddxf526uo8ZFujzoWfnzQKq1eSfqODtYbxVnDdzw750ztKxnyv7UH2hpTexAYEMqQIeWulNy4KAWO+rA0GNLapEYuB8WX+iF+WxJdsqjkwvG0co+qw7/mXObu2HmTJqxAjZ4jBhC/PQ7jpzPm3qsGSSVH1GYqUB4jtuV0Os33Cw1WMxR4sdKSnLZUhkRz8qXs7X8UVpyeifA69CbraDHP9kiXPE6aZxZoYzw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,59 +86,141 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-page_owner_sort opens the output file with "w" before reading the input.
-If both paths refer to the same file, this truncates the input and the
-tool silently processes zero records before returning success.
 
-Delay opening the output file until all input records have been loaded
-into memory. This allows the tool to sort a file in place without
-truncating data before it has been consumed.
 
-Signed-off-by: Warren Xiong <warren.xiong@ugreen.com>
----
-Changes in v2:
-- Delay opening the output file until after all input has been loaded, as
-  suggested by Andrew Morton.
-- Allow in-place sorting instead of rejecting matching input and output
-  files.
+On 7/29/26 10:07 PM, Zhiling Zou wrote:
+> shmem_fallocate() validates offset + len with inode_newsize_ok(), but
+> then rounds that end offset up to a page boundary before entering the
+> preallocation loop.
+> 
+> For a valid request ending at MAX_LFS_FILESIZE, such as offset = 0 and
+> len = LLONG_MAX, adding PAGE_SIZE - 1 to the validated end can overflow
+> the signed loff_t used for the rounded end calculation. If that wrapped
+> value is then converted into a page index, shmem_fallocate() can enter
+> the folio allocation loop with an invalid range.
+> 
+> Cache the already validated end position, use check_add_overflow() when
+> rounding it up to a page-aligned byte offset, and reuse the cached end
+> for the later seal, shmem_get_folio(), and i_size checks.
+> 
+> Fixes: e2d12e22c59c ("tmpfs: support fallocate preallocation")
+> Cc: stable@vger.kernel.org
 
-Tested with distinct paths, the same path, a hard-link alias, and a
-symbolic-link alias.
+I don't think this needs CC stable, since this is not a common case. We 
+never hit this issue in products
 
-Link to v1: https://lore.kernel.org/r/20260729053812.882137-1-warren.xiong@ugreen.com
+> Reported-by: Vega <vega@nebusec.ai>
+> Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
+> ---
+> changes in v2:
+> - drop the RAM/swap-based range rejection
+> - drop the NORESERVE full-range accounting probe
+> - use check_add_overflow() on a signed loff_t rounded end
+> - v1 Link: https://lore.kernel.org/all/adcf644e780706c220809b7a41e6e496d2181806.1784947149.git.zhilinz@nebusec.ai/
+> 
+>   mm/shmem.c | 21 ++++++++++++++-------
+>   1 file changed, 14 insertions(+), 7 deletions(-)
+> 
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index b51f83c970bb3..f4648545e7ae7 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -3602,6 +3602,8 @@ static long shmem_fallocate(struct file *file, int mode, loff_t offset,
+>   	struct shmem_inode_info *info = SHMEM_I(inode);
+>   	struct shmem_falloc shmem_falloc;
+>   	pgoff_t start, index, end, undo_fallocend;
+> +	loff_t end_byte;
+> +	loff_t end_pos;
+>   	int error;
 
- tools/mm/page_owner_sort.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+Too many unnecessary changes. I'd expect something like:
 
-diff --git a/tools/mm/page_owner_sort.c b/tools/mm/page_owner_sort.c
-index 35d3d2549..22b3b500d 100644
---- a/tools/mm/page_owner_sort.c
-+++ b/tools/mm/page_owner_sort.c
-@@ -836,8 +836,7 @@ int main(int argc, char **argv)
- 	}
- 
- 	fin = fopen(argv[optind], "r");
--	fout = fopen(argv[optind + 1], "w");
--	if (!fin || !fout) {
-+	if (!fin) {
- 		usage();
- 		perror("open: ");
- 		exit(1);
-@@ -874,6 +873,13 @@ int main(int argc, char **argv)
- 			goto out_free;
- 	}
- 
-+	fout = fopen(argv[optind + 1], "w");
-+	if (!fout) {
-+		usage();
-+		perror("open: ");
-+		exit(1);
-+	}
+diff --git a/mm/shmem.c b/mm/shmem.c
+index 6641823bed16..cc7b17d0111e 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -3624,6 +3624,7 @@ static long shmem_fallocate(struct file *file, int 
+mode, loff_t offset,
+         struct shmem_inode_info *info = SHMEM_I(inode);
+         struct shmem_falloc shmem_falloc;
+         pgoff_t start, index, end, undo_fallocend;
++       loff_t aligned_end;
+         int error;
+
+         if (mode & ~(FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE))
+@@ -3680,8 +3681,14 @@ static long shmem_fallocate(struct file *file, 
+int mode, loff_t offset,
+                 goto out;
+         }
+
++       /* Check for wraparound */
++       if (check_add_overflow(offset + len, (loff_t)PAGE_SIZE - 1, 
+&aligned_end)) {
++               error = -EFBIG;
++               goto out;
++       }
 +
- 	printf("loaded %d\n", list_size);
- 
- 	printf("sorting ....\n");
--- 
-2.39.5
+         start = offset >> PAGE_SHIFT;
+-       end = (offset + len + PAGE_SIZE - 1) >> PAGE_SHIFT;
++       end = aligned_end >> PAGE_SHIFT;
+         /* Try to avoid a swapstorm if len is impossible to satisfy */
+         if (sbinfo->max_blocks && end - start > sbinfo->max_blocks) {
+                 error = -ENOSPC;
+
+>   
+>   	if (mode & ~(FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE))
+> @@ -3649,23 +3651,28 @@ static long shmem_fallocate(struct file *file, int mode, loff_t offset,
+>   	}
+>   
+>   	/* We need to check rlimit even when FALLOC_FL_KEEP_SIZE */
+> -	error = inode_newsize_ok(inode, offset + len);
+> +	end_pos = offset + len;
+> +	error = inode_newsize_ok(inode, end_pos);
+>   	if (error)
+>   		goto out;
+>   
+> -	if ((info->seals & F_SEAL_GROW) && offset + len > inode->i_size) {
+> +	if ((info->seals & F_SEAL_GROW) && end_pos > inode->i_size) {
+>   		error = -EPERM;
+>   		goto out;
+>   	}
+>   
+> +	if (check_add_overflow(end_pos, (loff_t)PAGE_SIZE - 1, &end_byte)) {
+> +		error = -EFBIG;
+> +		goto out;
+> +	}
+> +
+>   	start = offset >> PAGE_SHIFT;
+> -	end = (offset + len + PAGE_SIZE - 1) >> PAGE_SHIFT;
+> +	end = (u64)end_byte >> PAGE_SHIFT;
+>   	/* Try to avoid a swapstorm if len is impossible to satisfy */
+>   	if (sbinfo->max_blocks && end - start > sbinfo->max_blocks) {
+>   		error = -ENOSPC;
+>   		goto out;
+>   	}
+> -
+>   	shmem_falloc.waitq = NULL;
+>   	shmem_falloc.start = start;
+>   	shmem_falloc.next  = start;
+> @@ -3699,7 +3706,7 @@ static long shmem_fallocate(struct file *file, int mode, loff_t offset,
+>   		else if (shmem_falloc.nr_unswapped > shmem_falloc.nr_falloced)
+>   			error = -ENOMEM;
+>   		else
+> -			error = shmem_get_folio(inode, index, offset + len,
+> +			error = shmem_get_folio(inode, index, end_pos,
+>   						&folio, SGP_FALLOC);
+>   		if (error) {
+>   			info->fallocend = undo_fallocend;
+> @@ -3743,8 +3750,8 @@ static long shmem_fallocate(struct file *file, int mode, loff_t offset,
+>   		cond_resched();
+>   	}
+>   
+> -	if (!(mode & FALLOC_FL_KEEP_SIZE) && offset + len > inode->i_size)
+> -		i_size_write(inode, offset + len);
+> +	if (!(mode & FALLOC_FL_KEEP_SIZE) && end_pos > inode->i_size)
+> +		i_size_write(inode, end_pos);
+>   undone:
+>   	spin_lock(&inode->i_lock);
+>   	inode->i_private = NULL;
 
 
