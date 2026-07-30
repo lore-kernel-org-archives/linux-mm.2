@@ -4,145 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B718C5516F
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 18:18:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9709C5516E
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 18:21:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 721676B0096; Thu, 30 Jul 2026 14:18:50 -0400 (EDT)
+	id 79A456B0098; Thu, 30 Jul 2026 14:21:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D2A76B0098; Thu, 30 Jul 2026 14:18:50 -0400 (EDT)
+	id 74B236B0099; Thu, 30 Jul 2026 14:21:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C1026B0099; Thu, 30 Jul 2026 14:18:50 -0400 (EDT)
+	id 615066B009B; Thu, 30 Jul 2026 14:21:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 293D96B0096
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 14:18:50 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2831B6B0098
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 14:21:09 -0400 (EDT)
 Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B64ECA0234
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 18:18:49 +0000 (UTC)
-X-FDA: 85046253978.26.DE048CC
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	by imf24.hostedemail.com (Postfix) with ESMTP id C47B2180004
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 18:18:47 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=TOvLJu4V;
-	dmarc=pass (policy=reject) header.from=google.com;
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AAAB5C0243
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 18:21:08 +0000 (UTC)
+X-FDA: 85046259816.26.356D614
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	by imf14.hostedemail.com (Postfix) with ESMTP id D25D5100006
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 18:21:06 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=JwIzkS7U;
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf24.hostedemail.com: domain of ackerleytng@google.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=ackerleytng@google.com
+	spf=pass (imf14.hostedemail.com: domain of greatdanerrrr@gmail.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=greatdanerrrr@gmail.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785435527;
+	s=arc-20220608; t=1785435666;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BcSk1/y4fhEYP1oDWtEyRtQmE44YyXI71BVE0scYBk4=;
-	b=cNofVAWVEjxaliaDr0Nmsum/sv24lNwWVMFponX5oswv5WYYZ37hiU9bLTPWR9Ntl8FrlQ
-	+auOE8xYbR8YsXHUF1TTl/WuLxyP9ek8c442Cyo25P51AuAb8VxlWFYKxttII4QeQ+Ff1k
-	7Qn5pf8O5HznOb6GcURcjXKhMal0YY8=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=OYKbwERx20dbeiIyUIlnTCgasqUg2SfAVLY7xvX8KUM=;
+	b=ZajRZO+sguqY6dgOKJ3SF9iTehxs+QWZM2hkSiR+k5poEs3BQvRoMTVAVs/QuhXOIAPoZq
+	DF21ezrt7iJ5o4zBuUCeUqsYSZDITykCMO3x3RZOFmj+U4XhT4QtFoE38XcmUc1XSjWd2V
+	TYzC5jv6xKo7jcmh29vXbNjPbXOhTTc=
 ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=TOvLJu4V;
-	dmarc=pass (policy=reject) header.from=google.com;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=JwIzkS7U;
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf24.hostedemail.com: domain of ackerleytng@google.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=ackerleytng@google.com
+	spf=pass (imf14.hostedemail.com: domain of greatdanerrrr@gmail.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=greatdanerrrr@gmail.com
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1785435527;
-	b=3dFbTZH+6YPFlWwSEIYOaJm4e36nFxSsw6dcpMNgPJ7wKHAy1cNKKBZ/iEEqBTdKQWgfvZ
-	gHcFw5kc4zSYe3JLwQDxJ9ZSgqbrlUn4d4cQgyJa+h/YhyZ75P976HSQtf6jC7fRY8xosv
-	aDR9sSYSfpEnYXATP3kRU3Fi43V+5jA=
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-38d489b6b71so247829a91.0
-        for <linux-mm@kvack.org>; Thu, 30 Jul 2026 11:18:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785435527; cv=none;
+	t=1785435666;
+	b=i47+PH2EP926Guj93Kxu8C+OmFyM/WcKBH9ySjxH2kflPS77pjbm4+6+xUHJ/smFvReWrT
+	9zMYSAW/N1JtSHCDqUxiipL0x6gR4ttiPtHAPqYoaMpjy8uHAQCD72zIhJ/zsL2M2MKlv8
+	clgC2otbkuZIsuEweMu5C2n28b5GquQ=
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-697bd21fdc2so247898a12.1
+        for <linux-mm@kvack.org>; Thu, 30 Jul 2026 11:21:06 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785435665; cv=none;
         d=google.com; s=arc-20260327;
-        b=pWqfyS72SvsO6WwCw3VzXqrjr8N/1LnpiASvhY39kZoFqGL4+HOjlCoqRcYhd6BTBy
-         4ULVJ1f9tZWyAB9QU8Kq4RVw6v+zXy33JYQ2ke/zVjiG+DuTZtVieWz5MC5rg+n3B/Ev
-         andGeS+Bdw1pzlGFMnsgshS4oS1hydlvi6q/X/dx//KL+qT1Uskqte8SJS2EG8l5LQrF
-         AbN3oLMgDP8j+3DXOmK4xl7qJL/a07c9DoMMUDKvJrdJetRLB0KpruxE+AvuEibtQo/p
-         2ig5Vi9aXMKS08ujAfSuqZjSPEW4VE2jZixDzEpC7WkXdChVm/F0yvm25D2wV8RMj6Xe
-         QQiw==
+        b=YK2tq28qKLc0wzdTCgso5c2btm9e1w+HEcj6QG7CWCaIW4uxgpFmSiuxFCgbE93Ocf
+         2uhoZUcaAuJETCcwjafYASehKbLJ6IY+tdhWNqFVVM/T3naLmv8PdPVO7T4iXtYcCjGz
+         OOOMuORi7a71OoUmXYphtU/ycxb8FrwBQNwGl3wk04Tf6crWQV88VVif/XHexXEuoxFz
+         nubgld4TvHrTo58tQp4UnNMfqHAhdEbUeHSYNDt3sVhHS2GV/R115JN7tONCjHOcPWEq
+         jrcngSsF69X8h6aR/H4UPhQyYfac6bfVB3HYOp+p+jQ4vVfRqx6jnrZLwFdMZ2YeouLP
+         K4/g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=BcSk1/y4fhEYP1oDWtEyRtQmE44YyXI71BVE0scYBk4=;
-        fh=fSCn5+jXC6oxbE+sA3XOnRLstIxv4LfTXVDlDEyhHYs=;
-        b=SGvmsweTjDadYKbZ+BybSpYdrBjd0LVGQsQy8aVsUhsRo0APbCYzuiednvhnRyEKjK
-         HMrarEVYH0Pv+jUslSmRJGPGDNGuLCNFbpq9gV95uU9t+JY5GSfl54SMQakSkH8OOscn
-         oS4uQ9avf6ITug9CkDirKWMGt29jfqpOKRRgmXY1SA2CRbALtVjKjSTCSXFMT3zoIbd+
-         fWPhIwp5MSpXBs/cX6n8LgVUGu7N4X0vFCAX6zFmoFoenr3xy/Ftn60DqqUr1Eja2MP9
-         qeKeYTw50zidPYs8cldt3h54y6x3ds/vCzvqDPeNAXjJpNJYPiT3Csi8/KfiypIjhCYq
-         djVg==;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=OYKbwERx20dbeiIyUIlnTCgasqUg2SfAVLY7xvX8KUM=;
+        fh=2DwymKcedapKDuxnu6/5mci0/Hqp1HDy4JWZA6sOW+8=;
+        b=ay+2O6rxq+NzYJ76y5VSWxR/rkyGehvYEiL7leSlTA0retuAGBHRs0jYp5YFIPfZth
+         6UzPeZO29FMOhn6p+ArUVEDabdzcjPhUe9Hh2CuAw8PlxFmoxG2GZL5ttZihBf+TpH4h
+         W1paLYUqqQs1Wv3d8X2m0HxtTRzkT1TQ0q1nDiitskE6QesdSThu44/fEW9TgMEn5SYW
+         mOitFALSfYN+F65vNCNk59uA46CHY0A0TvbTFu30olLs/B0sQ27oE5W27CGnEG6ItQ0r
+         PVKsgMOO4RLujUusbmJFHTjfMeb/h0YciAtTYQmoAVDtlrtHmsUnMFIYE5h2Ph9vBU//
+         iaAw==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785435527; x=1786040327; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=BcSk1/y4fhEYP1oDWtEyRtQmE44YyXI71BVE0scYBk4=;
-        b=TOvLJu4VKP0NTpXk9PjheiqEs7iiEBuHDpIkQnaPfB+wtszYnWJ1dALvu8hftp5Nds
-         76y+mqD8uAdVylOAKBD/WhRgezCz7X+jvH09PnzVuXkwlXTBQqi9T8Z9E+hsguEjKQM+
-         1VxAWz36BAGWg/nnrmYw12+sGsbhf2D0H5uTm6+q6UgrGO8FXBNHR8s5+yCVBSFRDJ2y
-         IN+FDIMOqlrshO6Nz7eEiRh2f2dPG3nYumSVrM4ClXn/R+vVS+bvYRp7R1N6lE2rYjeU
-         9zhY22+j/kA2gWTkMRYwwGzy+5EfswWJY61ks/5fCU/K8mJTNYqkSHrWIMreociISuYc
-         vPUg==
+        d=gmail.com; s=20251104; t=1785435665; x=1786040465; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=OYKbwERx20dbeiIyUIlnTCgasqUg2SfAVLY7xvX8KUM=;
+        b=JwIzkS7UDhAXuGnIMXib9Q96/2s3y1Wrowka8fZFxwfeBmTrrNSUfodxuWY2KBkr1E
+         6gClL2HtsYEu3F/wtqwdfuwBrKA/LjE5HzWSoT0hXJK6VKOgZX6YkJz1k2gDyvGJ3tWd
+         Z67yZrq9fBD+M+rgrB1m9nJTHel6673oiAkbXcRcqJcxGsJrUUvHalmJ1FXllZE5q4Dw
+         1esi53zlq0+gk3ItW4ZWz9hFehQJ/Rd9ZpUDkeV3WN8eS0CbdVw0uZMT/quWc0NLh/wD
+         BHimurQ6yRV/+udk7mJad40iZIcPBezA28/hYRfsjGpsgYuum/K2yyL4M7XZBJXUQyDh
+         hkkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785435527; x=1786040327;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=BcSk1/y4fhEYP1oDWtEyRtQmE44YyXI71BVE0scYBk4=;
-        b=Z4i/Jy7jkHjnidW046ubpYk5c9IPShQJD83ZR2dSE9QolBNRVFaScGdOGH3GxLzYzK
-         pFuCPhk6vSNm7nT4wxuZHNC6lS87RKOpWuu4YpLABLijpp7VfrClQvOG2tclWe+VegND
-         gq6TXaB2hmPV41NZRMgju7uVy2FBEqKYnX+dxmxrkNs5Z7mf2dgaJIvO50Ug0Txe5dt0
-         3WRi3ZzsmHxzyDTAQyOZS8MqH6NxYiQtA1YTcg8f+j4TKN6wZ0DVzSfpKKQvxqMZhWru
-         9oIfuTUwNTF2yP/2WAL+n1RfYTBGRZchaecW312cCEPOGRSQ+ihOPWeUvbq8FbF7h4nu
-         LpFg==
-X-Forwarded-Encrypted: i=1; AHgh+RoaskEGQOWDNIkWXAY2mjTWnxoa1c89h/MzefUjT4fgLa3pF9nE42Tjl6hJ/cMq0SyZV+qFgVbiaA==@kvack.org
-X-Gm-Message-State: AOJu0Yzs9ikFyseA7fWUkKg6OMWmTbOSw8BS10qCBYZc3imsmZTVgDM/
-	qRIlp4zyNC9FpsboqxVT0/YNtO0OY7qwcziKphuBbzxS9lcc34yc6IESBY7TAONYIg4FZnFWAHX
-	toJ4lJirTQ82R7aBj0spyJH2ARzqhpIHUSyKIjZEX
-X-Gm-Gg: AR+sD13CXTbpEyw8NL/PzRfVGdXMlJk5AqVtyjzx67wHCLiRs6RN8v5YhK82pcjkmga
-	XjInlM372tNeNdiNz5taRMi5U1157Ks2hQLMu/BSIAJn/9aCMtx63/ntw+5S9yIlE7vPf3B2kKp
-	n4VA35q/hPW2A+z9VfPnkCKLFELl5ElA13KXnS15Ey6MRgUN4vgK891ML8wdmiVNp3hjnTRXmCH
-	W0FUcxcamTxuUadarHS+iAv64ncr8v+7ZUI4tlQyI34CWDqoBZpd9vLi54AzBiXWmK0ZxsnU+K3
-	pJKA3RvVpMFzbp5e0c1H99o/SnF0bR7E1Uo3SFRxQq5Wa9bdZ3lyIY4IUcC2T7K/B1BRIoswl8J
-	acah+GSAsoNg4bNIPQuECcqFJL1UJLCovaA==
-X-Received: by 2002:a17:90a:d007:b0:37c:6130:7a5b with SMTP id
- 98e67ed59e1d1-38fa7dcb036mr912482a91.8.1785435525974; Thu, 30 Jul 2026
- 11:18:45 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 30 Jul 2026 11:18:45 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 30 Jul 2026 11:18:44 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20260728121138.1103610-12-tarunsahu@google.com>
-References: <20260728121138.1103610-1-tarunsahu@google.com> <20260728121138.1103610-12-tarunsahu@google.com>
+        d=1e100.net; s=20251104; t=1785435665; x=1786040465;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=OYKbwERx20dbeiIyUIlnTCgasqUg2SfAVLY7xvX8KUM=;
+        b=qWbat8C1gh9McPMVH7DVDG5DCOcwLEUQrl5bjIfO/kK0kmgARHlkQIl1DbRBKzZdPf
+         JXdcd5Z05ivy1+69foty/CutUIh8AJDggSKrPUm7wk68/7VlHfU6322NOUEvD/9ad702
+         b555VpA2DfqbE3WZp04mRB1W2UY8HmJFmUQzrjnRkn4biCFpPohCLrwwu+5GGXEdKEum
+         bgBMlVgFG9KNeKSaAXsy+8vdujGi6iP2aMOMgamdS4oGo+4az2DuGgIwvNl0EFXrbsGb
+         Db/Uiefgx0wTKYpatYSjal9E4sj2EJ34FMbXF5bZD8vDH0F0matQl83jZmoDSuMfQ0Eo
+         FB+A==
+X-Forwarded-Encrypted: i=1; AHgh+RplUU33ZSsAmas2mNBT496qRqLiB10AUKLmdHrxqXJhwKiRm9dLfkVjq8iip/+gbABYrVCmCFk/Hw==@kvack.org
+X-Gm-Message-State: AOJu0YyUWlGKvl9aQajlStrYBdiscNIjt3GWSCpPlJa+SCDkfyqdCYjn
+	7QwUSFEN4d9YAnyKnu7mdl2b7Z27uabW4JAy/xuzP4h7KNJFrP3/41v+bXgf3vFhezqaT00hOB0
+	kObhsQIy6VS+6hDZPYm0dihdybS2coBk=
+X-Gm-Gg: AR+sD11duDu5nHGH0LDviRp/3xrQhowZjNgxHYWH09aTHiLCgTdMA/moxJIDSON221Q
+	pObSikURq7BSbAjn7HykeEz4f3TAt8nlkEi/tZw6niFUJBohc+mvOL2MwEweCRlpK9FD/HfMOIz
+	a7h/V08U7SXjPCkeEx3Uu/puD9xJ3TU1OYlS9ziecaqSPbV/NpAHbJey9QAp12kHapHPXY7UKwb
+	KyLq8GolPgv2INWQNf9ufJ6u/dFfsJY1JyLFSg82hpy9oHfRpW6Jk/tyGG8zc/C03krIcuK0TBs
+	oDp7EooSu5wFe+1kD7hyIzrliu2fxFOW60mNEJZuQxXnaWDELrsNiQP1YKFU1lSpEiUEfVEPAwC
+	beESpn7q5zii/MiSaKkriLRtkCmuPIiw2Jl7yBQ8h3rth
+X-Received: by 2002:a05:6402:4314:b0:69e:98a8:4f05 with SMTP id
+ 4fb4d7f45d1cf-6a07b843800mr1910619a12.34.1785435665064; Thu, 30 Jul 2026
+ 11:21:05 -0700 (PDT)
 MIME-Version: 1.0
-Date: Thu, 30 Jul 2026 11:18:44 -0700
-X-Gm-Features: AUfX_mzurojFzFl7kQ4jInKyqzMda986c-EWBvJn_4YyREdNQpyHfl__fqR3AfU
-Message-ID: <CAEvNRgEbS06snhyHznPSqxnUrdudVEKUuOpPwnU+AJATWFBRBA@mail.gmail.com>
-Subject: Re: [PATCH v4 11/11] KVM: selftests: Add guest_memfd_preservation_test
-To: Tarun Sahu <tarunsahu@google.com>, fuad.tabba@linux.dev, 
-	Andrew Morton <akpm@linux-foundation.org>, seanjc@google.com, dmatlack@google.com, 
-	Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>, david@redhat.com, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, sagis@google.com, 
-	Paolo Bonzini <pbonzini@redhat.com>, Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>
-Cc: linux-kselftest@vger.kernel.org, andre.przywara@arm.com, 
-	michael.roth@amd.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	will@kernel.org, vannapurve@google.com, maz@kernel.org, fvdl@google.com, 
-	kvm@vger.kernel.org, oliver.upton@linux.dev, kvmarm@lists.linux.dev, 
-	alexandru.elisei@arm.com, skhawaja@google.com, aneesh.kumar@kernel.org, 
-	linux-doc@vger.kernel.org, David Hildenbrand <david@kernel.org>, yan.y.zhao@intel.com, 
-	kexec@lists.infradead.org, suzuki.poulose@arm.com
+From: dane phillips <greatdanerrrr@gmail.com>
+Date: Thu, 30 Jul 2026 11:20:53 -0700
+X-Gm-Features: AUfX_mxjp7OusIdtZwC51kJm4H-r48e75MMq_eLAX4lRvFFoqtXoaP0UKEaCq6g
+Message-ID: <CAAzp_c6=Ka7q4pZtp_mWB2m_8MK9=z6OZgLiFoXJNTey0soGfw@mail.gmail.com>
+Subject: KMSAN: use-after-free in sw842_decompress (zswap writeback)
+To: linux-kernel@vger.kernel.org
+Cc: linux-crypto@vger.kernel.org, linux-mm@kvack.org, 
+	syzkaller-bugs@lists.sourceforge.net
 Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C47B2180004
+X-Rspamd-Queue-Id: D25D5100006
 X-Rspam-User: 
-X-Stat-Signature: b9y8i6p8y6ed6c53ircca6yg7a9h3pq8
-X-HE-Tag: 1785435527-912642
-X-HE-Meta: U2FsdGVkX1/hmXLQMhUNMp7KhVNf4+0ZK6h/wTxOwR1rZKM7ERGibfmpwG68yChsfcy7Kz5LvYAA/7rxcsE3RWDUwLHkMcB8rMywmkZUroxFrRHpJ7RmBiuevv6RidSTUgu+xgoke6imXSoWJSiPd2dgDpUKaS+7w4g4Rdyt0sTweH8f6lmh1zy2UgOjp+jBjGAut7xV7wJ2IfCOhJOLiM4Pwbg/muFh/TSFCssVXNv3atvughJ+8RSJzfgo4K/g/Bd7+HZY5yTdWyKrXqq/geKYCWTNzxg7de8+Lc9c9DNX5QZkgVnldxZrBZPbV9vtvDcl5FR31YPlR0FqVw4GlmkJ4n2taoQZmiVBP+WuGZNAYQkXSgyRND/GDKfwpvv0R7p3brdm84lJfyBie3RU0X8vj2Xcb2hEQrMSpntITiCgsitPX5B064kxvAOoKgRzo8vTbzUXecXaQ0TVxurFMjR2f1FHL4TGNgUjAEs8JgaR70zPaJ+5DTp7TYjGZI/W4QMt7eo+goT/9RUKvFiv8xUsAZhDkVOhg1gBmGlnqJSiYf0LX6DaaAjc7Lotrvsxl/Q/1vnpLJeTFkFh9ART5ngcB8Wg5g03cTAWNxxvFQragEXSxy84tSvfY221kvyAzNFhWCGv+15I2nIsR+xF1Zbu/NAPfriRzdJ9rautPJ/SCqpFodW1UvXLgYuKfIBiBJXuH32w6xw4cPBGx2VtWHzhT7rMGiHNlwIi0XlOlPLgIxeaDtqzlVsdnt2mIeQUnhZuf1Q08RieSzKMLHMMxbWRvRSWsfDICrcr0vgN6qB1sniO5dcIT9SN7kvnRayto017AaP/4iMFbP/WQ/FKl8v0GTJGbXUYwaZpvC4kFK90tVnRpUABt0E6HvYoxRsfXFgvGQgY2RtbL91tvtw2rWCHgIpnlQxI4n/3sRWxKfxijnPcEeojbl3gJ2PS36dpUQvoPGBcCq8MiAcg8c/
- Y+Frnbmh
- zdEPm8AGa32iNP/NA/u1Zfk3wzkw3k+9OzJvyUUrh0hM+LI0uqjqY1bpSJcDXgXSfHgsk0X2PV+bBy/4B8zNVgakCcvu3iNJpTu76npvnDJO5a9w3D/BPb+F+DGOFHssw9Zqm0u4yN61zzZYvg14qDiMbWOyZouJI9aO9wMRIFqTJWYKC4PwA4pIq0xT095RXPCTNa2asToId+REbiL9wWJI1Jq6/ZLAdmztW+v2bYjsdZr89L/X8xY88/wDqDBZAoB3mXfT1y3JZGiYnccpBQqozqt9OyzSi6rlm5zsio6bqbjMvEGC9gOqinjAfKR983kVjZCaoxW+CeKa42c49QbCMR+D4MwFVR3QKvBVSfmDdygaTTO6x+wDI+2vrZb345hSOwkZTMdGkUeyViBaJj8syxg==
+X-Stat-Signature: mmay961gnpg9wj67dysqmj9utoyg7zgp
+X-HE-Tag: 1785435666-636894
+X-HE-Meta: U2FsdGVkX1+vMSYV00GSd84FEmiIKh72pVpd4DhDCKWraed6d7BAG4YY4AZsyjeB4CGOAWKwrxeJbUTCIM7LHeTTpbZflAdG1a7bMq/y37HIQynUfgoHcXRusoEWTQ0o91543Tuef0LFduqncjIsIvMpbaQIsRz6S5310ZvS5OxaUeY33PTKvJ2IXFMQSJ9JXYOvUF+/ot1NE0wfc6aMspFgli6Mwm+CZd1rktw07sJLjafU2coL+BRIAZQj0Lj3ynVTvmndB9lblGy3hLG2pfbRAfgKwmF8H1du7tqNYUJyu58G4ipvLDIy+xoX/VrzCpeTUUAtR05cexVHeQmpapJIi/qck6npNEmNrBq8hHxr/AinFnbUoa1mDDGJVZmCLHhaUJqWEYUHIXZh9LEvT9UgIore3cza9j32NUhqnTHS7McglqIQ1yyAi3SJk2t5BwzsfH1isIX1hz1dB38gYFRpiEwVa1Et23NPiWDVKjnCGXkWuDAvWowvJLRopYq0NJe56VOOWktqEZVxPIgk5A9eMLpDOJ4mdurrjsbmbwmpZWrxHsur/9yj0keLrX8SdaDAc4iQ8F6MNP5gY0dbBZNWlRh+7ikiZGdxjfcZOGqHGFbtj9PXCUmOSKbu4E8nxHtga+G2YNbyfowxeC40v7JBbUaQxl96SNbcZMEcGqVDhtJR52EIi0C2D4v7VJCAhwFI0nx2mfcJ7rWt/iQan6c59rEy3CVvWJK5S1hJiR846fXJ+gzdnczgBdq2gqP7YquWhwJdiR2dVxQyiAyqPJuOZb3mGqh93ihqc4BFiyR/rcVZBud7Q+kjHVoGMRqfDO/CgzNwoopbqNFlsBklGxcHG5ZhiZcvIpz8Gob7UlnSNuXl1BgNAgk8k8ONZ+OO/8bYegujbynwNLqeols9cMLBb2eb4vUGqWO6AiLALift2udmT+ut7hF7Q2RLB5ALT9OG2fABWfj6JNQOANV
+ lioJ4AhV
+ WIpVFuXXmwCZ1s1mTIxdp0yV6NOq7LhQ3nYlX7YK4AFX5Danby7VhiMFgrHcGk64VMy/piyjKAVnN1OCh/YGCUKdsev2gguNnAV9zIQd09vK2TOujhYmFfsTodxv7YVOqXSXs2BCn6eZ3mMlxOmRc6yRkaJqYOHn3EIDQPsRBn0WhnnwmUVCnj1Z0APwdx4Yk220E/M7CjhcW7avg/xfWeQcvBaC6z5L18qD0FTni95LsirmXX7AHAeZBwoKRTRuJYCUy6pTrYU5VZIFcj48hjC+Xw896iCmoSFcT5FcT8g0Yi8yN9WlWrmhJMrMV1n391Aww/E9SBXql2p+kBVdh8balf89RoJ7ihNAyTPYxk/qjtsv7hY8V6hd3PrtDCcyLoZr2e22+6L2XjkdrBAR9/jaYE3lBrF+DbrFeZsvqf/KRCQtN9LAXLyy/jZOjEAG6713e
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,50 +132,145 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Tarun Sahu <tarunsahu@google.com> writes:
+Hi,
 
-> Add guest_memfd_preservation_test to verify that KVM VM state and guest
-> memory backed by guest_memfd are preserved across a kexec reboot via Live
-> Update Orchestrator (LUO).
->
-> This test includes multiple tests
-> - (A) Test to preserve non-guest_memfd, non-memfd which must fail (/dev/null)
-> - (B) Test to preserve guest_memfd with no INIT_SHARED flag which must fail
-> - (C) Test to allocate the guest_memfd memory after preservation because
->   preservation makes the guest_memfd frozen. Which must fail as well.
-> - (D) Test to verify guest_memfd with INIT_SHARED flag preservation across
->   kexec: Below is the details of stages in this test.
->
+I am running syzkaller on commit 3dab139d4795 and it
+reported the use-after-free below. The issue occurs when zswap
+writeback decompresses a page that has already been freed by
+process exit.
 
-I think we should split this into multiple patches, where each patch
-introduces 1 test.
+Kernel version: 7.2.0-rc4-00503-g3dab139d4795
+Config: CONFIG_KMSAN=y, CONFIG_ZSWAP=y, CONFIG_CRYPTO_842=y
 
->
-> [...snip...]
->
-> +++ b/tools/testing/selftests/kvm/guest_memfd_preservation_test.c
-> @@ -0,0 +1,357 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Copyright (C) 2026, Google LLC.
-> + *
-> + * Author: Tarun Sahu <tarunsahu@google.com>
-> + *
-> + * Test for VM and guest_memfd preservation across kexec (Live Update) via LUO.
-> + *
-> + * NOTE: This is a MANUAL test and is excluded from automated CI/testing
-> + * frameworks because Stage 1 daemonizes into the background to pin resources
-> + * and requires a human operator to manually trigger kexec before Stage 2
-> + * is executed. Running Stage 1 automatically would leak the background daemon
-> + * and cause CI runners to falsely interpret it as a passed test.
-> + *
+The bug manifests in sw842_decompress accessing memory that was
+freed in exit_mmap, while the shrinker is still walking the zswap
+pool.
 
-Usually there aren't many printfs in tests, but since this is a MANUAL
-test, maybe that's ok?
+BUG: KMSAN: use-after-free in sw842_decompress+0x11c8/0x1750
+lib/842/842_decompress.c:303
+ sw842_decompress+0x11c8/0x1750 lib/842/842_decompress.c:303
+ crypto842_sdecompress+0x46/0x60 crypto/842.c:53
+ scomp_acomp_comp_decomp+0xa49/0x1120 include/crypto/internal/scompress.h:-1
+ scomp_acomp_decompress+0x30/0x40 crypto/scompress.c:283
+ crypto_acomp_decompress+0x5c4/0xe50 crypto/acompress.c:297
+ zswap_decompress+0x4ba/0xcc0 mm/zswap.c:952
+ zswap_writeback_entry mm/zswap.c:1032 [inline]
+ shrink_memcg_cb+0x78f/0xda0 mm/zswap.c:1147
+ __list_lru_walk_one+0x49a/0xde0 mm/list_lru.c:362
+ list_lru_walk_one+0x5c/0x70 mm/list_lru.c:399
+ list_lru_shrink_walk include/linux/list_lru.h:332 [inline]
+ zswap_shrinker_scan+0x11f/0x290 mm/zswap.c:1181
+ do_shrink_slab+0x736/0x1460 mm/shrinker.c:443
+ shrink_slab_memcg mm/shrinker.c:560 [inline]
+ shrink_slab+0xb70/0x14c0 mm/shrinker.c:638
+ shrink_one+0x560/0xc10 mm/vmscan.c:5026
+ shrink_many mm/vmscan.c:5087 [inline]
+ lru_gen_shrink_node mm/vmscan.c:5165 [inline]
+ shrink_node+0x47a5/0x5b70 mm/vmscan.c:6154
+ kswapd_shrink_node mm/vmscan.c:7008 [inline]
+ balance_pgdat mm/vmscan.c:7186 [inline]
+ kswapd+0x3029/0x5a50 mm/vmscan.c:7462
+ kthread+0x53f/0x600 kernel/kthread.c:436
+ ret_from_fork+0x20f/0x8d0 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
 
-Would like to know what Sean thinks of this, and printfs in general.
+Uninit was stored to memory at:
+ sw842_decompress+0x11c1/0x1750 lib/842/842_decompress.c:303
+ crypto842_sdecompress+0x46/0x60 crypto/842.c:53
+ scomp_acomp_comp_decomp+0xa49/0x1120 include/crypto/internal/scompress.h:-1
+ scomp_acomp_decompress+0x30/0x40 crypto/scompress.c:283
+ crypto_acomp_decompress+0x5c4/0xe50 crypto/acompress.c:297
+ zswap_decompress+0x4ba/0xcc0 mm/zswap.c:952
+ zswap_writeback_entry mm/zswap.c:1032 [inline]
+ shrink_memcg_cb+0x78f/0xda0 mm/zswap.c:1147
+ __list_lru_walk_one+0x49a/0xde0 mm/list_lru.c:362
+ list_lru_walk_one+0x5c/0x70 mm/list_lru.c:399
+ list_lru_shrink_walk include/linux/list_lru.h:332 [inline]
+ zswap_shrinker_scan+0x11f/0x290 mm/zswap.c:1181
+ do_shrink_slab+0x736/0x1460 mm/shrinker.c:443
+ shrink_slab_memcg mm/shrinker.c:560 [inline]
+ shrink_slab+0xb70/0x14c0 mm/shrinker.c:638
+ shrink_one+0x560/0xc10 mm/vmscan.c:5026
+ shrink_many mm/vmscan.c:5087 [inline]
+ lru_gen_shrink_node mm/vmscan.c:5165 [inline]
+ shrink_node+0x47a5/0x5b70 mm/vmscan.c:6154
+ kswapd_shrink_node mm/vmscan.c:7008 [inline]
+ balance_pgdat mm/vmscan.c:7186 [inline]
+ kswapd+0x3029/0x5a50 mm/vmscan.c:7462
+ kthread+0x53f/0x600 kernel/kthread.c:436
+ ret_from_fork+0x20f/0x8d0 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
 
->
-> [...snip...]
->
+Uninit was stored to memory at:
+ next_bits+0xac2/0xda0 lib/842/842_decompress.c:118
+ sw842_decompress+0x1a6/0x1750 lib/842/842_decompress.c:297
+ crypto842_sdecompress+0x46/0x60 crypto/842.c:53
+ scomp_acomp_comp_decomp+0xa49/0x1120 include/crypto/internal/scompress.h:-1
+ scomp_acomp_decompress+0x30/0x40 crypto/scompress.c:283
+ crypto_acomp_decompress+0x5c4/0xe50 crypto/acompress.c:297
+ zswap_decompress+0x4ba/0xcc0 mm/zswap.c:952
+ zswap_writeback_entry mm/zswap.c:1032 [inline]
+ shrink_memcg_cb+0x78f/0xda0 mm/zswap.c:1147
+ __list_lru_walk_one+0x49a/0xde0 mm/list_lru.c:362
+ list_lru_walk_one+0x5c/0x70 mm/list_lru.c:399
+ list_lru_shrink_walk include/linux/list_lru.h:332 [inline]
+ zswap_shrinker_scan+0x11f/0x290 mm/zswap.c:1181
+ do_shrink_slab+0x736/0x1460 mm/shrinker.c:443
+ shrink_slab_memcg mm/shrinker.c:560 [inline]
+ shrink_slab+0xb70/0x14c0 mm/shrinker.c:638
+ shrink_one+0x560/0xc10 mm/vmscan.c:5026
+ shrink_many mm/vmscan.c:5087 [inline]
+ lru_gen_shrink_node mm/vmscan.c:5165 [inline]
+ shrink_node+0x47a5/0x5b70 mm/vmscan.c:6154
+ kswapd_shrink_node mm/vmscan.c:7008 [inline]
+ balance_pgdat mm/vmscan.c:7186 [inline]
+ kswapd+0x3029/0x5a50 mm/vmscan.c:7462
+ kthread+0x53f/0x600 kernel/kthread.c:436
+ ret_from_fork+0x20f/0x8d0 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+
+Uninit was created at:
+ __free_pages_prepare mm/page_alloc.c:1327 [inline]
+ free_unref_folios+0x280/0x2880 mm/page_alloc.c:3011
+ folios_put_refs+0xb2e/0xba0 mm/swap.c:1057
+ free_pages_and_swap_cache+0x804/0x840 mm/swap_state.c:589
+ __tlb_batch_free_encoded_pages mm/mmu_gather.c:138 [inline]
+ tlb_batch_pages_flush mm/mmu_gather.c:151 [inline]
+ tlb_flush_mmu_free mm/mmu_gather.c:417 [inline]
+ tlb_flush_mmu+0x92b/0xe90 mm/mmu_gather.c:424
+ zap_pte_range mm/memory.c:1973 [inline]
+ zap_pmd_range mm/memory.c:2020 [inline]
+ zap_pud_range mm/memory.c:2048 [inline]
+ zap_p4d_range mm/memory.c:2069 [inline]
+ __zap_vma_range+0x763f/0x9340 mm/memory.c:2109
+ unmap_vmas+0x440/0x800 mm/memory.c:2178
+ exit_mmap+0x27c/0xac0 mm/mmap.c:1300
+ __mmput+0x134/0x650 kernel/fork.c:1187
+ mmput+0x74/0x90 kernel/fork.c:1210
+ exit_mm+0x2b1/0x4b0 kernel/exit.c:615
+ do_exit+0x9a9/0x3c30 kernel/exit.c:997
+ do_group_exit+0x258/0x390 kernel/exit.c:1152
+ __do_sys_exit_group kernel/exit.c:1163 [inline]
+ __se_sys_exit_group kernel/exit.c:1161 [inline]
+ __x64_sys_exit_group+0x35/0x40 kernel/exit.c:1161
+ x64_sys_call+0x3e6d/0x3ea0 arch/x86/include/generated/asm/syscalls_64.h:232
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x15d/0x3c0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+CPU: 0 UID: 0 PID: 81 Comm: kswapd0 Tainted: G        W
+7.2.0-rc4-00503-g3dab139d4795 #9 PREEMPT(lazy)
+Tainted: [W]=WARN
+Hardware name: QEMU Ubuntu 26.04 PC (i440FX + PIIX, 1996), BIOS
+1.17.0-debian-1.17.0-1ubuntu1 04/01/2014
+=====================================================
+
+
+
+The full syzkaller log is available if needed.  I do not yet have a
+reliable reproducer.
+
+Thanks,
+
+Dane Phillips
 
