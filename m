@@ -4,84 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4F37C55165
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 13:14:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA42BC55160
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 13:28:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C89AF6B009D; Thu, 30 Jul 2026 09:14:43 -0400 (EDT)
+	id 4664A6B0088; Thu, 30 Jul 2026 09:28:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C3AD16B009E; Thu, 30 Jul 2026 09:14:43 -0400 (EDT)
+	id 416ED6B008A; Thu, 30 Jul 2026 09:28:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B50EC6B009F; Thu, 30 Jul 2026 09:14:43 -0400 (EDT)
+	id 308F36B008C; Thu, 30 Jul 2026 09:28:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F3E36B009D
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:14:43 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 03C3316013F
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 13:14:41 +0000 (UTC)
-X-FDA: 85045487604.15.5A67A05
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 7577818000D
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 13:14:39 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=VxdpRI4E;
-	spf=pass (imf24.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id 0A5A66B0088
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:28:19 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1938C1C00AF
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 13:28:17 +0000 (UTC)
+X-FDA: 85045521834.30.DAA6FB1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 46ED2180003
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 13:28:15 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=STAaQVz2;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785417280;
+	s=arc-20220608; t=1785418095;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=CsmgVl9DxU9xLZ0DpO6hQSdRrbiTeSiiU7I5XzEhKCs=;
-	b=hzs6Ykq6pBj+xhqrT+uREDFGLAafFsuO4aaVrx/ij53PImqd7SbK8NavZSPCg++ej5ahmk
-	MkuVOTXxkcH1Tp8ugGbScv7R6tVhJltfuI9YTo9Y90JB+zVJoYkgu9w45yAi94igv5e3oI
-	p59IOu5RRL4+Lm8IKIoVp065cTo9WI0=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=VxdpRI4E;
-	spf=pass (imf24.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=xPnew5v71ay+4DcW4J0TjINiz4IVW7sV6QTrPkZl9CY=;
+	b=Fe5vOWjnYEK09sR4oxGBzgtcZAhJoeEUfOxV8UTcM7Hzd5LLKVNalDq6FVEcAJub2rsP6h
+	rGS6IqTeOXWZj5/yul+G97vyywbTlQWxqvFbWA5nXy+vlzFpB9vistfOH6s/nFcNQX0EGy
+	zYKOX+U11K1oFmuU7dqomwYgwxVZjfE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785417280;
-	b=2KnSoQ/2NMUJgW2cNz+S8E2tRTMHCzhTkaZW/145MzpcY1KZYXTDM69pK6uUMLM1GCdw3r
-	vgglj5faGNozzMuGnXPO0ezm8UuGLIsMGzNXQFgGeHxUjMsz7l7mPvBXOSAFmgDn6IZHea
-	tRWfPslBN5Bb3d1tOkvu54HfURBTaak=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=CsmgVl9DxU9xLZ0DpO6hQSdRrbiTeSiiU7I5XzEhKCs=; b=VxdpRI4En3pj1IsFpUPTiDGG7a
-	6HljXzmZ1NE58QIFAuR+6XRAHR0ZNLrvHKJaH+V/UByJSrUPGEg2DjEJaAUOP9g80OuRC2nIWKQ+8
-	izb+T9muo17o+VnvDxhAkfxt+hPGzxKdnFlJ6HJ5jCPljGijvwV6q+Q0VRtgzww3KK8Kp7ym6uE5p
-	vcXLTnmuS/v2L8Jpze6N584olbLyqah0q9cY8MOEUT/d/rlI2P9ss9gGh5ubPnHPX/v4KpJRakJs/
-	gapf2E68nXM5K8OaJg9y5gtskqysr9IQhB0CSGr8FVrVFhj8bqLajz2i8Rk35UPE07hoki2Eb9DKD
-	YbfOcuOg==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wpQam-0000000FA3H-28qw;
-	Thu, 30 Jul 2026 13:14:32 +0000
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-To: Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jane Chu <jane.chu@oracle.com>,
-	linux-mm@kvack.org
-Subject: [PATCH] hugetlb: Use invalidate_lock instead of fault_mutex
-Date: Thu, 30 Jul 2026 14:14:27 +0100
-Message-ID: <20260730131431.3613545-1-willy@infradead.org>
-X-Mailer: git-send-email 2.54.0
+	t=1785418095;
+	b=Vw8whynjEXF6z2Fpim8eZCOPrzDHh35bI22smb/t2yeD1KTFzP5TtbIXjbZADd/Cc1jPqh
+	NrS2YJsYqaJAhnzsWHDIXBvHY5Xt0dmdKmazCqBp4aW7gtsi6VmHOS+uRfFGJW49soaQTk
+	ltgmRogUU1afkoSAjdqOHClfTYUTFYw=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=STAaQVz2;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 96602600B0;
+	Thu, 30 Jul 2026 13:28:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C2251F000E9;
+	Thu, 30 Jul 2026 13:28:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785418094;
+	bh=xPnew5v71ay+4DcW4J0TjINiz4IVW7sV6QTrPkZl9CY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=STAaQVz2mu5IZvnat8cZ6LI37gj2LXIoSpQvDy/2iiWM8IR8VL1ULETqDO0omE7iM
+	 GVyeY27l7bUfnx9hs4eZoeGowOU08tt4TavKwDpVBk+ACSJaJL3zp8dYs3qsvGeZJd
+	 BFd1rZv9YgcXRudjbJYNxhGw632aI5erUPzrITOP5jnLuU9M/+ZSYJ3u1B6vI+UAk6
+	 JpfOsD4Ng3IvazItvU+R72b46RmmgKde4jiRCZdPqYz5kC7Jh2fL3n7qsmUxFL9z2g
+	 7kPwslfoOPV/smUN83Ryp7P/oxohUHHkse9teGBpD5AgxGqDtu86dCjqZXTtHD1xbG
+	 OJxpIk3ZIk8qQ==
+Message-ID: <ad247496-6c03-4042-89be-80c044ffa316@kernel.org>
+Date: Thu, 30 Jul 2026 15:28:07 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 2/2] mm/memory: add anonymous mTHP folios to deferred
+ split list
+To: Usama Arif <usama.arif@linux.dev>, Joanne Koong <joannelkoong@gmail.com>,
+ akpm@linux-foundation.org, ljs@kernel.org,
+ Johannes Weiner <hannes@cmpxchg.org>
+Cc: alex@ghiti.fr, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+ liam@infradead.org, npache@redhat.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
+ vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ willy@infradead.org, linux-mm@kvack.org
+References: <20260707201735.4113107-1-joannelkoong@gmail.com>
+ <20260707201735.4113107-3-joannelkoong@gmail.com>
+ <584098de-dd48-4004-8e7e-3d826e60c860@kernel.org>
+ <77b3b74d-c1bb-461b-8076-8729cdcf91f5@linux.dev>
+ <7d841b27-f60a-496f-81db-84158a0a8f8f@kernel.org>
+ <0bdb81db-5e2f-47c9-998d-bca450644ba6@linux.dev>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <0bdb81db-5e2f-47c9-998d-bca450644ba6@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 46ED2180003
+X-Stat-Signature: 6frcxg3tz1m3k5hif3x5p63kxyn4u1ck
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 7577818000D
-X-Stat-Signature: 5tuww73eqbj99gpz5bepmofpeqjutnf1
-X-HE-Tag: 1785417279-412464
-X-HE-Meta: U2FsdGVkX1+WqGRcRGVydPwoIWduCX3x0ehN9n0iGOCGzmM8XGA8D/NvIg0TSyUFvWQOMLd7NAEKpi5XP1KsaFGPg2RYL56OgWSz4nPuzetGQQeUTj554fejrWImA9lnbgw8ejt9TptOGAfGvJ+W3CcLyiWZ8cyzuRknTVwzXSwOuF2YGozDDSZxUtBQ4Ou5PDV36PiQi+qixpUJ37/pFU3tj4F1pnz8Zw14IZU1F0jZGKRUJBItV1Q5UQF0CkRatzk+mJ3uiQuWXd5unPqZF0WTAvN6wUPE6Px9nQoGmrKK/PMc1yb0E3EQhKgsq27CHyaSob5SI7v4Qgi9t0X3b3EFV/rVodiyUjDtAfqx3B98Dzl4wevtG3XF/MPO6fxmEw1tIiuLAbQtz+/Crq5h1c/bAAsgPlPd0ENFGDRDKuka3cLyf8TnU4VYNTeUC1tkVLTEJ8SKPks9pVBB0I9PaZpE7uVS00+9n3fTQyBnOv7DP1fqf09nyfYoPCFn3hRPPc4XrVwG4Zu+YDdS3oDV2pBrJfZzh2V6/KPJ1YZfBfsLko+gVJwAEfSkETrNmo66A+Tp/9648eY3aWar9sewjPsnCQVZosCPv5iBovz0T+9+J3nDSWdci7bXeSeqhRlPbDHInzrJV8qZ3dhvlTf/w0+s/1ia3zWZO5acQCLnyvktfcA/vsrxjFsfDI3RqBLgM7PgasYGPqu6IrvDDH5XyW+J5q3WN1mVx8CPkdBI0PzGpPhVi23MXGew6vNunMUG+Y0TDbd8oR+npxLIbOPHUpp8IiPviSIC1qhvQ/VT0F5enjkFxAd1ydwNNGAjlWjU1swVS0W5wykwbg2SH1JbIArUT3UXdLbH8kiKgPOnUNLyV/WzEH7gn7oEX1Q0Kp7xNzHCAybiIq7z1MVeyvERoBFlezyDNU6W7xVXFNAKTpbg9SvbmGKSmvzD6ArcrLjZvPbvLOYcn0txht1j2GW
- etOLKTTb
- lVxEptWOUXjh23k05BVWTp7fGbq76ntVO7TZA3WASldOmQKJzXCQb18BFFVFQJV/z3lZ6kn7ZzwTlxYZ7VYhcaG5ixDJUSb9fgrftrx1NnyOa+2Xw/MgjSzHqTTi02IrsV6I/2XDBNi+8XV7JcUV4gXrVBeI6nLh59aRHw1No9zouMc6CvLfe8jBuB2tHfuUHybsoOUDvFkMhF6k3ZU7XHMH6zj7aN8zy9WHlABhP4WklKTtIjy7maeDQ9YgpnVR2tXEgqdfp2A1IEEs2urG6WtXDXJkgZHE0HuvuqqWOiqBQILg8a97TEwROgxUSGaGECXr7/A/NELZxfWE=
+X-HE-Tag: 1785418095-547654
+X-HE-Meta: U2FsdGVkX1/TK5rHZEmmyjtbkQumD2cmcn3HxkasWqYkVuBjobxwCjrCys8RtnMsliWygRgSvg/e4R707ub35uWkfMto6lxyoH8ubjsf1cjSQOc2dbwsjlzw0DnDiG90PoruDZCg/5fA4q1XfhrUm2P+/hYBHwoPwBof1iiy+vSLS1R5v6iFxNkwTxZmBe6aTExfnqRhJ4/4MJX5qUB8XxnyBieWrQF5nHlwT4nVgsgvOaZX/79MWUonrYoGKG8ObMW3q9msGMfek7VVkibL2KIsoPYMVV8WahzMKalvKDU6CFrS+s75PBF96dcn97RX1H9qC/AkxGlreiQXht0r9IOT3s2PFhquHuqT7iUwBnaeNAkQFH6e6IxnWkvB/Djq+jSixQOdTpLUNvsVFFKx7xx9EZu/PIkGD1RFKbULcMSHZNCVffnSNzTUqw+aqCWy+N7Dc/JUAdaiG7kVhyR0mjUoitnkh9Hd0h3wCFdPz2O0YINrCgzbfgOHt52k89RBLEAP5lnsiYr4bfUXOnaVFi+4nJRggdvlp2m/3RuLkua62LJ3FfZH/gkpYp2H27luB27qvBwkDPSD+f325KvpDMmj8eT9qFBSneL2q5kVTgGAiMvVIZuEBXnHjKVoKJd7gfSHhr140mOClNCe4WxmMDlObBZ+jaNQCWK/IYjePPVo3tk43zY7j5ZZYPau0NB3+B1r0aEne6dEceGPh2YO6skUfOC0jeYRoaGD5YMC2nPGQxBBL10FuufeDMGkIqmtJbZeJajhgKIL73xGokrxJFiX7m2O2yho93si46cRe+iHhQOcABjBjyQQ/rm+bme5gpRG3ZSAYAg3snclT5skiyHO04yeXSavDaQ7VCv54ROwItuNaUmI2Kdipkih/l5puP3Pj0nYt6PBMQAYEbPyB9ORAhyIGxjhCnj91jK7IBR/Wb5WQh0LotY2ZpuHAmv1xnuAq2TTE8UGzrg7OmK
+ ZpSU3XNL
+ qma0WW4Xrf4TkB1NUQs31MUz6Tb333AfUeXDmG28oyoGB/EHYagiKopG+8w4vpNDXEyWy+92+g7YxB7nDJm3fvLnxV9r8FNcvDJmw46kgpgdlVjIm6Zn6FFmmVRUrHUTMPaQhiF6Bh52ltDryFI0qn9WB6ztA8enmXVcKVGaiziIIMvSeGPHmNuRwOvQG6H/Kp3Xm/OX9dpTc6tdIkyavIqojutbNeU81VJVyYRs8biIwcDgyT5IBTT4XErpMVHp+udJxLFXUeA4844I7r9ZyPc9CGg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,377 +148,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Since commit 730633f0b7f9 in 2021, we've had a per-mapping
-invalidate_lock which is used in much the same way as the hugetlb
-fault_mutex.  This is a fairly naive conversion; all acquisitions
-are in exclusive mode.  It may be possible to relax some of these
-uses to shared mode, but I shall leave that for a future patch.
+On 7/29/26 15:43, Usama Arif wrote:
+> 
+> 
+> On 29/07/2026 13:36, David Hildenbrand (Arm) wrote:
+>> On 7/8/26 11:58, Usama Arif wrote:
+>>>
+>>>
+>>>
+>>> What if we only add the mTHPs for which the policy is set to always.
+>>
+>> That doesn't really help lock contention. And the lock contention is indeed a
+>> thing, as we now also want to enable the LRU cache for smaller large folios,
+>> which improves performance:
+>>
+>> https://lore.kernel.org/r/20260709081536.82768-1-baohua@kernel.org
+>>
+>>>
+>>> I think it doesn't scale if someone sets all orders to always, but if you only
+>>> set the 2M mTHP sysfs to always, it should be the same as what we have today
+>>> for PMD order?
+>>
+>> I don't see a problem with large large folios, only with small large folios :)
+>>
+>>>
+>>> The main motivation for this series is to try and bring the performance for
+>>> ARM on par with x86. One of the differences is TLB misses. I imagine the lower
+>>> churn in kernel by using larger page sizes will help as well. But we will
+>>> run into OOMs without the shrinker.
+>>
+>> Can you elaborate how this change helps here? I assume you want to enable mTHP
+>> in production. Which sizes? large large ones? :)
+>>
+> 
+> One of the differences in our production between x86 and ARM hosts which we think
+> should perform at a similar level (but currently aren't) is TLB misses.
+> 
+> On x86, we have 2M THP set to always.
+> On ARM, we have base page size of 64K. 2M mTHPs should help bridge the gap due to
+> TLB coalescing. We can't really set 2M mTHP to always as without the mTHP shrinker
+> we will end up with severe memory pressure and a significant increase in OOMs.
+> 
+> We don't plan to enable other mTHP sizes on ARM, only 2M.
+> 
+> The series by Barry is for folios above costly order, so won't impact this.
+> 
+> David, Joanne, Johannes: what do you think about only adding folios that are larger
+> than COSTLY_ORDER to deferred split list?
 
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
----
-I've run the libhugetlb test suite against this, and it includes
-a test called fallocate_stress.sh, so I hope this works correctly.
+It's definitely better but I think it's also not an ultimate solution to the
+overall problem I'm afraid. As we increase COSTLY_ORDER (what people are already
+talking about) the behavior would change, and that's not good.
 
- fs/hugetlbfs/inode.c    | 27 ++++++-------------
- include/linux/hugetlb.h |  2 --
- mm/hugetlb.c            | 57 ++++++++---------------------------------
- mm/memfd.c              |  9 ++-----
- mm/userfaultfd.c        | 10 +++-----
- 5 files changed, 25 insertions(+), 80 deletions(-)
-
-diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-index cef7e61b827d..991142eb034c 100644
---- a/fs/hugetlbfs/inode.c
-+++ b/fs/hugetlbfs/inode.c
-@@ -454,27 +454,22 @@ static void remove_inode_hugepages(struct inode *inode, loff_t lstart,
- 
- 	folio_batch_init(&fbatch);
- 	next = lstart >> PAGE_SHIFT;
-+	filemap_invalidate_lock(mapping);
- 	while (filemap_get_folios(mapping, &next, end - 1, &fbatch)) {
- 		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
- 			struct folio *folio = fbatch.folios[i];
--			u32 hash = 0;
- 
- 			index = folio->index >> huge_page_order(h);
--			hash = hugetlb_fault_mutex_hash(mapping, index);
--			mutex_lock(&hugetlb_fault_mutex_table[hash]);
--
--			/*
--			 * Remove folio that was part of folio_batch.
--			 */
- 			remove_inode_single_folio(h, inode, mapping, folio,
- 						  index, truncate_op);
- 			freed++;
--
--			mutex_unlock(&hugetlb_fault_mutex_table[hash]);
- 		}
-+		filemap_invalidate_unlock(mapping);
- 		folio_batch_release(&fbatch);
- 		cond_resched();
-+		filemap_invalidate_lock(mapping);
- 	}
-+	filemap_invalidate_unlock(mapping);
- 
- 	if (truncate_op)
- 		(void)hugetlb_unreserve_pages(inode,
-@@ -603,7 +598,6 @@ static long hugetlbfs_fallocate(struct file *file, int mode, loff_t offset,
- 	unsigned long hpage_shift = huge_page_shift(h);
- 	pgoff_t start, index, end;
- 	int error;
--	u32 hash;
- 
- 	if (mode & ~(FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE))
- 		return -EOPNOTSUPP;
-@@ -641,6 +635,7 @@ static long hugetlbfs_fallocate(struct file *file, int mode, loff_t offset,
- 	vm_flags_init(&pseudo_vma, VM_HUGETLB | VM_MAYSHARE | VM_SHARED);
- 	pseudo_vma.vm_file = file;
- 
-+	filemap_invalidate_lock(mapping);
- 	for (index = start; index < end; index++) {
- 		/*
- 		 * This is supposed to be the vaddr where the page is being
-@@ -663,15 +658,10 @@ static long hugetlbfs_fallocate(struct file *file, int mode, loff_t offset,
- 		/* addr is the offset within the file (zero based) */
- 		addr = index * hpage_size;
- 
--		/* mutex taken here, fault path and hole punch */
--		hash = hugetlb_fault_mutex_hash(mapping, index);
--		mutex_lock(&hugetlb_fault_mutex_table[hash]);
--
- 		/* See if already present in mapping to avoid alloc/free */
- 		folio = filemap_get_folio(mapping, index << huge_page_order(h));
- 		if (!IS_ERR(folio)) {
- 			folio_put(folio);
--			mutex_unlock(&hugetlb_fault_mutex_table[hash]);
- 			continue;
- 		}
- 
-@@ -685,8 +675,8 @@ static long hugetlbfs_fallocate(struct file *file, int mode, loff_t offset,
- 		 */
- 		folio = alloc_hugetlb_folio(&pseudo_vma, addr, false);
- 		if (IS_ERR(folio)) {
--			mutex_unlock(&hugetlb_fault_mutex_table[hash]);
- 			error = PTR_ERR(folio);
-+			filemap_invalidate_unlock(mapping);
- 			goto out;
- 		}
- 		folio_zero_user(folio, addr);
-@@ -695,12 +685,10 @@ static long hugetlbfs_fallocate(struct file *file, int mode, loff_t offset,
- 		if (unlikely(error)) {
- 			restore_reserve_on_error(h, &pseudo_vma, addr, folio);
- 			folio_put(folio);
--			mutex_unlock(&hugetlb_fault_mutex_table[hash]);
-+			filemap_invalidate_unlock(mapping);
- 			goto out;
- 		}
- 
--		mutex_unlock(&hugetlb_fault_mutex_table[hash]);
--
- 		folio_set_hugetlb_migratable(folio);
- 		/*
- 		 * folio_unlock because locked by hugetlb_add_to_page_cache()
-@@ -709,6 +697,7 @@ static long hugetlbfs_fallocate(struct file *file, int mode, loff_t offset,
- 		folio_unlock(folio);
- 		folio_put(folio);
- 	}
-+	filemap_invalidate_unlock(mapping);
- 
- 	if (!(mode & FALLOC_FL_KEEP_SIZE) && offset + len > inode->i_size)
- 		i_size_write(inode, offset + len);
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index 639c0a772856..95b0d5ebe18f 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -167,8 +167,6 @@ int get_hwpoison_hugetlb_folio(struct folio *folio, bool *hugetlb, bool unpoison
- void folio_putback_hugetlb(struct folio *folio);
- void move_hugetlb_state(struct folio *old_folio, struct folio *new_folio, int reason);
- void hugetlb_fix_reserve_counts(struct inode *inode);
--extern struct mutex *hugetlb_fault_mutex_table;
--u32 hugetlb_fault_mutex_hash(struct address_space *mapping, pgoff_t idx);
- 
- pte_t *huge_pmd_share(struct mm_struct *mm, struct vm_area_struct *vma,
- 		      unsigned long addr, pud_t *pud);
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 40ae967b9ecc..37a574bc7807 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -27,7 +27,6 @@
- #include <linux/string_helpers.h>
- #include <linux/swap.h>
- #include <linux/leafops.h>
--#include <linux/jhash.h>
- #include <linux/numa.h>
- #include <linux/llist.h>
- #include <linux/cma.h>
-@@ -5515,12 +5514,10 @@ static vm_fault_t hugetlb_wp(struct vm_fault *vmf)
- 		 */
- 		if (cow_from_owner) {
- 			struct address_space *mapping = vma->vm_file->f_mapping;
--			pgoff_t idx;
--			u32 hash;
- 
- 			folio_put(old_folio);
- 			/*
--			 * Drop hugetlb_fault_mutex and vma_lock before
-+			 * Release invalidate lock and vma_lock before
- 			 * unmapping.  unmapping needs to hold vma_lock
- 			 * in write mode.  Dropping vma_lock in read mode
- 			 * here is OK as COW mappings do not interact with
-@@ -5528,14 +5525,12 @@ static vm_fault_t hugetlb_wp(struct vm_fault *vmf)
- 			 *
- 			 * Reacquire both after unmap operation.
- 			 */
--			idx = vma_hugecache_offset(h, vma, vmf->address);
--			hash = hugetlb_fault_mutex_hash(mapping, idx);
- 			hugetlb_vma_unlock_read(vma);
--			mutex_unlock(&hugetlb_fault_mutex_table[hash]);
-+			filemap_invalidate_unlock(mapping);
- 
- 			unmap_ref_private(mm, vma, old_folio, vmf->address);
- 
--			mutex_lock(&hugetlb_fault_mutex_table[hash]);
-+			filemap_invalidate_lock(mapping);
- 			hugetlb_vma_lock_read(vma);
- 			spin_lock(vmf->ptl);
- 			vmf->pte = hugetlb_walk(vma, vmf->address,
-@@ -5663,16 +5658,13 @@ static inline vm_fault_t hugetlb_handle_userfault(struct vm_fault *vmf,
- 						  struct address_space *mapping,
- 						  unsigned long reason)
- {
--	u32 hash;
--
- 	/*
--	 * vma_lock and hugetlb_fault_mutex must be dropped before handling
-+	 * vma_lock and invalidate lock must be dropped before handling
- 	 * userfault. Also mmap_lock could be dropped due to handling
- 	 * userfault, any vma operation should be careful from here.
- 	 */
- 	hugetlb_vma_unlock_read(vmf->vma);
--	hash = hugetlb_fault_mutex_hash(mapping, vmf->pgoff);
--	mutex_unlock(&hugetlb_fault_mutex_table[hash]);
-+	filemap_invalidate_unlock(mapping);
- 	return handle_userfault(vmf, reason);
- }
- 
-@@ -5696,7 +5688,6 @@ static bool hugetlb_pte_stable(struct hstate *h, struct mm_struct *mm, unsigned
- static vm_fault_t hugetlb_no_page(struct address_space *mapping,
- 			struct vm_fault *vmf)
- {
--	u32 hash = hugetlb_fault_mutex_hash(mapping, vmf->pgoff);
- 	bool new_folio, new_anon_folio = false;
- 	struct vm_area_struct *vma = vmf->vma;
- 	struct mm_struct *mm = vma->vm_mm;
-@@ -5904,7 +5895,7 @@ static vm_fault_t hugetlb_no_page(struct address_space *mapping,
- 	if (unlikely(ret & VM_FAULT_RETRY))
- 		vma_end_read(vma);
- 
--	mutex_unlock(&hugetlb_fault_mutex_table[hash]);
-+	filemap_invalidate_unlock(mapping);
- 	return ret;
- 
- backout:
-@@ -5919,35 +5910,10 @@ static vm_fault_t hugetlb_no_page(struct address_space *mapping,
- 	goto out;
- }
- 
--#ifdef CONFIG_SMP
--u32 hugetlb_fault_mutex_hash(struct address_space *mapping, pgoff_t idx)
--{
--	unsigned long key[2];
--	u32 hash;
--
--	key[0] = (unsigned long) mapping;
--	key[1] = idx;
--
--	hash = jhash2((u32 *)&key, sizeof(key)/(sizeof(u32)), 0);
--
--	return hash & (num_fault_mutexes - 1);
--}
--#else
--/*
-- * For uniprocessor systems we always use a single mutex, so just
-- * return 0 and avoid the hashing overhead.
-- */
--u32 hugetlb_fault_mutex_hash(struct address_space *mapping, pgoff_t idx)
--{
--	return 0;
--}
--#endif
--
- vm_fault_t hugetlb_fault(struct mm_struct *mm, struct vm_area_struct *vma,
- 			unsigned long address, unsigned int flags)
- {
- 	vm_fault_t ret;
--	u32 hash;
- 	struct folio *folio = NULL;
- 	struct hstate *h = hstate_vma(vma);
- 	struct address_space *mapping;
-@@ -5973,8 +5939,7 @@ vm_fault_t hugetlb_fault(struct mm_struct *mm, struct vm_area_struct *vma,
- 	 * the same page in the page cache.
- 	 */
- 	mapping = vma->vm_file->f_mapping;
--	hash = hugetlb_fault_mutex_hash(mapping, vmf.pgoff);
--	mutex_lock(&hugetlb_fault_mutex_table[hash]);
-+	filemap_invalidate_lock(mapping);
- 
- 	/*
- 	 * Acquire vma lock before calling huge_pte_alloc and hold
-@@ -5985,7 +5950,7 @@ vm_fault_t hugetlb_fault(struct mm_struct *mm, struct vm_area_struct *vma,
- 	vmf.pte = huge_pte_alloc(mm, vma, vmf.address, huge_page_size(h));
- 	if (!vmf.pte) {
- 		hugetlb_vma_unlock_read(vma);
--		mutex_unlock(&hugetlb_fault_mutex_table[hash]);
-+		filemap_invalidate_unlock(mapping);
- 		return VM_FAULT_OOM;
- 	}
- 
-@@ -6028,7 +5993,7 @@ vm_fault_t hugetlb_fault(struct mm_struct *mm, struct vm_area_struct *vma,
- 			 * migration_entry_wait_huge(). The vma lock will
- 			 * be released there.
- 			 */
--			mutex_unlock(&hugetlb_fault_mutex_table[hash]);
-+			filemap_invalidate_unlock(mapping);
- 			migration_entry_wait_huge(vma, vmf.address, vmf.pte);
- 			return 0;
- 		}
-@@ -6068,7 +6033,7 @@ vm_fault_t hugetlb_fault(struct mm_struct *mm, struct vm_area_struct *vma,
- 		if (!userfaultfd_wp_async(vma)) {
- 			spin_unlock(vmf.ptl);
- 			hugetlb_vma_unlock_read(vma);
--			mutex_unlock(&hugetlb_fault_mutex_table[hash]);
-+			filemap_invalidate_unlock(mapping);
- 			return handle_userfault(&vmf, VM_UFFD_WP);
- 		}
- 
-@@ -6116,7 +6081,7 @@ vm_fault_t hugetlb_fault(struct mm_struct *mm, struct vm_area_struct *vma,
- 	if (unlikely(ret & VM_FAULT_RETRY))
- 		vma_end_read(vma);
- 
--	mutex_unlock(&hugetlb_fault_mutex_table[hash]);
-+	filemap_invalidate_unlock(mapping);
- 	/*
- 	 * hugetlb_wp drops all the locks, but the folio lock, before trying to
- 	 * unmap the folio from other processes. During that window, if another
-diff --git a/mm/memfd.c b/mm/memfd.c
-index abe13b291ddc..0fe6f3b545c1 100644
---- a/mm/memfd.c
-+++ b/mm/memfd.c
-@@ -95,8 +95,6 @@ struct folio *memfd_alloc_folio(struct file *memfd, pgoff_t idx)
- 						    NULL,
- 						    gfp_mask);
- 		if (folio) {
--			u32 hash;
--
- 			/*
- 			 * Zero the folio to prevent information leaks to userspace.
- 			 * Use folio_zero_user() which is optimized for huge/gigantic
-@@ -116,14 +114,11 @@ struct folio *memfd_alloc_folio(struct file *memfd, pgoff_t idx)
- 			 * races with concurrent allocations, as required by all other
- 			 * callers of hugetlb_add_to_page_cache().
- 			 */
--			hash = hugetlb_fault_mutex_hash(memfd->f_mapping, idx);
--			mutex_lock(&hugetlb_fault_mutex_table[hash]);
--
-+			filemap_invalidate_lock(memfd->f_mapping);
- 			err = hugetlb_add_to_page_cache(folio,
- 							memfd->f_mapping,
- 							idx);
--
--			mutex_unlock(&hugetlb_fault_mutex_table[hash]);
-+			filemap_invalidate_unlock(memfd->f_mapping);
- 
- 			if (err) {
- 				folio_put(folio);
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index 246af12bf801..be9f83dfa838 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -790,7 +790,6 @@ static __always_inline ssize_t mfill_atomic_hugetlb(
- 	struct folio *folio;
- 	unsigned long vma_hpagesize;
- 	pgoff_t idx;
--	u32 hash;
- 	struct address_space *mapping;
- 
- 	/*
-@@ -860,15 +859,14 @@ static __always_inline ssize_t mfill_atomic_hugetlb(
- 		 */
- 		idx = hugetlb_linear_page_index(dst_vma, dst_addr);
- 		mapping = dst_vma->vm_file->f_mapping;
--		hash = hugetlb_fault_mutex_hash(mapping, idx);
--		mutex_lock(&hugetlb_fault_mutex_table[hash]);
-+		filemap_invalidate_lock(mapping);
- 		hugetlb_vma_lock_read(dst_vma);
- 
- 		err = -ENOMEM;
- 		dst_pte = huge_pte_alloc(dst_mm, dst_vma, dst_addr, vma_hpagesize);
- 		if (!dst_pte) {
- 			hugetlb_vma_unlock_read(dst_vma);
--			mutex_unlock(&hugetlb_fault_mutex_table[hash]);
-+			filemap_invalidate_unlock(mapping);
- 			goto out_unlock;
- 		}
- 
-@@ -878,7 +876,7 @@ static __always_inline ssize_t mfill_atomic_hugetlb(
- 			if (!huge_pte_none(ptep) && !pte_is_uffd_marker(ptep)) {
- 				err = -EEXIST;
- 				hugetlb_vma_unlock_read(dst_vma);
--				mutex_unlock(&hugetlb_fault_mutex_table[hash]);
-+				filemap_invalidate_unlock(mapping);
- 				goto out_unlock;
- 			}
- 		}
-@@ -887,7 +885,7 @@ static __always_inline ssize_t mfill_atomic_hugetlb(
- 					       src_addr, flags, &folio);
- 
- 		hugetlb_vma_unlock_read(dst_vma);
--		mutex_unlock(&hugetlb_fault_mutex_table[hash]);
-+		filemap_invalidate_unlock(mapping);
- 
- 		cond_resched();
- 
 -- 
-2.47.3
+Cheers,
 
+David
 
