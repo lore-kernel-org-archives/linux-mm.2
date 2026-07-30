@@ -4,93 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91A7EC55165
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 07:26:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6275C531D0
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 07:28:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 777C46B008A; Thu, 30 Jul 2026 03:26:51 -0400 (EDT)
+	id C5D7E6B0092; Thu, 30 Jul 2026 03:28:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 728636B0092; Thu, 30 Jul 2026 03:26:51 -0400 (EDT)
+	id C0CD46B0096; Thu, 30 Jul 2026 03:28:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 668846B0096; Thu, 30 Jul 2026 03:26:51 -0400 (EDT)
+	id B4B226B0098; Thu, 30 Jul 2026 03:28:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F33F6B008A
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 03:26:51 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BBDB7A08C8
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 07:26:50 +0000 (UTC)
-X-FDA: 85044610980.05.94A59B0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 2A1A8100007
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 07:26:48 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RxfkodDJ;
-	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 980546B0092
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 03:28:21 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2CE57408DF
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 07:28:21 +0000 (UTC)
+X-FDA: 85044614802.02.427A3BC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 8547610000D
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 07:28:19 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JfpZcsTI;
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785396409;
+	s=arc-20220608; t=1785396499;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q8ZEcwCwLQetxV1WFtJMYHvZdqoS2LqCfUtFy76iNIQ=;
-	b=0lFoMgb0yWU4sKOIiuY1K1mOrBA8bGZdRH61T0aUEU6BkSiE+P9FWMcZoO7+/CWhlH9Tfl
-	SiTvHm1Y0Q8y0TdL/Wf9uOeXVwFP5BF7+eCsJYppI3EjzmOPxy4cuNpVEdwy4YN1sT6D4S
-	diRK2EI/D//jRmY/HNCRIX6Zh9m8kkc=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RxfkodDJ;
-	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=U+Tn6v+fwIrJojcp6KTc+RNYg06A/2SJBiLKpI3895M=;
+	b=rcGjwXhr/1fleS5BEzXrf1K1c4JgMGkBiZ+rK5gUQV2P7ixJrb1MAvc9A369SzzwOpRIcu
+	otFTKNua7J+DZeWeApJKEjI8AYHjg6JTyI2XUrxc0hEFzUOiAimxEOoS29/k4Lh2NbC9F5
+	5BYggiruX6BhWqGAqKgKoxDbW18Pmz0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785396409;
-	b=oFXGuG9URIwraD8gHgXWZsVi/qrR239CvqLDpOlMcgKwHwyEwTk8n4qpVbf0jZczcr2Pbj
-	Mt9oY5VzowVkDbTswu8fXb/HqSE6IA4txqIY1M5BNQao0yd2z2Ym4Bw2Q/AbUL+WYB5ka9
-	Bhe+3NVAVrdZGWjW+icURbWVffbJ/6M=
+	t=1785396499;
+	b=53fFYNhNqDRT2JnY+cj2pV48IE3g9+zYlvF/n03jGghGa+PwN4HEqzCXW0+Y+0mVWbII4U
+	1QpzeqSWART4xur2nn+hWtcOdG4heI/O5BhPAlGFS62TSNIryUG1pPkNTBdp+RLxlzk90F
+	QtTOyG+DtkQAqbNAxT6E1hFA2HsH298=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JfpZcsTI;
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B151F600AA;
-	Thu, 30 Jul 2026 07:26:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 098F51F00A3A;
-	Thu, 30 Jul 2026 07:26:45 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id ABA4D408E1;
+	Thu, 30 Jul 2026 07:28:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 184871F000E9;
+	Thu, 30 Jul 2026 07:28:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785396408;
-	bh=Q8ZEcwCwLQetxV1WFtJMYHvZdqoS2LqCfUtFy76iNIQ=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=RxfkodDJSo/HC0OF23G424dtbX5R0k/p/rIVXMGavtHl3+W7XKRuYoP6HD++eIW/E
-	 Cd5LgJuI5/SmIbyn+zS+zhKdDtEw5puQbim/Z0grP4kIqj94kWP0NdmVWdfbByZEhb
-	 +1RKyVeqOn02xB+tqh4Rpw/q84dmC7v5VLh5gSzr1fo9ZXD8aruKXhgo9T65K/n2MD
-	 wr9/CaA82x9z0bQbI51bJe4HZG2u5U6ZFIr5KQK/Mokas7qcjVHU80tOP/8DZDdm5B
-	 HTldpABea/BuPoj+0C1DqtvVXsOKBdD67TN0S7P9rXDIaonqncHi7QCfaD2wZL99ED
-	 sezDkWd4N6prw==
+	s=k20260515; t=1785396498;
+	bh=U+Tn6v+fwIrJojcp6KTc+RNYg06A/2SJBiLKpI3895M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=JfpZcsTIi4Hst6B2IIzM18A8fKqpm49BKKL9gLMgWdsPlDnjn7wbKb1muCUmGrGiv
+	 mMyoSW9FQkCXNid8xKZQqGzFZORSD/nN+VeXAR1Rpm5ritRgWobY86FqWrvJgasIPi
+	 XszO0IBd0BWXSk1RjnXzQMwp5esqTrWO1aEDeUO0KtPtQFcCQ+P5E7LtaTz2T+Vhb9
+	 5WWSBDEx/F6nGQZhYXvDcUo1bj04TESx1O2/Xs2sKq7tTJmDJTjdzEQI0/qsGYMuqH
+	 60Dl10CCNSD1uxJrJyXgpZNFLeFzJZfMnooq+37x5XJJgGXwrD5UH7UfbH9K6V1q0d
+	 sVvpTRO0rQM4g==
+Date: Thu, 30 Jul 2026 08:27:59 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, xueyuan.chen@vivo.com, 
+	linux-mm@kvack.org, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Bob Liu <lliubbo@gmail.com>, 
+	linux-kernel@vger.kernel.org, Xueyuan Chen <xueyuan.chen21@gmail.com>
+Subject: Re: [PATCH] mm/huge_memory: fix huge zero folio publication race
+Message-ID: <amr1tqBj9ec57xwa@lucifer>
+References: <4ee89c27873fb4d9e598f8a5cfe71d700ecf894e.1785300563.git.xueyuan.chen@vivo.com>
+ <37c40d62-51e2-45b4-9837-a4b96d1640b3@kernel.org>
+ <20260729180241.2b8bcb2379b975b22c48d251@linux-foundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v3 2/2] kho: Introduce preserve/restore APIs for
- high-order pages
-From: Mike Rapoport <rppt@kernel.org>
-To: Pranjal Shrivastava <praan@google.com>
-Cc: Mike Rapoport <rppt@kernel.org>, 
- Pasha Tatashin <pasha.tatashin@soleen.com>, 
- Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>, 
- Samiullah Khawaja <skhawaja@google.com>, 
- David Matlack <dmatlack@google.com>, kexec@lists.infradead.org, 
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260723204203.2997395-3-praan@google.com>
-References: <20260723204203.2997395-1-praan@google.com>
- <20260723204203.2997395-3-praan@google.com>
-Date: Thu, 30 Jul 2026 10:26:41 +0300
-Message-Id: <178539640188.2151126.10266644348178621151.b4-review@b4>
-X-Mailer: b4 0.16-dev
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260729180241.2b8bcb2379b975b22c48d251@linux-foundation.org>
+X-Stat-Signature: byhbu9hhw1pqmj6z4e331nxqx8p7b3yt
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2A1A8100007
-X-Rspamd-Server: rspam01
-X-Stat-Signature: w33cnmazpdmjm9fdjwijdjoxeruccp7n
-X-HE-Tag: 1785396408-486694
-X-HE-Meta: U2FsdGVkX1/65X6YRl+6hxeStRe5Vn/L72cYBXq3vCBX7W0MMYXiUv90aPR2lwZINEBW+Tlpd//ZFD3VCLaqj2xyfXT7sdRtKlxQnQhY2tTgGiGWcZs414S9SwPE3Fgb4+rSlrOHtWApcmo4NpHSNRI0FxjS28YtWhKccy6/34mLq2qRYpK6mOUF8gIXrgDqNysUU6obPyDMMvTc4DoUrQBUnWA+cJy0CaTPFjlPhvidF2yzN1pX13NgDzl16aR5EUp7ajgSaStdYFJMeKWFtbJ3bJpKeOywdwbhBorL23uyts+yLS2Kdyix5gmU6jiQuDk7VcAUsF/mJF1UC2WoWPidxgIYiePRkncOByJz/QMwvzz4BEXlBp5VWeF02ksfb0oYu0uuzMN97eid7W16DtLvN7m3pHVMS/Okr6Br5W+Kj1LCKmfOqdAM9kxa6vdSLgwrIpc0XxlDcu86xWhagw1PlgPRzpkbU3M6j7zz81PZjbje3cfDc9MLzchfMXcbBujUk3OBwq8F8AYtMBW/gniu/wSfufrrZlqVAz8bXzNtMu9GXSjYX4c8d+liZHMS1K+H2SgaH9Ps3gvOmlq/J1Yo+WYD2NNwS1Ke/2/TpfOpjOExKMElsqIo+E7Vytlx81MJxw7OCZ9pL/e8IMFVTiEA7Si5sVaep4IoJ2SkEukdtAS7F4TmgsmVPsfSDTZhXppSvShOYuHt/9PPjLjsohWCxG45lDA5zxYPvZP1Hw4fI4ITH1jrttcBI1ear64Vl3lOPbUe8sv0vk7+08X/bLJi+OrpidjdSQ19NWb8jKalanzqrv/lm5s/NkxpZGp19s4lnBVo+FyzKHrr7+rywTHqGVvxaRvasXzQ6ORbO9sXzTf72xOeZnMMnrPBGXO4zHsnw1Q59RFl9rwBvAWaq1pQdymNhcWTM+SXgbENqoSHN2rlooqEeVJKk5dKzdDGsf069RAdqindU/e8Pa5
- nZed/01s
- xt0iwxv535dcEOAH+WhHpmiH2c6I+rc3lrDAPLFd5FBB/giNsth89zIAnW56/62JI/pohPB2hPzbEX2WxD3SyhPhZl7slYVkP5lhy7h/j49EvKcE3y3XAiGbdAVkMCAv3ZysePYLtuXkiqktiNl87z38UyxR7wSsoWqxbvb6sRZQwbrlP8Q/MywIt25m0PW3WObDmznMxK73aAxYUS+auhcqqq4D5aQxYS7zR5heypvDSUP8=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 8547610000D
+X-HE-Tag: 1785396499-410580
+X-HE-Meta: U2FsdGVkX1+mEMNdzsykc27666hg35dmT72t1L0I52ikQRxWJT0kdJCsfn1dVZ3ifKpkfJRE7rfxiwZDIkkp3h4Ii+ALW2R/4Gi7cUREfM5GFqbfstJYPqMBY4eEJqC/C7JnjfqavzvNOGRlsOT+JzyASRrbNyGkNaej1/erxHEhnj++TbdYfcPw/DXVexZxZjRiKdmCUG4oDWeHwYnC6IQzQHlJcYNB/w0uEKZEX650em/bUOcH7WqxBcB688FFPdgVhd+Gs05Q6SVC0r47S+buEziUllVEDnsYb5RLEB49lYpjoGMvzab0i0y9vQHa7YO3OC+NgbPsDuvw6Q+6hcrlzCcAOMK8i7k54H1Y73N/mOGlFQ4E/Mg0Zbnvlz+Nf0k03Pu0OA5aaS5/lrgYCMo0HfTcWeWwVrt5iQJM1T4Uq2ZD+10IaHHswfv9cjUg4Z3Pi2z1qYIqjrGo89/FrqOwJF7veTlMVpwdJ8hyMm8mq3iOS9ON/Tc0mI/ZrHYS76KLAUL/ePuh3ADBCcCSgsLN8KQJsqnRV3EzZOjObuGcZM7j4rbAuH8bd932Ote3DkDiCbc4D8BF0T17oV9H/UE7peLtOsg9TXCLnI74Dlny5oe7eI/Hg8oQRxlpV1cXVUjM4C/N00YYp2UTqvPmLaeArjnYicBjzfORtbTKtBJ+yysuKH36acKFHwhNvpj2Pl86qA7E69ooTTBwrjBKBLOiUseewRImyViLbpVw8S1ZtGGfIrft7JPsVFxpaG9/Q1mdNKxvCPWvStge29LpKEIZ5lFcVBa2qfB2ZXlAFPeUZPDcApfr/oseFTemkUkEmTnLY6+byL5xIRqTE1EKK2CUMYFz80+734c086y+B5jrOqyuZN0t8cFWoT+Sd6PQ3w+adSEU8mA9iHp5M16yTe5OBDVUyahmNMWX8Z7DERv8zKeH3E5LmRL3QwExoQC/KgffQBaXTsSnMLs4Z0X
+ v1cVH33v
+ YIIN08AtZ0IJ7ZCUMEDnjcr3aDx8tv9AO0I8DqlHBMZxNEHR5diwvXgqXnBP/VWyfAUbvpPaFbOMzG1GoO72cAgI944vdshkS/xn2OpT76CCdz2dEPcmSDVLyAzaEMOSjMRELm0267UKfjvGtXvGBqCX24Om2wQMUDA5QjJyazs3OaSM4EARo2xwh2S/GjfQibq1rnwqduzpItS1BogJcfhmaFRCiH/3li+tFjpheFqGZjJ2XxoJ9+2zenjflO4i6hpjfLyfEo2e7zS0+RhJAXQeMRCzlCcDyDZAfII7TxRQd57VVKZMWfiIu77JAAreDKwZCD03wCukM88fm1Cf6WShlu498P4TXa6C2wA2dSWBBapzIkrtYRgiVJAbWNKMqB9TxYF7WeEuEfoQw8BFmk4v84g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,44 +97,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Pranjal,
-
-> The current KHO page preservation APIs (e.g. kho_preserve_pages) assume
-> that multi-page blocks are split into independent 4KB pages during
-> restoration. This is incompatible with high-order non-compound pages,
-> such as DMA buffers, which must be restored with tail pages having a
-> zero reference count.
-> 
-> Introduce explicit preserve and restore APIs for high-order pages,
-> which preserve and restore a high-order page block as a single unit,
-> applying a refcount of 1 to the head page while leaving tail pages at 0.
-> Rename the existing internal helper to __kho_restore_page() and
-> consolidate the common restoration code into it.
-> 
-> Signed-off-by: Pranjal Shrivastava <praan@google.com>
+On Wed, Jul 29, 2026 at 06:02:41PM -0700, Andrew Morton wrote:
+> On Wed, 29 Jul 2026 08:44:12 +0200 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
 >
-> @@ -457,10 +482,14 @@ struct page *kho_restore_pages(phys_addr_t phys, unsigned long nr_pages)
->  	while (pfn < end_pfn) {
->  		const unsigned int order =
->  			min(count_trailing_zeros(pfn), ilog2(end_pfn - pfn));
-> -		struct page *page = kho_restore_page(PFN_PHYS(pfn), false);
-> +		unsigned int info_order;
-> +		struct page *page = __kho_restore_page(PFN_PHYS(pfn), &info_order);
->  
->  		if (!page)
->  			return NULL;
-> +
-> +		kho_init_pages(page, 1UL << info_order);
-> +		adjust_managed_page_count(page, 1UL << info_order);
+> > > --- a/mm/huge_memory.c
+> > > +++ b/mm/huge_memory.c
+> > > @@ -245,8 +245,11 @@ static bool get_huge_zero_folio(void)
+> > >  	}
+> > >  	WRITE_ONCE(huge_zero_pfn, folio_pfn(zero_folio));
+> > >
+> > > -	/* We take additional reference here. It will be put back by shrinker */
+> > > -	atomic_set(&huge_zero_refcount, 2);
+> > > +	/*
+> > > +	 * Publish the folio and PFN before making them available to lockless
+> > > +	 * users. Pairs with a successful atomic_inc_not_zero() above.
+> > > +	 */
+> > > +	atomic_set_release(&huge_zero_refcount, 2);
+> > >  	preempt_enable();
+> > >  	count_vm_event(THP_ZERO_PAGE_ALLOC);
+> > >  	return true;
+> >
+> > https://lore.kernel.org/r/20260728-fix-refcounted-huge-zero-v1-0-3f261f5447b4@kernel.org
+>
+> Does that actually fix the same thing?
 
-Seeing 
+???
 
-+		adjust_managed_page_count(page, 1UL << info_order);
+This patch was sent after mine and tries to change code that doesn't exist?
 
-for the third time hinted that something is off ;-)
+If you look at [0] you will see:
 
--- 
-Sincerely yours,
-Mike.
++	/* Paired with atomic_inc_not_zero(). +1 for shrinker pin. */
++	atomic_set_release(&huge_zero_refcount, 2);
 
+Which is... doing what this does anyway?
+
+(I don't actually think this patch is correct anyway since the cmpxchg() is
+fully-ordered with a try loop and the issue with PFN vs folio publication still
+exists.)
+
+BUT it doesn't matter anyway.
+
+The race is fixed and I went into great detail in [0] and [1] explaining why and
+how. If somebody can poke holes in that then go ahead, otherwise I'm not sure
+why David's response didn't suffice here.
+
+>
+> Is so, Xueyuan's Fixes: is 97ae17497e99 ("thp: implement refcounting
+> for huge zero page").  Which to believe?
+>
+
+Again ???
+
+3b77e8c8cde5 is where the PFN actually started to matter, before that the huge
+zero page was compared directly.
+
+The patch proposed here says the PFN is the issue so it already had an incorrect
+fixes tag.
+
+Cheers, Lorenzo
+
+[0]:https://lore.kernel.org/all/20260728-fix-refcounted-huge-zero-v1-2-3f261f5447b4@kernel.org/
+[1]:https://lore.kernel.org/all/ameC4IWCOVBGlXZu@lucifer/
 
