@@ -4,91 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C483C55167
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 22:49:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08CB4C55165
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 23:11:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 265106B008C; Thu, 30 Jul 2026 18:49:17 -0400 (EDT)
+	id D15B76B007B; Thu, 30 Jul 2026 19:11:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 215156B0092; Thu, 30 Jul 2026 18:49:17 -0400 (EDT)
+	id CC7136B008A; Thu, 30 Jul 2026 19:11:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 106546B0093; Thu, 30 Jul 2026 18:49:17 -0400 (EDT)
+	id BB4476B008C; Thu, 30 Jul 2026 19:11:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DDB176B008C
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 18:49:16 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5DC25402C7
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 22:49:16 +0000 (UTC)
-X-FDA: 85046935512.30.0BD87EE
-Received: from rev.ng (rev.ng [94.130.142.21])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 785FBA000A
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 22:49:14 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=rev.ng header.s=dkim header.b=W59GTqzz;
-	spf=pass (imf15.hostedemail.com: domain of ale@rev.ng designates 94.130.142.21 as permitted sender) smtp.mailfrom=ale@rev.ng;
-	dmarc=pass (policy=reject) header.from=rev.ng
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785451754;
-	b=yBouZ6iz5mOXQQM0hlsNVnmYv1GhIlBFGSrLD40T0PHTilMqMR2j+PvJc5WnhxC/8jwN2o
-	q0litPp9J6/JJ5fkc4VB4ub2eoAMYlyMsBH7e3wM+59jSYkBlcBFWalwhVTcxnvePr5OpQ
-	0+Pgik6rA2E6Hs29OvtVwInQt7jWL6M=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=rev.ng header.s=dkim header.b=W59GTqzz;
-	spf=pass (imf15.hostedemail.com: domain of ale@rev.ng designates 94.130.142.21 as permitted sender) smtp.mailfrom=ale@rev.ng;
-	dmarc=pass (policy=reject) header.from=rev.ng
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785451754;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8C81B6B007B
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 19:11:02 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0C7AE1602D8
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 23:11:02 +0000 (UTC)
+X-FDA: 85046990364.12.36F89CA
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	by imf12.hostedemail.com (Postfix) with ESMTP id F123640005
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 23:10:59 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=XGgABXRo;
+	spf=pass (imf12.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785453060;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L54GOWdjqRndf1N0Bl3JKPypFdhuh4dOD9kZrETKjt0=;
-	b=e1KyHSwtQBd6Niroua46CzGGOG8E4flqqW6AFd43C6CEQwA2zylbuIXjcXmOeeI4G4nkg6
-	DBzDlL0vFk2A72iKEgIkHrHzl15SZXjg0q8BzW008TP+rLXR1DfAcYvb4OPFecF6fl6qwH
-	0OXL4ViOP1SekJ++Wd6v8fRvY1unmnc=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
-	s=dkim; h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
-	In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
-	List-Help; bh=L54GOWdjqRndf1N0Bl3JKPypFdhuh4dOD9kZrETKjt0=; b=W59GTqzz28XGIfy
-	MgWx2m5J08iQh2gCyOqieNW/0EwHDytQKkSAAl/wKbD1Y3PD8KMO8aVJd04cLL531CRhIouIUz2cQ
-	vf3sQspzC7+QNsYSFQ9VPoZVxfFd4tf4ltvruZ0zH8MQTZC/pMjcfRSvwLDW7ZrWkQHJnUhMeaDo0
-	ks=;
-Date: Fri, 31 Jul 2026 00:46:04 +0200
-From: Alessandro Di Federico <ale@rev.ng>
-To: Christian Brauner <brauner@kernel.org>
-Cc: Farid Zakaria <farid.m.zakaria@gmail.com>, david.laight.linux@gmail.com,
- jack@suse.cz, jannh@google.com, kees@kernel.org,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org, mail@johnericson.me,
- shuah@kernel.org, viro@zeniv.linux.org.uk, Gemini <assistant@google.com>
-Subject: Re: [RFC PATCH] fs: binfmt_misc: introduce eBPF-based matching and
- interpreter selection
-Message-ID: <20260731004604.53c66732@spawn>
-In-Reply-To: <20260722-raser-leselust-konsolidieren-05f8e36a0782@brauner>
-References: <20260704-kochkunst-hauswand-blass-7226e9443a9f@brauner>
- <20260704211409.1978485-1-farid.m.zakaria@gmail.com>
- <20260706-uhren-raubbau-sinnkrise-e40a8337414b@brauner>
- <CACCo2jm5=xrQNfak=TdO=2oh0DC5pe+atj=UfuTa8Y9s8GVkqg@mail.gmail.com>
- <20260707-campieren-fingen-himbeeren-e4b682bd8e63@brauner>
- <20260722011217.45e79a08@spawn>
- <20260722-raser-leselust-konsolidieren-05f8e36a0782@brauner>
+	bh=xd5vLDkGU0plOZGMPAuXeFegEAIEtVEvtYGsMIDTS+0=;
+	b=kFrCEnY8JEU2g3C9OycWYaEqPGT/1PNHHYgzf6VBa+JANHZjlzO01jmncZUFbHy6jaX8qO
+	aP1geJQ53ZIADbgMv7ztw4YKC2bY2GyRmJ90PrLzGte4FYVaEN3swN2lp+IWFewK1sXxTB
+	P6SlW0DniYp40g0Hom2vP2PDESIRrG4=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1785453060;
+	b=Oq/kdFAUgN6yaTNutLbW3p/zZuNweTNsjJDglG4UlKIP71EcDNYlYcGXDS1FYvZ651hO75
+	fiC8oA6MN+JCMsfbthiHmxkEZejJRRJJee3guX6+xsHp56X+wyHfwDeoRJCR85tRR/T/eK
+	QV17dUH3Sg/zOjgH3zgWojug8liiE+s=
+ARC-Authentication-Results: i=2;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=XGgABXRo;
+	spf=pass (imf12.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-495635a85d2so2421985e9.0
+        for <linux-mm@kvack.org>; Thu, 30 Jul 2026 16:10:59 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785453058; cv=none;
+        d=google.com; s=arc-20260327;
+        b=cWMkXT+c2RDKFjcVha6Ge0dHJdqKsCFZxDsha+4TKOIK59awrHj7lfi4lWZfQamT0R
+         QkJ41ZNQnu7wWqVSX/taEs6SRfik/9UTXF2+wOhV0+LccFXfS9hhoRrDXi9EcYPpTvyV
+         BiFMYMyBXKIDzJ0DPFFOrcmbH449/p2cTyjGBjdxHlnsGmJEpXvPRbNIKjLrqUvy/6Gi
+         vjz10VDGlFj6trsX4yB6a9St4Ho32KyjLSN5NdM7KyWrxXbB7WwK86RxbXzLRopYVwca
+         HYdq3fjHAXsumPMYo20zvJsMdBJs67hAV/TpMxWsa7AK5C4JdB5xAOrj2KJ322Rqoi88
+         QPHw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=xd5vLDkGU0plOZGMPAuXeFegEAIEtVEvtYGsMIDTS+0=;
+        fh=1CrxQ8z4CPPqDR3solT2KG0Eas9xlQuC1AKFxOGSAPw=;
+        b=rvJFwy0N44ZmJHUAv/XPReM+Q+6mPLsK6PeJptqYQomqO5Vfg7g+hAMc6icM/3Kaoc
+         Huq7TYUbuSanVSEM+3udroxnV0os2CpNCqdZzb6UIE3TpArvmh26xqVu8wH33k1jCUOE
+         LGxvtV8Zi5/jgNJaqLEPZeTqNBbvYPMH0PGCtJMSmsU65AJZDwR/U/YpBwEFiqrTArMB
+         QBOqZnHQzff8R1Ue2LVlRGsuqOidyUadSiARScaTQYz8MQipGmNBgLopCHhCYOgmqXcL
+         xs1BjIuc/qESlPt1L6LN1KEvdKc/F2qYSCcAvGS7vD8ztNAPzAWuM+dOQ7C6Se5Cv4h2
+         B3XA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785453058; x=1786057858; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=xd5vLDkGU0plOZGMPAuXeFegEAIEtVEvtYGsMIDTS+0=;
+        b=XGgABXRoU6fMp1w8y+valz6ce+PFfb88dpbfrWns1paa9/cRMHjsTRdcPKn8Cl+mUa
+         rP9bBuGvzyxCVM6DZO7UwKn0KYQdCJbGJQzTkepfNIj0WZMlGgYbr9G3R35TKT6v76KN
+         Cw6T6cDC4nAETKyhLLmo+KtdEu9K9GfKw36h7P9PVQ0RVu4+CZ3fji5NodUZirU4m17w
+         23CsY6t9Yj6TZCK8Zv6DCb+M7BL55inWgZial+Kl8r18NTmByjsllodhNnEjAzPxxZH/
+         lI3YUEaGAKs9wkyVT++VAQBVeDUc8svKPukKey63IiWWfsBiyX+7grLpXygHHRctUdZS
+         0qUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785453058; x=1786057858;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=xd5vLDkGU0plOZGMPAuXeFegEAIEtVEvtYGsMIDTS+0=;
+        b=d25uTYbyewuzOIrwNxYrRw9ul4D6ZsgdcWe/5shyE7x90J/DOdLST9PLpScD4dAI1t
+         hsPqgBpUWGHQmLmDx5tP9JfGAMwXkHSe0TvI/y63m8thtiyiG+cUhc3Des+TgUz/SiEz
+         XBgJCddD17bxEP3ocpF2VjpFut0AzUPikCTRw0ZJsVdpK1QyolmFqT3klwZH2QCXhYh9
+         JxdosdVvzhJ5625/xZR17hMt4k9YAb/tSMCrsQkHUHOUFhfvNUlWatniweqilqOHusRk
+         vEQ1yh3FORzs860AzaBSsVwOpoK5aBDcc2yJPviamvmUXA3abfe0xPwV1KqlEoscptsO
+         m+vA==
+X-Forwarded-Encrypted: i=1; AHgh+Rp+aVI0V1QuBTz4zDxHaEcJwfM24fTpMe+4uAAphiAewt2DsD8i4VZzS+oX8kV7K/8wttW005a0fw==@kvack.org
+X-Gm-Message-State: AOJu0Yy4yGEDoZdXPjNYGZKQNnqaMHipLWOPYt59inOoBLIf4kEOq3px
+	Y66yZ4jyB0pNR8g+ybLydu2UGIGGZENnxhCVdOPEr+dLr3xof4LanO2jL0Cs+S9ak3hQgMVP40e
+	7jEKu9rnGe3w9zhOeDpPFAAwCVDWxY7I=
+X-Gm-Gg: AR+sD10xrjIN+t7mpiy4a+6laig+6cdKBJQO3B23MDpdAOjbG+JQ3ikcgJHipBw0oZW
+	Mmwm7N97q6Eq8HcKjj9C/BFS9VQTMjx6Z5uXiadU2qPgpBofiQeYcTVAUCPF/li4QM6mG2HF62E
+	R1ERFvTQyOBidq8Y2ksVkGAxzpT9I4B9bjUgtL2lmR+AJIIlbwJH2m5l0EpuRCS5FzVlTW3c15x
+	f8Ois5Jhof4DNAdCOBuzy/5Ch7qyUk/Z4rPwKx9KCM8IKfhjEEGoPtYwgKhgv0L4i0Z5dKotFSV
+	POCZKNp+4UC+0HKmCrxuLL6igNizHwCOoarXDNHh1vtol+rDAgHv1OUQ8okuMAvXuOsr6i4Ap2f
+	R4YD5WqDcTqrZbCRw2bnbT7eX
+X-Received: by 2002:a05:600c:c05c:b0:495:6060:d6de with SMTP id
+ 5b1f17b1804b1-49800ece23fmr43508145e9.31.1785453058373; Thu, 30 Jul 2026
+ 16:10:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: y5ghxtrrfzrzzwgaqs9ksg4oe1qfuixz
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 785FBA000A
+References: <20260707201735.4113107-1-joannelkoong@gmail.com>
+ <ad31d36d-ac84-4053-a5d9-e18c346f3908@kernel.org> <CAJnrk1Y-4-_0udtGKeva=f5=xYRCWcyCnBA_1aVQ8oUZRKGkAg@mail.gmail.com>
+ <411318eb-3156-4e5d-9e11-4c319bb9e755@kernel.org>
+In-Reply-To: <411318eb-3156-4e5d-9e11-4c319bb9e755@kernel.org>
+From: Joanne Koong <joannelkoong@gmail.com>
+Date: Thu, 30 Jul 2026 16:10:46 -0700
+X-Gm-Features: AUfX_myk2dUrnprBBbtBc7KG5m1PqaZut-_Y_pgsqKv13103U2O0vsO7thvG7ik
+Message-ID: <CAJnrk1YBG7bT6M=oeEPJDo7A_bXakpN-Vu_Cm3awhXQv_6JmwA@mail.gmail.com>
+Subject: Re: [PATCH v1 0/2] mm: split underused anonymous mTHP folios
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: akpm@linux-foundation.org, ljs@kernel.org, usama.arif@linux.dev, 
+	alex@ghiti.fr, ziy@nvidia.com, baolin.wang@linux.alibaba.com, 
+	liam@infradead.org, npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
+	baohua@kernel.org, lance.yang@linux.dev, vbabka@kernel.org, rppt@kernel.org, 
+	surenb@google.com, mhocko@suse.com, willy@infradead.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: F123640005
+X-Stat-Signature: 79kj6ujdzpssnjn55ft5jxk4eegsho71
 X-Rspam-User: 
-X-HE-Tag: 1785451754-949903
-X-HE-Meta: U2FsdGVkX1/m/x/Ps7U7wAskXeNwhjVm0y9d5ljKnOMWQ3Tm8NaM2ybUlNFyJwS+A+OMrcqIm4X7iU/n2rFcrA6JuWXvNy5vH+9p+bIc6AZjYNCZYcNgghsilB4Sb03i92rzno6NnG+DIN1e6V+oIA0ACxIneBqdkJUjVWnpe2gt9QFx1ySZ6QJYa6miWrhSXaN+eoartiaO5ThyaoaQIy8VioU8Z5hFIPabkNqEuVavLY9KU5c8N5zjPyiA+WYWFwwN0ocg3F53cKW9lEMLm1Bh+DQEQThPWXhKZUSN0jmv6OI/1t5QNr1by8QjP0tEPqt8dXV8iLyYKyHE6bOQ1YS/u57lrAX1VdaHSk9UD6wNBcH2ocrBawBnzqJxpMJk07xEqeTmd2rneQjBQXcsmB43Uia69Gza9HPHB2cUY1f6+Jpou78na8rLy0ZgdDN5CuRlN17FVST7dD+FSXOJSJxISVG1VedL0PWWs86iChRuJkAnF3vwbRhsIH2hS0WPAw64KVnysau4ZVRA9haZQEG6Cy5/no+Is37w9wn9kHy2f3aPDLX1KL0DWkV4LDW5jU/qlYtSL0pfIzozEwseRQsSngi5XyIJeE4Al7AjXAPr1uZ9R40DR+iQEMDlPklhSlZwxtZ6zeAW51ro8Ck7EZ56g2i7QPf5tIObFDKgALNL7XpLQwpshF9fRccCWvprrkOa5g6J1S+MkUXhWZJd+VENRzXj5tdIH3XjlCVedS1yUo4vPCJQNNOLYovLXkOUEqC5mYK0zLcqn2rOkfC6LUlwGpmkVmuk9rk1vZJobKHQBaEJ/MYrpjz3ZbrrVrgtdbdHUw6g/w8yODMzb/Vwxe3vE+THLgxGv8mM+6rbahstvoW+eXT2rjGypPr9TXwxB3pOEvrYlunU+v8RGVcdJ/g3U5NeLgVWOvIVnUMj4B1NsZi0cLr2ll8R0meEhUkUbVzr2gdh4YxA5ToGK17
- 2B58+Rh9
- AyPMAHxtONr11Cu1VwrAoliR+8dk8cJyckV+OqV4+Cg58Wruc+eEmVXNk9FU85kmDURO2aDraun65w4e82pJ51hby3WKQo/dvtYCakZk1qes+KiCmAnGDR110Hnv5hFlLzIMu1Tq9AWHdllDogo+YYm8qBoMQhLwquC56xErTaQYIfIn98pOQB3rEQYNdCZsTBwrvtWq8KkyyasYHHa3N1Jvmby54owSMOSfkI5RGL+soXa2sKTkCF7rzeAysqCi3vEXZ03SFstPz+xONp10ruHhfQLCGtwcb6IViQR3cpTSAHnz8qKi3sURCdg==
+X-HE-Tag: 1785453059-674756
+X-HE-Meta: U2FsdGVkX19C6slTmaVFxQyid5xFUtGgzTeXilAoIv8d2r9oTraw2+NrbOeIuXzE9m8p6zx6uStkaJjSi+eJEjPYVHSf8b8k4XhfM9QSAD8XJHZqHLruid6UyKrcoO50+j8GdxhHXbHqgk0XYSaQGRkUUBT+RB0V1XgXuHmfjDea60ZO9q7OfURZfEfr0JYhpBzGF5zTTaF0Ci1jkWk/wy7tlcJgzD/6FG+LZEKAV1cqgRgGhW9M6Ak9OryMxkeqgCuYY0kO6Qmdi/FKfcp6EzK1g0VHg2MXh0f173WWMa24ZtfFClVUMGqfjIbHoTOyCm2OjyQTVACZaDPRYpy/D1M8UnzatEY1HsJ90hvqMbCF1EZZcW8aMEqBslhXY5LyfWD9rtjbMtWZ3mY4b0ftoAK6Di+by5gGqaZORJjc6azJVkUrgaGzdX0RVL8nCv+/kVenc2ijnFwdQQALXmE0kSuup8zfrz6URU4QbR8WTyujL+WcBQ8OoLyh+UJNWuWIMadU9BwR0Ri5bAyPDU/fiwPUu4/jK9BdDcSGd2O5TwUwYl5kpi59yOfFLhNVPW9J5z4Ykvpe1wP3jJ6DOrPWNK5wBLqYr5WBhfHaP7/aqAG/xFi93jktnSzJhY6fq0FmTrrzsLxtBKFt94Of0AmHcFueuEyknOrRQtPgekwH+PIVgJjDmnuDy+FuKW2gfLXGtr5O2mdnDtcQfUvBXa6GbW7smaetuWHVwMsjTgP0u0kBo/uHPQn8viVzFbINQHXbxNmbjbbfhOUCasCBrMY3C2pgnwNx7cUXNhKIfi5xXkZPOTHnYu4fLA1wecZWJt4l+F39v0fDQCAumIA+IMy5eouwbnaAl3gmTAgXfrMjdmbxmr7MCOVapAcBN9+p9PO3fXBsH6W3J+/278/bLOTSoF8l6ZAWg6b+P3YRJLi4Ex7wTuaJbTFRIaLhiyUTL3if5fauXAqtF3irafk+XuB
+ JGqZtpFf
+ 3ADiPxEHyi+WyFcyJGDPuHeaBGT6aSJiRfa604n+l08mq+EwCBInABkELvjKpuuiqldiB8MU/hlXz0/5mDbk99XV4f67Fw0i+RVVMuBbLMGV7/MZGmp7hgT4N4bF3Pe7Y1nQtrmirPGkNhtTRM5DDdXUGYwOr1OxabVWt4h6ENI2Amcwly2iRsA63jTO+5+DPlgGtwwHhmdTa94dcsM9HTmybAe3xg82ZM+ngRGPuQmziyLVaNztK/sFdkfsuFA683I96MvZAR6dgrCc6JkTVo0LtygWzQM8+Exw8Sx6IOdDpAiPoqFFinZuzt6NSzUADHMOU6PYLkAjjkgVljgxTgwE2C1pTfUx4hcYV2xeGydfbkBwOd3TUNngxkXWE99jx94MxVz+wz1w9PC04TtoUMzKidToFUzP6zyaEXSzQEQPtX+w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,82 +145,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 22 Jul 2026 15:33:40 +0200
-Christian Brauner <brauner@kernel.org> wrote:
+On Thu, Jul 30, 2026 at 6:53=E2=80=AFAM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
+>
+> On 7/8/26 20:19, Joanne Koong wrote:
+> > On Wed, Jul 8, 2026 at 12:47=E2=80=AFAM David Hildenbrand (Arm)
+> > <david@kernel.org> wrote:
+> >>
+> >> On 7/7/26 22:17, Joanne Koong wrote:
+> >>> PMD-sized THPs that are mostly zero-filled are reclaimed under memory=
+ pressure
+> >>> by the deferred split shrinker, but this is not done for mTHP folios.=
+ At Meta,
+> >>> we would like to deploy 2M THP=3Dalways on ARM (with 64k base pages),=
+ as 2M
+> >>> provides contpte benefits and 512M is too big. However, 2M THP=3Dalwa=
+ys will
+> >>> result in a memory regression unless the extra unused portions of THP=
+s can be
+> >>> broken down and reclaimed.
+> >>>
+> >>> This series has two patches:
+> >>> Patch 1 - makes thp_underused() work for non-PMD-sized folios by scal=
+ing
+> >>> khugepaged_max_ptes_none proportionally to the folio size and using t=
+hat
+> >>> as the threshold for how many zero-filled pages a folio can contain b=
+efore
+> >>> it's considered underused.
+> >> Did you look at the khugepaged side, and how we handle it there?
+> >
+> > I'm not sure if I'm interpreting your suggestion correctly - is your
+> > suggestion about using the khugepaged mTHP collapse threshold in
+> > collapse_max_ptes_none()? I had looked at Nico's patchset in [1] and
+> > my understanding of it was that the mTHP collapse threshold currently
+> > only supports values of 0 and HPAGE_PMD_NR - 1. The patch 1 changes
+> > use khugepaged_max_ptes_none's value as a proportional per-order
+> > threshold for mTHP because 0 and HPAGE_PMD_NR - 1 are too extreme for
+> > our use case where we're trying to find a middle ground that keeps
+> > mostly-populated 2M folios whole but splits mostly zero-filled ones.
+> >
+> > Is that what you had in mind or were you pointing at something else on
+> > the khugepaged side?
+>
+> Yes, essentially that khugepaged does not apply the scaling because we di=
+scussed
+> it back and forth and it either results slowly consuming more memory than
+> intended (creep), or ends up being completely confusing for users.
+>
+> So khugepaged will currently only collapse mTHP if it can either not wast=
+e any
+> memory, or is told to waste as much memory as it wants.
+>
+> Adding scaling here when we explicitly rejected it in the collapse path l=
+ooked
+> odd at first.
+>
+> I assume your point would be that just mTHP over-allocation (not due to
+> khugepaged) could make scaling here a good choice, correct?
+>
 
-> I think this could even just be part of systemd. You ship the distro
-> with a file for that in /etc/binfmt.d/ and systemd loads that bpf
-> program for PT_INTERP_WITH_ORIGIN.
+Yes, that's exactly the motivation. I'll make this more explicit in
+the cover letter in future versions.
 
-One could delegate the feature to user space, but that makes it much
-harder to get adopted in a uniform way.
-
-Will systemd, Android [1] and OpenWrt implement this? In the same way?
-If so, at that point it could have just been a feature of the Linux ELF
-extension. 
-
-Of course the Android people could disable the feature even if it's
-in the kernel, but if the convention is established by the kernel,
-there's really no reason to deviate from it in the way it's implemented.
-
-The whole point of the portability thing is to reduce the assumptions
-you make about the target system. Ideally, you just want to use
-features widely available in kernels in the wild.
-
-But from what I understand from another thread, your intention is to
-use userspace as testbench, correct?
-
-> This is policy that the admin should decide
-
-Agreed, but the admin is probably satisfied with enabling/disabling,
-not deciding whether the program header type is `PT_INTERP_WITH_ORIGIN`
-or `PT_ORIGIN_ENABLED_INTERP`. Same for the distro maintainers.
-
-> not an arbitrary extension into elf core.
-
-I think that, in order for this to be useful, it needs to be a ELF
-feature, not something the admin/distro maintainer puts together in
-eBPF.
-
-Then, from a security perspective, AFAIU, implementing this in
-eBPF does not solve the problems that have been discussed.
-
-For instance, `selftests/exec: add binfmt_misc bpf-backed handler test`
-does string manipulation (no `openat`).
-
-I understand that's just an example and it's not the same as committing
-to a new ABI feature, but still.
-
-Overall, I feel like the current proposal pushes back on having a new
-ELF feature for security reasons, but then delegates to distro
-maintainers who want to use the feature to take those risks. But also,
-distro maintainers don't really need this feature because they can just
-write /nix.
-
-I love binfmt_misc enabling you to do ./foreign-architecture-binary or
-./notepad.exe and spawn qemu/wine (usually with your friendly sysadmin
-approval) and extra flexibility in that area with eBPF is super cool.
-However if we are thinking about portability, this make sense only if
-it's a default-enabled ELF feature (implemented in eBPF or not).
-
-I'd be happy to try to work on the example eBPF program using openat,
-address the various security concerns that have been mentioned until it
-looks right and then it could be loaded by default, but with an option
-to disable it. But I'm not sure whether there's such a thing as "default
-loaded eBPF program".
-
-Alternatively, I could extend the ELF core as a parallel feature of
-the eBPF-based mechanism, reviving some patches from previous
-iterations.
-
-What do you think?
-
--- 
-Alessandro Di Federico
-rev.ng Labs
-
-[1] There's a flavor of nix for Android (using proot) which would
-benefit from this:
-
-    https://github.com/nix-community/nix-on-droid-app
+Thanks,
+Joanne
 
