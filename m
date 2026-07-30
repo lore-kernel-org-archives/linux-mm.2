@@ -4,102 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 710A4C53200
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 00:31:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA489C53200
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 00:31:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C05446B0088; Wed, 29 Jul 2026 20:31:12 -0400 (EDT)
+	id CCAE86B008C; Wed, 29 Jul 2026 20:31:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB6B76B008A; Wed, 29 Jul 2026 20:31:12 -0400 (EDT)
+	id C7BDC6B0092; Wed, 29 Jul 2026 20:31:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ACC746B008C; Wed, 29 Jul 2026 20:31:12 -0400 (EDT)
+	id B90CC6B0093; Wed, 29 Jul 2026 20:31:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 82C956B0088
-	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 20:31:12 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 221231C11AC
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 00:31:12 +0000 (UTC)
-X-FDA: 85043563584.11.9A9B953
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 2B4EA100006
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 00:31:10 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nfdKRFkl;
-	spf=pass (imf14.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 93D756B008C
+	for <linux-mm@kvack.org>; Wed, 29 Jul 2026 20:31:42 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2A8C5A1D6F
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 00:31:42 +0000 (UTC)
+X-FDA: 85043564844.27.6B06D21
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id D5C2580005
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 00:31:39 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=DMLoX7c+;
+	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785371470;
+	s=arc-20220608; t=1785371500;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=223Lw9K3r/YKNgDc8O3HO2tfWjMepfaOnuVJWOvxOI4=;
-	b=Tdz2R/CwgFHzVFEGJD4VJTmOpFs5x0OR4cBXiJh5/bpPZUb/eHDYUAjm/4eYxtEO77+4BP
-	E6dCvt2eBfO9yWOYwN+WvScKDIltvzotU6KrLmfuRca3b9r3aqWtTSZ4xSBLrFMNtuZfIi
-	/QiYoFYurX8bT+of8T2J21okuUFLse4=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nfdKRFkl;
-	spf=pass (imf14.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=W5hzEifNAICIGNN+PUDsMpr3lok91oEEG60TAB3VXM8=;
+	b=zLT0DAP6DjjmIyqfFQQPx5n7QwL1o08cj9iDB+PRiuamYjAej9VfnrDjVLJEkuFj2GRrz6
+	XbFi4GRt0DidH1mVuXrf8W5VpZTH9zkag5QM3dtJ6Py/DC8EYovrdwLwakGe1jSWfZmZA4
+	s29ld4WqsmoDwOFo8oyn4pJEXYK8iB4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1785371470;
-	b=k6lRjbOU3lN6+ERO1CrOfRUjUg7VmU50w09KufZiejWDy2Hce72RfqM8txhqDTf4hKOdlk
-	SZU6gksAVsp63wFwmEbwYbuLoAj/YiUCEQCl5beKQBQAiQd0sYQ2UCNtOsIbMPlznoqnZE
-	V80sn9LvJFeyjm8Jdug/uH2FQVxxdJs=
+	t=1785371500;
+	b=jHjDHwCVVgG1wZ7wieobD6paFu4wGIGzE1dAG54ZXjtLr54CdCxigpK5kJ+Idg81WysRfq
+	OOheDNYPf3RUlmLfotCrpe94Xmr7Tep/k6S68T5qGcF6Tw4u17IZTWiOXWWCF/xR++Xdt0
+	qep14VCMVqShaK8DlaztekZBF0gPl7U=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=DMLoX7c+;
+	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 199BA43CBD
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 00:31:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB3881F00ACF
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 00:31:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785371469;
-	bh=223Lw9K3r/YKNgDc8O3HO2tfWjMepfaOnuVJWOvxOI4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=nfdKRFklDNUurArltP8U4rxO7Qro6nf3tlY/PIbjjmp7aC5NIx/FB38kvWdwAxj2P
-	 +WI7XndHSPbOuXAik5bgfIpKgS4cheU9njAMaP+kUQ+etMUHBY/5t9Z4YETlBdwZ5O
-	 PFU0b0s7Yh2fN+2lS0j052EkpYHn18uTne9ws1qC0KcTRjmwfWytiS6lkhlC41vtgm
-	 0UpbbKSvoOEQVwGIxW41J+slwmhS07zFfm05WS6eyFI4UHX9NHgOvVJ9jrmBO4pTj1
-	 8Ryi/urIRG1ktSHTQDijgfXUUV8t2lFLuQXdktjHZ3ILKb3fA5GS74yPO0VGGIM4F7
-	 +odj1+z/YMblg==
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c1677c91969so184787766b.1
-        for <linux-mm@kvack.org>; Wed, 29 Jul 2026 17:31:08 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RpA94QoO10g63aCqbFN86jU432ySgIxPzMklVxR8/UauhjIu7D+QBVFPISNv1ztyD0fuCNB9lbI5A==@kvack.org
-X-Gm-Message-State: AOJu0Yyok3hTiN1qSvTH1H8/YQGUTdFkOT3fW437/pot57kdaOZH6i8z
-	71UZ6lWSdrnnxrSritnya+mdXNxJCXZd2TcojFOwsXVl58W9hisbfQokMn6PwpdlZzN4kYTa0EZ
-	sAJb+lONL37GBkc33eAAyh3cK/mC/UG4=
-X-Received: by 2002:a17:907:d08:b0:c1b:1315:163e with SMTP id
- a640c23a62f3a-c1fa54c4b5bmr24929866b.29.1785371467863; Wed, 29 Jul 2026
- 17:31:07 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260729084206.77793-1-jiahao.kernel@gmail.com>
- <20260729084206.77793-2-jiahao.kernel@gmail.com> <20260729155858.c7aabff48166a9bca4d68ac3@linux-foundation.org>
-In-Reply-To: <20260729155858.c7aabff48166a9bca4d68ac3@linux-foundation.org>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Wed, 29 Jul 2026 17:30:56 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zNhBCghP8T_98z2p==Cfs_=kamcRN_3ROxaj3R8PN2Qvw@mail.gmail.com>
-X-Gm-Features: AUfX_mzEIitLB3kH8Hiawz-YUBT-nt1v9BFc8j6q1ERagl2zhHIwEwDmanOLo5A
-Message-ID: <CAO9r8zNhBCghP8T_98z2p==Cfs_=kamcRN_3ROxaj3R8PN2Qvw@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] mm/zswap: Fix global shrinker when memory cgroup
- is disabled
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Hao Jia <jiahao.kernel@gmail.com>, tj@kernel.org, hannes@cmpxchg.org, 
-	shakeel.butt@linux.dev, mhocko@kernel.org, mkoutny@suse.com, 
-	nphamcs@gmail.com, chengming.zhou@linux.dev, muchun.song@linux.dev, 
-	roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, Hao Jia <jiahao1@lixiang.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	by tor.source.kernel.org (Postfix) with ESMTP id 1A9AB600AE;
+	Thu, 30 Jul 2026 00:31:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF9371F00A3A;
+	Thu, 30 Jul 2026 00:31:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1785371498;
+	bh=W5hzEifNAICIGNN+PUDsMpr3lok91oEEG60TAB3VXM8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=DMLoX7c+usdsyboVTHPWoLS8PUAu3rFTAKhUd0P1FAnsMdKXSbPc1Q+pL1eKZYNQ0
+	 Yb4/cWXSDKG8WmFAlydSqS5t0uK+K78IHewKiPOG17mpOUxUbbaUxeIGhIj1jEDzt+
+	 vFBgbHE27zF7jF4GKvQcCcTDiZR7+8uy7JSEQXwo=
+Date: Wed, 29 Jul 2026 17:31:38 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Warren Xiong <warren.xiong@ugreen.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] tools/mm: prevent page_owner_sort from truncating input
+Message-Id: <20260729173138.fbc115b5285e1b465b055de7@linux-foundation.org>
+In-Reply-To: <20260729053812.882137-1-warren.xiong@ugreen.com>
+References: <20260729053812.882137-1-warren.xiong@ugreen.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: D5C2580005
+X-Stat-Signature: epe9rhuemnabb3c9xtasoqzgi1ygf147
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2B4EA100006
-X-Rspamd-Server: rspam01
-X-Stat-Signature: cqfyqoqs3we7ktif71koez5n1bkgjwb4
-X-HE-Tag: 1785371470-700683
-X-HE-Meta: U2FsdGVkX1+NrX3+IKafhxYWF23HudnVHPkwBDOymfO8k2yX1R9b1krFLJXKJ8yCV4KlU7zJfCBg6DlDrBs8F072nnb6e0ZhffbpX9HOJc52dWnEK31Ip5G3xcMgGmc+662JnBKgucFwMzqfvGFUkKS/unK8V+Vn60Wx8lI0+MnE3BEax2qt/pPCgD5D/rFJy9xuf3SaJWCsnRm4chNchOatkDys2dGeYAariiZJGEPb+Y4KvJRWd285HSveWjleK6sWpbJYTazMUOhdnxeqC/igPfbFbMfdksbEZKXK+7lAQALN2FCn6lWQaFgrGM62NIA81Na2bHhX3MNNxuDLG7GgfkYL+SJAgxUqY1AjSnTvZN2Ag80XTNWmb90pOV6hJaB8/T+KgjxGS7IdIwaHUHC23ucrej1do9FLef3gNROLfTkAQGsQzwXkAyzAghz8MOmcUcOPBycAaM2KbTzvLbHx9iBzbhmZBYoFxlahN2gKC1deBP1Hw2YMVKVJbnrnU23Ezal0BZPfdpL8+HYgTYk3nfByYN8b3OWZqc0DzcKevyPyvYYtsME9kftrU+SPbBq5LjXn/7r+1Divkt/XlSoci8BrJEShnaxEl+Ww7No8vuTO5/UYWzR4g0Qi7SIeBqzsv1THfuMfUtLUcXm2wb16ZYt/o4oSzniIifeWutsAx222dxh5XqpTO0NBwcBAuYG70yXrWBQTxctvmHnK419EQglI/+VvqiRfmhwjt65u7wmFKuJqr4bvn0QZ8vdRcYwGtq/gdQSpBEWWkr7CiGJDUdcmidLNy0Mtztwr+nKSYxMt6mJFXB7vkFw7QSfNnVK/FFPw75BoGCiL5cQp6f6krwI8XTLrz0G4yvnWiOyw6NUwRCd6m6x8KaJmFIRpM8MwRUPy4cAfk9jQVG4MbMy1lVo/xThyA6fnyp+RtppUXkzg+SCOHVNAQ7oWD2xNOnYtYWZq8J6zbG6FQ0G
- lxvFejDa
- +GmWDGVExPYUmiEJeYAXK+BRGAOua3LTM3/KomNm9Cy5FatPzmoyaRb9eEa84vmFmTWBjoWMVbxn1KfbTN9J6jYguEaEOyzVPqLClGIu/wPbGGTHLvMqGExYEO8x3V9pHA1SNL6yEO497XMu2ySOcX8jj6oxNG32RTIrBn1CSaqBe4/fxoerh8Iu1I/bhnpWq72d9i6CYZlYCwQMP/1D2Ece4gc1yiVJRb4nm4GBm1vVUm6vew9Zor6CL4OHaZ5WFRzUueLAz1NC8PqPFJY7r0z8bX4r2TtDouR2Ch7mLCt6XtsgpDqlvIZ8Gf0b8xFO43hv+f2cwIA8YT7bzFelxcfI43TPHqT3YXPx22j+3Z3l75nUUDpAZvNCkndHh+NMIwpnr8n5n6oZp4U6iC4jm3ov5uJjYyu6XKibDtDHUQocuL5E6C6zTru4WNJMQQn7K6uMgWu5D9RvGdsm5H2geBh80y99u6vNiex5XR1PmqAnRwRFK8kiU9u4SfXXv80BLG64kYDyGRV+TB5A=
+X-HE-Tag: 1785371499-648324
+X-HE-Meta: U2FsdGVkX1+M493tlMkP+I2hbxMDvNbiu+89jr8tmYNGomLjpf6sxBEaPlFLFPHFh8oMg3i/NB1g68DeegE+vcTnrcUZnOTKwS7PAFS+hKWlTmQTPG4+ynsmSnxX5Lb+qutAw6w7i08z/tpBdbN51+yn6vyOF4nSM1KWwvDhy+VjgW4srPM4CAvO+dvHbGhm7fgK9MQ/WbS+CnDM74R92HaRMWukctZtj8yMRgm9JE10ApI1rlqTO5BEsFm1PzaY3/AZZeX9NnW6pRMG6Ul6lhT0AIiPRJd8BzQ8ETQ94p4hBdifu93mc/lRlIHzt55OIUbUPCPw7u1O2Hlbdr//m+28DxOE58IRia1algpW4avSTM9MVtY2+ZKnHAiA3LCo0KYamvvngEWZ5KvNOlEafTsbu8YpKyn8SmjesJf5zRw74yvF6hsXmUWxpJVv+wYYLA8u7P4FvqjkZyoj0UVdwafAOTmcLIgYMS6pEKWsFYf7244+iEqt2VJiCVgowysA+L/GNvXFawq8gF1CUOxzDsIPL7yv3PRFVMWcgtmmSst3djBjvnTrFKB+yAT70BW7NiMusFWgxiEdwmFHMzE6MmtKFmQKjtMa0xEzfXXUDv0dSWTSOvT+jj90itWaPi+e8jsth0feUeU+kMsH0bsB/Kn7/0it1OEq4m0lOr8SjJ27wy0fvzfXePD71+jG3BSwtFyFB9ZcsjtHjNRxxBnw/ux0B1Ln5hVcA+Uek5kN1CUNJ8cRaYLA3+DCKL8Z6LKJfSrtknyqgnQFzttKqdNmpiHk0akfaXwyb5PR+BQkvFz8isvWO8DwTER/GnrOsuuF88uRGV5mThkvOALklDOYFGei+pCOdju1TZak7JRLYBHSw0mN+yiBrBRWlZMJFv7weAlTBpW84mRbnn3UOWIr/QCOI6vUH757QjBWESpU68dxLeMVexSSco+6S8hkXbc0ryYfgB3H9xM0R6sQRVG
+ /UZbVmr+
+ lMb1odSOnhMsoqfkpmXO5hYkQXZDePhSFntrCOr/5vFObfzc+DruB/TnTs0K8mfPd7KNGNaaLYp/6kPYQ+2eIO7UIG44Qbna+eWw0zkLfrxpGkZPMDCKlpXR2oPexlErBhsmC1WCNwbRw8/0vlIy8vR4TXBHZXBfn55DdmBEt4k+aZLZ+PrOe1Av7dhfjInwjNojv+djm4pKZeriufpkk28gRfmhk/SmPH4SIw7Kvhn7QE8hoRmYb61dnWpCjtEIse2ByVrBc9aa0b9rQe+GgEY7EsOcZK5u3FMAbZJ9CV5Gc3DS1FhR22qvaF/3/7d0eTsw3XbWcum5drZJv9jjrCUlg6YaGIE9mcIe+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,91 +88,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 29, 2026 at 3:58=E2=80=AFPM Andrew Morton <akpm@linux-foundatio=
-n.org> wrote:
->
-> On Wed, 29 Jul 2026 16:42:05 +0800 Hao Jia <jiahao.kernel@gmail.com> wrot=
-e:
->
-> > Zswap writeback when the global pool limit is hit fails when memory
-> > cgroup is disabled. The pool remains full until it is organically
-> > drained by swapins or memory freeing, leading to zswap store failures
-> > and pages bypassing getting written directly to the backing swap device=
-,
-> > causing LRU inversion (hotter pages with higher fault latency).
-> >
-> > This happens because mem_cgroup_iter() always returns NULL when
-> > memory cgroups are disabled. As a result, the global shrinker
-> > shrink_worker() repeatedly takes empty walks. After MAX_RECLAIM_RETRIES
-> > failed attempts, the worker gives up without writing back any pages.
-> >
-> > Therefore, when memory cgroup is disabled, fall through with the !memcg
-> > branch and shrink the root memcg directly.
-> >
-> > With memcg disabled, shrink_memcg() only returns -ENOENT when the root
-> > LRU is empty, which means the total pages are already below thr. In the
-> > absence of heavy concurrent zswap stores, the loop then safely bails ou=
-t
-> > via the zswap_total_pages() <=3D thr check; otherwise, it will resume
-> > shrinking the memcg after processing the reschedule check. For any othe=
-r
-> > return value from shrink_memcg(), the loop is guaranteed to terminate,
-> > either after MAX_RECLAIM_RETRIES failures or once the threshold is met.
-> >
-> > Fixes: a65b0e7607cc ("zswap: make shrinking memcg-aware")
-> > Cc: stable@vger.kernel.org
->
-> How does this affect users?  What behavior do they observe when it
-> occurs?
+On Wed, 29 Jul 2026 13:38:12 +0800 Warren Xiong <warren.xiong@ugreen.com> wrote:
 
-I think the first paragraph sums it up pretty well, especially the
-last sentence "hotter pages with higher fault latency".
+> page_owner_sort opens the output file with "w" before reading the input.
+> If both paths refer to the same file, this truncates the input and the
+> tool silently processes zero records before returning success.
 
->
-> > Closes: https://lore.kernel.org/all/CAO9r8zPVzMKFbCixxD-qgtRrkFxWVrHiZZ=
-eLc=3DeyTPKPVQgX4g@mail.gmail.com
->
-> hm, that isn't really a bug report and doesn't answer the above
-> question.
+Don't do that then?  I mean, is there any expectation that this works?
 
-Yeah, it isn't. Probably we should drop "Closes". I assume Hao added
-it because checkpatch annoyingly complains if you add "Reported-by"
-without "Closes", so Hao just linked to the thread where I pointed out
-the bug.
+hp2:/usr/src/25> ls -l x
+-rw-rw-r-- 1 akpm akpm 55318 Jul 29 17:27 x
+hp2:/usr/src/25> sort -o x x
+hp2:/usr/src/25> ls -l x    
+-rw-rw-r-- 1 akpm akpm 55318 Jul 29 17:27 x
 
->
-> AI review asked a couple of questions:
->         https://sashiko.dev/#/patchset/20260729084206.77793-1-jiahao.kern=
-el@gmail.com
+Oh.  sort(1) does that.  I never knew.
 
-The review on patch #1 is something theoretical, we discussed it at
-length in previous versions.
+> Open the output without truncating it and compare the device and inode
+> numbers of the opened files. Reject matching regular files, then truncate
+> regular output files only after the check. This also detects hard link and
+> symbolic link aliases while preserving non-regular outputs such as
+> /dev/stdout.
 
-For patch #2:
+This all sounds complex.  How does sort(1) do it?  Write to a temporary
+file then a rename?
 
-> Does this batching logic break NUMA fairness?
->
-> Because for_each_node_state() always starts from the lowest node
-> ID and breaks when the scan budget is exhausted, subsequent
-> calls to shrink_memcg() will restart at the lowest node ID again.
->
-> If the lowest node (typically Node 0) consistently has enough
-> items to exhaust the scan budget, wouldn't we exclusively evict
-> pages from it while ignoring older pages on other nodes? Could
-> this cause LRU inversion across nodes, keeping older pages in
-> memory on Node 1 while hot pages on Node 0 are evicted?
+For page_owner_sort I expect we could load all the input into memory
+before opening the output file?
 
-Yes, unfairness is possible.
-
-For global shrinking, it's probably not an issue. We reclaim until we
-hit the acceptance threshold and it's very unlikely this will happen
-before iterating all nodes (given that the batch size is 32 pages).
-However, with the shrink_memcg() path, we only reclaim one batch, so
-there's a chance we'll always reclaim it from node 0.
-
-Maybe we should just drop the early bailout and accept potentially
-doing more writeback than needed. Hao, WDYT?
-
-If you respin, please also drop the batch size argument to
-shrink_memcg() as it's now always SWAP_CLUSTER_MAX.
 
