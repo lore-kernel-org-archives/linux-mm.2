@@ -4,141 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2231AC54FD2
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 09:35:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F366C54FD2
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Jul 2026 09:41:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 21B1B6B00A1; Thu, 30 Jul 2026 05:35:23 -0400 (EDT)
+	id 6DF5A6B00A0; Thu, 30 Jul 2026 05:41:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1F3F56B00AA; Thu, 30 Jul 2026 05:35:23 -0400 (EDT)
+	id 690C46B00A2; Thu, 30 Jul 2026 05:41:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 10F3E6B00A1; Thu, 30 Jul 2026 05:35:23 -0400 (EDT)
+	id 558946B00A3; Thu, 30 Jul 2026 05:41:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E087F6B00A1
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 05:35:22 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 75201A091E
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:35:22 +0000 (UTC)
-X-FDA: 85044934884.25.1CB5930
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 908D2140004
-	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:35:20 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=EOcoQvbM;
-	spf=pass (imf26.hostedemail.com: domain of huangzhaoyang@gmail.com designates 209.85.208.180 as permitted sender) smtp.mailfrom=huangzhaoyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1785404120;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1DE276B00A0
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 05:41:13 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 92D0CC08F4
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:41:12 +0000 (UTC)
+X-FDA: 85044949584.15.8080A29
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id D49B840004
+	for <linux-mm@kvack.org>; Thu, 30 Jul 2026 09:41:10 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=owEBCDFF;
+	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1785404470;
+	b=5jN8LWO/XDLsAX4caZjT0dYS5N/acHnPgx/Fkx6bqGqYQDDB7OpT85tHMm06tTPUHqW4UQ
+	ELnjPkvCuo/a8kmPr09wiJfzoZfh1eUpP3uUJnhjaexYVzSihKZ6as0riXOhsYPWogAouN
+	1zznNxTXr/Xdwx3NRrFgI/GaipAYPA4=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=owEBCDFF;
+	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1785404470;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NryIn5+QOfV5q6ne7Ag2M6p8wAK1ISxZjdVgOE/cIdQ=;
-	b=J6GxjewDS7jLNwbXcl8zzFPxoGnA3jmiPlMe5iacZu/H/PEohHMg2ZV2GluP+nKSydTALp
-	Yi5VvPP1U80Xcn972ed89ntGi2Q1o7JbZ06BI0/EDfAaQu1VI6wZIY6uMoqQbRWNx5VdLQ
-	km1SZiEN78MxrhglTplMK27aYOLewBM=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1785404120;
-	b=EA0xQ6553ntbGtggwm2fhtbFcfrCIYtsjSGzTPDYtKo6hWDLkVdZRNyOON29srtjbAMVF+
-	tQTtCX78QINwN+Rak9Clgklz7M1wG3H4wpaKRgAqhWNSPigDSKEzVaEtWxmOU07LPZNtZ9
-	8+M9ks6/8fKFuY0SiwZ7VH76/VkN+og=
-ARC-Authentication-Results: i=2;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=EOcoQvbM;
-	spf=pass (imf26.hostedemail.com: domain of huangzhaoyang@gmail.com designates 209.85.208.180 as permitted sender) smtp.mailfrom=huangzhaoyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-39dba1ea83bso588141fa.3
-        for <linux-mm@kvack.org>; Thu, 30 Jul 2026 02:35:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785404119; cv=none;
-        d=google.com; s=arc-20260327;
-        b=b+hU7lrNa1NgB1XxZouICEBcdB2hznmyfMRdojjC3LAP2RUYq4sXpwp72l2MA9sWFG
-         wHc85y9XB5wrMCuhHnf9SpLA5EM3saR8LFrLdpyc9CdvTY9mDyus72RMd1Nf6ZIHkcmR
-         ZWBP2LKBQCvUtpIb4v/vmtKsWOXV4oKIKM75htywDAO5KDAkDhcGxT2K0A5QS3DtQBsA
-         gIlm2fZRessqeMBvl86fWEf2gZ5B+FpR0ZZ9njGOsbGPXKNvOsFeXEj0Z4OhaXE4M2Pp
-         xl3VWteusVRIPnHnxYArwfVfDTVzMriTdk5UMYnxqIDdmTpsp904buhrlg9FjxK9o563
-         S2Mw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=NryIn5+QOfV5q6ne7Ag2M6p8wAK1ISxZjdVgOE/cIdQ=;
-        fh=mOf5cvNS6a5+9beTXxkKaUSQSNCSxRrqqlPP0oH175w=;
-        b=ORBim+71R3HIgyOpDW5TeGP9DVSIUiAXpQvYh9uP2mIEcpLt5fEYVvdJLzXf23q0rf
-         aUIglrM1suJXPmB3VoiHOic3Qdy9bTjQnhefl1z8E1Y23u05yMZ4UpV0XMgZy2UBjCeH
-         zptLChGKhNhcoGFNB/duHF8UmKaVXN+ZelD60mlvj06btdMG/gLLT+Ahmk72XSUY7lIG
-         Mc+5fauBimX73Q+Azrkg/oX1m9ifzTiTa0Ysx1KAIggk+aQzMmnn6SrMalyxhMaeNdQ+
-         ZvmePrOwjq3ArRfBMthhtxTdVxOSd1Ajbp2lSTXTI2meyb19yaLiA4qEg5jCbxoXmdWA
-         XsRQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785404119; x=1786008919; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=NryIn5+QOfV5q6ne7Ag2M6p8wAK1ISxZjdVgOE/cIdQ=;
-        b=EOcoQvbMLX4JrYDtKtw/YGwwTb745yWv2R8gq/yuOlBuZmgwVToTTiEleRM6vO0dm/
-         0l7I+NselAIoIqzSJ9KAGSYXGZN7vw7ilTrYzD5XlOwLw8GYD0rlYXzCMwpTsA+wpcby
-         TzSG1QsSgolXECTp0Mj/fqP6jpsaHDonz4hphPd4M+hrF1weV80NjZ70Q3zbny2N/ceK
-         qtob6ulZp6FPByLihSg4LCevfy7ltFRHyrqVG1QFAXBuJOFKEWd266BPIuWpwKaM7CzS
-         iGrSLFeMIr11daiS/Tv9ke02PaWEnch1ZMvh+C6maKhzqSVv7+HUmmwiQ5VGfhRTXZEr
-         MEdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785404119; x=1786008919;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=NryIn5+QOfV5q6ne7Ag2M6p8wAK1ISxZjdVgOE/cIdQ=;
-        b=TXuqgM/pagyM4HVRQDYZlnZ3FUKjW3spybmM6pg1g02hXJzKByVWctrDkQySnngkXk
-         oxgeV8IeLFf8YDJsD1C6YPqInuob/fHl+kZTBz51tKMiJEMb5HrPSm2iODDEjAT2pFmp
-         GpyEfhWyny4pd8Ncvjy8EaYlzX154uCz7kJA6kBtot/ZuCvWaEHGQwITx3XbBPlGDC47
-         OtwMUdryFtjmbTIBzkaUt3aU037/3nqQZg/BsOc1TPI5LQk5iU/jYr8kFHivcXcPyGY8
-         hOYOkqDix07EAh2hjoZcYe2kc6G3ddlr0fJC8PM/v1dL5/ybP0D1sjjy/MUEhCcc+o/T
-         AsFg==
-X-Forwarded-Encrypted: i=1; AHgh+RpF0e7//ZpG3rjJTHedMpgULTpKqaTP0WbkzDTZouBCfRG2MzmOs7zjhHL3wCsbtCubl3k6mJy3LA==@kvack.org
-X-Gm-Message-State: AOJu0YwmrAbQSbOJGoaGVayP+JYxETGKwpVrzJWG9/lCNPsuDfGOEWYS
-	KlPY1TGAEuJDm35JAWwWy+X2EpZomrg8WLhUEowEs7Irc0zhwq024oJIQsZIAuSUOHfJ2///h45
-	3lkfaiKl650g1ybqoPQCA3arz/CRTGXo=
-X-Gm-Gg: AR+sD10FODoLmlyONLz8RErQ3d14IM68UY+i5/CUQRBo4k1b8mlTOXESne1+WbbW/hy
-	avjAEEIsQkg35Ci+a7OJ/MnFUmA5yR0oxYCRdNcMRnA//OJO8g73he2g+cOsNMh0RNSe3M98zGv
-	Q306LKyE/FgjWCHKcMxEsWWb9vJWO6x0zOS1qBWWlb0DfcPDrIm7OZOm4QiOFUMvtE7JIYsLuLr
-	UgsnqIC7A9lEARVZ6ZMvFOU/H8i2LgTsODHSdZl2leg6W7J1xycFj6aKIbH63HSCu97r4czq1Dz
-	rnwKpOBJXE3TYcqaCI54ekQbslYjlkVUi07eFA5tfI1UfzmPKslcWlEy
-X-Received: by 2002:a2e:bc06:0:b0:39c:9b7b:7e4a with SMTP id
- 38308e7fff4ca-39f6b66ca43mr3973561fa.0.1785404118676; Thu, 30 Jul 2026
- 02:35:18 -0700 (PDT)
+	bh=bXRSOEW7KmTLEA5e4w9VE7SIvHIV48lOKraAwCykp7M=;
+	b=ZBmVJ/sRR2+Fpq86JAPEMfVFkRRjBKQH53JU/m6STUlsvkwzBw644C+/pZrBefYpJSePsl
+	qYx40giPAcBFaDBu9j0qlQYmtSSFba3u+23WXxc+UpbcO7GES7c27lRmveRb03MbBMYma/
+	kPpREfXfRIvkHFZpaedeMEnFQesab90=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id B762E401F8;
+	Thu, 30 Jul 2026 09:41:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C7A81F000E9;
+	Thu, 30 Jul 2026 09:41:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785404469;
+	bh=bXRSOEW7KmTLEA5e4w9VE7SIvHIV48lOKraAwCykp7M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=owEBCDFFYm/5ZGKYj3PLpfK+W4y/oqab8Ho92pybkve7clPInVhDZYpnfoTE2ZI9w
+	 ZJcdk9WK/XuZ4xo1fAia9i8pCuoK5NIMjj7Vt4X7ThgaEv5SrTuO6SrBPoo/mZO3xw
+	 sy9fYDPX7qedxRttlYHJ9q0EDjpfGK0xUZ19gOGeiVIeu2TwwfErbWKZ87/2sU1/lE
+	 8RhFDnjjaTmufFd6794B6PbR6kfVxcM09RXHKo/NfZeAM0Ln535IdVwrtGHY9beqLj
+	 rPhVwl45M11nidWsdiefFhPWPdjhNcYtx8CQ6IEgv2yzE3EXffemnjENxT1rx2DHHr
+	 ebSEugnxHDQuQ==
+Date: Thu, 30 Jul 2026 10:40:50 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Pratyush Mallick <pratmal@google.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	akpm@linux-foundation.org, vbabka@kernel.org, sj@kernel.org, corbet@lwn.net, 
+	skhan@linuxfoundation.org, anshuman.khandual@arm.com, gthelen@google.com, surenb@google.com, 
+	mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com, 
+	liam@infradead.org, rppt@kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v3] mm/page_reporting: Add page_reporting_delay_ms module
+ parameter
+Message-ID: <amsYVFfJmOs-Hy90@lucifer>
+References: <20260727230545.262579-1-pratmal@google.com>
+ <amiN82J8p5z9l_Rm@lucifer>
+ <91b61f02-c533-41b9-b680-7de52a5c6918@kernel.org>
+ <CALHaPKeOs25YNRg60+NxfS3E5RYLt5hJqFNX02ZCEBrjcDua0Q@mail.gmail.com>
 MIME-Version: 1.0
-References: <20260730072349.1360449-1-zhaoyang.huang@unisoc.com>
- <CAGsJ_4xW8WujWvgFrrR2NHoQZd4nLPi8QBtXwGsrQXj72CL=NA@mail.gmail.com>
- <CAGWkznEuXnYMyFkkQM6fx1MVE8p=oGjg_VTZK7SJsCBDrcap+A@mail.gmail.com> <CAGsJ_4xnc6HzvoNeMmcN1yOEnXC+adVO+AT+pOsxyWhhUcbXbw@mail.gmail.com>
-In-Reply-To: <CAGsJ_4xnc6HzvoNeMmcN1yOEnXC+adVO+AT+pOsxyWhhUcbXbw@mail.gmail.com>
-From: Zhaoyang Huang <huangzhaoyang@gmail.com>
-Date: Thu, 30 Jul 2026 17:35:06 +0800
-X-Gm-Features: AUfX_mxfH-6xCYvo18fBqxaOOig6pKieEVfJffFKpWvj8n2KBPjawQWpAH6IPe0
-Message-ID: <CAGWkznFCzz=ow2eDyzQR6UsAkLvuamEYpyc4PXJXXd6rF4HHcg@mail.gmail.com>
-Subject: Re: [PATCH] mm/mglru: force aging the lruvec when min_seq pinned
-To: Barry Song <baohua@kernel.org>
-Cc: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	steve.kang@unisoc.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: fpsqym6zrcspjt8hemn1ixpws7zjubmi
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CALHaPKeOs25YNRg60+NxfS3E5RYLt5hJqFNX02ZCEBrjcDua0Q@mail.gmail.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: D49B840004
+X-Stat-Signature: mztzqhhod7pk735skfdzqhgsafaidoyk
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 908D2140004
-X-HE-Tag: 1785404120-667888
-X-HE-Meta: U2FsdGVkX1/wbvuNv96pOoGWXXJXkkJ8TAW5qImP0smIsx3oCfY6T0KCHonmv3qrvmxXSSeH+kNvvE58c/uJEF2Bl8A34n1pl8+F4gzDsW9zY45oSc5/I++pl9GZPqJjjvHLgD+No6o6La84KcXXp+3+lyxBtFz9P9VsI+KQQRLqXskaBmdiqh3iH2ZKGURxMqSfAoIgX3BDSzFXHHPNOxJGijZsB+t8iIJIaHXW9CUb4asB2B8dYaSwA6zVA8cLXS/3vyhS94mkaDMsXuzbt4wR/l17317CoN4sdYgKh5SgbrvGe4ipxCSI0TlwMt7/CaYT4NK/+Qw3l0dax7UXntl6DJrsx1UJaoXJJZM3TJIYQ+CthwUzOb1AIj9DN8Ph8lKKjl61lcOOyDDG7EECYTOBA89Dpr6TLxc7NOL+Z6g9yhaZX4Mu320pB5Ma1QDRwVoQi5+RXzLFxCBsuMPrwruGTkqGkuzlmi6pblW9ca/s4GH5MOkBUWxGPjf38LuDWogbHHVAOi/Zd3sOt/uuW7uzIH4A9IZxnMJIsyGkhzAH5628X7UK4WhhVGqjyMSuPIW2uMeRxTgz7s4NyIEDZz23PSItL0oFWhLJTBwH8YmmcH3Nb+bmH0ZDw+1UJxy3reAguJxYqPqD+c+9Z4quHkmZ+QXtdk9tgAEZzjHUko5uotvF9Jmx+EjPOQ/ZMv/JficOsksVHLqCUCQya0msZQzuGz0E9QNlbURgjshh073Pug6jHg4yhgV3M4HrfH+mfn+dRW02vyX5DdDaXtgc9Zc83UNQq9eYN2GY0wxKNcC/KZAgeEgtH/6nhQ/6odrEUz9Eugw7i+yqeUqaIPLIBj2/O0+FYhHnoT/s1BDKPNpgmv5QHLMI7EOyYlPY4lejLnilAQN+un+RgPOBu1lKJ0RuRRjNFK+KcEEv5qz5mm9h2WtMW/gJOZ3yVmNo8SMf0YZ3sHJKu+xyyYQFSu0
- RjThut2R
- MMRj/Oyx2g112vURaeyq7NrfFs4PEvNlLELTocYK034wewZORMZlIsy4OOZ6azyQDl/hqol33hTjU2rfzp6dGCa3W9QDLuzT+LD1b/QSTmgQTfmrEFRWAs4VRqwHiNFYAufxFSEH+H7gZ8SWuX6e3OV+0UVcy9DE4xx8rkFxnCtxFplFoLa5+tGietZDTU2nczHCiDssxEvA64f3TukYkiKnTQJdILQotobLJ0sicAZOkBmqGGpMWCoo2LRddQ8HmbpaA4HYJ24CffheqtxWb6SeX90VjOkg6rKeH55NOzK4lYw82vkfHl7WPXhioKADnDohuLQsaZFutqNDjKvgzgwEuz1iVawMetY5KFgkItFM7/849zViKaa1dQTsxWXjJUI5M/8MOnqfxzHOmMp1Qcn4ln0tFggnWqUeIYriRPvKvNQ70OZU0GM6VQ7dDjuEDVLZqbN09vmiUcBri4ULsbYlaID24h03Qjtyo4G87FJs4eJ62XGaY4BFNZg==
+X-HE-Tag: 1785404470-187272
+X-HE-Meta: U2FsdGVkX19EFcT8hk1OwefNp5tVxCIIPNk/R6IB7I7p3L4pAAaUzybJxMlUUvTocSmp6hCMHbOX9mctkohPPaH2D1JmPzc034dMgr08SyJ+eHX4/dTta94X0mvcnsrOF0ldpGJhrX9rPkwsiDd0YpK2LXuca8xqQl7IGn6yTn3gn1trWPTTn1/83GAc+KMtCp1bxJCbbge0p0WxRSgdvOaYVcBzxyE35y7scgaVun8RC9zx2uPZ1NiSa64W4ehjvxyEy3maXvqgu4Lovgp+t+E/g5sXqqi9p7sr+BPzplp1QAo9msrstUTJuTD6D/45/w5gD6ibmSirPjvpbha817e+szev1O5y3pGlPBiH8rS3gHqOfHKCMxQlS3R+/06tBHMp4JQHxvxkDmErNvEDCiRV0a3ns6nxgfvRA9vA1qLIIrFRSgMtdNS8GYjGZgOLpFmXSAoS9pH6FktkWENm75fQgHkBedVfHajQHMILGYIJCNWeCKm0I1l8ystYEZdHkL3uCPGWwM/Ka+zdgNLRKO3Af3pkX1zaDanqj4aj2CXKlxAFN7RxBFUwXX4aGD/SI7hQ5eW3TmCEospfFenbk93KyTXeOjutT3pyVe5+sFfpiMGZG8ztFY3lyzz4u7J/0z0lgJgVnpyytKOYKWBpZx0fX1PUXYsAZRQUNtDXYuHrH1xkJD7xh1+4fI30dx6p9H9UBiULlfo95cweIFHVY9gE7Si4TSak9GPhbDpMg8dddKv7sTZjHOL/pJdJ8orvWdbaecip52kS0+4kzWj8WPTeLtI/3yXumoAeb2BF71krhigk+nhV6ycz7dW5hvwlU9q231X807lVX96LKixZPosLyqppgTZTjGeD0H3zOgQddJ2JExVa3Iz+m7fyJg6QiW/1+lTnIfgFFymWiFsS/HgnTLik2/rSq70lqBUp/gYkdxM4P/E1IMDPIEsfRp6YFBo56hQ2yDh0fjE4hkP
+ mTVWz2gW
+ LvTzKwr/oveUdkhe6G1tW5n+HZmxGPkoWLp5pauGZrXTID6NgqliaTN8IG0pKsIspNA4RZYzndImmKMHr/JXeSUbMJSVIinmEhu2qQ1r891jW7h7NOntowFmbBjocZECc66pTLflHK+2TdGGC0JQmki7XghAz/F20LWAxRQhTiH2l9Jyt3IKe/k6HPFE3UtraeGuFpZjM/yKHgVG5chYEphjY5/0Pto9c/aynONs6uHCjFScNOGo+qubvxgKIvAg0dihjiIhQCePHsIOyeBpScwxeeWr6FTnkCk/YzG2K/GVq4sjxQdFlBbjzRVrA3dqJfMUBWuKVuEkbdyprGBniHtu86qoAZoKJwiMG1rVpDFNp0gv2B3A0NxNtSw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,36 +100,167 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 30, 2026 at 5:31=E2=80=AFPM Barry Song <baohua@kernel.org> wrot=
-e:
+On Tue, Jul 28, 2026 at 01:31:10PM -0700, Pratyush Mallick wrote:
+> On Tue, Jul 28, 2026 at 11:55 AM David Hildenbrand (Arm)
+> <david@kernel.org> wrote:
+> >
+> > On 7/28/26 13:13, Lorenzo Stoakes (ARM) wrote:
+> > > On Mon, Jul 27, 2026 at 11:05:45PM +0000, pratmal@google.com wrote:
+> > >> From: Pratyush Mallick <pratmal@google.com>
+> > >>
+> > >> Currently, the free page reporting uses a hardcoded delay of
+> > >> (2 HZ) between reporting intervals. While this is a reasonable
+> > >> default, it lacks the flexibility to adapt to varying guest workloads.
+> > >>
+> > >> A low delay allows aggressive memory reclamation, returning unused
+> > >> pages to the host as quickly as possible. However, during spiky
+> > >> allocation/free churn, this immediate reporting can lead to a severe
+> > >> performance penalty (nested page faults) as the guest re-allocates memory
+> > >> that the host has just unmapped. In these scenarios, there is benefit
+> > >> from increasing the delay to batch free pages over a longer window,
+> > >> absorbing the churn without hypercall and re-fault overhead.
+> > >
+> > > Since you're talking about increasing it, maybe set the floor at the current
+> > > value of 2s?
 >
-> On Thu, Jul 30, 2026 at 5:20=E2=80=AFPM Zhaoyang Huang <huangzhaoyang@gma=
-il.com> wrote:
-> [...]
+> We benefit equally by setting the value to zero as well. This would immediately
+> report the pages being freed back to the host without any delay. This helps when
+> the host is under pressure, as any immediate memory release would help it.
+
+OK page_reporting_order makes this better.
+
+>
+> > >>
+> > >> This patch exposes the delay as a module parameter:
+> > >> /sys/module/page_reporting/parameters/page_reporting_delay_ms, measured
+> > >> in milliseconds and defaults to 2000ms.
 > > >
-> > > This is very weird. This seems like using a sledgehammer to kill a fl=
-y :-)
+> > > I'm not sure this is great as it means we now have a parameter we have to
+> > > support forever and autotuning becomes harder to implement, also if later the
+> > > implementation is changed, this might prevent a reimplementation.
+> >
+> > While I'd prefer to keep the implementation as simple as possible unless really
+> > required, I guess auto-tune could be enabled by setting the parameter to e.g.,
+> > -1 in the future.
+
+We'd have to retain the customisable delay forever either way.
+
+But I guess maybe in this case it's not such a big deal.
+
+>
+> The case we're trying to solve involves tuning free page reporting based on host
+> memory pressure. I think the host is the primary beneficiary of free page
+> reporting, so if we wanted to dynamically autotune this delay, we would need
+> some mechanism from the host to enlighten the guest about its current memory
+> pressure and the autotuner would build its heuristics around it.
+> As far as I understand, no such mechanism currently exists. While
+> we do have ballooning, it requires the guest to actively allocate memory under
+> pressure, which makes it a comparatively slower mechanism and wouldn't help
+> much for simply adjusting the reporting rate of already free pages.
+
+You're explicitly needing to do this under certain circumstances.
+
+>
+> > >>      /*
+> > >> -     * Delay the start of work to allow a sizable queue to build. For
+> > >> -     * now we are limiting this to running no more than once every
+> > >> -     * couple of seconds.
+> > >> +     * Delay the start of work to allow a sizable queue to build.
+> > >> +     * We limit this based on page_reporting_delay_ms.
+> > >>       */
+> > >> -    schedule_delayed_work(&prdev->work, PAGE_REPORTING_DELAY);
+> > >> +    schedule_delayed_work(&prdev->work,
+> > >> +                          msecs_to_jiffies(page_reporting_delay_ms));
 > > >
-> > > Do you mean that isolate_folio() fails, the folio is put back
-> > > into the oldest generation, and the next time it is scanned, it
-> > > still fails to be isolated? As a result, scan_folios() makes
-> > > no progress at all?
-> > > And is it because the oldest generation contains only this
-> > > folio, leaving no other folios for scan_folios() to scan?
+> > > Err, do we not want to limit this to something sensible? What if the user
+> > > specifies 0 does it just hammer the system at that stage?
+> >
+> > IIUC, 0 just means "as soon there is a suitable free page block to report, start
+> > reporting immediately".
+
+There's comments like "We will defer by page_reporting_delay_ms to allow more
+pages to accumulate." etc.
+
+Maybe worth tweaking that?
+
+But with page_reporting_order == 9 (or 5 see below) then fine I guess.
+
+If somebody asks for something stupid by setting it higher they'd already
+accumulate latencies, just now with a 0 timer it could be really crazy :) but I
+suppose they are asking for it.
+
+> >
+> > With 2s, we wait 2s before we start reporting immediately by kicking the
+> > workqueue immediately.
+> >
+> > So "0" does not mean "report all the time", rather "start reporting immediately
+> > as we are notified about a pageblock to report".
+
+No, it's whenever pageblock_order is specified, defaulting to a pageblock.
+
+But I guess in practice fine.
+
+There's fun like this in virtio_balloon.c btw:
+
+		/*
+		 * The default page reporting order is @pageblock_order, which
+		 * corresponds to 512MB in size on ARM64 when 64KB base page
+		 * size is used. The page reporting won't be triggered if the
+		 * freeing page can't come up with a free area like that huge.
+		 * So we specify the page reporting order to 5, corresponding
+		 * to 2MB. It helps to avoid THP splitting if 4KB base page
+		 * size is used by host.
+		 *
+		 * Ideally, the page reporting order is selected based on the
+		 * host's base page size. However, it needs more work to report
+		 * that value. The hard-coded order would be fine currently.
+		 */
+#if defined(CONFIG_ARM64) && defined(CONFIG_ARM64_64K_PAGES)
+		vb->pr_dev_info.order = 5;
+#endif
+
+>
+> Right. Setting the delay to 0 does not hammer the system. The execution
+> is constrained by two checks:
+> 1. The worker is only scheduled when high-order pages (default is >= 2MB) are
+> freed. This makes scheduling relatively infrequent compared to normal 4K
+> page allocations.
+
+It's that only by default and could be overridden (and is for arm64 64 KiB page
+tables but probably also fine there)
+
+But probably fine.
+
+> 2. Even when the worker wakes up, the actual expensive operations, such
+> as page isolation, acquiring locks, and hypercalls to report pages, are
+> guarded by the watermark check in page_reporting_process_zone(). We only
+> proceed with reporting if the zone has enough free pages to fill the
+> capacity batches (32 slots by default). If the watermark is not met,
+> the worker simply
+> exits and returns to the IDLE state without issuing any hypercalls.
+
+OK that makes it better.
+
+Can you make these points in the commit msg on respin then?
+
+>
+> > >>       state = atomic_cmpxchg(&prdev->state, state, PAGE_REPORTING_IDLE);
+> > >>       if (state == PAGE_REPORTING_REQUESTED)
+> > >> -             schedule_delayed_work(&prdev->work, PAGE_REPORTING_DELAY);
+> > >> +             schedule_delayed_work(&prdev->work,
+> > >> +                                   msecs_to_jiffies(page_reporting_delay_ms));
 > > >
-> > > Why can't you simply promote the folio?
-> > > Do you know why isolate_folio() keeps failing? I suspect it's
-> > > because folio_try_get(folio) fails repeatedly?
-> > Yes. As described in commit message, the orphan folio is an abnormal
-> > one as it is on page cache but has folio->refcount=3D0 which makes it
-> > isolated and putback to lru forever and finally be the only one in
-> > min_seq. IMO, MGLRU should keep make progress with bringing this
-> > orphan folio together with.
+> > > This code is duplicated, while you've making this change maybe pull this into
+> > > its own function?
 > > >
 >
-> Why is a folio with folio->refcount =3D=3D 0 still in the page
-> cache? Can this be fixed at the source instead?
-Yes, it is a bug and should be fixed. But I think it should not affect
-LRU in this way while the legacy LRU could move forward in the same
-scenario.
+> Thanks. I can create a new function for this and send a V4.
+
+Thanks
+
+>
+> Regards,
+> Pratyush
+
+Cheers, Lorenzo
 
